@@ -12,7 +12,7 @@ python3 scripts/gen_sections.py
 
 # ReasBookWeb depends on Verso/subverso/MD4Lean and does not expose the
 # Mathlib `cache` executable. Cache priming is handled in ReasBook scripts.
-echo "[build_reasbook_web] skipping cache get (no `lake exe cache` in ReasBookWeb)"
+echo "[build_reasbook_web] skipping cache get (no 'lake exe cache' in ReasBookWeb)"
 
 echo "[build_reasbook_web] building Verso site"
 "$LAKE_BIN" exe reasbook-site
