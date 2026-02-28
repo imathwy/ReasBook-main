@@ -13,16 +13,13 @@ Overview page for `7.3 Outer Measure Is not Additive`.
 This aggregation module imports all currently available part files for this section.
 
 Verso links:
-- [Local Verso: Section overview](/ReasBook/books/analysis2_tao_2022/chapters/chap07/section03/)
-- [Local Verso: Chapter overview](/ReasBook/books/analysis2_tao_2022/chapters/chap07/)
-- [Local Verso: Book overview](/ReasBook/books/analysis2_tao_2022/book/)
-- [Published Verso: Section overview](https://optsuite.github.io/ReasBook/books/analysis2_tao_2022/chapters/chap07/section03/)
-- [Published Verso: Chapter overview](https://optsuite.github.io/ReasBook/books/analysis2_tao_2022/chapters/chap07/)
-- [Published Verso: Book overview](https://optsuite.github.io/ReasBook/books/analysis2_tao_2022/book/)
+- [Section overview](https://imathwy.github.io/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section03/)
+- [Chapter overview](https://imathwy.github.io/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/)
+- [Book overview](https://imathwy.github.io/ReasBook-main/books/analysis2_tao_2022/book/)
 
 Directory:
 
-- [Part 1 file](https://github.com/optsuite/ReasBook/blob/main/ReasBook/Books/Analysis2_Tao_2022/Chapters/Chap07/section03_part1.lean) ([Local Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap07/section03_part1/)) ([Published Verso](https://optsuite.github.io/ReasBook/books/analysis2_tao_2022/chapters/chap07/section03_part1/))
-- [Part 2 file](https://github.com/optsuite/ReasBook/blob/main/ReasBook/Books/Analysis2_Tao_2022/Chapters/Chap07/section03_part2.lean) ([Local Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap07/section03_part2/)) ([Published Verso](https://optsuite.github.io/ReasBook/books/analysis2_tao_2022/chapters/chap07/section03_part2/))
+- [Part 1 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/Analysis2_Tao_2022/Chapters/Chap07/section03_part1.lean) ([Verso](https://imathwy.github.io/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section03_part1/))
+- [Part 2 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/Analysis2_Tao_2022/Chapters/Chap07/section03_part2.lean) ([Verso](https://imathwy.github.io/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section03_part2/))
 
 -/

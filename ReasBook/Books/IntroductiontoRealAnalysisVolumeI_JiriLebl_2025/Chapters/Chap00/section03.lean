@@ -16,17 +16,15 @@ Overview page for `Section 0.3`.
 This aggregation module imports all currently available part files for this section.
 
 Verso links:
-- [Local Verso: Section overview](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03/)
-- [Local Verso: Book overview](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/book/)
-- [Published Verso: Section overview](https://optsuite.github.io/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03/)
-- [Published Verso: Book overview](https://optsuite.github.io/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/book/)
+- [Section overview](https://imathwy.github.io/ReasBook-main/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03/)
+- [Book overview](https://imathwy.github.io/ReasBook-main/books/introductiontorealanalysisvolumei_jirilebl_2025/book/)
 
 Directory:
 
-- [Part 1 file](https://github.com/optsuite/ReasBook/blob/main/ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap00/section03_part1.lean) ([Local Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part1/)) ([Published Verso](https://optsuite.github.io/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part1/))
-- [Part 2 file](https://github.com/optsuite/ReasBook/blob/main/ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap00/section03_part2.lean) ([Local Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part2/)) ([Published Verso](https://optsuite.github.io/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part2/))
-- [Part 3 file](https://github.com/optsuite/ReasBook/blob/main/ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap00/section03_part3.lean) ([Local Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part3/)) ([Published Verso](https://optsuite.github.io/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part3/))
-- [Part 4 file](https://github.com/optsuite/ReasBook/blob/main/ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap00/section03_part4.lean) ([Local Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part4/)) ([Published Verso](https://optsuite.github.io/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part4/))
-- [Part 5 file](https://github.com/optsuite/ReasBook/blob/main/ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap00/section03_part5.lean) ([Local Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part5/)) ([Published Verso](https://optsuite.github.io/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part5/))
+- [Part 1 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap00/section03_part1.lean) ([Verso](https://imathwy.github.io/ReasBook-main/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part1/))
+- [Part 2 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap00/section03_part2.lean) ([Verso](https://imathwy.github.io/ReasBook-main/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part2/))
+- [Part 3 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap00/section03_part3.lean) ([Verso](https://imathwy.github.io/ReasBook-main/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part3/))
+- [Part 4 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap00/section03_part4.lean) ([Verso](https://imathwy.github.io/ReasBook-main/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part4/))
+- [Part 5 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap00/section03_part5.lean) ([Verso](https://imathwy.github.io/ReasBook-main/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part5/))
 
 -/

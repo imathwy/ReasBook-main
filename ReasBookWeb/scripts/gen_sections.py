@@ -11,7 +11,7 @@ from typing import Iterable
 import json
 
 SITE_BASE = "https://imathwy.github.io/ReasBook-main/"
-SITE_ROOT = "/ReasBook/"
+SITE_ROOT = "/ReasBook-main/"
 DOCS_BASE = f"{SITE_BASE}docs/"
 GITHUB_SOURCE_BASE = "https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/"
 GITHUB_TREE_BASE = "https://github.com/imathwy/ReasBook-main/tree/main/ReasBook/"
@@ -1024,10 +1024,8 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
         body.append("This aggregation module imports the currently formalized sections in this book.")
         body.append("")
         body.append("Verso links:")
-        body.append(f"- [Local Verso: Book home]({local_site_link(f'books/{book.lower()}/')})")
-        body.append(f"- [Local Verso: Book overview]({local_site_link(f'books/{book.lower()}/book/')})")
-        body.append(f"- [Published Verso: Book home]({verso_link(f'books/{book.lower()}/')})")
-        body.append(f"- [Published Verso: Book overview]({verso_link(f'books/{book.lower()}/book/')})")
+        body.append(f"- [Book home]({verso_link(f'books/{book.lower()}/')})")
+        body.append(f"- [Book overview]({verso_link(f'books/{book.lower()}/book/')})")
         body.append("")
         if section_entries:
             body.append("Directory:")
@@ -1045,8 +1043,7 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
                     continue
                 body.append(
                     f"- [{label} file]({source_link(e.module)}) "
-                    f"([Local Verso]({local_site_link(e.route)})) "
-                    f"([Published Verso]({verso_link(e.route)}))"
+                    f"([Verso]({verso_link(e.route)}))"
                 )
             body.append("")
         else:
@@ -1074,10 +1071,8 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
                 chapter_body.append(f"Title: {chapter_title}")
                 chapter_body.append("")
             chapter_body.append("Verso links:")
-            chapter_body.append(f"- [Local Verso: Chapter overview]({local_site_link(chapter_route)})")
-            chapter_body.append(f"- [Local Verso: Book overview]({local_site_link(f'books/{book.lower()}/book/')})")
-            chapter_body.append(f"- [Published Verso: Chapter overview]({verso_link(chapter_route)})")
-            chapter_body.append(f"- [Published Verso: Book overview]({verso_link(f'books/{book.lower()}/book/')})")
+            chapter_body.append(f"- [Chapter overview]({verso_link(chapter_route)})")
+            chapter_body.append(f"- [Book overview]({verso_link(f'books/{book.lower()}/book/')})")
             chapter_body.append("")
             chapter_body.append("Section overviews:")
             chapter_body.append("")
@@ -1087,8 +1082,7 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
                     continue
                 chapter_body.append(
                     f"- [{label} file]({source_link(e.module)}) "
-                    f"([Local Verso]({local_site_link(e.route)})) "
-                    f"([Published Verso]({verso_link(e.route)}))"
+                    f"([Verso]({verso_link(e.route)}))"
                 )
             chapter_body.append("")
 
@@ -1127,22 +1121,17 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
         body.append("This aggregation module imports all currently available part files for this section.")
         body.append("")
         body.append("Verso links:")
-        body.append(f"- [Local Verso: Section overview]({local_site_link(base.route)})")
+        body.append(f"- [Section overview]({verso_link(base.route)})")
         if has_chapter_overview:
-            body.append(f"- [Local Verso: Chapter overview]({local_site_link(chapter_route)})")
-        body.append(f"- [Local Verso: Book overview]({local_site_link(f'books/{base.book_or_paper.lower()}/book/')})")
-        body.append(f"- [Published Verso: Section overview]({verso_link(base.route)})")
-        if has_chapter_overview:
-            body.append(f"- [Published Verso: Chapter overview]({verso_link(chapter_route)})")
-        body.append(f"- [Published Verso: Book overview]({verso_link(f'books/{base.book_or_paper.lower()}/book/')})")
+            body.append(f"- [Chapter overview]({verso_link(chapter_route)})")
+        body.append(f"- [Book overview]({verso_link(f'books/{base.book_or_paper.lower()}/book/')})")
         body.append("")
         body.append("Directory:")
         body.append("")
         for p in part_entries:
             body.append(
                 f"- [Part {p.part_num} file]({source_link(p.module)}) "
-                f"([Local Verso]({local_site_link(p.route)})) "
-                f"([Published Verso]({verso_link(p.route)}))"
+                f"([Verso]({verso_link(p.route)}))"
             )
         body.append("")
 

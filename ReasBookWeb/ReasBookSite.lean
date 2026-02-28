@@ -11,13 +11,13 @@ open scoped ReasBookSite.RouteTable
 
 open Output Html Template Theme
 
-def siteRoot : String := "/ReasBook/"
+def siteRoot : String := "/ReasBook-main/"
 def siteRootScript : String := s!"window.__versoSiteRoot=\"{siteRoot}\""
 def sidebarDataScript : String := s!"window.__reasbookSidebarData={ReasBookSite.Sections.sidebarDataJson};"
 def sidebarFallbackScript : String := r##"
 (function () {
-  const siteRoot = "/ReasBook/";
-  const siteRootNoSlash = "/ReasBook";
+  const siteRoot = "/ReasBook-main/";
+  const siteRootNoSlash = "/ReasBook-main";
 
   function trimSlashes(s) {
     return (s || "").replace(/^\/+|\/+$/g, "");
@@ -52,6 +52,16 @@ def sidebarFallbackScript : String := r##"
     if (parts.length >= 2 && parts[0] === "papers") {
       const slug = parts[1];
       const work = (navData.papers || []).find((w) => w.slug === slug) || null;
+      return { kind: "paper", work: work };
+    }
+    if (parts.length >= 3 && parts[0] === "docs" && parts[1] === "Books") {
+      const slug = String(parts[2] || "").toLowerCase();
+      const work = (navData.books || []).find((w) => String(w.slug || "").toLowerCase() === slug) || null;
+      return { kind: "book", work: work };
+    }
+    if (parts.length >= 3 && parts[0] === "docs" && parts[1] === "Papers") {
+      const slug = String(parts[2] || "").toLowerCase();
+      const work = (navData.papers || []).find((w) => String(w.slug || "").toLowerCase() === slug) || null;
       return { kind: "paper", work: work };
     }
     return { kind: "", work: null };
@@ -113,8 +123,8 @@ def docsRoot : String := s!"{siteRoot}docs/"
 def staticRoot : String := s!"{siteRoot}static/style.css"
 def navLinkRewriteScript : String := r##"
 (function () {
-  const siteRoot = "/ReasBook/";
-  const siteRootNoSlash = "/ReasBook";
+  const siteRoot = "/ReasBook-main/";
+  const siteRootNoSlash = "/ReasBook-main";
   const specials = ["#", "mailto:", "tel:"];
 
   function isSpecial(href) {
@@ -154,6 +164,16 @@ def navLinkRewriteScript : String := r##"
     if (parts.length >= 2 && parts[0] === "papers") {
       const slug = parts[1];
       const work = (navData.papers || []).find((w) => w.slug === slug) || null;
+      return { kind: "paper", work: work };
+    }
+    if (parts.length >= 3 && parts[0] === "docs" && parts[1] === "Books") {
+      const slug = String(parts[2] || "").toLowerCase();
+      const work = (navData.books || []).find((w) => String(w.slug || "").toLowerCase() === slug) || null;
+      return { kind: "book", work: work };
+    }
+    if (parts.length >= 3 && parts[0] === "docs" && parts[1] === "Papers") {
+      const slug = String(parts[2] || "").toLowerCase();
+      const work = (navData.papers || []).find((w) => String(w.slug || "").toLowerCase() === slug) || null;
       return { kind: "paper", work: work };
     }
     return { kind: "", work: null };
@@ -309,9 +329,9 @@ def theme : Theme := { Theme.default with
       <html>
         <head>
           <meta charset="UTF-8"/>
-          <base href="/ReasBook/"/>
+          <base href="/ReasBook-main/"/>
           <title>{{ (← param (α := String) "title") }} " -- ReasBook "</title>
-          <link rel="stylesheet" href="/ReasBook/static/style.css"/>
+          <link rel="stylesheet" href="/ReasBook-main/static/style.css"/>
           <script>{{Html.text false siteRootScript}}</script>
           <script>{{Html.text false sidebarDataScript}}</script>
           <script>{{Html.text false navLinkRewriteScript}}</script>
@@ -338,7 +358,7 @@ def theme : Theme := { Theme.default with
 /-- Generated section routes are injected by `reasbook_site_dir` from `ReasBookSite.RouteTable`. -/
 def demoSite : Site := reasbook_site
 
-def baseUrl := "https://optsuite.github.io/ReasBook/docs/"
+def baseUrl := "https://imathwy.github.io/ReasBook-main/docs/"
 
 def linkTargets : Code.LinkTargets α where
   const name _ := #[mkLink s!"{baseUrl}find?pattern={name}#doc"]

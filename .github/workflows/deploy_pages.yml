@@ -581,7 +581,7 @@ jobs:
                           '    <li><a href="./pages/">Pages</a></li>',
                           '    <li><a href="./docs/">Documentation</a></li>',
                           "  </ul>",
-                          '  <p><a href="/ReasBook/">Back to root</a></p>',
+                          '  <p><a href="/ReasBook-main/">Back to root</a></p>',
                           "</body>",
                           "</html>",
                           "",
