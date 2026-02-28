@@ -510,7 +510,7 @@ jobs:
     needs:
       - discover-projects
       - build-monolith-site
-    if: needs.discover-projects.outputs.full_deploy == 'true'
+    if: always() && needs.build-monolith-site.result == 'success'
     runs-on: ubuntu-latest
     outputs:
       pages_artifact_name: ${{ steps.pages_artifact_name.outputs.name }}
