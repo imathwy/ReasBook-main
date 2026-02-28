@@ -3,7 +3,8 @@
 # Build the Verso web project after sections/routes generation.
 set -euo pipefail
 
-LAKE_BIN="${LAKE_BIN:-$HOME/.elan/bin/lake}"
+HOME_DIR="${HOME:-/root}"
+LAKE_BIN="${LAKE_BIN:-$HOME_DIR/.elan/bin/lake}"
 
 echo "[build_reasbook_web] generating sections/routes"
 cd ReasBookWeb

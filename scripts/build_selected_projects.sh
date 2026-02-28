@@ -3,7 +3,8 @@
 # Build docs/core targets for selected books/papers from PROJECTS_JSON.
 set -euo pipefail
 
-LAKE_BIN="${LAKE_BIN:-$HOME/.elan/bin/lake}"
+HOME_DIR="${HOME:-/root}"
+LAKE_BIN="${LAKE_BIN:-$HOME_DIR/.elan/bin/lake}"
 PROJECTS_JSON="${PROJECTS_JSON:-[]}"
 
 cd ReasBook

@@ -80,11 +80,11 @@ jobs:
           ln -sfn "$persist_root/reasbook_lake" ReasBook/.lake
           ln -sfn "$persist_root/reasbookweb_lake" ReasBookWeb/.lake
           if [ -d "$persist_root/elan" ] && [ -n "$(ls -A "$persist_root/elan" 2>/dev/null)" ]; then
-            mkdir -p "$HOME/.elan"
+            mkdir -p "${HOME:-/root}/.elan"
             if command -v rsync >/dev/null 2>&1; then
-              rsync -a "$persist_root/elan/" "$HOME/.elan/"
+              rsync -a "$persist_root/elan/" "${HOME:-/root}/.elan/"
             else
-              cp -a "$persist_root/elan/." "$HOME/.elan/"
+              cp -a "$persist_root/elan/." "${HOME:-/root}/.elan/"
             fi
           fi
 
@@ -101,7 +101,7 @@ jobs:
 
       - name: Install elan (Lean toolchain manager)
         run: |
-          if [ ! -x "$HOME/.elan/bin/elan" ]; then
+          if [ ! -x "${HOME:-/root}/.elan/bin/elan" ]; then
             curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
           fi
 
@@ -237,12 +237,12 @@ jobs:
           repo_key="${GITHUB_REPOSITORY//\//_}"
           persist_root="${PERSIST_ROOT:-${HOME:-/root}/.cache/reasbook-ci/$repo_key}"
           mkdir -p "$persist_root/elan"
-          if [ -d "$HOME/.elan" ]; then
+          if [ -d "${HOME:-/root}/.elan" ]; then
             if command -v rsync >/dev/null 2>&1; then
-              rsync -a --delete "$HOME/.elan/" "$persist_root/elan/"
+              rsync -a --delete "${HOME:-/root}/.elan/" "$persist_root/elan/"
             else
               rm -rf "$persist_root/elan"/*
-              cp -a "$HOME/.elan/." "$persist_root/elan/"
+              cp -a "${HOME:-/root}/.elan/." "$persist_root/elan/"
             fi
           fi
 
@@ -282,11 +282,11 @@ jobs:
           ln -sfn "$persist_root/reasbook_lake" ReasBook/.lake
           ln -sfn "$persist_root/reasbookweb_lake" ReasBookWeb/.lake
           if [ -d "$persist_root/elan" ] && [ -n "$(ls -A "$persist_root/elan" 2>/dev/null)" ]; then
-            mkdir -p "$HOME/.elan"
+            mkdir -p "${HOME:-/root}/.elan"
             if command -v rsync >/dev/null 2>&1; then
-              rsync -a "$persist_root/elan/" "$HOME/.elan/"
+              rsync -a "$persist_root/elan/" "${HOME:-/root}/.elan/"
             else
-              cp -a "$persist_root/elan/." "$HOME/.elan/"
+              cp -a "$persist_root/elan/." "${HOME:-/root}/.elan/"
             fi
           fi
 
@@ -303,7 +303,7 @@ jobs:
 
       - name: Install elan (Lean toolchain manager)
         run: |
-          if [ ! -x "$HOME/.elan/bin/elan" ]; then
+          if [ ! -x "${HOME:-/root}/.elan/bin/elan" ]; then
             curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
           fi
 
@@ -358,12 +358,12 @@ jobs:
           repo_key="${GITHUB_REPOSITORY//\//_}"
           persist_root="${PERSIST_ROOT:-${HOME:-/root}/.cache/reasbook-ci/$repo_key}"
           mkdir -p "$persist_root/elan"
-          if [ -d "$HOME/.elan" ]; then
+          if [ -d "${HOME:-/root}/.elan" ]; then
             if command -v rsync >/dev/null 2>&1; then
-              rsync -a --delete "$HOME/.elan/" "$persist_root/elan/"
+              rsync -a --delete "${HOME:-/root}/.elan/" "$persist_root/elan/"
             else
               rm -rf "$persist_root/elan"/*
-              cp -a "$HOME/.elan/." "$persist_root/elan/"
+              cp -a "${HOME:-/root}/.elan/." "$persist_root/elan/"
             fi
           fi
 
