@@ -4,17 +4,161 @@
 from __future__ import annotations
 
 import argparse
+import os
 import re
+import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 import json
 
-SITE_BASE = "https://imathwy.github.io/ReasBook-main/"
-SITE_ROOT = "/ReasBook-main/"
+
+def parse_github_remote(url: str) -> tuple[str, str] | None:
+    url = (url or "").strip()
+    if not url:
+        return None
+    m = re.match(r"^https?://github\.com/([^/]+)/([^/]+?)(?:\.git)?/?$", url)
+    if m:
+        return m.group(1), m.group(2)
+    m = re.match(r"^git@github\.com:([^/]+)/([^/]+?)(?:\.git)?/?$", url)
+    if m:
+        return m.group(1), m.group(2)
+    return None
+
+
+def git_output(args: list[str]) -> str:
+    try:
+        return subprocess.check_output(args, text=True, stderr=subprocess.DEVNULL).strip()
+    except Exception:
+        return ""
+
+
+def git_config_get(key: str) -> str:
+    return git_output(["git", "config", "--get", key])
+
+
+def git_remote_url(name: str) -> str:
+    if not name:
+        return ""
+    return git_config_get(f"remote.{name}.url")
+
+
+def current_git_branch() -> str:
+    return git_output(["git", "branch", "--show-current"])
+
+
+def detect_default_branch() -> str:
+    candidate_remotes: list[str] = []
+    env_remote_name = os.environ.get("REASBOOK_GIT_REMOTE_NAME", "").strip()
+    if env_remote_name:
+        candidate_remotes.append(env_remote_name)
+
+    branch = current_git_branch()
+    if branch:
+        branch_remote = git_config_get(f"branch.{branch}.remote")
+        if branch_remote:
+            candidate_remotes.append(branch_remote)
+
+    push_default = git_config_get("remote.pushDefault")
+    if push_default:
+        candidate_remotes.append(push_default)
+
+    for fallback in ("origin", "upstream"):
+        candidate_remotes.append(fallback)
+
+    seen: set[str] = set()
+    for remote_name in candidate_remotes:
+        if not remote_name or remote_name in seen:
+            continue
+        seen.add(remote_name)
+        ref = git_output(["git", "symbolic-ref", "--quiet", "--short", f"refs/remotes/{remote_name}/HEAD"])
+        prefix = f"{remote_name}/"
+        if ref.startswith(prefix):
+            branch_name = ref[len(prefix) :].strip()
+            if branch_name:
+                return branch_name
+    return ""
+
+
+def detect_github_repo() -> tuple[str, str]:
+    env_repo = os.environ.get("REASBOOK_GITHUB_REPO", "").strip()
+    if env_repo and "/" in env_repo:
+        owner, repo = env_repo.split("/", 1)
+        owner = owner.strip()
+        repo = repo.strip()
+        if owner and repo:
+            return owner, repo
+
+    candidate_urls: list[str] = []
+
+    env_remote_url = os.environ.get("REASBOOK_GIT_REMOTE_URL", "").strip()
+    if env_remote_url:
+        candidate_urls.append(env_remote_url)
+
+    candidate_remotes: list[str] = []
+    env_remote_name = os.environ.get("REASBOOK_GIT_REMOTE_NAME", "").strip()
+    if env_remote_name:
+        candidate_remotes.append(env_remote_name)
+
+    branch = current_git_branch()
+    if branch:
+        branch_remote = git_config_get(f"branch.{branch}.remote")
+        if branch_remote:
+            candidate_remotes.append(branch_remote)
+
+    push_default = git_config_get("remote.pushDefault")
+    if push_default:
+        candidate_remotes.append(push_default)
+
+    for fallback in ("origin", "upstream"):
+        candidate_remotes.append(fallback)
+
+    seen: set[str] = set()
+    for remote_name in candidate_remotes:
+        if not remote_name or remote_name in seen:
+            continue
+        seen.add(remote_name)
+        remote_url = git_remote_url(remote_name)
+        if remote_url:
+            candidate_urls.append(remote_url)
+
+    for remote_url in candidate_urls:
+        parsed = parse_github_remote(remote_url)
+        if parsed is not None:
+            return parsed
+
+    return ("optsuite", "ReasBook")
+
+
+GITHUB_OWNER, GITHUB_REPO = detect_github_repo()
+GITHUB_BRANCH = (
+    os.environ.get("REASBOOK_GITHUB_BRANCH", "").strip()
+    or detect_default_branch()
+    or current_git_branch()
+    or "main"
+)
+
+SITE_BASE = (
+    os.environ.get("REASBOOK_SITE_BASE")
+    or f"https://{GITHUB_OWNER}.github.io/{GITHUB_REPO}/"
+).rstrip("/") + "/"
+
+DEFAULT_SITE_ROOT = "/" if GITHUB_REPO == f"{GITHUB_OWNER}.github.io" else f"/{GITHUB_REPO}/"
+SITE_ROOT = (os.environ.get("REASBOOK_SITE_ROOT") or DEFAULT_SITE_ROOT).strip()
+if not SITE_ROOT.startswith("/"):
+    SITE_ROOT = f"/{SITE_ROOT}"
+if not SITE_ROOT.endswith("/"):
+    SITE_ROOT = f"{SITE_ROOT}/"
+
 DOCS_BASE = f"{SITE_BASE}docs/"
-GITHUB_SOURCE_BASE = "https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/"
-GITHUB_TREE_BASE = "https://github.com/imathwy/ReasBook-main/tree/main/ReasBook/"
+GITHUB_SOURCE_BASE = (
+    os.environ.get("REASBOOK_GITHUB_SOURCE_BASE")
+    or f"https://github.com/{GITHUB_OWNER}/{GITHUB_REPO}/blob/{GITHUB_BRANCH}/ReasBook/"
+).rstrip("/") + "/"
+GITHUB_TREE_BASE = (
+    os.environ.get("REASBOOK_GITHUB_TREE_BASE")
+    or f"https://github.com/{GITHUB_OWNER}/{GITHUB_REPO}/tree/{GITHUB_BRANCH}/ReasBook/"
+).rstrip("/") + "/"
 
 BOOK_TITLES = {
     "ConvexAnalysis_Rockafellar_1970": "Convex Analysis (Rockafellar, 1970)",
@@ -287,7 +431,8 @@ def module_doc_title(path: Path) -> str | None:
 
 def chapter_number(parts: Iterable[str]) -> int:
     for p in parts:
-        m = CHAPTER_RE.match(p)
+        token = p.rsplit(".", 1)[0]
+        m = CHAPTER_RE.match(token)
         if m:
             return int(m.group(1))
     return 0
@@ -295,7 +440,8 @@ def chapter_number(parts: Iterable[str]) -> int:
 
 def chapter_title(parts: Iterable[str]) -> str | None:
     for p in parts:
-        m = CHAPTER_RE.match(p)
+        token = p.rsplit(".", 1)[0]
+        m = CHAPTER_RE.match(token)
         if m:
             return f"Chapter {int(m.group(1)):02d}"
     return None
@@ -516,43 +662,170 @@ def lean_string(s: str) -> str:
 def emit_sections(entries: list[Entry]) -> str:
     books: dict[str, dict] = {}
     papers: dict[str, dict] = {}
-    for e in entries:
-        if e.part_num > 0:
-            continue
-        if e.category == "books":
-            target = books
-        elif e.category == "papers":
-            target = papers
-        else:
-            continue
 
-        key = e.book_or_paper
-        if key not in target:
-            target[key] = {
-                "slug": key.lower(),
-                "title": book_title(key) if e.category == "books" else paper_title(key),
+    def ensure_book(book: str) -> dict:
+        if book not in books:
+            books[book] = {
+                "slug": book.lower(),
+                "title": book_title(book),
                 "home": "",
-                "sections": [],
+                "chapters": {},
             }
+        return books[book]
 
-        if e.stem in {"book", "paper", "main"}:
-            if e.category == "books":
-                target[key]["home"] = f"books/{key.lower()}/"
+    def ensure_chapter(work: dict, book: str, chapter_num: int) -> dict:
+        chapters: dict[int, dict] = work["chapters"]
+        if chapter_num not in chapters:
+            chapters[chapter_num] = {
+                "number": chapter_num,
+                "title": chapter_title_for_book(book, chapter_num),
+                "route": f"books/{book.lower()}/chapters/chap{chapter_num:02d}/",
+                "sections": {},
+            }
+        return chapters[chapter_num]
+
+    def ensure_paper(paper: str) -> dict:
+        if paper not in papers:
+            papers[paper] = {
+                "slug": paper.lower(),
+                "title": paper_title(paper),
+                "home": "",
+                "sections": {},
+            }
+        return papers[paper]
+
+    for e in entries:
+        if e.category == "books":
+            work = ensure_book(e.book_or_paper)
+            if e.stem == "book":
+                work["home"] = f"books/{e.book_or_paper.lower()}/"
+                continue
+
+            if e.chapter_num <= 0:
+                continue
+
+            chapter = ensure_chapter(work, e.book_or_paper, e.chapter_num)
+
+            if e.section_num <= 0 and e.part_num == 0:
+                chapter["route"] = e.route
+                continue
+            if e.section_num <= 0:
+                continue
+
+            sections: dict[int, dict] = chapter["sections"]
+            if e.section_num not in sections:
+                sections[e.section_num] = {
+                    "number": e.section_num,
+                    "title": entry_label(e) or f"Section {e.section_num:02d}",
+                    "route": "",
+                    "parts": [],
+                }
+            section = sections[e.section_num]
+            if e.part_num == 0:
+                section["title"] = entry_label(e) or section["title"]
+                section["route"] = e.route
             else:
-                target[key]["home"] = f"papers/{key.lower()}/"
+                section["parts"].append(
+                    {"number": e.part_num, "title": f"Part {e.part_num}", "route": e.route}
+                )
             continue
 
+        if e.category != "papers":
+            continue
+
+        work = ensure_paper(e.book_or_paper)
+        if e.stem in {"paper", "main"}:
+            work["home"] = f"papers/{e.book_or_paper.lower()}/"
+            continue
         if e.section_num <= 0:
             continue
 
-        if e.category == "books":
-            chapter_label = chapter_title_for_book(e.book_or_paper, e.chapter_num)
-            label = f"{chapter_label} -- {entry_label(e)}"
+        sections: dict[int, dict] = work["sections"]
+        if e.section_num not in sections:
+            sections[e.section_num] = {
+                "number": e.section_num,
+                "title": entry_label(e) or section_title_from_stem(f"section{e.section_num:02d}"),
+                "route": "",
+                "parts": [],
+            }
+        section = sections[e.section_num]
+        if e.part_num == 0:
+            section["title"] = entry_label(e) or section["title"]
+            section["route"] = e.route
         else:
-            label = entry_label(e)
-        target[key]["sections"].append({"title": label, "route": e.route})
+            section["parts"].append({"number": e.part_num, "title": f"Part {e.part_num}", "route": e.route})
 
-    payload = {"books": [books[k] for k in sorted(books)], "papers": [papers[k] for k in sorted(papers)]}
+    books_payload: list[dict] = []
+    for book in sorted(books):
+        work = books[book]
+        chapters_payload: list[dict] = []
+        chapters: dict[int, dict] = work["chapters"]
+        for chapter_num in sorted(chapters):
+            chapter = chapters[chapter_num]
+            chapter_sections: dict[int, dict] = chapter["sections"]
+            sections_payload: list[dict] = []
+            for section_num in sorted(chapter_sections):
+                section = chapter_sections[section_num]
+                parts_payload = sorted(
+                    section["parts"],
+                    key=lambda p: (p["number"], p["route"]),
+                )
+                section_title = section["title"] or f"Section {section_num:02d}"
+                section_route = section["route"]
+                sections_payload.append(
+                    {
+                        "number": section_num,
+                        "title": section_title,
+                        "route": section_route,
+                        "parts": parts_payload,
+                    }
+                )
+            chapters_payload.append(
+                {
+                    "number": chapter_num,
+                    "title": chapter["title"],
+                    "route": chapter["route"],
+                    "sections": sections_payload,
+                }
+            )
+        books_payload.append(
+            {
+                "slug": work["slug"],
+                "title": work["title"],
+                "home": work["home"],
+                "chapters": chapters_payload,
+            }
+        )
+
+    papers_payload: list[dict] = []
+    for paper in sorted(papers):
+        work = papers[paper]
+        section_map: dict[int, dict] = work["sections"]
+        sections_payload: list[dict] = []
+        for section_num in sorted(section_map):
+            section = section_map[section_num]
+            parts_payload = sorted(
+                section["parts"],
+                key=lambda p: (p["number"], p["route"]),
+            )
+            sections_payload.append(
+                {
+                    "number": section_num,
+                    "title": section["title"],
+                    "route": section["route"],
+                    "parts": parts_payload,
+                }
+            )
+        papers_payload.append(
+            {
+                "slug": work["slug"],
+                "title": work["title"],
+                "home": work["home"],
+                "sections": sections_payload,
+            }
+        )
+
+    payload = {"books": books_payload, "papers": papers_payload}
     sidebar_json = json.dumps(payload, ensure_ascii=True, separators=(",", ":"))
 
     lines: list[str] = []
@@ -570,6 +843,11 @@ def emit_sections(entries: list[Entry]) -> str:
     for e in entries:
         lines.append(f"  ({lean_string(e.route)}, `{e.module}),")
     lines.append("]")
+    lines.append("")
+    lines.append(f"def siteRoot : String := {lean_string(SITE_ROOT)}")
+    lines.append(f"def siteBase : String := {lean_string(SITE_BASE)}")
+    lines.append(f"def docsRoot : String := {lean_string(local_site_link('docs/'))}")
+    lines.append(f"def staticRoot : String := {lean_string(local_site_link('static/style.css'))}")
     lines.append("")
     lines.append(f"def sidebarDataJson : String := {lean_string(sidebar_json)}")
     lines.append("")
@@ -665,7 +943,11 @@ def paper_sections_source_link(e: Entry) -> str:
 
 
 def verso_link(route: str) -> str:
-    return f"{SITE_BASE}{route}"
+    return local_site_link(route)
+
+
+def published_verso_link(route: str) -> str:
+    return f"{SITE_BASE}{normalize_path(route)}"
 
 
 def write_book_readmes(source_root: Path, entries: list[Entry]) -> None:
@@ -696,15 +978,19 @@ def write_book_readmes(source_root: Path, entries: list[Entry]) -> None:
             out.append("- Links: Verso (TBD) | Documentation (TBD) | Lean source (TBD)")
         else:
             verso_target = (
-                f"{SITE_BASE}books/{book.lower()}/"
+                published_verso_link(f"books/{book.lower()}/")
                 if home_entry is not None
-                else (verso_link(item_entries[0].route) if item_entries else f"{SITE_BASE}books/{book.lower()}/")
+                else (
+                    published_verso_link(item_entries[0].route)
+                    if item_entries
+                    else published_verso_link(f"books/{book.lower()}/")
+                )
             )
             docs_target = doc_link(home_entry.module) if home_entry is not None else (
                 doc_link(item_entries[0].module) if item_entries else doc_link(book_module)
             )
             links = [
-                f"[Published Verso]({verso_target})",
+                f"[Verso]({verso_target})",
                 f"[Documentation]({docs_target})",
             ]
             if book_file.exists():
@@ -733,7 +1019,7 @@ def write_book_readmes(source_root: Path, entries: list[Entry]) -> None:
                     continue
                 out.append(
                     f"- {label} "
-                    f"([Published Verso]({verso_link(e.route)})) "
+                    f"([Verso]({published_verso_link(e.route)})) "
                     f"([Documentation]({doc_link(e.module)})) "
                     f"([Lean source]({chapter_source_link(e)}))"
                 )
@@ -772,15 +1058,19 @@ def write_paper_readmes(source_root: Path, entries: list[Entry]) -> None:
         out.append(f"# {title}")
         out.append("")
         verso_target = (
-            f"{SITE_BASE}papers/{paper.lower()}/"
+            published_verso_link(f"papers/{paper.lower()}/")
             if home_entry is not None
-            else (verso_link(item_entries[0].route) if item_entries else f"{SITE_BASE}papers/{paper.lower()}/")
+            else (
+                published_verso_link(item_entries[0].route)
+                if item_entries
+                else published_verso_link(f"papers/{paper.lower()}/")
+            )
         )
         docs_target = doc_link(home_entry.module) if home_entry is not None else (
             doc_link(item_entries[0].module) if item_entries else doc_link(paper_module)
         )
         links = [
-            f"[Published Verso]({verso_target})",
+            f"[Verso]({verso_target})",
             f"[Documentation]({docs_target})",
         ]
         if paper_file.exists():
@@ -806,7 +1096,7 @@ def write_paper_readmes(source_root: Path, entries: list[Entry]) -> None:
                     continue
                 out.append(
                     f"- {label} "
-                    f"([Published Verso]({verso_link(e.route)})) "
+                    f"([Verso]({published_verso_link(e.route)})) "
                     f"([Documentation]({doc_link(e.module)})) "
                     f"([Lean source]({paper_sections_source_link(e)}))"
                 )
@@ -815,6 +1105,74 @@ def write_paper_readmes(source_root: Path, entries: list[Entry]) -> None:
         readme = papers_root / paper / "README.md"
         readme.write_text("\n".join(out), encoding="utf-8")
         print(f"Wrote {readme}")
+
+
+def write_root_readme(repo_root: Path, source_root: Path) -> None:
+    readme_path = repo_root / "README.md"
+    if not readme_path.exists():
+        return
+
+    lines = readme_path.read_text(encoding="utf-8").splitlines()
+    changed = False
+
+    def update_links_line(i: int, lean_src: str, verso: str) -> None:
+        nonlocal changed
+        expected = "  - Links:"
+        if i < 0 or i >= len(lines):
+            return
+        if not lines[i].startswith(expected):
+            return
+        new_line = f"  - Links: [Lean source]({lean_src}) | [Verso]({verso})"
+        if lines[i] != new_line:
+            lines[i] = new_line
+            changed = True
+
+    # Books block
+    for book in sorted([p.name for p in (source_root / "Books").iterdir() if p.is_dir()]):
+        book_repo_link = f"{GITHUB_TREE_BASE}Books/{book}"
+        book_verso = published_verso_link(f"books/{book.lower()}/")
+        has_book_agg = (source_root / "Books" / book / "Book.lean").exists()
+        if has_book_agg:
+            lean_src = f"{GITHUB_TREE_BASE}Books/{book}/Chapters"
+        else:
+            lean_src = f"{GITHUB_TREE_BASE}Books/{book}"
+
+        for i, line in enumerate(lines):
+            if f"/Books/{book})" in line and line.startswith("- ["):
+                repl = re.sub(r"\((https?://[^)]+|\.?/[^)]+)\)$", f"({book_repo_link})", line)
+                if repl != line:
+                    lines[i] = repl
+                    changed = True
+                # Contributors line is usually i+1, links i+2
+                for j in range(i + 1, min(i + 6, len(lines))):
+                    if lines[j].startswith("  - Links:"):
+                        update_links_line(j, lean_src, book_verso)
+                        break
+
+    # Papers block
+    for paper in sorted([p.name for p in (source_root / "Papers").iterdir() if p.is_dir()]):
+        paper_repo_link = f"{GITHUB_TREE_BASE}Papers/{paper}"
+        paper_verso = published_verso_link(f"papers/{paper.lower()}/")
+        has_paper_agg = (source_root / "Papers" / paper / "Paper.lean").exists()
+        if has_paper_agg:
+            lean_src = f"{GITHUB_TREE_BASE}Papers/{paper}/Sections"
+        else:
+            lean_src = f"{GITHUB_TREE_BASE}Papers/{paper}"
+
+        for i, line in enumerate(lines):
+            if f"/Papers/{paper})" in line and line.startswith("- ["):
+                repl = re.sub(r"\((https?://[^)]+|\.?/[^)]+)\)$", f"({paper_repo_link})", line)
+                if repl != line:
+                    lines[i] = repl
+                    changed = True
+                for j in range(i + 1, min(i + 6, len(lines))):
+                    if lines[j].startswith("  - Links:"):
+                        update_links_line(j, lean_src, paper_verso)
+                        break
+
+    if changed:
+        readme_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        print(f"Wrote {readme_path}")
 
 
 def lean_module_name(s: str) -> str:
@@ -937,7 +1295,7 @@ def is_generated_overview_block(body_lines: list[str]) -> bool:
     if not lines:
         return False
     first = lines[0]
-    if not (first.startswith("Overview page for `") or re.match(r"^Chapter \d{2}$", first)):
+    if not (first.startswith("Overview page for ") or re.match(r"^Chapter \d{2}$", first)):
         return False
     return "Verso links:" in "\n".join(lines)
 
@@ -1019,9 +1377,10 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
         )
 
         body: list[str] = []
-        body.append(f"Overview page for `{book_title(book)}`.")
+        body.append(f"Overview page for {book_title(book)}.")
         body.append("")
         body.append("This aggregation module imports the currently formalized sections in this book.")
+        body.append("Use the links below to jump directly into chapter and section overview pages.")
         body.append("")
         body.append("Verso links:")
         body.append(f"- [Book home]({verso_link(f'books/{book.lower()}/')})")
@@ -1059,7 +1418,15 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
         for chapter_num, ch_entries in sorted(by_chapter.items()):
             chapter_file = source_root / "Books" / book / "Chapters" / f"Chap{chapter_num:02d}.lean"
             if not chapter_file.exists():
-                continue
+                chapter_file.parent.mkdir(parents=True, exist_ok=True)
+                imports = sorted({e.module for e in ch_entries})
+                chapter_lines: list[str] = ["-- BEGIN AUTO-IMPORTS (managed by orchestrator)"]
+                for module in imports:
+                    chapter_lines.append(f"import {module}")
+                chapter_lines.append("-- END AUTO-IMPORTS")
+                chapter_lines.append("")
+                chapter_file.write_text("\n".join(chapter_lines), encoding="utf-8")
+                print(f"Wrote {chapter_file} (generated chapter aggregator)")
 
             chapter_route = f"books/{book.lower()}/chapters/chap{chapter_num:02d}/"
             chapter_title = chapter_title_for_book(book, chapter_num)
@@ -1070,6 +1437,8 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
             if chapter_title != f"Chapter {chapter_num:02d}":
                 chapter_body.append(f"Title: {chapter_title}")
                 chapter_body.append("")
+            chapter_body.append("This chapter aggregation page links to section overviews and source files.")
+            chapter_body.append("")
             chapter_body.append("Verso links:")
             chapter_body.append(f"- [Chapter overview]({verso_link(chapter_route)})")
             chapter_body.append(f"- [Book overview]({verso_link(f'books/{book.lower()}/book/')})")
@@ -1116,9 +1485,10 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
         section_label = readme_label(base) or section_title_from_stem(base.stem)
 
         body: list[str] = []
-        body.append(f"Overview page for `{section_label}`.")
+        body.append(f"Overview page for {section_label}.")
         body.append("")
         body.append("This aggregation module imports all currently available part files for this section.")
+        body.append("Use this page to jump to each part page quickly.")
         body.append("")
         body.append("Verso links:")
         body.append(f"- [Section overview]({verso_link(base.route)})")
@@ -1161,6 +1531,7 @@ def main() -> None:
     write_work_pages(repo_root, source_root, entries)
     write_book_readmes(source_root, entries)
     write_paper_readmes(source_root, entries)
+    write_root_readme(repo_root, source_root)
     print(f"Wrote {out_file} with {len(entries)} sections")
     print(f"Wrote {route_file} with generated route macro")
 

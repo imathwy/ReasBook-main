@@ -23,13 +23,6 @@ macro_rules
       "books/analysis2_tao_2022/" ReasBookSite.WorkPages.Books.Analysis2_Tao_2022
       "books/analysis2_tao_2022/book/" ReasBookSite.WorkPages.Books.Analysis2_Tao_2022
       "books/analysis2_tao_2022/chapters/chap01/" Book.Books.Analysis2_Tao_2022.Chapters.Chap01
-      "books/analysis2_tao_2022/chapters/chap02/" Book.Books.Analysis2_Tao_2022.Chapters.Chap02
-      "books/analysis2_tao_2022/chapters/chap03/" Book.Books.Analysis2_Tao_2022.Chapters.Chap03
-      "books/analysis2_tao_2022/chapters/chap04/" Book.Books.Analysis2_Tao_2022.Chapters.Chap04
-      "books/analysis2_tao_2022/chapters/chap05/" Book.Books.Analysis2_Tao_2022.Chapters.Chap05
-      "books/analysis2_tao_2022/chapters/chap06/" Book.Books.Analysis2_Tao_2022.Chapters.Chap06
-      "books/analysis2_tao_2022/chapters/chap07/" Book.Books.Analysis2_Tao_2022.Chapters.Chap07
-      "books/analysis2_tao_2022/chapters/chap08/" Book.Books.Analysis2_Tao_2022.Chapters.Chap08
       "books/analysis2_tao_2022/chapters/chap01/section01/" Book.Books.Analysis2_Tao_2022.Chapters.Chap01.section01
       "books/analysis2_tao_2022/chapters/chap01/section01_part1/" Book.Books.Analysis2_Tao_2022.Chapters.Chap01.section01_part1
       "books/analysis2_tao_2022/chapters/chap01/section01_part2/" Book.Books.Analysis2_Tao_2022.Chapters.Chap01.section01_part2
@@ -39,11 +32,13 @@ macro_rules
       "books/analysis2_tao_2022/chapters/chap01/section04_part1/" Book.Books.Analysis2_Tao_2022.Chapters.Chap01.section04_part1
       "books/analysis2_tao_2022/chapters/chap01/section04_part2/" Book.Books.Analysis2_Tao_2022.Chapters.Chap01.section04_part2
       "books/analysis2_tao_2022/chapters/chap01/section05/" Book.Books.Analysis2_Tao_2022.Chapters.Chap01.section05
+      "books/analysis2_tao_2022/chapters/chap02/" Book.Books.Analysis2_Tao_2022.Chapters.Chap02
       "books/analysis2_tao_2022/chapters/chap02/section01/" Book.Books.Analysis2_Tao_2022.Chapters.Chap02.section01
       "books/analysis2_tao_2022/chapters/chap02/section02/" Book.Books.Analysis2_Tao_2022.Chapters.Chap02.section02
       "books/analysis2_tao_2022/chapters/chap02/section03/" Book.Books.Analysis2_Tao_2022.Chapters.Chap02.section03
       "books/analysis2_tao_2022/chapters/chap02/section04/" Book.Books.Analysis2_Tao_2022.Chapters.Chap02.section04
       "books/analysis2_tao_2022/chapters/chap02/section05/" Book.Books.Analysis2_Tao_2022.Chapters.Chap02.section05
+      "books/analysis2_tao_2022/chapters/chap03/" Book.Books.Analysis2_Tao_2022.Chapters.Chap03
       "books/analysis2_tao_2022/chapters/chap03/section01/" Book.Books.Analysis2_Tao_2022.Chapters.Chap03.section01
       "books/analysis2_tao_2022/chapters/chap03/section02/" Book.Books.Analysis2_Tao_2022.Chapters.Chap03.section02
       "books/analysis2_tao_2022/chapters/chap03/section03/" Book.Books.Analysis2_Tao_2022.Chapters.Chap03.section03
@@ -54,6 +49,7 @@ macro_rules
       "books/analysis2_tao_2022/chapters/chap03/section07_part1/" Book.Books.Analysis2_Tao_2022.Chapters.Chap03.section07_part1
       "books/analysis2_tao_2022/chapters/chap03/section07_part2/" Book.Books.Analysis2_Tao_2022.Chapters.Chap03.section07_part2
       "books/analysis2_tao_2022/chapters/chap03/section08/" Book.Books.Analysis2_Tao_2022.Chapters.Chap03.section08
+      "books/analysis2_tao_2022/chapters/chap04/" Book.Books.Analysis2_Tao_2022.Chapters.Chap04
       "books/analysis2_tao_2022/chapters/chap04/section01/" Book.Books.Analysis2_Tao_2022.Chapters.Chap04.section01
       "books/analysis2_tao_2022/chapters/chap04/section02/" Book.Books.Analysis2_Tao_2022.Chapters.Chap04.section02
       "books/analysis2_tao_2022/chapters/chap04/section02_part1/" Book.Books.Analysis2_Tao_2022.Chapters.Chap04.section02_part1
@@ -70,6 +66,7 @@ macro_rules
       "books/analysis2_tao_2022/chapters/chap04/section07_part1/" Book.Books.Analysis2_Tao_2022.Chapters.Chap04.section07_part1
       "books/analysis2_tao_2022/chapters/chap04/section07_part2/" Book.Books.Analysis2_Tao_2022.Chapters.Chap04.section07_part2
       "books/analysis2_tao_2022/chapters/chap04/section07_part3/" Book.Books.Analysis2_Tao_2022.Chapters.Chap04.section07_part3
+      "books/analysis2_tao_2022/chapters/chap05/" Book.Books.Analysis2_Tao_2022.Chapters.Chap05
       "books/analysis2_tao_2022/chapters/chap05/section01/" Book.Books.Analysis2_Tao_2022.Chapters.Chap05.section01
       "books/analysis2_tao_2022/chapters/chap05/section02/" Book.Books.Analysis2_Tao_2022.Chapters.Chap05.section02
       "books/analysis2_tao_2022/chapters/chap05/section02_part1/" Book.Books.Analysis2_Tao_2022.Chapters.Chap05.section02_part1
@@ -79,6 +76,7 @@ macro_rules
       "books/analysis2_tao_2022/chapters/chap05/section04_part1/" Book.Books.Analysis2_Tao_2022.Chapters.Chap05.section04_part1
       "books/analysis2_tao_2022/chapters/chap05/section04_part2/" Book.Books.Analysis2_Tao_2022.Chapters.Chap05.section04_part2
       "books/analysis2_tao_2022/chapters/chap05/section05/" Book.Books.Analysis2_Tao_2022.Chapters.Chap05.section05
+      "books/analysis2_tao_2022/chapters/chap06/" Book.Books.Analysis2_Tao_2022.Chapters.Chap06
       "books/analysis2_tao_2022/chapters/chap06/section01/" Book.Books.Analysis2_Tao_2022.Chapters.Chap06.section01
       "books/analysis2_tao_2022/chapters/chap06/section02/" Book.Books.Analysis2_Tao_2022.Chapters.Chap06.section02
       "books/analysis2_tao_2022/chapters/chap06/section03/" Book.Books.Analysis2_Tao_2022.Chapters.Chap06.section03
@@ -102,6 +100,7 @@ macro_rules
       "books/analysis2_tao_2022/chapters/chap06/section06_part8/" Book.Books.Analysis2_Tao_2022.Chapters.Chap06.section06_part8
       "books/analysis2_tao_2022/chapters/chap06/section07/" Book.Books.Analysis2_Tao_2022.Chapters.Chap06.section07
       "books/analysis2_tao_2022/chapters/chap06/section08/" Book.Books.Analysis2_Tao_2022.Chapters.Chap06.section08
+      "books/analysis2_tao_2022/chapters/chap07/" Book.Books.Analysis2_Tao_2022.Chapters.Chap07
       "books/analysis2_tao_2022/chapters/chap07/section01/" Book.Books.Analysis2_Tao_2022.Chapters.Chap07.section01
       "books/analysis2_tao_2022/chapters/chap07/section02/" Book.Books.Analysis2_Tao_2022.Chapters.Chap07.section02
       "books/analysis2_tao_2022/chapters/chap07/section02_part1/" Book.Books.Analysis2_Tao_2022.Chapters.Chap07.section02_part1
@@ -116,6 +115,7 @@ macro_rules
       "books/analysis2_tao_2022/chapters/chap07/section05_part1/" Book.Books.Analysis2_Tao_2022.Chapters.Chap07.section05_part1
       "books/analysis2_tao_2022/chapters/chap07/section05_part2/" Book.Books.Analysis2_Tao_2022.Chapters.Chap07.section05_part2
       "books/analysis2_tao_2022/chapters/chap07/section05_part3/" Book.Books.Analysis2_Tao_2022.Chapters.Chap07.section05_part3
+      "books/analysis2_tao_2022/chapters/chap08/" Book.Books.Analysis2_Tao_2022.Chapters.Chap08
       "books/analysis2_tao_2022/chapters/chap08/section01/" Book.Books.Analysis2_Tao_2022.Chapters.Chap08.section01
       "books/analysis2_tao_2022/chapters/chap08/section01_part1/" Book.Books.Analysis2_Tao_2022.Chapters.Chap08.section01_part1
       "books/analysis2_tao_2022/chapters/chap08/section01_part2/" Book.Books.Analysis2_Tao_2022.Chapters.Chap08.section01_part2
@@ -128,9 +128,6 @@ macro_rules
       "books/convexanalysis_rockafellar_1970/" ReasBookSite.WorkPages.Books.ConvexAnalysis_Rockafellar_1970
       "books/convexanalysis_rockafellar_1970/book/" ReasBookSite.WorkPages.Books.ConvexAnalysis_Rockafellar_1970
       "books/convexanalysis_rockafellar_1970/chapters/chap01/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap01
-      "books/convexanalysis_rockafellar_1970/chapters/chap02/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02
-      "books/convexanalysis_rockafellar_1970/chapters/chap03/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap03
-      "books/convexanalysis_rockafellar_1970/chapters/chap04/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap04
       "books/convexanalysis_rockafellar_1970/chapters/chap01/section01/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap01.section01
       "books/convexanalysis_rockafellar_1970/chapters/chap01/section01_part1/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap01.section01_part1
       "books/convexanalysis_rockafellar_1970/chapters/chap01/section01_part2/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap01.section01_part2
@@ -166,6 +163,7 @@ macro_rules
       "books/convexanalysis_rockafellar_1970/chapters/chap01/section05_part11/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap01.section05_part11
       "books/convexanalysis_rockafellar_1970/chapters/chap01/section05_part12/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap01.section05_part12
       "books/convexanalysis_rockafellar_1970/chapters/chap01/section05_part13/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap01.section05_part13
+      "books/convexanalysis_rockafellar_1970/chapters/chap02/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02
       "books/convexanalysis_rockafellar_1970/chapters/chap02/section05/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02.section05
       "books/convexanalysis_rockafellar_1970/chapters/chap02/section06/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02.section06
       "books/convexanalysis_rockafellar_1970/chapters/chap02/section06_part1/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02.section06_part1
@@ -222,6 +220,7 @@ macro_rules
       "books/convexanalysis_rockafellar_1970/chapters/chap02/section10_part6/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02.section10_part6
       "books/convexanalysis_rockafellar_1970/chapters/chap02/section10_part7/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02.section10_part7
       "books/convexanalysis_rockafellar_1970/chapters/chap02/section10_part8/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02.section10_part8
+      "books/convexanalysis_rockafellar_1970/chapters/chap03/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap03
       "books/convexanalysis_rockafellar_1970/chapters/chap03/section11/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap03.section11
       "books/convexanalysis_rockafellar_1970/chapters/chap03/section11_part1/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap03.section11_part1
       "books/convexanalysis_rockafellar_1970/chapters/chap03/section11_part2/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap03.section11_part2
@@ -308,6 +307,7 @@ macro_rules
       "books/convexanalysis_rockafellar_1970/chapters/chap03/section16_part13/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap03.section16_part13
       "books/convexanalysis_rockafellar_1970/chapters/chap03/section16_part14/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap03.section16_part14
       "books/convexanalysis_rockafellar_1970/chapters/chap03/section16_part15/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap03.section16_part15
+      "books/convexanalysis_rockafellar_1970/chapters/chap04/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap04
       "books/convexanalysis_rockafellar_1970/chapters/chap04/section17/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap04.section17
       "books/convexanalysis_rockafellar_1970/chapters/chap04/section17_part1/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap04.section17_part1
       "books/convexanalysis_rockafellar_1970/chapters/chap04/section17_part2/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap04.section17_part2
@@ -351,33 +351,39 @@ macro_rules
       "books/convexanalysis_rockafellar_1970/chapters/chap04/section20_part2/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap04.section20_part2
       "books/introductiontorealanalysisvolumei_jirilebl_2025/" ReasBookSite.WorkPages.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025
       "books/introductiontorealanalysisvolumei_jirilebl_2025/book/" ReasBookSite.WorkPages.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025
+      "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap00
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap00.section03
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part1/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap00.section03_part1
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part2/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap00.section03_part2
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part3/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap00.section03_part3
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part4/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap00.section03_part4
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part5/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap00.section03_part5
+      "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap01
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section01/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap01.section01
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section02/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap01.section02
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section03/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap01.section03
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section04/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap01.section04
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section05/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap01.section05
+      "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap02/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap02
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap02/section01/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap02.section01
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap02/section02/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap02.section02
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap02/section03/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap02.section03
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap02/section04/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap02.section04
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap02/section05/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap02.section05
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap02/section06/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap02.section06
+      "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap03/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap03
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap03/section01/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap03.section01
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap03/section02/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap03.section02
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap03/section03/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap03.section03
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap03/section04/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap03.section04
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap03/section05/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap03.section05
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap03/section06/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap03.section06
+      "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap04/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap04
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap04/section01/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap04.section01
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap04/section02/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap04.section02
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap04/section03/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap04.section03
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap04/section04/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap04.section04
+      "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap05/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap05/section01/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05.section01
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap05/section02/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05.section02
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap05/section02_part1/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05.section02_part1
@@ -389,9 +395,11 @@ macro_rules
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap05/section03/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05.section03
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap05/section04/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05.section04
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap05/section05/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05.section05
+      "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap06/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap06
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap06/section01/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap06.section01
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap06/section02/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap06.section02
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap06/section03/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap06.section03
+      "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap07
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section01/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap07.section01
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section02/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap07.section02
       "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section03/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap07.section03
@@ -442,13 +450,6 @@ def reasbook_site : Site := site ReasBookSite.Home /
   "books/analysis2_tao_2022/" ReasBookSite.WorkPages.Books.Analysis2_Tao_2022
   "books/analysis2_tao_2022/book/" ReasBookSite.WorkPages.Books.Analysis2_Tao_2022
   "books/analysis2_tao_2022/chapters/chap01/" Book.Books.Analysis2_Tao_2022.Chapters.Chap01
-  "books/analysis2_tao_2022/chapters/chap02/" Book.Books.Analysis2_Tao_2022.Chapters.Chap02
-  "books/analysis2_tao_2022/chapters/chap03/" Book.Books.Analysis2_Tao_2022.Chapters.Chap03
-  "books/analysis2_tao_2022/chapters/chap04/" Book.Books.Analysis2_Tao_2022.Chapters.Chap04
-  "books/analysis2_tao_2022/chapters/chap05/" Book.Books.Analysis2_Tao_2022.Chapters.Chap05
-  "books/analysis2_tao_2022/chapters/chap06/" Book.Books.Analysis2_Tao_2022.Chapters.Chap06
-  "books/analysis2_tao_2022/chapters/chap07/" Book.Books.Analysis2_Tao_2022.Chapters.Chap07
-  "books/analysis2_tao_2022/chapters/chap08/" Book.Books.Analysis2_Tao_2022.Chapters.Chap08
   "books/analysis2_tao_2022/chapters/chap01/section01/" Book.Books.Analysis2_Tao_2022.Chapters.Chap01.section01
   "books/analysis2_tao_2022/chapters/chap01/section01_part1/" Book.Books.Analysis2_Tao_2022.Chapters.Chap01.section01_part1
   "books/analysis2_tao_2022/chapters/chap01/section01_part2/" Book.Books.Analysis2_Tao_2022.Chapters.Chap01.section01_part2
@@ -458,11 +459,13 @@ def reasbook_site : Site := site ReasBookSite.Home /
   "books/analysis2_tao_2022/chapters/chap01/section04_part1/" Book.Books.Analysis2_Tao_2022.Chapters.Chap01.section04_part1
   "books/analysis2_tao_2022/chapters/chap01/section04_part2/" Book.Books.Analysis2_Tao_2022.Chapters.Chap01.section04_part2
   "books/analysis2_tao_2022/chapters/chap01/section05/" Book.Books.Analysis2_Tao_2022.Chapters.Chap01.section05
+  "books/analysis2_tao_2022/chapters/chap02/" Book.Books.Analysis2_Tao_2022.Chapters.Chap02
   "books/analysis2_tao_2022/chapters/chap02/section01/" Book.Books.Analysis2_Tao_2022.Chapters.Chap02.section01
   "books/analysis2_tao_2022/chapters/chap02/section02/" Book.Books.Analysis2_Tao_2022.Chapters.Chap02.section02
   "books/analysis2_tao_2022/chapters/chap02/section03/" Book.Books.Analysis2_Tao_2022.Chapters.Chap02.section03
   "books/analysis2_tao_2022/chapters/chap02/section04/" Book.Books.Analysis2_Tao_2022.Chapters.Chap02.section04
   "books/analysis2_tao_2022/chapters/chap02/section05/" Book.Books.Analysis2_Tao_2022.Chapters.Chap02.section05
+  "books/analysis2_tao_2022/chapters/chap03/" Book.Books.Analysis2_Tao_2022.Chapters.Chap03
   "books/analysis2_tao_2022/chapters/chap03/section01/" Book.Books.Analysis2_Tao_2022.Chapters.Chap03.section01
   "books/analysis2_tao_2022/chapters/chap03/section02/" Book.Books.Analysis2_Tao_2022.Chapters.Chap03.section02
   "books/analysis2_tao_2022/chapters/chap03/section03/" Book.Books.Analysis2_Tao_2022.Chapters.Chap03.section03
@@ -473,6 +476,7 @@ def reasbook_site : Site := site ReasBookSite.Home /
   "books/analysis2_tao_2022/chapters/chap03/section07_part1/" Book.Books.Analysis2_Tao_2022.Chapters.Chap03.section07_part1
   "books/analysis2_tao_2022/chapters/chap03/section07_part2/" Book.Books.Analysis2_Tao_2022.Chapters.Chap03.section07_part2
   "books/analysis2_tao_2022/chapters/chap03/section08/" Book.Books.Analysis2_Tao_2022.Chapters.Chap03.section08
+  "books/analysis2_tao_2022/chapters/chap04/" Book.Books.Analysis2_Tao_2022.Chapters.Chap04
   "books/analysis2_tao_2022/chapters/chap04/section01/" Book.Books.Analysis2_Tao_2022.Chapters.Chap04.section01
   "books/analysis2_tao_2022/chapters/chap04/section02/" Book.Books.Analysis2_Tao_2022.Chapters.Chap04.section02
   "books/analysis2_tao_2022/chapters/chap04/section02_part1/" Book.Books.Analysis2_Tao_2022.Chapters.Chap04.section02_part1
@@ -489,6 +493,7 @@ def reasbook_site : Site := site ReasBookSite.Home /
   "books/analysis2_tao_2022/chapters/chap04/section07_part1/" Book.Books.Analysis2_Tao_2022.Chapters.Chap04.section07_part1
   "books/analysis2_tao_2022/chapters/chap04/section07_part2/" Book.Books.Analysis2_Tao_2022.Chapters.Chap04.section07_part2
   "books/analysis2_tao_2022/chapters/chap04/section07_part3/" Book.Books.Analysis2_Tao_2022.Chapters.Chap04.section07_part3
+  "books/analysis2_tao_2022/chapters/chap05/" Book.Books.Analysis2_Tao_2022.Chapters.Chap05
   "books/analysis2_tao_2022/chapters/chap05/section01/" Book.Books.Analysis2_Tao_2022.Chapters.Chap05.section01
   "books/analysis2_tao_2022/chapters/chap05/section02/" Book.Books.Analysis2_Tao_2022.Chapters.Chap05.section02
   "books/analysis2_tao_2022/chapters/chap05/section02_part1/" Book.Books.Analysis2_Tao_2022.Chapters.Chap05.section02_part1
@@ -498,6 +503,7 @@ def reasbook_site : Site := site ReasBookSite.Home /
   "books/analysis2_tao_2022/chapters/chap05/section04_part1/" Book.Books.Analysis2_Tao_2022.Chapters.Chap05.section04_part1
   "books/analysis2_tao_2022/chapters/chap05/section04_part2/" Book.Books.Analysis2_Tao_2022.Chapters.Chap05.section04_part2
   "books/analysis2_tao_2022/chapters/chap05/section05/" Book.Books.Analysis2_Tao_2022.Chapters.Chap05.section05
+  "books/analysis2_tao_2022/chapters/chap06/" Book.Books.Analysis2_Tao_2022.Chapters.Chap06
   "books/analysis2_tao_2022/chapters/chap06/section01/" Book.Books.Analysis2_Tao_2022.Chapters.Chap06.section01
   "books/analysis2_tao_2022/chapters/chap06/section02/" Book.Books.Analysis2_Tao_2022.Chapters.Chap06.section02
   "books/analysis2_tao_2022/chapters/chap06/section03/" Book.Books.Analysis2_Tao_2022.Chapters.Chap06.section03
@@ -521,6 +527,7 @@ def reasbook_site : Site := site ReasBookSite.Home /
   "books/analysis2_tao_2022/chapters/chap06/section06_part8/" Book.Books.Analysis2_Tao_2022.Chapters.Chap06.section06_part8
   "books/analysis2_tao_2022/chapters/chap06/section07/" Book.Books.Analysis2_Tao_2022.Chapters.Chap06.section07
   "books/analysis2_tao_2022/chapters/chap06/section08/" Book.Books.Analysis2_Tao_2022.Chapters.Chap06.section08
+  "books/analysis2_tao_2022/chapters/chap07/" Book.Books.Analysis2_Tao_2022.Chapters.Chap07
   "books/analysis2_tao_2022/chapters/chap07/section01/" Book.Books.Analysis2_Tao_2022.Chapters.Chap07.section01
   "books/analysis2_tao_2022/chapters/chap07/section02/" Book.Books.Analysis2_Tao_2022.Chapters.Chap07.section02
   "books/analysis2_tao_2022/chapters/chap07/section02_part1/" Book.Books.Analysis2_Tao_2022.Chapters.Chap07.section02_part1
@@ -535,6 +542,7 @@ def reasbook_site : Site := site ReasBookSite.Home /
   "books/analysis2_tao_2022/chapters/chap07/section05_part1/" Book.Books.Analysis2_Tao_2022.Chapters.Chap07.section05_part1
   "books/analysis2_tao_2022/chapters/chap07/section05_part2/" Book.Books.Analysis2_Tao_2022.Chapters.Chap07.section05_part2
   "books/analysis2_tao_2022/chapters/chap07/section05_part3/" Book.Books.Analysis2_Tao_2022.Chapters.Chap07.section05_part3
+  "books/analysis2_tao_2022/chapters/chap08/" Book.Books.Analysis2_Tao_2022.Chapters.Chap08
   "books/analysis2_tao_2022/chapters/chap08/section01/" Book.Books.Analysis2_Tao_2022.Chapters.Chap08.section01
   "books/analysis2_tao_2022/chapters/chap08/section01_part1/" Book.Books.Analysis2_Tao_2022.Chapters.Chap08.section01_part1
   "books/analysis2_tao_2022/chapters/chap08/section01_part2/" Book.Books.Analysis2_Tao_2022.Chapters.Chap08.section01_part2
@@ -547,9 +555,6 @@ def reasbook_site : Site := site ReasBookSite.Home /
   "books/convexanalysis_rockafellar_1970/" ReasBookSite.WorkPages.Books.ConvexAnalysis_Rockafellar_1970
   "books/convexanalysis_rockafellar_1970/book/" ReasBookSite.WorkPages.Books.ConvexAnalysis_Rockafellar_1970
   "books/convexanalysis_rockafellar_1970/chapters/chap01/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap01
-  "books/convexanalysis_rockafellar_1970/chapters/chap02/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02
-  "books/convexanalysis_rockafellar_1970/chapters/chap03/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap03
-  "books/convexanalysis_rockafellar_1970/chapters/chap04/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap04
   "books/convexanalysis_rockafellar_1970/chapters/chap01/section01/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap01.section01
   "books/convexanalysis_rockafellar_1970/chapters/chap01/section01_part1/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap01.section01_part1
   "books/convexanalysis_rockafellar_1970/chapters/chap01/section01_part2/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap01.section01_part2
@@ -585,6 +590,7 @@ def reasbook_site : Site := site ReasBookSite.Home /
   "books/convexanalysis_rockafellar_1970/chapters/chap01/section05_part11/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap01.section05_part11
   "books/convexanalysis_rockafellar_1970/chapters/chap01/section05_part12/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap01.section05_part12
   "books/convexanalysis_rockafellar_1970/chapters/chap01/section05_part13/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap01.section05_part13
+  "books/convexanalysis_rockafellar_1970/chapters/chap02/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02
   "books/convexanalysis_rockafellar_1970/chapters/chap02/section05/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02.section05
   "books/convexanalysis_rockafellar_1970/chapters/chap02/section06/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02.section06
   "books/convexanalysis_rockafellar_1970/chapters/chap02/section06_part1/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02.section06_part1
@@ -641,6 +647,7 @@ def reasbook_site : Site := site ReasBookSite.Home /
   "books/convexanalysis_rockafellar_1970/chapters/chap02/section10_part6/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02.section10_part6
   "books/convexanalysis_rockafellar_1970/chapters/chap02/section10_part7/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02.section10_part7
   "books/convexanalysis_rockafellar_1970/chapters/chap02/section10_part8/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02.section10_part8
+  "books/convexanalysis_rockafellar_1970/chapters/chap03/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap03
   "books/convexanalysis_rockafellar_1970/chapters/chap03/section11/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap03.section11
   "books/convexanalysis_rockafellar_1970/chapters/chap03/section11_part1/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap03.section11_part1
   "books/convexanalysis_rockafellar_1970/chapters/chap03/section11_part2/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap03.section11_part2
@@ -727,6 +734,7 @@ def reasbook_site : Site := site ReasBookSite.Home /
   "books/convexanalysis_rockafellar_1970/chapters/chap03/section16_part13/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap03.section16_part13
   "books/convexanalysis_rockafellar_1970/chapters/chap03/section16_part14/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap03.section16_part14
   "books/convexanalysis_rockafellar_1970/chapters/chap03/section16_part15/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap03.section16_part15
+  "books/convexanalysis_rockafellar_1970/chapters/chap04/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap04
   "books/convexanalysis_rockafellar_1970/chapters/chap04/section17/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap04.section17
   "books/convexanalysis_rockafellar_1970/chapters/chap04/section17_part1/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap04.section17_part1
   "books/convexanalysis_rockafellar_1970/chapters/chap04/section17_part2/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap04.section17_part2
@@ -770,33 +778,39 @@ def reasbook_site : Site := site ReasBookSite.Home /
   "books/convexanalysis_rockafellar_1970/chapters/chap04/section20_part2/" Book.Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap04.section20_part2
   "books/introductiontorealanalysisvolumei_jirilebl_2025/" ReasBookSite.WorkPages.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025
   "books/introductiontorealanalysisvolumei_jirilebl_2025/book/" ReasBookSite.WorkPages.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025
+  "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap00
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap00.section03
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part1/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap00.section03_part1
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part2/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap00.section03_part2
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part3/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap00.section03_part3
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part4/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap00.section03_part4
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03_part5/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap00.section03_part5
+  "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap01
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section01/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap01.section01
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section02/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap01.section02
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section03/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap01.section03
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section04/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap01.section04
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section05/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap01.section05
+  "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap02/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap02
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap02/section01/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap02.section01
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap02/section02/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap02.section02
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap02/section03/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap02.section03
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap02/section04/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap02.section04
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap02/section05/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap02.section05
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap02/section06/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap02.section06
+  "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap03/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap03
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap03/section01/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap03.section01
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap03/section02/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap03.section02
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap03/section03/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap03.section03
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap03/section04/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap03.section04
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap03/section05/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap03.section05
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap03/section06/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap03.section06
+  "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap04/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap04
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap04/section01/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap04.section01
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap04/section02/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap04.section02
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap04/section03/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap04.section03
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap04/section04/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap04.section04
+  "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap05/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap05/section01/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05.section01
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap05/section02/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05.section02
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap05/section02_part1/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05.section02_part1
@@ -808,9 +822,11 @@ def reasbook_site : Site := site ReasBookSite.Home /
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap05/section03/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05.section03
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap05/section04/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05.section04
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap05/section05/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05.section05
+  "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap06/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap06
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap06/section01/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap06.section01
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap06/section02/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap06.section02
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap06/section03/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap06.section03
+  "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap07
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section01/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap07.section01
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section02/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap07.section02
   "books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section03/" Book.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap07.section03

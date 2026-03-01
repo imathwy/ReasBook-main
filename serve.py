@@ -1,39 +1,56 @@
 #!/usr/bin/env python3
-"""Serve ReasBook pages locally with the Project Pages prefix /ReasBook-main/."""
+"""Serve ReasBook pages locally with the generated Project Pages prefix."""
 
 import argparse
 import os
+import re
 from http import HTTPStatus
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from urllib.parse import unquote, urlparse
 
-SITE_ROOT = "/ReasBook-main/"
-LEGACY_SITE_ROOT = "/ReasBook/"
 BOOK_SITE = os.path.abspath("./ReasBookWeb/_site")
 DOCS_SITE = os.path.abspath("./ReasBook/.lake/build/doc")
+SECTIONS_LEAN = os.path.abspath("./ReasBookWeb/ReasBookSite/Sections.lean")
+
+
+def _normalize_site_root(value: str) -> str:
+    v = value.strip()
+    if not v:
+        return "/ReasBook/"
+    if not v.startswith("/"):
+        v = "/" + v
+    if not v.endswith("/"):
+        v = v + "/"
+    return v
+
+
+def detect_site_root() -> str:
+    env_root = os.environ.get("REASBOOK_SITE_ROOT")
+    if env_root:
+        return _normalize_site_root(env_root)
+
+    if os.path.exists(SECTIONS_LEAN):
+        with open(SECTIONS_LEAN, "r", encoding="utf-8") as f:
+            content = f.read()
+        m = re.search(r'def siteRoot : String := "([^"]+)"', content)
+        if m:
+            return _normalize_site_root(m.group(1))
+
+    return "/ReasBook/"
+
+
+SITE_ROOT = detect_site_root()
 
 
 class ReasBookHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
-        parsed = urlparse(self.path)
-        req_path = unquote(parsed.path)
-
-        if req_path == "/favicon.ico":
+        if self.path == "/favicon.ico":
             self.send_response(HTTPStatus.NO_CONTENT)
             self.end_headers()
             return
-        if req_path == "/":
+        if self.path == "/":
             self.send_response(HTTPStatus.MOVED_PERMANENTLY)
             self.send_header("Location", SITE_ROOT)
-            self.end_headers()
-            return
-        if req_path.startswith(LEGACY_SITE_ROOT):
-            suffix = req_path[len(LEGACY_SITE_ROOT) :]
-            location = f"{SITE_ROOT}{suffix}"
-            if parsed.query:
-                location = f"{location}?{parsed.query}"
-            self.send_response(HTTPStatus.MOVED_PERMANENTLY)
-            self.send_header("Location", location)
             self.end_headers()
             return
         super().do_GET()
@@ -42,21 +59,19 @@ class ReasBookHandler(SimpleHTTPRequestHandler):
         parsed = urlparse(path)
         req_path = unquote(parsed.path)
 
-        if (
-            req_path.startswith(f"{SITE_ROOT}docs/")
-            or req_path.startswith(f"{LEGACY_SITE_ROOT}docs/")
-            or req_path.startswith("/docs/")
-        ):
+        if req_path.startswith(f"{SITE_ROOT}docs/") or req_path.startswith("/docs/"):
             rel = req_path.split("/docs/", 1)[1]
+            local_docs = os.path.join(DOCS_SITE, rel)
+            if os.path.exists(local_docs):
+                return local_docs
             site_docs = os.path.join(BOOK_SITE, "docs", rel)
             if os.path.exists(site_docs):
                 return site_docs
-            return os.path.join(DOCS_SITE, rel)
+            return local_docs
 
-        for root in (SITE_ROOT, LEGACY_SITE_ROOT):
-            if req_path.startswith(root):
-                rel = req_path[len(root) :]
-                return os.path.join(BOOK_SITE, rel)
+        if req_path.startswith(SITE_ROOT):
+            rel = req_path[len(SITE_ROOT) :]
+            return os.path.join(BOOK_SITE, rel)
 
         # Allow unprefixed local routes such as /books/... and /papers/... to
         # make manually-authored links work in local preview.
@@ -76,9 +91,8 @@ def main() -> None:
 
     with HTTPServer(("", args.port), ReasBookHandler) as httpd:
         print(f"Serving at http://localhost:{args.port}{SITE_ROOT}")
-        print(f"(legacy alias) http://localhost:{args.port}{LEGACY_SITE_ROOT}")
         print(f"{SITE_ROOT} -> {BOOK_SITE}")
-        print(f"{SITE_ROOT}docs/ -> {os.path.join(BOOK_SITE, 'docs')} (fallback: {DOCS_SITE})")
+        print(f"{SITE_ROOT}docs/ -> {DOCS_SITE} (fallback: {os.path.join(BOOK_SITE, 'docs')})")
         httpd.serve_forever()
 
 

@@ -9,19 +9,20 @@ import Books.Analysis2_Tao_2022.Chapters.Chap07.section05_part2
 import Books.Analysis2_Tao_2022.Chapters.Chap07.section05_part3
 
 /-!
-Overview page for `7.5 Measurable Functions`.
+Overview page for 7.5 Measurable Functions.
 
 This aggregation module imports all currently available part files for this section.
+Use this page to jump to each part page quickly.
 
 Verso links:
-- [Section overview](https://imathwy.github.io/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section05/)
-- [Chapter overview](https://imathwy.github.io/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/)
-- [Book overview](https://imathwy.github.io/ReasBook-main/books/analysis2_tao_2022/book/)
+- [Section overview](/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section05/)
+- [Chapter overview](/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/)
+- [Book overview](/ReasBook-main/books/analysis2_tao_2022/book/)
 
 Directory:
 
-- [Part 1 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/Analysis2_Tao_2022/Chapters/Chap07/section05_part1.lean) ([Verso](https://imathwy.github.io/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section05_part1/))
-- [Part 2 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/Analysis2_Tao_2022/Chapters/Chap07/section05_part2.lean) ([Verso](https://imathwy.github.io/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section05_part2/))
-- [Part 3 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/Analysis2_Tao_2022/Chapters/Chap07/section05_part3.lean) ([Verso](https://imathwy.github.io/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section05_part3/))
+- [Part 1 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/Analysis2_Tao_2022/Chapters/Chap07/section05_part1.lean) ([Verso](/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section05_part1/))
+- [Part 2 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/Analysis2_Tao_2022/Chapters/Chap07/section05_part2.lean) ([Verso](/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section05_part2/))
+- [Part 3 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/Analysis2_Tao_2022/Chapters/Chap07/section05_part3.lean) ([Verso](/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section05_part3/))
 
 -/

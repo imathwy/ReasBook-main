@@ -11,20 +11,30 @@ open scoped ReasBookSite.RouteTable
 
 open Output Html Template Theme
 
-def siteRoot : String := "/ReasBook-main/"
+def siteRoot : String := ReasBookSite.Sections.siteRoot
 def siteRootScript : String := s!"window.__versoSiteRoot=\"{siteRoot}\""
 def sidebarDataScript : String := s!"window.__reasbookSidebarData={ReasBookSite.Sections.sidebarDataJson};"
 def sidebarFallbackScript : String := r##"
 (function () {
-  const siteRoot = "/ReasBook-main/";
-  const siteRootNoSlash = "/ReasBook-main";
+  const siteRoot = (typeof window !== "undefined" && typeof window.__versoSiteRoot === "string" && window.__versoSiteRoot)
+    ? window.__versoSiteRoot
+    : "/";
+  const siteRootNoSlash = siteRoot.endsWith("/") ? siteRoot.slice(0, -1) : siteRoot;
 
   function trimSlashes(s) {
     return (s || "").replace(/^\/+|\/+$/g, "");
   }
 
+  function normalizeRoute(route) {
+    route = (route || "").replace(/^\/+/, "");
+    route = route.replace(/index\.html$/i, "");
+    if (route.endsWith(".html")) route = route.slice(0, -5) + "/";
+    if (route && !route.endsWith("/")) route += "/";
+    return route;
+  }
+
   function canonicalRelPath(rel) {
-    rel = (rel || "").replace(/^\/+/, "");
+    rel = normalizeRoute((rel || "").replace(/^\/+/, ""));
     const keys = ["books/", "papers/", "docs/"];
     for (const key of keys) {
       const i = rel.lastIndexOf(key);
@@ -41,30 +51,81 @@ def sidebarFallbackScript : String := r##"
     return canonicalRelPath(p);
   }
 
+  function docsRelToRoute(rel) {
+    const parts = canonicalRelPath(rel).split("/").filter(Boolean);
+    if (parts.length < 3 || parts[0] !== "docs") return "";
+    const scope = String(parts[1] || "").toLowerCase();
+    const slug = String(parts[2] || "").toLowerCase();
+    if (!slug) return "";
+
+    if (scope === "books") {
+      if (parts.length >= 4 && String(parts[3] || "").toLowerCase() === "chapters") {
+        const chap = String(parts[4] || "").toLowerCase().replace(/\.html$/i, "");
+        if (!chap) return "";
+        if (parts.length >= 6) {
+          const leaf = String(parts[5] || "").toLowerCase().replace(/\.html$/i, "");
+          if (!leaf) return normalizeRoute("books/" + slug + "/chapters/" + chap + "/");
+          return normalizeRoute("books/" + slug + "/chapters/" + chap + "/" + leaf + "/");
+        }
+        return normalizeRoute("books/" + slug + "/chapters/" + chap + "/");
+      }
+      const leaf = String(parts[3] || "").toLowerCase();
+      if (leaf === "book.html") return normalizeRoute("books/" + slug + "/book/");
+      if (leaf.startsWith("chap") && leaf.endsWith(".html")) {
+        return normalizeRoute("books/" + slug + "/chapters/" + leaf.replace(/\.html$/i, "") + "/");
+      }
+    }
+
+    if (scope === "papers") {
+      if (parts.length >= 4 && String(parts[3] || "").toLowerCase() === "sections") {
+        const leaf = String(parts[4] || "").toLowerCase().replace(/\.html$/i, "");
+        if (!leaf) return normalizeRoute("papers/" + slug + "/");
+        return normalizeRoute("papers/" + slug + "/sections/" + leaf + "/");
+      }
+      const leaf = String(parts[3] || "").toLowerCase();
+      if (leaf === "paper.html" || leaf === "main.html") return normalizeRoute("papers/" + slug + "/");
+    }
+
+    return "";
+  }
+
+  function routeForLocation() {
+    const rel = currentRelPath();
+    if (rel.startsWith("docs/")) return docsRelToRoute(rel);
+    return normalizeRoute(rel);
+  }
+
+  function sameRoute(a, b) {
+    const aa = normalizeRoute(a);
+    const bb = normalizeRoute(b);
+    return aa !== "" && aa === bb;
+  }
+
   function findCurrentWork(navData) {
     const rel = currentRelPath();
+    const route = routeForLocation();
     const parts = rel.split("/").filter(Boolean);
     if (parts.length >= 2 && parts[0] === "books") {
       const slug = parts[1];
       const work = (navData.books || []).find((w) => w.slug === slug) || null;
-      return { kind: "book", work: work };
+      return { kind: "book", work: work, route: route };
     }
     if (parts.length >= 2 && parts[0] === "papers") {
       const slug = parts[1];
       const work = (navData.papers || []).find((w) => w.slug === slug) || null;
-      return { kind: "paper", work: work };
+      return { kind: "paper", work: work, route: route };
     }
     if (parts.length >= 3 && parts[0] === "docs" && parts[1] === "Books") {
       const slug = String(parts[2] || "").toLowerCase();
       const work = (navData.books || []).find((w) => String(w.slug || "").toLowerCase() === slug) || null;
-      return { kind: "book", work: work };
+      return { kind: "book", work: work, route: route };
     }
     if (parts.length >= 3 && parts[0] === "docs" && parts[1] === "Papers") {
       const slug = String(parts[2] || "").toLowerCase();
       const work = (navData.papers || []).find((w) => String(w.slug || "").toLowerCase() === slug) || null;
-      return { kind: "paper", work: work };
+      return { kind: "paper", work: work, route: route };
     }
-    return { kind: "", work: null };
+    return { kind: "", work: null, route: route };
   }
 
   function escapeHtml(s) {
@@ -78,6 +139,58 @@ def sidebarFallbackScript : String := r##"
     return '<li><a href="' + href + '">' + escapeHtml(label) + '</a></li>';
   }
 
+  function renderCurrentWork(current) {
+    const work = current.work;
+    const route = current.route;
+    if (!work) return "";
+
+    let html = "<li><details open><summary>" + escapeHtml(work.title || "") + "</summary><ul>";
+    if (work.home) {
+      const href = siteRoot + trimSlashes(work.home) + "/";
+      html += sameRoute(work.home, route)
+        ? '<li><a class="is-current" href="' + href + '">Home</a></li>'
+        : itemHtml(href, "Home");
+    }
+
+    if (current.kind === "book" && Array.isArray(work.chapters) && work.chapters.length > 0) {
+      for (const chapter of work.chapters) {
+        html += "<li><details open><summary>" + escapeHtml(chapter.title || "") + "</summary><ul>";
+        if (chapter.route) {
+          const href = siteRoot + trimSlashes(chapter.route) + "/";
+          html += sameRoute(chapter.route, route)
+            ? '<li><a class="is-current" href="' + href + '">Overview</a></li>'
+            : itemHtml(href, "Overview");
+        }
+        for (const section of (chapter.sections || [])) {
+          if (section.route) {
+            const href = siteRoot + trimSlashes(section.route) + "/";
+            html += sameRoute(section.route, route)
+              ? '<li><a class="is-current" href="' + href + '">' + escapeHtml(section.title || "") + "</a></li>"
+              : itemHtml(href, section.title || "");
+          }
+          for (const part of (section.parts || [])) {
+            const href = siteRoot + trimSlashes(part.route || "") + "/";
+            html += sameRoute(part.route || "", route)
+              ? '<li><a class="is-current" href="' + href + '">' + escapeHtml(part.title || "") + "</a></li>"
+              : itemHtml(href, part.title || "");
+          }
+        }
+        html += "</ul></details></li>";
+      }
+    } else {
+      for (const section of (work.sections || [])) {
+        if (!section.route) continue;
+        const href = siteRoot + trimSlashes(section.route) + "/";
+        html += sameRoute(section.route, route)
+          ? '<li><a class="is-current" href="' + href + '">' + escapeHtml(section.title || "") + "</a></li>"
+          : itemHtml(href, section.title || "");
+      }
+    }
+
+    html += "</ul></details></li>";
+    return html;
+  }
+
   function fallbackHtml() {
     const navData = window.__reasbookSidebarData || { books: [], papers: [] };
     const current = findCurrentWork(navData);
@@ -86,14 +199,7 @@ def sidebarFallbackScript : String := r##"
     html += itemHtml(siteRoot + "docs/", "Documentation");
 
     if (current.work) {
-      html += "<li><details open><summary>" + escapeHtml(current.work.title) + "</summary><ul>";
-      if (current.work.home) {
-        html += itemHtml(siteRoot + trimSlashes(current.work.home) + "/", "Home");
-      }
-      for (const s of (current.work.sections || [])) {
-        html += itemHtml(siteRoot + trimSlashes(s.route) + "/", s.title || "");
-      }
-      html += "</ul></details></li>";
+      html += renderCurrentWork(current);
       html += "</ol>";
       return html;
     }
@@ -119,13 +225,27 @@ def sidebarFallbackScript : String := r##"
   else ensureSidebarFallback();
 })();
 "##
-def docsRoot : String := s!"{siteRoot}docs/"
-def staticRoot : String := s!"{siteRoot}static/style.css"
+def docsRoot : String := ReasBookSite.Sections.docsRoot
+def staticRoot : String := ReasBookSite.Sections.staticRoot
 def navLinkRewriteScript : String := r##"
 (function () {
-  const siteRoot = "/ReasBook-main/";
-  const siteRootNoSlash = "/ReasBook-main";
+  const siteRoot = (typeof window !== "undefined" && typeof window.__versoSiteRoot === "string" && window.__versoSiteRoot)
+    ? window.__versoSiteRoot
+    : "/";
+  const siteRootNoSlash = siteRoot.endsWith("/") ? siteRoot.slice(0, -1) : siteRoot;
   const specials = ["#", "mailto:", "tel:"];
+
+  function trimSlashes(s) {
+    return (s || "").replace(/^\/+|\/+$/g, "");
+  }
+
+  function normalizeRoute(route) {
+    route = (route || "").replace(/^\/+/, "");
+    route = route.replace(/index\.html$/i, "");
+    if (route.endsWith(".html")) route = route.slice(0, -5) + "/";
+    if (route && !route.endsWith("/")) route += "/";
+    return route;
+  }
 
   function isSpecial(href) {
     return specials.some((p) => href.startsWith(p));
@@ -138,7 +258,7 @@ def navLinkRewriteScript : String := r##"
   }
 
   function canonicalRelPath(rel) {
-    rel = rel.replace(/^\/+/, "");
+    rel = normalizeRoute(rel.replace(/^\/+/, ""));
     rel = trimToLastSegment(rel, "books/");
     rel = trimToLastSegment(rel, "papers/");
     rel = trimToLastSegment(rel, "docs/");
@@ -153,30 +273,254 @@ def navLinkRewriteScript : String := r##"
     return canonicalRelPath(p);
   }
 
+  function docsRelToRoute(rel) {
+    const parts = canonicalRelPath(rel).split("/").filter(Boolean);
+    if (parts.length < 3 || parts[0] !== "docs") return "";
+    const scope = String(parts[1] || "").toLowerCase();
+    const slug = String(parts[2] || "").toLowerCase();
+    if (!slug) return "";
+
+    if (scope === "books") {
+      if (parts.length >= 4 && String(parts[3] || "").toLowerCase() === "chapters") {
+        const chap = String(parts[4] || "").toLowerCase().replace(/\.html$/i, "");
+        if (!chap) return "";
+        if (parts.length >= 6) {
+          const leaf = String(parts[5] || "").toLowerCase().replace(/\.html$/i, "");
+          if (!leaf) return normalizeRoute("books/" + slug + "/chapters/" + chap + "/");
+          return normalizeRoute("books/" + slug + "/chapters/" + chap + "/" + leaf + "/");
+        }
+        return normalizeRoute("books/" + slug + "/chapters/" + chap + "/");
+      }
+      const leaf = String(parts[3] || "").toLowerCase();
+      if (leaf === "book.html") return normalizeRoute("books/" + slug + "/book/");
+      if (leaf.startsWith("chap") && leaf.endsWith(".html")) {
+        return normalizeRoute("books/" + slug + "/chapters/" + leaf.replace(/\.html$/i, "") + "/");
+      }
+    }
+
+    if (scope === "papers") {
+      if (parts.length >= 4 && String(parts[3] || "").toLowerCase() === "sections") {
+        const leaf = String(parts[4] || "").toLowerCase().replace(/\.html$/i, "");
+        if (!leaf) return normalizeRoute("papers/" + slug + "/");
+        return normalizeRoute("papers/" + slug + "/sections/" + leaf + "/");
+      }
+      const leaf = String(parts[3] || "").toLowerCase();
+      if (leaf === "paper.html" || leaf === "main.html") return normalizeRoute("papers/" + slug + "/");
+    }
+
+    return "";
+  }
+
+  function routeForLocation() {
+    const rel = currentRelPath();
+    if (rel.startsWith("docs/")) return docsRelToRoute(rel);
+    return normalizeRoute(rel);
+  }
+
+  function findWork(collection, slug) {
+    return (collection || []).find((w) => String(w.slug || "").toLowerCase() === String(slug || "").toLowerCase()) || null;
+  }
+
   function findCurrentWork(navData) {
     const rel = currentRelPath();
+    const currentRoute = routeForLocation();
     const parts = rel.split("/").filter(Boolean);
-    if (parts.length >= 2 && parts[0] === "books") {
-      const slug = parts[1];
-      const work = (navData.books || []).find((w) => w.slug === slug) || null;
-      return { kind: "book", work: work };
+    const p0 = String(parts[0] || "").toLowerCase();
+    const p1 = String(parts[1] || "").toLowerCase();
+
+    if (parts.length >= 2 && p0 === "books") {
+      return { kind: "book", work: findWork(navData.books, parts[1]), route: currentRoute };
     }
-    if (parts.length >= 2 && parts[0] === "papers") {
-      const slug = parts[1];
-      const work = (navData.papers || []).find((w) => w.slug === slug) || null;
-      return { kind: "paper", work: work };
+    if (parts.length >= 2 && p0 === "papers") {
+      return { kind: "paper", work: findWork(navData.papers, parts[1]), route: currentRoute };
     }
-    if (parts.length >= 3 && parts[0] === "docs" && parts[1] === "Books") {
-      const slug = String(parts[2] || "").toLowerCase();
-      const work = (navData.books || []).find((w) => String(w.slug || "").toLowerCase() === slug) || null;
-      return { kind: "book", work: work };
+    if (parts.length >= 3 && p0 === "docs" && p1 === "books") {
+      return { kind: "book", work: findWork(navData.books, parts[2]), route: currentRoute };
     }
-    if (parts.length >= 3 && parts[0] === "docs" && parts[1] === "Papers") {
-      const slug = String(parts[2] || "").toLowerCase();
-      const work = (navData.papers || []).find((w) => String(w.slug || "").toLowerCase() === slug) || null;
-      return { kind: "paper", work: work };
+    if (parts.length >= 3 && p0 === "docs" && p1 === "papers") {
+      return { kind: "paper", work: findWork(navData.papers, parts[2]), route: currentRoute };
     }
-    return { kind: "", work: null };
+    return { kind: "", work: null, route: currentRoute };
+  }
+
+  function sameRoute(a, b) {
+    const aa = normalizeRoute(a);
+    const bb = normalizeRoute(b);
+    return aa !== "" && aa === bb;
+  }
+
+  function isRoutePrefix(prefix, current) {
+    const p = normalizeRoute(prefix);
+    const c = normalizeRoute(current);
+    return p !== "" && c.startsWith(p);
+  }
+
+  function routeHref(route) {
+    const rel = normalizeRoute(route);
+    if (!rel) return siteRoot;
+    return siteRoot + rel;
+  }
+
+  function mkAnchor(href, label, isCurrent) {
+    const a = document.createElement("a");
+    a.href = href;
+    a.textContent = label;
+    if (isCurrent) a.classList.add("is-current");
+    return a;
+  }
+
+  function mkItem(href, label, isCurrent) {
+    const li = document.createElement("li");
+    li.appendChild(mkAnchor(href, label, isCurrent));
+    return li;
+  }
+
+  function sectionHasCurrent(section, currentRoute) {
+    if (sameRoute(section.route || "", currentRoute)) return true;
+    if (isRoutePrefix(section.route || "", currentRoute)) return true;
+    for (const part of (section.parts || [])) {
+      if (sameRoute(part.route || "", currentRoute)) return true;
+    }
+    return false;
+  }
+
+  function chapterHasCurrent(chapter, currentRoute) {
+    if (sameRoute(chapter.route || "", currentRoute)) return true;
+    if (isRoutePrefix(chapter.route || "", currentRoute)) return true;
+    for (const section of (chapter.sections || [])) {
+      if (sectionHasCurrent(section, currentRoute)) return true;
+    }
+    return false;
+  }
+
+  function mkSectionNode(section, currentRoute) {
+    const li = document.createElement("li");
+    li.classList.add("nav-section-item");
+
+    const title = section.title || "";
+    if (section.route) {
+      li.appendChild(mkAnchor(routeHref(section.route), title, sameRoute(section.route, currentRoute)));
+    } else {
+      const span = document.createElement("span");
+      span.textContent = title;
+      li.appendChild(span);
+    }
+
+    const parts = Array.isArray(section.parts) ? section.parts : [];
+    if (parts.length > 0) {
+      const partList = document.createElement("ul");
+      partList.classList.add("nav-part-list");
+      for (const part of parts) {
+        if (!part.route) continue;
+        partList.appendChild(mkItem(routeHref(part.route), part.title || "", sameRoute(part.route, currentRoute)));
+      }
+      if (partList.children.length > 0) li.appendChild(partList);
+    }
+
+    return li;
+  }
+
+  function mkChapterNode(chapter, currentRoute) {
+    const li = document.createElement("li");
+    li.classList.add("nav-chapter-item");
+
+    const details = document.createElement("details");
+    details.classList.add("nav-chapter");
+    details.open = chapterHasCurrent(chapter, currentRoute);
+
+    const summary = document.createElement("summary");
+    summary.textContent = chapter.title || "";
+    details.appendChild(summary);
+
+    const sectionList = document.createElement("ul");
+    sectionList.classList.add("nav-section-list");
+    if (chapter.route) {
+      sectionList.appendChild(mkItem(routeHref(chapter.route), "Overview", sameRoute(chapter.route, currentRoute)));
+    }
+    for (const section of (chapter.sections || [])) {
+      sectionList.appendChild(mkSectionNode(section, currentRoute));
+    }
+
+    details.appendChild(sectionList);
+    li.appendChild(details);
+    return li;
+  }
+
+  function mkBookTree(work, currentRoute) {
+    const li = document.createElement("li");
+    const details = document.createElement("details");
+    details.classList.add("nav-work");
+    details.open = true;
+
+    const summary = document.createElement("summary");
+    summary.textContent = work.title || "";
+    details.appendChild(summary);
+
+    const tree = document.createElement("ul");
+    tree.classList.add("nav-work-tree");
+    if (work.home) {
+      tree.appendChild(mkItem(routeHref(work.home), "Home", sameRoute(work.home, currentRoute)));
+    }
+
+    const chapters = Array.isArray(work.chapters) ? work.chapters : [];
+    if (chapters.length > 0) {
+      for (const chapter of chapters) {
+        tree.appendChild(mkChapterNode(chapter, currentRoute));
+      }
+    } else {
+      for (const section of (work.sections || [])) {
+        if (!section.route) continue;
+        tree.appendChild(mkItem(routeHref(section.route), section.title || "", sameRoute(section.route, currentRoute)));
+      }
+    }
+
+    details.appendChild(tree);
+    li.appendChild(details);
+    return li;
+  }
+
+  function mkPaperTree(work, currentRoute) {
+    const li = document.createElement("li");
+    const details = document.createElement("details");
+    details.classList.add("nav-work");
+    details.open = true;
+
+    const summary = document.createElement("summary");
+    summary.textContent = work.title || "";
+    details.appendChild(summary);
+
+    const sectionList = document.createElement("ul");
+    sectionList.classList.add("nav-work-tree");
+    if (work.home) {
+      sectionList.appendChild(mkItem(routeHref(work.home), "Home", sameRoute(work.home, currentRoute)));
+    }
+    for (const section of (work.sections || [])) {
+      if (!section.route) continue;
+      sectionList.appendChild(mkSectionNode(section, currentRoute));
+    }
+
+    details.appendChild(sectionList);
+    li.appendChild(details);
+    return li;
+  }
+
+  function mkSectionGroup(title, works) {
+    const li = document.createElement("li");
+    const details = document.createElement("details");
+    details.open = true;
+    const summary = document.createElement("summary");
+    summary.textContent = title;
+    details.appendChild(summary);
+
+    const workList = document.createElement("ul");
+    for (const w of works || []) {
+      if (!w.home) continue;
+      workList.appendChild(mkItem(routeHref(w.home), w.title || "", false));
+    }
+
+    details.appendChild(workList);
+    li.appendChild(details);
+    return li;
   }
 
   function normalizeInternalHref(href) {
@@ -206,7 +550,8 @@ def navLinkRewriteScript : String := r##"
     else if (p.startsWith("/")) rel = p.slice(1);
     else rel = p;
 
-    rel = canonicalRelPath(rel);
+    rel = normalizeRoute(canonicalRelPath(rel));
+    if (!rel) return siteRoot + qh;
     return siteRoot + rel + qh;
   }
 
@@ -235,76 +580,23 @@ def navLinkRewriteScript : String := r##"
 
   function boot() {
     const navData = window.__reasbookSidebarData || { books: [], papers: [] };
+    const current = findCurrentWork(navData);
     const navRoot = document.getElementById("sidebar-nav-root");
-
-    function trimSlashes(s) {
-      return (s || "").replace(/^\/+|\/+$/g, "");
-    }
-
-    function mkItem(href, label) {
-      const li = document.createElement("li");
-      const a = document.createElement("a");
-      a.href = href;
-      a.textContent = label;
-      li.appendChild(a);
-      return li;
-    }
-
-    function mkWorkDetails(work) {
-      const li = document.createElement("li");
-      const details = document.createElement("details");
-      details.open = true;
-      const summary = document.createElement("summary");
-      summary.textContent = work.title;
-      details.appendChild(summary);
-
-      const sectionList = document.createElement("ul");
-      if (work.home) {
-        sectionList.appendChild(mkItem(siteRoot + trimSlashes(work.home) + "/", "Home"));
-      }
-      for (const s of (work.sections || [])) {
-        sectionList.appendChild(mkItem(siteRoot + trimSlashes(s.route) + "/", s.title));
-      }
-      details.appendChild(sectionList);
-      li.appendChild(details);
-      return li;
-    }
-
-    function mkSectionGroup(title, works) {
-      const li = document.createElement("li");
-      const details = document.createElement("details");
-      details.open = true;
-      const summary = document.createElement("summary");
-      summary.textContent = title;
-      details.appendChild(summary);
-
-      const workList = document.createElement("ul");
-      for (const w of works || []) {
-        workList.appendChild(mkWorkDetails(w));
-      }
-
-      details.appendChild(workList);
-      li.appendChild(details);
-      return li;
-    }
-
-    function renderGroupedNav(list) {
-      list.appendChild(mkItem(siteRoot, "Home"));
-      list.appendChild(mkItem(siteRoot + "docs/", "Documentation"));
-      const current = findCurrentWork(navData);
-      if (current.work) {
-        list.appendChild(mkWorkDetails(current.work));
-        return;
-      }
-      list.appendChild(mkSectionGroup("Books", navData.books || []));
-      list.appendChild(mkSectionGroup("Papers", navData.papers || []));
-    }
 
     function renderSidebarNav() {
       if (!navRoot) return;
       const list = document.createElement("ol");
+      list.classList.add("nav-tree-root");
       try {
-        renderGroupedNav(list);
+        list.appendChild(mkItem(siteRoot, "Home", sameRoute("", current.route)));
+        list.appendChild(mkItem(siteRoot + "docs/", "Documentation", false));
+        if (current.work) {
+          if (current.kind === "book") list.appendChild(mkBookTree(current.work, current.route));
+          else if (current.kind === "paper") list.appendChild(mkPaperTree(current.work, current.route));
+        } else {
+          list.appendChild(mkSectionGroup("Books", navData.books || []));
+          list.appendChild(mkSectionGroup("Papers", navData.papers || []));
+        }
       } catch (err) {
         console.error("Failed to build sidebar navigation", err);
         return;
@@ -329,9 +621,9 @@ def theme : Theme := { Theme.default with
       <html>
         <head>
           <meta charset="UTF-8"/>
-          <base href="/ReasBook-main/"/>
+          <base href={{siteRoot}}/>
           <title>{{ (← param (α := String) "title") }} " -- ReasBook "</title>
-          <link rel="stylesheet" href="/ReasBook-main/static/style.css"/>
+          <link rel="stylesheet" href={{staticRoot}}/>
           <script>{{Html.text false siteRootScript}}</script>
           <script>{{Html.text false sidebarDataScript}}</script>
           <script>{{Html.text false navLinkRewriteScript}}</script>
@@ -358,7 +650,7 @@ def theme : Theme := { Theme.default with
 /-- Generated section routes are injected by `reasbook_site_dir` from `ReasBookSite.RouteTable`. -/
 def demoSite : Site := reasbook_site
 
-def baseUrl := "https://imathwy.github.io/ReasBook-main/docs/"
+def baseUrl := ReasBookSite.Sections.siteBase ++ "docs/"
 
 def linkTargets : Code.LinkTargets α where
   const name _ := #[mkLink s!"{baseUrl}find?pattern={name}#doc"]

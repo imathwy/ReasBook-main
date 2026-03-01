@@ -10,20 +10,21 @@ import Books.Analysis2_Tao_2022.Chapters.Chap07.section02_part3
 import Books.Analysis2_Tao_2022.Chapters.Chap07.section02_part4
 
 /-!
-Overview page for `7.2 First Attempt: Outer Measure`.
+Overview page for 7.2 First Attempt: Outer Measure.
 
 This aggregation module imports all currently available part files for this section.
+Use this page to jump to each part page quickly.
 
 Verso links:
-- [Section overview](https://imathwy.github.io/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section02/)
-- [Chapter overview](https://imathwy.github.io/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/)
-- [Book overview](https://imathwy.github.io/ReasBook-main/books/analysis2_tao_2022/book/)
+- [Section overview](/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section02/)
+- [Chapter overview](/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/)
+- [Book overview](/ReasBook-main/books/analysis2_tao_2022/book/)
 
 Directory:
 
-- [Part 1 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/Analysis2_Tao_2022/Chapters/Chap07/section02_part1.lean) ([Verso](https://imathwy.github.io/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section02_part1/))
-- [Part 2 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/Analysis2_Tao_2022/Chapters/Chap07/section02_part2.lean) ([Verso](https://imathwy.github.io/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section02_part2/))
-- [Part 3 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/Analysis2_Tao_2022/Chapters/Chap07/section02_part3.lean) ([Verso](https://imathwy.github.io/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section02_part3/))
-- [Part 4 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/Analysis2_Tao_2022/Chapters/Chap07/section02_part4.lean) ([Verso](https://imathwy.github.io/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section02_part4/))
+- [Part 1 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/Analysis2_Tao_2022/Chapters/Chap07/section02_part1.lean) ([Verso](/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section02_part1/))
+- [Part 2 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/Analysis2_Tao_2022/Chapters/Chap07/section02_part2.lean) ([Verso](/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section02_part2/))
+- [Part 3 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/Analysis2_Tao_2022/Chapters/Chap07/section02_part3.lean) ([Verso](/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section02_part3/))
+- [Part 4 file](https://github.com/imathwy/ReasBook-main/blob/main/ReasBook/Books/Analysis2_Tao_2022/Chapters/Chap07/section02_part4.lean) ([Verso](/ReasBook-main/books/analysis2_tao_2022/chapters/chap07/section02_part4/))
 
 -/

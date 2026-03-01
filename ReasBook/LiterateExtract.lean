@@ -195,52 +195,39 @@ unsafe def go (suppressedNamespaces : Array Name) (debugMatching : Bool) (mod : 
     let env ← Compat.importModules imports {}
     let pctx : Context := {inputCtx := ictx}
 
-    let scopes := [{header := "", opts := maxHeartbeats.set {} 10000000 }]
-    let commandState := { env, maxRecDepth := defaultMaxRecDepth, messages := msgs, scopes }
+    let commandState : Command.State := { env, maxRecDepth := defaultMaxRecDepth, messages := msgs }
+    let scopes :=
+      let sc := commandState.scopes[0]!
+      { sc with opts := (maxHeartbeats.set sc.opts 10000000).setBool `pp.tagAppFns true } ::
+        commandState.scopes.tail!
+    let commandState := { commandState with scopes }
     let cmdPos := parserState.pos
     let cmdSt ← IO.mkRef {commandState, parserState, cmdPos}
 
-    processCommands pctx cmdSt
-
-    -- The EOI parser uses a constant `"".toSubstring` for its leading and trailing info, which gets
-    -- in the way of `updateLeading`. This can lead to missing comments from the end of the file.
-    -- This fixup replaces it with an empty substring that's actually at the end of the input, which
-    -- fixes this.
-    let cmdStx := (← cmdSt.get).commands.map fun cmd =>
-      if cmd.isOfKind ``Lean.Parser.Command.eoi then
-        let s := {contents.toSubstring with startPos := contents.rawEndPos, stopPos := contents.rawEndPos}
-        .node .none ``Lean.Parser.Command.eoi #[.atom (.original s contents.rawEndPos s contents.rawEndPos) ""]
-      else cmd
+    let res ← Compat.Frontend.processCommands headerStx pctx cmdSt
 
     let infos := (← cmdSt.get).commandState.infoState.trees
-    let msgs := Compat.messageLogArray (← cmdSt.get).commandState.messages
-
-    let .node _ _ cmds := mkNullNode (#[headerStx] ++ cmdStx) |>.updateLeading |> wholeFile contents
-      | panic! "updateLeading created non-node"
-
-    let infoForest := infos.toArray
-    let commandSpans := cmds.filterMap cmdSpan?
+    let msgs := Array.flatten (res.items.map (Compat.messageLogArray ·.messages))
+    let res := res.updateLeading contents
+    let cmds := res.syntax
 
     if debugMatching then
-      IO.eprintln s!"[literate-extract] module={modName} commands={cmds.size} trees={infoForest.size}"
+      IO.eprintln s!"[literate-extract] module={modName} commands={cmds.size} trees={infos.size}"
       for cmd in cmds do
         match cmdSpan? cmd with
         | some span =>
-          let matched := infoTreesForCommand span infoForest
+          let matched := infoTreesForCommand span infos.toArray
           IO.eprintln s!"[literate-extract] command kind={cmd.getKind} span={spanToString fm span} matchedTrees={matched.size} text={commandPreview cmd}"
         | none =>
           IO.eprintln s!"[literate-extract] command kind={cmd.getKind} span=<none> matchedTrees=0 text={commandPreview cmd}"
-      let unmatched := infoForest.foldl (init := 0) fun acc t =>
+      let commandSpans := cmds.filterMap cmdSpan?
+      let unmatched := infos.toArray.foldl (init := 0) fun acc t =>
         if infoTreeOverlapsAny commandSpans t then acc else acc + 1
-      IO.eprintln s!"[literate-extract] unmatchedTrees={unmatched}/{infoForest.size}"
+      IO.eprintln s!"[literate-extract] unmatchedTrees={unmatched}/{infos.size}"
 
-    let hls ← cmds.mapM fun stx => do
-      let matchedTrees :=
-        match cmdSpan? stx with
-        | some span => infoTreesForCommand span infoForest
-        | none => #[]
-      let mergedTrees := mergedTreesForCommand stx matchedTrees
-      (Frontend.runCommandElabM <| liftTermElabM <| highlight stx msgs mergedTrees (suppressNamespaces := suppressedNamespaces.toList)) pctx cmdSt
+    let hls ←
+      (Frontend.runCommandElabM <| liftTermElabM <|
+        SubVerso.Highlighting.highlightFrontendResult res (suppressNamespaces := suppressedNamespaces.toList)) pctx cmdSt
 
     let env := (← cmdSt.get).commandState.env
     let getTerms := cmds.mapM fun (stx : Syntax) => show FrontendM _ from do
