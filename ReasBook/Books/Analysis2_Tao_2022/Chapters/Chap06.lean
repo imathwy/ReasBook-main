@@ -1,6 +1,5 @@
 import Mathlib
 
--- BEGIN AUTO-IMPORTS (managed by orchestrator)
 import Books.Analysis2_Tao_2022.Chapters.Chap06.section01
 import Books.Analysis2_Tao_2022.Chapters.Chap06.section02
 import Books.Analysis2_Tao_2022.Chapters.Chap06.section03
@@ -9,7 +8,6 @@ import Books.Analysis2_Tao_2022.Chapters.Chap06.section05
 import Books.Analysis2_Tao_2022.Chapters.Chap06.section06
 import Books.Analysis2_Tao_2022.Chapters.Chap06.section07
 import Books.Analysis2_Tao_2022.Chapters.Chap06.section08
--- END AUTO-IMPORTS
 
 /-!
 Chapter 06
@@ -33,10 +31,4 @@ Section overviews:
 - 6.7 The Inverse Function Theorem in Several Variable Calculus ([Documentation](../Chap06/section07.html)) ([Verso](/ReasBook-main/books/analysis2_tao_2022/chapters/chap06/section07/))
 - 6.8 The Implicit Function Theorem ([Documentation](../Chap06/section08.html)) ([Verso](/ReasBook-main/books/analysis2_tao_2022/chapters/chap06/section08/))
 
--/
-
-/-!
-# tao_analysis2_formal: Chap06
-
-Auto-managed imports live below.
 -/

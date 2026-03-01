@@ -1,10 +1,8 @@
 
--- BEGIN AUTO-IMPORTS (managed by orchestrator)
 import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap04.section17
 import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap04.section18
 import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap04.section19
 import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap04.section20
--- END AUTO-IMPORTS
 
 /-!
 Chapter 04
@@ -24,10 +22,4 @@ Section overviews:
 - 4.19 Polyhedral Convex Sets and Functions ([Documentation](../Chap04/section19.html)) ([Verso](/ReasBook-main/books/convexanalysis_rockafellar_1970/chapters/chap04/section19/))
 - 4.20 Some Applications of Polyhedral Convexity ([Documentation](../Chap04/section20.html)) ([Verso](/ReasBook-main/books/convexanalysis_rockafellar_1970/chapters/chap04/section20/))
 
--/
-
-/-!
-# Books.ConvexAnalysis_Rockafellar_1970: Chap04
-
-Auto-managed imports live below.
 -/

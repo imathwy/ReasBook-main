@@ -382,6 +382,28 @@ def navLinkRewriteScript : String := r##"
     return li;
   }
 
+  function fmtNumber(n) {
+    const k = Number(n);
+    return Number.isFinite(k) && k > 0 ? String(Math.trunc(k)) : "";
+  }
+
+  function sectionLabel(chapterNumber, section) {
+    const c = fmtNumber(chapterNumber);
+    const s = fmtNumber(section && section.number);
+    const title = (section && section.title) ? String(section.title) : "";
+    if (c && s) return c + "." + s + ". " + title;
+    return title;
+  }
+
+  function partLabel(chapterNumber, section, part) {
+    const c = fmtNumber(chapterNumber);
+    const s = fmtNumber(section && section.number);
+    const p = fmtNumber(part && part.number);
+    const title = (part && part.title) ? String(part.title) : ("Part " + p);
+    if (c && s && p) return c + "." + s + "." + p + ". " + title;
+    return title;
+  }
+
   function sectionHasCurrent(section, currentRoute) {
     if (sameRoute(section.route || "", currentRoute)) return true;
     if (isRoutePrefix(section.route || "", currentRoute)) return true;
@@ -400,11 +422,11 @@ def navLinkRewriteScript : String := r##"
     return false;
   }
 
-  function mkSectionNode(section, currentRoute) {
+  function mkSectionNode(section, currentRoute, chapterNumber) {
     const li = document.createElement("li");
     li.classList.add("nav-section-item");
 
-    const title = section.title || "";
+    const title = sectionLabel(chapterNumber, section);
     if (section.route) {
       li.appendChild(mkAnchor(routeHref(section.route), title, sameRoute(section.route, currentRoute)));
     } else {
@@ -427,7 +449,13 @@ def navLinkRewriteScript : String := r##"
       partList.classList.add("nav-part-list");
       for (const part of parts) {
         if (!part.route) continue;
-        partList.appendChild(mkItem(routeHref(part.route), part.title || "", sameRoute(part.route, currentRoute)));
+        partList.appendChild(
+          mkItem(
+            routeHref(part.route),
+            partLabel(chapterNumber, section, part),
+            sameRoute(part.route, currentRoute)
+          )
+        );
       }
       if (partList.children.length > 0) {
         details.appendChild(partList);
@@ -456,7 +484,7 @@ def navLinkRewriteScript : String := r##"
       sectionList.appendChild(mkItem(routeHref(chapter.route), "Overview", sameRoute(chapter.route, currentRoute)));
     }
     for (const section of (chapter.sections || [])) {
-      sectionList.appendChild(mkSectionNode(section, currentRoute));
+      sectionList.appendChild(mkSectionNode(section, currentRoute, chapter.number));
     }
 
     details.appendChild(sectionList);
@@ -489,7 +517,7 @@ def navLinkRewriteScript : String := r##"
     } else {
       for (const section of (work.sections || [])) {
         if (!section.route) continue;
-        tree.appendChild(mkItem(routeHref(section.route), section.title || "", sameRoute(section.route, currentRoute)));
+        tree.appendChild(mkSectionNode(section, currentRoute, 0));
       }
     }
 
@@ -516,7 +544,7 @@ def navLinkRewriteScript : String := r##"
     }
     for (const section of (work.sections || [])) {
       if (!section.route) continue;
-      sectionList.appendChild(mkSectionNode(section, currentRoute));
+      sectionList.appendChild(mkSectionNode(section, currentRoute, 0));
     }
 
     details.appendChild(sectionList);

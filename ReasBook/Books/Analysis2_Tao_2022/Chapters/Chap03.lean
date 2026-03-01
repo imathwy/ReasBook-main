@@ -6,7 +6,6 @@
 
 import Mathlib
 
--- BEGIN AUTO-IMPORTS (managed by orchestrator)
 import Books.Analysis2_Tao_2022.Chapters.Chap03.section01
 import Books.Analysis2_Tao_2022.Chapters.Chap03.section02
 import Books.Analysis2_Tao_2022.Chapters.Chap03.section03
@@ -15,7 +14,6 @@ import Books.Analysis2_Tao_2022.Chapters.Chap03.section05
 import Books.Analysis2_Tao_2022.Chapters.Chap03.section06
 import Books.Analysis2_Tao_2022.Chapters.Chap03.section07
 import Books.Analysis2_Tao_2022.Chapters.Chap03.section08
--- END AUTO-IMPORTS
 
 /-!
 Chapter 03
@@ -39,10 +37,4 @@ Section overviews:
 - 3.7 Uniform Convergence and Derivatives ([Documentation](../Chap03/section07.html)) ([Verso](/ReasBook-main/books/analysis2_tao_2022/chapters/chap03/section07/))
 - 3.8 Uniform Approximation by Polynomials ([Documentation](../Chap03/section08.html)) ([Verso](/ReasBook-main/books/analysis2_tao_2022/chapters/chap03/section08/))
 
--/
-
-/-!
-# Books.Analysis2_Tao_2022: Chap03
-
-Auto-managed imports live below.
 -/

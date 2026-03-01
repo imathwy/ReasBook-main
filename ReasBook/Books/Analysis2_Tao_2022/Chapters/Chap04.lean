@@ -6,7 +6,6 @@
 
 import Mathlib
 
--- BEGIN AUTO-IMPORTS (managed by orchestrator)
 import Books.Analysis2_Tao_2022.Chapters.Chap04.section01
 import Books.Analysis2_Tao_2022.Chapters.Chap04.section02
 import Books.Analysis2_Tao_2022.Chapters.Chap04.section03
@@ -14,7 +13,6 @@ import Books.Analysis2_Tao_2022.Chapters.Chap04.section04
 import Books.Analysis2_Tao_2022.Chapters.Chap04.section05
 import Books.Analysis2_Tao_2022.Chapters.Chap04.section06
 import Books.Analysis2_Tao_2022.Chapters.Chap04.section07
--- END AUTO-IMPORTS
 
 /-!
 Chapter 04
@@ -37,10 +35,4 @@ Section overviews:
 - 4.6 A Digression on Complex Numbers ([Documentation](../Chap04/section06.html)) ([Verso](/ReasBook-main/books/analysis2_tao_2022/chapters/chap04/section06/))
 - 4.7 Trigonometric Functions ([Documentation](../Chap04/section07.html)) ([Verso](/ReasBook-main/books/analysis2_tao_2022/chapters/chap04/section07/))
 
--/
-
-/-!
-# Books.Analysis2_Tao_2022: Chap04
-
-Auto-managed imports live below.
 -/

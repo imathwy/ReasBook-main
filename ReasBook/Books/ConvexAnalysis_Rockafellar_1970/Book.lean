@@ -1,11 +1,8 @@
 
--- BEGIN AUTO-IMPORTS (managed by orchestrator)
 import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap01
 import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02
 import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap03
 import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap04
-
--- END AUTO-IMPORTS
 
 /-!
 Overview page for Convex Analysis (Rockafellar, 1970).

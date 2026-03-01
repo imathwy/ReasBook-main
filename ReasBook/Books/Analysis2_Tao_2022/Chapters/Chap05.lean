@@ -6,13 +6,11 @@
 
 import Mathlib
 
--- BEGIN AUTO-IMPORTS (managed by orchestrator)
 import Books.Analysis2_Tao_2022.Chapters.Chap05.section01
 import Books.Analysis2_Tao_2022.Chapters.Chap05.section02
 import Books.Analysis2_Tao_2022.Chapters.Chap05.section03
 import Books.Analysis2_Tao_2022.Chapters.Chap05.section04
 import Books.Analysis2_Tao_2022.Chapters.Chap05.section05
--- END AUTO-IMPORTS
 
 /-!
 Chapter 05
@@ -33,10 +31,4 @@ Section overviews:
 - 5.4 Periodic Convolutions ([Documentation](../Chap05/section04.html)) ([Verso](/ReasBook-main/books/analysis2_tao_2022/chapters/chap05/section04/))
 - 5.5 The Fourier and Plancherel Theorems ([Documentation](../Chap05/section05.html)) ([Verso](/ReasBook-main/books/analysis2_tao_2022/chapters/chap05/section05/))
 
--/
-
-/-!
-# Books.Analysis2_Tao_2022: Chap05
-
-Auto-managed imports live below.
 -/

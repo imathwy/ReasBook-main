@@ -593,6 +593,12 @@ def repo_relative_link(path: str) -> str:
     return f"./{norm}"
 
 
+def github_tree_link(path: str) -> str:
+    norm = normalize_path(path)
+    base = f"https://github.com/{GITHUB_OWNER}/{GITHUB_REPO}/tree/{GITHUB_BRANCH}/"
+    return base + norm
+
+
 def route_from_module(module: str) -> str:
     return normalize_path("/".join(part.lower() for part in module.split(".")) + "/")
 
@@ -1304,11 +1310,11 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
             if home_entry is not None
             else f"Books/{book}/Book"
         )
-        lines.append(f"- [Documentation]({route_relative_link(page_route, f'docs/{docs_path}.html')})")
+        lines.append(f"- [Documentation]({portable_site_link(f'docs/{docs_path}.html')})")
         if (book_dir / "Book.lean").exists():
-            lines.append(f"- Lean source path: `ReasBook/Books/{book}/Chapters/`")
+            lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Books/{book}/Chapters/')})")
         else:
-            lines.append(f"- Lean source path: `ReasBook/Books/{book}/`")
+            lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Books/{book}/')})")
         lines.append("")
         if section_entries:
             lines.append("Section index:")
@@ -1324,7 +1330,7 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
                 label = readme_label(e)
                 if not label:
                     continue
-                lines.append(f"- [{label}]({route_relative_link(page_route, e.route)})")
+                lines.append(f"- [{label}]({portable_site_link(e.route)})")
             lines.append("")
         else:
             lines.append("- (TODO: no chapter/section modules discovered yet)")
@@ -1355,11 +1361,11 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
             if home_entry is not None
             else f"Papers/{paper}/Paper"
         )
-        lines.append(f"- [Documentation]({route_relative_link(page_route, f'docs/{docs_path}.html')})")
+        lines.append(f"- [Documentation]({portable_site_link(f'docs/{docs_path}.html')})")
         if (paper_dir / "Paper.lean").exists():
-            lines.append(f"- Lean source path: `ReasBook/Papers/{paper}/Sections/`")
+            lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Papers/{paper}/Sections/')})")
         else:
-            lines.append(f"- Lean source path: `ReasBook/Papers/{paper}/`")
+            lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Papers/{paper}/')})")
         lines.append("")
         if section_entries:
             lines.append("Section index:")
@@ -1368,7 +1374,7 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
                 label = readme_label(e)
                 if not label:
                     continue
-                lines.append(f"- [{label}]({route_relative_link(page_route, e.route)})")
+                lines.append(f"- [{label}]({portable_site_link(e.route)})")
             lines.append("")
         else:
             lines.append("- (TODO: no section modules discovered yet)")
@@ -1399,18 +1405,22 @@ def upsert_overview_block(path: Path, body_lines: list[str]) -> None:
 
     lines = text.splitlines()
 
-    insert_at = -1
-    for i, line in enumerate(lines):
-        if line.strip() == "-- END AUTO-IMPORTS":
-            insert_at = i + 1
-            break
+    # Remove auto-import marker comments from older generated files.
+    lines = [
+        line
+        for line in lines
+        if line.strip() not in {
+            "-- BEGIN AUTO-IMPORTS (managed by orchestrator)",
+            "-- END AUTO-IMPORTS",
+        }
+    ]
 
-    if insert_at < 0:
-        last_import = -1
-        for i, line in enumerate(lines):
-            if line.startswith("import "):
-                last_import = i
-        insert_at = last_import + 1 if last_import >= 0 else 0
+    insert_at = -1
+    last_import = -1
+    for i, line in enumerate(lines):
+        if line.startswith("import "):
+            last_import = i
+    insert_at = last_import + 1 if last_import >= 0 else 0
 
     while insert_at < len(lines) and lines[insert_at].strip() == "":
         insert_at += 1
@@ -1433,6 +1443,25 @@ def upsert_overview_block(path: Path, body_lines: list[str]) -> None:
                         del lines[candidate_start]
                     else:
                         break
+
+    # Drop stale legacy docstring blocks used by old generated chapter aggregators.
+    i = 0
+    while i < len(lines):
+        if lines[i].strip() == "/-!":
+            j = i + 1
+            while j < len(lines) and lines[j].strip() != "-/":
+                j += 1
+            if j < len(lines):
+                block_text = "\n".join(lines[i + 1 : j])
+                if "Auto-managed imports live below." in block_text:
+                    del lines[i : j + 1]
+                    while i < len(lines) and lines[i].strip() == "":
+                        if i == 0 or lines[i - 1].strip() == "":
+                            del lines[i]
+                        else:
+                            break
+                    continue
+        i += 1
 
     block_lines = ["/-!", *body_lines, "-/"]
     insert_lines = ["", *block_lines, ""]
@@ -1508,10 +1537,9 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
             if not chapter_file.exists():
                 chapter_file.parent.mkdir(parents=True, exist_ok=True)
                 imports = sorted({e.module for e in ch_entries})
-                chapter_lines: list[str] = ["-- BEGIN AUTO-IMPORTS (managed by orchestrator)"]
+                chapter_lines: list[str] = []
                 for module in imports:
                     chapter_lines.append(f"import {module}")
-                chapter_lines.append("-- END AUTO-IMPORTS")
                 chapter_lines.append("")
                 write_text_if_changed(
                     chapter_file,

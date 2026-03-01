@@ -4,13 +4,11 @@
   Authors: Zichen Wang, Wanli Ma, Chenyi Li, Zaiwen Wen
   -/
 
--- BEGIN AUTO-IMPORTS (managed by orchestrator)
 import Books.Analysis2_Tao_2022.Chapters.Chap02.section01
 import Books.Analysis2_Tao_2022.Chapters.Chap02.section02
 import Books.Analysis2_Tao_2022.Chapters.Chap02.section03
 import Books.Analysis2_Tao_2022.Chapters.Chap02.section04
 import Books.Analysis2_Tao_2022.Chapters.Chap02.section05
--- END AUTO-IMPORTS
 
 /-!
 Chapter 02
@@ -31,10 +29,4 @@ Section overviews:
 - 2.4 Continuity and Connectedness ([Documentation](../Chap02/section04.html)) ([Verso](/ReasBook-main/books/analysis2_tao_2022/chapters/chap02/section04/))
 - 2.5 Topological Spaces ([Documentation](../Chap02/section05.html)) ([Verso](/ReasBook-main/books/analysis2_tao_2022/chapters/chap02/section05/))
 
--/
-
-/-!
-# Books.Analysis2_Tao_2022: Chap02
-
-Auto-managed imports live below.
 -/

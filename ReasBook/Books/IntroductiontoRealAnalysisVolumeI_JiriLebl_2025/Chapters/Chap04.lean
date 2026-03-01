@@ -1,9 +1,7 @@
--- BEGIN AUTO-IMPORTS (managed by orchestrator)
 import Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap04.section01
 import Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap04.section02
 import Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap04.section03
 import Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap04.section04
--- END AUTO-IMPORTS
 
 /-!
 Chapter 04
