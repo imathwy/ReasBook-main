@@ -612,13 +612,22 @@ def navLinkRewriteScript : String := r##"
     if (p === "/" || p === "/index.html") return siteRoot + qh;
     if (p === "/docs" || p === "/docs/") return siteRoot + "docs/" + qh;
 
-    let rel;
-    if (p.startsWith(siteRoot)) rel = p.slice(siteRoot.length);
-    else if (p.startsWith(siteRootNoSlash + "/")) rel = p.slice(siteRootNoSlash.length + 1);
-    else if (p.startsWith("/")) rel = p.slice(1);
-    else rel = p;
+    let relRaw;
+    if (p.startsWith(siteRoot)) relRaw = p.slice(siteRoot.length);
+    else if (p.startsWith(siteRootNoSlash + "/")) relRaw = p.slice(siteRootNoSlash.length + 1);
+    else if (p.startsWith("/")) relRaw = p.slice(1);
+    else relRaw = p;
 
-    rel = normalizeRoute(canonicalRelPath(rel));
+    relRaw = (relRaw || "").replace(/^\/+/, "");
+    const docsIdx = relRaw.toLowerCase().lastIndexOf("docs/");
+    if (docsIdx >= 0) {
+      const docsRel = relRaw.slice(docsIdx);
+      const docsLower = docsRel.toLowerCase();
+      if (docsLower === "docs" || docsLower === "docs/") return siteRoot + "docs/" + qh;
+      if (docsLower.endsWith(".html")) return siteRoot + docsRel + qh;
+    }
+
+    let rel = normalizeRoute(canonicalRelPath(relRaw));
     if (!rel) return siteRoot + qh;
     return siteRoot + rel + qh;
   }
