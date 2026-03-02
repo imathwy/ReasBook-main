@@ -20,19 +20,19 @@ This aggregation module imports all currently available part files for this sect
 Use this page to jump to each part page quickly.
 
 Verso links:
-- [Section overview](/ReasBook-main/books/convexanalysis_rockafellar_1970/chapters/chap03/section11/)
-- [Chapter overview](/ReasBook-main/books/convexanalysis_rockafellar_1970/chapters/chap03/)
-- [Book overview](/ReasBook-main/books/convexanalysis_rockafellar_1970/book/)
+- [Section overview](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section11/)
+- [Chapter overview](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/)
+- [Book overview](/ReasBook/books/convexanalysis_rockafellar_1970/book/)
 
 Directory:
 
-- Part 1 ([Documentation](../section11_part1.html)) ([Verso](/ReasBook-main/books/convexanalysis_rockafellar_1970/chapters/chap03/section11_part1/))
-- Part 2 ([Documentation](../section11_part2.html)) ([Verso](/ReasBook-main/books/convexanalysis_rockafellar_1970/chapters/chap03/section11_part2/))
-- Part 3 ([Documentation](../section11_part3.html)) ([Verso](/ReasBook-main/books/convexanalysis_rockafellar_1970/chapters/chap03/section11_part3/))
-- Part 4 ([Documentation](../section11_part4.html)) ([Verso](/ReasBook-main/books/convexanalysis_rockafellar_1970/chapters/chap03/section11_part4/))
-- Part 5 ([Documentation](../section11_part5.html)) ([Verso](/ReasBook-main/books/convexanalysis_rockafellar_1970/chapters/chap03/section11_part5/))
-- Part 6 ([Documentation](../section11_part6.html)) ([Verso](/ReasBook-main/books/convexanalysis_rockafellar_1970/chapters/chap03/section11_part6/))
-- Part 7 ([Documentation](../section11_part7.html)) ([Verso](/ReasBook-main/books/convexanalysis_rockafellar_1970/chapters/chap03/section11_part7/))
-- Part 8 ([Documentation](../section11_part8.html)) ([Verso](/ReasBook-main/books/convexanalysis_rockafellar_1970/chapters/chap03/section11_part8/))
+- Part 1 ([Documentation](../section11_part1.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section11_part1/))
+- Part 2 ([Documentation](../section11_part2.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section11_part2/))
+- Part 3 ([Documentation](../section11_part3.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section11_part3/))
+- Part 4 ([Documentation](../section11_part4.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section11_part4/))
+- Part 5 ([Documentation](../section11_part5.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section11_part5/))
+- Part 6 ([Documentation](../section11_part6.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section11_part6/))
+- Part 7 ([Documentation](../section11_part7.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section11_part7/))
+- Part 8 ([Documentation](../section11_part8.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section11_part8/))
 
 -/

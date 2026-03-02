@@ -14,13 +14,13 @@ This aggregation module imports all currently available part files for this sect
 Use this page to jump to each part page quickly.
 
 Verso links:
-- [Section overview](/ReasBook-main/books/analysis2_tao_2022/chapters/chap03/section07/)
-- [Chapter overview](/ReasBook-main/books/analysis2_tao_2022/chapters/chap03/)
-- [Book overview](/ReasBook-main/books/analysis2_tao_2022/book/)
+- [Section overview](/ReasBook/books/analysis2_tao_2022/chapters/chap03/section07/)
+- [Chapter overview](/ReasBook/books/analysis2_tao_2022/chapters/chap03/)
+- [Book overview](/ReasBook/books/analysis2_tao_2022/book/)
 
 Directory:
 
-- Part 1 ([Documentation](../section07_part1.html)) ([Verso](/ReasBook-main/books/analysis2_tao_2022/chapters/chap03/section07_part1/))
-- Part 2 ([Documentation](../section07_part2.html)) ([Verso](/ReasBook-main/books/analysis2_tao_2022/chapters/chap03/section07_part2/))
+- Part 1 ([Documentation](../section07_part1.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap03/section07_part1/))
+- Part 2 ([Documentation](../section07_part2.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap03/section07_part2/))
 
 -/
