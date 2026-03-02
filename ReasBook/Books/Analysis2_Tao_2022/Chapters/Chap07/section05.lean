@@ -21,8 +21,8 @@ Verso links:
 
 Directory:
 
-- Part 1 ([Documentation](../section05_part1.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap07/section05_part1/))
-- Part 2 ([Documentation](../section05_part2.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap07/section05_part2/))
-- Part 3 ([Documentation](../section05_part3.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap07/section05_part3/))
+- Part 1 ([Documentation](/ReasBook/docs/Books/Analysis2_Tao_2022/Chapters/Chap07/section05_part1.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap07/section05_part1/))
+- Part 2 ([Documentation](/ReasBook/docs/Books/Analysis2_Tao_2022/Chapters/Chap07/section05_part2.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap07/section05_part2/))
+- Part 3 ([Documentation](/ReasBook/docs/Books/Analysis2_Tao_2022/Chapters/Chap07/section05_part3.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap07/section05_part3/))
 
 -/

@@ -18,11 +18,11 @@ Verso links:
 
 Section overviews:
 
-- 7.1 Metric Spaces ([Documentation](../Chap07/section01.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section01/))
-- 7.2 Open and Closed Sets ([Documentation](../Chap07/section02.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section02/))
-- 7.3 Sequences and Convergence ([Documentation](../Chap07/section03.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section03/))
-- 7.4 Completeness and Compactness ([Documentation](../Chap07/section04.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section04/))
-- 7.5 Continuous Functions ([Documentation](../Chap07/section05.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section05/))
-- 7.6 Fixed Point Theorem and Picard's Theorem Again ([Documentation](../Chap07/section06.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section06/))
+- 7.1 Metric Spaces ([Documentation](/ReasBook/docs/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap07/section01.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section01/))
+- 7.2 Open and Closed Sets ([Documentation](/ReasBook/docs/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap07/section02.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section02/))
+- 7.3 Sequences and Convergence ([Documentation](/ReasBook/docs/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap07/section03.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section03/))
+- 7.4 Completeness and Compactness ([Documentation](/ReasBook/docs/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap07/section04.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section04/))
+- 7.5 Continuous Functions ([Documentation](/ReasBook/docs/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap07/section05.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section05/))
+- 7.6 Fixed Point Theorem and Picard's Theorem Again ([Documentation](/ReasBook/docs/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap07/section06.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section06/))
 
 -/

@@ -22,9 +22,9 @@ Verso links:
 
 Directory:
 
-- Part 1 ([Documentation](../section02_part1.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap04/section02_part1/))
-- Part 2 ([Documentation](../section02_part2.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap04/section02_part2/))
-- Part 3 ([Documentation](../section02_part3.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap04/section02_part3/))
-- Part 4 ([Documentation](../section02_part4.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap04/section02_part4/))
+- Part 1 ([Documentation](/ReasBook/docs/Books/Analysis2_Tao_2022/Chapters/Chap04/section02_part1.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap04/section02_part1/))
+- Part 2 ([Documentation](/ReasBook/docs/Books/Analysis2_Tao_2022/Chapters/Chap04/section02_part2.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap04/section02_part2/))
+- Part 3 ([Documentation](/ReasBook/docs/Books/Analysis2_Tao_2022/Chapters/Chap04/section02_part3.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap04/section02_part3/))
+- Part 4 ([Documentation](/ReasBook/docs/Books/Analysis2_Tao_2022/Chapters/Chap04/section02_part4.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap04/section02_part4/))
 
 -/

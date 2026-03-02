@@ -26,13 +26,13 @@ Verso links:
 
 Directory:
 
-- Part 1 ([Documentation](../section06_part1.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap06/section06_part1/))
-- Part 2 ([Documentation](../section06_part2.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap06/section06_part2/))
-- Part 3 ([Documentation](../section06_part3.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap06/section06_part3/))
-- Part 4 ([Documentation](../section06_part4.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap06/section06_part4/))
-- Part 5 ([Documentation](../section06_part5.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap06/section06_part5/))
-- Part 6 ([Documentation](../section06_part6.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap06/section06_part6/))
-- Part 7 ([Documentation](../section06_part7.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap06/section06_part7/))
-- Part 8 ([Documentation](../section06_part8.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap06/section06_part8/))
+- Part 1 ([Documentation](/ReasBook/docs/Books/Analysis2_Tao_2022/Chapters/Chap06/section06_part1.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap06/section06_part1/))
+- Part 2 ([Documentation](/ReasBook/docs/Books/Analysis2_Tao_2022/Chapters/Chap06/section06_part2.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap06/section06_part2/))
+- Part 3 ([Documentation](/ReasBook/docs/Books/Analysis2_Tao_2022/Chapters/Chap06/section06_part3.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap06/section06_part3/))
+- Part 4 ([Documentation](/ReasBook/docs/Books/Analysis2_Tao_2022/Chapters/Chap06/section06_part4.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap06/section06_part4/))
+- Part 5 ([Documentation](/ReasBook/docs/Books/Analysis2_Tao_2022/Chapters/Chap06/section06_part5.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap06/section06_part5/))
+- Part 6 ([Documentation](/ReasBook/docs/Books/Analysis2_Tao_2022/Chapters/Chap06/section06_part6.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap06/section06_part6/))
+- Part 7 ([Documentation](/ReasBook/docs/Books/Analysis2_Tao_2022/Chapters/Chap06/section06_part7.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap06/section06_part7/))
+- Part 8 ([Documentation](/ReasBook/docs/Books/Analysis2_Tao_2022/Chapters/Chap06/section06_part8.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap06/section06_part8/))
 
 -/

@@ -14,7 +14,7 @@ Verso links:
 
 Directory:
 
-- Part 1 ([Documentation](../section20_part1.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap04/section20_part1/))
-- Part 2 ([Documentation](../section20_part2.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap04/section20_part2/))
+- Part 1 ([Documentation](/ReasBook/docs/Books/ConvexAnalysis_Rockafellar_1970/Chapters/Chap04/section20_part1.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap04/section20_part1/))
+- Part 2 ([Documentation](/ReasBook/docs/Books/ConvexAnalysis_Rockafellar_1970/Chapters/Chap04/section20_part2.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap04/section20_part2/))
 
 -/

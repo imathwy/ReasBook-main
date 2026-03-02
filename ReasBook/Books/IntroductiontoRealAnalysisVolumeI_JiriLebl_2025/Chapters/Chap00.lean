@@ -11,6 +11,6 @@ Verso links:
 
 Section overviews:
 
-- Section 0.3 ([Documentation](../Chap00/section03.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03/))
+- Section 0.3 ([Documentation](/ReasBook/docs/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap00/section03.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03/))
 
 -/

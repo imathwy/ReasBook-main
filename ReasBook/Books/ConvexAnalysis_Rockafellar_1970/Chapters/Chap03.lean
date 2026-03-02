@@ -19,11 +19,11 @@ Verso links:
 
 Section overviews:
 
-- 3.11 Separation Theorems ([Documentation](../Chap03/section11.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section11/))
-- 3.12 Conjugates of Convex Functions ([Documentation](../Chap03/section12.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section12/))
-- 3.13 Support Functions ([Documentation](../Chap03/section13.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section13/))
-- 3.14 Polars of Convex Sets ([Documentation](../Chap03/section14.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section14/))
-- 3.15 Polars of Convex Functions ([Documentation](../Chap03/section15.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section15/))
-- 3.16 Dual Operations ([Documentation](../Chap03/section16.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section16/))
+- 3.11 Separation Theorems ([Documentation](/ReasBook/docs/Books/ConvexAnalysis_Rockafellar_1970/Chapters/Chap03/section11.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section11/))
+- 3.12 Conjugates of Convex Functions ([Documentation](/ReasBook/docs/Books/ConvexAnalysis_Rockafellar_1970/Chapters/Chap03/section12.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section12/))
+- 3.13 Support Functions ([Documentation](/ReasBook/docs/Books/ConvexAnalysis_Rockafellar_1970/Chapters/Chap03/section13.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section13/))
+- 3.14 Polars of Convex Sets ([Documentation](/ReasBook/docs/Books/ConvexAnalysis_Rockafellar_1970/Chapters/Chap03/section14.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section14/))
+- 3.15 Polars of Convex Functions ([Documentation](/ReasBook/docs/Books/ConvexAnalysis_Rockafellar_1970/Chapters/Chap03/section15.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section15/))
+- 3.16 Dual Operations ([Documentation](/ReasBook/docs/Books/ConvexAnalysis_Rockafellar_1970/Chapters/Chap03/section16.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap03/section16/))
 
 -/

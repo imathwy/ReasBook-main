@@ -19,10 +19,10 @@ Verso links:
 
 Section overviews:
 
-- 8.1 Simple Functions ([Documentation](../Chap08/section01.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap08/section01/))
-- 8.2 Integration of Non-negative Measurable Functions ([Documentation](../Chap08/section02.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap08/section02/))
-- 8.3 Integration of Absolutely Integrable Functions ([Documentation](../Chap08/section03.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap08/section03/))
-- 8.4 Comparison with the Riemann Integral ([Documentation](../Chap08/section04.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap08/section04/))
-- 8.5 Fubini's Theorem ([Documentation](../Chap08/section05.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap08/section05/))
+- 8.1 Simple Functions ([Documentation](/ReasBook/docs/Books/Analysis2_Tao_2022/Chapters/Chap08/section01.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap08/section01/))
+- 8.2 Integration of Non-negative Measurable Functions ([Documentation](/ReasBook/docs/Books/Analysis2_Tao_2022/Chapters/Chap08/section02.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap08/section02/))
+- 8.3 Integration of Absolutely Integrable Functions ([Documentation](/ReasBook/docs/Books/Analysis2_Tao_2022/Chapters/Chap08/section03.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap08/section03/))
+- 8.4 Comparison with the Riemann Integral ([Documentation](/ReasBook/docs/Books/Analysis2_Tao_2022/Chapters/Chap08/section04.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap08/section04/))
+- 8.5 Fubini's Theorem ([Documentation](/ReasBook/docs/Books/Analysis2_Tao_2022/Chapters/Chap08/section05.html)) ([Verso](/ReasBook/books/analysis2_tao_2022/chapters/chap08/section05/))
 
 -/

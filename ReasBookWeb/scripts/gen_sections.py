@@ -640,9 +640,8 @@ def docs_relative_site_link(module: str, route: str) -> str:
 
 
 def docs_relative_doc_link(from_module: str, to_module: str) -> str:
-    from_route = f"docs/{from_module.replace('.', '/')}.html"
-    to_route = f"docs/{to_module.replace('.', '/')}.html"
-    return route_relative_link(from_route, to_route)
+    _ = from_module
+    return portable_site_link(f"docs/{to_module.replace('.', '/')}.html")
 
 
 def portable_site_link(route: str) -> str:

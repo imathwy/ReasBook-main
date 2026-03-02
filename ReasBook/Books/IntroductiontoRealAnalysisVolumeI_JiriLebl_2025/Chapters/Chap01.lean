@@ -17,10 +17,10 @@ Verso links:
 
 Section overviews:
 
-- 1.1 Basic Properties ([Documentation](../Chap01/section01.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section01/))
-- 1.2 The Set of Real Numbers ([Documentation](../Chap01/section02.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section02/))
-- 1.3 Absolute Value and Bounded Functions ([Documentation](../Chap01/section03.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section03/))
-- 1.4 Intervals and the Size of R ([Documentation](../Chap01/section04.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section04/))
-- 1.5 Decimal Representation of the Reals ([Documentation](../Chap01/section05.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section05/))
+- 1.1 Basic Properties ([Documentation](/ReasBook/docs/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap01/section01.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section01/))
+- 1.2 The Set of Real Numbers ([Documentation](/ReasBook/docs/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap01/section02.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section02/))
+- 1.3 Absolute Value and Bounded Functions ([Documentation](/ReasBook/docs/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap01/section03.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section03/))
+- 1.4 Intervals and the Size of R ([Documentation](/ReasBook/docs/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap01/section04.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section04/))
+- 1.5 Decimal Representation of the Reals ([Documentation](/ReasBook/docs/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap01/section05.html)) ([Verso](/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section05/))
 
 -/
