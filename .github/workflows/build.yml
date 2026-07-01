@@ -35,6 +35,11 @@ jobs:
           restore-keys: |
             lake-reasbook-v1-${{ runner.os }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
 
+      - name: Resolve dependencies
+        run: |
+          cd ReasBook
+          lake resolve-deps
+
       - name: Prime mathlib cache
         run: |
           cd ReasBook
@@ -98,6 +103,11 @@ jobs:
           restore-keys: |
             lake-reasbook-v1-${{ runner.os }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-
             lake-reasbook-v1-${{ runner.os }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
+
+      - name: Resolve dependencies
+        run: |
+          cd ReasBook
+          lake resolve-deps
 
       - name: Prime mathlib cache
         run: |
