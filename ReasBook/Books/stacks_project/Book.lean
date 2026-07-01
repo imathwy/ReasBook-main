@@ -1317,7 +1317,6 @@ import stacks_project.Chap10.Lemma_10_101_5
 import stacks_project.Chap10.Lemma_10_101_6
 import stacks_project.Chap10.Lemma_10_101_7
 import stacks_project.Chap10.Lemma_10_101_8_Crit_re_de_platitude_par_fibres_Nilpotent_case
-import stacks_project.Chap10.Lemma_10_101_8_Crit_re_de_platitude_par_fibres_Nilpotent_case
 import stacks_project.Chap10.Lemma_10_102_2
 import stacks_project.Chap10.Lemma_10_102_3
 import stacks_project.Chap10.Lemma_10_102_4
@@ -1438,7 +1437,6 @@ import stacks_project.Chap10.Lemma_10_119_11
 import stacks_project.Chap10.Lemma_10_119_12_Krull_Akizuki
 import stacks_project.Chap10.Lemma_10_119_13
 import stacks_project.Chap10.Lemma_10_119_2_Koll_r
-import stacks_project.Chap10.Lemma_10_119_2_Koll_r
 import stacks_project.Chap10.Lemma_10_119_3
 import stacks_project.Chap10.Lemma_10_119_7
 import stacks_project.Chap10.Lemma_10_119_9
@@ -1525,7 +1523,6 @@ import stacks_project.Chap10.Lemma_10_127_7
 import stacks_project.Chap10.Lemma_10_127_8
 import stacks_project.Chap10.Lemma_10_127_9
 import stacks_project.Chap10.Lemma_10_128_1
-import stacks_project.Chap10.Lemma_10_128_10_Crit_re_de_platitude_par_fibres_locally_nilpotent_case
 import stacks_project.Chap10.Lemma_10_128_10_Crit_re_de_platitude_par_fibres_locally_nilpotent_case
 import stacks_project.Chap10.Lemma_10_128_2
 import stacks_project.Chap10.Lemma_10_128_3

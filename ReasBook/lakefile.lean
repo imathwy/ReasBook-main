@@ -31,22 +31,37 @@ lean_lib Books where
 
 lean_lib Papers where
 
--- Books from ALLBOOKS
+-- Books from ALLBOOKS (sources live under Books/<LibName>/)
 lean_lib AchimKlenkeLean where
+  srcDir := "Books"
 lean_lib BauschkeLean where
+  srcDir := "Books"
 lean_lib CombinatorialGroupTheory where
+  srcDir := "Books"
 lean_lib FirstOrderMethodsinOptimization where
+  srcDir := "Books"
 lean_lib MayConciseRevised where
+  srcDir := "Books"
 lean_lib Nesterov where
+  srcDir := "Books"
 lean_lib OptimizationResearch where
+  srcDir := "Books"
 lean_lib Reaslib where
+  srcDir := "Books"
 lean_lib RiemannSurfaces where
+  srcDir := "Books"
 lean_lib Serre where
+  srcDir := "Books"
 lean_lib SmoothManifoldsLee where
+  srcDir := "Books"
 lean_lib cartan where
+  srcDir := "Books"
 lean_lib chapter1_reference_format where
+  srcDir := "Books"
 lean_lib stacks_project where
+  srcDir := "Books"
 lean_lib stacks_proof where
+  srcDir := "Books"
 
 lean_exe "literate-extract" where
   root := `LiterateExtract
