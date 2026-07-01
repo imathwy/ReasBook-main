@@ -15,8 +15,29 @@ Title: Chapter 04 -- Power Series
 
 This chapter aggregation page links to section overviews and source files.
 
+Verso links:
+- [Chapter overview](/ReasBook-private/books/analysis2_tao_2022/chapters/chap04/)
+- [Book overview](/ReasBook-private/books/analysis2_tao_2022/book/)
 
 Section overviews:
 
+- 4.1 Formal Power Series ([Documentation](/ReasBook-private/docs/Books/Analysis2_Tao_2022/Chapters/Chap04/section01.html)) ([Verso](/ReasBook-private/books/analysis2_tao_2022/chapters/chap04/section01/))
+- 4.2 Real Analytic Functions ([Documentation](/ReasBook-private/docs/Books/Analysis2_Tao_2022/Chapters/Chap04/section02.html)) ([Verso](/ReasBook-private/books/analysis2_tao_2022/chapters/chap04/section02/))
+- 4.3 Abel's Theorem ([Documentation](/ReasBook-private/docs/Books/Analysis2_Tao_2022/Chapters/Chap04/section03.html)) ([Verso](/ReasBook-private/books/analysis2_tao_2022/chapters/chap04/section03/))
+- 4.4 Multiplication of Power Series ([Documentation](/ReasBook-private/docs/Books/Analysis2_Tao_2022/Chapters/Chap04/section04.html)) ([Verso](/ReasBook-private/books/analysis2_tao_2022/chapters/chap04/section04/))
+- 4.5 The Exponential and Logarithm Functions ([Documentation](/ReasBook-private/docs/Books/Analysis2_Tao_2022/Chapters/Chap04/section05.html)) ([Verso](/ReasBook-private/books/analysis2_tao_2022/chapters/chap04/section05/))
+- 4.6 A Digression on Complex Numbers ([Documentation](/ReasBook-private/docs/Books/Analysis2_Tao_2022/Chapters/Chap04/section06.html)) ([Verso](/ReasBook-private/books/analysis2_tao_2022/chapters/chap04/section06/))
+- 4.7 Trigonometric Functions ([Documentation](/ReasBook-private/docs/Books/Analysis2_Tao_2022/Chapters/Chap04/section07.html)) ([Verso](/ReasBook-private/books/analysis2_tao_2022/chapters/chap04/section07/))
+
+-/
+
+/-!
+Chapter 04
+
+Title: Chapter 04 -- Power Series
+
+This chapter aggregation page links to section overviews and source files.
+
+Section overviews:
 
 -/

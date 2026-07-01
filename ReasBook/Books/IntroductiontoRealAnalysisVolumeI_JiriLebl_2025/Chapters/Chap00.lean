@@ -5,8 +5,21 @@ Chapter 00
 
 This chapter aggregation page links to section overviews and source files.
 
+Verso links:
+- [Chapter overview](/ReasBook-private/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/)
+- [Book overview](/ReasBook-private/books/introductiontorealanalysisvolumei_jirilebl_2025/book/)
 
 Section overviews:
 
+- Section 0.3 ([Documentation](/ReasBook-private/docs/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap00/section03.html)) ([Verso](/ReasBook-private/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03/))
+
+-/
+
+/-!
+Chapter 00
+
+This chapter aggregation page links to section overviews and source files.
+
+Section overviews:
 
 -/

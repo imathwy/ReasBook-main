@@ -7,9 +7,27 @@ import Books.Analysis2_Tao_2022.Chapters.Chap06.section03_part4
 Overview page for 6.3 Partial and Directional Derivatives.
 
 This aggregation module imports all currently available part files for this section.
+Use this page to jump to each part page quickly.
 
+Verso links:
+- [Section overview](/ReasBook-private/books/analysis2_tao_2022/chapters/chap06/section03/)
+- [Chapter overview](/ReasBook-private/books/analysis2_tao_2022/chapters/chap06/)
+- [Book overview](/ReasBook-private/books/analysis2_tao_2022/book/)
 
 Directory:
 
+- Part 1 ([Documentation](/ReasBook-private/docs/Books/Analysis2_Tao_2022/Chapters/Chap06/section03_part1.html)) ([Verso](/ReasBook-private/books/analysis2_tao_2022/chapters/chap06/section03_part1/))
+- Part 2 ([Documentation](/ReasBook-private/docs/Books/Analysis2_Tao_2022/Chapters/Chap06/section03_part2.html)) ([Verso](/ReasBook-private/books/analysis2_tao_2022/chapters/chap06/section03_part2/))
+- Part 3 ([Documentation](/ReasBook-private/docs/Books/Analysis2_Tao_2022/Chapters/Chap06/section03_part3.html)) ([Verso](/ReasBook-private/books/analysis2_tao_2022/chapters/chap06/section03_part3/))
+- Part 4 ([Documentation](/ReasBook-private/docs/Books/Analysis2_Tao_2022/Chapters/Chap06/section03_part4.html)) ([Verso](/ReasBook-private/books/analysis2_tao_2022/chapters/chap06/section03_part4/))
+
+-/
+
+/-!
+Overview page for 6.3 Partial and Directional Derivatives.
+
+This aggregation module imports all currently available part files for this section.
+
+Directory:
 
 -/

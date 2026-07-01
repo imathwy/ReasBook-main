@@ -2,7 +2,7 @@ import Lake
 open Lake DSL
 
 require verso from git "https://github.com/leanprover/verso.git" @ "v4.30.0"
-require subverso from git "https://github.com/leanprover/subverso" @ "v4.30.0"
+require subverso from git "https://github.com/leanprover/subverso" @ "verso-v4.30.0"
 require MD4Lean from git "https://github.com/acmepjz/md4lean" @ "main"
 
 package "reasbook-site" where
