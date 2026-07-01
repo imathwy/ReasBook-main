@@ -1,5 +1,4 @@
 **/.lake/
-.shared-lake/
 *.olean
 *.ilean
 *.trace
