@@ -1,0 +1,1 @@
+import FirstOrderMethodsinOptimization.Chap10.Theorem_10_72.StepsizeRules

@@ -1,0 +1,3 @@
+import SmoothManifoldsLee.Chap05.Sec05_29.Theorem_5_8.Common
+import SmoothManifoldsLee.Chap05.Sec05_29.Theorem_5_8.LocalSliceAtlas
+import SmoothManifoldsLee.Chap05.Sec05_29.Theorem_5_8.LocalSliceImmersion

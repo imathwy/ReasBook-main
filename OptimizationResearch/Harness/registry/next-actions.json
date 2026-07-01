@@ -1,0 +1,42 @@
+{
+  "schema_version": "next-actions-v0",
+  "actions": [
+    {
+      "next_action_id": "phase1-build-declaration-index",
+      "action": "implement incremental declaration indexing for the selected corpus",
+      "reason": "Phase 0 corpus and schemas are frozen; indexing is the next required capability",
+      "evidence": ["optimization-pilot-v0", "corpus-baseline.md"],
+      "expected_value": "high",
+      "required_permission": "write-OptimizationResearch-only",
+      "status": "approved-for-phase-1"
+    },
+    {
+      "next_action_id": "benchmark-independent-labeling",
+      "action": "independently review and label the 30 candidate alignment tasks",
+      "reason": "Formal H1 runs require reviewed dev/test labels",
+      "evidence": ["optimization-alignment-v0", "protocol-audit-v0"],
+      "expected_value": "high",
+      "required_permission": "human-mathematical-review",
+      "status": "pending"
+    },
+    {
+      "next_action_id": "freeze-model-budget",
+      "action": "freeze model, prompt, token budget, timeout, and cost accounting before formal runs",
+      "reason": "Protocol audit identified these as required fixed variables",
+      "evidence": ["protocol-audit-v0"],
+      "expected_value": "high",
+      "required_permission": "human-experiment-approval",
+      "status": "pending"
+    },
+    {
+      "next_action_id": "publication-license-review",
+      "action": "review source licenses before publishing source-derived benchmark material",
+      "reason": "No project-local license file was found in the bounded audit",
+      "evidence": ["candidates.json", "corpus-baseline.md"],
+      "expected_value": "medium",
+      "required_permission": "human-legal-review",
+      "status": "pending-nonblocking-for-internal-research"
+    }
+  ]
+}
+

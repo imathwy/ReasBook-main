@@ -1,0 +1,5 @@
+import Serre.Chap18.Exercise_18_18_5_2.LinearCharacters
+import Serre.Chap18.Exercise_18_18_5_2.OrdinaryExplicitModels
+import Serre.Chap18.Exercise_18_18_5_2.PrimeFieldInfrastructure
+import Serre.Chap18.Exercise_18_18_5_2.PrimeFieldTransport
+import Serre.Chap18.Exercise_18_18_5_2.ModularDescent

@@ -1,0 +1,16 @@
+import Serre.Chap09.Exercise_9_9_1_3.InvariantSubspaces
+import Serre.Chap09.Exercise_9_9_1_3.ScalarSymmetricPowers
+import Serre.Chap09.Exercise_9_9_1_3.PolynomialIdentities
+import Serre.Chap09.Exercise_9_9_1_3.FiniteSetReindexing
+import Serre.Chap09.Exercise_9_9_1_3.BaseChangeAndExteriorBasics
+import Serre.Chap09.Exercise_9_9_1_3.CharacterSeriesDefs
+import Serre.Chap09.Exercise_9_9_1_3.InvariantCharpoly
+import Serre.Chap09.Exercise_9_9_1_3.PrincipalMinors
+import Serre.Chap09.Exercise_9_9_1_3.ExteriorDeterminants
+import Serre.Chap09.Exercise_9_9_1_3.SymmetricExteriorProduct
+import Serre.Chap09.Exercise_9_9_1_3.AdamsOperatorSeries
+import Serre.Chap09.Exercise_9_9_1_3.AdamsCalculus
+import Serre.Chap09.Exercise_9_9_1_3.NewtonIdentities
+import Serre.Chap09.Exercise_9_9_1_3.ExteriorAdamsExponential
+import Serre.Chap09.Exercise_9_9_1_3.SymmetricAdamsExponential
+import Serre.Chap09.Exercise_9_9_1_3.CharacterRecurrences

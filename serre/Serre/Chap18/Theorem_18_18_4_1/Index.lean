@@ -1,0 +1,4 @@
+import Serre.Chap18.Theorem_18_18_4_1.CharacterTransformCore
+import Serre.Chap18.Theorem_18_18_4_1.ElementaryPrimeSplit
+import Serre.Chap18.Theorem_18_18_4_1.CommutativePrimeToPBridge
+import Serre.Chap18.Theorem_18_18_4_1.AssociatedSubgroupBridge

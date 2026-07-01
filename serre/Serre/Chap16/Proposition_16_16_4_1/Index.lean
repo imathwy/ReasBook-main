@@ -1,0 +1,5 @@
+import Serre.Chap16.Proposition_16_16_4_1.ReductionBridge
+import Serre.Chap16.Proposition_16_16_4_1.FourierBridge
+import Serre.Chap16.Proposition_16_16_4_1.PacketBridge
+import Serre.Chap16.Proposition_16_16_4_1.MatrixUnitBridge
+import Serre.Chap16.Proposition_16_16_4_1.CentralProjectorBridge

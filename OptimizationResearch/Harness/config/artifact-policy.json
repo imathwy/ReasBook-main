@@ -1,0 +1,21 @@
+{
+  "schema_version": "artifact-policy-v0",
+  "immutable_results": true,
+  "run_directory": "Runs/",
+  "run_directory_committed": false,
+  "required_versions": [
+    "corpus_version",
+    "config_version",
+    "model_version",
+    "tool_version",
+    "skill_version",
+    "hook_version"
+  ],
+  "forbidden_content": [
+    "credentials",
+    "environment dumps",
+    "raw private conversations",
+    "authorization headers"
+  ]
+}
+

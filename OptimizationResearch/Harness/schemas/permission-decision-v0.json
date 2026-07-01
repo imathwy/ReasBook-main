@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "permission-decision-v0",
+  "type": "object",
+  "required": ["schema_version", "decision_id", "task_id", "decision", "reason", "resolved_scope"]
+}
+

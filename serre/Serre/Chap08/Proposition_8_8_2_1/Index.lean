@@ -1,0 +1,5 @@
+import Serre.Chap08.Proposition_8_8_2_1.CharacterPacketCore
+import Serre.Chap08.Proposition_8_8_2_1.InductionBridge
+import Serre.Chap08.Proposition_8_8_2_1.RestrictionBridge
+import Serre.Chap08.Proposition_8_8_2_1.MackeyWeights
+import Serre.Chap08.Proposition_8_8_2_1.CharacterWeightBridge

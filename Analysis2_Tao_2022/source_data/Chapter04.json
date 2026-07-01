@@ -1,0 +1,3292 @@
+[
+  {
+    "label": "Definition 4.1.1",
+    "env": "def",
+    "number_components": [
+      4,
+      1,
+      1
+    ],
+    "extracted_labels": [
+      "def:4.1",
+      "eq:4.u1"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Formal Power Series",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.1}\nLet $a\\in\\mathbb{R}$. A \\emph{formal power series centered at $a$} is an expression of the form\n\\[\n\\label{eq:4.u1}\n\\sum_{n=0}^{\\infty} c_n (x-a)^n,\n\\]\nwhere $(c_n)_{n\\ge 0}$ is a sequence of real numbers (not depending on $x$), called the \\emph{coefficients}, and $x$ is an indeterminate. For each $n\\ge 0$, the number $c_n$ is called the $n$th coefficient.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 1
+  },
+  {
+    "label": "Definition 4.1.2",
+    "env": "def",
+    "number_components": [
+      4,
+      1,
+      2
+    ],
+    "extracted_labels": [
+      "def:4.3",
+      "eq:4.u3",
+      "eq:4.u4",
+      "eq:4.u5"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Formal Power Series",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.3}\n[Radius of convergence]\nLet $a\\in\\mathbb{R}$ and let $(c_n)_{n\\ge 0}$ be a sequence of real numbers. Consider the power series\n\\[\n\\label{eq:4.u3}\n\\sum_{n=0}^{\\infty} c_n (x-a)^n.\n\\]\nDefine\n\\[\n\\label{eq:4.u4}\nL:=\\limsup_{n\\to\\infty} |c_n|^{1/n}\\in[0,+\\infty].\n\\]\nThe \\emph{radius of convergence} of the series is the number\n\\[\n\\label{eq:4.u5}\nR:=\\frac{1}{L},\n\\]\nwith the conventions $1/0=+\\infty$ and $1/(+\\infty)=0$.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 2
+  },
+  {
+    "label": "Theorem 4.1.1",
+    "env": "thm",
+    "number_components": [
+      4,
+      1,
+      1
+    ],
+    "extracted_labels": [
+      "thm:4.1.6a"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Formal Power Series",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}[Divergence outside the radius of convergence]\n\\label{thm:4.1.6a}\nLet $\\sum_{n=0}^{\\infty} c_n (x-a)^n$ be a power series with radius of convergence $R\\in[0,\\infty]$. If $x\\in\\mathbb{R}$ satisfies $|x-a|>R$, then the series $\\sum_{n=0}^{\\infty} c_n (x-a)^n$ diverges at that value of $x$.\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nLet $d:=|x-a|$. The definition of the radius of convergence $R$ means that the series converges for all $|x-a|<R$ and diverges for all $|x-a|>R$; equivalently one may define\n\\[\nR:=\\sup\\{\\rho\\ge 0: \\sum_{n=0}^\\infty c_n (y-a)^n \\text{ converges for every } y \\text{ with } |y-a|<\\rho\\}.\n\\]\nSuppose for contradiction that $\\sum_{n=0}^{\\infty} c_n (x-a)^n$ converges for some $x$ with $d>R$. Then for any $y$ with $|y-a|<d$, we have\n\\[\n|c_n(y-a)^n|=|c_n(x-a)^n|\\left|\\frac{y-a}{x-a}\\right|^n.\n\\]\nSince $\\sum_{n=0}^\\infty c_n(x-a)^n$ converges, we have $c_n(x-a)^n\\to 0$, hence the sequence $|c_n(x-a)^n|$ is bounded, say by $M>0$. Choose $q:=|y-a|/|x-a|<1$. Then\n\\[\n|c_n(y-a)^n|\\le M q^n.\n\\]\nBecause $\\sum_{n=0}^\\infty M q^n$ converges (geometric series), the comparison test implies that $\\sum_{n=0}^\\infty c_n(y-a)^n$ converges absolutely for every $y$ with $|y-a|<d$. This shows the radius of convergence is at least $d$, i.e. $R\\ge d$, contradicting $d>R$. Therefore the series diverges whenever $|x-a|>R$.\n\\end{proof}",
+    "index": 3
+  },
+  {
+    "label": "Theorem 4.1.2",
+    "env": "thm",
+    "number_components": [
+      4,
+      1,
+      2
+    ],
+    "extracted_labels": [
+      "thm:4.1.6b"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Formal Power Series",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}[Absolute convergence inside the radius of convergence]\n\\label{thm:4.1.6b}\nLet $\\sum_{n=0}^{\\infty} c_n (x-a)^n$ be a power series with radius of convergence $R\\in[0,\\infty]$. If $x\\in\\mathbb{R}$ satisfies $|x-a|<R$, then the series $\\sum_{n=0}^{\\infty} c_n (x-a)^n$ converges absolutely at that value of $x$.\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nLet $d:=|x-a|$ and assume $d<R$. Choose any $r$ such that $d<r<R$. By definition of the radius of convergence, the series converges at $a+r$ and at $a-r$; in particular it converges at some point $y$ with $|y-a|=r$. Consider the nonnegative sequence $u_n:=|c_n|r^n$. Since $\\sum c_n(y-a)^n$ converges, we have $c_n(y-a)^n\\to 0$, hence $u_n\\to 0$ and therefore $(u_n)$ is bounded, say $u_n\\le M$ for all $n$.\nNow set $q:=d/r<1$. Then\n\\[\n|c_n|d^n = |c_n|r^n\\left(\\frac{d}{r}\\right)^n \\le M q^n.\n\\]\nSince $\\sum_{n=0}^\\infty M q^n$ converges, comparison with a geometric series shows $\\sum_{n=0}^\\infty |c_n|d^n$ converges, i.e. $\\sum_{n=0}^{\\infty} c_n (x-a)^n$ converges absolutely.\n\\end{proof}",
+    "index": 4
+  },
+  {
+    "label": "Theorem 4.1.3",
+    "env": "thm",
+    "number_components": [
+      4,
+      1,
+      3
+    ],
+    "extracted_labels": [
+      "thm:4.1.6c"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Formal Power Series",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}[Uniform convergence on compact subintervals]\n\\label{thm:4.1.6c}\nLet $\\sum_{n=0}^{\\infty} c_n (x-a)^n$ be a power series with radius of convergence $R>0$, and define\n\\[\nf(x):=\\sum_{n=0}^{\\infty} c_n (x-a)^n,\\qquad x\\in(a-R,a+R).\n\\]\nFor any $r$ with $0<r<R$, the series $\\sum_{n=0}^{\\infty} c_n (x-a)^n$ converges uniformly to $f$ on the compact interval $[a-r,a+r]$. In particular, $f$ is continuous on $(a-R,a+R)$.\n\\end{theorem}\n(depend on: \"Theorem 4.1.2\")",
+    "dependencies": [
+      "Theorem 4.1.2"
+    ],
+    "proof": "\\begin{proof}\nFix $r$ with $0<r<R$. Choose $\\rho$ such that $r<\\rho<R$. By Theorem~\\ref{thm:4.1.6b}, the series converges absolutely at any point with distance $\\rho$ from $a$, hence the numeric series $\\sum_{n=0}^\\infty |c_n|\\rho^n$ converges.\nFor $x\\in[a-r,a+r]$ we have $|x-a|\\le r$, so\n\\[\n|c_n(x-a)^n|\\le |c_n|r^n = |c_n|\\rho^n\\left(\\frac{r}{\\rho}\\right)^n.\n\\]\nLet $q:=r/\\rho\\in(0,1)$. Since $\\sum |c_n|\\rho^n$ converges, the terms $|c_n|\\rho^n$ are bounded, say by $M>0$, and thus\n\\[\n|c_n(x-a)^n|\\le M q^n\\quad\\text{for all }x\\in[a-r,a+r].\n\\]\nBecause $\\sum M q^n$ converges, the Weierstrass M-test implies uniform convergence on $[a-r,a+r]$.\nEach partial sum is a polynomial in $x$ and hence continuous. A uniform limit of continuous functions is continuous; therefore $f$ is continuous on every $[a-r,a+r]$ with $r<R$, hence on $(a-R,a+R)$.\n\\end{proof}",
+    "index": 5
+  },
+  {
+    "label": "Theorem 4.1.4",
+    "env": "thm",
+    "number_components": [
+      4,
+      1,
+      4
+    ],
+    "extracted_labels": [
+      "thm:4.1.6d"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Formal Power Series",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}[Term-by-term differentiation of a power series]\n\\label{thm:4.1.6d}\nLet $\\sum_{n=0}^{\\infty} c_n (x-a)^n$ be a power series with radius of convergence $R>0$, and define\n\\[\nf(x):=\\sum_{n=0}^{\\infty} c_n (x-a)^n\\qquad (x\\in(a-R,a+R)).\n\\]\nThen $f$ is differentiable on $(a-R,a+R)$, and for any $r$ with $0<r<R$, the derived series\n\\[\n\\sum_{n=1}^{\\infty} n c_n (x-a)^{n-1}\n\\]\nconverges uniformly to $f'$ on the interval $[a-r,a+r]$.\n\\end{theorem}\n(depend on: \"Theorem 4.1.3\", \"Theorem 4.1.2\")",
+    "dependencies": [
+      "Theorem 4.1.3",
+      "Theorem 4.1.2"
+    ],
+    "proof": "\\begin{proof}\nFix $r$ with $0<r<R$. Choose $\\rho$ with $r<\\rho<R$. Since $\\sum |c_n|\\rho^n$ converges, the sequence $|c_n|\\rho^n$ is bounded; let $|c_n|\\rho^n\\le M$.\nFor $x\\in[a-r,a+r]$ we have $|x-a|\\le r$, hence\n\\[\n|n c_n (x-a)^{n-1}|\\le n|c_n|r^{n-1} = n|c_n|\\rho^n\\cdot \\frac{r^{n-1}}{\\rho^n}\n= \\frac{M}{r}\\, n\\left(\\frac{r}{\\rho}\\right)^n.\n\\]\nLet $q:=r/\\rho\\in(0,1)$. The series $\\sum_{n=1}^\\infty n q^n$ converges, so by the Weierstrass M-test the series $\\sum_{n=1}^{\\infty} n c_n (x-a)^{n-1}$ converges uniformly on $[a-r,a+r]$.\n\nLet $S_N(x):=\\sum_{n=0}^{N} c_n (x-a)^n$ be the partial sums. Then each $S_N$ is differentiable and\n\\[\nS_N'(x)=\\sum_{n=1}^{N} n c_n (x-a)^{n-1}.\n\\]\nBy Theorem~\\ref{thm:4.1.6c}, $S_N\\to f$ uniformly on $[a-r,a+r]$, and we just proved $S_N'\\to g$ uniformly on $[a-r,a+r]$, where\n\\[g(x):=\\sum_{n=1}^{\\infty} n c_n (x-a)^{n-1}.\n\\]\nMoreover, $S_N(a)=c_0$ for all $N$, so $(S_N)$ converges at $x=a$. A standard result from real analysis states: if $(S_N)$ converges uniformly to $f$ on a closed interval and $(S_N')$ converges uniformly to $g$ on that interval, then $f$ is differentiable and $f'=g$.\nTherefore $f$ is differentiable on $[a-r,a+r]$ with $f'(x)=g(x)$ there. Since $r<R$ was arbitrary, $f$ is differentiable on $(a-R,a+R)$ and the derived series converges uniformly to $f'$ on each $[a-r,a+r]$.\n\\end{proof}",
+    "index": 6
+  },
+  {
+    "label": "Theorem 4.1.5",
+    "env": "thm",
+    "number_components": [
+      4,
+      1,
+      5
+    ],
+    "extracted_labels": [
+      "thm:4.1.6e",
+      "eq:4.1.5"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Formal Power Series",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}[Term-by-term integration of a power series]\n\\label{thm:4.1.6e}\nLet $\\sum_{n=0}^{\\infty} c_n (x-a)^n$ be a power series with radius of convergence $R>0$, and define\n\\[\nf(x):=\\sum_{n=0}^{\\infty} c_n (x-a)^n\\qquad (x\\in(a-R,a+R)).\n\\]\nFor any closed interval $[y,z]\\subset(a-R,a+R)$, we have\n\\begin{equation}\\label{eq:4.1.5}\n\\int_{y}^{z} f(x)\\,dx\n=\\sum_{n=0}^{\\infty} c_n\\,\\frac{(z-a)^{n+1}-(y-a)^{n+1}}{n+1}.\n\\end{equation}\n\\end{theorem}\n(depend on: \"Theorem 4.1.3\", \"Theorem 4.1.2\")",
+    "dependencies": [
+      "Theorem 4.1.3",
+      "Theorem 4.1.2"
+    ],
+    "proof": "\\begin{proof}\nLet $[y,z]\\subset(a-R,a+R)$. Choose $r$ with $0<r<R$ such that $[y,z]\\subset[a-r,a+r]$. By Theorem~\\ref{thm:4.1.6c}, the series defining $f$ converges uniformly on $[a-r,a+r]$, hence also uniformly on $[y,z]$.\n\nLet $S_N(x):=\\sum_{n=0}^{N} c_n (x-a)^n$. Then $S_N\\to f$ uniformly on $[y,z]$. Uniform convergence allows exchanging limit and integral:\n\\[\n\\int_y^z f(x)\\,dx = \\int_y^z \\lim_{N\\to\\infty} S_N(x)\\,dx = \\lim_{N\\to\\infty}\\int_y^z S_N(x)\\,dx.\n\\]\nSince each $S_N$ is a polynomial, we may integrate term-by-term:\n\\[\n\\int_y^z S_N(x)\\,dx = \\sum_{n=0}^{N} c_n \\int_y^z (x-a)^n\\,dx\n=\\sum_{n=0}^{N} c_n\\,\\frac{(z-a)^{n+1}-(y-a)^{n+1}}{n+1}.\n\\]\nTaking $N\\to\\infty$ yields \\eqref{eq:4.1.5}.\n\\end{proof}",
+    "index": 7
+  },
+  {
+    "label": "Definition 4.2.1",
+    "env": "def",
+    "number_components": [
+      4,
+      2,
+      1
+    ],
+    "extracted_labels": [
+      "def:4.5",
+      "eq:4.u17"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Real Analytic Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.5}\n[Real analytic functions]\nLet $E\\subseteq\\mathbb{R}$ and let $f:E\\to\\mathbb{R}$. Let $a\\in E$ be an interior point of $E$. The function $f$ is \\emph{real analytic at $a$} if there exist $r>0$ and real coefficients $\\{c_n\\}_{n\\ge 0}\\subseteq\\mathbb{R}$ such that $(a-r,a+r)\\subseteq E$, the power series $\\sum_{n=0}^{\\infty} c_n (x-a)^n$ has radius of convergence at least $r$, and\n\\[\n\\label{eq:4.u17}\nf(x)=\\sum_{n=0}^{\\infty} c_n (x-a)^n\\qquad\\text{for all }x\\in(a-r,a+r).\n\\]\nIf $E$ is open and $f$ is real analytic at every $a\\in E$, then $f$ is \\emph{real analytic on $E$}.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 8
+  },
+  {
+    "label": "Definition 4.1.3",
+    "env": "def",
+    "number_components": [
+      4,
+      1,
+      3
+    ],
+    "extracted_labels": [
+      "def:4.6",
+      "eq:4.u18"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Formal Power Series",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.6}\nDefine the function $f:\\mathbb{R}\\setminus\\{1\\}\\to\\mathbb{R}$ by\n\\[\n\\label{eq:4.u18}\nf(x):=\\frac{1}{1-x}.\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 9
+  },
+  {
+    "label": "Lemma 4.1.1",
+    "env": "lem",
+    "number_components": [
+      4,
+      1,
+      1
+    ],
+    "extracted_labels": [
+      "lem:4.7",
+      "eq:4.u19"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Formal Power Series",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\n\\label{lem:4.7}\nFor every $x\\in(-1,1)$ we have\n\\[\n\\label{eq:4.u19}\n\\sum_{n=0}^{\\infty} x^n = \\frac{1}{1-x}=f(x).\n\\]\nIn particular, $f$ is real analytic at $0$.\n\\end{lemma}\n(depend on: \"Definition 4.1.3\")",
+    "dependencies": [
+      "Definition 4.1.3"
+    ],
+    "proof": "\\begin{proof}\nFix $x\\in(-1,1)$. Then $|x|<1$, so the geometric series $\\sum_{n=0}^{\\infty} x^n$ converges and satisfies the standard identity\n\\[\n\\sum_{n=0}^{\\infty} x^n = \\frac{1}{1-x}.\n\\]\n(Indeed, for partial sums $S_N=\\sum_{n=0}^{N}x^n$ we have $(1-x)S_N=1-x^{N+1}$, hence $S_N=\\frac{1-x^{N+1}}{1-x}$; since $|x|<1$ we get $x^{N+1}\\to 0$, and thus $S_N\\to \\frac{1}{1-x}$.) This proves \\eqref{eq:4.u19} and the equality to $f(x)$ by the definition of $f$.\n\nTo see that $f$ is real analytic at $0$, apply Definition~\\ref{def:4.6} to $g=f$, $a=0$, $R=1$, and coefficients $c_n=1$ for all $n\\ge 0$. Then for all $x\\in(-1,1)$ we have $f(x)=\\sum_{n=0}^{\\infty} c_n(x-0)^n=\\sum_{n=0}^{\\infty} x^n$, as shown above.\n\\end{proof}",
+    "index": 10
+  },
+  {
+    "label": "Lemma 4.1.2",
+    "env": "lem",
+    "number_components": [
+      4,
+      1,
+      2
+    ],
+    "extracted_labels": [
+      "lem:4.8",
+      "eq:4.u20"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Formal Power Series",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\n\\label{lem:4.8}\nFor every $x\\in(1,3)$ we have\n\\[\n\\label{eq:4.u20}\n\\sum_{n=0}^{\\infty} (-1)^{n+1}(x-2)^n = \\frac{1}{1-x}=f(x).\n\\]\nIn particular, $f$ is real analytic at $2$.\n\\end{lemma}\n(depend on: \"Definition 4.1.3\")",
+    "dependencies": [
+      "Definition 4.1.3"
+    ],
+    "proof": "\\begin{proof}\nFix $x\\in(1,3)$. Then $|x-2|<1$, hence $|-(x-2)|<1$. Consider the geometric series with ratio $r:=-(x-2)$. Since $|r|<1$, we have\n\\[\n\\sum_{n=0}^{\\infty} r^n = \\frac{1}{1-r}.\n\\]\nSubstituting $r=-(x-2)$ gives\n\\[\n\\sum_{n=0}^{\\infty} (-(x-2))^n = \\frac{1}{1+(x-2)} = \\frac{1}{x-1}.\n\\]\nMultiplying both sides by $-1$ yields\n\\[\n-\\sum_{n=0}^{\\infty} (-(x-2))^n = -\\frac{1}{x-1} = \\frac{1}{1-x}.\n\\]\nFinally, note that\n\\[\n- (-(x-2))^n = -(-1)^n (x-2)^n = (-1)^{n+1}(x-2)^n,\n\\]\nso the left-hand side equals $\\sum_{n=0}^{\\infty} (-1)^{n+1}(x-2)^n$. This proves \\eqref{eq:4.u20}, and the equality to $f(x)$ follows from the definition $f(x)=\\frac{1}{1-x}$.\n\nTo see that $f$ is real analytic at $2$, apply Definition~\\ref{def:4.6} to $g=f$, $a=2$, $R=1$, and coefficients $c_n:=(-1)^{n+1}$. Then for all $x\\in(1,3)=(2-1,2+1)$ we have $f(x)=\\sum_{n=0}^{\\infty} c_n(x-2)^n$, as shown above.\n\\end{proof}",
+    "index": 11
+  },
+  {
+    "label": "Definition 4.2.2",
+    "env": "def",
+    "number_components": [
+      4,
+      2,
+      2
+    ],
+    "extracted_labels": [
+      "def:4.7",
+      "eq:4.u21",
+      "eq:4.u22"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Real Analytic Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.7}\n[$k$-times differentiability]\nLet $E\\subseteq\\mathbb{R}$ be a set such that every point of $E$ is a limit point of $E$, and let $f:E\\to\\mathbb{R}$.\n\\begin{enumerate}\n\\item The function $f$ is \\emph{once differentiable on $E$} if and only if $f$ is differentiable at every point of $E$, i.e., for each $x\\in E$ the limit\n\\[\n\\label{eq:4.u21}\n\\lim_{\\substack{h\\to 0\\\\ x+h\\in E}} \\frac{f(x+h)-f(x)}{h}\n\\]\nexists. In this case the \\emph{first derivative} $f':E\\to\\mathbb{R}$ is defined by this limit.\n\\item For an integer $k\\ge 2$, the function $f$ is \\emph{$k$ times differentiable on $E$} if and only if $f$ is differentiable on $E$ and $f'$ is $(k-1)$ times differentiable on $E$.\n\\item If $f$ is $k$ times differentiable on $E$, define derivatives recursively by\n\\[\n\\label{eq:4.u22}\nf^{(0)}:=f,\\qquad f^{(1)}:=f',\\qquad f^{(k)}:=(f^{(k-1)})'\\ \\text{for all integers }k\\ge 2.\n\\]\n\\item The function $f$ is \\emph{infinitely differentiable} (or \\emph{smooth}) on $E$ if and only if $f$ is $k$ times differentiable on $E$ for every integer $k\\ge 0$.\n\\end{enumerate}\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 12
+  },
+  {
+    "label": "Proposition 4.2.1",
+    "env": "prop",
+    "number_components": [
+      4,
+      2,
+      1
+    ],
+    "extracted_labels": [
+      "prop:4.2.5"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Real Analytic Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.2.5}\nDefine $f:\\mathbb{R}\\to\\mathbb{R}$ by $f(x):=|x|^3$. Then $f$ is twice differentiable on $\\mathbb{R}$, but $f$ is not three times differentiable at $0$. More precisely,\n\\[\nf'(x)=3x|x|\\quad (x\\in\\mathbb{R}),\\qquad f''(x)=6|x|\\quad (x\\in\\mathbb{R}),\n\\]\nand the function $f''$ is not differentiable at $0$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nWe first compute $f'$. For $x>0$ we have $f(x)=x^3$, hence $f'(x)=3x^2$. For $x<0$ we have $f(x)=(-x)^3=-x^3$, hence $f'(x)=-3x^2$. These two formulas can be written uniformly as\n\\[\nf'(x)=3x|x|\\quad\\text{for }x\\neq 0.\n\\]\nAt $x=0$, we compute the derivative by the limit:\n\\[\nf'(0)=\\lim_{h\\to 0}\\frac{|h|^3-0}{h}=\\lim_{h\\to 0}\\frac{|h|^3}{h}=\\lim_{h\\to 0}|h|^2\\,\\frac{|h|}{h}=0,\n\\]\nsince $|h|^2\\to 0$ and $\\frac{|h|}{h}\\in\\{-1,1\\}$. Thus $f'$ exists everywhere and is given by $f'(x)=3x|x|$ for all $x\\in\\mathbb{R}$.\n\nNext compute $f''$. For $x>0$, $f'(x)=3x^2$ so $f''(x)=6x$. For $x<0$, $f'(x)=-3x^2$ so $f''(x)=-6x$. Hence for $x\\neq 0$,\n\\[\nf''(x)=6|x|.\n\\]\nAt $0$ we compute\n\\[\nf''(0)=\\lim_{h\\to 0}\\frac{f'(h)-f'(0)}{h}=\\lim_{h\\to 0}\\frac{3h|h|}{h}=\\lim_{h\\to 0}3|h|=0.\n\\]\nTherefore $f''$ exists everywhere and equals $6|x|$ for all $x\\in\\mathbb{R}$.\n\nFinally, $f$ is three times differentiable at $0$ if and only if $f''$ is differentiable at $0$. But\n\\[\n\\lim_{h\\downarrow 0}\\frac{f''(h)-f''(0)}{h}=\\lim_{h\\downarrow 0}\\frac{6|h|-0}{h}=\\lim_{h\\downarrow 0}6=6,\n\\]\nwhile\n\\[\n\\lim_{h\\uparrow 0}\\frac{f''(h)-f''(0)}{h}=\\lim_{h\\uparrow 0}\\frac{6|h|-0}{h}=\\lim_{h\\uparrow 0}\\frac{6(-h)}{h}=-6.\n\\]\nThe one-sided limits are different, so the derivative of $f''$ at $0$ does not exist. Hence $f$ is not three times differentiable at $0$.\n\\end{proof}",
+    "index": 13
+  },
+  {
+    "label": "Proposition 4.2.2",
+    "env": "prop",
+    "number_components": [
+      4,
+      2,
+      2
+    ],
+    "extracted_labels": [
+      "prop:4.1",
+      "eq:4.u23",
+      "eq:4.u24",
+      "prf:prop:4.1",
+      "eq:4.u25",
+      "eq:4.u26",
+      "eq:4.u27",
+      "eq:4.u28",
+      "eq:4.u29",
+      "eq:4.u30",
+      "eq:4.u31"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Real Analytic Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.1}\n(Real analytic functions are $k$-times differentiable) Let $a\\in\\mathbb{R}$, let $r>0$, and let $f:(a-r,a+r)\\to\\mathbb{R}$ be a function such that there exist coefficients $(c_n)_{n\\ge 0}$ with\n\\[\n\\label{eq:4.u23}\nf(x)=\\sum_{n=0}^{\\infty} c_n (x-a)^n\\quad\\text{for all }x\\in(a-r,a+r).\n\\]\nThen for every integer $k\\ge 0$, the function $f$ is $k$-times differentiable on $(a-r,a+r)$, and for all $x\\in(a-r,a+r)$,\n\\[\n\\label{eq:4.u24}\nf^{(k)}(x)=\\sum_{n=0}^{\\infty} c_{n+k}(n+1)(n+2)\\cdots(n+k)(x-a)^n\n=\\sum_{n=0}^{\\infty} c_{n+k}\\frac{(n+k)!}{n!}(x-a)^n,\n\\]\nwith the convention that for $k=0$ the empty product equals $1$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.1}\nFix an integer $k\\ge 0$. Define, for $x\\in(a-r,a+r)$,\n\\[\n\\label{eq:4.u25}\nS(x):=\\sum_{n=0}^{\\infty} c_{n+k}\\frac{(n+k)!}{n!}(x-a)^n.\n\\]\nFirst, $S$ is well-defined on $(a-r,a+r)$: for any $x$ with $|x-a|<r$, choose $\\rho$ with $|x-a|<\\rho<r$. Since $\\sum_{m=0}^\\infty c_m (x-a)^m$ converges absolutely for $|x-a|<r$, it converges absolutely at $\\rho$, hence\n\\[\n\\label{eq:4.u26}\n\\sum_{m=0}^\\infty |c_m|\\rho^m<\\infty,\n\\]\nwhich implies $|c_m|\\le M\\rho^{-m}$ for all $m$ and some $M>0$. Then for $|x-a|\\le \\rho' <\\rho$,\n\\[\n\\label{eq:4.u27}\n\\left|c_{n+k}\\frac{(n+k)!}{n!}(x-a)^n\\right|\n\\le M\\rho^{-(n+k)}\\frac{(n+k)!}{n!}(\\rho')^n\n= M\\rho^{-k}\\frac{(n+k)!}{n!}\\left(\\frac{\\rho'}{\\rho}\\right)^n.\n\\]\nSince $(n+k)!/n!$ grows polynomially in $n$ and $(\\rho'/\\rho)^n$ decays geometrically, the series for $S$ converges absolutely and uniformly on $[a-\\rho',a+\\rho']$.\n\nFor $m\\ge 0$ define partial sums\n\\[\n\\label{eq:4.u28}\nP_m(x):=\\sum_{n=0}^{m} c_n (x-a)^n.\n\\]\nThen $P_m$ is a polynomial and $P_m\\to f$ uniformly on $[a-\\rho',a+\\rho']$ because the power series converges uniformly there. Moreover, for each fixed $k$, the $k$-th derivatives satisfy\n\\[\n\\label{eq:4.u29}\nP_m^{(k)}(x)=\\sum_{n=k}^{m} c_n\\, n(n-1)\\cdots(n-k+1)(x-a)^{n-k}\n=\\sum_{n=0}^{m-k} c_{n+k}\\frac{(n+k)!}{n!}(x-a)^n.\n\\]\nThe right-hand side converges uniformly on $[a-\\rho',a+\\rho']$ to $S(x)$ by the uniform convergence established above.\n\nUniform convergence of $P_m$ and $P_m^{(1)}$ on $[a-\\rho',a+\\rho']$ implies that $f$ is differentiable on $(a-\\rho',a+\\rho')$ and $f'=\\lim_{m\\to\\infty} P_m'$ there; applying this argument iteratively $k$ times (each time using uniform convergence of the next derivative series on $[a-\\rho',a+\\rho']$) yields that $f$ is $k$-times differentiable on $(a-\\rho',a+\\rho')$ and\n\\[\n\\label{eq:4.u30}\nf^{(k)}(x)=\\lim_{m\\to\\infty} P_m^{(k)}(x)=S(x)\\quad\\text{for }x\\in(a-\\rho',a+\\rho').\n\\]\nSince $x\\in(a-r,a+r)$ was arbitrary, this holds for all $x\\in(a-r,a+r)$.\n\nFinally, the identity\n\\[\n\\label{eq:4.u31}\n(n+1)(n+2)\\cdots(n+k)=\\frac{(n+k)!}{n!}\n\\]\ngives the stated alternative form of the coefficients. For $k=0$ the series reduces to $f$.\n\\end{proof}",
+    "index": 14
+  },
+  {
+    "label": "Theorem 4.2.1",
+    "env": "thm",
+    "number_components": [
+      4,
+      2,
+      1
+    ],
+    "extracted_labels": [
+      "thm:4.3",
+      "eq:4.u32",
+      "prf:thm:4.3",
+      "eq:4.u33",
+      "eq:4.u34",
+      "eq:4.u35",
+      "eq:4.u36"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Real Analytic Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:4.3}\nLet $E\\subset\\mathbb{R}$ be open, and let $f:E\\to\\mathbb{R}$ be real analytic on $E$, meaning that for every $a\\in E$ there exist $r>0$ and coefficients $(c_n)_{n\\ge 0}$ such that $(a-r,a+r)\\subset E$ and\n\\[\n\\label{eq:4.u32}\nf(x)=\\sum_{n=0}^\\infty c_n(x-a)^n\\quad\\text{for all }x\\in(a-r,a+r),\n\\]\nwith the series converging for all $x\\in(a-r,a+r)$. Then $f\\in C^{\\infty}(E)$. Moreover, for every integer $k\\ge 0$, the derivative $f^{(k)}$ exists at every point of $E$ and is real analytic on $E$.\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:4.3}\nFix $a\\in E$. By real analyticity, there exist $r>0$ and coefficients $(c_n)_{n\\ge 0}$ such that $(a-r,a+r)\\subset E$ and\n\\[\n\\label{eq:4.u33}\nf(x)=\\sum_{n=0}^\\infty c_n(x-a)^n\\quad\\text{for all }x\\in(a-r,a+r).\n\\]\nFix an integer $k\\ge 0$. Define\n\\[\n\\label{eq:4.u34}\ng_k(x):=\\sum_{n=k}^\\infty c_n\\,n(n-1)\\cdots(n-k+1)\\,(x-a)^{n-k}\\quad\\text{for }x\\in(a-r,a+r).\n\\]\nThe series defining $g_k$ has the same radius of convergence $r$ as the original power series, hence converges for all $x\\in(a-r,a+r)$. For $|x-a|<r$ and $h\\to 0$ with $|x+h-a|<r$, termwise differentiation of the power series (justified by uniform convergence on closed subintervals of $(a-r,a+r)$) yields\n\\[\n\\label{eq:4.u35}\n\\lim_{h\\to 0}\\frac{f(x+h)-f(x)}{h}=g_1(x).\n\\]\nThus $f$ is differentiable on $(a-r,a+r)$ and $f'(x)=g_1(x)$ there. Iterating the same argument applied to $g_1, g_2,\\dots$ shows that for each $k\\ge 0$, $f^{(k)}$ exists on $(a-r,a+r)$ and\n\\[\n\\label{eq:4.u36}\nf^{(k)}(x)=g_k(x)=\\sum_{n=k}^\\infty c_n\\,n(n-1)\\cdots(n-k+1)\\,(x-a)^{n-k},\\quad |x-a|<r.\n\\]\nSince $a\\in E$ was arbitrary, every point of $E$ has a neighborhood on which all derivatives $f^{(k)}$ exist; hence $f\\in C^{\\infty}(E)$. The displayed power series representation shows that for each $k\\ge 0$ and each $a\\in E$, the function $f^{(k)}$ admits a convergent power series expansion on some neighborhood of $a$, so $f^{(k)}$ is real analytic on $E$.\n\\end{proof}",
+    "index": 15
+  },
+  {
+    "label": "Proposition 4.2.3",
+    "env": "prop",
+    "number_components": [
+      4,
+      2,
+      3
+    ],
+    "extracted_labels": [
+      "prop:4.2.8"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Real Analytic Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.2.8}\nLet $f:\\mathbb{R}\\to\\mathbb{R}$ be defined by $f(x):=|x|$. Then $f$ is not differentiable at $x=0$, and in particular $f$ is not real analytic at $0$.\nMoreover, for every $a\\in\\mathbb{R}\\setminus\\{0\\}$, the function $f$ is real analytic at $a$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\emph{Non-differentiability at $0$.} For $h\\neq 0$ we have\n\\[\n\\frac{f(h)-f(0)}{h}=\\frac{|h|}{h}=\\begin{cases}1,&h>0,\\\\-1,&h<0.\\end{cases}\n\\]\nThe right-hand and left-hand limits as $h\\to 0$ are $1$ and $-1$, respectively, so the derivative $f'(0)$ does not exist.\n\n\\emph{Not real analytic at $0$.} Real analyticity at a point implies differentiability at that point (indeed, a power series representing $f$ in a neighborhood is differentiable term-by-term). Since $f$ is not differentiable at $0$, it cannot be real analytic at $0$.\n\n\\emph{Real analyticity at $a\\neq 0$.} Fix $a\\in\\mathbb{R}\\setminus\\{0\\}$. Choose $r>0$ such that the open interval $(a-r,a+r)$ does not contain $0$ (for instance, take $r=|a|/2$). Then $x$ has constant sign on $(a-r,a+r)$: if $a>0$ then $x>0$ there and $f(x)=x$; if $a<0$ then $x<0$ there and $f(x)=-x$.\nIn either case, on $(a-r,a+r)$ the function $f$ agrees with an affine function, namely $x$ or $-x$, which is represented by a power series about $a$ (a polynomial) with positive radius of convergence. Therefore $f$ is real analytic at $a$.\n\\end{proof}",
+    "index": 16
+  },
+  {
+    "label": "Theorem 4.2.2",
+    "env": "thm",
+    "number_components": [
+      4,
+      2,
+      2
+    ],
+    "extracted_labels": [
+      "thm:4.4",
+      "eq:4.u37",
+      "eq:4.u38",
+      "eq:4.u39",
+      "prf:thm:4.4",
+      "eq:4.u40",
+      "eq:4.u41",
+      "eq:4.u42",
+      "eq:4.u43",
+      "eq:4.u44",
+      "eq:4.u45"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Real Analytic Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:4.4}\n[Taylor's formula]\nLet $E\\subseteq\\mathbb{R}$, let $a$ be an interior point of $E$, and let $f:E\\to\\mathbb{R}$ be real analytic at $a$. Suppose there exist $r>0$ and real numbers $(c_n)_{n\\ge 0}$ such that\n\\[\n\\label{eq:4.u37}\nf(x)=\\sum_{n=0}^{\\infty} c_n (x-a)^n\\quad\\text{for all }x\\in(a-r,a+r).\n\\]\nThen for every integer $k\\ge 0$,\n\\[\n\\label{eq:4.u38}\nf^{(k)}(a)=k!\\,c_k.\n\\]\nIn particular,\n\\[\n\\label{eq:4.u39}\nf(x)=\\sum_{n=0}^{\\infty}\\frac{f^{(n)}(a)}{n!}(x-a)^n\\quad\\text{for all }x\\in(a-r,a+r).\n\\]\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:4.4}\n\\begin{proof}\nFix an integer $k\\ge 0$.\n\nFor each $N\\ge 0$ define the polynomial\n\\[\n\\label{eq:4.u40}\nS_N(x)=\\sum_{n=0}^N c_n (x-a)^n.\n\\]\nSince $f(x)=\\sum_{n=0}^\\infty c_n (x-a)^n$ for all $x\\in(a-r,a+r)$, the sequence $(S_N)$ converges to $f$ pointwise on $(a-r,a+r)$. Moreover, for every $\\rho$ with $0<\\rho<r$, the power series converges uniformly on $[a-\\rho,a+\\rho]$, and hence $S_N\\to f$ uniformly on $[a-\\rho,a+\\rho]$.\n\nDifferentiate term-by-term $k$ times: for $x\\in(a-r,a+r)$,\n\\[\n\\label{eq:4.u41}\nS_N^{(k)}(x)=\\sum_{n=k}^N c_n\\,n(n-1)\\cdots(n-k+1)\\,(x-a)^{n-k}.\n\\]\nFix $\\rho$ with $0<\\rho<r$. The differentiated series\n\\[\n\\label{eq:4.u42}\n\\sum_{n=k}^\\infty c_n\\,n(n-1)\\cdots(n-k+1)\\,(x-a)^{n-k}\n\\]\nalso converges uniformly on $[a-\\rho,a+\\rho]$, so $(S_N^{(k)})$ converges uniformly on $[a-\\rho,a+\\rho]$ to a function $g_k$, and standard differentiation under uniform convergence yields that $f$ is $k$ times differentiable on $(a-r,a+r)$ and\n\\[\n\\label{eq:4.u43}\nf^{(k)}(x)=g_k(x)=\\sum_{n=k}^\\infty c_n\\,n(n-1)\\cdots(n-k+1)\\,(x-a)^{n-k}\n\\quad\\text{for }x\\in(a-r,a+r).\n\\]\nEvaluating at $x=a$ gives\n\\[\n\\label{eq:4.u44}\nf^{(k)}(a)=\\sum_{n=k}^\\infty c_n\\,n(n-1)\\cdots(n-k+1)\\,(a-a)^{n-k}=c_k\\,k!.\n\\]\nThis proves $f^{(k)}(a)=k!\\,c_k$.\n\nFinally, substituting $c_n=f^{(n)}(a)/n!$ into the given power series expansion yields\n\\[\n\\label{eq:4.u45}\nf(x)=\\sum_{n=0}^{\\infty}\\frac{f^{(n)}(a)}{n!}(x-a)^n\\quad\\text{for all }x\\in(a-r,a+r).\n\\]\n\\end{proof>\n\\end{proof}",
+    "index": 17
+  },
+  {
+    "label": "Theorem 4.2.3",
+    "env": "thm",
+    "number_components": [
+      4,
+      2,
+      3
+    ],
+    "extracted_labels": [
+      "thm:4.5",
+      "eq:4.u46",
+      "eq:4.u47",
+      "prf:thm:4.5",
+      "eq:4.u48",
+      "eq:4.u49",
+      "eq:4.u50",
+      "eq:4.u51"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Real Analytic Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:4.5}\n[Uniqueness of power series]\nLet $E\\subseteq\\mathbb{R}$, let $a$ be an interior point of $E$, and let $f:E\\to\\mathbb{R}$. Suppose there exist sequences $(c_n)_{n\\ge 0}$ and $(d_n)_{n\\ge 0}$ and radii $R_c,R_d>0$ such that, for all $x\\in E$ with $|x-a|<R_c$,\n\\[\n\\label{eq:4.u46}\nf(x)=\\sum_{n=0}^\\infty c_n (x-a)^n,\n\\]\nfor all $x\\in E$ with $|x-a|<R_d$,\n\\[\n\\label{eq:4.u47}\nf(x)=\\sum_{n=0}^\\infty d_n (x-a)^n,\n\\]\nand both series converge on their respective intervals. Then $c_n=d_n$ for all $n\\ge 0$.\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:4.5}\nLet $R:=\\min\\{R_c,R_d\\}>0$. For $|x-a|<R$ both series converge and represent $f(x)$, hence\n\\[\n\\label{eq:4.u48}\n\\sum_{n=0}^\\infty c_n(x-a)^n=\\sum_{n=0}^\\infty d_n(x-a)^n.\n\\]\nDefine\n\\[\n\\label{eq:4.u49}\nS(x):=\\sum_{n=0}^\\infty (c_n-d_n)(x-a)^n.\n\\]\nThen $S(x)=0$ for all $|x-a|<R$. Fix $m\\ge 0$. For $|x-a|<R$, term-by-term differentiation of a power series is valid on $(-R,R)$, so $S$ is $m$ times differentiable and\n\\[\n\\label{eq:4.u50}\nS^{(m)}(x)=\\sum_{n=m}^\\infty (c_n-d_n)\\,n(n-1)\\cdots(n-m+1)\\,(x-a)^{n-m}.\n\\]\nEvaluating at $x=a$ yields\n\\[\n\\label{eq:4.u51}\nS^{(m)}(a)=m!\\,(c_m-d_m),\n\\]\nsince all terms with $n>m$ contain a positive power of $(x-a)$ and vanish at $x=a$. Because $S(x)=0$ on $|x-a|<R$, all derivatives satisfy $S^{(m)}(a)=0$, hence $m!\\,(c_m-d_m)=0$ and therefore $c_m=d_m$. As $m\\ge 0$ was arbitrary, $c_n=d_n$ for all $n\\ge 0$.\n\\end{proof}",
+    "index": 18
+  },
+  {
+    "label": "Proposition 4.2.4",
+    "env": "prop",
+    "number_components": [
+      4,
+      2,
+      4
+    ],
+    "extracted_labels": [
+      "prop:4.2",
+      "eq:4.u52",
+      "prf:prop:4.2",
+      "eq:4.u53",
+      "eq:4.u54",
+      "eq:4.u55",
+      "eq:4.u56"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Real Analytic Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.2}\nFor every real number $x$ with $|x|<1$, the geometric series converges and satisfies\n\\[\n\\label{eq:4.u52}\n\\sum_{n=0}^{\\infty} x^n = \\frac{1}{1-x}.\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.2}\nLet $x\\in\\mathbb{R}$ with $|x|<1$. For $N\\ge 0$, define the partial sum\n\\[\n\\label{eq:4.u53}\nS_N:=\\sum_{n=0}^{N} x^n.\n\\]\nThen\n\\[\n\\label{eq:4.u54}\n(1-x)S_N = S_N - xS_N = \\Bigl(\\sum_{n=0}^{N} x^n\\Bigr) - \\Bigl(\\sum_{n=0}^{N} x^{n+1}\\Bigr)=1-x^{N+1},\n\\]\nso\n\\[\n\\label{eq:4.u55}\nS_N=\\frac{1-x^{N+1}}{1-x}.\n\\]\nSince $|x|<1$, one has $x^{N+1}\\to 0$ as $N\\to\\infty$. Taking limits gives\n\\[\n\\label{eq:4.u56}\n\\sum_{n=0}^{\\infty} x^n = \\lim_{N\\to\\infty} S_N = \\lim_{N\\to\\infty}\\frac{1-x^{N+1}}{1-x}=\\frac{1}{1-x}.\n\\]\n\\end{proof}",
+    "index": 19
+  },
+  {
+    "label": "Proposition 4.2.5",
+    "env": "prop",
+    "number_components": [
+      4,
+      2,
+      5
+    ],
+    "extracted_labels": [
+      "prop:4.3",
+      "eq:4.u57",
+      "prf:prop:4.3",
+      "eq:4.u58",
+      "eq:4.u59",
+      "eq:4.u60"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Real Analytic Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.3}\nLet $x\\in\\mathbb{R}$ satisfy $\\lvert x-\\tfrac12\\rvert<\\tfrac12$. Then the geometric series $\\sum_{n=0}^{\\infty} 2^{n+1}\\left(x-\\tfrac12\\right)^n$ converges and\n\\[\n\\label{eq:4.u57}\n\\frac{1}{1-x}=\\sum_{n=0}^{\\infty} 2^{n+1}\\left(x-\\tfrac12\\right)^n.\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.3}\nSet $t=2\\left(x-\\tfrac12\\right)$. The hypothesis $\\lvert x-\\tfrac12\\rvert<\\tfrac12$ is equivalent to $|t|<1$. Then\n\\[\n\\label{eq:4.u58}\n1-x=\\tfrac12-\\left(x-\\tfrac12\\right)=\\tfrac12\\bigl(1-2(x-\\tfrac12)\\bigr)=\\tfrac12(1-t),\n\\]\nso\n\\[\n\\label{eq:4.u59}\n\\frac{1}{1-x}=\\frac{2}{1-t}.\n\\]\nSince $|t|<1$, the geometric series satisfies $\\sum_{n=0}^{\\infty} t^n=\\frac{1}{1-t}$. Hence\n\\[\n\\label{eq:4.u60}\n\\frac{1}{1-x}=2\\sum_{n=0}^{\\infty} t^n=2\\sum_{n=0}^{\\infty}\\bigl(2(x-\\tfrac12)\\bigr)^n=\\sum_{n=0}^{\\infty}2^{n+1}\\left(x-\\tfrac12\\right)^n,\n\\]\nwhich is the desired identity.\n\\end{proof}",
+    "index": 20
+  },
+  {
+    "label": "Proposition 4.2.6",
+    "env": "prop",
+    "number_components": [
+      4,
+      2,
+      6
+    ],
+    "extracted_labels": [
+      "prop:4.4",
+      "eq:4.u61",
+      "eq:4.u62",
+      "prf:prop:4.4",
+      "eq:4.u63",
+      "eq:4.u64",
+      "eq:4.u65"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Real Analytic Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.4}\nLet $n\\ge 0$ be an integer and let $a,c\\in\\mathbb{R}$. Define $f:\\mathbb{R}\\to\\mathbb{R}$ by $f(x)=c(x-a)^n$. Then $f$ is infinitely differentiable on $\\mathbb{R}$. Moreover, for every integer $k$ with $0\\le k\\le n$,\n\\[\n\\label{eq:4.u61}\nf^{(k)}(x)=c\\,\\frac{n!}{(n-k)!}(x-a)^{n-k}\\qquad (x\\in\\mathbb{R}),\n\\]\nand for every integer $k>n$,\n\\[\n\\label{eq:4.u62}\nf^{(k)}(x)=0\\qquad (x\\in\\mathbb{R}).\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.4}\nFor $n=0$, $f(x)=c$ is constant, hence differentiable of all orders, with $f^{(0)}(x)=c$ and $f^{(k)}(x)=0$ for all $k\\ge 1$.\n\nAssume $n\\ge 1$. First, $g(x)=x-a$ is differentiable with $g'(x)=1$. By repeated application of the product rule, the function $h_n(x)=(x-a)^n$ is differentiable and satisfies\n\\[\n\\label{eq:4.u63}\n\\frac{d}{dx}(x-a)^n=n(x-a)^{n-1}.\n\\]\nMultiplying by the constant $c$ gives $f'(x)=cn(x-a)^{n-1}$.\n\nDefine for integers $k$ with $0\\le k\\le n$ the expression\n\\[\n\\label{eq:4.u64}\nF_k(x):=c\\,\\frac{n!}{(n-k)!}(x-a)^{n-k}.\n\\]\nThe case $k=0$ gives $F_0(x)=c(x-a)^n=f(x)$. Suppose $0\\le k<n$ and $f^{(k)}(x)=F_k(x)$ for all $x$. Then $F_k$ is differentiable and\n\\[\n\\label{eq:4.u65}\n\\frac{d}{dx}F_k(x)=c\\,\\frac{n!}{(n-k)!}(n-k)(x-a)^{n-k-1}=c\\,\\frac{n!}{(n-(k+1))!}(x-a)^{n-(k+1)}=F_{k+1}(x).\n\\]\nHence $f^{(k+1)}(x)=F_{k+1}(x)$ for all $x$. By induction, the stated formula holds for all integers $k$ with $0\\le k\\le n$.\n\nFor $k=n$, the formula yields $f^{(n)}(x)=c\\,n!$, a constant function. Therefore $f^{(n+1)}(x)=0$ for all $x$, and differentiating further gives $f^{(k)}(x)=0$ for all $k>n$.\n\nThus $f$ has derivatives of all orders on $\\mathbb{R}$ and satisfies the claimed formulas.\n\\end{proof}",
+    "index": 21
+  },
+  {
+    "label": "Proposition 4.2.7",
+    "env": "prop",
+    "number_components": [
+      4,
+      2,
+      7
+    ],
+    "extracted_labels": [
+      "prop:4.5",
+      "eq:4.u66",
+      "prf:prop:4.5",
+      "eq:4.u67",
+      "eq:4.u68"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Real Analytic Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.5}\nLet $a,b\\in\\mathbb{R}$ and let $n\\ge 0$ be an integer. Then for every $x\\in\\mathbb{R}$,\n\\[\n\\label{eq:4.u66}\n(x-a)^n=\\sum_{m=0}^{n} \\frac{n!}{m!(n-m)!} (b-a)^{n-m}(x-b)^m.\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.5}\nFix $x\\in\\mathbb{R}$. Then $x-a=(x-b)+(b-a)$, so by the binomial theorem,\n\\[\n\\label{eq:4.u67}\n(x-a)^n=((x-b)+(b-a))^n=\\sum_{m=0}^n \\binom{n}{m}(x-b)^m(b-a)^{n-m}.\n\\]\nSince $\\binom{n}{m}=\\dfrac{n!}{m!(n-m)!}$, this equals\n\\[\n\\label{eq:4.u68}\n\\sum_{m=0}^{n} \\frac{n!}{m!(n-m)!} (b-a)^{n-m}(x-b)^m,\n\\]\nwhich is the desired identity.\n\\end{proof}",
+    "index": 22
+  },
+  {
+    "label": "Proposition 4.2.8",
+    "env": "prop",
+    "number_components": [
+      4,
+      2,
+      8
+    ],
+    "extracted_labels": [
+      "prop:4.6",
+      "eq:4.u69",
+      "prf:prop:4.6",
+      "eq:4.u70",
+      "eq:4.u71",
+      "eq:4.u72",
+      "eq:4.u73",
+      "eq:4.u74"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Real Analytic Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.6}\nLet $r>0$ and let $x\\in\\mathbb{R}$ satisfy $|x|<r$. Then\n\\[\n\\label{eq:4.u69}\n\\frac{r}{r-x}=\\sum_{n=0}^{\\infty} x^n r^{-n}.\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.6}\nSet $t=x/r$. Then $|t|<1$ and\n\\[\n\\label{eq:4.u70}\n\\frac{r}{r-x}=\\frac{1}{1-x/r}=\\frac{1}{1-t}.\n\\]\nFor each $N\\ge 0$,\n\\[\n\\label{eq:4.u71}\n(1-t)\\sum_{n=0}^N t^n = 1-t^{N+1},\n\\]\nso\n\\[\n\\label{eq:4.u72}\n\\sum_{n=0}^N t^n = \\frac{1-t^{N+1}}{1-t}.\n\\]\nSince $|t|<1$, one has $t^{N+1}\\to 0$ as $N\\to\\infty$, hence\n\\[\n\\label{eq:4.u73}\n\\sum_{n=0}^{\\infty} t^n = \\frac{1}{1-t}.\n\\]\nSubstituting $t=x/r$ gives\n\\[\n\\label{eq:4.u74}\n\\frac{r}{r-x}=\\sum_{n=0}^{\\infty}\\left(\\frac{x}{r}\\right)^n=\\sum_{n=0}^{\\infty} x^n r^{-n}.\n\\]\n\\end{proof}",
+    "index": 23
+  },
+  {
+    "label": "Proposition 4.2.9",
+    "env": "prop",
+    "number_components": [
+      4,
+      2,
+      9
+    ],
+    "extracted_labels": [
+      "prop:4.7",
+      "eq:4.u75",
+      "prf:prop:4.7",
+      "eq:4.u76",
+      "eq:4.u77",
+      "eq:4.u78",
+      "eq:4.u79",
+      "eq:4.u80",
+      "eq:4.u81",
+      "eq:4.u82"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Real Analytic Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.7}\nLet $r>0$, let $m\\ge 0$ be an integer, and let $x\\in\\mathbb{R}$ satisfy $|x|<r$. Then\n\\[\n\\label{eq:4.u75}\n\\frac{r}{(r-x)^{m+1}}=\\sum_{n=m}^{\\infty} \\frac{n!}{m!(n-m)!} x^{n-m} r^{-n}.\n\\]\nMoreover, the series on the right-hand side converges absolutely for every $x\\in(-r,r)$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.7}\nSet $t=x/r$. Then $|t|<1$ and\n\\[\n\\label{eq:4.u76}\n\\frac{r}{(r-x)^{m+1}}=\\frac{r}{\\bigl(r(1-t)\\bigr)^{m+1}}=r^{-m}(1-t)^{-(m+1)}.\n\\]\nFor $|t|<1$ the geometric series gives\n\\[\n\\label{eq:4.u77}\n\\frac1{1-t}=\\sum_{k=0}^\\infty t^k.\n\\]\nDifferentiate this identity $m$ times term-by-term (justified since the power series has radius of convergence $1$), obtaining\n\\[\n\\label{eq:4.u78}\n\\frac{m!}{(1-t)^{m+1}}=\\sum_{k=m}^\\infty k(k-1)\\cdots(k-m+1)t^{k-m}=\\sum_{k=m}^\\infty \\frac{k!}{(k-m)!}t^{k-m}.\n\\]\nDividing by $m!$ yields\n\\[\n\\label{eq:4.u79}\n(1-t)^{-(m+1)}=\\sum_{k=m}^\\infty \\frac{k!}{m!(k-m)!}t^{k-m}.\n\\]\nMultiplying by $r^{-m}$ and substituting $t=x/r$ gives\n\\[\n\\label{eq:4.u80}\n\\frac{r}{(r-x)^{m+1}}=r^{-m}\\sum_{k=m}^\\infty \\frac{k!}{m!(k-m)!}\\left(\\frac{x}{r}\\right)^{k-m}\n=\\sum_{k=m}^\\infty \\frac{k!}{m!(k-m)!}x^{k-m}r^{-k}.\n\\]\nThis is the desired identity (rename $k$ as $n$).\n\nFor absolute convergence, write the series as\n\\[\n\\label{eq:4.u81}\n\\sum_{n=m}^\\infty \\frac{n!}{m!(n-m)!}\\,|x|^{n-m} r^{-n}=r^{-m}\\sum_{j=0}^\\infty \\binom{m+j}{m}\\left(\\frac{|x|}{r}\\right)^j,\n\\]\nwhere $j=n-m$. With $q=|x|/r\\in(0,1)$, the ratio test applies to $a_j=\\binom{m+j}{m}q^j$:\n\\[\n\\label{eq:4.u82}\n\\frac{a_{j+1}}{a_j}=\\frac{\\binom{m+j+1}{m}}{\\binom{m+j}{m}}\\,q=\\frac{m+j+1}{j+1}\\,q\\xrightarrow[j\\to\\infty]{}q<1.\n\\]\nHence $\\sum_{j=0}^\\infty a_j$ converges, proving absolute convergence for every $|x|<r$.\n\\end{proof}",
+    "index": 24
+  },
+  {
+    "label": "Proposition 4.2.10",
+    "env": "prop",
+    "number_components": [
+      4,
+      2,
+      10
+    ],
+    "extracted_labels": [
+      "prop:4.2.8.a",
+      "eq:4.2.4"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Real Analytic Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.2.8.a}\nLet $E\\subseteq\\mathbb{R}$ and let $a$ be an interior point of $E$. Let $f:E\\to\\mathbb{R}$ be real analytic at $a$, and suppose $f$ has a power series expansion\n\\begin{equation}\\label{eq:4.2.4}\n f(x)=\\sum_{n=0}^{\\infty} c_n (x-a)^n\n\\end{equation}\nwhich converges (at least) for all $x\\in(a-r,a+r)$ for some $r>0$.\nLet $(b-s,b+s)$ be any open interval with $s>0$ such that $(b-s,b+s)\\subseteq(a-r,a+r)$.\nThen $|a-b|\\le r-s$; in particular $|a-b|<r$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nSince $(b-s,b+s)\\subseteq(a-r,a+r)$, we have both inequalities\n\\[b-s>a-r\\quad\\text{and}\\quad b+s<a+r.\\]\nRearranging gives\n\\[b-a>-(r-s)\\quad\\text{and}\\quad b-a<r-s.\\]\nThus $-(r-s)<b-a<r-s$, hence $|b-a|\\le r-s$. Since $s>0$, we also have $r-s<r$, so $|a-b|<r$.\n\\end{proof}",
+    "index": 25
+  },
+  {
+    "label": "Proposition 4.2.11",
+    "env": "prop",
+    "number_components": [
+      4,
+      2,
+      11
+    ],
+    "extracted_labels": [
+      "prop:4.2.8.b"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Real Analytic Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.2.8.b}\nAssume the hypotheses and notation of Proposition~\\ref{prop:4.2.8.a}. Then for every $\\epsilon$ with $0<\\epsilon<r$, there exists a constant $C>0$ such that\n\\[\n|c_n|\\le C\\,(r-\\epsilon)^{-n}\\quad\\text{for all integers }n\\ge 0.\n\\]\n\\end{proposition}\n(depend on: \"Proposition 4.2.10\")",
+    "dependencies": [
+      "Proposition 4.2.10"
+    ],
+    "proof": "\\begin{proof}\nFix $\\epsilon$ with $0<\\epsilon<r$, and set $\\rho:=r-\\epsilon>0$. Since the series $\\sum_{n\\ge 0} c_n (x-a)^n$ converges for every $x\\in(a-r,a+r)$, in particular it converges at $x=a+\\rho$ and at $x=a-\\rho$.\nThen\n\\[\\sum_{n=0}^\\infty c_n\\rho^n\\quad\\text{and}\\quad \\sum_{n=0}^\\infty c_n(-\\rho)^n\\]\nare convergent real series, hence their terms are bounded. In particular the sequences $(c_n\\rho^n)_{n\\ge0}$ and $(c_n(-\\rho)^n)_{n\\ge0}$ are bounded, so $(|c_n|\\rho^n)_{n\\ge0}$ is bounded as well.\nTherefore there exists $C>0$ such that $|c_n|\\rho^n\\le C$ for all $n\\ge0$, i.e.\n$|c_n|\\le C\\rho^{-n}=C(r-\\epsilon)^{-n}$.\n\\end{proof}",
+    "index": 26
+  },
+  {
+    "label": "Proposition 4.2.12",
+    "env": "prop",
+    "number_components": [
+      4,
+      2,
+      12
+    ],
+    "extracted_labels": [
+      "prop:4.2.8.c",
+      "eq:4.2.7"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Real Analytic Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.2.8.c}\nAssume the hypotheses and notation of Proposition~\\ref{prop:4.2.8.a}, and let $(b-s,b+s)\\subseteq(a-r,a+r)$ with $s>0$.\nFor each integer $m\\ge 0$, define\n\\begin{equation}\\label{eq:4.2.7}\n d_m:=\\sum_{n=m}^{\\infty} \\frac{n!}{m!(n-m)!}(b-a)^{n-m}c_n.\n\\end{equation}\nThen for every $m\\ge0$ the series defining $d_m$ is absolutely convergent; hence each $d_m$ is well-defined.\n\\end{proposition}\n(depend on: \"Proposition 4.2.10\", \"Proposition 4.2.11\")",
+    "dependencies": [
+      "Proposition 4.2.10",
+      "Proposition 4.2.11"
+    ],
+    "proof": "\\begin{proof}\nFix $m\\ge0$. Choose $\\epsilon$ with $0<\\epsilon<r-|a-b|$ (possible because by Proposition~\\ref{prop:4.2.8.a} we have $|a-b|<r$). Set $\\rho:=r-\\epsilon$, so that $|b-a|<\\rho$.\nBy Proposition~\\ref{prop:4.2.8.b} there exists $C>0$ such that $|c_n|\\le C\\rho^{-n}$ for all $n\\ge0$.\nThen for $n\\ge m$,\n\\[\n\\left|\\frac{n!}{m!(n-m)!}(b-a)^{n-m}c_n\\right|=\\binom{n}{m}|b-a|^{n-m}|c_n|\n\\le C\\binom{n}{m}|b-a|^{n-m}\\rho^{-n}.\n\\]\nRewrite the right-hand side as\n\\[\nC\\rho^{-m}\\binom{n}{m}\\left(\\frac{|b-a|}{\\rho}\\right)^{n-m}.\n\\]\nLet $t:=|b-a|/\\rho\\in(0,1)$. The series $\\sum_{n=m}^\\infty \\binom{n}{m}t^{n-m}$ converges (for instance, it is a power series in $t$ with radius $1$, or one may use ratio test).\nTherefore by comparison, $\\sum_{n=m}^\\infty \\left|\\frac{n!}{m!(n-m)!}(b-a)^{n-m}c_n\\right|$ converges.\nHence the defining series for $d_m$ is absolutely convergent.\n\\end{proof}",
+    "index": 27
+  },
+  {
+    "label": "Proposition 4.2.13",
+    "env": "prop",
+    "number_components": [
+      4,
+      2,
+      13
+    ],
+    "extracted_labels": [
+      "prop:4.2.8.d",
+      "eq:4.2.8"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Real Analytic Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.2.8.d}\nAssume the hypotheses and notation of Proposition~\\ref{prop:4.2.8.c}. Then for every $\\epsilon$ with $0<\\epsilon<s$, there exists a constant $C>0$ such that\n\\begin{equation}\\label{eq:4.2.8}\n|d_m|\\le C\\,(s-\\epsilon)^{-m}\\quad\\text{for all integers }m\\ge 0.\n\\end{equation}\n\\end{proposition}\n(depend on: \"Proposition 4.2.12\", \"Proposition 4.2.10\", \"Proposition 4.2.11\")",
+    "dependencies": [
+      "Proposition 4.2.12",
+      "Proposition 4.2.10",
+      "Proposition 4.2.11"
+    ],
+    "proof": "\\begin{proof}\nFix $\\epsilon$ with $0<\\epsilon<s$, and set $\\sigma:=s-\\epsilon>0$. Since $(b-s,b+s)\\subseteq(a-r,a+r)$, we have $b\\pm\\sigma\\in(a-r,a+r)$.\nDefine $g(x):=f(x)$ on $(a-r,a+r)$ and consider the shifted variable $y:=x-b$. Formally expanding around $b$ yields coefficients $d_m$ as in \\eqref{eq:4.2.7}.\nWe now bound $d_m$ by evaluating the (absolutely convergent) series for $f$ at $x=b\\pm\\sigma$.\n\nChoose $\\rho$ with $|b-a|+\\sigma<\\rho<r$ (possible because $|b-a|\\le r-s$ and $\\sigma<s$ imply $|b-a|+\\sigma<r$). By Proposition~\\ref{prop:4.2.8.b} there exists $C_0>0$ such that $|c_n|\\le C_0\\rho^{-n}$.\nThen from \\eqref{eq:4.2.7}, using absolute values and the binomial coefficient bound,\n\\[\n|d_m|\\le \\sum_{n=m}^\\infty \\binom{n}{m}|b-a|^{n-m}|c_n|\n\\le C_0\\sum_{n=m}^\\infty \\binom{n}{m}|b-a|^{n-m}\\rho^{-n}\n= C_0\\rho^{-m}\\sum_{k=0}^\\infty \\binom{m+k}{m}\\left(\\frac{|b-a|}{\\rho}\\right)^k.\n\\]\nLet $t:=|b-a|/\\rho\\in(0,1)$. The identity\n\\[\\sum_{k=0}^\\infty \\binom{m+k}{m} t^k = \\frac{1}{(1-t)^{m+1}}\n\\]\nholds for $|t|<1$ (it is the power-series expansion of $(1-t)^{-(m+1)}$). Therefore\n\\[\n|d_m|\\le C_0\\rho^{-m}\\frac{1}{(1-t)^{m+1}}=\\frac{C_0}{1-t}\\left(\\frac{1}{\\rho(1-t)}\\right)^m.\n\\]\nBut $\\rho(1-t)=\\rho-|b-a|>\\sigma=s-\\epsilon$ by the choice of $\\rho$. Hence\n\\[\n\\frac{1}{\\rho(1-t)}<\\frac{1}{\\sigma}=(s-\\epsilon)^{-1}.\n\\]\nAbsorbing constants, there exists $C>0$ such that $|d_m|\\le C\\sigma^{-m}=C(s-\\epsilon)^{-m}$ for all $m\\ge0$.\n\\end{proof}",
+    "index": 28
+  },
+  {
+    "label": "Proposition 4.2.14",
+    "env": "prop",
+    "number_components": [
+      4,
+      2,
+      14
+    ],
+    "extracted_labels": [
+      "prop:4.2.8.e"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Real Analytic Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.2.8.e}\nAssume the hypotheses and notation of Proposition~\\ref{prop:4.2.8.c}. Then the power series\n\\[\n\\sum_{m=0}^{\\infty} d_m (x-b)^m\n\\]\nis absolutely convergent for every $x\\in(b-s,b+s)$, and for all such $x$ one has\n\\[\n f(x)=\\sum_{m=0}^{\\infty} d_m (x-b)^m.\n\\]\n\\end{proposition}\n(depend on: \"Proposition 4.2.12\", \"Proposition 4.2.10\", \"Proposition 4.2.11\", \"Proposition 4.2.13\")",
+    "dependencies": [
+      "Proposition 4.2.12",
+      "Proposition 4.2.10",
+      "Proposition 4.2.11",
+      "Proposition 4.2.13"
+    ],
+    "proof": "\\begin{proof}\nLet $x\\in(b-s,b+s)$ and set $y:=x-b$, so $|y|<s$. Choose $\\epsilon$ with $0<\\epsilon<s-|y|$ so that $|y|<s-\\epsilon$.\nBy Proposition~\\ref{prop:4.2.8.d}, there exists $C>0$ such that $|d_m|\\le C(s-\\epsilon)^{-m}$ for all $m\\ge0$. Hence\n\\[\n\\sum_{m=0}^\\infty |d_m||y|^m \\le \\sum_{m=0}^\\infty C\\left(\\frac{|y|}{s-\\epsilon}\\right)^m\n\\]\nwhich converges geometrically since $|y|/(s-\\epsilon)<1$. This proves absolute convergence.\n\nIt remains to show the sum equals $f(x)$. Starting from the original expansion around $a$,\n\\[f(x)=\\sum_{n=0}^\\infty c_n((b-a)+y)^n,\\]\nand expanding $((b-a)+y)^n$ by the binomial theorem gives\n\\[f(x)=\\sum_{n=0}^\\infty c_n\\sum_{m=0}^n \\binom{n}{m}(b-a)^{n-m}y^m.\n\\]\nThe absolute convergence established above (together with Proposition~\\ref{prop:4.2.8.c} ensuring absolute convergence of the defining sums) justifies exchanging the order of summation, yielding\n\\[f(x)=\\sum_{m=0}^\\infty \\left(\\sum_{n=m}^\\infty \\binom{n}{m}(b-a)^{n-m}c_n\\right) y^m = \\sum_{m=0}^\\infty d_m (x-b)^m,\n\\]\nwhere the inner sum is exactly $d_m$ by \\eqref{eq:4.2.7}.\n\\end{proof}",
+    "index": 29
+  },
+  {
+    "label": "Proposition 4.2.15",
+    "env": "prop",
+    "number_components": [
+      4,
+      2,
+      15
+    ],
+    "extracted_labels": [
+      "prop:4.2.8.f"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Real Analytic Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.2.8.f}\nAssume the hypotheses and notation of Proposition~\\ref{prop:4.2.8.a}. Then $f$ is real analytic at every point $b\\in(a-r,a+r)$.\n\\end{proposition}\n(depend on: \"Proposition 4.2.10\", \"Proposition 4.2.14\", \"Proposition 4.2.12\", \"Proposition 4.2.11\", \"Proposition 4.2.13\")",
+    "dependencies": [
+      "Proposition 4.2.10",
+      "Proposition 4.2.14",
+      "Proposition 4.2.12",
+      "Proposition 4.2.11",
+      "Proposition 4.2.13"
+    ],
+    "proof": "\\begin{proof}\nFix any $b\\in(a-r,a+r)$. Choose $s>0$ such that $(b-s,b+s)\\subseteq(a-r,a+r)$.\nBy Proposition~\\ref{prop:4.2.8.e}, there exists a power series $\\sum_{m=0}^\\infty d_m(x-b)^m$ with positive radius of convergence (at least $s$) that converges to $f(x)$ for all $x\\in(b-s,b+s)$.\nThis is exactly the definition of $f$ being real analytic at $b$.\n\\end{proof}",
+    "index": 30
+  },
+  {
+    "label": "Lemma 4.3.1",
+    "env": "lem",
+    "number_components": [
+      4,
+      3,
+      1
+    ],
+    "extracted_labels": [
+      "lem:4.1",
+      "eq:4.u109",
+      "prf:lem:4.1",
+      "eq:4.u110",
+      "eq:4.u111",
+      "eq:4.u112",
+      "eq:4.u113",
+      "eq:4.u114",
+      "eq:4.u115",
+      "eq:4.u116",
+      "eq:4.u117"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Abel’s Theorem",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\n\\label{lem:4.1}\n[Summation by parts formula]\nLet $(a_n)_{n\\ge 0}$ and $(b_n)_{n\\ge 0}$ be sequences of real numbers with $\\lim_{n\\to\\infty} a_n = A$ and $\\lim_{n\\to\\infty} b_n = B$. Assume that the series $\\sum_{n=0}^{\\infty} (a_{n+1}-a_n)b_n$ converges. Then the series $\\sum_{n=0}^{\\infty} a_{n+1}(b_{n+1}-b_n)$ converges and\n\\[\n\\label{eq:4.u109}\n\\sum_{n=0}^{\\infty} (a_{n+1}-a_n)b_n \\,=\\, AB - a_0 b_0 - \\sum_{n=0}^{\\infty} a_{n+1}(b_{n+1}-b_n).\n\\]\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:lem:4.1}\nFor $N\\ge 0$, set\n\\[\n\\label{eq:4.u110}\nS_N:=\\sum_{n=0}^{N} (a_{n+1}-a_n)b_n,\\qquad T_N:=\\sum_{n=0}^{N} a_{n+1}(b_{n+1}-b_n).\n\\]\nExpanding $T_N$ gives\n\\[\n\\label{eq:4.u111}\nT_N=\\sum_{n=0}^{N} a_{n+1}b_{n+1}-\\sum_{n=0}^{N} a_{n+1}b_n.\n\\]\nAlso,\n\\[\n\\label{eq:4.u112}\nS_N=\\sum_{n=0}^{N} a_{n+1}b_n-\\sum_{n=0}^{N} a_nb_n.\n\\]\nAdding these identities yields cancellation of the middle sums and\n\\[\n\\label{eq:4.u113}\nS_N+T_N=\\sum_{n=0}^{N} a_{n+1}b_{n+1}-\\sum_{n=0}^{N} a_nb_n.\n\\]\nSince $\\sum_{n=0}^{N} a_{n+1}b_{n+1}=\\sum_{m=1}^{N+1} a_m b_m$, it follows that\n\\[\n\\label{eq:4.u114}\nS_N+T_N=a_{N+1}b_{N+1}-a_0b_0,\n\\]\nand hence\n\\[\n\\label{eq:4.u115}\nS_N=a_{N+1}b_{N+1}-a_0b_0-T_N.\n\\]\nBy assumption, $(S_N)_{N\\ge 0}$ converges to $S:=\\sum_{n=0}^{\\infty}(a_{n+1}-a_n)b_n$. Also $a_{N+1}b_{N+1}\\to AB$ as $N\\to\\infty$. Therefore\n\\[\n\\label{eq:4.u116}\nT_N=a_{N+1}b_{N+1}-a_0b_0-S_N \\longrightarrow AB-a_0b_0-S.\n\\]\nThus $\\sum_{n=0}^{\\infty} a_{n+1}(b_{n+1}-b_n)$ converges, with sum $\\lim_{N\\to\\infty}T_N=AB-a_0b_0-S$. Rearranging gives\n\\[\n\\label{eq:4.u117}\nS=AB-a_0b_0-\\sum_{n=0}^{\\infty} a_{n+1}(b_{n+1}-b_n),\n\\]\nas required.\n\\end{proof}",
+    "index": 31
+  },
+  {
+    "label": "Theorem 4.3.1",
+    "env": "thm",
+    "number_components": [
+      4,
+      3,
+      1
+    ],
+    "extracted_labels": [
+      "thm:4.3.1",
+      "eq:4.3.2",
+      "eq:4.3.1",
+      "eq:4.3.3"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Power Series",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{thm}\\label{thm:4.3.1}\n[Abel's theorem]\nLet $f(x)=\\sum_{n=0}^{\\infty} c_n (x-a)^n$ be a real power series centered at $a$ with radius of convergence $0<R<\\infty$.\n\n(1) If the series converges at $x=a+R$, i.e. if $\\sum_{n=0}^{\\infty} c_n R^n$ converges, then $f$ is continuous at $a+R$ from within the interval $(a-R,a+R)$, i.e.\n\\begin{equation}\\label{eq:4.3.2}\n\\lim_{x\\to a+R\\, :\\, x\\in(a-R,a+R)} \\sum_{n=0}^{\\infty} c_n (x-a)^n \n= \\sum_{n=0}^{\\infty} c_n R^n.\n\\end{equation}\n\n(2) Similarly, if the series converges at $x=a-R$, i.e. if $\\sum_{n=0}^{\\infty} c_n (-R)^n$ converges, then $f$ is continuous at $a-R$ from within $(a-R,a+R)$, i.e.\n\\begin{equation}\\label{eq:4.3.1}\n\\lim_{x\\to a-R\\, :\\, x\\in(a-R,a+R)} \\sum_{n=0}^{\\infty} c_n (x-a)^n \n= \\sum_{n=0}^{\\infty} c_n (-R)^n.\n\\end{equation}\n\\end{thm}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nIt suffices to prove (1); part (2) follows by applying (1) to the power series with coefficients $c'_n:=(-1)^n c_n$, since\n\\[\\sum_{n=0}^\\infty c'_n (x-a)^n = \\sum_{n=0}^\\infty c_n (a-x)^n\\]\nand convergence at $a+R$ for $(c'_n)$ is the same as convergence at $a-R$ for $(c_n)$.\n\nAssume $\\sum_{n=0}^{\\infty} c_n R^n$ converges. Define\n\\[d_n := c_n R^n,\\qquad y := \\frac{x-a}{R}.\n\\]\nThen $x\\in(a-R,a+R)$ is equivalent to $y\\in(-1,1)$, and $x\\to a+R$ with $x\\in(a-R,a+R)$ is equivalent to $y\\to 1$ with $y\\in(-1,1)$. Moreover\n\\[\\sum_{n=0}^{\\infty} c_n (x-a)^n = \\sum_{n=0}^{\\infty} c_n (Ry)^n = \\sum_{n=0}^{\\infty} d_n y^n.\n\\]\nThus \\eqref{eq:4.3.2} is equivalent to\n\\begin{equation}\\label{eq:4.3.3}\n\\lim_{y\\to 1\\, :\\, y\\in(-1,1)} \\sum_{n=0}^{\\infty} d_n y^n \n= \\sum_{n=0}^{\\infty} d_n,\n\\end{equation}\nwhenever $\\sum_{n=0}^{\\infty} d_n$ converges.\n\nLet\n\\[D := \\sum_{n=0}^{\\infty} d_n,\\qquad S_N := \\Bigl(\\sum_{n=0}^{N-1} d_n\\Bigr) - D\\quad (N\\ge 0).\n\\]\nThen $S_0=-D$, $\\lim_{N\\to\\infty} S_N=0$, and\n\\[d_n = S_{n+1}-S_n\\quad\\text{for all }n\\ge 0.\n\\]\nFix $y\\in(-1,1)$. Using summation by parts (Abel summation) for the sequences $(S_{n})$ and $(y^n)$ and the fact that $y^n\\to 0$ as $n\\to\\infty$, we obtain\n\\[\n\\sum_{n=0}^{\\infty} d_n y^n\n= \\sum_{n=0}^{\\infty} (S_{n+1}-S_n) y^n\n= -S_0 y^0 - \\sum_{n=0}^{\\infty} S_{n+1}(y^{n+1}-y^n).\n\\]\nSince $-S_0 y^0 = -(-D)\\cdot 1 = D$, this becomes\n\\[\n\\sum_{n=0}^{\\infty} d_n y^n = D - \\sum_{n=0}^{\\infty} S_{n+1}(y^{n+1}-y^n).\n\\]\nTherefore, to prove \\eqref{eq:4.3.3} it suffices to show\n\\[\n\\lim_{y\\to 1\\, :\\, y\\in(-1,1)} \\sum_{n=0}^{\\infty} S_{n+1}(y^{n+1}-y^n)=0.\n\\]\nBecause the absolute value estimate below only improves when restricting to $y\\in[0,1)$, it is enough to prove\n\\[\n\\lim_{y\\to 1\\, :\\, y\\in[0,1)} \\sum_{n=0}^{\\infty} S_{n+1}(y^{n+1}-y^n)=0.\n\\]\nFor $y\\in[0,1)$ we have $y^{n+1}-y^n\\le 0$ and hence $y^n-y^{n+1}\\ge 0$. By the triangle inequality for series,\n\\[\n\\left|\\sum_{n=0}^{\\infty} S_{n+1}(y^{n+1}-y^n)\\right|\n\\le \\sum_{n=0}^{\\infty} |S_{n+1}|\\,(y^n-y^{n+1}).\n\\]\nThus it suffices to show\n\\[\n\\lim_{y\\to 1\\, :\\, y\\in[0,1)} \\sum_{n=0}^{\\infty} |S_{n+1}|\\,(y^n-y^{n+1}) = 0.\n\\]\nEquivalently, since the expression is nonnegative, it suffices to show that its $\\limsup$ is $0$.\n\nLet $\\varepsilon>0$. Since $S_n\\to 0$, choose $N$ such that $|S_n|\\le \\varepsilon$ for all $n>N$. Then for $y\\in[0,1)$,\n\\[\n\\sum_{n=0}^{\\infty} |S_{n+1}|(y^n-y^{n+1})\n\\le \\sum_{n=0}^{N} |S_{n+1}|(y^n-y^{n+1})\n+ \\sum_{n=N+1}^{\\infty} \\varepsilon (y^n-y^{n+1}).\n\\]\nThe last sum is telescoping:\n\\[\n\\sum_{n=N+1}^{\\infty} (y^n-y^{n+1}) = y^{N+1}.\n\\]\nHence\n\\[\n\\sum_{n=0}^{\\infty} |S_{n+1}|(y^n-y^{n+1})\n\\le \\sum_{n=0}^{N} |S_{n+1}|(y^n-y^{n+1}) + \\varepsilon y^{N+1}.\n\\]\nNow let $y\\to 1$ with $y\\in[0,1)$. For each fixed $n\\le N$, we have $y^n-y^{n+1}\\to 0$. Because the first sum is finite, its limit is $0$, and also $y^{N+1}\\to 1$. Therefore\n\\[\n\\limsup_{y\\to 1\\, :\\, y\\in[0,1)} \\sum_{n=0}^{\\infty} |S_{n+1}|(y^n-y^{n+1})\n\\le \\varepsilon.\n\\]\nSince $\\varepsilon>0$ was arbitrary and the left-hand side is nonnegative, the $\\limsup$ must be $0$. This proves the desired limit, hence \\eqref{eq:4.3.3}, and therefore \\eqref{eq:4.3.2}.\n\\end{proof}",
+    "index": 32
+  },
+  {
+    "label": "Theorem 4.4.1",
+    "env": "thm",
+    "number_components": [
+      4,
+      4,
+      1
+    ],
+    "extracted_labels": [
+      "thm:4.9",
+      "eq:4.u132",
+      "eq:4.u133",
+      "eq:4.u134",
+      "prf:thm:4.9",
+      "eq:4.u135",
+      "eq:4.u136",
+      "eq:4.u137",
+      "eq:4.u138",
+      "eq:4.u139",
+      "eq:4.u140",
+      "eq:4.u141"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Multiplication of Power Series",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 4,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:4.9}\nLet $a\\in\\mathbb{R}$ and $r>0$. Let $f,g:(a-r,a+r)\\to\\mathbb{R}$ be analytic, and suppose that for all $x\\in(a-r,a+r)$,\n\\[\n\\label{eq:4.u132}\nf(x)=\\sum_{n=0}^{\\infty} c_n (x-a)^n,\\qquad g(x)=\\sum_{n=0}^{\\infty} d_n (x-a)^n,\n\\]\nwhere each series converges to the corresponding function on $(a-r,a+r)$. Define, for $n\\ge 0$,\n\\[\n\\label{eq:4.u133}\ne_n:=\\sum_{m=0}^{n} c_m d_{n-m}.\n\\]\nThen the product $fg:(a-r,a+r)\\to\\mathbb{R}$ is analytic on $(a-r,a+r)$ and, for all $x\\in(a-r,a+r)$,\n\\[\n\\label{eq:4.u134}\nf(x)g(x)=\\sum_{n=0}^{\\infty} e_n (x-a)^n.\n\\]\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:4.9}\nFix $x\\in(a-r,a+r)$ and set $t:=|x-a|<r$. For $N\\ge 0$ define partial sums\n\\[\n\\label{eq:4.u135}\nS_N:=\\sum_{n=0}^N c_n (x-a)^n,\\qquad T_N:=\\sum_{n=0}^N d_n (x-a)^n.\n\\]\nSince $\\sum_{n\\ge 0} c_n (x-a)^n$ and $\\sum_{n\\ge 0} d_n (x-a)^n$ converge, the sequences $(S_N)$ and $(T_N)$ are bounded; choose $M>0$ such that $|S_N|\\le M$ and $|T_N|\\le M$ for all $N$.\n\nFor each $N$ define\n\\[\n\\label{eq:4.u136}\nU_N:=\\sum_{n=0}^N e_n (x-a)^n=\\sum_{n=0}^N\\sum_{m=0}^n c_m d_{n-m}(x-a)^n.\n\\]\nReindexing gives\n\\[\n\\label{eq:4.u137}\nU_N=\\sum_{m=0}^N\\sum_{k=0}^{N-m} c_m d_k (x-a)^{m+k}.\n\\]\nAlso,\n\\[\n\\label{eq:4.u138}\nS_NT_N=\\sum_{m=0}^N\\sum_{k=0}^N c_m d_k (x-a)^{m+k}.\n\\]\nHence\n\\[\n\\label{eq:4.u139}\nS_NT_N-U_N=\\sum_{m=0}^N\\sum_{k=N-m+1}^{N} c_m d_k (x-a)^{m+k}.\n\\]\nTaking absolute values and writing $a_m:=|c_m|t^m$ and $b_k:=|d_k|t^k$ yields\n\\[\n\\label{eq:4.u140}\n|S_NT_N-U_N|\\le \\sum_{m=0}^N\\sum_{k=N-m+1}^{N} a_m b_k \\le \\sum_{m=0}^N\\sum_{k=N-m+1}^{\\infty} a_m b_k.\n\\]\nSince $\\sum_{m\\ge 0} a_m=\\sum_{m\\ge 0} |c_m|t^m$ and $\\sum_{k\\ge 0} b_k=\\sum_{k\\ge 0} |d_k|t^k$ are convergent, the double series $\\sum_{m,k\\ge 0} a_m b_k$ converges and has tails tending to $0$. Therefore $|S_NT_N-U_N|\\to 0$ as $N\\to\\infty$.\n\nBecause $S_N\\to f(x)$ and $T_N\\to g(x)$, it follows that $S_NT_N\\to f(x)g(x)$. Since $|S_NT_N-U_N|\\to 0$, also $U_N\\to f(x)g(x)$. Thus\n\\[\n\\label{eq:4.u141}\nf(x)g(x)=\\sum_{n=0}^{\\infty} e_n (x-a)^n\n\\]\nfor the fixed $x\\in(a-r,a+r)$. As this holds for every $x$ in the interval, $fg$ is represented there by a power series about $a$, hence is analytic on $(a-r,a+r)$.\n\\end{proof}",
+    "index": 33
+  },
+  {
+    "label": "Definition 4.5.1",
+    "env": "def",
+    "number_components": [
+      4,
+      5,
+      1
+    ],
+    "extracted_labels": [
+      "def:4.8",
+      "eq:4.u142"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "The Exponential and Logarithm Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.8}\n[Exponential function]\nFor every real number $x\\in\\mathbb{R}$, the \\emph{exponential function} is defined by the power series\n\\[\n\\label{eq:4.u142}\n\\exp(x) := \\sum_{n=0}^{\\infty} \\frac{x^n}{n!}.\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 34
+  },
+  {
+    "label": "Theorem 4.5.1",
+    "env": "thm",
+    "number_components": [
+      4,
+      5,
+      1
+    ],
+    "extracted_labels": [
+      "thm:4.5.2a"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Exponential",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{thm}[Basic properties of $\\exp$, part (a)]\\label{thm:4.5.2a}\nFor every real number $x$, the series\n\\[\n\\sum_{n=0}^{\\infty} \\frac{x^n}{n!}\n\\]\nis absolutely convergent. In particular, the function $\\exp:\\mathbb{R}\\to\\mathbb{R}$ defined by\n\\[\n\\exp(x):=\\sum_{n=0}^{\\infty} \\frac{x^n}{n!}\n\\]\nexists for every $x\\in\\mathbb{R}$, the above power series has infinite radius of convergence, and $\\exp$ is real analytic on $\\mathbb{R}$.\n\\end{thm}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nFix $x\\in\\mathbb{R}$. Consider the nonnegative series $\\sum_{n=0}^\\infty \\left|\\frac{x^n}{n!}\\right|$. By the ratio test,\n\\[\n\\frac{\\left|x^{n+1}/(n+1)!\\right|}{\\left|x^n/n!\\right|} = \\frac{|x|}{n+1} \\to 0 \\quad (n\\to\\infty).\n\\]\nHence $\\sum_{n=0}^{\\infty} \\left|\\frac{x^n}{n!}\\right|$ converges, so $\\sum_{n=0}^{\\infty} \\frac{x^n}{n!}$ converges absolutely for every $x\\in\\mathbb{R}$. Therefore $\\exp(x)$ is well-defined for all $x$.\n\nSince the ratio test gives convergence for every real $x$, the radius of convergence is $+\\infty$. A power series with positive (indeed infinite) radius of convergence defines a real-analytic function on its interval of convergence, hence $\\exp$ is real analytic on $\\mathbb{R}$.\n\\end{proof}",
+    "index": 35
+  },
+  {
+    "label": "Theorem 4.5.2",
+    "env": "thm",
+    "number_components": [
+      4,
+      5,
+      2
+    ],
+    "extracted_labels": [
+      "thm:4.5.2b"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Exponential",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{thm}[Basic properties of $\\exp$, part (b)]\\label{thm:4.5.2b}\nThe function $\\exp:\\mathbb{R}\\to\\mathbb{R}$ is differentiable on $\\mathbb{R}$, and for every $x\\in\\mathbb{R}$ we have\n\\[\n\\exp'(x)=\\exp(x).\n\\]\n\\end{thm}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nFrom part (a), $\\exp$ is given by a power series with infinite radius of convergence:\n\\[\\exp(x)=\\sum_{n=0}^{\\infty} \\frac{x^n}{n!}.\n\\]\nA standard theorem on power series (term-by-term differentiation is valid inside the radius of convergence) implies that $\\exp$ is differentiable on $\\mathbb{R}$ and\n\\[\n\\exp'(x)=\\sum_{n=1}^{\\infty} \\frac{n x^{n-1}}{n!} = \\sum_{n=1}^{\\infty} \\frac{x^{n-1}}{(n-1)!}.\n\\]\nReindex with $m=n-1$ to obtain\n\\[\n\\exp'(x)=\\sum_{m=0}^{\\infty} \\frac{x^{m}}{m!}=\\exp(x).\n\\]\n\\end{proof}",
+    "index": 36
+  },
+  {
+    "label": "Theorem 4.5.3",
+    "env": "thm",
+    "number_components": [
+      4,
+      5,
+      3
+    ],
+    "extracted_labels": [
+      "thm:4.5.2c"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Exponential",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{thm}[Basic properties of $\\exp$, part (c)]\\label{thm:4.5.2c}\nThe function $\\exp$ is continuous on $\\mathbb{R}$. Moreover, for every $a,b\\in\\mathbb{R}$,\n\\[\n\\int_{[a,b]} \\exp(x)\\,dx = \\exp(b)-\\exp(a).\n\\]\n\\end{thm}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nFrom part (b), $\\exp$ is differentiable on $\\mathbb{R}$, hence it is continuous on $\\mathbb{R}$.\n\nFor the integral identity, apply the Fundamental Theorem of Calculus to the differentiable function $\\exp$ on $[a,b]$. Since $\\exp'(x)=\\exp(x)$ for all $x$, we have\n\\[\n\\int_a^b \\exp(x)\\,dx = \\int_a^b \\exp'(x)\\,dx = \\exp(b)-\\exp(a).\n\\]\nInterpreting $\\int_{[a,b]}$ as the usual definite integral gives the stated formula.\n\\end{proof}",
+    "index": 37
+  },
+  {
+    "label": "Theorem 4.5.4",
+    "env": "thm",
+    "number_components": [
+      4,
+      5,
+      4
+    ],
+    "extracted_labels": [
+      "thm:4.5.2d"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Exponential",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{thm}[Basic properties of $\\exp$, part (d)]\\label{thm:4.5.2d}\nFor all $x,y\\in\\mathbb{R}$, one has\n\\[\n\\exp(x+y)=\\exp(x)\\exp(y).\n\\]\n\\end{thm}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nFix $y\\in\\mathbb{R}$ and define $g_y:\\mathbb{R}\\to\\mathbb{R}$ by\n\\[g_y(x):=\\exp(x+y).\n\\]\nThen by part (b), $g_y$ is differentiable and\n\\[g_y'(x)=\\exp'(x+y)=\\exp(x+y)=g_y(x).\n\\]\nDefine also $h_y(x):=\\exp(x)\\exp(y)$. This function is differentiable and\n\\[h_y'(x)=\\exp'(x)\\exp(y)=\\exp(x)\\exp(y)=h_y(x).\n\\]\nThus $g_y$ and $h_y$ solve the same ODE $u'=u$ on $\\mathbb{R}$. Moreover, they have the same value at $x=0$:\n\\[g_y(0)=\\exp(y)=\\exp(0)\\exp(y)=h_y(0),\n\\]\nusing part (e) for $\\exp(0)=1$. By uniqueness of solutions to $u'=u$ with a given initial value (equivalently, apply the fact that $(g_y/h_y)'=0$ wherever $h_y\\ne 0$, or use Grönwall), we conclude $g_y(x)=h_y(x)$ for all $x$. Hence $\\exp(x+y)=\\exp(x)\\exp(y)$.\n\\end{proof}",
+    "index": 38
+  },
+  {
+    "label": "Theorem 4.5.5",
+    "env": "thm",
+    "number_components": [
+      4,
+      5,
+      5
+    ],
+    "extracted_labels": [
+      "thm:4.5.2e"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Exponential",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{thm}[Basic properties of $\\exp$, part (e)]\\label{thm:4.5.2e}\nWe have $\\exp(0)=1$. Moreover, for every $x\\in\\mathbb{R}$, $\\exp(x)>0$ and\n\\[\n\\exp(-x)=\\frac{1}{\\exp(x)}.\n\\]\n\\end{thm}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nFrom the defining power series,\n\\[\\exp(0)=\\sum_{n=0}^{\\infty} \\frac{0^n}{n!}=\\frac{0^0}{0!}+\\sum_{n=1}^{\\infty} 0 = 1.\n\\]\n(Here $0^0$ is interpreted as $1$ in the power series convention.)\n\nUsing the functional equation from part (d), for any $x$ we have\n\\[\\exp(x)\\exp(-x)=\\exp(x+(-x))=\\exp(0)=1,\n\\]\nso $\\exp(x)\\ne 0$ and $\\exp(-x)=1/\\exp(x)$.\n\nTo show positivity: first note $\\exp(x)^2 = \\exp(x)\\exp(x)=\\exp(2x)$ by (d), hence $\\exp(2x)\\ge 0$ for all $x$ would follow if $\\exp$ never changes sign. Since $\\exp$ is continuous (part (c)) and $\\exp(0)=1>0$, it suffices to show $\\exp$ is never zero. But we already have $\\exp(x)\\exp(-x)=1$, so $\\exp(x)\\ne 0$ for all $x$. Therefore, by continuity and the fact it is positive at $0$, we conclude $\\exp(x)>0$ for all $x$.\n\\end{proof}",
+    "index": 39
+  },
+  {
+    "label": "Theorem 4.5.6",
+    "env": "thm",
+    "number_components": [
+      4,
+      5,
+      6
+    ],
+    "extracted_labels": [
+      "thm:4.5.2f"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Exponential",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{thm}[Basic properties of $\\exp$, part (f)]\\label{thm:4.5.2f}\nThe function $\\exp$ is strictly increasing on $\\mathbb{R}$. Equivalently, for all $x,y\\in\\mathbb{R}$,\n\\[\ny>x \\iff \\exp(y)>\\exp(x).\n\\]\n\\end{thm}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nBy part (b), $\\exp$ is differentiable on $\\mathbb{R}$ and $\\exp'(x)=\\exp(x)$. By part (e), $\\exp(x)>0$ for all $x$, hence $\\exp'(x)>0$ for all $x$. Therefore $\\exp$ is strictly increasing on $\\mathbb{R}$.\n\nIn particular, if $y>x$, then strict monotonicity gives $\\exp(y)>\\exp(x)$. Conversely, if $\\exp(y)>\\exp(x)$ and $y\\le x$, then monotonicity would imply $\\exp(y)\\le\\exp(x)$, a contradiction. Hence $y>x$.\n\\end{proof}",
+    "index": 40
+  },
+  {
+    "label": "Definition 4.5.2",
+    "env": "def",
+    "number_components": [
+      4,
+      5,
+      2
+    ],
+    "extracted_labels": [
+      "def:4.9",
+      "eq:4.u152"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "The Exponential and Logarithm Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.9}\n[Euler's number]\nEuler's number $e$ is the real number defined by the convergent series\n\\[\n\\label{eq:4.u152}\ne := \\exp(1) := \\sum_{n=0}^{\\infty} \\frac{1}{n!}.\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 41
+  },
+  {
+    "label": "Proposition 4.5.1",
+    "env": "prop",
+    "number_components": [
+      4,
+      5,
+      1
+    ],
+    "extracted_labels": [
+      "prop:4.9",
+      "eq:4.u153",
+      "prf:prop:4.9",
+      "eq:4.u154",
+      "eq:4.u155"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "The Exponential and Logarithm Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.9}\nFor every real number $x$, the exponential function satisfies\n\\[\n\\label{eq:4.u153}\n\\exp(x)=e^x.\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.9}\nDefine $f:\\mathbb{R}\\to(0,\\infty)$ by $f(x)=e^x$, and define $g:\\mathbb{R}\\to(0,\\infty)$ by $g(x)=\\exp(x)$. By the defining properties of the exponential function, both $f$ and $g$ satisfy\n\\[\n\\label{eq:4.u154}\nh(0)=1,\\qquad h(x+y)=h(x)h(y)\\quad\\text{for all }x,y\\in\\mathbb{R},\\qquad h'(0)=1.\n\\]\nLet $q\\in\\mathbb{Q}$. Writing $q=m/n$ with $m\\in\\mathbb{Z}$ and $n\\in\\mathbb{N}$, the functional equation implies $h(m)=h(1)^m$ for integers $m$, and $h(1)=h(1/n)^n$, hence $h(1/n)=h(1)^{1/n}$ and therefore $h(m/n)=h(1)^{m/n}$. Since $f(1)=e$ and $g(1)=e$ (by definition of the constant $e$ as the value of the exponential at $1$), it follows that $f(q)=g(q)=e^q$ for all $q\\in\\mathbb{Q}$.\nBoth $f$ and $g$ are differentiable on $\\mathbb{R}$, hence continuous. For any real $x$, choose a sequence $(q_k)\\subset\\mathbb{Q}$ with $q_k\\to x$. Then\n\\[\n\\label{eq:4.u155}\nf(x)=\\lim_{k\\to\\infty} f(q_k)=\\lim_{k\\to\\infty} e^{q_k}=\\lim_{k\\to\\infty} g(q_k)=g(x),\n\\]\nso $\\exp(x)=e^x$ for all $x\\in\\mathbb{R}$.\n\\end{proof}",
+    "index": 42
+  },
+  {
+    "label": "Definition 4.5.3",
+    "env": "def",
+    "number_components": [
+      4,
+      5,
+      3
+    ],
+    "extracted_labels": [
+      "def:4.10",
+      "eq:4.u156"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "The Exponential and Logarithm Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.10}\n[Natural logarithm]\nThe natural logarithm is the function $\\log:(0,\\infty)\\to\\mathbb{R}$ (also denoted $\\ln$) defined as the inverse of the exponential function $\\exp:\\mathbb{R}\\to(0,\\infty)$. Thus, for every $x>0$ and every $y\\in\\mathbb{R}$,\n\\[\n\\label{eq:4.u156}\n\\exp(\\log(x))=x,\\qquad \\log(\\exp(y))=y.\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 43
+  },
+  {
+    "label": "Theorem 4.5.7",
+    "env": "thm",
+    "number_components": [
+      4,
+      5,
+      7
+    ],
+    "extracted_labels": [
+      "thm:4.5.6a"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Logarithm",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{thm}[Logarithm properties, part (a)]\\label{thm:4.5.6a}\nFor every $x\\in(0,\\infty)$, we have\n\\[\n\\ln'(x)=\\frac{1}{x}.\n\\]\nIn particular, for any $0<a<b$,\n\\[\n\\int_{[a,b]} \\frac{1}{x}\\,dx = \\ln(b)-\\ln(a).\n\\]\n\\end{thm}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nAssume $\\ln:(0,\\infty)\\to\\mathbb{R}$ is defined as the inverse function of $\\exp:\\mathbb{R}\\to(0,\\infty)$. Since $\\exp$ is differentiable with $\\exp'(t)=\\exp(t)>0$, it is strictly increasing and hence invertible; moreover its inverse $\\ln$ is differentiable and satisfies the inverse-derivative formula.\n\nFix $x>0$ and set $t:=\\ln(x)$, so that $\\exp(t)=x$. By the inverse function theorem,\n\\[\n\\ln'(x)=\\frac{1}{\\exp'(t)}=\\frac{1}{\\exp(t)}=\\frac{1}{x}.\n\\]\nFor the integral identity, apply the Fundamental Theorem of Calculus to the differentiable function $\\ln$ on $[a,b]\\subset(0,\\infty)$:\n\\[\n\\int_a^b \\frac{1}{x}\\,dx = \\int_a^b \\ln'(x)\\,dx = \\ln(b)-\\ln(a).\n\\]\n\\end{proof}",
+    "index": 44
+  },
+  {
+    "label": "Theorem 4.5.8",
+    "env": "thm",
+    "number_components": [
+      4,
+      5,
+      8
+    ],
+    "extracted_labels": [
+      "thm:4.5.6b"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Logarithm",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{thm}[Logarithm properties, part (b)]\\label{thm:4.5.6b}\nFor all $x,y\\in(0,\\infty)$, one has\n\\[\n\\ln(xy)=\\ln(x)+\\ln(y).\n\\]\n\\end{thm}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nLet $x,y>0$ and set $a:=\\ln(x)$ and $b:=\\ln(y)$, so $\\exp(a)=x$ and $\\exp(b)=y$. Using the exponential law $\\exp(a+b)=\\exp(a)\\exp(b)$, we obtain\n\\[\nxy = \\exp(a)\\exp(b)=\\exp(a+b).\n\\]\nApply $\\ln$ to both sides and use that $\\ln$ is the inverse of $\\exp$ to get\n\\[\n\\ln(xy)=\\ln(\\exp(a+b))=a+b=\\ln(x)+\\ln(y).\n\\]\n\\end{proof}",
+    "index": 45
+  },
+  {
+    "label": "Theorem 4.5.9",
+    "env": "thm",
+    "number_components": [
+      4,
+      5,
+      9
+    ],
+    "extracted_labels": [
+      "thm:4.5.6c"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Logarithm",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{thm}[Logarithm properties, part (c)]\\label{thm:4.5.6c}\nWe have $\\ln(1)=0$. Moreover, for every $x\\in(0,\\infty)$,\n\\[\n\\ln(1/x)=-\\ln(x).\n\\]\n\\end{thm}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nSince $\\exp(0)=1$ and $\\ln$ is the inverse of $\\exp$, we have $\\ln(1)=0$.\n\nFor $x>0$, note that $x\\cdot (1/x)=1$. Apply the multiplicative property of $\\ln$ (part (b)):\n\\[\n\\ln(1)=\\ln\\bigl(x\\cdot (1/x)\\bigr)=\\ln(x)+\\ln(1/x).\n\\]\nUsing $\\ln(1)=0$, we get $\\ln(1/x)=-\\ln(x)$.\n\\end{proof}",
+    "index": 46
+  },
+  {
+    "label": "Theorem 4.5.10",
+    "env": "thm",
+    "number_components": [
+      4,
+      5,
+      10
+    ],
+    "extracted_labels": [
+      "thm:4.5.6d"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Logarithm",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{thm}[Logarithm properties, part (d)]\\label{thm:4.5.6d}\nFor any $x\\in(0,\\infty)$ and any $y\\in\\mathbb{R}$, we have\n\\[\n\\ln(x^y)=y\\,\\ln(x),\n\\]\nwhere $x^y$ is defined by $x^y:=\\exp(y\\ln x)$.\n\\end{thm}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nFix $x>0$ and $y\\in\\mathbb{R}$. By definition, $x^y:=\\exp(y\\ln x)$. Apply $\\ln$ to both sides and use that $\\ln$ is the inverse of $\\exp$:\n\\[\n\\ln(x^y)=\\ln(\\exp(y\\ln x))=y\\ln x.\n\\]\n\\end{proof}",
+    "index": 47
+  },
+  {
+    "label": "Theorem 4.5.11",
+    "env": "thm",
+    "number_components": [
+      4,
+      5,
+      11
+    ],
+    "extracted_labels": [
+      "thm:4.5.6e",
+      "eq:4.5.6",
+      "eq:4.5.7"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Logarithm",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{thm}[Logarithm properties, part (e)]\\label{thm:4.5.6e}\nFor any $x\\in(-1,1)$, we have\n\\[\n\\label{eq:4.5.6}\n\\ln(1-x)=-\\sum_{n=1}^{\\infty}\\frac{x^n}{n}.\n\\]\nIn particular, $\\ln$ is real analytic at $1$, with the power series expansion\n\\[\n\\label{eq:4.5.7}\n\\ln(x)=\\sum_{n=1}^{\\infty}\\frac{(-1)^{n+1}}{n}(x-1)^n\n\\]\nfor $x\\in(0,2)$, with radius of convergence $1$.\n\\end{thm}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nFix $x\\in(-1,1)$ and define\n\\[\nF(x):=\\ln(1-x),\\qquad G(x):=-\\sum_{n=1}^{\\infty}\\frac{x^n}{n}.\n\\]\nWe first show that $G$ is well-defined and differentiable on $(-1,1)$. The power series $\\sum_{n=1}^{\\infty} x^n/n$ has radius of convergence $1$ (e.g. by the root test), hence it converges for $|x|<1$; moreover, term-by-term differentiation is valid on $(-1,1)$, giving\n\\[\nG'(x)=-\\sum_{n=1}^{\\infty} x^{n-1}=-\\sum_{m=0}^{\\infty} x^m=-\\frac{1}{1-x},\n\\]\nwhere the geometric series identity $\\sum_{m=0}^{\\infty} x^m = \\frac{1}{1-x}$ holds for $|x|<1$.\n\nOn the other hand, by part (a), for $x\\in(-1,1)$ we have\n\\[\nF'(x)=\\frac{d}{dx}\\ln(1-x)=\\ln'(1-x)\\cdot(-1)=\\frac{1}{1-x}\\cdot(-1)=-\\frac{1}{1-x}.\n\\]\nThus $F'(x)=G'(x)$ for all $x\\in(-1,1)$, so $F-G$ is constant on $(-1,1)$. Evaluate at $x=0$:\n\\[\nF(0)=\\ln(1)=0,\\qquad G(0)=-\\sum_{n=1}^{\\infty} 0 = 0.\n\\]\nHence the constant is $0$ and $F(x)=G(x)$ for all $x\\in(-1,1)$, proving \\eqref{eq:4.5.6}.\n\nFor the expansion at $1$, substitute $x:=1-t$ with $t\\in(0,2)$ (equivalently $t-1\\in(-1,1)$): from \\eqref{eq:4.5.6} with $x=t-1$ we get\n\\[\n\\ln(t)=\\ln\\bigl(1-(1-t)\\bigr)=\\ln(1-(t-1))=-\\sum_{n=1}^{\\infty}\\frac{(t-1)^n}{n}.\n\\]\nRewrite $-(t-1)^n = (-1)^{n+1}(t-1)^n$ to obtain \\eqref{eq:4.5.7}. Since this is a power series in $(t-1)$ with convergence for $|t-1|<1$, its radius of convergence is $1$, and it shows $\\ln$ is analytic at $1$.\n\\end{proof}",
+    "index": 48
+  },
+  {
+    "label": "Proposition 4.5.2",
+    "env": "prop",
+    "number_components": [
+      4,
+      5,
+      2
+    ],
+    "extracted_labels": [
+      "prop:4.10",
+      "eq:4.u174",
+      "prf:prop:4.10",
+      "eq:4.u175",
+      "eq:4.u176",
+      "eq:4.u177",
+      "eq:4.u178",
+      "eq:4.u179"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "The Exponential and Logarithm Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.10}\nThe alternating harmonic series converges and satisfies\n\\[\n\\label{eq:4.u174}\n\\sum_{n=1}^{\\infty}\\frac{(-1)^{n+1}}{n}=\\ln(2).\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.10}\nFor $|x|<1$, the geometric series gives\n\\[\n\\label{eq:4.u175}\n\\frac{1}{1+x}=\\sum_{n=0}^{\\infty}(-1)^n x^n.\n\\]\nIntegrating term-by-term on $[0,t]$ for any $t\\in[0,1)$ yields\n\\[\n\\label{eq:4.u176}\n\\int_0^t \\frac{1}{1+x}\\,dx=\\sum_{n=0}^{\\infty}(-1)^n\\int_0^t x^n\\,dx\n=\\sum_{n=0}^{\\infty}(-1)^n\\frac{t^{n+1}}{n+1}.\n\\]\nSince $\\int_0^t \\frac{1}{1+x}\\,dx=\\ln(1+t)$, reindexing gives\n\\[\n\\label{eq:4.u177}\n\\ln(1+t)=\\sum_{n=1}^{\\infty}\\frac{(-1)^{n-1}}{n}t^n,\\qquad 0\\le t<1.\n\\]\nAs $t\\uparrow 1$, the left-hand side converges to $\\ln 2$. On the right-hand side, the series at $t=1$ is the alternating series $\\sum_{n=1}^\\infty (-1)^{n-1}/n$, which converges by the alternating series test because $1/n$ decreases to $0$. Moreover, for $0\\le t\\le 1$ the remainder estimate in the alternating series test implies\n\\[\n\\label{eq:4.u178}\n\\left|\\sum_{n=1}^{\\infty}\\frac{(-1)^{n-1}}{n}t^n-\\sum_{n=1}^{N}\\frac{(-1)^{n-1}}{n}t^n\\right|\\le \\frac{t^{N+1}}{N+1}\\le \\frac{1}{N+1}.\n\\]\nFix $N$ and let $t\\uparrow 1$ to obtain\n\\[\n\\label{eq:4.u179}\n\\left|\\ln 2-\\sum_{n=1}^{N}\\frac{(-1)^{n-1}}{n}\\right|\\le \\frac{1}{N+1}.\n\\]\nLetting $N\\to\\infty$ yields $\\ln 2=\\sum_{n=1}^{\\infty}(-1)^{n-1}/n=\\sum_{n=1}^{\\infty}(-1)^{n+1}/n$.\n\\end{proof}",
+    "index": 49
+  },
+  {
+    "label": "Proposition 4.5.3",
+    "env": "prop",
+    "number_components": [
+      4,
+      5,
+      3
+    ],
+    "extracted_labels": [
+      "prop:4.11",
+      "eq:4.u180",
+      "prf:prop:4.11",
+      "eq:4.u181",
+      "eq:4.u182",
+      "eq:4.u183",
+      "eq:4.u184",
+      "eq:4.u185"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "The Exponential and Logarithm Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.11}\nFor every integer $n\\ge 3$,\n\\[\n\\label{eq:4.u180}\n0<\\sum_{k=1}^{\\infty}\\frac{1}{(n+k)!}<\\frac{1}{n!}.\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.11}\nFix an integer $n\\ge 3$ and set\n\\[\n\\label{eq:4.u181}\nS:=\\sum_{k=1}^{\\infty}\\frac{1}{(n+k)!}.\n\\]\nEach term of the series is positive, hence $S>0$.\n\nFor $k\\ge 1$,\n\\[\n\\label{eq:4.u182}\n(n+k)!=(n+k)(n+k-1)\\cdots (n+1)\\,n!\\ge (n+1)^k\\,n!,\n\\]\nso\n\\[\n\\label{eq:4.u183}\n\\frac{1}{(n+k)!}\\le \\frac{1}{(n+1)^k\\,n!}.\n\\]\nTherefore\n\\[\n\\label{eq:4.u184}\nS\\le \\frac{1}{n!}\\sum_{k=1}^{\\infty}\\frac{1}{(n+1)^k}.\n\\]\nSince $n\\ge 3$, one has $n+1\\ge 4$, and the geometric series converges with\n\\[\n\\label{eq:4.u185}\n\\sum_{k=1}^{\\infty}\\frac{1}{(n+1)^k}=\\frac{\\frac{1}{n+1}}{1-\\frac{1}{n+1}}=\\frac{1}{n}.\n\\]\nThus $S\\le \\frac{1}{n!}\\cdot \\frac{1}{n}=\\frac{1}{n\\,n!}<\\frac{1}{n!}$, which proves $0<S<\\frac{1}{n!}$.\n\\end{proof}",
+    "index": 50
+  },
+  {
+    "label": "Proposition 4.5.4",
+    "env": "prop",
+    "number_components": [
+      4,
+      5,
+      4
+    ],
+    "extracted_labels": [
+      "prop:4.12",
+      "prf:prop:4.12",
+      "eq:4.u186",
+      "eq:4.u187",
+      "eq:4.u188",
+      "eq:4.u189",
+      "eq:4.u190",
+      "eq:4.u191"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "The Exponential and Logarithm Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.12}\nFor every integer $n\\ge 3$, the real number $n!e$ is not an integer.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.12}\nFix an integer $n\\ge 3$. Using the series expansion $e=\\sum_{k=0}^\\infty \\frac1{k!}$, one has\n\\[\n\\label{eq:4.u186}\nn!e=\\sum_{k=0}^\\infty \\frac{n!}{k!}=\\sum_{k=0}^n \\frac{n!}{k!}+\\sum_{k=n+1}^\\infty \\frac{n!}{k!}.\n\\]\nFor $0\\le k\\le n$, the quantity $\\frac{n!}{k!}$ is an integer, hence\n\\[\n\\label{eq:4.u187}\nA:=\\sum_{k=0}^n \\frac{n!}{k!}\\in\\mathbb Z.\n\\]\nDefine the tail\n\\[\n\\label{eq:4.u188}\nT:=\\sum_{k=n+1}^\\infty \\frac{n!}{k!}.\n\\]\nThen\n\\[\n\\label{eq:4.u189}\nT=\\frac1{n+1}+\\frac1{(n+1)(n+2)}+\\frac1{(n+1)(n+2)(n+3)}+\\cdots>0.\n\\]\nMoreover, for each $m\\ge n+1$ one has\n\\[\n\\label{eq:4.u190}\n\\frac{n!}{m!}=\\frac1{(n+1)(n+2)\\cdots m}\\le \\frac1{(n+1)^{m-n}},\n\\]\nso\n\\[\n\\label{eq:4.u191}\nT\\le \\sum_{j=1}^\\infty \\frac1{(n+1)^j}=\\frac{1/(n+1)}{1-1/(n+1)}=\\frac1n<1.\n\\]\nThus $0<T<1$. Since $n!e=A+T$ with $A\\in\\mathbb Z$ and $0<T<1$, the number $n!e$ is not an integer.\n\\end{proof}",
+    "index": 51
+  },
+  {
+    "label": "Theorem 4.5.12",
+    "env": "thm",
+    "number_components": [
+      4,
+      5,
+      12
+    ],
+    "extracted_labels": [
+      "thm:4.12",
+      "prf:thm:4.12",
+      "eq:4.u192",
+      "eq:4.u193",
+      "eq:4.u194",
+      "eq:4.u195"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "The Exponential and Logarithm Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:4.12}\nThe number $e$ is irrational.\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:4.12}\nAssume for contradiction that $e\\in\\mathbb{Q}$. Then there exist integers $p,q\\ge 1$ such that $e=p/q$.\n\nFor $n\\ge 0$ define\n\\[\n\\label{eq:4.u192}\nR_n:=e-\\sum_{k=0}^n \\frac{1}{k!}=\\sum_{k=n+1}^\\infty \\frac{1}{k!}.\n\\]\nFix $n=q$. Then\n\\[\n\\label{eq:4.u193}\n0<R_q=\\sum_{k=q+1}^\\infty \\frac{1}{k!}<\\sum_{k=q+1}^\\infty \\frac{1}{(q+1)^{k-q}\\,q!}=\\frac{1}{q!}\\sum_{m=1}^\\infty \\frac{1}{(q+1)^m}=\\frac{1}{q\\,q!}.\n\\]\nMultiply the identity $e=\\sum_{k=0}^q \\frac{1}{k!}+R_q$ by $q!$ to obtain\n\\[\n\\label{eq:4.u194}\nq!e=\\sum_{k=0}^q \\frac{q!}{k!}+q!R_q.\n\\]\nThe sum $\\sum_{k=0}^q \\frac{q!}{k!}$ is an integer. Also $q!e=q!\\cdot \\frac{p}{q}=p\\,(q-1)!$ is an integer, so $q!R_q$ is an integer. On the other hand, from the bound above,\n\\[\n\\label{eq:4.u195}\n0<q!R_q<\\frac{q!}{q\\,q!}=\\frac{1}{q}<1.\n\\]\nNo integer lies strictly between $0$ and $1$, a contradiction. Therefore $e$ is irrational.\n\\end{proof}",
+    "index": 52
+  },
+  {
+    "label": "Proposition 4.5.5",
+    "env": "prop",
+    "number_components": [
+      4,
+      5,
+      5
+    ],
+    "extracted_labels": [
+      "prop:4.13",
+      "eq:4.u196",
+      "prf:prop:4.13",
+      "eq:polyexp",
+      "eq:derivform",
+      "eq:4.u197",
+      "eq:4.u198",
+      "eq:4.u199"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "The Exponential and Logarithm Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.13}\nDefine $f:\\mathbb{R}\\to\\mathbb{R}$ by\n\\[\n\\label{eq:4.u196}\nf(x)=\n\\begin{cases}\n\\exp(-1/x),& x>0,\\\\\n0,& x\\le 0.\n\\end{cases}\n\\]\nThen $f\\in C^{\\infty}(\\mathbb{R})$, and for every integer $k\\ge 0$ one has $f^{(k)}(0)=0$. Moreover, $f$ is not real analytic at $0$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.13}\nFor $x>0$ the function $f(x)=e^{-1/x}$ is $C^{\\infty}$, and for $x<0$ it is identically $0$, hence $C^{\\infty}$. It remains to verify smoothness at $0$ and compute the derivatives there.\n\n\\medskip\n\\noindent\\emph{Step 1: Growth estimate.} For each integer $m\\ge 0$,\n\\begin{equation}\\label{eq:polyexp}\n\\lim_{x\\to 0^+} x^{-m}e^{-1/x}=0.\n\\end{equation}\nIndeed, with $t=1/x$ one has $x^{-m}e^{-1/x}=t^{m}e^{-t}\\to 0$ as $t\\to\\infty$.\n\n\\medskip\n\\noindent\\emph{Step 2: Form of derivatives on $(0,\\infty)$.} For each integer $k\\ge 0$ there exists a polynomial $P_k$ such that for all $x>0$,\n\\begin{equation}\\label{eq:derivform}\nf^{(k)}(x)=P_k\\bigl(1/x\\bigr)e^{-1/x}.\n\\end{equation}\nThis is proved by induction on $k$. For $k=0$, $P_0\\equiv 1$. If \\eqref{eq:derivform} holds for $k$, then for $x>0$,\n\\[\n\\label{eq:4.u197}\n\\frac{d}{dx}\\Bigl(P_k(1/x)e^{-1/x}\\Bigr)=\\Bigl(-\\frac1{x^2}P_k'(1/x)+\\frac1{x^2}P_k(1/x)\\Bigr)e^{-1/x}.\n\\]\nThe bracket is a polynomial in $1/x$, namely $P_{k+1}(1/x)$ for an appropriate polynomial $P_{k+1}$.\n\n\\medskip\n\\noindent\\emph{Step 3: Existence and value of derivatives at $0$.} For $x<0$, $f^{(k)}(x)=0$ for all $k\\ge 0$. For $x>0$, \\eqref{eq:derivform} implies that for each $k$ there exist constants $C_{k},N_{k}\\ge 0$ with\n\\[\n\\label{eq:4.u198}\n|f^{(k)}(x)|\\le C_{k}x^{-N_{k}}e^{-1/x}\\quad (x>0).\n\\]\nBy \\eqref{eq:polyexp} (with $m=N_k$), $\\lim_{x\\to 0^+}f^{(k)}(x)=0$. Therefore $\\lim_{x\\to 0}f^{(k)}(x)=0$ and the extension of $f^{(k)}$ obtained by setting $f^{(k)}(0):=0$ is continuous at $0$.\n\nIt follows inductively that $f\\in C^{\\infty}(\\mathbb{R})$ and that $f^{(k)}(0)=0$ for all $k\\ge 0$.\n\n\\medskip\n\\noindent\\emph{Step 4: Failure of real analyticity at $0$.} If $f$ were real analytic at $0$, then in a neighborhood of $0$ it would equal its Taylor series\n\\[\n\\label{eq:4.u199}\n\\sum_{k=0}^\\infty \\frac{f^{(k)}(0)}{k!}x^k.\n\\]\nSince $f^{(k)}(0)=0$ for all $k$, this series is identically $0$ near $0$, which would imply $f(x)=0$ for all sufficiently small $x>0$. This contradicts $f(x)=e^{-1/x}>0$ for every $x>0$. Hence $f$ is not real analytic at $0$.\n\\end{proof}",
+    "index": 53
+  },
+  {
+    "label": "Theorem 4.5.13",
+    "env": "thm",
+    "number_components": [
+      4,
+      5,
+      13
+    ],
+    "extracted_labels": [
+      "thm:4.13",
+      "prf:thm:4.13",
+      "eq:4.u200",
+      "eq:4.u201",
+      "eq:4.u202",
+      "eq:4.u203",
+      "eq:4.u204"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "The Exponential and Logarithm Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:4.13}\nThe natural logarithm function $\\ln:(0,+\\infty)\\to\\mathbb{R}$ is real analytic on $(0,+\\infty)$.\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:4.13}\nFix $a\\in(0,+\\infty)$. Define\n\\[\n\\label{eq:4.u200}\nf(x)=\\ln x-\\ln a=\\ln\\Bigl(1+\\frac{x-a}{a}\\Bigr),\\qquad x>0.\n\\]\nFor $|u|<1$, the power series\n\\[\n\\label{eq:4.u201}\n\\sum_{n=1}^\\infty (-1)^{n+1}\\frac{u^n}{n}\n\\]\nconverges absolutely and uniformly on $[-r,r]$ for every $0<r<1$, hence defines a real analytic function there. For $|u|<1$, its termwise derivative is\n\\[\n\\label{eq:4.u202}\n\\sum_{n=1}^\\infty (-1)^{n+1}u^{n-1}=\\frac{1}{1+u},\n\\]\nso the series differs from $\\ln(1+u)$ by a constant; evaluating at $u=0$ gives that constant as $0$. Therefore\n\\[\n\\label{eq:4.u203}\n\\ln(1+u)=\\sum_{n=1}^\\infty (-1)^{n+1}\\frac{u^n}{n}\\qquad (|u|<1).\n\\]\nSet $u=(x-a)/a$. Then $|u|<1$ is equivalent to $|x-a|<a$, and for such $x$,\n\\[\n\\label{eq:4.u204}\n\\ln x=\\ln a+\\sum_{n=1}^\\infty (-1)^{n+1}\\frac{1}{n}\\Bigl(\\frac{x-a}{a}\\Bigr)^n.\n\\]\nThus $\\ln x$ admits a convergent power series expansion in a neighborhood of $a$. Since $a\\in(0,+\\infty)$ is arbitrary, $\\ln$ is real analytic on $(0,+\\infty)$.\n\\end{proof}",
+    "index": 54
+  },
+  {
+    "label": "Proposition 4.5.6",
+    "env": "prop",
+    "number_components": [
+      4,
+      5,
+      6
+    ],
+    "extracted_labels": [
+      "prop:4.14",
+      "prf:prop:4.14",
+      "eq:4.u205"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "The Exponential and Logarithm Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.14}\nLet $f:\\mathbb{R}\\to(0,\\infty)$ be real analytic and satisfy $f'(x)=f(x)$ for all $x\\in\\mathbb{R}$. Then there exists a constant $C>0$ such that $f(x)=Ce^x$ for all $x\\in\\mathbb{R}$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.14}\nDefine $g:\\mathbb{R}\\to\\mathbb{R}$ by $g(x)=e^{-x}f(x)$. Since $f$ is real analytic and $x\\mapsto e^{-x}$ is real analytic, the function $g$ is real analytic. Differentiate:\n\\[\n\\label{eq:4.u205}\ng'(x)=(-e^{-x})f(x)+e^{-x}f'(x)=e^{-x}(f'(x)-f(x))=0\n\\]\nfor all $x\\in\\mathbb{R}$. Hence $g$ is constant on $\\mathbb{R}$, so there exists $C\\in\\mathbb{R}$ with $g(x)=C$ for all $x$. Therefore $f(x)=Ce^x$ for all $x\\in\\mathbb{R}$. Since $f(x)>0$ for all $x$, it follows that $C=g(0)=f(0)>0$.\n\\end{proof}",
+    "index": 55
+  },
+  {
+    "label": "Proposition 4.5.7",
+    "env": "prop",
+    "number_components": [
+      4,
+      5,
+      7
+    ],
+    "extracted_labels": [
+      "prop:4.15",
+      "eq:4.u206",
+      "prf:prop:4.15",
+      "eq:4.u207",
+      "eq:4.u208",
+      "eq:4.u209",
+      "eq:4.u210"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "The Exponential and Logarithm Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.15}\nLet $m\\in\\mathbb{N}$ with $m\\ge 1$. Then\n\\[\n\\label{eq:4.u206}\n\\lim_{x\\to+\\infty}\\frac{e^x}{x^m}=+\\infty.\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.15}\nFix $m\\in\\mathbb{N}$ with $m\\ge 1$ and define $f(x)=\\dfrac{e^x}{x^m}$ for $x>0$. For $x>0$,\n\\[\n\\label{eq:4.u207}\n\\frac{f'(x)}{f(x)}=\\frac{d}{dx}\\bigl(x-m\\ln x\\bigr)=1-\\frac{m}{x}.\n\\]\nHence $f'(x)\\ge 0$ for all $x\\ge m$, so $f$ is increasing on $[m,\\infty)$. For $x>0$, repeated integration by parts gives\n\\[\n\\label{eq:4.u208}\n\\int_0^x t^m e^t\\,dt\n= x^m e^x - m\\int_0^x t^{m-1}e^t\\,dt\n\\le x^m e^x.\n\\]\nSince $e^t\\ge 1$ for $t\\ge 0$, it follows that\n\\[\n\\label{eq:4.u209}\n\\int_0^x t^m e^t\\,dt\\ge \\int_0^x t^m\\,dt=\\frac{x^{m+1}}{m+1}.\n\\]\nCombining the two inequalities yields, for all $x>0$,\n\\[\n\\label{eq:4.u210}\n\\frac{e^x}{x^m}\\ge \\frac{x}{m+1}.\n\\]\nAs $x\\to+\\infty$, the right-hand side tends to $+\\infty$, hence $\\dfrac{e^x}{x^m}\\to+\\infty$.\n\\end{proof}",
+    "index": 56
+  },
+  {
+    "label": "Proposition 4.5.8",
+    "env": "prop",
+    "number_components": [
+      4,
+      5,
+      8
+    ],
+    "extracted_labels": [
+      "prop:4.16",
+      "eq:4.u211",
+      "prf:prop:4.16",
+      "eq:4.u212",
+      "eq:4.u213"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "The Exponential and Logarithm Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.16}\nLet $P(x)$ be a real polynomial and let $c>0$. Then there exists $N\\in\\mathbb{R}$ such that for all real $x>N$ one has\n\\[\n\\label{eq:4.u211}\ne^{cx} > |P(x)|.\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.16}\nIf $P\\equiv 0$, then $|P(x)|=0<e^{cx}$ for all $x$, so any $N$ works. Assume $P\\not\\equiv 0$ and write $P(x)=\\sum_{k=0}^m a_k x^k$ with $a_m\\neq 0$.\n\nFor each integer $k\\ge 0$, the limit $\\lim_{x\\to\\infty} x^k e^{-cx}=0$ holds. Indeed, for $k=0$ this is $e^{-cx}\\to 0$. If $\\lim_{x\\to\\infty} x^k e^{-cx}=0$, then by L'H\\^opital's rule,\n\\[\n\\label{eq:4.u212}\n\\lim_{x\\to\\infty} x^{k+1} e^{-cx} = \\lim_{x\\to\\infty} \\frac{x^{k+1}}{e^{cx}} = \\lim_{x\\to\\infty} \\frac{(k+1)x^k}{c e^{cx}} = \\frac{k+1}{c}\\lim_{x\\to\\infty} x^k e^{-cx}=0,\n\\]\nso the statement follows for all $k$ by induction.\n\nFor each $k=0,\\dots,m$, choose $N_k$ such that $|a_k|x^k e^{-cx} < \\frac{1}{m+1}$ for all $x>N_k$. Let $N=\\max\\{N_0,\\dots,N_m\\}$. Then for all $x>N$,\n\\[\n\\label{eq:4.u213}\n|P(x)|e^{-cx} \\le \\sum_{k=0}^m |a_k|x^k e^{-cx} < \\sum_{k=0}^m \\frac{1}{m+1} = 1.\n\\]\nMultiplying by $e^{cx}>0$ yields $|P(x)|<e^{cx}$ for all $x>N$.\n\\end{proof}",
+    "index": 57
+  },
+  {
+    "label": "Proposition 4.5.9",
+    "env": "prop",
+    "number_components": [
+      4,
+      5,
+      9
+    ],
+    "extracted_labels": [
+      "prop:4.17",
+      "prf:prop:4.17"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "The Exponential and Logarithm Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.17}\nDefine $f:(0,+\\infty)\\times\\mathbb{R}\\to\\mathbb{R}$ by $f(x,y):=x^y$, where $x^y:=\\exp(y\\ln x)$ for $x>0$ and $y\\in\\mathbb{R}$. Then $f$ is continuous on $(0,+\\infty)\\times\\mathbb{R}$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.17}\nThe maps $\\ln:(0,+\\infty)\\to\\mathbb{R}$ and $\\exp:\\mathbb{R}\\to(0,+\\infty)$ are continuous. The map $g:(0,+\\infty)\\times\\mathbb{R}\\to\\mathbb{R}$ defined by $g(x,y)=y\\ln x$ is continuous since $(x,y)\\mapsto \\ln x$ is continuous and multiplication $\\mathbb{R}\\times\\mathbb{R}\\to\\mathbb{R}$ is continuous. Then $f=\\exp\\circ g$ is continuous as a composition of continuous functions.\n\\end{proof}",
+    "index": 58
+  },
+  {
+    "label": "Definition 4.6.1",
+    "env": "def",
+    "number_components": [
+      4,
+      6,
+      1
+    ],
+    "extracted_labels": [
+      "def:4.11",
+      "eq:4.u214"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.11}\n[Complex numbers]\nThe set of \\emph{complex numbers} is\n\\[\n\\label{eq:4.u214}\n\\mathbb{C}=\\{\\,a+bi\\mid a,b\\in\\mathbb{R}\\,\\},\n\\]\nwhere $i$ is a symbol satisfying $i^2=-1$.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 59
+  },
+  {
+    "label": "Definition 4.6.2",
+    "env": "def",
+    "number_components": [
+      4,
+      6,
+      2
+    ],
+    "extracted_labels": [
+      "def:4.12"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.12}\n[Complex numbers]\\begin{enumerate}\\item A \\emph{complex number} is an ordered pair $(a,b)$ with $a,b\\in\\mathbb{R}$.\\item Two complex numbers $(a,b)$ and $(c,d)$ are \\emph{equal} if and only if $a=c$ and $b=d$.\\item The set of all complex numbers is denoted by $\\mathbb{C}$ and is defined by $\\mathbb{C}=\\mathbb{R}\\times\\mathbb{R}$.\\end{enumerate}\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 60
+  },
+  {
+    "label": "Definition 4.6.3",
+    "env": "def",
+    "number_components": [
+      4,
+      6,
+      3
+    ],
+    "extracted_labels": [
+      "def:4.14",
+      "eq:4.u217",
+      "eq:4.u218",
+      "eq:4.u219"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.14}\n[Complex addition, negation, and zero]\nLet $\\mathbb{C}$ denote the set of ordered pairs of real numbers. For $z=(a,b)\\in\\mathbb{C}$ and $w=(c,d)\\in\\mathbb{C}$, define the \\emph{sum} $z+w\\in\\mathbb{C}$ by\n\\[\n\\label{eq:4.u217}\nz+w := (a+c,\\, b+d).\n\\]\nDefine the \\emph{additive inverse} (negation) of $z$ by\n\\[\n\\label{eq:4.u218}\n-z := (-a,\\,-b).\n\\]\nDefine the \\emph{complex zero} (additive identity) by\n\\[\n\\label{eq:4.u219}\n0_C := (0,0).\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 61
+  },
+  {
+    "label": "Lemma 4.6.1",
+    "env": "lem",
+    "number_components": [
+      4,
+      6,
+      1
+    ],
+    "extracted_labels": [
+      "lem:4.2",
+      "prf:lem:4.2",
+      "eq:4.u220",
+      "eq:4.u221",
+      "eq:4.u222",
+      "eq:4.u223",
+      "eq:4.u224",
+      "eq:4.u225"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\n\\label{lem:4.2}\n[Addition on $\\mathbb{C}$ satisfies the abelian group axioms]\\nFor all $z_1,z_2,z_3\\in\\mathbb{C}$ the following identities hold:\\n\\begin{enumerate}\\n\\item (Commutativity) $z_1+z_2=z_2+z_1$.\\n\\item (Associativity) $(z_1+z_2)+z_3=z_1+(z_2+z_3)$.\\n\\item (Additive identity) $z_1+0_C=0_C+z_1=z_1$.\\n\\item (Additive inverse) $z_1+(-z_1)=(-z_1)+z_1=0_C$.\\n\\end{enumerate}\\nIn particular, $(\\mathbb{C},+)$ is an abelian group with identity element $0_C$.\\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:lem:4.2}\n\\nWrite $z_1=a+bi$, $z_2=c+di$, and $z_3=e+fi$ with $a,b,c,d,e,f\\in\\mathbb{R}$. Using the definition of addition in $\\mathbb{C}$,\\n\\[\n\\label{eq:4.u220}\n\\n(a+bi)+(c+di)=(a+c)+(b+d)i.\\n\n\\]\\n\\n\\n\\noindent\\textit{(1) Commutativity.} Since addition in $\\mathbb{R}$ is commutative, $a+c=c+a$ and $b+d=d+b$, hence\\n\\[\n\\label{eq:4.u221}\n\\n(a+c)+(b+d)i=(c+a)+(d+b)i=(c+di)+(a+bi).\\n\n\\]\\nThus $z_1+z_2=z_2+z_1$.\\n\\n\\n\\noindent\\textit{(2) Associativity.} Compute\\n\\[\n\\label{eq:4.u222}\n\\n(z_1+z_2)+z_3=((a+c)+(b+d)i)+(e+fi)=(a+c+e)+(b+d+f)i,\\n\n\\]\\nand\\n\\[\n\\label{eq:4.u223}\n\\nz_1+(z_2+z_3)=(a+bi)+((c+e)+(d+f)i)=(a+c+e)+(b+d+f)i.\\n\n\\]\\nSince addition in $\\mathbb{R}$ is associative, the two expressions are equal, so $(z_1+z_2)+z_3=z_1+(z_2+z_3)$.\\n\\n\\n\\noindent\\textit{(3) Identity.} By definition $0_C=0+0i$. Then\\n\\[\n\\label{eq:4.u224}\n\\n(a+bi)+0_C=(a+0)+(b+0)i=a+bi=z_1\\n\n\\]\\nand similarly $0_C+(a+bi)=z_1$.\\n\\n\\n\\noindent\\textit{(4) Inverse.} Define $-z_1:=(-a)+(-b)i$. Then\\n\\[\n\\label{eq:4.u225}\n\\n(a+bi)+((-a)+(-b)i)=(a-a)+(b-b)i=0+0i=0_C,\\n\n\\]\\nand by commutativity also $(-z_1)+z_1=0_C$.\\n\\nTherefore all four stated properties hold for all complex numbers.\\n\\end{proof}",
+    "index": 62
+  },
+  {
+    "label": "Definition 4.6.4",
+    "env": "def",
+    "number_components": [
+      4,
+      6,
+      4
+    ],
+    "extracted_labels": [
+      "def:4.16",
+      "eq:4.u228",
+      "eq:4.u229"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.16}\n[Complex multiplication]\nA \\emph{complex number} is an ordered pair of real numbers. For complex numbers $z=(a,b)$ and $w=(c,d)$, the \\emph{product} $zw$ is defined by\n\\[\n\\label{eq:4.u228}\nzw := (ac-bd,\\,ad+bc).\n\\]\nThe \\emph{complex multiplicative identity} is the complex number\n\\[\n\\label{eq:4.u229}\n1_C := (1,0).\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 63
+  },
+  {
+    "label": "Lemma 4.3.2",
+    "env": "lem",
+    "number_components": [
+      4,
+      3,
+      2
+    ],
+    "extracted_labels": [
+      "lem:4.3.comm",
+      "eq:4.u230"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\\label{lem:4.3.comm}\nFor all $z_1,z_2\\in\\mathbb{C}$, we have\n\\[\n\\label{eq:4.u230}\nz_1 z_2 = z_2 z_1.\n\\]\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nThis is a basic field property of $\\mathbb{C}$: multiplication on $\\mathbb{C}$ is commutative.\n\\end{proof}",
+    "index": 64
+  },
+  {
+    "label": "Lemma 4.3.3",
+    "env": "lem",
+    "number_components": [
+      4,
+      3,
+      3
+    ],
+    "extracted_labels": [
+      "lem:4.3.assoc",
+      "eq:4.u230"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\\label{lem:4.3.assoc}\nFor all $z_1,z_2,z_3\\in\\mathbb{C}$, we have\n\\[\n\\label{eq:4.u230}\n(z_1 z_2) z_3 = z_1 (z_2 z_3).\n\\]\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nThis is a basic field property of $\\mathbb{C}$: multiplication on $\\mathbb{C}$ is associative.\n\\end{proof}",
+    "index": 65
+  },
+  {
+    "label": "Lemma 4.3.4",
+    "env": "lem",
+    "number_components": [
+      4,
+      3,
+      4
+    ],
+    "extracted_labels": [
+      "lem:4.3.one",
+      "eq:4.u230"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\\label{lem:4.3.one}\nFor all $z\\in\\mathbb{C}$, we have\n\\[\n\\label{eq:4.u230}\nz\\cdot 1_{\\mathbb{C}} = 1_{\\mathbb{C}}\\cdot z = z.\n\\]\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nThis is a basic field property of $\\mathbb{C}$: $1_{\\mathbb{C}}$ is the multiplicative identity.\n\\end{proof}",
+    "index": 66
+  },
+  {
+    "label": "Lemma 4.3.5",
+    "env": "lem",
+    "number_components": [
+      4,
+      3,
+      5
+    ],
+    "extracted_labels": [
+      "lem:4.3.ldist",
+      "eq:4.u230"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\\label{lem:4.3.ldist}\nFor all $z_1,z_2,z_3\\in\\mathbb{C}$, we have\n\\[\n\\label{eq:4.u230}\nz_1(z_2+z_3)=z_1 z_2+z_1 z_3.\n\\]\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nThis is a basic field property of $\\mathbb{C}$: multiplication is left-distributive over addition.\n\\end{proof}",
+    "index": 67
+  },
+  {
+    "label": "Lemma 4.3.6",
+    "env": "lem",
+    "number_components": [
+      4,
+      3,
+      6
+    ],
+    "extracted_labels": [
+      "lem:4.3.rdist",
+      "eq:4.u230"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\\label{lem:4.3.rdist}\nFor all $z_1,z_2,z_3\\in\\mathbb{C}$, we have\n\\[\n\\label{eq:4.u230}\n(z_2+z_3)z_1=z_2 z_1+z_3 z_1.\n\\]\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nThis is a basic field property of $\\mathbb{C}$: multiplication is right-distributive over addition.\n\\end{proof}",
+    "index": 68
+  },
+  {
+    "label": "Definition 4.6.5",
+    "env": "def",
+    "number_components": [
+      4,
+      6,
+      5
+    ],
+    "extracted_labels": [
+      "def:4.17",
+      "eq:4.u242"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.17}\n[Embedding of real numbers into complex numbers]\nDefine the map \\(\\iota:\\mathbb{R}\\to\\mathbb{C}\\) by \\(\\iota(x):=(x,0)\\). Under the identification \\(x\\equiv (x,0)\\), equality and the operations of addition, negation, and multiplication on \\(\\mathbb{R}\\) agree with the corresponding operations induced from \\(\\mathbb{C}\\); namely, for all \\(x,y,x_1,x_2\\in\\mathbb{R}\\),\n\\[\n\\label{eq:4.u242}\nx=y\\iff (x,0)=(y,0),\\qquad (x_1+x_2,0)=(x_1,0)+(x_2,0),\\qquad (-x,0)=-(x,0),\\qquad (x_1x_2,0)=(x_1,0)(x_2,0).\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 69
+  },
+  {
+    "label": "Definition 4.6.6",
+    "env": "def",
+    "number_components": [
+      4,
+      6,
+      6
+    ],
+    "extracted_labels": [
+      "def:4.18"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.18}\n[Imaginary unit]\nThe \\emph{imaginary unit} is the complex number \\(i\\in\\mathbb{C}\\) defined by \\(i:=(0,1)\\).\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 70
+  },
+  {
+    "label": "Lemma 4.6.2",
+    "env": "lem",
+    "number_components": [
+      4,
+      6,
+      2
+    ],
+    "extracted_labels": [
+      "lem:4.4",
+      "prf:lem:4.4",
+      "eq:4.u243",
+      "eq:4.u244",
+      "eq:4.u245"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\n\\label{lem:4.4}\nEvery complex number $z\\in\\mathbb{C}$ can be written uniquely in the form $z=a+bi$ for some $a,b\\in\\mathbb{R}$. Moreover, $i^2=-1$ and $-z=(-1)z$.\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:lem:4.4}\n%% ASSUMPTION: The complex numbers are defined as the set $\\mathbb{C}=\\mathbb{R}\\times\\mathbb{R}$ with addition and multiplication given by\n%% $(a,b)+(c,d)=(a+c,b+d)$ and $(a,b)(c,d)=(ac-bd,ad+bc)$, with $1=(1,0)$ and $i=(0,1)$, and with the usual embedding $\\mathbb{R}\\hookrightarrow\\mathbb{C}$ given by $a\\mapsto (a,0)$.\nLet $z\\in\\mathbb{C}=\\mathbb{R}\\times\\mathbb{R}$. Then $z=(a,b)$ for some $a,b\\in\\mathbb{R}$. Under the embedding $a\\mapsto (a,0)$ and with $i=(0,1)$, one has\n\\[\n\\label{eq:4.u243}\n(a,0)+b(0,1)=(a,0)+(0,b)=(a,b)=z,\n\\]\nso $z=a+bi$.\n\nFor uniqueness, suppose $a+bi=c+di$ with $a,b,c,d\\in\\mathbb{R}$. Writing both sides as ordered pairs gives $(a,b)=(c,d)$, hence $a=c$ and $b=d$.\n\nFinally,\n\\[\n\\label{eq:4.u244}\ni^2=(0,1)(0,1)=(0\\cdot 0-1\\cdot 1,0\\cdot 1+1\\cdot 0)=(-1,0)=-1.\n\\]\nAlso, by definition of additive inverse in $\\mathbb{C}$, $-z=(-a,-b)$. Since $(-1)=( -1,0)$,\n\\[\n\\label{eq:4.u245}\n(-1)z=(-1,0)(a,b)=((-1)a-0\\cdot b,(-1)b+0\\cdot a)=(-a,-b)=-z.\n\\]\n\\end{proof}",
+    "index": 71
+  },
+  {
+    "label": "Definition 4.6.7",
+    "env": "def",
+    "number_components": [
+      4,
+      6,
+      7
+    ],
+    "extracted_labels": [
+      "def:4.19",
+      "eq:4.u246",
+      "eq:4.u247"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.19}\n[Real and imaginary parts; complex conjugate]\nLet $z\\in\\mathbb{C}$. If $z=a+bi$ for some $a,b\\in\\mathbb{R}$, define the \\emph{real part} and \\emph{imaginary part} of $z$ by\n\\[\n\\label{eq:4.u246}\n\\Re(z):=a,\\qquad \\Im(z):=b.\n\\]\nThen $z=\\Re(z)+i\\Im(z)$. The number $z$ is called \\emph{real} if $\\Im(z)=0$, and $z$ is called \\emph{imaginary} (i.e. purely imaginary) if $\\Re(z)=0$.\nThe \\emph{complex conjugate} of $z$ is defined by\n\\[\n\\label{eq:4.u247}\n\\overline z:=\\Re(z)-i\\Im(z).\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 72
+  },
+  {
+    "label": "Lemma 4.6.3",
+    "env": "lem",
+    "number_components": [
+      4,
+      6,
+      3
+    ],
+    "extracted_labels": [
+      "lem:4.5",
+      "eq:4.u248",
+      "prf:lem:4.5",
+      "eq:4.u249",
+      "eq:4.u250",
+      "eq:4.u251",
+      "eq:4.u252",
+      "eq:4.u253",
+      "eq:4.u254"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\n\\label{lem:4.5}\n[Complex conjugation is an involution]\nLet $z,w\\in\\mathbb{C}$. Then\n\\[\n\\label{eq:4.u248}\n\\overline{z+w}=\\bar z+\\bar w,\\qquad \\overline{-z}=-\\bar z,\\qquad \\overline{zw}=\\bar z\\,\\bar w,\n\\qquad \\overline{\\bar z}=z.\n\\]\nMoreover, $\\bar z=\\bar w$ if and only if $z=w$, and $\\bar z=z$ if and only if $z\\in\\mathbb{R}$.\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:lem:4.5}\nWrite $z=a+bi$ and $w=c+di$ with $a,b,c,d\\in\\mathbb{R}$, and recall that $\\overline{a+bi}=a-bi$.\n\nFor addition,\n\\[\n\\label{eq:4.u249}\n\\overline{z+w}=\\overline{(a+c)+(b+d)i}=(a+c)-(b+d)i=(a-bi)+(c-di)=\\bar z+\\bar w.\n\\]\nFor negation,\n\\[\n\\label{eq:4.u250}\n\\overline{-z}=\\overline{-a+(-b)i}=-a-(-b)i=-a+bi=-(a-bi)=-\\bar z.\n\\]\nFor multiplication,\n\\[\n\\label{eq:4.u251}\nzw=(a+bi)(c+di)=(ac-bd)+(ad+bc)i,\n\\]\nso\n\\[\n\\label{eq:4.u252}\n\\overline{zw}=(ac-bd)-(ad+bc)i.\n\\]\nAlso\n\\[\n\\label{eq:4.u253}\n\\bar z\\,\\bar w=(a-bi)(c-di)=(ac-bd)-(ad+bc)i,\n\\]\nhence $\\overline{zw}=\\bar z\\,\\bar w$.\n\nFor involution,\n\\[\n\\label{eq:4.u254}\n\\overline{\\bar z}=\\overline{a-bi}=a+bi=z.\n\\]\n\nIf $\\bar z=\\bar w$, then applying conjugation to both sides gives $\\overline{\\bar z}=\\overline{\\bar w}$, hence $z=w$. Conversely, if $z=w$ then $\\bar z=\\bar w$.\n\nFinally, $\\bar z=z$ holds if and only if $a-bi=a+bi$, which is equivalent to $b=0$, i.e. $z=a\\in\\mathbb{R}$.\n\\end{proof}",
+    "index": 73
+  },
+  {
+    "label": "Definition 4.6.8",
+    "env": "def",
+    "number_components": [
+      4,
+      6,
+      8
+    ],
+    "extracted_labels": [
+      "def:4.20",
+      "eq:4.u255"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.20}\n[Complex absolute value]\nFor a complex number $z\\in\\mathbb{C}$ written as $z=a+bi$ with $a,b\\in\\mathbb{R}$, the (complex) absolute value of $z$ is the nonnegative real number\n\\[\n\\label{eq:4.u255}\n|z|:=\\sqrt{a^{2}+b^{2}}=(a^{2}+b^{2})^{1/2}.\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 74
+  },
+  {
+    "label": "Lemma 4.6.4",
+    "env": "lem",
+    "number_components": [
+      4,
+      6,
+      4
+    ],
+    "extracted_labels": [
+      "lem:4.6.11.nonneg"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\\label{lem:4.6.11.nonneg}\nFor every $z\\in\\mathbb{C}$, the complex absolute value $|z|$ is a non-negative real number.\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nBy definition, $|z| := \\sqrt{z\\overline z}$. Since $z\\overline z\\in\\mathbb{R}$ and $z\\overline z\\ge 0$, its square root is a real number and is non-negative.\n\\end{proof}",
+    "index": 75
+  },
+  {
+    "label": "Lemma 4.6.5",
+    "env": "lem",
+    "number_components": [
+      4,
+      6,
+      5
+    ],
+    "extracted_labels": [
+      "lem:4.6.11.zero_iff"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\\label{lem:4.6.11.zero_iff}\nFor every $z\\in\\mathbb{C}$, we have $|z|=0$ if and only if $z=0$.\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nUsing $|z|=\\sqrt{z\\overline z}$, we have $|z|=0\\iff z\\overline z=0$. But $z\\overline z=0$ holds if and only if $z=0$ (e.g. writing $z=a+bi$ gives $z\\overline z=a^2+b^2$, which is $0$ iff $a=b=0$).\n\\end{proof}",
+    "index": 76
+  },
+  {
+    "label": "Lemma 4.6.6",
+    "env": "lem",
+    "number_components": [
+      4,
+      6,
+      6
+    ],
+    "extracted_labels": [
+      "lem:4.6.11.mul_conj"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\\label{lem:4.6.11.mul_conj}\nFor every $z\\in\\mathbb{C}$, we have\n\\[\nz\\overline z = |z|^2.\n\\]\nIn particular,\n\\[\n|z|=\\sqrt{z\\overline z}.\n\\]\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nThis is immediate from the definition $|z|:=\\sqrt{z\\overline z}$. Squaring both sides gives $|z|^2=z\\overline z$, and conversely taking square roots (noting $z\\overline z\\ge 0$) gives $|z|=\\sqrt{z\\overline z}$.\n\\end{proof}",
+    "index": 77
+  },
+  {
+    "label": "Lemma 4.6.7",
+    "env": "lem",
+    "number_components": [
+      4,
+      6,
+      7
+    ],
+    "extracted_labels": [
+      "lem:4.6.11.mul"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\\label{lem:4.6.11.mul}\nFor all $z,w\\in\\mathbb{C}$, we have\n\\[\n|zw|=|z|\\,|w|.\n\\]\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nUsing $|u|^2=u\\overline u$ for any $u$, we compute\n\\[\n|zw|^2=(zw)\\overline{(zw)}=(zw)(\\overline z\\,\\overline w)=(z\\overline z)(w\\overline w)=|z|^2|w|^2.\n\\]\nBoth sides are non-negative real numbers, hence taking square roots gives $|zw|=|z|\\,|w|$.\n\\end{proof}",
+    "index": 78
+  },
+  {
+    "label": "Lemma 4.6.8",
+    "env": "lem",
+    "number_components": [
+      4,
+      6,
+      8
+    ],
+    "extracted_labels": [
+      "lem:4.6.11.conj"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\\label{lem:4.6.11.conj}\nFor every $z\\in\\mathbb{C}$, we have\n\\[\n|\\overline z|=|z|.\n\\]\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nWe have $|\\overline z|^2=\\overline z\\,\\overline{\\overline z}=\\overline z\\,z=z\\overline z=|z|^2$. Both $|\\overline z|$ and $|z|$ are non-negative real numbers, so taking square roots yields $|\\overline z|=|z|$.\n\\end{proof}",
+    "index": 79
+  },
+  {
+    "label": "Lemma 4.6.9",
+    "env": "lem",
+    "number_components": [
+      4,
+      6,
+      9
+    ],
+    "extracted_labels": [
+      "lem:4.6.11.re_bound"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\\label{lem:4.6.11.re_bound}\nFor every $z\\in\\mathbb{C}$, we have\n\\[\n-|z|\\le \\Re(z)\\le |z|.\n\\]\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nWrite $z=a+bi$ with $a=\\Re(z)$ and $b=\\Im(z)$. Then $|z|=\\sqrt{a^2+b^2}$. Since $a^2\\le a^2+b^2$, we get $|a|\\le \\sqrt{a^2+b^2}=|z|$, i.e. $-|z|\\le a\\le |z|$.\n\\end{proof}",
+    "index": 80
+  },
+  {
+    "label": "Lemma 4.6.10",
+    "env": "lem",
+    "number_components": [
+      4,
+      6,
+      10
+    ],
+    "extracted_labels": [
+      "lem:4.6.11.im_bound"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\\label{lem:4.6.11.im_bound}\nFor every $z\\in\\mathbb{C}$, we have\n\\[\n-|z|\\le \\Im(z)\\le |z|.\n\\]\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nWrite $z=a+bi$ with $b=\\Im(z)$. Then $|z|=\\sqrt{a^2+b^2}$ and $b^2\\le a^2+b^2$, hence $|b|\\le |z|$, i.e. $-|z|\\le \\Im(z)\\le |z|$.\n\\end{proof}",
+    "index": 81
+  },
+  {
+    "label": "Lemma 4.6.11",
+    "env": "lem",
+    "number_components": [
+      4,
+      6,
+      11
+    ],
+    "extracted_labels": [
+      "lem:4.6.11.reim_sum_bound"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\\label{lem:4.6.11.reim_sum_bound}\nFor every $z\\in\\mathbb{C}$, we have\n\\[\n|z|\\le |\\Re(z)|+|\\Im(z)|.\n\\]\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nWrite $z=a+bi$. Then $|z|=\\sqrt{a^2+b^2}$. Since $|a|,|b|\\ge 0$, we have\n\\[\n(|a|+|b|)^2 = a^2+b^2+2|a||b|\\ge a^2+b^2.\n\\]\nTaking square roots (both sides non-negative) yields $|a|+|b|\\ge \\sqrt{a^2+b^2}=|z|$.\n\\end{proof}",
+    "index": 82
+  },
+  {
+    "label": "Lemma 4.6.12",
+    "env": "lem",
+    "number_components": [
+      4,
+      6,
+      12
+    ],
+    "extracted_labels": [
+      "lem:4.6.11.triangle"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\\label{lem:4.6.11.triangle}\nFor all $z,w\\in\\mathbb{C}$, we have the triangle inequality\n\\[\n|z+w|\\le |z|+|w|.\n\\]\n\\end{lemma}\n(depend on: \"Lemma 4.6.9\")",
+    "dependencies": [
+      "Lemma 4.6.9"
+    ],
+    "proof": "\\begin{proof}\nUsing $|u|^2=u\\overline u$, expand\n\\[\n|z+w|^2=(z+w)(\\overline z+\\overline w)=z\\overline z+w\\overline w+z\\overline w+\\overline z\\,w.\n\\]\nWrite $z\\overline w+\\overline z\\,w = 2\\Re(z\\overline w)$. We claim $\\Re(z\\overline w)\\le |z\\overline w|$. Indeed, by Lemma~\\ref{lem:4.6.11.re_bound} applied to the complex number $z\\overline w$, we have $\\Re(z\\overline w)\\le |z\\overline w|$. Using multiplicativity and conjugation-invariance of absolute value,\n\\[\n|z\\overline w|=|z|\\,|\\overline w|=|z|\\,|w|.\n\\]\nTherefore\n\\[\n|z+w|^2 \\le |z|^2+|w|^2+2|z||w|=(|z|+|w|)^2.\n\\]\nBoth sides are non-negative, so taking square roots gives $|z+w|\\le |z|+|w|$.\n\\end{proof}",
+    "index": 83
+  },
+  {
+    "label": "Definition 4.6.9",
+    "env": "def",
+    "number_components": [
+      4,
+      6,
+      9
+    ],
+    "extracted_labels": [
+      "def:4.21",
+      "eq:4.u267",
+      "eq:4.u268"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.21}\n[Complex reciprocal and quotient]\nLet $z\\in\\mathbb{C}$. If $z\\neq 0$, the (multiplicative) reciprocal of $z$ is the complex number\n\\[\n\\label{eq:4.u267}\nz^{-1}:=|z|^{-2}\\,\\overline{z}.\n\\]\nThe reciprocal of $0$ is undefined.\n\nLet $z,w\\in\\mathbb{C}$ with $w\\neq 0$. The quotient $z/w$ is defined by\n\\[\n\\label{eq:4.u268}\n\\frac{z}{w}:=z\\,w^{-1}.\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 84
+  },
+  {
+    "label": "Lemma 4.6.13",
+    "env": "lem",
+    "number_components": [
+      4,
+      6,
+      13
+    ],
+    "extracted_labels": [
+      "lem:4.7",
+      "eq:4.u269",
+      "eq:4.u270",
+      "eq:4.u271",
+      "prf:lem:4.7",
+      "eq:4.u272",
+      "eq:4.u273",
+      "eq:4.u274",
+      "eq:4.u275"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\n\\label{lem:4.7}\nLet $d:\\mathbf{C}\\times\\mathbf{C}\\to[0,\\infty)$ be defined by\n\\[\n\\label{eq:4.u269}\nd(z,w)=|z-w|,\\qquad z,w\\in\\mathbf{C},\n\\]\nwhere $|\\cdot|$ denotes the complex modulus. Then $(\\mathbf{C},d)$ is a metric space. Moreover, for any sequence $(z_n)_{n=1}^\\infty\\subset\\mathbf{C}$ and any $z\\in\\mathbf{C}$,\n\\[\n\\label{eq:4.u270}\n\\lim_{n\\to\\infty} z_n=z \\text{ in } (\\mathbf{C},d)\n\\]\nif and only if\n\\[\n\\label{eq:4.u271}\n\\lim_{n\\to\\infty}\\Re(z_n)=\\Re(z)\\quad\\text{and}\\quad \\lim_{n\\to\\infty}\\Im(z_n)=\\Im(z).\n\\]\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:lem:4.7}\nFor $z,w\\in\\mathbf{C}$, $d(z,w)=|z-w|\\ge 0$, and $d(z,w)=0$ iff $|z-w|=0$ iff $z=w$. Also $d(z,w)=|z-w|=|w-z|=d(w,z)$. For the triangle inequality, for any $z,w,u\\in\\mathbf{C}$,\n\\[\n\\label{eq:4.u272}\nd(z,u)=|z-u|=|(z-w)+(w-u)|\\le |z-w|+|w-u|=d(z,w)+d(w,u).\n\\]\nHence $d$ is a metric and $(\\mathbf{C},d)$ is a metric space.\n\nWrite $z_n=x_n+iy_n$ and $z=x+iy$ with $x_n=\\Re(z_n)$, $y_n=\\Im(z_n)$, $x=\\Re(z)$, and $y=\\Im(z)$. Then\n\\[\n\\label{eq:4.u273}\nd(z_n,z)=|z_n-z|=|(x_n-x)+i(y_n-y)|=\\sqrt{(x_n-x)^2+(y_n-y)^2}.\n\\]\nAssume $z_n\\to z$ in $(\\mathbf{C},d)$. Then $|z_n-z|\\to 0$. Since\n\\[\n\\label{eq:4.u274}\n|x_n-x|\\le \\sqrt{(x_n-x)^2+(y_n-y)^2}=|z_n-z|,\\qquad |y_n-y|\\le |z_n-z|,\n\\]\nit follows that $|x_n-x|\\to 0$ and $|y_n-y|\\to 0$, i.e., $x_n\\to x$ and $y_n\\to y$.\n\nConversely, assume $x_n\\to x$ and $y_n\\to y$. Then $(x_n-x)^2\\to 0$ and $(y_n-y)^2\\to 0$, hence $(x_n-x)^2+(y_n-y)^2\\to 0$. By continuity of the square root on $[0,\\infty)$,\n\\[\n\\label{eq:4.u275}\n|z_n-z|=\\sqrt{(x_n-x)^2+(y_n-y)^2}\\to 0,\n\\]\nso $z_n\\to z$ in the metric $d$.\n\\end{proof}",
+    "index": 85
+  },
+  {
+    "label": "Lemma 4.6.14",
+    "env": "lem",
+    "number_components": [
+      4,
+      6,
+      14
+    ],
+    "extracted_labels": [
+      "lem:4.8",
+      "eq:4.u277",
+      "eq:4.u276",
+      "eq:4.u278",
+      "prf:lem:4.8",
+      "eq:4.u279",
+      "eq:4.u280",
+      "eq:4.u281",
+      "eq:4.u282",
+      "eq:4.u283",
+      "eq:4.u284",
+      "eq:4.u285",
+      "eq:4.u286",
+      "eq:4.u287",
+      "eq:4.u288"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\n\\label{lem:4.8}\n[Complex limit laws]\nLet $(z_n)_{n=1}^\\infty$ and $(w_n)_{n=1}^\\infty$ be sequences in $\\mathbb{C}$ with\n\\[\n\\label{eq:4.u277}\n\\lim_{n\\to\\infty} z_n = z\\in\\mathbb{C},\\qquad \\lim_{n\\to\\infty} w_n = w\\in\\mathbb{C},\n\\]\nand let $c\\in\\mathbb{C}$. Then the sequences $(z_n+w_n)_{n=1}^\\infty$, $(z_n-w_n)_{n=1}^\\infty$, $(c z_n)_{n=1}^\\infty$, $(z_n w_n)_{n=1}^\\infty$, and $(\\overline{z_n})_{n=1}^\\infty$ are convergent, and\n\\begin{align}\n\\label{eq:4.u276}\n\\lim_{n\\to\\infty}(z_n+w_n) &= z+w,\\\\\n\\lim_{n\\to\\infty}(z_n-w_n) &= z-w,\\\\\n\\lim_{n\\to\\infty}(c z_n) &= c z,\\\\\n\\lim_{n\\to\\infty}(z_n w_n) &= z w,\\\\\n\\lim_{n\\to\\infty}\\overline{z_n} &= \\overline{z}.\n\\end{align}\nMoreover, if $w_n\\neq 0$ for all $n$ and $w\\neq 0$, then $(z_n/w_n)_{n=1}^\\infty$ is convergent and\n\\[\n\\label{eq:4.u278}\n\\lim_{n\\to\\infty}\\frac{z_n}{w_n} = \\frac{z}{w}.\n\\]\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:lem:4.8}\nWrite $z_n=x_n+i y_n$ and $w_n=u_n+i v_n$ with $x_n,y_n,u_n,v_n\\in\\mathbb{R}$, and write $z=x+i y$ and $w=u+i v$ with $x,y,u,v\\in\\mathbb{R}$. Since $z_n\\to z$ and $w_n\\to w$ in $\\mathbb{C}$, one has $x_n\\to x$, $y_n\\to y$, $u_n\\to u$, and $v_n\\to v$ in $\\mathbb{R}$.\n\nFor sums and differences,\n\\[\n\\label{eq:4.u279}\nz_n\\pm w_n=(x_n\\pm u_n)+i(y_n\\pm v_n),\n\\]\nso by the real limit laws applied to the real and imaginary parts,\n\\[\n\\label{eq:4.u280}\n(x_n\\pm u_n)\\to (x\\pm u),\\qquad (y_n\\pm v_n)\\to (y\\pm v),\n\\]\nwhich implies $z_n\\pm w_n\\to (x\\pm u)+i(y\\pm v)=z\\pm w$.\n\nFor scalar multiples, write $c=a+ib$ with $a,b\\in\\mathbb{R}$. Then\n\\[\n\\label{eq:4.u281}\ncz_n=(a+ib)(x_n+i y_n)=(a x_n-b y_n)+i(b x_n+a y_n).\n\\]\nUsing the real limit laws and $x_n\\to x$, $y_n\\to y$ gives\n\\[\n\\label{eq:4.u282}\n(a x_n-b y_n)\\to (a x-b y),\\qquad (b x_n+a y_n)\\to (b x+a y),\n\\]\nso $cz_n\\to (a+ib)(x+i y)=cz$.\n\nFor products,\n\\[\n\\label{eq:4.u283}\nz_n w_n=(x_n+i y_n)(u_n+i v_n)=(x_n u_n-y_n v_n)+i(x_n v_n+y_n u_n).\n\\]\nAgain by the real limit laws,\n\\[\n\\label{eq:4.u284}\n(x_n u_n-y_n v_n)\\to (x u-y v),\\qquad (x_n v_n+y_n u_n)\\to (x v+y u),\n\\]\nso $z_n w_n\\to (x+i y)(u+i v)=zw$.\n\nFor complex conjugation,\n\\[\n\\label{eq:4.u285}\n\\overline{z_n}=x_n-i y_n \\to x-i y = \\overline{z},\n\\]\nusing $x_n\\to x$ and $y_n\\to y$.\n\nFor quotients, assume $w_n\\neq 0$ for all $n$ and $w\\neq 0$. Consider the real sequence $|w_n|$. Since\n\\[\n\\label{eq:4.u286}\n|w_n|^2=u_n^2+v_n^2 \\to u^2+v^2=|w|^2>0,\n\\]\nthere exists $N$ such that $|w_n|^2\\ge \\tfrac12 |w|^2$ for all $n\\ge N$. Hence for $n\\ge N$,\n\\[\n\\label{eq:4.u287}\n\\left|\\frac{1}{w_n}-\\frac{1}{w}\\right|=\\frac{|w-w_n|}{|w_n||w|}\\le \\frac{\\sqrt{2}}{|w|^2}\\,|w_n-w|\\xrightarrow[n\\to\\infty]{}0,\n\\]\nso $1/w_n\\to 1/w$. Then the product limit just proved yields\n\\[\n\\label{eq:4.u288}\n\\frac{z_n}{w_n}=z_n\\left(\\frac{1}{w_n}\\right)\\longrightarrow z\\left(\\frac{1}{w}\\right)=\\frac{z}{w}.\n\\]\n\\end{proof}",
+    "index": 86
+  },
+  {
+    "label": "Definition 4.6.10",
+    "env": "def",
+    "number_components": [
+      4,
+      6,
+      10
+    ],
+    "extracted_labels": [
+      "def:4.22",
+      "eq:4.u289"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.22}\n[Complex exponential]\nFor each $z\\in\\mathbb{C}$, the \\emph{complex exponential} is defined by the power series\n\\[\n\\label{eq:4.u289}\n\\exp(z)=\\sum_{n=0}^{\\infty}\\frac{z^n}{n!}.\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 87
+  },
+  {
+    "label": "Proposition 4.6.1",
+    "env": "prop",
+    "number_components": [
+      4,
+      6,
+      1
+    ],
+    "extracted_labels": [
+      "prop:4.18",
+      "eq:4.u291",
+      "prf:prop:4.18",
+      "eq:4.u292",
+      "eq:4.u293"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.18}\nFor every $z\\in\\mathbb{C}$, one has\n\\[\n\\label{eq:4.u291}\n\\exp(\\overline{z})=\\overline{\\exp(z)}.\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.18}\nWrite $z=x+iy$ with $x,y\\in\\mathbb{R}$. Then $\\overline{z}=x-iy$ and\n\\[\n\\label{eq:4.u292}\n\\exp(z)=e^{x+iy}=e^x(\\cos y+i\\sin y),\\qquad\n\\exp(\\overline{z})=e^{x-iy}=e^x(\\cos y-i\\sin y).\n\\]\nSince complex conjugation fixes real numbers and satisfies $\\overline{a+ib}=a-ib$ for $a,b\\in\\mathbb{R}$, one has\n\\[\n\\label{eq:4.u293}\n\\overline{\\exp(z)}=\\overline{e^x(\\cos y+i\\sin y)}=e^x(\\cos y-i\\sin y)=\\exp(\\overline{z}).\n\\]\n\\end{proof}",
+    "index": 88
+  },
+  {
+    "label": "Proposition 4.6.2",
+    "env": "prop",
+    "number_components": [
+      4,
+      6,
+      2
+    ],
+    "extracted_labels": [
+      "prop:4.19",
+      "eq:4.u294",
+      "prf:prop:4.19",
+      "eq:4.u295",
+      "eq:4.u296"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.19}\nFor every complex number $z\\in\\mathbb{C}$,\n\\[\n\\label{eq:4.u294}\n\\Re(z)=\\frac{z+\\overline{z}}{2}\\qquad\\text{and}\\qquad \\Im(z)=\\frac{z-\\overline{z}}{2i}.\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.19}\nLet $z\\in\\mathbb{C}$. Write $z=x+iy$ with $x,y\\in\\mathbb{R}$. Then $\\overline{z}=x-iy$, so\n\\[\n\\label{eq:4.u295}\n\\frac{z+\\overline{z}}{2}=\\frac{(x+iy)+(x-iy)}{2}=\\frac{2x}{2}=x=\\Re(z),\n\\]\nand\n\\[\n\\label{eq:4.u296}\n\\frac{z-\\overline{z}}{2i}=\\frac{(x+iy)-(x-iy)}{2i}=\\frac{2iy}{2i}=y=\\Im(z).\n\\]\n\\end{proof}",
+    "index": 89
+  },
+  {
+    "label": "Proposition 4.6.3",
+    "env": "prop",
+    "number_components": [
+      4,
+      6,
+      3
+    ],
+    "extracted_labels": [
+      "prop:4.20",
+      "eq:4.u297",
+      "prf:prop:4.20",
+      "eq:4.u298",
+      "eq:4.u299",
+      "eq:4.u300"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.20}\nIf $z,w\\in\\mathbb{C}$ and $w\\neq 0$, then\n\\[\n\\label{eq:4.u297}\n\\left|\\frac{z}{w}\\right|=\\frac{|z|}{|w|}.\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.20}\nSince $w\\neq 0$, the quotient $z/w$ is defined and equals $z\\cdot (1/w)$. Using multiplicativity of the complex modulus, $|ab|=|a|\\,|b|$ for $a,b\\in\\mathbb{C}$, yields\n\\[\n\\label{eq:4.u298}\n\\left|\\frac{z}{w}\\right|=\\left|z\\cdot \\frac{1}{w}\\right|=|z|\\,\\left|\\frac{1}{w}\\right|.\n\\]\nAlso, $w\\cdot (1/w)=1$, so applying multiplicativity again gives\n\\[\n\\label{eq:4.u299}\n1=|1|=\\left|w\\cdot \\frac{1}{w}\\right|=|w|\\,\\left|\\frac{1}{w}\\right|.\n\\]\nBecause $w\\neq 0$, one has $|w|>0$, hence $\\left|\\frac{1}{w}\\right|=\\frac{1}{|w|}$. Substituting into the first displayed equation gives\n\\[\n\\label{eq:4.u300}\n\\left|\\frac{z}{w}\\right|=|z|\\cdot \\frac{1}{|w|}=\\frac{|z|}{|w|}.\n\\]\n\\end{proof}",
+    "index": 90
+  },
+  {
+    "label": "Proposition 4.6.4",
+    "env": "prop",
+    "number_components": [
+      4,
+      6,
+      4
+    ],
+    "extracted_labels": [
+      "prop:4.21",
+      "eq:4.u301",
+      "prf:prop:4.21",
+      "eq:4.u302",
+      "eq:4.u303",
+      "eq:4.u304",
+      "eq:4.u305",
+      "eq:4.u306"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.21}\nLet $z,w\\in\\mathbb{C}$ be nonzero. Then\n\\[\n\\label{eq:4.u301}\n|z+w|=|z|+|w|\n\\]\nif and only if there exists a real number $c>0$ such that $z=cw$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.21}\nAssume that there exists a real number $c>0$ such that $z=cw$. Then\n\\[\n\\label{eq:4.u302}\n|z+w|=|(c+1)w|=(c+1)|w|=|cw|+|w|=|z|+|w|.\n\\]\n\nConversely, assume that $|z+w|=|z|+|w|$. Squaring both sides gives\n\\[\n\\label{eq:4.u303}\n|z+w|^2=(|z|+|w|)^2=|z|^2+|w|^2+2|z||w|.\n\\]\nOn the other hand,\n\\[\n\\label{eq:4.u304}\n|z+w|^2=(z+w)\\overline{(z+w)}=|z|^2+|w|^2+z\\overline{w}+\\overline{z}w\n=|z|^2+|w|^2+2\\Re(z\\overline{w}).\n\\]\nComparing yields $\\Re(z\\overline{w})=|z||w|$. Let $u=z/|z|$ and $v=w/|w|$. Then $|u|=|v|=1$ and\n\\[\n\\label{eq:4.u305}\n\\Re(u\\overline{v})=\\frac{\\Re(z\\overline{w})}{|z||w|}=1.\n\\]\nSince $|u\\overline{v}|=|u||v|=1$, the complex number $u\\overline{v}$ lies on the unit circle, and the only point on the unit circle with real part $1$ is $1$. Hence $u\\overline{v}=1$, so $u=v$ and therefore\n\\[\n\\label{eq:4.u306}\n\\frac{z}{|z|}=\\frac{w}{|w|}\\quad\\Longrightarrow\\quad z=\\frac{|z|}{|w|}\\,w.\n\\]\nSetting $c=|z|/|w|>0$ gives $z=cw$.\n\\end{proof}",
+    "index": 91
+  },
+  {
+    "label": "Proposition 4.6.5",
+    "env": "prop",
+    "number_components": [
+      4,
+      6,
+      5
+    ],
+    "extracted_labels": [
+      "prop:4.22",
+      "prf:prop:4.22"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.22}\nThere does not exist a partition of $\\mathbb{C}$ into three disjoint classes, called \\emph{positive}, \\emph{negative}, and \\emph{zero}, such that the following axioms hold for all $z,w\\in\\mathbb{C}$:\n\\begin{enumerate}\n\\item \\textbf{(Trichotomy)} Exactly one of the following holds: $z$ is positive, $z$ is negative, or $z=0$.\n\\item \\textbf{(Negation)} If $z$ is positive then $-z$ is negative, and if $z$ is negative then $-z$ is positive.\n\\item \\textbf{(Additivity)} If $z$ and $w$ are positive, then $z+w$ is positive.\n\\item \\textbf{(Multiplicativity)} If $z$ and $w$ are positive, then $zw$ is positive.\n\\end{enumerate}\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.22}\nAssume such a classification exists. Since $1\\neq 0$, by trichotomy either $1$ is positive or $1$ is negative.\n\nIf $1$ is negative, then by negation $-1$ is positive. By multiplicativity, $(-1)(-1)=1$ is positive. By negation, $-1$ is then negative, contradicting that $-1$ is positive. Hence $1$ is positive.\n\nSince $1$ is positive, multiplicativity implies $1\\cdot 1=1$ is positive, and negation implies $-1$ is negative. Again by negation, $(-1)$ negative implies $1=-(-1)$ is positive, consistent.\n\nBecause $1$ is positive, additivity implies $1+1=2$ is positive, and then repeatedly $n:=\\underbrace{1+\\cdots+1}_{n\\text{ times}}$ is positive for every integer $n\\ge 1$. In particular, $2$ is positive, so by multiplicativity $2\\cdot 2=4$ is positive.\n\nNow consider $i\\in\\mathbb{C}$ with $i^2=-1$. By trichotomy, either $i=0$, $i$ is positive, or $i$ is negative. Since $i\\neq 0$, either $i$ is positive or $i$ is negative.\n\nIf $i$ is positive, then multiplicativity gives $i^2=-1$ is positive, so by negation $1$ is negative, contradicting that $1$ is positive.\n\nIf $i$ is negative, then by negation $-i$ is positive, hence by multiplicativity $(-i)^2=i^2=-1$ is positive, yielding the same contradiction.\n\nTherefore no such classification exists.\n\\end{proof}",
+    "index": 92
+  },
+  {
+    "label": "Theorem 4.6.1",
+    "env": "thm",
+    "number_components": [
+      4,
+      6,
+      1
+    ],
+    "extracted_labels": [
+      "thm:4.14",
+      "eq:4.u307",
+      "prf:thm:4.14",
+      "eq:4.u308",
+      "eq:4.u309",
+      "eq:4.u310",
+      "eq:4.u311"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "A Digression on Complex Numbers",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:4.14}\nFor all $z,w\\in\\mathbb{C}$,\n\\[\n\\label{eq:4.u307}\n\\exp(z+w)=\\exp(z)\\,\\exp(w).\n\\]\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:4.14}\nAssume $\\exp$ is defined for all $u\\in\\mathbb{C}$ by the power series\n\\[\n\\label{eq:4.u308}\n\\exp(u)=\\sum_{n=0}^{\\infty}\\frac{u^n}{n!}.\n\\]\nThen\n\\[\n\\label{eq:4.u309}\n\\exp(z)\\exp(w)=\\left(\\sum_{n=0}^{\\infty}\\frac{z^n}{n!}\\right)\\left(\\sum_{m=0}^{\\infty}\\frac{w^m}{m!}\\right).\n\\]\nThe series are absolutely convergent, so their Cauchy product converges absolutely and equals the product. Hence\n\\[\n\\label{eq:4.u310}\n\\exp(z)\\exp(w)=\\sum_{k=0}^{\\infty}\\sum_{n=0}^{k}\\frac{z^n}{n!}\\frac{w^{k-n}}{(k-n)!}.\n\\]\nUsing $\\frac{1}{n!(k-n)!}=\\frac{1}{k!}\\binom{k}{n}$, this becomes\n\\[\n\\label{eq:4.u311}\n\\exp(z)\\exp(w)=\\sum_{k=0}^{\\infty}\\frac{1}{k!}\\sum_{n=0}^{k}\\binom{k}{n}z^n w^{k-n}=\n\\sum_{k=0}^{\\infty}\\frac{(z+w)^k}{k!}=\\exp(z+w),\n\\]\nwhere the binomial theorem was used in the last equality.\n\\end{proof}",
+    "index": 93
+  },
+  {
+    "label": "Definition 4.7.1",
+    "env": "def",
+    "number_components": [
+      4,
+      7,
+      1
+    ],
+    "extracted_labels": [
+      "def:4.24",
+      "eq:4.u312",
+      "eq:4.u313"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.24}\n[Trigonometric functions]\nFor $z\\in\\mathbb{C}$, define\n\\[\n\\label{eq:4.u312}\n\\cos(z) := \\frac{e^{iz}+e^{-iz}}{2}\n\\]\nand\n\\[\n\\label{eq:4.u313}\n\\sin(z) := \\frac{e^{iz}-e^{-iz}}{2i}.\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 94
+  },
+  {
+    "label": "Proposition 4.7.1",
+    "env": "prop",
+    "number_components": [
+      4,
+      7,
+      1
+    ],
+    "extracted_labels": [
+      "prop:4.23",
+      "eq:4.u315",
+      "eq:4.u316",
+      "prf:prop:4.23",
+      "eq:4.u317",
+      "eq:4.u318",
+      "eq:4.u319",
+      "eq:4.u320"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.23}\n[Reality and absolute convergence on $\\mathbb{R}$]\nFor every $x\\in\\mathbb{R}$, the series\n\\[\n\\label{eq:4.u315}\n\\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n}}{(2n)!}\\quad\\text{and}\\quad\\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n+1}}{(2n+1)!}\n\\]\nconverge absolutely. Consequently, if\n\\[\n\\label{eq:4.u316}\n\\cos(x):=\\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n}}{(2n)!},\\qquad \\sin(x):=\\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n+1}}{(2n+1)!},\n\\]\nthen $\\cos(x),\\sin(x)\\in\\mathbb{R}$ for all $x\\in\\mathbb{R}$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.23}\nFix $x\\in\\mathbb{R}$. Consider the series with nonnegative terms\n\\[\n\\label{eq:4.u317}\n\\sum_{n=0}^{\\infty} \\left|\\frac{(-1)^n x^{2n}}{(2n)!}\\right|=\\sum_{n=0}^{\\infty} \\frac{|x|^{2n}}{(2n)!}.\n\\]\nLet $a_n:=\\frac{|x|^{2n}}{(2n)!}$. Then\n\\[\n\\label{eq:4.u318}\n\\frac{a_{n+1}}{a_n}=\\frac{|x|^{2n+2}}{(2n+2)!}\\cdot\\frac{(2n)!}{|x|^{2n}}=\\frac{|x|^2}{(2n+2)(2n+1)}\\xrightarrow[n\\to\\infty]{}0.\n\\]\nBy the ratio test, $\\sum_{n=0}^{\\infty} a_n$ converges, hence $\\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n}}{(2n)!}$ converges absolutely.\n\nSimilarly,\n\\[\n\\label{eq:4.u319}\n\\sum_{n=0}^{\\infty} \\left|\\frac{(-1)^n x^{2n+1}}{(2n+1)!}\\right|=\\sum_{n=0}^{\\infty} \\frac{|x|^{2n+1}}{(2n+1)!}.\n\\]\nLet $b_n:=\\frac{|x|^{2n+1}}{(2n+1)!}$. Then\n\\[\n\\label{eq:4.u320}\n\\frac{b_{n+1}}{b_n}=\\frac{|x|^{2n+3}}{(2n+3)!}\\cdot\\frac{(2n+1)!}{|x|^{2n+1}}=\\frac{|x|^2}{(2n+3)(2n+2)}\\xrightarrow[n\\to\\infty]{}0.\n\\]\nAgain the ratio test gives convergence of $\\sum b_n$, hence absolute convergence of $\\sum_{n=0}^{\\infty} \\frac{(-1)^n x^{2n+1}}{(2n+1)!}$.\n\nEach partial sum of each series is a real number, since it is a finite combination of real numbers. The limits of convergent real series are real, so the values defined by these series satisfy $\\cos(x),\\sin(x)\\in\\mathbb{R}$.\n\\end{proof}",
+    "index": 95
+  },
+  {
+    "label": "Theorem 4.7.1",
+    "env": "thm",
+    "number_components": [
+      4,
+      7,
+      1
+    ],
+    "extracted_labels": [
+      "thm:4.7.2.a"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Exponentials and Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\\label{thm:4.7.2.a}\nFor every real number $x$, we have\n\\[\n\\sin(x)^2+\\cos(x)^2=1.\n\\]\nIn particular, $\\sin(x)\\in[-1,1]$ and $\\cos(x)\\in[-1,1]$ for all $x\\in\\mathbb{R}$.\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nAssume $\\sin$ and $\\cos$ are defined via the complex exponential by\n\\[\ne^{ix}=\\cos(x)+i\\sin(x),\\qquad x\\in\\mathbb{R}.\n\\]\nTaking complex conjugates gives $e^{-ix}=\\cos(x)-i\\sin(x)$, hence\n\\[\n1=e^{ix}e^{-ix}=(\\cos(x)+i\\sin(x))(\\cos(x)-i\\sin(x))=\\cos(x)^2+\\sin(x)^2.\n\\]\nFor the bounds, note that $\\sin(x)^2\\le 1$ and $\\cos(x)^2\\le 1$ from the identity, hence $|\\sin(x)|\\le 1$ and $|\\cos(x)|\\le 1$.\n\\end{proof}",
+    "index": 96
+  },
+  {
+    "label": "Theorem 4.7.2",
+    "env": "thm",
+    "number_components": [
+      4,
+      7,
+      2
+    ],
+    "extracted_labels": [
+      "thm:4.7.2.b"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Exponentials and Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\\label{thm:4.7.2.b}\nFor every real number $x$, we have\n\\[\n\\sin'(x)=\\cos(x),\\qquad \\cos'(x)=-\\sin(x).\n\\]\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nAssume $\\sin$ and $\\cos$ are defined by $e^{ix}=\\cos(x)+i\\sin(x)$.\nDifferentiate both sides with respect to $x$. Using $\\frac{d}{dx}e^{ix}=ie^{ix}$ and linearity of differentiation,\n\\[\nie^{ix}=\\cos'(x)+i\\sin'(x).\n\\]\nSubstitute $e^{ix}=\\cos(x)+i\\sin(x)$ into the left-hand side:\n\\[\nie^{ix}=i(\\cos(x)+i\\sin(x))=i\\cos(x)-\\sin(x).\n\\]\nEquating real and imaginary parts yields\n\\[\n\\cos'(x)=-\\sin(x),\\qquad \\sin'(x)=\\cos(x).\n\\]\n\\end{proof}",
+    "index": 97
+  },
+  {
+    "label": "Theorem 4.7.3",
+    "env": "thm",
+    "number_components": [
+      4,
+      7,
+      3
+    ],
+    "extracted_labels": [
+      "thm:4.7.2.c"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Exponentials and Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\\label{thm:4.7.2.c}\nFor every real number $x$, we have\n\\[\n\\sin(-x)=-\\sin(x),\\qquad \\cos(-x)=\\cos(x).\n\\]\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nUsing $e^{ix}=\\cos(x)+i\\sin(x)$, replace $x$ by $-x$ to obtain\n\\[\ne^{-ix}=\\cos(-x)+i\\sin(-x).\n\\]\nOn the other hand, taking complex conjugates in $e^{ix}=\\cos(x)+i\\sin(x)$ gives\n\\[\ne^{-ix}=\\cos(x)-i\\sin(x),\n\\]\nsince $\\cos(x)$ and $\\sin(x)$ are real-valued. Comparing the two expressions for $e^{-ix}$ and equating real and imaginary parts yields\n\\[\n\\cos(-x)=\\cos(x),\\qquad \\sin(-x)=-\\sin(x).\n\\]\n\\end{proof}",
+    "index": 98
+  },
+  {
+    "label": "Theorem 4.7.4",
+    "env": "thm",
+    "number_components": [
+      4,
+      7,
+      4
+    ],
+    "extracted_labels": [
+      "thm:4.7.2.d"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Exponentials and Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\\label{thm:4.7.2.d}\nFor all real numbers $x,y$, we have\n\\[\n\\cos(x+y)=\\cos(x)\\cos(y)-\\sin(x)\\sin(y),\n\\]\n\\[\n\\sin(x+y)=\\sin(x)\\cos(y)+\\cos(x)\\sin(y).\n\\]\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nUsing $e^{it}=\\cos(t)+i\\sin(t)$ and the exponential law $e^{i(x+y)}=e^{ix}e^{iy}$, we compute\n\\[\n\\cos(x+y)+i\\sin(x+y)=e^{i(x+y)}=e^{ix}e^{iy}=(\\cos x+i\\sin x)(\\cos y+i\\sin y).\n\\]\nExpanding the product gives\n\\[\n(\\cos x\\cos y-\\sin x\\sin y)+i(\\sin x\\cos y+\\cos x\\sin y).\n\\]\nEquating real and imaginary parts yields the stated formulas.\n\\end{proof}",
+    "index": 99
+  },
+  {
+    "label": "Theorem 4.7.5",
+    "env": "thm",
+    "number_components": [
+      4,
+      7,
+      5
+    ],
+    "extracted_labels": [
+      "thm:4.7.2.e"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Exponentials and Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\\label{thm:4.7.2.e}\nWe have\n\\[\n\\sin(0)=0,\\qquad \\cos(0)=1.\n\\]\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nFrom $e^{ix}=\\cos(x)+i\\sin(x)$, set $x=0$ to get\n\\[\n1=e^{i\\cdot 0}=\\cos(0)+i\\sin(0).\n\\]\nComparing real and imaginary parts yields $\\cos(0)=1$ and $\\sin(0)=0$.\n\\end{proof}",
+    "index": 100
+  },
+  {
+    "label": "Theorem 4.7.6",
+    "env": "thm",
+    "number_components": [
+      4,
+      7,
+      6
+    ],
+    "extracted_labels": [
+      "thm:4.7.2.f"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Exponentials and Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\\label{thm:4.7.2.f}\nFor every real number $x$, we have\n\\[\ne^{ix}=\\cos(x)+i\\sin(x),\\qquad e^{-ix}=\\cos(x)-i\\sin(x).\n\\]\nIn particular,\n\\[\n\\cos(x)=\\Re(e^{ix}),\\qquad \\sin(x)=\\Im(e^{ix}).\n\\]\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\nThe identity $e^{ix}=\\cos(x)+i\\sin(x)$ can be taken as the definition of $\\sin$ and $\\cos$ in terms of the complex exponential (equivalently, it follows from the power series definitions of $\\exp$, $\\sin$, and $\\cos$ and separating even and odd terms).\nTaking complex conjugates of both sides gives\n\\[\n\\overline{e^{ix}}=\\overline{\\cos(x)+i\\sin(x)}=\\cos(x)-i\\sin(x).\n\\]\nSince $x$ is real, $\\overline{e^{ix}}=e^{-ix}$, hence $e^{-ix}=\\cos(x)-i\\sin(x)$.\nFinally, by definition of real and imaginary parts, if $e^{ix}=\\cos(x)+i\\sin(x)$ then $\\Re(e^{ix})=\\cos(x)$ and $\\Im(e^{ix})=\\sin(x)$.\n\\end{proof}",
+    "index": 101
+  },
+  {
+    "label": "Lemma 4.7.1",
+    "env": "lem",
+    "number_components": [
+      4,
+      7,
+      1
+    ],
+    "extracted_labels": [
+      "lem:4.9",
+      "prf:lem:4.9",
+      "eq:4.u328",
+      "eq:4.u329",
+      "eq:4.u330"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\n\\label{lem:4.9}\nThere exists a real number $x>0$ such that $\\sin x=0$.\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:lem:4.9}\nSuppose, for contradiction, that $\\sin x\\neq 0$ for all $x>0$.\n\nFirst, $\\cos x\\neq 0$ for all $x>0$. Indeed, if $\\cos x_0=0$ for some $x_0>0$, then\n\\[\n\\label{eq:4.u328}\n\\sin(2x_0)=2\\sin x_0\\cos x_0=0,\n\\]\ncontradicting the assumption.\n\nSince $\\cos(0)=1$ and $\\cos$ is continuous, the fact that $\\cos$ has no zeros on $(0,\\infty)$ implies $\\cos x>0$ for all $x>0$.\n\nNext, $\\sin x>0$ for all $x>0$. Since $\\sin(0)=0$ and $\\sin'(0)=\\cos(0)=1>0$, there exists $\\delta>0$ such that $\\sin x>0$ for all $x\\in(0,\\delta)$. If there were $y>0$ with $\\sin y<0$, then by continuity there would exist $z\\in(0,y)$ with $\\sin z=0$, contradicting the assumption.\n\nDefine $\\cot x:=\\cos x/\\sin x$ on $(0,\\infty)$. Then $\\cot x>0$ for all $x>0$, and $\\cot$ is differentiable. Using $\\sin'(x)=\\cos x$ and $\\cos'(x)=-\\sin x$,\n\\[\n\\label{eq:4.u329}\n\\cot'(x)=\\frac{\\cos'(x)\\sin x-\\cos x\\sin'(x)}{\\sin^2 x}=\n\\frac{-\\sin^2 x-\\cos^2 x}{\\sin^2 x}=-\\frac{1}{\\sin^2 x}.\n\\]\nSince $\\sin x\\in(0,1]$ for all $x$, it follows that $\\cot'(x)=-1/\\sin^2 x\\le -1$ on $(0,\\infty)$. Hence for any $x>0$ and $s>0$,\n\\[\n\\label{eq:4.u330}\n\\cot(x+s)-\\cot(x)=\\int_x^{x+s}\\cot'(t)\\,dt\\le\\int_x^{x+s}(-1)\\,dt=-s,\n\\]\nso $\\cot(x+s)\\le \\cot(x)-s$. Choosing $s>\\cot(x)$ gives $\\cot(x+s)<0$, contradicting that $\\cot$ is positive on $(0,\\infty)$. This contradiction shows that there exists $x>0$ with $\\sin x=0$.\n\\end{proof}",
+    "index": 102
+  },
+  {
+    "label": "Definition 4.7.2",
+    "env": "def",
+    "number_components": [
+      4,
+      7,
+      2
+    ],
+    "extracted_labels": [
+      "def:4.26",
+      "eq:4.u331"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.26}\nDefine\n\\[\n\\label{eq:4.u331}\n\\pi := \\inf\\{x\\in(0,\\infty):\\sin(x)=0\\}.\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 103
+  },
+  {
+    "label": "Theorem 4.7.7",
+    "env": "thm",
+    "number_components": [
+      4,
+      7,
+      7
+    ],
+    "extracted_labels": [
+      "thm:4.7.5.a"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Exponentials and Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\\label{thm:4.7.5.a}\nFor every real number $x$, we have\n\\[\n\\cos(x+\\pi)=-\\cos(x),\\qquad \\sin(x+\\pi)=-\\sin(x).\n\\]\nIn particular,\n\\[\n\\cos(x+2\\pi)=\\cos(x),\\qquad \\sin(x+2\\pi)=\\sin(x),\n\\]\nso $\\sin$ and $\\cos$ are periodic with period $2\\pi$.\n\\end{theorem}\n(depend on: \"Definition 4.7.2\")",
+    "dependencies": [
+      "Definition 4.7.2"
+    ],
+    "proof": "\\begin{proof}\nUsing the addition formulas,\n\\[\n\\cos(x+\\pi)=\\cos x\\cos\\pi-\\sin x\\sin\\pi,\\qquad \\sin(x+\\pi)=\\sin x\\cos\\pi+\\cos x\\sin\\pi.\n\\]\nFrom $\\sin(0)=0$ and $\\cos(0)=1$, together with the standard value $\\pi$ satisfying\n\\[\n\\cos\\pi=-1,\\qquad \\sin\\pi=0,\n\\]\nwe obtain\n\\[\n\\cos(x+\\pi)=\\cos x(-1)-\\sin x\\cdot 0=-\\cos x,\n\\]\n\\[\n\\sin(x+\\pi)=\\sin x(-1)+\\cos x\\cdot 0=-\\sin x.\n\\]\nApplying the same identities twice gives\n\\[\n\\cos(x+2\\pi)=\\cos((x+\\pi)+\\pi)=-\\cos(x+\\pi)=\\cos x,\n\\]\n\\[\n\\sin(x+2\\pi)=\\sin((x+\\pi)+\\pi)=-\\sin(x+\\pi)=\\sin x.\n\\]\n\\end{proof}",
+    "index": 104
+  },
+  {
+    "label": "Theorem 4.7.8",
+    "env": "thm",
+    "number_components": [
+      4,
+      7,
+      8
+    ],
+    "extracted_labels": [
+      "thm:4.7.5.b"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Exponentials and Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\\label{thm:4.7.5.b}\nFor every real number $x$, we have\n\\[\n\\sin(x)=0 \\quad\\Longleftrightarrow\\quad \\frac{x}{\\pi}\\in\\mathbb{Z}.\n\\]\n\\end{theorem}\n(depend on: \"Definition 4.7.2\")",
+    "dependencies": [
+      "Definition 4.7.2"
+    ],
+    "proof": "\\begin{proof}\n(\\Rightarrow) Suppose $\\sin(x)=0$. Then by the Pythagorean identity $\\sin(x)^2+\\cos(x)^2=1$, we have $\\cos(x)^2=1$, hence $\\cos(x)=\\pm 1$.\nUsing the shift identities from periodicity,\n\\[\n\\sin(x+\\pi)=-\\sin(x)=0,\n\\]\nso all points of the form $x+k\\pi$ are also zeros.\nTo conclude that $x$ must be an integer multiple of $\\pi$, we use the standard fact that on $[0,\\pi]$ the only zeros of $\\sin$ are at $0$ and $\\pi$ (e.g. from strict monotonicity of $\\cos$ on $[0,\\pi]$ together with $\\sin'=\\cos$ and the intermediate value property). Therefore $x\\in\\pi\\mathbb{Z}$.\n\n(\\Leftarrow) If $x=k\\pi$ for some $k\\in\\mathbb{Z}$, then iterating $\\sin(t+\\pi)=-\\sin(t)$ and using $\\sin(0)=0$ gives $\\sin(k\\pi)=0$.\n\\end{proof}",
+    "index": 105
+  },
+  {
+    "label": "Theorem 4.7.9",
+    "env": "thm",
+    "number_components": [
+      4,
+      7,
+      9
+    ],
+    "extracted_labels": [
+      "thm:4.7.5.c"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Complex Exponentials and Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\\label{thm:4.7.5.c}\nFor every real number $x$, we have\n\\[\n\\cos(x)=0 \\quad\\Longleftrightarrow\\quad \\frac{x}{\\pi}\\in\\mathbb{Z}+\\frac12.\n\\]\n\\end{theorem}\n(depend on: \"Definition 4.7.2\")",
+    "dependencies": [
+      "Definition 4.7.2"
+    ],
+    "proof": "\\begin{proof}\nUsing the addition formula with $y=\\tfrac\\pi2$,\n\\[\n\\sin\\Bigl(x+\\tfrac\\pi2\\Bigr)=\\sin x\\cos\\tfrac\\pi2+\\cos x\\sin\\tfrac\\pi2.\n\\]\nWith the standard values $\\cos(\\tfrac\\pi2)=0$ and $\\sin(\\tfrac\\pi2)=1$, this simplifies to\n\\[\n\\sin\\Bigl(x+\\tfrac\\pi2\\Bigr)=\\cos x.\n\\]\nTherefore $\\cos x=0$ if and only if $\\sin(x+\\tfrac\\pi2)=0$.\nBy the characterization of zeros of sine,\n\\[\n\\sin\\Bigl(x+\\tfrac\\pi2\\Bigr)=0 \\iff x+\\tfrac\\pi2 \\in \\pi\\mathbb{Z} \\iff x\\in \\pi\\Bigl(\\mathbb{Z}-\\tfrac12\\Bigr)=\\pi\\Bigl(\\mathbb{Z}+\\tfrac12\\Bigr).\n\\]\nDividing by $\\pi$ gives the desired equivalence.\n\\end{proof}",
+    "index": 106
+  },
+  {
+    "label": "Proposition 4.7.2",
+    "env": "prop",
+    "number_components": [
+      4,
+      7,
+      2
+    ],
+    "extracted_labels": [
+      "prop:4.24",
+      "prf:prop:4.24",
+      "eq:4.u337",
+      "eq:4.u338",
+      "eq:4.u339"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.24}\nLet $f:\\mathbb{R}\\to\\mathbb{R}$ be differentiable at $x_0\\in\\mathbb{R}$. Assume that $f(x_0)=0$ and $f'(x_0)\\neq 0$. Then there exists $c>0$ such that for every $y\\in\\mathbb{R}$ with $0<|y-x_0|<c$, one has $f(y)\\neq 0$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.24}\nSince $f$ is differentiable at $x_0$ and $f(x_0)=0$, for $y\\neq x_0$ define\n\\[\n\\label{eq:4.u337}\nq(y):=\\frac{f(y)-f(x_0)}{y-x_0}=\\frac{f(y)}{y-x_0}.\n\\]\nThen $\\lim_{y\\to x_0} q(y)=f'(x_0)\\neq 0$. Choose $\\varepsilon:=\\tfrac12|f'(x_0)|>0$. By the definition of limit, there exists $c>0$ such that whenever $0<|y-x_0|<c$,\n\\[\n\\label{eq:4.u338}\n|q(y)-f'(x_0)|<\\varepsilon.\n\\]\nIf $q(y)=0$ for some such $y$, then\n\\[\n\\label{eq:4.u339}\n|f'(x_0)|=|f'(x_0)-q(y)|<\\varepsilon=\\tfrac12|f'(x_0)|,\n\\]\na contradiction. Hence $q(y)\\neq 0$ for all $0<|y-x_0|<c$. Since $f(y)=(y-x_0)q(y)$ and $y-x_0\\neq 0$ in this range, it follows that $f(y)\\neq 0$.\n\\end{proof}",
+    "index": 107
+  },
+  {
+    "label": "Proposition 4.7.3",
+    "env": "prop",
+    "number_components": [
+      4,
+      7,
+      3
+    ],
+    "extracted_labels": [
+      "prop:4.25",
+      "prf:prop:4.25",
+      "eq:4.u340",
+      "eq:4.u341"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.25}\nThere exists a real number $c>0$ such that $\\sin x\\neq 0$ for every real $x$ with $0<x<c$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.25}\nAssume for contradiction that for every $c>0$ there exists $x$ with $0<x<c$ and $\\sin x=0$. Then there exists a sequence $(x_n)_{n\\ge 1}$ such that $0<x_n<1/n$ and $\\sin x_n=0$ for all $n$. Hence $x_n\\to 0$ as $n\\to\\infty$.\n\nThe function $\\sin$ is differentiable at $0$ with $\\sin'(0)=1$, so\n\\[\n\\label{eq:4.u340}\n\\lim_{x\\to 0}\\frac{\\sin x-\\sin 0}{x-0}=1.\n\\]\nIn particular,\n\\[\n\\label{eq:4.u341}\n\\lim_{n\\to\\infty}\\frac{\\sin x_n}{x_n}=1.\n\\]\nHowever $\\sin x_n=0$ for all $n$, so $\\sin x_n/x_n=0$ for all $n$, and therefore the limit equals $0$, a contradiction. Thus there exists $c>0$ such that $\\sin x\\neq 0$ for all $x$ with $0<x<c$.\n\\end{proof}",
+    "index": 108
+  },
+  {
+    "label": "Proposition 4.7.4",
+    "env": "prop",
+    "number_components": [
+      4,
+      7,
+      4
+    ],
+    "extracted_labels": [
+      "prop:4.26",
+      "eq:4.u342",
+      "prf:prop:4.26",
+      "eq:4.u343",
+      "eq:4.u344"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.26}\nLet $x,y\\in\\mathbb{R}$ satisfy $x^2+y^2=1$. Then there exists a unique $\\theta\\in(-\\pi,\\pi]$ such that\n\\[\n\\label{eq:4.u342}\n\\sin\\theta=x\\quad\\text{and}\\quad \\cos\\theta=y.\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.26}\nDefine $z:=y+ix\\in\\mathbb{C}$. Then\n\\[\n\\label{eq:4.u343}\n|z|^2=y^2+x^2=1,\n\\]\nso $z$ lies on the unit circle. The exponential map $\\theta\\mapsto e^{i\\theta}$ maps $(-\\pi,\\pi]$ bijectively onto the unit circle; hence there exists a unique $\\theta\\in(-\\pi,\\pi]$ such that\n\\[\n\\label{eq:4.u344}\ne^{i\\theta}=z.\n\\]\nWriting $e^{i\\theta}=\\cos\\theta+i\\sin\\theta$ and comparing real and imaginary parts yields $\\cos\\theta=y$ and $\\sin\\theta=x$.\n\nFor uniqueness, if $\\theta,\\varphi\\in(-\\pi,\\pi]$ satisfy $\\sin\\theta=\\sin\\varphi$ and $\\cos\\theta=\\cos\\varphi$, then $e^{i\\theta}=\\cos\\theta+i\\sin\\theta=\\cos\\varphi+i\\sin\\varphi=e^{i\\varphi}$. Since $\\theta\\mapsto e^{i\\theta}$ is injective on $(-\\pi,\\pi]$, it follows that $\\theta=\\varphi$.\n\\end{proof}",
+    "index": 109
+  },
+  {
+    "label": "Proposition 4.7.5",
+    "env": "prop",
+    "number_components": [
+      4,
+      7,
+      5
+    ],
+    "extracted_labels": [
+      "prop:4.27",
+      "prf:prop:4.27",
+      "eq:4.u345",
+      "eq:4.u346"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.27}\nLet $r,s>0$ and $\\theta,\\alpha\\in\\mathbb{R}$. If $re^{i\\theta}=se^{i\\alpha}$, then $r=s$ and there exists $k\\in\\mathbb{Z}$ such that $\\theta=\\alpha+2\\pi k$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.27}\nAssume $re^{i\\theta}=se^{i\\alpha}$. Taking moduli gives\n\\[\n\\label{eq:4.u345}\n|re^{i\\theta}|=|se^{i\\alpha}|.\n\\]\nSince $|e^{it}|=1$ for all $t\\in\\mathbb{R}$, it follows that $r=s$.\n\nWith $r=s>0$, divide the original equality by $r$ to obtain $e^{i\\theta}=e^{i\\alpha}$. Then\n\\[\n\\label{eq:4.u346}\ne^{i(\\theta-\\alpha)}=1.\n\\]\nUsing Euler's formula, $e^{i(\\theta-\\alpha)}=\\cos(\\theta-\\alpha)+i\\sin(\\theta-\\alpha)$, so $\\cos(\\theta-\\alpha)=1$ and $\\sin(\\theta-\\alpha)=0$. Hence $\\theta-\\alpha=2\\pi k$ for some $k\\in\\mathbb{Z}$, i.e. $\\theta=\\alpha+2\\pi k$.\n\\end{proof}",
+    "index": 110
+  },
+  {
+    "label": "Proposition 4.7.6",
+    "env": "prop",
+    "number_components": [
+      4,
+      7,
+      6
+    ],
+    "extracted_labels": [
+      "prop:4.28",
+      "eq:4.u347",
+      "prf:prop:4.28"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.28}\nLet $z\\in\\mathbb{C}\\setminus\\{0\\}$. There exists a unique pair $(r,\\theta)$ with $r>0$ and $\\theta\\in(-\\pi,\\pi]$ such that\n\\[\n\\label{eq:4.u347}\nz = r e^{i\\theta}.\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.28}\nWrite $z=x+iy$ with $x,y\\in\\mathbb{R}$ and set $r=|z|=\\sqrt{x^2+y^2}>0$. Then $w=z/r$ satisfies $|w|=1$. Let $w=u+iv$ with $u,v\\in\\mathbb{R}$; then $u^2+v^2=1$.\n\nConsider the continuous map $\\gamma:[-\\pi,\\pi]\\to\\mathbb{R}^2$ defined by $\\gamma(t)=(\\cos t,\\sin t)$. The restriction of $\\gamma$ to $(-\\pi,\\pi)$ is injective, and $\\gamma(-\\pi)=\\gamma(\\pi)=(-1,0)$. Since $u^2+v^2=1$, there exists $\\theta\\in[-\\pi,\\pi]$ such that $(u,v)=(\\cos\\theta,\\sin\\theta)$. If $(u,v)\\neq(-1,0)$, then necessarily $\\theta\\in(-\\pi,\\pi)$; if $(u,v)=(-1,0)$, choose $\\theta=\\pi$. In all cases $\\theta\\in(-\\pi,\\pi]$ and $w=\\cos\\theta+i\\sin\\theta=e^{i\\theta}$, hence $z=r e^{i\\theta}$.\n\nFor uniqueness, suppose $z=r e^{i\\theta}=r' e^{i\\theta'}$ with $r,r'>0$ and $\\theta,\\theta'\\in(-\\pi,\\pi]$. Taking moduli gives $r=|z|=r'$. Dividing by $r$ yields $e^{i\\theta}=e^{i\\theta'}$, so $\\cos\\theta=\\cos\\theta'$ and $\\sin\\theta=\\sin\\theta'$. Thus $(\\cos\\theta,\\sin\\theta)=(\\cos\\theta',\\sin\\theta')$. Since $\\gamma$ is injective on $(-\\pi,\\pi)$ and identifies only the endpoints $-\\pi$ and $\\pi$, the condition $\\theta,\\theta'\\in(-\\pi,\\pi]$ implies $\\theta=\\theta'$. Therefore $(r,\\theta)$ is unique.\n\\end{proof}",
+    "index": 111
+  },
+  {
+    "label": "Proposition 4.7.7",
+    "env": "prop",
+    "number_components": [
+      4,
+      7,
+      7
+    ],
+    "extracted_labels": [
+      "prop:4.29",
+      "eq:4.u348",
+      "eq:4.u349",
+      "prf:prop:4.29",
+      "eq:4.u350",
+      "eq:4.u351"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.29}\n[de Moivre identities]\nFor every $\\theta\\in\\mathbb{R}$ and every $n\\in\\mathbb{Z}$,\n\\[\n\\label{eq:4.u348}\n\\cos(n\\theta)=\\Re\\bigl((\\cos\\theta+i\\sin\\theta)^n\\bigr),\\qquad \\sin(n\\theta)=\\Im\\bigl((\\cos\\theta+i\\sin\\theta)^n\\bigr).\n\\]\nEquivalently,\n\\[\n\\label{eq:4.u349}\n(\\cos\\theta+i\\sin\\theta)^n=\\cos(n\\theta)+i\\sin(n\\theta).\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.29}\nSet $z=\\cos\\theta+i\\sin\\theta$. Then $|z|=1$, so $z\\neq 0$ and $z^n$ is defined for all $n\\in\\mathbb{Z}$.\n\nFirst assume $n\\ge 0$. The statement is clear for $n=0$, since $z^0=1=\\cos 0+i\\sin 0$. For $n\\ge 1$, use induction. Suppose $z^n=\\cos(n\\theta)+i\\sin(n\\theta)$. Then\n\\[\n\\label{eq:4.u350}\n\\begin{aligned}\nz^{n+1}&=z^n z=(\\cos(n\\theta)+i\\sin(n\\theta))(\\cos\\theta+i\\sin\\theta)\\\\\n&=\\bigl(\\cos(n\\theta)\\cos\\theta-\\sin(n\\theta)\\sin\\theta\\bigr)+i\\bigl(\\sin(n\\theta)\\cos\\theta+\\cos(n\\theta)\\sin\\theta\\bigr)\\\\\n&=\\cos((n+1)\\theta)+i\\sin((n+1)\\theta),\n\\end{aligned}\n\\]\nusing the addition formulas for cosine and sine. Hence the identity holds for all $n\\in\\mathbb{N}$.\n\nNow let $n<0$ and write $n=-m$ with $m\\in\\mathbb{N}$. Since $|z|=1$, one has $z^{-1}=\\overline z=\\cos\\theta-i\\sin\\theta=\\cos(-\\theta)+i\\sin(-\\theta)$. Applying the already proved nonnegative case to $z^{-1}$ gives\n\\[\n\\label{eq:4.u351}\nz^{-m}=(z^{-1})^m=\\cos(m(-\\theta))+i\\sin(m(-\\theta))=\\cos(-m\\theta)+i\\sin(-m\\theta)=\\cos(n\\theta)+i\\sin(n\\theta).\n\\]\nTherefore $(\\cos\\theta+i\\sin\\theta)^n=\\cos(n\\theta)+i\\sin(n\\theta)$ for all $n\\in\\mathbb{Z}$. Taking real and imaginary parts yields the stated formulas.\n\\end{proof}",
+    "index": 112
+  },
+  {
+    "label": "Definition 4.7.3",
+    "env": "def",
+    "number_components": [
+      4,
+      7,
+      3
+    ],
+    "extracted_labels": [
+      "def:4.27",
+      "eq:4.u352"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.27}\nThe tangent function is the map $\\tan:(-\\pi/2,\\pi/2)\\to\\mathbb{R}$ defined by\n\\[\n\\label{eq:4.u352}\n\\tan(x):=\\frac{\\sin x}{\\cos x}.\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 113
+  },
+  {
+    "label": "Proposition 4.7.8",
+    "env": "prop",
+    "number_components": [
+      4,
+      7,
+      8
+    ],
+    "extracted_labels": [
+      "prop:4.30",
+      "eq:4.u353",
+      "eq:4.u354",
+      "prf:prop:4.30",
+      "eq:4.u355",
+      "eq:4.u356",
+      "eq:4.u357",
+      "eq:4.u358"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.30}\nDefine $\\tan:(-\\pi/2,\\pi/2)\\to\\mathbb{R}$ by $\\tan(x)=\\dfrac{\\sin x}{\\cos x}$. Then $\\tan$ is differentiable on $(-\\pi/2,\\pi/2)$ and\n\\[\n\\label{eq:4.u353}\n\\frac{d}{dx}\\tan(x)=1+\\tan^2(x)\\qquad (x\\in(-\\pi/2,\\pi/2)).\n\\]\nIn particular, $\\tan$ is strictly increasing on $(-\\pi/2,\\pi/2)$. Moreover,\n\\[\n\\label{eq:4.u354}\n\\lim_{x\\to\\pi/2^-}\\tan(x)=+\\infty,\\qquad \\lim_{x\\to-\\pi/2^+}\\tan(x)=-\\infty.\n\\]\nConsequently, $\\tan$ is a bijection from $(-\\pi/2,\\pi/2)$ onto $\\mathbb{R}$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.30}\nFor $x\\in(-\\pi/2,\\pi/2)$, one has $\\cos x>0$, hence $\\tan(x)=\\sin x/\\cos x$ is well-defined. Using the quotient rule and $\\sin'(x)=\\cos x$, $\\cos'(x)=-\\sin x$,\n\\[\n\\label{eq:4.u355}\n\\tan'(x)=\\frac{\\cos x\\,\\cos x-\\sin x(-\\sin x)}{\\cos^2 x}=\\frac{\\cos^2 x+\\sin^2 x}{\\cos^2 x}=\\frac{1}{\\cos^2 x}.\n\\]\nSince $\\tan^2(x)=\\sin^2 x/\\cos^2 x$, the identity $\\sin^2 x+\\cos^2 x=1$ gives\n\\[\n\\label{eq:4.u356}\n1+\\tan^2(x)=1+\\frac{\\sin^2 x}{\\cos^2 x}=\\frac{\\cos^2 x+\\sin^2 x}{\\cos^2 x}=\\frac{1}{\\cos^2 x}=\\tan'(x).\n\\]\nIn particular, $\\tan'(x)=1/\\cos^2 x>0$ on $(-\\pi/2,\\pi/2)$, so $\\tan$ is strictly increasing.\n\nFor the one-sided limits, set $x=\\pi/2-h$ with $h\\downarrow 0$. Then\n\\[\n\\label{eq:4.u357}\n\\tan(\\pi/2-h)=\\frac{\\sin(\\pi/2-h)}{\\cos(\\pi/2-h)}=\\frac{\\cos h}{\\sin h}=\\cot h.\n\\]\nAs $h\\downarrow 0$, $\\cos h\\to 1$ and $\\sin h\\to 0^+$, hence $\\cot h=\\cos h/\\sin h\\to +\\infty$, so $\\lim_{x\\to\\pi/2^-}\\tan(x)=+\\infty$. Similarly, writing $x=-\\pi/2+h$ with $h\\downarrow 0$ yields\n\\[\n\\label{eq:4.u358}\n\\tan(-\\pi/2+h)=\\frac{\\sin(-\\pi/2+h)}{\\cos(-\\pi/2+h)}=\\frac{-\\cos h}{\\sin h}\\to-\\infty,\n\\]\nso $\\lim_{x\\to-\\pi/2^+}\\tan(x)=-\\infty$.\n\nSince $\\tan$ is strictly increasing, it is injective. The limits show that its range is unbounded above and below; by the intermediate value theorem and monotonicity, for each $y\\in\\mathbb{R}$ there exists $x\\in(-\\pi/2,\\pi/2)$ with $\\tan(x)=y$, so $\\tan$ is surjective onto $\\mathbb{R}$. Therefore $\\tan$ is a bijection from $(-\\pi/2,\\pi/2)$ onto $\\mathbb{R}$.\n\\end{proof}",
+    "index": 114
+  },
+  {
+    "label": "Proposition 4.7.9",
+    "env": "prop",
+    "number_components": [
+      4,
+      7,
+      9
+    ],
+    "extracted_labels": [
+      "prop:4.31",
+      "eq:4.u359",
+      "prf:prop:4.31",
+      "eq:4.u360",
+      "eq:4.u361",
+      "eq:4.u362",
+      "eq:4.u363",
+      "eq:4.u364"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.31}\nLet $\\tan^{-1}:\\mathbb{R}\\to(-\\pi/2,\\pi/2)$ denote the inverse function of $\\tan:(-\\pi/2,\\pi/2)\\to\\mathbb{R}$. Then $\\tan^{-1}$ is differentiable on $\\mathbb{R}$ and\n\\[\n\\label{eq:4.u359}\n\\frac{d}{dx}\\tan^{-1}(x)=\\frac{1}{1+x^2}\\qquad (x\\in\\mathbb{R}).\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.31}\nThe function $\\tan$ is differentiable on $(-\\pi/2,\\pi/2)$ with\n\\[\n\\label{eq:4.u360}\n\\tan'(y)=\\sec^2(y)=1+\\tan^2(y)\\qquad (y\\in(-\\pi/2,\\pi/2)).\n\\]\nIn particular, $\\tan'(y)>0$ for all such $y$. Since $\\tan$ is a bijection from $(-\\pi/2,\\pi/2)$ onto $\\mathbb{R}$, its inverse $\\tan^{-1}:\\mathbb{R}\\to(-\\pi/2,\\pi/2)$ is well-defined.\n\nFix $x\\in\\mathbb{R}$ and set $y=\\tan^{-1}(x)$, so that $x=\\tan(y)$. For $h\\neq 0$ with $x+h\\in\\mathbb{R}$, write $y_h=\\tan^{-1}(x+h)$, so $x+h=\\tan(y_h)$. Then\n\\[\n\\label{eq:4.u361}\n\\frac{\\tan^{-1}(x+h)-\\tan^{-1}(x)}{h}=\\frac{y_h-y}{\\tan(y_h)-\\tan(y)}.\n\\]\nBy the mean value theorem applied to $\\tan$ on the interval with endpoints $y$ and $y_h$, there exists $c_h$ between $y$ and $y_h$ such that\n\\[\n\\label{eq:4.u362}\n\\tan(y_h)-\\tan(y)=\\tan'(c_h)(y_h-y).\n\\]\nHence\n\\[\n\\label{eq:4.u363}\n\\frac{y_h-y}{\\tan(y_h)-\\tan(y)}=\\frac{1}{\\tan'(c_h)}.\n\\]\nAs $h\\to 0$, one has $y_h\\to y$ because $\\tan$ is continuous and strictly increasing, so $c_h\\to y$. Since $\\tan'$ is continuous,\n\\[\n\\label{eq:4.u364}\n\\lim_{h\\to 0}\\frac{\\tan^{-1}(x+h)-\\tan^{-1}(x)}{h}=\\lim_{h\\to 0}\\frac{1}{\\tan'(c_h)}=\\frac{1}{\\tan'(y)}.\n\\]\nUsing $\\tan'(y)=1+\\tan^2(y)=1+x^2$, it follows that $(\\tan^{-1})'(x)=\\frac{1}{1+x^2}$.\n\\end{proof}",
+    "index": 115
+  },
+  {
+    "label": "Proposition 4.7.10",
+    "env": "prop",
+    "number_components": [
+      4,
+      7,
+      10
+    ],
+    "extracted_labels": [
+      "prop:4.32",
+      "eq:4.u365",
+      "prf:prop:4.32",
+      "eq:4.u366",
+      "eq:4.u367",
+      "eq:4.u368",
+      "eq:4.u369"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.32}\nFor every real number $x$ with $|x|<1$, the arctangent function admits the power series expansion\n\\[\n\\label{eq:4.u365}\n\\arctan(x)=\\sum_{n=0}^{\\infty}\\frac{(-1)^n x^{2n+1}}{2n+1}.\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.32}\nFix $x$ with $|x|<1$. The geometric series gives\n\\[\n\\label{eq:4.u366}\n\\frac{1}{1+t}=\\sum_{n=0}^{\\infty}(-1)^n t^n\\qquad (|t|<1).\n\\]\nSubstitute $t=u^2$ to obtain, for $|u|<1$,\n\\[\n\\label{eq:4.u367}\n\\frac{1}{1+u^2}=\\sum_{n=0}^{\\infty}(-1)^n u^{2n}.\n\\]\nFix $r$ with $|x|<r<1$. On $[-r,r]$ the series $\\sum_{n\\ge 0}(-1)^n u^{2n}$ converges uniformly (since $\\sum_{n\\ge 0} r^{2n}$ converges), hence it may be integrated term-by-term on $[0,x]$:\n\\[\n\\label{eq:4.u368}\n\\int_0^x \\frac{1}{1+u^2}\\,du = \\sum_{n=0}^{\\infty}(-1)^n \\int_0^x u^{2n}\\,du\n=\\sum_{n=0}^{\\infty}\\frac{(-1)^n x^{2n+1}}{2n+1}.\n\\]\nBy the definition of $\\arctan$ as the inverse of $\\tan$ on $(-\\pi/2,\\pi/2)$, the function $\\arctan(x)$ satisfies\n\\[\n\\label{eq:4.u369}\n\\arctan(x)=\\int_0^x \\frac{1}{1+u^2}\\,du\n\\qquad (x\\in\\mathbb{R}),\n\\]\nsince the derivative of $\\arctan$ is $1/(1+x^2)$ and $\\arctan(0)=0$. Combining the displayed equalities yields the stated power series for $|x|<1$.\n\\end{proof}",
+    "index": 116
+  },
+  {
+    "label": "Proposition 4.7.11",
+    "env": "prop",
+    "number_components": [
+      4,
+      7,
+      11
+    ],
+    "extracted_labels": [
+      "prop:4.33",
+      "eq:4.u370",
+      "eq:4.u371",
+      "prf:prop:4.33",
+      "eq:4.u372",
+      "eq:4.u373",
+      "eq:4.u374",
+      "eq:4.u375"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.33}\nThe following series identity holds:\n\\[\n\\label{eq:4.u370}\n\\pi=4\\sum_{n=0}^{\\infty}\\frac{(-1)^n}{2n+1}=4-\\frac{4}{3}+\\frac{4}{5}-\\frac{4}{7}+\\cdots.\n\\]\nIn particular,\n\\[\n\\label{eq:4.u371}\n4-\\frac{4}{3}<\\pi<4.\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.33}\nFor $|x|<1$, the geometric series gives\n\\[\n\\label{eq:4.u372}\n\\frac{1}{1+x^2}=\\sum_{n=0}^{\\infty}(-1)^n x^{2n}.\n\\]\nIntegrating term-by-term from $0$ to $x$ (which is justified since the series converges uniformly on $[0,r]$ for every $0<r<1$) yields\n\\[\n\\label{eq:4.u373}\n\\arctan(x)=\\int_0^x \\frac{1}{1+t^2}\\,dt=\\sum_{n=0}^{\\infty}(-1)^n\\frac{x^{2n+1}}{2n+1},\\qquad |x|<1.\n\\]\nThis power series is continuous on $[-1,1]$, hence taking $x=1$ gives\n\\[\n\\label{eq:4.u374}\n\\frac{\\pi}{4}=\\arctan(1)=\\sum_{n=0}^{\\infty}\\frac{(-1)^n}{2n+1},\n\\]\nand multiplying by $4$ proves the stated identity.\n\nThe series $\\sum_{n=0}^\\infty \\frac{(-1)^n}{2n+1}$ is alternating with strictly decreasing terms tending to $0$, so its partial sums satisfy the alternating-series bounds\n\\[\n\\label{eq:4.u375}\n1-\\frac13 < \\sum_{n=0}^{\\infty}\\frac{(-1)^n}{2n+1} < 1.\n\\]\nMultiplying by $4$ gives $4-\\frac{4}{3}<\\pi<4$.\n\\end{proof}",
+    "index": 117
+  },
+  {
+    "label": "Definition 4.7.4",
+    "env": "def",
+    "number_components": [
+      4,
+      7,
+      4
+    ],
+    "extracted_labels": [
+      "def:4.28",
+      "eq:4.u376"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:4.28}\nDefine $f:\\mathbb{R}\\to\\mathbb{R}$ by\n\\[\n\\label{eq:4.u376}\nf(x):=\\sum_{n=1}^{\\infty}4^{-n}\\cos(32^n\\pi x).\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 118
+  },
+  {
+    "label": "Proposition 4.7.12",
+    "env": "prop",
+    "number_components": [
+      4,
+      7,
+      12
+    ],
+    "extracted_labels": [
+      "prop:4.34",
+      "eq:4.u377",
+      "prf:prop:4.34",
+      "eq:4.u378"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.34}\nDefine, for each $x\\in\\mathbb{R}$,\n\\[\n\\label{eq:4.u377}\nf(x)=\\sum_{n=1}^{\\infty}4^{-n}\\cos\\bigl(32^n\\pi x\\bigr).\n\\]\nThen the series $\\sum_{n=1}^{\\infty}4^{-n}\\cos(32^n\\pi x)$ converges uniformly on $\\mathbb{R}$. In particular, $f$ is continuous on $\\mathbb{R}$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.34}\nFor each $n\\ge 1$ define $u_n(x)=4^{-n}\\cos(32^n\\pi x)$ for $x\\in\\mathbb{R}$. Since $|\\cos(32^n\\pi x)|\\le 1$ for all $x$, it follows that\n\\[\n\\label{eq:4.u378}\n|u_n(x)|\\le 4^{-n}\\qquad \\text{for all }x\\in\\mathbb{R}.\n\\]\nThe numerical series $\\sum_{n=1}^\\infty 4^{-n}$ converges. Therefore, by the Weierstrass M-test, the series $\\sum_{n=1}^{\\infty}u_n(x)$ converges uniformly on $\\mathbb{R}$.\n\nEach function $u_n$ is continuous on $\\mathbb{R}$, being a scalar multiple of the cosine function composed with an affine map. A uniformly convergent series of continuous functions has a continuous sum; hence $f$ is continuous on $\\mathbb{R}$.\n\\end{proof}",
+    "index": 119
+  },
+  {
+    "label": "Proposition 4.7.13",
+    "env": "prop",
+    "number_components": [
+      4,
+      7,
+      13
+    ],
+    "extracted_labels": [
+      "prop:4.35",
+      "eq:4.u379",
+      "eq:4.u380",
+      "prf:prop:4.35",
+      "eq:4.u381",
+      "eq:4.u382",
+      "eq:4.u383",
+      "eq:4.u384",
+      "eq:4.u385",
+      "eq:4.u386",
+      "eq:4.u387",
+      "eq:4.u388",
+      "eq:4.u389"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.35}\nLet $f:\\mathbb{R}\\to\\mathbb{R}$ be defined by\n\\[\n\\label{eq:4.u379}\nf(x)=\\sum_{n=1}^{\\infty}4^{-n}\\cos\\bigl(32^n\\pi x\\bigr).\n\\]\nThen, for every $j\\in\\mathbb{Z}$ and every integer $m\\ge 1$,\n\\[\n\\label{eq:4.u380}\n\\left|f\\left(\\frac{j+1}{32^m}\\right)-f\\left(\\frac{j}{32^m}\\right)\\right|\\ge 4^{-m}.\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.35}\nFix $j\\in\\mathbb{Z}$ and an integer $m\\ge 1$, and set\n\\[\n\\label{eq:4.u381}\nx_0=\\frac{j}{32^m},\\qquad x_1=\\frac{j+1}{32^m}.\n\\]\nThen\n\\[\n\\label{eq:4.u382}\nf(x_1)-f(x_0)=\\sum_{n=1}^{\\infty}4^{-n}\\Bigl(\\cos(32^n\\pi x_1)-\\cos(32^n\\pi x_0)\\Bigr).\n\\]\nFor $1\\le n\\le m-1$, one has $32^n(x_1-x_0)=32^{n-m}=1/32^{m-n}\\in\\mathbb{Z}$? Actually $32^{n-m}$ is a reciprocal power of $32$, and\n\\[\n\\label{eq:4.u383}\n32^n\\pi x_0=\\pi j\\,32^{n-m},\\qquad 32^n\\pi x_1=\\pi (j+1)\\,32^{n-m}.\n\\]\nSince $32^{n-m}$ is an integer multiple of $1/32$ and in particular $32\\cdot 32^{n-m}=32^{n-m+1}\\in\\mathbb{Z}$, the difference between the two angles is $\\pi\\,32^{n-m}$, which is an integer multiple of $2\\pi$ because $32^{n-m}$ is an even integer when $n\\le m-1$. Hence\n\\[\n\\label{eq:4.u384}\n\\cos(32^n\\pi x_1)=\\cos(32^n\\pi x_0)\\quad\\text{for }1\\le n\\le m-1,\n\\]\nand these terms contribute $0$.\n\nFor $n=m$,\n\\[\n\\label{eq:4.u385}\n32^m\\pi x_0=\\pi j,\\qquad 32^m\\pi x_1=\\pi(j+1),\n\\]\nso\n\\[\n\\label{eq:4.u386}\n\\cos(32^m\\pi x_1)-\\cos(32^m\\pi x_0)=\\cos(\\pi(j+1)) - \\cos(\\pi j)=(-1)^{j+1}-(-1)^j=-2(-1)^j.\n\\]\nTherefore the $n=m$ term equals $4^{-m}\\cdot(-2)(-1)^j$ and has absolute value $2\\cdot 4^{-m}$.\n\nFor $n\\ge m+1$, write $32^n\\pi x_0=\\pi j\\,32^{n-m}$ and $32^n\\pi x_1=\\pi(j+1)\\,32^{n-m}$. Since $32^{n-m}$ is an even integer, both angles are integer multiples of $2\\pi$, hence\n\\[\n\\label{eq:4.u387}\n\\cos(32^n\\pi x_1)=\\cos(32^n\\pi x_0)=1\\quad\\text{for all }n\\ge m+1,\n\\]\nand these terms also contribute $0$.\n\nConsequently,\n\\[\n\\label{eq:4.u388}\nf(x_1)-f(x_0)=4^{-m}\\bigl((-1)^{j+1}-(-1)^j\\bigr),\n\\]\nso\n\\[\n\\label{eq:4.u389}\n\\left|f\\left(\\frac{j+1}{32^m}\\right)-f\\left(\\frac{j}{32^m}\\right)\\right|=2\\cdot 4^{-m}\\ge 4^{-m}.\n\\]\n\\end{proof}",
+    "index": 120
+  },
+  {
+    "label": "Proposition 4.7.14",
+    "env": "prop",
+    "number_components": [
+      4,
+      7,
+      14
+    ],
+    "extracted_labels": [
+      "prop:4.36",
+      "eq:4.u390",
+      "prf:prop:4.36",
+      "eq:4.u391",
+      "eq:4.u392",
+      "eq:4.u393",
+      "eq:4.u394",
+      "eq:4.u395",
+      "eq:4.u396",
+      "eq:4.u397",
+      "eq:4.u398",
+      "eq:4.u399",
+      "eq:4.u400"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Trigonometric Functions",
+      "subsection": "",
+      "chapter_number": 4,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:4.36}\nDefine\n\\[\n\\label{eq:4.u390}\nf(x)=\\sum_{n=1}^{\\infty}4^{-n}\\cos\\bigl(32^n\\pi x\\bigr),\\qquad x\\in\\mathbb{R}.\n\\]\nThen $f$ is nowhere differentiable; that is, for every $x_0\\in\\mathbb{R}$, the function $f$ is not differentiable at $x_0$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:4.36}\nFix $x_0\\in\\mathbb{R}$. For each integer $m\\ge 1$, set\n\\[\n\\label{eq:4.u391}\nh_m:=2\\cdot 32^{-m}.\n\\]\nThen $h_m\\to 0$ as $m\\to\\infty$, and for every integer $n$,\n\\[\n\\label{eq:4.u392}\n32^n\\pi(x_0+h_m)=32^n\\pi x_0+2\\pi\\,32^{n-m},\n\\]\nso $\\cos\\bigl(32^n\\pi(x_0+h_m)\\bigr)=\\cos\\bigl(32^n\\pi x_0\\bigr)$ because $32^{n-m}$ is an integer when $n\\ge m$. Therefore, for $n\\ge m$,\n\\[\n\\label{eq:4.u393}\n\\cos\\bigl(32^n\\pi(x_0+h_m)\\bigr)-\\cos\\bigl(32^n\\pi x_0\\bigr)=0.\n\\]\nHence\n\\[\n\\label{eq:4.u394}\nf(x_0+h_m)-f(x_0)=\\sum_{n=1}^{m-1}4^{-n}\\Bigl(\\cos\\bigl(32^n\\pi(x_0+h_m)\\bigr)-\\cos\\bigl(32^n\\pi x_0\\bigr)\\Bigr).\n\\]\nUsing $\\cos(A+B)-\\cos A=-2\\sin(A+B/2)\\sin(B/2)$ with $A=32^n\\pi x_0$ and $B=2\\pi\\,32^{n-m}$ gives, for $1\\le n\\le m-1$,\n\\[\n\\label{eq:4.u395}\n\\cos\\bigl(32^n\\pi(x_0+h_m)\\bigr)-\\cos\\bigl(32^n\\pi x_0\\bigr)\n=-2\\sin\\bigl(32^n\\pi x_0+\\pi\\,32^{n-m}\\bigr)\\,\\sin\\bigl(\\pi\\,32^{n-m}\\bigr).\n\\]\nSince $n-m\\le -1$, one has $\\pi\\,32^{n-m}=\\pi/32^{m-n}\\in(0,\\pi/32]$. For $t\\in[0,\\pi/2]$, $\\sin t\\ge (2/\\pi)t$, hence\n\\[\n\\label{eq:4.u396}\n\\sin\\bigl(\\pi\\,32^{n-m}\\bigr)\\ge \\frac{2}{\\pi}\\,\\pi\\,32^{n-m}=2\\cdot 32^{n-m}.\n\\]\nChoose $m$ such that\n\\[\n\\label{eq:4.u397}\n\\left|\\sin\\bigl(32^{m-1}\\pi x_0\\bigr)\\right|\\ge \\frac12.\n\\]\nSuch $m$ exist infinitely often: if $x_0\\in\\mathbb{Q}$, then $32^{m-1}\\pi x_0$ is an integer multiple of $\\pi$ for only finitely many $m$, and the values $\\sin(32^{m-1}\\pi x_0)$ are periodic and not identically $0$, so the bound holds for infinitely many $m$; if $x_0\\notin\\mathbb{Q}$, then the sequence $\\{32^{m-1}x_0\\}$ is dense modulo $1$, so $\\{32^{m-1}\\pi x_0\\}$ is dense modulo $2\\pi$, and again the bound holds for infinitely many $m$.\n\nFor such an $m$, consider the term $n=m-1$ in the above finite sum. Then $\\sin(\\pi\\,32^{(m-1)-m})=\\sin(\\pi/32)\\ge 2\\cdot 32^{-1}=1/16$, so\n\\[\n\\label{eq:4.u398}\n\\left|\\cos\\bigl(32^{m-1}\\pi(x_0+h_m)\\bigr)-\\cos\\bigl(32^{m-1}\\pi x_0\\bigr)\\right|\n=2\\left|\\sin\\bigl(32^{m-1}\\pi x_0+\\pi/32\\bigr)\\right|\\,\\sin(\\pi/32)\\ge 2\\cdot \\frac12\\cdot \\frac1{16}=\\frac1{16},\n\\]\nwhere $|\\sin(\\theta+\\pi/32)|\\ge |\\sin\\theta|\\cos(\\pi/32)-|\\cos\\theta|\\sin(\\pi/32)\\ge \\tfrac12\\cos(\\pi/32)-\\sin(\\pi/32)\\ge \\tfrac12$ is ensured by possibly passing to a further subsequence of such $m$ (since $\\sin(32^{m-1}\\pi x_0)$ takes values arbitrarily close to $\\pm1$ in the irrational case and assumes finitely many nonzero values in the rational case).\nThus\n\\[\n\\label{eq:4.u399}\n\\left|f(x_0+h_m)-f(x_0)\\right|\n\\ge 4^{-(m-1)}\\cdot \\frac1{16}-\\sum_{n=1}^{m-2}4^{-n}\\cdot 2\n\\ge \\frac{1}{16}\\,4^{-(m-1)}-2\\sum_{n=1}^{\\infty}4^{-n}\n=\\frac{1}{16}\\,4^{-(m-1)}-\\frac{2}{3}.\n\\]\nDividing by $|h_m|=2\\cdot 32^{-m}$ and using $4^{-(m-1)}=4\\cdot 4^{-m}$ gives\n\\[\n\\label{eq:4.u400}\n\\left|\\frac{f(x_0+h_m)-f(x_0)}{h_m}\\right|\n\\ge \\frac{\\frac{1}{16}4^{-(m-1)}}{2\\cdot 32^{-m}}-\\frac{2/3}{2\\cdot 32^{-m}}\n=\\frac{1}{32}\\cdot \\frac{4^{-(m-1)}}{32^{-m}}-\\frac{1}{3}\\,32^{m}\n=\\frac{1}{32}\\cdot 4\\cdot \\left(\\frac{32}{4}\\right)^m-\\frac{1}{3}\\,32^{m}\n=\\frac{1}{8}\\,8^{m}-\\frac{1}{3}\\,32^{m}.\n\\]\nSince the right-hand side has absolute value tending to $\\infty$ along the chosen subsequence of $m$ (in particular, the negative term dominates in magnitude), the difference quotients are unbounded as $h_m\\to 0$. Therefore the limit defining $f'(x_0)$ cannot exist, and $f$ is not differentiable at $x_0$. As $x_0$ was arbitrary, $f$ is nowhere differentiable.\n\\end{proof}",
+    "index": 121
+  }
+]

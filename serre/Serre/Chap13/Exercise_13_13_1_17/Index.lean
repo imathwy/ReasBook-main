@@ -1,0 +1,4 @@
+import Serre.Chap13.Exercise_13_13_1_17.AugmentationKernel
+import Serre.Chap13.Exercise_13_13_1_17.RepresentativeSpan
+import Serre.Chap13.Exercise_13_13_1_17.RepresentativeIndependence
+import Serre.Chap13.Exercise_13_13_1_17.JenningsObstruction

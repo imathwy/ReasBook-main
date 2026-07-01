@@ -1,0 +1,572 @@
+[
+  {
+    "index": 1,
+    "label": "Definition 1.1.1",
+    "env": "defn",
+    "number_components": [
+      1,
+      1,
+      1
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Basic properties",
+      "chapter_number": 1,
+      "section_number": "1.1"
+    },
+    "content": "\\begin{defn}\nAn \\emph{\\myindex{ordered set}} is a set $S$ together with\na relation $<$ such that\n%\\begin{enumerate}[(i),itemsep=0.5\\itemsep,parsep=0.5\\parsep,topsep=0.5\\topsep,partopsep=0.5\\partopsep]\n%\\begin{enumerate}[(i),nolistsep]\n\\begin{enumerate}[(i)]\n\\item \\emph{(\\myindex{trichotomy})} For all $x, y \\in S$, exactly one of\n$x < y$, $x=y$, or $y < x$ holds.\n\\item \\emph{(transitivity)} If $x,y,z \\in S$ are such that $x < y$ and $y\n< z$, then $x < z$.\n\\end{enumerate}\nWe write $x \\leq y$ if $x < y$ or $x=y$.  We define\n$>$ and $\\geq$ in the obvious way.\n\\glsadd{not:ordereq}\n\\glsadd{not:orderlt}\n\\glsadd{not:orderleq}\n\\glsadd{not:ordergt}\n\\glsadd{not:ordergeq}\n\\end{defn}"
+  },
+  {
+    "index": 2,
+    "label": "Definition 1.1.2",
+    "env": "defn",
+    "number_components": [
+      1,
+      1,
+      2
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Basic properties",
+      "chapter_number": 1,
+      "section_number": "1.1"
+    },
+    "content": "\\begin{defn}\nLet $E \\subset S$, where $S$ is an ordered set.\n%\\begin{enumerate}[(i),itemsep=0.5\\itemsep,parsep=0.5\\parsep,topsep=0.5\\topsep,partopsep=0.5\\partopsep]\n%\\begin{enumerate}[(i),nolistsep]\n\\begin{enumerate}[(i)]\n\\item If there exists a $b \\in S$ such that $x \\leq b$ for all $x \\in E$,\nthen we say $E$ is \\emph{\\myindex{bounded above}} and $b$\nis an \\emph{\\myindex{upper bound}} of $E$.\n\\item If there exists a $b \\in S$ such that $x \\geq b$ for all $x \\in E$,\nthen we say $E$ is \\emph{\\myindex{bounded below}} and $b$\nis a \\emph{\\myindex{lower bound}} of $E$.\n\\item If there exists an upper bound $b_0$ of $E$ such that\n$b_0 \\leq b$ for all upper bounds $b$ of $E$, then\n$b_0$ is called the \\emph{\\myindex{least upper bound}} or\nthe \\emph{\\myindex{supremum}}\nof $E$.  See \\figureref{fig:lub}.  We write\\glsadd{not:sup}\n\\begin{equation*}\n\\sup\\, E \\coloneqq b_0 .\n\\end{equation*}\n\\item Similarly, if there exists a lower bound $b_0$ of $E$ such that\n$b_0 \\geq b$ for all lower bounds $b$ of $E$, then\n$b_0$ is called the \\emph{\\myindex{greatest lower bound}} or\nthe \\emph{\\myindex{infimum}}\nof $E$.  We write\\glsadd{not:inf}\n\\begin{equation*}\n\\inf\\, E \\coloneqq b_0 .\n\\end{equation*}\n\\end{enumerate}\nWhen a set $E$ is both bounded above and bounded below, we say simply that\n$E$ is \\emph{bounded}\\index{bounded set}.\n\\end{defn}"
+  },
+  {
+    "index": 3,
+    "label": "Definition 1.1.3",
+    "env": "defn",
+    "number_components": [
+      1,
+      1,
+      3
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Basic properties",
+      "chapter_number": 1,
+      "section_number": "1.1"
+    },
+    "content": "\\begin{defn} \\label{defn:lub}\nAn ordered set $S$ has the \\emph{\\myindex{least-upper-bound property}} if\nevery nonempty\nsubset $E \\subset S$ that is bounded above has a least upper bound,\nthat is, $\\sup\\, E$ exists in $S$.\n\\end{defn}"
+  },
+  {
+    "index": 4,
+    "label": "Example 1.1.4",
+    "env": "example",
+    "number_components": [
+      1,
+      1,
+      4
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Basic properties",
+      "chapter_number": 1,
+      "section_number": "1.1"
+    },
+    "content": "\\begin{example}\nThe set $\\Q$ of rational numbers does not have the least-upper-bound property.  The subset\n$\\{ x \\in \\Q : x^2 < 2 \\}$ does not have a supremum in $\\Q$.  We will\nsee later (\\exampleref{example:sqrt2}) that the supremum is\n$\\sqrt{2}$, which is not rational%\n\\footnote{This is true for all other roots of 2, and interestingly,\nthat $\\sqrt[k]{2}$ is never rational for $k > 1$ is related to\nthe impossibility to tuning a piano\nperfectly in all keys.  See, for example:\n\\url{https://youtu.be/1Hqm0dYKUx4}.}.\nSuppose $x \\in \\Q$ such that $x^2 = 2$.\nWrite $x=\\nicefrac{m}{n}$ in lowest terms.  So ${(\\nicefrac{m}{n})}^2 = 2$\nor\n$m^2 = 2n^2$.  Hence, $m^2$ is divisible by 2, and so $m$ is divisible by\n2.  Write $m = 2k$ and so ${(2k)}^2 = 2n^2$.  Divide by 2\nand note that $2k^2 = n^2$, and hence $n$ is divisible by 2.  But that is a\ncontradiction as $\\nicefrac{m}{n}$ is in lowest terms.\n\\end{example}"
+  },
+  {
+    "index": 5,
+    "label": "Definition 1.1.5",
+    "env": "defn",
+    "number_components": [
+      1,
+      1,
+      5
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Basic properties",
+      "chapter_number": 1,
+      "section_number": "1.1"
+    },
+    "content": "\\begin{defn}\nA set $F$ is called a \\emph{\\myindex{field}} if it has two operations\ndefined on it, addition $x+y$ and multiplication $xy$, and if it satisfies\nthe following axioms\\index{axiom}:\n%mbxSTARTIGNORE\n\\begin{enumerate}[({A}1)]\n%mbxENDIGNORE\n%mbxCLOSEPARAGRAPH\n%mbx <dl>\n\\item\n%mbx <title>(A1)</title>\nIf $x \\in F$ and $y \\in F$, then $x+y \\in F$.\n\\item\n%mbx <title>(A2)</title>\n\\emph{(commutativity of addition)}\n$x+y = y+x$ for all $x,y \\in F$.\n\\item\n%mbx <title>(A3)</title>\n\\emph{(associativity of addition)}\n$(x+y)+z = x+(y+z)$ for all $x,y,z \\in F$.\n\\item\n%mbx <title>(A4)</title>\nThere exists an element $0 \\in F$ such that\n$0+x = x$ for all $x \\in F$.\n\\item\n%mbx <title>(A5)</title>\nFor every element $x\\in F$, there exists an element $-x \\in F$\nsuch that $x + (-x) = 0$.\n%mbxCLOSEITEM\n%mbx </dl>\n%mbxSTARTIGNORE\n\\end{enumerate}\n\\begin{enumerate}[({M}1)]\n%mbxENDIGNORE\n%mbx <dl>\n\\item\n%mbx <title>(M1)</title>\nIf $x \\in F$ and $y \\in F$, then $xy \\in F$.\n\\item\n%mbx <title>(M2)</title>\n\\emph{(commutativity of multiplication)}\n$xy = yx$ for all $x,y \\in F$.\n\\item\n%mbx <title>(M3)</title>\n\\emph{(associativity of multiplication)}\n$(xy)z = x(yz)$ for all $x,y,z \\in F$.\n\\item\n%mbx <title>(M4)</title>\nThere exists an element $1 \\in F$ (and $1 \\not= 0$) such that\n$1x = x$ for all $x \\in F$.\n\\item\n%mbx <title>(M5)</title>\nFor every $x\\in F$ such that $x \\not= 0$ there exists an element\n$\\nicefrac{1}{x} \\in F$\nsuch that $x(\\nicefrac{1}{x}) = 1$.\n%\\end{enumerate}\n%\\begin{enumerate}\n%mbxSTARTIGNORE\n\\item[(D)]\n%mbxENDIGNORE\n%mbxlatex \\item\n%mbx <title>(D)</title>\n\\emph{(distributive law)} $x(y+z) = xy+xz$\nfor all $x,y,z \\in F$.\n%mbxSTARTIGNORE\n\\end{enumerate}\n%mbxENDIGNORE\n%mbxCLOSEITEM\n%mbx </dl>\n\\end{defn}"
+  },
+  {
+    "index": 6,
+    "label": "Example 1.1.6",
+    "env": "example",
+    "number_components": [
+      1,
+      1,
+      6
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Basic properties",
+      "chapter_number": 1,
+      "section_number": "1.1"
+    },
+    "content": "\\begin{example}\nThe set $\\Q$ of rational numbers is a field.  On the other hand, $\\Z$ is not a\nfield, as it does not contain multiplicative inverses.  For instance,\nthere is no $x \\in \\Z$ such that $2x = 1$, so (M5) is not satisfied.  You\ncan check that (M5) is the only property that fails\\footnote{An algebraist would say that $\\Z$ is an ordered\nring, or perhaps a commutative ordered ring.}.\n\\end{example}"
+  },
+  {
+    "index": 7,
+    "label": "Definition 1.1.7",
+    "env": "defn",
+    "number_components": [
+      1,
+      1,
+      7
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Basic properties",
+      "chapter_number": 1,
+      "section_number": "1.1"
+    },
+    "content": "\\begin{defn}\nA field $F$ is said to be an \\emph{\\myindex{ordered field}} if\n$F$ is also an ordered set such that\n\\begin{enumerate}[(i)]\n\\item \\label{defn:ordfield:i} For $x,y,z \\in F$, $x < y$ implies $x+z <\ny+z$.\n\\item \\label{defn:ordfield:ii} For $x,y \\in F$, $x > 0$ and $y > 0$\nimplies $xy > 0$.\n\\end{enumerate}\nIf $x > 0$, we say $x$ is \\emph{\\myindex{positive}}.\nIf $x < 0$, we say $x$ is \\emph{\\myindex{negative}}.\nWe also say $x$ is \\emph{\\myindex{nonnegative}} if $x \\geq 0$,\nand $x$ is \\emph{\\myindex{nonpositive}} if $x \\leq 0$.\n\\end{defn}"
+  },
+  {
+    "index": 8,
+    "label": "Proposition 1.1.9",
+    "env": "prop",
+    "number_components": [
+      1,
+      1,
+      9
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Basic properties",
+      "chapter_number": 1,
+      "section_number": "1.1"
+    },
+    "content": "\\begin{prop}\nLet $x,y \\in F$, where $F$ is an ordered field.  If\n$xy > 0$, then either both $x$ and $y$ are positive, or both are negative.\n\\end{prop}"
+  },
+  {
+    "index": 9,
+    "label": "Example 1.1.10",
+    "env": "example",
+    "number_components": [
+      1,
+      1,
+      10
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Basic properties",
+      "chapter_number": 1,
+      "section_number": "1.1"
+    },
+    "content": "\\begin{example} \\label{example:complexfield}\nThe reader may have heard about the \\emph{\\myindex{complex numbers}},\nusually denoted by $\\C$.\\glsadd{not:complex}\nThat is, $\\C$ is the set of numbers of\nthe form $x + iy$, where $x$ and $y$ are real numbers, and $i$ is the\nimaginary number, a number such that $i^2 = -1$.  The reader may\nremember from algebra that $\\C$ is also a field; however, it is not an\nordered field.  While one can make $\\C$ into an ordered set in some way,\nit is not possible to put an\norder on $\\C$ that would make it an ordered field: In every ordered field,\n$-1 < 0$ and $x^2 > 0$ for all nonzero $x$, but in $\\C$, $i^2 = -1$.\n\\end{example}"
+  },
+  {
+    "index": 10,
+    "label": "Proposition 1.1.11",
+    "env": "prop",
+    "number_components": [
+      1,
+      1,
+      11
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Basic properties",
+      "chapter_number": 1,
+      "section_number": "1.1"
+    },
+    "content": "\\begin{prop}\nLet $F$ be an ordered field with the least-upper-bound property.\nLet $A \\subset F$ be a nonempty set that is bounded below.\nThen $\\inf\\, A$ exists.\n\\end{prop}"
+  },
+  {
+    "index": 11,
+    "label": "Theorem 1.2.1",
+    "env": "thm",
+    "number_components": [
+      1,
+      2,
+      1
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "The set of real numbers",
+      "subsection": "The set of real numbers",
+      "chapter_number": 1,
+      "section_number": "1.2"
+    },
+    "content": "\\begin{thm}\nThere exists a unique\\footnote{Uniqueness is up to isomorphism, but we wish\nto avoid excessive use of algebra.  For us, it is simply enough to assume\nthat a set of real numbers exists.  See Rudin~\\cite{Rudin:baby} for the\nconstruction and more details.}\nordered field $\\R$ with the \\hyperref[defn:lub]{least-upper-bound property}\nsuch that $\\Q \\subset \\R$.\n\\end{thm}"
+  },
+  {
+    "index": 12,
+    "label": "Proposition 1.2.2",
+    "env": "prop",
+    "number_components": [
+      1,
+      2,
+      2
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "The set of real numbers",
+      "subsection": "The set of real numbers",
+      "chapter_number": 1,
+      "section_number": "1.2"
+    },
+    "content": "\\begin{prop}\nIf $x \\in \\R$ is such that $x \\leq \\epsilon$ for all\n$\\epsilon \\in \\R$ where\n$\\epsilon > 0$, then $x \\leq 0$.\n\\end{prop}"
+  },
+  {
+    "index": 13,
+    "label": "Example 1.2.3",
+    "env": "example",
+    "number_components": [
+      1,
+      2,
+      3
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "The set of real numbers",
+      "subsection": "The set of real numbers",
+      "chapter_number": 1,
+      "section_number": "1.2"
+    },
+    "content": "\\begin{example} \\label{example:sqrt2}\nClaim: \\emph{There exists a unique positive\n$r \\in \\R$ such that $r^2 = 2$.  We denote $r$ by $\\sqrt{2}$.}\n\n\\begin{proof}\nTake the set\n$A \\coloneqq \\{ x \\in \\R : x^2 < 2 \\}$.  We first show that $A$ is bounded above and\nnonempty.  The inequality $x \\geq 2$ implies $x^2 \\geq 4$\n(see \\exerciseref{exercise:squareineq}).\nSo if $x^2 < 2$, then $x < 2$.  So $A$ is bounded above.\nAs $1 \\in A$, the set $A$ is nonempty.  The supremum, therefore, exists.\n\nLet $r \\coloneqq \\sup\\, A$.  We will show that $r^2 = 2$ by showing\nthat $r^2 \\geq 2$ and $r^2 \\leq 2$.  This is the way analysts show\nequality, by showing two inequalities.\nWe already know that $r \\geq 1 > 0$.\n\n%\\medskip\nIn the following, it may seem we are pulling certain expressions out of\na hat.  When writing a proof such as this, we would, of course, come up with\nthe expressions only after playing around with what we wish to prove.  The\norder in which we write the proof is not necessarily the order in which we\ncome up with the proof.\n\nLet us first show that $r^2 \\geq 2$.\nTake a positive number $s$ such that $s^2 < 2$.  We wish to find an $h > 0$\nsuch that ${(s+h)}^2 < 2$.\nAs $2-s^2 > 0$, we have $\\frac{2-s^2}{2s+1} > 0$.\nChoose an $h \\in \\R$ such that\n$0 < h < \\frac{2-s^2}{2s+1}$.\nFurthermore, assume $h < 1$.  Estimate,\n\\begin{equation*}\n\\begin{aligned}\n{(s+h)}^2 - s^2 & = h(2s + h) \\\\\n & < h(2s+1) & & \\quad \\bigl(\\text{since } h < 1\\bigr) \\\\\n & < 2-s^2 & & \\quad \\bigl(\\text{since } h < \\tfrac{2-s^2}{2s+1} \\bigr) .\n\\end{aligned}\n\\end{equation*}\nTherefore, ${(s+h)}^2 < 2$.  Hence $s+h \\in A$, but as $h > 0$,\nwe have $s+h > s$.  So $s < r = \\sup\\, A$.  As $s$ was an arbitrary\npositive number such that $s^2 < 2$, it follows that $r^2 \\geq 2$.\n\n%\\medskip\n\nNow take a positive number $s$ such that\n$s^2 > 2$.  We wish to find an $h > 0$ such that\n${(s-h)}^2 > 2$ and $s-h$ is still positive.\nAs $s^2-2 > 0$, we have $\\frac{s^2-2}{2s} > 0$.\nLet $h \\coloneqq \\frac{s^2-2}{2s}$,\nand check $s-h=s-\\frac{s^2-2}{2s} = \\frac{s}{2}+\\frac{1}{s} > 0$.\nEstimate,\n\\begin{equation*}\n\\begin{aligned}\ns^2 - {(s-h)}^2 & = 2sh - h^2 \\\\\n & < 2sh & & \\quad \\bigl( \\text{since } h^2 > 0 \\text{ as } h \\not= 0 \\bigr) \\\\\n & = s^2-2 & & \\quad \\bigl( \\text{since } h = \\tfrac{s^2-2}{2s} \\bigr) .\n\\end{aligned}\n\\end{equation*}\nBy subtracting $s^2$ from both sides and multiplying by $-1$, we find\n${(s-h)}^2 > 2$.  Therefore, $s-h \\notin A$.\n\nMoreover, if $x \\geq s-h$,\nthen $x^2 \\geq {(s-h)}^2 > 2$ (as $x > 0$ and $s-h > 0$) and so $x \\notin A$.\nThus,\n$s-h$ is an upper bound for $A$.  However, $s-h < s$, or in other\nwords, $s > r = \\sup\\, A$.  Hence, $r^2 \\leq 2$.\n\n\\medskip\n\nTogether, $r^2 \\geq 2$ and $r^2 \\leq 2$ imply\n$r^2 = 2$.  The existence part is finished.  We still need to\nhandle uniqueness.  Suppose $s \\in \\R$ such that $s^2 = 2$ and $s > 0$.\nThus, $s^2 = r^2$.  However, if $0 < s < r$, then $s^2 < r^2$.  Similarly,\n$0 < r < s$ implies $r^2 < s^2$.  Hence, $s = r$.\n\\end{proof}\n\\end{example}"
+  },
+  {
+    "index": 14,
+    "label": "Proposition 1.1.8",
+    "env": "prop",
+    "number_components": [
+      1,
+      1,
+      8
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Basic properties",
+      "chapter_number": 1,
+      "section_number": "1.1"
+    },
+    "content": "\\begin{prop} \\label{prop:bordfield}\nLet $F$ be an ordered field and $x,y,z,w \\in F$.  Then\n\\begin{enumerate}[(i)]\n\\item \\label{prop:bordfield:i} If $x > 0$, then $-x < 0$ (and vice versa).\n\\item \\label{prop:bordfield:ii} If $x > 0$ and $y < z$, then $xy < xz$.\n\\item \\label{prop:bordfield:iii} If $x < 0$ and $y < z$, then $xy > xz$.\n\\item \\label{prop:bordfield:iv} If $x \\not= 0$, then $x^2 > 0$.\n\\item \\label{prop:bordfield:v} If $0 < x < y$, then $0 < \\nicefrac{1}{y} < \\nicefrac{1}{x}$.\n\\item \\label{prop:bordfield:vi} If $0 < x < y$, then $x^2 < y^2$.\n\\item \\label{prop:bordfield:vii} If $x \\leq y$ and $z \\leq w$, then $x + z \\leq y + w$.\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 15,
+    "label": "Corollary 1.2.5",
+    "env": "cor",
+    "number_components": [
+      1,
+      2,
+      5
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "The set of real numbers",
+      "subsection": "Archimedean property",
+      "chapter_number": 1,
+      "section_number": "1.2"
+    },
+    "content": "\\begin{cor}\n$\\inf \\{ \\nicefrac{1}{n} : n \\in \\N \\} = 0$.\nSee \\figureref{fig:oneovernset}.\n\\end{cor}"
+  },
+  {
+    "index": 16,
+    "label": "Definition 1.2.9",
+    "env": "defn",
+    "number_components": [
+      1,
+      2,
+      9
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "The set of real numbers",
+      "subsection": "Using supremum and infimum",
+      "chapter_number": 1,
+      "section_number": "1.2"
+    },
+    "content": "\\begin{defn}\nLet $A \\subset \\R$ be a set.\n\\begin{enumerate}[(i)]\n\\item If $A$ is empty, then $\\sup\\, A \\coloneqq -\\infty$.\n\\item If $A$ is not bounded above, then $\\sup\\, A \\coloneqq \\infty$.\n\\item If $A$ is empty, then $\\inf\\, A \\coloneqq \\infty$.\n\\item If $A$ is not bounded below, then $\\inf\\, A \\coloneqq -\\infty$.\n\\end{enumerate}\n\\end{defn}"
+  },
+  {
+    "index": 17,
+    "label": "Proposition 1.2.6",
+    "env": "prop",
+    "number_components": [
+      1,
+      2,
+      6
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "The set of real numbers",
+      "subsection": "Using supremum and infimum",
+      "chapter_number": 1,
+      "section_number": "1.2"
+    },
+    "content": "\\begin{prop} \\label{prop:supinfalg}\nLet $A \\subset \\R$ be nonempty.\n\\begin{enumerate}[(i)]\n\\item If $x \\in \\R$ and $A$ is bounded above, then $\\sup (x+A) = x + \\sup\\, A$.\n\\item If $x \\in \\R$ and $A$ is bounded below, then $\\inf (x+A) = x + \\inf\\, A$.\n\\item If $x > 0$ and $A$ is bounded above, then $\\sup (xA) = x ( \\sup\\, A )$.\n\\item If $x > 0$ and $A$ is bounded below, then $\\inf (xA) = x ( \\inf\\, A )$.\n\\item If $x < 0$ and $A$ is bounded below, then $\\sup (xA) = x ( \\inf\\, A )$.\n\\item If $x < 0$ and $A$ is bounded above, then $\\inf (xA) = x ( \\sup\\, A )$.\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 18,
+    "label": "Proposition 1.2.8",
+    "env": "prop",
+    "number_components": [
+      1,
+      2,
+      8
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "The set of real numbers",
+      "subsection": "Using supremum and infimum",
+      "chapter_number": 1,
+      "section_number": "1.2"
+    },
+    "content": "\\begin{prop} \\label{prop:existsxepsfromsup}\nIf $S \\subset \\R$ is nonempty and bounded above,\nthen for every $\\epsilon > 0$ there exists an $x \\in S$ such\nthat $(\\sup\\, S) - \\epsilon < x \\leq \\sup\\, S$.\n\\end{prop}"
+  },
+  {
+    "index": 19,
+    "label": "Theorem 1.2.4",
+    "env": "thm",
+    "number_components": [
+      1,
+      2,
+      4
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "The set of real numbers",
+      "subsection": "Archimedean property",
+      "chapter_number": 1,
+      "section_number": "1.2"
+    },
+    "content": "\\begin{thm} \\label{thm:arch}\n%FIXMEevillayouthack\n\\pagebreak[3]\n\\leavevmode\n\\begin{enumerate}[(i)]\n\\item \\label{thm:arch:i} \\emph{(\\myindex{Archimedean property})}%\n\\footnote{Named after the Ancient Greek mathematician\n\\href{https://en.wikipedia.org/wiki/Archimedes}{Archimedes of Syracuse}\n(c.\\ 287 BC -- c.\\ 212 BC)\\@.\nThis property is Axiom V from Archimedes' \\myquote{On the Sphere and\nCylinder} (225 BC)\\@.}\nIf $x, y \\in \\R$ and\n$x > 0$, then there exists an $n \\in \\N$ such that\n\\begin{equation*}\nnx > y .\n\\end{equation*}\n\\item \\label{thm:arch:ii} \\emph{($\\Q$ is dense in $\\R$\\index{density of\nrational numbers})} If $x, y \\in \\R$ and\n$x < y$, then there exists an $r \\in \\Q$ such that\n$x < r < y$.\n\\end{enumerate}\n\\end{thm}"
+  },
+  {
+    "index": 20,
+    "label": "Proposition 1.3.2",
+    "env": "prop",
+    "number_components": [
+      1,
+      3,
+      2
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Absolute value and bounded functions",
+      "chapter_number": 1,
+      "section_number": "1.3"
+    },
+    "content": "\\begin{prop}[Triangle Inequality]\n$\\sabs{x+y} \\leq \\sabs{x}+\\sabs{y}$\nfor all $x, y \\in \\R$.\n\\end{prop}"
+  },
+  {
+    "index": 21,
+    "label": "Proposition 1.3.1",
+    "env": "prop",
+    "number_components": [
+      1,
+      3,
+      1
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Absolute value and bounded functions",
+      "chapter_number": 1,
+      "section_number": "1.3"
+    },
+    "content": "\\begin{prop} \\label{prop:absbas}\n\\leavevmode\n\\begin{enumerate}[(i)]\n\\item \\label{prop:absbas:i} $\\sabs{x} \\geq 0$, moreover, $\\sabs{x}=0$ if and only if $x = 0$.\n\\item \\label{prop:absbas:ii} $\\sabs{-x} = \\sabs{x}$ for all $x \\in \\R$.\n\\item \\label{prop:absbas:iii} $\\sabs{xy} = \\sabs{x}\\sabs{y}$ for all $x,y \\in \\R$.\n\\item \\label{prop:absbas:iv} $\\sabs{x}^2 = x^2$ for all $x \\in \\R$.\n\\item \\label{prop:absbas:v} $\\sabs{x} \\leq y$ if and only if $-y \\leq x \\leq y$.\n\\item \\label{prop:absbas:vi} $-\\sabs{x} \\leq x \\leq \\sabs{x}$ for all $x \\in \\R$.\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 22,
+    "label": "Corollary 1.3.3",
+    "env": "cor",
+    "number_components": [
+      1,
+      3,
+      3
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Absolute value and bounded functions",
+      "chapter_number": 1,
+      "section_number": "1.3"
+    },
+    "content": "\\begin{cor}\nLet $x,y \\in \\R$.\n\\begin{enumerate}[(i)]\n\\item \\emph{(\\myindex{reverse triangle inequality})}\n~\n$\\babs{ \\, \\sabs{x}-\\sabs{y} \\, } \\leq \\sabs{x-y}$.\n\\item $\\sabs{x-y} \\leq \\sabs{x}+\\sabs{y}$.\n\\end{enumerate}\n\\end{cor}"
+  },
+  {
+    "index": 23,
+    "label": "Corollary 1.3.4",
+    "env": "cor",
+    "number_components": [
+      1,
+      3,
+      4
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Absolute value and bounded functions",
+      "chapter_number": 1,
+      "section_number": "1.3"
+    },
+    "content": "\\begin{cor}\nLet $x_1, x_2, \\ldots, x_n \\in \\R$.  Then\n\\begin{equation*}\n\\sabs{x_1 + x_2 + \\cdots + x_n} \\leq\n\\sabs{x_1} + \\sabs{x_2} + \\cdots + \\sabs{x_n} .\n\\end{equation*}\n\\end{cor}"
+  },
+  {
+    "index": 24,
+    "label": "Example 1.3.5",
+    "env": "example",
+    "number_components": [
+      1,
+      3,
+      5
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Absolute value and bounded functions",
+      "chapter_number": 1,
+      "section_number": "1.3"
+    },
+    "content": "\\begin{example}\nFind a number $M$ such that $\\sabs{x^2-9x+1} \\leq M$ for all $-1 \\leq x \\leq\n5$.\n\nUsing the triangle inequality, write\n\\begin{equation*}\n\\sabs{x^2-9x+1} \\leq \\sabs{x^2}+\\sabs{9x}+\\sabs{1}\n=\n\\sabs{x}^2+9\\sabs{x}+1 .\n\\end{equation*}\nThe expression\n$\\sabs{x}^2+9\\sabs{x}+1$ is largest when $\\sabs{x}$ is largest (why?).  In the interval\nprovided, $\\sabs{x}$ is largest when $x=5$ and so $\\sabs{x}=5$.  One\npossibility for $M$ is\n\\begin{equation*}\nM = 5^2+9(5)+1 = 71 .\n\\end{equation*}\nThere are, of course, other $M$ that work.  The bound of 71\nis much higher than it\nneed be, but we didn't ask for the best possible $M$, just one that works.\n\\end{example}"
+  },
+  {
+    "index": 25,
+    "label": "Definition 1.3.6",
+    "env": "defn",
+    "number_components": [
+      1,
+      3,
+      6
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Absolute value and bounded functions",
+      "chapter_number": 1,
+      "section_number": "1.3"
+    },
+    "content": "\\begin{defn}\nSuppose $f \\colon D \\to \\R$ is a function.  We say $f$ is\n\\emph{bounded}\\index{bounded function}\nif there exists a number $M$\nsuch that $\\babs{f(x)} \\leq M$ for all $x \\in D$.\n\\end{defn}"
+  },
+  {
+    "index": 26,
+    "label": "Proposition 1.3.7",
+    "env": "prop",
+    "number_components": [
+      1,
+      3,
+      7
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Absolute value and bounded functions",
+      "chapter_number": 1,
+      "section_number": "1.3"
+    },
+    "content": "\\begin{prop} \\label{prop:funcsupinf}\nIf $f \\colon D \\to \\R$ and $g \\colon D \\to \\R$ ($D$ nonempty) are\nbounded\\footnote{The boundedness hypothesis is for simplicity;\nit can be dropped if we use the extended real numbers.}\nfunctions and\n\\begin{equation*}\nf(x) \\leq g(x) \\qquad \\text{for all } x \\in D,\n\\end{equation*}\nthen\n\\begin{equation} \\label{prop:funcsupinf:eq}\n\\sup_{x \\in D} f(x) \\leq \\sup_{x \\in D} g(x)\n\\qquad \\text{and} \\qquad\n\\inf_{x \\in D} f(x) \\leq \\inf_{x \\in D} g(x) .\n\\end{equation}\n\\end{prop}"
+  },
+  {
+    "index": 27,
+    "label": "Proposition 1.2.7",
+    "env": "prop",
+    "number_components": [
+      1,
+      2,
+      7
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "The set of real numbers",
+      "subsection": "Using supremum and infimum",
+      "chapter_number": 1,
+      "section_number": "1.2"
+    },
+    "content": "\\begin{prop} \\label{infsupineq:prop}\nLet $A, B \\subset \\R$ be nonempty sets such that $x \\leq y$ whenever $x \\in A$ and\n$y \\in B$.  Then $A$ is bounded above, $B$ is bounded below, and $\\sup\\, A \\leq \\inf\\, B$.\n\\end{prop}"
+  },
+  {
+    "index": 28,
+    "label": "Theorem 1.4.2",
+    "env": "thm",
+    "number_components": [
+      1,
+      4,
+      2
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Intervals and the size of \\texorpdfstring{$\\R$",
+      "chapter_number": 1,
+      "section_number": "1.4"
+    },
+    "content": "\\begin{thm}[Cantor]\\index{Cantor's theorem}\n$\\R$ is uncountable.\n\\end{thm}"
+  },
+  {
+    "index": 29,
+    "label": "Proposition 1.4.1",
+    "env": "prop",
+    "number_components": [
+      1,
+      4,
+      1
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Intervals and the size of \\texorpdfstring{$\\R$",
+      "chapter_number": 1,
+      "section_number": "1.4"
+    },
+    "content": "\\begin{prop} \\label{prop:intervaldef}\nA set $I \\subset \\R$ is an interval if and only if\n$I$ contains at least 2 points and\nfor all $a,c \\in I$ and $b \\in \\R$ such that $a < b < c$, we have $b \\in I$.\n\\end{prop}"
+  },
+  {
+    "index": 30,
+    "label": "Theorem 1.5.2",
+    "env": "thm",
+    "number_components": [
+      1,
+      5,
+      2
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Decimal representation of the reals",
+      "chapter_number": 1,
+      "section_number": "1.5"
+    },
+    "content": "\\begin{thm}[Cantor]\nThe set $(0,1]$ is uncountable.\n\\end{thm}"
+  },
+  {
+    "index": 31,
+    "label": "Example 1.5.4",
+    "env": "example",
+    "number_components": [
+      1,
+      5,
+      4
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Decimal representation of the reals",
+      "chapter_number": 1,
+      "section_number": "1.5"
+    },
+    "content": "\\begin{example}\nThe number\n\\begin{equation*}\nx = 0.101001000100001000001\\ldots\n\\end{equation*}\nis irrational.\nThat is, the digits are a one,\nthen a zero, then a one, then two zeros, then a one,\nthen three zeros,\nand so on and so forth.\nThe fact that $x$ is irrational follows from the\nproposition; the digits never start repeating.\nFor every $P$,\nif we go far enough, we find a 1 followed by at least $P$ zeros,\nand there are infinitely many such 1s.\nThat is, there are infinitely many $n$ (so arbitrarily large $n$)\nsuch that $d_n=1$ and $d_{n+P}=0$, in other words,\n$d_n \\not= d_{n+P}$.\n\\end{example}"
+  },
+  {
+    "index": 32,
+    "label": "Proposition 1.5.1",
+    "env": "prop",
+    "number_components": [
+      1,
+      5,
+      1
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Decimal representation of the reals",
+      "chapter_number": 1,
+      "section_number": "1.5"
+    },
+    "content": "\\begin{prop} \\label{prop:decimalprop}\n\\leavevmode\n\\begin{enumerate}[(i)]\n\\item\nEvery infinite sequence of digits\n$0.d_1d_2d_3\\ldots$ represents a unique real number $x \\in [0,1]$, and\n\\begin{equation*}\nD_n \\leq x \\leq D_n+\\frac{1}{{10}^n} \\qquad \\text{for all } n \\in \\N.\n\\end{equation*}\n\\item\nFor every $x \\in (0,1]$ there exists an infinite sequence of digits\n$0.d_1d_2d_3\\ldots$ that represents $x$.\nThere exists a unique representation such that\n\\begin{equation*}\nD_n < x \\leq D_n+\\frac{1}{{10}^n} \\qquad \\text{for all } n \\in \\N.\n\\end{equation*}\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 33,
+    "label": "Proposition 1.5.3",
+    "env": "prop",
+    "number_components": [
+      1,
+      5,
+      3
+    ],
+    "context": {
+      "chapter": "Real Numbers",
+      "section": "Decimal representation of the reals",
+      "chapter_number": 1,
+      "section_number": "1.5"
+    },
+    "content": "\\begin{prop} \\label{prop:rationaldecimal}\nIf $x \\in (0,1]$ is a rational number and $x = 0.d_1d_2d_3\\ldots$,\nthen the decimal digits eventually start repeating.  That is, there are\npositive integers $N$ and $P$, such that for all $n \\geq N$, $d_n = d_{n+P}$.\n\\end{prop}"
+  }
+]

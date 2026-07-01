@@ -1,0 +1,5 @@
+import Serre.Chap18.Exercise_18_18_3_2.RegularClasses
+import Serre.Chap18.Exercise_18_18_3_2.ProjectiveCharacterSpan
+import Serre.Chap18.Exercise_18_18_3_2.MixedCharacteristicModel
+import Serre.Chap18.Exercise_18_18_3_2.DiagonalQuotient
+import Serre.Chap18.Exercise_18_18_3_2.SmithDiagonal

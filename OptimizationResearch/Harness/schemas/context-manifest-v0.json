@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "context-manifest-v0",
+  "type": "object",
+  "required": ["schema_version", "resident", "on_demand", "compression_output"]
+}
+

@@ -1,0 +1,1465 @@
+[
+  {
+    "index": 1,
+    "label": "Definition 2.1.1",
+    "env": "defn",
+    "number_components": [
+      2,
+      1,
+      1
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Sequences and limits",
+      "chapter_number": 2,
+      "section_number": "2.1"
+    },
+    "content": "\\begin{defn}\nA \\emph{\\myindex{sequence}} (of real numbers) is a function $x \\colon \\N \\to\n\\R$.  Instead of $x(n)$, we \nusually denote the $n$th element in the sequence by $x_n$.\nTo denote a sequence we write%\n\\footnote{It is common to use $\\{ x_n \\}$ or $\\{ x_n \\}_n$ for brevity.}%\n\\glsadd{not:sequence}%\n\\begin{equation*}\n\\{ x_n \\}_{n=1}^\\infty.\n\\end{equation*}\n%to denote a sequence, though sometimes for brevity we may use $\\{ x_n \\}$.\n\nA sequence $\\{ x_n \\}_{n=1}^\\infty$ is \\emph{bounded}\\index{bounded sequence} if\nthe underlying function is bounded.  That is, if\nthere exists a $B \\in \\R$ such that\n\\begin{equation*}\n\\sabs{x_n} \\leq B \\qquad \\text{for all } n \\in \\N.\n\\end{equation*}\nIn other words, the sequence $\\{x_n\\}_{n=1}^\\infty$ is bounded whenever\nthe set $\\{ x_n : n \\in \\N \\}$\nis bounded.\nWe similarly define the words\n\\emph{bounded below}\\index{bounded below!sequence} and\n\\emph{bounded above}\\index{bounded above!sequence}.\n\\end{defn}"
+  },
+  {
+    "index": 2,
+    "label": "Definition 2.1.2",
+    "env": "defn",
+    "number_components": [
+      2,
+      1,
+      2
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Sequences and limits",
+      "chapter_number": 2,
+      "section_number": "2.1"
+    },
+    "content": "\\begin{defn}\nA sequence $\\{ x_n \\}_{n=1}^\\infty$ is said to \\emph{converge} to a number\n$x \\in \\R$ if for every $\\epsilon > 0$, there exists an $M \\in \\N$ such\nthat $\\sabs{x_n - x} < \\epsilon$ for all $n \\geq M$.\nThe number $x$ is called a \\emph{limit} of the sequence.\nIf the limit $x$ is unique, we write%\n\\footnote{In text, this may get rendered as $\\lim_{n\\to\\infty} x_n$.}\n\\glsadd{not:limseq}%\n\\begin{equation*}\n\\lim_{n\\to \\infty} x_n \\coloneqq x .\n\\end{equation*}\n\nA sequence\nthat converges is said to be \\emph{convergent}\\index{convergent!sequence}.\nOtherwise, we say the sequence \\emph{diverges}\nor that it is\n\\emph{divergent}\\index{divergent!sequence}.\n\\end{defn}"
+  },
+  {
+    "index": 3,
+    "label": "Example 2.1.3",
+    "env": "example",
+    "number_components": [
+      2,
+      1,
+      3
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Sequences and limits",
+      "chapter_number": 2,
+      "section_number": "2.1"
+    },
+    "content": "\\begin{example}\nThe constant sequence $1,1,1,1,\\ldots$ converges to 1.  For\nevery $\\epsilon > 0$, pick $M = 1$.  That is, $\\sabs{x_n-x} = \\sabs{1-1} < \\epsilon$ for all $n$.\n\\end{example}"
+  },
+  {
+    "index": 4,
+    "label": "Example 2.1.4",
+    "env": "example",
+    "number_components": [
+      2,
+      1,
+      4
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Sequences and limits",
+      "chapter_number": 2,
+      "section_number": "2.1"
+    },
+    "content": "\\begin{example}\nClaim: \\emph{The sequence $\\{ \\nicefrac{1}{n} \\}_{n=1}^\\infty$ is convergent and}\n\\begin{equation*}\n\\lim_{n\\to \\infty} \\frac{1}{n} = 0 .\n\\end{equation*}\nProof: Given an $\\epsilon > 0$, find an $M \\in \\N$ such that\n$0 < \\nicefrac{1}{M} < \\epsilon$\n(\\hyperref[thm:arch:i]{Archimedean property} at work).\nFor all $n \\geq M$,\n\\begin{equation*}\n\\sabs{x_n - x}\n=\n\\abs{\\frac{1}{n} - 0} = \\abs{\\frac{1}{n}} = \\frac{1}{n} \\leq \\frac{1}{M} < \\epsilon .\n\\end{equation*}\n\\end{example}"
+  },
+  {
+    "index": 5,
+    "label": "Example 2.1.5",
+    "env": "example",
+    "number_components": [
+      2,
+      1,
+      5
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Sequences and limits",
+      "chapter_number": 2,
+      "section_number": "2.1"
+    },
+    "content": "\\begin{example}\nThe sequence $\\bigl\\{ {(-1)}^n \\bigr\\}_{n=1}^\\infty$ is divergent.  Proof: If there\nwere a limit $x$, then for $\\epsilon = \\frac{1}{2}$, we expect an $M$ that\nsatisfies the definition.  Suppose\nsuch an $M$ exists.\nThen for an even $n \\geq M$, we compute\n\\begin{equation*}\n\\nicefrac{1}{2} > \\sabs{x_n - x}  = \\sabs{1 - x}\n\\qquad \\text{and} \\qquad\n\\nicefrac{1}{2} > \\sabs{x_{n+1} - x}  = \\sabs{-1 - x} .\n\\end{equation*}\nAnd we obtain a contradiction\n\\begin{equation*}\n2 = \\babs{1 - x - (-1 -x)} \\leq\n\\sabs{1 - x} + \\sabs{-1 -x} < \\nicefrac{1}{2} + \\nicefrac{1}{2} = 1 .\n\\end{equation*}\n\\end{example}"
+  },
+  {
+    "index": 6,
+    "label": "Proposition 2.1.6",
+    "env": "prop",
+    "number_components": [
+      2,
+      1,
+      6
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Sequences and limits",
+      "chapter_number": 2,
+      "section_number": "2.1"
+    },
+    "content": "\\begin{prop} \\label{prop:limisunique}\nA convergent sequence has a unique limit.\n\\end{prop}"
+  },
+  {
+    "index": 7,
+    "label": "Proposition 2.1.7",
+    "env": "prop",
+    "number_components": [
+      2,
+      1,
+      7
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Sequences and limits",
+      "chapter_number": 2,
+      "section_number": "2.1"
+    },
+    "content": "\\begin{prop}\nA convergent sequence $\\{ x_n \\}_{n=1}^\\infty$ is bounded.\n\\end{prop}"
+  },
+  {
+    "index": 8,
+    "label": "Example 2.1.8",
+    "env": "example",
+    "number_components": [
+      2,
+      1,
+      8
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Sequences and limits",
+      "chapter_number": 2,
+      "section_number": "2.1"
+    },
+    "content": "\\begin{example}\nLet us show $\\left\\{ \\frac{n^2+1}{n^2+n} \\right\\}_{n=1}^\\infty$ converges and\n\\begin{equation*}\n\\lim_{n\\to\\infty} \\frac{n^2+1}{n^2+n} = 1 .\n\\end{equation*}\n\nGiven $\\epsilon > 0$,\nfind $M \\in \\N$ such that $\\frac{1}{M} < \\epsilon$.  Then for all $n \\geq\nM$,\n\\begin{equation*}\n\\begin{split}\n%\\abs{\\frac{n^2+1}{n^2+n} - 1} & =\n%\\abs{\\frac{n^2+1 - (n^2+n)}{n^2+n}} \\\\\n\\abs{\\frac{n^2+1}{n^2+n} - 1}  =\n\\abs{\\frac{n^2+1 - (n^2+n)}{n^2+n}}\n& =\n\\abs{\\frac{1 - n}{n^2+n}} \\\\\n& =\n\\frac{n-1}{n^2+n} \\\\\n& \\leq \n\\frac{n}{n^2+n} \n =\n\\frac{1}{n+1}  \\\\\n& \\leq \\frac{1}{n}\n\\leq \\frac{1}{M} < \\epsilon .\n\\end{split}\n\\end{equation*}\nTherefore,\n$\\lim_{n\\to\\infty} \\frac{n^2+1}{n^2+n} = 1$.\nThis example shows that sometimes to get what you want, you must throw away\nsome information to get a simpler estimate.\n\\end{example}"
+  },
+  {
+    "index": 9,
+    "label": "Definition 2.1.9",
+    "env": "defn",
+    "number_components": [
+      2,
+      1,
+      9
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Sequences and limits",
+      "subsection": "Monotone sequences",
+      "chapter_number": 2,
+      "section_number": "2.1"
+    },
+    "content": "\\begin{defn}\nA sequence $\\{ x_n \\}_{n=1}^\\infty$ is \\emph{monotone increasing}\\index{monotone\nincreasing sequence} if $x_n \\leq x_{n+1}$ for all $n \\in \\N$.  \n%\nA sequence $\\{ x_n \\}_{n=1}^\\infty$ is \\emph{monotone decreasing}\\index{monotone\ndecreasing sequence} if $x_n \\geq x_{n+1}$ for all $n \\in \\N$.  \n%\nIf a sequence is either monotone increasing or monotone decreasing, we\ncan simply say the sequence is \\emph{monotone}\\index{monotone\nsequence}.\\footnote{Some\nauthors use the word \\emph{monotonic}\\index{monotonic sequence}.}\n\\end{defn}"
+  },
+  {
+    "index": 10,
+    "label": "Example 2.1.11",
+    "env": "example",
+    "number_components": [
+      2,
+      1,
+      11
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Sequences and limits",
+      "subsection": "Monotone sequences",
+      "chapter_number": 2,
+      "section_number": "2.1"
+    },
+    "content": "\\begin{example}\nTake the sequence $\\bigl\\{ \\frac{1}{\\sqrt{n}} \\bigr\\}_{n=1}^\\infty$.\n\nThe sequence is\nbounded below as\n$\\frac{1}{\\sqrt{n}} > 0$ for all $n \\in \\N$.\nLet us show that it is monotone decreasing.  We start with\n$\\sqrt{n+1} \\geq \\sqrt{n}$ (why is that true?).  From this inequality\nwe obtain\n\\begin{equation*}\n\\frac{1}{\\sqrt{n+1}} \\leq \\frac{1}{\\sqrt{n}} .\n\\end{equation*}\nSo the sequence is monotone decreasing and bounded below (hence\nbounded).  Via \\thmref{thm:monotoneconv} we find that the sequence is\nconvergent and\n\\begin{equation*}\n\\lim_{n\\to \\infty} \\frac{1}{\\sqrt{n}}\n=\n\\inf \\left\\{ \\frac{1}{\\sqrt{n}} : n \\in \\N \\right\\} .\n\\end{equation*}\nWe already know that the infimum is greater than or equal to 0, as\n0 is a lower bound.  Take a number $b \\geq 0$ such\nthat $b \\leq \\frac{1}{\\sqrt{n}}$ for all $n$.  We square both sides to\nobtain\n\\begin{equation*}\nb^2 \\leq \\frac{1}{n} \\qquad \\text{for all } n \\in \\N.\n\\end{equation*}\nWe have seen before that this implies that $b^2 \\leq 0$ (a consequence\nof the \\hyperref[thm:arch:i]{Archimedean property}).  As $b^2 \\geq 0$ as\nwell, we have $b^2 = 0$\nand so $b = 0$.\nHence, $b=0$ is the greatest lower bound, and $\\lim\\limits_{n\\to\\infty} \\frac{1}{\\sqrt{n}} = 0$.\n\\end{example}"
+  },
+  {
+    "index": 11,
+    "label": "Example 2.1.12",
+    "env": "example",
+    "number_components": [
+      2,
+      1,
+      12
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Sequences and limits",
+      "subsection": "Monotone sequences",
+      "chapter_number": 2,
+      "section_number": "2.1"
+    },
+    "content": "\\begin{example}\nA word of caution:  Showing that a monotone sequence is bounded\nin order to use \\thmref{thm:monotoneconv} may be difficult.\nThe sequence\n$\\{ 1 + \\nicefrac{1}{2} + \\cdots + \\nicefrac{1}{n} \\}_{n=1}^\\infty$\nis a monotone increasing\nsequence that grows slowly and in fact grows slower and slower as $n$ gets\nlarger.  We will see, once we get to series,\nthat this sequence has no upper bound and so does not converge.  It is not\nat all obvious that this sequence has no upper bound.\n\\end{example}"
+  },
+  {
+    "index": 12,
+    "label": "Definition 2.1.14",
+    "env": "defn",
+    "number_components": [
+      2,
+      1,
+      14
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Sequences and limits",
+      "subsection": "Tail of a sequence",
+      "chapter_number": 2,
+      "section_number": "2.1"
+    },
+    "content": "\\begin{defn}\nFor a sequence $\\{ x_n \\}_{n=1}^\\infty$,\nthe \\emph{$K$-tail} (where $K \\in \\N$),\nor just the\n\\emph{tail},\\index{tail of a sequence} of\n$\\{ x_n \\}_{n=1}^\\infty$ is the sequence starting at $K+1$, usually written as\n\\begin{equation*}\n\\{ x_{n+K} \\}_{n=1}^\\infty\n\\qquad \\text{or} \\qquad \\{ x_n \\}_{n=K+1}^\\infty .\n\\end{equation*}\n\\end{defn}"
+  },
+  {
+    "index": 13,
+    "label": "Proposition 2.1.15",
+    "env": "prop",
+    "number_components": [
+      2,
+      1,
+      15
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Sequences and limits",
+      "subsection": "Tail of a sequence",
+      "chapter_number": 2,
+      "section_number": "2.1"
+    },
+    "content": "\\begin{prop}\nLet $\\{ x_n \\}_{n=1}^\\infty$ be a sequence.  Then the following\nstatements are equivalent:\n\\begin{enumerate}[(i)]\n\\item \\label{prop:ktail:i}\nThe sequence $\\{ x_n \\}_{n=1}^\\infty$ converges.\n\\item \\label{prop:ktail:ii}\nThe $K$-tail $\\{ x_{n+K} \\}_{n=1}^\\infty$ converges for all $K \\in \\N$.\n\\item \\label{prop:ktail:iii}\nThe $K$-tail $\\{ x_{n+K} \\}_{n=1}^\\infty$ converges for some $K \\in \\N$.\n\\end{enumerate}\nFurthermore, if any (and hence all) of the limits exist, then for all $K \\in \\N$\n\\begin{equation*}\n\\lim_{n\\to \\infty} x_n = \\lim_{n \\to \\infty} x_{n+K} .\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 14,
+    "label": "Definition 2.1.16",
+    "env": "defn",
+    "number_components": [
+      2,
+      1,
+      16
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Sequences and limits",
+      "subsection": "Subsequences",
+      "chapter_number": 2,
+      "section_number": "2.1"
+    },
+    "content": "\\begin{defn}\nLet $\\{ x_n \\}_{n=1}^\\infty$ be a sequence.\nLet $\\{ n_i \\}_{i=1}^\\infty$ be a strictly increasing sequence of natural\nnumbers, that is, $n_i < n_{i+1}$ for all $i \\in \\N$ (in other words $n_1 < n_2 < n_3 < \\cdots$).  \nThe sequence\n\\begin{equation*}\n\\{ x_{n_i} \\}_{i=1}^\\infty\n\\end{equation*}\nis called \\glsadd{not:subsequence}\na \\emph{\\myindex{subsequence}} of $\\{ x_n \\}_{n=1}^\\infty$.\n\\end{defn}"
+  },
+  {
+    "index": 15,
+    "label": "Example 2.1.18",
+    "env": "example",
+    "number_components": [
+      2,
+      1,
+      18
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Sequences and limits",
+      "subsection": "Subsequences",
+      "chapter_number": 2,
+      "section_number": "2.1"
+    },
+    "content": "\\begin{example}\nExistence of a convergent subsequence does not imply\nconvergence of the sequence itself.\nTake the sequence $0,1,0,1,0,1,\\ldots$.  That is,\n$x_n = 0$ if $n$ is odd, and $x_n = 1$ if $n$ is even.  The sequence\n$\\{ x_n \\}_{n=1}^\\infty$ is divergent; however, the subsequence\n$\\{ x_{2i} \\}_{i=1}^\\infty$ converges to 1 and the subsequence\n$\\{ x_{2i+1} \\}_{i=1}^\\infty$ converges to 0.  Compare \\propref{seqconvsubseqconv:prop}.\n\\end{example}"
+  },
+  {
+    "index": 16,
+    "label": "Proposition 2.1.13",
+    "env": "prop",
+    "number_components": [
+      2,
+      1,
+      13
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Sequences and limits",
+      "subsection": "Monotone sequences",
+      "chapter_number": 2,
+      "section_number": "2.1"
+    },
+    "content": "\\begin{prop} \\label{prop:supinfseq}\nLet $S \\subset \\R$ be a nonempty bounded set.\nThen there exist monotone sequences\n$\\{ x_n \\}_{n=1}^\\infty$ and $\\{ y_n \\}_{n=1}^\\infty$ such that $x_n, y_n \\in S$ and\n\\begin{equation*}\n\\sup\\,S = \\lim_{n\\to \\infty} x_n \\qquad \\text{and} \\qquad \\inf\\,S =\n\\lim_{n\\to\\infty} y_n .\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 17,
+    "label": "Proposition 2.1.17",
+    "env": "prop",
+    "number_components": [
+      2,
+      1,
+      17
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Sequences and limits",
+      "subsection": "Subsequences",
+      "chapter_number": 2,
+      "section_number": "2.1"
+    },
+    "content": "\\begin{prop} \\label{prop:seqtosubseq}\nIf $\\{ x_n \\}_{n=1}^\\infty$ is a convergent sequence,\nthen every subsequence $\\{ x_{n_i} \\}_{i=1}^\\infty$ is also convergent, and\n\\begin{equation*}\n\\lim_{n\\to \\infty} x_n = \n\\lim_{i\\to \\infty} x_{n_i} .\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 18,
+    "label": "Lemma 2.2.1",
+    "env": "lemma",
+    "number_components": [
+      2,
+      2,
+      1
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Facts about limits of sequences",
+      "subsection": "Limits and inequalities",
+      "chapter_number": 2,
+      "section_number": "2.2"
+    },
+    "content": "\\begin{lemma}[Squeeze lemma]\\index{squeeze lemma} \\label{squeeze:lemma}\nLet $\\{ a_n \\}_{n=1}^\\infty$, \n$\\{ b_n \\}_{n=1}^\\infty$, and \n$\\{ x_n \\}_{n=1}^\\infty$ be sequences such that\n\\begin{equation*}\na_n \\leq x_n \\leq b_n \\quad \\text{for all } n \\in \\N.\n\\end{equation*}\nSuppose $\\{ a_n \\}_{n=1}^\\infty$ and $\\{ b_n \\}_{n=1}^\\infty$ converge and\n\\begin{equation*}\n\\lim_{n\\to \\infty} a_n\n=\n\\lim_{n\\to \\infty} b_n .\n\\end{equation*}\nThen $\\{ x_n \\}_{n=1}^\\infty$ converges and\n\\begin{equation*}\n\\lim_{n\\to \\infty} x_n\n=\n\\lim_{n\\to \\infty} a_n\n=\n\\lim_{n\\to \\infty} b_n .\n\\end{equation*}\n\\end{lemma}"
+  },
+  {
+    "index": 19,
+    "label": "Example 2.2.2",
+    "env": "example",
+    "number_components": [
+      2,
+      2,
+      2
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Facts about limits of sequences",
+      "subsection": "Limits and inequalities",
+      "chapter_number": 2,
+      "section_number": "2.2"
+    },
+    "content": "\\begin{example}\nOne application of\nthe \\hyperref[squeeze:lemma]{squeeze lemma} is to compute limits of \nsequences using limits that we already know.  For example, consider\nthe sequence $\\bigl\\{ \\frac{1}{n\\sqrt{n}} \\bigr\\}_{n=1}^\\infty$.\nSince $\\sqrt{n} \\geq 1$ for all $n \\in \\N$, we have\n\\begin{equation*}\n0 \\leq \\frac{1}{n\\sqrt{n}} \\leq \\frac{1}{n}\n\\end{equation*}\nfor all $n \\in \\N$.  We already know $\\lim_{n\\to\\infty} \\nicefrac{1}{n} = 0$. \nHence, using\nthe constant sequence $\\{ 0 \\}_{n=1}^\\infty$ and the sequence\n$\\{ \\nicefrac{1}{n} \\}_{n=1}^\\infty$ in the\nsqueeze lemma, we conclude\n\\begin{equation*}\n\\lim_{n\\to\\infty} \\frac{1}{n\\sqrt{n}} = 0 .\n\\end{equation*}\n\\end{example}"
+  },
+  {
+    "index": 20,
+    "label": "Lemma 2.2.3",
+    "env": "lemma",
+    "number_components": [
+      2,
+      2,
+      3
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Facts about limits of sequences",
+      "subsection": "Limits and inequalities",
+      "chapter_number": 2,
+      "section_number": "2.2"
+    },
+    "content": "\\begin{lemma} \\label{limandineq:lemma}\nLet $\\{ x_n \\}_{n=1}^\\infty$ and $\\{ y_n \\}_{n=1}^\\infty$ be\nconvergent sequences and\n\\begin{equation*}\nx_n \\leq y_n \\quad \\text{for all } n \\in \\N .\n\\end{equation*}\nThen\n\\begin{equation*}\n\\lim_{n\\to\\infty} x_n \\leq\n\\lim_{n\\to\\infty} y_n .\n\\end{equation*}\n\\end{lemma}"
+  },
+  {
+    "index": 21,
+    "label": "Proposition 2.2.6",
+    "env": "prop",
+    "number_components": [
+      2,
+      2,
+      6
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Facts about limits of sequences",
+      "subsection": "Continuity of algebraic operations",
+      "chapter_number": 2,
+      "section_number": "2.2"
+    },
+    "content": "\\begin{prop}\n\\pagebreak[2]\nLet $\\{ x_n \\}_{n=1}^\\infty$ be a convergent sequence such\nthat $x_n \\geq 0$ for all $n \\in \\N$.\nThen\n\\begin{equation*}\n\\lim_{n\\to\\infty} \\sqrt{x_n} =\n\\sqrt{ \\lim_{n\\to\\infty} x_n } .\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 22,
+    "label": "Proposition 2.2.7",
+    "env": "prop",
+    "number_components": [
+      2,
+      2,
+      7
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Facts about limits of sequences",
+      "subsection": "Continuity of algebraic operations",
+      "chapter_number": 2,
+      "section_number": "2.2"
+    },
+    "content": "\\begin{prop}\nIf $\\{ x_n \\}_{n=1}^\\infty$ is a convergent sequence, then $\\{ \\sabs{x_n} \\}_{n=1}^\\infty$\nis convergent and\n\\begin{equation*}\n\\lim_{n\\to\\infty} \\sabs{x_n} = \n\\abs{\\lim_{n\\to\\infty} x_n} .\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 23,
+    "label": "Example 2.2.8",
+    "env": "example",
+    "number_components": [
+      2,
+      2,
+      8
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Facts about limits of sequences",
+      "subsection": "Recursively defined sequences",
+      "chapter_number": 2,
+      "section_number": "2.2"
+    },
+    "content": "\\begin{example}\nLet $\\{ x_n \\}_{n=1}^\\infty$ be defined by $x_1 \\coloneqq 2$ and\n\\begin{equation*}\nx_{n+1} \\coloneqq x_n - \\frac{x_n^2-2}{2x_n} .\n\\end{equation*}\nWe must first find out if this sequence is well-defined; we must show we never\ndivide by zero.\nThen we must find out if the sequence converges.  Only then\ncan we attempt to find the limit.\n\nSo let us prove that for all $n$ \n$x_n$ exists and $x_n > 0$\n(so the sequence is well-defined and bounded below).\nLet us show this by \\hyperref[induction:thm]{induction}.  We know that\n$x_1 = 2 > 0$.  For the induction step, suppose $x_n$ exists and\n$x_n > 0$.  Then\n\\begin{equation*}\nx_{n+1} = x_n - \\frac{x_n^2-2}{2x_n} =\n\\frac{2x_n^2 - x_n^2+2}{2x_n} =\n\\frac{x_n^2+2}{2x_n} .\n\\end{equation*}\nIt is always true that $x_n^2+2 > 0$,\nand as\n$x_n > 0$, then $x_{n+1} = \\frac{x_n^2+2}{2x_n} > 0$.\n\nNext let us\nshow that the sequence is monotone decreasing.  If we show that\n$x_n^2-2 \\geq 0$ for all $n$, then $x_{n+1} \\leq x_n$ for all $n$.\nObviously $x_1^2-2 = 4-2 = 2 > 0$.  For an arbitrary $n$, we have \n\\begin{equation*}\nx_{n+1}^2-2 =\n{\\left( \\frac{x_n^2+2}{2x_n} \\right)}^2 - 2\n=\n\\frac{x_n^4+4x_n^2+4 - 8x_n^2}{4x_n^2}\n=\n\\frac{x_n^4-4x_n^2+4}{4x_n^2}\n=\n\\frac{{\\left( x_n^2-2 \\right)}^2}{4x_n^2} .\n\\end{equation*}\nSince squares are nonnegative,\n$x_{n+1}^2-2 \\geq 0$ for all $n$.  Therefore,\n$\\{ x_n \\}_{n=1}^\\infty$ is monotone decreasing and bounded ($x_n > 0$ for all $n$), and \nso the limit exists.  It remains to find the limit.\n\nWrite\n\\begin{equation*}\n2x_nx_{n+1} = x_n^2+2 .\n\\end{equation*}\nSince $\\{ x_{n+1} \\}_{n=1}^\\infty$ is the 1-tail of $\\{ x_n \\}_{n=1}^\\infty$, it converges to the\nsame limit.  Let us define $x \\coloneqq \\lim_{n\\to\\infty} x_n$.  Take the limit of\nboth sides to obtain\n\\begin{equation*}\n2x^2 = x^2+2 ,\n\\end{equation*}\nor $x^2 = 2$.  As $x_n > 0$ for all $n$ we get $x \\geq 0$, and therefore $x = \\sqrt{2}$.\n\\end{example}"
+  },
+  {
+    "index": 24,
+    "label": "Example 2.2.9",
+    "env": "example",
+    "number_components": [
+      2,
+      2,
+      9
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Facts about limits of sequences",
+      "subsection": "Recursively defined sequences",
+      "chapter_number": 2,
+      "section_number": "2.2"
+    },
+    "content": "\\begin{example}\nSuppose $x_1 \\coloneqq 1$ and $x_{n+1} \\coloneqq x_n^2+x_n$.\nIf we blindly assumed that the limit exists (call it $x$), then we\nwould get the equation $x = x^2+x$, from which we might\nconclude $x=0$.  However, it is not hard\nto show that $\\{ x_n \\}_{n=1}^\\infty$ is unbounded and therefore does not converge.\n\nThe thing to notice in this example is that the method still works, but\nit depends on the initial value $x_1$.  If we set $x_1 \\coloneqq 0$,\nthen the sequence converges and the limit really is 0.\nAn entire branch of mathematics, called dynamics, deals precisely with these\nissues.\nSee\n\\exerciseref{exercise:convergentinitialvalues}.\n\\end{example}"
+  },
+  {
+    "index": 25,
+    "label": "Proposition 2.2.11",
+    "env": "prop",
+    "number_components": [
+      2,
+      2,
+      11
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Facts about limits of sequences",
+      "subsection": "Some convergence tests",
+      "chapter_number": 2,
+      "section_number": "2.2"
+    },
+    "content": "\\begin{prop}\nLet $c > 0$.\n\\begin{enumerate}[(i)]\n\\item\nIf $c < 1$, then\n\\begin{equation*}\n\\lim_{n\\to\\infty} c^n = 0.\n\\end{equation*}\n\\item\nIf $c > 1$, then $\\{ c^n \\}_{n=1}^\\infty$ is unbounded.\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 26,
+    "label": "Proposition 2.2.10",
+    "env": "prop",
+    "number_components": [
+      2,
+      2,
+      10
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Facts about limits of sequences",
+      "subsection": "Some convergence tests",
+      "chapter_number": 2,
+      "section_number": "2.2"
+    },
+    "content": "\\begin{prop} \\label{convzero:prop}\nLet $\\{ x_n \\}_{n=1}^\\infty$ be a sequence. \nSuppose there is an $x \\in \\R$\nand a convergent sequence $\\{ a_n \\}_{n=1}^\\infty$\nsuch that\n\\begin{equation*}\n\\lim_{n\\to\\infty} a_n = 0\n\\end{equation*}\nand \n\\begin{equation*}\n\\sabs{x_n - x} \\leq a_n\n\\qquad\n\\text{for all $n \\in \\N$.}\n\\end{equation*}\nThen $\\{ x_n \\}_{n=1}^\\infty$ converges and $\\lim\\limits_{n\\to\\infty} x_n = x$.\n\\end{prop}"
+  },
+  {
+    "index": 27,
+    "label": "Lemma 2.2.12",
+    "env": "lemma",
+    "number_components": [
+      2,
+      2,
+      12
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Facts about limits of sequences",
+      "subsection": "Some convergence tests",
+      "chapter_number": 2,
+      "section_number": "2.2"
+    },
+    "content": "\\begin{lemma}[Ratio test for sequences]\\index{ratio test for sequences}\n\\label{seq:ratiotest}\nLet $\\{ x_n \\}_{n=1}^\\infty$ be a sequence such that $x_n \\not= 0$ for all $n$ and such that\nthe limit\n\\begin{equation*}\nL \\coloneqq \\lim_{n\\to\\infty} \\frac{\\sabs{x_{n+1}}}{\\sabs{x_n}}\n\\qquad\n\\text{exists.}\n\\end{equation*}\n\\begin{enumerate}[(i)]\n\\item\nIf $L < 1$, then $\\{ x_n \\}_{n=1}^\\infty$ converges and $\\lim\\limits_{n\\to\\infty} x_n = 0$.\n\\item\nIf $L > 1$, then $\\{ x_n \\}_{n=1}^\\infty$ is unbounded (hence diverges).\n\\end{enumerate}\n\\end{lemma}"
+  },
+  {
+    "index": 28,
+    "label": "Example 2.2.13",
+    "env": "example",
+    "number_components": [
+      2,
+      2,
+      13
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Facts about limits of sequences",
+      "subsection": "Some convergence tests",
+      "chapter_number": 2,
+      "section_number": "2.2"
+    },
+    "content": "\\begin{example}\nA simple application of the lemma above is to prove \n\\begin{equation*}\n\\lim_{n\\to\\infty} \\frac{2^n}{n!} = 0 .\n\\end{equation*}\n\nProof:\nCompute\n\\begin{equation*}\n\\frac{2^{n+1} / (n+1)!}{2^n/n!}\n=\n\\frac{2^{n+1}}{2^n}\\frac{n!}{(n+1)!}\n=\n\\frac{2}{n+1} .\n\\end{equation*}\nIt is not hard to see that $\\bigl\\{ \\frac{2}{n+1} \\bigr\\}_{n=1}^\\infty$ converges to zero.\nThe conclusion follows by the lemma.\n\\end{example}"
+  },
+  {
+    "index": 29,
+    "label": "Example 2.2.14",
+    "env": "example",
+    "number_components": [
+      2,
+      2,
+      14
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Facts about limits of sequences",
+      "subsection": "Some convergence tests",
+      "chapter_number": 2,
+      "section_number": "2.2"
+    },
+    "content": "\\begin{example} \\label{example:nto1overn}\nA more complicated (and useful) application of the ratio test is to prove \n\\begin{equation*}\n\\lim_{n\\to\\infty} n^{1/n} = 1 .\n\\end{equation*}\n\nProof:\nLet $\\epsilon > 0$ be given.  Consider the sequence\n$\\bigl\\{ \\frac{n}{{(1+\\epsilon)}^n} \\bigr\\}_{n=1}^\\infty$.  Compute\n\\begin{equation*}\n\\frac{(n+1)/{(1+\\epsilon)}^{n+1}}{n/{(1+\\epsilon)}^{n}}\n=\n\\frac{n+1}{n} \\frac{1}{1+\\epsilon} .\n\\end{equation*}\nThe limit of $\\frac{n+1}{n} = 1+\\frac{1}{n}$ as $n \\to \\infty$ is 1, and so\n\\begin{equation*}\n\\lim_{n\\to \\infty} \\frac{(n+1)/{(1+\\epsilon)}^{n+1}}{n/{(1+\\epsilon)}^{n}}\n=\n\\frac{1}{1+\\epsilon}  < 1 .\n\\end{equation*}\nTherefore, $\\bigl\\{ \\frac{n}{{(1+\\epsilon)}^n} \\bigr\\}_{n=1}^\\infty$ converges to 0.\nIn particular,\nthere exists an $M$ such that for $n \\geq M$, we have\n$\\frac{n}{{(1+\\epsilon)}^n} < 1$, or \n$n < {(1+\\epsilon)}^n$, or \n$n^{1/n} < 1+\\epsilon$.  As $n \\geq 1$, we find $n^{1/n} \\geq 1$, and\nso $0 \\leq n^{1/n}-1 < \\epsilon$. Consequently,\n$\\lim\\limits_{n\\to\\infty} n^{1/n} = 1$.\n\\end{example}"
+  },
+  {
+    "index": 30,
+    "label": "Corollary 2.2.4",
+    "env": "cor",
+    "number_components": [
+      2,
+      2,
+      4
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Facts about limits of sequences",
+      "subsection": "Limits and inequalities",
+      "chapter_number": 2,
+      "section_number": "2.2"
+    },
+    "content": "\\begin{cor} \\label{limandineq:cor}\n\\leavevmode\n\\begin{enumerate}[(i)]\n\\item If $\\{ x_n \\}_{n=1}^\\infty$ is a convergent sequence such that $x_n \\geq 0$ for all\n$n \\in \\N$,\nthen\n\\begin{equation*}\n\\lim_{n\\to\\infty} x_n \\geq 0.\n\\end{equation*}\n\\item\nLet $a,b \\in \\R$ and\nlet $\\{ x_n \\}_{n=1}^\\infty$ be a convergent sequence such that\n\\begin{equation*}\na \\leq x_n \\leq b \\quad \\text{for all } n \\in \\N .\n\\end{equation*}\nThen\n\\begin{equation*}\na \\leq \\lim_{n\\to\\infty} x_n \\leq b.\n\\end{equation*}\n\\end{enumerate}\n\\end{cor}"
+  },
+  {
+    "index": 31,
+    "label": "Proposition 2.3.2",
+    "env": "prop",
+    "number_components": [
+      2,
+      3,
+      2
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Limit superior, limit inferior, and Bolzano--Weierstrass",
+      "subsection": "Upper and lower limits",
+      "chapter_number": 2,
+      "section_number": "2.3"
+    },
+    "content": "\\begin{prop}\nLet $\\{ x_n \\}_{n=1}^\\infty$ be a bounded sequence.  Let $a_n$ and $b_n$ be as in\nthe definition above.\n\\begin{enumerate}[(i)]\n\\item\nThe\nsequence $\\{ a_n \\}_{n=1}^\\infty$ is bounded monotone decreasing\nand $\\{ b_n \\}_{n=1}^\\infty$ is bounded monotone increasing.  In particular,\n$\\liminf\\limits_{n\\to\\infty} x_n$ and $\\limsup\\limits_{n\\to\\infty} x_n$ exist.\n\\item\n$\\displaystyle \\limsup_{n \\to \\infty} x_n = \\inf \\{ a_n : n \\in \\N \\}$\nand\n$\\displaystyle \\liminf_{n \\to \\infty} x_n = \\sup \\{ b_n : n \\in \\N \\}$.\n\\item\n$\\displaystyle \\liminf_{n \\to \\infty} x_n \\leq \\limsup_{n \\to \\infty} x_n$.\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 32,
+    "label": "Example 2.3.3",
+    "env": "example",
+    "number_components": [
+      2,
+      3,
+      3
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Limit superior, limit inferior, and Bolzano--Weierstrass",
+      "subsection": "Upper and lower limits",
+      "chapter_number": 2,
+      "section_number": "2.3"
+    },
+    "content": "\\begin{example} \\label{example:liminfsupex}\nLet $\\{ x_n \\}_{n=1}^\\infty$ be defined by\n\\begin{equation*}\nx_n \\coloneqq\n\\begin{cases}\n\\frac{n+1}{n} & \\text{if } n \\text{ is odd,} \\\\\n0             & \\text{if } n \\text{ is even.}\n\\end{cases}\n\\end{equation*}\nLet us compute the $\\liminf$ and $\\limsup$ of this sequence.  See also\n\\figureref{sequence-limsupliminf_an_bn-example}.  First the\nlimit inferior:\n\\begin{equation*}\n\\liminf_{n\\to\\infty} x_n = \n\\lim_{n\\to\\infty}\n\\bigl(\n\\inf \\{ x_k : k \\geq n \\}\n\\bigr)\n=\n\\lim_{n\\to\\infty} 0 = 0 .\n\\end{equation*}\nFor the limit superior, we write\n\\begin{equation*}\n\\limsup_{n\\to\\infty} x_n = \n\\lim_{n\\to\\infty}\n\\bigl(\n\\sup \\{ x_k : k \\geq n \\}\n\\bigr) .\n\\end{equation*}\nIt is not hard to see that\n\\begin{equation*}\n\\sup \\{ x_k : k \\geq n \\} =\n\\begin{cases}\n\\frac{n+1}{n}   & \\text{if } n \\text{ is odd,} \\\\\n\\frac{n+2}{n+1} & \\text{if } n \\text{ is even.}\n\\end{cases}\n\\end{equation*}\nWe leave it to the reader to show that the limit is 1.  That is,\n\\begin{equation*}\n\\limsup_{n\\to\\infty} x_n = 1 .\n\\end{equation*}\nDo note that the sequence $\\{ x_n \\}_{n=1}^\\infty$ is not a convergent sequence.\n\\begin{myfigureht}\n\\includegraphics{figures/sequence-limsupliminf_an_bn-example}\n\\caption{First 20 terms of the sequence in \\exampleref{example:liminfsupex}.\nThe marking is as in \\figureref{sequence-limsupliminf_an_bn}.\n\\label{sequence-limsupliminf_an_bn-example}}\n\\end{myfigureht}\n\\end{example}"
+  },
+  {
+    "index": 33,
+    "label": "Theorem 2.3.8",
+    "env": "thm",
+    "number_components": [
+      2,
+      3,
+      8
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Limit superior, limit inferior, and Bolzano--Weierstrass",
+      "subsection": "Bolzano--Weierstrass theorem",
+      "chapter_number": 2,
+      "section_number": "2.3"
+    },
+    "content": "\\begin{thm}[Bolzano--Weierstrass]\\index{Bolzano--Weierstrass theorem}\\label{thm:bwseq}\nSuppose a sequence $\\{ x_n \\}_{n=1}^\\infty$ of real numbers is bounded.\nThen there exists a convergent subsequence $\\{ x_{n_i} \\}_{i=1}^\\infty$.\n\\end{thm}"
+  },
+  {
+    "index": 34,
+    "label": "Definition 2.3.9",
+    "env": "defn",
+    "number_components": [
+      2,
+      3,
+      9
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Limit superior, limit inferior, and Bolzano--Weierstrass",
+      "subsection": "Infinite limits",
+      "chapter_number": 2,
+      "section_number": "2.3"
+    },
+    "content": "\\begin{defn}\n\\index{infinite limit!of a sequence}\\index{limit!infinite}\nWe say\n$\\{ x_n \\}_{n=1}^\\infty$ \\emph{\\myindex{diverges to infinity}}%\n\\footnote{Sometimes it is said that $\\{ x_n \\}_{n=1}^\\infty$ \\emph{converges to infinity}.}\nif for every $K \\in\n\\R$, there exists an $M \\in \\N$ such that for all $n \\geq M$, we have $x_n >\nK$.  In this case we write\n\\begin{equation*}\n\\lim_{n \\to \\infty} x_n \\coloneqq \\infty .  \n\\end{equation*}\nSimilarly,\nif for every $K \\in \\R$ there exists an $M \\in \\N$ such that\nfor all $n \\geq M$, we have $x_n < K$, we say $\\{ x_n \\}_{n=1}^\\infty$\n\\emph{\\myindex{diverges to minus infinity}} and we write\n\\begin{equation*}\n\\lim_{n \\to \\infty} x_n \\coloneqq -\\infty .  \n\\end{equation*}\n\\end{defn}"
+  },
+  {
+    "index": 35,
+    "label": "Example 2.3.11",
+    "env": "example",
+    "number_components": [
+      2,
+      3,
+      11
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Limit superior, limit inferior, and Bolzano--Weierstrass",
+      "subsection": "Infinite limits",
+      "chapter_number": 2,
+      "section_number": "2.3"
+    },
+    "content": "\\begin{example}\n\\begin{equation*}\n\\lim_{n\\to \\infty} n = \\infty,\n\\qquad\n\\lim_{n\\to \\infty} n^2 = \\infty,\n\\qquad\n\\lim_{n\\to \\infty} -n = -\\infty.\n\\end{equation*}\nWe leave verification to the reader.\n\\end{example}"
+  },
+  {
+    "index": 36,
+    "label": "Definition 2.3.12",
+    "env": "defn",
+    "number_components": [
+      2,
+      3,
+      12
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Limit superior, limit inferior, and Bolzano--Weierstrass",
+      "subsection": "Infinite limits",
+      "chapter_number": 2,
+      "section_number": "2.3"
+    },
+    "content": "\\begin{defn}\nLet $\\{ x_n \\}_{n=1}^\\infty$ be an unbounded sequence of real numbers.  Define\nsequences of extended real numbers by\n$a_n \\coloneqq \\sup \\{ x_k : k \\geq n \\}$ and\n$b_n \\coloneqq \\inf \\{ x_k : k \\geq n \\}$.\nDefine\\glsadd{not:limsupseq}\\glsadd{not:liminfseq}\n\\index{limit inferior}\\index{limit superior}\\index{limsup}\\index{liminf}\n\\begin{equation*}\n\\limsup_{n \\to \\infty} x_n \\coloneqq \\inf \\{ a_n : n \\in \\N \\}, \\qquad \\text{and} \\qquad\n\\liminf_{n \\to \\infty} x_n \\coloneqq \\sup \\{ b_n : n \\in \\N \\}.\n\\end{equation*}\n\\end{defn}"
+  },
+  {
+    "index": 37,
+    "label": "Theorem 2.1.10",
+    "env": "thm",
+    "number_components": [
+      2,
+      1,
+      10
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Sequences and limits",
+      "subsection": "Monotone sequences",
+      "chapter_number": 2,
+      "section_number": "2.1"
+    },
+    "content": "\\begin{thm}[Monotone convergence theorem] \\label{thm:monotoneconv}\n\\index{monotone convergence theorem}%\nA monotone sequence $\\{ x_n \\}_{n=1}^\\infty$ is bounded if and only if it is convergent.\n\nFurthermore, if $\\{ x_n \\}_{n=1}^\\infty$ is monotone increasing and bounded, then\n\\begin{equation*}\n\\lim_{n\\to \\infty} x_n = \\sup \\{ x_n : n \\in \\N \\} .\n\\end{equation*}\nIf $\\{ x_n \\}_{n=1}^\\infty$ is monotone decreasing and bounded, then\n\\begin{equation*}\n\\lim_{n\\to \\infty} x_n = \\inf \\{ x_n : n \\in \\N \\} .\n\\end{equation*}\n\\end{thm}"
+  },
+  {
+    "index": 38,
+    "label": "Proposition 2.3.10",
+    "env": "prop",
+    "number_components": [
+      2,
+      3,
+      10
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Limit superior, limit inferior, and Bolzano--Weierstrass",
+      "subsection": "Infinite limits",
+      "chapter_number": 2,
+      "section_number": "2.3"
+    },
+    "content": "\\begin{prop} \\label{prop:unboundedmonotone}\nSuppose $\\{ x_n \\}_{n=1}^\\infty$ is a monotone unbounded sequence.  Then\n\\begin{equation*}\n\\lim_{n \\to \\infty} x_n =\n\\begin{cases}\n\\infty  & \\text{if } \\{ x_n \\}_{n=1}^\\infty \\text{ is increasing,} \\\\\n-\\infty & \\text{if } \\{ x_n \\}_{n=1}^\\infty \\text{ is decreasing.}\n\\end{cases}\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 39,
+    "label": "Proposition 2.3.13",
+    "env": "prop",
+    "number_components": [
+      2,
+      3,
+      13
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Limit superior, limit inferior, and Bolzano--Weierstrass",
+      "subsection": "Infinite limits",
+      "chapter_number": 2,
+      "section_number": "2.3"
+    },
+    "content": "\\begin{prop}\nLet $\\{ x_n \\}_{n=1}^\\infty$ be an unbounded sequence.  Define\n$\\{ a_n \\}_{n=1}^\\infty$ and $\\{ b_n \\}_{n=1}^\\infty$ as above.\nThen $\\{ a_n \\}_{n=1}^\\infty$ is decreasing, and $\\{ b_n \\}_{n=1}^\\infty$ is increasing.\nIf $a_n$ is a real number for every $n$, then\n$\\limsup_{n\\to\\infty} x_n = \\lim_{n\\to\\infty} a_n$.\nIf $b_n$ is a real number for every $n$, then\n$\\liminf_{n\\to\\infty} x_n = \\lim_{n\\to\\infty} b_n$.\n\\end{prop}"
+  },
+  {
+    "index": 40,
+    "label": "Example 2.3.14",
+    "env": "example",
+    "number_components": [
+      2,
+      3,
+      14
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Limit superior, limit inferior, and Bolzano--Weierstrass",
+      "subsection": "Infinite limits",
+      "chapter_number": 2,
+      "section_number": "2.3"
+    },
+    "content": "\\begin{example}\nSuppose\n$x_n \\coloneqq 0$ for odd $n$ and $x_n \\coloneqq n$ for even $n$.\nThen $a_n = \\infty$ for all $n$, since for every $M$,\nthere exists an even $k$ such that $x_k = k \\geq M$.\nOn the other hand, $b_n = 0$ for all $n$, as\nfor every $n$, the set\n$\\{ b_k : k \\geq n \\}$ consists of $0$ and positive numbers.\nSo,\n\\begin{equation*}\n\\lim_{n\\to \\infty} x_n \\quad \\text{does not exist},\n\\qquad\n\\limsup_{n\\to \\infty} x_n = \\infty ,\n\\qquad\n\\liminf_{n\\to \\infty} x_n = 0.\n\\end{equation*}\n\\end{example}"
+  },
+  {
+    "index": 41,
+    "label": "Definition 2.3.1",
+    "env": "defn",
+    "number_components": [
+      2,
+      3,
+      1
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Limit superior, limit inferior, and Bolzano--Weierstrass",
+      "subsection": "Upper and lower limits",
+      "chapter_number": 2,
+      "section_number": "2.3"
+    },
+    "content": "\\begin{defn} \\label{liminflimsup:def}\nLet $\\{ x_n \\}_{n=1}^\\infty$ be a bounded sequence.  Define the sequences\n$\\{ a_n \\}_{n=1}^\\infty$\nand $\\{ b_n \\}_{n=1}^\\infty$ by\n$a_n \\coloneqq \\sup \\{ x_k : k \\geq n \\}$ and\n$b_n \\coloneqq \\inf \\{ x_k : k \\geq n \\}$.  \nDefine, if the limits exist,\\glsadd{not:limsupseq}\\glsadd{not:liminfseq}\n\\begin{equation*}\n\\limsup_{n \\to \\infty} x_n \\coloneqq \\lim_{n \\to \\infty} a_n ,\n\\qquad\n\\liminf_{n \\to \\infty} x_n \\coloneqq \\lim_{n \\to \\infty} b_n .\n\\end{equation*}\n\\end{defn}"
+  },
+  {
+    "index": 42,
+    "label": "Proposition 2.3.6",
+    "env": "prop",
+    "number_components": [
+      2,
+      3,
+      6
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Limit superior, limit inferior, and Bolzano--Weierstrass",
+      "subsection": "Using limit inferior and limit superior",
+      "chapter_number": 2,
+      "section_number": "2.3"
+    },
+    "content": "\\begin{prop} \\label{prop:subseqslimsupinf}\nSuppose $\\{ x_n \\}_{n=1}^\\infty$ is a bounded sequence and\n$\\{ x_{n_k} \\}_{k=1}^\\infty$ is a subsequence.  Then\n\\begin{equation*}\n\\liminf_{n\\to\\infty} x_n \\leq\n\\liminf_{k\\to\\infty} x_{n_k} \\leq\n\\limsup_{k\\to\\infty} x_{n_k} \\leq\n\\limsup_{n\\to\\infty} x_n .\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 43,
+    "label": "Proposition 2.3.7",
+    "env": "prop",
+    "number_components": [
+      2,
+      3,
+      7
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Limit superior, limit inferior, and Bolzano--Weierstrass",
+      "subsection": "Using limit inferior and limit superior",
+      "chapter_number": 2,
+      "section_number": "2.3"
+    },
+    "content": "\\begin{prop} \\label{seqconvsubseqconv:prop}\nA bounded sequence $\\{ x_n \\}_{n=1}^\\infty$ is convergent and converges to $x$\nif and only if\nevery convergent subsequence\n$\\{ x_{n_k} \\}_{k=1}^\\infty$ converges to $x$.\n\\end{prop}"
+  },
+  {
+    "index": 44,
+    "label": "Definition 2.4.1",
+    "env": "defn",
+    "number_components": [
+      2,
+      4,
+      1
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Cauchy sequences",
+      "chapter_number": 2,
+      "section_number": "2.4"
+    },
+    "content": "\\begin{defn}\nA sequence $\\{ x_n \\}_{n=1}^\\infty$ is a \\emph{\\myindex{Cauchy sequence}}%\n\\footnote{%\nNamed after the French mathematician\n\\href{https://en.wikipedia.org/wiki/Cauchy}{Augustin-Louis Cauchy} (1789--1857).} if\nfor every $\\epsilon > 0$ there exists an $M \\in \\N$ such that\nfor all $n \\geq M$ and all $k \\geq M$, we have\n\\begin{equation*}\n\\sabs{x_n - x_k} < \\epsilon .\n\\end{equation*}\n\\end{defn}"
+  },
+  {
+    "index": 45,
+    "label": "Example 2.4.2",
+    "env": "example",
+    "number_components": [
+      2,
+      4,
+      2
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Cauchy sequences",
+      "chapter_number": 2,
+      "section_number": "2.4"
+    },
+    "content": "\\begin{example}\nThe sequence $\\{ \\nicefrac{1}{n} \\}_{n=1}^\\infty$ is a Cauchy sequence.\n\nProof:  Given $\\epsilon > 0$, find $M$ such that\n$M > \\nicefrac{2}{\\epsilon}$.  Then for $n,k \\geq M$,\nwe have $\\nicefrac{1}{n} < \\nicefrac{\\epsilon}{2}$\nand\n$\\nicefrac{1}{k} < \\nicefrac{\\epsilon}{2}$.  Therefore, for $n, k \\geq M$,\nwe have\n\\begin{equation*}\n\\abs{\\frac{1}{n} - \\frac{1}{k}}\n\\leq\n\\abs{\\frac{1}{n}} + \\abs{\\frac{1}{k}}\n< \\frac{\\epsilon}{2} + \\frac{\\epsilon}{2} = \\epsilon.\n\\end{equation*}\n\\end{example}"
+  },
+  {
+    "index": 46,
+    "label": "Example 2.4.3",
+    "env": "example",
+    "number_components": [
+      2,
+      4,
+      3
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Cauchy sequences",
+      "chapter_number": 2,
+      "section_number": "2.4"
+    },
+    "content": "\\begin{example}\nThe sequence $\\bigl\\{ {(-1)}^n \\bigr\\}_{n=1}^\\infty$ is not a Cauchy sequence.\n\nProof:\nGiven any $M \\in \\N$, take $n \\geq M$ to be any even number, and\nlet $k \\coloneqq n+1$.  Then\n\\begin{equation*}\n\\begin{split}\n\\babs{{(-1)}^n - {(-1)}^k}\n& =\n\\babs{{(-1)}^n - {(-1)}^{n+1}}\n\\\\\n& =\n\\babs{1 - (-1)} = 2 .\n\\end{split}\n\\end{equation*}\nTherefore, for any $\\epsilon \\leq 2$ the definition cannot be satisfied, and\nthe sequence is not Cauchy.\n\\end{example}"
+  },
+  {
+    "index": 47,
+    "label": "Proposition 2.4.4",
+    "env": "prop",
+    "number_components": [
+      2,
+      4,
+      4
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Cauchy sequences",
+      "chapter_number": 2,
+      "section_number": "2.4"
+    },
+    "content": "\\begin{prop}\nIf a sequence is Cauchy, then it is bounded.\n\\end{prop}"
+  },
+  {
+    "index": 48,
+    "label": "Proposition 2.3.5",
+    "env": "prop",
+    "number_components": [
+      2,
+      3,
+      5
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Limit superior, limit inferior, and Bolzano--Weierstrass",
+      "subsection": "Using limit inferior and limit superior",
+      "chapter_number": 2,
+      "section_number": "2.3"
+    },
+    "content": "\\begin{prop} \\label{liminfsupconv:prop}\nLet $\\{ x_n \\}_{n=1}^\\infty$ be a bounded sequence.  Then\n$\\{ x_n \\}_{n=1}^\\infty$ converges\nif and only if\n\\begin{equation*}\n\\liminf_{n\\to \\infty} x_n = \n\\limsup_{n\\to \\infty} x_n.\n\\end{equation*}\nFurthermore, if $\\{ x_n \\}_{n=1}^\\infty$ converges, then\n\\begin{equation*}\n\\lim_{n\\to \\infty} x_n = \n\\liminf_{n\\to \\infty} x_n = \n\\limsup_{n\\to \\infty} x_n.\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 49,
+    "label": "Theorem 2.4.5",
+    "env": "thm",
+    "number_components": [
+      2,
+      4,
+      5
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Cauchy sequences",
+      "chapter_number": 2,
+      "section_number": "2.4"
+    },
+    "content": "\\begin{thm}\nA sequence of real numbers is Cauchy if and only if it converges.\n\\end{thm}"
+  },
+  {
+    "index": 50,
+    "label": "Definition 2.5.1",
+    "env": "defn",
+    "number_components": [
+      2,
+      5,
+      1
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Series",
+      "subsection": "Definition",
+      "chapter_number": 2,
+      "section_number": "2.5"
+    },
+    "content": "\\begin{defn}\nGiven a sequence $\\{ x_n \\}_{n=1}^\\infty$, we write the formal object\n\\begin{equation*}\n\\sum_{n=1}^\\infty x_n\n\\end{equation*}\n\\glsadd{not:series}\nand call it a \\emph{\\myindex{series}}.  A series\n\\emph{converges}\\index{convergent!series} if the sequence\n$\\{ s_k \\}_{k=1}^\\infty$\ndefined by\n\\glsadd{not:finitesum}\n\\begin{equation*}\ns_k \\coloneqq \\sum_{n=1}^k x_n = x_1 + x_2 + \\cdots + x_k\n\\end{equation*}\nconverges.\nThe numbers $s_k$ are called\n\\emph{\\myindex{partial sums}}.\nIf the series converges, we write\n\\begin{equation*}\n\\sum_{n=1}^\\infty x_n =  \\lim\\limits_{k\\to\\infty} s_k .\n\\end{equation*}\nIn this case, we cheat a little and treat\n$\\sum_{n=1}^\\infty x_n$ as a number.\n\nIf the sequence $\\{ s_k \\}_{k=1}^\\infty$ diverges,\nwe say the series is \\emph{divergent}\\index{divergent!series}.\nIn this case, $\\sum_{n=1}^\\infty x_n$ is simply a formal object and not a number.\n\\end{defn}"
+  },
+  {
+    "index": 51,
+    "label": "Example 2.5.4",
+    "env": "example",
+    "number_components": [
+      2,
+      5,
+      4
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Series",
+      "subsection": "Definition",
+      "chapter_number": 2,
+      "section_number": "2.5"
+    },
+    "content": "\\begin{example}\nThe series\n\\begin{equation*}\n\\sum_{n=1}^\\infty \\frac{1}{2^n}\n\\end{equation*}\nconverges and the limit is 1.  That is,\n\\begin{equation*}\n\\sum_{n=1}^\\infty \\frac{1}{2^n} = \n\\lim_{k\\to\\infty} \\sum_{n=1}^k \\frac{1}{2^n} = \n1 .\n\\end{equation*}\n\nProof: We need the equality\n\\begin{equation*}\n\\left( \\sum_{n=1}^k \\frac{1}{2^n} \\right)\n+ \\frac{1}{2^k}\n= 1 .\n\\end{equation*}\nThe equality is immediate when $k=1$.  The proof for general $k$\nfollows by \\hyperref[induction:thm]{induction}, which we leave to the\nreader.  See \\figureref{figcutseries} for an illustration.\n\\begin{myfigureht}\n\\subimport*{figures/}{figcutseries.pdf_t}\n\\caption{The equality \n$\\left( \\sum_{n=1}^k \\frac{1}{2^n} \\right)\n+ \\frac{1}{2^k}\n= 1$ illustrated for $k=3$.\\label{figcutseries}}\n\\end{myfigureht}\n\nLet $s_k$ be the partial sum.  We write\n\\begin{equation*}\n\\sabs{\n1 - s_k \n}\n=\n\\abs{\n1 - \n\\sum_{n=1}^k \\frac{1}{2^n}\n}\n=\n\\abs{\\frac{1}{2^k}} = \n\\frac{1}{2^k} .\n\\end{equation*}\nThe sequence $\\bigl\\{ \\frac{1}{2^k} \\bigr\\}_{k=1}^\\infty$, and\ntherefore $\\bigl\\{ \\sabs{1-s_k} \\bigr\\}_{k=1}^\\infty$,\nconverges to zero.  So, $\\{ s_k \\}_{k=1}^\\infty$ converges to $1$.\n\\end{example}"
+  },
+  {
+    "index": 52,
+    "label": "Proposition 2.2.5",
+    "env": "prop",
+    "number_components": [
+      2,
+      2,
+      5
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Facts about limits of sequences",
+      "subsection": "Continuity of algebraic operations",
+      "chapter_number": 2,
+      "section_number": "2.2"
+    },
+    "content": "\\begin{prop} \\label{prop:contalg}\nLet $\\{ x_n \\}_{n=1}^\\infty$ and $\\{ y_n \\}_{n=1}^\\infty$ be convergent sequences.\n\\begin{enumerate}[(i)]\n\\item \\label{prop:contalg:i}\nThe sequence $\\{ z_n \\}_{n=1}^\\infty$, where $z_n \\coloneqq x_n + y_n$, converges and\n\\begin{equation*}\n\\lim_{n \\to \\infty} (x_n + y_n) = \n\\lim_{n \\to \\infty} z_n = \n\\lim_{n \\to \\infty} x_n + \n\\lim_{n \\to \\infty} y_n .\n\\end{equation*}\n\\item \\label{prop:contalg:ii}\nThe sequence $\\{ z_n \\}_{n=1}^\\infty$, where $z_n \\coloneqq x_n - y_n$, converges and\n\\begin{equation*}\n\\lim_{n \\to \\infty} (x_n - y_n) = \n\\lim_{n \\to \\infty} z_n = \n\\lim_{n \\to \\infty} x_n - \n\\lim_{n \\to \\infty} y_n .\n\\end{equation*}\n\\item \\label{prop:contalg:iii}\nThe sequence $\\{ z_n \\}_{n=1}^\\infty$, where $z_n \\coloneqq x_n y_n$, converges and\n\\begin{equation*}\n\\lim_{n \\to \\infty} (x_n y_n) = \n\\lim_{n \\to \\infty} z_n = \n\\left( \\lim_{n \\to \\infty} x_n \\right)\n\\left( \\lim_{n \\to \\infty} y_n \\right) .\n\\end{equation*}\n\\item \\label{prop:contalg:iv}\nIf $\\lim_{n\\to\\infty} y_n \\not= 0$ and $y_n \\not= 0$ for all $n \\in \\N$, then\nthe sequence $\\{ z_n \\}_{n=1}^\\infty$, where $z_n \\coloneqq \\dfrac{x_n}{y_n}$, converges and\n\\begin{equation*}\n\\lim_{n \\to \\infty} \\frac{x_n}{y_n} = \n\\lim_{n \\to \\infty} z_n = \n\\frac{\\lim_{n \\to \\infty} x_n}{\\lim_{n \\to \\infty} y_n} .\n\\end{equation*}\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 53,
+    "label": "Proposition 2.5.6",
+    "env": "prop",
+    "number_components": [
+      2,
+      5,
+      6
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Series",
+      "subsection": "Definition",
+      "chapter_number": 2,
+      "section_number": "2.5"
+    },
+    "content": "\\begin{prop}\nLet $\\sum_{n=1}^\\infty x_n$ be a series.  Let $M \\in \\N$.  Then\n\\begin{equation*}\n\\sum_{n=1}^\\infty x_n \\quad \\text{converges if and only if} \\quad\n\\sum_{n=M}^\\infty x_n \\quad \\text{converges.}\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 54,
+    "label": "Definition 2.5.7",
+    "env": "defn",
+    "number_components": [
+      2,
+      5,
+      7
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Series",
+      "subsection": "Cauchy series",
+      "chapter_number": 2,
+      "section_number": "2.5"
+    },
+    "content": "\\begin{defn}\nA series $\\sum_{n=1}^\\infty x_n$ is said to be \\emph{Cauchy} or a\n\\emph{Cauchy series}\\index{Cauchy series}\nif the sequence of partial sums $\\{ s_n \\}_{n=1}^\\infty$ is a Cauchy sequence.\n\\end{defn}"
+  },
+  {
+    "index": 55,
+    "label": "Proposition 2.5.8",
+    "env": "prop",
+    "number_components": [
+      2,
+      5,
+      8
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Series",
+      "subsection": "Cauchy series",
+      "chapter_number": 2,
+      "section_number": "2.5"
+    },
+    "content": "\\begin{prop} \\label{prop:cachyser}\nThe series $\\sum_{n=1}^\\infty x_n$ is Cauchy\nif and only if for every $\\epsilon > 0$, \nthere exists an $M \\in \\N$ such that for every $n \\geq M$\nand every $k > n$,\n\\begin{equation*}\n\\abs{ \\sum_{i={n+1}}^k x_i }\n< \\epsilon .\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 56,
+    "label": "Proposition 2.5.9",
+    "env": "prop",
+    "number_components": [
+      2,
+      5,
+      9
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Series",
+      "subsection": "Basic properties",
+      "chapter_number": 2,
+      "section_number": "2.5"
+    },
+    "content": "\\begin{prop}\nLet $\\sum_{n=1}^\\infty x_n$ be a convergent series.  Then\nthe sequence $\\{ x_n \\}_{n=1}^\\infty$ is convergent and\n\\begin{equation*}\n\\lim_{n\\to\\infty} x_n = 0.\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 57,
+    "label": "Example 2.5.10",
+    "env": "example",
+    "number_components": [
+      2,
+      5,
+      10
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Series",
+      "subsection": "Basic properties",
+      "chapter_number": 2,
+      "section_number": "2.5"
+    },
+    "content": "\\begin{example}\nIf $r \\geq 1$ or $r \\leq -1$, then the geometric series $\\sum_{n=0}^\\infty r^n$\ndiverges.\n\nProof: $\\sabs{r^n} = \\sabs{r}^n \\geq 1^n = 1$.  The terms do not go to zero\nand the series cannot converge.\n\\end{example}"
+  },
+  {
+    "index": 58,
+    "label": "Example 2.5.11",
+    "env": "example",
+    "number_components": [
+      2,
+      5,
+      11
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Series",
+      "subsection": "Basic properties",
+      "chapter_number": 2,
+      "section_number": "2.5"
+    },
+    "content": "\\begin{example} \\label{example:harmonicseries}\nThe series $\\sum_{n=1}^\\infty \\nicefrac{1}{n}$ diverges (despite the fact that\n$\\lim_{n\\to\\infty} \\nicefrac{1}{n} = 0$).\nThis is the famous \\emph{\\myindex{harmonic series}}%\n\\footnote{The divergence of the harmonic series was known \nlong before the theory of series was made rigorous.  The proof we\ngive is the earliest proof and was given by\n\\href{https://en.wikipedia.org/wiki/Oresme}{Nicole Oresme}\n(1323?--1382).}.\n\nProof: We will show that the sequence of partial sums is unbounded, and hence\ncannot converge.\nWrite the partial sums $s_n$ for $n = 2^k$ as:\n\\begin{align*}\n s_1 & = 1 , \\\\\n s_2 & = \\left( 1 \\right) + \\left( \\frac{1}{2} \\right) , \\\\\n s_4 & = \\left( 1 \\right) + \\left( \\frac{1}{2} \\right) +\n        \\left( \\frac{1}{3} + \\frac{1}{4} \\right) , \\\\\n s_8 & = \\left( 1 \\right) + \\left( \\frac{1}{2} \\right) +\n        \\left( \\frac{1}{3} + \\frac{1}{4} \\right) +\n        \\left( \\frac{1}{5} + \\frac{1}{6} + \\frac{1}{7} + \\frac{1}{8} \\right) , \\\\\n& ~~ \\vdots \\\\\n s_{2^k} & = \n1 + \n\\sum_{i=1}^k\n\\left(\n\\sum_{m=2^{i-1}+1}^{2^i} \\frac{1}{m}\n\\right) .\n\\end{align*}\nNotice $\\nicefrac{1}{3} + \\nicefrac{1}{4} \\geq \\nicefrac{1}{4} + \\nicefrac{1}{4} =\n\\nicefrac{1}{2}$ and\n$\\nicefrac{1}{5} + \\nicefrac{1}{6} + \\nicefrac{1}{7} + \\nicefrac{1}{8}\n\\geq \\nicefrac{1}{8} + \\nicefrac{1}{8} + \\nicefrac{1}{8} + \\nicefrac{1}{8} =\n\\nicefrac{1}{2}$.  More generally\n\\begin{equation*}\n\\sum_{m=2^{k-1}+1}^{2^k} \\frac{1}{m}\n\\geq\n\\sum_{m=2^{k-1}+1}^{2^k} \\frac{1}{2^k}\n=\n(2^{k-1}) \\frac{1}{2^k} = \\frac{1}{2} .\n\\end{equation*}\nTherefore,\n\\begin{equation*}\ns_{2^k} = \n1 + \n\\sum_{i=1}^k\n\\left(\n\\sum_{m=2^{i-1}+1}^{2^i} \\frac{1}{m}\n\\right) \n\\geq\n1 + \\sum_{i=1}^k \\frac{1}{2} = 1 + \\frac{k}{2} .\n\\end{equation*}\nAs $\\{ \\nicefrac{k}{2} \\}_{k=1}^\\infty$ is unbounded by the\n\\hyperref[thm:arch:i]{Archimedean property}, that means that\n$\\{ s_{2^k} \\}_{k=1}^\\infty$ is unbounded,\nand therefore $\\{ s_n \\}_{n=1}^\\infty$ is unbounded.\nHence $\\{ s_n \\}_{n=1}^\\infty$ diverges, and consequently $\\sum_{n=1}^\\infty \\nicefrac{1}{n}$ diverges.\n\\end{example}"
+  },
+  {
+    "index": 59,
+    "label": "Proposition 2.5.12",
+    "env": "prop",
+    "number_components": [
+      2,
+      5,
+      12
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Series",
+      "subsection": "Basic properties",
+      "chapter_number": 2,
+      "section_number": "2.5"
+    },
+    "content": "\\begin{prop}[Linearity of series]\\index{linearity of series}\nLet $\\alpha \\in \\R$ and $\\sum_{n=1}^\\infty x_n$ and $\\sum_{n=1}^\\infty y_n$ be\nconvergent series.  Then\n\\begin{enumerate}[(i)]\n\\item\n$\\sum_{n=1}^\\infty \\alpha x_n$ is a convergent series and\n\\begin{equation*}\n\\sum_{n=1}^\\infty \\alpha x_n\n=\n\\alpha \\sum_{n=1}^\\infty x_n .\n\\end{equation*}\n\\item\n$\\sum_{n=1}^\\infty ( x_n + y_n )$ is a convergent series and\n\\begin{equation*}\n\\sum_{n=1}^\\infty ( x_n + y_n ) \n=\n\\left( \\sum_{n=1}^\\infty x_n \\right)\n+\n\\left( \\sum_{n=1}^\\infty y_n \\right) .\n\\end{equation*}\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 60,
+    "label": "Proposition 2.5.13",
+    "env": "prop",
+    "number_components": [
+      2,
+      5,
+      13
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Series",
+      "subsection": "Absolute convergence",
+      "chapter_number": 2,
+      "section_number": "2.5"
+    },
+    "content": "\\begin{prop}\nIf $x_n \\geq 0$ for all $n$, then $\\sum_{n=1}^\\infty x_n$ converges if and only if\nthe sequence of partial sums is bounded above.\n\\end{prop}"
+  },
+  {
+    "index": 61,
+    "label": "Definition 2.5.14",
+    "env": "defn",
+    "number_components": [
+      2,
+      5,
+      14
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Series",
+      "subsection": "Absolute convergence",
+      "chapter_number": 2,
+      "section_number": "2.5"
+    },
+    "content": "\\begin{defn}\nA series $\\sum_{n=1}^\\infty x_n$\n\\emph{\\myindex{converges absolutely}}\\index{absolute convergence} if\nthe series $\\sum_{n=1}^\\infty \\sabs{x_n}$ converges.\nIf a series converges, but does not converge absolutely, we say\nit \\emph{\\myindex{converges conditionally}}.\\index{conditional convergence}\n\\end{defn}"
+  },
+  {
+    "index": 62,
+    "label": "Proposition 2.5.15",
+    "env": "prop",
+    "number_components": [
+      2,
+      5,
+      15
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Series",
+      "subsection": "Absolute convergence",
+      "chapter_number": 2,
+      "section_number": "2.5"
+    },
+    "content": "\\begin{prop}\nIf the series $\\sum_{n=1}^\\infty x_n$ converges absolutely, then it converges.\n\\end{prop}"
+  },
+  {
+    "index": 63,
+    "label": "Proposition 2.5.16",
+    "env": "prop",
+    "number_components": [
+      2,
+      5,
+      16
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Series",
+      "subsection": "Comparison test and the \\texorpdfstring{$p$",
+      "chapter_number": 2,
+      "section_number": "2.5"
+    },
+    "content": "\\begin{prop}[Comparison test]\\index{comparison test for series}\nLet $\\sum_{n=1}^\\infty x_n$ and $\\sum_{n=1}^\\infty y_n$ be series such that $0 \\leq x_n \\leq y_n$\nfor all $n \\in \\N$.\n\\begin{enumerate}[(i)]\n\\item If $\\sum_{n=1}^\\infty y_n$ converges, then so does $\\sum_{n=1}^\\infty x_n$.\n\\item If $\\sum_{n=1}^\\infty x_n$ diverges, then so does $\\sum_{n=1}^\\infty y_n$.\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 64,
+    "label": "Proposition 2.5.17",
+    "env": "prop",
+    "number_components": [
+      2,
+      5,
+      17
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Series",
+      "subsection": "Comparison test and the \\texorpdfstring{$p$",
+      "chapter_number": 2,
+      "section_number": "2.5"
+    },
+    "content": "\\begin{prop}[$p$-series or the $p$-test]%\n\\index{p-series@$p$-series}\\index{p-test@$p$-test}\nFor $p \\in \\R$, \nthe series\n\\begin{equation*}\n\\sum_{n=1}^\\infty \\frac{1}{n^p}\n\\end{equation*}\nconverges if and only if $p > 1$.\n\\end{prop}"
+  },
+  {
+    "index": 65,
+    "label": "Example 2.5.18",
+    "env": "example",
+    "number_components": [
+      2,
+      5,
+      18
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Series",
+      "subsection": "Comparison test and the \\texorpdfstring{$p$",
+      "chapter_number": 2,
+      "section_number": "2.5"
+    },
+    "content": "\\begin{example}\nThe series $\\sum_{n=1}^\\infty \\frac{1}{n^2+1}$ converges.\n\nProof:  First, $\\frac{1}{n^2+1} < \\frac{1}{n^2}$ for all $n \\in \\N$.\nThe series $\\sum_{n=1}^\\infty \\frac{1}{n^2}$ converges by the $p$-series test.\nTherefore, by the comparison test, $\\sum_{n=1}^\\infty \\frac{1}{n^2+1}$ converges.\n\\end{example}"
+  },
+  {
+    "index": 66,
+    "label": "Proposition 2.5.19",
+    "env": "prop",
+    "number_components": [
+      2,
+      5,
+      19
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Series",
+      "subsection": "Ratio test",
+      "chapter_number": 2,
+      "section_number": "2.5"
+    },
+    "content": "\\begin{prop}[Ratio test]\\index{ratio test for series}\nLet $\\sum_{n=1}^\\infty x_n$ be a series, $x_n \\not= 0$ for all $n$, and such that\n\\begin{equation*}\nL \\coloneqq \\lim_{n\\to\\infty} \\frac{\\sabs{x_{n+1}}}{\\sabs{x_n}}\n\\qquad \\text{exists.}\n\\end{equation*}\n\\begin{enumerate}[(i)]\n\\item\nIf $L < 1$, then $\\sum_{n=1}^\\infty x_n$ converges absolutely.\n\\item\nIf $L > 1$, then $\\sum_{n=1}^\\infty x_n$ diverges.\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 67,
+    "label": "Example 2.5.20",
+    "env": "example",
+    "number_components": [
+      2,
+      5,
+      20
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Series",
+      "subsection": "Ratio test",
+      "chapter_number": 2,
+      "section_number": "2.5"
+    },
+    "content": "\\begin{example}\nThe series\n\\begin{equation*}\n\\sum_{n=1}^\\infty \\frac{2^n}{n!}\n\\end{equation*}\nconverges absolutely.\n\nProof:  We write\n\\begin{equation*}\n\\lim_{n\\to\\infty} \\frac{2^{(n+1)}/(n+1)!}{2^n / n!} =\n\\lim_{n\\to\\infty} \\frac{2}{n+1} = 0 .\n\\end{equation*}\nTherefore, the series converges absolutely by the ratio test.\n\\end{example}"
+  },
+  {
+    "index": 68,
+    "label": "Proposition 2.5.5",
+    "env": "prop",
+    "number_components": [
+      2,
+      5,
+      5
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Series",
+      "subsection": "Definition",
+      "chapter_number": 2,
+      "section_number": "2.5"
+    },
+    "content": "\\begin{prop} \\label{geometric:prop}\nSuppose\n$-1 < r < 1$.  Then the \\emph{\\myindex{geometric series}}\n$\\sum_{n=0}^\\infty r^n$ converges, and\n\\begin{equation*}\n\\sum_{n=0}^\\infty r^n = \\frac{1}{1-r} .\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 69,
+    "label": "Theorem 2.3.4",
+    "env": "thm",
+    "number_components": [
+      2,
+      3,
+      4
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "Limit superior, limit inferior, and Bolzano--Weierstrass",
+      "subsection": "Upper and lower limits",
+      "chapter_number": 2,
+      "section_number": "2.3"
+    },
+    "content": "\\begin{thm} \\label{subseqlimsupinf:thm}\nIf $\\{ x_n \\}_{n=1}^\\infty$ is a bounded sequence, then there exists a subsequence\n$\\{ x_{n_k} \\}_{k=1}^\\infty$ such that\n\\begin{equation*}\n\\lim_{k\\to \\infty} x_{n_k} = \\limsup_{n \\to \\infty} x_n .\n\\end{equation*}\nSimilarly, there exists a (perhaps different) subsequence\n$\\{ x_{m_k} \\}_{k=1}^\\infty$ such that\n\\begin{equation*}\n\\lim_{k\\to \\infty} x_{m_k} = \\liminf_{n \\to \\infty} x_n .\n\\end{equation*}\n\\end{thm}"
+  },
+  {
+    "index": 70,
+    "label": "Proposition 2.6.1",
+    "env": "prop",
+    "number_components": [
+      2,
+      6,
+      1
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "More on series",
+      "subsection": "Root test",
+      "chapter_number": 2,
+      "section_number": "2.6"
+    },
+    "content": "\\begin{prop}[Root test]\nLet $\\sum_{n=1}^\\infty x_n$ be a series and let\n\\begin{equation*}\nL \\coloneqq \\limsup_{n\\to\\infty} {\\sabs{x_n}}^{1/n} .\n\\end{equation*}\n\\begin{enumerate}[(i)]\n\\item If $L < 1$, then $\\sum_{n=1}^\\infty x_n$ converges absolutely.\n\\item If $L > 1$, then $\\sum_{n=1}^\\infty x_n$ diverges.\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 71,
+    "label": "Proposition 2.6.2",
+    "env": "prop",
+    "number_components": [
+      2,
+      6,
+      2
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "More on series",
+      "subsection": "Alternating series test",
+      "chapter_number": 2,
+      "section_number": "2.6"
+    },
+    "content": "\\begin{prop}[Alternating series]\nLet $\\{ x_n \\}_{n=1}^\\infty$ be a monotone decreasing sequence of positive real numbers such\nthat $\\lim\\limits_{n\\to\\infty} x_n = 0$.  Then\n\\begin{equation*}\n\\sum_{n=1}^\\infty {(-1)}^n x_n \\qquad \\text{converges.}\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 72,
+    "label": "Proposition 2.6.3",
+    "env": "prop",
+    "number_components": [
+      2,
+      6,
+      3
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "More on series",
+      "subsection": "Rearrangements",
+      "chapter_number": 2,
+      "section_number": "2.6"
+    },
+    "content": "\\begin{prop}\nLet $\\sum_{n=1}^\\infty x_n$ be an absolutely convergent series converging to a number\n$x$.  Let $\\sigma \\colon \\N \\to \\N$ be a bijection.  Then\n$\\sum_{n=1}^\\infty x_{\\sigma(n)}$ is absolutely convergent and converges to $x$.\n\\end{prop}"
+  },
+  {
+    "index": 73,
+    "label": "Theorem 2.6.5",
+    "env": "thm",
+    "number_components": [
+      2,
+      6,
+      5
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "More on series",
+      "subsection": "Multiplication of series",
+      "chapter_number": 2,
+      "section_number": "2.6"
+    },
+    "content": "\\begin{thm}[\\myindex{Mertens' theorem}\\footnote{Proved by\nthe German mathematician\n\\href{https://en.wikipedia.org/wiki/Franz_Mertens}{Franz Mertens}\n(1840--1927).}]\nSuppose $\\sum_{n=0}^\\infty a_n$ and $\\sum_{n=0}^\\infty b_n$ are two convergent series, converging\nto $A$ and $B$ respectively.  Suppose at least one of the series\nconverges absolutely.  Define\n\\begin{equation*}\nc_n \\coloneqq a_0 b_n + a_1 b_{n-1} + \\cdots + a_n b_0 = \\sum_{i=0}^n a_i b_{n-i} .\n\\end{equation*}\nThen the series $\\sum_{n=0}^\\infty c_n$\nconverges to $AB$.\n\\end{thm}"
+  },
+  {
+    "index": 74,
+    "label": "Example 2.6.6",
+    "env": "example",
+    "number_components": [
+      2,
+      6,
+      6
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "More on series",
+      "subsection": "Multiplication of series",
+      "chapter_number": 2,
+      "section_number": "2.6"
+    },
+    "content": "\\begin{example}\nIf both series are only conditionally convergent, the Cauchy product series\nneed not even converge.\nSuppose we take $a_n = b_n = {(-1)}^n \\frac{1}{\\sqrt{n+1}}$.\nThe series $\\sum_{n=0}^\\infty a_n = \\sum_{n=0}^\\infty b_n$\nconverges\nby the alternating series test; however, it does not converge\nabsolutely as can be seen from the $p$-test.  Let us look\nat the Cauchy product.\n\\begin{equation*}\n%mbxlatex \\begin{aligned}\nc_n\n%mbxlatex &\n= \n{(-1)}^n\n\\left(\n\\frac{1}{\\sqrt{n+1}} + \n\\frac{1}{\\sqrt{2n}} + \n\\frac{1}{\\sqrt{3(n-1)}} + \\cdots +\n%\\frac{1}{\\sqrt{2n}} + \n\\frac{1}{\\sqrt{n+1}}\n\\right)\n%mbxlatex \\\\\n%mbxlatex &\n=\n{(-1)}^n\n\\sum_{i=0}^n \\frac{1}{\\sqrt{(i+1)(n-i+1)}} .\n%mbxlatex \\end{aligned}\n\\end{equation*}\nTherefore,\n\\begin{equation*}\n\\sabs{c_n} \n=\n\\sum_{i=0}^n \\frac{1}{\\sqrt{(i+1)(n-i+1)}} \n\\geq\n\\sum_{i=0}^n \\frac{1}{\\sqrt{(n+1)(n+1)}} \n= 1 .\n\\end{equation*}\nThe terms do not go to zero and hence $\\sum_{n=0}^\\infty c_n$ cannot converge.\n\\end{example}"
+  },
+  {
+    "index": 75,
+    "label": "Example 2.6.7",
+    "env": "example",
+    "number_components": [
+      2,
+      6,
+      7
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "More on series",
+      "subsection": "Power series",
+      "chapter_number": 2,
+      "section_number": "2.6"
+    },
+    "content": "\\begin{example} \\label{ps:expex}\nThe series\n\\begin{equation*}\n\\sum_{n=0}^\\infty \\frac{1}{n!} x^n\n\\end{equation*}\nis absolutely convergent for all $x \\in \\R$ using the ratio test:\nFor any $x \\in \\R$\n\\begin{equation*}\n\\lim_{n \\to \\infty}\n\\frac{\\bigl(1/(n+1)!\\bigr) \\, x^{n+1}}{(1/n!) \\, x^{n}}\n=\n\\lim_{n \\to \\infty}\n\\frac{x}{n+1}\n=\n0.\n\\end{equation*}\nRecall from calculus that this series converges to $e^x$.\n\\end{example}"
+  },
+  {
+    "index": 76,
+    "label": "Example 2.6.8",
+    "env": "example",
+    "number_components": [
+      2,
+      6,
+      8
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "More on series",
+      "subsection": "Power series",
+      "chapter_number": 2,
+      "section_number": "2.6"
+    },
+    "content": "\\begin{example} \\label{ps:1kex}\nThe series\n\\begin{equation*}\n\\sum_{n=1}^\\infty \\frac{1}{n} x^n\n\\end{equation*}\nconverges absolutely for all $x \\in (-1,1)$ via the ratio test:\n\\begin{equation*}\n\\lim_{n \\to \\infty}\n\\abs{\n\\frac{\\bigl(1/(n+1) \\bigr) \\, x^{n+1}}{(1/n) \\, x^{n}}\n}\n=\n\\lim_{n \\to \\infty}\n\\sabs{x} \\frac{n}{n+1}\n=\n\\sabs{x} < 1 .\n\\end{equation*}\nThe series converges at $x=-1$,\nas\n$\\sum_{n=1}^\\infty \\frac{{(-1)}^n}{n}$ converges\nby the alternating series\ntest.\nBut the power series does not converge absolutely at $x=-1$, because\n$\\sum_{n=1}^\\infty \\frac{1}{n}$ does not converge.\nThe series\ndiverges at $x=1$.\nWhen $\\sabs{x} > 1$, then the series diverges via the ratio test.\n\\end{example}"
+  },
+  {
+    "index": 77,
+    "label": "Example 2.6.9",
+    "env": "example",
+    "number_components": [
+      2,
+      6,
+      9
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "More on series",
+      "subsection": "Power series",
+      "chapter_number": 2,
+      "section_number": "2.6"
+    },
+    "content": "\\begin{example} \\label{ps:divergeex}\nThe series\n\\begin{equation*}\n\\sum_{n=1}^\\infty n^n x^n\n\\end{equation*}\ndiverges for all $x \\not= 0$.  Let us apply the root test\n\\begin{equation*}\n\\limsup_{n\\to\\infty}\n\\,\n\\sabs{n^n x^n}^{1/n}\n=\n\\limsup_{n\\to\\infty}\n\\,\nn \\sabs{x}\n= \\infty .\n\\end{equation*}\nTherefore, the series diverges for all $x \\not= 0$.\n\\end{example}"
+  },
+  {
+    "index": 78,
+    "label": "Proposition 2.6.10",
+    "env": "prop",
+    "number_components": [
+      2,
+      6,
+      10
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "More on series",
+      "subsection": "Power series",
+      "chapter_number": 2,
+      "section_number": "2.6"
+    },
+    "content": "\\begin{prop} \\label{prop:powerserrealradius}\nLet $\\sum_{n=0}^\\infty a_n {(x-x_0)}^n$ be a power series.\nIf the series is convergent, then either it converges absolutely at\nall $x \\in \\R$, or\nthere exists a number $\\rho$, such that\nthe series converges absolutely on the interval\n$(x_0-\\rho,x_0+\\rho)$ and diverges when $x < x_0-\\rho$ or $x > x_0+\\rho$.\n\\end{prop}"
+  },
+  {
+    "index": 79,
+    "label": "Proposition 2.6.11",
+    "env": "prop",
+    "number_components": [
+      2,
+      6,
+      11
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "More on series",
+      "subsection": "Power series",
+      "chapter_number": 2,
+      "section_number": "2.6"
+    },
+    "content": "\\begin{prop}\nLet $\\sum_{n=0}^\\infty a_n {(x-x_0)}^n$ be a power series, and let\n\\begin{equation*}\nR \\coloneqq \\limsup_{n\\to\\infty} {\\sabs{a_n}}^{1/n} .\n\\end{equation*}\nIf $R = \\infty$, the power series is divergent.  If\n$R=0$, then the power series converges everywhere.   Otherwise,\nthe radius of convergence $\\rho = \\nicefrac{1}{R}$.\n\\end{prop}"
+  },
+  {
+    "index": 80,
+    "label": "Proposition 2.6.12",
+    "env": "prop",
+    "number_components": [
+      2,
+      6,
+      12
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "More on series",
+      "subsection": "Power series",
+      "chapter_number": 2,
+      "section_number": "2.6"
+    },
+    "content": "\\begin{prop}\nLet $\\sum_{n=0}^\\infty a_n {(x-x_0)}^n$ and\n$\\sum_{n=0}^\\infty b_n {(x-x_0)}^n$ be two convergent power series\nwith radius of convergence at least $\\rho > 0$ and $\\alpha \\in \\R$.  Then\nfor all $x$ such that $\\sabs{x-x_0} < \\rho$, we have \n\\begin{equation*}\n\\left(\\sum_{n=0}^\\infty a_n {(x-x_0)}^n\\right)\n+\n\\left(\\sum_{n=0}^\\infty b_n {(x-x_0)}^n\\right)\n=\n\\sum_{n=0}^\\infty (a_n+b_n) {(x-x_0)}^n ,\n\\end{equation*}\n\\begin{equation*}\n\\alpha\n\\left(\\sum_{n=0}^\\infty a_n {(x-x_0)}^n\\right)\n=\n\\sum_{n=0}^\\infty \\alpha a_n {(x-x_0)}^n ,\n\\end{equation*}\nand\n\\begin{equation*}\n\\left(\\sum_{n=0}^\\infty a_n {(x-x_0)}^n\\right)\n\\,\n\\left(\\sum_{n=0}^\\infty b_n {(x-x_0)}^n\\right)\n=\n\\sum_{n=0}^\\infty c_n {(x-x_0)}^n ,\n\\end{equation*}\nwhere\n$c_n = a_0b_n + a_1 b_{n-1} + \\cdots + a_n b_0$.\n\\end{prop}"
+  },
+  {
+    "index": 81,
+    "label": "Example 2.6.13",
+    "env": "example",
+    "number_components": [
+      2,
+      6,
+      13
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "More on series",
+      "subsection": "Power series",
+      "chapter_number": 2,
+      "section_number": "2.6"
+    },
+    "content": "\\begin{example}\nLet us expand $\\frac{x}{1+2x+x^2}$ as a power series around the origin ($x_0 = 0$) and\nfind the radius of convergence.\n\nWrite $1+2x+x^2 = {(1+x)}^2 = {\\bigl(1-(-x)\\bigr)}^2$, and suppose\n$\\sabs{x} < 1$.  Compute\n\\begin{equation*}\n\\begin{split}\n\\frac{x}{1+2x+x^2}\n&=\nx \\,\n{\\left(\n\\frac{1}{1-(-x)}\n\\right)}^2\n\\\\\n&=\nx \\,\n{\\left( \n\\sum_{n=0}^\\infty {(-1)}^n x^n \n\\right)}^2\n\\\\\n&=\nx \\,\n\\left(\n\\sum_{n=0}^\\infty c_n x^n \n\\right)\n\\\\\n&=\n\\sum_{n=0}^\\infty c_n x^{n+1} .\n\\end{split}\n\\end{equation*}\nUsing the formula for the product of series,\nwe obtain $c_0 = 1$, $c_1 = -1 -1 = -2$, $c_2 = 1+1+1 = 3$, etc.\nHence, for $\\sabs{x} < 1$, \n\\begin{equation*}\n\\frac{x}{1+2x+x^2}\n=\n\\sum_{n=1}^\\infty {(-1)}^{n+1} n x^n .\n\\end{equation*}\nThe radius of convergence is at least 1.  We leave it to the reader to\nverify that the radius of convergence is exactly equal to 1.\n\\end{example}"
+  },
+  {
+    "index": 82,
+    "label": "Example 2.6.4",
+    "env": "example",
+    "number_components": [
+      2,
+      6,
+      4
+    ],
+    "context": {
+      "chapter": "Sequences and Series",
+      "section": "More on series",
+      "subsection": "Rearrangements",
+      "chapter_number": 2,
+      "section_number": "2.6"
+    },
+    "content": "\\begin{example} \\label{example:harmonsumanything}\nLet us show that the alternating harmonic series\n$\\sum_{n=1}^\\infty \\frac{{(-1)}^{n+1}}{n}$, which does not converge absolutely, can be\nrearranged to converge to anything.\nThe odd terms and the even terms diverge to\nplus infinity and minus infinity respectively (prove this!):\n\\begin{equation*}\n\\sum_{m=1}^\\infty \\frac{1}{2m-1} = \\infty, \\qquad \\text{and} \\qquad\n\\sum_{m=1}^\\infty \\frac{-1}{2m} = -\\infty .\n\\end{equation*}\nLet $a_n \\coloneqq \\frac{{(-1)}^{n+1}}{n}$ for simplicity, \nlet an arbitrary number $L \\in \\R$ be given, and set $\\sigma(1) \\coloneqq 1$.\nSuppose we have\ndefined $\\sigma(n)$ for all $n \\leq N$.  If\n\\begin{equation*}\n\\sum_{n=1}^N a_{\\sigma(n)} \\leq L ,\n\\end{equation*}\nthen let $\\sigma(N+1) \\coloneqq k$ be the smallest odd $k \\in \\N$\nthat we have not used yet,\nthat is, $\\sigma(n) \\not= k$ for all $n \\leq N$.\nOtherwise, let $\\sigma(N+1) \\coloneqq k$ \nbe the smallest even $k$ that we have not yet used.\n\nBy construction, $\\sigma \\colon \\N \\to \\N$ is one-to-one.\nIt is also onto, because if we keep adding either odd (resp.\\ even) terms,\neventually we pass $L$ and switch\nto the evens (resp.\\ odds).  So we switch infinitely many times.\n\nFinally, let $N$ be the $N$ where we just pass $L$ and switch.\nFor example, suppose we have just switched from odd to even (so we start\nsubtracting),\nand let $N' > N$ be where we first switch back from even to odd.  Then\n\\begin{equation*}\nL + \\frac{1}{\\sigma(N)} \\geq \\sum_{n=1}^{N-1} a_{\\sigma(n)}\n> \\sum_{n=1}^{N'-1} a_{\\sigma(n)} > L- \\frac{1}{\\sigma(N')}.\n\\end{equation*}\nSimilarly for switching in the other direction.\nTherefore,\nthe sum up to $N'-1$ is within $\\frac{1}{\\min \\{ \\sigma(N), \\sigma(N') \\}}$\nof $L$.  As\nwe switch infinitely many times, $\\sigma(N) \\to \\infty$\nand $\\sigma(N') \\to \\infty$. Hence\n\\begin{equation*}\n\\sum_{n=1}^\\infty a_{\\sigma(n)} = \n\\sum_{n=1}^\\infty \\frac{{(-1)}^{\\sigma(n)+1}}{\\sigma(n)} = L .\n\\end{equation*}\n\nHere is an example to illustrate the proof.  Suppose $L=1.2$, then the order\nis\n\\begin{equation*}\n1+\\nicefrac{1}{3}-\\nicefrac{1}{2}+\\nicefrac{1}{5}+\\nicefrac{1}{7}+\\nicefrac{1}{9}-\\nicefrac{1}{4}+\\nicefrac{1}{11}+\\nicefrac{1}{13}-\\nicefrac{1}{6}\n+\\nicefrac{1}{15}+\\nicefrac{1}{17}+\\nicefrac{1}{19} - \\nicefrac{1}{8} + \\cdots .\n\\end{equation*}\nAt this point we are no more than $\\nicefrac{1}{8}$ from the limit.\nSee \\figureref{fig:serrearrange}.\n\\begin{myfigureht}\n\\includegraphics{figures/ser-rearrange}\n\\caption{The first 14 partial sums of the rearrangement converging\nto $1.2$.\\label{fig:serrearrange}}\n\\end{myfigureht}\n\\end{example}"
+  }
+]

@@ -1,0 +1,3 @@
+import Serre.Chap11.Theorem_11_11_2_1.TensorCharacterBridge
+import Serre.Chap11.Theorem_11_11_2_1.ElementarySubgroupBridge
+import Serre.Chap11.Theorem_11_11_2_1.InverseRootFiber

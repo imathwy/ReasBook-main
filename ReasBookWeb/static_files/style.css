@@ -1,0 +1,190 @@
+#sidebar-nav-root {
+    display: block !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 18em;
+    height: 100vh;
+    background: #f7f7fa;
+    border-right: 1px solid #ddd;
+    padding: 1.25em 0.75em 1em 0.75em;
+    box-sizing: border-box;
+    overflow-y: auto;
+    z-index: 100;
+}
+
+#sidebar-nav-root ol,
+#sidebar-nav-root ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#sidebar-nav-root li {
+    margin: 0.2em 0;
+}
+
+#sidebar-nav-root a {
+    display: block;
+    color: #222;
+    text-decoration: none;
+    padding: 0.3em 0.5em;
+    border-radius: 4px;
+    transition: background 0.2s ease;
+    line-height: 1.25;
+}
+
+#sidebar-nav-root a:hover,
+#sidebar-nav-root a:focus {
+    background: #e0e0f0;
+    color: #000;
+}
+
+#sidebar-nav-root a.is-current {
+    background: #dbeafe;
+    border-left: 3px solid #2563eb;
+    padding-left: calc(0.5em - 3px);
+    font-weight: 600;
+}
+
+#sidebar-nav-root details {
+    margin: 0.25em 0;
+}
+
+#sidebar-nav-root details > summary {
+    cursor: pointer;
+    font-weight: 600;
+    padding: 0.25em 0.45em;
+    border-radius: 4px;
+    color: #111827;
+}
+
+#sidebar-nav-root details > summary:hover {
+    background: #ececf8;
+}
+
+#sidebar-nav-root .nav-work-tree {
+    margin: 0.3em 0 0.4em 0.35em;
+}
+
+#sidebar-nav-root .nav-group-label {
+    margin-top: 0.5em;
+    margin-bottom: 0.15em;
+    padding: 0.2em 0.45em;
+    font-size: 0.78em;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #4b5563;
+}
+
+#sidebar-nav-root .nav-current-work > details {
+    border: 1px solid #d5dbe7;
+    border-radius: 6px;
+    background: #f9fafb;
+    padding: 0.15em 0.2em;
+}
+
+#sidebar-nav-root .nav-secondary-group {
+    margin-top: 0.35em;
+}
+
+#sidebar-nav-root .nav-secondary > summary {
+    font-size: 0.86em;
+    color: #374151;
+}
+
+#sidebar-nav-root .nav-chapter-item {
+    margin-top: 0.15em;
+}
+
+#sidebar-nav-root .nav-chapter > summary {
+    font-size: 0.93em;
+    font-weight: 600;
+}
+
+#sidebar-nav-root .nav-section-list {
+    margin: 0.15em 0 0.25em 0.55em;
+}
+
+#sidebar-nav-root .nav-section-item > a {
+    font-size: 0.9em;
+}
+
+#sidebar-nav-root .nav-part-list {
+    margin: 0.1em 0 0.15em 0.65em;
+}
+
+#sidebar-nav-root .nav-section-parts > summary {
+    font-size: 0.82em;
+    color: #4b5563;
+    font-weight: 500;
+    padding: 0.05em 0.3em;
+}
+
+#sidebar-nav-root .nav-part-list a {
+    font-size: 0.86em;
+    color: #374151;
+}
+
+.nav-tree-root {
+    margin-top: 0.35em;
+}
+
+/* Keep content offset for fixed sidebar on desktop. */
+div.main {
+    margin-left: 20em;
+}
+
+@media (max-width: 1000px) {
+    #sidebar-nav-root {
+        position: static;
+        width: auto;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    div.main {
+        margin-left: 0;
+    }
+}
+
+#sidebar-nav-root details ul li {
+    margin-bottom: 0.1em;
+}
+
+#sidebar-nav-root .nav-work > summary {
+    font-size: 0.98em;
+}
+
+#sidebar-nav-root .nav-chapter > summary {
+    margin-top: 0.1em;
+}
+
+#sidebar-nav-root details ul {
+    margin: 0.15em 0 0.25em 0.35em;
+    padding: 0;
+}
+
+code span {
+    font-family: "Source Code Pro" "Noto sans mono", monospace;
+    font-size: 15px;
+}
+
+body {
+    font-family: "Source Sans 3","Helvetica Neue","Segoe UI","Roboto",Arial,sans-serif;
+}
+
+div.declaration {
+    border-top: 1px solid #c0c0d0;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+/* HACK: disable wavy red underline for errors, because they are quite common in docstrings */
+.hl.lean .has-info.error :not(.tactic-state):not(.tactic-state *) {
+    text-decoration: none !important;
+}

@@ -1,0 +1,219 @@
+{
+  "schema_version": "benchmark-tasks-v0",
+  "benchmark_id": "optimization-alignment-v0",
+  "corpus_version": "optimization-pilot-v0",
+  "label_status": "unreviewed-candidates",
+  "tasks": [
+    {
+      "task_id": "da-001",
+      "source": "FirstOrderMethodsinOptimization.Chap03.Definition_3_2.subdifferential",
+      "source_file": "FirstOrderMethodsinOptimization/FirstOrderMethodsinOptimization/Chap03/Definition_3_2.lean",
+      "candidate_query": "Nesterov subdifferential or subgradient set",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-002",
+      "source": "FirstOrderMethodsinOptimization.Chap03.Definition_3_2.mem_subdifferential",
+      "source_file": "FirstOrderMethodsinOptimization/FirstOrderMethodsinOptimization/Chap03/Definition_3_2.lean",
+      "candidate_query": "Nesterov membership in subdifferential",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-003",
+      "source": "FirstOrderMethodsinOptimization.Chap03.Definition_3_2.convex_subdifferential",
+      "source_file": "FirstOrderMethodsinOptimization/FirstOrderMethodsinOptimization/Chap03/Definition_3_2.lean",
+      "candidate_query": "Nesterov convexity of subdifferential",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-004",
+      "source": "FirstOrderMethodsinOptimization.Chap03.Definition_3_6.subdifferential_domain",
+      "source_file": "FirstOrderMethodsinOptimization/FirstOrderMethodsinOptimization/Chap03/Definition_3_6.lean",
+      "candidate_query": "Nesterov domain of subdifferential",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-005",
+      "source": "FirstOrderMethodsinOptimization.Chap03.Proposition_3_14.differentiableAt_iff_subdifferentialAt_eq_singleton_fderiv",
+      "source_file": "FirstOrderMethodsinOptimization/FirstOrderMethodsinOptimization/Chap03/Proposition_3_14.lean",
+      "candidate_query": "Nesterov subdifferential singleton gradient",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-006",
+      "source": "FirstOrderMethodsinOptimization.Chap03.Proposition_3_17.l1CoordinateSubgradientVectors",
+      "source_file": "FirstOrderMethodsinOptimization/FirstOrderMethodsinOptimization/Chap03/Proposition_3_17.lean",
+      "candidate_query": "Nesterov l1 norm subgradient vectors",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-007",
+      "source": "FirstOrderMethodsinOptimization.Chap03.Proposition_3_2.subdifferential_extended_indicator_eq_normal_cone",
+      "source_file": "FirstOrderMethodsinOptimization/FirstOrderMethodsinOptimization/Chap03/Proposition_3_2.lean",
+      "candidate_query": "Nesterov indicator function normal cone",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-008",
+      "source": "FirstOrderMethodsinOptimization.Chap03.Proposition_3_10.directional_derivative_eq_support_function_subdifferential_at_interior_point",
+      "source_file": "FirstOrderMethodsinOptimization/FirstOrderMethodsinOptimization/Chap03/Proposition_3_10.lean",
+      "candidate_query": "Nesterov directional derivative support subdifferential",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-009",
+      "source": "FirstOrderMethodsinOptimization.Chap03.Proposition_3_15.euclidean_subdifferentialAt_l2_norm_eq_piecewise",
+      "source_file": "FirstOrderMethodsinOptimization/FirstOrderMethodsinOptimization/Chap03/Proposition_3_15.lean",
+      "candidate_query": "Nesterov Euclidean norm subdifferential",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-010",
+      "source": "FirstOrderMethodsinOptimization.Chap03.Proposition_3_25.subdifferentialAt_piecewiseLinearMax_eq_image_activeCoordinateFace",
+      "source_file": "FirstOrderMethodsinOptimization/FirstOrderMethodsinOptimization/Chap03/Proposition_3_25.lean",
+      "candidate_query": "Nesterov piecewise linear maximum subgradient",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-011",
+      "source": "FirstOrderMethodsinOptimization.Chap11.Definition_11_4.block_partial_gradient_mapping",
+      "source_file": "FirstOrderMethodsinOptimization/FirstOrderMethodsinOptimization/Chap11/Definition_11_4.lean",
+      "candidate_query": "Nesterov gradient mapping",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-012",
+      "source": "FirstOrderMethodsinOptimization.Chap11.Definition_11_4.IsBlockProximalGradientProblem",
+      "source_file": "FirstOrderMethodsinOptimization/FirstOrderMethodsinOptimization/Chap11/Definition_11_4.lean",
+      "candidate_query": "Nesterov proximal gradient problem",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-013",
+      "source": "FirstOrderMethodsinOptimization.Chap11.Algorithm_11_4.cyclic_block_proximal_gradient_method",
+      "source_file": "FirstOrderMethodsinOptimization/FirstOrderMethodsinOptimization/Chap11/Algorithm_11_4.lean",
+      "candidate_query": "Nesterov block coordinate proximal method",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-014",
+      "source": "FirstOrderMethodsinOptimization.Chap13.Assumption_13_1.IsGeneralizedConditionalGradientProblem",
+      "source_file": "FirstOrderMethodsinOptimization/FirstOrderMethodsinOptimization/Chap13/Assumption_13_1.lean",
+      "candidate_query": "Nesterov conditional gradient problem",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-015",
+      "source": "FirstOrderMethodsinOptimization.Chap13.Theorem_13_23.is_l_smooth_on_upper_quadratic_univ",
+      "source_file": "FirstOrderMethodsinOptimization/FirstOrderMethodsinOptimization/Chap13/Theorem_13_23.lean",
+      "candidate_query": "Nesterov smooth upper quadratic bound",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-016",
+      "source": "Nesterov.Chap03.Algorithm_3_2.IsAdmissibleSubgradientStepsizeSequence",
+      "source_file": "Nesterov/Nesterov/Chap03/Algorithm_3_2.lean",
+      "candidate_query": "FirstOrderMethods subgradient stepsize assumptions",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-017",
+      "source": "Nesterov.Chap03.Algorithm_3_2.SimpleSetSubgradientMethod",
+      "source_file": "Nesterov/Nesterov/Chap03/Algorithm_3_2.lean",
+      "candidate_query": "FirstOrderMethods projected subgradient method",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-018",
+      "source": "Nesterov.Chap03.Definition_3_40.normalizedSubgradientStep",
+      "source_file": "Nesterov/Nesterov/Chap03/Definition_3_40.lean",
+      "candidate_query": "FirstOrderMethods normalized subgradient step",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-019",
+      "source": "Nesterov.Chap03.Definition_3_47.strongConvexOn",
+      "source_file": "Nesterov/Nesterov/Chap03/Definition_3_47.lean",
+      "candidate_query": "mathlib StrongConvexOn and SmoothMinimization uses",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-020",
+      "source": "Nesterov.Chap03.Lemma_3_1_7.gradient_mem_subdifferential_of_hasGradientAt",
+      "source_file": "Nesterov/Nesterov/Chap03/Lemma_3_1_7.lean",
+      "candidate_query": "FirstOrderMethods gradient membership in subdifferential",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-021",
+      "source": "Nesterov.Chap03.Lemma_3_1_7.subdifferential_eq_singleton_of_hasGradientAt",
+      "source_file": "Nesterov/Nesterov/Chap03/Lemma_3_1_7.lean",
+      "candidate_query": "FirstOrderMethods differentiable singleton subdifferential",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-022",
+      "source": "Nesterov.Chap04.Definition_4_2_11.HasIteratedFDerivLipschitzConstantOfDegree",
+      "source_file": "Nesterov/Nesterov/Chap04/Definition_4_2_11.lean",
+      "candidate_query": "FirstOrderMethods higher derivative Lipschitz assumption",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-023",
+      "source": "Nesterov.Chap04.Definition_4_2_11.HasUniformConvexityParameterOfDegree",
+      "source_file": "Nesterov/Nesterov/Chap04/Definition_4_2_11.lean",
+      "candidate_query": "FirstOrderMethods uniform convexity degree",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-024",
+      "source": "Nesterov.Chap04.Text_4_2_12.quadraticGradientRegion",
+      "source_file": "Nesterov/Nesterov/Chap04/Text_4_2_12.lean",
+      "candidate_query": "FirstOrderMethods local quadratic gradient region",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-025",
+      "source": "SmoothMinimization.section01.ClassicalSubgradientComplexityBenchmark",
+      "source_file": "SmoothMinimization_Nesterov_2004/Papers/SmoothMinimization_Nesterov_2004/Sections/section01.lean",
+      "candidate_query": "Nesterov nonsmooth first-order lower bound",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-026",
+      "source": "SmoothMinimization.section01.SmoothConvexComplexityBenchmark",
+      "source_file": "SmoothMinimization_Nesterov_2004/Papers/SmoothMinimization_Nesterov_2004/Sections/section01.lean",
+      "candidate_query": "Nesterov smooth convex complexity class",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-027",
+      "source": "SmoothMinimization.section02_part1.IsSmoothedMaximizer",
+      "source_file": "SmoothMinimization_Nesterov_2004/Papers/SmoothMinimization_Nesterov_2004/Sections/section02_part1.lean",
+      "candidate_query": "Nesterov smoothing maximizer construction",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-028",
+      "source": "SmoothMinimization.section02_part1.prox_center_lower_bound",
+      "source_file": "SmoothMinimization_Nesterov_2004/Papers/SmoothMinimization_Nesterov_2004/Sections/section02_part1.lean",
+      "candidate_query": "Nesterov prox center strong convex lower bound",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-029",
+      "source": "SmoothMinimization.section03_part1.smooth_convex_upper_bound",
+      "source_file": "SmoothMinimization_Nesterov_2004/Papers/SmoothMinimization_Nesterov_2004/Sections/section03_part1.lean",
+      "candidate_query": "FirstOrderMethods and Nesterov smooth upper quadratic theorem",
+      "expected_label": "unknown"
+    },
+    {
+      "task_id": "da-030",
+      "source": "SmoothMinimization.section03_part1.SmoothConvexMinimizationProblem",
+      "source_file": "SmoothMinimization_Nesterov_2004/Papers/SmoothMinimization_Nesterov_2004/Sections/section03_part1.lean",
+      "candidate_query": "FirstOrderMethods smooth convex problem structure",
+      "expected_label": "unknown"
+    }
+  ]
+}
+

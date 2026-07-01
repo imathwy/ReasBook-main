@@ -1,0 +1,4 @@
+import Serre.Chap12.GaloisPowerClasses
+import Serre.Chap12.Exercise_12_12_7_8.ScalarExtensionTransport
+import Serre.Chap12.Exercise_12_12_7_8.KernelTransport
+import Serre.Chap12.Exercise_12_12_7_8.RegularPrimeFiber

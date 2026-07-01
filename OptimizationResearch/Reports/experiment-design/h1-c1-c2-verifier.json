@@ -1,0 +1,16 @@
+{
+  "protocol_id": "h1-c1-c2-verifier-v0",
+  "hypothesis": "A Lean verifier Hook reduces accepted false relations after retrieval.",
+  "corpus_version": "optimization-pilot-v0",
+  "benchmark_version": "optimization-alignment-v0",
+  "baseline": "C1 single main Agent plus declaration retrieval",
+  "experiment": "C2 equals C1 plus Lean verifier Hook",
+  "active_variable": ["lean-verifier-hook"],
+  "fixed_variables": ["tasks", "model", "prompt", "budget", "toolchain", "review-rubric", "memory-off"],
+  "metrics": ["relation-precision", "verifier-accept-reject-unknown", "human-review-time", "tool-cost"],
+  "success_criteria": ["accepted relation precision improves and verifier unknown cases remain reported"],
+  "invalid_run_rules": ["configuration drift", "test-label leakage", "unrecorded verifier failure"],
+  "stopping_rules": ["all formally checkable obligations attempted", "predeclared budget reached"],
+  "negative_result_policy": "retain"
+}
+

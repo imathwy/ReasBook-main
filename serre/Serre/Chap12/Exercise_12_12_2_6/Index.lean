@@ -1,0 +1,13 @@
+import Serre.Chap12.Exercise_12_12_2_6.FieldDenominatorPrelude
+import Serre.Chap12.Exercise_12_12_2_6.ExternalTensorUniverseBridge
+import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionConstituents
+import Serre.Chap12.Exercise_12_12_2_6.ComplexMinimalRealization
+import Serre.Chap12.Exercise_12_12_2_6.FieldTensorCenterBridge
+import Serre.Chap12.Exercise_12_12_2_6.CharacterBasisCoefficients
+import Serre.Chap12.Exercise_12_12_2_6.PacketTransport
+import Serre.Chap12.Exercise_12_12_2_6.PacketCenterDescentCore
+import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionBlockProjectors
+import Serre.Chap12.Exercise_12_12_2_6.FieldDenominatorDescent
+import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionPairing
+import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionPackets
+import Serre.Chap12.Exercise_12_12_2_6.CanonicalPacketCenterBridge

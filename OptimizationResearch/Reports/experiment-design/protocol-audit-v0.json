@@ -1,0 +1,15 @@
+{
+  "schema_version": "experiment-audit-v0",
+  "audit_id": "protocol-audit-v0",
+  "protocol_id": "h1-h2-bundle-v0",
+  "auditor": "deterministic-protocol-check-v0",
+  "status": "valid-with-limitations",
+  "findings": [],
+  "limitations": [
+    "Candidate benchmark tasks do not yet have independently reviewed gold labels.",
+    "Model and numeric budget values must be frozen before the first formal run.",
+    "H2 net-review-value weighting must be fixed before analysis.",
+    "Publication license review remains required before releasing source-derived tasks."
+  ]
+}
+

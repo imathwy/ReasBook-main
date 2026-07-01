@@ -1,0 +1,1556 @@
+[
+  {
+    "index": 1,
+    "label": "Example 7.1.2",
+    "env": "example",
+    "number_components": [
+      7,
+      1,
+      2
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Metric spaces",
+      "chapter_number": 7,
+      "section_number": "7.1"
+    },
+    "content": "\\begin{example}\nThe set of real numbers $\\R$ is a metric space with the metric\n\\begin{equation*}\nd(x,y) \\coloneqq \\sabs{x-y} .\n\\end{equation*}\nItems \\ref{metric:pos}--\\ref{metric:com} of the definition\nare easy to verify.  The\ntriangle inequality \\ref{metric:triang} follows immediately\nfrom the standard triangle inequality for real numbers:\n\\begin{equation*}\nd(x,z) = \\sabs{x-z} = \n\\sabs{x-y+y-z} \\leq\n\\sabs{x-y}+\\sabs{y-z} =\nd(x,y)+ d(y,z) .\n\\end{equation*}\nThis metric is the \\emph{\\myindex{standard metric on $\\R$}}.  If we talk\nabout $\\R$ as a metric space without mentioning a specific metric, we \nmean this particular metric.\n\\end{example}"
+  },
+  {
+    "index": 2,
+    "label": "Example 7.1.3",
+    "env": "example",
+    "number_components": [
+      7,
+      1,
+      3
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Metric spaces",
+      "chapter_number": 7,
+      "section_number": "7.1"
+    },
+    "content": "\\begin{example}\nWe can also put a different metric on the set of real numbers.\nFor example, take the set of real numbers $\\R$ together with the metric\n\\begin{equation*}\nd(x,y) \\coloneqq\n\\frac{\\sabs{x-y}}{\\sabs{x-y}+1} .\n\\end{equation*}\nItems \\ref{metric:pos}--\\ref{metric:com} are again easy to verify.  The\ntriangle inequality \\ref{metric:triang} is a little bit more difficult.\nNote that $d(x,y) = \\varphi\\bigl(\\sabs{x-y}\\bigr)$ where $\\varphi(t) =\n\\frac{t}{t+1}$ and $\\varphi$ is an increasing function\n(positive derivative, see \\figureref{fig:tovertp1}).\nHence\n\\begin{equation*}\n\\begin{split}\nd(x,z) = \\varphi\\bigl(\\sabs{x-z}\\bigr)\n& = \n\\varphi\\bigl(\\sabs{x-y+y-z}\\bigr) \\\\\n& \\leq\n\\varphi\\bigl(\\sabs{x-y}+\\sabs{y-z}\\bigr)\n\\\\\n& =\n\\frac{\\sabs{x-y}+\\sabs{y-z}}{\\sabs{x-y}+\\sabs{y-z}+1} \\\\\n& =\n\\frac{\\sabs{x-y}}{\\sabs{x-y}+\\sabs{y-z}+1} +\n\\frac{\\sabs{y-z}}{\\sabs{x-y}+\\sabs{y-z}+1}\n\\\\\n& \\leq\n\\frac{\\sabs{x-y}}{\\sabs{x-y}+1} +\n\\frac{\\sabs{y-z}}{\\sabs{y-z}+1} =\nd(x,y)+ d(y,z) .\n\\end{split}\n\\end{equation*}\nThe function $d$ is thus a metric, and gives\nan example of a nonstandard metric on $\\R$.  With this metric,\n$d(x,y) < 1$ for all $x,y \\in \\R$.  That is,\nevery two points are less than 1 unit apart.\n\\begin{myfigureht}\n\\includegraphics{figures/tovertp1graph}\n\\caption{Graph of $\\frac{t}{t+1}$ for positive $t$ with an asymptote at 1.\\label{fig:tovertp1}}\n\\end{myfigureht}\n\\end{example}"
+  },
+  {
+    "index": 3,
+    "label": "Lemma 7.1.4",
+    "env": "lemma",
+    "number_components": [
+      7,
+      1,
+      4
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Metric spaces",
+      "chapter_number": 7,
+      "section_number": "7.1"
+    },
+    "content": "\\begin{lemma}[\\myindex{Cauchy--Schwarz inequality}%\n\\footnote{%\nSometimes it is called the \\myindex{Cauchy--Bunyakovsky--Schwarz inequality}.\n\\href{https://en.wikipedia.org/wiki/Hermann_Schwarz}{Karl Hermann Amandus\nSchwarz} (1843--1921) was a German mathematician and\n\\href{https://en.wikipedia.org/wiki/Viktor_Bunyakovsky}{Viktor Yakovlevich\nBunyakovsky} (1804--1889) was a Ukrainian mathematician.  What we\nstated should really be called the Cauchy inequality, as\nBunyakovsky and Schwarz provided proofs for infinite-dimensional versions.}]\nSuppose $x =(x_1,x_2,\\ldots,x_n) \\in \\R^n$, $y =(y_1,y_2,\\ldots,y_n) \\in \\R^n$.\nThen\n\\begin{equation*}\n{\\biggl( \\sum_{k=1}^n x_k y_k \\biggr)}^2\n\\leq\n\\biggl(\\sum_{k=1}^n x_k^2 \\biggr)\n\\biggl(\\sum_{k=1}^n y_k^2 \\biggr) .\n\\end{equation*}\n\\end{lemma}"
+  },
+  {
+    "index": 4,
+    "label": "Example 7.1.5",
+    "env": "example",
+    "number_components": [
+      7,
+      1,
+      5
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Metric spaces",
+      "chapter_number": 7,
+      "section_number": "7.1"
+    },
+    "content": "\\begin{example}\nLet us construct the\nstandard metric\\index{standard metric on $\\R^n$} for $\\R^n$.  Define\n\\begin{equation*}\nd(x,y) \\coloneqq\n\\sqrt{\n{(x_1-y_1)}^2 + \n{(x_2-y_2)}^2 + \n\\cdots +\n{(x_n-y_n)}^2\n} =\n\\sqrt{\n\\sum_{k=1}^n\n{(x_k-y_k)}^2 \n} .\n\\end{equation*}\nFor $n=1$, the real line, this metric agrees with what we defined above.\nFor $n > 1$,\nthe only tricky part of the definition to check, as before, is the triangle inequality.\nIt is less messy to work with the square of the metric.  In the\nfollowing estimate, note the use of the Cauchy--Schwarz inequality.\n\\begin{equation*}\n\\begin{split}\n{\\bigl(d(x,z)\\bigr)}^2 & =\n\\sum_{k=1}^n\n{(x_k-z_k)}^2 \n\\\\\n& =\n\\sum_{k=1}^n\n{(x_k-y_k+y_k-z_k)}^2 \n\\\\\n& =\n\\sum_{k=1}^n\n\\Bigl(\n{(x_k-y_k)}^2+{(y_k-z_k)}^2 + 2(x_k-y_k)(y_k-z_k)\n\\Bigr)\n\\\\\n& =\n\\sum_{k=1}^n\n{(x_k-y_k)}^2\n+\n\\sum_{k=1}^n\n{(y_k-z_k)}^2 \n+\n2\n\\sum_{k=1}^n\n(x_k-y_k)(y_k-z_k)\n\\\\\n& \\leq\n\\sum_{k=1}^n\n{(x_k-y_k)}^2\n+\n\\sum_{k=1}^n\n{(y_k-z_k)}^2 \n+\n2\n\\sqrt{\n\\sum_{k=1}^n\n{(x_k-y_k)}^2\n\\sum_{k=1}^n\n{(y_k-z_k)}^2\n}\n\\\\\n& =\n{\\left(\n\\sqrt{\n\\sum_{k=1}^n\n{(x_k-y_k)}^2\n}\n+\n\\sqrt{\n\\sum_{k=1}^n\n{(y_k-z_k)}^2 \n}\n\\right)}^2\n=\n{\\bigl( d(x,y) + d(y,z) \\bigr)}^2 .\n\\end{split}\n\\end{equation*}\nBecause the square root is an increasing function, the\ninequality is preserved when we \ntake the square root of both sides, and we obtain the triangle inequality.\n\\end{example}"
+  },
+  {
+    "index": 5,
+    "label": "Example 7.1.6",
+    "env": "example",
+    "number_components": [
+      7,
+      1,
+      6
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Metric spaces",
+      "chapter_number": 7,
+      "section_number": "7.1"
+    },
+    "content": "\\begin{example}\nThe set of complex numbers $\\C$ is the set of numbers $z = x+iy$, where $x$\nand $y$ are in $\\R$.  By imposing $i^2 = -1$, we make $\\C$ into a\nfield.\nFor the purposes of taking limits,\nthe set $\\C$ is regarded as the metric space $\\R^2$, where $z=x+iy \\in \\C$\ncorresponds to $(x,y) \\in \\R^2$.\nFor $z=x+iy$ define the \\emph{\\myindex{complex modulus}}\\index{modulus}\nby $\\sabs{z} \\coloneqq \\sqrt{x^2+y^2}$.\nThen for two complex numbers\n$z_1 = x_1 + iy_1$ and $z_2 = x_2 + iy_2$, the distance is\n\\begin{equation*}\nd(z_1,z_2) = \\sqrt{{(x_1-x_2)}^2+ {(y_1-y_2)}^2} = \\sabs{z_1-z_2}.\n\\end{equation*}\nFurthermore, when working with complex numbers\nit is often convenient to write the metric in terms of\nthe so-called\n\\emph{\\myindex{complex conjugate}}: The conjugate of $z=x+iy$\nis $\\bar{z} \\coloneqq x-iy$.  Then \n${\\sabs{z}}^2 = x^2 +y^2 = z\\bar{z}$, and so ${\\sabs{z_1-z_2}}^2 =\n(z_1-z_2)\\overline{(z_1-z_2)}$.\n\\end{example}"
+  },
+  {
+    "index": 6,
+    "label": "Example 7.1.7",
+    "env": "example",
+    "number_components": [
+      7,
+      1,
+      7
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Metric spaces",
+      "chapter_number": 7,
+      "section_number": "7.1"
+    },
+    "content": "\\begin{example}\nAn example to keep in mind is the so-called\n\\emph{\\myindex{discrete metric}}.\nFor any set $X$, define\n\\begin{equation*}\nd(x,y) \\coloneqq\n\\begin{cases}\n1 & \\text{if } x \\not= y, \\\\\n0 & \\text{if } x = y.\n\\end{cases}\n\\end{equation*}\nThat is, all points are equally distant from each other.  When $X$ is a\nfinite set, we can draw a diagram, see for example\n\\figureref{fig:msdiscmetric}.  Of course, in the diagram the distances \nare not the normal euclidean distances in the plane.\nThings become subtle when $X$ is an infinite set such\nas the real numbers.\n\\begin{myfigureht}\n\\subimport*{figures/}{msdiscmetric.pdf_t}\n\\caption{Sample discrete metric space $\\{ a,b,c,d,e \\}$, the distance\nbetween any two points is $1$.\\label{fig:msdiscmetric}}\n\\end{myfigureht}\n\nWhile this particular\nexample may seldom come up in practice, it gives a useful \n\\myquote{smell test.}  If you make a statement about metric spaces,\ntry it with the discrete metric.\nTo show that $(X,d)$ is indeed a metric space is left as an exercise.\n\\end{example}"
+  },
+  {
+    "index": 7,
+    "label": "Example 7.1.9",
+    "env": "example",
+    "number_components": [
+      7,
+      1,
+      9
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Metric spaces",
+      "chapter_number": 7,
+      "section_number": "7.1"
+    },
+    "content": "\\begin{example}\nAnother useful example of a metric space is the sphere\nwith a metric usually called the \\emph{\\myindex{great circle distance}}.\nLet $S^2$ be the \\myindex{unit sphere}\\index{sphere} in $\\R^3$,\nthat is $S^2 \\coloneqq \\{ x \\in \\R^3 : x_1^2+x_2^2+x_3^2 = 1 \\}$.\nTake $x$ and $y$ in $S^2$, draw a line through the origin and $x$,\nand another line through the origin and $y$,\nand let $\\theta$ be the angle that the two lines make.\nThen define $d(x,y) \\coloneqq \\theta$.  See \\figureref{fig:spheremetric}.\nThe law of cosines from vector calculus says\n$d(x,y) = \\arccos(x_1y_1+x_2y_2+x_3y_3)$.\nIt is relatively easy to see that this function satisfies the first three\nproperties of a metric.\nTriangle inequality is harder to prove, and requires a bit more\ntrigonometry and linear algebra than we wish to indulge in right now, so let\nus leave it without proof.\n\n\\begin{myfigureht}\n\\subimport*{figures/}{spheremetric.pdf_t}\n\\caption{The great circle distance on the unit\nsphere.\\label{fig:spheremetric}}\n\\end{myfigureht}\n\nThis distance is the shortest distance between points on a sphere if\nwe are allowed to travel on the sphere only.  It is easy to\ngeneralize to arbitrary diameters.  If we take a sphere of radius\n$r$, we let the distance be $d(x,y) \\coloneqq r \\theta$.  As an example, this is the\nstandard distance you would use if you compute a distance on the\nsurface of the earth, such as computing the distance a plane travels from London to\nLos Angeles.\n\\end{example}"
+  },
+  {
+    "index": 8,
+    "label": "Proposition 7.1.10",
+    "env": "prop",
+    "number_components": [
+      7,
+      1,
+      10
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Metric spaces",
+      "chapter_number": 7,
+      "section_number": "7.1"
+    },
+    "content": "\\begin{prop}\nLet $(X,d)$ be a metric space and $Y \\subset X$.  Then the restriction\n$d|_{Y \\times Y}$ is a metric on $Y$.\n\\end{prop}"
+  },
+  {
+    "index": 9,
+    "label": "Definition 7.1.11",
+    "env": "defn",
+    "number_components": [
+      7,
+      1,
+      11
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Metric spaces",
+      "chapter_number": 7,
+      "section_number": "7.1"
+    },
+    "content": "\\begin{defn}\nIf $(X,d)$ is a metric space, $Y \\subset X$, and $d' \\coloneqq d|_{Y \\times Y}$,\nthen $(Y,d')$ is said to be a \\emph{\\myindex{subspace}} of $(X,d)$.\n\\end{defn}"
+  },
+  {
+    "index": 10,
+    "label": "Definition 7.1.12",
+    "env": "defn",
+    "number_components": [
+      7,
+      1,
+      12
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Metric spaces",
+      "chapter_number": 7,
+      "section_number": "7.1"
+    },
+    "content": "\\begin{defn}\nLet $(X,d)$ be a metric space.  A subset $S \\subset X$ is said to be\n\\emph{bounded}\\index{bounded set} if there exists a $p \\in X$ and a\n$B \\in \\R$ such that\n\\begin{equation*}\nd(p,x) \\leq B \\quad \\text{for all } x \\in S.\n\\end{equation*}\nWe say $(X,d)$ is bounded if $X$ itself is a bounded subset.\n\\end{defn}"
+  },
+  {
+    "index": 11,
+    "label": "Definition 7.1.1",
+    "env": "defn",
+    "number_components": [
+      7,
+      1,
+      1
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Metric spaces",
+      "chapter_number": 7,
+      "section_number": "7.1"
+    },
+    "content": "\\begin{defn}\nLet $X$ be a set, and let\n$d \\colon X \\times X \\to \\R$\nbe a function such that for all $x,y,z \\in X$\n\\begin{enumerate}[(i)]\n%\n\\item \\label{metric:pos}\n%mbxSTARTIGNORE\n\\makebox[2.8in][l]{$d(x,y) \\geq 0$.}\n%mbxENDIGNORE\n%mbxlatex $d(x,y) \\geq 0$. \\qquad\n(\\emph{nonnegativity})\\index{nonnegativity of a metric}\n%\n\\item \\label{metric:zero}\n%mbxSTARTIGNORE\n\\makebox[2.8in][l]{$d(x,y) = 0$ if and only if $x = y$.}\n%mbxENDIGNORE\n%mbxlatex $d(x,y) = 0$ if and only if $x = y$. \\qquad\n(\\emph{\\myindex{identity of indiscernibles}})\n%\n\\item \\label{metric:com}\n%mbxSTARTIGNORE\n\\makebox[2.8in][l]{$d(x,y) = d(y,x)$.} \n%mbxENDIGNORE\n%mbxlatex $d(x,y) = d(y,x)$. \\qquad\n(\\emph{symmetry})\\index{symmetry of a metric}\n%\n\\item \\label{metric:triang}\n%mbxSTARTIGNORE\n\\makebox[2.8in][l]{$d(x,z) \\leq d(x,y)+ d(y,z)$.}\n%mbxENDIGNORE\n%mbxlatex $d(x,z) \\leq d(x,y)+ d(y,z)$. \\qquad\n(\\emph{\\myindex{triangle inequality}})\n\\end{enumerate}\nThe pair $(X,d)$ is called a \\emph{\\myindex{metric space}}.  The\nfunction $d$ is called the \\emph{\\myindex{metric}} or the\n\\emph{\\myindex{distance function}}.\nSometimes we write just $X$ as the metric space instead of $(X,d)$\nif the metric is clear from context.\n\\end{defn}"
+  },
+  {
+    "index": 12,
+    "label": "Definition 7.2.1",
+    "env": "defn",
+    "number_components": [
+      7,
+      2,
+      1
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Topology",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{defn}\nLet $(X,d)$ be a metric space, $x \\in X$, and $\\delta > 0$.  Define\nthe \\emph{\\myindex{open ball}}, or simply \\emph{\\myindex{ball}}, of radius $\\delta$\naround $x$ as\n\\glsadd{not:openball}\n\\begin{equation*}\nB(x,\\delta) \\coloneqq \\bigl\\{ y \\in X : d(x,y) < \\delta \\bigr\\} .\n\\end{equation*}\nDefine the \\emph{\\myindex{closed ball}} as\n\\glsadd{not:closedball}\n\\begin{equation*}\nC(x,\\delta) \\coloneqq \\bigl\\{ y \\in X : d(x,y) \\leq \\delta \\bigr\\} .\n\\end{equation*}\n\\end{defn}"
+  },
+  {
+    "index": 13,
+    "label": "Example 7.2.2",
+    "env": "example",
+    "number_components": [
+      7,
+      2,
+      2
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Topology",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{example}\nTake the metric space $\\R$ with the standard metric.  For\n$x \\in \\R$ and $\\delta > 0$,\n\\begin{equation*}\nB(x,\\delta) = (x-\\delta,x+\\delta) \\qquad \\text{and} \\qquad\nC(x,\\delta) = [x-\\delta,x+\\delta] .\n\\end{equation*}\n\\end{example}"
+  },
+  {
+    "index": 14,
+    "label": "Example 7.2.3",
+    "env": "example",
+    "number_components": [
+      7,
+      2,
+      3
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Topology",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{example}\nBe careful when working on a subspace.  Consider the\nmetric space $[0,1]$ as a subspace of $\\R$.  Then in $[0,1]$,\n\\begin{equation*}\nB(0,\\nicefrac{1}{2}) = B_{[0,1]}(0,\\nicefrac{1}{2})\n= \\bigl\\{ y \\in [0,1] : \\sabs{0-y} < \\nicefrac{1}{2} \\bigr\\}\n= [0,\\nicefrac{1}{2}) .\n\\end{equation*}\nThis is different from $B_{\\R}(0,\\nicefrac{1}{2}) =\n(\\nicefrac{-1}{2},\\nicefrac{1}{2})$.\nThe important thing to keep in mind is which metric space we are working\nin.\n\\end{example}"
+  },
+  {
+    "index": 15,
+    "label": "Definition 7.2.4",
+    "env": "defn",
+    "number_components": [
+      7,
+      2,
+      4
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Topology",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{defn}\nLet $(X,d)$ be a metric space.  A subset $V \\subset X$\nis \\emph{open}\\index{open set}\nif for every $x \\in V$, there exists a $\\delta > 0$ such that\n$B(x,\\delta) \\subset V$.  See \\figureref{fig:msopenset}.  A subset $E \\subset X$ is \n\\emph{closed}\\index{closed set} if the complement $E^c = X \\setminus E$ is open.\nWhen the ambient space $X$ is not clear from context,\nwe say \\emph{$V$ is open in $X$} and \\emph{$E$ is closed in $X$}.\n\nIf $x \\in V$ and $V$ is open, then we say \n$V$ is an \\emph{\\myindex{open neighborhood}} of $x$ (or\nsometimes just \\emph{\\myindex{neighborhood}}).\n\\end{defn}"
+  },
+  {
+    "index": 16,
+    "label": "Example 7.2.5",
+    "env": "example",
+    "number_components": [
+      7,
+      2,
+      5
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Topology",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{example}\nThe set $(0,\\infty) \\subset \\R$ is open:  Given any $x \\in (0,\\infty)$,\nlet $\\delta \\coloneqq x$.  Then $B(x,\\delta) = (0,2x) \\subset (0,\\infty)$.\n\nThe set $[0,\\infty) \\subset \\R$ is closed:  Given $x \\in (-\\infty,0) =\n[0,\\infty)^c$,\nlet $\\delta \\coloneqq -x$.  Then $B(x,\\delta) = (-2x,0) \\subset\n(-\\infty,0) = [0,\\infty)^c$.\n\nThe set $[0,1) \\subset \\R$ is neither open nor closed.  First,\nevery ball in $\\R$ around $0$, $B(0,\\delta) = (-\\delta,\\delta)$, contains negative\nnumbers and hence is not contained in $[0,1)$.  So $[0,1)$ is not open.\nSecond, every ball in $\\R$ around $1$,\n$B(1,\\delta) = (1-\\delta,1+\\delta)$, contains\nnumbers strictly less than 1 and greater than 0\n(e.g.\\ $1-\\nicefrac{\\delta}{2}$ as long as $\\delta < 2$).\nThus $[0,1)^c = \\R \\setminus\n[0,1)$ is not open, and $[0,1)$ is not closed.\n\nIf $(X,d)$ is any metric space, and $x \\in X$ is a point, then $\\{ x \\}$ is\nclosed (exercise).\nOn the other hand, $\\{ x \\}$ may or may not be open depending on $X$.\nThe set $\\{ 0 \\} \\subset \\R$ is not open as $B(0,\\delta)$\ncontains nonzero numbers for every $\\delta > 0$.\nIf $X=\\{ x \\}$, then $\\{ x \\}$ is open.\n\\end{example}"
+  },
+  {
+    "index": 17,
+    "label": "Example 7.2.7",
+    "env": "example",
+    "number_components": [
+      7,
+      2,
+      7
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Topology",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{example}\nNotice the difference between\nitems\n\\ref{topology:openii} and \\ref{topology:openiii}.\nItem \\ref{topology:openii} is not true for an arbitrary intersection.\nFor instance,\n$\\bigcap_{n=1}^\\infty (\\nicefrac{-1}{n},\\nicefrac{1}{n}) = \\{ 0 \\}$,\nwhich is not open.\n\\end{example}"
+  },
+  {
+    "index": 18,
+    "label": "Definition 7.2.13",
+    "env": "defn",
+    "number_components": [
+      7,
+      2,
+      13
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Connected sets",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{defn}\nA nonempty%\n\\footnote{Some authors do not exclude the empty set from the definition,\nand the empty set would then be connected.\nWe avoid the empty set for essentially the same reason why\n1 is neither a prime nor a composite number:  Our connected sets have exactly\ntwo clopen subsets and disconnected sets have more than two.  The empty set\nhas exactly one.}\nmetric space $(X,d)$ is \\emph{\\myindex{connected}} if the\nonly subsets of $X$ that are both open and closed (so-called\n\\emph{\\myindex{clopen}} subsets) are $\\emptyset$ and $X$ itself.\nIf a nonempty $(X,d)$ is not connected we say it is\n\\emph{\\myindex{disconnected}}.\n\nWhen we apply the term \\emph{connected} to a nonempty subset $A \\subset X$, we \nmean that $A$ with the subspace topology is connected.\n\\end{defn}"
+  },
+  {
+    "index": 19,
+    "label": "Proposition 7.2.14",
+    "env": "prop",
+    "number_components": [
+      7,
+      2,
+      14
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Connected sets",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{prop}\nLet $(X,d)$ be a metric space.\nA nonempty set $S \\subset X$ is disconnected if and only if\nthere exist open sets $U_1$ and\n$U_2$ in $X$ such that $U_1 \\cap U_2 \\cap S = \\emptyset$,\n$U_1 \\cap S \\not= \\emptyset$,\n$U_2 \\cap S \\not= \\emptyset$, and\n\\begin{equation*}\nS = \n\\bigl( U_1 \\cap S \\bigr)\n\\cup\n\\bigl( U_2 \\cap S \\bigr) .\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 20,
+    "label": "Example 7.2.15",
+    "env": "example",
+    "number_components": [
+      7,
+      2,
+      15
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Connected sets",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{example}\nSuppose $S \\subset \\R$ and there are $x,y,z$ such that $x < z < y$ with $x,y \\in S$\nand $z \\notin S$.  Claim: \\emph{$S$ is disconnected}.  Proof:  Notice\n\\begin{equation*}\n\\bigl( (-\\infty,z) \\cap S \\bigr)\n\\cup\n\\bigl( (z,\\infty) \\cap S \\bigr)\n= S .\n\\end{equation*}\n\\end{example}"
+  },
+  {
+    "index": 21,
+    "label": "Proposition 7.2.16",
+    "env": "prop",
+    "number_components": [
+      7,
+      2,
+      16
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Connected sets",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{prop}\nA nonempty set $S \\subset \\R$ is connected if and only if $S$ is\nan interval or a single point.\n\\end{prop}"
+  },
+  {
+    "index": 22,
+    "label": "Example 7.2.17",
+    "env": "example",
+    "number_components": [
+      7,
+      2,
+      17
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Connected sets",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{example}\nOftentimes a ball $B(x,\\delta)$ is connected, but this is not\nnecessarily true in every metric space.\nFor a simplest example,\ntake a two point space $\\{ a, b\\}$ with the discrete metric.\nThen $B(a,2) = \\{ a , b \\}$, which is not\nconnected as $B(a,1) = \\{ a \\}$ and \n$B(b,1) = \\{ b \\}$ are open and disjoint.\n\\end{example}"
+  },
+  {
+    "index": 23,
+    "label": "Definition 7.2.18",
+    "env": "defn",
+    "number_components": [
+      7,
+      2,
+      18
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Closure and boundary",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{defn}\nLet $(X,d)$ be a metric space and $A \\subset X$.\nThe \\emph{\\myindex{closure}} of $A$ is the set\n\\glsadd{not:closure}\n\\begin{equation*}\n\\widebar{A} \\coloneqq \\bigcap \\{ E \\subset X : E \\text{ is closed and } A \\subset\nE \\} .\n\\end{equation*}\n\\end{defn}"
+  },
+  {
+    "index": 24,
+    "label": "Proposition 7.2.19",
+    "env": "prop",
+    "number_components": [
+      7,
+      2,
+      19
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Closure and boundary",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{prop}\nLet $(X,d)$ be a metric space and $A \\subset X$.  The closure $\\widebar{A}$\nis closed, and $A \\subset \\widebar{A}$.\nFurthermore, if $A$ is closed, then $\\widebar{A} = A$.\n\\end{prop}"
+  },
+  {
+    "index": 25,
+    "label": "Example 7.2.20",
+    "env": "example",
+    "number_components": [
+      7,
+      2,
+      20
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Closure and boundary",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{example}\nThe closure of $(0,1)$ in $\\R$ is $[0,1]$.  Proof:  If\n$E$ is closed and contains $(0,1)$, then $E$ contains $0$ and $1$ (why?).\nThus $[0,1] \\subset E$.  But $[0,1]$ is also closed.\nHence, the closure $\\overline{(0,1)} = [0,1]$.\n\\end{example}"
+  },
+  {
+    "index": 26,
+    "label": "Example 7.2.21",
+    "env": "example",
+    "number_components": [
+      7,
+      2,
+      21
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Closure and boundary",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{example}\nBe careful to notice what ambient metric space you are working with.\nIf $X = (0,\\infty)$, then\nthe closure of $(0,1)$ in $(0,\\infty)$ is $(0,1]$.  Proof:  Similarly as\nabove, $(0,1]$ is closed in $(0,\\infty)$ (why?).  Any closed set $E$\nthat contains $(0,1)$ must contain 1 (why?).  Therefore, $(0,1] \\subset E$,\nand hence $\\overline{(0,1)} = (0,1]$ when working in $(0,\\infty)$.\n\\end{example}"
+  },
+  {
+    "index": 27,
+    "label": "Definition 7.2.23",
+    "env": "defn",
+    "number_components": [
+      7,
+      2,
+      23
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Closure and boundary",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{defn}\nLet $(X,d)$ be a metric space and $A \\subset X$.\nThe \\emph{\\myindex{interior}} of $A$ is the set\n\\glsadd{not:interior}\n\\begin{equation*}\nA^\\circ \\coloneqq \\{ x \\in A : \\text{there exists a } \\delta > 0\n\\text{ such that } B(x,\\delta) \\subset A \\} .\n\\end{equation*}\nThe \\emph{\\myindex{boundary}} of $A$ is the set\n\\glsadd{not:boundary}\n\\begin{equation*}\n\\partial A \\coloneqq \\widebar{A}\\setminus A^\\circ.\n\\end{equation*}\n\\end{defn}"
+  },
+  {
+    "index": 28,
+    "label": "Example 7.2.24",
+    "env": "example",
+    "number_components": [
+      7,
+      2,
+      24
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Closure and boundary",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{example}\nSuppose $A \\coloneqq (0,1]$ and $X \\coloneqq \\R$.  Then $\\widebar{A}=[0,1]$, $A^\\circ = (0,1)$,\nand $\\partial A = \\{ 0, 1 \\}$.\n\\end{example}"
+  },
+  {
+    "index": 29,
+    "label": "Example 7.2.25",
+    "env": "example",
+    "number_components": [
+      7,
+      2,
+      25
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Closure and boundary",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{example}\nConsider $X \\coloneqq \\{ a, b \\}$ with the discrete metric,\nand let $A \\coloneqq \\{ a \\}$.  Then $\\widebar{A} = A^\\circ = A$ and $\\partial A =\n\\emptyset$.\n\\end{example}"
+  },
+  {
+    "index": 30,
+    "label": "Proposition 7.2.26",
+    "env": "prop",
+    "number_components": [
+      7,
+      2,
+      26
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Closure and boundary",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{prop}\nLet $(X,d)$ be a metric space and $A \\subset X$.  Then $A^\\circ$ is open\nand $\\partial A$ is closed.\n\\end{prop}"
+  },
+  {
+    "index": 31,
+    "label": "Proposition 7.2.27",
+    "env": "prop",
+    "number_components": [
+      7,
+      2,
+      27
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Closure and boundary",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{prop}\nLet $(X,d)$ be a metric space and $A \\subset X$.  Then $x \\in \\partial A$\nif and only if for every $\\delta > 0$,\n$B(x,\\delta) \\cap A$ and\n$B(x,\\delta) \\cap A^c$ are both nonempty.\n\\end{prop}"
+  },
+  {
+    "index": 32,
+    "label": "Corollary 7.2.28",
+    "env": "cor",
+    "number_components": [
+      7,
+      2,
+      28
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Closure and boundary",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{cor}\nLet $(X,d)$ be a metric space and $A \\subset X$.\nThen $\\partial A = \\widebar{A} \\cap \\widebar{A^c}$.\n\\end{cor}"
+  },
+  {
+    "index": 33,
+    "label": "Proposition 7.2.6",
+    "env": "prop",
+    "number_components": [
+      7,
+      2,
+      6
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Topology",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{prop} \\label{prop:topology:open}\nLet $(X,d)$ be a metric space.\n\\begin{enumerate}[(i)]\n\\item \\label{topology:openi} $\\emptyset$ and $X$ are open.\n\\item \\label{topology:openii} If $V_1, V_2, \\ldots, V_k$ are open subsets of $X$, then\n\\begin{equation*}\n\\bigcap_{j=1}^k V_j\n\\end{equation*}\nis also open.  That is, a finite intersection of open sets is open.\n\\item \\label{topology:openiii} If $\\{ V_\\lambda \\}_{\\lambda \\in I}$ is\nan arbitrary collection of open subsets of $X$, then\n\\begin{equation*}\n\\bigcup_{\\lambda \\in I} V_\\lambda\n\\end{equation*}\nis also open.  That is, a union of open sets is open.\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 34,
+    "label": "Proposition 7.2.8",
+    "env": "prop",
+    "number_components": [
+      7,
+      2,
+      8
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Topology",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{prop} \\label{prop:topology:closed}\n%FIXMEevillayouthack\n\\pagebreak[2]\nLet $(X,d)$ be a metric space.\n\\begin{enumerate}[(i)]\n\\item \\label{topology:closedi} $\\emptyset$ and $X$ are closed.\n\\item \\label{topology:closedii} If $\\{ E_\\lambda \\}_{\\lambda \\in I}$ is\nan arbitrary collection of closed subsets of $X$, then\n\\begin{equation*}\n\\bigcap_{\\lambda \\in I} E_\\lambda\n\\end{equation*}\nis also closed.  That is, an intersection of closed sets is closed.\n\\item \\label{topology:closediii} If $E_1, E_2, \\ldots, E_k$ are closed\nsubsets of $X$, then\n\\begin{equation*}\n\\bigcup_{j=1}^k E_j\n\\end{equation*}\nis also closed.  That is, a finite union of closed sets is closed.\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 35,
+    "label": "Proposition 7.2.9",
+    "env": "prop",
+    "number_components": [
+      7,
+      2,
+      9
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Topology",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{prop} \\label{prop:topology:ballsopenclosed}\nLet $(X,d)$ be a metric space, $x \\in X$, and $\\delta > 0$.  Then\n$B(x,\\delta)$ is open and \n$C(x,\\delta)$ is closed.\n\\end{prop}"
+  },
+  {
+    "index": 36,
+    "label": "Proposition 7.2.10",
+    "env": "prop",
+    "number_components": [
+      7,
+      2,
+      10
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Topology",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{prop} \\label{prop:topology:intervals:openclosed}\nLet $a, b$ be two real numbers, $a < b$.  Then $(a,b)$, $(a,\\infty)$,\nand $(-\\infty,b)$ are open in $\\R$.\nAlso $[a,b]$, $[a,\\infty)$,\nand $(-\\infty,b]$ are closed in $\\R$.\n\\end{prop}"
+  },
+  {
+    "index": 37,
+    "label": "Proposition 7.2.11",
+    "env": "prop",
+    "number_components": [
+      7,
+      2,
+      11
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Topology",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{prop} \\label{prop:topology:subspaceopen}\nSuppose $(X,d)$ is a metric space, and $Y \\subset X$.  Then $U \\subset Y$\nis open in $Y$ (in the subspace topology) if and only if\nthere exists an open set $V \\subset X$ (so open in $X$) such that\n$V \\cap Y = U$.\n\\end{prop}"
+  },
+  {
+    "index": 38,
+    "label": "Definition 7.3.1",
+    "env": "defn",
+    "number_components": [
+      7,
+      3,
+      1
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Sequences and convergence",
+      "subsection": "Sequences",
+      "chapter_number": 7,
+      "section_number": "7.3"
+    },
+    "content": "\\begin{defn}\nA \\emph{\\myindex{sequence}} in a metric space $(X,d)$ is a function\n$x \\colon \\N \\to X$.  As before we write $x_n$ for the $n$th element in\nthe sequence, and for the whole sequence use the notation\n\\glsadd{not:sequence}\n\\begin{equation*}\n\\{ x_n \\}_{n=1}^\\infty .\n\\end{equation*}\n\nA sequence $\\{ x_n \\}_{n=1}^\\infty$ is \\emph{bounded}\\index{bounded sequence} if\nthere exists a point $p \\in X$ and $B \\in \\R$ such that\n\\begin{equation*}\nd(p,x_n) \\leq B \\qquad \\text{for all } n \\in \\N.\n\\end{equation*}\nIn other words, the sequence $\\{x_n\\}_{n=1}^\\infty$ is bounded whenever\nthe set $\\{ x_n : n \\in \\N \\}$\nis bounded.\n\nIf $\\{ n_k \\}_{k=1}^\\infty$ is a sequence of natural numbers\nsuch that $n_{k+1} > n_k$ for all $k$, then\nthe sequence $\\{ x_{n_k} \\}_{k=1}^\\infty$\\glsadd{not:subsequence}\nis said to be\na \\emph{\\myindex{subsequence}} of $\\{x_n \\}_{n=1}^\\infty$.\n\\end{defn}"
+  },
+  {
+    "index": 39,
+    "label": "Definition 7.3.2",
+    "env": "defn",
+    "number_components": [
+      7,
+      3,
+      2
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Sequences and convergence",
+      "subsection": "Sequences",
+      "chapter_number": 7,
+      "section_number": "7.3"
+    },
+    "content": "\\begin{defn}\nA sequence $\\{ x_n \\}_{n=1}^\\infty$ in a metric space $(X,d)$ is said\nto \\emph{converge} to a point\n$p \\in X$ if for every $\\epsilon > 0$, there exists an $M \\in \\N$ such\nthat $d(x_n,p) < \\epsilon$ for all $n \\geq M$.  The point $p$\nis said to be a \\emph{limit}\\index{limit!of a sequence in a metric space}\nof $\\{ x_n \\}_{n=1}^\\infty$.\nIf the limit is unique, we write\\glsadd{not:limseq}\n\\begin{equation*}\n\\lim_{n\\to \\infty} x_n \\coloneqq p .\n\\end{equation*}\n\nA sequence\nthat converges is \\emph{convergent}\\index{convergent!sequence in a metric\nspace}.\nOtherwise, the sequence is \n\\emph{divergent}\\index{divergent!sequence in a metric space}.\n\\begin{myfigureht}\n\\includegraphics{figures/sequence-convergence-metric}\n\\caption{Sequence converging to $p$.  The first 10 points \nare shown and $M=7$ for this $\\epsilon$.\\label{fig:sequence-convergence-metric}}\n\\end{myfigureht}\n\\end{defn}"
+  },
+  {
+    "index": 40,
+    "label": "Proposition 7.3.3",
+    "env": "prop",
+    "number_components": [
+      7,
+      3,
+      3
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Sequences and convergence",
+      "subsection": "Sequences",
+      "chapter_number": 7,
+      "section_number": "7.3"
+    },
+    "content": "\\begin{prop} \\label{prop:mslimisunique}\nA convergent sequence in a metric space has a unique limit.\n\\end{prop}"
+  },
+  {
+    "index": 41,
+    "label": "Example 7.3.7",
+    "env": "example",
+    "number_components": [
+      7,
+      3,
+      7
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Sequences and convergence",
+      "subsection": "Sequences",
+      "chapter_number": 7,
+      "section_number": "7.3"
+    },
+    "content": "\\begin{example}\nTake $C\\bigl([a,b],\\R\\bigr)$ be the set of continuous functions with the metric being\nthe uniform norm.  We saw that we obtain a metric space.\nIf we look at the definition of convergence, we notice that it is identical\nto uniform convergence.  That is, $\\{ f_n \\}_{n=1}^\\infty$ converges uniformly if and only\nif it converges in the metric space sense.\n\\end{example}"
+  },
+  {
+    "index": 42,
+    "label": "Example 7.3.10",
+    "env": "example",
+    "number_components": [
+      7,
+      3,
+      10
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Sequences and convergence",
+      "subsection": "Convergence in euclidean space",
+      "chapter_number": 7,
+      "section_number": "7.3"
+    },
+    "content": "\\begin{example}\nAs we said, the set $\\C$ of complex numbers $z = x+iy$ is considered \nas the metric space $\\R^2$.  The proposition says that the\nsequence $\\{ z_n \\}_{n=1}^\\infty = \\{ x_n + iy_n \\}_{n=1}^\\infty$ converges\nto $z = x+iy$\nif and only if $\\{ x_n \\}_{n=1}^\\infty$ converges to $x$ and \n$\\{ y_n \\}_{n=1}^\\infty$ converges to $y$.\n\\end{example}"
+  },
+  {
+    "index": 43,
+    "label": "Proposition 7.3.11",
+    "env": "prop",
+    "number_components": [
+      7,
+      3,
+      11
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Sequences and convergence",
+      "subsection": "Convergence and topology",
+      "chapter_number": 7,
+      "section_number": "7.3"
+    },
+    "content": "\\begin{prop} \\label{prop:msconvtopo}\nLet $(X,d)$ be a metric space and $\\{x_n\\}_{n=1}^\\infty$ a sequence in $X$.  Then\n$\\{ x_n \\}_{n=1}^\\infty$ converges to $p \\in X$ if and only if for every open neighborhood\n$U$ of $p$, there exists an $M \\in \\N$ such that for all $n \\geq M$,\nwe have $x_n \\in U$.\n\\end{prop}"
+  },
+  {
+    "index": 44,
+    "label": "Proposition 7.3.12",
+    "env": "prop",
+    "number_components": [
+      7,
+      3,
+      12
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Sequences and convergence",
+      "subsection": "Convergence and topology",
+      "chapter_number": 7,
+      "section_number": "7.3"
+    },
+    "content": "\\begin{prop} \\label{prop:msclosedlim}\nLet $(X,d)$ be a metric space, $E \\subset X$ a closed set,\nand $\\{ x_n \\}_{n=1}^\\infty$ a sequence in $E$ that converges to some $p \\in X$.\nThen $p \\in E$.\n\\end{prop}"
+  },
+  {
+    "index": 45,
+    "label": "Proposition 7.2.22",
+    "env": "prop",
+    "number_components": [
+      7,
+      2,
+      22
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Closure and boundary",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{prop} \\label{prop:msclosureappr}\nLet $(X,d)$ be a metric space and $A \\subset X$.  Then $x \\in \\widebar{A}$\nif and only if for every $\\delta > 0$, $B(x,\\delta) \\cap A \\not=\\emptyset$.\n\\end{prop}"
+  },
+  {
+    "index": 46,
+    "label": "Proposition 7.3.13",
+    "env": "prop",
+    "number_components": [
+      7,
+      3,
+      13
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Sequences and convergence",
+      "subsection": "Convergence and topology",
+      "chapter_number": 7,
+      "section_number": "7.3"
+    },
+    "content": "\\begin{prop} \\label{prop:msclosureapprseq}\nLet $(X,d)$ be a metric space and $A \\subset X$.\nThen $p \\in \\widebar{A}$ if and only if there exists a sequence\n$\\{ x_n \\}_{n=1}^\\infty$ of\nelements in $A$ such that $\\lim\\limits_{n\\to\\infty} x_n = p$.\n\\end{prop}"
+  },
+  {
+    "index": 47,
+    "label": "Proposition 7.3.4",
+    "env": "prop",
+    "number_components": [
+      7,
+      3,
+      4
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Sequences and convergence",
+      "subsection": "Sequences",
+      "chapter_number": 7,
+      "section_number": "7.3"
+    },
+    "content": "\\begin{prop} \\label{prop:msconvbound}\nA convergent sequence in a metric space is bounded.\n\\end{prop}"
+  },
+  {
+    "index": 48,
+    "label": "Proposition 7.3.6",
+    "env": "prop",
+    "number_components": [
+      7,
+      3,
+      6
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Sequences and convergence",
+      "subsection": "Sequences",
+      "chapter_number": 7,
+      "section_number": "7.3"
+    },
+    "content": "\\begin{prop} \\label{prop:mssubseq}\nLet $\\{ x_n \\}_{n=1}^\\infty$ be a sequence in a metric space $(X,d)$.\n\\begin{enumerate}[(i)]\n\\item If $\\{ x_n \\}_{n=1}^\\infty$ converges to $p \\in X$, then every\nsubsequence $\\{ x_{n_k} \\}_{k=1}^\\infty$\nconverges to $p$.\n\\item If for some $K \\in \\N$ the $K$-tail $\\{ x_n \\}_{n=K+1}^\\infty$\nconverges to $p \\in X$, then\n $\\{ x_n \\}_{n=1}^\\infty$ converges to $p$.\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 49,
+    "label": "Definition 7.4.1",
+    "env": "defn",
+    "number_components": [
+      7,
+      4,
+      1
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Completeness and compactness",
+      "subsection": "Cauchy sequences and completeness",
+      "chapter_number": 7,
+      "section_number": "7.4"
+    },
+    "content": "\\begin{defn}\nLet $(X,d)$ be a metric space.\nA sequence $\\{ x_n \\}_{n=1}^\\infty$ in $X$ is a \\emph{\\myindex{Cauchy sequence}} if\nfor every $\\epsilon > 0$, there exists an $M \\in \\N$ such that\nfor all $n \\geq M$ and all $k \\geq M$, we have\n\\begin{equation*}\nd(x_n, x_k) < \\epsilon .\n\\end{equation*}\n\\end{defn}"
+  },
+  {
+    "index": 50,
+    "label": "Proposition 7.4.2",
+    "env": "prop",
+    "number_components": [
+      7,
+      4,
+      2
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Completeness and compactness",
+      "subsection": "Cauchy sequences and completeness",
+      "chapter_number": 7,
+      "section_number": "7.4"
+    },
+    "content": "\\begin{prop}\nA convergent sequence in a metric space is Cauchy.\n\\end{prop}"
+  },
+  {
+    "index": 51,
+    "label": "Definition 7.4.3",
+    "env": "defn",
+    "number_components": [
+      7,
+      4,
+      3
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Completeness and compactness",
+      "subsection": "Cauchy sequences and completeness",
+      "chapter_number": 7,
+      "section_number": "7.4"
+    },
+    "content": "\\begin{defn}\nWe say a metric space $(X,d)$ is\n\\emph{\\myindex{complete}} or \\emph{\\myindex{Cauchy-complete}}\nif every Cauchy sequence $\\{ x_n \\}_{n=1}^\\infty$ in $X$\nconverges to a $p \\in X$.\n\\end{defn}"
+  },
+  {
+    "index": 52,
+    "label": "Proposition 7.4.4",
+    "env": "prop",
+    "number_components": [
+      7,
+      4,
+      4
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Completeness and compactness",
+      "subsection": "Cauchy sequences and completeness",
+      "chapter_number": 7,
+      "section_number": "7.4"
+    },
+    "content": "\\begin{prop}\nThe space $\\R^n$ with the standard metric is a complete metric space.\n\\end{prop}"
+  },
+  {
+    "index": 53,
+    "label": "Definition 7.4.7",
+    "env": "defn",
+    "number_components": [
+      7,
+      4,
+      7
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Completeness and compactness",
+      "subsection": "Compactness",
+      "chapter_number": 7,
+      "section_number": "7.4"
+    },
+    "content": "\\begin{defn}\nLet $(X,d)$ be a metric space and $K \\subset X$. \nThe set $K$ is said to be \\emph{\\myindex{compact}}\nif for every collection\nof open sets $\\{ U_{\\lambda} \\}_{\\lambda \\in I}$ such that\n\\begin{equation*}\nK \\subset \\bigcup_{\\lambda \\in I} U_\\lambda ,\n\\end{equation*}\nthere exists a finite subset\n$\\{ \\lambda_1, \\lambda_2,\\ldots,\\lambda_m \\} \\subset I$\nsuch that\n\\begin{equation*}\nK \\subset \\bigcup_{j=1}^m U_{\\lambda_j} .\n\\end{equation*}\n\\end{defn}"
+  },
+  {
+    "index": 54,
+    "label": "Example 7.4.8",
+    "env": "example",
+    "number_components": [
+      7,
+      4,
+      8
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Completeness and compactness",
+      "subsection": "Compactness",
+      "chapter_number": 7,
+      "section_number": "7.4"
+    },
+    "content": "\\begin{example}\nLet $\\R$ be the metric space with the standard metric.\n\nThe set $\\R$ is not compact.  Proof: For $j \\in \\N$, let $U_j \\coloneqq (-j,j)$.\nAny $x \\in \\R$ is in some $U_j$ (by the\n\\hyperref[thm:arch:i]{Archimedean property}), so we have an open cover.\nSuppose we have a finite\nsubcover $\\R \\subset U_{j_1} \\cup U_{j_2} \\cup \\cdots \\cup U_{j_m}$,\nand suppose $j_1 < j_2 < \\cdots < j_m$.  Then $\\R \\subset U_{j_m}$, but that is\na contradiction as $j_m \\in \\R$ on one hand and $j_m \\notin U_{j_m} =\n(-j_m,j_m)$ on the\nother.\n\nThe set $(0,1) \\subset \\R$ is also not compact.  Proof:  Take the \nsets $U_{j} \\coloneqq (\\nicefrac{1}{j},1-\\nicefrac{1}{j})$ for $j=3,4,5,\\ldots$.\nAs above $(0,1) = \\bigcup_{j=3}^\\infty U_j$.  And similarly as above,\nif there exists a finite subcover, then there is one $U_j$ such that $(0,1)\n\\subset U_j$, which again leads to a contradiction.\n\nThe set $\\{ 0 \\} \\subset \\R$ is compact.  Proof: Given an open cover $\\{\nU_{\\lambda} \\}_{\\lambda \\in I}$, there must exist a $\\lambda_0$ such that $0\n\\in U_{\\lambda_0}$ as it is a cover.  But then $U_{\\lambda_0}$ gives a\nfinite subcover.\n\nWe will prove below that $[0,1]$, and in fact every closed and bounded\ninterval $[a,b]$, is compact.\n\\end{example}"
+  },
+  {
+    "index": 55,
+    "label": "Proposition 7.4.9",
+    "env": "prop",
+    "number_components": [
+      7,
+      4,
+      9
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Completeness and compactness",
+      "subsection": "Compactness",
+      "chapter_number": 7,
+      "section_number": "7.4"
+    },
+    "content": "\\begin{prop}\nLet $(X,d)$ be a metric space.  If $K \\subset X$ is compact, then\n$K$ is closed and bounded.\n\\end{prop}"
+  },
+  {
+    "index": 56,
+    "label": "Lemma 7.4.10",
+    "env": "lemma",
+    "number_components": [
+      7,
+      4,
+      10
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Completeness and compactness",
+      "subsection": "Compactness",
+      "chapter_number": 7,
+      "section_number": "7.4"
+    },
+    "content": "\\begin{lemma}[Lebesgue covering lemma%\n\\footnote{Named after the French mathematician\n\\href{https://en.wikipedia.org/wiki/Henri_Lebesgue}{Henri L\\'eon Lebesgue}\n(1875--1941).\nThe number $\\delta$ is sometimes called the \\myindex{Lebesgue number} of the\ncover.}]\\label{ms:lebesgue}\n\\index{Lebesgue covering lemma}\nLet $(X,d)$ be a metric space and $K \\subset X$.  Suppose \nevery sequence in $K$ has a subsequence convergent in $K$.  Given\nan open cover $\\{ U_\\lambda \\}_{\\lambda \\in I}$ of $K$, there exists a\n$\\delta > 0$ such that for every $x \\in K$, there exists a $\\lambda \\in I$\nwith $B(x,\\delta) \\subset U_\\lambda$.\n\\end{lemma}"
+  },
+  {
+    "index": 57,
+    "label": "Proposition 7.3.5",
+    "env": "prop",
+    "number_components": [
+      7,
+      3,
+      5
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Sequences and convergence",
+      "subsection": "Sequences",
+      "chapter_number": 7,
+      "section_number": "7.3"
+    },
+    "content": "\\begin{prop} \\label{prop:msconvifa}\nA sequence $\\{ x_n \\}_{n=1}^\\infty$ in a metric space $(X,d)$ converges to $p \\in X$\nif and only\nif there exists a sequence $\\{ a_n \\}_{n=1}^\\infty$ of real numbers such that\n\\begin{equation*}\nd(x_n,p) \\leq a_n \\quad \\text{for all } n \\in \\N,\n\\qquad\n\\text{and}\n\\qquad\n\\lim_{n\\to\\infty} a_n = 0.\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 58,
+    "label": "Proposition 7.2.12",
+    "env": "prop",
+    "number_components": [
+      7,
+      2,
+      12
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Open and closed sets",
+      "subsection": "Topology",
+      "chapter_number": 7,
+      "section_number": "7.2"
+    },
+    "content": "\\begin{prop} \\label{prop:topology:subspacesame}\nSuppose $(X,d)$ is a metric space, $V \\subset X$ is open,\nand $E \\subset X$ is closed.\n\\begin{enumerate}[(i)]\n\\item \\label{prop:topology:subspacesame:i}\n$U \\subset V$ is open in the subspace topology if and only if $U$ is open\nin $X$.\n\\item \\label{prop:topology:subspacesame:ii}\n$F \\subset E$ is closed in the subspace topology if and only if $F$ is\nclosed in $X$.\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 59,
+    "label": "Proposition 7.3.9",
+    "env": "prop",
+    "number_components": [
+      7,
+      3,
+      9
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Sequences and convergence",
+      "subsection": "Convergence in euclidean space",
+      "chapter_number": 7,
+      "section_number": "7.3"
+    },
+    "content": "\\begin{prop} \\label{prop:msconveuc}\nLet $\\{ x_m \\}_{m=1}^\\infty$ be a sequence in $\\R^n$,\nwhere $x_m = \\bigl(x_{m,1},x_{m,2},\\ldots,x_{m,n}\\bigr) \\in \\R^n$.\nThen $\\{ x_m \\}_{m=1}^\\infty$ converges if and only if\n$\\{ x_{m,k} \\}_{m=1}^\\infty$ converges for every $k=1,2,\\ldots,n$, in which case\n\\begin{equation*}\n\\lim_{m\\to\\infty}\nx_m =\n\\Bigl(\n\\lim_{m\\to\\infty} x_{m,1},\n\\lim_{m\\to\\infty} x_{m,2},\n\\ldots,\n\\lim_{m\\to\\infty} x_{m,n}\n\\Bigr) .\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 60,
+    "label": "Example 7.4.12",
+    "env": "example",
+    "number_components": [
+      7,
+      4,
+      12
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Completeness and compactness",
+      "subsection": "Compactness",
+      "chapter_number": 7,
+      "section_number": "7.4"
+    },
+    "content": "\\begin{example} \\label{example:intervalcompact}\n\\thmref{thm:bwseq},\nthe Bolzano--Weierstrass theorem for sequences of real numbers,\nsays that every bounded sequence in $\\R$ has a convergent\nsubsequence.  Therefore, every sequence in a closed interval $[a,b] \\subset \\R$ has \na convergent subsequence.  The limit is also in $[a,b]$ as limits\npreserve non-strict inequalities.  Hence a closed bounded interval $[a,b]\n\\subset \\R$ is (sequentially) compact.\n\\end{example}"
+  },
+  {
+    "index": 61,
+    "label": "Proposition 7.4.13",
+    "env": "prop",
+    "number_components": [
+      7,
+      4,
+      13
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Completeness and compactness",
+      "subsection": "Compactness",
+      "chapter_number": 7,
+      "section_number": "7.4"
+    },
+    "content": "\\begin{prop} \\label{prop:closedsubsetcompact}\nLet $(X,d)$ be a metric space and let $K \\subset X$ be compact.  If\n$E \\subset K$ is a closed set, then $E$ is compact.\n\\end{prop}"
+  },
+  {
+    "index": 62,
+    "label": "Example 7.4.15",
+    "env": "example",
+    "number_components": [
+      7,
+      4,
+      15
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Completeness and compactness",
+      "subsection": "Compactness",
+      "chapter_number": 7,
+      "section_number": "7.4"
+    },
+    "content": "\\begin{example}\nThe discrete metric provides interesting counterexamples again.\nLet $(X,d)$ be a metric space with the discrete metric, that is, $d(x,y) = 1$\nif $x \\not= y$.  Suppose\n$X$ is an infinite set.  Then\n\\begin{enumerate}[(i)]\n\\item $(X,d)$ is a complete metric space.\n\\item Any subset $K \\subset X$ is closed and bounded.\n\\item A subset $K \\subset X$ is compact if and only if it is a finite set.\n\\item The conclusion of the Lebesgue covering lemma is always satisfied,\ne.g. with $\\delta = \\nicefrac{1}{2}$,\neven for noncompact $K \\subset X$.\n\\end{enumerate}\nThe proofs\nof the statements above are either trivial or are relegated to the exercises\nbelow.\n\\end{example}"
+  },
+  {
+    "index": 63,
+    "label": "Theorem 7.4.14",
+    "env": "thm",
+    "number_components": [
+      7,
+      4,
+      14
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Completeness and compactness",
+      "subsection": "Compactness",
+      "chapter_number": 7,
+      "section_number": "7.4"
+    },
+    "content": "\\begin{thm}[Heine--Borel%\n\\footnote{Named after the German mathematician \n\\href{https://en.wikipedia.org/wiki/Eduard_Heine}{Heinrich Eduard Heine}\n(1821--1881),\nand the French mathematician\n\\href{https://en.wikipedia.org/wiki/\\%C3\\%89mile_Borel}{F\\'elix \\'Edouard Justin \\'Emile Borel}\n(1871--1956).}]%\n\\index{Heine--Borel theorem}\n\\label{thm:msbw}\nA closed bounded subset $K \\subset \\R^n$ is compact.\n\\end{thm}"
+  },
+  {
+    "index": 64,
+    "label": "Definition 7.5.1",
+    "env": "defn",
+    "number_components": [
+      7,
+      5,
+      1
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Continuous functions",
+      "subsection": "Continuity",
+      "chapter_number": 7,
+      "section_number": "7.5"
+    },
+    "content": "\\begin{defn}\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces and $c \\in X$.\nThen $f \\colon X \\to Y$ is\n\\emph{continuous at $c$}\\index{continuous at $c$}\nif for every $\\epsilon > 0$\nthere is a $\\delta > 0$ such that whenever $x \\in X$ and $d_X(x,c) <\n\\delta$, then\n$d_Y\\bigl(f(x),f(c)\\bigr) < \\epsilon$.\n\n\\medskip\n\nWhen $f \\colon X \\to Y$ is continuous at all $c \\in X$, we simply say\nthat $f$ is a \\emph{continuous function}\\index{continuous function!in a\nmetric space}\\index{function!continuous}.\n\\end{defn}"
+  },
+  {
+    "index": 65,
+    "label": "Example 7.5.3",
+    "env": "example",
+    "number_components": [
+      7,
+      5,
+      3
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Continuous functions",
+      "subsection": "Continuity",
+      "chapter_number": 7,
+      "section_number": "7.5"
+    },
+    "content": "\\begin{example}\nSuppose $f \\colon \\R^2 \\to \\R$ is a polynomial.  That is,\n\\begin{equation*}\nf(x,y) =\n\\sum_{j=0}^d\n\\sum_{k=0}^{d-j}\na_{jk}\\,x^jy^k =\na_{0\\,0} + a_{1\\,0} \\, x +\na_{0\\,1} \\, y+  \na_{2\\,0} \\, x^2+  \na_{1\\,1} \\, xy+  \na_{0\\,2} \\, y^2+ \\cdots +\na_{0\\,d} \\, y^d ,\n\\end{equation*}\nfor some $d \\in \\N$ (the degree) and $a_{jk} \\in \\R$.  We claim \n$f$ is continuous.  Let $\\bigl\\{ (x_n,y_n) \\bigr\\}_{n=1}^\\infty$ be a sequence\nin $\\R^2$ that converges to $(x,y) \\in \\R^2$.  We proved that this\nmeans $\\lim_{n\\to\\infty} x_n = x$ and $\\lim_{n\\to\\infty} y_n = y$.\nBy \\propref{prop:contalg},\n\\begin{equation*}\n\\lim_{n\\to\\infty}\nf(x_n,y_n) =\n\\lim_{n\\to\\infty}\n\\sum_{j=0}^d\n\\sum_{k=0}^{d-j}\na_{jk} \\, x_n^jy_n^k \n=\n\\sum_{j=0}^d\n\\sum_{k=0}^{d-j}\na_{jk} \\, x^jy^k\n=\nf(x,y) .\n\\end{equation*}\nSo $f$ is continuous at $(x,y)$, and as $(x,y)$ was arbitrary $f$ is\ncontinuous everywhere.  Similarly, a\npolynomial in $n$ variables is continuous.\n\\end{example}"
+  },
+  {
+    "index": 66,
+    "label": "Example 7.5.4",
+    "env": "example",
+    "number_components": [
+      7,
+      5,
+      4
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Continuous functions",
+      "subsection": "Continuity",
+      "chapter_number": 7,
+      "section_number": "7.5"
+    },
+    "content": "\\begin{example}\nLet $X$ be a metric space and $f \\colon X \\to \\C$ a complex-valued\nfunction.  Write $f(p) = g(p) + i \\, h(p)$, where $g \\colon X \\to \\R$\nand $h \\colon X \\to \\R$ are the real and imaginary parts of $f$.\nThen $f$ is continuous at $c \\in X$ if and only if its real\nand imaginary parts are continuous at~$c$.  \nThis fact follows because $\\bigl\\{ f(p_n) = g(p_n) + i \\, h(p_n) \\bigr\\}_{n=1}^\\infty$\nconverges to $f(p) = g(p) + i \\, h(p)$ if and only if\n$\\bigl\\{ g(p_n) \\bigr\\}_{n=1}^\\infty$ converges to $g(p)$ and\n$\\bigl\\{ h(p_n) \\bigr\\}_{n=1}^\\infty$ converges to $h(p)$.\n\\end{example}"
+  },
+  {
+    "index": 67,
+    "label": "Theorem 7.4.11",
+    "env": "thm",
+    "number_components": [
+      7,
+      4,
+      11
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Completeness and compactness",
+      "subsection": "Compactness",
+      "chapter_number": 7,
+      "section_number": "7.4"
+    },
+    "content": "\\begin{thm} \\label{thm:mscompactisseqcpt}\nLet $(X,d)$ be a metric space.  Then $K \\subset X$ is compact if\nand only if every sequence in $K$ has a subsequence converging to\na point in $K$.\n\\end{thm}"
+  },
+  {
+    "index": 68,
+    "label": "Lemma 7.5.5",
+    "env": "lemma",
+    "number_components": [
+      7,
+      5,
+      5
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Continuous functions",
+      "subsection": "Compactness and continuity",
+      "chapter_number": 7,
+      "section_number": "7.5"
+    },
+    "content": "\\begin{lemma} \\label{lemma:continuouscompact}\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces\nand $f \\colon X \\to Y$ a continuous function.  If\n$K \\subset X$ is a compact set, then $f(K)$ is a compact set.\n\\end{lemma}"
+  },
+  {
+    "index": 69,
+    "label": "Theorem 7.5.6",
+    "env": "thm",
+    "number_components": [
+      7,
+      5,
+      6
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Continuous functions",
+      "subsection": "Compactness and continuity",
+      "chapter_number": 7,
+      "section_number": "7.5"
+    },
+    "content": "\\begin{thm}\nLet $(X,d)$ be a nonempty compact metric space\nand let $f \\colon X \\to \\R$ be continuous.  Then\n$f$ is bounded and in fact\n$f$ achieves an absolute minimum and an absolute maximum on $X$.\n\\end{thm}"
+  },
+  {
+    "index": 70,
+    "label": "Lemma 7.5.7",
+    "env": "lemma",
+    "number_components": [
+      7,
+      5,
+      7
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Continuous functions",
+      "subsection": "Continuity and topology",
+      "chapter_number": 7,
+      "section_number": "7.5"
+    },
+    "content": "\\begin{lemma} \\label{lemma:mstopocontloc}\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces.\nA function $f \\colon X \\to Y$ is continuous at $c \\in X$\nif and only if for every open neighborhood $U$ of $f(c)$ in $Y$, the set\n$f^{-1}(U)$ contains an open neighborhood of $c$ in $X$.\nSee \\figureref{fig:mscontfuncpt}.\n\\end{lemma}"
+  },
+  {
+    "index": 71,
+    "label": "Example 7.5.9",
+    "env": "example",
+    "number_components": [
+      7,
+      5,
+      9
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Continuous functions",
+      "subsection": "Continuity and topology",
+      "chapter_number": 7,
+      "section_number": "7.5"
+    },
+    "content": "\\begin{example}\nLet $f \\colon X \\to Y$ be a continuous function.\n\\thmref{thm:mstopocont} tells us that if $E \\subset Y$ is closed, then \n$f^{-1}(E) = X \\setminus f^{-1}(E^c)$ is also closed.  Therefore, if\nwe have a continuous\nfunction $f \\colon X \\to \\R$, then the\n\\emph{\\myindex{zero set}} of $f$, that is, \n$f^{-1}(0) = \\bigl\\{ x \\in X : f(x) = 0 \\bigr\\}$, is closed.\nWe have just proved the most basic result in\n\\emph{\\myindex{algebraic geometry}}, the study of\nzero sets of polynomials:  The zero set of a polynomial is closed.\n\nSimilarly, the set where $f$ is nonnegative,\n$f^{-1}\\bigl( [0,\\infty) \\bigr) = \\bigl\\{ x \\in X : f(x) \\geq 0 \\bigr\\}$,\nis closed.  On the other hand, the\nset where $f$ is positive,\n$f^{-1}\\bigl( (0,\\infty) \\bigr) = \\bigl\\{ x \\in X : f(x) > 0 \\bigr\\}$,\nis open.  \n\\end{example}"
+  },
+  {
+    "index": 72,
+    "label": "Definition 7.5.10",
+    "env": "defn",
+    "number_components": [
+      7,
+      5,
+      10
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Continuous functions",
+      "subsection": "Uniform continuity",
+      "chapter_number": 7,
+      "section_number": "7.5"
+    },
+    "content": "\\begin{defn}\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces.\nThen $f \\colon X \\to Y$ is\n\\emph{uniformly continuous}\\index{uniformly continuous!in a metric space}\nif for every $\\epsilon > 0$\nthere is a $\\delta > 0$ such that whenever $p,q \\in X$ and $d_X(p,q) <\n\\delta$, we have\n$d_Y\\bigl(f(p),f(q)\\bigr) < \\epsilon$.\n\\end{defn}"
+  },
+  {
+    "index": 73,
+    "label": "Theorem 7.5.11",
+    "env": "thm",
+    "number_components": [
+      7,
+      5,
+      11
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Continuous functions",
+      "subsection": "Uniform continuity",
+      "chapter_number": 7,
+      "section_number": "7.5"
+    },
+    "content": "\\begin{thm} \\label{thm:Xcompactfunifcont}\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces.\nSuppose $f \\colon X \\to Y$ is continuous and $X$ is compact.  Then\n$f$ is uniformly continuous.\n\\end{thm}"
+  },
+  {
+    "index": 74,
+    "label": "Example 7.5.13",
+    "env": "example",
+    "number_components": [
+      7,
+      5,
+      13
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Continuous functions",
+      "subsection": "Uniform continuity",
+      "chapter_number": 7,
+      "section_number": "7.5"
+    },
+    "content": "\\begin{example}\nUseful examples of uniformly continuous functions are again the so-called\n\\emph{Lipschitz continuous}%\n\\index{Lipschitz continuous!in a metric space}%\n\\index{function!Lipschitz}\nfunctions.  That is, if\n$(X,d_X)$ and $(Y,d_Y)$ are metric spaces, then $f \\colon X \\to Y$\nis called Lipschitz or $K$-Lipschitz if there exists a $K \\in \\R$ such that\n\\begin{equation*}\nd_Y\\bigl(f(p),f(q)\\bigr) \\leq K \\, d_X(p,q)\n\\qquad \\text{for all } p,q \\in X.\n\\end{equation*}\nA Lipschitz function is uniformly continuous:\nTake $\\delta = \\nicefrac{\\epsilon}{K}$.\nA function can be uniformly continuous\nbut not Lipschitz,\nas we already saw: $\\sqrt{x}$ on $[0,1]$\nis uniformly continuous but not Lipschitz.\n\nIt is worth mentioning that,\nif a function is Lipschitz, it tends to be\neasiest to simply show it is Lipschitz even if we are only\ninterested in knowing continuity.\n\\end{example}"
+  },
+  {
+    "index": 75,
+    "label": "Definition 7.5.14",
+    "env": "defn",
+    "number_components": [
+      7,
+      5,
+      14
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Continuous functions",
+      "subsection": "Cluster points and limits of functions",
+      "chapter_number": 7,
+      "section_number": "7.5"
+    },
+    "content": "\\begin{defn}\nLet $(X,d)$ be a metric space and\n$S \\subset X$. A point $p \\in X$ is called\na \\emph{cluster point}\\index{cluster point!in a metric space} of $S$\nif for every $\\epsilon > 0$, the set $B(p,\\epsilon) \\cap S\n\\setminus \\{ p \\}$ is not empty.\n\\end{defn}"
+  },
+  {
+    "index": 76,
+    "label": "Definition 7.5.15",
+    "env": "defn",
+    "number_components": [
+      7,
+      5,
+      15
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Continuous functions",
+      "subsection": "Cluster points and limits of functions",
+      "chapter_number": 7,
+      "section_number": "7.5"
+    },
+    "content": "\\begin{defn}\n\\index{limit!of a function in a metric space}%\nLet $(X,d_X)$, $(Y,d_Y)$ be metric spaces, $S \\subset X$, $p \\in X$ a cluster point of $S$,\nand $f \\colon S \\to Y$ a function.\nSuppose there exists an $L \\in Y$ and for every $\\epsilon > 0$,\nthere exists a $\\delta > 0$ such that whenever $x \\in S \\setminus \\{ p \\}$\nand $d_X(x,p) < \\delta$, then\n\\begin{equation*}\nd_Y\\bigl(f(x),L\\bigr) < \\epsilon .\n\\end{equation*}\nThen we say $f(x)$\n\\emph{converges}\\index{converges!function in a metric space} to $L$ as $x$ goes\nto $p$, and $L$ is a \\emph{limit} of $f(x)$ as $x$\ngoes to $p$.  If $L$ is unique, we write\n\\glsadd{not:limfunc}\n\\begin{equation*}\n\\lim_{x \\to p} f(x) \\coloneqq L .\n\\end{equation*}\nIf $f(x)$ does not converge as $x$ goes to $p$, we say $f$\n\\emph{diverges}\\index{diverges!function in a metric space} at $p$.\n\\end{defn}"
+  },
+  {
+    "index": 77,
+    "label": "Lemma 7.5.17",
+    "env": "lemma",
+    "number_components": [
+      7,
+      5,
+      17
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Continuous functions",
+      "subsection": "Cluster points and limits of functions",
+      "chapter_number": 7,
+      "section_number": "7.5"
+    },
+    "content": "\\begin{lemma}\\label{ms:seqflimit:lemma}\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces, $S \\subset X$, $p \\in X$\na cluster point of $S$, and let $f \\colon S \\to Y$ be a function.\n\nThen\n$f(x)$ converges to $L \\in Y$ as $x$ goes to $p$ if and only if for every\nsequence $\\{ x_n \\}_{n=1}^\\infty$\nin $S \\setminus \\{p\\}$\nsuch that $\\lim_{n\\to\\infty} x_n = p$,\nthe sequence $\\bigl\\{ f(x_n) \\bigr\\}_{n=1}^\\infty$ converges to $L$.\n\\end{lemma}"
+  },
+  {
+    "index": 78,
+    "label": "Proposition 7.5.2",
+    "env": "prop",
+    "number_components": [
+      7,
+      5,
+      2
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Continuous functions",
+      "subsection": "Continuity",
+      "chapter_number": 7,
+      "section_number": "7.5"
+    },
+    "content": "\\begin{prop} \\label{prop:contiscont}\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces.\nThen $f \\colon X \\to Y$ is\ncontinuous at $c \\in X$\nif and only if for every sequence $\\{ x_n \\}_{n=1}^\\infty$ in $X$\nconverging to $c$, the sequence $\\bigl\\{ f(x_n) \\bigr\\}_{n=1}^\\infty$ converges\nto $f(c)$.\n\\end{prop}"
+  },
+  {
+    "index": 79,
+    "label": "Theorem 7.5.8",
+    "env": "thm",
+    "number_components": [
+      7,
+      5,
+      8
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Continuous functions",
+      "subsection": "Continuity and topology",
+      "chapter_number": 7,
+      "section_number": "7.5"
+    },
+    "content": "\\begin{thm} \\label{thm:mstopocont}\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces.  A function $f \\colon X \\to Y$\nis continuous if and only if\nfor every open $U \\subset Y$, $f^{-1}(U)$ is open in $X$.\n\\end{thm}"
+  },
+  {
+    "index": 80,
+    "label": "Proposition 7.5.16",
+    "env": "prop",
+    "number_components": [
+      7,
+      5,
+      16
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Continuous functions",
+      "subsection": "Cluster points and limits of functions",
+      "chapter_number": 7,
+      "section_number": "7.5"
+    },
+    "content": "\\begin{prop} \\label{prop:mslimitisunique}\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces, $S \\subset X$, $p \\in X$\na cluster point of $S$, and let $f \\colon S \\to Y$ be a function\nsuch that $f(x)$ converges as $x$ goes to $p$.  Then\nthe limit of $f(x)$ as $x$ goes to $p$ is unique.\n\\end{prop}"
+  },
+  {
+    "index": 81,
+    "label": "Proposition 7.5.12",
+    "env": "prop",
+    "number_components": [
+      7,
+      5,
+      12
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Continuous functions",
+      "subsection": "Uniform continuity",
+      "chapter_number": 7,
+      "section_number": "7.5"
+    },
+    "content": "\\begin{prop} \\label{prop:integralcontcont}\nIf $f \\colon [a,b] \\times [c,d] \\to \\R$ is continuous,\nthen $g \\colon [c,d] \\to \\R$ defined by\n\\begin{equation*}\ng(y) \\coloneqq \\int_a^b f(x,y) \\,dx  \\qquad \\text{is continuous}.\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 82,
+    "label": "Definition 7.6.1",
+    "env": "defn",
+    "number_components": [
+      7,
+      6,
+      1
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Fixed point theorem and Picard's theorem again",
+      "subsection": "Fixed point theorem",
+      "chapter_number": 7,
+      "section_number": "7.6"
+    },
+    "content": "\\begin{defn}\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces.\nA map\n$\\varphi \\colon X \\to Y$ is a \\emph{\\myindex{contraction}}\n(or a contractive map) if it is\na $k$-Lipschitz map for some $k < 1$, i.e.\\ if there exists a $k < 1$ such that\n\\begin{equation*}\nd_Y\\bigl(\\varphi(p),\\varphi(q)\\bigr) \\leq k\\, d_X(p,q)\n\\qquad \\text{for all } p,q \\in X.\n\\end{equation*}\n\n\\medskip\n\nGiven a map $\\varphi \\colon X \\to X$, a point $x \\in X$ is called a\n\\emph{\\myindex{fixed point}}\nif $\\varphi(x)=x$.\n\\end{defn}"
+  },
+  {
+    "index": 83,
+    "label": "Example 7.1.8",
+    "env": "example",
+    "number_components": [
+      7,
+      1,
+      8
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Metric spaces",
+      "chapter_number": 7,
+      "section_number": "7.1"
+    },
+    "content": "\\begin{example} \\label{example:msC01}\nLet $C\\bigl([a,b],\\R\\bigr)$\\glsadd{not:contfuncs} be the set of\ncontinuous real-valued functions on the interval $[a,b]$.\nDefine the metric on $C\\bigl([a,b],\\R\\bigr)$ as\n\\begin{equation*}\nd(f,g) \\coloneqq \\sup_{x \\in [a,b]} \\babs{f(x)-g(x)} .\n\\end{equation*}\nLet us check the properties.  First, $d(f,g)$ is finite as\n$\\babs{f(x)-g(x)}$ is a continuous function on a closed bounded interval\n$[a,b]$, and so is bounded.\nIt is clear that $d(f,g) \\geq 0$, \nit is the supremum of nonnegative numbers.  If $f = g$,\nthen $\\babs{f(x)-g(x)} = 0$ for all $x$, and hence $d(f,g) = 0$.  Conversely,\nif $d(f,g) = 0$, then for every $x$, we have $\\babs{f(x)-g(x)} \\leq d(f,g) = 0$,\nand hence $f(x) = g(x)$ for all $x$, and so $f=g$.  That $d(f,g) = d(g,f)$\nis equally trivial.  To show the triangle inequality we use the standard\ntriangle inequality;\n\\begin{equation*}\n\\begin{split}\nd(f,g) & =\n\\sup_{x \\in [a,b]} \\babs{f(x)-g(x)} =\n\\sup_{x \\in [a,b]} \\babs{f(x)-h(x)+h(x)-g(x)}\n\\\\\n& \\leq\n\\sup_{x \\in [a,b]} \\Bigl( \\babs{f(x)-h(x)}+\\babs{h(x)-g(x)} \\Bigr)\n\\\\\n& \\leq\n\\sup_{x \\in [a,b]} \\babs{f(x)-h(x)}+\n\\sup_{x \\in [a,b]} \\babs{h(x)-g(x)} = d(f,h) + d(h,g) .\n\\end{split}\n\\end{equation*}\nWhen treating $C\\bigl([a,b],\\R\\bigr)$ as a metric space without mentioning a metric,\nwe mean this particular metric.\nNotice that $d(f,g) = \\snorm{f-g}_{[a,b]}$, the uniform norm of \\defnref{def:unifnorm}.\n\nThis example may seem esoteric at first, but it turns out that working with\nspaces such as $C\\bigl([a,b],\\R\\bigr)$ is really the meat of a large part of modern \nanalysis.  Treating sets of functions as metric spaces allows us to\nabstract away a lot of the grubby detail and prove powerful results such as\n\\hyperref[thm:fs:picard]{Picard's theorem} with less work.\n\\end{example}"
+  },
+  {
+    "index": 84,
+    "label": "Proposition 7.4.5",
+    "env": "prop",
+    "number_components": [
+      7,
+      4,
+      5
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Completeness and compactness",
+      "subsection": "Cauchy sequences and completeness",
+      "chapter_number": 7,
+      "section_number": "7.4"
+    },
+    "content": "\\begin{prop} \\label{prop:CabRcomplete}\nThe space of continuous functions $C\\bigl([a,b],\\R\\bigr)$ with the uniform\nnorm as metric is a complete metric space.\n\\end{prop}"
+  },
+  {
+    "index": 85,
+    "label": "Proposition 7.4.6",
+    "env": "prop",
+    "number_components": [
+      7,
+      4,
+      6
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Completeness and compactness",
+      "subsection": "Cauchy sequences and completeness",
+      "chapter_number": 7,
+      "section_number": "7.4"
+    },
+    "content": "\\begin{prop} \\label{prop:closedcomplete}\nSuppose $(X,d)$ is a complete metric space and $E \\subset X$\nis closed.\nThen $E$ is a complete metric space with the subspace metric.\n\\end{prop}"
+  },
+  {
+    "index": 86,
+    "label": "Theorem 7.6.2",
+    "env": "thm",
+    "number_components": [
+      7,
+      6,
+      2
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Fixed point theorem and Picard's theorem again",
+      "subsection": "Fixed point theorem",
+      "chapter_number": 7,
+      "section_number": "7.6"
+    },
+    "content": "\\begin{thm}%\n[Contraction mapping principle\\index{contraction mapping principle}\nor \\myindex{Banach fixed point theorem}\\index{fixed point theorem}%\n\\footnote{Named after the Polish mathematician\n\\href{https://en.wikipedia.org/wiki/Stefan_Banach}{Stefan Banach}\n(1892--1945) who first stated the theorem in 1922.}]\n\\label{thm:contr}\nLet $(X,d)$ be a nonempty complete metric space and $\\varphi \\colon X \\to X$ a\ncontraction.\nThen $\\varphi$ has a unique fixed point.\n\\end{thm}"
+  },
+  {
+    "index": 87,
+    "label": "Theorem 7.6.3",
+    "env": "thm",
+    "number_components": [
+      7,
+      6,
+      3
+    ],
+    "context": {
+      "chapter": "Metric Spaces",
+      "section": "Fixed point theorem and Picard's theorem again",
+      "subsection": "Picard's theorem",
+      "chapter_number": 7,
+      "section_number": "7.6"
+    },
+    "content": "\\begin{thm}[Picard's theorem on existence and uniqueness]%\n\\index{existence and uniqueness theorem}\\index{Picard's theorem}\nLet $I, J \\subset \\R$ be closed and bounded intervals,\nlet $I^\\circ$ and $J^\\circ$ be their interiors, and \nlet $(x_0,y_0) \\in I^\\circ \\times J^\\circ$.\nSuppose $F \\colon I \\times J \\to \\R$ is continuous\nand Lipschitz in the second variable, that is, there exists\nan $L \\in \\R$ such that\n\\begin{equation*}\n\\babs{F(x,y) - F(x,z)} \\leq L \\sabs{y-z}\n\\qquad \\text{for all } y,z \\in J, x \\in I .\n\\end{equation*}\nThen there exists an $h > 0$ such that $[x_0-h,x_0+h] \\subset I$ and a unique differentiable\nfunction $f \\colon [x_0 - h, x_0 + h] \\to J \\subset \\R$ such that\n\\begin{equation*}\nf'(x) = F\\bigl(x,f(x)\\bigr) \\qquad \\text{and} \\qquad f(x_0) = y_0.\n\\end{equation*}\n\\end{thm}"
+  }
+]

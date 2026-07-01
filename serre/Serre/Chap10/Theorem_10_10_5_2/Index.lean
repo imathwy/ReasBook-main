@@ -1,0 +1,10 @@
+import Serre.Chap10.Theorem_10_10_5_2.BrauerInductionInfrastructure
+import Serre.Chap10.Theorem_10_10_5_2.MonomialLinearCharacter
+import Serre.Chap10.Theorem_10_10_5_2.InducedModelEquivalence
+import Serre.Chap10.Theorem_10_10_5_2.BrauerPRegularBridge
+import Serre.Chap10.Theorem_10_10_5_2.QuotientMonomialReduction
+import Serre.Chap10.Theorem_10_10_5_2.SubrepresentationTransport
+import Serre.Chap10.Theorem_10_10_5_2.IsotypicRestrictionBridge
+import Serre.Chap10.Theorem_10_10_5_2.SupersolvableInductionBridge
+
+-- Proof rescue support index.

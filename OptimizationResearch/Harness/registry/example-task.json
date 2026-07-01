@@ -1,0 +1,18 @@
+{
+  "schema_version": "task-v0",
+  "task_id": "audit-nesterov-v0",
+  "phase": "phase-0",
+  "work_package": "wp3",
+  "task_type": "corpus-audit",
+  "status": "completed",
+  "permissions": {
+    "read": ["Nesterov/"],
+    "write": [
+      "OptimizationResearch/Metadata/corpus/",
+      "OptimizationResearch/Reports/phase-0/"
+    ]
+  },
+  "required_outputs": ["candidate-audit", "build-summary", "declaration-samples"],
+  "checks": ["source-tree-unchanged", "required-fields-complete"]
+}
+

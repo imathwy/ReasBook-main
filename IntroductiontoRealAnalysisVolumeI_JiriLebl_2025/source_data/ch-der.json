@@ -1,0 +1,542 @@
+[
+  {
+    "index": 1,
+    "label": "Definition 4.1.1",
+    "env": "defn",
+    "number_components": [
+      4,
+      1,
+      1
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "The derivative",
+      "subsection": "Definition and basic properties",
+      "chapter_number": 4,
+      "section_number": "4.1"
+    },
+    "content": "\\begin{defn}\nLet $I$ be an interval, let\n$f \\colon I \\to \\R$ be a function, and let $c \\in I$.  If \nthe limit\n\\begin{equation*}\nL \\coloneqq \\lim_{x \\to c} \\frac{f(x)-f(c)}{x-c} \n\\end{equation*}\nexists, then we say $f$ is\n\\emph{\\myindex{differentiable}}\\index{function!differentiable} at\n$c$,  we call $L$ the \\emph{\\myindex{derivative}} of $f$ at $c$,\nand we write $f'(c) \\coloneqq L$.\\glsadd{not:derivative}\n\n\\medskip\n\nIf $f$ is differentiable at all $c \\in I$, then we simply say that\n$f$ is \\emph{differentiable}, and then we obtain a function\n$f' \\colon I \\to \\R$.\nThe derivative is sometimes written as $\\frac{df}{dx}$ or\n$\\frac{d}{dx}\\bigl( f(x) \\bigr)$.\n\n\\medskip\n\nThe expression $\\frac{f(x)-f(c)}{x-c}$ is called the\n\\emph{\\myindex{difference quotient}}.\n\\end{defn}"
+  },
+  {
+    "index": 2,
+    "label": "Example 4.1.2",
+    "env": "example",
+    "number_components": [
+      4,
+      1,
+      2
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "The derivative",
+      "subsection": "Definition and basic properties",
+      "chapter_number": 4,
+      "section_number": "4.1"
+    },
+    "content": "\\begin{example}\nLet $f(x) \\coloneqq x^2$ defined on the whole real line.  Let $c \\in \\R$ be arbitrary.  We find that if\n$x \\not=c$,\n\\begin{equation*}\n\\frac{x^2-c^2}{x-c} =\n\\frac{(x+c)(x-c)}{x-c} =\n(x+c) .\n\\end{equation*}\nTherefore,\n\\begin{equation*}\nf'(c) = \n\\lim_{x\\to c} \\frac{x^2-c^2}{x-c} =\n\\lim_{x\\to c} (x+c) = 2c.\n\\end{equation*}\n\\end{example}"
+  },
+  {
+    "index": 3,
+    "label": "Example 4.1.3",
+    "env": "example",
+    "number_components": [
+      4,
+      1,
+      3
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "The derivative",
+      "subsection": "Definition and basic properties",
+      "chapter_number": 4,
+      "section_number": "4.1"
+    },
+    "content": "\\begin{example}\nLet $f(x) \\coloneqq ax + b$ for numbers $a, b \\in \\R$.\nLet $c \\in \\R$ be arbitrary.\nFor $x \\not=c$,\n\\begin{equation*}\n\\frac{f(x)-f(c)}{x-c} =\n\\frac{a(x-c)}{x-c} = a .\n\\end{equation*}\nTherefore,\n\\begin{equation*}\nf'(c) =\n\\lim_{x\\to c} \n\\frac{f(x)-f(c)}{x-c} =\n\\lim_{x\\to c} \na = a.\n\\end{equation*}\nIn fact, every differentiable function \\myquote{infinitesimally} behaves like\nthe affine function $ax + b$.  You can guess many results\nand formulas for derivatives if you work them out for affine functions\nfirst.\n\\end{example}"
+  },
+  {
+    "index": 4,
+    "label": "Example 4.1.4",
+    "env": "example",
+    "number_components": [
+      4,
+      1,
+      4
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "The derivative",
+      "subsection": "Definition and basic properties",
+      "chapter_number": 4,
+      "section_number": "4.1"
+    },
+    "content": "\\begin{example}\nThe function $f(x) \\coloneqq \\sqrt{x}$ is differentiable for $x > 0$.  To see this\nfact, fix $c > 0$,\nand suppose $x \\not= c$ and $x > 0$.  Compute\n\\begin{equation*}\n\\frac{\\sqrt{x}-\\sqrt{c}}{x-c}\n=\n\\frac{\\sqrt{x}-\\sqrt{c}}{(\\sqrt{x}-\\sqrt{c})(\\sqrt{x}+\\sqrt{c})}\n=\n\\frac{1}{\\sqrt{x}+\\sqrt{c}} .\n\\end{equation*}\nTherefore,\n\\begin{equation*}\nf'(c) =\n\\lim_{x\\to c}\n\\frac{\\sqrt{x}-\\sqrt{c}}{x-c}\n=\n\\lim_{x\\to c}\n\\frac{1}{\\sqrt{x}+\\sqrt{c}}\n=\n\\frac{1}{2\\sqrt{c}} .\n\\end{equation*}\n\\end{example}"
+  },
+  {
+    "index": 5,
+    "label": "Example 4.1.5",
+    "env": "example",
+    "number_components": [
+      4,
+      1,
+      5
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "The derivative",
+      "subsection": "Definition and basic properties",
+      "chapter_number": 4,
+      "section_number": "4.1"
+    },
+    "content": "\\begin{example}\nThe function $f(x) \\coloneqq \\sabs{x}$ is not differentiable\nat the origin.  When $x > 0$,\n\\begin{equation*}\n\\frac{\\sabs{x}-\\sabs{0}}{x-0} =\n\\frac{x-0}{x-0} = 1 .\n\\end{equation*}\nWhen $x < 0$,\n\\begin{equation*}\n\\frac{\\sabs{x}-\\sabs{0}}{x-0} =\n\\frac{-x-0}{x-0} = -1 .\n\\end{equation*}\n\\end{example}"
+  },
+  {
+    "index": 6,
+    "label": "Proposition 4.1.6",
+    "env": "prop",
+    "number_components": [
+      4,
+      1,
+      6
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "The derivative",
+      "subsection": "Definition and basic properties",
+      "chapter_number": 4,
+      "section_number": "4.1"
+    },
+    "content": "\\begin{prop}\nLet $f \\colon I \\to \\R$ be differentiable at $c \\in I$,\nthen it is continuous at $c$.\n\\end{prop}"
+  },
+  {
+    "index": 7,
+    "label": "Proposition 4.1.7",
+    "env": "prop",
+    "number_components": [
+      4,
+      1,
+      7
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "The derivative",
+      "subsection": "Definition and basic properties",
+      "chapter_number": 4,
+      "section_number": "4.1"
+    },
+    "content": "\\begin{prop}[Linearity]\n\\index{linearity of the derivative}\nLet $I$ be an interval, let\n$f \\colon I \\to \\R$ and $g \\colon I \\to \\R$ be differentiable at $c \\in I$,\nand let $\\alpha \\in \\R$.\n\\begin{enumerate}[(i)]\n\\item\nDefine $h \\colon I \\to \\R$ by $h(x) \\coloneqq \\alpha f(x)$.  Then\n$h$ is differentiable at $c$ and\n$h'(c) = \\alpha f'(c)$.\n\\item\nDefine $h \\colon I \\to \\R$ by $h(x) \\coloneqq  f(x) + g(x)$.  Then\n$h$ is differentiable at $c$ and\n$h'(c) =  f'(c) + g'(c)$.\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 8,
+    "label": "Proposition 4.1.8",
+    "env": "prop",
+    "number_components": [
+      4,
+      1,
+      8
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "The derivative",
+      "subsection": "Definition and basic properties",
+      "chapter_number": 4,
+      "section_number": "4.1"
+    },
+    "content": "\\begin{prop}[Product rule]\\index{product rule}\nLet $I$ be an interval, let\n$f \\colon I \\to \\R$ and $g \\colon I \\to \\R$ be \nfunctions differentiable at $c$.  If $h \\colon I \\to \\R$\nis defined by\n\\begin{equation*}\nh(x) \\coloneqq f(x) g(x) ,\n\\end{equation*}\nthen $h$ is differentiable at $c$ and\n\\begin{equation*}\nh'(c) = f(c) g'(c) + f'(c) g(c) .\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 9,
+    "label": "Proposition 4.1.9",
+    "env": "prop",
+    "number_components": [
+      4,
+      1,
+      9
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "The derivative",
+      "subsection": "Definition and basic properties",
+      "chapter_number": 4,
+      "section_number": "4.1"
+    },
+    "content": "\\begin{prop}[Quotient rule]\\index{quotient rule}\nLet $I$ be an interval, let\n$f \\colon I \\to \\R$ and $g \\colon I \\to \\R$ be differentiable at $c$\nand $g(x) \\not= 0$ for all $x \\in I$.\nIf $h \\colon I \\to \\R$\nis defined by\n\\begin{equation*}\nh(x) \\coloneqq \\frac{f(x)}{g(x)},\n\\end{equation*}\nthen $h$ is differentiable at $c$ and\n\\begin{equation*}\nh'(c) = \\frac{f'(c) g(c) - f(c) g'(c)}{{\\bigl(g(c)\\bigr)}^2} .\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 10,
+    "label": "Proposition 4.1.10",
+    "env": "prop",
+    "number_components": [
+      4,
+      1,
+      10
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "The derivative",
+      "subsection": "Chain rule",
+      "chapter_number": 4,
+      "section_number": "4.1"
+    },
+    "content": "\\begin{prop}[Chain rule]\n\\index{chain rule}\nLet $I_1, I_2$ be intervals, let\n$g \\colon I_1 \\to I_2$ be differentiable at $c \\in I_1$,\nand\n$f \\colon I_2 \\to \\R$ be differentiable at $g(c)$.\nIf $h \\colon I_1 \\to \\R$\nis defined by\n\\begin{equation*}\nh(x) \\coloneqq (f \\circ g) (x) = f\\bigl(g(x)\\bigr) ,\n\\end{equation*}\nthen $h$ is differentiable at $c$ and\n\\begin{equation*}\nh'(c) = f'\\bigl(g(c)\\bigr)g'(c) .\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 11,
+    "label": "Definition 4.2.1",
+    "env": "defn",
+    "number_components": [
+      4,
+      2,
+      1
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "Mean value theorem",
+      "subsection": "Relative minima and maxima",
+      "chapter_number": 4,
+      "section_number": "4.2"
+    },
+    "content": "\\begin{defn}\nLet $S \\subset \\R$ be a set and\nlet $f \\colon S \\to \\R$ be a function.  The function $f$ is said to have\na \\emph{\\myindex{relative maximum}}\\index{maximum!relative}\nat $c \\in S$ if there exists a $\\delta>0$\nsuch that for all $x \\in S$ where $\\sabs{x-c} < \\delta$,\nwe have $f(x) \\leq f(c)$.\nThe definition of\n\\emph{\\myindex{relative minimum}}\\index{minimum!relative}\nis analogous.\n\\end{defn}"
+  },
+  {
+    "index": 12,
+    "label": "Lemma 4.2.2",
+    "env": "lemma",
+    "number_components": [
+      4,
+      2,
+      2
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "Mean value theorem",
+      "subsection": "Relative minima and maxima",
+      "chapter_number": 4,
+      "section_number": "4.2"
+    },
+    "content": "\\begin{lemma}\\label{relminmax:lemma}\nSuppose $f \\colon (a,b) \\to \\R$ is differentiable at $c \\in (a,b)$,\nand $f$ has\na relative minimum or a relative maximum at $c$.  Then\n$f'(c) = 0$.\n\\end{lemma}"
+  },
+  {
+    "index": 13,
+    "label": "Theorem 4.2.3",
+    "env": "thm",
+    "number_components": [
+      4,
+      2,
+      3
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "Mean value theorem",
+      "subsection": "Rolle's theorem",
+      "chapter_number": 4,
+      "section_number": "4.2"
+    },
+    "content": "\\begin{thm}[Rolle] \\label{thm:rolle}\n\\index{Rolle's theorem}\nLet $f \\colon [a,b] \\to \\R$ be a continuous function\ndifferentiable on $(a,b)$ such that $f(a) = f(b)$.\nThen there exists a $c \\in (a,b)$ such that $f'(c) = 0$.\n\\end{thm}"
+  },
+  {
+    "index": 14,
+    "label": "Theorem 4.2.4",
+    "env": "thm",
+    "number_components": [
+      4,
+      2,
+      4
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "Mean value theorem",
+      "subsection": "Mean value theorem",
+      "chapter_number": 4,
+      "section_number": "4.2"
+    },
+    "content": "\\begin{thm}[Mean value theorem] \\label{thm:mvt}\n\\index{mean value theorem}\nLet $f \\colon [a,b] \\to \\R$ be a continuous function\ndifferentiable on $(a,b)$.  Then there exists a point $c \\in (a,b)$\nsuch that\n\\begin{equation*}\nf(b)-f(a) = f'(c)(b-a) .\n\\end{equation*}\n\\end{thm}"
+  },
+  {
+    "index": 15,
+    "label": "Proposition 4.2.6",
+    "env": "prop",
+    "number_components": [
+      4,
+      2,
+      6
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "Mean value theorem",
+      "subsection": "Applications",
+      "chapter_number": 4,
+      "section_number": "4.2"
+    },
+    "content": "\\begin{prop} \\label{prop:derzeroconst}\nLet $I$ be an interval and\nlet $f \\colon I \\to \\R$ be a differentiable function such that $f'(x) = 0$\nfor all $x \\in I$.\nThen $f$ is constant.\n\\end{prop}"
+  },
+  {
+    "index": 16,
+    "label": "Theorem 4.2.11",
+    "env": "thm",
+    "number_components": [
+      4,
+      2,
+      11
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "Mean value theorem",
+      "subsection": "Continuity of derivatives and the intermediate value theorem",
+      "chapter_number": 4,
+      "section_number": "4.2"
+    },
+    "content": "\\begin{thm}[Darboux] \\label{thm:darboux} \\index{Darboux's theorem}\nLet $f \\colon [a,b] \\to \\R$ be differentiable.  Suppose $y \\in \\R$ is such\nthat $f'(a) < y < f'(b)$ or\n$f'(a) > y > f'(b)$.  Then there exists a $c \\in (a,b)$ such that $f'(c) =\ny$.\n\\end{thm}"
+  },
+  {
+    "index": 17,
+    "label": "Example 4.2.12",
+    "env": "example",
+    "number_components": [
+      4,
+      2,
+      12
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "Mean value theorem",
+      "subsection": "Continuity of derivatives and the intermediate value theorem",
+      "chapter_number": 4,
+      "section_number": "4.2"
+    },
+    "content": "\\begin{example} \\label{baddifffunc:example}\nLet $f \\colon \\R \\to \\R$ be the function defined by\n\\begin{equation*}\nf(x) \\coloneqq\n\\begin{cases}\n{\\bigl( x \\sin(\\nicefrac{1}{x}) \\bigr)}^2 & \\text{if } x \\not= 0, \\\\\n0 & \\text{if } x = 0.\n\\end{cases}\n\\end{equation*}\nWe claim that $f$ is differentiable everywhere, but\n$f' \\colon \\R \\to \\R$ is not continuous at\nthe origin.  Furthermore, $f$ has a minimum at $0$, but the derivative\nchanges sign infinitely often near the origin.\nSee \\figureref{fig:nonc1diff}.\n\\begin{myfigureht}\n\\subimport*{figures/}{nonc1diff_full.pdf_t}\n\\caption{A function with a discontinuous derivative. The function $f$ is on the left\nand $f'$ is on the right.  Notice that $f(x) \\leq x^2$ on the left graph.\\label{fig:nonc1diff}}\n\\end{myfigureht}\n\nProof: It is immediate from the definition that $f$ has an absolute\nminimum at $0$; we know $f(x) \\geq 0$ for all $x$ and $f(0) = 0$.\n\nFor $x \\not= 0$,\n$f$ is differentiable\nand\nthe derivative \nis $2 \\sin (\\nicefrac{1}{x}) \\bigl( x \\sin (\\nicefrac{1}{x}) -\n\\cos(\\nicefrac{1}{x}) \\bigr)$.\nAs an exercise, show that for $x_n = \\frac{4}{(8n+1)\\pi}$,\nwe have\n$\\lim_{n\\to\\infty} f'(x_n) = -1$, and for\n$y_n = \\frac{4}{(8n+3)\\pi}$, we have\n$\\lim_{n\\to\\infty} f'(y_n) = 1$.  So $f'$\ncannot be continuous at $0$\nno matter what $f'(0)$ is.\n\nLet us show that $f$ is differentiable at $0$ and $f'(0)=0$.\nFor $x \\not= 0$,\n\\begin{equation*}\n\\abs{\\frac{f(x)-f(0)}{x-0} - 0}\n=\n\\abs{\\frac{x^2 \\sin^2(\\nicefrac{1}{x})}{x}}\n=\n\\babs{x \\sin^2(\\nicefrac{1}{x})}\n\\leq\n\\sabs{x} .\n\\end{equation*}\nAnd, of course, as $x$ tends to zero, $\\sabs{x}$ tends to zero, and hence\n$\\abs{\\frac{f(x)-f(0)}{x-0} - 0}$ goes to zero.  Therefore, $f$\nis differentiable at 0 and the derivative at 0 is 0.\nA key point in the calculation above\nis that $\\babs{f(x)} \\leq x^2$,\nsee also Exercises \\ref{exercise:bndmuldiff} and\n\\ref{exercise:diffsqueeze}.\n\\end{example}"
+  },
+  {
+    "index": 18,
+    "label": "Proposition 4.2.7",
+    "env": "prop",
+    "number_components": [
+      4,
+      2,
+      7
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "Mean value theorem",
+      "subsection": "Applications",
+      "chapter_number": 4,
+      "section_number": "4.2"
+    },
+    "content": "\\begin{prop} \\label{incdecdiffprop}\nLet $I$ be an interval and\nlet $f \\colon I \\to \\R$ be a differentiable function.\n%\\begin{enumerate}[(i),itemsep=0.5\\itemsep,parsep=0.5\\parsep,topsep=0.5\\topsep,partopsep=0.5\\partopsep]\n\\begin{enumerate}[(i)]\n\\item $f$ is increasing if and only if $f'(x) \\geq 0$ for all $x \\in I$.\n\\item $f$ is decreasing if and only if $f'(x) \\leq 0$ for all $x \\in I$.\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 19,
+    "label": "Proposition 4.2.9",
+    "env": "prop",
+    "number_components": [
+      4,
+      2,
+      9
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "Mean value theorem",
+      "subsection": "Applications",
+      "chapter_number": 4,
+      "section_number": "4.2"
+    },
+    "content": "\\begin{prop} \\label{firstderminmaxtest}\nLet $f \\colon (a,b) \\to \\R$ be continuous.  Let $c \\in (a,b)$\nand suppose\n$f$ is differentiable on $(a,c)$ and $(c,b)$.\n\\begin{enumerate}[(i)]\n\\item If $f'(x) \\leq 0$ whenever $x \\in (a,c)$ and\n $f'(x) \\geq 0$ whenever $x \\in (c,b)$, then $f$ has an absolute minimum \nat $c$.\n\\item If $f'(x) \\geq 0$ whenever $x \\in (a,c)$ and\n $f'(x) \\leq 0$ whenever $x \\in (c,b)$, then $f$ has an absolute maximum\nat $c$.\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 20,
+    "label": "Proposition 4.2.10",
+    "env": "prop",
+    "number_components": [
+      4,
+      2,
+      10
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "Mean value theorem",
+      "subsection": "Applications",
+      "chapter_number": 4,
+      "section_number": "4.2"
+    },
+    "content": "\\begin{prop} \\label{prop:endpointderivative}\n\\leavevmode\n\\begin{enumerate}[(i)]\n\\item\nSuppose $f \\colon [a,b) \\to \\R$ is continuous, differentiable in $(a,b)$,\nand $\\lim_{x \\to a} f'(x) = L$.  Then $f$ is differentiable at $a$ and\n$f'(a) = L$.\n\\item\nSuppose $f \\colon (a,b] \\to \\R$ is continuous, differentiable in $(a,b)$,\nand $\\lim_{x \\to b} f'(x) = L$.  Then $f$ is differentiable at $b$ and\n$f'(b) = L$.\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 21,
+    "label": "Theorem 4.2.5",
+    "env": "thm",
+    "number_components": [
+      4,
+      2,
+      5
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "Mean value theorem",
+      "subsection": "Mean value theorem",
+      "chapter_number": 4,
+      "section_number": "4.2"
+    },
+    "content": "\\begin{thm}[Cauchy's mean value theorem] \\label{thm:cauchymvt}\n\\index{Cauchy's mean value theorem}\nLet $f \\colon [a,b] \\to \\R$ and $\\varphi \\colon [a,b] \\to \\R$ be continuous\nfunctions\ndifferentiable on $(a,b)$.  Then there exists a point $c \\in (a,b)$\nsuch that\n\\begin{equation*}\n\\bigl(f(b)-f(a)\\bigr)\\varphi'(c) = f'(c)\\bigl(\\varphi(b)-\\varphi(a)\\bigr) .\n\\end{equation*}\n\\end{thm}"
+  },
+  {
+    "index": 22,
+    "label": "Definition 4.3.1",
+    "env": "defn",
+    "number_components": [
+      4,
+      3,
+      1
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "Taylor's theorem",
+      "subsection": "Taylor's theorem",
+      "chapter_number": 4,
+      "section_number": "4.3"
+    },
+    "content": "\\begin{defn}\nFor an $n$ times differentiable function $f$ defined near a point $x_0 \\in \\R$, define the\n$n$th order \\emph{\\myindex{Taylor polynomial}}%\n\\index{nth order Taylor polynomial@$n$th order Taylor polynomial}\nfor $f$ at $x_0$ as\n\\begin{equation*}\n\\begin{split}\nP_n^{x_0}(x)\n& \\coloneqq\n\\sum_{k=0}^n\n\\frac{f^{(k)}(x_0)}{k!}{(x-x_0)}^k\n\\\\\n& =\nf(x_0)\n+ f'(x_0)(x-x_0)\n+ \\frac{f''(x_0)}{2}{(x-x_0)}^2\n+ \\frac{f^{(3)}(x_0)}{6}{(x-x_0)}^3\n\\\\\n& \\qquad\n+ \\cdots\n+ \\frac{f^{(n)}(x_0)}{n!}{(x-x_0)}^n .\n\\end{split}\n\\end{equation*}\n\\end{defn}"
+  },
+  {
+    "index": 23,
+    "label": "Theorem 4.3.2",
+    "env": "thm",
+    "number_components": [
+      4,
+      3,
+      2
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "Taylor's theorem",
+      "subsection": "Taylor's theorem",
+      "chapter_number": 4,
+      "section_number": "4.3"
+    },
+    "content": "\\begin{thm}[Taylor]\\index{Taylor's theorem} \\label{thm:taylor}\nSuppose $f \\colon [a,b] \\to \\R$ is a function with $n$ continuous\nderivatives on $[a,b]$ and such that $f^{(n+1)}$ exists on $(a,b)$.\nGiven distinct points $x_0$ and $x$ in $[a,b]$,\nwe can find a point $c$ between $x_0$\nand $x$ such that\n\\begin{equation*}\nf(x)=P_{n}^{x_0}(x)+\\frac{f^{(n+1)}(c)}{(n+1)!}{(x-x_0)}^{n+1} .\n\\end{equation*}\n\\end{thm}"
+  },
+  {
+    "index": 24,
+    "label": "Proposition 4.3.3",
+    "env": "prop",
+    "number_components": [
+      4,
+      3,
+      3
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "Taylor's theorem",
+      "subsection": "Taylor's theorem",
+      "chapter_number": 4,
+      "section_number": "4.3"
+    },
+    "content": "\\begin{prop}[Second derivative test]\\index{second derivative test}\nSuppose $f \\colon (a,b) \\to \\R$ is twice continuously differentiable,\n$x_0 \\in (a,b)$, $f'(x_0) = 0$ and $f''(x_0) > 0$.  Then $f$ has a strict relative\nminimum at $x_0$.\n\\end{prop}"
+  },
+  {
+    "index": 25,
+    "label": "Lemma 4.4.1",
+    "env": "lemma",
+    "number_components": [
+      4,
+      4,
+      1
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "Inverse function theorem",
+      "subsection": "Inverse function theorem",
+      "chapter_number": 4,
+      "section_number": "4.4"
+    },
+    "content": "\\begin{lemma} \\label{lemma:ift}\nLet $I,J \\subset \\R$ be intervals.\nIf $f \\colon I \\to J$ is strictly monotone (hence one-to-one),\nonto ($f(I) = J$),\ndifferentiable at $x_0 \\in I$, and $f'(x_0) \\not= 0$,\nthen the inverse \n$f^{-1}$ is differentiable at $y_0 = f(x_0)$ and\n\\begin{equation*}\n(f^{-1})'(y_0) = \\frac{1}{f'\\bigl( f^{-1}(y_0) \\bigr)} = \\frac{1}{f'(x_0)} .\n\\end{equation*}\nIf $f$ is continuously differentiable and $f'$ is never zero, then $f^{-1}$\nis continuously differentiable.\n\\end{lemma}"
+  },
+  {
+    "index": 26,
+    "label": "Theorem 4.4.2",
+    "env": "thm",
+    "number_components": [
+      4,
+      4,
+      2
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "Inverse function theorem",
+      "subsection": "Inverse function theorem",
+      "chapter_number": 4,
+      "section_number": "4.4"
+    },
+    "content": "\\begin{thm}[Inverse function theorem]\\index{inverse function theorem}\nLet $f \\colon (a,b) \\to \\R$ be a continuously differentiable function,\n$x_0 \\in (a,b)$ a point where $f'(x_0) \\not= 0$.  Then there exists\nan open interval $I \\subset (a,b)$ with $x_0 \\in I$, the\nrestriction $f|_{I}$ is injective with a continuously differentiable inverse\n$g \\colon J \\to I$ defined on an interval $J \\coloneqq f(I)$,\nand\n\\begin{equation*}\ng'(y) = \\frac{1}{f'\\bigl( g(y) \\bigr)} \\qquad \\text{for all } y \\in J.\n\\end{equation*}\n\\end{thm}"
+  },
+  {
+    "index": 27,
+    "label": "Proposition 4.2.8",
+    "env": "prop",
+    "number_components": [
+      4,
+      2,
+      8
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "Mean value theorem",
+      "subsection": "Applications",
+      "chapter_number": 4,
+      "section_number": "4.2"
+    },
+    "content": "\\begin{prop} \\label{incdecdiffstrictprop}\nLet $I$ be an interval and\nlet $f \\colon I \\to \\R$ be a differentiable function.\n\\begin{enumerate}[(i)]\n\\item\n\\label{incdecdiffstrictprop:i}\nIf $f'(x) > 0$ for all $x \\in I$, then\n$f$ is strictly increasing.\n\\item\n\\label{incdecdiffstrictprop:ii}\nIf $f'(x) < 0$ for all $x \\in I$,\nthen $f$ is strictly decreasing.\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 28,
+    "label": "Corollary 4.4.3",
+    "env": "cor",
+    "number_components": [
+      4,
+      4,
+      3
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "Inverse function theorem",
+      "subsection": "Inverse function theorem",
+      "chapter_number": 4,
+      "section_number": "4.4"
+    },
+    "content": "\\begin{cor}\nGiven $n \\in \\N$ and $x \\geq 0$, there exists a unique \nnumber $y \\geq 0$ (denoted $x^{1/n} \\coloneqq y$), such that $y^n = x$.  Furthermore,\nthe function $g \\colon (0,\\infty) \\to (0,\\infty)$ defined by\n$g(x) \\coloneqq x^{1/n}$ is continuously differentiable and\n\\begin{equation*}\ng'(x) = \\frac{1}{nx^{(n-1)/n}} = \\frac{1}{n} \\, x^{(1-n)/n} ,\n\\end{equation*}\nusing the convention $x^{m/n} \\coloneqq {(x^{1/n})}^{m}$.\n\\end{cor}"
+  },
+  {
+    "index": 29,
+    "label": "Example 4.4.4",
+    "env": "example",
+    "number_components": [
+      4,
+      4,
+      4
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "Inverse function theorem",
+      "subsection": "Inverse function theorem",
+      "chapter_number": 4,
+      "section_number": "4.4"
+    },
+    "content": "\\begin{example}\nThe corollary provides a good example of where the inverse function theorem\ngives us an interval smaller than $(a,b)$.  Take $f \\colon \\R \\to \\R$\ndefined by $f(x) \\coloneqq x^2$.  Then $f'(x_0) \\not= 0$\nas long as $x_0 \\not= 0$.  If $x_0 > 0$, we can take $I=(0,\\infty)$, but\nno larger.\n\\end{example}"
+  },
+  {
+    "index": 30,
+    "label": "Example 4.4.5",
+    "env": "example",
+    "number_components": [
+      4,
+      4,
+      5
+    ],
+    "context": {
+      "chapter": "The Derivative",
+      "section": "Inverse function theorem",
+      "subsection": "Inverse function theorem",
+      "chapter_number": 4,
+      "section_number": "4.4"
+    },
+    "content": "\\begin{example}\nAnother useful example is $f(x) \\coloneqq x^3$.  The function $f \\colon \\R \\to \\R$ is\none-to-one and onto, so $f^{-1}(y) = y^{1/3}$ exists on the entire real\nline, including zero and negative $y$.  The function $f$ has\na continuous derivative, but $f^{-1}$ has no derivative at the origin.  The\npoint is that $f'(0) = 0$.  See \\figureref{cubecuberootfig} for a graph.\nNotice the vertical tangent on the cube root at the origin.\nSee also \\exerciseref{exercise:oddroot}.\n\\begin{myfigureht}\n\\includegraphics{figures/cubecuberoot}\n\\caption{Graphs of $x^3$ and $x^{1/3}$.\\label{cubecuberootfig}}\n\\end{myfigureht}\n\\end{example}"
+  }
+]

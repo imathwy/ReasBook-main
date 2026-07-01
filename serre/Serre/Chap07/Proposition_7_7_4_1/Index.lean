@@ -1,0 +1,12 @@
+import Serre.Chap07.Proposition_7_7_4_1.IntertwiningAndInduction
+import Serre.Chap07.Proposition_7_7_4_1.MackeyDecomposition
+import Serre.Chap07.Proposition_7_7_4_1.MackeyCoordinateEquivalences
+import Serre.Chap07.Proposition_7_7_4_1.FrobeniusCoordinates
+import Serre.Chap07.Proposition_7_7_4_1.IdentityBlockIrreducibility
+import Serre.Chap07.Proposition_7_7_4_1.MackeySeedTransport
+import Serre.Chap07.Proposition_7_7_4_1.SelfMapCoordinates
+import Serre.Chap07.Proposition_7_7_4_1.IdentityProjectionDefs
+import Serre.Chap07.Proposition_7_7_4_1.IdentityProjectionRepresentativeSeeds
+import Serre.Chap07.Proposition_7_7_4_1.IdentityProjectionTransport
+import Serre.Chap07.Proposition_7_7_4_1.SingletonOffIdentityBoundary
+import Serre.Chap07.Proposition_7_7_4_1.SingletonOffIdentityNotBijective

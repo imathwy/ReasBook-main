@@ -1,0 +1,6 @@
+import Serre.Chap18.Theorem_18_18_2_1.RegularConjClassCore
+import Serre.Chap18.Theorem_18_18_2_1.RegularClassFunctionSpanBridge
+import Serre.Chap18.Theorem_18_18_2_1.BrauerRelationSeparator
+import Serre.Chap18.Theorem_18_18_2_1.MixedCharacterOwner
+import Serre.Chap18.Theorem_18_18_2_1.FiniteTransportCore
+import Serre.Chap18.Theorem_18_18_2_1.FiniteMixedCharacteristicRealization

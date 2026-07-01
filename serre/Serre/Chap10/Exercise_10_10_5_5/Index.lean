@@ -1,0 +1,6 @@
+import Serre.Chap10.Exercise_10_10_5_5.AutoSplit
+import Serre.Chap10.Exercise_10_10_5_5.BrauerPrelude
+import Serre.Chap10.Exercise_10_10_5_5.SubgroupInductionBridge
+import Serre.Chap10.Exercise_10_10_5_5.SupersolvableBridge
+import Serre.Chap10.Exercise_10_10_5_5.MonomialModel
+import Serre.Chap10.Exercise_10_10_5_5.VirtualCharacterReductions

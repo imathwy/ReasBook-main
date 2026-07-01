@@ -1,0 +1,37 @@
+{
+  "schema_version": "benchmark-v0",
+  "benchmark_id": "optimization-alignment-v0",
+  "corpus_version": "optimization-pilot-v0",
+  "status": "candidate-set-not-gold",
+  "task_types": [
+    "definition-alignment",
+    "theorem-relation",
+    "api-retrieval",
+    "proof-refactoring",
+    "statement-fidelity-review"
+  ],
+  "relation_labels": [
+    "syntactic-equivalent",
+    "provably-equivalent",
+    "implication",
+    "specialization",
+    "generalization",
+    "compatible-adapter",
+    "related-not-reusable",
+    "conflict",
+    "unknown"
+  ],
+  "split_policy": {
+    "development": "labels visible for prompt and Harness iteration",
+    "test": "labels hidden from Agent context",
+    "current_split": "unassigned-candidates",
+    "change_policy": "split or label changes require a new manifest version"
+  },
+  "sampling": {
+    "target_candidates": 30,
+    "required_categories": ["positive-potential", "hard-negative-potential", "unknown"],
+    "gold_label_required_in_phase_0": false
+  },
+  "negative_result_policy": "retain"
+}
+

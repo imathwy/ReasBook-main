@@ -1,0 +1,130 @@
+import Mathlib
+import stacks_project.Chap17.Definition_17_28_1
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+open CategoryTheory TopCat TopologicalSpace
+open PresheafOfModules
+open PresheafOfModules.DifferentialsConstruction
+open TopCat.Sheaf
+open RelativeDerivation
+open scoped RelativeDerivation
+
+universe u
+
+noncomputable section
+
+variable {X : TopCat.{u}}
+variable {O₁ O₂ : TopCat.Sheaf CommRingCat.{u} X}
+variable (φ : O₁ ⟶ O₂)
+
+namespace TopCat.Sheaf
+
+/- Domain-style sampling for Definition 17.28.3:
+- primary domain: sheafified relative differentials of sheaves of commutative rings on a
+  topological space;
+- sampled owner declarations:
+  `PresheafOfModules.sheafificationAdjunction`,
+  `PresheafOfModules.DifferentialsConstruction.relativeDifferentials'`,
+  `PresheafOfModules.DifferentialsConstruction.derivation'`,
+  `PresheafOfModules.DifferentialsConstruction.isUniversal'`,
+  `TopCat.Sheaf.relativeDifferentialDesc`;
+- best owner abstraction: the source-facing sheafified owner
+  `TopCat.Sheaf.relativeDifferentials`, obtained from the canonical presheaf differentials owner by
+  sheafification;
+  `relativeDifferentials' φ.hom`, the sheafified module `relativeDifferentials`, and its
+  universal derivation `relativeDifferential`;
+- derived API: the definitional sheafification theorem `relativeDifferentials_def`, the descended
+  universal morphism `relativeDifferentialDesc`, its factorization and injectivity lemmas, and the
+  representing theorem
+  `relativeDifferentials_representsDerivations`.
+
+Source/core/bridge triage:
+- `core/canonical`: the presheaf owner
+  `PresheafOfModules.DifferentialsConstruction.relativeDifferentials'`;
+- `source-facing`: the sheafified owner `TopCat.Sheaf.relativeDifferentials`;
+- `bridge/view`: the sheafification descent API from the presheaf universal derivation to sheaf
+  targets;
+- this file owns the sheaf-level construction and its primitive support data, so downstream files
+  should reuse these declarations rather than reintroduce local copies. -/
+
+/-- A sheaf of commutative rings on `X`, viewed as a sheaf with values in `RingCat`. -/
+abbrev ringSheaf (O : TopCat.Sheaf CommRingCat.{u} X) : TopCat.Sheaf RingCat.{u} X :=
+  (sheafCompose (Opens.grothendieckTopology X) (forget₂ CommRingCat RingCat)).obj O
+
+/-- The underlying morphism of `RingCat`-valued sheaves induced by a morphism of sheaves of
+commutative rings. -/
+abbrev ringSheafMap {O O' : TopCat.Sheaf CommRingCat.{u} X} (α : O ⟶ O') :
+    ringSheaf O ⟶ ringSheaf O' :=
+  (sheafCompose (Opens.grothendieckTopology X) (forget₂ CommRingCat RingCat)).map α
+
+/-- Definition 17.28.3: for a morphism `φ : 𝒪₁ ⟶ 𝒪₂` of sheaves of rings on a topological
+space, the module of differentials `Ω_{𝒪₂/𝒪₁}` is the sheaf representing the functor
+`ℱ ↦ Der_{𝒪₁}(𝒪₂, ℱ)`. -/
+noncomputable def relativeDifferentials :
+    SheafOfModules (ringSheaf O₂) :=
+  (PresheafOfModules.sheafification
+      (𝟙 (ringSheaf O₂).obj)).obj
+    (relativeDifferentials' φ.hom)
+
+@[inherit_doc relativeDifferentials]
+notation:max "Ω(" φ ")" => relativeDifferentials φ
+
+/-- The sheaf of relative differentials is the sheafification of the presheaf of objectwise
+Kähler differentials. -/
+theorem relativeDifferentials_def :
+    Ω(φ) =
+      (PresheafOfModules.sheafification (𝟙 (ringSheaf O₂).obj)).obj
+        (relativeDifferentials' φ.hom) := rfl
+
+/-- The universal `φ`-derivation from `O₂` to `Ω(φ)`. -/
+noncomputable def relativeDifferential :
+    Der[φ ; Ω(φ)] :=
+  (derivation' φ.hom).postcomp
+    ((PresheafOfModules.sheafificationAdjunction
+      (𝟙 (ringSheaf O₂).obj)).unit.app
+      (relativeDifferentials' φ.hom))
+
+/-- The descended morphism induced by a `φ`-derivation into a sheaf of modules. -/
+noncomputable def relativeDifferentialDesc
+    {F : SheafOfModules (ringSheaf O₂)} (D : Der[φ ; F]) :
+    Ω(φ) ⟶ F :=
+  ((PresheafOfModules.sheafificationAdjunction (𝟙 (ringSheaf O₂).obj)).homEquiv
+    (relativeDifferentials' φ.hom) F).symm
+      ((isUniversal' φ.hom).desc D)
+
+-- Proof sketch: `relativeDifferentialDesc` is obtained by transporting the presheaf-level
+-- universal morphism across the sheafification adjunction, so the factorization identity is the
+-- adjoint form of `isUniversal' φ.hom |>.fac`.
+/-- The descended morphism factors the target derivation through the universal derivation. -/
+theorem relativeDifferentialDesc_fac
+    {F : SheafOfModules (ringSheaf O₂)} (D : Der[φ ; F]) :
+    RelativeDerivation.postcomp (relativeDifferential φ)
+      (relativeDifferentialDesc φ D) = D := sorry
+
+-- Proof sketch: uniqueness is inherited from the presheaf-level universal property after applying
+-- the sheafification adjunction equivalence.
+/-- A morphism out of `Ω(φ)` is determined by its postcomposition with the universal
+derivation. -/
+theorem relativeDifferential_postcomp_injective
+    {F : SheafOfModules (ringSheaf O₂)} ⦃α β : Ω(φ) ⟶ F⦄
+    (h : RelativeDerivation.postcomp (relativeDifferential φ) α =
+      RelativeDerivation.postcomp (relativeDifferential φ) β) :
+    α = β := sorry
+
+/-- The sheaf of relative differentials represents `O₁`-derivations out of `O₂`. -/
+theorem relativeDifferentials_representsDerivations
+    (F : SheafOfModules (ringSheaf O₂)) (D : Der[φ ; F]) :
+    ∃! α : Ω(φ) ⟶ F,
+      RelativeDerivation.postcomp (relativeDifferential φ) α = D := by
+  refine ⟨relativeDifferentialDesc φ D, ?_, ?_⟩
+  · exact relativeDifferentialDesc_fac φ D
+  · intro α hα
+    apply relativeDifferential_postcomp_injective φ
+    calc
+      RelativeDerivation.postcomp (relativeDifferential φ) α = D := hα
+      _ = RelativeDerivation.postcomp (relativeDifferential φ)
+            (relativeDifferentialDesc φ D) :=
+        (relativeDifferentialDesc_fac φ D).symm
+
+end TopCat.Sheaf

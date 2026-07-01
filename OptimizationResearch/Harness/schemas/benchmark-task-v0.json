@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "benchmark-task-v0",
+  "type": "object",
+  "required": ["schema_version", "task_id", "corpus_version", "task_type", "source", "split"]
+}
+

@@ -1,0 +1,5 @@
+import Serre.Chap11.Remark_11_11_1_3.TensorCharacterRingRestriction
+import Serre.Chap11.Remark_11_11_1_3.RestrictionFamily
+import Serre.Chap11.Remark_11_11_1_3.ElementaryConjugation
+import Serre.Chap11.Remark_11_11_1_3.ElementaryDetection
+import Serre.Chap11.Remark_11_11_1_3.IntegralRestrictionSplitting

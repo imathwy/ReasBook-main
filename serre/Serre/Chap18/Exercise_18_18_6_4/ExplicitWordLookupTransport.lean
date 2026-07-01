@@ -1,0 +1,1 @@
+import Serre.Chap18.Exercise_18_18_6_4.ExplicitWordTransportHom

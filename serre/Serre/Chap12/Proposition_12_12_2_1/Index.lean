@@ -1,0 +1,3 @@
+import Serre.Chap12.Proposition_12_12_2_1.ScaledCharacterCore
+import Serre.Chap12.Proposition_12_12_2_1.ScaledCharacterPacket
+import Serre.Chap12.Proposition_12_12_2_1.ScaledCharacterPairing

@@ -1,0 +1,50 @@
+{
+  "schema_version": "corpus-v0",
+  "corpus_id": "optimization-pilot-v0",
+  "created_at": "2026-06-29",
+  "repository_revision": "5bf0bf8343c8d7b164b99013176aaea61f9dc1d8",
+  "domain": "mathematical-optimization",
+  "focus": [
+    "smoothness",
+    "strong-convexity",
+    "gradient-and-subgradient",
+    "first-order-methods"
+  ],
+  "projects": [
+    {
+      "project_id": "first-order-methods-in-optimization",
+      "path": "FirstOrderMethodsinOptimization/",
+      "role": "read-only-source",
+      "revision": "5bf0bf8343c8d7b164b99013176aaea61f9dc1d8+e16920e9e298d7de7244115c9ecdd060a96e65e316ff982a6d6433a8a25c6e68",
+      "source": "First-Order Methods in Optimization",
+      "license_status": "publication-review-required",
+      "lean_toolchain": "leanprover/lean4:v4.30.0",
+      "build_command": "lake build",
+      "build_status": "pass-default-target"
+    },
+    {
+      "project_id": "nesterov",
+      "path": "Nesterov/",
+      "role": "read-only-source",
+      "revision": "5bf0bf8343c8d7b164b99013176aaea61f9dc1d8+68e478bd506de57aa0e828f670725bc7ca448d42325ad7aa077221ffe341992d",
+      "source": "Nesterov optimization formalization",
+      "license_status": "publication-review-required",
+      "lean_toolchain": "leanprover/lean4:v4.30.0",
+      "build_command": "lake build",
+      "build_status": "pass-default-target"
+    },
+    {
+      "project_id": "smooth-minimization-nesterov-2004",
+      "path": "SmoothMinimization_Nesterov_2004/",
+      "role": "read-only-source",
+      "revision": "5bf0bf8343c8d7b164b99013176aaea61f9dc1d8+9a504a7012fc465c60a0b69be074953b24352998b0d14e17742691131afd1ec5",
+      "source": "Smooth Minimization of Non-smooth Functions (Nesterov, 2004)",
+      "license_status": "publication-review-required",
+      "lean_toolchain": "leanprover/lean4:v4.30.0",
+      "build_command": "lake build",
+      "build_status": "pass-default-target"
+    }
+  ],
+  "deferred_projects": ["ConvexAnalysis_Rockafellar_1970/"]
+}
+

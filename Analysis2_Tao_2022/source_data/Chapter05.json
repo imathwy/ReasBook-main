@@ -1,0 +1,1024 @@
+[
+    {
+        "label": "Definition 5.1.1",
+        "env": "def",
+        "number_components": [
+            5,
+            1,
+            1
+        ],
+        "extracted_labels": [
+            "def:5.1",
+            "eq:5.u1"
+        ],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 1,
+            "subsection_number": 0
+        },
+        "content": "\\begin{definition}\n\\label{def:5.1}\nLet $L>0$ be a real number. A function $f:\\mathbb{R}\\to\\mathbb{C}$ is called \\emph{periodic with period $L$} (or \\emph{$L$-periodic}) if, for every $x\\in\\mathbb{R}$, one has\n\\[\n\\label{eq:5.u1}\nf(x+L)=f(x).\n\\]\n\\end{definition}",
+        "dependencies": [],
+        "proof": "",
+        "index": 1
+    },
+    {
+        "label": "Example 5.1.2",
+        "env": "example",
+        "number_components": [
+            5,
+            1,
+            2
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 1,
+            "subsection_number": 0
+        },
+        "content": "\\begin{example}\nThe functions $\\sin x$, $\\cos x$, and $e^{ix}$ are $2\\pi$-periodic. Consequently, they are also $2\\pi k$-periodic for every integer $k\\in\\mathbb{Z}$. The function $f(x)=x$ is not periodic. The constant function $f(x)=1$ is $L$-periodic for every $L>0$.\n\\end{example}",
+        "dependencies": [
+            "Definition 5.1.1"
+        ],
+        "proof": "\\begin{proof}\nWe verify periodicity using Definition~5.1.1.\n\n\\textbf{(1) $2\\pi$-periodicity of $\\sin x$ and $\\cos x$.} For all $x\\in\\mathbb{R}$, the standard trigonometric identities give\n\\[\n\\sin(x+2\\pi)=\\sin x,\\qquad \\cos(x+2\\pi)=\\cos x.\n\\]\nHence $\\sin x$ and $\\cos x$ are $2\\pi$-periodic.\n\n\\textbf{(2) $2\\pi$-periodicity of $e^{ix}$.} For all $x\\in\\mathbb{R}$,\n\\[\n e^{i(x+2\\pi)}=e^{ix}e^{i2\\pi}=e^{ix},\n\\]\nsince $e^{i2\\pi}=1$. Thus $e^{ix}$ is $2\\pi$-periodic.\n\n\\textbf{(3) Periods $4\\pi,6\\pi,\\dots$.} If $f$ is $2\\pi$-periodic, then for any integer $k$,\n\\[\n f(x+2\\pi k)=f(x)\n\\]\nby repeated application of $f(x+2\\pi)=f(x)$ (and for negative $k$ by applying the identity to $x-2\\pi$). Hence $4\\pi,6\\pi,\\dots$ are also periods.\n\n\\textbf{(4) Non-periodicity of $f(x)=x$.} Suppose there exists $L>0$ such that $x+L=x$ for all $x$. Then $L=0$, contradicting $L>0$. Hence $f(x)=x$ is not periodic.\n\n\\textbf{(5) Constant function.} If $f(x)\\equiv 1$, then for any $L>0$ and all $x$,\n\\[\n f(x+L)=1=f(x),\n\\]\nso $f$ is $L$-periodic for every $L>0$.\n\\end{proof}",
+        "index": 2
+    },
+    {
+        "label": "Corollary 5.1.1",
+        "env": "cor",
+        "number_components": [
+            5,
+            1,
+            1
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 1,
+            "subsection_number": 0
+        },
+        "content": "\\begin{corollary}[$kL$-shift invariance]\nIf a function $f:\\mathbb{R}\\to\\mathbb{C}$ is $L$-periodic, then\n\\[\nf(x+kL)=f(x)\\quad\\text{for all }x\\in\\mathbb{R}\\text{ and all }k\\in\\mathbb{Z}.\n\\]\nIn particular, if $f$ is $1$-periodic, then $f(x+k)=f(x)$ for all $k\\in\\mathbb{Z}$.\n\\end{corollary}",
+        "dependencies": [
+            "Definition 5.1.1"
+        ],
+        "proof": "From $f(x+L)=f(x)$, use induction for $k\\ge 0$; for $k<0$, apply the $k>0$ case to $x+kL$ (or substitute $x\\mapsto x-kL$) to obtain the negative shifts. The case $k=0$ is trivial.",
+        "index": 3
+    },
+    {
+        "label": "Definition 5.1.2",
+        "env": "def",
+        "number_components": [
+            5,
+            1,
+            2
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 1,
+            "subsection_number": 0
+        },
+        "content": "\\begin{definition}[$\\mathbb{Z}$-periodic and $L\\mathbb{Z}$-periodic]\nA function $f:\\mathbb{R}\\to\\mathbb{C}$ is called \\emph{$\\mathbb{Z}$-periodic} if it is $1$-periodic, i.e.\n\\[\nf(x+1)=f(x)\\quad\\text{for all }x\\in\\mathbb{R}.\n\\]\nMore generally, for $L>0$, an $L$-periodic function is sometimes also called \\emph{$L\\mathbb{Z}$-periodic}.\n\\end{definition}",
+        "dependencies": [
+            "Definition 5.1.1"
+        ],
+        "proof": "",
+        "index": 4
+    },
+    {
+        "label": "Example 5.1.4",
+        "env": "example",
+        "number_components": [
+            5,
+            1,
+            4
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 1,
+            "subsection_number": 0
+        },
+        "content": "\\begin{example}\nLet $n\\in\\mathbb{Z}$. Then the functions\n\\[\n\\cos(2\\pi n x),\\qquad \\sin(2\\pi n x),\\qquad e^{2\\pi i n x}\n\\]\nare all $\\mathbb{Z}$-periodic (i.e. $1$-periodic).\n\nAnother $\\mathbb{Z}$-periodic function is the \\emph{square wave} $f:\\mathbb{R}\\to\\mathbb{C}$ defined by\n\\[\n f(x):=\\begin{cases}\n 1, & x\\in\\bigl[k, k+\\tfrac12\\bigr),\\\\\n 0, & x\\in\\bigl[k+\\tfrac12, k+1\\bigr),\n \\end{cases}\n\\qquad (k\\in\\mathbb{Z}),\n\\]\nand extended periodically to all of $\\mathbb{R}$.\n\\end{example}",
+        "dependencies": [
+            "Definition 5.1.1"
+        ],
+        "proof": "\\begin{proof}\nWe use the definition of $\\mathbb{Z}$-periodic (equivalently, $1$-periodic): $f(x+1)=f(x)$ for all $x\\in\\mathbb{R}$.\n\n\\textbf{(1) Trigonometric/exponential examples.}\nLet $n\\in\\mathbb{Z}$. For all $x\\in\\mathbb{R}$,\n\\[\n\\cos\\bigl(2\\pi n(x+1)\\bigr)=\\cos(2\\pi n x+2\\pi n)=\\cos(2\\pi n x),\n\\]\n\\[\n\\sin\\bigl(2\\pi n(x+1)\\bigr)=\\sin(2\\pi n x+2\\pi n)=\\sin(2\\pi n x),\n\\]\nusing that adding an integer multiple of $2\\pi$ does not change $\\sin$ or $\\cos$. Also,\n\\[\n e^{2\\pi i n(x+1)}=e^{2\\pi i n x}\\,e^{2\\pi i n}=e^{2\\pi i n x},\n\\]\nsince $e^{2\\pi i n}=1$ for $n\\in\\mathbb{Z}$. Hence all three functions are $\\mathbb{Z}$-periodic.\n\n\\textbf{What if $n\\notin\\mathbb{Z}$?}\nIf $n\\notin\\mathbb{Z}$, then $e^{2\\pi i n(x+1)}=e^{2\\pi i n x}e^{2\\pi i n}\\neq e^{2\\pi i n x}$, because $e^{2\\pi i n}\\neq 1$. Thus $e^{2\\pi i n x}$ is not $\\mathbb{Z}$-periodic. Likewise, $\\cos(2\\pi n x)$ and $\\sin(2\\pi n x)$ are $\\mathbb{Z}$-periodic if and only if $n\\in\\mathbb{Z}$.\n\n\\textbf{(2) Square wave.}\nDefine $f$ by\n\\[\n f(x)=1 \\text{ if } x\\in\\bigl[k,k+\\tfrac12\\bigr),\\qquad f(x)=0 \\text{ if } x\\in\\bigl[k+\\tfrac12,k+1\\bigr)\n\\]\nfor the unique integer $k$ with $x\\in[k,k+1)$.\nThen for any $x\\in\\mathbb{R}$, if $x\\in[k,k+1)$, we have $x+1\\in[k+1,k+2)$ and the membership of $x$ in the first half $[k,k+\\tfrac12)$ or second half $[k+\\tfrac12,k+1)$ is preserved after shifting by $1$. Hence $f(x+1)=f(x)$ for all $x$, so $f$ is $\\mathbb{Z}$-periodic.\n\\end{proof}",
+        "index": 5
+    },
+    {
+        "label": "Definition 5.1.3",
+        "env": "def",
+        "number_components": [
+            5,
+            1,
+            3
+        ],
+        "extracted_labels": [
+            "def:5.1.int_frac_part"
+        ],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 1,
+            "subsection_number": 0
+        },
+        "content": "\\begin{definition}[Integer part and fractional part]\nFor any real number $x\\in\\mathbb{R}$, we define the \\emph{integer part} of $x$, denoted $[x]$,\nto be the unique integer $k\\in\\mathbb{Z}$ such that\n\\[\nk \\le x < k+1.\n\\]\nWe then define the \\emph{fractional part} of $x$, denoted $\\{x\\}$, by\n\\[\n\\{x\\} := x - [x].\n\\]\n\\end{definition}",
+        "dependencies": [],
+        "proof": "",
+        "index": 6
+    },
+    {
+        "label": "Lemma 5.1.5a",
+        "env": "lemma",
+        "number_components": [
+            5,
+            1,
+            5,
+            "a"
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 1,
+            "subsection_number": 0
+        },
+        "content": "\\begin{lemma}[Basic properties of $C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$ (a)]\n(Boundedness) If $f\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$, then $f$ is bounded.\n\\end{lemma}",
+        "dependencies": [],
+        "proof": "\\begin{proof}\nSince $f$ is $\\mathbb{Z}$-periodic, we have\n\\[\n\\sup_{x\\in\\mathbb{R}} |f(x)| = \\sup_{x\\in[0,1]} |f(x)|.\n\\]\nIndeed, for any $x\\in\\mathbb{R}$ we can write $x=k+y$ with $k\\in\\mathbb{Z}$ and $y\\in[0,1)$, and then\n$|f(x)| = |f(y)|$ by periodicity.\n\nNow $f$ is continuous on the compact interval $[0,1]$, hence $|f|$ is continuous on $[0,1]$.\nBy the extreme value theorem, $|f|$ attains a maximum on $[0,1]$; i.e. there exists $M>0$ such that\n$|f(x)|\\le M$ for all $x\\in[0,1]$. By the reduction above, this holds for all $x\\in\\mathbb{R}$.\n\\end{proof}",
+        "index": 7
+    },
+    {
+        "label": "Lemma 5.1.5b",
+        "env": "lemma",
+        "number_components": [
+            5,
+            1,
+            5,
+            "b"
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 1,
+            "subsection_number": 0
+        },
+        "content": "\\begin{lemma}[Basic properties of $C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$ (b)]\n(Vector space and algebra properties) If $f,g\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$, then $f\\pm g$ and $fg$ are also in $C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$; and if $c\\in\\mathbb{C}$ then $cf\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$.\n\\end{lemma}",
+        "dependencies": [],
+        "proof": "\\begin{proof}\n\\emph{Periodicity:} For any $x\\in\\mathbb{R}$,\n\\[\n(f\\pm g)(x+1)=f(x+1)\\pm g(x+1)=f(x)\\pm g(x)=(f\\pm g)(x),\n\\]\n\\[\n(fg)(x+1)=f(x+1)g(x+1)=f(x)g(x)=(fg)(x),\n\\]\nand for $c\\in\\mathbb{C}$,\n\\[\n(cf)(x+1)=c f(x+1)=c f(x)=(cf)(x).\n\\]\nSo these functions are $\\mathbb{Z}$-periodic.\n\n\\emph{Continuity:} Sums, differences, and products of continuous functions are continuous, and scalar multiples\nof continuous functions are continuous. Hence $f\\pm g$, $fg$, and $cf$ are continuous on $\\mathbb{R}$.\nTherefore they all lie in $C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$.\n\\end{proof}",
+        "index": 8
+    },
+    {
+        "label": "Lemma 5.1.5c",
+        "env": "lemma",
+        "number_components": [
+            5,
+            1,
+            5,
+            "c"
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 1,
+            "subsection_number": 0
+        },
+        "content": "\\begin{lemma}[Basic properties of $C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$ (c)]\n(Closure under uniform limits) If $(f_n)$ is a sequence in $C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$ converging uniformly to $f$, then $f\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$.\n\\end{lemma}",
+        "dependencies": [],
+        "proof": "\\begin{proof}\nAssume $(f_n)$ is a sequence in $C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$ and $f_n \\to f$ uniformly on $\\mathbb{R}$.\n\n\\emph{Periodicity of the limit:} Fix $x\\in\\mathbb{R}$. For every $n$, $f_n(x+1)=f_n(x)$.\nTaking $n\\to\\infty$ gives\n\\[\nf(x+1)=\\lim_{n\\to\\infty} f_n(x+1)=\\lim_{n\\to\\infty} f_n(x)=f(x),\n\\]\nso $f$ is $\\mathbb{Z}$-periodic.\n\n\\emph{Continuity of the limit:} Fix $x_0\\in\\mathbb{R}$ and $\\varepsilon>0$.\nChoose $N$ such that $\\sup_{x\\in\\mathbb{R}} |f_N(x)-f(x)| < \\varepsilon/3$.\nSince $f_N$ is continuous at $x_0$, there exists $\\delta>0$ such that\n$|x-x_0|<\\delta$ implies $|f_N(x)-f_N(x_0)|<\\varepsilon/3$.\nThen for $|x-x_0|<\\delta$,\n\\[\n|f(x)-f(x_0)|\n\\le |f(x)-f_N(x)| + |f_N(x)-f_N(x_0)| + |f_N(x_0)-f(x_0)|\n< \\varepsilon.\n\\]\nThus $f$ is continuous at $x_0$, and hence continuous on $\\mathbb{R}$.\nTherefore $f\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$.\n\\end{proof}",
+        "index": 9
+    },
+    {
+        "label": "Definition 5.2.1",
+        "env": "def",
+        "number_components": [
+            5,
+            2,
+            1
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Inner Products on Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 2,
+            "subsection_number": 0
+        },
+        "content": "\\begin{definition}[Inner product]\nIf $f,g\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$, we define\n\\[\n\\langle f,g\\rangle := \\int_{[0,1]} f(x)\\overline{g(x)}\\,dx.\n\\]\n\\end{definition}",
+        "dependencies": [
+            "Definition 5.1.1",
+            "Lemma 5.1.5b"
+        ],
+        "proof": "",
+        "index": 10
+    },
+    {
+        "label": "Example 5.2.3",
+        "env": "example",
+        "number_components": [
+            5,
+            2,
+            3
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Inner Products on Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 2,
+            "subsection_number": 0
+        },
+        "content": "\\begin{example}\nLet $f(x):=1$ and $g(x):=e^{2\\pi i x}$. Then $\\langle f,g\\rangle=0$.\n\\end{example}",
+        "dependencies": [
+            "Definition 5.2.1"
+        ],
+        "proof": "\\begin{proof}\nBy definition of the inner product,\n\\[\n\\langle f,g\\rangle = \\int_{0}^{1} f(x)\\overline{g(x)}\\,dx = \\int_{0}^{1} 1\\cdot e^{-2\\pi i x}\\,dx.\n\\]\nCompute:\n\\[\n\\int_{0}^{1} e^{-2\\pi i x}\\,dx\n= \\left.\\frac{e^{-2\\pi i x}}{-2\\pi i}\\right|_{0}^{1}\n= \\frac{e^{-2\\pi i}-1}{-2\\pi i}\n=0,\n\\]\nsince $e^{-2\\pi i}=1$. Hence $\\langle f,g\\rangle=0$.\n\\end{proof}",
+        "index": 11
+    },
+    {
+        "label": "Lemma 5.2.5a",
+        "env": "lemma",
+        "number_components": [
+            5,
+            2,
+            5,
+            "a"
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Inner Products on Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 2,
+            "subsection_number": 0
+        },
+        "content": "\\begin{lemma}[Properties of the inner product (a)]\n(Hermitian) If $f,g\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$, then $\\langle g,f\\rangle = \\overline{\\langle f,g\\rangle}$.\n\\end{lemma}",
+        "dependencies": [
+            "Definition 5.2.1"
+        ],
+        "proof": "\\begin{proof}\nWe compute\n\\[\n\\langle g,f\\rangle=\\int_{0}^{1} g(x)\\overline{f(x)}\\,dx.\n\\]\nOn the other hand,\n\\[\n\\overline{\\langle f,g\\rangle}\n=\\overline{\\int_{0}^{1} f(x)\\overline{g(x)}\\,dx}\n=\\int_{0}^{1} \\overline{f(x)\\overline{g(x)}}\\,dx\n=\\int_{0}^{1} \\overline{f(x)}\\,g(x)\\,dx\n=\\int_{0}^{1} g(x)\\overline{f(x)}\\,dx\n=\\langle g,f\\rangle.\n\\]\n\\end{proof}",
+        "index": 12
+    },
+    {
+        "label": "Lemma 5.2.5b",
+        "env": "lemma",
+        "number_components": [
+            5,
+            2,
+            5,
+            "b"
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Inner Products on Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 2,
+            "subsection_number": 0
+        },
+        "content": "\\begin{lemma}[Properties of the inner product (b)]\n(Positivity) If $f\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$, then $\\langle f,f\\rangle\\ge 0$, and $\\langle f,f\\rangle=0$ iff $f=0$.\n\\end{lemma}",
+        "dependencies": [
+            "Definition 5.2.1"
+        ],
+        "proof": "\\begin{proof}\nWe have\n\\[\n\\langle f,f\\rangle=\\int_{0}^{1} f(x)\\overline{f(x)}\\,dx=\\int_{0}^{1} |f(x)|^2\\,dx\\ge 0.\n\\]\nIf $f\\equiv 0$, then clearly $\\langle f,f\\rangle=0$.\nConversely, assume $\\langle f,f\\rangle=0$, i.e.\n\\[\n\\int_{0}^{1}|f(x)|^2\\,dx=0.\n\\]\nIf $f$ is not identically zero, then there exists $x_0\\in[0,1]$ such that $f(x_0)\\neq 0$,\nhence $|f(x_0)|^2>0$. Since $f$ is continuous, $|f|^2$ is continuous, so there exist\n$\\delta>0$ and $c>0$ such that $|f(x)|^2\\ge c$ whenever $|x-x_0|<\\delta$.\nTherefore\n\\[\n\\int_{0}^{1}|f(x)|^2\\,dx\n\\ge \\int_{(x_0-\\delta,\\,x_0+\\delta)\\cap[0,1]} c\\,dx\n>0,\n\\]\na contradiction. Thus $f\\equiv 0$.\n\\end{proof}",
+        "index": 13
+    },
+    {
+        "label": "Lemma 5.2.5c",
+        "env": "lemma",
+        "number_components": [
+            5,
+            2,
+            5,
+            "c"
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Inner Products on Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 2,
+            "subsection_number": 0
+        },
+        "content": "\\begin{lemma}[Properties of the inner product (c)]\n(Linearity in the first variable) For $f,g,h\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$ and $c\\in\\mathbb{C}$,\n$\\langle f+g,h\\rangle=\\langle f,h\\rangle+\\langle g,h\\rangle$ and $\\langle cf,g\\rangle=c\\langle f,g\\rangle$.\n\\end{lemma}",
+        "dependencies": [
+            "Definition 5.2.1"
+        ],
+        "proof": "\\begin{proof}\nBy linearity of the integral,\n\\[\n\\langle f+g,h\\rangle\n=\\int_{0}^{1}(f(x)+g(x))\\overline{h(x)}\\,dx\n=\\int_{0}^{1}f(x)\\overline{h(x)}\\,dx+\\int_{0}^{1}g(x)\\overline{h(x)}\\,dx\n=\\langle f,h\\rangle+\\langle g,h\\rangle.\n\\]\nAlso, for $c\\in\\mathbb{C}$,\n\\[\n\\langle cf,g\\rangle\n=\\int_{0}^{1}(cf(x))\\overline{g(x)}\\,dx\n=c\\int_{0}^{1}f(x)\\overline{g(x)}\\,dx\n=c\\langle f,g\\rangle.\n\\]\n\\end{proof}",
+        "index": 14
+    },
+    {
+        "label": "Lemma 5.2.5d",
+        "env": "lemma",
+        "number_components": [
+            5,
+            2,
+            5,
+            "d"
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Inner Products on Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 2,
+            "subsection_number": 0
+        },
+        "content": "\\begin{lemma}[Properties of the inner product (d)]\n(Antilinearity in the second variable) For $f,g,h\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$ and $c\\in\\mathbb{C}$,\n$\\langle f,g+h\\rangle=\\langle f,g\\rangle+\\langle f,h\\rangle$ and $\\langle f,cg\\rangle=\\overline{c}\\,\\langle f,g\\rangle$.\n\\end{lemma}",
+        "dependencies": [
+            "Definition 5.2.1"
+        ],
+        "proof": "\\begin{proof}\nFirst,\n\\[\n\\langle f,g+h\\rangle\n=\\int_{0}^{1} f(x)\\overline{g(x)+h(x)}\\,dx\n=\\int_{0}^{1} f(x)\\big(\\overline{g(x)}+\\overline{h(x)}\\big)\\,dx\n=\\langle f,g\\rangle+\\langle f,h\\rangle.\n\\]\nNext,\n\\[\n\\langle f,cg\\rangle\n=\\int_{0}^{1} f(x)\\overline{c\\,g(x)}\\,dx\n=\\int_{0}^{1} f(x)\\,\\overline{c}\\,\\overline{g(x)}\\,dx\n=\\overline{c}\\int_{0}^{1} f(x)\\overline{g(x)}\\,dx\n=\\overline{c}\\,\\langle f,g\\rangle.\n\\]\n\\end{proof}",
+        "index": 15
+    },
+    {
+        "label": "Example 5.2.6",
+        "env": "example",
+        "number_components": [
+            5,
+            2,
+            6
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Inner Products on Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 2,
+            "subsection_number": 0
+        },
+        "content": "\\begin{example}\nLet $f(x):=e^{2\\pi i x}$. Then $\\|f\\|_2=1$.\n\\end{example}",
+        "dependencies": [
+            "Definition 5.2.1"
+        ],
+        "proof": "\\begin{proof}\nBy definition of the $L^2$ norm,\n\\[\n\\|f\\|_2 = \\left(\\int_{0}^{1} f(x)\\overline{f(x)}\\,dx\\right)^{1/2}.\n\\]\nSince $\\overline{e^{2\\pi i x}}=e^{-2\\pi i x}$, we have $f(x)\\overline{f(x)}=e^{2\\pi i x}e^{-2\\pi i x}=1$. Hence\n\\[\n\\|f\\|_2 = \\left(\\int_{0}^{1} 1\\,dx\\right)^{1/2} = 1.\n\\]\n\\end{proof}",
+        "index": 16
+    },
+    {
+        "label": "Exercise 5.2.3",
+        "env": "exercise",
+        "number_components": [
+            5,
+            2,
+            3
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Inner Products on Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 2,
+            "subsection_number": 0
+        },
+        "content": "\\begin{exercise}\nIf $f \\in C(\\mathbb{R}/\\mathbb{Z}; \\mathbb{C})$ is non-zero, show that $0 < \\|f\\|_2 \\leq \\|f\\|_{L^{\\infty}}$. Conversely, if $0 < A \\leq B$ are real numbers, show that there exists a non-zero function $f \\in C(\\mathbb{R}/\\mathbb{Z}; \\mathbb{C})$ such that $\\|f\\|_2 = A$ and $\\|f\\|_{L^{\\infty}} = B$. (Hint: let $g$ be a non-constant non-negative real-valued function in $C(\\mathbb{R}/\\mathbb{Z}; \\mathbb{C})$, and consider functions $f = (c + dg)^{1/2}$ for some constant real numbers $c,d > 0$.)\\end{exercise}",
+        "dependencies": [
+            "Definition 5.2.1"
+        ],
+        "proof": "\\begin{proof}\n(1) If $f\\neq 0$, then $|f|^2$ is continuous and not identically $0$, hence $\\int_0^1 |f(x)|^2\\,dx>0$, so $\\|f\\|_2>0$.\nAlso, for all $x$, $|f(x)|\\le \\|f\\|_{L^\\infty}$, hence\n\\[\n\\|f\\|_2^2=\\int_0^1 |f(x)|^2\\,dx\\le \\int_0^1 \\|f\\|_{L^\\infty}^2\\,dx=\\|f\\|_{L^\\infty}^2,\n\\]\nso $\\|f\\|_2\\le \\|f\\|_{L^\\infty}$.\n\n(2) Conversely, fix $0<A\\le B$. Choose a non-constant non-negative $g\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{R})$ with $\\|g\\|_{L^\\infty}=1$.\nLet $f=(c+d g)^{1/2}$ with $c,d>0$. Then $\\|f\\|_{L^\\infty}=\\sqrt{c+d}$.\nPick $c+d=B^2$ so that $\\|f\\|_{L^\\infty}=B$.\nAlso\n\\[\n\\|f\\|_2^2=\\int_0^1 (c+d g(x))\\,dx=c+d\\int_0^1 g(x)\\,dx.\n\\]\nSince $g$ is not constant and $0\\le g\\le 1$, we have $0<\\int_0^1 g(x)\\,dx<1$.\nWith $c=B^2-d$, the quantity $\\|f\\|_2^2$ varies continuously from $B^2\\int_0^1 g$ (when $d\\to B^2$) to $B^2$ (when $d\\to 0$), hence attains every value in $(B^2\\int_0^1 g,\\,B^2)$.\nChoose $d$ so that $\\|f\\|_2^2=A^2$; then $\\|f\\|_2=A$ and $\\|f\\|_{L^\\infty}=B$, with $f\\neq 0$.\n\\end{proof}",
+        "index": 17
+    },
+    {
+        "label": "Lemma 5.2.7a",
+        "env": "lemma",
+        "number_components": [
+            5,
+            2,
+            7,
+            "a"
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Inner Products on Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 2,
+            "subsection_number": 0
+        },
+        "content": "\\begin{lemma}[Basic properties of $\\|\\cdot\\|_2$ (a)]\n(Non-degeneracy) $\\|f\\|_2=0$ iff $f=0$.\n\\end{lemma}",
+        "dependencies": [
+            "Lemma 5.2.5b"
+        ],
+        "proof": "\\begin{proof}\nRecall $\\|f\\|_2=\\sqrt{\\langle f,f\\rangle}$. If $f\\equiv 0$ then $\\|f\\|_2=0$.\nConversely, if $\\|f\\|_2=0$ then $\\langle f,f\\rangle=0$, hence $f=0$ by Lemma~5.2.5b.\n\\end{proof}",
+        "index": 18
+    },
+    {
+        "label": "Lemma 5.2.7b",
+        "env": "lemma",
+        "number_components": [
+            5,
+            2,
+            7,
+            "b"
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Inner Products on Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 2,
+            "subsection_number": 0
+        },
+        "content": "\\begin{lemma}[Basic properties of $\\|\\cdot\\|_2$ (b)]\n(Cauchy--Schwarz) $|\\langle f,g\\rangle|\\le \\|f\\|_2\\,\\|g\\|_2$.\n\\end{lemma}",
+        "dependencies": [
+            "Lemma 5.2.5a",
+            "Lemma 5.2.5c",
+            "Lemma 5.2.5d",
+            "Lemma 5.2.7a"
+        ],
+        "proof": "\\begin{proof}\nIf $\\|g\\|_2=0$, then $g=0$ by Lemma~5.2.7a and the inequality is trivial.\nAssume $\\|g\\|_2>0$. For any $\\lambda\\in\\mathbb{C}$, positivity gives\n\\[\n0\\le \\langle f-\\lambda g, f-\\lambda g\\rangle.\n\\]\nExpand using Lemma~5.2.5c--d and Hermitian symmetry:\n\\[\n\\langle f-\\lambda g, f-\\lambda g\\rangle\n=\\|f\\|_2^2 -2\\Re\\big(\\overline{\\lambda}\\langle f,g\\rangle\\big)+|\\lambda|^2\\|g\\|_2^2.\n\\]\nChoose $\\lambda=\\langle f,g\\rangle/\\|g\\|_2^2$ to obtain\n\\[\n0\\le \\|f\\|_2^2-\\frac{|\\langle f,g\\rangle|^2}{\\|g\\|_2^2},\n\\]\nhence $|\\langle f,g\\rangle|^2\\le \\|f\\|_2^2\\|g\\|_2^2$, and taking square roots gives the result.\n\\end{proof}",
+        "index": 19
+    },
+    {
+        "label": "Lemma 5.2.7c",
+        "env": "lemma",
+        "number_components": [
+            5,
+            2,
+            7,
+            "c"
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Inner Products on Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 2,
+            "subsection_number": 0
+        },
+        "content": "\\begin{lemma}[Basic properties of $\\|\\cdot\\|_2$ (c)]\n(Triangle inequality) $\\|f+g\\|_2\\le \\|f\\|_2+\\|g\\|_2$.\n\\end{lemma}",
+        "dependencies": [
+            "Lemma 5.2.5a",
+            "Lemma 5.2.5c",
+            "Lemma 5.2.5d",
+            "Lemma 5.2.7b"
+        ],
+        "proof": "\\begin{proof}\nCompute\n\\[\n\\|f+g\\|_2^2=\\langle f+g,f+g\\rangle=\\|f\\|_2^2+2\\Re\\langle f,g\\rangle+\\|g\\|_2^2\n\\le \\|f\\|_2^2+2|\\langle f,g\\rangle|+\\|g\\|_2^2.\n\\]\nBy Cauchy--Schwarz (Lemma~5.2.7b), $|\\langle f,g\\rangle|\\le \\|f\\|_2\\|g\\|_2$, so\n\\[\n\\|f+g\\|_2^2\\le (\\|f\\|_2+\\|g\\|_2)^2.\n\\]\nTaking square roots yields $\\|f+g\\|_2\\le \\|f\\|_2+\\|g\\|_2$.\n\\end{proof}",
+        "index": 20
+    },
+    {
+        "label": "Lemma 5.2.7d",
+        "env": "lemma",
+        "number_components": [
+            5,
+            2,
+            7,
+            "d"
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Inner Products on Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 2,
+            "subsection_number": 0
+        },
+        "content": "\\begin{lemma}[Basic properties of $\\|\\cdot\\|_2$ (d)]\n(Pythagoras) If $\\langle f,g\\rangle=0$, then $\\|f+g\\|_2^2=\\|f\\|_2^2+\\|g\\|_2^2$.\n\\end{lemma}",
+        "dependencies": [
+            "Lemma 5.2.5a",
+            "Lemma 5.2.5c",
+            "Lemma 5.2.5d"
+        ],
+        "proof": "\\begin{proof}\nIf $\\langle f,g\\rangle=0$, then $\\langle g,f\\rangle=\\overline{\\langle f,g\\rangle}=0$ by Lemma~5.2.5a.\nTherefore\n\\[\n\\|f+g\\|_2^2=\\langle f+g,f+g\\rangle=\\langle f,f\\rangle+\\langle f,g\\rangle+\\langle g,f\\rangle+\\langle g,g\\rangle=\\|f\\|_2^2+\\|g\\|_2^2.\n\\]\n\\end{proof}",
+        "index": 21
+    },
+    {
+        "label": "Lemma 5.2.7e",
+        "env": "lemma",
+        "number_components": [
+            5,
+            2,
+            7,
+            "e"
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Inner Products on Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 2,
+            "subsection_number": 0
+        },
+        "content": "\\begin{lemma}[Basic properties of $\\|\\cdot\\|_2$ (e)]\n(Homogeneity) $\\|cf\\|_2=|c|\\,\\|f\\|_2$.\n\\end{lemma}",
+        "dependencies": [
+            "Definition 5.2.1"
+        ],
+        "proof": "\\begin{proof}\nWe compute\n\\[\n\\|cf\\|_2^2=\\langle cf,cf\\rangle=\\int_0^1 (cf(x))\\overline{(cf(x))}\\,dx=\\int_0^1 |c|^2|f(x)|^2\\,dx=|c|^2\\|f\\|_2^2.\n\\]\nTaking square roots gives $\\|cf\\|_2=|c|\\,\\|f\\|_2$.\n\\end{proof}",
+        "index": 22
+    },
+    {
+        "label": "Definition 5.2.2",
+        "env": "def",
+        "number_components": [
+            5,
+            2,
+            2
+        ],
+        "extracted_labels": [
+            "def:5.2.X"
+        ],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Inner Products on Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 2,
+            "subsection_number": 0
+        },
+        "content": "\\begin{definition}[Orthogonality and the $L^2$ metric]\\label{def:5.2.X}\nLet $f,g\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$.\n\\begin{enumerate}\n  \\item We say $f$ and $g$ are \\emph{orthogonal} if and only if $\\langle f,g\\rangle = 0$.\n  \\item The \\emph{$L^2$ metric} on $C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$ is defined by\n  \\[\n  d_{L^2}(f,g) := \\|f-g\\|_2 = \\left(\\int_{0}^{1} |f(x)-g(x)|^2\\,dx\\right)^{1/2}.\n  \\]\n\\end{enumerate}\n\\end{definition}",
+        "dependencies": [
+            "def:5.2.1"
+        ],
+        "proof": "",
+        "index": 23
+    },
+    {
+        "label": "Definition 5.2.3",
+        "env": "def",
+        "number_components": [
+            5,
+            2,
+            3
+        ],
+        "extracted_labels": [
+            "def:5.2.Y"
+        ],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Inner Products on Periodic Functions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 2,
+            "subsection_number": 0
+        },
+        "content": "\\begin{definition}[$L^2$-convergence]\\label{def:5.2.Y}\nLet $(f_n)_{n=1}^\\infty$ be a sequence in $C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$ and let $f\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$. We say that $f_n$ \\emph{converges to $f$ in the $L^2$ metric} (or \\emph{in $L^2$}) if\n\\[\n\\lim_{n\\to\\infty} d_{L^2}(f_n,f)=0,\n\\]\nthat is, equivalently,\n\\[\n\\lim_{n\\to\\infty} \\int_{0}^{1} |f_n(x)-f(x)|^2\\,dx = 0.\n\\]\n\\end{definition}",
+        "dependencies": [
+            "def:5.2.2"
+        ],
+        "proof": "",
+        "index": 24
+    },
+    {
+        "label": "Definition 5.3.1",
+        "env": "def",
+        "number_components": [
+            5,
+            3,
+            1
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Trigonometric Polynomials",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 3,
+            "subsection_number": 0
+        },
+        "content": "\\begin{definition}[Characters]\nFor every integer $n$, define $e_n\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$ by\n\\[\ne_n(x):=e^{2\\pi i n x}.\n\\]\n\\end{definition}",
+        "dependencies": [
+            "Definition 5.1.1"
+        ],
+        "proof": "",
+        "index": 25
+    },
+    {
+        "label": "Definition 5.3.2",
+        "env": "def",
+        "number_components": [
+            5,
+            3,
+            2
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Trigonometric Polynomials",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 3,
+            "subsection_number": 0
+        },
+        "content": "\\begin{definition}[Trigonometric polynomials]\nA function $f\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$ is a trigonometric polynomial if\n\\[\nf=\\sum_{n=-N}^{N} c_n e_n\n\\]\nfor some integer $N\\ge 0$ and complex numbers $(c_n)_{n=-N}^N$.\n\\end{definition}",
+        "dependencies": [
+            "Definition 5.3.1"
+        ],
+        "proof": "",
+        "index": 26
+    },
+    {
+        "label": "Lemma 5.3.5",
+        "env": "lemma",
+        "number_components": [
+            5,
+            3,
+            5
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Trigonometric Polynomials",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 3,
+            "subsection_number": 0
+        },
+        "content": "\\begin{lemma}[Characters are an orthonormal system]\nFor any integers $n,m$,\n\\[\n\\langle e_n,e_m\\rangle = \\begin{cases}1,& n=m\\\\ 0,& n\\ne m\\end{cases}\n\\]\nand $\\|e_n\\|_2=1$.\n\\end{lemma}",
+        "dependencies": [
+            "Definition 5.2.1",
+            "Definition 5.3.1"
+        ],
+        "proof": "\\begin{proof}\nRecall that $e_n(x)=e^{2\\pi i n x}$ and\n\\[\n\\langle f,g\\rangle=\\int_{0}^{1} f(x)\\overline{g(x)}\\,dx.\n\\]\nFix integers $n,m$. Then\n\\[\n\\langle e_n,e_m\\rangle\n=\\int_{0}^{1} e^{2\\pi i n x}\\,\\overline{e^{2\\pi i m x}}\\,dx\n=\\int_{0}^{1} e^{2\\pi i (n-m)x}\\,dx.\n\\]\nIf $n=m$, then the integrand is identically $1$, so $\\langle e_n,e_n\\rangle=1$.\nIf $n\\neq m$, set $k:=n-m\\in\\mathbb{Z}\\setminus\\{0\\}$; then\n\\[\n\\int_{0}^{1} e^{2\\pi i k x}\\,dx\n=\\left[\\frac{e^{2\\pi i k x}}{2\\pi i k}\\right]_{0}^{1}\n=\\frac{e^{2\\pi i k}-1}{2\\pi i k}=0.\n\\]\nHence $\\langle e_n,e_m\\rangle$ equals $1$ if $n=m$ and $0$ otherwise, and therefore\n$\\|e_n\\|_2=\\sqrt{\\langle e_n,e_n\\rangle}=1$.\n\\end{proof}",
+        "index": 27
+    },
+    {
+        "label": "Corollary 5.3.6",
+        "env": "cor",
+        "number_components": [
+            5,
+            3,
+            6
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Trigonometric Polynomials",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 3,
+            "subsection_number": 0
+        },
+        "content": "\\begin{corollary}\nLet $f=\\sum_{n=-N}^{N} c_n e_n$ be a trigonometric polynomial. Then\n\\[\nc_n=\\langle f,e_n\\rangle\\quad (-N\\le n\\le N),\n\\]\nand $\\langle f,e_n\\rangle=0$ if $n>N$ or $n<-N$. Also,\n\\[\n\\|f\\|_2^2=\\sum_{n=-N}^{N} |c_n|^2.\n\\]\n\\end{corollary}",
+        "dependencies": [
+            "Lemma 5.3.5"
+        ],
+        "proof": "\\begin{proof}\nFix $m\\in\\mathbb{Z}$. By linearity,\n\\[\n\\langle f,e_m\\rangle=\\sum_{n=-N}^{N} c_n\\langle e_n,e_m\\rangle.\n\\]\nBy Lemma~5.3.5, this equals $c_m$ if $|m|\\le N$ and $0$ otherwise.\nFor the norm,\n\\[\n\\|f\\|_2^2=\\langle f,f\\rangle=\\sum_{n=-N}^{N}\\sum_{m=-N}^{N} c_n\\overline{c_m}\\langle e_n,e_m\\rangle\n=\\sum_{n=-N}^{N} |c_n|^2.\n\\]\n\\end{proof}",
+        "index": 28
+    },
+    {
+        "label": "Definition 5.3.7",
+        "env": "def",
+        "number_components": [
+            5,
+            3,
+            7
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Trigonometric Polynomials",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 3,
+            "subsection_number": 0
+        },
+        "content": "\\begin{definition}[Fourier transform]\nFor $f\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$ and $n\\in\\mathbb{Z}$, define the $n$-th Fourier coefficient\n\\[\n\\hat f(n):=\\langle f,e_n\\rangle = \\int_{[0,1]} f(x)e^{-2\\pi i n x}\\,dx.\n\\]\nThe function $\\hat f:\\mathbb{Z}\\to\\mathbb{C}$ is called the Fourier transform of $f$.\n\\end{definition}",
+        "dependencies": [
+            "Definition 5.2.1",
+            "Definition 5.3.1"
+        ],
+        "proof": "",
+        "index": 29
+    },
+    {
+        "label": "Definition 5.3.8",
+        "env": "def",
+        "number_components": [
+            5,
+            3,
+            8
+        ],
+        "extracted_labels": [
+            "def:5.3.8"
+        ],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Trigonometric Polynomials",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 3,
+            "subsection_number": 0
+        },
+        "content": "\\begin{definition}[Fourier inversion, Fourier series, and Plancherel formula]\n\\label{def:5.3.8}\nLet $f\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$ and let $\\hat f(n)$ denote its Fourier coefficients (as in Definition~5.3.7).\n\n\\begin{enumerate}\n\\item \\textbf{Fourier series of $f$.} The formal series\n\\[\n\\sum_{n\\in\\mathbb{Z}} \\hat f(n) e_n\\qquad\\text{equivalently}\\qquad \\sum_{n\\in\\mathbb{Z}} \\hat f(n) e^{2\\pi i n x}\n\\]\nis called the \\emph{Fourier series} of $f$.\n\n\\item \\textbf{Fourier inversion formula (finite/trigonometric-polynomial case).} If $f$ is a trigonometric polynomial, then\n\\[\n f = \\sum_{n\\in\\mathbb{Z}} \\hat f(n) e_n\n\\]\n(where only finitely many terms are nonzero).\n\n\\item \\textbf{Plancherel (Parseval) formula (finite/trigonometric-polynomial case).} If $f$ is a trigonometric polynomial, then\n\\[\n\\|f\\|_2^2 = \\sum_{n\\in\\mathbb{Z}} |\\hat f(n)|^2.\n\\]\n\\end{enumerate}\n\\end{definition}",
+        "dependencies": [
+            "Definition 5.3.7",
+            "Corollary 5.3.6"
+        ],
+        "proof": "",
+        "index": 30
+    },
+    {
+        "label": "Theorem 5.4.1",
+        "env": "thm",
+        "number_components": [
+            5,
+            4,
+            1
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Periodic Convolutions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 4,
+            "subsection_number": 0
+        },
+        "content": "\\begin{theorem}[Weierstrass approximation theorem for trigonometric polynomials]\nLet $f\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$ and let $\\varepsilon>0$. Then there exists a trigonometric polynomial $P$ such that\n\\[\n\\|f-P\\|_\\infty\\le \\varepsilon.\n\\]\n\\end{theorem}",
+        "dependencies": [
+            "Definition 5.3.2"
+        ],
+        "proof": "\\begin{proof}\nLet $f\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$. By Lemma~5.1.5a, there exists $M>0$ such that $|f(x)|\\le M$ for all $x$.\nLet $\\varepsilon>0$. By uniform continuity, choose $0<\\delta<1/2$ so that $|f(x)-f(y)|\\le\\varepsilon$ whenever $|x-y|\\le\\delta$.\nBy Lemma~5.4.6, choose a trigonometric polynomial $P$ that is a periodic $(\\varepsilon,\\delta)$ approximation to the identity.\nThen $f*P$ is a trigonometric polynomial. For any $x$,\n\\[\n|f(x)-(f*P)(x)|\\le \\int_0^1 P(y)|f(x)-f(x-y)|\\,dy.\n\\]\nSplit $[0,1]=[0,\\delta]\\cup[\\delta,1-\\delta]\\cup[1-\\delta,1]$ and use (i) uniform continuity on the first and last pieces, (ii) $|f|\\le M$ and $P\\le\\varepsilon$ on the middle piece, to obtain\n\\[\n|f(x)-(f*P)(x)|\\le (2M+1)\\varepsilon.\n\\]\nTaking the supremum over $x$ yields $\\|f-f*P\\|_\\infty\\le (2M+1)\\varepsilon$, and choosing $\\varepsilon$ suitably gives the desired approximation.\n\\end{proof}",
+        "index": 31
+    },
+    {
+        "label": "Definition 5.4.2",
+        "env": "def",
+        "number_components": [
+            5,
+            4,
+            2
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Periodic Convolutions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 4,
+            "subsection_number": 0
+        },
+        "content": "\\begin{definition}[Periodic convolution]\nLet $f,g\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$. Define\n\\[\n(f*g)(x):=\\int_{[0,1]} f(y)g(x-y)\\,dy.\n\\]\n\\end{definition}",
+        "dependencies": [
+            "Definition 5.1.1"
+        ],
+        "proof": "",
+        "index": 32
+    },
+    {
+        "label": "Lemma 5.4.4a",
+        "env": "lemma",
+        "number_components": [
+            5,
+            4,
+            4,
+            "a"
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Periodic Convolutions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 4,
+            "subsection_number": 0
+        },
+        "content": "\\begin{lemma}[Basic properties of periodic convolution (a)]\n(Closure) If $f,g\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$, then $f*g\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$.\n\\end{lemma}",
+        "dependencies": [
+            "Definition 5.4.2"
+        ],
+        "proof": "\\begin{proof}\nWe show $f*g$ is $\\mathbb{Z}$-periodic and continuous.\n\n\\emph{Periodicity:} for any $x$,\n\\[\n(f*g)(x+1)=\\int_0^1 f(y)g(x+1-y)\\,dy=\\int_0^1 f(y)g(x-y)\\,dy=(f*g)(x),\n\\]\nsince $g$ is $1$-periodic.\n\n\\emph{Continuity:} $f$ is bounded on $[0,1]$; let $M=\\sup_{y\\in[0,1]}|f(y)|$.\nSince $g$ is uniformly continuous, for $x'\\to x$ we have $\\sup_{y\\in[0,1]}|g(x'-y)-g(x-y)|\\to 0$.\nThus\n\\[\n|(f*g)(x')-(f*g)(x)|\\le \\int_0^1 |f(y)|\\,|g(x'-y)-g(x-y)|\\,dy\\le M\\sup_{y\\in[0,1]}|g(x'-y)-g(x-y)|\\to 0.\n\\]\nHence $f*g$ is continuous and $\\mathbb{Z}$-periodic.\n\\end{proof}",
+        "index": 33
+    },
+    {
+        "label": "Lemma 5.4.4b",
+        "env": "lemma",
+        "number_components": [
+            5,
+            4,
+            4,
+            "b"
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Periodic Convolutions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 4,
+            "subsection_number": 0
+        },
+        "content": "\\begin{lemma}[Basic properties of periodic convolution (b)]\n(Commutativity) $f*g=g*f$.\n\\end{lemma}",
+        "dependencies": [
+            "Definition 5.4.2"
+        ],
+        "proof": "\\begin{proof}\nFor any $x$,\n\\[\n(f*g)(x)=\\int_0^1 f(y)g(x-y)\\,dy.\n\\]\nSubstitute $t=x-y$ to get\n\\[\n(f*g)(x)=\\int_{x-1}^{x} f(x-t)g(t)\\,dt.\n\\]\nUsing $1$-periodicity of $f$ and $g$, the integral over any length-$1$ interval equals the integral over $[0,1]$:\n\\[\n\\int_{x-1}^{x} f(x-t)g(t)\\,dt=\\int_0^1 f(x-t)g(t)\\,dt=(g*f)(x).\n\\]\n\\end{proof}",
+        "index": 34
+    },
+    {
+        "label": "Lemma 5.4.4c",
+        "env": "lemma",
+        "number_components": [
+            5,
+            4,
+            4,
+            "c"
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Periodic Convolutions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 4,
+            "subsection_number": 0
+        },
+        "content": "\\begin{lemma}[Basic properties of periodic convolution (c)]\n(Bilinearity) $f*(g+h)=f*g+f*h$, $(f+g)*h=f*h+g*h$, and $c(f*g)=(cf)*g=f*(cg)$.\n\\end{lemma}",
+        "dependencies": [
+            "Definition 5.4.2"
+        ],
+        "proof": "\\begin{proof}\nAll identities follow from linearity of the integral. For example,\n\\[\n(f*(g+h))(x)=\\int_0^1 f(y)(g+h)(x-y)\\,dy=(f*g)(x)+(f*h)(x).\n\\]\nSimilarly\n\\[\n((f+g)*h)(x)=\\int_0^1 (f+g)(y)h(x-y)\\,dy=(f*h)(x)+(g*h)(x),\n\\]\nand for $c\\in\\mathbb{C}$,\n\\[\n(c(f*g))(x)=c\\int_0^1 f(y)g(x-y)\\,dy=\\int_0^1 (cf)(y)g(x-y)\\,dy=((cf)*g)(x),\n\\]\nand likewise $c(f*g)=f*(cg)$.\n\\end{proof}",
+        "index": 35
+    },
+    {
+        "label": "Lemma 5.4.5",
+        "env": "lemma",
+        "number_components": [
+            5,
+            4,
+            5
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Periodic Convolutions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 4,
+            "subsection_number": 0
+        },
+        "content": "Let $f\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$ and $n\\in\\mathbb{Z}$. Then\n\\[\n f*e_n = \\hat f(n)\\,e_n.\n\\]\nMore generally, if $P=\\sum_{n=-N}^{N} c_n e_n$ is a trigonometric polynomial, then\n\\[\n f*P = \\sum_{n=-N}^{N} \\hat f(n)c_n\\,e_n,\n\\]\nand in particular $f*P$ is a trigonometric polynomial.",
+        "dependencies": [
+            "Definition 5.3.1",
+            "Definition 5.3.2",
+            "Definition 5.3.7",
+            "Definition 5.4.2",
+            "Lemma 5.4.4c"
+        ],
+        "proof": "For $n\\in\\mathbb{Z}$ and $x\\in\\mathbb{R}$,\n\\[\n(f*e_n)(x)=\\int_{0}^{1} f(y)\\,e_n(x-y)\\,dy\n=\\int_{0}^{1} f(y)e^{2\\pi i n(x-y)}\\,dy\n=e^{2\\pi i n x}\\int_{0}^{1} f(y)e^{-2\\pi i n y}\\,dy\n=\\hat f(n)e^{2\\pi i n x}\n=\\hat f(n)e_n(x).\n\\]\nIf $P=\\sum_{n=-N}^{N} c_n e_n$, then by bilinearity of convolution,\n\\[\n f*P = \\sum_{n=-N}^{N} c_n(f*e_n)=\\sum_{n=-N}^{N} c_n\\hat f(n)e_n.\n\\]\nHence $f*P$ is a trigonometric polynomial.",
+        "index": 36
+    },
+    {
+        "label": "Definition 5.4.5",
+        "env": "def",
+        "number_components": [
+            5,
+            4,
+            5
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Periodic Convolutions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 4,
+            "subsection_number": 0
+        },
+        "content": "\\begin{definition}[Periodic approximation to the identity]\nLet $\\varepsilon>0$ and $0<\\delta<1/2$. A function $f\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$ is a periodic $(\\varepsilon,\\delta)$ approximation to the identity if:\n\n(a) $f(x)\\ge 0$ for all $x$ and $\\int_{[0,1]} f = 1$.\n\n(b) $f(x)<\\varepsilon$ for all $\\delta\\le |x|\\le 1-\\delta$.\n\\end{definition}",
+        "dependencies": [
+            "Definition 5.4.2"
+        ],
+        "proof": "",
+        "index": 37
+    },
+    {
+        "label": "Lemma 5.4.6",
+        "env": "lemma",
+        "number_components": [
+            5,
+            4,
+            6
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "Periodic Convolutions",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 4,
+            "subsection_number": 0
+        },
+        "content": "\\begin{lemma}\nFor every $\\varepsilon>0$ and $0<\\delta<1/2$, there exists a trigonometric polynomial $P$ which is a $(\\varepsilon,\\delta)$ approximation to the identity.\n\\end{lemma}",
+        "dependencies": [
+            "Definition 5.4.5",
+            "Definition 5.3.2"
+        ],
+        "proof": "\\begin{proof}\n(Fej\\'er kernel construction; see your existing proof for the details.)\n\\end{proof}",
+        "index": 38
+    },
+    {
+        "label": "Theorem 5.5.1",
+        "env": "thm",
+        "number_components": [
+            5,
+            5,
+            1
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "The Fourier and Plancherel Theorems",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 5,
+            "subsection_number": 0
+        },
+        "content": "\\begin{theorem}[Fourier theorem]\nFor any $f\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$, the series $\\sum_{n=-\\infty}^{\\infty} \\hat f(n)e_n$ converges to $f$ in $L^2$ metric:\n\\[\n\\lim_{N\\to\\infty}\\left\\|f-\\sum_{n=-N}^{N}\\hat f(n)e_n\\right\\|_2=0.\n\\]\n\\end{theorem}",
+        "dependencies": [
+            "Theorem 5.4.1",
+            "Lemma 5.3.5",
+            "Definition 5.3.7"
+        ],
+        "proof": "Proof Let \\( \\varepsilon > 0 \\). We have to show that there exists an \\( N_0 \\) such that \\( \\|f - \\sum_{n=-N}^{N} \\hat{f}(n)e_n\\|_2 \\leq \\varepsilon \\) for all sufficiently large \\( N \\).\n\nBy the Weierstrass approximation theorem (Theorem 5.4.1), we can find a trigonometric polynomial \\( P = \\sum_{n=-N_0}^{N_0} c_n e_n \\) such that \\( \\|f - P\\|_\\infty \\leq \\varepsilon \\), for some \\( N_0 > 0 \\). In particular we have \\( \\|f - P\\|_2 \\leq \\varepsilon \\).\n\nNow let \\( N > N_0 \\), and let \\( F_N := \\sum_{n=-N}^{n=N} \\hat{f}(n)e_n \\). We claim that \\( \\|f - F_N\\|_2 \\leq \\varepsilon \\). First observe that for any \\( |m| \\leq N \\), we have\n\n\\[\n\\langle f - F_N, e_m \\rangle = \\langle f, e_m \\rangle - \\sum_{n=-N}^{N} \\hat{f}(n) \\langle e_n, e_m \\rangle = \\hat{f}(m) - \\hat{f}(m) = 0,\n\\]\n\nwhere we have used Lemma 5.3.5. In particular we have\n\n\\[\n\\langle f - F_N, F_N - P \\rangle = 0\n\\]\n\nsince we can write \\( F_N - P \\) as a linear combination of the \\( e_m \\) for which \\( |m| \\leq N \\). By Pythagoras’ theorem we therefore have\n\n\\[\n\\|f - P\\|_2^2 = \\|f - F_N\\|_2^2 + \\|F_N - P\\|_2^2\n\\]\n\nand in particular\n\n\\[\n\\|f - F_N\\|_2 \\leq \\|f - P\\|_2 \\leq \\varepsilon.\n\\]\n",
+        "index": 39
+    },
+    {
+        "label": "Theorem 5.5.3",
+        "env": "thm",
+        "number_components": [
+            5,
+            5,
+            3
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "The Fourier and Plancherel Theorems",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 5,
+            "subsection_number": 0
+        },
+        "content": "\\begin{theorem}\nLet $f\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$. If $\\sum_{n=-\\infty}^{\\infty} |\\hat f(n)|$ converges, then $\\sum_{n=-\\infty}^{\\infty} \\hat f(n)e_n$ converges uniformly to $f$, i.e.\n\\[\n\\lim_{N\\to\\infty}\\left\\|f-\\sum_{n=-N}^{N}\\hat f(n)e_n\\right\\|_\\infty=0.\n\\]\n\\end{theorem}",
+        "dependencies": [
+            "Theorem 5.5.1",
+            "Lemma 5.1.5a",
+            "Lemma 5.1.5c"
+        ],
+        "proof": "Proof By the Weierstrass \\(M\\)-test (Theorem 3.5.7), we see that \\(\\sum_{n=-\\infty}^{\\infty} \\hat{f}(n)e_n\\) converges to some function \\(F\\), which by Lemma~5.1.5c is also continuous and \\(\\mathbb{Z}\\)-periodic. Thus\n\n\\[\\lim_{N \\to \\infty} \\left\\| F - \\sum_{n=-N}^{N} \\hat{f}(n)e_n \\right\\|_{\\infty} = 0\\]\n\nwhich implies that\n\n\\[\\lim_{N \\to \\infty} \\left\\| F - \\sum_{n=-N}^{N} \\hat{f}(n)e_n \\right\\|_{2} = 0\\]\n\nsince $\\|\\cdot\\|_2\\le \\|\\cdot\\|_{\\infty}$ (using boundedness from Lemma~5.1.5a). But the same partial sums converge in $L^2$ to $f$ by the Fourier theorem, hence $F=f$, and the uniform convergence follows.",
+        "index": 40
+    },
+    {
+        "label": "Theorem 5.5.4",
+        "env": "thm",
+        "number_components": [
+            5,
+            5,
+            4
+        ],
+        "extracted_labels": [],
+        "context": {
+            "chapter": "Fourier Series",
+            "section": "The Fourier and Plancherel Theorems",
+            "subsection": "",
+            "chapter_number": 5,
+            "section_number": 5,
+            "subsection_number": 0
+        },
+        "content": "\\begin{theorem}[Plancherel / Parseval]\nFor any $f\\in C(\\mathbb{R}/\\mathbb{Z};\\mathbb{C})$, the series $\\sum_{n\\in\\mathbb{Z}} |\\hat f(n)|^2$ converges and\n\\[\n\\|f\\|_2^2 = \\sum_{n=-\\infty}^{\\infty} |\\hat f(n)|^2.\n\\]\n\\end{theorem}",
+        "dependencies": [
+            "Theorem 5.5.1",
+            "Corollary 5.3.6"
+        ],
+        "proof": "Let \\(\\varepsilon > 0\\). By the Fourier theorem we know that\n\n\\[ \\left\\| f - \\sum_{n=-N}^{N} \\hat{f}(n)e_n \\right\\|_2 \\leq \\varepsilon \\]\n\nif \\(N\\) is large enough. In particular,\n\n\\[ \\| f \\|_2 - \\varepsilon \\leq \\left\\| \\sum_{n=-N}^{N} \\hat{f}(n)e_n \\right\\|_2 \\leq \\| f \\|_2 + \\varepsilon. \\]\n\nBy Corollary 5.3.6,\n\n\\[ \\left\\| \\sum_{n=-N}^{N} \\hat{f}(n)e_n \\right\\|_2^2 = \\sum_{n=-N}^{N} |\\hat{f}(n)|^2. \\]\n\nHence\n\n\\[ (\\| f \\|_2 - \\varepsilon)^2 \\leq \\sum_{n=-N}^{N} |\\hat{f}(n)|^2 \\leq (\\| f \\|_2 + \\varepsilon)^2. \\]\n\nLetting $N\\to\\infty$ and then $\\varepsilon\\to 0$ yields\n\\[\\sum_{n=-\\infty}^{\\infty} |\\hat f(n)|^2 = \\|f\\|_2^2.\\]",
+        "index": 41
+    }
+]

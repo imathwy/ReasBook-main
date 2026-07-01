@@ -1,0 +1,54 @@
+{
+  "schema_version": "build-baseline-v0",
+  "corpus_version": "optimization-pilot-v0",
+  "recorded_at": "2026-06-29",
+  "toolchain": "leanprover/lean4:v4.30.0",
+  "results": [
+    {
+      "project": "ConvexAnalysis_Rockafellar_1970",
+      "command": "lake build",
+      "status": "pass",
+      "elapsed_seconds": 0.53,
+      "maxrss_kb": 786808,
+      "jobs_built": 0
+    },
+    {
+      "project": "FirstOrderMethodsinOptimization",
+      "command": "lake build",
+      "status": "pass",
+      "elapsed_seconds": 0.48,
+      "maxrss_kb": 788288,
+      "jobs_built": 0
+    },
+    {
+      "project": "Nesterov",
+      "command": "lake build",
+      "status": "pass",
+      "elapsed_seconds": 0.49,
+      "maxrss_kb": 788628,
+      "jobs_built": 0
+    },
+    {
+      "project": "SmoothMinimization_Nesterov_2004",
+      "command": "lake build",
+      "status": "pass",
+      "elapsed_seconds": 0.46,
+      "maxrss_kb": 788312,
+      "jobs_built": 0
+    },
+    {
+      "project": "OptimizationResearch",
+      "command": "lake build",
+      "status": "pass",
+      "elapsed_seconds": 50.6,
+      "jobs_built": 8477,
+      "note": "cold isolated-project build"
+    }
+  ],
+  "limitations": [
+    "Candidate builds were warm-cache builds.",
+    "Default root modules in several source projects import only Basic or selected aggregate modules; default lake build does not prove every standalone Lean file was checked.",
+    "Full per-file verification is outside Phase 0 and must be represented explicitly in later benchmark tasks."
+  ]
+}
+

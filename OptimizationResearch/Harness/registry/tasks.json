@@ -1,0 +1,107 @@
+{
+  "schema_version": "task-registry-v0",
+  "batch_id": "phase0-20260629",
+  "tasks": [
+    {
+      "task_id": "wp0-preflight",
+      "phase": "phase-0",
+      "work_package": "wp0",
+      "task_type": "preflight",
+      "status": "completed",
+      "permissions": {"read": ["repository-config"], "write": ["OptimizationResearch/"]},
+      "required_outputs": ["preflight-report", "project-state", "task-registry"],
+      "checks": ["shared-cache-present", "source-state-recorded"]
+    },
+    {
+      "task_id": "wp1-isolated-project",
+      "phase": "phase-0",
+      "work_package": "wp1",
+      "task_type": "project-bootstrap",
+      "status": "completed",
+      "permissions": {"read": [".shared-lake/"], "write": ["OptimizationResearch/"]},
+      "required_outputs": ["lake-project", "shared-path-manifest", "build-result"],
+      "checks": ["lean-4.30.0", "lake-build", "no-local-dependency-copy"]
+    },
+    {
+      "task_id": "wp2-policy-hooks",
+      "phase": "phase-0",
+      "work_package": "wp2",
+      "task_type": "security-controls",
+      "status": "completed",
+      "permissions": {"read": ["candidate-source-metadata"], "write": ["OptimizationResearch/"]},
+      "required_outputs": ["permission-config", "threat-model", "hook-tests"],
+      "checks": ["allow", "deny", "approval-required", "dry-run-only", "bypass-denied"]
+    },
+    {
+      "task_id": "wp3-corpus-audits",
+      "phase": "phase-0",
+      "work_package": "wp3",
+      "task_type": "corpus-audit",
+      "status": "completed",
+      "permissions": {"read": ["four-candidate-projects"], "write": ["OptimizationResearch/"]},
+      "required_outputs": ["candidate-records", "build-results", "declaration-samples"],
+      "checks": ["uniform-rubric", "source-digests-unchanged"]
+    },
+    {
+      "task_id": "wp4-source-selection",
+      "phase": "phase-0",
+      "work_package": "wp4",
+      "task_type": "source-selection",
+      "status": "completed",
+      "permissions": {"read": ["candidate-audits"], "write": ["OptimizationResearch/"]},
+      "required_outputs": ["selected-sources", "deferred-sources", "selection-reasons"],
+      "checks": ["two-or-three-sources", "optimization-overlap", "human-boundary-recorded"]
+    },
+    {
+      "task_id": "wp5-corpus-baseline",
+      "phase": "phase-0",
+      "work_package": "wp5",
+      "task_type": "baseline",
+      "status": "completed",
+      "permissions": {"read": ["selected-source-projects"], "write": ["OptimizationResearch/"]},
+      "required_outputs": ["corpus-manifest-v0", "build-baseline-v0"],
+      "checks": ["immutable-identifiers", "bounded-failures-recorded", "sources-unchanged"]
+    },
+    {
+      "task_id": "wp6-schemas-artifacts",
+      "phase": "phase-0",
+      "work_package": "wp6",
+      "task_type": "harness-schema",
+      "status": "completed",
+      "permissions": {"read": ["phase-0-plan"], "write": ["OptimizationResearch/"]},
+      "required_outputs": ["schemas-v0", "skills-v0", "example-task", "example-run"],
+      "checks": ["json-parse", "required-fields", "versions-traceable"]
+    },
+    {
+      "task_id": "wp7-benchmark-rules",
+      "phase": "phase-0",
+      "work_package": "wp7",
+      "task_type": "benchmark-design",
+      "status": "completed",
+      "permissions": {"read": ["selected-source-projects"], "write": ["OptimizationResearch/"]},
+      "required_outputs": ["benchmark-manifest-v0", "thirty-candidates", "annotation-guidelines"],
+      "checks": ["source-files-exist", "unknown-allowed", "test-label-isolation"]
+    },
+    {
+      "task_id": "wp8-experiment-protocols",
+      "phase": "phase-0",
+      "work_package": "wp8",
+      "task_type": "experiment-design",
+      "status": "completed",
+      "permissions": {"read": ["benchmark-v0", "methodology"], "write": ["OptimizationResearch/"]},
+      "required_outputs": ["h1-protocols", "h2-protocol", "metrics", "reviewer-rubric", "audit"],
+      "checks": ["falsifiable", "single-active-variable", "negative-results-retained"]
+    },
+    {
+      "task_id": "wp9-stage-decision",
+      "phase": "phase-0",
+      "work_package": "wp9",
+      "task_type": "stage-evaluation",
+      "status": "completed",
+      "permissions": {"read": ["all-phase-0-artifacts"], "write": ["OptimizationResearch/"]},
+      "required_outputs": ["stage-decision", "final-report", "next-actions"],
+      "checks": ["all-exit-criteria-evaluated", "blocking-items-empty", "limitations-recorded"]
+    }
+  ]
+}
+

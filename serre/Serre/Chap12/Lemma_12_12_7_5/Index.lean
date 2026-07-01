@@ -1,0 +1,8 @@
+import Serre.Chap12.Lemma_12_12_7_5.AssociatedElementaryCore
+import Serre.Chap12.Lemma_12_12_7_5.CharacterRingRestriction
+import Serre.Chap12.Lemma_12_12_7_5.CyclicIrreducibleBridge
+import Serre.Chap12.Lemma_12_12_7_5.GeneratorFieldTwists
+import Serre.Chap12.Lemma_12_12_7_5.GeneratorFieldModel
+import Serre.Chap12.Lemma_12_12_7_5.GeneratorFieldOrbitTrace
+import Serre.Chap12.Lemma_12_12_7_5.GeneratorFieldSubrepresentation
+import Serre.Chap12.Lemma_12_12_7_5.GeneratorFieldTransportPointwise

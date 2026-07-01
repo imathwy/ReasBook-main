@@ -1,0 +1,599 @@
+import Mathlib
+import Serre.GroupTheory.ConjClassesPower
+import Serre.Chap12.Corollary_12_12_4_2
+import Serre.Chap12.Lemma_12_12_1_4
+import Serre.Chap12.Theorem_12_12_4_1
+import Serre.Chap13.Corollary_13_13_1_2
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+noncomputable section
+
+universe u
+
+open Representation
+open scoped Pointwise Representation
+
+section
+
+variable {G : Type u} [Group G] [Finite G]
+
+local instance : Fintype G := Fintype.ofFinite G
+local instance : NeZero (Monoid.exponent G) := Monoid.neZero_exponent_of_finite
+local notation "Lexp" => CyclotomicField (Monoid.exponent G) ℚ
+local notation "ΓR" => (ZMod (Monoid.exponent G))ˣ
+
+/-- Helper for Corollary 13-13.1-4: multiplication of power exponents is compatible with the
+underlying exponent modulo relation. -/
+private theorem gammaRat_galoisPowerExponentUnit_mul_modEq
+    (t u : ΓR) :
+    galoisPowerExponentUnit (t * u) ≡
+      galoisPowerExponentUnit t * galoisPowerExponentUnit u [MOD Monoid.exponent G] := by
+  rw [← ZMod.natCast_eq_natCast_iff]
+  simp [galoisPowerExponentUnit, Nat.cast_mul]
+
+namespace ConjClasses
+
+/-- Helper for Corollary 13-13.1-4: `Γ_ℚ(G)` acts on conjugacy classes by powering
+representatives. -/
+private instance gammaRatMulAction : MulAction ΓR (ConjClasses G) where
+  smul t c := ConjClasses.pow (galoisPowerExponentUnit t) c
+  one_smul c := by
+    obtain ⟨g, rfl⟩ := ConjClasses.mk_surjective c
+    apply congrArg ConjClasses.mk
+    have hmod : galoisPowerExponentUnit (1 : ΓR) ≡ 1 [MOD Monoid.exponent G] := by
+      rw [← ZMod.natCast_eq_natCast_iff]
+      simp [galoisPowerExponentUnit]
+    calc
+      g ^ galoisPowerExponentUnit (1 : ΓR) = g ^ 1 := by
+        exact pow_eq_pow_of_modEq hmod (Monoid.pow_exponent_eq_one g)
+      _ = g := pow_one g
+  mul_smul t u c := by
+    obtain ⟨g, rfl⟩ := ConjClasses.mk_surjective c
+    apply congrArg ConjClasses.mk
+    calc
+      g ^ galoisPowerExponentUnit (t * u)
+          = g ^ (galoisPowerExponentUnit u * galoisPowerExponentUnit t) := by
+        rw [Nat.mul_comm]
+        exact pow_eq_pow_of_modEq
+          (gammaRat_galoisPowerExponentUnit_mul_modEq t u)
+          (Monoid.pow_exponent_eq_one g)
+      _ = (g ^ galoisPowerExponentUnit u) ^ galoisPowerExponentUnit t := by
+        rw [pow_mul]
+
+/-- Helper for Corollary 13-13.1-4: the `Γ_ℚ(G)` action on conjugacy classes sends `g` to the
+class of the corresponding power `g ^ t`. -/
+@[simp] private theorem smul_mk_gammaRat (t : ΓR) (g : G) :
+    t • ConjClasses.mk g = ConjClasses.mk (g ^ t) := by
+  change ConjClasses.pow (galoisPowerExponentUnit t) (ConjClasses.mk g) =
+    ConjClasses.mk (g ^ t)
+  rw [pow_unit_eq_pow_nat]
+  exact ConjClasses.pow_mk (galoisPowerExponentUnit t) g
+
+end ConjClasses
+
+local instance : MulAction ΓR (ConjClasses G) := ConjClasses.gammaRatMulAction
+
+/-- Helper for Corollary 13-13.1-4: Serre's rational power classes, with the group parameter kept
+explicit so elaboration does not need to reconstruct it from local notation. -/
+private abbrev GammaRatPowerClassType (G : Type u) [Group G] [Finite G] : Type u :=
+  MulAction.orbitRel.Quotient ((ZMod (Monoid.exponent G))ˣ) (ConjClasses G)
+
+local notation "GammaRatPowerClass" => GammaRatPowerClassType G
+
+/-- Helper for Corollary 13-13.1-4: the canonical map from group elements to rational power
+classes. -/
+private def gammaRatPowerClassMk (g : G) : GammaRatPowerClass :=
+  Quotient.mk'' (ConjClasses.mk g)
+
+/-- Helper for Corollary 13-13.1-4: every rational power class has a group-element
+representative. -/
+private theorem gammaRatPowerClassMk_surjective :
+    Function.Surjective (gammaRatPowerClassMk : G → GammaRatPowerClass) := by
+  intro q
+  refine Quotient.inductionOn q ?_
+  intro c
+  obtain ⟨g, rfl⟩ := ConjClasses.mk_surjective c
+  exact ⟨g, rfl⟩
+
+/-- Helper for Corollary 13-13.1-4: a function is constant on rational power classes when it
+factors through `gammaRatPowerClassMk`. -/
+@[mk_iff]
+private class IsConstantOnGammaRatPowerClasses {R : Type*} (f : G → R) : Prop where
+  factorsThrough : Function.FactorsThrough f gammaRatPowerClassMk
+
+/-- Helper for Corollary 13-13.1-4: equality of rational power classes forces equality of values
+for any function factoring through the quotient. -/
+private theorem IsConstantOnGammaRatPowerClasses.eq_of_mk_eq
+    {R : Type*} {f : G → R} (hf : IsConstantOnGammaRatPowerClasses f)
+    {s t : G} (hst : gammaRatPowerClassMk s = gammaRatPowerClassMk t) :
+    f s = f t :=
+  hf.factorsThrough hst
+
+/-- Helper for Corollary 13-13.1-4: functions constant on rational power classes are class
+functions. -/
+private theorem IsConstantOnGammaRatPowerClasses.isClassFunction
+    {R : Type*} {f : G → R} (hf : IsConstantOnGammaRatPowerClasses f) :
+    IsClassFunction f := by
+  refine ⟨?_⟩
+  intro s t hst
+  exact
+    IsConstantOnGammaRatPowerClasses.eq_of_mk_eq hf <| by
+      simpa [gammaRatPowerClassMk] using congrArg Quotient.mk'' hst
+
+/-- Helper for Corollary 13-13.1-4: a function constant on rational power classes descends to
+the quotient. -/
+private def IsConstantOnGammaRatPowerClasses.lift
+    {R : Type*} {f : G → R} (hf : IsConstantOnGammaRatPowerClasses f) :
+    GammaRatPowerClass → R :=
+  Quotient.lift
+    (_root_.IsClassFunction.lift hf.isClassFunction)
+    (fun c d hcd ↦ by
+      obtain ⟨g, rfl⟩ := ConjClasses.mk_surjective c
+      obtain ⟨h, rfl⟩ := ConjClasses.mk_surjective d
+      simpa [gammaRatPowerClassMk] using hf.factorsThrough (Quotient.sound hcd))
+
+/-- Helper for Corollary 13-13.1-4: the descended quotient function recovers the original value
+on representatives. -/
+@[simp] private theorem IsConstantOnGammaRatPowerClasses.lift_mk
+    {R : Type*} {f : G → R} (hf : IsConstantOnGammaRatPowerClasses f) (g : G) :
+    hf.lift (gammaRatPowerClassMk g) = f g :=
+  rfl
+
+/-- Helper for Corollary 13-13.1-4: class constancy on rational power classes is equivalent to
+invariance under all `Γ_ℚ(G)` power maps. -/
+private theorem isConstantOnGammaRatPowerClasses_iff_forall_pow_eq
+    {R : Type*} {f : G → R} (hf : IsClassFunction f) :
+    IsConstantOnGammaRatPowerClasses f ↔
+      ∀ s (t : Γ_ℚ(G)), f s = f (s ^ t) := by
+  constructor
+  · intro hconst s t
+    have hst :
+        gammaRatPowerClassMk (s ^ t) = gammaRatPowerClassMk s := by
+      apply Quotient.sound
+      change ConjClasses.mk (s ^ t) ∈ MulAction.orbit ΓR (ConjClasses.mk s)
+      exact ⟨t, ConjClasses.smul_mk_gammaRat t s⟩
+    exact (IsConstantOnGammaRatPowerClasses.eq_of_mk_eq hconst hst).symm
+  · intro hpow
+    refine ⟨?_⟩
+    intro s t hst
+    have horbit :
+        MulAction.orbitRel ΓR (ConjClasses G) (ConjClasses.mk s) (ConjClasses.mk t) :=
+      Quotient.exact hst
+    rw [MulAction.orbitRel_apply] at horbit
+    rcases horbit with ⟨a, ha⟩
+    have hmk : ConjClasses.mk (t ^ a) = ConjClasses.mk s := by
+      simpa [gammaRatPowerClassMk] using ha
+    calc
+      f s = f (t ^ a) := by
+        simpa using (hf.eq_of_mk_eq hmk).symm
+      _ = f t := (hpow t a).symm
+
+/-- Helper for Corollary 13-13.1-4: the subspace of rational-valued functions constant on
+rational power classes. -/
+private def gammaRatPowerClassFunctionSubmodule : Submodule ℚ (G → ℚ) where
+  carrier := {f | IsConstantOnGammaRatPowerClasses f}
+  zero_mem' := by
+    refine ⟨?_⟩
+    intro _ _ _
+    rfl
+  add_mem' := by
+    intro f g hf hg
+    refine ⟨?_⟩
+    intro s t hst
+    exact congrArg₂ (· + ·) (hf.factorsThrough hst) (hg.factorsThrough hst)
+  smul_mem' := by
+    intro a f hf
+    refine ⟨?_⟩
+    intro s t hst
+    exact congrArg (a • ·) (hf.factorsThrough hst)
+
+/-- Helper for Corollary 13-13.1-4: functions constant on rational power classes are exactly
+functions on the quotient `GammaRatPowerClass`. -/
+private noncomputable def gammaRatPowerClassFunctionLinearEquiv :
+    (gammaRatPowerClassFunctionSubmodule (G := G)) ≃ₗ[ℚ]
+      (GammaRatPowerClassType G → ℚ) :=
+  { toFun := fun φ ↦
+      IsConstantOnGammaRatPowerClasses.lift φ.2
+    invFun := fun φ ↦
+      ⟨φ ∘ gammaRatPowerClassMk, ⟨fun _ _ h ↦ congrArg φ h⟩⟩
+    left_inv := by
+      intro φ
+      ext g
+      exact IsConstantOnGammaRatPowerClasses.lift_mk φ.2 g
+    right_inv := by
+      intro φ
+      ext c
+      refine Quotient.inductionOn c ?_
+      intro d
+      obtain ⟨g, rfl⟩ := ConjClasses.mk_surjective d
+      rfl
+    map_add' := by
+      intro φ ψ
+      ext c
+      refine Quotient.inductionOn c ?_
+      intro d
+      obtain ⟨g, rfl⟩ := ConjClasses.mk_surjective d
+      rfl
+    map_smul' := by
+      intro a φ
+      ext c
+      refine Quotient.inductionOn c ?_
+      intro d
+      obtain ⟨g, rfl⟩ := ConjClasses.mk_surjective d
+      rfl }
+
+omit [Finite G] in
+/-- Helper for Corollary 13-13.1-4: transporting a rational character to the bottom intermediate
+field preserves membership in the ordinary character ring. -/
+private theorem bot_symm_mem_characterRingOverField_of_mem
+    {K : Type v} [Field K] [CharZero K]
+    [IsCyclotomicExtension {Monoid.exponent G} ℚ K]
+    {χ : G → ℚ} (hχ : χ ∈ R[ℚ](G)) :
+    (fun s ↦ (IntermediateField.botEquiv ℚ K).symm (χ s)) ∈
+      R[↥(⊥ : IntermediateField ℚ K)](G) := by
+  refine Algebra.adjoin_induction ?_ ?_ ?_ ?_ hχ
+  · intro ψ hψ
+    rcases hψ with ⟨ρ, _, _, rfl⟩
+    let ρL : Rep.{max u v} ↥(⊥ : IntermediateField ℚ K) G :=
+      Rep.of (Representation.scalarExtension (k := ↥(⊥ : IntermediateField ℚ K)) ρ.ρ)
+    have hρL : ρL.ρ.character ∈ R[↥(⊥ : IntermediateField ℚ K)](G) := by
+      exact Representation.rep_character_mem_characterRingOverField
+        (K := ↥(⊥ : IntermediateField ℚ K)) (G := G) ρL
+    have hchar :
+        ρL.ρ.character =
+          fun s ↦ (IntermediateField.botEquiv ℚ K).symm (ρ.ρ.character s) := by
+      ext s
+      have hs : ρL.ρ.character s = (IntermediateField.botEquiv ℚ K).symm (ρ.ρ.character s) := by
+        change
+            (LinearMap.trace ↥(⊥ : IntermediateField ℚ K)
+              (TensorProduct ℚ ↥(⊥ : IntermediateField ℚ K) ↑ρ))
+              ((Representation.scalarExtension (k := ↥(⊥ : IntermediateField ℚ K)) ρ.ρ) s) =
+          algebraMap ℚ ↥(⊥ : IntermediateField ℚ K) ((LinearMap.trace ℚ ↑ρ) (ρ.ρ s))
+        exact LinearMap.trace_baseChange (ρ.ρ s) ↥(⊥ : IntermediateField ℚ K)
+      exact congrArg (fun x : ↥(⊥ : IntermediateField ℚ K) => (x : K)) hs
+    simpa [ρL, hchar] using hρL
+  · intro n
+    have hconst :
+        (fun s : G ↦ (IntermediateField.botEquiv ℚ K).symm ((algebraMap ℤ (G → ℚ)) n s)) =
+          algebraMap ℤ (G → ↥(⊥ : IntermediateField ℚ K)) n := by
+      ext s
+      simp [Pi.algebraMap_apply]
+    rw [hconst]
+    exact (R[↥(⊥ : IntermediateField ℚ K)](G)).algebraMap_mem n
+  · intro f g _ _ hf hg
+    simpa [Pi.add_apply] using (R[↥(⊥ : IntermediateField ℚ K)](G)).add_mem hf hg
+  · intro f g _ _ hf hg
+    simpa [Pi.mul_apply] using (R[↥(⊥ : IntermediateField ℚ K)](G)).mul_mem hf hg
+
+omit [Finite G] in
+/-- Helper for Corollary 13-13.1-4: transporting bottom-field-valued characters through
+`botEquiv` recovers honest rational characters. -/
+private theorem bot_equiv_mem_characterRingOverField_of_mem
+    {K : Type v} [Field K] [CharZero K]
+    [IsCyclotomicExtension {Monoid.exponent G} ℚ K]
+    {χ : G → ↥(⊥ : IntermediateField ℚ K)}
+    (hχ : χ ∈ R[↥(⊥ : IntermediateField ℚ K)](G)) :
+    (fun s ↦ IntermediateField.botEquiv ℚ K (χ s)) ∈ R[ℚ](G) := by
+  let χQ : G → ℚ := fun s ↦ IntermediateField.botEquiv ℚ K (χ s)
+  have hχQ_over :
+      χQ ∈ overlineCharacterRingInExtension
+        (K := ℚ) (L := ↥(⊥ : IntermediateField ℚ K)) (G := G) := by
+    rw [mem_overlineCharacterRingInExtension_iff
+      (K := ℚ) (L := ↥(⊥ : IntermediateField ℚ K)) (G := G) χQ]
+    have himage :
+        ((IsScalarTower.toAlgHom ℤ ℚ ↥(⊥ : IntermediateField ℚ K)).compLeft G) χQ = χ := by
+      ext s
+      have hs : algebraMap ℚ K (χQ s) = (χ s : K) := by
+        change algebraMap ℚ K (IntermediateField.botEquiv ℚ K (χ s)) =
+          algebraMap ↥(⊥ : IntermediateField ℚ K) K (χ s)
+        rw [IsScalarTower.algebraMap_apply ℚ ↥(⊥ : IntermediateField ℚ K) K
+          (IntermediateField.botEquiv ℚ K (χ s))]
+        rw [show algebraMap ℚ ↥(⊥ : IntermediateField ℚ K)
+          (IntermediateField.botEquiv ℚ K (χ s)) = χ s by
+          exact (IntermediateField.botEquiv ℚ K).symm_apply_apply (χ s)]
+      simpa [χQ] using hs
+    convert hχ using 1
+  have hsmul : ((Module.finrank ℚ ↥(⊥ : IntermediateField ℚ K) : ℤ) • χQ) ∈ R[ℚ](G) :=
+    Representation.extensionDegree_smul_mem_characterRingOverField
+      (K := ℚ) (L := ↥(⊥ : IntermediateField ℚ K)) (G := G) ⟨χQ, hχQ_over⟩
+  have hfinrank : Module.finrank ℚ ↥(⊥ : IntermediateField ℚ K) = 1 := by
+    calc
+      Module.finrank ℚ ↥(⊥ : IntermediateField ℚ K) = Module.finrank ℚ ℚ := by
+        exact (IntermediateField.botEquiv ℚ K).toLinearEquiv.finrank_eq
+      _ = 1 := Module.finrank_self ℚ
+  simpa [χQ, hfinrank] using hsmul
+
+/-- Helper for Corollary 13-13.1-4: the bottom-field character span agrees with the rational
+character span after transporting coefficients through `botEquiv`. -/
+private theorem bot_equiv_mem_characterRingOverFieldScalarExtension_iff
+    {K : Type v} [Field K] [CharZero K]
+    [IsCyclotomicExtension {Monoid.exponent G} ℚ K]
+    (g : G → ↥(⊥ : IntermediateField ℚ K)) :
+    g ∈ ℚ⊗R[↥(⊥ : IntermediateField ℚ K)](G) ↔
+      (fun s ↦ IntermediateField.botEquiv ℚ K (g s)) ∈ ℚ⊗R[ℚ](G) := by
+  let e : (G → ↥(⊥ : IntermediateField ℚ K)) →ₗ[ℚ] G → ℚ :=
+    ((IntermediateField.botEquiv ℚ K).toLinearEquiv.compLeft G)
+  have hmap :
+      Submodule.map e (ℚ⊗R[↥(⊥ : IntermediateField ℚ K)](G)) = ℚ⊗R[ℚ](G) := by
+    change Submodule.map e
+        (Submodule.span ℚ
+          (((R[↥(⊥ : IntermediateField ℚ K)](G)).toSubmodule :
+            Submodule ℤ (G → ↥(⊥ : IntermediateField ℚ K))) :
+              Set (G → ↥(⊥ : IntermediateField ℚ K)))) =
+      Submodule.span ℚ (((R[ℚ](G)).toSubmodule : Submodule ℤ (G → ℚ)) : Set (G → ℚ))
+    rw [Submodule.map_span]
+    congr 1
+    ext χ
+    constructor
+    · rintro ⟨ψ, hψ, rfl⟩
+      exact bot_equiv_mem_characterRingOverField_of_mem (G := G) (K := K) (by simpa using hψ)
+    · intro hχ
+      refine ⟨fun s ↦ (IntermediateField.botEquiv ℚ K).symm (χ s), ?_, ?_⟩
+      · exact bot_symm_mem_characterRingOverField_of_mem (G := G) (K := K) hχ
+      · ext s
+        simp [e]
+  constructor
+  · intro hg
+    have hem : e g ∈ Submodule.map e (ℚ⊗R[↥(⊥ : IntermediateField ℚ K)](G)) :=
+      Submodule.mem_map.mpr ⟨g, hg, rfl⟩
+    rw [hmap] at hem
+    simpa [e] using hem
+  · intro hg
+    have hem : e g ∈ Submodule.map e (ℚ⊗R[↥(⊥ : IntermediateField ℚ K)](G)) := by
+      rw [hmap]
+      simpa [e] using hg
+    rcases Submodule.mem_map.mp hem with ⟨g', hg', hg'eq⟩
+    have hgg' : g' = g := by
+      ext s
+      exact congrArg
+        (fun x : ↥(⊥ : IntermediateField ℚ K) => (x : K))
+        ((IntermediateField.botEquiv ℚ K).injective (congrFun hg'eq s))
+    simpa [hgg'] using hg'
+
+/-- Helper for Corollary 13-13.1-4: Serre's rational character criterion is equivalent to
+invariance under all rational power maps. -/
+private theorem rational_valued_classFunction_mem_rational_character_ring_iff_power_invariant
+    (f : G → ℚ) (hf : IsClassFunction f) :
+    f ∈ ℚ⊗R[ℚ](G) ↔
+      ∀ s (t : Γ_ℚ(G)), f s = f (s ^ t) := by
+  letI : NumberField Lexp := inferInstance
+  letI : IsCyclotomicExtension {Monoid.exponent G} ℚ Lexp :=
+    CyclotomicField.isCyclotomicExtension (n := Monoid.exponent G) (K := ℚ)
+  let fBot : G → ↥(⊥ : IntermediateField ℚ Lexp) :=
+    fun s ↦ (IntermediateField.botEquiv ℚ Lexp).symm (f s)
+  have hfBotClass : IsClassFunction fBot := by
+    exact hf.comp ((IntermediateField.botEquiv ℚ Lexp).symm : ℚ → ↥(⊥ : IntermediateField ℚ Lexp))
+  let φBot : classFunctionSubmodule (⊥ : IntermediateField ℚ Lexp) G :=
+    ⟨fBot, (mem_classFunctionSubmodule_iff _ _).2 hfBotClass⟩
+  have hGammaBot : Γ[(⊥ : IntermediateField ℚ Lexp)](G) = ⊤ := by
+    unfold Representation.gammaSubgroup
+    letI : IsGalois ℚ Lexp := IsCyclotomicExtension.isGalois {Monoid.exponent G} ℚ Lexp
+    have hfixingSubgroupBot : (⊥ : IntermediateField ℚ Lexp).fixingSubgroup = ⊤ :=
+      IsGaloisGroup.fixingSubgroup_bot (G := Gal(Lexp / ℚ)) (K := ℚ) (L := Lexp)
+    rw [hfixingSubgroupBot]
+    simp
+  have howner :
+      fBot ∈ ℚ⊗R[↥(⊥ : IntermediateField ℚ Lexp)](G) ↔
+        ∀ s (t : Γ[(⊥ : IntermediateField ℚ Lexp)](G)), fBot s = fBot (s ^ t) := by
+    simpa [φBot] using
+      (Representation.classFunction_mem_characterRingOverFieldScalarExtension_iff_gammaSubgroup_invariant
+        (G := G) (L := Lexp) (K := (⊥ : IntermediateField ℚ Lexp)) φBot)
+  calc
+    f ∈ ℚ⊗R[ℚ](G) ↔
+        fBot ∈ ℚ⊗R[↥(⊥ : IntermediateField ℚ Lexp)](G) := by
+          simpa [fBot] using
+            (bot_equiv_mem_characterRingOverFieldScalarExtension_iff (G := G) (K := Lexp) fBot).symm
+    _ ↔ ∀ s (t : Γ[(⊥ : IntermediateField ℚ Lexp)](G)), fBot s = fBot (s ^ t) := howner
+    _ ↔ ∀ s (t : Γ_ℚ(G)), f s = f (s ^ t) := by
+      constructor
+      · intro h s t
+        let tBot : Γ[(⊥ : IntermediateField ℚ Lexp)](G) := ⟨t, by simp [hGammaBot]⟩
+        simpa [fBot, tBot, pow_subgroup_eq_pow_nat, pow_unit_eq_pow_nat] using
+          congrArg (IntermediateField.botEquiv ℚ Lexp) (h s tBot)
+      · intro h s t
+        apply (IntermediateField.botEquiv ℚ Lexp).injective
+        simpa [fBot, pow_subgroup_eq_pow_nat, pow_unit_eq_pow_nat] using h s (t : Γ_ℚ(G))
+
+/- Source/core/bridge triage:
+- `source-facing`: the textbook counting statement for `ℚ ⊗ R_ℚ(G)` and conjugacy classes of
+  cyclic subgroups.
+- `core/canonical`: the Chapter `12` owner `GaloisPowerClass ΓQ` for the full `Γ_ℚ(G)`-action,
+  together with the function space on that orbit quotient.
+- `bridge/view`: `rational_valued_classFunction_mem_rational_character_ring_iff_power_invariant`
+  and `gammaRat_conjugate_iff_conjugate_zpowers`, which identify the rational character ring with
+  `Γ_ℚ`-class-constant functions and identify `Γ_ℚ`-classes with
+  `Subgroup.CyclicConjClasses G`.
+
+Sampled domain owners:
+* `Representation.GaloisPowerClass`
+* `Representation.IsConstantOnGaloisPowerClasses`
+* `Representation.isConstantOnGaloisPowerClasses_iff_forall_pow_eq`
+* `Subgroup.CyclicConjClasses`
+
+Primitive data:
+* the owner submodule `ℚ⊗R[ℚ](G)`
+* the quotient owner `GaloisPowerClass ΓQ`
+
+Derived API:
+* class-function and power-invariance consequences for elements of `ℚ⊗R[ℚ](G)`
+* the quotient bridge to `Subgroup.CyclicConjClasses G`. -/
+
+private theorem zpowers_isConj_of_isConj {x y : G} (hxy : IsConj x y) :
+    (Subgroup.zpowers x).IsConj (Subgroup.zpowers y) := by
+  refine (gammaRat_conjugate_iff_conjugate_zpowers x y).1 ?_
+  refine ⟨1, ?_⟩
+  have hy1 : y ^ (1 : Γ_ℚ(G)) = y := by
+    have hmod :
+        galoisPowerExponentUnit (1 : Γ_ℚ(G)) ≡ 1 [MOD Monoid.exponent G] := by
+      rw [← ZMod.natCast_eq_natCast_iff]
+      simp [galoisPowerExponentUnit]
+    rw [pow_unit_eq_pow_nat]
+    calc
+      y ^ galoisPowerExponentUnit (1 : Γ_ℚ(G)) = y ^ 1 := by
+        exact pow_eq_pow_of_modEq hmod (Monoid.pow_exponent_eq_one y)
+      _ = y := pow_one y
+  simpa [hy1] using hxy
+
+private def cyclicConjClassOf (g : G) : Subgroup.CyclicConjClasses G :=
+  Subgroup.CyclicConjClasses.mk ⟨Subgroup.zpowers g, inferInstance⟩
+
+private def conjClassesToCyclicConjClasses : ConjClasses G → Subgroup.CyclicConjClasses G :=
+  Quotient.lift
+    cyclicConjClassOf
+    (fun _ _ hxy ↦
+      Subgroup.CyclicConjClasses.mk_eq_mk_iff_isConj.2 (zpowers_isConj_of_isConj hxy))
+
+private theorem conjClassesToCyclicConjClasses_smul (t : Γ_ℚ(G)) (c : ConjClasses G) :
+    conjClassesToCyclicConjClasses (t • c) = conjClassesToCyclicConjClasses c := by
+  -- Reduce to a representative and use Corollary `13-13.1-2` on generated cyclic subgroups.
+  obtain ⟨g, rfl⟩ := ConjClasses.mk_surjective c
+  apply Subgroup.CyclicConjClasses.mk_eq_mk_iff_isConj.2
+  exact (gammaRat_conjugate_iff_conjugate_zpowers (g ^ t) g).1 ⟨t, IsConj.refl _⟩
+
+/-- Helper for Corollary 13-13.1-4: the cyclic-subgroup class map is constant on rational power
+orbits of conjugacy classes. -/
+private theorem conjClassesToCyclicConjClasses_orbitRel
+    {c d : ConjClasses G} (hcd : MulAction.orbitRel (Γ_ℚ(G)) (ConjClasses G) c d) :
+    conjClassesToCyclicConjClasses c = conjClassesToCyclicConjClasses d := by
+  -- Unpack the orbit relation into a concrete rational-power translate.
+  rw [MulAction.orbitRel_apply] at hcd
+  rcases hcd with ⟨t, ht⟩
+  -- Replace `c` by that translate and invoke the invariance lemma above.
+  calc
+    conjClassesToCyclicConjClasses c = conjClassesToCyclicConjClasses (t • d) := by
+      rw [← ht]
+    _ = conjClassesToCyclicConjClasses d := conjClassesToCyclicConjClasses_smul t d
+
+/-- Helper for Corollary 13-13.1-4: the map from power classes to cyclic-subgroup conjugacy
+classes descends from conjugacy classes because it is constant on rational power orbits. -/
+private def gammaRatPowerClassToCyclicConjClasses :
+    GammaRatPowerClass → Subgroup.CyclicConjClasses G :=
+  Quotient.lift
+    conjClassesToCyclicConjClasses
+    (fun _ _ hcd ↦ conjClassesToCyclicConjClasses_orbitRel hcd)
+
+private theorem gammaRatPowerClassToCyclicConjClasses_surjective :
+    Function.Surjective
+      (gammaRatPowerClassToCyclicConjClasses :
+        GammaRatPowerClass → Subgroup.CyclicConjClasses G) := by
+  intro c
+  refine Quotient.inductionOn c (fun H : { H : Subgroup G // IsCyclic H } ↦ ?_)
+  rcases (Subgroup.isCyclic_iff_exists_zpowers_eq_top H.1).1 H.2 with ⟨g, hg⟩
+  refine ⟨gammaRatPowerClassMk g, ?_⟩
+  change cyclicConjClassOf g = Subgroup.CyclicConjClasses.mk H
+  apply Subgroup.CyclicConjClasses.mk_eq_mk_iff_isConj.2
+  simpa [hg] using (Subgroup.IsConj.refl (Subgroup.zpowers g))
+
+private theorem gammaRatPowerClassToCyclicConjClasses_injective :
+    Function.Injective
+      (gammaRatPowerClassToCyclicConjClasses :
+        GammaRatPowerClass → Subgroup.CyclicConjClasses G) := by
+  intro a b hab
+  obtain ⟨x, rfl⟩ := gammaRatPowerClassMk_surjective a
+  obtain ⟨y, rfl⟩ := gammaRatPowerClassMk_surjective b
+  apply Quotient.sound
+  change MulAction.orbitRel (Γ_ℚ(G)) (ConjClasses G) (ConjClasses.mk x) (ConjClasses.mk y)
+  rw [MulAction.orbitRel_apply]
+  have hxy :
+      (Subgroup.zpowers x).IsConj (Subgroup.zpowers y) :=
+    Subgroup.CyclicConjClasses.mk_eq_mk_iff_isConj.1 hab
+  rcases (gammaRat_conjugate_iff_conjugate_zpowers x y).2 hxy with ⟨t, hxt⟩
+  refine ⟨t, ?_⟩
+  calc
+    t • ConjClasses.mk y = ConjClasses.mk (y ^ t) := ConjClasses.smul_mk_gammaRat t y
+    _ = ConjClasses.mk x := ConjClasses.mk_eq_mk_iff_isConj.2 hxt.symm
+
+private noncomputable def gammaRatPowerClassEquivCyclicConjClasses :
+    GammaRatPowerClass ≃ Subgroup.CyclicConjClasses G :=
+  Equiv.ofBijective
+    gammaRatPowerClassToCyclicConjClasses
+    ⟨gammaRatPowerClassToCyclicConjClasses_injective,
+      gammaRatPowerClassToCyclicConjClasses_surjective⟩
+
+private theorem isClassFunction_of_mem_rational_character_ring
+    {f : G → ℚ} (hf : f ∈ ℚ⊗R[ℚ](G)) :
+    IsClassFunction f := by
+  induction hf using Submodule.span_induction with
+  | mem χ hχ =>
+      exact Representation.isClassFunction_of_mem_characterRingOverField χ hχ
+  | zero =>
+      simpa using (inferInstance : IsClassFunction (fun _ : G ↦ (0 : ℚ)))
+  | add f g _ _ hf hg =>
+      letI : IsClassFunction f := hf
+      letI : IsClassFunction g := hg
+      simpa using (inferInstance : IsClassFunction (f + g))
+  | smul a f _ hf =>
+      letI : IsClassFunction f := hf
+      simpa using (inferInstance : IsClassFunction (a • f))
+
+private theorem isConstantOnGammaRatPowerClasses_of_mem_rational_character_ring
+    (f : ℚ⊗R[ℚ](G)) :
+    IsConstantOnGammaRatPowerClasses (f : G → ℚ) := by
+  -- First extract the class-function input required by Theorem `13-13.1-3`.
+  let hfClass : IsClassFunction (f : G → ℚ) :=
+    isClassFunction_of_mem_rational_character_ring f.property
+  -- Then translate rational-character membership into invariance under all rational power maps.
+  refine (isConstantOnGammaRatPowerClasses_iff_forall_pow_eq hfClass).2 ?_
+  intro s t
+  exact
+    (rational_valued_classFunction_mem_rational_character_ring_iff_power_invariant
+      (f : G → ℚ) hfClass).1 f.property s t
+
+/-- Helper for Corollary 13-13.1-4: Serre's rational character ring is exactly the submodule of
+rational-valued functions constant on rational power classes. -/
+private theorem rational_character_ring_eq_gammaRatPowerClassFunctionSubmodule :
+    (ℚ⊗R[ℚ](G) : Submodule ℚ (G → ℚ)) =
+      gammaRatPowerClassFunctionSubmodule (G := G) := by
+  ext f
+  constructor
+  · intro hf
+    -- The forward direction is the Chapter `13` power-invariance criterion.
+    exact isConstantOnGammaRatPowerClasses_of_mem_rational_character_ring ⟨f, hf⟩
+  · intro hf
+    -- The reverse direction pulls class-constancy back to rational-character membership.
+    let hfConst : IsConstantOnGammaRatPowerClasses f := hf
+    let hfClass : IsClassFunction f := IsConstantOnGammaRatPowerClasses.isClassFunction hfConst
+    refine
+      (rational_valued_classFunction_mem_rational_character_ring_iff_power_invariant f hfClass).2
+        ?_
+    intro s t
+    exact (isConstantOnGammaRatPowerClasses_iff_forall_pow_eq hfClass).1 hfConst s t
+
+/-- Helper for Corollary 13-13.1-4: evaluating constant functions on rational power classes gives
+the quotient function-space model for the rational character ring. -/
+private noncomputable def rationalCharacterRingLinearEquivGammaRatPowerClassFunctions :
+    (ℚ⊗R[ℚ](G)) ≃ₗ[ℚ]
+      (GammaRatPowerClassType G → ℚ) :=
+  (LinearEquiv.ofEq _ _ rational_character_ring_eq_gammaRatPowerClassFunctionSubmodule).trans
+    (gammaRatPowerClassFunctionLinearEquiv (G := G))
+
+-- Proof sketch: the Chapter `12` owner `GaloisPowerClass ΓQ` packages the genuine
+-- `Γ_ℚ`-power classes of conjugacy classes. Theorem `13-13.1-3` identifies `ℚ⊗R[ℚ](G)` with the
+-- rational-valued functions constant on those classes, hence with the full function space on
+-- `GaloisPowerClass ΓQ`; Corollary `13-13.1-2` then transports that quotient to
+-- `Subgroup.CyclicConjClasses G`.
+/-- Corollary 13-13.1-4: equivalently, the number of isomorphism classes of irreducible
+`ℚ`-representations of `G`, namely the `ℚ`-dimension of `ℚ⊗R[ℚ](G)`, is the number of conjugacy
+classes of cyclic subgroups of `G`, represented by `Subgroup.CyclicConjClasses G`. -/
+theorem finrank_rational_character_ring_eq_card_conjugacy_classes_of_cyclic_subgroups :
+    Module.finrank ℚ (ℚ⊗R[ℚ](G)) =
+      Nat.card (Subgroup.CyclicConjClasses G) := by
+  letI : Finite GammaRatPowerClass :=
+    Finite.of_surjective
+      gammaRatPowerClassMk
+      gammaRatPowerClassMk_surjective
+  letI : Fintype GammaRatPowerClass := Fintype.ofFinite _
+  -- Count the rational character ring through the canonical quotient function space.
+  calc
+    Module.finrank ℚ (ℚ⊗R[ℚ](G))
+        = Module.finrank ℚ (GammaRatPowerClass → ℚ) :=
+      rationalCharacterRingLinearEquivGammaRatPowerClassFunctions.finrank_eq
+    _ = Fintype.card GammaRatPowerClass := Module.finrank_fintype_fun_eq_card ℚ
+    _ = Nat.card GammaRatPowerClass := Nat.card_eq_fintype_card.symm
+    -- Corollary `13-13.1-2` turns rational power classes into conjugacy classes of cyclic
+    -- subgroups.
+    _ = Nat.card (Subgroup.CyclicConjClasses G) := by
+      exact Nat.card_congr gammaRatPowerClassEquivCyclicConjClasses
+
+end

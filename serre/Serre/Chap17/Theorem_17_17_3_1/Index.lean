@@ -1,0 +1,7 @@
+import Serre.Chap17.Theorem_17_17_3_1.CyclicNormalByPGroupBasics
+import Serre.Chap17.Theorem_17_17_3_1.CliffordIsotypicTransport
+import Serre.Chap17.Theorem_17_17_3_1.ResidueFieldLiftTransport
+import Serre.Chap17.Theorem_17_17_3_1.ProperOvergroupRecursion
+import Serre.Chap17.Theorem_17_17_3_1.CyclicOrbitSpan
+import Serre.Chap17.Theorem_17_17_3_1.SameUniverseInductionPackaging
+import Serre.Chap17.Theorem_17_17_3_1.InducedSubrepresentationLift
