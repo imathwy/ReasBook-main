@@ -1,4 +1,4 @@
-name: Deploy Preview (Verso only)
+name: Build and Check Docs
 
 on:
   push:
@@ -7,11 +7,9 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: preview-pages-${{ github.ref }}
+  group: build-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -35,11 +33,9 @@ jobs:
           persist_root="${PERSIST_ROOT:-$home_dir/.cache/reasbook-ci/$repo_key}"
           echo "PERSIST_ROOT=$persist_root" >> "$GITHUB_ENV"
           mkdir -p "$persist_root/reasbook_lake" \
-                   "$persist_root/reasbookweb_lake" \
                    "$persist_root/elan"
-          rm -rf ReasBook/.lake ReasBookWeb/.lake
+          rm -rf ReasBook/.lake
           ln -sfn "$persist_root/reasbook_lake" ReasBook/.lake
-          ln -sfn "$persist_root/reasbookweb_lake" ReasBookWeb/.lake
           if [ -d "$persist_root/elan" ] && [ -n "$(ls -A "$persist_root/elan" 2>/dev/null)" ]; then
             mkdir -p "$home_dir/.elan"
             if command -v rsync >/dev/null 2>&1; then
@@ -68,8 +64,8 @@ jobs:
           restore-keys: |
             lake-reasbook-lite-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
 
-      - name: Build ReasBook core (prime mathlib cache + build)
-        timeout-minutes: 120
+      - name: Build ReasBook (prime mathlib cache + compile)
+        timeout-minutes: 240
         run: |
           set -euo pipefail
           cd ReasBook
@@ -86,16 +82,11 @@ jobs:
             ReasBook/.lake/build/lib/lean
           key: lake-reasbook-lite-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-${{ github.run_id }}
 
-      - name: Build Verso site
+      - name: Build docs
         timeout-minutes: 120
         run: |
           set -euo pipefail
-          cd ReasBookWeb
-          python3 scripts/gen_sections.py
-          if ulimit -s unlimited 2>/dev/null; then
-            echo "stack limit set to unlimited"
-          fi
-          lake exe reasbook-site
+          ./scripts/build_reasbook_project_docs.sh
 
       - name: Persist elan toolchain
         if: always()
@@ -113,20 +104,3 @@ jobs:
               cp -a "$home_dir/.elan/." "$persist_root/elan/"
             fi
           fi
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ReasBookWeb/_site
-
-  deploy:
-    needs: build
-    if: needs.build.result == 'success'
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
