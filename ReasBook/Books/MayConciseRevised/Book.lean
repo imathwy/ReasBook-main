@@ -1,6 +1,9 @@
 import Mathlib
 
 -- BEGIN AUTO-IMPORTS (managed by orchestrator)
+import MayConciseRevised.Chapters.Chap01
+import MayConciseRevised.Chapters.Chap02
+import MayConciseRevised.Chapters.Chap03
 -- END AUTO-IMPORTS
 
 /-!

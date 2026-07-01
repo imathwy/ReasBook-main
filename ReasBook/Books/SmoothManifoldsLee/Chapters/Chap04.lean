@@ -1,0 +1,7 @@
+import SmoothManifoldsLee.Chapters.Chap04.section01
+import SmoothManifoldsLee.Chapters.Chap04.section02
+import SmoothManifoldsLee.Chapters.Chap04.section03
+import SmoothManifoldsLee.Chapters.Chap04.section04
+import SmoothManifoldsLee.Chapters.Chap04.section05
+import SmoothManifoldsLee.Chapters.Chap04.section06
+import SmoothManifoldsLee.Chapters.Chap04.section07

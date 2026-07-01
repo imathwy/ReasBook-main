@@ -1,6 +1,7 @@
 import Mathlib
 
 -- BEGIN AUTO-IMPORTS (managed by orchestrator)
+import RiemannSurfaces.Chapters.Chap01
 -- END AUTO-IMPORTS
 
 /-!

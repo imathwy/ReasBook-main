@@ -1,6 +1,7 @@
 import Mathlib
 
 -- BEGIN AUTO-IMPORTS (managed by orchestrator)
+import chapter1_reference_format.Chapters.Chap01
 -- END AUTO-IMPORTS
 
 /-!

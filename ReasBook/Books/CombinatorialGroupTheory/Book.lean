@@ -1,6 +1,11 @@
 import Mathlib
 
 -- BEGIN AUTO-IMPORTS (managed by orchestrator)
+import CombinatorialGroupTheory.Chapters.Chap01
+import CombinatorialGroupTheory.Chapters.Chap02
+import CombinatorialGroupTheory.Chapters.Chap03
+import CombinatorialGroupTheory.Chapters.Chap04
+import CombinatorialGroupTheory.Chapters.Chap05
 -- END AUTO-IMPORTS
 
 /-!

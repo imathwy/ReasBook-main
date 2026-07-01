@@ -1,0 +1,7 @@
+import SmoothManifoldsLee.Chap02.Sec02_09.Definition_2_9_extra_1
+import SmoothManifoldsLee.Chap02.Sec02_09.Example_2_14
+import SmoothManifoldsLee.Chap02.Sec02_09.Exercise_2_16
+import SmoothManifoldsLee.Chap02.Sec02_09.Exercise_2_19
+import SmoothManifoldsLee.Chap02.Sec02_09.Proposition_2_15
+import SmoothManifoldsLee.Chap02.Sec02_09.Theorem_2_17
+import SmoothManifoldsLee.Chap02.Sec02_09.Theorem_2_18

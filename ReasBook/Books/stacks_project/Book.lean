@@ -2512,3 +2512,27 @@ import stacks_project.Chap10.Remark_10_75_4
 import stacks_project.Internal.Chap08.StackInGroupoidsTwoFibreProductSquare
 import stacks_project.Internal.Chap08.StackInSetoidsTwoFibreProductSquare
 import stacks_project.LinearAlgebra.PowerOperations
+
+-- Chapters/ aggregators for Verso
+import stacks_project.Chapters.Chap04
+import stacks_project.Chapters.Chap05
+import stacks_project.Chapters.Chap06
+import stacks_project.Chapters.Chap07
+import stacks_project.Chapters.Chap08
+import stacks_project.Chapters.Chap09
+import stacks_project.Chapters.Chap10
+import stacks_project.Chapters.Chap11
+import stacks_project.Chapters.Chap12
+import stacks_project.Chapters.Chap13
+import stacks_project.Chapters.Chap14
+import stacks_project.Chapters.Chap15
+import stacks_project.Chapters.Chap16
+import stacks_project.Chapters.Chap17
+import stacks_project.Chapters.Chap18
+import stacks_project.Chapters.Chap19
+import stacks_project.Chapters.Chap20
+import stacks_project.Chapters.Chap21
+import stacks_project.Chapters.Chap25
+import stacks_project.Chapters.ChapInternal
+import stacks_project.Chapters.ChapLinAlg
+import stacks_project.Chapters.Chap23

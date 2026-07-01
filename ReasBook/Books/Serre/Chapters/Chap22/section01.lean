@@ -1,0 +1,1 @@
+import Serre.LinearAlgebra.TensorPower.Symmetric

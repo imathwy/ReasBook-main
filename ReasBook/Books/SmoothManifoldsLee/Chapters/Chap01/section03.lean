@@ -1,0 +1,4 @@
+import SmoothManifoldsLee.Chap01.Sec01_03.Definition_1_3_extra_1
+import SmoothManifoldsLee.Chap01.Sec01_03.Exercise_1_20
+import SmoothManifoldsLee.Chap01.Sec01_03.Notation_1_3_extra_2
+import SmoothManifoldsLee.Chap01.Sec01_03.Proposition_1_19

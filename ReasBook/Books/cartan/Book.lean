@@ -1,6 +1,13 @@
 import Mathlib
 
 -- BEGIN AUTO-IMPORTS (managed by orchestrator)
+import cartan.Chapters.Chap01
+import cartan.Chapters.Chap02
+import cartan.Chapters.Chap03
+import cartan.Chapters.Chap04
+import cartan.Chapters.Chap05
+import cartan.Chapters.Chap06
+import cartan.Chapters.Chap07
 -- END AUTO-IMPORTS
 
 /-!
