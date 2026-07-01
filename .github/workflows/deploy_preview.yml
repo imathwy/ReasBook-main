@@ -1,0 +1,166 @@
+name: Deploy Preview (Verso only)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: preview-pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: [self-hosted, Linux, X64]
+    timeout-minutes: 300
+    env:
+      HEARTBEAT_INTERVAL_SECONDS: 45
+      RETRY_ON_143_MAX_RETRIES: 1
+      RETRY_ON_143_SLEEP_SECONDS: 20
+      PERSIST_ROOT: ${{ vars.REASBOOK_PERSIST_ROOT }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare persistent build directories
+        run: |
+          set -euo pipefail
+          home_dir="${HOME:-/root}"
+          repo_key="${GITHUB_REPOSITORY//\//\_}"
+          persist_root="${PERSIST_ROOT:-$home_dir/.cache/reasbook-ci/$repo_key}"
+          echo "PERSIST_ROOT=$persist_root" >> "$GITHUB_ENV"
+          mkdir -p "$persist_root/shared_lake" \
+                   "$persist_root/reasbook_lake" \
+                   "$persist_root/reasbookweb_lake" \
+                   "$persist_root/elan"
+          # Wire up .shared-lake/.lake symlink (replaces local path-based mathlib)
+          mkdir -p .shared-lake
+          rm -rf .shared-lake/.lake
+          ln -sfn "$persist_root/shared_lake" .shared-lake/.lake
+          rm -rf ReasBook/.lake ReasBookWeb/.lake
+          ln -sfn "$persist_root/reasbook_lake" ReasBook/.lake
+          ln -sfn "$persist_root/reasbookweb_lake" ReasBookWeb/.lake
+          if [ -d "$persist_root/elan" ] && [ -n "$(ls -A "$persist_root/elan" 2>/dev/null)" ]; then
+            mkdir -p "$home_dir/.elan"
+            if command -v rsync >/dev/null 2>&1; then
+              rsync -a "$persist_root/elan/" "$home_dir/.elan/"
+            else
+              cp -a "$persist_root/elan/." "$home_dir/.elan/"
+            fi
+          fi
+
+      - name: Install elan (Lean toolchain manager)
+        run: |
+          home_dir="${HOME:-/root}"
+          if [ ! -x "$home_dir/.elan/bin/elan" ]; then
+            curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+          fi
+          echo "$home_dir/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Restore .shared-lake cache
+        continue-on-error: true
+        uses: actions/cache/restore@v4
+        with:
+          path: .shared-lake/.lake/packages
+          key: shared-lake-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.shared-lake/lean-toolchain') }}-${{ hashFiles('.shared-lake/lake-manifest.json') }}
+          restore-keys: |
+            shared-lake-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.shared-lake/lean-toolchain') }}-
+
+      - name: Build .shared-lake (prime mathlib cache)
+        timeout-minutes: 120
+        run: |
+          set -euo pipefail
+          cd .shared-lake
+          # Only build if mathlib not already present
+          if [ ! -d ".lake/packages/mathlib" ]; then
+            lake exe cache get || true
+            lake build
+          else
+            echo "[shared-lake] packages already present, skipping build"
+          fi
+
+      - name: Save .shared-lake cache
+        if: always()
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: .shared-lake/.lake/packages
+          key: shared-lake-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.shared-lake/lean-toolchain') }}-${{ hashFiles('.shared-lake/lake-manifest.json') }}-${{ github.run_id }}
+
+      - name: Restore ReasBook build cache
+        continue-on-error: true
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ReasBook/.lake/build/bin
+            ReasBook/.lake/build/lib/lean
+          key: lake-reasbook-lite-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}
+          restore-keys: |
+            lake-reasbook-lite-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
+
+      - name: Build ReasBook core
+        timeout-minutes: 120
+        run: |
+          set -euo pipefail
+          cd ReasBook
+          lake build
+
+      - name: Save ReasBook build cache
+        if: always()
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ReasBook/.lake/build/bin
+            ReasBook/.lake/build/lib/lean
+          key: lake-reasbook-lite-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-${{ github.run_id }}
+
+      - name: Build Verso site
+        timeout-minutes: 120
+        run: |
+          set -euo pipefail
+          cd ReasBookWeb
+          python3 scripts/gen_sections.py
+          if ulimit -s unlimited 2>/dev/null; then
+            echo "stack limit set to unlimited"
+          fi
+          lake exe reasbook-site
+
+      - name: Persist elan toolchain
+        if: always()
+        run: |
+          set -euo pipefail
+          home_dir="${HOME:-/root}"
+          repo_key="${GITHUB_REPOSITORY//\//\_}"
+          persist_root="${PERSIST_ROOT:-$home_dir/.cache/reasbook-ci/$repo_key}"
+          mkdir -p "$persist_root/elan"
+          if [ -d "$home_dir/.elan" ]; then
+            if command -v rsync >/dev/null 2>&1; then
+              rsync -a --delete "$home_dir/.elan/" "$persist_root/elan/"
+            else
+              rm -rf "$persist_root/elan"/*
+              cp -a "$home_dir/.elan/." "$persist_root/elan/"
+            fi
+          fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ReasBookWeb/_site
+
+  deploy:
+    needs: build
+    if: needs.build.result == 'success'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
