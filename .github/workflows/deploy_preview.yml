@@ -34,14 +34,9 @@ jobs:
           repo_key="${GITHUB_REPOSITORY//\//\_}"
           persist_root="${PERSIST_ROOT:-$home_dir/.cache/reasbook-ci/$repo_key}"
           echo "PERSIST_ROOT=$persist_root" >> "$GITHUB_ENV"
-          mkdir -p "$persist_root/shared_lake" \
-                   "$persist_root/reasbook_lake" \
+          mkdir -p "$persist_root/reasbook_lake" \
                    "$persist_root/reasbookweb_lake" \
                    "$persist_root/elan"
-          # Wire up .shared-lake/.lake symlink (replaces local path-based mathlib)
-          mkdir -p .shared-lake
-          rm -rf .shared-lake/.lake
-          ln -sfn "$persist_root/shared_lake" .shared-lake/.lake
           rm -rf ReasBook/.lake ReasBookWeb/.lake
           ln -sfn "$persist_root/reasbook_lake" ReasBook/.lake
           ln -sfn "$persist_root/reasbookweb_lake" ReasBookWeb/.lake
@@ -62,36 +57,6 @@ jobs:
           fi
           echo "$home_dir/.elan/bin" >> "$GITHUB_PATH"
 
-      - name: Restore .shared-lake cache
-        continue-on-error: true
-        uses: actions/cache/restore@v4
-        with:
-          path: .shared-lake/.lake/packages
-          key: shared-lake-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.shared-lake/lean-toolchain') }}-${{ hashFiles('.shared-lake/lake-manifest.json') }}
-          restore-keys: |
-            shared-lake-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.shared-lake/lean-toolchain') }}-
-
-      - name: Build .shared-lake (prime mathlib cache)
-        timeout-minutes: 120
-        run: |
-          set -euo pipefail
-          cd .shared-lake
-          # Only build if mathlib not already present
-          if [ ! -d ".lake/packages/mathlib" ]; then
-            lake exe cache get || true
-            lake build
-          else
-            echo "[shared-lake] packages already present, skipping build"
-          fi
-
-      - name: Save .shared-lake cache
-        if: always()
-        continue-on-error: true
-        uses: actions/cache/save@v4
-        with:
-          path: .shared-lake/.lake/packages
-          key: shared-lake-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('.shared-lake/lean-toolchain') }}-${{ hashFiles('.shared-lake/lake-manifest.json') }}-${{ github.run_id }}
-
       - name: Restore ReasBook build cache
         continue-on-error: true
         uses: actions/cache/restore@v4
@@ -103,11 +68,12 @@ jobs:
           restore-keys: |
             lake-reasbook-lite-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
 
-      - name: Build ReasBook core
+      - name: Build ReasBook core (prime mathlib cache + build)
         timeout-minutes: 120
         run: |
           set -euo pipefail
           cd ReasBook
+          lake exe cache get || true
           lake build
 
       - name: Save ReasBook build cache

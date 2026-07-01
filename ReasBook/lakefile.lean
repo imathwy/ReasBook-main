@@ -1,5 +1,5 @@
 import Lake
-open Lake DSL System
+open Lake DSL
 
 package «ReasBook» where
   leanOptions := #[
@@ -14,8 +14,8 @@ package «ReasBook» where
     ⟨`weak.linter.unnecessarySimpa, false⟩
   ]
 
-require mathlib from
-  FilePath.mk ".." / ".shared-lake" / ".lake" / "packages" / "mathlib"
+require mathlib from git
+  "https://github.com/leanprover-community/mathlib4.git" @ "v4.30.0"
 
 -- Register doc-gen4's `docs` facet in this main project.
 require «doc-gen4» from git
