@@ -1,5 +1,5 @@
 import Lake
-open Lake DSL
+open Lake DSL System
 
 package «ReasBook» where
   leanOptions := #[
@@ -21,7 +21,7 @@ require mathlib from
 require «doc-gen4» from git
   "https://github.com/leanprover/doc-gen4" @ "v4.30.0"
 
-require subverso from git "https://github.com/leanprover/subverso" @ "v4.30.0"
+require subverso from git "https://github.com/leanprover/subverso" @ "verso-v4.30.0"
 require MD4Lean from git "https://github.com/acmepjz/md4lean" @ "main"
 
 @[default_target]
