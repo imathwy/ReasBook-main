@@ -2,4 +2,6 @@
 *.olean
 *.ilean
 *.trace
-docs/CLAUDE.md
+docs/
+CLAUDE.md
+ReasBook/Books/OptimizationResearch/
