@@ -2,3 +2,6 @@
 *.olean
 *.ilean
 *.trace
+docs/*
+!docs/.gitkeep
+scripts/
