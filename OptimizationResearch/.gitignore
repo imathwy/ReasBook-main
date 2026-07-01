@@ -1,6 +1,0 @@
-.lake/
-Harness/.pytest_cache/
-Harness/.ruff_cache/
-Harness/**/__pycache__/
-Runs/
-

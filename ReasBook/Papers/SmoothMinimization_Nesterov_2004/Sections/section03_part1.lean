@@ -688,35 +688,248 @@ theorem R0_relation {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (hxSeq0 : xSeq 0 = x0) (hySeq0 : ySeq 0 = T_Q Q f L x0) :
     R_k Q f d L σ α xSeq ySeq 0 := by
   classical
-  simp [R_k, A_k, psi_k, hxSeq0, hySeq0] -- reduce k=0
-  refine le_csInf ?_ ?_
-  · refine ⟨(L / σ) * d (x0 : E) +
-      (α 0) * (f x0 + DualPairing ((fderiv ℝ f x0).toLinearMap) ((x0 : E) - x0)), ?_⟩
-    exact ⟨(x0 : E), x0.property, rfl⟩
-  · intro b hb
-    rcases hb with ⟨z, hz, rfl⟩
-    exact
-      R0_pointwise_bound_for_csInf (α := α) (hQ_closed := hQ_closed)
-        (hQ_convex := hQ_convex) (hf_diff := hf_diff) (hL := hL)
-        (hgrad_lipschitz := hgrad_lipschitz) (hconv := hconv) (hσ := hσ) (x0 := x0)
-        (hx0 := hx0) (hα0 := hα0) z hz
+  have hgoal :
+      α 0 * f ↑(T_Q Q f L x0) ≤
+        sInf ((fun a ↦ L / σ * d a + α 0 * (f ↑x0 + DualPairing (↑(fderiv ℝ f ↑x0)) (a - ↑x0))) '' Q) := by
+      refine le_csInf ?_ ?_
+      · refine ⟨(L / σ) * d (x0 : E) +
+          (α 0) * (f x0 + DualPairing ((fderiv ℝ f x0).toLinearMap) ((x0 : E) - x0)), ?_⟩
+        exact ⟨(x0 : E), x0.property, rfl⟩
+      · intro b hb
+        rcases hb with ⟨z, hz, rfl⟩
+        exact
+          R0_pointwise_bound_for_csInf (α := α) (hQ_closed := hQ_closed)
+            (hQ_convex := hQ_convex) (hf_diff := hf_diff) (hL := hL)
+            (hgrad_lipschitz := hgrad_lipschitz) (hconv := hconv) (hσ := hσ) (x0 := x0)
+            (hx0 := hx0) (hα0 := hα0) z hz
+  simpa [R_k, A_k, psi_k, hxSeq0, hySeq0] using hgoal
 
 /-- Definition 1.3.5.
 For `k ≥ 0`, define `z_k ∈ Q` to be any minimizer achieving `ψ_k` in (psi_k_def), namely
 `z_k ∈ argmin_{x ∈ Q} { (L/σ) d x + ∑_{i=0}^k α_i [ f(x_i) + ⟪∇ f(x_i), x - x_i⟫ ] }`
 (equation (zk_def)). -/
-noncomputable def z_k {E : Type*} [SeminormedAddCommGroup E] [NormedSpace ℝ E]
+noncomputable def z_k_objective {E : Type*} [SeminormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] (Q : Set E) (f d : E → ℝ) (L σ : ℝ) (α : ℕ → ℝ)
-    (xSeq : ℕ → Q) (k : ℕ) : Q := by
-  classical
-  let g : E → ℝ := fun z =>
+    (xSeq : ℕ → Q) (k : ℕ) : E → ℝ :=
+  fun z =>
     (L / σ) * d z +
       Finset.sum (Finset.range (k + 1)) (fun i =>
         let xi : E := xSeq i
         α i * (f xi + DualPairing ((fderiv ℝ f xi).toLinearMap) (z - xi)))
+
+/-- Definition 1.3.5.
+Under the prox assumptions used later, `z_k` is certified by `z_k_isMinOn` to minimize the
+auxiliary objective `z_k_objective`. -/
+noncomputable def z_k {E : Type*} [SeminormedAddCommGroup E] [NormedSpace ℝ E]
+    [FiniteDimensional ℝ E] (Q : Set E) (f d : E → ℝ) (L σ : ℝ) (α : ℕ → ℝ)
+    (xSeq : ℕ → Q) (k : ℕ) : Q := by
+  classical
+  let g : E → ℝ := z_k_objective Q f d L σ α xSeq k
   by_cases h : ∃ z : Q, IsMinOn g Q (z : E)
   · exact Classical.choose h
   · exact xSeq k
+
+/-- Internal implementation bridge: if a minimizer of `z_k_objective` exists, `z_k` is chosen to
+be one. This is intentionally kept private; the paper-facing interface is `z_k_isMinOn`. -/
+private lemma z_k_isMinOn_of_exists_internal {E : Type*} [SeminormedAddCommGroup E]
+    [NormedSpace ℝ E]
+    [FiniteDimensional ℝ E] {Q : Set E} {f d : E → ℝ} {L σ : ℝ} {α : ℕ → ℝ}
+    {xSeq : ℕ → Q} {k : ℕ}
+    (h :
+      ∃ z : Q,
+        IsMinOn (z_k_objective Q f d L σ α xSeq k) Q (z : E)) :
+    IsMinOn (z_k_objective Q f d L σ α xSeq k) Q (z_k Q f d L σ α xSeq k : E) := by
+  classical
+  simpa [z_k, h] using (Classical.choose_spec h)
+
+/-- Internal existence theorem for the auxiliary objective defining `z_k`. This is kept private so
+downstream files use `z_k_isMinOn` instead of the intermediate existence packaging. -/
+private lemma z_k_exists_isMinOn_internal {E : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E]
+    [FiniteDimensional ℝ E] {Q : Set E} {f d : E → ℝ} {L σ : ℝ} {α : ℕ → ℝ}
+    {xSeq : ℕ → Q} {k : ℕ} (hQ_closed : IsClosed Q) (hd_cont : ContinuousOn d Q)
+    (hL : 0 < L) (hconv : StrongConvexOn Q σ d) (hσ : 0 < σ) (x0 : Q)
+    (hx0 : IsNormalizedProxCenter Q d x0) :
+    ∃ z : Q,
+      IsMinOn (z_k_objective Q f d L σ α xSeq k) Q (z : E) := by
+  classical
+  let g : E → ℝ := z_k_objective Q f d L σ α xSeq k
+  let s : Module.Dual ℝ E :=
+    Finset.sum (Finset.range (k + 1)) (fun i =>
+      α i • (fderiv ℝ f (xSeq i)).toLinearMap)
+  let c : ℝ :=
+    Finset.sum (Finset.range (k + 1)) (fun i =>
+      let xi : E := xSeq i
+      α i * (f xi + DualPairing ((fderiv ℝ f xi).toLinearMap) ((x0 : E) - xi)))
+  let M : ℝ := DualNormDef (-s)
+  let R : ℝ := max 0 (2 * M / L)
+  let K : Set E := Metric.closedBall (x0 : E) R ∩ Q
+  have hg_eq :
+      g =
+        fun z : E =>
+          (L / σ) * d z + c + DualPairing s (z - (x0 : E)) := by
+    funext z
+    have hs_apply :
+        DualPairing s (z - (x0 : E)) =
+          Finset.sum (Finset.range (k + 1)) (fun i =>
+            α i * DualPairing ((fderiv ℝ f (xSeq i)).toLinearMap) (z - (x0 : E))) := by
+      simp [s, DualPairing]
+    calc
+      g z =
+          (L / σ) * d z +
+            Finset.sum (Finset.range (k + 1)) (fun i =>
+              let xi : E := xSeq i
+              α i * (f xi + DualPairing ((fderiv ℝ f xi).toLinearMap) (z - xi))) := rfl
+      _ =
+          (L / σ) * d z +
+            Finset.sum (Finset.range (k + 1)) (fun i =>
+              let xi : E := xSeq i
+              α i * (f xi +
+                (DualPairing ((fderiv ℝ f xi).toLinearMap) (z - (x0 : E)) +
+                  DualPairing ((fderiv ℝ f xi).toLinearMap) ((x0 : E) - xi)))) := by
+            refine congrArg (fun t : ℝ => (L / σ) * d z + t) ?_
+            refine Finset.sum_congr rfl ?_
+            intro i hi
+            have hsplit :
+                z - (xSeq i : E) =
+                  (z - (x0 : E)) + ((x0 : E) - (xSeq i : E)) := by
+              abel
+            calc
+              ((let xi : E := xSeq i;
+                α i * (f xi + DualPairing ((fderiv ℝ f xi).toLinearMap) (z - xi)))) =
+                  α i *
+                    (f (xSeq i) +
+                      DualPairing ((fderiv ℝ f (xSeq i)).toLinearMap) (z - (xSeq i : E))) := by
+                  rfl
+              _ =
+                  α i *
+                    (f (xSeq i) +
+                      DualPairing ((fderiv ℝ f (xSeq i)).toLinearMap)
+                        ((z - (x0 : E)) + ((x0 : E) - (xSeq i : E)))) := by
+                  rw [hsplit]
+              _ =
+                  α i *
+                    (f (xSeq i) +
+                      (DualPairing ((fderiv ℝ f (xSeq i)).toLinearMap) (z - (x0 : E)) +
+                        DualPairing ((fderiv ℝ f (xSeq i)).toLinearMap)
+                          ((x0 : E) - (xSeq i : E)))) := by
+                  simp [DualPairing]
+              _ =
+                  ((let xi : E := xSeq i;
+                    α i * (f xi +
+                      (DualPairing ((fderiv ℝ f xi).toLinearMap) (z - (x0 : E)) +
+                        DualPairing ((fderiv ℝ f xi).toLinearMap) ((x0 : E) - xi))))) := by
+                  rfl
+      _ =
+          (L / σ) * d z + c +
+            Finset.sum (Finset.range (k + 1)) (fun i =>
+              α i * DualPairing ((fderiv ℝ f (xSeq i)).toLinearMap) (z - (x0 : E))) := by
+            simp [c, Finset.sum_add_distrib, mul_add, add_left_comm, add_comm]
+      _ = (L / σ) * d z + c + DualPairing s (z - (x0 : E)) := by
+            rw [hs_apply]
+  have hR_nonneg : 0 ≤ R := by
+    exact le_max_left _ _
+  have hx0K : (x0 : E) ∈ K := by
+    refine ⟨?_, x0.property⟩
+    simpa using (Metric.mem_closedBall_self (x := (x0 : E)) hR_nonneg)
+  have hK_nonempty : K.Nonempty := ⟨x0, hx0K⟩
+  have hK_compact : IsCompact K := by
+    have hball : IsCompact (Metric.closedBall (x0 : E) R) :=
+      isCompact_closedBall (x := (x0 : E)) (r := R)
+    simpa [K, Set.inter_comm] using (hball.inter_right hQ_closed)
+  have hd_cont_K : ContinuousOn d K := by
+    exact hd_cont.mono (by intro z hz; exact hz.2)
+  have hcont_s : Continuous fun z : E => s z := by
+    simpa using (s.continuous_of_finiteDimensional)
+  have hcont_lin : Continuous fun z : E => DualPairing s (z - (x0 : E)) := by
+    have hcont_sub : Continuous fun z : E => s z - s x0 := hcont_s.sub continuous_const
+    simpa [DualPairing, map_sub] using hcont_sub
+  have hcont_g' :
+      ContinuousOn
+        (fun z : E => (L / σ) * d z + c + DualPairing s (z - (x0 : E))) K := by
+    have hscaled : ContinuousOn (fun z : E => (L / σ) * d z) K :=
+      continuousOn_const.mul hd_cont_K
+    exact (hscaled.add continuousOn_const).add hcont_lin.continuousOn
+  have hcont_g_on : ContinuousOn g K := by
+    simpa [hg_eq] using hcont_g'
+  obtain ⟨y, hyK, hyminK⟩ := hK_compact.exists_isMinOn hK_nonempty hcont_g_on
+  have hyQ : y ∈ Q := hyK.2
+  have hx0g : g (x0 : E) = c := by
+    simp [hg_eq, hx0.2, DualPairing]
+  have hyc : g y ≤ c := by
+    have hxy : g y ≤ g x0 := (isMinOn_iff.mp hyminK) x0 hx0K
+    simpa [hx0g] using hxy
+  have houtside :
+      ∀ z ∈ Q, R ≤ ‖z - (x0 : E)‖ → c ≤ g z := by
+    intro z hzQ hzR
+    have hR' : 2 * M / L ≤ ‖z - (x0 : E)‖ := by
+      exact le_trans (le_max_right _ _) hzR
+    have hR'' : 2 * M ≤ ‖z - (x0 : E)‖ * L := by
+      have h := (div_le_iff₀ hL).1 hR'
+      simpa [mul_comm, mul_left_comm, mul_assoc] using h
+    have hlin : DualPairing s (z - (x0 : E)) ≥ -M * ‖z - (x0 : E)‖ := by
+      have h :=
+        dualPairing_le_dualNormDef_mul_norm_section02 (s := -s) (x := z - (x0 : E))
+      have h' : -DualPairing s (z - (x0 : E)) ≤ M * ‖z - (x0 : E)‖ := by
+        simpa [DualPairing, M] using h
+      linarith
+    have hprox : (1 / 2 : ℝ) * σ * ‖z - (x0 : E)‖ ^ 2 ≤ d z := by
+      simpa [ge_iff_le] using
+        (prox_center_lower_bound_section03 (hconv := hconv) (hx0 := hx0) z hzQ)
+    have hLσ_nonneg : 0 ≤ L / σ := by
+      exact div_nonneg (le_of_lt hL) (le_of_lt hσ)
+    have hscaled :
+        (L / σ) * ((1 / 2 : ℝ) * σ * ‖z - (x0 : E)‖ ^ 2) ≤ (L / σ) * d z := by
+      exact mul_le_mul_of_nonneg_left hprox hLσ_nonneg
+    have hscaled' : (L / 2) * ‖z - (x0 : E)‖ ^ 2 ≤ (L / σ) * d z := by
+      have hσ_ne : (σ : ℝ) ≠ 0 := ne_of_gt hσ
+      have hcalc :
+          (L / σ) * ((1 / 2 : ℝ) * σ * ‖z - (x0 : E)‖ ^ 2) =
+            (L / 2) * ‖z - (x0 : E)‖ ^ 2 := by
+        field_simp [hσ_ne, mul_comm, mul_left_comm, mul_assoc]
+      calc
+        (L / 2) * ‖z - (x0 : E)‖ ^ 2 =
+            (L / σ) * ((1 / 2 : ℝ) * σ * ‖z - (x0 : E)‖ ^ 2) := by
+          symm
+          exact hcalc
+        _ ≤ (L / σ) * d z := hscaled
+    have hsum :
+        -M * ‖z - (x0 : E)‖ + (L / 2) * ‖z - (x0 : E)‖ ^ 2 ≤
+          DualPairing s (z - (x0 : E)) + (L / σ) * d z := by
+      linarith
+    have hbound :
+        c + (-M * ‖z - (x0 : E)‖ + (L / 2) * ‖z - (x0 : E)‖ ^ 2) ≤ g z := by
+      have h := add_le_add_left hsum c
+      simpa [hg_eq, add_assoc, add_left_comm, add_comm] using h
+    have hquad : 0 ≤ -M * ‖z - (x0 : E)‖ + (L / 2) * ‖z - (x0 : E)‖ ^ 2 := by
+      have hr : 0 ≤ ‖z - (x0 : E)‖ := norm_nonneg _
+      nlinarith [hR'', hr, hL]
+    have hbase : c ≤ c + (-M * ‖z - (x0 : E)‖ + (L / 2) * ‖z - (x0 : E)‖ ^ 2) := by
+      linarith
+    exact le_trans hbase hbound
+  have hyminQ : IsMinOn g Q y := by
+    intro z hzQ
+    by_cases hzR : ‖z - (x0 : E)‖ ≤ R
+    · have hzball : z ∈ Metric.closedBall (x0 : E) R := by
+        exact (Metric.mem_closedBall).2 (by simpa [dist_eq_norm] using hzR)
+      exact (isMinOn_iff.mp hyminK) z ⟨hzball, hzQ⟩
+    · have hzR' : R ≤ ‖z - (x0 : E)‖ := le_of_not_ge hzR
+      have hgz : c ≤ g z := houtside z hzQ hzR'
+      exact le_trans hyc hgz
+  refine ⟨⟨y, hyQ⟩, ?_⟩
+  simpa [g] using hyminQ
+
+/-- Paper-facing minimizer theorem for `z_k`: under the standard prox assumptions, the chosen
+point `z_k` minimizes the canonical objective `z_k_objective`. -/
+lemma z_k_isMinOn {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [FiniteDimensional ℝ E] {Q : Set E} {f d : E → ℝ} {L σ : ℝ} {α : ℕ → ℝ}
+    {xSeq : ℕ → Q} {k : ℕ} (hQ_closed : IsClosed Q) (hd_cont : ContinuousOn d Q)
+    (hL : 0 < L) (hconv : StrongConvexOn Q σ d) (hσ : 0 < σ) (x0 : Q)
+    (hx0 : IsNormalizedProxCenter Q d x0) :
+    IsMinOn (z_k_objective Q f d L σ α xSeq k) Q (z_k Q f d L σ α xSeq k : E) := by
+  exact z_k_isMinOn_of_exists_internal
+    (z_k_exists_isMinOn_internal (Q := Q) (f := f) (d := d) (L := L) (σ := σ) (α := α)
+      (xSeq := xSeq) (k := k) hQ_closed hd_cont hL hconv hσ x0 hx0)
 
 /-- Supporting hyperplane inequality for a differentiable convex function on a convex set. -/
 lemma section03_convex_support_fderiv {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]

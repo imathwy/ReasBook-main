@@ -1,7 +1,0 @@
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "verification-result-v0",
-  "type": "object",
-  "required": ["schema_version", "verification_id", "run_id", "checks", "status", "evidence"]
-}
-

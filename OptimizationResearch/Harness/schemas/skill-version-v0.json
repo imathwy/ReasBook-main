@@ -1,7 +1,0 @@
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "skill-version-v0",
-  "type": "object",
-  "required": ["schema_version", "skill_id", "version", "trigger", "inputs", "outputs", "checks", "failure_handling"]
-}
-

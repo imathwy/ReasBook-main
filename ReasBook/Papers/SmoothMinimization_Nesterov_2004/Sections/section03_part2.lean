@@ -375,16 +375,23 @@ theorem Rk_succ_update {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
       simpa [term, Finset.sum_range_succ, add_assoc] using h''
     exact le_trans (le_trans hmodel_bound hpsi_plus'') hFk1_lower
   unfold R_k
-  simp [psi_k]
-  refine le_csInf ?_ ?_
-  · refine ⟨(L / σ) * d (xSeq (k + 1)) +
-      Finset.sum (Finset.range (k + 2)) (fun i =>
-        α i * (f (xSeq i) +
-          DualPairing ((fderiv ℝ f (xSeq i)).toLinearMap) ((xSeq (k + 1) : E) - xSeq i))), ?_⟩
-    exact ⟨(xSeq (k + 1) : E), (xSeq (k + 1)).property, rfl⟩
-  · intro b hb
-    rcases hb with ⟨z, hz, rfl⟩
-    simpa [A] using hpoint z hz
+  have hgoal :
+      A_k α (k + 1) * f ↑(ySeq (k + 1)) ≤
+        sInf
+          ((fun a ↦
+              L / σ * d a +
+                ∑ x ∈ Finset.range (k + 1 + 1),
+                  α x * (f ↑(xSeq x) + DualPairing (↑(fderiv ℝ f ↑(xSeq x))) (a - ↑(xSeq x)))) '' Q) := by
+    refine le_csInf ?_ ?_
+    · refine ⟨(L / σ) * d (xSeq (k + 1)) +
+        Finset.sum (Finset.range (k + 2)) (fun i =>
+          α i * (f (xSeq i) +
+            DualPairing ((fderiv ℝ f (xSeq i)).toLinearMap) ((xSeq (k + 1) : E) - xSeq i))), ?_⟩
+      exact ⟨(xSeq (k + 1) : E), (xSeq (k + 1)).property, rfl⟩
+    · intro b hb
+      rcases hb with ⟨z, hz, rfl⟩
+      simpa [A] using hpoint z hz
+  simpa [psi_k] using hgoal
 
 /-- Closed form for `A_k` when `α_k = (k+1)/2`. -/
 lemma section03_Ak_alpha_closed_form (k : ℕ) :
@@ -505,7 +512,7 @@ theorem alpha_seq_closed_form :
     (∀ k, α (k + 1) / A_k α (k + 1) = 2 / ((k : ℝ) + 3)) ∧
     α 0 ∈ Set.Ioc (0 : ℝ) 1 ∧
     (∀ k, (α (k + 1)) ^ 2 ≤ A_k α (k + 1)) := by
-  simp
+  dsimp
   refine ⟨?_, ?_⟩
   · intro k
     simpa using section03_Ak_alpha_closed_form k
@@ -543,12 +550,7 @@ def OptimalSchemeAlgorithm {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E
   (∀ k, ySeq k = T_Q Q f L (xSeq k)) ∧
   (∀ k,
     IsMinOn
-      (fun x : E =>
-        (L / σ) * d x +
-          Finset.sum (Finset.range (k + 1)) (fun i =>
-            ((i : ℝ) + 1) / 2 *
-              (f (xSeq i) +
-                DualPairing ((fderiv ℝ f (xSeq i)).toLinearMap) (x - xSeq i))))
+      (z_k_objective Q f d L σ (fun i => ((i : ℝ) + 1) / 2) xSeq k)
       Q (z_k Q f d L σ (fun i => ((i : ℝ) + 1) / 2) xSeq k : E)) ∧
   (∀ k, (xSeq (k + 1) : E) =
     (2 / ((k : ℝ) + 3)) • (z_k Q f d L σ (fun i => ((i : ℝ) + 1) / 2) xSeq k : E) +
@@ -779,13 +781,9 @@ lemma section03_optimalScheme_Rk_all {E : Type*} [NormedAddCommGroup E] [NormedS
         simpa using hy_all (k + 1)
       have hzk_min :
           IsMinOn
-            (fun x : E =>
-              (L / σ) * d x +
-                Finset.sum (Finset.range (k + 1)) (fun i =>
-                  α i * (f (xSeq i) +
-                    DualPairing ((fderiv ℝ f (xSeq i)).toLinearMap) (x - xSeq i))))
+            (z_k_objective Q f d L σ α xSeq k)
             Q (z_k Q f d L σ α xSeq k : E) := by
-        simpa [α] using hzk_min_all k
+        simpa [α, z_k_objective] using hzk_min_all k
       exact
         Rk_succ_update (α := α) (hQ_closed := hQ_closed) (hQ_convex := hQ_convex)
           (hf_convex := hf_convex) (hf_diff := hf_diff) (hL := hL)
@@ -843,13 +841,9 @@ theorem optimal_scheme_rate {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ 
         psi_k Q f d L σ α xSeq k ≤ (L / σ) * d xstar + A_k α k * f xstar := by
       have hzk_min :
           IsMinOn
-            (fun x : E =>
-              (L / σ) * d x +
-                Finset.sum (Finset.range (k + 1)) (fun i =>
-                  α i * (f (xSeq i) +
-                    DualPairing ((fderiv ℝ f (xSeq i)).toLinearMap) (x - xSeq i))))
+            (z_k_objective Q f d L σ α xSeq k)
             Q (z_k Q f d L σ α xSeq k : E) := by
-        simpa [α] using hzk_min_all k
+        simpa [α, z_k_objective] using hzk_min_all k
       exact
         section03_psik_upper_bound_at_xstar (α := α) (xSeq := xSeq) (k := k)
           (hQ_convex := hQ_convex) (hf_convex := hf_convex) (hf_diff := hf_diff)

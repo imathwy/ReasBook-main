@@ -1,7 +1,0 @@
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "next-action-v0",
-  "type": "object",
-  "required": ["schema_version", "next_action_id", "action", "reason", "evidence", "expected_value", "required_permission", "status"]
-}
-

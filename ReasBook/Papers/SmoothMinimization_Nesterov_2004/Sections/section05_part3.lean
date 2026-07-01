@@ -112,8 +112,7 @@ lemma simplexProximalValue_dual_after_exchange (n : ℕ) (xbar gbar : Fin n → 
       have hshift' :=
         sInf_image_add_const (a := c)
           (s := (fun x : Fin n → ℝ => ∑ i, r i * x i) '' standardSimplex n) hbd hne
-      simp [hcomp] at hshift'
-      exact hshift'
+      simpa [hcomp] using hshift'
     calc
       sInf
           ((fun x : Fin n → ℝ =>
@@ -735,7 +734,11 @@ theorem logSumExpSmooth_shift (m : ℕ) (μ : ℝ) (hμ : 0 < μ) (u : Fin m →
   | zero =>
       simp [logSumExpSmooth]
   | succ m' =>
-      simp
+      change
+        (logSumExpSmooth (m' + 1) μ u =
+            sSup (Set.range u) + logSumExpSmooth (m' + 1) μ (fun j ↦ u j - sSup (Set.range u))) ∧
+          fderiv ℝ (logSumExpSmooth (m' + 1) μ) u =
+            fderiv ℝ (logSumExpSmooth (m' + 1) μ) (fun j ↦ u j - sSup (Set.range u))
       set ubar : ℝ := sSup (Set.range u)
       set v : Fin (m' + 1) → ℝ := fun j => u j - ubar
       have hv : (fun j => v j + ubar) = u := by

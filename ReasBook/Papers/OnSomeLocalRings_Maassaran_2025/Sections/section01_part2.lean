@@ -202,6 +202,7 @@ noncomputable def quotient_span_root_adjoinRoot_X_pow_ringEquiv_base
     (Ideal.quotEquivOfEq hJ0).trans
       (Polynomial.quotientSpanXSubCAlgEquiv (R := A) (x := (0 : A))).toRingEquiv
 
+set_option maxHeartbeats 800000 in
 /-- The isomorphism `A[Y]/(Y^k)/(Y) ≃ A` sends scalars to scalars. -/
 lemma quotient_span_root_adjoinRoot_X_pow_ringEquiv_base_algebraMap
     (A : Type*) [CommRing A] (k : ℕ) (hk : 1 ≤ k) (a : A) :
@@ -226,21 +227,20 @@ lemma quotient_span_root_adjoinRoot_X_pow_ringEquiv_base_algebraMap
             Ideal.span ({AdjoinRoot.root ((X : Polynomial A) ^ k)} : Set _)))
   -- Reduce to the explicit normal form used in the definition, then evaluate at `0`.
   rw [ha]
-  -- Replace `algebraMap` into `AdjoinRoot` by `AdjoinRoot.of`.
-  simp [AdjoinRoot.algebraMap_eq]
-  -- Unfold the ring equivalence and compute it on this scalar.
-  -- The remaining goal is an evaluation statement in a polynomial quotient.
-  simp [quotient_span_root_adjoinRoot_X_pow_ringEquiv_base, RingEquiv.trans_apply,
-    Ideal.quotEquivOfEq_mk, AdjoinRoot.of.eq_1, AdjoinRoot.mk, -AdjoinRoot.mk_C]
-  -- Finish by reducing to evaluation at `0` of a constant polynomial.
-  change
-      (quotientSpanXSubCAlgEquiv 0)
-          ((Ideal.quotEquivOfEq _)
-            ((DoubleQuot.quotQuotEquivQuotOfLE _)
-              (DoubleQuot.quotQuotMk (Ideal.span ({(X : Polynomial A) ^ k} : Set (Polynomial A)))
-                  (Ideal.span ({(X : Polynomial A)} : Set (Polynomial A))) (C a)))) =
-        a
-  simp [Ideal.quotEquivOfEq_mk, Polynomial.quotientSpanXSubCAlgEquiv_mk]
+  show quotient_span_root_adjoinRoot_X_pow_ringEquiv_base (A := A) (k := k) (hk := hk)
+      (Ideal.Quotient.mk (Ideal.span ({AdjoinRoot.root ((X : Polynomial A) ^ k)} : Set _))
+        ((algebraMap A (AdjoinRoot ((X : Polynomial A) ^ k))) a)) = a
+  have key : (quotient_span_root_adjoinRoot_X_pow_ringEquiv_base (A := A) (k := k) (hk := hk)).symm a =
+      Ideal.Quotient.mk (Ideal.span ({AdjoinRoot.root ((X : Polynomial A) ^ k)} : Set _))
+        ((algebraMap A (AdjoinRoot ((X : Polynomial A) ^ k))) a) := by
+    unfold quotient_span_root_adjoinRoot_X_pow_ringEquiv_base
+    simp only [RingEquiv.symm_trans, RingEquiv.symm_trans_apply, id_eq,
+      Ideal.quotEquivOfEq_mk, Ideal.quotEquivOfEq_symm,
+      AlgEquiv.toRingEquiv_symm,
+      Polynomial.quotientSpanXSubCAlgEquiv_symm_apply,
+      DoubleQuot.quotQuotEquivQuotOfLE_symm_mk, DoubleQuot.quotQuotMk]
+    rfl
+  rw [← key, RingEquiv.apply_symm_apply]
 
 /--
 For a field `A`, the nilradical of `A[Y]/(Y^k)` (presented as `AdjoinRoot (X^k)`) is the ideal
@@ -330,6 +330,7 @@ lemma nonempty_ringEquiv_adjoinRoot_X_pow_iff_nonempty_ringEquiv_base
     refine ⟨AdjoinRoot.mapRingEquiv e ((X : Polynomial A) ^ k) ((X : Polynomial B) ^ k) ?_⟩
     exact Associated.of_eq (by simp)
 
+set_option maxHeartbeats 1600000 in
 /--
 For `𝕜`-algebra fields `A` and `B`, the truncated polynomial rings `A[Y]/(Y^k)` and `B[Y]/(Y^k)`
 (presented as `AdjoinRoot (X^k)`) are isomorphic as `𝕜`-algebras if and only if `A` and `B` are

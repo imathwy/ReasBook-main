@@ -71,13 +71,16 @@ lemma lipschitzOnWith_add {α β : Type*} [PseudoMetricSpace α] [NormedAddCommG
         exact add_le_add hf' hg'
     _ = (K₁ + K₂) * dist x y := by simp [add_mul]
 
-/-- Lipschitz bound for the derivative of the smoothed max-function on a set. -/
-lemma smoothedMaxFunction_fderiv_lipschitzOn {E1 E2 : Type*} [NormedAddCommGroup E1]
+/-- Lipschitz bound for the derivative of the smoothed max-function on a set for a chosen
+maximizing branch. This is the general-branch helper form. -/
+private lemma smoothedMaxFunction_fderiv_lipschitzOn_of_isSmoothedMaximizer {E1 E2 : Type*}
+    [NormedAddCommGroup E1]
     [NormedSpace ℝ E1] [FiniteDimensional ℝ E1] [NormedAddCommGroup E2] [NormedSpace ℝ E2]
     [FiniteDimensional ℝ E2] (Q1 : Set E1) (Q2 : Set E2)
     (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ)) (phihat d2 : E2 → ℝ) (μ σ2 : ℝ)
     (hμ : 0 < μ) (hσ2 : 0 < σ2) (hconv : StrongConvexOn Q2 σ2 d2) (uμ : E1 → E2)
-    (hmax : ∀ x, IsSmoothedMaximizer Q2 A phihat d2 μ x (uμ x)) :
+    (hmax : ∀ x, IsSmoothedMaximizer Q2 A phihat d2 μ x (uμ x))
+    (hphi : ConvexOn ℝ Q2 phihat) :
     let fμ : E1 → ℝ := SmoothedMaxFunction Q2 A phihat d2 μ
     let A' : E1 →ₗ[ℝ] Module.Dual ℝ E2 :=
       { toFun := fun x => (A x).toLinearMap
@@ -89,17 +92,10 @@ lemma smoothedMaxFunction_fderiv_lipschitzOn {E1 E2 : Type*} [NormedAddCommGroup
           intro c x
           ext u
           simp }
-    (∀ x,
-        HasFDerivAt (fun y => A y (uμ y) - phihat (uμ y) - μ * d2 (uμ y))
-          ((AdjointOperator A' (uμ x)).toContinuousLinearMap) x) →
-    (∀ x1 x2,
-        μ * σ2 * ‖uμ x1 - uμ x2‖ ^ (2 : ℕ) ≤
-          DualPairing (AdjointOperator A' (uμ x1 - uμ x2)) (x1 - x2)) →
     LipschitzOnWith (Real.toNNReal ((1 / (μ * σ2)) * (OperatorNormDef A') ^ 2))
       (fun x => fderiv ℝ fμ x) Q1 := by
   classical
   simp only
-  intro _ _
   set fμ : E1 → ℝ := SmoothedMaxFunction Q2 A phihat d2 μ
   set A' : E1 →ₗ[ℝ] Module.Dual ℝ E2 :=
     { toFun := fun x => (A x).toLinearMap
@@ -111,48 +107,243 @@ lemma smoothedMaxFunction_fderiv_lipschitzOn {E1 E2 : Type*} [NormedAddCommGroup
         intro c x
         ext u
         simp }
-  have hprops :
-      ContDiff ℝ (1 : ℕ∞) fμ ∧
-        ConvexOn ℝ Set.univ fμ ∧
-          (∀ x, HasFDerivAt fμ ((AdjointOperator A' (uμ x)).toContinuousLinearMap) x) ∧
-            ∃ Lμ : ℝ,
-              Lμ = (1 / (μ * σ2)) * (OperatorNormDef A') ^ 2 ∧
-                LipschitzWith (Real.toNNReal Lμ)
-                  (fun x => (AdjointOperator A' (uμ x)).toContinuousLinearMap) := by
+  have hfderiv :
+      ∀ x, fderiv ℝ fμ x = (AdjointOperator A' (uμ x)).toContinuousLinearMap := by
     simpa [fμ, A'] using
-      (smoothedMaxFunction_properties (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2)
-        (μ := μ) (σ2 := σ2) (hμ := hμ) (hσ2 := hσ2) (hconv := hconv) (uμ := uμ)
-        (hmax := hmax))
-  rcases hprops with ⟨_, _, hderiv, ⟨Lμ, hLμ, hLip⟩⟩
+      (smoothedMaxFunction_fderiv_of_isSmoothedMaximizer
+        (Q2 := Q2) (A := A) (phihat := phihat)
+        (d2 := d2) (μ := μ) (σ2 := σ2) (hμ := hμ) (hσ2 := hσ2) (hconv := hconv)
+        (hphi := hphi) (uμ := uμ) (hmax := hmax))
+  rcases
+      (by
+        simpa [A'] using
+          (smoothedMaxFunction_gradient_lipschitz_of_isSmoothedMaximizer
+            (Q2 := Q2) (A := A) (phihat := phihat)
+            (d2 := d2) (μ := μ) (σ2 := σ2) (hμ := hμ) (hσ2 := hσ2) (hconv := hconv)
+            (hphi := hphi) (uμ := uμ) (hmax := hmax)) :
+        ∃ Lμ : ℝ,
+          Lμ = (1 / (μ * σ2)) * (OperatorNormDef A') ^ 2 ∧
+            LipschitzWith (Real.toNNReal Lμ)
+              (fun x => (AdjointOperator A' (uμ x)).toContinuousLinearMap))
+    with ⟨Lμ, hLμ, hLip⟩
   have hderiv' :
       (fun x => fderiv ℝ fμ x) =
         fun x => (AdjointOperator A' (uμ x)).toContinuousLinearMap := by
     funext x
-    exact (hderiv x).fderiv
+    exact hfderiv x
   have hLipOn :
       LipschitzOnWith (Real.toNNReal Lμ) (fun x => fderiv ℝ fμ x) Q1 := by
     simpa [hderiv'] using (hLip.lipschitzOnWith (s := Q1))
   simpa [hLμ] using hLipOn
 
-/-- On a set, the derivative of a sum is the sum of derivatives. -/
-lemma fderiv_add_on {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    {f g : E → ℝ} {s : Set E}
-    (hf : ∀ x ∈ s, DifferentiableAt ℝ f x)
-    (hg : ∀ x ∈ s, DifferentiableAt ℝ g x) :
-    ∀ x ∈ s, fderiv ℝ (fun y => f y + g y) x = fderiv ℝ f x + fderiv ℝ g x := by
-  intro x hx
-  simpa using (fderiv_add (f := f) (g := g) (x := x) (hf := hf x hx) (hg := hg x hx))
+/-- Canonical Lipschitz bound for the derivative of the smoothed max-function on `Q1`, using the
+unique optimizer selected by `smoothedMaximizer`. -/
+lemma smoothedMaxFunction_fderiv_lipschitzOn {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q1 : Set E1) (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ))
+    (phihat d2 : E2 → ℝ) (μ σ2 : ℝ) (hμ : 0 < μ) (hσ2 : 0 < σ2)
+    (hconv : StrongConvexOn Q2 σ2 d2) (hphi : ConvexOn ℝ Q2 phihat)
+    (hQ2_closed : IsClosed Q2) (hQ2_bdd : Bornology.IsBounded Q2)
+    (hQ2_nonempty : Q2.Nonempty) (hphihat : ContinuousOn phihat Q2)
+    (hd2 : ContinuousOn d2 Q2) :
+    let fμ : E1 → ℝ := SmoothedMaxFunction Q2 A phihat d2 μ
+    let A' : E1 →ₗ[ℝ] Module.Dual ℝ E2 :=
+      { toFun := fun x => (A x).toLinearMap
+        map_add' := by
+          intro x y
+          ext u
+          simp
+        map_smul' := by
+          intro c x
+          ext u
+          simp }
+    LipschitzOnWith (Real.toNNReal ((1 / (μ * σ2)) * (OperatorNormDef A') ^ 2))
+      (fun x => fderiv ℝ fμ x) Q1 := by
+  classical
+  simp only
+  exact smoothedMaxFunction_fderiv_lipschitzOn_of_isSmoothedMaximizer
+    (Q1 := Q1) (Q2 := Q2) (A := A)
+    (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2) (hμ := hμ) (hσ2 := hσ2)
+    (hconv := hconv)
+    (uμ := smoothedMaximizer Q2 A phihat d2 μ hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+    (hmax := smoothedMaximizer_isSmoothedMaximizer (Q2 := Q2) (A := A) (phihat := phihat)
+      (d2 := d2) (μ := μ) hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+    (hphi := hphi)
 
 /-- `Real.toNNReal` preserves addition on nonnegative inputs. -/
 lemma toNNReal_add_nonneg {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b) :
     Real.toNNReal (a + b) = Real.toNNReal a + Real.toNNReal b := by
   simpa using (Real.toNNReal_add ha hb)
 
+/-- Derivative formula for the smoothed objective along an abstract maximizing branch. -/
+private theorem smoothedObjective_hasFDerivAt_of_isSmoothedMaximizer {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q1 : Set E1) (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ))
+    (phihat d2 : E2 → ℝ) (μ σ2 : ℝ) (fhat : E1 → ℝ) (uμ : E1 → E2)
+    (hμ : 0 < μ) (hσ2 : 0 < σ2) (hconv : StrongConvexOn Q2 σ2 d2)
+    (hFhatDiff : ∀ x ∈ Q1, DifferentiableAt ℝ fhat x)
+    (hmax : ∀ x, IsSmoothedMaximizer Q2 A phihat d2 μ x (uμ x))
+    (hphi : ConvexOn ℝ Q2 phihat) :
+    let fbar : E1 → ℝ := SmoothedObjective Q2 A phihat d2 μ fhat
+    let A' : E1 →ₗ[ℝ] Module.Dual ℝ E2 :=
+      { toFun := fun x => (A x).toLinearMap
+        map_add' := by
+          intro x y
+          ext u
+          simp
+        map_smul' := by
+          intro c x
+          ext u
+          simp }
+    ∀ x ∈ Q1,
+      HasFDerivAt fbar
+        (fderiv ℝ fhat x + (AdjointOperator A' (uμ x)).toContinuousLinearMap) x := by
+  classical
+  simp only
+  intro x hx
+  set fμ : E1 → ℝ := SmoothedMaxFunction Q2 A phihat d2 μ
+  let A' : E1 →ₗ[ℝ] Module.Dual ℝ E2 :=
+    { toFun := fun x => (A x).toLinearMap
+      map_add' := by
+        intro x y
+        ext u
+        simp
+      map_smul' := by
+        intro c x
+        ext u
+        simp }
+  have hfhat : HasFDerivAt fhat (fderiv ℝ fhat x) x := (hFhatDiff x hx).hasFDerivAt
+  have hfμ :
+      HasFDerivAt fμ ((AdjointOperator A' (uμ x)).toContinuousLinearMap) x := by
+    simpa [fμ, A'] using
+      (smoothedMaxFunction_hasFDerivAt_of_isSmoothedMaximizer
+        (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2)
+        (hμ := hμ) (hσ2 := hσ2) (hconv := hconv) (uμ := uμ) (hmax := hmax) (hphi := hphi) x)
+  simpa [SmoothedObjective, fμ] using hfhat.add hfμ
+
+/-- Canonical derivative formula for the smoothed objective, using the unique optimizer selected by
+`smoothedMaximizer`. -/
+theorem smoothedObjective_hasFDerivAt {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q1 : Set E1) (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ))
+    (phihat d2 : E2 → ℝ) (μ σ2 : ℝ) (fhat : E1 → ℝ)
+    (hμ : 0 < μ) (hσ2 : 0 < σ2) (hconv : StrongConvexOn Q2 σ2 d2)
+    (hFhatDiff : ∀ x ∈ Q1, DifferentiableAt ℝ fhat x) (hphi : ConvexOn ℝ Q2 phihat)
+    (hQ2_closed : IsClosed Q2) (hQ2_bdd : Bornology.IsBounded Q2)
+    (hQ2_nonempty : Q2.Nonempty) (hphihat : ContinuousOn phihat Q2)
+    (hd2 : ContinuousOn d2 Q2) :
+    let fbar : E1 → ℝ := SmoothedObjective Q2 A phihat d2 μ fhat
+    let uμ : E1 → E2 :=
+      smoothedMaximizer Q2 A phihat d2 μ hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2
+    let A' : E1 →ₗ[ℝ] Module.Dual ℝ E2 :=
+      { toFun := fun x => (A x).toLinearMap
+        map_add' := by
+          intro x y
+          ext u
+          simp
+        map_smul' := by
+          intro c x
+          ext u
+          simp }
+    ∀ x ∈ Q1,
+      HasFDerivAt fbar
+        (fderiv ℝ fhat x + (AdjointOperator A' (uμ x)).toContinuousLinearMap) x := by
+  classical
+  simp only
+  exact smoothedObjective_hasFDerivAt_of_isSmoothedMaximizer
+    (Q1 := Q1) (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2)
+    (fhat := fhat)
+    (uμ := smoothedMaximizer Q2 A phihat d2 μ hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+    (hμ := hμ) (hσ2 := hσ2) (hconv := hconv) (hFhatDiff := hFhatDiff)
+    (hmax := smoothedMaximizer_isSmoothedMaximizer
+      (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ)
+      hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+    (hphi := hphi)
+
+/-- Explicit Fréchet derivative formula for the smoothed objective along an abstract maximizing
+branch. -/
+private theorem smoothedObjective_fderiv_of_isSmoothedMaximizer {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q1 : Set E1) (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ))
+    (phihat d2 : E2 → ℝ) (μ σ2 : ℝ) (fhat : E1 → ℝ) (uμ : E1 → E2)
+    (hμ : 0 < μ) (hσ2 : 0 < σ2) (hconv : StrongConvexOn Q2 σ2 d2)
+    (hFhatDiff : ∀ x ∈ Q1, DifferentiableAt ℝ fhat x)
+    (hmax : ∀ x, IsSmoothedMaximizer Q2 A phihat d2 μ x (uμ x))
+    (hphi : ConvexOn ℝ Q2 phihat) :
+    let fbar : E1 → ℝ := SmoothedObjective Q2 A phihat d2 μ fhat
+    let A' : E1 →ₗ[ℝ] Module.Dual ℝ E2 :=
+      { toFun := fun x => (A x).toLinearMap
+        map_add' := by
+          intro x y
+          ext u
+          simp
+        map_smul' := by
+          intro c x
+          ext u
+          simp }
+    ∀ x ∈ Q1,
+      fderiv ℝ fbar x =
+        fderiv ℝ fhat x + (AdjointOperator A' (uμ x)).toContinuousLinearMap := by
+  classical
+  simp only
+  intro x hx
+  exact
+    (smoothedObjective_hasFDerivAt_of_isSmoothedMaximizer
+      (Q1 := Q1) (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2)
+      (fhat := fhat) (uμ := uμ) (hμ := hμ) (hσ2 := hσ2) (hconv := hconv)
+      (hFhatDiff := hFhatDiff) (hmax := hmax) (hphi := hphi) x hx).fderiv
+
+/-- Canonical Fréchet derivative formula for the smoothed objective, using the unique optimizer
+selected by `smoothedMaximizer`. -/
+theorem smoothedObjective_fderiv {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q1 : Set E1) (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ))
+    (phihat d2 : E2 → ℝ) (μ σ2 : ℝ) (fhat : E1 → ℝ)
+    (hμ : 0 < μ) (hσ2 : 0 < σ2) (hconv : StrongConvexOn Q2 σ2 d2)
+    (hFhatDiff : ∀ x ∈ Q1, DifferentiableAt ℝ fhat x) (hphi : ConvexOn ℝ Q2 phihat)
+    (hQ2_closed : IsClosed Q2) (hQ2_bdd : Bornology.IsBounded Q2)
+    (hQ2_nonempty : Q2.Nonempty) (hphihat : ContinuousOn phihat Q2)
+    (hd2 : ContinuousOn d2 Q2) :
+    let fbar : E1 → ℝ := SmoothedObjective Q2 A phihat d2 μ fhat
+    let uμ : E1 → E2 :=
+      smoothedMaximizer Q2 A phihat d2 μ hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2
+    let A' : E1 →ₗ[ℝ] Module.Dual ℝ E2 :=
+      { toFun := fun x => (A x).toLinearMap
+        map_add' := by
+          intro x y
+          ext u
+          simp
+        map_smul' := by
+          intro c x
+          ext u
+          simp }
+    ∀ x ∈ Q1,
+      fderiv ℝ fbar x =
+        fderiv ℝ fhat x + (AdjointOperator A' (uμ x)).toContinuousLinearMap := by
+  classical
+  simp only
+  exact smoothedObjective_fderiv_of_isSmoothedMaximizer
+    (Q1 := Q1) (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2)
+    (fhat := fhat)
+    (uμ := smoothedMaximizer Q2 A phihat d2 μ hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+    (hμ := hμ) (hσ2 := hσ2) (hconv := hconv) (hFhatDiff := hFhatDiff)
+    (hmax := smoothedMaximizer_isSmoothedMaximizer
+      (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ)
+      hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+    (hphi := hphi)
+
 /-- Proposition 1.4.1.
 Under the assumptions of Definition 1.4.1, the function `\bar f_μ` has Lipschitz continuous
 gradient on `Q1` with Lipschitz constant `L_μ := M + (1/(μ σ2)) ‖A‖_{1,2}^2` (equation (4.2)),
-where `σ2` is the strong convexity parameter of the prox-function `d2` on `Q2`. -/
-theorem smoothedObjective_lipschitz_gradient {E1 E2 : Type*} [NormedAddCommGroup E1]
+where `σ2` is the strong convexity parameter of the prox-function `d2` on `Q2`, for a chosen
+maximizing branch. This is the general-branch helper form. -/
+private theorem smoothedObjective_lipschitz_gradient_of_isSmoothedMaximizer {E1 E2 : Type*}
+    [NormedAddCommGroup E1]
     [NormedSpace ℝ E1] [FiniteDimensional ℝ E1] [NormedAddCommGroup E2] [NormedSpace ℝ E2]
     [FiniteDimensional ℝ E2] (Q1 : Set E1) (Q2 : Set E2)
     (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ)) (phihat d2 : E2 → ℝ) (μ σ2 M : ℝ)
@@ -172,19 +363,13 @@ theorem smoothedObjective_lipschitz_gradient {E1 E2 : Type*} [NormedAddCommGroup
           ext u
           simp }
     (∀ x, IsSmoothedMaximizer Q2 A phihat d2 μ x (uμ x)) →
-    (∀ x,
-        HasFDerivAt (fun y => A y (uμ y) - phihat (uμ y) - μ * d2 (uμ y))
-          ((AdjointOperator A' (uμ x)).toContinuousLinearMap) x) →
-    (∀ x1 x2,
-        μ * σ2 * ‖uμ x1 - uμ x2‖ ^ (2 : ℕ) ≤
-          DualPairing (AdjointOperator A' (uμ x1 - uμ x2)) (x1 - x2)) →
+    ConvexOn ℝ Q2 phihat →
     ∃ Lμ : ℝ,
       Lμ = M + (1 / (μ * σ2)) * (OperatorNormDef A') ^ 2 ∧
         LipschitzOnWith (Real.toNNReal Lμ) (fun x => fderiv ℝ fbar x) Q1 := by
   classical
-  have hconv' := hconv
   simp only
-  intro hmax hDanskin hcoercive
+  intro hmax hphi
   set fbar : E1 → ℝ := SmoothedObjective Q2 A phihat d2 μ fhat with hfbar
   set fμ : E1 → ℝ := SmoothedMaxFunction Q2 A phihat d2 μ
   set A' : E1 →ₗ[ℝ] Module.Dual ℝ E2 :=
@@ -196,39 +381,45 @@ theorem smoothedObjective_lipschitz_gradient {E1 E2 : Type*} [NormedAddCommGroup
       map_smul' := by
         intro c x
         ext u
-        simp } with hA'
-  have hDanskin' :
-      ∀ x,
-        HasFDerivAt (fun y => A y (uμ y) - phihat (uμ y) - μ * d2 (uμ y))
-          ((AdjointOperator A' (uμ x)).toContinuousLinearMap) x := by
-    simpa [hA'.symm] using hDanskin
-  have hcoercive' :
-      ∀ x1 x2,
-        μ * σ2 * ‖uμ x1 - uμ x2‖ ^ (2 : ℕ) ≤
-          DualPairing (AdjointOperator A' (uμ x1 - uμ x2)) (x1 - x2) := by
-    simpa [hA'.symm] using hcoercive
+        simp }
   set L2 : ℝ := (1 / (μ * σ2)) * (OperatorNormDef A') ^ 2
+  have hFμDerivEq :
+      ∀ x, fderiv ℝ fμ x = (AdjointOperator A' (uμ x)).toContinuousLinearMap := by
+    simpa [fμ, A'] using
+      (smoothedMaxFunction_fderiv_of_isSmoothedMaximizer
+        (Q2 := Q2) (A := A) (phihat := phihat)
+        (d2 := d2) (μ := μ) (σ2 := σ2) (hμ := hμ) (hσ2 := hσ2) (hconv := hconv)
+        (hphi := hphi) (uμ := uμ) (hmax := hmax))
+  have hFμDiff : Differentiable ℝ fμ := by
+    simpa [fμ] using
+      (smoothedMaxFunction_differentiable_of_isSmoothedMaximizer
+        (Q2 := Q2) (A := A) (phihat := phihat)
+        (d2 := d2) (μ := μ) (σ2 := σ2) (hμ := hμ) (hσ2 := hσ2) (hconv := hconv)
+        (hphi := hphi) (uμ := uμ) (hmax := hmax))
+  rcases
+      (by
+        simpa [A'] using
+          (smoothedMaxFunction_gradient_lipschitz_of_isSmoothedMaximizer
+            (Q2 := Q2) (A := A) (phihat := phihat)
+            (d2 := d2) (μ := μ) (σ2 := σ2) (hμ := hμ) (hσ2 := hσ2) (hconv := hconv)
+            (hphi := hphi) (uμ := uμ) (hmax := hmax)) :
+        ∃ Lμ : ℝ,
+          Lμ = (1 / (μ * σ2)) * (OperatorNormDef A') ^ 2 ∧
+            LipschitzWith (Real.toNNReal Lμ)
+              (fun x => (AdjointOperator A' (uμ x)).toContinuousLinearMap))
+    with ⟨_, hL2, hLipAdj⟩
   have hLipμ :
       LipschitzOnWith (Real.toNNReal L2) (fun x => fderiv ℝ fμ x) Q1 := by
-    simpa [fμ, A', L2] using
-      (smoothedMaxFunction_fderiv_lipschitzOn (Q1 := Q1) (Q2 := Q2) (A := A)
-        (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2) (hμ := hμ) (hσ2 := hσ2)
-        (hconv := hconv') (uμ := uμ) (hmax := hmax) hDanskin' hcoercive')
-  have hFμDiff : ∀ x, DifferentiableAt ℝ fμ x := by
-    have hprops :
-        ContDiff ℝ (1 : ℕ∞) fμ ∧
-          ConvexOn ℝ Set.univ fμ ∧
-            (∀ x, HasFDerivAt fμ ((AdjointOperator A' (uμ x)).toContinuousLinearMap) x) ∧
-              ∃ Lμ : ℝ,
-                Lμ = (1 / (μ * σ2)) * (OperatorNormDef A') ^ 2 ∧
-                  LipschitzWith (Real.toNNReal Lμ)
-                    (fun x => (AdjointOperator A' (uμ x)).toContinuousLinearMap) := by
-      simpa [fμ, A'] using
-        (smoothedMaxFunction_properties (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2)
-          (μ := μ) (σ2 := σ2) (hμ := hμ) (hσ2 := hσ2) (hconv := hconv') (uμ := uμ)
-          (hmax := hmax))
-    intro x
-    exact (hprops.2.2.1 x).differentiableAt
+    have hFderiv :
+        (fun x => fderiv ℝ fμ x) =
+          fun x => (AdjointOperator A' (uμ x)).toContinuousLinearMap := by
+      funext x
+      exact hFμDerivEq x
+    have hLipOnAdj :
+        LipschitzOnWith (Real.toNNReal L2)
+          (fun x => (AdjointOperator A' (uμ x)).toContinuousLinearMap) Q1 := by
+      simpa [L2, hL2] using hLipAdj.lipschitzOnWith (s := Q1)
+    simpa [hFderiv] using hLipOnAdj
   have hLipSum :
       LipschitzOnWith (Real.toNNReal M + Real.toNNReal L2)
         (fun x => fderiv ℝ fhat x + fderiv ℝ fμ x) Q1 := by
@@ -267,6 +458,247 @@ theorem smoothedObjective_lipschitz_gradient {E1 E2 : Type*} [NormedAddCommGroup
   refine ⟨M + L2, by simp [L2], ?_⟩
   simpa [L2] using hLipBar
 
+/-- Canonical Section 4 Lipschitz-gradient theorem using the unique optimizer selected by
+`smoothedMaximizer`. This removes the external branch `uμ` from the application-layer interface. -/
+theorem smoothedObjective_lipschitz_gradient {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q1 : Set E1) (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ))
+    (phihat d2 : E2 → ℝ) (μ σ2 M : ℝ) (fhat : E1 → ℝ)
+    (hμ : 0 < μ) (hσ2 : 0 < σ2) (hM : 0 ≤ M) (hconv : StrongConvexOn Q2 σ2 d2)
+    (hFhatDiff : ∀ x ∈ Q1, DifferentiableAt ℝ fhat x)
+    (hLipschitz : LipschitzOnWith (Real.toNNReal M) (fun x => fderiv ℝ fhat x) Q1)
+    (hphi : ConvexOn ℝ Q2 phihat) (hQ2_closed : IsClosed Q2)
+    (hQ2_bdd : Bornology.IsBounded Q2) (hQ2_nonempty : Q2.Nonempty)
+    (hphihat : ContinuousOn phihat Q2) (hd2 : ContinuousOn d2 Q2) :
+    let fbar : E1 → ℝ := SmoothedObjective Q2 A phihat d2 μ fhat
+    let A' : E1 →ₗ[ℝ] Module.Dual ℝ E2 :=
+      { toFun := fun x => (A x).toLinearMap
+        map_add' := by
+          intro x y
+          ext u
+          simp
+        map_smul' := by
+          intro c x
+          ext u
+          simp }
+    ∃ Lμ : ℝ,
+      Lμ = M + (1 / (μ * σ2)) * (OperatorNormDef A') ^ 2 ∧
+        LipschitzOnWith (Real.toNNReal Lμ) (fun x => fderiv ℝ fbar x) Q1 := by
+  classical
+  simp only
+  exact smoothedObjective_lipschitz_gradient_of_isSmoothedMaximizer
+    (Q1 := Q1) (Q2 := Q2) (A := A)
+    (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2) (M := M) (fhat := fhat)
+    (uμ := smoothedMaximizer Q2 A phihat d2 μ hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+    (hμ := hμ) (hσ2 := hσ2) (hM := hM) (hconv := hconv)
+    (hFhatDiff := hFhatDiff) (hLipschitz := hLipschitz)
+    (smoothedMaximizer_isSmoothedMaximizer (Q2 := Q2) (A := A) (phihat := phihat)
+      (d2 := d2) (μ := μ) hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+    hphi
+
+/-- Convexity of the smoothed objective on `Q1` along an abstract maximizing branch. -/
+private theorem smoothedObjective_convexOn_of_isSmoothedMaximizer {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q1 : Set E1) (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ))
+    (phihat d2 : E2 → ℝ) (μ σ2 : ℝ) (fhat : E1 → ℝ) (uμ : E1 → E2)
+    (hfhat_convex : ConvexOn ℝ Q1 fhat) (hμ : 0 < μ) (hσ2 : 0 < σ2)
+    (hconv : StrongConvexOn Q2 σ2 d2) (hphi : ConvexOn ℝ Q2 phihat)
+    (hmax : ∀ x, IsSmoothedMaximizer Q2 A phihat d2 μ x (uμ x)) :
+    ConvexOn ℝ Q1 (SmoothedObjective Q2 A phihat d2 μ fhat) := by
+  classical
+  set fμ : E1 → ℝ := SmoothedMaxFunction Q2 A phihat d2 μ
+  have hQ1_convex : Convex ℝ Q1 := hfhat_convex.1
+  have hfμ_convex_univ : ConvexOn ℝ Set.univ fμ := by
+    simpa [fμ] using
+      (smoothedMaxFunction_convex_of_isSmoothedMaximizer
+        (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2)
+        (hμ := hμ) (hσ2 := hσ2) (hconv := hconv) (hphi := hphi) (uμ := uμ)
+        (hmax := hmax))
+  have hfμ_convex : ConvexOn ℝ Q1 fμ := by
+    refine ⟨hQ1_convex, ?_⟩
+    intro x hx y hy a b ha hb hab
+    simpa using hfμ_convex_univ.2 (show x ∈ Set.univ by simp) (show y ∈ Set.univ by simp)
+      ha hb hab
+  simpa [SmoothedObjective, fμ] using hfhat_convex.add hfμ_convex
+
+/-- Canonical convexity theorem for the smoothed objective on `Q1`, using
+`u_μ := smoothedMaximizer ...`. -/
+theorem smoothedObjective_convexOn {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q1 : Set E1) (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ))
+    (phihat d2 : E2 → ℝ) (μ σ2 : ℝ) (fhat : E1 → ℝ)
+    (hfhat_convex : ConvexOn ℝ Q1 fhat) (hμ : 0 < μ) (hσ2 : 0 < σ2)
+    (hconv : StrongConvexOn Q2 σ2 d2) (hphi : ConvexOn ℝ Q2 phihat)
+    (hQ2_closed : IsClosed Q2) (hQ2_bdd : Bornology.IsBounded Q2)
+    (hQ2_nonempty : Q2.Nonempty) (hphihat : ContinuousOn phihat Q2)
+    (hd2 : ContinuousOn d2 Q2) :
+    ConvexOn ℝ Q1 (SmoothedObjective Q2 A phihat d2 μ fhat) := by
+  classical
+  exact smoothedObjective_convexOn_of_isSmoothedMaximizer
+    (Q1 := Q1) (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2)
+    (fhat := fhat)
+    (uμ := smoothedMaximizer Q2 A phihat d2 μ hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+    (hfhat_convex := hfhat_convex) (hμ := hμ) (hσ2 := hσ2) (hconv := hconv) (hphi := hphi)
+    (hmax := smoothedMaximizer_isSmoothedMaximizer
+      (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ)
+      hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+
+/-- Differentiability of the smoothed objective on `Q1` along an abstract maximizing branch. -/
+private theorem smoothedObjective_differentiableOn_of_isSmoothedMaximizer {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q1 : Set E1) (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ))
+    (phihat d2 : E2 → ℝ) (μ σ2 : ℝ) (fhat : E1 → ℝ) (uμ : E1 → E2)
+    (hfhat_diff : DifferentiableOn ℝ fhat Q1) (hμ : 0 < μ) (hσ2 : 0 < σ2)
+    (hconv : StrongConvexOn Q2 σ2 d2) (hphi : ConvexOn ℝ Q2 phihat)
+    (hmax : ∀ x, IsSmoothedMaximizer Q2 A phihat d2 μ x (uμ x)) :
+    DifferentiableOn ℝ (SmoothedObjective Q2 A phihat d2 μ fhat) Q1 := by
+  classical
+  set fμ : E1 → ℝ := SmoothedMaxFunction Q2 A phihat d2 μ
+  have hfμ_diff : Differentiable ℝ fμ := by
+    simpa [fμ] using
+      (smoothedMaxFunction_differentiable_of_isSmoothedMaximizer
+        (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2)
+        (hμ := hμ) (hσ2 := hσ2) (hconv := hconv) (hphi := hphi) (uμ := uμ)
+        (hmax := hmax))
+  have hfμ_diffOn : DifferentiableOn ℝ fμ Q1 := by
+    intro x hx
+    exact (hfμ_diff x).differentiableWithinAt
+  simpa [SmoothedObjective, fμ] using hfhat_diff.add hfμ_diffOn
+
+/-- Canonical differentiability theorem for the smoothed objective on `Q1`, using
+`u_μ := smoothedMaximizer ...`. -/
+theorem smoothedObjective_differentiableOn {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q1 : Set E1) (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ))
+    (phihat d2 : E2 → ℝ) (μ σ2 : ℝ) (fhat : E1 → ℝ)
+    (hfhat_diff : DifferentiableOn ℝ fhat Q1) (hμ : 0 < μ) (hσ2 : 0 < σ2)
+    (hconv : StrongConvexOn Q2 σ2 d2) (hphi : ConvexOn ℝ Q2 phihat)
+    (hQ2_closed : IsClosed Q2) (hQ2_bdd : Bornology.IsBounded Q2)
+    (hQ2_nonempty : Q2.Nonempty) (hphihat : ContinuousOn phihat Q2)
+    (hd2 : ContinuousOn d2 Q2) :
+    DifferentiableOn ℝ (SmoothedObjective Q2 A phihat d2 μ fhat) Q1 := by
+  classical
+  exact smoothedObjective_differentiableOn_of_isSmoothedMaximizer
+    (Q1 := Q1) (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2)
+    (fhat := fhat)
+    (uμ := smoothedMaximizer Q2 A phihat d2 μ hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+    (hfhat_diff := hfhat_diff) (hμ := hμ) (hσ2 := hσ2) (hconv := hconv) (hphi := hphi)
+    (hmax := smoothedMaximizer_isSmoothedMaximizer
+      (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ)
+      hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+
+/-- Bundled regularity statement for the smoothed objective along an abstract maximizing branch. -/
+private theorem smoothedObjective_properties_of_isSmoothedMaximizer {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q1 : Set E1) (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ))
+    (phihat d2 : E2 → ℝ) (μ σ2 M : ℝ) (fhat : E1 → ℝ) (uμ : E1 → E2)
+    (hfhat_convex : ConvexOn ℝ Q1 fhat)
+    (hFhatDiff : ∀ x ∈ Q1, DifferentiableAt ℝ fhat x)
+    (hLipschitz : LipschitzOnWith (Real.toNNReal M) (fun x => fderiv ℝ fhat x) Q1)
+    (hμ : 0 < μ) (hσ2 : 0 < σ2) (hM : 0 ≤ M) (hconv : StrongConvexOn Q2 σ2 d2)
+    (hphi : ConvexOn ℝ Q2 phihat)
+    (hmax : ∀ x, IsSmoothedMaximizer Q2 A phihat d2 μ x (uμ x)) :
+    let fbar : E1 → ℝ := SmoothedObjective Q2 A phihat d2 μ fhat
+    let A' : E1 →ₗ[ℝ] Module.Dual ℝ E2 :=
+      { toFun := fun x => (A x).toLinearMap
+        map_add' := by
+          intro x y
+          ext u
+          simp
+        map_smul' := by
+          intro c x
+          ext u
+          simp }
+    ConvexOn ℝ Q1 fbar ∧
+      DifferentiableOn ℝ fbar Q1 ∧
+      (∀ x ∈ Q1,
+        fderiv ℝ fbar x =
+          fderiv ℝ fhat x + (AdjointOperator A' (uμ x)).toContinuousLinearMap) ∧
+      ∃ Lμ : ℝ,
+        Lμ = M + (1 / (μ * σ2)) * (OperatorNormDef A') ^ 2 ∧
+          LipschitzOnWith (Real.toNNReal Lμ) (fun x => fderiv ℝ fbar x) Q1 := by
+  classical
+  simp only
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · exact smoothedObjective_convexOn_of_isSmoothedMaximizer
+      (Q1 := Q1) (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2)
+      (fhat := fhat) (uμ := uμ) (hfhat_convex := hfhat_convex)
+      (hμ := hμ) (hσ2 := hσ2) (hconv := hconv) (hphi := hphi) (hmax := hmax)
+  · have hfhat_diff : DifferentiableOn ℝ fhat Q1 := by
+      intro x hx
+      exact (hFhatDiff x hx).differentiableWithinAt
+    exact smoothedObjective_differentiableOn_of_isSmoothedMaximizer
+      (Q1 := Q1) (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2)
+      (fhat := fhat) (uμ := uμ) (hfhat_diff := hfhat_diff)
+      (hμ := hμ) (hσ2 := hσ2) (hconv := hconv) (hphi := hphi) (hmax := hmax)
+  · exact smoothedObjective_fderiv_of_isSmoothedMaximizer
+      (Q1 := Q1) (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2)
+      (fhat := fhat) (uμ := uμ) (hμ := hμ) (hσ2 := hσ2) (hconv := hconv)
+      (hFhatDiff := hFhatDiff) (hmax := hmax) (hphi := hphi)
+  · exact smoothedObjective_lipschitz_gradient_of_isSmoothedMaximizer
+      (Q1 := Q1) (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2)
+      (M := M) (fhat := fhat) (uμ := uμ) (hμ := hμ) (hσ2 := hσ2)
+      (hM := hM) (hconv := hconv) (hFhatDiff := hFhatDiff)
+      (hLipschitz := hLipschitz) hmax hphi
+
+/-- Canonical bundled regularity statement for the smoothed objective, using
+`u_μ := smoothedMaximizer ...`. -/
+theorem smoothedObjective_properties {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q1 : Set E1) (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ))
+    (phihat d2 : E2 → ℝ) (μ σ2 M : ℝ) (fhat : E1 → ℝ)
+    (hfhat_convex : ConvexOn ℝ Q1 fhat) (hfhat_diff : DifferentiableOn ℝ fhat Q1)
+    (hQ1_open : IsOpen Q1)
+    (hLipschitz : LipschitzOnWith (Real.toNNReal M) (fun x => fderiv ℝ fhat x) Q1)
+    (hμ : 0 < μ) (hσ2 : 0 < σ2) (hM : 0 ≤ M) (hconv : StrongConvexOn Q2 σ2 d2)
+    (hphi : ConvexOn ℝ Q2 phihat)
+    (hQ2_closed : IsClosed Q2) (hQ2_bdd : Bornology.IsBounded Q2)
+    (hQ2_nonempty : Q2.Nonempty) (hphihat : ContinuousOn phihat Q2)
+    (hd2 : ContinuousOn d2 Q2) :
+    let fbar : E1 → ℝ := SmoothedObjective Q2 A phihat d2 μ fhat
+    let uμ : E1 → E2 :=
+      smoothedMaximizer Q2 A phihat d2 μ hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2
+    let A' : E1 →ₗ[ℝ] Module.Dual ℝ E2 :=
+      { toFun := fun x => (A x).toLinearMap
+        map_add' := by
+          intro x y
+          ext u
+          simp
+        map_smul' := by
+          intro c x
+          ext u
+          simp }
+    ConvexOn ℝ Q1 fbar ∧
+      DifferentiableOn ℝ fbar Q1 ∧
+      (∀ x ∈ Q1,
+        fderiv ℝ fbar x =
+          fderiv ℝ fhat x + (AdjointOperator A' (uμ x)).toContinuousLinearMap) ∧
+      ∃ Lμ : ℝ,
+        Lμ = M + (1 / (μ * σ2)) * (OperatorNormDef A') ^ 2 ∧
+          LipschitzOnWith (Real.toNNReal Lμ) (fun x => fderiv ℝ fbar x) Q1 := by
+  classical
+  simp only
+  have hFhatDiff : ∀ x ∈ Q1, DifferentiableAt ℝ fhat x := by
+    intro x hx
+    exact (hfhat_diff x hx).differentiableAt (hQ1_open.mem_nhds hx)
+  exact smoothedObjective_properties_of_isSmoothedMaximizer
+    (Q1 := Q1) (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2)
+    (M := M) (fhat := fhat)
+    (uμ := smoothedMaximizer Q2 A phihat d2 μ hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+    (hfhat_convex := hfhat_convex) (hFhatDiff := hFhatDiff)
+    (hLipschitz := hLipschitz) (hμ := hμ) (hσ2 := hσ2) (hM := hM)
+    (hconv := hconv) (hphi := hphi)
+    (hmax := smoothedMaximizer_isSmoothedMaximizer
+      (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ)
+      hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+
 /-- Definition 1.4.2.
 Let `Q1 ⊆ E1` be bounded, closed, and convex, and let `d1` be a prox-function on `Q1`, meaning
 it is continuous and `σ1`-strongly convex on `Q1` for some `σ1 > 0` with respect to `‖·‖_1`.
@@ -276,8 +708,9 @@ def IsProxDiameterBound {E1 : Type*} [NormedAddCommGroup E1] [NormedSpace ℝ E1
     (Q1 : Set E1) (d1 : E1 → ℝ) (D1 : ℝ) : Prop :=
   ∀ x ∈ Q1, d1 x ≤ D1
 
-/-- Linearization identity for the smoothed max-function under an adjoint derivative formula. -/
-lemma smoothedMaxFunction_linearization {E1 E2 : Type*} [NormedAddCommGroup E1]
+/-- Linearization identity for the smoothed max-function under an explicit adjoint derivative
+formula. This is the low-level helper theorem behind the more structural interfaces below. -/
+lemma smoothedMaxFunction_linearization_of_fderiv {E1 E2 : Type*} [NormedAddCommGroup E1]
     [NormedSpace ℝ E1] [FiniteDimensional ℝ E1] [NormedAddCommGroup E2] [NormedSpace ℝ E2]
     [FiniteDimensional ℝ E2] (Q2 : Set E2)
     (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ)) (phihat d2 : E2 → ℝ) (μ : ℝ) (uμ : E1 → E2)
@@ -334,6 +767,71 @@ lemma smoothedMaxFunction_linearization {E1 E2 : Type*} [NormedAddCommGroup E1]
             -phihat (uμ x) - μ * d2 (uμ x) := by
         ring
       simpa [hpairx] using hring
+
+/-- Linearization identity for the smoothed max-function along an abstract maximizing branch.
+The paper-facing canonical interface is `smoothedMaxFunction_linearization` below. -/
+private lemma smoothedMaxFunction_linearization_of_isSmoothedMaximizer {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ)) (phihat d2 : E2 → ℝ) (μ σ2 : ℝ)
+    (uμ : E1 → E2) (hμ : 0 < μ) (hσ2 : 0 < σ2) (hconv : StrongConvexOn Q2 σ2 d2)
+    (hphi : ConvexOn ℝ Q2 phihat)
+    (hmax : ∀ x, IsSmoothedMaximizer Q2 A phihat d2 μ x (uμ x)) :
+    ∀ x,
+      SmoothedMaxFunction Q2 A phihat d2 μ x -
+          DualPairing ((fderiv ℝ (SmoothedMaxFunction Q2 A phihat d2 μ) x).toLinearMap) x =
+        -phihat (uμ x) - μ * d2 (uμ x) := by
+  classical
+  let A' : E1 →ₗ[ℝ] Module.Dual ℝ E2 :=
+    { toFun := fun x => (A x).toLinearMap
+      map_add' := by
+        intro x y
+        ext u
+        simp
+      map_smul' := by
+        intro c x
+        ext u
+        simp }
+  have hderiv :
+      ∀ x,
+        fderiv ℝ (SmoothedMaxFunction Q2 A phihat d2 μ) x =
+          (AdjointOperator A' (uμ x)).toContinuousLinearMap := by
+    simpa [A'] using
+      (smoothedMaxFunction_fderiv_of_isSmoothedMaximizer
+        (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2)
+        (hμ := hμ) (hσ2 := hσ2) (hconv := hconv) (hphi := hphi) (uμ := uμ) (hmax := hmax))
+  have hpair : ∀ x u, DualPairing (AdjointOperator A' u) x = A x u := by
+    intro x u
+    simp [A', AdjointOperator, DualPairing]
+  exact smoothedMaxFunction_linearization_of_fderiv
+    (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ) (uμ := uμ) (A' := A')
+    (hmax := hmax) (hderiv := hderiv) (hpair := hpair)
+
+/-- Canonical linearization identity for the smoothed max-function, using the unique optimizer
+selected by `smoothedMaximizer`. -/
+lemma smoothedMaxFunction_linearization {E1 E2 : Type*} [NormedAddCommGroup E1]
+    [NormedSpace ℝ E1] [FiniteDimensional ℝ E1] [NormedAddCommGroup E2] [NormedSpace ℝ E2]
+    [FiniteDimensional ℝ E2] (Q2 : Set E2)
+    (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ)) (phihat d2 : E2 → ℝ) (μ σ2 : ℝ)
+    (hμ : 0 < μ) (hσ2 : 0 < σ2) (hconv : StrongConvexOn Q2 σ2 d2)
+    (hphi : ConvexOn ℝ Q2 phihat) (hQ2_closed : IsClosed Q2)
+    (hQ2_bdd : Bornology.IsBounded Q2) (hQ2_nonempty : Q2.Nonempty)
+    (hphihat : ContinuousOn phihat Q2) (hd2 : ContinuousOn d2 Q2) :
+    let uμ : E1 → E2 :=
+      smoothedMaximizer Q2 A phihat d2 μ hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2
+    ∀ x,
+      SmoothedMaxFunction Q2 A phihat d2 μ x -
+          DualPairing ((fderiv ℝ (SmoothedMaxFunction Q2 A phihat d2 μ) x).toLinearMap) x =
+        -phihat (uμ x) - μ * d2 (uμ x) := by
+  classical
+  simp only
+  exact smoothedMaxFunction_linearization_of_isSmoothedMaximizer
+    (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2)
+    (uμ := smoothedMaximizer Q2 A phihat d2 μ hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+    (hμ := hμ) (hσ2 := hσ2) (hconv := hconv) (hphi := hphi)
+    (hmax := smoothedMaximizer_isSmoothedMaximizer
+      (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ)
+      hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
 
 /-- Strong convexity on a set implies the set is convex. -/
 lemma convex_of_strongConvexOn {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
@@ -416,24 +914,12 @@ lemma sSup_image_nonneg {α : Type*} (s : Set α) (f : α → ℝ) (hbd : BddAbo
   have hle : f x ≤ sSup (f '' s) := le_csSup hbd hxmem
   exact le_trans (hnonneg x hx) hle
 
-/-- `z_k` is chosen as a minimizer of the auxiliary function defining `ψ_k` (Definition 1.3.5). -/
-axiom z_k_isMinOn {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [FiniteDimensional ℝ E] (Q : Set E) (f d : E → ℝ) (L σ : ℝ) (α : ℕ → ℝ)
-    (xSeq : ℕ → Q) (k : ℕ) :
-    IsMinOn
-      (fun z : E =>
-        (L / σ) * d z +
-          Finset.sum (Finset.range (k + 1)) (fun i =>
-            let xi : E := xSeq i
-            α i * (f xi + DualPairing ((fderiv ℝ f xi).toLinearMap) (z - xi)))) Q
-      (z_k Q f d L σ α xSeq k)
-
 /-- Rate bound for the optimal scheme after bounding the prox term by `D`. -/
 lemma fbar_rate_bound {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] {Q : Set E} {f d : E → ℝ} {L σ D : ℝ}
     (xSeq ySeq : ℕ → Q) (N : ℕ) (hL : 0 < L) (hσ : 0 < σ)
-    (hAlg : OptimalSchemeAlgorithm Q f d L σ xSeq ySeq) (hD : IsProxDiameterBound Q d D) {x : E}
-    (hx : x ∈ Q) :
+    (hAlg : OptimalSchemeAlgorithm Q f d L σ xSeq ySeq) (hD : IsProxDiameterBound Q d D)
+    {x : E} (hx : x ∈ Q) :
     f (ySeq N : E) ≤
       (4 * L * D) / (σ * (((N : ℝ) + 1) * ((N : ℝ) + 2))) +
         (2 / (((N : ℝ) + 1) * ((N : ℝ) + 2))) *
@@ -449,16 +935,14 @@ lemma fbar_rate_bound {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
         let xi : E := xSeq i
         α i * (f xi + DualPairing ((fderiv ℝ f xi).toLinearMap) (z - xi)))
   have hopt :=
-    (optimal_scheme_rate (xSeq := xSeq) (ySeq := ySeq) hAlg).1 N
+    (optimal_scheme_rate xSeq ySeq hAlg).1 N
+  rcases hAlg with
+    ⟨_, _, _, _, _, _, _, _, _, _, _, hzk_min_all, _⟩
   have hz_k :
       IsMinOn
-        (fun z : E =>
-          (L / σ) * d z +
-            Finset.sum (Finset.range (N + 1)) (fun i =>
-              let xi : E := xSeq i
-              α i * (f xi + DualPairing ((fderiv ℝ f xi).toLinearMap) (z - xi)))) Q
-        (z_k Q f d L σ α xSeq N) :=
-    z_k_isMinOn Q f d L σ α xSeq N
+        (z_k_objective Q f d L σ α xSeq N) Q
+        (z_k Q f d L σ α xSeq N) := by
+    simpa [α, z_k_objective] using hzk_min_all N
   have hmin' := isMinOn_iff.mp hz_k
   have hpsi_eq : psi_k Q f d L σ α xSeq N = Fk (z_k Q f d L σ α xSeq N) := by
     have hleast :
@@ -698,3 +1182,156 @@ lemma convex_support_grad {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     simp [gAff, AffineMap.lineMap_apply, vsub_eq_sub, vadd_eq_add]
   -- Rewrite back in terms of `u, v`.
   simpa [DualPairing, hAff0, hAff1, add_comm, add_left_comm, add_assoc] using hfinal
+
+/-- Linearization inequality for the smoothed objective along an abstract maximizing branch.
+This is the paper-facing Section 4 helper form before specializing to `smoothedMaximizer`. -/
+lemma smoothedObjective_linearization_of_isSmoothedMaximizer {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q1 : Set E1) (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ))
+    (fhat : E1 → ℝ) (phihat d2 : E2 → ℝ) (μ σ2 : ℝ) (uμ : E1 → E2)
+    (hQ1_open : IsOpen Q1) (hQ1_convex : Convex ℝ Q1)
+    (hfhat_convex : ConvexOn ℝ Q1 fhat) (hfhat_diff : DifferentiableOn ℝ fhat Q1)
+    (hphi : ConvexOn ℝ Q2 phihat) (hμ : 0 < μ) (hσ2 : 0 < σ2)
+    (hconv : StrongConvexOn Q2 σ2 d2) (hd2_nonneg : ∀ u ∈ Q2, 0 ≤ d2 u)
+    (hmax : ∀ x, IsSmoothedMaximizer Q2 A phihat d2 μ x (uμ x)) :
+    ∀ x ∈ Q1, ∀ y ∈ Q1,
+      SmoothedObjective Q2 A phihat d2 μ fhat y +
+          DualPairing
+            ((fderiv ℝ (SmoothedObjective Q2 A phihat d2 μ fhat) y).toLinearMap)
+            (x - y) ≤
+        fhat x + A x (uμ y) - phihat (uμ y) := by
+  classical
+  intro x hx y hy
+  set fμ : E1 → ℝ := SmoothedMaxFunction Q2 A phihat d2 μ with hfμ
+  let A' : E1 →ₗ[ℝ] Module.Dual ℝ E2 :=
+    { toFun := fun z => (A z).toLinearMap
+      map_add' := by
+        intro z w
+        ext u
+        simp
+      map_smul' := by
+        intro c z
+        ext u
+        simp }
+  have hFhatDiff : ∀ z ∈ Q1, DifferentiableAt ℝ fhat z := by
+    intro z hz
+    exact (hfhat_diff z hz).differentiableAt (hQ1_open.mem_nhds hz)
+  have hderivμ :
+      fderiv ℝ fμ y = (AdjointOperator A' (uμ y)).toContinuousLinearMap := by
+    simpa [hfμ, A'] using
+      (smoothedMaxFunction_fderiv_of_isSmoothedMaximizer
+        (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2)
+        (hμ := hμ) (hσ2 := hσ2) (hconv := hconv) (hphi := hphi) (uμ := uμ) (hmax := hmax) y)
+  have hhat :
+      fhat x ≥
+        fhat y + DualPairing ((fderiv ℝ fhat y).toLinearMap) (x - y) := by
+    have h :=
+      convex_support_grad (hQ_open := hQ1_open) (hQ_convex := hQ1_convex)
+        (hf_convex := hfhat_convex) (hf_diff := hfhat_diff) (u := x) (v := y) hx hy
+    simpa using h
+  have hlin0 :
+      fμ y - DualPairing ((fderiv ℝ fμ y).toLinearMap) y =
+        -phihat (uμ y) - μ * d2 (uμ y) := by
+    simpa [hfμ] using
+      (smoothedMaxFunction_linearization_of_isSmoothedMaximizer
+        (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2)
+        (uμ := uμ) (hμ := hμ) (hσ2 := hσ2) (hconv := hconv)
+        (hphi := hphi) (hmax := hmax) y)
+  have hderiv_lin :
+      DualPairing ((fderiv ℝ fμ y).toLinearMap) x = A x (uμ y) := by
+    have h' := congrArg (fun T : E1 →ₗ[ℝ] ℝ => T x) (congrArg ContinuousLinearMap.toLinearMap hderivμ)
+    simpa [A', AdjointOperator, DualPairing] using h'
+  have hμd2_nonneg : 0 ≤ μ * d2 (uμ y) := by
+    have hu : uμ y ∈ Q2 := (hmax y).1
+    exact mul_nonneg (le_of_lt hμ) (hd2_nonneg _ hu)
+  have hsub :
+      DualPairing ((fderiv ℝ fμ y).toLinearMap) (x - y) =
+        DualPairing ((fderiv ℝ fμ y).toLinearMap) x -
+          DualPairing ((fderiv ℝ fμ y).toLinearMap) y := by
+    simp [DualPairing, map_sub]
+  have hμ_lin :
+      fμ y + DualPairing ((fderiv ℝ fμ y).toLinearMap) (x - y) ≤
+        A x (uμ y) - phihat (uμ y) := by
+    calc
+      fμ y + DualPairing ((fderiv ℝ fμ y).toLinearMap) (x - y) =
+          (fμ y - DualPairing ((fderiv ℝ fμ y).toLinearMap) y) +
+            DualPairing ((fderiv ℝ fμ y).toLinearMap) x := by
+        simp [hsub]
+        ring
+      _ = (-phihat (uμ y) - μ * d2 (uμ y)) +
+            DualPairing ((fderiv ℝ fμ y).toLinearMap) x := by
+        simp [hlin0]
+      _ = (-phihat (uμ y) - μ * d2 (uμ y)) + A x (uμ y) := by
+        simp [hderiv_lin]
+      _ ≤ A x (uμ y) - phihat (uμ y) := by
+        linarith [hμd2_nonneg]
+  have hderiv_bar :
+      fderiv ℝ (SmoothedObjective Q2 A phihat d2 μ fhat) y =
+        fderiv ℝ fhat y + fderiv ℝ fμ y := by
+    calc
+      fderiv ℝ (SmoothedObjective Q2 A phihat d2 μ fhat) y =
+          fderiv ℝ fhat y + (AdjointOperator A' (uμ y)).toContinuousLinearMap := by
+        simpa [A'] using
+          (smoothedObjective_fderiv_of_isSmoothedMaximizer
+            (Q1 := Q1) (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2)
+            (μ := μ) (σ2 := σ2) (fhat := fhat) (uμ := uμ)
+            (hμ := hμ) (hσ2 := hσ2) (hconv := hconv)
+            (hFhatDiff := hFhatDiff) (hmax := hmax) (hphi := hphi) y hy)
+      _ = fderiv ℝ fhat y + fderiv ℝ fμ y := by
+        rw [hderivμ]
+  have hsplit :
+      SmoothedObjective Q2 A phihat d2 μ fhat y +
+          DualPairing
+            ((fderiv ℝ (SmoothedObjective Q2 A phihat d2 μ fhat) y).toLinearMap)
+            (x - y) =
+        (fhat y + DualPairing ((fderiv ℝ fhat y).toLinearMap) (x - y)) +
+          (fμ y + DualPairing ((fderiv ℝ fμ y).toLinearMap) (x - y)) := by
+    have hpair' :
+        DualPairing
+            ((fderiv ℝ (SmoothedObjective Q2 A phihat d2 μ fhat) y).toLinearMap)
+            (x - y) =
+          DualPairing ((fderiv ℝ fhat y).toLinearMap) (x - y) +
+            DualPairing ((fderiv ℝ fμ y).toLinearMap) (x - y) := by
+      simp [hderiv_bar, DualPairing]
+    simp [SmoothedObjective, hfμ, hpair']
+    ring
+  have hsum := add_le_add hhat hμ_lin
+  linarith [hsum, hsplit]
+
+/-- Canonical linearization inequality for the smoothed objective, using the unique optimizer
+selected by `smoothedMaximizer`. -/
+lemma smoothedObjective_linearization {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q1 : Set E1) (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ))
+    (fhat : E1 → ℝ) (phihat d2 : E2 → ℝ) (μ σ2 : ℝ)
+    (hQ2_closed : IsClosed Q2) (hQ2_bdd : Bornology.IsBounded Q2)
+    (hQ2_nonempty : Q2.Nonempty) (hphihat : ContinuousOn phihat Q2) (hd2 : ContinuousOn d2 Q2)
+    (hQ1_open : IsOpen Q1) (hQ1_convex : Convex ℝ Q1)
+    (hfhat_convex : ConvexOn ℝ Q1 fhat) (hfhat_diff : DifferentiableOn ℝ fhat Q1)
+    (hphi : ConvexOn ℝ Q2 phihat) (hμ : 0 < μ) (hσ2 : 0 < σ2)
+    (hconv : StrongConvexOn Q2 σ2 d2) (hd2_nonneg : ∀ u ∈ Q2, 0 ≤ d2 u) :
+    ∀ x ∈ Q1, ∀ y ∈ Q1,
+      SmoothedObjective Q2 A phihat d2 μ fhat y +
+          DualPairing
+            ((fderiv ℝ (SmoothedObjective Q2 A phihat d2 μ fhat) y).toLinearMap)
+            (x - y) ≤
+        fhat x +
+          A x
+            ((smoothedMaximizer Q2 A phihat d2 μ
+              hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2) y) -
+          phihat
+            ((smoothedMaximizer Q2 A phihat d2 μ
+              hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2) y) := by
+  classical
+  exact smoothedObjective_linearization_of_isSmoothedMaximizer
+    (Q1 := Q1) (Q2 := Q2) (A := A) (fhat := fhat) (phihat := phihat) (d2 := d2)
+    (μ := μ) (σ2 := σ2)
+    (uμ := smoothedMaximizer Q2 A phihat d2 μ hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+    (hQ1_open := hQ1_open) (hQ1_convex := hQ1_convex) (hfhat_convex := hfhat_convex)
+    (hfhat_diff := hfhat_diff) (hphi := hphi) (hμ := hμ) (hσ2 := hσ2) (hconv := hconv)
+    (hd2_nonneg := hd2_nonneg)
+    (hmax := smoothedMaximizer_isSmoothedMaximizer
+      (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ)
+      hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)

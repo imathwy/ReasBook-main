@@ -572,6 +572,7 @@ lemma maxAbs_admitsExplicitMaxStructure_succ {E1 : Type*} [NormedAddCommGroup E1
             _ = fhat x + sSup ((fun u => A x u - phihat u) '' Q2) := by simp [fhat]
   simpa [f] using hf
 
+set_option linter.flexible false in
 /-- Proposition 1.2.1.
 Let `a_1, …, a_m ∈ E1*` and `b ∈ ℝ^m`, and define
 `f(x) = max_{1 ≤ j ≤ m} |⟪a_j, x⟫_1 - b^(j)|` (equation (eq:ex1:f_def)). Then `f` admits explicit

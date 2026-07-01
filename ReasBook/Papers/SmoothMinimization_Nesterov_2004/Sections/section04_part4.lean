@@ -896,7 +896,7 @@ lemma StrongConvexOn.const_add {E : Type*} [NormedAddCommGroup E] [NormedSpace �
   have hEq :
       c + (a • f x + b • f y - P) = a • (c + f x) + b • (c + f y) - P := by
     -- rewrite `c` as `a*c + b*c` and expand the scalar multiplications
-    simp (config := {contextual := false}) [smul_eq_mul]
+    simp only [smul_eq_mul]
     calc
       c + (a * f x + b * f y - P) = (a * c + b * c) + (a * f x + b * f y - P) := by
         nth_rewrite 1 [hc]

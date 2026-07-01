@@ -1,7 +1,0 @@
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "run-v0",
-  "type": "object",
-  "required": ["schema_version", "run_id", "task_id", "corpus_version", "config_version", "evidence", "decision"]
-}
-

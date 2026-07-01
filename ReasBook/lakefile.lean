@@ -14,15 +14,14 @@ package «ReasBook» where
     ⟨`weak.linter.unnecessarySimpa, false⟩
   ]
 
-require mathlib from git
-  "https://github.com/leanprover-community/mathlib4.git" @ "v4.26.0"
+require mathlib from
+  FilePath.mk ".." / ".shared-lake" / ".lake" / "packages" / "mathlib"
 
 -- Register doc-gen4's `docs` facet in this main project.
--- Pin to Lean v4.26.0-compatible release so `ReasBook:docs` is available.
 require «doc-gen4» from git
-  "https://github.com/leanprover/doc-gen4" @ "v4.26.0"
+  "https://github.com/leanprover/doc-gen4" @ "v4.30.0"
 
-require subverso from git "https://github.com/leanprover/subverso" @ "eb77622e97e942ba2cfe02f60637705fc2d9481b"
+require subverso from git "https://github.com/leanprover/subverso" @ "v4.30.0"
 require MD4Lean from git "https://github.com/acmepjz/md4lean" @ "main"
 
 @[default_target]
@@ -31,6 +30,23 @@ lean_lib «ReasBook» where
 lean_lib Books where
 
 lean_lib Papers where
+
+-- Books from ALLBOOKS
+lean_lib AchimKlenkeLean where
+lean_lib BauschkeLean where
+lean_lib CombinatorialGroupTheory where
+lean_lib FirstOrderMethodsinOptimization where
+lean_lib MayConciseRevised where
+lean_lib Nesterov where
+lean_lib OptimizationResearch where
+lean_lib Reaslib where
+lean_lib RiemannSurfaces where
+lean_lib Serre where
+lean_lib SmoothManifoldsLee where
+lean_lib cartan where
+lean_lib chapter1_reference_format where
+lean_lib stacks_project where
+lean_lib stacks_proof where
 
 lean_exe "literate-extract" where
   root := `LiterateExtract

@@ -665,8 +665,7 @@ theorem continuousLocation_smoothedFunction_explicit (p n : ℕ) (m : Fin p → 
             exact abs_nonneg _
           have hγ0 : 0 ≤ γstar j := by
             -- `γstar j = τ/μ` in this branch
-            simp [γstar, hτ]
-            exact div_nonneg hτ_nonneg (le_of_lt hμ)
+            simpa only [γstar, hτ] using div_nonneg hτ_nonneg (le_of_lt hμ)
           have hγ1 : γstar j ≤ 1 := by
             -- `τ/μ ≤ 1` when `τ ≤ μ` and `μ > 0`
             have hdiv : (∑ i, |x i - c j i|) / μ ≤ 1 := (div_le_one hμ).2 hτ

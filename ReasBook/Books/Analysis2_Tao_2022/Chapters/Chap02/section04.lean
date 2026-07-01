@@ -15,14 +15,14 @@ say that `X` is disconnected iff there exist disjoint non-empty open sets `V` an
 that `V ∪ W = X` (equivalently, `X` contains a non-empty proper subset that is both closed and
 open). We say that `X` is connected iff it is non-empty and not disconnected; the empty set is
 declared neither connected nor disconnected. -/
-def IsConnectedMetricSpace (X : Type*) [MetricSpace X] : Prop :=
+def TaoIsConnectedMetricSpace (X : Type*) [MetricSpace X] : Prop :=
   Nonempty X ∧ ¬ IsDisconnectedMetricSpace X
 
 /-- Definition 2.8: [Connected sets] Let `(X, d)` be a metric space and let `Y ⊆ X`. Equip `Y`
 with the subspace metric. The subset `Y` is called connected if `(Y, d_Y)` is connected; it is
 called disconnected if `(Y, d_Y)` is disconnected. -/
-def IsConnectedSubset (X : Type*) [MetricSpace X] (Y : Set X) : Prop :=
-  IsConnectedMetricSpace (Subtype Y)
+def TaoIsConnectedSubset (X : Type*) [MetricSpace X] (Y : Set X) : Prop :=
+  TaoIsConnectedMetricSpace (Subtype Y)
 
 /-- A subset is disconnected when its subtype with the subspace metric is a disconnected metric
 space. -/
@@ -80,7 +80,7 @@ lemma helperForTheorem_2_8_isDisconnectedMetricSpace_iff_not_isPreconnected_univ
 /-- Helper for Theorem 2.8: connectedness of a metric space via connectedness of the universal set. -/
 lemma helperForTheorem_2_8_isConnectedMetricSpace_iff_isConnected_univ
     (Y : Type*) [MetricSpace Y] :
-    IsConnectedMetricSpace Y ↔ IsConnected (Set.univ : Set Y) := by
+    TaoIsConnectedMetricSpace Y ↔ IsConnected (Set.univ : Set Y) := by
   classical
   constructor
   · intro hconn
@@ -105,7 +105,7 @@ lemma helperForTheorem_2_8_isConnectedMetricSpace_iff_isConnected_univ
 
 /-- Helper for Theorem 2.8: connectedness of a subset of `Real` via `IsConnected` of the set. -/
 lemma helperForTheorem_2_8_isConnectedSubset_real_iff_isConnected (X : Set Real) :
-    IsConnectedSubset Real X ↔ IsConnected X := by
+    TaoIsConnectedSubset Real X ↔ IsConnected X := by
   constructor
   · intro hconn
     have hconn' : IsConnected (Set.univ : Set (Subtype X)) :=
@@ -155,7 +155,7 @@ equivalent: (a) `X` is connected; (b) whenever `x, y ∈ X` and `x < y`, the int
 contained in `X`; (c) `X` is an interval. -/
 theorem connected_subset_real_tfae (X : Set Real) (hX : X.Nonempty) :
     List.TFAE
-      [IsConnectedSubset Real X,
+      [TaoIsConnectedSubset Real X,
         ∀ ⦃x y : Real⦄, x ∈ X → y ∈ X → x < y → Set.Icc x y ⊆ X,
         Set.OrdConnected X] := by
   classical
@@ -181,9 +181,9 @@ iff for every `x, y ∈ E` there exists a continuous function `γ : [0, 1] → E
 def IsPathConnectedSubset (X : Type*) [MetricSpace X] (E : Set X) : Prop :=
   IsPathConnected E
 
-/-- Helper for Theorem 2.9: `IsConnectedSubset` is equivalent to `IsConnected`. -/
+/-- Helper for Theorem 2.9: `TaoIsConnectedSubset` is equivalent to `IsConnected`. -/
 lemma helperForTheorem_2_9_isConnectedSubset_iff_isConnected (X : Type*) [MetricSpace X]
-    (E : Set X) : IsConnectedSubset X E ↔ IsConnected E := by
+    (E : Set X) : TaoIsConnectedSubset X E ↔ IsConnected E := by
   constructor
   · intro hconn
     have hconn' : IsConnected (Set.univ : Set (Subtype E)) :=
@@ -208,8 +208,8 @@ lemma helperForTheorem_2_9_isConnected_image_of_continuous {X Y : Type*} [Metric
 /-- Theorem 2.9: [Continuity preserves connectedness] Let `f : X → Y` be continuous between metric
 spaces. If `E` is a connected subset of `X`, then `f(E)` is a connected subset of `Y`. -/
 theorem continuous_image_connected_subset {X Y : Type*} [MetricSpace X] [MetricSpace Y]
-    {f : X → Y} (hf : Continuous f) {E : Set X} (hE : IsConnectedSubset X E) :
-    IsConnectedSubset Y (f '' E) := by
+    {f : X → Y} (hf : Continuous f) {E : Set X} (hE : TaoIsConnectedSubset X E) :
+    TaoIsConnectedSubset Y (f '' E) := by
   have hconn : IsConnected E :=
     (helperForTheorem_2_9_isConnectedSubset_iff_isConnected X E).1 hE
   have himage : IsConnected (f '' E) :=
@@ -220,7 +220,7 @@ theorem continuous_image_connected_subset {X Y : Type*} [MetricSpace X] [MetricS
 be continuous, and let `E ⊆ X` be connected. For any `a, b ∈ E` and any `y ∈ ℝ` satisfying either
 `f(a) ≤ y ≤ f(b)` or `f(a) ≥ y ≥ f(b)`, there exists `c ∈ E` such that `f(c) = y`. -/
 theorem intermediate_value_connected_subset {X : Type*} [MetricSpace X] {f : X → ℝ}
-    (hf : Continuous f) {E : Set X} (hE : IsConnectedSubset X E) {a b : X} (ha : a ∈ E)
+    (hf : Continuous f) {E : Set X} (hE : TaoIsConnectedSubset X E) {a b : X} (ha : a ∈ E)
     (hb : b ∈ E) {y : ℝ} (hy : f a ≤ y ∧ y ≤ f b ∨ f b ≤ y ∧ y ≤ f a) :
     ∃ c ∈ E, f c = y := by
   have hconn : IsConnected E :=
@@ -325,7 +325,7 @@ equipped with the discrete metric `d_disc(y1,y2)=0` if `y1=y2` and `d_disc(y1,y2
 For a function `f : X → Y`, the following are equivalent: (1) `f` is continuous; (2) `f` is
 constant. -/
 theorem continuous_iff_constant_of_connected_discrete {X Y : Type*} [MetricSpace X] [MetricSpace Y]
-    (hX : IsConnectedMetricSpace X)
+    (hX : TaoIsConnectedMetricSpace X)
     (hdisc : ∀ y1 y2 : Y, dist y1 y2 = discreteMetric (X := Y) y1 y2) (f : X → Y) :
     Continuous f ↔ ∀ x1 x2 : X, f x1 = f x2 := by
   classical
@@ -335,7 +335,7 @@ theorem continuous_iff_constant_of_connected_discrete {X Y : Type*} [MetricSpace
       (helperForTheorem_2_8_isConnectedMetricSpace_iff_isConnected_univ (Y := X)).1 hX
     have hconnImage : IsConnected (f '' (Set.univ : Set X)) :=
       helperForTheorem_2_9_isConnected_image_of_continuous (f := f) hf hconnX
-    have hconnSub : IsConnectedSubset Y (f '' (Set.univ : Set X)) :=
+    have hconnSub : TaoIsConnectedSubset Y (f '' (Set.univ : Set X)) :=
       (helperForTheorem_2_9_isConnectedSubset_iff_isConnected Y (f '' (Set.univ : Set X))).2
         hconnImage
     by_contra hne
@@ -362,7 +362,7 @@ theorem continuous_iff_constant_of_connected_discrete {X Y : Type*} [MetricSpace
 /-- Proposition 2.20: every non-empty path-connected set in a metric space is connected. -/
 theorem connected_subset_of_nonempty_path_connected {X : Type*} [MetricSpace X] {E : Set X}
     (hE_nonempty : E.Nonempty) (hE_path : IsPathConnectedSubset X E) :
-    IsConnectedSubset X E := by
+    TaoIsConnectedSubset X E := by
   have hpath : IsPathConnected E := by
     simpa [IsPathConnectedSubset] using hE_path
   have hpre : IsPreconnected E :=
@@ -377,8 +377,8 @@ theorem connected_subset_of_nonempty_path_connected {X : Type*} [MetricSpace X] 
 path-connected, then the closure `closure E` of `E` is connected. -/
 theorem connected_closure_of_path_connected_subset {X : Type*} [MetricSpace X] {E : Set X}
     (hE_nonempty : E.Nonempty) (hE_path : IsPathConnectedSubset X E) :
-    IsConnectedSubset X (closure E) := by
-  have hconnsubset : IsConnectedSubset X E :=
+    TaoIsConnectedSubset X (closure E) := by
+  have hconnsubset : TaoIsConnectedSubset X E :=
     connected_subset_of_nonempty_path_connected (X := X) (E := E) hE_nonempty hE_path
   have hconn : IsConnected E :=
     (helperForTheorem_2_9_isConnectedSubset_iff_isConnected X E).1 hconnsubset
@@ -390,7 +390,7 @@ theorem connected_closure_of_path_connected_subset {X : Type*} [MetricSpace X] {
 /-- Proposition 2.21: Let `(X, d)` be a metric space and let `E ⊆ X` be connected. Then the
 closure `closure E` is connected. -/
 theorem connected_closure_of_connected_subset {X : Type*} [MetricSpace X] {E : Set X}
-    (hE : IsConnectedSubset X E) : IsConnectedSubset X (closure E) := by
+    (hE : TaoIsConnectedSubset X E) : TaoIsConnectedSubset X (closure E) := by
   have hconn : IsConnected E :=
     (helperForTheorem_2_9_isConnectedSubset_iff_isConnected X E).1 hE
   have hconnclosure : IsConnected (closure E) :=
@@ -400,7 +400,7 @@ theorem connected_closure_of_connected_subset {X : Type*} [MetricSpace X] {E : S
 
 /-- Relation on a metric space given by membership in a common connected subset. -/
 def ConnectedInSubset (X : Type*) [MetricSpace X] (x y : X) : Prop :=
-  ∃ C : Set X, IsConnectedSubset X C ∧ x ∈ C ∧ y ∈ C
+  ∃ C : Set X, TaoIsConnectedSubset X C ∧ x ∈ C ∧ y ∈ C
 
 /-- The equivalence class of a point under `ConnectedInSubset`. -/
 def ConnectedInSubsetClass (X : Type*) [MetricSpace X] (x : X) : Set X :=
@@ -482,7 +482,7 @@ subset `C ⊆ X` with `x ∈ C` and `y ∈ C`. Then `∼` is an equivalence rela
 each `x ∈ X`, the equivalence class `[x] = {y ∈ X : y ∼ x}` is connected and closed in `X`. -/
 theorem connectedInSubset_equivalence_and_class_connected_closed (X : Type*) [MetricSpace X] :
     Equivalence (ConnectedInSubset X) ∧
-      ∀ x : X, IsConnectedSubset X (ConnectedInSubsetClass X x) ∧
+      ∀ x : X, TaoIsConnectedSubset X (ConnectedInSubsetClass X x) ∧
         IsClosed (ConnectedInSubsetClass X x) := by
   refine ⟨?_, ?_⟩
   · exact helperForProposition_2_22_equivalence_connectedInSubset (X := X)
@@ -490,7 +490,7 @@ theorem connectedInSubset_equivalence_and_class_connected_closed (X : Type*) [Me
     have hclass : ConnectedInSubsetClass X x = connectedComponent x :=
       helperForProposition_2_22_class_eq_connectedComponent (X := X) x
     have hconn : IsConnected (connectedComponent x) := isConnected_connectedComponent
-    have hconnSub : IsConnectedSubset X (connectedComponent x) :=
+    have hconnSub : TaoIsConnectedSubset X (connectedComponent x) :=
       (helperForTheorem_2_9_isConnectedSubset_iff_isConnected X (connectedComponent x)).2 hconn
     have hclosed : IsClosed (connectedComponent x) := isClosed_connectedComponent
     refine ⟨?_, ?_⟩

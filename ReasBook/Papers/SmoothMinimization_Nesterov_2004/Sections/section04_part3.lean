@@ -12,8 +12,10 @@ Assume the structural model (2.2) and that `fhat` is differentiable with M-Lipsc
 (4.1) with `μ = μ(N) = (2‖A‖_{1,2}/(N+1)) * sqrt(D1/(σ1 σ2 D2))` (equation (thm3_muN)). After `N`
 iterations define `\hat x := y_N` and
 `\hat u := ∑_{i=0}^N 2(i+1)/((N+1)(N+2)) u_μ(x_i)` (4.2). Then `0 ≤ f(\hat x) - φ(\hat u)` and the
-duality-gap bound (4.3) holds, and consequently the ε-solution bound (4.4) holds. -/
-theorem algorithm311_duality_gap_bound {E1 E2 : Type*} [NormedAddCommGroup E1]
+duality-gap bound (4.3) holds, and consequently the ε-solution bound (4.4) holds, for a chosen
+maximizing branch. This is the general-branch helper form. -/
+private theorem algorithm311_duality_gap_bound_of_isSmoothedMaximizer {E1 E2 : Type*}
+    [NormedAddCommGroup E1]
     [NormedSpace ℝ E1] [FiniteDimensional ℝ E1] [NormedAddCommGroup E2] [NormedSpace ℝ E2]
     [FiniteDimensional ℝ E2] (Q1 : Set E1) (Q2 : Set E2)
     (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ)) (fhat : E1 → ℝ) (phihat : E2 → ℝ)
@@ -52,17 +54,12 @@ theorem algorithm311_duality_gap_bound {E1 E2 : Type*} [NormedAddCommGroup E1]
     ConvexOn ℝ Q1 fhat →
     DifferentiableOn ℝ fhat Q1 →
     ConvexOn ℝ Q2 phihat →
-    (∀ x,
-      fderiv ℝ (SmoothedMaxFunction Q2 A phihat d2 μ) x =
-        (AdjointOperator A' (uμ x)).toContinuousLinearMap) →
+    0 < μ →
     0 ≤ M →
     0 ≤ D1 →
     0 < M + (1 / (μ * σ2)) * (OperatorNormDef A') ^ 2 →
     IsClosed Q1 →
     IsOpen Q1 →
-    ConvexOn ℝ Q1 fbar →
-    DifferentiableOn ℝ fbar Q1 →
-    0 ≤ μ →
     (∀ u ∈ Q2, 0 ≤ d2 u) →
     (∀ x, BddAbove ((fun u => A x u - phihat u) '' Q2)) →
     BddAbove (d2 '' Q2) →
@@ -80,9 +77,8 @@ theorem algorithm311_duality_gap_bound {E1 E2 : Type*} [NormedAddCommGroup E1]
   classical
   dsimp
   intro hLipschitz hσ1 hσ2 hconv1 hconv2 hD1 hAlg hmax hhatudef
-    hfhat_convex hfhat_diff hphihat_convex hderivμ hM_nonneg hD1_nonneg hL_pos
-    hQ1_closed hQ1_open hfbar_convex hfbar_diff hμ_nonneg hd2_nonneg hbd0 hbd_d2 hQ2_nonempty
-    hbdBelow
+    hfhat_convex hfhat_diff hphihat_convex hμ_pos hM_nonneg hD1_nonneg hL_pos
+    hQ1_closed hQ1_open hd2_nonneg hbd0 hbd_d2 hQ2_nonempty hbdBelow
   set A' : E1 →ₗ[ℝ] Module.Dual ℝ E2 :=
     { toFun := fun x => (A x).toLinearMap
       map_add' := by
@@ -99,7 +95,7 @@ theorem algorithm311_duality_gap_bound {E1 E2 : Type*} [NormedAddCommGroup E1]
   set f : E1 → ℝ := fun x => fhat x + sSup ((fun u => A x u - phihat u) '' Q2) with hf
   set φ : Q2 → ℝ := AdjointFormPotential Q1 Q2 A fhat phihat with hφ
   have hμ_nonneg' : 0 ≤ μ := by
-    simpa [hA', hμ_def] using hμ_nonneg
+    exact le_of_lt hμ_pos
   have hD2_nonneg : 0 ≤ sSup (d2 '' Q2) := by
     refine sSup_image_nonneg (s := Q2) (f := d2) (hbd := hbd_d2) (hne := hQ2_nonempty)
       ?_
@@ -161,9 +157,6 @@ theorem algorithm311_duality_gap_bound {E1 E2 : Type*} [NormedAddCommGroup E1]
       simpa [denom] using mul_pos h1 h2
     have hcoef : (2 / denom) * (denom / 2) = (1 : ℝ) := by
       field_simp [denom, hdenom_pos.ne']
-    have hpair : ∀ x u, DualPairing (AdjointOperator A' u) x = A x u := by
-      intro x u
-      simp [AdjointOperator, DualPairing, hA']
     have hbound_all :
         ∀ x ∈ Q1,
           SmoothedObjective Q2 A phihat d2 μ fhat (ySeq N : E1) + phihat hatu -
@@ -174,12 +167,14 @@ theorem algorithm311_duality_gap_bound {E1 E2 : Type*} [NormedAddCommGroup E1]
           (f := SmoothedObjective Q2 A phihat d2 μ fhat) (d := d1) (L := L) (σ := σ1) (D := D1)
           (hL := hL_pos') (hσ := hσ1) (hAlg := hAlg) (hD := hD1) hx
       have hsum_bound :=
-        weighted_sum_bound_hatu (Q1 := Q1) (Q2 := Q2) (A := A) (fhat := fhat)
-          (phihat := phihat) (d2 := d2) (μ := μ) (uμ := uμ) (A' := A') (xSeq := xSeq) (N := N)
+        weighted_sum_bound_hatu_of_isSmoothedMaximizer
+          (Q1 := Q1) (Q2 := Q2) (A := A) (fhat := fhat)
+          (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2)
+          (uμ := uμ) (xSeq := xSeq) (N := N)
           (hatu := hatu) hhatudef (hQ1_open := hQ1_open) (hQ1_convex := hQ1_convex)
-          (hfhat_convex := hfhat_convex) (hfhat_diff := hfhat_diff) (hfbar_diff := hfbar_diff)
-          (hphihat_convex := hphihat_convex) (hμ_nonneg := hμ_nonneg) (hd2_nonneg := hd2_nonneg)
-          (hmax := hmax) (hderivμ := hderivμ) (hpair := hpair) x hx
+          (hfhat_convex := hfhat_convex) (hfhat_diff := hfhat_diff)
+          (hphihat_convex := hphihat_convex) (hμ := hμ_pos) (hσ2 := hσ2)
+          (hconv := hconv2) (hd2_nonneg := hd2_nonneg) (hmax := hmax) x hx
       have hcoef_nonneg : 0 ≤ 2 / denom := by
         exact div_nonneg (by norm_num) (le_of_lt hdenom_pos)
       have hsum_mul :=
@@ -528,3 +523,270 @@ theorem algorithm311_duality_gap_bound {E1 E2 : Type*} [NormedAddCommGroup E1]
       rw [div_mul_eq_div_div (4 * M * D1) σ1 (((N : ℝ) + 1) ^ (2 : ℕ))]
     exact le_trans hgap_bound' (le_of_eq hrhs)
   linarith [hgap_bound'', hε_bound]
+
+/-- Compatibility-layer version of Theorem 1.4.1 that still takes an explicit averaged dual point
+`\hat u` together with its defining equality. -/
+theorem algorithm311_duality_gap_bound_hatu {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q1 : Set E1) (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ)) (fhat : E1 → ℝ)
+    (phihat : E2 → ℝ) (d1 : E1 → ℝ) (d2 : E2 → ℝ) (σ1 σ2 M D1 : ℝ)
+    (xSeq ySeq : ℕ → Q1) (N : ℕ) (hatu : Q2)
+    (hQ2_closed : IsClosed Q2) (hQ2_bdd : Bornology.IsBounded Q2)
+    (hQ2_nonempty : Q2.Nonempty) (hphihat : ContinuousOn phihat Q2)
+    (hd2 : ContinuousOn d2 Q2) :
+    let A' : E1 →ₗ[ℝ] Module.Dual ℝ E2 :=
+      { toFun := fun x => (A x).toLinearMap
+        map_add' := by
+          intro x y
+          ext u
+          simp
+        map_smul' := by
+          intro c x
+          ext u
+          simp }
+    let D2 : ℝ := sSup (d2 '' Q2)
+    let μ : ℝ :=
+      (2 * OperatorNormDef A' / ((N : ℝ) + 1)) *
+        Real.sqrt (D1 / (σ1 * σ2 * D2))
+    let uμ : E1 → E2 :=
+      smoothedMaximizer Q2 A phihat d2 μ hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2
+    let fbar : E1 → ℝ := SmoothedObjective Q2 A phihat d2 μ fhat
+    let f : E1 → ℝ := fun x => fhat x + sSup ((fun u => A x u - phihat u) '' Q2)
+    let φ : Q2 → ℝ := AdjointFormPotential Q1 Q2 A fhat phihat
+    LipschitzOnWith (Real.toNNReal M) (fun x => fderiv ℝ fhat x) Q1 →
+    0 < σ1 →
+    0 < σ2 →
+    StrongConvexOn Q1 σ1 d1 →
+    StrongConvexOn Q2 σ2 d2 →
+    IsProxDiameterBound Q1 d1 D1 →
+    OptimalSchemeAlgorithm Q1 fbar d1
+      (M + (1 / (μ * σ2)) * (OperatorNormDef A') ^ 2) σ1 xSeq ySeq →
+    (hatu : E2) =
+      Finset.sum (Finset.range (N + 1)) (fun i =>
+        (2 * ((i : ℝ) + 1) / (((N : ℝ) + 1) * ((N : ℝ) + 2))) •
+          uμ (xSeq i : E1)) →
+    ConvexOn ℝ Q1 fhat →
+    DifferentiableOn ℝ fhat Q1 →
+    ConvexOn ℝ Q2 phihat →
+    0 < μ →
+    0 ≤ M →
+    0 ≤ D1 →
+    0 < M + (1 / (μ * σ2)) * (OperatorNormDef A') ^ 2 →
+    IsClosed Q1 →
+    IsOpen Q1 →
+    (∀ u ∈ Q2, 0 ≤ d2 u) →
+    (∀ x, BddAbove ((fun u => A x u - phihat u) '' Q2)) →
+    BddAbove (d2 '' Q2) →
+    (∀ u, BddBelow ((fun x => A x u + fhat x) '' Q1)) →
+    0 ≤ f (ySeq N : E1) - φ hatu ∧
+      f (ySeq N : E1) - φ hatu ≤
+        (4 * OperatorNormDef A' / ((N : ℝ) + 1)) * Real.sqrt (D1 * D2 / (σ1 * σ2)) +
+          (4 * M * D1) / (σ1 * ((N : ℝ) + 1) ^ (2 : ℕ)) ∧
+      ∀ ε > 0,
+        (N : ℝ) ≥
+          (4 * OperatorNormDef A' / ε) * Real.sqrt (D1 * D2 / (σ1 * σ2)) +
+            2 * Real.sqrt (M * D1 / (σ1 * ε)) →
+          f (ySeq N : E1) - φ hatu ≤ ε := by
+  classical
+  simp only
+  intro hLipschitz hσ1 hσ2 hconv1 hconv2 hD1 hAlg hhatudef
+    hfhat_convex hfhat_diff hphihat_convex hμ_pos hM_nonneg hD1_nonneg hL_pos
+    hQ1_closed hQ1_open hd2_nonneg hbd0 hbd_d2 hbdBelow
+  let A' : E1 →ₗ[ℝ] Module.Dual ℝ E2 :=
+    { toFun := fun x => (A x).toLinearMap
+      map_add' := by
+        intro x y
+        ext u
+        simp
+      map_smul' := by
+        intro c x
+        ext u
+        simp }
+  let μ : ℝ :=
+    (2 * OperatorNormDef A' / ((N : ℝ) + 1)) *
+      Real.sqrt (D1 / (σ1 * σ2 * sSup (d2 '' Q2)))
+  let uμ : E1 → E2 := smoothedMaximizer Q2 A phihat d2 μ hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2
+  have hmax : ∀ x, IsSmoothedMaximizer Q2 A phihat d2 μ x (uμ x) := by
+    simpa [uμ] using
+      (smoothedMaximizer_isSmoothedMaximizer (Q2 := Q2) (A := A) (phihat := phihat)
+        (d2 := d2) (μ := μ) hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+  simpa [A', μ, uμ] using
+    (algorithm311_duality_gap_bound_of_isSmoothedMaximizer
+      (Q1 := Q1) (Q2 := Q2) (A := A) (fhat := fhat)
+      (phihat := phihat) (d1 := d1) (d2 := d2) (σ1 := σ1) (σ2 := σ2) (M := M)
+      (D1 := D1) (xSeq := xSeq) (ySeq := ySeq) (uμ := uμ) (N := N) (hatu := hatu)
+      hLipschitz hσ1 hσ2 hconv1 hconv2 hD1 hAlg hmax hhatudef hfhat_convex hfhat_diff
+      hphihat_convex hμ_pos hM_nonneg hD1_nonneg hL_pos hQ1_closed hQ1_open
+      hd2_nonneg hbd0 hbd_d2 hQ2_nonempty hbdBelow)
+
+/-- Paper-facing version of Theorem 1.4.1 where `\hat u` is defined canonically by the weighted
+average (4.2), instead of being passed in together with a separate defining equality. -/
+theorem algorithm311_duality_gap_bound_averagedDualPoint {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q1 : Set E1) (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ)) (fhat : E1 → ℝ)
+    (phihat : E2 → ℝ) (d1 : E1 → ℝ) (d2 : E2 → ℝ) (σ1 σ2 M D1 : ℝ)
+    (xSeq ySeq : ℕ → Q1) (N : ℕ) (hQ2_convex : Convex ℝ Q2)
+    (hQ2_closed : IsClosed Q2) (hQ2_bdd : Bornology.IsBounded Q2)
+    (hQ2_nonempty : Q2.Nonempty) (hphihat : ContinuousOn phihat Q2)
+    (hd2 : ContinuousOn d2 Q2) :
+    let A' : E1 →ₗ[ℝ] Module.Dual ℝ E2 :=
+      { toFun := fun x => (A x).toLinearMap
+        map_add' := by
+          intro x y
+          ext u
+          simp
+        map_smul' := by
+          intro c x
+          ext u
+          simp }
+    let D2 : ℝ := sSup (d2 '' Q2)
+    let μ : ℝ :=
+      (2 * OperatorNormDef A' / ((N : ℝ) + 1)) *
+        Real.sqrt (D1 / (σ1 * σ2 * D2))
+    let hatu : Q2 :=
+      averagedDualPoint (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ)
+        (xSeq := fun i => (xSeq i : E1)) (N := N) (hQ2_convex := hQ2_convex)
+        (hQ2_closed := hQ2_closed) (hQ2_bdd := hQ2_bdd) (hQ2_nonempty := hQ2_nonempty)
+        (hphihat := hphihat) (hd2 := hd2)
+    let fbar : E1 → ℝ := SmoothedObjective Q2 A phihat d2 μ fhat
+    let f : E1 → ℝ := fun x => fhat x + sSup ((fun u => A x u - phihat u) '' Q2)
+    let φ : Q2 → ℝ := AdjointFormPotential Q1 Q2 A fhat phihat
+    LipschitzOnWith (Real.toNNReal M) (fun x => fderiv ℝ fhat x) Q1 →
+    0 < σ1 →
+    0 < σ2 →
+    StrongConvexOn Q1 σ1 d1 →
+    StrongConvexOn Q2 σ2 d2 →
+    IsProxDiameterBound Q1 d1 D1 →
+    OptimalSchemeAlgorithm Q1 fbar d1
+      (M + (1 / (μ * σ2)) * (OperatorNormDef A') ^ 2) σ1 xSeq ySeq →
+    ConvexOn ℝ Q1 fhat →
+    DifferentiableOn ℝ fhat Q1 →
+    ConvexOn ℝ Q2 phihat →
+    0 < μ →
+    0 ≤ M →
+    0 ≤ D1 →
+    0 < M + (1 / (μ * σ2)) * (OperatorNormDef A') ^ 2 →
+    IsClosed Q1 →
+    IsOpen Q1 →
+    (∀ u ∈ Q2, 0 ≤ d2 u) →
+    (∀ x, BddAbove ((fun u => A x u - phihat u) '' Q2)) →
+    BddAbove (d2 '' Q2) →
+    (∀ u, BddBelow ((fun x => A x u + fhat x) '' Q1)) →
+    0 ≤ f (ySeq N : E1) - φ hatu ∧
+      f (ySeq N : E1) - φ hatu ≤
+        (4 * OperatorNormDef A' / ((N : ℝ) + 1)) * Real.sqrt (D1 * D2 / (σ1 * σ2)) +
+          (4 * M * D1) / (σ1 * ((N : ℝ) + 1) ^ (2 : ℕ)) ∧
+      ∀ ε > 0,
+        (N : ℝ) ≥
+          (4 * OperatorNormDef A' / ε) * Real.sqrt (D1 * D2 / (σ1 * σ2)) +
+            2 * Real.sqrt (M * D1 / (σ1 * ε)) →
+          f (ySeq N : E1) - φ hatu ≤ ε := by
+  classical
+  simp only
+  intro hLipschitz hσ1 hσ2 hconv1 hconv2 hD1 hAlg hfhat_convex hfhat_diff
+    hphihat_convex hμ_pos hM_nonneg hD1_nonneg hL_pos hQ1_closed hQ1_open
+    hd2_nonneg hbd0 hbd_d2 hbdBelow
+  let A' : E1 →ₗ[ℝ] Module.Dual ℝ E2 :=
+    { toFun := fun x => (A x).toLinearMap
+      map_add' := by
+        intro x y
+        ext u
+        simp
+      map_smul' := by
+        intro c x
+        ext u
+        simp }
+  let μ : ℝ :=
+    (2 * OperatorNormDef A' / ((N : ℝ) + 1)) *
+      Real.sqrt (D1 / (σ1 * σ2 * sSup (d2 '' Q2)))
+  let uμ : E1 → E2 := smoothedMaximizer Q2 A phihat d2 μ hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2
+  let hatu : Q2 :=
+    averagedDualPoint (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ)
+      (xSeq := fun i => (xSeq i : E1)) (N := N) (hQ2_convex := hQ2_convex)
+      (hQ2_closed := hQ2_closed) (hQ2_bdd := hQ2_bdd) (hQ2_nonempty := hQ2_nonempty)
+      (hphihat := hphihat) (hd2 := hd2)
+  have hhatudef :
+      (hatu : E2) =
+        Finset.sum (Finset.range (N + 1)) (fun i =>
+          (2 * ((i : ℝ) + 1) / (((N : ℝ) + 1) * ((N : ℝ) + 2))) •
+            uμ (xSeq i : E1)) := by
+    simp [hatu, uμ, averagedDualPoint, averagedDualPoint_of_isSmoothedMaximizer, averagedDualWeight]
+  exact algorithm311_duality_gap_bound_hatu
+    (Q1 := Q1) (Q2 := Q2) (A := A) (fhat := fhat) (phihat := phihat) (d1 := d1) (d2 := d2)
+    (σ1 := σ1) (σ2 := σ2) (M := M) (D1 := D1) (xSeq := xSeq) (ySeq := ySeq) (N := N)
+    (hatu := hatu) (hQ2_closed := hQ2_closed) (hQ2_bdd := hQ2_bdd) (hQ2_nonempty := hQ2_nonempty)
+    (hphihat := hphihat) (hd2 := hd2)
+    hLipschitz hσ1 hσ2 hconv1 hconv2 hD1 hAlg hhatudef hfhat_convex hfhat_diff
+    hphihat_convex hμ_pos hM_nonneg hD1_nonneg hL_pos hQ1_closed hQ1_open hd2_nonneg
+    hbd0 hbd_d2 hbdBelow
+
+/-- Paper-facing canonical version of Theorem 1.4.1 where `\hat u` is defined by the weighted
+average (4.2). -/
+theorem algorithm311_duality_gap_bound {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q1 : Set E1) (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ)) (fhat : E1 → ℝ)
+    (phihat : E2 → ℝ) (d1 : E1 → ℝ) (d2 : E2 → ℝ) (σ1 σ2 M D1 : ℝ)
+    (xSeq ySeq : ℕ → Q1) (N : ℕ) (hQ2_convex : Convex ℝ Q2)
+    (hQ2_closed : IsClosed Q2) (hQ2_bdd : Bornology.IsBounded Q2)
+    (hQ2_nonempty : Q2.Nonempty) (hphihat : ContinuousOn phihat Q2)
+    (hd2 : ContinuousOn d2 Q2) :
+    let A' : E1 →ₗ[ℝ] Module.Dual ℝ E2 :=
+      { toFun := fun x => (A x).toLinearMap
+        map_add' := by
+          intro x y
+          ext u
+          simp
+        map_smul' := by
+          intro c x
+          ext u
+          simp }
+    let D2 : ℝ := sSup (d2 '' Q2)
+    let μ : ℝ :=
+      (2 * OperatorNormDef A' / ((N : ℝ) + 1)) *
+        Real.sqrt (D1 / (σ1 * σ2 * D2))
+    let hatu : Q2 :=
+      averagedDualPoint (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ)
+        (xSeq := fun i => (xSeq i : E1)) (N := N) (hQ2_convex := hQ2_convex)
+        (hQ2_closed := hQ2_closed) (hQ2_bdd := hQ2_bdd) (hQ2_nonempty := hQ2_nonempty)
+        (hphihat := hphihat) (hd2 := hd2)
+    let fbar : E1 → ℝ := SmoothedObjective Q2 A phihat d2 μ fhat
+    let f : E1 → ℝ := fun x => fhat x + sSup ((fun u => A x u - phihat u) '' Q2)
+    let φ : Q2 → ℝ := AdjointFormPotential Q1 Q2 A fhat phihat
+    LipschitzOnWith (Real.toNNReal M) (fun x => fderiv ℝ fhat x) Q1 →
+    0 < σ1 →
+    0 < σ2 →
+    StrongConvexOn Q1 σ1 d1 →
+    StrongConvexOn Q2 σ2 d2 →
+    IsProxDiameterBound Q1 d1 D1 →
+    OptimalSchemeAlgorithm Q1 fbar d1
+      (M + (1 / (μ * σ2)) * (OperatorNormDef A') ^ 2) σ1 xSeq ySeq →
+    ConvexOn ℝ Q1 fhat →
+    DifferentiableOn ℝ fhat Q1 →
+    ConvexOn ℝ Q2 phihat →
+    0 < μ →
+    0 ≤ M →
+    0 ≤ D1 →
+    0 < M + (1 / (μ * σ2)) * (OperatorNormDef A') ^ 2 →
+    IsClosed Q1 →
+    IsOpen Q1 →
+    (∀ u ∈ Q2, 0 ≤ d2 u) →
+    (∀ x, BddAbove ((fun u => A x u - phihat u) '' Q2)) →
+    BddAbove (d2 '' Q2) →
+    (∀ u, BddBelow ((fun x => A x u + fhat x) '' Q1)) →
+    0 ≤ f (ySeq N : E1) - φ hatu ∧
+      f (ySeq N : E1) - φ hatu ≤
+        (4 * OperatorNormDef A' / ((N : ℝ) + 1)) * Real.sqrt (D1 * D2 / (σ1 * σ2)) +
+          (4 * M * D1) / (σ1 * ((N : ℝ) + 1) ^ (2 : ℕ)) ∧
+      ∀ ε > 0,
+        (N : ℝ) ≥
+          (4 * OperatorNormDef A' / ε) * Real.sqrt (D1 * D2 / (σ1 * σ2)) +
+            2 * Real.sqrt (M * D1 / (σ1 * ε)) →
+          f (ySeq N : E1) - φ hatu ≤ ε := by
+  exact algorithm311_duality_gap_bound_averagedDualPoint
+    (Q1 := Q1) (Q2 := Q2) (A := A) (fhat := fhat) (phihat := phihat) (d1 := d1) (d2 := d2)
+    (σ1 := σ1) (σ2 := σ2) (M := M) (D1 := D1) (xSeq := xSeq) (ySeq := ySeq) (N := N)
+    (hQ2_convex := hQ2_convex) (hQ2_closed := hQ2_closed) (hQ2_bdd := hQ2_bdd)
+    (hQ2_nonempty := hQ2_nonempty) (hphihat := hphihat) (hd2 := hd2)

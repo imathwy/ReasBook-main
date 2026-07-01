@@ -1,7 +1,0 @@
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "metrics-v0",
-  "type": "object",
-  "required": ["schema_version", "run_id", "task_quality", "execution_efficiency", "reliability"]
-}
-

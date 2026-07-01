@@ -1,7 +1,0 @@
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "finding-v0",
-  "type": "object",
-  "required": ["schema_version", "finding_id", "severity", "category", "claim", "evidence", "blocking"]
-}
-

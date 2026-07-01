@@ -1,31 +1,25 @@
-/-
-  Copyright (c) 2026 Zichen Wang. All rights reserved.
-  Released under Apache 2.0 license as described in the file LICENSE.
-  Authors: Zichen Wang, Wanli Ma, Min Cui, Zaiwen Wen
--/
-
 import Mathlib
 
 section Chap08
 section Section04
 
-/-- Predicate asserting that `f` is Riemann integrable on a bounded interval `I`. -/
-def RiemannIntegrableOn (I : Set ℝ) (f : ℝ → ℝ) : Prop :=
+/-- Tao's book-level predicate asserting that `f` is Riemann integrable on a bounded interval `I`. -/
+def TaoRiemannIntegrableOn (I : Set ℝ) (f : ℝ → ℝ) : Prop :=
   MeasureTheory.IntegrableOn f I MeasureTheory.volume
 
 /-- The Riemann integral of `f` over a bounded interval `I`. -/
 noncomputable def riemannIntegralOn (I : Set ℝ) (f : ℝ → ℝ) : ℝ :=
   ∫ x in I, f x ∂ MeasureTheory.volume
 
-/-- Helper for Proposition 8.13: unpacking `RiemannIntegrableOn` yields `IntegrableOn`. -/
+/-- Helper for Proposition 8.13: unpacking `TaoRiemannIntegrableOn` yields `IntegrableOn`. -/
 lemma helperForProposition_8_13_integrableOn_of_riemann
-    {I : Set ℝ} {f : ℝ → ℝ} (hriemann : RiemannIntegrableOn I f) :
+    {I : Set ℝ} {f : ℝ → ℝ} (hriemann : TaoRiemannIntegrableOn I f) :
     MeasureTheory.IntegrableOn f I MeasureTheory.volume := by
-  simpa [RiemannIntegrableOn] using hriemann
+  simpa [TaoRiemannIntegrableOn] using hriemann
 
 /-- Helper for Proposition 8.13: a Riemann-integrable function is a.e.-measurable on `I`. -/
 lemma helperForProposition_8_13_aemeasurable_of_riemann
-    {I : Set ℝ} {f : ℝ → ℝ} (hriemann : RiemannIntegrableOn I f) :
+    {I : Set ℝ} {f : ℝ → ℝ} (hriemann : TaoRiemannIntegrableOn I f) :
     AEMeasurable f (MeasureTheory.volume.restrict I) := by
   exact
     (MeasureTheory.IntegrableOn.integrable
@@ -36,7 +30,7 @@ integrable. Then `f` is Lebesgue measurable and Lebesgue integrable on `I`, and 
 integral on `I` equals the Riemann integral on `I`. -/
 theorem proposition_8_13
     {I : Set ℝ} (hinterval : Set.OrdConnected I) (hbounded : Bornology.IsBounded I)
-    {f : ℝ → ℝ} (hriemann : RiemannIntegrableOn I f) :
+    {f : ℝ → ℝ} (hriemann : TaoRiemannIntegrableOn I f) :
     AEMeasurable f (MeasureTheory.volume.restrict I) ∧
       MeasureTheory.IntegrableOn f I MeasureTheory.volume ∧
       (∫ x in I, f x ∂ MeasureTheory.volume) = riemannIntegralOn I f := by

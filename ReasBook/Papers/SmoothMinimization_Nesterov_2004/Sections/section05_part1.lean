@@ -225,12 +225,12 @@ lemma simplex_sum_sub_eq_zero {n : ℕ} {x xbar : Fin n → ℝ}
     (hx : x ∈ standardSimplex n) (hxbar : xbar ∈ standardSimplex n) :
     (∑ i, (x i - xbar i)) = 0 := by
   have hxsum : ∑ i, x i = (1 : ℝ) := by
-    have hx' := hx
-    simp [standardSimplex] at hx'
+    have hx' : (∀ i, 0 ≤ x i) ∧ ∑ i, x i = (1 : ℝ) := by
+      simpa only [standardSimplex] using hx
     exact hx'.2
   have hxbar_sum : ∑ i, xbar i = (1 : ℝ) := by
-    have hxbar' := hxbar
-    simp [standardSimplex] at hxbar'
+    have hxbar' : (∀ i, 0 ≤ xbar i) ∧ ∑ i, xbar i = (1 : ℝ) := by
+      simpa only [standardSimplex] using hxbar
     exact hxbar'.2
   calc
     ∑ i, (x i - xbar i) = (∑ i, x i) - ∑ i, xbar i := by

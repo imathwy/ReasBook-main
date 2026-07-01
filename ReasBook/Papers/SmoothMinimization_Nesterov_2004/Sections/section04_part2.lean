@@ -3,12 +3,98 @@ import Papers.SmoothMinimization_Nesterov_2004.Sections.section04_part1
 
 open scoped NNReal
 
-/-- Weighted linearization sum bound using the averaged dual point. -/
-lemma weighted_sum_bound_hatu {E1 E2 : Type*} [NormedAddCommGroup E1] [NormedSpace ℝ E1]
+/-- The averaging weights from equation (4.2). -/
+noncomputable def averagedDualWeight (N i : ℕ) : ℝ :=
+  2 * ((i : ℝ) + 1) / (((N : ℝ) + 1) * ((N : ℝ) + 2))
+
+lemma averagedDualWeight_nonneg (N i : ℕ) : 0 ≤ averagedDualWeight N i := by
+  have h1 : 0 < (N : ℝ) + 1 := by nlinarith
+  have h2 : 0 < (N : ℝ) + 2 := by nlinarith
+  have hi : 0 ≤ (i : ℝ) + 1 := by nlinarith
+  have hnum : 0 ≤ 2 * ((i : ℝ) + 1) := by nlinarith
+  exact div_nonneg hnum (le_of_lt (mul_pos h1 h2))
+
+/-- The averaging weights from (4.2) sum to `1`. -/
+lemma averagedDualWeight_sum (N : ℕ) :
+    Finset.sum (Finset.range (N + 1)) (fun i => averagedDualWeight N i) = (1 : ℝ) := by
+  set denom : ℝ := ((N : ℝ) + 1) * ((N : ℝ) + 2)
+  have hdenom_pos : 0 < denom := by
+    have h1 : 0 < (N : ℝ) + 1 := by nlinarith
+    have h2 : 0 < (N : ℝ) + 2 := by nlinarith
+    simpa [denom] using mul_pos h1 h2
+  have hsum := sum_range_add_one_cast N
+  calc
+    Finset.sum (Finset.range (N + 1)) (fun i => averagedDualWeight N i) =
+        Finset.sum (Finset.range (N + 1)) (fun i => (2 / denom) * ((i : ℝ) + 1)) := by
+      refine Finset.sum_congr rfl ?_
+      intro i hi
+      simp [averagedDualWeight, denom, div_eq_mul_inv, mul_comm, mul_assoc]
+    _ = (2 / denom) * Finset.sum (Finset.range (N + 1)) (fun i => ((i : ℝ) + 1)) := by
+      symm
+      simpa using
+        (Finset.mul_sum (s := Finset.range (N + 1)) (f := fun i => ((i : ℝ) + 1))
+          (a := (2 / denom)))
+    _ = (2 / denom) * (denom / 2) := by
+      simp [hsum, denom]
+    _ = (1 : ℝ) := by
+      field_simp [denom, hdenom_pos.ne']
+
+/-- The averaged dual point from equation (4.2) for a chosen maximizing branch. -/
+noncomputable def averagedDualPoint_of_isSmoothedMaximizer {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1]
+    [FiniteDimensional ℝ E1] [NormedAddCommGroup E2] [NormedSpace ℝ E2]
+    [FiniteDimensional ℝ E2]
+    (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ)) (phihat d2 : E2 → ℝ) (μ : ℝ)
+    (uμ : E1 → E2) (xSeq : ℕ → E1) (N : ℕ) (hQ2_convex : Convex ℝ Q2)
+    (hmax : ∀ x, IsSmoothedMaximizer Q2 A phihat d2 μ x (uμ x)) : Q2 := by
+  classical
+  refine ⟨Finset.sum (Finset.range (N + 1)) (fun i => averagedDualWeight N i • uμ (xSeq i)), ?_⟩
+  refine hQ2_convex.sum_mem ?_ ?_ ?_
+  · intro i hi
+    exact averagedDualWeight_nonneg N i
+  · exact averagedDualWeight_sum N
+  · intro i hi
+    exact (hmax (xSeq i)).1
+
+@[simp] theorem averagedDualPoint_of_isSmoothedMaximizer_coe {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1]
+    [FiniteDimensional ℝ E1] [NormedAddCommGroup E2] [NormedSpace ℝ E2]
+    [FiniteDimensional ℝ E2]
+    (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ)) (phihat d2 : E2 → ℝ) (μ : ℝ)
+    (uμ : E1 → E2) (xSeq : ℕ → E1) (N : ℕ) (hQ2_convex : Convex ℝ Q2)
+    (hmax : ∀ x, IsSmoothedMaximizer Q2 A phihat d2 μ x (uμ x)) :
+    ((averagedDualPoint_of_isSmoothedMaximizer
+      (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ)
+      (uμ := uμ) (xSeq := xSeq) (N := N) (hQ2_convex := hQ2_convex) (hmax := hmax) : Q2) : E2) =
+      Finset.sum (Finset.range (N + 1)) (fun i => averagedDualWeight N i • uμ (xSeq i)) := rfl
+
+/-- The averaged dual point from equation (4.2), using `smoothedMaximizer`. -/
+noncomputable def averagedDualPoint {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1]
+    [FiniteDimensional ℝ E1] [NormedAddCommGroup E2] [NormedSpace ℝ E2]
+    [FiniteDimensional ℝ E2]
+    (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ)) (phihat d2 : E2 → ℝ) (μ : ℝ)
+    (xSeq : ℕ → E1) (N : ℕ) (hQ2_convex : Convex ℝ Q2)
+    (hQ2_closed : IsClosed Q2) (hQ2_bdd : Bornology.IsBounded Q2)
+    (hQ2_nonempty : Q2.Nonempty) (hphihat : ContinuousOn phihat Q2)
+    (hd2 : ContinuousOn d2 Q2) : Q2 :=
+  averagedDualPoint_of_isSmoothedMaximizer
+    (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ)
+    (uμ := smoothedMaximizer Q2 A phihat d2 μ hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+    (xSeq := xSeq)
+    (N := N) (hQ2_convex := hQ2_convex)
+    (hmax := smoothedMaximizer_isSmoothedMaximizer
+      (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ)
+      hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+
+/-- Weighted linearization sum bound using the averaged dual point for a chosen maximizing branch.
+This is the general-branch helper form. -/
+lemma weighted_sum_bound_hatu_of_isSmoothedMaximizer {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1]
     [FiniteDimensional ℝ E1] [NormedAddCommGroup E2] [NormedSpace ℝ E2]
     [FiniteDimensional ℝ E2] (Q1 : Set E1) (Q2 : Set E2)
-    (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ)) (fhat : E1 → ℝ) (phihat d2 : E2 → ℝ) (μ : ℝ)
-    (uμ : E1 → E2) (A' : E1 →ₗ[ℝ] Module.Dual ℝ E2) (xSeq : ℕ → Q1) (N : ℕ) (hatu : Q2)
+    (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ)) (fhat : E1 → ℝ) (phihat d2 : E2 → ℝ) (μ σ2 : ℝ)
+    (uμ : E1 → E2) (xSeq : ℕ → Q1) (N : ℕ) (hatu : Q2)
     (hhatudef :
       (hatu : E2) =
         Finset.sum (Finset.range (N + 1)) (fun i =>
@@ -16,16 +102,10 @@ lemma weighted_sum_bound_hatu {E1 E2 : Type*} [NormedAddCommGroup E1] [NormedSpa
             uμ (xSeq i : E1)))
     (hQ1_open : IsOpen Q1) (hQ1_convex : Convex ℝ Q1)
     (hfhat_convex : ConvexOn ℝ Q1 fhat) (hfhat_diff : DifferentiableOn ℝ fhat Q1)
-    (hfbar_diff :
-      DifferentiableOn ℝ (SmoothedObjective Q2 A phihat d2 μ fhat) Q1)
     (hphihat_convex : ConvexOn ℝ Q2 phihat)
-    (hμ_nonneg : 0 ≤ μ) (hd2_nonneg : ∀ u ∈ Q2, 0 ≤ d2 u)
-    (hmax : ∀ x, IsSmoothedMaximizer Q2 A phihat d2 μ x (uμ x))
-    (hderivμ :
-      ∀ x,
-        fderiv ℝ (SmoothedMaxFunction Q2 A phihat d2 μ) x =
-          (AdjointOperator A' (uμ x)).toContinuousLinearMap)
-    (hpair : ∀ x u, DualPairing (AdjointOperator A' u) x = A x u) :
+    (hμ : 0 < μ) (hσ2 : 0 < σ2) (hconv : StrongConvexOn Q2 σ2 d2)
+    (hd2_nonneg : ∀ u ∈ Q2, 0 ≤ d2 u)
+    (hmax : ∀ x, IsSmoothedMaximizer Q2 A phihat d2 μ x (uμ x)) :
     ∀ x ∈ Q1,
       Finset.sum (Finset.range (N + 1)) (fun i =>
         ((i : ℝ) + 1) *
@@ -37,31 +117,6 @@ lemma weighted_sum_bound_hatu {E1 E2 : Type*} [NormedAddCommGroup E1] [NormedSpa
           (fhat x + A x hatu - phihat hatu) := by
   classical
   intro x hx
-  set fμ : E1 → ℝ := SmoothedMaxFunction Q2 A phihat d2 μ
-  have hfbar_diff' : DifferentiableOn ℝ (fun y => fhat y + fμ y) Q1 := by
-    simpa [SmoothedObjective, fμ] using hfbar_diff
-  have hfμ_diff : DifferentiableOn ℝ fμ Q1 := by
-    have h := hfbar_diff'.sub hfhat_diff
-    convert h using 1
-    ext y
-    simp [sub_eq_add_neg, add_assoc]
-  have hfhat_diff_at : ∀ x ∈ Q1, DifferentiableAt ℝ fhat x := by
-    intro x hx
-    exact (hfhat_diff x hx).differentiableAt (hQ1_open.mem_nhds hx)
-  have hfμ_diff_at : ∀ x ∈ Q1, DifferentiableAt ℝ fμ x := by
-    intro x hx
-    exact (hfμ_diff x hx).differentiableAt (hQ1_open.mem_nhds hx)
-  have hderiv_add :
-      ∀ x ∈ Q1,
-        fderiv ℝ (fun y => fhat y + fμ y) x =
-          fderiv ℝ fhat x + fderiv ℝ fμ x :=
-    fderiv_add_on (s := Q1) (hf := hfhat_diff_at) (hg := hfμ_diff_at)
-  have hderiv_add' :
-      ∀ x ∈ Q1,
-        fderiv ℝ (SmoothedObjective Q2 A phihat d2 μ fhat) x =
-          fderiv ℝ fhat x + fderiv ℝ fμ x := by
-    intro x hx
-    simpa [SmoothedObjective, fμ] using (hderiv_add x hx)
   set denom : ℝ := ((N : ℝ) + 1) * ((N : ℝ) + 2)
   have hdenom_pos : 0 < denom := by
     have h1 : 0 < (N : ℝ) + 1 := by nlinarith
@@ -213,91 +268,12 @@ lemma weighted_sum_bound_hatu {E1 E2 : Type*} [NormedAddCommGroup E1] [NormedSpa
               (x - xSeq i) ≤
           fhat x + A x (uμ (xSeq i : E1)) - phihat (uμ (xSeq i : E1)) := by
     intro i
-    have hx_i : (xSeq i : E1) ∈ Q1 := (xSeq i).property
-    have hderiv_i :
-        fderiv ℝ (SmoothedObjective Q2 A phihat d2 μ fhat) (xSeq i) =
-          fderiv ℝ fhat (xSeq i) + fderiv ℝ fμ (xSeq i) := by
-      exact hderiv_add' (xSeq i) hx_i
-    have hhat_i :
-        fhat x ≥
-          fhat (xSeq i : E1) +
-            DualPairing ((fderiv ℝ fhat (xSeq i)).toLinearMap) (x - xSeq i) := by
-      have h :=
-        convex_support_grad (hQ_open := hQ1_open) (hQ_convex := hQ1_convex)
-          (hf_convex := hfhat_convex) (hf_diff := hfhat_diff) (u := x) (v := xSeq i)
-          hx hx_i
-      simpa using h
-    have hμ_lin :
-        fμ (xSeq i : E1) +
-            DualPairing ((fderiv ℝ fμ (xSeq i)).toLinearMap) (x - xSeq i) ≤
-          A x (uμ (xSeq i : E1)) - phihat (uμ (xSeq i : E1)) := by
-      have hlin0 :
-          fμ (xSeq i : E1) -
-              DualPairing ((fderiv ℝ fμ (xSeq i)).toLinearMap) (xSeq i) =
-            -phihat (uμ (xSeq i : E1)) - μ * d2 (uμ (xSeq i : E1)) := by
-        have hlin :=
-          smoothedMaxFunction_linearization (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2)
-            (μ := μ) (uμ := uμ) (A' := A') (hmax := hmax) (hderiv := hderivμ) (hpair := hpair)
-            (xSeq i : E1)
-        simpa [fμ] using hlin
-      have hderiv_lin :
-          DualPairing ((fderiv ℝ fμ (xSeq i)).toLinearMap) x =
-            A x (uμ (xSeq i : E1)) := by
-        have h :=
-          congrArg ContinuousLinearMap.toLinearMap (hderivμ (xSeq i))
-        have h' := congrArg (fun T => T x) h
-        have h'' :
-            DualPairing ((fderiv ℝ fμ (xSeq i)).toLinearMap) x =
-              DualPairing (AdjointOperator A' (uμ (xSeq i : E1))) x := by
-          simpa [DualPairing, fμ] using h'
-        simpa [hpair] using h''
-      have hμd2_nonneg :
-          0 ≤ μ * d2 (uμ (xSeq i : E1)) := by
-        have hu : uμ (xSeq i : E1) ∈ Q2 := (hmax (xSeq i)).1
-        exact mul_nonneg hμ_nonneg (hd2_nonneg _ hu)
-      have hsub :
-          DualPairing ((fderiv ℝ fμ (xSeq i)).toLinearMap) (x - xSeq i) =
-            DualPairing ((fderiv ℝ fμ (xSeq i)).toLinearMap) x -
-              DualPairing ((fderiv ℝ fμ (xSeq i)).toLinearMap) (xSeq i) := by
-        simp [DualPairing, map_sub]
-      calc
-        fμ (xSeq i : E1) +
-            DualPairing ((fderiv ℝ fμ (xSeq i)).toLinearMap) (x - xSeq i) =
-            (fμ (xSeq i : E1) -
-                DualPairing ((fderiv ℝ fμ (xSeq i)).toLinearMap) (xSeq i)) +
-              DualPairing ((fderiv ℝ fμ (xSeq i)).toLinearMap) x := by
-          simp [hsub]
-          ring
-        _ =
-            (-phihat (uμ (xSeq i : E1)) - μ * d2 (uμ (xSeq i : E1))) +
-              DualPairing ((fderiv ℝ fμ (xSeq i)).toLinearMap) x := by
-          simp [hlin0]
-        _ =
-            (-phihat (uμ (xSeq i : E1)) - μ * d2 (uμ (xSeq i : E1))) +
-              A x (uμ (xSeq i : E1)) := by
-          simp [hderiv_lin]
-        _ ≤ A x (uμ (xSeq i : E1)) - phihat (uμ (xSeq i : E1)) := by
-          linarith [hμd2_nonneg]
-    have hsplit :
-        SmoothedObjective Q2 A phihat d2 μ fhat (xSeq i : E1) +
-            DualPairing
-              ((fderiv ℝ (SmoothedObjective Q2 A phihat d2 μ fhat) (xSeq i)).toLinearMap)
-              (x - xSeq i) =
-          (fhat (xSeq i : E1) +
-              DualPairing ((fderiv ℝ fhat (xSeq i)).toLinearMap) (x - xSeq i)) +
-            (fμ (xSeq i : E1) +
-              DualPairing ((fderiv ℝ fμ (xSeq i)).toLinearMap) (x - xSeq i)) := by
-      have hpair' :
-          DualPairing
-              ((fderiv ℝ (SmoothedObjective Q2 A phihat d2 μ fhat) (xSeq i)).toLinearMap)
-              (x - xSeq i) =
-            DualPairing ((fderiv ℝ fhat (xSeq i)).toLinearMap) (x - xSeq i) +
-              DualPairing ((fderiv ℝ fμ (xSeq i)).toLinearMap) (x - xSeq i) := by
-        simp [hderiv_i, DualPairing]
-      simp [SmoothedObjective, fμ, hpair']
-      ring
-    have hsum := add_le_add hhat_i hμ_lin
-    linarith [hsum, hsplit]
+    exact smoothedObjective_linearization_of_isSmoothedMaximizer
+      (Q1 := Q1) (Q2 := Q2) (A := A) (fhat := fhat) (phihat := phihat) (d2 := d2)
+      (μ := μ) (σ2 := σ2) (uμ := uμ) (hQ1_open := hQ1_open) (hQ1_convex := hQ1_convex)
+      (hfhat_convex := hfhat_convex) (hfhat_diff := hfhat_diff) (hphi := hphihat_convex)
+      (hμ := hμ) (hσ2 := hσ2) (hconv := hconv) (hd2_nonneg := hd2_nonneg)
+      (hmax := hmax) x hx (xSeq i) (xSeq i).property
   have hsum_term :
       Finset.sum (Finset.range (N + 1)) (fun i =>
         ((i : ℝ) + 1) *
@@ -357,6 +333,169 @@ lemma weighted_sum_bound_hatu {E1 E2 : Type*} [NormedAddCommGroup E1] [NormedSpa
           Finset.sum (Finset.range (N + 1)) (fun i =>
             ((i : ℝ) + 1) * phihat (uμ (xSeq i : E1))) := hsum_rhs
     _ ≤ (denom / 2) * (fhat x + A x hatu - phihat hatu) := hfinal_rhs
+
+/-- Canonical weighted linearization bound using the unique optimizer selected by
+`smoothedMaximizer`. -/
+lemma weighted_sum_bound_hatu {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q1 : Set E1) (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ))
+    (fhat : E1 → ℝ) (phihat d2 : E2 → ℝ) (μ σ2 : ℝ)
+    (xSeq : ℕ → Q1) (N : ℕ) (hatu : Q2)
+    (hQ2_closed : IsClosed Q2) (hQ2_bdd : Bornology.IsBounded Q2)
+    (hQ2_nonempty : Q2.Nonempty) (hphihat : ContinuousOn phihat Q2)
+    (hd2 : ContinuousOn d2 Q2)
+    (hhatudef :
+      (hatu : E2) =
+        Finset.sum (Finset.range (N + 1)) (fun i =>
+          (2 * ((i : ℝ) + 1) / (((N : ℝ) + 1) * ((N : ℝ) + 2))) •
+            (smoothedMaximizer Q2 A phihat d2 μ
+              hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2) (xSeq i : E1)))
+    (hQ1_open : IsOpen Q1) (hQ1_convex : Convex ℝ Q1)
+    (hfhat_convex : ConvexOn ℝ Q1 fhat) (hfhat_diff : DifferentiableOn ℝ fhat Q1)
+    (hphihat_convex : ConvexOn ℝ Q2 phihat)
+    (hμ : 0 < μ) (hσ2 : 0 < σ2) (hconv : StrongConvexOn Q2 σ2 d2)
+    (hd2_nonneg : ∀ u ∈ Q2, 0 ≤ d2 u) :
+    ∀ x ∈ Q1,
+      Finset.sum (Finset.range (N + 1)) (fun i =>
+        ((i : ℝ) + 1) *
+          (SmoothedObjective Q2 A phihat d2 μ fhat (xSeq i : E1) +
+            DualPairing
+              ((fderiv ℝ (SmoothedObjective Q2 A phihat d2 μ fhat) (xSeq i)).toLinearMap)
+              (x - xSeq i))) ≤
+        ((N : ℝ) + 1) * ((N : ℝ) + 2) / 2 *
+          (fhat x + A x hatu - phihat hatu) := by
+  classical
+  exact weighted_sum_bound_hatu_of_isSmoothedMaximizer
+    (Q1 := Q1) (Q2 := Q2) (A := A) (fhat := fhat)
+    (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2)
+    (uμ := smoothedMaximizer Q2 A phihat d2 μ hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+    (xSeq := xSeq) (N := N) (hatu := hatu) hhatudef (hQ1_open := hQ1_open)
+    (hQ1_convex := hQ1_convex) (hfhat_convex := hfhat_convex) (hfhat_diff := hfhat_diff)
+    (hphihat_convex := hphihat_convex) (hμ := hμ)
+    (hσ2 := hσ2) (hconv := hconv) (hd2_nonneg := hd2_nonneg)
+    (hmax := smoothedMaximizer_isSmoothedMaximizer (Q2 := Q2) (A := A) (phihat := phihat)
+      (d2 := d2) (μ := μ) hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+
+/-- Weighted linearization bound using the canonical averaged dual point from equation (4.2),
+for a chosen maximizing branch. -/
+lemma weighted_sum_bound_averagedDualPoint_of_isSmoothedMaximizer {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1]
+    [FiniteDimensional ℝ E1] [NormedAddCommGroup E2] [NormedSpace ℝ E2]
+    [FiniteDimensional ℝ E2] (Q1 : Set E1) (Q2 : Set E2)
+    (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ)) (fhat : E1 → ℝ) (phihat d2 : E2 → ℝ) (μ σ2 : ℝ)
+    (uμ : E1 → E2) (xSeq : ℕ → Q1) (N : ℕ)
+    (hQ1_open : IsOpen Q1) (hQ1_convex : Convex ℝ Q1) (hQ2_convex : Convex ℝ Q2)
+    (hfhat_convex : ConvexOn ℝ Q1 fhat) (hfhat_diff : DifferentiableOn ℝ fhat Q1)
+    (hphihat_convex : ConvexOn ℝ Q2 phihat)
+    (hμ : 0 < μ) (hσ2 : 0 < σ2) (hconv : StrongConvexOn Q2 σ2 d2)
+    (hd2_nonneg : ∀ u ∈ Q2, 0 ≤ d2 u)
+    (hmax : ∀ x, IsSmoothedMaximizer Q2 A phihat d2 μ x (uμ x)) :
+    let hatu : Q2 :=
+      averagedDualPoint_of_isSmoothedMaximizer (Q2 := Q2) (A := A) (phihat := phihat)
+        (d2 := d2) (μ := μ) (uμ := uμ) (xSeq := fun i => (xSeq i : E1)) (N := N)
+        (hQ2_convex := hQ2_convex) (hmax := hmax)
+    ∀ x ∈ Q1,
+      Finset.sum (Finset.range (N + 1)) (fun i =>
+        ((i : ℝ) + 1) *
+          (SmoothedObjective Q2 A phihat d2 μ fhat (xSeq i : E1) +
+            DualPairing
+              ((fderiv ℝ (SmoothedObjective Q2 A phihat d2 μ fhat) (xSeq i)).toLinearMap)
+              (x - xSeq i))) ≤
+        ((N : ℝ) + 1) * ((N : ℝ) + 2) / 2 *
+          (fhat x + A x hatu - phihat hatu) := by
+  classical
+  simp only
+  exact weighted_sum_bound_hatu_of_isSmoothedMaximizer
+    (Q1 := Q1) (Q2 := Q2) (A := A) (fhat := fhat)
+    (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2) (uμ := uμ) (xSeq := xSeq) (N := N)
+    (hatu := averagedDualPoint_of_isSmoothedMaximizer
+      (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ) (uμ := uμ)
+      (xSeq := fun i => (xSeq i : E1)) (N := N) (hQ2_convex := hQ2_convex) (hmax := hmax))
+    (by simp [averagedDualPoint_of_isSmoothedMaximizer, averagedDualWeight])
+    (hQ1_open := hQ1_open) (hQ1_convex := hQ1_convex) (hfhat_convex := hfhat_convex)
+    (hfhat_diff := hfhat_diff) (hphihat_convex := hphihat_convex)
+    (hμ := hμ) (hσ2 := hσ2) (hconv := hconv) (hd2_nonneg := hd2_nonneg) (hmax := hmax)
+
+/-- Weighted linearization bound using the canonical averaged dual point from equation (4.2),
+with `u_μ := smoothedMaximizer ...`. -/
+lemma weighted_sum_bound_averagedDualPoint {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q1 : Set E1) (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ))
+    (fhat : E1 → ℝ) (phihat d2 : E2 → ℝ) (μ σ2 : ℝ)
+    (xSeq : ℕ → Q1) (N : ℕ) (hQ2_convex : Convex ℝ Q2)
+    (hQ2_closed : IsClosed Q2) (hQ2_bdd : Bornology.IsBounded Q2)
+    (hQ2_nonempty : Q2.Nonempty) (hphihat : ContinuousOn phihat Q2) (hd2 : ContinuousOn d2 Q2)
+    (hQ1_open : IsOpen Q1) (hQ1_convex : Convex ℝ Q1)
+    (hfhat_convex : ConvexOn ℝ Q1 fhat) (hfhat_diff : DifferentiableOn ℝ fhat Q1)
+    (hphihat_convex : ConvexOn ℝ Q2 phihat)
+    (hμ : 0 < μ) (hσ2 : 0 < σ2) (hconv : StrongConvexOn Q2 σ2 d2)
+    (hd2_nonneg : ∀ u ∈ Q2, 0 ≤ d2 u) :
+    let hatu : Q2 :=
+      averagedDualPoint (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ)
+        (xSeq := fun i => (xSeq i : E1)) (N := N) (hQ2_convex := hQ2_convex)
+        (hQ2_closed := hQ2_closed) (hQ2_bdd := hQ2_bdd) (hQ2_nonempty := hQ2_nonempty)
+        (hphihat := hphihat) (hd2 := hd2)
+    ∀ x ∈ Q1,
+      Finset.sum (Finset.range (N + 1)) (fun i =>
+        ((i : ℝ) + 1) *
+          (SmoothedObjective Q2 A phihat d2 μ fhat (xSeq i : E1) +
+            DualPairing
+              ((fderiv ℝ (SmoothedObjective Q2 A phihat d2 μ fhat) (xSeq i)).toLinearMap)
+              (x - xSeq i))) ≤
+        ((N : ℝ) + 1) * ((N : ℝ) + 2) / 2 *
+          (fhat x + A x hatu - phihat hatu) := by
+  classical
+  simp only
+  exact weighted_sum_bound_averagedDualPoint_of_isSmoothedMaximizer
+    (Q1 := Q1) (Q2 := Q2) (A := A) (fhat := fhat) (phihat := phihat) (d2 := d2)
+    (μ := μ) (σ2 := σ2)
+    (uμ := smoothedMaximizer Q2 A phihat d2 μ hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+    (xSeq := xSeq) (N := N) (hQ1_open := hQ1_open) (hQ1_convex := hQ1_convex)
+    (hQ2_convex := hQ2_convex) (hfhat_convex := hfhat_convex) (hfhat_diff := hfhat_diff)
+    (hphihat_convex := hphihat_convex) (hμ := hμ) (hσ2 := hσ2) (hconv := hconv)
+    (hd2_nonneg := hd2_nonneg)
+    (hmax := smoothedMaximizer_isSmoothedMaximizer
+      (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ)
+      hQ2_closed hQ2_bdd hQ2_nonempty hphihat hd2)
+
+/-- Paper-facing canonical weighted linearization bound using the averaged dual point from
+equation (4.2). -/
+lemma weighted_sum_bound {E1 E2 : Type*}
+    [NormedAddCommGroup E1] [NormedSpace ℝ E1] [FiniteDimensional ℝ E1]
+    [NormedAddCommGroup E2] [NormedSpace ℝ E2] [FiniteDimensional ℝ E2]
+    (Q1 : Set E1) (Q2 : Set E2) (A : E1 →L[ℝ] (E2 →L[ℝ] ℝ))
+    (fhat : E1 → ℝ) (phihat d2 : E2 → ℝ) (μ σ2 : ℝ)
+    (xSeq : ℕ → Q1) (N : ℕ) (hQ2_convex : Convex ℝ Q2)
+    (hQ2_closed : IsClosed Q2) (hQ2_bdd : Bornology.IsBounded Q2)
+    (hQ2_nonempty : Q2.Nonempty) (hphihat : ContinuousOn phihat Q2) (hd2 : ContinuousOn d2 Q2)
+    (hQ1_open : IsOpen Q1) (hQ1_convex : Convex ℝ Q1)
+    (hfhat_convex : ConvexOn ℝ Q1 fhat) (hfhat_diff : DifferentiableOn ℝ fhat Q1)
+    (hphihat_convex : ConvexOn ℝ Q2 phihat)
+    (hμ : 0 < μ) (hσ2 : 0 < σ2) (hconv : StrongConvexOn Q2 σ2 d2)
+    (hd2_nonneg : ∀ u ∈ Q2, 0 ≤ d2 u) :
+    let hatu : Q2 :=
+      averagedDualPoint (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ)
+        (xSeq := fun i => (xSeq i : E1)) (N := N) (hQ2_convex := hQ2_convex)
+        (hQ2_closed := hQ2_closed) (hQ2_bdd := hQ2_bdd) (hQ2_nonempty := hQ2_nonempty)
+        (hphihat := hphihat) (hd2 := hd2)
+    ∀ x ∈ Q1,
+      Finset.sum (Finset.range (N + 1)) (fun i =>
+        ((i : ℝ) + 1) *
+          (SmoothedObjective Q2 A phihat d2 μ fhat (xSeq i : E1) +
+            DualPairing
+              ((fderiv ℝ (SmoothedObjective Q2 A phihat d2 μ fhat) (xSeq i)).toLinearMap)
+              (x - xSeq i))) ≤
+        ((N : ℝ) + 1) * ((N : ℝ) + 2) / 2 *
+          (fhat x + A x hatu - phihat hatu) := by
+  exact weighted_sum_bound_averagedDualPoint
+    (Q1 := Q1) (Q2 := Q2) (A := A) (fhat := fhat) (phihat := phihat) (d2 := d2)
+    (μ := μ) (σ2 := σ2) (xSeq := xSeq) (N := N) (hQ2_convex := hQ2_convex)
+    (hQ2_closed := hQ2_closed) (hQ2_bdd := hQ2_bdd) (hQ2_nonempty := hQ2_nonempty)
+    (hphihat := hphihat) (hd2 := hd2) (hQ1_open := hQ1_open) (hQ1_convex := hQ1_convex)
+    (hfhat_convex := hfhat_convex) (hfhat_diff := hfhat_diff) (hphihat_convex := hphihat_convex)
+    (hμ := hμ) (hσ2 := hσ2) (hconv := hconv) (hd2_nonneg := hd2_nonneg)
 
 /-- If `μ` is chosen as in the smoothing rule, its square satisfies the scaling identity. -/
 lemma mu_sq_identity (D1 D2 σ1 σ2 μ Aop : ℝ) (N : ℕ)

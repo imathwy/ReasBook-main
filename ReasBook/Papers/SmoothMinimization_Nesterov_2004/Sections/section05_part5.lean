@@ -200,16 +200,23 @@ theorem Rk_succ_update_modified {E : Type*} [NormedAddCommGroup E] [NormedSpace 
           (le_trans hadd (le_trans hVQ_min'' (le_trans hpsi_plus'' hFk1_lower)))
     simpa [term] using hfinal
   unfold R_k
-  simp [psi_k]
-  refine le_csInf ?_ ?_
-  · refine ⟨(L / σ) * d (xSeq (k + 1)) +
-      Finset.sum (Finset.range (k + 2)) (fun i =>
-        α i * (f (xSeq i) +
-          DualPairing ((fderiv ℝ f (xSeq i)).toLinearMap) ((xSeq (k + 1) : E) - xSeq i))), ?_⟩
-    exact ⟨(xSeq (k + 1) : E), (xSeq (k + 1)).property, rfl⟩
-  · intro b hb
-    rcases hb with ⟨z, hz, rfl⟩
-    simpa [A] using hpoint z hz
+  have hgoal :
+      A_k α (k + 1) * f ↑(ySeq (k + 1)) ≤
+        sInf
+          ((fun a ↦
+              L / σ * d a +
+                ∑ x ∈ Finset.range (k + 1 + 1),
+                  α x * (f ↑(xSeq x) + DualPairing (↑(fderiv ℝ f ↑(xSeq x))) (a - ↑(xSeq x)))) '' Q) := by
+    refine le_csInf ?_ ?_
+    · refine ⟨(L / σ) * d (xSeq (k + 1)) +
+        Finset.sum (Finset.range (k + 2)) (fun i =>
+          α i * (f (xSeq i) +
+            DualPairing ((fderiv ℝ f (xSeq i)).toLinearMap) ((xSeq (k + 1) : E) - xSeq i))), ?_⟩
+      exact ⟨(xSeq (k + 1) : E), (xSeq (k + 1)).property, rfl⟩
+    · intro b hb
+      rcases hb with ⟨z, hz, rfl⟩
+      simpa [A] using hpoint z hz
+  simpa [psi_k] using hgoal
 
 /-- Algorithm 1.5.3.1.
 Choose an initial point

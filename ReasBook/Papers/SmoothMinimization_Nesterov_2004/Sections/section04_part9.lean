@@ -1,8 +1,6 @@
 import Mathlib
 import Papers.SmoothMinimization_Nesterov_2004.Sections.section04_part8
 
-set_option maxHeartbeats 200000
-
 /-- Definition 1.4.3.1.
 Let `E` be a finite-dimensional normed space with norm `‖·‖_1` and dual norm `‖·‖_{1,*}` on `E*`.
 Let `Q ⊆ E` be bounded, closed, and convex. Let `B : E → E*` be affine with

@@ -3,11 +3,10 @@ import Papers.OnSomeLocalRings_Maassaran_2025.Sections.section02_part3
 
 namespace SomeLocalRings
 
-set_option maxHeartbeats 800000
-
 variable {𝕜 : Type*} [Field 𝕜]
 variable {A B : Type*} [Ring A] [Ring B] [Algebra 𝕜 A] [Algebra 𝕜 B]
 
+set_option maxHeartbeats 800000 in
 /--
 Theorem 2.8.
 Assume `𝕜` is a field and `P₁, P₂` are irreducible polynomials in `𝕜[X]`. Take `n > 1`.
@@ -224,7 +223,7 @@ theorem corollary_2_9
                     (I := Ideal.comap fX
                       (Ideal.span ({P₂ ^ Nat.succ (Nat.succ n)} : Set (Polynomial 𝕜))))
                     (x := P₁ ^ Nat.succ (Nat.succ n))).2 ?_
-            show fX (P₁ ^ Nat.succ (Nat.succ n)) ∈
+            change fX (P₁ ^ Nat.succ (Nat.succ n)) ∈
                 Ideal.span ({P₂ ^ Nat.succ (Nat.succ n)} : Set (Polynomial 𝕜))
             refine (Ideal.mem_span_singleton).2 ?_
             refine ⟨Sf ^ Nat.succ (Nat.succ n), ?_⟩
@@ -262,6 +261,7 @@ lemma span_pow_le_span (P : Polynomial 𝕜) (m : ℕ) (hm : 1 ≤ m) :
     _ = P ^ (m - 1) * P := by simp [pow_succ]
     _ = P * P ^ (m - 1) := by simp [mul_comm]
 
+set_option maxHeartbeats 800000 in
 /--
 Theorem 2.10.
 Assume `𝕜` is a field and `P₁, P₂` are irreducible polynomials in `𝕜[X]`. Let
@@ -602,10 +602,6 @@ theorem theorem_2_10
       | zero =>
           -- `n = 1`
           refine ⟨?_⟩
-          have f₁ :
-              (Polynomial 𝕜 ⧸ Ideal.span ({P₁} : Set (Polynomial 𝕜))) ≃+*
-                (Polynomial 𝕜 ⧸ Ideal.span ({P₂} : Set (Polynomial 𝕜))) := by
-            simpa [I₁, I₂] using f
           have hI₁ :
               (Ideal.span ({P₁ ^ (1 : ℕ)} : Set (Polynomial 𝕜)) :
                   Ideal (Polynomial 𝕜)) =
@@ -616,10 +612,7 @@ theorem theorem_2_10
                   Ideal (Polynomial 𝕜)) =
                 Ideal.span ({P₂} : Set (Polynomial 𝕜)) := by
             simp
-          -- Simplify the exponent and rewrite the ideals to match `f₁`.
-          simp
-          rw [hI₁, hI₂]
-          exact f₁
+          exact (Ideal.quotEquivOfEq hI₁).trans (f.trans (Ideal.quotEquivOfEq hI₂).symm)
       | succ n =>
           -- `n ≥ 2`
           have hn' : 1 < Nat.succ (Nat.succ n) :=

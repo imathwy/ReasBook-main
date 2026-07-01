@@ -1,9 +1,3 @@
-/-
-Copyright (c) 2026 Zichen Wang. All rights reserved.
-Released under Apache 2.0 license as described in the file LICENSE.
-Authors: Zichen Wang, Zaiwen Wen
--/
-
 import Mathlib
 import Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap02.section03
 import Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap03.section03

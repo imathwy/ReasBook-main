@@ -1,7 +1,0 @@
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "corpus-manifest-v0",
-  "type": "object",
-  "required": ["schema_version", "corpus_id", "created_at", "domain", "projects"]
-}
-

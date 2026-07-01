@@ -1,9 +1,3 @@
-/-
-  Copyright (c) 2026 Zichen Wang. All rights reserved.
-  Released under Apache 2.0 license as described in the file LICENSE.
-  Authors: Zichen Wang, Wanli Ma, Ziyu Wang, Zaiwen Wen
-  -/
-
 import Mathlib
 
 section Chap01
@@ -12,7 +6,7 @@ section Section02
 /-- Definition 1.10 (Balls): Let `(X,d)` be a metric space, let `x0 ∈ X`, and let `r > 0`.
 The (open) ball in `X` centered at `x0` with radius `r` is the set
 `B_{(X,d)}(x0,r) = {x ∈ X : d(x,x0) < r}`. -/
-abbrev openBall (X : Type*) [MetricSpace X] (x0 : X) (r : Real) : Set X :=
+abbrev taoOpenBall (X : Type*) [MetricSpace X] (x0 : X) (r : Real) : Set X :=
   Metric.ball x0 r
 
 /-- Definition 1.11 (Interior/exterior/boundary points): Let `(X,d)` be a metric space and `E ⊆ X`.

@@ -1,7 +1,0 @@
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "final-decision-v0",
-  "type": "object",
-  "required": ["schema_version", "decision_id", "run_id", "decision", "evidence", "open_risks"]
-}
-

@@ -1,9 +1,3 @@
-/-
-  Copyright (c) 2026 Zichen Wang. All rights reserved.
-  Released under Apache 2.0 license as described in the file LICENSE.
-  Authors: Zichen Wang, Wanli Ma, Ziyu Wang, Zaiwen Wen
-  -/
-
 import Mathlib
 
 section Chap01
@@ -220,7 +214,7 @@ lemma realSeqConvergesFrom_iff_realDist_tendsto_zero (m : Nat) (x : Nat → Real
     simpa [realDist, Real.dist_eq, abs_sub_comm] using h
 
 /-- Definition 1.3 (Metric space): a metric satisfies the usual axioms. -/
-structure MetricAxioms {X : Type*} (d : X → X → ℝ) : Prop where
+structure TaoMetricAxioms {X : Type*} (d : X → X → ℝ) : Prop where
   eq_zero_iff : ∀ x y, d x y = 0 ↔ x = y
   comm : ∀ x y, d x y = d y x
   triangle : ∀ x y z, d x z ≤ d x y + d y z
@@ -263,9 +257,9 @@ lemma proposition_1_1 {X : Type*} {d : X → X → ℝ} :
     · exact self_of_eq_zero_iff h
     · exact eq_of_eq_zero_of_eq_zero_iff h
 
-/-- The distance of a metric space satisfies `MetricAxioms`. -/
+/-- The distance of a metric space satisfies `TaoMetricAxioms`. -/
 lemma metricAxioms_dist {X : Type*} [MetricSpace X] :
-    MetricAxioms (fun x y : X => dist x y) := by
+    TaoMetricAxioms (fun x y : X => dist x y) := by
   refine
     { eq_zero_iff := ?_
       comm := ?_
@@ -280,12 +274,12 @@ lemma metricAxioms_dist {X : Type*} [MetricSpace X] :
   · intro x y
     simp
 
-/-- The real distance satisfies `MetricAxioms`. -/
-lemma metricAxioms_realDist : MetricAxioms (fun x y : ℝ => realDist x y) := by
+/-- The real distance satisfies `TaoMetricAxioms`. -/
+lemma metricAxioms_realDist : TaoMetricAxioms (fun x y : ℝ => realDist x y) := by
   simpa [realDist] using (metricAxioms_dist (X := ℝ))
 
 /-- A metric satisfies `d x x = 0`. -/
-lemma MetricAxioms.self {X : Type*} {d : X → X → ℝ} (h : MetricAxioms d) (x : X) :
+lemma TaoMetricAxioms.self {X : Type*} {d : X → X → ℝ} (h : TaoMetricAxioms d) (x : X) :
     d x x = 0 := by
   exact (h.eq_zero_iff x x).2 rfl
 
@@ -304,8 +298,8 @@ def standardMetric (x y : ℝ) : ℝ := |x - y|
 lemma standardMetric_eq_realDist (x y : ℝ) : standardMetric x y = realDist x y := by
   simp [standardMetric, abs_sub_eq_realDist]
 
-/-- The standard metric on `ℝ` satisfies `MetricAxioms`. -/
-lemma metricAxioms_standardMetric : MetricAxioms (fun x y : ℝ => standardMetric x y) := by
+/-- The standard metric on `ℝ` satisfies `TaoMetricAxioms`. -/
+lemma metricAxioms_standardMetric : TaoMetricAxioms (fun x y : ℝ => standardMetric x y) := by
   simpa [standardMetric_eq_realDist] using (metricAxioms_realDist)
 
 /-- Definition 1.5: for a metric space `(X, d)` and `Y ⊆ X`, the induced metric on `Y` is the restriction `d|_{Y×Y}` given by `d|_{Y×Y}(y1, y2) = d(y1, y2)`; the subspace induced by `Y` is the metric space `(Y, d|_{Y×Y})`. -/
@@ -861,8 +855,8 @@ theorem metric_limit_unique {X : Type*} [MetricSpace X]
 /-- Proposition 1.8: Let `(X, d)` be a metric space and let `f : X → X` be a
 bijection. Define `d'(x,y) = d (f x) (f y)`. Then `d'` is a metric on `X`. -/
 theorem metricAxioms_comp_bijective {X : Type*} {d : X → X → ℝ}
-    (hd : MetricAxioms d) {f : X → X} (hf : Function.Bijective f) :
-    MetricAxioms (fun x y => d (f x) (f y)) := by
+    (hd : TaoMetricAxioms d) {f : X → X} (hf : Function.Bijective f) :
+    TaoMetricAxioms (fun x y => d (f x) (f y)) := by
   refine
     { eq_zero_iff := ?_
       comm := ?_

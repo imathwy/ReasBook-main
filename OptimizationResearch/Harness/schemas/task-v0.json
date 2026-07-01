@@ -1,7 +1,0 @@
-{
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "task-v0",
-  "type": "object",
-  "required": ["schema_version", "task_id", "phase", "work_package", "task_type", "status", "permissions", "required_outputs", "checks"]
-}
-
