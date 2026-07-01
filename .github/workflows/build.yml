@@ -13,94 +13,100 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: [self-hosted, Linux, X64]
-    timeout-minutes: 300
-    env:
-      HEARTBEAT_INTERVAL_SECONDS: 45
-      RETRY_ON_143_MAX_RETRIES: 1
-      RETRY_ON_143_SLEEP_SECONDS: 20
-      PERSIST_ROOT: ${{ vars.REASBOOK_PERSIST_ROOT }}
+  build-core:
+    name: Build ReasBook core
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Prepare persistent build directories
+      - name: Install elan
         run: |
-          set -euo pipefail
-          home_dir="${HOME:-/root}"
-          repo_key="${GITHUB_REPOSITORY//\//\_}"
-          persist_root="${PERSIST_ROOT:-$home_dir/.cache/reasbook-ci/$repo_key}"
-          echo "PERSIST_ROOT=$persist_root" >> "$GITHUB_ENV"
-          mkdir -p "$persist_root/reasbook_lake" \
-                   "$persist_root/elan"
-          rm -rf ReasBook/.lake
-          ln -sfn "$persist_root/reasbook_lake" ReasBook/.lake
-          if [ -d "$persist_root/elan" ] && [ -n "$(ls -A "$persist_root/elan" 2>/dev/null)" ]; then
-            mkdir -p "$home_dir/.elan"
-            if command -v rsync >/dev/null 2>&1; then
-              rsync -a "$persist_root/elan/" "$home_dir/.elan/"
-            else
-              cp -a "$persist_root/elan/." "$home_dir/.elan/"
-            fi
-          fi
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
 
-      - name: Install elan (Lean toolchain manager)
-        run: |
-          home_dir="${HOME:-/root}"
-          if [ ! -x "$home_dir/.elan/bin/elan" ]; then
-            curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
-          fi
-          echo "$home_dir/.elan/bin" >> "$GITHUB_PATH"
-
-      - name: Restore ReasBook build cache
+      - name: Restore build cache
         continue-on-error: true
         uses: actions/cache/restore@v4
         with:
-          path: |
-            ReasBook/.lake/build/bin
-            ReasBook/.lake/build/lib/lean
-          key: lake-reasbook-lite-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}
+          path: ReasBook/.lake/build
+          key: lake-reasbook-v1-${{ runner.os }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}
           restore-keys: |
-            lake-reasbook-lite-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
+            lake-reasbook-v1-${{ runner.os }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
 
-      - name: Build ReasBook (prime mathlib cache + compile)
-        timeout-minutes: 240
+      - name: Prime mathlib cache
         run: |
-          set -euo pipefail
           cd ReasBook
           lake exe cache get || true
+
+      - name: Build ReasBook
+        run: |
+          cd ReasBook
           lake build
 
-      - name: Save ReasBook build cache
+      - name: Save build cache
         if: always()
         continue-on-error: true
         uses: actions/cache/save@v4
         with:
-          path: |
-            ReasBook/.lake/build/bin
-            ReasBook/.lake/build/lib/lean
-          key: lake-reasbook-lite-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-${{ github.run_id }}
+          path: ReasBook/.lake/build
+          key: lake-reasbook-v1-${{ runner.os }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-${{ github.run_id }}
 
-      - name: Build docs
-        timeout-minutes: 120
-        run: |
-          set -euo pipefail
-          ./scripts/build_reasbook_project_docs.sh
+  build-docs:
+    name: Docs (${{ matrix.module }})
+    needs: build-core
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        module:
+          - Books/AchimKlenkeLean
+          - Books/Analysis2_Tao_2022
+          - Books/BauschkeLean
+          - Books/CombinatorialGroupTheory
+          - Books/ConvexAnalysis_Rockafellar_1970
+          - Books/FirstOrderMethodsinOptimization
+          - Books/IntegerProgramming_Conforti_2014
+          - Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025
+          - Books/MayConciseRevised
+          - Books/Nesterov
+          - Books/Reaslib
+          - Books/RiemannSurfaces
+          - Books/Serre
+          - Books/SmoothManifoldsLee
+          - Books/cartan
+          - Books/chapter1_reference_format
+          - Books/stacks_project
+          - Papers/OnSomeLocalRings_Maassaran_2025
+          - Papers/SmoothMinimization_Nesterov_2004
 
-      - name: Persist elan toolchain
-        if: always()
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install elan
         run: |
-          set -euo pipefail
-          home_dir="${HOME:-/root}"
-          repo_key="${GITHUB_REPOSITORY//\//\_}"
-          persist_root="${PERSIST_ROOT:-$home_dir/.cache/reasbook-ci/$repo_key}"
-          mkdir -p "$persist_root/elan"
-          if [ -d "$home_dir/.elan" ]; then
-            if command -v rsync >/dev/null 2>&1; then
-              rsync -a --delete "$home_dir/.elan/" "$persist_root/elan/"
-            else
-              rm -rf "$persist_root/elan"/*
-              cp -a "$home_dir/.elan/." "$persist_root/elan/"
-            fi
-          fi
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      - name: Restore build cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ReasBook/.lake/build
+          key: lake-reasbook-v1-${{ runner.os }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-${{ github.run_id }}
+          restore-keys: |
+            lake-reasbook-v1-${{ runner.os }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-
+            lake-reasbook-v1-${{ runner.os }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
+
+      - name: Prime mathlib cache
+        run: |
+          cd ReasBook
+          lake exe cache get || true
+
+      - name: Build docs (${{ matrix.module }})
+        run: |
+          mod="${{ matrix.module }}"
+          mod="${mod//\//.}"
+          cd ReasBook
+          lake -R -Kenv=dev build "${mod}:docs"
