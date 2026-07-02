@@ -15,28 +15,38 @@ concurrency:
 jobs:
   build-core:
     name: Build ReasBook core
-    runs-on: ubuntu-latest
-    timeout-minutes: 240
+    runs-on: [self-hosted, Linux, X64]
+    timeout-minutes: 60
+    env:
+      PERSIST_ROOT: ${{ vars.REASBOOK_PERSIST_ROOT }}
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build ReasBook (resolves deps, gets mathlib cache, builds)
-        uses: leanprover/lean-action@v1
-        with:
-          lake-package-directory: ReasBook
-          use-mathlib-cache: true
-          use-github-cache: true
-          build: true
-          test: false
-          lint: false
-          auto-config: false
+      - name: Link persistent .lake directory
+        run: |
+          set -euo pipefail
+          persist_root="${PERSIST_ROOT:-/data/reasbook-ci}"
+          mkdir -p "$persist_root/reasbook_lake"
+          rm -rf ReasBook/.lake
+          ln -sfn "$persist_root/reasbook_lake" ReasBook/.lake
+
+      - name: Resolve dependencies
+        run: cd ReasBook && lake resolve-deps
+
+      - name: Prime mathlib cache
+        run: cd ReasBook && lake exe cache get || true
+
+      - name: Build ReasBook
+        run: cd ReasBook && lake build
 
   build-docs:
     name: Docs (${{ matrix.module }})
     needs: build-core
-    runs-on: ubuntu-latest
-    timeout-minutes: 120
+    runs-on: [self-hosted, Linux, X64]
+    timeout-minutes: 30
+    env:
+      PERSIST_ROOT: ${{ vars.REASBOOK_PERSIST_ROOT }}
     strategy:
       fail-fast: false
       matrix:
@@ -64,21 +74,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # lean-action installs elan (with retry+toolcache) and restores .lake cache from build-core
-      - name: Setup elan and restore build cache
-        uses: leanprover/lean-action@v1
-        with:
-          lake-package-directory: ReasBook
-          use-mathlib-cache: true
-          use-github-cache: true
-          build: false
-          test: false
-          lint: false
-          auto-config: false
-
-      # resolve-deps ensures .lake/packages exist even on partial cache miss
-      - name: Resolve dependencies
-        run: cd ReasBook && lake resolve-deps
+      - name: Link persistent .lake directory
+        run: |
+          set -euo pipefail
+          persist_root="${PERSIST_ROOT:-/data/reasbook-ci}"
+          rm -rf ReasBook/.lake
+          ln -sfn "$persist_root/reasbook_lake" ReasBook/.lake
 
       - name: Build docs (${{ matrix.module }})
         run: |
