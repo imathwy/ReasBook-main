@@ -84,7 +84,7 @@
    "manifestFile": "lake-manifest.json",
    "inputRev": "main",
    "inherited": true,
-   "configFile": "lakefile.toml"
+   "configFile": "lakefile.lean"
   },
   {
    "url": "https://github.com/dupuisf/BibtexQuery",
@@ -96,7 +96,7 @@
    "manifestFile": "lake-manifest.json",
    "inputRev": "main",
    "inherited": true,
-   "configFile": "lakefile.lean"
+   "configFile": "lakefile.toml"
   },
   {
    "url": "https://github.com/leanprover-community/plausible",
