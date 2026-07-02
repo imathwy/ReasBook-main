@@ -42,13 +42,13 @@ jobs:
       matrix:
         module:
           - Books/AchimKlenkeLean
-          - Books/Analysis2_Tao_2022
+          - Books/Analysis2_Tao_2022/Book
           - Books/BauschkeLean
           - Books/CombinatorialGroupTheory
-          - Books/ConvexAnalysis_Rockafellar_1970
+          - Books/ConvexAnalysis_Rockafellar_1970/Book
           - Books/FirstOrderMethodsinOptimization
-          - Books/IntegerProgramming_Conforti_2014
-          - Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025
+          - Books/IntegerProgramming_Conforti_2014/Book
+          - Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Book
           - Books/MayConciseRevised
           - Books/Nesterov
           - Books/Reaslib
@@ -58,8 +58,8 @@ jobs:
           - Books/cartan
           - Books/chapter1_reference_format
           - Books/stacks_project
-          - Papers/OnSomeLocalRings_Maassaran_2025
-          - Papers/SmoothMinimization_Nesterov_2004
+          - Papers/OnSomeLocalRings_Maassaran_2025/Paper
+          - Papers/SmoothMinimization_Nesterov_2004/Paper
 
     steps:
       - uses: actions/checkout@v4

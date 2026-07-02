@@ -63,6 +63,22 @@ lean_lib stacks_project where
 lean_lib stacks_proof where
   srcDir := "Books"
 
+-- Books living under Books/<LibName>/ with a Book.lean entry point
+lean_lib Analysis2_Tao_2022 where
+  srcDir := "Books"
+lean_lib ConvexAnalysis_Rockafellar_1970 where
+  srcDir := "Books"
+lean_lib IntegerProgramming_Conforti_2014 where
+  srcDir := "Books"
+lean_lib IntroductiontoRealAnalysisVolumeI_JiriLebl_2025 where
+  srcDir := "Books"
+
+-- Papers living under Papers/<LibName>/ with a Paper.lean entry point
+lean_lib OnSomeLocalRings_Maassaran_2025 where
+  srcDir := "Papers"
+lean_lib SmoothMinimization_Nesterov_2004 where
+  srcDir := "Papers"
+
 lean_exe "literate-extract" where
   root := `LiterateExtract
   supportInterpreter := true
