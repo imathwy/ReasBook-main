@@ -21,42 +21,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install elan
-        run: |
-          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
-          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
-
-      - name: Restore build cache
-        continue-on-error: true
-        uses: actions/cache/restore@v4
+      - name: Build ReasBook (resolves deps, gets mathlib cache, builds)
+        uses: leanprover/lean-action@v1
         with:
-          path: ReasBook/.lake/build
-          key: lake-reasbook-v1-${{ runner.os }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}
-          restore-keys: |
-            lake-reasbook-v1-${{ runner.os }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
-
-      - name: Resolve dependencies
-        run: |
-          cd ReasBook
-          lake resolve-deps
-
-      - name: Prime mathlib cache
-        run: |
-          cd ReasBook
-          lake exe cache get || true
-
-      - name: Build ReasBook
-        run: |
-          cd ReasBook
-          lake build
-
-      - name: Save build cache
-        if: always()
-        continue-on-error: true
-        uses: actions/cache/save@v4
-        with:
-          path: ReasBook/.lake/build
-          key: lake-reasbook-v1-${{ runner.os }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-${{ github.run_id }}
+          lake-package-directory: ReasBook
+          use-mathlib-cache: true
+          use-github-cache: true
+          build: true
+          test: false
+          lint: false
+          auto-config: false
 
   build-docs:
     name: Docs (${{ matrix.module }})
@@ -90,29 +64,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install elan
-        run: |
-          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
-          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
-
-      - name: Restore build cache
-        uses: actions/cache/restore@v4
+      # lean-action installs elan (with retry+toolcache) and restores .lake cache from build-core
+      - name: Setup elan and restore build cache
+        uses: leanprover/lean-action@v1
         with:
-          path: ReasBook/.lake/build
-          key: lake-reasbook-v1-${{ runner.os }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-${{ github.run_id }}
-          restore-keys: |
-            lake-reasbook-v1-${{ runner.os }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-
-            lake-reasbook-v1-${{ runner.os }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
+          lake-package-directory: ReasBook
+          use-mathlib-cache: true
+          use-github-cache: true
+          build: false
+          test: false
+          lint: false
+          auto-config: false
 
+      # resolve-deps ensures .lake/packages exist even on partial cache miss
       - name: Resolve dependencies
-        run: |
-          cd ReasBook
-          lake resolve-deps
-
-      - name: Prime mathlib cache
-        run: |
-          cd ReasBook
-          lake exe cache get || true
+        run: cd ReasBook && lake resolve-deps
 
       - name: Build docs (${{ matrix.module }})
         run: |
