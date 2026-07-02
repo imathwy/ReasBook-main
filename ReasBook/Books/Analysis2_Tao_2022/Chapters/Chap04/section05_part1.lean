@@ -42,7 +42,7 @@ lemma realEulerNumber_eq_tsum :
     realEulerNumber = ∑' n : ℕ, (1 : ℝ) / (n.factorial : ℝ) := by
   rw [realEulerNumber, Real.exp_eq_exp_ℝ]
   simpa using
-    congrArg (fun f : ℝ → ℝ => f 1) (NormedSpace.exp_eq_tsum_div (𝕂 := ℝ) (𝔸 := ℝ))
+    congrArg (fun f : ℝ → ℝ => f 1) (NormedSpace.exp_eq_tsum_div (𝔸 := ℝ))
 
 /-- Helper for Proposition 4.5.1: rewrite `Real.exp x` as `(Real.exp 1) ^ x`. -/
 lemma helperForProposition_4_5_1_exp_eq_expOne_rpow (x : ℝ) :
@@ -74,13 +74,13 @@ theorem exp_basic_properties_part_a :
     AnalyticOn ℝ Real.exp Set.univ := by
   refine ⟨?_, ?_, ?_, ?_⟩
   · intro x
-    refine Summable.congr (NormedSpace.norm_expSeries_div_summable (𝕂 := ℝ) (x := x)) ?_
+    refine Summable.congr (NormedSpace.norm_expSeries_div_summable (x := x)) ?_
     intro n
     rw [Real.norm_eq_abs]
   · intro x
     rw [Real.exp_eq_exp_ℝ]
     simpa using
-      congrArg (fun f : ℝ → ℝ => f x) (NormedSpace.exp_eq_tsum_div (𝕂 := ℝ) (𝔸 := ℝ))
+      congrArg (fun f : ℝ → ℝ => f x) (NormedSpace.exp_eq_tsum_div (𝔸 := ℝ))
   · simpa using (NormedSpace.expSeries_radius_eq_top (𝕂 := ℝ) (𝔸 := ℝ))
   · simpa using (analyticOn_rexp : AnalyticOn ℝ Real.exp Set.univ)
 

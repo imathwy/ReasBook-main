@@ -205,7 +205,7 @@ theorem implicitFunctionTheorem
     have hcontAtF : ContDiffAt ℝ 1 F (y', yLast) := by
       simpa [F] using hcontAtf.comp (y', yLast) hcontAtSnoc
     have hdiffAtF : DifferentiableAt ℝ F (y', yLast) :=
-      hcontAtF.differentiableAt hOneLe
+      hcontAtF.differentiableAt one_ne_zero
     have hHasFDerivAtF : HasFDerivAt F (fderiv ℝ F (y', yLast)) (y', yLast) :=
       hdiffAtF.hasFDerivAt
     let L : ℝ →L[ℝ] ℝ :=
@@ -225,7 +225,7 @@ theorem implicitFunctionTheorem
       · intro j
         simpa [M, Fin.snoc_castSucc] using (hasFDerivAt_const (c := y' j) (x := yLast))
     have hdiffAtf : DifferentiableAt ℝ f (Fin.snoc y' yLast) :=
-      hcontAtf.differentiableAt hOneLe
+      hcontAtf.differentiableAt one_ne_zero
     have hDerivLineDirect :
         HasFDerivAt (fun t : ℝ => f (Fin.snoc y' t))
           ((fderiv ℝ f (Fin.snoc y' yLast)).comp M) yLast := by
@@ -256,7 +256,7 @@ theorem implicitFunctionTheorem
     · simpa [F] using hHasFDerivAtF
     · simpa [F] using hcontAtF
     · simpa [F, L] using hBij
-    · exact hOneLe
+    · exact one_ne_zero
   have hMainData :
       ∃ U : Set (Fin n → ℝ),
         IsOpen U ∧ y' ∈ U ∧
@@ -272,10 +272,62 @@ theorem implicitFunctionTheorem
                             partialDerivWithin f E (Fin.snoc x' (g x')) (Fin.castSucc j) /
                               partialDerivWithin f E (Fin.snoc x' (g x')) (Fin.last n)
                           ) := by
-    let hIF := hBuildIsContDiffImplicitAt
     let F : (Fin n → ℝ) × ℝ → ℝ := fun p => f (Fin.snoc p.1 p.2)
+    have hStrictF : HasStrictFDerivAt F (fderiv ℝ F (y', yLast)) (y', yLast) :=
+      hBuildIsContDiffImplicitAt.contDiffAt.hasStrictFDerivAt one_ne_zero
+    have hBijInr : Function.Bijective
+        (fderiv ℝ F (y', yLast) ∘L ContinuousLinearMap.inr ℝ (Fin n → ℝ) ℝ) :=
+      hBuildIsContDiffImplicitAt.bijective
+    let φ : ImplicitFunctionData ℝ ((Fin n → ℝ) × ℝ) (Fin n → ℝ) ℝ := {
+      leftFun := Prod.fst
+      rightFun := F
+      pt := (y', yLast)
+      leftDeriv := ContinuousLinearMap.fst ℝ (Fin n → ℝ) ℝ
+      rightDeriv := fderiv ℝ F (y', yLast)
+      hasStrictFDerivAt_leftFun := hasStrictFDerivAt_fst
+      hasStrictFDerivAt_rightFun := hStrictF
+      range_leftDeriv := Submodule.range_fst
+      range_rightDeriv := by
+        have hle : (fderiv ℝ F (y', yLast) ∘L
+            ContinuousLinearMap.inr ℝ (Fin n → ℝ) ℝ).range ≤
+            (fderiv ℝ F (y', yLast)).range :=
+          LinearMap.range_comp_le_range ..
+        rwa [LinearMap.range_eq_top.mpr hBijInr.surjective, top_le_iff] at hle
+      isCompl_ker := by
+        constructor
+        · rw [LinearMap.disjoint_ker]
+          intro ⟨x₁, x₂⟩ hmem hzero
+          rw [LinearMap.mem_ker] at hmem
+          simp at hmem
+          subst hmem
+          have hLx₂ : (fderiv ℝ F (y', yLast) ∘L
+              ContinuousLinearMap.inr ℝ (Fin n → ℝ) ℝ) x₂ = 0 := by
+            simp [ContinuousLinearMap.comp_apply, ContinuousLinearMap.inr_apply]
+            exact_mod_cast hzero
+          have hx₂ : x₂ = 0 :=
+            (injective_iff_map_eq_zero _).mp hBijInr.injective x₂ hLx₂
+          simp [hx₂]
+        · rw [Submodule.codisjoint_iff_exists_add_eq]
+          intro ⟨v₁, v₂⟩
+          have ⟨t, ht⟩ := hBijInr.surjective (fderiv ℝ F (y', yLast) (v₁, v₂))
+          refine ⟨(0, t), (v₁, v₂ - t), ?_, ?_, ?_⟩
+          · rw [LinearMap.mem_ker]
+            simp
+          · rw [LinearMap.mem_ker]
+            have hLinr : (fderiv ℝ F (y', yLast) ∘L
+                ContinuousLinearMap.inr ℝ (Fin n → ℝ) ℝ) t =
+                fderiv ℝ F (y', yLast) (0, t) := by
+              simp [ContinuousLinearMap.comp_apply, ContinuousLinearMap.inr_apply]
+            calc fderiv ℝ F (y', yLast) (v₁, v₂ - t)
+                = fderiv ℝ F (y', yLast) (v₁, v₂) -
+                    fderiv ℝ F (y', yLast) (0, t) := by
+                  rw [show (v₁, v₂ - t) = (v₁, v₂) - (0, t) from by simp]
+                  exact (fderiv ℝ F (y', yLast)).map_sub _ _
+              _ = 0 := by rw [← hLinr, ht, sub_self]
+          · simp
+    }
     let e0 : OpenPartialHomeomorph ((Fin n → ℝ) × ℝ) ((Fin n → ℝ) × ℝ) :=
-      hIF.implicitFunctionData.toOpenPartialHomeomorph
+      φ.toOpenPartialHomeomorph
     let s : Set ((Fin n → ℝ) × ℝ) := {p | Fin.snoc p.1 p.2 ∈ E}
     have hOneNeTop : (1 : WithTop ℕ∞) ≠ (↑(⊤ : ℕ∞) : WithTop ℕ∞) := by
       simp
@@ -291,7 +343,7 @@ theorem implicitFunctionTheorem
       rfl
     have hySource1 : (y', yLast) ∈ e1.source := by
       have hySource0 : (y', yLast) ∈ e0.source := by
-        exact hIF.implicitFunctionData.pt_mem_toOpenPartialHomeomorph_source
+        exact φ.pt_mem_toOpenPartialHomeomorph_source
       have hyInS : (y', yLast) ∈ s := by
         simpa [s] using hy
       simpa [e1, OpenPartialHomeomorph.restrOpen_source] using And.intro hySource0 hyInS
@@ -306,21 +358,21 @@ theorem implicitFunctionTheorem
       have hyTarget1' : e1 (y', yLast) ∈ e1.target := e1.map_source hySource1
       simpa [hyMapEq1] using hyTarget1'
     let eDeriv : ((Fin n → ℝ) × ℝ) ≃L[ℝ] ((Fin n → ℝ) × ℝ) :=
-      hIF.implicitFunctionData.leftDeriv.equivProdOfSurjectiveOfIsCompl
-        hIF.implicitFunctionData.rightDeriv
-        hIF.implicitFunctionData.range_leftDeriv
-        hIF.implicitFunctionData.range_rightDeriv
-        hIF.implicitFunctionData.isCompl_ker
+      φ.leftDeriv.equivProdOfSurjectiveOfIsCompl
+        φ.rightDeriv
+        φ.range_leftDeriv
+        φ.range_rightDeriv
+        φ.isCompl_ker
     have hHasFDerivAtE0 : HasFDerivAt e0 (eDeriv : ((Fin n → ℝ) × ℝ) →L[ℝ] ((Fin n → ℝ) × ℝ))
         (y', yLast) := by
       have hStrictE0 :
           HasStrictFDerivAt e0 (eDeriv : ((Fin n → ℝ) × ℝ) →L[ℝ] ((Fin n → ℝ) × ℝ))
             (y', yLast) := by
-        simpa [e0, eDeriv, F] using hIF.implicitFunctionData.hasStrictFDerivAt
+        simpa [e0, eDeriv, F] using φ.hasStrictFDerivAt
       exact hStrictE0.hasFDerivAt
     have hContDiffAtE0 : ContDiffAt ℝ 1 e0 (y', yLast) := by
       have hContDiffAtF : ContDiffAt ℝ 1 F (y', yLast) := by
-        simpa [F] using hIF.contDiffAt
+        simpa [F] using hBuildIsContDiffImplicitAt.contDiffAt
       have hContDiffAtProd : ContDiffAt ℝ 1 (fun p : (Fin n → ℝ) × ℝ => (p.1, F p)) (y', yLast) :=
         contDiffAt_fst.prodMk hContDiffAtF
       simpa [e0] using hContDiffAtProd
@@ -678,9 +730,24 @@ theorem implicitFunctionTheorem
       have hEvalDecomp :
           (fderivWithin ℝ f E (H x')) (eCastSucc + (partialDerivWithin g U1 x' j) • eLast) = 0 := by
         simpa [hSnocDecomp] using hEvalSnoc
-      simpa [partialDerivWithin, eJ, eCastSucc, eLast, map_add, map_smul, smul_eq_mul,
-        mul_comm, mul_left_comm, mul_assoc]
-        using hEvalDecomp
+      have hpartialEq :
+          partialDerivWithin f E (H x') (Fin.castSucc j) +
+              partialDerivWithin f E (H x') (Fin.last n) * partialDerivWithin g U1 x' j = 0 := by
+        change (fderivWithin ℝ f E (H x')) (Pi.single (Fin.castSucc j) 1) +
+            (fderivWithin ℝ f E (H x')) (Pi.single (Fin.last n) 1) *
+              partialDerivWithin g U1 x' j = 0
+        have hLinear : (fderivWithin ℝ f E (H x')) (eCastSucc + partialDerivWithin g U1 x' j • eLast)
+            = (fderivWithin ℝ f E (H x')) eCastSucc +
+              partialDerivWithin g U1 x' j * (fderivWithin ℝ f E (H x')) eLast := by
+          rw [(fderivWithin ℝ f E (H x')).map_add,
+              (fderivWithin ℝ f E (H x')).map_smul]
+          ring
+        have hgoal : (fderivWithin ℝ f E (H x')) eCastSucc +
+            partialDerivWithin g U1 x' j * (fderivWithin ℝ f E (H x')) eLast = 0 := by
+          linarith [hLinear.symm.trans hEvalDecomp]
+        linarith [mul_comm (fderivWithin ℝ f E (H x') eLast) (partialDerivWithin g U1 x' j),
+                  hgoal]
+      exact hpartialEq
     have hQuotient1 :
         ∀ x' ∈ U1, ∀ j : Fin n,
           partialDerivWithin g U1 x' j =
@@ -1038,7 +1105,7 @@ theorem regularLevelSetAsLocalGraph
       simpa [Φ, L, Fin.insertNth_apply_succAbove] using
         ((ContinuousLinearMap.proj (R := ℝ) (ι := Fin (m + 1)) (i := Fin.castSucc k) :
           (Fin (m + 1) → ℝ) →L[ℝ] ℝ).hasFDerivAt)
-  have hfDiffAt : DifferentiableAt ℝ f x₀ := (hf.contDiffAt (x := x₀)).differentiableAt hOneLe
+  have hfDiffAt : DifferentiableAt ℝ f x₀ := (hf.contDiffAt (x := x₀)).differentiableAt one_ne_zero
   have hfDerivAtX0 : HasFDerivAt f (fderiv ℝ f x₀) x₀ := hfDiffAt.hasFDerivAt
   have hfDerivAtΦy0 : HasFDerivAt f (fderiv ℝ f x₀) (Φ y0) := by
     simpa [hΦAty0] using hfDerivAtX0
@@ -1079,7 +1146,7 @@ theorem regularLevelSetAsLocalGraph
       hPartialTilde
   rcases hIFT with ⟨U, hUopen, -, V, hVopen, hyV, -, g, hgA, hgB, -⟩
   have hGraphEqTilde : {y | y ∈ V ∧ fTilde y = 0} = (fun x' => Fin.snoc x' (g x')) '' U := hgA.2
-  have hDiffOn : DifferentiableOn ℝ g U := hgB.1.differentiableOn hOneLe
+  have hDiffOn : DifferentiableOn ℝ g U := hgB.1.differentiableOn one_ne_zero
   let W : Set (Fin (m + 1) → ℝ) := Ψ ⁻¹' V
   have hΨContDiff : ContDiff ℝ 1 Ψ := by
     refine contDiff_pi.2 ?_

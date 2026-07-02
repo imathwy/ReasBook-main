@@ -14,9 +14,9 @@ lemma exists_notMeasurableSet_real :
     exact hCountable.le_aleph0.trans Cardinal.aleph0_le_continuum
   have hMeasurableCard :
       Cardinal.mk { s : Set ℝ // MeasurableSet s } ≤ Cardinal.continuum := by
-    simpa [MeasurableSpace.generateFrom_countableGeneratingSet (α := ℝ)] using
-      (MeasurableSpace.cardinal_measurableSet_le_continuum
-        (s := MeasurableSpace.countableGeneratingSet ℝ) hGeneratorCard)
+    have := MeasurableSpace.cardinal_measurableSet_le_continuum
+        (s := MeasurableSpace.countableGeneratingSet ℝ) hGeneratorCard
+    rwa [MeasurableSpace.generateFrom_countableGeneratingSet] at this
   have hSetToMeasurable :
       Cardinal.mk (Set ℝ) ≤ Cardinal.mk { s : Set ℝ // MeasurableSet s } := by
     refine Cardinal.mk_le_of_injective
@@ -134,7 +134,7 @@ lemma isCaratheodory_implies_nullMeasurable_for_volume
   have hV_meas : MeasurableSet V := by
     exact MeasurableSet.iUnion hU_meas
   have hV_diff_zero : (MeasureTheory.volume : MeasureTheory.Measure ℝ) (V \ E) = 0 := by
-    refine le_antisymm ?_ (zero_le _)
+    refine le_antisymm ?_ zero_le
     calc
       (MeasureTheory.volume : MeasureTheory.Measure ℝ) (V \ E) =
           (MeasureTheory.volume : MeasureTheory.Measure ℝ) (⋃ n : ℕ, U n \ E) := by

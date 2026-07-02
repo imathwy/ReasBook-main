@@ -350,7 +350,7 @@ theorem lebesgueIntegralNonnegSimple_nonneg_le_top_and_eq_zero_iff {n : ℕ}
       lebesgueIntegralNonnegSimple f ≤ ⊤ ∧
       (lebesgueIntegralNonnegSimple f = 0 ↔
         MeasureTheory.volume (((↑) : Ω → Fin n → ℝ) '' {x : Ω | f.1 x ≠ 0}) = 0) := by
-  refine ⟨zero_le _, le_top, ?_⟩
+  refine ⟨zero_le, le_top, ?_⟩
   constructor
   · intro hintegral_zero
     have hsum_zero :

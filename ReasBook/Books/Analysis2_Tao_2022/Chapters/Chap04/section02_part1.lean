@@ -556,7 +556,8 @@ lemma helperForProposition_4_2_2_iteratedDerivWithin_series_formula
   have hSubsetBall : E ⊆ EMetric.ball a (ENNReal.ofReal r) := by
     intro y hy
     rcases hy with ⟨hy_left, hy_right⟩
-    rw [EMetric.mem_ball, edist_dist, Real.dist_eq, abs_sub_comm, ENNReal.ofReal_lt_ofReal_iff hr]
+    change y ∈ Metric.eball a (ENNReal.ofReal r)
+    rw [Metric.mem_eball, edist_dist, Real.dist_eq, abs_sub_comm, ENNReal.ofReal_lt_ofReal_iff hr]
     exact abs_lt.2 (by constructor <;> linarith)
   have ha_mem : a ∈ E := by
     change a ∈ Set.Ioo (a - r) (a + r)
@@ -574,7 +575,8 @@ lemma helperForProposition_4_2_2_iteratedDerivWithin_series_formula
     hpow.iteratedFDerivWithin hAnalytic k hUnique ha_mem
   have hxBall : x ∈ EMetric.ball a (ENNReal.ofReal r) := by
     rcases hx with ⟨hxL, hxR⟩
-    rw [EMetric.mem_ball, edist_dist, Real.dist_eq, ENNReal.ofReal_lt_ofReal_iff hr]
+    change x ∈ Metric.eball a (ENNReal.ofReal r)
+    rw [Metric.mem_eball, edist_dist, Real.dist_eq, ENNReal.ofReal_lt_ofReal_iff hr]
     exact abs_lt.2 (by constructor <;> linarith)
   have hHasSumMultilin :
       HasSum (fun n : ℕ => p.iteratedFDerivSeries k n (fun _ : Fin n => x - a))
@@ -638,7 +640,8 @@ lemma helperForProposition_4_2_2_onceDifferentiable_all_orders_of_analytic
   have hSubsetBall : E ⊆ EMetric.ball a (ENNReal.ofReal r) := by
     intro x hx
     rcases hx with ⟨hx_left, hx_right⟩
-    rw [EMetric.mem_ball, edist_dist, Real.dist_eq, abs_sub_comm, ENNReal.ofReal_lt_ofReal_iff hr]
+    change x ∈ Metric.eball a (ENNReal.ofReal r)
+    rw [Metric.mem_eball, edist_dist, Real.dist_eq, abs_sub_comm, ENNReal.ofReal_lt_ofReal_iff hr]
     exact abs_lt.2 (by constructor <;> linarith)
   have hAnalyticAux : AnalyticOn ℝ (SubtypeExtension E f) (insert a E ∩ EMetric.ball a (ENNReal.ofReal r)) :=
     hpow.analyticOn

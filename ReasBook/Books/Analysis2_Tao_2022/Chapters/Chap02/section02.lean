@@ -575,8 +575,8 @@ lemma helperForProposition_2_12_tendsto_nhds_forces_value_at_point
 /-- Helper for Proposition 2.12: identify section limits at the point. -/
 lemma helperForProposition_2_12_limUnder_section_at_point_eq
     (f : ℝ × ℝ → ℝ) (x0 y0 : ℝ) (hf : ContinuousAt f (x0, y0)) :
-    limUnder (nhds y0) (fun y => f (x0, y)) = f (x0, y0) ∧
-      limUnder (nhds x0) (fun x => f (x, y0)) = f (x0, y0) := by
+    Filter.limUnder (nhds y0) (fun y => f (x0, y)) = f (x0, y0) ∧
+      Filter.limUnder (nhds x0) (fun x => f (x, y0)) = f (x0, y0) := by
   constructor
   ·
     have hpair : ContinuousAt (fun y : ℝ => (x0, y)) y0 :=
@@ -585,7 +585,7 @@ lemma helperForProposition_2_12_limUnder_section_at_point_eq
       simpa [Function.comp] using
         (ContinuousAt.comp (g:=f) (f:=fun y : ℝ => (x0, y)) hf hpair)
     have hlim :
-        limUnder (nhds y0) (fun y => f (x0, y)) = f (x0, y0) :=
+        Filter.limUnder (nhds y0) (fun y => f (x0, y)) = f (x0, y0) :=
       Filter.Tendsto.limUnder_eq hy.tendsto
     exact hlim
   ·
@@ -595,7 +595,7 @@ lemma helperForProposition_2_12_limUnder_section_at_point_eq
       simpa [Function.comp] using
         (ContinuousAt.comp (g:=f) (f:=fun x : ℝ => (x, y0)) hf hpair)
     have hlim :
-        limUnder (nhds x0) (fun x => f (x, y0)) = f (x0, y0) :=
+        Filter.limUnder (nhds x0) (fun x => f (x, y0)) = f (x0, y0) :=
       Filter.Tendsto.limUnder_eq hx.tendsto
     exact hlim
 
@@ -616,8 +616,8 @@ theorem iterated_limsup_liminf_eq_of_continuousAt
       Filter.Tendsto (fun y => Filter.liminf (fun x => f (x, y)) (nhds x0)) (nhds y0)
         (nhds (f (x0, y0)))) ∧
     (∀ {L1 L2 : ℝ},
-        Filter.Tendsto (fun x => limUnder (nhds y0) (fun y => f (x, y))) (nhds x0) (nhds L1) →
-        Filter.Tendsto (fun y => limUnder (nhds x0) (fun x => f (x, y))) (nhds y0) (nhds L2) →
+        Filter.Tendsto (fun x => Filter.limUnder (nhds y0) (fun y => f (x, y))) (nhds x0) (nhds L1) →
+        Filter.Tendsto (fun y => Filter.limUnder (nhds x0) (fun x => f (x, y))) (nhds y0) (nhds L2) →
         L1 = L2) := by
   have hlimsup_x :
       Filter.Tendsto (fun x => Filter.limsup (fun y => f (x, y)) (nhds y0)) (nhds x0)
@@ -651,25 +651,25 @@ theorem iterated_limsup_liminf_eq_of_continuousAt
     · exact And.intro hliminf_x hliminf_y
     · intro L1 L2 hL1 hL2
       have hsections :
-          limUnder (nhds y0) (fun y => f (x0, y)) = f (x0, y0) ∧
-            limUnder (nhds x0) (fun x => f (x, y0)) = f (x0, y0) :=
+          Filter.limUnder (nhds y0) (fun y => f (x0, y)) = f (x0, y0) ∧
+            Filter.limUnder (nhds x0) (fun x => f (x, y0)) = f (x0, y0) :=
         helperForProposition_2_12_limUnder_section_at_point_eq (f:=f) (x0:=x0) (y0:=y0) hf
       have hL1_at :
-          (fun x => limUnder (nhds y0) (fun y => f (x, y))) x0 = L1 :=
+          (fun x => Filter.limUnder (nhds y0) (fun y => f (x, y))) x0 = L1 :=
         helperForProposition_2_12_tendsto_nhds_forces_value_at_point
           (x0:=x0)
-          (g:=fun x => limUnder (nhds y0) (fun y => f (x, y))) (a:=L1) hL1
+          (g:=fun x => Filter.limUnder (nhds y0) (fun y => f (x, y))) (a:=L1) hL1
       have hL2_at :
-          (fun y => limUnder (nhds x0) (fun x => f (x, y))) y0 = L2 :=
+          (fun y => Filter.limUnder (nhds x0) (fun x => f (x, y))) y0 = L2 :=
         helperForProposition_2_12_tendsto_nhds_forces_value_at_point
           (x0:=y0)
-          (g:=fun y => limUnder (nhds x0) (fun x => f (x, y))) (a:=L2) hL2
+          (g:=fun y => Filter.limUnder (nhds x0) (fun x => f (x, y))) (a:=L2) hL2
       have hL1_eq : L1 = f (x0, y0) := by
-        have h1 : L1 = limUnder (nhds y0) (fun y => f (x0, y)) := by
+        have h1 : L1 = Filter.limUnder (nhds y0) (fun y => f (x0, y)) := by
           simpa using hL1_at.symm
         exact h1.trans hsections.1
       have hL2_eq : L2 = f (x0, y0) := by
-        have h2 : L2 = limUnder (nhds x0) (fun x => f (x, y0)) := by
+        have h2 : L2 = Filter.limUnder (nhds x0) (fun x => f (x, y0)) := by
           simpa using hL2_at.symm
         exact h2.trans hsections.2
       exact hL1_eq.trans hL2_eq.symm

@@ -208,7 +208,9 @@ lemma helperForTheorem_4_2_1_isRealAnalyticAt_of_analyticWithinAtSubtypeExtensio
         (ENNReal.ofReal_lt_ofReal_iff hρpos).2 hdistρ
       exact lt_trans hdistρ' hρltR
     have hxBall : x ∈ EMetric.ball (a : ℝ) R := by
-      simpa [EMetric.mem_ball, edist_dist] using hdistR
+      show edist x (a : ℝ) < R
+      rw [edist_dist]
+      exact hdistR
     have hHasSumG : HasSum (fun n : ℕ => p n (fun _ : Fin n => x - (a : ℝ))) (G x) :=
       hR.hasSum_sub hxBall
     have hTermEq :
@@ -250,7 +252,9 @@ lemma helperForTheorem_4_2_1_isRealAnalyticAt_of_analyticWithinAtSubtypeExtensio
         (ENNReal.ofReal_lt_ofReal_iff hρpos).2 hdistρ
       exact lt_trans hdistρ' hρltR
     have hxBall : x ∈ EMetric.ball (a : ℝ) R := by
-      simpa [EMetric.mem_ball, edist_dist] using hdistR
+      show edist x (a : ℝ) < R
+      rw [edist_dist]
+      exact hdistR
     have hHasSumG : HasSum (fun n : ℕ => p n (fun _ : Fin n => x - (a : ℝ))) (G x) :=
       hR.hasSum_sub hxBall
     have hTermEq :

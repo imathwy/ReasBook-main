@@ -213,7 +213,8 @@ lemma helperForLemma_5_4_6_pairCount_nonnegShift (N m : ℕ) :
         have haN1 : a < N + 1 := lt_of_lt_of_le ha_lt (Nat.sub_le (N + 1) m)
         simpa [hEq2] using haN1
       have hij : i = j + m := by omega
-      simpa [Finset.mem_filter, Finset.mem_product] using And.intro ⟨hi, hj⟩ hij
+      simpa [Finset.mem_filter, Finset.mem_product] using
+        And.intro ⟨Nat.lt_succ_iff.mp hi, Nat.lt_succ_iff.mp hj⟩ hij
   have hinj : Function.Injective (fun j : ℕ => (j + m, j)) := by
     intro a b h
     have hsnd : a = b := by
@@ -266,7 +267,8 @@ lemma helperForLemma_5_4_6_pairCount_nonnegShift_swapped (N m : ℕ) :
         have haN1 : a < N + 1 := lt_of_lt_of_le ha_lt (Nat.sub_le (N + 1) m)
         simpa [hEq1] using haN1
       have hij : j = i + m := by omega
-      simpa [Finset.mem_filter, Finset.mem_product] using And.intro ⟨hi, hj⟩ hij
+      simpa [Finset.mem_filter, Finset.mem_product] using
+        And.intro ⟨Nat.lt_succ_iff.mp hi, Nat.lt_succ_iff.mp hj⟩ hij
   have hinj : Function.Injective (fun i : ℕ => (i, i + m)) := by
     intro a b h
     have hfst : a = b := by
@@ -404,7 +406,7 @@ lemma helperForLemma_5_4_6_expTerm_onDifferenceFiber
   have hstarExp : ∀ w : ℂ, star (Complex.exp w) = Complex.exp (star w) := by
     intro w
     simpa [Complex.exp_eq_exp_ℂ] using
-      (NormedSpace.map_exp (𝕂 := ℂ) (f := starRingEnd ℂ) continuous_star w)
+      (NormedSpace.map_exp (f := starRingEnd ℂ) continuous_star w)
   have hzpowi : z ^ i = Complex.exp ((i : ℂ) * (Complex.I * (2 * Real.pi * (x : ℂ)))) := by
     calc
       z ^ i = Complex.exp (Complex.I * (2 * Real.pi * (x : ℂ))) ^ i := by rfl

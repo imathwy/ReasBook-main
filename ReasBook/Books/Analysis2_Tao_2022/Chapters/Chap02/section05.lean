@@ -106,7 +106,7 @@ abbrev orderTopology (X : Type u) [LinearOrder X] : TopologicalSpace X :=
 `X`. In Lean this is the `TopologicalSpace` structure induced by the `CofiniteTopology` type
 synonym. -/
 abbrev cofiniteTopology (X : Type u) : TopologicalSpace X :=
-  (inferInstance : TopologicalSpace (CofiniteTopology X))
+  TopologicalSpace.cofinite
 
 /-- A set is cocountable-open if it is empty or its complement is countable. -/
 def IsCocountableOpen (X : Type u) (E : Set X) : Prop :=
