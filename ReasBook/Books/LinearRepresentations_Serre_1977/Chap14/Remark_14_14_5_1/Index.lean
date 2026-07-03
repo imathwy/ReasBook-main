@@ -1,1 +1,0 @@
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.GenericCharacterDescent

@@ -1,16 +1,17 @@
-import LinearRepresentations_Serre_1977.Chapters.Chap13.section01
-
-/-!
-Chapter 13
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/linearrepresentations_serre_1977/chapters/chap13/)
-- [Book overview](/ReasBook-private/books/linearrepresentations_serre_1977/book/)
-
-Section overviews:
-
-- Section 13.1 ([Documentation](/ReasBook-private/docs/Books/LinearRepresentations_Serre_1977/Chapters/Chap13/section01.html)) ([Verso](/ReasBook-private/books/linearrepresentations_serre_1977/chapters/chap13/section01/))
-
--/
+import Chapters.Chap13.section13_part1
+import Chapters.Chap13.section13_part10
+import Chapters.Chap13.section13_part11
+import Chapters.Chap13.section13_part12
+import Chapters.Chap13.section13_part13
+import Chapters.Chap13.section13_part14
+import Chapters.Chap13.section13_part15
+import Chapters.Chap13.section13_part16
+import Chapters.Chap13.section13_part17
+import Chapters.Chap13.section13_part2
+import Chapters.Chap13.section13_part3
+import Chapters.Chap13.section13_part4
+import Chapters.Chap13.section13_part5
+import Chapters.Chap13.section13_part6
+import Chapters.Chap13.section13_part7
+import Chapters.Chap13.section13_part8
+import Chapters.Chap13.section13_part9

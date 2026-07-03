@@ -1,54 +1,110 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Corollary_14_23
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Corollary_14_24
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Corollary_14_33
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Corollary_14_43
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Corollary_14_44
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Definition_14_1
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Definition_14_17
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Definition_14_25
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Definition_14_3
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Definition_14_39
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Definition_14_4
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Definition_14_40
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Definition_14_46
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Definition_14_6
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Definition_14_9
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Example_14_15
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Example_14_2
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Example_14_30
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Example_14_37
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Example_14_38
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Example_14_45
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Exercise_14_1_1
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Exercise_14_2_1
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Exercise_14_2_2
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Exercise_14_2_3
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Exercise_14_4_1
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Exercise_14_4_2
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Exercise_14_4_3
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Exercise_14_4_4
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Lemma_14_11
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Lemma_14_13
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Lemma_14_18
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Lemma_14_20
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Lemma_14_27
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Lemma_14_41
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Lemma_14_7
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Remark_14_10
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Remark_14_21
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Remark_14_31
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Remark_14_5
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Theorem_14_12
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Theorem_14_14
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Theorem_14_16
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Theorem_14_19
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Theorem_14_22
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Theorem_14_26
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Theorem_14_28
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Theorem_14_29
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Theorem_14_32
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Theorem_14_35
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Theorem_14_36
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Theorem_14_42
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Theorem_14_47
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Theorem_14_8
+import Mathlib
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+
+/-! ### Definition_14_1 (from Items/Chap14) -/
+universe u v
+
+variable {I : Type u}
+variable (Ω : I → Type v)
+
+/- Definition 14.1: the product of a family of sets `(Ω i)_{i ∈ I}` is canonically the dependent
+function type `((i : I) → Ω i)`. This core Lean type is the owner abstraction for the textbook
+product space, so no parallel local wrapper is needed. -/
+#check ((i : I) → Ω i)
+
+variable (Ω₀ : Type v)
+
+/- In the homogeneous case `Ω i = Ω₀` for all `i`, the product specializes to the ordinary
+function space `I → Ω₀`. -/
+#check (I → Ω₀)
+
+/-! ### Exercise_14_1_1 (from Items/Chap14) -/
+universe u v
+
+open Set MeasureTheory
+open scoped MeasureTheory
+
+variable {I : Type u} {Ω : I → Type v} [∀ i, MeasurableSpace (Ω i)]
+
+-- Proof sketch: for the forward direction, combine
+-- `MeasurableSet.eq_preimage_restrict_countable` and rewrite the resulting pullback statement as
+-- membership in the countable-coordinate cylinder `σ`-algebra. For the reverse
+-- direction, use that `cylinderEvents J ≤ MeasurableSpace.pi` for every `J`, so any set
+-- measurable for one of these countable-coordinate `σ`-algebras is measurable in the full
+-- product `σ`-algebra.
+/-- Exercise 14.1.1: equation (14.4) says that the measurable subsets of the product space are
+exactly the union, over countable subsets `J ⊆ I`, of the measurable-set families of the
+countable-coordinate cylinder `σ`-algebras `cylinderEvents J`. -/
+theorem product_measurableSets_eq_iUnion_countable_cylinderEvents :
+    {s : Set ((i : I) → Ω i) | MeasurableSet s} =
+      ⋃ J : {J : Set I // J.Countable},
+        {s : Set ((i : I) → Ω i) | MeasurableSet[cylinderEvents (J : Set I)] s} := by
+  classical
+  let mCount : MeasurableSpace ((i : I) → Ω i) := {
+    MeasurableSet' := fun s ↦ ∃ J : Set I, J.Countable ∧ MeasurableSet[cylinderEvents J] s
+    measurableSet_empty := ⟨∅, by simp, by simp⟩
+    measurableSet_compl := by
+      rintro s ⟨J, hJ, hs⟩
+      exact ⟨J, hJ, hs.compl⟩
+    measurableSet_iUnion := by
+      intro f hf
+      choose J hJ hmeas using hf
+      refine ⟨⋃ n, J n, countable_iUnion hJ, MeasurableSet.iUnion fun n ↦ ?_⟩
+      exact (show MeasurableSet[cylinderEvents (⋃ n, J n)] (f n) from
+        (cylinderEvents_mono (subset_iUnion J n)) (f n) (hmeas n)) }
+  have hpi : MeasurableSpace.pi ≤ mCount := by
+    rw [← generateFrom_squareCylinders]
+    rw [MeasurableSpace.generateFrom_le_iff]
+    rintro s ⟨J, t, ht, rfl⟩
+    refine ⟨(J : Set I), J.countable_toSet, ?_⟩
+    let A : Set ((j : (J : Set I)) → Ω j) := Set.pi univ fun j ↦ t j.1
+    haveI : Countable (J : Set I) := J.countable_toSet.to_subtype
+    have hA : MeasurableSet A := by
+      refine MeasurableSet.pi Set.countable_univ fun j _ ↦ ?_
+      exact ht j (by simp)
+    have hrestrict :
+        Measurable[cylinderEvents (J : Set I)]
+          (((J : Set I).restrict : ((i : I) → Ω i) → ((j : (J : Set I)) → Ω j))) := by
+      exact measurable_restrict_cylinderEvents (J : Set I)
+    have hpre : MeasurableSet[cylinderEvents (J : Set I)]
+        ((((J : Set I).restrict : ((i : I) → Ω i) → ((j : (J : Set I)) → Ω j))) ⁻¹' A) :=
+      hA.preimage hrestrict
+    have hEq :
+        (((J : Set I).restrict : ((i : I) → Ω i) → ((j : (J : Set I)) → Ω j)) ⁻¹' A) =
+          (J : Set I).pi t := by
+      ext x
+      simp [A, Set.mem_pi]
+    rwa [hEq] at hpre
+  ext s
+  constructor
+  · intro hs
+    have hs_pi : MeasurableSet[MeasurableSpace.pi] s := by simpa using hs
+    have hs' : MeasurableSet[mCount] s := hpi s hs_pi
+    rcases hs' with ⟨J, hJ, hsJ⟩
+    rw [Set.mem_iUnion]
+    exact ⟨⟨J, hJ⟩, by simpa using hsJ⟩
+  · intro hs
+    rw [Set.mem_iUnion] at hs
+    rcases hs with ⟨⟨J, hJ⟩, hsJ⟩
+    have hsJ' : MeasurableSet[cylinderEvents J] s := by simpa using hsJ
+    have hs_pi : MeasurableSet[MeasurableSpace.pi] s := (cylinderEvents_le_pi) s hsJ'
+    simpa using hs_pi
+
+-- Proof sketch: reformulate set-membership in the union of
+-- `product_measurableSets_eq_iUnion_countable_cylinderEvents`; one direction is immediate from the
+-- equality, and the other packages the witness countable set `J` as a point of the subtype of
+-- countable subsets of `I`.
+/-- A set in the product space is measurable exactly when it belongs to the cylinder `σ`-algebra
+generated by some countable set of coordinates. -/
+theorem measurableSet_iff_exists_countable_cylinderEvents {s : Set ((i : I) → Ω i)} :
+    MeasurableSet s ↔ ∃ J : Set I, J.Countable ∧ MeasurableSet[cylinderEvents J] s := by
+  change s ∈ ({t : Set ((i : I) → Ω i) | MeasurableSet t} : Set (Set ((i : I) → Ω i))) ↔
+    ∃ J : Set I, J.Countable ∧ MeasurableSet[cylinderEvents J] s
+  rw [product_measurableSets_eq_iUnion_countable_cylinderEvents, Set.mem_iUnion]
+  constructor
+  · rintro ⟨⟨J, hJ⟩, hsJ⟩
+    exact ⟨J, hJ, hsJ⟩
+  · rintro ⟨J, hJ, hsJ⟩
+    exact ⟨⟨J, hJ⟩, hsJ⟩

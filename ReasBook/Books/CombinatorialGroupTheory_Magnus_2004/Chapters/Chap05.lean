@@ -1,16 +1,11 @@
-import CombinatorialGroupTheory_Magnus_2004.Chapters.Chap05.section01
-
-/-!
-Chapter 05
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/combinatorialgrouptheory_magnus_2004/chapters/chap05/)
-- [Book overview](/ReasBook-private/books/combinatorialgrouptheory_magnus_2004/book/)
-
-Section overviews:
-
-- Section 5.1 ([Documentation](/ReasBook-private/docs/Books/CombinatorialGroupTheory_Magnus_2004/Chapters/Chap05/section01.html)) ([Verso](/ReasBook-private/books/combinatorialgrouptheory_magnus_2004/chapters/chap05/section01/))
-
--/
+import Chapters.Chap05.section01
+import Chapters.Chap05.section02
+import Chapters.Chap05.section03
+import Chapters.Chap05.section04
+import Chapters.Chap05.section05
+import Chapters.Chap05.section06
+import Chapters.Chap05.section07
+import Chapters.Chap05.section08
+import Chapters.Chap05.section09
+import Chapters.Chap05.section10
+import Chapters.Chap05.section11

@@ -1,1 +1,0 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_4.ExplicitWordTransportHom

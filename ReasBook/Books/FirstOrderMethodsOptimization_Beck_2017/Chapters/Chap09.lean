@@ -1,16 +1,21 @@
-import FirstOrderMethodsOptimization_Beck_2017.Chapters.Chap09.section01
-
-/-!
-Chapter 09
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/firstordermethodsoptimization_beck_2017/chapters/chap09/)
-- [Book overview](/ReasBook-private/books/firstordermethodsoptimization_beck_2017/book/)
-
-Section overviews:
-
-- Section 9.1 ([Documentation](/ReasBook-private/docs/Books/FirstOrderMethodsOptimization_Beck_2017/Chapters/Chap09/section01.html)) ([Verso](/ReasBook-private/books/firstordermethodsoptimization_beck_2017/chapters/chap09/section01/))
-
--/
+import Chapters.Chap09.section01
+import Chapters.Chap09.section02
+import Chapters.Chap09.section03
+import Chapters.Chap09.section04
+import Chapters.Chap09.section05
+import Chapters.Chap09.section06
+import Chapters.Chap09.section07
+import Chapters.Chap09.section08
+import Chapters.Chap09.section09
+import Chapters.Chap09.section10
+import Chapters.Chap09.section11
+import Chapters.Chap09.section12
+import Chapters.Chap09.section13
+import Chapters.Chap09.section14
+import Chapters.Chap09.section15
+import Chapters.Chap09.section16
+import Chapters.Chap09.section18
+import Chapters.Chap09.section24
+import Chapters.Chap09.section25
+import Chapters.Chap09.section26
+import Chapters.Chap09.section27

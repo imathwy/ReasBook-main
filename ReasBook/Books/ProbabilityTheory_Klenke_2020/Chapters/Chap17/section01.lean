@@ -1,77 +1,104 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Corollary_17_10
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Corollary_17_48
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_1
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_12
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_16
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_23
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_28
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_3
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_30
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_33
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_36
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_42
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_43
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_53
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_57
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Example_17_18
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Example_17_19
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Example_17_20
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Example_17_21
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Example_17_22
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Example_17_24
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Example_17_27
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Example_17_5
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Example_17_52
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Example_17_54
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Example_17_55
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Example_17_59
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Example_17_6
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Example_17_7
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_1_1
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_2_1
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_3_1
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_3_2
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_4_1
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_5_1
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_5_2
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_5_3
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_5_4
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_5_5
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_6_1
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_6_2
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_6_3
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_6_4
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_6_5
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_6_6
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_7_1
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_7_2
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_7_3
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Lemma_17_45
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Remark_17_13
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Remark_17_2
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Remark_17_26
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Remark_17_31
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Remark_17_4
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Remark_17_44
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Remark_17_50
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_11
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_14
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_15
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_17
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_25
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_29
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_35
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_37
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_38
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_39
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_40
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_41
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_46
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_47
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_49
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_51
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_56
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_58
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_60
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_8
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_9
+import Mathlib
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+
+/-! ### Definition_17_1 (from Items/Chap17) -/
+open MeasureTheory
+open scoped ProbabilityTheory
+
+universe u v w
+
+namespace ProbabilityTheory
+
+variable {ι : Type u} [Preorder ι]
+variable {Ω : Type v} [mΩ : MeasurableSpace Ω]
+variable {E : Type w} [mE : MeasurableSpace E]
+
+/-- Definition 17.1: a process has the Markov property with respect to a filtration `ℱ` if, for
+it is adapted to `ℱ`, and for every measurable set `A` and all times `s ≤ t`, the conditional
+probability of the future event `{X_t ∈ A}` given `ℱ s` agrees almost surely with the conditional
+probability given the present state `X s`. -/
+def HasMarkovProperty (ℱ : Filtration ι mΩ) (μ : Measure Ω) [IsProbabilityMeasure μ]
+    (X : ι → Ω → E) : Prop :=
+  Adapted ℱ X ∧
+    ∀ ⦃A : Set E⦄, MeasurableSet A → ∀ ⦃s t : ι⦄, s ≤ t →
+      μ⟦X t ⁻¹' A | ℱ s⟧ =ᵐ[μ]
+        μ⟦X t ⁻¹' A | MeasurableSpace.comap (X s) mE⟧
+
+theorem HasMarkovProperty.adapted {ℱ : Filtration ι mΩ} {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {X : ι → Ω → E} (h : HasMarkovProperty ℱ μ X) :
+    Adapted ℱ X :=
+  h.1
+
+theorem HasMarkovProperty.measurable {ℱ : Filtration ι mΩ} {μ : Measure Ω}
+    [IsProbabilityMeasure μ] {X : ι → Ω → E} (h : HasMarkovProperty ℱ μ X) (t : ι) :
+    Measurable (X t) :=
+  h.adapted.measurable
+
+-- Proof sketch: unfold `HasMarkovProperty`; this is the defining adaptedness plus conditional-
+-- probability identity written as an explicit `↔`, which is the useful elimination form for later
+-- rewriting.
+/-- Having the Markov property is equivalent to adaptedness together with the conditional-
+probability identity for all measurable state events and all times `s ≤ t`. -/
+theorem hasMarkovProperty_iff (ℱ : Filtration ι mΩ) (μ : Measure Ω) [IsProbabilityMeasure μ]
+    (X : ι → Ω → E) :
+    HasMarkovProperty ℱ μ X ↔
+      Adapted ℱ X ∧
+        ∀ ⦃A : Set E⦄, MeasurableSet A → ∀ ⦃s t : ι⦄, s ≤ t →
+          μ⟦X t ⁻¹' A | ℱ s⟧ =ᵐ[μ]
+            μ⟦X t ⁻¹' A | MeasurableSpace.comap (X s) mE⟧ :=
+  Iff.rfl
+
+end ProbabilityTheory
+
+/-! ### Exercise_17_1_1 (from Items/Chap17) -/
+open MeasureTheory ProbabilityTheory
+open scoped ProbabilityTheory
+
+noncomputable section
+
+universe u v w
+
+variable {Ω : Type u} [MeasurableSpace Ω]
+variable {T : Type v} [LinearOrder T]
+variable {E : Type w} [MeasurableSpace E]
+
+namespace ProbabilityTheory
+
+/-- The future `σ`-algebra of a process from time `t` onward, generated by the coordinates
+`X r` with `t ≤ r`. -/
+abbrev processFuture (X : T → Ω → E) (t : T) : MeasurableSpace Ω :=
+  ⨆ r ≥ t, MeasurableSpace.comap (X r) ‹MeasurableSpace E›
+
+-- Proof sketch: for the forward implication, use the natural-history Markov property on future
+-- cylinder events and extend from the generating future coordinates to the full future
+-- `σ`-algebra. For the reverse implication, test the conditional-independence statement on the
+-- future events `{ω | X u ω ∈ A}` with `t ≤ u`.
+/-- Exercise 17.1.1: on a linearly ordered time set, a process has the natural Markov property
+exactly when, for every time `t`, the history `σ`-algebra up to `t` and the future `σ`-algebra
+from `t` onward are conditionally independent given the present state `X t`. This is stated in
+the chapter's source-facing conditional-independence API. -/
+theorem hasNaturalMarkovProperty_iff_pastFutureConditionallyIndependentGivenPresent
+    (μ : Measure Ω) [IsProbabilityMeasure μ] (X : T → Ω → E) :
+    HasNaturalMarkovProperty μ X ↔
+      ∀ t : T,
+        IsConditionallyIndependent
+          (MeasurableSpace.comap (X t) ‹MeasurableSpace E›)
+          (fun b : Bool ↦ if b then processFuture X t else generatedFiltrationSpace X t) μ := sorry
+
+/-- Under `StandardBorelSpace Ω`, the source-facing past/future conditional-independence
+criterion on a linearly ordered time set is equivalent to the owner-level statement `CondIndep`
+for the history and future `σ`-algebras. -/
+theorem pastFutureConditionallyIndependentGivenPresent_iff_condIndep
+    [StandardBorelSpace Ω] (μ : Measure Ω) [IsProbabilityMeasure μ] (X : T → Ω → E) :
+    (∀ t : T,
+      IsConditionallyIndependent
+        (MeasurableSpace.comap (X t) ‹MeasurableSpace E›)
+        (fun b : Bool ↦ if b then processFuture X t else generatedFiltrationSpace X t) μ) ↔
+      ∀ t : T,
+        ∃ hXt : MeasurableSpace.comap (X t) ‹MeasurableSpace E› ≤ ‹MeasurableSpace Ω›,
+          CondIndep (MeasurableSpace.comap (X t) ‹MeasurableSpace E›)
+            (generatedFiltrationSpace X t) (processFuture X t) hXt μ := sorry
+
+end ProbabilityTheory

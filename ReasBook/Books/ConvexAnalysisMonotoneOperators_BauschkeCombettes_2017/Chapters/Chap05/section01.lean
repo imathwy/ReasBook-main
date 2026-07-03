@@ -1,36 +1,28 @@
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Corollary_5_17
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Corollary_5_19
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Corollary_5_24
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Corollary_5_26
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Corollary_5_30
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Corollary_5_37
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Corollary_5_8
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Definition_5_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Definition_5_32
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Example_5_18
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Example_5_21
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Example_5_22_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Example_5_29
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Example_5_2_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Example_5_2_2
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Example_5_38
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Example_5_3_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Example_5_3_2
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Example_5_6
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Lemma_5_31
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Proposition_5_10
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Proposition_5_13
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Proposition_5_16
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Proposition_5_28
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Proposition_5_34
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Proposition_5_4
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Proposition_5_7
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Proposition_5_9
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Theorem_5_11
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Theorem_5_12
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Theorem_5_14
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Theorem_5_15
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Theorem_5_23
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Theorem_5_33
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Theorem_5_36
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Theorem_5_5
+import Mathlib
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+
+/-! ### Definition_5_1 (from Chap05) -/
+universe u
+
+section
+
+variable {X : Type u} [PseudoMetricSpace X]
+variable {C : Set X} {x : ℕ → X}
+
+/-- Definition 5.1: a sequence `x : ℕ → X` is Fejer monotone with respect to `C` if for every
+`c ∈ C` the distances `dist (x n) c` do not increase from one step to the next. In a seminormed
+additive group this is the textbook inequality `‖x n - c‖`. -/
+def FejerMonotone (C : Set X) (x : ℕ → X) : Prop :=
+  ∀ c ∈ C, ∀ n : ℕ, dist (x (n + 1)) c ≤ dist (x n) c
+
+-- Proof sketch: unfold `FejerMonotone` and specialize the defining inequality at the chosen
+-- point `c ∈ C` and index `n`.
+/-- A Fejer-monotone sequence satisfies the defining one-step distance inequality at each point of
+`C`. -/
+theorem FejerMonotone.step (h : FejerMonotone C x) (c : X) (hc : c ∈ C) (n : ℕ) :
+    dist (x (n + 1)) c ≤ dist (x n) c :=
+  h c hc n
+
+end

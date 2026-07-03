@@ -1,40 +1,43 @@
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Corollary_12_12
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Corollary_12_18
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Corollary_12_19
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Corollary_12_31
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Definition_12_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Definition_12_16
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Definition_12_20
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Definition_12_20_Core
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Definition_12_23
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Definition_12_34
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Definition_12_5
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Example_12_13
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Example_12_2
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Example_12_21
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Example_12_25
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Example_12_3
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Example_12_35
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Example_12_4
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Example_12_7
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_11
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_14
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_15
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_17
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_22
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_26
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_27
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_28
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_29
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_30
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_32
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_33
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_36
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_37
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_6
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_8
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_9
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.ProximityOperator
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Remark_12_10
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Remark_12_24
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.ScaledProximityOperator
+import Mathlib
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+
+/-! ### Definition_12_1 (from Chap12) -/
+universe u
+
+namespace ERealFunction
+
+variable {H : Type u} [AddGroup H]
+
+/-- Definition 12.1 (1): the infimal convolution of two `]-∞,+∞]`-valued functions. -/
+noncomputable def infimalConvolution (f g : H → EReal) : H → EReal :=
+  fun x ↦ ⨅ y : H, f y + g (x - y)
+
+infixl:70 " □ " => fun f g x ↦
+  ERealFunction.infimalConvolution
+    (fun y ↦ (f y : EReal))
+    (fun y ↦ (g y : EReal))
+    x
+
+/-- The value of the infimal convolution at `x` is the infimum of the translated sums
+`y ↦ f y + g (x - y)`. -/
+theorem infimalConvolution_apply (f g : H → EReal) (x : H) :
+    (f □ g) x = ⨅ y : H, f y + g (x - y) := rfl
+
+namespace infimalConvolution
+
+/-- Definition 12.1 (2): infimal convolution is exact at `x` when some point `y` attains the
+defining infimum of `(f □ g) x`. -/
+def ExactAt (f g : H → Set.Ioi (⊥ : EReal)) (x : H) : Prop :=
+  ∃ y : H, (f □ g) x = (f y : EReal) + (g (x - y) : EReal)
+
+/-- Definition 12.1 (3): infimal convolution is exact when it is exact at every point of its
+domain. The project records exactness by this predicate rather than by a second infimal-convolution
+operator. -/
+def Exact (f g : H → Set.Ioi (⊥ : EReal)) : Prop :=
+  ∀ ⦃x : H⦄, x ∈ dom (f □ g) → ExactAt f g x
+
+end infimalConvolution
+
+end ERealFunction

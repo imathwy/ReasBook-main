@@ -1,71 +1,54 @@
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Corollary_16_11
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Corollary_16_18
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Corollary_16_19
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Corollary_16_21
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Corollary_16_30
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Corollary_16_39
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Corollary_16_40
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Corollary_16_41
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Corollary_16_48
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Corollary_16_49
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Corollary_16_50
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Corollary_16_52
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Corollary_16_53
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Corollary_16_57
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Corollary_16_72
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Definition_16_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Definition_16_67
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Example_16_12
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Example_16_13
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Example_16_14
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Example_16_15
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Example_16_22
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Example_16_26
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Example_16_31
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Example_16_32
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Example_16_34
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Example_16_43
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Example_16_51
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Example_16_54
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Example_16_55
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Example_16_62
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Example_16_64
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Example_16_68
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Example_16_73
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_10
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_16
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_17
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_20
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_25
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_27
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_33
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_35
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_36
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_37
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_38
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_4
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_42
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_44
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_45
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_5
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_59
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_6
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_60
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_61
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_63
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_65
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_66
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_69
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_7
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_70
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_9
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Remark_16_2
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Remark_16_28
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Remark_16_46
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Remark_16_8
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Theorem_16_29
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Theorem_16_3
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Theorem_16_47
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Theorem_16_56
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Theorem_16_58
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Theorem_16_71
+import Mathlib
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+
+/-! ### Definition_16_1 (from Chap16) -/
+open scoped InnerProductSpace
+
+universe u
+
+namespace ERealFunction
+
+noncomputable section
+
+section Subdifferential
+
+variable {H : Type u} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
+
+/-- The canonical codomain bridge from `]-∞,+∞]`-valued functions to `EReal`-valued functions. -/
+instance {X : Type*} : CoeTC (X → Set.Ioi (⊥ : EReal)) (X → EReal) := ⟨Function.asEReal⟩
+
+/-- Definition 16.1: the subdifferential of a function with canonical `EReal`-valued codomain
+coercion sends `x` to the set of vectors `u` such that the affine function
+`y ↦ ⟪y - x, u⟫ + f x` minorizes `f` everywhere. In particular, the same owner surface applies
+directly to both `EReal`-valued and `]-∞,+∞]`-valued functions. -/
+def subdifferential {α : Type*} [CoeTC α EReal] (f : H → α) : SetValuedOperator H H :=
+  fun x ↦ {u | ∀ y : H, (⟪y - x, u⟫_ℝ : EReal) + (f x : EReal) ≤ (f y : EReal)}
+
+scoped prefix:100 "∂ " => ERealFunction.subdifferential
+
+/-- The function `f` is subdifferentiable at `x` when `x` belongs to the domain of the
+subdifferential operator. -/
+abbrev SubdifferentiableAt {α : Type*} [CoeTC α EReal] (f : H → α) (x : H) : Prop :=
+  x ∈ SetValuedOperator.dom (∂ f)
+
+/-- Subdifferentiability at `x` is membership of `x` in the domain of the subdifferential
+operator. -/
+@[simp] theorem subdifferentiableAt_iff_mem_dom
+    {α : Type*} [CoeTC α EReal] (f : H → α) (x : H) :
+    SubdifferentiableAt f x ↔ x ∈ SetValuedOperator.dom (∂ f) :=
+  Iff.rfl
+
+/-- Membership in the subdifferential is exactly the global affine-minorant inequality. -/
+@[simp] theorem mem_subdifferential_iff
+    {α : Type*} [CoeTC α EReal] (f : H → α) (x u : H) :
+    u ∈ subdifferential f x ↔
+      ∀ y : H, (⟪y - x, u⟫_ℝ : EReal) + (f x : EReal) ≤ (f y : EReal) :=
+  Iff.rfl
+
+end Subdifferential
+
+end
+
+end ERealFunction

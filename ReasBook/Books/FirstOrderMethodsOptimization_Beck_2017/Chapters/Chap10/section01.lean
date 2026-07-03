@@ -1,110 +1,52 @@
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_1
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_11
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_13
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_14
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_2
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_3
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_59
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_6
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_60
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_61
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_62
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_63
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_64
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_65
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_66
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_67
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_68
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_69
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Assumption_10_1
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Assumption_10_31
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Corollary_10_18
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Corollary_10_47
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Corollary_10_52_1
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Corollary_10_6
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Corollary_10_8
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_1
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_11
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_12
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_2
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_21
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_29
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_3
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_43
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_4_1
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_4_2
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_4_3
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_4_4
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_5
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_53
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_54
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_55
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_57
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_59
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_60
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_61
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_62
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_63
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_64
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_65
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_66
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_67
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_68
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_69
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_8
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_9
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Example_10_44
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Example_10_45
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Example_10_48
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Example_10_49
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Example_10_50
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Example_10_53
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Example_10_54
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Example_10_55
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Lemma_10_10
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Lemma_10_11
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Lemma_10_12
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Lemma_10_14
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Lemma_10_33
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Lemma_10_4
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Lemma_10_61
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Lemma_10_65
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Lemma_10_66
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Lemma_10_69
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Lemma_10_70
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Proposition_10_56
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Proposition_10_58
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Proposition_10_59
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Proposition_10_60
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Proposition_10_61
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Proposition_10_62
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Remark_10_13
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Remark_10_17
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Remark_10_19
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Remark_10_20
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Remark_10_32
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Remark_10_35
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Text_10_7_1
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_15
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_16
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_21
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_23
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_24
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_25
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_26
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_27
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_28
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_29
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_30
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_34
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_40
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_41
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_42
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_46
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_51_1
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_57
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_67
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_7
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_71
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_72
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_9
+import Mathlib
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+
+/-! ### Assumption_10_1 (from Chap10) -/
+/- Assumption 10.1 is recall-only in Chapter 10. Its `source-facing` content is the standing
+assumption package for the composite model `min_x {f(x) + g(x)}`, and the exact `core/canonical`
+owner already exists as `IsCompositeSmoothMinimizationProblem`; there is no new mathematics here
+that would justify a second wrapper, alias, or unpacking theorem. -/
+
+/- Assumption 10.1: the standing hypotheses (A)-(C) for the composite model
+`min_x {F(x) = f(x) + g(x)}` are the existing owner class
+`IsCompositeSmoothMinimizationProblem`, which packages that `g : E → (-∞, ∞]` is proper, closed,
+and convex; that `f : E → (-∞, ∞]` never takes the value `-∞`, is closed, has convex effective
+domain, satisfies `effective_domain g ⊆ interior (effective_domain f)`, and has
+`(fun x ↦ (f x).toReal)` `L_f`-smooth on `interior (effective_domain f)`; consequently `f` is
+proper; and that the optimal set `X^*` is nonempty with optimal value `F_opt`. -/
+recall IsCompositeSmoothMinimizationProblem
+
+/-! ### Definition_10_1 (from Chap10) -/
+universe u
+
+section
+
+variable (E : Type u) [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+
+/- Definition 10.1 is recall-only. The ambient Euclidean-space owner was already fixed in
+Definition 1.14, so the Chapter 10 entry should reuse that same canonical surface rather than
+repeat a parallel local wrapper.
+
+Domain sampling in the ambient geometry API gives:
+- `source-facing`: the Chapter 10 Euclidean-space recall;
+- `core/canonical`: `InnerProductSpace ℝ E`, `FiniteDimensional ℝ E`, and
+  `norm_eq_sqrt_real_inner`;
+- `bridge/view`: none.
+
+Primitive data are only the real inner-product structure and finite-dimensionality; the norm is
+derived API from that owner. -/
+
+/- Definition 10.1: a Euclidean space carries the canonical real inner product structure
+`InnerProductSpace ℝ E`. -/
+#check InnerProductSpace ℝ E
+
+/- Definition 10.1: finite-dimensionality is the standard predicate `FiniteDimensional ℝ E`. -/
+#check FiniteDimensional ℝ E
+
+/- Definition 10.1: the Euclidean norm is the norm induced by the ambient inner product, with
+canonical evaluation rule `norm_eq_sqrt_real_inner`. -/
+recall norm_eq_sqrt_real_inner
+
+end

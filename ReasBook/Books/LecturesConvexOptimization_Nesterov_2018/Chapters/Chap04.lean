@@ -1,16 +1,22 @@
-import LecturesConvexOptimization_Nesterov_2018.Chapters.Chap04.section01
-
-/-!
-Chapter 04
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/lecturesconvexoptimization_nesterov_2018/chapters/chap04/)
-- [Book overview](/ReasBook-private/books/lecturesconvexoptimization_nesterov_2018/book/)
-
-Section overviews:
-
-- Section 4.1 ([Documentation](/ReasBook-private/docs/Books/LecturesConvexOptimization_Nesterov_2018/Chapters/Chap04/section01.html)) ([Verso](/ReasBook-private/books/lecturesconvexoptimization_nesterov_2018/chapters/chap04/section01/))
-
--/
+import Chapters.Chap04.section01_part1
+import Chapters.Chap04.section01_part10
+import Chapters.Chap04.section01_part11
+import Chapters.Chap04.section01_part12
+import Chapters.Chap04.section01_part2
+import Chapters.Chap04.section01_part3
+import Chapters.Chap04.section01_part4
+import Chapters.Chap04.section01_part5
+import Chapters.Chap04.section01_part6
+import Chapters.Chap04.section01_part7
+import Chapters.Chap04.section01_part8
+import Chapters.Chap04.section01_part9
+import Chapters.Chap04.section02_part1
+import Chapters.Chap04.section02_part2
+import Chapters.Chap04.section02_part3
+import Chapters.Chap04.section02_part4
+import Chapters.Chap04.section03_part1
+import Chapters.Chap04.section03_part2
+import Chapters.Chap04.section04_part1
+import Chapters.Chap04.section04_part2
+import Chapters.Chap04.section04_part3
+import Chapters.Chap04.section04_part4

@@ -1,16 +1,19 @@
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chapters.Chap14.section01
-
-/-!
-Chapter 14
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/convexanalysismonotoneoperators_bauschkecombettes_2017/chapters/chap14/)
-- [Book overview](/ReasBook-private/books/convexanalysismonotoneoperators_bauschkecombettes_2017/book/)
-
-Section overviews:
-
-- Section 14.1 ([Documentation](/ReasBook-private/docs/Books/ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017/Chapters/Chap14/section01.html)) ([Verso](/ReasBook-private/books/convexanalysismonotoneoperators_bauschkecombettes_2017/chapters/chap14/section01/))
-
--/
+import Chapters.Chap14.section01
+import Chapters.Chap14.section02
+import Chapters.Chap14.section03
+import Chapters.Chap14.section04
+import Chapters.Chap14.section05
+import Chapters.Chap14.section06
+import Chapters.Chap14.section07
+import Chapters.Chap14.section08
+import Chapters.Chap14.section09
+import Chapters.Chap14.section10
+import Chapters.Chap14.section12
+import Chapters.Chap14.section13
+import Chapters.Chap14.section14
+import Chapters.Chap14.section15
+import Chapters.Chap14.section16
+import Chapters.Chap14.section17
+import Chapters.Chap14.section18
+import Chapters.Chap14.section19
+import Chapters.Chap14.section20

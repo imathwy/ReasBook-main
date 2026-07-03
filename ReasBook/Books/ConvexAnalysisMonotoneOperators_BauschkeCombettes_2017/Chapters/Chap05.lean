@@ -1,16 +1,34 @@
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chapters.Chap05.section01
-
-/-!
-Chapter 05
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/convexanalysismonotoneoperators_bauschkecombettes_2017/chapters/chap05/)
-- [Book overview](/ReasBook-private/books/convexanalysismonotoneoperators_bauschkecombettes_2017/book/)
-
-Section overviews:
-
-- Section 5.1 ([Documentation](/ReasBook-private/docs/Books/ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017/Chapters/Chap05/section01.html)) ([Verso](/ReasBook-private/books/convexanalysismonotoneoperators_bauschkecombettes_2017/chapters/chap05/section01/))
-
--/
+import Chapters.Chap05.section01
+import Chapters.Chap05.section02
+import Chapters.Chap05.section03
+import Chapters.Chap05.section04
+import Chapters.Chap05.section05
+import Chapters.Chap05.section06
+import Chapters.Chap05.section07
+import Chapters.Chap05.section08
+import Chapters.Chap05.section09
+import Chapters.Chap05.section10
+import Chapters.Chap05.section11
+import Chapters.Chap05.section12
+import Chapters.Chap05.section13
+import Chapters.Chap05.section14
+import Chapters.Chap05.section15
+import Chapters.Chap05.section16
+import Chapters.Chap05.section17
+import Chapters.Chap05.section18
+import Chapters.Chap05.section19
+import Chapters.Chap05.section21
+import Chapters.Chap05.section22
+import Chapters.Chap05.section23
+import Chapters.Chap05.section24
+import Chapters.Chap05.section26
+import Chapters.Chap05.section28
+import Chapters.Chap05.section29
+import Chapters.Chap05.section30
+import Chapters.Chap05.section31
+import Chapters.Chap05.section32
+import Chapters.Chap05.section33
+import Chapters.Chap05.section34
+import Chapters.Chap05.section36
+import Chapters.Chap05.section37
+import Chapters.Chap05.section38

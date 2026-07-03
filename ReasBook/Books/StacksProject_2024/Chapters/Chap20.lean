@@ -1,16 +1,52 @@
-import StacksProject_2024.Chapters.Chap20.section01
-
-/-!
-Chapter 20
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/StacksProject_2024/chapters/chap20/)
-- [Book overview](/ReasBook-private/books/StacksProject_2024/book/)
-
-Section overviews:
-
-- Section 20.1 ([Documentation](/ReasBook-private/docs/Books/StacksProject_2024/Chapters/Chap20/section01.html)) ([Verso](/ReasBook-private/books/StacksProject_2024/chapters/chap20/section01/))
-
--/
+import Chapters.Chap20.section04
+import Chapters.Chap20.section05
+import Chapters.Chap20.section06
+import Chapters.Chap20.section07
+import Chapters.Chap20.section08
+import Chapters.Chap20.section09
+import Chapters.Chap20.section10
+import Chapters.Chap20.section11
+import Chapters.Chap20.section12
+import Chapters.Chap20.section13
+import Chapters.Chap20.section14
+import Chapters.Chap20.section15
+import Chapters.Chap20.section16
+import Chapters.Chap20.section17
+import Chapters.Chap20.section18
+import Chapters.Chap20.section19
+import Chapters.Chap20.section20
+import Chapters.Chap20.section21
+import Chapters.Chap20.section22
+import Chapters.Chap20.section23
+import Chapters.Chap20.section24
+import Chapters.Chap20.section25
+import Chapters.Chap20.section26
+import Chapters.Chap20.section27
+import Chapters.Chap20.section28
+import Chapters.Chap20.section29
+import Chapters.Chap20.section30
+import Chapters.Chap20.section31
+import Chapters.Chap20.section32
+import Chapters.Chap20.section33
+import Chapters.Chap20.section34_part1
+import Chapters.Chap20.section34_part2
+import Chapters.Chap20.section35
+import Chapters.Chap20.section36
+import Chapters.Chap20.section37
+import Chapters.Chap20.section38
+import Chapters.Chap20.section39
+import Chapters.Chap20.section40
+import Chapters.Chap20.section41
+import Chapters.Chap20.section42
+import Chapters.Chap20.section45
+import Chapters.Chap20.section46
+import Chapters.Chap20.section47
+import Chapters.Chap20.section48
+import Chapters.Chap20.section49
+import Chapters.Chap20.section50
+import Chapters.Chap20.section51
+import Chapters.Chap20.section52
+import Chapters.Chap20.section53
+import Chapters.Chap20.section54
+import Chapters.Chap20.section55_part1
+import Chapters.Chap20.section55_part2

@@ -1,3 +1,0 @@
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_2_1.ScaledCharacterCore
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_2_1.ScaledCharacterPacket
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_2_1.ScaledCharacterPairing

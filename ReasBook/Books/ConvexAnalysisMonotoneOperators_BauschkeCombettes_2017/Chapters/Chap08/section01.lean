@@ -1,50 +1,36 @@
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Corollary_8_39
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Corollary_8_40
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Corollary_8_41
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Corollary_8_47
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Corollary_8_5
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Corrollary_8_12
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Definition_8_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Definition_8_7
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_10
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_15
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_19
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_22
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_23
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_26
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_27
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_28
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_29
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_3
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_30
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_31
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_32
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_33
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_34
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_36
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_42
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_43
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_44
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_9
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_11
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_13
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_14
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_16
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_17
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_18
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_2
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_20
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_21
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_24
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_25
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_35
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_37
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_4
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_45
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_46
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_6
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Remark_8_8
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Text_8_0_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Text_8_0_2
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Text_8_0_3
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Theorem_8_38
+import Mathlib
+import Mathlib.Tactic.Recall
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+
+/-! ### Definition_8_1 (from Chap08) -/
+universe u
+
+namespace ERealFunction
+
+section RealVectorSpace
+
+variable {H : Type u} [AddCommGroup H] [Module ℝ H]
+variable (f : H → EReal)
+
+/- Definition 8.1: the textbook real-height epigraph of an extended-real-valued function is the
+canonical set `epigraph f` already introduced in Definition 1.4; concretely, it consists of the
+pairs `(x, ξ) : H × ℝ` with `f x ≤ ξ`. In this chapter, convexity of `f` is expressed by
+`Convex ℝ (epigraph f)`, and concavity by convexity of the epigraph of `-f`. -/
+recall epigraph
+
+/- Companion recall: membership in the real-height epigraph is exactly the inequality `f x ≤ ξ`. -/
+recall mem_epigraph_iff
+
+/- Companion recall: the textbook statement that `f` is convex is expressed by the proposition
+`Convex ℝ (epigraph f)`. -/
+#check Convex ℝ (epigraph f)
+
+/- Companion recall: the textbook statement that `f` is concave is expressed by convexity of the
+real-height epigraph of `-f`. -/
+#check Convex ℝ (epigraph (-f))
+
+end RealVectorSpace
+
+end ERealFunction

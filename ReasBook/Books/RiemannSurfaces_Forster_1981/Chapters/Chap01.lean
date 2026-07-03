@@ -1,16 +1,16 @@
-import RiemannSurfaces_Forster_1981.Chapters.Chap01.section01
-
-/-!
-Chapter 01
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/riemannsurfaces_forster_1981/chapters/chap01/)
-- [Book overview](/ReasBook-private/books/riemannsurfaces_forster_1981/book/)
-
-Section overviews:
-
-- Section 1.1 ([Documentation](/ReasBook-private/docs/Books/RiemannSurfaces_Forster_1981/Chapters/Chap01/section01.html)) ([Verso](/ReasBook-private/books/riemannsurfaces_forster_1981/chapters/chap01/section01/))
-
--/
+import Chapters.Chap01.section01
+import Chapters.Chap01.section02
+import Chapters.Chap01.section03
+import Chapters.Chap01.section04
+import Chapters.Chap01.section05
+import Chapters.Chap01.section06
+import Chapters.Chap01.section07
+import Chapters.Chap01.section08
+import Chapters.Chap01.section09
+import Chapters.Chap01.section10
+import Chapters.Chap01.section11
+import Chapters.Chap01.section12
+import Chapters.Chap01.section13
+import Chapters.Chap01.section14
+import Chapters.Chap01.section15
+import Chapters.Chap01.section16

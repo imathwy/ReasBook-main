@@ -1,0 +1,49 @@
+import Mathlib
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+
+/-! ### Example_16_34 (from Chap16) -/
+open scoped InnerProductSpace
+
+universe u
+
+namespace ERealFunction
+
+noncomputable section
+
+variable {H : Type u} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
+
+-- Proof sketch: apply Proposition 16.33 to the indicator `ι_C`, whose Fenchel conjugate is the
+-- support function `σ[C]`. The minimizers of `ι_C` are exactly the points of `C`, and the
+-- nonempty closed convex hypotheses place `ι_C` in `Γ₀(H)`.
+/-- Example 16.34: if `C` is a nonempty closed convex subset of a real Hilbert space, then the
+subdifferential of its support function at `0` is exactly `C`. -/
+theorem subdifferential_supportFunction_eq_self_at_zero_of_nonempty_isClosed_convex
+    (C : Set H) (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C) (hC_convex : Convex ℝ C) :
+    (∂ σ[C]) 0 = C := by
+  have hC_gamma : ι[C] ∈ Γ₀(H) :=
+    indicator_mem_gammaZero_of_nonempty_isClosed_convex hC_nonempty hC_closed hC_convex
+  have hargmin : Argmin ((ι[C]).asEReal) = C := by
+    ext x
+    constructor
+    · intro hx
+      rw [mem_argmin_iff, isMinOn_univ_iff] at hx
+      by_contra hxC
+      rcases hC_nonempty with ⟨y, hy⟩
+      simpa [indicator_apply, hxC, hy] using hx y
+    · intro hx
+      rw [mem_argmin_iff, isMinOn_univ_iff]
+      intro y
+      by_cases hy : y ∈ C <;> simp [indicator_apply, hx, hy]
+  calc
+    (∂ σ[C]) 0 = (∂ (((ι[C]).asEReal)∗)) 0 := by
+      simp [ERealFunction.subdifferential, conjugate_indicator_eq_supportFunction]
+    _ = Argmin ((ι[C]).asEReal) := by
+      simpa [gammaZeroConjugate_apply] using
+        (argmin_eq_subdifferential_gammaZeroConjugate_zero (ι[C]) hC_gamma).symm
+    _ = C := hargmin
+
+end
+
+end ERealFunction

@@ -1,0 +1,9 @@
+import Chapters.Chap19.section00_part1
+import Chapters.Chap19.section00_part2
+import Chapters.Chap19.section01
+import Chapters.Chap19.section02
+import Chapters.Chap19.section03
+import Chapters.Chap19.section04
+import Chapters.Chap19.section05
+import Chapters.Chap19.section06
+import Chapters.Chap19.section07

@@ -1,48 +1,63 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Corollary_9_34
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Definition_9_1
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Definition_9_10
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Definition_9_12
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Definition_9_15
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Definition_9_19
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Definition_9_22
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Definition_9_24
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Definition_9_37
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Definition_9_42
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Definition_9_44
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Definition_9_6
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Definition_9_7
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Definition_9_9
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Example_9_13
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Example_9_14
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Example_9_17
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Example_9_20
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Example_9_30
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Example_9_31
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Example_9_36
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Example_9_4
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Example_9_40
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Example_9_41
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Example_9_5
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Example_9_8
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Exercise_9_2_1
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Exercise_9_2_2
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Exercise_9_2_3
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Exercise_9_2_4
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Lemma_9_18
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Lemma_9_21
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Lemma_9_23
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Remark_9_11
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Remark_9_2
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Remark_9_25
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Remark_9_26
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Remark_9_27
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Remark_9_28
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Remark_9_29
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Remark_9_3
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Remark_9_33
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Remark_9_38
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Theorem_9_16
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Theorem_9_32
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Theorem_9_35
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Theorem_9_39
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Theorem_9_43
+import Mathlib
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+
+/-! ### Definition_9_1 (from Items/Chap09) -/
+open MeasureTheory
+
+universe u v w
+
+variable {I : Type u} {Ω : Type v} [mΩ : MeasurableSpace Ω]
+variable {E : Type w} [MeasurableSpace E]
+
+/- Definition 9.1: a stochastic process with time set `I` and state space `E` is a family
+`X : I → Ω → E` whose time marginals are random variables. -/
+#check (I → Ω → E)
+
+/-- Definition 9.1: a stochastic process is a time-indexed family of `E`-valued random variables,
+i.e. each time marginal `X t` is measurable on `Ω`. -/
+def IsStochasticProcess (X : I → Ω → E) : Prop :=
+  ∀ t, Measurable (X t)
+
+namespace IsStochasticProcess
+
+variable {X : I → Ω → E}
+
+/-- Every time marginal of a stochastic process is measurable. -/
+theorem measurable (hX : IsStochasticProcess X) (t : I) : Measurable (X t) :=
+  hX t
+
+end IsStochasticProcess
+
+/-- Unfolding `IsStochasticProcess` gives the coordinatewise measurability condition. -/
+theorem isStochasticProcess_iff (X : I → Ω → E) :
+    IsStochasticProcess X ↔ ∀ t, Measurable (X t) :=
+  Iff.rfl
+
+/-- Constant families are stochastic processes on any time set. -/
+theorem isStochasticProcess_const (x : E) :
+    IsStochasticProcess (fun _ _ ↦ x : I → Ω → E) :=
+  fun _ ↦ measurable_const
+
+section AdaptedBridge
+
+variable [Preorder I]
+variable {X : I → Ω → E}
+
+/-- A stochastic process is adapted to the top filtration. -/
+theorem IsStochasticProcess.adapted_top (hX : IsStochasticProcess X) :
+    Adapted (⊤ : Filtration I mΩ) X := by
+  intro t
+  simpa using hX t
+
+/-- For the top filtration, adaptedness is exactly the textbook measurability condition for a
+stochastic process. -/
+theorem isStochasticProcess_iff_adapted_top (X : I → Ω → E) :
+    IsStochasticProcess X ↔ Adapted (⊤ : Filtration I mΩ) X := by
+  constructor
+  · exact IsStochasticProcess.adapted_top
+  · intro hX t
+    simpa using hX t
+
+end AdaptedBridge

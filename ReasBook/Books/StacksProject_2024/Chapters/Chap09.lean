@@ -1,16 +1,27 @@
-import StacksProject_2024.Chapters.Chap09.section01
-
-/-!
-Chapter 09
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/StacksProject_2024/chapters/chap09/)
-- [Book overview](/ReasBook-private/books/StacksProject_2024/book/)
-
-Section overviews:
-
-- Section 9.1 ([Documentation](/ReasBook-private/docs/Books/StacksProject_2024/Chapters/Chap09/section01.html)) ([Verso](/ReasBook-private/books/StacksProject_2024/chapters/chap09/section01/))
-
--/
+import Chapters.Chap09.section02
+import Chapters.Chap09.section03
+import Chapters.Chap09.section04
+import Chapters.Chap09.section05
+import Chapters.Chap09.section06
+import Chapters.Chap09.section07
+import Chapters.Chap09.section08
+import Chapters.Chap09.section09
+import Chapters.Chap09.section10
+import Chapters.Chap09.section11
+import Chapters.Chap09.section12_part1
+import Chapters.Chap09.section12_part2
+import Chapters.Chap09.section13
+import Chapters.Chap09.section14
+import Chapters.Chap09.section15
+import Chapters.Chap09.section16
+import Chapters.Chap09.section17
+import Chapters.Chap09.section19
+import Chapters.Chap09.section20
+import Chapters.Chap09.section21
+import Chapters.Chap09.section22
+import Chapters.Chap09.section23
+import Chapters.Chap09.section24
+import Chapters.Chap09.section25
+import Chapters.Chap09.section26
+import Chapters.Chap09.section27
+import Chapters.Chap09.section28

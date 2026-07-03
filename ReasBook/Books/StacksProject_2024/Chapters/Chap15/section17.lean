@@ -1,0 +1,114 @@
+
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+
+/-! ### Lemma_15_17_1 (from Chap15) -/
+universe u v
+
+section
+
+variable {R : Type u} [CommRing R]
+variable {M : Type v} [AddCommGroup M] [Module R M]
+
+/-
+Domain triage:
+- primary domain: commutative algebra of quotient-flatness over quotient rings in the Artinian
+  ideal lattice;
+- sampled owner declarations of the same kind:
+  `Ideal.IsFlatQuotient`,
+  `Module.Flat`,
+  `Ideal.IsFlatQuotient.inf`,
+  `exists_minimal_of_wellFoundedLT`;
+- best owner abstraction: the ideal-level predicate recording that `M / JM` is flat over `R / J`;
+- primitive data: the ring `R`, the module `M`, and an ideal `J : Ideal R`;
+- derived API: the canonical `sInf` least ideal and the source-facing existence corollary.
+
+Layering:
+- `source-facing`: the existence of a smallest ideal cutting out a flat quotient of `M`;
+- `core/canonical`: `Ideal.IsFlatQuotient` with `Module.Flat` on the canonical quotient ring and
+  quotient module, together with the lattice infimum `sInf`;
+- `bridge/view`: the existence theorem derived from the canonical `sInf` leastness statement.
+-/
+
+variable [IsArtinianRing R]
+
+-- Proof sketch: consider the set of ideals `J` such that `M / JM` is flat over `R ⧸ J`. By
+-- Lemma `15.16.1`, this set is closed under finite intersections, and since `R` is Artinian every
+-- nonempty collection of ideals has a minimal element. Taking the intersection of all such ideals
+-- then gives the smallest one.
+/-- The infimum of all flat-quotient ideals is itself the smallest flat-quotient ideal. -/
+theorem isLeast_sInf_flat_quotient_ideal :
+    IsLeast
+      {J : Ideal R | J.IsFlatQuotient M}
+      (sInf {J : Ideal R | J.IsFlatQuotient M}) := sorry
+
+/-- Lemma 15.17.1: over an Artinian ring `R`, there exists a smallest ideal `I` such that
+`M / IM` is flat over `R ⧸ I`. -/
+theorem exists_isLeast_flat_quotient_ideal :
+    ∃ I : Ideal R,
+      IsLeast {J : Ideal R | J.IsFlatQuotient M} I :=
+  ⟨_, isLeast_sInf_flat_quotient_ideal⟩
+
+end
+
+/-! ### Lemma_15_17_2 (from Chap15) -/
+open scoped TensorProduct
+
+universe u v w
+
+section
+
+variable {R : Type u} [CommRing R] [IsArtinianRing R]
+variable {M : Type v} [AddCommGroup M] [Module R M]
+variable {R' : Type w} [CommRing R'] [Algebra R R']
+
+/- Domain triage:
+- primary domain: commutative algebra of Artinian flatness criteria under quotienting and base
+  change;
+- sampled owner declarations of the same kind:
+  `Ideal.IsFlatQuotient`,
+  `Module.Flat.baseChange`,
+  `IsBaseChange.tensorEquiv`,
+  `TensorProduct.tensorQuotMapSMulEquivTensorQuot`;
+- best owner abstraction in this chapter: the source-facing ideal predicate `J.IsFlatQuotient M`,
+  whose canonical core is `Module.Flat` on the quotient ring and quotient module;
+- primitive data: the base ring `R`, the module `M`, the least ideal `I`, and the target
+  `R`-algebra `R'`;
+- derived API: the base-change flatness criterion characterized by vanishing of the image ideal.
+
+Layering:
+- `source-facing`: this theorem identifies when the least flat-quotient ideal becomes zero after
+  base change;
+- `core/canonical`: `Ideal.IsFlatQuotient`, `Module.Flat`, the quotient-base-change owner
+  `IsBaseChange.tensorEquiv`, the packaged quotient/tensor comparison
+  `TensorProduct.tensorQuotMapSMulEquivTensorQuot`, and the
+  Chapter 10 Artinian descent theorem
+  `flat_of_isArtinianRing_of_injective_algebraMap_of_flat_tensorProduct`;
+- no separate `bridge/view` owner is introduced here.
+-/
+
+-- Proof sketch: the quotient map `M → M ⧸ (I • ⊤)` is the base change of `M` along
+-- `R → R ⧸ I`, so after any further `R ⧸ I`-algebra base change, `IsBaseChange.tensorEquiv`
+-- identifies `R' ⊗[R ⧸ I] (M ⧸ (I • ⊤))` with `R' ⊗[R] M`. If `I.map (algebraMap R R') = ⊥`,
+-- endow `R'` with its induced `R ⧸ I`-algebra structure and base-change the flat quotient module
+-- to conclude that `R' ⊗[R] M` is flat. Conversely, for `J = RingHom.ker (algebraMap R R')`, the
+-- same base-change comparison identifies `R' ⊗[R ⧸ J] (M ⧸ (J • ⊤))` with `R' ⊗[R] M`; applying
+-- `flat_of_isArtinianRing_of_injective_algebraMap_of_flat_tensorProduct` over `R ⧸ J` shows
+-- `J.IsFlatQuotient M`, and the leastness of `I` then forces `I ≤ J`, equivalently
+-- `I.map (algebraMap R R') = ⊥`.
+
+/-- Lemma 15.17.2: if `I` is the smallest ideal such that `M / IM` is flat over `R ⧸ I`, then
+for any `R`-algebra `R'`, the base change `R' ⊗[R] M` is flat over `R'` if and only if the image
+of `I` in `R'` is zero. -/
+theorem flat_baseChange_iff_map_eq_bot_of_isLeast_flat_quotient_ideal
+    {I : Ideal R}
+    (hI : IsLeast {J : Ideal R | J.IsFlatQuotient M} I) :
+    Module.Flat R' (R' ⊗[R] M) ↔ I.map (algebraMap R R') = ⊥ := by
+  constructor
+  · intro hflat
+    sorry
+  · intro hmap
+    sorry
+
+end

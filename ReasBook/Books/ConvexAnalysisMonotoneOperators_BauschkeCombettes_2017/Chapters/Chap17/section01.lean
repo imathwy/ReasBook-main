@@ -1,51 +1,35 @@
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Corollary_17_12
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Corollary_17_15
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Corollary_17_19
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Corollary_17_28
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Corollary_17_30
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Corollary_17_40
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Corollary_17_42
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Corollary_17_43
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Corollary_17_44
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Definition_17_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Definition_17_20
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Example_17_11
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Example_17_13
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Example_17_23
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Example_17_33
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Example_17_37
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Example_17_38
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Example_17_46
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Example_17_47
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Example_17_49
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Example_17_8
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_10
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_14
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_16
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_17
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_2
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_21
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_22
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_24
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_25
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_26
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_27
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_29
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_3
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_31
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_32
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_34
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_35
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_36
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_39
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_4
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_41
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_45
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_48
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_5
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_50
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_51
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_6
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_7
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_9
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Theorem_17_18
+import Mathlib
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+
+/-! ### Definition_17_1 (from Chap17) -/
+universe u
+
+namespace ERealFunction
+
+variable {H : Type u} [AddCommGroup H] [Module ℝ H]
+
+/-- Definition 17.1: `ξ` is the directional derivative of a proper `]-∞,+∞]`-valued function
+`f` at `x` in the direction `y` when `x` belongs to the domain of `f` and the difference quotient
+`(f (x + α • y) - f x) / α` tends to `ξ` as `α ↓ 0`. -/
+def HasDirectionalDerivativeAt
+    (f : H → Set.Ioi (⊥ : EReal)) (x y : H) (ξ : EReal) : Prop :=
+  x ∈ effectiveDomain f ∧
+    Filter.Tendsto
+      (fun α : ℝ ↦ ((f (x + α • y) : EReal) - (f x : EReal)) / α)
+      (nhdsWithin (0 : ℝ) (Set.Ioi 0)) (nhds ξ)
+
+/-- The right derivative of an `]-∞,+∞]`-valued function on `ℝ` is the directional derivative in
+the direction `1`. -/
+abbrev HasRightDerivativeAt
+    (f : ℝ → Set.Ioi (⊥ : EReal)) (x : ℝ) (ξ : EReal) : Prop :=
+  HasDirectionalDerivativeAt f x 1 ξ
+
+/-- The left derivative of an `]-∞,+∞]`-valued function on `ℝ` is the directional derivative in
+the direction `-1`; equivalently, it is the left-hand limit of the usual difference quotient. -/
+abbrev HasLeftDerivativeAt
+    (f : ℝ → Set.Ioi (⊥ : EReal)) (x : ℝ) (ξ : EReal) : Prop :=
+  HasDirectionalDerivativeAt f x (-1) (-ξ)
+
+end ERealFunction

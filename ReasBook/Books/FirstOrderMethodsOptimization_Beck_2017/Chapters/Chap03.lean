@@ -1,16 +1,37 @@
-import FirstOrderMethodsOptimization_Beck_2017.Chapters.Chap03.section01
-
-/-!
-Chapter 03
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/firstordermethodsoptimization_beck_2017/chapters/chap03/)
-- [Book overview](/ReasBook-private/books/firstordermethodsoptimization_beck_2017/book/)
-
-Section overviews:
-
-- Section 3.1 ([Documentation](/ReasBook-private/docs/Books/FirstOrderMethodsOptimization_Beck_2017/Chapters/Chap03/section01.html)) ([Verso](/ReasBook-private/books/firstordermethodsoptimization_beck_2017/chapters/chap03/section01/))
-
--/
+import Chapters.Chap03.section01
+import Chapters.Chap03.section02
+import Chapters.Chap03.section03
+import Chapters.Chap03.section04
+import Chapters.Chap03.section05
+import Chapters.Chap03.section06
+import Chapters.Chap03.section07
+import Chapters.Chap03.section08
+import Chapters.Chap03.section09
+import Chapters.Chap03.section10
+import Chapters.Chap03.section11
+import Chapters.Chap03.section12
+import Chapters.Chap03.section13
+import Chapters.Chap03.section14
+import Chapters.Chap03.section15
+import Chapters.Chap03.section16
+import Chapters.Chap03.section17
+import Chapters.Chap03.section18
+import Chapters.Chap03.section19
+import Chapters.Chap03.section20
+import Chapters.Chap03.section21
+import Chapters.Chap03.section22
+import Chapters.Chap03.section23
+import Chapters.Chap03.section24
+import Chapters.Chap03.section25
+import Chapters.Chap03.section26
+import Chapters.Chap03.section27
+import Chapters.Chap03.section28
+import Chapters.Chap03.section29
+import Chapters.Chap03.section30
+import Chapters.Chap03.section31
+import Chapters.Chap03.section32
+import Chapters.Chap03.section33
+import Chapters.Chap03.section34
+import Chapters.Chap03.section35
+import Chapters.Chap03.section36
+import Chapters.Chap03.section37

@@ -1,34 +1,249 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Corollary_12_18
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Corollary_12_19
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Definition_12_1
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Definition_12_11
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Definition_12_20
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Definition_12_25
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Definition_12_4
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Definition_12_6
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Example_12_13
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Example_12_15
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Example_12_16
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Example_12_21
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Example_12_22
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Example_12_23
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Example_12_28
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Example_12_29
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Example_12_3
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Example_12_5
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Exercise_12_1_1
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Exercise_12_1_2
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Exercise_12_1_3
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Exercise_12_1_4
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Exercise_12_1_5
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Remark_12_12
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Remark_12_2
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Remark_12_27
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Remark_12_7
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Remark_12_8
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Remark_12_9
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Theorem_12_10
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Theorem_12_14
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Theorem_12_17
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Theorem_12_24
-import ProbabilityTheory_Klenke_2020.Items.Chap12.Theorem_12_26
+import Mathlib
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+
+/-! ### Definition_12_1 (from Items/Chap12) -/
+open MeasureTheory ProbabilityTheory
+
+universe u v w
+
+variable {I : Type u} {Ω : Type v} {E : Type w}
+
+variable [MeasurableSpace Ω] [MeasurableSpace E]
+
+/-- Definition 12.1: a family `(X i)ᵢ` is exchangeable when every finite injective coordinate tuple
+has the same law after permuting its coordinates. This source-facing declaration is the chapter
+owner for exchangeability; later items derive companion criteria and consequences from it. -/
+def IsExchangeable (X : I → Ω → E) (μ : Measure Ω := by volume_tac) : Prop :=
+  ∀ ⦃n : ℕ⦄ (u : Fin n ↪ I) (σ : Equiv.Perm (Fin n)),
+    IdentDistrib (fun ω i ↦ X (u (σ i)) ω) (fun ω i ↦ X (u i) ω) μ μ
+
+/-! ### Exercise_12_1_1 (from Items/Chap12) -/
+open MeasureTheory
+
+universe u
+
+section
+
+variable {E : Type u} [MeasurableSpace E]
+variable {n : ℕ+}
+
+/- Source/core/bridge triage: this file stays `source-facing`. It concerns symmetric functionals on
+the finite tuple space `Fin n → E`. The sequence-space owner `nExchangeableSigmaAlgebra` from
+Definition 12.6 is a different layer because it also retains the tail coordinates. -/
+
+-- Proof sketch: a symmetric map on `Eⁿ` depends only on the unordered collection of its input
+-- values. Under the point-separating hypothesis on the measurable space of `E`, this unordered
+-- collection is equivalently encoded by the empirical distribution `n⁻¹ ∑ i, δ_{x i}`.
+/-- Exercise 12.1.1: every symmetric map on `Eⁿ` factors through the empirical distribution of the
+tuple. This is the source-facing finite-tuple empirical-measure formulation; the symmetric power
+`Sym E n` is only an internal quotient model of the same information. -/
+theorem symmetric_function_factors_through_empiricalDistribution
+    [MeasurableSpace.SeparatesPoints E]
+    (f : (Fin n → E) → ℝ) (hf : IsSymmetricMap f) :
+    ∃ g : ProbabilityMeasure E → ℝ,
+      f = fun x ↦ g (empiricalDistributionTuple (fun i ↦ x i)) := sorry
+
+-- Proof sketch: combine the factorization through the empirical distribution with measurability of
+-- the quotient/empirical-distribution map to obtain a measurable factor.
+/-- Measurable symmetric maps on `Eⁿ` are measurable functions of the empirical distribution. This
+is the measurable finite-tuple companion to
+`symmetric_function_factors_through_empiricalDistribution`; it identifies the symmetric
+`σ`-algebra on `Eⁿ`, not the larger sequence-space stage `nExchangeableSigmaAlgebra` from
+Definition 12.6. -/
+theorem measurable_symmetric_function_factors_through_empiricalDistribution
+    [MeasurableSpace.SeparatesPoints E]
+    (f : (Fin n → E) → ℝ) (hf : IsSymmetricMap f) (hf_meas : Measurable f) :
+    ∃ g : ProbabilityMeasure E → ℝ,
+      Measurable g ∧
+        f = fun x ↦ g (empiricalDistributionTuple (fun i ↦ x i)) := sorry
+
+-- Proof sketch: the left-hand side is by definition generated by measurable symmetric
+-- real-valued functionals on `Fin n → E`, and the preceding factorization theorem identifies each
+-- such functional as a measurable function of the empirical distribution. Conversely, the
+-- empirical-distribution map is exactly the quotient owner for the symmetric information of the
+-- tuple, so its pullback sigma-algebra is generated by those symmetric functionals.
+/-- The measurable `σ`-algebra on `Ω` generated by measurable symmetric functions of a finite
+family `X₁, …, Xₙ` is exactly the `σ`-algebra generated by its empirical distribution. This is
+the owner-level finite-tuple form behind Remark 12.8. -/
+theorem symmetricFiniteFamilySigmaAlgebra_eq_sigma_empiricalDistribution
+    [MeasurableSpace.SeparatesPoints E]
+    {Ω : Type*} [MeasurableSpace Ω] (n : ℕ+) (X : Fin n → Ω → E) :
+    (⨆ F : {F : (Fin n → E) → ℝ // Measurable F ∧ IsSymmetricMap F},
+      MeasurableSpace.comap (fun ω ↦ F.1 (fun i ↦ X i ω)) inferInstance) =
+      MeasurableSpace.comap (empiricalDistribution n X) inferInstance :=
+  sorry
+
+end
+
+/-! ### Exercise_12_1_2 (from Items/Chap12) -/
+open MeasureTheory ProbabilityTheory
+open scoped BigOperators ProbabilityTheory
+
+universe u
+
+variable {Ω : Type u} [MeasurableSpace Ω]
+variable {μ : Measure Ω}
+
+-- Proof sketch: take the test functional `φ(x) = x 0` in the permutation-averaging formula for
+-- conditional expectation on the `n`-exchangeable sigma-algebra. Then evaluate the resulting
+-- average over `S(n)` explicitly: each of the first `n` coordinates appears equally often in the
+-- orbit of the first coordinate, so the symmetrized average is the empirical mean of the first
+-- `n` entries.
+/-- Exercise 12.1.2: for an exchangeable real sequence, the conditional expectation of the first
+coordinate with respect to the `n`-exchangeable sigma-algebra is the empirical mean of the first
+`n` coordinates; this is the formal content of equation `(12.4)`. -/
+theorem condExp_zero_eq_prefix_average_of_isExchangeable {X : ℕ → Ω → ℝ}
+    (hX : IsExchangeable X μ) (hX0 : Integrable (X 0) μ) (n : ℕ+) :
+    μ[X 0 | nExchangeableSigmaAlgebra (Function.swap X) (n : ℕ)] =ᵐ[μ]
+      fun ω ↦ (∑ i : Fin (n : ℕ), X i ω) / (n : ℝ) := by
+  simpa [exchangeableAverage_apply_zero n, Function.comp, Function.swap] using
+    condExp_eq_exchangeableAverage_of_isExchangeable hX
+      (measurable_pi_apply 0)
+      (by simpa [Function.swap] using hX0)
+      (n : ℕ)
+
+/-! ### Exercise_12_1_3 (from Items/Chap12) -/
+open MeasureTheory ProbabilityTheory
+open scoped ProbabilityTheory
+
+universe u
+
+noncomputable section
+
+/-- The explicit equality-case family on `Fin n`: the `i`-th random variable is the indicator of
+the event that the sampled state equals `i`. -/
+def exchangeableCovarianceEqualityExample (n : ℕ) : Fin n → Fin n → ℝ :=
+  fun i ω ↦ if ω = i then 1 else 0
+
+private theorem two_le_ne_zero {n : ℕ} (h_n : 2 ≤ n) : n ≠ 0 := by
+  omega
+
+/-- The uniform probability law on the nonempty finite space `Fin n` used for the equality
+example. -/
+def exchangeableCovarianceEqualityExampleLaw (n : ℕ) (h_nz : n ≠ 0) :
+    ProbabilityMeasure (Fin n) :=
+  let _ : NeZero n := ⟨h_nz⟩
+  ⟨(PMF.uniformOfFintype (Fin n)).toMeasure, inferInstance⟩
+
+-- Proof sketch: under the uniform law on `Fin n`, permuting the coordinate labels simply permutes
+-- the atoms of the sample space, so the finite-dimensional laws of the indicator family are
+-- unchanged.
+/-- The indicator family on the uniform finite space is exchangeable. -/
+theorem exchangeableCovarianceEqualityExample_isExchangeable (n : ℕ) (h_nz : n ≠ 0) :
+    IsExchangeable (exchangeableCovarianceEqualityExample n)
+      (exchangeableCovarianceEqualityExampleLaw n h_nz) := sorry
+
+-- Proof sketch: the sample space `Fin n` is finite and the indicator variables take only the
+-- values `0` and `1`, hence every coordinate belongs to `L²`.
+/-- Every coordinate of the explicit equality example is square integrable. -/
+theorem exchangeableCovarianceEqualityExample_memLp (n : ℕ) (h_nz : n ≠ 0) :
+    ∀ i, MemLp (exchangeableCovarianceEqualityExample n i) 2
+      (exchangeableCovarianceEqualityExampleLaw n h_nz) := sorry
+
+-- Proof sketch: under the uniform law each indicator has success probability `1 / n`, so its
+-- variance is `((n - 1) / n^2)`, which is positive for `n ≥ 2`.
+/-- Every coordinate of the explicit equality example has nonzero variance. -/
+theorem exchangeableCovarianceEqualityExample_variance_ne_zero (n : ℕ) (h_n : 2 ≤ n) :
+    ∀ i, Var[exchangeableCovarianceEqualityExample n i;
+      exchangeableCovarianceEqualityExampleLaw n (two_le_ne_zero h_n)] ≠ 0 := sorry
+
+variable {Ω : Type u} [MeasurableSpace Ω]
+
+-- Proof sketch: apply nonnegativity of `Var[∑ i : Fin n, X i; μ]`, expand it by
+-- `ProbabilityTheory.variance_sum`, and use exchangeability to identify every diagonal term with
+-- `Var[X₁; μ]` and every off-diagonal term with `cov[X₁, X₂; μ]`.
+/-- Exercise 12.1.3 (1): for an exchangeable square-integrable family `X₁, …, Xₙ`, the covariance
+between two distinct coordinates is bounded below by `-(n - 1)⁻¹ Var[X₁]`. -/
+theorem cov_ge_neg_inv_mul_var_of_exchangeable
+    (μ : Measure Ω) [IsProbabilityMeasure μ] {n : ℕ} (X : Fin n → Ω → ℝ)
+    {i j : Fin n} (hij : i ≠ j) (h_exchangeable : IsExchangeable X μ)
+    (h_memLp : ∀ k, MemLp (X k) 2 μ) :
+    cov[X i, X j; μ] ≥ -((1 : ℝ) / (n - 1 : ℝ)) * Var[X i; μ] := sorry
+
+-- Proof sketch: for the explicit indicator family on the uniform finite space, one has
+-- `E[X₁ X₂] = 0`, `E[X₁] = 1 / n`, and `Var[X₁] = (n - 1) / n^2`, so the covariance equals
+-- `-1 / n^2 = -(n - 1)⁻¹ Var[X₁]`.
+/-- Exercise 12.1.3 (2): for `n ≥ 2`, the indicator family on the uniform sample space `Fin n`
+provides a nontrivial exchangeable square-integrable example attaining equality in (12.6). -/
+theorem exchangeable_indicator_example_attains_covariance_bound (n : ℕ) (h_n : 2 ≤ n)
+    {i j : Fin n} (hij : i ≠ j) :
+    cov[exchangeableCovarianceEqualityExample n i,
+        exchangeableCovarianceEqualityExample n j;
+        exchangeableCovarianceEqualityExampleLaw n (two_le_ne_zero h_n)] =
+      -((1 : ℝ) / (n - 1 : ℝ)) * Var[exchangeableCovarianceEqualityExample n i;
+        exchangeableCovarianceEqualityExampleLaw n (two_le_ne_zero h_n)] := sorry
+
+end
+
+/-! ### Exercise_12_1_4 (from Items/Chap12) -/
+open MeasureTheory ProbabilityTheory
+open scoped ProbabilityTheory
+
+universe u
+
+variable {Ω : Type u} [MeasurableSpace Ω]
+variable {μ : Measure Ω} [IsProbabilityMeasure μ]
+
+private theorem nonneg_of_lower_bounds_inv_succ_mul (a x : ℝ)
+    (hx : ∀ m : ℕ, -((1 : ℝ) / (m + 1 : ℝ)) * a ≤ x) :
+    0 ≤ x := by
+  have hlim :
+      Filter.Tendsto (fun m : ℕ ↦ -((1 : ℝ) / (m + 1 : ℝ)) * a) Filter.atTop (nhds 0) := by
+    simpa [one_div, div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm] using
+      (tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)).const_mul (-a)
+  exact le_of_tendsto' hlim hx
+
+-- Proof sketch: apply `ProbabilityTheory.variance_nonneg` to `X 0 + X 1`, expand the variance of
+-- the first `m + 2` coordinates to obtain the finite exchangeable bound from Exercise 12.1.3, and
+-- let `m → ∞`. If `cov[X 0, X 1; μ]` were negative, then for large `m` the lower bound
+-- `-(1 / (m + 1)) * Var[X 0; μ]` would become stricter than the covariance itself, a
+-- contradiction.
+/-- Exercise 12.1.4: for a square-integrable exchangeable real sequence, the covariance of its
+first two coordinates is nonnegative. -/
+theorem covariance_first_two_nonneg_of_isExchangeable {X : ℕ → Ω → ℝ}
+    (hX : IsExchangeable X μ) (hX_sq : ∀ n, MemLp (X n) 2 μ) :
+    0 ≤ cov[X 0, X 1; μ] := by
+  refine nonneg_of_lower_bounds_inv_succ_mul (Var[X 0; μ]) (cov[X 0, X 1; μ]) ?_
+  intro m
+  simpa [div_eq_mul_inv, show ((m : ℝ) + 2 - 1) = (m + 1 : ℝ) by ring] using
+    cov_ge_neg_inv_mul_var_of_exchangeable μ (X ∘ Fin.val)
+      (show (0 : Fin (m + 2)) ≠ 1 by simp)
+      (hX.comp_embedding Fin.valEmbedding) (fun i ↦ hX_sq i)
+
+/-! ### Exercise_12_1_5 (from Items/Chap12) -/
+open MeasureTheory ProbabilityTheory
+
+universe u v
+
+variable {Ω : Type u} {S : Type v}
+
+variable [MeasurableSpace Ω] [MeasurableSpace S]
+
+/-- A finite family `X : Fin n → Ω → S` admits an infinite exchangeable extension if it is the
+initial segment of an infinite exchangeable sequence on the same probability space. -/
+def HasInfiniteExchangeableExtension {n : ℕ} (X : Fin n → Ω → S) (μ : Measure Ω) : Prop :=
+  ∃ Y : ℕ → Ω → S, IsExchangeable Y μ ∧ X = Y ∘ Fin.valEmbedding
+
+-- Proof sketch: restrict an infinite exchangeable extension to its first `n` coordinates via the
+-- chapter-owner reindexing lemma `IsExchangeable.comp_embedding`.
+/-- Any finite family admitting an infinite exchangeable extension is exchangeable. -/
+theorem HasInfiniteExchangeableExtension.isExchangeable {n : ℕ}
+    {X : Fin n → Ω → S} {μ : Measure Ω} (hX : HasInfiniteExchangeableExtension X μ) :
+    IsExchangeable X μ := by
+  rcases hX with ⟨Y, hY, rfl⟩
+  simpa using hY.comp_embedding Fin.valEmbedding
+
+-- Proof sketch: use the classical sampling-without-replacement example, for instance the
+-- indicators of the unique marked element in a uniformly chosen point of `Fin n`; this family is
+-- exchangeable, but de Finetti's theorem rules out any infinite exchangeable extension when
+-- `n ≥ 2`.
+/-- Exercise 12.1.5: for every `n ≥ 2`, there exists an exchangeable family
+`X₁, …, Xₙ` that does not extend to any infinite exchangeable sequence on the same probability
+space. -/
+theorem exists_exchangeable_family_without_infinite_extension {n : ℕ} (hn : 1 < n) :
+    ∃ (Ω : Type u) (_ : MeasurableSpace Ω) (μ : Measure Ω)
+      (_ : IsProbabilityMeasure μ)
+      (X : Fin n → Ω → Bool),
+      IsExchangeable X μ ∧ ¬ HasInfiniteExchangeableExtension X μ := sorry

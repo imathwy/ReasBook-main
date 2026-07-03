@@ -1,0 +1,115 @@
+import Mathlib
+import Mathlib.Data.List.TFAE
+import Mathlib.Tactic.Recall
+import Mathlib.Tactic.TFAE
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+
+/-! ### Lemma_10_158_10 (from Chap10) -/
+universe u v w
+
+namespace Algebra
+
+section
+
+variable {k : Type u} {K : Type v} [Field k] [Field K] [Algebra k K]
+variable [Algebra.EssFiniteType k K]
+
+-- Domain-style sampling:
+-- * primary domain: finitely generated field extensions, smooth algebras, and fraction fields;
+-- * sampled owners: `Algebra.IsSeparableOver`, `Algebra.Smooth.exists_subalgebra_fg`,
+--   `Algebra.EssFiniteType.subalgebra`, and `IsFractionRing` for subalgebras obtained from
+--   localizations inside a field;
+-- * best owner abstraction here: the source-facing pair consisting of a `k`-subalgebra
+--   `A : Subalgebra k K` together with the canonical fraction-field condition `IsFractionRing A K`;
+--   smoothness of `A` is the extra geometric property, while the inclusion `A →ₐ[k] K` is derived
+--   from the owner `A` itself.
+--
+-- Proof sketch: choose a domain `A` of finite type over `k` whose fraction field is `K`, using
+-- that `K / k` is essentially of finite type, and replace it by its image in `K`, viewed as a
+-- `k`-subalgebra. By Lemma `10.140.9`, the extension `K / k` is separable exactly when `A` is
+-- smooth at the generic point `(0)`. Since smoothness is local on the source, smoothness at `(0)`
+-- is equivalent to replacing `A` by a localization `A_g` that is smooth over `k`, and inside the
+-- ambient field `K` that localization is again represented by a smooth `k`-subalgebra whose
+-- fraction field is `K`.
+/-- Lemma 10.158.10: a finitely generated field extension `K / k` is separable in the Stacks
+Project sense if and only if `K` is the fraction field of some smooth domain over `k`. In the
+canonical owner formulation below, that domain is represented by a smooth `k`-subalgebra of the
+ambient field `K` together with the canonical condition that `K` is its fraction field. -/
+theorem isSeparableOver_iff_exists_smooth_domain_with_fractionRing :
+    IsSeparableOver k K ↔
+      ∃ A : Subalgebra k K, Smooth k A ∧ IsFractionRing A K := sorry
+
+end
+
+end Algebra
+
+/-! ### Lemma_10_158_11 (from Chap10) -/
+universe u v
+
+namespace Algebra
+
+section
+
+variable {k : Type u} {K : Type v} [Field k] [Field K] [Algebra k K]
+
+/- Domain-style sampling for Lemma 10.158.11.
+
+Primary domain: commutative algebra of field extensions approximated by directed systems of
+subalgebras inside a fixed ambient field.
+
+Sampled owner declarations in the project/mathlib ecosystem:
+* `Algebra.IsSeparableOver` from `Definition_10_42_1.lean`;
+* `Algebra.IsGlobalCompleteIntersection` from `Definition_10_135_1.lean`;
+* `Algebra.isGeometricallyRegular_of_directed_iSup_subfields` from
+  `Lemma_10_166_5.lean`;
+* `Subalgebra.coe_iSup_of_directed` from mathlib's directed-subalgebra API.
+
+Best owner abstraction: a theorem-level family `S : ι → Subalgebra k K` indexed in the ambient
+owner universe `Type (max u v)`, together with explicit proofs that `S` is directed, every stage
+has the desired property, and `iSup S = ⊤`. The local wrapper classes previously in this file were
+only bundling those theorem witnesses and did not carry additional source mathematics.
+
+Primitive data vs. derived API:
+* primitive source-facing data: the chosen family of `k`-subalgebras `S : ι → Subalgebra k K`;
+* derived theorem content: directedness, the stagewise global-complete-intersection or smoothness
+  condition, and the statement that the supremum is `⊤`.
+
+Source/core/bridge triage:
+* `source-facing`: the existence of a directed approximation family with the textbook stage
+  property;
+* `core/canonical`: `Subalgebra k K`, `Directed (· ≤ ·)`, and `iSup`;
+* `bridge/view`: the filtered-colimit interpretation mentioned in the docstrings.
+-/
+
+-- Proof sketch: for each finite subset `E ⊆ K`, the proof in the source constructs a `k`
+-- subalgebra `A ⊆ K` containing `E` that is a global complete intersection over `k`. Ordering
+-- these subalgebras by inclusion gives a directed family, and every element of `K` lies in one of
+-- them by taking `E = {x}`. Hence the supremum of the family is `⊤`.
+/-- Lemma 10.158.11 (1): the field extension `K / k` is the directed supremum of global complete
+intersection `k`-subalgebras of `K`. Equivalently, `K` is a filtered colimit of global complete
+intersection algebras over `k`. -/
+theorem exists_directed_globalCompleteIntersection_subalgebra_family :
+    ∃ (ι : Type (max u v)) (S : ι → Subalgebra k K)
+      (_ : Directed (· ≤ ·) S)
+      (_ : ∀ i, IsGlobalCompleteIntersection k ↥(S i)),
+      iSup S = (⊤ : Subalgebra k K) := sorry
+
+-- Proof sketch: by Lemma `10.158.10`, every finitely generated separable intermediate field of
+-- `K / k` is the fraction field of a smooth `k`-domain. Given a finite subset `E ⊆ K`, apply that
+-- lemma to the subfield generated by `E` and localize the smooth model further so that the images
+-- of the elements of `E` lie in the chosen `k`-subalgebra of `K`. Ordering these smooth
+-- subalgebras by inclusion yields a directed family with supremum `⊤`.
+/-- Lemma 10.158.11 (2): if `K / k` is separable in the Stacks Project sense, then `K` is the
+directed supremum of smooth `k`-subalgebras of `K`. Equivalently, `K` is a filtered colimit of
+smooth algebras over `k`. -/
+theorem exists_directed_smooth_subalgebra_family [IsSeparableOver k K] :
+    ∃ (ι : Type (max u v)) (S : ι → Subalgebra k K)
+      (_ : Directed (· ≤ ·) S)
+      (_ : ∀ i, Smooth k ↥(S i)),
+      iSup S = (⊤ : Subalgebra k K) := sorry
+
+end
+
+end Algebra

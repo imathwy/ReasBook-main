@@ -1,5 +1,0 @@
--- Proof rescue support index.
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_3.Shared
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_3.SourceCharacters
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_3.ExplicitModels
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_3.SourceReductionOwners

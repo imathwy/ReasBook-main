@@ -1,16 +1,13 @@
-import FirstOrderMethodsOptimization_Beck_2017.Chapters.Chap11.section01
-
-/-!
-Chapter 11
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/firstordermethodsoptimization_beck_2017/chapters/chap11/)
-- [Book overview](/ReasBook-private/books/firstordermethodsoptimization_beck_2017/book/)
-
-Section overviews:
-
-- Section 11.1 ([Documentation](/ReasBook-private/docs/Books/FirstOrderMethodsOptimization_Beck_2017/Chapters/Chap11/section01.html)) ([Verso](/ReasBook-private/books/firstordermethodsoptimization_beck_2017/chapters/chap11/section01/))
-
--/
+import Chapters.Chap11.section01
+import Chapters.Chap11.section02
+import Chapters.Chap11.section03
+import Chapters.Chap11.section04
+import Chapters.Chap11.section05
+import Chapters.Chap11.section06
+import Chapters.Chap11.section07
+import Chapters.Chap11.section08
+import Chapters.Chap11.section10
+import Chapters.Chap11.section11
+import Chapters.Chap11.section12
+import Chapters.Chap11.section13
+import Chapters.Chap11.section14

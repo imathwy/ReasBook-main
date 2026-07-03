@@ -1,2 +1,0 @@
-import LinearRepresentations_Serre_1977.Chap16.Exercise_16_16_2_3.ScalarExtensionLocalization
-import LinearRepresentations_Serre_1977.Chap16.Exercise_16_16_2_3.SubgroupRestriction

@@ -1,31 +1,55 @@
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Definition_9_1
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Definition_9_2
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Definition_9_3
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Definition_9_4
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Definition_9_5
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Definition_9_6
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Lemma_9_13
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Lemma_9_14
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Lemma_9_15
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Lemma_9_25
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Lemma_9_3
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Lemma_9_4
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Lemma_9_7
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Text_9_1
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Text_9_10
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Text_9_11
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Text_9_2
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Text_9_3
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Text_9_4
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Text_9_5
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Text_9_6
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Text_9_7
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Text_9_8
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Text_9_9
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Theorem_9_12
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Theorem_9_16
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Theorem_9_18
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Theorem_9_24
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Theorem_9_26
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Theorem_9_27
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Theorem_9_8
+
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+
+/-! ### Definition_9_1 (from Chap09) -/
+/- Definition 9.1 is recall-only in Chapter 9. Its `source-facing` content is the standing
+assumption package for the constrained convex problem `(P)`, and the exact `core/canonical` owner
+already exists as `IsConstrainedConvexProblem`; there is no new mathematics here that would
+justify a second wrapper or alias. -/
+
+/- Definition 9.1: the standing assumptions (A)-(D) for
+`(P) := min {f(x) : x ∈ C}` are the existing owner class `IsConstrainedConvexProblem`, which
+packages that `f : E → (-∞, ∞]` is proper, closed, and convex, that `C` is nonempty, closed,
+convex, and contained in `interior (dom(f))`, and that the optimal set `X^*` is nonempty with
+optimal value `f_opt`. -/
+recall IsConstrainedConvexProblem
+
+/-! ### Text_9_1 (from Chap09) -/
+universe u
+
+open scoped Gradient
+
+noncomputable section
+
+section
+
+variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [CompleteSpace E]
+
+/- Text 9.1 is `source-facing`, but its owner object is already the Chapter 9 declaration
+`bregmanDistance` from Definition 9.2. This file is therefore a `bridge/view` specialization to
+the textbook real-valued setting `ω : E → ℝ`, with primitive data only the function, the set, and
+the strict-convexity/differentiability hypotheses. -/
+
+/-- For a real-valued potential, the Chapter 9 Bregman distance specializes to the textbook
+formula `ω(x) - ω(y) - ⟪∇ω(y), x - y⟫`. -/
+@[simp] theorem bregmanDistance_apply_real (ω : E → ℝ) (x y : E) :
+    B[ω] x y = ω x - ω y - inner ℝ (∇ ω y) (x - y) := by
+  simp [bregmanDistance, Function.toEReal]
+
+-- Proof sketch: apply the first-order lower support inequality for a differentiable convex
+-- function at `y` to obtain `0 ≤ B[ω] x y`. If `x ≠ y`, strict convexity upgrades that support
+-- inequality to a strict inequality, so `B[ω] x y > 0`. Combining this strict positivity with
+-- the canonical diagonal identity `bregmanDistance_self_eq_zero` gives the equality
+-- characterization. For this fixed pair `(x, y)`, only differentiability at the second argument
+-- `y` is used.
+/-- Text 9.1, specialized at a fixed pair `(x, y)`: if `ω` is strictly convex on `D` and
+differentiable at `y ∈ D`, then the associated Bregman distance from `x` to `y` is nonnegative,
+and it vanishes exactly on the diagonal. -/
+theorem bregmanDistance_nonneg_and_eq_zero_iff
+    (ω : E → ℝ) (D : Set E) (hω : StrictConvexOn ℝ D ω) {x y : E}
+    (hx : x ∈ D) (hy : y ∈ D) (hy_diff : DifferentiableAt ℝ ω y) :
+    0 ≤ B[ω] x y ∧ (B[ω] x y = 0 ↔ x = y) := sorry
+
+end

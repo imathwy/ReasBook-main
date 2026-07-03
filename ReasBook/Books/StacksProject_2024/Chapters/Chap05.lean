@@ -1,16 +1,36 @@
-import StacksProject_2024.Chapters.Chap05.section01
-
-/-!
-Chapter 05
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/StacksProject_2024/chapters/chap05/)
-- [Book overview](/ReasBook-private/books/StacksProject_2024/book/)
-
-Section overviews:
-
-- Section 5.1 ([Documentation](/ReasBook-private/docs/Books/StacksProject_2024/Chapters/Chap05/section01.html)) ([Verso](/ReasBook-private/books/StacksProject_2024/chapters/chap05/section01/))
-
--/
+import Chapters.Chap05.section03
+import Chapters.Chap05.section04
+import Chapters.Chap05.section05
+import Chapters.Chap05.section06
+import Chapters.Chap05.section07
+import Chapters.Chap05.section08_part1
+import Chapters.Chap05.section08_part2
+import Chapters.Chap05.section09
+import Chapters.Chap05.section10
+import Chapters.Chap05.section11_part1
+import Chapters.Chap05.section11_part2
+import Chapters.Chap05.section12
+import Chapters.Chap05.section13_part1
+import Chapters.Chap05.section13_part2
+import Chapters.Chap05.section14
+import Chapters.Chap05.section15
+import Chapters.Chap05.section16
+import Chapters.Chap05.section17
+import Chapters.Chap05.section18
+import Chapters.Chap05.section19
+import Chapters.Chap05.section20
+import Chapters.Chap05.section21
+import Chapters.Chap05.section22
+import Chapters.Chap05.section23_part1
+import Chapters.Chap05.section23_part2
+import Chapters.Chap05.section24_part1
+import Chapters.Chap05.section24_part2
+import Chapters.Chap05.section24_part3
+import Chapters.Chap05.section25
+import Chapters.Chap05.section26
+import Chapters.Chap05.section27
+import Chapters.Chap05.section28_part1
+import Chapters.Chap05.section28_part2
+import Chapters.Chap05.section29
+import Chapters.Chap05.section30_part1
+import Chapters.Chap05.section30_part2

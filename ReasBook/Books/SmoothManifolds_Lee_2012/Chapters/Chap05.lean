@@ -1,34 +1,52 @@
-import SmoothManifolds_Lee_2012.Chapters.Chap05.section01
-import SmoothManifolds_Lee_2012.Chapters.Chap05.section02
-import SmoothManifolds_Lee_2012.Chapters.Chap05.section03
-import SmoothManifolds_Lee_2012.Chapters.Chap05.section04
-import SmoothManifolds_Lee_2012.Chapters.Chap05.section05
-import SmoothManifolds_Lee_2012.Chapters.Chap05.section06
-import SmoothManifolds_Lee_2012.Chapters.Chap05.section07
-import SmoothManifolds_Lee_2012.Chapters.Chap05.section08
-import SmoothManifolds_Lee_2012.Chapters.Chap05.section09
-import SmoothManifolds_Lee_2012.Chapters.Chap05.section10
-
-/-!
-Chapter 05
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/smoothmanifolds_lee_2012/chapters/chap05/)
-- [Book overview](/ReasBook-private/books/smoothmanifolds_lee_2012/book/)
-
-Section overviews:
-
-- Section 5.1 ([Documentation](/ReasBook-private/docs/Books/SmoothManifolds_Lee_2012/Chapters/Chap05/section01.html)) ([Verso](/ReasBook-private/books/smoothmanifolds_lee_2012/chapters/chap05/section01/))
-- Section 5.2 ([Documentation](/ReasBook-private/docs/Books/SmoothManifolds_Lee_2012/Chapters/Chap05/section02.html)) ([Verso](/ReasBook-private/books/smoothmanifolds_lee_2012/chapters/chap05/section02/))
-- Section 5.3 ([Documentation](/ReasBook-private/docs/Books/SmoothManifolds_Lee_2012/Chapters/Chap05/section03.html)) ([Verso](/ReasBook-private/books/smoothmanifolds_lee_2012/chapters/chap05/section03/))
-- Section 5.4 ([Documentation](/ReasBook-private/docs/Books/SmoothManifolds_Lee_2012/Chapters/Chap05/section04.html)) ([Verso](/ReasBook-private/books/smoothmanifolds_lee_2012/chapters/chap05/section04/))
-- Section 5.5 ([Documentation](/ReasBook-private/docs/Books/SmoothManifolds_Lee_2012/Chapters/Chap05/section05.html)) ([Verso](/ReasBook-private/books/smoothmanifolds_lee_2012/chapters/chap05/section05/))
-- Section 5.6 ([Documentation](/ReasBook-private/docs/Books/SmoothManifolds_Lee_2012/Chapters/Chap05/section06.html)) ([Verso](/ReasBook-private/books/smoothmanifolds_lee_2012/chapters/chap05/section06/))
-- Section 5.7 ([Documentation](/ReasBook-private/docs/Books/SmoothManifolds_Lee_2012/Chapters/Chap05/section07.html)) ([Verso](/ReasBook-private/books/smoothmanifolds_lee_2012/chapters/chap05/section07/))
-- Section 5.8 ([Documentation](/ReasBook-private/docs/Books/SmoothManifolds_Lee_2012/Chapters/Chap05/section08.html)) ([Verso](/ReasBook-private/books/smoothmanifolds_lee_2012/chapters/chap05/section08/))
-- Section 5.9 ([Documentation](/ReasBook-private/docs/Books/SmoothManifolds_Lee_2012/Chapters/Chap05/section09.html)) ([Verso](/ReasBook-private/books/smoothmanifolds_lee_2012/chapters/chap05/section09/))
-- Section 5.10 ([Documentation](/ReasBook-private/docs/Books/SmoothManifolds_Lee_2012/Chapters/Chap05/section10.html)) ([Verso](/ReasBook-private/books/smoothmanifolds_lee_2012/chapters/chap05/section10/))
-
--/
+import Chapters.Chap05.section01
+import Chapters.Chap05.section02
+import Chapters.Chap05.section03
+import Chapters.Chap05.section04
+import Chapters.Chap05.section05
+import Chapters.Chap05.section06
+import Chapters.Chap05.section07
+import Chapters.Chap05.section08_part1
+import Chapters.Chap05.section08_part2
+import Chapters.Chap05.section09
+import Chapters.Chap05.section10_part1
+import Chapters.Chap05.section10_part2
+import Chapters.Chap05.section11
+import Chapters.Chap05.section12
+import Chapters.Chap05.section13
+import Chapters.Chap05.section14
+import Chapters.Chap05.section15
+import Chapters.Chap05.section16
+import Chapters.Chap05.section17
+import Chapters.Chap05.section18
+import Chapters.Chap05.section19
+import Chapters.Chap05.section20
+import Chapters.Chap05.section22
+import Chapters.Chap05.section23_part1
+import Chapters.Chap05.section23_part2
+import Chapters.Chap05.section24
+import Chapters.Chap05.section25
+import Chapters.Chap05.section26
+import Chapters.Chap05.section27
+import Chapters.Chap05.section28
+import Chapters.Chap05.section29
+import Chapters.Chap05.section30
+import Chapters.Chap05.section31
+import Chapters.Chap05.section32
+import Chapters.Chap05.section35
+import Chapters.Chap05.section36
+import Chapters.Chap05.section37
+import Chapters.Chap05.section38
+import Chapters.Chap05.section39
+import Chapters.Chap05.section40
+import Chapters.Chap05.section41
+import Chapters.Chap05.section42
+import Chapters.Chap05.section43
+import Chapters.Chap05.section44
+import Chapters.Chap05.section45
+import Chapters.Chap05.section46
+import Chapters.Chap05.section49
+import Chapters.Chap05.section50
+import Chapters.Chap05.section51_part1
+import Chapters.Chap05.section52
+import Chapters.Chap05.section53
+import Chapters.Chap05.section54

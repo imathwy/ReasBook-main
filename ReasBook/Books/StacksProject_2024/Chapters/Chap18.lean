@@ -1,16 +1,43 @@
-import StacksProject_2024.Chapters.Chap18.section01
-
-/-!
-Chapter 18
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/StacksProject_2024/chapters/chap18/)
-- [Book overview](/ReasBook-private/books/StacksProject_2024/book/)
-
-Section overviews:
-
-- Section 18.1 ([Documentation](/ReasBook-private/docs/Books/StacksProject_2024/Chapters/Chap18/section01.html)) ([Verso](/ReasBook-private/books/StacksProject_2024/chapters/chap18/section01/))
-
--/
+import Chapters.Chap18.section02
+import Chapters.Chap18.section03
+import Chapters.Chap18.section04
+import Chapters.Chap18.section05
+import Chapters.Chap18.section06
+import Chapters.Chap18.section07
+import Chapters.Chap18.section08
+import Chapters.Chap18.section09
+import Chapters.Chap18.section10
+import Chapters.Chap18.section11
+import Chapters.Chap18.section12
+import Chapters.Chap18.section13
+import Chapters.Chap18.section14
+import Chapters.Chap18.section15
+import Chapters.Chap18.section16
+import Chapters.Chap18.section17
+import Chapters.Chap18.section19
+import Chapters.Chap18.section20
+import Chapters.Chap18.section21
+import Chapters.Chap18.section22
+import Chapters.Chap18.section23
+import Chapters.Chap18.section24
+import Chapters.Chap18.section25
+import Chapters.Chap18.section26
+import Chapters.Chap18.section27
+import Chapters.Chap18.section28
+import Chapters.Chap18.section29
+import Chapters.Chap18.section30
+import Chapters.Chap18.section31
+import Chapters.Chap18.section32
+import Chapters.Chap18.section33_part1
+import Chapters.Chap18.section33_part2
+import Chapters.Chap18.section34
+import Chapters.Chap18.section35
+import Chapters.Chap18.section36
+import Chapters.Chap18.section37
+import Chapters.Chap18.section38
+import Chapters.Chap18.section39
+import Chapters.Chap18.section40
+import Chapters.Chap18.section41
+import Chapters.Chap18.section42
+import Chapters.Chap18.section43
+import Chapters.Chap18.section44

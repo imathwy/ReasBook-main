@@ -1,16 +1,94 @@
-import LecturesConvexOptimization_Nesterov_2018.Chapters.Chap07.section01
-
-/-!
-Chapter 07
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/lecturesconvexoptimization_nesterov_2018/chapters/chap07/)
-- [Book overview](/ReasBook-private/books/lecturesconvexoptimization_nesterov_2018/book/)
-
-Section overviews:
-
-- Section 7.1 ([Documentation](/ReasBook-private/docs/Books/LecturesConvexOptimization_Nesterov_2018/Chapters/Chap07/section01.html)) ([Verso](/ReasBook-private/books/lecturesconvexoptimization_nesterov_2018/chapters/chap07/section01/))
-
--/
+import Chapters.Chap07.section01
+import Chapters.Chap07.section02
+import Chapters.Chap07.section03
+import Chapters.Chap07.section04
+import Chapters.Chap07.section05
+import Chapters.Chap07.section06
+import Chapters.Chap07.section07
+import Chapters.Chap07.section08
+import Chapters.Chap07.section09
+import Chapters.Chap07.section10
+import Chapters.Chap07.section11
+import Chapters.Chap07.section12
+import Chapters.Chap07.section13
+import Chapters.Chap07.section14
+import Chapters.Chap07.section15
+import Chapters.Chap07.section16
+import Chapters.Chap07.section17
+import Chapters.Chap07.section18
+import Chapters.Chap07.section19
+import Chapters.Chap07.section20
+import Chapters.Chap07.section21
+import Chapters.Chap07.section22
+import Chapters.Chap07.section23
+import Chapters.Chap07.section24
+import Chapters.Chap07.section25
+import Chapters.Chap07.section26
+import Chapters.Chap07.section27
+import Chapters.Chap07.section28
+import Chapters.Chap07.section29
+import Chapters.Chap07.section30
+import Chapters.Chap07.section31
+import Chapters.Chap07.section32
+import Chapters.Chap07.section33
+import Chapters.Chap07.section34
+import Chapters.Chap07.section35
+import Chapters.Chap07.section36
+import Chapters.Chap07.section37
+import Chapters.Chap07.section38
+import Chapters.Chap07.section39
+import Chapters.Chap07.section40
+import Chapters.Chap07.section41
+import Chapters.Chap07.section42
+import Chapters.Chap07.section43
+import Chapters.Chap07.section44
+import Chapters.Chap07.section45
+import Chapters.Chap07.section46
+import Chapters.Chap07.section47
+import Chapters.Chap07.section48
+import Chapters.Chap07.section49
+import Chapters.Chap07.section50
+import Chapters.Chap07.section51
+import Chapters.Chap07.section52
+import Chapters.Chap07.section53
+import Chapters.Chap07.section54
+import Chapters.Chap07.section55
+import Chapters.Chap07.section56
+import Chapters.Chap07.section57
+import Chapters.Chap07.section58
+import Chapters.Chap07.section59
+import Chapters.Chap07.section60
+import Chapters.Chap07.section61
+import Chapters.Chap07.section62
+import Chapters.Chap07.section63
+import Chapters.Chap07.section64
+import Chapters.Chap07.section65
+import Chapters.Chap07.section66
+import Chapters.Chap07.section67
+import Chapters.Chap07.section68
+import Chapters.Chap07.section69
+import Chapters.Chap07.section70
+import Chapters.Chap07.section71
+import Chapters.Chap07.section72
+import Chapters.Chap07.section73
+import Chapters.Chap07.section74
+import Chapters.Chap07.section75
+import Chapters.Chap07.section76
+import Chapters.Chap07.section77
+import Chapters.Chap07.section78
+import Chapters.Chap07.section79
+import Chapters.Chap07.section80
+import Chapters.Chap07.section81
+import Chapters.Chap07.section82
+import Chapters.Chap07.section83
+import Chapters.Chap07.section84
+import Chapters.Chap07.section85
+import Chapters.Chap07.section86
+import Chapters.Chap07.section87
+import Chapters.Chap07.section88
+import Chapters.Chap07.section89
+import Chapters.Chap07.section90
+import Chapters.Chap07.section91
+import Chapters.Chap07.section92
+import Chapters.Chap07.section93
+import Chapters.Chap07.section94

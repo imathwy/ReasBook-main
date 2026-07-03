@@ -1,16 +1,48 @@
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chapters.Chap09.section01
-
-/-!
-Chapter 09
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/convexanalysismonotoneoperators_bauschkecombettes_2017/chapters/chap09/)
-- [Book overview](/ReasBook-private/books/convexanalysismonotoneoperators_bauschkecombettes_2017/book/)
-
-Section overviews:
-
-- Section 9.1 ([Documentation](/ReasBook-private/docs/Books/ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017/Chapters/Chap09/section01.html)) ([Verso](/ReasBook-private/books/convexanalysismonotoneoperators_bauschkecombettes_2017/chapters/chap09/section01/))
-
--/
+import Chapters.Chap09.section01
+import Chapters.Chap09.section02
+import Chapters.Chap09.section03
+import Chapters.Chap09.section04
+import Chapters.Chap09.section05
+import Chapters.Chap09.section06
+import Chapters.Chap09.section07
+import Chapters.Chap09.section08
+import Chapters.Chap09.section09
+import Chapters.Chap09.section10
+import Chapters.Chap09.section11
+import Chapters.Chap09.section12
+import Chapters.Chap09.section13
+import Chapters.Chap09.section14
+import Chapters.Chap09.section15
+import Chapters.Chap09.section16
+import Chapters.Chap09.section17
+import Chapters.Chap09.section18
+import Chapters.Chap09.section19
+import Chapters.Chap09.section20
+import Chapters.Chap09.section21
+import Chapters.Chap09.section22
+import Chapters.Chap09.section23
+import Chapters.Chap09.section24
+import Chapters.Chap09.section25
+import Chapters.Chap09.section26
+import Chapters.Chap09.section27
+import Chapters.Chap09.section28
+import Chapters.Chap09.section29
+import Chapters.Chap09.section30
+import Chapters.Chap09.section31
+import Chapters.Chap09.section32
+import Chapters.Chap09.section33
+import Chapters.Chap09.section34
+import Chapters.Chap09.section35
+import Chapters.Chap09.section36_part1
+import Chapters.Chap09.section37
+import Chapters.Chap09.section38
+import Chapters.Chap09.section39
+import Chapters.Chap09.section40
+import Chapters.Chap09.section41
+import Chapters.Chap09.section42
+import Chapters.Chap09.section43
+import Chapters.Chap09.section44
+import Chapters.Chap09.section45
+import Chapters.Chap09.section46
+import Chapters.Chap09.section47
+import Chapters.Chap09.section48

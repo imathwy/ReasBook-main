@@ -1,16 +1,47 @@
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chapters.Chap01.section01
-
-/-!
-Chapter 01
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/convexanalysismonotoneoperators_bauschkecombettes_2017/chapters/chap01/)
-- [Book overview](/ReasBook-private/books/convexanalysismonotoneoperators_bauschkecombettes_2017/book/)
-
-Section overviews:
-
-- Section 1.1 ([Documentation](/ReasBook-private/docs/Books/ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017/Chapters/Chap01/section01.html)) ([Verso](/ReasBook-private/books/convexanalysismonotoneoperators_bauschkecombettes_2017/chapters/chap01/section01/))
-
--/
+import Chapters.Chap01.section00_part1
+import Chapters.Chap01.section00_part2
+import Chapters.Chap01.section01
+import Chapters.Chap01.section03
+import Chapters.Chap01.section04
+import Chapters.Chap01.section06
+import Chapters.Chap01.section07
+import Chapters.Chap01.section08
+import Chapters.Chap01.section09
+import Chapters.Chap01.section10
+import Chapters.Chap01.section11
+import Chapters.Chap01.section12
+import Chapters.Chap01.section14
+import Chapters.Chap01.section15
+import Chapters.Chap01.section16
+import Chapters.Chap01.section17
+import Chapters.Chap01.section18
+import Chapters.Chap01.section19
+import Chapters.Chap01.section20
+import Chapters.Chap01.section21
+import Chapters.Chap01.section23
+import Chapters.Chap01.section24
+import Chapters.Chap01.section26
+import Chapters.Chap01.section27
+import Chapters.Chap01.section28
+import Chapters.Chap01.section29
+import Chapters.Chap01.section30
+import Chapters.Chap01.section31
+import Chapters.Chap01.section32
+import Chapters.Chap01.section33
+import Chapters.Chap01.section34
+import Chapters.Chap01.section35
+import Chapters.Chap01.section36
+import Chapters.Chap01.section38
+import Chapters.Chap01.section39
+import Chapters.Chap01.section40
+import Chapters.Chap01.section41
+import Chapters.Chap01.section42
+import Chapters.Chap01.section43
+import Chapters.Chap01.section44
+import Chapters.Chap01.section45
+import Chapters.Chap01.section46
+import Chapters.Chap01.section47
+import Chapters.Chap01.section48
+import Chapters.Chap01.section49
+import Chapters.Chap01.section50
+import Chapters.Chap01.section51

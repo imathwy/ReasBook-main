@@ -1,51 +1,50 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Corollary_2_22
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Corollary_2_23
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Corollary_2_38
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Corollary_2_39
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Definition_2_11
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Definition_2_14
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Definition_2_20
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Definition_2_29
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Definition_2_3
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Definition_2_32
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Definition_2_34
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Definition_2_41
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Definition_2_44
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Example_2_1
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Example_2_10
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Example_2_12
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Example_2_17
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Example_2_18
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Example_2_2
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Example_2_24
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Example_2_25
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Example_2_27
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Example_2_28
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Example_2_33
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Example_2_36
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Example_2_4
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Example_2_6
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Example_2_8
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Example_2_9
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Exercise_2_2_1
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Exercise_2_2_2
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Exercise_2_2_3
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Exercise_2_3_1
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Lemma_2_40
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Remark_2_15
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Remark_2_30
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Theorem_2_13
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Theorem_2_16
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Theorem_2_19
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Theorem_2_21
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Theorem_2_26
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Theorem_2_31
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Theorem_2_35
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Theorem_2_37
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Theorem_2_42
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Theorem_2_43
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Theorem_2_45
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Theorem_2_46
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Theorem_2_47
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Theorem_2_5
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Theorem_2_7
+import Mathlib
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+
+/-! ### Example_2_1 (from Items/Chap02) -/
+open Set MeasureTheory ProbabilityTheory
+
+noncomputable section
+
+/-- The six outcomes of a single fair die, modeled by `Fin 6`. -/
+abbrev Die := Fin 6
+
+/-- The sample space of two successive die rolls. -/
+abbrev TwoRolls := Die × Die
+
+/-- The uniform law of a single fair die roll. -/
+noncomputable abbrev dieMeasure : Measure Die :=
+  (PMF.uniformOfFintype Die).toMeasure
+
+/-- The law of two independent fair die rolls. -/
+noncomputable abbrev twoRollMeasure : Measure TwoRolls :=
+  dieMeasure.prod dieMeasure
+
+/-- The event that the sum of the two rolls is odd. With the `Fin 6` encoding of die faces by
+`0, 1, ..., 5`, this is equivalent to oddness of the textbook face sum after adding `1` to each
+coordinate. -/
+def oddSumEvent : Set TwoRolls :=
+  {ω | Odd ((ω.1 : ℕ) + (ω.2 : ℕ))}
+
+/-- The event that the first roll is at most three. In the `Fin 6` encoding this is the condition
+`ω.1 < 3`, corresponding to the textbook faces `{1, 2, 3}`. -/
+def firstRollAtMostThreeEvent : Set TwoRolls :=
+  {ω | (ω.1 : ℕ) < 3}
+
+-- Proof sketch: under the product law `twoRollMeasure`, the coordinate projections are
+-- independent; apply this to the preimages of `A` and `B` under `Prod.fst` and `Prod.snd`.
+/-- Example 2.1: Item (i). Under the uniform distribution on two die rolls, an event depending only
+on the first roll is independent of an event depending only on the second roll. -/
+theorem firstRollCylinder_indep_secondRollCylinder (A B : Set Die) :
+    IndepSet (Prod.fst ⁻¹' A) (Prod.snd ⁻¹' B) twoRollMeasure := sorry
+
+-- Proof sketch: compute the uniform probabilities of `oddSumEvent`,
+-- `firstRollAtMostThreeEvent`, and their intersection by counting favorable outcomes in the `36`
+-- point sample space, then conclude with the characterization of independence by
+-- `μ (A ∩ B) = μ A * μ B`.
+/-- Item (ii) of the rolling-two-dice example: the event that the sum is odd is independent of the
+event that the first roll is at most three. -/
+theorem oddSumEvent_indep_firstRollAtMostThreeEvent :
+    IndepSet oddSumEvent firstRollAtMostThreeEvent twoRollMeasure := sorry

@@ -1,16 +1,27 @@
-import StacksProject_2024.Chapters.Chap08.section01
-
-/-!
-Chapter 08
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/StacksProject_2024/chapters/chap08/)
-- [Book overview](/ReasBook-private/books/StacksProject_2024/book/)
-
-Section overviews:
-
-- Section 8.1 ([Documentation](/ReasBook-private/docs/Books/StacksProject_2024/Chapters/Chap08/section01.html)) ([Verso](/ReasBook-private/books/StacksProject_2024/chapters/chap08/section01/))
-
--/
+import Chapters.Chap08.section02
+import Chapters.Chap08.section03
+import Chapters.Chap08.section04_part1
+import Chapters.Chap08.section04_part2
+import Chapters.Chap08.section04_part3
+import Chapters.Chap08.section04_part4
+import Chapters.Chap08.section04_part5
+import Chapters.Chap08.section04_part6
+import Chapters.Chap08.section04_part7
+import Chapters.Chap08.section04_part8
+import Chapters.Chap08.section04_part9
+import Chapters.Chap08.section05
+import Chapters.Chap08.section06_part1
+import Chapters.Chap08.section06_part2
+import Chapters.Chap08.section06_part3
+import Chapters.Chap08.section07
+import Chapters.Chap08.section08_part1
+import Chapters.Chap08.section08_part2
+import Chapters.Chap08.section09
+import Chapters.Chap08.section10_part1
+import Chapters.Chap08.section10_part2
+import Chapters.Chap08.section10_part3
+import Chapters.Chap08.section11
+import Chapters.Chap08.section12_part1
+import Chapters.Chap08.section12_part2
+import Chapters.Chap08.section12_part3
+import Chapters.Chap08.section13

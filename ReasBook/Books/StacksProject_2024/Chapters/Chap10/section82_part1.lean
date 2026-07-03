@@ -1,0 +1,1353 @@
+import Mathlib
+import Mathlib.Algebra.Category.ModuleCat.Monoidal.Basic
+import Mathlib.Algebra.Homology.ShortComplex.FunctorEquivalence
+import Mathlib.Algebra.Homology.ShortComplex.Limits
+import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
+import Mathlib.CategoryTheory.Abelian.GrothendieckAxioms.Colim
+import Mathlib.CategoryTheory.Functor.ReflectsIso.Exact
+import Mathlib.RingTheory.Flat.FaithfullyFlat.Algebra
+import Mathlib.Tactic.Recall
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+
+/-! ### Definition_10_82_1 (from Chap10) -/
+universe u v w
+
+namespace LinearMap
+
+section
+
+variable {R : Type u} [CommRing R]
+variable {M : Type v} {N : Type w}
+variable [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
+
+/-- Definition 10.82.1 (1): an `R`-linear map is universally injective if tensoring it with any
+`R`-module preserves injectivity. -/
+def UniversallyInjective (f : M →ₗ[R] N) : Prop :=
+  ∀ (Q : Type*) (_ : AddCommGroup Q) (_ : Module R Q),
+    Function.Injective (f.rTensor Q)
+
+-- Proof sketch: for every `Q`, the tensor map of the identity is the identity on `M ⊗[R] Q`,
+-- hence it is injective.
+/-- The identity map of an `R`-module is universally injective. -/
+theorem universallyInjective_id :
+    UniversallyInjective (LinearMap.id : M →ₗ[R] M) := by
+  unfold UniversallyInjective
+  intro Q _ _ x y h
+  simpa using h
+
+end
+
+end LinearMap
+
+namespace CategoryTheory.ShortComplex
+
+section
+
+variable {R : Type u} [CommRing R]
+variable {S : ShortComplex (ModuleCat.{v} R)}
+
+/-- Definition 10.82.1 (2): a short exact sequence of `R`-modules is universally exact if its
+first map is universally injective. -/
+def UniversallyExact (S : ShortComplex (ModuleCat.{v} R)) : Prop :=
+  S.ShortExact ∧ LinearMap.UniversallyInjective.{u, v, v, v} S.f.hom
+
+namespace UniversallyExact
+
+-- Proof sketch: this is the first projection from the defining conjunction.
+/-- A universally exact short complex is short exact. -/
+theorem shortExact (hS : UniversallyExact S) : S.ShortExact := hS.1
+
+-- Proof sketch: this is the second projection from the defining conjunction.
+/-- In a universally exact short complex, the first map is universally injective. -/
+theorem universallyInjective_f (hS : UniversallyExact S) :
+    LinearMap.UniversallyInjective.{u, v, v, v} S.f.hom := hS.2
+
+end UniversallyExact
+
+end
+
+end CategoryTheory.ShortComplex
+
+/-! ### Example_10_82_2 (from Chap10) -/
+open CategoryTheory Limits MonoidalCategory
+open LinearMap
+
+universe u
+
+namespace CategoryTheory
+namespace ShortComplex
+
+variable {R : Type u} [CommRing R]
+
+namespace Splitting
+
+-- Proof sketch: a splitting is preserved by the additive tensor functor `tensorLeft N`; applying
+-- `ShortComplex.Splitting.shortExact` after tensoring gives short exactness for every `N`.
+/-- A splitting of a short complex of `R`-modules makes it universally exact. -/
+theorem universallyExact {S : ShortComplex (ModuleCat.{u} R)}
+    (s : S.Splitting) : S.UniversallyExact := by
+  refine ⟨s.shortExact, ?_⟩
+  intro Q _ _
+  let N : ModuleCat.{u} R := ModuleCat.of R Q
+  -- Tensor the chosen splitting and read off injectivity from the tensorized split exact sequence.
+  have hShortExact : (S.map (tensorLeft N)).ShortExact := (s.map (tensorLeft N)).shortExact
+  rw [← LinearMap.lTensor_inj_iff_rTensor_inj]
+  simpa [N, ModuleCat.hom_whiskerLeft] using
+    (ModuleCat.mono_iff_injective ((S.map (tensorLeft N)).f)).1 hShortExact.mono_f
+
+end Splitting
+
+variable {J : Type u} [Category.{u} J] [IsFiltered J]
+
+omit [IsFiltered J] in
+/-- Helper for Example 10.82.2: evaluation functors jointly reflect isomorphisms on a module-valued
+functor category. -/
+theorem evaluation_jointly_reflects_isomorphisms :
+    JointlyReflectIsomorphisms (fun j : J ↦ (evaluation J (ModuleCat.{u} R)).obj j) := by
+  refine ⟨?_⟩
+  intro X Y f hf
+  -- A natural transformation is an isomorphism exactly when all of its components are.
+  rw [NatTrans.isIso_iff_isIso_app]
+  intro j
+  simpa using hf j
+
+namespace UniversallyExact
+
+/-- Helper for Example 10.82.2: tensoring a universally exact short complex on the left preserves
+short exactness. -/
+theorem tensorLeft_shortExact {S : ShortComplex (ModuleCat.{u} R)}
+    (hS : S.UniversallyExact) (N : ModuleCat.{u} R) :
+    (S.map (tensorLeft N)).ShortExact := by
+  have hShortExact : S.ShortExact := hS.shortExact
+  have hExact : Function.Exact S.f.hom S.g.hom := by
+    simpa using (ShortComplex.ShortExact.moduleCat_exact_iff_function_exact S).mp hShortExact.exact
+  have hSurj : Function.Surjective S.g.hom := hShortExact.moduleCat_surjective_g
+  have hTensorExact : Function.Exact (S.f.hom.lTensor N) (S.g.hom.lTensor N) :=
+    lTensor_exact N hExact hSurj
+  -- Universal injectivity supplies the missing injectivity of the left tensor map.
+  have hTensorInj : Function.Injective (S.f.hom.lTensor N) := by
+    rw [LinearMap.lTensor_inj_iff_rTensor_inj]
+    exact hS.universallyInjective_f N inferInstance inferInstance
+  refine ModuleCat.shortComplex_shortExact (S.map (tensorLeft N)) ?_ ?_ ?_
+  · simpa [ModuleCat.hom_whiskerLeft] using hTensorExact
+  · simpa [ModuleCat.hom_whiskerLeft] using hTensorInj
+  · simpa [ModuleCat.hom_whiskerLeft] using LinearMap.lTensor_surjective N hSurj
+
+end UniversallyExact
+
+/-- Helper for Example 10.82.2: tensoring the colimit cocone of a diagram of short complexes by a
+fixed module again yields a colimit cocone. -/
+noncomputable def tensorLeft_mapCocone_isColimit
+    (F : J ⥤ ShortComplex (ModuleCat.{u} R)) (N : ModuleCat.{u} R) :
+    IsColimit (((tensorLeft N).mapShortComplex).mapCocone (colimit.cocone F)) :=
+  ShortComplex.isColimitOfIsColimitπ _
+    (Limits.isColimitOfPreserves (tensorLeft N)
+      (Limits.isColimitOfPreserves
+        (ShortComplex.π₁ : ShortComplex (ModuleCat.{u} R) ⥤ ModuleCat.{u} R)
+        (colimit.isColimit F)))
+    (Limits.isColimitOfPreserves (tensorLeft N)
+      (Limits.isColimitOfPreserves
+        (ShortComplex.π₂ : ShortComplex (ModuleCat.{u} R) ⥤ ModuleCat.{u} R)
+        (colimit.isColimit F)))
+    (Limits.isColimitOfPreserves (tensorLeft N)
+      (Limits.isColimitOfPreserves
+        (ShortComplex.π₃ : ShortComplex (ModuleCat.{u} R) ⥤ ModuleCat.{u} R)
+        (colimit.isColimit F)))
+
+/-- Helper for Example 10.82.2: a colimit cocone of stagewise short exact short complexes has a
+short exact cocone point. -/
+theorem shortExact_of_isColimit_of_stagewise_shortExact
+    (G : J ⥤ ShortComplex (ModuleCat.{u} R))
+    (c : Cocone G) (hc : IsColimit c)
+    (hG : ∀ j, (G.obj j).ShortExact) :
+    c.pt.ShortExact := by
+  let S : ShortComplex (J ⥤ ModuleCat.{u} R) :=
+    (ShortComplex.functorEquivalence J (ModuleCat.{u} R)).inverse.obj G
+  have hS : S.ShortExact := by
+    let hEval := evaluation_jointly_reflects_isomorphisms (R := R) (J := J)
+    -- Reflect short exactness from the family of componentwise evaluations.
+    refine (hEval.shortExact_iff S).2 ?_
+    intro j
+    simpa [S] using hG j
+  letI : Mono S.f := hS.mono_f
+  letI : Epi S.g := hS.epi_g
+  have hπ₁ : IsColimit (ShortComplex.π₁.mapCocone c) :=
+    Limits.isColimitOfPreserves
+      (ShortComplex.π₁ : ShortComplex (ModuleCat.{u} R) ⥤ ModuleCat.{u} R) hc
+  have hπ₂ : IsColimit (ShortComplex.π₂.mapCocone c) :=
+    Limits.isColimitOfPreserves
+      (ShortComplex.π₂ : ShortComplex (ModuleCat.{u} R) ⥤ ModuleCat.{u} R) hc
+  have hπ₃ : IsColimit (ShortComplex.π₃.mapCocone c) :=
+    Limits.isColimitOfPreserves
+      (ShortComplex.π₃ : ShortComplex (ModuleCat.{u} R) ⥤ ModuleCat.{u} R) hc
+  -- Exactness, monicity, and epimorphicity all pass to the colimit point.
+  have hExactColim : c.pt.Exact := by
+    simpa [S] using
+      (Limits.colim.exact_mapShortComplex (S := S) hS.exact hπ₁ hπ₂ hπ₃ c.pt.f c.pt.g
+        (fun j ↦ by simpa [S] using (c.ι.app j).comm₁₂)
+        (fun j ↦ by simpa [S] using (c.ι.app j).comm₂₃))
+  refine ModuleCat.shortComplex_shortExact c.pt ?_ ?_ ?_
+  · exact (ShortComplex.ShortExact.moduleCat_exact_iff_function_exact c.pt).mp hExactColim
+  · exact (ModuleCat.mono_iff_injective _).1 <|
+      Limits.colim.map_mono' S.f hπ₁ hπ₂ c.pt.f
+        (fun j ↦ by simpa [S] using (c.ι.app j).comm₁₂)
+  · exact (ModuleCat.epi_iff_surjective _).1 <|
+      Limits.colim.map_epi' S.g (ShortComplex.π₂.mapCocone c) hπ₃ c.pt.g
+        (fun j ↦ by simpa [S] using (c.ι.app j).comm₂₃)
+
+-- Proof sketch: for each `N`, tensor-left by `N` preserves colimits, so
+-- `(colimit F).map (tensorLeft N)` identifies with the colimit of the tensorized diagram; exact
+-- filtered colimits in `ModuleCat R` then preserve the short exactness supplied by `hF`.
+/-- Example 10.82.2: the colimit of a directed system of universally exact short exact sequences of
+`R`-modules is universally exact. -/
+theorem universallyExact_colimit_of_isFiltered
+    (F : J ⥤ ShortComplex (ModuleCat.{u} R))
+    (hF : ∀ j, (F.obj j).UniversallyExact) :
+    (colimit F).UniversallyExact := by
+  refine ⟨?_, ?_⟩
+  · -- First forget the universal injectivity and keep only the stagewise short exactness.
+    exact shortExact_of_isColimit_of_stagewise_shortExact F (colimit.cocone F)
+      (colimit.isColimit F) (fun j ↦ (hF j).shortExact)
+  · intro Q _ _
+    let N : ModuleCat.{u} R := ModuleCat.of R Q
+    have hTensorShortExact : ((colimit F).map (tensorLeft N)).ShortExact := by
+      -- Tensor the entire filtered system, then pass short exactness through the tensorized colimit.
+      simpa [N] using
+        shortExact_of_isColimit_of_stagewise_shortExact
+          (F ⋙ (tensorLeft N).mapShortComplex)
+          (((tensorLeft N).mapShortComplex).mapCocone (colimit.cocone F))
+          (tensorLeft_mapCocone_isColimit F N)
+          (fun j ↦ (hF j).tensorLeft_shortExact N)
+    -- Universal injectivity is the monomorphism statement for the tensorized first map.
+    rw [← LinearMap.lTensor_inj_iff_rTensor_inj]
+    simpa [N, ModuleCat.hom_whiskerLeft] using
+      (ModuleCat.mono_iff_injective (((colimit F).map (tensorLeft N)).f)).1
+        hTensorShortExact.mono_f
+
+-- Proof sketch: each stage is universally exact by `Splitting.universallyExact`, applied to a
+-- chosen stagewise splitting, and the previous theorem preserves universal exactness under
+-- filtered colimits.
+/-- A directed colimit of split short exact sequences of `R`-modules is universally exact. -/
+theorem universallyExact_colimit_of_split_system
+    (F : J ⥤ ShortComplex (ModuleCat.{u} R))
+    (hF : ∀ j, Nonempty ((F.obj j).Splitting)) :
+    (colimit F).UniversallyExact := by
+  apply universallyExact_colimit_of_isFiltered
+  intro j
+  obtain ⟨s⟩ := hF j
+  -- Each stage is universally exact because its splitting survives tensoring.
+  exact s.universallyExact
+
+end ShortComplex
+end CategoryTheory
+
+/-! ### Theorem_10_82_3 (from Chap10) -/
+open CategoryTheory Limits MonoidalCategory
+
+universe u
+
+namespace CategoryTheory.ShortComplex
+
+section
+
+variable {R : Type u} [CommRing R]
+variable {S : ShortComplex (ModuleCat.{u} R)}
+
+/-- Helper for Theorem 10.82.3: a morphism out of a finite free module is determined by its values
+on the standard basis vectors. -/
+private lemma linear_map_eq_linearCombination_single
+    {n : ℕ} {M : ModuleCat R} (φ : ModuleCat.of R (Fin n →₀ R) ⟶ M) :
+    φ.hom = Finsupp.linearCombination R (fun i ↦ φ.hom (Finsupp.single i 1)) := by
+  -- The free module `Fin n →₀ R` is generated by the basis vectors `single i 1`, so equality on
+  -- those generators determines the whole linear map.
+  apply Finsupp.lhom_ext
+  intro i r
+  have hsingle : (Finsupp.single i r : Fin n →₀ R) = r • Finsupp.single i 1 := by
+    ext j
+    by_cases h : j = i
+    · subst h
+      simp
+    · simp [h]
+  calc
+    φ.hom (Finsupp.single i r) = φ.hom (r • Finsupp.single i 1) := by
+      rw [hsingle]
+    _ = r • φ.hom (Finsupp.single i 1) := by
+      simpa using φ.hom.map_smul r (Finsupp.single i 1)
+    _ = Finsupp.linearCombination R (fun j ↦ φ.hom (Finsupp.single j 1)) (Finsupp.single i r) := by
+      simp [Finsupp.linearCombination_single]
+
+/-- Helper for Theorem 10.82.3: evaluating a morphism out of a finite free module is the linear
+combination of its basis values with the given coefficients. -/
+private lemma linearCombination_apply_eq_sum
+    {n : ℕ} {M : ModuleCat R} (φ : ModuleCat.of R (Fin n →₀ R) ⟶ M) (v : Fin n →₀ R) :
+    φ.hom v = ∑ i, v i • φ.hom (Finsupp.single i 1) := by
+  -- Rewrite the map by its basis values and then evaluate at the chosen finitely supported vector.
+  rw [linear_map_eq_linearCombination_single (R := R) (M := M) φ]
+  simpa using
+    (Finsupp.linearCombination_apply_of_mem_supported (R := R)
+      (v := fun i : Fin n ↦ φ.hom (Finsupp.single i 1)) (l := v) (s := Finset.univ) (by simp))
+
+/-- Helper for Theorem 10.82.3: two morphisms from a finite free module agree once they agree on
+the standard basis vectors. -/
+private lemma hom_eq_of_single_eq
+    {n : ℕ} {M : ModuleCat R}
+    {φ ψ : ModuleCat.of R (Fin n →₀ R) ⟶ M}
+    (h : ∀ i, φ.hom (Finsupp.single i 1) = ψ.hom (Finsupp.single i 1)) :
+    φ = ψ := by
+  -- The earlier basis-expansion lemma turns basiswise equality into equality of linear maps.
+  apply ModuleCat.hom_ext
+  calc
+    φ.hom = Finsupp.linearCombination R (fun i ↦ φ.hom (Finsupp.single i 1)) :=
+      linear_map_eq_linearCombination_single (R := R) (M := M) φ
+    _ = Finsupp.linearCombination R (fun i ↦ ψ.hom (Finsupp.single i 1)) := by
+      exact congrArg (Finsupp.linearCombination R) (funext h)
+    _ = ψ.hom :=
+      linear_map_eq_linearCombination_single (R := R) (M := M) ψ |>.symm
+
+/-- Helper for Theorem 10.82.3: the coefficient matrix `a` defines the top horizontal map in the
+finite free square corresponding to clause `(3)`. -/
+private noncomputable def coefficientMatrixMap {n m : ℕ} (a : Fin n → Fin m → R) :
+    ModuleCat.of R (Fin n →₀ R) ⟶ ModuleCat.of R (Fin m →₀ R) :=
+  ModuleCat.ofHom <| Finsupp.linearCombination R (fun i ↦ ∑ j, a i j • Finsupp.single j 1)
+
+/-- Helper for Theorem 10.82.3: the coefficient matrix map sends the `i`-th basis vector to the
+`i`-th row combination. -/
+private lemma coefficientMatrixMap_single {n m : ℕ} (a : Fin n → Fin m → R) (i : Fin n) :
+    (coefficientMatrixMap (R := R) a).hom (Finsupp.single i 1) =
+      ∑ j, a i j • Finsupp.single j 1 := by
+  -- This is the defining basis evaluation of `Finsupp.linearCombination`.
+  simp [coefficientMatrixMap, Finsupp.linearCombination_single]
+
+/-- Helper for Theorem 10.82.3: the source-proof row matrix attached to coefficients `a i j`,
+viewed as a map `R^m → R^n`. -/
+private noncomputable def relationMatrixMap {n m : ℕ} (a : Fin n → Fin m → R) :
+    ModuleCat.of R (Fin m →₀ R) ⟶ ModuleCat.of R (Fin n →₀ R) :=
+  ModuleCat.ofHom <| Finsupp.linearCombination R (fun j ↦ ∑ i, a i j • Finsupp.single i 1)
+
+/-- Helper for Theorem 10.82.3: the row matrix map sends the `j`-th basis vector to the `j`-th
+column of coefficients, which is the source proof's relation operator. -/
+private lemma relationMatrixMap_single {n m : ℕ} (a : Fin n → Fin m → R) (j : Fin m) :
+    (relationMatrixMap (R := R) a).hom (Finsupp.single j 1) =
+      ∑ i, a i j • Finsupp.single i 1 := by
+  -- This is again the defining basis evaluation of `Finsupp.linearCombination`.
+  simp [relationMatrixMap, Finsupp.linearCombination_single]
+
+/-- Helper for Theorem 10.82.3: the cokernel of the source-proof row matrix between finite free
+modules is finitely presented. -/
+private lemma relationMatrixMap_cokernel_finitePresentation {n m : ℕ}
+    (a : Fin n → Fin m → R) :
+    Module.FinitePresentation R
+      ((Fin n →₀ R) ⧸ LinearMap.range (relationMatrixMap (R := R) a).hom) := by
+  -- The cokernel is a quotient of the finite free module `R^n` by the finitely generated image of
+  -- `R^m`.
+  letI : Module.Finite R (Fin m →₀ R) := inferInstance
+  exact Module.finitePresentation_of_surjective
+    (Submodule.mkQ (LinearMap.range (relationMatrixMap (R := R) a).hom))
+    (Submodule.mkQ_surjective _)
+    (by simpa using (Submodule.fg_range (relationMatrixMap (R := R) a).hom))
+
+/-- Helper for Theorem 10.82.3: under `TensorProduct.finsuppScalarRight`, tensoring a tuple with
+the quotient map to the cokernel of the relation matrix just records the tuple's class in the
+tensor quotient. -/
+private lemma rTensor_tuple_apply
+    {n : ℕ} {M N : ModuleCat.{u} R} (φ : M ⟶ N) (x : Fin n → M) (i : Fin n) :
+    TensorProduct.finsuppScalarRight R R N (Fin n)
+      (φ.hom.rTensor (ModuleCat.of R (Fin n →₀ R))
+        ((TensorProduct.finsuppScalarRight R R M (Fin n)).symm
+          (Finsupp.equivFunOnFinite.symm x))) i
+      = φ.hom (x i) := by
+  -- Expand the tuple into basis vectors, then tensoring on the first factor acts coordinatewise.
+  rw [Finsupp.equivFunOnFinite_symm_eq_sum]
+  simp [map_sum, LinearMap.rTensor_tmul, TensorProduct.finsuppScalarRight_apply_tmul_apply,
+    Finsupp.single_apply]
+
+/-- Helper for Theorem 10.82.3: under `TensorProduct.finsuppScalarRight`, tensoring the relation
+matrix computes the source row operator `z ↦ (i ↦ ∑ j, a i j • z j)`. -/
+private lemma relationMatrixMap_lTensor_finsuppScalarRight_apply
+    {n m : ℕ} (a : Fin n → Fin m → R) (M : ModuleCat.{u} R)
+    (z : Fin m → M) (i : Fin n) :
+    TensorProduct.finsuppScalarRight R R M (Fin n)
+      ((relationMatrixMap (R := R) a).hom.lTensor M
+        ((TensorProduct.finsuppScalarRight R R M (Fin m)).symm
+          (Finsupp.equivFunOnFinite.symm z))) i
+      = ∑ j, a i j • z j := by
+  -- Expand the tuple into basis tensors and evaluate the row matrix on each basis vector.
+  rw [Finsupp.equivFunOnFinite_symm_eq_sum]
+  simp only [map_sum, TensorProduct.finsuppScalarRight_symm_apply_single, LinearMap.lTensor_tmul]
+  rw [Finset.sum_apply']
+  refine Finset.sum_congr rfl ?_
+  intro j hj
+  rw [TensorProduct.finsuppScalarRight_apply_tmul_apply]
+  rw [relationMatrixMap_single]
+  simp [Finsupp.single_apply]
+
+/-- Helper for Theorem 10.82.3: if a tuple dies after tensoring with the cokernel of the relation
+matrix, then it already comes from a tuple on the source of that matrix. -/
+private lemma exists_tuple_of_lTensor_mkQ_zero
+    {n m : ℕ} (a : Fin n → Fin m → R) (M : ModuleCat.{u} R)
+    (t : Fin n → M)
+    (ht :
+      ((Submodule.mkQ (LinearMap.range (relationMatrixMap (R := R) a).hom)).lTensor M)
+        ((TensorProduct.finsuppScalarRight R R M (Fin n)).symm
+          (Finsupp.equivFunOnFinite.symm t)) = 0) :
+    ∃ z : Fin m → M, ∀ i, t i = ∑ j, a i j • z j := by
+  let v : ModuleCat.of R (Fin m →₀ R) ⟶ ModuleCat.of R (Fin n →₀ R) :=
+    relationMatrixMap (R := R) a
+  let xTensor :=
+    (TensorProduct.finsuppScalarRight R R M (Fin n)).symm (Finsupp.equivFunOnFinite.symm t)
+  have hxker :
+      xTensor ∈ LinearMap.ker
+        ((Submodule.mkQ (LinearMap.range v.hom)).lTensor M) := by
+    -- The vanishing hypothesis says exactly that the tensor lies in this kernel.
+    rw [LinearMap.mem_ker]
+    simpa [v, xTensor] using ht
+  have hxrangeSubtype :
+      xTensor ∈ LinearMap.range
+        ((Submodule.subtype (LinearMap.range v.hom)).lTensor M) := by
+    -- Right exactness identifies the kernel of the tensorized quotient map with this range.
+    have hkerEq :
+        LinearMap.ker ((Submodule.mkQ (LinearMap.range v.hom)).lTensor M) =
+          LinearMap.range ((Submodule.subtype (LinearMap.range v.hom)).lTensor M) := by
+      simpa using (lTensor_mkQ (Q := M) (N := LinearMap.range v.hom))
+    rw [hkerEq] at hxker
+    simpa using hxker
+  have hxrange :
+      xTensor ∈ LinearMap.range (v.hom.lTensor M) := by
+    -- Replace the subtype map by the original row matrix using `LinearMap.lTensor_range`.
+    rw [LinearMap.lTensor_range (Q := M) (g := v.hom)]
+    exact hxrangeSubtype
+  rcases hxrange with ⟨u, hu⟩
+  refine ⟨fun j ↦ TensorProduct.finsuppScalarRight R R M (Fin m) u j, ?_⟩
+  intro i
+  -- Read the preimage equation through `TensorProduct.finsuppScalarRight`.
+  calc
+    t i = (TensorProduct.finsuppScalarRight R R M (Fin n) xTensor) i := by
+      simp [xTensor]
+    _ = TensorProduct.finsuppScalarRight R R M (Fin n) ((v.hom.lTensor M) u) i := by
+      rw [hu.symm]
+    _ = ∑ j, a i j • (TensorProduct.finsuppScalarRight R R M (Fin m) u) j := by
+      simpa [v] using
+        relationMatrixMap_lTensor_finsuppScalarRight_apply (R := R) a M
+          (TensorProduct.finsuppScalarRight R R M (Fin m) u) i
+
+/-- Helper for Theorem 10.82.3: if `S` is universally exact, then tensoring it on the right by any
+finitely presented module stays short exact. -/
+lemma tensorRight_shortExact_of_universallyExact
+    (hU : S.UniversallyExact) (Q : ModuleCat.{u} R) [Module.FinitePresentation R Q] :
+    (S.map (tensorRight Q)).ShortExact := by
+  -- The braided symmetry identifies right tensoring with left tensoring, and Example `10.82.2`
+  -- already proves short exactness after left tensoring for universally exact sequences.
+  let e : S.map (tensorLeft Q) ≅ S.map (tensorRight Q) :=
+    S.mapNatIso (BraidedCategory.tensorLeftIsoTensorRight Q)
+  exact ShortComplex.shortExact_of_iso e <|
+    UniversallyExact.tensorLeft_shortExact hU Q
+
+/-- Tensoring `S` on the right with any finitely presented module preserves short exactness. -/
+def TensorShortExactForFinitelyPresented (S : ShortComplex (ModuleCat.{u} R)) : Prop :=
+  ∀ (Q : ModuleCat.{u} R) [Module.FinitePresentation R Q], (S.map (tensorRight Q)).ShortExact
+
+/-- The equational lifting criterion for the first map of `S`. -/
+def EquationalLiftingCriterion (S : ShortComplex (ModuleCat.{u} R)) : Prop :=
+  ∀ {n m : ℕ} (x : Fin n → S.X₁) (y : Fin m → S.X₂) (a : Fin n → Fin m → R),
+    (∀ i, S.f.hom (x i) = ∑ j, a i j • y j) →
+      ∃ z : Fin m → S.X₁, ∀ i, x i = ∑ j, a i j • z j
+
+/-- The finite free square lifting criterion for the first map of `S`. -/
+def FiniteFreeSquareLiftingCriterion (S : ShortComplex (ModuleCat.{u} R)) : Prop :=
+  ∀ {n m : ℕ}
+    (u : ModuleCat.of R (Fin n →₀ R) ⟶ ModuleCat.of R (Fin m →₀ R))
+    (φ : ModuleCat.of R (Fin n →₀ R) ⟶ S.X₁)
+    (ψ : ModuleCat.of R (Fin m →₀ R) ⟶ S.X₂),
+    CommSq u φ ψ S.f → ∃ l : ModuleCat.of R (Fin m →₀ R) ⟶ S.X₁, u ≫ l = φ
+
+/-- Postcomposition with `S.g` is surjective on maps from finitely presented modules. -/
+def HomSurjectiveOnFinitelyPresented (S : ShortComplex (ModuleCat.{u} R)) : Prop :=
+  ∀ (P : ModuleCat.{u} R) [Module.FinitePresentation R P],
+    Function.Surjective fun φ : P ⟶ S.X₂ ↦ φ ≫ S.g
+
+/-- `S` is a filtered colimit of split short exact sequences whose left term is constantly `S.X₁`
+and whose cokernels are finitely presented. -/
+def FilteredSplitColimitCriterion (S : ShortComplex (ModuleCat.{u} R)) : Prop :=
+  ∃ (J : Type u) (_ : Category.{u} J) (_ : IsFiltered J)
+    (F : J ⥤ ShortComplex (ModuleCat.{u} R))
+    (_ : F ⋙ ShortComplex.π₁ ≅ (Functor.const J).obj S.X₁)
+    (_ : ∀ j, Nonempty ((F.obj j).Splitting))
+    (_ : ∀ j, Module.FinitePresentation R (F.obj j).X₃),
+    ∃ e : colimit F ⟶ S, IsIso e
+
+/-- Helper for Theorem 10.82.3: universal exactness transports across an isomorphism of short
+complexes. -/
+lemma universallyExact_of_iso {T : ShortComplex (ModuleCat.{u} R)} (e : T ≅ S)
+    (hT : T.UniversallyExact) : S.UniversallyExact := by
+  refine ⟨ShortComplex.shortExact_of_iso e hT.shortExact, ?_⟩
+  intro Q _ _
+  let N : ModuleCat.{u} R := ModuleCat.of R Q
+  let eN : T.map (tensorLeft N) ≅ S.map (tensorLeft N) :=
+    ((tensorLeft N).mapShortComplex.mapIso e)
+  have hTensorShortExact : (S.map (tensorLeft N)).ShortExact := by
+    -- Transport the tensorized short exact sequence across the induced isomorphism of complexes.
+    exact ShortComplex.shortExact_of_iso eN <|
+      UniversallyExact.tensorLeft_shortExact (R := R) hT N
+  -- Universal injectivity is exactly monicity of the tensorized first map.
+  rw [← LinearMap.lTensor_inj_iff_rTensor_inj]
+  simpa [N, ModuleCat.hom_whiskerLeft] using
+    (ModuleCat.mono_iff_injective ((S.map (tensorLeft N)).f)).1 hTensorShortExact.mono_f
+
+/-- Helper for Theorem 10.82.3: the elementwise lifting formulation in clause `(3)` is exactly the
+same as the categorical finite-free square lifting property in clause `(4)`. -/
+lemma equationalLiftingCriterion_iff_finiteFreeSquareLiftingCriterion :
+    EquationalLiftingCriterion S ↔ FiniteFreeSquareLiftingCriterion S := by
+  -- Route correction: clause `(4)` only asks for a top-triangle filler, so the proof should work
+  -- directly with `CommSq` and basis evaluation instead of the stronger `HasLiftingProperty` API.
+  constructor
+  · intro hEq n m u φ ψ hsquare
+    let x : Fin n → S.X₁ := fun i ↦ φ.hom (Finsupp.single i 1)
+    let y : Fin m → S.X₂ := fun j ↦ ψ.hom (Finsupp.single j 1)
+    let a : Fin n → Fin m → R := fun i j ↦ u.hom (Finsupp.single i 1) j
+    have hrelations : ∀ i, S.f.hom (x i) = ∑ j, a i j • y j := by
+      intro i
+      -- Evaluate the commutative square on the `i`-th basis vector and expand the right side.
+      have hsingle :
+          (u ≫ ψ).hom (Finsupp.single i 1) = (φ ≫ S.f).hom (Finsupp.single i 1) :=
+        congrArg (fun f ↦ f.hom (Finsupp.single i 1)) hsquare.w
+      calc
+        S.f.hom (x i) = (φ ≫ S.f).hom (Finsupp.single i 1) := by
+          rfl
+        _ = (u ≫ ψ).hom (Finsupp.single i 1) := by
+          rw [hsingle.symm]
+        _ = ψ.hom (u.hom (Finsupp.single i 1)) := by
+          rfl
+        _ = ∑ j, a i j • y j := by
+          simpa [a, y] using
+            linearCombination_apply_eq_sum (R := R) (φ := ψ)
+              (v := u.hom (Finsupp.single i 1))
+    obtain ⟨z, hz⟩ := hEq x y a hrelations
+    let l : ModuleCat.of R (Fin m →₀ R) ⟶ S.X₁ := ModuleCat.ofHom <| Finsupp.linearCombination R z
+    refine ⟨l, ?_⟩
+    -- The desired filler is the linear map determined by the lifted coefficients `z`.
+    apply hom_eq_of_single_eq (R := R)
+    intro i
+    calc
+      (u ≫ l).hom (Finsupp.single i 1) = l.hom (u.hom (Finsupp.single i 1)) := by
+        rfl
+      _ = ∑ j, a i j • z j := by
+        simpa [l, a] using
+          linearCombination_apply_eq_sum (R := R) (φ := l)
+            (v := u.hom (Finsupp.single i 1))
+      _ = x i := (hz i).symm
+      _ = φ.hom (Finsupp.single i 1) := by
+        rfl
+  · intro hSquare n m x y a hrelations
+    let u : ModuleCat.of R (Fin n →₀ R) ⟶ ModuleCat.of R (Fin m →₀ R) := coefficientMatrixMap a
+    let φ : ModuleCat.of R (Fin n →₀ R) ⟶ S.X₁ := ModuleCat.ofHom <| Finsupp.linearCombination R x
+    let ψ : ModuleCat.of R (Fin m →₀ R) ⟶ S.X₂ := ModuleCat.ofHom <| Finsupp.linearCombination R y
+    have hsquare : CommSq u φ ψ S.f := by
+      refine ⟨?_⟩
+      -- The square commutes because each basis vector records exactly one displayed relation.
+      apply hom_eq_of_single_eq (R := R)
+      intro i
+      calc
+        (u ≫ ψ).hom (Finsupp.single i 1) = ψ.hom ((coefficientMatrixMap (R := R) a).hom
+            (Finsupp.single i 1)) := by
+          rfl
+        _ = ψ.hom (∑ j, a i j • Finsupp.single j 1) := by
+          rw [coefficientMatrixMap_single (R := R) a i]
+        _ = ∑ j, a i j • y j := by
+          simp [ψ]
+        _ = S.f.hom (x i) := (hrelations i).symm
+        _ = (φ ≫ S.f).hom (Finsupp.single i 1) := by
+          simp [φ]
+    obtain ⟨l, hl⟩ := hSquare u φ ψ hsquare
+    refine ⟨fun j ↦ l.hom (Finsupp.single j 1), ?_⟩
+    intro i
+    -- Read the filler equality on the `i`-th basis vector to recover the lifted coefficients.
+    have hsingle : (u ≫ l).hom (Finsupp.single i 1) = φ.hom (Finsupp.single i 1) :=
+      congrArg (fun f ↦ f.hom (Finsupp.single i 1)) hl
+    calc
+      x i = φ.hom (Finsupp.single i 1) := by
+        simp [φ]
+      _ = (u ≫ l).hom (Finsupp.single i 1) := by
+        rw [hsingle.symm]
+      _ = l.hom ((coefficientMatrixMap (R := R) a).hom (Finsupp.single i 1)) := by
+        rfl
+      _ = l.hom (∑ j, a i j • Finsupp.single j 1) := by
+        rw [coefficientMatrixMap_single (R := R) a i]
+      _ = ∑ j, a i j • l.hom (Finsupp.single j 1) := by
+        calc
+          l.hom (∑ j, a i j • Finsupp.single j 1) =
+              ∑ j, l.hom (Finsupp.single j (a i j)) := by
+            simp
+          _ = ∑ j, a i j • l.hom (Finsupp.single j 1) := by
+            refine Finset.sum_congr rfl ?_
+            intro j hj
+            have hsinglej :
+                (Finsupp.single j (a i j) : Fin m →₀ R) = a i j • Finsupp.single j 1 := by
+              ext k
+              by_cases hk : k = j
+              · subst hk
+                simp
+              · simp [hk]
+            calc
+              l.hom (Finsupp.single j (a i j)) = l.hom (a i j • Finsupp.single j 1) := by
+                rw [hsinglej]
+              _ = a i j • l.hom (Finsupp.single j 1) := by
+                simpa using l.hom.map_smul (a i j) (Finsupp.single j 1)
+
+/-- Helper for Theorem 10.82.3: a finitely presented module admits a two-step presentation by
+finite free modules in the `Fin n →₀ R` model used in the source proof. -/
+private lemma finitePresentation_exists_two_step_finite_free_presentation
+    (P : ModuleCat.{u} R) [Module.FinitePresentation R P] :
+    ∃ n m : ℕ,
+      ∃ g₁ : ModuleCat.of R (Fin m →₀ R) ⟶ ModuleCat.of R (Fin n →₀ R),
+      ∃ g₂ : ModuleCat.of R (Fin n →₀ R) ⟶ P,
+        Function.Exact g₁.hom g₂.hom ∧ Function.Surjective g₂.hom := by
+  classical
+  -- Route correction: instead of quotient bookkeeping, first choose a finite free cover of `P`
+  -- and then a finite free cover of its kernel; this still realizes the source's two-step
+  -- presentation and keeps the exactness proof at the linear-map level.
+  letI : Module.Finite R P := inferInstance
+  obtain ⟨n, π', hπ'⟩ := Module.Finite.exists_fin' R P
+  let eₙ : (Fin n →₀ R) ≃ₗ[R] (Fin n → R) := Finsupp.linearEquivFunOnFinite R R (Fin n)
+  let π : (Fin n →₀ R) →ₗ[R] P := π' ∘ₗ eₙ.toLinearMap
+  have hπ : Function.Surjective π := by
+    intro x
+    obtain ⟨v, hv⟩ := hπ' x
+    refine ⟨eₙ.symm v, ?_⟩
+    simpa [π] using hv
+  have hker_fg : (LinearMap.ker π).FG :=
+    Module.FinitePresentation.fg_ker π hπ
+  letI : Module.Finite R (LinearMap.ker π) := Module.Finite.of_fg hker_fg
+  obtain ⟨m, σ', hσ'⟩ := Module.Finite.exists_fin' R (LinearMap.ker π)
+  let eₘ : (Fin m →₀ R) ≃ₗ[R] (Fin m → R) := Finsupp.linearEquivFunOnFinite R R (Fin m)
+  let σ : (Fin m →₀ R) →ₗ[R] LinearMap.ker π := σ' ∘ₗ eₘ.toLinearMap
+  have hσ : Function.Surjective σ := by
+    intro x
+    obtain ⟨v, hv⟩ := hσ' x
+    refine ⟨eₘ.symm v, ?_⟩
+    simpa [σ] using hv
+  let g₁lin : (Fin m →₀ R) →ₗ[R] (Fin n →₀ R) := (LinearMap.ker π).subtype ∘ₗ σ
+  let g₂lin : (Fin n →₀ R) →ₗ[R] P := π
+  have hExact : Function.Exact g₁lin g₂lin := by
+    -- Exactness is precisely the statement that the image of the kernel cover equals the kernel
+    -- of the chosen surjection onto `P`.
+    rw [LinearMap.exact_iff]
+    apply le_antisymm
+    · intro x hx
+      let xker : ↥(LinearMap.ker π) := ⟨x, hx⟩
+      obtain ⟨y, hy⟩ := hσ xker
+      refine ⟨y, ?_⟩
+      exact congrArg Subtype.val hy
+    · rintro x ⟨y, rfl⟩
+      change π (σ y) = 0
+      simp [σ]
+  refine ⟨n, m, ModuleCat.ofHom g₁lin, ModuleCat.ofHom g₂lin, hExact, hπ⟩
+
+/-- Helper for Theorem 10.82.3: every module admits a filtered colimit presentation by finitely
+presented stages, unpacked in the concrete `ColimitPresentation` form needed in clause `(6)`. -/
+private lemma finite_presentation_stage_presentation
+    {Q : Type u} [AddCommGroup Q] [Module R Q] :
+    ∃ (J : Type u) (_ : SmallCategory J) (_ : IsFiltered J)
+      (pres : ColimitPresentation J (ModuleCat.of R Q)),
+        ∀ j, Module.FinitePresentation R (pres.diag.obj j) := by
+  -- Reuse the earlier owner theorem and unpack the bundled `ObjectProperty.ind` witness.
+  simpa [CategoryTheory.ObjectProperty.ind] using
+    (module_is_isomorphic_to_colimit_of_directed_system_of_finitelyPresented
+      (R := R) (M := ModuleCat.of R Q))
+
+/-- Helper for Theorem 10.82.3: the source-proof stage over `j` is the kernel sequence of the
+pullback projection `M₂ ×_{M₃} M_{3,j} → M_{3,j}`. -/
+private noncomputable abbrev pullbackStage
+    {J : Type u} [Category.{u} J] (pres : ColimitPresentation J S.X₃) (j : J) :
+    ShortComplex (ModuleCat.{u} R) :=
+  ShortComplex.kernelSequence (pullback.snd S.g (pres.ι.app j))
+
+/-- Helper for Theorem 10.82.3: a short exact sequence identifies its left term with the kernel of
+its right map. -/
+private noncomputable def kernelIsoOfShortExact (hS : S.ShortExact) :
+    kernel S.g ≅ S.X₁ :=
+  IsLimit.conePointUniqueUpToIso (kernelIsKernel S.g) hS.fIsKernel
+
+/-- Helper for Theorem 10.82.3: each pullback stage has left term canonically isomorphic to
+`S.X₁`, exactly expressing that the fiber-product kernel is the original kernel. -/
+private noncomputable def pullbackStageLeftIso
+    {J : Type u} [Category.{u} J] (hS : S.ShortExact)
+    (pres : ColimitPresentation J S.X₃) (j : J) :
+    kernel (pullback.snd S.g (pres.ι.app j)) ≅ S.X₁ := by
+  let sq := (IsPullback.of_hasPullback S.g (pres.ι.app j)).flip
+  let e :
+      kernel (pullback.snd S.g (pres.ι.app j)) ≅ kernel S.g := by
+    letI :
+        IsIso
+          (kernel.map
+            (pullback.snd S.g (pres.ι.app j))
+            S.g
+            (pullback.fst S.g (pres.ι.app j))
+            (pres.ι.app j)
+            sq.w) :=
+      CategoryTheory.Limits.isIso_kernel_map_of_isPullback sq
+    exact asIso
+      (kernel.map
+        (pullback.snd S.g (pres.ι.app j))
+        S.g
+        (pullback.fst S.g (pres.ι.app j))
+        (pres.ι.app j)
+        sq.w)
+  exact e ≪≫ kernelIsoOfShortExact (S := S) hS
+
+/-- Helper for Theorem 10.82.3: the kernel object identified by short exactness maps to the
+ambient middle term through `S.f`. -/
+private lemma kernelIsoOfShortExact_hom_f
+    (hS : S.ShortExact) :
+    (kernelIsoOfShortExact (S := S) hS).hom ≫ S.f = kernel.ι S.g := by
+  -- Both kernels have the same comparison map to `S.X₂`, so the universal uniqueness iso has the
+  -- expected composite with the kernel inclusion.
+  simpa [kernelIsoOfShortExact] using
+    (IsLimit.conePointUniqueUpToIso_hom_comp (kernelIsKernel S.g) hS.fIsKernel
+      WalkingParallelPair.zero)
+
+/-- Helper for Theorem 10.82.3: the left isomorphism of a pullback stage is characterized by the
+fact that it identifies the kernel inclusion with the pullback first projection. -/
+private lemma pullbackStageLeftIso_hom_f
+    {J : Type u} [Category.{u} J] (hS : S.ShortExact)
+    (pres : ColimitPresentation J S.X₃) (j : J) :
+    (pullbackStageLeftIso (S := S) hS pres j).hom ≫ S.f =
+      kernel.ι (pullback.snd S.g (pres.ι.app j)) ≫ pullback.fst S.g (pres.ι.app j) := by
+  -- Unfold the two-step kernel comparison and compose with the short exact kernel identification.
+  dsimp [pullbackStageLeftIso]
+  simp [kernelIsoOfShortExact_hom_f]
+
+/-- Helper for Theorem 10.82.3: the middle map in the pullback-stage directed system is the
+canonical pullback map induced by a transition in the finitely presented presentation. -/
+private noncomputable def pullbackStageMiddleMap
+    {J : Type u} [Category.{u} J]
+    (pres : ColimitPresentation J S.X₃) {i j : J} (u : i ⟶ j) :
+    pullback S.g (pres.ι.app i) ⟶ pullback S.g (pres.ι.app j) :=
+  pullback.map S.g (pres.ι.app i) S.g (pres.ι.app j)
+    (𝟙 _) (pres.diag.map u) (𝟙 _)
+    (by simp) (by simpa using (pres.w u).symm)
+
+/-- Helper for Theorem 10.82.3: the pullback-stage transition keeps the first projection fixed. -/
+private lemma pullbackStageMiddleMap_fst
+    {J : Type u} [Category.{u} J]
+    (pres : ColimitPresentation J S.X₃) {i j : J} (u : i ⟶ j) :
+    pullbackStageMiddleMap (S := S) pres u ≫ pullback.fst S.g (pres.ι.app j) =
+      pullback.fst S.g (pres.ι.app i) := by
+  -- Unfold only to the pullback lift and then use the canonical first-projection formula.
+  simpa [pullbackStageMiddleMap, pullback.map, Category.assoc] using
+    (pullback.lift_fst
+      (pullback.fst S.g (pres.ι.app i) ≫ 𝟙 S.X₂)
+      (pullback.snd S.g (pres.ι.app i) ≫ pres.diag.map u)
+      (by
+        rw [Category.comp_id]
+        rw [pullback.condition]
+        simpa [Category.assoc] using
+          (congrArg (fun k ↦ pullback.snd S.g (pres.ι.app i) ≫ k) (pres.w u)).symm))
+
+/-- Helper for Theorem 10.82.3: the pullback-stage transition maps the second projection by the
+presentation transition morphism. -/
+private lemma pullbackStageMiddleMap_snd
+    {J : Type u} [Category.{u} J]
+    (pres : ColimitPresentation J S.X₃) {i j : J} (u : i ⟶ j) :
+    pullbackStageMiddleMap (S := S) pres u ≫ pullback.snd S.g (pres.ι.app j) =
+      pullback.snd S.g (pres.ι.app i) ≫ pres.diag.map u := by
+  -- Unfold only to the pullback lift and then use the canonical second-projection formula.
+  simpa [pullbackStageMiddleMap, pullback.map, Category.assoc] using
+    (pullback.lift_snd
+      (pullback.fst S.g (pres.ι.app i) ≫ 𝟙 S.X₂)
+      (pullback.snd S.g (pres.ι.app i) ≫ pres.diag.map u)
+      (by
+        rw [Category.comp_id]
+        rw [pullback.condition]
+        simpa [Category.assoc] using
+          (congrArg (fun k ↦ pullback.snd S.g (pres.ι.app i) ≫ k) (pres.w u)).symm))
+
+/-- Helper for Theorem 10.82.3: the source-proof pullback stages assemble functorially into the
+directed system used in clause `(6)`. -/
+private noncomputable def pullbackStageFunctor
+    {J : Type u} [Category.{u} J] (pres : ColimitPresentation J S.X₃) :
+    J ⥤ ShortComplex (ModuleCat.{u} R) where
+  obj j := pullbackStage (S := S) pres j
+  map {i j} u :=
+    -- The source proof moves between stages by the pullback transition on the middle term and the
+    -- induced kernel map on the left term.
+    ShortComplex.homMk
+      (kernel.map
+        (pullback.snd S.g (pres.ι.app i))
+        (pullback.snd S.g (pres.ι.app j))
+        (pullbackStageMiddleMap (S := S) pres u)
+        (pres.diag.map u)
+        ((pullbackStageMiddleMap_snd (S := S) pres u).symm))
+      (pullbackStageMiddleMap (S := S) pres u)
+      (pres.diag.map u)
+      (by
+        simp [pullbackStageMiddleMap])
+      (by
+        exact pullbackStageMiddleMap_snd (S := S) pres u)
+  map_id j := by
+    -- The pullback transition and induced kernel transition are identities at an identity arrow.
+    apply ShortComplex.hom_ext
+    · apply (cancel_mono (kernel.ι (pullback.snd S.g (pres.ι.app j)))).1
+      simp [pullbackStageMiddleMap]
+    · simp [pullbackStageMiddleMap]
+    · simp
+  map_comp {i j k} u v := by
+    -- Composition is checked componentwise; on the left term we compare after the kernel
+    -- inclusion, where the induced kernel maps are characterized by `kernel.lift_ι`.
+    apply ShortComplex.hom_ext
+    · apply (cancel_mono (kernel.ι (pullback.snd S.g (pres.ι.app k)))).1
+      simp [pullbackStageMiddleMap, pullback.map_comp]
+    · simp [pullbackStageMiddleMap, pullback.map_comp]
+    · simp
+
+/-- Helper for Theorem 10.82.3: the pointwise kernel identifications form a natural isomorphism
+from the left projection of the pullback-stage diagram to the constant diagram on `S.X₁`. -/
+private noncomputable def pullbackStageLeftNatIso
+    {J : Type u} [Category.{u} J] (hS : S.ShortExact)
+    (pres : ColimitPresentation J S.X₃) :
+    pullbackStageFunctor (S := S) pres ⋙ ShortComplex.π₁ ≅ (Functor.const J).obj S.X₁ :=
+by
+  refine NatIso.ofComponents (fun j ↦ pullbackStageLeftIso (S := S) hS pres j) ?_
+  intro i j u
+  letI : Mono S.f := hS.mono_f
+  -- Compare the two candidate maps after postcomposing with `S.f`, where both become the same
+  -- pullback-first-projection formula.
+  apply (cancel_mono S.f).1
+  change (((pullbackStageFunctor (S := S) pres).map u).τ₁ ≫
+      (pullbackStageLeftIso (S := S) hS pres j).hom) ≫ S.f =
+    ((pullbackStageLeftIso (S := S) hS pres i).hom ≫ 𝟙 S.X₁) ≫ S.f
+  calc
+    (((pullbackStageFunctor (S := S) pres).map u).τ₁ ≫
+        (pullbackStageLeftIso (S := S) hS pres j).hom) ≫ S.f
+        = ((pullbackStageFunctor (S := S) pres).map u).τ₁ ≫
+            (kernel.ι (pullback.snd S.g (pres.ι.app j)) ≫
+              pullback.fst S.g (pres.ι.app j)) := by
+              simpa [Category.assoc] using
+                congrArg
+                  (fun k ↦ ((pullbackStageFunctor (S := S) pres).map u).τ₁ ≫ k)
+                  (pullbackStageLeftIso_hom_f (S := S) hS pres j)
+    _ = ((((pullbackStageFunctor (S := S) pres).map u).τ₁ ≫
+          kernel.ι (pullback.snd S.g (pres.ι.app j))) ≫ pullback.fst S.g (pres.ι.app j)) := by
+            rw [Category.assoc]
+    _ = ((kernel.ι (pullback.snd S.g (pres.ι.app i)) ≫
+          pullbackStageMiddleMap (S := S) pres u) ≫ pullback.fst S.g (pres.ι.app j)) := by
+            simp [pullbackStageFunctor]
+    _ = kernel.ι (pullback.snd S.g (pres.ι.app i)) ≫
+          (pullbackStageMiddleMap (S := S) pres u ≫ pullback.fst S.g (pres.ι.app j)) := by
+            rw [Category.assoc]
+    _ = kernel.ι (pullback.snd S.g (pres.ι.app i)) ≫ pullback.fst S.g (pres.ι.app i) := by
+          rw [pullbackStageMiddleMap_fst (S := S) pres u]
+    _ = (pullbackStageLeftIso (S := S) hS pres i).hom ≫ S.f := by
+          rw [pullbackStageLeftIso_hom_f]
+    _ = ((pullbackStageLeftIso (S := S) hS pres i).hom ≫ 𝟙 S.X₁) ≫ S.f := by
+          simp
+
+/-- Helper for Theorem 10.82.3: the source-proof maps from each pullback stage to `S` form the
+canonical cocone whose right leg is the chosen finitely presented presentation of `S.X₃`. -/
+private noncomputable def pullbackStageCocone
+    {J : Type u} [Category.{u} J] (hS : S.ShortExact)
+    (pres : ColimitPresentation J S.X₃) :
+    Cocone (pullbackStageFunctor (S := S) pres) := by
+  refine Cocone.mk S ?_
+  refine NatTrans.mk ?_ ?_
+  · intro j
+    -- Each stage maps to the original short complex by the canonical pullback projections.
+    refine ShortComplex.homMk
+      ((pullbackStageLeftIso (S := S) hS pres j).hom)
+      (pullback.fst S.g (pres.ι.app j))
+      (pres.ι.app j)
+      ?_
+      ?_
+    · exact pullbackStageLeftIso_hom_f (S := S) hS pres j
+    · simpa using pullback.condition (f := S.g) (g := pres.ι.app j)
+  · intro i j u
+    -- Naturality is checked componentwise using the projection formulas and the left natural iso.
+    apply ShortComplex.hom_ext
+    · simpa using
+        ((pullbackStageLeftNatIso (S := S) hS pres).hom.naturality u)
+    · exact pullbackStageMiddleMap_fst (S := S) pres u
+    · simpa using pres.w u
+
+/-- Helper for Theorem 10.82.3: clause `(5)` produces a section of each pullback-stage projection,
+so every stage sequence in the source proof splits. -/
+private lemma pullbackStageSplitting
+    {J : Type u} [Category.{u} J]
+    (hHom : HomSurjectiveOnFinitelyPresented S)
+    (pres : ColimitPresentation J S.X₃)
+    (hpres : ∀ j, Module.FinitePresentation R (pres.diag.obj j))
+    (j : J) :
+    Nonempty ((pullbackStage (S := S) pres j).Splitting) := by
+  letI : Module.FinitePresentation R (pres.diag.obj j) := hpres j
+  obtain ⟨s, hs⟩ := hHom (pres.diag.obj j) (pres.ι.app j)
+  let t : pres.diag.obj j ⟶ pullback S.g (pres.ι.app j) :=
+    pullback.lift s (𝟙 _) (by simpa using hs)
+  have ht : t ≫ pullback.snd S.g (pres.ι.app j) = 𝟙 _ := by
+    -- The pullback lift is built with identity right component, so it is a section.
+    simpa [t] using
+      (pullback.lift_snd s (𝟙 (pres.diag.obj j)) (by simpa using hs))
+  -- The source proof now invokes the exact kernel sequence of `pullback.snd` and the section `t`.
+  refine ⟨ShortComplex.Splitting.ofExactOfSection
+    (pullbackStage (S := S) pres j)
+    (ShortComplex.kernelSequence_exact (pullback.snd S.g (pres.ι.app j)))
+    t
+    ht
+    inferInstance⟩
+
+/-- Helper for Theorem 10.82.3: the remaining `(5) -> (6)` work is to package the pointwise
+pullback stages into a filtered diagram and compare its colimit with `S`. -/
+private lemma filteredSplitColimitCriterion_of_homSurjective
+    {J : Type u} [Category.{u} J] [IsFiltered J]
+    (hS : S.ShortExact)
+    (hHom : HomSurjectiveOnFinitelyPresented S)
+    (pres : ColimitPresentation J S.X₃)
+    (hpres : ∀ j, Module.FinitePresentation R (pres.diag.obj j)) :
+    FilteredSplitColimitCriterion S := by
+  -- Route correction: after aligning the ambient `ModuleCat` universe with the imported colimit
+  -- API, the remaining work is the source-proof packaging of the stagewise pullback system.
+  let F : J ⥤ ShortComplex (ModuleCat.{u} R) := pullbackStageFunctor (J := J) (S := S) pres
+  let c : Cocone F := pullbackStageCocone (J := J) (S := S) hS pres
+  have hStageShortExact : ∀ j, (F.obj j).ShortExact := by
+    intro j
+    obtain ⟨s⟩ := pullbackStageSplitting (S := S) hHom pres hpres j
+    exact s.shortExact
+  have hColimShortExact : (colimit F).ShortExact :=
+    shortExact_of_isColimit_of_stagewise_shortExact
+      (R := R) F (colimit.cocone F) (colimit.isColimit F) hStageShortExact
+  have hπ₁colim :
+      IsColimit
+        ((ShortComplex.π₁ : ShortComplex (ModuleCat.{u} R) ⥤ ModuleCat.{u} R).mapCocone
+          (colimit.cocone F)) :=
+    Limits.isColimitOfPreserves
+      (ShortComplex.π₁ : ShortComplex (ModuleCat.{u} R) ⥤ ModuleCat.{u} R)
+      (colimit.isColimit F)
+  have hπ₃colim :
+      IsColimit
+        ((ShortComplex.π₃ : ShortComplex (ModuleCat.{u} R) ⥤ ModuleCat.{u} R).mapCocone
+          (colimit.cocone F)) :=
+    Limits.isColimitOfPreserves
+      (ShortComplex.π₃ : ShortComplex (ModuleCat.{u} R) ⥤ ModuleCat.{u} R)
+      (colimit.isColimit F)
+  have hπ₁stage :
+      IsColimit
+        ((ShortComplex.π₁ : ShortComplex (ModuleCat.{u} R) ⥤ ModuleCat.{u} R).mapCocone c) := by
+    let c₀ : Cocone ((Functor.const J).obj S.X₁) := Cocone.mk _ (𝟙 _)
+    letI : IsConnected J := IsFiltered.isConnected J
+    have hc₀ : IsColimit c₀ := isColimitConstCocone J S.X₁
+    -- Transport the constant colimit cocone across the left-term natural isomorphism.
+    simpa [F, c, pullbackStageCocone, c₀, pullbackStageLeftNatIso] using
+      (IsColimit.precomposeHomEquiv (pullbackStageLeftNatIso (S := S) hS pres) c₀).2 hc₀
+  have hπ₃stage :
+      IsColimit
+        ((ShortComplex.π₃ : ShortComplex (ModuleCat.{u} R) ⥤ ModuleCat.{u} R).mapCocone c) := by
+    -- On the right, the pullback-stage cocone is exactly the given presentation cocone.
+    simpa [F, c, pullbackStageCocone, ColimitPresentation.cocone] using pres.isColimit
+  let e : colimit F ⟶ S := colimit.desc F c
+  have hτ₁ :
+      e.τ₁ = hπ₁colim.desc (ShortComplex.π₁.mapCocone c) := by
+    -- The first component of the comparison morphism is characterized by the projected cocone.
+    apply hπ₁colim.hom_ext
+    intro j
+    have hfac₁ : (colimit.ι F j).τ₁ ≫ e.τ₁ = (c.ι.app j).τ₁ := by
+      change ((colimit.ι F j ≫ colimit.desc F c).τ₁ = (c.ι.app j).τ₁)
+      rw [colimit.ι_desc]
+    have hdesc₁ :
+        (c.ι.app j).τ₁ = (colimit.ι F j).τ₁ ≫ hπ₁colim.desc (ShortComplex.π₁.mapCocone c) := by
+      symm
+      simpa using hπ₁colim.fac (ShortComplex.π₁.mapCocone c) j
+    exact hfac₁.trans hdesc₁
+  have hτ₃ :
+      e.τ₃ = hπ₃colim.desc (ShortComplex.π₃.mapCocone c) := by
+    -- The third component is characterized in the same way by the presentation cocone.
+    apply hπ₃colim.hom_ext
+    intro j
+    have hfac₃ : (colimit.ι F j).τ₃ ≫ e.τ₃ = (c.ι.app j).τ₃ := by
+      change ((colimit.ι F j ≫ colimit.desc F c).τ₃ = (c.ι.app j).τ₃)
+      rw [colimit.ι_desc]
+    have hdesc₃ :
+        (c.ι.app j).τ₃ = (colimit.ι F j).τ₃ ≫ hπ₃colim.desc (ShortComplex.π₃.mapCocone c) := by
+      symm
+      simpa using hπ₃colim.fac (ShortComplex.π₃.mapCocone c) j
+    exact hfac₃.trans hdesc₃
+  haveI : IsIso e.τ₁ := by
+    rw [hτ₁]
+    exact (hπ₁colim.coconePointUniqueUpToIso hπ₁stage).isIso_hom
+  haveI : IsIso e.τ₃ := by
+    rw [hτ₃]
+    exact (hπ₃colim.coconePointUniqueUpToIso hπ₃stage).isIso_hom
+  haveI : IsIso e.τ₂ := isIso₂_of_shortExact_of_isIso₁₃ e hColimShortExact hS
+  -- The source-proof filtered system is now fully assembled: the left term is constant, each
+  -- stage splits, the right term is finitely presented, and the comparison morphism is an iso.
+  refine ⟨J, inferInstance, inferInstance, F,
+    pullbackStageLeftNatIso (S := S) hS pres,
+    fun j ↦ pullbackStageSplitting (S := S) hHom pres hpres j,
+    hpres, e, ?_⟩
+  exact ShortComplex.isIso_of_isIso e
+
+/-- Helper for Theorem 10.82.3: clause `(2)` implies the equational lifting criterion by
+tensoring with the cokernel of the source-proof relation matrix. -/
+private lemma tensorShortExactForFinitelyPresented_implies_equationalLifting
+    (hTensor : TensorShortExactForFinitelyPresented S) :
+    EquationalLiftingCriterion S := by
+  intro n m x y a hrelations
+  let v : ModuleCat.of R (Fin m →₀ R) ⟶ ModuleCat.of R (Fin n →₀ R) :=
+    relationMatrixMap (R := R) a
+  let Q : ModuleCat R := ModuleCat.of R ((Fin n →₀ R) ⧸ LinearMap.range v.hom)
+  let q : (Fin n →₀ R) →ₗ[R] ((Fin n →₀ R) ⧸ LinearMap.range v.hom) :=
+    Submodule.mkQ (LinearMap.range v.hom)
+  letI : Module.FinitePresentation R Q :=
+    relationMatrixMap_cokernel_finitePresentation (R := R) a
+  have hQ : (S.map (tensorRight Q)).ShortExact := hTensor Q
+  let xTensor₁ :=
+    (TensorProduct.finsuppScalarRight R R S.X₁ (Fin n)).symm
+      (Finsupp.equivFunOnFinite.symm x)
+  let yTensor₂ :=
+    (TensorProduct.finsuppScalarRight R R S.X₂ (Fin m)).symm
+      (Finsupp.equivFunOnFinite.symm y)
+  -- Route correction: follow the source proof literally with the cokernel
+  -- `Q = coker(relationMatrixMap a)`, rather than switching to a flatness criterion.
+  have himage :
+      S.f.hom.rTensor (ModuleCat.of R (Fin n →₀ R)) xTensor₁ = v.hom.lTensor S.X₂ yTensor₂ := by
+    -- The displayed relations say that the image tuple `f(x)` is exactly the row-matrix image
+    -- of the tuple `y`.
+    apply (TensorProduct.finsuppScalarRight R R S.X₂ (Fin n)).injective
+    ext i
+    calc
+      TensorProduct.finsuppScalarRight R R S.X₂ (Fin n)
+          (S.f.hom.rTensor (ModuleCat.of R (Fin n →₀ R)) xTensor₁) i
+          = S.f.hom (x i) := by
+              simpa [xTensor₁] using
+                rTensor_tuple_apply (R := R) (φ := S.f) x i
+      _ = ∑ j, a i j • y j := hrelations i
+      _ = TensorProduct.finsuppScalarRight R R S.X₂ (Fin n)
+            (v.hom.lTensor S.X₂ yTensor₂) i := by
+              symm
+              simpa [v, yTensor₂] using
+                relationMatrixMap_lTensor_finsuppScalarRight_apply (R := R) a S.X₂ y i
+  have hqv : q.comp v.hom = 0 := by
+    -- The quotient map kills the image of the row matrix by construction.
+    apply LinearMap.ext
+    intro u
+    change Submodule.mkQ (LinearMap.range v.hom) (v.hom u) = 0
+    exact (Submodule.Quotient.mk_eq_zero _).2 ⟨u, rfl⟩
+  have hzero₂ :
+      q.lTensor S.X₂ (S.f.hom.rTensor (ModuleCat.of R (Fin n →₀ R)) xTensor₁) = 0 := by
+    calc
+      q.lTensor S.X₂ (S.f.hom.rTensor (ModuleCat.of R (Fin n →₀ R)) xTensor₁)
+          = q.lTensor S.X₂ (v.hom.lTensor S.X₂ yTensor₂) := by
+              rw [himage]
+      _ = (q.comp v.hom).lTensor S.X₂ yTensor₂ := by
+            symm
+            simpa using
+              (LinearMap.lTensor_comp_apply (M := S.X₂) (f := v.hom) (g := q) yTensor₂)
+      _ = 0 := by
+            simpa [hqv]
+  have hf_inj : Function.Injective ((S.map (tensorRight Q)).f).hom :=
+    (ModuleCat.mono_iff_injective _).1 hQ.mono_f
+  have hzero₁ : q.lTensor S.X₁ xTensor₁ = 0 := by
+    -- Injectivity of the tensorized first map turns vanishing in `S.X₂ ⊗ Q` into vanishing in
+    -- `S.X₁ ⊗ Q`.
+    apply hf_inj
+    calc
+      ((S.map (tensorRight Q)).f).hom (q.lTensor S.X₁ xTensor₁)
+          = S.f.hom.rTensor Q (q.lTensor S.X₁ xTensor₁) := by
+              rfl
+      _ = q.lTensor S.X₂ (S.f.hom.rTensor (ModuleCat.of R (Fin n →₀ R)) xTensor₁) := by
+            change ((S.f.hom.rTensor Q).comp (q.lTensor S.X₁)) xTensor₁ =
+              ((q.lTensor S.X₂).comp (S.f.hom.rTensor (ModuleCat.of R (Fin n →₀ R)))) xTensor₁
+            rw [LinearMap.rTensor_comp_lTensor, LinearMap.lTensor_comp_rTensor]
+      _ = 0 := hzero₂
+  obtain ⟨z, hz⟩ :=
+    exists_tuple_of_lTensor_mkQ_zero (R := R) a S.X₁ x (by simpa [q, v, xTensor₁] using hzero₁)
+  exact ⟨z, hz⟩
+
+/-- Helper for Theorem 10.82.3: clause `(4)` implies surjectivity on `Hom` from finitely
+presented modules by lifting across a two-step finite free presentation. -/
+private lemma finiteFreeSquareLiftingCriterion_implies_homSurjective
+    (hS : S.ShortExact) (hSquare : FiniteFreeSquareLiftingCriterion S) :
+    HomSurjectiveOnFinitelyPresented S := by
+  intro P _ φ
+  classical
+  obtain ⟨n, m, g₁, g₂, hExactg, hSurjg₂⟩ :=
+    finitePresentation_exists_two_step_finite_free_presentation (R := R) P
+  have hExactS : Function.Exact S.f.hom S.g.hom := by
+    -- The short exact row identifies the image of `S.f` with the kernel of `S.g`.
+    simpa using (ShortComplex.ShortExact.moduleCat_exact_iff_function_exact S).mp hS.exact
+  have hKerRangeS : LinearMap.ker S.g.hom = LinearMap.range S.f.hom :=
+    LinearMap.exact_iff.mp hExactS
+  have hKerRangeg : LinearMap.ker g₂.hom = LinearMap.range g₁.hom :=
+    LinearMap.exact_iff.mp hExactg
+  let y : Fin n → S.X₂ := fun i ↦
+    Function.surjInv hS.moduleCat_surjective_g (φ.hom (g₂.hom (Finsupp.single i 1)))
+  let h₂ : ModuleCat.of R (Fin n →₀ R) ⟶ S.X₂ :=
+    ModuleCat.ofHom <| Finsupp.linearCombination R y
+  have hh₂g : h₂ ≫ S.g = g₂ ≫ φ := by
+    -- The lift `h₂` is chosen basiswise so that it maps to `φ ∘ g₂`.
+    apply hom_eq_of_single_eq (R := R)
+    intro i
+    calc
+      (h₂ ≫ S.g).hom (Finsupp.single i 1) = S.g.hom (h₂.hom (Finsupp.single i 1)) := by
+        rfl
+      _ = S.g.hom (y i) := by
+        simp [h₂, y]
+      _ = φ.hom (g₂.hom (Finsupp.single i 1)) := by
+        exact Function.rightInverse_surjInv hS.moduleCat_surjective_g _
+      _ = (g₂ ≫ φ).hom (Finsupp.single i 1) := by
+        rfl
+  have hx_exists : ∀ i : Fin m, ∃ x : S.X₁,
+      S.f.hom x = h₂.hom (g₁.hom (Finsupp.single i 1)) := by
+    intro i
+    have hzero_g₂ : g₂.hom (g₁.hom (Finsupp.single i 1)) = 0 := by
+      have hmem : g₁.hom (Finsupp.single i 1) ∈ LinearMap.range g₁.hom := by
+        exact ⟨Finsupp.single i 1, rfl⟩
+      have hmem' : g₁.hom (Finsupp.single i 1) ∈ LinearMap.ker g₂.hom := by
+        rw [hKerRangeg]
+        exact hmem
+      exact hmem'
+    have hzero_S : S.g.hom (h₂.hom (g₁.hom (Finsupp.single i 1))) = 0 := by
+      calc
+        S.g.hom (h₂.hom (g₁.hom (Finsupp.single i 1))) =
+            (h₂ ≫ S.g).hom (g₁.hom (Finsupp.single i 1)) := by
+          rfl
+        _ = (g₂ ≫ φ).hom (g₁.hom (Finsupp.single i 1)) := by
+          rw [hh₂g]
+        _ = φ.hom (g₂.hom (g₁.hom (Finsupp.single i 1))) := by
+          rfl
+        _ = 0 := by
+          rw [hzero_g₂, map_zero]
+    have hmemKer : h₂.hom (g₁.hom (Finsupp.single i 1)) ∈ LinearMap.ker S.g.hom := hzero_S
+    have hmemRange : h₂.hom (g₁.hom (Finsupp.single i 1)) ∈ LinearMap.range S.f.hom := by
+      rwa [hKerRangeS] at hmemKer
+    rcases hmemRange with ⟨x, hx⟩
+    exact ⟨x, hx⟩
+  choose x hx using hx_exists
+  let h₁ : ModuleCat.of R (Fin m →₀ R) ⟶ S.X₁ :=
+    ModuleCat.ofHom <| Finsupp.linearCombination R x
+  have hsquare : CommSq g₁ h₁ h₂ S.f := by
+    refine ⟨?_⟩
+    -- The left square commutes because each basis vector of the source lands in the kernel of
+    -- `S.g`, hence has the chosen exactness lift through `S.f`.
+    apply hom_eq_of_single_eq (R := R)
+    intro i
+    calc
+      (g₁ ≫ h₂).hom (Finsupp.single i 1) = h₂.hom (g₁.hom (Finsupp.single i 1)) := by
+        rfl
+      _ = S.f.hom (x i) := (hx i).symm
+      _ = (h₁ ≫ S.f).hom (Finsupp.single i 1) := by
+        simp [h₁]
+  obtain ⟨k₁, hk₁⟩ := hSquare g₁ h₁ h₂ hsquare
+  let h₂' : ModuleCat.of R (Fin n →₀ R) ⟶ S.X₂ :=
+    ModuleCat.ofHom (h₂.hom - (k₁ ≫ S.f).hom)
+  have hg₁h₂' : g₁ ≫ h₂' = 0 := by
+    -- Subtracting the lifted square filler makes the presentation relations vanish.
+    apply hom_eq_of_single_eq (R := R)
+    intro i
+    have hk₁_single :
+        k₁.hom (g₁.hom (Finsupp.single i 1)) = h₁.hom (Finsupp.single i 1) := by
+      exact congrArg (fun f ↦ f.hom (Finsupp.single i 1)) hk₁
+    calc
+      (g₁ ≫ h₂').hom (Finsupp.single i 1)
+          = h₂'.hom (g₁.hom (Finsupp.single i 1)) := by
+            rfl
+      _ = h₂.hom (g₁.hom (Finsupp.single i 1)) -
+            (k₁ ≫ S.f).hom (g₁.hom (Finsupp.single i 1)) := by
+            simp [h₂']
+      _ = h₂.hom (g₁.hom (Finsupp.single i 1)) -
+            S.f.hom (k₁.hom (g₁.hom (Finsupp.single i 1))) := by
+            rfl
+      _ = S.f.hom (x i) - S.f.hom (k₁.hom (g₁.hom (Finsupp.single i 1))) := by
+            rw [hx i]
+      _ = S.f.hom (x i) - S.f.hom (h₁.hom (Finsupp.single i 1)) := by
+            rw [hk₁_single]
+      _ = S.f.hom (x i) - S.f.hom (x i) := by
+            simp [h₁]
+      _ = 0 := sub_self _
+  have hker_le : LinearMap.ker g₂.hom ≤ LinearMap.ker h₂'.hom := by
+    intro u hu
+    have hu' : u ∈ LinearMap.range g₁.hom := by
+      rwa [hKerRangeg] at hu
+    rcases hu' with ⟨v, rfl⟩
+    have hzero : (g₁ ≫ h₂').hom v = 0 := by
+      simpa using congrArg (fun f ↦ f.hom v) hg₁h₂'
+    simpa using hzero
+  let φ' : P ⟶ S.X₂ := ModuleCat.ofHom <|
+    (LinearMap.ker g₂.hom).liftQ h₂'.hom hker_le ∘ₗ
+      (LinearMap.quotKerEquivOfSurjective g₂.hom hSurjg₂).symm.toLinearMap
+  refine ⟨φ', ?_⟩
+  ext p
+  rcases hSurjg₂ p with ⟨u, rfl⟩
+  -- Evaluate the descended map on a free lift of `p`; the correction term dies after composing
+  -- with `S.g`, so the resulting map still lifts `φ`.
+  calc
+    (φ' ≫ S.g).hom (g₂.hom u) = S.g.hom (φ'.hom (g₂.hom u)) := by
+      rfl
+    _ = S.g.hom (h₂'.hom u) := by
+      simp [φ', LinearMap.quotKerEquivOfSurjective_symm_apply]
+    _ = S.g.hom (h₂.hom u) - S.g.hom ((k₁ ≫ S.f).hom u) := by
+      simp [h₂']
+    _ = (h₂ ≫ S.g).hom u - 0 := by
+      have hzero_fg : S.g.hom ((k₁ ≫ S.f).hom u) = 0 := by
+        simpa using congrArg (fun f ↦ f.hom (k₁.hom u)) S.zero
+      rw [hzero_fg]
+      rfl
+    _ = (g₂ ≫ φ).hom u - 0 := by
+      rw [hh₂g]
+    _ = φ.hom (g₂.hom u) := by
+      simp
+
+-- Proof sketch: identify universal exactness of the short exact sequence with flatness of the
+-- cokernel module `S.X₃`, then combine the equational criterion for flatness, the finite
+-- presentation lifting criterion, and Lazard-style filtered-colimit characterizations, translating
+-- each flatness criterion back into the corresponding statement about the fixed short exact
+-- sequence.
+/-- Theorem 10.82.3: for a short exact sequence of `R`-modules, universal exactness is equivalent
+to exactness after tensoring with every finitely presented module, to the equational lifting
+criterion, to the finite free diagram lifting criterion, to surjectivity on `Hom` from finitely
+presented modules, and to being a filtered colimit of split short exact sequences with constant
+left term `S.X₁` and finitely presented cokernels. -/
+theorem universallyExact_tfae (hS : S.ShortExact) :
+    ([ S.UniversallyExact
+     , TensorShortExactForFinitelyPresented S
+     , EquationalLiftingCriterion S
+     , FiniteFreeSquareLiftingCriterion S
+     , HomSurjectiveOnFinitelyPresented S
+     , FilteredSplitColimitCriterion S ] : List Prop).TFAE := by
+  tfae_have 1 → 2 := by
+    intro hU Q _
+    -- The source proof starts by tensoring the short exact sequence; the right-tensor version is
+    -- the braided transport of Example `10.82.2`.
+    exact tensorRight_shortExact_of_universallyExact hU Q
+  tfae_have 2 → 3 := by
+    intro hTensor
+    -- The heavy tensor-cokernel calculation is isolated in a standalone helper so the final TFAE
+    -- theorem does not exhaust a single elaboration budget.
+    exact tensorShortExactForFinitelyPresented_implies_equationalLifting (S := S) hTensor
+  tfae_have 3 ↔ 4 := by
+    -- Clause `(4)` is exactly the diagrammatic repackaging of clause `(3)`.
+    exact equationalLiftingCriterion_iff_finiteFreeSquareLiftingCriterion (S := S)
+  tfae_have 4 → 5 := by
+    intro hSquare
+    -- The source-proof presentation argument is likewise isolated so the final TFAE declaration
+    -- only orchestrates already-checked pieces.
+    exact finiteFreeSquareLiftingCriterion_implies_homSurjective (S := S) hS hSquare
+  tfae_have 5 → 6 := by
+    intro hHom
+    obtain ⟨J, _, _, pres, hpres⟩ :=
+      finite_presentation_stage_presentation (R := R) (Q := S.X₃)
+    -- Route correction: after proving the pointwise pullback-stage kernel and splitting facts
+    -- above, the theorem branch reduces to packaging those stages into the source's filtered
+    -- colimit diagram.
+    exact filteredSplitColimitCriterion_of_homSurjective
+      (S := S) hS hHom pres hpres
+  tfae_have 6 → 1 := by
+    intro hColim
+    rcases hColim with ⟨J, _, _, F, _, hSplit, _, e, he⟩
+    let eIso : colimit F ≅ S := asIso e
+    -- Apply Example `10.82.2` to the split filtered system and then transport along the colimit
+    -- comparison isomorphism from the criterion.
+    exact universallyExact_of_iso (R := R) eIso <|
+      universallyExact_colimit_of_split_system (R := R) (J := J) F hSplit
+  tfae_finish
+
+end
+
+end CategoryTheory.ShortComplex
+
+/-! ### Lemma_10_82_4 (from Chap10) -/
+universe u
+
+namespace CategoryTheory.ShortComplex
+
+section
+
+variable {R : Type u} [CommRing R]
+variable {S : ShortComplex (ModuleCat.{u} R)}
+variable [Module.FinitePresentation R S.X₃]
+
+/- Domain-style sampling:
+- primary domain: universally exact short exact sequences of modules and their splitting criteria;
+- sampled owner declarations of the same kind:
+  `CategoryTheory.ShortComplex.UniversallyExact`,
+  `CategoryTheory.ShortComplex.Splitting`,
+  `CategoryTheory.ShortComplex.Splitting.ofExactOfSection`,
+  `CategoryTheory.ShortComplex.Splitting.universallyExact`;
+- best owner abstraction: the core owners are `S.UniversallyExact` and `S.Splitting`, while the
+  finite-presentation hypothesis on `S.X₃` is auxiliary input used to bridge between them through
+  the Chapter 10 TFAE criterion;
+- primitive data: the short complex `S`, the universal exactness predicate, and the canonical
+  splitting owner `S.Splitting`;
+- derived API: the `Hom`-surjectivity criterion on finitely presented modules supplied by
+  `universallyExact_tfae`.
+
+Layering:
+- this numbered item is `bridge/view`: it does not introduce a new owner notion, but refines the
+  source statement to the canonical owners `S.UniversallyExact` and `S.Splitting`.
+-/
+
+-- Proof sketch: a splitting makes the sequence universally exact because tensoring preserves split
+-- exact sequences. Conversely, `S.UniversallyExact` already contains short exactness; under finite
+-- presentation of `S.X₃`, universal injectivity of the first map yields the `Hom`-lifting
+-- criterion against `S.X₃`. Applying it to `𝟙 S.X₃` produces a section of `S.g`, and a section of
+-- the quotient map of a short exact sequence gives a splitting.
+/-- Lemma 10.82.4: for a short exact sequence of `R`-modules whose cokernel `S.X₃` is finitely
+presented, universal exactness is equivalent to the sequence being split. -/
+theorem universallyExact_iff_split_of_finitePresentation_X₃ :
+    S.UniversallyExact ↔ Nonempty S.Splitting := by
+  constructor
+  · intro hU
+    have hS : S.ShortExact := hU.shortExact
+    have hsurj : HomSurjectiveOnFinitelyPresented S :=
+      ((universallyExact_tfae hS).out 0 4).mp hU
+    obtain ⟨s, hs⟩ := hsurj S.X₃ (𝟙 S.X₃)
+    exact ⟨Splitting.ofExactOfSection S hS.exact s hs hS.mono_f⟩
+  · rintro ⟨s⟩
+    exact s.universallyExact
+
+end
+
+end CategoryTheory.ShortComplex
+
+/-! ### Lemma_10_82_5 (from Chap10) -/
+universe u
+
+namespace CategoryTheory.ShortComplex
+
+section
+
+variable {R : Type u} [CommRing R]
+variable {M : Type u} [AddCommGroup M] [Module R M]
+
+-- Proof sketch: for a short exact complex `S` ending in `M`, Theorem `10.82.3` identifies
+-- `S.UniversallyExact` with surjectivity on `Hom` from finitely presented modules, and an
+-- isomorphism `S.X₃ ≅ M` transports that condition to the criterion in Lemma `10.81.3`. For the
+-- converse, realize an arbitrary surjection onto `M` as the right map of a short exact sequence
+-- and apply the assumed universal exactness of every such sequence.
+/-- Lemma 10.82.5: an `R`-module `M` is flat if and only if every short exact sequence of
+`R`-modules whose rightmost term is isomorphic to `M` is universally exact. -/
+theorem flat_iff_forall_universallyExact_of_shortExact_right_iso :
+    Module.Flat R M ↔
+      ∀ (S : ShortComplex (ModuleCat R)),
+        S.ShortExact →
+        Nonempty (S.X₃ ≅ ModuleCat.of R M) →
+        S.UniversallyExact := by
+  constructor
+  · intro hM S hS ⟨e⟩
+    let _ : Module.Flat R (ModuleCat.of R M) := hM
+    let _ : Module.Flat R S.X₃ := Module.Flat.of_linearEquiv e.toLinearEquiv
+    exact ShortExact.universallyExact_of_flat_X₃ hS
+  · intro h
+    refine flat_iff_postcompose_surjective_on_hom_from_finitelyPresented.2 ?_
+    intro P _ _ _ N _ _ π hπ
+    let S : ShortComplex (ModuleCat R) := π.shortComplexKer
+    have hS : S.ShortExact := LinearMap.shortExact_shortComplexKer hπ
+    have hU : S.UniversallyExact := h S hS ⟨Iso.refl _⟩
+    have hsurj : HomSurjectiveOnFinitelyPresented S :=
+      ((universallyExact_tfae hS).out 0 4).mp hU
+    intro f
+    obtain ⟨g, hg⟩ := hsurj (ModuleCat.of R P) (ModuleCat.ofHom f)
+    refine ⟨g.hom, ?_⟩
+    simpa [S] using congrArg ModuleCat.Hom.hom hg
+
+end
+
+end CategoryTheory.ShortComplex

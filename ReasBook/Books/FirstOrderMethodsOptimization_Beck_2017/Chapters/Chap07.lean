@@ -1,16 +1,25 @@
-import FirstOrderMethodsOptimization_Beck_2017.Chapters.Chap07.section01
-
-/-!
-Chapter 07
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/firstordermethodsoptimization_beck_2017/chapters/chap07/)
-- [Book overview](/ReasBook-private/books/firstordermethodsoptimization_beck_2017/book/)
-
-Section overviews:
-
-- Section 7.1 ([Documentation](/ReasBook-private/docs/Books/FirstOrderMethodsOptimization_Beck_2017/Chapters/Chap07/section01.html)) ([Verso](/ReasBook-private/books/firstordermethodsoptimization_beck_2017/chapters/chap07/section01/))
-
--/
+import Chapters.Chap07.section01_part1
+import Chapters.Chap07.section01_part2
+import Chapters.Chap07.section02
+import Chapters.Chap07.section03
+import Chapters.Chap07.section04_part1
+import Chapters.Chap07.section04_part2
+import Chapters.Chap07.section05
+import Chapters.Chap07.section06
+import Chapters.Chap07.section07
+import Chapters.Chap07.section08
+import Chapters.Chap07.section09
+import Chapters.Chap07.section10
+import Chapters.Chap07.section11
+import Chapters.Chap07.section12
+import Chapters.Chap07.section13
+import Chapters.Chap07.section14
+import Chapters.Chap07.section15
+import Chapters.Chap07.section16
+import Chapters.Chap07.section17
+import Chapters.Chap07.section18
+import Chapters.Chap07.section19
+import Chapters.Chap07.section20
+import Chapters.Chap07.section21
+import Chapters.Chap07.section22
+import Chapters.Chap07.section23

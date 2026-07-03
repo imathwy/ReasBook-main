@@ -1,16 +1,48 @@
-import FirstOrderMethodsOptimization_Beck_2017.Chapters.Chap08.section01
-
-/-!
-Chapter 08
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/firstordermethodsoptimization_beck_2017/chapters/chap08/)
-- [Book overview](/ReasBook-private/books/firstordermethodsoptimization_beck_2017/book/)
-
-Section overviews:
-
-- Section 8.1 ([Documentation](/ReasBook-private/docs/Books/FirstOrderMethodsOptimization_Beck_2017/Chapters/Chap08/section01.html)) ([Verso](/ReasBook-private/books/firstordermethodsoptimization_beck_2017/chapters/chap08/section01/))
-
--/
+import Chapters.Chap08.section01
+import Chapters.Chap08.section02
+import Chapters.Chap08.section03
+import Chapters.Chap08.section04
+import Chapters.Chap08.section05
+import Chapters.Chap08.section06
+import Chapters.Chap08.section07
+import Chapters.Chap08.section08
+import Chapters.Chap08.section09
+import Chapters.Chap08.section10
+import Chapters.Chap08.section11
+import Chapters.Chap08.section12
+import Chapters.Chap08.section13
+import Chapters.Chap08.section15
+import Chapters.Chap08.section16
+import Chapters.Chap08.section17
+import Chapters.Chap08.section18
+import Chapters.Chap08.section19
+import Chapters.Chap08.section20
+import Chapters.Chap08.section21
+import Chapters.Chap08.section22
+import Chapters.Chap08.section23
+import Chapters.Chap08.section24
+import Chapters.Chap08.section25
+import Chapters.Chap08.section26
+import Chapters.Chap08.section27
+import Chapters.Chap08.section28
+import Chapters.Chap08.section29
+import Chapters.Chap08.section30
+import Chapters.Chap08.section31
+import Chapters.Chap08.section32
+import Chapters.Chap08.section33
+import Chapters.Chap08.section34
+import Chapters.Chap08.section35
+import Chapters.Chap08.section36
+import Chapters.Chap08.section37
+import Chapters.Chap08.section38
+import Chapters.Chap08.section39
+import Chapters.Chap08.section40
+import Chapters.Chap08.section41
+import Chapters.Chap08.section42
+import Chapters.Chap08.section43
+import Chapters.Chap08.section44
+import Chapters.Chap08.section45
+import Chapters.Chap08.section46
+import Chapters.Chap08.section47
+import Chapters.Chap08.section48
+import Chapters.Chap08.section49

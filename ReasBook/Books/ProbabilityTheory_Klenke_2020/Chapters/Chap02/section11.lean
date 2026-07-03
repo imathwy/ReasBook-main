@@ -1,0 +1,14 @@
+import Mathlib
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+
+/-! ### Definition_2_11 (from Items/Chap02) -/
+/-- Definition 2.11: The textbook notion that a family of classes of events
+`(ℰᵢ)ᵢ`, viewed as a family `ι → Set (Set Ω)` of collections of measurable sets, is independent is
+the canonical mathlib predicate `ProbabilityTheory.iIndepSets`. -/
+recall ProbabilityTheory.iIndepSets
+
+/-- The finite-choice product formula characterizing independence of classes of events is the
+canonical theorem `ProbabilityTheory.iIndepSets_iff`. -/
+recall ProbabilityTheory.iIndepSets_iff

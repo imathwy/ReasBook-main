@@ -1,16 +1,69 @@
-import LecturesConvexOptimization_Nesterov_2018.Chapters.Chap06.section01
-
-/-!
-Chapter 06
-
-This chapter aggregation page links to section overviews and source files.
-
-Verso links:
-- [Chapter overview](/ReasBook-private/books/lecturesconvexoptimization_nesterov_2018/chapters/chap06/)
-- [Book overview](/ReasBook-private/books/lecturesconvexoptimization_nesterov_2018/book/)
-
-Section overviews:
-
-- Section 6.1 ([Documentation](/ReasBook-private/docs/Books/LecturesConvexOptimization_Nesterov_2018/Chapters/Chap06/section01.html)) ([Verso](/ReasBook-private/books/lecturesconvexoptimization_nesterov_2018/chapters/chap06/section01/))
-
--/
+import Chapters.Chap06.section01_part1
+import Chapters.Chap06.section01_part2
+import Chapters.Chap06.section02_part1
+import Chapters.Chap06.section02_part2
+import Chapters.Chap06.section03
+import Chapters.Chap06.section04
+import Chapters.Chap06.section05
+import Chapters.Chap06.section06
+import Chapters.Chap06.section07
+import Chapters.Chap06.section08
+import Chapters.Chap06.section09
+import Chapters.Chap06.section10
+import Chapters.Chap06.section11
+import Chapters.Chap06.section12
+import Chapters.Chap06.section13
+import Chapters.Chap06.section14
+import Chapters.Chap06.section15
+import Chapters.Chap06.section16
+import Chapters.Chap06.section17
+import Chapters.Chap06.section18
+import Chapters.Chap06.section19
+import Chapters.Chap06.section20
+import Chapters.Chap06.section21
+import Chapters.Chap06.section22
+import Chapters.Chap06.section23
+import Chapters.Chap06.section24
+import Chapters.Chap06.section25
+import Chapters.Chap06.section26
+import Chapters.Chap06.section27
+import Chapters.Chap06.section28
+import Chapters.Chap06.section29
+import Chapters.Chap06.section30
+import Chapters.Chap06.section31
+import Chapters.Chap06.section32
+import Chapters.Chap06.section33
+import Chapters.Chap06.section34
+import Chapters.Chap06.section35
+import Chapters.Chap06.section36
+import Chapters.Chap06.section37
+import Chapters.Chap06.section38
+import Chapters.Chap06.section39
+import Chapters.Chap06.section40
+import Chapters.Chap06.section41
+import Chapters.Chap06.section42
+import Chapters.Chap06.section43
+import Chapters.Chap06.section44
+import Chapters.Chap06.section45
+import Chapters.Chap06.section46
+import Chapters.Chap06.section47
+import Chapters.Chap06.section48
+import Chapters.Chap06.section49
+import Chapters.Chap06.section50
+import Chapters.Chap06.section51
+import Chapters.Chap06.section52
+import Chapters.Chap06.section53
+import Chapters.Chap06.section54
+import Chapters.Chap06.section55
+import Chapters.Chap06.section56
+import Chapters.Chap06.section57
+import Chapters.Chap06.section58
+import Chapters.Chap06.section59
+import Chapters.Chap06.section60
+import Chapters.Chap06.section61
+import Chapters.Chap06.section62
+import Chapters.Chap06.section63
+import Chapters.Chap06.section64
+import Chapters.Chap06.section65
+import Chapters.Chap06.section66
+import Chapters.Chap06.section67

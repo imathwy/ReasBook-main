@@ -1,3 +1,0 @@
-import SmoothManifolds_Lee_2012.Chap02.Sec02_11.Exercise_2_27
-#print zero_mem_tsupport_of_eqOn_const_Ioi_zero
-#print not_exists_supported_contMDiffMap_extension_Ioi_zero

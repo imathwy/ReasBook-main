@@ -1,0 +1,9 @@
+import Chapters.Chap03.section00
+import Chapters.Chap03.section01
+import Chapters.Chap03.section02
+import Chapters.Chap03.section03
+import Chapters.Chap03.section04
+import Chapters.Chap03.section05
+import Chapters.Chap03.section06
+import Chapters.Chap03.section07
+import Chapters.Chap03.section08

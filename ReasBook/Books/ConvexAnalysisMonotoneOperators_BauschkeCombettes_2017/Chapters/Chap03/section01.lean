@@ -1,55 +1,46 @@
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Corollary_3_15
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Corollary_3_22
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Corollary_3_24
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Corollary_3_32
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Corollary_3_35
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Corollary_3_36
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Corollary_3_38
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Corollary_3_51
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Corollary_3_52
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Definition_3_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Definition_3_26
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Definition_3_27_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Definition_3_28
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Definition_3_3
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Definition_3_49
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Definition_3_8
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Example_3_10
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Example_3_13
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Example_3_23
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Example_3_29
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Example_3_33
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Example_3_40
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Example_3_41
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Example_3_47
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Example_3_9
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_12
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_14
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_15_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_15_2
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_19
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_20
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_21
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_25
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_27
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_30
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_31
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_39
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_4
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_42
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_44
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_45
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_46
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_48
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_5
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_54
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_6
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Proposition_3_7
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Remark_3_11_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Remark_3_11_2
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Theorem_3_16_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Theorem_3_16_2
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Theorem_3_34
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Theorem_3_37
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Theorem_3_50
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Theorem_3_53
+import Mathlib
+import Mathlib.Tactic.Recall
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+
+/-! ### Definition_3_1 (from Chap03) -/
+universe u
+
+open scoped Pointwise
+
+variable {E : Type u} [AddCommMonoid E] [Module ℝ E]
+
+/- Definition 3.1: for a subset `C` of a real `ℝ`-module `E` (hence in particular of a real
+vector space), convexity is the canonical predicate `Convex ℝ C`. -/
+recall Convex
+
+-- Proof sketch: specialize `convex_iff_pointwise_add_subset` to coefficients `a` and `1 - a`,
+-- then use `0 < a` and `a < 1` to obtain the required nonnegativity hypotheses; conversely,
+-- recover the textbook one-parameter form from the standard two-parameter characterization.
+/-- The textbook pointwise characterization of convexity says that `C` is closed under
+combinations `a • x + (1 - a) • y` with `0 < a < 1`, expressed setwise as
+`a • C + (1 - a) • C ⊆ C`. -/
+theorem convex_iff_smul_add_smul_subset_of_lt_one (C : Set E) :
+    Convex ℝ C ↔ ∀ a : ℝ, 0 < a → a < 1 → a • C + (1 - a) • C ⊆ C := by
+  constructor
+  · intro hC a ha hlt
+    exact hC.set_combo_subset ha.le (sub_nonneg.mpr hlt.le) (by ring)
+  · intro hC
+    refine convex_iff_forall_pos.2 ?_
+    intro x hx y hy a b ha hb hab
+    have hsubset : a • C + (1 - a) • C ⊆ C := hC a ha (by linarith)
+    have hmem : a • x + (1 - a) • y ∈ a • C + (1 - a) • C :=
+      Set.add_mem_add ⟨x, hx, rfl⟩ ⟨y, hy, rfl⟩
+    have hb' : b = 1 - a := by linarith
+    exact hsubset (by simpa [hb'] using hmem)
+
+/- Companion recall: a convex set is equivalently closed under pointwise convex combinations
+`a • C + b • C` with nonnegative coefficients summing to `1`; specializing to `b = 1 - a`
+recovers the textbook formula `a C + (1 - a) C ⊆ C` for `0 < a < 1`. -/
+recall convex_iff_pointwise_add_subset
+
+/- Companion recall: the textbook open-segment characterization of convexity is the standard theorem
+`convex_iff_openSegment_subset`, whose `ℝ`-specialization matches the formulation using
+open line segments `]x,y[`. -/
+recall convex_iff_openSegment_subset

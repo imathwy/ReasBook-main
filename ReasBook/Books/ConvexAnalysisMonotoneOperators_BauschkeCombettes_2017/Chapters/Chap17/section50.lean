@@ -1,0 +1,47 @@
+import Mathlib
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+
+/-! ### Proposition_17_50 (from Chap17) -/
+universe u
+
+namespace ERealFunction
+
+section DifferentiabilityAndContinuity
+
+variable {H : Type u} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
+variable {f : H → Set.Ioi (⊥ : EReal)} (hf : f ∈ Γ₀(H))
+
+/- Source/core/bridge triage:
+- `source-facing`: Proposition 17.50 records interior-domain and continuity consequences for
+  members of `Γ₀(H)`.
+- `core/canonical`: the owner abstractions are `Γ₀(H)`, `interior (effectiveDomain f)`, and
+  `ContinuousAtOnEffectiveDomain`.
+- `bridge/view`: clause (1) is exactly Proposition 17.48 (2) specialized from `ConvexOn f
+  (effectiveDomain f)` to the convexity field packaged by `hf : f ∈ Γ₀(H)`, so the file should
+  reuse that owner directly instead of restating a parallel local theorem. -/
+
+/- Proposition 17.50 (1): this is Proposition 17.48 (2) specialized to `hf.2 :
+ConvexOn f (effectiveDomain f)`. -/
+#check mem_interior_effectiveDomain_of_convexOn_of_gateauxDifferentiableAt
+
+-- Proof sketch: Corollary 8.39 identifies the points where the finite real representative of a
+-- convex lower semicontinuous function is continuous with `interior (effectiveDomain f)`. Since
+-- membership in `Γ₀(H)` packages lower semicontinuity and convexity on the effective domain, this
+-- yields continuity on the whole interior.
+/-- Proposition 17.50 (2): every function in `Γ₀(H)` is continuous on the interior of its
+effective domain. -/
+theorem continuousOn_toReal_interior_effectiveDomain_of_mem_gammaZero
+    (hf : f ∈ Γ₀(H))
+    :
+    ContinuousOn (fun y ↦ (f y : EReal).toReal) (interior (effectiveDomain f)) := by
+  intro x hx
+  have hxcont : x ∈ {z : H | ContinuousAtOnEffectiveDomain f z} := by
+    rw [← interior_effectiveDomain_eq_setOf_continuousAtOnEffectiveDomain_of_mem_gammaZero hf]
+    exact hx
+  exact hxcont.continuousWithinAt.mono interior_subset
+
+end DifferentiabilityAndContinuity
+
+end ERealFunction

@@ -1,0 +1,10 @@
+import Chapters.Chap39.section00_part1
+import Chapters.Chap39.section00_part2
+import Chapters.Chap39.section01
+import Chapters.Chap39.section02
+import Chapters.Chap39.section03
+import Chapters.Chap39.section04
+import Chapters.Chap39.section05
+import Chapters.Chap39.section06
+import Chapters.Chap39.section07
+import Chapters.Chap39.section08

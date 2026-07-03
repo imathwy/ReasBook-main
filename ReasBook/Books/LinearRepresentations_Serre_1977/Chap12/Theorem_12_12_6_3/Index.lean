@@ -1,1 +1,0 @@
--- Proof rescue support index.
