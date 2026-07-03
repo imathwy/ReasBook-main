@@ -1,4 +1,4 @@
-name: Build and Check Docs
+name: Build
 
 on:
   push:
@@ -13,8 +13,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-core:
-    name: Build ReasBook core
+  build:
+    name: Build ReasBook
     runs-on: [self-hosted, Linux, X64]
     timeout-minutes: 60
     env:
@@ -39,51 +39,3 @@ jobs:
 
       - name: Build ReasBook
         run: cd ReasBook && lake build
-
-  build-docs:
-    name: Docs (${{ matrix.module }})
-    needs: build-core
-    runs-on: [self-hosted, Linux, X64]
-    timeout-minutes: 30
-    env:
-      PERSIST_ROOT: ${{ vars.REASBOOK_PERSIST_ROOT }}
-    strategy:
-      fail-fast: false
-      matrix:
-        module:
-          - Books/ProbabilityTheory_Klenke_2020
-          - Books/Analysis2_Tao_2022/Book
-          - Books/ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017
-          - Books/CombinatorialGroupTheory_Magnus_2004
-          - Books/ConvexAnalysis_Rockafellar_1970/Book
-          - Books/FirstOrderMethodsOptimization_Beck_2017
-          - Books/IntegerProgramming_Conforti_2014/Book
-          - Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Book
-          - Books/AlgebraicTopology_May_1999
-          - Books/LecturesConvexOptimization_Nesterov_2018
-          - Books/ReasLib
-          - Books/RiemannSurfaces_Forster_1981
-          - Books/LinearRepresentations_Serre_1977
-          - Books/SmoothManifolds_Lee_2012
-          - Books/DifferentialForms_Cartan_1970
-          - Books/chapter1_reference_format
-          - Books/StacksProject_2024
-          - Papers/OnSomeLocalRings_Maassaran_2025/Paper
-          - Papers/SmoothMinimization_Nesterov_2004/Paper
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Link persistent .lake directory
-        run: |
-          set -euo pipefail
-          persist_root="${PERSIST_ROOT:-/data/reasbook-ci}"
-          rm -rf ReasBook/.lake
-          ln -sfn "$persist_root/reasbook_lake" ReasBook/.lake
-
-      - name: Build docs (${{ matrix.module }})
-        run: |
-          mod="${{ matrix.module }}"
-          mod="${mod//\//.}"
-          cd ReasBook
-          lake -R -Kenv=dev build "${mod}:docs"
