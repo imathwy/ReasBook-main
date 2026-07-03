@@ -1,4 +1,4 @@
-import Nesterov.Chap03.Definition_3_1_5_4
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_1_5_4
 
 noncomputable section
 

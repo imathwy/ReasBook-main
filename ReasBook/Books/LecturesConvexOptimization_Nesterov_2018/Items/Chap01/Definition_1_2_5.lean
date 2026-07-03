@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Definition_1_2_5
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_2_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -15,20 +15,20 @@ Primary domain:
 * power-law and square-root decay bounds for real-valued error sequences
 
 Relevant owner-style declarations sampled before refining:
-* `exists_power_law_bound_of_sqrt_bound` in `Nesterov/Chap01/Definition_1_2_5.lean`, the
+* `exists_power_law_bound_of_sqrt_bound` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_2_5.lean`, the
   chapter theorem realizing the `1 / sqrt k` specialization of the textbook power-law bound;
 * `IsOptimizationErrorSequence.hasConvergenceRateOfOrder_of_sqrt_bound` in the same file, the
   canonical bridge from the source-facing square-root estimate to the later owner
   `HasConvergenceRateOfOrder`;
-* `HasConvergenceRateOfOrder` in `Nesterov/Chap01/Definition_1_6_9.lean`, the later Chapter 1
+* `HasConvergenceRateOfOrder` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_6_9.lean`, the later Chapter 1
   owner abstraction for eventual comparison rates of optimization-error sequences;
-* `sqrt_rate_complexity_bound` in `Nesterov/Chap01/Definition_1_2_5.lean`, the explicit
+* `sqrt_rate_complexity_bound` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_2_5.lean`, the explicit
   complexity-threshold consequence used later in the chapter.
 
 Source/core/bridge triage:
 * source-facing: the existential power-law statement
   `∃ c > 0, ∃ p > 0, ∀ ⦃k : ℕ⦄, 0 < k → r k ≤ c / Real.rpow (k : ℝ) p`;
-* core/canonical: the chapter owner file `Nesterov/Chap01/Definition_1_2_5.lean`;
+* core/canonical: the chapter owner file `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_2_5.lean`;
 * bridge/view: the square-root specialization and the later
   `IsOptimizationErrorSequence.hasConvergenceRateOfOrder_of_sqrt_bound`.
 

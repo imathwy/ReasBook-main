@@ -1,7 +1,7 @@
 import Mathlib
-import FirstOrderMethodsinOptimization.Chap02.Corollary_2_1
-import FirstOrderMethodsinOptimization.Chap02.Theorem_2_5
-import FirstOrderMethodsinOptimization.Chap06.Definition_6_1
+import FirstOrderMethodsOptimization_Beck_2017.Chap02.Corollary_2_1
+import FirstOrderMethodsOptimization_Beck_2017.Chap02.Theorem_2_5
+import FirstOrderMethodsOptimization_Beck_2017.Chap06.Definition_6_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
-import stacks_project.Chap12.Lemma_12_24_2
-import stacks_project.Chap12.Lemma_12_19_12
+import StacksProject_2024.Chap12.Lemma_12_24_2
+import StacksProject_2024.Chap12.Lemma_12_19_12
 import Mathlib.CategoryTheory.Limits.FunctorCategory.Shapes.Kernels
 
 -- Declarations for this item will be appended below by the statement pipeline.

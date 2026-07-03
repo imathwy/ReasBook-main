@@ -1,14 +1,14 @@
-import Serre.Chap01.Definition_1_1_4_1
-import Serre.Chap13.Proposition_13_13_2_3
-import Serre.Chap13.Proposition_13_13_2_4
-import Serre.Chap02.Corollary_2_2_4_2
-import Serre.Chap06.Proposition_6_6_2_1
-import Serre.Chap06.Proposition_6_6_3_1
-import Serre.Chap06.Proposition_6_6_5_1
-import Serre.Chap06.Proposition_6_6_5_2
-import Serre.Chap06.Exercise_6_6_5_6
-import Serre.Chap12.Proposition_12_12_1_1
-import Serre.Chap02.Theorem_2_2_5_3
+import LinearRepresentations_Serre_1977.Chap01.Definition_1_1_4_1
+import LinearRepresentations_Serre_1977.Chap13.Proposition_13_13_2_3
+import LinearRepresentations_Serre_1977.Chap13.Proposition_13_13_2_4
+import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_4_2
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_2_1
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_3_1
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_1
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_2
+import LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_5_6
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_5_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

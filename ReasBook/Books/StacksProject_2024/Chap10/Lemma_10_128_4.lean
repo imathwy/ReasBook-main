@@ -1,5 +1,5 @@
-import stacks_project.Chap10.Definition_10_54_1
-import stacks_project.Chap10.Lemma_10_99_1
+import StacksProject_2024.Chap10.Definition_10_54_1
+import StacksProject_2024.Chap10.Lemma_10_99_1
 
 open IsLocalRing
 open scoped TensorProduct

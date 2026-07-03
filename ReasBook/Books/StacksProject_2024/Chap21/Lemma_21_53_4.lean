@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap21.Lemma_21_53_1
+import StacksProject_2024.Chap21.Lemma_21_53_1
 
 open CategoryTheory
 open CategoryTheory.MonoidalCategory

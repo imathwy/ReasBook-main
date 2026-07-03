@@ -25,7 +25,7 @@ variable {A : Type u} [Category.{v} A] [Abelian A]
   `ObjectProperty.IsClosedUnderKernels`,
   `ObjectProperty.IsClosedUnderCokernels`,
   and `ObjectProperty.IsClosedUnderExtensions`;
-- owner abstraction: `ObjectProperty A`, with the source-facing weak-Serre notion recorded by the
+- owner abstraction: `ObjectProperty A`, with the source-facing weak-LinearRepresentations_Serre_1977 notion recorded by the
   owner predicate `IsWeakSerreClass P`;
 - primitive data: a nonempty object property together with the four-out-of-five exactness
   criterion on exact `ComposableArrows A 4`;
@@ -37,9 +37,9 @@ Source/core/bridge triage:
   subcategory;
 - `core/canonical`: the ambient owner `ObjectProperty A`;
 - `bridge/view`: the derived closure-package bridge
-  `isWeakSerreClass_of_closure`, together with the Serre-to-weak implication below. -/
+  `isWeakSerreClass_of_closure`, together with the LinearRepresentations_Serre_1977-to-weak implication below. -/
 
-/-- Definition 12.10.1 (2): a weak Serre subcategory is a nonempty full subcategory such that in
+/-- Definition 12.10.1 (2): a weak LinearRepresentations_Serre_1977 subcategory is a nonempty full subcategory such that in
 every exact sequence `A₀ ⟶ A₁ ⟶ A₂ ⟶ A₃ ⟶ A₄`, membership of `A₀`, `A₁`, `A₃`, and `A₄`
 forces membership of `A₂`. This is formalized on the canonical owner `ObjectProperty A`. -/
 class IsWeakSerreClass (P : ObjectProperty A) : Prop extends P.Nonempty where
@@ -170,7 +170,7 @@ instance [IsWeakSerreClass P] : P.IsClosedUnderExtensions where
             (inferInstance : Epi S.g)
     exact IsWeakSerreClass.prop_X₂_of_exact₄ hR hPZ h₁ h₃ hPZ
 
-/-- The later closure-package characterization of weak Serre subcategories implies the original
+/-- The later closure-package characterization of weak LinearRepresentations_Serre_1977 subcategories implies the original
 source-facing four-out-of-five exactness criterion. This is the canonical bridge back to
 Definition 12.10.1. -/
 theorem isWeakSerreClass_of_closure [P.ContainsZero] [P.IsClosedUnderKernels]
@@ -226,12 +226,12 @@ theorem isWeakSerreClass_of_closure [P.ContainsZero] [P.IsClosedUnderKernels]
     P.prop_X₂_of_shortExact (ShortComplex.ShortExact.mk' hT inferInstance inferInstance)
       hcoim₁ hcoim₂
 
-/- Definition 12.10.1 (1): a Serre subcategory of an abelian category is the canonical
+/- Definition 12.10.1 (1): a LinearRepresentations_Serre_1977 subcategory of an abelian category is the canonical
 object-property predicate `IsSerreClass`, i.e. containing zero and closed under subobjects,
 quotients, and extensions. -/
 recall IsSerreClass
 
-/-- Every Serre subcategory is in particular a weak Serre subcategory. -/
+/-- Every LinearRepresentations_Serre_1977 subcategory is in particular a weak LinearRepresentations_Serre_1977 subcategory. -/
 instance instIsWeakSerreClassOfIsSerreClass [P.IsSerreClass] : IsWeakSerreClass P :=
   isWeakSerreClass_of_closure P
 

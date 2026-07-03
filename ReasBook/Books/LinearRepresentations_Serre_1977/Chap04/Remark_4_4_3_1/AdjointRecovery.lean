@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap04.Remark_4_4_3_1.InvariantDual
+import LinearRepresentations_Serre_1977.Chap04.Remark_4_4_3_1.InvariantDual
 
 noncomputable section
 

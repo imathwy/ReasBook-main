@@ -1,3 +1,3 @@
-import stacks_project.Chap25.Definition_25_2_1
-import stacks_project.Chap25.Definition_25_2_2
-import stacks_project.Chap25.Definition_25_3_1
+import StacksProject_2024.Chap25.Definition_25_2_1
+import StacksProject_2024.Chap25.Definition_25_2_2
+import StacksProject_2024.Chap25.Definition_25_3_1

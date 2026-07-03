@@ -1,21 +1,21 @@
 import Mathlib
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap14.Corollary_14_14_3_3
-import Serre.Chap14.Corollary_14_14_4_4
-import Serre.Chap15.Definition_15_15_1_1
-import Serre.Chap15.Theorem_15_15_2_2
-import Serre.Chap16.Corollary_16_16_1_6
-import Serre.Chap16.Corollary_16_16_1_8
-import Serre.Chap16.Corollary_16_16_1_8.Index
-import Serre.Chap16.Corollary_16_16_1_8_CartanGramSupport
-import Serre.Chap16.Theorem_16_16_1_2
-import Serre.Chap16.Theorem_16_16_2_1
-import Serre.Chap18.Definition_18_18_1_1
-import Serre.Chap18.Proposition_18_18_1_2
-import Serre.Chap18.Remark_18_18_1_3
-import Serre.Chap18.Corollary_18_18_2_5
-import Serre.Chap18.Theorem_18_18_3_1
-import Serre.Chap18.Exercise_18_18_3_2.Index
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_3_3
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_4
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_6
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_8
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_8.Index
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_8_CartanGramSupport
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_2
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_2_1
+import LinearRepresentations_Serre_1977.Chap18.Definition_18_18_1_1
+import LinearRepresentations_Serre_1977.Chap18.Proposition_18_18_1_2
+import LinearRepresentations_Serre_1977.Chap18.Remark_18_18_1_3
+import LinearRepresentations_Serre_1977.Chap18.Corollary_18_18_2_5
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_3_1
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -50,7 +50,7 @@ def exercise_18_18_2_9_irreducible_modular_characters_basis
   -- coefficient-ring basis, but the compiled environment currently lacks the expected canonical
   -- semiring owner `irreducible_modular_characters_form_basis_of_pRegularConjClassFunctions_overSemiring`.
   -- TODO: restore that earlier API owner (or a compiled local equivalent) and replace this local
-  -- wrapper by the canonical basis theorem exactly as in `Serre/Chap18/Exercise_18_18_2_9.lean`.
+  -- wrapper by the canonical basis theorem exactly as in `LinearRepresentations_Serre_1977/Chap18/Exercise_18_18_2_9.lean`.
   sorry
 
 /-- Helper for Exercise 18-18.3-2: evaluation rule for the local Exercise `18-18.2-9` Brauer
@@ -89,7 +89,7 @@ theorem virtualModularCharacter_decomposition_eq_character_restriction
     _root_.Representation.virtualModularCharacter
         (PrimeToPRoot.toFieldLift lift) ((decompositionHom B K G) y) =
       (finiteRepGrothendieckCharacter K G y : G → K) ∘ Subtype.val := by
-  -- Route correction: descend Serre's stable-lattice comparison through the Grothendieck quotient,
+  -- Route correction: descend LinearRepresentations_Serre_1977's stable-lattice comparison through the Grothendieck quotient,
   -- matching the Chapter `18.3.1` regular-branch proof route.
   refine QuotientAddGroup.induction_on y ?_
   intro a
@@ -308,7 +308,7 @@ private theorem exists_projective_class_difference_rep
       _ = [W]ₚ₀ - [Z]ₚ₀ := by
             simp [hW, hZ, sub_eq_add_neg, add_assoc, add_left_comm, add_comm]
 
-/-- Helper for Exercise 18-18.3-2: Serre's base-change owner sends a difference of actual
+/-- Helper for Exercise 18-18.3-2: LinearRepresentations_Serre_1977's base-change owner sends a difference of actual
 projective generator classes to the corresponding difference of scalar-extension classes. -/
 private theorem projectiveGrothendieckBaseChangeHom_sub_projectiveClass_eq
     (Q R : FiniteProjectiveGroupAlgebraModule A G) :
@@ -384,7 +384,7 @@ private theorem decompositionHom_projective_scalarExtension_class_eq_cartan_redu
     (hL : [FDRep.of L.reductionRepresentation]₀ = [Q.residueFieldReduction.toFiniteRep]₀) :
     decompositionHom A K G [Q.scalarExtension K]₀ =
       cartanHom k G [Q.residueFieldReduction]ₚ₀ := by
-  -- Reuse the Chapter `16` support owner packaging the projective-generator case of Serre's
+  -- Reuse the Chapter `16` support owner packaging the projective-generator case of LinearRepresentations_Serre_1977's
   -- triangle.
   exact
     decompositionHom_projective_scalarExtension_class_eq_cartan_reduction_class_support
@@ -402,7 +402,7 @@ private theorem cartanHom_residueFieldReduction_projectiveClass_eq
   simpa using (cartanHom_projectiveClass_eq k G Q.residueFieldReduction)
 
 /-- Helper for Exercise 18-18.3-2: two lifted projective classes satisfying the usual
-scalar-extension and reduction identities also satisfy Serre's `c = d ∘ e` triangle on their
+scalar-extension and reduction identities also satisfy LinearRepresentations_Serre_1977's `c = d ∘ e` triangle on their
 Grothendieck difference. -/
 private theorem decompositionHom_baseChange_sub_eq_cartan_sub_of_lift_data
     (Q R : FiniteProjectiveGroupAlgebraModule A G)
@@ -426,7 +426,7 @@ private theorem decompositionHom_baseChange_sub_eq_cartan_sub_of_lift_data
       (A := A) (K := K) (G := G) R VR hVR LR hLR]
 
 /-- Helper for Exercise 18-18.3-2: once a lifted projective `Q` supplies the scalar-extension and
-reduction data for a residue-field projective generator `P`, the generator case of Serre's
+reduction data for a residue-field projective generator `P`, the generator case of LinearRepresentations_Serre_1977's
 `c = d ∘ e` triangle follows formally. -/
 private theorem
     decompositionHom_comp_projectiveGrothendieckScalarExtensionHom_eq_cartanHom_generator_of_lift_data
@@ -442,7 +442,7 @@ private theorem
     decompositionHom A K G
       ((projectiveGrothendieckScalarExtensionHom A K) [P]ₚ₀) =
       cartanHom k G [P]ₚ₀ := by
-  -- Rewrite Serre's scalar-extension class through the chosen lifted projective `Q`.
+  -- Rewrite LinearRepresentations_Serre_1977's scalar-extension class through the chosen lifted projective `Q`.
   calc
     decompositionHom A K G ((projectiveGrothendieckScalarExtensionHom A K) [P]ₚ₀) =
         decompositionHom A K G [Q.scalarExtension K]₀ := by
@@ -455,7 +455,7 @@ private theorem
     _ = cartanHom k G [P]ₚ₀ := by
       rw [hred]
 
-/-- Helper for Exercise 18-18.3-2: the projective-generator case of Serre's `c = d ∘ e`
+/-- Helper for Exercise 18-18.3-2: the projective-generator case of LinearRepresentations_Serre_1977's `c = d ∘ e`
 triangle. -/
 theorem decompositionHom_comp_projectiveGrothendieckScalarExtensionHom_eq_cartanHom_generator
     (P : FiniteProjectiveGroupAlgebraModule k G) :
@@ -468,7 +468,7 @@ theorem decompositionHom_comp_projectiveGrothendieckScalarExtensionHom_eq_cartan
     decompositionHom_comp_projectiveGrothendieckScalarExtensionHom_eq_cartanHom_local_support
       (A := A) (K := K) (G := G) [P]ₚ₀
 
-/-- Helper for Exercise 18-18.3-2: the `c = d ∘ e` compatibility in Serre's `cde` triangle. -/
+/-- Helper for Exercise 18-18.3-2: the `c = d ∘ e` compatibility in LinearRepresentations_Serre_1977's `cde` triangle. -/
 theorem decompositionHom_comp_projectiveGrothendieckScalarExtensionHom_eq_cartanHom
     (x : P₀[k](G)) :
     decompositionHom A K G
@@ -898,7 +898,7 @@ private noncomputable def regularRestrictionProjectiveCharacterAddHom :
         ext g
         simp [projectiveCharacterScalarExtension] }
 
-/-- Helper for Exercise 18-18.3-2: once Serre's divisibility statement is known on the canonical
+/-- Helper for Exercise 18-18.3-2: once LinearRepresentations_Serre_1977's divisibility statement is known on the canonical
 projective-envelope generators, it extends to every projective class by the projective-envelope
 basis of `P₀[k](G)`. -/
 private theorem regularRestriction_projectiveCharacter_mem_of_projectiveEnvelope_generators
@@ -989,7 +989,7 @@ private theorem regularRestriction_projectiveCharacter_zeroExtension_eq_projecti
     simpa [hs, projectiveCharacterScalarExtension] using hzero.symm
 
 /-- Helper for Exercise 18-18.3-2: the chosen projective-envelope generators and Brauer
-characters satisfy Serre's Kronecker-delta pairing relation. -/
+characters satisfy LinearRepresentations_Serre_1977's Kronecker-delta pairing relation. -/
 private theorem projectiveEnvelope_regular_pairing_eq_delta
     {ι : Type (u + 1)} [DecidableEq ι]
     [HasEnoughRootsOfUnity K (Monoid.exponent G)]
@@ -1047,7 +1047,7 @@ private theorem projectiveEnvelope_regular_pairing_eq_delta
     exact congrArg
       (fun z : K ↦ z * FDRep.modularCharacterZeroExtension (π j) (PrimeToPRoot.toFieldLift lift) s)
       (congrFun hproj s)
-  -- Route correction: package Serre's projective-lift pairing as an explicit `PRegularConjClass`
+  -- Route correction: package LinearRepresentations_Serre_1977's projective-lift pairing as an explicit `PRegularConjClass`
   -- delta statement before attempting the later basis expansion.
   calc
     (Fintype.card G : K)⁻¹ *
@@ -1075,12 +1075,12 @@ private theorem projectiveEnvelope_regular_pairing_eq_delta
 namespace ConjClasses
 
 /-- Helper for Exercise 18-18.3-2: the centralizer order attached to a conjugacy class is
-the centralizer order of a chosen representative. This is the source-side scalar Serre later
+the centralizer order of a chosen representative. This is the source-side scalar LinearRepresentations_Serre_1977 later
 splits into its `p`-part and prime-to-`p` part. -/
 noncomputable def centralizerCard (c : ConjClasses G) : ℕ :=
   Nat.card (Subgroup.centralizer ({Classical.choose (ConjClasses.mk_surjective c)} : Set G))
 
-/-- Helper for Exercise 18-18.3-2: Serre's centralizer order on a conjugacy class factors as the
+/-- Helper for Exercise 18-18.3-2: LinearRepresentations_Serre_1977's centralizer order on a conjugacy class factors as the
 centralizer `p`-part times its prime-to-`p` complement. -/
 theorem centralizerCard_eq_centralizerPPart_mul_ordCompl
     (c : ConjClasses G) :
@@ -1136,13 +1136,13 @@ private theorem ordCompl_centralizerCard_isUnit
         (α := Subgroup.centralizer ({Classical.choose (ConjClasses.mk_surjective c.1)} : Set G))).ne'
   exact Nat.not_dvd_ordCompl (Fact.out : Nat.Prime p) hcard_ne hpdiv
 
-/-- Helper for Exercise 18-18.3-2: Serre's full regular indicator at `c` is the point mass whose
+/-- Helper for Exercise 18-18.3-2: LinearRepresentations_Serre_1977's full regular indicator at `c` is the point mass whose
 single nonzero value is the full centralizer order of `c`. -/
 private noncomputable def full_regular_indicator
     (c : PRegularConjClass G p) : PRegularConjClass G p → K :=
   Pi.single c (algebraMap A K (ConjClasses.centralizerCard c.1 : A))
 
-/-- Helper for Exercise 18-18.3-2: Serre's prime-to-`p` regular indicator at `c` is the
+/-- Helper for Exercise 18-18.3-2: LinearRepresentations_Serre_1977's prime-to-`p` regular indicator at `c` is the
 `A`-valued point mass whose single nonzero value is the prime-to-`p` factor of the centralizer
 order. Pairing this function with projective envelopes is the source-faithful route to the
 `p`-part divisibility statement. -/
@@ -1150,7 +1150,7 @@ private noncomputable def primeToP_regular_indicator
     (c : PRegularConjClass G p) : PRegularConjClass G p → A :=
   Pi.single c (ordCompl[p] (ConjClasses.centralizerCard c.1) : A)
 
-/-- Helper for Exercise 18-18.3-2: evaluating Serre's prime-to-`p` point mass at a `p`-regular
+/-- Helper for Exercise 18-18.3-2: evaluating LinearRepresentations_Serre_1977's prime-to-`p` point mass at a `p`-regular
 representative of the supporting class returns the prime-to-`p` factor of the centralizer order.
 This is the positive branch of the source point-mass calculation. -/
 private theorem primeToP_regular_indicator_ofSubtype_eq_ordCompl
@@ -1164,7 +1164,7 @@ private theorem primeToP_regular_indicator_ofSubtype_eq_ordCompl
   -- Evaluating the point mass at its support returns the defining coefficient.
   simpa [primeToP_regular_indicator, Pi.single_apply, hEq]
 
-/-- Helper for Exercise 18-18.3-2: evaluating Serre's prime-to-`p` point mass at a `p`-regular
+/-- Helper for Exercise 18-18.3-2: evaluating LinearRepresentations_Serre_1977's prime-to-`p` point mass at a `p`-regular
 representative outside the supporting class gives `0`. This is the negative branch of the source
 point-mass calculation. -/
 private theorem primeToP_regular_indicator_ofSubtype_eq_zero_of_mk_ne
@@ -1182,7 +1182,7 @@ private theorem primeToP_regular_indicator_ofSubtype_eq_zero_of_mk_ne
 
 /-- Helper for Exercise 18-18.3-2: summing a function constant on conjugacy classes over `G`
 equals summing it over conjugacy classes weighted by class size. This is the bookkeeping step used
-to collapse Serre's prime-to-`p` point masses. -/
+to collapse LinearRepresentations_Serre_1977's prime-to-`p` point masses. -/
 private theorem sum_over_group_eq_sum_over_conjClasses
     (a : ConjClasses G → K) :
     ∑ x : G, a (ConjClasses.mk x) =
@@ -1251,7 +1251,7 @@ private theorem sum_over_group_eq_sum_over_conjClasses
           intro c hc
           exact hcoeff c
 
-/-- Helper for Exercise 18-18.3-2: the zero extension of Serre's prime-to-`p` point mass at `c`
+/-- Helper for Exercise 18-18.3-2: the zero extension of LinearRepresentations_Serre_1977's prime-to-`p` point mass at `c`
 has total mass equal to the size of the conjugacy class times the prime-to-`p` factor of the
 centralizer order. This is the source-side class-sum calculation needed before the orthogonality
 comparison. -/
@@ -1311,7 +1311,7 @@ private theorem sum_primeToP_regular_indicator_zeroExtension_eq_class_card_mul
 
 /-- Helper for Exercise 18-18.3-2: inverting a conjugacy class does not change the order of the
 centralizer of a representative. This isolates the only stable class-level datum needed to repair
-the remaining `s⁻¹` pairing convention in Serre's orthogonality formula. -/
+the remaining `s⁻¹` pairing convention in LinearRepresentations_Serre_1977's orthogonality formula. -/
 private theorem nat_card_centralizer_eq_of_isConj
     {g h : G} (hgh : IsConj g h) :
     Nat.card (Subgroup.centralizer ({g} : Set G)) =
@@ -1352,7 +1352,7 @@ private theorem nat_card_centralizer_eq_of_isConj
 
 /-- Helper for Exercise 18-18.3-2: inverting a conjugacy class does not change the order of the
 centralizer of a representative. This isolates the only stable class-level datum needed to repair
-the remaining `s⁻¹` pairing convention in Serre's orthogonality formula. -/
+the remaining `s⁻¹` pairing convention in LinearRepresentations_Serre_1977's orthogonality formula. -/
 private theorem ConjClasses.centralizerCard_inv
     (c : ConjClasses G) :
     ConjClasses.centralizerCard c⁻¹ = ConjClasses.centralizerCard c := by
@@ -1882,7 +1882,7 @@ private theorem centralizerCard_cast_eq_centralizerPPart_mul_ordCompl_cast
     algebraMap A K (ConjClasses.centralizerCard c.1 : A) =
       algebraMap A K (ConjClasses.centralizerPPart p c.1 : A) *
         algebraMap A K (ordCompl[p] (ConjClasses.centralizerCard c.1) : A) := by
-  -- Rewrite Serre's class-level factorization and then map it into the characteristic-zero
+  -- Rewrite LinearRepresentations_Serre_1977's class-level factorization and then map it into the characteristic-zero
   -- coefficient field.
   have hcard :
       ConjClasses.centralizerCard c.1 =
@@ -1929,7 +1929,7 @@ private theorem card_carrier_mul_centralizerCard_cast_eq_groupCard
 
 /-- Helper for Exercise 18-18.3-2: the class-size factor and the prime-to-`p` part of the
 centralizer order combine to the inverse of the centralizer `p`-part. This is the scalar identity
-used after collapsing Serre's orthogonality sum to one conjugacy class. -/
+used after collapsing LinearRepresentations_Serre_1977's orthogonality sum to one conjugacy class. -/
 private theorem class_card_mul_ordCompl_eq_card_mul_centralizerPPart_inv
     (c : PRegularConjClass G p) :
     (Nat.card c.1.carrier : K) *
@@ -1972,7 +1972,7 @@ private theorem class_card_mul_ordCompl_eq_card_mul_centralizerPPart_inv
         (algebraMap A K (ConjClasses.centralizerPPart p c.1 : A))⁻¹ := by
           simp [x]
 
-/-- Helper for Exercise 18-18.3-2: Serre's pairing with the prime-to-`p` indicator at `c`
+/-- Helper for Exercise 18-18.3-2: LinearRepresentations_Serre_1977's pairing with the prime-to-`p` indicator at `c`
 collapses to the inverse-class regular value scaled by the inverse centralizer `p`-part. This is
 the class-sum half of the orthogonality argument for part `(a)`. -/
 private theorem projectiveEnvelope_pairing_primeToP_indicator_eq_inverse_regularRestriction
@@ -2084,7 +2084,7 @@ private theorem projectiveEnvelope_pairing_primeToP_indicator_eq_inverse_regular
   · intro hc
     exact (hc hc_mem).elim
 
-/-- Helper for Exercise 18-18.3-2: evaluating the Brauer-basis expansion of Serre's prime-to-`p`
+/-- Helper for Exercise 18-18.3-2: evaluating the Brauer-basis expansion of LinearRepresentations_Serre_1977's prime-to-`p`
 indicator at a regular class reads the point mass as the sum of its basis coefficients times the
 corresponding basis values. -/
 private theorem primeToP_regular_indicator_apply_eq_sum_basis_repr
@@ -2119,7 +2119,7 @@ private theorem primeToP_regular_indicator_apply_eq_sum_basis_repr
 variable [HasEnoughRootsOfUnity K (Monoid.exponent G)]
 
 /-- Helper for Exercise 18-18.3-2: after transporting the canonical `A`-valued Brauer basis
-through `algebraMap A K`, Serre's projective-envelope pairing with its `j`-th basis vector is the
+through `algebraMap A K`, LinearRepresentations_Serre_1977's projective-envelope pairing with its `j`-th basis vector is the
 Kronecker delta. This is the source-faithful bridge from the Exercise `18.4` basis to the
 characteristic-zero orthogonality relation. -/
 private theorem projectiveEnvelope_pairing_primeToP_indicator_eq_basis_repr
@@ -2157,7 +2157,7 @@ private theorem projectiveEnvelope_pairing_primeToP_indicator_eq_basis_repr
         FDRep.modularCharacterOnPRegularConjClass (p := p) (π j)
           (PrimeToPRoot.toFieldLift liftK) := by
     -- Transport the canonical `A`-valued Exercise `18.4` basis vector to the `K`-valued Brauer
-    -- character used by Serre's orthogonality formula.
+    -- character used by LinearRepresentations_Serre_1977's orthogonality formula.
     ext c
     simp [exercise_18_18_2_9_irreducible_modular_characters_basis_apply,
       PrimeToPRoot.toFieldLift, primeToPRoot_canonicalLift, liftK]
@@ -2199,7 +2199,7 @@ private theorem projectiveEnvelope_pairing_primeToP_indicator_eq_basis_repr
       (hπ_complete := hπ_complete) (P := P) (hP_envelope := hP_envelope) i j)
 
 /-- Helper for Exercise 18-18.3-2: the regular restriction of each projective-character generator
-already satisfies Serre's coordinatewise divisibility condition. -/
+already satisfies LinearRepresentations_Serre_1977's coordinatewise divisibility condition. -/
 private theorem projectiveEnvelope_regularRestriction_value_eq_centralizerPPart_mul_repr_inv
     {ι : Type (u + 1)} [Fintype ι] [DecidableEq ι]
     (π : ι → FDRep k G)
@@ -2256,7 +2256,7 @@ private theorem projectiveEnvelope_regularRestriction_value_eq_centralizerPPart_
             (p := p) (A := A) (G := G)
             (π := π) (hπ_pairwise := hπ_pairwise) (hπ_complete := hπ_complete)
             c (PRegularConjClass.ofSubtype (G := G) p ⟨s, hs⟩)
-        -- Expand Serre's prime-to-`p` indicator in the canonical `A`-valued Brauer basis, then
+        -- Expand LinearRepresentations_Serre_1977's prime-to-`p` indicator in the canonical `A`-valued Brauer basis, then
         -- transport the resulting coefficient formula through `algebraMap A K`.
         simp only [hs, dif_pos]
         calc
@@ -2301,7 +2301,7 @@ private theorem projectiveEnvelope_regularRestriction_value_eq_centralizerPPart_
                 else 0) =
           algebraMap A K
             ((bA.repr (primeToP_regular_indicator (p := p) (A := A) (G := G) c)) i) := by
-      -- Replace Serre's prime-to-`p` indicator by its canonical Brauer-basis expansion, then
+      -- Replace LinearRepresentations_Serre_1977's prime-to-`p` indicator by its canonical Brauer-basis expansion, then
       -- collapse each basis pairing by the previous Kronecker-delta helper.
       calc
         (Fintype.card G : K)⁻¹ *
@@ -2421,7 +2421,7 @@ private theorem projectiveEnvelope_regularRestriction_value_eq_centralizerPPart_
   have hppart_ne :=
     algebraMap_centralizerPPart_ne_zero (p := p) (A := A) (K := K) (G := G) c
   apply (mul_left_injective₀ hppart_ne)
-  -- Clear the invertible denominator `ConjClasses.centralizerPPart p c.1` to recover Serre's
+  -- Clear the invertible denominator `ConjClasses.centralizerPPart p c.1` to recover LinearRepresentations_Serre_1977's
   -- divisibility statement itself.
   calc
     algebraMap A K (ConjClasses.centralizerPPart p c.1 : A) *
@@ -2449,7 +2449,7 @@ private theorem projectiveEnvelope_regularRestriction_value_eq_centralizerPPart_
           simp [map_mul]
 
 /-- Helper for Exercise 18-18.3-2: the regular restriction of each projective-character generator
-already satisfies Serre's coordinatewise divisibility condition. -/
+already satisfies LinearRepresentations_Serre_1977's coordinatewise divisibility condition. -/
 private theorem regularRestriction_projectiveCharacter_mem_regularValueDivisibilitySubmodule
     (x : P₀[k](G)) :
     regularRestriction (p := p)
@@ -2466,7 +2466,7 @@ private theorem regularRestriction_projectiveCharacter_mem_regularValueDivisibil
   rcases hfamilies with
     ⟨ι, _, π, hπ_pairwise, hπ_complete, P, hP_envelope⟩
   -- Route correction: first reduce the arbitrary projective class to the canonical
-  -- projective-envelope basis used by Serre, then isolate the source orthogonality calculation on
+  -- projective-envelope basis used by LinearRepresentations_Serre_1977, then isolate the source orthogonality calculation on
   -- those generators.
   refine
     regularRestriction_projectiveCharacter_mem_of_projectiveEnvelope_generators
@@ -2497,7 +2497,7 @@ private theorem regularRestriction_projectiveCharacter_mem_regularValueDivisibil
       (P := P) (hP_envelope := hP_envelope) i
       (inversePRegularConjClass (p := p) c))
 
-/-- Helper for Exercise 18-18.3-2: Serre's full indicator should first be written as an explicit
+/-- Helper for Exercise 18-18.3-2: LinearRepresentations_Serre_1977's full indicator should first be written as an explicit
 combination of the projective-envelope restrictions before passing to the scaled indicator by a
 unit rescaling. -/
 private theorem full_regular_indicator_eq_sum_projectiveEnvelope_restriction
@@ -2516,7 +2516,7 @@ private theorem full_regular_indicator_eq_sum_projectiveEnvelope_restriction
           (inversePRegularConjClass (p := p) c)) •
           regularRestriction (p := p)
             (projectiveCharacterScalarExtension (A := A) (K := K) (G := G) [P i]ₚ₀) := by
-  -- Route correction: package Serre's reverse direction as an exact equality first, so the image
+  -- Route correction: package LinearRepresentations_Serre_1977's reverse direction as an exact equality first, so the image
   -- theorem below becomes a formal `Submodule.sum_mem` corollary instead of another membership
   -- loop.
   classical
@@ -2702,7 +2702,7 @@ private theorem regularRestriction_projectiveCharacter_mem_projectiveCharacter_m
       projectiveCharacterScalarExtension_mem_projectiveCharacterSubmodule
         (A := A) (K := K) (G := G) x, rfl⟩
 
-/-- Helper for Exercise 18-18.3-2: Serre's full indicator should first be written as an explicit
+/-- Helper for Exercise 18-18.3-2: LinearRepresentations_Serre_1977's full indicator should first be written as an explicit
 combination of the projective-envelope restrictions before passing to the scaled indicator by a
 unit rescaling. -/
 private theorem full_regular_indicator_mem_projectiveCharacter_map
@@ -2762,7 +2762,7 @@ theorem projectiveCharacterSubmodule_map_regularRestriction_eq_regularValueDivis
     exact
       regularRestriction_projectiveCharacter_mem_regularValueDivisibilitySubmodule
         (p := p) (A := A) (K := K) (G := G) y
-  · -- Route correction: reduce the reverse inclusion to Serre's scaled point-mass generators.
+  · -- Route correction: reduce the reverse inclusion to LinearRepresentations_Serre_1977's scaled point-mass generators.
     rw [regularValueDivisibilitySubmodule_eq_span_scaled_regular_indicator
       (p := p) (A := A) (K := K) (G := G)]
     refine Submodule.span_le.2 ?_
@@ -3323,7 +3323,7 @@ private theorem cartanCoordinateAddHom_eq_scaled_regular_integer_indicator_of_ca
     simp [scaled_regular_integer_indicator]
   · simp [scaled_regular_integer_indicator, h]
 
-/-- Helper for Exercise 18-18.3-2: once Serre's Cartan class identity is known for a
+/-- Helper for Exercise 18-18.3-2: once LinearRepresentations_Serre_1977's Cartan class identity is known for a
 coordinate-normalized projective-envelope family, the generator formula is a formal rewrite
 through `cartanCoordinateAddHom`. This isolates the remaining mixed-character work to the
 transported class identity itself. -/
@@ -3348,7 +3348,7 @@ private theorem coordinate_normalized_cartan_generator_formula_of_cartan_class
       (p := p) (k := k) (G := G) (π := π) hπ_coord [P c]ₚ₀ c (hcartan c)
 
 /-- Helper for Exercise 18-18.3-2: if a transported projective/simple family has the same
-Grothendieck classes as the fixed coordinate-normalized family, then Serre's Cartan class identity
+Grothendieck classes as the fixed coordinate-normalized family, then LinearRepresentations_Serre_1977's Cartan class identity
 rewrites back to the original family indexwise. -/
 private theorem transport_coordinate_normalized_cartan_class_across_class_equalities
     (π π₀ : PRegularConjClass G p → FDRep k G)
@@ -3365,7 +3365,7 @@ private theorem transport_coordinate_normalized_cartan_class_across_class_equali
       cartanHom k G [P c]ₚ₀ =
         (ConjClasses.centralizerPPart p c.1 : ℤ) • [π c]₀ := by
   intro c
-  -- Read Serre's class identity on the transported family and rewrite both sides through the
+  -- Read LinearRepresentations_Serre_1977's class identity on the transported family and rewrite both sides through the
   -- indexwise class equalities.
   calc
     cartanHom k G [P c]ₚ₀ = cartanHom k G [P₀ c]ₚ₀ := by
@@ -3375,7 +3375,7 @@ private theorem transport_coordinate_normalized_cartan_class_across_class_equali
       rw [hπ_class c]
 
 /-- Helper for Exercise 18-18.3-2: once the scalar-extended residue-owner family is identified
-with the fixed coordinate-normalized `k`-family on Grothendieck classes, Serre's Cartan class
+with the fixed coordinate-normalized `k`-family on Grothendieck classes, LinearRepresentations_Serre_1977's Cartan class
 identity transports forward to the scalar-extended projective envelopes. -/
 private theorem scalarExtension_coordinate_normalized_cartan_class_from_residue_owner
     (π π₀ : PRegularConjClass G p → FDRep k G)
@@ -3392,7 +3392,7 @@ private theorem scalarExtension_coordinate_normalized_cartan_class_from_residue_
       cartanHom k G [P₀ c]ₚ₀ =
         (ConjClasses.centralizerPPart p c.1 : ℤ) • [π₀ c]₀ := by
   intro c
-  -- Read Serre's class identity on the reference `k`-family and rewrite both sides through the
+  -- Read LinearRepresentations_Serre_1977's class identity on the reference `k`-family and rewrite both sides through the
   -- scalar-extension class equalities.
   calc
     cartanHom k G [P₀ c]ₚ₀ = cartanHom k G [P c]ₚ₀ := by
@@ -3741,7 +3741,7 @@ private theorem exists_mixed_character_model_over_algClosed_residueField :
       (ξK1u : K1) ^ (m / Nat.factorizationLCMRight (p ^ Nat.factorization n p) m)
   have hζ :
       IsPrimitiveRoot ζ (Nat.lcm (p ^ Nat.factorization n p) m) := by
-    -- Serre's source route combines the `p`-power primitive root with the coprime prime-to-`p`
+    -- LinearRepresentations_Serre_1977's source route combines the `p`-power primitive root with the coprime prime-to-`p`
     -- lift into a primitive root of order the full exponent.
     simpa [ζ] using
       IsPrimitiveRoot.pow_mul_pow_lcm hζp hξ_K1 hp_pow_ne hm_ne
@@ -3797,7 +3797,7 @@ private theorem scalarExtension_projectiveEnvelope_family
 /-- Helper for Exercise 18-18.3-2: once the residue-field owner `e0` is fixed, the remaining
 source-faithful step for part `(b)` is to compare the scalar-extended residue-owner
 coordinate-normalized family with the fixed `k`-family on Grothendieck classes and then transport
-Serre's Cartan class identity across those equalities. -/
+LinearRepresentations_Serre_1977's Cartan class identity across those equalities. -/
 private theorem residueField_equiv_transport_coordinate_normalized_family_data
     {A0 : Type u} [CommRing A0] [IsLocalRing A0]
     (e0 : IsLocalRing.ResidueField A0 ≃+* k)
@@ -3964,7 +3964,7 @@ private theorem residueField_equiv_transport_complete_family_gram_data
   -- `cartanMatrix_eq_of_complete_family_class_equalities`.
   sorry
 
-/-- Helper for Exercise 18-18.3-2: after choosing the coordinate-normalized simple family, Serre's
+/-- Helper for Exercise 18-18.3-2: after choosing the coordinate-normalized simple family, LinearRepresentations_Serre_1977's
 mixed-character argument should supply projective envelopes whose Cartan images are the scaled
 regular indicators. This is the exact generator package needed by the generic range theorem
 already proved below. -/
@@ -4191,7 +4191,7 @@ theorem cartanCokernel_nonempty_addEquiv_pi_centralizerPPart :
 -- conjugacy classes of `G`. Since the determinant of an integer matrix in Smith normal form is
 -- the product of its invariant factors, the determinant of the canonical Cartan matrix attached to
 -- a complete simple family and its projective envelopes is the product of these classwise
--- integers, equivalently `p ^ (∑ z(s))` in Serre's notation after choosing representatives.
+-- integers, equivalently `p ^ (∑ z(s))` in LinearRepresentations_Serre_1977's notation after choosing representatives.
 /-- Helper for Exercise 18-18.3-2: once the Cartan cokernel is transported to the diagonal
 regular-class quotient, the absolute value of the distinguished Cartan determinant is the product
 of the centralizer `p`-parts. -/

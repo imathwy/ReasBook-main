@@ -1,10 +1,10 @@
 import Mathlib
-import Serre.GroupTheory.ConjClassesPower
-import Serre.Chap10.Definition_10_10_1_1
-import Serre.Chap11.Proposition_11_11_4_1.OwnersAndPrimeFibers
-import Serre.Chap12.Proposition_12_12_1_1
-import Serre.Chap12.Corollary_12_12_4_2
-import Serre.Chap12.Theorem_12_12_4_1
+import LinearRepresentations_Serre_1977.GroupTheory.ConjClassesPower
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_1
+import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_1.OwnersAndPrimeFibers
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_4_2
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_4_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -26,7 +26,7 @@ local instance instNeZeroExponentGaloisPowerClasses :
     NeZero (Monoid.exponent G) := Monoid.neZero_exponent_of_finite
 
 /- Source/core/bridge triage:
-- `source-facing`: `GaloisPowerClass ΓK` and `PRegularGaloisPowerClass ΓK p`, Serre's genuine
+- `source-facing`: `GaloisPowerClass ΓK` and `PRegularGaloisPowerClass ΓK p`, LinearRepresentations_Serre_1977's genuine
   `Γ_K`-classes and `p`-regular `Γ_K`-classes.
 - `core/canonical`: `ConjClasses G`, `PRegularConjClass G p`, the orbit quotients
   `MulAction.orbitRel.Quotient ΓK _` coming from the descended `Γ_K`-power action, and the
@@ -86,12 +86,12 @@ instance : MulAction (ZMod (Monoid.exponent G))ˣ (ConjClasses G) where
 
 end ConjClasses
 
-/-- Serre's `Γ_K`-classes, realized canonically as the orbit quotient of `ConjClasses G` under the
+/-- LinearRepresentations_Serre_1977's `Γ_K`-classes, realized canonically as the orbit quotient of `ConjClasses G` under the
 descended `Γ_K`-power action. -/
 abbrev GaloisPowerClass (ΓK : Subgroup (ZMod (Monoid.exponent G))ˣ) :=
   MulAction.orbitRel.Quotient ΓK (ConjClasses G)
 
-/-- The canonical map from group elements to Serre's `Γ_K`-classes. -/
+/-- The canonical map from group elements to LinearRepresentations_Serre_1977's `Γ_K`-classes. -/
 def galoisPowerClassMk (ΓK : Subgroup (ZMod (Monoid.exponent G))ˣ) :
     G → GaloisPowerClass ΓK :=
   Quotient.mk'' ∘ ConjClasses.mk
@@ -169,7 +169,7 @@ instance : MulAction (ZMod (Monoid.exponent G))ˣ (PRegularConjClass G p) where
 
 end PRegularConjClass
 
-/-- The `p`-regular Serre `Γ_K`-classes, realized canonically as the orbit quotient of
+/-- The `p`-regular LinearRepresentations_Serre_1977 `Γ_K`-classes, realized canonically as the orbit quotient of
 `PRegularConjClass G p` under the descended `Γ_K`-power action. -/
 abbrev PRegularGaloisPowerClass (ΓK : Subgroup (ZMod (Monoid.exponent G))ˣ) (p : ℕ) :=
   MulAction.orbitRel.Quotient ΓK (PRegularConjClass G p)
@@ -183,7 +183,7 @@ section GaloisPowerClassFunctions
 
 variable {R : Type v}
 
-/-- An `R`-valued function on `G` is constant on Serre's `Γ_K`-classes if it factors through the
+/-- An `R`-valued function on `G` is constant on LinearRepresentations_Serre_1977's `Γ_K`-classes if it factors through the
 canonical map `G → GaloisPowerClass ΓK`. -/
 @[mk_iff]
 class IsConstantOnGaloisPowerClasses
@@ -253,7 +253,7 @@ theorem isConstantOnGaloisPowerClasses_iff_isClassFunction_and_factorsThrough
   · rintro ⟨_, hfactor⟩
     exact ⟨hfactor⟩
 
-/-- A function on `G` is constant on Serre's `Γ_K`-classes exactly when it is pulled back from
+/-- A function on `G` is constant on LinearRepresentations_Serre_1977's `Γ_K`-classes exactly when it is pulled back from
 `GaloisPowerClass ΓK`. -/
 theorem isConstantOnGaloisPowerClasses_iff_exists
     {ΓK : Subgroup (ZMod (Monoid.exponent G))ˣ} {f : G → R} :
@@ -265,7 +265,7 @@ theorem isConstantOnGaloisPowerClasses_iff_exists
   · rintro ⟨φ, rfl⟩
     infer_instance
 
-/-- For a class function, constancy on Serre's `Γ_K`-classes is equivalent to invariance under the
+/-- For a class function, constancy on LinearRepresentations_Serre_1977's `Γ_K`-classes is equivalent to invariance under the
 corresponding `Γ_K`-power maps. -/
 theorem isConstantOnGaloisPowerClasses_iff_forall_pow_eq
     {ΓK : Subgroup (ZMod (Monoid.exponent G))ˣ} {f : G → R}
@@ -325,7 +325,7 @@ section GaloisPowerClassFunctionSubmodule
 
 variable {R : Type v} [Semiring R]
 
-/-- The `R`-submodule of `R`-valued functions on `G` that are constant on Serre's `Γ_K`-classes.
+/-- The `R`-submodule of `R`-valued functions on `G` that are constant on LinearRepresentations_Serre_1977's `Γ_K`-classes.
 This is the Chapter `12` owner matching the Chapter `2` owner `classFunctionSubmodule`. -/
 def galoisPowerClassFunctionSubmodule
     (ΓK : Subgroup (ZMod (Monoid.exponent G))ˣ) : Submodule R (G → R) where
@@ -342,7 +342,7 @@ def galoisPowerClassFunctionSubmodule
     letI : IsConstantOnGaloisPowerClasses ΓK f := hf
     simpa using (inferInstance : IsConstantOnGaloisPowerClasses ΓK (a • f))
 
-/-- Membership in the bundled owner `galoisPowerClassFunctionSubmodule R ΓK` is exactly Serre's
+/-- Membership in the bundled owner `galoisPowerClassFunctionSubmodule R ΓK` is exactly LinearRepresentations_Serre_1977's
 `Γ_K`-class-constancy condition. -/
 @[simp] theorem mem_galoisPowerClassFunctionSubmodule_iff
     (ΓK : Subgroup (ZMod (Monoid.exponent G))ˣ) (f : G → R) :
@@ -449,7 +449,7 @@ theorem isClassFunction_of_mem_characterRingOverFieldScalarExtension
 
 /-- Corollary `12-12.4-2`, rewritten through the canonical quotient owner
 `GaloisPowerClass (Γ[K](G))`: a `K`-valued function belongs to `K ⊗ R_K(G)` exactly when
-it is constant on Serre's `Γ_K`-classes. -/
+it is constant on LinearRepresentations_Serre_1977's `Γ_K`-classes. -/
 theorem classFunction_mem_characterRingOverFieldScalarExtension_iff_isConstantOnGaloisPowerClasses
     (f : G → K) :
     f ∈ K⊗R[K](G) ↔ IsConstantOnGaloisPowerClasses (Γ[K](G)) f := by
@@ -477,9 +477,9 @@ abbrev galoisPowerClassFunctionSubmoduleOverField :
     @Submodule K (G → K) _ _ (Pi.module G (fun _ : G ↦ K) K) :=
   galoisPowerClassFunctionSubmodule (R := K) (Γ[K](G))
 
-/-- Serre's scalar extension `K ⊗ R_K(G)` is exactly the owner submodule of `K`-valued
+/-- LinearRepresentations_Serre_1977's scalar extension `K ⊗ R_K(G)` is exactly the owner submodule of `K`-valued
 functions on `G` that are constant on `Γ[K](G)`-power classes. This is Corollary 12.4.2 in
-Serre's notation; the earlier rationalized owner `ℚ ⊗ R_K(G)` is too small for this statement. -/
+LinearRepresentations_Serre_1977's notation; the earlier rationalized owner `ℚ ⊗ R_K(G)` is too small for this statement. -/
 theorem characterRingOverFieldScalarExtension_eq_galoisPowerClassFunctionSubmodule :
     (K⊗R[K](G) : Submodule K (G → K)) =
       galoisPowerClassFunctionSubmoduleOverField (G := G) (L := L) K := by
@@ -489,7 +489,7 @@ theorem characterRingOverFieldScalarExtension_eq_galoisPowerClassFunctionSubmodu
     classFunction_mem_characterRingOverFieldScalarExtension_iff_isConstantOnGaloisPowerClasses
       K f
 
-/-- Corollary 12-12.4-3 bridge: Serre's scalar extension `K ⊗ R_K(G)` is canonically the full
+/-- Corollary 12-12.4-3 bridge: LinearRepresentations_Serre_1977's scalar extension `K ⊗ R_K(G)` is canonically the full
 function space on the quotient `GaloisPowerClass (Γ[K](G))`. -/
 def characterRingOverFieldScalarExtensionEquivGaloisPowerClassFunctions
     :
@@ -535,7 +535,7 @@ def characterRingOverFieldScalarExtensionEquivGaloisPowerClassFunctions
     simpa using congrArg ((↑) : K → L) (congrFun hφ_eq g)
   simpa using hleft.trans hright
 
-/-- A `K`-valued character in `R_K(G)` is constant on Serre's `Γ_K`-classes. -/
+/-- A `K`-valued character in `R_K(G)` is constant on LinearRepresentations_Serre_1977's `Γ_K`-classes. -/
 theorem isConstantOnGaloisPowerClasses_of_mem_characterRingOverField
     {f : G → K} (hf : f ∈ R[K](G)) :
     IsConstantOnGaloisPowerClasses (Γ[K](G)) f := by
@@ -544,7 +544,7 @@ theorem isConstantOnGaloisPowerClasses_of_mem_characterRingOverField
       K f).1
       (mem_characterRingOverFieldAlgebraScalarExtension_of_mem_characterRingOverField (A := K) hf)
 
-/-- Membership in Serre's scalar extension `A ⊗ R_K(G)` implies constancy on the genuine
+/-- Membership in LinearRepresentations_Serre_1977's scalar extension `A ⊗ R_K(G)` implies constancy on the genuine
 arithmetic `Γ_K`-classes. This is the owner-level Chapter `12` upgrade of the `R_K(G)` statement
 above, and the canonical source for later reductions modulo prime ideals. -/
 theorem isConstantOnGaloisPowerClasses_of_mem_characterRingOverFieldAlgebraScalarExtension
@@ -571,7 +571,7 @@ theorem isConstantOnGaloisPowerClasses_of_mem_characterRingOverFieldAlgebraScala
 -- space `GaloisPowerClass (Γ[K](G)) → K` via
 -- `characterRingOverFieldScalarExtensionEquivGaloisPowerClassFunctions`. Transport each
 -- irreducible character through that quotient equivalence, then package the resulting family as
--- the basis promised by Serre's corollary.
+-- the basis promised by LinearRepresentations_Serre_1977's corollary.
 /-- The quotient function on `GaloisPowerClass (Γ[K](G))` corresponding to the irreducible
 character of `π i`. -/
 def irreducibleCharacterOnGaloisPowerClasses
@@ -837,7 +837,7 @@ lemma span_irreducibleCharacterOnGaloisPowerClasses_eq_top
     simpa [hψφ] using hψ
 
 /-- Corollary 12-12.4-3: the characters of the distinct irreducible `K`-representations of `G`
-form a basis of the `K`-valued functions that are constant on Serre's `Γ_K`-classes of `G`. In
+form a basis of the `K`-valued functions that are constant on LinearRepresentations_Serre_1977's `Γ_K`-classes of `G`. In
 the canonical quotient-owner presentation used in this file, this is realized as a basis of the
 function space on `GaloisPowerClass (Γ[K](G))`. -/
 def irreducible_characters_basis_of_galoisPowerClassFunctions

@@ -1,4 +1,4 @@
-import stacks_project.Chap04.Lemma_4_36_4.Strictification
+import StacksProject_2024.Chap04.Lemma_4_36_4.Strictification
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib
-import CombinatorialGroupTheory.Items.Chap01.Proposition_1_11_24
-import CombinatorialGroupTheory.Items.Chap04.Definition_4_2_9
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_11_24
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap04.Definition_4_2_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -47,7 +47,7 @@ Primitive vs. derived:
   subgroup.
 
 The finite-generation and nontriviality hypotheses from the textbook are omitted below: the
-canonical Kurosh/Bass-Serre decomposition statements do not require them.
+canonical Kurosh/Bass-LinearRepresentations_Serre_1977 decomposition statements do not require them.
 -/
 
 section AmalgamatedProduct
@@ -92,7 +92,7 @@ local notation "of" => (HNNExtension.of : G →* E)
 associated subgroups trivially is a free product of one free factor together with subgroup factors
 which are the corresponding conjugate intersections with conjugates of the embedded base subgroup.
 -/
--- Proof sketch: let the subgroup act on the Bass-Serre tree of the HNN extension, or equivalently
+-- Proof sketch: let the subgroup act on the Bass-LinearRepresentations_Serre_1977 tree of the HNN extension, or equivalently
 -- use the bipolar structure from Section `6`. Trivial intersections with conjugates of the base
 -- associated subgroups `A` and `B` force the edge stabilizers to be trivial, so the subgroup is
 -- the free product of its vertex stabilizers together with a free group. Those vertex stabilizers

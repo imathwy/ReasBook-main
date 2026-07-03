@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap02.Corollary_2_2_4_3
-import Serre.Chap12.Proposition_12_12_1_3
+import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_4_3
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_3
 
 noncomputable section
 
@@ -30,7 +30,7 @@ abbrev schurScaledCharacter (V : FDRep K G) (m : ℕ+) : G → K :=
 
 /-- The positive integer `m` is the source-facing Schur denominator attached to the
 finite-dimensional `K`-representation `V` when `χ_V / m` belongs to `\overline{R}_K(G)` and `m`
-is maximal for this property. This is the general-field denominator form of Serre's Schur-index
+is maximal for this property. This is the general-field denominator form of LinearRepresentations_Serre_1977's Schur-index
 condition; the
 complex-character owner `HasSchurIndex` remains the specialized Chapter 12 owner on the complex
 side. -/

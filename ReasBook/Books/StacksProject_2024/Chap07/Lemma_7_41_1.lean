@@ -13,11 +13,11 @@ import Mathlib.CategoryTheory.Sites.LeftExact
 import Mathlib.CategoryTheory.Sites.Adjunction
 import Mathlib.CategoryTheory.Sites.Equivalence
 import Mathlib.Tactic.Recall
-import stacks_project.Chap07.Lemma_7_12_4
-import stacks_project.Chap07.Lemma_7_11_2
-import stacks_project.Chap07.Lemma_7_11_3
-import stacks_project.Chap07.Lemma_7_17_6
-import stacks_project.Chap07.Definition_7_15_1_Topoi
+import StacksProject_2024.Chap07.Lemma_7_12_4
+import StacksProject_2024.Chap07.Lemma_7_11_2
+import StacksProject_2024.Chap07.Lemma_7_11_3
+import StacksProject_2024.Chap07.Lemma_7_17_6
+import StacksProject_2024.Chap07.Definition_7_15_1_Topoi
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

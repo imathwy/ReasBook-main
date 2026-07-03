@@ -1,10 +1,10 @@
 import Mathlib
-import FirstOrderMethodsinOptimization.Chap13.Algorithm_13_5
-import FirstOrderMethodsinOptimization.Chap13.Assumption_13_17
-import FirstOrderMethodsinOptimization.Chap13.Assumption_13_18
-import FirstOrderMethodsinOptimization.Chap13.Definition_13_6
-import FirstOrderMethodsinOptimization.Chap13.Lemma_13_16
-import FirstOrderMethodsinOptimization.Chap13.Lemma_13_19.Index
+import FirstOrderMethodsOptimization_Beck_2017.Chap13.Algorithm_13_5
+import FirstOrderMethodsOptimization_Beck_2017.Chap13.Assumption_13_17
+import FirstOrderMethodsOptimization_Beck_2017.Chap13.Assumption_13_18
+import FirstOrderMethodsOptimization_Beck_2017.Chap13.Definition_13_6
+import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_16
+import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_19.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

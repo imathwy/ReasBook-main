@@ -1,5 +1,5 @@
 import Mathlib
-import CombinatorialGroupTheory.Items.Chap02.Proposition_2_5_14
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap02.Proposition_2_5_14
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -22,7 +22,7 @@ open Subgroup (normalClosure)
   via `FreeGroupBasis.isPrimitiveElement`, and Proposition `2-5-14` supplies the owner-level
   bridge from membership in `normalClosure ({q} : Set F)` to the conjugacy conclusion.
 - Domain sampling:
-  1. `IsPrimitiveElement` from `CombinatorialGroupTheory.Basic` is the project owner for
+  1. `IsPrimitiveElement` from `CombinatorialGroupTheory_Magnus_2004.Basic` is the project owner for
      “belongs to some free basis”, so the proposition should not expose a parallel basis-witness
      theorem as its main entry.
   2. `FreeGroupBasis.isPrimitiveElement` is the canonical project bridge from a chosen basis

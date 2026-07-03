@@ -1,4 +1,4 @@
-import Nesterov.Chap04.Text_4_2_2
+import LecturesConvexOptimization_Nesterov_2018.Chap04.Text_4_2_2
 
 noncomputable section
 

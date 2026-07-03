@@ -1,6 +1,6 @@
-import cartan.IV.section14.0001_Definition_IV_2_extra_1
-import cartan.IV.section14.0002_Definition_IV_2_extra_2
-import cartan.IV.section14.0003_Proposition_2_I
-import cartan.IV.section14.0004_Theorem_IV_2_extra_3
-import cartan.IV.section14.0005_Corollary_I
-import cartan.IV.section14.0006_Corollary_2
+import DifferentialForms_Cartan_1970.IV.section14.0001_Definition_IV_2_extra_1
+import DifferentialForms_Cartan_1970.IV.section14.0002_Definition_IV_2_extra_2
+import DifferentialForms_Cartan_1970.IV.section14.0003_Proposition_2_I
+import DifferentialForms_Cartan_1970.IV.section14.0004_Theorem_IV_2_extra_3
+import DifferentialForms_Cartan_1970.IV.section14.0005_Corollary_I
+import DifferentialForms_Cartan_1970.IV.section14.0006_Corollary_2

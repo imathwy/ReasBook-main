@@ -5,8 +5,8 @@ Authors: Chenyi Li, Ziyu Wang, Yuxuan Wu, Shengyang Xu
 -/
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Convex.Strong
-import Reaslib.Optlib.Convex.StronglyConvex
-import Reaslib.Optlib.Algorithm.GD.GradientDescent
+import ReasLib.Optlib.Convex.StronglyConvex
+import ReasLib.Optlib.Algorithm.GD.GradientDescent
 
 /-!
 # GradientDescentStronglyConvex

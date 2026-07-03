@@ -1,11 +1,11 @@
 import Mathlib
-import Serre.Chap01.Definition_1_1_2_1
-import Serre.Chap02.Remark_2_2_1_2
-import Serre.Chap02.Theorem_2_2_5_2
-import Serre.Chap07.Exercise_7_7_2_5
-import Serre.Chap10.Definition_10_10_1_3
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap01.Definition_1_1_2_1
+import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_1_2
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_5_2
+import LinearRepresentations_Serre_1977.Chap07.Exercise_7_7_2_5
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -116,7 +116,7 @@ theorem character_ulift_representation_eq
 
 omit [Finite G] in
 /-- The ordinary character of a finite-dimensional complex representation defines an element of
-Serre's character ring `R(G)`. -/
+LinearRepresentations_Serre_1977's character ring `R(G)`. -/
 theorem rep_character_mem_characterRing (ρ : Rep.{w} ℂ G) [FiniteDimensional ℂ ρ] :
     ρ.ρ.character ∈ R(G) := by
   let ρfin : Representation ℂ G (Fin (Module.finrank ℂ ρ) → ℂ) :=
@@ -148,7 +148,7 @@ variable {G : Type u} [Group G] [Finite G]
 
 namespace MonoidHom
 
-/-- A degree-`1` complex character of a finite group, viewed in Serre's character ring `R(G)`. -/
+/-- A degree-`1` complex character of a finite group, viewed in LinearRepresentations_Serre_1977's character ring `R(G)`. -/
 abbrev toCharacterRing (ρ : G →* ℂˣ) : R(G) :=
   ⟨ρ.toRepresentation.character,
     Representation.rep_character_mem_characterRing (Rep.of ρ.toRepresentation)⟩
@@ -168,7 +168,7 @@ section AdamsOperator
 variable {G : Type u} [Group G]
 variable {A : Type v}
 
-/-- Serre's Adams operator `Ψ^n` on `A`-valued class functions, defined by precomposition with the
+/-- LinearRepresentations_Serre_1977's Adams operator `Ψ^n` on `A`-valued class functions, defined by precomposition with the
 `n`th-power map on `G`. -/
 def adamsOperator (n : ℕ+) (f : G → A) : G → A :=
   fun g ↦ f (g ^ (n : ℕ))
@@ -208,7 +208,7 @@ local instance tensorCharacterBridge_subgroup_fintype [Finite G] (H : Subgroup G
   Fintype.ofFinite H
 
 -- Source/core/bridge triage:
--- * source-facing: Serre's tensor character ring `A ⊗ R(G)`.
+-- * source-facing: LinearRepresentations_Serre_1977's tensor character ring `A ⊗ R(G)`.
 -- * core/canonical: the tensor product owner `TensorProduct ℤ A (R(G))`.
 -- * bridge/view: `characterRingScalarExtension A G`, the realized `A`-span in `G → ℂ`.
 --
@@ -217,7 +217,7 @@ local instance tensorCharacterBridge_subgroup_fintype [Finite G] (H : Subgroup G
 -- coercion from the owner to `G → ℂ`.
 scoped[Representation] notation:max A " ⊗R(" G ")" => TensorProduct ℤ A (R(G))
 
-/-- The ambient complex-function realization of Serre's tensor character ring. This is a
+/-- The ambient complex-function realization of LinearRepresentations_Serre_1977's tensor character ring. This is a
 bridge/view of the owner `A ⊗R(G)`. -/
 def characterRingScalarExtension (A : Type v) [CommRing A] [Algebra A ℂ]
     (G : Type u) [Group G] : Submodule A (G → ℂ) :=
@@ -238,7 +238,7 @@ theorem tensorCharacterRing_mem_characterRingScalarExtension (χ : A ⊗R(G)) :
 
 -- Proof sketch: `χ` is one of the generators of the `A`-span defining
 -- `characterRingScalarExtension A G`.
-/-- Every element of Serre's integral character ring belongs to the complex-function realization of
+/-- Every element of LinearRepresentations_Serre_1977's integral character ring belongs to the complex-function realization of
 its scalar extension to `A`. -/
 theorem mem_characterRingScalarExtension_of_mem_characterRing
     (χ : G → ℂ) (hχ : χ ∈ R(G)) :
@@ -259,7 +259,7 @@ theorem algebraMap_mem_characterRingScalarExtension (a : A) :
 
 -- Proof sketch: every irreducible character is constant on conjugacy classes, and the defining
 -- `A`-span preserves that property under addition and scalar multiplication.
-/-- Every element of Serre's scalar extension `A ⊗ R(G)` is a class function. -/
+/-- Every element of LinearRepresentations_Serre_1977's scalar extension `A ⊗ R(G)` is a class function. -/
 theorem isClassFunction_of_mem_characterRingScalarExtension {f : G → ℂ}
     (hf : f ∈ characterRingScalarExtension A G) : _root_.IsClassFunction f := by
   induction hf using Submodule.span_induction with
@@ -278,7 +278,7 @@ theorem isClassFunction_of_mem_characterRingScalarExtension {f : G → ℂ}
 
 -- Proof sketch: the product of two ordinary characters is the character of a tensor product
 -- representation, and bilinearity extends this closure to the whole scalar extension.
-/-- Serre's scalar extension `A ⊗ R(G)` is closed under pointwise multiplication. -/
+/-- LinearRepresentations_Serre_1977's scalar extension `A ⊗ R(G)` is closed under pointwise multiplication. -/
 theorem mul_mem_characterRingScalarExtension {f g : G → ℂ}
     (hf : f ∈ characterRingScalarExtension A G) (hg : g ∈ characterRingScalarExtension A G) :
     f * g ∈ characterRingScalarExtension A G := by
@@ -315,7 +315,7 @@ theorem mul_mem_characterRingScalarExtension {f g : G → ℂ}
 
 /-- The pointwise `A`-subalgebra of complex-valued functions on `G` whose carrier is
 `Representation.characterRingScalarExtension A G`. This is the canonical algebra-level bridge/view
-of Serre's scalar extension `A ⊗ R(G)`. -/
+of LinearRepresentations_Serre_1977's scalar extension `A ⊗ R(G)`. -/
 def characterRingScalarExtensionSubalgebra
     (A : Type v) [CommRing A] [Algebra A ℂ] (G : Type u) [Group G] :
     Subalgebra A (G → ℂ) :=
@@ -324,7 +324,7 @@ def characterRingScalarExtensionSubalgebra
       simpa using algebraMap_mem_characterRingScalarExtension (1 : A))
     (fun f g ↦ mul_mem_characterRingScalarExtension)
 
-/-- The canonical `A`-algebra hom from Serre's tensor character ring to its algebra-level
+/-- The canonical `A`-algebra hom from LinearRepresentations_Serre_1977's tensor character ring to its algebra-level
 realization inside complex-valued functions on `G`. -/
 noncomputable def tensorCharacterRingToSubalgebra
     (A : Type v) [CommRing A] [Algebra A ℂ] (G : Type u) [Group G] :
@@ -448,7 +448,7 @@ theorem Subgroup.inducedClassFunction_mem_characterRing_local
   -- This is the complex specialization of the subgroup-induction character theorem.
   simpa using _root_.Subgroup.inducedClassFunction_mem_characterRingOverField (K := ℂ) H χ
 
-/-- Helper for Theorem 11-11.2-1: the canonical subgroup-induction map on Serre's integral
+/-- Helper for Theorem 11-11.2-1: the canonical subgroup-induction map on LinearRepresentations_Serre_1977's integral
 character rings. -/
 def Subgroup.characterRingInduction_local
     [Finite G] (H : Subgroup G) :

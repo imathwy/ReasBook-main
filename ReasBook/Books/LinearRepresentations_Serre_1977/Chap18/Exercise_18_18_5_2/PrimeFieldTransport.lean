@@ -1,11 +1,11 @@
 import Mathlib
-import Serre.Chap08.Corollary_8_8_3_8
-import Serre.Chap07.Exercise_7_7_2_4
-import Serre.Chap08.Exercise_8_8_2_3
-import Serre.Chap18.Exercise_18_18_5_1
-import Serre.Chap18.Exercise_18_18_5_2.OrdinaryExplicitModels
-import Serre.Chap18.Exercise_18_18_5_2.PrimeFieldInfrastructure
-import Serre.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Chap08.Corollary_8_8_3_8
+import LinearRepresentations_Serre_1977.Chap07.Exercise_7_7_2_4
+import LinearRepresentations_Serre_1977.Chap08.Exercise_8_8_2_3
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_1
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_2.OrdinaryExplicitModels
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_2.PrimeFieldInfrastructure
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
 
 noncomputable section
 

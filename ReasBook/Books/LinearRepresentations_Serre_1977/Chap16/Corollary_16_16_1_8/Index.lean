@@ -1,2 +1,2 @@
 -- Proof rescue support index.
-import Serre.Chap16.Corollary_16_16_1_8.ProjectiveDifference
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_8.ProjectiveDifference

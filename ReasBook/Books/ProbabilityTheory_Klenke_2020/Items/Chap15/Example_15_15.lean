@@ -1,4 +1,4 @@
-import AchimKlenkeLean.Items.Chap15.Theorem_15_12
+import ProbabilityTheory_Klenke_2020.Items.Chap15.Theorem_15_12
 
 open MeasureTheory ProbabilityTheory Set
 open scoped BigOperators

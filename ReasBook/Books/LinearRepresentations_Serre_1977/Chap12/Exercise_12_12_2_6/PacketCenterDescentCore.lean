@@ -1,17 +1,17 @@
 import Mathlib
-import Serre.Chap02.Proposition_2_2_2_1
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap06.Corollary_6_6_5_4
-import Serre.Chap06.Proposition_6_6_5_5
-import Serre.Chap12.Exercise_12_12_2_3.API
-import Serre.Chap12.Exercise_12_12_2_6.CharacterBasisCoefficients
-import Serre.Chap12.Exercise_12_12_2_6.ComplexMinimalRealization
-import Serre.Chap12.Exercise_12_12_2_6.FieldDenominatorDescent
-import Serre.Chap12.Exercise_12_12_2_6.FieldTensorCenterBridge
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionConstituents
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionPackets
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionPairing
-import Serre.Chap12.Proposition_12_12_2_1
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_2_1
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_5_4
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_5
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_3.API
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.CharacterBasisCoefficients
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ComplexMinimalRealization
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.FieldDenominatorDescent
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.FieldTensorCenterBridge
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionConstituents
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionPackets
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionPairing
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_2_1
 
 noncomputable section
 
@@ -38,7 +38,7 @@ local instance instFintypeGExercise_12_12_2_6_packet_center_core : Fintype G := 
 
 /-- Helper for Exercise 12-12.2-6: the coefficient of the primitive central idempotent attached
 to one algebraic-closure constituent is the degree-weighted inverse-character value appearing in
-Serre's projector formula. -/
+LinearRepresentations_Serre_1977's projector formula. -/
 def primitive_central_idempotent_coefficient_packet_local
     {K' : Type v} [Field K'] [CharZero K']
     (V : Rep.{max u v} (AlgebraicClosure K') G)
@@ -75,7 +75,7 @@ theorem
         Module.finrank (AlgebraicClosure K') (ψ (τ i)) := by
     exact_mod_cast hdim_cast
   have hchar_inv := hchar i g⁻¹
-  -- Apply the automorphism to Serre's explicit coefficient formula and rewrite both factors.
+  -- Apply the automorphism to LinearRepresentations_Serre_1977's explicit coefficient formula and rewrite both factors.
   dsimp [primitive_central_idempotent_coefficient_packet_local]
   calc
     σ

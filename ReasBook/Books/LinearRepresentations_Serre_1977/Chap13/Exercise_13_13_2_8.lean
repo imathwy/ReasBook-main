@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap01.Definition_1_1_4_1
-import Serre.Chap02.Corollary_2_2_4_3
-import Serre.Chap13.Proposition_13_13_2_4
+import LinearRepresentations_Serre_1977.Chap01.Definition_1_1_4_1
+import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_4_3
+import LinearRepresentations_Serre_1977.Chap13.Proposition_13_13_2_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -231,7 +231,7 @@ lemma complex_cast_typeTwo_sub_typeThree_eq_signed_sum
             (if p i then (d i : ℂ) else 0) - (if q i ∧ ¬ p i then (d i : ℂ) else 0)) := by
             rw [← Finset.sum_sub_distrib]
     _ = ∑ i : ι, if p i then (d i : ℂ) else if q i then -(d i : ℂ) else 0 := by
-          -- The second branch already contains `¬ p`, so only the three Serre types remain.
+          -- The second branch already contains `¬ p`, so only the three LinearRepresentations_Serre_1977 types remain.
           refine Finset.sum_congr rfl ?_
           intro i hi
           by_cases hp' : p i
@@ -397,7 +397,7 @@ lemma trivial_constituent_is_type_two_and_degree_one
 -- type `3` summands contribute negatively, one more type `2` irreducible is needed.
 /-- Exercise 13-13.2-8 (2): if the finite group `G` has even order, then a complete family of
 pairwise nonisomorphic irreducible complex representations of `G` contains at least two members of
-Serre type `2`. -/
+LinearRepresentations_Serre_1977 type `2`. -/
 theorem card_typeTwo_irreducibles_ge_two_of_even_order_of_complete_irreducible_family
     (hπ_pairwise : PairwiseNonisomorphic π)
     (hπ_complete : IsCompleteIrreducibleFamily π)

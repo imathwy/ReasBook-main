@@ -1,5 +1,5 @@
-import AchimKlenkeLean.Items.Chap02.Definition_2_44
-import AchimKlenkeLean.Items.Chap02.Theorem_2_47
+import ProbabilityTheory_Klenke_2020.Items.Chap02.Definition_2_44
+import ProbabilityTheory_Klenke_2020.Items.Chap02.Theorem_2_47
 
 open MeasureTheory ProbabilityTheory
 open scoped unitInterval

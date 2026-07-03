@@ -1,5 +1,5 @@
-import CombinatorialGroupTheory.Items.Chap03.Definition_3_5_3
-import CombinatorialGroupTheory.Items.Chap03.Proposition_3_7_7
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Definition_3_5_3
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Proposition_3_7_7
 
 universe u v w
 

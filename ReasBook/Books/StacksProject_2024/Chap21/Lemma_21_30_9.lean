@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap18.Lemma_18_24_4
-import stacks_project.Chap21.Lemma_21_30_8
+import StacksProject_2024.Chap18.Lemma_18_24_4
+import StacksProject_2024.Chap21.Lemma_21_30_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -77,18 +77,18 @@ abbrev comparisonTargetDerivedPlus
   (localizedDerivedPlusCohomologyInProperty (τ'.over X) (A' X)).FullSubcategory
 
 -- Proof sketch: transport kernels and cokernels in `A_X` by applying `ε_{X,*}` and use that
--- `A'_X` is weak Serre by the comparison situation. For extensions, apply `ε_{X,*}` to a short
+-- `A'_X` is weak LinearRepresentations_Serre_1977 by the comparison situation. For extensions, apply `ε_{X,*}` to a short
 -- exact sequence in `Ab(C_τ/X)`, use Lemma `21.30.8` to kill `R¹ ε_{X,*}` on the left term, and
 -- then pull the middle term back along `ε_X^{-1}`.
 /-- Lemma 21.30.9 (1): in Situation `21.30.1`, for every `X ∈ \mathcal C` the pulled-back
-comparison subcategory `\mathcal A_X ⊂ \operatorname{Ab}(\mathcal C_\tau / X)` is a weak Serre
+comparison subcategory `\mathcal A_X ⊂ \operatorname{Ab}(\mathcal C_\tau / X)` is a weak LinearRepresentations_Serre_1977
 subcategory. -/
 theorem comparisonObjectProperty_isWeakSerreSubcategory
     (h : @cohomology_comparison_situation _ _ τ τ' _ _ _ P A')
     (X : C) :
     IsWeakSerreClass (comparisonSourceObjectProperty hle A' X) := sorry
 
-/-- The pulled-back comparison subcategory `A_X` inherits a weak Serre structure from
+/-- The pulled-back comparison subcategory `A_X` inherits a weak LinearRepresentations_Serre_1977 structure from
 Lemma `21.30.9 (1)`. -/
 instance instComparisonObjectPropertyIsWeakSerreClass
     (h : @cohomology_comparison_situation _ _ τ τ' _ _ _ P A')
@@ -126,7 +126,7 @@ abbrev comparisonPullbackDerivedPlusWithCohomologyIn
     (comparisonPullbackDerived_obj_mem_plusCohomologyIn hle P A' h X)
 
 -- Proof sketch: apply the bounded-below comparison theorem from Lemma `21.28.5` in the localized
--- setting, with source weak Serre subcategory `A_X`, target weak Serre subcategory `A'_X`, exact
+-- setting, with source weak LinearRepresentations_Serre_1977 subcategory `A_X`, target weak LinearRepresentations_Serre_1977 subcategory `A'_X`, exact
 -- inverse image `ε_X^{-1}`, and unit isomorphisms supplied by Lemma `21.30.8 (2)`.
 /-- The restricted right-derived direct image `R\epsilon_{X,*}` on the bounded-below derived
 subcategory with cohomology in `A_X`. It is the quasi-inverse promised by Lemma `21.30.9 (2)`. -/
@@ -154,7 +154,7 @@ abbrev comparisonPushforwardDerivedPlusWithCohomologyIn
         rEpsilonDerived hle X)
     (comparisonPushforwardDerived_obj_mem_plusCohomologyIn hle P A' h X)
 
--- Proof sketch: after clause `(1)`, the source subcategory `A_X` is weak Serre. Lemma
+-- Proof sketch: after clause `(1)`, the source subcategory `A_X` is weak LinearRepresentations_Serre_1977. Lemma
 -- `21.30.8 (2)` identifies the unit `K' ⟶ R ε_{X,*}(ε_X^{-1} K')` on every object of
 -- `D^+_{A'_X}`, and Lemma `21.28.5` then upgrades these unit isomorphisms to an equivalence of
 -- bounded-below derived subcategories, with quasi-inverse the restricted `ε_X^{-1}`.

@@ -6,9 +6,9 @@ import Mathlib.RingTheory.IntegralClosure.Algebra.Defs
 import Mathlib.RingTheory.Jacobson.Ring
 import Mathlib.RingTheory.RingHom.Flat
 import Mathlib.RingTheory.TensorProduct.Quotient
-import stacks_project.Chap10.Lemma_10_36_5
-import stacks_project.Chap10.Lemma_10_36_23
-import stacks_project.Chap15.Lemma_15_3_5
+import StacksProject_2024.Chap10.Lemma_10_36_5
+import StacksProject_2024.Chap10.Lemma_10_36_23
+import StacksProject_2024.Chap15.Lemma_15_3_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

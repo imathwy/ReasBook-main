@@ -1,5 +1,5 @@
 import Mathlib
-import BauschkeLean.Chap04.Corollary_4_13
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04.Corollary_4_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

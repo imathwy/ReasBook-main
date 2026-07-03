@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import stacks_project.Chap12.Definition_12_19_1
+import StacksProject_2024.Chap12.Definition_12_19_1
 
 open CategoryTheory.Limits
 open scoped CategoryTheory

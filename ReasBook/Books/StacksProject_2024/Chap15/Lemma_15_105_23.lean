@@ -1,6 +1,6 @@
 import Mathlib.FieldTheory.PurelyInseparable.Basic
 import Mathlib.RingTheory.LocalRing.ResidueField.Instances
-import stacks_project.Chap10.Definition_10_153_1
+import StacksProject_2024.Chap10.Definition_10_153_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

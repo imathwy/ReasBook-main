@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap12.Theorem_12_12_6_2
-import Serre.Chap17.Corollary_17_17_2_2.ElementarySubgroupInduction
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_6_2
+import LinearRepresentations_Serre_1977.Chap17.Corollary_17_17_2_2.ElementarySubgroupInduction
 
 open scoped Representation
 
@@ -31,7 +31,7 @@ Domain-style sampling:
   source-facing: Theorem `17-17.2-1`, the modular Brauer-induction existence statements for the
     arithmetic subgroup `Γ[K](G)`;
   core/canonical: the subgroup-level Grothendieck-group induction owners from
-    `Serre.Chap17.Corollary_17_17_2_2`, together with the characteristic-zero owner
+    `LinearRepresentations_Serre_1977.Chap17.Corollary_17_17_2_2`, together with the characteristic-zero owner
     `Representation.gammaElementarySubgroupInductionOverField`;
   bridge/view: no additional public bundled owner is introduced here.
 * Primitive data: the subgroup induction maps on `R₀[k](H)` and `P₀[k](H)`.

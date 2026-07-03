@@ -1,9 +1,9 @@
 import Mathlib
-import stacks_project.Chap07.Definition_7_32_1
-import stacks_project.Chap07.GSetForgetfulPoint
-import stacks_project.Chap07.Lemma_7_11_2
-import stacks_project.Chap07.Lemma_7_32_7
-import stacks_project.Chap07.Lemma_7_32_9
+import StacksProject_2024.Chap07.Definition_7_32_1
+import StacksProject_2024.Chap07.GSetForgetfulPoint
+import StacksProject_2024.Chap07.Lemma_7_11_2
+import StacksProject_2024.Chap07.Lemma_7_32_7
+import StacksProject_2024.Chap07.Lemma_7_32_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

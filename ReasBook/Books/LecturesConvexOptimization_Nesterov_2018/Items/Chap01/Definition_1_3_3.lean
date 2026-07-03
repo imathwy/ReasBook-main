@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Definition_1_3_3
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_3_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -8,13 +8,13 @@ open scoped ConstrainedArgmin
 /- Definition 1.3.3 lies in the finite-dimensional box-constrained minimization domain.
 
 Relevant owner-style declarations sampled before refining:
-* `SetConstrainedMinimizationProblem` in `Nesterov/Chap01/Definition_1_3_3.lean`, the chapter's
+* `SetConstrainedMinimizationProblem` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_3_3.lean`, the chapter's
   canonical owner of a feasible set together with a real-valued objective;
 * `constrainedArgmin` / `argmin[Q]`, the chapter owner of constrained minimizer sets for a fixed
   feasible set `Q`;
-* `zeroOneBox` in `Nesterov/Chap01/Definition_1_3_1.lean`, the chapter owner of the textbook box
+* `zeroOneBox` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_3_1.lean`, the chapter owner of the textbook box
   `B_n = [0,1]^n`;
-* `zeroOneBoxProblem` in `Nesterov/Chap01/Definition_1_3_3.lean`, the source-facing box-problem
+* `zeroOneBoxProblem` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_3_3.lean`, the source-facing box-problem
   specialization of the ambient owner `SetConstrainedMinimizationProblem`.
 
 Best owner abstraction:

@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap04.CanonicalPullbackChoice
-import stacks_project.Chap04.Definition_4_33_6
+import StacksProject_2024.Chap04.CanonicalPullbackChoice
+import StacksProject_2024.Chap04.Definition_4_33_6
 
 /-!
 # Canonical fiber pseudofunctor comparison package

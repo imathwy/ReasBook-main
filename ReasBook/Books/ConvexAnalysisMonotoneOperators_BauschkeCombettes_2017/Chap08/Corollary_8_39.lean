@@ -1,7 +1,7 @@
 import Mathlib
-import BauschkeLean.Chap01.Lemma_1_44
-import BauschkeLean.Chap08.Proposition_8_11
-import BauschkeLean.Chap08.Theorem_8_38
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap01.Lemma_1_44
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_11
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Theorem_8_38
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

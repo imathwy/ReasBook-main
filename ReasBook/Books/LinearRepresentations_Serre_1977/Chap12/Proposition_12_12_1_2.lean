@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.RepresentationTheory.RealizableOver
-import Serre.Chap02.Proposition_2_2_2_1
-import Serre.Chap02.Corollary_2_2_3_4
-import Serre.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_2_1
+import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_3_4
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -593,7 +593,7 @@ private theorem isRealizableOver_of_scalarExtension_character_eq
 -- coefficients are nonnegative via character pairings, realize that finite
 -- nonnegative combination over `K`, and then compare complex characters.
 /-- Proposition 12-12.1-2: a finite-dimensional complex representation of `G` is realizable over
-`K` exactly when its character belongs to Serre's `R_K(G)`, viewed inside the complex-valued
+`K` exactly when its character belongs to LinearRepresentations_Serre_1977's `R_K(G)`, viewed inside the complex-valued
 class functions by the pointwise algebra map `K → ℂ`. -/
 theorem isRealizableOver_iff_character_mem_characterRingOverFieldInExtension
     (ρ : Representation ℂ G V) [FiniteDimensional ℂ V] :

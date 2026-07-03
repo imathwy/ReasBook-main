@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap01.Theorem_1_1_4_2
-import Serre.Chap02.Theorem_2_2_3_5
-import Serre.RepresentationTheory.ExternalTensor
+import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_4_2
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.RepresentationTheory.ExternalTensor
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

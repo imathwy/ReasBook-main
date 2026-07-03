@@ -1,6 +1,6 @@
 import Mathlib.RingTheory.Localization.BaseChange
-import stacks_project.Chap10.Lemma_10_63_14
-import stacks_project.Chap10.Lemma_10_63_16
+import StacksProject_2024.Chap10.Lemma_10_63_14
+import StacksProject_2024.Chap10.Lemma_10_63_16
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

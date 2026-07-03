@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
-import stacks_project.Chap21.Remark_21_14_4
+import StacksProject_2024.Chap21.Remark_21_14_4
 
 open CategoryTheory
 open CategoryTheory.Limits

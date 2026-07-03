@@ -1,8 +1,8 @@
 import Mathlib
-import stacks_project.Chap18.Lemma_18_24_4
-import stacks_project.Chap21.Situation_21_25_1
-import stacks_project.Chap21.Lemma_21_25_6
-import stacks_project.Chap21.Lemma_21_28_4
+import StacksProject_2024.Chap18.Lemma_18_24_4
+import StacksProject_2024.Chap21.Situation_21_25_1
+import StacksProject_2024.Chap21.Lemma_21_25_6
+import StacksProject_2024.Chap21.Lemma_21_28_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -50,7 +50,7 @@ abbrev moduleObjectAsDerived (Z : RingedSite.{u, v}) (ℱ : ModuleCat Z) :
     ModuleDerived Z :=
   (DerivedCategory.singleFunctor (ModuleCat Z) (0 : ℤ)).obj ℱ
 
-/-- Pullback on module sheaves induces a functor between the weak Serre full subcategories cut out
+/-- Pullback on module sheaves induces a functor between the weak LinearRepresentations_Serre_1977 full subcategories cut out
 by `A'` and `A`. -/
 abbrev modulePullbackOnWeakSerreSubcategory
     (hpull_mem : ∀ ⦃ℱ' : ModY⦄, A' ℱ' → A (f.modulePullback.obj ℱ')) :
@@ -67,7 +67,7 @@ theorem modulePullbackDerivedOfFlat_obj_mem_derivedCategoryWithCohomologyIn
     (K : DY) :
     PX ((ObjectProperty.ι PY ⋙ modulePullbackDerivedOfFlat f).obj K) := sorry
 
-/-- The pullback functor on unbounded derived categories with cohomology in the chosen weak Serre
+/-- The pullback functor on unbounded derived categories with cohomology in the chosen weak LinearRepresentations_Serre_1977
 subcategories. -/
 abbrev modulePullbackDerivedOfFlatWithCohomologyIn
     (hpull_mem : ∀ ⦃ℱ' : ModY⦄, A' ℱ' → A (f.modulePullback.obj ℱ')) :
@@ -122,7 +122,7 @@ abbrev modulePushforwardDerivedWithCohomologyIn
 -- restricted `Rf_*`.
 /-- Lemma 21.28.6: let `f : X ⟶ Y` be a flat morphism of ringed topoi formalized by a flat
 morphism of ringed sites, let `\mathcal A \subset \operatorname{Mod}(\mathcal O_X)` and
-`\mathcal A' \subset \operatorname{Mod}(\mathcal O_Y)` be weak Serre subcategories, assume that
+`\mathcal A' \subset \operatorname{Mod}(\mathcal O_Y)` be weak LinearRepresentations_Serre_1977 subcategories, assume that
 pullback induces an equivalence `\mathcal A' \simeq \mathcal A`, assume
 `\mathcal F' \to Rf_* f^* \mathcal F'` is an isomorphism for every
 `\mathcal F' \in \operatorname{Ob}(\mathcal A')`, and assume both

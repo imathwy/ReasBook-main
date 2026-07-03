@@ -1,6 +1,6 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap02.Proposition_2_22
-import Nesterov.Chap02.Remark_2_35_1
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Proposition_2_22
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Remark_2_35_1
 
 open scoped Gradient ProjectedGradient
 

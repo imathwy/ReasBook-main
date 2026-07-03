@@ -1,4 +1,4 @@
-import Nesterov.Chap01.Definition_1_2_2
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_2_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -28,7 +28,7 @@ Derived API:
 * the class-level oracle shape `Problem → Query → Answer`
 * locality predicates and transcript-driven algorithms built from oracle evaluation
 
-The owner already lives in `Nesterov.Chap01.Definition_1_2_2`, so this item stays a direct
+The owner already lives in `LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_2_2`, so this item stays a direct
 recall-only use of that canonical expression and introduces no parallel wrapper. -/
 
 /- Definition 1.2.2: an oracle for a fixed optimization problem is the answer rule sending each

@@ -1,6 +1,6 @@
-import stacks_project.Chap10.Lemma_10_39_12
-import stacks_project.Chap10.Lemma_10_81_3
-import stacks_project.Chap10.Theorem_10_82_3
+import StacksProject_2024.Chap10.Lemma_10_39_12
+import StacksProject_2024.Chap10.Lemma_10_81_3
+import StacksProject_2024.Chap10.Theorem_10_82_3
 
 universe u
 

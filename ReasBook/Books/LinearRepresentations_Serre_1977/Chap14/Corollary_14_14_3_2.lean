@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap14.Proposition_14_14_3_1
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_3_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -284,7 +284,7 @@ local notation "kG" => MonoidAlgebra k G
 variable {M : ModuleCat (MonoidAlgebra k G)}
 variable [Module.Finite (MonoidAlgebra k G) M] [Module.Projective (MonoidAlgebra k G) M]
 
--- Source-faithful public surface: Serre states this corollary for finite projective `k[G]`-modules.
+-- Source-faithful public surface: LinearRepresentations_Serre_1977 states this corollary for finite projective `k[G]`-modules.
 /-- Corollary 14-14.3-2 (1): every finite projective `k[G]`-module is isomorphic to a finite
 direct sum of finite projective indecomposable `k[G]`-modules, realized here as a finite biproduct
 in `ModuleCat`. -/

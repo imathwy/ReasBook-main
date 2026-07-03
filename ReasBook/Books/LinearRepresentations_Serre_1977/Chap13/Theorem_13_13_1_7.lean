@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap09.Corollary_9_9_2_2
-import Serre.Chap12.Proposition_12_12_6_4
-import Serre.Chap13.Corollary_13_13_1_2
-import Serre.Chap13.Theorem_13_13_1_3
+import LinearRepresentations_Serre_1977.Chap09.Corollary_9_9_2_2
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_6_4
+import LinearRepresentations_Serre_1977.Chap13.Corollary_13_13_1_2
+import LinearRepresentations_Serre_1977.Chap13.Theorem_13_13_1_3
 
 open scoped BigOperators
 
@@ -201,7 +201,7 @@ lemma cyclic_rat_character_eq_zero_of_zero_subgroup_sums
   simpa using hstrong (Nat.card A) A inferInstance inferInstance inferInstance rfl θ hsum
 
 -- Route correction: the pairing-wrapper proof route imported Theorem `13-13.1-6`, which already
--- occupied the public basename needed here. This file instead follows Serre's direct restriction
+-- occupied the public basename needed here. This file instead follows LinearRepresentations_Serre_1977's direct restriction
 -- to `⟨g⟩` and cyclic-induction argument at the source owner `R[ℚ](G)`.
 /-- Theorem 13-13.1-7: if a rational virtual character has sum `0` on every cyclic subgroup of
 `G`, then it is the zero element of `R[ℚ](G)`. -/

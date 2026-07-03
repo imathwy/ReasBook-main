@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.CategoryTheory.Functor.OfSequence
-import stacks_project.Chap15.Lemma_15_88_1_Base
-import stacks_project.Chap15.Lemma_15_101_1
-import stacks_project.Chap15.Remark_15_101_6
+import StacksProject_2024.Chap15.Lemma_15_88_1_Base
+import StacksProject_2024.Chap15.Lemma_15_101_1
+import StacksProject_2024.Chap15.Remark_15_101_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

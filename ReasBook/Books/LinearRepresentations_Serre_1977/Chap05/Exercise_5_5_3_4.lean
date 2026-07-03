@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap02.Proposition_2_2_1_3
-import Serre.Chap05.Proposition_5_5_3_2
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_1_3
+import LinearRepresentations_Serre_1977.Chap05.Proposition_5_5_3_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -65,7 +65,7 @@ theorem dihedralTwoDimensionalCharacter_mul (h h' : ZMod n) :
 
 -- Proof sketch: specialize `dihedralTwoDimensionalCharacter_mul` to `h' = h` and simplify the
 -- two indices `h + h` and `h - h`.
-/-- Squaring `χ_h` gives `χ_{2h} + χ_0` in Serre's notation. -/
+/-- Squaring `χ_h` gives `χ_{2h} + χ_0` in LinearRepresentations_Serre_1977's notation. -/
 theorem dihedralTwoDimensionalCharacter_mul_self (h : ZMod n) :
     χ_ h * χ_ h = χ_ (h + h) + χ_ (0 : ZMod n) := by
   simpa using dihedralTwoDimensionalCharacter_mul n h h

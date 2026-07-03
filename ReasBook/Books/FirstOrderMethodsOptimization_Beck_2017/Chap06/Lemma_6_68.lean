@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Analysis.Normed.Algebra.GelfandFormula
-import FirstOrderMethodsinOptimization.Chap06.Definition_6_1
-import FirstOrderMethodsinOptimization.Chap06.Example_6_19
-import FirstOrderMethodsinOptimization.Chap06.Theorem_6_39
+import FirstOrderMethodsOptimization_Beck_2017.Chap06.Definition_6_1
+import FirstOrderMethodsOptimization_Beck_2017.Chap06.Example_6_19
+import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_39
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

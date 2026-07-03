@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap16.Definition_16_2_3
+import StacksProject_2024.Chap16.Definition_16_2_3
 
 /- Domain-style sampling for `16_7_1_1`:
 - primary domain: strict-standard elements of a finitely presented algebra and the tail

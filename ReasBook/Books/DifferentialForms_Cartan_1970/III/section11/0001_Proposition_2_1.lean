@@ -1,10 +1,10 @@
 import Mathlib
-import cartan.II.section05.«0001_Definition_II_1_extra_1»
-import cartan.II.section05.«0026_Definition_II_1_extra_16»
-import cartan.II.section05.«0027_Remark_II_1_extra_17»
-import cartan.III.section10.«0002_Definition_III_4_extra_2»
-import cartan.II.section06.«0006_Corollary_2»
-import cartan.II.section06.«0018_Exercise_3»
+import DifferentialForms_Cartan_1970.II.section05.«0001_Definition_II_1_extra_1»
+import DifferentialForms_Cartan_1970.II.section05.«0026_Definition_II_1_extra_16»
+import DifferentialForms_Cartan_1970.II.section05.«0027_Remark_II_1_extra_17»
+import DifferentialForms_Cartan_1970.III.section10.«0002_Definition_III_4_extra_2»
+import DifferentialForms_Cartan_1970.II.section06.«0006_Corollary_2»
+import DifferentialForms_Cartan_1970.II.section06.«0018_Exercise_3»
 
 -- Semantic recall note: `lean_leansearch` was unavailable here; the statement shape was checked
 -- against the owner `Path.closedPathIndexAt` and annulus Laurent-expansion APIs.

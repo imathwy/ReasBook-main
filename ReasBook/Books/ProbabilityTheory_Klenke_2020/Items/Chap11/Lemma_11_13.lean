@@ -1,6 +1,6 @@
-import AchimKlenkeLean.Items.Chap10.Definition_10_3
-import AchimKlenkeLean.Items.Chap10.Example_10_2
-import AchimKlenkeLean.Items.Chap10.Theorem_10_15
+import ProbabilityTheory_Klenke_2020.Items.Chap10.Definition_10_3
+import ProbabilityTheory_Klenke_2020.Items.Chap10.Example_10_2
+import ProbabilityTheory_Klenke_2020.Items.Chap10.Theorem_10_15
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

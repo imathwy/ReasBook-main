@@ -1,6 +1,6 @@
 import Mathlib
-import MayConciseRevised.Chap01.Theorem_1_5_11
-import MayConciseRevised.Chap01.Theorem_1_6_4
+import AlgebraicTopology_May_1999.Chap01.Theorem_1_5_11
+import AlgebraicTopology_May_1999.Chap01.Theorem_1_6_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

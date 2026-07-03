@@ -1,9 +1,9 @@
 import Mathlib
-import stacks_project.Chap18.Lemma_18_28_8
-import stacks_project.Chap18.Lemma_18_30_4
-import stacks_project.Chap13.Lemma_13_35_7
-import stacks_project.Chap13.Remark_13_35_5
-import stacks_project.Chap21.Lemma_21_52_1
+import StacksProject_2024.Chap18.Lemma_18_28_8
+import StacksProject_2024.Chap18.Lemma_18_30_4
+import StacksProject_2024.Chap13.Lemma_13_35_7
+import StacksProject_2024.Chap13.Remark_13_35_5
+import StacksProject_2024.Chap21.Lemma_21_52_1
 
 open CategoryTheory
 open CategoryTheory.IsGrothendieckAbelian

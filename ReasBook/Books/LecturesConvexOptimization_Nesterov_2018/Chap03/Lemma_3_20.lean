@@ -1,6 +1,6 @@
 import Mathlib
-import Nesterov.Chap03.Lemma_3_2_7
-import Nesterov.Chap04.Definition_4_2_6
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Lemma_3_2_7
+import LecturesConvexOptimization_Nesterov_2018.Chap04.Definition_4_2_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

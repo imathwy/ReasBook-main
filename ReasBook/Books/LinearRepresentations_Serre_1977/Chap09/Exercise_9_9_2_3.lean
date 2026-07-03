@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.Chap05.Exercise_5_5_7_1
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap07.Exercise_7_7_2_5
-import Serre.Chap07.Exercise_7_7_2_4
-import Serre.Chap09.Corollary_9_9_2_2
+import LinearRepresentations_Serre_1977.Chap05.Exercise_5_5_7_1
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap07.Exercise_7_7_2_5
+import LinearRepresentations_Serre_1977.Chap07.Exercise_7_7_2_4
+import LinearRepresentations_Serre_1977.Chap09.Corollary_9_9_2_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -36,7 +36,7 @@ local instance : Invertible (Nat.card V4 : ℂ) :=
   invertibleOfNonzero (by
     exact_mod_cast Nat.card_pos.ne')
 
-/-- Helper for Exercise 9-9.2-3: the nonlinear character `ψ` is realized by inducing Serre's
+/-- Helper for Exercise 9-9.2-3: the nonlinear character `ψ` is realized by inducing LinearRepresentations_Serre_1977's
 Klein-four character `θ` to `A₄`. -/
 private abbrev a4_psi : R(A4) :=
   (V4).characterRingInduction (MonoidHom.toCharacterRing a4_theta)
@@ -735,12 +735,12 @@ private lemma a4_quotient_linearCharacterFamily_complete :
     simp
   rw [hsum, ← Nat.card_eq_fintype_card, a4_linearCharacters_card, a4_quotient_by_kleinFour_card]
 
-/-- Helper for Exercise 9-9.2-3: Serre's nonlinear augmentation constituent of `A₄`. -/
+/-- Helper for Exercise 9-9.2-3: LinearRepresentations_Serre_1977's nonlinear augmentation constituent of `A₄`. -/
 private abbrev a4_augmentationRepresentation :
     Representation ℂ A4 (IndV (Subgroup.subtype V4) a4_theta.toRepresentation) :=
   ind (Subgroup.subtype V4) a4_theta.toRepresentation
 
-/-- Helper for Exercise 9-9.2-3: Serre's nonlinear constituent is irreducible. -/
+/-- Helper for Exercise 9-9.2-3: LinearRepresentations_Serre_1977's nonlinear constituent is irreducible. -/
 private lemma a4_augmentation_representation_isIrreducible :
     a4_augmentationRepresentation.IsIrreducible := by
   -- Reuse the Chapter 5 proof of irreducibility for `Ind_{V₄}^{A₄}(θ)`.
@@ -754,7 +754,7 @@ private instance a4_augmentationRepresentation_moduleFinite :
     IsIrreducible.finiteDimensional_of_finite a4_augmentationRepresentation
   infer_instance
 
-/-- Helper for Exercise 9-9.2-3: Serre's nonlinear constituent has degree `3`. -/
+/-- Helper for Exercise 9-9.2-3: LinearRepresentations_Serre_1977's nonlinear constituent has degree `3`. -/
 private lemma a4_augmentationRepresentation_finrank_three :
     Module.finrank ℂ (IndV (Subgroup.subtype V4) a4_theta.toRepresentation) = 3 := by
   -- Evaluate the known character identity at the identity element.
@@ -774,7 +774,7 @@ private lemma a4_augmentationRepresentation_finrank_three :
   exact_mod_cast hfinrank_complex
 
 /-- Helper for Exercise 9-9.2-3: no pulled-back quotient linear character is isomorphic to
-Serre's nonlinear augmentation constituent. -/
+LinearRepresentations_Serre_1977's nonlinear augmentation constituent. -/
 private lemma a4_linearCharacterFamily_not_isomorphic_augmentation
     (χ : a4_linearCharacters) :
     ¬ Nonempty
@@ -959,7 +959,7 @@ private lemma a4_linear_character_restrict_kleinFour_eq_one
   rw [hρ]
   simpa using congrArg α hq
 
-/-- Helper for Exercise 9-9.2-3: Serre's Klein-four character `θ` is orthogonal to the trivial
+/-- Helper for Exercise 9-9.2-3: LinearRepresentations_Serre_1977's Klein-four character `θ` is orthogonal to the trivial
 character of `V₄`. -/
 private lemma a4_theta_pairing_trivial_eq_zero :
     ⟪a4_theta.toRepresentation.character, (Representation.trivial ℂ V4 ℂ).character⟫ = 0 := by
@@ -998,7 +998,7 @@ private lemma a4_theta_pairing_trivial_eq_zero :
               (ρ := a4_theta.toRepresentation)
               (σ := Representation.trivial ℂ V4 ℂ))
 
-/-- Helper for Exercise 9-9.2-3: every degree-`1` character of `A₄` is orthogonal to Serre's
+/-- Helper for Exercise 9-9.2-3: every degree-`1` character of `A₄` is orthogonal to LinearRepresentations_Serre_1977's
 nonlinear character `ψ`. -/
 private lemma a4_psi_eq_augmentation_character :
     (ψ : A4 → ℂ) = a4_augmentationRepresentation.character := by
@@ -1008,7 +1008,7 @@ private lemma a4_psi_eq_augmentation_character :
     (Subgroup.inducedClassFunction_eq_character_ind (H := V4) (K := ℂ)
       a4_theta.toRepresentation)
 
-/-- Helper for Exercise 9-9.2-3: every degree-`1` character of `A₄` is orthogonal to Serre's
+/-- Helper for Exercise 9-9.2-3: every degree-`1` character of `A₄` is orthogonal to LinearRepresentations_Serre_1977's
 nonlinear character `ψ`. -/
 private lemma a4_linear_character_pairing_psi_eq_zero
     (ρ : A4 →* ℂˣ) :
@@ -1108,7 +1108,7 @@ private lemma a4_order_two_subgroup_eq_one_or_generator
   interval_cases n <;> simp [a4_order_two_generator]
 
 /-- Helper for Exercise 9-9.2-3: the nontrivial linear character of the distinguished order-`2`
-subgroup, obtained by restricting Serre's Klein-four character `θ`. -/
+subgroup, obtained by restricting LinearRepresentations_Serre_1977's Klein-four character `θ`. -/
 private def a4_order_two_character : a4_order_two_subgroup →* ℂˣ :=
   a4_theta.comp (Subgroup.inclusion a4_order_two_subgroup_le_kleinFour)
 
@@ -2080,7 +2080,7 @@ already lies in the cyclic-induced owner submodule. -/
 private lemma a4_linear_plus_psi_mem_cyclicInducedCharacterSubmodule
     (ρ : A4 →* ℂˣ) :
     MonoidHom.toCharacterRing ρ + ψ ∈ cyclicInducedCharacterSubmodule A4 := by
-  -- Use the distinguished order-`3` subgroup as the source cyclic subgroup for Serre's formula.
+  -- Use the distinguished order-`3` subgroup as the source cyclic subgroup for LinearRepresentations_Serre_1977's formula.
   simpa [cyclicInducedCharacterSubmodule,
     a4_order_three_induced_restriction_linear_eq_linear_plus_psi ρ] using
     (Representation.characterRingInduction_mem_artinInducedCharacterSubmodule

@@ -1,5 +1,5 @@
 import Mathlib
-import AchimKlenkeLean.Items.Chap06.Corollary_6_21
+import ProbabilityTheory_Klenke_2020.Items.Chap06.Corollary_6_21
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

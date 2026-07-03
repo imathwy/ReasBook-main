@@ -1,5 +1,5 @@
-import FirstOrderMethodsinOptimization.Chap02.Example_2_5
-import FirstOrderMethodsinOptimization.Chap05.Theorem_5_4
+import FirstOrderMethodsOptimization_Beck_2017.Chap02.Example_2_5
+import FirstOrderMethodsOptimization_Beck_2017.Chap05.Theorem_5_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

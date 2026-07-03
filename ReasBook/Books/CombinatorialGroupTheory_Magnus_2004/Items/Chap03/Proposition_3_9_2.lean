@@ -1,5 +1,5 @@
-import CombinatorialGroupTheory.Items.Chap03.Proposition_3_5_9
-import CombinatorialGroupTheory.Items.Chap03.Proposition_3_9_1
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Proposition_3_5_9
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Proposition_3_9_1
 
 universe u
 

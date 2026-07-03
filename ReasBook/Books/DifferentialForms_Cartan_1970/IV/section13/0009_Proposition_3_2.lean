@@ -1,6 +1,6 @@
-import cartan.IV.section13.«0007_Proposition_3_I»
-import cartan.IV.section13.«0008_Definition_IV_1_extra_5»
-import cartan.I.section02.«0013_Proposition_7_1»
+import DifferentialForms_Cartan_1970.IV.section13.«0007_Proposition_3_I»
+import DifferentialForms_Cartan_1970.IV.section13.«0008_Definition_IV_1_extra_5»
+import DifferentialForms_Cartan_1970.I.section02.«0013_Proposition_7_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

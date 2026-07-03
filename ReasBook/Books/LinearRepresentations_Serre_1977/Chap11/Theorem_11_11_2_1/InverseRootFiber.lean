@@ -1,4 +1,4 @@
-import Serre.Chap11.Theorem_11_11_2_1.ElementarySubgroupBridge
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1.ElementarySubgroupBridge
 
 noncomputable section
 

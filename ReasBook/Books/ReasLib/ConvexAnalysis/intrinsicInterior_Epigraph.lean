@@ -5,8 +5,8 @@ Author: Yifan Bai, Yunxi Duan, Zichen Wang, Chenyi Li
 -/
 import Mathlib.Order.Interval.Set.Defs
 import Mathlib.Data.EReal.Basic
-import Reaslib.ConvexAnalysis.IntrinsicInterior
-import Reaslib.ConvexAnalysis.Epigraph
+import ReasLib.ConvexAnalysis.IntrinsicInterior
+import ReasLib.ConvexAnalysis.Epigraph
 
 /-!
 # Intrinsic interior of a function's epigraph

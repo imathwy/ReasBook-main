@@ -1,5 +1,5 @@
-import Serre.Chap02.Remark_2_2_2_5
-import Serre.Chap02.Theorem_2_2_6_1
+import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_2_5
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_6_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

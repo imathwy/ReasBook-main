@@ -1,7 +1,7 @@
-import AchimKlenkeLean.Items.Chap13.Definition_13_12
-import AchimKlenkeLean.Items.Chap16.Definition_16_1
-import AchimKlenkeLean.Items.Chap16.Theorem_16_14
-import AchimKlenkeLean.Items.Chap16.Theorem_16_17
+import ProbabilityTheory_Klenke_2020.Items.Chap13.Definition_13_12
+import ProbabilityTheory_Klenke_2020.Items.Chap16.Definition_16_1
+import ProbabilityTheory_Klenke_2020.Items.Chap16.Theorem_16_14
+import ProbabilityTheory_Klenke_2020.Items.Chap16.Theorem_16_17
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap10.Definition_10_157_1
+import StacksProject_2024.Chap10.Definition_10_157_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -19,7 +19,7 @@ local notation "y" => (X (1 : Fin 2) : Pxy)
 
 /- Domain-style sampling:
 - primary domain: subalgebras and ideals as module owners, together with module duality,
-  reflexivity, and Serre's condition `(S_2)`;
+  reflexivity, and LinearRepresentations_Serre_1977's condition `(S_2)`;
 - sampled owner declarations:
   `Subalgebra.moduleLeft`,
   `SMulMemClass.toModule`,
@@ -245,9 +245,9 @@ noncomputable def reflexiveCounterexampleIdealDualEquivAmbient :
 theorem reflexiveCounterexampleAmbient_isReflexive :
     Module.IsReflexive R Pxy := sorry
 
--- Proof sketch: the omitted depth computations in the text verify Serre's condition `(S_2)` for
+-- Proof sketch: the omitted depth computations in the text verify LinearRepresentations_Serre_1977's condition `(S_2)` for
 -- `k[x, y]` when it is regarded as an `R`-module.
-/-- The ambient polynomial ring satisfies Serre's condition `(S_2)` as an `R`-module. -/
+/-- The ambient polynomial ring satisfies LinearRepresentations_Serre_1977's condition `(S_2)` as an `R`-module. -/
 theorem reflexiveCounterexampleAmbient_serreConditionS2 :
     Module.SerreConditionS R Pxy 2 := sorry
 

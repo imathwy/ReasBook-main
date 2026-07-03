@@ -1,6 +1,6 @@
-import Nesterov.Chap05.Definition_5_2_10
-import Nesterov.Chap05.Definition_5_2_11
-import Nesterov.Chap05.Proposition_5_2_3
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_2_10
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_2_11
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Proposition_5_2_3
 
 open scoped BigOperators SelfConcordantQuadraticRegion
 open scoped StronglyConvexHalfGapIndex StronglyConvexMultiStageAccelerationNotation

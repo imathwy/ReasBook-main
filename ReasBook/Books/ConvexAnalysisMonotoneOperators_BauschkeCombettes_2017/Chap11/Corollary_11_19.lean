@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Data.List.TFAE
-import BauschkeLean.Chap05.Example_5_3_2
-import BauschkeLean.Chap05.Proposition_5_4
-import BauschkeLean.Chap11.Proposition_11_18
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Example_5_3_2
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Proposition_5_4
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap11.Proposition_11_18
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

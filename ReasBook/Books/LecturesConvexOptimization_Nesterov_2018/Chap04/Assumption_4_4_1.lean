@@ -15,7 +15,7 @@ Sampled owner-style declarations:
 * mathlib `LipschitzOnWith L g 𝓕`
 * mathlib `contDiffOn_succ_iff_fderivWithin`
 * Chapter 1's whole-space owner pair `ContDiff ℝ 1 f` and `LipschitzWith L (∇ f)` in
-  `Nesterov.Chap01.Definition_1_5_2`
+  `LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_5_2`
 
 Best owner abstraction:
 * source-facing: `HasLipschitzDerivativeOnWith L 𝓕 f`

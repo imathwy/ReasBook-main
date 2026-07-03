@@ -1,1 +1,1 @@
-import FirstOrderMethodsinOptimization.Chap14.Lemma_14_4.InactiveBlockSupport
+import FirstOrderMethodsOptimization_Beck_2017.Chap14.Lemma_14_4.InactiveBlockSupport

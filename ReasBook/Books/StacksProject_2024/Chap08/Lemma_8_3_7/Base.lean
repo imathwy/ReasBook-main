@@ -1,6 +1,6 @@
-import stacks_project.Chap04.Lemma_4_33_7
-import stacks_project.Chap08.Definition_8_3_5
-import stacks_project.Chap08.Lemma_8_3_3
+import StacksProject_2024.Chap04.Lemma_4_33_7
+import StacksProject_2024.Chap08.Definition_8_3_5
+import StacksProject_2024.Chap08.Lemma_8_3_3
 
 noncomputable section
 

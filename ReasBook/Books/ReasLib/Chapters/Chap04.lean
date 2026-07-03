@@ -1,4 +1,4 @@
-import Reaslib.Chapters.Chap04.section01
+import ReasLib.Chapters.Chap04.section01
 
 /-!
 Chapter 04
@@ -11,6 +11,6 @@ Verso links:
 
 Section overviews:
 
-- Section 4.1 ([Documentation](/ReasBook-private/docs/Books/Reaslib/Chapters/Chap04/section01.html)) ([Verso](/ReasBook-private/books/reaslib/chapters/chap04/section01/))
+- Section 4.1 ([Documentation](/ReasBook-private/docs/Books/ReasLib/Chapters/Chap04/section01.html)) ([Verso](/ReasBook-private/books/reaslib/chapters/chap04/section01/))
 
 -/

@@ -1,4 +1,4 @@
-import BauschkeLean.Chapters.Chap12.section01
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chapters.Chap12.section01
 
 /-!
 Chapter 12
@@ -6,11 +6,11 @@ Chapter 12
 This chapter aggregation page links to section overviews and source files.
 
 Verso links:
-- [Chapter overview](/ReasBook-private/books/bauschkelean/chapters/chap12/)
-- [Book overview](/ReasBook-private/books/bauschkelean/book/)
+- [Chapter overview](/ReasBook-private/books/convexanalysismonotoneoperators_bauschkecombettes_2017/chapters/chap12/)
+- [Book overview](/ReasBook-private/books/convexanalysismonotoneoperators_bauschkecombettes_2017/book/)
 
 Section overviews:
 
-- Section 12.1 ([Documentation](/ReasBook-private/docs/Books/BauschkeLean/Chapters/Chap12/section01.html)) ([Verso](/ReasBook-private/books/bauschkelean/chapters/chap12/section01/))
+- Section 12.1 ([Documentation](/ReasBook-private/docs/Books/ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017/Chapters/Chap12/section01.html)) ([Verso](/ReasBook-private/books/convexanalysismonotoneoperators_bauschkecombettes_2017/chapters/chap12/section01/))
 
 -/

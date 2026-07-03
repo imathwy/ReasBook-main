@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap17.Definition_17_14_1
-import stacks_project.Chap20.Definition_20_26_14
+import StacksProject_2024.Chap17.Definition_17_14_1
+import StacksProject_2024.Chap20.Definition_20_26_14
 
 open CategoryTheory
 open CategoryTheory.MonoidalCategory

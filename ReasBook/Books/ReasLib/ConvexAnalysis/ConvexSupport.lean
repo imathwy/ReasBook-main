@@ -11,10 +11,10 @@ import Mathlib.Analysis.Normed.Operator.BanachSteinhaus
 import Mathlib.Topology.Algebra.Module.LinearMap
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.Topology.Defs.Induced
-import Reaslib.ConvexAnalysis.AffineMinorant
-import Reaslib.ConvexAnalysis.ConvexConjugate
-import Reaslib.ConvexAnalysis.ConvexIndicator
-import Reaslib.ConvexAnalysis.IntrinsicInterior
+import ReasLib.ConvexAnalysis.AffineMinorant
+import ReasLib.ConvexAnalysis.ConvexConjugate
+import ReasLib.ConvexAnalysis.ConvexIndicator
+import ReasLib.ConvexAnalysis.IntrinsicInterior
 
 
 open Filter BigOperators Set Topology Inner Function Module EReal

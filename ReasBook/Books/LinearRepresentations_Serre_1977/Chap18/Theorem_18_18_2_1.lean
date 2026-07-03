@@ -1,13 +1,13 @@
 import Mathlib
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap18.Proposition_18_18_1_2
-import Serre.Chap18.Remark_18_18_1_3
-import Serre.Chap18.Theorem_18_18_2_1.RegularConjClassCore
-import Serre.Chap18.Theorem_18_18_2_1.RegularClassFunctionSpanBridge
-import Serre.Chap18.Theorem_18_18_2_1.MixedCharacterOwner
-import Serre.Chap18.Theorem_18_18_2_1.FiniteTransportCore
-import Serre.Chap18.Theorem_18_18_2_1.FiniteMixedCharacteristicRealization
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap18.Proposition_18_18_1_2
+import LinearRepresentations_Serre_1977.Chap18.Remark_18_18_1_3
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.RegularConjClassCore
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.RegularClassFunctionSpanBridge
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.MixedCharacterOwner
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.FiniteTransportCore
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.FiniteMixedCharacteristicRealization
 
 noncomputable section
 
@@ -50,7 +50,7 @@ private theorem linearIndependent_of_supported_coefficient_vanishes_local
 
 /-- Helper for Theorem 18-18.2-1: in every characteristic-zero coefficient field, the order of the
 finite group `G` stays nonzero. This is the Maschke-side arithmetic input needed when freezing
-Serre part `(b)` over an algebraically closed characteristic-zero owner. -/
+LinearRepresentations_Serre_1977 part `(b)` over an algebraically closed characteristic-zero owner. -/
 private theorem nat_card_ne_zero_of_charZero_local
     {L : Type*} [Field L] [CharZero L] :
     (Nat.card G : L) ≠ 0 := by
@@ -69,7 +69,7 @@ private theorem top_cyclotomic_fixing_subgroup_maps_to_bot_local :
   simpa using OrderIso.map_bot
     (IsCyclotomicExtension.Rat.galEquivZMod (Monoid.exponent G) Lexp).mapSubgroup
 
-/-- Helper for Theorem 18-18.2-1: after normalizing one supported coefficient, Serre part `(a)`
+/-- Helper for Theorem 18-18.2-1: after normalizing one supported coefficient, LinearRepresentations_Serre_1977 part `(a)`
 reduces coefficient vanishing to the imported mixed-character contradiction. -/
 private theorem supported_coefficient_zero_after_transport_local
     (lift : PrimeToPRoot p k →* Kˣ)
@@ -98,7 +98,7 @@ private theorem supported_coefficient_zero_after_transport_local
       (p := p) (k := k) (K := K) (G := G)
       lift hlift E hE_simple hE_pairwise s aNorm hsumNorm hi haNorm_i
 
-/-- Helper for Theorem 18-18.2-1: Serre part `(b)` now reduces directly to the canonical
+/-- Helper for Theorem 18-18.2-1: LinearRepresentations_Serre_1977 part `(b)` now reduces directly to the canonical
 finite-table transport theorem from the theorem-local support files. -/
 private theorem regularClassFunction_mem_span_after_mixed_character_transport_local
     (lift : PrimeToPRoot p k →* Kˣ)
@@ -119,7 +119,7 @@ private theorem regularClassFunction_mem_span_after_mixed_character_transport_lo
 
 /-- Helper for Theorem 18-18.2-1: every `K`-valued function on `PRegularConjClass G p` already
 lies in the span of the Brauer characters of a complete irreducible family. This is the explicit
-one-function form of Serre part `(b)` used before packaging the full `span = ⊤` statement. -/
+one-function form of LinearRepresentations_Serre_1977 part `(b)` used before packaging the full `span = ⊤` statement. -/
 theorem regularClassFunction_mem_span_irreducibleModularCharacters_of_complete_family
     (lift : PrimeToPRoot p k →* Kˣ)
     (hlift : Function.Injective lift)
@@ -131,7 +131,7 @@ theorem regularClassFunction_mem_span_irreducibleModularCharacters_of_complete_f
       (Set.range fun i ↦
         FDRep.modularCharacterOnPRegularConjClass (p := p) (E i)
           (PrimeToPRoot.toFieldLift lift)) := by
-  -- Route correction: keep Serre part `(b)` at the wrapper level as a one-function span statement,
+  -- Route correction: keep LinearRepresentations_Serre_1977 part `(b)` at the wrapper level as a one-function span statement,
   -- and let the theorem-local mixed-character transport module supply the only remaining heavy
   -- owner-change step.
   exact
@@ -150,7 +150,7 @@ theorem linearIndependent_irreducibleModularCharacters_of_pairwiseNonisomorphic
       (fun i ↦
         FDRep.modularCharacterOnPRegularConjClass (p := p) (E i)
           (PrimeToPRoot.toFieldLift lift)) := by
-  -- Serre part `(a)` reduces to vanishing of every supported coefficient in a finite relation.
+  -- LinearRepresentations_Serre_1977 part `(a)` reduces to vanishing of every supported coefficient in a finite relation.
   refine
     linearIndependent_of_supported_coefficient_vanishes_local
       (K := K)
@@ -175,7 +175,7 @@ theorem span_irreducibleModularCharacters_eq_top_of_complete_family
           FDRep.modularCharacterOnPRegularConjClass (p := p) (E i)
             (PrimeToPRoot.toFieldLift lift)) =
       ⊤ := by
-  -- Serre part `(b)` is the statement that every regular class function already lies in the
+  -- LinearRepresentations_Serre_1977 part `(b)` is the statement that every regular class function already lies in the
   -- Brauer-character span.
   apply top_unique
   intro f _
@@ -183,7 +183,7 @@ theorem span_irreducibleModularCharacters_eq_top_of_complete_family
     regularClassFunction_mem_span_irreducibleModularCharacters_of_complete_family
       (p := p) (k := k) (K := K) (G := G) lift hlift E hE_pairwise hE_complete f
 
-/-- Helper for Theorem 18-18.2-1: once Serre parts `(a)` and `(b)` are available in the
+/-- Helper for Theorem 18-18.2-1: once LinearRepresentations_Serre_1977 parts `(a)` and `(b)` are available in the
 field-valued setting, the Brauer-character family is a basis of the full function space. -/
 private theorem brauer_character_linearIndependent_and_span_local
     (lift : PrimeToPRoot p k →* Kˣ)
@@ -200,7 +200,7 @@ private theorem brauer_character_linearIndependent_and_span_local
             FDRep.modularCharacterOnPRegularConjClass (p := p) (E i)
               (PrimeToPRoot.toFieldLift lift)) =
         ⊤ := by
-  -- Record Serre parts `(a)` and `(b)` together as the stable proof skeleton used by the final
+  -- Record LinearRepresentations_Serre_1977 parts `(a)` and `(b)` together as the stable proof skeleton used by the final
   -- basis construction.
   constructor
   · exact
@@ -210,7 +210,7 @@ private theorem brauer_character_linearIndependent_and_span_local
       span_irreducibleModularCharacters_eq_top_of_complete_family
         (p := p) (k := k) (K := K) (G := G) lift hlift E hE_pairwise hE_complete
 
-/-- Helper for Theorem 18-18.2-1: once Serre parts `(a)` and `(b)` are available in the
+/-- Helper for Theorem 18-18.2-1: once LinearRepresentations_Serre_1977 parts `(a)` and `(b)` are available in the
 field-valued setting, the Brauer-character family is a basis of the full function space. -/
 private theorem basis_of_linearIndependent_and_span_eq_top_local
     (lift : PrimeToPRoot p k →* Kˣ)
@@ -227,7 +227,7 @@ private theorem basis_of_linearIndependent_and_span_eq_top_local
     Module.Basis.mk
       hlin
       ?_
-  -- The spanning statement from Serre part `(b)` is exactly the second basis axiom.
+  -- The spanning statement from LinearRepresentations_Serre_1977 part `(b)` is exactly the second basis axiom.
   exact hspan.ge
 
 /-- Theorem 18-18.2-1: for a complete pairwise nonisomorphic family of simple finite-dimensional

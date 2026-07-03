@@ -1,6 +1,6 @@
 import Mathlib
-import Nesterov.Chap03.Definition_3_34
-import Nesterov.Chap06.Text_6_1_1_Complexity_Insight
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_34
+import LecturesConvexOptimization_Nesterov_2018.Chap06.Text_6_1_1_Complexity_Insight
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

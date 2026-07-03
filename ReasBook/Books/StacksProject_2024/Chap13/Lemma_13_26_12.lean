@@ -1,10 +1,10 @@
 import Mathlib
-import stacks_project.Chap13.Lemma_13_10_6
-import stacks_project.Chap13.Lemma_13_13_3
-import stacks_project.Chap13.Lemma_13_13_9
-import stacks_project.Chap13.Lemma_13_26_5
-import stacks_project.Chap13.Proposition_13_23_1
-import stacks_project.Chap13.Situation_13_15_1
+import StacksProject_2024.Chap13.Lemma_13_10_6
+import StacksProject_2024.Chap13.Lemma_13_13_3
+import StacksProject_2024.Chap13.Lemma_13_13_9
+import StacksProject_2024.Chap13.Lemma_13_26_5
+import StacksProject_2024.Chap13.Proposition_13_23_1
+import StacksProject_2024.Chap13.Situation_13_15_1
 
 open CategoryTheory
 open CategoryTheory.Limits

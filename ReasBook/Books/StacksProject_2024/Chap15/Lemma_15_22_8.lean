@@ -1,8 +1,8 @@
 import Mathlib.Data.List.TFAE
-import stacks_project.Chap10.Proposition_10_63_6
-import stacks_project.Chap10.Lemma_10_157_2
-import stacks_project.Chap15.Definition_15_22_1
-import stacks_project.Chap15.Lemma_15_22_7
+import StacksProject_2024.Chap10.Proposition_10_63_6
+import StacksProject_2024.Chap10.Lemma_10_157_2
+import StacksProject_2024.Chap15.Definition_15_22_1
+import StacksProject_2024.Chap15.Lemma_15_22_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -49,7 +49,7 @@ variable [Nontrivial M]
 
 /-- Lemma 15.22.8: for a nonzero finite module over a Noetherian domain, the following are
 equivalent: `M` is torsion free, `M` embeds into a finite free module, `(0)` is the only
-associated prime of `M`, `(0)` lies in the support of `M` and `M` satisfies Serre's condition
+associated prime of `M`, `(0)` lies in the support of `M` and `M` satisfies LinearRepresentations_Serre_1977's condition
 `(S_1)`, and `(0)` lies in the support of `M` and `M` has no embedded associated prime. -/
 theorem torsionFree_tfae_associatedPrimes_support_serreS1 :
     List.TFAE

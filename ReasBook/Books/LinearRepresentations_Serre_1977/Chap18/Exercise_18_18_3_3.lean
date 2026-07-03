@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.GroupTheory.PSolvable
-import Serre.Chap18.Proposition_18_18_1_2
-import Serre.Chap18.Theorem_18_18_2_1
+import LinearRepresentations_Serre_1977.GroupTheory.PSolvable
+import LinearRepresentations_Serre_1977.Chap18.Proposition_18_18_1_2
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

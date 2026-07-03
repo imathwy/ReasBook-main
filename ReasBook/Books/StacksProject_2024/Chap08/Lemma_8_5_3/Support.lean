@@ -1,5 +1,5 @@
-import stacks_project.Chap08.Lemma_8_5_3.CoverForgetNormalization
-import stacks_project.Chap08.Lemma_8_4_2_Core
+import StacksProject_2024.Chap08.Lemma_8_5_3.CoverForgetNormalization
+import StacksProject_2024.Chap08.Lemma_8_4_2_Core
 
 universe u₁ u₂ v₁ v₂
 

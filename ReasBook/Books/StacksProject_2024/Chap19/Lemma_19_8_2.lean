@@ -1,7 +1,7 @@
 import Mathlib
-import stacks_project.Chap18.Example_18_29_1
-import stacks_project.Chap18.Lemma_18_19_2
-import stacks_project.Chap18.«18_19_2_1»
+import StacksProject_2024.Chap18.Example_18_29_1
+import StacksProject_2024.Chap18.Lemma_18_19_2
+import StacksProject_2024.Chap18.«18_19_2_1»
 
 open CategoryTheory
 open CategoryTheory.MonoidalCategory

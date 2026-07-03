@@ -10,7 +10,7 @@ import Mathlib.Topology.Algebra.Order.LiminfLimsup
 import Mathlib.Topology.Defs.Filter
 import Mathlib.Analysis.Convex.Intrinsic
 import Mathlib.Topology.Semicontinuous
-import Reaslib.Basic.EReal
+import ReasLib.Basic.EReal
 /-!
 # Definitions of the proper functions
 This file contains the definitions and properties of the proper functions

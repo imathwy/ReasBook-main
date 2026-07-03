@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap16.Corollary_16_16_1_6
-import Serre.Chap17.Corollary_17_17_2_2.Index
-import Serre.Chap17.Theorem_17_17_2_4.ScalarMultipleDescent
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_6
+import LinearRepresentations_Serre_1977.Chap17.Corollary_17_17_2_2.Index
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_2_4.ScalarMultipleDescent
 
 open scoped MonoidAlgebra Representation TensorProduct
 open CategoryTheory
@@ -196,7 +196,7 @@ private theorem rationalized_cartan_hits_nonzero_multiple
     let n := Nat.factorization (Nat.card G) p
     let m := ordCompl[p] (Nat.card G)
     have hcard_hm := card_eq_ordProj_mul_ordCompl_and_coprime (k := k) (G := G) (p := p)
-    -- In positive characteristic, Serre's source route provides one fixed `p`-power multiple of
+    -- In positive characteristic, LinearRepresentations_Serre_1977's source route provides one fixed `p`-power multiple of
     -- every integral target class inside the Cartan image; tensor induction lifts that to `ℚ`.
     refine TensorProduct.induction_on x ?_ ?_ ?_
     · refine ⟨1, one_ne_zero, 0, ?_⟩

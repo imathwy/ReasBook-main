@@ -1,17 +1,17 @@
 import Mathlib
-import Serre.Chap01.Theorem_1_1_4_2
-import Serre.GroupTheory.PSolvable
-import Serre.Chap07.Proposition_7_7_1_3
-import Serre.Chap07.Remark_7_7_1_4
-import Serre.Chap15.Exercise_15_15_5_3
-import Serre.Chap17.Theorem_17_17_3_1.CyclicNormalByPGroupBasics
-import Serre.Chap17.Theorem_17_17_3_1.CliffordIsotypicTransport
-import Serre.Chap17.Theorem_17_17_3_1.ResidueFieldLiftTransport
-import Serre.Chap17.Theorem_17_17_3_1.ProperOvergroupRecursion
-import Serre.Chap17.Theorem_17_17_3_1.CyclicOrbitSpan
-import Serre.Chap17.Theorem_17_17_3_1.SameUniverseInductionPackaging
-import Serre.Chap17.Theorem_17_17_3_1.InducedSubrepresentationLift
-import Serre.Chap17.Theorem_17_17_6_1.HallKernelOwnerTransport
+import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_4_2
+import LinearRepresentations_Serre_1977.GroupTheory.PSolvable
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_1_3
+import LinearRepresentations_Serre_1977.Chap07.Remark_7_7_1_4
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_5_3
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.CyclicNormalByPGroupBasics
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.CliffordIsotypicTransport
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.ResidueFieldLiftTransport
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.ProperOvergroupRecursion
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.CyclicOrbitSpan
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.SameUniverseInductionPackaging
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.InducedSubrepresentationLift
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_6_1.HallKernelOwnerTransport
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -76,7 +76,7 @@ lemma stabilizer_contains_subgroup_of_isotypic_component
         _ = x := by
           simp [aI]
 
-/-- Helper for Theorem 17-17.6-1: semisimplicity of the Hall-kernel restriction gives Serre's
+/-- Helper for Theorem 17-17.6-1: semisimplicity of the Hall-kernel restriction gives LinearRepresentations_Serre_1977's
 Clifford split between induction from a proper overgroup and isotypy of the restriction. -/
 theorem exists_proper_overgroup_irreducible_induced_or_restriction_isotypic_of_semisimple_restriction
     (I : Subgroup G) [I.Normal]

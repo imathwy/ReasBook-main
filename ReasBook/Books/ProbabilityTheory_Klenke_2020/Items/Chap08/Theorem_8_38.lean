@@ -1,4 +1,4 @@
-import AchimKlenkeLean.Items.Chap08.Definition_8_28
+import ProbabilityTheory_Klenke_2020.Items.Chap08.Definition_8_28
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

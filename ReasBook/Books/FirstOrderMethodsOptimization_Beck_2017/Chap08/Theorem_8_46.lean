@@ -1,6 +1,6 @@
 import Mathlib
-import FirstOrderMethodsinOptimization.Chap08.Lemma_8_45
-import FirstOrderMethodsinOptimization.Chap08.Theorem_8_42
+import FirstOrderMethodsOptimization_Beck_2017.Chap08.Lemma_8_45
+import FirstOrderMethodsOptimization_Beck_2017.Chap08.Theorem_8_42
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
-import stacks_project.Chap10.Theorem_10_95_6
-import stacks_project.Chap10.Lemma_10_97_3
-import stacks_project.Chap10.Lemma_10_97_9
+import StacksProject_2024.Chap10.Theorem_10_95_6
+import StacksProject_2024.Chap10.Lemma_10_97_3
+import StacksProject_2024.Chap10.Lemma_10_97_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

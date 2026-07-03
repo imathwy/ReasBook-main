@@ -1,5 +1,5 @@
-import Serre.Chap14.Exercise_14_14_5_2
-import Serre.Chap14.Lemma_14_14_4_1
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_2
+import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_1
 import Mathlib.LinearAlgebra.Basis.VectorSpace
 import Mathlib.LinearAlgebra.PerfectPairing.Basic
 
@@ -154,7 +154,7 @@ instance ofModule_linHom_asModule_isScalarTower
       (Representation.asModuleEquiv_map_smul (ρ := ρ) (r := algebraMap k k[G] r) (x := x))
 
 -- Source/core/bridge triage:
--- * source-facing: Serre's symmetry statement for the `k`-dimensions of the `k[G]`-linear Hom
+-- * source-facing: LinearRepresentations_Serre_1977's symmetry statement for the `k`-dimensions of the `k[G]`-linear Hom
 --   spaces `E → F` and `F → E`.
 -- * core/canonical: `Representation.ofModule`, `Representation.linHom`,
 --   `Representation.invariantsEquivIntertwiningMap`, and

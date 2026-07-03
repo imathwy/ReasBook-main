@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap18.Proposition_18_18_1_2
-import Serre.Chap18.Remark_18_18_1_3
-import Serre.Chap18.Theorem_18_18_2_1.RegularConjClassCore
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap18.Proposition_18_18_1_2
+import LinearRepresentations_Serre_1977.Chap18.Remark_18_18_1_3
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.RegularConjClassCore
 
 noncomputable section
 
@@ -101,7 +101,7 @@ theorem sum_smul_modularCharacterOnPRegularConjClass_eq_zero_on_support_local
 
 /-- Helper for Theorem 18-18.2-1 / Exercise 18-18.2-9: once the coefficient lift admits a
 compatible reduction map, a vanishing Brauer-character relation on `PRegularConjClass G p`
-rewrites to Serre's trace relation on group elements. -/
+rewrites to LinearRepresentations_Serre_1977's trace relation on group elements. -/
 private theorem trace_relation_of_zero_brauer_relation_on_group_support_local
     {A : Type u} [CommRing A] [Fact p.Prime]
     (lift : PrimeToPRoot p k →* A)
@@ -140,7 +140,7 @@ private theorem trace_relation_of_zero_brauer_relation_on_group_support_local
   exact hredPoint
 
 /-- Helper for Theorem 18-18.2-1 / Exercise 18-18.2-9: after the same reduction-compatible
-rewrite, Serre's trace relation extends linearly from `G` to the group algebra `k[G]`. -/
+rewrite, LinearRepresentations_Serre_1977's trace relation extends linearly from `G` to the group algebra `k[G]`. -/
 private theorem trace_relation_of_zero_brauer_relation_on_monoidAlgebra_support_local
     {A : Type u} [CommRing A] [Fact p.Prime]
     (lift : PrimeToPRoot p k →* A)
@@ -164,7 +164,7 @@ private theorem trace_relation_of_zero_brauer_relation_on_monoidAlgebra_support_
         trace_relation_of_zero_brauer_relation_on_group_support_local
           (p := p) lift red hred E s a hsum g
   | hadd t₁ t₂ ht₁ ht₂ =>
-      -- Extend Serre's group-level relation to sums in the group algebra one summand at a time.
+      -- Extend LinearRepresentations_Serre_1977's group-level relation to sums in the group algebra one summand at a time.
       calc
         (Finset.sum s fun j ↦
           red (a j) *
@@ -588,7 +588,7 @@ theorem support_product_column_is_scalar_single_local
   have hcol_eval := congrArg (fun l ↦ l v) hc
   simpa [LinearMap.comp_apply] using hcol_eval
 
-/-- Helper for Theorem 18-18.2-1 / Exercise 18-18.2-9: Serre part `(a)` needs an arbitrary
+/-- Helper for Theorem 18-18.2-1 / Exercise 18-18.2-9: LinearRepresentations_Serre_1977 part `(a)` needs an arbitrary
 `k`-linear endomorphism on the chosen simple factor, not merely a `k[G]`-linear one. The
 supported block map built from such a base-field endomorphism is still linear over the endomorphism
 ring of the multiplicity-free support product, so it is the correct Jacobson-density input before
@@ -768,7 +768,7 @@ formula the later Jacobson-density separator must match on the remaining basis v
 
 omit [IsAlgClosed k] [Finite G] in
 /-- Helper for Theorem 18-18.2-1: the finite support product of simple factors is semisimple as a
-`k[G]`-module. This is the exact Jacobson-density owner used in Serre part `(a)`. -/
+`k[G]`-module. This is the exact Jacobson-density owner used in LinearRepresentations_Serre_1977 part `(a)`. -/
 theorem support_product_isSemisimpleModule_local
     (E : ι → FDRep k G)
     (hE_simple : ∀ i, Simple (E i))
@@ -833,7 +833,7 @@ omit [IsAlgClosed k] [Finite G] in
 
 /-- Helper for Theorem 18-18.2-1: the finite support product of the chosen simple factors carries
 the obvious `k`-basis obtained by taking a basis in each coordinate. This is the finite sample fed
-to Jacobson density in Serre part `(a)`. -/
+to Jacobson density in LinearRepresentations_Serre_1977 part `(a)`. -/
 private def support_product_basis_local
     (E : ι → FDRep k G)
     (s : Finset ι) :
@@ -842,7 +842,7 @@ private def support_product_basis_local
       k (∀ a : s.attach, asModule (E a.1).ρ) :=
   Pi.basis fun a ↦ FDRep.asModule_basis_local (E a.1)
 
-/-- Helper for Theorem 18-18.2-1: Jacobson density realizes Serre's separator on a finite support
+/-- Helper for Theorem 18-18.2-1: Jacobson density realizes LinearRepresentations_Serre_1977's separator on a finite support
 of pairwise nonisomorphic simple factors by matching the supported block endomorphism on a basis of
 the support product. -/
   theorem support_product_separator_exists_local
@@ -1016,7 +1016,7 @@ the support product. -/
 
 omit [IsAlgClosed k] [Finite G] in
 /-- Helper for Theorem 18-18.2-1 / Exercise 18-18.2-9: once a separator `t` has trace `1` on the
-chosen factor and trace `0` on every other supported factor, Serre's finite trace sum collapses to
+chosen factor and trace `0` on every other supported factor, LinearRepresentations_Serre_1977's finite trace sum collapses to
 the single surviving coefficient. -/
 private theorem separated_trace_sum_eq_coefficient_local
     {A : Type u} [CommRing A]
@@ -1046,7 +1046,7 @@ private theorem separated_trace_sum_eq_coefficient_local
     simp
 
 /-- Helper for Theorem 18-18.2-1 / Exercise 18-18.2-9: on a finite support, a coefficient in a
-vanishing Brauer-character relation must vanish. This is the exact Serre part `(a)` frontier:
+vanishing Brauer-character relation must vanish. This is the exact LinearRepresentations_Serre_1977 part `(a)` frontier:
 reduce the relation on `PRegularConjClass G p` to a residue trace relation on the chosen support,
 then apply Jacobson density to the singled-out simple factor. -/
 private theorem coefficient_zero_of_trace_relation_with_separator_local
@@ -1089,7 +1089,7 @@ private theorem coefficient_zero_of_trace_relation_with_separator_local
     _ = 0 := htrace t
 
 /-- Helper for Theorem 18-18.2-1 / Exercise 18-18.2-9: on a finite support, a coefficient in a
-vanishing Brauer-character relation must vanish. This is the exact Serre part `(a)` frontier:
+vanishing Brauer-character relation must vanish. This is the exact LinearRepresentations_Serre_1977 part `(a)` frontier:
 reduce the relation on `PRegularConjClass G p` to a residue trace relation on the chosen support,
 then apply Jacobson density to the singled-out simple factor. -/
 theorem
@@ -1115,7 +1115,7 @@ theorem
         LinearMap.trace k (E j).V
           (Representation.asAlgebraHom (E j).ρ t) = 0) :
     red (a i) = 0 := by
-  -- First convert the Brauer-character relation to Serre's trace relation on the support.
+  -- First convert the Brauer-character relation to LinearRepresentations_Serre_1977's trace relation on the support.
   have htrace :
       ∀ t' : MonoidAlgebra k G,
         (Finset.sum s fun j ↦

@@ -1,14 +1,14 @@
 import Mathlib
-import Serre.Chap02.Proposition_2_2_1_1
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap12.Proposition_12_12_1_1
-import Serre.Chap12.Proposition_12_12_1_3
-import Serre.Chap12.Exercise_12_12_2_6.CharacterBasisCoefficients
-import Serre.Chap14.Remark_14_14_1_2
-import Serre.Chap15.Definition_15_15_3_1
-import Serre.Chap15.Definition_15_15_3_1.FiniteRepScalarExtension
-import Serre.Chap16.Theorem_16_16_1_2
-import Serre.Chap16.Corollary_16_16_1_3.Index
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_1_1
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_3
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.CharacterBasisCoefficients
+import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_1_2
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1.FiniteRepScalarExtension
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_2
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_3.Index
 
 noncomputable section
 

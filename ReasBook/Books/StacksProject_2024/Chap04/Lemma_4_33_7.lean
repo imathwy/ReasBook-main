@@ -1,4 +1,4 @@
-import stacks_project.Chap04.CanonicalFiberPseudofunctor
+import StacksProject_2024.Chap04.CanonicalFiberPseudofunctor
 
 /-!
 # Compatibility owner for Lemma 4.33.7

@@ -1,7 +1,7 @@
 import Mathlib
-import stacks_project.Chap15.Definition_15_65_1
-import stacks_project.Chap15.Lemma_15_92_3
-import stacks_project.Chap15.Lemma_15_92_6
+import StacksProject_2024.Chap15.Definition_15_65_1
+import StacksProject_2024.Chap15.Lemma_15_92_3
+import StacksProject_2024.Chap15.Lemma_15_92_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -32,7 +32,7 @@ local notation "DMod" => DerivedCategory (ModuleCat A)
   the bridge theorem from Lemma `15.92.3`;
 - primitive data: the ideal `I`, the derived object `K`, and the ring object
   `ModuleCat.of A A`;
-- derived API: the weak-Serre owner on derived-complete modules and the cohomology-in-property
+- derived API: the weak-LinearRepresentations_Serre_1977 owner on derived-complete modules and the cohomology-in-property
   reformulation from Lemma `15.92.6`.
 
 Layer triage:
@@ -44,7 +44,7 @@ Layer triage:
 -- Proof sketch: a pseudo-coherent object of `D(A)` is represented by a bounded-above finite-free
 -- complex, so every cohomology module is a subquotient of finite free `A`-modules and hence is
 -- pseudo-coherent as an `A`-module. Since `A`, viewed as an `A`-module, is derived complete,
--- pseudo-coherent modules are derived complete by the weak Serre property from Lemma `15.92.6`;
+-- pseudo-coherent modules are derived complete by the weak LinearRepresentations_Serre_1977 property from Lemma `15.92.6`;
 -- apply the cohomological criterion there to conclude that `K` itself is derived complete.
 /-- Lemma 15.92.8: if the ring `A`, viewed as an `A`-module, is derived complete with respect to
 an ideal `I`, then every pseudo-coherent object of `D(A)` is derived complete with respect to

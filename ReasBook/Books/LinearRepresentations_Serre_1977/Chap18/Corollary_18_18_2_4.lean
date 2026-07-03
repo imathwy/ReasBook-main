@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap18.Corollary_18_18_2_3
+import LinearRepresentations_Serre_1977.Chap18.Corollary_18_18_2_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

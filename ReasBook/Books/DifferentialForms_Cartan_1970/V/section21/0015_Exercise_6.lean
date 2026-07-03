@@ -1,5 +1,5 @@
 import Mathlib
-import cartan.V.section20.«0007_Remark_V_3_extra_5»
+import DifferentialForms_Cartan_1970.V.section20.«0007_Remark_V_3_extra_5»
 
 open scoped BigOperators
 
@@ -10,7 +10,7 @@ open scoped BigOperators
 -- * `Complex.digamma`
 -- * `Complex.digamma_apply_add_one`
 -- * `Complex.Gamma_mul_Gamma_add_half`
--- * `cartan.V.section20.0007_Remark_V_3_extra_5.deriv_complex_digamma_eq_inverse_square_series`
+-- * `DifferentialForms_Cartan_1970.V.section20.0007_Remark_V_3_extra_5.deriv_complex_digamma_eq_inverse_square_series`
 -- Owner abstraction: the canonical owner for the logarithmic derivative `Γ' / Γ` is
 -- `Complex.digamma`, while Legendre's duplication formula is owned by
 -- `Complex.Gamma_mul_Gamma_add_half`.

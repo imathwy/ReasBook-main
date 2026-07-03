@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Definition_1_3_1
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_3_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -8,9 +8,9 @@ import Nesterov.Chap01.Definition_1_3_1
 Relevant owner-style declarations sampled before refining:
 * `Set.Icc`, the canonical scalar owner for the interval `[0, 1]`;
 * `Set.mem_Icc`, the canonical bridge from interval membership to inequalities;
-* `zeroOneBox` in `Nesterov/Chap01/Definition_1_3_1.lean`, the chapter owner of the textbook box
+* `zeroOneBox` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_3_1.lean`, the chapter owner of the textbook box
   `B_n = [0,1]^n`;
-* `mem_zeroOneBox_iff` in `Nesterov/Chap01/Definition_1_3_1.lean`, the chapter bridge exposing
+* `mem_zeroOneBox_iff` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_3_1.lean`, the chapter bridge exposing
   the coordinatewise interval condition.
 
 Best owner abstraction:

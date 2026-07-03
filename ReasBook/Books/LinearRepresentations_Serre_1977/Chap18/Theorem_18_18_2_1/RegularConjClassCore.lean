@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap12.GaloisPowerClasses
-import Serre.Chap12.Theorem_12_12_4_1.GaloisPowerAction
-import Serre.Chap18.Proposition_18_18_1_2
-import Serre.Chap18.Remark_18_18_1_3
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap12.GaloisPowerClasses
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_4_1.GaloisPowerAction
+import LinearRepresentations_Serre_1977.Chap18.Proposition_18_18_1_2
+import LinearRepresentations_Serre_1977.Chap18.Remark_18_18_1_3
 
 noncomputable section
 
@@ -110,7 +110,7 @@ theorem itself.
 
 namespace FDRep
 
-/-- Helper for Theorem 18-18.2-1: the Brauer character of `E` descended to Serre's owner
+/-- Helper for Theorem 18-18.2-1: the Brauer character of `E` descended to LinearRepresentations_Serre_1977's owner
 `PRegularConjClass G p` of `p`-regular conjugacy classes. -/
 noncomputable def modularCharacterOnPRegularConjClass
     {A : Type x} [AddCommMonoid A]
@@ -235,7 +235,7 @@ class. -/
     (Classical.choose_spec (Quotient.exists_rep c.1))
 
 /-- Helper for Theorem 18-18.2-1: descend the virtual modular character from the `p`-regular locus
-to Serre's owner `PRegularConjClass G p`. -/
+to LinearRepresentations_Serre_1977's owner `PRegularConjClass G p`. -/
 noncomputable def virtualModularCharacterOnPRegularConjClass
     (lift : PrimeToPRoot p k → A) :
     R₀[k](G) →+ (PRegularConjClass G p → A) :=
@@ -357,7 +357,7 @@ theorem virtualModularCharacter_decomposition_finiteRepClass_eq_character_restri
       E.character ∘ Subtype.val := by
   funext s
   -- Route correction: first compare the generator class obtained from stable-lattice reduction,
-  -- then apply Serre's source clause `(6)` at the chosen regular element.
+  -- then apply LinearRepresentations_Serre_1977's source clause `(6)` at the chosen regular element.
   rw [decompositionHom_finiteRepClass_eq (A := A) (K := K) (G := G) E L,
     virtualModularCharacter_class]
   simpa using
@@ -690,7 +690,7 @@ section RegularClassFunctionExtension
 variable {K : Type u} [Field K]
 
 /-- Helper for Theorem 18-18.2-1: extend a function on `PRegularConjClass G p` to all of `G` by
-Serre's source route, namely by keeping the given value on `p`-regular elements and sending the
+LinearRepresentations_Serre_1977's source route, namely by keeping the given value on `p`-regular elements and sending the
 non-regular locus to `0`. -/
 def regularClassFunctionExtension
     (f : PRegularConjClass G p → K) : G → K :=
@@ -700,7 +700,7 @@ def regularClassFunctionExtension
     else
       0
 
-/-- Helper for Theorem 18-18.2-1: on a chosen `p`-regular representative, Serre's extension
+/-- Helper for Theorem 18-18.2-1: on a chosen `p`-regular representative, LinearRepresentations_Serre_1977's extension
 recovers the original regular class function. -/
 @[simp] theorem regularClassFunctionExtension_ofSubtype
     (f : PRegularConjClass G p → K)
@@ -710,7 +710,7 @@ recovers the original regular class function. -/
   -- The extension uses the original value on the regular branch.
   simp [regularClassFunctionExtension, s.2]
 
-/-- Helper for Theorem 18-18.2-1: Serre's extension vanishes on the non-regular locus. -/
+/-- Helper for Theorem 18-18.2-1: LinearRepresentations_Serre_1977's extension vanishes on the non-regular locus. -/
 @[simp] theorem regularClassFunctionExtension_eq_zero_of_not_isPRegular
     (f : PRegularConjClass G p → K)
     {g : G} (hg : ¬ IsPRegular p g) :
@@ -718,7 +718,7 @@ recovers the original regular class function. -/
   -- The non-regular branch of the extension is definitionally zero.
   simp [regularClassFunctionExtension, hg]
 
-/-- Helper for Theorem 18-18.2-1: Serre's zero-extension is still a class function on `G`. -/
+/-- Helper for Theorem 18-18.2-1: LinearRepresentations_Serre_1977's zero-extension is still a class function on `G`. -/
 theorem regularClassFunctionExtension_isClassFunction
     (f : PRegularConjClass G p → K) :
     _root_.IsClassFunction (regularClassFunctionExtension (G := G) (p := p) f) := by
@@ -752,7 +752,7 @@ theorem regularClassFunctionExtension_isClassFunction
 
 /-- Helper for Theorem 18-18.2-1: raising a `p`-regular element to a power coming from any
 subgroup of exponent units preserves `p`-regularity. This isolates the only arithmetic fact needed
-to compare Serre's zero-extension along power orbits. -/
+to compare LinearRepresentations_Serre_1977's zero-extension along power orbits. -/
 private theorem isPRegular_pow_gamma_local
     {Γ : Subgroup (ZMod (Monoid.exponent G))ˣ}
     (t : Γ) {g : G} (hg : IsPRegular p g) :
@@ -802,7 +802,7 @@ theorem pregular_pow_invariant_of_regularClassFunctionExtension_isConstantOnGalo
           simpa using
             regularClassFunctionExtension_ofSubtype (G := G) (p := p) f s
 
-/-- Helper for Theorem 18-18.2-1: conversely, Serre's zero-extension is constant on the
+/-- Helper for Theorem 18-18.2-1: conversely, LinearRepresentations_Serre_1977's zero-extension is constant on the
 `Γ`-power classes of `G` whenever the original regular class function is invariant under the
 induced `Γ`-power action on `p`-regular representatives. This turns an implicit quotient-basis
 assumption into an explicit checkable condition. -/
@@ -857,7 +857,7 @@ theorem regularClassFunctionExtension_isConstantOnGaloisPowerClasses_of_pregular
     rw [regularClassFunctionExtension_eq_zero_of_not_isPRegular (G := G) (p := p) f hg,
       regularClassFunctionExtension_eq_zero_of_not_isPRegular (G := G) (p := p) f hgpow_not]
 
-/-- Helper for Theorem 18-18.2-1: package Serre's zero-extension as a bundled class function on
+/-- Helper for Theorem 18-18.2-1: package LinearRepresentations_Serre_1977's zero-extension as a bundled class function on
 `G`. -/
 def regularClassFunctionExtensionClassFunction
     (f : PRegularConjClass G p → K) : classFunctionSubmodule K G :=
@@ -865,7 +865,7 @@ def regularClassFunctionExtensionClassFunction
     regularClassFunctionExtension_isClassFunction (G := G) (p := p) f⟩
 
 /-- Helper for Theorem 18-18.2-1: coercing the bundled zero-extension back to a function recovers
-Serre's original extension on `G`. -/
+LinearRepresentations_Serre_1977's original extension on `G`. -/
 @[simp] theorem regularClassFunctionExtensionClassFunction_coe
     (f : PRegularConjClass G p → K) :
     ((regularClassFunctionExtensionClassFunction (G := G) (p := p) f :
@@ -873,7 +873,7 @@ Serre's original extension on `G`. -/
       regularClassFunctionExtension (G := G) (p := p) f :=
   rfl
 
-/-- Helper for Theorem 18-18.2-1: descending Serre's extension back to
+/-- Helper for Theorem 18-18.2-1: descending LinearRepresentations_Serre_1977's extension back to
 `PRegularConjClass G p` recovers the original function. -/
 @[simp] theorem pRegularLift_regularClassFunctionExtension
     (f : PRegularConjClass G p → K) :

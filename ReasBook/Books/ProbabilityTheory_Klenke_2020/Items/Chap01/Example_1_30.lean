@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Probability.UniformOn
-import AchimKlenkeLean.Items.Chap01.Definition_1_28
-import AchimKlenkeLean.Items.Chap01.Example_1_11
-import AchimKlenkeLean.Items.Chap01.Example_1_37
+import ProbabilityTheory_Klenke_2020.Items.Chap01.Definition_1_28
+import ProbabilityTheory_Klenke_2020.Items.Chap01.Example_1_11
+import ProbabilityTheory_Klenke_2020.Items.Chap01.Example_1_37
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -2,9 +2,9 @@ import Mathlib.Algebra.Module.FinitePresentation
 import Mathlib.Algebra.Module.Torsion.Basic
 import Mathlib.Algebra.Ring.NonZeroDivisors
 import Mathlib.CategoryTheory.Abelian.Projective.Dimension
-import stacks_project.Chap10.Definition_10_78_1
-import stacks_project.Chap15.Definition_15_8_3
-import stacks_project.Chap15.PrincipalIdeal
+import StacksProject_2024.Chap10.Definition_10_78_1
+import StacksProject_2024.Chap15.Definition_15_8_3
+import StacksProject_2024.Chap15.PrincipalIdeal
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

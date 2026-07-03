@@ -1,11 +1,11 @@
 import Mathlib
-import Serre.Chap02.Proposition_2_2_2_1
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap06.Corollary_6_6_5_4
-import Serre.Chap06.Proposition_6_6_5_5
-import Serre.Chap12.Exercise_12_12_2_3.API
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionConstituents
-import Serre.Chap12.Proposition_12_12_2_1
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_2_1
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_5_4
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_5
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_3.API
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionConstituents
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_2_1
 
 noncomputable section
 

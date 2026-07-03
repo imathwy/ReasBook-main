@@ -1,4 +1,4 @@
-import SmoothManifoldsLee.Chap04.Sec04_21.Exercise_4_4
+import SmoothManifolds_Lee_2012.Chap04.Sec04_21.Exercise_4_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

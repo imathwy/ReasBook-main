@@ -1,4 +1,4 @@
-import Serre.Chap11.Proposition_11_11_4_1.OwnersAndPrimeFibers
+import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_1.OwnersAndPrimeFibers
 
 -- Stable regular-owner incidence helpers extracted from Proposition 11-11.4-1.
 
@@ -30,7 +30,7 @@ variable [IsDomain A] [Ring.HasFiniteQuotients A] [IsIntegralClosure A ℤ ℂ]
 local instance (p : Nat.Primes) : Fact ((p : ℕ).Prime) := ⟨p.2⟩
 
 /-- Helper for Proposition 11-11.4-1: the `p`-regular owner class represented by the `p'`-part of
-an element. This is the source-side bridge from ordinary conjugacy classes to Serre's regular
+an element. This is the source-side bridge from ordinary conjugacy classes to LinearRepresentations_Serre_1977's regular
 class parameter. -/
 def pregular_conj_class_of_element
     (p : Nat.Primes) (x : G) : PRegularConjClass G p :=
@@ -311,7 +311,7 @@ theorem associatedPElementarySubgroup_conj_transport_stable
           (P.mapSurjective (show Function.Surjective e.toMonoidHom from e.surjective)) := by
       rw [associatedPElementarySubgroup]
 
-/-- Helper for Proposition 11-11.4-1: if the same ambient prime satisfies Serre's intrinsic
+/-- Helper for Proposition 11-11.4-1: if the same ambient prime satisfies LinearRepresentations_Serre_1977's intrinsic
 regular-owner predicate for two `p`-regular classes, then the two classes have the same
 associated-`p`-elementary subgroup incidence profile. This isolates the already-verified formal
 part of the regular-branch uniqueness argument, leaving only the source-side profile-separation

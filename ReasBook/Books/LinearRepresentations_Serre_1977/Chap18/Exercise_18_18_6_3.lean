@@ -1,8 +1,8 @@
-import Serre.RepresentationTheory.RealizableOver
-import Serre.Chap16.Corollary_16_16_1_6.Bases
-import Serre.Chap18.Exercise_18_18_6_3.Shared
-import Serre.Chap18.Exercise_18_18_6_3.SourceCharacters
-import Serre.Chap18.Exercise_18_18_6_3.ExplicitModels
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_6.Bases
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_3.Shared
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_3.SourceCharacters
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_3.ExplicitModels
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -158,7 +158,7 @@ private theorem a5_three_cycle_fixed_points_card :
 
 /-- Helper for Exercise 18-18.6-3: over an algebraically closed characteristic-`2` field, the
 canonical scalar lift identifies the Brauer character with the ordinary character on `2`-regular
-elements. This is the bridge needed for the augmentation row in Serre's source route. -/
+elements. This is the bridge needed for the augmentation row in LinearRepresentations_Serre_1977's source route. -/
 private theorem modularCharacter_eq_character_of_scalarLift_local
     {Ω : Type*} [Field Ω] [IsAlgClosed Ω] [CharP Ω 2]
     {V : Type*} [AddCommGroup V] [Module Ω V] [Module.Finite Ω V]
@@ -417,7 +417,7 @@ private theorem a5_generator_defect_map_baseChange_piRight
     ext i
     simp [map_add, hx, hy]
 
-/-- Helper for Exercise 18-18.6-3: Serre's two source degree-`2` Brauer rows remain distinct on
+/-- Helper for Exercise 18-18.6-3: LinearRepresentations_Serre_1977's two source degree-`2` Brauer rows remain distinct on
 the explicit `2`-regular classes of `A₅`. This records that the remaining gap is the owner-level
 construction, not ambiguity in the target character functions. -/
 private theorem a5_source_degree_two_character_functions_ne_modTwo :
@@ -465,7 +465,7 @@ private theorem a5_source_degree_two_character_function_phi_ne_trivial_modTwo :
       BrauerProjectiveModTwo.trivial
   have hphi := congrFun a5_source_degree_two_character_function_phi_modTwo c1
   have hvalue : (0 : 𝔽₄) = 1 := by
-    -- Evaluate the reduced row at the identity class, where Serre's source function vanishes.
+    -- Evaluate the reduced row at the identity class, where LinearRepresentations_Serre_1977's source function vanishes.
     have heval := congrFun hEq c1
     simpa [c1] using hphi.trans heval
   exact zero_ne_one hvalue
@@ -537,7 +537,7 @@ private theorem a5_source_degree_two_character_function_psi_ne_zero_modTwo :
     simpa [Pi.zero_apply, cψ] using hpsi.trans heval
   exact one_ne_zero hvalue
 
-/-- Helper for Exercise 18-18.6-3: Serre's reduced `φ`-row vanishes on the trivial Brauer label.
+/-- Helper for Exercise 18-18.6-3: LinearRepresentations_Serre_1977's reduced `φ`-row vanishes on the trivial Brauer label.
 This is the concrete value that later forces the corrected owner statement to split off a trivial
 constituent before reaching the degree-`2` source slot. -/
 private theorem a5_source_degree_two_character_function_phi_value_at_trivial_label :
@@ -577,7 +577,7 @@ private theorem a5_source_degree_two_character_function_psi_value_at_trivial_lab
   have hpsi := congrFun a5_source_degree_two_character_function_psi_modTwo c1
   simpa [c1] using hpsi
 
-/-- Helper for Exercise 18-18.6-3: Serre's reduced `φ`-row takes the value `1` on the
+/-- Helper for Exercise 18-18.6-3: LinearRepresentations_Serre_1977's reduced `φ`-row takes the value `1` on the
 `φ`-labeled split `5`-cycle class. -/
 private theorem a5_source_degree_two_character_function_phi_value_at_phi_label :
     (fun c : PRegularConjClass A5 2 ↦
@@ -596,7 +596,7 @@ private theorem a5_source_degree_two_character_function_phi_value_at_phi_label :
   have hphi := congrFun a5_source_degree_two_character_function_phi_modTwo cφ
   simpa [cφ] using hphi
 
-/-- Helper for Exercise 18-18.6-3: Serre's reduced `ψ`-row takes the value `1` on the
+/-- Helper for Exercise 18-18.6-3: LinearRepresentations_Serre_1977's reduced `ψ`-row takes the value `1` on the
 `ψ`-labeled split `5`-cycle class. -/
 private theorem a5_source_degree_two_character_function_psi_value_at_psi_label :
     (fun c : PRegularConjClass A5 2 ↦
@@ -750,7 +750,7 @@ private theorem exists_irreducible_quotient_of_finiteDimensional_nontrivial_loca
     simpa using hpoint
   exact ⟨W, hWirr, q, hq_nonzero⟩
 
-/-- Helper for Exercise 18-18.6-3: Serre's reduced row `χ₃,φ,ψ - χ₁` should be realized by an
+/-- Helper for Exercise 18-18.6-3: LinearRepresentations_Serre_1977's reduced row `χ₃,φ,ψ - χ₁` should be realized by an
 actual simple degree-`2` `𝔽₄[A₅]`-module. -/
 private theorem a5_source_degree_two_phi_slot_over_f4 :
     ∃ E : FDRep 𝔽₄ A5,
@@ -770,14 +770,14 @@ private theorem a5_source_degree_two_phi_slot_over_f4 :
   -- `a5_source_degree_two_character_function_phi_value_at_trivial_label` shows that row vanishes
   -- on the trivial Brauer class. The next plan must first correct the owner statement to package
   -- a genuine degree-`3` reduction together with its trivial constituent/subquotient, and only
-  -- then apply Serre's `3 = 1 + 2` quotient step.
+  -- then apply LinearRepresentations_Serre_1977's `3 = 1 + 2` quotient step.
   -- TODO for Exercise 18-18.6-3: after that corrected owner is available, take the resulting
   -- nontrivial degree-`2` quotient, rule out the degree-`1` case using
   -- `alternatingGroup_fin5_fdRep_class_eq_trivial_of_finrank_one`, and identify its Brauer
   -- character with `a5_source_degree_two_character_function_phi_modTwo`.
   sorry
 
-/-- Helper for Exercise 18-18.6-3: Serre's reduced row `χ₃,ψ,φ - χ₁` should be realized by the
+/-- Helper for Exercise 18-18.6-3: LinearRepresentations_Serre_1977's reduced row `χ₃,ψ,φ - χ₁` should be realized by the
 second simple degree-`2` `𝔽₄[A₅]`-module. -/
 private theorem a5_source_degree_two_psi_slot_over_f4 :
     ∃ E : FDRep 𝔽₄ A5,
@@ -915,7 +915,7 @@ private theorem fdRep_not_iso_of_finrank_ne_local
   rintro ⟨e⟩
   exact hfinrank (FDRep.isoToLinearEquiv e).finrank_eq
 
-/-- Helper for Exercise 18-18.6-3: over any characteristic-`2` field, Serre's degree-`4` branch
+/-- Helper for Exercise 18-18.6-3: over any characteristic-`2` field, LinearRepresentations_Serre_1977's degree-`4` branch
 is represented by the augmentation slot for the natural action of `A₅` on five letters. -/
 private abbrev a5_augmentation_slot_over
     (Ω : Type*) [Field Ω] [CharP Ω 2] : FDRep Ω A5 :=
@@ -1092,7 +1092,7 @@ private theorem a5_irreducible_degree_two_descends_to_f4
   let _ := hEψΩ_dim
   sorry
 
-/-- Helper for Exercise 18-18.6-3: Serre's source route for the two degree-`2` Brauer slots of
+/-- Helper for Exercise 18-18.6-3: LinearRepresentations_Serre_1977's source route for the two degree-`2` Brauer slots of
 `A₅` in characteristic `2`. The still-open owner-level input is exactly that one gets descended
 irreducible degree-`2` `𝔽₄[A₅]`-modules from the reductions of the ordinary degree-`3` rows
 `χ₃,φ,ψ` and `χ₃,ψ,φ`. -/
@@ -1121,7 +1121,7 @@ theorem a5_degree_two_source_slot_exists_over_f4 :
     ∃ (W : Type u) (_ : AddCommGroup W) (_ : Module 𝔽₄ W) (_ : FiniteDimensional 𝔽₄ W)
       (ρ : Representation 𝔽₄ A5 W),
       ρ.IsIrreducible ∧ Module.finrank 𝔽₄ W = 2 := by
-  -- Reuse the existential component of the full Serre source package.
+  -- Reuse the existential component of the full LinearRepresentations_Serre_1977 source package.
   exact a5_degree_two_source_route_over_f4.1
 
 /-- Helper for Exercise 18-18.6-3: every irreducible degree-`2` representation of `A₅` over an

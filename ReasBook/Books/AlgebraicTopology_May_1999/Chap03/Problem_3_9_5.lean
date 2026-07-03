@@ -1,5 +1,5 @@
 import Mathlib
-import MayConciseRevised.Chap03.Lemma_3_4_8
+import AlgebraicTopology_May_1999.Chap03.Lemma_3_4_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

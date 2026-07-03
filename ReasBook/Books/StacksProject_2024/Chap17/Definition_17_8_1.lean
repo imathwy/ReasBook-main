@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import stacks_project.Chap06.Definition_6_26_1
+import StacksProject_2024.Chap06.Definition_6_26_1
 
 universe u
 

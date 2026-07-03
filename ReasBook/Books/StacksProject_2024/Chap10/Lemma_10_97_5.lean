@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap10.Lemma_10_96_12
-import stacks_project.Chap10.Lemma_10_150_6.AssociatedGradedAPI
+import StacksProject_2024.Chap10.Lemma_10_96_12
+import StacksProject_2024.Chap10.Lemma_10_150_6.AssociatedGradedAPI
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

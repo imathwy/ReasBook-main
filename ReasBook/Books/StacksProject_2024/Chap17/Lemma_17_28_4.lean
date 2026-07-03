@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import stacks_project.Chap17.Definition_17_28_3
+import StacksProject_2024.Chap17.Definition_17_28_3
 
 /- Domain-style sampling for Lemma 17.28.4:
 - primary domain: sheafified relative differentials of sheaves of commutative rings on a

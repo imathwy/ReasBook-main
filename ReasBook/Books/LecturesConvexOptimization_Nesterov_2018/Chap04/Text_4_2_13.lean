@@ -1,6 +1,6 @@
 import Mathlib
-import Nesterov.Chap04.Algorithm_4_2_4
-import Nesterov.Chap04.Theorem_4_2_3
+import LecturesConvexOptimization_Nesterov_2018.Chap04.Algorithm_4_2_4
+import LecturesConvexOptimization_Nesterov_2018.Chap04.Theorem_4_2_3
 
 open scoped BigOperators Gradient
 open StrongConvexAcceleratedCubicNewton

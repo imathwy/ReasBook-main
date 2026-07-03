@@ -1,5 +1,5 @@
-import Serre.Chap12.Exercise_12_12_7_8.RegularPrimeResidueEvaluation
-import Serre.Chap12.Lemma_12_12_7_1
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_7_8.RegularPrimeResidueEvaluation
+import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_1
 
 open scoped Representation
 
@@ -32,7 +32,7 @@ section RegularPrime
 
 variable {p : Nat.Primes}
 
-/-- Helper for Exercise 12-12.7-8: if an owner element of `A ⊗ R_K(G)` already lies in Serre's
+/-- Helper for Exercise 12-12.7-8: if an owner element of `A ⊗ R_K(G)` already lies in LinearRepresentations_Serre_1977's
 realized scalar extension `A ⊗ V[K,p](ΓK)`, then its tensor-character representative dies in the
 quotient `A ⊗ (R_K(G) / V[K,p](ΓK))`. This is the owner-side quotient-killing bridge used before
 transporting to a fixed fiber. -/

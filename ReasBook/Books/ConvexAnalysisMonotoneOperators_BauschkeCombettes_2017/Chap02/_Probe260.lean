@@ -1,4 +1,4 @@
-import BauschkeLean.Chap02.Example_2_60
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap02.Example_2_60
 
 universe u v
 open ContinuousLinearMap

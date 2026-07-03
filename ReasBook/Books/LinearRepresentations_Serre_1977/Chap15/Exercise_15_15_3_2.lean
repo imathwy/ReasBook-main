@@ -1,6 +1,6 @@
-import Serre.Chap15.Exercise_15_15_1_2
-import Serre.Chap15.Definition_15_15_3_1
-import Serre.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_1_2
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
 
 noncomputable section
 
@@ -26,7 +26,7 @@ local notation "d" => decompositionHom A K G
 
 local notation "e" => projectiveGrothendieckScalarExtensionHom (A := A) (K := K) (G := G)
 
-/-- Exercise 15-15.3-2: Serre's scalar-extension homomorphism intertwines the tensor-product
+/-- Exercise 15-15.3-2: LinearRepresentations_Serre_1977's scalar-extension homomorphism intertwines the tensor-product
 action of `d x ∈ R_k(G)` on `P_k(G)` with multiplication by `x ∈ R_K(G)`. -/
 theorem projectiveGrothendieckScalarExtensionHom_smul
     (x : R_K(G)) (y : P_k(G)) :

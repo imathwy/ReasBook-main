@@ -1,6 +1,6 @@
 import Mathlib
-import Nesterov.Chap07.Algorithm_7_1
-import Nesterov.Chap03.Theorem_3_40
+import LecturesConvexOptimization_Nesterov_2018.Chap07.Algorithm_7_1
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_40
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,4 +1,4 @@
-import Serre.Chap16.Proposition_16_16_4_1.FourierBridge
+import LinearRepresentations_Serre_1977.Chap16.Proposition_16_16_4_1.FourierBridge
 
 noncomputable section
 
@@ -142,7 +142,7 @@ lemma endHom_toRepresentation_eq_ambient_action
   simpa [Representation.asAlgebraHom_of] using
     (L.ambient_action_map_eq_endHom (u := MonoidAlgebra.of A G s)).symm
 
-/-- Helper for Proposition 16-16.4-1: after mapping coefficients to the fraction field, Serre's
+/-- Helper for Proposition 16-16.4-1: after mapping coefficients to the fraction field, LinearRepresentations_Serre_1977's
 explicit integral Fourier coefficient at `s` already matches the ambient trace expression that the
 source proof will compare to the inverse-Wedderburn packet. -/
 lemma algebraMap_serre_fourier_element_apply_eq_ambient_trace
@@ -189,7 +189,7 @@ lemma algebraMap_serre_fourier_element_apply_eq_ambient_trace
         L.algebraMap_trace_eq_trace_endHom ((L.toRepresentation s⁻¹).comp φ), hbaseChange]
 
 /-- Helper for Proposition 16-16.4-1: over `K`, the ambient-trace coefficient formula already
-characterizes Serre's Fourier element. This packages the source-faithful coefficient comparison
+characterizes LinearRepresentations_Serre_1977's Fourier element. This packages the source-faithful coefficient comparison
 before any later complete-family owner reads off the distinguished simple factor. -/
 lemma eq_mapped_serre_fourier_of_ambient_coefficients_local
     [Invertible (Nat.card G : K)]
@@ -205,14 +205,14 @@ lemma eq_mapped_serre_fourier_of_ambient_coefficients_local
       MonoidAlgebra.mapRingHom G (algebraMap A K)
         (L.serre_fourier_element hdefect φ) := by
   ext s
-  -- Replace the mapped Serre coefficient by the already verified ambient trace formula over `K`.
+  -- Replace the mapped LinearRepresentations_Serre_1977 coefficient by the already verified ambient trace formula over `K`.
   rw [MonoidAlgebra.mapRingHom_apply,
     L.algebraMap_serre_fourier_element_apply_eq_ambient_trace
       (p := p) hdefect φ s]
   exact hcoeff s
 
 /-- Helper for Proposition 16-16.4-1: after mapping coefficients all the way to
-`AlgebraicClosure K`, Serre's Fourier coefficient formula is still the same ambient trace formula,
+`AlgebraicClosure K`, LinearRepresentations_Serre_1977's Fourier coefficient formula is still the same ambient trace formula,
 now with the endomorphism base-changed to the algebraic closure. This is the coefficient bridge
 needed before identifying the mapped Fourier element with its packet-supported Wedderburn
 preimage. -/
@@ -248,7 +248,7 @@ lemma algebraMap_serre_fourier_element_apply_eq_algClosure_ambient_trace
                 (AlgebraicClosure K))
 
 /-- Helper for Proposition 16-16.4-1: once a candidate element of `(AlgebraicClosure K)[G]` has
-the same ambient trace coefficients as Serre's mapped Fourier element, coefficientwise
+the same ambient trace coefficients as LinearRepresentations_Serre_1977's mapped Fourier element, coefficientwise
 extensionality identifies the two group-algebra elements. This isolates the final coefficient
 comparison step in the characteristic-zero packet argument. -/
 lemma eq_mapped_serre_fourier_of_algClosure_ambient_coefficients
@@ -266,7 +266,7 @@ lemma eq_mapped_serre_fourier_of_algClosure_ambient_coefficients
       MonoidAlgebra.mapRingHom G (algebraMap A (AlgebraicClosure K))
         (L.serre_fourier_element hdefect φ) := by
   ext s
-  -- Replace the mapped Serre coefficient by the already verified algebraic-closure trace formula.
+  -- Replace the mapped LinearRepresentations_Serre_1977 coefficient by the already verified algebraic-closure trace formula.
   rw [MonoidAlgebra.mapRingHom_apply,
     L.algebraMap_serre_fourier_element_apply_eq_algClosure_ambient_trace
       (p := p) hdefect φ s]
@@ -415,7 +415,7 @@ lemma family_equiv_action_id_of_ambient_id_local
 /-- Helper for Proposition 16-16.4-1: in characteristic zero, the Chapter `12` packet
 decomposition of `Representation.scalarExtension ρ` can be reindexed through a complete
 irreducible family over `AlgebraicClosure K`. This is the local packet-to-complete-family adapter
-needed before comparing Serre's Fourier element with an inverse-Wedderburn preimage. -/
+needed before comparing LinearRepresentations_Serre_1977's Fourier element with an inverse-Wedderburn preimage. -/
 lemma charZero_packet_complete_family_data_local
     [CharZero K] : True := by
   -- TODO: restore the complete-family reindexing owner once the packet API is re-synchronized.
@@ -599,7 +599,7 @@ lemma irreducibleFamilyEndAlgEquiv_symm_supported_id_family
 `AlgebraicClosure K`, the supported identity family already determines the exact injective product
 target and packet projector required by the general annihilator lemma. This isolates the purely
 Wedderburn-side data of the characteristic-zero projector argument so the only remaining step is
-to identify Serre's mapped element with this supported preimage. -/
+to identify LinearRepresentations_Serre_1977's mapped element with this supported preimage. -/
 lemma irreducibleFamily_supported_id_projector_target_local
     {κ : Type*} [Fintype κ] [DecidableEq κ]
     (π : κ → Rep (AlgebraicClosure K) G)
@@ -712,7 +712,7 @@ lemma representation_equiv_conj_mul_eq_local
 
 /-- Helper for Proposition 16-16.4-1: transporting an endomorphism across a representation
 equivalence preserves the Fourier trace term `Tr(ρ(s⁻¹) ∘ f)`. This is the exact packet-trace
-rewrite needed before collapsing the supported-family coefficient sum to Serre's coefficient
+rewrite needed before collapsing the supported-family coefficient sum to LinearRepresentations_Serre_1977's coefficient
 formula. -/
 lemma representation_trace_action_conj_eq_local
     {L' : Type*} [Field L']
@@ -781,7 +781,7 @@ lemma internal_decomposition_endomorphism_ext_local
 
 /-- Helper for Proposition 16-16.4-1: after choosing the packet data in characteristic zero,
 package the genuine source-faithful missing step as the existence of a supported inverse-Wedderburn
-preimage that is simultaneously Serre's mapped Fourier element and acts by the scalar extension of
+preimage that is simultaneously LinearRepresentations_Serre_1977's mapped Fourier element and acts by the scalar extension of
 `φ`. The wrapper theorem below can then consume this data without reopening the coefficient chase.
 -/
 lemma charZero_supported_preimage_eq_mapped_serre_local

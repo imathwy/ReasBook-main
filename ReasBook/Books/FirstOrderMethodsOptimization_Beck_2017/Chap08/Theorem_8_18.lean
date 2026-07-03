@@ -1,9 +1,9 @@
-import FirstOrderMethodsinOptimization.Chap08.Algorithm_8_3
-import FirstOrderMethodsinOptimization.Chap08.Assumption_8_7
-import FirstOrderMethodsinOptimization.Chap08.Assumption_8_12
-import FirstOrderMethodsinOptimization.Chap08.Definition_8_8
-import FirstOrderMethodsinOptimization.Chap08.Definition_8_10
-import FirstOrderMethodsinOptimization.Chap08.Theorem_8_13
+import FirstOrderMethodsOptimization_Beck_2017.Chap08.Algorithm_8_3
+import FirstOrderMethodsOptimization_Beck_2017.Chap08.Assumption_8_7
+import FirstOrderMethodsOptimization_Beck_2017.Chap08.Assumption_8_12
+import FirstOrderMethodsOptimization_Beck_2017.Chap08.Definition_8_8
+import FirstOrderMethodsOptimization_Beck_2017.Chap08.Definition_8_10
+import FirstOrderMethodsOptimization_Beck_2017.Chap08.Theorem_8_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

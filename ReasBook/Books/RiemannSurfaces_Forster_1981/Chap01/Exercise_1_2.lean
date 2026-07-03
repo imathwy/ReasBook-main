@@ -1,5 +1,5 @@
-import RiemannSurfaces.Chap01.Definition_1_9
-import RiemannSurfaces.Chap01.Example_1_5
+import RiemannSurfaces_Forster_1981.Chap01.Definition_1_9
+import RiemannSurfaces_Forster_1981.Chap01.Example_1_5
 import Mathlib.Topology.Algebra.ConstMulAction
 import Mathlib.Topology.Compactification.OnePoint.ProjectiveLine
 

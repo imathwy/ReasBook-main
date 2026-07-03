@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Category.ModuleCat.Basic
 import Mathlib.CategoryTheory.Category.Preorder
-import stacks_project.Chap04.Definition_4_2_15
+import StacksProject_2024.Chap04.Definition_4_2_15
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

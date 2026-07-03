@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap14.Corollary_14_14_3_3
-import Serre.Chap14.Corollary_14_14_4_3
-import Serre.Chap14.Exercise_14_14_4_6.ProjectorRangeBridge
-import Serre.Chap16.Lemma_16_16_3_1.Index
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_3_3
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_4_6.ProjectorRangeBridge
+import LinearRepresentations_Serre_1977.Chap16.Lemma_16_16_3_1.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

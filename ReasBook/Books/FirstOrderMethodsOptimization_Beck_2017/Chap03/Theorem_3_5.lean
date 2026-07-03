@@ -1,4 +1,4 @@
-import FirstOrderMethodsinOptimization.Chap03.Theorem_3_3
+import FirstOrderMethodsOptimization_Beck_2017.Chap03.Theorem_3_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

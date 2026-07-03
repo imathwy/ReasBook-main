@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap18.Definition_18_43_1
-import stacks_project.Chap07.Definition_7_15_1_Topoi
+import StacksProject_2024.Chap18.Definition_18_43_1
+import StacksProject_2024.Chap07.Definition_7_15_1_Topoi
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,9 +1,9 @@
 import Mathlib
-import stacks_project.Chap10.Lemma_10_44_2
-import stacks_project.Chap10.Lemma_10_44_4
-import stacks_project.Chap10.Lemma_10_158_11
-import stacks_project.Chap15.Lemma_15_41_3_Regular_maps_and_base_change
-import stacks_project.Chap15.Lemma_15_41_5
+import StacksProject_2024.Chap10.Lemma_10_44_2
+import StacksProject_2024.Chap10.Lemma_10_44_4
+import StacksProject_2024.Chap10.Lemma_10_158_11
+import StacksProject_2024.Chap15.Lemma_15_41_3_Regular_maps_and_base_change
+import StacksProject_2024.Chap15.Lemma_15_41_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

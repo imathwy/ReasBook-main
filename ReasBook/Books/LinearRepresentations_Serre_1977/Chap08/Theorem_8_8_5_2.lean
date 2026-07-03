@@ -1,10 +1,10 @@
 import Mathlib
-import Serre.Chap03.Exercise_3_3_3_6
-import Serre.Chap08.Definition_8_8_3_2
-import Serre.Chap08.Exercise_8_8_3_9
-import Serre.Chap08.Lemma_8_8_5_1
-import Serre.Chap08.Proposition_8_8_1_1
-import Serre.Chap08.Remark_8_8_1_2
+import LinearRepresentations_Serre_1977.Chap03.Exercise_3_3_3_6
+import LinearRepresentations_Serre_1977.Chap08.Definition_8_8_3_2
+import LinearRepresentations_Serre_1977.Chap08.Exercise_8_8_3_9
+import LinearRepresentations_Serre_1977.Chap08.Lemma_8_8_5_1
+import LinearRepresentations_Serre_1977.Chap08.Proposition_8_8_1_1
+import LinearRepresentations_Serre_1977.Chap08.Remark_8_8_1_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -1788,7 +1788,7 @@ lemma isMonomial_of_quotient_ker_isMonomial
       (σ := ρ.ofQuotient ρ.ker) hquot)
 
 /- Source/core/bridge triage:
-* `source-facing`: Serre's theorem that irreducible complex representations of finite
+* `source-facing`: LinearRepresentations_Serre_1977's theorem that irreducible complex representations of finite
   supersolvable groups are monomial.
 * `core/canonical`: `Representation.IsMonomial`, whose primitive data already packages the
   subgroup, one-dimensional subrepresentation, and induction witness.

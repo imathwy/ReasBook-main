@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.AB
-import stacks_project.Chap13.Situation_13_15_1
-import stacks_project.Chap15.Definition_15_59_13
-import stacks_project.Chap15.Definition_15_65_1
-import stacks_project.Chap19.Lemma_19_13_4
+import StacksProject_2024.Chap13.Situation_13_15_1
+import StacksProject_2024.Chap15.Definition_15_59_13
+import StacksProject_2024.Chap15.Definition_15_65_1
+import StacksProject_2024.Chap19.Lemma_19_13_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

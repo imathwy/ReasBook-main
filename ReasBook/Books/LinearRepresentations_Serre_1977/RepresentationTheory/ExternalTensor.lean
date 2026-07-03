@@ -4,7 +4,7 @@ namespace Representation
 
 /-
 Source/core/bridge triage:
-* source-facing: Serre's external tensor-product notation `ρ₁ ⊠ ρ₂` for representations of the
+* source-facing: LinearRepresentations_Serre_1977's external tensor-product notation `ρ₁ ⊠ ρ₂` for representations of the
   product monoid `G₁ × G₂`.
 * core/canonical: the restricted tensor-product owner
   `(ρ₁.comp (MonoidHom.fst G₁ G₂)).tprod (ρ₂.comp (MonoidHom.snd G₁ G₂))`.

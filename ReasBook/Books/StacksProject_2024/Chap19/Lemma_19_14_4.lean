@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.CategoryTheory.Functor.Derived.Adjunction
-import stacks_project.Chap19.Lemma_19_13_6
-import stacks_project.Chap19.Theorem_19_14_3
+import StacksProject_2024.Chap19.Lemma_19_13_6
+import StacksProject_2024.Chap19.Theorem_19_14_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

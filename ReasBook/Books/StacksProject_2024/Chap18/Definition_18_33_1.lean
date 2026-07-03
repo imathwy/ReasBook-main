@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import stacks_project.Chap17.Definition_17_28_1
+import StacksProject_2024.Chap17.Definition_17_28_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -42,5 +42,5 @@ an `O₂`-module sheaf `F`, the type `Der[φ ; F]` is the canonical notion of a
 
 /- Companion recall: the upstream canonical owner is `PresheafOfModules.Derivation'`, and
 `Der[φ ; F]` is its sheaf-level source-facing specialization from
-`stacks_project/Items/Chap17/Definition_17_28_1.lean`. -/
+`StacksProject_2024/Items/Chap17/Definition_17_28_1.lean`. -/
 recall PresheafOfModules.Derivation'

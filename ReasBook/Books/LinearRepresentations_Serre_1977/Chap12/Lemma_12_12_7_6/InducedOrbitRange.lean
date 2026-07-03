@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.Chap12.Corollary_12_12_4_2
-import Serre.Chap12.GaloisPowerClasses
-import Serre.Chap12.Lemma_12_12_7_5
-import Serre.Chap12.Lemma_12_12_7_6.AssociatedSubgroupBridge
-import Serre.Chap12.Lemma_12_12_7_6.OrbitSupportedLift
+import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_4_2
+import LinearRepresentations_Serre_1977.Chap12.GaloisPowerClasses
+import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_5
+import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_6.AssociatedSubgroupBridge
+import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_6.OrbitSupportedLift
 
 noncomputable section
 
@@ -250,7 +250,7 @@ lemma induced_lifted_orbit_supported_eq_zero_of_pregular_class_ne_local
   simpa [hsum]
 
 /-- Helper for Lemma 12-12.7-6: at the distinguished source element `x`, the induced
-orbit-supported witness has the normalizer-quotient value appearing in Serre's formula. -/
+orbit-supported witness has the normalizer-quotient value appearing in LinearRepresentations_Serre_1977's formula. -/
 lemma induced_lifted_orbit_supported_summand_at_x_eq_gammaNormalizer_indicator_local
     (x : G) (hx : IsPRegular p x) (P : Sylow p N[ΓK](x))
     (ψ : A ⊗R[K](associatedGammaPElementarySubgroup ΓK x P))
@@ -357,7 +357,7 @@ lemma induced_lifted_orbit_supported_summand_at_x_eq_gammaNormalizer_indicator_l
             else 0 := by exact (if_neg hyN).symm
 
 /-- Helper for Lemma 12-12.7-6: at the distinguished source element `x`, the induced
-orbit-supported witness has the normalizer-quotient value appearing in Serre's formula. -/
+orbit-supported witness has the normalizer-quotient value appearing in LinearRepresentations_Serre_1977's formula. -/
 lemma associatedGammaPElementary_card_eq_zpowers_card_mul_card_P_local
     (x : G) (hx : IsPRegular p x) (P : Sylow p N[ΓK](x)) :
     Nat.card (associatedGammaPElementarySubgroup ΓK x P) =
@@ -456,7 +456,7 @@ lemma isConstantOnGaloisPowerClasses_of_mem_characterRingOverFieldAlgebraScalarE
       (G := G) (L := L) K φ).1 hscalar
 
 /-- Helper for Lemma 12-12.7-6: at the distinguished source element `x`, the induced
-orbit-supported witness has the normalizer-quotient value appearing in Serre's formula. -/
+orbit-supported witness has the normalizer-quotient value appearing in LinearRepresentations_Serre_1977's formula. -/
 lemma induced_lifted_orbit_supported_at_x_eq_normalizer_quotient_local
     (x : G) (hx : IsPRegular p x) (P : Sylow p N[ΓK](x))
     (ψ : A ⊗R[K](associatedGammaPElementarySubgroup ΓK x P))
@@ -704,7 +704,7 @@ lemma associated_orbit_supported_function_inclusion_eq_orbit_supported_zpowers_l
 
 /-- Helper for Lemma 12-12.7-6: the orbit-supported formula on
 `H = associatedGammaPElementarySubgroup ΓK x P` vanishes off the cyclic factor `C = ⟨x⟩`. This is
-the exact support statement used in Serre's source proof. -/
+the exact support statement used in LinearRepresentations_Serre_1977's source proof. -/
 lemma associated_orbit_supported_function_eq_zero_of_not_mem_zpowers_local
     (x : G) (P : Sylow p N[ΓK](x))
     {h : associatedGammaPElementarySubgroup ΓK x P}
@@ -716,7 +716,7 @@ lemma associated_orbit_supported_function_eq_zero_of_not_mem_zpowers_local
       mem_zpowers_of_exists_gamma_power_local (K := K) (p := p) x P hpow
   rw [associated_orbit_supported_function, if_neg hpow_false]
 
-/-- Helper for Lemma 12-12.7-6: any lift that agrees with Serre's orbit-supported formula on the
+/-- Helper for Lemma 12-12.7-6: any lift that agrees with LinearRepresentations_Serre_1977's orbit-supported formula on the
 `p`-regular locus of `H = associatedGammaPElementarySubgroup ΓK x P` already vanishes on
 `p`-regular elements outside the cyclic factor `C = ⟨x⟩`. -/
 lemma lifted_orbit_supported_eq_zero_of_not_mem_zpowers_of_isPRegular_local

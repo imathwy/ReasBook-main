@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap10.Definition_10_10_1_3
-import Serre.Chap11.Remark_11_11_1_3.Index
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap11.Remark_11_11_1_3.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -1501,7 +1501,7 @@ private theorem top_local_coordinate_pairing_eq_induced_pairing
       (K := K) (α := χ) (x := ξcf)).symm
 
 /-- Helper for Remark 11-11.1-3: on an elementary ambient group, subtracting the index copy of
-the trivial character moves an induced linear character into Serre's augmentation subgroup
+the trivial character moves an induced linear character into LinearRepresentations_Serre_1977's augmentation subgroup
 `R₀'`. -/
 private theorem induced_linearCharacter_sub_index_smul_one_mem_augmentation_of_isElementary
     {H0 : Type*} [Group H0] [Finite H0]
@@ -1522,7 +1522,7 @@ private theorem induced_linearCharacter_sub_index_smul_one_mem_augmentation_of_i
       (G := H0) hH0 hzero
 
 /-- Helper for Remark 11-11.1-3: on an elementary ambient group, every induced degree-`1`
-subgroup character already belongs to Serre's span `R'`. -/
+subgroup character already belongs to LinearRepresentations_Serre_1977's span `R'`. -/
 private theorem induced_linearCharacter_mem_elementaryLinearCharacterSpan_of_subgroup_of_isElementary_local
     {H0 : Type*} [Group H0] [Finite H0]
     (K : Subgroup H0) (χ : K →* ℂˣ) (hH0 : IsElementary H0) :
@@ -1545,7 +1545,7 @@ private theorem induced_linearCharacter_mem_elementaryLinearCharacterSpan_of_sub
     Subgroup.map_elementaryLinearCharacterAugmentationSpan K haug_map
   have haugH0' :
       Subgroup.characterRingInduction K (χ.toCharacterRing - 1) ∈ R'(H0) := by
-    -- The augmentation subgroup is the right summand of Serre's span `R'`.
+    -- The augmentation subgroup is the right summand of LinearRepresentations_Serre_1977's span `R'`.
     rw [elementaryLinearCharacterSpan]
     exact
       (le_sup_right :
@@ -1873,7 +1873,7 @@ private theorem ambient_difference_pairing_eq_top_induced_difference_pairing
 
 /-- Helper for Remark 11-11.1-3: inducing a linear-character difference from the top subgroup
 recovers the corresponding ambient linear-character difference, so the `E = ⊤` generators already
-lie in Serre's augmentation subgroup. -/
+lie in LinearRepresentations_Serre_1977's augmentation subgroup. -/
 private theorem top_induced_linearCharacter_difference_mem_augmentation_of_isElementary
     {H0 : Type*} [Group H0] [Finite H0]
     (hH0 : IsElementary H0) (α : (⊤ : Subgroup H0) →* ℂˣ) :
@@ -4782,7 +4782,7 @@ private theorem isElementary_of_isCyclic_quotient_local
     simpa using Subgroup.isComplement'_top_bot (G := H0)
 
 /-- Helper for Remark 11-11.1-3: the strict-branch quotient-top-layer element already lies in
-Serre's subgroup `R'` of the cyclic kernel quotient. The remaining blocker is therefore the
+LinearRepresentations_Serre_1977's subgroup `R'` of the cyclic kernel quotient. The remaining blocker is therefore the
 sharper upgrade from `R'` to the span of proper induced-trivial quotient characters. -/
 private theorem faithful_quotient_top_layer_mem_elementaryLinearCharacterSpan_of_nontrivial_character
     {H0 : Type*} [Group H0] [Finite H0]
@@ -4800,7 +4800,7 @@ private theorem faithful_quotient_top_layer_mem_elementaryLinearCharacterSpan_of
     kernel_quotient_isCyclic_of_nontrivial_character β hβ
   have hElem : IsElementary (H0 ⧸ β.ker) :=
     isElementary_of_isCyclic_quotient_local hcyc
-  -- On the cyclic kernel quotient, Chapter 10 already identifies Serre's subgroup with the full
+  -- On the cyclic kernel quotient, Chapter 10 already identifies LinearRepresentations_Serre_1977's subgroup with the full
   -- character ring, so the faithful top layer is automatically an `R'` element.
   rw [elementaryLinearCharacterSpan_eq_top_of_isElementary hElem]
   simp

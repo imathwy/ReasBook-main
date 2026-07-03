@@ -1,5 +1,5 @@
 import Mathlib.Topology.Sheaves.LocalPredicate
-import stacks_project.Chap06.Example_6_4_5
+import StacksProject_2024.Chap06.Example_6_4_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

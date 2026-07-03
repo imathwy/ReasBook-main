@@ -1,4 +1,4 @@
-import AchimKlenkeLean.Items.Chap09.Example_9_4
+import ProbabilityTheory_Klenke_2020.Items.Chap09.Example_9_4
 import Mathlib.Probability.Martingale.BorelCantelli
 
 -- Declarations for this item will be appended below by the statement pipeline.

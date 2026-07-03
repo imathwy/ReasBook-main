@@ -10,9 +10,9 @@ import Mathlib.Analysis.NormedSpace.HahnBanach.Separation
 import Mathlib.Analysis.Normed.Operator.BanachSteinhaus
 import Mathlib.Topology.Algebra.Module.LinearMap
 import Mathlib.Analysis.InnerProductSpace.Adjoint
-import Reaslib.ConvexAnalysis.ClosedFunction_Closure_Proper
-import Reaslib.ConvexAnalysis.AffineMinorant
-import Reaslib.Basic.EReal
+import ReasLib.ConvexAnalysis.ClosedFunction_Closure_Proper
+import ReasLib.ConvexAnalysis.AffineMinorant
+import ReasLib.Basic.EReal
 
 open Filter BigOperators Set Topology Inner Function Module EReal
 open scoped Pointwise

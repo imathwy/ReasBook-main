@@ -1,4 +1,4 @@
-import Serre.Chap16.Lemma_16_16_3_1.PositiveConeBridge
+import LinearRepresentations_Serre_1977.Chap16.Lemma_16_16_3_1.PositiveConeBridge
 
 noncomputable section
 
@@ -719,7 +719,7 @@ private theorem projective_class_eq_nonneg_basis_combination
 -- of `P_k(G)`. The source-facing positive subset is therefore exactly the positive cone of that
 -- canonical basis.
 /-- For the distinguished projective-envelope basis of `P_k(G)` attached to a complete family of
-pairwise nonisomorphic simple `k[G]`-modules, Serre's positive subset `P_k^+(G)`, written here as
+pairwise nonisomorphic simple `k[G]`-modules, LinearRepresentations_Serre_1977's positive subset `P_k^+(G)`, written here as
 `P⁺[k](G)`, is exactly the positive cone of that basis. -/
 theorem projectivePositiveSubset_eq_positiveCone_of_complete_simple_family :
     P⁺[k](G) = (bP).positiveCone := by

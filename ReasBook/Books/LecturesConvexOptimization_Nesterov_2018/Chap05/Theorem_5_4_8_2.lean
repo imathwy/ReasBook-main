@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Analysis.InnerProductSpace.ProdL2
-import Nesterov.Chap05.Definition_5_4_8_5
-import Nesterov.Chap05.Example_5_3_1_3
-import Nesterov.Chap05.Theorem_5_3_5
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_4_8_5
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Example_5_3_1_3
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Theorem_5_3_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

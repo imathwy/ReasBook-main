@@ -1,5 +1,5 @@
-import CombinatorialGroupTheory.Basic
-import CombinatorialGroupTheory.Items.Chap02.Definition_2_1_1
+import CombinatorialGroupTheory_Magnus_2004.Basic
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap02.Definition_2_1_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -32,7 +32,7 @@ local notation "G" => PresentedGroup (Set.singleton r)
 --    elements”; compare Proposition `1-6-6`.
 -- 4. `Nat.card X` is the chapter's intrinsic finite-cardinality owner for a generator type,
 --    avoiding any public dependence on an ordered `Fin` indexing.
--- 5. `IsPrimitiveElement` from `CombinatorialGroupTheory.Basic` is the project owner for the
+-- 5. `IsPrimitiveElement` from `CombinatorialGroupTheory_Magnus_2004.Basic` is the project owner for the
 --    recurring
 --    “belongs to some basis” conclusion.
 -- Primitive vs. derived:

@@ -2,10 +2,10 @@ import Mathlib.Geometry.Manifold.ContMDiff.Atlas
 import Mathlib.Geometry.Manifold.ContMDiff.Basic
 import Mathlib.NumberTheory.Real.Irrational
 import Mathlib.Topology.Homeomorph.TransferInstance
-import SmoothManifoldsLee.Chap01.Sec01.Example_1_9
-import SmoothManifoldsLee.Chap04.Sec04_21.Exercise_4_4
-import SmoothManifoldsLee.Chap04.Sec04_24.Example_4_20
-import SmoothManifoldsLee.Chap05.Sec05_32.Definition_5_32_extra_2
+import SmoothManifolds_Lee_2012.Chap01.Sec01.Example_1_9
+import SmoothManifolds_Lee_2012.Chap04.Sec04_21.Exercise_4_4
+import SmoothManifolds_Lee_2012.Chap04.Sec04_24.Example_4_20
+import SmoothManifolds_Lee_2012.Chap05.Sec05_32.Definition_5_32_extra_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

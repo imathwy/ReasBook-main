@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap02.Theorem_2_2_5_2
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap10.Theorem_10_10_5_2
-import Serre.RepresentationTheory.FrobeniusCharacterPairing
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_5_2
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_2
+import LinearRepresentations_Serre_1977.RepresentationTheory.FrobeniusCharacterPairing
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -629,7 +629,7 @@ private theorem pElementaryInducedCharacterSpan_mul_classFunction_mem_characterR
     simpa [add_mul] using (characterRingScalarExtension A G).add_mem hξ hη
 
 /-- Helper for Theorem 11-11.1-4: realized scalar-extension membership on every elementary
-subgroup lifts the ambient class function into Serre's tensor character ring. -/
+subgroup lifts the ambient class function into LinearRepresentations_Serre_1977's tensor character ring. -/
 private theorem classFunction_lifts_to_tensorCharacterRing_of_restrict_mem_on_elementarySubgroups_local
     (φ : classFunctionSubmodule ℂ G)
     (hres : ∀ H : Subgroup G, IsElementary H →
@@ -662,7 +662,7 @@ private theorem classFunction_lifts_to_tensorCharacterRing_of_restrict_mem_on_el
 
 /-- Theorem 11-11.1-4: if the canonical restriction of a bundled class function `φ` to every
 elementary subgroup pairs with each degree-`1` character to a value in the image of `A`, then `φ`
-belongs to Serre's tensor character ring `A ⊗R(G)`. -/
+belongs to LinearRepresentations_Serre_1977's tensor character ring `A ⊗R(G)`. -/
 theorem classFunction_lifts_to_tensorCharacterRing_of_pairing_mem_range_on_elementary_linearCharacters
     (φ : classFunctionSubmodule ℂ G)
     (hpair : ∀ (H : Subgroup G) (_ : IsElementary H) (χ : H →* ℂˣ),

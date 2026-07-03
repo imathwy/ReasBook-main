@@ -1,6 +1,6 @@
-import BauschkeLean.Chap03.Corollary_3_22
-import BauschkeLean.Chap05.Proposition_5_9
-import BauschkeLean.Chap05.Theorem_5_14
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Corollary_3_22
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Proposition_5_9
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Theorem_5_14
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

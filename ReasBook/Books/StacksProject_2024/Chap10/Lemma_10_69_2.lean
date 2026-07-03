@@ -1,7 +1,7 @@
 import Mathlib
-import stacks_project.Chap10.Definition_10_69_1
-import stacks_project.Chap10.«10_69_0_1»
-import stacks_project.Chap10.Lemma_10_68_10
+import StacksProject_2024.Chap10.Definition_10_69_1
+import StacksProject_2024.Chap10.«10_69_0_1»
+import StacksProject_2024.Chap10.Lemma_10_68_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -29,7 +29,7 @@ private def chap10_69_0_1_private_name (decl : String) : Lean.Name :=
             (Lean.Name.str
               (Lean.Name.str
                 (Lean.Name.str Lean.Name.anonymous "_private")
-                "stacks_project")
+                "StacksProject_2024")
               "Chap10")
             "10_69_0_1")
           0)

@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory.Basic
+import CombinatorialGroupTheory_Magnus_2004.Basic
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -28,7 +28,7 @@ local notation "G" => PresentedGroup (Set.singleton r : Set (FreeGroup X))
 -- 2. `IsFreeGroup` is mathlib's owner predicate for freeness of a group.
 -- 3. `FreeGroupBasis X F`, together with the owner bridge `FreeGroupBasis.reindexRange`, is the
 --    canonical API for chosen free bases and the corresponding basis subset in the ambient group.
--- 4. `IsPrimitiveElement` from `CombinatorialGroupTheory.Basic` is the project owner for the
+-- 4. `IsPrimitiveElement` from `CombinatorialGroupTheory_Magnus_2004.Basic` is the project owner for the
 --    recurring “belongs to some basis”
 --    conclusion, while basis witnesses are bridge data.
 -- Primitive vs. derived:

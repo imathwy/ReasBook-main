@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Theorem_1_3_6
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Theorem_1_3_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -15,12 +15,12 @@ local notation "E" => EuclideanSpace ℝ (Fin n)
 domain.
 
 Relevant owner-style declarations sampled before refining:
-* `uniformGridPoint` in `Nesterov/Chap01/Theorem_1_3_6.lean`, the chapter owner of the midpoint
+* `uniformGridPoint` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Theorem_1_3_6.lean`, the chapter owner of the midpoint
   grid points;
 * `uniformGrid` in the same file, the chapter owner of the midpoint grid itself;
 * `isMinOn_iff` in mathlib, the canonical owner-style elimination rule for the minimizer
   hypothesis `IsMinOn f (uniformGrid n p) xBar`;
-* `SetConstrainedMinimizationProblem.optimalValue` in `Nesterov/Chap01/Definition_1_3_7.lean`,
+* `SetConstrainedMinimizationProblem.optimalValue` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_3_7.lean`,
   the canonical owner of the constrained optimal value.
 
 Best owner abstraction:

@@ -1,9 +1,9 @@
 import Mathlib
-import stacks_project.Chap07.«7_32_1_1»
-import stacks_project.Chap07.Definition_7_38_1
-import stacks_project.Chap07.Lemma_7_17_2
-import stacks_project.Chap07.Lemma_7_39_2
-import stacks_project.Chap07.Proposition_7_33_3
+import StacksProject_2024.Chap07.«7_32_1_1»
+import StacksProject_2024.Chap07.Definition_7_38_1
+import StacksProject_2024.Chap07.Lemma_7_17_2
+import StacksProject_2024.Chap07.Lemma_7_39_2
+import StacksProject_2024.Chap07.Proposition_7_33_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

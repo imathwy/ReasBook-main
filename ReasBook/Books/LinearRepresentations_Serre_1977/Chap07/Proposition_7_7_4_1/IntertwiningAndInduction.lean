@@ -1,7 +1,7 @@
 import Mathlib.LinearAlgebra.Projection
-import Serre.Chap07.Proposition_7_7_3_1
-import Serre.Chap07.Remark_7_7_3_2
-import Serre.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_3_1
+import LinearRepresentations_Serre_1977.Chap07.Remark_7_7_3_2
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
 
 noncomputable section
 

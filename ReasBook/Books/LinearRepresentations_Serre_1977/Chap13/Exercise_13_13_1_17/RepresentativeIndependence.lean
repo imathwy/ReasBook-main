@@ -1,4 +1,4 @@
-import Serre.Chap13.Exercise_13_13_1_17.RepresentativeSpan
+import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_17.RepresentativeSpan
 
 noncomputable section
 

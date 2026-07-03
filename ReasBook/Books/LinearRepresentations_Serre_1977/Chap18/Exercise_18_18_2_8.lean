@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap18.Exercise_18_18_2_8.Index
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_2_8.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -39,7 +39,7 @@ local notation "ClassFnK" => PRegularConjClass G p → K
   representatives to the owner `PRegularConjClass G p`.
 
 Layer triage:
-* source-facing: prime ideals of Serre's scalar-extended representation ring
+* source-facing: prime ideals of LinearRepresentations_Serre_1977's scalar-extended representation ring
   `RK`.
 * core/canonical: `scalarExtensionBrauerCharacterOnPRegularConjClassAlgEquiv`.
 * bridge/view: `pRegularPrime`, obtained by comapping the evaluation prime of `ClassFnK`, together

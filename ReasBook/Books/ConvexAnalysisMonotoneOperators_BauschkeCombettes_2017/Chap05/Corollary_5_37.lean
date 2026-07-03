@@ -1,9 +1,9 @@
 import Mathlib
-import BauschkeLean.Chap02.Lemma_2_47
-import BauschkeLean.Chap05.Definition_5_32
-import BauschkeLean.Chap05.Lemma_5_31
-import BauschkeLean.Chap05.Theorem_5_36
-import BauschkeLean.Chap05.Theorem_5_5
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap02.Lemma_2_47
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Definition_5_32
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Lemma_5_31
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Theorem_5_36
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Theorem_5_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

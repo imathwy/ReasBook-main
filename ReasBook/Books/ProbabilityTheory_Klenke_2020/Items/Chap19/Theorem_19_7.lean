@@ -1,6 +1,6 @@
-import AchimKlenkeLean.Items.Chap08.Example_8_27
-import AchimKlenkeLean.Items.Chap17.Definition_17_36
-import AchimKlenkeLean.Items.Chap19.Definition_19_5
+import ProbabilityTheory_Klenke_2020.Items.Chap08.Example_8_27
+import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_36
+import ProbabilityTheory_Klenke_2020.Items.Chap19.Definition_19_5
 import Mathlib
 
 open MeasureTheory ProbabilityTheory

@@ -1,9 +1,9 @@
 import Mathlib
-import stacks_project.Chap07.Definition_7_14_1
-import stacks_project.Chap07.Lemma_7_14_6
-import stacks_project.Chap07.Lemma_7_18_2
-import stacks_project.Chap07.Lemma_7_18_3.AuxiliarySheaf
-import stacks_project.Chap07.Situation_7_18_1
+import StacksProject_2024.Chap07.Definition_7_14_1
+import StacksProject_2024.Chap07.Lemma_7_14_6
+import StacksProject_2024.Chap07.Lemma_7_18_2
+import StacksProject_2024.Chap07.Lemma_7_18_3.AuxiliarySheaf
+import StacksProject_2024.Chap07.Situation_7_18_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

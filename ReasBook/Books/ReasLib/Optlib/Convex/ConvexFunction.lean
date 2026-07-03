@@ -10,8 +10,8 @@ import Mathlib.Analysis.Calculus.LineDeriv.Basic
 import Mathlib.Analysis.Calculus.FDeriv.Symmetric
 import Mathlib.Topology.Order.OrderClosed
 import Mathlib.Topology.Order.NhdsSet
-import Reaslib.Optlib.Differential.Calculation
-import Reaslib.Optlib.Differential.Lemmas
+import ReasLib.Optlib.Differential.Calculation
+import ReasLib.Optlib.Differential.Lemmas
 
 set_option linter.unusedVariables false
 

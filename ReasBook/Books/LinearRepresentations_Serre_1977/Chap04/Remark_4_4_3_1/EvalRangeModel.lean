@@ -1,4 +1,4 @@
-import Serre.Chap04.Remark_4_4_3_1.GeneratedCopyContinuous
+import LinearRepresentations_Serre_1977.Chap04.Remark_4_4_3_1.GeneratedCopyContinuous
 
 open MeasureTheory
 open DomMulAct

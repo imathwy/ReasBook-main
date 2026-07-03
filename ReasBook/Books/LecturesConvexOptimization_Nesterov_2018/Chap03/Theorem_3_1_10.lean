@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap03.Theorem_3_1_2_6
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_1_2_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

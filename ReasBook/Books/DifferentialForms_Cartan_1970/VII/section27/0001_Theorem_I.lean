@@ -1,5 +1,5 @@
-import cartan.IV.section13.«0001_Definition_IV_1_extra_1»
-import cartan.IV.section13.«0007_Proposition_3_I»
+import DifferentialForms_Cartan_1970.IV.section13.«0001_Definition_IV_1_extra_1»
+import DifferentialForms_Cartan_1970.IV.section13.«0007_Proposition_3_I»
 import Mathlib
 
 open Filter

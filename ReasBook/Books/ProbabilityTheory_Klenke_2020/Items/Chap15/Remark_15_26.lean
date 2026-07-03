@@ -1,5 +1,5 @@
-import AchimKlenkeLean.Items.Chap15.Corollary_15_25
-import AchimKlenkeLean.Items.Chap16.Definition_16_20
+import ProbabilityTheory_Klenke_2020.Items.Chap15.Corollary_15_25
+import ProbabilityTheory_Klenke_2020.Items.Chap16.Definition_16_20
 
 open MeasureTheory ProbabilityTheory
 open MeasureTheory.ProbabilityMeasure

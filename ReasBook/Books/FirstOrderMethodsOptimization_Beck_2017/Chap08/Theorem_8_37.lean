@@ -1,9 +1,9 @@
-import FirstOrderMethodsinOptimization.Chap08.Algorithm_8_10
-import FirstOrderMethodsinOptimization.Chap08.Assumption_8_7
-import FirstOrderMethodsinOptimization.Chap08.Assumption_8_34
-import FirstOrderMethodsinOptimization.Chap08.Definition_8_8
-import FirstOrderMethodsinOptimization.Chap08.Lemma_8_11
-import FirstOrderMethodsinOptimization.Chap05.Theorem_5_4
+import FirstOrderMethodsOptimization_Beck_2017.Chap08.Algorithm_8_10
+import FirstOrderMethodsOptimization_Beck_2017.Chap08.Assumption_8_7
+import FirstOrderMethodsOptimization_Beck_2017.Chap08.Assumption_8_34
+import FirstOrderMethodsOptimization_Beck_2017.Chap08.Definition_8_8
+import FirstOrderMethodsOptimization_Beck_2017.Chap08.Lemma_8_11
+import FirstOrderMethodsOptimization_Beck_2017.Chap05.Theorem_5_4
 import Mathlib.MeasureTheory.Function.ConditionalExpectation.PullOut
 
 -- Declarations for this item will be appended below by the statement pipeline.

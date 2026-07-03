@@ -1,5 +1,5 @@
-import SmoothManifoldsLee.Chap01.Sec01.Definition_1_extra_4
-import SmoothManifoldsLee.Chap01.Sec01.Lemma_1_10
+import SmoothManifolds_Lee_2012.Chap01.Sec01.Definition_1_extra_4
+import SmoothManifolds_Lee_2012.Chap01.Sec01.Lemma_1_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,8 +1,8 @@
 import Mathlib
-import Nesterov.Chap05.Definition_5_1_1
-import Nesterov.Chap05.Definition_5_4_6_5
-import Nesterov.Chap05.Definition_5_4_6_8
-import Nesterov.Chap05.Theorem_5_4_6_5
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_1_1
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_4_6_5
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_4_6_8
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Theorem_5_4_6_5
 
 open scoped Gradient
 

@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.Chap18.Exercise_18_18_6_4.ProjectiveLinearGroupCardinality
-import Serre.Chap18.Exercise_18_18_6_4.ExplicitGeneratorsAndRegularClasses
-import Serre.Chap18.Exercise_18_18_6_4.ExplicitWordTransportData
-import Serre.Chap18.Exercise_18_18_6_4.ExplicitWordTransportHom
-import Serre.Chap18.Exercise_18_18_6_4.ExplicitExceptionalIsomorphism
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_4.ProjectiveLinearGroupCardinality
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_4.ExplicitGeneratorsAndRegularClasses
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_4.ExplicitWordTransportData
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_4.ExplicitWordTransportHom
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_4.ExplicitExceptionalIsomorphism
 
 noncomputable section
 
@@ -13,7 +13,7 @@ open scoped MatrixGroups
 
 local notation "A5" => alternatingGroup (Fin 5)
 
-/-- Exercise 18-18.6-4 (1): the alternating group `A₅` is isomorphic to Serre's quotient
+/-- Exercise 18-18.6-4 (1): the alternating group `A₅` is isomorphic to LinearRepresentations_Serre_1977's quotient
 `SL₂(𝔽₅) / {±1}`, expressed canonically as the projective special linear group
 `PSL(2, ZMod 5)`. -/
 theorem alternatingGroup_fin5_isomorphic_to_PSL_two_zmod_five :

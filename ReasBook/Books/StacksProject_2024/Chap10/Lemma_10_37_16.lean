@@ -1,11 +1,11 @@
 import Mathlib.Data.List.TFAE
 import Mathlib.RingTheory.Idempotents
 import Mathlib.RingTheory.Localization.Pi
-import stacks_project.Chap10.Definition_10_37_11
-import stacks_project.Chap10.Lemma_10_25_4
-import stacks_project.Chap10.Lemma_10_36_10
-import stacks_project.Chap10.Lemma_10_37_12
-import stacks_project.Chap10.Lemma_10_37_15
+import StacksProject_2024.Chap10.Definition_10_37_11
+import StacksProject_2024.Chap10.Lemma_10_25_4
+import StacksProject_2024.Chap10.Lemma_10_36_10
+import StacksProject_2024.Chap10.Lemma_10_37_12
+import StacksProject_2024.Chap10.Lemma_10_37_15
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,4 +1,4 @@
-import Serre.Chap11.Proposition_11_11_4_4
+import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -21,7 +21,7 @@ variable {G : Type} [Group G] [Finite G]
 -- * `PrimeSpectrum.homeomorphOfRingEquiv`
 -- * `Algebra.TensorProduct.lid`
 --
--- Primitive data: the finite group `G` and Serre's representation ring `R(G)`.
+-- Primitive data: the finite group `G` and LinearRepresentations_Serre_1977's representation ring `R(G)`.
 -- Derived API: connectedness of `Spec (R(G))` via the canonical tensor-product identification.
 /-- Corollary 11-11.4-5: the prime spectrum `Spec (R(G))` is connected. -/
 theorem characterRingPrimeSpectrum_connected :

@@ -1,10 +1,10 @@
 import Mathlib
-import stacks_project.Chap20.Definition_20_49_1
-import stacks_project.Chap20.Lemma_20_32_4
-import stacks_project.Chap20.Lemma_20_47_3
-import stacks_project.Chap20.«20_54_2_1»
-import stacks_project.Chap21.Lemma_21_47_2
-import stacks_project.Chap21.Lemma_21_50_1
+import StacksProject_2024.Chap20.Definition_20_49_1
+import StacksProject_2024.Chap20.Lemma_20_32_4
+import StacksProject_2024.Chap20.Lemma_20_47_3
+import StacksProject_2024.Chap20.«20_54_2_1»
+import StacksProject_2024.Chap21.Lemma_21_47_2
+import StacksProject_2024.Chap21.Lemma_21_50_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

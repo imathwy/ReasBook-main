@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap18.Exercise_18_18_6_4.ProjectiveLinearGroupCardinality
-import Serre.Chap18.Exercise_18_18_6_4.ExplicitWordTransportHom
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_4.ProjectiveLinearGroupCardinality
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_4.ExplicitWordTransportHom
 
 noncomputable section
 
@@ -8,7 +8,7 @@ open scoped MatrixGroups
 
 local notation "A5" => alternatingGroup (Fin 5)
 
-/-- Helper for Exercise 18-18.6-4: the lookup transport sends Serre's involution generator to the
+/-- Helper for Exercise 18-18.6-4: the lookup transport sends LinearRepresentations_Serre_1977's involution generator to the
 distinguished projective involution. -/
 theorem alternating_group_fin5_to_psl_lookup_generator_two :
     alternating_group_fin5_to_psl_lookup a5_generator_two = psl_generator_two := by

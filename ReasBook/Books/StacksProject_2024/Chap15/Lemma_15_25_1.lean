@@ -2,7 +2,7 @@ import Mathlib.Algebra.Module.FinitePresentation
 import Mathlib.RingTheory.Flat.Basic
 import Mathlib.RingTheory.Localization.AtPrime.Basic
 import Mathlib.RingTheory.MvPolynomial.Basic
-import stacks_project.Chap15.Remark_15_25_5
+import StacksProject_2024.Chap15.Remark_15_25_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

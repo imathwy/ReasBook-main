@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
 import Mathlib.CategoryTheory.Triangulated.TStructure.TruncLTGE
-import stacks_project.Chap15.«15_60_1_1»
-import stacks_project.Chap15.Lemma_15_85_3
+import StacksProject_2024.Chap15.«15_60_1_1»
+import StacksProject_2024.Chap15.Lemma_15_85_3
 
 noncomputable section
 

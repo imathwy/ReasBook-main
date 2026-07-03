@@ -1,5 +1,5 @@
 import Mathlib
-import BauschkeLean.Chap12.ScaledProximityOperator
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.ScaledProximityOperator
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

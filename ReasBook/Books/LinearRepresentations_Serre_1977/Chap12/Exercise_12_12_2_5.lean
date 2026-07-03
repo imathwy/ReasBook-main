@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap01.Theorem_1_1_3_1
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap12.Corollary_12_12_2_2
-import Serre.Chap12.Exercise_12_12_2_5.Index
+import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_3_1
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_2_2
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_5.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -946,11 +946,11 @@ theorem quaternionGroupTwoQuaternionCharacterOver_fdRep_of_neg_one_sum_two_squar
     (K := K) a b h s
 
 /-- Helper for Exercise 12-12.2-5: the quaternionic nonlinear character always belongs to
-Serre's owner `R̄[K](Q8)` because it is realized over the algebraic closure. -/
+LinearRepresentations_Serre_1977's owner `R̄[K](Q8)` because it is realized over the algebraic closure. -/
 theorem quaternionGroupTwoQuaternionCharacterOver_mem_overlineCharacterRing :
     quaternionGroupTwoQuaternionCharacterOver (K := K) ∈ R̄[K](Q8) := by
   -- Realize the nonlinear slot over the algebraic closure, then read that realization in
-  -- Serre's owner `R̄[K](Q8)`.
+  -- LinearRepresentations_Serre_1977's owner `R̄[K](Q8)`.
   rw [mem_overlineCharacterRingInExtension_iff]
   have hmap_two :
       algebraMap K (AlgebraicClosure K) (2 : K) = (2 : AlgebraicClosure K) := by
@@ -1123,7 +1123,7 @@ theorem quaternionGroupTwoQuaternionCharacterOver_mem_characterRing_of_isQuasisp
     (hquasi : IsQuasisplitGroupAlgebra K Q8) :
     quaternionGroupTwoQuaternionCharacterOver (K := K) ∈ R[K](Q8) := by
   letI : CharZero K := charZero_of_injective_algebraMap (algebraMap ℚ K).injective
-  -- Convert quasisplitness into Serre's owner equality and then reuse the algebraic-closure
+  -- Convert quasisplitness into LinearRepresentations_Serre_1977's owner equality and then reuse the algebraic-closure
   -- realization of the nonlinear slot.
   have hEq : R[K](Q8) = R̄[K](Q8) :=
     (characterRing_eq_overlineCharacterRing_iff_isQuasisplitGroupAlgebra
@@ -1783,7 +1783,7 @@ private theorem quaternionGroupTwoQuaternionCharacterOver_fdRep_of_mem_character
     simpa [x] using quaternionGroupTwoQuaternionCharacterOver_self_pairing (K := K)
   have hsum :
       ∑ i, (c i)^2 * (n i : ℤ) = 1 := by
-    -- Pairing the basis expansion of `x` with itself yields Serre's weighted square-sum identity.
+    -- Pairing the basis expansion of `x` with itself yields LinearRepresentations_Serre_1977's weighted square-sum identity.
     simpa [b, c, x] using
       repr_weighted_square_sum_eq_one_of_self_pairing_eq_one
         (K := K) (π := π) hπ_pairwise hπ_complete x n hdiag hpair
@@ -1829,7 +1829,7 @@ private theorem quaternionGroupTwoQuaternionCharacterOver_fdRep_of_mem_character
       Nat.cast_ne_zero.mpr hnat_pos.ne'
     exact False.elim (hnat_ne hnat_zero)
 
--- Proof sketch: Serre's source route reduces the forward implication to one descent statement for
+-- Proof sketch: LinearRepresentations_Serre_1977's source route reduces the forward implication to one descent statement for
 -- the nonlinear character `ψ`: once `ψ ∈ R[K](Q8)` yields an honest `K`-model, the endgame is
 -- already packaged by `quaternionGroupTwo_groupAlgebra_forward_of_realizableQuaternionCharacter`.
 /-- Helper for Exercise 12-12.2-5: the forward implication of quasisplitness reduces to descending

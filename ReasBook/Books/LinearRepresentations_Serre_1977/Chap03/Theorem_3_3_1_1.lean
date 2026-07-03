@@ -1,10 +1,10 @@
 import Mathlib
-import Serre.Chap01.Theorem_1_1_4_2
-import Serre.Chap02.Theorem_2_2_3_5
-import Serre.Chap02.Corollary_2_2_4_2
-import Serre.Chap02.Corollary_2_2_4_3
-import Serre.Chap02.Remark_2_2_4_4
-import Serre.Chap02.Theorem_2_2_5_3
+import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_4_2
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_4_2
+import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_4_3
+import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_4_4
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_5_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -54,7 +54,7 @@ private theorem isIrreducible_uliftRepresentation
 variable {G : Type} [Group G] [Finite G]
 
 -- Source/core/bridge triage:
--- * source-facing: Serre's criterion that a finite group is abelian exactly when all irreducible
+-- * source-facing: LinearRepresentations_Serre_1977's criterion that a finite group is abelian exactly when all irreducible
 --   complex representations have degree `1`, using the Chapter 1 owner
 --   `Representation.IsIrreducible`.
 -- * core/canonical: the complete-family arguments run through the bundled owner `FDRep ℂ G`,

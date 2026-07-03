@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
 
 noncomputable section
 

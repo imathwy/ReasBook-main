@@ -1,5 +1,5 @@
 import Mathlib
-import FirstOrderMethodsinOptimization.Chap09.Lemma_9_7
+import FirstOrderMethodsOptimization_Beck_2017.Chap09.Lemma_9_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

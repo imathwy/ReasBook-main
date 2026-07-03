@@ -1,5 +1,5 @@
-import AchimKlenkeLean.Items.Chap15.Definition_15_27
-import AchimKlenkeLean.Items.Chap16.Definition_16_1
+import ProbabilityTheory_Klenke_2020.Items.Chap15.Definition_15_27
+import ProbabilityTheory_Klenke_2020.Items.Chap16.Definition_16_1
 
 open Filter MeasureTheory
 open scoped Topology

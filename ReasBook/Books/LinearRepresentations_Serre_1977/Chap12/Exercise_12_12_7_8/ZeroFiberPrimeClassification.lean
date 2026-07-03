@@ -1,4 +1,4 @@
-import Serre.Chap12.Exercise_12_12_7_8.ZeroFiberClassification
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_7_8.ZeroFiberClassification
 
 open scoped Representation
 
@@ -79,7 +79,7 @@ private theorem zero_fiber_prime_classification
             (zero_fiber_lift (A := A) (K := K) (G := G) e c) =
           galoisPowerClassScalarExtensionZeroPrimeIdeal K c := by
     intro c
-    -- Once the transported evaluation map is identified with Serre's owner map, the zero-prime
+    -- Once the transported evaluation map is identified with LinearRepresentations_Serre_1977's owner map, the zero-prime
     -- equality is exactly the packaged kernel comparison.
     exact
       transported_zero_fiber_eval_prime_eq_zero_prime_of_evalAlgHom_eq
@@ -92,7 +92,7 @@ private theorem zero_fiber_prime_classification
       (A := A) (K := K) (G := G) e htransport q
 
 /-- Helper for Exercise 12-12.7-8: a prime of `A ⊗ R_K(G)` whose contraction to `A` is zero must
-be one of Serre's zero-residual primes `P₀,c`. -/
+be one of LinearRepresentations_Serre_1977's zero-residual primes `P₀,c`. -/
 theorem exists_eq_galoisPowerClassScalarExtensionZeroPrimeIdeal_of_comap_eq_bot
     {𝔭 : SpecAKG}
     (h𝔭 :

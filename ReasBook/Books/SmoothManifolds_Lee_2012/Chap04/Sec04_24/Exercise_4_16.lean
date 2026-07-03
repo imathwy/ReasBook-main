@@ -1,5 +1,5 @@
 import Mathlib.Geometry.Manifold.LocalDiffeomorph
-import SmoothManifoldsLee.Chap04.Sec04_21.Exercise_4_4
+import SmoothManifolds_Lee_2012.Chap04.Sec04_21.Exercise_4_4
 import Mathlib.Geometry.Manifold.SmoothEmbedding
 
 open scoped Topology ContDiff

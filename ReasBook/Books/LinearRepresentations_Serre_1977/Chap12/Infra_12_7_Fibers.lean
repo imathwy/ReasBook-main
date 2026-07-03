@@ -1,4 +1,4 @@
-import Serre.Chap12.Exercise_12_12_7_8
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_7_8
 
 open scoped Representation
 
@@ -7,7 +7,7 @@ noncomputable section
 open Lean Elab Term Meta
 
 /-- Term elaborator for the compiled owner equivalence from
-`Serre.Chap12.Exercise_12_12_7_8`. This wrapper keeps the infrastructure theorem in this file
+`LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_7_8`. This wrapper keeps the infrastructure theorem in this file
 source-faithful while reusing the canonical proof term that now lives in the owner module. -/
 elab "privateFixedFiberEquivWitness" : term => do
   let n :=
@@ -18,7 +18,7 @@ elab "privateFixedFiberEquivWitness" : term => do
             (Name.str
               (Name.str
                 (Name.str Name.anonymous "_private")
-                "Serre")
+                "LinearRepresentations_Serre_1977")
               "Chap12")
             "Exercise_12_12_7_8")
           0)
@@ -27,7 +27,7 @@ elab "privateFixedFiberEquivWitness" : term => do
   return (← mkConstWithFreshMVarLevels n)
 
 /-- Term elaborator for the compiled owner classification step from
-`Serre.Chap12.Exercise_12_12_7_8`. This lets the local wrapper theorem recover the fixed-fiber
+`LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_7_8`. This lets the local wrapper theorem recover the fixed-fiber
 classification without duplicating the owner proof. -/
 elab "privateExistsEqRegularPrimeOfComapEqFixedMaximal" : term => do
   let n :=
@@ -38,7 +38,7 @@ elab "privateExistsEqRegularPrimeOfComapEqFixedMaximal" : term => do
             (Name.str
               (Name.str
                 (Name.str Name.anonymous "_private")
-                "Serre")
+                "LinearRepresentations_Serre_1977")
               "Chap12")
             "Exercise_12_12_7_8")
           0)
@@ -71,11 +71,11 @@ omit [IsDomain A] [Ring.HasFiniteQuotients A] [IsFractionRing A K] in
 `Γ_K`-classes.  This isolates the structural algebra equivalence from the prime-classification
 argument.
 
-Proof route from Serre, Ch. 12, Sec. 7:
+Proof route from LinearRepresentations_Serre_1977, Ch. 12, Sec. 7:
 1. Localize the classification at a maximal ideal `M` of `A` with residue characteristic `p`.
    Passing to the fiber over `M` means tensoring `A ⊗ R_K(G)` with the residue field
    `M.1.asIdeal.ResidueField`.
-2. Serre's modular character theorem identifies this fiber with the algebra of class functions on
+2. LinearRepresentations_Serre_1977's modular character theorem identifies this fiber with the algebra of class functions on
    the `p`-regular elements, modulo the `Γ_K` power action.  In the current API that target is the
    finite product ring
    `PRegularGaloisPowerClass ΓK p → M.1.asIdeal.ResidueField`.
@@ -111,7 +111,7 @@ end
 /-- Infrastructure for Exercise 12-12.7-8: every prime over a fixed nonzero maximal ideal is one
 of the transported evaluation primes on `p`-regular `Γ_K`-classes.
 
-Proof route from Serre, Ch. 12, Sec. 7:
+Proof route from LinearRepresentations_Serre_1977, Ch. 12, Sec. 7:
 1. Package `P` as a point of the fiber over `M` using
    `PrimeSpectrum.primesOverOrderIsoFiber` and the comap equality `hP`.
 2. Choose the fixed-fiber equivalence from
@@ -124,7 +124,7 @@ Proof route from Serre, Ch. 12, Sec. 7:
 4. Pull the coordinate prime back through the same two equivalences.  The resulting prime is `P`
    by inverse-map cancellation in `PrimeSpectrum.primesOverOrderIsoFiber`.
 5. Apply `transportedRegularFiberEvalPrime_is_regularPrime` to translate the transported
-   coordinate-kernel statement into Serre's predicate
+   coordinate-kernel statement into LinearRepresentations_Serre_1977's predicate
    `IsGaloisPowerClassScalarExtensionRegularPrime K M c P`. -/
 theorem exists_regularPrime_of_comap_eq_fixed_maximal
     {p : Nat.Primes} (M : NonzeroResidualCharacteristicMaximalIdeal A p)
@@ -136,7 +136,7 @@ theorem exists_regularPrime_of_comap_eq_fixed_maximal
     ∃ c : PRegularGaloisPowerClass ΓK p,
       IsGaloisPowerClassScalarExtensionRegularPrime K M c P := by
   -- Route correction: reuse the compiled owner classification over the fixed fiber, then turn the
-  -- resulting equality with the indexed owner prime back into Serre's intrinsic predicate.
+  -- resulting equality with the indexed owner prime back into LinearRepresentations_Serre_1977's intrinsic predicate.
   obtain ⟨c, hc⟩ := privateExistsEqRegularPrimeOfComapEqFixedMaximal K M hP
   refine ⟨c, ?_⟩
   simpa [hc] using galoisPowerClassScalarExtensionRegularPrime_spec K M c

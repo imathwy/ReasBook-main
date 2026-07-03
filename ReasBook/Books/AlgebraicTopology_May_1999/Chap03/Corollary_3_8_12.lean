@@ -1,8 +1,8 @@
-import MayConciseRevised.Chap03.Corollary_3_7_8
-import MayConciseRevised.Chap03.Lemma_3_6_4
-import MayConciseRevised.Chap03.Lemma_3_8_11
-import MayConciseRevised.Chap03.Theorem_3_6_1
-import MayConciseRevised.Chap03.Theorem_3_8_2
+import AlgebraicTopology_May_1999.Chap03.Corollary_3_7_8
+import AlgebraicTopology_May_1999.Chap03.Lemma_3_6_4
+import AlgebraicTopology_May_1999.Chap03.Lemma_3_8_11
+import AlgebraicTopology_May_1999.Chap03.Theorem_3_6_1
+import AlgebraicTopology_May_1999.Chap03.Theorem_3_8_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

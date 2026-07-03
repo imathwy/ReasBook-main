@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap03.Proposition_3_26
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Proposition_3_26
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -14,14 +14,14 @@ Primary domain:
 - convex optimization models obtained by averaging sampled affine minorants.
 
 Sampled owner-style declarations:
-- `StdSimplex.Strict` in `Nesterov.Chap03.Definition_3_4`, the earlier chapter owner for
+- `StdSimplex.Strict` in `LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_4`, the earlier chapter owner for
   the textbook's strict-positivity side condition on simplex coefficients
-- `sampledAffineMinorant` in `Nesterov.Chap03.Proposition_3_26`, the chapter owner for one
+- `sampledAffineMinorant` in `LecturesConvexOptimization_Nesterov_2018.Chap03.Proposition_3_26`, the chapter owner for one
   sampled affine oracle model
 - the mathlib affine-map sum
   `∑ i, α i • sampledAffineMinorant (y i) (g i) (f (y i)) : E →ᵃ[ℝ] ℝ`,
   the canonical owner for the aggregated model
-- `sum_smul_sampledAffineMinorant_apply` in `Nesterov.Chap03.Proposition_3_26`, the evaluation
+- `sum_smul_sampledAffineMinorant_apply` in `LecturesConvexOptimization_Nesterov_2018.Chap03.Proposition_3_26`, the evaluation
   bridge for that canonical affine-map sum
 
 Best owner abstraction:
@@ -32,7 +32,7 @@ Best owner abstraction:
 - `bridge/view`: the simplex specialization `α = weights.weights` together with the sampled slope
   family `g ∘ y`; `StdSimplex.Strict` records the source's redundant strict-positivity side
   condition when needed, while the later affine-map owner in
-  `Nesterov.Chap03.Proposition_3_27` is the corresponding packaged affine view of the same
+  `LecturesConvexOptimization_Nesterov_2018.Chap03.Proposition_3_27` is the corresponding packaged affine view of the same
   finite averaging construction
 
 Primitive data:

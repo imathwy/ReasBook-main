@@ -1,6 +1,6 @@
 import Mathlib
-import MayConciseRevised.Chap03.Example_3_1_7
-import MayConciseRevised.Chap03.Definition_3_2_7
+import AlgebraicTopology_May_1999.Chap03.Example_3_1_7
+import AlgebraicTopology_May_1999.Chap03.Definition_3_2_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

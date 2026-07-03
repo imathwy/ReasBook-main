@@ -1,3 +1,3 @@
-import Serre.Chap12.Theorem_12_12_4_1.ClassFunctionScalarExtension
-import Serre.Chap12.Theorem_12_12_4_1.GaloisPowerAction
-import Serre.Chap12.Theorem_12_12_4_1.GammaSubgroupAction
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_4_1.ClassFunctionScalarExtension
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_4_1.GaloisPowerAction
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_4_1.GammaSubgroupAction

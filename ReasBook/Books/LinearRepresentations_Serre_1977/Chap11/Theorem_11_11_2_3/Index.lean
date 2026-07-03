@@ -1,3 +1,3 @@
-import Serre.Chap11.Theorem_11_11_2_3.FrobeniusPairingBridge
-import Serre.Chap11.Theorem_11_11_2_3.SubgroupRootFiber
-import Serre.Chap11.Theorem_11_11_2_3.InverseIndicator
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_3.FrobeniusPairingBridge
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_3.SubgroupRootFiber
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_3.InverseIndicator

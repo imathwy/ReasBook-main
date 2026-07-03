@@ -1,6 +1,6 @@
-import Serre.RepresentationTheory.RealizableOver
-import Serre.Chap14.Lemma_14_14_4_1
-import Serre.Chap14.Lemma_14_14_4_2
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_1
+import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_2
 import Mathlib.LinearAlgebra.TensorProduct.Tower
 import Mathlib.RingTheory.LocalProperties.Projective
 import Mathlib.RingTheory.LocalRing.ResidueField.Ideal
@@ -180,7 +180,7 @@ lemma localized_direct_reduction_isResidueFieldReduction
     | add z w hz hw =>
         simp [hz, hw]
 
-/-- Helper for Exercise 14-14.4-5: over the local ring `Λ_𝔭`, Serre's local criterion identifies
+/-- Helper for Exercise 14-14.4-5: over the local ring `Λ_𝔭`, LinearRepresentations_Serre_1977's local criterion identifies
 projectivity over `(Λ_𝔭)[G]` with projectivity of the residue-field reduction over
 `𝔭.ResidueField[G]`. -/
 theorem localized_projective_iff_projective_residueField_reduction
@@ -249,7 +249,7 @@ lemma localized_group_algebra_projective_of_projective
   rcases
       (projective_groupAlgebra_iff_projective_and_exists_averaging_endomorphism
         (Λ := Λ) (G := G) (P := P)).mp hproj with ⟨_, u, hu⟩
-  -- Reapply Serre's averaging criterion after base change to `Λ_𝔭`.
+  -- Reapply LinearRepresentations_Serre_1977's averaging criterion after base change to `Λ_𝔭`.
   refine
     (projective_groupAlgebra_iff_projective_and_exists_averaging_endomorphism
       (Λ := A) (G := G) (P := A ⊗[Λ] P)).mpr ?_

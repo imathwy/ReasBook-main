@@ -1,2 +1,2 @@
-import Serre.Chap14.Exercise_14_14_5_5.DualEnvelopeBridge
-import Serre.Chap14.Exercise_14_14_5_5.DfinsuppDualBridge
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_5.DualEnvelopeBridge
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_5.DfinsuppDualBridge

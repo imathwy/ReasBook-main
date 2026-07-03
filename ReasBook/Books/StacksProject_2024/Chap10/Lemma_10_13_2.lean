@@ -1,4 +1,4 @@
-import stacks_project.LinearAlgebra.PowerOperations
+import StacksProject_2024.LinearAlgebra.PowerOperations
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -8,7 +8,7 @@ open scoped TensorProduct
 /- Domain triage: this file lies in multilinear algebra of symmetric and exterior powers.
 The owner abstractions are the canonical comparison maps
 `SymmetricPower.leftTensorMap`, `SymmetricPower.map`, `exteriorPower.leftTensorMap`, and
-`exteriorPower.map` from `stacks_project.LinearAlgebra.PowerOperations`, organized around the
+`exteriorPower.map` from `StacksProject_2024.LinearAlgebra.PowerOperations`, organized around the
 canonical owner `S : ShortComplex (ModuleCat R)` with `hS : S.ShortExact`. The present results are
 `source-facing` exactness statements expressed directly in those owner maps, while the
 tensor-presentation exact sequences from Lemma `10.13.3` remain the lower `bridge/view` layer

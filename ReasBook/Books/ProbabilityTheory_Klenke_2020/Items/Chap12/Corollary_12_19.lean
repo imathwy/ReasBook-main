@@ -1,8 +1,8 @@
 import Mathlib
-import AchimKlenkeLean.Items.Chap02.Theorem_2_35
-import AchimKlenkeLean.Items.Chap02.Theorem_2_37
-import AchimKlenkeLean.Items.Chap12.Corollary_12_18
-import AchimKlenkeLean.Items.Chap12.Example_12_3
+import ProbabilityTheory_Klenke_2020.Items.Chap02.Theorem_2_35
+import ProbabilityTheory_Klenke_2020.Items.Chap02.Theorem_2_37
+import ProbabilityTheory_Klenke_2020.Items.Chap12.Corollary_12_18
+import ProbabilityTheory_Klenke_2020.Items.Chap12.Example_12_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

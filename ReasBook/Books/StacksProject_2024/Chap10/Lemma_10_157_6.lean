@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap10.Definition_10_67_1
+import StacksProject_2024.Chap10.Definition_10_67_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -45,7 +45,7 @@ Source/core/bridge triage:
 /-- Lemma 10.157.6 (1): for a nonzero element `a` of a Noetherian normal domain `R`, the quotient
 `R / aR` has no embedded associated primes, and every associated prime of `R / aR` has height
 `1`. -/
--- Proof sketch: Serre's criterion gives `(S_2)` for `R`, and Lemma `10.72.6` descends this to
+-- Proof sketch: LinearRepresentations_Serre_1977's criterion gives `(S_2)` for `R`, and Lemma `10.72.6` descends this to
 -- `(S_1)` for `R / aR`. Then Lemma `10.157.2` removes embedded primes, while Lemma `10.60.11`
 -- shows that minimal primes over `(a)` have height at most `1`; since `a ≠ 0` in a domain, any
 -- associated prime of `R / aR` is nonzero and hence has height exactly `1`.

@@ -1,4 +1,4 @@
-import Serre.Chap12.Lemma_12_12_7_5.CyclicIrreducibleBridge
+import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_5.CyclicIrreducibleBridge
 
 open Representation
 open scoped Pointwise Representation
@@ -176,7 +176,7 @@ theorem generatorFieldOfLinearCharacter_twist_eq
   rw [linearCharacter_twist_generator (G := G) (K := K) (x := x) β t]
   exact adjoin_unit_pow_eq_of_coprime (K := K) α hα_cop
 
-/-- Helper for Lemma 12-12.7-5: the underlying `K`-vector-space carrier of Serre's generator
+/-- Helper for Lemma 12-12.7-5: the underlying `K`-vector-space carrier of LinearRepresentations_Serre_1977's generator
 field model attached to a linear character of `C = ⟨x⟩`. -/
 abbrev generatorFieldCarrier
     (β : C →* (AlgebraicClosure K)ˣ) : Type v :=
@@ -306,7 +306,7 @@ theorem linearCharacter_twist_value_mem_generatorField_public
   exact linear_character_value_mem_generatorField (K := K) (x := x)
     (linearCharacter_twist (G := G) (K := K) (x := x) β t) c
 
-/-- Helper for Lemma 12-12.7-5: a `K`-algebra map out of Serre's simple field `K(β(x))` is
+/-- Helper for Lemma 12-12.7-5: a `K`-algebra map out of LinearRepresentations_Serre_1977's simple field `K(β(x))` is
 determined by the image of the distinguished generator `β(x)`. -/
 theorem generatorField_algHom_ext_on_generator
     {S : Type*} [Field S] [Algebra K S]
@@ -350,7 +350,7 @@ theorem generatorField_algEquiv_eq_of_apply_generator_eq
             (zpowers_generator (x := x))⟩ :
             generatorFieldCarrier (K := K) (x := x) β)) :
     φ = ψ := by
-  -- Route correction: the remaining witness-independence step for Serre's restricted `σ_t`
+  -- Route correction: the remaining witness-independence step for LinearRepresentations_Serre_1977's restricted `σ_t`
   -- package should now be proved by this simple-field extensionality lemma instead of repeatedly
   -- unfolding the whole adjoin construction.
   ext z

@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Category.Grp.Basic
 import Mathlib.Topology.Sheaves.Presheaf
-import stacks_project.Chap20.«20_9_0_1»
+import StacksProject_2024.Chap20.«20_9_0_1»
 
 open CategoryTheory Opposite TopCat TopologicalSpace
 open CategoryTheory.Limits

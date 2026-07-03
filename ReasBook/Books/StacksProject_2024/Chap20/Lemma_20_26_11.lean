@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap13.Lemma_13_29_1
-import stacks_project.Chap17.Lemma_17_17_7
+import StacksProject_2024.Chap13.Lemma_13_29_1
+import StacksProject_2024.Chap17.Lemma_17_17_7
 
 open CategoryTheory CategoryTheory.Limits
 open AlgebraicGeometry

@@ -1,4 +1,4 @@
-import Nesterov.Chap02.Proposition_2_6
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Proposition_2_6
 
 open scoped BigOperators lp
 
@@ -239,7 +239,7 @@ private theorem tridiagonalApply_bound (x : ℝ∞) :
       simp [norm_smul]
       ring
 
-/-- Definition 2.18: the infinite tridiagonal operator `A` on `ℓ₂(ℕ, ℝ)` used in Nesterov's
+/-- Definition 2.18: the infinite tridiagonal operator `A` on `ℓ₂(ℕ, ℝ)` used in LecturesConvexOptimization_Nesterov_2018's
 lower-bound construction. -/
 def nesterovLowerBoundTridiagonalOperator : ℝ∞ →L[ℝ] ℝ∞ :=
   ({ toFun := tridiagonalApply

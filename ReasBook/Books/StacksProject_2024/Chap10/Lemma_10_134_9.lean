@@ -1,5 +1,5 @@
-import stacks_project.Chap10.Definition_10_134_1
-import stacks_project.Chap10.Lemma_10_131_5
+import StacksProject_2024.Chap10.Definition_10_134_1
+import StacksProject_2024.Chap10.Lemma_10_131_5
 
 open Algebra
 open Algebra.Extension

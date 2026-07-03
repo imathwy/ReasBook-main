@@ -1,8 +1,8 @@
 import Mathlib
-import stacks_project.Chap12.Definition_12_19_3
-import stacks_project.Chap13.Lemma_13_13_8
-import stacks_project.Chap13.Lemma_13_15_5
-import stacks_project.Chap13.Lemma_13_26_5
+import StacksProject_2024.Chap12.Definition_12_19_3
+import StacksProject_2024.Chap13.Lemma_13_13_8
+import StacksProject_2024.Chap13.Lemma_13_15_5
+import StacksProject_2024.Chap13.Lemma_13_26_5
 
 open CategoryTheory
 open CategoryTheory.Limits

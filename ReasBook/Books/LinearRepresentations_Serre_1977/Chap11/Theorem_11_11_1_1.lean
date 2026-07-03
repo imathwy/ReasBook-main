@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap07.Exercise_7_7_2_5
-import Serre.Chap10.Definition_10_10_1_3
-import Serre.Chap10.Theorem_10_10_5_1
-import Serre.Chap11.Theorem_11_11_2_1
+import LinearRepresentations_Serre_1977.Chap07.Exercise_7_7_2_5
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_1
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -146,7 +146,7 @@ lemma one_character_mul_classFunction (φ : classFunctionSubmodule ℂ G) :
   simp
 
 -- Source/core/bridge triage:
--- * source-facing: this subgroup-detection theorem for Serre's `A ⊗ R(G)`.
+-- * source-facing: this subgroup-detection theorem for LinearRepresentations_Serre_1977's `A ⊗ R(G)`.
 -- * core/canonical owner: bundled complex class functions `classFunctionSubmodule ℂ G`, with the
 --   chapter alias `classFunctionSubspace G`.
 -- * bridge/view: `characterRingScalarExtension A G`, the realized scalar-extension submodule in
@@ -164,7 +164,7 @@ lemma one_character_mul_classFunction (φ : classFunctionSubmodule ℂ G) :
 -- global tensor character.
 /-- Theorem 11-11.1-1: a complex-valued class function on the finite group `G`, packaged in the
 canonical bundled owner `classFunctionSubmodule ℂ G` (equivalently `classFunctionSubspace G`), is
-realized by an element of Serre's tensor character ring `A ⊗R(G)` if, for every elementary
+realized by an element of LinearRepresentations_Serre_1977's tensor character ring `A ⊗R(G)` if, for every elementary
 subgroup `H ≤ G`, its canonical restriction to `H` belongs to the corresponding scalar extension
 `A ⊗R(H)`. -/
 theorem classFunction_lifts_to_tensorCharacterRing_of_restrict_mem_on_elementarySubgroups

@@ -1,6 +1,6 @@
 import Mathlib
-import cartan.II.section06.«0007_Theorem_I»
-import cartan.II.section06.«0012_Theorem_4»
+import DifferentialForms_Cartan_1970.II.section06.«0007_Theorem_I»
+import DifferentialForms_Cartan_1970.II.section06.«0012_Theorem_4»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

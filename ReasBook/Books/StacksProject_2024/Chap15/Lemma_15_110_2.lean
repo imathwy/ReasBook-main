@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap15.Proposition_15_110_5_Ratliff
+import StacksProject_2024.Chap15.Proposition_15_110_5_Ratliff
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

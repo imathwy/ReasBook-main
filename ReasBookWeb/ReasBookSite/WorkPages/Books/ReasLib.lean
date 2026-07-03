@@ -1,10 +1,10 @@
 import VersoBlog
 open Verso Genre Blog
 
-#doc (Page) "Reaslib" =>
+#doc (Page) "ReasLib" =>
 
-- [Documentation](/ReasBook-private/docs/Books/Reaslib/Book.html)
-- [Lean source path](https://github.com/optpku/ReasBook-private/tree/main/ReasBook/Books/Reaslib/Chapters/)
+- [Documentation](/ReasBook-private/docs/Books/ReasLib/Book.html)
+- [Lean source path](https://github.com/optpku/ReasBook-private/tree/main/ReasBook/Books/ReasLib/Chapters/)
 
 Section index:
 

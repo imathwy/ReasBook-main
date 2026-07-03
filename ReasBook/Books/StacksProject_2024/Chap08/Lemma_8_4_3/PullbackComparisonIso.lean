@@ -1,6 +1,6 @@
-import stacks_project.Chap04.CanonicalFiberPseudofunctor
-import stacks_project.Chap08.Lemma_8_2_3.PullbackComparisonNaturality
-import stacks_project.Chap08.Lemma_8_4_3.PullbackComparisonBase
+import StacksProject_2024.Chap04.CanonicalFiberPseudofunctor
+import StacksProject_2024.Chap08.Lemma_8_2_3.PullbackComparisonNaturality
+import StacksProject_2024.Chap08.Lemma_8_4_3.PullbackComparisonBase
 
 open CategoryTheory
 open CategoryTheory Functor

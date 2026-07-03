@@ -1,4 +1,4 @@
-import AchimKlenkeLean.Items.Chap11.Theorem_11_7
+import ProbabilityTheory_Klenke_2020.Items.Chap11.Theorem_11_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

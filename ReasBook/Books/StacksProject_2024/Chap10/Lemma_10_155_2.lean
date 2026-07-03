@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.FieldTheory.IsSepClosed
 import Mathlib.FieldTheory.SeparableClosure
-import stacks_project.Chap10.Definition_10_153_1
-import stacks_project.Chap10.Lemma_10_154_3
-import stacks_project.Chap10.Lemma_10_155_1
+import StacksProject_2024.Chap10.Definition_10_153_1
+import StacksProject_2024.Chap10.Lemma_10_154_3
+import StacksProject_2024.Chap10.Lemma_10_155_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.CategoryTheory.Sites.Limits
-import stacks_project.Chap06.Example_6_29_2
+import StacksProject_2024.Chap06.Example_6_29_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

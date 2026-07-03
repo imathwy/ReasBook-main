@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap17.Lemma_17_17_2
-import stacks_project.Chap17.Lemma_17_18_2
+import StacksProject_2024.Chap17.Lemma_17_17_2
+import StacksProject_2024.Chap17.Lemma_17_18_2
 
 open CategoryTheory TopologicalSpace
 open AlgebraicGeometry

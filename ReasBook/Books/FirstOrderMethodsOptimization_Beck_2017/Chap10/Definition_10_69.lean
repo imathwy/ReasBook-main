@@ -1,5 +1,5 @@
-import FirstOrderMethodsinOptimization.Chap05.Lemma_5_7
-import FirstOrderMethodsinOptimization.Chap10.Theorem_10_72.Index
+import FirstOrderMethodsOptimization_Beck_2017.Chap05.Lemma_5_7
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_72.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,10 +1,10 @@
 import Mathlib
-import cartan.III.section11.PeriodLattice
+import DifferentialForms_Cartan_1970.III.section11.PeriodLattice
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
 -- Semantic recall note: the chapter owner `HasPeriodLattice` now lives in the importable library
--- module `cartan.III.section11.PeriodLattice`; this source file recalls that owner and keeps the
+-- module `DifferentialForms_Cartan_1970.III.section11.PeriodLattice`; this source file recalls that owner and keeps the
 -- remaining source-facing constructions local.
 
 universe u

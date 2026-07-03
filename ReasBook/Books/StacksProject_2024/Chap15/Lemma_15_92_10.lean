@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import stacks_project.Chap15.Lemma_15_59_14
-import stacks_project.Chap15.Lemma_15_74_4
-import stacks_project.Chap15.Definition_15_92_4
-import stacks_project.Chap15.Lemma_15_29_4
+import StacksProject_2024.Chap15.Lemma_15_59_14
+import StacksProject_2024.Chap15.Lemma_15_74_4
+import StacksProject_2024.Chap15.Definition_15_92_4
+import StacksProject_2024.Chap15.Lemma_15_29_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

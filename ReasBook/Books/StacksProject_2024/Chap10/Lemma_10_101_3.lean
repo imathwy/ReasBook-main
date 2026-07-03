@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap10.Lemma_10_20_1_Nakayama_s_lemma
+import StacksProject_2024.Chap10.Lemma_10_20_1_Nakayama_s_lemma
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -211,7 +211,7 @@ lemma lTensor_injective_of_exact_of_tor_one_vanishes_local
   -- TODO: instantiate `ModuleCat.torTensorSixTermSequence_exact` from `Lemma_10_75_2`,
   -- identify the connecting map out of `Tor₁[R](R ⧸ I, M)` as zero via `htor`, and read off the
   -- injectivity of `f.lTensor (R ⧸ I)` from exactness. At the moment the earlier dependency file
-  -- `stacks_project/Chap10/Lemma_10_75_2.lean` itself fails to compile when imported, so the
+  -- `StacksProject_2024/Chap10/Lemma_10_75_2.lean` itself fails to compile when imported, so the
   -- canonical owner theorem is unavailable in this item file.
   sorry
 

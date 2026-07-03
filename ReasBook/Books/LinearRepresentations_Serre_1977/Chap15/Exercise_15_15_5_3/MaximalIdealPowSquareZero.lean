@@ -27,7 +27,7 @@ abbrev maximalIdealPowTransition (n : ℕ+) :
 
 /-- Helper for Exercise 15-15.5-3: the kernel of the transition
 `E / 𝔪^(n+1) E → E / 𝔪^n E` is exactly the image of the `𝔪^n E` layer inside the
-`(n + 1)`-st quotient. This is the coefficient module for Serre's square-zero cocycles. -/
+`(n + 1)`-st quotient. This is the coefficient module for LinearRepresentations_Serre_1977's square-zero cocycles. -/
 private theorem maximalIdealPowTransition_ker_eq_powLayer
     (n : ℕ+) :
     LinearMap.ker (maximalIdealPowTransition (A := A) (E := E) n) =
@@ -72,7 +72,7 @@ private theorem maximalIdealPowTransition_surjective
   rfl
 
 /-- Helper for Exercise 15-15.5-3: the kernel layer of
-`E / 𝔪^(n+1) E → E / 𝔪^n E` is annihilated by `𝔪`. This is Serre's
+`E / 𝔪^(n+1) E → E / 𝔪^n E` is annihilated by `𝔪`. This is LinearRepresentations_Serre_1977's
 source-level square-zero coefficient layer `𝔪^n E / 𝔪^(n+1) E`. -/
 private theorem maximalIdealPowTransition_kernel_smul_eq_zero
     (n : ℕ+)
@@ -125,7 +125,7 @@ private theorem correction_endomorphism_smul_eq_zero
 
 /-- Helper for Exercise 15-15.5-3: a correction endomorphism on
 `E / 𝔪^(n+1) E` kills the canonical layer `𝔪^n E / 𝔪^(n+1) E` inside that quotient. This is the
-source-faithful bridge from the kernel condition `π ∘ t = 0` to Serre's square-zero coefficient
+source-faithful bridge from the kernel condition `π ∘ t = 0` to LinearRepresentations_Serre_1977's square-zero coefficient
 module. -/
 private theorem correction_endomorphism_comp_powSMulQuotInclusion_eq_zero
     (n : ℕ+)
@@ -191,7 +191,7 @@ private theorem correction_endomorphism_eq_zero_on_transition_kernel
   simpa [LinearMap.comp_apply] using hy
 
 /-- Helper for Exercise 15-15.5-3: correction endomorphisms with image in the transition kernel
-form a square-zero algebra. This is Serre's coefficient algebra for the obstruction and comparison
+form a square-zero algebra. This is LinearRepresentations_Serre_1977's coefficient algebra for the obstruction and comparison
 cocycles. -/
 private theorem ker_correction_square_zero
     (n : ℕ+)
@@ -211,7 +211,7 @@ private theorem ker_correction_square_zero
     correction_endomorphism_eq_zero_on_transition_kernel
       (A := A) (E := E) (n := n) (t := t₁) ht₁ hxker
 
-/-- Helper for Exercise 15-15.5-3: Serre's coefficient algebra on the tower
+/-- Helper for Exercise 15-15.5-3: LinearRepresentations_Serre_1977's coefficient algebra on the tower
 `E / 𝔪^(n+1) E → E / 𝔪^n E` is the subtype of endomorphisms annihilated by the transition. This
 packages the already-verified kernel condition before adding the group-conjugation action. -/
 private def maximalIdealPowTransitionCorrection (n : ℕ+) :
@@ -254,7 +254,7 @@ private theorem maximalIdealPowTransitionCorrection_square_zero
 
 /-- Helper for Exercise 15-15.5-3: if an upstairs automorphism `U` reduces to some downstairs
 endomorphism through `maximalIdealPowTransition`, then conjugation by `U` preserves the packaged
-correction algebra. This is the stable interface needed before introducing Serre's cocycles. -/
+correction algebra. This is the stable interface needed before introducing LinearRepresentations_Serre_1977's cocycles. -/
 private theorem maximalIdealPowTransitionCorrection_conj_mem
     (n : ℕ+)
     (U : E⧸𝔪^((n : ℕ) + 1)E ≃ₗ[A⧸𝔪^((n : ℕ) + 1)] E⧸𝔪^((n : ℕ) + 1)E)
@@ -286,7 +286,7 @@ private theorem maximalIdealPowTransitionCorrection_conj_mem
 
 /-- Helper for Exercise 15-15.5-3: package the previous conjugation-closure statement as an
 actual endomorphism of the correction subtype. This is the coefficient-side conjugation action
-used later for Serre's obstruction and comparison cocycles. -/
+used later for LinearRepresentations_Serre_1977's obstruction and comparison cocycles. -/
 private def maximalIdealPowTransitionCorrection_conj
     (n : ℕ+)
     (U : E⧸𝔪^((n : ℕ) + 1)E ≃ₗ[A⧸𝔪^((n : ℕ) + 1)] E⧸𝔪^((n : ℕ) + 1)E)
@@ -301,7 +301,7 @@ private def maximalIdealPowTransitionCorrection_conj
       (A := A) (E := E) (n := n) U hU t⟩
 
 /-- Helper for Exercise 15-15.5-3: every packaged correction is annihilated by the maximal ideal
-at each vector. This is the coefficient-side torsion fact used to view Serre's correction space
+at each vector. This is the coefficient-side torsion fact used to view LinearRepresentations_Serre_1977's correction space
 over the residue field. -/
 private theorem maximalIdealPowTransitionCorrection_smul_apply_eq_zero
     (n : ℕ+)
@@ -314,7 +314,7 @@ private theorem maximalIdealPowTransitionCorrection_smul_apply_eq_zero
       (A := A) (E := E) (n := n) (t := t.1) t.2 a x
 
 /-- Helper for Exercise 15-15.5-3: because corrections square to zero, `1 - c` is a left inverse
-to `1 + c`. This is the algebraic core behind Serre's correction automorphisms. -/
+to `1 + c`. This is the algebraic core behind LinearRepresentations_Serre_1977's correction automorphisms. -/
 private theorem maximalIdealPowTransitionCorrection_one_add_mul_one_sub
     (n : ℕ+)
     (c : maximalIdealPowTransitionCorrection (A := A) (E := E) n) :
@@ -357,7 +357,7 @@ private theorem maximalIdealPowTransitionCorrection_one_sub_mul_one_add
 
 /-- Helper for Exercise 15-15.5-3: every square-zero correction produces the concrete
 automorphism `1 + c` with inverse `1 - c`. This is the source-faithful correction automorphism
-used later in Serre's uniqueness-by-conjugation argument. -/
+used later in LinearRepresentations_Serre_1977's uniqueness-by-conjugation argument. -/
 private theorem maximalIdealPowTransitionCorrection_exists_one_add_linearEquiv
     (n : ℕ+)
     (c : maximalIdealPowTransitionCorrection (A := A) (E := E) n) :

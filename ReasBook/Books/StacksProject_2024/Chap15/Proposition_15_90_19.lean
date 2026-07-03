@@ -1,8 +1,8 @@
 import Mathlib.Algebra.Category.FGModuleCat.Basic
 import Mathlib.RingTheory.AdicCompletion.Algebra
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import stacks_project.Chap15.PrincipalIdeal
-import stacks_project.Chap15.Theorem_15_90_18
+import StacksProject_2024.Chap15.PrincipalIdeal
+import StacksProject_2024.Chap15.Theorem_15_90_18
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

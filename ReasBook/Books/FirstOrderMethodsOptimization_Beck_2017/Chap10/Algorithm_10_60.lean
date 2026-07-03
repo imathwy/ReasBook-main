@@ -1,6 +1,6 @@
-import FirstOrderMethodsinOptimization.Chap10.Proposition_10_58
-import FirstOrderMethodsinOptimization.Chap10.Definition_10_43
-import FirstOrderMethodsinOptimization.Chap10.Definition_10_60
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Proposition_10_58
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_43
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_60
 
 noncomputable section
 

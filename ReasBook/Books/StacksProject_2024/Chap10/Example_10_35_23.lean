@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap05.Lemma_5_8_4
+import StacksProject_2024.Chap05.Lemma_5_8_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -32,8 +32,8 @@ abbrev nodeCoordinateRing :=
 
 Same-domain owner sampling used here:
 * `irreducibleComponents` and `irreducibleComponents_eq_maximals_closed`
-  (`stacks_project/Chap05/Definition_5_8_1.lean`);
-* `minimalPrimes.equivIrreducibleComponents` (`stacks_project/Chap10/Lemma_10_26_1.lean`);
+  (`StacksProject_2024/Chap05/Definition_5_8_1.lean`);
+* `minimalPrimes.equivIrreducibleComponents` (`StacksProject_2024/Chap10/Lemma_10_26_1.lean`);
 * `PrimeSpectrum.zeroLocus`;
 * `Matrix.mvPolynomialX`.
 -/

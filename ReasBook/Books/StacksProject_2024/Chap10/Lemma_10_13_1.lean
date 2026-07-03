@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import stacks_project.LinearAlgebra.PowerOperations
+import StacksProject_2024.LinearAlgebra.PowerOperations
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

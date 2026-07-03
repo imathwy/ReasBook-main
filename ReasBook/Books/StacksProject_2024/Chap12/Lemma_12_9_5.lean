@@ -1,4 +1,4 @@
-import stacks_project.Chap12.Lemma_12_9_4
+import StacksProject_2024.Chap12.Lemma_12_9_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -18,11 +18,11 @@ Domain-style sampling for Lemma 12.9.5:
   `ObjectProperty.prop_iff_of_shortExact`,
   `ShortComplex.ShortExact.op`,
   `ShortComplex.isArtinianObject_iff_of_shortExact`;
-- best owner abstraction: the object property `isNoetherianObject` together with the Serre-class
+- best owner abstraction: the object property `isNoetherianObject` together with the LinearRepresentations_Serre_1977-class
   owner interface;
 - primitive data: a short exact sequence in `C`, together with the canonical opposite short
   complex in `Cᵒᵖ`;
-- derived API: the Serre-class instance and the short-exact characterization obtained from
+- derived API: the LinearRepresentations_Serre_1977-class instance and the short-exact characterization obtained from
   `ObjectProperty.prop_iff_of_shortExact`.
 
 Source/core/bridge triage:
@@ -56,7 +56,7 @@ private theorem isNoetherianObject_iff_of_shortExact_aux {S : ShortComplex C} (h
     exact (isNoetherianObject_iff_isArtinianObject_op S.X₂).mpr <|
       (ShortComplex.isArtinianObject_iff_of_shortExact hS.op).mpr ⟨h₃', h₁'⟩
 
-/-- Lemma 12.9.5 owner abstraction: in an abelian category, Noetherian objects form a Serre
+/-- Lemma 12.9.5 owner abstraction: in an abelian category, Noetherian objects form a LinearRepresentations_Serre_1977
 class. -/
 instance isNoetherianObject_isSerreClass :
     (isNoetherianObject : ObjectProperty C).IsSerreClass where

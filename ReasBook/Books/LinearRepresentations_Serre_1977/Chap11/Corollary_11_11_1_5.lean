@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.Chap10.Theorem_10_10_5_1
-import Serre.Chap10.Theorem_10_10_5_2
-import Serre.Chap11.Theorem_11_11_2_1.TensorCharacterBridge
-import Serre.Chap11.Theorem_11_11_2_1.ElementarySubgroupBridge
-import Serre.RepresentationTheory.FrobeniusCharacterPairing
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_1
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_2
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1.TensorCharacterBridge
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1.ElementarySubgroupBridge
+import LinearRepresentations_Serre_1977.RepresentationTheory.FrobeniusCharacterPairing
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -179,7 +179,7 @@ the subgroup character ring. -/
 lemma restrict_mem_characterRing
     (H : Subgroup G) {φ : G → ℂ} (hφ : φ ∈ R(G)) :
     (fun h : H ↦ φ h) ∈ R(H) := by
-  -- Restriction respects the algebra generators defining Serre's character ring.
+  -- Restriction respects the algebra generators defining LinearRepresentations_Serre_1977's character ring.
   refine Algebra.adjoin_induction ?_ ?_ ?_ ?_ hφ
   · intro ψ hψ
     rcases hψ with ⟨σ, hσfd, _hσirr, rfl⟩

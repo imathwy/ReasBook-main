@@ -1,6 +1,6 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap06.Definition_6_30
-import Nesterov.Chap06.Definition_6_31
+import LecturesConvexOptimization_Nesterov_2018.Chap06.Definition_6_30
+import LecturesConvexOptimization_Nesterov_2018.Chap06.Definition_6_31
 
 /- Definition 6.7 lies in the chapter's prox-function smoothing domain.
 
@@ -68,7 +68,7 @@ variable
   (A : E₁ →L[ℝ] StrongDual ℝ E₂)
   (Q₂ : Set E₂) (hatφ d₂ : E₂ → ℝ) (μ : ℝ) (u₀ : E₂) (x : E₁) (u : E₂)
 
-/- Definition 6.7: Nesterov's prox-smoothed approximation `f_μ` is the chapter's
+/- Definition 6.7: LecturesConvexOptimization_Nesterov_2018's prox-smoothed approximation `f_μ` is the chapter's
 canonical regularized-max owner `smoothedPrimalObjective` specialized to zero
 smooth part. -/
 recall smoothedPrimalObjective

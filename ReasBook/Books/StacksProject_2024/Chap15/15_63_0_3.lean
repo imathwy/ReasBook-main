@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap15.«15_60_1_1»
-import stacks_project.Chap15.«15_63_0_1»
+import StacksProject_2024.Chap15.«15_60_1_1»
+import StacksProject_2024.Chap15.«15_63_0_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

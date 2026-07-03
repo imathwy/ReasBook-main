@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap12.Proposition_12_12_1_1
-import Serre.Chap12.Proposition_12_12_1_3
-import Serre.Chap12.Proposition_12_12_6_5
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_3
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_6_5
 
 noncomputable section
 

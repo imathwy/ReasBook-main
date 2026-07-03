@@ -1,7 +1,7 @@
 import Mathlib
-import BauschkeLean.Chap01.Text_1_0_11
-import BauschkeLean.Chap11.Definition_11_3
-import BauschkeLean.Chap16.Definition_16_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap01.Text_1_0_11
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap11.Definition_11_3
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Definition_16_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib
-import FirstOrderMethodsinOptimization.Chap12.Lemma_12_7
-import FirstOrderMethodsinOptimization.Chap12.Theorem_12_9
+import FirstOrderMethodsOptimization_Beck_2017.Chap12.Lemma_12_7
+import FirstOrderMethodsOptimization_Beck_2017.Chap12.Theorem_12_9
 
 noncomputable section
 

@@ -129,7 +129,7 @@ local instance instFintypeGGroupFunctionPairingCharacter : Fintype G := Fintype.
 
 -- Proof sketch: rewrite the normalized sum using
 -- `Representation.card_inv_mul_sum_char_mul_char_eq_finrank`; the invertibility assumption on
--- `(Nat.card G : K)` identifies that canonical owner theorem with Serre's normalized pairing.
+-- `(Nat.card G : K)` identifies that canonical owner theorem with LinearRepresentations_Serre_1977's normalized pairing.
 /-- The normalized pairing of two characters equals the `K`-dimension of the intertwining space. -/
 theorem groupFunctionPairingOverField_character_eq_finrank_intertwiningMap
     (ρ : Representation K G V) (σ : Representation K G W) :

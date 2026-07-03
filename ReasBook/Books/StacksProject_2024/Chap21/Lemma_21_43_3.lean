@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap18.Definition_18_34_1
-import stacks_project.Chap21.Definition_21_43_1
+import StacksProject_2024.Chap18.Definition_18_34_1
+import StacksProject_2024.Chap21.Definition_21_43_1
 
 open CategoryTheory
 open Opposite

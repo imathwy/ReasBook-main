@@ -1,9 +1,9 @@
 import Mathlib
-import stacks_project.Chap04.Lemma_4_2_18
-import stacks_project.Chap13.Lemma_13_18_8
-import stacks_project.Chap13.Lemma_13_11_6
-import stacks_project.Chap13.Lemma_13_23_4
-import stacks_project.Chap13.Lemma_13_23_5
+import StacksProject_2024.Chap04.Lemma_4_2_18
+import StacksProject_2024.Chap13.Lemma_13_18_8
+import StacksProject_2024.Chap13.Lemma_13_11_6
+import StacksProject_2024.Chap13.Lemma_13_23_4
+import StacksProject_2024.Chap13.Lemma_13_23_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

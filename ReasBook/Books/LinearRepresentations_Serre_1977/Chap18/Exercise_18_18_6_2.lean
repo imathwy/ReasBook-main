@@ -1,4 +1,4 @@
-import Serre.Chap18.Remark_18_18_6_1
+import LinearRepresentations_Serre_1977.Chap18.Remark_18_18_6_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -19,7 +19,7 @@ import Serre.Chap18.Remark_18_18_6_1
   here.
 
 Source/core/bridge triage:
-* source-facing: Exercise `18-18.6-2` only points back to Serre's recorded determinant assertions.
+* source-facing: Exercise `18-18.6-2` only points back to LinearRepresentations_Serre_1977's recorded determinant assertions.
 * core/canonical: the owner theorems are
   `alternating_group_five_cartan_matrix_mod_three_det` and
   `alternating_group_five_cartan_matrix_mod_five_det`.
@@ -29,11 +29,11 @@ This item should therefore remain a direct recall of the upstream canonical theo
 parallel local wrapper or restatement. -/
 
 /- Exercise 18-18.6-2 (1): assertion `(b)` of Remark `18-18.6-1` is the already recorded
-statement that the determinant of the `p = 3` Cartan matrix for Serre's modular-character example
+statement that the determinant of the `p = 3` Cartan matrix for LinearRepresentations_Serre_1977's modular-character example
 for `A₅` is `3`. -/
 recall alternating_group_five_cartan_matrix_mod_three_det
 
 /- Exercise 18-18.6-2 (2): assertion `(c)` of Remark `18-18.6-1` is the already recorded
-statement that the determinant of the `p = 5` Cartan matrix for Serre's modular-character example
+statement that the determinant of the `p = 5` Cartan matrix for LinearRepresentations_Serre_1977's modular-character example
 for `A₅` is `5`. -/
 recall alternating_group_five_cartan_matrix_mod_five_det

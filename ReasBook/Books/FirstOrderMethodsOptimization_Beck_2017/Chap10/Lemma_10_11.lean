@@ -1,8 +1,8 @@
 import Mathlib
-import FirstOrderMethodsinOptimization.Chap05.Definition_5_1
-import FirstOrderMethodsinOptimization.Chap05.Theorem_5_8
-import FirstOrderMethodsinOptimization.Chap06.Theorem_6_42
-import FirstOrderMethodsinOptimization.Chap10.Definition_10_5
+import FirstOrderMethodsOptimization_Beck_2017.Chap05.Definition_5_1
+import FirstOrderMethodsOptimization_Beck_2017.Chap05.Theorem_5_8
+import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_42
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

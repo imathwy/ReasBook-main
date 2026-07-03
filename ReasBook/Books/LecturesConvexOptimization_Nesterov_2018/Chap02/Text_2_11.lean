@@ -1,8 +1,8 @@
 import Mathlib
-import Nesterov.Chap01.Proposition_1_5_7
-import Nesterov.Chap01.Theorem_1_4_19
-import Nesterov.Chap02.Definition_2_10
-import Nesterov.Chap02.Proposition_2_2
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Proposition_1_5_7
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Theorem_1_4_19
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_10
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Proposition_2_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -386,7 +386,7 @@ private theorem chain_expression_eq_normal_form
   nlinarith [hcast_eq, hsucc_eq, hexpand, hsum_expand]
 
 /-- Helper for Text 2.11: on the active prefix coordinates, the path tridiagonal quadratic form is
-exactly the endpoint-plus-edge chain expression from Nesterov's proof. -/
+exactly the endpoint-plus-edge chain expression from LecturesConvexOptimization_Nesterov_2018's proof. -/
 private theorem pathTridiagonal_quadratic_form_eq_chain_prefix
     (k : Fin n) (y : EuclideanSpace ℝ (Fin (k.1 + 1))) :
     inner ℝ (((pathTridiagonalMatrix (Nat.succPNat k.1)).toEuclideanLin y)) y =
@@ -409,7 +409,7 @@ private theorem pathTridiagonal_quadratic_form_eq_chain_prefix
           rw [chain_expression_eq_normal_form]
 
 /-- Helper for Text 2.11: the quadratic form of the path tridiagonal matrix on the prefix
-coordinates is exactly Nesterov's endpoint-plus-edge chain form. -/
+coordinates is exactly LecturesConvexOptimization_Nesterov_2018's endpoint-plus-edge chain form. -/
 private theorem pathTridiagonal_quadratic_form_eq_chain
     (k : Fin n) (h : E) :
     inner ℝ

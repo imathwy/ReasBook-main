@@ -1,5 +1,5 @@
 import Mathlib.Geometry.Manifold.SmoothEmbedding
-import SmoothManifoldsLee.Chap04.Sec04_27.Problem_4_10
+import SmoothManifolds_Lee_2012.Chap04.Sec04_27.Problem_4_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

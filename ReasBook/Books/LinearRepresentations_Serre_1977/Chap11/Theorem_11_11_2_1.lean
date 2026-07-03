@@ -1,14 +1,14 @@
 import Mathlib
-import Serre.Chap01.Definition_1_1_2_1
-import Serre.Chap02.Remark_2_2_1_2
-import Serre.Chap02.Theorem_2_2_5_2
-import Serre.Chap07.Exercise_7_7_2_5
-import Serre.Chap10.Definition_10_10_1_3
-import Serre.Chap10.Theorem_10_10_5_1
-import Serre.Chap11.Theorem_11_11_1_4
-import Serre.Chap11.Theorem_11_11_2_1.Index
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap01.Definition_1_1_2_1
+import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_1_2
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_5_2
+import LinearRepresentations_Serre_1977.Chap07.Exercise_7_7_2_5
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_1
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_1_4
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1.Index
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -1368,7 +1368,7 @@ private theorem weighted_adams_indicator_restricted_pairing_mem_range_on_subgrou
       (H := H) (A := A) n c K χ hpair
 
 /-- Helper for Theorem 11-11.2-1: once every elementary restriction of the weighted indicator on
-`H` is realized in Serre's scalar extension, the indicator itself already lies in that scalar
+`H` is realized in LinearRepresentations_Serre_1977's scalar extension, the indicator itself already lies in that scalar
 extension. -/
 private theorem weighted_adams_indicator_mem_characterRingScalarExtension_of_elementary_restrictions
     [Finite G] (n : ℕ+) (H : Subgroup G) (c : ConjClasses H)
@@ -3178,7 +3178,7 @@ private theorem global_weighted_adams_restriction_mem_characterRingScalarExtensi
 `A`-valued class function has Frobenius's weighted Adams transform
 `g ↦ (Nat.card G / gcd (Nat.card G, n)) Ψ^n(f)(g)` realized by an element of `A ⊗ R(G)`.
 
-This matches Serre's source statement: the multiplier is the global group-order factor
+This matches LinearRepresentations_Serre_1977's source statement: the multiplier is the global group-order factor
 `|G| / (|G|, n)`, not the pointwise order factor `orderOf g / (orderOf g, n)`. The latter is a
 stronger and false statement even for coefficient rings containing all `|G|`-th roots of unity. -/
 theorem frobenius_weighted_adamsOperator_lifts_to_tensorCharacterRing

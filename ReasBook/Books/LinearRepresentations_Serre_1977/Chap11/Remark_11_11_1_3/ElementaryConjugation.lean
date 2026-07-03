@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap10.Definition_10_10_1_3
-import Serre.Chap10.Exercise_10_10_5_5
-import Serre.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap10.Exercise_10_10_5_5
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
 
 -- Stable elementary-subgroup conjugation infrastructure extracted from Remark 11-11.1-3.
 

@@ -1,4 +1,4 @@
-import stacks_project.Chap14.Definition_14_3_1
+import StacksProject_2024.Chap14.Definition_14_3_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

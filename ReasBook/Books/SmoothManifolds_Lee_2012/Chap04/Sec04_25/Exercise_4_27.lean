@@ -3,8 +3,8 @@ import Mathlib.Geometry.Manifold.Algebra.Monoid
 import Mathlib.Geometry.Manifold.ContMDiff.Defs
 import Mathlib.Geometry.Manifold.MFDeriv.FDeriv
 import Mathlib.Topology.IsLocalHomeomorph
-import SmoothManifoldsLee.Chap01.Sec01_04.Example_1_23
-import SmoothManifoldsLee.Chap04.Sec04_25.Proposition_4_28
+import SmoothManifolds_Lee_2012.Chap01.Sec01_04.Example_1_23
+import SmoothManifolds_Lee_2012.Chap04.Sec04_25.Proposition_4_28
 
 open scoped Manifold ContDiff
 

@@ -3,8 +3,8 @@ import Mathlib.Algebra.Category.ModuleCat.Projective
 import Mathlib.Algebra.Category.ModuleCat.Monoidal.Adjunction
 import Mathlib.CategoryTheory.Monoidal.Tor
 import Mathlib.RingTheory.TensorProduct.Maps
-import stacks_project.Chap10.Lemma_10_76_1
-import stacks_project.Chap15.Definition_15_61_1
+import StacksProject_2024.Chap10.Lemma_10_76_1
+import StacksProject_2024.Chap15.Definition_15_61_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

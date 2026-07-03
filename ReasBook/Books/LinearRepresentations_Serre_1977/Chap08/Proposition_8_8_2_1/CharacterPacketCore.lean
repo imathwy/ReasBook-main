@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
 
 open CategoryTheory
 
@@ -164,7 +164,7 @@ theorem stabilizerRepresentation_isIrreducible
     }
   exact e.isSimpleOrder_iff.mp inferInstance
 
-/-- Serre's representation `θ_{χ,ρ}` on `A ⋊[φ] H`, obtained by inducing the representation of
+/-- LinearRepresentations_Serre_1977's representation `θ_{χ,ρ}` on `A ⋊[φ] H`, obtained by inducing the representation of
 `A ⋊ H_[φ; χ]` defined by the character `χ` and the irreducible representation `ρ` of
 `H_[φ; χ]`. -/
 noncomputable abbrev theta (χ : A →* ℂˣ) (ρ : Rep.{w} ℂ H_[φ; χ]) :

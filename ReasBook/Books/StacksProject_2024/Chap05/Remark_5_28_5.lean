@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap05.Definition_5_28_2
-import stacks_project.Chap05.Definition_5_28_3
+import StacksProject_2024.Chap05.Definition_5_28_2
+import StacksProject_2024.Chap05.Definition_5_28_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

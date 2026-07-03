@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap10.Lemma_10_15_2_Prime_avoidance
-import stacks_project.Chap10.Lemma_10_17_5
+import StacksProject_2024.Chap10.Lemma_10_15_2_Prime_avoidance
+import StacksProject_2024.Chap10.Lemma_10_17_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

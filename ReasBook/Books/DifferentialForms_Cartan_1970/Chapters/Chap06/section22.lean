@@ -1,7 +1,7 @@
-import cartan.VI.section22.0001_Proposition_1_1
-import cartan.VI.section22.0002_Proposition_1_2
-import cartan.VI.section22.0003_Theorem_VI_1_extra_1
-import cartan.VI.section22.0004_Remark_VI_1_extra_2
-import cartan.VI.section22.0005_Corollary_VI_1_extra_3
-import cartan.VI.section22.0006_Definition_VI_1_extra_4
-import cartan.VI.section22.0007_Remark_VI_1_extra_5
+import DifferentialForms_Cartan_1970.VI.section22.0001_Proposition_1_1
+import DifferentialForms_Cartan_1970.VI.section22.0002_Proposition_1_2
+import DifferentialForms_Cartan_1970.VI.section22.0003_Theorem_VI_1_extra_1
+import DifferentialForms_Cartan_1970.VI.section22.0004_Remark_VI_1_extra_2
+import DifferentialForms_Cartan_1970.VI.section22.0005_Corollary_VI_1_extra_3
+import DifferentialForms_Cartan_1970.VI.section22.0006_Definition_VI_1_extra_4
+import DifferentialForms_Cartan_1970.VI.section22.0007_Remark_VI_1_extra_5

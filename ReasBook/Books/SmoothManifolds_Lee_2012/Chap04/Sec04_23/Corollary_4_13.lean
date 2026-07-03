@@ -1,4 +1,4 @@
-import SmoothManifoldsLee.Chap04.Sec04_23.Theorem_4_12
+import SmoothManifolds_Lee_2012.Chap04.Sec04_23.Theorem_4_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

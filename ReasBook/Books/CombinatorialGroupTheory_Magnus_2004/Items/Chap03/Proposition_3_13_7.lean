@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory.Items.Chap03.Proposition_3_12_5
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Proposition_3_12_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -11,7 +11,7 @@ set_option autoImplicit false
 section
 
 /-!
-Primary domain: special linear groups over localizations of `ℤ` and Bass-Serre amalgams.
+Primary domain: special linear groups over localizations of `ℤ` and Bass-LinearRepresentations_Serre_1977 amalgams.
 
 Layer triage:
 - `source-facing`: the congruence subgroup `Γ₀(p) ≤ SL(2, ℤ)`, the two adjacent-vertex
@@ -111,7 +111,7 @@ adjacent vertex stabilizers is bijective. The source-facing edge subgroup remain
 -- The stabilizers of two adjacent vertices are the integral copy and the `diag(1, p)`-conjugate
 -- copy of `SL(2, ℤ)`, and their common edge stabilizer is the ambient subgroup
 -- `gamma0Subgroup p`, identified with the subgroup intersection by `gamma0Subgroup_eq_inf p`.
--- The quotient graph is a single edge. Bass-Serre theory then identifies the ambient group with
+-- The quotient graph is a single edge. Bass-LinearRepresentations_Serre_1977 theory then identifies the ambient group with
 -- the pushout of those two vertex stabilizers over that edge stabilizer.
 private theorem integralAdjacentSpecialLinearSubgroup_amalgamatedProductComparison_bijective
     (p : ℕ) (hp : p.Prime) :

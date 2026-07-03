@@ -3,7 +3,7 @@ import Mathlib.CategoryTheory.Abelian.Transfer
 import Mathlib.CategoryTheory.Limits.Shapes.Opposites.Products
 import Mathlib.CategoryTheory.Preadditive.Transfer
 import Mathlib.Tactic.Recall
-import stacks_project.Chap12.Definition_12_3_8
+import StacksProject_2024.Chap12.Definition_12_3_8
 
 universe v u
 

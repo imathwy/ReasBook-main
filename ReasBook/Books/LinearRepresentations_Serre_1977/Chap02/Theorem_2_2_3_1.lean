@@ -1,5 +1,5 @@
-import Serre.Chap02.Remark_2_2_2_5
-import Serre.Chap02.Corollary_2_2_2_3
+import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_2_5
+import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_2_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -170,7 +170,7 @@ lemma sum_diagonal_self_pairings_eq_one
     _ = 1 := by
           exact mul_inv_cancel₀ hdim_ne_zero
 
--- Route correction: replace the later Chapter 12 shortcut by Serre's Chapter 2 proof skeleton,
+-- Route correction: replace the later Chapter 12 shortcut by LinearRepresentations_Serre_1977's Chapter 2 proof skeleton,
 -- namely character expansion into diagonal matrix coefficients followed by orthogonality.
 /-- Theorem 2-2.3-1 (1): clause (i). The normalized scalar product of the character of an
 irreducible complex representation with itself is `1`. -/
@@ -191,7 +191,7 @@ theorem self_character_pairing_eq_one_of_irreducible
     _ = 1 := sum_diagonal_self_pairings_eq_one (ρ := ρ) b
 
 /-- Source-facing clause (ii) of Theorem 2-2.3-1: characters of nonisomorphic irreducible complex
-representations are orthogonal for Serre's normalized pairing. -/
+representations are orthogonal for LinearRepresentations_Serre_1977's normalized pairing. -/
 theorem character_pairing_eq_zero_of_not_isomorphic_irreducible
     (ρ : Representation ℂ G V) (σ : Representation ℂ G W)
     [ρ.IsIrreducible] [σ.IsIrreducible] (hρσ : ¬ Nonempty (ρ.Equiv σ)) :

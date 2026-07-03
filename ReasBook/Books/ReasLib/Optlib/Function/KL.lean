@@ -1,6 +1,6 @@
 import Mathlib.Analysis.Calculus.ContDiff.Basic
-import Reaslib.Optlib.Function.Proximal
-import Reaslib.Optlib.Differential.Subdifferential
+import ReasLib.Optlib.Function.Proximal
+import ReasLib.Optlib.Differential.Subdifferential
 
 open Filter BigOperators Set Topology
 noncomputable section

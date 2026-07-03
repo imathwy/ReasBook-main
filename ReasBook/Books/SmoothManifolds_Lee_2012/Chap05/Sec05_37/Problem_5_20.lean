@@ -1,6 +1,6 @@
-import SmoothManifoldsLee.Chap03.Sec03_17.Corollary_3_25
-import SmoothManifoldsLee.Chap05.Sec05_34.Notation_5_34_extra_1
-import SmoothManifoldsLee.Chap05.Sec05_37.Problem_5_19
+import SmoothManifolds_Lee_2012.Chap03.Sec03_17.Corollary_3_25
+import SmoothManifolds_Lee_2012.Chap05.Sec05_34.Notation_5_34_extra_1
+import SmoothManifolds_Lee_2012.Chap05.Sec05_37.Problem_5_19
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

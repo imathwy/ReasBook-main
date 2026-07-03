@@ -1,8 +1,8 @@
-import Nesterov.Chap02.Algorithm_2_9
-import Nesterov.Chap02.Proposition_2_12
-import Nesterov.Chap02.Proposition_2_35
-import Nesterov.Chap02.Theorem_2_20
-import Nesterov.Chap02.Theorem_2_30
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Algorithm_2_9
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Proposition_2_12
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Proposition_2_35
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_20
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_30
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,10 +1,10 @@
 import Mathlib
-import stacks_project.Chap07.Lemma_7_13_5
-import stacks_project.Chap07.Lemma_7_28_1
-import stacks_project.Chap07.Lemma_7_28_2
-import stacks_project.Chap07.Lemma_7_30_5
-import stacks_project.Chap07.Lemma_7_30_7
-import stacks_project.Chap07.Lemma_7_31_1
+import StacksProject_2024.Chap07.Lemma_7_13_5
+import StacksProject_2024.Chap07.Lemma_7_28_1
+import StacksProject_2024.Chap07.Lemma_7_28_2
+import StacksProject_2024.Chap07.Lemma_7_30_5
+import StacksProject_2024.Chap07.Lemma_7_30_7
+import StacksProject_2024.Chap07.Lemma_7_31_1
 
 open CategoryTheory CategoryTheory.Limits Opposite
 open CategoryTheory.GrothendieckTopology

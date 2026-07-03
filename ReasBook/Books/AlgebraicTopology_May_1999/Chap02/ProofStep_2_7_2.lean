@@ -1,5 +1,5 @@
 import Mathlib
-import MayConciseRevised.Chap02.Theorem_2_7_1
+import AlgebraicTopology_May_1999.Chap02.Theorem_2_7_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

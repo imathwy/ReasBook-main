@@ -1,7 +1,7 @@
 import Mathlib
-import cartan.I.section02.«frozen_0007_Example_I_2_extra_5»
-import cartan.I.section02.«frozen_0013_Proposition_7_1»
-import cartan.I.section03.«0011_Proposition_6_1»
+import DifferentialForms_Cartan_1970.I.section02.«frozen_0007_Example_I_2_extra_5»
+import DifferentialForms_Cartan_1970.I.section02.«frozen_0013_Proposition_7_1»
+import DifferentialForms_Cartan_1970.I.section03.«0011_Proposition_6_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

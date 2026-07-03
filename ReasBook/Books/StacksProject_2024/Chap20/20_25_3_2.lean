@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Algebra.Homology.Monoidal
-import stacks_project.Chap20.«20_25_0_2»
+import StacksProject_2024.Chap20.«20_25_0_2»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

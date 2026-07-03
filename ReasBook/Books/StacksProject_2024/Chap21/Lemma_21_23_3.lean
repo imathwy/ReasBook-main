@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.CategoryTheory.Triangulated.Basic
 import Mathlib.CategoryTheory.Triangulated.Yoneda
-import stacks_project.Chap18.Definition_18_6_1
+import StacksProject_2024.Chap18.Definition_18_6_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,8 +1,8 @@
-import Serre.Chap06.Corollary_6_6_5_3
-import Serre.Chap06.Exercise_6_6_5_6
-import Serre.Chap06.Exercise_6_6_5_7
-import Serre.Chap06.Exercise_6_6_5_8
-import Serre.Chap06.Proposition_6_6_5_1
+import LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_5_3
+import LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_5_6
+import LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_5_7
+import LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_5_8
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

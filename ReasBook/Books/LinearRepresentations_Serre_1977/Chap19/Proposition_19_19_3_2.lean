@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.Chap14.Exercise_14_14_5_3.RepresentationBridge
-import Serre.Chap02.Remark_2_2_1_2
-import Serre.Chap12.Proposition_12_12_1_1
-import Serre.Chap18.Proposition_18_18_1_2
-import Serre.Chap19.Definition_19_19_3_1
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_3.RepresentationBridge
+import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_1_2
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap18.Proposition_18_18_1_2
+import LinearRepresentations_Serre_1977.Chap19.Definition_19_19_3_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -387,7 +387,7 @@ private theorem intertwiningMultiplicity_eq_finrank_moduleHomSpace
 -- Proof sketch: `intertwiningMultiplicity P M` is the dimension of `Hom^G(P, M)`, and
 -- `Hom^G(P, -)` is exact on short exact sequences because `P` is projective.
 /-- Proposition 19-19.3-2 (1): the additive clause is a generic projective-module statement.
-Specializing `P` to Serre's mod-`l` Swan module `\overline{\mathrm{Sw}}_G` recovers the source
+Specializing `P` to LinearRepresentations_Serre_1977's mod-`l` Swan module `\overline{\mathrm{Sw}}_G` recovers the source
 formula for `b(M)`. This is the core/canonical owner-level statement. -/
 theorem intertwiningMultiplicity_add_of_shortExactSequence
     (P : FiniteProjectiveGroupAlgebraModule k G)
@@ -478,8 +478,8 @@ local instance isPRegularDecidablePred : DecidablePred (IsPRegular p : G → Pro
 -- Proof sketch: combine the owner-level identification of `intertwiningMultiplicity` with the
 -- Chapter `18` projective-character pairing formula.
 /-- Proposition 19-19.3-2 (2): clause (ii) is the bridge/view specialization of the Chapter `18`
-projective-character pairing formula to Serre's Swan module. The canonical owners are
-`b[SwG](M)` for Serre's invariant,
+projective-character pairing formula to LinearRepresentations_Serre_1977's Swan module. The canonical owners are
+`b[SwG](M)` for LinearRepresentations_Serre_1977's invariant,
 `FiniteProjectiveGroupAlgebraModule.projectiveLiftCharacter SwG e` for the Swan class function,
 `FDRep.modularCharacterZeroExtension` for the modular character
 of `M`. -/
@@ -524,7 +524,7 @@ theorem swanMultiplicity_eq_regular_sum
         ∑ s : G,
           FiniteProjectiveGroupAlgebraModule.projectiveLiftCharacter SwG e s⁻¹ *
             FDRep.modularCharacterZeroExtension M (PrimeToPRoot.toFieldLift lift) s := by
-  -- Unfold the normalized pairing from clause `(2)` to recover Serre's averaged sum.
+  -- Unfold the normalized pairing from clause `(2)` to recover LinearRepresentations_Serre_1977's averaged sum.
   simpa [Representation.groupFunctionPairingOverField] using
     swanMultiplicity_eq_pairing_with_modularCharacter
       (p := p) (A := A) (K := K) (G := G) lift SwG M
@@ -537,7 +537,7 @@ variable {G : Type u} [Group G] [Finite G]
 
 /-- A source-facing lower ramification filtration on `G`: the ramification groups start at `G`,
 are normal, decrease with the index, and are eventually trivial. The numerical weights `g_i` from
-Serre are then the derived cardinalities `|Gi i|`, so they are not kept as separate primitive
+LinearRepresentations_Serre_1977 are then the derived cardinalities `|Gi i|`, so they are not kept as separate primitive
 data. -/
 class IsLowerRamificationFiltration (Gi : ℕ → Subgroup G) : Prop where
   zero_eq_top : Gi 0 = ⊤
@@ -609,9 +609,9 @@ theorem lowerRamificationTerm_eq_zero_of_eq_bot
     simpa using Representation.invariants_eq_top (M.ρ.comp (⊥ : Subgroup G).subtype)
   simp [lowerRamificationTerm, hinv]
 
-/-- The source-facing ramification-side expression for Serre's modular invariant `b(M)` attached
+/-- The source-facing ramification-side expression for LinearRepresentations_Serre_1977's modular invariant `b(M)` attached
 to a lower ramification filtration `Gi`. This is the canonical filtration-side owner: it is the
-positive-index finite ramification sum, and a projective module represents Serre's mod-`l` Swan
+positive-index finite ramification sum, and a projective module represents LinearRepresentations_Serre_1977's mod-`l` Swan
 module over a coefficient field of characteristic `l` for `Gi` only after an explicit bridge
 identifies its intertwining multiplicity with this functional. -/
 def lowerRamificationMultiplicity
@@ -638,9 +638,9 @@ variable {k : Type u} [Field k]
 variable {G : Type u} [Group G] [Finite G]
 
 -- Proof sketch: clause `(iii)` is a bridge/view statement: once the source module `SwG` is known
--- to realize Serre's lower-ramification multiplicity functional for the chosen filtration `Gi`,
+-- to realize LinearRepresentations_Serre_1977's lower-ramification multiplicity functional for the chosen filtration `Gi`,
 -- unfold that functional.
-/-- Proposition 19-19.3-2 (4): source clause (iii): if Serre's mod-`l` Swan module `SwG`
+/-- Proposition 19-19.3-2 (4): source clause (iii): if LinearRepresentations_Serre_1977's mod-`l` Swan module `SwG`
 realizes the lower-ramification multiplicity functional for `Gi`, then `b(M)` is the weighted
 finite sum of the dimensions of the quotients by the fixed subspaces, with weight `|Gi i| / |G|`
 at each positive stage `i`. -/
@@ -796,7 +796,7 @@ theorem lowerRamificationMultiplicity_eq_zero_iff_isTrivial_on_firstRamification
 -- Proof sketch: use the bridge/view identification of `SwG.intertwiningMultiplicity` with the
 -- source-facing lower-ramification multiplicity functional, then apply the vanishing criterion for
 -- that functional.
-/-- Proposition 19-19.3-2 (5): source clause (iv): if Serre's mod-`l` Swan module `SwG` realizes
+/-- Proposition 19-19.3-2 (5): source clause (iv): if LinearRepresentations_Serre_1977's mod-`l` Swan module `SwG` realizes
 the lower-ramification multiplicity functional for `Gi`, then `b(M)` vanishes exactly when the
 restriction of `M` to the first ramification subgroup `Gi 1` is trivial, i.e. when the action is
 tame. -/

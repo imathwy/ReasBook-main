@@ -1,4 +1,4 @@
-import Serre.Chap10.Exercise_10_10_5_5.BrauerPrelude
+import LinearRepresentations_Serre_1977.Chap10.Exercise_10_10_5_5.BrauerPrelude
 
 noncomputable section
 
@@ -344,7 +344,7 @@ private theorem isSupersolvable_of_isPElementary_local
 theorem elementary_group_isSupersolvable
     (hG : IsElementary G) :
     IsSupersolvable G := by
-  -- Route correction: use Serre's exact bridge `elementary => p-elementary => p-group/cyclic
+  -- Route correction: use LinearRepresentations_Serre_1977's exact bridge `elementary => p-elementary => p-group/cyclic
   -- kernel => supersolvable`, rather than searching for an unrelated nilpotent shortcut.
   rcases hG with ⟨p, hp⟩
   exact isSupersolvable_of_isPElementary_local hp

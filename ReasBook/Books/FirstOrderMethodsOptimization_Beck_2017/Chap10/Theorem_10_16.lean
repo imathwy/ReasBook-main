@@ -1,9 +1,9 @@
 import Mathlib
-import FirstOrderMethodsinOptimization.Chap06.Definition_6_10
-import FirstOrderMethodsinOptimization.Chap10.Algorithm_10_3
-import FirstOrderMethodsinOptimization.Chap10.Definition_10_2
-import FirstOrderMethodsinOptimization.Chap10.Definition_10_9
-import FirstOrderMethodsinOptimization.Chap10.Remark_10_17
+import FirstOrderMethodsOptimization_Beck_2017.Chap06.Definition_6_10
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_3
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_2
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_9
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Remark_10_17
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

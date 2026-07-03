@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap14.Corollary_14_14_3_3
-import Serre.Chap14.Proposition_14_14_1_1
-import Serre.Chap15.Definition_15_15_1_1
-import Serre.Chap16.Corollary_16_16_1_6
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_3_3
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_1_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_6
 
 noncomputable section
 

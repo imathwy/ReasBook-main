@@ -1,4 +1,4 @@
-import stacks_project.Chap06.Lemma_6_33_4
+import StacksProject_2024.Chap06.Lemma_6_33_4
 
 open CategoryTheory TopCat TopologicalSpace
 open TopologicalSpace.Opens

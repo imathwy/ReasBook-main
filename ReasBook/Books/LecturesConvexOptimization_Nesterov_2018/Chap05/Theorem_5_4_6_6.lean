@@ -1,8 +1,8 @@
-import Nesterov.Chap05.Corollary_5_3_2
-import Nesterov.Chap05.Definition_5_4_6_7
-import Nesterov.Chap05.Theorem_5_3_3
-import Nesterov.Chap05.Theorem_5_4_6_4
-import Nesterov.Chap05.Theorem_5_4_6_5
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Corollary_5_3_2
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_4_6_7
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Theorem_5_3_3
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Theorem_5_4_6_4
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Theorem_5_4_6_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

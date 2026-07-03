@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap07.Proposition_7_7_2_1
-import Serre.Chap09.Corollary_9_9_2_2
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Chap09.Corollary_9_9_2_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -19,7 +19,7 @@ variable {K : Type v} [Zero K] [NatCast K]
 variable (A : Type u) [Group A] [Finite A]
 
 open Classical in
-/-- Serre's auxiliary function `θ_A` on a finite group `A`, supported on the generators of `A`
+/-- LinearRepresentations_Serre_1977's auxiliary function `θ_A` on a finite group `A`, supported on the generators of `A`
 and equal to `|A|` on each generator. -/
 def cyclicGroupTheta : A → K :=
   fun a ↦ if Subgroup.zpowers a = (⊤ : Subgroup A) then Nat.card A else 0

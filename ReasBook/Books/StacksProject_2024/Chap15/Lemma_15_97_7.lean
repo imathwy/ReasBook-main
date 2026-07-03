@@ -1,4 +1,4 @@
-import stacks_project.Chap15.LinearMapIdentifiesWithProdSubmodules
+import StacksProject_2024.Chap15.LinearMapIdentifiesWithProdSubmodules
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

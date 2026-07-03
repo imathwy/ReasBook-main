@@ -1,13 +1,13 @@
 import Mathlib
-import Serre.Chap01.Theorem_1_1_4_2
-import Serre.Chap03.Definition_3_3_3_1
-import Serre.Chap03.Exercise_3_3_3_6
-import Serre.Chap07.Proposition_7_7_1_3
-import Serre.Chap07.Remark_7_7_1_4
-import Serre.Chap08.Definition_8_8_3_2
-import Serre.Chap08.Exercise_8_8_3_9
-import Serre.Chap10.Definition_10_10_1_3
-import Serre.Chap10.MonomialCharacter
+import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_4_2
+import LinearRepresentations_Serre_1977.Chap03.Definition_3_3_3_1
+import LinearRepresentations_Serre_1977.Chap03.Exercise_3_3_3_6
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_1_3
+import LinearRepresentations_Serre_1977.Chap07.Remark_7_7_1_4
+import LinearRepresentations_Serre_1977.Chap08.Definition_8_8_3_2
+import LinearRepresentations_Serre_1977.Chap08.Exercise_8_8_3_9
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap10.MonomialCharacter
 
 noncomputable section
 
@@ -22,9 +22,9 @@ section
 variable {G : Type} [Group G] [Finite G]
 
 /- Source/core/bridge triage:
-* `source-facing`: `IsMonomialCharacter`, Serre's character-level notion of being induced from a
+* `source-facing`: `IsMonomialCharacter`, LinearRepresentations_Serre_1977's character-level notion of being induced from a
   degree-`1` complex character of a subgroup.
-* `core/canonical`: the owner now lives in `Serre.Chap10.MonomialCharacter`.
+* `core/canonical`: the owner now lives in `LinearRepresentations_Serre_1977.Chap10.MonomialCharacter`.
 * `bridge/view`: `MonoidHom.toCharacterRing` together with
   `Subgroup.characterRingInduction`, which move degree-`1` subgroup characters into the character
   ring.

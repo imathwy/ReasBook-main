@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.Chap10.Definition_10_10_1_2
-import Serre.Chap12.Definition_12_12_6_1
-import Serre.Chap16.Theorem_16_16_2_1
-import Serre.Chap18.Remark_18_18_1_3
-import Serre.Chap18.Theorem_18_18_4_1
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_2
+import LinearRepresentations_Serre_1977.Chap12.Definition_12_12_6_1
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_2_1
+import LinearRepresentations_Serre_1977.Chap18.Remark_18_18_1_3
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_4_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -21,7 +21,7 @@ Domain-style sampling for this item:
   component of a group element, defined using the `p`-part `p ^ padicValNat p (orderOf x)` and
   the prime-to-`p` part `Nat.divMaxPow (orderOf x) p`.
 * `virtualModularCharacter` in Remark `18-18.1-3` and `pRegularComponentVirtualModularCharacter`
-  in Theorem `18-18.4-1` are the canonical Chapter `18` owners for modular characters and Serre's
+  in Theorem `18-18.4-1` are the canonical Chapter `18` owners for modular characters and LinearRepresentations_Serre_1977's
   `f ↦ f'` construction.
 * `R[K](G)` in Chapter `12` is the core/canonical owner for ordinary virtual characters on `G`.
 * `finiteRepGrothendieckCharacter` in Theorem `16-16.2-1` is only the bridge from `R₀[K](G)` to
@@ -29,7 +29,7 @@ Domain-style sampling for this item:
 
 Layer triage:
 * source-facing: the congruence description of `pRegularComponent p s` and the resulting formulas
-  for Serre's `f'`.
+  for LinearRepresentations_Serre_1977's `f'`.
 * core/canonical: `pRegularComponent`, `virtualModularCharacter`, `x′[p, lift]`, and `R[K](G)`.
 * bridge/view: the restriction map from ordinary class functions on `G` to the `p`-regular locus;
   the theorem below should quantify over `R[K](G)` directly, using `finiteRepGrothendieckCharacter`
@@ -241,7 +241,7 @@ theorem pRegularComponentVirtualModularCharacter_eq_character_pow_of_restriction
     ([E]₀)′[p, PrimeToPRoot.toFieldLift lift] =
       fun s ↦ χ (s ^ q) := by
   ext s
-  -- First rewrite Serre's `f'` by evaluating the restriction identity on the canonical
+  -- First rewrite LinearRepresentations_Serre_1977's `f'` by evaluating the restriction identity on the canonical
   -- `p`-regular component of `s`.
   have hχs :=
     virtualModularCharacter_apply_pRegularComponent_of_restriction

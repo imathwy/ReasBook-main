@@ -1,5 +1,5 @@
-import Serre.Chap14.Remark_14_14_1_2
-import Serre.Chap18.Theorem_18_18_2_1
+import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_1_2
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -115,7 +115,7 @@ private theorem virtualModularCharacterOnPRegularConjClass_class_local
   exact congrFun (virtualModularCharacter_class (PrimeToPRoot.toFieldLift lift) E) s
 
 /-- Corollary 18-18.2-3 (core/canonical form): for an injective lift of the prime-to-`p` roots of
-unity, the descended virtual modular character on Serre's Grothendieck group `R_k(G)` is
+unity, the descended virtual modular character on LinearRepresentations_Serre_1977's Grothendieck group `R_k(G)` is
 injective. -/
 theorem virtualModularCharacterOnPRegularConjClass_injective
     (lift : PrimeToPRoot p k →* Kˣ) (hlift : Function.Injective lift) :
@@ -206,7 +206,7 @@ theorem virtualModularCharacterOnPRegularConjClass_injective
 -- `[F]₀` and `[F']₀`, then rewrite with
 -- `virtualModularCharacterOnPRegularConjClass_class`.
 /-- If two finite-dimensional `k[G]`-modules have the same Brauer character on
-`PRegularConjClass G p`, then they define the same class in Serre's Grothendieck group
+`PRegularConjClass G p`, then they define the same class in LinearRepresentations_Serre_1977's Grothendieck group
 `R_k(G)`. -/
 theorem finiteRepGrothendieckClass_eq_of_modularCharacterOnPRegularConjClass_eq
     (lift : PrimeToPRoot p k →* Kˣ) (hlift : Function.Injective lift)
@@ -238,7 +238,7 @@ theorem finiteRepGrothendieckClass_eq_of_modularCharacterOnPRegularConjClass_eq
 -- `FDRep.modularCharacterOnPRegularConjClass_ofSubtype`, then invoke the previous descended-owner
 -- equality theorem.
 /-- Corollary 18-18.2-3 (1): if two finite-dimensional `k[G]`-modules have the same modular
-character, then they define the same class in Serre's Grothendieck group `R_k(G)`. -/
+character, then they define the same class in LinearRepresentations_Serre_1977's Grothendieck group `R_k(G)`. -/
 theorem finiteRepGrothendieckClass_eq_of_modularCharacter_eq
     (lift : PrimeToPRoot p k →* Kˣ) (hlift : Function.Injective lift)
     {F F' : FDRep k G}

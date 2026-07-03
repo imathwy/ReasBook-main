@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap20.Lemma_20_13_4_Leray_spectral_sequence
-import stacks_project.Chap20.«20_14_1_1»
+import StacksProject_2024.Chap20.Lemma_20_13_4_Leray_spectral_sequence
+import StacksProject_2024.Chap20.«20_14_1_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

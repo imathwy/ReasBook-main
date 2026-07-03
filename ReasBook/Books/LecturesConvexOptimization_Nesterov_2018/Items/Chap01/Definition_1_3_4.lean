@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Definition_1_3_4
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_3_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -16,12 +16,12 @@ local notation "coordBox" => Set.Icc (0 : Coord) 1
 
 Relevant owner-style declarations sampled before refining:
 * `LipschitzOnWith` in mathlib, the canonical owner of set-restricted Lipschitz continuity;
-* `linftyLipschitzClass` in `Nesterov/Chap01/Definition_1_3_4.lean`, the chapter owner of the
+* `linftyLipschitzClass` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_3_4.lean`, the chapter owner of the
   textbook class `𝒫∞[n, L]`;
 * `mem_linftyLipschitzClass_iff_lipschitzOnWith` in the same file, the canonical bridge from the
   source-facing `ℓ∞` statement on `B_n` to `LipschitzOnWith`;
-* `zeroOneBox` and `EuclideanSpace.linftyNorm` in `Nesterov/Chap01/Definition_1_3_1.lean` and
-  `Nesterov/Chap01/Definition_1_3_2.lean`, the upstream chapter owners for the box and `ℓ∞` norm.
+* `zeroOneBox` and `EuclideanSpace.linftyNorm` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_3_1.lean` and
+  `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_3_2.lean`, the upstream chapter owners for the box and `ℓ∞` norm.
 
 Best owner abstraction:
 * source-facing owner: `linftyLipschitzClass n L`, with notation `𝒫∞[n, L]`;

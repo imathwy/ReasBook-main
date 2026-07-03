@@ -82,7 +82,7 @@ variable (𝒜 : Type u) [Category.{v} 𝒜]
   `source-facing`: the textbook category `Gr(𝒜)` of `ℤ`-graded objects;
   `core/canonical`: the owner type `GradedObject ℤ 𝒜`;
   `bridge/view`: the equivalence `piEquivalenceFunctorDiscrete`, used downstream in
-  [Lemma_12_16_2](/volume/math/AI4M/users/zcwang/stacks_project/stacks_project/Items/Chap12/Lemma_12_16_2.lean)
+  [Lemma_12_16_2](/volume/math/AI4M/users/zcwang/StacksProject_2024/StacksProject_2024/Items/Chap12/Lemma_12_16_2.lean)
   to transfer abelianity from the functor category.
 
 Primitive data are only the ambient category `𝒜` and the grading set `ℤ`. The pointwise category

@@ -1,5 +1,5 @@
-import FirstOrderMethodsinOptimization.Chap03.Lemma_3_5
-import FirstOrderMethodsinOptimization.Chap03.Theorem_3_4
+import FirstOrderMethodsOptimization_Beck_2017.Chap03.Lemma_3_5
+import FirstOrderMethodsOptimization_Beck_2017.Chap03.Theorem_3_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

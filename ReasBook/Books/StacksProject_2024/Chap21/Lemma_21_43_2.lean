@@ -7,9 +7,9 @@ import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
 import Mathlib.CategoryTheory.ObjectProperty.Kernels
 import Mathlib.CategoryTheory.ObjectProperty.Retract
 import Mathlib.CategoryTheory.Triangulated.Subcategory
-import stacks_project.Chap13.Lemma_13_17_1
-import stacks_project.Chap18.Lemma_18_24_4
-import stacks_project.Chap18.Definition_18_34_1
+import StacksProject_2024.Chap13.Lemma_13_17_1
+import StacksProject_2024.Chap18.Lemma_18_24_4
+import StacksProject_2024.Chap18.Definition_18_34_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -27,7 +27,7 @@ attribute [local instance] HasDerivedCategory.standard
 namespace CategoryTheory
 
 /- Domain-style sampling for Lemma 21.43.2:
-- primary domain: weak-Serre object properties on abelian categories and the derived subcategories
+- primary domain: weak-LinearRepresentations_Serre_1977 object properties on abelian categories and the derived subcategories
   they cut out by cohomology conditions;
 - sampled owner declarations:
   `derivedCategoryCohomologyInProperty`,
@@ -69,14 +69,14 @@ variable [Abelian Mod𝒪]
 variable [Fact (∀ ⦃U V : C⦄ (f : U ⟶ V), RingHom.Flat ((𝒪.obj.map f.op).hom))]
 
 -- Proof sketch: flat restriction maps make quasi-coherent modules on the chaotic site into a weak
--- Serre subcategory by Lemma `18.24.4`; then the generic derived-category statement for
+-- LinearRepresentations_Serre_1977 subcategory by Lemma `18.24.4`; then the generic derived-category statement for
 -- `D_P(A)` shows that the degreewise quasi-coherent condition is preserved under isomorphisms.
 /-- The object property defining `QC(\mathcal O)` is strictly full inside `D(\mathcal O)`. -/
 instance derivedQuasiCoherentProperty_isClosedUnderIsomorphisms :
     ObjectProperty.IsClosedUnderIsomorphisms DQCoh :=
   derivedCategoryCohomologyInProperty_isClosedUnderIsomorphisms QCoh
 
--- Proof sketch: after Lemma `18.24.4`, quasi-coherent modules form a weak Serre subcategory of
+-- Proof sketch: after Lemma `18.24.4`, quasi-coherent modules form a weak LinearRepresentations_Serre_1977 subcategory of
 -- `Mod(\mathcal O)`, and the generic saturation result for `D_P(A)` identifies retracts in the
 -- derived category with direct summands of all cohomology modules.
 /-- The object property defining `QC(\mathcal O)` is saturated, i.e. stable under retracts in
@@ -86,7 +86,7 @@ instance derivedQuasiCoherentProperty_isStableUnderRetracts :
   derivedCategoryCohomologyInProperty_isSaturated QCoh
 
 -- Proof sketch: flat restriction maps on the chaotic site imply that quasi-coherent
--- `\mathcal O`-modules form a weak Serre subcategory of `Mod(\mathcal O)`. The derived
+-- `\mathcal O`-modules form a weak LinearRepresentations_Serre_1977 subcategory of `Mod(\mathcal O)`. The derived
 -- cohomology-in-subcategory criterion then shows that the degreewise quasi-coherent condition is
 -- preserved under zero objects, shifts, and distinguished triangles.
 /-- Lemma 21.43.2: in the chaotic-site module situation, the object property cutting out

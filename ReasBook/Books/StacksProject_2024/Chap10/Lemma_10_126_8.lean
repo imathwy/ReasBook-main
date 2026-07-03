@@ -1,6 +1,6 @@
 import Mathlib.RingTheory.FiniteType
 import Mathlib.RingTheory.Ideal.Over
-import stacks_project.Chap10.Lemma_10_20_1_Nakayama_s_lemma
+import StacksProject_2024.Chap10.Lemma_10_20_1_Nakayama_s_lemma
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

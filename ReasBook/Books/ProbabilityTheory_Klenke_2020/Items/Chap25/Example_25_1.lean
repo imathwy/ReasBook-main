@@ -1,7 +1,7 @@
 import Mathlib
-import AchimKlenkeLean.Items.Chap09.Example_9_4
-import AchimKlenkeLean.Items.Chap06.Exercise_6_1_4
-import AchimKlenkeLean.Items.Chap07.Definition_7_2
+import ProbabilityTheory_Klenke_2020.Items.Chap09.Example_9_4
+import ProbabilityTheory_Klenke_2020.Items.Chap06.Exercise_6_1_4
+import ProbabilityTheory_Klenke_2020.Items.Chap07.Definition_7_2
 
 open Filter MeasureTheory ProbabilityTheory
 open scoped ENNReal ProbabilityTheory Topology lp

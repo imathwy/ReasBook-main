@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory.Items.Chap01.Proposition_1_9_1
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_9_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -65,7 +65,7 @@ restricts to the given length function. -/
 --    `(Word.equiv g).toList.length` at the theorem surface.
 -- 5. An embedding of groups is stated canonically as an injective `MonoidHom`.
 -- Proof sketch: build the Lyndon-Chiswell tree associated to `length`, identify the induced
--- action of `G` with the Bass-Serre action of a suitable indexed free product of vertex
+-- action of `G` with the Bass-LinearRepresentations_Serre_1977 action of a suitable indexed free product of vertex
 -- stabilizers, and use the normal form theorem for free products to obtain an injective
 -- homomorphism whose reduced-word syllable-length pulls back to `length`.
 theorem exists_freeProduct_embedding_preserving_length

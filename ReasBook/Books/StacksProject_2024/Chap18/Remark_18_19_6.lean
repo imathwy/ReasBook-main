@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.PullbackContinuous
 import Mathlib.Tactic.Recall
-import stacks_project.Chap18.Lemma_18_27_9
+import StacksProject_2024.Chap18.Lemma_18_27_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

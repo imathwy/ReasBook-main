@@ -1,8 +1,8 @@
-import FirstOrderMethodsinOptimization.Chap11.Algorithm_11_4
-import FirstOrderMethodsinOptimization.Chap11.Lemma_11_4
-import FirstOrderMethodsinOptimization.Chap11.Theorem_11_5
-import FirstOrderMethodsinOptimization.Chap11.Theorem_11_6
-import FirstOrderMethodsinOptimization.Chap11.Lemma_11_7
+import FirstOrderMethodsOptimization_Beck_2017.Chap11.Algorithm_11_4
+import FirstOrderMethodsOptimization_Beck_2017.Chap11.Lemma_11_4
+import FirstOrderMethodsOptimization_Beck_2017.Chap11.Theorem_11_5
+import FirstOrderMethodsOptimization_Beck_2017.Chap11.Theorem_11_6
+import FirstOrderMethodsOptimization_Beck_2017.Chap11.Lemma_11_7
 
 noncomputable section
 

@@ -1,7 +1,7 @@
 import Mathlib
-import AchimKlenkeLean.Items.Chap21.Definition_21_8
-import AchimKlenkeLean.Items.Chap25.DriftIntegralProcess
-import AchimKlenkeLean.Items.Chap25.Theorem_25_17
+import ProbabilityTheory_Klenke_2020.Items.Chap21.Definition_21_8
+import ProbabilityTheory_Klenke_2020.Items.Chap25.DriftIntegralProcess
+import ProbabilityTheory_Klenke_2020.Items.Chap25.Theorem_25_17
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

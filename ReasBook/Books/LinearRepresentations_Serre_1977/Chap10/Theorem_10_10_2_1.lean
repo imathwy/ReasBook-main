@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.Data.ZMod.QuotientRing
-import Serre.Chap06.Exercise_6_6_5_10
-import Serre.Chap07.Proposition_7_7_2_1
-import Serre.Chap10.Lemma_10_10_3_3
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_5_10
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Chap10.Lemma_10_10_3_3
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -35,7 +35,7 @@ theorem inducedClassFunction_mem_characterRing (H : Subgroup G) (χ : R(H)) :
   -- This is exactly the complex specialization of the subgroup-induction character theorem.
   simpa using _root_.Subgroup.inducedClassFunction_mem_characterRingOverField (K := ℂ) H χ
 
-/-- The canonical `ℤ`-linear induction map `R(H) → R(G)` on Serre's integral character rings. -/
+/-- The canonical `ℤ`-linear induction map `R(H) → R(G)` on LinearRepresentations_Serre_1977's integral character rings. -/
 def characterRingInduction (H : Subgroup G) :
     R(H) →ₗ[ℤ] R(G) where
   toFun χ := ⟨Ind[H]((χ : H → ℂ)), inducedClassFunction_mem_characterRing H χ⟩
@@ -375,7 +375,7 @@ local instance pElementaryScalarExtensionTensorModule (p : ℕ) :
       (TensorProduct ℤ pElementaryScalarExtensionRing ↥(V[p](G))) :=
   TensorProduct.leftModule
 
-/-- Helper for Theorem 10-10.2-1: Serre's local owner is the scalar span of the ambient image of
+/-- Helper for Theorem 10-10.2-1: LinearRepresentations_Serre_1977's local owner is the scalar span of the ambient image of
 Brauer's subgroup `V_p` inside `G → ℂ`. -/
 private abbrev pElementaryScalarExtensionOwner (p : ℕ) :
     Submodule pElementaryScalarExtensionRing (G → ℂ) :=

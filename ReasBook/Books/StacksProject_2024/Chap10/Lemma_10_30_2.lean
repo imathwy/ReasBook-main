@@ -1,10 +1,10 @@
 import Mathlib.RingTheory.Spectrum.Prime.Chevalley
 import Mathlib.RingTheory.Finiteness.Quotient
-import stacks_project.Chap05.Lemma_5_15_15
-import stacks_project.Chap10.Lemma_10_17_6
-import stacks_project.Chap10.Lemma_10_17_7
-import stacks_project.Chap10.Lemma_10_29_2
-import stacks_project.Chap10.Lemma_10_30_1
+import StacksProject_2024.Chap05.Lemma_5_15_15
+import StacksProject_2024.Chap10.Lemma_10_17_6
+import StacksProject_2024.Chap10.Lemma_10_17_7
+import StacksProject_2024.Chap10.Lemma_10_29_2
+import StacksProject_2024.Chap10.Lemma_10_30_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

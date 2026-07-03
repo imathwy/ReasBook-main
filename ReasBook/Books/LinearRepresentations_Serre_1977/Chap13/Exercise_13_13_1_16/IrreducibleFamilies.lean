@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.Chap02.Corollary_2_2_4_3
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap12.Theorem_12_12_4_1.ClassFunctionScalarExtension
-import Serre.Chap13.Exercise_13_13_1_16.GammaActions
-import Serre.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_4_3
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_4_1.ClassFunctionScalarExtension
+import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_16.GammaActions
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
 
 open CategoryTheory
 open IsCyclotomicExtension.Rat
@@ -21,7 +21,7 @@ section ExerciseClauses
 variable {K : Type u} [Field K] [NumberField K]
 variable [IsCyclotomicExtension {Monoid.exponent G} ℚ K]
 
-/-- Helper for Exercise 13-13.1-16: under the cyclotomic Galois equivalence, the Serre subgroup
+/-- Helper for Exercise 13-13.1-16: under the cyclotomic Galois equivalence, the LinearRepresentations_Serre_1977 subgroup
 attached to the fixed field of a subgroup of `Γ_ℚ(G)` is the subgroup itself. -/
 theorem gammaSubgroup_fixedField_preimage_eq
     (H : Subgroup (Γ_ℚ(G))) :
@@ -162,7 +162,7 @@ variable (π : ι → Rep K G) [∀ i, FiniteDimensional K (π i)]
 
 attribute [local instance] Classical.decEq
 
-/-- Helper for Exercise 13-13.1-16: Serre's subgroup fixes the image of its defining intermediate
+/-- Helper for Exercise 13-13.1-16: LinearRepresentations_Serre_1977's subgroup fixes the image of its defining intermediate
 field under the cyclotomic Galois action. -/
 theorem gammaSubgroup_smul_algebraMap_fixed
     (K0 : IntermediateField ℚ K) (a : K0) (t : Γ[K0](G)) :
@@ -299,7 +299,7 @@ theorem fiber_subtype_sum_transport_after_mul_sum
   simp [Finset.mul_sum]
 
 /-- Helper for Exercise 13-13.1-16: the sum of character values over one `H`-orbit is fixed by
-the subgroup action on values. This is the fixed-field descent step from Serre's source proof. -/
+the subgroup action on values. This is the fixed-field descent step from LinearRepresentations_Serre_1977's source proof. -/
 theorem orbit_sum_character_fixed_by_subgroup
     (hπ_galois : IrreducibleCharacterIndexGaloisCompatible π)
     (H : Subgroup (Γ_ℚ(G))) (q : MulAction.orbitRel.Quotient H ι) (t : H) (s : G) :
@@ -406,7 +406,7 @@ theorem orbit_sum_character_mem_fixedField
             (G := G) (K := K) (π := π) hπ_galois H q tH s)
 
 /-- Helper for Exercise 13-13.1-16: descend an `H`-orbit sum pointwise to the fixed field
-attached to `H`. This is the concrete `KH`-valued character candidate used in Serre's argument. -/
+attached to `H`. This is the concrete `KH`-valued character candidate used in LinearRepresentations_Serre_1977's argument. -/
 noncomputable def orbit_sum_character_fixedFieldLift
     (hπ_galois : IrreducibleCharacterIndexGaloisCompatible π)
     (H : Subgroup (Γ_ℚ(G))) :
@@ -512,7 +512,7 @@ theorem honest_character_irreducible_basis_expansion
   -- Evaluate that basis expansion at the chosen group element.
   simpa [x] using congrFun hx g
 
-/-- Helper for Exercise 13-13.1-16: in Serre's source proof, the integral multiplicities in the
+/-- Helper for Exercise 13-13.1-16: in LinearRepresentations_Serre_1977's source proof, the integral multiplicities in the
 irreducible `K`-basis expansion of an honest `KH`-character are constant on `H`-orbits. -/
 theorem honest_character_irreducible_multiplicity_constant_on_orbits
     (hπ_pairwise : PairwiseNonisomorphic π)
@@ -830,7 +830,7 @@ theorem honest_character_eq_linearCombination_orbitLift
         orbitLift_linearCombination_algebraMap_eq_irreducible_sum
           (G := G) (K := K) (π := π) hπ_galois H c d' hdi s
 
-/-- Helper for Exercise 13-13.1-16: the honest-generator case of Serre's descent rewrites one
+/-- Helper for Exercise 13-13.1-16: the honest-generator case of LinearRepresentations_Serre_1977's descent rewrites one
 `KH`-character as a `KH`-linear combination of the descended orbit sums. -/
 theorem mem_span_orbit_sum_character_fixedFieldLift_of_mem_characterRingOverField
     (hπ_pairwise : PairwiseNonisomorphic π)

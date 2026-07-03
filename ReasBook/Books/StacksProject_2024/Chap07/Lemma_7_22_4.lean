@@ -1,7 +1,7 @@
 import Mathlib.CategoryTheory.Sites.CoverLifting
 import Mathlib.CategoryTheory.Sites.Closed
 import Mathlib.Tactic.Recall
-import stacks_project.Chap07.Definition_7_14_1
+import StacksProject_2024.Chap07.Definition_7_14_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

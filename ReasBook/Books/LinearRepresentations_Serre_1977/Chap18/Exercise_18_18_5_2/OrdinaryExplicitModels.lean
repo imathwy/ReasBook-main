@@ -1,10 +1,10 @@
 import Mathlib
-import Serre.Chap08.Corollary_8_8_3_8
-import Serre.Chap07.Exercise_7_7_2_4
-import Serre.Chap08.Exercise_8_8_2_3
-import Serre.Chap18.Exercise_18_18_5_1
-import Serre.Chap18.Exercise_18_18_5_2.LinearCharacters
-import Serre.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Chap08.Corollary_8_8_3_8
+import LinearRepresentations_Serre_1977.Chap07.Exercise_7_7_2_4
+import LinearRepresentations_Serre_1977.Chap08.Exercise_8_8_2_3
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_1
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_2.LinearCharacters
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
 
 noncomputable section
 
@@ -69,7 +69,7 @@ lemma s3_augmentation_representation_degree :
   exact_mod_cast hone.symm
 
 /-- Helper for Exercise 18-18.5-2: the quotient augmentation constituent of `S₄` has degree `2`.
-This is the degree of Serre's explicit `q₂` slot. -/
+This is the degree of LinearRepresentations_Serre_1977's explicit `q₂` slot. -/
 lemma s4_quotient_augmentation_representation_degree :
     Module.finrank ℂ
       (permutationAugmentationSubrepresentation ℂ S4 (Fin 3)).toSubmodule = 2 := by
@@ -537,7 +537,7 @@ lemma ulift_group_carrier_representation_isIrreducible_iff
         (σ := ulift_group_carrier_representation ρ)
         (ulift_carrier_representation_equiv ρcomp).symm
 
-/-- Helper for Exercise 18-18.5-2: the five standard `S₄` models used in Serre's proof,
+/-- Helper for Exercise 18-18.5-2: the five standard `S₄` models used in LinearRepresentations_Serre_1977's proof,
 indexed as `1`, `sgn`, `q₂`, `std`, and `sgn ⊗ std`. -/
 noncomputable def s4_explicit_family
     (F : Type w) [Field F] : Fin 5 → FDRep F (ULift.{w} S4)

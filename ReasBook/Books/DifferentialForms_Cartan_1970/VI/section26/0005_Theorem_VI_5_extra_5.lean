@@ -1,5 +1,5 @@
 import Mathlib
-import cartan.VI.section26.«0002_Definition_VI_5_extra_2»
+import DifferentialForms_Cartan_1970.VI.section26.«0002_Definition_VI_5_extra_2»
 
 open scoped Manifold
 
@@ -7,7 +7,7 @@ open scoped Manifold
 with unramified covering surfaces over them. The relevant declarations inspected before this
 refinement were:
 * the chapter-local primitive owner `UnramifiedSurfaceOver` in
-  `cartan/VI/section26/0002_Definition_VI_5_extra_2.lean`, which records the topological
+  `DifferentialForms_Cartan_1970/VI/section26/0002_Definition_VI_5_extra_2.lean`, which records the topological
   local-homeomorphism data over a base;
 * the source-facing refinement `ConnectedHausdorffUnramifiedSurfaceOver` in the same file, which
   adds the connected Hausdorff hypotheses required by the theorem;

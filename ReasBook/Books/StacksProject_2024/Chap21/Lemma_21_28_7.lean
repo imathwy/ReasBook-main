@@ -1,7 +1,7 @@
 import Mathlib
-import stacks_project.Chap18.Lemma_18_24_4
-import stacks_project.Chap21.Lemma_21_25_6
-import stacks_project.Chap21.Lemma_21_28_4
+import StacksProject_2024.Chap18.Lemma_18_24_4
+import StacksProject_2024.Chap21.Lemma_21_25_6
+import StacksProject_2024.Chap21.Lemma_21_28_4
 
 open CategoryTheory
 open CategoryTheory.GrothendieckTopology
@@ -47,7 +47,7 @@ abbrev moduleObjectAsDerivedDegreeZero (Z : RingedSite.{u, v}) (ℱ : ModuleCat 
     ModuleDerived Z :=
   (DerivedCategory.singleFunctor (ModuleCat Z) (0 : ℤ)).obj ℱ
 
-/-- Pullback on module sheaves induces a functor between the weak Serre full subcategories cut out
+/-- Pullback on module sheaves induces a functor between the weak LinearRepresentations_Serre_1977 full subcategories cut out
 by `A'` and `A`. -/
 abbrev modulePullbackOnWeakSerreSubcategoryForDerivedCohomologyIn
     (hpull_mem : ∀ ⦃ℱ' : ModY⦄, A' ℱ' → A (f.modulePullback.obj ℱ')) :
@@ -64,7 +64,7 @@ theorem modulePullbackDerivedOfFlat_obj_mem_weakSerreCohomologyIn
     (K : DY) :
     PX ((ObjectProperty.ι PY ⋙ modulePullbackDerivedOfFlat f).obj K) := sorry
 
-/-- The pullback functor on the unbounded derived subcategories cut out by the weak Serre
+/-- The pullback functor on the unbounded derived subcategories cut out by the weak LinearRepresentations_Serre_1977
 cohomology conditions. -/
 abbrev modulePullbackDerivedOfFlatWithWeakSerreCohomologyIn
     (hpull_mem : ∀ ⦃ℱ' : ModY⦄, A' ℱ' → A (f.modulePullback.obj ℱ')) :
@@ -120,7 +120,7 @@ abbrev modulePushforwardDerivedWithCohomologyInOfLocalBoundedCohomology
 -- is an equivalence with quasi-inverse the restricted `Rf_*`.
 /-- Lemma 21.28.7: let `f : (\mathcal C, \mathcal O) \to (\mathcal C', \mathcal O')` be a
 morphism of ringed sites, let `\mathcal A \subset \operatorname{Mod}(\mathcal O)` and
-`\mathcal A' \subset \operatorname{Mod}(\mathcal O')` be weak Serre subcategories, assume `f` is
+`\mathcal A' \subset \operatorname{Mod}(\mathcal O')` be weak LinearRepresentations_Serre_1977 subcategories, assume `f` is
 flat, assume `f^* : \mathcal A' \to \mathcal A` is an equivalence, assume
 `\mathcal F' \to Rf_* f^* \mathcal F'` is an isomorphism for `\mathcal F' \in \operatorname{Ob}
 (\mathcal A')`, assume `(\mathcal C, \mathcal O, \mathcal A)` satisfies Situation `21.25.1`, and

@@ -10,9 +10,9 @@ import Mathlib.LinearAlgebra.Matrix.Rank
 import Mathlib.Analysis.Calculus.Implicit
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
 import Mathlib.Analysis.InnerProductSpace.Calculus
-import Reaslib.Optlib.Differential.Calculation
-import Reaslib.Optlib.Convex.Farkas
-import Reaslib.Optlib.Differential.Lemmas
+import ReasLib.Optlib.Differential.Calculation
+import ReasLib.Optlib.Convex.Farkas
+import ReasLib.Optlib.Differential.Lemmas
 
 /-!
 # Constrained_Problem

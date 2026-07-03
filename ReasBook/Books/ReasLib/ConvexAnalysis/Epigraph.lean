@@ -8,7 +8,7 @@ import Mathlib.LinearAlgebra.Dual.Basis
 import Mathlib.LinearAlgebra.Dual.Lemmas
 import Mathlib.Analysis.NormedSpace.HahnBanach.Separation
 import Mathlib.Analysis.InnerProductSpace.Dual
-import Reaslib.Basic.ProperFunction
+import ReasLib.Basic.ProperFunction
 
 /-!
 # Epigraph of a convex function

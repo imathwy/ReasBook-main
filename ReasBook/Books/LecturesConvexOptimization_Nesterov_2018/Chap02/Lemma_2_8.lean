@@ -1,9 +1,9 @@
-import Nesterov.Chap01.Definition_1_4_17
-import Nesterov.Chap02.Definition_2_2
-import Nesterov.Chap02.Definition_2_14
-import Nesterov.Chap02.Definition_2_21
-import Nesterov.Chap02.Proposition_2_13
-import Nesterov.Chap02.Theorem_2_19
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_4_17
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_2
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_14
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_21
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Proposition_2_13
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_19
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -48,7 +48,7 @@ section
 
 variable (μ : ℝ) (f φ₀ : E → ℝ) (y : ℕ → E) (α : ℕ → ℝ)
 
-/-- The recursively defined estimating-sequence functions in Nesterov's strong-convex
+/-- The recursively defined estimating-sequence functions in LecturesConvexOptimization_Nesterov_2018's strong-convex
 construction. -/
 def strongConvexEstimatingFunction
     (μ : ℝ) (f φ₀ : E → ℝ) (y : ℕ → E) (α : ℕ → ℝ) :

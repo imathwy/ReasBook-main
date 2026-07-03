@@ -1,4 +1,4 @@
-import stacks_project.Chap10.Definition_10_17_1
+import StacksProject_2024.Chap10.Definition_10_17_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -17,7 +17,7 @@ variable {R : Type u} {S : Type v} [CommRing R] [CommRing S]
   quotient elements;
 - sampled owner declarations: `PrimeSpectrum.closure_image_comap_zeroLocus`,
   `PrimeSpectrum.zeroLocus_sup`, `PrimeSpectrum.zeroLocus_empty_iff_eq_top`,
-  `stacks_project.Chap10.Definition_10_17_1`'s source-facing notation owner `V(-)`;
+  `StacksProject_2024.Chap10.Definition_10_17_1`'s source-facing notation owner `V(-)`;
 - source/core/bridge triage:
   * source-facing: this lemma extracts an element `r : R` from a disjointness statement on spectra;
   * core/canonical: the owner objects are `PrimeSpectrum.comap`, `PrimeSpectrum.zeroLocus`, and the

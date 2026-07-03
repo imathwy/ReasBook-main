@@ -1,4 +1,4 @@
-import Serre.Chap09.Exercise_9_9_1_3.ExteriorAdamsExponential
+import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_3.ExteriorAdamsExponential
 
 open scoped Representation
 

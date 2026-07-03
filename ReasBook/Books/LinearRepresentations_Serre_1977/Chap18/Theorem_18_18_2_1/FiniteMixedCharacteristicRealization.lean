@@ -1,12 +1,12 @@
 import Mathlib
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap18.Proposition_18_18_1_2
-import Serre.Chap18.Remark_18_18_1_3
-import Serre.Chap18.Theorem_18_18_2_1.RegularConjClassCore
-import Serre.Chap18.Theorem_18_18_2_1.RegularClassFunctionSpanBridge
-import Serre.Chap18.Theorem_18_18_2_1.BrauerRelationSeparator
-import Serre.Chap18.Theorem_18_18_2_1.MixedCharacterOwner
-import Serre.Chap18.Theorem_18_18_2_1.FiniteTransportCore
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap18.Proposition_18_18_1_2
+import LinearRepresentations_Serre_1977.Chap18.Remark_18_18_1_3
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.RegularConjClassCore
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.RegularClassFunctionSpanBridge
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.BrauerRelationSeparator
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.MixedCharacterOwner
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.FiniteTransportCore
 
 noncomputable section
 
@@ -40,7 +40,7 @@ private theorem witt_vector_primeToPRoot_lift_injective_local
   simpa [hred0 x, hred0 y] using congrArg red0 hxy
 
 /-- Helper for Theorem 18-18.2-1: the fixed Witt-vector lift induces an injective units-valued
-lift into `Frac(W(k))`. This is the canonical mixed-character lift that both Serre part `(a)` and
+lift into `Frac(W(k))`. This is the canonical mixed-character lift that both LinearRepresentations_Serre_1977 part `(a)` and
 part `(b)` are meant to use after freezing the owner at `W(k)`. -/
 private theorem exists_fractionRing_witt_primeToPRoot_units_lift_local :
     ∃ liftFrac : PrimeToPRoot p k →* (FractionRing (WittVector p k))ˣ,
@@ -94,7 +94,7 @@ private theorem zero_brauer_relation_map_local
   simpa [Pi.smul_apply, smul_eq_mul, map_sum, map_mul,
     modularCharacterOnPRegularConjClass_comp_lift_local] using hmap
 
-/-- Helper for Theorem 18-18.2-1: Serre's zero-extension on `PRegularConjClass G p` commutes with
+/-- Helper for Theorem 18-18.2-1: LinearRepresentations_Serre_1977's zero-extension on `PRegularConjClass G p` commutes with
 postcomposing the values by a field homomorphism. This packages the finite-table rewrite needed in
 part `(b)` before comparing upstairs and downstairs regular class functions. -/
 private theorem regularClassFunctionExtension_map_local
@@ -104,7 +104,7 @@ private theorem regularClassFunctionExtension_map_local
     (f : PRegularConjClass G p → A) :
     (fun g ↦ σ (regularClassFunctionExtension (G := G) (p := p) f g)) =
       regularClassFunctionExtension (G := G) (p := p) (fun c ↦ σ (f c)) := by
-  -- Serre's extension is defined by the same regular/non-regular case split both before and
+  -- LinearRepresentations_Serre_1977's extension is defined by the same regular/non-regular case split both before and
   -- after postcomposition by `σ`, so a direct branchwise comparison is enough.
   funext g
   by_cases hg : IsPRegular p g
@@ -112,7 +112,7 @@ private theorem regularClassFunctionExtension_map_local
   · simp [regularClassFunctionExtension, hg]
 
 /-- Helper for Theorem 18-18.2-1: once the normalized Brauer relation has been realized over the
-fixed Witt owner, Serre part `(a)` reduces it by `constantCoeff`, applies the public separator on
+fixed Witt owner, LinearRepresentations_Serre_1977 part `(a)` reduces it by `constantCoeff`, applies the public separator on
 the chosen simple factor, and reaches the contradiction `0 = 1`. -/
 theorem supported_normalized_brauer_relation_contradiction_over_residue_local
     (lift : PrimeToPRoot p k →* Kˣ)
@@ -137,7 +137,7 @@ theorem supported_normalized_brauer_relation_contradiction_over_residue_local
           FDRep.modularCharacterOnPRegularConjClass (p := p) (E j)
             (PrimeToPRoot.toFieldLift lift)) := by
     -- Route correction: use the already-packaged linear independence theorem on
-    -- `PRegularConjClass G p` instead of rebuilding Serre part `(a)` through an internal
+    -- `PRegularConjClass G p` instead of rebuilding LinearRepresentations_Serre_1977 part `(a)` through an internal
     -- mixed-character realization.
     exact
       linearIndependent_irreducibleModularCharacters_of_pairwiseNonisomorphic_overSemiring

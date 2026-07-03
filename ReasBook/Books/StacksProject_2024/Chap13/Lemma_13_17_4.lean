@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap13.«13_17_1_1»
+import StacksProject_2024.Chap13.«13_17_1_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -23,7 +23,7 @@ variable {A : Type u} [Category.{v} A] [Abelian A]
 variable (P : ObjectProperty A) [P.IsWeakSerreClass]
 
 /- Domain-style sampling for Lemma 13.17.4:
-- primary domain: bounded-above derived categories of a Serre full subcategory and the canonical
+- primary domain: bounded-above derived categories of a LinearRepresentations_Serre_1977 full subcategory and the canonical
   comparison with the bounded-above part of `D_{P}(A)`;
 - sampled owner declarations:
   `P.ι.mapDerivedCategory`,
@@ -47,7 +47,7 @@ variable (P : ObjectProperty A) [P.IsWeakSerreClass]
     `derivedCategoryBoundedAboveCohomologyInProperty P`, and `ObjectProperty.lift`;
   `bridge/view`: the bounded-above lift of the primitive derived inclusion functor.
 
-The local `Abelian P.FullSubcategory` wrapper was duplicate API: for a weak Serre class, the canonical
+The local `Abelian P.FullSubcategory` wrapper was duplicate API: for a weak LinearRepresentations_Serre_1977 class, the canonical
 mathlib instance on `P.FullSubcategory` is already available and is reused directly here. -/
 
 local instance : PreservesFiniteLimits P.ι :=
@@ -100,7 +100,7 @@ variable (P : ObjectProperty A) [P.IsSerreClass]
 -- `P` by a quasi-isomorphic bounded-above subcomplex whose terms lie in `P.FullSubcategory`.
 -- This gives essential surjectivity of the comparison functor, and the same replacement applied to
 -- mapping cones and homotopies yields faithfulness and fullness.
-/-- Lemma 13.17.4: let `P` be a Serre subcategory of an abelian category `A`. Assume that for
+/-- Lemma 13.17.4: let `P` be a LinearRepresentations_Serre_1977 subcategory of an abelian category `A`. Assume that for
 every epimorphism `f : X ⟶ Y` with `Y` an object of `P.FullSubcategory`, there exist an object
 `X'` of `P.FullSubcategory`, a monomorphism `ι : X' ⟶ X`, and an epimorphism `X' ⟶ Y` given by
 `ι ≫ f`. Then the canonical comparison functor `D^-(P) ⟶ D^-_P(A)` is an equivalence. -/

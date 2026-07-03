@@ -1,12 +1,12 @@
 import Mathlib
-import Serre.Chap14.Exercise_14_14_4_5
-import Serre.Chap14.Infra_14_4_ProjectiveLift
-import Serre.Chap15.Definition_15_15_1_1
-import Serre.Chap15.Definition_15_15_2_1
-import Serre.Chap15.Definition_15_15_3_1
-import Serre.Chap15.Proposition_15_15_5_1.ReductionMkQ
-import Serre.Chap15.Proposition_15_15_5_1.StableLatticeExactOwner
-import Serre.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_4_5
+import LinearRepresentations_Serre_1977.Chap14.Infra_14_4_ProjectiveLift
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_2_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Chap15.Proposition_15_15_5_1.ReductionMkQ
+import LinearRepresentations_Serre_1977.Chap15.Proposition_15_15_5_1.StableLatticeExactOwner
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
 
 noncomputable section
 
@@ -143,7 +143,7 @@ private theorem projective_scalarExtension_literal_map_range_isLattice_local_sup
     exact Submodule.smul_mem _ _ hi'
 
 /-- Helper for Proposition 15-15.5-1: the literal range inside `Q.scalarExtension K` is the fixed
-stable lattice used in Serre's projective comparison. -/
+stable lattice used in LinearRepresentations_Serre_1977's projective comparison. -/
 private noncomputable def projective_scalarExtension_literal_range_stableLattice_local_support
     (Q : FiniteProjectiveGroupAlgebraModule A G) :
     StableLattice A (Q.scalarExtension K).ρ :=
@@ -674,7 +674,7 @@ private theorem
       (projective_scalarExtension_literal_range_reduction_iso_local_support
         (A := A) (K := K) (G := G) Q)
 
-/-- Helper for Proposition 15-15.5-1: Serre's literal scalar-extension lattice can be chosen on
+/-- Helper for Proposition 15-15.5-1: LinearRepresentations_Serre_1977's literal scalar-extension lattice can be chosen on
 the exact `FDRep.of` owner used by the decomposition-map computation, and its reduction class is
 the intrinsic residue-field reduction of `Q`. -/
 theorem projective_scalarExtension_literal_reduction_class_fdrep_owner_support
@@ -741,7 +741,7 @@ private theorem
       projective_scalarExtension_literal_range_stableLattice_fdrep_default_local_support
         (A := A) (K := K) (G := G) Q
     [FDRep.of Lsrc.reductionRepresentation]₀ = [FDRep.of Ldst.reductionRepresentation]₀ := by
-  -- Both literal lattices reduce to Serre's intrinsic residue-field reduction of `Q`, so their
+  -- Both literal lattices reduce to LinearRepresentations_Serre_1977's intrinsic residue-field reduction of `Q`, so their
   -- Grothendieck classes coincide before any exact-owner transport is applied.
   calc
     [FDRep.of
@@ -872,7 +872,7 @@ private theorem projective_scalarExtension_literal_range_reduction_class_agrees_
       projective_scalarExtension_literal_range_stableLattice_fdrep_owner_local_support
         (A := A) (K := K) (G := G) Q
     [FDRep.of Lsrc.reductionRepresentation]₀ = [FDRep.of Ldst.reductionRepresentation]₀ := by
-  -- Both literal lattices reduce to Serre's intrinsic residue-field reduction of `Q`, so their
+  -- Both literal lattices reduce to LinearRepresentations_Serre_1977's intrinsic residue-field reduction of `Q`, so their
   -- reduced classes agree before the exact-owner transport issue enters.
   calc
     [FDRep.of
@@ -935,7 +935,7 @@ private theorem decompositionHom_fdrepOf_scalarExtension_eq_literal_reduction_cl
               (A := A) (K := K) (G := G) V Lcanon)
     _ = [Q.residueFieldReduction.toFiniteRep]₀ := hLcanon
 
-/-- Helper for Proposition 15-15.5-1: Serre's literal scalar-extension lattice computes the
+/-- Helper for Proposition 15-15.5-1: LinearRepresentations_Serre_1977's literal scalar-extension lattice computes the
 decomposition class of a projective generic fiber as the finite-representation class of its
 intrinsic residue-field reduction. -/
 theorem decompositionHom_projective_scalarExtension_class_eq_residueFieldReduction_finiteRepClass_support
@@ -982,7 +982,7 @@ private theorem projective_scalarExtension_literal_range_reduction_class_local_s
         (A := A) (K := K) (G := G) Q
     [FDRep.of L.reductionRepresentation]₀ = [Q.residueFieldReduction.toFiniteRep]₀ := by
   -- Package the previously constructed reduction isomorphism as an equality of Grothendieck
-  -- classes for Serre's fixed literal lattice.
+  -- classes for LinearRepresentations_Serre_1977's fixed literal lattice.
   simpa using
     finiteRepGrothendieckClass_eq_of_nonempty_iso
       (L := k) (G := G)

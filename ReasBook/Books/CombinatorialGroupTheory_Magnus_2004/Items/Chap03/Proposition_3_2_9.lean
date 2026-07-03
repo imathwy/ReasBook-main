@@ -1,6 +1,6 @@
 import Mathlib.CategoryTheory.ConnectedComponents
 import Mathlib.GroupTheory.FreeGroup.NielsenSchreier
-import CombinatorialGroupTheory.Items.Chap03.Definition_3_2_6
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Definition_3_2_6
 
 open CategoryTheory
 open CategoryTheory.ObjectProperty

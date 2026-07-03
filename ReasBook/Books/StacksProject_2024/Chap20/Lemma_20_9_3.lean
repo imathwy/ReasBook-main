@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.CategoryTheory.Limits.Lattice
 import Mathlib.CategoryTheory.Sites.SheafCohomology.Cech
-import stacks_project.Chap20.«20_9_0_1»
+import StacksProject_2024.Chap20.«20_9_0_1»
 
 open CategoryTheory Opposite TopologicalSpace
 open CategoryTheory.Limits

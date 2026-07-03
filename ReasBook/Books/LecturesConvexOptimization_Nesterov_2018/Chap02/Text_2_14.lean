@@ -1,7 +1,7 @@
-import Nesterov.Chap02.Text_2_11
-import Nesterov.Chap02.Text_2_13
-import Nesterov.Chap02.Definition_2_20
-import Nesterov.Chap02.Theorem_2_29
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Text_2_11
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Text_2_13
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_20
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_29
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

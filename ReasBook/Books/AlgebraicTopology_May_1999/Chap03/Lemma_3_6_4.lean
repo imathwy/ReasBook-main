@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.CategoryTheory.Groupoid.VertexGroup
-import MayConciseRevised.Chap03.Construction_3_6_3
+import AlgebraicTopology_May_1999.Chap03.Construction_3_6_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

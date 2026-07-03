@@ -1,4 +1,4 @@
-import Serre.Chap11.Proposition_11_11_4_1
+import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -17,7 +17,7 @@ variable {A : Type v} [CommRing A] [IsDomain A] [Ring.HasFiniteQuotients A] [Alg
 noncomputable local instance : Fintype G := Fintype.ofFinite G
 
 -- Domain-style sampling pass:
--- * primary domain: prime ideals in Serre's tensor character ring `A ⊗R(G)`.
+-- * primary domain: prime ideals in LinearRepresentations_Serre_1977's tensor character ring `A ⊗R(G)`.
 -- * sampled owner declarations:
 --   - `PrimeSpectrum.zeroLocus`
 --   - `PrimeSpectrum.mem_zeroLocus`
@@ -31,7 +31,7 @@ noncomputable local instance : Fintype G := Fintype.ofFinite G
 -- Primitive data: the owner ring `A ⊗R(G)` and the canonical prime families `P0`, `Pm`.
 -- Derived API: `tensor_character_ring_prime_ideal_classification`.
 
-/-- Remark 11-11.4-3: an ideal of Serre's tensor character ring `A ⊗ R(G)` that is contained in
+/-- Remark 11-11.4-3: an ideal of LinearRepresentations_Serre_1977's tensor character ring `A ⊗ R(G)` that is contained in
 neither any zero-residual prime `P₀,c` nor any regular prime `P_{M,c}` is the whole ring. -/
 theorem tensorCharacterRingIdeal_eq_top_of_not_le_indexed_primes
     (I : Ideal (A ⊗R(G)))

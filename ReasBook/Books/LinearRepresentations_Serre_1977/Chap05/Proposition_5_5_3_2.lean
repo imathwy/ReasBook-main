@@ -1,5 +1,5 @@
-import Serre.Chap01.Definition_1_1_2_1
-import Serre.Chap05.Definition_5_5_1_1
+import LinearRepresentations_Serre_1977.Chap01.Definition_1_1_2_1
+import LinearRepresentations_Serre_1977.Chap05.Definition_5_5_1_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -15,7 +15,7 @@ file rather than re-owning these declarations. The proposition then adds the exp
 formulas, the exceptional reducible and irreducible cases, and the even-`n` characters `ψ₃`,
 `ψ₄`. -/
 
-/-- The linear action maps used to define Serre's two-dimensional representation `ρ^h`. -/
+/-- The linear action maps used to define LinearRepresentations_Serre_1977's two-dimensional representation `ρ^h`. -/
 private def dihedralTwoDimensionalLinear (n : ℕ) [NeZero n] (h : ZMod n) :
     DihedralGroup n → (Fin 2 → ℂ) →ₗ[ℂ] Fin 2 → ℂ
   | DihedralGroup.r k =>
@@ -144,7 +144,7 @@ private theorem dihedralTwoDimensionalLinear_map_mul (n : ℕ) [NeZero n] (h : Z
           simpa [dihedralTwoDimensionalLinear] using
             (dihedral_reflection_reflection_matrix_mul n h i j).symm
 
-/-- The two-dimensional complex representation `ρ^h` of `DihedralGroup n` given by Serre's
+/-- The two-dimensional complex representation `ρ^h` of `DihedralGroup n` given by LinearRepresentations_Serre_1977's
 rotation and reflection matrices. -/
 def dihedralTwoDimensionalRepresentation (n : ℕ) [NeZero n] (h : ZMod n) :
     Representation ℂ (DihedralGroup n) (Fin 2 → ℂ) where
@@ -162,7 +162,7 @@ scoped[DihedralCharacter] notation:max "χ_" h:max =>
 scoped[DihedralCharacter] notation:max "ψ₁[" n "]" =>
   Representation.character (Representation.trivial ℂ (DihedralGroup n) ℂ)
 
-/-- The degree-1 dihedral character affording Serre's reflection-sign character `ψ₂`. -/
+/-- The degree-1 dihedral character affording LinearRepresentations_Serre_1977's reflection-sign character `ψ₂`. -/
 private theorem dihedralReflectionSignDegreeOneCharacter_map_one (n : ℕ) :
     (match (1 : DihedralGroup n) with
       | DihedralGroup.r _ => (1 : ℂˣ)
@@ -186,7 +186,7 @@ private theorem dihedralReflectionSignDegreeOneCharacter_map_mul (n : ℕ)
   -- Exhaust the four dihedral normal-form products; the sign bookkeeping is then immediate.
   cases x <;> cases y <;> simp
 
-/-- The degree-1 dihedral character affording Serre's reflection-sign character `ψ₂`. -/
+/-- The degree-1 dihedral character affording LinearRepresentations_Serre_1977's reflection-sign character `ψ₂`. -/
 def dihedralReflectionSignDegreeOneCharacter (n : ℕ) : DihedralGroup n →* ℂˣ where
   toFun
     | DihedralGroup.r _ => 1
@@ -496,7 +496,7 @@ private theorem submodule_eq_top_of_coordinate_basis_mem
 -- Proof sketch: the matrix of `ρ^h(r)` has distinct eigenvalues when `h ≠ -h`, so
 -- any stable line must be a coordinate axis; the reflection matrices exchange the axes, so no
 -- nontrivial proper stable line exists.
-/-- Proposition 5-5.3-2: in the canonical `ZMod n` parametrization of Serre's family `ρ^h`, the
+/-- Proposition 5-5.3-2: in the canonical `ZMod n` parametrization of LinearRepresentations_Serre_1977's family `ρ^h`, the
 non-self-opposite cases `h ≠ -h` are irreducible. This is the `ZMod n` reformulation of the
 text's condition `0 < h < n / 2`. -/
 theorem dihedralTwoDimensionalRepresentation_isIrreducible
@@ -745,7 +745,7 @@ private theorem dihedralParityUnit_neg [NeZero n] [Fact (Even n)] (a : ZMod n) :
         simpa [Fact.out] using h
       exact (Even.mod_even_iff (n := n - a.val) (a := 2) (by decide : Even 2)).trans hEvenSub
 
-/-- The degree-1 dihedral character affording Serre's even-`n` character `ψ₃`. -/
+/-- The degree-1 dihedral character affording LinearRepresentations_Serre_1977's even-`n` character `ψ₃`. -/
 def dihedralRotationSignDegreeOneCharacter [Fact (Even n)] :
     DihedralGroup n →* ℂˣ where
   toFun
@@ -783,7 +783,7 @@ def dihedralRotationSignDegreeOneCharacter [Fact (Even n)] :
               _ = dihedralParityUnit a * dihedralParityUnit b := by
                   rw [dihedralParityUnit_neg, mul_comm]
 
-/-- The degree-1 dihedral character affording Serre's even-`n` character `ψ₄`, obtained by
+/-- The degree-1 dihedral character affording LinearRepresentations_Serre_1977's even-`n` character `ψ₄`, obtained by
 twisting `ψ₃` by the reflection-sign character `ψ₂`. -/
 def dihedralRotationReflectionSignDegreeOneCharacter [Fact (Even n)] :
     DihedralGroup n →* ℂˣ :=

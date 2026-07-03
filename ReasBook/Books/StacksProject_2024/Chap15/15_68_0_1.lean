@@ -1,6 +1,6 @@
-import stacks_project.Chap13.Definition_13_11_3
-import stacks_project.Chap13.Definition_13_27_1
-import stacks_project.Chap19.Remark_19_13_9
+import StacksProject_2024.Chap13.Definition_13_11_3
+import StacksProject_2024.Chap13.Definition_13_27_1
+import StacksProject_2024.Chap19.Remark_19_13_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

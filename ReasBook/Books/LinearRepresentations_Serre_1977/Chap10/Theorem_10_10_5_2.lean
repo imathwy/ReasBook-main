@@ -1,22 +1,22 @@
 import Mathlib
-import Serre.Chap01.Theorem_1_1_4_2
-import Serre.Chap03.Definition_3_3_3_1
-import Serre.Chap03.Exercise_3_3_3_6
-import Serre.Chap07.Proposition_7_7_1_3
-import Serre.Chap07.Remark_7_7_1_4
-import Serre.Chap08.Definition_8_8_3_2
-import Serre.Chap08.Exercise_8_8_3_9
-import Serre.Chap10.Definition_10_10_1_3
-import Serre.Chap10.MonomialCharacter
-import Serre.Chap10.Theorem_10_10_2_1
-import Serre.Chap10.Theorem_10_10_5_2.BrauerInductionInfrastructure
-import Serre.Chap10.Theorem_10_10_5_2.BrauerPRegularBridge
-import Serre.Chap10.Theorem_10_10_5_2.MonomialLinearCharacter
-import Serre.Chap10.Theorem_10_10_5_2.InducedModelEquivalence
-import Serre.Chap10.Theorem_10_10_5_2.QuotientMonomialReduction
-import Serre.Chap10.Theorem_10_10_5_2.SubrepresentationTransport
-import Serre.Chap10.Theorem_10_10_5_2.IsotypicRestrictionBridge
-import Serre.Chap10.Theorem_10_10_5_2.SupersolvableInductionBridge
+import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_4_2
+import LinearRepresentations_Serre_1977.Chap03.Definition_3_3_3_1
+import LinearRepresentations_Serre_1977.Chap03.Exercise_3_3_3_6
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_1_3
+import LinearRepresentations_Serre_1977.Chap07.Remark_7_7_1_4
+import LinearRepresentations_Serre_1977.Chap08.Definition_8_8_3_2
+import LinearRepresentations_Serre_1977.Chap08.Exercise_8_8_3_9
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap10.MonomialCharacter
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_2_1
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_2.BrauerInductionInfrastructure
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_2.BrauerPRegularBridge
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_2.MonomialLinearCharacter
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_2.InducedModelEquivalence
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_2.QuotientMonomialReduction
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_2.SubrepresentationTransport
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_2.IsotypicRestrictionBridge
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_2.SupersolvableInductionBridge
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -216,7 +216,7 @@ private theorem brauer_sup_le_monomialCharacterSpan :
 -- Theorem `8-8.5-2` to decompose the irreducible constituents on `H` into inductions from
 -- one-dimensional characters. Induction in stages then shows that each elementary induced
 -- character lies in `monomialCharacterSpan G`, so this span is all of `R(G)`.
-/-- Theorem 10-10.5-2: the monomial characters span Serre's integral character ring `R(G)`. -/
+/-- Theorem 10-10.5-2: the monomial characters span LinearRepresentations_Serre_1977's integral character ring `R(G)`. -/
 theorem monomialCharacterSpan_eq_top :
     monomialCharacterSpan G = ⊤ := by
   -- Brauer's theorem puts each character into the supremum of the elementary induction spans,

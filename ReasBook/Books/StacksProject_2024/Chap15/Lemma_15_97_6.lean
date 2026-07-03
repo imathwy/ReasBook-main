@@ -1,6 +1,6 @@
 import Mathlib.LinearAlgebra.TensorProduct.Tower
-import stacks_project.Chap15.Lemma_15_96_10
-import stacks_project.Chap15.Lemma_15_97_5
+import StacksProject_2024.Chap15.Lemma_15_96_10
+import StacksProject_2024.Chap15.Lemma_15_97_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

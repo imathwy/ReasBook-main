@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap07.Proposition_7_7_4_1
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_4_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -20,7 +20,7 @@ variable {G : Type u} [Group G] [Finite G] [NeZero (Nat.card G : k)]
 variable {W : Type v} [AddCommGroup W] [Module k W]
 
 -- Source/core/bridge triage:
--- * source-facing: Serre's normal-subgroup form of Mackey's irreducibility criterion.
+-- * source-facing: LinearRepresentations_Serre_1977's normal-subgroup form of Mackey's irreducibility criterion.
 -- * core/canonical owners: `Rep.ind`, `Rep.of`, `Representation.IsIrreducible`,
 --   `Representation.Equiv`, and the Chapter 7 conjugation owner `ρ ^ s`.
 -- * bridge/view: this corollary keeps the source-facing ordinary representation `ρ`, but phrases

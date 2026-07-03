@@ -1,4 +1,4 @@
-import Serre.Chap10.Theorem_10_10_5_2
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -36,7 +36,7 @@ existing finite-subgroup-of-`ℂˣ` owner, not by new local structure. -/
 /- Remark 10-10.5-4: the chapter's source-facing reduction to degree-`1` characters is already
 owned by `IsMonomialCharacter`, whose defining data is induction from a one-dimensional complex
 representation of a subgroup. The further reduction to cyclic groups, and the application to
-Artin `L`-functions mentioned by Serre, are expository consequences of this canonical owner rather
+Artin `L`-functions mentioned by LinearRepresentations_Serre_1977, are expository consequences of this canonical owner rather
 than new declaration-level mathematics in this file. -/
 recall IsMonomialCharacter
 

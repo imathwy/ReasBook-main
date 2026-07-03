@@ -1,7 +1,7 @@
-import Serre.Chap02.Proposition_2_2_2_1
-import Serre.Chap02.Theorem_2_2_3_5
-import Serre.Chap06.Corollary_6_6_5_4
-import Serre.RepresentationTheory.ExternalTensor
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_2_1
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_5_4
+import LinearRepresentations_Serre_1977.RepresentationTheory.ExternalTensor
 import Mathlib.Algebra.Group.Shrink
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.LinearAlgebra.TensorPower.Basic
@@ -770,7 +770,7 @@ def centerTupleProd (n : ℕ) : (Fin (n + 1) → Subgroup.center G) →* Subgrou
     simpa using
       (Finset.prod_mul_distrib : (∏ i, x i * y i) = (∏ i, x i) * ∏ i, y i)
 
-/-- Helper for Proposition 6-6.5-5: Serre's product-one central subgroup inside the tuple group is
+/-- Helper for Proposition 6-6.5-5: LinearRepresentations_Serre_1977's product-one central subgroup inside the tuple group is
 the image of the kernel of the coordinatewise product map. -/
 def productOneCenterSubgroup (n : ℕ) : Subgroup (Fin (n + 1) → G) :=
   (centerTupleProd n).ker.map (centerTupleEmbedding n)
@@ -809,7 +809,7 @@ lemma centerTupleProd_surjective (n : ℕ) :
   simp
 
 /-- Helper for Proposition 6-6.5-5: the product-one central subgroup has the index appearing in
-Serre's quotient-order computation. -/
+LinearRepresentations_Serre_1977's quotient-order computation. -/
 lemma product_one_center_subgroup_index (n : ℕ) :
     ((productOneCenterSubgroup n : Subgroup (Fin (n + 1) → G))).index =
       Nat.card (Subgroup.center G) * (Subgroup.center G).index ^ (n + 1) := by
@@ -897,7 +897,7 @@ lemma tensor_power_rep_product_one_center_is_trivial (ρ : Representation ℂ G 
           rw [one_smul]
           rfl
 
-/-- Helper for Proposition 6-6.5-5: the tensor-power quotient construction from Serre's proof
+/-- Helper for Proposition 6-6.5-5: the tensor-power quotient construction from LinearRepresentations_Serre_1977's proof
 produces the divisibility family needed for the final arithmetic extraction. -/
 lemma tensor_power_quotient_finrank_pow_dvd_center_card_mul_index_pow
     [Finite G] (ρ : Representation ℂ G V) [ρ.IsIrreducible] (m : ℕ) :
@@ -926,7 +926,7 @@ lemma tensor_power_quotient_finrank_pow_dvd_center_card_mul_index_pow
   have hdiv : Module.finrank ℂ (⨂[ℂ]^(m + 1) V) ∣ H.index := by
     -- The descended quotient representation is irreducible, so Corollary 6-6.5-4 applies.
     simpa [H, τ, Subgroup.index_eq_card] using finrank_dvd_card τ
-  -- Rewrite both the tensor-power degree and the quotient order into Serre's arithmetic form.
+  -- Rewrite both the tensor-power degree and the quotient order into LinearRepresentations_Serre_1977's arithmetic form.
   simpa [H, tensor_power_finrank, product_one_center_subgroup_index] using hdiv
 
 /-- Proposition 6-6.5-5: the degree of an irreducible complex representation of a finite group

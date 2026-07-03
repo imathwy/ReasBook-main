@@ -1,12 +1,12 @@
 import Mathlib
-import stacks_project.Chap07.Definition_7_14_1
-import stacks_project.Chap07.Definition_7_15_1_Topoi
-import stacks_project.Chap07.Lemma_7_13_5
-import stacks_project.Chap07.Lemma_7_25_9
-import stacks_project.Chap07.Lemma_7_28_2
-import stacks_project.Chap07.Lemma_7_30_7
-import stacks_project.Chap07.Lemma_7_31_1
-import stacks_project.Chap07.Lemma_7_31_2
+import StacksProject_2024.Chap07.Definition_7_14_1
+import StacksProject_2024.Chap07.Definition_7_15_1_Topoi
+import StacksProject_2024.Chap07.Lemma_7_13_5
+import StacksProject_2024.Chap07.Lemma_7_25_9
+import StacksProject_2024.Chap07.Lemma_7_28_2
+import StacksProject_2024.Chap07.Lemma_7_30_7
+import StacksProject_2024.Chap07.Lemma_7_31_1
+import StacksProject_2024.Chap07.Lemma_7_31_2
 
 open CategoryTheory Opposite
 open CategoryTheory.Limits

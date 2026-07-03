@@ -1,6 +1,6 @@
-import FirstOrderMethodsinOptimization.Chap04.Definition_4_1
-import FirstOrderMethodsinOptimization.Chap04.Theorem_4_15
-import FirstOrderMethodsinOptimization.Chap15.Definition_15_1
+import FirstOrderMethodsOptimization_Beck_2017.Chap04.Definition_4_1
+import FirstOrderMethodsOptimization_Beck_2017.Chap04.Theorem_4_15
+import FirstOrderMethodsOptimization_Beck_2017.Chap15.Definition_15_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

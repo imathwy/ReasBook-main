@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap21.Definition_21_43_1
+import StacksProject_2024.Chap21.Definition_21_43_1
 
 open CategoryTheory
 open CategoryTheory.Limits
@@ -56,7 +56,7 @@ instance qc_isStableUnderRetracts :
 
 -- Proof sketch: the proposition identifies `QC(\mathcal O)` as a triangulated subcategory. In the
 -- intended site-theoretic proof, this follows from the quasi-coherent cohomology characterization
--- and the weak-Serre stability of quasi-coherent modules.
+-- and the weak-LinearRepresentations_Serre_1977 stability of quasi-coherent modules.
 /-- Proposition 21.43.9 (3): the quasi-coherent subcategory `QC(\mathcal O)` is triangulated. -/
 instance qc_isTriangulated :
     ObjectProperty.IsTriangulated QCP := sorry

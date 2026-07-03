@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap10.Definition_10_10_1_1
-import Serre.Chap18.Theorem_18_18_2_1.RegularConjClassCore
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_1
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.RegularConjClassCore
 
 noncomputable section
 
@@ -43,7 +43,7 @@ def psl_generator_five : PSL(2, ZMod 5) :=
 def psl_generator_two : PSL(2, ZMod 5) :=
   QuotientGroup.mk sl_generator_two
 
-/-- Helper for Exercise 18-18.6-4: the chosen `A₅` generators satisfy Serre's `2,3,5` triangle
+/-- Helper for Exercise 18-18.6-4: the chosen `A₅` generators satisfy LinearRepresentations_Serre_1977's `2,3,5` triangle
 relations. -/
 theorem a5_generator_triangle_relations :
     a5_generator_five ^ 5 = 1 ∧
@@ -59,7 +59,7 @@ theorem psl_generator_triangle_relations :
       (psl_generator_five * psl_generator_two) ^ 3 = 1 := by
   native_decide
 
-/-- Helper for Exercise 18-18.6-4: the Serre generator product gives an explicit order-`3`
+/-- Helper for Exercise 18-18.6-4: the LinearRepresentations_Serre_1977 generator product gives an explicit order-`3`
 element of `A₅`. -/
 def a5_generator_three : A5 :=
   a5_generator_five * a5_generator_two

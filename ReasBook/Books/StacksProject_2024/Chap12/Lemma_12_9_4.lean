@@ -21,9 +21,9 @@ Domain-style sampling for Lemma 12.9.4:
   `ObjectProperty.IsSerreClass`,
   `ObjectProperty.prop_iff_of_shortExact`;
 - best owner abstraction: the object property `isArtinianObject : ObjectProperty C` together with
-  the Serre-class owner interface;
+  the LinearRepresentations_Serre_1977-class owner interface;
 - primitive data: only the Artinian object property itself and the short exact sequence;
-- derived API: the Serre-class instance and the short-exact characterization obtained from
+- derived API: the LinearRepresentations_Serre_1977-class instance and the short-exact characterization obtained from
   `ObjectProperty.prop_iff_of_shortExact`.
 
 Source/core/bridge triage:
@@ -78,7 +78,7 @@ theorem isArtinianObject_iff_isNoetherianObject_op {C : Type u} [Category.{v} C]
   simpa [IsArtinianObject, ObjectProperty.is_iff, IsNoetherianObject] using
     wellFoundedLT_subobject_iff_wellFoundedGT_subobject_op A
 
-/-- Lemma 12.9.4 owner abstraction: in an abelian category, Artinian objects form a Serre
+/-- Lemma 12.9.4 owner abstraction: in an abelian category, Artinian objects form a LinearRepresentations_Serre_1977
 class. -/
 instance isArtinianObject_isSerreClass {C : Type u} [Category.{v} C] [Abelian C] :
     (isArtinianObject : ObjectProperty C).IsSerreClass where
@@ -102,7 +102,7 @@ variable {S : ShortComplex C}
 /-- Lemma 12.9.4: in a short exact sequence in an abelian category, the middle object is
 Artinian if and only if the left and right objects are Artinian. -/
 -- Proof sketch: the owner abstraction is the object property `isArtinianObject`. Once this
--- property is known to form a Serre class, the statement is the canonical owner theorem
+-- property is known to form a LinearRepresentations_Serre_1977 class, the statement is the canonical owner theorem
 -- `ObjectProperty.prop_iff_of_shortExact`.
 lemma isArtinianObject_iff_of_shortExact (hS : S.ShortExact) :
     IsArtinianObject S.X₂ ↔ IsArtinianObject S.X₁ ∧ IsArtinianObject S.X₃ := by

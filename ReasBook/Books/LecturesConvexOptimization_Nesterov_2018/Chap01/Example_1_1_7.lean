@@ -1,4 +1,4 @@
-import Nesterov.Chap01.Example_1_1_5
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Example_1_1_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

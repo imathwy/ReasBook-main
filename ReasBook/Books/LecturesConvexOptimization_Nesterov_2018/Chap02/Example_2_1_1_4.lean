@@ -1,5 +1,5 @@
 import Mathlib.Analysis.InnerProductSpace.PiL2
-import Nesterov.Chap03.Proposition_3_21
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Proposition_3_21
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
-import Serre.Chap08.Proposition_8_8_2_1.Index
-import Serre.Chap07.Proposition_7_7_4_1
-import Serre.Chap08.Remark_8_8_1_2
+import LinearRepresentations_Serre_1977.Chap08.Proposition_8_8_2_1.Index
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_4_1
+import LinearRepresentations_Serre_1977.Chap08.Remark_8_8_1_2
 
 open CategoryTheory
 open scoped BigOperators Representation
@@ -20,7 +20,7 @@ variable (φ : H →* MulAut A)
 attribute [local instance] Fintype.ofFinite
 
 /-!
-Serre, Proposition 25 (Section 8.2).
+LinearRepresentations_Serre_1977, Proposition 25 (Section 8.2).
 
 The file records the source-facing parts of the little-groups construction already isolated in
 `Proposition_8_8_2_1/*`.  The Mackey disjointness needed for part (a) lives in
@@ -97,7 +97,7 @@ private theorem theta_reverse_mackey_hypothesis [Finite A] [Finite H]
     simpa [theta_packet_source] using
       character_stabilizer_subgroup_source_isIrreducible (φ := φ) χ ρ
   · intro s hs f
-    -- Serre's source route kills off-subgroup intertwiners by the character mismatch on `A`.
+    -- LinearRepresentations_Serre_1977's source route kills off-subgroup intertwiners by the character mismatch on `A`.
     exact theta_local_mackey_disjoint (φ := φ) (χ := χ) (ρ := ρ) hs f
 
 /-- Helper for Proposition 8-8.2-1: Mackey's criterion makes the explicit induced packet model
@@ -120,7 +120,7 @@ private theorem theta_packet_induction_model_isIrreducible [Finite A] [Finite H]
   simpa [localMackeySubgroup, localMackeyTwist] using
     theta_reverse_mackey_hypothesis (φ := φ) χ ρ
 
-/-- Proposition 8-8.2-1(a): Serre's packet `θ[φ; χ, ρ]` is irreducible. -/
+/-- Proposition 8-8.2-1(a): LinearRepresentations_Serre_1977's packet `θ[φ; χ, ρ]` is irreducible. -/
 theorem theta_isIrreducible [Finite A] [Finite H]
     (χ : A →* ℂˣ) (ρ : Rep.{w} ℂ H_[φ; χ]) [ρ.ρ.IsIrreducible] :
     (Representation.theta φ χ ρ).ρ.IsIrreducible := by
@@ -548,13 +548,13 @@ private theorem theta_packet_source_hom_of_character_weight_constituent_ne_zero
     simpa using congrArg Rep.Hom.hom hf
   simpa [f₀, f] using congrArg (fun k ↦ k x) hh
 
-/-- Proposition 8-8.2-1(c): every irreducible representation of `A ⋊[φ] H` is one of Serre's
+/-- Proposition 8-8.2-1(c): every irreducible representation of `A ⋊[φ] H` is one of LinearRepresentations_Serre_1977's
 little-groups packets. -/
 theorem exists_iso_theta_of_isIrreducible [Finite A] [Finite H]
     {ι : Type*} (χ : ι → A →* ℂˣ) (hχ : HasCharacterOrbitRepresentatives φ χ)
     (τ : Rep.{x} ℂ (A ⋊[φ] H)) [τ.ρ.IsIrreducible] :
     ∃ i, ∃ ρ : Rep.{x} ℂ H_[φ; χ i], ρ.ρ.IsIrreducible ∧ Nonempty (θ[φ; χ i, ρ] ≅ τ) := by
-  -- Follow Serre's route literally: choose a nonzero `χ_i`-weight, take an irreducible
+  -- Follow LinearRepresentations_Serre_1977's route literally: choose a nonzero `χ_i`-weight, take an irreducible
   -- stabilizer constituent there, and then invoke Frobenius reciprocity.
   rcases exists_orbit_representative_with_nonzero_character_weight
       (φ := φ) χ hχ τ with

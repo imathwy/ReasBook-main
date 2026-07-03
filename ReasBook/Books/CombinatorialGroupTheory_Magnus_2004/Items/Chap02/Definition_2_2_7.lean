@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory.Items.Chap02.Definition_2_2_6
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap02.Definition_2_2_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

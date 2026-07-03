@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Algebra.Category.Grp.AB
-import stacks_project.Chap13.Lemma_13_33_8
+import StacksProject_2024.Chap13.Lemma_13_33_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

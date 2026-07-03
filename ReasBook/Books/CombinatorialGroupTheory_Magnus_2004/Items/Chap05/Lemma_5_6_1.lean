@@ -1,8 +1,8 @@
-import CombinatorialGroupTheory.Items.Chap03.Proposition_3_9_1
-import CombinatorialGroupTheory.Items.Chap05.Definition_5_1_5
-import CombinatorialGroupTheory.Items.Chap05.Definition_5_3_1
-import CombinatorialGroupTheory.Items.Chap05.Theorem_5_3_2
-import CombinatorialGroupTheory.Items.Chap05.Lemma_5_5_1
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Proposition_3_9_1
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_1_5
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_3_1
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Theorem_5_3_2
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Lemma_5_5_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

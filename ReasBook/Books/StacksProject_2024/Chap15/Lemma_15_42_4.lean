@@ -1,7 +1,7 @@
 import Mathlib
-import stacks_project.Chap10.Definition_10_104_6
-import stacks_project.Chap10.Lemma_10_163_4
-import stacks_project.Chap15.Definition_15_41_1
+import StacksProject_2024.Chap10.Definition_10_104_6
+import StacksProject_2024.Chap10.Lemma_10_163_4
+import StacksProject_2024.Chap15.Definition_15_41_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -34,13 +34,13 @@ variable {R : Type u} {S : Type v} [CommRing R] [CommRing S]
 Layering:
 - `cohenMacaulayRing_of_regularRingMap` is `source-facing`;
 - the core/canonical owners are `CohenMacaulayRing` and `IsRegularRingMap`;
-- the Serre-condition ascent argument is a `bridge/view`, not a new public owner.
+- the LinearRepresentations_Serre_1977-condition ascent argument is a `bridge/view`, not a new public owner.
 -/
--- Proof sketch: for Noetherian rings, being Cohen-Macaulay is equivalent to satisfying Serre's
+-- Proof sketch: for Noetherian rings, being Cohen-Macaulay is equivalent to satisfying LinearRepresentations_Serre_1977's
 -- condition `(S_k)` for every `k`. A regular ring map is flat and its fibers are geometrically
 -- regular, hence regular and therefore Cohen-Macaulay; therefore each fiber satisfies every
 -- `(S_k)`. Apply Lemma
--- `10.163.4` for each `k` to ascend the Serre conditions from `R` to `S`.
+-- `10.163.4` for each `k` to ascend the LinearRepresentations_Serre_1977 conditions from `R` to `S`.
 /-- Lemma 15.42.4: if `R → S` is a regular ring map, `S` is Noetherian, and `R` is
 Cohen-Macaulay, then `S` is Cohen-Macaulay. -/
 theorem cohenMacaulayRing_of_regularRingMap

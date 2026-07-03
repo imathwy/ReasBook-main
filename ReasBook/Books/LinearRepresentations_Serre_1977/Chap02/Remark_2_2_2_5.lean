@@ -1,5 +1,5 @@
-import Serre.RepresentationTheory.GroupFunctionPairing
-import Serre.Chap02.Corollary_2_2_2_2
+import LinearRepresentations_Serre_1977.RepresentationTheory.GroupFunctionPairing
+import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_2_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -18,7 +18,7 @@ variable {G : Type u} [Group G] [Finite G]
 
 local instance instFintypeGRemark2225 : Fintype G := Fintype.ofFinite G
 
-/- Remark 2-2.2-5 uses Serre's complex pairing; the canonical owner in the project is the
+/- Remark 2-2.2-5 uses LinearRepresentations_Serre_1977's complex pairing; the canonical owner in the project is the
 field-valued pairing `groupFunctionPairingOverField`, and the bracket notation is the source-facing
 surface form. -/
 open scoped Representation
@@ -29,7 +29,7 @@ open scoped Representation
 * bridge/view: the chapter corollaries on matrix coefficients, restated here in the pairing
   notation. -/
 
-/- Remark 2-2.2-5 first records basic owner-level API for Serre's normalized pairing. Those
+/- Remark 2-2.2-5 first records basic owner-level API for LinearRepresentations_Serre_1977's normalized pairing. Those
 canonical statements now live with `groupFunctionPairingOverField` itself:
 `groupFunctionPairing_eq_card_inv_sum_apply_mul_inv_apply`, `groupFunctionPairing_comm`,
 `groupFunctionPairing_add_left`, `groupFunctionPairing_smul_left`,

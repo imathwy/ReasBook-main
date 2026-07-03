@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap09.Proposition_9_9_4_1
+import LinearRepresentations_Serre_1977.Chap09.Proposition_9_9_4_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -57,7 +57,7 @@ lemma top_cyclicGroupTheta_eq {G : Type u} [Group G] [Finite G] :
       exact hg (hsub.mp h)
     simp [Representation.cyclicGroupTheta, hg, hg']
 
-/-- Helper for Proposition 9-9.4-2: in a finite commutative group, the `H = ⊤` summand in Serre's
+/-- Helper for Proposition 9-9.4-2: in a finite commutative group, the `H = ⊤` summand in LinearRepresentations_Serre_1977's
 induction formula is exactly the original auxiliary function `θ`. -/
 lemma top_induced_cyclicGroupTheta_eq {G : Type u} [CommGroup G] [Finite G] :
     Ind[(⊤ : Subgroup G)]((θ[(⊤ : Subgroup G)] : (⊤ : Subgroup G) → ℂ)) = (θ[G] : G → ℂ) := by
@@ -138,7 +138,7 @@ lemma proper_cyclic_subgroup_sum_mem_characterRing
   simpa using Subgroup.inducedClassFunction_mem_characterRingOverField (K := ℂ) H χH
 
 -- Source/core/bridge triage:
--- * source-facing: Serre's auxiliary class function `θ[A]` on a cyclic finite group.
+-- * source-facing: LinearRepresentations_Serre_1977's auxiliary class function `θ[A]` on a cyclic finite group.
 -- * core/canonical: the character ring owner `R(A)`.
 -- * bridge/view: for this owner-membership statement, the relevant derived API is the theorem
 --   `Subgroup.inducedClassFunction_mem_characterRing`; the linear map
@@ -150,7 +150,7 @@ lemma proper_cyclic_subgroup_sum_mem_characterRing
 -- contributions from the proper cyclic subgroups of `A`; the induction hypothesis places each
 -- `θ[B]` in `R(B)`, and `Subgroup.inducedClassFunction_mem_characterRing` moves those induced
 -- terms into `R(A)`.
-/-- Proposition 9-9.4-2: if `A` is a cyclic finite group, then Serre's auxiliary function `θ_A`
+/-- Proposition 9-9.4-2: if `A` is a cyclic finite group, then LinearRepresentations_Serre_1977's auxiliary function `θ_A`
 belongs to the character ring `R(A)`. -/
 theorem cyclicGroupTheta_mem_characterRing [IsCyclic A] :
     θ[A] ∈ R(A) := by
@@ -195,7 +195,7 @@ theorem cyclicGroupTheta_mem_characterRing [IsCyclic A] :
       ext g
       simp [Nat.card_eq_fintype_card, zsmul_eq_mul]
     -- Route correction: instead of recursive proof-script unfolding, isolate the `H = ⊤` term and
-    -- rewrite Serre's identity as `θ[G] = |G| • 1 - (proper subgroup sum)`.
+    -- rewrite LinearRepresentations_Serre_1977's identity as `θ[G] = |G| • 1 - (proper subgroup sum)`.
     have htheta_eq :
         (θ[G] : G → ℂ) =
           (Nat.card G : ℂ) • (1 : G → ℂ) -

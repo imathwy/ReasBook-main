@@ -5,7 +5,7 @@ Authors: Yuxuan Wu, Chenyi Li
 -/
 import Mathlib.LinearAlgebra.Matrix.DotProduct
 import Mathlib.Analysis.CStarAlgebra.Matrix
-import Reaslib.Optlib.Algorithm.ProximalGradient
+import ReasLib.Optlib.Algorithm.ProximalGradient
 
 set_option linter.unusedVariables false
 

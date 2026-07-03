@@ -1,8 +1,8 @@
-import FirstOrderMethodsinOptimization.Chap03.Definition_3_17
-import FirstOrderMethodsinOptimization.Chap03.Theorem_3_14
-import FirstOrderMethodsinOptimization.Chap06.Proposition_6_2_1
-import FirstOrderMethodsinOptimization.Chap06.Theorem_6_39
-import FirstOrderMethodsinOptimization.Chap10.Definition_10_5
+import FirstOrderMethodsOptimization_Beck_2017.Chap03.Definition_3_17
+import FirstOrderMethodsOptimization_Beck_2017.Chap03.Theorem_3_14
+import FirstOrderMethodsOptimization_Beck_2017.Chap06.Proposition_6_2_1
+import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_39
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

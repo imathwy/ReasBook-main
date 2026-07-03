@@ -1,5 +1,5 @@
 import Mathlib
-import cartan.III.section10.«0011_Theorem_III_4_extra_9»
+import DifferentialForms_Cartan_1970.III.section10.«0011_Theorem_III_4_extra_9»
 
 -- Semantic recall note: `lean_leansearch` was unavailable in this runner, so the statement shape
 -- was checked against the local isolated/essential-singularity owner API together with mathlib's

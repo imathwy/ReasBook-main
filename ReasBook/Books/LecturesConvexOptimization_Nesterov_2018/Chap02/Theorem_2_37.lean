@@ -1,8 +1,8 @@
-import Nesterov.Chap02.Definition_2_35
-import Nesterov.Chap02.Definition_2_36
-import Nesterov.Chap02.Lemma_2_13
-import Nesterov.Chap02.Theorem_2_5
-import Nesterov.Chap02.Theorem_2_30
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_35
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_36
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Lemma_2_13
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_5
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_30
 
 open scoped Gradient ProjectedGradient
 

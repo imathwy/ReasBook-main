@@ -1,3 +1,3 @@
-import Serre.Chap12.Exercise_12_12_2_5.QuaternionicSchurModel
-import Serre.Chap12.Exercise_12_12_2_5.RationalDecomposition
-import Serre.Chap12.Exercise_12_12_2_5.SplitTensorModel
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_5.QuaternionicSchurModel
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_5.RationalDecomposition
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_5.SplitTensorModel

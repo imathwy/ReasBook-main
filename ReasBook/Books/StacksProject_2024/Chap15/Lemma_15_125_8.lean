@@ -2,10 +2,10 @@ import Mathlib.Algebra.Module.FinitePresentation
 import Mathlib.Algebra.Module.Torsion.Basic
 import Mathlib.LinearAlgebra.DirectSum.Finsupp
 import Mathlib.RingTheory.Bezout
-import stacks_project.Chap15.Lemma_15_22_2
-import stacks_project.Chap15.Lemma_15_125_4
-import stacks_project.Chap15.Lemma_15_125_7
-import stacks_project.Chap15.PrincipalIdeal
+import StacksProject_2024.Chap15.Lemma_15_22_2
+import StacksProject_2024.Chap15.Lemma_15_125_4
+import StacksProject_2024.Chap15.Lemma_15_125_7
+import StacksProject_2024.Chap15.PrincipalIdeal
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

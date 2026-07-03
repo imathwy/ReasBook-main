@@ -1,5 +1,5 @@
 import Mathlib
-import BauschkeLean.Chap06.Theorem_6_30
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Theorem_6_30
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

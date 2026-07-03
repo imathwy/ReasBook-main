@@ -81,7 +81,7 @@ private theorem wittVector_charZero_local [Fact p.Prime] :
       have hm_eq_zero : m = 0 := ih m hm_lt hm_zero
       simp [hm_eq_zero]
 
-/-- Helper for Theorem 18-18.2-1: Serre's mixed-character route can be frozen at the single owner
+/-- Helper for Theorem 18-18.2-1: LinearRepresentations_Serre_1977's mixed-character route can be frozen at the single owner
 `W(k)` with fraction field `Frac(W(k))`, together with the residue identification back to `k`. -/
 theorem mixed_character_owner_with_residue_equiv_local [Fact p.Prime] :
     ∃ (A0 : Type u) (_ : CommRing A0) (_ : Fact p.Prime) (_ : IsLocalRing A0)

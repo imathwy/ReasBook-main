@@ -1,8 +1,8 @@
 import Mathlib
-import BauschkeLean.Chap12.Corollary_12_31
-import BauschkeLean.Chap13.Example_13_3
-import BauschkeLean.Chap13.Proposition_13_15
-import BauschkeLean.Chap15.Proposition_15_13
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Corollary_12_31
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Example_13_3
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Proposition_13_15
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap15.Proposition_15_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

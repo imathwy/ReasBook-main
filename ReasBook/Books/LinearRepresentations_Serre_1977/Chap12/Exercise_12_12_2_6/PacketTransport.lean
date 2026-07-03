@@ -1,14 +1,14 @@
 import Mathlib
-import Serre.Chap02.Proposition_2_2_2_1
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap06.Corollary_6_6_5_4
-import Serre.Chap06.Proposition_6_6_5_5
-import Serre.Chap12.Exercise_12_12_2_3.API
-import Serre.Chap12.Exercise_12_12_2_6.CharacterBasisCoefficients
-import Serre.Chap12.Exercise_12_12_2_6.FieldDenominatorPrelude
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionPackets
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionPairing
-import Serre.Chap12.Proposition_12_12_2_1
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_2_1
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_5_4
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_5
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_3.API
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.CharacterBasisCoefficients
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.FieldDenominatorPrelude
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionPackets
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionPairing
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_2_1
 
 noncomputable section
 
@@ -195,7 +195,7 @@ theorem transported_constituent_character_mem_characterRing_local
       (rep_character_mem_characterRingOverField_universe_local
         (K' := AlgebraicClosure K1) (H := G) (ρ := ψ0.ρ))
 
-/-- Helper for Exercise 12-12.2-6: applying a base-field automorphism to Serre's normalized
+/-- Helper for Exercise 12-12.2-6: applying a base-field automorphism to LinearRepresentations_Serre_1977's normalized
 pairing is the same as transporting both arguments coefficientwise. -/
 theorem algEquiv_groupFunctionPairing_apply_local
     {K1 : Type v} [Field K1] [CharZero K1]

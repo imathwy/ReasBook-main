@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.Chap14.Corollary_14_14_3_3
-import Serre.Chap14.Proposition_14_14_1_1
-import Serre.Chap14.Proposition_14_14_3_1
-import Serre.Chap16.Corollary_16_16_1_6.Bases
-import Serre.Chap16.Theorem_16_16_1_5
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_3_3
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_1_1
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_3_1
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_6.Bases
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -259,7 +259,7 @@ private theorem cartan_source_target_finrank_eq :
     @Module.finrank_eq_card_basis ℤ (R₀[k](G)) Int.instSemiring
       (QuotientAddGroup.Quotient.addCommGroup (finiteRepGrothendieckRelations k G)).toAddCommMonoid
       (AddCommGroup.toIntModule (R₀[k](G))) _ ι _ bR
-  -- Serre's source and target have the same rank because the basis index type is shared.
+  -- LinearRepresentations_Serre_1977's source and target have the same rank because the basis index type is shared.
   exact (Module.finrank_eq_card_basis bP).trans hcardR.symm
 
 /-- Helper for Corollary 16-16.1-6: in characteristic zero, every finite-dimensional class is the
@@ -402,7 +402,7 @@ private theorem cartan_range_index_ne_zero_of_annihilation
   letI : (cartanHom k G).range.FiniteIndex := AddSubgroup.finiteIndex_of_le hL_le
   exact AddSubgroup.finiteIndex_iff.mp inferInstance
 
-/-- Helper for Corollary 16-16.1-6: once the additive Cartan range has finite index, Serre's
+/-- Helper for Corollary 16-16.1-6: once the additive Cartan range has finite index, LinearRepresentations_Serre_1977's
 rank comparison already gives it the full ambient `ℤ`-rank on the canonical owner `R₀[k](G)`. -/
 private theorem cartan_additive_range_finrank_eq_of_finiteIndex_local
     [((cartanHom k G).range).FiniteIndex] :
@@ -431,7 +431,7 @@ theorem cartanHom_injective :
   have hRangeFiniteIndex : (cartanHom k G).range.FiniteIndex := by
     by_cases hchar0 : ringChar k = 0
     · letI : CharZero k := (CharP.ringChar_zero_iff_CharZero (R := k)).mp hchar0
-      -- In characteristic zero Serre's proof makes the Cartan range all of `R₀[k](G)`.
+      -- In characteristic zero LinearRepresentations_Serre_1977's proof makes the Cartan range all of `R₀[k](G)`.
       have hrange : (cartanHom k G).range = ⊤ :=
         cartan_range_eq_top_of_charZero (k := k) (G := G)
       have htop : (⊤ : AddSubgroup (R₀[k](G))).FiniteIndex := by

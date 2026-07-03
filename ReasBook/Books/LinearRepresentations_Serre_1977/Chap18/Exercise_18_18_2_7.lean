@@ -1,6 +1,6 @@
-import Serre.Chap18.Proposition_18_18_1_2
-import Serre.Chap17.Corollary_17_17_2_2
-import Serre.Chap03.Theorem_3_3_3_4
+import LinearRepresentations_Serre_1977.Chap18.Proposition_18_18_1_2
+import LinearRepresentations_Serre_1977.Chap17.Corollary_17_17_2_2
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_3_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -133,7 +133,7 @@ the left cosets `G / H`, the modular character of `E` at a `p`-regular element o
 by the same representative sum as in the characteristic-zero induced-character formula.  This
 source-facing Lean form uses the canonical scalar-valued lift of prime-to-`p` roots to `k`; an
 arbitrary function `PrimeToPRoot p k → A` is too weak for the induced-cycle cancellation used in
-Serre's proof. -/
+LinearRepresentations_Serre_1977's proof. -/
 theorem modularCharacter_subgroupInduction_eq_sum_over_representatives
     (H : Subgroup G)
     (F : FDRep k H)

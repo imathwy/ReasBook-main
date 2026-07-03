@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Data.List.TFAE
 import Mathlib.Tactic.Recall
-import stacks_project.Chap05.Definition_5_10_1
-import stacks_project.Chap10.Definition_10_17_1
+import StacksProject_2024.Chap05.Definition_5_10_1
+import StacksProject_2024.Chap10.Definition_10_17_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

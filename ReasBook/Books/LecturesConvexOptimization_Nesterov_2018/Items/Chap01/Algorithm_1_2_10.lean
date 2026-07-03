@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Algorithm_1_2_10
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Algorithm_1_2_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -20,7 +20,7 @@ Relevant owner-style declarations sampled before refining:
   stopping criterion `Set (Set (Query × Answer))`;
 * `BlackBoxOptimizationProblemClass` in `Definition_1_2_4.lean`, the chapter owner packaging a
   problem model, oracle, and stopping criterion at the class level;
-* `Nesterov.Chap01.Algorithm_1_2_10.GeneralIterativeScheme`, the existing chapter owner for the
+* `LecturesConvexOptimization_Nesterov_2018.Chap01.Algorithm_1_2_10.GeneralIterativeScheme`, the existing chapter owner for the
   single-problem iterative method together with its recursive information-state API.
 
 Owner abstraction:

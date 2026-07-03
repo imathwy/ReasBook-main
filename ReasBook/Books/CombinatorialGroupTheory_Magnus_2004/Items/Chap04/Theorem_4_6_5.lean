@@ -1,6 +1,6 @@
 import Mathlib
-import CombinatorialGroupTheory.Items.Chap04.Definition_4_2_9
-import CombinatorialGroupTheory.Items.Chap04.Definition_4_6_1
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap04.Definition_4_2_9
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap04.Definition_4_6_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -11,7 +11,7 @@ set_option autoImplicit false
 open Subgroup
 
 /-!
-Primary domain: Bass-Serre type decompositions of groups with bipolar structures.
+Primary domain: Bass-LinearRepresentations_Serre_1977 type decompositions of groups with bipolar structures.
 
 Layer triage:
 - `source-facing`: a group admitting a bipolar structure, and the two alternative decompositions

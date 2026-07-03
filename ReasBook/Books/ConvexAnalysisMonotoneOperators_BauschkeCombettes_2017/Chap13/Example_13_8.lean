@@ -1,5 +1,5 @@
-import BauschkeLean.Chap08.Definition_8_7
-import BauschkeLean.Chap13.Definition_13_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Definition_8_7
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Definition_13_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

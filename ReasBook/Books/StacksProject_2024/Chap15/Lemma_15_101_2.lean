@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap15.Lemma_15_65_17
-import stacks_project.Chap15.Lemma_15_98_6_Koll_r_Kov_cs
+import StacksProject_2024.Chap15.Lemma_15_65_17
+import StacksProject_2024.Chap15.Lemma_15_98_6_Koll_r_Kov_cs
 
 noncomputable section
 

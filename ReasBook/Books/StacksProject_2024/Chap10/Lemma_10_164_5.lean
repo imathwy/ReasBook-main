@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap10.Definition_10_157_1
-import stacks_project.Chap10.Lemma_10_164_1
+import StacksProject_2024.Chap10.Definition_10_157_1
+import StacksProject_2024.Chap10.Lemma_10_164_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -12,7 +12,7 @@ variable {R : Type u} {S : Type v} [CommRing R] [CommRing S]
 variable {k : ℕ}
 
 /- Domain-style sampling:
-* primary domain: faithfully flat descent for Serre's condition `(S_k)` in commutative algebra;
+* primary domain: faithfully flat descent for LinearRepresentations_Serre_1977's condition `(S_k)` in commutative algebra;
 * sampled owner declarations:
   `SerreConditionS`,
   `Module.SerreConditionS`,
@@ -25,7 +25,7 @@ variable {k : ℕ}
 
 Source/core/bridge triage:
 * `source-facing`: `serreConditionS_of_faithfullyFlat`, the textbook descent statement for
-  Serre's condition `(S_k)`;
+  LinearRepresentations_Serre_1977's condition `(S_k)`;
 * `core/canonical`: the owner predicate `SerreConditionS` together with the module owner
   `Module.SerreConditionS R R k`;
 * `bridge/view`: the self-module identification
@@ -41,7 +41,7 @@ than treating the whole class-valued conclusion as opaque proof data.
 -- `R_p → S_q` is flat local with closed fiber of dimension `0`, so Lemmas `10.112.7` and
 -- `10.163.2` identify both the Krull dimension and the depth of `R_p` with those of `S_q`.
 -- Since `S` satisfies `(S_k)`, the inequality `depth R_p ≥ min(k, dim R_p)` follows.
-/-- Lemma 10.164.5: if `f : R →+* S` is faithfully flat and `S` satisfies Serre's condition
+/-- Lemma 10.164.5: if `f : R →+* S` is faithfully flat and `S` satisfies LinearRepresentations_Serre_1977's condition
 `(S_k)`, then `R` is Noetherian and satisfies `(S_k)`, i.e. `R` satisfies
 `SerreConditionS R k`. -/
 theorem serreConditionS_of_faithfullyFlat (f : R →+* S) (hf : f.FaithfullyFlat)

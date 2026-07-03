@@ -1,8 +1,8 @@
 import Mathlib
-import BauschkeLean.Chap06.Example_6_43
-import BauschkeLean.Chap06.Proposition_6_45
-import BauschkeLean.Chap06.Proposition_6_46
-import BauschkeLean.Chap07.Proposition_7_3
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Example_6_43
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Proposition_6_45
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Proposition_6_46
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap07.Proposition_7_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

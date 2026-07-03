@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap15.Situation_15_7_1
+import StacksProject_2024.Chap15.Situation_15_7_1
 
 open CategoryTheory Limits
 

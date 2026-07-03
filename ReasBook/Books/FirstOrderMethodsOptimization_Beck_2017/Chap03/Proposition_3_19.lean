@@ -1,5 +1,5 @@
-import FirstOrderMethodsinOptimization.Chap03.Proposition_3_18
-import FirstOrderMethodsinOptimization.Chap03.Theorem_3_19
+import FirstOrderMethodsOptimization_Beck_2017.Chap03.Proposition_3_18
+import FirstOrderMethodsOptimization_Beck_2017.Chap03.Theorem_3_19
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

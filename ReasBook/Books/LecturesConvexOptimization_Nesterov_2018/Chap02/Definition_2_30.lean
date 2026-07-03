@@ -1,6 +1,6 @@
-import Nesterov.Chap01.Definition_1_3_7
-import Nesterov.Chap01.Definition_1_10_2
-import Nesterov.Chap03.LinearEqualityFeasibleSet
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_3_7
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_10_2
+import LecturesConvexOptimization_Nesterov_2018.Chap03.LinearEqualityFeasibleSet
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -14,12 +14,12 @@ universe u v
 
 Owner declarations sampled before refining this file:
 * `SetConstrainedMinimizationProblem` and
-  `SetConstrainedMinimizationProblem.optimalValue` in `Nesterov/Chap01/Definition_1_3_7.lean`;
+  `SetConstrainedMinimizationProblem.optimalValue` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_3_7.lean`;
 * `LagrangianProblem.lagrangian`, `LagrangianProblem.dualFunction`, and
-  `LagrangianProblem.lagrangianMinimizers` in `Nesterov/Chap01/Definition_1_10_2.lean`;
+  `LagrangianProblem.lagrangianMinimizers` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_10_2.lean`;
 * `linearEqualityFeasibleSet` and `mem_linearEqualityFeasibleSet_iff` in
-  `Nesterov/Chap03/LinearEqualityFeasibleSet.lean`;
-* `LinearEqualityConstrainedConvexProblem` in `Nesterov/Chap03/Definition_3_27.lean`, which uses
+  `LecturesConvexOptimization_Nesterov_2018/Chap03/LinearEqualityFeasibleSet.lean`;
+* `LinearEqualityConstrainedConvexProblem` in `LecturesConvexOptimization_Nesterov_2018/Chap03/Definition_3_27.lean`, which uses
   the same intrinsic linear-map owner for equality constraints.
 
 Best owner abstractions:

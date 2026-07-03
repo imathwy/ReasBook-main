@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap03.Exercise_3_3_3_7
-import Serre.Chap10.Definition_10_10_1_1
-import Serre.Chap10.Definition_10_10_1_2
+import LinearRepresentations_Serre_1977.Chap03.Exercise_3_3_3_7
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_1
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

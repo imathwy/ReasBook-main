@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Algebra.Homology.ShortComplex.Abelian
-import stacks_project.Chap12.Lemma_12_16_2
-import stacks_project.Chap12.Definition_12_24_5
-import stacks_project.Chap12.Lemma_12_24_11
+import StacksProject_2024.Chap12.Lemma_12_16_2
+import StacksProject_2024.Chap12.Definition_12_24_5
+import StacksProject_2024.Chap12.Lemma_12_24_11
 
 open CategoryTheory
 open CategoryTheory.Limits

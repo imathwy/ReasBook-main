@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Proposition_1_3_13
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Proposition_1_3_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -9,12 +9,12 @@ open MeasureTheory intervalIntegral
 domain.
 
 Relevant owner-style declarations sampled before refining:
-* `uniformGridRiemannSum` in `Nesterov/Chap01/Definition_1_3_12.lean`, the chapter owner for the
+* `uniformGridRiemannSum` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_3_12.lean`, the chapter owner for the
   source-facing right-endpoint sampled sum
 * `abs_intervalIntegral_sub_uniformGridRiemannSum_le` in
-  `Nesterov/Chap01/Proposition_1_3_13.lean`, the chapter owner of the sharp `L / (2N)` estimate
+  `LecturesConvexOptimization_Nesterov_2018/Chap01/Proposition_1_3_13.lean`, the chapter owner of the sharp `L / (2N)` estimate
 * `abs_intervalIntegral_sub_uniformGridRiemannSum_le_eps` in
-  `Nesterov/Chap01/Proposition_1_3_13.lean`, the chapter owner of the epsilon corollary
+  `LecturesConvexOptimization_Nesterov_2018/Chap01/Proposition_1_3_13.lean`, the chapter owner of the epsilon corollary
 * `LipschitzOnWith`, the canonical mathlib owner for the Lipschitz hypothesis on `[0, 1]`
 
 Best owner abstraction:

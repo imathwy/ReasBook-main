@@ -1,6 +1,6 @@
 import Mathlib
-import cartan.I.section02.«frozen_0004_Definition_I_2_extra_3»
-import cartan.I.section02.«frozen_0008_Proposition_4_1»
+import DifferentialForms_Cartan_1970.I.section02.«frozen_0004_Definition_I_2_extra_3»
+import DifferentialForms_Cartan_1970.I.section02.«frozen_0008_Proposition_4_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

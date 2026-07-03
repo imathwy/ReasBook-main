@@ -1,12 +1,12 @@
 import Mathlib
-import Serre.Chap06.Corollary_6_6_5_4
-import Serre.Chap09.Exercise_9_9_1_3
-import Serre.Chap15.Definition_15_15_2_1
-import Serre.Chap15.Theorem_15_15_2_2
-import Serre.Chap16.Exercise_16_16_3_9.DimensionTwoTransport
-import Serre.Chap16.Remark_16_16_3_5
-import Serre.RepresentationTheory.RealizableOver
-import Serre.RepresentationTheory.SymmetricExterior
+import LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_5_4
+import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_3
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_2_1
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap16.Exercise_16_16_3_9.DimensionTwoTransport
+import LinearRepresentations_Serre_1977.Chap16.Remark_16_16_3_5
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.RepresentationTheory.SymmetricExterior
 
 open scoped TensorProduct
 

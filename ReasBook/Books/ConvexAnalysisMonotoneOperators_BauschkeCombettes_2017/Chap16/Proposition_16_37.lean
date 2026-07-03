@@ -1,7 +1,7 @@
 import Mathlib
-import BauschkeLean.Chap01.Text_1_0_9
-import BauschkeLean.Chap13.Corollary_13_38
-import BauschkeLean.Chap16.Definition_16_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap01.Text_1_0_9
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Corollary_13_38
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Definition_16_1
 
 open Set
 open scoped InnerProductSpace

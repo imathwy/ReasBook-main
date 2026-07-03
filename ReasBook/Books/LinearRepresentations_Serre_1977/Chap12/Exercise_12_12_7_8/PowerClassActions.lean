@@ -1,6 +1,6 @@
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.GroupTheory.ConjClassesPower
-import Serre.Chap11.Proposition_11_11_4_1
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.GroupTheory.ConjClassesPower
+import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_1
 
 open scoped Representation
 
@@ -28,7 +28,7 @@ local instance : NeZero (Monoid.exponent G) := Monoid.neZero_exponent_of_finite
 private abbrev galoisPowerExponentUnit (t : (ZMod (Monoid.exponent G))ˣ) : ℕ :=
   (t : ZMod (Monoid.exponent G)).val
 
-/-- Helper for Exercise 12-12.7-8: Serre's `Γ_K`-power action uses the chosen exponent-unit
+/-- Helper for Exercise 12-12.7-8: LinearRepresentations_Serre_1977's `Γ_K`-power action uses the chosen exponent-unit
 representative. -/
 private instance gammaSubgroupPow
     {ΓK : Subgroup (ZMod (Monoid.exponent G))ˣ} : Pow G ΓK where
@@ -50,7 +50,7 @@ private theorem galoisPowerExponentUnit_mul_modEq
   rw [← ZMod.natCast_eq_natCast_iff]
   simp [galoisPowerExponentUnit, Nat.cast_mul]
 
-/-- Helper for Exercise 12-12.7-8: the theorem-local owner of Serre's subgroup
+/-- Helper for Exercise 12-12.7-8: the theorem-local owner of LinearRepresentations_Serre_1977's subgroup
 `Γ_K ⊆ (ℤ / exp(G)ℤ)ˣ` attached to `K ⊆ L`. It is deliberately named away from the chapter-level
 API to avoid import collisions with earlier owner modules while the local helper tree is active.
 -/
@@ -112,11 +112,11 @@ representatives. -/
 
 end ConjClasses
 
-/-- Serre's `Γ_K`-classes, realized canonically as the orbit quotient of `ConjClasses G`. -/
+/-- LinearRepresentations_Serre_1977's `Γ_K`-classes, realized canonically as the orbit quotient of `ConjClasses G`. -/
 abbrev GaloisPowerClass (ΓK : Subgroup (ZMod (Monoid.exponent G))ˣ) :=
   MulAction.orbitRel.Quotient ΓK (ConjClasses G)
 
-/-- The canonical map from `G` to Serre's `Γ_K`-classes. -/
+/-- The canonical map from `G` to LinearRepresentations_Serre_1977's `Γ_K`-classes. -/
 def galoisPowerClassMk (ΓK : Subgroup (ZMod (Monoid.exponent G))ˣ) :
     G → GaloisPowerClass ΓK :=
   Quotient.mk'' ∘ ConjClasses.mk
@@ -135,7 +135,7 @@ section GaloisPowerClassFunctions
 
 variable {R : Type w}
 
-/-- Helper for Exercise 12-12.7-8: an `R`-valued function is constant on Serre's `Γ_K`-classes
+/-- Helper for Exercise 12-12.7-8: an `R`-valued function is constant on LinearRepresentations_Serre_1977's `Γ_K`-classes
 when it factors through the quotient map `galoisPowerClassMk`. This is the minimal quotient API
 used by the fiber-first proof route. -/
 @[mk_iff]
@@ -191,7 +191,7 @@ instance {ΓK : Subgroup (ZMod (Monoid.exponent G))ˣ}
   intro _ _ h
   exact congrArg f h
 
-/-- Helper for Exercise 12-12.7-8: for a class function, Serre's quotient-constancy is exactly
+/-- Helper for Exercise 12-12.7-8: for a class function, LinearRepresentations_Serre_1977's quotient-constancy is exactly
 invariance under the `Γ_K`-power maps. -/
 theorem isConstantOnGaloisPowerClasses_iff_forall_pow_eq
     {ΓK : Subgroup (ZMod (Monoid.exponent G))ˣ} {f : G → R}
@@ -263,7 +263,7 @@ def galoisPowerClassFunctionSubmodule
     letI : IsConstantOnGaloisPowerClasses ΓK f := hf
     simpa using (inferInstance : IsConstantOnGaloisPowerClasses ΓK (a • f))
 
-/-- Membership in the bundled owner `galoisPowerClassFunctionSubmodule ΓK` is exactly Serre's
+/-- Membership in the bundled owner `galoisPowerClassFunctionSubmodule ΓK` is exactly LinearRepresentations_Serre_1977's
 `Γ_K`-class-constancy condition. -/
 @[simp] theorem mem_galoisPowerClassFunctionSubmodule_iff
     (ΓK : Subgroup (ZMod (Monoid.exponent G))ˣ) (f : G → R) :
@@ -408,16 +408,16 @@ same power formula. -/
 
 end PRegularConjClass
 
-/-- The `p`-regular Serre `Γ_K`-classes, realized canonically as an orbit quotient. -/
+/-- The `p`-regular LinearRepresentations_Serre_1977 `Γ_K`-classes, realized canonically as an orbit quotient. -/
 abbrev PRegularGaloisPowerClass (ΓK : Subgroup (ZMod (Monoid.exponent G))ˣ) (p : ℕ) :=
   MulAction.orbitRel.Quotient ΓK (PRegularConjClass G p)
 
-/-- The canonical map from `p`-regular elements to their `p`-regular Serre `Γ_K`-class. -/
+/-- The canonical map from `p`-regular elements to their `p`-regular LinearRepresentations_Serre_1977 `Γ_K`-class. -/
 def pRegularGaloisPowerClassMk (ΓK : Subgroup (ZMod (Monoid.exponent G))ˣ) (p : ℕ) :
     {x : G // IsPRegular p x} → PRegularGaloisPowerClass ΓK p :=
   Quotient.mk'' ∘ PRegularConjClass.ofSubtype p
 
-/-- Helper for Exercise 12-12.7-8: every `p`-regular Serre `Γ_K`-class is represented by a
+/-- Helper for Exercise 12-12.7-8: every `p`-regular LinearRepresentations_Serre_1977 `Γ_K`-class is represented by a
 `p`-regular element of `G`. -/
 theorem pRegularGaloisPowerClassMk_surjective
     (ΓK : Subgroup (ZMod (Monoid.exponent G))ˣ) (p : ℕ) :

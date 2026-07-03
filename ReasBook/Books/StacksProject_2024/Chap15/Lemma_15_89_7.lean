@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
-import stacks_project.Chap13.Lemma_13_11_6
-import stacks_project.Chap15.Definition_15_65_1
-import stacks_project.Chap15.Definition_15_59_13
-import stacks_project.Chap15.Definition_15_89_1
+import StacksProject_2024.Chap13.Lemma_13_11_6
+import StacksProject_2024.Chap15.Definition_15_65_1
+import StacksProject_2024.Chap15.Definition_15_59_13
+import StacksProject_2024.Chap15.Definition_15_89_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

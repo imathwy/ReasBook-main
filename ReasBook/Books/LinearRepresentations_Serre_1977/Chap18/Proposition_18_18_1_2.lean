@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.Chap10.Definition_10_10_1_2
-import Serre.Chap12.Proposition_12_12_1_1
-import Serre.Chap15.Definition_15_15_3_1
-import Serre.Chap15.Theorem_15_15_2_2
-import Serre.Chap18.Definition_18_18_1_1
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_2
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap18.Definition_18_18_1_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -134,7 +134,7 @@ private theorem character_eq_add_character_quotient_of_invariant_submodule_local
     trace_eq_trace_restrict_add_trace_mapQ_local K (ρ g) W (hW g)
 
 /-- Helper for Proposition 18-18.1-2: the ordinary character of a finite-dimensional
-`K[G]`-representation belongs to Serre's character ring owner `R[K](G)`. -/
+`K[G]`-representation belongs to LinearRepresentations_Serre_1977's character ring owner `R[K](G)`. -/
 private theorem finiteRepCharacter_mem_characterRingOverField
     (K : Type u) [Field K] (G : Type u) [Group G] (V : FDRep K G) :
     V.character ∈ R[K](G) := by

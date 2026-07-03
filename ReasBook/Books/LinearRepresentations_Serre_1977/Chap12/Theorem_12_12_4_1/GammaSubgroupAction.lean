@@ -12,7 +12,7 @@ section GammaSubgroup
 
 variable {L : Type v} [Field L] [NumberField L]
 
-/-- Serre's subgroup `Γ_K ⊆ (ℤ / nℤ)ˣ` attached to an intermediate field `K ⊆ L` inside the
+/-- LinearRepresentations_Serre_1977's subgroup `Γ_K ⊆ (ℤ / nℤ)ˣ` attached to an intermediate field `K ⊆ L` inside the
 cyclotomic realization `L / ℚ`. -/
 abbrev gammaSubgroup (n : ℕ) [NeZero n] [IsCyclotomicExtension {n} ℚ L]
     (K : IntermediateField ℚ L) : Subgroup (ZMod n)ˣ :=

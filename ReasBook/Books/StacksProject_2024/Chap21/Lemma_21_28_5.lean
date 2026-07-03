@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
-import stacks_project.Chap18.Definition_18_31_1
-import stacks_project.Chap18.Lemma_18_24_4
-import stacks_project.Chap21.Remark_21_19_3
+import StacksProject_2024.Chap18.Definition_18_31_1
+import StacksProject_2024.Chap18.Lemma_18_24_4
+import StacksProject_2024.Chap21.Remark_21_19_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -78,7 +78,7 @@ abbrev moduleObjectAsDerived (Z : RingedSite.{u, v}) (ℱ : ModuleCat Z) :
     ModuleDerived Z :=
   (DerivedCategory.singleFunctor (ModuleCat Z) (0 : ℤ)).obj ℱ
 
-/-- The pullback functor on weak Serre subcategories induced by pullback on module sheaves. -/
+/-- The pullback functor on weak LinearRepresentations_Serre_1977 subcategories induced by pullback on module sheaves. -/
 abbrev modulePullbackOnWeakSerreSubcategory
     (hpull_mem : ∀ ⦃ℱ' : ModuleCat Y⦄, A' ℱ' → A (f.modulePullback.obj ℱ')) :
     A'.FullSubcategory ⥤ A.FullSubcategory :=
@@ -95,7 +95,7 @@ theorem modulePullbackDerivedOfFlat_obj_mem_derivedCategoryPlusWithCohomologyIn
     PplusX ((ObjectProperty.ι PplusY ⋙ fStarDerived).obj K) := sorry
 
 /-- The pullback functor on bounded-below derived categories with cohomology in the chosen weak
-Serre subcategories. -/
+LinearRepresentations_Serre_1977 subcategories. -/
 abbrev modulePullbackDerivedOfFlatPlusWithCohomologyIn
     (hpull_mem : ∀ ⦃ℱ' : ModuleCat Y⦄, A' ℱ' → A (f.modulePullback.obj ℱ')) :
     DplusY ⥤ DplusX :=
@@ -142,7 +142,7 @@ abbrev modulePushforwardDerivedPlusWithCohomologyIn
 -- pushforward lands in `D^+_{A'}(\mathcal O_Y)`, and Lemmas `21.28.2`, `21.28.3`, and `4.24.4`
 -- then identify it as the quasi-inverse.
 /-- Lemma 21.28.5: let `f : X ⟶ Y` be a flat morphism of ringed sites, let
-`A' ⊆ \operatorname{Mod}(\mathcal O_Y)` and `A ⊆ \operatorname{Mod}(\mathcal O_X)` be weak Serre
+`A' ⊆ \operatorname{Mod}(\mathcal O_Y)` and `A ⊆ \operatorname{Mod}(\mathcal O_X)` be weak LinearRepresentations_Serre_1977
 subcategories, assume pullback induces an equivalence `A' ≌ A`, and assume the adjunction unit
 `ℱ'[0] ⟶ Rf_* f^*(ℱ'[0])` is an isomorphism for every `ℱ' ∈ A'`. Then the induced pullback functor
 `f^* : D^+_{A'}(\mathcal O_Y) ⥤ D^+_A(\mathcal O_X)` is an equivalence of categories. The

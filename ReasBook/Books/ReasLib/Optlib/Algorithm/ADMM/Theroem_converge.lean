@@ -1,8 +1,8 @@
-import Reaslib.Optlib.Function.Proximal
+import ReasLib.Optlib.Function.Proximal
 import Mathlib.Topology.MetricSpace.Sequences
-import Reaslib.Optlib.Algorithm.ADMM.Lemma
-import Reaslib.Optlib.Algorithm.ADMM.Scheme
-import Reaslib.Optlib.Convex.ImageSubgradientClosed
+import ReasLib.Optlib.Algorithm.ADMM.Lemma
+import ReasLib.Optlib.Algorithm.ADMM.Scheme
+import ReasLib.Optlib.Convex.ImageSubgradientClosed
 
 noncomputable section
 

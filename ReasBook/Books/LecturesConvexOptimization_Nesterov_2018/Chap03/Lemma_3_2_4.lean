@@ -1,4 +1,4 @@
-import Nesterov.Chap03.Algorithm_3_5
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Algorithm_3_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -408,7 +408,7 @@ lemma textbook_radius_le_cycle_radius
 Algorithm 3.5 so the last stored lower corner reduces definitionally. -/
 elab "unfold_oracle_lower_bound_owners" : tactic => do
   let privateRoot := Name.str Name.anonymous "_private"
-  let privateRoot := Name.str privateRoot "Nesterov"
+  let privateRoot := Name.str privateRoot "LecturesConvexOptimization_Nesterov_2018"
   let privateRoot := Name.str privateRoot "Chap03"
   let privateRoot := Name.str privateRoot "Algorithm_3_5"
   let privateRoot := Name.num privateRoot 0
@@ -427,7 +427,7 @@ elab "unfold_oracle_lower_bound_owners" : tactic => do
 Algorithm 3.5 so the last stored upper corner reduces definitionally. -/
 elab "unfold_oracle_upper_bound_owners" : tactic => do
   let privateRoot := Name.str Name.anonymous "_private"
-  let privateRoot := Name.str privateRoot "Nesterov"
+  let privateRoot := Name.str privateRoot "LecturesConvexOptimization_Nesterov_2018"
   let privateRoot := Name.str privateRoot "Chap03"
   let privateRoot := Name.str privateRoot "Algorithm_3_5"
   let privateRoot := Name.num privateRoot 0

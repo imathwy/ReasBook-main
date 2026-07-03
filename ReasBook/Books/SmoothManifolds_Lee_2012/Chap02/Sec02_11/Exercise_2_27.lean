@@ -1,4 +1,4 @@
-import SmoothManifoldsLee.Chap02.Sec02_11.Lemma_2_26
+import SmoothManifolds_Lee_2012.Chap02.Sec02_11.Lemma_2_26
 
 open scoped ContDiff Manifold
 

@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap02.Corollary_2_2_3_4
-import Serre.Chap02.Proposition_2_2_1_1
-import Serre.Chap12.Proposition_12_12_1_3
-import Serre.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_3_4
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_1_1
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_3
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

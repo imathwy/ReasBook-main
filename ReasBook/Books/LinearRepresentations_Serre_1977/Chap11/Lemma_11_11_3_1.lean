@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap02.Remark_2_2_1_2
-import Serre.Chap07.Proposition_7_7_2_1
-import Serre.Chap10.Definition_10_10_1_4
+import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_1_2
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -85,7 +85,7 @@ section FieldBridge
 variable {K : Type v} [Field K]
 
 -- Source/core/bridge triage:
--- * source-facing: `leftCosetInductionSum` is Serre's quotient-indexed left-coset formula.
+-- * source-facing: `leftCosetInductionSum` is LinearRepresentations_Serre_1977's quotient-indexed left-coset formula.
 -- * core/canonical: `Ind[H](ψ)` is the owner declaration for induced class functions.
 -- * bridge/view: this theorem identifies the source-facing quotient sum with the canonical owner.
 -- Proof sketch: partition the defining sum of `Ind[H](ψ) x` over the left cosets of `H`. The
@@ -148,7 +148,7 @@ section
 variable {p : ℕ} [Fact p.Prime]
 
 -- Source/core/bridge triage:
--- * source-facing: Serre's congruence for the value of the induced character at `x`.
+-- * source-facing: LinearRepresentations_Serre_1977's congruence for the value of the induced character at `x`.
 -- * core/canonical: `Ind[H](fun h ↦ (ψ h : ℂ)) x`.
 -- * bridge/view: `leftCosetInductionSum` from above remains only the quotient-indexed formula for
 --   computing that owner.
@@ -278,7 +278,7 @@ theorem inducedClassFunction_apply_isIntegral
   rw [← coe_leftCosetInductionSum (H := H) (ψ := ψ) hψ x]
   exact (leftCosetInductionSum H ψ hψ x).2
 
-/-- Helper for Lemma 11-11.3-1: the quotient-valued summand whose total sum is Serre's
+/-- Helper for Lemma 11-11.3-1: the quotient-valued summand whose total sum is LinearRepresentations_Serre_1977's
 left-coset induction formula. -/
 private def leftCosetInductionQuotientValue
     (H : Subgroup G) (ψ : H → integralClosure ℤ ℂ) (hψ : IsClassFunction ψ) (x : G) :

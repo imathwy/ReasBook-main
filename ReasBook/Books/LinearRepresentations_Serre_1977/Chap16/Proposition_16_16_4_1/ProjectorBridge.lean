@@ -1,4 +1,4 @@
-import Serre.Chap16.Proposition_16_16_4_1.FourierBridge
+import LinearRepresentations_Serre_1977.Chap16.Proposition_16_16_4_1.FourierBridge
 
 noncomputable section
 
@@ -305,7 +305,7 @@ lemma projective_restrictScalars_of_projective_hom
     exact LinearMap.congr_fun hs x
 
 /-- Helper for Proposition 16-16.4-1: once the action map `A[G] → End_A(P)` is surjective and its
-kernel is split as a two-sided ideal, Serre's part `(a)` follows formally by restricting scalars
+kernel is split as a two-sided ideal, LinearRepresentations_Serre_1977's part `(a)` follows formally by restricting scalars
 from `End_A(P)` back to `A[G]`. -/
 lemma projective_of_action_hom_surjective_and_ker_isCompl
     [Nontrivial L.toSubmodule]
@@ -383,7 +383,7 @@ lemma projective_of_action_hom_surjective_and_ker_isCompl
   have hprojEnd : Module.Projective A[G] S := by
     exact (Module.Projective.iff_split_of_projective (s := πlin) hsurj).2 ⟨σ, hsplit⟩
   have hprojSubmodule : Module.Projective S L.toSubmodule := by
-    -- Serre's elementary module-theoretic input is projectivity over the endomorphism ring.
+    -- LinearRepresentations_Serre_1977's elementary module-theoretic input is projectivity over the endomorphism ring.
     exact L.toSubmodule_projective_over_endomorphismRing
   letI : Module.Projective A[G] S := hprojEnd
   letI : Module.Projective S L.toSubmodule := hprojSubmodule
@@ -396,7 +396,7 @@ lemma projective_of_action_hom_surjective_and_ker_isCompl
 
 /-- Helper for Proposition 16-16.4-1: once a central idempotent `e` cuts out exactly the kernel
 of the lattice action map by left multiplication, the image ideal `e · A[G]` is a direct
-complement to that kernel. This packages the purely ring-theoretic half of Serre's `φ = id`
+complement to that kernel. This packages the purely ring-theoretic half of LinearRepresentations_Serre_1977's `φ = id`
 projector argument so the remaining blocker stays concentrated in the packet descent. -/
 lemma isCompl_ker_of_central_idempotent_annihilator
     {e : A[G]}
@@ -466,7 +466,7 @@ lemma isCompl_ker_of_central_idempotent_annihilator
       refine ⟨x - e * x, ?_, e * x, ⟨x, by simp⟩, by abel⟩
       exact (TwoSidedIdeal.mem_ker _).mpr ((hker (x - e * x)).mpr hker_zero)
 
-/-- Helper for Proposition 16-16.4-1: the class-function description of Serre's special Fourier
+/-- Helper for Proposition 16-16.4-1: the class-function description of LinearRepresentations_Serre_1977's special Fourier
 element after scalar extension already forces the integral element itself to lie in the center of
 `A[G]`. This is the portion of the source projector packet that descends in the current
 universe-generic setting without invoking the equal-universe `FDRep` bridge. -/
@@ -518,7 +518,7 @@ lemma serre_fourier_id_coeff_isClassFunction
     _ = L.serre_fourier_element hdefect LinearMap.id (g * a * g⁻¹) := by
             simp [StableLattice.serre_fourier_element_apply]
 
-/-- Helper for Proposition 16-16.4-1: Serre's special Fourier element for `LinearMap.id` already
+/-- Helper for Proposition 16-16.4-1: LinearRepresentations_Serre_1977's special Fourier element for `LinearMap.id` already
 has class-function coefficients over `A`, so it is central before any passage to the fraction
 field. -/
 lemma serre_fourier_id_mem_center
@@ -548,7 +548,7 @@ lemma endHom_toRepresentation_eq_ambient_action
   simpa [Representation.asAlgebraHom_of] using
     (L.ambient_action_map_eq_endHom (u := MonoidAlgebra.of A G s)).symm
 
-/-- Helper for Proposition 16-16.4-1: after mapping coefficients to the fraction field, Serre's
+/-- Helper for Proposition 16-16.4-1: after mapping coefficients to the fraction field, LinearRepresentations_Serre_1977's
 explicit integral Fourier coefficient at `s` already matches the ambient trace expression that the
 source proof will compare to the inverse-Wedderburn packet. -/
 lemma algebraMap_serre_fourier_element_apply_eq_ambient_trace
@@ -595,7 +595,7 @@ lemma algebraMap_serre_fourier_element_apply_eq_ambient_trace
             L.algebraMap_trace_eq_trace_endHom ((L.toRepresentation s⁻¹).comp φ), hbaseChange]
 
 /-- Helper for Proposition 16-16.4-1: after mapping coefficients all the way to
-`AlgebraicClosure K`, Serre's Fourier coefficient formula is still the same ambient trace formula,
+`AlgebraicClosure K`, LinearRepresentations_Serre_1977's Fourier coefficient formula is still the same ambient trace formula,
 now with the endomorphism base-changed to the algebraic closure. This is the exact coefficient
 comparison needed for the characteristic-zero one-slot packet route. -/
 lemma algebraMap_serre_fourier_element_apply_eq_algClosure_ambient_trace
@@ -630,7 +630,7 @@ lemma algebraMap_serre_fourier_element_apply_eq_algClosure_ambient_trace
                 (AlgebraicClosure K))
 
 /-- Helper for Proposition 16-16.4-1: over `K`, the ambient-trace coefficient formula already
-characterizes Serre's Fourier element. This packages the source-faithful coefficient comparison
+characterizes LinearRepresentations_Serre_1977's Fourier element. This packages the source-faithful coefficient comparison
 before any later complete-family owner reads off the distinguished simple factor. -/
 lemma eq_mapped_serre_fourier_of_ambient_coefficients_local
     [Invertible (Nat.card G : K)]
@@ -646,14 +646,14 @@ lemma eq_mapped_serre_fourier_of_ambient_coefficients_local
       MonoidAlgebra.mapRingHom G (algebraMap A K)
         (L.serre_fourier_element hdefect φ) := by
   ext s
-  -- Replace the mapped Serre coefficient by the already verified ambient trace formula over `K`.
+  -- Replace the mapped LinearRepresentations_Serre_1977 coefficient by the already verified ambient trace formula over `K`.
   rw [MonoidAlgebra.mapRingHom_apply,
     L.algebraMap_serre_fourier_element_apply_eq_ambient_trace
       (p := p) hdefect φ s]
   exact hcoeff s
 
 /-- Helper for Proposition 16-16.4-1: once a candidate element of `(AlgebraicClosure K)[G]` has
-the same ambient trace coefficients as Serre's mapped Fourier element, coefficientwise
+the same ambient trace coefficients as LinearRepresentations_Serre_1977's mapped Fourier element, coefficientwise
 extensionality identifies the two group-algebra elements. This isolates the last step after the
 inverse-Wedderburn coefficient computation. -/
 lemma eq_mapped_serre_fourier_of_algClosure_ambient_coefficients
@@ -671,7 +671,7 @@ lemma eq_mapped_serre_fourier_of_algClosure_ambient_coefficients
       MonoidAlgebra.mapRingHom G (algebraMap A (AlgebraicClosure K))
         (L.serre_fourier_element hdefect φ) := by
   ext s
-  -- Replace the mapped Serre coefficient by the already verified ambient trace formula.
+  -- Replace the mapped LinearRepresentations_Serre_1977 coefficient by the already verified ambient trace formula.
   rw [MonoidAlgebra.mapRingHom_apply,
     L.algebraMap_serre_fourier_element_apply_eq_algClosure_ambient_trace
       (p := p) hdefect φ s]
@@ -798,7 +798,7 @@ lemma family_equiv_action_zero_of_ambient_zero_local
 /-- Helper for Proposition 16-16.4-1: if an ambient action is the identity, then after
 transporting each member of a family of subrepresentations to a chosen equivalent target family,
 every coordinate action is still the identity. This packages the repeated packet-projector step
-used to identify the `φ = id` Serre element with the support projector. -/
+used to identify the `φ = id` LinearRepresentations_Serre_1977 element with the support projector. -/
 lemma family_equiv_action_id_of_ambient_id_local
     {L' : Type*} [Field L']
     {G' : Type*} [Group G']
@@ -820,7 +820,7 @@ lemma family_equiv_action_id_of_ambient_id_local
 /-- Helper for Proposition 16-16.4-1: the scalar extension of the ambient endomorphism induced by
 `LinearMap.id` on the stable lattice is the identity on the scalar-extended ambient
 representation. This is the normalization needed when the remaining packet argument specializes
-Serre's `u_φ` to the projector case `φ = LinearMap.id`. -/
+LinearRepresentations_Serre_1977's `u_φ` to the projector case `φ = LinearMap.id`. -/
 lemma algClosure_baseChange_endHom_id_local :
     LinearMap.baseChange (AlgebraicClosure K)
       ((L.toSubmodule_subtype_isBaseChange).endHom
@@ -877,7 +877,7 @@ lemma algClosure_family_equiv_action_zero_of_mapped_ambient_zero_local
 /-- Helper for Proposition 16-16.4-1: if a mapped group-algebra element acts as the identity on
 `Representation.scalarExtension ρ`, then every transported constituent in any chosen family also
 sees the identity action. This packages the scalar-extension specialization of the generic family
-projector bridge used to recognize the `φ = LinearMap.id` Serre element. -/
+projector bridge used to recognize the `φ = LinearMap.id` LinearRepresentations_Serre_1977 element. -/
 lemma algClosure_family_equiv_action_id_of_mapped_ambient_id_local
     {ι : Type*}
     {W : ι → Type*}
@@ -905,7 +905,7 @@ lemma algClosure_family_equiv_action_id_of_mapped_ambient_id_local
 /-- Helper for Proposition 16-16.4-1: for a complete irreducible family over an algebraically
 closed field, the inverse Wedderburn preimage attached to a family of endomorphisms acts on each
 coordinate by the prescribed endomorphism. This isolates the final `apply_symm_apply` read-off
-used after the coefficient comparison identifies Serre's mapped Fourier element with that
+used after the coefficient comparison identifies LinearRepresentations_Serre_1977's mapped Fourier element with that
 preimage. -/
 lemma irreducibleFamilyEndAlgEquiv_symm_coordinate_action_local
     {F : Type*} [Field F] [Algebra A F] [IsScalarTower A K F]
@@ -1109,7 +1109,7 @@ lemma family_supported_on_univ_image_local_id
 
 /-- Helper for Proposition 16-16.4-1: after applying the inverse-Wedderburn equivalence to the
 family supported on `Finset.univ.image c`, the coordinate at `c i` is exactly the original packet
-endomorphism `f i`. This is the source-faithful on-support read-off used when the mapped Serre
+endomorphism `f i`. This is the source-faithful on-support read-off used when the mapped LinearRepresentations_Serre_1977
 element is identified with that supported preimage. -/
 lemma irreducibleFamilyEndAlgEquiv_symm_supported_family_apply
     {F : Type*} [Field F] [Algebra A F] [IsScalarTower A K F]
@@ -1199,7 +1199,7 @@ lemma irreducibleFamilyEndAlgEquiv_symm_supported_id_family
 `AlgebraicClosure K`, the supported identity family already determines the exact injective product
 target and packet projector required by the general annihilator lemma. This isolates the purely
 Wedderburn-side data of the characteristic-zero projector argument so the only remaining step is
-to identify Serre's mapped element with this supported preimage. -/
+to identify LinearRepresentations_Serre_1977's mapped element with this supported preimage. -/
 lemma irreducibleFamily_supported_id_projector_target_local
     {κ : Type*} [Fintype κ] [DecidableEq κ]
     (π : κ → Rep (AlgebraicClosure K) G)
@@ -1232,7 +1232,7 @@ lemma irreducibleFamily_supported_id_projector_target_local
         (π := π) hπ_pairwise hπ_complete c hc) q
 
 /-- Helper for Proposition 16-16.4-1: in the equal-characteristic branch, the remaining packet
-block computation should show that the mapped Serre element acts on the scalar extension by the
+block computation should show that the mapped LinearRepresentations_Serre_1977 element acts on the scalar extension by the
 base-changed ambient endomorphism attached to `φ`. The target file only uses this already lifted
 identity and then descends it back to `K`. -/
 lemma equalChar_algClosure_fourier_action_eq_baseChange
@@ -1244,7 +1244,7 @@ lemma equalChar_algClosure_fourier_action_eq_baseChange
       LinearMap.baseChange (AlgebraicClosure K)
         ((L.toSubmodule_subtype_isBaseChange).endHom φ) := by
   -- TODO: cut out the distinguished packet block in equal characteristic, compute the coordinate
-  -- action of the mapped Serre element there, and then reassemble the scalar-extension action as
+  -- action of the mapped LinearRepresentations_Serre_1977 element there, and then reassemble the scalar-extension action as
   -- the transported base change of `φ`. The support-side `φ = LinearMap.id` normalization is
   -- already factored into `algClosure_baseChange_endHom_id_local`.
   sorry
@@ -1262,7 +1262,7 @@ lemma equalChar_serre_fourier_id_mul_eq_zero_of_algClosure_action_zero
     MonoidAlgebra.mapRingHom G (algebraMap A (AlgebraicClosure K))
       (L.serre_fourier_element hdefect
         (LinearMap.id : Module.End A L.toSubmodule) * u) = 0 := by
-  -- TODO: identify the mapped equal-characteristic Serre projector with the distinguished packet
+  -- TODO: identify the mapped equal-characteristic LinearRepresentations_Serre_1977 projector with the distinguished packet
   -- block projector, use `algClosure_family_equiv_action_zero_of_mapped_ambient_zero_local` and
   -- `algClosure_family_equiv_action_id_of_mapped_ambient_id_local` for the packet coordinates, and
   -- feed that description into

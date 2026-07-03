@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap10.Definition_10_17_1
-import stacks_project.Chap15.«15_18_0_1»
+import StacksProject_2024.Chap10.Definition_10_17_1
+import StacksProject_2024.Chap15.«15_18_0_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -23,7 +23,7 @@ Domain triage:
 - primary domain: flatness loci of finite modules over a Noetherian base, detected primewise on a
   closed subset of `Spec S` by the local criterion for flatness;
 - sampled owner declarations:
-  `stacks_project.Chap10.Definition_10_17_1`'s closed-subset notation owner `V(-)`,
+  `StacksProject_2024.Chap10.Definition_10_17_1`'s closed-subset notation owner `V(-)`,
   `Module.flatOverBaseLocus`,
   `Ideal.zeroLocus_subset_flatOverBaseLocus_iff`,
   `flat_localizedModule_atPrime_of_flat_quotients_by_ideal_powers`,

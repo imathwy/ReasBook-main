@@ -1,4 +1,4 @@
-import Nesterov.Chap01.Definition_1_2_8
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_2_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -30,7 +30,7 @@ Derived API:
 * fixed-problem evaluations `oracle problem : Query → Answer`
 * downstream locality predicates such as `OptimizationOracle.IsLocal`
 
-The canonical owner already lives upstream in `Nesterov.Chap01.Definition_1_2_8`, so this item
+The canonical owner already lives upstream in `LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_2_8`, so this item
 keeps only the direct recall surface and does not restate a parallel local owner API. -/
 
 /- Definition 1.2.8: an optimization oracle for problem instances in `Problem` and query points in

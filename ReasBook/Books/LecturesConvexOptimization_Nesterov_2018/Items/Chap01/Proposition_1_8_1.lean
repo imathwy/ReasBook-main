@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Proposition_1_8_1
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Proposition_1_8_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -19,7 +19,7 @@ Best owner abstraction:
 * the canonical upper model
   `quadraticallyRegularizedObjective (firstOrderTaylorModelAt f xBar) (1 / h) xBar`
   together with its minimizer and upper-approximation theorems already proved in
-  `Nesterov.Chap01.Proposition_1_8_1`
+  `LecturesConvexOptimization_Nesterov_2018.Chap01.Proposition_1_8_1`
 
 Primitive data:
 * the objective `f`, base point `xBar`, and step size `h`

@@ -1,4 +1,4 @@
-import Serre.Chap16.Proposition_16_16_4_1.PacketBridge
+import LinearRepresentations_Serre_1977.Chap16.Proposition_16_16_4_1.PacketBridge
 
 noncomputable section
 
@@ -29,7 +29,7 @@ local instance : Fintype G := Fintype.ofFinite G
 
 /-- Helper for Proposition 16-16.4-1: the equal-characteristic branch of the remaining Fourier
 packet argument. The local distinguished-block computation already identifies the scalar-extended
-action of Serre's Fourier element, so this wrapper only performs the descent back to `K` and
+action of LinearRepresentations_Serre_1977's Fourier element, so this wrapper only performs the descent back to `K` and
 reuses the corresponding projector-annihilator statement. -/
 lemma algClosure_fourier_action_eq_baseChange_of_ambient_action_local
     (hdefect : ρ.HasDefectZero p) (φ : Module.End A L.toSubmodule)
@@ -50,7 +50,7 @@ lemma algClosure_fourier_action_eq_baseChange_of_ambient_action_local
       (f := (L.toSubmodule_subtype_isBaseChange).endHom φ)
       hambient
 
-/-- Helper for Proposition 16-16.4-1: once the mapped Serre Fourier element is known to act on
+/-- Helper for Proposition 16-16.4-1: once the mapped LinearRepresentations_Serre_1977 Fourier element is known to act on
 the original simple representation `ρ`, any isomorphic simple representation sees the same action
 after conjugation. This isolates the purely formal transport half of the source Proposition `11`
 package, so the remaining equal-characteristic blocker is only the self-action identity on `ρ`. -/
@@ -205,7 +205,7 @@ lemma basis_unit_endHom_toMatrix_entry_local
   exact congrArg (fun M : Matrix ι ι K ↦ M a m)
     (L.basis_unit_endHom_toMatrix_local (ρ := ρ) (b := b) i j)
 
-/-- Helper for Proposition 16-16.4-1: the trace coefficient appearing in Serre's integral Fourier
+/-- Helper for Proposition 16-16.4-1: the trace coefficient appearing in LinearRepresentations_Serre_1977's integral Fourier
 formula for a basis matrix unit is exactly the corresponding ambient matrix entry of `ρ s⁻¹`. -/
 lemma trace_comp_basis_unit_eq_matrix_entry_local
     {ι : Type*} [Fintype ι] [DecidableEq ι]

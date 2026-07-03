@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import stacks_project.Chap20.Remark_20_28_3
+import StacksProject_2024.Chap20.Remark_20_28_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

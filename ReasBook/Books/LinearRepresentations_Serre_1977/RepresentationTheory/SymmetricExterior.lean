@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.LinearAlgebra.TensorPower.Symmetric
+import LinearRepresentations_Serre_1977.LinearAlgebra.TensorPower.Symmetric
 
 noncomputable section
 

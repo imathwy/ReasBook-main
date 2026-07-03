@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap18.Exercise_18_18_6_4.ExplicitWordTransportData
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_4.ExplicitWordTransportData
 
 noncomputable section
 
@@ -64,7 +64,7 @@ theorem alternating_group_fin5_to_psl_lookup_map_one :
     alternating_group_fin5_to_psl_lookup 1 = 1 := by
   exact alternating_group_fin5_to_psl_lookup_transport_facts.1
 
-/-- Helper for Exercise 18-18.6-4: left multiplication by Serre's order-`5` generator is
+/-- Helper for Exercise 18-18.6-4: left multiplication by LinearRepresentations_Serre_1977's order-`5` generator is
 transported correctly to `PSL₂(𝔽₅)`. -/
 theorem alternating_group_fin5_to_psl_lookup_mul_generator_five
     (g : A5) :
@@ -72,7 +72,7 @@ theorem alternating_group_fin5_to_psl_lookup_mul_generator_five
       psl_generator_five * alternating_group_fin5_to_psl_lookup g := by
   exact alternating_group_fin5_to_psl_lookup_transport_facts.2.1 g
 
-/-- Helper for Exercise 18-18.6-4: left multiplication by Serre's order-`2` generator is
+/-- Helper for Exercise 18-18.6-4: left multiplication by LinearRepresentations_Serre_1977's order-`2` generator is
 transported correctly to `PSL₂(𝔽₅)`. -/
 theorem alternating_group_fin5_to_psl_lookup_mul_generator_two
     (g : A5) :
@@ -81,7 +81,7 @@ theorem alternating_group_fin5_to_psl_lookup_mul_generator_two
   exact alternating_group_fin5_to_psl_lookup_transport_facts.2.2 g
 
 /-- Helper for Exercise 18-18.6-4: the direct transport intertwines left multiplication by any
-explicit word in Serre's two generators. -/
+explicit word in LinearRepresentations_Serre_1977's two generators. -/
 theorem alternating_group_fin5_to_psl_lookup_word_mul
     (w : List Bool) (g : A5) :
     alternating_group_fin5_to_psl_lookup

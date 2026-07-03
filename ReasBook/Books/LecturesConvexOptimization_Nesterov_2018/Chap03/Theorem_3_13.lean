@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import Nesterov.Chap03.Theorem_3_1_3_1
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_1_3_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -56,7 +56,7 @@ source-facing `ℓ₁`-ball estimate. -/
 /- Theorem 3.13 is already the chapter's canonical source-facing `ℓ₁` local regularity theorem,
 recorded upstream as
 `ConvexOn.exists_l1_ball_subset_effectiveDomain_and_abs_sub_le_of_mem_interior` in
-`Nesterov.Chap03.Theorem_3_1_3_1`. This file reuses that owner theorem directly and keeps
+`LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_1_3_1`. This file reuses that owner theorem directly and keeps
 only the bounded-image consequence as additional derived API. -/
 recall exists_l1_ball_subset_effectiveDomain_and_abs_sub_le_of_mem_interior
     {f : E → WithTop ℝ}

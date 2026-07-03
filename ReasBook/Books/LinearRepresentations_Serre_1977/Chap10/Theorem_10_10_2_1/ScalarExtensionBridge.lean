@@ -1,4 +1,4 @@
-import Serre.Chap10.Lemma_10_10_2_3
+import LinearRepresentations_Serre_1977.Chap10.Lemma_10_10_2_3
 
 noncomputable section
 

@@ -1,15 +1,15 @@
-import Serre.Chap10.Definition_10_10_1_3
-import Serre.Chap10.Theorem_10_10_5_2
-import Serre.Chap02.Theorem_2_2_5_2
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap11.Theorem_11_11_2_2
-import Serre.Chap01.Definition_1_1_2_1
-import Serre.GroupTheory.ConjClassesPower
-import Serre.RepresentationTheory.GroupFunctionPairing
-import Serre.Chap06.Proposition_6_6_5_1
-import Serre.Chap06.Corollary_6_6_5_3
-import Serre.Chap06.Exercise_6_6_5_6
-import Serre.Chap11.Theorem_11_11_2_3.Index
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_2
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_5_2
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_2
+import LinearRepresentations_Serre_1977.Chap01.Definition_1_1_2_1
+import LinearRepresentations_Serre_1977.GroupTheory.ConjClassesPower
+import LinearRepresentations_Serre_1977.RepresentationTheory.GroupFunctionPairing
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_1
+import LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_5_3
+import LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_5_6
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_3.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

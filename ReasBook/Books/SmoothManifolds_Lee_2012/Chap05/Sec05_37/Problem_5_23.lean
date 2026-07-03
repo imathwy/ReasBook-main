@@ -3,15 +3,15 @@ import Mathlib.Geometry.Manifold.ContMDiff.Atlas
 import Mathlib.Geometry.Manifold.Instances.Real
 import Mathlib.Geometry.Manifold.IsManifold.InteriorBoundary
 import Mathlib.Geometry.Manifold.SmoothEmbedding
-import SmoothManifoldsLee.Chap01.Sec01_06.Definition_1_6_extra_2
-import SmoothManifoldsLee.Chap01.Sec01_05.Definition_1_5_extra_1
-import SmoothManifoldsLee.Chap05.Sec05_30.Definition_5_30_extra_3
-import SmoothManifoldsLee.Chap05.Sec05_30.Corollary_5_13
-import SmoothManifoldsLee.Chap05.Sec05_35.Corollary_5_39
-import SmoothManifoldsLee.Chap05.Sec05_36.Theorem_5_51
-import SmoothManifoldsLee.Chap05.Sec05_36.Definition_5_36_extra_3
-import SmoothManifoldsLee.Chap05.Sec05_36.Definition_5_36_extra_4
-import SmoothManifoldsLee.Chap05.Sec05_37.Problem_5_8
+import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Definition_1_6_extra_2
+import SmoothManifolds_Lee_2012.Chap01.Sec01_05.Definition_1_5_extra_1
+import SmoothManifolds_Lee_2012.Chap05.Sec05_30.Definition_5_30_extra_3
+import SmoothManifolds_Lee_2012.Chap05.Sec05_30.Corollary_5_13
+import SmoothManifolds_Lee_2012.Chap05.Sec05_35.Corollary_5_39
+import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Theorem_5_51
+import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Definition_5_36_extra_3
+import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Definition_5_36_extra_4
+import SmoothManifolds_Lee_2012.Chap05.Sec05_37.Problem_5_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

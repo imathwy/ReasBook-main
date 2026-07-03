@@ -1,5 +1,5 @@
 import Mathlib.Algebra.Homology.HomotopyCategory.HomComplexCohomology
-import stacks_project.Chap18.Definition_18_19_1
+import StacksProject_2024.Chap18.Definition_18_19_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -21,7 +21,7 @@ local notation "ModU" => SheafOfModules (RingedSite.structureSheaf (X.localizati
   `RingedSite.localization_structureSheaf`,
   `CochainComplex.HomComplex.homologyAddEquiv`,
   `CochainComplex.HomComplex.CohomologyClass.homAddEquiv`,
-  `stacks_project/Items/Chap20/20_41_0_1.lean`;
+  `StacksProject_2024/Items/Chap20/20_41_0_1.lean`;
 - best owner abstraction: the source-facing ambient owner is the localized ringed site
   `X.localization U`, while the canonical core equivalences are
   `CochainComplex.HomComplex.homologyAddEquiv` and `homAddEquiv`;

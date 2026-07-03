@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap14.Lemma_14_14_4_1
-import Serre.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
 
 noncomputable section
 
@@ -16,7 +16,7 @@ section FiniteRepTensorRing
 variable (k : Type u) (G : Type u) [Field k] [Monoid G]
 
 /- Domain-style sampling for this item:
-* primary domain: tensor-product actions on Serre's Grothendieck groups `R₀[k](G)` and `P₀[k](G)`.
+* primary domain: tensor-product actions on LinearRepresentations_Serre_1977's Grothendieck groups `R₀[k](G)` and `P₀[k](G)`.
 * core/canonical owners already fixed upstream:
   `finiteRepGrothendieckGroup` / `R₀[k](G)`,
   `FiniteProjectiveGroupAlgebraModule`,
@@ -239,7 +239,7 @@ theorem finiteRepGrothendieck_neg_mul
   exact congrArg (fun f : AddMonoid.End (R₀[k](G)) ↦ f y)
     ((finiteRepActionHom k G).map_neg x)
 
-/-- Tensor-product multiplication makes `R_k(G)` into Serre's representation ring. -/
+/-- Tensor-product multiplication makes `R_k(G)` into LinearRepresentations_Serre_1977's representation ring. -/
 instance finiteRepGrothendieckGroup_commRing :
     CommRing (R₀[k](G)) :=
   CommRing.ofMinimalAxioms

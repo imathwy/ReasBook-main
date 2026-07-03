@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.Chap14.Corollary_14_14_3_3
-import Serre.Chap14.Exercise_14_14_5_3
-import Serre.Chap15.Definition_15_15_1_1
-import Serre.Chap15.Definition_15_15_3_1
-import Serre.Chap16.Theorem_16_16_1_2.BrauerMultiplicity
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_3_3
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_3
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_2.BrauerMultiplicity
 
 noncomputable section
 

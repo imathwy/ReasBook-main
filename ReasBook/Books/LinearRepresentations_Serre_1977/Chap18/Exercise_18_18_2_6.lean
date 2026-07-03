@@ -1,7 +1,7 @@
-import Serre.Chap09.Exercise_9_9_1_3
-import Serre.Chap06.Proposition_6_6_2_2
-import Serre.Chap14.Remark_14_14_1_2
-import Serre.Chap18.Exercise_18_18_2_6.Index
+import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_3
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_2_2
+import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_1_2
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_2_6.Index
 import Mathlib.RingTheory.Morita.Matrix
 
 -- Declarations for this item will be appended below by the statement pipeline.
@@ -39,7 +39,7 @@ variable {V : Type w} [AddCommGroup V] [Module k V] [FiniteDimensional k V]
 --   Grothendieck classes and the resulting isomorphism criterion.
 --
 -- Layer triage:
--- * source-facing: Serre's determinant-polynomial criterion and its unipotent triviality
+-- * source-facing: LinearRepresentations_Serre_1977's determinant-polynomial criterion and its unipotent triviality
 --   corollary.
 -- * core/canonical: the bundled semisimple owner theorem
 --   `finiteRepGrothendieckClass_eq_iff_nonempty_iso_of_isSemisimple` on `FDRep.of ρ` and
@@ -92,7 +92,7 @@ lemma trace_eq_on_common_kernel_quotient_of_det_one_add_polynomial_eq
       Ideal.Quotient.liftₐ I ρ'.asAlgebraHom
         (prod_asAlgebraHom_ker_le_right (ρ := ρ) (ρ' := ρ'))
     ∀ a : A, LinearMap.trace k V (φV a) = LinearMap.trace k W (φW a) := by
-  -- Route correction: Serre's proof only needs trace equality on the common image algebra, so
+  -- Route correction: LinearRepresentations_Serre_1977's proof only needs trace equality on the common image algebra, so
   -- we first extract ordinary character equality from the determinant polynomials and then
   -- descend that linear invariant across the quotient.
   have hchar :
@@ -240,7 +240,7 @@ theorem nonempty_equiv_of_isSemisimple_of_det_one_add_polynomial_eq
         LinearMap.trace k (⋀[k]^n V) ((ρ.nthExteriorPower n).asAlgebraHom a) =
           LinearMap.trace k (⋀[k]^n W) ((ρ'.nthExteriorPower n).asAlgebraHom a) := by
     intro n a
-    -- Route correction: this is the exact additive invariant delivered by Serre's proof route on
+    -- Route correction: this is the exact additive invariant delivered by LinearRepresentations_Serre_1977's proof route on
     -- `k[G]`; the missing owner still has to convert these exterior-power traces into
     -- multiplicity equality on the common semisimple image algebra.
     exact

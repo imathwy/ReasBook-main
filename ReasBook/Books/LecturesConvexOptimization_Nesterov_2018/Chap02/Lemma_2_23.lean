@@ -1,4 +1,4 @@
-import Nesterov.Chap02.Lemma_2_22
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Lemma_2_22
 
 noncomputable section
 
@@ -12,15 +12,15 @@ variable {E : Type u} {m : ℕ}
 optimization problem.
 
 Owner abstractions sampled before refining:
-- `LagrangianProblem` in `Nesterov/Chap01/Definition_1_10_2.lean`, which owns the primitive
+- `LagrangianProblem` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_10_2.lean`, which owns the primitive
   objective-plus-constraints data;
-- `LagrangianProblem.constrainedAuxiliaryObjective` in `Nesterov/Chap02/Lemma_2_21.lean`,
+- `LagrangianProblem.constrainedAuxiliaryObjective` in `LecturesConvexOptimization_Nesterov_2018/Chap02/Lemma_2_21.lean`,
   the canonical auxiliary objective `x ↦ max {f₀(x) - t, f₁(x), …, fₘ(x)}`;
 - `LagrangianProblem.constrainedAuxiliaryOptimalValue` in
-  `Nesterov/Chap02/Lemma_2_21.lean`, the derived extended-real infimum value of that owner
+  `LecturesConvexOptimization_Nesterov_2018/Chap02/Lemma_2_21.lean`, the derived extended-real infimum value of that owner
   objective;
 - `LagrangianProblem.constrainedAuxiliaryOptimalValue_eq_of_isMinOn` in
-  `Nesterov/Chap02/Lemma_2_21.lean`, the owner attained-value bridge used to replace chosen
+  `LecturesConvexOptimization_Nesterov_2018/Chap02/Lemma_2_21.lean`, the owner attained-value bridge used to replace chosen
   minimizer evaluations by the canonical value function.
 
 The primitive owner here is `LagrangianProblem E m`. For the displayed one-variable inequality, the

@@ -1,6 +1,6 @@
-import Serre.Chap01.Definition_1_1_2_1
-import Serre.Chap01.Theorem_1_1_4_2
-import Serre.Chap08.Proposition_8_8_2_1.MackeyWeights
+import LinearRepresentations_Serre_1977.Chap01.Definition_1_1_2_1
+import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_4_2
+import LinearRepresentations_Serre_1977.Chap08.Proposition_8_8_2_1.MackeyWeights
 
 open CategoryTheory
 
@@ -337,7 +337,7 @@ noncomputable def theta_character_weight_subrepresentation_equiv
         (character_weight_subrepresentation (φ := φ) (Rep.coind S.subtype σ) χ).ρ :=
     character_weight_subrepresentation_equiv_of_equiv (φ := φ)
       (theta_coind_character_stabilizer_subgroup_equiv (φ := φ) χ ρ) χ
-  -- Route correction: Serre's source proof recovers `ρ` from the distinguished `χ`-weight by
+  -- Route correction: LinearRepresentations_Serre_1977's source proof recovers `ρ` from the distinguished `χ`-weight by
   -- passing to the coinduced model, forcing support on the packet subgroup, and evaluating at `1`.
   exact etransport.trans ecoind_weight
 

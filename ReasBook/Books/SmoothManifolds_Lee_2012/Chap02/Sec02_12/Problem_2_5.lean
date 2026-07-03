@@ -5,7 +5,7 @@ import Mathlib.Analysis.Calculus.Taylor
 import Mathlib.Geometry.Manifold.ContMDiff.Basic
 import Mathlib.Geometry.Manifold.ContMDiff.NormedSpace
 import Mathlib.Geometry.Manifold.Instances.Real
-import SmoothManifoldsLee.Chap01.Sec01_04.Example_1_23
+import SmoothManifolds_Lee_2012.Chap01.Sec01_04.Example_1_23
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

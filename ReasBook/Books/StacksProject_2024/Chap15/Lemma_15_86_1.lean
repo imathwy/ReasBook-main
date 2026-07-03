@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
 import Mathlib.CategoryTheory.Triangulated.TStructure.TruncLTGE
-import stacks_project.Chap10.Definition_10_134_1
-import stacks_project.Chap15.Lemma_15_60_3
+import StacksProject_2024.Chap10.Definition_10_134_1
+import StacksProject_2024.Chap15.Lemma_15_60_3
 
 noncomputable section
 

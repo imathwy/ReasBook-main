@@ -1,6 +1,6 @@
-import FirstOrderMethodsinOptimization.Chap02.Definition_2_2
-import FirstOrderMethodsinOptimization.Chap02.Theorem_2_2
-import FirstOrderMethodsinOptimization.Chap02.Definition_2_5
+import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_2
+import FirstOrderMethodsOptimization_Beck_2017.Chap02.Theorem_2_2
+import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

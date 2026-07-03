@@ -1,15 +1,15 @@
 import Mathlib
-import Serre.Chap02.Remark_2_2_1_2
-import Serre.Chap02.Remark_2_2_4_4
-import Serre.Chap06.Exercise_6_6_3_3
-import Serre.Chap06.Corollary_6_6_5_4
-import Serre.Chap06.Proposition_6_6_3_1
-import Serre.GroupTheory.ConjClassesPower
-import Serre.Chap06.Exercise_6_6_5_6
-import Serre.Chap09.Exercise_9_9_1_3
-import Serre.Chap11.Theorem_11_11_2_1
-import Serre.Chap12.Proposition_12_12_1_1
-import Serre.RepresentationTheory.SymmetricExterior
+import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_1_2
+import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_4_4
+import LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_3_3
+import LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_5_4
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_3_1
+import LinearRepresentations_Serre_1977.GroupTheory.ConjClassesPower
+import LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_5_6
+import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_3
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.RepresentationTheory.SymmetricExterior
 
 open scoped BigOperators MonoidAlgebra Representation
 open Representation
@@ -92,7 +92,7 @@ private lemma intCast_smul_eq_zsmul (m : ℤ) (f : G → ℂ) :
 
 omit [Finite G] in
 /-- Helper for Exercise 9-9.1-4: the Adams transform of a finite-dimensional character should land
-back in Serre's character ring. -/
+back in LinearRepresentations_Serre_1977's character ring. -/
 lemma psiPower_mem_characterRing (n : ℕ+) (V : FDRep ℂ G) :
     Ψ^n((V.character : G → ℂ)) ∈ R(G) := by
   -- Route correction: isolate the top Adams summand once in a split-last recurrence, then run

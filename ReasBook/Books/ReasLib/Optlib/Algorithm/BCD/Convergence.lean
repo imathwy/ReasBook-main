@@ -3,7 +3,7 @@ Copyright (c) 2024 Chenyi Li, Bowen Yang, Yifan Bai. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Chenyi Li, Bowen Yang, Yifan Bai
 -/
-import Reaslib.Optlib.Algorithm.BCD.Scheme
+import ReasLib.Optlib.Algorithm.BCD.Scheme
 
 /-!
 # Block Coordinate Descent

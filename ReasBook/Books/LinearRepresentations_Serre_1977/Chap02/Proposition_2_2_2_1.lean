@@ -16,7 +16,7 @@ variable (ρ1 : Representation k G V1) (ρ2 : Representation k G V2)
 variable [ρ1.IsIrreducible] [ρ2.IsIrreducible]
 
 -- Source/core/bridge triage:
--- * source-facing: Schur's lemma as Serre states it, namely zero/nonzero and scalar-identity
+-- * source-facing: Schur's lemma as LinearRepresentations_Serre_1977 states it, namely zero/nonzero and scalar-identity
 --   consequences for equivariant maps.
 -- * core/canonical: the owner abstraction is `Representation.IntertwiningMap` together with the
 --   `Representation.IsIrreducible` API in mathlib.
@@ -71,7 +71,7 @@ theorem intertwiningMap_eq_smul_id
     (Representation.IsIrreducible.algebraMap_intertwiningMap_bijective_of_isAlgClosed
       (ρ := ρ)).surjective f
   refine ⟨c, ?_⟩
-  -- Rewrite the abstract scalar endomorphism into Serre's source-facing homothety form.
+  -- Rewrite the abstract scalar endomorphism into LinearRepresentations_Serre_1977's source-facing homothety form.
   calc
     f = algebraMap k (ρ.IntertwiningMap ρ) c := hc.symm
     _ = c • 1 := algebraMap_eq_smul_id (ρ := ρ) c

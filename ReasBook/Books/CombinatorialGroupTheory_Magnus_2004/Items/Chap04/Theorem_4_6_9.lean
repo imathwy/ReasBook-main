@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory.Items.Chap03.Proposition_3_13_8
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Proposition_3_13_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -13,7 +13,7 @@ section
 variable {K : Type u} [Field K]
 
 /-!
-Primary domain: Bass-Serre decompositions of matrix groups over polynomial rings.
+Primary domain: Bass-LinearRepresentations_Serre_1977 decompositions of matrix groups over polynomial rings.
 
 Layer triage:
 - `source-facing`: the decomposition of `GL₂(K[x])` as the amalgamated free product of the
@@ -33,7 +33,7 @@ Domain sampling:
 3. `constantLinearSubgroup` from Proposition `3-13-8` is the constant copy of `GL₂(K)` inside
    `GL₂(K[x])`.
 4. `glPolynomial_amalgamatedProductComparison_bijective` from Proposition `3-13-8` already states
-   the exact owner-level Bass-Serre decomposition used here.
+   the exact owner-level Bass-LinearRepresentations_Serre_1977 decomposition used here.
 
 Primitive vs. derived:
 - primitive source objects: the two actual subgroups inside `GL (Fin 2) (Polynomial K)`;
@@ -42,7 +42,7 @@ Primitive vs. derived:
 -/
 
 /- Theorem 4-6-9 adds no new owner-level API beyond Proposition `3-13-8`. The upstream theorem
-already states the source-faithful Bass-Serre decomposition on the canonical subgroup objects, so
+already states the source-faithful Bass-LinearRepresentations_Serre_1977 decomposition on the canonical subgroup objects, so
 this file keeps only a direct recall instead of a parallel local `Monoid.PushoutI` presentation. -/
 #check (glPolynomial_amalgamatedProductComparison_bijective K :
   Function.Bijective

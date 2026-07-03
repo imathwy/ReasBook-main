@@ -1,8 +1,8 @@
-import AchimKlenkeLean.Items.Chap08.Example_8_27
-import AchimKlenkeLean.Items.Chap17.Definition_17_33
-import AchimKlenkeLean.Items.Chap17.Definition_17_30
-import AchimKlenkeLean.Items.Chap17.Theorem_17_8
-import AchimKlenkeLean.Items.Chap19.Definition_19_1
+import ProbabilityTheory_Klenke_2020.Items.Chap08.Example_8_27
+import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_33
+import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_30
+import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_8
+import ProbabilityTheory_Klenke_2020.Items.Chap19.Definition_19_1
 import Mathlib
 
 -- Declarations for this item will be appended below by the statement pipeline.

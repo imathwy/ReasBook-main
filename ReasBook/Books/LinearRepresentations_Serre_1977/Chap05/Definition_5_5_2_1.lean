@@ -3,7 +3,7 @@ import Mathlib
 -- Declarations for this item will be appended below by the statement pipeline.
 
 /- Source/core/bridge triage:
-- `source-facing`: Serre's continuous rotation group `C_infty`, written via angles modulo `2π`
+- `source-facing`: LinearRepresentations_Serre_1977's continuous rotation group `C_infty`, written via angles modulo `2π`
   together with its invariant measure;
 - `core/canonical`: the additive circle owner `Real.Angle = AddCircle (2 * π)`;
 - `bridge/view`: `Real.Angle.toCircle` realizes an angle class as the corresponding unit complex

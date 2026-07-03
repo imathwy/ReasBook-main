@@ -1,4 +1,4 @@
-import cartan.VII.section27.«0003_Definition_VII_1_extra_1»
+import DifferentialForms_Cartan_1970.VII.section27.«0003_Definition_VII_1_extra_1»
 import Mathlib
 
 -- Declarations for this item will be appended below by the statement pipeline.

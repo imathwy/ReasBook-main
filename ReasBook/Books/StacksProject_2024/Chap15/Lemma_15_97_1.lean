@@ -1,6 +1,6 @@
-import stacks_project.Chap15.Definition_15_8_3
-import stacks_project.Chap15.Definition_15_65_1
-import stacks_project.Chap15.PrincipalIdeal
+import StacksProject_2024.Chap15.Definition_15_8_3
+import StacksProject_2024.Chap15.Definition_15_65_1
+import StacksProject_2024.Chap15.PrincipalIdeal
 import Mathlib.Data.Int.Range
 
 -- Declarations for this item will be appended below by the statement pipeline.

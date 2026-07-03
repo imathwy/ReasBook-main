@@ -1,7 +1,7 @@
 import Mathlib
-import BauschkeLean.Chap07.Exercise_7_9
-import BauschkeLean.Chap13.Example_13_2
-import BauschkeLean.Chap13.Proposition_13_30
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap07.Exercise_7_9
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Example_13_2
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Proposition_13_30
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap15.Lemma_15_58_1
-import stacks_project.Chap17.Definition_17_5_1
+import StacksProject_2024.Chap15.Lemma_15_58_1
+import StacksProject_2024.Chap17.Definition_17_5_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

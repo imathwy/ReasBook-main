@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap11.Theorem_11_11_2_1
-import Serre.RepresentationTheory.SymmetricExterior
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1
+import LinearRepresentations_Serre_1977.RepresentationTheory.SymmetricExterior
 
 open scoped Representation
 

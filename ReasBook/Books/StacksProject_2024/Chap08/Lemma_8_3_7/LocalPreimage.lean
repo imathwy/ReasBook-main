@@ -1,5 +1,5 @@
-import stacks_project.Chap08.Lemma_8_3_7.ComparisonCocycle
-import stacks_project.Chap08.Lemma_8_3_7.Faithful
+import StacksProject_2024.Chap08.Lemma_8_3_7.ComparisonCocycle
+import StacksProject_2024.Chap08.Lemma_8_3_7.Faithful
 
 noncomputable section
 

@@ -1,6 +1,6 @@
 import Mathlib
-import «stacks_project».«Chap04».«4_27_7_1»
-import «stacks_project».«Chap04».«Lemma_4_19_2»
+import «StacksProject_2024».«Chap04».«4_27_7_1»
+import «StacksProject_2024».«Chap04».«Lemma_4_19_2»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,10 +1,10 @@
-import stacks_project.Chap10.Definition_10_67_1
-import stacks_project.Chap10.Definition_10_157_1
-import stacks_project.Chap10.Lemma_10_40_6
-import stacks_project.Chap10.Lemma_10_63_15
-import stacks_project.Chap10.Lemma_10_63_18
-import stacks_project.Chap10.Lemma_10_72_9
-import stacks_project.Chap10.Proposition_10_63_6
+import StacksProject_2024.Chap10.Definition_10_67_1
+import StacksProject_2024.Chap10.Definition_10_157_1
+import StacksProject_2024.Chap10.Lemma_10_40_6
+import StacksProject_2024.Chap10.Lemma_10_63_15
+import StacksProject_2024.Chap10.Lemma_10_63_18
+import StacksProject_2024.Chap10.Lemma_10_72_9
+import StacksProject_2024.Chap10.Proposition_10_63_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -186,7 +186,7 @@ lemma supportDim_localizationAtPrime_eq_zero_of_minimal_support
         (LocalizedModule.AtPrime p.asIdeal M)))
 
 /- Domain triage:
-* source-facing: the equivalence between Serre's condition `(S_1)` and having no embedded
+* source-facing: the equivalence between LinearRepresentations_Serre_1977's condition `(S_1)` and having no embedded
   associated primes;
 * core/canonical: `Module.SerreConditionS R M 1` for `(S_1)` and `embeddedAssociatedPrimes R M`
   for the no-embedded-primes condition;
@@ -204,7 +204,7 @@ owners in this file.
 -- while support dimension at least `1` produces a smaller prime in the support; a minimal such
 -- prime is associated, so `p` is embedded.
 /-- Lemma 10.157.2: a finite module over a Noetherian ring has no embedded associated primes if
-and only if it satisfies Serre's condition `(S_1)`. -/
+and only if it satisfies LinearRepresentations_Serre_1977's condition `(S_1)`. -/
 theorem embeddedAssociatedPrimes_eq_empty_iff_serreConditionS_one :
     embeddedAssociatedPrimes R M = ∅ ↔ Module.SerreConditionS R M 1 := by
   constructor

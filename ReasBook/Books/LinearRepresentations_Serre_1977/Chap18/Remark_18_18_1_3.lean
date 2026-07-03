@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap18.Proposition_18_18_1_2
+import LinearRepresentations_Serre_1977.Chap18.Proposition_18_18_1_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -20,7 +20,7 @@ variable {G : Type u} [Group G]
 
 /-
 Domain-style sampling:
-* source-facing: Serre's virtual modular character on `R₀[k](G)`, obtained by additivity from
+* source-facing: LinearRepresentations_Serre_1977's virtual modular character on `R₀[k](G)`, obtained by additivity from
   modular characters of finite-dimensional `k[G]`-representations.
 * core/canonical owners inspected in this domain: `Representation.modularCharacter`,
   `finiteRepGrothendieckRelations`, `finiteRepGrothendieckCharacter`, and `decompositionHom`.
@@ -61,7 +61,7 @@ private theorem finiteRepGrothendieckRelations_le_virtualModularCharacterLift_ke
     sub_eq_zero.mpr hchar
 
 /-- Remark 18-18.1-3: additivity of the modular character extends it from finite-dimensional
-`k[G]`-representations to a virtual modular character on Serre's Grothendieck group `R_k(G)`,
+`k[G]`-representations to a virtual modular character on LinearRepresentations_Serre_1977's Grothendieck group `R_k(G)`,
 valued on the `p`-regular locus of `G`. -/
 def virtualModularCharacter (lift : PrimeToPRoot p k → A) :
     R₀[k](G) →+ ({ s : G // IsPRegular p s } → A) :=

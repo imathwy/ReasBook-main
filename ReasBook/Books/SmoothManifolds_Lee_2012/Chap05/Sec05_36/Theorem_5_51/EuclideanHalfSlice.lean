@@ -1,5 +1,5 @@
-import SmoothManifoldsLee.Chap05.Sec05_36.Definition_5_36_extra_4
-import SmoothManifoldsLee.Chap01.Sec01_06.Definition_1_6_extra_2
+import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Definition_5_36_extra_4
+import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Definition_1_6_extra_2
 
 -- Declarations for theorem-local helper geometry used by Theorem 5.51.
 

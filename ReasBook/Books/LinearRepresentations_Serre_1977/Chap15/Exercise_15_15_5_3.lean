@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.Chap14.Corollary_14_14_4_4
-import Serre.Chap14.Lemma_14_14_4_2
-import Serre.Chap15.Definition_15_15_2_1
-import Serre.Chap15.Exercise_15_15_5_3.Index
-import Serre.Chap15.Exercise_15_15_5_3.ResidueFieldLift
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_4
+import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_2
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_2_1
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_5_3.Index
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_5_3.ResidueFieldLift
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -24,7 +24,7 @@ variable {A : Type u} [CommRing A] [IsLocalRing A]
 * bridge/view: the direct quotient-level lift and congruence conditions expressed through
   `Submodule.factorPowSucc` and `Representation.IsIntertwiningMap`, together with the thin
   representation-level residue-field lifting view `IsResidueFieldLift` that keeps the theorem
-  surface in Serre's representation language while delegating the reduction owner to Chapter `14`.
+  surface in LinearRepresentations_Serre_1977's representation language while delegating the reduction owner to Chapter `14`.
 -/
 
 namespace Representation
@@ -59,7 +59,7 @@ private theorem transition_difference_reduces_to_zero
 
 /-- Helper for Exercise 15-15.5-3: the transition
 `E / 𝔪^(n+1) E → E / 𝔪^n E` is surjective. This is the basic pointwise lift input before
-reconstructing Serre's preliminary automorphisms upstairs. -/
+reconstructing LinearRepresentations_Serre_1977's preliminary automorphisms upstairs. -/
 private theorem maximalIdealPowTransition_surjective
     (n : ℕ+) :
     Function.Surjective (maximalIdealPowTransition (A := A) (E := E) n) := by
@@ -87,7 +87,7 @@ private theorem maximalIdealPowTransition_surjective_factorPowSucc
 
 /-- Helper for Exercise 15-15.5-3: the kernel of the transition is the canonical image of the
 layer `𝔪^n E / 𝔪^(n+1) E` in `E / 𝔪^(n+1) E`. This is the square-zero coefficient layer in
-Serre's argument. -/
+LinearRepresentations_Serre_1977's argument. -/
 private theorem transition_ker_eq_powSMul_layer_range
     (n : ℕ+) :
     LinearMap.ker (maximalIdealPowTransition (A := A) (E := E) n) =
@@ -201,7 +201,7 @@ private theorem zero_reduction_comp_powSMulQuotInclusion_eq_zero
     simp [hx, hy]
 
 /-- Helper for Exercise 15-15.5-3: a zero-reduction correction endomorphism vanishes on the whole
-transition kernel. This is the exact square-zero bridge used in Serre's cocycle algebra. -/
+transition kernel. This is the exact square-zero bridge used in LinearRepresentations_Serre_1977's cocycle algebra. -/
 private theorem zero_reduction_eq_zero_on_transition_kernel
     (n : ℕ+)
     {c : Module.End (A⧸𝔪^((n : ℕ) + 1)) (E⧸𝔪^((n : ℕ) + 1)E)}
@@ -231,7 +231,7 @@ private theorem zero_reduction_eq_zero_on_transition_kernel
   simpa [LinearMap.comp_apply] using hy
 
 /-- Helper for Exercise 15-15.5-3: two zero-reduction correction endomorphisms compose to zero.
-This is Serre's square-zero coefficient algebra on the transition tower. -/
+This is LinearRepresentations_Serre_1977's square-zero coefficient algebra on the transition tower. -/
 private theorem zero_reduction_square_zero
     (n : ℕ+)
     {c d : Module.End (A⧸𝔪^((n : ℕ) + 1)) (E⧸𝔪^((n : ℕ) + 1)E)}
@@ -287,7 +287,7 @@ private theorem zero_reduction_conj
     _ = 0 := by rw [hcx, map_zero]
 
 /-- Helper for Exercise 15-15.5-3: because zero-reduction corrections square to zero,
-`(1 + c) * (1 - c) = 1`. This is the algebraic core of Serre's correction automorphisms. -/
+`(1 + c) * (1 - c) = 1`. This is the algebraic core of LinearRepresentations_Serre_1977's correction automorphisms. -/
 private theorem one_add_mul_one_sub_of_zero_reduction
     (n : ℕ+)
     {c : Module.End (A⧸𝔪^((n : ℕ) + 1)) (E⧸𝔪^((n : ℕ) + 1)E)}
@@ -365,7 +365,7 @@ private theorem exists_linearEquiv_one_add_of_zero_reduction
     simp [hcx]
 
 /-- Helper for Exercise 15-15.5-3: once lifts of a downstairs automorphism and its inverse are
-available upstairs, Serre's square-zero correction package turns them into a genuine upstairs
+available upstairs, LinearRepresentations_Serre_1977's square-zero correction package turns them into a genuine upstairs
 automorphism. -/
 private theorem exists_linearEquiv_of_lifted_inverses
     (n : ℕ+)
@@ -536,7 +536,7 @@ private theorem exists_linearEquiv_lift_of_transition
       (A := A) (E := E) (n := n) u hL hLinv
   exact ⟨U, hU⟩
 
-/-- Helper for Exercise 15-15.5-3: Serre's part `(a)` existence step, isolated to the finite-level
+/-- Helper for Exercise 15-15.5-3: LinearRepresentations_Serre_1977's part `(a)` existence step, isolated to the finite-level
 square-zero/prelift package on `E / 𝔪^(n+1) E → E / 𝔪^n E`. -/
 private theorem exists_lift_of_maximalIdealPowLevel_via_square_zero_package
     (hG : ¬ p ∣ Nat.card G)
@@ -554,7 +554,7 @@ private theorem exists_lift_of_maximalIdealPowLevel_via_square_zero_package
   -- algebra to repair the group law.
   sorry
 
-/-- Helper for Exercise 15-15.5-3: Serre's part `(a)` uniqueness step, isolated to the
+/-- Helper for Exercise 15-15.5-3: LinearRepresentations_Serre_1977's part `(a)` uniqueness step, isolated to the
 square-zero comparison-cocycle package on the same finite-level tower. -/
 private theorem lift_of_maximalIdealPowLevel_unique_up_to_conjugation_via_square_zero_package
     (hG : ¬ p ∣ Nat.card G)
@@ -1322,7 +1322,7 @@ private theorem isResidueFieldLift_of_raw_isResidueFieldReduction
   change IsBaseChange k red ∧ ρP.IsIntertwiningMap ρV red
   exact hred
 
-/-- Helper for Exercise 15-15.5-3: Serre's part `(b)` after the local same-universe coordinate
+/-- Helper for Exercise 15-15.5-3: LinearRepresentations_Serre_1977's part `(b)` after the local same-universe coordinate
 model and the Chapter `14` projective-lift owner are both exposed on the import surface. -/
 private theorem exists_residueFieldLift_via_same_universe_owner
     (hG : ¬ p ∣ Nat.card G)

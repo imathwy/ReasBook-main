@@ -1,4 +1,4 @@
-import Nesterov.Chap06.Proposition_6_25
+import LecturesConvexOptimization_Nesterov_2018.Chap06.Proposition_6_25
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

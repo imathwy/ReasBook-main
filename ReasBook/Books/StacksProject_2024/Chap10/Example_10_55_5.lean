@@ -1,7 +1,7 @@
-import stacks_project.Chap10.Lemma_10_55_6
-import stacks_project.Chap10.EqualEndpointRing
-import stacks_project.Chap10.Lemma_10_39_12
-import stacks_project.Chap10.Example_10_55_3
+import StacksProject_2024.Chap10.Lemma_10_55_6
+import StacksProject_2024.Chap10.EqualEndpointRing
+import StacksProject_2024.Chap10.Lemma_10_39_12
+import StacksProject_2024.Chap10.Example_10_55_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

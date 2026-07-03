@@ -1,12 +1,12 @@
 import Mathlib
 import Mathlib.Analysis.InnerProductSpace.ProdL2
-import BauschkeLean.Chap08.Proposition_8_17
-import BauschkeLean.Chap08.Proposition_8_35
-import BauschkeLean.Chap11.Definition_11_3
-import BauschkeLean.Chap09.Definition_9_12
-import BauschkeLean.Chap09.Proposition_9_30
-import BauschkeLean.Chap16.Definition_16_67
-import BauschkeLean.Chap16.Proposition_16_70
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_17
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_35
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap11.Definition_11_3
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09.Definition_9_12
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09.Proposition_9_30
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Definition_16_67
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_70
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

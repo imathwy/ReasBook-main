@@ -1,6 +1,6 @@
 import Mathlib
-import cartan.III.section08.«0001_Definition_III_2_extra_1»
-import cartan.IV.section16.«0005_Theorem_IV_4_extra_5»
+import DifferentialForms_Cartan_1970.III.section08.«0001_Definition_III_2_extra_1»
+import DifferentialForms_Cartan_1970.IV.section16.«0005_Theorem_IV_4_extra_5»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

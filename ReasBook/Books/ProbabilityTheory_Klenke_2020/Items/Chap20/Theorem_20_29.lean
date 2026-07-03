@@ -1,7 +1,7 @@
-import AchimKlenkeLean.Items.Chap17.Definition_17_36
-import AchimKlenkeLean.Items.Chap17.Theorem_17_17
-import AchimKlenkeLean.Items.Chap18.Definition_18_1
-import AchimKlenkeLean.Items.Chap20.Definition_20_24
+import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_36
+import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_17
+import ProbabilityTheory_Klenke_2020.Items.Chap18.Definition_18_1
+import ProbabilityTheory_Klenke_2020.Items.Chap20.Definition_20_24
 import Mathlib
 
 open Filter MeasureTheory ProbabilityTheory

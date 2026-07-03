@@ -1,5 +1,5 @@
-import SmoothManifoldsLee.Chap05.Sec05_28.Proposition_5_4
-import SmoothManifoldsLee.Chap05.Sec05_31.Definition_5_31_extra_2
+import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Proposition_5_4
+import SmoothManifolds_Lee_2012.Chap05.Sec05_31.Definition_5_31_extra_2
 
 open scoped ContDiff Manifold
 open Manifold

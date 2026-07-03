@@ -1,10 +1,10 @@
 import Mathlib.Data.List.TFAE
-import BauschkeLean.Chap06.Proposition_6_44
-import BauschkeLean.Chap06.Proposition_6_45
-import BauschkeLean.Chap06.Proposition_6_47
-import BauschkeLean.Chap07.Proposition_7_3
-import BauschkeLean.Chap16.Example_16_62
-import BauschkeLean.Chap17.Proposition_17_31
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Proposition_6_44
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Proposition_6_45
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Proposition_6_47
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap07.Proposition_7_3
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Example_16_62
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_31
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

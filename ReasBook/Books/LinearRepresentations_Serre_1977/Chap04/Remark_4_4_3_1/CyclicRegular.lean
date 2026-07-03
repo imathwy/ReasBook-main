@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap02.Exercise_2_2_6_3
-import Serre.Chap02.Exercise_2_2_7_2
-import Serre.Chap04.Remark_4_4_3_1.DefectRecovery
+import LinearRepresentations_Serre_1977.Chap02.Exercise_2_2_6_3
+import LinearRepresentations_Serre_1977.Chap02.Exercise_2_2_7_2
+import LinearRepresentations_Serre_1977.Chap04.Remark_4_4_3_1.DefectRecovery
 open MeasureTheory
 open DomMulAct
 open scoped ENNReal MonoidAlgebra

@@ -1,4 +1,4 @@
-import Nesterov.Chap03.Theorem_3_44
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_44
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -14,13 +14,13 @@ variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
 Mandatory domain-style sampling before refinement:
 - `subdifferentialWithin` and `mem_subdifferentialWithin_iff` in
-  `Nesterov.Chap03.Theorem_3_44`, the chapter owner for real-valued relative
+  `LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_44`, the chapter owner for real-valued relative
   subdifferentials;
-- `∂[Set.univ] (Ψ u)(x)` in `Nesterov.Chap07.Definition_7_51`,
+- `∂[Set.univ] (Ψ u)(x)` in `LecturesConvexOptimization_Nesterov_2018.Chap07.Definition_7_51`,
   the nearby Chapter 7 whole-space specialization of that owner;
 - the owner-level pointwise nonemptiness condition
   `EverywhereNonemptySubdifferentialCondition` in
-  `Nesterov.Chap07.Definition_7_80`, which already treats `∂ f(x)` as primitive and
+  `LecturesConvexOptimization_Nesterov_2018.Chap07.Definition_7_80`, which already treats `∂ f(x)` as primitive and
   source-facing conditions as derived API.
 
 Best owner abstraction:

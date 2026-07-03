@@ -1,7 +1,7 @@
 import Mathlib.RingTheory.TensorProduct.Basic
 import Mathlib.RingTheory.Flat.FaithfullyFlat.Algebra
-import Serre.Chap09.Exercise_9_9_1_3.ExteriorDeterminants
-import Serre.Chap09.Exercise_9_9_1_3.SymmetricBaseChangeFinrank
+import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_3.ExteriorDeterminants
+import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_3.SymmetricBaseChangeFinrank
 
 open scoped Representation
 open scoped TensorProduct
@@ -635,7 +635,7 @@ private theorem symmetricPower_insert_left_fun_smul
   rw [LinearMap.map_smul]
   rfl
 
-/-- Helper for Exercise 9-9.1-3: Serre's first filtration piece is modeled by adjoining the fixed
+/-- Helper for Exercise 9-9.1-3: LinearRepresentations_Serre_1977's first filtration piece is modeled by adjoining the fixed
 eigenvector `v` as a distinguished left factor. -/
 private def symmetricPower_insert_left
     (n : ℕ) (v : V) :
@@ -808,7 +808,7 @@ private theorem exists_dual_eq_one_of_nonzero
 
 /-- Helper for Exercise 9-9.1-3: if a dual functional takes the value `1` on `v`, then the line
 `k · v` and the kernel of that functional form a complementary pair. This packages the ambient
-splitting used in Serre's first filtration step. -/
+splitting used in LinearRepresentations_Serre_1977's first filtration step. -/
 private theorem span_singleton_isCompl_ker_of_dual_eq_one
     {v : V} {φ : Module.Dual k V} (hφ : φ v = 1) :
     IsCompl (Submodule.span k ({v} : Set V)) (LinearMap.ker φ) := by
@@ -1023,7 +1023,7 @@ private theorem symmetricPower_mapQ_span_singleton_comp_insert_left_eq_zero
   exact LinearMap.congr_fun hcomp x
 
 /-- Helper for Exercise 9-9.1-3: the image of the distinguished-factor insertion already gives
-the easy inclusion in Serre's first exact sequence, namely `range(insert_v) ≤ ker(qSym)`. -/
+the easy inclusion in LinearRepresentations_Serre_1977's first exact sequence, namely `range(insert_v) ≤ ker(qSym)`. -/
 private theorem symmetricPower_insert_left_range_le_ker_mapQ_span_singleton
     (n : ℕ) (v : V) :
     let L : Submodule k V := Submodule.span k ({v} : Set V)
@@ -1063,7 +1063,7 @@ private noncomputable def symmetricPower_mapQ_span_singleton_quotKerEquiv
   symmetricPower_mapQ_quotKerEquiv
     (k := k) (V := V) (n := n + 1) (Submodule.span k ({v} : Set V))
 
-/-- Helper for Exercise 9-9.1-3: Serre's first filtration piece is stable under the symmetric
+/-- Helper for Exercise 9-9.1-3: LinearRepresentations_Serre_1977's first filtration piece is stable under the symmetric
 power action because adjoining the eigenvector `v` intertwines with multiplication by `μ`. -/
 private theorem symmetricPower_insert_left_range_le_comap
     (A : V →ₗ[k] V) (n : ℕ) {v : V} {μ : k} (hμ : A v = μ • v) :
@@ -1082,7 +1082,7 @@ private theorem symmetricPower_insert_left_range_le_comap
 
 /-- Helper for Exercise 9-9.1-3: after splitting `V = (k · v) ⊕ ker φ`, the symmetric power of
 the quotient map by `k · v` becomes the symmetric power of the second projection. This packages
-the transport step in Serre's first filtration argument, leaving only the split-model
+the transport step in LinearRepresentations_Serre_1977's first filtration argument, leaving only the split-model
 kernel-versus-range exactness to prove. -/
 private theorem symmetricPower_map_quotient_span_singleton_comp_prodEquiv_eq_map_snd
     {v : V} {φ : Module.Dual k V} (hφ : φ v = 1) (n : ℕ) :
@@ -1136,7 +1136,7 @@ private theorem symmetricPower_map_quotient_span_singleton_comp_prodEquiv_eq_map
                 (k := k) (V := V) (v := v) (φ := φ) hφ
 
 /-- Helper for Exercise 9-9.1-3: under the split equivalence
-`V ≃ (k · v) × ker φ`, Serre's first-stage insertion by the distinguished line generator
+`V ≃ (k · v) × ker φ`, LinearRepresentations_Serre_1977's first-stage insertion by the distinguished line generator
 transports to the ambient insertion by `v`. -/
 private theorem symmetricPower_insert_left_comp_prodEquiv_eq
     {v : V} {φ : Module.Dual k V} (hφ : φ v = 1) (n : ℕ) :
@@ -1470,7 +1470,7 @@ private theorem symmetricPower_map_snd_comp_insert_left_eq_zero
         (M := (Submodule.span k ({v} : Set V)) × LinearMap.ker φ)) y
   exact LinearMap.congr_fun hcomp x
 
-/-- Helper for Exercise 9-9.1-3: in the split model, Serre's first filtration piece gives the easy
+/-- Helper for Exercise 9-9.1-3: in the split model, LinearRepresentations_Serre_1977's first filtration piece gives the easy
 inclusion `range(insert_left) ≤ ker(Sym(snd))`; only the reverse inclusion remains open. -/
 private theorem symmetricPower_insert_left_range_le_ker_map_snd
     {v : V} {φ : Module.Dual k V} (hφ : φ v = 1) (n : ℕ) :
@@ -1490,7 +1490,7 @@ private theorem symmetricPower_insert_left_range_le_ker_map_snd
   exact LinearMap.congr_fun hzero x
 
 /-- Helper for Exercise 9-9.1-3: in the split model `V = (k · v) ⊕ ker φ`, any pure symmetric
-generator with one tensor factor already lying in the line summand `L × 0` belongs to Serre's
+generator with one tensor factor already lying in the line summand `L × 0` belongs to LinearRepresentations_Serre_1977's
 first-stage range `range(insert_left)`. -/
 private theorem symmetricPower_mk_mem_range_insert_left_of_exists_mem_range_inl
     {v : V} {φ : Module.Dual k V} (hφ : φ v = 1) (n : ℕ)
@@ -1647,7 +1647,7 @@ private theorem symmetricPower_split_projector_eq_self_of_mem_ker
   -- On the kernel, the correction term `Sym(inr) (Sym(snd) x)` vanishes.
   simp [hx0]
 
-/-- Helper for Exercise 9-9.1-3: once the explicit split-model projector has image in Serre's
+/-- Helper for Exercise 9-9.1-3: once the explicit split-model projector has image in LinearRepresentations_Serre_1977's
 first filtration piece, the kernel of `Sym(snd)` is exactly that filtration piece. -/
 private theorem symmetricPower_first_stage_exact_split_via_projector
     {v : V} {φ : Module.Dual k V} (hφ : φ v = 1) (n : ℕ)
@@ -1695,7 +1695,7 @@ private theorem symmetricPower_first_stage_exact_split_via_projector
         (k := k) (V := V) (v := v) (φ := φ) hφ n
 
 /-- Helper for Exercise 9-9.1-3: the remaining split-model multilinear step is that the explicit
-projector `id - Sym(inr) ∘ Sym(snd)` lands inside Serre's first filtration piece. -/
+projector `id - Sym(inr) ∘ Sym(snd)` lands inside LinearRepresentations_Serre_1977's first filtration piece. -/
 private theorem symmetricPower_split_projector_range_le_insert_left
     {v : V} {φ : Module.Dual k V} (hφ : φ v = 1) (n : ℕ) :
     let L : Submodule k V := Submodule.span k ({v} : Set V)
@@ -1889,7 +1889,7 @@ private theorem symmetricPower_split_projector_range_le_insert_left
   simpa [Q, P, q, sec, lineVec, Submodule.ker_mkQ] using hyker
 
 /-- Helper for Exercise 9-9.1-3: transporting the split-model exactness back along the explicit
-line-plus-kernel decomposition identifies Serre's ambient first filtration piece with the kernel of
+line-plus-kernel decomposition identifies LinearRepresentations_Serre_1977's ambient first filtration piece with the kernel of
 the quotient map on `Sym^(n + 1)(V)`. -/
 theorem symmetricPower_first_stage_exact_span_singleton
     {v : V} (hv : v ≠ 0) (n : ℕ) :
@@ -2001,7 +2001,7 @@ theorem symmetricPower_first_stage_exact_span_singleton
 
 /-- Helper for Exercise 9-9.1-3: the kernel of the quotient map on `Sym^(n+1)(V)` is stable under
 `Sym^(n+1)(A)` once the line `k · v` is `A`-stable. This isolates the quotient-side transport
-needed in Serre's first filtration step. -/
+needed in LinearRepresentations_Serre_1977's first filtration step. -/
 private theorem symmetricPower_mapQ_span_singleton_ker_le_comap
     (A : V →ₗ[k] V) (n : ℕ) {v : V} {μ : k} (hμ : A v = μ • v) :
     let L : Submodule k V := Submodule.span k ({v} : Set V)
@@ -2119,7 +2119,7 @@ private theorem trace_symmetricPower_mapQ_span_singleton_quotKer_eq
 
 /-- Helper for Exercise 9-9.1-3: in the split model `L × W`, the exact first-stage sequence and
 the multichoose dimension formula force insertion by the distinguished line generator to be
-injective. This is the source-faithful rank argument behind Serre's first filtration step. -/
+injective. This is the source-faithful rank argument behind LinearRepresentations_Serre_1977's first filtration step. -/
 private theorem symmetricPower_insert_left_split_injective_of_exact_and_finrank
     {v : V} {φ : Module.Dual k V} (hφ : φ v = 1) (n : ℕ) :
     let L : Submodule k V := Submodule.span k ({v} : Set V)
@@ -2254,7 +2254,7 @@ private theorem symmetricPower_insert_left_split_injective_of_exact_and_finrank
   apply hinjRange
   exact Subtype.ext hxy
 
-/-- Helper for Exercise 9-9.1-3: once Serre's first-step insertion map is known to be injective,
+/-- Helper for Exercise 9-9.1-3: once LinearRepresentations_Serre_1977's first-step insertion map is known to be injective,
 its image identifies with `Sym^n(V)`, so the restricted action on that image is conjugate to
 `μ • Sym^n(A)`. -/
 private theorem trace_restrict_symmetricPower_insert_left_range_eq_mul_trace_of_injective
@@ -2373,7 +2373,7 @@ private theorem trace_restrict_eq_of_submodule_eq
   rfl
 
 /-- Helper for Exercise 9-9.1-3: this is the single missing first-step filtration identity from
-Serre's source proof. It isolates the contribution of the eigenline `k · v` and the quotient
+LinearRepresentations_Serre_1977's source proof. It isolates the contribution of the eigenline `k · v` and the quotient
 `V/(k · v)` in degree `n + 1`. -/
 theorem trace_symmetricPower_map_step_span_singleton_mapQ
     [IsAlgClosed k] (A : V →ₗ[k] V) {v : V} {μ : k} (hv : v ≠ 0) (hμ : A v = μ • v)
@@ -2386,7 +2386,7 @@ theorem trace_symmetricPower_map_step_span_singleton_mapQ
           (SymmetricPower.map (n + 1) (L.mapQ L A hL)) := by
   -- Route correction: the old statement omitted `hv : v ≠ 0`, but for `v = 0` the quotient owner
   -- is just `V` again, so the displayed recurrence is false in general. After repairing the
-  -- helper to the genuine eigenline case, the only remaining work is Serre's first filtration
+  -- helper to the genuine eigenline case, the only remaining work is LinearRepresentations_Serre_1977's first filtration
   -- step on `Sym^(n+1)(V)`.
   -- TODO: the quotient side is now packaged by `symmetricPower_mapQ_quotKerEquiv`; the remaining
   -- source-faithful gap is to work in the split model `(k · v) × ker φ`, where the just-added
@@ -3901,7 +3901,7 @@ theorem symmetricPower_baseChange_rangeTargetMap_bijective_of_finrank_eq
       (f := symmetricPower_baseChange_rangeTargetMap (k := k) (V := V) n S)
       hdim).2 hsurj
 
-/-- Helper for Exercise 9-9.1-3: once Serre's included generators span the genuine target and the
+/-- Helper for Exercise 9-9.1-3: once LinearRepresentations_Serre_1977's included generators span the genuine target and the
 scalar-extended stabilized range has the same finrank as that target, the range-to-target
 comparison is bijective. This isolates the positive-degree base-change hole to the exact span and
 dimension inputs still missing from the source proof. -/
@@ -3961,7 +3961,7 @@ theorem symmetricPower_baseChange_rangeTargetMap_bijective_of_generator_span_and
 /-- Helper for Exercise 9-9.1-3: the positive-degree base-change comparison becomes bijective as
 soon as every pure symmetric generator belongs to the span of the included generators and the
 source and target have the same finrank. This packages the remaining span-top step into the exact
-pure-generator membership statement still missing from Serre's source route. -/
+pure-generator membership statement still missing from LinearRepresentations_Serre_1977's source route. -/
 theorem symmetricPower_baseChange_rangeTargetMap_bijective_of_tprod_mem_and_finrank
     (n : ℕ)
     (hmem :
@@ -4256,7 +4256,7 @@ theorem symmetricPower_baseChange_conj_pos_of_tprod_mem_and_finrank
 
 /-- Helper for Exercise 9-9.1-3: once the remaining source-faithful pure-generator membership
 statement and the genuine target finrank equality are available, the positive-degree
-scalar-extension conjugacy follows immediately. This keeps the final proof focused on Serre's two
+scalar-extension conjugacy follows immediately. This keeps the final proof focused on LinearRepresentations_Serre_1977's two
 missing inputs rather than re-expanding the bijectivity packaging. -/
 theorem symmetricPower_baseChange_conj_pos_of_tprod_mem_and_target_finrank
     (A : V →ₗ[k] V) (n : ℕ)

@@ -1,7 +1,7 @@
 import Mathlib
-import stacks_project.Chap12.Definition_12_19_3
-import stacks_project.Chap13.Definition_13_13_1
-import stacks_project.Chap13.Lemma_13_15_5
+import StacksProject_2024.Chap12.Definition_12_19_3
+import StacksProject_2024.Chap13.Definition_13_13_1
+import StacksProject_2024.Chap13.Lemma_13_15_5
 
 open CategoryTheory
 open FilteredObject.Hom

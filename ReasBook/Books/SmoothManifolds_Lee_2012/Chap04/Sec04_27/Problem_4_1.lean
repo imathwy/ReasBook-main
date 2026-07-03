@@ -1,5 +1,5 @@
 import Mathlib.Geometry.Manifold.Instances.Real
-import SmoothManifoldsLee.Chap04.Sec04_22.Theorem_4_5
+import SmoothManifolds_Lee_2012.Chap04.Sec04_22.Theorem_4_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

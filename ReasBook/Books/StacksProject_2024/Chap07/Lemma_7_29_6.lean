@@ -1,14 +1,14 @@
 import Mathlib
-import stacks_project.Chap07.Definition_7_13_1
-import stacks_project.Chap07.Definition_7_14_1
-import stacks_project.Chap07.Definition_7_15_1_Topoi
-import stacks_project.Chap07.Lemma_7_12_4
-import stacks_project.Chap07.Lemma_7_15_2
-import stacks_project.Chap07.Lemma_7_29_5
-import stacks_project.Chap07.Definition_7_29_2
-import stacks_project.Chap07.Remark_7_14_8
-import stacks_project.Chap07.Remark_7_15_4
-import stacks_project.Chap07.Lemma_7_17_6
+import StacksProject_2024.Chap07.Definition_7_13_1
+import StacksProject_2024.Chap07.Definition_7_14_1
+import StacksProject_2024.Chap07.Definition_7_15_1_Topoi
+import StacksProject_2024.Chap07.Lemma_7_12_4
+import StacksProject_2024.Chap07.Lemma_7_15_2
+import StacksProject_2024.Chap07.Lemma_7_29_5
+import StacksProject_2024.Chap07.Definition_7_29_2
+import StacksProject_2024.Chap07.Remark_7_14_8
+import StacksProject_2024.Chap07.Remark_7_15_4
+import StacksProject_2024.Chap07.Lemma_7_17_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

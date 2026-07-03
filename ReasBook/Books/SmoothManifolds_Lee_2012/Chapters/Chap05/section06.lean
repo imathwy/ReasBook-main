@@ -1,1 +1,1 @@
-import SmoothManifoldsLee.Chap05.Sec05_33.Theorem_5_31
+import SmoothManifolds_Lee_2012.Chap05.Sec05_33.Theorem_5_31

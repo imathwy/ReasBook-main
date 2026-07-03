@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.CategoryTheory.Limits.Shapes.Opposites.Products
-import stacks_project.Chap12.Definition_12_18_3
+import StacksProject_2024.Chap12.Definition_12_18_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

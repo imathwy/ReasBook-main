@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import stacks_project.Chap07.Remark_7_14_8
-import stacks_project.Chap07.Proposition_7_14_7
-import stacks_project.Chap07.Lemma_7_33_1
+import StacksProject_2024.Chap07.Remark_7_14_8
+import StacksProject_2024.Chap07.Proposition_7_14_7
+import StacksProject_2024.Chap07.Lemma_7_33_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

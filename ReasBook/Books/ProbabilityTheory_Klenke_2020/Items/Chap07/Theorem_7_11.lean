@@ -1,4 +1,4 @@
-import AchimKlenkeLean.Items.Chap07.Corollary_7_8
+import ProbabilityTheory_Klenke_2020.Items.Chap07.Corollary_7_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

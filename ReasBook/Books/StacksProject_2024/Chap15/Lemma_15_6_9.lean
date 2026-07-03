@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import stacks_project.Chap15.Situation_15_6_1
-import stacks_project.Chap15.Lemma_15_6_7
-import stacks_project.Chap15.Lemma_15_6_8
-import stacks_project.Chap15.Lemma_15_13_1
+import StacksProject_2024.Chap15.Situation_15_6_1
+import StacksProject_2024.Chap15.Lemma_15_6_7
+import StacksProject_2024.Chap15.Lemma_15_6_8
+import StacksProject_2024.Chap15.Lemma_15_13_1
 
 open CategoryTheory
 open CategoryTheory.Limits

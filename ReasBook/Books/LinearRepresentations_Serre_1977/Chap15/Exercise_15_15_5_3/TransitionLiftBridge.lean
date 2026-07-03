@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap15.Exercise_15_15_5_3.MaximalIdealPowSquareZero
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_5_3.MaximalIdealPowSquareZero
 
 open scoped TensorProduct
 

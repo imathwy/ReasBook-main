@@ -1,8 +1,8 @@
 import Mathlib
-import BauschkeLean.Chap02.Example_2_32_1
-import BauschkeLean.Chap04.Proposition_4_4
-import BauschkeLean.Chap04.Text_4_21_1
-import BauschkeLean.Chap20.Example_20_30
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap02.Example_2_32_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04.Proposition_4_4
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04.Text_4_21_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap20.Example_20_30
 
 open Filter
 open scoped InnerProductSpace Topology

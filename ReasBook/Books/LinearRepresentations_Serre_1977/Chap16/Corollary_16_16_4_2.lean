@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap15.Theorem_15_15_2_2
-import Serre.Chap16.Theorem_16_16_2_1
-import Serre.Chap16.Proposition_16_16_4_1
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_2_1
+import LinearRepresentations_Serre_1977.Chap16.Proposition_16_16_4_1
 
 noncomputable section
 
@@ -63,7 +63,7 @@ lemma mem_projectiveGrothendieckScalarExtension_range_of_projective_scalar_exten
     [V]₀ ∈ (projectiveGrothendieckScalarExtensionHom A K : P₀[k](G) →+ R₀[K](G)).range := by
   rcases hV with ⟨Q, hQ⟩
   refine ⟨projectiveGrothendieckReductionEquiv (A := A) (G := G) [Q]ₚ₀, ?_⟩
-  -- Evaluate Serre's scalar-extension map on the explicit projective witness.
+  -- Evaluate LinearRepresentations_Serre_1977's scalar-extension map on the explicit projective witness.
   calc
     projectiveGrothendieckScalarExtensionHom A K
         ((projectiveGrothendieckReductionEquiv (A := A) (G := G)) [Q]ₚ₀) =
@@ -85,7 +85,7 @@ theorem character_eq_zero_of_not_isPRegular_of_defect_zero
     (V : FDRep K G) (hdefect : Representation.HasDefectZero V.ρ p)
     (g : G) (hg : ¬ IsPRegular p g) :
     V.character g = 0 := by
-  -- Follow Serre's source route: defect zero gives an actual projective lattice lift.
+  -- Follow LinearRepresentations_Serre_1977's source route: defect zero gives an actual projective lattice lift.
   have hclass :
       ∃ Q : FiniteProjectiveGroupAlgebraModule A G, [Q.scalarExtension K]₀ = [V]₀ :=
     projective_scalar_extension_class_of_defect_zero

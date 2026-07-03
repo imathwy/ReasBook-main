@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap14.Corollary_14_14_4_3.GrothendieckBasics
-import Serre.Chap14.Proposition_14_14_3_1
-import Serre.Chap15.Definition_15_15_1_1
-import Serre.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3.GrothendieckBasics
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_3_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
 
 noncomputable section
 

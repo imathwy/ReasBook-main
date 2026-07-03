@@ -1,4 +1,4 @@
-import Serre.Chap08.Definition_8_8_4_1
+import LinearRepresentations_Serre_1977.Chap08.Definition_8_8_4_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

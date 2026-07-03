@@ -7,9 +7,9 @@ import Mathlib.Analysis.InnerProductSpace.ProdL2
 import Mathlib.Analysis.Normed.Lp.ProdLp
 import Mathlib.Topology.MetricSpace.Sequences
 import Mathlib.Analysis.Convex.Deriv
-import Reaslib.Optlib.Function.KL
-import Reaslib.Optlib.Function.Proximal
-import Reaslib.Optlib.Differential.Subdifferential
+import ReasLib.Optlib.Function.KL
+import ReasLib.Optlib.Function.Proximal
+import ReasLib.Optlib.Differential.Subdifferential
 import Mathlib.Topology.EMetricSpace.Lipschitz
 
 /-!

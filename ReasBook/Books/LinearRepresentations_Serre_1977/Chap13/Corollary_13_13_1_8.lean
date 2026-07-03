@@ -1,15 +1,15 @@
 import Mathlib
-import Serre.Chap01.Theorem_1_1_3_1
-import Serre.Chap01.Theorem_1_1_4_2
-import Serre.Chap02.Proposition_2_2_2_1
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap07.Proposition_7_7_2_1
-import Serre.Chap12.Proposition_12_12_1_3
-import Serre.Chap12.Lemma_12_12_1_4
-import Serre.Chap12.Corollary_12_12_4_2
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap13.Corollary_13_13_1_2
-import Serre.RepresentationTheory.GroupFunctionPairing
+import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_3_1
+import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_4_2
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_2_1
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_3
+import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_1_4
+import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_4_2
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap13.Corollary_13_13_1_2
+import LinearRepresentations_Serre_1977.RepresentationTheory.GroupFunctionPairing
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -296,7 +296,7 @@ private theorem bot_equiv_mem_characterRingOverFieldScalarExtension_iff
         (IntermediateField.botEquiv ℚ K).injective (congrFun hg'eq s)
     simpa [hgg'] using hg'
 
-/-- Helper for Corollary 13-13.1-8: a rational-valued class function belongs to Serre's rational
+/-- Helper for Corollary 13-13.1-8: a rational-valued class function belongs to LinearRepresentations_Serre_1977's rational
 character ring exactly when it is invariant under all `Γ_ℚ(G)` power maps. -/
 private theorem rational_valued_classFunction_mem_rational_character_ring_iff_power_invariant
     (f : G → ℚ) (hf : _root_.IsClassFunction f) :
@@ -399,7 +399,7 @@ private theorem pairing_restrict_trivialCharacter_eq_average
   rw [groupFunctionPairing_eq_card_inv_sum_apply_mul_inv_apply]
   simp
 
-/-- Helper for Corollary 13-13.1-8: restriction preserves Serre's rational scalar-extension
+/-- Helper for Corollary 13-13.1-8: restriction preserves LinearRepresentations_Serre_1977's rational scalar-extension
 character ring. -/
 private theorem restrict_mem_characterRingOverFieldScalarExtension
     {A : Type} [Group A] [Finite A] (J : Subgroup A) {φ : A → ℚ}

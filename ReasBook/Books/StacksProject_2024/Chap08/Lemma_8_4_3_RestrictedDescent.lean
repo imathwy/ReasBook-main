@@ -1,6 +1,6 @@
-import stacks_project.Chap08.Lemma_8_4_3_PullbackComparison
-import stacks_project.Chap08.Lemma_8_4_3_AmbientIsoClosure
-import stacks_project.Chap08.Lemma_8_4_3.RestrictedDescentForward
+import StacksProject_2024.Chap08.Lemma_8_4_3_PullbackComparison
+import StacksProject_2024.Chap08.Lemma_8_4_3_AmbientIsoClosure
+import StacksProject_2024.Chap08.Lemma_8_4_3.RestrictedDescentForward
 
 open CategoryTheory
 open CategoryTheory Functor

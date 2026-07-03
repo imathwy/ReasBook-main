@@ -1,5 +1,5 @@
 import Mathlib
-import CombinatorialGroupTheory.Items.Chap04.Theorem_4_6_6
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap04.Theorem_4_6_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -42,7 +42,7 @@ Domain sampling:
 Primitive vs. derived:
 - primitive public data: the subgroup and the disjointness hypotheses against conjugates of the
   canonical factor or base subgroups;
-- derived API: the Kurosh- or Bass-Serre-type free-product decomposition whose extra factors are
+- derived API: the Kurosh- or Bass-LinearRepresentations_Serre_1977-type free-product decomposition whose extra factors are
   forced to be trivial, leaving only a free subgroup factor.
 
 The textbook includes finite generation, but for the freeness conclusion that hypothesis is

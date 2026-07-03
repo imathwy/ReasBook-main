@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import stacks_project.Chap17.Remark_17_13_5
+import StacksProject_2024.Chap17.Remark_17_13_5
 
 open CategoryTheory
 open scoped AlgebraicGeometry

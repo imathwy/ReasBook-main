@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap10.EqualEndpointRing
+import StacksProject_2024.Chap10.EqualEndpointRing
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

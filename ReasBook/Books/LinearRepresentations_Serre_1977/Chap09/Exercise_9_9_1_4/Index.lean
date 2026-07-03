@@ -1,1 +1,1 @@
-import Serre.Chap09.Exercise_9_9_1_4.IrreducibleCharacterTransport
+import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_4.IrreducibleCharacterTransport

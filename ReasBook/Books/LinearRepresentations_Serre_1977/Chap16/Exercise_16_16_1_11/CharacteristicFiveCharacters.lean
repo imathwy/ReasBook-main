@@ -1,4 +1,4 @@
-import Serre.Chap16.Exercise_16_16_1_11.Common
+import LinearRepresentations_Serre_1977.Chap16.Exercise_16_16_1_11.Common
 
 noncomputable section
 
@@ -18,7 +18,7 @@ local instance characteristicFiveCharactersCommGroup : CommGroup G := IsCyclic.c
 local notation "DivisorIndex" => { d : ℕ // d ∣ Nat.card G }
 
 /-- Helper for Exercise 16-16.1-11: the canonical subgroup of a finite cyclic group obtained from
-the `d`-th power map. This is the source-facing subgroup denoted `G_d` in Serre. -/
+the `d`-th power map. This is the source-facing subgroup denoted `G_d` in LinearRepresentations_Serre_1977. -/
 noncomputable def cyclicSubgroupOfIndex_char5
     (d : DivisorIndex) : Subgroup G :=
   (powMonoidHom d.1 : G →* G).range

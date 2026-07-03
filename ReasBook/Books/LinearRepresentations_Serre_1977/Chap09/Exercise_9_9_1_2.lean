@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap09.Exercise_9_9_1_1
+import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -18,7 +18,7 @@ variable {G : Type} [Group G] [Finite G]
 local instance : Fintype G := Fintype.ofFinite G
 
 -- Source/core/bridge triage:
--- * source-facing: Serre's irreducibility criterion for a virtual complex character `χ ∈ R(G)`.
+-- * source-facing: LinearRepresentations_Serre_1977's irreducibility criterion for a virtual complex character `χ ∈ R(G)`.
 -- * core/canonical: the bundled owner `FDRep ℂ G` together with the Chapter 2 owner theorem
 --   `self_character_pairing_eq_one_iff_isIrreducible`.
 -- * bridge/view: the canonical coercion from `R(G)` to complex-valued functions on `G`, and
@@ -342,7 +342,7 @@ private theorem simple_fdRep_finrank_pos (V : FDRep ℂ G) [Simple V] :
     exact CategoryTheory.id_nonzero V hzero
   exact Module.finrank_pos
 
-/-- Exercise 9-9.1-2: for a virtual complex character `χ ∈ R(G)`, Serre's irreducibility
+/-- Exercise 9-9.1-2: for a virtual complex character `χ ∈ R(G)`, LinearRepresentations_Serre_1977's irreducibility
 criterion is equivalent to the conjunction that the self-pairing of `χ` is `1` and the value of
 `χ` at the identity has nonnegative real part. The finite-dimensional irreducible realization is
 expressed canonically as a simple object of `FDRep ℂ G`. -/

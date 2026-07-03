@@ -1,4 +1,4 @@
-import Nesterov.Chap01.Algorithm_1_7_1
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Algorithm_1_7_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

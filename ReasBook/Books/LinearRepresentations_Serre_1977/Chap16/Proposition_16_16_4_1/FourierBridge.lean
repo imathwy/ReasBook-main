@@ -1,6 +1,6 @@
-import Serre.Chap12.Exercise_12_12_2_6.PacketCenterDescentCore
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionPackets
-import Serre.Chap16.Proposition_16_16_4_1.ReductionBridge
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.PacketCenterDescentCore
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionPackets
+import LinearRepresentations_Serre_1977.Chap16.Proposition_16_16_4_1.ReductionBridge
 
 noncomputable section
 
@@ -106,7 +106,7 @@ lemma algebraMap_defect_zero_dim_ratio
     algebraMap A K (L.defect_zero_dim_ratio hdefect) =
       (Module.finrank K ρ.asModule : K) / Nat.card G := by
   -- Route correction: isolate the denominator-clearing scalar before comparing coefficients of
-  -- Serre's Fourier element with the Chapter `6` inverse-Wedderburn preimage over `K[G]`.
+  -- LinearRepresentations_Serre_1977's Fourier element with the Chapter `6` inverse-Wedderburn preimage over `K[G]`.
   let n := Nat.factorization (Nat.card G) p
   let m := ordCompl[p] (Nat.card G)
   let q := Module.finrank K ρ.asModule / p ^ n
@@ -146,7 +146,7 @@ lemma algebraMap_defect_zero_dim_ratio
     simp
   calc
     algebraMap A K (L.defect_zero_dim_ratio hdefect) = (q : K) * (m : K)⁻¹ := by
-      -- Unfold Serre's integral scalar and map the chosen unit inverse into `K`.
+      -- Unfold LinearRepresentations_Serre_1977's integral scalar and map the chosen unit inverse into `K`.
       dsimp [StableLattice.defect_zero_dim_ratio, n, q]
       rw [map_mul, hmK_inv]
       simp
@@ -157,7 +157,7 @@ lemma algebraMap_defect_zero_dim_ratio
       -- Replace the numerator and denominator by the factorizations recorded above.
       rw [← hfinrankK, ← hcardK]
 
-/-- Helper for Proposition 16-16.4-1: Serre's explicit integral Fourier element attached to an
+/-- Helper for Proposition 16-16.4-1: LinearRepresentations_Serre_1977's explicit integral Fourier element attached to an
 `A`-linear endomorphism `φ` of the stable lattice. -/
 noncomputable def serre_fourier_element
     (L : StableLattice A ρ) (hdefect : ρ.HasDefectZero p) (φ : Module.End A L.toSubmodule) :
@@ -168,7 +168,7 @@ noncomputable def serre_fourier_element
         LinearMap.trace A L.toSubmodule ((L.toRepresentation s⁻¹).comp φ)) •
       MonoidAlgebra.of A G s
 
-/-- Helper for Proposition 16-16.4-1: the coefficient of Serre's explicit integral Fourier element
+/-- Helper for Proposition 16-16.4-1: the coefficient of LinearRepresentations_Serre_1977's explicit integral Fourier element
 is exactly the source trace formula. -/
 lemma serre_fourier_element_apply
     (hdefect : ρ.HasDefectZero p) (φ : Module.End A L.toSubmodule) (s : G) :
@@ -334,7 +334,7 @@ lemma algebraMap_trace_toRepresentation_eq_character
     _ = LinearMap.trace K E (ρ s) := by
           rw [LinearMap.trace_eq_matrix_trace K e]
 
-/-- Helper for Proposition 16-16.4-1: after mapping coefficients to the fraction field, Serre's
+/-- Helper for Proposition 16-16.4-1: after mapping coefficients to the fraction field, LinearRepresentations_Serre_1977's
 special Fourier element for `φ = LinearMap.id` matches the explicit character-theoretic central
 element formula from Chapter `6`. -/
 lemma map_serre_fourier_element_id_eq_character_formula
@@ -418,7 +418,7 @@ lemma map_serre_fourier_element_id_eq_classFunction_packet
               simp [f, f', Finset.smul_sum]
 
 /-- Helper for Proposition 16-16.4-1: the mapped Fourier projector for `φ = LinearMap.id` is
-central in `K[G]`, exactly as in Serre's character-central-element packet. -/
+central in `K[G]`, exactly as in LinearRepresentations_Serre_1977's character-central-element packet. -/
 lemma map_serre_fourier_element_id_mem_center
     [Invertible (Nat.card G : K)]
     (hdefect : ρ.HasDefectZero p) :
@@ -445,7 +445,7 @@ lemma mapRingHom_to_algClosure_eq_two_step_local
   simp [MonoidAlgebra.mapRingHom_apply,
     IsScalarTower.algebraMap_eq A K (AlgebraicClosure K)]
 
-/-- Helper for Proposition 16-16.4-1: after mapping Serre's special Fourier projector
+/-- Helper for Proposition 16-16.4-1: after mapping LinearRepresentations_Serre_1977's special Fourier projector
 `u_{LinearMap.id}` to `AlgebraicClosure K`, the same source coefficient formula remains valid with
 all coefficients transported to the algebraic closure. This is the concrete group-algebra element
 whose packet coordinates still have to be identified. -/
@@ -622,7 +622,7 @@ lemma trace_action_conj_eq
     LinearMap.trace K W (σ s⁻¹ * e.toLinearEquiv.conj f) =
       LinearMap.trace K E (ρ s⁻¹ * f) := by
   -- Route correction: separate the transport/conjugation step from the remaining coefficient
-  -- comparison with Serre's explicit lattice trace formula.
+  -- comparison with LinearRepresentations_Serre_1977's explicit lattice trace formula.
   calc
     LinearMap.trace K W (σ s⁻¹ * e.toLinearEquiv.conj f) =
         LinearMap.trace K W (e.toLinearEquiv.conj (ρ s⁻¹) * e.toLinearEquiv.conj f) := by
@@ -736,7 +736,7 @@ lemma algClosure_ambient_action_eq_of_local_action_eq
   -- `K`-linear action identity.
   rw [hmap, Representation.scalarExtension_asAlgebraHom_mapRingHom (ρ := ρ), hlocal]
 
-/-- Helper for Proposition 16-16.4-1: once an injective target sees Serre's special Fourier
+/-- Helper for Proposition 16-16.4-1: once an injective target sees LinearRepresentations_Serre_1977's special Fourier
 projector as the identity, the forward annihilator implication `ρ(u) = 0 → e * u = 0` reduces to
 a single multiplicative calculation in that target. This is the pure algebra step shared by the
 remaining characteristic-zero and equal-characteristic packet arguments. -/
@@ -770,7 +770,7 @@ lemma mapped_serre_fourier_id_mul_eq_zero_of_injective_target
     _ = 1 * 0 := by rw [hσ_id, hu]
     _ = σ 0 := by simp
 
-/-- Helper for Proposition 16-16.4-1: if an injective target sends Serre's special element
+/-- Helper for Proposition 16-16.4-1: if an injective target sends LinearRepresentations_Serre_1977's special element
 `u_id` to the projector which is the identity on the packet support `T` and `0` off `T`, then
 the forward annihilator statement follows by a coordinatewise multiplication check. This is the
 pure algebraic step behind both remaining branch goals; only the source-faithful construction of

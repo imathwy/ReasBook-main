@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap10.Definition_10_10_1_3
-import Serre.Chap10.Theorem_10_10_2_1
-import Serre.Chap11.Theorem_11_11_2_1.TensorCharacterBridge
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_2_1
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1.TensorCharacterBridge
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -32,7 +32,7 @@ private abbrev instFintypeLemma101023Subgroup (H : Subgroup G) : Fintype H :=
 attribute [local instance] instFintypeLemma101023Subgroup
 
 -- Source/core/bridge triage:
--- * source-facing: Serre's `A ⊗ V_p`.
+-- * source-facing: LinearRepresentations_Serre_1977's `A ⊗ V_p`.
 -- * core/canonical: the tensor product owner
 --   `TensorProduct ℤ A ((Representation.pElementaryInducedCharacterSpan p G))`.
 -- * bridge/view: the canonical realization map
@@ -52,7 +52,7 @@ abbrev pElementaryInducedCharacterToFunction
     (Representation.pElementaryInducedCharacterSpan p G) →ₗ[ℤ] G → ℂ :=
   ((R(G)).toSubmodule.subtype).comp ((Representation.pElementaryInducedCharacterSpan p G)).subtype
 
-/-- The canonical realization of Serre's tensor product `A ⊗ V_p` as complex-valued functions on
+/-- The canonical realization of LinearRepresentations_Serre_1977's tensor product `A ⊗ V_p` as complex-valued functions on
 `G`. -/
 abbrev tensorPElementaryInducedCharacterToFunction
     (A : Type v) [CommRing A] [Algebra A ℂ]
@@ -68,7 +68,7 @@ instance : CoeFun (A ⊗V[p](G)) (fun _ ↦ G → ℂ) where
     ((a ⊗ₜ[ℤ] χ : A ⊗V[p](G)) : G → ℂ) = a • ((χ : R(G)) : G → ℂ) := by
   simp [tensorPElementaryInducedCharacterToFunction, pElementaryInducedCharacterToFunction]
 
-/-- The ambient complex-function realization of Serre's tensor product `A ⊗V[p](G)`. This is a
+/-- The ambient complex-function realization of LinearRepresentations_Serre_1977's tensor product `A ⊗V[p](G)`. This is a
 bridge/view of the owner `A ⊗V[p](G)`. -/
 def pElementaryInducedCharacterScalarExtension (A : Type v) [CommRing A] [Algebra A ℂ]
     (p : ℕ) (G : Type) [Group G] [Finite G] :
@@ -119,7 +119,7 @@ private lemma smul_mem_characterRingScalarExtension_of_pElementary_generator
 
 -- Proof sketch: the generators of `V_p` already lie in the integral character ring `R(G)`, so
 -- the `A`-span defining `A ⊗ V_p` is contained in the `A`-span defining `A ⊗ R(G)`.
-/-- Serre's scalar extension `A ⊗ V_p` is contained in the scalar-extended character ring
+/-- LinearRepresentations_Serre_1977's scalar extension `A ⊗ V_p` is contained in the scalar-extended character ring
 `A ⊗ R(G)`. -/
 theorem pElementaryInducedCharacterScalarExtension_le_characterRingScalarExtension :
     pElementaryInducedCharacterScalarExtension A p G ≤ characterRingScalarExtension A G := by

@@ -1,7 +1,7 @@
 import Mathlib
-import cartan.III.section11.«0008_Proposition_4_1»
-import cartan.III.section12.«0031_Exercise_19»
-import cartan.IV.section17.«0012_Exercise_4»
+import DifferentialForms_Cartan_1970.III.section11.«0008_Proposition_4_1»
+import DifferentialForms_Cartan_1970.III.section12.«0031_Exercise_19»
+import DifferentialForms_Cartan_1970.IV.section17.«0012_Exercise_4»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
-import cartan.IV.section14.«0002_Definition_IV_2_extra_2»
-import cartan.IV.section17.«0001_Definition_IV_5_extra_1»
+import DifferentialForms_Cartan_1970.IV.section14.«0002_Definition_IV_2_extra_2»
+import DifferentialForms_Cartan_1970.IV.section17.«0001_Definition_IV_5_extra_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

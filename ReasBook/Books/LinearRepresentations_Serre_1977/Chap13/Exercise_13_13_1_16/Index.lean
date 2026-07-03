@@ -1,3 +1,3 @@
-import Serre.Chap13.Exercise_13_13_1_16.GammaActions
-import Serre.Chap13.Exercise_13_13_1_16.IrreducibleFamilies
-import Serre.Chap13.Exercise_13_13_1_16.SemilinearModels
+import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_16.GammaActions
+import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_16.IrreducibleFamilies
+import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_16.SemilinearModels

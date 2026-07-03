@@ -1,5 +1,5 @@
 import Mathlib
-import MayConciseRevised.Chap02.Proposition_2_4_6
+import AlgebraicTopology_May_1999.Chap02.Proposition_2_4_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap07.Lemma_7_21_7
+import StacksProject_2024.Chap07.Lemma_7_21_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

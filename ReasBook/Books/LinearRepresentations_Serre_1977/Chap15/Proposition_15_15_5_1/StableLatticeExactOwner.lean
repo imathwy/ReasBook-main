@@ -1,9 +1,9 @@
-import Serre.Chap14.Lemma_14_14_4_2
-import Serre.Chap14.Exercise_14_14_4_5
-import Serre.Chap15.Definition_15_15_3_1
-import Serre.Chap15.Exercise_15_15_5_3.LocalProjectiveBridges
-import Serre.Chap15.Proposition_15_15_5_1.ReductionMkQ
-import Serre.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_2
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_4_5
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_5_3.LocalProjectiveBridges
+import LinearRepresentations_Serre_1977.Chap15.Proposition_15_15_5_1.ReductionMkQ
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
 
 noncomputable section
 
@@ -328,7 +328,7 @@ lemma reduction_iso_reflects_exact_owner_linearEquiv_of_order_prime_to_p
   let _ : Module.Free A LY.toSubmodule := by
     infer_instance
   have hprojLX : Module.Projective A[G] LX.toSubmodule := by
-    -- Over the local ring, Serre's averaging argument makes each exact owner projective.
+    -- Over the local ring, LinearRepresentations_Serre_1977's averaging argument makes each exact owner projective.
     exact
       Representation.free_groupAlgebra_module_projective_of_order_prime_to_p
         (A := A) (G := G) (p := p) (P := LX.toSubmodule) hG

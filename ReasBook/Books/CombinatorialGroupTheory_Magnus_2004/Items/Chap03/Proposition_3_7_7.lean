@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory.Items.Chap03.Proposition_3_7_3
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Proposition_3_7_3
 
 universe u
 

@@ -1,8 +1,8 @@
 import Mathlib.Geometry.Manifold.Instances.Real
 import Mathlib.Geometry.Manifold.IsManifold.InteriorBoundary
 import Mathlib.Topology.Covering.Basic
-import SmoothManifoldsLee.Chap01.Sec01_06.Definition_1_6_extra_2
-import SmoothManifoldsLee.Chap04.Sec04_26.Definition_4_26_extra_1
+import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Definition_1_6_extra_2
+import SmoothManifolds_Lee_2012.Chap04.Sec04_26.Definition_4_26_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

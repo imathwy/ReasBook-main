@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap13.Exercise_13_13_1_11
-import Serre.Chap15.Theorem_15_15_2_2
-import Serre.Chap16.Theorem_16_16_2_1
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_11
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_2_1
 
 noncomputable section
 

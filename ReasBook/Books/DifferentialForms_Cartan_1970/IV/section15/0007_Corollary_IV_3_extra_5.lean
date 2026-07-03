@@ -1,6 +1,6 @@
 import Mathlib.Analysis.Complex.Harmonic.Analytic
-import cartan.II.section05.«0023_Theorem_3»
-import cartan.II.section06.«0005_Corollary_1»
+import DifferentialForms_Cartan_1970.II.section05.«0023_Theorem_3»
+import DifferentialForms_Cartan_1970.II.section06.«0005_Corollary_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

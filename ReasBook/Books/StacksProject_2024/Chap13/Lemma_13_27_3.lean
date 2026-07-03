@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Homology.DerivedCategory.FullyFaithful
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
-import stacks_project.Chap13.Definition_13_27_1
+import StacksProject_2024.Chap13.Definition_13_27_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

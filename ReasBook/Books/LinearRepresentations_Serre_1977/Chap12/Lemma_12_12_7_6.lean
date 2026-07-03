@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap12.Corollary_12_12_4_2
-import Serre.Chap12.GaloisPowerClasses
-import Serre.Chap12.Lemma_12_12_7_5
-import Serre.Chap12.Lemma_12_12_7_6.Index
+import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_4_2
+import LinearRepresentations_Serre_1977.Chap12.GaloisPowerClasses
+import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_5
+import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_6.Index
 
 noncomputable section
 
@@ -33,7 +33,7 @@ section
 
 omit [Fact p.Prime]
 
-/-- Helper for Lemma 12-12.7-6: the induced witness on `G` already lies in Serre's owner
+/-- Helper for Lemma 12-12.7-6: the induced witness on `G` already lies in LinearRepresentations_Serre_1977's owner
 `A ⊗ R_K(G)`, so it is constant on ambient `Γ_K`-power classes. This is the owner-level
 invariance that the remaining Lemma `16` bridge must specialize. -/
 lemma induced_lifted_orbit_supported_isConstantOnGaloisPowerClasses_local
@@ -78,7 +78,7 @@ lemma induced_lifted_orbit_supported_eq_of_galoisPowerClass_eq_local
 
 end
 
-/-- Helper for Lemma 12-12.7-6: Serre's Lemma `16` step compares the induced separator
+/-- Helper for Lemma 12-12.7-6: LinearRepresentations_Serre_1977's Lemma `16` step compares the induced separator
 with its `p`-regular component modulo any prime ideal above `(p)`. Because the owner values live in
 `K`, the congruence is expressed by an `A`-lift lying in `Q.asIdeal`. -/
 lemma induced_lifted_orbit_supported_sub_mem_primeIdealOverPrime_of_pRegularComponent_local
@@ -149,7 +149,7 @@ lemma induced_lifted_orbit_supported_exists_range_witness_with_mod_primeIdealOve
   refine ⟨q, ?_⟩
   simpa [χ, χA, ha] using hq
 
-/-- Helper for Lemma 12-12.7-6: Serre's Lemma `16` step should transfer `A`-valuedness from the
+/-- Helper for Lemma 12-12.7-6: LinearRepresentations_Serre_1977's Lemma `16` step should transfer `A`-valuedness from the
 `p`-regular component back to the original element for the induced separator built from the
 associated subgroup witness. -/
 lemma induced_lifted_orbit_supported_value_mem_range_of_pRegularComponent_local
@@ -176,7 +176,7 @@ lemma induced_lifted_orbit_supported_value_mem_range_of_pRegularComponent_local
   · -- On the `p`-regular branch, the comparison element is just `g` itself, so the already
     -- proved range statement at `pRegularComponent p g` closes the goal directly.
     simpa [pRegularComponent_eq_self_of_isPRegular (p := p) (x := g) hg] using hg_range
-  · -- Route correction: Serre only needs the chosen `H = C ⋅ P`-lift to vanish on the
+  · -- Route correction: LinearRepresentations_Serre_1977 only needs the chosen `H = C ⋅ P`-lift to vanish on the
     -- non-`p`-regular locus. The existing induction lemma then forces the induced value at `g`
     -- itself to be zero, so it is automatically `A`-valued.
     refine ⟨0, ?_⟩
@@ -184,7 +184,7 @@ lemma induced_lifted_orbit_supported_value_mem_range_of_pRegularComponent_local
       (induced_lifted_orbit_supported_eq_zero_of_not_isPRegular_local
         (K := K) (A := A) (p := p) x P ψ hψ_nonpregular g hg).symm
 
-/-- Helper for Lemma 12-12.7-6: Serre's cyclic source `ψ_C` on `C = ⟨x⟩` belongs to
+/-- Helper for Lemma 12-12.7-6: LinearRepresentations_Serre_1977's cyclic source `ψ_C` on `C = ⟨x⟩` belongs to
 `A ⊗ R_K(C)`. This packages the source proof's first step before the restriction lift to
 `H = associatedGammaPElementarySubgroup Γ[K](G) x P`. -/
 lemma orbit_supported_zpowers_character_exists_local
@@ -194,7 +194,7 @@ lemma orbit_supported_zpowers_character_exists_local
         (χC : Subgroup.zpowers x → K) c =
           ((algebraMap A K) ∘ orbit_supported_zpowers_function (K := K) (A := A) x) c := by
   refine ⟨⟨((algebraMap A K) ∘ orbit_supported_zpowers_function (K := K) (A := A) x), ?_⟩, ?_⟩
-  · -- Serre's `ψ_C` is exactly the orbit-supported cyclic source on `C = ⟨x⟩`; the reduced
+  · -- LinearRepresentations_Serre_1977's `ψ_C` is exactly the orbit-supported cyclic source on `C = ⟨x⟩`; the reduced
     -- ambient arithmetic subgroup packages the Lemma `15` descent already proved in the helper
     -- file.
     exact
@@ -277,7 +277,7 @@ lemma exists_lifted_character_on_associated_subgroup_with_prescribed_restriction
 
 end
 
-/-- Helper for Lemma 12-12.7-6: Serre first builds the cyclic source on
+/-- Helper for Lemma 12-12.7-6: LinearRepresentations_Serre_1977 first builds the cyclic source on
 `C = ⟨x⟩` and then lifts it to `H = associatedGammaPElementarySubgroup ΓK x P` by the plain
 restriction-surjectivity statement from Lemma `12-12.7-5`. -/
 lemma exists_lifted_orbit_supported_character_on_associated_subgroup_from_ambient_gamma_local
@@ -287,15 +287,15 @@ lemma exists_lifted_orbit_supported_character_on_associated_subgroup_from_ambien
         (ψ : associatedGammaPElementarySubgroup ΓK x P → K)
             (Subgroup.inclusion (zpowers_le_associatedGammaPElementarySubgroup ΓK p x P) c) =
           ((algebraMap A K) ∘ orbit_supported_zpowers_function (K := K) (A := A) x) c := by
-  -- Route correction: Serre's source only needs a restriction lift from `C = ⟨x⟩` to
+  -- Route correction: LinearRepresentations_Serre_1977's source only needs a restriction lift from `C = ⟨x⟩` to
   -- `H = associatedGammaPElementarySubgroup ΓK x P`; the old demand for a lift vanishing on all
   -- of `H \ ⟨x⟩` was stronger than the source proof.
   -- The cyclic source step now uses the reduced ambient arithmetic subgroup on `C = ⟨x⟩`, so the
-  -- remaining work here is only to package Serre's `ψ_C` in `A ⊗ R_K(C)` before invoking the
+  -- remaining work here is only to package LinearRepresentations_Serre_1977's `ψ_C` in `A ⊗ R_K(C)` before invoking the
   -- already-stable restriction-surjectivity bridge.
   obtain ⟨χC, hχC⟩ :=
     orbit_supported_zpowers_character_exists_local (K := K) (A := A) x
-  -- Once Serre's cyclic source `ψ_C` is packaged as an owner element on `C = ⟨x⟩`, the
+  -- Once LinearRepresentations_Serre_1977's cyclic source `ψ_C` is packaged as an owner element on `C = ⟨x⟩`, the
   -- associated-subgroup witness is exactly the already-proved restriction lift from Lemma
   -- `12-12.7-5`.
   obtain ⟨ψ, hψ⟩ :=
@@ -309,7 +309,7 @@ lemma exists_lifted_orbit_supported_character_on_associated_subgroup_from_ambien
       (χC : Subgroup.zpowers x → K) c := hψ c
     _ = ((algebraMap A K) ∘ orbit_supported_zpowers_function (K := K) (A := A) x) c := hχC c
 
-/-- Helper for Lemma 12-12.7-6: after lifting Serre's cyclic source from `C = ⟨x⟩` to
+/-- Helper for Lemma 12-12.7-6: after lifting LinearRepresentations_Serre_1977's cyclic source from `C = ⟨x⟩` to
 `H = associatedGammaPElementarySubgroup ΓK x P`, the lifted witness agrees with the associated
 orbit-supported formula on every `p`-regular element of `H`. -/
 lemma exists_lifted_orbit_supported_character_on_associated_subgroup_pregular_local
@@ -346,7 +346,7 @@ lemma exists_lifted_orbit_supported_character_on_associated_subgroup_pregular_lo
             (associated_orbit_supported_function (K := K) (A := A) x P) hc
 
 /-- Helper for Lemma 12-12.7-6: the restriction-lifted witness already vanishes on the
-`p`-regular part of `H \ ⟨x⟩`, because on that locus it agrees with Serre's orbit-supported
+`p`-regular part of `H \ ⟨x⟩`, because on that locus it agrees with LinearRepresentations_Serre_1977's orbit-supported
 formula and the orbit-supported formula is supported on `⟨x⟩`. -/
 lemma exists_lifted_orbit_supported_character_on_associated_subgroup_pregular_zero_off_not_mem_zpowers_local
     (x : G) (hx : IsPRegular p x) (P : Sylow p N[ΓK](x)) :
@@ -389,7 +389,7 @@ lemma not_exists_gamma_power_of_not_isPRegular_in_associated_subgroup_local
     isPRegular_of_mem_zpowers_local (p := p) x hx hxpow_mem
   exact hh (ht ▸ hxpow_reg)
 
-/-- Helper for Lemma 12-12.7-6: once a lift on `H = C ⋅ P` restricts to Serre's cyclic source on
+/-- Helper for Lemma 12-12.7-6: once a lift on `H = C ⋅ P` restricts to LinearRepresentations_Serre_1977's cyclic source on
 `C = ⟨x⟩` and is already known to vanish off `C`, the source proof's support conclusions are
 formal. Namely, the lift agrees with the associated orbit-supported function on every `p`-regular
 element of `H`, and the zero-off-`⟨x⟩` hypothesis is simply carried along unchanged. -/
@@ -437,7 +437,7 @@ lemma lifted_character_matches_associated_orbit_supported_of_restriction_and_zer
     -- The second component is exactly the input support hypothesis.
     exact hψ_off h hh
 
-/-- Helper for Lemma 12-12.7-6: Serre's actual lift on
+/-- Helper for Lemma 12-12.7-6: LinearRepresentations_Serre_1977's actual lift on
 `H = associatedGammaPElementarySubgroup ΓK x P` only needs to agree with the orbit-supported
 source on the `p`-regular locus of `H`. The stronger zero-off-`H \ ⟨x⟩` statement is no longer on
 the critical path. -/
@@ -546,7 +546,7 @@ lemma not_span_prime_le_primeIdeal_of_span_prime_eq_top_local
 
 /-- Helper for Lemma 12-12.7-6: once `(p) = ⊤`, the prime `p` is already a unit in `A`, so every
 power of `p` is a unit as well. This isolates the denominator-clearing input for the top-ideal
-branch of Serre's argument. -/
+branch of LinearRepresentations_Serre_1977's argument. -/
 lemma prime_pow_isUnit_of_span_prime_eq_top_local
     (n : ℕ)
     (htop : Ideal.span ({(p : A)} : Set A) = ⊤) :
@@ -574,7 +574,7 @@ lemma algebraMap_div_mem_range_of_isUnit_denom_local
   simp [div_eq_mul_inv, map_mul]
 
 /-- Helper for Lemma 12-12.7-6: under `(p) = ⊤`, every fraction with denominator a power of `p`
-already lies in the image of `A → K`. This is the exact arithmetic closure Serre's top-case branch
+already lies in the image of `A → K`. This is the exact arithmetic closure LinearRepresentations_Serre_1977's top-case branch
 still needs once the induced value is rewritten with a `p`-power denominator. -/
 lemma algebraMap_div_prime_pow_mem_range_of_span_prime_eq_top_local
     (a : A) (n : ℕ)
@@ -588,7 +588,7 @@ lemma algebraMap_div_prime_pow_mem_range_of_span_prime_eq_top_local
 
 end
 
-/-- Helper for Lemma 12-12.7-6: after lifting Serre's cyclic witness from `C = ⟨x⟩` to
+/-- Helper for Lemma 12-12.7-6: after lifting LinearRepresentations_Serre_1977's cyclic witness from `C = ⟨x⟩` to
 `H = C ⋅ P`, the Chapter `12.7.4` exact-frontier argument gives pointwise `A`-valuedness as soon
 as `(p)` is a proper ideal. -/
 lemma induced_lifted_orbit_supported_value_mem_range_local
@@ -621,7 +621,7 @@ lemma induced_lifted_orbit_supported_value_mem_range_local
 
 /-- Helper for Lemma 12-12.7-6: once the induced witness is known pointwise to lie in the image
 of `A → K` in the proper-ideal branch, choose a pointwise `A`-valued lift. This is the only
-branch where Serre's exact-frontier comparison is needed. -/
+branch where LinearRepresentations_Serre_1977's exact-frontier comparison is needed. -/
 lemma induced_character_has_A_valued_lift_local
     (x : G) (hx : IsPRegular p x) (P : Sylow p N[ΓK](x))
     (ψ : A ⊗R[K](associatedGammaPElementarySubgroup ΓK x P))
@@ -654,7 +654,7 @@ lemma induced_character_has_A_valued_lift_local
   exact Classical.choose_spec (hχ_range g)
 
 /-- Lemma 12-12.7-6: with `Γ_K = Γ[K](G)` attached to the intermediate field `K ⊆ L` in the
-cyclotomic realization of the exponent of `G`, there exists an element of Serre's scalar-extended
+cyclotomic realization of the exponent of `G`, there exists an element of LinearRepresentations_Serre_1977's scalar-extended
 owner `A ⊗ V_{K,p}` whose realized function on `G` comes from induction from the associated
 subgroup `H = ⟨x⟩ ⋅ P`, has nonzero value at `x` modulo every prime ideal of `A` containing `p`,
 and vanishes on every `p'`-element not `Γ_K`-conjugate to `x`. -/
@@ -684,7 +684,7 @@ theorem exists_associatedGammaPElementary_character_nonzero_mod_primeIdeals_vani
   by_cases htop : Ideal.span ({(p : A)} : Set A) = ⊤
   · -- Route correction: when `(p) = ⊤`, the prime-over-`(p)` condition is vacuous, so the
     -- theorem may use the trivial induced witness instead of forcing the generic top-branch
-    -- arithmetic on Serre's nontrivial source lift.
+    -- arithmetic on LinearRepresentations_Serre_1977's nontrivial source lift.
     let χ : G → K := H.characterRingOverFieldAlgebraScalarExtensionInduction (0 : A ⊗R[K](H))
     refine ⟨0, χ, (fun _ ↦ 0), rfl, ?_, ?_, ?_⟩
     · funext g
@@ -710,7 +710,7 @@ theorem exists_associatedGammaPElementary_character_nonzero_mod_primeIdeals_vani
     · intro Q hQ
       have hχx :
           χ x = algebraMap A K (Nat.card N[ΓK](x) / Nat.card (P : Subgroup N[ΓK](x))) := by
-        -- Serre's right-`P` orbit count gives the explicit nonzero value at the distinguished
+        -- LinearRepresentations_Serre_1977's right-`P` orbit count gives the explicit nonzero value at the distinguished
         -- element `x`.
         change
           ((Subgroup.characterRingOverFieldAlgebraScalarExtensionInduction

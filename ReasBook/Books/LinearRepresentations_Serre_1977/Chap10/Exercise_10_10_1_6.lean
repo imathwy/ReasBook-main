@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap10.Definition_10_10_1_1
-import Serre.Chap10.Definition_10_10_1_2
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_1
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -13,7 +13,7 @@ variable {p : ℕ} [Fact p.Prime] [CharP k p]
 variable {V : Type v} [AddCommGroup V] [Module k V]
 
 -- Layer triage:
--- * source-facing: Serre's `p`-unipotence criterion for a linear automorphism.
+-- * source-facing: LinearRepresentations_Serre_1977's `p`-unipotence criterion for a linear automorphism.
 -- * core/canonical: `IsPElement` and `IsNilpotent` on the owner `Module.End k V`.
 -- * bridge/view: `LinearEquiv.toLinearMap`.
 --
@@ -97,7 +97,7 @@ theorem isPElement_iff_isNilpotent_sub_one (x : V ≃ₗ[k] V) :
       simpa [Module.End.pow_apply, LinearEquiv.pow_apply] using hval
     simpa using sub_eq_zero.mpr hiter
   · rintro ⟨n, hn⟩
-    -- Raise the nilpotence exponent to a prime-power exponent large enough for Serre's criterion.
+    -- Raise the nilpotence exponent to a prime-power exponent large enough for LinearRepresentations_Serre_1977's criterion.
     let m := Nat.clog p n
     have hp : Nat.Prime p := Fact.out
     have hle : n ≤ p ^ m :=
@@ -130,7 +130,7 @@ variable {V : Type v} [AddCommGroup V] [Module k V] [FiniteDimensional k V]
 open Module.End
 
 -- Layer triage:
--- * source-facing: the two Serre criteria for `p`-elements and `p'`-elements of a linear
+-- * source-facing: the two LinearRepresentations_Serre_1977 criteria for `p`-elements and `p'`-elements of a linear
 --   automorphism.
 -- * core/canonical: `IsPElement`, `IsPRegular`, `IsNilpotent`, and `Module.End.IsSemisimple`.
 -- * bridge/view: `LinearEquiv.toLinearMap`.

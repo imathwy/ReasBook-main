@@ -1,9 +1,9 @@
 import Mathlib
-import stacks_project.Chap10.Lemma_10_20_1_Nakayama_s_lemma
-import stacks_project.Chap10.Lemma_10_96_1
-import stacks_project.Chap10.Lemma_10_96_8
-import stacks_project.Chap10.Lemma_10_96_12
-import stacks_project.Chap10.Lemma_10_97_2
+import StacksProject_2024.Chap10.Lemma_10_20_1_Nakayama_s_lemma
+import StacksProject_2024.Chap10.Lemma_10_96_1
+import StacksProject_2024.Chap10.Lemma_10_96_8
+import StacksProject_2024.Chap10.Lemma_10_96_12
+import StacksProject_2024.Chap10.Lemma_10_97_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

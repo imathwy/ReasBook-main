@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.CategoryTheory.Limits.FormalCoproducts.Basic
-import stacks_project.Chap07.Definition_7_40_2
-import stacks_project.Chap18.Definition_18_6_1
+import StacksProject_2024.Chap07.Definition_7_40_2
+import StacksProject_2024.Chap18.Definition_18_6_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -46,11 +46,11 @@ Source/core/bridge triage:
   `FormalCoproduct`, and the cohomology functors `H'`;
 - bridge/view: the coercion from a bounded-cohomology basis to its underlying subset of objects.
 
-The weak-Serre closure assumptions on `A` are not primitive data for this situation and do not
+The weak-LinearRepresentations_Serre_1977 closure assumptions on `A` are not primitive data for this situation and do not
 appear in the fields below, so they should not be kept in the public owner signature. -/
 
 /-- Situation 21.25.5: for a morphism of ringed sites `f : X ⟶ Y` with underlying continuous
-functor `f.base : Y ⥤ X`, and for a weak Serre subcategory `A ⊆ Mod(\mathcal O_X)`, there is a
+functor `f.base : Y ⥤ X`, and for a weak LinearRepresentations_Serre_1977 subcategory `A ⊆ Mod(\mathcal O_X)`, there is a
 subset `B'` of objects of `Y` covering every object of `Y` such that for each `V' ∈ B'` there is
 a bound `d_{V'}` and a cofinal system of coverings of `V'` whose members `V'_i` satisfy
 `H^p(f.base.obj V'_i, ℱ) = 0` for every `ℱ ∈ A` and every `p > d_{V'}`. -/

@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
 import Mathlib.CategoryTheory.Functor.Derived.RightDerived
-import stacks_project.Chap06.Definition_6_31_2
-import stacks_project.Chap06.Restriction_and_extension_by_zero_for_module_valued_sheaves
-import stacks_project.Chap20.«20_3_0_4»
+import StacksProject_2024.Chap06.Definition_6_31_2
+import StacksProject_2024.Chap06.Restriction_and_extension_by_zero_for_module_valued_sheaves
+import StacksProject_2024.Chap20.«20_3_0_4»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

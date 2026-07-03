@@ -1,10 +1,10 @@
 import Mathlib.Geometry.Manifold.SmoothEmbedding
 import Mathlib.Geometry.Manifold.MFDeriv.Defs
 import Mathlib.Geometry.Manifold.Instances.Sphere
-import SmoothManifoldsLee.Chap04.Sec04_21.Definition_4_21_extra_1
-import SmoothManifoldsLee.Chap04.Sec04_22.Exercise_4_10
-import SmoothManifoldsLee.Chap04.Sec04_24.Proposition_4_22
-import SmoothManifoldsLee.Chap04.Sec04_26.Example_4_35
+import SmoothManifolds_Lee_2012.Chap04.Sec04_21.Definition_4_21_extra_1
+import SmoothManifolds_Lee_2012.Chap04.Sec04_22.Exercise_4_10
+import SmoothManifolds_Lee_2012.Chap04.Sec04_24.Proposition_4_22
+import SmoothManifolds_Lee_2012.Chap04.Sec04_26.Example_4_35
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

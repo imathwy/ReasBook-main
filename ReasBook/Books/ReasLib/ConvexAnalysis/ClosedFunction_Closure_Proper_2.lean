@@ -1,10 +1,10 @@
 import Mathlib.Topology.Defs.Basic
 import Mathlib.Topology.Maps.Basic
 import Mathlib.Topology.MetricSpace.Isometry
-import Reaslib.ConvexAnalysis.ClosedFunction_Closure
-import Reaslib.ConvexAnalysis.ClosedFunction_Closure_Proper
-import Reaslib.ConvexAnalysis.intrinsicInterior_Epigraph
-import Reaslib.ConvexAnalysis.ConvexConjugate
+import ReasLib.ConvexAnalysis.ClosedFunction_Closure
+import ReasLib.ConvexAnalysis.ClosedFunction_Closure_Proper
+import ReasLib.ConvexAnalysis.intrinsicInterior_Epigraph
+import ReasLib.ConvexAnalysis.ConvexConjugate
 
 open Filter Set Topology Function Module EReal Inner
 

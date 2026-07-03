@@ -9,7 +9,7 @@ open scoped goldenRatio
 
 namespace AlternatingGroupFive
 
-/-- The ordinary irreducible characters used in Serre's `A₅` example. The two degree-`3`
+/-- The ordinary irreducible characters used in LinearRepresentations_Serre_1977's `A₅` example. The two degree-`3`
 characters are distinguished by their values `(φ, ψ)` and `(ψ, φ)` on the two `5`-cycle
 classes. -/
 inductive OrdinaryIrreducible
@@ -20,7 +20,7 @@ inductive OrdinaryIrreducible
   | chi5
   deriving DecidableEq, Fintype
 
-/-- The conjugacy-class labels for Serre's ordinary character table of `A₅`. The two `5`-cycle
+/-- The conjugacy-class labels for LinearRepresentations_Serre_1977's ordinary character table of `A₅`. The two `5`-cycle
 classes are ordered so that `OrdinaryIrreducible.chi3_phi_psi` takes the values `φ` and `ψ` on
 `fiveCycle_phi` and `fiveCycle_psi`, respectively. -/
 inductive ConjugacyClass
@@ -72,18 +72,18 @@ open AlternatingGroupFive
 local notation "A5" => alternatingGroup (Fin 5)
 
 /- Domain-style sampling for this remark:
-* primary domain: modular representation theory of finite groups, specialized here to Serre's
+* primary domain: modular representation theory of finite groups, specialized here to LinearRepresentations_Serre_1977's
   explicit `A₅` ordinary-character, decomposition, and Cartan tables;
 * relevant owner declarations inspected upstream in the chapter/project:
   `Representation.decompositionHom`,
   `Representation.cartanHom`,
   `Representation.cartanMatrix`,
   `Representation.decompositionHom_toMatrix_eq_one_of_order_prime_to_p`;
-* best owner abstraction for this file: Serre's tables are source-facing matrix data, but their
+* best owner abstraction for this file: LinearRepresentations_Serre_1977's tables are source-facing matrix data, but their
   indices should be the chapter's ordinary-simple and Brauer/projective basis labels rather than
   anonymous `Fin` coordinates;
 * source/core/bridge triage:
-  source-facing: these explicit `A₅` tables with Serre's chosen basis orderings;
+  source-facing: these explicit `A₅` tables with LinearRepresentations_Serre_1977's chosen basis orderings;
   core/canonical: the chapter-level decomposition and Cartan owners determining the orientation of
     those basis labels;
   bridge/view: this file stays at the explicit table layer, so the Cartan matrices remain derived
@@ -96,7 +96,7 @@ Primitive data vs derived API:
   together with the three Cartan matrices and their explicit-value and determinant lemmas.
 -/
 
-/-- The ordinary irreducible character table of `A₅` in Serre's example, with rows indexed by the
+/-- The ordinary irreducible character table of `A₅` in LinearRepresentations_Serre_1977's example, with rows indexed by the
 labeled ordinary irreducible characters and columns indexed by the labeled conjugacy classes. -/
 def alternating_group_five_ordinary_irreducible_character_table :
     Matrix OrdinaryIrreducible ConjugacyClass ℝ
@@ -126,7 +126,7 @@ def alternating_group_five_ordinary_irreducible_character_table :
   | .chi5, .fiveCycle_phi => 0
   | .chi5, .fiveCycle_psi => 0
 
-/-- A fixed representative of the `fiveCycle_phi` column in Serre's split `5`-cycle ordering for
+/-- A fixed representative of the `fiveCycle_phi` column in LinearRepresentations_Serre_1977's split `5`-cycle ordering for
 the ordinary character table of `A₅`. -/
 private def fiveCyclePhiRepresentative : A5 :=
   ⟨finRotate 5, by
@@ -134,7 +134,7 @@ private def fiveCyclePhiRepresentative : A5 :=
       finRotate_bit1_mem_alternatingGroup
     simpa using h⟩
 
-/-- The labeled conjugacy class of an element of `A₅` in Serre's ordinary character table. The
+/-- The labeled conjugacy class of an element of `A₅` in LinearRepresentations_Serre_1977's ordinary character table. The
 two split `5`-cycle classes are ordered so that `OrdinaryIrreducible.chi3_phi_psi` has values
 `(φ, ψ)` on `fiveCycle_phi` and `fiveCycle_psi`. -/
 def conjugacyClass (g : A5) : ConjugacyClass :=
@@ -146,7 +146,7 @@ def conjugacyClass (g : A5) : ConjugacyClass :=
 
 namespace OrdinaryIrreducible
 
-/-- The ordinary complex character of `A₅` attached to one of Serre's labeled rows in the
+/-- The ordinary complex character of `A₅` attached to one of LinearRepresentations_Serre_1977's labeled rows in the
 ordinary character table from `Remark 18-18.6-1`. -/
 def character (χ : OrdinaryIrreducible) : A5 → ℂ :=
   fun g ↦ (alternating_group_five_ordinary_irreducible_character_table χ (conjugacyClass g) : ℂ)
@@ -158,7 +158,7 @@ def character (χ : OrdinaryIrreducible) : A5 → ℂ :=
 
 end OrdinaryIrreducible
 
-/-- The `p = 2` decomposition matrix in Serre's modular-character example for `A₅`, with rows
+/-- The `p = 2` decomposition matrix in LinearRepresentations_Serre_1977's modular-character example for `A₅`, with rows
 indexed by the ordered `p = 2` Brauer/projective labels and columns indexed by the ordered
 ordinary irreducible labels. -/
 def alternating_group_five_decomposition_matrix_mod_two :
@@ -184,7 +184,7 @@ def alternating_group_five_decomposition_matrix_mod_two :
   | .degreeFour, .chi4 => 1
   | .degreeFour, .chi5 => 0
 
-/-- The `p = 2` Cartan matrix in Serre's modular-character example for `A₅`. Its rows are indexed
+/-- The `p = 2` Cartan matrix in LinearRepresentations_Serre_1977's modular-character example for `A₅`. Its rows are indexed
 by the chosen `p = 2` Brauer-character labels, and its columns by the corresponding projective
 indecomposable labels in the same order. -/
 def alternating_group_five_cartan_matrix_mod_two :
@@ -216,12 +216,12 @@ theorem alternating_group_five_cartan_matrix_mod_two_eq :
         | .degreeFour, .degreeFour => 1 := by
   decide
 
-/-- The determinant of Serre's `p = 2` Cartan matrix for `A₅` is `4`. -/
+/-- The determinant of LinearRepresentations_Serre_1977's `p = 2` Cartan matrix for `A₅` is `4`. -/
 theorem alternating_group_five_cartan_matrix_mod_two_det :
     det alternating_group_five_cartan_matrix_mod_two = 4 := by
   decide
 
-/-- The `p = 3` decomposition matrix in Serre's modular-character example for `A₅`, with rows
+/-- The `p = 3` decomposition matrix in LinearRepresentations_Serre_1977's modular-character example for `A₅`, with rows
 indexed by the ordered `p = 3` Brauer/projective labels and columns indexed by the ordered
 ordinary irreducible labels. -/
 def alternating_group_five_decomposition_matrix_mod_three :
@@ -247,7 +247,7 @@ def alternating_group_five_decomposition_matrix_mod_three :
   | .degreeFour, .chi4 => 1
   | .degreeFour, .chi5 => 1
 
-/-- The `p = 3` Cartan matrix in Serre's modular-character example for `A₅`. Its rows are indexed
+/-- The `p = 3` Cartan matrix in LinearRepresentations_Serre_1977's modular-character example for `A₅`. Its rows are indexed
 by the chosen `p = 3` Brauer-character labels, and its columns by the corresponding projective
 indecomposable labels in the same order. -/
 def alternating_group_five_cartan_matrix_mod_three :
@@ -279,12 +279,12 @@ theorem alternating_group_five_cartan_matrix_mod_three_eq :
         | .degreeFour, .degreeFour => 2 := by
   decide
 
-/-- The determinant of Serre's `p = 3` Cartan matrix for `A₅` is `3`. -/
+/-- The determinant of LinearRepresentations_Serre_1977's `p = 3` Cartan matrix for `A₅` is `3`. -/
 theorem alternating_group_five_cartan_matrix_mod_three_det :
     det alternating_group_five_cartan_matrix_mod_three = 3 := by
   decide
 
-/-- The `p = 5` decomposition matrix in Serre's modular-character example for `A₅`, with rows
+/-- The `p = 5` decomposition matrix in LinearRepresentations_Serre_1977's modular-character example for `A₅`, with rows
 indexed by the ordered `p = 5` Brauer/projective labels and columns indexed by the ordered
 ordinary irreducible labels. -/
 def alternating_group_five_decomposition_matrix_mod_five :
@@ -305,7 +305,7 @@ def alternating_group_five_decomposition_matrix_mod_five :
   | .degreeFive, .chi4 => 0
   | .degreeFive, .chi5 => 1
 
-/-- The `p = 5` Cartan matrix in Serre's modular-character example for `A₅`. Its rows are indexed
+/-- The `p = 5` Cartan matrix in LinearRepresentations_Serre_1977's modular-character example for `A₅`. Its rows are indexed
 by the chosen `p = 5` Brauer-character labels, and its columns by the corresponding projective
 indecomposable labels in the same order. -/
 def alternating_group_five_cartan_matrix_mod_five :
@@ -330,12 +330,12 @@ theorem alternating_group_five_cartan_matrix_mod_five_eq :
         | .degreeFive, .degreeFive => 1 := by
   decide
 
-/-- The determinant of Serre's `p = 5` Cartan matrix for `A₅` is `5`. -/
+/-- The determinant of LinearRepresentations_Serre_1977's `p = 5` Cartan matrix for `A₅` is `5`. -/
 theorem alternating_group_five_cartan_matrix_mod_five_det :
     det alternating_group_five_cartan_matrix_mod_five = 5 := by
   decide
 
-/- Remark 18-18.6-1 records Serre's `A₅` example: the labeled ordinary irreducible character
+/- Remark 18-18.6-1 records LinearRepresentations_Serre_1977's `A₅` example: the labeled ordinary irreducible character
 table and, for `p = 2`, `3`, and `5`, the labeled decomposition matrices together with the
 corresponding Cartan matrices, defined canonically as `D * Dᵀ` in the chapter's
 Brauer/projective basis conventions. -/

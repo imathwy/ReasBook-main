@@ -1,4 +1,4 @@
-import BauschkeLean.Chap17.Proposition_17_41
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_41
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

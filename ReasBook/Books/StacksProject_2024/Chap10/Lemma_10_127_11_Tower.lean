@@ -1,4 +1,4 @@
-import stacks_project.Chap10.Lemma_10_127_11_Tower_Local
+import StacksProject_2024.Chap10.Lemma_10_127_11_Tower_Local
 
 open scoped TensorProduct
 

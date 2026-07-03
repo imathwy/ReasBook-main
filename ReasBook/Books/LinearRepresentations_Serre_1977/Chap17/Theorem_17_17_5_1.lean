@@ -1,10 +1,10 @@
-import Serre.Chap16.Theorem_16_16_2_1
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
 /- Domain-style sampling for this item:
 * primary domain: modular representation theory of finite groups, at the Grothendieck-group and
-  ordinary-character interface for Serre's projective scalar-extension map;
+  ordinary-character interface for LinearRepresentations_Serre_1977's projective scalar-extension map;
 * relevant owner declarations inspected in this domain:
   `Representation.projectiveGrothendieckScalarExtensionHom`,
   `Representation.finiteRepGrothendieckCharacter`,
@@ -18,7 +18,7 @@ Primitive data vs derived API:
   `p`-singular elements.
 
 Source/core/bridge triage:
-* source-facing: Theorem `17-17.5-1`, which restates the image criterion for Serre's map
+* source-facing: Theorem `17-17.5-1`, which restates the image criterion for LinearRepresentations_Serre_1977's map
   `e : P_k(G) → R_K(G)`;
 * core/canonical: the Chapter `16` owner theorem
   `Representation.mem_projectiveGrothendieckScalarExtension_range_iff_

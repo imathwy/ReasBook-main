@@ -1,9 +1,9 @@
 import Mathlib
-import stacks_project.Chap12.Definition_12_11_1
-import stacks_project.Chap12.Lemma_12_10_3
-import stacks_project.Chap13.Lemma_13_17_1
-import stacks_project.Chap13.Definition_13_28_1
-import stacks_project.Chap13.Lemma_13_28_2
+import StacksProject_2024.Chap12.Definition_12_11_1
+import StacksProject_2024.Chap12.Lemma_12_10_3
+import StacksProject_2024.Chap13.Lemma_13_17_1
+import StacksProject_2024.Chap13.Definition_13_28_1
+import StacksProject_2024.Chap13.Lemma_13_28_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -34,7 +34,7 @@ section WeakSerreSingleBridge
 variable (P : ObjectProperty A) [P.ContainsZero] [P.IsClosedUnderIsomorphisms]
 
 /- Domain-style sampling for Lemma 13.28.5:
-- primary domain: the bounded derived subcategory cut out by a weak Serre object property and the
+- primary domain: the bounded derived subcategory cut out by a weak LinearRepresentations_Serre_1977 object property and the
   induced Grothendieck-group comparison map;
 - sampled owner declarations:
   `derivedCategoryCohomologyInProperty`,
@@ -107,7 +107,7 @@ section WeakSerreBoundedDerivedBridge
 
 variable (P : ObjectProperty A)
 
-/-- The `i`-th cohomology functor on `Dᵇ_{P}` lifted to the weak Serre full subcategory
+/-- The `i`-th cohomology functor on `Dᵇ_{P}` lifted to the weak LinearRepresentations_Serre_1977 full subcategory
 `P.FullSubcategory`. -/
 abbrev derivedBoundedWithCohomologyInHomologyFunctor (i : ℤ) :
     Dᵇ_{P} ⥤ P.FullSubcategory :=
@@ -164,7 +164,7 @@ def weakSerreToDerivedBoundedK0 :
 
 -- Proof sketch: `Dᵇ_P(A)` inherits its triangulated structure from the ambient derived category,
 -- and the lifted degree-zero cohomology functor is the source-facing `H⁰` functor valued in the
--- weak Serre full subcategory. Exactness is therefore the same long exact cohomology sequence as
+-- weak LinearRepresentations_Serre_1977 full subcategory. Exactness is therefore the same long exact cohomology sequence as
 -- for `DerivedCategory.homologyFunctor A 0`, viewed inside `P.FullSubcategory`.
 local instance derivedBoundedWithCohomologyInZeroHomologyFunctor_isHomological :
     (derivedBoundedWithCohomologyInZeroHomologyFunctor P).IsHomological := by
@@ -237,7 +237,7 @@ theorem weakSerreToDerivedBoundedK0_rightInverse :
       (derivedBoundedWithCohomologyInEulerK0 P)
       (weakSerreToDerivedBoundedK0 P) := sorry
 
-/-- Lemma 13.28.5: for a weak Serre subcategory `P` of an abelian category `A`, the canonical map
+/-- Lemma 13.28.5: for a weak LinearRepresentations_Serre_1977 subcategory `P` of an abelian category `A`, the canonical map
 `K₀(P) → K₀(Dᵇ_{P})` sending `[X]` to `[X[0]]` is an isomorphism. Its inverse sends the class
 of `X` to the alternating sum `\sum_i (-1)^i [H^i(X)]`. -/
 noncomputable def weakSerreSubcategoryK0EquivDerivedBoundedWithCohomologyIn :

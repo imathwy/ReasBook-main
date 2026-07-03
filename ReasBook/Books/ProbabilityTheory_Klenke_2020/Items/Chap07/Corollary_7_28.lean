@@ -1,5 +1,5 @@
-import AchimKlenkeLean.Items.Chap07.Definition_7_20
-import AchimKlenkeLean.Items.Chap07.Theorem_7_26
+import ProbabilityTheory_Klenke_2020.Items.Chap07.Definition_7_20
+import ProbabilityTheory_Klenke_2020.Items.Chap07.Theorem_7_26
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,9 +1,9 @@
 import Mathlib
-import CombinatorialGroupTheory.Basic
-import CombinatorialGroupTheory.Items.Chap01.Proposition_1_3_5
-import CombinatorialGroupTheory.Items.Chap01.Proposition_1_4_5
-import CombinatorialGroupTheory.Items.Chap05.Lemma_5_10_2
-import CombinatorialGroupTheory.Items.Chap05.Theorem_5_10_1
+import CombinatorialGroupTheory_Magnus_2004.Basic
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_3_5
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_4_5
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Lemma_5_10_2
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Theorem_5_10_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -41,14 +41,14 @@ Layer triage:
 Domain sampling:
 1. `Monoid.CoprodI` from mathlib is the canonical owner for the free product of an indexed family
    of groups, and Section `10` already phrases small-cancellation over free products with that
-   owner in [Theorem_5_10_1](/volume/math/AI4M/users/zcwang/bookrepo/CombinatorialGroupTheory/CombinatorialGroupTheory/Items/Chap05/Theorem_5_10_1.lean).
+   owner in [Theorem_5_10_1](/volume/math/AI4M/users/zcwang/bookrepo/CombinatorialGroupTheory_Magnus_2004/CombinatorialGroupTheory_Magnus_2004/Items/Chap05/Theorem_5_10_1.lean).
 2. `Monoid.CoprodI.condition_c_prime` and its notation `C'(\lambda)[R]` are the chapter owner
    APIs for the symmetrized small-cancellation hypothesis.
-3. `IsHopfian` from [Proposition_1_3_5](/volume/math/AI4M/users/zcwang/bookrepo/CombinatorialGroupTheory/CombinatorialGroupTheory/Items/Chap01/Proposition_1_3_5.lean)
+3. `IsHopfian` from [Proposition_1_3_5](/volume/math/AI4M/users/zcwang/bookrepo/CombinatorialGroupTheory_Magnus_2004/CombinatorialGroupTheory_Magnus_2004/Items/Chap01/Proposition_1_3_5.lean)
    is the owner predicate for the Hopfian conclusion, and the same file now houses the matching
    cohopfian owner.
 4. `MulAut.innerAutomorphismSubgroup` from
-   [Proposition_1_4_5](/volume/math/AI4M/users/zcwang/bookrepo/CombinatorialGroupTheory/CombinatorialGroupTheory/Items/Chap01/Proposition_1_4_5.lean)
+   [Proposition_1_4_5](/volume/math/AI4M/users/zcwang/bookrepo/CombinatorialGroupTheory_Magnus_2004/CombinatorialGroupTheory_Magnus_2004/Items/Chap01/Proposition_1_4_5.lean)
    is the canonical owner for “every automorphism is inner”, and the textbook notation `JA(G)` is
    the source-facing theorem surface for that owner, so completeness is expressed by the pair
    `Subgroup.center G = ⊥` and `JA(G) = ⊤`.

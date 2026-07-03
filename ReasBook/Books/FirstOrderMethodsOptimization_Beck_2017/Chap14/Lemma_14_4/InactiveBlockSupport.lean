@@ -1,7 +1,7 @@
 import Mathlib
-import FirstOrderMethodsinOptimization.Chap02.Definition_2_6
-import FirstOrderMethodsinOptimization.Chap09.Definition_9_2
-import FirstOrderMethodsinOptimization.Chap14.Algorithm_14_8
+import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_6
+import FirstOrderMethodsOptimization_Beck_2017.Chap09.Definition_9_2
+import FirstOrderMethodsOptimization_Beck_2017.Chap14.Algorithm_14_8
 
 -- Theorem-local helpers for Lemma 14.4.
 

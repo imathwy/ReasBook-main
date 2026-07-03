@@ -1,5 +1,5 @@
 import Mathlib.LinearAlgebra.Dual.Lemmas
-import stacks_project.Chap15.Lemma_15_15_6
+import StacksProject_2024.Chap15.Lemma_15_15_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap10.Lemma_10_47_3
+import StacksProject_2024.Chap10.Lemma_10_47_3
 
 open scoped TensorProduct
 open Algebra.TensorProduct

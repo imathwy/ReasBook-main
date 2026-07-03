@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap02.Remark_2_2_1_2
+import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_1_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -19,7 +19,7 @@ variable {K : Type v} [Semifield K]
 local instance : Fintype G := Fintype.ofFinite G
 
 /-- The class function on `G` induced from a `K`-valued function on the subgroup `H`; this is
-Serre's `Ind_H^G(f)` or `Ind(f)`. -/
+LinearRepresentations_Serre_1977's `Ind_H^G(f)` or `Ind(f)`. -/
 def inducedClassFunction (H : Subgroup G) (f : H → K) : G → K :=
   let _ : DecidablePred fun x : G ↦ x ∈ H := Classical.decPred _
   fun g ↦

@@ -1,8 +1,8 @@
 import Mathlib.Order.LiminfLimsup
 import Mathlib.Topology.Defs.Filter
 import Mathlib.Data.EReal.Basic
-import Reaslib.Optlib.Differential.Calculation
-import Reaslib.Optlib.Function.Proximal
+import ReasLib.Optlib.Differential.Calculation
+import ReasLib.Optlib.Function.Proximal
 
 noncomputable section
 

@@ -1,6 +1,6 @@
 import Mathlib
-import Nesterov.Chap01.Algorithm_1_6_1
-import Nesterov.Chap02.Definition_2_23
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Algorithm_1_6_1
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_23
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

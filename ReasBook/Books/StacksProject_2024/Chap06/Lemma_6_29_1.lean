@@ -2,8 +2,8 @@ import Mathlib
 import Mathlib.CategoryTheory.Sites.LeftExact
 import Mathlib.CategoryTheory.Sites.Limits
 import Mathlib.CategoryTheory.Sites.LocallyBijective
-import stacks_project.Chap06.Definition_6_16_2
-import stacks_project.Chap06.Lemma_6_17_5
+import StacksProject_2024.Chap06.Definition_6_16_2
+import StacksProject_2024.Chap06.Lemma_6_17_5
 
 open CategoryTheory CategoryTheory.Limits Opposite TopologicalSpace
 open CategoryTheory.GrothendieckTopology

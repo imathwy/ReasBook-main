@@ -2,7 +2,7 @@ import Mathlib.Algebra.Module.LocalizedModule.AtPrime
 import Mathlib.RingTheory.Ideal.Height
 import Mathlib.RingTheory.KrullDimension.Module
 import Mathlib.RingTheory.RegularLocalRing.Defs
-import stacks_project.Chap10.Definition_10_72_1
+import StacksProject_2024.Chap10.Definition_10_72_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -56,7 +56,7 @@ namespace Module
 
 /-
 Source/core/bridge triage:
-* source-facing: `Module.SerreConditionS R M k`, the module-theoretic Serre condition `(S_k)`;
+* source-facing: `Module.SerreConditionS R M k`, the module-theoretic LinearRepresentations_Serre_1977 condition `(S_k)`;
 * core/canonical: the localized owner data `moduleDepth` and `Module.supportDim` on
   `LocalizedModule.AtPrime p.asIdeal M`;
 * bridge/view: the ring self-module specialization `SerreConditionS R k` below.
@@ -64,7 +64,7 @@ Source/core/bridge triage:
 Primitive data are exactly the finiteness hypothesis and the primewise depth inequality for the
 localized modules. The ring version is derived from this owner by specializing to `M = R`.
 -/
-/-- Definition 10.157.1 (3): a finite `R`-module satisfies Serre's condition `(S_k)` if, for every
+/-- Definition 10.157.1 (3): a finite `R`-module satisfies LinearRepresentations_Serre_1977's condition `(S_k)` if, for every
 prime ideal `𝔭`, the depth of `M_𝔭` is at least `min(k, dim(Supp(M_𝔭)))`. -/
 class SerreConditionS (k : outParam ℕ) : Prop extends Module.Finite R M where
   moduleDepth_localizationAtPrime_ge_min_supportDim :
@@ -78,7 +78,7 @@ class SerreConditionS (k : outParam ℕ) : Prop extends Module.Finite R M where
 
 namespace SerreConditionS
 
-/-- Serre's condition `(S_k)` is invariant under linear equivalence. -/
+/-- LinearRepresentations_Serre_1977's condition `(S_k)` is invariant under linear equivalence. -/
 theorem of_linearEquiv {R : Type u} [CommRing R] {M : Type v} [AddCommGroup M] [Module R M]
     {N : Type*} [AddCommGroup N] [Module R N] {k : ℕ} (e : M ≃ₗ[R] N)
     [hM : Module.SerreConditionS R M k] : Module.SerreConditionS R N k where
@@ -123,7 +123,7 @@ Source/core/bridge triage:
 For `(S_k)`, the old ring-specific primewise depth field was duplicate derived API for the
 self-module. The primitive owner data are Noetherianity together with `Module.SerreConditionS R R`.
 -/
-/-- Definition 10.157.1 (1): a Noetherian ring satisfies Serre's condition `(R_k)` if every
+/-- Definition 10.157.1 (1): a Noetherian ring satisfies LinearRepresentations_Serre_1977's condition `(R_k)` if every
 localization at a prime ideal of height at most `k` is a regular local ring; equivalently, `R` is
 regular in codimension at most `k`. -/
 class SerreConditionR (k : outParam ℕ) : Prop extends IsNoetherianRing R where
@@ -132,7 +132,7 @@ class SerreConditionR (k : outParam ℕ) : Prop extends IsNoetherianRing R where
       Ideal.primeHeight p.asIdeal ≤ k →
         IsRegularLocalRing (Localization.AtPrime p.asIdeal)
 
-/-- Definition 10.157.1 (2): a Noetherian ring satisfies Serre's condition `(S_k)` if, for every
+/-- Definition 10.157.1 (2): a Noetherian ring satisfies LinearRepresentations_Serre_1977's condition `(S_k)` if, for every
 prime ideal `𝔭`, the depth of `R_𝔭` is at least `min(k, dim(R_𝔭))`. -/
 class SerreConditionS (k : outParam ℕ) : Prop extends IsNoetherianRing R, Module.SerreConditionS R R k
 

@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap18.Proposition_18_18_1_2
-import Serre.Chap18.Remark_18_18_1_3
-import Serre.Chap18.Theorem_18_18_2_1.RegularConjClassCore
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap18.Proposition_18_18_1_2
+import LinearRepresentations_Serre_1977.Chap18.Remark_18_18_1_3
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.RegularConjClassCore
 
 noncomputable section
 
@@ -143,7 +143,7 @@ private abbrev ordinaryCharacterClassFunction
     (X : FDRep K G) : classFunctionSubmodule K G :=
   ⟨X.character, ordinaryCharacter_mem_classFunctionSubmodule (K := K) (G := G) X⟩
 
-/-- Helper for Theorem 18-18.2-1: if Serre's bundled zero-extension already lies in the span of
+/-- Helper for Theorem 18-18.2-1: if LinearRepresentations_Serre_1977's bundled zero-extension already lies in the span of
 bundled honest ordinary characters, then the underlying unbundled extension lies in the span of the
 corresponding raw characters. -/
 private theorem regularClassFunctionExtension_mem_span_honest_characters_of_bundled_span_local
@@ -179,9 +179,9 @@ private theorem regularClassFunctionExtension_mem_span_honest_characters_of_bund
   · intro a φ hφ hφ_mem
     simpa using Submodule.smul_mem (Submodule.span K Sfun) a hφ_mem
 
-/-- Helper for Theorem 18-18.2-1: once Serre's zero-extension lies in the span of honest ordinary
+/-- Helper for Theorem 18-18.2-1: once LinearRepresentations_Serre_1977's zero-extension lies in the span of honest ordinary
 characters upstairs, the Brauer characters already span all functions on `PRegularConjClass G p`.
-This public theorem is the exact Serre part `(b)` bridge from an upstairs honest-character span
+This public theorem is the exact LinearRepresentations_Serre_1977 part `(b)` bridge from an upstairs honest-character span
 witness to the downstairs Brauer-character span. -/
 theorem
     regularClassFunction_mem_span_irreducibleModularCharacters_of_complete_family_of_extension_span_local
@@ -218,11 +218,11 @@ theorem
       (p := p) (A := A) (K := K) (G := G) lift E hE_pairwise hE_complete
       (regularClassFunctionExtension_isClassFunction (G := G) (p := p) f)
       hExtension_fun
-  -- Serre's extension-restriction identity turns the descended span witness back into the
+  -- LinearRepresentations_Serre_1977's extension-restriction identity turns the descended span witness back into the
   -- original regular class function.
   simpa [pRegularLift_regularClassFunctionExtension (G := G) (p := p) f] using hmem
 
-/-- Helper for Theorem 18-18.2-1: once Serre's zero-extension lies in the span of honest ordinary
+/-- Helper for Theorem 18-18.2-1: once LinearRepresentations_Serre_1977's zero-extension lies in the span of honest ordinary
 characters upstairs, the Brauer characters already span all functions on `PRegularConjClass G p`.
 -/
 private theorem span_irreducibleModularCharacters_eq_top_of_complete_family_of_extension_span_local
@@ -244,7 +244,7 @@ private theorem span_irreducibleModularCharacters_eq_top_of_complete_family_of_e
   apply top_unique
   intro f _
   -- Reduce the `top` claim to the one-function descent statement above, so the source route for
-  -- Serre part `(b)` is recorded once and reused.
+  -- LinearRepresentations_Serre_1977 part `(b)` is recorded once and reused.
   exact
     regularClassFunction_mem_span_irreducibleModularCharacters_of_complete_family_of_extension_span_local
       (p := p) (A := A) (K := K) (G := G) lift E hE_pairwise hE_complete f (hExtension f)
@@ -287,7 +287,7 @@ private theorem characterRing_mem_span_fdRep_characters_local
         (Submodule.span K { ψ : G → K | ∃ X : FDRep K G, ψ = X.character })
         (n : K) hg)
 
-/-- Helper for Theorem 18-18.2-1: any function in Serre's field-level owner `R_K(G)` already lies
+/-- Helper for Theorem 18-18.2-1: any function in LinearRepresentations_Serre_1977's field-level owner `R_K(G)` already lies
 in the ambient `K`-span of honest ordinary characters. This is the exact part `(b)` adapter before
 descending those ordinary characters to Brauer characters on `PRegularConjClass G p`. -/
 theorem function_mem_span_fdRep_characters_of_mem_characterRingOverField_local
@@ -295,10 +295,10 @@ theorem function_mem_span_fdRep_characters_of_mem_characterRingOverField_local
     {f : G → K} (hf : f ∈ R[K](G)) :
     f ∈ Submodule.span K { ψ : G → K | ∃ X : FDRep K G, ψ = X.character } := by
   -- Reuse the already-proved Chapter `12` expansion of a virtual character into honest ordinary
-  -- characters; this public wrapper exposes the exact field-level owner used in Serre part `(b)`.
+  -- characters; this public wrapper exposes the exact field-level owner used in LinearRepresentations_Serre_1977 part `(b)`.
   exact characterRing_mem_span_fdRep_characters_local (G := G) (K := K) hf
 
-/-- Helper for Theorem 18-18.2-1: any function in Serre's scalar-extension owner
+/-- Helper for Theorem 18-18.2-1: any function in LinearRepresentations_Serre_1977's scalar-extension owner
 `A ⊗ R_K(G)` already lies in the ambient `K`-span of honest ordinary characters. -/
 private theorem
     function_mem_span_fdRep_characters_of_mem_characterRingOverFieldAlgebraScalarExtension_local
@@ -392,7 +392,7 @@ private theorem classFunction_mem_bundled_span_honest_characters_of_raw_span_loc
   -- Proof irrelevance identifies the rebundled class function with the original owner.
   simpa using hf_mem
 
-/-- Helper for Theorem 18-18.2-1: once Serre's zero-extension is an ordinary virtual character
+/-- Helper for Theorem 18-18.2-1: once LinearRepresentations_Serre_1977's zero-extension is an ordinary virtual character
 upstairs, its bundled class-function owner already lies in the span of bundled honest ordinary
 characters. -/
 private theorem regularClassFunctionExtensionClassFunction_mem_span_honest_characters_of_extension_mem_characterRing_local
@@ -416,7 +416,7 @@ private theorem regularClassFunctionExtensionClassFunction_mem_span_honest_chara
       (regularClassFunctionExtension_isClassFunction (G := G) (p := p) f)
       hraw
 
-/-- Helper for Theorem 18-18.2-1: once Serre's zero-extension lies in the Chapter `12`
+/-- Helper for Theorem 18-18.2-1: once LinearRepresentations_Serre_1977's zero-extension lies in the Chapter `12`
 scalar-extension owner `A ⊗ R_K(G)`, its bundled class-function owner already lies in the span of
 bundled honest ordinary characters. -/
 private theorem
@@ -441,7 +441,7 @@ private theorem
       (regularClassFunctionExtension_isClassFunction (G := G) (p := p) f)
       hraw
 
-/-- Helper for Theorem 18-18.2-1: if Serre's zero-extension is known to be an ordinary virtual
+/-- Helper for Theorem 18-18.2-1: if LinearRepresentations_Serre_1977's zero-extension is known to be an ordinary virtual
 character upstairs, then the Brauer characters already span all regular class functions. -/
 private theorem
     span_irreducibleModularCharacters_eq_top_of_complete_family_of_extension_mem_characterRing_local
@@ -469,7 +469,7 @@ private theorem
     regularClassFunctionExtensionClassFunction_mem_span_honest_characters_of_extension_mem_characterRing_local
       (G := G) (p := p) (K := K) f (hExtension f)
 
-/-- Helper for Theorem 18-18.2-1: under the source coefficient-ring hypotheses, once Serre's
+/-- Helper for Theorem 18-18.2-1: under the source coefficient-ring hypotheses, once LinearRepresentations_Serre_1977's
 zero-extension of one regular class function is known to be an ordinary virtual character on `G`,
 the corresponding regular class function already lies in the Brauer-character span downstairs. -/
 private theorem
@@ -505,13 +505,13 @@ private theorem
       (p := p) (A := A) (K := K) (G := G) lift E hE_pairwise hE_complete
       (regularClassFunctionExtension_isClassFunction (G := G) (p := p) f)
       hraw
-  -- Serre's extension-restriction identity turns the descended span witness back into `f`.
+  -- LinearRepresentations_Serre_1977's extension-restriction identity turns the descended span witness back into `f`.
   simpa [pRegularLift_regularClassFunctionExtension (G := G) (p := p) f] using hmem
 
-/-- Helper for Theorem 18-18.2-1: under the source coefficient-ring hypotheses, once Serre's
+/-- Helper for Theorem 18-18.2-1: under the source coefficient-ring hypotheses, once LinearRepresentations_Serre_1977's
 zero-extension of one regular class function is known to be an ordinary virtual character on `G`,
 the corresponding regular class function already lies in the Brauer-character span downstairs. This
-public theorem is the exact field-level descent used in Serre part `(b)`. -/
+public theorem is the exact field-level descent used in LinearRepresentations_Serre_1977 part `(b)`. -/
 theorem
     regularClassFunction_mem_span_irreducibleModularCharacters_of_complete_family_of_extension_mem_characterRingOverField_local
     [CharZero K]
@@ -532,7 +532,7 @@ theorem
     regularClassFunction_mem_span_irreducibleModularCharacters_of_complete_family_of_extension_mem_characterRing_local
       (p := p) (A := A) (K := K) (G := G) lift E hE_pairwise hE_complete f hExtension
 
-/-- Helper for Theorem 18-18.2-1: Serre part `(b)` only needs the weaker public hypothesis that
+/-- Helper for Theorem 18-18.2-1: LinearRepresentations_Serre_1977 part `(b)` only needs the weaker public hypothesis that
 the zero-extension lies in the ambient `K`-span generated by `R_K(G)`. This bridge records the
 source-faithful descent from that ordinary-character span upstairs to the Brauer-character span on
 `PRegularConjClass G p`. -/
@@ -556,7 +556,7 @@ theorem
       (Set.range fun i ↦
         FDRep.modularCharacterOnPRegularConjClass (p := p) (E i)
           (PrimeToPRoot.toFieldLift lift))
-  -- Route correction: Serre's part `(b)` uses only a finite linear combination of ordinary
+  -- Route correction: LinearRepresentations_Serre_1977's part `(b)` uses only a finite linear combination of ordinary
   -- characters upstairs, so we descend from the public span `Submodule.span K (R[K](G))`
   -- instead of the over-strong hypothesis `regularClassFunctionExtension f ∈ R[K](G)`.
   have hdescend :
@@ -627,7 +627,7 @@ theorem
     simpa [hEq] using hg_mem
   simpa [pRegularLift_regularClassFunctionExtension (G := G) (p := p) f] using hcanon
 
-/-- Helper for Theorem 18-18.2-1: once Serre's zero-extension lies in the scalar-extension owner
+/-- Helper for Theorem 18-18.2-1: once LinearRepresentations_Serre_1977's zero-extension lies in the scalar-extension owner
 `A ⊗ R_K(G)`, the regular class function already lies in the Brauer-character span downstairs. -/
 theorem
     regularClassFunction_mem_span_irreducibleModularCharacters_of_complete_family_of_extension_mem_characterRingScalarExtension_local
@@ -662,11 +662,11 @@ theorem
       (p := p) (A := A) (K := K) (G := G) lift E hE_pairwise hE_complete
       (regularClassFunctionExtension_isClassFunction (G := G) (p := p) f)
       hraw
-  -- Serre's extension-restriction identity turns the descended span witness back into `f`.
+  -- LinearRepresentations_Serre_1977's extension-restriction identity turns the descended span witness back into `f`.
   simpa [pRegularLift_regularClassFunctionExtension (G := G) (p := p) f] using hmem
 
 /-- Helper for Theorem 18-18.2-1: once every zero-extension lies in the public span
-`Submodule.span K (R_K(G))`, Serre part `(b)` already yields the full spanning statement on
+`Submodule.span K (R_K(G))`, LinearRepresentations_Serre_1977 part `(b)` already yields the full spanning statement on
 `PRegularConjClass G p`. This keeps the remaining mixed-character blocker at the correct public
 API boundary. -/
 theorem
@@ -721,7 +721,7 @@ private theorem
 
 /-- Helper for Theorem 18-18.2-1: if every zero-extension is an ordinary virtual character in
 `R_K(G)`, then the Brauer characters of a complete irreducible family span all regular class
-functions. This public wrapper records the exact field-level owner statement for Serre part `(b)`.
+functions. This public wrapper records the exact field-level owner statement for LinearRepresentations_Serre_1977 part `(b)`.
 -/
 theorem
     span_irreducibleModularCharacters_eq_top_of_complete_family_of_extension_mem_characterRingOverField_local
@@ -739,7 +739,7 @@ theorem
             (PrimeToPRoot.toFieldLift lift)) =
       ⊤ := by
   -- Re-export the proved field-owner spanning step so later target wrappers only have to supply
-  -- Serre's owner witness `regularClassFunctionExtension f ∈ R_K(G)`.
+  -- LinearRepresentations_Serre_1977's owner witness `regularClassFunctionExtension f ∈ R_K(G)`.
   exact
     span_irreducibleModularCharacters_eq_top_of_complete_family_of_extension_mem_characterRing_local
       (p := p) (A := A) (K := K) (G := G) lift E hE_pairwise hE_complete hExtension

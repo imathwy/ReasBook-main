@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap15.Definition_15_15_1_1
-import Serre.Chap16.Theorem_16_16_1_5
-import Serre.Chap16.Corollary_16_16_1_6
-import Serre.Chap16.Exercise_16_16_1_12
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_5
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_6
+import LinearRepresentations_Serre_1977.Chap16.Exercise_16_16_1_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

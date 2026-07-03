@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Definition_1_2_4
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_2_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -13,7 +13,7 @@ Relevant owner-style declarations sampled before refining:
   oracle;
 * `#check (Set State)` in `Definition_1_2_3.lean`, the canonical owner of the stopping criterion
   `𝒯_ε`;
-* `BlackBoxOptimizationProblemClass` in `Nesterov/Chap01/Definition_1_2_4.lean`, which already
+* `BlackBoxOptimizationProblemClass` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_2_4.lean`, which already
   packages exactly the source-facing triple from those primitive owners.
 
 Best owner abstraction:

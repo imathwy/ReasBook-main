@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap10.Definition_10_10_1_3
-import Serre.Chap10.Theorem_10_10_5_1
-import Serre.Chap11.Remark_11_11_1_3.RestrictionFamily
-import Serre.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_1
+import LinearRepresentations_Serre_1977.Chap11.Remark_11_11_1_3.RestrictionFamily
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
 
 -- Stable integral restriction-family splitting infrastructure extracted from Remark 11-11.1-3.
 
@@ -187,7 +187,7 @@ private theorem eq_zero_of_divisible_by_all_nonzero_int
   simpa using hcoeff_zero i
 
 omit [Finite G] in
-/-- Helper for Remark 11-11.1-3: Serre's character ring is torsion-free as a `ℤ`-module. -/
+/-- Helper for Remark 11-11.1-3: LinearRepresentations_Serre_1977's character ring is torsion-free as a `ℤ`-module. -/
 private theorem characterRing_isTorsionFree :
     Module.IsTorsionFree ℤ (R(G)) := by
   refine Module.IsTorsionFree.of_smul_eq_zero ?_
@@ -366,7 +366,7 @@ private theorem exists_complete_pairwise_nonisomorphic_irreducible_family [Finit
   exact ⟨ι, inferInstance, π, hπ_pairwise, hπ_complete⟩
 
 omit [Finite G] in
-/-- Helper for Remark 11-11.1-3: Serre's character ring is finitely generated over `ℤ`. -/
+/-- Helper for Remark 11-11.1-3: LinearRepresentations_Serre_1977's character ring is finitely generated over `ℤ`. -/
 theorem characterRing_moduleFinite [Finite G] : Module.Finite ℤ (R(G)) := by
   classical
   obtain ⟨ι, _, π, hπ_pairwise, hπ_complete⟩ :=

@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap19.Remark_19_9_4
+import StacksProject_2024.Chap19.Remark_19_9_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -42,10 +42,10 @@ variable {𝒜 : Type u} [Category.{v} 𝒜] [Abelian 𝒜] [EnoughInjectives �
 variable {I : Type w}
 
 -- Proof sketch: first use `exists_small_abelian_fullSubcategory_containing` on `E` to obtain a
--- small weak-Serre object property containing `E`; then refine that witness so that its full
+-- small weak-LinearRepresentations_Serre_1977 object property containing `E`; then refine that witness so that its full
 -- subcategory also has enough injectives.
 /-- Owner refinement of Remark 13.26.13: any small object property in an abelian category with
-enough injectives is contained in a small weak-Serre object property whose full subcategory also
+enough injectives is contained in a small weak-LinearRepresentations_Serre_1977 object property whose full subcategory also
 has enough injectives. -/
 theorem exists_small_abelian_fullSubcategory_with_enough_injectives_containing
     (E : ObjectProperty 𝒜) [ObjectProperty.Small.{w} E] :

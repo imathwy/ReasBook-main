@@ -1,7 +1,7 @@
 import Mathlib
-import stacks_project.Chap12.Definition_12_10_1
-import stacks_project.Chap18.Definition_18_43_1
-import stacks_project.Chap21.Situation_21_30_1
+import StacksProject_2024.Chap12.Definition_12_10_1
+import StacksProject_2024.Chap18.Definition_18_43_1
+import StacksProject_2024.Chap21.Situation_21_30_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -71,16 +71,16 @@ section AddCommGroups
 variable [HasWeakSheafify J AddCommGrpCat.{w}]
 variable [∀ U : C, HasWeakSheafify (J.over U) AddCommGrpCat.{w}]
 
--- Proof sketch: apply the weak-Serre criterion recorded in the imported owner abstraction.
+-- Proof sketch: apply the weak-LinearRepresentations_Serre_1977 criterion recorded in the imported owner abstraction.
 -- Kernels and cokernels are handled locally by trivializing maps, and extensions are checked after
 -- refining to a cover where the end terms are constant finite abelian sheaves.
-/-- Lemma 18.43.5 (3): finite locally constant abelian sheaves form a weak Serre subcategory of
+/-- Lemma 18.43.5 (3): finite locally constant abelian sheaves form a weak LinearRepresentations_Serre_1977 subcategory of
 `Ab(\mathcal C)`. -/
 theorem isFiniteLocallyConstantAddCommGrp_isWeakSerreClass :
     IsWeakSerreClass (fun F : Sheaf J AddCommGrpCat.{w} ↦ IsFiniteLocallyConstantAddCommGrp F) :=
   sorry
 
-/-- Finite locally constant abelian sheaves carry their canonical weak-Serre instance. -/
+/-- Finite locally constant abelian sheaves carry their canonical weak-LinearRepresentations_Serre_1977 instance. -/
 instance isFiniteLocallyConstantAddCommGrp_instWeakSerreClass :
     IsWeakSerreClass (fun F : Sheaf J AddCommGrpCat.{w} ↦ IsFiniteLocallyConstantAddCommGrp F) :=
   isFiniteLocallyConstantAddCommGrp_isWeakSerreClass
@@ -93,17 +93,17 @@ variable {Λ : Type w} [Ring Λ] [IsNoetherianRing Λ]
 variable [HasWeakSheafify J (ModuleCat.{w} Λ)]
 variable [∀ U : C, HasWeakSheafify (J.over U) (ModuleCat.{w} Λ)]
 
--- Proof sketch: again use the weak-Serre criterion. After local trivialization, kernels and
+-- Proof sketch: again use the weak-LinearRepresentations_Serre_1977 criterion. After local trivialization, kernels and
 -- cokernels are kernels and cokernels of maps of finite type `\Lambda`-modules; the Noetherian
 -- hypothesis guarantees these remain finite type, and the extension argument follows from the
 -- pushout description in the source text.
 /-- Lemma 18.43.5 (4): for a Noetherian ring `\Lambda`, locally constant sheaves of finite type
-`\Lambda`-modules form a weak Serre subcategory of `Mod(\mathcal C, \Lambda)`. -/
+`\Lambda`-modules form a weak LinearRepresentations_Serre_1977 subcategory of `Mod(\mathcal C, \Lambda)`. -/
 theorem isFiniteTypeLocallyConstantModule_isWeakSerreClass :
     IsWeakSerreClass (fun F : Sheaf J (ModuleCat.{w} Λ) ↦ IsFiniteTypeLocallyConstantModule F) :=
   sorry
 
-/-- Finite type locally constant module sheaves carry their canonical weak-Serre instance. -/
+/-- Finite type locally constant module sheaves carry their canonical weak-LinearRepresentations_Serre_1977 instance. -/
 instance isFiniteTypeLocallyConstantModule_instWeakSerreClass :
     IsWeakSerreClass
       (fun F : Sheaf J (ModuleCat.{w} Λ) ↦ IsFiniteTypeLocallyConstantModule F) :=

@@ -1,5 +1,5 @@
 import Mathlib.Tactic.TFAE
-import stacks_project.Chap10.Definition_10_17_1
+import StacksProject_2024.Chap10.Definition_10_17_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -19,7 +19,7 @@ variable {R : Type u} [CommSemiring R] {U : Set (PrimeSpectrum R)}
   `PrimeSpectrum.isCompact_isOpen_iff`,
   `PrimeSpectrum.isCompact_isOpen_iff_ideal`,
   `PrimeSpectrum.basicOpen_eq_zeroLocus_compl`,
-  `stacks_project.Chap10.Definition_10_17_1`'s notation owners `D(-)` and `V(-)`;
+  `StacksProject_2024.Chap10.Definition_10_17_1`'s notation owners `D(-)` and `V(-)`;
 - best owner abstraction: the core/canonical owners are the ambient predicates `IsRetrocompact`,
   `IsCompact`, and the spectrum-specific compact-open characterizations above;
 - primitive data: an open subset `U ⊆ Spec(R)`;

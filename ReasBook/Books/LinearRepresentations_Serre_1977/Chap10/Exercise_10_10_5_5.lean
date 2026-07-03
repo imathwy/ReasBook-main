@@ -1,18 +1,18 @@
 import Mathlib
-import Serre.Chap01.Definition_1_1_2_1
-import Serre.Chap01.Theorem_1_1_4_2
-import Serre.Chap02.Proposition_2_2_4_1
-import Serre.Chap08.Theorem_8_8_5_2
-import Serre.Chap07.Proposition_7_7_2_1
-import Serre.Chap09.Theorem_9_9_2_1
-import Serre.Chap10.Definition_10_10_1_3
-import Serre.Chap10.Definition_10_10_1_4
-import Serre.Chap10.Lemma_10_10_3_3
-import Serre.Chap10.MonomialCharacter
-import Serre.Chap10.Theorem_10_10_5_1
-import Serre.Chap11.Theorem_11_11_2_1
-import Serre.Chap12.Proposition_12_12_1_1
-import Serre.Chap10.Exercise_10_10_5_5.Index
+import LinearRepresentations_Serre_1977.Chap01.Definition_1_1_2_1
+import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_4_2
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_4_1
+import LinearRepresentations_Serre_1977.Chap08.Theorem_8_8_5_2
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Chap09.Theorem_9_9_2_1
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_4
+import LinearRepresentations_Serre_1977.Chap10.Lemma_10_10_3_3
+import LinearRepresentations_Serre_1977.Chap10.MonomialCharacter
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_1
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap10.Exercise_10_10_5_5.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -115,7 +115,7 @@ theorem induced_trivial_sub_index_smul_one_eq_sum_quotient_linearCharacter_diffe
 namespace Subgroup
 
 /-- Helper for Exercise 10-10.5-5: if `M` is a coatom of an elementary finite group, then
-`Ind_M^G(1_M)` already belongs to Serre's subgroup `R'(G)`. -/
+`Ind_M^G(1_M)` already belongs to LinearRepresentations_Serre_1977's subgroup `R'(G)`. -/
 theorem induced_trivial_mem_elementaryLinearCharacterSpan_of_isCoatom_of_isElementary
     (M : Subgroup G) (hM : IsCoatom M) (hG : IsElementary G) :
     Subgroup.characterRingInduction M (1 : R(M)) ∈ R'(G) := by
@@ -169,7 +169,7 @@ theorem induced_trivial_mem_elementaryLinearCharacterSpan_of_isCoatom_of_isEleme
   exact Submodule.add_mem _ hone' hdiff'
 
 /-- Helper for Exercise 10-10.5-5: induction from a coatom of an elementary finite group maps
-Serre's subgroup `R'(M)` into the ambient subgroup `R'(G)`. -/
+LinearRepresentations_Serre_1977's subgroup `R'(M)` into the ambient subgroup `R'(G)`. -/
 theorem map_elementaryLinearCharacterSpan_of_isCoatom_of_isElementary
     (M : Subgroup G) (hM : IsCoatom M) (hG : IsElementary G) :
     Submodule.map (Subgroup.characterRingInduction M) (R'(M)) ≤ R'(G) := by
@@ -203,7 +203,7 @@ end Subgroup
 namespace Subgroup
 
 /-- Helper for Exercise 10-10.5-5: in an elementary ambient group, induction of the trivial
-character from any subgroup already lies in Serre's subgroup `R'(G)`. -/
+character from any subgroup already lies in LinearRepresentations_Serre_1977's subgroup `R'(G)`. -/
 theorem induced_trivial_mem_elementaryLinearCharacterSpan_of_subgroup_of_isElementary
     (H : Subgroup G) (hG : IsElementary G) :
     Subgroup.characterRingInduction H (1 : R(H)) ∈ R'(G) := by
@@ -309,7 +309,7 @@ end Subgroup
 
 
 /-- Helper for Exercise 10-10.5-5: inducing a degree-`1` subgroup character of an elementary
-group lands in Serre's subgroup `R'(G)`. -/
+group lands in LinearRepresentations_Serre_1977's subgroup `R'(G)`. -/
 private theorem
     induced_linearCharacter_mem_elementaryLinearCharacterSpan_of_subgroup_of_isElementary
     (H : Subgroup G) (α : H →* ℂˣ) (hG : IsElementary G) :
@@ -362,11 +362,11 @@ private theorem
   exact hrewrite ▸ hsum
 
 /-- Helper for Exercise 10-10.5-5: the character of an irreducible finite-dimensional complex
-representation of an elementary group belongs to Serre's subgroup `R'(G)`. -/
+representation of an elementary group belongs to LinearRepresentations_Serre_1977's subgroup `R'(G)`. -/
 lemma irreducible_fdRepCharacterRing_mem_elementaryLinearCharacterSpan_of_isElementary
     (V : FDRep ℂ G) [CategoryTheory.Simple V] (hG : IsElementary G) :
     fdRepCharacterRing V ∈ R'(G) := by
-  -- Route correction: follow Serre's source path directly inside this file:
+  -- Route correction: follow LinearRepresentations_Serre_1977's source path directly inside this file:
   -- elementary => supersolvable => monomial => induced linear character => `R'(G)`.
   have hsup : IsSupersolvable G := elementary_group_isSupersolvable hG
   letI : IsSupersolvable G := hsup
@@ -382,7 +382,7 @@ lemma irreducible_fdRepCharacterRing_mem_elementaryLinearCharacterSpan_of_isElem
       H α hG
 
 /-- Helper for Exercise 10-10.5-5: every honest finite-dimensional character of an elementary
-group belongs to Serre's subgroup `R'(G)`. -/
+group belongs to LinearRepresentations_Serre_1977's subgroup `R'(G)`. -/
 lemma fdRepCharacterRing_mem_elementaryLinearCharacterSpan_of_isElementary
     (V : FDRep ℂ G) (hG : IsElementary G) :
     fdRepCharacterRing V ∈ R'(G) := by
@@ -408,7 +408,7 @@ lemma fdRepCharacterRing_mem_elementaryLinearCharacterSpan_of_isElementary
         (f := V.ρ g) (hf := fun i ↦ (σ i).apply_mem_toSubmodule g))
   have hring :
       fdRepCharacterRing V = ∑ i : κ, fdRepCharacterRing (FDRep.of (σ i).toRepresentation) := by
-    -- Bundle the character decomposition inside Serre's character ring.
+    -- Bundle the character decomposition inside LinearRepresentations_Serre_1977's character ring.
     apply Subtype.ext
     ext g
     simpa [fdRepCharacterRing] using congrFun hchar g
@@ -423,7 +423,7 @@ lemma fdRepCharacterRing_mem_elementaryLinearCharacterSpan_of_isElementary
     irreducible_fdRepCharacterRing_mem_elementaryLinearCharacterSpan_of_isElementary τ hG
 
 /-- Helper for Exercise 10-10.5-5: the span of honest finite-dimensional characters is all of
-Serre's character ring `R(G)`. -/
+LinearRepresentations_Serre_1977's character ring `R(G)`. -/
 theorem rep_character_span_eq_top_local :
     Submodule.span ℤ {χ : R(G) | ∃ V : FDRep ℂ G, fdRepCharacterRing V = χ} = ⊤ := by
   let S : Set (R(G)) := {χ : R(G) | ∃ V : FDRep ℂ G, fdRepCharacterRing V = χ}
@@ -503,7 +503,7 @@ theorem rep_character_span_eq_top_local :
 -- and has prime index. Induct on `Nat.card G`; Brauer's theorem `10-10.5-1` and the subgroup
 -- induction result above show that the contributions induced from maximal subgroups already lie in
 -- `R'(G)`, while the remaining degree-one characters generate the quotient.
-/-- For an elementary finite group, Serre's subgroup `R'(G)` equals the whole character ring
+/-- For an elementary finite group, LinearRepresentations_Serre_1977's subgroup `R'(G)` equals the whole character ring
 `R(G)`. -/
 theorem elementaryLinearCharacterSpan_eq_top_of_isElementary
     (hG : IsElementary G) :
@@ -628,7 +628,7 @@ theorem character_mem_elementaryLinearCharacterAugmentationSpan_of_apply_one_eq_
 -- Proof sketch: every element of `R(G)` differs from its value at the identity times the trivial
 -- character by an element of `R₀'(G)` by the previous theorem, so `R'(G)` contains all of
 -- `R(G)`.
-/-- Serre's subgroup `R'(G)` generated by the trivial character and the induced differences
+/-- LinearRepresentations_Serre_1977's subgroup `R'(G)` generated by the trivial character and the induced differences
 `Ind_E^G(α - 1)` is all of `R(G)`. -/
 theorem elementaryLinearCharacterSpan_eq_top :
     R'(G) = ⊤ := by
@@ -674,7 +674,7 @@ theorem elementaryLinearCharacterSpan_eq_top :
 namespace Subgroup
 
 /-- Helper for Exercise 10-10.5-5: the packaged quotient regular-minus-rank element belongs to
-Serre's augmentation subgroup `R₀'(G)`. -/
+LinearRepresentations_Serre_1977's augmentation subgroup `R₀'(G)`. -/
 theorem quotient_linearCharacter_differences_sum_mem_elementaryLinearCharacterAugmentationSpan
     (H : Subgroup G) [H.Normal]
     (hcomm : ∀ a b : G ⧸ H, a * b = b * a)
@@ -695,7 +695,7 @@ theorem quotient_linearCharacter_differences_sum_mem_elementaryLinearCharacterAu
       hzero
 
 /-- Helper for Exercise 10-10.5-5: if `H` is normal and the canonical quotient multiplication on
-`G ⧸ H` is commutative, then `Ind_H^G(1_H)` already lies in Serre's subgroup `R'(G)`. -/
+`G ⧸ H` is commutative, then `Ind_H^G(1_H)` already lies in LinearRepresentations_Serre_1977's subgroup `R'(G)`. -/
 theorem induced_trivial_mem_elementaryLinearCharacterSpan_of_normal_quotient_mul_comm
     (H : Subgroup G) [H.Normal]
     (hcomm : ∀ a b : G ⧸ H, a * b = b * a)
@@ -737,14 +737,14 @@ theorem induced_trivial_mem_elementaryLinearCharacterSpan_of_normal_quotient_mul
 -- Proof sketch: by the previous theorem it is enough to check the image of the trivial character
 -- of `H`. If `H` is normal and `G ⧸ H` is abelian, then `Ind_H^G(1_H)` is a sum of degree-one
 -- characters of `G` with kernel containing `H`, hence lies in `R'(G)`.
-/-- If `H` is normal with abelian quotient, induction sends Serre's subgroup `R'(H)` into
+/-- If `H` is normal with abelian quotient, induction sends LinearRepresentations_Serre_1977's subgroup `R'(H)` into
 `R'(G)`. -/
 theorem map_elementaryLinearCharacterSpan_of_normal_quotient_mul_comm
     (H : Subgroup G) [H.Normal]
     (hcomm : ∀ a b : G ⧸ H, a * b = b * a)
     [Finite ((G ⧸ H) →* ℂˣ)] :
     Submodule.map (Subgroup.characterRingInduction H) (R'(H)) ≤ R'(G) := by
-  -- Split Serre's subgroup into the trivial line and the augmentation subgroup, then use part (a)
+  -- Split LinearRepresentations_Serre_1977's subgroup into the trivial line and the augmentation subgroup, then use part (a)
   -- for the augmentation part and the previous theorem for the trivial generator.
   letI : Fintype ((G ⧸ H) →* ℂˣ) := Fintype.ofFinite ((G ⧸ H) →* ℂˣ)
   rw [elementaryLinearCharacterSpan, Submodule.map_sup]

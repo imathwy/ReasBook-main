@@ -1,10 +1,10 @@
 import Mathlib
-import Serre.Chap14.Corollary_14_14_4_3.GrothendieckBasics
-import Serre.Chap14.Proposition_14_14_3_1
-import Serre.Chap14.Infra_14_4_ProjectiveLift
-import Serre.Chap15.Definition_15_15_1_1
-import Serre.Chap15.Definition_15_15_3_1
-import Serre.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3.GrothendieckBasics
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_3_1
+import LinearRepresentations_Serre_1977.Chap14.Infra_14_4_ProjectiveLift
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
 
 noncomputable section
 
@@ -125,7 +125,7 @@ private theorem projective_scalarExtension_literal_map_range_isLattice
     exact Submodule.smul_mem _ _ hi'
 
 /-- Helper for Infra 16 1 DecompositionSurjectivity: the literal image of `Q.V` inside
-`Q.scalarExtension K` defines the stable lattice used in Serre's honest-projective calculation. -/
+`Q.scalarExtension K` defines the stable lattice used in LinearRepresentations_Serre_1977's honest-projective calculation. -/
 private noncomputable def projective_scalarExtension_literal_stableLattice
     (Q : FiniteProjectiveGroupAlgebraModule A G) :
     StableLattice A (Q.scalarExtension K).ρ :=

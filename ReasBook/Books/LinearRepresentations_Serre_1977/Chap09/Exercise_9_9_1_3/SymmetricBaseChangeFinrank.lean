@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.RepresentationTheory.SymmetricExterior
+import LinearRepresentations_Serre_1977.RepresentationTheory.SymmetricExterior
 
 open scoped TensorProduct
 

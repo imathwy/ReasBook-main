@@ -1,4 +1,4 @@
-import RiemannSurfaces.Chap01.Definition_1_4
+import RiemannSurfaces_Forster_1981.Chap01.Definition_1_4
 import Mathlib.Geometry.Manifold.Complex
 
 open scoped Manifold

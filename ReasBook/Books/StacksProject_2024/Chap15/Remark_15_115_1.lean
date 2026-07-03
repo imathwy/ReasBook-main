@@ -5,10 +5,10 @@ import Mathlib.RingTheory.IntegralClosure.Algebra.Basic
 import Mathlib.RingTheory.Localization.AtPrime.Basic
 import Mathlib.RingTheory.Nilpotent.Lemmas
 import Mathlib.RingTheory.Spectrum.Prime.Basic
-import stacks_project.Chap15.Definition_15_37_3
-import stacks_project.Chap15.Definition_15_112_1
-import stacks_project.Chap15.Lemma_15_105_23
-import stacks_project.Chap15.Lemma_15_124_3
+import StacksProject_2024.Chap15.Definition_15_37_3
+import StacksProject_2024.Chap15.Definition_15_112_1
+import StacksProject_2024.Chap15.Lemma_15_105_23
+import StacksProject_2024.Chap15.Lemma_15_124_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

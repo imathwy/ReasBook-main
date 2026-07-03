@@ -1,4 +1,4 @@
-import stacks_project.Chap04.Lemma_4_31_6
+import StacksProject_2024.Chap04.Lemma_4_31_6
 
 open CategoryTheory.Limits
 

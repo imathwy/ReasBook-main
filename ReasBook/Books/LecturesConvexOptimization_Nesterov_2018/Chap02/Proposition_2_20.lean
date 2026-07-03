@@ -1,5 +1,5 @@
 import Mathlib
-import Nesterov.Chap02.Definition_2_31
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_31
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -15,13 +15,13 @@ selection.
 
 Owner declarations sampled before refining this file:
 * `LagrangianProblem.lagrangianMinimizers` and `LagrangianProblem.dualFunction` in
-  `Nesterov/Chap01/Definition_1_10_2.lean`;
+  `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_10_2.lean`;
 * `PrimalEqualityConstrainedProblem.lagrangian`, `dualFunction`, `constraintResidual`, and
-  `mem_equalityFeasibleSet_iff` in `Nesterov/Chap02/Definition_2_30.lean`;
+  `mem_equalityFeasibleSet_iff` in `LecturesConvexOptimization_Nesterov_2018/Chap02/Definition_2_30.lean`;
 * `PrimalEqualityConstrainedProblem.LagrangianMinimizerSelection`, together with the derived
   equality-problem API `LagrangianMinimizerSelection.isMinOn` and
   `LagrangianMinimizerSelection.dualFunction_eq_lagrangian`, in
-  `Nesterov/Chap02/Definition_2_31.lean`;
+  `LecturesConvexOptimization_Nesterov_2018/Chap02/Definition_2_31.lean`;
 * mathlib `HasGradientAt.unique` and `IsLocalMax.fderiv_eq_zero`, which give the canonical local
   stationary-point bridge at a dual maximizer.
 

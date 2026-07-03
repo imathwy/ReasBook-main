@@ -1,5 +1,5 @@
 import Mathlib
-import CombinatorialGroupTheory.Items.Chap01.Proposition_1_3_9
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_3_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

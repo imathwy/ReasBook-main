@@ -1,6 +1,6 @@
-import Serre.Chap14.Infra_14_4_ProjectiveLift
-import Serre.Chap14.Corollary_14_14_4_3
-import Serre.Chap14.Lemma_14_14_4_2
+import LinearRepresentations_Serre_1977.Chap14.Infra_14_4_ProjectiveLift
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3
+import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -220,7 +220,7 @@ private theorem exists_reduction_preimage_of_projective_class
     (F : FiniteProjectiveGroupAlgebraModule k G) :
     ∃ Q : FiniteProjectiveGroupAlgebraModule A G,
       projectiveGrothendieckReductionHom (A := A) (G := G) [Q]ₚ₀ = [F]ₚ₀ := by
-  -- Serre's Proposition 42(b) supplies the projective lift under the Henselian local hypothesis;
+  -- LinearRepresentations_Serre_1977's Proposition 42(b) supplies the projective lift under the Henselian local hypothesis;
   -- the imported owner already converts the lifted reduction isomorphism to Grothendieck classes.
   exact projectiveGrothendieckReductionHom_lifted_projectiveClass_eq (A := A) (G := G) F
 

@@ -1,13 +1,13 @@
 import Mathlib
-import Serre.Chap01.Theorem_1_1_4_2
-import Serre.Chap07.Proposition_7_7_1_1
-import Serre.Chap07.Proposition_7_7_1_3
-import Serre.Chap07.Remark_7_7_1_4
-import Serre.Chap07.Proposition_7_7_4_1.IdentityProjectionRepresentativeSeeds
-import Serre.Chap08.Corollary_8_8_3_8
-import Serre.Chap15.Exercise_15_15_5_3
-import Serre.GroupTheory.PSolvable
-import Serre.Chap17.Theorem_17_17_3_1.ResidueFieldLiftTransport
+import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_4_2
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_1_1
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_1_3
+import LinearRepresentations_Serre_1977.Chap07.Remark_7_7_1_4
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_4_1.IdentityProjectionRepresentativeSeeds
+import LinearRepresentations_Serre_1977.Chap08.Corollary_8_8_3_8
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_5_3
+import LinearRepresentations_Serre_1977.GroupTheory.PSolvable
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.ResidueFieldLiftTransport
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -103,7 +103,7 @@ lemma c_orbit_span_eq_top_of_fixed_vector
   simpa [S, Sρ] using congrArg Subrepresentation.toSubmodule hSρ_top
 
 /-- Helper for Theorem 17-17.3-1: the residue-field `C`-orbit span of `ν` is contained in the
-image of the lifted `C`-orbit span of any chosen lift `w0`. This is Serre's orbit-span step before
+image of the lifted `C`-orbit span of any chosen lift `w0`. This is LinearRepresentations_Serre_1977's orbit-span step before
 the final essentiality argument upgrades image-surjectivity to equality of spans. -/
 lemma cyclic_lift_orbit_span_maps_into_lifted_span
     (ρ : Representation k G V)
@@ -166,7 +166,7 @@ theorem nontrivial_of_isIrreducible_local
 
 /-- Helper for Theorem 17-17.3-1: once the residue-field `C`-orbit of `ν` spans all of `V`, the
 chosen lift `w0` already generates the lifted `C`-module over `A`. This is the local
-base-change/Nakayama upgrade of Serre's `k' · ν = E` step. -/
+base-change/Nakayama upgrade of LinearRepresentations_Serre_1977's `k' · ν = E` step. -/
 lemma cyclic_lift_span_top_of_fixed_lift
     (ρ : Representation k G V)
     {W : Type x} [AddCommGroup W] [Module A W]

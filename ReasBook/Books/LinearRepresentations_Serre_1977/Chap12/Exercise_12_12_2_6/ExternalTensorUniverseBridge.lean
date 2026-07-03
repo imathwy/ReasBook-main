@@ -1,4 +1,4 @@
-import Serre.Chap12.Exercise_12_12_2_6.FieldDenominatorPrelude
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.FieldDenominatorPrelude
 
 noncomputable section
 

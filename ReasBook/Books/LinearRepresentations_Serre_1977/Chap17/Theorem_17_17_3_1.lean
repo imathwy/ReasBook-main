@@ -1,17 +1,17 @@
 import Mathlib
-import Serre.Chap01.Theorem_1_1_4_2
-import Serre.Chap07.Proposition_7_7_1_1
-import Serre.Chap07.Proposition_7_7_1_3
-import Serre.Chap07.Remark_7_7_1_4
-import Serre.Chap07.Proposition_7_7_4_1.IdentityProjectionRepresentativeSeeds
-import Serre.Chap08.Corollary_8_8_3_8
-import Serre.Chap15.Exercise_15_15_5_3
-import Serre.GroupTheory.PSolvable
-import Serre.Chap17.Theorem_17_17_3_1.CyclicNormalByPGroupBasics
-import Serre.Chap17.Theorem_17_17_3_1.CliffordIsotypicTransport
-import Serre.Chap17.Theorem_17_17_3_1.ResidueFieldLiftTransport
-import Serre.Chap17.Theorem_17_17_3_1.ProperOvergroupRecursion
-import Serre.Chap17.Theorem_17_17_3_1.CyclicOrbitSpan
+import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_4_2
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_1_1
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_1_3
+import LinearRepresentations_Serre_1977.Chap07.Remark_7_7_1_4
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_4_1.IdentityProjectionRepresentativeSeeds
+import LinearRepresentations_Serre_1977.Chap08.Corollary_8_8_3_8
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_5_3
+import LinearRepresentations_Serre_1977.GroupTheory.PSolvable
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.CyclicNormalByPGroupBasics
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.CliffordIsotypicTransport
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.ResidueFieldLiftTransport
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.ProperOvergroupRecursion
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.CyclicOrbitSpan
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -408,11 +408,11 @@ private noncomputable def subrepresentation_inclusion_hom_generic
   `hCP.symm.QuotientMulEquiv`, and the lifting conclusion expressed by `IsResidueFieldLift`.
 
 Source/core/bridge triage:
-* source-facing: Serre's cyclic-normal-by-`p`-group semidirect-product lifting criterion;
+* source-facing: LinearRepresentations_Serre_1977's cyclic-normal-by-`p`-group semidirect-product lifting criterion;
 * core/canonical: `LinearMap.IsResidueFieldReduction` for the reduction map, and
   `Subgroup.IsComplement'` together with `Subgroup.IsComplement'.QuotientMulEquiv` for the
   complementary-subgroup quotient data;
-* bridge/view: `Representation.IsResidueFieldLift` for phrasing the conclusion in Serre's
+* bridge/view: `Representation.IsResidueFieldLift` for phrasing the conclusion in LinearRepresentations_Serre_1977's
   representation language, together with the quotient `p`-group instance derived from the
   complement data. The theorem keeps the subgroup hypotheses explicit because replacing them by the
   quotient witness would erase part of the source-facing decomposition.
@@ -1598,7 +1598,7 @@ private theorem induced_scalarExtension_source_hom_apply_single_local
   simpa [Algebra.smul_def]
 
 /-- Helper for Theorem 17-17.3-1: the scalar-extended source action on a singleton-supported pure
-tensor is already the translated singleton formula from Serre's induced-model relation. -/
+tensor is already the translated singleton formula from LinearRepresentations_Serre_1977's induced-model relation. -/
 private theorem induced_scalarExtension_source_sourceAct_apply_single_local
     {H : Subgroup G}
     {W0 : Type u} [AddCommGroup W0] [Module A W0]
@@ -1946,7 +1946,7 @@ private theorem induced_scalarExtension_source_inv_rel_local
       simp [rawHom, rawInv]
     _ = rawHom (sourceAct (rawInv v)) := hforward.symm
 
-/-- Helper for Theorem 17-17.3-1: Serre's quotient step is implemented directly by sending
+/-- Helper for Theorem 17-17.3-1: LinearRepresentations_Serre_1977's quotient step is implemented directly by sending
 `z ⊗ [x]` to `[z ⊗ x]`, avoiding the earlier transport-heavy `range = ker` detour. -/
 private theorem scalarExtension_induced_source_coinvariants_forward_apply_act_local
     {H : Subgroup G}
@@ -2002,7 +2002,7 @@ private theorem scalarExtension_induced_source_coinvariants_forward_apply_act_lo
   rw [← LinearMap.baseChange_tmul (f := ρrawA h) (A := k) z y]
   exact Representation.Coinvariants.mk_self_apply sourceScalarρ h (z ⊗ₜ[A] y)
 
-/-- Helper for Theorem 17-17.3-1: Serre's quotient step is implemented directly by sending
+/-- Helper for Theorem 17-17.3-1: LinearRepresentations_Serre_1977's quotient step is implemented directly by sending
 `z ⊗ [x]` to `[z ⊗ x]`, avoiding the earlier transport-heavy `range = ker` detour. -/
 private noncomputable def scalarExtension_induced_source_coinvariants_forward_fixed_z_linear_local
     {H : Subgroup G}
@@ -2092,7 +2092,7 @@ private noncomputable def scalarExtension_induced_source_coinvariants_forward_fi
             (A := A) (G := G) (ρA_HU := ρA_HU) z h ((f : G →₀ A) ⊗ₜ[A] xU))
 
 /-- Helper for Theorem 17-17.3-1: on standard induced generators, the fixed-`z` descended map is
-exactly Serre's class `[(z ⊗ single g ⊗ x)]`. -/
+exactly LinearRepresentations_Serre_1977's class `[(z ⊗ single g ⊗ x)]`. -/
 private theorem scalarExtension_induced_source_coinvariants_forward_fixed_z_apply_mk_local
     {H : Subgroup G}
     {W0 : Type u} [AddCommGroup W0] [Module A W0]
@@ -2130,7 +2130,7 @@ private theorem scalarExtension_induced_source_coinvariants_forward_fixed_z_appl
     scalarExtension_induced_source_coinvariants_forward_fixed_z_linear_local,
     Representation.IndV.mk, LinearMap.comp_apply]
 
-/-- Helper for Theorem 17-17.3-1: Serre's quotient step is implemented directly by sending
+/-- Helper for Theorem 17-17.3-1: LinearRepresentations_Serre_1977's quotient step is implemented directly by sending
 `z ⊗ [x]` to `[z ⊗ x]`, with the outer scalar handled by base change of the fixed-`1` quotient
 map. -/
 private noncomputable def scalarExtension_induced_source_coinvariants_forward_local
@@ -2171,7 +2171,7 @@ private noncomputable def scalarExtension_induced_source_coinvariants_forward_lo
   exact
     (scalarExtension_induced_source_coinvariants_forward_fixed_z_local ρA_HU (1 : k)).liftBaseChange k
 
-/-- Helper for Theorem 17-17.3-1: on pure tensors, the forward map is Serre's formula
+/-- Helper for Theorem 17-17.3-1: on pure tensors, the forward map is LinearRepresentations_Serre_1977's formula
 `z ⊗ [x] ↦ [z ⊗ x]`. -/
 private theorem scalarExtension_induced_source_coinvariants_forward_apply_tmul_mk_local
     {H : Subgroup G}
@@ -2243,7 +2243,7 @@ by
 
 /-
 The duplicate induced-lift packaging block that was previously inlined here has been replaced
- by the split support owner `Serre.Chap17.Theorem_17_17_3_1.InducedSubrepresentationLift`. Keeping
+ by the split support owner `LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.InducedSubrepresentationLift`. Keeping
  the old local copy caused multiple elaboration timeouts without changing the final proof route. -/
 /-
 private theorem scalarExtension_induced_source_coinvariants_backward_invariant_local
@@ -2409,7 +2409,7 @@ private theorem scalarExtension_induced_source_coinvariants_backward_forward_app
   let sourceScalarρ :
       Representation k H (TensorProduct A k (TensorProduct A (G →₀ A) W0)) :=
     Representation.scalarExtension ρrawA
-  -- On the standard pure tensors, Serre's forward map and the base-changed quotient map are
+  -- On the standard pure tensors, LinearRepresentations_Serre_1977's forward map and the base-changed quotient map are
   -- visibly inverse after both are rewritten on the canonical raw representative.
   calc
     scalarExtension_induced_source_coinvariants_backward_local
@@ -2547,7 +2547,7 @@ by
             simpa [one_mul] using
               (TensorProduct.smul_tmul' z (1 : k)
                 (Representation.Coinvariants.mk ρrawA y))
-  -- Route correction: package the already-defined Serre forward/backward quotient maps, and
+  -- Route correction: package the already-defined LinearRepresentations_Serre_1977 forward/backward quotient maps, and
   -- discharge the inverse laws separately on tensor generators and quotient generators.
   refine LinearEquiv.ofLinear
     (scalarExtension_induced_source_coinvariants_forward_local
@@ -2650,7 +2650,7 @@ private noncomputable def induced_scalarExtension_source_coinvariants_equiv_loca
       · ext x
         simp [rawHom, rawInv, Representation.Coinvariants.map_comp]
     -- Compose the direct scalar-extension/coinvariants bridge with the descended raw
-    -- coinvariants equivalence in the same order as Serre's source proof.
+    -- coinvariants equivalence in the same order as LinearRepresentations_Serre_1977's source proof.
     exact
       (scalarExtension_induced_source_coinvariants_tensor_equiv_local
           (A := A) (G := G) (ρA_HU := ρA_HU)).trans
@@ -2888,7 +2888,7 @@ theorem induced_subrepresentation_lift_ulift_source_isBaseChange_local
     (eCanon.toLinearMap.restrictScalars A).comp
       (TensorProduct.mk A k
         (Representation.IndV H.subtype (uliftRepresentation_witness_local (A := A) ρA_H)) 1)
-  -- Route correction: freeze Serre's canonical comparison map `x ↦ eCanon (1 ⊗ x)` first, prove
+  -- Route correction: freeze LinearRepresentations_Serre_1977's canonical comparison map `x ↦ eCanon (1 ⊗ x)` first, prove
   -- it is the desired base change by `of_equiv`, and only then compare it with the Frobenius map.
   have hCanon : IsBaseChange k redCanon := by
     refine IsBaseChange.of_equiv eCanon ?_
@@ -3495,7 +3495,7 @@ private noncomputable def restricted_conjugation_equiv_of_p_local
     _ = ((ρ.comp C.subtype) c) (e v) := by
           exact LinearMap.congr_fun (ρ.map_mul (c : G) (s : G)) v
 
-/-- Helper for Theorem 17-17.3-1: for each `s : P`, Serre's conjugated `C`-lift and the chosen
+/-- Helper for Theorem 17-17.3-1: for each `s : P`, LinearRepresentations_Serre_1977's conjugated `C`-lift and the chosen
 fixed `C`-lift are already compared by Chapter `15` uniqueness after shrinking `C` into the
 coefficient universe. -/
 private theorem character_field_transport_conjugate_lift_compare_local
@@ -3646,7 +3646,7 @@ private theorem character_field_transport_compare_generator_span_local
 
 /-- Helper for Theorem 17-17.3-1: on the regular `A[C]`-module of a lifted `C`-representation,
 left multiplication by any `r : A[C]` is `C`-equivariant because `C` is cyclic and hence
-`A[C]` is commutative. This is the source-level commutativity input in Serre's cyclic-presentation
+`A[C]` is commutative. This is the source-level commutativity input in LinearRepresentations_Serre_1977's cyclic-presentation
 comparison. -/
 private theorem character_field_transport_regular_action_isIntertwining_local
     {C0 : Type*} [Group C0] [IsMulCommutative C0]
@@ -3677,7 +3677,7 @@ private theorem character_field_transport_regular_action_isIntertwining_local
     LinearMap.congr_fun hcomm x
 
 /-- Helper for Theorem 17-17.3-1: two cyclic generators with full `C`-orbit span define the same
-kernel in the regular `A[C]`-module. This is the common cyclic presentation behind Serre's
+kernel in the regular `A[C]`-module. This is the common cyclic presentation behind LinearRepresentations_Serre_1977's
 normalization step. -/
 private theorem character_field_transport_cyclic_kernel_eq_local
     {W : Type u} [AddCommGroup W] [Module A W] [IsMulCommutative C]
@@ -3755,7 +3755,7 @@ private theorem character_field_transport_cyclic_kernel_eq_local
 
 /-- Helper for Theorem 17-17.3-1: if the `C`-orbit of `w` spans `W`, then every vector of `W`
 is of the form `r • w` for some `r ∈ A[C]`. This is the surjectivity input needed before passing
-to Serre's common cyclic quotient. -/
+to LinearRepresentations_Serre_1977's common cyclic quotient. -/
 private theorem character_field_transport_cyclic_presentation_surjective_local
     {W : Type u} [AddCommGroup W] [Module A W]
     (ρA_C : Representation A C W)
@@ -3800,7 +3800,7 @@ private theorem character_field_transport_cyclic_presentation_surjective_local
 
 /-- Helper for Theorem 17-17.3-1: an equality of annihilator submodules transports the common
 cyclic quotient without introducing any new carrier-level data. This isolates the only quotient
-transport used in Serre's normalization step. -/
+transport used in LinearRepresentations_Serre_1977's normalization step. -/
 private noncomputable def quotient_transport_linearEquiv_local
     {M : Type*} [AddCommGroup M] [Module A M]
     {K L : Submodule A M} (h : K = L) :
@@ -3850,7 +3850,7 @@ private theorem common_quotient_model_of_surjective_linearMaps_local
     simpa using LinearMap.quotKerEquivOfSurjective_apply_mk π1 hπ1 x
 
 /-- Helper for Theorem 17-17.3-1: once two lifts `w0` and `w1` of the same cyclic residue
-generator define the same annihilator in `A[C]`, Serre's common-quotient argument yields a
+generator define the same annihilator in `A[C]`, LinearRepresentations_Serre_1977's common-quotient argument yields a
 `C`-equivariant automorphism reducing to the identity and sending `w1` back to `w0`. -/
 private theorem character_field_transport_correction_equiv_local
     (ρ : Representation k G V)
@@ -4074,7 +4074,7 @@ private theorem character_field_transport_endomorphism_eq_id_of_generator_local
       (A := A) (C := C) ρA_C w0 hspanLifted hf hid hw0
 
 /-- Helper for Theorem 17-17.3-1: the identity comparison already belongs to the transport fiber
-over `1 ∈ P`. This is Serre's neutral normalized transport once the correction step is done. -/
+over `1 ∈ P`. This is LinearRepresentations_Serre_1977's neutral normalized transport once the correction step is done. -/
 private noncomputable def character_field_transport_fiber_one_local
     {W : Type u} [AddCommGroup W] [Module A W] [C.Normal]
     (ρA_C : Representation A C W) :
@@ -4115,7 +4115,7 @@ private noncomputable def character_field_transport_fiber_comp_local
     ext x
     simpa [MulAut.conjNormal_apply, mul_assoc] using
       LinearMap.congr_fun (v.isIntertwining' ((MulAut.conjNormal ((s : G))⁻¹) a)) x
-  -- Compose the two transport operators in Serre's order: first `t`, then `s`.
+  -- Compose the two transport operators in LinearRepresentations_Serre_1977's order: first `t`, then `s`.
   exact v_over_s.trans u
 
 /-- Helper for Theorem 17-17.3-1: once two comparison maps have the same reduction formula and
@@ -4201,7 +4201,7 @@ private theorem character_field_transport_equiv_eq_of_reduction_and_generator_lo
     _ = v x := by rw [u.symm_apply_apply]
 
 /-- Helper for Theorem 17-17.3-1: if two normalized comparisons satisfy the expected reduction
-formulas for `s` and `t`, then their Serre-style composition has the expected reduction formula
+formulas for `s` and `t`, then their LinearRepresentations_Serre_1977-style composition has the expected reduction formula
 for `s * t`. -/
 private theorem character_field_transport_fiber_comp_reduction_local
     (ρ : Representation k G V)
@@ -4269,7 +4269,7 @@ private theorem character_field_transport_fiber_comp_reduction_local
     _ = σst (red_C x) := rfl
 
 /-- Helper for Theorem 17-17.3-1: once the normalized comparisons are available, the fixed
-generator `w0` forces the normalized family to satisfy Serre's multiplicativity law. -/
+generator `w0` forces the normalized family to satisfy LinearRepresentations_Serre_1977's multiplicativity law. -/
 private theorem character_field_transport_normalized_multiplicative_local
     (ρ : Representation k G V)
     {W : Type u} [AddCommGroup W] [Module A W] [C.Normal]
@@ -4338,7 +4338,7 @@ private theorem character_field_transport_normalized_multiplicative_local
         (hu0 := hu0 1)
         (hv0 := hone0)
   · intro s t
-    -- The Serre-style product comparison has the correct reduced action and still fixes `w0`, so
+    -- The LinearRepresentations_Serre_1977-style product comparison has the correct reduced action and still fixes `w0`, so
     -- uniqueness on the cyclic generator identifies it with `uNorm (s * t)`.
     apply
       character_field_transport_equiv_eq_of_reduction_and_generator_local
@@ -4399,7 +4399,7 @@ private theorem character_field_transport_extends_lift
                 A).comp red_C) ∧
             red_C (u w0) = ν := by
     intro s
-    -- The conjugated lift is now packaged exactly as in Serre's source route, and the comparison
+    -- The conjugated lift is now packaged exactly as in LinearRepresentations_Serre_1977's source route, and the comparison
     -- already sends `w0` to another lift of the same residue generator `ν`.
     exact
       character_field_transport_conjugate_lift_compare_fixed_vector_local
@@ -4447,7 +4447,7 @@ private theorem character_field_transport_extends_lift
           (ρA_C.comp (MulAut.conjNormal ((s : G))⁻¹).toMonoidHom)
           ρA_C := u.trans corr
     refine ⟨uNorm, ?_, hcorrw⟩
-    -- The correction map preserves reduction, so the normalized transport keeps Serre's reduced
+    -- The correction map preserves reduction, so the normalized transport keeps LinearRepresentations_Serre_1977's reduced
     -- comparison formula while now fixing `w0`.
     apply LinearMap.ext
     intro x
@@ -4649,7 +4649,7 @@ private theorem exists_residueFieldLift_of_character_field_transport
   have hspanLifted :
       Submodule.span A (Set.range fun c : C ↦ ρA_C c w0) = ⊤ := by
     -- Route correction: the lifted orbit span is now upgraded to `⊤` before we normalize the
-    -- comparison isomorphisms. This follows Serre's source proof more faithfully than trying to
+    -- comparison isomorphisms. This follows LinearRepresentations_Serre_1977's source proof more faithfully than trying to
     -- build the `P`-action first and only then recover generation.
     exact
       cyclic_lift_span_top_of_fixed_lift
@@ -4665,7 +4665,7 @@ private theorem exists_residueFieldLift_of_character_field_transport
   let _ := hOrbitSpan
   exact ⟨W, hWadd, hWmod, hWfree, hWfinite, ρA, red_C, hLift⟩
 
-/-- Helper for Theorem 17-17.3-1: if the restriction to `C` is isotypic, Serre's multiplicity
+/-- Helper for Theorem 17-17.3-1: if the restriction to `C` is isotypic, LinearRepresentations_Serre_1977's multiplicity
 space argument produces the desired residue-field lift. -/
 lemma exists_residueFieldLift_of_restriction_isotypic
     (hp : Nat.Prime p) (hC : C.Normal) (hCP : C.IsComplement' P) (hCyclic : IsCyclic C)
@@ -4686,7 +4686,7 @@ lemma exists_residueFieldLift_of_restriction_isotypic
   letI : Nontrivial V := nontrivial_of_isIrreducible_local (ρ := ρ)
   have hCndvd : ¬ p ∣ Nat.card C := hp.coprime_iff_not_dvd.mp hCoprime
   have hPinv : ρP.invariants ≠ ⊥ := by
-    -- Serre's first checkpoint in the isotypic branch is the existence of a nonzero `P`-fixed
+    -- LinearRepresentations_Serre_1977's first checkpoint in the isotypic branch is the existence of a nonzero `P`-fixed
     -- vector in characteristic `p`.
     simpa [ρP] using invariants_ne_bot_of_isPGroup_charP ρP hP
   obtain ⟨ν, hνinv, hν0⟩ := ρP.invariants.ne_bot_iff.mp hPinv
@@ -4695,7 +4695,7 @@ lemma exists_residueFieldLift_of_restriction_isotypic
     exact (ρP.mem_invariants ν).mp hνinv
   have hOrbitSpan :
       Submodule.span k (Set.range fun c : C ↦ ρ c ν) = ⊤ := by
-    -- Serre's orbit-span checkpoint is now closed: the `C`-orbit of the nonzero `P`-fixed vector
+    -- LinearRepresentations_Serre_1977's orbit-span checkpoint is now closed: the `C`-orbit of the nonzero `P`-fixed vector
     -- spans a nonzero `G`-stable subrepresentation, hence all of `V` by irreducibility.
     exact
       c_orbit_span_eq_top_of_fixed_vector
@@ -4709,7 +4709,7 @@ lemma exists_residueFieldLift_of_restriction_isotypic
           IsResidueFieldLift ρC ρA_C red_C := by
     -- Chapter `15` already lifts the restricted `C`-representation because `|C|` is prime to `p`.
     exact exists_residueFieldLift_of_non_dvd_card (A := A) (p := p) hCndvd ρC
-  -- Route correction: the fixed-vector and orbit-span part of Serre's argument is now completed
+  -- Route correction: the fixed-vector and orbit-span part of LinearRepresentations_Serre_1977's argument is now completed
   -- here. The only remaining blocker is the character-field transport from the chosen `C`-lift to
   -- an ambient `G`-lift.
   exact
@@ -4773,7 +4773,7 @@ theorem exists_residueFieldLift_of_isIrreducible_of_cyclicNormalByPGroupDecompos
               hC'' hC''P'' hCyclic'' hCoprime'' hP'' hcard'' ρ'' ↦
                 ihn hcard'' hC'' hC''P'' hCyclic'' hCoprime'' hP'' ρ'')
             H hH hC0 hC0P0 hC0cyc hC0cop hP0 σ hcard
-      -- Follow Serre's two-branch Clifford split on the restricted `C'`-module.
+      -- Follow LinearRepresentations_Serre_1977's two-branch Clifford split on the restricted `C'`-module.
       have hsplit :
           (∃ H : Subgroup G',
             C' ≤ H ∧ H < ⊤ ∧
@@ -4790,7 +4790,7 @@ theorem exists_residueFieldLift_of_isIrreducible_of_cyclicNormalByPGroupDecompos
           exists_residueFieldLift_of_proper_overgroup_induced
             (A := A) (G := G') (p := p) (V := V') (C := C') (P := P')
             hp hC' hC'P' hCyclic' hCoprime' hP' hrecSame ρ' hproper
-      · -- In the isotypic branch, the remaining blocker is Serre's character-field construction.
+      · -- In the isotypic branch, the remaining blocker is LinearRepresentations_Serre_1977's character-field construction.
         exact
           exists_residueFieldLift_of_restriction_isotypic
             (A := A) (G := G') (p := p) (V := V') (C := C') (P := P')
@@ -4830,7 +4830,7 @@ theorem exists_residueFieldLift_of_isIrreducible_of_cyclicNormalByPGroupDecompos
       (red : W →ₗ[A] V),
         IsResidueFieldLift ρ ρA red := by
   -- Split off the degenerate `p = 0` case first; the genuine textbook content begins when `p` is
-  -- prime, exactly as in Serre's theorem statement.
+  -- prime, exactly as in LinearRepresentations_Serre_1977's theorem statement.
   rcases CharP.char_is_prime_or_zero k p with hp | hp0
   · -- The prime-characteristic branch is the only remaining frontier.
     exact

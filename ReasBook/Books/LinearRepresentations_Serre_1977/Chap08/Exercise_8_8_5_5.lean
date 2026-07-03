@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap02.Corollary_2_2_4_3
-import Serre.Chap06.Corollary_6_6_5_4
+import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_4_3
+import LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_5_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

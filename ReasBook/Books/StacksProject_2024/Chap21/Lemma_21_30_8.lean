@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
-import stacks_project.Chap21.«21_30_0_1»
-import stacks_project.Chap21.Situation_21_30_1
+import StacksProject_2024.Chap21.«21_30_0_1»
+import StacksProject_2024.Chap21.Situation_21_30_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -257,7 +257,7 @@ theorem comparisonTopologyPullback_pushforward_isomorphic_of_plusCohomologyIn
 -- Proof sketch: use the spectral sequence
 -- `R^p f_{τ',*} H^q(K') ⇒ H^{p+q}(R f_{τ',*} K')`. The cohomology sheaves `H^q(K')` lie in
 -- `A'_X`, higher direct images of objects of `A'_X` stay in `A'_Y` by Situation `21.30.1`, and
--- the weak Serre property then places every cohomology sheaf of `R f_{τ',*} K'` back in
+-- the weak LinearRepresentations_Serre_1977 property then places every cohomology sheaf of `R f_{τ',*} K'` back in
 -- `A'_Y`; bounded-belowness is preserved by the same spectral-sequence argument.
 /-- Lemma 21.30.8 (3): for `f : X \to Y` in `P` and
 `K' ∈ D^+_{\mathcal A'_X}(\mathcal C_{\tau'}/X)`, the derived direct image

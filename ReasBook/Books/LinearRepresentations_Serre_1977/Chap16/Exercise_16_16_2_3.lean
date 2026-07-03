@@ -1,11 +1,11 @@
 import Mathlib
-import Serre.Chap11.Proposition_11_11_4_1.Index
-import Serre.Chap14.Exercise_14_14_4_5
-import Serre.Chap14.Remark_14_14_1_2
-import Serre.Chap16.Exercise_16_16_1_12
-import Serre.Chap02.Exercise_2_2_4_5
-import Serre.Chap02.Proposition_2_2_4_1
-import Serre.Chap06.Proposition_6_6_2_1
+import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_1.Index
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_4_5
+import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_1_2
+import LinearRepresentations_Serre_1977.Chap16.Exercise_16_16_1_12
+import LinearRepresentations_Serre_1977.Chap02.Exercise_2_2_4_5
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_4_1
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

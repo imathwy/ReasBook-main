@@ -1,9 +1,9 @@
 import Mathlib
-import BauschkeLean.Chap06.Definition_6_9
-import BauschkeLean.Chap11.Definition_11_3
-import BauschkeLean.Chap12.ProximityOperator
-import BauschkeLean.Chap13.Corollary_13_38
-import BauschkeLean.Chap19.Proposition_19_20
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Definition_6_9
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap11.Definition_11_3
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.ProximityOperator
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Corollary_13_38
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap19.Proposition_19_20
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

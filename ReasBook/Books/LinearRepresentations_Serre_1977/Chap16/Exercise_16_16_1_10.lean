@@ -1,9 +1,9 @@
-import Serre.Chap16.Theorem_16_16_1_1
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
 /- Domain-style sampling for this item:
-* primary domain: Serre's decomposition homomorphism on Grothendieck groups of finite-dimensional
+* primary domain: LinearRepresentations_Serre_1977's decomposition homomorphism on Grothendieck groups of finite-dimensional
   representations over a fraction field and its residue field.
 * relevant owner declarations inspected in the same domain:
   `stableLatticeReduction_grothendieckClass_eq`,

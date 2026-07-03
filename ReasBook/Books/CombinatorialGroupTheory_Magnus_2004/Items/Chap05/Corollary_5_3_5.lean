@@ -1,5 +1,5 @@
-import CombinatorialGroupTheory.Items.Chap05.Theorem_5_3_2
-import CombinatorialGroupTheory.Items.Chap05.Corollary_5_3_4
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Theorem_5_3_2
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Corollary_5_3_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

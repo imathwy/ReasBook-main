@@ -1,5 +1,5 @@
 import Mathlib
-import SmoothManifoldsLee.Chap05.Sec05_35.Definition_5_35_extra_2
+import SmoothManifolds_Lee_2012.Chap05.Sec05_35.Definition_5_35_extra_2
 
 open Set
 open scoped ContDiff Manifold Topology

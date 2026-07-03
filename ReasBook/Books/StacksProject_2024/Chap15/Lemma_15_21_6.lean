@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Module.FinitePresentation
 import Mathlib.RingTheory.Algebraic.Integral
 import Mathlib.RingTheory.MvPolynomial.Basic
-import stacks_project.Chap15.Lemma_15_21_5
+import StacksProject_2024.Chap15.Lemma_15_21_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

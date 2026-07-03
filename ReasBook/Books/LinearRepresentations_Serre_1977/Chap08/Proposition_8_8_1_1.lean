@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap02.Theorem_2_2_6_1
-import Serre.Chap03.Definition_3_3_3_1
-import Serre.Chap07.Proposition_7_7_1_3
-import Serre.Chap07.Remark_7_7_1_4
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_6_1
+import LinearRepresentations_Serre_1977.Chap03.Definition_3_3_3_1
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_1_3
+import LinearRepresentations_Serre_1977.Chap07.Remark_7_7_1_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -1079,7 +1079,7 @@ private theorem iSupIndep_and_iSup_top_of_subtype_ofSubmodule'_family
 -- subrepresentation.
 /-
 Source/core/bridge triage:
-* `source-facing`: Serre's alternative between induction from a proper overgroup containing `A`
+* `source-facing`: LinearRepresentations_Serre_1977's alternative between induction from a proper overgroup containing `A`
   and isotypy of the restriction to `A`.
 * `core/canonical`: the owner predicates are `Representation.IsInducedFromSubrepresentation` and
   `IsIsotypic` on the carrier `V` equipped with the restricted `MonoidAlgebra ℂ A`-module
@@ -1112,7 +1112,7 @@ theorem exists_proper_overgroup_irreducible_induced_or_restriction_isotypic
   letI : NeZero (Nat.card A : ℂ) := by
     exact ⟨by exact_mod_cast Nat.card_pos.ne'⟩
   letI : IsSemisimpleModule (MonoidAlgebra ℂ A) V := by infer_instance
-  -- Split first by Serre's dichotomy on the number of isotypic summands for the restricted
+  -- Split first by LinearRepresentations_Serre_1977's dichotomy on the number of isotypic summands for the restricted
   -- `A`-module.
   by_cases hsub : Subsingleton (isotypicComponents (MonoidAlgebra ℂ A) V)
   · -- A unique isotypic component must be the whole restricted module, giving branch (b).

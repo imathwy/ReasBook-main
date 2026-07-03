@@ -1,7 +1,7 @@
-import Serre.Chap01.Theorem_1_1_3_1
-import Serre.Chap01.Theorem_1_1_4_2
-import Serre.Chap02.Proposition_2_2_1_2
-import Serre.Chap02.Corollary_2_2_3_3
+import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_3_1
+import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_4_2
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_1_2
+import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_3_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

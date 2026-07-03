@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap21.Definition_21_31_2
-import stacks_project.Chap21.Situation_21_30_1
+import StacksProject_2024.Chap21.Definition_21_31_2
+import StacksProject_2024.Chap21.Situation_21_30_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -76,7 +76,7 @@ variable [∀ {X Y : LCCat.{u}} (f : X ⟶ Y),
       (τzar.over X) (τzar.over Y))]
 
 -- Proof sketch: for each `X`, Lemma `21.31.7` identifies `A'_X` with the essential image of the
--- exact fully faithful functor `π_X^{-1}`, giving the weak Serre conditions. Proper maps in `LC`
+-- exact fully faithful functor `π_X^{-1}`, giving the weak LinearRepresentations_Serre_1977 conditions. Proper maps in `LC`
 -- are stable under base change, Lemma `21.31.6` shows objects of `A'_X` are already sheaves for
 -- the qc topology, Lemma `21.31.7` gives compatibility of inverse image and higher direct images
 -- with `π_X^{-1}` for proper maps, and Lemma `21.31.4` supplies the refinement clause for qc

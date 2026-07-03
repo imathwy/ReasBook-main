@@ -9,7 +9,7 @@ import Mathlib.Analysis.InnerProductSpace.Projection.Submodule
 import Mathlib.Algebra.GroupWithZero.Action.Pointwise.Set
 import Mathlib.Order.Filter.AtTopBot.Defs
 import Mathlib.Order.Filter.Defs
-import Reaslib.Basic.ProperFunction
+import ReasLib.Basic.ProperFunction
 
 variable {E F : Type*}
 variable [NormedAddCommGroup E] [InnerProductSpace ℝ E]

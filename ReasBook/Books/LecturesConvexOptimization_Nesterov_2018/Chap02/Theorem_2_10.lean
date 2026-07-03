@@ -1,5 +1,5 @@
 import Mathlib
-import Nesterov.Chap02.Theorem_2_3
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

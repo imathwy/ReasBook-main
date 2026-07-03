@@ -1,6 +1,6 @@
 import Mathlib
-import BauschkeLean.Chap09.Definition_9_12
-import BauschkeLean.Chap09.Theorem_9_23
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09.Definition_9_12
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09.Theorem_9_23
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

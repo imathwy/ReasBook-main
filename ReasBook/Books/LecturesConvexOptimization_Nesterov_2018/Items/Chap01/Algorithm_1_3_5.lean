@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Algorithm_1_3_5
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Algorithm_1_3_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -12,7 +12,7 @@ local notation "E" => EuclideanSpace ℝ (Fin n)
 /- Algorithm 1.3.5 lies in the box-constrained deterministic value-oracle midpoint-grid domain.
 
 Relevant owner-style declarations sampled before refining:
-* `uniformGridMethod` in `Nesterov/Chap01/Algorithm_1_3_5.lean`, the chapter owner of the
+* `uniformGridMethod` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Algorithm_1_3_5.lean`, the chapter owner of the
   textbook midpoint-grid method;
 * `uniformGridMethod_output_isMinOn` in the same file, the owner theorem giving the sampled
   minimizer property after exactly `p^n` calls;

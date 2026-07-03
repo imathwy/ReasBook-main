@@ -36,11 +36,11 @@ Source/core/bridge triage:
   functors `H'`;
 - bridge/view: the coercion from a bounded-cohomology basis to its underlying subset of objects.
 
-The weak-Serre closure assumptions on `A` are not primitive data for this situation and do not
+The weak-LinearRepresentations_Serre_1977 closure assumptions on `A` are not primitive data for this situation and do not
 appear in the fields below, so they should not be kept in the public owner signature. -/
 
 /-- Situation 21.25.1: for a site `(\mathcal C, J)`, a sheaf of rings `\mathcal O`, and a weak
-Serre subcategory `\mathcal A \subset \mathrm{Mod}(\mathcal O)`, a choice of basis objects
+LinearRepresentations_Serre_1977 subcategory `\mathcal A \subset \mathrm{Mod}(\mathcal O)`, a choice of basis objects
 `B ⊂ \mathrm{Ob}(\mathcal C)` covering every object together with, for each `V ∈ B`, an integer
 bound `d_V` and a cofinal family of coverings of `V` whose members have vanishing cohomology
 `H^p(V_i, \mathcal F)` for every `\mathcal F ∈ \mathcal A` and every `p > d_V`. -/

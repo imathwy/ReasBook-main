@@ -1,5 +1,5 @@
-import Serre.Chap12.Lemma_12_12_7_5.AssociatedElementaryCore
-import Serre.RepresentationTheory.GroupFunctionPairing
+import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_5.AssociatedElementaryCore
+import LinearRepresentations_Serre_1977.RepresentationTheory.GroupFunctionPairing
 
 open Representation
 open scoped Pointwise Representation

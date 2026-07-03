@@ -1,4 +1,4 @@
-import Nesterov.Chap03.Theorem_3_44
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_44
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -13,12 +13,12 @@ subdifferential domain.
 
 Mandatory domain-style sampling before refinement:
 - `subdifferentialWithin` and `mem_subdifferentialWithin_iff` in
-  `Nesterov.Chap03.Theorem_3_44`, the chapter owner for real-valued relative
+  `LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_44`, the chapter owner for real-valued relative
   subdifferentials;
 - the whole-space owner usage `∂[Set.univ] f(x)` in
-  `Nesterov.Chap03.Theorem_3_42`;
+  `LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_42`;
 - the analogous Chapter 7 whole-space specialization in
-  `Nesterov.Chap07.Definition_7_11`.
+  `LecturesConvexOptimization_Nesterov_2018.Chap07.Definition_7_11`.
 
 Best owner abstraction:
 - source-facing: the whole-space subdifferential of the partial map `x' ↦ Ψ u x'` with respect

@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap14.Corollary_14_14_4_4
-import Serre.Chap14.Lemma_14_14_4_2
-import Serre.Chap14.Proposition_14_14_1_1
-import Serre.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_4
+import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_2
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_1_1
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
 import Mathlib.RingTheory.TensorProduct.Finite
 
 noncomputable section
@@ -27,7 +27,7 @@ local notation:max "P₀[" A "](" G ")" =>
 /-
 Domain-style sampling:
 * Primary domain: scalar extension of finite projective `A[G]`-modules and the induced maps on
-  Serre's Grothendieck groups.
+  LinearRepresentations_Serre_1977's Grothendieck groups.
 * Core/canonical owner abstraction already present upstream: the Chapter `14` owner
   `FiniteProjectiveGroupAlgebraModule A G`, together with its canonical bridges `toRep`,
   `finiteProjectiveGroupAlgebraGrothendieckGroup`, and `finiteRepGrothendieckGroup`.
@@ -833,7 +833,7 @@ variable {G : Type u} [Group G] [Finite G]
 local notation "k" => IsLocalRing.ResidueField A
 variable (A K)
 
-/-- Definition 15-15.3-1: using the canonical identification `P_A(G) ≃ P_k(G)`, Serre's
+/-- Definition 15-15.3-1: using the canonical identification `P_A(G) ≃ P_k(G)`, LinearRepresentations_Serre_1977's
 homomorphism `e : P_k(G) → R_K(G)` is the scalar-extension map on `P_A(G)` transported along the
 inverse reduction isomorphism. -/
 def projectiveGrothendieckScalarExtensionHom :
@@ -844,7 +844,7 @@ def projectiveGrothendieckScalarExtensionHom :
 -- Proof sketch: unfold `projectiveGrothendieckScalarExtensionHom`; it is the composite of
 -- `projectiveGrothendieckBaseChangeHom` with `projectiveGrothendieckReductionEquiv.symm`, so
 -- evaluation is immediate.
-/-- Evaluating Serre's scalar-extension homomorphism amounts to transporting a class in `P_k(G)`
+/-- Evaluating LinearRepresentations_Serre_1977's scalar-extension homomorphism amounts to transporting a class in `P_k(G)`
 back to `P_A(G)` by the inverse reduction isomorphism and then extending scalars to `K`. -/
 theorem projectiveGrothendieckScalarExtensionHom_apply
     (x : finiteProjectiveGroupAlgebraGrothendieckGroup k G) :

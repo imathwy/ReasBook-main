@@ -1,4 +1,4 @@
-import stacks_project.Chap08.Definition_8_4_1
+import StacksProject_2024.Chap08.Definition_8_4_1
 
 universe u₁ u₂ v₁ v₂ vDesc
 

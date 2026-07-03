@@ -1,7 +1,7 @@
 import Mathlib
-import FirstOrderMethodsinOptimization.Chap01.Proposition_1_9
-import FirstOrderMethodsinOptimization.Chap03.Proposition_3_24
-import FirstOrderMethodsinOptimization.Chap10.Lemma_10_61
+import FirstOrderMethodsOptimization_Beck_2017.Chap01.Proposition_1_9
+import FirstOrderMethodsOptimization_Beck_2017.Chap03.Proposition_3_24
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Lemma_10_61
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import stacks_project.Chap21.Lemma_21_34_3
+import StacksProject_2024.Chap21.Lemma_21_34_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

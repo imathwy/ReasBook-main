@@ -1,11 +1,11 @@
 import Mathlib
 import Mathlib.CategoryTheory.Functor.OfSequence
-import stacks_project.Chap04.Example_4_22_6
-import stacks_project.Chap15.Definition_15_59_13
-import stacks_project.Chap15.Lemma_15_101_1
-import stacks_project.Chap15.Lemma_15_59_14
-import stacks_project.Chap15.Proposition_15_95_2
-import stacks_project.Chap15.Remark_15_96_5
+import StacksProject_2024.Chap04.Example_4_22_6
+import StacksProject_2024.Chap15.Definition_15_59_13
+import StacksProject_2024.Chap15.Lemma_15_101_1
+import StacksProject_2024.Chap15.Lemma_15_59_14
+import StacksProject_2024.Chap15.Proposition_15_95_2
+import StacksProject_2024.Chap15.Remark_15_96_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

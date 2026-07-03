@@ -1,6 +1,6 @@
-import Nesterov.Chap01.Definition_1_3_3
-import Nesterov.Chap04.Definition_4_2_11
-import Nesterov.Chap04.Definition_4_3_2
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_3_3
+import LecturesConvexOptimization_Nesterov_2018.Chap04.Definition_4_2_11
+import LecturesConvexOptimization_Nesterov_2018.Chap04.Definition_4_3_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

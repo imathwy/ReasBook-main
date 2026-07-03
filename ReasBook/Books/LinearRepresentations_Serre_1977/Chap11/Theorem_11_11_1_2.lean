@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap09.Corollary_9_9_2_2
-import Serre.Chap11.Theorem_11_11_2_1
+import LinearRepresentations_Serre_1977.Chap09.Corollary_9_9_2_2
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -23,7 +23,7 @@ private abbrev instFintypeTheorem111112Subgroup (H : Subgroup G) : Fintype H :=
 attribute [local instance] instFintypeTheorem111112Subgroup
 
 -- Source/core/bridge triage:
--- * source-facing: the cyclic-subgroup detection criterion for Serre's `A ⊗ R(G)`.
+-- * source-facing: the cyclic-subgroup detection criterion for LinearRepresentations_Serre_1977's `A ⊗ R(G)`.
 -- * core/canonical owner: bundled complex class functions `classFunctionSubmodule ℂ G`.
 -- * bridge/view: `characterRingScalarExtension A G`, the realized scalar-extension submodule in
 --   `G → ℂ`.
@@ -103,7 +103,7 @@ lemma cyclic_span_mul_classFunction_mem_characterRingScalarExtension
         (characterRingScalarExtension A G).smul_mem (algebraMap ℚ A a) hf
       simpa [Pi.smul_apply, smul_eq_mul, mul_assoc] using hsmul
 
-/-- Owner-level lift form of Theorem `11-11.1-2` into Serre's tensor character ring `A ⊗R(G)`. -/
+/-- Owner-level lift form of Theorem `11-11.1-2` into LinearRepresentations_Serre_1977's tensor character ring `A ⊗R(G)`. -/
 theorem classFunction_lifts_to_tensorCharacterRing_of_restrict_mem_on_cyclicSubgroups
     (φ : classFunctionSubmodule ℂ G)
     (hres : ∀ H : Subgroup G, IsCyclic H →

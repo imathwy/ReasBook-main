@@ -1,4 +1,4 @@
-import stacks_project.Chap05.FiniteUnionOfLocallyClosed
+import StacksProject_2024.Chap05.FiniteUnionOfLocallyClosed
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

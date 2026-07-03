@@ -1,4 +1,4 @@
-import AchimKlenkeLean.Items.Chap05.Definition_5_1
+import ProbabilityTheory_Klenke_2020.Items.Chap05.Definition_5_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

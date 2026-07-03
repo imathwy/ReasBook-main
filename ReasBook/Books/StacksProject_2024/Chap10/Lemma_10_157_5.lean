@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap10.Definition_10_37_11
-import stacks_project.Chap10.Definition_10_110_7
+import StacksProject_2024.Chap10.Definition_10_37_11
+import StacksProject_2024.Chap10.Definition_10_110_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -32,7 +32,7 @@ Layering:
 -/
 
 -- Proof sketch: a regular ring satisfies the primewise regular-local hypothesis built into
--- `IsRegularRing`; Serre's criterion from Lemma `10.157.4` then yields that the ring is normal.
+-- `IsRegularRing`; LinearRepresentations_Serre_1977's criterion from Lemma `10.157.4` then yields that the ring is normal.
 /-- Lemma 10.157.5: a regular ring is normal. -/
 theorem isNormalRing_of_isRegularRing [IsRegularRing R] : IsNormalRing R := by
   sorry

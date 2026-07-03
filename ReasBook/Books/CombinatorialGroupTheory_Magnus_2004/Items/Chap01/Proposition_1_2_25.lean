@@ -1,6 +1,6 @@
 import Mathlib
-import CombinatorialGroupTheory.Items.Chap01.Proposition_1_2_23
-import CombinatorialGroupTheory.Items.Chap01.Proposition_1_2_24
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_2_23
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_2_24
 
 universe u
 

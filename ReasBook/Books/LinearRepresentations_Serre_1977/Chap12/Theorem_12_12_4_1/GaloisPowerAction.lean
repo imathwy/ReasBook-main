@@ -27,13 +27,13 @@ omit [NeZero (Monoid.exponent G)] in
 
 variable {ΓK : Subgroup (ZMod (Monoid.exponent G))ˣ}
 
-/-- Serre's `Γ_K`-power action on group elements, written with the ordinary exponent notation. -/
+/-- LinearRepresentations_Serre_1977's `Γ_K`-power action on group elements, written with the ordinary exponent notation. -/
 instance gammaSubgroupPow : Pow G ΓK where
   pow s t := s ^ galoisPowerExponentUnit (t : (ZMod (Monoid.exponent G))ˣ)
 
 omit [NeZero (Monoid.exponent G)] in
 -- Proof sketch: unfold the `Pow` instance on `ΓK`.
-/-- Rewriting lemma for Serre's `Γ_K`-power action in terms of the underlying natural-number
+/-- Rewriting lemma for LinearRepresentations_Serre_1977's `Γ_K`-power action in terms of the underlying natural-number
 exponent. -/
 @[simp] theorem pow_subgroup_eq_pow_nat (s : G) (t : ΓK) :
     (s ^ t : G) = s ^ galoisPowerExponentUnit (t : (ZMod (Monoid.exponent G))ˣ) := rfl

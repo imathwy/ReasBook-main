@@ -1,8 +1,8 @@
 import Mathlib
-import stacks_project.Chap13.Definition_13_34_1
-import stacks_project.Chap15.Definition_15_65_1
-import stacks_project.Chap15.Lemma_15_60_3
-import stacks_project.Chap15.Lemma_15_88_5_TowerBridge
+import StacksProject_2024.Chap13.Definition_13_34_1
+import StacksProject_2024.Chap15.Definition_15_65_1
+import StacksProject_2024.Chap15.Lemma_15_60_3
+import StacksProject_2024.Chap15.Lemma_15_88_5_TowerBridge
 
 open CategoryTheory
 open CategoryTheory.Limits

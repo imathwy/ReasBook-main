@@ -1,4 +1,4 @@
-import SmoothManifoldsLee.Chap03.Sec03_18.Definition_3_18_extra_1
+import SmoothManifolds_Lee_2012.Chap03.Sec03_18.Definition_3_18_extra_1
 import Mathlib.RingTheory.Derivation.Basic
 
 -- Declarations for this item will be appended below by the statement pipeline.

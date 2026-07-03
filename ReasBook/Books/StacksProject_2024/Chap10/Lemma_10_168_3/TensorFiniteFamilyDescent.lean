@@ -1,4 +1,4 @@
-import stacks_project.Chap10.Lemma_10_127_5
+import StacksProject_2024.Chap10.Lemma_10_127_5
 
 open LinearMap
 open scoped TensorProduct

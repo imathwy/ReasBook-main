@@ -1,5 +1,5 @@
-import cartan.VI.section25.«0016_Theorem_VI_4_extra_13»
-import cartan.VI.section23.«0001_Theorem_1»
+import DifferentialForms_Cartan_1970.VI.section25.«0016_Theorem_VI_4_extra_13»
+import DifferentialForms_Cartan_1970.VI.section23.«0001_Theorem_1»
 
 universe u
 

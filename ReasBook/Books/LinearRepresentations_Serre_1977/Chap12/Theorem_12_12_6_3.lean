@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap12.Theorem_12_12_6_2
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_6_2
 
 open scoped NumberField Representation
 
@@ -22,7 +22,7 @@ variable (K : IntermediateField ℚ L)
 
 local notation "ΓK" => Γ[K](G)
 
-/-- Helper for Theorem 12-12.6-3: the mixed-universe version of Serre's fixed-`p` subgroup
+/-- Helper for Theorem 12-12.6-3: the mixed-universe version of LinearRepresentations_Serre_1977's fixed-`p` subgroup
 `V_{K,p} ≤ R_K(G)`, defined directly inside this file to avoid the same-universe restriction in
 the public notation. -/
 private abbrev gammaPElementaryInducedCharacterSpan_local (p : ℕ) : Submodule ℤ R[K](G) :=
@@ -32,7 +32,7 @@ private abbrev gammaPElementaryInducedCharacterSpan_local (p : ℕ) : Submodule 
     (Finset.univ.filter fun H : Subgroup G ↦ Subgroup.IsGammaPElementary ΓK p H)
 
 /-- Helper for Theorem 12-12.6-3: the only remaining missing step is the membership of the
-constant virtual character `l • 1` in Serre's fixed-`p` subgroup `V_{K,p}`. -/
+constant virtual character `l • 1` in LinearRepresentations_Serre_1977's fixed-`p` subgroup `V_{K,p}`. -/
 private theorem primeToPart_constantCharacter_mem_gammaPImage
     (p n l : ℕ) [Fact p.Prime]
     (hcard : Nat.card G = p ^ n * l) (hl : Nat.Coprime p l) :
@@ -66,7 +66,7 @@ private theorem primeToPart_constantCharacter_mem_gammaPImage
       gammaPElementaryInducedCharacterSpan_local (K := K) (G := G) p
     exact hgroupOrder_raw
   have hpowχ : p ^ n • χ ∈ Vkp := by
-    -- Rewrite Serre's factorization `|G| = p^n l` so the group-order multiple becomes the
+    -- Rewrite LinearRepresentations_Serre_1977's factorization `|G| = p^n l` so the group-order multiple becomes the
     -- `p^n`-multiple of the target constant character.
     have hpow_eq : p ^ n • χ = Nat.card G • (1 : R[K](G)) := by
       calc

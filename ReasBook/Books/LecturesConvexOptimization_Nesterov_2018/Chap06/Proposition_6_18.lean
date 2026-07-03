@@ -1,4 +1,4 @@
-import Nesterov.Chap06.Text_6_1_4_2_Average_Individual_Expense_Bound
+import LecturesConvexOptimization_Nesterov_2018.Chap06.Text_6_1_4_2_Average_Individual_Expense_Bound
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

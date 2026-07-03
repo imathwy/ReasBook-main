@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap02.Proposition_2_2_1_1
-import Serre.Chap02.Proposition_2_2_2_1
-import Serre.Chap02.Theorem_2_2_3_5
-import Serre.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_1_1
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_2_1
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -1357,11 +1357,11 @@ variable (ρ : Representation ℂ G V) [ρ.IsIrreducible]
 
 -- Proof sketch: by the previous clause, a nonzero symmetric invariant bilinear form is
 -- automatically nondegenerate, and then Theorem `13-13.2-1 (2)` identifies such a form with
--- realizability over `ℝ`, which is exactly Serre type `2`. Finite-dimensionality is automatic
+-- realizability over `ℝ`, which is exactly LinearRepresentations_Serre_1977 type `2`. Finite-dimensionality is automatic
 -- from `IsIrreducible.finiteDimensional_of_finite ρ`.
 /-- Proposition 13-13.2-3 (5): source part (b). A nonzero symmetric `G`-invariant bilinear form
 on an irreducible complex representation of a finite group forces the representation to be of
-Serre type `2`. Finite-dimensionality is automatic here. -/
+LinearRepresentations_Serre_1977 type `2`. Finite-dimensionality is automatic here. -/
 theorem isTypeTwo_of_nonzero_invariant_symmetric_bilinForm
     (B : BilinForm ℂ V) (hB : B.IsInvariantUnder ρ)
     (hBsymm : B.IsSymm) (hB0 : B ≠ 0) :
@@ -1374,11 +1374,11 @@ theorem isTypeTwo_of_nonzero_invariant_symmetric_bilinForm
 -- bilinear form, while the preceding clause shows that a representation admitting a nonzero
 -- symmetric invariant form would be of type `2`. Hence a nonzero alternating invariant form gives
 -- real-valued character but prevents
--- realizability over `ℝ`, i.e. Serre type `3`. Finite-dimensionality is automatic from
+-- realizability over `ℝ`, i.e. LinearRepresentations_Serre_1977 type `3`. Finite-dimensionality is automatic from
 -- `IsIrreducible.finiteDimensional_of_finite ρ`.
 /-- Proposition 13-13.2-3 (6): source part (b). A nonzero alternating `G`-invariant bilinear form
 on an irreducible complex representation of a finite group forces the representation to be of
-Serre type `3`. Finite-dimensionality is automatic here. -/
+LinearRepresentations_Serre_1977 type `3`. Finite-dimensionality is automatic here. -/
 theorem isTypeThree_of_nonzero_invariant_alternating_bilinForm
     (B : BilinForm ℂ V) (hB : B.IsInvariantUnder ρ)
     (hBalt : B.IsAlt) (hB0 : B ≠ 0) :

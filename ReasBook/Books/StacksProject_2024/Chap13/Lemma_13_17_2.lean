@@ -31,7 +31,7 @@ variable [HasDerivedCategory.{wA} A]
 variable [HasDerivedCategory.{wQ} (P.isoModSerre.Localization)]
 
 /- Domain-style sampling for 13.17.2:
-- primary domain: Serre localizations of abelian categories and the induced functor on derived
+- primary domain: LinearRepresentations_Serre_1977 localizations of abelian categories and the induced functor on derived
   categories;
 - sampled owner declarations:
   `ObjectProperty.SerreClassLocalization.abelian`,
@@ -40,26 +40,26 @@ variable [HasDerivedCategory.{wQ} (P.isoModSerre.Localization)]
   `CategoryTheory.Functor.mapDerivedCategory`,
   `CategoryTheory.Functor.EssSurj`;
 - best owner abstraction: the derived functor owner `Q.mapDerivedCategory` of the
-  canonical Serre quotient functor `Q := P.isoModSerre.Q`;
-- primitive data: the Serre class `P` and the quotient functor `Q`;
+  canonical LinearRepresentations_Serre_1977 quotient functor `Q := P.isoModSerre.Q`;
+- primitive data: the LinearRepresentations_Serre_1977 class `P` and the quotient functor `Q`;
 - derived API: the abelian structure on `P.isoModSerre.Localization` and the finite-limit and
-  finite-colimit preservation instances for `Q`, supplied canonically by the Serre-localization
+  finite-colimit preservation instances for `Q`, supplied canonically by the LinearRepresentations_Serre_1977-localization
   owner API and consumed directly by `Q.mapDerivedCategory`;
 - source/core/bridge triage:
-  `source-facing`: the essential-surjectivity statement for the derived Serre quotient functor;
+  `source-facing`: the essential-surjectivity statement for the derived LinearRepresentations_Serre_1977 quotient functor;
   `core/canonical`: `Q.mapDerivedCategory`;
-  `bridge/view`: objectwise preimages in the underived Serre quotient, transported to the derived
+  `bridge/view`: objectwise preimages in the underived LinearRepresentations_Serre_1977 quotient, transported to the derived
   category through complex representatives and the localization map `DerivedCategory.Q`.
 
-This file therefore uses the Serre-localization owner instances directly instead of repackaging
+This file therefore uses the LinearRepresentations_Serre_1977-localization owner instances directly instead of repackaging
 them through a local exactness wrapper. -/
 
--- Proof sketch: represent an object of `D(A / P)` by a complex in the Serre quotient, then use
+-- Proof sketch: represent an object of `D(A / P)` by a complex in the LinearRepresentations_Serre_1977 quotient, then use
 -- Lemma 12.10.6 degreewise to lift the differential data to a quasi-isomorphic complex in `A`.
 -- The lifted complex becomes isomorphic to the original object after applying the derived functor,
 -- producing the canonical owner witness `Q.mapDerivedCategory.EssSurj`.
-/-- Lemma 13.17.2: if `P` is a Serre subcategory of an abelian category `A`, then the canonical
-functor `D(A) ⟶ D(A/P)` induced by the Serre quotient functor is essentially surjective. -/
+/-- Lemma 13.17.2: if `P` is a LinearRepresentations_Serre_1977 subcategory of an abelian category `A`, then the canonical
+functor `D(A) ⟶ D(A/P)` induced by the LinearRepresentations_Serre_1977 quotient functor is essentially surjective. -/
 theorem serreQuotientDerivedFunctor_essSurj :
     Functor.EssSurj ((Q).mapDerivedCategory) := sorry
 

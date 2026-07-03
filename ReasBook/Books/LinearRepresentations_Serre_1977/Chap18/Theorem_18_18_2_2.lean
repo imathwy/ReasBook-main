@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap15.Exercise_15_15_1_2.Index
-import Serre.Chap18.Remark_18_18_1_3
-import Serre.Chap18.Theorem_18_18_2_1
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_1_2.Index
+import LinearRepresentations_Serre_1977.Chap18.Remark_18_18_1_3
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1
 
 open scoped TensorProduct
 
@@ -34,7 +34,7 @@ variable (p)
 
 /-
 Domain-style sampling:
-* primary domain: Brauer/modular characters descended from `FDRep k G` to Serre's Grothendieck
+* primary domain: Brauer/modular characters descended from `FDRep k G` to LinearRepresentations_Serre_1977's Grothendieck
   group and then restricted to the owner `PRegularConjClass G p`;
 * inspected owner declarations in this domain:
   `FDRep.modularCharacterOnPRegularConjClass`,
@@ -50,7 +50,7 @@ Domain-style sampling:
 Characteristic `p` is not primitive data for this descent layer. It first becomes essential only in
 the later bijectivity/equivalence layer via Theorem `18-18.2-1`.
 -/
-/-- Bridge/view: the virtual modular character on Serre's Grothendieck group, descended from the
+/-- Bridge/view: the virtual modular character on LinearRepresentations_Serre_1977's Grothendieck group, descended from the
 canonical `FDRep.modularCharacterOnPRegularConjClass` owner. -/
 def virtualModularCharacterOnPRegularConjClass
     (lift : PrimeToPRoot p k → A) :
@@ -85,7 +85,7 @@ variable [CommRing A]
 
 -- Proof sketch: on the unit class this is Proposition `18-18.1-2 (1)` after descending from the
 -- `p`-regular locus to `PRegularConjClass G p`.
-/-- On Serre's representation ring, the descended virtual modular character sends `1` to the
+/-- On LinearRepresentations_Serre_1977's representation ring, the descended virtual modular character sends `1` to the
 constant function `1`. -/
 @[simp] theorem virtualModularCharacterOnPRegularConjClass_one
     (lift : PrimeToPRoot p k →* A) :
@@ -94,7 +94,7 @@ constant function `1`. -/
 
 -- Proof sketch: compare both sides on actual classes using Proposition `18-18.1-2 (4)` and
 -- `finiteRepGrothendieckClass_mul`, then extend the identity from generators to `R₀[k](G)`.
-/-- On Serre's representation ring, the descended virtual modular character is multiplicative. -/
+/-- On LinearRepresentations_Serre_1977's representation ring, the descended virtual modular character is multiplicative. -/
 @[simp] theorem virtualModularCharacterOnPRegularConjClass_mul
     (lift : PrimeToPRoot p k →* A) (x y : R₀[k](G)) :
     virtualModularCharacterOnPRegularConjClass p lift (x * y) =
@@ -113,7 +113,7 @@ variable {k : Type u} [Field k] [IsAlgClosed k]
 variable {K : Type v} [Field K]
 variable {G : Type u} [Group G] [Finite G]
 
--- source-facing: Serre's theorem identifies the scalar extension of `R₀[k](G)` with the full
+-- source-facing: LinearRepresentations_Serre_1977's theorem identifies the scalar extension of `R₀[k](G)` with the full
 -- function space on `PRegularConjClass G p`.
 -- core/canonical: `virtualModularCharacter` from Remark `18-18.1-3`.
 -- bridge/view: `virtualModularCharacterOnPRegularConjClass` descends that owner to regular

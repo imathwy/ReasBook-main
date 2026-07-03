@@ -10,8 +10,8 @@ import Mathlib.Analysis.Calculus.Gradient.Basic
 import Mathlib.Analysis.Calculus.LineDeriv.Basic
 import Mathlib.Data.Real.Sign
 import Mathlib.Algebra.Order.GroupWithZero.Unbundled.Defs
-import Reaslib.Optlib.Convex.BanachSubgradient
-import Reaslib.Optlib.Convex.ConvexFunction
+import ReasLib.Optlib.Convex.BanachSubgradient
+import ReasLib.Optlib.Convex.ConvexFunction
 
 /-!
 # Subgradient of convex functions

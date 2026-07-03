@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap11.Proposition_11_11_4_1
+import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -27,7 +27,7 @@ an element of the tensor character ring lying in exactly one of the two kernels.
 private lemma zero_prime_separator_of_ne
     (c₁ c₂ : ConjClasses G) (hc : c₁ ≠ c₂) :
     ∃ χ : A ⊗R(G), χ ∈ (P0 A c₂).asIdeal ∧ χ ∉ (P0 A c₁).asIdeal := by
-  -- TODO: the source-faithful proof should separate the two kernels through Serre's source
+  -- TODO: the source-faithful proof should separate the two kernels through LinearRepresentations_Serre_1977's source
   -- value profile and the point-mass functions `conjClassDelta`. The currently exported rewrite
   -- `zero_line_point_eq_comap_tensorCharacterRingValueAtConjClass` only applies in the arithmetic
   -- `[IsDomain] [Ring.HasFiniteQuotients] [IsIntegralClosure]` setting, so the remaining gap is a
@@ -94,7 +94,7 @@ theorem regular_prime_eq_iff
         c₁ = c₂ := by
   constructor
   · intro hP
-    -- Route correction: rewrite Serre's regular owners as fixed-class pullbacks over `M`, then
+    -- Route correction: rewrite LinearRepresentations_Serre_1977's regular owners as fixed-class pullbacks over `M`, then
     -- delegate uniqueness to the remaining comap-level blocker.
     have hcomap :
         PrimeSpectrum.comap

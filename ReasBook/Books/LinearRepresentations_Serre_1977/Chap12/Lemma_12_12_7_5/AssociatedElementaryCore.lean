@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap01.Theorem_1_1_4_2
-import Serre.Chap12.Definition_12_12_6_1
-import Serre.Chap12.Theorem_12_12_4_1
-import Serre.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_4_2
+import LinearRepresentations_Serre_1977.Chap12.Definition_12_12_6_1
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_4_1
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
 
 open Representation
 open scoped Pointwise Representation

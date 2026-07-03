@@ -1,8 +1,8 @@
 import Mathlib
-import BauschkeLean.Chap12.ProximityOperator
-import BauschkeLean.Chap13.Corollary_13_38
-import BauschkeLean.Chap13.Definition_13_34
-import BauschkeLean.Chap14.Remark_14_4
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.ProximityOperator
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Corollary_13_38
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Definition_13_34
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap14.Remark_14_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

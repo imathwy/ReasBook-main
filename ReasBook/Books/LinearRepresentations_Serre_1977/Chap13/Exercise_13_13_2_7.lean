@@ -1,16 +1,16 @@
 import Mathlib
-import Serre.Chap01.Theorem_1_1_4_2
-import Serre.Chap02.Proposition_2_2_2_1
-import Serre.Chap02.Remark_2_2_1_2
-import Serre.Chap02.Corollary_2_2_4_2
-import Serre.Chap06.Proposition_6_6_2_1
-import Serre.Chap06.Proposition_6_6_3_2
-import Serre.Chap06.Exercise_6_6_5_6
-import Serre.Chap11.Theorem_11_11_2_1
-import Serre.Chap11.Theorem_11_11_2_2
-import Serre.Chap12.Proposition_12_12_1_1
-import Serre.Chap13.Proposition_13_13_2_3
-import Serre.Chap13.Exercise_13_13_2_6
+import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_4_2
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_2_1
+import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_1_2
+import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_4_2
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_2_1
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_3_2
+import LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_5_6
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_2
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap13.Proposition_13_13_2_3
+import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_2_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -2141,7 +2141,7 @@ lemma finrank_fixedConjFun_eq_card_conjClasses :
     _ = Fintype.card (ConjClasses G) := Module.finrank_fintype_fun_eq_card ℂ
 
 /-- Exercise `13-13.2-7`: the center of the real group algebra `ℝ[G]` is `ℝ`-algebra isomorphic
-to Serre's tensor character ring `ℝ ⊗R(G)`. -/
+to LinearRepresentations_Serre_1977's tensor character ring `ℝ ⊗R(G)`. -/
 theorem center_realGroupRing_algEquiv_tensorCharacterRing :
     Nonempty (Subalgebra.center ℝ (ℝ[G]) ≃ₐ[ℝ] ℝ ⊗R(G)) := by
   classical

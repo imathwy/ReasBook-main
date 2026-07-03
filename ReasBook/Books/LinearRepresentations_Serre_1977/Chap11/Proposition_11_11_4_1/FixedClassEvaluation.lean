@@ -1,5 +1,5 @@
-import Serre.Chap06.Proposition_6_6_5_1
-import Serre.Chap11.Proposition_11_11_4_1.ConjClassFunctionRealization
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_1
+import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_1.ConjClassFunctionRealization
 
 -- Stable fixed-class evaluation helpers extracted from Proposition 11-11.4-1.
 
@@ -267,7 +267,7 @@ theorem tensorCharacterRingValueAtConjClass_complex_eq
 
 end IntegralClosureFixedClassEvaluation
 
-/-- Helper for Proposition 11-11.4-1: Serre's zero prime `P₀,c` is the kernel of the concrete
+/-- Helper for Proposition 11-11.4-1: LinearRepresentations_Serre_1977's zero prime `P₀,c` is the kernel of the concrete
 fixed-class evaluation map at any representative of `c`. This is the source-facing identification
 used when reducing the zero branch to coordinate kernels. -/
 theorem tensorCharacterRingZeroPrimeIdealEval_eq_valueAtConjClassComplex

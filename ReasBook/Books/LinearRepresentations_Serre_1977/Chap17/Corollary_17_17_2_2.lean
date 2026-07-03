@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap17.Theorem_17_17_2_1
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_2_1
 
 open IsCyclotomicExtension.Rat
 open scoped Representation
@@ -25,7 +25,7 @@ section
 
 open scoped FiniteRepGrothendieckInduction
 
-/-- Helper for Corollary 17-17.2-2: for the trivial arithmetic subgroup `Γ = ⊥`, Serre's
+/-- Helper for Corollary 17-17.2-2: for the trivial arithmetic subgroup `Γ = ⊥`, LinearRepresentations_Serre_1977's
 `Γ`-elementary subgroups are exactly the ordinary elementary subgroups. -/
 theorem Subgroup.isGammaElementary_bot_iff_isElementary
     (H : Subgroup G) :
@@ -41,7 +41,7 @@ theorem Subgroup.isGammaElementary_bot_iff_isElementary
     -- Repackage the ordinary elementary witness as a trivial-`Γ` witness.
     exact ⟨p, (Subgroup.IsGammaPElementary.bot_iff_isPElementary p H).2 hp⟩
 
-/-- Helper for Corollary 17-17.2-2: at the full cyclotomic field, Serre's arithmetic subgroup is
+/-- Helper for Corollary 17-17.2-2: at the full cyclotomic field, LinearRepresentations_Serre_1977's arithmetic subgroup is
 trivial. -/
 theorem gammaSubgroup_top_eq_bot :
     Γ[(⊤ : IntermediateField ℚ Lexp)](G) =
@@ -71,7 +71,7 @@ theorem residueField_grothendieckClass_exists_sum_of_elementary_subgroup_inducti
     ⟨ι, hι, H, hHΓ, y, hx⟩
   refine ⟨ι, hι, H, ?_, y, hx⟩
   intro i
-  -- The top-field specialization makes the Serre subgroup trivial, so the subgroup is ordinary
+  -- The top-field specialization makes the LinearRepresentations_Serre_1977 subgroup trivial, so the subgroup is ordinary
   -- elementary.
   exact
     (Subgroup.isGammaElementary_bot_iff_isElementary (G := G) (H i)).1 <|

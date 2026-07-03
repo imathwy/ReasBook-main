@@ -1,12 +1,12 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Definition_1_5_1
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_5_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
 /- Definition 1.5.1 lies in the higher-order Taylor-coefficient regularity domain.
 
 Relevant owner-style declarations sampled before refining:
-* `taylorCoeffLipschitzClass` in `Nesterov/Chap01/Definition_1_5_1.lean`, the project's
+* `taylorCoeffLipschitzClass` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_5_1.lean`, the project's
   source-facing owner for the textbook class `C^{k,p}_L(Q)`;
 * `HasFTaylorSeriesUpToOn`, the canonical mathlib owner for Taylor data on a set;
 * `mem_taylorCoeffLipschitzClass_notation_iff`, the source-facing membership bridge for the

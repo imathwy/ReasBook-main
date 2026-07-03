@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap07.Lemma_7_18_2
-import stacks_project.Chap07.Situation_7_18_1
+import StacksProject_2024.Chap07.Lemma_7_18_2
+import StacksProject_2024.Chap07.Situation_7_18_1
 
 /-!
 Auxiliary sheaf for Lemma 7.18.3 (Stacks 0A35, equation (7.18.3.1)).

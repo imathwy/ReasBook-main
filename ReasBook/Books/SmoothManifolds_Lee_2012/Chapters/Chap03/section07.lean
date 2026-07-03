@@ -1,7 +1,7 @@
-import SmoothManifoldsLee.Chap03.Sec03_19.Definition_3_19_extra_1
-import SmoothManifoldsLee.Chap03.Sec03_19.Definition_3_19_extra_2
-import SmoothManifoldsLee.Chap03.Sec03_19.Definition_3_19_extra_3
-import SmoothManifoldsLee.Chap03.Sec03_19.Definition_3_19_extra_4
-import SmoothManifoldsLee.Chap03.Sec03_19.Definition_3_19_extra_5
-import SmoothManifoldsLee.Chap03.Sec03_19.Example_3_26
-import SmoothManifoldsLee.Chap03.Sec03_19.Exercise_3_27
+import SmoothManifolds_Lee_2012.Chap03.Sec03_19.Definition_3_19_extra_1
+import SmoothManifolds_Lee_2012.Chap03.Sec03_19.Definition_3_19_extra_2
+import SmoothManifolds_Lee_2012.Chap03.Sec03_19.Definition_3_19_extra_3
+import SmoothManifolds_Lee_2012.Chap03.Sec03_19.Definition_3_19_extra_4
+import SmoothManifolds_Lee_2012.Chap03.Sec03_19.Definition_3_19_extra_5
+import SmoothManifolds_Lee_2012.Chap03.Sec03_19.Example_3_26
+import SmoothManifolds_Lee_2012.Chap03.Sec03_19.Exercise_3_27

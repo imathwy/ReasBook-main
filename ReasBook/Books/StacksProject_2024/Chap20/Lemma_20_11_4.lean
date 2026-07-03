@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import stacks_project.Chap21.Lemma_21_12_2
+import StacksProject_2024.Chap21.Lemma_21_12_2
 
 open CategoryTheory Opposite TopologicalSpace
 open AlgebraicGeometry

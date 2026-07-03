@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap12.Definition_12_16_1
-import stacks_project.Chap13.Definition_13_13_2
+import StacksProject_2024.Chap12.Definition_12_16_1
+import StacksProject_2024.Chap13.Definition_13_13_2
 
 open CategoryTheory
 open CategoryTheory.Limits

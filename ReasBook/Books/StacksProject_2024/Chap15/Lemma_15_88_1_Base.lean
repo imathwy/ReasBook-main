@@ -2,7 +2,7 @@ import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Presheaf.Colimits
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.Limits
 import Mathlib.CategoryTheory.Whiskering
-import stacks_project.Chap12.Definition_12_31_2
+import StacksProject_2024.Chap12.Definition_12_31_2
 
 open CategoryTheory
 open CategoryTheory.GrothendieckTopology

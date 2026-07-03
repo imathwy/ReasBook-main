@@ -1,6 +1,6 @@
-import CombinatorialGroupTheory.Items.Chap05.Lemma_5_5_1
-import CombinatorialGroupTheory.Items.Chap05.Definition_5_1_5
-import CombinatorialGroupTheory.Items.Chap05.Definition_5_2_5
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Lemma_5_5_1
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_1_5
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_2_5
 
 universe u
 

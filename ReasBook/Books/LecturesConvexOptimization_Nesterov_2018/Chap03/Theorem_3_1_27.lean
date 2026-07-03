@@ -1,6 +1,6 @@
-import Nesterov.Chap03.Definition_3_1_5
-import Nesterov.Chap03.Definition_3_22
-import Nesterov.Chap03.LinearEqualityFeasibleSet
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_1_5
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_22
+import LecturesConvexOptimization_Nesterov_2018.Chap03.LinearEqualityFeasibleSet
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

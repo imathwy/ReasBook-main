@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import stacks_project.Chap17.Definition_17_5_1
-import stacks_project.Chap13.Remark_13_10_9
+import StacksProject_2024.Chap17.Definition_17_5_1
+import StacksProject_2024.Chap13.Remark_13_10_9
 
 open CategoryTheory CategoryTheory.Limits ComplexShape HomotopyCategory MonoidalCategory
 open AlgebraicGeometry

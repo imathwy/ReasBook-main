@@ -1,10 +1,10 @@
 import Mathlib
-import BauschkeLean.Chap03.Definition_3_8
-import BauschkeLean.Chap03.Theorem_3_16_1
-import BauschkeLean.Chap06.Definition_6_9
-import BauschkeLean.Chap07.Definition_7_8
-import BauschkeLean.Chap11.Definition_11_3
-import BauschkeLean.Chap19.Proposition_19_5
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Definition_3_8
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Theorem_3_16_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Definition_6_9
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap07.Definition_7_8
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap11.Definition_11_3
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap19.Proposition_19_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

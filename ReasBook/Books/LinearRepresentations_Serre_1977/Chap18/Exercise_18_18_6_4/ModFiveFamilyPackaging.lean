@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap18.Theorem_18_18_2_1
-import Serre.Chap18.Exercise_18_18_6_4.ExplicitGeneratorsAndRegularClasses
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_4.ExplicitGeneratorsAndRegularClasses
 
 noncomputable section
 
@@ -139,7 +139,7 @@ theorem alternatingGroup_fin5_exists_complete_family_modFive
       rcases hσ_complete.exists_iso τ hτ with ⟨i, hi⟩
       exact ⟨e i, by simpa using hi⟩
 
-/-- Helper for Exercise 18-18.6-4: the degree-`1` Serre slot is the trivial `A₅`-module. -/
+/-- Helper for Exercise 18-18.6-4: the degree-`1` LinearRepresentations_Serre_1977 slot is the trivial `A₅`-module. -/
 abbrev alternatingGroup_fin5_trivial_fdRep
     {k : Type} [Field k] [IsAlgClosed k] [CharP k 5] : FDRep k A5 :=
   FDRep.of (Representation.trivial k A5 k)

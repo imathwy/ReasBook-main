@@ -1,9 +1,9 @@
-import AchimKlenkeLean.Items.Chap02.Theorem_2_47
-import AchimKlenkeLean.Items.Chap08.Example_8_27
-import AchimKlenkeLean.Items.Chap17.Theorem_17_11
-import AchimKlenkeLean.Items.Chap17.Theorem_17_39
-import AchimKlenkeLean.Items.Chap19.Example_19_10
-import AchimKlenkeLean.Items.Chap19.Theorem_19_30
+import ProbabilityTheory_Klenke_2020.Items.Chap02.Theorem_2_47
+import ProbabilityTheory_Klenke_2020.Items.Chap08.Example_8_27
+import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_11
+import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_39
+import ProbabilityTheory_Klenke_2020.Items.Chap19.Example_19_10
+import ProbabilityTheory_Klenke_2020.Items.Chap19.Theorem_19_30
 import Mathlib
 
 open MeasureTheory ProbabilityTheory

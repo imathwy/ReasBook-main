@@ -1,9 +1,9 @@
 import Mathlib.Geometry.Manifold.Diffeomorph
 import Mathlib.Geometry.Manifold.Instances.Sphere
-import SmoothManifoldsLee.Chap01.Sec01_07.Problem_1_7
-import SmoothManifoldsLee.Chap01.Sec01_07.Problem_1_9
-import SmoothManifoldsLee.Chap02.Sec02_09.Example_2_14
-import SmoothManifoldsLee.Chap04.Sec04_25.Proposition_4_28
+import SmoothManifolds_Lee_2012.Chap01.Sec01_07.Problem_1_7
+import SmoothManifolds_Lee_2012.Chap01.Sec01_07.Problem_1_9
+import SmoothManifolds_Lee_2012.Chap02.Sec02_09.Example_2_14
+import SmoothManifolds_Lee_2012.Chap04.Sec04_25.Proposition_4_28
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

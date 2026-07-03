@@ -1,4 +1,4 @@
-import stacks_project.Chap10.Lemma_10_32_6
+import StacksProject_2024.Chap10.Lemma_10_32_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -60,7 +60,7 @@ Layer triage:
 - `source-facing`: the corrected element is exhibited explicitly as `e + (e^2 - e) q(e)`.
 - `core/canonical`: idempotent lifting across a nilpotent kernel, owned upstream by
   `RingHom.exists_isIdempotentElem_eq_of_ker_isNilpotent` and exposed in this chapter through
-  [Lemma_10_32_6](/volume/math/AI4M/users/zcwang/stacks_project/stacks_project/Items/Chap10/Lemma_10_32_6.lean).
+  [Lemma_10_32_6](/volume/math/AI4M/users/zcwang/StacksProject_2024/StacksProject_2024/Items/Chap10/Lemma_10_32_6.lean).
 - `bridge/view`: this theorem converts the canonical lift into the textbook polynomial-correction
   form, using the owner polynomial ring `ℤ[X]` with its canonical evaluation map `aeval` rather
   than a bespoke package of coefficients. -/

@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.Chap07.Proposition_7_7_2_1
-import Serre.Chap12.Proposition_12_12_1_1
-import Serre.Chap12.Proposition_12_12_1_3
-import Serre.Chap12.Proposition_12_12_6_4
-import Serre.Chap12.Theorem_12_12_6_2
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_3
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_6_4
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_6_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -31,7 +31,7 @@ variable [IsCyclotomicExtension {Monoid.exponent G} ℚ L]
 -- `K[G]` is quasisplit.
 --
 -- Source/core/bridge triage:
--- * source-facing: Serre's quasisplitness criterion detected on `Γ_K`-elementary subgroups.
+-- * source-facing: LinearRepresentations_Serre_1977's quasisplitness criterion detected on `Γ_K`-elementary subgroups.
 -- * core/canonical owners: `IsQuasisplitGroupAlgebra`, `R[K](G)`, `R̄[K](G)`.
 -- * bridge/view: `mem_overlineCharacterRingInExtension_iff` and
 --   `classFunction_mem_characterRingOverField_iff_restrict_mem_on_gammaElementarySubgroups`.
@@ -39,7 +39,7 @@ variable [IsCyclotomicExtension {Monoid.exponent G} ℚ L]
 -- The primitive input data are the intermediate field `K` and the subgroupwise quasisplitness
 -- hypothesis `hquasi`; the class-function packaging used below is derived API needed only to apply
 -- Proposition `12-12.6-4`.
-/-- Helper for Proposition 12-12.6-5: in the present item, Serre's quasisplitness condition is
+/-- Helper for Proposition 12-12.6-5: in the present item, LinearRepresentations_Serre_1977's quasisplitness condition is
 tracked through the equivalent equality `R[K](G) = \overline{R}_K(G)`. -/
 abbrev IsQuasisplitGroupAlgebra (K : Type*) [Field K] (G : Type*) [Group G] : Prop :=
   R[K](G) = R̄[K](G)
@@ -270,7 +270,7 @@ private theorem overlineCharacterRing_le_characterRing_of_quasisplit_on_gammaEle
   have hχcf_mem : ((χcf : G → K) ∈ R[K](G)) := by
     rw [hχcf]
     intro H hH
-    -- The restriction step is precisely the subgroupwise Serre argument.
+    -- The restriction step is precisely the subgroupwise LinearRepresentations_Serre_1977 argument.
     simpa [classFunctionRestriction_apply, χcf] using
       gammaElementary_restriction_mem_characterRing_of_mem_overline
         (K := K) hquasi hχ H hH
@@ -284,7 +284,7 @@ private theorem characterRing_eq_overlineCharacterRing_of_quasisplit_on_gammaEle
       ∀ H : Subgroup G,
         Subgroup.IsGammaElementary (Γ[K](G)) H → IsQuasisplitGroupAlgebra K H) :
     R[K](G) = R̄[K](G) := by
-  -- The forward inclusion is always available, while the reverse inclusion is the Serre
+  -- The forward inclusion is always available, while the reverse inclusion is the LinearRepresentations_Serre_1977
   -- subgroup-detection argument established just above.
   apply le_antisymm
   · simpa using (characterRingOverField_le_overlineCharacterRing K G : R[K](G) ≤ R̄[K](G))
@@ -307,7 +307,7 @@ theorem isQuasisplitGroupAlgebra_of_quasisplit_on_gammaElementarySubgroups
   have hEq : R[K](G) = R̄[K](G) :=
     characterRing_eq_overlineCharacterRing_of_quasisplit_on_gammaElementarySubgroups
       (K := K) hquasi
-  -- Corollary `12-12.2-2` converts the ring equality into Serre's quasisplitness condition.
+  -- Corollary `12-12.2-2` converts the ring equality into LinearRepresentations_Serre_1977's quasisplitness condition.
   exact (characterRing_eq_overlineCharacterRing_iff_isQuasisplitGroupAlgebra K G).1 hEq
 
 end

@@ -2,7 +2,7 @@ import Mathlib.Algebra.Module.LocalizedModule.AtPrime
 import Mathlib.Algebra.Module.LocalizedModule.Submodule
 import Mathlib.AlgebraicGeometry.ProjectiveSpectrum.Scheme
 import Mathlib.Tactic.Recall
-import stacks_project.Chap10.Lemma_10_57_9
+import StacksProject_2024.Chap10.Lemma_10_57_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

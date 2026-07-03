@@ -1,8 +1,8 @@
 import Mathlib
-import stacks_project.Chap10.Lemma_10_109_6
-import stacks_project.Chap15.Lemma_15_67_6
-import stacks_project.Chap15.Definition_15_75_1
-import stacks_project.Chap15.Lemma_15_75_2
+import StacksProject_2024.Chap10.Lemma_10_109_6
+import StacksProject_2024.Chap15.Lemma_15_67_6
+import StacksProject_2024.Chap15.Definition_15_75_1
+import StacksProject_2024.Chap15.Lemma_15_75_2
 
 universe u
 

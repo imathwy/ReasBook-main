@@ -1,4 +1,4 @@
-import Serre.Chap16.Theorem_16_16_1_2
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_2
 
 noncomputable section
 
@@ -31,7 +31,7 @@ local notation "k" => IsLocalRing.ResidueField A
 * source/core/bridge triage:
   source-facing: equality of scalar-extension classes forces isomorphism of the original finite
     projective `A[G]`-modules;
-  core/canonical: Serre's map `projectiveGrothendieckScalarExtensionHom A K` and the reduction
+  core/canonical: LinearRepresentations_Serre_1977's map `projectiveGrothendieckScalarExtensionHom A K` and the reduction
     equivalence `projectiveGrothendieckReductionEquiv A G`;
   bridge/view: Chapter `14`'s classification theorem from equality in `P₀[A](G)` to an isomorphism
     in the owner category.
@@ -42,7 +42,7 @@ The theorem should therefore conclude with the canonical owner-level isomorphism
 than keeping a parallel module-level bridge as its main public surface.
 -/
 
--- Proof sketch: the source proof uses injectivity of Serre's map `e` directly, so the right Lean
+-- Proof sketch: the source proof uses injectivity of LinearRepresentations_Serre_1977's map `e` directly, so the right Lean
 -- skeleton is to reflect equality of scalar-extension classes back along the base-change
 -- homomorphism `P₀[A](G) → R₀[K](G)` and then finish with the Chapter `14` class-equality
 -- criterion. The only remaining blocker is the earlier public injectivity bridge for that
@@ -51,7 +51,7 @@ than keeping a parallel module-level bridge as its main public surface.
 classes is injective on the present Henselian-local surface. -/
 private theorem projective_baseChange_injective :
     Function.Injective (projectiveGrothendieckBaseChangeHom (A := A) (G := G) K) := by
-  -- Reflect equality of base-change classes through the split injectivity of Serre's map and
+  -- Reflect equality of base-change classes through the split injectivity of LinearRepresentations_Serre_1977's map and
   -- then transport back across the reduction equivalence.
   obtain ⟨s, hs⟩ :=
     projectiveGrothendieckScalarExtensionHom_split_injective
@@ -61,7 +61,7 @@ private theorem projective_baseChange_injective :
       projectiveGrothendieckReductionEquiv (A := A) (G := G) x =
         projectiveGrothendieckReductionEquiv (A := A) (G := G) y := by
     apply hs.injective
-    -- Rewrite Serre's scalar-extension map on both sides to the source-facing base-change map.
+    -- Rewrite LinearRepresentations_Serre_1977's scalar-extension map on both sides to the source-facing base-change map.
     simpa [projectiveGrothendieckScalarExtensionHom_apply] using hxy
   exact (projectiveGrothendieckReductionEquiv (A := A) (G := G)).injective hred
 

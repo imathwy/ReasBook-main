@@ -1,8 +1,8 @@
 import Mathlib
-import BauschkeLean.Chap14.Corollary_14_8
-import BauschkeLean.Chap20.Definition_20_20
-import BauschkeLean.Chap20.Proposition_20_56
-import BauschkeLean.Chap20.Theorem_20_46
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap14.Corollary_14_8
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap20.Definition_20_20
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap20.Proposition_20_56
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap20.Theorem_20_46
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,7 +1,7 @@
-import Serre.Chap02.Exercise_2_2_1_5
-import Serre.Chap02.Theorem_2_2_3_5
-import Serre.Chap06.Proposition_6_6_5_5
-import Serre.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Chap02.Exercise_2_2_1_5
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_5
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

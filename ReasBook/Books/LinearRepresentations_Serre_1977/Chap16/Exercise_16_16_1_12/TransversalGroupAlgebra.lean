@@ -192,7 +192,7 @@ theorem subgroup_groupAlgebra_free_of_transversal
     Module.Free k[↥H] k[G] := by
   let σ : k[↥H] →+* k[G] := MonoidAlgebra.mapDomainRingHom k H.subtype
   let _ : Module k[↥H] k[G] := Module.compHom k[G] σ
-  -- Follow Serre's transversal argument first, then transport the resulting free `k[H]`-basis
+  -- Follow LinearRepresentations_Serre_1977's transversal argument first, then transport the resulting free `k[H]`-basis
   -- from the restricted regular owner to the literal `k[G]` owner.
   let T : H.RightTransversal := default
   obtain ⟨eρ⟩ :=

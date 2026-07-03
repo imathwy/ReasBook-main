@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap09.Exercise_9_9_1_3.SymmetricBaseChangeFinrank
-import Serre.Chap09.Exercise_9_9_1_3.ScalarSymmetricPowers
-import Serre.Chap16.Exercise_16_16_3_9
-import Serre.Chap18.Exercise_18_18_5_3
+import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_3.SymmetricBaseChangeFinrank
+import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_3.ScalarSymmetricPowers
+import LinearRepresentations_Serre_1977.Chap16.Exercise_16_16_3_9
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_3
 
 noncomputable section
 

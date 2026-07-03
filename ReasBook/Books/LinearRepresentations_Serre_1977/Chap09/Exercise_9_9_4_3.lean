@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.RepresentationTheory.GroupFunctionPairing
-import Serre.Chap02.Proposition_2_2_4_1
-import Serre.Chap07.Proposition_7_7_2_1
-import Serre.Chap09.Exercise_9_9_1_1
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.RepresentationTheory.GroupFunctionPairing
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_4_1
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_1
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -42,7 +42,7 @@ variable {K : Type} [Zero K] [NatCast K]
 variable (A : Type) [Group A] [Finite A]
 
 open Classical in
-/-- Helper for Exercise 9-9.4-3: Serre's auxiliary function `θ_A`, supported on the generators of
+/-- Helper for Exercise 9-9.4-3: LinearRepresentations_Serre_1977's auxiliary function `θ_A`, supported on the generators of
 `A` and equal to `|A|` on each generator. -/
 def cyclicGroupTheta : A → K :=
   fun a ↦ if Subgroup.zpowers a = (⊤ : Subgroup A) then Nat.card A else 0
@@ -270,7 +270,7 @@ private lemma top_cyclicGroupTheta_eq {B : Type} [Group B] [Finite B] :
       exact hg (hsub.mp h)
     simp [Representation.cyclicGroupTheta, hg, hg']
 
-/-- Helper for Exercise 9-9.4-3: in a finite commutative group, the `H = ⊤` summand in Serre's
+/-- Helper for Exercise 9-9.4-3: in a finite commutative group, the `H = ⊤` summand in LinearRepresentations_Serre_1977's
 induction formula is exactly the original auxiliary function `θ`. -/
 private lemma top_induced_cyclicGroupTheta_eq {B : Type} [CommGroup B] [Finite B] :
     Ind[(⊤ : Subgroup B)]((θ[(⊤ : Subgroup B)] : (⊤ : Subgroup B) → ℂ)) = (θ[B] : B → ℂ) := by
@@ -328,7 +328,7 @@ private lemma top_induced_cyclicGroupTheta_eq {B : Type} [CommGroup B] [Finite B
     _ = (θ[B] : B → ℂ) g := by
           simpa using congrFun (top_cyclicGroupTheta_eq (B := B)) g
 
-/-- Helper for Exercise 9-9.4-3: if `A` is cyclic, then Serre's auxiliary function `θ[A]`
+/-- Helper for Exercise 9-9.4-3: if `A` is cyclic, then LinearRepresentations_Serre_1977's auxiliary function `θ[A]`
 belongs to the character ring `R(A)`. -/
 theorem cyclicGroupTheta_mem_characterRing [IsCyclic A] :
     θ[A] ∈ R(A) := by
@@ -390,14 +390,14 @@ theorem cyclicGroupTheta_mem_characterRing [IsCyclic A] :
   have hA : P (Nat.card A) := hstrong (Nat.card A)
   simpa using hA A inferInstance inferInstance inferInstance rfl
 
-/-- Serre's auxiliary character candidate `λ_A = φ(|A|) r_A - θ_A` on a finite group `A`. -/
+/-- LinearRepresentations_Serre_1977's auxiliary character candidate `λ_A = φ(|A|) r_A - θ_A` on a finite group `A`. -/
 def cyclicGroupLambda : A → ℂ :=
   ((Nat.totient (Nat.card A) : ℂ)) • (leftRegular ℂ A).character - θ[A]
 
 scoped[Representation] notation:max "λ[" A "]" => cyclicGroupLambda A
 
 -- Source/core/bridge triage:
--- * source-facing: Serre's auxiliary class function `λ[A]`.
+-- * source-facing: LinearRepresentations_Serre_1977's auxiliary class function `λ[A]`.
 -- * core/canonical: the integral character ring owner `R(A)`.
 -- * bridge/view: realization of `λ[A]` as an actual finite-dimensional character in `FDRep ℂ A`
 --   and its induced sum over cyclic subgroups.
@@ -499,11 +499,11 @@ private lemma cyclicGroupTheta_pairing_one_eq_totient [IsCyclic A] :
 -- Proof sketch: evaluate the pairing directly from the definition of `cyclicGroupLambda A`,
 -- use the explicit values of the regular character and of `θ[A]`, and count the
 -- generators of the cyclic group by `Nat.totient (Nat.card A)`.
-/-- Exercise 9-9.4-3 (1): if `A` is cyclic, Serre's auxiliary character candidate `λ_A` is
+/-- Exercise 9-9.4-3 (1): if `A` is cyclic, LinearRepresentations_Serre_1977's auxiliary character candidate `λ_A` is
 orthogonal to the unit character. -/
 theorem cyclicGroupLambda_pairing_one_eq_zero [IsCyclic A] :
     ⟪λ[A], 1⟫ = 0 := by
-  -- Expand Serre's definition of `λ[A]` and evaluate each pairing separately.
+  -- Expand LinearRepresentations_Serre_1977's definition of `λ[A]` and evaluate each pairing separately.
   calc
     ⟪λ[A], 1⟫
         =
@@ -536,7 +536,7 @@ theorem cyclicGroupLambda_pairing_one_eq_zero [IsCyclic A] :
 -- Proof sketch: `θ[A]` already lies in the owner `R(A)` by Proposition `9-9.4-2`. The regular
 -- character term is itself a genuine character, so it also lies in `R(A)`, and the character ring
 -- is closed under additive combinations inside the ambient function space.
-/-- If `A` is cyclic, Serre's auxiliary character candidate `λ_A` belongs to the character ring
+/-- If `A` is cyclic, LinearRepresentations_Serre_1977's auxiliary character candidate `λ_A` belongs to the character ring
 `R(A)`. This is the canonical owner-level bridge from the source-facing function `λ_A` to the
 chapter's character-ring API. -/
 theorem cyclicGroupLambda_mem_characterRing [IsCyclic A] :
@@ -560,7 +560,7 @@ private lemma cyclicGroupLambda_real_model [IsCyclic A] :
     (Nat.totient (Nat.card A) : ℝ) * (if a = 1 then (Nat.card A : ℝ) else 0) -
       (if Subgroup.zpowers a = (⊤ : Subgroup A) then (Nat.card A : ℝ) else 0)
   refine ⟨φ, ?_, ?_⟩
-  · -- Compare the explicit real model with Serre's complex-valued formula pointwise.
+  · -- Compare the explicit real model with LinearRepresentations_Serre_1977's complex-valued formula pointwise.
     ext a
     by_cases ha : a = 1
     · subst ha
@@ -853,7 +853,7 @@ private lemma sum_totient_natCard_cyclicSubgroups_eq_natCard :
     ∑ H ∈ Subgroup.cyclicSubgroups G, Nat.totient (Nat.card H) = Nat.card G := by
   have hpair_rhs :
       ⟪(∑ H ∈ Subgroup.cyclicSubgroups G, Ind[H](θ[H]) : G → ℂ), (1 : G → ℂ)⟫ = Nat.card G := by
-    -- Pair Serre's cyclic `θ`-identity with the unit character on the right.
+    -- Pair LinearRepresentations_Serre_1977's cyclic `θ`-identity with the unit character on the right.
     calc
       ⟪(∑ H ∈ Subgroup.cyclicSubgroups G, Ind[H](θ[H]) : G → ℂ), (1 : G → ℂ)⟫
           = ⟪(Nat.card G : ℂ) • (1 : G → ℂ), (1 : G → ℂ)⟫ := by

@@ -1,4 +1,4 @@
-import BauschkeLean.Chap17.Corollary_17_42
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Corollary_17_42
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

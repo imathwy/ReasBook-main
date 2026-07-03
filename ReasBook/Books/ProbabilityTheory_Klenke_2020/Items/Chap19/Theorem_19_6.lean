@@ -1,6 +1,6 @@
-import AchimKlenkeLean.Items.Chap08.Example_8_27
-import AchimKlenkeLean.Items.Chap17.Theorem_17_8
-import AchimKlenkeLean.Items.Chap19.Definition_19_5
+import ProbabilityTheory_Klenke_2020.Items.Chap08.Example_8_27
+import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_8
+import ProbabilityTheory_Klenke_2020.Items.Chap19.Definition_19_5
 
 open MeasureTheory
 open scoped ENNReal

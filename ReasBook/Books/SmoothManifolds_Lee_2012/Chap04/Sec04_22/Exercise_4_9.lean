@@ -1,6 +1,6 @@
 import Mathlib
-import SmoothManifoldsLee.Chap04.Sec04_22.Proposition_4_8
-import SmoothManifoldsLee.Chap04.Sec04_27.Problem_4_1
+import SmoothManifolds_Lee_2012.Chap04.Sec04_22.Proposition_4_8
+import SmoothManifolds_Lee_2012.Chap04.Sec04_27.Problem_4_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

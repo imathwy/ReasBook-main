@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap15.Definition_15_15_2_1
-import Serre.Chap15.Exercise_15_15_2_5
-import Serre.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_2_1
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_2_5
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -46,7 +46,7 @@ the form modulo `2`. -/
 def IsCharacteristicModTwo (B : BilinForm ℤ E) (x : E) : Prop :=
   ∀ y : E, B y y ≡ B x y [ZMOD 2]
 
-/-- Source-facing form of Serre's assertion that the integral lattice `E` is equal to its
+/-- Source-facing form of LinearRepresentations_Serre_1977's assertion that the integral lattice `E` is equal to its
 `B`-dual lattice inside `ℚ ⊗[ℤ] E`. The previous statement encoded this as the dual of
 `(⊤ : Submodule ℤ E).baseChange ℚ`, which is only the whole ambient rational space and loses the
 integral lattice. Until the integral-lattice embedding is available as a first-class owner, we
@@ -55,7 +55,7 @@ def IsSelfDualIntegralLattice (B : BilinForm ℤ E) : Prop :=
   ∀ {ι : Type u} [Fintype ι] [DecidableEq ι] (b : Module.Basis ι ℤ E),
     Matrix.det (B.toMatrix b) = 1
 
-/-- Source-facing form of Serre's assertion in Exercise 15.4(b) that the `B`-dual integral
+/-- Source-facing form of LinearRepresentations_Serre_1977's assertion in Exercise 15.4(b) that the `B`-dual integral
 lattice is a rational homothety of the original lattice. Route correction: the owner now stores
 the actual rescaled integral form on `E`, because the later self-duality step needs the rescaling
 data itself rather than only nondegeneracy. -/
@@ -345,7 +345,7 @@ theorem exists_positive_definite_invariant_bilinForm
 -- Exercise `15-15.2-5` to the original lattice and its dual lattice inside the scalar-extended
 -- representation.
 /-- Helper for Exercise 15-15.2-6: the coefficient ring `ℤ_(p)` has the same fraction field as
-`ℤ`. This closes the ring-side half of Serre's primewise localization route; the remaining
+`ℤ`. This closes the ring-side half of LinearRepresentations_Serre_1977's primewise localization route; the remaining
 unresolved part of `(b)` is to put the localized module itself inside a compatible
 fraction-field representation. -/
 theorem prime_local_fraction_field_bridge
@@ -1505,7 +1505,7 @@ theorem characteristic_vector_mem_two_mul_and_form_even
 -- Exercise 15-15.2-6 (7): for a finite group action with simple prime reductions, the rank of
 -- `E` is divisible by `8` provided the reduction modulo `2` is not the trivial representation.
 /-- Helper for Exercise 15-15.2-6: the averaged positive definite invariant form from part `(a)`
-is automatically nondegenerate, so Serre's part `(b)` can start from a nondegenerate owner. -/
+is automatically nondegenerate, so LinearRepresentations_Serre_1977's part `(b)` can start from a nondegenerate owner. -/
 theorem exists_positive_definite_invariant_nondegenerate_bilinForm
     [Finite G] (ρ : Representation ℤ G E) :
     ∃ B : BilinForm ℤ E, B.IsSymm ∧ B.IsInvariantUnder ρ ∧ B.toQuadraticMap.PosDef ∧
@@ -1524,7 +1524,7 @@ theorem exists_positive_definite_invariant_rational_dual_homothety
       B.DualIntegralLatticeIsRationalHomothety := by
   obtain ⟨B, hB_symm, hB_invariant, hB_pos, hB_nondegenerate⟩ :=
     exists_positive_definite_invariant_nondegenerate_bilinForm (ρ := ρ)
-  -- Route correction: package Serre's part `(a)` output together with the part `(b)` bridge
+  -- Route correction: package LinearRepresentations_Serre_1977's part `(a)` output together with the part `(b)` bridge
   -- before attempting the self-dual rescaling.
   refine ⟨B, hB_symm, hB_invariant, hB_pos, ?_⟩
   exact
@@ -1549,7 +1549,7 @@ theorem LinearMap.BilinForm.posDef_of_eq_nat_smul
   simpa [LinearMap.BilinMap.toQuadraticMap_apply] using
     pos_of_mul_pos_right hmul (show 0 ≤ (m : ℤ) from by exact_mod_cast Nat.zero_le m)
 
--- Serre's part `(b)` is used in part `(d)` through a chosen positive definite invariant integral
+-- LinearRepresentations_Serre_1977's part `(b)` is used in part `(d)` through a chosen positive definite invariant integral
 -- form whose lattice is already self-dual.
 /-- Helper for Exercise 15-15.2-6: once the part `(b)` homothety witness is expressed at the
 integral-lattice owner level, one rescales the form to a self-dual integral form without changing
@@ -1565,7 +1565,7 @@ theorem exists_integral_rescale_selfDual_of_dual_homothety
   -- argument that cancels the positive integer factor from symmetry and invariance.
   sorry
 
-/-- Helper for Exercise 15-15.2-6: Serre's part `(b)` is used in part `(d)` through a chosen
+/-- Helper for Exercise 15-15.2-6: LinearRepresentations_Serre_1977's part `(b)` is used in part `(d)` through a chosen
 positive definite invariant integral form whose lattice is already self-dual. -/
 theorem exists_positive_definite_invariant_selfDual_bilinForm
     [Finite G] (ρ : Representation ℤ G E) (hρ : ρ.HasSimplePrimeReductions) :
@@ -1581,7 +1581,7 @@ namespace LinearMap.BilinForm
 definite unimodular integral lattice has rank divisible by `8`. -/
 -- TODO: replace this theorem stub by the cited even-unimodular rank-divisibility theorem, ideally
 -- in a theorem-local helper file once the surrounding lattice API is stable. A repo-wide search
--- in this pass found no existing owner for this classification statement under mathlib or Serre.
+-- in this pass found no existing owner for this classification statement under mathlib or LinearRepresentations_Serre_1977.
 theorem finrank_mod_eight_of_isEven_of_posDef_of_isSelfDualIntegralLattice
     (B : BilinForm ℤ E) (h_even : B.IsEven) (h_pos : B.toQuadraticMap.PosDef)
     (hselfDual : B.IsSelfDualIntegralLattice) :

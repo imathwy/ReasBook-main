@@ -26,7 +26,7 @@ variable {J : GrothendieckTopology C}
   `GrothendieckTopology.Point.Hom.sheafFiber`
 - primitive data: a natural transformation `p'.fiber ⟶ p.fiber`
 - derived API: functoriality on presheaf and sheaf fibers, together with the component formulas used
-  in [Lemma_7_37_1](/volume/math/AI4M/users/zcwang/stacks_project/stacks_project/Items/Chap07/Lemma_7_37_1.lean)
+  in [Lemma_7_37_1](/volume/math/AI4M/users/zcwang/StacksProject_2024/StacksProject_2024/Items/Chap07/Lemma_7_37_1.lean)
 -/
 /- Definition 7.37.2: for points `p` and `p'` of the site `(C, J)`, a morphism `p ⟶ p'` is the
 canonical mathlib notion `GrothendieckTopology.Point.Hom p p'`, whose data is a natural

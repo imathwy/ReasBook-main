@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap10.Definition_10_10_1_2
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap12.Theorem_12_12_4_1
-import Serre.Chap12.GaloisPowerClasses
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_2
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_4_1
+import LinearRepresentations_Serre_1977.Chap12.GaloisPowerClasses
 
 noncomputable section
 
@@ -42,7 +42,7 @@ theorem character_value_sub_mem_primeIdealOverPrime_of_pRegularComponents_galois
           ⟨pRegularComponent p y, isPRegular_pRegularComponent (p := p) y⟩)
     (Q : PrimeSpectrum A) (hQ : Ideal.span {(p : A)} ≤ Q.asIdeal) :
     ∃ q : Q.asIdeal, algebraMap A K q.1 = f x - f y := by
-  -- Serre, §12.7, Lemma 16: reduce to the `p'`-component and apply the same congruence
+  -- LinearRepresentations_Serre_1977, §12.7, Lemma 16: reduce to the `p'`-component and apply the same congruence
   -- argument as Lemma 7, using Corollary 12.4.2 for `Γ_K`-class constancy. Since owner values live
   -- in the fraction field `K`, membership in a prime ideal of `A` is stated by an `A`-lift in that
   -- ideal whose image is the corresponding difference.

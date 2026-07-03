@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap06.Proposition_6_6_2_1
-import Serre.Chap08.Corollary_8_8_3_8
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_2_1
+import LinearRepresentations_Serre_1977.Chap08.Corollary_8_8_3_8
 
 noncomputable section
 
@@ -266,7 +266,7 @@ theorem p_group_generator_sub_one_mem_jacobson
     [Fact p.Prime]
     (hG : IsPGroup p G) (g : G) :
     ((MonoidAlgebra.of (ZMod p) G g : (ZMod p)[G]) - 1) ∈ Ring.jacobson ((ZMod p)[G]) := by
-  -- Route correction: use Serre's maximal-left-ideal quotient argument directly. For every
+  -- Route correction: use LinearRepresentations_Serre_1977's maximal-left-ideal quotient argument directly. For every
   -- maximal left ideal `I`, the quotient `k[G] ⧸ I` is a simple `k[G]`-module, hence an
   -- irreducible `G`-representation in characteristic `p`, so the `p`-group action is trivial.
   -- Evaluating `([g] - 1)` on the class of `1` therefore shows `([g] - 1) ∈ I`.

@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap18.Theorem_18_18_2_1
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -19,7 +19,7 @@ variable {A : Type u} [CommRing A]
 variable {G : Type u} [Group G] [Finite G]
 variable {ι : Type x}
 
-/-- Exercise 18-18.2-9 / Serre Exercise 18.4: for a complete family of pairwise nonisomorphic
+/-- Exercise 18-18.2-9 / LinearRepresentations_Serre_1977 Exercise 18.4: for a complete family of pairwise nonisomorphic
 simple finite-dimensional `k[G]`-representations, the corresponding modular characters form a
 basis of the coefficient-ring-valued functions on the `p`-regular conjugacy classes. -/
 def exercise_18_18_2_9_irreducible_modular_characters_basis

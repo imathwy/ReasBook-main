@@ -1,7 +1,7 @@
 import Mathlib
-import Nesterov.Chap01.Definition_1_10_2
-import Nesterov.Chap01.Definition_1_3_7
-import Nesterov.Chap02.Lemma_2_18
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_10_2
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_3_7
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Lemma_2_18
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -19,14 +19,14 @@ value function.
 Owner abstractions sampled before refining:
 - `LagrangianProblem.feasibleSet`, `LagrangianProblem.primalOptimalValue`, and
   `LagrangianProblem.lagrangian` in Chapter 1's owner file
-  `Nesterov/Items/Chap01/Definition_1_10_2.lean`;
+  `LecturesConvexOptimization_Nesterov_2018/Items/Chap01/Definition_1_10_2.lean`;
 - `GeneralMinimizationProblem.componentOnAmbient` in
-  `Nesterov/Items/Chap01/Definition_1_1_4_3.lean`, which packages an objective together with its
+  `LecturesConvexOptimization_Nesterov_2018/Items/Chap01/Definition_1_1_4_3.lean`, which packages an objective together with its
   constraint family as a canonical `Fin (m + 1)`-indexed component map;
 - the later Euclidean bridge
   `SmoothFunctionalConstraintsMinimizationProblem.toLagrangianProblem`, which reuses this same
   owner component family on `EuclideanSpace`;
-- `maxTypeObjective` in `Nesterov/Items/Chap02/Lemma_2_18.lean`, the Euclidean finite-maximum
+- `maxTypeObjective` in `LecturesConvexOptimization_Nesterov_2018/Items/Chap02/Lemma_2_18.lean`, the Euclidean finite-maximum
   owner that matches the same construction once the ambient space has specialized to `ℝⁿ`.
 
 The best owner abstraction here is still the generic `LagrangianProblem Q m` itself: the later

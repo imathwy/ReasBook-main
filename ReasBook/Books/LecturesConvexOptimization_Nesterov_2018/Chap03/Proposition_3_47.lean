@@ -1,15 +1,15 @@
-import Nesterov.Chap03.Algorithm_3_8
-import Nesterov.Chap01.Definition_1_3_7
-import Nesterov.Chap03.Definition_3_53
-import Nesterov.Chap03.Definition_3_55
-import Nesterov.Chap03.Definition_3_59
-import Nesterov.Chap03.Lemma_3_2_1
-import Nesterov.Chap03.Lemma_3_2_2
-import Nesterov.Chap03.Lemma_3_30
-import Nesterov.Chap03.Proposition_3_44
-import Nesterov.Chap03.Proposition_3_45
-import Nesterov.Chap03.Theorem_3_52
-import Nesterov.Chap03.Theorem_3_54
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Algorithm_3_8
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_3_7
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_53
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_55
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_59
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Lemma_3_2_1
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Lemma_3_2_2
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Lemma_3_30
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Proposition_3_44
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Proposition_3_45
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_52
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_54
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

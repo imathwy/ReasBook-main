@@ -1,11 +1,11 @@
 import Mathlib
-import Serre.Chap12.Proposition_12_12_1_3
-import Serre.Chap14.Corollary_14_14_4_3
-import Serre.Chap14.Corollary_14_14_4_4
-import Serre.Chap15.Definition_15_15_3_1
-import Serre.Chap15.Definition_15_15_3_1.FiniteRepScalarExtension
-import Serre.Chap15.Theorem_15_15_2_2
-import Serre.Chap16.Exercise_16_16_3_8.Index
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_3
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_4
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1.FiniteRepScalarExtension
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap16.Exercise_16_16_3_8.Index
 
 noncomputable section
 
@@ -27,7 +27,7 @@ local notation "e" =>
     finiteProjectiveGroupAlgebraGrothendieckGroup A G →+
       finiteRepGrothendieckGroup K G)
 
-/-- Helper for Exercise 16-16.3-8: Serre's positive subset `P_A^+(G)` consists of the classes in
+/-- Helper for Exercise 16-16.3-8: LinearRepresentations_Serre_1977's positive subset `P_A^+(G)` consists of the classes in
 `P_A(G)` represented by actual finite projective `A[G]`-modules. -/
 def projectivePositiveSubset
     (A : Type u) [CommRing A] (G : Type u) [Group G] :
@@ -45,7 +45,7 @@ an actual finite projective `A[G]`-module. -/
       ∃ P : FiniteProjectiveGroupAlgebraModule A G, [P]ₚ₀ = x :=
   Iff.rfl
 
-/-- Helper for Exercise 16-16.3-8: Serre's actual positive subset `R_K^+(G)` consists of the
+/-- Helper for Exercise 16-16.3-8: LinearRepresentations_Serre_1977's actual positive subset `R_K^+(G)` consists of the
 Grothendieck classes represented by actual finite-dimensional `K[G]`-representations. -/
 def finiteRepPositiveSubset
     (K : Type u) [Field K] (G : Type u) [Group G] :
@@ -85,12 +85,12 @@ def SatisfiesConditionR
 Source-faithful repair note.
 
 The surrounding API currently has the Grothendieck groups and the decomposition map, but it does
-not yet expose the character map on `R₀[K](G)` or Serre's Proposition 44 descent as reusable Lean
+not yet expose the character map on `R₀[K](G)` or LinearRepresentations_Serre_1977's Proposition 44 descent as reusable Lean
 lemmas. The previous local proof tried to manufacture those missing facts with ad-hoc names such
 as `finiteRepGrothendieckCharacter`, which are not present in this repository and caused a build
 blocker.
 
-The statement below matches Serre, Section 16.3, Exercise 16.6: for `K` sufficiently large,
+The statement below matches LinearRepresentations_Serre_1977, Section 16.3, Exercise 16.6: for `K` sufficiently large,
 condition `(R)` is equivalent to
 
   `e(P_A^+(G)) = e(P_A(G)) ∩ R_K^+(G)`.
@@ -105,7 +105,7 @@ transports these inequalities across the adjunction between the decomposition ma
 Cartan map `e`, forcing the image of `d` to be exactly the residue-field positive cone.
 -/
 
-/-- Exercise 16-16.3-8: under the large-field hypothesis on `K`, Serre's condition `(R)` for the
+/-- Exercise 16-16.3-8: under the large-field hypothesis on `K`, LinearRepresentations_Serre_1977's condition `(R)` for the
 actual positive subset `R_K^+(G)` is equivalent to the source-facing equality
 `e(P_A^+(G)) = range(e) ∩ R_K^+(G)`, where
 `e = projectiveGrothendieckBaseChangeHom K : P_A(G) → R_K(G)`. -/

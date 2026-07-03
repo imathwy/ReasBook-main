@@ -1,11 +1,11 @@
 import Mathlib
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap12.Proposition_12_12_1_1
-import Serre.Chap12.Proposition_12_12_1_2
-import Serre.Chap12.Theorem_12_12_3_1
-import Serre.Chap12.Theorem_12_12_4_1.Index
-import Serre.Chap02.Theorem_2_2_5_2
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_2
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_3_1
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_4_1.Index
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_5_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -281,7 +281,7 @@ private theorem character_galois_compatible_of_mem_characterRingOverField
     (zpowers_restricted_character_galois_compatible (G := G) (K := K) s χC t)
 
 /-- Helper for Theorem 12-12.4-1: values coming from the intermediate field `K` are fixed by
-Serre's subgroup `Γ[K](G)` under the cyclotomic Galois action on `L`. -/
+LinearRepresentations_Serre_1977's subgroup `Γ[K](G)` under the cyclotomic Galois action on `L`. -/
 theorem gammaSubgroup_smul_algebraMap
     (K : IntermediateField ℚ L) (a : K) (t : Γ[K](G)) :
     t • algebraMap K L a = algebraMap K L a := by
@@ -336,7 +336,7 @@ theorem mem_intermediateField_of_gammaSubgroup_fixed
   exact hx_fixed
 
 /-- Helper for Theorem 12-12.4-1: the character of a finite-dimensional `L`-representation is
-itself compatible with Serre's `Γ[K](G)`-action. -/
+itself compatible with LinearRepresentations_Serre_1977's `Γ[K](G)`-action. -/
 private theorem conjRepresentation_map_one_local
     {V : Type*} {W : Type*} [AddCommGroup V] [Module L V] [AddCommGroup W] [Module L W]
     (e : V ≃ₗ[L] W) (ρ : Representation L G V) :
@@ -439,7 +439,7 @@ private theorem rep_character_mem_characterRingOverField_universe_local
   exact hchar ▸ Representation.rep_character_mem_characterRingOverField (K := L) (G := G) τ
 
 /-- Helper for Theorem 12-12.4-1: the character of a finite-dimensional `L`-representation is
-itself compatible with Serre's `Γ[K](G)`-action. -/
+itself compatible with LinearRepresentations_Serre_1977's `Γ[K](G)`-action. -/
 private theorem representation_character_galois_compatible
     (K : IntermediateField ℚ L)
     {V : Type u} [AddCommGroup V] [Module L V]
@@ -940,7 +940,7 @@ private theorem classFunctionSubmodule_sum_smul_apply_pointwise
     (((∑ i, c i • f i : classFunctionSubmodule K' H) : H → K') x) =
       ∑ i, c i * ((f i : H → K') x) := by
   -- Push evaluation through the finite sum so the converse proof can compare basis coefficients
-  -- pointwise, exactly as in Serre's reconstruction argument.
+  -- pointwise, exactly as in LinearRepresentations_Serre_1977's reconstruction argument.
   simp [Pi.smul_apply, smul_eq_mul]
 
 /-- Helper for Theorem 12-12.4-1: each coefficient in the complete irreducible complex basis of a
@@ -979,7 +979,7 @@ private theorem complex_basis_coefficient_descends_to_K_local
       b.repr φC i =
         algebraMap L ℂ (Representation.groupFunctionPairingOverField L
           (φ : G → L) (χL i : G → L)) := by
-    -- Identify the basis coefficient with Serre's pairing coefficient, then move it across
+    -- Identify the basis coefficient with LinearRepresentations_Serre_1977's pairing coefficient, then move it across
     -- the scalar-extension map `L → ℂ`.
     calc
       b.repr φC i =
@@ -1099,7 +1099,7 @@ private theorem span_membership_of_reconstructed_sum_local
   exact finite_character_sum_mem_span_local (G := G) (L := L) K a χL
 
 -- Source/core/bridge triage:
--- * source-facing: Serre's criterion for an `L`-valued class function to come from
+-- * source-facing: LinearRepresentations_Serre_1977's criterion for an `L`-valued class function to come from
 --   `ℚ ⊗ R_K(G)`.
 -- * core/canonical owner: bundled `L`-valued class functions `classFunctionSubmodule L G`.
 -- * bridge/view: the underlying function coercion `(φ : G → L)`.
@@ -1112,7 +1112,7 @@ private theorem span_membership_of_reconstructed_sum_local
 /-- Theorem 12-12.4-1: let `L / ℚ` be a cyclotomic realization for the exponent of `G`, and let
 `K ⊆ L` be an intermediate field. An `L`-valued class function on `G`, viewed through the canonical
 owner `classFunctionSubmodule L G`, belongs to the `K`-span of the ordinary `L`-valued characters
-of `G` if and only if it is equivariant for Serre's subgroup `Γ_K`, acting on values through the
+of `G` if and only if it is equivariant for LinearRepresentations_Serre_1977's subgroup `Γ_K`, acting on values through the
 canonical cyclotomic Galois action on `L`. This is the source-faithful realization of
 `K ⊗_ℤ R(G)` inside `G → L`. -/
 theorem classFunction_mem_characterRingOverFieldScalarExtension_map_iff_galoisCompatible
@@ -1149,7 +1149,7 @@ theorem classFunction_mem_characterRingOverFieldScalarExtension_map_iff_galoisCo
               rw [gammaSubgroup_smul_algebraMap, hcompat]
         _ = (a • f) (s ^ t) := by rfl
   · intro hcompat
-    -- Route correction: the converse should follow Serre's irreducible-character basis argument,
+    -- Route correction: the converse should follow LinearRepresentations_Serre_1977's irreducible-character basis argument,
     -- not a local recursive decomposition. The pointwise evaluation normalization is now isolated
     -- in `classFunctionSubmodule_sum_smul_apply_pointwise`, so the remaining work is to assemble
     -- the complete-family expansion and coefficient descent along the existing local pairing API.
@@ -1214,7 +1214,7 @@ theorem classFunction_mem_characterRingOverFieldScalarExtension_map_iff_galoisCo
         ∀ g : G, algebraMap L ℂ (∑ i, (a i : L) * χL i g) = algebraMap L ℂ (φ g) :=
       complexified_reconstruction_from_basis_sum_local
         (G := G) (L := L) (H := G₀) e K π hπ_pairwise hπ_complete φ a ha χL hχL
-    -- This is Serre's converse: the complex basis expansion descends coefficientwise to `K`,
+    -- This is LinearRepresentations_Serre_1977's converse: the complex basis expansion descends coefficientwise to `K`,
     -- then the descended finite sum of lifted `L`-characters already lies in the desired span.
     exact
       span_membership_of_reconstructed_sum_local

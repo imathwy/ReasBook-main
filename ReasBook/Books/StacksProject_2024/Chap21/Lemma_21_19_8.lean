@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
-import stacks_project.Chap12.Lemma_12_10_3
-import stacks_project.Chap13.Lemma_13_17_1
+import StacksProject_2024.Chap12.Lemma_12_10_3
+import StacksProject_2024.Chap13.Lemma_13_17_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -63,7 +63,7 @@ theorem mem_torsionAbelianSheafProperty_iff
       ∀ U : C, AddMonoid.IsTorsion (F.obj.obj (op U)) :=
   Iff.rfl
 
-/-- Torsion abelian sheaves form a Serre subcategory of `Ab(\mathcal C)`. -/
+/-- Torsion abelian sheaves form a LinearRepresentations_Serre_1977 subcategory of `Ab(\mathcal C)`. -/
 instance torsionAbelianSheafProperty_isSerreClass :
     TorsionProperty.IsSerreClass := sorry
 
@@ -114,7 +114,7 @@ abbrev torsionAbelianSheafDerivedComparisonFunctor :
 -- to the inclusion `D(\mathcal A) ⥤ D_\mathcal A(\mathcal C)`, and the unit and counit are
 -- isomorphisms because torsion complexes are unchanged by torsion and a complex with torsion
 -- cohomology is quasi-isomorphic to the torsion subcomplex of an injective representative.
-/-- Lemma 21.19.8: if `\mathcal A ⊂ \operatorname{Ab}(\mathcal C)` is the Serre subcategory of
+/-- Lemma 21.19.8: if `\mathcal A ⊂ \operatorname{Ab}(\mathcal C)` is the LinearRepresentations_Serre_1977 subcategory of
 torsion abelian sheaves on a site `\mathcal C`, then the canonical functor
 `D(\mathcal A) \to D_\mathcal A(\mathcal C)` is an equivalence. -/
 theorem torsionAbelianSheafDerivedComparisonFunctor_isEquivalence :

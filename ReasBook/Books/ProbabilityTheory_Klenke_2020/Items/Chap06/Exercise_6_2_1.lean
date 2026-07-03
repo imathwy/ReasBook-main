@@ -1,4 +1,4 @@
-import AchimKlenkeLean.Items.Chap06.Definition_6_2
+import ProbabilityTheory_Klenke_2020.Items.Chap06.Definition_6_2
 
 open Filter MeasureTheory
 open scoped ENNReal Topology

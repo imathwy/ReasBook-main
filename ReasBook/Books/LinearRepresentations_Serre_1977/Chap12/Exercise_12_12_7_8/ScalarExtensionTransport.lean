@@ -1,4 +1,4 @@
-import Serre.Chap12.GaloisPowerClasses
+import LinearRepresentations_Serre_1977.Chap12.GaloisPowerClasses
 
 open scoped Representation
 
@@ -27,7 +27,7 @@ local notation "ΓK" => (Representation.exerciseGammaSubgroup (G := G) (L := L) 
 local notation "SpecAKG" =>
   PrimeSpectrum (characterRingOverFieldAlgebraScalarExtensionSubalgebra A K G)
 
-/-- Evaluation on a `Γ_K`-class defines the source-facing map whose kernel is Serre's
+/-- Evaluation on a `Γ_K`-class defines the source-facing map whose kernel is LinearRepresentations_Serre_1977's
 zero-residual prime `P₀,c` in `A ⊗ R_K(G)`. -/
 def galoisPowerClassScalarExtensionZeroPrimeIdealEval
     (c : GaloisPowerClass ΓK) :
@@ -212,7 +212,7 @@ noncomputable def fiber_algEquiv_tensorCharacterRingOverField_baseChange
 
 /-- Helper for Exercise 12-12.7-8: the tensor-associativity base-change transport above is also
 available as an `F`-linear equivalence. This packages the coercion-stable linear endpoint used by
-the regular-fiber transport in Serre's source route. -/
+the regular-fiber transport in LinearRepresentations_Serre_1977's source route. -/
 noncomputable def fiber_linearEquiv_tensorCharacterRingOverField_baseChange
     (F : Type*) [Field F] [Algebra A F] :
     TensorProduct A F (TensorProduct ℤ A (R[K](G))) ≃ₗ[F] TensorProduct ℤ F (R[K](G)) :=

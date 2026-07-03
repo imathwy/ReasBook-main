@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap03.Proposition_3_35
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Proposition_3_35
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -15,14 +15,14 @@ Definition 3.41 is a recall-only item in the chapter's finite-horizon subgradien
 domain.
 
 Sampled owner-style declarations:
-- `EuclideanSpace.positiveOrthant` in `Nesterov.Chap01.Definition_1_10_2`, the strict
+- `EuclideanSpace.positiveOrthant` in `LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_10_2`, the strict
   orthant owner reused by the same stepsize functional
-- `deltaN` in `Nesterov.Chap03.Proposition_3_35`, the chapter owner for the scalar
+- `deltaN` in `LecturesConvexOptimization_Nesterov_2018.Chap03.Proposition_3_35`, the chapter owner for the scalar
   `Δ_N(h₀, ..., h_N)`
-- `deltaN_apply` in `Nesterov.Chap03.Proposition_3_35`, the pointwise evaluation bridge for
+- `deltaN_apply` in `LecturesConvexOptimization_Nesterov_2018.Chap03.Proposition_3_35`, the pointwise evaluation bridge for
   that owner
 - `deltaN_constantChoice_minimizes_positiveOrthant` in
-  `Nesterov.Chap03.Proposition_3_35`, the later constant-stepsize optimality theorem for
+  `LecturesConvexOptimization_Nesterov_2018.Chap03.Proposition_3_35`, the later constant-stepsize optimality theorem for
   the same owner
 
 Best owner abstraction:

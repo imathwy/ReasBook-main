@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap02.Remark_2_2_1_2
-import Serre.Chap07.Proposition_7_7_2_1
-import Serre.Chap09.Theorem_9_9_2_1
-import Serre.RepresentationTheory.GroupFunctionPairing
+import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_1_2
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Chap09.Theorem_9_9_2_1
+import LinearRepresentations_Serre_1977.RepresentationTheory.GroupFunctionPairing
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -793,7 +793,7 @@ of subgroup induction operators as in the rational view. -/
   simp [artinInductionMapC]
 
 /-- Helper for Exercise 9-9.3-1: the componentwise pairing on subgroup-indexed class-function
-families, built from Serre's normalized pairing on each subgroup. -/
+families, built from LinearRepresentations_Serre_1977's normalized pairing on each subgroup. -/
 private def artinSourcePairing (X : Finset (Subgroup G)) :
     LinearMap.BilinForm ℂ (artinInductionSource X) where
   toFun ξ :=
@@ -1318,7 +1318,7 @@ private theorem artinSourcePairing_nondegenerate (X : Finset (Subgroup G)) :
   exact hψ <| by
     simpa [artinSourcePairing_pi_single_right] using hz
 
-/-- Helper for Exercise 9-9.3-1: orthogonality to the relation span is equivalent to Serre's
+/-- Helper for Exercise 9-9.3-1: orthogonality to the relation span is equivalent to LinearRepresentations_Serre_1977's
 subgroup-restriction and conjugation compatibility conditions. -/
 private theorem mem_artinSourcePairing_orthogonal_iff_compatibleFamily
     (X : Finset (Subgroup G))
@@ -1534,7 +1534,7 @@ private theorem artinSourcePairing_restrictionFamily_eq
           (artinInductionMapC X ξ : G → ℂ) (χ : G → ℂ) := by
         simp [f, artinInductionMapC]
 
-/-- Helper for Exercise 9-9.3-1: the unresolved reverse inclusion is Serre's gluing and
+/-- Helper for Exercise 9-9.3-1: the unresolved reverse inclusion is LinearRepresentations_Serre_1977's gluing and
 finite-dimensional separation argument. -/
 private theorem artinInductionMap_ker_le_artinInductionRelations
     (X : Finset (Subgroup G))
@@ -1586,7 +1586,7 @@ private theorem artinInductionMap_ker_le_artinInductionRelations
 -- span of the relations using the restriction and conjugation compatibility conditions; duality
 -- then reconstructs every element of the kernel from induction-in-stages and conjugation
 -- relations.
-/-- Exercise 9-9.3-1: in Serre's source context, the subgroup family `X` is the Chapter 9 Artin
+/-- Exercise 9-9.3-1: in LinearRepresentations_Serre_1977's source context, the subgroup family `X` is the Chapter 9 Artin
 family from Theorem 9-9.2-1. Besides conjugation stability and the conjugacy-cover hypothesis, this
 source family is closed under passing to subgroups; without that closure the statement is false
 even for an abelian Klein-four example. Under these source-faithful hypotheses, the rational
@@ -1599,7 +1599,7 @@ theorem artinInductionMap_ker_eq_artinInductionRelations
     (hcover : is_conjugacy_cover X) :
     (artinInductionMap X).ker = artinInductionRelations X := by
   -- Route correction: the generator containment direction is already formalized above; the
-  -- remaining work is the duality-and-gluing argument from Serre's hint for the reverse inclusion.
+  -- remaining work is the duality-and-gluing argument from LinearRepresentations_Serre_1977's hint for the reverse inclusion.
   apply le_antisymm
   · exact artinInductionMap_ker_le_artinInductionRelations X hsubgroups hconj hcover
   · exact artinInductionRelations_le_artinInductionMap_ker X

@@ -1,10 +1,10 @@
-import Serre.Chap11.Proposition_11_11_4_1.RegularOwnerIncidence
-import Serre.Chap10.Lemma_10_10_2_3
-import Serre.Chap10.Lemma_10_10_3_3
-import Serre.Chap10.Theorem_10_10_5_2.BrauerInductionInfrastructure
-import Serre.Chap11.Remark_11_11_1_3.TensorCharacterRingRestriction
-import Serre.Chap11.Theorem_11_11_2_1.TensorCharacterBridge
-import Serre.Chap11.Theorem_11_11_3_2
+import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_1.RegularOwnerIncidence
+import LinearRepresentations_Serre_1977.Chap10.Lemma_10_10_2_3
+import LinearRepresentations_Serre_1977.Chap10.Lemma_10_10_3_3
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_2.BrauerInductionInfrastructure
+import LinearRepresentations_Serre_1977.Chap11.Remark_11_11_1_3.TensorCharacterRingRestriction
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1.TensorCharacterBridge
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_3_2
 
 -- Declarations for this item are assembled here from the extracted Proposition 11-11.4-1 API.
 
@@ -272,7 +272,7 @@ theorem tensorCharacterRingValueAtConjClass_complex_eq
 
 end IntegralClosureFixedClassEvaluation
 
-/-- Helper for Proposition 11-11.4-1: Serre's zero prime `P₀,c` is the kernel of the concrete
+/-- Helper for Proposition 11-11.4-1: LinearRepresentations_Serre_1977's zero prime `P₀,c` is the kernel of the concrete
 fixed-class evaluation map at any representative of `c`. This is the source-facing identification
 used when reducing the zero branch to coordinate kernels. -/
 theorem tensorCharacterRingZeroPrimeIdealEval_eq_valueAtConjClassComplex
@@ -337,7 +337,7 @@ theorem value_comap_eq_source_prime
       a ∈ q.asIdeal
   rw [tensorCharacterRingValueAtConjClass_algebraMap (A := A) (G := G) c a]
 
-/-- Helper for Proposition 11-11.4-1: bundle the fixed-class evaluations into Serre's source
+/-- Helper for Proposition 11-11.4-1: bundle the fixed-class evaluations into LinearRepresentations_Serre_1977's source
 map `A ⊗ R(G) → A^{Cl(G)}`. This is the governing source object for Proposition `30`, and it
 keeps the later prime-classification step on the source route instead of returning to fiber
 transport packages. -/
@@ -369,7 +369,7 @@ evaluation. This keeps later `rw` steps on the explicit source presentation. -/
       tensorCharacterRingValueAtConjClass (A := A) (G := G) c χ :=
   rfl
 
-/-- Helper for Proposition 11-11.4-1: the point-mass function at a conjugacy class in Serre's
+/-- Helper for Proposition 11-11.4-1: the point-mass function at a conjugacy class in LinearRepresentations_Serre_1977's
 source ring `A^{Cl(G)}`. This is the idempotent source generator used in the lying-over pivot. -/
 noncomputable def conjClassDelta
     (c : ConjClasses G) : ConjClasses G → A :=
@@ -400,7 +400,7 @@ theorem sum_smul_conjClassDelta_eq
   simp [conjClassDelta]
 
 /-- Helper for Proposition 11-11.4-1: each source point mass is integral over the image of
-Serre's source profile map. This is the idempotent input for the lying-over step on
+LinearRepresentations_Serre_1977's source profile map. This is the idempotent input for the lying-over step on
 `A^{Cl(G)}`. -/
 theorem conjClassDelta_isIntegral_over_valueProfile
     (c : ConjClasses G) :
@@ -412,9 +412,9 @@ theorem conjClassDelta_isIntegral_over_valueProfile
         (Polynomial.monic_X_sub_C (1 : A ⊗R(G))))
   · simp [conjClassDelta_mul_self, sub_eq_add_neg, mul_add]
 
-/-- Helper for Proposition 11-11.4-1: Serre's source profile map
+/-- Helper for Proposition 11-11.4-1: LinearRepresentations_Serre_1977's source profile map
 `A ⊗ R(G) → A^{Cl(G)}` is injective. This is the exact missing hypothesis needed to apply
-lying-over to the source inclusion and keep the proof on Serre's source spectrum
+lying-over to the source inclusion and keep the proof on LinearRepresentations_Serre_1977's source spectrum
 `Spec(A^{Cl(G)}) → Spec(A ⊗ R(G))`. -/
 theorem tensorCharacterRingValueProfile_injective :
     Function.Injective (tensorCharacterRingValueProfile (A := A) (G := G)) := by
@@ -436,7 +436,7 @@ theorem tensorCharacterRingValueProfile_injective :
       (ConjClasses.mk g) ψ rfl] at hclass_complex
   simpa using hclass_complex
 
-/-- Helper for Proposition 11-11.4-1: Serre's source profile map
+/-- Helper for Proposition 11-11.4-1: LinearRepresentations_Serre_1977's source profile map
 `A ⊗ R(G) → A^{Cl(G)}` is integral. This is the source-faithful bridge from the tensor character
 ring to the function ring on conjugacy classes. -/
 theorem tensorCharacterRingValueProfile_isIntegral :
@@ -497,7 +497,7 @@ theorem tensorCharacterRingValueProfile_isIntegral :
             simpa [s] using sum_smul_conjClassDelta_eq (A := A) (G := G) F
   exact hrewrite ▸ hsum
 
-/-- Helper for Proposition 11-11.4-1: evaluating Serre's source profile at a fixed conjugacy
+/-- Helper for Proposition 11-11.4-1: evaluating LinearRepresentations_Serre_1977's source profile at a fixed conjugacy
 class recovers the corresponding fixed-class evaluation map. This keeps the source-spectrum proof
 as a direct comap computation instead of a transport argument. -/
 theorem evalRingHom_comp_tensorCharacterRingValueProfile
@@ -508,7 +508,7 @@ theorem evalRingHom_comp_tensorCharacterRingValueProfile
   rfl
 
 /-- Helper for Proposition 11-11.4-1: every ambient prime should be presented directly as the
-pullback of a coefficient prime along fixed-class evaluation. This is Serre's actual source map
+pullback of a coefficient prime along fixed-class evaluation. This is LinearRepresentations_Serre_1977's actual source map
 `Spec(A^{Cl(G)}) → Spec(A ⊗ R(G))`, and replacing the old fiber packages by this theorem is the
 main structural pivot for Proposition `30`. -/
 theorem source_prime_eq_value_comap_of_class
@@ -533,7 +533,7 @@ theorem source_prime_eq_value_comap_of_class
   simpa [f, evalRingHom_comp_tensorCharacterRingValueProfile (A := A) (G := G) d] using hcomp
 
 /-- Helper for Proposition 11-11.4-1: once an ambient prime is known to contract to the fixed
-maximal ideal `M`, Serre's source-spectrum presentation can be normalized so that the coefficient
+maximal ideal `M`, LinearRepresentations_Serre_1977's source-spectrum presentation can be normalized so that the coefficient
 prime in the fixed-class evaluation pullback is exactly `M`. This is the source-faithful wrapper
 needed before attaching the `p`-regular owner class to the presentation. -/
 theorem source_prime_eq_value_comap_of_class_over_fixed_maximal
@@ -986,7 +986,7 @@ variable [Algebra A ℂ] [IsIntegralClosure A ℤ ℂ]
 local notation "SpecARG" => PrimeSpectrum (A ⊗R(G))
 
 /-- Helper for Proposition 11-11.4-1: every nonzero prime of the arithmetic coefficient ring is
-one of the residual-characteristic maximal ideals indexing Serre's regular branch. -/
+one of the residual-characteristic maximal ideals indexing LinearRepresentations_Serre_1977's regular branch. -/
 theorem nonzero_primeSpectrum_eq_residual_maximal
     (q : PrimeSpectrum A) (hq : q.asIdeal ≠ ⊥) :
     ∃ p : Nat.Primes, ∃ M : NonzeroResidualCharacteristicMaximalIdeal A p,
@@ -1014,7 +1014,7 @@ theorem nonzero_primeSpectrum_eq_residual_maximal
 
 /-- Helper for Proposition 11-11.4-1: the source-spectrum route already classifies every prime of
 `A ⊗ R(G)` into the zero branch or into a fixed-class evaluation pullback over a residual
-maximal ideal. This is the verified prefix of Serre's proof before the remaining regular-branch
+maximal ideal. This is the verified prefix of LinearRepresentations_Serre_1977's proof before the remaining regular-branch
 owner identification is applied. -/
 theorem tensor_character_ring_prime_ideal_source_presentation
     (𝔭 : SpecARG) :
@@ -1058,7 +1058,7 @@ theorem tensor_character_ring_prime_ideal_source_presentation
     have hqEq : q' = (⟨M.1.asIdeal, inferInstance⟩ : PrimeSpectrum A) := by
       apply PrimeSpectrum.ext
       simpa using hqIdeal
-    -- This is the exact nonzero branch that remains to be identified with Serre's indexed
+    -- This is the exact nonzero branch that remains to be identified with LinearRepresentations_Serre_1977's indexed
     -- regular owner `P_{M,c}`.
     exact ⟨p, M, d, by simpa [hqEq] using hq'⟩
 
@@ -1277,7 +1277,7 @@ theorem not_mem_residual_maximal_of_integer_value_not_dvd
   exact M.1.2.ne_top htop
 
 /-- Helper for Proposition 11-11.4-1: every induced class function coming from the realized scalar
-extension on a subgroup is represented by an element of Serre's induction ideal `I_H`. This
+extension on a subgroup is represented by an element of LinearRepresentations_Serre_1977's induction ideal `I_H`. This
 separates the tensor-realization step from the later Brauer arithmetic on the induced values. -/
 theorem induced_realization_mem_tensorCharacterRingInductionIdeal
     (H : Subgroup G) {f : H → ℂ}
@@ -1285,7 +1285,7 @@ theorem induced_realization_mem_tensorCharacterRingInductionIdeal
     ∃ ξ : A ⊗R(G), ξ ∈ tensorCharacterRingInductionIdeal (A := A) (G := G) H ∧
       (ξ : G → ℂ) = Ind[H](f) := by
   -- Induct over the defining `A`-span of the scalar extension on `H`, so the base case is
-  -- exactly one generator of Serre's induction ideal `I_H`.
+  -- exactly one generator of LinearRepresentations_Serre_1977's induction ideal `I_H`.
   induction hf using Submodule.span_induction with
   | mem χ hχ =>
       refine ⟨Algebra.TensorProduct.includeRight (R := ℤ) (A := A) (B := R(G))
@@ -1344,7 +1344,7 @@ theorem induced_realization_mem_tensorCharacterRingInductionIdeal
             congrFun
               (Subgroup.inducedClassFunction_map_smul (S := A) H a f).symm g
 
-/-- Helper for Proposition 11-11.4-1: the forward half of Serre's regular-prime criterion is
+/-- Helper for Proposition 11-11.4-1: the forward half of LinearRepresentations_Serre_1977's regular-prime criterion is
 already available once the canonical `p`-regular owner of `d` is represented by a concrete
 element `x`. This isolates the Chapter `11.3` divisibility step before transporting the result
 back from `ConjClasses.mk x` to the original class `d` modulo `M`. -/
@@ -1420,7 +1420,7 @@ theorem tensorCharacterRingInductionIdeal_le_value_comap_of_not_hasAssociated_ow
           simpa [Subgroup.characterRingInduction_local,
             Representation.Subgroup.characterRingInduction] using hz.symm
 
-/-- Helper for Proposition 11-11.4-1: the forward half of Serre's regular-prime criterion can be
+/-- Helper for Proposition 11-11.4-1: the forward half of LinearRepresentations_Serre_1977's regular-prime criterion can be
 applied at the canonical owner representative obtained by taking the `p'`-part of the fixed
 representative of `d`. This packages the arbitrary-representative lemma above in the exact
 source-chosen form used by the remaining transport step back to `d`. -/
@@ -1539,7 +1539,7 @@ theorem subgroupOf_restriction_mem_characterRingScalarExtension
     exact Submodule.smul_mem _ a hg
 
 /-- Helper for Proposition 11-11.4-1: if `L ≤ H` and a class function on `L` lies in the realized
-scalar extension, then its direct induction from `L` to `G` is realized by an element of Serre's
+scalar extension, then its direct induction from `L` to `G` is realized by an element of LinearRepresentations_Serre_1977's
 induction ideal `I_H`. This packages the restriction-to-`L.subgroupOf H` and induction-in-stages
 route into a single reusable witness theorem. -/
 theorem induced_realization_mem_tensorCharacterRingInductionIdeal_of_le
@@ -1573,7 +1573,7 @@ theorem induced_realization_mem_tensorCharacterRingInductionIdeal_of_le
           (H := H) (L := L) hL f)
 
 /-- Helper for Proposition 11-11.4-1: an associated owner subgroup should supply an explicit
-element of Serre's induction ideal `I_H` whose fixed-class value is an integer prime to `p`, so
+element of LinearRepresentations_Serre_1977's induction ideal `I_H` whose fixed-class value is an integer prime to `p`, so
 it cannot lie in the evaluation pullback prime over `M`. -/
 theorem associated_owner_induction_witness_not_mem_owner_value_comap
     (p : Nat.Primes) (M : NonzeroResidualCharacteristicMaximalIdeal A p)
@@ -2141,7 +2141,7 @@ theorem associated_owner_induction_witness_not_mem_value_comap
   exact hξ_notmem hξx
 
 /-- Helper for Proposition 11-11.4-1: the fixed-class evaluation pullback over `M` already
-satisfies Serre's intrinsic regular-prime criterion for the canonical `p`-regular owner of `d`. -/
+satisfies LinearRepresentations_Serre_1977's intrinsic regular-prime criterion for the canonical `p`-regular owner of `d`. -/
 theorem value_comap_isTensorCharacterRingRegularPrime
     (p : Nat.Primes) (M : NonzeroResidualCharacteristicMaximalIdeal A p)
     (d : ConjClasses G) :
@@ -2206,7 +2206,7 @@ def tensorCharacterRingRegularPrime
     (⟨M.1.asIdeal, inferInstance⟩ : PrimeSpectrum A)
 
 /-- Helper for Proposition 11-11.4-1: the remaining nonzero source branch should identify the
-fixed-class evaluation pullback over `M` with Serre's canonical regular prime indexed by the
+fixed-class evaluation pullback over `M` with LinearRepresentations_Serre_1977's canonical regular prime indexed by the
 owner `p`-regular class of `d`. -/
 theorem value_comap_eq_tensorCharacterRingRegularPrime
     (p : Nat.Primes) (M : NonzeroResidualCharacteristicMaximalIdeal A p)

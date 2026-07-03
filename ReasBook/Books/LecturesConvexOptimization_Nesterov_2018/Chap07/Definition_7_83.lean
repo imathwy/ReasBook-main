@@ -1,4 +1,4 @@
-import Nesterov.Chap07.Definition_7_81
+import LecturesConvexOptimization_Nesterov_2018.Chap07.Definition_7_81
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -13,14 +13,14 @@ domain.
 
 Mandatory domain-style sampling before refinement:
 - `StrictlyPositiveOn` and `StrictlyPositiveOn.inequality` in
-  `Nesterov.Chap07.Definition_7_81`, the source-facing Chapter 7 owner for the
+  `LecturesConvexOptimization_Nesterov_2018.Chap07.Definition_7_81`, the source-facing Chapter 7 owner for the
   subgradient inequality;
-- the recall-only conjunction surface in `Nesterov.Chap03.Definition_3_36`, which keeps
+- the recall-only conjunction surface in `LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_36`, which keeps
   closedness, convexity, and whole-space objective convexity directly on canonical owners instead
   of introducing a second wrapper predicate;
-- `ConvexOn ℝ Set.univ f` in `Nesterov.Chap03.Definition_3_33`, the project's canonical
+- `ConvexOn ℝ Set.univ f` in `LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_33`, the project's canonical
   owner for whole-space convexity of a real-valued objective;
-- `EverywhereNonemptySubdifferentialCondition` in `Nesterov.Chap07.Definition_7_80`, which
+- `EverywhereNonemptySubdifferentialCondition` in `LecturesConvexOptimization_Nesterov_2018.Chap07.Definition_7_80`, which
   likewise treats owner-level subdifferential data as primitive and uses a named condition only
   when the source adds genuine new content.
 

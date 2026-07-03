@@ -1,6 +1,6 @@
 import Mathlib
-import FirstOrderMethodsinOptimization.Chap13.Lemma_13_19.TrajectoryCore
-import FirstOrderMethodsinOptimization.Chap13.Lemma_13_19.SimplexWeights
+import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_19.TrajectoryCore
+import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_19.SimplexWeights
 
 -- Theorem-local exact-line-search weight helpers for Lemma 13.19.
 

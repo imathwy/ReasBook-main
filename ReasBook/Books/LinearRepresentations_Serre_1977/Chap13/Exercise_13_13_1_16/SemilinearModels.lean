@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap13.Exercise_13_13_1_16.GammaActions
-import Serre.Chap13.Exercise_13_13_1_15
+import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_16.GammaActions
+import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_15
 
 open CategoryTheory
 open IsCyclotomicExtension.Rat
@@ -273,7 +273,7 @@ theorem smul_algHom_prod_factorSnd
   rfl
 
 /-- Helper for Exercise 13-13.1-16: the cyclotomic action preserves the branch test
-`φ (1, 0) = 1` used in Serre's explicit product-point classifier. -/
+`φ (1, 0) = 1` used in LinearRepresentations_Serre_1977's explicit product-point classifier. -/
 theorem smul_algHom_prod_fst_eq_one_iff
     (t : Γ_ℚ(G)) (φ : A × B →ₐ[ℚ] K) :
     (t • φ) (1, 0) = 1 ↔ φ (1, 0) = 1 := by
@@ -287,7 +287,7 @@ theorem smul_algHom_prod_fst_eq_one_iff
   · intro h
     simpa [h]
 
-/-- Helper for Exercise 13-13.1-16: Serre's explicit classifier from `K`-points of `A × B` to the
+/-- Helper for Exercise 13-13.1-16: LinearRepresentations_Serre_1977's explicit classifier from `K`-points of `A × B` to the
 disjoint union of `K`-points of `A` and `B` is equivariant for the cyclotomic `Γ_ℚ(G)`-action. -/
 theorem algHom_points_prod_toSum_smul
     (t : Γ_ℚ(G)) (φ : A × B →ₐ[ℚ] K) :

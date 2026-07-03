@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap07.Situation_7_18_1
+import StacksProject_2024.Chap07.Situation_7_18_1
 
 /-!
 Proof support for Lemma 7.18.2: the explicit colimit category of a cofiltered system of sites.

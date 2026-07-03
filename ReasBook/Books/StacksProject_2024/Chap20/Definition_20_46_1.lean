@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import stacks_project.Chap20.Lemma_20_47_9
+import StacksProject_2024.Chap20.Lemma_20_47_9
 
 noncomputable section
 

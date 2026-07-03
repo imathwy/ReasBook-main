@@ -1,5 +1,5 @@
-import Serre.Chap14.Exercise_14_14_5_3.Index
-import Serre.Chap14.Exercise_14_14_5_3.ProjectiveOwner
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_3.Index
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_3.ProjectiveOwner
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -21,7 +21,7 @@ theorem finrank_hom_eq_finrank_hom_swap_of_projective
     [FiniteDimensional k E] [FiniteDimensional k F] :
     Module.finrank k (E →ₗ[k[G]] F) = Module.finrank k (F →ₗ[k[G]] E) :=
 by
-  -- Route correction: follow Serre's source proof literally through the internal-Hom
+  -- Route correction: follow LinearRepresentations_Serre_1977's source proof literally through the internal-Hom
   -- representation `ρ := Hom(E,F)`, rather than switching to the trace-pairing shortcut.
   letI : Module k (RestrictScalars k k[G] E) :=
     restrictScalars_module (k := k) (G := G) E

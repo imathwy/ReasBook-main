@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap04.Lemma_4_27_14
-import stacks_project.Chap08.Lemma_8_12_5
+import StacksProject_2024.Chap04.Lemma_4_27_14
+import StacksProject_2024.Chap08.Lemma_8_12_5
 
 open CategoryTheory.Limits
 open CategoryTheory.MorphismProperty

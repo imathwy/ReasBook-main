@@ -1,5 +1,5 @@
-import stacks_project.Chap08.Lemma_8_4_3.PullbackComparisonNaturality
-import stacks_project.Chap08.Lemma_8_4_3.AmbientIsoClosure
+import StacksProject_2024.Chap08.Lemma_8_4_3.PullbackComparisonNaturality
+import StacksProject_2024.Chap08.Lemma_8_4_3.AmbientIsoClosure
 
 open CategoryTheory
 open CategoryTheory Functor

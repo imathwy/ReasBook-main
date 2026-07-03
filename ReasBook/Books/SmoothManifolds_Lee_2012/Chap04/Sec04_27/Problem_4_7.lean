@@ -1,5 +1,5 @@
 import Mathlib.Geometry.Manifold.Diffeomorph
-import SmoothManifoldsLee.Chap04.Sec04_25.Theorem_4_29
+import SmoothManifolds_Lee_2012.Chap04.Sec04_25.Theorem_4_29
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

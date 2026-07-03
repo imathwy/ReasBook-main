@@ -1,5 +1,5 @@
-import CombinatorialGroupTheory.Items.Chap03.Proposition_3_9_5
-import CombinatorialGroupTheory.Items.Chap03.Definition_3_10_1
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Proposition_3_9_5
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Definition_3_10_1
 
 -- Declarations for this item are recorded in this dedicated item file.
 

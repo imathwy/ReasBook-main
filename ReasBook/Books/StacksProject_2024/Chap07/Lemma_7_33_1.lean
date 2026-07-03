@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap07.«7_32_1_1»
+import StacksProject_2024.Chap07.«7_32_1_1»
 
 open CategoryTheory.Limits
 

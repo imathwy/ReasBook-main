@@ -1,5 +1,5 @@
 import Mathlib
-import Nesterov.Chap03.Definition_3_1_1_3
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_1_1_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -20,9 +20,9 @@ Relevant owner-style declarations sampled before refinement:
 - mathlib `HasLineDerivWithinAt`
 - mathlib `LineDifferentiableWithinAt`
 - chapter `hasDerivWithinAt_directionalSlice_of_differentiableAt` in
-  `Nesterov.Chap01.Definition_1_4_11`
+  `LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_4_11`
 - chapter notation `dom f` for the effective domain owner in
-  `Nesterov.Chap03.Definition_3_1_1_2`
+  `LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_1_1_2`
 
 Best owner abstraction:
 - the one-variable right derivative

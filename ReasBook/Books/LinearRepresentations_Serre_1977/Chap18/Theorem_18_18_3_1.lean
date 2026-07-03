@@ -1,14 +1,14 @@
-import Serre.Chap18.Proposition_18_18_1_2
-import Serre.Chap10.Definition_10_10_1_2
-import Serre.Chap10.Definition_10_10_1_3
-import Serre.Chap12.Exercise_12_12_2_6.ComplexMinimalRealization
-import Serre.Chap15.Exercise_15_15_1_2
-import Serre.Chap15.Proposition_15_15_5_1
-import Serre.Chap16.Corollary_16_16_1_6.Bases
-import Serre.Chap16.Theorem_16_16_1_5
-import Serre.Chap16.Theorem_16_16_1_5.CartanSubgroupInduction
-import Serre.Chap16.Theorem_16_16_1_5.PGroupBridges
-import Serre.Chap16.Theorem_16_16_1_5.CartanBasisExtension
+import LinearRepresentations_Serre_1977.Chap18.Proposition_18_18_1_2
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_2
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ComplexMinimalRealization
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_1_2
+import LinearRepresentations_Serre_1977.Chap15.Proposition_15_15_5_1
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_6.Bases
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_5
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_5.CartanSubgroupInduction
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_5.PGroupBridges
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_5.CartanBasisExtension
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -396,7 +396,7 @@ private theorem grothendieck_nsmul_sum_local
     (Finset.mul_sum Finset.univ (fun i ↦ f i) (((N : ℕ) : R₀[k](H))))
 
 /-- Helper for Theorem 18-18.3-1: the ordinary character of a finite-dimensional
-`K[G]`-representation belongs to Serre's character ring owner `R[K](G)`. -/
+`K[G]`-representation belongs to LinearRepresentations_Serre_1977's character ring owner `R[K](G)`. -/
 private theorem finiteRepCharacter_mem_characterRingOverField_local
     (K : Type u) [Field K] (G : Type u) [Group G] [Finite G] (V : FDRep K G) :
     V.character ∈ R[K](G) := by
@@ -682,7 +682,7 @@ private theorem finiteRepGrothendieckRelations_le_precomposeLift_ker_local
     _ = 0 := by
           abel
 
-/-- Helper for Theorem 18-18.3-1: pull back Serre's Grothendieck classes along a group
+/-- Helper for Theorem 18-18.3-1: pull back LinearRepresentations_Serre_1977's Grothendieck classes along a group
 homomorphism. -/
 private def finiteRepGrothendieckPrecomposeLocal
     {G₁ : Type u} [Group G₁] {G₂ : Type u} [Group G₂] (φ : G₂ →* G₁) :
@@ -998,7 +998,7 @@ private theorem split_product_simple_factorization_local
   refine ⟨ρS, hρS_irreducible, ?_⟩
   exact representation_eq_comp_inl_comp_fst_of_trivial_right_local τ.ρ hTriv
 
-/-- Helper for Theorem 18-18.3-1: for a simple class on an elementary subgroup, Serre's `S × P`
+/-- Helper for Theorem 18-18.3-1: for a simple class on an elementary subgroup, LinearRepresentations_Serre_1977's `S × P`
 decomposition directly produces the local Cartan witness of size `ordProj[p] |H|`. -/
 private theorem simple_class_ordProj_nsmul_mem_cartan_range_of_elementary_local
     (H : Subgroup G) (hH : IsElementary H)
@@ -1059,7 +1059,7 @@ private theorem subgroup_induction_nsmul_mem_cartan_range_local
         ((N : ℕ) • finiteRep_subgroupInduction (G := G) H z) := by
           rw [map_nsmul]
 
-/-- Helper for Theorem 18-18.3-1: after the source-faithful elementary decomposition, Serre's
+/-- Helper for Theorem 18-18.3-1: after the source-faithful elementary decomposition, LinearRepresentations_Serre_1977's
 argument assembles the local Cartan witnesses into a global `p ^ n` witness on `G`. -/
 private theorem p_part_nsmul_mem_cartan_range_of_card_factorization_local
     (n m : ℕ) (hcard : Nat.card G = p ^ n * m) (hm : Nat.Coprime p m)
@@ -1169,7 +1169,7 @@ private theorem decomposition_projective_scalar_extension_eq_p_part_multiple
     (hP : cartanHom k G P = (pPartCardG : ℕ) • [E]₀) :
     decompositionHom A K G ((projectiveGrothendieckScalarExtensionHom A K) P) =
       (pPartCardG : ℕ) • [E]₀ := by
-  -- Reprove Serre's `d ∘ e = c` bridge locally by induction on projective classes, using the
+  -- Reprove LinearRepresentations_Serre_1977's `d ∘ e = c` bridge locally by induction on projective classes, using the
   -- literal stable lattice on an actual projective lift in the generator case.
   have htriangle :
       ∀ x : P_k(G),
@@ -1328,7 +1328,7 @@ theorem p_part_zeroExtension_modularCharacter_mem_characterRingOverField
     (lift : PrimeToPRoot p k →* Kˣ) (E : FDRep k G) :
     ((pPartCardG : ℤ) •
       FDRep.modularCharacterZeroExtension E (PrimeToPRoot.toFieldLift lift)) ∈ R[K](G) := by
-  -- Route correction: follow Serre's Cartan/projective route directly. First realize the
+  -- Route correction: follow LinearRepresentations_Serre_1977's Cartan/projective route directly. First realize the
   -- `p`-part multiple of `[E]₀` in the Cartan image, then compare on the regular locus and use
   -- projective vanishing on the singular locus.
   let n : ℕ := Nat.factorization (Nat.card G) p

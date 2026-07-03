@@ -1,7 +1,7 @@
-import Nesterov.Chap03.Definition_3_35
-import Nesterov.Chap03.Definition_3_40
-import Nesterov.Chap03.Proposition_3_15
-import Nesterov.Chap03.Proposition_3_28
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_35
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_40
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Proposition_3_15
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Proposition_3_28
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -20,11 +20,11 @@ Sampled owner-style declarations:
 * `first_k_coordinate_max`
 * `FirstKIndex`, `firstKCoordinateFamily`
 * `activePointwiseSupremumOnIndices`
-* `FirstOrderOracle` in `Nesterov.Chap03.Definition_3_40`
+* `FirstOrderOracle` in `LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_40`
 * `subdifferential_f_k_eq_affineImage_convexHull_activeBasis` in
-  `Nesterov.Chap03.Proposition_3_28`
+  `LecturesConvexOptimization_Nesterov_2018.Chap03.Proposition_3_28`
 * the direct first-order answer-map shape `E → ℝ × E` recalled in
-  `Nesterov.Chap01.Definition_1_2_9`
+  `LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_2_9`
 
 Best owner abstraction:
 * source-facing owner: the direct answer map `E → ℝ × E` sending `x` to the hard-instance value

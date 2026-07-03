@@ -1,12 +1,12 @@
 import Mathlib
 import Mathlib.Algebra.Homology.CochainComplexOpposite
 import Mathlib.CategoryTheory.Abelian.Projective.Extend
-import stacks_project.Chap12.Definition_12_24_9
-import stacks_project.Chap12.Definition_12_24_5
-import stacks_project.Chap12.Lemma_12_24_11
-import stacks_project.Chap12.Lemma_12_25_3
-import stacks_project.Chap13.Situation_13_15_1
-import stacks_project.Chap15.Definition_15_59_13
+import StacksProject_2024.Chap12.Definition_12_24_9
+import StacksProject_2024.Chap12.Definition_12_24_5
+import StacksProject_2024.Chap12.Lemma_12_24_11
+import StacksProject_2024.Chap12.Lemma_12_25_3
+import StacksProject_2024.Chap13.Situation_13_15_1
+import StacksProject_2024.Chap15.Definition_15_59_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

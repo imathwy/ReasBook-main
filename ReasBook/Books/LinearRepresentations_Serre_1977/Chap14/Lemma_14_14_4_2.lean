@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.RepresentationTheory.Intertwining
-import Serre.Chap14.Lemma_14_14_4_1
-import Serre.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_1
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -409,7 +409,7 @@ theorem projective_monoidAlgebra_iff_projective_of_isResidueFieldReduction [Modu
       Module.Projective (IsLocalRing.ResidueField Λ)[G] Pbar := by
   constructor
   · intro hP
-    -- Move Serre's averaging criterion through residue-field reduction.
+    -- Move LinearRepresentations_Serre_1977's averaging criterion through residue-field reduction.
     rcases
       (projective_groupAlgebra_iff_projective_and_exists_averaging_endomorphism
         (Λ := Λ) (G := G) (P := P)).mp hP with ⟨_, u, hu⟩
@@ -427,7 +427,7 @@ theorem projective_monoidAlgebra_iff_projective_of_isResidueFieldReduction [Modu
       _ = LinearMap.id := hf.1.endHom_one
   · intro hPbar
     -- Lift the reduced averaging endomorphism and normalize by the inverse of its equivariant
-    -- average, exactly as in Serre's argument.
+    -- average, exactly as in LinearRepresentations_Serre_1977's argument.
     rcases
       (projective_groupAlgebra_iff_projective_and_exists_averaging_endomorphism
         (Λ := IsLocalRing.ResidueField Λ) (G := G) (P := Pbar)).mp hPbar with ⟨_, ubar, hubar⟩

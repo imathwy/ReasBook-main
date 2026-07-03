@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.RepresentationTheory.RealizableOver
-import Serre.Chap12.Proposition_12_12_1_1
-import Serre.Chap02.Corollary_2_2_4_2
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_4_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -19,7 +19,7 @@ section
 variable (K : Type v) (L : Type w) {G : Type u}
 variable [Field K] [Field L] [Algebra K L] [Group G]
 
-/-- Serre's `\overline{R}_K(G)` relative to an extension `L/K`, realized as the `ℤ`-subalgebra
+/-- LinearRepresentations_Serre_1977's `\overline{R}_K(G)` relative to an extension `L/K`, realized as the `ℤ`-subalgebra
 of `K`-valued functions whose coefficientwise image in `L` belongs to `R_L(G)`. -/
 def overlineCharacterRingInExtension : Subalgebra ℤ (G → K) :=
   (R[L](G)).comap ((IsScalarTower.toAlgHom ℤ K L).compLeft G)
@@ -37,7 +37,7 @@ section
 
 variable (K : Type v) (G : Type u) [Field K] [Group G]
 
-/-- Serre's `\overline{R}_K(G)`, realized as the specialization of the extension-relative owner to
+/-- LinearRepresentations_Serre_1977's `\overline{R}_K(G)`, realized as the specialization of the extension-relative owner to
 the algebraic closure of `K`. -/
 abbrev overlineCharacterRing : Subalgebra ℤ (G → K) :=
   overlineCharacterRingInExtension K (AlgebraicClosure K)
@@ -71,7 +71,7 @@ section
 
 variable (K : Type v) (G : Type u) [Field K] [Group G]
 
-/-- The algebraic-closure realization of Serre's `\overline{R}_K(G)`. This is the canonical
+/-- The algebraic-closure realization of LinearRepresentations_Serre_1977's `\overline{R}_K(G)`. This is the canonical
 bridge/view of the source-facing `K`-valued owner `R̄[K](G)` inside
 `G → AlgebraicClosure K`. -/
 abbrev overlineCharacterRingOverField : Subalgebra ℤ (G → AlgebraicClosure K) :=
@@ -100,7 +100,7 @@ theorem mem_overlineCharacterRingOverField_iff (χ : G → AlgebraicClosure K) :
     refine ⟨χK, ?_, rfl⟩
     exact (mem_overlineCharacterRingInExtension_iff K (AlgebraicClosure K) χK).2 hχ
 
-/-- Serre's representation ring `R_K(G)` is contained in `\overline{R}_K(G)`. -/
+/-- LinearRepresentations_Serre_1977's representation ring `R_K(G)` is contained in `\overline{R}_K(G)`. -/
 theorem characterRingOverField_le_overlineCharacterRing :
     R[K](G) ≤ R̄[K](G) := by
   refine Algebra.adjoin_le ?_
@@ -379,7 +379,7 @@ private theorem characterRingOverAlgebraicClosure_toSubmodule_fg :
 
 omit [Finite G] in
 /-- Helper for Proposition 12-12.1-3: if one finite intermediate extension realizes the whole
-algebraic-closure character ring, then Serre's trace argument gives a uniform annihilating
+algebraic-closure character ring, then LinearRepresentations_Serre_1977's trace argument gives a uniform annihilating
 integer for the quotient `\overline{R}_K(G) / R_K(G)`. -/
 private theorem rep_character_mem_characterRingOverFieldInExtension_of_matrix_coefficients
     {L : IntermediateField K (AlgebraicClosure K)}
@@ -897,7 +897,7 @@ private theorem smul_le_characterRingOverField_of_mapped_smul_le
       simpa [coefficientEmbeddingLinearMap] using hφeq
   simpa [hφ_eq] using hφ
 
-/-- Helper for Proposition 12-12.1-3: Serre's finite-extension-plus-trace route should produce a
+/-- Helper for Proposition 12-12.1-3: LinearRepresentations_Serre_1977's finite-extension-plus-trace route should produce a
 single positive integer whose multiplication image of `\overline{R}_K(G)` lies in the embedded
 character ring over the algebraic closure. -/
 private theorem exists_uniform_smul_le_characterRingOverField_mapped :
@@ -952,7 +952,7 @@ private theorem characterRingOverField_isFiniteRelIndex_overlineCharacterRing_of
         (R[K](G)).toSubmodule) :
     ((R[K](G)).toSubmodule.toAddSubgroup).IsFiniteRelIndex
       (R̄[K](G)).toSubmodule.toAddSubgroup := by
-  -- This is the generic `ℤ`-submodule endgame once Serre's structural input has been assembled.
+  -- This is the generic `ℤ`-submodule endgame once LinearRepresentations_Serre_1977's structural input has been assembled.
   exact Submodule.isFiniteRelIndex_of_map_linearMapMulLeft_le hn hfg hsmul
 
 -- Proof sketch: choose a finite extension splitting all irreducible characters, use the field

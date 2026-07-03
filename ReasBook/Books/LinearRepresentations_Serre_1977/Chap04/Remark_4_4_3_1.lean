@@ -1,5 +1,5 @@
-import Serre.Chap02.Proposition_2_2_4_1
-import Serre.Chap04.Remark_4_4_3_1.CyclicRegular
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_4_1
+import LinearRepresentations_Serre_1977.Chap04.Remark_4_4_3_1.CyclicRegular
 
 open MeasureTheory
 open DomMulAct

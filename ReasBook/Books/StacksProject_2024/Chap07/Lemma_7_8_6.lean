@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap07.Lemma_7_8_3
+import StacksProject_2024.Chap07.Lemma_7_8_3
 
 open Opposite
 open CategoryTheory.Limits

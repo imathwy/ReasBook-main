@@ -1,5 +1,5 @@
-import Serre.Chap10.Exercise_10_10_5_5.SupersolvableBridge
-import Serre.Chap10.MonomialCharacter
+import LinearRepresentations_Serre_1977.Chap10.Exercise_10_10_5_5.SupersolvableBridge
+import LinearRepresentations_Serre_1977.Chap10.MonomialCharacter
 
 noncomputable section
 
@@ -938,7 +938,7 @@ private theorem isMonomialCharacter_of_isMonomial_local
 
 /-- Helper for Exercise 10-10.5-5: a monomial finite-dimensional complex representation has
 character induced from a degree-`1` subgroup character, once the equality is bundled in
-Serre's character ring. -/
+LinearRepresentations_Serre_1977's character ring. -/
 private theorem fdRepCharacterRing_eq_characterRingInduction_of_character_eq_induced_linear
     (V : FDRep ℂ G) (H : Subgroup G) (α : H →* ℂˣ)
     (hchar : V.character = Ind[H](α.toRepresentation.character)) :

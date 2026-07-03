@@ -1,5 +1,5 @@
 import Mathlib
-import Nesterov.Chap01.Theorem_1_4_19
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Theorem_1_4_19
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,7 +1,7 @@
 import Mathlib
-import stacks_project.Chap10.Lemma_10_131_9
-import stacks_project.Chap10.Lemma_10_131_10
-import stacks_project.Chap10.Theorem_10_34_1_Hilbert_Nullstellensatz
+import StacksProject_2024.Chap10.Lemma_10_131_9
+import StacksProject_2024.Chap10.Lemma_10_131_10
+import StacksProject_2024.Chap10.Theorem_10_34_1_Hilbert_Nullstellensatz
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap14.Corollary_14_14_4_3.GrothendieckBasics
-import Serre.Chap14.Proposition_14_14_1_1
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3.GrothendieckBasics
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_1_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -24,7 +24,7 @@ local notation:max "P₀[" A "](" G ")" =>
 /- Domain-style sampling for this item:
 * core/canonical owners already fixed upstream in Chapter `14`: `P₀[k](G)` for finite projective
   `k[G]`-modules and `R₀[k](G)` for finite-dimensional `k`-representations.
-* source-facing declaration in this file: Serre's Cartan homomorphism `c : P_k(G) → R_k(G)`.
+* source-facing declaration in this file: LinearRepresentations_Serre_1977's Cartan homomorphism `c : P_k(G) → R_k(G)`.
 * bridge/view layer: `cartanHom` is the additive map induced by forgetting projectivity, while
   `cartanCokernel` and `cartanMatrix` are derived companions of that owner.
 
@@ -618,7 +618,7 @@ abbrev cartanCokernel :=
     cartanHom k G [P]ₚ₀ = [P.toFiniteRep]₀ := rfl
 
 /-- The Cartan matrix of `G` with respect to chosen `ℤ`-bases of `P_k(G)` and `R_k(G)` is the
-matrix of the Cartan homomorphism. In Serre's setting, one takes the bases coming from projective
+matrix of the Cartan homomorphism. In LinearRepresentations_Serre_1977's setting, one takes the bases coming from projective
 envelopes of simples and from simple modules. This is a thin abbreviation for the canonical
 matrix of the owner map `cartanHom`. -/
 abbrev cartanMatrix {ι : Type w} {κ : Type x}

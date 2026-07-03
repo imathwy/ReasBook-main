@@ -1,19 +1,19 @@
 import Mathlib
-import Serre.Chap02.Proposition_2_2_2_1
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap06.Corollary_6_6_5_4
-import Serre.Chap06.Proposition_6_6_5_5
-import Serre.Chap12.Exercise_12_12_2_3.API
-import Serre.Chap12.Exercise_12_12_2_6.CharacterBasisCoefficients
-import Serre.Chap12.Exercise_12_12_2_6.ComplexMinimalRealization
-import Serre.Chap12.Exercise_12_12_2_6.FieldDenominatorDescent
-import Serre.Chap12.Exercise_12_12_2_6.FieldTensorCenterBridge
-import Serre.Chap12.Exercise_12_12_2_6.PacketCenterDescentCore
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionBlockProjectors
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionConstituents
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionPackets
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionPairing
-import Serre.Chap12.Proposition_12_12_2_1
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_2_1
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_5_4
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_5
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_3.API
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.CharacterBasisCoefficients
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ComplexMinimalRealization
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.FieldDenominatorDescent
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.FieldTensorCenterBridge
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.PacketCenterDescentCore
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionBlockProjectors
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionConstituents
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionPackets
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionPairing
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_2_1
 
 noncomputable section
 
@@ -38,7 +38,7 @@ variable {G : Type u} [Group G] [Finite G]
 
 local instance instFintypeGExercise_12_12_2_6_packet_center : Fintype G := Fintype.ofFinite G
 
-/-- Helper for Exercise 12-12.2-6: once Serre's visible algebraic-closure packet already has the
+/-- Helper for Exercise 12-12.2-6: once LinearRepresentations_Serre_1977's visible algebraic-closure packet already has the
 canonical common coefficient `n`, the target `χ_i / m_i = ∑ ψ_{i,σ}` statement is just the
 rescaling and `Fin`-reindexing of that packet. -/
 theorem canonical_scaled_character_packet_of_public_common_coeff_local
@@ -187,7 +187,7 @@ theorem scaled_visible_packet_of_canonical_denominator_local
       _ = (∑ i, (e i : AlgebraicClosure K') • (ψ i).ρ.character) g := by
             simp [smul_eq_mul, Finset.mul_sum, he, hn_ne, mul_assoc, mul_left_comm, mul_comm]
 
-/-- Helper for Exercise 12-12.2-6: the canonical source denominator yields Serre's packet
+/-- Helper for Exercise 12-12.2-6: the canonical source denominator yields LinearRepresentations_Serre_1977's packet
 `χ_i / m_i = ∑_σ ψ_{i,σ}` after scalar extension to the algebraic closure. -/
 theorem canonical_scaled_character_packet_of_scaled_visible_packet_coeff_one_local
     {K' : Type v} [Field K'] [CharZero K']
@@ -413,7 +413,7 @@ theorem visible_packet_constituent_degree_multiple_of_canonical_denominator_loca
       (ψ := ψ) (d := d) (e := e)
       hψ_fd hψ_pairwise hψ_irr hpacket he hscaled_packet hcoeff_one
 
-/-- Helper for Exercise 12-12.2-6: the canonical source denominator yields Serre's packet
+/-- Helper for Exercise 12-12.2-6: the canonical source denominator yields LinearRepresentations_Serre_1977's packet
 `χ_i / m_i = ∑_σ ψ_{i,σ}` after scalar extension to the algebraic closure. -/
 theorem canonical_scaled_character_packet_local
     {K' : Type v} [Field K'] [CharZero K']
@@ -471,7 +471,7 @@ theorem canonical_scaled_character_packet_local
   -- 2. `hcoeff_div` and `hscaled_packet` refine this to the scaled packet
   --    `map ((1 / n) • χ_ρ) = ∑ i, e i • χ_(ψ i)` with exact quotient coefficients
   --    `d i = n * e i`.
-  -- 3. The remaining theorem-local work is to show Serre's packet consists of one Galois orbit,
+  -- 3. The remaining theorem-local work is to show LinearRepresentations_Serre_1977's packet consists of one Galois orbit,
   --    hence every quotient coefficient `e i` is `1`.
   -- 4. Once `e i = 1` for all `i`, `canonical_scaled_character_packet_of_public_common_coeff_local`
   --    and the source degree argument finish the theorem.
@@ -496,7 +496,7 @@ theorem canonical_scaled_character_packet_local
         ∑ i, (e i : AlgebraicClosure K') • (ψ i).ρ.character := hscaled_packet
   have hcoeff_one : ∀ i, e i = 1 := by
     -- Reduce the orbit-collapse step to the dedicated theorem-local helper so the main theorem
-    -- stays aligned with Serre's closure-first packet skeleton.
+    -- stays aligned with LinearRepresentations_Serre_1977's closure-first packet skeleton.
     exact
       visible_scaled_packet_coeff_one_of_irreducible_source_local
         (G := G) (ρ := ρ) (n := n) hcanon hmax
@@ -558,7 +558,7 @@ theorem finrank_dvd_center_index_over_algClosed_local
   have hdiv : Module.finrank L (TensorPower L (m + 1) σ) ∣ H.index := by
     -- Apply Corollary 6-6.5-4 to the descended irreducible quotient representation.
     simpa [H, τquot, Subgroup.index_eq_card] using finrank_dvd_card τquot
-  -- Rewrite the tensor-power degree and the subgroup index into Serre's arithmetic identity.
+  -- Rewrite the tensor-power degree and the subgroup index into LinearRepresentations_Serre_1977's arithmetic identity.
   simpa [H, _root_.Representation.tensor_power_finrank_field_local,
     product_one_center_subgroup_index] using hdiv
 

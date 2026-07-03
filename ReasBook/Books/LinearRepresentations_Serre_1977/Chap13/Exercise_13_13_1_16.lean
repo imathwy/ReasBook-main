@@ -1,10 +1,10 @@
 import Mathlib
-import Serre.GroupTheory.ConjClassesPower
-import Serre.Chap02.Corollary_2_2_4_3
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap06.Exercise_6_6_3_3
-import Serre.Chap13.Exercise_13_13_1_15
-import Serre.Chap13.Exercise_13_13_1_16.Index
+import LinearRepresentations_Serre_1977.GroupTheory.ConjClassesPower
+import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_4_3
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_3_3
+import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_15
+import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_16.Index
 
 open CategoryTheory
 open IsCyclotomicExtension.Rat

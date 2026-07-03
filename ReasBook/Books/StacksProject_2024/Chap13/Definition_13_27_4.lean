@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import stacks_project.Chap12.Definition_12_6_2
+import StacksProject_2024.Chap12.Definition_12_6_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

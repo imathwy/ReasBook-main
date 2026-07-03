@@ -5,7 +5,7 @@ import Mathlib.Algebra.Homology.DerivedCategory.Basic
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
 import Mathlib.CategoryTheory.Subobject.Limits
 import Mathlib.CategoryTheory.Functor.OfSequence
-import stacks_project.Chap20.Lemma_20_39_2
+import StacksProject_2024.Chap20.Lemma_20_39_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

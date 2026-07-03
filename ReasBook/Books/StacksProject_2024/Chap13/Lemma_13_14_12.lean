@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.CategoryTheory.Functor.Derived.LeftDerived
 import Mathlib.CategoryTheory.Functor.Derived.RightDerived
-import stacks_project.Chap04.Definition_4_27_20
-import stacks_project.Chap13.Definition_13_14_10
-import stacks_project.Chap13.Lemma_13_14_6
-import stacks_project.Chap13.Lemma_13_14_11
+import StacksProject_2024.Chap04.Definition_4_27_20
+import StacksProject_2024.Chap13.Definition_13_14_10
+import StacksProject_2024.Chap13.Lemma_13_14_6
+import StacksProject_2024.Chap13.Lemma_13_14_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

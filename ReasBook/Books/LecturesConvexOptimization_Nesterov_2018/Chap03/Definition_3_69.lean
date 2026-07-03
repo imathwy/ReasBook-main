@@ -1,8 +1,8 @@
-import Nesterov.Chap03.Definition_3_68
-import Nesterov.Chap03.Definition_3_65
-import Nesterov.Chap03.Definition_3_62
-import Nesterov.Chap03.Definition_3_3
-import Nesterov.Chap02.Definition_2_33
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_68
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_65
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_62
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_3
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_33
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

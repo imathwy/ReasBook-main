@@ -1,7 +1,7 @@
 import Mathlib
-import stacks_project.Chap13.Definition_13_33_1
-import stacks_project.Chap13.Definition_13_34_1
-import stacks_project.Chap20.Definition_20_49_1
+import StacksProject_2024.Chap13.Definition_13_33_1
+import StacksProject_2024.Chap13.Definition_13_34_1
+import StacksProject_2024.Chap20.Definition_20_49_1
 
 open AlgebraicGeometry
 open CategoryTheory

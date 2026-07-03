@@ -1,5 +1,5 @@
-import Serre.Chap04.Remark_4_4_3_1.GeneratedCopyAmbient
-import Serre.Chap04.Remark_4_4_3_1.EvalSymmApply
+import LinearRepresentations_Serre_1977.Chap04.Remark_4_4_3_1.GeneratedCopyAmbient
+import LinearRepresentations_Serre_1977.Chap04.Remark_4_4_3_1.EvalSymmApply
 
 open MeasureTheory
 open DomMulAct

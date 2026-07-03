@@ -1,8 +1,8 @@
 import Mathlib.CategoryTheory.Localization.Monoidal.Braided
 import Mathlib.CategoryTheory.Functor.Derived.PointwiseLeftDerived
-import stacks_project.Chap13.Remark_13_10_9
-import stacks_project.Chap15.Lemma_15_58_3
-import stacks_project.Chap15.Definition_15_59_13
+import StacksProject_2024.Chap13.Remark_13_10_9
+import StacksProject_2024.Chap15.Lemma_15_58_3
+import StacksProject_2024.Chap15.Definition_15_59_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

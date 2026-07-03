@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Polynomial.Homogenize
 import Mathlib.Analysis.Calculus.ContDiff.Polynomial
 import Mathlib.Topology.Algebra.MvPolynomial
-import SmoothManifoldsLee.Chap02.Sec02_12.Problem_2_8
+import SmoothManifolds_Lee_2012.Chap02.Sec02_12.Problem_2_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

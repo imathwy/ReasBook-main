@@ -1,7 +1,7 @@
 import Mathlib
-import AchimKlenkeLean.Items.Chap21.Corollary_21_76
-import AchimKlenkeLean.Items.Chap25.Definition_25_14
-import AchimKlenkeLean.Items.Chap25.Theorem_25_17
+import ProbabilityTheory_Klenke_2020.Items.Chap21.Corollary_21_76
+import ProbabilityTheory_Klenke_2020.Items.Chap25.Definition_25_14
+import ProbabilityTheory_Klenke_2020.Items.Chap25.Theorem_25_17
 
 open Filter MeasureTheory
 open scoped ENNReal Topology

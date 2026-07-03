@@ -1,3 +1,3 @@
 -- Proof rescue support index.
-import Serre.Chap12.Theorem_12_12_6_2.SeparatorSupport
-import Serre.Chap12.Theorem_12_12_6_2.ShrinkTransport
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_6_2.SeparatorSupport
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_6_2.ShrinkTransport

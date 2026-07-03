@@ -1,10 +1,10 @@
 import Mathlib
-import stacks_project.Chap04.Example_4_37_1
-import stacks_project.Chap04.Definition_4_36_2
-import stacks_project.Chap04.Lemma_4_36_3
-import stacks_project.Chap04.Lemma_4_34_1
-import stacks_project.Chap04.Lemma_4_35_9
-import stacks_project.Chap04.Lemma_4_41_2_2_Yoneda_lemma
+import StacksProject_2024.Chap04.Example_4_37_1
+import StacksProject_2024.Chap04.Definition_4_36_2
+import StacksProject_2024.Chap04.Lemma_4_36_3
+import StacksProject_2024.Chap04.Lemma_4_34_1
+import StacksProject_2024.Chap04.Lemma_4_35_9
+import StacksProject_2024.Chap04.Lemma_4_41_2_2_Yoneda_lemma
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

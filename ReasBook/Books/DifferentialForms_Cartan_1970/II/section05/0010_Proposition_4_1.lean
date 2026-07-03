@@ -1,5 +1,5 @@
 import Mathlib
-import cartan.II.section05.«0009_Definition_II_1_extra_6»
+import DifferentialForms_Cartan_1970.II.section05.«0009_Definition_II_1_extra_6»
 
 -- `lean_leansearch` is unavailable in this environment; the statement surface was matched against
 -- the local `IsClosedOn` / `HasPrimitiveOn` API, Proposition 3.1, and the existing rectangle

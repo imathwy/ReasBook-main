@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
 import Mathlib.CategoryTheory.Sites.Over
-import stacks_project.Chap18.Lemma_18_20_1
-import stacks_project.Chap21.Remark_21_19_3
+import StacksProject_2024.Chap18.Lemma_18_20_1
+import StacksProject_2024.Chap21.Remark_21_19_3
 
 open CategoryTheory
 open CategoryTheory.Limits

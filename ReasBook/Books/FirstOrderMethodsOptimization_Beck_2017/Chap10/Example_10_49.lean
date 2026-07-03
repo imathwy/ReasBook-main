@@ -1,6 +1,6 @@
 import Mathlib
-import FirstOrderMethodsinOptimization.Chap10.Example_10_45
-import FirstOrderMethodsinOptimization.Chap10.Theorem_10_46
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Example_10_45
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_46
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap15.Definition_15_46_1
+import StacksProject_2024.Chap15.Definition_15_46_1
 
 noncomputable section
 

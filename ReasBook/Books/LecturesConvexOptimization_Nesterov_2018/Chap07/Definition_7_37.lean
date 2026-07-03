@@ -1,6 +1,6 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap03.Definition_3_1_4_1
-import Nesterov.Chap07.Proposition_7_7
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_1_4_1
+import LecturesConvexOptimization_Nesterov_2018.Chap07.Proposition_7_7
 
 noncomputable section
 

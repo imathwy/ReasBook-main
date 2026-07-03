@@ -1,11 +1,11 @@
 import Mathlib
-import Serre.Chap08.Proposition_8_8_3_7
-import Serre.Chap06.Corollary_6_6_5_4
-import Serre.Chap09.Exercise_9_9_1_3.SymmetricBaseChangeFinrank
-import Serre.Chap15.Definition_15_15_2_1
-import Serre.Chap15.Theorem_15_15_2_2
-import Serre.Chap16.Exercise_16_16_3_9.DimensionTwoTransport
-import Serre.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Chap08.Proposition_8_8_3_7
+import LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_5_4
+import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_3.SymmetricBaseChangeFinrank
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_2_1
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap16.Exercise_16_16_3_9.DimensionTwoTransport
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -603,7 +603,7 @@ theorem symmetricPower_map_tprod
 
 /-- Helper for Exercise 16-16.3-9: when `i < p`, the binomial coefficients `choose i r` stay
 nonzero after passing from `ℕ` to any field over `𝔽_p`. This is the arithmetic side condition
-needed for Serre's binary-form highest-weight argument. -/
+needed for LinearRepresentations_Serre_1977's binary-form highest-weight argument. -/
 theorem nat_choose_cast_ne_zero_of_lt_prime
     {i r : ℕ} (hr : r ≤ i) (hi : i < p) :
     (Nat.choose i r : K) ≠ 0 := by
@@ -651,7 +651,7 @@ theorem binary_form_monomial_mem_homogeneousSubmodule
   rw [Finsupp.degree_eq_sum]
   simpa [add_comm] using Nat.sub_add_cancel hr
 
-/-- Helper for Exercise 16-16.3-9: Serre's highest binary form `X₀^i` is a degree-`i`
+/-- Helper for Exercise 16-16.3-9: LinearRepresentations_Serre_1977's highest binary form `X₀^i` is a degree-`i`
 homogeneous polynomial. -/
 theorem highest_binary_form_mem_homogeneousSubmodule (i : ℕ) :
     MvPolynomial.monomial (Finsupp.single (0 : Fin 2) i) (1 : K) ∈
@@ -660,7 +660,7 @@ theorem highest_binary_form_mem_homogeneousSubmodule (i : ℕ) :
   simpa using
     binary_form_monomial_mem_homogeneousSubmodule (K := K) (i := i) (r := 0) (Nat.zero_le i)
 
-/-- Helper for Exercise 16-16.3-9: the highest-weight vector in Serre's binary-form model is the
+/-- Helper for Exercise 16-16.3-9: the highest-weight vector in LinearRepresentations_Serre_1977's binary-form model is the
 degree-`i` monomial `X₀^i`. -/
 def highest_binary_form (i : ℕ) : MvPolynomial.homogeneousSubmodule (Fin 2) K i :=
   ⟨MvPolynomial.monomial (Finsupp.single (0 : Fin 2) i) (1 : K),
@@ -733,7 +733,7 @@ theorem coeff_binary_form_basisVec
           hexp hEq.symm
     simp [hsr, hexp']
 
-/-- Helper for Exercise 16-16.3-9: Serre's highest binary form is the first basis vector
+/-- Helper for Exercise 16-16.3-9: LinearRepresentations_Serre_1977's highest binary form is the first basis vector
 `X₀^i = X₀^(i-0) X₁^0`. -/
 theorem highest_binary_form_eq_binary_form_basisVec_zero
     (i : ℕ) :
@@ -1047,7 +1047,7 @@ theorem coordinate_to_binary_form_surjective
           simp [Algebra.smul_def, MvPolynomial.C_mul_monomial]
 
 /-- Helper for Exercise 16-16.3-9: the coordinate symmetric-power carrier is canonically
-equivalent to Serre's degree-`i` binary-form model. -/
+equivalent to LinearRepresentations_Serre_1977's degree-`i` binary-form model. -/
 noncomputable def standard_sl2_binary_form_linearEquiv
     (i : ℕ) :
     Sym[K]^i (Fin 2 →₀ K) ≃ₗ[K] MvPolynomial.homogeneousSubmodule (Fin 2) K i := by
@@ -1072,11 +1072,11 @@ noncomputable def standard_sl2_binary_form_linearEquiv
   have hinj : Function.Injective f :=
     (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).2 hsurj
   -- Route correction: package the Chapter 9 map as the named linear equivalence needed before
-  -- starting Serre's fixed-line and orbit-span arguments on binary forms.
+  -- starting LinearRepresentations_Serre_1977's fixed-line and orbit-span arguments on binary forms.
   exact LinearEquiv.ofBijective f ⟨hinj, hsurj⟩
 
 /-- Helper for Exercise 16-16.3-9: transporting the standard coordinate symmetric-power action
-through the binary-form linear equivalence gives Serre's binary-form representation. -/
+through the binary-form linear equivalence gives LinearRepresentations_Serre_1977's binary-form representation. -/
 noncomputable def standard_sl2_binary_form_model
     (i : ℕ) :
     Representation K (SpecialLinearGroup (ZMod p) (Fin 2 → ZMod p))
@@ -1134,7 +1134,7 @@ theorem standard_sl2_binary_form_linearEquiv_symm_highest_binary_form
   simp [standard_sl2_binary_form_linearEquiv_tprod_single_zero (K := K) i]
 
 /-- Helper for Exercise 16-16.3-9: the highest binary form is fixed by every upper-unipotent
-element in Serre's binary-form model. -/
+element in LinearRepresentations_Serre_1977's binary-form model. -/
 theorem highest_binary_form_fixed_by_upper_unipotent
     (i : ℕ) (a : ZMod p) :
     (standard_sl2_binary_form_model (K := K) (p := p) i)
@@ -2066,8 +2066,8 @@ theorem specialLinearNthSymmetricPower_isAbsolutelyIrreducible_of_finrank_eq_two
           standard_sl2_binary_form_model_equiv (K := K) (p := p) i
       have hbin :
           (standard_sl2_binary_form_model (K := K) (p := p) i).IsIrreducible := by
-        -- Route correction: the transport to Serre's binary-form carrier is explicit, so the last
-        -- step is Serre's highest-weight argument on binary forms.
+        -- Route correction: the transport to LinearRepresentations_Serre_1977's binary-form carrier is explicit, so the last
+        -- step is LinearRepresentations_Serre_1977's highest-weight argument on binary forms.
         have hfixed :
             ∀ W : Subrepresentation (standard_sl2_binary_form_model (K := K) (p := p) i),
               W ≠ ⊥ →
@@ -2441,7 +2441,7 @@ theorem simple_fdRep_degree_five_absurd_of_finrank_eq_two
   rw [hX] at hdiv
   exact hfive hdiv
 
-/-- Serre's parenthetical example: when `p = 7` and `dim V = 2`, the fourth symmetric-power
+/-- LinearRepresentations_Serre_1977's parenthetical example: when `p = 7` and `dim V = 2`, the fourth symmetric-power
 representation of `SL(V)` over `𝔽_7` is not obtained, even up to equivariant identification, by
 scalar extension from any residue-field representation that satisfies the Chapter `16` lift owner
 `FDRep.HasRPrimeLift` through a sufficiently large characteristic-zero fraction field, once the

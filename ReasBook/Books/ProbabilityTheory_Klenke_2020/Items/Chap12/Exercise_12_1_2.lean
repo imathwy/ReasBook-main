@@ -1,4 +1,4 @@
-import AchimKlenkeLean.Items.Chap12.Theorem_12_10
+import ProbabilityTheory_Klenke_2020.Items.Chap12.Theorem_12_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

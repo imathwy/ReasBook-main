@@ -1,10 +1,10 @@
 import Mathlib
-import Serre.Chap10.Definition_10_10_1_3
-import Serre.Chap12.Definition_12_12_6_1
-import Serre.Chap12.Proposition_12_12_6_4
-import Serre.Chap12.Theorem_12_12_6_2
-import Serre.Chap14.Proposition_14_14_1_1
-import Serre.Chap14.Corollary_14_14_4_3
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap12.Definition_12_12_6_1
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_6_4
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_6_2
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_1_1
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3
 
 open CategoryTheory
 open scoped BigOperators MonoidAlgebra Representation TensorProduct

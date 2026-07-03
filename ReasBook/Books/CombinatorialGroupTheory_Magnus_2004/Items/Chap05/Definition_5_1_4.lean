@@ -1,5 +1,5 @@
-import CombinatorialGroupTheory.Items.Chap05.Definition_5_1_2
-import CombinatorialGroupTheory.Items.Chap05.Definition_5_1_3
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_1_2
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_1_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

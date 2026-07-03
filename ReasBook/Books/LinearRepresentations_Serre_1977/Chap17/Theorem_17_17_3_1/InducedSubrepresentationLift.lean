@@ -1,17 +1,17 @@
 import Mathlib
-import Serre.Chap01.Theorem_1_1_4_2
-import Serre.Chap07.Proposition_7_7_1_1
-import Serre.Chap07.Proposition_7_7_1_3
-import Serre.Chap07.Remark_7_7_1_4
-import Serre.Chap07.Proposition_7_7_4_1.IdentityProjectionRepresentativeSeeds
-import Serre.Chap08.Corollary_8_8_3_8
-import Serre.Chap15.Exercise_15_15_5_3
-import Serre.GroupTheory.PSolvable
-import Serre.Chap17.Theorem_17_17_3_1.CyclicNormalByPGroupBasics
-import Serre.Chap17.Theorem_17_17_3_1.CliffordIsotypicTransport
-import Serre.Chap17.Theorem_17_17_3_1.ResidueFieldLiftTransport
-import Serre.Chap17.Theorem_17_17_3_1.ProperOvergroupRecursion
-import Serre.Chap17.Theorem_17_17_3_1.SameUniverseInductionPackaging
+import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_4_2
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_1_1
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_1_3
+import LinearRepresentations_Serre_1977.Chap07.Remark_7_7_1_4
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_4_1.IdentityProjectionRepresentativeSeeds
+import LinearRepresentations_Serre_1977.Chap08.Corollary_8_8_3_8
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_5_3
+import LinearRepresentations_Serre_1977.GroupTheory.PSolvable
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.CyclicNormalByPGroupBasics
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.CliffordIsotypicTransport
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.ResidueFieldLiftTransport
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.ProperOvergroupRecursion
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.SameUniverseInductionPackaging
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -87,7 +87,7 @@ lemma exists_residueFieldLift_of_isInducedFromSubrepresentation
   -- induction step. The source-faithful route is still the same: lift the subgroup module,
   -- induce it to the standard model, package the source in the witness universe, then transport
   -- across the explicit induced-model equivalence back to `ρ`.
-  -- TODO: port the aggregate proof from `Serre/Chap17/Theorem_17_17_3_1.lean` into this split
+  -- TODO: port the aggregate proof from `LinearRepresentations_Serre_1977/Chap17/Theorem_17_17_3_1.lean` into this split
   -- owner. The remaining blocker is the standard induced-model packaging stage before the final
   -- transport through `ρ.inducedFromSubrepresentationHom H W`.
   sorry

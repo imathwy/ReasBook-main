@@ -1,6 +1,6 @@
 import Mathlib.Analysis.Calculus.FDeriv.WithLp
-import Nesterov.Chap01.Definition_1_10_2
-import Nesterov.Chap04.Definition_4_4_11
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_10_2
+import LecturesConvexOptimization_Nesterov_2018.Chap04.Definition_4_4_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

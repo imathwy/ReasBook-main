@@ -1,5 +1,5 @@
 import Mathlib.Algebra.Homology.HomotopyCategory.HomComplexCohomology
-import stacks_project.Chap18.Definition_18_28_1
+import StacksProject_2024.Chap18.Definition_18_28_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -23,8 +23,8 @@ local notation "Mod" => SheafOfModules (ringSheaf J 𝒪)
   `ringSheaf`,
   `CochainComplex.HomComplex.homologyAddEquiv`,
   `CochainComplex.HomComplex.CohomologyClass.homAddEquiv`,
-  `stacks_project/Items/Chap15/15_72_0_1.lean`,
-  `stacks_project/Items/Chap20/20_41_0_1.lean`;
+  `StacksProject_2024/Items/Chap15/15_72_0_1.lean`,
+  `StacksProject_2024/Items/Chap20/20_41_0_1.lean`;
 - best owner abstraction: the ambient owner is the ringed-site structure sheaf `ringSheaf J 𝒪`,
   and the canonical bridge layer is the Hom-complex cohomology-class API; the source statement
   itself is the upstream composite

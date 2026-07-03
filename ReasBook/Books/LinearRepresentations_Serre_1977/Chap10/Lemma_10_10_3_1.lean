@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap02.Remark_2_2_1_2
-import Serre.Chap09.Corollary_9_9_2_2
-import Serre.Chap09.Proposition_9_9_4_1
+import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_1_2
+import LinearRepresentations_Serre_1977.Chap09.Corollary_9_9_2_2
+import LinearRepresentations_Serre_1977.Chap09.Proposition_9_9_4_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -17,7 +17,7 @@ variable {A : Type} [CommRing A] [Algebra A ℂ] [IsIntegralClosure A ℤ ℂ]
 attribute [local instance] Fintype.ofFinite
 
 -- Source/core/bridge triage:
--- * source-facing: Serre's divisibility criterion for a bundled class function on `G`.
+-- * source-facing: LinearRepresentations_Serre_1977's divisibility criterion for a bundled class function on `G`.
 -- * core/canonical owner for the bundled complex class function: `classFunctionSubspace G`.
 -- * bridge/view: `cyclicInducedCharacterSpan A G` as the target ambient `A`-submodule of
 --   `G → ℂ`.
@@ -78,7 +78,7 @@ lemma scaled_classFunction_integer_valued
           field_simp [hcard]
           ac_rfl
 
-/-- Helper for Lemma 10-10.3-1: multiplying Serre's `θ[H]` by an integer-valued function produces
+/-- Helper for Lemma 10-10.3-1: multiplying LinearRepresentations_Serre_1977's `θ[H]` by an integer-valued function produces
 values divisible by `|H|`. -/
 lemma theta_mul_integer_function_dvd_subgroup_order
     (H : Subgroup G) (η : G → ℂ)

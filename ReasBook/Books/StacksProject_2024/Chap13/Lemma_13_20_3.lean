@@ -1,17 +1,17 @@
 import Mathlib
 import Mathlib.Algebra.Homology.CochainComplexPlus
 import Mathlib.CategoryTheory.Localization.DerivabilityStructure.Constructor
-import stacks_project.Chap13.Definition_13_8_1
-import stacks_project.Chap13.Definition_13_3_6
-import stacks_project.Chap13.Definition_13_15_3
-import stacks_project.Chap13.Lemma_13_12_1
-import stacks_project.Chap13.Lemma_13_11_6
-import stacks_project.Chap13.Lemma_13_16_6
-import stacks_project.Chap13.Lemma_13_20_2
-import stacks_project.Chap13.Lemma_13_4_21
-import stacks_project.Chap13.Lemma_13_5_8
-import stacks_project.Chap13.Proposition_13_14_8
-import stacks_project.Chap13.Situation_13_15_1
+import StacksProject_2024.Chap13.Definition_13_8_1
+import StacksProject_2024.Chap13.Definition_13_3_6
+import StacksProject_2024.Chap13.Definition_13_15_3
+import StacksProject_2024.Chap13.Lemma_13_12_1
+import StacksProject_2024.Chap13.Lemma_13_11_6
+import StacksProject_2024.Chap13.Lemma_13_16_6
+import StacksProject_2024.Chap13.Lemma_13_20_2
+import StacksProject_2024.Chap13.Lemma_13_4_21
+import StacksProject_2024.Chap13.Lemma_13_5_8
+import StacksProject_2024.Chap13.Proposition_13_14_8
+import StacksProject_2024.Chap13.Situation_13_15_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

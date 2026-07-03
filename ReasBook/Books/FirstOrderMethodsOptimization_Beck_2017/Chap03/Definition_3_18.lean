@@ -1,7 +1,7 @@
-import FirstOrderMethodsinOptimization.Chap02.Definition_2_2
-import FirstOrderMethodsinOptimization.Chap03.Definition_3_3
-import FirstOrderMethodsinOptimization.Chap03.Definition_3_17
-import FirstOrderMethodsinOptimization.Chap03.Proposition_3_2
+import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_2
+import FirstOrderMethodsOptimization_Beck_2017.Chap03.Definition_3_3
+import FirstOrderMethodsOptimization_Beck_2017.Chap03.Definition_3_17
+import FirstOrderMethodsOptimization_Beck_2017.Chap03.Proposition_3_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

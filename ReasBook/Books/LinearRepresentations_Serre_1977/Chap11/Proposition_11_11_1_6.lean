@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap12.Proposition_12_12_6_4
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_6_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -196,7 +196,7 @@ private theorem eq_zero_of_divisible_by_all_nonzero_int
   ext i
   simpa using hcoeff_zero i
 
-/-- Helper for Proposition 11-11.1-6: Serre's character ring is torsion-free as a `ℤ`-module. -/
+/-- Helper for Proposition 11-11.1-6: LinearRepresentations_Serre_1977's character ring is torsion-free as a `ℤ`-module. -/
 private theorem characterRing_isTorsionFree :
     Module.IsTorsionFree ℤ (R(G)) := by
   refine Module.IsTorsionFree.of_smul_eq_zero ?_
@@ -457,13 +457,13 @@ private theorem split_injective_of_detection_by_restrictions_of_finite
 -- Proof sketch: show first that the cokernel of `characterRingRestriction X` is torsion-free. If
 -- `n • f` comes from a global character `χ`, then the detection hypothesis applies to the
 -- canonical class-function view of `χ / n`, whose restrictions are exactly the local characters
--- encoded by `f`, so `f` already lies in the image. Serre's proof then invokes the fact that,
+-- encoded by `f`, so `f` already lies in the image. LinearRepresentations_Serre_1977's proof then invokes the fact that,
 -- for finite groups, the character rings under consideration are finitely generated free
 -- `ℤ`-modules; here that finite-generation input is derived internally from the canonical
 -- irreducible-character basis owner, keeping the public theorem in the finite-group chapter
 -- context rather than exposing proof-route module hypotheses.
 /-- Proposition 11-11.1-6: if restriction to a finite family `X` of subgroups detects membership
-in Serre's character ring `R(G)` for bundled complex class functions
+in LinearRepresentations_Serre_1977's character ring `R(G)` for bundled complex class functions
 `φ : classFunctionSubmodule ℂ G` via the canonical restriction maps `H.classFunctionRestriction φ`,
 then for a finite group `G` the restriction homomorphism `R(G) → ⨁_{H ∈ X} R(H)` is a split
 injection; in Lean the finite direct sum is realized as the product over the finite index type

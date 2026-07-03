@@ -2,7 +2,7 @@ import Mathlib
 import Mathlib.CategoryTheory.Sites.SheafCohomology.Cech
 import Mathlib.Algebra.Homology.TotalComplex
 import Mathlib.Algebra.Homology.Embedding.CochainComplex
-import stacks_project.Chap20.«20_9_0_1»
+import StacksProject_2024.Chap20.«20_9_0_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

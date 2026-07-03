@@ -1,4 +1,4 @@
-import stacks_project.Chap14.Lemma_14_18_6
+import StacksProject_2024.Chap14.Lemma_14_18_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -31,7 +31,7 @@ variable {A : Type u} [Category.{v} A] [Abelian A]
   `source-facing`: the stability of the lower-face kernel intersection under the last face map;
   `core/canonical`: `NormalizedMooreComplex.objX`;
   `bridge/view`: the owner `SimplicialObject.lowerFaceKernelSubobject` from
-  [Lemma_14_18_6](/volume/math/AI4M/users/zcwang/stacks_project/stacks_project/Items/Chap14/Lemma_14_18_6.lean),
+  [Lemma_14_18_6](/volume/math/AI4M/users/zcwang/StacksProject_2024/StacksProject_2024/Items/Chap14/Lemma_14_18_6.lean),
   which packages the lower-face convention as the reversed-simplex view of the normalized Moore
   subobject. -/
 

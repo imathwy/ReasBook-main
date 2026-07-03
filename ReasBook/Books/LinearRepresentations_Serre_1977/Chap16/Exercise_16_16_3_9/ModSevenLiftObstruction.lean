@@ -1,4 +1,4 @@
-import Serre.Chap16.Exercise_16_16_3_9.ModSevenDegree
+import LinearRepresentations_Serre_1977.Chap16.Exercise_16_16_3_9.ModSevenDegree
 
 open scoped TensorProduct
 
@@ -39,7 +39,7 @@ local notation "ρSL₇" =>
 
 -- Proof sketch: for `p = 7` and `i = 4`, the representation `Sym⁴(V)` has dimension `5`; if the
 -- corresponding object of `FDRep (ZMod 7) G₇` lifted to characteristic zero through a stable
--- lattice in a simple finite-dimensional ordinary representation, Serre's degree obstruction for
+-- lattice in a simple finite-dimensional ordinary representation, LinearRepresentations_Serre_1977's degree obstruction for
 -- ordinary irreducible representations of `SL₂(𝔽₇)` would force
 -- `5 ∣ |SL₂(𝔽₇)|`, which is false.
 /-- Helper for Exercise 16-16.3-9: an `(R')`-lift whose reduction scalar-extends to the fourth
@@ -123,7 +123,7 @@ theorem hasRPrimeLift_reduction_degree_eq_five_of_sym4_equiv
       (V := V) (hV := hV) (T := T) (L := L) hReduction hEquiv
 
 /-- Helper for Exercise 16-16.3-9: over an algebraically closed characteristic-zero field, a
-simple lift with the same generic and reduction degrees would already contradict Serre's degree
+simple lift with the same generic and reduction degrees would already contradict LinearRepresentations_Serre_1977's degree
 divisibility obstruction once the reduction degree is `5`. -/
 theorem modSeven_lift_contradiction_of_generic_degree_eq_reduction
     {K : Type} [Field K] [CharZero K] [IsAlgClosed K]

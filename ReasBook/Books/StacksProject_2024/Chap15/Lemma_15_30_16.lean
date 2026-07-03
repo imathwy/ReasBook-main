@@ -1,6 +1,6 @@
 import Mathlib.Algebra.MvPolynomial.Basic
 import Mathlib.Algebra.Regular.Basic
-import stacks_project.Chap10.Lemma_10_24_4
+import StacksProject_2024.Chap10.Lemma_10_24_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

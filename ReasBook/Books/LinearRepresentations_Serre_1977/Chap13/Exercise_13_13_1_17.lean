@@ -1,17 +1,17 @@
 import Mathlib
-import Serre.Chap06.Proposition_6_6_2_1
-import Serre.Chap07.Proposition_7_7_2_1
-import Serre.Chap08.Exercise_8_8_4_5
-import Serre.RepresentationTheory.GroupFunctionPairing
-import Serre.Chap12.Proposition_12_12_1_3
-import Serre.Chap12.Lemma_12_12_1_4
-import Serre.Chap12.Corollary_12_12_4_2
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap13.Corollary_13_13_1_2
-import Serre.Chap13.Exercise_13_13_1_17.AugmentationKernel
-import Serre.Chap13.Exercise_13_13_1_17.RepresentativeSpan
-import Serre.Chap13.Exercise_13_13_1_17.RepresentativeIndependence
-import Serre.Chap13.Exercise_13_13_1_17.JenningsObstruction
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_2_1
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Chap08.Exercise_8_8_4_5
+import LinearRepresentations_Serre_1977.RepresentationTheory.GroupFunctionPairing
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_3
+import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_1_4
+import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_4_2
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap13.Corollary_13_13_1_2
+import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_17.AugmentationKernel
+import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_17.RepresentativeSpan
+import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_17.RepresentativeIndependence
+import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_17.JenningsObstruction
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -690,7 +690,7 @@ private theorem upperUnitriangularSubgroup_jacobson_le_augmentationKernel :
   -- kernel.
   exact Ring.jacobson_le_of_isMaximal _
 
-/-- Helper for Exercise 13-13.1-17: Serre's generator-level Jacobson lemma upgrades the concrete
+/-- Helper for Exercise 13-13.1-17: LinearRepresentations_Serre_1977's generator-level Jacobson lemma upgrades the concrete
 Heisenberg augmentation kernel to a subideal of the Jacobson radical. -/
 private theorem upperUnitriangularSubgroup_augmentationKernel_le_jacobson :
     RingHom.ker (upperUnitriangularSubgroup_augmentation (p := p)).toRingHom ≤
@@ -725,7 +725,7 @@ private theorem upperUnitriangularSubgroup_jacobson_eq_augmentationKernel :
     (upperUnitriangularSubgroup_jacobson_le_augmentationKernel (p := p))
     (upperUnitriangularSubgroup_augmentationKernel_le_jacobson (p := p))
 
-/-- Helper for Exercise 13-13.1-17: once Serre's packet comparison map on the canonical
+/-- Helper for Exercise 13-13.1-17: once LinearRepresentations_Serre_1977's packet comparison map on the canonical
 upper-unitriangular model is injective, finite-dimensionality upgrades it to the desired
 Artin-Wedderburn equivalence. -/
 private theorem upperUnitriangularSubgroup_rational_packet_data
@@ -734,7 +734,7 @@ private theorem upperUnitriangularSubgroup_rational_packet_data
       ℚ[upperUnitriangularSubgroup (ZMod p) 3] →ₐ[ℚ]
         RationalPacketTarget (p := p),
       Function.Injective Φ := by
-  -- Route correction: the remaining source-faithful work is now exactly Serre's explicit packet
+  -- Route correction: the remaining source-faithful work is now exactly LinearRepresentations_Serre_1977's explicit packet
   -- map on the Heisenberg model and the proof that its kernel vanishes.
   -- TODO: construct the `p + 1` linear rational packets from the abelianization together with the
   -- single degree-`p` Schrödinger packet, then prove that zero packet data kills the complete
@@ -790,7 +790,7 @@ private theorem standard_nonabelian_zmodP2_unit_coprime :
     exact Nat.coprime_one_left p
   exact hcoprime.pow_right 2
 
-/-- Helper for Exercise 13-13.1-17: the unit `1 + p` in `Z / p² Z` is the owner of Serre's
+/-- Helper for Exercise 13-13.1-17: the unit `1 + p` in `Z / p² Z` is the owner of LinearRepresentations_Serre_1977's
 standard semidirect action. -/
 private def standard_nonabelian_zmodP2_unit : (ZMod (p ^ 2))ˣ :=
   ZMod.unitOfCoprime (p + 1) (standard_nonabelian_zmodP2_unit_coprime (p := p))
@@ -866,7 +866,7 @@ private theorem semidirect_action_generator_orderOf_eq_p
     (semidirect_action_generator_pow_p (p := p) (φ := φ))
     (semidirect_action_generator_ne_one_of_noncommutative (p := p) (φ := φ) hφ)
 
-/-- Helper for Exercise 13-13.1-17: Serre's standard unit has order dividing `p`, so the
+/-- Helper for Exercise 13-13.1-17: LinearRepresentations_Serre_1977's standard unit has order dividing `p`, so the
 `Z / p Z`-parameter really factors through the `1 + p` action modulo `p²`. -/
 private theorem standard_nonabelian_zmodP2_unit_pow_p :
     (standard_nonabelian_zmodP2_unit (p := p)) ^ p = 1 := by
@@ -929,7 +929,7 @@ private theorem zmodP2_units_isCyclic :
   · exact ZMod.isCyclic_units_of_prime_pow p (Fact.out) hp2 2
 
 /-- Helper for Exercise 13-13.1-17: every order-`p` unit in `(Z / p² Z)ˣ` lies in the subgroup
-generated by Serre's standard unit `1 + p`. -/
+generated by LinearRepresentations_Serre_1977's standard unit `1 + p`. -/
 private theorem order_p_unit_mem_standard_zpowers
     (u : (ZMod (p ^ 2))ˣ) (hu_pow : u ^ p = 1) (_hu_ne : u ≠ 1) :
     u ∈ Subgroup.zpowers (standard_nonabelian_zmodP2_unit (p := p)) := by
@@ -997,7 +997,7 @@ private def standard_nonabelian_zmodP2_units_hom :
           (Additive.ofMul (standard_nonabelian_zmodP2_unit (p := p))),
         standard_nonabelian_zmodP2_unit_zmultiples_zero (p := p)⟩
 
-/-- Helper for Exercise 13-13.1-17: Serre's standard `Z/p² ⋊ Z/p` model is governed by the
+/-- Helper for Exercise 13-13.1-17: LinearRepresentations_Serre_1977's standard `Z/p² ⋊ Z/p` model is governed by the
 `1 + p` automorphism of `Z / p² Z`. -/
 private def standard_nonabelian_zmodP2_action :
     Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod (p ^ 2))) :=
@@ -1009,7 +1009,7 @@ local notation "StandardGPrime" =>
   Multiplicative (ZMod (p ^ 2)) ⋊[standard_nonabelian_zmodP2_action (p := p)] Multiplicative
     (ZMod p)
 
-/-- Helper for Exercise 13-13.1-17: the distinguished `Z / p² Z` generator in Serre's standard
+/-- Helper for Exercise 13-13.1-17: the distinguished `Z / p² Z` generator in LinearRepresentations_Serre_1977's standard
 semidirect model. -/
 private def standard_nonabelian_semidirect_inl_one : StandardGPrime :=
   SemidirectProduct.inl (φ := standard_nonabelian_zmodP2_action (p := p))
@@ -1061,7 +1061,7 @@ private def standard_nonabelian_semidirect_pth_power_coefficient :
   map_smul' c z := by
     rfl
 
-/-- Helper for Exercise 13-13.1-17: the coefficient detector already evaluates to `1` on Serre's
+/-- Helper for Exercise 13-13.1-17: the coefficient detector already evaluates to `1` on LinearRepresentations_Serre_1977's
 distinguished source-side class `([a] - 1)^p`. -/
 private theorem standard_nonabelian_semidirect_pth_power_coefficient_yRaw_pow_p :
     standard_nonabelian_semidirect_pth_power_coefficient (p := p)
@@ -1187,7 +1187,7 @@ private theorem standard_nonabelian_semidirect_augmentation_surjective :
   -- The augmentation sends scalar coefficients to the same scalar in `𝔽_p`.
   simp [standard_nonabelian_semidirect_augmentation]
 
-/-- Helper for Exercise 13-13.1-17: Serre's distinguished semidirect augmentation generator
+/-- Helper for Exercise 13-13.1-17: LinearRepresentations_Serre_1977's distinguished semidirect augmentation generator
 belongs to the augmentation kernel. -/
 private theorem standard_nonabelian_semidirect_inl_sub_one_mem_augmentationKernel :
     let yRaw : (ZMod p)[StandardGPrime] :=
@@ -1229,7 +1229,7 @@ private theorem standard_nonabelian_semidirect_jacobson_le_augmentationKernel :
   -- kernel of the standard model.
   exact Ring.jacobson_le_of_isMaximal _
 
-/-- Helper for Exercise 13-13.1-17: Serre's generator-level Jacobson lemma upgrades the concrete
+/-- Helper for Exercise 13-13.1-17: LinearRepresentations_Serre_1977's generator-level Jacobson lemma upgrades the concrete
 standard semidirect augmentation kernel to a subideal of the Jacobson radical. -/
 private theorem standard_nonabelian_semidirect_augmentationKernel_le_jacobson :
     RingHom.ker (standard_nonabelian_semidirect_augmentation (p := p)).toRingHom ≤
@@ -1264,7 +1264,7 @@ private theorem standard_nonabelian_semidirect_jacobson_eq_augmentationKernel :
     (standard_nonabelian_semidirect_augmentationKernel_le_jacobson (p := p))
 
 /-- Helper for Exercise 13-13.1-17: every nonabelian semidirect product
-`(Z / p² Z) ⋊ (Z / p Z)` is multiplicatively equivalent to Serre's standard action model. -/
+`(Z / p² Z) ⋊ (Z / p Z)` is multiplicatively equivalent to LinearRepresentations_Serre_1977's standard action model. -/
 private theorem nonabelian_zmod_semidirectProduct_mulEquiv_standard_action
     (hφ : ¬ IsMulCommutative GPrime) :
     Nonempty (GPrime ≃* StandardGPrime) := by
@@ -1333,7 +1333,7 @@ private theorem nonabelian_zmod_semidirectProduct_mulEquiv_standard_action
     exact orderOf_eq_prime hg_pow hg_ne
   have hs_on_generator :
       standard_nonabelian_zmodP2_units_hom (p := p) g = s := by
-    -- Unfold the additive lift once: the generator `1` is sent to Serre's standard unit `1 + p`.
+    -- Unfold the additive lift once: the generator `1` is sent to LinearRepresentations_Serre_1977's standard unit `1 + p`.
     dsimp [g, s, standard_nonabelian_zmodP2_units_hom]
     simpa using
       congrArg Additive.toMul
@@ -1418,7 +1418,7 @@ private theorem nonabelian_zmod_semidirectProduct_mulEquiv_standard_action
     (fun f : Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod (p ^ 2))) => f x) h_action
   simpa using hx.symm
 
-/-- Helper for Exercise 13-13.1-17: once Serre's packet comparison map on the canonical standard
+/-- Helper for Exercise 13-13.1-17: once LinearRepresentations_Serre_1977's packet comparison map on the canonical standard
 semidirect model is injective, finite-dimensionality upgrades it to the desired
 Artin-Wedderburn equivalence. -/
 private theorem standard_nonabelian_zmod_semidirectProduct_rational_packet_data
@@ -1451,7 +1451,7 @@ private theorem standard_nonabelian_zmod_semidirectProduct_rational_groupAlgebra
   exact algEquiv_of_injective_algHom_of_finrank_eq Φ hdim hΦ
 
 /-- Helper for Exercise 13-13.1-17: on the canonical Heisenberg model, every Jacobson-radical
-element has trivial class in Serre's Jennings quotient `J^p / J^(p+1)`. -/
+element has trivial class in LinearRepresentations_Serre_1977's Jennings quotient `J^p / J^(p+1)`. -/
 private theorem upperUnitriangularSubgroup_generator_pth_power_mem_augmentation_pow_succ
     (hp2 : p ≠ 2)
     (g : upperUnitriangularSubgroup (ZMod p) 3) :
@@ -1468,7 +1468,7 @@ private theorem upperUnitriangularSubgroup_generator_pth_power_mem_augmentation_
   exact Ideal.zero_mem _
 
 /-- Helper for Exercise 13-13.1-17: on the canonical Heisenberg model, every Jacobson-radical
-element has trivial class in Serre's Jennings quotient `J^p / J^(p+1)`. -/
+element has trivial class in LinearRepresentations_Serre_1977's Jennings quotient `J^p / J^(p+1)`. -/
 private theorem upperUnitriangularSubgroup_generator_pth_power_class_zero
     (hp2 : p ≠ 2)
     (g : upperUnitriangularSubgroup (ZMod p) 3) :
@@ -1494,14 +1494,14 @@ private theorem upperUnitriangularSubgroup_generator_pth_power_class_zero
   exact Ideal.Quotient.eq_zero_iff_mem.2 hmem_jac
 
 /-- Helper for Exercise 13-13.1-17: on the canonical Heisenberg model, every Jacobson-radical
-element has trivial class in Serre's Jennings quotient `J^p / J^(p+1)`. -/
+element has trivial class in LinearRepresentations_Serre_1977's Jennings quotient `J^p / J^(p+1)`. -/
 private theorem upperUnitriangularSubgroup_augmentation_pth_power_mem_pow_succ
     (hp2 : p ≠ 2)
     (x : (ZMod p)[upperUnitriangularSubgroup (ZMod p) 3])
     (hx : x ∈ RingHom.ker (upperUnitriangularSubgroup_augmentation (p := p)).toRingHom) :
     x ^ p ∈
       (RingHom.ker (upperUnitriangularSubgroup_augmentation (p := p)).toRingHom) ^ (p + 1) := by
-  -- Route correction: the remaining modular Heisenberg step is exactly Serre's augmentation
+  -- Route correction: the remaining modular Heisenberg step is exactly LinearRepresentations_Serre_1977's augmentation
   -- filtration estimate in the quotient by `I^(p + 1)`, not another Jacobson-radical rewrite.
   -- TODO: write `x` modulo `I²` in terms of the two abelianization generators, note that the
   -- central commutator generator already lies in `I²`, and use Frobenius together with
@@ -1509,7 +1509,7 @@ private theorem upperUnitriangularSubgroup_augmentation_pth_power_mem_pow_succ
   sorry
 
 /-- Helper for Exercise 13-13.1-17: on the canonical Heisenberg model, every Jacobson-radical
-element has trivial class in Serre's Jennings quotient `J^p / J^(p+1)`. -/
+element has trivial class in LinearRepresentations_Serre_1977's Jennings quotient `J^p / J^(p+1)`. -/
 private theorem upperUnitriangularSubgroup_jacobson_pth_power_class_zero
     (hp2 : p ≠ 2)
     (x : Ring.jacobson ((ZMod p)[upperUnitriangularSubgroup (ZMod p) 3])) :
@@ -1536,7 +1536,7 @@ private theorem upperUnitriangularSubgroup_jacobson_pth_power_class_zero
     simpa [A, upperUnitriangularSubgroup_jacobson_eq_augmentationKernel (p := p)] using hx_pow_aug
   exact Ideal.Quotient.eq_zero_iff_mem.2 hx_pow_jac
 
-/-- Helper for Exercise 13-13.1-17: Serre's distinguished semidirect augmentation generator is
+/-- Helper for Exercise 13-13.1-17: LinearRepresentations_Serre_1977's distinguished semidirect augmentation generator is
 already a Jacobson-radical element on the canonical standard model. -/
 private theorem standard_nonabelian_semidirect_inl_sub_one_mem_jacobson :
     let yRaw : (ZMod p)[StandardGPrime] :=
@@ -1561,7 +1561,7 @@ private theorem standard_nonabelian_semidirect_generator_pth_power_ne_zero :
   -- The remaining obstruction is no longer raw nonvanishing but survival modulo `J^(p+1)`.
   simpa [yRaw] using standard_nonabelian_semidirect_inl_sub_one_pow_p_ne_zero (p := p)
 
-/-- Helper for Exercise 13-13.1-17: Serre's distinguished semidirect augmentation generator
+/-- Helper for Exercise 13-13.1-17: LinearRepresentations_Serre_1977's distinguished semidirect augmentation generator
 already lies in the `p`-th augmentation power, so it defines a genuine degree-`p` Jennings-layer
 class. -/
 private theorem standard_nonabelian_semidirect_generator_pth_power_mem_augmentation_pow :
@@ -1582,7 +1582,7 @@ private theorem standard_nonabelian_semidirect_generator_pth_power_mem_augmentat
       yRaw ^ p ∈
         (RingHom.ker (standard_nonabelian_semidirect_augmentation (p := p)).toRingHom) ^ p)
 
-/-- Helper for Exercise 13-13.1-17: Serre's source-side semidirect obstruction is detected by a
+/-- Helper for Exercise 13-13.1-17: LinearRepresentations_Serre_1977's source-side semidirect obstruction is detected by a
 linear functional that kills `I^(p + 1)` but evaluates to `1` on the distinguished class
 `([a] - 1)^p`. -/
 private theorem standard_nonabelian_semidirect_pth_layer_detector :
@@ -1598,7 +1598,7 @@ private theorem standard_nonabelian_semidirect_pth_layer_detector :
   -- `([a] - 1)^p` using `monoidAlgebra_of_sub_one_pow_p`.
   sorry
 
-/-- Helper for Exercise 13-13.1-17: Serre's distinguished semidirect augmentation generator
+/-- Helper for Exercise 13-13.1-17: LinearRepresentations_Serre_1977's distinguished semidirect augmentation generator
 survives in the Jennings quotient `J^p / J^(p+1)`. -/
 private theorem standard_nonabelian_semidirect_generator_pow_p_not_mem_augmentation_pow_succ :
     let yRaw : (ZMod p)[StandardGPrime] :=
@@ -1618,7 +1618,7 @@ private theorem standard_nonabelian_semidirect_generator_pow_p_not_mem_augmentat
     simpa [yRaw] using hδ_y
   exact one_ne_zero (hone.symm.trans hzero)
 
-/-- Helper for Exercise 13-13.1-17: Serre's distinguished semidirect augmentation generator
+/-- Helper for Exercise 13-13.1-17: LinearRepresentations_Serre_1977's distinguished semidirect augmentation generator
 survives in the Jennings quotient `J^p / J^(p+1)`. -/
 private theorem standard_nonabelian_semidirect_generator_pth_power_class_nonzero :
     ∃ y : Ring.jacobson ((ZMod p)[StandardGPrime]),
@@ -1737,7 +1737,7 @@ theorem nonabelian_zmod_semidirectProduct_rational_groupAlgebra_decomposition
   rcases groupAlgebra_equiv_of_mulEquiv (k := ℚ) eStd with ⟨eAlg⟩
   rcases standard_nonabelian_zmod_semidirectProduct_rational_groupAlgebra_decomposition
       (p := p) hp2 with ⟨eStdAlg⟩
-  -- Normalize first to Serre's standard semidirect model, then apply the canonical decomposition.
+  -- Normalize first to LinearRepresentations_Serre_1977's standard semidirect model, then apply the canonical decomposition.
   exact ⟨eAlg.trans eStdAlg⟩
 
 -- Proof sketch: combine the two Artin-Wedderburn decompositions from parts (2) and (3) by
@@ -1772,7 +1772,7 @@ theorem sylowGL3_and_nonabelian_zmod_semidirectProduct_modP_groupAlgebras_not_is
   rcases nonabelian_zmod_semidirectProduct_mulEquiv_standard_action
       (p := p) (φ := φ) hφ with ⟨eStd⟩
   rcases groupAlgebra_equiv_of_mulEquiv (k := ZMod p) eStd with ⟨eAlgStd⟩
-  -- Freeze both groups to Serre's canonical models, compare the distinguished modular layer
+  -- Freeze both groups to LinearRepresentations_Serre_1977's canonical models, compare the distinguished modular layer
   -- there, and pull the contradiction back through the algebra transports.
   intro hIso
   rcases hIso with ⟨e⟩

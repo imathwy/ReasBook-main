@@ -12,7 +12,7 @@ variable {n : ℕ}
 variable [NeZero n]
 
 /- Source/core/bridge triage:
-- `source-facing`: Serre's explicit exponential formula for the cyclic character indexed by `h`;
+- `source-facing`: LinearRepresentations_Serre_1977's explicit exponential formula for the cyclic character indexed by `h`;
 - `core/canonical`: the upstream Pontryagin-duality owner `AddChar.zmodAddEquiv`, built from
   `AddChar.zmod` and `ZMod.toCircle`;
 - `bridge/view`: `AddChar.zmodAddEquiv_apply_eq_exp`, which specializes the owner to the textbook

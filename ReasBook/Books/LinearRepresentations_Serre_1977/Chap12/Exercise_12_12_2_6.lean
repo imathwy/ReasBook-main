@@ -1,23 +1,23 @@
-import Serre.Chap01.Definition_1_1_2_1
-import Serre.Chap02.Proposition_2_2_2_1
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap06.Corollary_6_6_5_4
-import Serre.Chap06.Proposition_6_6_5_5
-import Serre.Chap10.Theorem_10_10_5_2
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap12.Exercise_12_12_2_3.API
-import Serre.Chap12.Exercise_12_12_2_6.CanonicalPacketCenterBridge
-import Serre.Chap12.Exercise_12_12_2_6.CharacterBasisCoefficients
-import Serre.Chap12.Exercise_12_12_2_6.ComplexMinimalRealization
-import Serre.Chap12.Exercise_12_12_2_6.ExternalTensorUniverseBridge
-import Serre.Chap12.Exercise_12_12_2_6.FieldDenominatorDescent
-import Serre.Chap12.Exercise_12_12_2_6.FieldDenominatorPrelude
-import Serre.Chap12.Exercise_12_12_2_6.FieldTensorCenterBridge
-import Serre.Chap12.Exercise_12_12_2_6.PacketCenterDescentCore
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionBlockProjectors
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionConstituents
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionPackets
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionPairing
+import LinearRepresentations_Serre_1977.Chap01.Definition_1_1_2_1
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_2_1
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_5_4
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_5
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_2
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_3.API
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.CanonicalPacketCenterBridge
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.CharacterBasisCoefficients
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ComplexMinimalRealization
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ExternalTensorUniverseBridge
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.FieldDenominatorDescent
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.FieldDenominatorPrelude
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.FieldTensorCenterBridge
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.PacketCenterDescentCore
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionBlockProjectors
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionConstituents
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionPackets
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionPairing
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -115,7 +115,7 @@ private theorem canonical_scaled_character_visible_packet_frontier_local
       _ = (∑ i, (e i : AlgebraicClosure K1) • (ψ i).ρ.character) g := by
             simp [smul_eq_mul, Finset.mul_sum, he, hn_ne, mul_assoc, mul_left_comm, mul_comm]
   -- Package the visible packet, the quotient coefficients, and the scaled packet identity
-  -- together so the later orbit/stabilizer descent can work at exactly Serre's frontier.
+  -- together so the later orbit/stabilizer descent can work at exactly LinearRepresentations_Serre_1977's frontier.
   exact
     ⟨ι, inferInstance, ψ, d, e, hd_pos, hψ_fd, hψ_pairwise, hψ_irr, hpacket, hcoeff_div', he,
       hscaled_packet⟩
@@ -476,7 +476,7 @@ private theorem transported_constituent_character_mem_characterRing_local
       (rep_character_mem_characterRingOverField_universe_local
         (K' := AlgebraicClosure K1) (H := G) (ρ := ψ0.ρ))
 
-/-- Helper for Exercise 12-12.2-6: applying a base-field automorphism to Serre's normalized
+/-- Helper for Exercise 12-12.2-6: applying a base-field automorphism to LinearRepresentations_Serre_1977's normalized
 pairing is the same as transporting both arguments coefficientwise. -/
 private theorem algEquiv_groupFunctionPairing_apply_local
     {K1 : Type v} [Field K1] [CharZero K1]
@@ -1147,7 +1147,7 @@ private theorem scaled_packet_coeff_eq_of_transport_relation_local
       (G := G) (ρ := ρ) (n := n) (ψ := ψ) (e := e)
       hψ_fd hψ_pairwise hψ_irr hscaled_packet σ τ hchar i
 
-/-- Helper for Exercise 12-12.2-6: once Serre's visible packet is one transport orbit, the
+/-- Helper for Exercise 12-12.2-6: once LinearRepresentations_Serre_1977's visible packet is one transport orbit, the
 quotient coefficients are all `1`. -/
 private theorem visible_scaled_packet_coeff_one_shadow_local
     {K1 : Type v} [Field K1] [CharZero K1]
@@ -1183,7 +1183,7 @@ private theorem visible_scaled_packet_coeff_one_shadow_local
       (ψ := ψ) (d := d) (e := e)
       hd_pos hψ_fd hψ_pairwise hψ_irr hpacket he hscaled_packet
 
-/-- Helper for Exercise 12-12.2-6: after the quotient coefficients collapse, Serre's stabilizer
+/-- Helper for Exercise 12-12.2-6: after the quotient coefficients collapse, LinearRepresentations_Serre_1977's stabilizer
 fixed-field descent should force each visible constituent degree to be a multiple of `n`. -/
 private theorem fixedField_block_realization_finrank_multiple_local
     {K1 : Type v} [Field K1] [CharZero K1]
@@ -1218,7 +1218,7 @@ private theorem fixedField_block_realization_finrank_multiple_local
       (ψ := ψ) (d := d) (e := e)
       hψ_fd hψ_pairwise hψ_irr hpacket he _hscaled_packet hcoeff_one
 
-/-- Helper for Exercise 12-12.2-6: after the quotient coefficients collapse, Serre's stabilizer
+/-- Helper for Exercise 12-12.2-6: after the quotient coefficients collapse, LinearRepresentations_Serre_1977's stabilizer
 fixed-field descent should force each visible constituent degree to be a multiple of `n`. -/
 private theorem stabilizer_fixedField_realization_forces_degree_multiple_local
     {K1 : Type v} [Field K1] [CharZero K1]
@@ -1407,11 +1407,11 @@ private theorem finrank_dvd_center_index_over_algClosed_shadow_local
   have hdiv : Module.finrank L (TensorPower L (m + 1) σ) ∣ H.index := by
     -- Apply Corollary 6-6.5-4 to the descended irreducible quotient representation.
     simpa [H, τquot, Subgroup.index_eq_card] using finrank_dvd_card τquot
-  -- Rewrite the tensor-power degree and the subgroup index into Serre's arithmetic identity.
+  -- Rewrite the tensor-power degree and the subgroup index into LinearRepresentations_Serre_1977's arithmetic identity.
   simpa [H, _root_.Representation.tensor_power_finrank_field_local,
     product_one_center_subgroup_index] using hdiv
 
-/-- Helper for Exercise 12-12.2-6: Serre's canonical packet is nonempty, so one visible
+/-- Helper for Exercise 12-12.2-6: LinearRepresentations_Serre_1977's canonical packet is nonempty, so one visible
 constituent already carries the denominator divisibility needed for the final center-index step. -/
 private theorem canonical_packet_selected_constituent_degree_multiple_local
     {K1 : Type v} [Field K1] [CharZero K1]
@@ -1437,7 +1437,7 @@ private theorem canonical_packet_selected_constituent_degree_multiple_local
 -- source-side owner `R̄[K](G)`, so the old extension-only center-index bridge is no longer part
 -- of the active proof path for this item.
 
-/-- Helper for Exercise 12-12.2-6: Serre's packet argument for the canonical denominator `n`
+/-- Helper for Exercise 12-12.2-6: LinearRepresentations_Serre_1977's packet argument for the canonical denominator `n`
 already yields `n ∣ [G : Z(G)]` before descending back to any smaller admissible denominator. -/
 private theorem canonical_denominator_dvd_center_index_local
     {K1 : Type v} [Field K1] [CharZero K1]
@@ -1453,7 +1453,7 @@ private theorem canonical_denominator_dvd_center_index_local
       (G := G) (ρ := ρ) (n := n) hcanon hmax
   letI : FiniteDimensional (AlgebraicClosure K1) σ := hσ_fd
   letI : σ.ρ.IsIrreducible := hσ_irr
-  -- Choose one visible constituent of the nonempty packet; Serre's degree divisibility and
+  -- Choose one visible constituent of the nonempty packet; LinearRepresentations_Serre_1977's degree divisibility and
   -- Proposition `17` then compose to show that `n` divides the center index.
   exact
     dvd_trans hσ_degree
@@ -1480,7 +1480,7 @@ private theorem scaled_character_denominator_dvd_center_index_via_canonical_loca
       (n : ℕ) ∣ (Subgroup.center G).index :=
     canonical_denominator_dvd_center_index_local
       (G := G) (ρ := ρ) (n := n) hcanon hmax
-  -- First descend to Serre's canonical denominator, then apply the packet-based center-index
+  -- First descend to LinearRepresentations_Serre_1977's canonical denominator, then apply the packet-based center-index
   -- divisibility established for that canonical denominator.
   exact dvd_trans hm_dvd_n hn_dvd_center
 

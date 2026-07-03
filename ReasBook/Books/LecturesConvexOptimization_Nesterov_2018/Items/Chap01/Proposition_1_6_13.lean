@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Proposition_1_6_13
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Proposition_1_6_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -17,7 +17,7 @@ local notation "Mat" => Matrix (Fin n) (Fin n) ℝ
 domain.
 
 Relevant owner-style declarations sampled before refining:
-* `linear_iteration_contraction_estimate` in `Nesterov/Chap01/Proposition_1_6_13.lean`, the
+* `linear_iteration_contraction_estimate` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Proposition_1_6_13.lean`, the
   chapter owner theorem for norm decay of linear iterations on normed spaces;
 * `Matrix.toEuclideanCLM`, the canonical bridge from a matrix to the continuous linear map used by
   that owner theorem;

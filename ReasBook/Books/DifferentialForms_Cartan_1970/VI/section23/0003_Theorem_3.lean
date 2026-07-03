@@ -1,7 +1,7 @@
 import Mathlib
-import cartan.VI.section23.«0002_Theorem_2»
-import cartan.VI.section23.«0004_Lemma_VI_2_extra_1»
-import cartan.VI.section25.«0016_Theorem_VI_4_extra_13»
+import DifferentialForms_Cartan_1970.VI.section23.«0002_Theorem_2»
+import DifferentialForms_Cartan_1970.VI.section23.«0004_Lemma_VI_2_extra_1»
+import DifferentialForms_Cartan_1970.VI.section25.«0016_Theorem_VI_4_extra_13»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

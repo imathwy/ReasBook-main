@@ -1,9 +1,9 @@
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import MayConciseRevised.Chap03.Example_3_1_7
-import MayConciseRevised.Chap03.Definition_3_1_6
-import MayConciseRevised.Chap03.Corollary_3_7_11
-import MayConciseRevised.Chap03.Lemma_3_8_8
-import MayConciseRevised.Chap03.Proposition_3_8_9
+import AlgebraicTopology_May_1999.Chap03.Example_3_1_7
+import AlgebraicTopology_May_1999.Chap03.Definition_3_1_6
+import AlgebraicTopology_May_1999.Chap03.Corollary_3_7_11
+import AlgebraicTopology_May_1999.Chap03.Lemma_3_8_8
+import AlgebraicTopology_May_1999.Chap03.Proposition_3_8_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

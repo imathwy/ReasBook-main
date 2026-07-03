@@ -1,15 +1,15 @@
 import Mathlib
-import Serre.Chap14.Corollary_14_14_3_3
-import Serre.Chap14.Exercise_14_14_4_5
-import Serre.Chap14.Infra_14_4_ProjectiveLift
-import Serre.Chap14.Lemma_14_14_4_1
-import Serre.Chap15.Definition_15_15_1_1
-import Serre.Chap15.Definition_15_15_2_1
-import Serre.Chap15.Definition_15_15_3_1
-import Serre.Chap15.Exercise_15_15_2_5
-import Serre.Chap15.Proposition_15_15_5_1.ReductionMkQ
-import Serre.Chap15.Proposition_15_15_5_1.StableLatticeExactOwner
-import Serre.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_3_3
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_4_5
+import LinearRepresentations_Serre_1977.Chap14.Infra_14_4_ProjectiveLift
+import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_2_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_2_5
+import LinearRepresentations_Serre_1977.Chap15.Proposition_15_15_5_1.ReductionMkQ
+import LinearRepresentations_Serre_1977.Chap15.Proposition_15_15_5_1.StableLatticeExactOwner
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -298,7 +298,7 @@ private theorem projective_scalarExtension_literal_map_range_isLattice_local_sup
     exact Submodule.smul_mem _ _ hi'
 
 /-- Helper for Proposition 15-15.5-1: the literal range inside `Q.scalarExtension K` is the fixed
-stable lattice used in Serre's projective comparison. -/
+stable lattice used in LinearRepresentations_Serre_1977's projective comparison. -/
 private noncomputable def projective_scalarExtension_literal_range_stableLattice_local_support
     (Q : FiniteProjectiveGroupAlgebraModule A G) :
     StableLattice A (Q.scalarExtension K).ρ :=
@@ -753,7 +753,7 @@ representation. -/
 private noncomputable abbrev fdRepAsModule (τ : FDRep k G) : ModuleCat k[G] :=
   Rep.toModuleMonoidAlgebra.obj ((forget₂ (FDRep k G) (Rep k G)).obj τ)
 
-/-- Helper for Proposition 15-15.5-1: choose Serre's literal scalar-extension lattice on the
+/-- Helper for Proposition 15-15.5-1: choose LinearRepresentations_Serre_1977's literal scalar-extension lattice on the
 ambient scalar-extension owner once and for all. -/
 private noncomputable def projective_scalarExtension_literal_stableLattice_source_local
     (Q : FiniteProjectiveGroupAlgebraModule A G) :
@@ -1047,7 +1047,7 @@ private theorem decompositionHom_projective_scalarExtension_class_eq_fdrepOfRho_
   rw [finiteRepClass_projective_scalarExtension_eq_fdrepOfRho_local
     (A := A) (K := K) (G := G) Q]
 
-/-- Helper for Proposition 15-15.5-1: rebuild Serre's literal range lattice on the explicit
+/-- Helper for Proposition 15-15.5-1: rebuild LinearRepresentations_Serre_1977's literal range lattice on the explicit
 `FDRep.of (Q.scalarExtension K).ρ` owner used by `decompositionHom`. -/
 private noncomputable def projective_scalarExtension_literal_range_stableLattice_fdrep_owner_local
     (Q : FiniteProjectiveGroupAlgebraModule A G) :
@@ -1063,7 +1063,7 @@ private noncomputable def projective_scalarExtension_literal_range_stableLattice
           add_mem' := fun hx hy ↦ L.toSubmodule.add_mem hx hy
           smul_mem' := fun a x hx ↦ by
             -- The restrict-scalars `A`-action on the explicit `FDRep.of` owner is still the
-            -- ambient tensor-product action defining Serre's literal lattice.
+            -- ambient tensor-product action defining LinearRepresentations_Serre_1977's literal lattice.
             simpa [Algebra.smul_def] using L.toSubmodule.smul_mem a hx }
       apply_mem_toSubmodule := ?_
       isLattice := ?_ }
@@ -1086,7 +1086,7 @@ private theorem projective_scalarExtension_literal_range_reduction_class_fdrep_o
       (projective_scalarExtension_literal_range_reduction_iso_local_support
         (A := A) (K := K) (G := G) Q)
 
-/-- Helper for Proposition 15-15.5-1: Serre's literal scalar-extension lattice can be chosen on
+/-- Helper for Proposition 15-15.5-1: LinearRepresentations_Serre_1977's literal scalar-extension lattice can be chosen on
 the exact `FDRep.of` owner used by the decomposition-map computation. -/
 private theorem projective_scalarExtension_literal_reduction_class_fdrep_owner_local
     (Q : FiniteProjectiveGroupAlgebraModule A G) :
@@ -1107,7 +1107,7 @@ private theorem decompositionHom_fdrepOf_scalarExtension_eq_literal_reduction_cl
     (Q : FiniteProjectiveGroupAlgebraModule A G) :
     decompositionHom A K G [FDRep.of (Q.scalarExtension K).ρ]₀ =
       [Q.residueFieldReduction.toFiniteRep]₀ := by
-  -- TODO: transport Serre's literal tensor-product lattice to the default `FDRep`
+  -- TODO: transport LinearRepresentations_Serre_1977's literal tensor-product lattice to the default `FDRep`
   -- restrict-scalars owner used by `decompositionHom_finiteRepClass_eq`; the blocker is the
   -- non-definitional mismatch between the tensor-product `A`-action and `FDRep.instModuleRestrictScalars`.
   sorry
@@ -1141,13 +1141,13 @@ private theorem residueFieldReduction_cartan_class_eq_finiteRepClass_local
   -- corresponding finite-representation class.
   exact cartanHom_projectiveClass_eq k G Q.residueFieldReduction
 
-/-- Helper for Proposition 15-15.5-1: Serre's projective generator identity immediately rewrites
+/-- Helper for Proposition 15-15.5-1: LinearRepresentations_Serre_1977's projective generator identity immediately rewrites
 the scalar-extension class of `Q` to the finite-representation class of its residue reduction. -/
 private theorem decompositionHom_projective_scalarExtension_class_eq_finiteRepClass_local
     (Q : FiniteProjectiveGroupAlgebraModule A G) :
     decompositionHom A K G [Q.scalarExtension K]₀ =
       [Q.residueFieldReduction.toFiniteRep]₀ := by
-  -- First compute `d([Q_K])` by Serre's projective formula, then collapse the Cartan class of the
+  -- First compute `d([Q_K])` by LinearRepresentations_Serre_1977's projective formula, then collapse the Cartan class of the
   -- projective residue reduction to its ordinary finite-representation class.
   calc
     decompositionHom A K G [Q.scalarExtension K]₀ =
@@ -1158,7 +1158,7 @@ private theorem decompositionHom_projective_scalarExtension_class_eq_finiteRepCl
     _ = [Q.residueFieldReduction.toFiniteRep]₀ := by
           exact residueFieldReduction_cartan_class_eq_finiteRepClass_local Q
 
-/-- Helper for Proposition 15-15.5-1: if a projective lift reduces to `τ`, then Serre's
+/-- Helper for Proposition 15-15.5-1: if a projective lift reduces to `τ`, then LinearRepresentations_Serre_1977's
 decomposition map sends its generic class to `[τ]₀`. -/
 private theorem decompositionHom_projective_scalarExtension_class_eq_iso_target_local
     (Q : FiniteProjectiveGroupAlgebraModule A G) {τ : FDRep k G}
@@ -1209,7 +1209,7 @@ private theorem projective_lift_scalarExtension_simple_of_order_prime_to_p
     -- The reduction representation is simple because it is isomorphic to `S`.
     simpa using FDRep.isIrreducible_of_simple (FDRep.of L.reductionRepresentation)
   have hQirr : Representation.IsIrreducible (Q.scalarExtension K).ρ := by
-    -- Serre's route now applies the simple-reduction criterion to the literal stable lattice.
+    -- LinearRepresentations_Serre_1977's route now applies the simple-reduction criterion to the literal stable lattice.
     simpa using simple_reduction_implies_isIrreducible
       (A := A) (K := K) (G := G) ((Q.scalarExtension K).ρ) L hLirr
   exact FDRep.simple_of_isIrreducible (Q.scalarExtension K)
@@ -1343,7 +1343,7 @@ private theorem scalarExtension_nonempty_linearEquiv_of_nonempty_linearEquiv_loc
 
 /-- Helper for Proposition 15-15.5-1: an isomorphism between the chosen reductions should
 reflect to an isomorphism between the generic fibers when `p ∤ |G|`. -/
--- Route correction: Serre's injectivity step should stay on the exact owners `L.toSubmodule`;
+-- Route correction: LinearRepresentations_Serre_1977's injectivity step should stay on the exact owners `L.toSubmodule`;
 -- once the reduction isomorphism reflects there, scalar extension and the support-file exact-owner
 -- identifications transport it back to the original generic fibers.
 private theorem stableLattice_reduction_iso_implies_generic_iso_of_order_prime_to_p
@@ -2141,7 +2141,7 @@ private theorem reduction_split_to_lifted_product_linearEquiv_local
   refine ⟨QU, QV, ?_, ?_, ?_⟩
   · exact ⟨eQU⟩
   · exact ⟨eQV⟩
-  · -- Follow Serre's source route: split the reduced module, identify the product owner
+  · -- Follow LinearRepresentations_Serre_1977's source route: split the reduced module, identify the product owner
     -- factorwise, then rewrite the factorwise summands as reductions of lifted projectives.
     exact ⟨by
       simpa using
@@ -2239,7 +2239,7 @@ private theorem reflected_exact_owner_scalarExtension_to_prod_asModule_linearEqu
       scalarExtension_prod_exact_owner_asModule_linearEquiv_local
         (A := A) (K := K) (G := G) QU QV with
     ⟨eprod⟩
-  -- Base-change Serre's exact-owner equivalence once, then compose with the raw product-owner
+  -- Base-change LinearRepresentations_Serre_1977's exact-owner equivalence once, then compose with the raw product-owner
   -- adapter instead of bundling a separate product projective owner.
   exact ⟨eK.trans eprod⟩
 
@@ -2287,7 +2287,7 @@ private theorem StableLattice.reduction_split_reflects_exact_owner_product_linea
   let _ : Module.Free A L.toSubmodule := by
     infer_instance
   have hprojL : Module.Projective A[G] L.toSubmodule := by
-    -- Serre's averaging argument packages the exact lattice owner as projective over `A[G]`.
+    -- LinearRepresentations_Serre_1977's averaging argument packages the exact lattice owner as projective over `A[G]`.
     exact
       free_groupAlgebra_module_projective_of_order_prime_to_p
         (A := A) (G := G) (p := p) (P := L.toSubmodule) hG
@@ -2504,7 +2504,7 @@ private theorem stableLattice_reduction_simple_of_order_prime_to_p
   -- statement is the standard Chapter `2` wrapper.
   exact FDRep.simple_of_isIrreducible (FDRep.of L.reductionRepresentation)
 
-/-- Helper for Proposition 15-15.5-1: in a complete simple generic family, Serre's reduction
+/-- Helper for Proposition 15-15.5-1: in a complete simple generic family, LinearRepresentations_Serre_1977's reduction
 argument makes every chosen reduction simple. -/
 private theorem stableLattice_reductionFamily_isSimple_of_order_prime_to_p
     {S : Type v}
@@ -2515,7 +2515,7 @@ private theorem stableLattice_reductionFamily_isSimple_of_order_prime_to_p
     ∀ i, Simple (FDRep.of (L i).reductionRepresentation) := by
   intro i
   -- Each generic family member is simple by completeness, so the pointwise reduction lemma applies
-  -- directly to Serre's chosen stable lattice in that member.
+  -- directly to LinearRepresentations_Serre_1977's chosen stable lattice in that member.
   letI : Simple (πK i) := hπK_complete.isSimple i
   exact
     stableLattice_reduction_simple_of_order_prime_to_p
@@ -2546,7 +2546,7 @@ theorem stableLattice_reductionFamily_pairwiseNonisomorphic_of_order_prime_to_p
         stableLattice_reduction_iso_implies_generic_iso_of_order_prime_to_p
           (A := A) (K := K) (G := G) (p := p) (S := S) hG πK L hij)
 
-/-- Helper for Proposition 15-15.5-1: Serre's projective-envelope inverse map already proves the
+/-- Helper for Proposition 15-15.5-1: LinearRepresentations_Serre_1977's projective-envelope inverse map already proves the
 existence clause for the reduced family attached to a complete simple `K[G]`-family. -/
 -- Proof sketch: lift the simple `k[G]`-representation through a projective envelope over `A[G]`,
 -- show the scalar extension of that lift is simple, then use completeness of `πK` and compare
@@ -2579,7 +2579,7 @@ private theorem stableLattice_reductionFamily_exists_iso_of_order_prime_to_p
     simpa using hi
   have hclassτ :
       [τ]₀ = decompositionHom A K G [Q.scalarExtension K]₀ := by
-    -- Serre's projective-lift identity computes the reduction class of `Q` directly as `[τ]₀`.
+    -- LinearRepresentations_Serre_1977's projective-lift identity computes the reduction class of `Q` directly as `[τ]₀`.
     simpa using
       (decompositionHom_projective_scalarExtension_class_eq_iso_target_local
         (A := A) (K := K) (G := G) Q hQτ).symm
@@ -2604,7 +2604,7 @@ private theorem stableLattice_reductionFamily_exists_iso_of_order_prime_to_p
     (finiteRepGrothendieckClass_eq_iff_nonempty_iso_of_isSemisimple hsemiτ hsemii).mp hclass
 
 /-- Helper for Proposition 15-15.5-1: once the reductions `FDRep.of (L i).reductionRepresentation`
-are known to be simple, Serre's projective-envelope inverse map already supplies the completeness
+are known to be simple, LinearRepresentations_Serre_1977's projective-envelope inverse map already supplies the completeness
 of the reduced family. -/
 private theorem stableLattice_reductionFamily_complete_of_isSimple_of_order_prime_to_p
     {S : Type v}
@@ -2624,7 +2624,7 @@ private theorem stableLattice_reductionFamily_complete_of_isSimple_of_order_prim
     simpa [πk] using hsimple i
   · intro τ hτ
     letI : Simple τ := hτ
-    -- Serre's lifted-projective-envelope argument already provides the completeness clause.
+    -- LinearRepresentations_Serre_1977's lifted-projective-envelope argument already provides the completeness clause.
     exact
       stableLattice_reductionFamily_exists_iso_of_order_prime_to_p
         (A := A) (K := K) (G := G) (p := p) hG πK hπK_complete L
@@ -2992,7 +2992,7 @@ theorem decompositionHom_toMatrix_eq_one_of_order_prime_to_p
 -- Proof sketch: in the `cde` triangle, once both `c` and `decompositionHom A K G` are identity
 -- matrices in the simple bases from part `(ii)`, the matrix of
 -- `projectiveGrothendieckScalarExtensionHom A K` is also the identity.
--- Proposition 15-15.5-1 (6): if `p ∤ |G|`, then Serre's scalar-extension homomorphism is
+-- Proposition 15-15.5-1 (6): if `p ∤ |G|`, then LinearRepresentations_Serre_1977's scalar-extension homomorphism is
 -- represented by the identity matrix between the canonical projective-envelope basis of `P_k(G)`
 -- attached to the canonical reduced family and the corresponding complete simple-class basis of
 -- `R_K(G)`. Concretely, this is the canonical owner
@@ -3000,7 +3000,7 @@ theorem decompositionHom_toMatrix_eq_one_of_order_prime_to_p
 -- TODO: combine the Cartan identity with the decomposition identity, using the
 -- `projectiveGrothendieckReductionEquiv` transport and the projective-class bridge
 -- `projectiveGrothendieckScalarExtensionHom_apply`.
-/-- Helper for Proposition 15-15.5-1: Serre's scalar-extension homomorphism satisfies
+/-- Helper for Proposition 15-15.5-1: LinearRepresentations_Serre_1977's scalar-extension homomorphism satisfies
 `d (e x) = c x` on projective Grothendieck classes over the residue field. -/
 private theorem decompositionHom_projectiveGrothendieckBaseChange_eq_cartan_reduction_local
     (x : P_A(G)) :
@@ -3034,7 +3034,7 @@ private theorem decompositionHom_projectiveGrothendieckBaseChange_eq_cartan_redu
   · intro a b ha hb
     simpa [map_add] using congrArg₂ (fun x y ↦ x + y) ha hb
 
-/-- Helper for Proposition 15-15.5-1: Serre's scalar-extension homomorphism satisfies
+/-- Helper for Proposition 15-15.5-1: LinearRepresentations_Serre_1977's scalar-extension homomorphism satisfies
 `d (e x) = c x` on projective Grothendieck classes over the residue field. -/
 private theorem decompositionHom_comp_projectiveGrothendieckScalarExtensionHom_eq_cartanHom
     (x : P_k(G)) :
@@ -3125,7 +3125,7 @@ private theorem cartanHom_projectiveEnvelope_basis_eq_reduced_simple_basis_local
     _ = bk i := by
       rw [simple_finiteRep_classes_basis_of_complete_family_apply]
 
-/-- Helper for Proposition 15-15.5-1: evaluating Serre's `d ∘ e = c` triangle on the chosen
+/-- Helper for Proposition 15-15.5-1: evaluating LinearRepresentations_Serre_1977's `d ∘ e = c` triangle on the chosen
 projective-envelope basis yields the reduced simple basis. -/
 private theorem projectiveScalarExtension_triangle_on_projectiveEnvelope_basis_local
     {S : Type v}
@@ -3138,7 +3138,7 @@ private theorem projectiveScalarExtension_triangle_on_projectiveEnvelope_basis_l
             (bP i)) =
         bk i := by
   intro i
-  -- Compute `d (e (bP i))` through Serre's triangle, then rewrite the Cartan image on the basis.
+  -- Compute `d (e (bP i))` through LinearRepresentations_Serre_1977's triangle, then rewrite the Cartan image on the basis.
   calc
     (decompositionHom A K G).toIntLinearMap
         ((projectiveGrothendieckScalarExtensionHom (A := A) (K := K) (G := G)).toIntLinearMap
@@ -3206,7 +3206,7 @@ private theorem projectiveScalarExtension_basis_image_of_order_prime_to_p_local
               hG πK hπK_pairwise hπK_complete L P hP_envelope) i) =
         (generic_simple_basis_of_order_prime_to_p_local
           (G := G) πK hπK_pairwise hπK_complete) i := by
-  -- Route correction: keep Serre's `d ∘ e = c` proof, but split the old hotspot into separate
+  -- Route correction: keep LinearRepresentations_Serre_1977's `d ∘ e = c` proof, but split the old hotspot into separate
   -- triangle and left-inverse helpers so Lean no longer elaborates one large declaration.
   let bP : Module.Basis S ℤ (P_k(G)) :=
     projective_envelope_basis_of_order_prime_to_p_local
@@ -3239,7 +3239,7 @@ private theorem projectiveScalarExtension_basis_image_of_order_prime_to_p_local
             ((projectiveGrothendieckScalarExtensionHom (A := A) (K := K) (G := G)).toIntLinearMap
               (bP i)) =
           bk i := by
-    -- Evaluate Serre's `d ∘ e = c` triangle on the chosen projective-envelope basis.
+    -- Evaluate LinearRepresentations_Serre_1977's `d ∘ e = c` triangle on the chosen projective-envelope basis.
     exact
       projectiveScalarExtension_triangle_on_projectiveEnvelope_basis_local
         (A := A) (K := K) (G := G) bP bk hcartan_basis

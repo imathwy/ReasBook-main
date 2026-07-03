@@ -1,10 +1,10 @@
 import Mathlib
-import AchimKlenkeLean.Items.Chap25.Definition_25_14
-import AchimKlenkeLean.Items.Chap25.Definition_25_16
-import AchimKlenkeLean.Items.Chap25.Theorem_25_4
-import AchimKlenkeLean.Items.Chap25.Theorem_25_18
-import AchimKlenkeLean.Items.Chap21.Theorem_21_70
-import AchimKlenkeLean.Items.Chap21.Corollary_21_76
+import ProbabilityTheory_Klenke_2020.Items.Chap25.Definition_25_14
+import ProbabilityTheory_Klenke_2020.Items.Chap25.Definition_25_16
+import ProbabilityTheory_Klenke_2020.Items.Chap25.Theorem_25_4
+import ProbabilityTheory_Klenke_2020.Items.Chap25.Theorem_25_18
+import ProbabilityTheory_Klenke_2020.Items.Chap21.Theorem_21_70
+import ProbabilityTheory_Klenke_2020.Items.Chap21.Corollary_21_76
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

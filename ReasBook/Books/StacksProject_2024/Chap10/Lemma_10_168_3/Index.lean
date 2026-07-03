@@ -1,2 +1,2 @@
 -- Proof rescue support index.
-import stacks_project.Chap10.Lemma_10_168_3.TensorFiniteFamilyDescent
+import StacksProject_2024.Chap10.Lemma_10_168_3.TensorFiniteFamilyDescent

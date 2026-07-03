@@ -1,5 +1,5 @@
 import Mathlib
-import MayConciseRevised.Chap01.ProofStep_1_7_7
+import AlgebraicTopology_May_1999.Chap01.ProofStep_1_7_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

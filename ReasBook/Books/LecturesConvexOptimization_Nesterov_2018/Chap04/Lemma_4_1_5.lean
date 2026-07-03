@@ -1,7 +1,7 @@
 import Mathlib
-import Nesterov.Chap04.Definition_4_1_3
-import Nesterov.Chap04.Definition_4_1_2
-import Nesterov.Chap04.Lemma_4_1_1
+import LecturesConvexOptimization_Nesterov_2018.Chap04.Definition_4_1_3
+import LecturesConvexOptimization_Nesterov_2018.Chap04.Definition_4_1_2
+import LecturesConvexOptimization_Nesterov_2018.Chap04.Lemma_4_1_1
 
 open scoped ConstrainedArgmin CubicRegularizationModelNotation Gradient
 

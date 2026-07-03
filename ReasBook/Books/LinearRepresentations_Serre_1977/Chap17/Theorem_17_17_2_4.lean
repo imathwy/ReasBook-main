@@ -1,17 +1,17 @@
 import Mathlib
-import Serre.Chap02.Theorem_2_2_3_5
-import Serre.Chap09.Corollary_9_9_2_2
-import Serre.Chap14.Proposition_14_14_1_1
-import Serre.Chap15.Definition_15_15_1_1
-import Serre.Chap16.Corollary_16_16_1_6
-import Serre.Chap16.Corollary_16_16_1_6.Bases
-import Serre.Chap16.SubgroupInductionDecompositionBridge
-import Serre.Chap16.Theorem_16_16_1_5
-import Serre.Chap12.Theorem_12_12_5_1
-import Serre.Chap07.Proposition_7_7_4_1.IntertwiningAndInduction
-import Serre.Chap17.Corollary_17_17_2_2.Index
-import Serre.Chap17.Theorem_17_17_2_4.ScalarMultipleDescent
-import Serre.Chap17.Theorem_17_17_2_4.CharacterTransport
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Chap09.Corollary_9_9_2_2
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_1_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_6
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_6.Bases
+import LinearRepresentations_Serre_1977.Chap16.SubgroupInductionDecompositionBridge
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_5
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_5_1
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_4_1.IntertwiningAndInduction
+import LinearRepresentations_Serre_1977.Chap17.Corollary_17_17_2_2.Index
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_2_4.ScalarMultipleDescent
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_2_4.CharacterTransport
 
 open scoped MonoidAlgebra Representation SubgroupInduction TensorProduct
 open CategoryTheory
@@ -746,14 +746,14 @@ private theorem fdRep_subgroupInduction_tensor_restriction_equiv_local
   -- mono as a finite-dimensional equivalence.
   sorry
 
-/-- Helper for Theorem 17-17.2-4: subgroup induction satisfies Serre's projection formula on
+/-- Helper for Theorem 17-17.2-4: subgroup induction satisfies LinearRepresentations_Serre_1977's projection formula on
 Grothendieck classes once subgroup restriction is packaged on `R₀`. -/
 private theorem finiteRep_subgroupInduction_mul_restriction_local
     (H : Subgroup G) (x : R₀[k](H)) (y : R₀[k](G)) :
     Representation.Subgroup.finiteRepGrothendieckGroupInduction k H
         (x * finiteRepGrothendieckGroupRestriction_local (G := G) (L := k) H y) =
       Representation.Subgroup.finiteRepGrothendieckGroupInduction k H x * y := by
-  -- Reduce Serre's projection formula to generator classes `[V]₀` and `[W]₀`.
+  -- Reduce LinearRepresentations_Serre_1977's projection formula to generator classes `[V]₀` and `[W]₀`.
   refine QuotientAddGroup.induction_on x ?_
   intro a
   refine FreeAbelianGroup.induction_on a ?_ ?_ ?_ ?_
@@ -855,7 +855,7 @@ private theorem cyclic_rationalized_induction_mapRange_mul_restriction
 /-- Helper for Theorem 17-17.2-4: in positive characteristic, a nonzero integer multiple of the
 trivial modular class is already hit by the cyclic-induction owner.
 
-This is the fixed-unit descent step in Serre's proof: realize the `p`-regular zero extension of
+This is the fixed-unit descent step in LinearRepresentations_Serre_1977's proof: realize the `p`-regular zero extension of
 the trivial modular character in characteristic zero, apply the ordinary cyclic theorem there, and
 descend the resulting cyclic source back to `R₀[k](G)` componentwise. -/
 private theorem cyclic_rationalized_unit_preimage_of_charZero_descent
@@ -892,7 +892,7 @@ private theorem cyclic_rationalized_unit_preimage_of_charZero_descent
             ℚ ⊗[ℤ] R₀[K](G)) with
     ⟨ξK, hξK⟩
   refine ⟨1, one_ne_zero, (DFinsupp.mapRange.linearMap dSource) ξK, ?_⟩
-  -- Descend Serre's characteristic-zero cyclic witness componentwise through the chosen
+  -- Descend LinearRepresentations_Serre_1977's characteristic-zero cyclic witness componentwise through the chosen
   -- decomposition square.
   calc
     (cyclic_rationalized_induction_lsum k G)
@@ -917,7 +917,7 @@ private theorem cyclic_rationalized_unit_preimage_of_charZero_descent
 /-- Helper for Theorem 17-17.2-4: in positive characteristic, a nonzero integer multiple of the
 trivial modular class is already hit by the cyclic-induction owner.
 
-This is the fixed-unit descent step in Serre's proof: realize the `p`-regular zero extension of
+This is the fixed-unit descent step in LinearRepresentations_Serre_1977's proof: realize the `p`-regular zero extension of
 the trivial modular character in characteristic zero, apply the ordinary cyclic theorem there, and
 descend the resulting cyclic source back to `R₀[k](G)` componentwise. -/
 private theorem cyclic_rationalized_unit_preimage_of_positive_char
@@ -928,7 +928,7 @@ private theorem cyclic_rationalized_unit_preimage_of_positive_char
           (N : ℚ) •
             ((1 : ℚ) ⊗ₜ[ℤ] ([FDRep.of (Representation.trivial k G k)]₀ : R₀[k](G)) :
               RationalizedFiniteRepGrothendieck (k := k) G) := by
-  -- Route correction: keep Serre's original fixed-unit descent rather than reopening the solved
+  -- Route correction: keep LinearRepresentations_Serre_1977's original fixed-unit descent rather than reopening the solved
   -- characteristic-zero transport layer in the main theorem file.
   let _ := hzero
   -- TODO: instantiate `cyclic_rationalized_unit_preimage_of_charZero_descent` with an actual
@@ -943,7 +943,7 @@ private theorem cyclic_rationalized_unit_preimage_of_positive_char
 /-- Helper for Theorem 17-17.2-4: once the fixed-unit witness is known, multiplying each cyclic
 summand by the subgroup restriction of `y` yields the corresponding witness for `N • (1 ⊗ y)`.
 
-This is Serre's projection-formula step: compare the two targets on `PRegularConjClass G p`,
+This is LinearRepresentations_Serre_1977's projection-formula step: compare the two targets on `PRegularConjClass G p`,
 push the global factor through induction by `Ind_H^G(ψ * Res_H χ) = Ind_H^G(ψ) * χ`, and finish
 by injectivity of the descended virtual modular character. -/
 private theorem cyclic_rationalized_induction_mul_restriction_pureTensor
@@ -1366,7 +1366,7 @@ private theorem rationalized_cartan_hits_nonzero_multiple
     let n := Nat.factorization (Nat.card G) p
     let m := ordCompl[p] (Nat.card G)
     have hcard_hm := card_eq_ordProj_mul_ordCompl_and_coprime (k := k) (G := G) (p := p)
-    -- In positive characteristic, Serre's source route provides one fixed `p`-power multiple of
+    -- In positive characteristic, LinearRepresentations_Serre_1977's source route provides one fixed `p`-power multiple of
     -- every integral target class inside the Cartan image; tensor induction lifts that to `ℚ`.
     refine TensorProduct.induction_on x ?_ ?_ ?_
     · refine ⟨1, one_ne_zero, 0, ?_⟩
@@ -1608,7 +1608,7 @@ private theorem cyclic_rationalized_projective_induction_surjective_of_cartan_sq
           (cyclic_rationalized_projective_source_cartan_equiv (k := k) (G := G)).toLinearMap) :
     Function.Surjective
       (cyclic_rationalized_projective_induction_lsum k G) := by
-  -- This is exactly Serre's source route: conjugate projective induction by Cartan to ordinary
+  -- This is exactly LinearRepresentations_Serre_1977's source route: conjugate projective induction by Cartan to ordinary
   -- induction, then reuse the already-proved ordinary-row surjectivity.
   exact
     surjective_of_linear_equiv_conjugate

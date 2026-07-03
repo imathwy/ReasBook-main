@@ -1,12 +1,12 @@
 import Mathlib
-import Serre.Chap10.Definition_10_10_1_2
-import Serre.Chap11.Proposition_11_11_4_1
-import Serre.Chap11.Theorem_11_11_2_2
-import Serre.Chap11.Theorem_11_11_3_2
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_2
+import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_1
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_2
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_3_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
--- Primary domain: the prime spectrum of Serre's tensor character ring `A ⊗R(G)`, organized by
+-- Primary domain: the prime spectrum of LinearRepresentations_Serre_1977's tensor character ring `A ⊗R(G)`, organized by
 -- the canonical prime families `P0` and `Pm` and by the passage from an ordinary conjugacy class
 -- to its `p`-regular component.
 -- Sampled owner declarations in this domain:
@@ -131,7 +131,7 @@ def tensorCharacterRingPrimeSpectrumLineIntersects
 variable {A}
 
 /-- Helper for Proposition 11-11.4-4: every nonzero prime of the arithmetic coefficient ring is
-one of the residual-characteristic maximal ideals indexing Serre's regular branch. -/
+one of the residual-characteristic maximal ideals indexing LinearRepresentations_Serre_1977's regular branch. -/
 private theorem nonzero_primeSpectrum_eq_residual_maximal_local
     (q : PrimeSpectrum A) (hq : q.asIdeal ≠ ⊥) :
     ∃ p : Nat.Primes, ∃ M : NonzeroResidualCharacteristicMaximalIdeal A p,
@@ -257,7 +257,7 @@ private theorem iUnion_tensorCharacterRingPrimeSpectrumLine_eq_univ :
 -- lines attached to ordinary conjugacy classes. If each such line is connected and every line can
 -- be joined to the unit-class line through a finite chain of nonempty intersections, then the
 -- standard connected-union theorem applies to this canonical line decomposition.
-/-- Auxiliary connectedness criterion: if every canonical line in the prime spectrum of Serre's
+/-- Auxiliary connectedness criterion: if every canonical line in the prime spectrum of LinearRepresentations_Serre_1977's
 tensor character ring `A ⊗ R(G)` is connected and every such line is linked to the unit-class line
 by a finite chain of nonempty intersections, then `Spec (A ⊗ R(G))` is connected. -/
 theorem tensorCharacterRingPrimeSpectrum_connected_of_lineCriterion
@@ -706,7 +706,7 @@ representative of `c` lies in the arithmetic coefficient ring `A`. -/
 private theorem characterRingValueAtConjClass_mem_range
     (c : ConjClasses G) (χ : R(G)) :
     (χ (fixedClassRepresentativeLocal c) : ℂ) ∈ Set.range (algebraMap A ℂ) := by
-  -- Serre's arithmetic hypothesis says every character value is integral over `ℤ`, hence it
+  -- LinearRepresentations_Serre_1977's arithmetic hypothesis says every character value is integral over `ℤ`, hence it
   -- already comes from the integral-closure ring `A`.
   exact
     (IsIntegralClosure.isIntegral_iff (A := A) (R := ℤ) (B := ℂ)).mp
@@ -904,7 +904,7 @@ private theorem zero_prime_separator_eval_of_ne
   obtain ⟨x, rfl⟩ := ConjClasses.mk_surjective c₁
   rcases Representation.weighted_adamsOperator_conjClassIndicator_lifts_to_tensorCharacterRing
       A 1 (ConjClasses.mk x) (by
-        -- Serre's Frobenius theorem uses exactly the `|G|`-th roots-of-unity hypothesis, which
+        -- LinearRepresentations_Serre_1977's Frobenius theorem uses exactly the `|G|`-th roots-of-unity hypothesis, which
         -- the integral-closure assumption provides.
         exact root_of_unity_mem_range_of_pow_card_eq_one (A := A) (G := G)) with ⟨χ, hχ⟩
   refine ⟨χ, ?_, ?_⟩
@@ -936,7 +936,7 @@ private theorem zero_prime_separator_eval_of_ne
     simpa [Representation.adamsOperator, hxfin, ConjClasses.indicator, hcard_ne] using hindicator
 
 /-- Helper for Proposition 11-11.4-4: the canonical regular prime indexed by `(p, M, c)` should
-satisfy Serre's defining regular-prime predicate. -/
+satisfy LinearRepresentations_Serre_1977's defining regular-prime predicate. -/
 private theorem tensorCharacterRingRegularPrime_spec
     (p : Nat.Primes) (M : NonzeroResidualCharacteristicMaximalIdeal A p)
     (c : PRegularConjClass G p) :
@@ -1035,7 +1035,7 @@ private theorem value_comap_eq_residual_maximal_local
   rw [tensorCharacterRingValueAtConjClass_algebraMap (A := A) c a]
 
 /-- Helper for Proposition 11-11.4-4: the fixed-class evaluation pullback of `M` lands on the
-regular branch of Serre's prime-spectrum classification, not on the zero branch. -/
+regular branch of LinearRepresentations_Serre_1977's prime-spectrum classification, not on the zero branch. -/
 private theorem value_comap_eq_some_regular_point
     (p : Nat.Primes) (M : NonzeroResidualCharacteristicMaximalIdeal A p) (c : ConjClasses G) :
     ∃ p' : Nat.Primes, ∃ M' : NonzeroResidualCharacteristicMaximalIdeal A p',
@@ -1182,7 +1182,7 @@ private theorem tensorCharacterRingInductionIdeal_le_value_comap_of_disjoint_car
           ⟨M.1.asIdeal, inferInstance⟩).asIdeal :=
       zero_line_point_specializes_value_comap_local (A := A) p M c
 
-/-- Helper for Proposition 11-11.4-4: the evaluation pullback over `M` already satisfies Serre's
+/-- Helper for Proposition 11-11.4-4: the evaluation pullback over `M` already satisfies LinearRepresentations_Serre_1977's
 intrinsic regular-prime predicate for the canonical `p`-regular component of `c`. -/
 private theorem value_comap_isTensorCharacterRingRegularPrime_local
     (p : Nat.Primes) (M : NonzeroResidualCharacteristicMaximalIdeal A p) (c : ConjClasses G) :
@@ -1292,9 +1292,9 @@ private theorem tensorCharacterRingPrimeSpectrumLine_connected
 -- classes. Each line is isomorphic to `Spec(A)`, hence connected, and stripping off one prime
 -- power at a time from an element connects any line to the unit-class line through a finite chain
 -- of nonempty intersections. Then apply the auxiliary line criterion above. This proposition is in
--- Serre's standing arithmetic setting on `A`; it is not intended as a statement for arbitrary
+-- LinearRepresentations_Serre_1977's standing arithmetic setting on `A`; it is not intended as a statement for arbitrary
 -- complex algebras.
-/-- Proposition 11-11.4-4: in Serre's standing arithmetic setting on `A`, modeled here by an
+/-- Proposition 11-11.4-4: in LinearRepresentations_Serre_1977's standing arithmetic setting on `A`, modeled here by an
 integral-closure arithmetic subring of `ℂ` with finite quotients, the prime spectrum
 `Spec (A ⊗ R(G))` is connected in the Zariski topology. This is not a statement for an arbitrary
 complex algebra such as `ℚ`. -/

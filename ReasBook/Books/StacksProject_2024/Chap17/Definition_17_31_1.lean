@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import stacks_project.Chap17.«17_31_0_1»
-import stacks_project.Chap17.Lemma_17_28_9
-import stacks_project.Chap18.Definition_18_35_1
+import StacksProject_2024.Chap17.«17_31_0_1»
+import StacksProject_2024.Chap17.Lemma_17_28_9
+import StacksProject_2024.Chap18.Definition_18_35_1
 
 open CategoryTheory
 open CategoryTheory.Limits

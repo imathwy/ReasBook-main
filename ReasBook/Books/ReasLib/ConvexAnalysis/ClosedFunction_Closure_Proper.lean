@@ -1,7 +1,7 @@
 import Mathlib.Topology.Defs.Basic
 import Mathlib.Topology.Maps.Basic
 import Mathlib.Topology.MetricSpace.Isometry
-import Reaslib.ConvexAnalysis.ClosedFunction_Closure
+import ReasLib.ConvexAnalysis.ClosedFunction_Closure
 
 open Filter Set Topology Function Module EReal Inner
 

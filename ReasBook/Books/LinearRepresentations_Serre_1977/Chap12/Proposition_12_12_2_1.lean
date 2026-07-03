@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap02.Corollary_2_2_4_3
-import Serre.Chap12.Proposition_12_12_1_3
-import Serre.Chap12.Proposition_12_12_2_1.ScaledCharacterPacket
-import Serre.Chap12.Proposition_12_12_2_1.Index
+import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_4_3
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_3
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_2_1.ScaledCharacterPacket
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_2_1.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

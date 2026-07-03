@@ -1,5 +1,5 @@
-import Nesterov.Chap02.Remark_2_35_1
-import Nesterov.Chap02.Theorem_2_36
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Remark_2_35_1
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_36
 
 open scoped Gradient StrongConvexSmooth
 

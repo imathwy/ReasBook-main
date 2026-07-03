@@ -1,5 +1,5 @@
 import Mathlib
-import cartan.II.section05.«0012_Definition_II_1_extra_7»
+import DifferentialForms_Cartan_1970.II.section05.«0012_Definition_II_1_extra_7»
 
 open Set
 

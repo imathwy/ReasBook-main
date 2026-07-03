@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Tactic.TFAE
-import stacks_project.Chap10.Definition_10_137_10
-import stacks_project.Chap10.Lemma_10_140_1
-import stacks_project.Chap10.Lemma_10_140_3
+import StacksProject_2024.Chap10.Definition_10_137_10
+import StacksProject_2024.Chap10.Lemma_10_140_1
+import StacksProject_2024.Chap10.Lemma_10_140_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

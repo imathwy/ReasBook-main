@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap14.Lemma_14_14_4_2
+import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_2
 
 noncomputable section
 
@@ -25,7 +25,7 @@ Domain-style sampling:
 * Best owner abstraction: the canonical finite-generation owner `FGModuleCat A[G]`, with
   projectivity over `A[G]` as the additional source-facing condition.
 * Source/core/bridge triage:
-  source-facing: `FiniteProjectiveGroupAlgebraModule A G`, Serre's category of finitely generated
+  source-facing: `FiniteProjectiveGroupAlgebraModule A G`, LinearRepresentations_Serre_1977's category of finitely generated
     projective `A[G]`-modules;
   core/canonical: `FGModuleCat A[G]`;
   bridge/view: the forgetful view to `ModuleCat A[G]` and, when `[Finite G]`, the restriction of

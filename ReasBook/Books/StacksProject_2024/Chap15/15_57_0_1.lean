@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Category.ModuleCat.Monoidal.Basic
 import Mathlib.CategoryTheory.Functor.Derived.LeftDerived
-import stacks_project.Chap13.Proposition_13_16_8
+import StacksProject_2024.Chap13.Proposition_13_16_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

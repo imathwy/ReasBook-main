@@ -1,12 +1,12 @@
 import Mathlib.FieldTheory.IsAlgClosed.Basic
 import Mathlib.RingTheory.QuotSMulTop
 import Mathlib.RepresentationTheory.Irreducible
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap06.Exercise_6_6_3_3
-import Serre.Chap06.Proposition_6_6_2_2
-import Serre.Chap14.Lemma_14_14_4_2
-import Serre.Chap15.Definition_15_15_2_1
-import Serre.Chap15.Exercise_15_15_2_5
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_3_3
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_2_2
+import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_2
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_2_1
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_2_5
 
 noncomputable section
 
@@ -36,7 +36,7 @@ class HasDefectZero (ρ : Representation K G E) [FiniteDimensional K E] (p : ℕ
 attribute [simp] hasDefectZero_iff
 
 /-- Helper for Proposition 16-16.4-1: a representation equivalence conjugates the action of every
-group-algebra element. This is the slot-transport adapter needed to compare Serre's explicit
+group-algebra element. This is the slot-transport adapter needed to compare LinearRepresentations_Serre_1977's explicit
 Fourier coefficients with the Chapter `6` Wedderburn packet. -/
 lemma equiv_conj_asAlgebraHom
     {V : Type*} [AddCommGroup V] [Module K V]
@@ -154,7 +154,7 @@ theorem toSubmodule_projective :
 
 /-- Helper for Proposition 16-16.4-1: once the lattice is nontrivial, evaluation at a chosen basis
 vector splits the left `End_A(P)`-module `End_A(P)` onto `P`. Hence the lattice is projective over
-its own endomorphism ring, matching Serre's source reduction from part `(b)` to part `(a)`. -/
+its own endomorphism ring, matching LinearRepresentations_Serre_1977's source reduction from part `(b)` to part `(a)`. -/
 theorem toSubmodule_projective_over_endomorphismRing [Nontrivial L.toSubmodule] :
     Module.Projective (Module.End A L.toSubmodule) L.toSubmodule := by
   let b : Module.Basis (Module.Free.ChooseBasisIndex A L.toSubmodule) A L.toSubmodule :=

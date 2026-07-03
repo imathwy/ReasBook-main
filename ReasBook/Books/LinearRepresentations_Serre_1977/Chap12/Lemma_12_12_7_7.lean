@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap12.Lemma_12_12_7_1
-import Serre.Chap12.Theorem_12_12_6_2
-import Serre.Chap12.Theorem_12_12_6_2.SeparatorSupport
+import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_1
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_6_2
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_6_2.SeparatorSupport
 
 noncomputable section
 
@@ -26,7 +26,7 @@ local instance instFintypeLemma121277Group : Fintype G := Fintype.ofFinite G
 
 local notation "ΓK" => Γ[K](G)
 
-/-- Helper for Lemma 12-12.7-7: the mixed-universe version of Serre's fixed-`p` subgroup
+/-- Helper for Lemma 12-12.7-7: the mixed-universe version of LinearRepresentations_Serre_1977's fixed-`p` subgroup
 `V_{K,p} ≤ R_K(G)`, written directly to avoid the public notation's universe mismatch for an
 intermediate field `K ⊆ L`. -/
 abbrev gammaPElementaryInducedCharacterSpan_local (p : ℕ) : Submodule ℤ R[K](G) :=
@@ -43,7 +43,7 @@ abbrev tensorGammaPElementaryInducedCharacterToFunction_local (p : ℕ) :
       (gammaPElementaryInducedCharacterSpan_local (K := K) (G := G) p).subtype)).liftBaseChange A
 
 omit [IsDomain A] [IsFractionRing A K] in
-/-- Lemma 12-12.7-7: there exist an element of Serre's scalar-extended owner `A ⊗ V_{K,p}` and an
+/-- Lemma 12-12.7-7: there exist an element of LinearRepresentations_Serre_1977's scalar-extended owner `A ⊗ V_{K,p}` and an
 `A`-valued function realizing it coefficientwise for the genuine arithmetic subgroup
 `Γ_K = Γ[K](G)` attached to the intermediate field `K ⊆ L` in the cyclotomic setting, whose value
 at every element of `G` is nonzero modulo every prime ideal of `A` in the canonical zero locus of

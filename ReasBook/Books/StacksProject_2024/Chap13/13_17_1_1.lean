@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
 import Mathlib.Tactic.Recall
-import stacks_project.Chap12.Lemma_12_10_3
-import stacks_project.Chap13.Lemma_13_17_1
+import StacksProject_2024.Chap12.Lemma_12_10_3
+import StacksProject_2024.Chap13.Lemma_13_17_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -69,7 +69,7 @@ theorem weakSerreSubcategory_mapDerivedCategory_obj_mem_derivedCategoryWithCohom
     derivedCategoryCohomologyInProperty P (P.ι.mapDerivedCategory.obj K) := sorry
 
 /-- 13.17.1.1: the canonical comparison functor `D(P.FullSubcategory) ⥤ D_{P}` induced by the
-derived functor of the inclusion of the weak Serre full subcategory. -/
+derived functor of the inclusion of the weak LinearRepresentations_Serre_1977 full subcategory. -/
 noncomputable abbrev weakSerreSubcategoryDerivedComparisonFunctor :
     D(P.FullSubcategory) ⥤ D_{P} :=
   (derivedCategoryCohomologyInProperty P).lift

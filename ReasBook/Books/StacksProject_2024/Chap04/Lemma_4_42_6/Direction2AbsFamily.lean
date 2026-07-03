@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap04.Lemma_4_42_6.SliceRepresentable
-import stacks_project.Chap04.Lemma_4_42_6.Direction2Family
+import StacksProject_2024.Chap04.Lemma_4_42_6.SliceRepresentable
+import StacksProject_2024.Chap04.Lemma_4_42_6.Direction2Family
 
 universe v u
 

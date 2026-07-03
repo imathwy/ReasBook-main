@@ -1,5 +1,5 @@
 import Mathlib.Algebra.Homology.HomotopyCategory.HomComplexCohomology
-import stacks_project.Chap17.Definition_17_4_1
+import StacksProject_2024.Chap17.Definition_17_4_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -25,7 +25,7 @@ local notation "ModU" => SheafOfModules ((RingedSpace.ringCatSheaf X).over U)
   `SheafOfModules`,
   `CochainComplex.HomComplex.homologyAddEquiv`,
   `CochainComplex.HomComplex.CohomologyClass.homAddEquiv`,
-  `stacks_project/Items/Chap15/15_72_0_1.lean`;
+  `StacksProject_2024/Items/Chap15/15_72_0_1.lean`;
 - best owner abstraction: the canonical owner layer is the Hom-complex cohomology-class API,
   instantiated in the ambient open-subspace module category
   `ModU`;

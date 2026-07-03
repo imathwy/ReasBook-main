@@ -1,6 +1,6 @@
-import Serre.Chap12.Corollary_12_12_2_2
-import Serre.Chap12.Corollary_12_12_3_2
-import Serre.Chap16.Theorem_16_16_3_6
+import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_2_2
+import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_3_2
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_3_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

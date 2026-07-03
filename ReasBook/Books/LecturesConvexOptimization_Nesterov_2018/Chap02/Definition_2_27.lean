@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap02.ReciprocalEpigraphOnPositiveRay
+import LecturesConvexOptimization_Nesterov_2018.Chap02.ReciprocalEpigraphOnPositiveRay
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

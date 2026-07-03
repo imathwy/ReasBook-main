@@ -1,8 +1,8 @@
-import Serre.Chap01.Definition_1_1_2_1
-import Serre.Chap02.Exercise_2_2_1_5
-import Serre.Chap02.Theorem_2_2_3_5
-import Serre.Chap07.Proposition_7_7_2_1
-import Serre.RepresentationTheory.GroupFunctionPairing
+import LinearRepresentations_Serre_1977.Chap01.Definition_1_1_2_1
+import LinearRepresentations_Serre_1977.Chap02.Exercise_2_2_1_5
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.RepresentationTheory.GroupFunctionPairing
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -55,7 +55,7 @@ def a4_v4_z : V4 :=
       decide)
     (by decide)
 
-/-- The values of Serre's degree-one character `θ` on the Klein four subgroup `H`. -/
+/-- The values of LinearRepresentations_Serre_1977's degree-one character `θ` on the Klein four subgroup `H`. -/
 private def a4_theta_value (h : V4) : ℂˣ :=
   if h = 1 ∨ h = a4_v4_x then
     1
@@ -292,7 +292,7 @@ private theorem a4_theta_value_mul (h h' : V4) :
   -- Specialize the finite multiplicativity table to the requested pair.
   exact a4_theta_value_mul_all h h'
 
-/-- Serre's degree-one character `θ` of the Klein four subgroup `H ≤ A₄`, with
+/-- LinearRepresentations_Serre_1977's degree-one character `θ` of the Klein four subgroup `H ≤ A₄`, with
 `θ(1) = θ(x) = 1` and `θ(y) = θ(z) = -1`. -/
 def a4_theta : V4 →* ℂˣ where
   toFun := a4_theta_value
@@ -326,7 +326,7 @@ local notation "θ" => a4_theta
   have hzx : a4_v4_z ≠ a4_v4_x := by decide
   simp [a4_theta, a4_theta_value, hz1, hzx]
 
-/-- Helper for Exercise 5-5.7-1: Serre's character `ψ` for the natural action of `A₄` on
+/-- Helper for Exercise 5-5.7-1: LinearRepresentations_Serre_1977's character `ψ` for the natural action of `A₄` on
 `Fin 4`, realized as the permutation character minus the trivial summand. -/
 private def a4_psi : A4 → ℂ :=
   fun g ↦ (ofMulAction ℂ A4 (Fin 4)).character g - 1

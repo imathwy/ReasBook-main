@@ -1,6 +1,6 @@
 import Mathlib
-import CombinatorialGroupTheory.Items.Chap01.Proposition_1_3_20
-import CombinatorialGroupTheory.Items.Chap02.Definition_2_1_1
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_3_20
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap02.Definition_2_1_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
-import Serre.Chap04.Remark_4_4_3_1.CyclicRegular
-import Serre.Chap04.Remark_4_4_3_1.FixedVectorRangeBridge
+import LinearRepresentations_Serre_1977.Chap04.Remark_4_4_3_1.CyclicRegular
+import LinearRepresentations_Serre_1977.Chap04.Remark_4_4_3_1.FixedVectorRangeBridge
 
 open MeasureTheory
 open DomMulAct

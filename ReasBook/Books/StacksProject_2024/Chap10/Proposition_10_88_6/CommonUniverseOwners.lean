@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap10.Lemma_10_11_1
-import stacks_project.Chap10.Lemma_10_11_4
+import StacksProject_2024.Chap10.Lemma_10_11_1
+import StacksProject_2024.Chap10.Lemma_10_11_4
 
 -- Proof rescue support owners for Proposition 10.88.6.
 

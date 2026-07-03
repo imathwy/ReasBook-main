@@ -1,4 +1,4 @@
-import Serre.Chap13.Exercise_13_13_1_14.IntertwinerCubicPlane
+import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_14.IntertwinerCubicPlane
 
 noncomputable section
 
@@ -40,13 +40,13 @@ local instance : DecidableEq ℍ[ℚ] := by
       intro h
       exact hre (congrArg QuaternionAlgebra.re h))
 
-/-- Helper for Exercise 13-13.1-14: Serre's double-centralizer step identifies the image algebra
+/-- Helper for Exercise 13-13.1-14: LinearRepresentations_Serre_1977's double-centralizer step identifies the image algebra
 with the endomorphism algebra over the cubic coefficient field. -/
 theorem quaternion_cyclic_imageSubalgebra_algEquiv_moduleEnd_cubic_subfield_exists :
     Nonempty
       (quaternion_cyclic_imageSubalgebra ≃ₐ[ℚ]
         Module.End ↥quaternion_cubic_subfield ℍ[ℚ]) := by
-  -- Route correction: avoid the abstract transport equivalence and follow Serre's concrete
+  -- Route correction: avoid the abstract transport equivalence and follow LinearRepresentations_Serre_1977's concrete
   -- double-centralizer route. We send each image-algebra element to the same underlying map,
   -- now viewed as `quaternion_cubic_subfield`-linear because the two actions commute.
   let actionHom :
@@ -130,7 +130,7 @@ theorem quaternion_cyclic_imageSubalgebra_algEquiv_moduleEnd_cubic_subfield_exis
       _ = f (u • (1 : ℍ[ℚ]) + v • rational_quaternion_basis.j) := by
             simp
 
-/-- Helper for Exercise 13-13.1-14: a chosen algebra equivalence realizing Serre's
+/-- Helper for Exercise 13-13.1-14: a chosen algebra equivalence realizing LinearRepresentations_Serre_1977's
 double-centralizer step. -/
 noncomputable def quaternion_cyclic_imageSubalgebra_algEquiv_moduleEnd_cubic_subfield :
     quaternion_cyclic_imageSubalgebra ≃ₐ[ℚ]
@@ -147,7 +147,7 @@ local instance quaternion_cubic_subfield_fun_end_algebra :
     ↥quaternion_cubic_subfield ↥quaternion_cubic_subfield
     (Fin 2 → ↥quaternion_cubic_subfield)
 
-/-- Helper for Exercise 13-13.1-14: Serre's `{1, j}` basis identifies `End_K(ℍ[ℚ])` with
+/-- Helper for Exercise 13-13.1-14: LinearRepresentations_Serre_1977's `{1, j}` basis identifies `End_K(ℍ[ℚ])` with
 `M₂(K)`, viewed as a `ℚ`-algebra equivalence by restriction of scalars. -/
 noncomputable def quaternion_cubic_subfield_moduleEnd_algEquiv_matrix_over_Q :
     Module.End ↥quaternion_cubic_subfield ℍ[ℚ] ≃ₐ[ℚ]
@@ -156,7 +156,7 @@ noncomputable def quaternion_cubic_subfield_moduleEnd_algEquiv_matrix_over_Q :
   (quaternion_cubic_subfield_basis_one_j.equivFun.conjAlgEquiv ℚ).trans
     ((algEquivMatrix' (R := ↥quaternion_cubic_subfield) (n := Fin 2)).restrictScalars ℚ)
 
-/-- Helper for Exercise 13-13.1-14: the image algebra is already Serre's `M₂(K)` once the
+/-- Helper for Exercise 13-13.1-14: the image algebra is already LinearRepresentations_Serre_1977's `M₂(K)` once the
 double-centralizer step is followed by the `{1, j}` matrix model. -/
 noncomputable def quaternion_cyclic_imageSubalgebra_algEquiv_matrix_over_cubic_subfield :
     quaternion_cyclic_imageSubalgebra ≃ₐ[ℚ]

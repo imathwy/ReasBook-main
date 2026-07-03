@@ -6,7 +6,7 @@ Authors: Chenyi Li, Zaiwen Wen
 import Mathlib.Analysis.Convex.Basic
 import Mathlib.Analysis.Calculus.MeanValue
 import Mathlib.Analysis.InnerProductSpace.Positive
-import Reaslib.Optlib.Convex.ConvexFunction
+import ReasLib.Optlib.Convex.ConvexFunction
 
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [CompleteSpace E]
 variable {x xm : E} {f : E → ℝ} {f' : E → E} {s : Set E}

@@ -1,5 +1,5 @@
-import FirstOrderMethodsinOptimization.Chap05.Proposition_5_3
-import FirstOrderMethodsinOptimization.Chap06.Theorem_6_25
+import FirstOrderMethodsOptimization_Beck_2017.Chap05.Proposition_5_3
+import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_25
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

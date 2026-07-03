@@ -1,6 +1,6 @@
 import Mathlib
-import CombinatorialGroupTheory.Items.Chap01.Proposition_1_3_5
-import CombinatorialGroupTheory.Items.Chap01.Proposition_1_4_5
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_3_5
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_4_5
 
 universe u
 
@@ -22,21 +22,21 @@ Layer triage:
   for the two-generator conclusion, `IsHopfian` and `IsCohopfian` for the endomorphism
   conditions, `Subgroup.center G = ⊥` and `MulAut.innerAutomorphismSubgroup G = ⊤` for
   completeness, and `Group.IsFinitelyPresented` for finite presentability.
-- `bridge/view`: [Theorem_5_10_5](/volume/math/AI4M/users/zcwang/bookrepo/CombinatorialGroupTheory/CombinatorialGroupTheory/Items/Chap05/Theorem_5_10_5.lean)
+- `bridge/view`: [Theorem_5_10_5](/volume/math/AI4M/users/zcwang/bookrepo/CombinatorialGroupTheory_Magnus_2004/CombinatorialGroupTheory_Magnus_2004/Items/Chap05/Theorem_5_10_5.lean)
   provides the explicit quotient owner `SmallCancellationProduct.quotient enumerate`; the present
   theorem is the source-facing existential packaging of that explicit construction.
 
 Domain sampling:
-1. [Theorem_4_3_1](/volume/math/AI4M/users/zcwang/bookrepo/CombinatorialGroupTheory/CombinatorialGroupTheory/Items/Chap04/Theorem_4_3_1.lean)
+1. [Theorem_4_3_1](/volume/math/AI4M/users/zcwang/bookrepo/CombinatorialGroupTheory_Magnus_2004/CombinatorialGroupTheory_Magnus_2004/Items/Chap04/Theorem_4_3_1.lean)
    already fixes the project style for “`H` embeds in a two-generator overgroup”: existentially
    quantify the ambient group and embedding map, and express the generator bound through
    `Group.rank`.
-2. [Proposition_1_3_5](/volume/math/AI4M/users/zcwang/bookrepo/CombinatorialGroupTheory/CombinatorialGroupTheory/Items/Chap01/Proposition_1_3_5.lean)
+2. [Proposition_1_3_5](/volume/math/AI4M/users/zcwang/bookrepo/CombinatorialGroupTheory_Magnus_2004/CombinatorialGroupTheory_Magnus_2004/Items/Chap01/Proposition_1_3_5.lean)
    provides the owner predicates `IsHopfian` and `IsCohopfian`.
-3. [Proposition_1_4_5](/volume/math/AI4M/users/zcwang/bookrepo/CombinatorialGroupTheory/CombinatorialGroupTheory/Items/Chap01/Proposition_1_4_5.lean)
+3. [Proposition_1_4_5](/volume/math/AI4M/users/zcwang/bookrepo/CombinatorialGroupTheory_Magnus_2004/CombinatorialGroupTheory_Magnus_2004/Items/Chap01/Proposition_1_4_5.lean)
    provides `MulAut.innerAutomorphismSubgroup`, so completeness is stated on the canonical
    automorphism-group owner rather than by a local wrapper.
-4. [Theorem_5_10_5](/volume/math/AI4M/users/zcwang/bookrepo/CombinatorialGroupTheory/CombinatorialGroupTheory/Items/Chap05/Theorem_5_10_5.lean)
+4. [Theorem_5_10_5](/volume/math/AI4M/users/zcwang/bookrepo/CombinatorialGroupTheory_Magnus_2004/CombinatorialGroupTheory_Magnus_2004/Items/Chap05/Theorem_5_10_5.lean)
    already packages the explicit Section `10` quotient and its Hopfian/complete/cohopfian
    properties, so this file should expose only the source-facing existence theorem.
 

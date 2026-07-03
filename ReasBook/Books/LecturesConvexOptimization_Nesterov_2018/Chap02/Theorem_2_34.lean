@@ -1,5 +1,5 @@
-import Nesterov.Chap02.Lemma_2_13
-import Nesterov.Chap02.Theorem_2_33
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Lemma_2_13
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_33
 
 noncomputable section
 

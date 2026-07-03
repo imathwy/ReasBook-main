@@ -1,5 +1,5 @@
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import stacks_project.Chap04.CanonicalPullbackChoice
+import StacksProject_2024.Chap04.CanonicalPullbackChoice
 
 open CategoryTheory
 open CategoryTheory Functor

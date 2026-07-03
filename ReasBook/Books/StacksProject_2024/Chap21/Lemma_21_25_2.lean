@@ -1,8 +1,8 @@
 import Mathlib
-import stacks_project.Chap13.Lemma_13_17_1
-import stacks_project.Chap13.Remark_13_34_5
-import stacks_project.Chap18.Definition_18_6_1
-import stacks_project.Chap21.Situation_21_25_1
+import StacksProject_2024.Chap13.Lemma_13_17_1
+import StacksProject_2024.Chap13.Remark_13_34_5
+import StacksProject_2024.Chap18.Definition_18_6_1
+import StacksProject_2024.Chap21.Situation_21_25_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -42,7 +42,7 @@ variable [A.IsClosedUnderExtensions]
 -- identifies the compatible comparison morphism with the textbook map
 -- `E \to R\!\varprojlim_n \tau_{\ge -n} E`.
 /-- Lemma 21.25.2: in Situation `21.25.1`, if `E` is a derived `\mathcal O_X`-module whose
-cohomology sheaves all lie in the weak Serre subcategory `\mathcal A`, then any compatible
+cohomology sheaves all lie in the weak LinearRepresentations_Serre_1977 subcategory `\mathcal A`, then any compatible
 morphism formalizing the canonical map
 `E \to R\!\varprojlim_n \tau_{\ge -n} E` is an isomorphism in `D(\mathcal O_X)`. -/
 theorem truncationComparison_isIso_of_mem_derivedCategoryWithCohomologyIn

@@ -1,4 +1,4 @@
-import Serre.Chap18.Exercise_18_18_2_6.MatrixCornerActions
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_2_6.MatrixCornerActions
 
 noncomputable section
 

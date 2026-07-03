@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
-import stacks_project.Chap18.Lemma_18_43_3
+import StacksProject_2024.Chap18.Lemma_18_43_3
 
 open CategoryTheory
 
@@ -49,7 +49,7 @@ def DerivedCategory.HasBoundedFiniteTypeLocallyConstantCohomology
 -- Proof sketch: argue by induction on the cohomological amplitude of `K`. After refining to a
 -- cover of the terminal object, make the top nonzero cohomology sheaf constant of finite type,
 -- choose a surjection from a finite free constant sheaf, and form the cone to reduce the
--- amplitude. The weak-Serre closure of locally constant finite-type sheaves keeps the cone in the
+-- amplitude. The weak-LinearRepresentations_Serre_1977 closure of locally constant finite-type sheaves keeps the cone in the
 -- same class, so on each member of the cover one obtains a bounded complex of locally constant
 -- finite-type sheaves whose cohomology identifies with the restricted cohomology sheaves of `K`.
 /-- Lemma 21.53.1: if `K ∈ D^b(\mathcal C, \Lambda)` has cohomology sheaves locally constant of

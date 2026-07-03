@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Field.ULift
 import Mathlib.FieldTheory.PurelyInseparable.PerfectClosure
 import Mathlib.Tactic.Recall
-import stacks_project.Chap10.Definition_10_42_1
+import StacksProject_2024.Chap10.Definition_10_42_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

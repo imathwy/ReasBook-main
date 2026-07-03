@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap20.Lemma_20_35_1
+import StacksProject_2024.Chap20.Lemma_20_35_1
 
 open Opposite
 open TopologicalSpace

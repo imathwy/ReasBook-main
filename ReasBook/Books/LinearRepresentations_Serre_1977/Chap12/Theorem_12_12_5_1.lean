@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap09.Proposition_9_9_4_2
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap09.Proposition_9_9_4_2
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
 
 open scoped BigOperators Representation SubgroupInduction
 
@@ -94,7 +94,7 @@ lemma top_cyclicGroupTheta_eq_overField {K : Type v} [Field K] {G : Type u} [Gro
       exact hg (hsub.mp h)
     simp [Representation.cyclicGroupTheta, hg, hg']
 
-/-- Helper for Theorem 12-12.5-1: on a finite commutative group, the `H = ⊤` summand in Serre's
+/-- Helper for Theorem 12-12.5-1: on a finite commutative group, the `H = ⊤` summand in LinearRepresentations_Serre_1977's
 induction formula is exactly the original auxiliary function `θ`. -/
 lemma top_induced_cyclicGroupTheta_eq_overField {G : Type u} [CommGroup G] [Finite G] :
     Ind[(⊤ : Subgroup G)]((θ[(⊤ : Subgroup G)] : (⊤ : Subgroup G) → K)) = (θ[G] : G → K) := by
@@ -171,7 +171,7 @@ lemma cyclicGroupTheta_mem_characterRingOverFieldScalarExtension
     have htop : (⊤ : Subgroup A) ∈ S := by
       simpa [S] using (Subgroup.mem_cyclicSubgroups.2 inferInstance :
         (⊤ : Subgroup A) ∈ Subgroup.cyclicSubgroups A)
-    -- Split Serre's cyclic sum into the top subgroup term and the proper subgroup contribution.
+    -- Split LinearRepresentations_Serre_1977's cyclic sum into the top subgroup term and the proper subgroup contribution.
     have hsplit :
         Finset.sum S (fun J ↦ Ind[J]((θ[J] : J → K))) =
           Ind[(⊤ : Subgroup A)]((θ[(⊤ : Subgroup A)] : (⊤ : Subgroup A) → K)) +
@@ -216,7 +216,7 @@ lemma cyclicGroupTheta_mem_characterRingOverFieldScalarExtension
       convert hconst' using 1
       ext a
       simp [Pi.smul_apply]
-    -- Rewrite Serre's identity as `θ[A] = |A| • 1 - (proper subgroup sum)`.
+    -- Rewrite LinearRepresentations_Serre_1977's identity as `θ[A] = |A| • 1 - (proper subgroup sum)`.
     have htheta_eq :
         (θ[A] : A → K) =
           (Nat.card A : K) • (1 : A → K) -
@@ -321,7 +321,7 @@ lemma cyclicSubgroupInduction_single
   exact DFinsupp.sumAddHom_single
     (fun H ↦ (H.1.characterRingOverFieldAlgebraScalarExtensionInduction).toAddMonoidHom) H χ
 
-/-- Helper for Theorem 12-12.5-1: Serre's cyclic-subgroup identity rewritten on the actual owner
+/-- Helper for Theorem 12-12.5-1: LinearRepresentations_Serre_1977's cyclic-subgroup identity rewritten on the actual owner
 index `CycSub`. -/
 lemma cyclicSubgroup_sum_induced_cyclicGroupTheta_eq_groupOrder_smul_one
     {K : Type v} [Field K] :
@@ -341,7 +341,7 @@ lemma cyclicSubgroup_sum_induced_cyclicGroupTheta_eq_groupOrder_smul_one
     _ = (Nat.card G : K) • (1 : G → K) := by
           exact sum_induced_cyclicGroupTheta_eq_groupOrder_smul_one (G := G) (K := K)
 
-/-- Helper for Theorem 12-12.5-1: multiplying Serre's cyclic `θ`-identity by any
+/-- Helper for Theorem 12-12.5-1: multiplying LinearRepresentations_Serre_1977's cyclic `θ`-identity by any
 `φ ∈ ℚ ⊗ R_K(G)` produces a direct-sum preimage of `(Nat.card G : ℚ) • φ`. -/
 lemma exists_cyclicSubgroupInduction_preimage_groupOrder_smul
     (φ : ℚ⊗R[K](G)) :

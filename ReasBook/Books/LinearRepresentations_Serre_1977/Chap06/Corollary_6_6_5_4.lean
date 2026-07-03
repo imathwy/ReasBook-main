@@ -1,7 +1,7 @@
-import Serre.Chap06.Corollary_6_6_5_3
-import Serre.Chap06.Exercise_6_6_5_6
-import Serre.Chap06.Proposition_6_6_5_1
-import Serre.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_5_3
+import LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_5_6
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_1
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
 import Mathlib.NumberTheory.Niven
 
 -- Declarations for this item will be appended below by the statement pipeline.

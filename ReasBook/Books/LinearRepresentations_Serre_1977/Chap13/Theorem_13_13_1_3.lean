@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.RepresentationTheory.RealizableOver
-import Serre.Chap12.Corollary_12_12_4_2
-import Serre.Chap12.Lemma_12_12_1_4
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_4_2
+import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_1_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -23,7 +23,7 @@ local instance instNeZeroExponent : NeZero (Monoid.exponent G) :=
   Monoid.neZero_exponent_of_finite
 
 /- Source/core/bridge triage:
-- `source-facing`: Serre's rational-character criterion over a cyclotomic realization of `ℚ(m)`,
+- `source-facing`: LinearRepresentations_Serre_1977's rational-character criterion over a cyclotomic realization of `ℚ(m)`,
   together with its rational-valued specialization.
 - `core/canonical`: the Chapter `12` owner
   `Representation.classFunction_mem_characterRingOverFieldScalarExtension_map_iff_galoisCompatible`,
@@ -56,9 +56,9 @@ it locally. -/
 -- Proof sketch: combine the cyclotomic Galois description from Theorem `13-13.1-1` with the
 -- general Galois-power criterion for rationalized character rings from Chapter `12`, specialized
 -- to the exponent `m = Monoid.exponent G`; over a cyclotomic realization of `ℚ(m)`, this is
--- exactly Serre's condition `σ_t(f) = Ψ^t(f)`.
+-- exactly LinearRepresentations_Serre_1977's condition `σ_t(f) = Ψ^t(f)`.
 /-- Helper for Theorem 13-13.1-3: extending rational characters from `ℚ` to the bottom field of
-`K` keeps them inside Serre's character ring. -/
+`K` keeps them inside LinearRepresentations_Serre_1977's character ring. -/
 private theorem bot_symm_mem_characterRingOverField_of_mem
     {χ : G → ℚ} (hχ : χ ∈ R[ℚ](G)) :
     (fun s ↦ (IntermediateField.botEquiv ℚ K).symm (χ s)) ∈
@@ -240,7 +240,7 @@ private theorem bot_field_scalar_extension_transport
 
 /-- Theorem 13-13.1-3 (1): for a `K`-valued class function on `G`, where `K` is a cyclotomic
 extension realizing the source field `ℚ(m)` with `m = Monoid.exponent G`, membership in the
-coefficientwise image of Serre's rational character ring `ℚ ⊗ R_ℚ(G)` is equivalent to the
+coefficientwise image of LinearRepresentations_Serre_1977's rational character ring `ℚ ⊗ R_ℚ(G)` is equivalent to the
 compatibility condition `σ_t(f) = Ψ^t(f)` for every `t ∈ (ℤ / mℤ)ˣ`, written using the canonical
 cyclotomic Galois action of `Γ_ℚ` on `K`. -/
 theorem cyclotomic_valued_classFunction_mem_rational_character_ring_iff_galois_compatible
@@ -321,7 +321,7 @@ private theorem rational_scalar_extension_mem_map_iff
     -- The forward map witnesses membership immediately.
     exact Submodule.mem_map.mpr ⟨f, hf, rfl⟩
 
-/-- Theorem 13-13.1-3 (2): a rational-valued class function belongs to Serre's
+/-- Theorem 13-13.1-3 (2): a rational-valued class function belongs to LinearRepresentations_Serre_1977's
 `ℚ ⊗ R_ℚ(G)` exactly when it is fixed by every power operation `Ψ^t` with
 `t ∈ (ℤ / mℤ)ˣ`, where `m = Monoid.exponent G`; the source requirement that `f` have values in
 `ℚ` is represented here by taking `f : G → ℚ`. -/

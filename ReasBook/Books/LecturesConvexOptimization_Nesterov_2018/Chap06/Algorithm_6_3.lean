@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Ring.Parity
-import Nesterov.Chap06.Theorem_6_2_3
-import Nesterov.Chap06.Theorem_6_4
+import LecturesConvexOptimization_Nesterov_2018.Chap06.Theorem_6_2_3
+import LecturesConvexOptimization_Nesterov_2018.Chap06.Theorem_6_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

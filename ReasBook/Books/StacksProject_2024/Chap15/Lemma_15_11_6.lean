@@ -1,8 +1,8 @@
 import Mathlib.Data.List.TFAE
 import Mathlib.RingTheory.Etale.Basic
 import Mathlib.RingTheory.Henselian
-import stacks_project.Chap15.IdempotentLifting
-import stacks_project.Chap15.Lemma_15_10_2
+import StacksProject_2024.Chap15.IdempotentLifting
+import StacksProject_2024.Chap15.Lemma_15_10_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,7 +1,7 @@
 import Mathlib
-import stacks_project.Chap10.Lemma_10_157_4_Serre_s_criterion_for_normality
-import stacks_project.Chap10.Lemma_10_163_4
-import stacks_project.Chap10.Lemma_10_163_5
+import StacksProject_2024.Chap10.Lemma_10_157_4_Serre_s_criterion_for_normality
+import StacksProject_2024.Chap10.Lemma_10_163_4
+import StacksProject_2024.Chap10.Lemma_10_163_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -21,7 +21,7 @@ Domain-style sampling pass:
 * primary domain: Noetherian commutative algebra of ascent of normality along flat maps;
 * sampled owner declarations of the same kind:
   - `IsNormalRing`, the chapter owner for ring normality;
-  - `isNormalRing_iff_serreConditionR_one_and_serreConditionS_two`, the canonical Serre-criterion
+  - `isNormalRing_iff_serreConditionR_one_and_serreConditionS_two`, the canonical LinearRepresentations_Serre_1977-criterion
     owner-level characterization of normality;
   - `serreConditionR_of_flat_of_fiber`, the chapter ascent theorem for `(R₁)`;
   - `serreConditionS_of_flat_of_fiber`, the chapter ascent theorem for `(S₂)`;
@@ -31,13 +31,13 @@ Domain-style sampling pass:
 Best owner abstraction:
 * the public target stays the source-facing normality theorem, but its proof should pass entirely
   through the owner predicates `IsNormalRing`, `SerreConditionR`, and `SerreConditionS`, rather
-  than duplicating local wheel definitions for the Serre conditions.
+  than duplicating local wheel definitions for the LinearRepresentations_Serre_1977 conditions.
 
 Primitive data vs. derived API:
 * primitive data: the flat algebra `R → S`, the Noetherian hypotheses on `R` and `S`, the normal
   base-ring owner `[IsNormalRing R]`, and the fiberwise normality hypothesis `hfiber`;
 * derived API: the `(R₁)` and `(S₂)` instances for the base and the fibers, obtained canonically
-  from the Serre criterion, together with fiberwise Noetherianity obtained canonically from
+  from the LinearRepresentations_Serre_1977 criterion, together with fiberwise Noetherianity obtained canonically from
   `Algebra.EssFiniteType.isNoetherianRing`, and then fed into the existing ascent theorems.
 
 Source/core/bridge triage:
@@ -47,10 +47,10 @@ Source/core/bridge triage:
 * `bridge/view`: the two ascent theorems for `(R₁)` and `(S₂)` along the flat map.
 -/
 
--- Proof sketch: by Serre's criterion, it is enough to prove that `S` satisfies `(R_1)` and
--- `(S_2)`. The normality of `R` and of each fiber ring gives these Serre conditions on `R` and on
+-- Proof sketch: by LinearRepresentations_Serre_1977's criterion, it is enough to prove that `S` satisfies `(R_1)` and
+-- `(S_2)`. The normality of `R` and of each fiber ring gives these LinearRepresentations_Serre_1977 conditions on `R` and on
 -- every fiber. Apply Lemmas `10.163.5` and `10.163.4` to ascend `(R_1)` and `(S_2)` along the flat
--- map `R → S`, and conclude that `S` is normal by Serre's criterion again.
+-- map `R → S`, and conclude that `S` is normal by LinearRepresentations_Serre_1977's criterion again.
 /-- Lemma 10.163.8: for a flat ring map `R → S` between Noetherian rings, if `R` is normal and
 every fiber ring `κ(𝔭) ⊗[R] S`, formalized as `p.asIdeal.Fiber S`, is normal, then `S` is a
 normal ring. -/

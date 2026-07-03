@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap08.Definition_8_8_3_4
+import LinearRepresentations_Serre_1977.Chap08.Definition_8_8_3_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

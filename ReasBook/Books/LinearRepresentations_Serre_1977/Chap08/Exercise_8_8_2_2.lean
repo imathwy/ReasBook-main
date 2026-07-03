@@ -1,14 +1,14 @@
 import Mathlib
-import Serre.Chap02.Corollary_2_2_4_3
-import Serre.Chap02.Remark_2_2_4_4
-import Serre.Chap08.Proposition_8_8_2_1.CharacterPacketCore
-import Serre.Chap08.Proposition_8_8_2_1.InductionBridge
-import Serre.Chap08.Proposition_8_8_2_1.RestrictionBridge
-import Serre.Chap08.Proposition_8_8_2_1.MackeyWeights
-import Serre.Chap08.Proposition_8_8_2_1.CharacterWeightBridge
-import Serre.Chap07.Proposition_7_7_2_1
-import Serre.Chap07.Proposition_7_7_4_1
-import Serre.Chap07.Exercise_7_7_2_5
+import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_4_3
+import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_4_4
+import LinearRepresentations_Serre_1977.Chap08.Proposition_8_8_2_1.CharacterPacketCore
+import LinearRepresentations_Serre_1977.Chap08.Proposition_8_8_2_1.InductionBridge
+import LinearRepresentations_Serre_1977.Chap08.Proposition_8_8_2_1.RestrictionBridge
+import LinearRepresentations_Serre_1977.Chap08.Proposition_8_8_2_1.MackeyWeights
+import LinearRepresentations_Serre_1977.Chap08.Proposition_8_8_2_1.CharacterWeightBridge
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_4_1
+import LinearRepresentations_Serre_1977.Chap07.Exercise_7_7_2_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -31,7 +31,7 @@ attribute [local instance] Fintype.ofFinite
 
 namespace FDRep
 
-/-- Helper for Exercise 8-8.2-2: bundle Serre's packet `θ[φ; χ, ρ]` as a finite-dimensional
+/-- Helper for Exercise 8-8.2-2: bundle LinearRepresentations_Serre_1977's packet `θ[φ; χ, ρ]` as a finite-dimensional
 representation so Chapter 2's complete-family API can read its degree and simplicity. -/
 noncomputable abbrev theta [Finite H]
     (φ : H →* MulAut A) (χ : A →* ℂˣ) (ρ : FDRep ℂ H_[φ; χ]) :
@@ -66,7 +66,7 @@ private theorem semidirect_product_card_ne_zero_complex [Finite A] [Finite H] :
   exact ⟨Nat.cast_ne_zero.mpr Nat.card_pos.ne'⟩
 
 /-- Helper for Exercise 8-8.2-2: the subgroup-side packet source already satisfies the two
-inputs of Serre's reverse Mackey criterion. -/
+inputs of LinearRepresentations_Serre_1977's reverse Mackey criterion. -/
 private theorem theta_reverse_mackey_hypothesis [Finite A] [Finite H]
     (χ : A →* ℂˣ) (ρ : Rep.{w} ℂ H_[φ; χ]) [ρ.ρ.IsIrreducible] :
     Representation.IsIrreducible (theta_packet_source (φ := φ) χ ρ).ρ ∧
@@ -90,7 +90,7 @@ private theorem theta_reverse_mackey_hypothesis [Finite A] [Finite H]
     -- Away from the stabilizer subgroup, the Mackey weight mismatch kills every intertwiner.
     exact theta_local_mackey_disjoint (φ := φ) (χ := χ) (ρ := ρ) hs f
 
-/-- Helper for Exercise 8-8.2-2: the explicit induced subgroup model in Serre's proof is
+/-- Helper for Exercise 8-8.2-2: the explicit induced subgroup model in LinearRepresentations_Serre_1977's proof is
 irreducible by the reverse direction of Mackey's criterion. -/
 private theorem theta_packet_induction_model_isIrreducible [Finite A] [Finite H]
     (χ : A →* ℂˣ) (ρ : Rep.{w} ℂ H_[φ; χ]) [ρ.ρ.IsIrreducible] :
@@ -134,12 +134,12 @@ private theorem theta_isIrreducible_of_induction_model_local [Finite H]
       (σ := (Representation.theta φ χ ρ).ρ)
       ⟨(theta_equiv_ind_character_stabilizer_subgroup (φ := φ) χ ρ).symm⟩
 
-/-- Helper for Exercise 8-8.2-2: in the finite-`A` situation of the exercise, Serre's Mackey criterion
+/-- Helper for Exercise 8-8.2-2: in the finite-`A` situation of the exercise, LinearRepresentations_Serre_1977's Mackey criterion
 proves that the little-groups packet `θ[φ; χ, ρ]` is irreducible. -/
 theorem theta_isIrreducible [Finite A] [Finite H]
     (χ : A →* ℂˣ) (ρ : Rep.{w} ℂ H_[φ; χ]) [ρ.ρ.IsIrreducible] :
     (Representation.theta φ χ ρ).ρ.IsIrreducible := by
-  -- Route correction: the compiled Chapter 7 criterion is now available, so we follow Serre's
+  -- Route correction: the compiled Chapter 7 criterion is now available, so we follow LinearRepresentations_Serre_1977's
   -- original route directly on the explicit packet subgroup instead of rebuilding a parallel API.
   have hInd :
       (Rep.ind
@@ -149,7 +149,7 @@ theorem theta_isIrreducible [Finite A] [Finite H]
   -- Transport irreducibility from the induced subgroup model back to the packet `θ[φ; χ, ρ]`.
   exact theta_isIrreducible_of_induction_model_local (φ := φ) χ ρ hInd
 
-/-- Helper for Exercise 8-8.2-2: Serre's Mackey-criterion proof already closes the packet
+/-- Helper for Exercise 8-8.2-2: LinearRepresentations_Serre_1977's Mackey-criterion proof already closes the packet
 irreducibility statement when the normal factor `A` is finite, so the ambient semidirect product
 is itself finite. -/
 private theorem theta_irreducible_of_finite_normal_factor [Finite A] [Finite H]
@@ -161,7 +161,7 @@ private theorem theta_irreducible_of_finite_normal_factor [Finite A] [Finite H]
 
 /-
 Source/core/bridge triage for Exercise 8-8.2-2:
-* `source-facing`: the orbit-count and square-degree identities for Serre's little-groups
+* `source-facing`: the orbit-count and square-degree identities for LinearRepresentations_Serre_1977's little-groups
   construction, and the resulting completeness of the induced family on `A ⋊[φ] H`.
 * `core/canonical`: `HasCharacterOrbitRepresentatives`, `FDRep.theta`,
   `IsCompleteIrreducibleFamily`, `sum_sq_degree_eq_card_of_complete_irreducible_family`, and

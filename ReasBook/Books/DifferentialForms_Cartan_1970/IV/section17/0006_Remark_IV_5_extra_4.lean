@@ -1,5 +1,5 @@
 import Mathlib
-import cartan.IV.section17.«0002_Theorem_IV_5_extra_2»
+import DifferentialForms_Cartan_1970.IV.section17.«0002_Theorem_IV_5_extra_2»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -6,7 +6,7 @@ import Mathlib.Data.Matrix.ColumnRowPartitioned
 import Mathlib.Analysis.Matrix
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.LinearAlgebra.FiniteDimensional.Defs
-import Reaslib.NumericalAlgebra.Basics.Orthogonality
+import ReasLib.NumericalAlgebra.Basics.Orthogonality
 
 /-!
 # Singular Value Decomposition for Linear Map

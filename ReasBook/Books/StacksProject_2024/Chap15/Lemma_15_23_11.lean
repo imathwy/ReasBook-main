@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import stacks_project.Chap10.Definition_10_157_1
-import stacks_project.Chap15.Lemma_15_23_10
+import StacksProject_2024.Chap10.Definition_10_157_1
+import StacksProject_2024.Chap15.Lemma_15_23_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -9,7 +9,7 @@ universe u v w
 
 /-
 Domain-style sampling:
-- primary domain: Serre conditions of finite modules over Noetherian rings and torsion-freeness of
+- primary domain: LinearRepresentations_Serre_1977 conditions of finite modules over Noetherian rings and torsion-freeness of
   linear-map modules;
 - sampled owner declarations:
   `Module.SerreConditionS`,
@@ -46,8 +46,8 @@ instance LinearMap.instSerreConditionSOneOfCodomain
 -- `Hom`. Then apply the depth estimate from Lemma `15.23.10 (1)` to the localized linear-map
 -- module, and package the resulting local inequalities back into the definition of
 -- `Module.SerreConditionS ... 1`.
-/-- Lemma 15.23.11 (1): if the finite `R`-module `N` satisfies Serre's condition `(S_1)`, then
-the module `Hom_R(M, N)` also satisfies Serre's condition `(S_1)`. -/
+/-- Lemma 15.23.11 (1): if the finite `R`-module `N` satisfies LinearRepresentations_Serre_1977's condition `(S_1)`, then
+the module `Hom_R(M, N)` also satisfies LinearRepresentations_Serre_1977's condition `(S_1)`. -/
 theorem linearMap_serreConditionS_one_of_codomain
     [Module.SerreConditionS R N 1] :
     Module.SerreConditionS R (M →ₗ[R] N) 1 := inferInstance
@@ -62,8 +62,8 @@ instance LinearMap.instSerreConditionSTwoOfCodomain
 -- Proof sketch: localize at a prime ideal, identify localization of `Hom_R(M, N)` with the `Hom`
 -- module of the localized finite modules, and invoke Lemma `15.23.10 (2)` to get the depth bound
 -- required in the definition of `Module.SerreConditionS ... 2`.
-/-- Lemma 15.23.11 (2): if the finite `R`-module `N` satisfies Serre's condition `(S_2)`, then
-the module `Hom_R(M, N)` also satisfies Serre's condition `(S_2)`. -/
+/-- Lemma 15.23.11 (2): if the finite `R`-module `N` satisfies LinearRepresentations_Serre_1977's condition `(S_2)`, then
+the module `Hom_R(M, N)` also satisfies LinearRepresentations_Serre_1977's condition `(S_2)`. -/
 theorem linearMap_serreConditionS_two_of_codomain
     [Module.SerreConditionS R N 2] :
     Module.SerreConditionS R (M →ₗ[R] N) 2 := inferInstance

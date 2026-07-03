@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Analysis.InnerProductSpace.ProdL2
 import Mathlib.Data.List.TFAE
-import BauschkeLean.Chap16.Definition_16_67
-import BauschkeLean.Chap16.Theorem_16_29
-import BauschkeLean.Chap19.Definition_19_11
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Definition_16_67
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Theorem_16_29
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap19.Definition_19_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

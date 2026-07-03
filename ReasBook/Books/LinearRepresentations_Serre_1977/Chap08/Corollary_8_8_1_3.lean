@@ -1,10 +1,10 @@
-import Serre.Chap08.Proposition_8_8_1_1
-import Serre.Chap08.Remark_8_8_1_2
-import Serre.Chap02.Theorem_2_2_3_5
-import Serre.Chap02.Proposition_2_2_2_1
-import Serre.Chap06.Corollary_6_6_5_3
-import Serre.Chap06.Proposition_6_6_5_1
-import Serre.Chap06.Exercise_6_6_5_6
+import LinearRepresentations_Serre_1977.Chap08.Proposition_8_8_1_1
+import LinearRepresentations_Serre_1977.Chap08.Remark_8_8_1_2
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_2_1
+import LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_5_3
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_1
+import LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_5_6
 import Mathlib.Data.Nat.Factorization.Basic
 import Mathlib.NumberTheory.Niven
 import Mathlib.LinearAlgebra.TensorPower.Basic
@@ -27,7 +27,7 @@ variable {V : Type v} [AddCommGroup V] [Module ℂ V]
 local instance finiteGroupFintypeCorollary8813 : Fintype G := Fintype.ofFinite G
 
 /- Source/core/bridge triage:
-* `source-facing`: Serre's divisibility statement for an irreducible complex representation and an
+* `source-facing`: LinearRepresentations_Serre_1977's divisibility statement for an irreducible complex representation and an
   abelian normal subgroup `A`.
 * `core/canonical`: the Chapter 6 owner theorem `finrank_dvd_center_index`.
 * `bridge/view`: the descended quotient representation `Representation.ofQuotient ρ ρ.ker`,
@@ -128,7 +128,7 @@ lemma dvd_index_of_induced_from_overgroup
     (hWdiv : Module.finrank ℂ W.toSubmodule ∣ (A.subgroupOf H).index) :
     Module.finrank ℂ V ∣ A.index := by
   rcases hWdiv with ⟨d, hd⟩
-  -- Rewrite the ambient degree by Serre's induced-dimension formula and the subgroup-index
+  -- Rewrite the ambient degree by LinearRepresentations_Serre_1977's induced-dimension formula and the subgroup-index
   -- factorization `A.index = (A : H) * H.index`.
   refine ⟨d, ?_⟩
   calc
@@ -1077,7 +1077,7 @@ def centerTupleProd_local (n : ℕ) : (Fin (n + 1) → Subgroup.center G) →* S
     simpa using
       (Finset.prod_mul_distrib : (∏ i, x i * y i) = (∏ i, x i) * ∏ i, y i)
 
-/-- Helper for Corollary 8-8.1-3: Serre's product-one central subgroup inside the tuple group is
+/-- Helper for Corollary 8-8.1-3: LinearRepresentations_Serre_1977's product-one central subgroup inside the tuple group is
 the image of the kernel of the coordinatewise product map. -/
 def productOneCenterSubgroup_local (n : ℕ) : Subgroup (Fin (n + 1) → G) :=
   ((centerTupleProd_local (G := G) n).ker).map (centerTupleEmbedding_local (G := G) n)
@@ -1112,7 +1112,7 @@ lemma centerTupleProd_surjective_local (n : ℕ) :
   rw [Fin.prod_univ_castSucc]
   simp
 
-/-- Helper for Corollary 8-8.1-3: the product-one central subgroup has the index in Serre's
+/-- Helper for Corollary 8-8.1-3: the product-one central subgroup has the index in LinearRepresentations_Serre_1977's
 quotient-order computation. -/
 lemma product_one_center_subgroup_index_local (n : ℕ) :
     (productOneCenterSubgroup_local (G := G) n).index =
@@ -1227,7 +1227,7 @@ lemma tensor_power_quotient_finrank_pow_dvd_center_card_mul_index_pow_local
   have hdiv : Module.finrank ℂ (TensorPower ℂ (m + 1) V) ∣ H.index := by
     -- The descended quotient representation is irreducible, so the order-divisibility owner applies.
     simpa [H, τ, Subgroup.index_eq_card] using finrank_dvd_card_local τ
-  -- Rewrite the tensor-power degree and quotient order into Serre's final arithmetic form.
+  -- Rewrite the tensor-power degree and quotient order into LinearRepresentations_Serre_1977's final arithmetic form.
   simpa [H, tensor_power_finrank_local, product_one_center_subgroup_index_local] using hdiv
 
 /-- Helper for Corollary 8-8.1-3: an irreducible representation has degree dividing the index of

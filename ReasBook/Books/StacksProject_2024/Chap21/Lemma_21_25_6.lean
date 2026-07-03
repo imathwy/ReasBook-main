@@ -1,8 +1,8 @@
 import Mathlib
-import stacks_project.Chap13.Remark_13_34_5
-import stacks_project.Chap21.Remark_21_19_3
-import stacks_project.Chap21.Situation_21_25_1
-import stacks_project.Chap21.Situation_21_25_5
+import StacksProject_2024.Chap13.Remark_13_34_5
+import StacksProject_2024.Chap21.Remark_21_19_3
+import StacksProject_2024.Chap21.Situation_21_25_1
+import StacksProject_2024.Chap21.Situation_21_25_5
 
 open CategoryTheory
 open CategoryTheory.GrothendieckTopology

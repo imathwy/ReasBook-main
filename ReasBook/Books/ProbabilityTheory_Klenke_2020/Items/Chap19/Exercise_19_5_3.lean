@@ -1,9 +1,9 @@
-import AchimKlenkeLean.Items.Chap17.Theorem_17_8
-import AchimKlenkeLean.Items.Chap19.Definition_19_17
-import AchimKlenkeLean.Items.Chap19.Definition_19_23
-import AchimKlenkeLean.Items.Chap19.Exercise_19_5_LadderGraphs
-import AchimKlenkeLean.Items.Chap19.Theorem_19_19
-import AchimKlenkeLean.Items.Chap19.Theorem_19_15
+import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_8
+import ProbabilityTheory_Klenke_2020.Items.Chap19.Definition_19_17
+import ProbabilityTheory_Klenke_2020.Items.Chap19.Definition_19_23
+import ProbabilityTheory_Klenke_2020.Items.Chap19.Exercise_19_5_LadderGraphs
+import ProbabilityTheory_Klenke_2020.Items.Chap19.Theorem_19_19
+import ProbabilityTheory_Klenke_2020.Items.Chap19.Theorem_19_15
 import Mathlib
 
 open MeasureTheory ProbabilityTheory SimpleGraph

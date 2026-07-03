@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap02.Exercise_2_2_1_5
-import Serre.Chap02.Theorem_2_2_3_5
-import Serre.Chap08.Corollary_8_8_1_3
+import LinearRepresentations_Serre_1977.Chap02.Exercise_2_2_1_5
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Chap08.Corollary_8_8_1_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -53,7 +53,7 @@ abbrev permutationAugmentationSubrepresentation :
     Subrepresentation (ofMulAction k G X) :=
   (permutationAugmentation k G X).ker
 
-/- `source-facing`: Serre's augmentation representation.
+/- `source-facing`: LinearRepresentations_Serre_1977's augmentation representation.
 `bridge/view`: the induced representation on the canonical augmentation kernel. -/
 /-- The augmentation representation attached to the permutation action of `G` on `X`. -/
 abbrev permutationAugmentationRepresentation [CommRing k] :
@@ -80,7 +80,7 @@ section AugmentationCharacter
 
 variable (k : Type w) [Field k]
 
-/- `source-facing`: Serre's augmentation character `ψ`.
+/- `source-facing`: LinearRepresentations_Serre_1977's augmentation character `ψ`.
 `bridge/view`: the character of `permutationAugmentationRepresentation`. -/
 /-- The character of the augmentation representation attached to the permutation action of `G`
 on `X`. -/

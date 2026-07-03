@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap03.Definition_3_2_2
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_2_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -12,10 +12,10 @@ Primary domain:
 
 Sampled owner-style declarations:
 - `StrongConvexOn` from mathlib;
-- `strongConvexOn_iff_quadratic_jensen_bound` in `Nesterov.Chap02.Theorem_2_10`;
+- `strongConvexOn_iff_quadratic_jensen_bound` in `LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_10`;
 - `exists_pos_strongConvexOn_iff_forall_segment_upper_bound` in
-  `Nesterov.Chap03.Definition_3_2_2`;
-- `𝒮^0_μ(Q)` / `StrongConvexOn Q μ f` in `Nesterov.Chap03.Definition_3_47`.
+  `LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_2_2`;
+- `𝒮^0_μ(Q)` / `StrongConvexOn Q μ f` in `LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_47`.
 
 Best owner abstraction:
 - source-facing: the positive-modulus strong-convexity assumption used in the text;

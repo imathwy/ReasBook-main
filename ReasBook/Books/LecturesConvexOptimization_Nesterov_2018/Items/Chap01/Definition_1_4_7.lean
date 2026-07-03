@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Definition_1_4_7
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_4_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -27,7 +27,7 @@ Relevant owner-style declarations sampled before refining:
 * `inner_gradient_left`, which identifies `fderiv ℝ f xBar` with pairing against `∇ f xBar`
 * `EuclideanSpace.inner_basisFun_real`, which recovers standard coordinates from the Euclidean
   basis
-* `gradient_eq_pi_fderiv_stdBasis` from `Nesterov/Chap01/Definition_1_4_7.lean`, the exact
+* `gradient_eq_pi_fderiv_stdBasis` from `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_4_7.lean`, the exact
   chapter-level source-facing bridge for this item
 
 Owner abstraction:

@@ -1,4 +1,4 @@
-import SmoothManifoldsLee.Chap04.Sec04_26.Definition_4_26_extra_1
+import SmoothManifolds_Lee_2012.Chap04.Sec04_26.Definition_4_26_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
-import CombinatorialGroupTheory.Items.Chap01.Corollary_1_4_13
-import CombinatorialGroupTheory.Items.Chap01.Proposition_1_2_18
-import CombinatorialGroupTheory.Items.Chap01.Proposition_1_2_21
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Corollary_1_4_13
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_2_18
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_2_21
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

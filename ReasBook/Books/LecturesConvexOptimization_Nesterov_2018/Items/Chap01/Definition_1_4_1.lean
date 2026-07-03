@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Definition_1_4_1
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_4_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -14,9 +14,9 @@ Primary domain:
 Relevant owner-style declarations sampled before refining:
 * `Antitone`, the canonical owner predicate for decreasing maps on a preorder;
 * `antitone_nat_of_succ_le`, the canonical `ℕ` constructor from the one-step decrease condition;
-* `antitone_nat_iff_succ_le` in `Nesterov/Chap01/Definition_1_4_1.lean`, the chapter bridge
+* `antitone_nat_iff_succ_le` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_4_1.lean`, the chapter bridge
   theorem already packaging the textbook successor-step criterion;
-* `bounded_relaxation_sequence_tendsto_infimum` in `Nesterov/Chap01/Proposition_1_4_2.lean`, the
+* `bounded_relaxation_sequence_tendsto_infimum` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Proposition_1_4_2.lean`, the
   direct downstream theorem that consumes the chapter bridge instead of a local item-level copy.
 
 Best owner abstraction:

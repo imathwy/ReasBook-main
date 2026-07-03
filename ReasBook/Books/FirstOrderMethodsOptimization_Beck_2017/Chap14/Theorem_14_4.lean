@@ -1,10 +1,10 @@
 import Mathlib
-import FirstOrderMethodsinOptimization.Chap03.Definition_3_17
-import FirstOrderMethodsinOptimization.Chap11.Definition_11_4
-import FirstOrderMethodsinOptimization.Chap14.Algorithm_14_3
-import FirstOrderMethodsinOptimization.Chap14.Lemma_14_2
-import FirstOrderMethodsinOptimization.Chap14.Proposition_14_2
-import FirstOrderMethodsinOptimization.Chap14.Theorem_14_3
+import FirstOrderMethodsOptimization_Beck_2017.Chap03.Definition_3_17
+import FirstOrderMethodsOptimization_Beck_2017.Chap11.Definition_11_4
+import FirstOrderMethodsOptimization_Beck_2017.Chap14.Algorithm_14_3
+import FirstOrderMethodsOptimization_Beck_2017.Chap14.Lemma_14_2
+import FirstOrderMethodsOptimization_Beck_2017.Chap14.Proposition_14_2
+import FirstOrderMethodsOptimization_Beck_2017.Chap14.Theorem_14_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -43,8 +43,8 @@ Algorithm 14.3 step data and use that owner trajectory only internally.
 
 Route correction: the remaining validation blocker for this file is upstream, not in the proof
 route below. A direct
-`lake env lean FirstOrderMethodsinOptimization/Chap14/Theorem_14_4.lean` currently stops at the
-missing object file for `FirstOrderMethodsinOptimization.Chap11.Definition_11_4`, so the
+`lake env lean FirstOrderMethodsOptimization_Beck_2017/Chap14/Theorem_14_4.lean` currently stops at the
+missing object file for `FirstOrderMethodsOptimization_Beck_2017.Chap11.Definition_11_4`, so the
 Chapter 14 proof skeleton is left unchanged until that canonical Chapter 11 owner rebuilds. -/
 
 -- Proof sketch: for each outer iteration and block, start from the owner clause

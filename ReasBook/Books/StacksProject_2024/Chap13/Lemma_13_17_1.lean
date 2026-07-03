@@ -3,8 +3,8 @@ import Mathlib.Algebra.Homology.DerivedCategory.TStructure
 import Mathlib.CategoryTheory.ObjectProperty.ColimitsOfShape
 import Mathlib.CategoryTheory.ObjectProperty.Retract
 import Mathlib.CategoryTheory.Triangulated.Subcategory
-import stacks_project.Chap12.Definition_12_10_1
-import stacks_project.Chap13.Definition_13_11_3
+import StacksProject_2024.Chap12.Definition_12_10_1
+import StacksProject_2024.Chap13.Definition_13_11_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -118,7 +118,7 @@ instance derivedCategoryCohomologyInProperty_isClosedUnderIsomorphisms
       (derivedCategoryCohomologyInProperty P) := sorry
 
 -- Proof sketch: a retract in `D(A)` is a direct summand, cohomology preserves biproducts, and a
--- weak Serre subcategory is closed under kernels, hence under direct summands of its objects.
+-- weak LinearRepresentations_Serre_1977 subcategory is closed under kernels, hence under direct summands of its objects.
 /-- The full subcategory `D_P(A)` is saturated, i.e. stable under retracts. -/
 instance derivedCategoryCohomologyInProperty_isSaturated
     (P : ObjectProperty A) [IsWeakSerreClass P] :
@@ -132,7 +132,7 @@ strict-fullness, saturation, and triangulatedity are therefore the generic upstr
 here. -/
 
 -- Proof sketch: the long exact cohomology sequence of a distinguished triangle and the weak
--- Serre condition on `P` give the two-out-of-three property degreewise; closure under zero and
+-- LinearRepresentations_Serre_1977 condition on `P` give the two-out-of-three property degreewise; closure under zero and
 -- shifts is formal in the derived category.
 /-- The object property cutting out `D_P(A)` is triangulated. -/
 instance derivedCategoryCohomologyInProperty_isTriangulated
@@ -156,7 +156,7 @@ section
 
 variable (P : ObjectProperty A) [IsWeakSerreClass P]
 
-/- Lemma 13.17.1: if `P` is a weak Serre subcategory of an abelian category `A`, then the full
+/- Lemma 13.17.1: if `P` is a weak LinearRepresentations_Serre_1977 subcategory of an abelian category `A`, then the full
 subcategory `D_P(A) ⊆ D(A)` consisting of objects whose cohomology objects all lie in `P` is
 triangulated. This is the generic full-subcategory instance applied to the owner property
 `derivedCategoryCohomologyInProperty P`. -/

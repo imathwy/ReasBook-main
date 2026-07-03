@@ -1,4 +1,4 @@
-import SmoothManifoldsLee.Chap03.Sec03_15.Remark_3_15_extra_4
+import SmoothManifolds_Lee_2012.Chap03.Sec03_15.Remark_3_15_extra_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap14.Lemma_14_14_4_1
-import Serre.Chap15.Definition_15_15_1_1
-import Serre.Chap15.Exercise_15_15_1_2.Index
+import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_1_2.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -74,7 +74,7 @@ private theorem toRep_asModule_projective
       ((Rep.counitIso P.V).toLinearEquiv.symm) :
       Module.Projective k[G] ((Rep.ofModuleMonoidAlgebra ⋙ Rep.toModuleMonoidAlgebra).obj P.V))
 
-/-- Helper for Exercise 15-15.1-2: freeze Serre's Chapter 14 averaging witness on the owner
+/-- Helper for Exercise 15-15.1-2: freeze LinearRepresentations_Serre_1977's Chapter 14 averaging witness on the owner
 `P.toRep.ρ.asModule` before transporting it to the tensor-product owner. -/
 private theorem toRep_asModule_exists_averaging_endomorphism
     (P : FiniteProjectiveGroupAlgebraModule k G) :
@@ -354,7 +354,7 @@ private theorem tprod_transport_sumOfConjugates_eq_id_apply_tmul
           rw [hu x]
 
 /-- Helper for Exercise 15-15.1-2: the frozen Chapter 14 averaging identity on the owner
-`P.toRep.ρ.asModule` rewrites to Serre's textbook average formula on the carrier `P.toRep.V`. -/
+`P.toRep.ρ.asModule` rewrites to LinearRepresentations_Serre_1977's textbook average formula on the carrier `P.toRep.V`. -/
 private theorem toRep_textbook_average_eq_id_apply
     (P : FiniteProjectiveGroupAlgebraModule k G) [Fintype G] :
     let ρ := P.toRep.ρ
@@ -374,7 +374,7 @@ private theorem toRep_textbook_average_eq_id_apply
             ((MonoidAlgebra.of k G g : k[G]) •
               u ((MonoidAlgebra.of k G g⁻¹ : k[G]) •
                 P.toRep.ρ.asModuleEquiv.symm x))) = x := by
-  -- Rewrite Serre's explicit average as `sumOfConjugates` on the frozen owner, then transport the
+  -- Rewrite LinearRepresentations_Serre_1977's explicit average as `sumOfConjugates` on the frozen owner, then transport the
   -- identity back to `P.toRep.V` through `asModuleEquiv`.
   dsimp
   classical
@@ -1157,7 +1157,7 @@ private theorem finiteProjective_toRep_shortComplex_shortExact
     hMod.map_of_exact (Rep.ofModuleMonoidAlgebra : ModuleCat k[G] ⥤ Rep k G)
 
 /-- Helper for Exercise 15-15.1-2: tensoring a projective-owner short complex on the left by a
-fixed finite-dimensional representation produces the owner short complex used in Serre's proof. -/
+fixed finite-dimensional representation produces the owner short complex used in LinearRepresentations_Serre_1977's proof. -/
 private abbrev tensor_projective_owner_shortComplex
     (V : FDRep k G) (S : ShortComplex (FiniteProjectiveGroupAlgebraModule k G)) :
     ShortComplex (FiniteProjectiveGroupAlgebraModule k G) :=
@@ -1189,7 +1189,7 @@ private abbrev tensor_projective_owner_shortComplex
         simpa [FGModuleCat.ofHom] using hm
       simpa [fHom, gHom, FGModuleCat.ofHom] using hFG)
 
-/-- Helper for Exercise 15-15.1-2: Serre's tensor-left exactness argument on `Rep k G` descends to
+/-- Helper for Exercise 15-15.1-2: LinearRepresentations_Serre_1977's tensor-left exactness argument on `Rep k G` descends to
 the corresponding owner short complex on finite projective modules. -/
 private theorem tensor_projective_owner_shortExact
     (V : FDRep k G) (S : ShortComplex (FiniteProjectiveGroupAlgebraModule k G))
@@ -1202,7 +1202,7 @@ private theorem tensor_projective_owner_shortExact
       (finiteProjective_toRep_shortComplex (k := k) (G := G) S).ShortExact :=
     finiteProjective_toRep_shortComplex_shortExact (k := k) (G := G) S hS
   have hTensorRep : TRep.ShortExact := by
-    -- Tensor-left exactness in `Rep k G` is the source-faithful core of Serre's argument.
+    -- Tensor-left exactness in `Rep k G` is the source-faithful core of LinearRepresentations_Serre_1977's argument.
     simpa [TRep] using FiniteProjectiveGroupAlgebraModule.rep_tensorLeft_shortExact (k := k) (G := G) V
       (finiteProjective_toRep_shortComplex (k := k) (G := G) S) hRep
   have hTensorMod :
@@ -1224,7 +1224,7 @@ theorem tensorProjectiveClass_middle_eq_left_add_right
     (V : FDRep k G) (S : ShortComplex (FiniteProjectiveGroupAlgebraModule k G))
     (hS : S.ShortExact) :
     [V ⊗ₚ S.X₂]ₚ₀ = [V ⊗ₚ S.X₁]ₚ₀ + [V ⊗ₚ S.X₃]ₚ₀ := by
-  -- Route correction: keep Serre's route. First tensor the ambient `Rep k G` sequence on the
+  -- Route correction: keep LinearRepresentations_Serre_1977's route. First tensor the ambient `Rep k G` sequence on the
   -- left, then reflect that exactness back to the packaged owner short complex.
   simpa [tensor_projective_owner_shortComplex] using
     Representation.finiteProjectiveGroupAlgebraGrothendieckClass_middle_eq_left_add_right
@@ -1329,7 +1329,7 @@ private theorem finiteRep_tensor_projective_owner_shortExact
     -- Forget the finite-dimensional sequence to `Rep k G` before tensoring.
     simpa [SRep] using hS.map_of_exact (forget₂ (FDRep k G) (Rep k G))
   have hLeft : TLeft.ShortExact := by
-    -- Serre's exactness input is the already-proved tensor-left exactness in `Rep k G`.
+    -- LinearRepresentations_Serre_1977's exactness input is the already-proved tensor-left exactness in `Rep k G`.
     simpa [SRep, TLeft] using
       FiniteProjectiveGroupAlgebraModule.rep_tensorLeft_shortExact
         (k := k) (G := G) P.toFiniteRep SRep hSRep

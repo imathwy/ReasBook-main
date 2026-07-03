@@ -1,4 +1,4 @@
-import RiemannSurfaces.Chap01.Definition_1_4
+import RiemannSurfaces_Forster_1981.Chap01.Definition_1_4
 import Mathlib.Analysis.Normed.Field.Lemmas
 import Mathlib.Analysis.SpecialFunctions.Elliptic.Weierstrass
 import Mathlib.Geometry.Manifold.Instances.Quotient

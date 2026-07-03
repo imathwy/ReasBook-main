@@ -1,5 +1,5 @@
 import Mathlib
-import CombinatorialGroupTheory.Items.Chap04.Theorem_4_8_4
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap04.Theorem_4_8_4
 
 universe u
 

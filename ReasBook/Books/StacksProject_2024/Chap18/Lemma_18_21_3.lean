@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.PushforwardContinuous
 import Mathlib.Tactic.Recall
-import stacks_project.Chap07.Lemma_7_30_5
-import stacks_project.Chap18.Definition_18_19_1
-import stacks_project.Chap18.Definition_18_21_2
+import StacksProject_2024.Chap07.Lemma_7_30_5
+import StacksProject_2024.Chap18.Definition_18_19_1
+import StacksProject_2024.Chap18.Definition_18_21_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

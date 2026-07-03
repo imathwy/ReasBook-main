@@ -1,6 +1,6 @@
-import AchimKlenkeLean.Items.Chap11.Lemma_11_18
-import AchimKlenkeLean.Items.Chap03.Definition_3_9
-import AchimKlenkeLean.Items.Chap03.Theorem_3_11
+import ProbabilityTheory_Klenke_2020.Items.Chap11.Lemma_11_18
+import ProbabilityTheory_Klenke_2020.Items.Chap03.Definition_3_9
+import ProbabilityTheory_Klenke_2020.Items.Chap03.Theorem_3_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

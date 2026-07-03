@@ -9,8 +9,8 @@ import Mathlib.Analysis.NormedSpace.HahnBanach.Separation
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.LinearAlgebra.Matrix.Rank
 import Mathlib.Topology.Algebra.Module.FiniteDimension
-import Reaslib.Optlib.Differential.Calculation
-import Reaslib.Optlib.Convex.ClosedCone
+import ReasLib.Optlib.Differential.Calculation
+import ReasLib.Optlib.Convex.ClosedCone
 
 /-!
 # Farkas

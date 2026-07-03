@@ -1,5 +1,5 @@
 import Mathlib.Topology.Constructible
-import stacks_project.Chap05.Lemma_5_12_13
+import StacksProject_2024.Chap05.Lemma_5_12_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

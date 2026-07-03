@@ -1,12 +1,12 @@
 import Mathlib
-import stacks_project.Chap07.Definition_7_43_2
-import stacks_project.Chap07.Lemma_7_21_1
-import stacks_project.Chap07.Lemma_7_21_7
-import stacks_project.Chap07.Lemma_7_27_4
-import stacks_project.Chap07.Lemma_7_29_5
-import stacks_project.Chap07.Lemma_7_30_3
-import stacks_project.Chap07.Lemma_7_30_5
-import stacks_project.Chap07.Lemma_7_30_7
+import StacksProject_2024.Chap07.Definition_7_43_2
+import StacksProject_2024.Chap07.Lemma_7_21_1
+import StacksProject_2024.Chap07.Lemma_7_21_7
+import StacksProject_2024.Chap07.Lemma_7_27_4
+import StacksProject_2024.Chap07.Lemma_7_29_5
+import StacksProject_2024.Chap07.Lemma_7_30_3
+import StacksProject_2024.Chap07.Lemma_7_30_5
+import StacksProject_2024.Chap07.Lemma_7_30_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

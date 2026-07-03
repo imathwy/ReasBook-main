@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.CategoryTheory.Monoidal.Closed.Basic
-import stacks_project.Chap15.Lemma_15_119_2
-import stacks_project.Chap17.Definition_17_14_1
-import stacks_project.Chap17.Definition_17_23_1
-import stacks_project.Chap17.Lemma_17_21_1
-import stacks_project.Chap17.Lemma_17_21_3
+import StacksProject_2024.Chap15.Lemma_15_119_2
+import StacksProject_2024.Chap17.Definition_17_14_1
+import StacksProject_2024.Chap17.Definition_17_23_1
+import StacksProject_2024.Chap17.Lemma_17_21_1
+import StacksProject_2024.Chap17.Lemma_17_21_3
 
 open CategoryTheory
 open CategoryTheory.Limits

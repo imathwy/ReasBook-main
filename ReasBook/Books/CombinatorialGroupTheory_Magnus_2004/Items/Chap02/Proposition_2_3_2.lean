@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory.Items.Chap01.Definition_1_10_4
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Definition_1_10_4
 
 open scoped MonoidAlgebra
 

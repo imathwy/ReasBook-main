@@ -1,4 +1,4 @@
-import cartan.IV.section16.«0003_Lemma_IV_4_extra_3»
+import DifferentialForms_Cartan_1970.IV.section16.«0003_Lemma_IV_4_extra_3»
 import Mathlib.Analysis.InnerProductSpace.Harmonic.Constructions
 
 -- Declarations for this item will be appended below by the statement pipeline.

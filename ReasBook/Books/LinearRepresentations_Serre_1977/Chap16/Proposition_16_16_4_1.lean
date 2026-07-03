@@ -1,6 +1,6 @@
-import Serre.Chap16.Proposition_16_16_4_1.ReductionBridge
-import Serre.Chap16.Proposition_16_16_4_1.FourierBridge
-import Serre.Chap16.Proposition_16_16_4_1.CentralProjectorBridge
+import LinearRepresentations_Serre_1977.Chap16.Proposition_16_16_4_1.ReductionBridge
+import LinearRepresentations_Serre_1977.Chap16.Proposition_16_16_4_1.FourierBridge
+import LinearRepresentations_Serre_1977.Chap16.Proposition_16_16_4_1.CentralProjectorBridge
 
 -- Stable theorem-local helper owners now live under the local index.
 -- This target keeps the active declarations and the remaining unfinished proof blocks.
@@ -35,7 +35,7 @@ variable {ρ : Representation K G E} [FiniteDimensional K E]
 variable (L : StableLattice A ρ)
 
 /-- Helper for Proposition 16-16.4-1: in this defect-zero section we realize the finite group as
-a `Fintype` whenever Serre's coefficient formulas sum over `G`. -/
+a `Fintype` whenever LinearRepresentations_Serre_1977's coefficient formulas sum over `G`. -/
 local instance instFintypeGDefectZero : Fintype G := Fintype.ofFinite G
 
 /-- Helper for Proposition 16-16.4-1: a defect-zero simple representation has nontrivial carrier.
@@ -267,7 +267,7 @@ lemma supported_family_symm_coeff_eq_sum_local
         rfl
 
 /-- Helper for Proposition 16-16.4-1: over `AlgebraicClosure K`, the remaining source-faithful
-packet computation should identify the mapped Serre Fourier element with the supported complete
+packet computation should identify the mapped LinearRepresentations_Serre_1977 Fourier element with the supported complete
 family attached to the scalar extension of `φ`. This extracted owner isolates the genuine
 coefficient-comparison blocker from the later descent back to `K`. -/
 lemma charZero_algClosure_fourier_action_eq_baseChange_local
@@ -282,14 +282,14 @@ lemma charZero_algClosure_fourier_action_eq_baseChange_local
   -- packet-to-complete-family owner instead of the placeholder `True` wrapper in `PacketBridge`.
   -- TODO: define the supported complete-family endomorphism carrying the transported copies of
   -- `φ`, use `supported_family_symm_coeff_eq_sum_local` to compute the inverse-Wedderburn
-  -- preimage coefficients packetwise, collapse that sum to Serre's mapped coefficient formula
+  -- preimage coefficients packetwise, collapse that sum to LinearRepresentations_Serre_1977's mapped coefficient formula
   -- with the trace-conjugation and packet-multiplicity identities, then reassemble the ambient
   -- action by
   -- `internal_decomposition_endomorphism_ext_local`.
   sorry
 
 /-- Helper for Proposition 16-16.4-1: once the algebraic-closure packet calculation identifies
-Serre's mapped Fourier element with the scalar-extended ambient endomorphism attached to `φ`,
+LinearRepresentations_Serre_1977's mapped Fourier element with the scalar-extended ambient endomorphism attached to `φ`,
 faithful descent immediately recovers the ambient `K`-linear action identity. This isolates the
 remaining characteristic-zero blocker to a single scalar-extension equality. -/
 lemma charZero_fourier_branch_consequences_of_algClosure_action_local
@@ -334,7 +334,7 @@ lemma charZero_fourier_branch_consequences
 
 /-- Helper for Proposition 16-16.4-1: the equal-characteristic branch of the remaining Fourier
 packet argument. The local distinguished-block computation already identifies the scalar-extended
-action of Serre's Fourier element, so this wrapper only performs the descent back to `K` and
+action of LinearRepresentations_Serre_1977's Fourier element, so this wrapper only performs the descent back to `K` and
 reuses the corresponding projector-annihilator statement. -/
 lemma algClosure_fourier_action_eq_baseChange_of_ambient_action_local
     (hdefect : ρ.HasDefectZero p) (φ : Module.End A L.toSubmodule)
@@ -479,7 +479,7 @@ lemma basis_unit_endHom_toMatrix_entry_local
   exact congrArg (fun M : Matrix ι ι K ↦ M a m)
     (L.basis_unit_endHom_toMatrix_local (ρ := ρ) (b := b) i j)
 
-/-- Helper for Proposition 16-16.4-1: the trace coefficient appearing in Serre's integral Fourier
+/-- Helper for Proposition 16-16.4-1: the trace coefficient appearing in LinearRepresentations_Serre_1977's integral Fourier
 formula for a basis matrix unit is exactly the corresponding ambient matrix entry of `ρ s⁻¹`. -/
 lemma trace_comp_basis_unit_eq_matrix_entry_local
     {ι : Type*} [Fintype ι] [DecidableEq ι]
@@ -569,7 +569,7 @@ lemma basis_repr_sum_smul_apply_local
         intro s hs
         simp [Finsupp.smul_apply, smul_eq_mul]
 
-/-- Helper for Proposition 16-16.4-1: the `(a,m)` matrix entry of the ambient action of Serre's
+/-- Helper for Proposition 16-16.4-1: the `(a,m)` matrix entry of the ambient action of LinearRepresentations_Serre_1977's
 integral Fourier element attached to one basis matrix unit is exactly the explicit defect-zero
 coefficient sum appearing in the source orthogonality formula. -/
 lemma integral_fourier_matrix_unit_action_entry_eq_sum_local
@@ -591,7 +591,7 @@ lemma integral_fourier_matrix_unit_action_entry_eq_sum_local
     -- Expand the mapped Fourier element in the delta basis of `K[G]`.
     simpa [MonoidAlgebra.mapRingHom_apply] using
       (Finsupp.univ_sum_single (MonoidAlgebra.mapRingHom G (algebraMap A K) u)).symm
-  -- Follow Serre's source route entrywise: first expand the group-algebra action as a finite sum,
+  -- Follow LinearRepresentations_Serre_1977's source route entrywise: first expand the group-algebra action as a finite sum,
   -- then rewrite the coefficient attached to each group element.
   calc
     LinearMap.toMatrix e e (ρ.asAlgebraHom (MonoidAlgebra.mapRingHom G (algebraMap A K) u)) a m =
@@ -681,7 +681,7 @@ lemma basis_unit_action_eq_of_matrix_entry_formula_local
           symm
           exact L.basis_unit_endHom_toMatrix_entry_local (ρ := ρ) (b := b) i j a m
 
-/-- Helper for Proposition 16-16.4-1: once Serre's source coefficient identity is known for one
+/-- Helper for Proposition 16-16.4-1: once LinearRepresentations_Serre_1977's source coefficient identity is known for one
 basis unit, the corresponding operator-level Proposition `11` specialization follows immediately
 by matrix extensionality. This isolates the formal reassembly from the still-missing coefficient
 calculation. -/
@@ -769,7 +769,7 @@ lemma defect_zero_basis_unit_entry_sum_eq_stdBasis_of_action_eq_local
             L.basis_unit_endHom_toMatrix_entry_local
               (ρ := ρ) (b := b) i j a m
 
-/-- Helper for Proposition 16-16.4-1: in the equal-characteristic branch, Serre's source
+/-- Helper for Proposition 16-16.4-1: in the equal-characteristic branch, LinearRepresentations_Serre_1977's source
 Proposition `11` should first identify the Fourier element of one basis matrix unit with the
 corresponding scalar-extended rank-one operator. This operator-level owner is the primitive
 equal-characteristic step; the entrywise orthogonality formula is only a later matrix-coordinate
@@ -784,7 +784,7 @@ lemma prop11_basis_unit_operator_specialization_local
           (L.serre_fourier_element hdefect ((b.coord i).smulRight (b j)))) =
       (L.toSubmodule_subtype_isBaseChange).endHom ((b.coord i).smulRight (b j)) := by
   -- Route correction: the primitive owner in equal characteristic is now the operator theorem
-  -- matching Serre's Proposition `11`, rather than another entrywise restatement of the same
+  -- matching LinearRepresentations_Serre_1977's Proposition `11`, rather than another entrywise restatement of the same
   -- orthogonality computation.
   refine
     L.basis_unit_operator_of_entry_formula_local
@@ -877,7 +877,7 @@ lemma defect_zero_basis_unit_entry_formula_direct_local
         (p := p) (ρ := ρ) (b := b) i j hdefect)
 
 /-- Helper for Proposition 16-16.4-1: in the equal-characteristic branch, the coefficient of the
-ambient action of Serre's Fourier element on one basis matrix unit collapses to the corresponding
+ambient action of LinearRepresentations_Serre_1977's Fourier element on one basis matrix unit collapses to the corresponding
 Kronecker delta. This is the remaining matrix-coefficient orthogonality step from the source
 proof, isolated as the only open equal-characteristic subgoal. -/
 lemma defect_zero_basis_unit_entry_sum_eq_stdBasis_local
@@ -906,7 +906,7 @@ lemma defect_zero_basis_unit_entry_sum_eq_stdBasis_local
       (p := p) (ρ := ρ) (b := b) i j a m hdefect hact
 
 /-- Helper for Proposition 16-16.4-1: in the equal-characteristic branch, the coefficient of the
-ambient action of Serre's Fourier element on one basis matrix unit collapses to the corresponding
+ambient action of LinearRepresentations_Serre_1977's Fourier element on one basis matrix unit collapses to the corresponding
 Kronecker delta. This is the remaining matrix-coefficient orthogonality step from the source
 proof, isolated as the only open equal-characteristic subgoal. -/
 lemma defect_zero_basis_unit_fourier_action_eq_baseChange_local
@@ -925,7 +925,7 @@ lemma defect_zero_basis_unit_fourier_action_eq_baseChange_local
       (p := p) (ρ := ρ) (b := b) i j hdefect
 
 /-- Helper for Proposition 16-16.4-1: in the equal-characteristic branch, the coefficient of the
-ambient action of Serre's Fourier element on one basis matrix unit collapses to the corresponding
+ambient action of LinearRepresentations_Serre_1977's Fourier element on one basis matrix unit collapses to the corresponding
 Kronecker delta. This is the remaining matrix-coefficient orthogonality step from the source
 proof, isolated as the only open equal-characteristic subgoal. -/
 lemma defect_zero_matrix_coefficient_orthogonality_local
@@ -943,7 +943,7 @@ lemma defect_zero_matrix_coefficient_orthogonality_local
       (p := p) (ρ := ρ) (b := b) i j a m hdefect
 
 /-- Helper for Proposition 16-16.4-1: in the equal-characteristic branch, the coefficient of the
-ambient action of Serre's Fourier element on one basis matrix unit collapses to the corresponding
+ambient action of LinearRepresentations_Serre_1977's Fourier element on one basis matrix unit collapses to the corresponding
 Kronecker delta. This is the remaining matrix-coefficient orthogonality step from the source
 proof, isolated as the only open equal-characteristic subgoal. -/
 lemma defect_zero_basis_unit_action_entry_local
@@ -976,7 +976,7 @@ lemma defect_zero_basis_unit_action_entry_local
               (p := p) (ρ := ρ) (b := b) i j a m hdefect
 
 /-- Helper for Proposition 16-16.4-1: in the equal-characteristic branch, the coefficient of the
-ambient action of Serre's Fourier element on one basis matrix unit collapses to the corresponding
+ambient action of LinearRepresentations_Serre_1977's Fourier element on one basis matrix unit collapses to the corresponding
 Kronecker delta. This is the remaining matrix-coefficient orthogonality step from the source
 proof, isolated as the only open equal-characteristic subgoal. -/
 lemma defect_zero_matrix_coefficient_convolution_local
@@ -994,7 +994,7 @@ lemma defect_zero_matrix_coefficient_convolution_local
       (p := p) (ρ := ρ) (b := b) i j a m hdefect
 
 /-- Helper for Proposition 16-16.4-1: for a single basis matrix unit on the stable lattice, the
-ambient action of Serre's integral Fourier element is exactly the scalar-extended matrix unit.
+ambient action of LinearRepresentations_Serre_1977's integral Fourier element is exactly the scalar-extended matrix unit.
 This is the unreduced source Proposition `11` specialization that still has to be formalized in
 the equal-characteristic branch. -/
 lemma integral_fourier_matrix_unit_action_local
@@ -1012,7 +1012,7 @@ lemma integral_fourier_matrix_unit_action_local
       (p := p) (ρ := ρ) (b := b) i j hdefect
 
 /-- Helper for Proposition 16-16.4-1: once the equal-characteristic Fourier identity is proved on
-the basis matrix units of the stable lattice, additivity and `A`-linearity of Serre's integral
+the basis matrix units of the stable lattice, additivity and `A`-linearity of LinearRepresentations_Serre_1977's integral
 Fourier section extend it to every lattice endomorphism. -/
 lemma integral_fourier_self_action_local
     [CharP K p]
@@ -1120,7 +1120,7 @@ lemma equalChar_hambient_local
 
 /-- Helper for Proposition 16-16.4-1: the equal-characteristic branch of the remaining Fourier
 packet argument. The local distinguished-block computation should first identify the ambient
-`K`-action of Serre's Fourier element; this lemma then lifts that identity to
+`K`-action of LinearRepresentations_Serre_1977's Fourier element; this lemma then lifts that identity to
 `AlgebraicClosure K`. -/
 lemma equalChar_algClosure_fourier_action_eq_baseChange
     [CharP K p]
@@ -1139,7 +1139,7 @@ lemma equalChar_algClosure_fourier_action_eq_baseChange
 
 /-- Helper for Proposition 16-16.4-1: the equal-characteristic branch of the remaining Fourier
 packet argument. The local distinguished-block computation already identifies the scalar-extended
-action of Serre's Fourier element, so this wrapper only performs the descent back to `K` and
+action of LinearRepresentations_Serre_1977's Fourier element, so this wrapper only performs the descent back to `K` and
 reuses the corresponding projector-annihilator statement. -/
 lemma equalChar_ambient_action_eq_of_projector_bridge
     [CharP K p]
@@ -1160,7 +1160,7 @@ lemma equalChar_ambient_action_eq_of_projector_bridge
 
 /-- Helper for Proposition 16-16.4-1: the equal-characteristic branch of the remaining Fourier
 packet argument. The local distinguished-block computation already identifies the scalar-extended
-action of Serre's Fourier element, so this wrapper only performs the descent back to `K`. -/
+action of LinearRepresentations_Serre_1977's Fourier element, so this wrapper only performs the descent back to `K`. -/
 lemma equalChar_packet_block_action_eq_transport
     [CharP K p]
     (hdefect : ρ.HasDefectZero p) :
@@ -1197,7 +1197,7 @@ lemma algClosure_complete_family_fourier_consequences
     -- Dispatch the equal-characteristic branch to the target-local packet-block workbench.
     exact L.equalChar_packet_block_action_eq_transport (p := p) (ρ := ρ) hdefect
 
-/-- Helper for Proposition 16-16.4-1: Serre's explicit integral Fourier element `u_φ`
+/-- Helper for Proposition 16-16.4-1: LinearRepresentations_Serre_1977's explicit integral Fourier element `u_φ`
 acts on the stable lattice as the prescribed `A`-linear endomorphism `φ`. -/
 lemma serre_fourier_action_eq_endHom
     (hdefect : ρ.HasDefectZero p) (φ : Module.End A L.toSubmodule) :
@@ -1208,9 +1208,9 @@ lemma serre_fourier_action_eq_endHom
   apply L.serre_fourier_action_eq_endHom_of_ambient (hdefect := hdefect) (φ := φ)
   exact L.algClosure_complete_family_fourier_consequences (p := p) (ρ := ρ) hdefect φ
 
-/-- Helper for Proposition 16-16.4-1: right multiplication of Serre's Fourier element by the basis
+/-- Helper for Proposition 16-16.4-1: right multiplication of LinearRepresentations_Serre_1977's Fourier element by the basis
 monomial `[g]` rotates the lifted endomorphism by the lattice action of `g`. This is the
-coefficientwise trace computation at the heart of Serre's section law. -/
+coefficientwise trace computation at the heart of LinearRepresentations_Serre_1977's section law. -/
 -- TODO: rewrite the trace calculation using the composition-friendly `LinearMap.trace_mul_comm`
 -- and `LinearMap.trace_mul_cycle` API at the ambient endomorphism level.
 lemma serre_fourier_mul_single_one_eq_action_local
@@ -1260,7 +1260,7 @@ lemma serre_fourier_mul_single_one_eq_action_local
     _ = L.serre_fourier_element hdefect (φ * L.toRepresentation g) s := by
           simp [StableLattice.serre_fourier_element_apply]
 
-/-- Helper for Proposition 16-16.4-1: Serre's integral Fourier section intertwines right
+/-- Helper for Proposition 16-16.4-1: LinearRepresentations_Serre_1977's integral Fourier section intertwines right
 multiplication in `A[G]` with postcomposition by the lattice action. This is the formal section law
 used later to derive the kernel criterion and the idempotence of `u_{LinearMap.id}`. -/
 -- TODO: prove the section law by induction on `u`, reducing the basis step to the repaired
@@ -1330,7 +1330,7 @@ lemma serre_fourier_mul_eq_action_local
             exact congrArg (fun ψ : Module.End A L.toSubmodule ↦ φ * ψ)
               (AlgHom.map_smul_of_tower (L.toRepresentation.asAlgebraHom) a u).symm
 
-/-- Helper for Proposition 16-16.4-1: Serre's special Fourier element
+/-- Helper for Proposition 16-16.4-1: LinearRepresentations_Serre_1977's special Fourier element
 `u_{LinearMap.id}` acts on the stable lattice as the identity endomorphism. This is the
 `φ = LinearMap.id` specialization of the integral Fourier lift. -/
 lemma serre_fourier_id_action_eq_id
@@ -1350,11 +1350,11 @@ the action of an element of `A[G]`. -/
 lemma exists_groupAlgebra_preimage_of_endomorphism
     (hdefect : ρ.HasDefectZero p) (φ : Module.End A L.toSubmodule) :
     ∃ u : A[G], L.toRepresentation.asAlgebraHom u = φ := by
-  -- Lock in Serre's concrete integral Fourier element, then invoke the isolated action packet.
+  -- Lock in LinearRepresentations_Serre_1977's concrete integral Fourier element, then invoke the isolated action packet.
   refine ⟨L.serre_fourier_element hdefect φ, ?_⟩
   exact L.serre_fourier_action_eq_endHom hdefect φ
 
-/-- Helper for Proposition 16-16.4-1: for Serre's special Fourier element
+/-- Helper for Proposition 16-16.4-1: for LinearRepresentations_Serre_1977's special Fourier element
 `e = u_{LinearMap.id}`, the implication `e * u = 0 → ρ_P(u) = 0` is already forced by the
 established identity `ρ_P(e) = id`. This isolates the easy half of the kernel criterion, so the
 remaining source-faithful projector work only has to prove the converse implication and
@@ -1387,12 +1387,12 @@ lemma serre_fourier_id_action_zero_of_left_mul_zero
 
 /-- Helper for Proposition 16-16.4-1: the remaining source-faithful `φ = LinearMap.id` packet
 step is the forward annihilator implication. Once this is known, applying it to `e - 1` yields
-the idempotence of Serre's projector `e = u_{LinearMap.id}`. -/
+the idempotence of LinearRepresentations_Serre_1977's projector `e = u_{LinearMap.id}`. -/
 lemma serre_fourier_id_left_mul_zero_of_action_zero
     (hdefect : ρ.HasDefectZero p) (u : A[G])
     (hu : L.toRepresentation.asAlgebraHom u = 0) :
     L.serre_fourier_element hdefect LinearMap.id * u = 0 := by
-  -- Route correction: Serre's source proof gets the annihilator implication from the section law
+  -- Route correction: LinearRepresentations_Serre_1977's source proof gets the annihilator implication from the section law
   -- `u_φ * u = u_{φ * ρ_P(u)}`, not from a second independent packet theorem.
   calc
     L.serre_fourier_element hdefect LinearMap.id * u =
@@ -1425,7 +1425,7 @@ lemma serre_fourier_id_left_mul_zero_of_algClosure_action_zero
     simpa using hlocal
   simpa using L.serre_fourier_id_left_mul_zero_of_action_zero hdefect u hlattice
 
-/-- Helper for Proposition 16-16.4-1: Serre's special Fourier element `u_{LinearMap.id}` cuts
+/-- Helper for Proposition 16-16.4-1: LinearRepresentations_Serre_1977's special Fourier element `u_{LinearMap.id}` cuts
 out exactly the kernel of the lattice action map by left multiplication. This packages the two
 directions of the kernel criterion that are proved separately around the remaining ambient packet
 bridge. -/
@@ -1464,7 +1464,7 @@ lemma serre_fourier_id_consequences
   letI : IsScalarTower A A[G] L.toSubmodule := by
     change IsScalarTower A A[G] L.toRepresentation.asModule
     infer_instance
-  -- Route correction: specialize Serre's Fourier element at `φ = LinearMap.id` before consuming
+  -- Route correction: specialize LinearRepresentations_Serre_1977's Fourier element at `φ = LinearMap.id` before consuming
   -- it. The same block projector should supply both the Chapter `14` averaging operator and the
   -- direct-factor description of the kernel ideal.
   let e := L.serre_fourier_element hdefect LinearMap.id
@@ -1511,7 +1511,7 @@ lemma serre_fourier_id_consequences
   letI : Nontrivial L.toSubmodule := L.toSubmodule_nontrivial
   have hproj :
       Module.Projective A[G] L.toRepresentation.asModule := by
-    -- Once the action map is surjective with split kernel, Serre's part `(a)` is formal.
+    -- Once the action map is surjective with split kernel, LinearRepresentations_Serre_1977's part `(a)` is formal.
     exact L.projective_of_action_hom_surjective_and_ker_isCompl hsurj hkernel_split
   have havg :
       ∃ u : Module.End A L.toSubmodule, u.sumOfConjugates G = LinearMap.id := by
@@ -1544,7 +1544,7 @@ theorem projective_of_defect_zero
       ∃ I : TwoSidedIdeal A[G],
         IsCompl (TwoSidedIdeal.ker L.toRepresentation.asAlgebraHom) I := by
     exact (L.serre_fourier_id_consequences hdefect).2
-  -- Route correction: follow Serre's actual part `(b) ⇒ (a)` implication. Once
+  -- Route correction: follow LinearRepresentations_Serre_1977's actual part `(b) ⇒ (a)` implication. Once
   -- `A[G] → End_A(P)` is onto with split kernel, projectivity descends formally from the
   -- endomorphism ring.
   exact L.projective_of_action_hom_surjective_and_ker_isCompl hsurj hkernel_split
@@ -1592,7 +1592,7 @@ theorem reduction_action_hom_surjective_of_defect_zero
       (Submodule.mkQ L.maximalIdealSubmodule : L.toSubmodule →ₗ[A] L.reduction) :=
     L.reduction_mkQ_isBaseChange
   intro ψ
-  -- First lift the reduced endomorphism to the lattice, then realize that lift by Serre's
+  -- First lift the reduced endomorphism to the lattice, then realize that lift by LinearRepresentations_Serre_1977's
   -- integral Fourier element upstairs.
   obtain ⟨φ, hφlift⟩ := L.reduction_endomorphism_lift_exists ψ
   obtain ⟨u, hu⟩ := L.exists_groupAlgebra_preimage_of_endomorphism hdefect φ

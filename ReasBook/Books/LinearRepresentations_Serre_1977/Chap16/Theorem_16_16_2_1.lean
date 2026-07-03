@@ -1,26 +1,26 @@
 import Mathlib
-import Serre.Chap06.Proposition_6_6_2_1
-import Serre.Chap10.Definition_10_10_1_1
-import Serre.Chap03.Lemma_3_3_3_2
-import Serre.Chap03.Exercise_3_3_3_7
-import Serre.Chap12.Exercise_12_12_2_6.CharacterBasisCoefficients
-import Serre.Chap12.Proposition_12_12_1_1
-import Serre.Chap12.Proposition_12_12_2_1
-import Serre.Chap12.Theorem_12_12_6_2
-import Serre.Chap12.Theorem_12_12_6_3
-import Serre.Chap14.Exercise_14_14_5_2
-import Serre.Chap14.Infra_14_4_ProjectiveLift
-import Serre.Chap14.Proposition_14_14_1_1
-import Serre.Chap15.Exercise_15_15_1_2
-import Serre.Chap15.Proposition_15_15_5_1
-import Serre.Chap16.Corollary_16_16_1_8
-import Serre.Chap16.Corollary_16_16_1_8.ProjectiveDifference
-import Serre.Chap16.Exercise_16_16_1_12
-import Serre.Chap16.Exercise_16_16_1_12.TransversalGroupAlgebra
-import Serre.Chap16.Theorem_16_16_1_2.BrauerMultiplicity
-import Serre.Chap16.Theorem_16_16_1_5.CartanSubgroupInduction
-import Serre.Chap16.Theorem_16_16_1_5.SubgroupInduction
-import Serre.Chap16.Theorem_16_16_1_5.PGroupBridges
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_2_1
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_1
+import LinearRepresentations_Serre_1977.Chap03.Lemma_3_3_3_2
+import LinearRepresentations_Serre_1977.Chap03.Exercise_3_3_3_7
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.CharacterBasisCoefficients
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_2_1
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_6_2
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_6_3
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_2
+import LinearRepresentations_Serre_1977.Chap14.Infra_14_4_ProjectiveLift
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_1_1
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_1_2
+import LinearRepresentations_Serre_1977.Chap15.Proposition_15_15_5_1
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_8
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_8.ProjectiveDifference
+import LinearRepresentations_Serre_1977.Chap16.Exercise_16_16_1_12
+import LinearRepresentations_Serre_1977.Chap16.Exercise_16_16_1_12.TransversalGroupAlgebra
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_2.BrauerMultiplicity
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_5.CartanSubgroupInduction
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_5.SubgroupInduction
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_5.PGroupBridges
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -274,7 +274,7 @@ private theorem finiteRepGrothendieckRelations_le_characterLift_ker :
   simpa [finiteRepGrothendieckCharacterLift, sub_eq_add_neg, add_assoc, add_left_comm, add_comm]
     using sub_eq_zero.mpr hchar
 
-/-- The canonical bridge from Serre's Grothendieck group `R₀[K](G)` to the character-ring owner
+/-- The canonical bridge from LinearRepresentations_Serre_1977's Grothendieck group `R₀[K](G)` to the character-ring owner
 `R[K](G)`. -/
 def finiteRepGrothendieckCharacter :
     R₀[K](G) →+ R[K](G) :=
@@ -888,7 +888,7 @@ private theorem zpowers_generator_ne_one_of_not_isPRegular_local
       (⟨g, Subgroup.mem_zpowers g⟩ : Subgroup.zpowers g) hg0
 
 /-- Helper for Theorem 16-16.2-1: a cyclic subgroup splits into its prime-to-`p` factor and its
-`p`-primary factor. This is the ambient-group form of Serre's `C = S × P` step used below. -/
+`p`-primary factor. This is the ambient-group form of LinearRepresentations_Serre_1977's `C = S × P` step used below. -/
 private theorem cyclic_subgroup_exists_primeToP_pGroup_split_local
     (C : Subgroup G) [IsCyclic C] :
     ∃ (S P : Subgroup G),
@@ -989,7 +989,7 @@ private theorem cyclic_subgroup_exists_primeToP_pGroup_split_local
   exact le_antisymm hC_le_sup hsup_le_C
 
 /-- Helper for Theorem 16-16.2-1: an element of a subgroup whose order is prime to `p` is already
-`p`-regular. This is the order-theoretic bridge used when reading Serre's split `C = S × P`
+`p`-regular. This is the order-theoretic bridge used when reading LinearRepresentations_Serre_1977's split `C = S × P`
 through the right coordinate. -/
 private theorem isPRegular_of_mem_subgroup_of_coprime_card_local
     {H : Subgroup G} (hH_coprime : Nat.Coprime p (Nat.card H))
@@ -1003,7 +1003,7 @@ private theorem isPRegular_of_mem_subgroup_of_coprime_card_local
     simpa [Subgroup.orderOf_mk] using orderOf_dvd_card_univ (a := (⟨g, hg⟩ : H))
   exact (Fact.out.coprime_iff_not_dvd.mp hH_coprime) (dvd_trans hdiv horder_dvd)
 
-/-- Helper for Theorem 16-16.2-1: in Serre's split `C = S × P`, a `p`-singular element has a
+/-- Helper for Theorem 16-16.2-1: in LinearRepresentations_Serre_1977's split `C = S × P`, a `p`-singular element has a
 nontrivial right `P`-coordinate. This isolates the order argument from the later character
 factorization step. -/
 private theorem split_right_coordinate_ne_one_of_not_isPRegular_local
@@ -1040,7 +1040,7 @@ private theorem residueFieldReduction_restrictScalars_projective_local
     -- The subgroup algebra sits inside the ambient group algebra with a transversal basis.
     simpa [σ] using
       (subgroup_groupAlgebra_free_of_transversal (k := k) (G := G) H)
-  -- Route correction: package Serre's subgroup restriction step on the residue-field owner first,
+  -- Route correction: package LinearRepresentations_Serre_1977's subgroup restriction step on the residue-field owner first,
   -- so the remaining cyclic blocker is only the character computation on that restricted owner.
   simpa [P, σ] using
     (projective_restrictScalars_of_subgroup_groupAlgebra
@@ -1093,7 +1093,7 @@ private theorem subgroup_compHom_owner_projective_local
     (fun (r : A[↥H]) (s : A[G]) => rfl)
 
 /-- Helper for Theorem 16-16.2-1: a normal `p`-subgroup acts trivially on an irreducible
-characteristic-`p` representation. This is the theorem-local transport step needed before Serre's
+characteristic-`p` representation. This is the theorem-local transport step needed before LinearRepresentations_Serre_1977's
 `S × P` split can collapse the right `p`-factor. -/
 private theorem isTrivial_restrict_normal_pSubgroup_of_isIrreducible_local
     {H : Type u} [Group H] [Finite H]
@@ -1294,7 +1294,7 @@ private theorem character_zero_of_iso_externalTensor_leftRegular_of_snd_ne_one_l
           rw [Representation.leftRegular_character_eq_zero_of_ne_one hg]
           simp
 
-/-- Helper for Theorem 16-16.2-1: Serre's split-model factorization immediately upgrades to the
+/-- Helper for Theorem 16-16.2-1: LinearRepresentations_Serre_1977's split-model factorization immediately upgrades to the
 full pointwise vanishing statement on the nontrivial `P`-coordinate locus. This keeps the forward
 cyclic branch focused on the single remaining owner-level factorization input. -/
 private theorem character_zero_on_nontrivial_p_coordinate_of_split_factorization_local
@@ -1304,7 +1304,7 @@ private theorem character_zero_on_nontrivial_p_coordinate_of_split_factorization
       ∃ U : FDRep k S, Nonempty (τ ≅ FDRep.of (U.ρ ⊠ Representation.leftRegular k P))) :
     ∀ h : S × P, h.2 ≠ 1 → τ.character h = 0 := by
   intro h hh
-  -- Once Serre's `U ⊠ r_P` model is in hand, the nontrivial-`P` vanishing is exactly the
+  -- Once LinearRepresentations_Serre_1977's `U ⊠ r_P` model is in hand, the nontrivial-`P` vanishing is exactly the
   -- previously packaged tensor-character computation.
   exact
     character_zero_of_iso_externalTensor_leftRegular_of_snd_ne_one_local
@@ -1372,7 +1372,7 @@ private theorem standard_direct_product_axes_commute_local
   ext <;> simp [hh_snd, hp'_fst]
 
 /-- Helper for Theorem 16-16.2-1: the right-axis invariants of a representation of `S × P`
-form a left-axis stable subrepresentation. This isolates Serre's actual source object before the
+form a left-axis stable subrepresentation. This isolates LinearRepresentations_Serre_1977's actual source object before the
 later induced/tensor transport. -/
 private theorem right_axis_invariants_left_axis_stable_local
     {S : Type u} [Group S] {P : Type u} [Group P]
@@ -1412,7 +1412,7 @@ private abbrev right_axis_invariants_left_axis_subrepresentation_local
 
 /-- Helper for Theorem 16-16.2-1: the right-axis restriction owner of a projective
 `k[S × P]`-representation is free over the `p`-group axis. This isolates the first source-faithful
-step in Serre's split-product argument before transporting the left-axis action on invariants. -/
+step in LinearRepresentations_Serre_1977's split-product argument before transporting the left-axis action on invariants. -/
 private theorem projective_right_axis_free_model_local
     {S : Type u} [Group S] [Finite S] {P : Type u} [Group P] [Finite P]
     (hP_isPGroup : IsPGroup p P)
@@ -1492,7 +1492,7 @@ private theorem projective_right_axis_free_model_local
 
 /-- Helper for Theorem 16-16.2-1: the right-axis invariant multiplicity space of a projective
 `k[S × P]`-representation identifies with a coordinate space coming from the free right-axis
-model. This isolates the invariants transport that Serre uses before comparing the left-axis
+model. This isolates the invariants transport that LinearRepresentations_Serre_1977 uses before comparing the left-axis
 action with the tensor-product model. -/
 private theorem right_axis_invariant_coordinate_equiv_local
     {S : Type u} [Group S] [Finite S] {P : Type u} [Group P] [Finite P]
@@ -1622,7 +1622,7 @@ private theorem projective_direct_product_character_zero_on_nontrivial_p_coordin
   let _ := hS_coprime
   let _ := hP_isPGroup
   let _ := hτ_projective
-  -- Route correction: abandon the earlier inducedness placeholder and follow Serre's actual split
+  -- Route correction: abandon the earlier inducedness placeholder and follow LinearRepresentations_Serre_1977's actual split
   -- direct-product proof. The remaining local blocker is now the tensor factorization
   -- `τ ≅ U ⊠ r_P`, not an `IsInducedFromSubrepresentation` witness for the invariant owner.
   --
@@ -1639,7 +1639,7 @@ private theorem projective_direct_product_character_zero_on_nontrivial_p_coordin
 
 /-- Helper for Theorem 16-16.2-1: restricting a projective `k[S × P]`-owner to the embedded
 right-axis `p`-subgroup keeps it projective, so the character already vanishes on every nontrivial
-axis element `(1, p')`. This isolates the completed `p`-group half of Serre's split argument
+axis element `(1, p')`. This isolates the completed `p`-group half of LinearRepresentations_Serre_1977's split argument
 before the remaining transport from the axis to an arbitrary `(s, p')`. -/
 private theorem projective_direct_product_character_zero_on_right_axis_local
     {S : Type u} [Group S] [Finite S] {P : Type u} [Group P] [Finite P]
@@ -1723,7 +1723,7 @@ private theorem projective_direct_product_character_zero_on_right_axis_local
   rw [← hchar_axis]
   exact hzero_axis
 
-/-- Helper for Theorem 16-16.2-1: in Serre's cyclic decomposition `C ≃ S × P`, the restricted
+/-- Helper for Theorem 16-16.2-1: in LinearRepresentations_Serre_1977's cyclic decomposition `C ≃ S × P`, the restricted
 residue-field projective owner already has character zero at every point with nontrivial
 `P`-coordinate. This is the exact forward-direction output consumed later, so the proof should
 stay at the character level rather than rebuilding a larger owner isomorphism. -/
@@ -1760,7 +1760,7 @@ private theorem cyclic_projective_restricted_owner_character_zero_on_nontrivial_
 /-- Helper for Theorem 16-16.2-1: after restricting an honest projective `A[G]`-module to the
 cyclic subgroup generated by a `p`-singular element, the scalar-extended character vanishes on
 the canonical generator of that cyclic subgroup. This isolates the remaining forward-direction
-blocker on Serre's explicit cyclic owner, before transporting back to the restricted
+blocker on LinearRepresentations_Serre_1977's explicit cyclic owner, before transporting back to the restricted
 representation. -/
 private theorem fdRep_comp_monoidEquiv_character_apply_local
     {H H' : Type u} [Group H] [Group H']
@@ -1770,7 +1770,7 @@ private theorem fdRep_comp_monoidEquiv_character_apply_local
   -- evaluated; the underlying endomorphism is still the one at `e h`.
   simp [FDRep.character, Representation.character]
 
-/-- Helper for Theorem 16-16.2-1: Serre's cyclic split already forces the restricted
+/-- Helper for Theorem 16-16.2-1: LinearRepresentations_Serre_1977's cyclic split already forces the restricted
 residue-field character to vanish at a `p`-singular generator. This packages the completed
 residue-side part of the cyclic argument so the remaining forward blocker is only the comparison
 with the scalar-extended owner. -/
@@ -1783,7 +1783,7 @@ private theorem cyclic_residueFieldReduction_character_zero_on_nonregular_local
       let _ : Module k[↥C] Q.residueFieldReduction.V := Module.compHom Q.residueFieldReduction.V σ
       Module.Projective k[↥C] Q.residueFieldReduction.V) :
     (Rep.res C.subtype Q.residueFieldReduction.toRep).ρ.character g0 = 0 := by
-  -- Route correction: the residue-field branch of Serre's cyclic split is complete; the only
+  -- Route correction: the residue-field branch of LinearRepresentations_Serre_1977's cyclic split is complete; the only
   -- remaining forward blocker lives in comparing this vanishing with the scalar-extended owner.
   obtain ⟨S, P, hS_le_top, hP_le_top, hS_coprime, hP_isPGroup, hS_cent, hSP_disjoint, hC_eq⟩ :=
     cyclic_subgroup_exists_primeToP_pGroup_split_local (p := p) (G := C) (⊤ : Subgroup C)
@@ -1811,7 +1811,7 @@ private theorem cyclic_residueFieldReduction_character_zero_on_nonregular_local
   let e : S × P ≃* C := hC_eq.prodMulEquiv hcomm
   have hright_ne : ((e.symm g0).2 : P) ≠ 1 := by
     -- The cyclic generator is `p`-singular, so it cannot live entirely in the prime-to-`p`
-    -- factor of Serre's split.
+    -- factor of LinearRepresentations_Serre_1977's split.
     exact
       split_right_coordinate_ne_one_of_not_isPRegular_local
         (p := p) (G := C) hS_coprime e hg0
@@ -1925,7 +1925,7 @@ private theorem scalarExtension_character_zero_of_residue_zero_on_cyclic_project
 /-- Helper for Theorem 16-16.2-1: after restricting an honest projective `A[G]`-module to the
 cyclic subgroup generated by a `p`-singular element, the scalar-extended character vanishes on
 the canonical generator of that cyclic subgroup. This isolates the remaining forward-direction
-blocker on Serre's explicit cyclic owner, before transporting back to the restricted
+blocker on LinearRepresentations_Serre_1977's explicit cyclic owner, before transporting back to the restricted
 representation. -/
 private theorem cyclic_scalarExtension_character_zero_on_nonregular_local
     (Q : FiniteProjectiveGroupAlgebraModule A G)
@@ -2666,7 +2666,7 @@ private theorem mul_pregular_multiplier_eq_nsmul_local
       finiteRepGrothendieckCharacter_mul_pregular_multiplier_eq_nsmul_local
         (K := K) (G := G) (p := p) hx hu
 
-/-- Helper for Theorem 16-16.2-1: membership in Serre's fixed-`p` gamma span can be replaced by
+/-- Helper for Theorem 16-16.2-1: membership in LinearRepresentations_Serre_1977's fixed-`p` gamma span can be replaced by
 an explicit finite-support `Γ[K](G)`-elementary induction witness. -/
 private theorem exists_gammaElementarySubgroupInductionOverField_eq_of_mem_gammaP_local
     [HasEnoughRootsOfUnity K (Monoid.exponent G)]
@@ -2777,7 +2777,7 @@ private theorem gammaElementarySubgroupInductionOverField_eq_character_of_sum_lo
                     (k := K) (G := G) H.1).toAddMonoidHom ψH)
                 (hf := fun H ↦ by simp)
 
-/-- Helper for Theorem 16-16.2-1: a class in Serre's fixed-`p` gamma span already admits an
+/-- Helper for Theorem 16-16.2-1: a class in LinearRepresentations_Serre_1977's fixed-`p` gamma span already admits an
 explicit finite-support expression as the ordinary character of a sum of subgroup-induced
 Grothendieck classes over `Γ[K](G)`-elementary subgroups. -/
 private theorem exists_gammaElementarySubgroupInductionOverField_eq_character_of_sum_of_mem_gammaP_local
@@ -3145,7 +3145,7 @@ private theorem primeToPart_smul_decomposition_mem_cartan_range_of_character_zer
     simpa [l] using Nat.coprime_ordCompl (Fact.out : Nat.Prime p) Nat.card_pos.ne'
   have hconst :
       l • (1 : R[K](G)) ∈ gammaPElementaryInducedCharacterSpan_local (K := K) (G := G) p := by
-    -- Chapter `12` supplies Serre's prime-to-`p` multiplier on the character-ring side.
+    -- Chapter `12` supplies LinearRepresentations_Serre_1977's prime-to-`p` multiplier on the character-ring side.
     rcases
         (primeToPart_card_constantCharacter_mem_gammaPElementarySubgroupInductionImage_and_primeTo
           (K := K) (G := G) p n l hcard hl) with
@@ -3158,7 +3158,7 @@ private theorem primeToPart_smul_decomposition_mem_cartan_range_of_character_zer
 
 /-- Helper for Theorem 16-16.2-1: the composite
 `QuotientAddGroup.mk' (cartanHom k G).range ∘ decompositionHom A K G` kills the projective
-scalar-extension range because Serre's local `c = d ∘ e` triangle lands in the Cartan image. -/
+scalar-extension range because LinearRepresentations_Serre_1977's local `c = d ∘ e` triangle lands in the Cartan image. -/
 private theorem projective_scalar_extension_range_le_decomposition_quotient_kernel_local :
     (projectiveGrothendieckScalarExtensionHom A K : P_k(G) →+ R₀[K](G)).range ≤
       (((QuotientAddGroup.mk' (cartanHom k G).range).comp
@@ -3248,7 +3248,7 @@ private theorem projective_scalar_extension_quotient_to_cartanCokernel_local_p_p
         (decompositionHom_fraction_ring_local (A := A) (K := K) (G := G) x)
 
 /-- Helper for Theorem 16-16.2-1: the Cartan range is saturated with respect to integers prime to
-`p`. This is the corrected Serre-side saturation statement replacing the false quotient-torsion
+`p`. This is the corrected LinearRepresentations_Serre_1977-side saturation statement replacing the false quotient-torsion
 route on `R₀[K](G) ⧸ range(e)`. -/
 private theorem cartan_range_saturated_at_prime_to_p_local
     {l : ℕ} {y : R₀[k](G)}
@@ -4170,7 +4170,7 @@ private theorem ordinary_character_eq_decomposition_character_on_pRegular_local
 
 /-- Helper for Theorem 16-16.2-1: if a class lies in `ker d`, then its ordinary character already
 vanishes on the `p`-regular locus. This is the remaining converse-side kernel bridge from
-Serre's source route. -/
+LinearRepresentations_Serre_1977's source route. -/
 private theorem character_eq_zero_on_pRegular_of_mem_decompositionHom_ker_local
     [HasEnoughRootsOfUnity K (Monoid.exponent G)]
     {z : R₀[K](G)}
@@ -4208,7 +4208,7 @@ private theorem finiteRepGrothendieckClass_eq_zero_of_character_zero_on_pRegular
   · simpa using hz_regular g hreg
   · simpa using hz_singular g hreg
 
-/-- Helper for Theorem 16-16.2-1: Serre's converse after the Cartan-side saturation step. A
+/-- Helper for Theorem 16-16.2-1: LinearRepresentations_Serre_1977's converse after the Cartan-side saturation step. A
 prime-to-`p` multiple in `range(e)` forces `d(x)` into the Cartan range, and the remaining
 kernel term is killed by its character on the `p`-regular and `p`-singular loci. -/
 private theorem mem_projectiveGrothendieckScalarExtension_range_of_character_zero_on_pSingular_local
@@ -4282,7 +4282,7 @@ private theorem mem_projectiveGrothendieckScalarExtension_range_of_character_zer
 -- `p`-singular elements, and identify the image of `e` with that kernel in the `c = d ∘ e`
 -- triangle.
 /-- Theorem 16-16.2-1: an element of `R_K(G)` lies in the image of
-Serre's scalar-extension homomorphism `e : P_k(G) → R_K(G)` exactly when its ordinary character is
+LinearRepresentations_Serre_1977's scalar-extension homomorphism `e : P_k(G) → R_K(G)` exactly when its ordinary character is
 zero on every `p`-singular element of `G`. Here `k = IsLocalRing.ResidueField A`. -/
 theorem mem_projectiveGrothendieckScalarExtension_range_iff_character_eq_zero_on_pSingular
     [HasEnoughRootsOfUnity K (Monoid.exponent G)]
@@ -4296,15 +4296,15 @@ theorem mem_projectiveGrothendieckScalarExtension_range_iff_character_eq_zero_on
       character_eq_zero_on_pSingular_of_mem_projectiveGrothendieckScalarExtension_range_local
         hx
   · intro hx
-    -- Route correction: the converse now follows Serre's `d ∘ e = c` triangle on the Cartan
+    -- Route correction: the converse now follows LinearRepresentations_Serre_1977's `d ∘ e = c` triangle on the Cartan
     -- side, rather than the false full-quotient `p`-group route.
     exact
       mem_projectiveGrothendieckScalarExtension_range_of_character_zero_on_pSingular_local
         (A := A) (K := K) (G := G) (p := p) hx
 
-/-- If a Grothendieck class lies in the image of Serre's projective scalar-extension map, then its
+/-- If a Grothendieck class lies in the image of LinearRepresentations_Serre_1977's projective scalar-extension map, then its
 ordinary character vanishes on every `p`-singular element. This is the public forward direction of
-Theorem `16-16.2-1`, exposed so later files can follow Serre's local-owner route directly. -/
+Theorem `16-16.2-1`, exposed so later files can follow LinearRepresentations_Serre_1977's local-owner route directly. -/
 theorem character_eq_zero_on_pSingular_of_mem_projectiveGrothendieckScalarExtension_range
     {x : R₀[K](G)}
     (hx :

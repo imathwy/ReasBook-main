@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap12.Theorem_12_12_4_1
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_4_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -339,7 +339,7 @@ private theorem fieldTrace_mem_characterRingOverField_local
       @restrictScalarsRepresentation G _ K' inferInstance L inferInstance inferInstance V
         _instAddCommGroupV _instModuleV moduleK towerK ρ
     have hchar : trMap ρ.character = ρK.character := by
-      -- Route correction: on an honest `L`-character, Serre's `Tr_{L/K}` is exactly the
+      -- Route correction: on an honest `L`-character, LinearRepresentations_Serre_1977's `Tr_{L/K}` is exactly the
       -- character of the restricted-scalars representation.
       ext g
       simpa [trMap] using
@@ -390,14 +390,14 @@ private theorem fieldTrace_mem_characterRingOverField_local
 -- `K ⊗ R_K(G)`.
 --
 -- Source/core/bridge triage:
--- * source-facing: Serre's criterion for a `K`-valued class function to lie in `K ⊗ R_K(G)`.
+-- * source-facing: LinearRepresentations_Serre_1977's criterion for a `K`-valued class function to lie in `K ⊗ R_K(G)`.
 -- * core/canonical owner: bundled `K`-valued class functions `classFunctionSubmodule K G`.
 -- * bridge/view: the underlying function coercion `(φ : G → K)`.
 --
 -- Primitive data are the bundled class function `φ` and the canonical scalar-extension bridge from
 -- `K` to `L`. The raw equalities on values are derived API.
 /-- Corollary 12-12.4-2: let `K ⊆ L` be an intermediate field in a cyclotomic realization
-`L / ℚ` for the exponent of `G`. A `K`-valued class function on `G` belongs to Serre's
+`L / ℚ` for the exponent of `G`. A `K`-valued class function on `G` belongs to LinearRepresentations_Serre_1977's
 `K ⊗ R_K(G)` if and only if it is constant on the corresponding `Γ_K`-classes of `G`,
 equivalently if it is invariant under the power maps indexed by `Γ_K`. -/
 theorem classFunction_mem_characterRingOverFieldScalarExtension_iff_gammaSubgroup_invariant

@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Definition_1_4_16
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_4_16
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -13,9 +13,9 @@ universe u
 space.
 
 Relevant owner-style declarations sampled before refining:
-* `hessian` in `Nesterov/Chap01/Definition_1_4_16.lean`, the chapter owner for the intrinsic
+* `hessian` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_4_16.lean`, the chapter owner for the intrinsic
   Hessian operator `fderiv ℝ (∇ f) x`
-* `hessianMatrix` in `Nesterov/Chap01/Definition_1_4_16.lean`, the source-facing matrix view in
+* `hessianMatrix` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_4_16.lean`, the source-facing matrix view in
   the standard Euclidean basis
 * `LinearMap.toMatrixOrthonormal`, the canonical matrix presentation of a Euclidean endomorphism
 * `Matrix.toEuclideanLin_eq_toLin_orthonormal`, the inverse bridge back to the intrinsic operator

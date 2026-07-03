@@ -1,4 +1,4 @@
-import cartan.IV.section17.«0003_Proposition_2_1»
+import DifferentialForms_Cartan_1970.IV.section17.«0003_Proposition_2_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

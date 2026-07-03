@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.GroupTheory.ConjClassesPower
-import Serre.Chap12.Corollary_12_12_4_2
-import Serre.Chap12.Lemma_12_12_1_4
-import Serre.Chap12.Theorem_12_12_4_1
-import Serre.Chap13.Corollary_13_13_1_2
+import LinearRepresentations_Serre_1977.GroupTheory.ConjClassesPower
+import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_4_2
+import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_1_4
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_4_1
+import LinearRepresentations_Serre_1977.Chap13.Corollary_13_13_1_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -74,7 +74,7 @@ end ConjClasses
 
 local instance : MulAction ΓR (ConjClasses G) := ConjClasses.gammaRatMulAction
 
-/-- Helper for Corollary 13-13.1-4: Serre's rational power classes, with the group parameter kept
+/-- Helper for Corollary 13-13.1-4: LinearRepresentations_Serre_1977's rational power classes, with the group parameter kept
 explicit so elaboration does not need to reconstruct it from local notation. -/
 private abbrev GammaRatPowerClassType (G : Type u) [Group G] [Finite G] : Type u :=
   MulAction.orbitRel.Quotient ((ZMod (Monoid.exponent G))ˣ) (ConjClasses G)
@@ -351,7 +351,7 @@ private theorem bot_equiv_mem_characterRingOverFieldScalarExtension_iff
         ((IntermediateField.botEquiv ℚ K).injective (congrFun hg'eq s))
     simpa [hgg'] using hg'
 
-/-- Helper for Corollary 13-13.1-4: Serre's rational character criterion is equivalent to
+/-- Helper for Corollary 13-13.1-4: LinearRepresentations_Serre_1977's rational character criterion is equivalent to
 invariance under all rational power maps. -/
 private theorem rational_valued_classFunction_mem_rational_character_ring_iff_power_invariant
     (f : G → ℚ) (hf : IsClassFunction f) :
@@ -540,7 +540,7 @@ private theorem isConstantOnGammaRatPowerClasses_of_mem_rational_character_ring
     (rational_valued_classFunction_mem_rational_character_ring_iff_power_invariant
       (f : G → ℚ) hfClass).1 f.property s t
 
-/-- Helper for Corollary 13-13.1-4: Serre's rational character ring is exactly the submodule of
+/-- Helper for Corollary 13-13.1-4: LinearRepresentations_Serre_1977's rational character ring is exactly the submodule of
 rational-valued functions constant on rational power classes. -/
 private theorem rational_character_ring_eq_gammaRatPowerClassFunctionSubmodule :
     (ℚ⊗R[ℚ](G) : Submodule ℚ (G → ℚ)) =

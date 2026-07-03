@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.GroupTheory.ConjClassesPower
+import LinearRepresentations_Serre_1977.GroupTheory.ConjClassesPower
 
 open CategoryTheory
 open IsCyclotomicExtension.Rat
@@ -43,7 +43,7 @@ section MinimalGammaSubgroup
 
 variable {L : Type u} [Field L] [NumberField L]
 
-/-- Helper for Exercise 13-13.1-16: Serre's subgroup `Γ_K ⊆ (ℤ / nℤ)ˣ` attached to an
+/-- Helper for Exercise 13-13.1-16: LinearRepresentations_Serre_1977's subgroup `Γ_K ⊆ (ℤ / nℤ)ˣ` attached to an
 intermediate field inside a cyclotomic realization. -/
 abbrev gammaSubgroup (n : ℕ) [NeZero n] [IsCyclotomicExtension {n} ℚ L]
     (K : IntermediateField ℚ L) : Subgroup (ZMod n)ˣ :=
@@ -80,7 +80,7 @@ chosen natural-number representative. -/
 
 variable {ΓK : Subgroup (ZMod (Monoid.exponent G))ˣ}
 
-/-- Helper for Exercise 13-13.1-16: Serre's subgroup power action on `G`. -/
+/-- Helper for Exercise 13-13.1-16: LinearRepresentations_Serre_1977's subgroup power action on `G`. -/
 instance gammaSubgroupPow : Pow G ΓK where
   pow s t := s ^ galoisPowerExponentUnit (t : (ZMod (Monoid.exponent G))ˣ)
 

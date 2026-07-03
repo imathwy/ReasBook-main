@@ -1,20 +1,20 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Definition_1_4_3
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_4_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
 /- Definition 1.4.3 lies in the unconstrained smooth minimization domain.
 
 Relevant owner-style declarations sampled before refining:
-* `SetConstrainedMinimizationProblem` in `Nesterov/Chap01/Definition_1_3_3.lean`, the chapter
+* `SetConstrainedMinimizationProblem` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_3_3.lean`, the chapter
   owner of a feasible set together with a real-valued objective;
 * `GeneralMinimizationProblem.IsConstrained` and
   `GeneralMinimizationProblem.not_isConstrained_iff_feasibleSet_eq_univ` in
-  `Nesterov/Chap01/Definition_1_1_4_1.lean`, the earlier owner of unconstrainedness;
-* `GeneralMinimizationProblem.IsSmooth` in `Nesterov/Chap01/Definition_1_1_4_3.lean`, the earlier
+  `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_1_4_1.lean`, the earlier owner of unconstrainedness;
+* `GeneralMinimizationProblem.IsSmooth` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_1_4_3.lean`, the earlier
   owner of smoothness;
 * `SetConstrainedMinimizationProblem.unconstrainedSmooth_iff` in
-  `Nesterov/Chap01/Definition_1_4_3.lean`, the chapter bridge back to the textbook whole-space
+  `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_4_3.lean`, the chapter bridge back to the textbook whole-space
   differentiability formulation.
 
 Best owner abstraction:

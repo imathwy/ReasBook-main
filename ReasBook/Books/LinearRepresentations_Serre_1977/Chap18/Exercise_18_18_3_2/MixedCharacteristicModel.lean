@@ -49,13 +49,13 @@ noncomputable def wittVector_residueField_ringEquiv
 variable {k : Type u} [Field k] [IsAlgClosed k] [CharP k p]
 variable {G : Type u} [Group G] [Finite G]
 
-/-- Helper for Exercise 18-18.3-2: Serre's positive branch adjoins a root of the shifted
+/-- Helper for Exercise 18-18.3-2: LinearRepresentations_Serre_1977's positive branch adjoins a root of the shifted
 `p`-power cyclotomic polynomial `Φ_{p^(n+1)}(X + 1)` over `W(k)`. -/
 private abbrev shifted_prime_power_cyclotomic_polynomial (n : ℕ) : (WittVector p k)[X] :=
   (((cyclotomic (p ^ (n + 1)) ℤ).map (Int.castRingHom (WittVector p k))).comp
     (X + C (1 : WittVector p k)))
 
-/-- Helper for Exercise 18-18.3-2: after transporting Serre's shifted cyclotomic polynomial from
+/-- Helper for Exercise 18-18.3-2: after transporting LinearRepresentations_Serre_1977's shifted cyclotomic polynomial from
 `ℤ` to `W(k)`, it is still Eisenstein at the maximal ideal `(p)`. This is the arithmetic input for
 the totally ramified mixed-character extension. -/
 theorem shifted_prime_power_cyclotomic_isEisenstein_over_wittVector (n : ℕ) :
@@ -122,7 +122,7 @@ theorem shifted_prime_power_cyclotomic_isEisenstein_over_wittVector (n : ℕ) :
     simpa [Polynomial.map_comp, φ] using hweak.mem hi'
   · simpa [Polynomial.map_comp, φ] using hnotmem
 
-/-- Helper for Exercise 18-18.3-2: Serre's shifted `p`-power cyclotomic polynomial stays
+/-- Helper for Exercise 18-18.3-2: LinearRepresentations_Serre_1977's shifted `p`-power cyclotomic polynomial stays
 irreducible over `W(k)`. This isolates the domain input for the positive `AdjoinRoot` branch. -/
 private theorem shifted_prime_power_cyclotomic_irreducible_over_wittVector (n : ℕ) :
     Irreducible (shifted_prime_power_cyclotomic_polynomial (p := p) (k := k) n) := by
@@ -224,7 +224,7 @@ theorem shifted_prime_power_cyclotomic_root_isPrimitiveRoot
       (show 0 < p ^ (n + 1) by
         exact pow_pos (show 0 < p from Nat.Prime.pos (Fact.out : Nat.Prime p)) _)).1 hrootK'
 
-/-- Helper for Exercise 18-18.3-2: isolate the only genuinely missing owner in Serre's source
+/-- Helper for Exercise 18-18.3-2: isolate the only genuinely missing owner in LinearRepresentations_Serre_1977's source
 route, namely a mixed-characteristic DVR over `W(k)` whose fraction field contains a primitive
 root of unity of order equal to the `p`-part of `Monoid.exponent G`. -/
 private theorem wittVector_henselianLocalRing :
@@ -278,7 +278,7 @@ private theorem wittVector_charZero :
       have hm_eq_zero : m = 0 := ih m hm_lt hm_zero
       simp [hm_eq_zero]
 
-/-- Helper for Exercise 18-18.3-2: isolate the only genuinely missing owner in Serre's source
+/-- Helper for Exercise 18-18.3-2: isolate the only genuinely missing owner in LinearRepresentations_Serre_1977's source
 route, namely a mixed-characteristic DVR over `W(k)` whose fraction field contains a primitive
 root of unity of order equal to the `p`-part of `Monoid.exponent G`. -/
 private theorem exists_totally_ramified_p_power_root_extension_over_wittVector_of_factorization_eq_zero
@@ -288,7 +288,7 @@ private theorem exists_totally_ramified_p_power_root_extension_over_wittVector_o
       (K1 : Type u) (_ : Field K1) (_ : Algebra A1 K1) (_ : IsFractionRing A1 K1)
       (_ : CharZero K1) (e1 : IsLocalRing.ResidueField A1 ≃+* k) (ζp : K1),
         IsPrimitiveRoot ζp (p ^ Nat.factorization (Monoid.exponent G) p) := by
-  -- When the `p`-part of the exponent is trivial, Serre's mixed-character owner is already the
+  -- When the `p`-part of the exponent is trivial, LinearRepresentations_Serre_1977's mixed-character owner is already the
   -- base Witt-vector DVR and the required primitive root is `1`.
   haveI : CharZero (WittVector p k) := wittVector_charZero (p := p) (k := k)
   refine ⟨WittVector p k, inferInstance, inferInstance,
@@ -300,7 +300,7 @@ private theorem exists_totally_ramified_p_power_root_extension_over_wittVector_o
   -- The only primitive root of order `1` is `1` itself.
   simpa [hpow] using (IsPrimitiveRoot.one (M := FractionRing (WittVector p k)))
 
-/-- Helper for Exercise 18-18.3-2: isolate the only genuinely missing owner in Serre's source
+/-- Helper for Exercise 18-18.3-2: isolate the only genuinely missing owner in LinearRepresentations_Serre_1977's source
 route, namely a mixed-characteristic DVR over `W(k)` whose fraction field contains a primitive
 root of unity of order equal to the `p`-part of `Monoid.exponent G`. -/
 theorem exists_totally_ramified_p_power_root_extension_over_wittVector :
@@ -485,7 +485,7 @@ theorem exists_totally_ramified_p_power_root_extension_over_wittVector :
         -- Once the positive `AdjoinRoot` is viewed inside its fraction field, the shifted root
         -- becomes the required primitive `p^(n+1)`-th root.
         simpa [ζp, A1, f] using hζp_explicit
-      -- Route correction: the arithmetic half of Serre's positive branch is now explicit.
+      -- Route correction: the arithmetic half of LinearRepresentations_Serre_1977's positive branch is now explicit.
       -- The only remaining blocker is to package `A1` as a henselian DVR over `W(k)` with
       -- residue field `k`, so that this primitive root can be returned in the mixed-character
       -- owner package.

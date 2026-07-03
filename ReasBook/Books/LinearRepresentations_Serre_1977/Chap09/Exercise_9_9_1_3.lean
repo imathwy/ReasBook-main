@@ -1,6 +1,6 @@
-import Serre.Chap09.Exercise_9_9_1_3.FiniteSetReindexing
-import Serre.Chap09.Exercise_9_9_1_3.SymmetricExteriorProduct
-import Serre.Chap09.Exercise_9_9_1_3.SymmetricAdamsExponential
+import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_3.FiniteSetReindexing
+import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_3.SymmetricExteriorProduct
+import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_3.SymmetricAdamsExponential
 
 open scoped Representation
 

@@ -1,4 +1,4 @@
-import SmoothManifoldsLee.Chap04.Sec04_23.Corollary_4_13
-import SmoothManifoldsLee.Chap04.Sec04_23.Theorem_4_12
-import SmoothManifoldsLee.Chap04.Sec04_23.Theorem_4_14
-import SmoothManifoldsLee.Chap04.Sec04_23.Theorem_4_15
+import SmoothManifolds_Lee_2012.Chap04.Sec04_23.Corollary_4_13
+import SmoothManifolds_Lee_2012.Chap04.Sec04_23.Theorem_4_12
+import SmoothManifolds_Lee_2012.Chap04.Sec04_23.Theorem_4_14
+import SmoothManifolds_Lee_2012.Chap04.Sec04_23.Theorem_4_15

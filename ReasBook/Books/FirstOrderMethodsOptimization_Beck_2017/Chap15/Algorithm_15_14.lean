@@ -1,5 +1,5 @@
-import FirstOrderMethodsinOptimization.Chap02.Definition_2_2
-import FirstOrderMethodsinOptimization.Chap15.Algorithm_15_10
+import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_2
+import FirstOrderMethodsOptimization_Beck_2017.Chap15.Algorithm_15_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

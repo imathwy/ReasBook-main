@@ -1,4 +1,4 @@
-import stacks_project.Chap04.Lemma_4_27_5
+import StacksProject_2024.Chap04.Lemma_4_27_5
 
 open CategoryTheory
 open MorphismProperty

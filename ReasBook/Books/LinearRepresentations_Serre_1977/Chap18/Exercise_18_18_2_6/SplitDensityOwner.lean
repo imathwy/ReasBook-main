@@ -1,6 +1,6 @@
-import Serre.Chap18.Exercise_18_18_2_6.CommonKernelQuotient
-import Serre.Chap18.Exercise_18_18_2_6.MatrixCornerActions
-import Serre.Chap18.Exercise_18_18_2_6.ProductIdempotentDecomposition
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_2_6.CommonKernelQuotient
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_2_6.MatrixCornerActions
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_2_6.ProductIdempotentDecomposition
 import Mathlib.LinearAlgebra.Basis.VectorSpace
 
 noncomputable section
@@ -443,7 +443,7 @@ theorem nonempty_linearEquiv_of_exterior_trace_eq_on_finite_semisimple_image
     trace_eq_on_target_of_surjective_lift
       (ρ := ρ) (ρ' := ρ') φV φW liftι hφV hφW hlift hexteriorTrace
   -- Route correction: the old theorem tried to work with determinant or trace identities on all
-  -- `a : A`. Serre's proof only evaluates the descended invariant on lifts of primitive
+  -- `a : A`. LinearRepresentations_Serre_1977's proof only evaluates the descended invariant on lifts of primitive
   -- projectors in a Wedderburn decomposition of `A`.
   have hlift_primitive : ∀ a : A, ∃ t : MonoidAlgebra k G, liftι t = a := hlift
   classical
@@ -552,7 +552,7 @@ theorem nonempty_linearEquiv_of_exterior_trace_eq_on_finite_semisimple_image
       simpa using
         corner_baseField_finrank_eq_of_wedderburn_primitive_projector
           (k := k) (D := D) (d := d) (M := V) (N := W) htraceB i
-    -- TODO: Serre's source route needs a valid bridge from the descended primitive projector in
+    -- TODO: LinearRepresentations_Serre_1977's source route needs a valid bridge from the descended primitive projector in
     -- `A` to equality of reverse characteristic polynomials on its chosen lifts. The tempting
     -- rewrite `((ρ.nthExteriorPower n).asAlgebraHom t) = exteriorPower.map n (ρ.asAlgebraHom t)`
     -- is false because exterior power is not additive on `k[G]`, so ordinary trace equality on

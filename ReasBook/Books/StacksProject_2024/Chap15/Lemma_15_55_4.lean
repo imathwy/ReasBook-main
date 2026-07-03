@@ -3,7 +3,7 @@ import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
 import Mathlib.Algebra.Category.ModuleCat.Injective
 import Mathlib.Algebra.Module.Injective
 import Mathlib.Tactic.TFAE
-import stacks_project.Chap12.Lemma_12_27_2
+import StacksProject_2024.Chap12.Lemma_12_27_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

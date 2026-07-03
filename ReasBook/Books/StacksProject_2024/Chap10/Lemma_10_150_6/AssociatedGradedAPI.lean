@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap10.Definition_10_70_1
+import StacksProject_2024.Chap10.Definition_10_70_1
 
 -- Minimal associated-graded API isolated for Lemma 10.150.6.
 

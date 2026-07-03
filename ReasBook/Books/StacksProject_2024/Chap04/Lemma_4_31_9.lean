@@ -1,5 +1,5 @@
 import Mathlib.CategoryTheory.EqToHom
-import stacks_project.Chap04.Lemma_4_31_6
+import StacksProject_2024.Chap04.Lemma_4_31_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

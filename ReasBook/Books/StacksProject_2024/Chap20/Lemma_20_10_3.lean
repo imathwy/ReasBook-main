@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.CategoryTheory.Limits.Lattice
 import Mathlib.CategoryTheory.Sites.SheafCohomology.Cech
-import stacks_project.Chap17.Lemma_17_18_2
-import stacks_project.Chap18.Lemma_18_28_7
-import stacks_project.Chap20.«20_9_0_1»
-import stacks_project.Chap20.«20_10_0_1»
+import StacksProject_2024.Chap17.Lemma_17_18_2
+import StacksProject_2024.Chap18.Lemma_18_28_7
+import StacksProject_2024.Chap20.«20_9_0_1»
+import StacksProject_2024.Chap20.«20_10_0_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

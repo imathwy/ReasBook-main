@@ -1,8 +1,8 @@
-import Serre.Chap14.Proposition_14_14_1_1
-import Serre.Chap10.Definition_10_10_1_3
-import Serre.Chap16.Theorem_16_16_1_5.CartanBasisExtension
-import Serre.Chap16.Theorem_16_16_1_5.SubgroupInduction
-import Serre.Chap16.Theorem_16_16_1_5.PGroupBridges
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_1_1
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_5.CartanBasisExtension
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_5.SubgroupInduction
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_5.PGroupBridges
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -191,7 +191,7 @@ private theorem exists_subgroupInduction_cartan_preimage
     simpa [map_add] using congrArg₂ HAdd.hAdd hx₁ hx₂
 
 /- Domain-style sampling for Theorem 16-16.1-5:
-* source-facing layer: Serre's theorem that the `p`-part of `|G|` kills the cokernel of the
+* source-facing layer: LinearRepresentations_Serre_1977's theorem that the `p`-part of `|G|` kills the cokernel of the
   Cartan homomorphism.
 * core/canonical owner already fixed upstream in Chapter `15`: `cartanHom k G : P₀[k](G) →+
   R₀[k](G)`.
@@ -495,7 +495,7 @@ private theorem finiteRepGrothendieckRelations_le_precomposeLift_ker
     _ = 0 := by
           abel
 
-/-- Helper for Theorem 16-16.1-5: pull back Serre's Grothendieck classes along a group
+/-- Helper for Theorem 16-16.1-5: pull back LinearRepresentations_Serre_1977's Grothendieck classes along a group
 homomorphism. -/
 private def finiteRepGrothendieckPrecompose
     {A : Type u} [Group A] {B : Type u} [Group B] (φ : B →* A) :
@@ -833,7 +833,7 @@ private theorem split_product_simple_factorization
 
 
 omit [IsAlgClosed k] in
-/-- Helper for Theorem 16-16.1-5: for a simple class on an elementary subgroup, Serre's `S × P`
+/-- Helper for Theorem 16-16.1-5: for a simple class on an elementary subgroup, LinearRepresentations_Serre_1977's `S × P`
 decomposition directly produces the local Cartan witness of size `ordProj[p] |H|`. -/
 private theorem simple_class_ordProj_nsmul_mem_cartan_range_of_elementary
     [Finite G] (H : Subgroup G) (hH : IsElementary H)
@@ -870,7 +870,7 @@ private theorem subgroup_induction_nsmul_mem_cartan_range
         ((N : ℕ) • finiteRep_subgroupInduction (k := k) (G := G) H z) := by
           rw [map_nsmul]
 
-/-- Helper for Theorem 16-16.1-5: after the source-faithful elementary decomposition, Serre's
+/-- Helper for Theorem 16-16.1-5: after the source-faithful elementary decomposition, LinearRepresentations_Serre_1977's
 argument assembles the local Cartan witnesses into a global `p ^ n` witness on `G`. -/
 private theorem p_part_nsmul_mem_cartan_range_of_card_factorization
     [Finite G]
@@ -939,7 +939,7 @@ private theorem p_part_nsmul_mem_cartan_range_of_card_factorization
   -- Sum the induced elementary witnesses and rewrite back to the original class `y`.
   simpa [hz] using hsum'
 
--- Proof sketch: this is Serre's theorem on the `p`-part of the Cartan image, assembled from the
+-- Proof sketch: this is LinearRepresentations_Serre_1977's theorem on the `p`-part of the Cartan image, assembled from the
 -- elementary-subgroup decomposition and the local Cartan witness on each elementary source. -/
 /-- Theorem 16-16.1-5: if `Nat.card G = p ^ n * m` with `m` prime to `p`, then every element of
 `R_k(G)` divisible by `p ^ n` lies in the image of the Cartan homomorphism

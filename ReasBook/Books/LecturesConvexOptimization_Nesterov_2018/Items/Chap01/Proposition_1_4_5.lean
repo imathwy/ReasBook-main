@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Proposition_1_4_5
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Proposition_1_4_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -11,7 +11,7 @@ Relevant owner-style declarations sampled before refining:
 * `LinearMap.adjoint`, the canonical adjoint owner for linear maps on Euclidean spaces
 * `LinearMap.adjoint_inner_right`, the owner adjointness identity
 * `Matrix.toEuclideanLin_conjTranspose_eq_adjoint`, the canonical matrix-to-adjoint bridge
-* `matrix_transpose_adjointness` in `Nesterov/Chap01/Proposition_1_4_5.lean`, the exact
+* `matrix_transpose_adjointness` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Proposition_1_4_5.lean`, the exact
   source-facing chapter theorem already owning this proposition
 
 Best owner abstraction:

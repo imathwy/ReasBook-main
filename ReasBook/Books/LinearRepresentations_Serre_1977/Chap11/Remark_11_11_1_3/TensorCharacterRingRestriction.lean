@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap07.Proposition_7_7_2_1
-import Serre.Chap10.Definition_10_10_1_3
-import Serre.Chap11.Theorem_11_11_2_1.TensorCharacterBridge
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1.TensorCharacterBridge
 
 -- Stable subgroup tensor-character-ring restriction infrastructure extracted from Remark 11-11.1-3.
 
@@ -64,7 +64,7 @@ private theorem precomp_mem_characterRing
   · intro x y _ _ hx hy
     simpa using (R(H)).mul_mem hx hy
 
-/-- The canonical transport on Serre's character ring along a group isomorphism. -/
+/-- The canonical transport on LinearRepresentations_Serre_1977's character ring along a group isomorphism. -/
 def characterRingTransport
     {H J : Type} [Group H] [Finite H] [Group J] [Finite J] (e : H ≃* J) :
     R(J) →ₐ[ℤ] R(H) :=
@@ -124,25 +124,25 @@ precomposition with that isomorphism. -/
     ((characterRingTransport e χ : R(H)) : H → ℂ) h = (χ : J → ℂ) (e h) := by
   rfl
 
-/-- The canonical restriction map on Serre's tensor character ring attached to a subgroup `H ≤ G`.
+/-- The canonical restriction map on LinearRepresentations_Serre_1977's tensor character ring attached to a subgroup `H ≤ G`.
 -/
 abbrev tensorCharacterRingRestriction (H : Subgroup G) :
     A ⊗R(G) →ₗ[A] A ⊗R(H) :=
   (H ↾R[ℂ]).toLinearMap.baseChange A
 
-/-- The canonical transport on Serre's tensor character ring along a subgroup isomorphism. -/
+/-- The canonical transport on LinearRepresentations_Serre_1977's tensor character ring along a subgroup isomorphism. -/
 abbrev tensorCharacterRingTransport {H J : Type} [Group H] [Finite H] [Group J] [Finite J]
     (e : H ≃* J) :
     A ⊗R(J) →ₗ[A] A ⊗R(H) :=
   (characterRingTransport e).toLinearMap.baseChange A
 
-/-- The canonical restriction map on Serre's tensor character ring attached to an inclusion
+/-- The canonical restriction map on LinearRepresentations_Serre_1977's tensor character ring attached to an inclusion
 `H ≤ J`. -/
 abbrev tensorCharacterRingRestrictionOfLe {H J : Subgroup G} (h : H ≤ J) :
     A ⊗R(J) →ₗ[A] A ⊗R(H) :=
   (h ↾R[ℂ]).toLinearMap.baseChange A
 
-/-- The canonical conjugation transport on Serre's tensor character ring. -/
+/-- The canonical conjugation transport on LinearRepresentations_Serre_1977's tensor character ring. -/
 abbrev conjugateTensorCharacterRingTransport (H : Subgroup G) (s : G) :
     A ⊗R(H) →ₗ[A] A ⊗R(s •ᶜ H) :=
   tensorCharacterRingTransport ((MulAut.conj s).subgroupMap H).symm

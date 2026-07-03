@@ -10,7 +10,7 @@ import Mathlib.Analysis.Calculus.FDeriv.Symmetric
 import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Topology.Semicontinuous
 import Mathlib.Analysis.Normed.Lp.ProdLp
-import Reaslib.Optlib.Differential.Calculation
+import ReasLib.Optlib.Differential.Calculation
 
 /-!
 # Lemmas

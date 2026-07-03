@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.Chap14.Infra_14_4_ProjectiveLift
-import Serre.Chap15.Definition_15_15_3_1.FiniteRepScalarExtension
-import Serre.Chap15.Theorem_15_15_2_2
-import Serre.Chap16.Proposition_16_16_3_3
-import Serre.Chap16.Theorem_16_16_2_1
+import LinearRepresentations_Serre_1977.Chap14.Infra_14_4_ProjectiveLift
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1.FiniteRepScalarExtension
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap16.Proposition_16_16_3_3
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -28,7 +28,7 @@ local notation "k" => IsLocalRing.ResidueField A
 local notation "e" =>
   (projectiveGrothendieckScalarExtensionHom (A := A) (K := K) (G := G))
 
-/-- Helper for Corollary 16-16.3-4: the Chapter `16` character criterion for the range of Serre's
+/-- Helper for Corollary 16-16.3-4: the Chapter `16` character criterion for the range of LinearRepresentations_Serre_1977's
 scalar-extension map, specialized to an actual finite-dimensional representation. -/
 private theorem
     finiteRepClass_mem_projectiveGrothendieckScalarExtension_range_iff_character_eq_zero_on_pSingular
@@ -42,11 +42,11 @@ private theorem
 
 omit [HasEnoughRootsOfUnity K (Monoid.exponent G)] in
 /-- Helper for Corollary 16-16.3-4: the Grothendieck class of an actual finite-dimensional
-`K[G]`-representation lies in Serre's positive subset `R_K^+(G)`. -/
+`K[G]`-representation lies in LinearRepresentations_Serre_1977's positive subset `R_K^+(G)`. -/
 private theorem finiteRepGrothendieckClass_mem_positiveSubset
     {K : Type u} [Field K] {G : Type u} [Group G] (V : FDRep K G) :
     [V]₀ ∈ R⁺[K](G) := by
-  -- Unpack Serre's positive subset as the range of actual finite-dimensional representations.
+  -- Unpack LinearRepresentations_Serre_1977's positive subset as the range of actual finite-dimensional representations.
   exact (mem_finiteRepPositiveSubset_iff (K := K) (G := G)).2 ⟨V, rfl⟩
 
 omit [IsFractionRing A K] [HasEnoughRootsOfUnity K (Monoid.exponent G)] in
@@ -60,7 +60,7 @@ private theorem residueField_projective_class_has_scalarExtension_lift
   obtain ⟨Q, hQ⟩ :=
     exists_projective_lift_of_residueField_projective (A := A) (G := G) F
   refine ⟨Q, ?_⟩
-  -- Convert the reduction isomorphism into equality of projective classes, then evaluate Serre's
+  -- Convert the reduction isomorphism into equality of projective classes, then evaluate LinearRepresentations_Serre_1977's
   -- scalar-extension map on the resulting generator.
   have hred :
       projectiveGrothendieckReductionEquiv (A := A) (G := G) [Q]ₚ₀ = [F]ₚ₀ := by
@@ -84,19 +84,19 @@ private theorem residueField_projective_class_has_scalarExtension_lift
           exact projectiveGrothendieckBaseChangeHom_projectiveClass_eq (K := K) Q
 
 omit [HasEnoughRootsOfUnity K (Monoid.exponent G)] in
-/-- Helper for Corollary 16-16.3-4: Serre's reverse bridge turns actual range membership into an
+/-- Helper for Corollary 16-16.3-4: LinearRepresentations_Serre_1977's reverse bridge turns actual range membership into an
 actual projective `A[G]`-lift. -/
 private theorem reverse_projectiveScalarExtensionClass_of_mem_range
     (hR : SatisfiesConditionR (R⁺[K](G)) A)
     (V : FDRep K G)
     (hmem : [V]₀ ∈ (e).range) :
     ∃ Q : FiniteProjectiveGroupAlgebraModule A G, [Q.scalarExtension K]₀ = [V]₀ := by
-  -- Actual finite-dimensional representations lie in Serre's positive subset.
+  -- Actual finite-dimensional representations lie in LinearRepresentations_Serre_1977's positive subset.
   have hactual : [V]₀ ∈ R⁺[K](G) :=
     finiteRepGrothendieckClass_mem_positiveSubset (K := K) (G := G) V
   have himage : [V]₀ ∈ e '' P⁺[k](G) := by
     have hinter : [V]₀ ∈ ((e).range : Set (R₀[K](G))) ∩ R⁺[K](G) := ⟨hmem, hactual⟩
-    -- Route correction: now that Proposition `16-16.3-3` is imported directly, use Serre's
+    -- Route correction: now that Proposition `16-16.3-3` is imported directly, use LinearRepresentations_Serre_1977's
     -- canonical image/range identity instead of the old local placeholder.
     rw [← SatisfiesConditionR.image_eq_range_inter_positive
       (A := A) (K := K) (G := G) hR] at hinter
@@ -131,7 +131,7 @@ Source/core/bridge triage:
 * core/canonical: the range of `e` and the Chapter `16` character-vanishing criterion for that
   range;
 * bridge/view: the companion theorem below, which identifies the source-facing lifting statement
-  with the canonical range condition under Serre's hypothesis `(R)`.
+  with the canonical range condition under LinearRepresentations_Serre_1977's hypothesis `(R)`.
 
 Primitive data vs derived API:
 * primitive data here: the actual finite-dimensional representation `V` and the condition
@@ -151,7 +151,7 @@ omit [HasEnoughRootsOfUnity K (Monoid.exponent G)] in
 /-- Under condition `(R)`, the Grothendieck class of an actual finite-dimensional
 `K[G]`-representation is a projective scalar-extension class, meaning
 `[V]₀ = [P.scalarExtension K]₀` for some finite projective `A[G]`-module `P`, exactly when
-`[V]₀` lies in the range of Serre's canonical scalar-extension homomorphism
+`[V]₀` lies in the range of LinearRepresentations_Serre_1977's canonical scalar-extension homomorphism
 `e : P_k(G) → R_K(G)`. -/
 theorem
     finiteRep_has_projectiveScalarExtensionClass_iff_mem_projectiveGrothendieckScalarExtension_range
@@ -177,14 +177,14 @@ theorem
             exact projectiveGrothendieckBaseChangeHom_projectiveClass_eq (K := K) P
       _ = [V]₀ := hP
   · intro hmem
-    -- Route correction: use Serre's canonical
+    -- Route correction: use LinearRepresentations_Serre_1977's canonical
     -- `e.range ∩ R⁺[K](G) -> e '' P⁺[k](G) -> F -> Q`
     -- bridge rather than the old local placeholder chain.
     exact
       reverse_projectiveScalarExtensionClass_of_mem_range
         (A := A) (K := K) (G := G) (hR := hR) V hmem
 
-/-- Corollary 16-16.3-4: if Serre's condition `(R)` holds for the actual positive subset
+/-- Corollary 16-16.3-4: if LinearRepresentations_Serre_1977's condition `(R)` holds for the actual positive subset
 `R_K^+(G)`, then the Grothendieck class of a finite-dimensional `K`-representation of `G` is a
 projective scalar-extension class, equivalently `[V]₀ = [P.scalarExtension K]₀` for some finite
 projective `A[G]`-module `P`, if and only if its ordinary character vanishes on the

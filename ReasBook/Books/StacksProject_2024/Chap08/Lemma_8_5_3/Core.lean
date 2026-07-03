@@ -1,6 +1,6 @@
-import stacks_project.Chap04.Definition_4_33_9
-import stacks_project.Chap04.Lemma_4_35_3
-import stacks_project.Chap04.Lemma_4_35_9
+import StacksProject_2024.Chap04.Definition_4_33_9
+import StacksProject_2024.Chap04.Lemma_4_35_3
+import StacksProject_2024.Chap04.Lemma_4_35_9
 
 universe u₁ u₂ v₁ v₂
 

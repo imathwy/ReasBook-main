@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap21.Lemma_21_10_4
+import StacksProject_2024.Chap21.Lemma_21_10_4
 
 open CategoryTheory Opposite TopologicalSpace TopCat
 open scoped BigOperators

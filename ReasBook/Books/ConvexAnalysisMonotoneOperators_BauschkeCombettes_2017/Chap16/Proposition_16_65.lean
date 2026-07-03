@@ -1,12 +1,12 @@
 import Mathlib
 import Mathlib.Data.List.TFAE
-import BauschkeLean.Chap12.ProximityOperator
-import BauschkeLean.Chap12.Proposition_12_26
-import BauschkeLean.Chap13.Corollary_13_38
-import BauschkeLean.Chap13.Definition_13_34
-import BauschkeLean.Chap13.Proposition_13_36
-import BauschkeLean.Chap16.Definition_16_1
-import BauschkeLean.Chap16.Proposition_16_10
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.ProximityOperator
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_26
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Corollary_13_38
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Definition_13_34
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Proposition_13_36
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Definition_16_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

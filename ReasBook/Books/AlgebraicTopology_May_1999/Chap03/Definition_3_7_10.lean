@@ -1,4 +1,4 @@
-import MayConciseRevised.Chap03.Definition_3_7_4
+import AlgebraicTopology_May_1999.Chap03.Definition_3_7_4
 import Mathlib.CategoryTheory.Endomorphism
 import Mathlib.Tactic.Recall
 

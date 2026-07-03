@@ -1,5 +1,5 @@
-import Serre.Chap02.CompleteIrreducibleFamily
-import Serre.RepresentationTheory.GroupFunctionPairing
+import LinearRepresentations_Serre_1977.Chap02.CompleteIrreducibleFamily
+import LinearRepresentations_Serre_1977.RepresentationTheory.GroupFunctionPairing
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,11 +1,11 @@
 import Mathlib
-import Serre.Chap01.Theorem_1_1_4_2
-import Serre.Chap07.Proposition_7_7_1_3
-import Serre.Chap07.Remark_7_7_1_4
-import Serre.Chap08.Corollary_8_8_3_8
-import Serre.Chap15.Exercise_15_15_5_3
-import Serre.GroupTheory.PSolvable
-import Serre.Chap17.Theorem_17_17_3_1.CyclicNormalByPGroupBasics
+import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_4_2
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_1_3
+import LinearRepresentations_Serre_1977.Chap07.Remark_7_7_1_4
+import LinearRepresentations_Serre_1977.Chap08.Corollary_8_8_3_8
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_5_3
+import LinearRepresentations_Serre_1977.GroupTheory.PSolvable
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.CyclicNormalByPGroupBasics
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -683,7 +683,7 @@ lemma transported_isotypic_component_mem
         (bot_lt_isotypicComponents c.2).ne'
 
 /-- Helper for Theorem 17-17.3-1: in the prime-characteristic case, semisimplicity of the
-restriction to `C` gives Serre's dichotomy between induction from a proper overgroup containing
+restriction to `C` gives LinearRepresentations_Serre_1977's dichotomy between induction from a proper overgroup containing
 `C` and `C`-isotypy of the restriction. -/
 lemma exists_proper_overgroup_irreducible_induced_or_restriction_isotypic_of_semisimple_restrict
     (hC : C.Normal)

@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap10.Lemma_10_37_12
+import StacksProject_2024.Chap10.Lemma_10_37_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -63,7 +63,7 @@ section
 variable {R : Type u} [CommRing R] [IsDomain R] [IsNoetherianRing R]
 
 -- Proof sketch: choose `f ≠ 0` such that `Localization.Away f` is normal, so the basic open
--- `D(f)` lies in the normal locus. If `p` is not in the normal locus, Serre's criterion
+-- `D(f)` lies in the normal locus. If `p` is not in the normal locus, LinearRepresentations_Serre_1977's criterion
 -- yields a prime `q ≤ p` where either `(S_2)` fails or a height-one localization is not regular;
 -- since `R_f` is normal, necessarily `f ∈ q`. These bad primes `q` are controlled by the finitely
 -- many associated and embedded associated primes of `R ⧸ Ideal.span ({f} : Set R)`, so the

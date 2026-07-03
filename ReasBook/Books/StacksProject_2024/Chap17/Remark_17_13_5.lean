@@ -1,10 +1,10 @@
 import Mathlib
-import stacks_project.Chap06.ClosedSubsetInclusion
-import stacks_project.Chap17.Definition_17_5_1
-import stacks_project.Chap06.Restriction_and_extension_by_zero_for_module_valued_sheaves
-import stacks_project.Chap06.Definition_6_26_1
-import stacks_project.Chap17.Definition_17_13_1
-import stacks_project.Chap17.Lemma_17_13_4
+import StacksProject_2024.Chap06.ClosedSubsetInclusion
+import StacksProject_2024.Chap17.Definition_17_5_1
+import StacksProject_2024.Chap06.Restriction_and_extension_by_zero_for_module_valued_sheaves
+import StacksProject_2024.Chap06.Definition_6_26_1
+import StacksProject_2024.Chap17.Definition_17_13_1
+import StacksProject_2024.Chap17.Lemma_17_13_4
 
 open CategoryTheory Opposite TopologicalSpace
 open CategoryTheory.Limits

@@ -1,4 +1,4 @@
-import Nesterov.Chap07.Lemma_7_15
+import LecturesConvexOptimization_Nesterov_2018.Chap07.Lemma_7_15
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

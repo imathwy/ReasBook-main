@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.AB
 import Mathlib.CategoryTheory.Abelian.Exact
-import stacks_project.Chap10.Lemma_10_8_2
-import stacks_project.Chap10.Lemma_10_8_3
-import stacks_project.Chap10.Lemma_10_8_4
+import StacksProject_2024.Chap10.Lemma_10_8_2
+import StacksProject_2024.Chap10.Lemma_10_8_3
+import StacksProject_2024.Chap10.Lemma_10_8_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

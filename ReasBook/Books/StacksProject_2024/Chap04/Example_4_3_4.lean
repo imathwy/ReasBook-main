@@ -1,6 +1,6 @@
 import Mathlib.CategoryTheory.Yoneda
 import Mathlib.Tactic.Recall
-import stacks_project.Chap04.Definition_4_3_3
+import StacksProject_2024.Chap04.Definition_4_3_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

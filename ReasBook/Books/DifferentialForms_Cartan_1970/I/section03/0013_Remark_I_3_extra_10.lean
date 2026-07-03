@@ -1,4 +1,4 @@
-import cartan.I.section03.«0011_Proposition_6_1»
+import DifferentialForms_Cartan_1970.I.section03.«0011_Proposition_6_1»
 
 open scoped Topology
 

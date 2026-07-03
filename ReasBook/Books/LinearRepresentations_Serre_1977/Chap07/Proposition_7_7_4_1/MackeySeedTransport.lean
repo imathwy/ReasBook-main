@@ -1,5 +1,5 @@
-import Serre.Chap07.Proposition_7_7_4_1.MackeyDecomposition
-import Serre.Chap07.Proposition_7_7_4_1.IdentityBlockIrreducibility
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_4_1.MackeyDecomposition
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_4_1.IdentityBlockIrreducibility
 
 noncomputable section
 

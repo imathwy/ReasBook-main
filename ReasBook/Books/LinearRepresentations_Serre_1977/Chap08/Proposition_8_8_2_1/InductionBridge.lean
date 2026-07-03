@@ -1,5 +1,5 @@
-import Serre.Chap03.Exercise_3_3_3_6
-import Serre.Chap08.Proposition_8_8_2_1.CharacterPacketCore
+import LinearRepresentations_Serre_1977.Chap03.Exercise_3_3_3_6
+import LinearRepresentations_Serre_1977.Chap08.Proposition_8_8_2_1.CharacterPacketCore
 
 open CategoryTheory
 
@@ -513,7 +513,7 @@ noncomputable abbrev localMackeyTwist
     Rep ℂ (localMackeySubgroup (φ := φ) K H' s) :=
   Rep.res (localMackeyConjHom (φ := φ) K H' s) W
 
-/-- For finite `H`, Serre's induced representation `θ[φ; χ, ρ]` is finite-dimensional as soon as
+/-- For finite `H`, LinearRepresentations_Serre_1977's induced representation `θ[φ; χ, ρ]` is finite-dimensional as soon as
 `ρ` is. -/
 noncomputable instance thetaFiniteDimensional [Finite H]
     (χ : A →* ℂˣ) (ρ : Rep.{w} ℂ H_[φ; χ]) [FiniteDimensional ℂ ρ] :

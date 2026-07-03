@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Definition_1_1_1
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_1_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -8,16 +8,16 @@ universe u
 /- Definition 1.1.1 lies in the finite-dimensional constrained-optimization domain.
 
 Relevant owner-style declarations sampled before refining:
-* `FunctionalConstraintsMinimizationProblem` in `Nesterov/Chap01/Definition_1_1_3.lean`, the
+* `FunctionalConstraintsMinimizationProblem` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_1_3.lean`, the
   ambient project owner for a basic feasible set, an objective, and finitely many scalar
   constraints with comparison senses;
-* `GeneralMinimizationProblem` in `Nesterov/Chap01/Definition_1_1_3.lean`, the textbook
+* `GeneralMinimizationProblem` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_1_3.lean`, the textbook
   `ℝⁿ` specialization of that ambient owner;
 * `FunctionalConstraintsMinimizationProblem.constraintVector` in
-  `Nesterov/Chap01/Definition_1_1_1.lean`, the canonical packaging of the scalar constraint family
+  `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_1_1.lean`, the canonical packaging of the scalar constraint family
   into a vector-valued map;
 * `FunctionalConstraintsMinimizationProblem.mem_feasibleSet_iff` in
-  `Nesterov/Chap01/Definition_1_1_1.lean`, the owner-level feasible-set rewrite under
+  `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_1_1.lean`, the owner-level feasible-set rewrite under
   inequality-only constraints.
 
 Best owner abstraction:

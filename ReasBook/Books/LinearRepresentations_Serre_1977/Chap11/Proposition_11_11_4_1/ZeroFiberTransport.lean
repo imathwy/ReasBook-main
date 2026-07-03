@@ -1,4 +1,4 @@
-import Serre.Chap11.Proposition_11_11_4_1.ConjClassFunctionRealization
+import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_1.ConjClassFunctionRealization
 
 -- Stable zero-fiber transport helpers extracted from Proposition 11-11.4-1.
 
@@ -293,7 +293,7 @@ noncomputable def transportedZeroFiberEvalPrimeAsIdeal
 
 /-- Helper for Proposition 11-11.4-1: the residue-field-valued transported evaluation map before
 postcomposing with the canonical coefficient embedding `((0).ResidueField) → ℂ`. This isolates
-the pure bottom-fiber coordinate evaluation from the later comparison with Serre's complex owner
+the pure bottom-fiber coordinate evaluation from the later comparison with LinearRepresentations_Serre_1977's complex owner
 map. -/
 noncomputable def transported_zero_fiber_residue_evalRingHom
     (e : ((⊥ : Ideal A).Fiber (A ⊗R(G))) ≃ₐ[((⊥ : Ideal A).ResidueField)]
@@ -327,7 +327,7 @@ theorem transported_zero_fiber_evalAlgHom_ker_eq_residue_eval_ker
 /-- Helper for Proposition 11-11.4-1: transporting the residue-field coordinate-evaluation prime
 back through the bottom-fiber identifications produces the kernel of the corresponding
 residue-field-valued evaluation map on `A ⊗ R(G)`. This is the exact structural normalization
-needed before comparing with Serre's complex owner map for `P₀,c`. -/
+needed before comparing with LinearRepresentations_Serre_1977's complex owner map for `P₀,c`. -/
 theorem transportedZeroFiberEvalPrimeAsIdeal_eq_ker_residue_evalRingHom
     (e : ((⊥ : Ideal A).Fiber (A ⊗R(G))) ≃ₐ[((⊥ : Ideal A).ResidueField)]
       (ConjClasses G → ((⊥ : Ideal A).ResidueField)))
@@ -346,7 +346,7 @@ theorem transportedZeroFiberEvalPrimeAsIdeal_eq_ker_residue_evalRingHom
   simp [RingHom.mem_ker, RingHom.comp_apply]
 
 /-- Helper for Proposition 11-11.4-1: once the transported bottom-fiber evaluation map agrees
-with Serre's defining complex evaluation map for `P₀,c`, the corresponding transported
+with LinearRepresentations_Serre_1977's defining complex evaluation map for `P₀,c`, the corresponding transported
 coordinate-evaluation prime is already exactly `P₀,c`. This reduces the remaining zero-fiber
 transport blocker to a pointwise equality of `A`-algebra maps. -/
 theorem transported_zero_fiber_eval_prime_eq_zero_prime_of_evalAlgHom_eq
@@ -361,7 +361,7 @@ theorem transported_zero_fiber_eval_prime_eq_zero_prime_of_evalAlgHom_eq
     ((PrimeSpectrum.primesOverOrderIsoFiber A (A ⊗R(G)) (⊥ : Ideal A)).symm
       (zero_fiber_lift (A := A) (G := G) e c)).1 =
         (P0 A c).asIdeal := by
-  -- Matching the transported evaluation map with Serre's owner map identifies their kernels.
+  -- Matching the transported evaluation map with LinearRepresentations_Serre_1977's owner map identifies their kernels.
   have hker :
       RingHom.ker (transported_zero_fiber_evalAlgHom (A := A) (G := G) e c).toRingHom =
         RingHom.ker (tensorCharacterRingZeroPrimeIdealEval A c) := by
@@ -409,7 +409,7 @@ theorem tensorCharacterRing_algHom_ext_of_eq_on_includeRight
   exact hχ χ
 
 /-- Helper for Proposition 11-11.4-1: to identify the transported zero-fiber evaluation map with
-Serre's defining owner map, it suffices to compare them on the `R(G)` generators. This packages
+LinearRepresentations_Serre_1977's defining owner map, it suffices to compare them on the `R(G)` generators. This packages
 the extensionality reduction so the remaining blocker is a single coefficient-descent statement on
 tensor generators. -/
 theorem zero_fiber_transport_evalAlgHom_eq_zeroPrimeIdealEval_of_includeRight

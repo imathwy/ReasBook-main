@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap13.Definition_13_13_2
-import stacks_project.Chap13.Lemma_13_26_3
+import StacksProject_2024.Chap13.Definition_13_13_2
+import StacksProject_2024.Chap13.Lemma_13_26_3
 
 open CategoryTheory
 open CochainComplex

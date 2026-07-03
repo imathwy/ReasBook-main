@@ -2,7 +2,7 @@ import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Topology.EMetricSpace.Lipschitz
 import Mathlib.Topology.MetricSpace.Lipschitz
-import Nesterov.Chap01.Definition_1_3_12
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_3_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

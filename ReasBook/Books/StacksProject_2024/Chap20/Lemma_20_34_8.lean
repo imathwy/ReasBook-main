@@ -1,8 +1,8 @@
 import Mathlib
-import stacks_project.Chap20.Lemma_20_21_1
-import stacks_project.Chap20.Lemma_20_25_1
-import stacks_project.Chap20.Lemma_20_32_7
-import stacks_project.Chap20.Lemma_20_34_2
+import StacksProject_2024.Chap20.Lemma_20_21_1
+import StacksProject_2024.Chap20.Lemma_20_25_1
+import StacksProject_2024.Chap20.Lemma_20_32_7
+import StacksProject_2024.Chap20.Lemma_20_34_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

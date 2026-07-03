@@ -1,8 +1,8 @@
-import Serre.Chap12.Exercise_12_12_7_8.ScalarExtensionTransport
-import Serre.Chap12.Lemma_12_12_7_1
-import Serre.Chap12.Lemma_12_12_7_6
-import Serre.Chap12.Lemma_12_12_7_7
-import Serre.Chap12.Proposition_12_12_1_2
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_7_8.ScalarExtensionTransport
+import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_1
+import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_6
+import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_7
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_2
 
 open scoped Representation
 open Lean Elab Term Meta
@@ -24,7 +24,7 @@ elab "privateCompleteIrreducibleFamilyWitness" : term => do
             (Name.str
               (Name.str
                 (Name.str Name.anonymous "_private")
-                "Serre")
+                "LinearRepresentations_Serre_1977")
               "Chap12")
             "Proposition_12_12_1_2")
           0)
@@ -69,7 +69,7 @@ section RegularPrime
 variable {p : Nat.Primes}
 variable {R : Type*}
 
-/-- Serre's defining characterization of the regular prime `P_{M,c}` in `A ⊗ R_K(G)` in the
+/-- LinearRepresentations_Serre_1977's defining characterization of the regular prime `P_{M,c}` in `A ⊗ R_K(G)` in the
 Chapter `12` arithmetic setting where `K` is the fraction field of the domain `A`: it lies over
 the maximal ideal `M`, and its residue condition is detected by evaluation on the chosen
 `p`-regular `Γ_K`-class `c`. -/
@@ -85,7 +85,7 @@ def IsGaloisPowerClassScalarExtensionRegularPrime
             ∃ a : M.1.asIdeal, algebraMap A K a.1 = (f : G → K) x.1
 
 /-- Helper for Exercise 12-12.7-8: a function on `p`-regular conjugacy classes descends to
-Serre's quotient `PRegularGaloisPowerClass ΓK p` once it is invariant under the `Γ_K` power
+LinearRepresentations_Serre_1977's quotient `PRegularGaloisPowerClass ΓK p` once it is invariant under the `Γ_K` power
 action. This is the quotient step used by the regular-fiber evaluator after first working on
 honest `p`-regular representatives. -/
 def pRegularGaloisPowerClassLift
@@ -99,7 +99,7 @@ def pRegularGaloisPowerClassLift
     rcases hab with ⟨t, rfl⟩
     simpa using hf t _
 
-/-- Helper for Exercise 12-12.7-8: to prove equality of functions on Serre's `p`-regular
+/-- Helper for Exercise 12-12.7-8: to prove equality of functions on LinearRepresentations_Serre_1977's `p`-regular
 `Γ_K`-classes, it suffices to check equality on `p`-regular representatives. This keeps later
 regular-fiber extensionality arguments on the source-faithful representative level. -/
 theorem pRegularGaloisPowerClass_funext
@@ -114,7 +114,7 @@ theorem pRegularGaloisPowerClass_funext
 
 /-- Helper for Exercise 12-12.7-8: evaluating a descended function on the `Γ_K`-class of a chosen
 `p`-regular representative returns the original representative-level value. This is the direct
-quotient-lift interface used before comparing Serre's regular-fiber zero tests. -/
+quotient-lift interface used before comparing LinearRepresentations_Serre_1977's regular-fiber zero tests. -/
 @[simp] theorem pRegularGaloisPowerClassLift_mk
     (f : PRegularConjClass G p → R)
     (hf : ∀ t : ΓK, ∀ c : PRegularConjClass G p, f (t • c) = f c)
@@ -142,7 +142,7 @@ the source-faithful bridge used when quotient-level zero statements are normaliz
   rw [pRegularGaloisPowerClassLift_mk (K := K) (G := G) (p := p) f hf x]
 
 /-- Helper for Exercise 12-12.7-8: once a function on `p`-regular conjugacy classes descends to
-Serre's quotient `PRegularGaloisPowerClass ΓK p`, vanishing at a quotient class is equivalent to
+LinearRepresentations_Serre_1977's quotient `PRegularGaloisPowerClass ΓK p`, vanishing at a quotient class is equivalent to
 vanishing on every `p`-regular representative of that class. This is the exact descent interface
 used to turn the representative-level residue test into the quotient-level formula. -/
 theorem pRegularGaloisPowerClassLift_eq_zero_iff_forall_representatives_eq_zero
@@ -213,7 +213,7 @@ private theorem groupFunctionPairing_sum_algebra_smul_left
         groupFunctionPairing_smul_left, ih, Finset.sum_insert hi]
 
 /-- Helper for Exercise 12-12.7-8: realizing an abstract tensor character in `A ⊗ R_K(G)`
-already lands in Serre's scalar-extension owner `A ⊗ R_K(G) ⊂ (G → K)`. This is the source-side
+already lands in LinearRepresentations_Serre_1977's scalar-extension owner `A ⊗ R_K(G) ⊂ (G → K)`. This is the source-side
 normalization used before any fixed-fiber or quotient descent. -/
 private theorem tensorCharacterRingToFunction_mem_owner
     (ξ : TensorProduct ℤ A (R[K](G))) :
@@ -234,14 +234,14 @@ private theorem tensorCharacterRingToFunction_mem_owner
         (characterRingOverFieldAlgebraScalarExtension A K G).add_mem hξ hη
 
 /-- Helper for Exercise 12-12.7-8: the abstract tensor owner `A ⊗ R_K(G)` maps linearly into
-Serre's scalar-extension owner by realization as a `K`-valued function. -/
+LinearRepresentations_Serre_1977's scalar-extension owner by realization as a `K`-valued function. -/
 private noncomputable def tensorCharacterRingToOwnerLinearMap :
     TensorProduct ℤ A (R[K](G)) →ₗ[A] characterRingOverFieldAlgebraScalarExtension A K G :=
   (tensorCharacterRingRealization (A := A) (K := K) (G := G)).codRestrict
     (characterRingOverFieldAlgebraScalarExtension A K G)
     (tensorCharacterRingToFunction_mem_owner (A := A) (K := K) (G := G))
 
-/-- Helper for Exercise 12-12.7-8: every element of Serre's scalar-extension owner is realized by
+/-- Helper for Exercise 12-12.7-8: every element of LinearRepresentations_Serre_1977's scalar-extension owner is realized by
 an abstract tensor character. This is the source-level lifting step used to normalize the fixed
 fiber before residue-field evaluation is introduced. -/
 private theorem exists_tensorCharacterRing_preimage_of_mem_owner
@@ -266,7 +266,7 @@ private theorem exists_tensorCharacterRing_preimage_of_mem_owner
       refine ⟨a • ξg, ?_⟩
       simp
 
-/-- Helper for Exercise 12-12.7-8: every element of Serre's scalar-extension owner is realized by
+/-- Helper for Exercise 12-12.7-8: every element of LinearRepresentations_Serre_1977's scalar-extension owner is realized by
 an abstract tensor character. This is the surjective half of the fiber-to-tensor normalization
 used in the regular-fiber route. -/
 private theorem tensorCharacterRingToOwnerLinearMap_surjective :
@@ -284,7 +284,7 @@ classes. -/
 private theorem tensorCharacterRingRealization_isClassFunction
     (ξ : TensorProduct ℤ A (R[K](G))) :
     _root_.IsClassFunction (tensorCharacterRingRealization (A := A) (K := K) (G := G) ξ) := by
-  -- The realized tensor lands in Serre's scalar-extension owner, and every owner element is a
+  -- The realized tensor lands in LinearRepresentations_Serre_1977's scalar-extension owner, and every owner element is a
   -- class function because the owner is the `A`-span of honest virtual characters.
   let S := (((R[K](G)).toSubmodule : Submodule ℤ (G → K)) : Set (G → K))
   let p : ∀ f : G → K, f ∈ Submodule.span A S → Prop :=
@@ -308,7 +308,7 @@ private theorem tensorCharacterRingRealization_isClassFunction
 
 /-- Helper for Exercise 12-12.7-8: before quotienting by `Γ_K`, a realized tensor character
 already descends to honest `p`-regular conjugacy classes. This is the representative-level owner
-used in Serre's regular-fiber route. -/
+used in LinearRepresentations_Serre_1977's regular-fiber route. -/
 private def tensorCharacterRingPRegularLift_local
     (p : ℕ) (ξ : TensorProduct ℤ A (R[K](G))) :
     PRegularConjClass G p → K :=
@@ -316,7 +316,7 @@ private def tensorCharacterRingPRegularLift_local
 
 /-- Helper for Exercise 12-12.7-8: evaluating the descended tensor owner on a chosen `p`-regular
 representative returns the original tensor-character value. This keeps later residue arguments on
-Serre's source-level representative side. -/
+LinearRepresentations_Serre_1977's source-level representative side. -/
 @[simp] private theorem tensorCharacterRingPRegularLift_local_ofSubtype
     (p : ℕ) (ξ : TensorProduct ℤ A (R[K](G)))
     (x : {x : G // IsPRegular p x}) :
@@ -552,7 +552,7 @@ private theorem intertwiningMap_eq_zero_of_not_isomorphic_explicit_local
   exact hρ (nonempty_equiv_of_intertwiningMap_ne_zero_explicit_local
     (K := K) (G := G) ρ1 ρ2 f hf)
 
-/-- Helper for Exercise 12-12.7-8: over Serre's fraction field `K`, the left regular
+/-- Helper for Exercise 12-12.7-8: over LinearRepresentations_Serre_1977's fraction field `K`, the left regular
 representation still contains a finite complete pairwise nonisomorphic irreducible family. This
 is the finite owner basis used to prove injectivity of `A ⊗ R_K(G) → G → K`. -/
 private theorem exists_complete_pairwise_nonisomorphic_simple_family_local :
@@ -603,7 +603,7 @@ private theorem tensorCharacterRingRealization_injective :
     simp
   exact sub_eq_zero.mp hξη'
 
-/-- Helper for Exercise 12-12.7-8: Serre's scalar-extension owner is canonically the same
+/-- Helper for Exercise 12-12.7-8: LinearRepresentations_Serre_1977's scalar-extension owner is canonically the same
 `A`-module as the abstract tensor owner `A ⊗ R_K(G)`. This isolates the owner-level transport
 before base-changing to a fixed residue field. -/
 private noncomputable def ownerLinearEquiv_tensorCharacterRing :
@@ -620,7 +620,7 @@ private noncomputable def ownerLinearEquiv_tensorCharacterRing :
       tensorCharacterRingToOwnerLinearMap_surjective (A := A) (K := K) (G := G)⟩).symm
 
 /-- Helper for Exercise 12-12.7-8: after base-changing from `A` to the residue field of `M`, the
-fixed fiber owner is linearly identified with Serre's tensor owner
+fixed fiber owner is linearly identified with LinearRepresentations_Serre_1977's tensor owner
 `M.1.asIdeal.ResidueField ⊗ R_K(G)`. This is the transport half of the regular-fiber source
 route, before evaluation on `p`-regular representatives. -/
 private noncomputable def regular_fiber_to_tensorCharacterRingLinearEquiv
@@ -654,7 +654,7 @@ private theorem fiber_linearEquiv_tensorCharacterRingOverField_baseChange_tmul_t
       ((a : F) ⊗ₜ[A] (b ⊗ₜ[ℤ] χ)) =
         (a * algebraMap A F b) ⊗ₜ[ℤ] χ := by
   -- Route correction: normalize the coefficient-change transport once on genuine pure tensors, so
-  -- later regular-fiber residue computations can stay on Serre's source-level tensor generators.
+  -- later regular-fiber residue computations can stay on LinearRepresentations_Serre_1977's source-level tensor generators.
   rw [fiber_linearEquiv_tensorCharacterRingOverField_baseChange,
     fiber_algEquiv_tensorCharacterRingOverField_baseChange]
   simp [Algebra.smul_def, mul_comm, mul_left_comm, mul_assoc]
@@ -662,7 +662,7 @@ private theorem fiber_linearEquiv_tensorCharacterRingOverField_baseChange_tmul_t
 /-- Helper for Exercise 12-12.7-8: transporting an `includeRight` generator of the fixed fiber
 through `regular_fiber_to_tensorCharacterRingLinearEquiv` reduces the base-change step to the
 pure tensor `(1 : k(M)) ⊗ owner(f)` before the final associativity normalization. This is the
-transport-stable normal form needed before Serre's representative-level residue evaluation is
+transport-stable normal form needed before LinearRepresentations_Serre_1977's representative-level residue evaluation is
 introduced. -/
 private theorem regular_fiber_to_tensorCharacterRingLinearEquiv_includeRight_formula
     (M : NonzeroResidualCharacteristicMaximalIdeal A p)
@@ -734,7 +734,7 @@ private theorem pRegularConjClass_ofSubtype_surjective
   simpa [PRegularConjClass.coe_ofSubtype, hx]
 
 /-- Helper for Exercise 12-12.7-8: taking the `Γ_K`-power of a chosen `p`-regular representative
-does not change its image in Serre's quotient `PRegularGaloisPowerClass ΓK p`. This is the
+does not change its image in LinearRepresentations_Serre_1977's quotient `PRegularGaloisPowerClass ΓK p`. This is the
 quotient-level normalization that later residue arguments should use instead of reopening the
 orbit relation by hand. -/
 private theorem pRegularGaloisPowerClassMk_of_pow_eq
@@ -782,7 +782,7 @@ private theorem regular_fiber_algHom_ext_of_eq_on_includeRight
   exact h f
 
 /-- Helper for Exercise 12-12.7-8: every owner element in `A ⊗ R_K(G)` is already constant on
-Serre's arithmetic `Γ_K`-classes. This is the source-level invariance input before any reduction
+LinearRepresentations_Serre_1977's arithmetic `Γ_K`-classes. This is the source-level invariance input before any reduction
 modulo the fixed maximal ideal is introduced. -/
 private theorem owner_isConstantOnGaloisPowerClasses
     (f : characterRingOverFieldAlgebraScalarExtensionSubalgebra A K G) :
@@ -804,7 +804,7 @@ private def owner_pregular_eval
 
 /-- Helper for Exercise 12-12.7-8: on an honest `p`-regular representative, the pre-residue owner
 evaluator recovers the original owner value. This keeps the future residue reduction pinned to
-Serre's chosen representatives. -/
+LinearRepresentations_Serre_1977's chosen representatives. -/
 @[simp] private theorem owner_pregular_eval_ofSubtype
     (f : characterRingOverFieldAlgebraScalarExtensionSubalgebra A K G)
     (x : {x : G // IsPRegular p x}) :
@@ -958,7 +958,7 @@ private theorem characterRingOverField_value_isIntegral
 
 /-- Helper for Exercise 12-12.7-8: under the missing integral-closure hypothesis, a
 `p`-regular value of a virtual `K`-character already lies in the image of `A → K`. This is
-Serre's arithmetic source statement before any tensor-owner or fiber packaging. -/
+LinearRepresentations_Serre_1977's arithmetic source statement before any tensor-owner or fiber packaging. -/
 private theorem characterRingOverField_value_mem_range_of_isPRegular_of_isIntegralClosure
     (χ : R[K](G)) (x : {x : G // IsPRegular p x}) :
     ((χ : G → K) x.1) ∈ Set.range (algebraMap A K) := by
@@ -1014,7 +1014,7 @@ private theorem owner_pregular_value_mem_range_on_pRegular_representatives_of_is
 
 /-- Helper for Exercise 12-12.7-8: under the integral-closure hypothesis, the source-level owner
 evaluation on a `p`-regular conjugacy class already lies in the image of `A → K`. This packages
-the representative-level arithmetic bridge at exactly the class-function layer used by Serre's
+the representative-level arithmetic bridge at exactly the class-function layer used by LinearRepresentations_Serre_1977's
 fixed-fiber construction. -/
 private theorem owner_pregular_eval_mem_range_on_pRegular_classes_of_isIntegralClosure
     (f : characterRingOverFieldAlgebraScalarExtensionSubalgebra A K G)
@@ -1254,7 +1254,7 @@ section IntegralClosureResidueEvaluator
 
 variable [IsIntegralClosure A ℤ K]
 
-/-- Helper for Exercise 12-12.7-8: under the integral-closure hypothesis, Serre's source-level
+/-- Helper for Exercise 12-12.7-8: under the integral-closure hypothesis, LinearRepresentations_Serre_1977's source-level
 residue evaluator on `p`-regular conjugacy classes is obtained by reducing the already
 `A`-valued owner evaluation modulo the fixed maximal ideal `M`. This is the arithmetic core of
 the stalled ambient owner evaluator. -/
@@ -1303,7 +1303,7 @@ owner value modulo `M`. This is the representative formula the ambient `sorry` b
     residueFieldOfLiftedValue_congr (A := A) (K := K) (p := p) M hxClass hxRep hvalue
 
 /-- Helper for Exercise 12-12.7-8: under the integral-closure hypothesis, the source-level
-residue evaluator is constant on `Γ_K`-orbits of `PRegularConjClass G p`. This is Serre's
+residue evaluator is constant on `Γ_K`-orbits of `PRegularConjClass G p`. This is LinearRepresentations_Serre_1977's
 orbit-invariance step before passing to `PRegularGaloisPowerClass ΓK p`. -/
 private theorem owner_pregular_residue_eval_of_isIntegralClosure_invariant
     (M : NonzeroResidualCharacteristicMaximalIdeal A p)
@@ -1690,7 +1690,7 @@ private noncomputable def owner_pregular_residue_eval_algHom
               (owner_pregular_eval_algebraMap
                 (A := A) (K := K) (G := G) (p := p) a c).symm)) }
 
-/-- Helper for Exercise 12-12.7-8: Serre's representative-level evaluator on the owner factor is
+/-- Helper for Exercise 12-12.7-8: LinearRepresentations_Serre_1977's representative-level evaluator on the owner factor is
 constant on `Γ_K`-orbits of `PRegularConjClass G p`. This is the source statement that later
 extends to the full fixed fiber by tensor induction. -/
 private theorem owner_pregular_residue_eval_invariant
@@ -1699,7 +1699,7 @@ private theorem owner_pregular_residue_eval_invariant
     (t : ΓK) (c : PRegularConjClass G p) :
     (owner_pregular_residue_eval_algHom (A := A) (K := K) (G := G) M f) (t • c) =
       (owner_pregular_residue_eval_algHom (A := A) (K := K) (G := G) M f) c := by
-  -- Route correction: the discarded direct fiber proof hid the actual source step. Serre first
+  -- Route correction: the discarded direct fiber proof hid the actual source step. LinearRepresentations_Serre_1977 first
   -- proves orbit invariance on the owner factor, then packages the full fiber evaluator by the
   -- tensor-product universal property.
   exact owner_pregular_residue_eval_of_isIntegralClosure_invariant
@@ -1735,7 +1735,7 @@ private theorem owner_pregular_residue_eval_commutes
   intro a f
   exact Commute.all _ _
 
-/-- Helper for Exercise 12-12.7-8: Serre's source route first evaluates the fixed fiber over `M`
+/-- Helper for Exercise 12-12.7-8: LinearRepresentations_Serre_1977's source route first evaluates the fixed fiber over `M`
 on honest `p`-regular conjugacy-class representatives before descending to `Γ_K`-classes. This
 is the fixed-fiber evaluator obtained by reassembling the owner-factor residue map with the
 tensor-product universal property. -/
@@ -1753,7 +1753,7 @@ noncomputable def regular_fiber_prequotient_eval_family_algHom
     (owner_pregular_residue_eval_commutes (A := A) (K := K) (G := G) M)
 
 /-- Helper for Exercise 12-12.7-8: on an `includeRight` generator of the fixed fiber, the
-prequotient evaluator is exactly Serre's owner-factor residue evaluator. This isolates the
+prequotient evaluator is exactly LinearRepresentations_Serre_1977's owner-factor residue evaluator. This isolates the
 tensor-product packaging step so later residue criteria can stay on the source-level owner map. -/
 @[simp] private theorem regular_fiber_prequotient_eval_family_algHom_includeRight_apply
     (M : NonzeroResidualCharacteristicMaximalIdeal A p)
@@ -1799,7 +1799,7 @@ private theorem pRegularConjClass_smul_ofSubtype_local
   simpa using ConjClasses.smul_mk (G := G) (t : (ZMod (Monoid.exponent G))ˣ) s.1
 
 /-- Helper for Exercise 12-12.7-8: the prequotient evaluator is constant on `Γ_K`-orbits of
-`PRegularConjClass G p`, so it descends to Serre's quotient
+`PRegularConjClass G p`, so it descends to LinearRepresentations_Serre_1977's quotient
 `PRegularGaloisPowerClass ΓK p`. -/
 theorem regular_fiber_prequotient_eval_family_invariant
     (M : NonzeroResidualCharacteristicMaximalIdeal A p)
@@ -1808,7 +1808,7 @@ theorem regular_fiber_prequotient_eval_family_invariant
     (t : ΓK) (c : PRegularConjClass G p) :
     (regular_fiber_prequotient_eval_family_algHom (A := A) (K := K) (G := G) M ξ) (t • c) =
       (regular_fiber_prequotient_eval_family_algHom (A := A) (K := K) (G := G) M ξ) c := by
-  -- Once the prequotient evaluator is packaged by `productMap`, Serre's orbit-invariance check
+  -- Once the prequotient evaluator is packaged by `productMap`, LinearRepresentations_Serre_1977's orbit-invariance check
   -- reduces to pure tensors and then extends additively across the fiber.
   refine TensorProduct.induction_on ξ ?_ ?_ ?_
   · -- The zero tensor already evaluates to the zero function.
@@ -1996,7 +1996,7 @@ private theorem regular_fiber_eval_family_commutes
       ((regular_fiber_prequotient_eval_family_algHom
         (A := A) (K := K) (G := G) M).commutes a)
 
-/-- Helper for Exercise 12-12.7-8: Serre's canonical evaluator on the fixed fiber over `M`.
+/-- Helper for Exercise 12-12.7-8: LinearRepresentations_Serre_1977's canonical evaluator on the fixed fiber over `M`.
 It should transport `M.1.asIdeal.Fiber (A ⊗ R_K(G))` to residue-field-valued functions on the
 `p`-regular `Γ_K`-classes by the fiber-first route from the source proof. -/
 noncomputable def regular_fiber_eval_family_algHom
@@ -2070,7 +2070,7 @@ theorem regular_fiber_prequotient_eval_includeRight_zero_iff
       (A := A) (K := K) (G := G) M x f
 
 /-- Helper for Exercise 12-12.7-8: the canonical evaluator detects vanishing on the
-`includeRight` generator exactly by Serre's intrinsic modulo-`M` condition on the chosen
+`includeRight` generator exactly by LinearRepresentations_Serre_1977's intrinsic modulo-`M` condition on the chosen
 `p`-regular `Γ_K`-class. -/
 theorem regular_fiber_eval_family_includeRight_zero_iff
     (M : NonzeroResidualCharacteristicMaximalIdeal A p)
@@ -2113,7 +2113,7 @@ theorem regular_fiber_eval_family_includeRight_zero_iff
           (A := A) (K := K) (G := G) M x f).mpr (h x hx)
     simpa [regular_fiber_eval_family_algHom, gpre, hgpre] using hzero
 
-/-- Helper for Exercise 12-12.7-8: Serre's separator-character construction can be specialized to
+/-- Helper for Exercise 12-12.7-8: LinearRepresentations_Serre_1977's separator-character construction can be specialized to
 the fixed maximal ideal `M`. It produces an owner element whose realized function is supported on
 the chosen `p`-regular `Γ_K`-class and whose distinguished value survives modulo `M`. This is the
 exact source witness later needed to build delta functions in the fixed fiber. -/
@@ -2151,7 +2151,7 @@ private theorem exists_owner_separator_for_fixed_maximal
     intro s hs hs_ne
     simpa [H] using hvanish s hs hs_ne
 
-/-- Helper for Exercise 12-12.7-8: Serre's separator owner from Lemma `12-12.7-6` already gives
+/-- Helper for Exercise 12-12.7-8: LinearRepresentations_Serre_1977's separator owner from Lemma `12-12.7-6` already gives
 an element of the fixed fiber whose canonical evaluator is nonzero on the chosen `p`-regular
 `Γ_K`-class and vanishes on every different representative class. This isolates the remaining
 surjectivity work to finite linear combinations of these source-faithful separators. -/
@@ -2208,7 +2208,7 @@ private theorem exists_regular_fiber_separator_on_representatives
 
 /-- Helper for Exercise 12-12.7-8: every `p`-regular `Γ_K`-class admits a fixed-fiber separator
 whose canonical evaluator is nonzero exactly at that class and zero on all distinct classes. This
-is the delta-function input Serre uses before summing coordinates in the surjectivity argument. -/
+is the delta-function input LinearRepresentations_Serre_1977 uses before summing coordinates in the surjectivity argument. -/
 private theorem exists_regular_fiber_separator_for_class
     (M : NonzeroResidualCharacteristicMaximalIdeal A p)
     (c : PRegularGaloisPowerClass ΓK p) :
@@ -2226,7 +2226,7 @@ private theorem exists_regular_fiber_separator_for_class
   obtain ⟨y, rfl⟩ := pRegularGaloisPowerClassMk_surjective (G := G) ΓK p d
   exact hξ_zero y hd
 
-/-- Helper for Exercise 12-12.7-8: normalize Serre's separator at the chosen `p`-regular
+/-- Helper for Exercise 12-12.7-8: normalize LinearRepresentations_Serre_1977's separator at the chosen `p`-regular
 `Γ_K`-class so that the canonical fixed-fiber evaluator becomes the corresponding delta
 function. This is the source-faithful building block used in the surjectivity proof. -/
 private noncomputable def normalized_regular_fiber_separator
@@ -2244,7 +2244,7 @@ private noncomputable def normalized_regular_fiber_separator
         (characterRingOverFieldAlgebraScalarExtensionSubalgebra A K G)) v⁻¹ * ξ
 
 /-- Helper for Exercise 12-12.7-8: the normalized separator attached to `c` evaluates to `1` at
-`c` and to `0` on every distinct `p`-regular `Γ_K`-class. This packages Serre's separator route
+`c` and to `0` on every distinct `p`-regular `Γ_K`-class. This packages LinearRepresentations_Serre_1977's separator route
 as an honest delta function in the fixed fiber. -/
 private theorem normalized_regular_fiber_separator_apply
     (M : NonzeroResidualCharacteristicMaximalIdeal A p)
@@ -2274,7 +2274,7 @@ private theorem normalized_regular_fiber_separator_apply
     simp [normalized_regular_fiber_separator, ξ, hzero, hcd,
       regular_fiber_eval_family_algHom, map_mul]
 
-/-- Helper for Exercise 12-12.7-8: Serre's auxiliary `A ⊗ V[K,p]` witness from Lemma `12-12.7-7`
+/-- Helper for Exercise 12-12.7-8: LinearRepresentations_Serre_1977's auxiliary `A ⊗ V[K,p]` witness from Lemma `12-12.7-7`
 can be specialized to the fixed maximal ideal `M`. Its realized `A`-valued function is nonzero
 modulo `M` at every group element, which is the input later used in the quotient-killing branch
 of the fixed-fiber injectivity argument. -/
@@ -2319,7 +2319,7 @@ private theorem exists_auxiliary_owner_witness_for_fixed_maximal
       (K := K) (G := G) (A := A) p χ
   have hψ_gammaP :
       ψ ∈ gammaPElementaryInducedCharacterScalarExtension A K ΓK p := by
-    -- The local `γ_p` tensor witness is already one of the canonical generators of Serre's
+    -- The local `γ_p` tensor witness is already one of the canonical generators of LinearRepresentations_Serre_1977's
     -- realized scalar extension `A ⊗ V[K,p]`.
     simpa [ψ, gammaPElementaryInducedCharacterSpan_local,
       tensorGammaPElementaryInducedCharacterToFunction_local] using
@@ -2339,7 +2339,7 @@ private theorem exists_auxiliary_owner_witness_for_fixed_maximal
 
 /-- Helper for Exercise 12-12.7-8: after reducing the auxiliary `γ_p` witness modulo the fixed
 maximal ideal `M`, none of its values vanish. This is the nonvanishing half of the source route
-when Serre multiplies by the auxiliary witness before killing the quotient class. -/
+when LinearRepresentations_Serre_1977 multiplies by the auxiliary witness before killing the quotient class. -/
 private theorem exists_auxiliary_owner_witness_with_nonzero_residue_for_fixed_maximal
     (M : NonzeroResidualCharacteristicMaximalIdeal A p) :
     ∃ f : characterRingOverFieldAlgebraScalarExtensionSubalgebra A K G,
@@ -2354,7 +2354,7 @@ private theorem exists_auxiliary_owner_witness_with_nonzero_residue_for_fixed_ma
   -- defining nonvanishing property of the auxiliary witness.
   exact hnonzero x ((Ideal.algebraMap_residueField_eq_zero (I := M.1.asIdeal)).mp hx)
 
-/-- Helper for Exercise 12-12.7-8: Serre's auxiliary owner witness may be chosen so that its
+/-- Helper for Exercise 12-12.7-8: LinearRepresentations_Serre_1977's auxiliary owner witness may be chosen so that its
 reduced `A`-lift is constant on `p`-regular `Γ_K`-classes and nowhere vanishing on
 representatives. This packages the source multiplier in the exact residue-stable form needed
 before the quotient-killing step. -/
@@ -2384,7 +2384,7 @@ private theorem exists_auxiliary_owner_witness_constant_nonzero_on_pRegular_clas
     exact hnonzero x.1
 
 /-- Helper for Exercise 12-12.7-8: the auxiliary owner witness can be packaged without losing
-its source-level `γ_p` provenance. This keeps the later quotient-killing step on Serre's original
+its source-level `γ_p` provenance. This keeps the later quotient-killing step on LinearRepresentations_Serre_1977's original
 route instead of reconstructing the `A ⊗ V[K,p]` origin after transport to the residue fiber. -/
 private theorem exists_auxiliary_owner_witness_constant_nonzero_on_pRegular_classes_with_gammaP
     (M : NonzeroResidualCharacteristicMaximalIdeal A p) :
@@ -2405,7 +2405,7 @@ private theorem exists_auxiliary_owner_witness_constant_nonzero_on_pRegular_clas
       (K := K) (G := G) (A := A) p χ
   have hψ_gammaP :
       ψ ∈ gammaPElementaryInducedCharacterScalarExtension A K ΓK p := by
-    -- The original witness is already a canonical generator of Serre's realized
+    -- The original witness is already a canonical generator of LinearRepresentations_Serre_1977's realized
     -- scalar extension `A ⊗ V[K,p]`.
     simpa [ψ, gammaPElementaryInducedCharacterSpan_local,
       tensorGammaPElementaryInducedCharacterToFunction_local] using
@@ -2433,7 +2433,7 @@ private theorem exists_auxiliary_owner_witness_constant_nonzero_on_pRegular_clas
     -- auxiliary witness's construction.
     exact hnonzero_mem x.1 ((Ideal.algebraMap_residueField_eq_zero (I := M.1.asIdeal)).mp hx_zero)
 
-/-- Helper for Exercise 12-12.7-8: Serre's separator characters make the canonical evaluator on
+/-- Helper for Exercise 12-12.7-8: LinearRepresentations_Serre_1977's separator characters make the canonical evaluator on
 the fixed fiber over `M` surjective. -/
 theorem regular_fiber_eval_family_surjective_from_separators
     (M : NonzeroResidualCharacteristicMaximalIdeal A p) :
@@ -2460,7 +2460,7 @@ theorem regular_fiber_eval_family_surjective_from_separators
               (fun c : PRegularGaloisPowerClass ΓK p ↦ ψ c))
 
 /-- Helper for Exercise 12-12.7-8: if every coordinate of a fixed-fiber element `ξ` vanishes
-under Serre's evaluator, then the same is true after multiplying `ξ` by any other fiber element.
+under LinearRepresentations_Serre_1977's evaluator, then the same is true after multiplying `ξ` by any other fiber element.
 This isolates the purely algebra-homomorphic part of the kernel argument before the Chapter `12.7`
 quotient-killing step is invoked. -/
 private theorem regular_fiber_eval_family_mul_right_zero_of_eval_family_zero
@@ -2480,7 +2480,7 @@ private theorem regular_fiber_eval_family_mul_right_zero_of_eval_family_zero
 /-- Helper for Exercise 12-12.7-8: if an auxiliary owner witness `f` is presented by an
 `A`-valued lift `φ`, then evaluating its `includeRight` image in the fixed fiber at a chosen
 `p`-regular representative returns the residue class of `φ(x)`. This isolates the scalar factor
-in Serre's multiplier argument before multiplying by an arbitrary fiber element. -/
+in LinearRepresentations_Serre_1977's multiplier argument before multiplying by an arbitrary fiber element. -/
 private theorem auxiliary_witness_eval_family_includeRight_value
     (M : NonzeroResidualCharacteristicMaximalIdeal A p)
     (f : characterRingOverFieldAlgebraScalarExtensionSubalgebra A K G)
@@ -2509,7 +2509,7 @@ private theorem auxiliary_witness_eval_family_includeRight_value
 /-- Helper for Exercise 12-12.7-8: after multiplying a fixed-fiber element `ξ` by the
 `includeRight` image of an auxiliary witness `f`, the resulting coordinate at a chosen
 `p`-regular representative is the residue of `φ(x)` times the original coordinate of `ξ`. This
-is the representative-level multiplier formula from Serre's source route before the quotient
+is the representative-level multiplier formula from LinearRepresentations_Serre_1977's source route before the quotient
 class is killed. -/
 private theorem auxiliary_witness_mul_eval_family_value
     (M : NonzeroResidualCharacteristicMaximalIdeal A p)
@@ -2541,7 +2541,7 @@ private theorem auxiliary_witness_mul_eval_family_value
   simpa [auxiliary_witness_eval_family_includeRight_value
       (A := A) (K := K) (G := G) (p := p) M f φ hφ x] using hmul
 
-/-- Helper for Exercise 12-12.7-8: if every coordinate of `ξ` vanishes under Serre's fixed-fiber
+/-- Helper for Exercise 12-12.7-8: if every coordinate of `ξ` vanishes under LinearRepresentations_Serre_1977's fixed-fiber
 evaluator, then the auxiliary-witness multiplier formula already forces the scaled representative
 values to vanish. This isolates the purely evaluator-side part of the kernel proof before the
 remaining quotient-image transport is invoked. -/

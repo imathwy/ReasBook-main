@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap04.Theorem_4_1_11
+import LecturesConvexOptimization_Nesterov_2018.Chap04.Theorem_4_1_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

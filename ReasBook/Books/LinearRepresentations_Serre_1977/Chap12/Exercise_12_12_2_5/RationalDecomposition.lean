@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap12.Corollary_12_12_2_2
-import Serre.Chap12.Exercise_12_12_2_5.QuaternionicSchurModel
+import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_2_2
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_5.QuaternionicSchurModel
 
 noncomputable section
 
@@ -73,7 +73,7 @@ theorem quaternion_group_two_rational_linear_character_algHom_single
       (quaternion_group_two_rational_linear_character_family n) g r)
 
 /-- Helper for Exercise 12-12.2-5: the four scalar linear characters together with the explicit
-quaternion quotient define the rational comparison map from `ℚ[Q8]` to Serre's proposed simple
+quaternion quotient define the rational comparison map from `ℚ[Q8]` to LinearRepresentations_Serre_1977's proposed simple
 product. -/
 def quaternion_group_two_rational_comparison_algHom :
     ℚ[Q8] →ₐ[ℚ] ℚ × ℚ × ℚ × ℚ × ℍ[ℚ] :=

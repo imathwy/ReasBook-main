@@ -1,7 +1,7 @@
-import Nesterov.Chap05.Definition_5_4_8_12
-import Nesterov.Chap05.Definition_5_4_9_1
-import Nesterov.Chap05.Definition_5_4_9_5
-import Nesterov.Chap05.Definition_5_4_9_8
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_4_8_12
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_4_9_1
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_4_9_5
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_4_9_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

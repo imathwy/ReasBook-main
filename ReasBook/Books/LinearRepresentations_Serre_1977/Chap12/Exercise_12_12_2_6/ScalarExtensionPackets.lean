@@ -1,16 +1,16 @@
 import Mathlib
-import Serre.Chap02.Proposition_2_2_2_1
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap06.Corollary_6_6_5_4
-import Serre.Chap06.Proposition_6_6_5_5
-import Serre.Chap12.Exercise_12_12_2_3.API
-import Serre.Chap12.Exercise_12_12_2_6.CharacterBasisCoefficients
-import Serre.Chap12.Exercise_12_12_2_6.ComplexMinimalRealization
-import Serre.Chap12.Exercise_12_12_2_6.FieldDenominatorDescent
-import Serre.Chap12.Exercise_12_12_2_6.FieldTensorCenterBridge
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionConstituents
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionPairing
-import Serre.Chap12.Proposition_12_12_2_1
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_2_1
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_5_4
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_5
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_3.API
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.CharacterBasisCoefficients
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ComplexMinimalRealization
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.FieldDenominatorDescent
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.FieldTensorCenterBridge
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionConstituents
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionPairing
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_2_1
 
 noncomputable section
 
@@ -331,7 +331,7 @@ theorem lifted_owner_scalar_extension_packet_local
       (V := lifted_field_basis_fdRep_local (L := K') (G0 := G) (V := ρ) ρ.ρ))
 
 /-- Helper for Exercise 12-12.2-6: the support-file packet theorem already gives the visible
-algebraic-closure decomposition of `ρ`, so the main proof can stay on Serre's closure-first route
+algebraic-closure decomposition of `ρ`, so the main proof can stay on LinearRepresentations_Serre_1977's closure-first route
 without reopening the lifted-owner transport. -/
 theorem scalar_extension_public_packet_visible_adapter_local
     {K' : Type v} [Field K'] [CharZero K']

@@ -1,9 +1,9 @@
 import Mathlib
-import stacks_project.Chap04.«4_34_2_1»
-import stacks_project.Chap04.«4_34_2_2»
-import stacks_project.Chap04.Definition_4_39_2
-import stacks_project.Chap04.Lemma_4_35_9
-import stacks_project.Chap04.Lemma_4_35_12
+import StacksProject_2024.Chap04.«4_34_2_1»
+import StacksProject_2024.Chap04.«4_34_2_2»
+import StacksProject_2024.Chap04.Definition_4_39_2
+import StacksProject_2024.Chap04.Lemma_4_35_9
+import StacksProject_2024.Chap04.Lemma_4_35_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

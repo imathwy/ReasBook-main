@@ -1,4 +1,4 @@
-import AchimKlenkeLean.Items.Chap20.Definition_20_34
+import ProbabilityTheory_Klenke_2020.Items.Chap20.Definition_20_34
 import Mathlib
 
 -- Declarations for this item will be appended below by the statement pipeline.

@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap21.Lemma_21_18_4
-import stacks_project.Chap21.Definition_21_47_1
+import StacksProject_2024.Chap21.Lemma_21_18_4
+import StacksProject_2024.Chap21.Definition_21_47_1
 
 open CategoryTheory
 open ComplexShape

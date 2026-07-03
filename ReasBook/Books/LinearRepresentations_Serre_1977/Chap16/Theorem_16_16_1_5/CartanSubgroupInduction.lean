@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap10.Definition_10_10_1_3
-import Serre.Chap14.Corollary_14_14_4_3
-import Serre.Chap15.Definition_15_15_1_1
-import Serre.Chap16.Theorem_16_16_1_5.ElementaryDecompositionBridge
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_5.ElementaryDecompositionBridge
 
 -- This theorem-local support file keeps subgroup-induction support inside Chapter 16 so it does
 -- not import later Chapter 17 wrappers while building the Cartan theorem.

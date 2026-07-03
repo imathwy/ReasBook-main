@@ -1,5 +1,5 @@
 import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
-import stacks_project.Chap15.«15_91_9_1»
+import StacksProject_2024.Chap15.«15_91_9_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap21.Lemma_21_28_6
+import StacksProject_2024.Chap21.Lemma_21_28_6
 
 open CategoryTheory
 open CategoryTheory.GrothendieckTopology
@@ -35,12 +35,12 @@ variable [Functor.HasRightDerivedFunctor (modulePushforwardToDerived ε) (Module
 variable (A' : ObjectProperty ModY) (A : ObjectProperty ModX)
 variable [IsWeakSerreClass A]
 
--- Proof sketch: push forward is assumed exact on the source weak Serre full subcategory. Pull back
--- a five-term exact sequence in `A'`, apply weak-Serre closure on `A`, and then use the unit
+-- Proof sketch: push forward is assumed exact on the source weak LinearRepresentations_Serre_1977 full subcategory. Pull back
+-- a five-term exact sequence in `A'`, apply weak-LinearRepresentations_Serre_1977 closure on `A`, and then use the unit
 -- isomorphisms together with exact pushforward to transport the middle term back to `A'`.
 /-- Lemma 21.29.1 (1): in the topology-comparison situation, if pullback identifies the target
-subcategory `\mathcal A'` with a weak Serre subcategory `\mathcal A` on the source and
-pushforward is exact on the source subcategory, then `\mathcal A'` is a weak Serre subcategory
+subcategory `\mathcal A'` with a weak LinearRepresentations_Serre_1977 subcategory `\mathcal A` on the source and
+pushforward is exact on the source subcategory, then `\mathcal A'` is a weak LinearRepresentations_Serre_1977 subcategory
 of `\operatorname{Mod}(\mathcal O_{\tau'})`. This formalizes the target-side image of the
 textbook subcategory `\mathcal A`. -/
 theorem targetWeakSerreSubcategory_of_pullbackEquivalence_of_pushforwardExact
@@ -60,7 +60,7 @@ variable [IsWeakSerreClass A']
 -- morphism `ε`. The bounded-cohomology basis hypotheses provide the local vanishing input, and
 -- the unit isomorphisms on degree-zero objects identify the restricted right derived pushforward
 -- as the quasi-inverse.
-/-- Lemma 21.29.1 (2): assuming the target image subcategory is weak Serre and the local
+/-- Lemma 21.29.1 (2): assuming the target image subcategory is weak LinearRepresentations_Serre_1977 and the local
 bounded-cohomology hypotheses needed for the comparison-topology argument, the exact pullback
 along `\epsilon` induces the equivalence
 `D_{\mathcal A'}(\mathcal O_{\tau'}) \simeq D_{\mathcal A}(\mathcal O_\tau)`, with quasi-inverse

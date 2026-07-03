@@ -1,17 +1,17 @@
 import Mathlib
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap08.Proposition_8_8_2_1.InductionBridge
-import Serre.Chap12.Proposition_12_12_1_1
-import Serre.Chap12.Definition_12_12_6_1
-import Serre.Chap12.Proposition_12_12_6_4
-import Serre.Chap12.Exercise_12_12_2_3
-import Serre.Chap17.Theorem_17_17_3_1.CyclicNormalByPGroupBasics
-import Serre.Chap17.Corollary_17_17_2_2
-import Serre.Chap16.Theorem_16_16_2_1
-import Serre.Chap18.Remark_18_18_1_3
-import Serre.Chap18.Corollary_18_18_2_3
-import Serre.Chap18.Theorem_18_18_4_1.CharacterTransformCore
-import Serre.Chap18.Theorem_18_18_4_1.Index
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap08.Proposition_8_8_2_1.InductionBridge
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap12.Definition_12_12_6_1
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_6_4
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_3
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.CyclicNormalByPGroupBasics
+import LinearRepresentations_Serre_1977.Chap17.Corollary_17_17_2_2
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_2_1
+import LinearRepresentations_Serre_1977.Chap18.Remark_18_18_1_3
+import LinearRepresentations_Serre_1977.Chap18.Corollary_18_18_2_3
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_4_1.CharacterTransformCore
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_4_1.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -40,7 +40,7 @@ local instance : AddCommGroup (R₀[k](G)) :=
 local instance : Module ℤ (R₀[k](G)) := AddCommGroup.toIntModule (R₀[k](G))
 
 /-- Helper for Theorem 18-18.4-1: once each restricted simple class already lifts on every
-elementary subgroup, the ambient transformed simple class satisfies Serre's elementary-subgroup
+elementary subgroup, the ambient transformed simple class satisfies LinearRepresentations_Serre_1977's elementary-subgroup
 frontier. -/
 private theorem simple_class_elementary_frontier_of_local_restricted_simple_cases_local
     (lift : PrimeToPRoot p k →* Kˣ) (S : FDRep k G) [Simple S]
@@ -168,7 +168,7 @@ private theorem isPRegular_of_coprime_card_local
   -- same coprimality for each element order.
   exact hS.coprime_dvd_right (orderOf_dvd_natCard s)
 
-/-- Helper for Theorem 18-18.4-1: on a group whose order is prime to `p`, Serre's transformed
+/-- Helper for Theorem 18-18.4-1: on a group whose order is prime to `p`, LinearRepresentations_Serre_1977's transformed
 simple class is exactly the zero extension of the modular character, because every element is
 already `p`-regular. -/
 private theorem primeToP_simple_class_eq_zeroExtension_local
@@ -212,7 +212,7 @@ private theorem primeToP_simple_class_character_witness_via_character_field_tran
     {S : Type u} [Group S] [Finite S]
     (hS : Nat.Coprime p (Nat.card S)) (U : FDRep k S) [Simple U] :
     ∃ χS : R[K](S), (χS : S → K) = ([U]₀)′[p, PrimeToPRoot.toFieldLift lift] := by
-  -- Route correction: expose Serre's exact `15.7` interface first.
+  -- Route correction: expose LinearRepresentations_Serre_1977's exact `15.7` interface first.
   -- The local source-faithful consumer only needs the direct left-factor witness in `R[K](S)`;
   -- the earlier `PRegularConjClass`-level existential obscured that exact interface.
   have hSsolv : IsPSolvable p S :=
@@ -229,7 +229,7 @@ private theorem primeToP_simple_class_character_witness_via_character_field_tran
   sorry
 
 /-- Helper for Theorem 18-18.4-1: on a prime-to-`p` group `S`, a simple modular class already
-has the ordinary witness required in Serre's elementary `S × P` argument. -/
+has the ordinary witness required in LinearRepresentations_Serre_1977's elementary `S × P` argument. -/
 private theorem primeToP_character_eq_of_pRegularConjClass_eq_local
     (lift : PrimeToPRoot p k →* Kˣ)
     {S : Type u} [Group S] [Finite S]
@@ -288,20 +288,20 @@ private theorem primeToP_characterRing_witness_of_pRegularConjClass_eq_local
     (p := p) (k := k) (K := K) lift hS U X hχ
 
 /-- Helper for Theorem 18-18.4-1: on a prime-to-`p` group `S`, a simple modular class already
-has the direct character-ring witness required in Serre's elementary `S × P` argument. -/
+has the direct character-ring witness required in LinearRepresentations_Serre_1977's elementary `S × P` argument. -/
 private theorem primeToP_simple_class_mem_characterRingOverField_local
     (lift : PrimeToPRoot p k →* Kˣ)
     {S : Type u} [Group S] [Finite S]
     (hS : Nat.Coprime p (Nat.card S)) (U : FDRep k S) [Simple U] :
     ([U]₀)′[p, PrimeToPRoot.toFieldLift lift] ∈ R[K](S) := by
-  -- Consume the direct `15.7` left-factor witness produced at the abstraction level Serre uses.
+  -- Consume the direct `15.7` left-factor witness produced at the abstraction level LinearRepresentations_Serre_1977 uses.
   obtain ⟨χS, hχS⟩ :=
     primeToP_simple_class_character_witness_via_character_field_transport_local
       (p := p) (k := k) (K := K) lift hS U
   simpa [hχS] using χS.2
 
 /-- Helper for Theorem 18-18.4-1: on a prime-to-`p` group `S`, a simple modular class already
-has the ordinary witness required in Serre's elementary `S × P` argument. -/
+has the ordinary witness required in LinearRepresentations_Serre_1977's elementary `S × P` argument. -/
 private theorem primeToP_simple_class_character_witness_local
     (lift : PrimeToPRoot p k →* Kˣ)
     {S : Type u} [Group S] [Finite S]
@@ -406,7 +406,7 @@ private theorem split_product_inflated_simple_class_mem_characterRingOverField_l
   rw [hpoint]
   exact hprecomp
 
-/-- Helper for Theorem 18-18.4-1: Serre's `f ↦ f'` transform commutes with transport across a
+/-- Helper for Theorem 18-18.4-1: LinearRepresentations_Serre_1977's `f ↦ f'` transform commutes with transport across a
 group equivalence. -/
 private theorem transformed_fdRep_class_precomp_mulEquiv_local
     (lift : PrimeToPRoot p k →* Kˣ)
@@ -833,7 +833,7 @@ private theorem modularCharacter_isIntegral_rat_local
     (ρ : Representation k H V) (s : { g : H // IsPRegular p g }) :
     IsIntegral ℚ (modularCharacter (PrimeToPRoot.toFieldLift lift) ρ s) := by
   classical
-  -- Unfold Serre's modular-character packet and verify integrality termwise on the root multiset.
+  -- Unfold LinearRepresentations_Serre_1977's modular-character packet and verify integrality termwise on the root multiset.
   simp only [Representation.modularCharacter]
   refine IsIntegral.multiset_sum ?_
   intro z hz
@@ -985,7 +985,7 @@ private theorem restrict_mem_intermediateField_characterRing_of_le_local
     {K0 : Type u} [Field K0] {H A : Subgroup G} (hHA : H ≤ A)
     {χ : A → K0} (hχ : χ ∈ R[K0](A)) :
     (fun h : H ↦ χ (Subgroup.inclusion hHA h)) ∈ R[K0](H) := by
-  -- Apply the canonical subgroup-restriction map on Serre's ordinary character ring.
+  -- Apply the canonical subgroup-restriction map on LinearRepresentations_Serre_1977's ordinary character ring.
   refine Algebra.adjoin_induction ?_ ?_ ?_ ?_ hχ
   · intro ψ hψ
     rcases hψ with ⟨ρ, hρfd, -, rfl⟩
@@ -1013,7 +1013,7 @@ private theorem classFunctionRestriction_mem_intermediateField_characterRing_of_
     restrict_mem_intermediateField_characterRing_of_le_local
       (G := G) (hHA := hHA) hA
 
-/-- Helper for Theorem 18-18.4-1: when Serre's associated-subgroup witnesses are already known
+/-- Helper for Theorem 18-18.4-1: when LinearRepresentations_Serre_1977's associated-subgroup witnesses are already known
 for the trivial arithmetic subgroup `Γ = ⊥`, every ordinary elementary subgroup restriction is
 obtained just by placing that subgroup inside the corresponding associated subgroup and then
 restricting along the inclusion. -/
@@ -1251,7 +1251,7 @@ private theorem pRegularComponentVirtualModularCharacter_simple_class_mem_charac
   exact associated_subgroup_explicit_character_bridge_for_simple_class_local
     (p := p) (k := k) (K := K) (G := G) lift S
 
--- Proof sketch: restrict first to the case of a simple modular class, where Serre's elementary
+-- Proof sketch: restrict first to the case of a simple modular class, where LinearRepresentations_Serre_1977's elementary
 -- subgroup argument realizes the `p`-regular-component class function as an ordinary character;
 -- then extend by additivity to arbitrary classes in `R_k(G)`.
 /-- Theorem 18-18.4-1 (1): for a class `x ∈ R_k(G)`, the class function `f'` obtained by
@@ -1302,7 +1302,7 @@ theorem pRegularComponentVirtualModularCharacter_mem_characterRingOverField
 
 variable (p)
 
-/-- Theorem 18-18.4-1, source-facing additive owner: Serre's `x ↦ x'` construction viewed
+/-- Theorem 18-18.4-1, source-facing additive owner: LinearRepresentations_Serre_1977's `x ↦ x'` construction viewed
 directly as a homomorphism from `R_k(G)` to the ordinary character ring `R_K(G)`. -/
 def pRegularComponentVirtualCharacter
     (lift : PrimeToPRoot p k →* Kˣ) :
@@ -1317,7 +1317,7 @@ def pRegularComponentVirtualCharacter
       x′[p, PrimeToPRoot.toFieldLift lift] g :=
   rfl
 
-/-- Helper for Theorem 18-18.4-1: on a `p`-regular element, Serre's `f ↦ f'` construction simply
+/-- Helper for Theorem 18-18.4-1: on a `p`-regular element, LinearRepresentations_Serre_1977's `f ↦ f'` construction simply
 recovers the original virtual modular character. -/
 @[simp] theorem pRegularComponentVirtualCharacter_apply_of_isPRegular
     (lift : PrimeToPRoot p k →* Kˣ) (x : R₀[k](G))
@@ -1381,7 +1381,7 @@ private theorem virtualModularCharacter_decomposition_eq_character_restriction_l
     simpa [Function.comp, map_add] using congrArg₂ HAdd.hAdd (congrFun ha s) (congrFun hb s)
 
 /-- Helper for Theorem 18-18.4-1: once an additive section of
-`finiteRepGrothendieckCharacter` is fixed, composing it with Serre's `x ↦ x'` map immediately
+`finiteRepGrothendieckCharacter` is fixed, composing it with LinearRepresentations_Serre_1977's `x ↦ x'` map immediately
 recovers `pRegularComponentVirtualCharacter` after applying
 `finiteRepGrothendieckCharacter`. -/
 theorem finiteRepGrothendieckCharacter_comp_section_eq_pRegularComponentVirtualCharacter
@@ -1399,7 +1399,7 @@ theorem finiteRepGrothendieckCharacter_comp_section_eq_pRegularComponentVirtualC
 
 /-- Helper for Theorem 18-18.4-1: with an injective lift of the prime-to-`p` roots, any additive
 section of `finiteRepGrothendieckCharacter` becomes a left inverse to `decompositionHom` after
-composition with Serre's `x ↦ x'` construction. -/
+composition with LinearRepresentations_Serre_1977's `x ↦ x'` construction. -/
 theorem decompositionHom_leftInverse_of_pRegularComponent_section
     (lift : PrimeToPRoot p k →* Kˣ) (hlift : Function.Injective lift)
     (t : R[K](G) →+ R₀[K](G))
@@ -1567,7 +1567,7 @@ theorem exists_decompositionHom_section_of_pRegularComponent_virtualModularChara
       (finiteRepGrothendieckCharacter K G).comp s = pRegularComponentVirtualCharacter p lift :=
       by
         -- Route correction: first construct the characteristic-zero section of
-        -- `finiteRepGrothendieckCharacter`, then compose it with Serre's `x ↦ x'` map.
+        -- `finiteRepGrothendieckCharacter`, then compose it with LinearRepresentations_Serre_1977's `x ↦ x'` map.
         rcases finiteRepGrothendieckCharacter_has_section_local (K := K) (G := G) with ⟨t, ht⟩
         refine ⟨t.comp (pRegularComponentVirtualCharacter p lift), ?_, ?_⟩
         · -- On the `p`-regular locus, Corollary `18-18.2-4` turns the ordinary-character section
@@ -1575,7 +1575,7 @@ theorem exists_decompositionHom_section_of_pRegularComponent_virtualModularChara
           exact decompositionHom_leftInverse_of_pRegularComponent_section
             (p := p) (A := A) (K := K) (G := G) lift hlift t ht
         · -- The chosen section was built precisely so that applying
-          -- `finiteRepGrothendieckCharacter` recovers Serre's `x ↦ x'` character.
+          -- `finiteRepGrothendieckCharacter` recovers LinearRepresentations_Serre_1977's `x ↦ x'` character.
           exact finiteRepGrothendieckCharacter_comp_section_eq_pRegularComponentVirtualCharacter
             (p := p) (K := K) (G := G) lift t ht
 

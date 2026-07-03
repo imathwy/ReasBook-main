@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.Chap14.Proposition_14_14_1_1
-import Serre.Chap14.Corollary_14_14_4_3
-import Serre.Chap15.Definition_15_15_3_1
-import Serre.Chap15.Theorem_15_15_2_2
-import Serre.Chap16.Lemma_16_16_3_1
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_1_1
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap16.Lemma_16_16_3_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -45,7 +45,7 @@ Source/core/bridge triage:
 
 section FiniteRepPositiveSubset
 
-/-- Serre's actual positive subset `R_K^+(G)`, written here as `R⁺[K](G)`, consists of the classes
+/-- LinearRepresentations_Serre_1977's actual positive subset `R_K^+(G)`, written here as `R⁺[K](G)`, consists of the classes
 in `R_K(G)` represented by actual finite-dimensional `K[G]`-representations. -/
 def finiteRepPositiveSubset
     (K : Type u) [Field K] (G : Type u) [Group G] :
@@ -67,7 +67,7 @@ end FiniteRepPositiveSubset
 
 variable [Finite G]
 
-/-- Serre's condition `(R)` for a subset `RKplus ⊆ R_K(G)` is the existence of a finite local
+/-- LinearRepresentations_Serre_1977's condition `(R)` for a subset `RKplus ⊆ R_K(G)` is the existence of a finite local
 overring `A'` of `A` with fraction field `K'`, such that the scalar-extension map
 `R_K(G) → R_K'(G)` identifies `RKplus` with the preimage of the actual positive cone in
 `R_K'(G)`, and the decomposition map `R_K'(G) → R_k'(G)` sends that actual positive cone onto the
@@ -92,10 +92,10 @@ local notation "e" =>
 -- Proof sketch: use Proposition `16-16.3-2` to descend positive projective classes from a finite
 -- extension satisfying condition `(R)`. Through the canonical reduction equivalence
 -- `P_A(G) ≃ P_k(G)`, this identifies the image of the source-facing positive subset `P_k^+(G)`
--- under Serre's scalar-extension owner `e` with the intersection of the full scalar-extension
+-- under LinearRepresentations_Serre_1977's scalar-extension owner `e` with the intersection of the full scalar-extension
 -- range of `e` and the actual positive subset `R⁺[K](G)`.
 /-- Proposition 16-16.3-3: if condition `(R)` holds for the positive subset `R_K^+(G)`, then the
-image of the source-facing positive subset `P_k^+(G)`, under Serre's canonical scalar-extension
+image of the source-facing positive subset `P_k^+(G)`, under LinearRepresentations_Serre_1977's canonical scalar-extension
 homomorphism `e : P_k(G) → R_K(G)`, is exactly the intersection of the range of `e` with
 `R_K^+(G)`. Here `k = IsLocalRing.ResidueField A`. -/
 theorem SatisfiesConditionR.image_eq_range_inter_positive

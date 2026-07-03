@@ -1,6 +1,6 @@
-import Serre.Chap12.Exercise_12_12_7_8.ScalarExtensionTransport
-import Serre.Chap12.Lemma_12_12_7_1
-import Serre.Chap12.Proposition_12_12_1_2
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_7_8.ScalarExtensionTransport
+import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_1
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_2
 
 open scoped Representation
 open Lean Elab Term Meta
@@ -22,7 +22,7 @@ elab "privateCompleteIrreducibleFamilyWitness" : term => do
             (Name.str
               (Name.str
                 (Name.str Name.anonymous "_private")
-                "Serre")
+                "LinearRepresentations_Serre_1977")
               "Chap12")
             "Proposition_12_12_1_2")
           0)
@@ -67,7 +67,7 @@ section RegularPrime
 variable {p : Nat.Primes}
 variable {R : Type*}
 
-/-- Serre's defining characterization of the regular prime `P_{M,c}` in `A ⊗ R_K(G)` in the
+/-- LinearRepresentations_Serre_1977's defining characterization of the regular prime `P_{M,c}` in `A ⊗ R_K(G)` in the
 Chapter `12` arithmetic setting where `K` is the fraction field of the domain `A`: it lies over
 the maximal ideal `M`, and its residue condition is detected by evaluation on the chosen
 `p`-regular `Γ_K`-class `c`. -/
@@ -83,7 +83,7 @@ def IsGaloisPowerClassScalarExtensionRegularPrime
             ∃ a : M.1.asIdeal, algebraMap A K a.1 = (f : G → K) x.1
 
 /-- Helper for Exercise 12-12.7-8: a function on `p`-regular conjugacy classes descends to
-Serre's quotient `PRegularGaloisPowerClass ΓK p` once it is invariant under the `Γ_K` power
+LinearRepresentations_Serre_1977's quotient `PRegularGaloisPowerClass ΓK p` once it is invariant under the `Γ_K` power
 action. This is the quotient step used by the regular-fiber evaluator after first working on
 honest `p`-regular representatives. -/
 def pRegularGaloisPowerClassLift
@@ -95,7 +95,7 @@ def pRegularGaloisPowerClassLift
     rcases hab with ⟨t, rfl⟩
     simpa using hf t _
 
-/-- Helper for Exercise 12-12.7-8: to prove equality of functions on Serre's `p`-regular
+/-- Helper for Exercise 12-12.7-8: to prove equality of functions on LinearRepresentations_Serre_1977's `p`-regular
 `Γ_K`-classes, it suffices to check equality on `p`-regular representatives. This keeps later
 regular-fiber extensionality arguments on the source-faithful representative level. -/
 theorem pRegularGaloisPowerClass_funext
@@ -109,7 +109,7 @@ theorem pRegularGaloisPowerClass_funext
 
 /-- Helper for Exercise 12-12.7-8: evaluating a descended function on the `Γ_K`-class of a chosen
 `p`-regular representative returns the original representative-level value. This is the direct
-quotient-lift interface used before comparing Serre's regular-fiber zero tests. -/
+quotient-lift interface used before comparing LinearRepresentations_Serre_1977's regular-fiber zero tests. -/
 @[simp] theorem pRegularGaloisPowerClassLift_mk
     (f : PRegularConjClass G p → R)
     (hf : ∀ t : ΓK, ∀ c : PRegularConjClass G p, f (t • c) = f c)
@@ -134,7 +134,7 @@ the source-faithful bridge used when quotient-level zero statements are normaliz
   rw [pRegularGaloisPowerClassLift_mk (K := K) (G := G) (p := p) f hf x]
 
 /-- Helper for Exercise 12-12.7-8: once a function on `p`-regular conjugacy classes descends to
-Serre's quotient `PRegularGaloisPowerClass ΓK p`, vanishing at a quotient class is equivalent to
+LinearRepresentations_Serre_1977's quotient `PRegularGaloisPowerClass ΓK p`, vanishing at a quotient class is equivalent to
 vanishing on every `p`-regular representative of that class. This is the exact descent interface
 used to turn the representative-level residue test into the quotient-level formula. -/
 theorem pRegularGaloisPowerClassLift_eq_zero_iff_forall_representatives_eq_zero
@@ -199,7 +199,7 @@ theorem groupFunctionPairing_sum_algebra_smul_left
         groupFunctionPairing_smul_left, ih, Finset.sum_insert hi]
 
 /-- Helper for Exercise 12-12.7-8: realizing an abstract tensor character in `A ⊗ R_K(G)`
-already lands in Serre's scalar-extension owner `A ⊗ R_K(G) ⊂ (G → K)`. This is the source-side
+already lands in LinearRepresentations_Serre_1977's scalar-extension owner `A ⊗ R_K(G) ⊂ (G → K)`. This is the source-side
 normalization used before any fixed-fiber or quotient descent. -/
 theorem tensorCharacterRingToFunction_mem_owner
     (ξ : TensorProduct ℤ A (R[K](G))) :
@@ -218,14 +218,14 @@ theorem tensorCharacterRingToFunction_mem_owner
         (characterRingOverFieldAlgebraScalarExtension A K G).add_mem hξ hη
 
 /-- Helper for Exercise 12-12.7-8: the abstract tensor owner `A ⊗ R_K(G)` maps linearly into
-Serre's scalar-extension owner by realization as a `K`-valued function. -/
+LinearRepresentations_Serre_1977's scalar-extension owner by realization as a `K`-valued function. -/
 noncomputable def tensorCharacterRingToOwnerLinearMap :
     TensorProduct ℤ A (R[K](G)) →ₗ[A] characterRingOverFieldAlgebraScalarExtension A K G :=
   (tensorCharacterRingRealization (A := A) (K := K) (G := G)).codRestrict
     (characterRingOverFieldAlgebraScalarExtension A K G)
     (tensorCharacterRingToFunction_mem_owner (A := A) (K := K) (G := G))
 
-/-- Helper for Exercise 12-12.7-8: every element of Serre's scalar-extension owner is realized by
+/-- Helper for Exercise 12-12.7-8: every element of LinearRepresentations_Serre_1977's scalar-extension owner is realized by
 an abstract tensor character. This is the source-level lifting step used to normalize the fixed
 fiber before residue-field evaluation is introduced. -/
 theorem exists_tensorCharacterRing_preimage_of_mem_owner
@@ -250,7 +250,7 @@ theorem exists_tensorCharacterRing_preimage_of_mem_owner
       refine ⟨a • ξg, ?_⟩
       simp
 
-/-- Helper for Exercise 12-12.7-8: every element of Serre's scalar-extension owner is realized by
+/-- Helper for Exercise 12-12.7-8: every element of LinearRepresentations_Serre_1977's scalar-extension owner is realized by
 an abstract tensor character. This is the surjective half of the fiber-to-tensor normalization
 used in the regular-fiber route. -/
 theorem tensorCharacterRingToOwnerLinearMap_surjective :
@@ -290,7 +290,7 @@ theorem tensorCharacterRingRealization_isClassFunction
 
 /-- Helper for Exercise 12-12.7-8: before quotienting by `Γ_K`, a realized tensor character
 already descends to honest `p`-regular conjugacy classes. This is the representative-level owner
-used in Serre's regular-fiber route. -/
+used in LinearRepresentations_Serre_1977's regular-fiber route. -/
 def tensorCharacterRingPRegularLift_local
     (p : ℕ) (ξ : TensorProduct ℤ A (R[K](G))) :
     PRegularConjClass G p → K :=
@@ -298,7 +298,7 @@ def tensorCharacterRingPRegularLift_local
 
 /-- Helper for Exercise 12-12.7-8: evaluating the descended tensor owner on a chosen `p`-regular
 representative returns the original tensor-character value. This keeps later residue arguments on
-Serre's source-level representative side. -/
+LinearRepresentations_Serre_1977's source-level representative side. -/
 @[simp] theorem tensorCharacterRingPRegularLift_local_ofSubtype
     (p : ℕ) (ξ : TensorProduct ℤ A (R[K](G)))
     (x : {x : G // IsPRegular p x}) :
@@ -524,7 +524,7 @@ theorem intertwiningMap_eq_zero_of_not_isomorphic_explicit_local
   exact hρ (nonempty_equiv_of_intertwiningMap_ne_zero_explicit_local
     (K := K) (G := G) ρ1 ρ2 f hf)
 
-/-- Helper for Exercise 12-12.7-8: over Serre's fraction field `K`, the left regular
+/-- Helper for Exercise 12-12.7-8: over LinearRepresentations_Serre_1977's fraction field `K`, the left regular
 representation still contains a finite complete pairwise nonisomorphic irreducible family. This
 is the finite owner basis used to prove injectivity of `A ⊗ R_K(G) → G → K`. -/
 theorem exists_complete_pairwise_nonisomorphic_simple_family_local :
@@ -568,7 +568,7 @@ theorem tensorCharacterRingRealization_injective :
     simp
   exact sub_eq_zero.mp hξη'
 
-/-- Helper for Exercise 12-12.7-8: Serre's scalar-extension owner is canonically the same
+/-- Helper for Exercise 12-12.7-8: LinearRepresentations_Serre_1977's scalar-extension owner is canonically the same
 `A`-module as the abstract tensor owner `A ⊗ R_K(G)`. This isolates the owner-level transport
 before base-changing to a fixed residue field. -/
 noncomputable def ownerLinearEquiv_tensorCharacterRing :

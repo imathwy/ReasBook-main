@@ -1,9 +1,9 @@
 import Mathlib
-import stacks_project.Chap12.Definition_12_18_3
-import stacks_project.Chap12.Definition_12_10_1
-import stacks_project.Chap12.Definition_12_24_7
-import stacks_project.Chap12.Definition_12_24_9
-import stacks_project.Chap12.Lemma_12_24_11
+import StacksProject_2024.Chap12.Definition_12_18_3
+import StacksProject_2024.Chap12.Definition_12_10_1
+import StacksProject_2024.Chap12.Definition_12_24_7
+import StacksProject_2024.Chap12.Definition_12_24_9
+import StacksProject_2024.Chap12.Lemma_12_24_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -53,7 +53,7 @@ local notation "FilteredComplex" => CategoryTheory.FilteredComplex 𝒜
   obtained as the images of the partial antidiagonal coproduct maps;
 - derived API: finite-filtration consequences from finite antidiagonal support, boundedness of an
   associated spectral sequence, finiteness of the induced cohomology filtration, convergence, and
-  the weak-Serre consequence for total cohomology;
+  the weak-LinearRepresentations_Serre_1977 consequence for total cohomology;
 - source/core/bridge triage:
   `source-facing`: the finiteness hypothesis on the antidiagonal support and the eight conclusions
     of the lemma, together with the first and second filtrations on `Tot(K)`;
@@ -249,11 +249,11 @@ theorem secondDoubleComplex_convergesToTotalCohomology_of_finiteAntidiagonalSupp
     (hfin : doubleComplexHasFiniteAntidiagonalSupport K) :
     (secondDoubleComplexFilteredComplex K).convergesToCohomology E := sorry
 
--- Proof sketch: boundedness lets one pass from a page `E_r` lying in a weak Serre subcategory to
+-- Proof sketch: boundedness lets one pass from a page `E_r` lying in a weak LinearRepresentations_Serre_1977 subcategory to
 -- the limiting graded pieces of the first filtration; finiteness of that filtration then implies
--- that the total cohomology objects belong to the same weak Serre subcategory by closure under
+-- that the total cohomology objects belong to the same weak LinearRepresentations_Serre_1977 subcategory by closure under
 -- extensions.
-/-- Lemma 12.25.3 (7): let `\mathcal C` be a weak Serre subcategory of `\mathcal A`. If for some
+/-- Lemma 12.25.3 (7): let `\mathcal C` be a weak LinearRepresentations_Serre_1977 subcategory of `\mathcal A`. If for some
 page `r` every term of the first spectral sequence associated to `K^{\bullet,\bullet}` lies in
 `\mathcal C`, then every cohomology object `H^n(\mathrm{Tot}(K^{\bullet,\bullet}))` lies in
 `\mathcal C`. -/
@@ -268,9 +268,9 @@ theorem firstDoubleComplex_totalCohomologyObject_mem_of_page_mem_of_finiteAntidi
     ∀ n : ℤ, P ((Tot(K)).homology n) := sorry
 
 -- Proof sketch: the same argument applied to the second filtration shows that a page of the
--- second spectral sequence lying in a weak Serre subcategory forces the cohomology of the total
+-- second spectral sequence lying in a weak LinearRepresentations_Serre_1977 subcategory forces the cohomology of the total
 -- complex to lie there as well.
-/-- Lemma 12.25.3 (8): let `\mathcal C` be a weak Serre subcategory of `\mathcal A`. If for some
+/-- Lemma 12.25.3 (8): let `\mathcal C` be a weak LinearRepresentations_Serre_1977 subcategory of `\mathcal A`. If for some
 page `r` every term of the second spectral sequence associated to `K^{\bullet,\bullet}` lies in
 `\mathcal C`, then every cohomology object `H^n(\mathrm{Tot}(K^{\bullet,\bullet}))` lies in
 `\mathcal C`. -/

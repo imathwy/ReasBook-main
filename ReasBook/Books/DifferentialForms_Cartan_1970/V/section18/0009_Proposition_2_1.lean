@@ -1,4 +1,4 @@
-import cartan.V.section18.«0004_Theorem_1»
+import DifferentialForms_Cartan_1970.V.section18.«0004_Theorem_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

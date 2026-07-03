@@ -7,8 +7,8 @@ import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Calculus.MeanValue
 import Mathlib.Analysis.InnerProductSpace.Dual
 import Mathlib.Analysis.Calculus.Gradient.Basic
-import Reaslib.Optlib.Convex.ConvexFunction
-import Reaslib.Optlib.Differential.Lemmas
+import ReasLib.Optlib.Convex.ConvexFunction
+import ReasLib.Optlib.Differential.Lemmas
 
 /-!
 # Gradient.division

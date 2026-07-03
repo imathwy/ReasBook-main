@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.Chap07.Exercise_7_7_2_5
-import Serre.Chap11.Theorem_11_11_2_1
-import Serre.Chap12.Corollary_12_12_4_2
-import Serre.Chap12.Proposition_12_12_1_1
-import Serre.Chap12.Theorem_12_12_6_2
+import LinearRepresentations_Serre_1977.Chap07.Exercise_7_7_2_5
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1
+import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_4_2
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_6_2
 
 noncomputable section
 
@@ -65,7 +65,7 @@ private theorem precomp_mem_characterRingOverField
 -- `G`. Restrict each generator along `H.subtype`; this is the character of the restricted
 -- representation, hence lies in `R_K(H)`. The result follows by `ℤ`-linearity of the span
 -- defining `characterRingOverField K`.
-/-- Restricting an element of Serre's representation ring `R_K(G)` to a subgroup `H` gives an
+/-- Restricting an element of LinearRepresentations_Serre_1977's representation ring `R_K(G)` to a subgroup `H` gives an
 element of `R_K(H)`. -/
 theorem restrict_mem_characterRingOverField
     (K : Type v) [Field K] (H : Subgroup G) (χ : R[K](G)) :

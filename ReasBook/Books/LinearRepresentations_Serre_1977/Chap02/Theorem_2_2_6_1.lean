@@ -1,6 +1,6 @@
-import Serre.Chap02.Proposition_2_2_1_1
-import Serre.Chap02.Proposition_2_2_5_1
-import Serre.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_1_1
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_5_1
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -383,7 +383,7 @@ private theorem ofModule'_isIrreducible_of_isSimpleModule
         (ofModule'_asModuleLinearEquiv (G := G) S) hS)
 
 /-- Helper for Theorem 2-2.6-1: on a simple owner summand, the weighted character operator is the
-homothety predicted by Serre's character pairing formula. -/
+homothety predicted by LinearRepresentations_Serre_1977's character pairing formula. -/
 private theorem characterWeightedEndomorphism_eq_pairing_smul_of_mem_simple_submodule
     (S : Submodule ℂ[G] ρ.asModule) [IsSimpleModule ℂ[G] S]
     {x : V} (hx : x ∈ S) :
@@ -416,7 +416,7 @@ private theorem characterWeightedEndomorphism_eq_pairing_smul_of_mem_simple_subm
       (((Nat.card G : ℂ)⁻¹ *
           ∑ t : G, star (σ.character t) * ρS.character t) : ℂ) =
         ⟪ρS.character, σ.character⟫ := by
-    -- Rewrite Serre's averaged sum as the canonical character pairing.
+    -- Rewrite LinearRepresentations_Serre_1977's averaged sum as the canonical character pairing.
     calc
       ((Nat.card G : ℂ)⁻¹ * ∑ t : G, star (σ.character t) * ρS.character t)
         = ((Nat.card G : ℂ)⁻¹ * ∑ t : G, ρS.character t * σ.character t⁻¹) := by
@@ -657,7 +657,7 @@ theorem characterWeightedEndomorphism_isProj_isotypicSubrepresentation :
     LinearMap.IsProj (ρ.isotypicSubrepresentation σ).toSubmodule
       (characterWeightedEndomorphism ρ σ) := by
   -- Route correction: the simple-summand scalar calculation and the vanishing-on-other-isotypics
-  -- are already available, so we globalize Serre's argument by spanning the ambient owner module
+  -- are already available, so we globalize LinearRepresentations_Serre_1977's argument by spanning the ambient owner module
   -- with simple submodules and checking the operator on each simple constituent.
   letI : Module ℂ[G] V := ρ.instModuleMonoidAlgebraAsModule
   letI : IsScalarTower ℂ ℂ[G] V := by

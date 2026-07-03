@@ -1,5 +1,5 @@
 import Mathlib
-import cartan.III.section12.CircleSupNorm
+import DifferentialForms_Cartan_1970.III.section12.CircleSupNorm
 
 -- Semantic recall tool `lean_leansearch` was unavailable in this environment.
 -- No local precedent for Hadamard's three circles theorem was found in this repository.

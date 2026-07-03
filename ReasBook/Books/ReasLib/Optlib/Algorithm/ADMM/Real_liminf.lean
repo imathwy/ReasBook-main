@@ -1,4 +1,4 @@
-import Reaslib.Optlib.Function.Proximal
+import ReasLib.Optlib.Function.Proximal
 
 open Set InnerProductSpace Topology Filter
 

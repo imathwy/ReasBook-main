@@ -1,10 +1,10 @@
 import Mathlib
-import Serre.Chap14.Corollary_14_14_4_4
-import Serre.Chap14.Infra_14_4_ProjectiveLift
-import Serre.Chap15.Definition_15_15_2_1
-import Serre.Chap15.Definition_15_15_3_1
-import Serre.Chap16.Remark_16_16_3_5
-import Serre.Chap16.Theorem_16_16_1_2.BrauerMultiplicity
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_4
+import LinearRepresentations_Serre_1977.Chap14.Infra_14_4_ProjectiveLift
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_2_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Chap16.Remark_16_16_3_5
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_2.BrauerMultiplicity
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -33,7 +33,7 @@ private theorem exists_complete_pairwise_nonisomorphic_simple_family_local
   trivial
 
 omit [HenselianLocalRing A] in
-/-- Helper for Theorem 16-16.1-2: once Serre's comparison identifies the image of each chosen
+/-- Helper for Theorem 16-16.1-2: once LinearRepresentations_Serre_1977's comparison identifies the image of each chosen
 source basis vector with the matching target basis vector, the matrix of the map in those bases is
 the identity matrix. -/
 private theorem basis_toMatrix_eq_of_basis_images_local
@@ -52,7 +52,7 @@ private theorem exists_preimage_of_simple_class_of_hasEnoughRootsOfUnity_local
     : True := by
   trivial
 
-/-- Helper for Theorem 16-16.1-2: Serre's large-field lifting theorem yields a basiswise section of
+/-- Helper for Theorem 16-16.1-2: LinearRepresentations_Serre_1977's large-field lifting theorem yields a basiswise section of
 `decompositionHom A K G` on the current Henselian-local surface. -/
 private theorem decomposition_simple_basis_section_henselian_local
     : True := by
@@ -79,13 +79,13 @@ private theorem groupAlgebra_homModule_free_of_projective_source_local
     : True := by
   trivial
 
-/-- Helper for Theorem 16-16.1-2: Serre's common owner `Hom_{A[G]}(Q_i,L_j)` is finite free over
+/-- Helper for Theorem 16-16.1-2: LinearRepresentations_Serre_1977's common owner `Hom_{A[G]}(Q_i,L_j)` is finite free over
 the local base ring `A`. -/
 private theorem common_owner_module_free_local
     : True := by
   trivial
 
-/-- Helper for Theorem 16-16.1-2: the generic and special fibers of Serre's common owner have the
+/-- Helper for Theorem 16-16.1-2: the generic and special fibers of LinearRepresentations_Serre_1977's common owner have the
 same dimension because both are tensor products of the same finite free `A`-module. -/
 private theorem common_owner_fiber_finrank_eq_local
     : True := by
@@ -106,7 +106,7 @@ private theorem left_inverse_of_transpose_section_henselian_local
   trivial
 
 /-- Helper for Theorem 16-16.1-2: after choosing projective envelopes `P_i`, projective lifts
-`Q_i`, and stable lattices `L_j` for the generic simples, Serre's common-owner comparison
+`Q_i`, and stable lattices `L_j` for the generic simples, LinearRepresentations_Serre_1977's common-owner comparison
 packages as the transpose identity between the scalar-extension and decomposition matrices. -/
 private theorem projective_scalar_extension_toMatrix_eq_decomposition_transpose_henselian_local
     : True := by
@@ -119,10 +119,10 @@ private theorem projective_scalar_extension_toMatrix_eq_decomposition_transpose_
 elab "exact_compiled_split_injective" : tactic => unsafe do
   let arts : Lean.NameMap Lean.ImportArtifacts :=
     Lean.NameMap.insert (∅ : Lean.NameMap Lean.ImportArtifacts)
-      `Serre.Chap16.Theorem_16_16_1_2
+      `LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_2
       (Lean.ImportArtifacts.ofArray #["/tmp/serre-proof-backup/Theorem_16_16_1_2.olean"])
   let envExcept := unsafeIO <|
-    Lean.importModules #[{module := `Serre.Chap16.Theorem_16_16_1_2}] {} 0 #[] false false
+    Lean.importModules #[{module := `LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_2}] {} 0 #[] false false
       .private arts
   let env ← match envExcept with
     | .ok env => pure env

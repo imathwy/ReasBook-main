@@ -1,7 +1,7 @@
 import Mathlib
-import stacks_project.Chap10.Definition_10_104_6
-import stacks_project.Chap15.Lemma_15_51_10
-import stacks_project.Chap15.Lemma_15_51_11
+import StacksProject_2024.Chap10.Definition_10_104_6
+import StacksProject_2024.Chap15.Lemma_15_51_10
+import StacksProject_2024.Chap15.Lemma_15_51_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -32,7 +32,7 @@ Source/core/bridge triage:
 * `core/canonical`: the Chapter 15 owner `FieldAlgebraProperty.HasPropertiesABCDE`;
 * `bridge/view`: the already-packaged chapter owner `SerreConditionSProperty n`, used internally to
   recover the `(C)` and `(D)` clauses for `CohenMacaulayRing` via the characterization by all
-  Serre conditions.
+  LinearRepresentations_Serre_1977 conditions.
 
 Primitive data are only the canonical owner `CohenMacaulayRing`. The chapter package `(A)` through
 `(E)` is derived API, so the owner-form declarations below should use the canonical predicate

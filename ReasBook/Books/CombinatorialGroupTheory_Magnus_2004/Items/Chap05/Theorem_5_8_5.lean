@@ -1,8 +1,8 @@
 import Mathlib
-import CombinatorialGroupTheory.Items.Chap04.Theorem_4_4_8
-import CombinatorialGroupTheory.Items.Chap05.Lemma_5_8_1
-import CombinatorialGroupTheory.Items.Chap05.Lemma_5_8_3
-import CombinatorialGroupTheory.Items.Chap05.Lemma_5_8_4
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap04.Theorem_4_4_8
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Lemma_5_8_1
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Lemma_5_8_3
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Lemma_5_8_4
 
 universe u v
 

@@ -1,6 +1,6 @@
 import Mathlib.Tactic.Recall
-import SmoothManifoldsLee.Chap05.Sec05_32.Corollary_5_30
-import SmoothManifoldsLee.Chap05.Sec05_32.Theorem_5_27
+import SmoothManifolds_Lee_2012.Chap05.Sec05_32.Corollary_5_30
+import SmoothManifolds_Lee_2012.Chap05.Sec05_32.Theorem_5_27
 
 open scoped Manifold
 open Manifold

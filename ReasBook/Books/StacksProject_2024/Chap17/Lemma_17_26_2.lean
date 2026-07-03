@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.CategoryTheory.Monoidal.Closed.Basic
-import stacks_project.Chap17.Definition_17_20_3
-import stacks_project.Chap17.Definition_17_25_1
-import stacks_project.Chap17.Lemma_17_18_3
-import stacks_project.Chap17.Lemma_17_26_1
+import StacksProject_2024.Chap17.Definition_17_20_3
+import StacksProject_2024.Chap17.Definition_17_25_1
+import StacksProject_2024.Chap17.Lemma_17_18_3
+import StacksProject_2024.Chap17.Lemma_17_26_1
 
 open CategoryTheory
 open CategoryTheory.MonoidalCategory

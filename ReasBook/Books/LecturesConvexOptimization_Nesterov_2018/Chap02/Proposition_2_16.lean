@@ -1,4 +1,4 @@
-import Nesterov.Chap02.Definition_2_29
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_29
 
 open PointedCone (hull)
 open scoped Pointwise

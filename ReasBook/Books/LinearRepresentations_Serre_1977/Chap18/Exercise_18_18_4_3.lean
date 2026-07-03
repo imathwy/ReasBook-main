@@ -1,10 +1,10 @@
-import Serre.Chap18.Theorem_18_18_4_1
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_4_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
 /- Domain-style sampling for this item:
 * primary domain: modular representation theory of finite groups, specifically the interaction
-  between Serre's `x ↦ x'` operation, the decomposition homomorphism
+  between LinearRepresentations_Serre_1977's `x ↦ x'` operation, the decomposition homomorphism
   `d : R₀[K](G) → R₀[k](G)`, and its additive sections.
 * relevant owner declarations inspected in this domain:
   `Representation.virtualModularCharacter`,

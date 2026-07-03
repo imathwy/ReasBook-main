@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.RepresentationTheory.RealizableOver
-import Serre.Chap18.Exercise_18_18_5_2.ProofStub
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_2.ProofStub
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

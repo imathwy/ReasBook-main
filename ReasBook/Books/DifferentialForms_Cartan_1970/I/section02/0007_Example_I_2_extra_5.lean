@@ -1,7 +1,7 @@
 import Mathlib.Analysis.Analytic.OfScalars
 import Mathlib.Analysis.Normed.Algebra.Exponential
 import Mathlib.Analysis.RCLike.Basic
-import cartan.I.section02.«0004_Definition_I_2_extra_3»
+import DifferentialForms_Cartan_1970.I.section02.«0004_Definition_I_2_extra_3»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

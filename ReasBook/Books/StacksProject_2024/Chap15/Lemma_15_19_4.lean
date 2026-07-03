@@ -1,7 +1,7 @@
-import stacks_project.Chap10.Definition_10_17_1
-import stacks_project.Chap10.Definition_10_54_1
-import stacks_project.Chap10.Lemma_10_150_4
-import stacks_project.Chap15.«15_18_0_1»
+import StacksProject_2024.Chap10.Definition_10_17_1
+import StacksProject_2024.Chap10.Definition_10_54_1
+import StacksProject_2024.Chap10.Lemma_10_150_4
+import StacksProject_2024.Chap15.«15_18_0_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -27,7 +27,7 @@ attribute [local instance] Algebra.TensorProduct.rightAlgebra
   subsets;
 - sampled owner declarations:
   `PrimeSpectrum.zeroLocus`,
-  `stacks_project.Chap10.Definition_10_17_1`'s notation owner `V(-)`,
+  `StacksProject_2024.Chap10.Definition_10_17_1`'s notation owner `V(-)`,
   `Ring.DirectLimit.algebraMap`,
   `Ring.DirectLimit.algebraMap_eq_of`,
   `Ring.DirectLimit.instAlgebra`,

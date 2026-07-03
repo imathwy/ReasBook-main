@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap14.Proposition_14_14_3_1
-import Serre.Chap14.Exercise_14_14_3_5
-import Serre.Chap14.Exercise_14_14_5_3
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_3_1
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_3_5
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -961,7 +961,7 @@ theorem exists_isInjectiveEnvelope_of_isProjectiveEnvelope_of_simple
   refine ⟨fun N hN ↦ ?_⟩
   exact hj.toIsEssentialExtension.eq_bot_of_inf_range_eq_bot N (by simpa using hN)
 
-/-- Helper for Exercise 14-14.5-4: Serre's two exact sequences force at least two occurrences of
+/-- Helper for Exercise 14-14.5-4: LinearRepresentations_Serre_1977's two exact sequences force at least two occurrences of
 the simple module `S` among the composition factors of the projective envelope `P`. -/
 private theorem projective_envelope_simple_factor_count_ge_two
     {f : P →ₗ[k[G]] S} (hS : IsSimpleModule k[G] S) (hf : f.IsProjectiveEnvelope)
@@ -999,7 +999,7 @@ private theorem projective_envelope_simple_factor_count_ge_two
       simple_factor_multiplicity (k := k) (G := G) S K =
         simple_factor_multiplicity (k := k) (G := G) S S +
           simple_factor_multiplicity (k := k) (G := G) S Q := by
-    -- The embedded copy `S ↪ ker f` contributes one outer simple term in Serre's model.
+    -- The embedded copy `S ↪ ker f` contributes one outer simple term in LinearRepresentations_Serre_1977's model.
     simpa [Q, iKer] using
       (simple_factor_multiplicity_eq_add_of_exact (k := k) (G := G) (T := S)
         (f := iKer) (g := Submodule.mkQ (LinearMap.range iKer))
@@ -1041,7 +1041,7 @@ theorem simple_occurs_twice_in_compositionSeries_of_nonprojective_projectiveEnve
         Nonempty
           (((s (Fin.succ j)) ⧸
               (s (Fin.castSucc j)).comap (s (Fin.succ j)).subtype) ≃ₗ[k[G]] S) := by
-  -- Route correction: replace the fragile theorem-local `smash` bookkeeping by Serre's global
+  -- Route correction: replace the fragile theorem-local `smash` bookkeeping by LinearRepresentations_Serre_1977's global
   -- invariant, namely the multiplicity of `S` among the Jordan-Hölder factors of `P`.
   have hcount_ge_two :=
     projective_envelope_simple_factor_count_ge_two

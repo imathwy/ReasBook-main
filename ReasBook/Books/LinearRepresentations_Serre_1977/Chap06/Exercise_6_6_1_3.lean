@@ -18,9 +18,9 @@ Domain-style sampling for this item:
   `k[G]`, with primitive input `[NeZero (Nat.card G : k)]`.
 * `NeZero.of_not_dvd` in `Mathlib.Algebra.CharP.Defs` is the canonical bridge from `CharP k p` and
   `¬ p ∣ Nat.card G` to that primitive owner input.
-* `Serre.Chap06.Proposition_6_6_1_1` already treats the characteristic-zero case as a direct
+* `LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_1_1` already treats the characteristic-zero case as a direct
   recall of the same owner instance.
-* `Serre.Chap06.Corollary_6_6_1_2` reuses the same owner style for the Wedderburn-Artin
+* `LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_1_2` reuses the same owner style for the Wedderburn-Artin
   consequence.
 
 This exercise therefore stays at the `source-facing` layer as the divisibility criterion, while

@@ -1,4 +1,4 @@
-import Serre.Chap03.Lemma_3_3_3_2
+import LinearRepresentations_Serre_1977.Chap03.Lemma_3_3_3_2
 import Mathlib.CategoryTheory.Yoneda
 
 open CategoryTheory Rep
@@ -17,7 +17,7 @@ variable (ρ : Representation k G V) (H : Subgroup G)
 variable (W : Subrepresentation (ρ.comp H.subtype))
 
 -- Source/core/bridge triage for Proposition 7-7.1-1:
--- * source-facing: Serre's criterion that `ρ` is induced from the `H`-stable subrepresentation
+-- * source-facing: LinearRepresentations_Serre_1977's criterion that `ρ` is induced from the `H`-stable subrepresentation
 --   `W` exactly when the canonical comparison `Ind_H^G(W) ⟶ ρ` is an isomorphism.
 -- * core/canonical owners sampled in the induction domain:
 --   `Representation.IsInducedFromSubrepresentation`, `Rep.ind`, `Rep.indResHomEquiv`, and

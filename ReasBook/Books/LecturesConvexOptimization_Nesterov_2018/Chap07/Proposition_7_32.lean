@@ -1,5 +1,5 @@
 import Mathlib
-import Nesterov.Chap07.Proposition_7_31
+import LecturesConvexOptimization_Nesterov_2018.Chap07.Proposition_7_31
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

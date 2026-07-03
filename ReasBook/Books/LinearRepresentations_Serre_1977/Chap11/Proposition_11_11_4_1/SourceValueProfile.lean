@@ -1,5 +1,5 @@
-import Serre.Chap10.Lemma_10_10_2_3
-import Serre.Chap11.Proposition_11_11_4_1.FixedClassEvaluation
+import LinearRepresentations_Serre_1977.Chap10.Lemma_10_10_2_3
+import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_1.FixedClassEvaluation
 
 -- Stable source value-profile helpers extracted from Proposition 11-11.4-1.
 
@@ -66,7 +66,7 @@ theorem value_comap_eq_source_prime
       a ∈ q.asIdeal
   rw [tensorCharacterRingValueAtConjClass_algebraMap (A := A) (G := G) c a]
 
-/-- Helper for Proposition 11-11.4-1: bundle the fixed-class evaluations into Serre's source
+/-- Helper for Proposition 11-11.4-1: bundle the fixed-class evaluations into LinearRepresentations_Serre_1977's source
 map `A ⊗ R(G) → A^{Cl(G)}`. This is the governing source object for Proposition `30`, and it
 keeps the later prime-classification step on the source route instead of returning to fiber
 transport packages. -/
@@ -98,9 +98,9 @@ evaluation. This keeps later `rw` steps on the explicit source presentation. -/
       tensorCharacterRingValueAtConjClass (A := A) (G := G) c χ :=
   rfl
 
-/-- Helper for Proposition 11-11.4-1: Serre's source profile map
+/-- Helper for Proposition 11-11.4-1: LinearRepresentations_Serre_1977's source profile map
 `A ⊗ R(G) → A^{Cl(G)}` is injective. This is the exact missing hypothesis needed to apply
-lying-over to the source inclusion and keep the proof on Serre's source spectrum
+lying-over to the source inclusion and keep the proof on LinearRepresentations_Serre_1977's source spectrum
 `Spec(A^{Cl(G)}) → Spec(A ⊗ R(G))`. -/
 theorem tensorCharacterRingValueProfile_injective :
     Function.Injective (tensorCharacterRingValueProfile (A := A) (G := G)) := by
@@ -122,7 +122,7 @@ theorem tensorCharacterRingValueProfile_injective :
       (ConjClasses.mk g) ψ rfl] at hclass_complex
   simpa using hclass_complex
 
-/-- Helper for Proposition 11-11.4-1: the point-mass function at a conjugacy class in Serre's
+/-- Helper for Proposition 11-11.4-1: the point-mass function at a conjugacy class in LinearRepresentations_Serre_1977's
 source ring `A^{Cl(G)}`. This is the idempotent source generator used in the lying-over pivot. -/
 noncomputable def conjClassDelta
     (c : ConjClasses G) : ConjClasses G → A :=
@@ -153,7 +153,7 @@ theorem sum_smul_conjClassDelta_eq
   simp [conjClassDelta]
 
 /-- Helper for Proposition 11-11.4-1: each source point mass is integral over the image of
-Serre's source profile map. This is the idempotent input for the lying-over step on
+LinearRepresentations_Serre_1977's source profile map. This is the idempotent input for the lying-over step on
 `A^{Cl(G)}`. -/
 theorem conjClassDelta_isIntegral_over_valueProfile
     (c : ConjClasses G) :
@@ -165,7 +165,7 @@ theorem conjClassDelta_isIntegral_over_valueProfile
         (Polynomial.monic_X_sub_C (1 : A ⊗R(G))))
   · simp [conjClassDelta_mul_self, sub_eq_add_neg, mul_add]
 
-/-- Helper for Proposition 11-11.4-1: Serre's source profile map
+/-- Helper for Proposition 11-11.4-1: LinearRepresentations_Serre_1977's source profile map
 `A ⊗ R(G) → A^{Cl(G)}` is integral. This is the source-faithful bridge from the tensor character
 ring to the function ring on conjugacy classes. -/
 theorem tensorCharacterRingValueProfile_isIntegral :
@@ -226,7 +226,7 @@ theorem tensorCharacterRingValueProfile_isIntegral :
             simpa [s] using sum_smul_conjClassDelta_eq (A := A) (G := G) F
   exact hrewrite ▸ hsum
 
-/-- Helper for Proposition 11-11.4-1: evaluating Serre's source profile at a fixed conjugacy
+/-- Helper for Proposition 11-11.4-1: evaluating LinearRepresentations_Serre_1977's source profile at a fixed conjugacy
 class recovers the corresponding fixed-class evaluation map. This keeps the source-spectrum proof
 as a direct comap computation instead of a transport argument. -/
 theorem evalRingHom_comp_tensorCharacterRingValueProfile
@@ -237,7 +237,7 @@ theorem evalRingHom_comp_tensorCharacterRingValueProfile
   rfl
 
 /-- Helper for Proposition 11-11.4-1: every ambient prime should be presented directly as the
-pullback of a coefficient prime along fixed-class evaluation. This is Serre's actual source map
+pullback of a coefficient prime along fixed-class evaluation. This is LinearRepresentations_Serre_1977's actual source map
 `Spec(A^{Cl(G)}) → Spec(A ⊗ R(G))`, and replacing the old fiber packages by this theorem is the
 main structural pivot for Proposition `30`. -/
 theorem source_prime_eq_value_comap_of_class
@@ -262,7 +262,7 @@ theorem source_prime_eq_value_comap_of_class
   simpa [f, evalRingHom_comp_tensorCharacterRingValueProfile (A := A) (G := G) d] using hcomp
 
 /-- Helper for Proposition 11-11.4-1: once an ambient prime is known to contract to the fixed
-maximal ideal `M`, Serre's source-spectrum presentation can be normalized so that the coefficient
+maximal ideal `M`, LinearRepresentations_Serre_1977's source-spectrum presentation can be normalized so that the coefficient
 prime in the fixed-class evaluation pullback is exactly `M`. This is the source-faithful wrapper
 needed before attaching the `p`-regular owner class to the presentation. -/
 theorem source_prime_eq_value_comap_of_class_over_fixed_maximal

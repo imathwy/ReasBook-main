@@ -1,10 +1,10 @@
 import Mathlib
-import cartan.I.section04.«0012_Definition_I_4_extra_4»
-import cartan.III.section11.«0008_Proposition_4_1»
-import cartan.III.section11.«0012_Corollary_III_5_extra_8»
-import cartan.V.section20.«0002_Definition_V_3_extra_2»
-import cartan.V.section20.«0003_Theorem_1»
-import cartan.V.section21.«0012_Exercise_3»
+import DifferentialForms_Cartan_1970.I.section04.«0012_Definition_I_4_extra_4»
+import DifferentialForms_Cartan_1970.III.section11.«0008_Proposition_4_1»
+import DifferentialForms_Cartan_1970.III.section11.«0012_Corollary_III_5_extra_8»
+import DifferentialForms_Cartan_1970.V.section20.«0002_Definition_V_3_extra_2»
+import DifferentialForms_Cartan_1970.V.section20.«0003_Theorem_1»
+import DifferentialForms_Cartan_1970.V.section21.«0012_Exercise_3»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

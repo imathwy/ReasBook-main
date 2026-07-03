@@ -1,4 +1,4 @@
-import Nesterov.Chap02.Definition_2_17
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_17
 
 open scoped Gradient
 

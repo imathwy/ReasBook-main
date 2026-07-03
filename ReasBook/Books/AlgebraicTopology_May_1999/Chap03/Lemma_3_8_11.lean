@@ -1,5 +1,5 @@
 import Mathlib
-import MayConciseRevised.Chap03.Theorem_3_8_10
+import AlgebraicTopology_May_1999.Chap03.Theorem_3_8_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -63,7 +63,7 @@ private def universal_cover_orbit_projection_range_eq_subgroup_name : Name :=
           (Name.str
             (Name.str
               (Name.str Name.anonymous "_private")
-              "MayConciseRevised")
+              "AlgebraicTopology_May_1999")
             "Chap03")
           "Theorem_3_8_10")
         0)

@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap10.Lemma_10_163_5
-import stacks_project.Chap15.Definition_15_41_1
+import StacksProject_2024.Chap10.Lemma_10_163_5
+import StacksProject_2024.Chap15.Definition_15_41_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -11,7 +11,7 @@ universe u v
 /-
 Domain triage:
 - primary domain: commutative algebra of regular ring maps and ascent of regularity through
-  Serre's condition `(R_k)` with geometrically regular fibers;
+  LinearRepresentations_Serre_1977's condition `(R_k)` with geometrically regular fibers;
 - sampled owner declarations:
   `IsRegularRingMap`,
   `IsRegularRing`,
@@ -38,7 +38,7 @@ private theorem serreConditionR_of_isRegularRing
   isRegularLocalRing_localizationAtPrime p _ := IsRegularRing.isRegularLocalRing_atPrime p
 
 -- Proof sketch: a regular ring map is flat, and each fiber ring is geometrically regular over the
--- corresponding residue field, hence regular. A regular ring satisfies Serre's condition `(R_k)`
+-- corresponding residue field, hence regular. A regular ring satisfies LinearRepresentations_Serre_1977's condition `(R_k)`
 -- for every `k`, so Lemma `10.163.5` applied to the flat map `R → S` yields `(R_k)` for `S` for
 -- every `k`. The prime-local characterization of regular rings then gives regularity of `S`.
 /-- Lemma 15.42.3: if `R → S` is a regular ring map, `S` is Noetherian, and `R` is a regular ring,

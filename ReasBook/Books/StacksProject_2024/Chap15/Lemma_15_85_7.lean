@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
 import Mathlib.CategoryTheory.Triangulated.TStructure.TruncLTGE
-import stacks_project.Chap15.Lemma_15_85_5
-import stacks_project.Chap15.Lemma_15_85_6
+import StacksProject_2024.Chap15.Lemma_15_85_5
+import StacksProject_2024.Chap15.Lemma_15_85_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

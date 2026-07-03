@@ -1,7 +1,7 @@
 import Mathlib
-import stacks_project.Chap12.Definition_12_27_5
-import stacks_project.Chap19.Lemma_19_2_7
-import stacks_project.Chap19.Proposition_19_2_5
+import StacksProject_2024.Chap12.Definition_12_27_5
+import StacksProject_2024.Chap19.Lemma_19_2_7
+import StacksProject_2024.Chap19.Proposition_19_2_5
 
 open CategoryTheory
 open CategoryTheory.SmallObject

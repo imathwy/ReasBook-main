@@ -1,7 +1,7 @@
 import Mathlib.CategoryTheory.Abelian.Subcategory
 import Mathlib.Algebra.Homology.ShortComplex.ExactFunctor
 import Mathlib.CategoryTheory.Limits.ExactFunctor
-import stacks_project.Chap12.Definition_12_10_1
+import StacksProject_2024.Chap12.Definition_12_10_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -15,7 +15,7 @@ namespace CategoryTheory.ObjectProperty
 variable {𝒜 : Type u} [Category.{v} 𝒜] [Abelian 𝒜] (P : ObjectProperty 𝒜)
 
 /- Domain-style sampling for Lemma 12.10.3:
-- primary domain: weak Serre object properties in abelian categories and the induced exact
+- primary domain: weak LinearRepresentations_Serre_1977 object properties in abelian categories and the induced exact
   full-subcategory formalism;
 - sampled owner declarations:
   `ObjectProperty.IsWeakSerreClass`,
@@ -25,14 +25,14 @@ variable {𝒜 : Type u} [Category.{v} 𝒜] [Abelian 𝒜] (P : ObjectProperty 
   `ObjectProperty.FullSubcategory`;
 - best owner abstraction: an object property `P : ObjectProperty 𝒜` equipped with
   `[P.IsWeakSerreClass]`;
-- primitive data: the source-facing weak-Serre four-out-of-five exactness criterion from
+- primitive data: the source-facing weak-LinearRepresentations_Serre_1977 four-out-of-five exactness criterion from
   Definition 12.10.1;
 - derived API: containing zero, closure under kernels/cokernels/extensions and then closure under
   isomorphisms and finite products, the abelian structure on `P.FullSubcategory`, and exactness
   of the inclusion `P.ι`.
 
 Source/core/bridge triage:
-- `source-facing`: the Stacks consequences for a weak Serre subcategory;
+- `source-facing`: the Stacks consequences for a weak LinearRepresentations_Serre_1977 subcategory;
 - `core/canonical`: the `ObjectProperty` owner `P`, together with `P.FullSubcategory` and `P.ι`;
 - `bridge/view`: the exactness statement for the inclusion functor, derived from the canonical
   kernel/cokernel preservation API. -/
@@ -44,12 +44,12 @@ from the later closure-package characterization. -/
 /- Definition 12.10.1 stores the primitive four-out-of-five exactness criterion directly. -/
 #check IsWeakSerreClass.prop_X₂_of_exact₄
 
-/-- A weak Serre subcategory is closed under isomorphisms. -/
+/-- A weak LinearRepresentations_Serre_1977 subcategory is closed under isomorphisms. -/
 instance [IsWeakSerreClass P] :
     P.IsClosedUnderIsomorphisms :=
   isClosedUnderIsomorphisms_of_containsZero_of_closedUnderExtensions P
 
-/-- A weak Serre subcategory is closed under binary products. -/
+/-- A weak LinearRepresentations_Serre_1977 subcategory is closed under binary products. -/
 instance [IsWeakSerreClass P] :
     P.IsClosedUnderBinaryProducts := by
   refine IsClosedUnderLimitsOfShape.mk' ?_
@@ -63,7 +63,7 @@ instance [IsWeakSerreClass P] :
   exact P.prop_of_iso (IsLimit.conePointUniqueUpToIso hPair (BinaryBiproduct.isLimit X Y)).symm
     hXY
 
-/-- A weak Serre subcategory is closed under finite products. -/
+/-- A weak LinearRepresentations_Serre_1977 subcategory is closed under finite products. -/
 instance [IsWeakSerreClass P] : P.IsClosedUnderFiniteProducts := by
   exact .mk'
 
@@ -71,28 +71,28 @@ section
 
 variable [IsWeakSerreClass P]
 
-/- Lemma 12.10.3 (1): a weak Serre subcategory contains a zero object. -/
+/- Lemma 12.10.3 (1): a weak LinearRepresentations_Serre_1977 subcategory contains a zero object. -/
 #synth P.ContainsZero
 
-/- Lemma 12.10.3 (2): a weak Serre subcategory is strictly full, i.e. closed under
+/- Lemma 12.10.3 (2): a weak LinearRepresentations_Serre_1977 subcategory is strictly full, i.e. closed under
 isomorphisms. -/
 #synth P.IsClosedUnderIsomorphisms
 
 /- Lemma 12.10.3 (3): kernels and cokernels in `𝒜` of morphisms between objects of the weak
-Serre subcategory again belong to the subcategory. -/
+LinearRepresentations_Serre_1977 subcategory again belong to the subcategory. -/
 #synth P.IsClosedUnderKernels
 #synth P.IsClosedUnderCokernels
 
-/- Lemma 12.10.3 (4): an extension of two objects of a weak Serre subcategory again belongs
+/- Lemma 12.10.3 (4): an extension of two objects of a weak LinearRepresentations_Serre_1977 subcategory again belongs
 to the subcategory. -/
 #synth P.IsClosedUnderExtensions
 
-/- Lemma 12.10.3 (Moreover): the full subcategory cut out by a weak Serre subcategory of an
+/- Lemma 12.10.3 (Moreover): the full subcategory cut out by a weak LinearRepresentations_Serre_1977 subcategory of an
 abelian category is itself abelian. This is the canonical mathlib instance on
 `P.FullSubcategory`, derived from zero, kernel, cokernel, and finite-product closure. -/
 #synth Abelian P.FullSubcategory
 
-/-- Lemma 12.10.3 (Moreover): the inclusion functor of a weak Serre subcategory into the ambient
+/-- Lemma 12.10.3 (Moreover): the inclusion functor of a weak LinearRepresentations_Serre_1977 subcategory into the ambient
 abelian category is exact. -/
 theorem weakSerreSubcategory_inclusion_exact :
     exactFunctor P.FullSubcategory 𝒜 P.ι := by
@@ -105,12 +105,12 @@ theorem weakSerreSubcategory_inclusion_exact :
       fun {_ _} f ↦ P.preservesCokernels_ι f
     exact P.ι.preservesFiniteColimits_of_preservesCokernels
 
-/-- The inclusion functor of a weak Serre subcategory preserves finite limits. -/
+/-- The inclusion functor of a weak LinearRepresentations_Serre_1977 subcategory preserves finite limits. -/
 theorem weakSerreSubcategory_inclusion_preservesFiniteLimits :
     PreservesFiniteLimits P.ι :=
   (exactFunctor_iff P.ι).1 (weakSerreSubcategory_inclusion_exact P) |>.1
 
-/-- The inclusion functor of a weak Serre subcategory preserves finite colimits. -/
+/-- The inclusion functor of a weak LinearRepresentations_Serre_1977 subcategory preserves finite colimits. -/
 theorem weakSerreSubcategory_inclusion_preservesFiniteColimits :
     PreservesFiniteColimits P.ι :=
   (exactFunctor_iff P.ι).1 (weakSerreSubcategory_inclusion_exact P) |>.2

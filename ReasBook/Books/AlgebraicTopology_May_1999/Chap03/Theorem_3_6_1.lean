@@ -2,16 +2,16 @@ import Mathlib
 import Mathlib.CategoryTheory.Action.Basic
 import Mathlib.CategoryTheory.Groupoid.VertexGroup
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import MayConciseRevised.Chap03.Construction_3_6_2
-import MayConciseRevised.Chap03.Definition_3_3_3
-import MayConciseRevised.Chap03.Definition_3_3_7
-import MayConciseRevised.Chap03.Definition_3_4_7
-import MayConciseRevised.Chap03.Definition_3_4_10
-import MayConciseRevised.Chap03.Lemma_3_4_3
-import MayConciseRevised.Chap03.Lemma_3_4_8
-import MayConciseRevised.Chap03.Lemma_3_4_11
-import MayConciseRevised.Chap03.Remark_3_3_13
-import MayConciseRevised.Chap03.Theorem_3_5_6
+import AlgebraicTopology_May_1999.Chap03.Construction_3_6_2
+import AlgebraicTopology_May_1999.Chap03.Definition_3_3_3
+import AlgebraicTopology_May_1999.Chap03.Definition_3_3_7
+import AlgebraicTopology_May_1999.Chap03.Definition_3_4_7
+import AlgebraicTopology_May_1999.Chap03.Definition_3_4_10
+import AlgebraicTopology_May_1999.Chap03.Lemma_3_4_3
+import AlgebraicTopology_May_1999.Chap03.Lemma_3_4_8
+import AlgebraicTopology_May_1999.Chap03.Lemma_3_4_11
+import AlgebraicTopology_May_1999.Chap03.Remark_3_3_13
+import AlgebraicTopology_May_1999.Chap03.Theorem_3_5_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

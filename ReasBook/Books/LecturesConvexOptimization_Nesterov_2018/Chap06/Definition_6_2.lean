@@ -1,6 +1,6 @@
-import Nesterov.Chap03.Definition_3_1_1_2
-import Nesterov.Chap04.Definition_4_3_4
-import Nesterov.Chap06.Definition_6_1
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_1_1_2
+import LecturesConvexOptimization_Nesterov_2018.Chap04.Definition_4_3_4
+import LecturesConvexOptimization_Nesterov_2018.Chap06.Definition_6_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -59,7 +59,7 @@ the textbook `f_μ : E → ℝ` / `max` formula on the finite-value regime.
 
 variable {E : Type u} [AddCommGroup E] [Module ℝ E] [FiniteDimensional ℝ E]
 
-/-- The quadratically regularized affine functional used in the Nesterov smoothing formula,
+/-- The quadratically regularized affine functional used in the LecturesConvexOptimization_Nesterov_2018 smoothing formula,
 built from the Fenchel conjugate of `f` and regularized by the Chapter 4 dual-norm owner
 `‖s‖[B,*]`. -/
 def fenchelSmoothApproximationMaximand

@@ -1,5 +1,5 @@
-import Reaslib.Basic.EReal
-import Reaslib.Basic.ProperFunction
+import ReasLib.Basic.EReal
+import ReasLib.Basic.ProperFunction
 
 
 open Filter BigOperators Set Topology Function Module EReal

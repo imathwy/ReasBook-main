@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap07.Proposition_7_7_2_1
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap12.Proposition_12_12_1_1
-import Serre.Chap13.Exercise_13_13_1_14.Index
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_14.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -266,7 +266,7 @@ theorem quaternionCyclicWitnessRepresentation_imageSubalgebra_equiv_matrix_over_
     Nonempty
       ((ρ).asAlgebraHom.range ≃ₐ[ℚ]
         Matrix (Fin 2) (Fin 2) (CyclotomicField 3 ℚ)) := by
-  -- Route correction: use Serre's exact chain `A ≃ End_K(H_Q) ≃ M₂(K)`, with the middle arrow
+  -- Route correction: use LinearRepresentations_Serre_1977's exact chain `A ≃ End_K(H_Q) ≃ M₂(K)`, with the middle arrow
   -- cached above so the final composition is just coefficient transport to `CyclotomicField 3`.
   let e1 :
       quaternion_cyclic_imageSubalgebra ≃ₐ[ℚ]
@@ -303,7 +303,7 @@ theorem quaternionCyclicWitnessRepresentation_matrixSize_two :
     quaternion_cyclic_self_intertwining_finrank_eq_two
   rw [hnum, hden]
 
--- Proof sketch: the explicit witness character satisfies Serre's four central-value test, and the
+-- Proof sketch: the explicit witness character satisfies LinearRepresentations_Serre_1977's four central-value test, and the
 -- obstruction theorem above excludes every element of the subgroup-permutation span.
 /-- Exercise 13-13.1-14: the irreducible rational character of
 `quaternionCyclicWitnessRepresentation` is not an integral linear combination of the subgroup
@@ -313,7 +313,7 @@ theorem
     :
     χ_ ρ ∉ subgroupPermutationCharacterSpanOverQ G0 := by
   -- Route correction: the broken upstream import chain is replaced here by a local four-point
-  -- obstruction theorem tailored to the central values of Serre's quaternionic witness.
+  -- obstruction theorem tailored to the central values of LinearRepresentations_Serre_1977's quaternionic witness.
   refine quaternion_cyclic_obstruction_of_central_values ?_ ?_ ?_ ?_
   · -- The character value at the identity is the dimension `4`.
     change LinearMap.trace ℚ ℍ[ℚ] (ρ ((1 : Q8), (1 : C3))) = 4

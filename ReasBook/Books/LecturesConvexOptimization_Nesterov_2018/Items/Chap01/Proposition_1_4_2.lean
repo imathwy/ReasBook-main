@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Proposition_1_4_2
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Proposition_1_4_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -9,11 +9,11 @@ open Filter
 
 Relevant owner-style declarations sampled before refining:
 * `Antitone`, the canonical owner predicate for decreasing sequences;
-* `antitone_nat_iff_succ_le` in `Nesterov/Chap01/Definition_1_4_1.lean`, the chapter bridge from
+* `antitone_nat_iff_succ_le` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_4_1.lean`, the chapter bridge from
   the textbook one-step decrease condition to `Antitone`;
 * `tendsto_atTop_ciInf`, the canonical monotone-convergence owner theorem for antitone
   bounded-below sequences;
-* `relaxationSequence_tendsto_inf` in `Nesterov/Chap01/Proposition_1_4_2.lean`, the chapter
+* `relaxationSequence_tendsto_inf` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Proposition_1_4_2.lean`, the chapter
   source-facing owner already expressing this proposition.
 
 Best owner abstraction:

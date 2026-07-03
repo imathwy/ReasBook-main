@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap03.Definition_3_9
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -15,7 +15,7 @@ Primary domain:
 - support functions of subsets of a real inner-product space.
 
 Sampled owner-style declarations:
-- `supportFunction` from `Nesterov.Chap03.Definition_3_9`
+- `supportFunction` from `LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_9`
 - `supportFunction_apply`
 - `supportFunction_convexHull_eq`
 

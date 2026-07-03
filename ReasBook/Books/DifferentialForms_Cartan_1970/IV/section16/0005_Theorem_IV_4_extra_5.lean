@@ -1,5 +1,5 @@
-import cartan.IV.section16.«0002_Theorem_IV_4_extra_2»
-import cartan.III.section08.«0003_Corollary_III_2_extra_2»
+import DifferentialForms_Cartan_1970.IV.section16.«0002_Theorem_IV_4_extra_2»
+import DifferentialForms_Cartan_1970.III.section08.«0003_Corollary_III_2_extra_2»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

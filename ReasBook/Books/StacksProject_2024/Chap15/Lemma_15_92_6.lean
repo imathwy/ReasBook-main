@@ -1,7 +1,7 @@
 import Mathlib
-import stacks_project.Chap12.Lemma_12_10_3
-import stacks_project.Chap13.Lemma_13_17_1
-import stacks_project.Chap15.Definition_15_92_4
+import StacksProject_2024.Chap12.Lemma_12_10_3
+import StacksProject_2024.Chap13.Lemma_13_17_1
+import StacksProject_2024.Chap15.Definition_15_92_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -32,7 +32,7 @@ variable {A : Type u} [CommRing A] (I : Ideal A)
   `DerivedCategory.derivedCompleteObjectProperty I`;
 - primitive data: the module and derived derived-complete predicates from
   `Definition_15_92_4`;
-- derived API: the weak-Serre structure on the module owner and the identification of the
+- derived API: the weak-LinearRepresentations_Serre_1977 structure on the module owner and the identification of the
   derived owner with the generic cohomology-in-property owner.
 
 Layer triage:
@@ -45,8 +45,8 @@ Layer triage:
 -- Proof sketch: Lemma 15.92.1 identifies derived completeness with vanishing of
 -- `Ext^n_A(A_f, -)` for every `f ∈ I`; the associated long exact sequences show closure under
 -- kernels, cokernels, and extensions, and Lemma 12.10.3 packages these closures into the weak
--- Serre structure.
-/-- Lemma 15.92.6: the derived complete `A`-modules with respect to `I` form a weak Serre
+-- LinearRepresentations_Serre_1977 structure.
+/-- Lemma 15.92.6: the derived complete `A`-modules with respect to `I` form a weak LinearRepresentations_Serre_1977
 subcategory of `Mod_A`. -/
 theorem derivedCompleteObjectProperty_isWeakSerreClass :
     IsWeakSerreClass (ModuleCat.derivedCompleteObjectProperty I) := sorry

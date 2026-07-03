@@ -1,4 +1,4 @@
-import BauschkeLean.Chap05.Example_5_2_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Example_5_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

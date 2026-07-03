@@ -8,8 +8,8 @@ import Mathlib.LinearAlgebra.Dual.Basis
 import Mathlib.LinearAlgebra.Dual.Lemmas
 import Mathlib.Analysis.NormedSpace.HahnBanach.Separation
 import Mathlib.Analysis.InnerProductSpace.Dual
-import Reaslib.ConvexAnalysis.IntrinsicInterior
-import Reaslib.ConvexAnalysis.ClosedFunction_Closure
+import ReasLib.ConvexAnalysis.IntrinsicInterior
+import ReasLib.ConvexAnalysis.ClosedFunction_Closure
 
 /-!
 # Affine minorant of a function

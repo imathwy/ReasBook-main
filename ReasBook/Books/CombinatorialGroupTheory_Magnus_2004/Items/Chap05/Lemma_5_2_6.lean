@@ -1,7 +1,7 @@
 import Mathlib
-import CombinatorialGroupTheory.Items.Chap05.Definition_5_1_5
-import CombinatorialGroupTheory.Items.Chap05.Definition_5_2_4
-import CombinatorialGroupTheory.Items.Chap05.Definition_5_2_5
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_1_5
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_2_4
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_2_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,8 +1,8 @@
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap12.GaloisPowerClasses
-import Serre.Chap12.Theorem_12_12_4_1.GaloisPowerAction
-import Serre.Chap12.Theorem_12_12_4_1.GammaSubgroupAction
-import Serre.Chap12.Theorem_12_12_5_1
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap12.GaloisPowerClasses
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_4_1.GaloisPowerAction
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_4_1.GammaSubgroupAction
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_5_1
 
 open scoped Representation SubgroupInduction
 
@@ -316,7 +316,7 @@ lemma cyclic_theta_quotient_source_isConstantOnReducedAmbientClasses
     rfl
   refine (isConstantOnGaloisPowerClasses_iff_forall_pow_eq hsourceClass).2 ?_
   intro c u
-  -- Route correction: keep Serre's source on `⟨x⟩` and compare reduced ambient powers with actual
+  -- Route correction: keep LinearRepresentations_Serre_1977's source on `⟨x⟩` and compare reduced ambient powers with actual
   -- ambient `Γ[K](G)`-powers before asking for any owner-membership statement.
   obtain ⟨t, ht⟩ :=
     zpowers_pow_eq_ambient_gamma_pow_of_mem_reducedAmbient_local
@@ -369,7 +369,7 @@ lemma explicit_cyclicSubgroupInduction_single_overAlgebra
   rw [LinearMap.comp_apply, DFinsupp.lsum]
   simp
 
-/-- Helper for Infra 12 7 CyclicDescent: Serre's cyclic-subgroup `θ`-identity rewritten using the
+/-- Helper for Infra 12 7 CyclicDescent: LinearRepresentations_Serre_1977's cyclic-subgroup `θ`-identity rewritten using the
 current file's owner index `CycSub`. -/
 lemma cyclicSubgroup_sum_induced_cyclicGroupTheta_eq_groupOrder_smul_one_local :
     ∑ H : CycSub, Ind[H.1]((θ[H.1] : H.1 → K)) = (Nat.card G : K) • (1 : G → K) := by
@@ -642,7 +642,7 @@ lemma reducedAmbient_class_indicator_source_eq_orbit_supported_of_generator_repr
     rw [reducedAmbient_class_indicator_source, if_neg hc]
     rw [reducedAmbient_orbit_supported_source, if_neg hsupp_false]
 
-/-- Helper for Infra 12 7 CyclicDescent: Serre's denominator-cleared cyclic source on
+/-- Helper for Infra 12 7 CyclicDescent: LinearRepresentations_Serre_1977's denominator-cleared cyclic source on
 `C = ⟨x⟩` decomposes as the finite sum of reduced-ambient quotient-class indicators weighted by
 the descended quotient values of `g`. -/
 lemma cyclic_theta_quotient_source_eq_sum_reducedAmbient_class_indicators
@@ -919,7 +919,7 @@ lemma exists_cyclicSubgroupInduction_preimage_of_principal_values
             simpa [gK, Function.comp, Pi.smul_apply, Pi.mul_apply, Algebra.smul_def] using hs.symm
   exact congrArg ((↑) : K → L) hsK
 
-/-- Infra 12 7 CyclicDescent: Serre's denominator-clearing cyclic-descent step packages the
+/-- Infra 12 7 CyclicDescent: LinearRepresentations_Serre_1977's denominator-clearing cyclic-descent step packages the
 ambient class function `(algebraMap A K) ∘ f` as lying in the range of the total induction map
 from cyclic subgroups. -/
 theorem cyclicSubgroupInduction_descent_of_principal_values

@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap07.Proposition_7_7_2_1
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
 
 noncomputable section
 
@@ -331,7 +331,7 @@ theorem trivial_subgroup_test_on_subgroupPermutationCharacter
         exact hzH this
       simp [hH, hzH, hcH, hzcH]
 
-/-- Helper for Exercise 13-13.1-14: Serre's four central values force the subgroup test to take
+/-- Helper for Exercise 13-13.1-14: LinearRepresentations_Serre_1977's four central values force the subgroup test to take
 the obstruction value `1 / 2`. -/
 theorem trivial_subgroup_test_eq_half_of_central_values
     {χ : R[ℚ](G0)}
@@ -345,7 +345,7 @@ theorem trivial_subgroup_test_eq_half_of_central_values
   rw [trivial_subgroup_test, hone, hz, hc, hzc]
   norm_num
 
-/-- Helper for Exercise 13-13.1-14: any rational character on `Q8 × C3` with Serre's four
+/-- Helper for Exercise 13-13.1-14: any rational character on `Q8 × C3` with LinearRepresentations_Serre_1977's four
 distinguished central values already lies outside the subgroup-permutation lattice. -/
 theorem quaternion_cyclic_obstruction_of_central_values
     {χ : R[ℚ](G0)}

@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Proposition_1_8_2
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Proposition_1_8_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -14,11 +14,11 @@ local notation "E" => EuclideanSpace ℝ (Fin n)
 /- Proposition 1.8.2 lies in second-order smooth optimization / Newton quadratic models.
 
 Relevant owner-style declarations sampled before refining:
-* `secondOrderTaylorModelAt` in `Nesterov/Chap01/Definition_1_4_17`
-* `hessianMatrix_toEuclideanLin` in `Nesterov/Chap01/Definition_1_4_16`
-* `NewtonSystem.step` in `Nesterov/Chap01/Algorithm_1_7_1`
+* `secondOrderTaylorModelAt` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_4_17`
+* `hessianMatrix_toEuclideanLin` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_4_16`
+* `NewtonSystem.step` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Algorithm_1_7_1`
 * `newtonSystem_step_eq_matrixFormula` and `newtonQuadraticModel_isMinOn` in
-  `Nesterov/Chap01/Proposition_1_8_2`
+  `LecturesConvexOptimization_Nesterov_2018/Chap01/Proposition_1_8_2`
 
 Best owner abstraction:
 * the source-facing quadratic model `secondOrderTaylorModelAt f xBar`

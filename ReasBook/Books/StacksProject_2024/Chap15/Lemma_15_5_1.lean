@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Algebra.Prod
 import Mathlib.Algebra.Algebra.Subalgebra.Basic
-import stacks_project.Chap10.Lemma_10_51_7_Artin_Tate
+import StacksProject_2024.Chap10.Lemma_10_51_7_Artin_Tate
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

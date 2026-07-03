@@ -1,5 +1,5 @@
-import CombinatorialGroupTheory.Basic
-import CombinatorialGroupTheory.Items.Chap01.Proposition_1_6_13
+import CombinatorialGroupTheory_Magnus_2004.Basic
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_6_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -24,7 +24,7 @@ open scoped RelatorSetIr
 -- Domain sampling:
 -- 1. `Ir(W)` from Proposition `1-6-13` is the chapter owner abstraction for irreducibility rank.
 -- 2. `PresentedGroup` in mathlib is the canonical owner object on which `Ir(W)` is built.
--- 3. `IsPrimitiveElement` in `CombinatorialGroupTheory.Basic` is the project owner abstraction
+-- 3. `IsPrimitiveElement` in `CombinatorialGroupTheory_Magnus_2004.Basic` is the project owner abstraction
 --    for “belongs to some basis”, so its negation is the canonical owner-level form of “lies in
 --    no basis”.
 -- 4. `map Fin.castSucc` in mathlib is the canonical way to view a word in the first `n`

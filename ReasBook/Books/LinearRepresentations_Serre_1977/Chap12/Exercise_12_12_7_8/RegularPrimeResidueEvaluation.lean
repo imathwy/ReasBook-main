@@ -1,4 +1,4 @@
-import Serre.Chap12.Exercise_12_12_7_8.RegularPrimeTensorOwner
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_7_8.RegularPrimeTensorOwner
 
 open scoped Representation
 
@@ -32,7 +32,7 @@ section RegularPrime
 variable {p : Nat.Primes}
 
 /-- Helper for Exercise 12-12.7-8: after base-changing from `A` to the residue field of `M`, the
-fixed fiber owner is linearly identified with Serre's tensor owner
+fixed fiber owner is linearly identified with LinearRepresentations_Serre_1977's tensor owner
 `M.1.asIdeal.ResidueField ⊗ R_K(G)`. This is the transport half of the regular-fiber source
 route, before evaluation on `p`-regular representatives. -/
 noncomputable def regular_fiber_to_tensorCharacterRingLinearEquiv
@@ -69,7 +69,7 @@ theorem fiber_linearEquiv_tensorCharacterRingOverField_baseChange_tmul_tmul
 /-- Helper for Exercise 12-12.7-8: transporting an `includeRight` generator of the fixed fiber
 through `regular_fiber_to_tensorCharacterRingLinearEquiv` reduces the base-change step to the
 pure tensor `(1 : k(M)) ⊗ owner(f)` before the final associativity normalization. This is the
-transport-stable normal form needed before Serre's representative-level residue evaluation is
+transport-stable normal form needed before LinearRepresentations_Serre_1977's representative-level residue evaluation is
 introduced. -/
 theorem regular_fiber_to_tensorCharacterRingLinearEquiv_includeRight_formula
     (M : NonzeroResidualCharacteristicMaximalIdeal A p)
@@ -159,7 +159,7 @@ theorem pRegularConjClass_smul_ofSubtype_local
   simpa using ConjClasses.smul_mk (G := G) (t : (ZMod (Monoid.exponent G))ˣ) s.1
 
 /-- Helper for Exercise 12-12.7-8: taking the `Γ_K`-power of a chosen `p`-regular representative
-does not change its image in Serre's quotient `PRegularGaloisPowerClass ΓK p`. This is the
+does not change its image in LinearRepresentations_Serre_1977's quotient `PRegularGaloisPowerClass ΓK p`. This is the
 quotient-level normalization that later residue arguments should use instead of reopening the
 orbit relation by hand. -/
 theorem pRegularGaloisPowerClassMk_of_pow_eq
@@ -203,7 +203,7 @@ theorem regular_fiber_algHom_ext_of_eq_on_includeRight
   exact h f
 
 /-- Helper for Exercise 12-12.7-8: every owner element in `A ⊗ R_K(G)` is already constant on
-Serre's arithmetic `Γ_K`-classes. This is the source-level invariance input before any reduction
+LinearRepresentations_Serre_1977's arithmetic `Γ_K`-classes. This is the source-level invariance input before any reduction
 modulo the fixed maximal ideal is introduced. -/
 theorem owner_isConstantOnGaloisPowerClasses
     (f : characterRingOverFieldAlgebraScalarExtensionSubalgebra A K G) :
@@ -224,7 +224,7 @@ def owner_pregular_eval
 
 /-- Helper for Exercise 12-12.7-8: on an honest `p`-regular representative, the pre-residue owner
 evaluator recovers the original owner value. This keeps the future residue reduction pinned to
-Serre's chosen representatives. -/
+LinearRepresentations_Serre_1977's chosen representatives. -/
 @[simp] theorem owner_pregular_eval_ofSubtype
     (f : characterRingOverFieldAlgebraScalarExtensionSubalgebra A K G)
     (x : {x : G // IsPRegular p x}) :
@@ -310,7 +310,7 @@ theorem characterRingOverField_value_isIntegral
 
 /-- Helper for Exercise 12-12.7-8: under the missing integral-closure hypothesis, a
 `p`-regular value of a virtual `K`-character already lies in the image of `A → K`. This is
-Serre's arithmetic source statement before any tensor-owner or fiber packaging. -/
+LinearRepresentations_Serre_1977's arithmetic source statement before any tensor-owner or fiber packaging. -/
 theorem characterRingOverField_value_mem_range_of_isPRegular_of_isIntegralClosure
     (χ : R[K](G)) (x : {x : G // IsPRegular p x}) :
     ((χ : G → K) x.1) ∈ Set.range (algebraMap A K) := by
@@ -359,7 +359,7 @@ theorem owner_pregular_value_mem_range_on_pRegular_representatives_of_isIntegral
 
 /-- Helper for Exercise 12-12.7-8: under the integral-closure hypothesis, the source-level owner
 evaluation on a `p`-regular conjugacy class already lies in the image of `A → K`. This packages
-the representative-level arithmetic bridge at exactly the class-function layer used by Serre's
+the representative-level arithmetic bridge at exactly the class-function layer used by LinearRepresentations_Serre_1977's
 fixed-fiber construction. -/
 theorem owner_pregular_eval_mem_range_on_pRegular_classes_of_isIntegralClosure
     (f : characterRingOverFieldAlgebraScalarExtensionSubalgebra A K G)
@@ -498,7 +498,7 @@ theorem owner_pregular_residue_eval_of_range_invariant
 
 /-- Helper for Exercise 12-12.7-8: once the missing arithmetic descent theorem supplies
 representative-level `A`-lifts of the owner values, vanishing of the residue evaluator is exactly
-Serre's congruence criterion modulo the fixed maximal ideal `M`. -/
+LinearRepresentations_Serre_1977's congruence criterion modulo the fixed maximal ideal `M`. -/
 @[simp] theorem owner_pregular_residue_eval_of_range_ofSubtype_zero_iff
     (M : NonzeroResidualCharacteristicMaximalIdeal A p)
     (f : characterRingOverFieldAlgebraScalarExtensionSubalgebra A K G)
@@ -590,7 +590,7 @@ section IntegralClosureResidueEvaluator
 
 variable [IsIntegralClosure A ℤ K]
 
-/-- Helper for Exercise 12-12.7-8: under the integral-closure hypothesis, Serre's source-level
+/-- Helper for Exercise 12-12.7-8: under the integral-closure hypothesis, LinearRepresentations_Serre_1977's source-level
 residue evaluator on `p`-regular conjugacy classes is obtained by reducing the already
 `A`-valued owner evaluation modulo the fixed maximal ideal `M`. This is the arithmetic core of
 the stalled ambient owner evaluator. -/
@@ -637,7 +637,7 @@ owner value modulo `M`. This is the representative formula the ambient `sorry` b
     residueFieldOfLiftedValue_congr (A := A) (K := K) (p := p) M hxClass hxRep hvalue
 
 /-- Helper for Exercise 12-12.7-8: under the integral-closure hypothesis, the source-level
-residue evaluator is constant on `Γ_K`-orbits of `PRegularConjClass G p`. This is Serre's
+residue evaluator is constant on `Γ_K`-orbits of `PRegularConjClass G p`. This is LinearRepresentations_Serre_1977's
 orbit-invariance step before passing to `PRegularGaloisPowerClass ΓK p`. -/
 theorem owner_pregular_residue_eval_of_isIntegralClosure_invariant
     (M : NonzeroResidualCharacteristicMaximalIdeal A p)

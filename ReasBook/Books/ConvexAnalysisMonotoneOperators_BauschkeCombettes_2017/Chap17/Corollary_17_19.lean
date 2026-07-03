@@ -1,11 +1,11 @@
 import Mathlib
 import Mathlib.Data.List.TFAE
-import BauschkeLean.Chap01.Text_1_0_10
-import BauschkeLean.Chap08.Corollary_8_39
-import BauschkeLean.Chap09.Proposition_9_30
-import BauschkeLean.Chap12.Corollary_12_18
-import BauschkeLean.Chap13.Corollary_13_38
-import BauschkeLean.Chap16.Definition_16_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap01.Text_1_0_10
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Corollary_8_39
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09.Proposition_9_30
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Corollary_12_18
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Corollary_13_38
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Definition_16_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

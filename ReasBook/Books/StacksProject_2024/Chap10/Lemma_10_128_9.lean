@@ -1,5 +1,5 @@
-import stacks_project.Chap10.Definition_10_54_1
-import stacks_project.Chap10.Lemma_10_128_8_Crit_re_de_platitude_par_fibres
+import StacksProject_2024.Chap10.Definition_10_54_1
+import StacksProject_2024.Chap10.Lemma_10_128_8_Crit_re_de_platitude_par_fibres
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

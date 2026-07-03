@@ -1,4 +1,4 @@
-import SmoothManifoldsLee.Chap02.Sec02_11.Definition_2_11_extra_2
+import SmoothManifolds_Lee_2012.Chap02.Sec02_11.Definition_2_11_extra_2
 import Mathlib.Geometry.Manifold.PartitionOfUnity
 
 -- Declarations for this item will be appended below by the statement pipeline.

@@ -1,5 +1,5 @@
 import Mathlib.CategoryTheory.Triangulated.Yoneda
-import stacks_project.Chap15.Lemma_15_87_5
+import StacksProject_2024.Chap15.Lemma_15_87_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

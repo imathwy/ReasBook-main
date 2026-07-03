@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap14.Exercise_14_14_4_6
-import Serre.Chap15.Exercise_15_15_5_3
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_4_6
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_5_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -18,7 +18,7 @@ variable {G : Type v} [Group G] [Finite G]
 local notation "k" => IsLocalRing.ResidueField A
 
 /-- Helper for Theorem 17-17.6-1: when the Hall kernel `I` has order prime to `p`, any free
-lift carrier of Serre's fixed constituent is already projective over the group algebra `A[I]`.
+lift carrier of LinearRepresentations_Serre_1977's fixed constituent is already projective over the group algebra `A[I]`.
 This isolates the projectivity input needed before invoking the Chapter `14` endomorphism
 transport API. -/
 theorem fixed_constituent_lift_projective_of_order_prime_to_p
@@ -30,7 +30,7 @@ theorem fixed_constituent_lift_projective_of_order_prime_to_p
     [IsScalarTower A (MonoidAlgebra A I) P_S]
     [Module.Free A P_S] :
     Module.Projective (MonoidAlgebra A I) P_S := by
-  -- Serre's Hall-kernel hypothesis makes `|I|` a unit in `A`, so the standard averaging
+  -- LinearRepresentations_Serre_1977's Hall-kernel hypothesis makes `|I|` a unit in `A`, so the standard averaging
   -- argument upgrades free `A`-modules to projective `A[I]`-modules.
   exact
     free_groupAlgebra_module_projective_of_order_prime_to_p

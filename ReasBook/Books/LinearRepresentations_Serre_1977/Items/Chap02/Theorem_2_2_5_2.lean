@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Items.Chap02.Proposition_2_2_1_1
-import Serre.Items.Chap02.Corollary_2_2_4_3
+import LinearRepresentations_Serre_1977.Items.Chap02.Proposition_2_2_1_1
+import LinearRepresentations_Serre_1977.Items.Chap02.Corollary_2_2_4_3
 
--- Route correction: keep this owner module on the canonical `Serre.Items` dependency graph so
+-- Route correction: keep this owner module on the canonical `LinearRepresentations_Serre_1977.Items` dependency graph so
 -- downstream item shims do not mix local and owner copies of the same Chapter 2 declarations.
 
 -- Declarations for this item will be appended below by the statement pipeline.

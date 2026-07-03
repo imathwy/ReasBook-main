@@ -1,11 +1,11 @@
 import Mathlib
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap12.Proposition_12_12_1_1
-import Serre.Chap12.Definition_12_12_6_1
-import Serre.Chap12.Exercise_12_12_2_3
-import Serre.Chap17.Theorem_17_17_3_1.CyclicNormalByPGroupBasics
-import Serre.Chap16.Theorem_16_16_2_1
-import Serre.Chap18.Remark_18_18_1_3
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap12.Definition_12_12_6_1
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_3
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.CyclicNormalByPGroupBasics
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_2_1
+import LinearRepresentations_Serre_1977.Chap18.Remark_18_18_1_3
 
 noncomputable section
 
@@ -37,7 +37,7 @@ variable {G : Type u} [Group G] [Finite G]
   `R₀[K](G)` back to `R[K](G)`.
 
 Layer triage:
-* source-facing: Serre's class function `x ↦ x'` on all of `G`.
+* source-facing: LinearRepresentations_Serre_1977's class function `x ↦ x'` on all of `G`.
 * core/canonical owner reused here: `virtualModularCharacter lift`.
 * bridge/view: `pRegularComponentVirtualModularCharacter p lift`, obtained by precomposition along
   `g ↦ ⟨pRegularComponent p g, isPRegular_pRegularComponent g⟩`.
@@ -53,7 +53,7 @@ Primitive data vs. derived API:
 variable (p)
 
 /-- The class function on `G` obtained by evaluating a virtual modular character on the chosen
-`p`-regular component of each group element. This is Serre's `f ↦ f'` construction. -/
+`p`-regular component of each group element. This is LinearRepresentations_Serre_1977's `f ↦ f'` construction. -/
 def pRegularComponentVirtualModularCharacter
     (lift : PrimeToPRoot p k → A) :
     R₀[k](G) →+ G → A where
@@ -67,7 +67,7 @@ def pRegularComponentVirtualModularCharacter
     ext g
     simp
 
-/- Do `open scoped Representation` to write Serre's `f'` operation as `x′[p, lift]` for
+/- Do `open scoped Representation` to write LinearRepresentations_Serre_1977's `f'` operation as `x′[p, lift]` for
 `pRegularComponentVirtualModularCharacter p lift x`. The prime notation is source-facing, while
 the explicit `[p, lift]` keeps the non-inferable prime and coefficient-field lift visible. -/
 set_option quotPrecheck false in
@@ -135,7 +135,7 @@ theorem exists_complete_pairwise_nonisomorphic_simple_family_over_field_local :
       exact ⟨e.symm⟩
   exact ⟨ι, π, hπ_pairwise, hπ_complete⟩
 
-/-- Helper for Theorem 18-18.4-1: Serre's `x ↦ x'` construction is constant on conjugacy
+/-- Helper for Theorem 18-18.4-1: LinearRepresentations_Serre_1977's `x ↦ x'` construction is constant on conjugacy
 classes, so it defines a bundled `K`-valued class function on `G`. -/
 theorem pRegularComponentVirtualModularCharacter_isClassFunction
     (lift : PrimeToPRoot p k →* Kˣ) (x : R₀[k](G)) :
@@ -154,7 +154,7 @@ theorem pRegularComponentVirtualModularCharacter_isClassFunction
       (s := pRegularComponent p s) (t := a)
       (isPRegular_pRegularComponent s) |>.symm
 
-/-- Helper for Theorem 18-18.4-1: on a `p`-regular element, Serre's `x ↦ x'` construction simply
+/-- Helper for Theorem 18-18.4-1: on a `p`-regular element, LinearRepresentations_Serre_1977's `x ↦ x'` construction simply
 recovers the original virtual modular character. -/
 @[simp] theorem pRegularComponentVirtualModularCharacter_apply_of_isPRegular
     (lift : PrimeToPRoot p k →* Kˣ) (x : R₀[k](G))
@@ -172,7 +172,7 @@ private theorem subgroup_coe_pRegularComponent_eq
   simp [pRegularComponent, orderOf_submonoid]
 
 /-- Helper for Theorem 18-18.4-1: pointwise, restricting the ambient transformed simple class to
-`H` agrees with forming Serre's transform from the restricted representation. -/
+`H` agrees with forming LinearRepresentations_Serre_1977's transform from the restricted representation. -/
 theorem pRegularComponentVirtualModularCharacter_restrict_simple_class_apply
     (lift : PrimeToPRoot p k →* Kˣ) (H : Subgroup G) (S : FDRep k G) (h : H) :
     (H.classFunctionRestriction
@@ -226,7 +226,7 @@ theorem pRegularComponentVirtualModularCharacter_restrict_simple_class_apply
                   modularCharacter (PrimeToPRoot.toFieldLift lift) S.ρ hGreg₁)
     _ = modularCharacter (PrimeToPRoot.toFieldLift lift) (S.ρ.comp H.subtype) hHreg := hsub.symm
 
-/-- Helper for Theorem 18-18.4-1: restricting Serre's simple-class transform to a subgroup agrees
+/-- Helper for Theorem 18-18.4-1: restricting LinearRepresentations_Serre_1977's simple-class transform to a subgroup agrees
 pointwise with the same construction formed from the restricted representation. -/
 theorem pRegularComponentVirtualModularCharacter_restrict_simple_class
     (lift : PrimeToPRoot p k →* Kˣ) (H : Subgroup G) (S : FDRep k G) :

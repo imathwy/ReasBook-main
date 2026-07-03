@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap18.Exercise_18_18_6_4.ExplicitGeneratorsAndRegularClasses
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_4.ExplicitGeneratorsAndRegularClasses
 
 noncomputable section
 
@@ -7,7 +7,7 @@ open scoped MatrixGroups
 
 local notation "A5" => alternatingGroup (Fin 5)
 
-/-- Helper for Exercise 18-18.6-4: evaluate a word in Serre's chosen `A₅` generators, with
+/-- Helper for Exercise 18-18.6-4: evaluate a word in LinearRepresentations_Serre_1977's chosen `A₅` generators, with
 `false` standing for the order-`5` generator and `true` for the order-`2` generator. -/
 def alternating_group_fin5_word_eval_a5 : List Bool → A5
   | [] => 1
@@ -15,7 +15,7 @@ def alternating_group_fin5_word_eval_a5 : List Bool → A5
   | true :: w => a5_generator_two * alternating_group_fin5_word_eval_a5 w
 
 /-- Helper for Exercise 18-18.6-4: the finite word list used to enumerate all `60` elements of
-`A₅` from Serre's two explicit generators. -/
+`A₅` from LinearRepresentations_Serre_1977's two explicit generators. -/
 def alternating_group_fin5_word_table : List (List Bool) :=
   [[],
     [false],

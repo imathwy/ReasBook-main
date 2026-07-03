@@ -3,7 +3,7 @@ Copyright (c) 2023 Chenyi Li, Ziyu Wang, Zaiwen Wen. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Chenyi Li, Ziyu Wang, Zaiwen Wen
 -/
-import Reaslib.Optlib.Function.Lsmooth
+import ReasLib.Optlib.Function.Lsmooth
 
 /-!
 # GradientDescent

@@ -1,21 +1,21 @@
 import Mathlib
-import Serre.Chap02.Proposition_2_2_2_1
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap06.Corollary_6_6_5_4
-import Serre.Chap06.Proposition_6_6_5_5
-import Serre.Chap12.Exercise_12_12_2_3.API
-import Serre.Chap12.Exercise_12_12_2_6.CharacterBasisCoefficients
-import Serre.Chap12.Exercise_12_12_2_6.ComplexMinimalRealization
-import Serre.Chap12.Exercise_12_12_2_6.ExternalTensorUniverseBridge
-import Serre.Chap12.Exercise_12_12_2_6.FieldDenominatorDescent
-import Serre.Chap12.Exercise_12_12_2_6.FieldDenominatorPrelude
-import Serre.Chap12.Exercise_12_12_2_6.FieldTensorCenterBridge
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionBlockProjectors
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionConstituents
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionPackets
-import Serre.Chap12.Exercise_12_12_2_6.ScalarExtensionPairing
-import Serre.Chap12.Proposition_12_12_2_1
-import Serre.Chap12.Theorem_12_12_3_1
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_2_1
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_5_4
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_5
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_3.API
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.CharacterBasisCoefficients
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ComplexMinimalRealization
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ExternalTensorUniverseBridge
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.FieldDenominatorDescent
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.FieldDenominatorPrelude
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.FieldTensorCenterBridge
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionBlockProjectors
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionConstituents
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionPackets
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.ScalarExtensionPairing
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_2_1
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_3_1
 
 noncomputable section
 
@@ -58,7 +58,7 @@ private theorem visible_packet_quotient_coeff_pos_local
     rw [he i, hei_zero, Nat.mul_zero]
   exact (Nat.lt_irrefl 0) (hdi_zero ▸ hd_pos i)
 
-/-- Helper for Exercise 12-12.2-6: once Serre's orbit-projector step shows the visible quotient
+/-- Helper for Exercise 12-12.2-6: once LinearRepresentations_Serre_1977's orbit-projector step shows the visible quotient
 coefficients are constant, the canonical denominator maximality argument forces that common value
 to be exactly `1`. -/
 private theorem visible_scaled_packet_coeff_one_of_common_coeff_local
@@ -112,7 +112,7 @@ private theorem visible_scaled_packet_coeff_one_of_common_coeff_local
       _ = (n : ℕ) * (e i * k) := by ac_rfl
   exact Nat.eq_one_of_dvd_one ⟨k, hone⟩
 
-/-- Helper for Exercise 12-12.2-6: this theorem-local seam isolates Serre's orbit-projector
+/-- Helper for Exercise 12-12.2-6: this theorem-local seam isolates LinearRepresentations_Serre_1977's orbit-projector
 descent step at exactly the visible packet frontier used by the target file. -/
 theorem visible_scaled_packet_coeff_one_seam_local
     {K1 : Type v} [Field K1] [CharZero K1]
@@ -151,7 +151,7 @@ theorem visible_scaled_packet_coeff_one_seam_local
       (ψ := ψ) (d := d) (e := e) hd_pos
       hψ_fd hψ_pairwise hψ_irr hpacket he hconst
 
-/-- Helper for Exercise 12-12.2-6: this theorem-local seam isolates Serre's stabilizer fixed-field
+/-- Helper for Exercise 12-12.2-6: this theorem-local seam isolates LinearRepresentations_Serre_1977's stabilizer fixed-field
 projector descent after the coefficient-collapse step `e_i = 1`. -/
 theorem stabilizer_fixedField_degree_divisibility_seam_local
     {K1 : Type v} [Field K1] [CharZero K1]

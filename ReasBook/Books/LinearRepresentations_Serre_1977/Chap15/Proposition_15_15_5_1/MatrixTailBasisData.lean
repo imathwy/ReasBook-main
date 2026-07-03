@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap15.Definition_15_15_1_1
-import Serre.Chap15.Definition_15_15_2_1
-import Serre.Chap15.Definition_15_15_3_1
-import Serre.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_2_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
 
 noncomputable section
 

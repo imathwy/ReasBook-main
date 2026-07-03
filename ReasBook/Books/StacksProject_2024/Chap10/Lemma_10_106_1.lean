@@ -1,7 +1,7 @@
-import stacks_project.Chap10.Definition_10_60_10
-import stacks_project.Chap10.Lemma_10_150_6.AssociatedGradedAPI
-import stacks_project.Chap10.Lemma_10_59_9
-import stacks_project.Chap10.Lemma_10_106_1.Index
+import StacksProject_2024.Chap10.Definition_10_60_10
+import StacksProject_2024.Chap10.Lemma_10_150_6.AssociatedGradedAPI
+import StacksProject_2024.Chap10.Lemma_10_59_9
+import StacksProject_2024.Chap10.Lemma_10_106_1.Index
 
 -- Semantic search tool unavailable in this session; statement surface verified locally against
 -- `IsRegularSystemOfParameters`, `idealAssociatedGradedRing`, and `idealAssociatedGradedDegreeOne`.

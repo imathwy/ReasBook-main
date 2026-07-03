@@ -1,7 +1,7 @@
 import Mathlib
-import MayConciseRevised.Chap01.Lemma_1_5_6
-import MayConciseRevised.Chap02.Proposition_2_8_6
-import MayConciseRevised.Chap03.Definition_3_1_5
+import AlgebraicTopology_May_1999.Chap01.Lemma_1_5_6
+import AlgebraicTopology_May_1999.Chap02.Proposition_2_8_6
+import AlgebraicTopology_May_1999.Chap03.Definition_3_1_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

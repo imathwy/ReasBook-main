@@ -1,5 +1,5 @@
-import stacks_project.Chap10.Definition_10_157_1
-import stacks_project.Chap15.Lemma_15_51_10
+import StacksProject_2024.Chap10.Definition_10_157_1
+import StacksProject_2024.Chap15.Lemma_15_51_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -11,7 +11,7 @@ universe u
 
 /- Domain sampling pass:
 - primary domain: Chapter 15 field-algebra properties satisfying the formal-fiber axioms,
-  specialized to Serre's condition `(R_n)` after finite extensions of the base field;
+  specialized to LinearRepresentations_Serre_1977's condition `(R_n)` after finite extensions of the base field;
 - sampled owner declarations:
   `SerreConditionR`,
   `serreConditionR_of_flat_of_fiber`,
@@ -35,7 +35,7 @@ keeping separate one-use closure wrappers.
 
 namespace Algebra
 
-/-- The finite-field-extension form of Serre's condition `(R_n)`, viewed as a Chapter 15
+/-- The finite-field-extension form of LinearRepresentations_Serre_1977's condition `(R_n)`, viewed as a Chapter 15
 `FieldAlgebraProperty`. -/
 abbrev FiniteFieldExtensionSerreConditionRProperty (n : ℕ) : FieldAlgebraProperty :=
   fun k A ↦ fun [Field k] [CommRing A] [Algebra k A] ↦
@@ -52,7 +52,7 @@ variable {n : ℕ}
 -- Re-express `L ⊗[K] (K ⊗[k] A)` as `L ⊗[k] A`, note that `L / k` is still finite after
 -- descending to a finite subextension of the chosen finitely generated extension, and then apply
 -- the defining finite-field-extension hypothesis over `k`.
-/-- Lemma 15.51.13 (1): the finite-field-extension form of Serre's condition `(R_n)` is preserved
+/-- Lemma 15.51.13 (1): the finite-field-extension form of LinearRepresentations_Serre_1977's condition `(R_n)` is preserved
 after base change along a finitely generated extension of the ground field. -/
 theorem finiteFieldExtensionSerreConditionR_baseChange_of_finitelyGeneratedFieldExtension
     {k : Type u} {K : Type u} {A : Type u}
@@ -67,7 +67,7 @@ variable {k : Type u} {A : Type u} [Field k] [CommRing A] [Algebra k A]
 -- Proof sketch: unfold the source-facing property and apply the prime-local criterion for
 -- `SerreConditionR` to each finite tensor-product base change `K ⊗[k] A`.
 /-- Lemma 15.51.13 (2): for a Noetherian `k`-algebra `A`, the finite-field-extension form of
-Serre's condition `(R_n)` can be checked on the localizations `A_𝔭`. -/
+LinearRepresentations_Serre_1977's condition `(R_n)` can be checked on the localizations `A_𝔭`. -/
 theorem finiteFieldExtensionSerreConditionR_iff_localizationAtPrime [IsNoetherianRing A] :
     FiniteFieldExtensionSerreConditionRProperty n k A ↔
       ∀ p : PrimeSpectrum A,
@@ -114,7 +114,7 @@ variable [IsLocalHom (algebraMap A B)] [IsLocalHom (algebraMap B C)]
 -- `(R_n)` from the extended closed fiber over `C` to the corresponding extended closed fiber over
 -- `B`.
 /-- Lemma 15.51.13 (4): under a faithfully flat local extension on closed fibers, the
-finite-field-extension form of Serre's condition `(R_n)` descends from the closed fiber over `C`
+finite-field-extension form of LinearRepresentations_Serre_1977's condition `(R_n)` descends from the closed fiber over `C`
 to the closed fiber over `B`. -/
 theorem closedFiber_finiteFieldExtensionSerreConditionR_of_faithfullyFlat
     (hBC : RingHom.FaithfullyFlat (algebraMap B C))
@@ -149,7 +149,7 @@ theorem finiteFieldExtensionSerreConditionR_hasPropertyE :
 -- Lemma `10.163.5` fiberwise after finite residue-field extension. Property `(D)` is the
 -- closed-fiber faithfully flat descent statement from Lemma `10.164.6`. Property `(E)` is the
 -- separable-base-field reduction recorded in `finiteFieldExtensionSerreConditionR_hasPropertyE`.
-/-- Lemma 15.51.13 packages the finite-field-extension form of Serre's condition `(R_n)` into the
+/-- Lemma 15.51.13 packages the finite-field-extension form of LinearRepresentations_Serre_1977's condition `(R_n)` into the
 canonical owner for field-algebra properties satisfying `(A)` through `(E)`. -/
 instance finiteFieldExtensionSerreConditionR_hasPropertiesABCDE :
     (FiniteFieldExtensionSerreConditionRProperty n).HasPropertiesABCDE where

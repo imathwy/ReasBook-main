@@ -1,4 +1,4 @@
-import Serre.Chap02.Theorem_2_2_3_2
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
-import stacks_project.Chap15.Lemma_15_23_4
-import stacks_project.Chap15.Lemma_15_23_11
+import StacksProject_2024.Chap15.Lemma_15_23_4
+import StacksProject_2024.Chap15.Lemma_15_23_11
 import Mathlib.Algebra.Module.FinitePresentation
 import Mathlib.Tactic.Recall
 
@@ -12,7 +12,7 @@ open LocalizedModule (AtPrime)
 
 /-
 Domain-style sampling:
-- primary domain: reflexive finite modules over commutative Noetherian rings and their Serre condition
+- primary domain: reflexive finite modules over commutative Noetherian rings and their LinearRepresentations_Serre_1977 condition
   `(S₂)`, with prime-local depth bounds and double-dual linear maps as the local bridge;
 - sampled owner declarations:
   `Module.IsReflexive`,
@@ -84,7 +84,7 @@ variable {R : Type u} [CommRing R]
 variable {M : Type v} [AddCommGroup M] [Module R M]
 
 /- Lemma 15.23.16 (2): if `R` satisfies `(S_2)`, then every finite reflexive `R`-module `M`
-also satisfies Serre's condition `(S_2)`. This is the canonical owner instance
+also satisfies LinearRepresentations_Serre_1977's condition `(S_2)`. This is the canonical owner instance
 `Module.IsReflexive.instSerreConditionSTwo`, obtained by applying
 `linearMap_serreConditionS_two_of_codomain` to the double dual and transporting along the reflexive
 evaluation equivalence. -/

@@ -1,5 +1,5 @@
 import Mathlib
-import Nesterov.Chap03.PointwiseSupremumOn
+import LecturesConvexOptimization_Nesterov_2018.Chap03.PointwiseSupremumOn
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

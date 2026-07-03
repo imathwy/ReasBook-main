@@ -3,7 +3,7 @@ Copyright (c) 2024 Yuxuan Wu, Chenyi Li. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Yuxuan Wu, Chenyi Li
 -/
-import Reaslib.Optlib.Function.Proximal
+import ReasLib.Optlib.Function.Proximal
 
 /-!
 # NesterovAccelerationFirst
@@ -11,7 +11,7 @@ import Reaslib.Optlib.Function.Proximal
 ## Main results
 
   This file mainly concentrates on the first version of
-  Nesterov algorithm for composite optimization problems.
+  LecturesConvexOptimization_Nesterov_2018 algorithm for composite optimization problems.
 
   We prove the O(1 / k ^ 2) rate for this algorithm.
 

@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Data.List.TFAE
-import stacks_project.Chap15.Definition_15_65_1
-import stacks_project.Chap15.Definition_15_67_1
-import stacks_project.Chap15.Lemma_15_76_7
+import StacksProject_2024.Chap15.Definition_15_65_1
+import StacksProject_2024.Chap15.Definition_15_67_1
+import StacksProject_2024.Chap15.Lemma_15_76_7
 
 noncomputable section
 

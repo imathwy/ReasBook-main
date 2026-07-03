@@ -1,9 +1,9 @@
-import Nesterov.Chap01.Theorem_1_6_8
-import Nesterov.Chap02.Algorithm_2_1
-import Nesterov.Chap02.Definition_2_23
-import Nesterov.Chap02.Lemma_2_16
-import Nesterov.Chap02.Theorem_2_15
-import Nesterov.Chap02.Theorem_2_5
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Theorem_1_6_8
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Algorithm_2_1
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_23
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Lemma_2_16
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_15
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

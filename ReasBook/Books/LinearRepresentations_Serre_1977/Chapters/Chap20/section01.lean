@@ -1,2 +1,2 @@
-import Serre.GroupTheory.ConjClassesPower
-import Serre.GroupTheory.PSolvable
+import LinearRepresentations_Serre_1977.GroupTheory.ConjClassesPower
+import LinearRepresentations_Serre_1977.GroupTheory.PSolvable

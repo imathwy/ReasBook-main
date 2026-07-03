@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Data.List.TFAE
-import stacks_project.Chap20.Situation_20_55_2
+import StacksProject_2024.Chap20.Situation_20_55_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

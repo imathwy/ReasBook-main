@@ -5,10 +5,10 @@ Authors: Shengyang Xu, Chenyi Li
 -/
 import Mathlib.Topology.Semicontinuous
 import Mathlib.Analysis.Convex.Basic
-import Reaslib.Optlib.Convex.Subgradient
-import Reaslib.Optlib.Function.Lsmooth
-import Reaslib.Optlib.Convex.StronglyConvex
-import Reaslib.Optlib.Function.MinimaClosedFunction
+import ReasLib.Optlib.Convex.Subgradient
+import ReasLib.Optlib.Function.Lsmooth
+import ReasLib.Optlib.Convex.StronglyConvex
+import ReasLib.Optlib.Function.MinimaClosedFunction
 
 set_option linter.unusedVariables false
 

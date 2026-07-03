@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap14.Proposition_14_14_1_1
-import Serre.Chap15.Definition_15_15_2_1
-import Serre.Chap15.Remark_15_15_5_2
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_1_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_2_1
+import LinearRepresentations_Serre_1977.Chap15.Remark_15_15_5_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -925,7 +925,7 @@ theorem reductionGeneratorMapA_smul_mk
   simp [reductionGeneratorMapA, mulGeneratorToNestedLattice]
 
 /-- Helper for Theorem 15-15.2-2: the nested reduction map is residue-field linear and
-`G`-equivariant, so it is the canonical morphism `\bar E₂ → \bar E₁` in Serre's exact sequence. -/
+`G`-equivariant, so it is the canonical morphism `\bar E₂ → \bar E₁` in LinearRepresentations_Serre_1977's exact sequence. -/
 noncomputable def reductionNestedMap
     (ρ : Representation K G E) {L₁ L₂ : StableLattice A ρ}
     (h21 : L₂.toSubmodule ≤ L₁.toSubmodule) :
@@ -1000,7 +1000,7 @@ theorem mulGeneratorToNestedLattice_comm
     map_smul]
 
 /-- Helper for Theorem 15-15.2-2: the generator-descended map is residue-field linear and
-`G`-equivariant, hence gives Serre's morphism `\bar E₁ → \bar E₂`. -/
+`G`-equivariant, hence gives LinearRepresentations_Serre_1977's morphism `\bar E₁ → \bar E₂`. -/
 noncomputable def reductionGeneratorMap
     (ρ : Representation K G E) {L₁ L₂ : StableLattice A ρ}
     (h𝔪 : (IsLocalRing.maximalIdeal A) • L₁.toSubmodule ≤ L₂.toSubmodule) :
@@ -1133,7 +1133,7 @@ theorem subrepresentation_equiv_of_toSubmodule_eq
   subst hEq
   exact ⟨Representation.Equiv.refl _⟩
 
-/-- Helper for Theorem 15-15.2-2: in Serre's nested exact sequence, the kernel of
+/-- Helper for Theorem 15-15.2-2: in LinearRepresentations_Serre_1977's nested exact sequence, the kernel of
 `\bar E₂ → \bar E₁` is exactly the image of the generator map `\bar E₁ → \bar E₂`. -/
 theorem reductionNestedMap_ker_eq_reductionGeneratorMap_range
     (ρ : Representation K G E) {L₁ L₂ : StableLattice A ρ}
@@ -1186,7 +1186,7 @@ theorem reductionNestedMap_ker_eq_reductionGeneratorMap_range
     ext
     simp [mulGeneratorToNestedLattice]
 
-/-- Helper for Theorem 15-15.2-2: in Serre's nested exact sequence, the kernel of the generator
+/-- Helper for Theorem 15-15.2-2: in LinearRepresentations_Serre_1977's nested exact sequence, the kernel of the generator
 map `\bar E₁ → \bar E₂` is exactly the image of `\bar E₂ → \bar E₁`. -/
 theorem reductionGeneratorMap_ker_eq_reductionNestedMap_range
     (ρ : Representation K G E) {L₁ L₂ : StableLattice A ρ}
@@ -1250,7 +1250,7 @@ theorem reductionGeneratorMap_ker_eq_reductionNestedMap_range
     ext
     simp [mulGeneratorToNestedLattice]
 
-/-- Helper for Theorem 15-15.2-2: in the special nested case `𝔪_A • L₁ ≤ L₂ ≤ L₁`, Serre's
+/-- Helper for Theorem 15-15.2-2: in the special nested case `𝔪_A • L₁ ≤ L₂ ≤ L₁`, LinearRepresentations_Serre_1977's
 five-term exact-sequence argument shows that the two reduction classes agree. -/
 theorem reduction_grothendieckClass_eq_of_maximalIdeal_le
     (ρ : Representation K G E) {L₁ L₂ : StableLattice A ρ}
@@ -1324,7 +1324,7 @@ theorem reduction_grothendieckClass_eq_of_maximalIdeal_le
         (A := A) (G := G) (U := gr.ker) (W := g.ker) hkerg).some⟩
   have hcross1 :
       Nonempty (FDRep.of g.ker.toRepresentation ≅ FDRep.of f.range.toRepresentation) := by
-    -- Serre's second exactness identity identifies `ker(g)` with `im(f)`.
+    -- LinearRepresentations_Serre_1977's second exactness identity identifies `ker(g)` with `im(f)`.
     exact ⟨Representation.Equiv.toFDRepIso
       (subrepresentation_equiv_of_toSubmodule_eq
         (A := A) (G := G) (U := g.ker) (W := f.range)
@@ -1332,7 +1332,7 @@ theorem reduction_grothendieckClass_eq_of_maximalIdeal_le
           (A := A) (K := K) (G := G) (ρ := ρ) h21 h𝔪)).some⟩
   have hcross2 :
       Nonempty (FDRep.of f.ker.toRepresentation ≅ FDRep.of g.range.toRepresentation) := by
-    -- Serre's first exactness identity identifies `ker(f)` with `im(g)`.
+    -- LinearRepresentations_Serre_1977's first exactness identity identifies `ker(f)` with `im(g)`.
     exact ⟨Representation.Equiv.toFDRepIso
       (subrepresentation_equiv_of_toSubmodule_eq
         (A := A) (G := G) (U := f.ker) (W := g.range)
@@ -1394,7 +1394,7 @@ theorem reduction_grothendieckClass_eq_of_pow_le
               -- First drop the exponent from `n + 1` to `n` by replacing `L₂` with `L₃`.
               exact ih h31 h13pow
         _ = [FDRep.of L₂.reductionRepresentation]₀ := by
-              -- Then apply Serre's special nested-lattice comparison to `L₃` and `L₂`.
+              -- Then apply LinearRepresentations_Serre_1977's special nested-lattice comparison to `L₃` and `L₂`.
               exact reduction_grothendieckClass_eq_of_maximalIdeal_le
                 (A := A) (K := K) (G := G) (ρ := ρ) (L₁ := L₃) (L₂ := L₂) h23 h𝔪3
 
@@ -1405,12 +1405,12 @@ theorem reduction_grothendieckClass_eq_of_pow_le
 -- scaling one lattice and inducting on the least `n` with `𝔪_A ^ n • L₁ ≤ L₂ ≤ L₁`.
 /-- Theorem 15-15.2-2: the class in `R_k(G)` of the reduction modulo the maximal ideal of a
 `G`-stable lattice is independent of the chosen stable lattice. Source-faithful constraint: this
-is stated in the discrete-valuation-ring setting used in Serre's proof, not for an arbitrary local
+is stated in the discrete-valuation-ring setting used in LinearRepresentations_Serre_1977's proof, not for an arbitrary local
 ring. -/
 theorem stableLatticeReduction_grothendieckClass_eq
     (ρ : Representation K G E) (L₁ L₂ : StableLattice A ρ) :
     [FDRep.of L₁.reductionRepresentation]₀ = [FDRep.of L₂.reductionRepresentation]₀ := by
-  -- Route correction: the previous attempt jumped directly to Serre's five-term exact sequence.
+  -- Route correction: the previous attempt jumped directly to LinearRepresentations_Serre_1977's five-term exact sequence.
   -- The stabilized prefix is now fully bundled: rescaling a lattice does not change the
   -- Grothendieck class of its reduction representation.
   have hhomothety :
@@ -1609,7 +1609,7 @@ private theorem source_iso_kernel_of_shortExact
   rcases hRangeKer with ⟨e₂⟩
   exact ⟨e₁.trans e₂⟩
 
-/-- Helper for Theorem 15-15.2-2: the canonical source-side lattice for Serre's exact-sequence
+/-- Helper for Theorem 15-15.2-2: the canonical source-side lattice for LinearRepresentations_Serre_1977's exact-sequence
 argument is the intersection of the chosen middle lattice with the kernel of the quotient map. -/
 private noncomputable def kernelIntersectionStableLattice
     {V W : Type u}
@@ -2601,7 +2601,7 @@ private theorem reductionClassLift_shortExact_generator_mem_ker
             exact reductionClassLift_eq_reductionClass
               (A := A) (K := K) (G := G) hstable S.X₁ L₁
   -- Once the kernel term is identified with the reduced source, the Grothendieck relation is
-  -- exactly Serre's short-exact-sequence relation after applying `reductionClassLift`.
+  -- exactly LinearRepresentations_Serre_1977's short-exact-sequence relation after applying `reductionClassLift`.
   rw [AddMonoidHom.map_sub, AddMonoidHom.map_sub, hmiddle, hsplit, hkernel, ← htarget]
   abel
 

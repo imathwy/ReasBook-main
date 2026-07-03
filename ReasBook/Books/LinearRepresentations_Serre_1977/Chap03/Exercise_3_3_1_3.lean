@@ -4,7 +4,7 @@ import Mathlib.Tactic.Recall
 -- Declarations for this item will be appended below by the statement pipeline.
 
 -- Source/core/bridge triage:
--- * source-facing: Serre's exercise says that an irreducible finite-dimensional complex
+-- * source-facing: LinearRepresentations_Serre_1977's exercise says that an irreducible finite-dimensional complex
 --   representation of an abelian group has degree `1`.
 -- * core/canonical: this is exactly the mathlib owner theorem
 --   `Representation.IsIrreducible.finrank_eq_one_of_isMulCommutative`.

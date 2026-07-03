@@ -1,4 +1,4 @@
-import SmoothManifoldsLee.Chap02.Sec02_10.Lemma_2_20
+import SmoothManifolds_Lee_2012.Chap02.Sec02_10.Lemma_2_20
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

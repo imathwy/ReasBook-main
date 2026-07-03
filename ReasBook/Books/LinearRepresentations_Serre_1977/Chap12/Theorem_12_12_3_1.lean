@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap10.Theorem_10_10_5_2
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap12.Proposition_12_12_1_2
-import Serre.Chap11.Theorem_11_11_2_1.TensorCharacterBridge
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_2
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_2
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1.TensorCharacterBridge
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -214,7 +214,7 @@ private theorem characterRing_le_characterRingOverFieldInExtension_of_hasEnoughR
   simpa [χR] using hsubmodule
 
 -- Source/core/bridge triage:
--- * source-facing: Serre's equality between the complex character ring and the complex realization
+-- * source-facing: LinearRepresentations_Serre_1977's equality between the complex character ring and the complex realization
 --   of `R[K](G)` under the enough-roots-of-unity hypothesis.
 -- * core/canonical owners: `R[K](G)` from Proposition `12-12.1-1` and `R(G)` from Theorem
 --   `11-11.2-1`.
@@ -231,7 +231,7 @@ private theorem characterRing_le_characterRingOverFieldInExtension_of_hasEnoughR
 -- summand lies in the image of `R_K(G)`, giving `R(G) ≤ R_K(G)`, while the reverse inclusion is
 -- tautological after applying the coefficient embedding `K → ℂ`.
 /-- Theorem 12-12.3-1: if `K` contains the `m`th roots of unity, with `m = Monoid.exponent G`,
-then the image of Serre's representation ring `R[K](G)` in complex-valued class functions equals
+then the image of LinearRepresentations_Serre_1977's representation ring `R[K](G)` in complex-valued class functions equals
 the ordinary representation ring `R(G)`. -/
 theorem characterRingOverFieldInExtension_eq_characterRing_of_hasEnoughRootsOfUnity :
     characterRingOverFieldInExtension K ℂ G = R(G) := by

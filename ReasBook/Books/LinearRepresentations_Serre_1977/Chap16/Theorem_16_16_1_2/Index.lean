@@ -1,3 +1,3 @@
 -- Proof rescue support index.
-import Serre.Chap16.Theorem_16_16_1_2.BrauerMultiplicity
-import Serre.Chap16.Theorem_16_16_1_2.CommonOwner
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_2.BrauerMultiplicity
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_2.CommonOwner

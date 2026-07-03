@@ -1,5 +1,5 @@
-import AchimKlenkeLean.Items.Chap21.Definition_21_22
-import AchimKlenkeLean.Items.Chap21.Exercise_21_4_5
+import ProbabilityTheory_Klenke_2020.Items.Chap21.Definition_21_22
+import ProbabilityTheory_Klenke_2020.Items.Chap21.Exercise_21_4_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

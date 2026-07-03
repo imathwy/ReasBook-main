@@ -1,4 +1,4 @@
-import Serre.Chap16.Proposition_16_16_4_1.FourierBridge
+import LinearRepresentations_Serre_1977.Chap16.Proposition_16_16_4_1.FourierBridge
 
 noncomputable section
 
@@ -129,7 +129,7 @@ lemma projective_restrictScalars_of_projective_hom
     exact LinearMap.congr_fun hs x
 
 /-- Helper for Proposition 16-16.4-1: once the action map `A[G] → End_A(P)` is surjective and its
-kernel is split as a two-sided ideal, Serre's part `(a)` follows formally by restricting scalars
+kernel is split as a two-sided ideal, LinearRepresentations_Serre_1977's part `(a)` follows formally by restricting scalars
 from `End_A(P)` back to `A[G]`. -/
 lemma projective_of_action_hom_surjective_and_ker_isCompl
     [Nontrivial L.toSubmodule]
@@ -207,7 +207,7 @@ lemma projective_of_action_hom_surjective_and_ker_isCompl
   have hprojEnd : Module.Projective A[G] S := by
     exact (Module.Projective.iff_split_of_projective (s := πlin) hsurj).2 ⟨σ, hsplit⟩
   have hprojSubmodule : Module.Projective S L.toSubmodule := by
-    -- Serre's elementary module-theoretic input is projectivity over the endomorphism ring.
+    -- LinearRepresentations_Serre_1977's elementary module-theoretic input is projectivity over the endomorphism ring.
     exact L.toSubmodule_projective_over_endomorphismRing
   letI : Module.Projective A[G] S := hprojEnd
   letI : Module.Projective S L.toSubmodule := hprojSubmodule
@@ -220,7 +220,7 @@ lemma projective_of_action_hom_surjective_and_ker_isCompl
 
 /-- Helper for Proposition 16-16.4-1: once a central idempotent `e` cuts out exactly the kernel
 of the lattice action map by left multiplication, the image ideal `e · A[G]` is a direct
-complement to that kernel. This packages the purely ring-theoretic half of Serre's `φ = id`
+complement to that kernel. This packages the purely ring-theoretic half of LinearRepresentations_Serre_1977's `φ = id`
 projector argument so the remaining blocker stays concentrated in the packet descent. -/
 lemma isCompl_ker_of_central_idempotent_annihilator
     {e : A[G]}
@@ -290,7 +290,7 @@ lemma isCompl_ker_of_central_idempotent_annihilator
       refine ⟨x - e * x, ?_, e * x, ⟨x, by simp⟩, by abel⟩
       exact (TwoSidedIdeal.mem_ker _).mpr ((hker (x - e * x)).mpr hker_zero)
 
-/-- Helper for Proposition 16-16.4-1: the class-function description of Serre's special Fourier
+/-- Helper for Proposition 16-16.4-1: the class-function description of LinearRepresentations_Serre_1977's special Fourier
 element after scalar extension already forces the integral element itself to lie in the center of
 `A[G]`. This is the portion of the source projector packet that descends in the current
 universe-generic setting without invoking the equal-universe `FDRep` bridge. -/
@@ -342,7 +342,7 @@ lemma serre_fourier_id_coeff_isClassFunction
     _ = L.serre_fourier_element hdefect LinearMap.id (g * a * g⁻¹) := by
       simp [StableLattice.serre_fourier_element_apply]
 
-/-- Helper for Proposition 16-16.4-1: Serre's special Fourier element for `LinearMap.id` already
+/-- Helper for Proposition 16-16.4-1: LinearRepresentations_Serre_1977's special Fourier element for `LinearMap.id` already
 has class-function coefficients over `A`, so it is central before any passage to the fraction
 field. -/
 lemma serre_fourier_id_mem_center
@@ -364,7 +364,7 @@ lemma serre_fourier_id_mem_center
   exact mem_center_of_classFunction A f
 
 
-/-- Helper for Proposition 16-16.4-1: Serre's integral Fourier section is additive in the lifted
+/-- Helper for Proposition 16-16.4-1: LinearRepresentations_Serre_1977's integral Fourier section is additive in the lifted
 endomorphism. This is the coefficientwise linearity of the trace formula. -/
 lemma serre_fourier_add_local
     (hdefect : ρ.HasDefectZero p)
@@ -390,7 +390,7 @@ lemma serre_fourier_add_local
     _ = (L.serre_fourier_element hdefect φ + L.serre_fourier_element hdefect ψ) s := by
           simp [StableLattice.serre_fourier_element_apply, mul_add]
 
-/-- Helper for Proposition 16-16.4-1: Serre's integral Fourier section is `A`-linear in the lifted
+/-- Helper for Proposition 16-16.4-1: LinearRepresentations_Serre_1977's integral Fourier section is `A`-linear in the lifted
 endomorphism. This keeps scalar coefficients outside the section while we compute basis monomials
 in the group algebra. -/
 lemma serre_fourier_smul_local
@@ -418,7 +418,7 @@ lemma serre_fourier_smul_local
           simp [StableLattice.serre_fourier_element_apply, smul_eq_mul, mul_assoc, mul_left_comm,
             mul_comm]
 
-/-- Helper for Proposition 16-16.4-1: Serre's integral Fourier section sends the zero endomorphism
+/-- Helper for Proposition 16-16.4-1: LinearRepresentations_Serre_1977's integral Fourier section sends the zero endomorphism
 to the zero group-algebra element. -/
 lemma serre_fourier_zero_local
     (hdefect : ρ.HasDefectZero p) :

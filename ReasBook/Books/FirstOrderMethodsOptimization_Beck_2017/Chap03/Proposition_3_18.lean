@@ -1,5 +1,5 @@
-import FirstOrderMethodsinOptimization.Chap01.Definition_1_27
-import FirstOrderMethodsinOptimization.Chap03.Proposition_3_17
+import FirstOrderMethodsOptimization_Beck_2017.Chap01.Definition_1_27
+import FirstOrderMethodsOptimization_Beck_2017.Chap03.Proposition_3_17
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

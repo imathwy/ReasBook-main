@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap03.Theorem_3_1_12
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_1_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -7,10 +7,10 @@ import Nesterov.Chap03.Theorem_3_1_12
 
 Sampled owner-style declarations:
 - `HasDirectionalDerivAt` in
-  `Nesterov.Chap03.Definition_3_1_3_1`, the source-facing owner for one-sided directional
+  `LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_1_3_1`, the source-facing owner for one-sided directional
   derivatives of extended-real-valued functions;
 - `exists_tendsto_right_directionalSlope_of_convexOn_of_mem_interior_effectiveDomain` in
-  `Nesterov.Chap03.Theorem_3_1_12`, the canonical secant-slope existence theorem for convex
+  `LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_1_12`, the canonical secant-slope existence theorem for convex
   `WithTop ℝ`-valued functions at interior points;
 - `ConvexOn.slope_mono` and `bddBelow_slope_lt_of_mem_interior` in mathlib
   `Mathlib/Analysis/Convex/Deriv.lean`, the one-variable slope monotonicity and interior-point

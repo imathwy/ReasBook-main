@@ -1,5 +1,5 @@
 import Mathlib
-import Nesterov.Chap02.Definition_2_31
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_31
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -14,13 +14,13 @@ selection.
 
 Owner declarations sampled before refining this file:
 * `PrimalEqualityConstrainedProblem.lagrangian`, `lagrangianMinimizers`, and
-  `constraintResidual` in `Nesterov/Chap02/Definition_2_30.lean`;
+  `constraintResidual` in `LecturesConvexOptimization_Nesterov_2018/Chap02/Definition_2_30.lean`;
 * `PrimalEqualityConstrainedProblem.LagrangianMinimizerSelection.isMinOn` in
-  `Nesterov/Chap02/Definition_2_31.lean`, the owner theorem expressing that a chosen section
+  `LecturesConvexOptimization_Nesterov_2018/Chap02/Definition_2_31.lean`, the owner theorem expressing that a chosen section
   minimizes each fixed-multiplier Lagrangian subproblem;
 * `PrimalEqualityConstrainedProblem.LagrangianMinimizerSelection.
   selectedDualProfile_eq_objective_add_inner_dualResidual` in
-  `Nesterov/Chap02/Definition_2_31.lean`, the canonical expansion of the selected profile.
+  `LecturesConvexOptimization_Nesterov_2018/Chap02/Definition_2_31.lean`, the canonical expansion of the selected profile.
 
 Best owner abstraction: the equality problem's own Lagrangian layer, with
 `selection : LagrangianMinimizerSelection problem` as the source-facing auxiliary choice data.

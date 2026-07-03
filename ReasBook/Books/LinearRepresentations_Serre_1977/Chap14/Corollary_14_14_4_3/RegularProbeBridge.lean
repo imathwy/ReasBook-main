@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.LinearAlgebra.TensorProduct.RightExactness
-import Serre.Chap14.Lemma_14_14_4_2
-import Serre.Chap14.Proposition_14_14_3_1
-import Serre.Chap14.Corollary_14_14_4_3.SplitExactBridge
+import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_2
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_3_1
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3.SplitExactBridge
 
 noncomputable section
 
@@ -602,7 +602,7 @@ theorem lift_regular_probe_to_regular_owner
   exact LinearMap.congr_fun hg x
 
 /-- Helper for Corollary 14-14.4-3: once an `A`-linear lift into the regular module has the
-correct reduction, averaging it with a Serre endomorphism preserves that reduction identity. -/
+correct reduction, averaging it with a LinearRepresentations_Serre_1977 endomorphism preserves that reduction identity. -/
 theorem averaged_regular_probe_preserves_reduction
     [Fintype G]
     {X : FiniteProjectiveGroupAlgebraModule A G}

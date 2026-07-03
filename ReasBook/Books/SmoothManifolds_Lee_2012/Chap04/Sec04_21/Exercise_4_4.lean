@@ -4,7 +4,7 @@ import Mathlib.Geometry.Manifold.Immersion
 import Mathlib.Geometry.Manifold.LocalDiffeomorph
 import Mathlib.Geometry.Manifold.MFDeriv.Basic
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
-import SmoothManifoldsLee.Chap04.Sec04_25.Proposition_4_28
+import SmoothManifolds_Lee_2012.Chap04.Sec04_25.Proposition_4_28
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

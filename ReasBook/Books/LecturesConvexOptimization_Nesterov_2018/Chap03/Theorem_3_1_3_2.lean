@@ -1,6 +1,6 @@
-import Nesterov.Chap03.Definition_3_3
-import Nesterov.Chap03.Definition_3_1_3_1
-import Nesterov.Chap03.Theorem_3_1_12
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_3
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_1_3_1
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_1_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -22,12 +22,12 @@ Primary domain:
 
 Relevant owner-style declarations sampled before refinement:
 - `DirectionallyDifferentiableAt` and `HasDirectionalDerivAt` in
-  `Nesterov.Chap03.Definition_3_1_3_1`, the source-facing directional-derivative owners;
+  `LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_1_3_1`, the source-facing directional-derivative owners;
 - `dom f`, `withTopRealPart f`, and `withTopToEReal ∘ f` in `Definition_3_3`, the chapter's
   canonical bridge from `WithTop ℝ`-valued convex functions to the `EReal` directional-derivative
   owner surface;
 - `exists_tendsto_right_directionalSlope_of_convexOn_of_mem_interior_effectiveDomain` in
-  `Nesterov.Chap03.Theorem_3_1_12`, the upstream finite-real secant-slope limit theorem that
+  `LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_1_12`, the upstream finite-real secant-slope limit theorem that
   supplies the bridge data.
 
 Best owner abstraction:

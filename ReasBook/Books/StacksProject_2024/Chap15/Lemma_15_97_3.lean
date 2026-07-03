@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Category.ModuleCat.ChangeOfRings
 import Mathlib.LinearAlgebra.TensorProduct.Basis
-import stacks_project.Chap15.Lemma_15_8_4
-import stacks_project.Chap15.Lemma_15_97_1
+import StacksProject_2024.Chap15.Lemma_15_8_4
+import StacksProject_2024.Chap15.Lemma_15_97_1
 
 noncomputable section
 

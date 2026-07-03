@@ -1,10 +1,10 @@
 import Mathlib
-import MayConciseRevised.Chap03.Definition_3_2_6
-import MayConciseRevised.Chap03.Definition_3_8_7
-import MayConciseRevised.Chap03.Proposition_3_3_6
-import MayConciseRevised.Chap03.Corollary_3_7_8
-import MayConciseRevised.Chap03.Example_3_3_9
-import MayConciseRevised.Chap03.Theorem_3_5_8
+import AlgebraicTopology_May_1999.Chap03.Definition_3_2_6
+import AlgebraicTopology_May_1999.Chap03.Definition_3_8_7
+import AlgebraicTopology_May_1999.Chap03.Proposition_3_3_6
+import AlgebraicTopology_May_1999.Chap03.Corollary_3_7_8
+import AlgebraicTopology_May_1999.Chap03.Example_3_3_9
+import AlgebraicTopology_May_1999.Chap03.Theorem_3_5_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

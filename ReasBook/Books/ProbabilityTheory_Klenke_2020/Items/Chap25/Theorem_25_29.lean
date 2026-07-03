@@ -1,6 +1,6 @@
 import Mathlib
-import AchimKlenkeLean.Items.Chap25.Theorem_25_17
-import AchimKlenkeLean.Items.Chap25.ContinuousLocalMartingaleIto
+import ProbabilityTheory_Klenke_2020.Items.Chap25.Theorem_25_17
+import ProbabilityTheory_Klenke_2020.Items.Chap25.ContinuousLocalMartingaleIto
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

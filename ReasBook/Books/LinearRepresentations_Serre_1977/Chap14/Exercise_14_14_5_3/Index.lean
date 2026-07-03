@@ -1,3 +1,3 @@
-import Serre.Chap14.Exercise_14_14_5_3.RepresentationBridge
-import Serre.Chap14.Exercise_14_14_5_3.FiniteFreeAverage
-import Serre.Chap14.Exercise_14_14_5_3.TraceDuality
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_3.RepresentationBridge
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_3.FiniteFreeAverage
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_3.TraceDuality

@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.RepresentationTheory.GroupFunctionPairing
-import Serre.Chap11.Theorem_11_11_2_1
-import Serre.Chap02.Proposition_2_2_1_3
-import Serre.Chap13.Proposition_13_13_2_3
+import LinearRepresentations_Serre_1977.RepresentationTheory.GroupFunctionPairing
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_1_3
+import LinearRepresentations_Serre_1977.Chap13.Proposition_13_13_2_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -622,7 +622,7 @@ private theorem pairing_trivial_character_sq_eq_zero_of_not_hasRealValuedCharact
 -- invariant symmetric and alternating bilinear forms, so both multiplicities vanish exactly in
 -- this case.
 /-- Proposition 13-13.2-4 (1): an irreducible finite-dimensional complex representation is of
-Serre type `1` if and only if its Frobenius-Schur indicator vanishes. Finite-dimensionality is
+LinearRepresentations_Serre_1977 type `1` if and only if its Frobenius-Schur indicator vanishes. Finite-dimensionality is
 automatic here. -/
 theorem isTypeOne_iff_frobeniusSchurIndicator_eq_zero
     (ρ : Representation ℂ G V) [ρ.IsIrreducible] :
@@ -727,7 +727,7 @@ theorem isTypeOne_iff_frobeniusSchurIndicator_eq_zero
 -- identifies type `2` with the case where the symmetric square contains the trivial
 -- representation once and the alternating square does not contain it.
 /-- Proposition 13-13.2-4 (2): an irreducible finite-dimensional complex representation is of
-Serre type `2` if and only if its Frobenius-Schur indicator is `1`. Finite-dimensionality is
+LinearRepresentations_Serre_1977 type `2` if and only if its Frobenius-Schur indicator is `1`. Finite-dimensionality is
 automatic here. -/
 theorem isTypeTwo_iff_frobeniusSchurIndicator_eq_one
     (ρ : Representation ℂ G V) [ρ.IsIrreducible] :
@@ -812,7 +812,7 @@ theorem isTypeTwo_iff_frobeniusSchurIndicator_eq_one
 -- Proposition `13-13.2-3` identifies type `3` with the case where the alternating square
 -- contains the trivial representation once and the symmetric square does not.
 /-- Proposition 13-13.2-4 (3): an irreducible finite-dimensional complex representation is of
-Serre type `3` if and only if its Frobenius-Schur indicator is `-1`. Finite-dimensionality is
+LinearRepresentations_Serre_1977 type `3` if and only if its Frobenius-Schur indicator is `-1`. Finite-dimensionality is
 automatic here. -/
 theorem isTypeThree_iff_frobeniusSchurIndicator_eq_neg_one
     (ρ : Representation ℂ G V) [ρ.IsIrreducible] :
@@ -882,7 +882,7 @@ theorem isTypeThree_iff_frobeniusSchurIndicator_eq_neg_one
         (pairing_trivial_alternatingSquare_ne_zero_iff_exists_nonzero_invariant_alternating_bilinForm
           ρ).1 halt_ne with
       ⟨B, hB, hBalt, hB0⟩
-    -- The surviving alternating summand is exactly Serre type `3`.
+    -- The surviving alternating summand is exactly LinearRepresentations_Serre_1977 type `3`.
     exact isTypeThree_of_nonzero_invariant_alternating_bilinForm ρ B hB hBalt hB0
 
 end

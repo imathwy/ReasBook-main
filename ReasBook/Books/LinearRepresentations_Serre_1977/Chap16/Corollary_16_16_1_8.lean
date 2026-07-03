@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.Analysis.Matrix.PosDef
-import Serre.Chap14.Corollary_14_14_3_3
-import Serre.Chap14.Proposition_14_14_1_1
-import Serre.Chap16.Corollary_16_16_1_8_CartanGramSupport
-import Serre.Chap15.Definition_15_15_1_1
-import Serre.Chap16.Corollary_16_16_1_6
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_3_3
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_1_1
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_8_CartanGramSupport
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -52,7 +52,7 @@ variable
 * best owner abstraction: the canonical owner matrix `cartanMatrix k G`, with the simple-class and
   projective-envelope bases treated as derived input data from the Chapter `14` owner theorems;
 * source/core/bridge triage:
-  source-facing: symmetry, positive definiteness, and determinant shape of Serre's distinguished
+  source-facing: symmetry, positive definiteness, and determinant shape of LinearRepresentations_Serre_1977's distinguished
     Cartan matrix under the large-field hypothesis;
   core/canonical: `cartanMatrix k G` as the matrix of `cartanHom k G`;
   bridge/view: the Chapter `14` basis constructions that realize the source's distinguished bases.
@@ -266,7 +266,7 @@ private theorem Matrix.int_det_nonneg_of_eq_transpose_mul_self_local
   -- Replace `C` by the Gram matrix exhibited by the source-faithful positive-definite route.
   simpa [hC] using Matrix.int_gram_det_nonneg_local E
 
-/-- Helper for Corollary 16-16.1-8: after Serre's quadratic-form route has produced positive
+/-- Helper for Corollary 16-16.1-8: after LinearRepresentations_Serre_1977's quadratic-form route has produced positive
 definiteness of the distinguished Cartan matrix, only the sign bridge from `PosDef` to
 `0 ≤ det C` remains before the `natAbs` formula can be turned into an equality in `ℤ`. -/
 private theorem cartanMatrix_det_nonneg_of_sufficiently_large_local

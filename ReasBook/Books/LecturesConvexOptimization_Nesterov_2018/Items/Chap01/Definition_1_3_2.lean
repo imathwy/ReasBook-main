@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Definition_1_3_2
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_3_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -8,9 +8,9 @@ import Nesterov.Chap01.Definition_1_3_2
 Relevant owner-style declarations sampled before refining:
 * `Pi.norm_def`, the canonical sup-norm formula on `Fin n → ℝ`;
 * `EuclideanSpace.equiv (Fin n) ℝ`, the canonical coordinate identification of `ℝⁿ`;
-* `EuclideanSpace.linftyNorm` in `Nesterov/Chap01/Definition_1_3_2.lean`, the chapter owner for
+* `EuclideanSpace.linftyNorm` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_3_2.lean`, the chapter owner for
   the textbook `ℓ∞` norm on `EuclideanSpace ℝ (Fin n)`;
-* `linftyNorm_eq_sup` in `Nesterov/Chap01/Definition_1_3_2.lean`, the source-facing coordinate
+* `linftyNorm_eq_sup` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_3_2.lean`, the source-facing coordinate
   supremum formula for that owner.
 
 Best owner abstraction:

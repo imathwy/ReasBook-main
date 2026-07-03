@@ -1,5 +1,5 @@
 import Mathlib
-import FirstOrderMethodsinOptimization.Chap13.Lemma_13_19.ClusterConvergence
+import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_19.ClusterConvergence
 
 -- Theorem-local curvature lower-bound helpers for Lemma 13.19.
 

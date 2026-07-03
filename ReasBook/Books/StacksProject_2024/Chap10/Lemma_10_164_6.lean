@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap10.Definition_10_157_1
-import stacks_project.Chap10.Lemma_10_164_1
+import StacksProject_2024.Chap10.Definition_10_157_1
+import StacksProject_2024.Chap10.Lemma_10_164_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -12,7 +12,7 @@ variable {R : Type u} {S : Type v} [CommRing R] [CommRing S]
 variable {k : ℕ}
 
 /- Domain-style sampling:
-* primary domain: descent of Serre's condition `(R_k)` along faithfully flat maps in commutative
+* primary domain: descent of LinearRepresentations_Serre_1977's condition `(R_k)` along faithfully flat maps in commutative
   algebra;
 * sampled owner declarations:
   `SerreConditionR`,
@@ -42,8 +42,8 @@ instead of treating the whole class-valued conclusion as opaque proof data.
 -- local map `R_p → S_q` with closed fiber of dimension `0`, so Lemma `10.112.7` gives
 -- `dim R_p = dim S_q`. Since `S` satisfies `(R_k)`, the local ring `S_q` is regular; then Lemma
 -- `10.110.9` descends regularity along the flat local map, proving that `R_p` is regular.
-/-- Lemma 10.164.6: if `f : R →+* S` is faithfully flat and `S` satisfies Serre's condition
-`(R_k)`, then `R` satisfies Serre's condition `(R_k)`. Since `SerreConditionR` already includes
+/-- Lemma 10.164.6: if `f : R →+* S` is faithfully flat and `S` satisfies LinearRepresentations_Serre_1977's condition
+`(R_k)`, then `R` satisfies LinearRepresentations_Serre_1977's condition `(R_k)`. Since `SerreConditionR` already includes
 Noetherianity, this is exactly the textbook conclusion that `R` is Noetherian and has property
 `(R_k)`. -/
 theorem serreConditionR_of_faithfullyFlat (f : R →+* S) (hf : f.FaithfullyFlat)

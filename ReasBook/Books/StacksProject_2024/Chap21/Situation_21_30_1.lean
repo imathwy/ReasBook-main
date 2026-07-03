@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
 import Mathlib.CategoryTheory.Abelian.Subcategory
-import stacks_project.Chap12.Definition_12_10_1
+import StacksProject_2024.Chap12.Definition_12_10_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -22,14 +22,14 @@ variable [∀ {X Y : C} (f : X ⟶ Y),
 
 /-- Situation 21.30.1: a comparison setup for cohomology on a category `C` with two
 Grothendieck topologies `τ` and `τ'`, consisting of a morphism property `P` and for each object
-`X` a weak Serre subcategory `A'_X ⊂ Ab(C_{τ'}/X)`, such that `P` is stable under base change,
+`X` a weak LinearRepresentations_Serre_1977 subcategory `A'_X ⊂ Ab(C_{τ'}/X)`, such that `P` is stable under base change,
 inverse image preserves the chosen subcategories, objects of `A'_X` are already `τ`-sheaves,
 higher direct images along arrows in `P` stay in the chosen subcategories, and every `τ`-covering
 admits the refinement pattern described in the text by `τ'`-coverings and singleton `P`-covers. -/
 structure cohomology_comparison_situation
     (P : MorphismProperty C)
     (A' : ∀ X : C, ObjectProperty (Sheaf (τ'.over X) AddCommGrpCat.{max u v})) : Prop where
-  /-- Each `A'_X` is a weak Serre subcategory of `Ab(C_{τ'}/X)`. -/
+  /-- Each `A'_X` is a weak LinearRepresentations_Serre_1977 subcategory of `Ab(C_{τ'}/X)`. -/
   isWeakSerre : ∀ X : C, IsWeakSerreClass (A' X)
   /-- Base change of an arrow in `P` exists and again belongs to `P`. -/
   pullback_of_mem :
@@ -44,7 +44,7 @@ structure cohomology_comparison_situation
   isSheaf_for_coarser_topology :
     ∀ ⦃X : C⦄ ⦃ℱ : Sheaf (τ'.over X) AddCommGrpCat.{max u v}⦄,
       A' X ℱ → CategoryTheory.Presheaf.IsSheaf (τ.over X) ℱ.1
-  /-- Higher direct images along arrows in `P` remain inside the chosen weak Serre
+  /-- Higher direct images along arrows in `P` remain inside the chosen weak LinearRepresentations_Serre_1977
   subcategories. -/
   higherDirectImage_mem :
     ∀ ⦃X Y : C⦄ (f : X ⟶ Y), P f → ∀ (i : ℕ) ⦃ℱ : Sheaf (τ'.over X) AddCommGrpCat.{max u v}⦄,

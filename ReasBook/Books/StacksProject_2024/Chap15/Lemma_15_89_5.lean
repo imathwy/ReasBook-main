@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Category.ModuleCat.Abelian
 import Mathlib.CategoryTheory.Abelian.SerreClass.Basic
-import stacks_project.Chap15.Lemma_15_89_4
+import StacksProject_2024.Chap15.Lemma_15_89_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -17,7 +17,7 @@ variable {R : Type u} [CommRing R]
 
 /- 
 Domain-style sampling for Lemma 15.89.5:
-- primary domain: object properties on the abelian category `ModuleCat R`, with Serre-class
+- primary domain: object properties on the abelian category `ModuleCat R`, with LinearRepresentations_Serre_1977-class
   structure expressed by the owner interface `ObjectProperty.IsSerreClass`;
 - inspected same-domain declarations:
   `Module.IsIdealPowerTorsion`,
@@ -28,7 +28,7 @@ Domain-style sampling for Lemma 15.89.5:
   source-facing predicate `Module.IsIdealPowerTorsion`;
 - primitive data: only the module-level torsion predicate `Module.IsIdealPowerTorsion I M`;
 - derived API: the direct `ObjectProperty` view of that predicate on `ModuleCat R` and its
-  Serre-class instance.
+  LinearRepresentations_Serre_1977-class instance.
 
 Source/core/bridge triage:
 - `source-facing`: the textbook class of `I`-power torsion modules;
@@ -41,8 +41,8 @@ The owner-level object property should therefore be only a thin bridge over
 -- Proof sketch: submodules and quotients of an `I`-power torsion module are again `I`-power
 -- torsion by checking the annihilation condition elementwise, and extensions are handled by the
 -- corresponding module-theoretic lemma. These are exactly the data
--- needed for the Serre-class constructor on `ModuleCat R`.
-/-- Lemma 15.89.5: the `I`-power torsion modules form a Serre subcategory of the abelian
+-- needed for the LinearRepresentations_Serre_1977-class constructor on `ModuleCat R`.
+/-- Lemma 15.89.5: the `I`-power torsion modules form a LinearRepresentations_Serre_1977 subcategory of the abelian
 category `Mod_R`. -/
 instance
     (I : Ideal R) :

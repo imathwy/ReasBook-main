@@ -1,5 +1,5 @@
-import Reaslib.Optlib.Algorithm
-import Reaslib.Optlib.Convex
-import Reaslib.Optlib.Differential
-import Reaslib.Optlib.Function
-import Reaslib.Optlib.Optimality
+import ReasLib.Optlib.Algorithm
+import ReasLib.Optlib.Convex
+import ReasLib.Optlib.Differential
+import ReasLib.Optlib.Function
+import ReasLib.Optlib.Optimality

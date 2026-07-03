@@ -1,5 +1,5 @@
 import Mathlib
-import AchimKlenkeLean.Items.Chap17.Theorem_17_17
+import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_17
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.Chap06.Proposition_6_6_5_1
-import Serre.Chap09.Theorem_9_9_2_1
-import Serre.Chap10.Definition_10_10_1_3
-import Serre.Chap10.Definition_10_10_1_4
-import Serre.Chap11.Lemma_11_11_3_1
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_1
+import LinearRepresentations_Serre_1977.Chap09.Theorem_9_9_2_1
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_4
+import LinearRepresentations_Serre_1977.Chap11.Lemma_11_11_3_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -20,7 +20,7 @@ variable {G : Type} [Group G] [Finite G]
 variable {I : Type v}
 
 /- Source/core/bridge triage:
-* `source-facing`: Serre's detection theorem for an arbitrary family of subgroups `(H i)`.
+* `source-facing`: LinearRepresentations_Serre_1977's detection theorem for an arbitrary family of subgroups `(H i)`.
 * `core/canonical`: `Subgroup.characterRingInduction`, and for finite families the owner
   `Representation.artinInducedCharacterSubmodule`.
 * `bridge/view`: none new here; the theorem is already most natural as a statement about the

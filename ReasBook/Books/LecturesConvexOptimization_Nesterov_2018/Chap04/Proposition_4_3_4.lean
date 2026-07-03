@@ -1,4 +1,4 @@
-import Nesterov.Chap04.Theorem_4_3_2
+import LecturesConvexOptimization_Nesterov_2018.Chap04.Theorem_4_3_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

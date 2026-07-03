@@ -1,4 +1,4 @@
-import stacks_project.Chap04.CanonicalFiberPseudofunctor.ComparisonIso
+import StacksProject_2024.Chap04.CanonicalFiberPseudofunctor.ComparisonIso
 
 /-!
 # Canonical fiber pseudofunctor coherence package

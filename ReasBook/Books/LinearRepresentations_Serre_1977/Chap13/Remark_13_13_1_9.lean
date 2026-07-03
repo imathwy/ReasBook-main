@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap07.Proposition_7_7_2_1
-import Serre.Chap12.Proposition_12_12_1_1
-import Serre.Chap12.Theorem_12_12_6_2
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_6_2
 
 noncomputable section
 
@@ -365,7 +365,7 @@ private theorem trivial_subgroup_test_eq_half_of_central_values
   rw [trivial_subgroup_test, hone, hz, hc, hzc]
   norm_num
 
-/-- Helper for Remark 13-13.1-9: any rational character on `Q8 × C3` taking Serre's four central
+/-- Helper for Remark 13-13.1-9: any rational character on `Q8 × C3` taking LinearRepresentations_Serre_1977's four central
 values already lies outside the subgroup-permutation lattice. -/
 theorem quaternion_cyclic_obstruction_of_central_values
     {χ : R[ℚ](G0)}
@@ -789,7 +789,7 @@ private theorem trace_mulLeft_quaternion_cube_root_of_unity_eq_neg_two :
   exact h
 
 /-- Helper for Remark 13-13.1-9: the quaternionic witness produces the four central character
-values `4, -4, -2, 2` required by Serre's obstruction test. -/
+values `4, -4, -2, 2` required by LinearRepresentations_Serre_1977's obstruction test. -/
 private theorem quaternion_cyclic_witness_character_central_values :
     ∃ χ : R[ℚ](G0),
       ((χ : G0 → ℚ) 1) = 4 ∧

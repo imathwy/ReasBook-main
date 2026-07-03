@@ -1,7 +1,7 @@
 import Mathlib
-import MayConciseRevised.Chap03.Assumption_3_1_4
-import MayConciseRevised.Chap03.Definition_3_1_5
-import MayConciseRevised.Chap03.Example_3_1_7
+import AlgebraicTopology_May_1999.Chap03.Assumption_3_1_4
+import AlgebraicTopology_May_1999.Chap03.Definition_3_1_5
+import AlgebraicTopology_May_1999.Chap03.Example_3_1_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

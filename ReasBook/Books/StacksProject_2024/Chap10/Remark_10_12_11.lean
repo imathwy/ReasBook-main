@@ -1,4 +1,4 @@
-import stacks_project.Chap10.Example_10_12_12
+import StacksProject_2024.Chap10.Example_10_12_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

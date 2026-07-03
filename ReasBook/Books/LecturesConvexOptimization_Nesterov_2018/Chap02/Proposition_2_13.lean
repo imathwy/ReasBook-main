@@ -1,5 +1,5 @@
-import Nesterov.Chap01.FirstOrderTaylorModel
-import Nesterov.Chap01.Theorem_1_4_13
+import LecturesConvexOptimization_Nesterov_2018.Chap01.FirstOrderTaylorModel
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Theorem_1_4_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

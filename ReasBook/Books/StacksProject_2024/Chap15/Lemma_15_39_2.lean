@@ -2,9 +2,9 @@ import Mathlib.RingTheory.MvPowerSeries.LinearTopology
 import Mathlib.RingTheory.MvPowerSeries.Inverse
 import Mathlib.RingTheory.MvPowerSeries.Substitution
 import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
-import stacks_project.Chap10.Definition_10_60_10
-import stacks_project.Chap10.Definition_10_160_5
-import stacks_project.Chap15.Definition_15_36_1_Topological_rings
+import StacksProject_2024.Chap10.Definition_10_60_10
+import StacksProject_2024.Chap10.Definition_10_160_5
+import StacksProject_2024.Chap15.Definition_15_36_1_Topological_rings
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

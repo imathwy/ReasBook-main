@@ -12,7 +12,7 @@ import Mathlib.Analysis.Convex.Caratheodory
 import Mathlib.Analysis.Normed.Lp.PiLp
 import Mathlib.Topology.Algebra.Module.FiniteDimension
 import Mathlib.Analysis.InnerProductSpace.PiL2
-import Reaslib.Optlib.Function.L1Space
+import ReasLib.Optlib.Function.L1Space
 
 /-!
 # Finite-Dimensional Convex Functions and Their Lipschitz Properties

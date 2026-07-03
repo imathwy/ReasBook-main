@@ -1,4 +1,4 @@
-import Serre.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
 import Mathlib.RepresentationTheory.FDRep
 
 -- Declarations for this item will be appended below by the statement pipeline.
@@ -20,7 +20,7 @@ This file is a bridge/view layer. The owner declarations
 `CategoryTheory.PairwiseNonisomorphic`,
 `Representation.IsCompleteIrreducibleFamily`, and
 `Representation.IsCompleteIrreducibleFamily.exists_iso_of_representation`
-already live canonically in `Serre.Chap03.Theorem_3_3_2_1`.
+already live canonically in `LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1`.
 Only the representation-level companion theorem below is local here.
 -/
 

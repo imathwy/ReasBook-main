@@ -1,7 +1,7 @@
-import stacks_project.Chap10.Lemma_10_20_1_Nakayama_s_lemma
-import stacks_project.Chap10.Lemma_10_39_10
-import stacks_project.Chap10.Lemma_10_39_15
-import stacks_project.Chap10.Lemma_10_99_10_Variant_of_the_local_criterion
+import StacksProject_2024.Chap10.Lemma_10_20_1_Nakayama_s_lemma
+import StacksProject_2024.Chap10.Lemma_10_39_10
+import StacksProject_2024.Chap10.Lemma_10_39_15
+import StacksProject_2024.Chap10.Lemma_10_99_10_Variant_of_the_local_criterion
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

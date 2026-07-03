@@ -1,4 +1,4 @@
-import Serre.Chap07.Proposition_7_7_4_1.IdentityProjectionRepresentativeSeeds
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_4_1.IdentityProjectionRepresentativeSeeds
 
 noncomputable section
 

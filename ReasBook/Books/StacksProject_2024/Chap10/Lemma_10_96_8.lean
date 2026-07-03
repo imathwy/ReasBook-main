@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Algebra.Algebra.Operations
-import stacks_project.Chap10.Lemma_10_96_7
+import StacksProject_2024.Chap10.Lemma_10_96_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

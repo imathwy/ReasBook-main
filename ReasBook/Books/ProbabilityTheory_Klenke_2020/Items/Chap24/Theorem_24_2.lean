@@ -1,4 +1,4 @@
-import AchimKlenkeLean.Items.Chap24.Definition_24_1
+import ProbabilityTheory_Klenke_2020.Items.Chap24.Definition_24_1
 
 universe u
 

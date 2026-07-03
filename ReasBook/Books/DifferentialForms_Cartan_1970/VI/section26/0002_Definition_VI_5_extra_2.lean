@@ -1,5 +1,5 @@
 import Mathlib
-import cartan.VI.section26.«0001_Definition_VI_5_extra_1»
+import DifferentialForms_Cartan_1970.VI.section26.«0001_Definition_VI_5_extra_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
-import stacks_project.Chap14.Lemma_14_18_4
-import stacks_project.Chap14.Lemma_14_21_5
+import StacksProject_2024.Chap14.Lemma_14_18_4
+import StacksProject_2024.Chap14.Lemma_14_21_5
 
 open CategoryTheory
 open scoped Simplicial

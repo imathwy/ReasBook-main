@@ -1,9 +1,9 @@
 import Mathlib
-import Nesterov.Chap05.Definition_5_1_1
-import Nesterov.Chap05.Definition_5_4_6_2
-import Nesterov.Chap05.Definition_5_4_6_5
-import Nesterov.Chap05.Theorem_5_4_6_10
-import Nesterov.Chap05.Theorem_5_4_6_11
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_1_1
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_4_6_2
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_4_6_5
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Theorem_5_4_6_10
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Theorem_5_4_6_11
 
 noncomputable section
 

@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.CategoryTheory.Functor.Derived.LeftDerived
-import stacks_project.Chap13.Remark_13_10_9
-import stacks_project.Chap20.Definition_20_26_14
+import StacksProject_2024.Chap13.Remark_13_10_9
+import StacksProject_2024.Chap20.Definition_20_26_14
 
 noncomputable section
 

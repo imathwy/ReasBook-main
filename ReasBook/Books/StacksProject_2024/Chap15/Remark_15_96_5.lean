@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Category.ModuleCat.ChangeOfRings
 import Mathlib.RingTheory.AdicCompletion.Functoriality
-import stacks_project.Chap15.Lemma_15_96_2
-import stacks_project.Chap15.PrincipalIdeal
+import StacksProject_2024.Chap15.Lemma_15_96_2
+import StacksProject_2024.Chap15.PrincipalIdeal
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

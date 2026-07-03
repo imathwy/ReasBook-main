@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap02.Definition_2_14
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_14
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -25,10 +25,10 @@ Primary domain:
 
 Sampled owner-style declarations:
 * `StrongConvexOnWith` and `strongConvexOnWith_normSeminorm_iff` in
-  `Nesterov.Chap02.Definition_2_14`
+  `LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_14`
 * mathlib `StrongConvexOn`
 * `exists_pos_strongConvexOn_iff_forall_segment_upper_bound` in
-  `Nesterov.Chap03.Definition_3_2_2`
+  `LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_2_2`
 
 Best owner abstraction:
 * source-facing: the fixed-parameter class `𝒮^0_μ(Q)` as `f ∈ 𝒮^0_μ(Q)`

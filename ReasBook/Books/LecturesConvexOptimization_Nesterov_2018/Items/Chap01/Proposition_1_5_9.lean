@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Proposition_1_5_9
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Proposition_1_5_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -19,7 +19,7 @@ Primary mathematical domain:
 Sampled owner-style declarations:
 * `HasGradientAt`
 * `mem_contDiffOne_withLipschitzGradient_of_sub_affineApproximation_norm_sq_bound` in
-  `Nesterov.Chap01.Proposition_1_5_9`
+  `LecturesConvexOptimization_Nesterov_2018.Chap01.Proposition_1_5_9`
 * `LipschitzWith L g`
 * `LipschitzWith.norm_sub_le`
 

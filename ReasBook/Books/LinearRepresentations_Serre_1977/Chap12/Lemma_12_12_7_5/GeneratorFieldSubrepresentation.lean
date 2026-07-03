@@ -1,4 +1,4 @@
-import Serre.Chap12.Lemma_12_12_7_5.GeneratorFieldModel
+import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_5.GeneratorFieldModel
 
 open Representation
 open scoped Pointwise Representation
@@ -70,7 +70,7 @@ theorem generatorField_subrepresentation_mul_generator_pow_mem_local
       apply Subtype.ext
       simp [pow_succ', mul_assoc]
 
-/-- Helper for Lemma 12-12.7-5: any subrepresentation of Serre's generator-field model is stable
+/-- Helper for Lemma 12-12.7-5: any subrepresentation of LinearRepresentations_Serre_1977's generator-field model is stable
 under multiplication by an arbitrary element of `K(β(x))`, not just by powers of the distinguished
 generator. -/
 theorem generatorField_subrepresentation_mul_mem_local
@@ -153,7 +153,7 @@ theorem generatorField_subrepresentation_eq_top_of_nonzero_local
     (generatorField_subrepresentation_mul_mem_local
       (K := K) (x := x) β σ (z := z) (y := 1) h1)
 
-/-- Helper for Lemma 12-12.7-5: a nonzero intertwiner out of Serre's generator-field model is
+/-- Helper for Lemma 12-12.7-5: a nonzero intertwiner out of LinearRepresentations_Serre_1977's generator-field model is
 already an equivariant isomorphism once the target is irreducible. -/
 theorem generatorField_model_equiv_of_nonzero_intertwiner
     {V : Type*} [AddCommGroup V] [Module K V] [FiniteDimensional K V]

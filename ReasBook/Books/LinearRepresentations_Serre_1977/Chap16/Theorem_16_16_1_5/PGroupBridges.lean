@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.Chap08.Proposition_8_8_3_7
-import Serre.Chap14.Corollary_14_14_4_3
-import Serre.Chap14.Proposition_14_14_3_1
-import Serre.Chap15.Definition_15_15_1_1
-import Serre.Chap15.Exercise_15_15_1_2.FiniteRepTensorRing
+import LinearRepresentations_Serre_1977.Chap08.Proposition_8_8_3_7
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_3_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_1_2.FiniteRepTensorRing
 
 noncomputable section
 
@@ -452,7 +452,7 @@ private theorem finiteRepGrothendieckRelations_le_dimensionLift_ker_local
   rw [hdim, Int.natCast_add]
   abel
 
-/-- Helper for Theorem 16-16.1-5: the dimension homomorphism on Serre's Grothendieck group. -/
+/-- Helper for Theorem 16-16.1-5: the dimension homomorphism on LinearRepresentations_Serre_1977's Grothendieck group. -/
 private def finiteRepGrothendieckDimension_local
     {H : Type u} [Group H] :
     R₀[k](H) →+ ℤ :=

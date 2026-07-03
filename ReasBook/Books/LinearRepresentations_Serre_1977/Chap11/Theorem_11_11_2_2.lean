@@ -1,4 +1,4 @@
-import Serre.Chap11.Theorem_11_11_2_1
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -23,10 +23,10 @@ variable {G : Type u} [Group G] [Finite G]
 -- Proof sketch: apply Theorem `11-11.2-1` to the class function `f_c = c.indicator`;
 -- the previous lemma provides the needed conjugacy-invariance hypothesis.
 /-- Theorem 11-11.2-2: for each conjugacy class `c` of `G`, if `A` contains the
-`Nat.card G`-th roots of unity as in Serre's source convention, the globally weighted Adams
-transform of `f_c` belongs to Serre's `A ⊗ R(G)`.
+`Nat.card G`-th roots of unity as in LinearRepresentations_Serre_1977's source convention, the globally weighted Adams
+transform of `f_c` belongs to LinearRepresentations_Serre_1977's `A ⊗ R(G)`.
 
-This is Serre's Theorem 23' with the global multiplier `|G| / (|G|, n)`, not the stronger
+This is LinearRepresentations_Serre_1977's Theorem 23' with the global multiplier `|G| / (|G|, n)`, not the stronger
 pointwise multiplier `orderOf g / (orderOf g, n)`. -/
 theorem weighted_adamsOperator_conjClassIndicator_lifts_to_tensorCharacterRing
     (A : Type v) [CommRing A] [Algebra A ℂ] (n : ℕ+) (c : ConjClasses G)

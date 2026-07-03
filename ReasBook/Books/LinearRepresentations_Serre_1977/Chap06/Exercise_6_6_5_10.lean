@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Serre.Chap08.Exercise_8_8_3_10
+import LinearRepresentations_Serre_1977.Chap08.Exercise_8_8_3_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -13,7 +13,7 @@ Domain-style sampling:
   `exists_smul_id_of_prime_pow_conjClass_card_of_character_ne_zero`,
   `quotient_mk_mem_center_of_exists_smul_id`.
 * best owner abstraction: the existing Chapter `6` owner theorems already formalized in
-  `Serre.Chap06.Exercise_6_6_5_10`.
+  `LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_5_10`.
 
 Primitive data versus derived API:
 * primitive source-facing data: the prime-power conjugacy-class hypothesis and the resulting
@@ -28,7 +28,7 @@ Source/core/bridge triage:
 -/
 
 /- Exercise 6-6.5-10: the source-facing existence statement already has the correct public owner in
-`Serre.Chap06.Exercise_6_6_5_10`, so this file reuses it directly. -/
+`LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_5_10`, so this file reuses it directly. -/
 recall exists_irreducible_rep_with_character_ne_zero_of_conjClass_card_eq_prime_pow
 
 end Representation

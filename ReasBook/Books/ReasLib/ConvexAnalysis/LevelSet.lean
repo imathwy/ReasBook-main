@@ -1,7 +1,7 @@
 import Mathlib.Topology.Defs.Basic
-import Reaslib.Basic.EReal
-import Reaslib.Basic.ProperFunction
-import Reaslib.ConvexAnalysis.ClosedFunction_Closure
+import ReasLib.Basic.EReal
+import ReasLib.Basic.ProperFunction
+import ReasLib.ConvexAnalysis.ClosedFunction_Closure
 
 open Set
 variable {E : Type*}

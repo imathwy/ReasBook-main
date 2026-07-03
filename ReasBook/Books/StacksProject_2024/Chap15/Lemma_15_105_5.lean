@@ -1,6 +1,6 @@
 import Mathlib.Data.List.TFAE
-import stacks_project.Chap15.Definition_15_105_1
-import stacks_project.Chap15.Definition_15_105_3
+import StacksProject_2024.Chap15.Definition_15_105_1
+import StacksProject_2024.Chap15.Definition_15_105_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

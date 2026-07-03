@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import stacks_project.Chap17.Definition_17_5_1
-import stacks_project.Chap21.Lemma_21_12_4
+import StacksProject_2024.Chap17.Definition_17_5_1
+import StacksProject_2024.Chap21.Lemma_21_12_4
 
 open CategoryTheory
 

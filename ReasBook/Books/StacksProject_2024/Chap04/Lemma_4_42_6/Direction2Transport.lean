@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap04.Lemma_4_42_6.Direction2Aux
+import StacksProject_2024.Chap04.Lemma_4_42_6.Direction2Aux
 
 universe v u v₁ u₁ v₂ u₂
 

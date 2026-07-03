@@ -1,5 +1,5 @@
-import stacks_project.Chap12.Definition_12_24_5
-import stacks_project.Chap15.Definition_15_59_1
+import StacksProject_2024.Chap12.Definition_12_24_5
+import StacksProject_2024.Chap15.Definition_15_59_1
 
 noncomputable section
 

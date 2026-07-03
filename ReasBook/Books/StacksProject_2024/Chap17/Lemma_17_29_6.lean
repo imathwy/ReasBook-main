@@ -1,8 +1,8 @@
 import Mathlib
-import stacks_project.Chap10.Lemma_10_133_6
-import stacks_project.Chap17.Lemma_17_28_4
-import stacks_project.Chap17.Lemma_17_29_5
-import stacks_project.Chap18.Lemma_18_26_1
+import StacksProject_2024.Chap10.Lemma_10_133_6
+import StacksProject_2024.Chap17.Lemma_17_28_4
+import StacksProject_2024.Chap17.Lemma_17_29_5
+import StacksProject_2024.Chap18.Lemma_18_26_1
 
 open CategoryTheory MonoidalCategory TopologicalSpace
 open PresheafOfModules.DifferentialsConstruction

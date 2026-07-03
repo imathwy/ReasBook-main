@@ -1,7 +1,7 @@
-import Nesterov.Chap03.LinearEqualityFeasibleSet
-import Nesterov.Chap03.Definition_3_3
-import Nesterov.Chap03.Theorem_3_1_2_3
-import Nesterov.Chap03.Theorem_3_44
+import LecturesConvexOptimization_Nesterov_2018.Chap03.LinearEqualityFeasibleSet
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_3
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_1_2_3
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_44
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

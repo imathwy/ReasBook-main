@@ -1,8 +1,8 @@
 import Mathlib
-import MayConciseRevised.Chap03.Definition_3_3_11
-import MayConciseRevised.Chap03.Lemma_3_4_3
-import MayConciseRevised.Chap03.Definition_3_4_10
-import MayConciseRevised.Chap03.Lemma_3_4_11
+import AlgebraicTopology_May_1999.Chap03.Definition_3_3_11
+import AlgebraicTopology_May_1999.Chap03.Lemma_3_4_3
+import AlgebraicTopology_May_1999.Chap03.Definition_3_4_10
+import AlgebraicTopology_May_1999.Chap03.Lemma_3_4_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

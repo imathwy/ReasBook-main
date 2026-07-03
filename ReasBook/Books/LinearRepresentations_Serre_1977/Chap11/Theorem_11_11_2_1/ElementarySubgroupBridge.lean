@@ -1,4 +1,4 @@
-import Serre.Chap11.Theorem_11_11_2_1.TensorCharacterBridge
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1.TensorCharacterBridge
 
 noncomputable section
 

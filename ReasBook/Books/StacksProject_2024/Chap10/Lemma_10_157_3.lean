@@ -1,8 +1,8 @@
 import Mathlib
-import stacks_project.Chap10.Definition_10_157_1
-import stacks_project.Chap10.Lemma_10_25_1
-import stacks_project.Chap10.Lemma_10_63_18
-import stacks_project.Chap10.Lemma_10_72_9
+import StacksProject_2024.Chap10.Definition_10_157_1
+import StacksProject_2024.Chap10.Lemma_10_25_1
+import StacksProject_2024.Chap10.Lemma_10_63_18
+import StacksProject_2024.Chap10.Lemma_10_72_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -17,7 +17,7 @@ section
 variable {R : Type u} [CommRing R] [IsNoetherianRing R]
 
 /- Domain-style sampling:
-* primary domain: Serre conditions and reducedness for Noetherian commutative rings;
+* primary domain: LinearRepresentations_Serre_1977 conditions and reducedness for Noetherian commutative rings;
 * sampled owner/bridge declarations:
   `SerreConditionR`,
   `SerreConditionS`,
@@ -25,11 +25,11 @@ variable {R : Type u} [CommRing R] [IsNoetherianRing R]
   `embeddedPrimes_eq_empty_iff`;
 * best owner abstraction: the ring-theoretic owner classes `SerreConditionR R 0` and
   `SerreConditionS R 1` from Definition 10.157.1;
-* primitive data vs derived API: the Serre conditions are primitive owners here, while the
+* primitive data vs derived API: the LinearRepresentations_Serre_1977 conditions are primitive owners here, while the
   embedded-prime and associated-prime criteria are bridge/view API already provided upstream.
 
 Source/core/bridge triage:
-* `source-facing`: reducedness versus the textbook Serre conditions `(R_0)` and `(S_1)`;
+* `source-facing`: reducedness versus the textbook LinearRepresentations_Serre_1977 conditions `(R_0)` and `(S_1)`;
 * `core/canonical`: the owner classes `SerreConditionR R 0` and `SerreConditionS R 1`;
 * `bridge/view`: the source-facing localized and associated-prime criteria already live upstream,
   so this file keeps only the reducedness implications and does not repackage the `(S_1)` clause
@@ -316,7 +316,7 @@ lemma away_maximal_under_primeHeight_lt
 
 -- Proof sketch: localize at a height-zero prime ideal. Reducedness localizes, and a reduced local
 -- ring of Krull dimension `0` is a field, hence a regular local ring.
-/-- A reduced Noetherian ring satisfies Serre's condition `(R_0)`. -/
+/-- A reduced Noetherian ring satisfies LinearRepresentations_Serre_1977's condition `(R_0)`. -/
 instance [IsReduced R] : SerreConditionR R 0 where
   toIsNoetherian := inferInstance
   isRegularLocalRing_localizationAtPrime p hp := by
@@ -332,7 +332,7 @@ instance [IsReduced R] : SerreConditionR R 0 where
 -- Proof sketch: localize at a prime ideal. In dimension `0` the depth bound is automatic. In
 -- positive dimension, depth `0` would force the closed point to be associated, contradicting the
 -- reduced local lemma above.
-/-- A reduced Noetherian ring satisfies Serre's condition `(S_1)`. -/
+/-- A reduced Noetherian ring satisfies LinearRepresentations_Serre_1977's condition `(S_1)`. -/
 instance [IsReduced R] : SerreConditionS R 1 where
   toIsNoetherian := inferInstance
   toSerreConditionS := by
@@ -454,7 +454,7 @@ lemma isReduced_localizationAtPrime_of_serreConditionR_zero_and_serreConditionS_
 -- the converse, use `(R_0)` to see that localizations at minimal primes are fields, and use the
 -- canonical `(S_1)` owner together with its upstream associated-prime bridge to rule out
 -- nilpotents in every localization.
-/-- Lemma 10.157.3: for a Noetherian ring `R`, reducedness is equivalent to Serre's conditions
+/-- Lemma 10.157.3: for a Noetherian ring `R`, reducedness is equivalent to LinearRepresentations_Serre_1977's conditions
 `(R_0)` and `(S_1)`. -/
 lemma isReduced_iff_serreConditionR_zero_and_serreConditionS_one :
     IsReduced R ↔ SerreConditionR R 0 ∧ SerreConditionS R 1 := by

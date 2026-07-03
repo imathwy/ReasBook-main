@@ -6,7 +6,7 @@ import Mathlib.RingTheory.LocalRing.ResidueField.Basic
 import Mathlib.RingTheory.LocalRing.ResidueField.Instances
 import Mathlib.RingTheory.Nilpotent.Lemmas
 import Mathlib.Topology.Inseparable
-import stacks_project.Chap15.Lemma_15_105_23
+import StacksProject_2024.Chap15.Lemma_15_105_23
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

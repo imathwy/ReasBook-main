@@ -1,5 +1,5 @@
-import BauschkeLean.Chap04.Remark_4_34
-import BauschkeLean.Chap04.Proposition_4_40
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04.Remark_4_34
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04.Proposition_4_40
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

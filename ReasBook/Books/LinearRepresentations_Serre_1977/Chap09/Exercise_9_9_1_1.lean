@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.RepresentationTheory.GroupFunctionPairing
-import Serre.Chap02.Remark_2_2_4_4
-import Serre.Chap06.Exercise_6_6_5_7
-import Serre.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.RepresentationTheory.GroupFunctionPairing
+import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_4_4
+import LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_5_7
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -35,7 +35,7 @@ variable (φ : G → ℝ)
 local notation "φℂ" => Complex.ofReal ∘ φ
 
 -- Source/core/bridge triage:
--- * source-facing: Serre's Chapter 9 positivity criterion for an integral virtual character to be
+-- * source-facing: LinearRepresentations_Serre_1977's Chapter 9 positivity criterion for an integral virtual character to be
 --   an actual character.
 -- * core/canonical: the pairing owner `⟪-, -⟫` and the character-ring owner `R(G)`.
 -- * bridge/view: the canonical complex-valued view `φℂ` of the real-valued function `φ`.
@@ -378,10 +378,10 @@ theorem groupFunctionPairing_character_re_nonneg_of_pairing_one_eq_zero_of_nonpo
 
 -- Proof sketch: write the given function as an integral linear combination of irreducible
 -- characters using `hR`. Pairing with each irreducible character has nonnegative real part by the
--- previous theorem, and the pairing with the unit character is zero. As in Serre's argument, this
+-- previous theorem, and the pairing with the unit character is zero. As in LinearRepresentations_Serre_1977's argument, this
 -- forces all coefficients to be nonnegative, so the function is an actual character.
 /-- Exercise 9-9.1-1: if a real-valued function on a finite group has zero pairing with the unit
-character, is nonpositive away from the identity, and belongs to Serre's character ring `R(G)`,
+character, is nonpositive away from the identity, and belongs to LinearRepresentations_Serre_1977's character ring `R(G)`,
 then it is the character of a finite-dimensional complex representation. -/
 theorem exists_fdRep_character_eq_of_mem_characterRing_of_pairing_one_eq_zero_of_nonpos_off_identity
     (hpair : ⟪φℂ, (1 : G → ℂ)⟫ = 0)

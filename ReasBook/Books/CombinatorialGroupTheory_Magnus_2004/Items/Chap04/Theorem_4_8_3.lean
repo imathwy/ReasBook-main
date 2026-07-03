@@ -1,6 +1,6 @@
 import Mathlib
-import CombinatorialGroupTheory.Items.Chap02.Definition_2_1_3
-import CombinatorialGroupTheory.Items.Chap04.Theorem_4_8_1
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap02.Definition_2_1_3
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap04.Theorem_4_8_1
 
 universe u
 

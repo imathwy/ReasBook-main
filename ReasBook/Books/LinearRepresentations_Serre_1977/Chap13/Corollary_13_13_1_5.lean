@@ -1,10 +1,10 @@
 import Mathlib
-import Serre.Chap06.Proposition_6_6_5_1
-import Serre.Chap11.Theorem_11_11_2_1
-import Serre.Chap11.Theorem_11_11_2_2
-import Serre.Chap12.Theorem_12_12_3_1
-import Serre.Chap12.Theorem_12_12_4_1
-import Serre.Chap13.Corollary_13_13_1_2
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_1
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_2
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_3_1
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_4_1
+import LinearRepresentations_Serre_1977.Chap13.Corollary_13_13_1_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -45,7 +45,7 @@ private theorem cyclotomicFieldExponent_hasEnoughRootsOfUnity :
     IsCyclotomicExtension.zeta_spec (Monoid.exponent G) ℚ Lexp⟩
 
 /-- Helper for Corollary 13-13.1-5: the cyclotomic field attached to `Monoid.exponent G` carries
-the canonical cyclotomic `ℚ`-structure needed for Serre's `Γ`-subgroups. -/
+the canonical cyclotomic `ℚ`-structure needed for LinearRepresentations_Serre_1977's `Γ`-subgroups. -/
 noncomputable local instance cyclotomicFieldExponent_isCyclotomicExtension :
     IsCyclotomicExtension {Monoid.exponent G} ℚ Lexp :=
   CyclotomicField.isCyclotomicExtension (n := Monoid.exponent G) (K := ℚ)
@@ -635,7 +635,7 @@ Derived API:
 -- `gammaRat_conjugate_iff_conjugate_zpowers` translates that condition into conjugacy of
 -- generators of the same cyclic subgroup.
 /-- Corollary 13-13.1-5: the following are equivalent for a finite group `G`: every element of
-Serre's integral character ring `R(G)` is rational-valued, every element of `R(G)` is
+LinearRepresentations_Serre_1977's integral character ring `R(G)` is rational-valued, every element of `R(G)` is
 integer-valued, and any two elements generating the same cyclic subgroup are conjugate. -/
 theorem character_values_rational_integer_and_same_subgroup_conjugacy_tfae :
     [ (∀ χ : R(G), ∀ x : G, IsLocalization.IsInteger ℚ (χ x)),

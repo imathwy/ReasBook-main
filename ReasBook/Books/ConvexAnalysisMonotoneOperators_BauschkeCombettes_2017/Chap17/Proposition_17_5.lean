@@ -1,13 +1,13 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import BauschkeLean.Chap01.Text_1_0_13
-import BauschkeLean.Chap09.Definition_9_12
-import BauschkeLean.Chap11.Definition_11_3
-import BauschkeLean.Chap12.Definition_12_23
-import BauschkeLean.Chap12.Proposition_12_30
-import BauschkeLean.Chap13.Corollary_13_38
-import BauschkeLean.Chap16.Definition_16_1
-import BauschkeLean.Chap16.Proposition_16_33
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap01.Text_1_0_13
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09.Definition_9_12
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap11.Definition_11_3
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Definition_12_23
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_30
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Corollary_13_38
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Definition_16_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_33
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

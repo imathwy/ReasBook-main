@@ -1,7 +1,7 @@
 import Mathlib
-import MayConciseRevised.Chap03.Definition_3_3_7
-import MayConciseRevised.Chap03.Definition_3_4_2
-import MayConciseRevised.Chap03.Definition_3_4_9
+import AlgebraicTopology_May_1999.Chap03.Definition_3_3_7
+import AlgebraicTopology_May_1999.Chap03.Definition_3_4_2
+import AlgebraicTopology_May_1999.Chap03.Definition_3_4_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

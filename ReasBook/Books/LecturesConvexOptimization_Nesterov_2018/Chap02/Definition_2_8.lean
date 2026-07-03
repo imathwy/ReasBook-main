@@ -1,7 +1,7 @@
-import Nesterov.Chap01.Definition_1_2_4
-import Nesterov.Chap01.Definition_1_2_13
-import Nesterov.Chap01.Definition_1_3_7
-import Nesterov.Chap02.Theorem_2_5
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_2_4
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_2_13
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_3_7
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_5
 
 open scoped Gradient SmoothConvex
 

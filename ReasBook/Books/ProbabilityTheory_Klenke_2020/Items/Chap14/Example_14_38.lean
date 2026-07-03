@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Probability.Kernel.IonescuTulcea.Traj
-import AchimKlenkeLean.Items.Chap14.Remark_14_31
+import ProbabilityTheory_Klenke_2020.Items.Chap14.Remark_14_31
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

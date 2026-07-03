@@ -1,4 +1,4 @@
-import SmoothManifoldsLee.Chap05.Sec05_29.Theorem_5_8.LocalSliceAtlas
+import SmoothManifolds_Lee_2012.Chap05.Sec05_29.Theorem_5_8.LocalSliceAtlas
 
 open scoped Manifold
 

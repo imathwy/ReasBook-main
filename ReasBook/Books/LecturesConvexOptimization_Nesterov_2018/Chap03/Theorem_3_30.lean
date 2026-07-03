@@ -1,6 +1,6 @@
 import Mathlib
-import Nesterov.Chap03.Theorem_3_1_1_3
-import Nesterov.Chap03.Theorem_3_1_2_3
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_1_1_3
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_1_2_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

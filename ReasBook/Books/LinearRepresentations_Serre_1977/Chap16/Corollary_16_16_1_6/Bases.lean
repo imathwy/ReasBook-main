@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap14.Corollary_14_14_3_3
-import Serre.Chap14.Proposition_14_14_1_1
-import Serre.Chap14.Proposition_14_14_3_1
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_3_3
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_1_1
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_3_1
 
 noncomputable section
 
@@ -185,7 +185,7 @@ theorem cartan_source_target_finrank_eq_support :
   classical
   obtain ⟨ι, hι, ⟨bP⟩, ⟨bR⟩⟩ := cartan_source_target_bases_support (k := k) (G := G)
   letI : Fintype ι := hι
-  -- Serre's rank count is exactly the common cardinal of the simple-family index type.
+  -- LinearRepresentations_Serre_1977's rank count is exactly the common cardinal of the simple-family index type.
   rw [Module.finrank_eq_card_basis bP, Module.finrank_eq_card_basis bR]
 
 end

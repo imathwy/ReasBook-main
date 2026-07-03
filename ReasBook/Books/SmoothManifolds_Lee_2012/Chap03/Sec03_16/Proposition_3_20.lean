@@ -1,4 +1,4 @@
-import SmoothManifoldsLee.Chap03.Sec03_16.Corollary_3_22
+import SmoothManifolds_Lee_2012.Chap03.Sec03_16.Corollary_3_22
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Geometry.Manifold.MFDeriv.Tangent
 import Mathlib.Topology.Maps.Basic

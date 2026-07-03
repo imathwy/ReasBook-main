@@ -1,5 +1,5 @@
-import AchimKlenkeLean.Items.Chap13.Definition_13_4
-import AchimKlenkeLean.Items.Chap13.Remark_13_14
+import ProbabilityTheory_Klenke_2020.Items.Chap13.Definition_13_4
+import ProbabilityTheory_Klenke_2020.Items.Chap13.Remark_13_14
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

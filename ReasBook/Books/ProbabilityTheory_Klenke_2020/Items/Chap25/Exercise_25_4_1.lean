@@ -1,7 +1,7 @@
 import Mathlib
-import AchimKlenkeLean.Items.Chap25.StandardBrownianMotionVector
-import AchimKlenkeLean.Items.Chap25.Definition_25_37
-import AchimKlenkeLean.Items.Chap25.UpperHalfSpace
+import ProbabilityTheory_Klenke_2020.Items.Chap25.StandardBrownianMotionVector
+import ProbabilityTheory_Klenke_2020.Items.Chap25.Definition_25_37
+import ProbabilityTheory_Klenke_2020.Items.Chap25.UpperHalfSpace
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

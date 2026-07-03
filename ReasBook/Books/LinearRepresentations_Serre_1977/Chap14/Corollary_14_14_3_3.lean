@@ -1,11 +1,11 @@
 import Mathlib
-import Serre.Chap02.Corollary_2_2_4_3
-import Serre.Chap14.Corollary_14_14_4_3.GrothendieckBasics
-import Serre.Chap14.Proposition_14_14_1_1
-import Serre.Chap14.Proposition_14_14_3_1
-import Serre.Chap14.Corollary_14_14_3_2
-import Serre.Chap14.Lemma_14_14_4_2
-import Serre.Chap14.Remark_14_14_1_2
+import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_4_3
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3.GrothendieckBasics
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_1_1
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_3_1
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_3_2
+import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_2
+import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_1_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -768,7 +768,7 @@ private noncomputable def finiteProjective_underlying_moduleCat_splitting
       (finiteProjective_underlying_moduleCat_zero (k := k) (G := G) S)
   let _ : Projective Smod.X₃ :=
     finiteProjective_projective_moduleCat (k := k) (G := G) S.X₃
-  -- Once the forgotten sequence is short exact, Serre's source route is exactly that the
+  -- Once the forgotten sequence is short exact, LinearRepresentations_Serre_1977's source route is exactly that the
   -- projective right term splits it.
   (finiteProjective_shortExact_underlying_moduleCat_shortExact
       (k := k) (G := G) S hS).splittingOfProjective
@@ -1309,7 +1309,7 @@ theorem span_projectiveEnvelope_classes_eq_top_of_complete_family
 
 /-- Corollary 14-14.3-3: for a finite group `G`, if `π` is a complete family of pairwise
 nonisomorphic finite-dimensional simple `k[G]`-representations and `P i` is a projective
-envelope of `π i`, then the classes `[P i]` form a `ℤ`-basis of Serre's projective Grothendieck
+envelope of `π i`, then the classes `[P i]` form a `ℤ`-basis of LinearRepresentations_Serre_1977's projective Grothendieck
 group `P_k(G)`. -/
 def projectiveEnvelope_classes_basis_of_complete_family
     (π : ι → FDRep k G)

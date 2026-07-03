@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap14.Corollary_14_14_3_3
-import Serre.Chap14.Corollary_14_14_4_3.GrothendieckBasics
-import Serre.Chap15.Definition_15_15_1_1
-import Serre.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_3_3
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3.GrothendieckBasics
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
 
 noncomputable section
 
@@ -656,7 +656,7 @@ private theorem finiteRepGrothendieckRelations_le_simple_factor_multiplicity_lif
   simp [simple_factor_multiplicity_lift_local, hadd, sub_eq_add_neg,
     add_assoc, add_left_comm, add_comm]
 
-/-- Helper for Theorem 16-16.1-2: the fixed-simple multiplicity descends to Serre's Grothendieck
+/-- Helper for Theorem 16-16.1-2: the fixed-simple multiplicity descends to LinearRepresentations_Serre_1977's Grothendieck
 group. -/
 noncomputable def simple_factor_multiplicity_hom_fixed_local
     (S : FDRep k G) :

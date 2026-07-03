@@ -1,4 +1,4 @@
-import SmoothManifoldsLee.Chap01.Sec01.Example_1_9
+import SmoothManifolds_Lee_2012.Chap01.Sec01.Example_1_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

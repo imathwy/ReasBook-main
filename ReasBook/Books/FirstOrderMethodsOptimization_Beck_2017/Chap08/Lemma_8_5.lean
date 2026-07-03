@@ -1,9 +1,9 @@
-import FirstOrderMethodsinOptimization.Chap02.Definition_2_6
-import FirstOrderMethodsinOptimization.Chap02.Lemma_2_1
-import FirstOrderMethodsinOptimization.Chap03.Theorem_3_1
-import FirstOrderMethodsinOptimization.Chap03.Theorem_3_4
-import FirstOrderMethodsinOptimization.Chap04.Proposition_4_3
-import FirstOrderMethodsinOptimization.Chap04.Theorem_4_10
+import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_6
+import FirstOrderMethodsOptimization_Beck_2017.Chap02.Lemma_2_1
+import FirstOrderMethodsOptimization_Beck_2017.Chap03.Theorem_3_1
+import FirstOrderMethodsOptimization_Beck_2017.Chap03.Theorem_3_4
+import FirstOrderMethodsOptimization_Beck_2017.Chap04.Proposition_4_3
+import FirstOrderMethodsOptimization_Beck_2017.Chap04.Theorem_4_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

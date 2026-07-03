@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory.Basic
+import CombinatorialGroupTheory_Magnus_2004.Basic
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -18,7 +18,7 @@ open Subgroup
 - `bridge/view`: a chosen basis element `basis x` is only a witness for `IsPrimitiveElement p`
   through `FreeGroupBasis.isPrimitiveElement`.
 - Domain sampling:
-  1. `IsPrimitiveElement` from `CombinatorialGroupTheory.Basic` is the project owner for
+  1. `IsPrimitiveElement` from `CombinatorialGroupTheory_Magnus_2004.Basic` is the project owner for
      “belongs to some free basis”.
   2. `Subgroup.normalClosure` is mathlib's owner construction for the normal closure of a subset.
   3. `IsConj` is mathlib's owner relation for conjugacy in a group.

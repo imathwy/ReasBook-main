@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap12.Corollary_12_12_2_2
+import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_2_2
 
 noncomputable section
 

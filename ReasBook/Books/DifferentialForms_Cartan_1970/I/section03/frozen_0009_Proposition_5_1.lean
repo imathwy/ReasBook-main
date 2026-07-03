@@ -1,4 +1,4 @@
-import cartan.I.section03.«frozen_0008_Definition_I_3_extra_8»
+import DifferentialForms_Cartan_1970.I.section03.«frozen_0008_Definition_I_3_extra_8»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

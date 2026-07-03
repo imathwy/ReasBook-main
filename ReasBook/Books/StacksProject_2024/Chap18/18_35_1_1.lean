@@ -17,7 +17,7 @@ variable (α : 𝒜 ⟶ 𝒝) (ρ : 𝒜 ⟶ 𝒜') (β : 𝒜' ⟶ 𝒝') (φ :
   `CategoryTheory.CommSq`,
   `CommSq.mk`,
   `CommSq.w`,
-  `stacks_project.Chap17.17_31_1_1`;
+  `StacksProject_2024.Chap17.17_31_1_1`;
 - best owner abstraction: `CategoryTheory.CommSq`;
 - primitive data: the four corner sheaves and the four displayed morphisms
   `α : 𝒜 ⟶ 𝒝`, `ρ : 𝒜 ⟶ 𝒜'`, `β : 𝒜' ⟶ 𝒝'`, and `φ : 𝒝 ⟶ 𝒝'`;

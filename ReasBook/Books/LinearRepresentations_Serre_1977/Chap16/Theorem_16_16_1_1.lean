@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.Chap02.Theorem_2_2_3_5
-import Serre.Chap14.Infra_14_4_ProjectiveLift
-import Serre.Chap14.Proposition_14_14_3_1
-import Serre.Chap16.Remark_16_16_3_5
-import Serre.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Chap14.Infra_14_4_ProjectiveLift
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_3_1
+import LinearRepresentations_Serre_1977.Chap16.Remark_16_16_3_5
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -27,7 +27,7 @@ variable {G : Type u} [Group G]
 local notation "k" => IsLocalRing.ResidueField A
 
 /- Domain-style sampling for Theorem 16-16.1-1:
-* source-facing layer: Serre's large-field surjectivity statement for the decomposition map.
+* source-facing layer: LinearRepresentations_Serre_1977's large-field surjectivity statement for the decomposition map.
 * core/canonical owner already defined upstream in Chapter 15:
   `decompositionHom A K G : R₀[K](G) →+ R₀[k](G)`.
 * same-domain project declarations inspected before refining:
@@ -222,7 +222,7 @@ private theorem exists_finite_projective_envelope_of_simple_local
   · simpa [P, ρ] using hf'
 
 /-- Theorem 16-16.1-1: for a finite group `G`, under the standard large-field hypothesis on `K`,
-Serre's decomposition homomorphism `d = decompositionHom A K G : R₀[K](G) → R₀[k](G)` is
+LinearRepresentations_Serre_1977's decomposition homomorphism `d = decompositionHom A K G : R₀[K](G) → R₀[k](G)` is
 surjective. -/
 theorem decompositionHom_surjective
     [Finite G]
@@ -230,14 +230,14 @@ theorem decompositionHom_surjective
     Function.Surjective (decompositionHom A K G) := by
   classical
   -- Route correction: the dedicated Chapter 16 infra module is unavailable here as a compiled
-  -- dependency, so use the already-built `(R')` packaging of the same Serre lifting step.
+  -- dependency, so use the already-built `(R')` packaging of the same LinearRepresentations_Serre_1977 lifting step.
   obtain ⟨ι, π, hπ_pairwise, hπ_complete⟩ :=
     exists_complete_pairwise_nonisomorphic_simple_family_local (A := A) (G := G)
   have hRPrime : SatisfiesConditionRPrime A K G :=
     satisfiesConditionRPrime_of_sufficiently_large (A := A) (K := K) (G := G)
   let b : Module.Basis ι ℤ (R₀[k](G)) :=
     simple_class_basis_local π hπ_pairwise hπ_complete
-  -- Serre's basis argument reduces surjectivity to lifting the simple basis vectors.
+  -- LinearRepresentations_Serre_1977's basis argument reduces surjectivity to lifting the simple basis vectors.
   have hb : ∀ i, b i ∈ Set.range (decompositionHom A K G) := by
     intro i
     letI : Simple (π i) := hπ_complete.isSimple i

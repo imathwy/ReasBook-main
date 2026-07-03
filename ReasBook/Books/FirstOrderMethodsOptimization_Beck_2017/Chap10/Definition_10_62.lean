@@ -1,4 +1,4 @@
-import FirstOrderMethodsinOptimization.Chap08.Algorithm_8_1
+import FirstOrderMethodsOptimization_Beck_2017.Chap08.Algorithm_8_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

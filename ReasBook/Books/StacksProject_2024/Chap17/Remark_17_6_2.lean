@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import stacks_project.Chap17.Definition_17_5_1
-import stacks_project.Chap17.Lemma_17_6_3
+import StacksProject_2024.Chap17.Definition_17_5_1
+import StacksProject_2024.Chap17.Lemma_17_6_3
 
 open CategoryTheory CategoryTheory.Limits Opposite TopCat TopologicalSpace
 open scoped ClosedSubsetSectionsWithSupport

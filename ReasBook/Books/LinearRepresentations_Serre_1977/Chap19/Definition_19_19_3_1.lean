@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap14.Corollary_14_14_4_3
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -30,7 +30,7 @@ Domain-style sampling:
   `intertwining_finrank_eq_projectiveLiftCharacter_pairing`.
 * Best owner abstraction: the categorical `FDRep` Hom-space `P.toFiniteRep ⟶ M`.
 * Source/core/bridge triage:
-  source-facing: Serre's invariant `b[SwG](M)`;
+  source-facing: LinearRepresentations_Serre_1977's invariant `b[SwG](M)`;
   core/canonical: `Module.finrank k (P.toFiniteRep ⟶ M)`;
   bridge/view: the canonical linear equivalence between that Hom-space and the representation-level
     intertwining space `P.toRep.ρ.IntertwiningMap (FDRep.ρ M)`.
@@ -38,7 +38,7 @@ Domain-style sampling:
 * Derived API: the intertwining-space comparison theorem and the notation `b[SwG](M)`.
 -/
 
-/-- Definition 19-19.3-1: the core/canonical owner for Serre's invariant is the multiplicity of a
+/-- Definition 19-19.3-1: the core/canonical owner for LinearRepresentations_Serre_1977's invariant is the multiplicity of a
 finite-dimensional `k[G]`-module `M` in a finite projective `k[G]`-module `P`, measured by the
 `k`-dimension of the equivariant Hom-space `Hom^G(P, M)`. -/
 abbrev intertwiningMultiplicity

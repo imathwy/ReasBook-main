@@ -1,5 +1,5 @@
 import Mathlib.Analysis.Convex.Jensen
-import Nesterov.Chap03.Definition_3_1_1_4
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_1_1_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

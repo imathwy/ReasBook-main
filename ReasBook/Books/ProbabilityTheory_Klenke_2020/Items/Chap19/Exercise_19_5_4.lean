@@ -1,6 +1,6 @@
-import AchimKlenkeLean.Items.Chap19.Definition_19_23
-import AchimKlenkeLean.Items.Chap19.Exercise_19_5_LadderGraphs
-import AchimKlenkeLean.Items.Chap19.Theorem_19_19
+import ProbabilityTheory_Klenke_2020.Items.Chap19.Definition_19_23
+import ProbabilityTheory_Klenke_2020.Items.Chap19.Exercise_19_5_LadderGraphs
+import ProbabilityTheory_Klenke_2020.Items.Chap19.Theorem_19_19
 
 open MeasureTheory ProbabilityTheory SimpleGraph
 open scoped ENNReal

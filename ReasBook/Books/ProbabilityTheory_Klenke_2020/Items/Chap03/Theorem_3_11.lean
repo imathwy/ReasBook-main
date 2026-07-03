@@ -1,5 +1,5 @@
 import Mathlib
-import AchimKlenkeLean.Items.Chap03.Theorem_3_2
+import ProbabilityTheory_Klenke_2020.Items.Chap03.Theorem_3_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

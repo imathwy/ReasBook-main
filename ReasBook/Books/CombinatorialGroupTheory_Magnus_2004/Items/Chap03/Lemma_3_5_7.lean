@@ -2,11 +2,11 @@ import Mathlib
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
-import CombinatorialGroupTheory.Items.Chap01.SignedLetter
-import CombinatorialGroupTheory.Items.Chap02.Definition_2_1_4
-import CombinatorialGroupTheory.Items.Chap03.Definition_3_2_3
-import CombinatorialGroupTheory.Items.Chap03.Lemma_3_3_8
-import CombinatorialGroupTheory.Items.Chap03.Proposition_3_4_1
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.SignedLetter
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap02.Definition_2_1_4
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Definition_3_2_3
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Lemma_3_3_8
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Proposition_3_4_1
 
 universe u
 

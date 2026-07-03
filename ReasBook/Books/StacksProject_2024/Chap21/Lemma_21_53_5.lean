@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap21.Lemma_21_53_1
+import StacksProject_2024.Chap21.Lemma_21_53_1
 
 open CategoryTheory
 open CategoryTheory.MonoidalCategory
@@ -48,7 +48,7 @@ theorem isFiniteTypeLocallyConstant_of_isFiniteTypeLocallyConstantIdealPowerQuot
 -- `K ⊗ \underline{I^m/I^(m+1)} → K ⊗ \underline{\Lambda/I^(m+1)} → K ⊗ \underline{\Lambda/I^m}`
 -- and use the factorization
 -- `K ⊗ \underline{I^m/I^(m+1)} ≅ (K ⊗ \underline{\Lambda/I}) ⊗_{\Lambda/I}^{\mathbf L}
--- \underline{I^m/I^(m+1)}` together with Lemma `21.53.4`. The weak-Serre stability of locally
+-- \underline{I^m/I^(m+1)}` together with Lemma `21.53.4`. The weak-LinearRepresentations_Serre_1977 stability of locally
 -- constant finite-type sheaves propagates the property inductively from `n = 1` to all `n ≥ 1`.
 /-- Lemma 21.53.5: if the cohomology sheaves of
 `K \otimes_\Lambda^{\mathbf L} \underline{\Lambda / I}` are locally constant sheaves of finite

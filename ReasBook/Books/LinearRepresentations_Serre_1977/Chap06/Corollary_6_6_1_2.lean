@@ -1,5 +1,5 @@
 import Mathlib.RingTheory.SimpleModule.WedderburnArtin
-import Serre.Chap06.Proposition_6_6_1_1
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_1_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

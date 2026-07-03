@@ -1,5 +1,5 @@
-import stacks_project.Chap12.Lemma_12_26_1
-import stacks_project.Chap12.Lemma_12_26_2
+import StacksProject_2024.Chap12.Lemma_12_26_1
+import StacksProject_2024.Chap12.Lemma_12_26_2
 
 open CategoryTheory Limits ComplexShape HomologicalComplex HomologicalComplex₂
 open scoped HomologicalComplex₂

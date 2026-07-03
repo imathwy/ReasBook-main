@@ -1,4 +1,4 @@
-import Nesterov.Chap02.Theorem_2_6
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -49,7 +49,7 @@ private theorem nesterovChainPrefix_apply (k : Fin n) (h : E) (i : Fin (k.1 + 1)
   -- The restricted vector was defined by transporting exactly these first coordinates.
   simp [nesterovChainPrefix]
 
-/-- The chain quadratic form appearing in the Hessian identity for Nesterov's function `f_k`. -/
+/-- The chain quadratic form appearing in the Hessian identity for LecturesConvexOptimization_Nesterov_2018's function `f_k`. -/
 def nesterovChainQuadraticForm (k : Fin n) (h : E) : ℝ :=
   let h' := nesterovChainPrefix k h
   h' 0 ^ 2 +

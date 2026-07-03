@@ -1,5 +1,5 @@
 import Mathlib.LinearAlgebra.Basis.Defs
-import SmoothManifoldsLee.Chap03.Sec03_13.Proposition_3_2
+import SmoothManifolds_Lee_2012.Chap03.Sec03_13.Proposition_3_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Serre.Chap03.Corollary_3_3_1_2
+import LinearRepresentations_Serre_1977.Chap03.Corollary_3_3_1_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

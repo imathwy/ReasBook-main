@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap19.Proposition_19_11_5
+import StacksProject_2024.Chap19.Proposition_19_11_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

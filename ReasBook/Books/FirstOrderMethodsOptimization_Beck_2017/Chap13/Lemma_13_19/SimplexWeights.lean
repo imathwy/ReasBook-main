@@ -1,5 +1,5 @@
 import Mathlib
-import FirstOrderMethodsinOptimization.Chap13.Lemma_13_16
+import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_16
 
 -- Theorem-local helpers for Lemma 13.19.
 

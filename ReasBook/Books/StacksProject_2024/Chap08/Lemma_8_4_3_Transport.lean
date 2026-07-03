@@ -1,4 +1,4 @@
-import stacks_project.Chap08.Lemma_8_4_3_RestrictedDescent
+import StacksProject_2024.Chap08.Lemma_8_4_3_RestrictedDescent
 
 open CategoryTheory
 open CategoryTheory Functor

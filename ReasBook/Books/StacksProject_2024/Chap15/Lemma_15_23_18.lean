@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap10.Definition_10_157_1
+import StacksProject_2024.Chap10.Definition_10_157_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -55,12 +55,12 @@ section
 variable {R : Type u} [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R]
 variable {M : Type v} [AddCommGroup M] [Module R M] [Module.Finite R M]
 
--- Proof sketch: apply Serre's criterion for normality to deduce `(R_1)` and `(S_2)` for `R`.
+-- Proof sketch: apply LinearRepresentations_Serre_1977's criterion for normality to deduce `(R_1)` and `(S_2)` for `R`.
 -- Then use Lemma `15.23.2` and Lemma `15.23.16` for `(1) → (2)`, Lemma `15.23.14` for
 -- `(2) → (3)` after comparing the height-one localizations inside the generic fiber, and the DVR
 -- freeness criterion from Lemma `15.22.11` for `(3) → (1)`.
 /-- Lemma 15.23.18: for a finite module `M` over a Noetherian normal domain `R`, the following are
-equivalent: `M` is reflexive; `M` is torsion free and satisfies Serre's condition `(S_2)`; and
+equivalent: `M` is reflexive; `M` is torsion free and satisfies LinearRepresentations_Serre_1977's condition `(S_2)`; and
 `M` is torsion free and agrees with the intersection of its height-one localizations inside the
 generic localization `M ⊗[R] Frac(R)`. -/
 theorem reflexive_tfae_torsionFree_serreS2_heightOneLocalizationIntersection :

@@ -1,4 +1,4 @@
-import stacks_project.Chap04.«4_34_2_4»
+import StacksProject_2024.Chap04.«4_34_2_4»
 
 universe u v u₁ u₁' u₂ u₂'
 

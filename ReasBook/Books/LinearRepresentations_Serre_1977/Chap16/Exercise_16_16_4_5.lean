@@ -1,16 +1,16 @@
 import Mathlib
-import Serre.Chap14.Corollary_14_14_3_3
-import Serre.Chap14.Corollary_14_14_4_3.GrothendieckBasics
-import Serre.Chap14.Exercise_14_14_4_5
-import Serre.Chap14.Exercise_14_14_5_4
-import Serre.Chap14.Infra_14_4_ProjectiveLift
-import Serre.Chap14.Lemma_14_14_4_2
-import Serre.Chap15.Definition_15_15_1_1
-import Serre.Chap15.Definition_15_15_3_1
-import Serre.Chap15.Theorem_15_15_2_2
-import Serre.Chap16.Corollary_16_16_1_8_ProjectiveTriangleSupport
-import Serre.Chap16.Exercise_16_16_1_12
-import Serre.Chap16.Proposition_16_16_4_1
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_3_3
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3.GrothendieckBasics
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_4_5
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_4
+import LinearRepresentations_Serre_1977.Chap14.Infra_14_4_ProjectiveLift
+import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_2
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_8_ProjectiveTriangleSupport
+import LinearRepresentations_Serre_1977.Chap16.Exercise_16_16_1_12
+import LinearRepresentations_Serre_1977.Chap16.Proposition_16_16_4_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -1041,7 +1041,7 @@ private theorem finiteRepGrothendieckRelations_le_simple_factor_multiplicity_lif
   simp [simple_factor_multiplicity_lift_local, hadd, sub_eq_add_neg,
     add_assoc, add_left_comm, add_comm]
 
-/-- Helper for Exercise 16-16.4-5: the fixed-simple multiplicity descends to Serre's
+/-- Helper for Exercise 16-16.4-5: the fixed-simple multiplicity descends to LinearRepresentations_Serre_1977's
 Grothendieck group. -/
 private noncomputable def simple_factor_multiplicity_hom_fixed_local
     (S : FDRep k G) :
@@ -1560,7 +1560,7 @@ private theorem projective_scalarExtension_literal_map_range_isLattice_local
     exact Submodule.smul_mem _ _ hi'
 
 /-- Helper for Exercise 16-16.4-5: the literal image of `Q.V` inside `Q.scalarExtension K`
-defines the stable lattice used in Serre's honest-projective calculation. -/
+defines the stable lattice used in LinearRepresentations_Serre_1977's honest-projective calculation. -/
 private noncomputable def projective_scalarExtension_literal_stableLattice_local
     (Q : FiniteProjectiveGroupAlgebraModule A G) :
     StableLattice A (Q.scalarExtension K).ρ :=
@@ -1952,7 +1952,7 @@ theorem hasDefectZero_of_projective_simple_residue_lift_local
     -- module `S`.
     simpa using FDRep.isIrreducible_of_simple (FDRep.of L.reductionRepresentation)
   have hXirr : Representation.IsIrreducible (Q.scalarExtension K).ρ := by
-    -- Serre's source route deduces generic-fiber irreducibility from simplicity of the same
+    -- LinearRepresentations_Serre_1977's source route deduces generic-fiber irreducibility from simplicity of the same
     -- literal lattice reduction.
     simpa using simple_reduction_implies_isIrreducible
       (A := A) (K := K) (G := G) ((Q.scalarExtension K).ρ) L hLirr

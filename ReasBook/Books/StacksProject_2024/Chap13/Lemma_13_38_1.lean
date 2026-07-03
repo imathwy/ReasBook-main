@@ -2,7 +2,7 @@ import Mathlib.CategoryTheory.Preadditive.Yoneda.Basic
 import Mathlib.Algebra.Category.Grp.Abelian
 import Mathlib.CategoryTheory.Abelian.Opposite
 import Mathlib.CategoryTheory.Triangulated.HomologicalFunctor
-import stacks_project.Chap13.Definition_13_37_5
+import StacksProject_2024.Chap13.Definition_13_37_5
 
 open CategoryTheory Limits Opposite
 

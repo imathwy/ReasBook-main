@@ -1,6 +1,6 @@
 import Mathlib
-import cartan.II.section05.«0001_Definition_II_1_extra_1»
-import cartan.VI.section26.«0001_Definition_VI_5_extra_1»
+import DifferentialForms_Cartan_1970.II.section05.«0001_Definition_II_1_extra_1»
+import DifferentialForms_Cartan_1970.VI.section26.«0001_Definition_VI_5_extra_1»
 
 open MeasureTheory
 open scoped Manifold Real

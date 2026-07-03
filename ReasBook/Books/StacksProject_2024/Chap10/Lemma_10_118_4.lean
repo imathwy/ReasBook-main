@@ -1,5 +1,5 @@
-import stacks_project.Chap10.«10_118_3_2»
-import stacks_project.Chap10.Lemma_10_5_3
+import StacksProject_2024.Chap10.«10_118_3_2»
+import StacksProject_2024.Chap10.Lemma_10_5_3
 import Mathlib.Algebra.Category.ModuleCat.Localization
 import Mathlib.RingTheory.LocalProperties.Projective
 

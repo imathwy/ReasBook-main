@@ -1,7 +1,7 @@
-import stacks_project.Chap10.Theorem_10_34_1_Hilbert_Nullstellensatz
-import stacks_project.Chap10.Lemma_10_35_5
-import stacks_project.Chap10.Lemma_10_35_9
-import stacks_project.Chap10.Lemma_10_35_10
+import StacksProject_2024.Chap10.Theorem_10_34_1_Hilbert_Nullstellensatz
+import StacksProject_2024.Chap10.Lemma_10_35_5
+import StacksProject_2024.Chap10.Lemma_10_35_9
+import StacksProject_2024.Chap10.Lemma_10_35_10
 import Mathlib.RingTheory.Extension.Generators
 
 -- Declarations for this item will be appended below by the statement pipeline.

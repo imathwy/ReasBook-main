@@ -1,7 +1,7 @@
-import stacks_project.Chap10.Definition_10_43_1
-import stacks_project.Chap10.Lemma_10_43_5
-import stacks_project.Chap10.Lemma_10_43_6
-import stacks_project.Chap10.Lemma_10_43_8
+import StacksProject_2024.Chap10.Definition_10_43_1
+import StacksProject_2024.Chap10.Lemma_10_43_5
+import StacksProject_2024.Chap10.Lemma_10_43_6
+import StacksProject_2024.Chap10.Lemma_10_43_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

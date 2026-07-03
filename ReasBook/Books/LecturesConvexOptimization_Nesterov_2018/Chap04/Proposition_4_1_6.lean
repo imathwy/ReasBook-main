@@ -6,7 +6,7 @@ noncomputable section
 
 open Matrix
 
-namespace Nesterov.Chap04.Proposition_4_1_6
+namespace LecturesConvexOptimization_Nesterov_2018.Chap04.Proposition_4_1_6
 
 /-- The higher coordinates of `ℝⁿ⁺¹`, namely all coordinates except the first one. -/
 abbrev HigherCoord (n : ℕ) := { i : Fin n.succ // i ≠ 0 }
@@ -300,4 +300,4 @@ theorem triangularTransformation_fderiv_det_ne_zero {n : ℕ} (u : TriangularTra
   rw [triangularTransformation_fderiv_det_eq_one (u := u) (x := x)]
   norm_num
 
-end Nesterov.Chap04.Proposition_4_1_6
+end LecturesConvexOptimization_Nesterov_2018.Chap04.Proposition_4_1_6

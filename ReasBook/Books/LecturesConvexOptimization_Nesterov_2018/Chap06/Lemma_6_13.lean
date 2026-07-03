@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap06.Lemma_6_2_8
+import LecturesConvexOptimization_Nesterov_2018.Chap06.Lemma_6_2_8
 
 noncomputable section
 

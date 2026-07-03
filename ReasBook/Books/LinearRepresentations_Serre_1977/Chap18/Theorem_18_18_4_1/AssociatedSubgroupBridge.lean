@@ -1,5 +1,5 @@
-import Serre.Chap18.Theorem_18_18_4_1.CommutativePrimeToPBridge
-import Serre.Chap18.Theorem_18_18_4_1.ElementaryPrimeSplit
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_4_1.CommutativePrimeToPBridge
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_4_1.ElementaryPrimeSplit
 
 noncomputable section
 

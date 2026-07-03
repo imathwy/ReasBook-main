@@ -1,9 +1,9 @@
 import Mathlib
-import Serre.Chap02.Exercise_2_2_6_3
-import Serre.Chap04.Remark_4_4_3_1.MatrixCoefficientMaps
-import Serre.Chap04.Remark_4_4_3_1.SubrepresentationBridges
-import Serre.Chap04.Remark_4_4_3_1.InvariantDual
-import Serre.Chap04.Remark_4_4_3_1.AdjointRecovery
+import LinearRepresentations_Serre_1977.Chap02.Exercise_2_2_6_3
+import LinearRepresentations_Serre_1977.Chap04.Remark_4_4_3_1.MatrixCoefficientMaps
+import LinearRepresentations_Serre_1977.Chap04.Remark_4_4_3_1.SubrepresentationBridges
+import LinearRepresentations_Serre_1977.Chap04.Remark_4_4_3_1.InvariantDual
+import LinearRepresentations_Serre_1977.Chap04.Remark_4_4_3_1.AdjointRecovery
 
 open MeasureTheory
 open DomMulAct

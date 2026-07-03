@@ -17,7 +17,7 @@ variable {X Y Z : C} {f : X ⟶ Y} {g h : Z ⟶ X} {g' h' : Y ⟶ Z}
   `Epi`,
   `cancel_mono`,
   `cancel_epi`.
-- sampled project owner reuse: `stacks_project/Items/Chap12/Definition_12_5_3.lean`
+- sampled project owner reuse: `StacksProject_2024/Items/Chap12/Definition_12_5_3.lean`
   recalls `Mono` and `Epi` directly.
 - owner abstraction: the mathlib classes `Mono f` and `Epi f`.
 - primitive data: the owner-class fields `Mono.right_cancellation` and `Epi.left_cancellation`.

@@ -1,9 +1,9 @@
 import Mathlib
-import stacks_project.Chap15.«15_60_1_1»
-import stacks_project.Chap15.Definition_15_65_1
-import stacks_project.Chap15.Definition_15_84_1
-import stacks_project.Chap15.Lemma_15_72_1
-import stacks_project.Chap15.Lemma_15_74_4
+import StacksProject_2024.Chap15.«15_60_1_1»
+import StacksProject_2024.Chap15.Definition_15_65_1
+import StacksProject_2024.Chap15.Definition_15_84_1
+import StacksProject_2024.Chap15.Lemma_15_72_1
+import StacksProject_2024.Chap15.Lemma_15_74_4
 
 noncomputable section
 

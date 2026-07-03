@@ -1,7 +1,7 @@
-import SmoothManifoldsLee.Chap01.Sec01.Definition_1_extra_1
-import SmoothManifoldsLee.Chap05.Sec05_28.Definition_5_28_extra_1
-import SmoothManifoldsLee.Chap04.Sec04_25.Proposition_4_28
-import SmoothManifoldsLee.Chap05.Sec05_36.Proposition_5_49
+import SmoothManifolds_Lee_2012.Chap01.Sec01.Definition_1_extra_1
+import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Definition_5_28_extra_1
+import SmoothManifolds_Lee_2012.Chap04.Sec04_25.Proposition_4_28
+import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Proposition_5_49
 import Mathlib.Analysis.Calculus.FDeriv.WithLp
 import Mathlib.Analysis.Calculus.FDeriv.Pow
 

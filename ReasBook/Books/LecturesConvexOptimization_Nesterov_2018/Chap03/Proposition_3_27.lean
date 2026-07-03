@@ -17,9 +17,9 @@ Proposition 3.27 lies in the chapter's weighted affine-minorant / attained-infim
 Sampled owner-style declarations:
 - the mathlib additive and module structure on `E →ᵃ[ℝ] ℝ`, whose canonical owner for the
   aggregated affine model is the finite sum `∑ i, α i • ℓ i`;
-- `sampledAffineMinorant` in `Nesterov.Chap03.Proposition_3_26`, the chapter owner for one
+- `sampledAffineMinorant` in `LecturesConvexOptimization_Nesterov_2018.Chap03.Proposition_3_26`, the chapter owner for one
   sampled affine minorant in `(y, g, f)` coordinates;
-- `sum_smul_sampledAffineMinorant_le` in `Nesterov.Chap03.Proposition_3_26`, the chapter
+- `sum_smul_sampledAffineMinorant_le` in `LecturesConvexOptimization_Nesterov_2018.Chap03.Proposition_3_26`, the chapter
   lower-bound theorem for the corresponding weighted affine-map sum;
 - `IsLeast.csInf_eq` in mathlib, the attained-infimum bridge used by the minimum-form corollary.
 

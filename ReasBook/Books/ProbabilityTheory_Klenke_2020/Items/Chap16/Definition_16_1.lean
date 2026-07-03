@@ -1,5 +1,5 @@
 import Mathlib
-import AchimKlenkeLean.Items.Chap02.Definition_2_32
+import ProbabilityTheory_Klenke_2020.Items.Chap02.Definition_2_32
 
 open scoped MeasureTheory
 open MeasureTheory ProbabilityTheory

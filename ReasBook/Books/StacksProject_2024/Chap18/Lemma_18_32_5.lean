@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.CategoryTheory.ObjectProperty.Small
-import stacks_project.Chap18.Definition_18_32_1
+import StacksProject_2024.Chap18.Definition_18_32_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

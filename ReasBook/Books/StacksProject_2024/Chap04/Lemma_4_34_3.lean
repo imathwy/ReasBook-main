@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap04.«4_34_2_2»
-import stacks_project.Chap04.«4_34_2_3»
+import StacksProject_2024.Chap04.«4_34_2_2»
+import StacksProject_2024.Chap04.«4_34_2_3»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

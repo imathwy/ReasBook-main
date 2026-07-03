@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Monoidal.Basic
-import stacks_project.Chap15.Lemma_15_59_10
-import stacks_project.Chap15.Lemma_15_88_7
+import StacksProject_2024.Chap15.Lemma_15_59_10
+import StacksProject_2024.Chap15.Lemma_15_88_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,10 +1,10 @@
 import Mathlib
-import stacks_project.Chap04.Lemma_4_43_3
-import stacks_project.Chap17.Definition_17_23_1
-import stacks_project.Chap17.Example_17_18_1
-import stacks_project.Chap17.TensorPowerSheaf
-import stacks_project.Chap18.Lemma_18_32_4
-import stacks_project.Chap18.Example_18_29_1
+import StacksProject_2024.Chap04.Lemma_4_43_3
+import StacksProject_2024.Chap17.Definition_17_23_1
+import StacksProject_2024.Chap17.Example_17_18_1
+import StacksProject_2024.Chap17.TensorPowerSheaf
+import StacksProject_2024.Chap18.Lemma_18_32_4
+import StacksProject_2024.Chap18.Example_18_29_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

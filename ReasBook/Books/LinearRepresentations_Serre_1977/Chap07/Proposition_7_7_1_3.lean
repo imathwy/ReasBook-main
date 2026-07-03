@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap03.Definition_3_3_3_1
+import LinearRepresentations_Serre_1977.Chap03.Definition_3_3_3_1
 
 universe u v w x
 
@@ -94,7 +94,7 @@ variable {I : Type x}
 variable [MulAction G I] [MulAction.IsPretransitive G I]
 
 -- Source/core/bridge triage for Proposition 7-7.1-3:
--- * source-facing: Serre's stabilizer of a chosen summand and the associated stabilizer
+-- * source-facing: LinearRepresentations_Serre_1977's stabilizer of a chosen summand and the associated stabilizer
 --   subrepresentation from which `ρ` is induced, for a family of submodules permuted by `ρ`.
 -- * core/canonical owners sampled in the representation-theoretic domain:
 --   `Representation.IsInducedFromSubrepresentation`, `DirectSum.iSupIndep`, and

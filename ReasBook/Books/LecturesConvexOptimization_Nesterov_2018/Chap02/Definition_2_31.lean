@@ -1,4 +1,4 @@
-import Nesterov.Chap02.Definition_2_30
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_30
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -11,12 +11,12 @@ universe u v
 
 Owner declarations sampled before refining this file:
 * `PrimalEqualityConstrainedProblem.lagrangian`, `dualFunction`, `lagrangianMinimizers`, and
-  `constraintResidual` in `Nesterov/Chap02/Definition_2_30.lean`;
+  `constraintResidual` in `LecturesConvexOptimization_Nesterov_2018/Chap02/Definition_2_30.lean`;
 * `SetConstrainedMinimizationProblem.optimalValue` and `argmin[Q]` in
-  `Nesterov/Chap01/Definition_1_3_7.lean`, which already provide the canonical optimal-value and
+  `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_3_7.lean`, which already provide the canonical optimal-value and
   minimizer-set owners used upstream in `Definition_2_30`;
 * `LagrangianProblem.dualFunction` and `LagrangianProblem.lagrangianMinimizers` in
-  `Nesterov/Chap01/Definition_1_10_2.lean`, showing the chapter's owner style for fixed-multiplier
+  `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_10_2.lean`, showing the chapter's owner style for fixed-multiplier
   Lagrangian subproblems.
 
 Best owner abstraction:

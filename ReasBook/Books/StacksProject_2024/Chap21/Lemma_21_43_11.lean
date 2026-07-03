@@ -1,8 +1,8 @@
 import Mathlib
-import stacks_project.Chap13.Lemma_13_17_1
-import stacks_project.Chap15.Lemma_15_60_1
-import stacks_project.Chap18.Lemma_18_24_3
-import stacks_project.Chap21.Definition_21_43_1
+import StacksProject_2024.Chap13.Lemma_13_17_1
+import StacksProject_2024.Chap15.Lemma_15_60_1
+import StacksProject_2024.Chap18.Lemma_18_24_3
+import StacksProject_2024.Chap21.Definition_21_43_1
 
 open CategoryTheory
 open Opposite

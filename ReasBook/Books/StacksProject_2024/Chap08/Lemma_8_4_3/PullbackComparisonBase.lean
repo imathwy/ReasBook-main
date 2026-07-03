@@ -1,5 +1,5 @@
-import stacks_project.Chap04.Definition_4_33_9
-import stacks_project.Chap08.Lemma_8_4_3_Fibered
+import StacksProject_2024.Chap04.Definition_4_33_9
+import StacksProject_2024.Chap08.Lemma_8_4_3_Fibered
 
 open CategoryTheory
 open CategoryTheory Functor

@@ -1,9 +1,9 @@
-import Serre.Chap09.Exercise_9_9_1_3.InvariantSubspaces
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap12.Proposition_12_12_1_1
-import Serre.Chap13.Exercise_13_13_1_11
-import Serre.Chap13.Theorem_13_13_1_6
-import Serre.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_3.InvariantSubspaces
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_11
+import LinearRepresentations_Serre_1977.Chap13.Theorem_13_13_1_6
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
 
 noncomputable section
 
@@ -16,7 +16,7 @@ universe u
 namespace Representation
 
 /-- Helper for Exercise 16-16.1-11: the ordinary character of a finite-dimensional
-`K[G]`-representation belongs to Serre's character-ring owner `R[K](G)`. -/
+`K[G]`-representation belongs to LinearRepresentations_Serre_1977's character-ring owner `R[K](G)`. -/
 private theorem finiteRepCharacter_mem_characterRingOverField
     (K : Type u) [Field K] (G : Type u) [Group G] (V : FDRep K G) :
     V.character ∈ R[K](G) := by

@@ -1,7 +1,7 @@
 import Mathlib
-import cartan.V.section19.«0002_Theorem_V_2_extra_2»
-import cartan.V.section20.«0003_Theorem_1»
-import cartan.V.section20.«0002_Definition_V_3_extra_2»
+import DifferentialForms_Cartan_1970.V.section19.«0002_Theorem_V_2_extra_2»
+import DifferentialForms_Cartan_1970.V.section20.«0003_Theorem_1»
+import DifferentialForms_Cartan_1970.V.section20.«0002_Definition_V_3_extra_2»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

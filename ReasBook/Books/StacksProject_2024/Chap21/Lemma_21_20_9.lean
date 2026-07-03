@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
-import stacks_project.Chap18.Lemma_18_27_9
-import stacks_project.Chap21.Definition_21_17_13
+import StacksProject_2024.Chap18.Lemma_18_27_9
+import StacksProject_2024.Chap21.Definition_21_17_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,10 +1,10 @@
 import Mathlib
-import Serre.Chap07.Proposition_7_7_2_1
-import Serre.Chap12.Theorem_12_12_5_1
-import Serre.Chap14.Proposition_14_14_1_1
-import Serre.Chap16.Corollary_16_16_1_6.Bases
-import Serre.Chap16.Theorem_16_16_2_1
-import Serre.Chap17.Corollary_17_17_2_2.Index
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_5_1
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_1_1
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_6.Bases
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_2_1
+import LinearRepresentations_Serre_1977.Chap17.Corollary_17_17_2_2.Index
 
 open scoped MonoidAlgebra Representation SubgroupInduction TensorProduct
 open CategoryTheory

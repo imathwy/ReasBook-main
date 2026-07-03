@@ -60,12 +60,12 @@ local instance : Abelian P.isoModSerre.Localization :=
   abelian Q P
 
 -- Proof sketch: if the induced functor is faithful, then any object annihilated by `G` has zero
--- identity in the Serre quotient, hence belongs to `P`. Conversely, if `P = G.obj.kernel`, then
+-- identity in the LinearRepresentations_Serre_1977 quotient, hence belongs to `P`. Conversely, if `P = G.obj.kernel`, then
 -- a morphism in the quotient mapped to zero has image object in the kernel of `G`, hence in `P`,
 -- so the morphism itself is zero.
 /-- Lemma 12.10.7: let `G : A ⥤ₑ B` be an exact functor between abelian categories, and let `P`
-be a Serre subcategory of `A` contained in the kernel of `G`. Then `P` equals the kernel of `G`
-if and only if the induced functor from the Serre quotient `A/P` to `B` is faithful. -/
+be a LinearRepresentations_Serre_1977 subcategory of `A` contained in the kernel of `G`. Then `P` equals the kernel of `G`
+if and only if the induced functor from the LinearRepresentations_Serre_1977 quotient `A/P` to `B` is faithful. -/
 theorem kernel_eq_iff_inducedFunctorToSerreQuotient_faithful
     (G : A ⥤ₑ B) (hPker : P ≤ G.obj.kernel) :
     P = G.obj.kernel ↔

@@ -1,5 +1,5 @@
 import Mathlib
-import stacks_project.Chap20.Example_20_50_7
+import StacksProject_2024.Chap20.Example_20_50_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

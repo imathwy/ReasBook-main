@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap16.Theorem_16_16_2_1
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_2_1
 
 open scoped MonoidAlgebra Representation
 open CategoryTheory
@@ -54,7 +54,7 @@ private theorem decomposition_subgroupInduction_class_eq_of_reduction_iso
             rw [decompositionHom_finiteRepClass_eq (A := A) (K := K) (G := H) V L]
 
 /-- Helper for Theorem 17-17.2-4: once a supplied induced stable-lattice witness identifies the
-reduction of `Ind_H^G(V)` with the induction of the reduction of `V`, Serre's decomposition
+reduction of `Ind_H^G(V)` with the induction of the reduction of `V`, LinearRepresentations_Serre_1977's decomposition
 homomorphism commutes with subgroup induction on all subgroup Grothendieck classes. -/
 theorem decomposition_subgroupInduction_eq_subgroupInduction_decomposition_of_bridge
     (H : Subgroup G)

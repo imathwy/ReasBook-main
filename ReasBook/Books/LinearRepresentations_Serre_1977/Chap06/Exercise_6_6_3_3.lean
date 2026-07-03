@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap02.Remark_2_2_4_4
-import Serre.Chap06.Proposition_6_6_3_1
-import Serre.Chap06.Proposition_6_6_3_2
-import Serre.Chap06.Corollary_6_6_5_4
+import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_4_4
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_3_1
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_3_2
+import LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_5_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -29,7 +29,7 @@ variable (V : Rep k G)
 -- Proof sketch: the coefficient function `s ↦ V.ρ.character s⁻¹` is constant on conjugacy
 -- classes because characters are class functions, so the corresponding group-algebra element
 -- commutes with each basis element `MonoidAlgebra.of k G t`.
-/-- The central group-algebra element attached to the character of `V` by Serre's formula. -/
+/-- The central group-algebra element attached to the character of `V` by LinearRepresentations_Serre_1977's formula. -/
 theorem characterCentralElement_mem_center :
     ((Module.finrank k V : k) / Nat.card G) •
         ∑ s : G, V.ρ.character s⁻¹ • MonoidAlgebra.of k G s ∈
@@ -382,7 +382,7 @@ coefficient field. -/
 lemma finrank_cast_ne_zero_of_is_irreducible
     (hX : X.ρ.IsIrreducible) :
     (Module.finrank k X : k) ≠ 0 := by
-  -- Serre's later divisibility theorem gives `dim X ∣ |G|`; since `|G|` is invertible in
+  -- LinearRepresentations_Serre_1977's later divisibility theorem gives `dim X ∣ |G|`; since `|G|` is invertible in
   -- `k`, this degree is nonzero in `k`.
   letI : X.ρ.IsIrreducible := hX
   have hdiv : Module.finrank k X ∣ Nat.card G := finrank_dvd_card X.ρ
@@ -407,7 +407,7 @@ lemma nonempty_iso_iff_nonempty_rho_equiv :
 
 include finiteG charZeroK algClosedK invCardG
 
-/-- Helper for Exercise 6-6.3-3: Serre's explicit central element acts on an irreducible
+/-- Helper for Exercise 6-6.3-3: LinearRepresentations_Serre_1977's explicit central element acts on an irreducible
 representation by the normalized intertwining multiplicity. -/
 lemma centralCharacter_characterCentralElement_eq_dim_ratio_mul_finrank_intertwining
     (hX : X.ρ.IsIrreducible) (_hY : Y.ρ.IsIrreducible) :
@@ -432,7 +432,7 @@ lemma centralCharacter_characterCentralElement_eq_dim_ratio_mul_finrank_intertwi
           (Finsupp.equivFunOnFinite_symm_eq_sum (fun t : G ↦ Y.ρ.character t⁻¹)).symm
       -- Read off the coefficient at `s` from the packaged finitely supported function.
       simpa using congrArg (fun z : k[G] ↦ z s) hsum_single
-    -- Evaluate the explicit coefficient of Serre's central element at `s`.
+    -- Evaluate the explicit coefficient of LinearRepresentations_Serre_1977's central element at `s`.
     change (a * (∑ t : G, (Y.ρ.character t⁻¹ • MonoidAlgebra.of k G t : k[G])) s =
       a * Y.ρ.character s⁻¹)
     rw [hsingle]
@@ -458,7 +458,7 @@ lemma centralCharacter_characterCentralElement_eq_dim_ratio_mul_finrank_intertwi
             ∑ s : G, X.ρ.character s * Y.ρ.character s⁻¹ := by
             symm
             rw [Finset.mul_sum]
-  -- Route correction: rewrite Serre's element into the canonical character pairing first, and
+  -- Route correction: rewrite LinearRepresentations_Serre_1977's element into the canonical character pairing first, and
   -- only then invoke the owner theorem identifying that pairing with an intertwining dimension.
   rw [centralCharacter_apply_eq_sum_character (ρ := X.ρ)
     (u := characterCentralElement Y) hfinrankX]
@@ -494,7 +494,7 @@ lemma centralCharacter_characterCentralElement_eq_dim_ratio_mul_finrank_intertwi
 
 omit finX finY
 /-- Helper for Exercise 6-6.3-3: isomorphic irreducible representations have the same degree, so
-the degree ratio in Serre's formula is `1`. -/
+the degree ratio in LinearRepresentations_Serre_1977's formula is `1`. -/
 lemma finrank_ratio_eq_one_of_nonempty_iso
     (hX : X.ρ.IsIrreducible) (hXY : Nonempty (X ≅ Y)) :
     ((Module.finrank k Y : k) / (Module.finrank k X : k)) = 1 := by
@@ -508,7 +508,7 @@ lemma finrank_ratio_eq_one_of_nonempty_iso
 include finX finY
 
 /-- Helper for Exercise 6-6.3-3: the central character of an irreducible representation evaluates
-Serre's central element by the Kronecker delta on isomorphism classes. -/
+LinearRepresentations_Serre_1977's central element by the Kronecker delta on isomorphism classes. -/
 theorem centralCharacter_characterCentralElement_eq_ite_of_irreducible
     (hX : X.ρ.IsIrreducible) (hY : Y.ρ.IsIrreducible) :
     ω[X.ρ] (characterCentralElement Y) = if Nonempty (X ≅ Y) then 1 else 0 := by
@@ -567,7 +567,7 @@ attribute [local instance] Classical.propDecidable
 
 -- Proof sketch: transport the standard basis of `ι → k` back along the central-character algebra
 -- equivalence from Proposition `6-6.3-2`, then identify the inverse image of `Pi.basisFun k ι i`
--- with Serre's explicit central element using the character formula of Proposition `6-6.3-1`.
+-- with LinearRepresentations_Serre_1977's explicit central element using the character formula of Proposition `6-6.3-1`.
 /-- Exercise 6-6.3-3: under the canonical central-character algebra equivalence, the inverse image
 of the `i`-th standard basis vector is the central primitive idempotent attached to `π i`. -/
 theorem centralCharacterFamilyAlgEquiv_symm_basisFun
@@ -593,7 +593,7 @@ theorem centralCharacterFamilyAlgEquiv_symm_basisFun
 
 attribute [simp] centralCharacterFamilyAlgEquiv_symm_basisFun
 
--- Proof sketch: Serre's elements `p_i` are exactly the inverse images of the standard basis
+-- Proof sketch: LinearRepresentations_Serre_1977's elements `p_i` are exactly the inverse images of the standard basis
 -- vectors under Proposition `6-6.3-2`, so transporting `Pi.basisFun k ι` gives a basis of the
 -- center.
 /-- A basis statement for Exercise 6-6.3-3: for a complete pairwise nonisomorphic irreducible
@@ -686,7 +686,7 @@ theorem centralPrimitiveIdempotent_mul_self
     exact ⟨(forget₂ (FDRep k G) (Rep k G)).mapIso eFD⟩
   have hV_eq : characterCentralElement V = characterCentralElement (π i) :=
     characterCentralElement_eq_of_nonempty_iso (X := V) (Y := π i) hi
-  -- Transport Serre's element to the canonical basis vector and use coordinatewise idempotence.
+  -- Transport LinearRepresentations_Serre_1977's element to the canonical basis vector and use coordinatewise idempotence.
   rw [hV_eq]
   apply e.injective
   rw [map_mul]

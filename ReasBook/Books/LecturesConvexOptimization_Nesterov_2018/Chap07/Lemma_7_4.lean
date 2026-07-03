@@ -1,8 +1,8 @@
 import Mathlib
-import Nesterov.Chap03.Lemma_3_2_7
-import Nesterov.Chap07.Definition_7_23
-import Nesterov.Chap07.Definition_7_26
-import Nesterov.Chap07.Proposition_7_8
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Lemma_3_2_7
+import LecturesConvexOptimization_Nesterov_2018.Chap07.Definition_7_23
+import LecturesConvexOptimization_Nesterov_2018.Chap07.Definition_7_26
+import LecturesConvexOptimization_Nesterov_2018.Chap07.Proposition_7_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

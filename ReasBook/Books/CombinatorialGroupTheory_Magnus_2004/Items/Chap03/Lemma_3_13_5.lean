@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory.Items.Chap03.Proposition_3_13_1
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Proposition_3_13_1
 import Mathlib
 
 -- Declarations for this item are recorded in this dedicated item file.

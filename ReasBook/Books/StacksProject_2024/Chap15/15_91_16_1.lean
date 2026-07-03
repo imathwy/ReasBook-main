@@ -1,8 +1,8 @@
 import Mathlib.Algebra.Module.LocalizedModule.Away
 import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
 import Mathlib.RingTheory.Localization.BaseChange
-import stacks_project.Chap15.Lemma_15_91_6
-import stacks_project.Chap15.Theorem_15_90_18
+import StacksProject_2024.Chap15.Lemma_15_91_6
+import StacksProject_2024.Chap15.Theorem_15_90_18
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

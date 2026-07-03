@@ -1,7 +1,7 @@
 import Mathlib.LinearAlgebra.TensorProduct.RightExactness
 import Mathlib.LinearAlgebra.TensorProduct.Tower
 import Mathlib.RingTheory.Flat.Basic
-import stacks_project.Chap15.Lemma_15_90_6
+import StacksProject_2024.Chap15.Lemma_15_90_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -9,14 +9,14 @@ import Mathlib.RingTheory.HopkinsLevitzki
 import Mathlib.RingTheory.Ideal.KrullsHeightTheorem
 import Mathlib.RingTheory.LocalRing.Quotient
 import Mathlib.Tactic.TFAE
-import stacks_project.Chap10.Lemma_10_15_2_Prime_avoidance
-import stacks_project.Chap10.Lemma_10_31_6
-import stacks_project.Chap10.Lemma_10_32_5
-import stacks_project.Chap10.Example_10_28_7
-import stacks_project.Chap10.Definition_10_59_1
-import stacks_project.Chap10.Definition_10_59_8
-import stacks_project.Chap10.Lemma_10_59_10
-import stacks_project.Chap10.Definition_10_60_10
+import StacksProject_2024.Chap10.Lemma_10_15_2_Prime_avoidance
+import StacksProject_2024.Chap10.Lemma_10_31_6
+import StacksProject_2024.Chap10.Lemma_10_32_5
+import StacksProject_2024.Chap10.Example_10_28_7
+import StacksProject_2024.Chap10.Definition_10_59_1
+import StacksProject_2024.Chap10.Definition_10_59_8
+import StacksProject_2024.Chap10.Lemma_10_59_10
+import StacksProject_2024.Chap10.Definition_10_60_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

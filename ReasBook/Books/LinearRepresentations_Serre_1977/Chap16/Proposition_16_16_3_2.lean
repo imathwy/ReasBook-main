@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap16.Lemma_16_16_3_1
-import Serre.Chap16.Theorem_16_16_2_2
+import LinearRepresentations_Serre_1977.Chap16.Lemma_16_16_3_1
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_2_2
 
 noncomputable section
 
@@ -33,7 +33,7 @@ local notation "eA'" => (projectiveGrothendieckBaseChangeHom K' : P₀[A'](G) �
 
 /- Domain-style sampling for Proposition 16-16.3-2:
 * primary domain: projective Grothendieck classes under scalar extension to the common fraction
-  field `K'`, with Serre's source-facing actual-projective images over the finite local extension
+  field `K'`, with LinearRepresentations_Serre_1977's source-facing actual-projective images over the finite local extension
   `A ⟶ A'`;
 * relevant owner declarations inspected in this domain:
   `FiniteProjectiveGroupAlgebraModule`,
@@ -47,7 +47,7 @@ local notation "eA'" => (projectiveGrothendieckBaseChangeHom K' : P₀[A'](G) �
   source-facing actual projective images over `A` and `A'` mapped into them through the reduction
   equivalences `P₀[A](G) ≃+ P₀[k](G)` and `P₀[A'](G) ≃+ P₀[k'](G)`.
 * source/core/bridge triage:
-  source-facing: Serre's conclusion that `x` comes from an actual projective `A[G]`-module;
+  source-facing: LinearRepresentations_Serre_1977's conclusion that `x` comes from an actual projective `A[G]`-module;
   core/canonical: the scalar-extension maps
     `projectiveGrothendieckScalarExtensionHom A K'`,
     `projectiveGrothendieckScalarExtensionHom A' K'`, and the positive subsets
@@ -227,7 +227,7 @@ private theorem restricted_projective_witness_class_eq_extension_degree_nsmul
     ∃ E : FiniteProjectiveGroupAlgebraModule A G,
       projectiveGrothendieckBaseChangeHom (A := A) (G := G) K' [E]ₚ₀ =
         ((n * Module.finrank K K' : ℕ) • x) := by
-  -- Route correction: the remaining gap is exactly Serre's restricted-witness comparison over the
+  -- Route correction: the remaining gap is exactly LinearRepresentations_Serre_1977's restricted-witness comparison over the
   -- actual fraction field `K`; the K'-level placeholder route was discarded.
   let _ := x
   let _ := hchar

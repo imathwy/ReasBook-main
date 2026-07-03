@@ -1,5 +1,5 @@
 import Mathlib
-import FirstOrderMethodsinOptimization.Chap13.Definition_13_4
+import FirstOrderMethodsOptimization_Beck_2017.Chap13.Definition_13_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

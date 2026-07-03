@@ -1,4 +1,4 @@
-import SmoothManifoldsLee.Chap03.Sec03_16.Proposition_3_21
+import SmoothManifolds_Lee_2012.Chap03.Sec03_16.Proposition_3_21
 import Mathlib.Geometry.Manifold.LocalDiffeomorph
 
 -- Declarations for this item will be appended below by the statement pipeline.

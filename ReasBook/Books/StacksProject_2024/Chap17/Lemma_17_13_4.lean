@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.CategoryTheory.Limits.ExactFunctor
-import stacks_project.Chap06.Definition_6_26_1
-import stacks_project.Chap17.Definition_17_13_1
+import StacksProject_2024.Chap06.Definition_6_26_1
+import StacksProject_2024.Chap17.Definition_17_13_1
 
 open CategoryTheory Opposite
 open CategoryTheory.Limits

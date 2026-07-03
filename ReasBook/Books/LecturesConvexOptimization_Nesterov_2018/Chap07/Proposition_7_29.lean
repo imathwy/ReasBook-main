@@ -1,8 +1,8 @@
 import Mathlib
-import Nesterov.Chap07.Algorithm_7_12
-import Nesterov.Chap07.Lemma_7_12
-import Nesterov.Chap07.Definition_7_56
-import Nesterov.Chap07.Definition_7_57
+import LecturesConvexOptimization_Nesterov_2018.Chap07.Algorithm_7_12
+import LecturesConvexOptimization_Nesterov_2018.Chap07.Lemma_7_12
+import LecturesConvexOptimization_Nesterov_2018.Chap07.Definition_7_56
+import LecturesConvexOptimization_Nesterov_2018.Chap07.Definition_7_57
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

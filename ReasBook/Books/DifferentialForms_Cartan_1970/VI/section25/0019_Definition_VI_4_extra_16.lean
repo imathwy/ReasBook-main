@@ -1,5 +1,5 @@
 import Mathlib
-import cartan.III.section11.«0003_Theorem_III_5_extra_2»
+import DifferentialForms_Cartan_1970.III.section11.«0003_Theorem_III_5_extra_2»
 
 -- Semantic recall note: the dedicated `lean_leansearch` tool was unavailable in this runner, so
 -- the residue surface was verified directly against Mathlib's circle-integral notation

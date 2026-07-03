@@ -1,10 +1,10 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap03.Definition_3_1_3_1
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_1_3_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
 /- Definition 3.1.3 belongs to the chapter's canonical one-sided directional-derivative API in
-`Nesterov.Chap03.Definition_3_1_3_1`.
+`LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_1_3_1`.
 
 Primary domain:
 - one-sided directional derivatives of extended-real-valued functions on real modules.

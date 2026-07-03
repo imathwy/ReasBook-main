@@ -1,10 +1,10 @@
 import Mathlib
-import Nesterov.Chap05.Definition_5_3_4_1
-import Nesterov.Chap05.Definition_5_4_4_4
-import Nesterov.Chap05.Definition_5_4_4_5
-import Nesterov.Chap05.Definition_5_4_4_6
-import Nesterov.Chap05.Theorem_5_3_3
-import Nesterov.Chap05.Theorem_5_4_4_3
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_3_4_1
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_4_4_4
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_4_4_5
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_4_4_6
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Theorem_5_3_3
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Theorem_5_4_4_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

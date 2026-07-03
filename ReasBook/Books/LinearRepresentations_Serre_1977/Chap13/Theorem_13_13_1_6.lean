@@ -1,10 +1,10 @@
 import Mathlib
-import Serre.Chap07.Proposition_7_7_2_1
-import Serre.RepresentationTheory.GroupFunctionPairing
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
-import Serre.Chap12.Lemma_12_12_1_4
-import Serre.Chap12.Corollary_12_12_4_2
-import Serre.Chap13.Corollary_13_13_1_2
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.RepresentationTheory.GroupFunctionPairing
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_1_4
+import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_4_2
+import LinearRepresentations_Serre_1977.Chap13.Corollary_13_13_1_2
 
 noncomputable section
 
@@ -275,7 +275,7 @@ private theorem bot_equiv_mem_characterRingOverFieldScalarExtension_iff
         (IntermediateField.botEquiv ℚ K).injective (congrFun hg'eq s)
     simpa [hgg'] using hg'
 
-/-- Helper for Theorem 13-13.1-6: a rational-valued class function belongs to Serre's rational
+/-- Helper for Theorem 13-13.1-6: a rational-valued class function belongs to LinearRepresentations_Serre_1977's rational
 character ring exactly when it is invariant under all `Γ_ℚ(G)` power maps. -/
 private theorem rational_valued_classFunction_mem_rational_character_ring_iff_power_invariant
     (f : G → ℚ) (hf : _root_.IsClassFunction f) :
@@ -861,7 +861,7 @@ lemma rat_character_eq_zero_of_pairing_zero_on_cyclic_subgroupPermutationCharact
 -- cyclic subgroups `C`. Exercise `13-13.1-11` identifies each cyclic summand `ℚ ⊗ R_ℚ(C)` with
 -- the `ℚ`-span of the induced trivial characters `ℓ_D^C`, and induction in stages then rewrites
 -- their images in `G` as the permutation characters `ℓ_D^G` for cyclic `D ≤ G`.
-/-- Theorem 13-13.1-6: Serre's rationalized character ring `ℚ ⊗ R_ℚ(G)`, realized as
+/-- Theorem 13-13.1-6: LinearRepresentations_Serre_1977's rationalized character ring `ℚ ⊗ R_ℚ(G)`, realized as
 `Representation.characterRingOverFieldScalarExtension ℚ G`, is the `ℚ`-span of the permutation
 characters `ℓ_C^G = Ind_C^G(1_C)` induced from the cyclic subgroups `C ≤ G`. -/
 theorem characterRingOverFieldScalarExtension_eq_span_cyclic_subgroupPermutationCharactersOverQ :
@@ -878,7 +878,7 @@ theorem characterRingOverFieldScalarExtension_eq_span_cyclic_subgroupPermutation
     rw [Submodule.span_le]
     rintro _ ⟨H, rfl⟩
     exact subgroupPermutationCharacter_mem_characterRingOverFieldScalarExtension H
-  -- Route correction: the remaining direction should follow Serre's source proof. One proves
+  -- Route correction: the remaining direction should follow LinearRepresentations_Serre_1977's source proof. One proves
   -- that any `θ : ℚ⊗R[ℚ](G)` orthogonal to all generators `ℓ_C^G` has zero cyclic averages, then
   -- uses the helper above to show that the value of `θ` depends only on the generated cyclic
   -- subgroup and concludes by induction on subgroup order.

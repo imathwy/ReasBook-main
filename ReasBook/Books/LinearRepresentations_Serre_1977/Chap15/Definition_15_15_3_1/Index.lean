@@ -1,1 +1,1 @@
-import Serre.Chap15.Definition_15_15_3_1.FiniteRepScalarExtension
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1.FiniteRepScalarExtension

@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import stacks_project.Chap20.Lemma_20_33_6
+import StacksProject_2024.Chap20.Lemma_20_33_6
 
 open CategoryTheory
 open CategoryTheory.Limits

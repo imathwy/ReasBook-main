@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap06.Proposition_6_6_2_1
-import Serre.Chap06.Proposition_6_6_3_1
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_2_1
+import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_3_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -148,7 +148,7 @@ theorem centralCharacterFamilyAlgHom_bijective
 /-- Proposition 6-6.3-2: for a complete pairwise nonisomorphic family of irreducible
 finite-dimensional representations over an algebraically closed field in which `|G|` is
 invertible, the family of central characters yields an algebra isomorphism from the center of
-`k[G]` onto the product algebra `ι → k`. Specializing to `k = ℂ` recovers Serre's original
+`k[G]` onto the product algebra `ι → k`. Specializing to `k = ℂ` recovers LinearRepresentations_Serre_1977's original
 statement `\mathbf{C}^h`. -/
 def centralCharacterFamilyAlgEquiv
     (hπ_pairwise : PairwiseNonisomorphic π)

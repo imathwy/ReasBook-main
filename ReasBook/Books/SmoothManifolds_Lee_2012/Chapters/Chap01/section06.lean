@@ -1,8 +1,8 @@
-import SmoothManifoldsLee.Chap01.Sec01_06.Definition_1_6_extra_1
-import SmoothManifoldsLee.Chap01.Sec01_06.Definition_1_6_extra_2
-import SmoothManifoldsLee.Chap01.Sec01_06.Definition_1_6_extra_3
-import SmoothManifoldsLee.Chap01.Sec01_06.Exercise_1_42
-import SmoothManifoldsLee.Chap01.Sec01_06.Exercise_1_43
-import SmoothManifoldsLee.Chap01.Sec01_06.Exercise_1_44
-import SmoothManifoldsLee.Chap01.Sec01_06.Proposition_1_45
-import SmoothManifoldsLee.Chap01.Sec01_06.Theorem_1_46
+import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Definition_1_6_extra_1
+import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Definition_1_6_extra_2
+import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Definition_1_6_extra_3
+import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Exercise_1_42
+import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Exercise_1_43
+import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Exercise_1_44
+import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Proposition_1_45
+import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Theorem_1_46

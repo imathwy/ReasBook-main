@@ -1,4 +1,4 @@
-import Serre.Chap10.Exercise_10_10_5_5.BrauerPrelude
+import LinearRepresentations_Serre_1977.Chap10.Exercise_10_10_5_5.BrauerPrelude
 
 noncomputable section
 
@@ -88,7 +88,7 @@ theorem characterRingInduction_top_toCharacterRing
       simp [MonoidHom.toCharacterRing_apply]
 
 /-- Helper for Exercise 10-10.5-5: in an elementary ambient group, the difference of a degree-`1`
-character from the trivial character already belongs to Serre's augmentation subgroup `R₀'(G)`. -/
+character from the trivial character already belongs to LinearRepresentations_Serre_1977's augmentation subgroup `R₀'(G)`. -/
 theorem linearCharacter_difference_mem_elementaryLinearCharacterAugmentationSpan_of_isElementary
     (hG : IsElementary G) (β : G →* ℂˣ) :
     (β.toCharacterRing - 1 : R(G)) ∈ R₀'(G) := by
@@ -122,7 +122,7 @@ theorem linearCharacter_difference_mem_elementaryLinearCharacterAugmentationSpan
 namespace Subgroup
 
 /-- Helper for Exercise 10-10.5-5: the trivial degree-`1` character gives the trivial element of
-Serre's character ring. -/
+LinearRepresentations_Serre_1977's character ring. -/
 theorem toCharacterRing_one (H : Subgroup G) :
     ((1 : H →* ℂˣ).toCharacterRing : R(H)) = 1 := by
   -- Both class functions are identically `1`, so the bundled character-ring elements agree.
@@ -504,7 +504,7 @@ theorem characterRingInduction_linear_difference_subgroup_chain
 -- Proof sketch: each generator of `R₀'(H)` is itself induced from a linear character difference on
 -- an elementary subgroup `E ≤ H`; induction in stages rewrites its image in `R(G)` as the same
 -- kind of generator coming from the elementary subgroup `E ≤ G`.
-/-- Induction from a subgroup sends Serre's augmentation subgroup `R₀'` into `R₀'`. -/
+/-- Induction from a subgroup sends LinearRepresentations_Serre_1977's augmentation subgroup `R₀'` into `R₀'`. -/
 theorem map_elementaryLinearCharacterAugmentationSpan (H : Subgroup G) :
     Submodule.map (Subgroup.characterRingInduction H) (R₀'(H)) ≤ R₀'(G) := by
   -- Reduce the image of the span to its generators, then rewrite each generator by induction in
@@ -520,7 +520,7 @@ theorem map_elementaryLinearCharacterAugmentationSpan (H : Subgroup G) :
       characterRingInduction_linear_difference_subgroup_chain H K α
 
 /-- Helper for Exercise 10-10.5-5: if `H` is normal with abelian quotient, the induced trivial
-character belongs to Serre's subgroup `R'(G)`. -/
+character belongs to LinearRepresentations_Serre_1977's subgroup `R'(G)`. -/
 theorem induced_trivial_apply_eq_quotient_regular_value
     (H : Subgroup G) [H.Normal] (g : G) :
     ((Subgroup.characterRingInduction H (1 : R(H)) : R(G)) : G → ℂ) g =

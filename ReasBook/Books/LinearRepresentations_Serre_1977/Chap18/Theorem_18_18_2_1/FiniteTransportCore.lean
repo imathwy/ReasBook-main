@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap18.Proposition_18_18_1_2
-import Serre.Chap18.Remark_18_18_1_3
-import Serre.Chap18.Theorem_18_18_2_1.RegularConjClassCore
-import Serre.Chap18.Theorem_18_18_2_1.MixedCharacterOwner
+import LinearRepresentations_Serre_1977.Chap18.Proposition_18_18_1_2
+import LinearRepresentations_Serre_1977.Chap18.Remark_18_18_1_3
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.RegularConjClassCore
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.MixedCharacterOwner
 
 noncomputable section
 
@@ -22,7 +22,7 @@ variable {ι : Type x}
 
 /-- Helper for Theorem 18-18.2-1: dividing a finite-support Brauer relation by a chosen nonzero
 supported coefficient preserves the vanishing relation and normalizes that distinguished
-coefficient to `1`. This is the exact algebraic prefix of Serre's denominator-normalization step
+coefficient to `1`. This is the exact algebraic prefix of LinearRepresentations_Serre_1977's denominator-normalization step
 before any mixed-character model is introduced. -/
 theorem normalized_supported_brauer_relation_local
     (lift : PrimeToPRoot p k →* Kˣ)
@@ -88,7 +88,7 @@ theorem finite_normalized_brauer_relation_data_local
         FDRep.modularCharacterOnPRegularConjClass (p := p) (E q.1.1)
           (PrimeToPRoot.toFieldLift lift) q.2
 
-/-- Helper for Theorem 18-18.2-1: Serre part `(b)` only has to transport the finitely many values
+/-- Helper for Theorem 18-18.2-1: LinearRepresentations_Serre_1977 part `(b)` only has to transport the finitely many values
 taken by a regular class function on the finite owner `PRegularConjClass G p`. -/
 theorem finite_regularClassFunction_transport_values_local
     (f : PRegularConjClass G p → K) :
@@ -98,7 +98,7 @@ theorem finite_regularClassFunction_transport_values_local
   -- The owner `PRegularConjClass G p` is finite because `G` is finite, so `f` has finite image.
   exact Set.finite_range f
 
-/-- Helper for Theorem 18-18.2-1: in Serre part `(b)`, a complete irreducible family contributes
+/-- Helper for Theorem 18-18.2-1: in LinearRepresentations_Serre_1977 part `(b)`, a complete irreducible family contributes
 only finitely many Brauer-character values on the finite owner `PRegularConjClass G p`. -/
 theorem finite_complete_family_brauer_values_local
     [NeZero (Nat.card G : k)]
@@ -143,7 +143,7 @@ theorem modularCharacterOnPRegularConjClass_comp_lift_local
   simp [Representation.modularCharacter, Function.comp, map_multiset_sum]
 
 /-- Helper for Theorem 18-18.2-1: if the characteristic parameter of the source field is nonzero,
-then it is prime. This is the arithmetic gate needed before freezing Serre's mixed-character
+then it is prime. This is the arithmetic gate needed before freezing LinearRepresentations_Serre_1977's mixed-character
 transport at a Witt-vector owner. -/
 theorem fact_prime_of_charP_ne_zero_local
     (hp0 : p ≠ 0) :
@@ -154,7 +154,7 @@ theorem fact_prime_of_charP_ne_zero_local
   infer_instance
 
 /-- Helper for Theorem 18-18.2-1: in the positive-character branch, the theorem-local support file
-already supplies Serre's fixed mixed-character owner `W(k)` together with its residue-field
+already supplies LinearRepresentations_Serre_1977's fixed mixed-character owner `W(k)` together with its residue-field
 identification back to `k`. -/
 theorem exists_fixed_witt_owner_of_charP_ne_zero_local
     (hp0 : p ≠ 0) :
@@ -163,11 +163,11 @@ theorem exists_fixed_witt_owner_of_charP_ne_zero_local
       (K0 : Type u) (_ : Field K0) (_ : Algebra A0 K0) (_ : IsFractionRing A0 K0)
       (_ : CharZero K0) (_e0 : IsLocalRing.ResidueField A0 ≃+* k), True := by
   let _ := fact_prime_of_charP_ne_zero_local (p := p) hp0
-  -- Freeze Serre's mixed-character route at the theorem-local Witt-vector owner from the support
+  -- Freeze LinearRepresentations_Serre_1977's mixed-character route at the theorem-local Witt-vector owner from the support
   -- file; all later transport data is meant to live over this fixed DVR.
   simpa using mixed_character_owner_with_residue_equiv_local (p := p) (k := k)
 
-/-- Helper for Theorem 18-18.2-1: once Serre freezes part `(a)` at the Witt-vector owner `W(k)`,
+/-- Helper for Theorem 18-18.2-1: once LinearRepresentations_Serre_1977 freezes part `(a)` at the Witt-vector owner `W(k)`,
 the prime-to-`p` roots already have the canonical Teichmuller lift, and reducing by the constant
 coefficient map recovers the original root in `k`. This removes owner-selection noise from the
 remaining finite realization step. -/

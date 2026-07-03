@@ -1,9 +1,9 @@
 import Mathlib
-import stacks_project.Chap13.Remark_13_34_5
-import stacks_project.Chap18.Definition_18_6_1
-import stacks_project.Chap18.Lemma_18_24_4
-import stacks_project.Chap21.Situation_21_25_1
-import stacks_project.Chap21.Lemma_21_20_5
+import StacksProject_2024.Chap13.Remark_13_34_5
+import StacksProject_2024.Chap18.Definition_18_6_1
+import StacksProject_2024.Chap18.Lemma_18_24_4
+import StacksProject_2024.Chap21.Situation_21_25_1
+import StacksProject_2024.Chap21.Lemma_21_20_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -68,11 +68,11 @@ variable (h_vanish : ∀ (p : ℕ) ⦃ℱ : ModX⦄, A ℱ → N < p →
 -- Proof sketch: apply the spectral sequence with
 -- `E₂^{p,q} = R^p f_* H^q(K)` to each cohomological degree of `K`. The hypotheses on
 -- `R^p f_*` over objects of `A`, together with the bounded-cohomology bases on the source and
--- target ringed sites and the weak Serre property of `A'`, force every cohomology sheaf of
+-- target ringed sites and the weak LinearRepresentations_Serre_1977 property of `A'`, force every cohomology sheaf of
 -- `Rf_* K` to lie in `A'`.
 /-- Lemma 21.25.4 (1): under the bounded-cohomological-dimension hypotheses of Situation
 `21.25.1` on both the source and target ringed sites, if higher direct images of objects of the
-weak Serre subcategory `\mathcal A` land in `\mathcal A'` and vanish above the bound `N`, then
+weak LinearRepresentations_Serre_1977 subcategory `\mathcal A` land in `\mathcal A'` and vanish above the bound `N`, then
 for every `K ∈ D_\mathcal A(\mathcal O_X)` the derived direct image `Rf_* K` has all cohomology
 sheaves in `\mathcal A'`. -/
 theorem modulePushforwardDerived_mem_derivedCategoryWithCohomologyIn

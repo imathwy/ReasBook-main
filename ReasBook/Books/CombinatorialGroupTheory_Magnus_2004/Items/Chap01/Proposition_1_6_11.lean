@@ -1,5 +1,5 @@
-import CombinatorialGroupTheory.Basic
-import CombinatorialGroupTheory.Items.Chap01.Proposition_1_6_13
+import CombinatorialGroupTheory_Magnus_2004.Basic
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_6_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -18,7 +18,7 @@ open Subgroup
 -- `FreeGroupBasis.isPrimitiveElement`.
 -- Domain sampling:
 -- 1. `Ir(W)` from Proposition `1-6-13` is the chapter owner abstraction for irreducibility rank.
--- 2. `IsPrimitiveElement` in `CombinatorialGroupTheory.Basic` is the project owner abstraction
+-- 2. `IsPrimitiveElement` in `CombinatorialGroupTheory_Magnus_2004.Basic` is the project owner abstraction
 --    for “belongs to some free basis”.
 -- 3. `FreeGroupBasis.isPrimitiveElement` is the canonical bridge from a chosen basis element to
 --    that owner predicate.

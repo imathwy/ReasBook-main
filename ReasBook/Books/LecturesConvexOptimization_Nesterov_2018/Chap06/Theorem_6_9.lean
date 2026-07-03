@@ -1,5 +1,5 @@
-import Nesterov.Chap06.Definition_6_41
-import Nesterov.Chap06.Definition_6_42
+import LecturesConvexOptimization_Nesterov_2018.Chap06.Definition_6_41
+import LecturesConvexOptimization_Nesterov_2018.Chap06.Definition_6_42
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,9 +1,9 @@
 import Mathlib
-import BauschkeLean.Chap08.Proposition_8_17
-import BauschkeLean.Chap11.Definition_11_3
-import BauschkeLean.Chap09.Definition_9_12
-import BauschkeLean.Chap12.Proposition_12_14
-import BauschkeLean.Chap12.Proposition_12_9
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_17
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap11.Definition_11_3
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09.Definition_9_12
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_14
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

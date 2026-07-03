@@ -1,7 +1,7 @@
 import Mathlib
-import stacks_project.Chap04.Definition_4_42_3
-import stacks_project.Chap04.Definition_4_40_1
-import stacks_project.Chap04.Lemma_4_42_6.SliceRepresentable
+import StacksProject_2024.Chap04.Definition_4_42_3
+import StacksProject_2024.Chap04.Definition_4_40_1
+import StacksProject_2024.Chap04.Lemma_4_42_6.SliceRepresentable
 
 /-!
 # Core helpers for Lemma 4.42.6

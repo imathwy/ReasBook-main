@@ -1,6 +1,6 @@
-import Nesterov.Chap06.Definition_6_52
-import Nesterov.Chap06.Definition_6_53
-import Nesterov.Chap06.Proposition_6_42
+import LecturesConvexOptimization_Nesterov_2018.Chap06.Definition_6_52
+import LecturesConvexOptimization_Nesterov_2018.Chap06.Definition_6_53
+import LecturesConvexOptimization_Nesterov_2018.Chap06.Proposition_6_42
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

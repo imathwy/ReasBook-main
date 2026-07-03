@@ -1,6 +1,6 @@
 import Mathlib.RingTheory.Flat.FaithfullyFlat.Algebra
 import Mathlib.RingTheory.RingHom.Etale
-import stacks_project.Chap10.Lemma_10_164_1
+import StacksProject_2024.Chap10.Lemma_10_164_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

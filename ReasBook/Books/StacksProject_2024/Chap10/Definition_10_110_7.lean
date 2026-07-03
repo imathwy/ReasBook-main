@@ -1,4 +1,4 @@
-import stacks_project.Chap10.Definition_10_157_1
+import StacksProject_2024.Chap10.Definition_10_157_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -31,7 +31,7 @@ instance isNoetherianRing_of_regularRing [h : IsRegularRing R] : IsNoetherianRin
 
 namespace IsRegularRing
 
-/-- A regular ring satisfies Serre's condition `(R_k)` for every `k`. -/
+/-- A regular ring satisfies LinearRepresentations_Serre_1977's condition `(R_k)` for every `k`. -/
 theorem serreConditionR (k : ℕ) [IsRegularRing R] : SerreConditionR R k :=
   { toIsNoetherian := inferInstance
     isRegularLocalRing_localizationAtPrime := fun p _ ↦

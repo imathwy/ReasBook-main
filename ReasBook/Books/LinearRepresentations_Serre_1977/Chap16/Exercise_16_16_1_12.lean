@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap14.Corollary_14_14_4_3
-import Serre.Chap08.Corollary_8_8_3_8
-import Serre.Chap15.Definition_15_15_1_1
-import Serre.Chap16.Exercise_16_16_1_12.Index
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3
+import LinearRepresentations_Serre_1977.Chap08.Corollary_8_8_3_8
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Chap16.Exercise_16_16_1_12.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -75,7 +75,7 @@ private theorem finiteRepGrothendieckRelations_le_dimensionLift_ker :
   rw [hdim, Int.natCast_add]
   abel
 
-/-- The dimension homomorphism on Serre's Grothendieck group `R_k(G)`. -/
+/-- The dimension homomorphism on LinearRepresentations_Serre_1977's Grothendieck group `R_k(G)`. -/
 def finiteRepGrothendieckDimension :
     R₀[k](G) →+ ℤ :=
   QuotientAddGroup.lift
@@ -925,7 +925,7 @@ private theorem free_of_finite_projective_over_local_ring
   let _ : Module.Flat R M := Module.Flat.of_projective
   exact Module.free_of_flat_of_isLocalRing
 
-/-- Helper for Exercise 16-16.1-12: Serre's `15.6` route should identify every finite projective
+/-- Helper for Exercise 16-16.1-12: LinearRepresentations_Serre_1977's `15.6` route should identify every finite projective
 `k[H]`-module for a finite `p`-group `H` with a free module. -/
 private theorem finite_projective_groupAlgebra_free_of_isPGroup
     {H : Type u} [Group H] [Finite H]

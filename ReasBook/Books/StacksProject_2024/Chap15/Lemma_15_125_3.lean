@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Module.FinitePresentation
 import Mathlib.LinearAlgebra.DirectSum.Finsupp
 import Mathlib.RingTheory.Valuation.ValuationRing
-import stacks_project.Chap15.PrincipalIdeal
+import StacksProject_2024.Chap15.PrincipalIdeal
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

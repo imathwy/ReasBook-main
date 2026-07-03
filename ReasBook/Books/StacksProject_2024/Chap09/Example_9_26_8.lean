@@ -1,4 +1,4 @@
-import stacks_project.Chap09.Example_9_3_6
+import StacksProject_2024.Chap09.Example_9_3_6
 import Mathlib.Algebra.Category.CommAlgCat.Basic
 import Mathlib.AlgebraicGeometry.Morphisms.Proper
 import Mathlib.AlgebraicGeometry.Morphisms.Smooth

@@ -1,5 +1,5 @@
-import CombinatorialGroupTheory.Basic
-import CombinatorialGroupTheory.Items.Chap01.Lemma_1_4_11
+import CombinatorialGroupTheory_Magnus_2004.Basic
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Lemma_1_4_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -27,7 +27,7 @@ notation `JA(F)` is expressed by the canonical subgroup
 -- 1. `MulAut.IA F` in `Proposition_1_4_5` is the project's canonical subgroup of automorphisms
 --    acting trivially on the abelianization.
 -- 2. `MulAut.conj : F →* MulAut F` in mathlib is the canonical inner-automorphism map.
--- 3. `IsPrimitiveElement` in `CombinatorialGroupTheory.Basic` is the project's intrinsic owner
+-- 3. `IsPrimitiveElement` in `CombinatorialGroupTheory_Magnus_2004.Basic` is the project's intrinsic owner
 --    for elements belonging to some free basis.
 -- 4. `MulAut.innerAutomorphismSubgroup F` is the chapter owner abstraction for the subgroup of
 --    inner automorphisms.

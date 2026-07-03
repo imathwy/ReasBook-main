@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import stacks_project.Chap12.Lemma_12_10_3
-import stacks_project.Chap15.Definition_15_92_4
-import stacks_project.Chap15.Lemma_15_92_6
+import StacksProject_2024.Chap12.Lemma_12_10_3
+import StacksProject_2024.Chap15.Definition_15_92_4
+import StacksProject_2024.Chap15.Lemma_15_92_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -48,7 +48,7 @@ Layer triage:
 - `source-facing`: the category of derived-complete modules and its inclusion into `Mod_A`;
 - `core/canonical`: the owner surface `P`, the full subcategory `P.FullSubcategory`, and the
   inclusion `P.ι`;
-- `bridge/view`: the weak-Serre package from Lemma `15.92.6` and the owner-level closure
+- `bridge/view`: the weak-LinearRepresentations_Serre_1977 package from Lemma `15.92.6` and the owner-level closure
   theorems below, which feed the canonical `ObjectProperty` transfer results. -/
 
 local instance : IsWeakSerreClass P :=

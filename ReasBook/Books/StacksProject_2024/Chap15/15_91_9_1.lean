@@ -2,7 +2,7 @@ import Mathlib.Algebra.Category.ModuleCat.Monoidal.Basic
 import Mathlib.Algebra.Category.ModuleCat.ChangeOfRings
 import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
 import Mathlib.LinearAlgebra.TensorProduct.Prod
-import stacks_project.Chap15.Lemma_15_91_6
+import StacksProject_2024.Chap15.Lemma_15_91_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

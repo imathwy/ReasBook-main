@@ -1,1 +1,1 @@
-import SmoothManifoldsLee.Chap05.Sec05_34.Notation_5_34_extra_1
+import SmoothManifolds_Lee_2012.Chap05.Sec05_34.Notation_5_34_extra_1

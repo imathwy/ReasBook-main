@@ -1,11 +1,11 @@
 import Mathlib
-import Serre.Chap01.Definition_1_1_2_1
-import Serre.Chap03.Theorem_3_3_3_4
-import Serre.Chap07.Proposition_7_7_2_1
-import Serre.Chap07.Exercise_7_7_2_5
-import Serre.Chap10.MonomialCharacter
-import Serre.Chap18.Remark_18_18_6_1
-import Serre.Chap18.Exercise_18_18_6_5.PointStabilizerBridge
+import LinearRepresentations_Serre_1977.Chap01.Definition_1_1_2_1
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_3_4
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Chap07.Exercise_7_7_2_5
+import LinearRepresentations_Serre_1977.Chap10.MonomialCharacter
+import LinearRepresentations_Serre_1977.Chap18.Remark_18_18_6_1
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_5.PointStabilizerBridge
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -19,7 +19,7 @@ open scoped BigOperators
 local notation "A5" => alternatingGroup (Fin 5)
 
 /- Domain-style sampling for this item:
-* primary domain: ordinary character theory of the finite group `A₅`, specialized to Serre's
+* primary domain: ordinary character theory of the finite group `A₅`, specialized to LinearRepresentations_Serre_1977's
   question about which labeled irreducible ordinary characters are monomial;
 * relevant owner declarations inspected in this domain:
   `Representation.IsMonomialCharacter`,
@@ -31,7 +31,7 @@ local notation "A5" => alternatingGroup (Fin 5)
   character-level predicate `Representation.IsMonomialCharacter`;
 * source/core/bridge triage:
   - source-facing: the `OrdinaryIrreducible` labels `.chi3_phi_psi`, `.chi3_psi_phi`, `.chi4`,
-    `.chi5` from Serre's `A₅` character table;
+    `.chi5` from LinearRepresentations_Serre_1977's `A₅` character table;
   - core/canonical: `Representation.IsMonomialCharacter`;
   - bridge/view: the owner-level source-facing character
     `OrdinaryIrreducible.character` from `Remark_18_18_6_1`.
@@ -366,7 +366,7 @@ private theorem point_stabilizer_zero_transported_element_subtype_eq
   rfl
 
 /-- Helper for Exercise 18-18.6-5: the induced class function from the pulled-back `A₄/V₄`
-character is Serre's fixed-point sum over the natural five-point action. -/
+character is LinearRepresentations_Serre_1977's fixed-point sum over the natural five-point action. -/
 private theorem point_stabilizer_zero_induced_character_fixed_point_formula
     (g : A5) :
     Ind[MulAction.stabilizer A5 (0 : Fin 5)](
@@ -788,7 +788,7 @@ private theorem point_stabilizer_zero_induced_character_eq_zero_of_order_ne_one_
     simp [hfix]
 
 /-- Helper for Exercise 18-18.6-5: the induced character from the nontrivial point-stabilizer
-linear character is exactly Serre's row `χ₅`. -/
+linear character is exactly LinearRepresentations_Serre_1977's row `χ₅`. -/
 private theorem point_stabilizer_zero_induced_character_eq_chi5 :
     Ind[MulAction.stabilizer A5 (0 : Fin 5)](
       point_stabilizer_zero_linear_character.toRepresentation.character) = character .chi5 := by
@@ -829,14 +829,14 @@ private theorem point_stabilizer_zero_induced_character_eq_chi5 :
 
 -- Proof sketch: use the index-`5` subgroup `A₄ ≤ A₅` and a nontrivial linear character on that
 -- stabilizer to recover the row `χ₅`.
-/-- Exercise 18-18.6-5 (1): Serre's labeled ordinary character `χ₅` of `A₅` is monomial. -/
+/-- Exercise 18-18.6-5 (1): LinearRepresentations_Serre_1977's labeled ordinary character `χ₅` of `A₅` is monomial. -/
 theorem chi5_isMonomialCharacter :
     IsMonomialCharacter (character .chi5) := by
   let H : Subgroup A5 := MulAction.stabilizer A5 (0 : Fin 5)
   let α : H →* ℂˣ := point_stabilizer_zero_linear_character
   have hχ :
       Ind[H](α.toRepresentation.character) = character .chi5 := by
-    -- Route correction: finish Serre's subgroup route by identifying the induced character with
+    -- Route correction: finish LinearRepresentations_Serre_1977's subgroup route by identifying the induced character with
     -- the table row `χ₅` through the explicit five-point transport sum.
     simpa [H, α] using point_stabilizer_zero_induced_character_eq_chi5
   -- The monomial witness is exactly the nontrivial linear character on the point stabilizer.
@@ -845,13 +845,13 @@ theorem chi5_isMonomialCharacter :
 -- Proof sketch: inspect the characters induced from degree-`1` subgroup characters and compare
 -- them with the degree-`3` row taking values `(φ, ψ)` on the split `5`-cycle classes.
 /-- Exercise 18-18.6-5 (2): the degree-`3` labeled ordinary character of `A₅` taking the values
-`(φ, ψ)` on the split `5`-cycle classes, one of Serre's rows `χ₂`, `χ₃`, is not monomial. -/
+`(φ, ψ)` on the split `5`-cycle classes, one of LinearRepresentations_Serre_1977's rows `χ₂`, `χ₃`, is not monomial. -/
 theorem chi3_phi_psi_not_isMonomialCharacter :
     ¬ IsMonomialCharacter (character .chi3_phi_psi) := by
   intro hmono
   rcases monomial_subgroup_index_eq_character_one (character .chi3_phi_psi) hmono with
     ⟨H, hH⟩
-  -- Read the degree of `χ₃` from the identity column of Serre's table.
+  -- Read the degree of `χ₃` from the identity column of LinearRepresentations_Serre_1977's table.
   have hχ : character .chi3_phi_psi 1 = 3 := by
     norm_num [OrdinaryIrreducible.character, conjugacyClass,
       alternating_group_five_ordinary_irreducible_character_table]
@@ -866,7 +866,7 @@ theorem chi3_phi_psi_not_isMonomialCharacter :
 -- Proof sketch: the same induced-character classification excludes the conjugate degree-`3` row
 -- taking the values `(ψ, φ)` on the two split `5`-cycle classes.
 /-- Exercise 18-18.6-5 (2): the degree-`3` labeled ordinary character of `A₅` taking the values
-`(ψ, φ)` on the split `5`-cycle classes, the other of Serre's rows `χ₂`, `χ₃`, is not monomial. -/
+`(ψ, φ)` on the split `5`-cycle classes, the other of LinearRepresentations_Serre_1977's rows `χ₂`, `χ₃`, is not monomial. -/
 theorem chi3_psi_phi_not_isMonomialCharacter :
     ¬ IsMonomialCharacter (character .chi3_psi_phi) := by
   intro hmono
@@ -886,12 +886,12 @@ theorem chi3_psi_phi_not_isMonomialCharacter :
 
 -- Proof sketch: compare the degree-`4` row with the same list of subgroup-induced linear
 -- characters and note that no such induced character has those values.
-/-- Exercise 18-18.6-5 (3): Serre's labeled ordinary character `χ₄` of `A₅` is not monomial. -/
+/-- Exercise 18-18.6-5 (3): LinearRepresentations_Serre_1977's labeled ordinary character `χ₄` of `A₅` is not monomial. -/
 theorem chi4_not_isMonomialCharacter :
     ¬ IsMonomialCharacter (character .chi4) := by
   intro hmono
   rcases monomial_subgroup_index_eq_character_one (character .chi4) hmono with ⟨H, hH⟩
-  -- Read the degree of `χ₄` from the identity column of Serre's table.
+  -- Read the degree of `χ₄` from the identity column of LinearRepresentations_Serre_1977's table.
   have hχ : character .chi4 1 = 4 := by
     norm_num [OrdinaryIrreducible.character, conjugacyClass,
       alternating_group_five_ordinary_irreducible_character_table]

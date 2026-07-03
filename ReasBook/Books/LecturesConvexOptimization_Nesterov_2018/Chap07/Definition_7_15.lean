@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import Nesterov.Chap06.Definition_6_30
-import Nesterov.Chap06.Remark_6_1_1
+import LecturesConvexOptimization_Nesterov_2018.Chap06.Definition_6_30
+import LecturesConvexOptimization_Nesterov_2018.Chap06.Remark_6_1_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

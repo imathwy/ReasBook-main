@@ -514,7 +514,7 @@ private theorem isEssential_of_ker_le_jacobson_smul_top_local
     exact hsup ▸ hle
   exact eq_top_of_sup_jacobson_smul_top_eq_top_local (k := k) (G := G) N hsup'
 
--- Source-faithful public surface: Serre's proposition is about `k[G]`-modules. The broader
+-- Source-faithful public surface: LinearRepresentations_Serre_1977's proposition is about `k[G]`-modules. The broader
 -- Artinian-ring formulation is kept for internal helper infrastructure below, but the public
 -- existence theorem is recorded only in the group-algebra setting actually used downstream.
 /-- Proposition 14-14.3-1 (1): (a) every `k[G]`-module admits a projective envelope. -/

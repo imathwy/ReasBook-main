@@ -1,4 +1,4 @@
-import AchimKlenkeLean.Items.Chap17.Theorem_17_41
+import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_41
 
 open MeasureTheory
 

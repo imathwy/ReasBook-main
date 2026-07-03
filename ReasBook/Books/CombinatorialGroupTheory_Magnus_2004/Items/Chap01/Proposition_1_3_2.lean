@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory.Basic
+import CombinatorialGroupTheory_Magnus_2004.Basic
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

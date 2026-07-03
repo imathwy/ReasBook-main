@@ -1,5 +1,5 @@
 import Mathlib
-import BauschkeLean.Chap01.Theorem_1_49
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap01.Theorem_1_49
 
 open Filter
 open scoped Topology

@@ -1,6 +1,6 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap03.Definition_3_1_1_3
-import Nesterov.Chap06.Text_6_1_2_Adjoint_Problem_Tractability_Caveat
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_1_1_3
+import LecturesConvexOptimization_Nesterov_2018.Chap06.Text_6_1_2_Adjoint_Problem_Tractability_Caveat
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

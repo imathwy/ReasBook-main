@@ -1,4 +1,4 @@
-import Serre.Chap12.Infra_12_7_CyclicDescent
+import LinearRepresentations_Serre_1977.Chap12.Infra_12_7_CyclicDescent
 
 open scoped Representation SubgroupInduction
 
@@ -41,7 +41,7 @@ theorem exists_cyclicSubgroup_induction_decomposition
           H.1.characterRingOverFieldAlgebraScalarExtensionInduction)) := by
   -- Route correction: this item-level file should reuse the packaged cyclic-descent theorem
   -- rather than rebuilding the cyclic-component decomposition locally.
-  -- The Chapter 12 cyclic-descent infrastructure already packages Serre's denominator-clearing
+  -- The Chapter 12 cyclic-descent infrastructure already packages LinearRepresentations_Serre_1977's denominator-clearing
   -- argument with the same hypotheses and target owner map.
   simpa using
     cyclicSubgroupInduction_descent_of_principal_values

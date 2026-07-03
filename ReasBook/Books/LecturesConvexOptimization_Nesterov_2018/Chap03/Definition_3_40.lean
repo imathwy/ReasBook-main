@@ -1,7 +1,7 @@
-import Nesterov.Chap02.Theorem_2_33
-import Nesterov.Chap01.Definition_1_3_3
-import Nesterov.Chap03.Definition_3_36
-import Nesterov.Chap03.Theorem_3_2_1
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_33
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_3_3
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_36
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

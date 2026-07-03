@@ -1,4 +1,4 @@
-import Serre.Chap12.Exercise_12_12_7_8.RegularPrimeFiber
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_7_8.RegularPrimeFiber
 
 open scoped Representation
 
@@ -33,7 +33,7 @@ section RegularPrime
 
 variable {p : Nat.Primes}
 
-/-- Helper for Exercise 12-12.7-8: once a prime over `M` has Serre's defining residue test for
+/-- Helper for Exercise 12-12.7-8: once a prime over `M` has LinearRepresentations_Serre_1977's defining residue test for
 the fixed class `c`, it already satisfies the regular-prime predicate. -/
 theorem transportedRegularFiberEvalPrime_is_regularPrime
     (M : NonzeroResidualCharacteristicMaximalIdeal A p)
@@ -49,7 +49,7 @@ theorem transportedRegularFiberEvalPrime_is_regularPrime
     IsGaloisPowerClassScalarExtensionRegularPrime K M c P := by
   exact ⟨hfiber.over.symm, heval⟩
 
-/-- Helper for Exercise 12-12.7-8: for fixed `(M, c)`, Serre's intrinsic predicate determines at
+/-- Helper for Exercise 12-12.7-8: for fixed `(M, c)`, LinearRepresentations_Serre_1977's intrinsic predicate determines at
 most one prime of `A ⊗ R_K(G)`. -/
 theorem eq_of_isGaloisPowerClassScalarExtensionRegularPrime
     (M : NonzeroResidualCharacteristicMaximalIdeal A p)

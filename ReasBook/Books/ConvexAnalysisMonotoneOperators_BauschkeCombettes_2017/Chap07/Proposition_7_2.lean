@@ -1,5 +1,5 @@
 import Mathlib
-import BauschkeLean.Chap07.Definition_7_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap07.Definition_7_1
 
 open Set
 open scoped InnerProductSpace

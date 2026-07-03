@@ -1,8 +1,8 @@
 import Mathlib.RingTheory.Etale.Locus
 import Mathlib.RingTheory.RingHom.Etale
 import Mathlib.RingTheory.RingHom.Locally
-import stacks_project.Chap10.Definition_10_143_1
-import stacks_project.Chap15.Lemma_15_9_8
+import StacksProject_2024.Chap10.Definition_10_143_1
+import StacksProject_2024.Chap15.Lemma_15_9_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

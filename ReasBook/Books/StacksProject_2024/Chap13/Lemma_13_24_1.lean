@@ -1,6 +1,6 @@
 import Mathlib.Tactic.Recall
-import stacks_project.Chap12.Definition_12_27_5
-import stacks_project.Chap13.Lemma_13_23_4
+import StacksProject_2024.Chap12.Definition_12_27_5
+import StacksProject_2024.Chap13.Lemma_13_23_4
 
 universe v u
 

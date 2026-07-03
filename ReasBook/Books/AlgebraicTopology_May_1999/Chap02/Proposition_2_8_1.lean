@@ -1,8 +1,8 @@
 import Mathlib
-import MayConciseRevised.Chap02.Lemma_2_4_2
-import MayConciseRevised.Chap02.Lemma_2_4_4
-import MayConciseRevised.Chap02.Proposition_2_4_6
-import MayConciseRevised.Chap02.Theorem_2_7_5
+import AlgebraicTopology_May_1999.Chap02.Lemma_2_4_2
+import AlgebraicTopology_May_1999.Chap02.Lemma_2_4_4
+import AlgebraicTopology_May_1999.Chap02.Proposition_2_4_6
+import AlgebraicTopology_May_1999.Chap02.Theorem_2_7_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

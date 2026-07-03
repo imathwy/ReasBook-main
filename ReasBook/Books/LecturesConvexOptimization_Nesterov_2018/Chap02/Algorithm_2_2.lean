@@ -71,7 +71,7 @@ structure OptimalMethodRecurrence
   gamma_zero : gamma 0 = gamma0
   /-- Each interpolation coefficient lies strictly between `0` and `1`. -/
   alpha_mem_Ioo : ∀ k : ℕ, alpha k ∈ Set.Ioo (0 : ℝ) 1
-  /-- Each `alpha_k` satisfies Nesterov's quadratic relation from step `(a)`. -/
+  /-- Each `alpha_k` satisfies LecturesConvexOptimization_Nesterov_2018's quadratic relation from step `(a)`. -/
   alpha_equation : ∀ k : ℕ,
     L * alpha k ^ (2 : ℕ) = (1 - alpha k) * gamma k + alpha k * mu
   /-- The curvature parameter is updated by the recurrence from step `(a)`. -/

@@ -1,12 +1,12 @@
 import Mathlib
-import stacks_project.Chap04.Definition_4_32_1
-import stacks_project.Chap04.Definition_4_38_3
-import stacks_project.Chap04.Definition_4_39_3
-import stacks_project.Chap04.Example_4_38_5
-import stacks_project.Chap04.Lemma_4_33_7
-import stacks_project.Chap04.Lemma_4_35_2
-import stacks_project.Chap04.Lemma_4_35_9
-import stacks_project.Chap04.Definition_4_39_2
+import StacksProject_2024.Chap04.Definition_4_32_1
+import StacksProject_2024.Chap04.Definition_4_38_3
+import StacksProject_2024.Chap04.Definition_4_39_3
+import StacksProject_2024.Chap04.Example_4_38_5
+import StacksProject_2024.Chap04.Lemma_4_33_7
+import StacksProject_2024.Chap04.Lemma_4_35_2
+import StacksProject_2024.Chap04.Lemma_4_35_9
+import StacksProject_2024.Chap04.Definition_4_39_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

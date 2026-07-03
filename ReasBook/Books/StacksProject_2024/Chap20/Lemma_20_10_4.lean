@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Presheaf.Generator
-import stacks_project.Chap20.Lemma_20_10_3
+import StacksProject_2024.Chap20.Lemma_20_10_3
 
 open CategoryTheory Opposite TopologicalSpace
 open CategoryTheory.Limits

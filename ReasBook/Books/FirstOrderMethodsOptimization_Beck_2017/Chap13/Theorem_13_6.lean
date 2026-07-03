@@ -1,9 +1,9 @@
 import Mathlib
-import FirstOrderMethodsinOptimization.Chap03.Definition_3_17
-import FirstOrderMethodsinOptimization.Chap04.Proposition_4_2
-import FirstOrderMethodsinOptimization.Chap04.Theorem_4_10
-import FirstOrderMethodsinOptimization.Chap13.Assumption_13_1
-import FirstOrderMethodsinOptimization.Chap13.Lemma_13_5
+import FirstOrderMethodsOptimization_Beck_2017.Chap03.Definition_3_17
+import FirstOrderMethodsOptimization_Beck_2017.Chap04.Proposition_4_2
+import FirstOrderMethodsOptimization_Beck_2017.Chap04.Theorem_4_10
+import FirstOrderMethodsOptimization_Beck_2017.Chap13.Assumption_13_1
+import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap04.Remark_4_22_7
-import stacks_project.Chap15.Lemma_15_87_14_Emmanouil
+import StacksProject_2024.Chap04.Remark_4_22_7
+import StacksProject_2024.Chap15.Lemma_15_87_14_Emmanouil
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

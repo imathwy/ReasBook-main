@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import stacks_project.Chap20.Lemma_20_37_1
+import StacksProject_2024.Chap20.Lemma_20_37_1
 
 open AlgebraicGeometry
 

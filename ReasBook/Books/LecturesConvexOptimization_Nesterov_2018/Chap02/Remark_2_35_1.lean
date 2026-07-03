@@ -1,4 +1,4 @@
-import Nesterov.Chap02.Definition_2_35_1
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_35_1
 
 open scoped Gradient ProjectedGradient
 

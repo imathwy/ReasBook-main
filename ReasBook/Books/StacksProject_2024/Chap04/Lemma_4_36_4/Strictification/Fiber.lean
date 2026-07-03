@@ -1,4 +1,4 @@
-import stacks_project.Chap04.Lemma_4_36_4.Strictification.Core
+import StacksProject_2024.Chap04.Lemma_4_36_4.Strictification.Core
 
 universe v₁ v₂ v₃ vS u₁ u₂ u₃ w
 

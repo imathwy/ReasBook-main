@@ -1,7 +1,7 @@
 import Mathlib.Analysis.CStarAlgebra.Matrix
-import Reaslib.NumericalAlgebra.Defs
+import ReasLib.NumericalAlgebra.Defs
 import Mathlib.Logic.Nontrivial.Basic
-import Reaslib.NumericalAlgebra.Direct.SVD
+import ReasLib.NumericalAlgebra.Direct.SVD
 
 namespace Matrix
 

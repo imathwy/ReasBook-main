@@ -1,5 +1,5 @@
-import cartan.I.section02.«0004_Definition_I_2_extra_3»
-import cartan.I.section02.«0013_Proposition_7_1»
+import DifferentialForms_Cartan_1970.I.section02.«0004_Definition_I_2_extra_3»
+import DifferentialForms_Cartan_1970.I.section02.«0013_Proposition_7_1»
 import Mathlib.Analysis.Analytic.IsolatedZeros
 import Mathlib.Analysis.Calculus.DSlope
 import Mathlib.RingTheory.PowerSeries.Derivative

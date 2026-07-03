@@ -1,7 +1,7 @@
-import Reaslib.NumericalAlgebra.Basics.Inequalities
-import Reaslib.NumericalAlgebra.Basics.Norms
-import Reaslib.NumericalAlgebra.Basics.Orthogonality
-import Reaslib.NumericalAlgebra.Conditioning.ConditionNumber
-import Reaslib.NumericalAlgebra.Defs
-import Reaslib.NumericalAlgebra.Direct.SVD
-import Reaslib.NumericalAlgebra.Gradient
+import ReasLib.NumericalAlgebra.Basics.Inequalities
+import ReasLib.NumericalAlgebra.Basics.Norms
+import ReasLib.NumericalAlgebra.Basics.Orthogonality
+import ReasLib.NumericalAlgebra.Conditioning.ConditionNumber
+import ReasLib.NumericalAlgebra.Defs
+import ReasLib.NumericalAlgebra.Direct.SVD
+import ReasLib.NumericalAlgebra.Gradient

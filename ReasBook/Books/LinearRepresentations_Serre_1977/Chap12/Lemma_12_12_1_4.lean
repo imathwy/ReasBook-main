@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap12.Proposition_12_12_1_3
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

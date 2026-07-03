@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import BauschkeLean.Chap20.Theorem_20_25
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap20.Theorem_20_25
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,4 +1,4 @@
-import Serre.Chap18.Theorem_18_18_4_1.CharacterTransformCore
+import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_4_1.CharacterTransformCore
 
 noncomputable section
 
@@ -382,7 +382,7 @@ private theorem
   exact χK.2
 
 /-- Helper for Theorem 18-18.4-1: for a simple class on a finite commutative group of order
-prime to `p`, Serre's transform already comes from a genuine ordinary linear character over `K`. -/
+prime to `p`, LinearRepresentations_Serre_1977's transform already comes from a genuine ordinary linear character over `K`. -/
 private theorem pRegularComponentVirtualModularCharacter_simple_class_mem_characterRingOverField_of_commutative_coprime
     {H : Type u} [Group H] [Finite H] [IsMulCommutative H]
     (lift : PrimeToPRoot p k →* Kˣ) (S : FDRep k H) [Simple S]
@@ -394,7 +394,7 @@ private theorem pRegularComponentVirtualModularCharacter_simple_class_mem_charac
   exact pRegularComponentVirtualModularCharacter_linear_class_mem_characterRingOverField_of_coprime_card
     (p := p) (k := k) (K := K) lift α hpn
 
-/-- Helper for Theorem 18-18.4-1: on a finite commutative group of order prime to `p`, Serre's
+/-- Helper for Theorem 18-18.4-1: on a finite commutative group of order prime to `p`, LinearRepresentations_Serre_1977's
 transform of any virtual modular class is already an ordinary virtual character over `K`. -/
 theorem pRegularComponentVirtualModularCharacter_mem_characterRingOverField_of_commutative_coprime
     {H : Type u} [Group H] [Finite H] [IsMulCommutative H]

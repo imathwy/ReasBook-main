@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap20.Lemma_20_28_6
-import stacks_project.Chap20.«20_54_2_1»
+import StacksProject_2024.Chap20.Lemma_20_28_6
+import StacksProject_2024.Chap20.«20_54_2_1»
 
 open CategoryTheory
 open CategoryTheory.MonoidalCategory

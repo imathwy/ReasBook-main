@@ -1,4 +1,4 @@
-import cartan.IV.section13.«0001_Definition_IV_1_extra_1»
+import DifferentialForms_Cartan_1970.IV.section13.«0001_Definition_IV_1_extra_1»
 import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
 
 -- Declarations for this item will be appended below by the statement pipeline.

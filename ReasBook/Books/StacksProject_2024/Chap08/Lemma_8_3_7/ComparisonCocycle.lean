@@ -1,4 +1,4 @@
-import stacks_project.Chap08.Lemma_8_3_7.Base
+import StacksProject_2024.Chap08.Lemma_8_3_7.Base
 
 noncomputable section
 

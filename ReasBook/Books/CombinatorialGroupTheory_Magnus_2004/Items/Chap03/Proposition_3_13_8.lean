@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory.Items.Chap03.Proposition_3_12_5
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Proposition_3_12_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -9,7 +9,7 @@ universe u
 set_option autoImplicit false
 
 /-!
-Primary domain: Bass-Serre decompositions of matrix groups over polynomial rings.
+Primary domain: Bass-LinearRepresentations_Serre_1977 decompositions of matrix groups over polynomial rings.
 
 Layer triage:
 - `source-facing`: the two concrete subgroups of `GL(2, F[t])`, namely the constant-coefficient
@@ -110,7 +110,7 @@ constant copy of `GL(2, F)` and the upper triangular subgroup `T(F[t])`, with th
 subgroup `T(F)` identified, onto `GL(2, F[t])` is bijective. -/
 -- Proof sketch: let `GL(2, F[t])` act on the Behr tree attached to the valuation at infinity on
 -- `F(t)`. The quotient graph is an edge; its two vertex stabilizers are the constant copy of
--- `GL(2, F)` and `T(F[t])`, and the edge stabilizer is `T(F)`. Bass-Serre theory then identifies
+-- `GL(2, F)` and `T(F[t])`, and the edge stabilizer is `T(F)`. Bass-LinearRepresentations_Serre_1977 theory then identifies
 -- the ambient group with the amalgamated free product of those two stabilizers; the bridge theorem
 -- `map_upperTriangularSubgroup_eq_inf` identifies the constant image of the source-facing subgroup
 -- `T(F)` with the intersection used by `Subgroup.amalgamatedProductComparison`.

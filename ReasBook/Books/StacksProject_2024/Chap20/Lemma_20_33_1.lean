@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap06.Restriction_and_extension_by_zero_for_module_valued_sheaves
-import stacks_project.Chap20.Lemma_20_28_1
+import StacksProject_2024.Chap06.Restriction_and_extension_by_zero_for_module_valued_sheaves
+import StacksProject_2024.Chap20.Lemma_20_28_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

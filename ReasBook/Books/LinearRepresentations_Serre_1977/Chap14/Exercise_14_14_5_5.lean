@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap14.Proposition_14_14_3_1
-import Serre.Chap14.Exercise_14_14_5_4
-import Serre.Chap14.Exercise_14_14_5_5.DualEnvelopeBridge
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_3_1
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_4
+import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_5.DualEnvelopeBridge
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -782,7 +782,7 @@ private theorem directSum_owner_dual_projectiveEnvelope_of_simple_family
 end
 
 -- Source/core/bridge triage:
--- * source-facing: Serre's comparison, for a finite group `G`, between projective envelopes of a
+-- * source-facing: LinearRepresentations_Serre_1977's comparison, for a finite group `G`, between projective envelopes of a
 --   semisimple `k[G]`-module and of its contragredient dual.
 -- * core/canonical: `Representation.dual`, viewed on the module side through `asModule`, together
 --   with `LinearMap.IsProjectiveEnvelope` and the `ModuleCat`-level existence surface

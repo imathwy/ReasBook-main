@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap14.Corollary_14_14_3_3
-import Serre.Chap14.Corollary_14_14_4_3
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_3_3
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3
 
 noncomputable section
 
@@ -95,7 +95,7 @@ variable (G : Type u) [Group G]
 
 /-
 Domain-style sampling:
-* Primary domain: projective Grothendieck groups of finite projective `A[G]`-modules and Serre's
+* Primary domain: projective Grothendieck groups of finite projective `A[G]`-modules and LinearRepresentations_Serre_1977's
   source-facing positive subset inside `P₀[A](G)`.
 * Relevant owner declarations inspected in this domain:
   `finiteProjectiveGroupAlgebraGrothendieckClass`,
@@ -109,7 +109,7 @@ Domain-style sampling:
 * Derived API: the source-facing subset `P⁺[A](G)` and its comparison with the canonical
   projective-envelope basis cone over the residue field.
 -/
-/-- Serre's positive subset `P_A^+(G)`, written here as `P⁺[A](G)`, consists of the classes in
+/-- LinearRepresentations_Serre_1977's positive subset `P_A^+(G)`, written here as `P⁺[A](G)`, consists of the classes in
 `P_A(G)` represented by actual finite projective `A[G]`-modules. -/
 def projectivePositiveSubset :
     Set (P₀[A](G)) :=

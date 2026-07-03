@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap10.Definition_10_10_1_1
-import Serre.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_1
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -31,7 +31,7 @@ section
 variable {p : ℕ} [Fact p.Prime] [Finite G]
 
 -- Source/core/bridge triage:
--- * source-facing: `associatedPElementarySubgroup p x P` is Serre's associated subgroup.
+-- * source-facing: `associatedPElementarySubgroup p x P` is LinearRepresentations_Serre_1977's associated subgroup.
 -- * core/canonical: `IsPElementaryDecomposition`.
 -- * bridge/view: the next theorem records the canonical decomposition data carried by the
 --   associated subgroup.

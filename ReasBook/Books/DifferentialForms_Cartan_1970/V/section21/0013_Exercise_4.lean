@@ -1,4 +1,4 @@
-import cartan.V.section19.«0006_Example_3»
+import DifferentialForms_Cartan_1970.V.section19.«0006_Example_3»
 import Mathlib
 
 -- Declarations for this item will be appended below by the statement pipeline.

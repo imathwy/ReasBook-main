@@ -1,15 +1,15 @@
 import Mathlib
-import Serre.RepresentationTheory.RealizableOver
-import Serre.Chap12.Exercise_12_12_2_3.API
-import Serre.Chap01.Definition_1_1_4_1
-import Serre.Chap02.Exercise_2_2_1_5
-import Serre.Chap02.Theorem_2_2_3_5
-import Serre.Chap03.Corollary_3_3_1_2
-import Serre.Chap03.Exercise_3_3_3_5
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap03.Theorem_3_3_3_4
-import Serre.Chap05.Exercise_5_5_7_1
-import Serre.Chap05.Proposition_5_5_3_2
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_3.API
+import LinearRepresentations_Serre_1977.Chap01.Definition_1_1_4_1
+import LinearRepresentations_Serre_1977.Chap02.Exercise_2_2_1_5
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Chap03.Corollary_3_3_1_2
+import LinearRepresentations_Serre_1977.Chap03.Exercise_3_3_3_5
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_3_4
+import LinearRepresentations_Serre_1977.Chap05.Exercise_5_5_7_1
+import LinearRepresentations_Serre_1977.Chap05.Proposition_5_5_3_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -965,7 +965,7 @@ lemma dihedral_degree_two_equiv_induced_from_rotation_linear_character
     _ = X.ρ.character := hYchar
 
 /-- Helper for Exercise 12-12.2-3: every irreducible complex character of `D_n` should be reduced
-to either a linear character or one of Serre's standard two-dimensional representations `ρ^h`. -/
+to either a linear character or one of LinearRepresentations_Serre_1977's standard two-dimensional representations `ρ^h`. -/
 lemma dihedral_irreducible_character_eq_linear_or_standard_two_dimensional
     (ρ : Rep.{v} ℂ (DihedralGroup n))
     [ρ.ρ.IsIrreducible] :
@@ -989,7 +989,7 @@ lemma dihedral_irreducible_character_eq_linear_or_standard_two_dimensional
     rcases representation_character_eq_linear_character_of_finrank_one ρ.ρ hdim with ⟨α, hα⟩
     exact Or.inl ⟨α, hα⟩
   · -- In degree `2`, induce from the rotation subgroup and identify the resulting character with
-    -- one of Serre's standard two-dimensional characters.
+    -- one of LinearRepresentations_Serre_1977's standard two-dimensional characters.
     rcases dihedral_degree_two_equiv_induced_from_rotation_linear_character
         (n := n) ρ hdim with ⟨α, hρinduced⟩
     rcases rotation_subgroup_character_eq_zmodAddEquiv (n := n) α with ⟨h, halpha⟩
@@ -1675,7 +1675,7 @@ lemma a4_augmentation_characterField_eq_bot :
     exact one_mem (⊥ : IntermediateField ℚ ℂ)
   exact sub_mem hfixed hone
 
-/-- Helper for Exercise 12-12.2-3: Serre's induced nonlinear constituent of `A₄`. -/
+/-- Helper for Exercise 12-12.2-3: LinearRepresentations_Serre_1977's induced nonlinear constituent of `A₄`. -/
 abbrev a4_augmentationRepresentation :
     Representation ℂ A4 (IndV (Subgroup.subtype V4) a4_theta.toRepresentation) :=
   ind (Subgroup.subtype V4) a4_theta.toRepresentation
@@ -1757,7 +1757,7 @@ private lemma a4_v4_eq_one_or_source
             (by decide) (by decide) (by decide) (by decide) (by decide) (by decide))
   exact Or.inr <| Or.inr <| Or.inr hz
 
-/-- Helper for Exercise 12-12.2-3: Serre's Klein-four character `θ` takes the expected `±1`
+/-- Helper for Exercise 12-12.2-3: LinearRepresentations_Serre_1977's Klein-four character `θ` takes the expected `±1`
 values on the four source elements. -/
 private lemma a4_theta_eq_table
     (h : V4) :

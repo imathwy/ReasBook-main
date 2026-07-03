@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Data.List.TFAE
-import stacks_project.Chap10.Definition_10_162_1
-import stacks_project.Chap10.Definition_10_162_9
+import StacksProject_2024.Chap10.Definition_10_162_1
+import StacksProject_2024.Chap10.Definition_10_162_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

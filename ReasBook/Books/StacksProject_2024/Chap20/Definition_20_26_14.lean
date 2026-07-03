@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.CategoryTheory.Functor.Derived.LeftDerived
-import stacks_project.Chap17.Definition_17_5_1
-import stacks_project.Chap13.Remark_13_10_9
-import stacks_project.Chap20.Definition_20_26_2
+import StacksProject_2024.Chap17.Definition_17_5_1
+import StacksProject_2024.Chap13.Remark_13_10_9
+import StacksProject_2024.Chap20.Definition_20_26_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

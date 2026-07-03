@@ -1,5 +1,5 @@
-import AchimKlenkeLean.Items.Chap02.Definition_2_34
-import AchimKlenkeLean.Items.Chap02.Corollary_2_39
+import ProbabilityTheory_Klenke_2020.Items.Chap02.Definition_2_34
+import ProbabilityTheory_Klenke_2020.Items.Chap02.Corollary_2_39
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

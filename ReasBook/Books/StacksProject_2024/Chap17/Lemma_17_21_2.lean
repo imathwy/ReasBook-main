@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Stalk
-import stacks_project.Chap17.Lemma_17_17_2
-import stacks_project.Chap17.Lemma_17_21_3
+import StacksProject_2024.Chap17.Lemma_17_17_2
+import StacksProject_2024.Chap17.Lemma_17_21_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

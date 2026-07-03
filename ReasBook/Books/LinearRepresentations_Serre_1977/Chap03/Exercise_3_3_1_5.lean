@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Serre.Chap03.Exercise_3_3_1_5
+import LinearRepresentations_Serre_1977.Chap03.Exercise_3_3_1_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -12,7 +12,7 @@ Domain-style sampling:
   `AddChar.doubleDualEmb_injective`,
   `AddChar.card_eq`.
 * best owner abstraction: the existing `AddChar` double-dual API from mathlib, already reused by
-  the chapter-level file `Serre.Chap03.Exercise_3_3_1_5`.
+  the chapter-level file `LinearRepresentations_Serre_1977.Chap03.Exercise_3_3_1_5`.
 
 Primitive data versus derived API:
 * primitive owner data: the canonical evaluation morphism into the double dual.
@@ -23,7 +23,7 @@ Source/core/bridge triage:
 * `source-facing`: Exercise `3-3.1-5` as a recall of the canonical double-dual statements for
   finite abelian groups.
 * `core/canonical`: the `AddChar` owner declarations listed above, as surfaced in
-  `Serre.Chap03.Exercise_3_3_1_5`.
+  `LinearRepresentations_Serre_1977.Chap03.Exercise_3_3_1_5`.
 * `bridge/view`: this item file is only a thin recall layer reusing the chapter-level owner file
   rather than restating the same recalls from scratch.
 -/

@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap07.Proposition_7_7_2_1
-import Serre.Chap10.Definition_10_10_1_4
-import Serre.Chap10.Lemma_10_10_3_1
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_4
+import LinearRepresentations_Serre_1977.Chap10.Lemma_10_10_3_1
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
 
 open Representation
 open scoped Representation SubgroupInduction TensorProduct
@@ -21,7 +21,7 @@ local notation "C(" x ")" => Subgroup.centralizer ({x} : Set G)
 
 -- Source/core/bridge triage:
 -- * source-facing: Brauer's auxiliary virtual character on the associated subgroup `H`.
--- * core/canonical: Serre's integral character-ring owner `R(H)`.
+-- * core/canonical: LinearRepresentations_Serre_1977's integral character-ring owner `R(H)`.
 -- * bridge/view: its underlying explicit function `H → ℂ`, and later the scalar extension
 --   `(1 : A) ⊗ ψ₀` in `A ⊗R(H)`.
 

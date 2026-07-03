@@ -1,4 +1,4 @@
-import stacks_project.Chap10.Lemma_10_72_6
+import StacksProject_2024.Chap10.Lemma_10_72_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -30,14 +30,14 @@ Domain triage:
 
 Primitive data here are just the finite module structures on `M` and `N`; the depth hypotheses in
 the theorems are source-facing assumptions rather than extra packaged data. The short exact
-sequence built from a finite presentation of `M` is proof-internal, and the Serre-condition
+sequence built from a finite presentation of `M` is proof-internal, and the LinearRepresentations_Serre_1977-condition
 statements are derived downstream packaging that should not replace this local owner-level file.
 -/
 
 /- Source/core/bridge triage:
 * `source-facing`: the local depth bounds for `Hom_R(M, N)`;
 * `core/canonical`: `moduleDepth` and the Chapter 10 short-exact depth inequalities;
-* `bridge/view`: Lemma `15.23.11`, which repackages these local statements as Serre conditions.
+* `bridge/view`: Lemma `15.23.11`, which repackages these local statements as LinearRepresentations_Serre_1977 conditions.
 -/
 
 -- Proof sketch: choose a finite presentation of the finite module `M`, dualize against `N`, and

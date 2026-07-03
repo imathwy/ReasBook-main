@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap20.Definition_20_26_14
-import stacks_project.Chap20.Definition_20_47_1
+import StacksProject_2024.Chap20.Definition_20_26_14
+import StacksProject_2024.Chap20.Definition_20_47_1
 
 open AlgebraicGeometry
 open CategoryTheory

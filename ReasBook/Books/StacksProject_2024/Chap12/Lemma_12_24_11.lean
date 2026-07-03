@@ -1,9 +1,9 @@
 import Mathlib
-import stacks_project.Chap12.Definition_12_10_1
-import stacks_project.Chap12.Definition_12_24_9
-import stacks_project.Chap12.Lemma_12_24_2
-import stacks_project.Chap12.Lemma_12_24_8
-import stacks_project.Chap12.Lemma_12_24_10
+import StacksProject_2024.Chap12.Definition_12_10_1
+import StacksProject_2024.Chap12.Definition_12_24_9
+import StacksProject_2024.Chap12.Lemma_12_24_2
+import StacksProject_2024.Chap12.Lemma_12_24_8
+import StacksProject_2024.Chap12.Lemma_12_24_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -36,7 +36,7 @@ variable {𝒜 : Type u} [Category.{v} 𝒜] [HasZeroMorphisms 𝒜] [HasZeroObj
 - primitive data: only the filtered complex `K`, a chosen associated spectral sequence `E`, and
   the object property `P`;
 - derived API: boundedness of `E`, finiteness of the induced cohomology filtration, and the weak
-  Serre membership and convergence consequences for the cohomology objects.
+  LinearRepresentations_Serre_1977 membership and convergence consequences for the cohomology objects.
 Source/core/bridge triage:
 - `source-facing`: `HasFiniteFiltrations` and the four lemmas below;
 - `core/canonical`: `FilteredComplex`, `FilteredObject.IsFinite`,
@@ -107,10 +107,10 @@ theorem convergesToCohomology_of_hasFiniteFiltrations
 end Convergence
 
 -- Proof sketch: boundedness implies eventual stabilization, so a page `E_r` lying in a weak
--- Serre subcategory forces the corresponding `E_∞`-graded pieces to lie there as well. The
+-- LinearRepresentations_Serre_1977 subcategory forces the corresponding `E_∞`-graded pieces to lie there as well. The
 -- finite cohomology filtration from part (2) then shows `H^n(K^•)` itself belongs to the weak
--- Serre subcategory by closure under extensions.
-/-- Lemma 12.24.11 (4): let `\mathcal C` be a weak Serre subcategory of the ambient abelian
+-- LinearRepresentations_Serre_1977 subcategory by closure under extensions.
+/-- Lemma 12.24.11 (4): let `\mathcal C` be a weak LinearRepresentations_Serre_1977 subcategory of the ambient abelian
 category. If for some page `r` all terms `E_r^{p,q}` of the spectral sequence associated to the
 filtered complex lie in `\mathcal C`, then every cohomology object `H^n(K^•)` lies in
 `\mathcal C`. -/

@@ -1,4 +1,4 @@
-import SmoothManifoldsLee.Chap03.Sec03_15.Proposition_3_15
+import SmoothManifolds_Lee_2012.Chap03.Sec03_15.Proposition_3_15
 import Mathlib.Geometry.Manifold.IsManifold.Basic
 
 -- Declarations for this item will be appended below by the statement pipeline.

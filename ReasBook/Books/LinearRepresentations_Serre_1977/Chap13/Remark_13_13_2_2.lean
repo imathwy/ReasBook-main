@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.RingTheory.Morita.Matrix
-import Serre.Chap12.Proposition_12_12_1_3
-import Serre.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_3
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

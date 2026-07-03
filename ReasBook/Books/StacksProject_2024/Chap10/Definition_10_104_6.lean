@@ -1,7 +1,7 @@
 import Mathlib
-import stacks_project.Chap10.Definition_10_103_12
-import stacks_project.Chap10.Definition_10_157_1
-import stacks_project.Chap10.Lemma_10_72_3
+import StacksProject_2024.Chap10.Definition_10_103_12
+import StacksProject_2024.Chap10.Definition_10_157_1
+import StacksProject_2024.Chap10.Lemma_10_72_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -48,7 +48,7 @@ theorem localizedRing_moduleDepth_eq_ringKrullDim (p : PrimeSpectrum R) [h : Coh
 
 namespace CohenMacaulayRing
 
-/-- A Cohen-Macaulay ring satisfies Serre's condition `(S_k)` for every `k`. -/
+/-- A Cohen-Macaulay ring satisfies LinearRepresentations_Serre_1977's condition `(S_k)` for every `k`. -/
 theorem serreConditionS (k : ℕ) [h : CohenMacaulayRing R] : SerreConditionS R k := by
   refine
     { toIsNoetherian := inferInstance
@@ -60,7 +60,7 @@ theorem serreConditionS (k : ℕ) [h : CohenMacaulayRing R] : SerreConditionS R 
   rw [Module.supportDim_self_eq_ringKrullDim, localizedRing_moduleDepth_eq_ringKrullDim R p]
   exact min_le_right _ _
 
-/-- A Noetherian ring is Cohen-Macaulay if it satisfies Serre's condition `(S_k)` for every
+/-- A Noetherian ring is Cohen-Macaulay if it satisfies LinearRepresentations_Serre_1977's condition `(S_k)` for every
 `k`. -/
 theorem of_serreConditionS [IsNoetherianRing R] (hS : ∀ k : ℕ, SerreConditionS R k) :
     CohenMacaulayRing R := by

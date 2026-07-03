@@ -1,5 +1,5 @@
-import Serre.Chap12.Proposition_12_12_1_1
-import Serre.Chap12.Corollary_12_12_3_2
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_3_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -20,20 +20,20 @@ namespace Representation
   `groupFunctionPairingOverField_character_eq_finrank_intertwiningMap` for the character-pairing
   clause.
 * source/core/bridge triage:
-  source-facing: Serre applies these theorems to the Artin character;
+  source-facing: LinearRepresentations_Serre_1977 applies these theorems to the Artin character;
   core/canonical: the Chapter `12` owners above;
   bridge/view: a chosen complex Artin realization `ArtinRep : FDRep ℂ G` would only be an
     auxiliary view used to specialize those owners.
 
 Primitive data versus derived API:
 in the minimal API closure of this file, the project does not yet provide a source-facing owner
-for "Serre's Artin class function" itself. A theorem quantified over an arbitrary `ArtinRep :
+for "LinearRepresentations_Serre_1977's Artin class function" itself. A theorem quantified over an arbitrary `ArtinRep :
 FDRep ℂ G` therefore changes the source semantics: it no longer says anything specifically about
 the Artin character. The faithful refinement is recall-only. The Chapter `12` owners are the real
 mathematical statements, and the Artin application is obtained by specializing them to whichever
 complex realization of the Artin character is available upstream. -/
 
-/- Theorem 19-19.1-1, realizability clause: Serre's Artin character application is a direct
+/- Theorem 19-19.1-1, realizability clause: LinearRepresentations_Serre_1977's Artin character application is a direct
 specialization of the Chapter `12` owner theorem saying that every finite-dimensional complex
 representation of a finite group is realizable over any field with enough roots of unity. The
 textbook equality of characters over `K` is the bridge companion

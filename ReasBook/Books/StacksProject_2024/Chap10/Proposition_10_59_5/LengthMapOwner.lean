@@ -1,5 +1,5 @@
 import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
-import stacks_project.Chap10.Proposition_10_58_7
+import StacksProject_2024.Chap10.Proposition_10_58_7
 
 -- Proof rescue support for Proposition 10.59.5: Grothendieck length map on the Chapter 10 owners
 -- imported from Proposition 10.58.7.

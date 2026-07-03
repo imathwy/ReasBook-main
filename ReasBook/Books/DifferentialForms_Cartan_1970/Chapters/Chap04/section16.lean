@@ -1,5 +1,5 @@
-import cartan.IV.section16.0001_Problem_IV_4_extra_1
-import cartan.IV.section16.0002_Theorem_IV_4_extra_2
-import cartan.IV.section16.0003_Lemma_IV_4_extra_3
-import cartan.IV.section16.0004_Lemma_IV_4_extra_4
-import cartan.IV.section16.0005_Theorem_IV_4_extra_5
+import DifferentialForms_Cartan_1970.IV.section16.0001_Problem_IV_4_extra_1
+import DifferentialForms_Cartan_1970.IV.section16.0002_Theorem_IV_4_extra_2
+import DifferentialForms_Cartan_1970.IV.section16.0003_Lemma_IV_4_extra_3
+import DifferentialForms_Cartan_1970.IV.section16.0004_Lemma_IV_4_extra_4
+import DifferentialForms_Cartan_1970.IV.section16.0005_Theorem_IV_4_extra_5

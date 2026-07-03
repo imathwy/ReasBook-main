@@ -3,7 +3,7 @@ import Mathlib.LinearAlgebra.Projectivization.Action
 import Mathlib.Topology.Homeomorph.TransferInstance
 import Mathlib.Topology.Algebra.Module.FiniteDimension
 import Mathlib.Topology.IsLocalHomeomorph
-import SmoothManifoldsLee.Chap01.Sec01_04.Example_1_33
+import SmoothManifolds_Lee_2012.Chap01.Sec01_04.Example_1_33
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

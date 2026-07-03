@@ -1,4 +1,4 @@
-import SmoothManifoldsLee.Chap03.Sec03_14.Proposition_3_6
+import SmoothManifolds_Lee_2012.Chap03.Sec03_14.Proposition_3_6
 import Mathlib.Tactic.Recall
 
 -- Declarations for this item will be appended below by the statement pipeline.

@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory.Items.Chap03.Lemma_3_13_5
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Lemma_3_13_5
 
 universe u v w
 

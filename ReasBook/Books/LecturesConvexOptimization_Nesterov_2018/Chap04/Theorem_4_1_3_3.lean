@@ -1,8 +1,8 @@
 import Mathlib
-import Nesterov.Chap01.Theorem_1_4_21
-import Nesterov.Chap04.Text_4_2_3
-import Nesterov.Chap04.Theorem_4_1_2
-import Nesterov.Chap04.Theorem_4_1_3_2
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Theorem_1_4_21
+import LecturesConvexOptimization_Nesterov_2018.Chap04.Text_4_2_3
+import LecturesConvexOptimization_Nesterov_2018.Chap04.Theorem_4_1_2
+import LecturesConvexOptimization_Nesterov_2018.Chap04.Theorem_4_1_3_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

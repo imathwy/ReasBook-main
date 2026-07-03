@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap14.Corollary_14_14_4_4
-import Serre.Chap14.Lemma_14_14_4_2
-import Serre.Chap14.Proposition_14_14_1_1
-import Serre.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_4
+import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_2
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_1_1
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
 import Mathlib.RingTheory.TensorProduct.Finite
 
 noncomputable section
@@ -24,7 +24,7 @@ variable (K K' G)
 
 /- Domain-style sampling for this owner:
 * primary domain: scalar extension of finite-dimensional representations and the induced maps on
-  Serre's Grothendieck groups `R₀[K](G)`;
+  LinearRepresentations_Serre_1977's Grothendieck groups `R₀[K](G)`;
 * relevant owner declarations inspected in this domain:
   `Representation.scalarExtension`,
   `FDRep.scalarExtension`,

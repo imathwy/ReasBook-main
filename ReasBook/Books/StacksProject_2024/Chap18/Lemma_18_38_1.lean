@@ -2,9 +2,9 @@ import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.PullbackContinuous
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.PushforwardContinuous
 import Mathlib.CategoryTheory.Sites.Over
-import stacks_project.Chap18.Definition_18_28_1
-import stacks_project.Chap18.Lemma_18_19_2
-import stacks_project.Chap18.Lemma_18_36_3
+import StacksProject_2024.Chap18.Definition_18_28_1
+import StacksProject_2024.Chap18.Lemma_18_19_2
+import StacksProject_2024.Chap18.Lemma_18_36_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

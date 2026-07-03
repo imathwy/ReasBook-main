@@ -1,4 +1,4 @@
-import stacks_project.Chap13.Lemma_13_10_5
+import StacksProject_2024.Chap13.Lemma_13_10_5
 
 open CategoryTheory
 open CategoryTheory.Limits

@@ -1,4 +1,4 @@
-import AchimKlenkeLean.Items.Chap15.Theorem_15_43
+import ProbabilityTheory_Klenke_2020.Items.Chap15.Theorem_15_43
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
-import stacks_project.Chap10.Definition_10_37_11
-import stacks_project.Chap15.PrincipalIdeal
+import StacksProject_2024.Chap10.Definition_10_37_11
+import StacksProject_2024.Chap15.PrincipalIdeal
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

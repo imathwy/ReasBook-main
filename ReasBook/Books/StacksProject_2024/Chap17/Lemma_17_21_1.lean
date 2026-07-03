@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Presheaf.Sheafification
 import Mathlib.Algebra.Category.ModuleCat.ExteriorPower
-import stacks_project.LinearAlgebra.PowerOperations
-import stacks_project.Chap06.Definition_6_26_1
-import stacks_project.Chap17.Lemma_17_16_2
+import StacksProject_2024.LinearAlgebra.PowerOperations
+import StacksProject_2024.Chap06.Definition_6_26_1
+import StacksProject_2024.Chap17.Lemma_17_16_2
 
 open scoped AlgebraicGeometry TensorProduct
 open CategoryTheory Opposite TensorProduct

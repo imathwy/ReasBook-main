@@ -1,7 +1,7 @@
 import Mathlib.Tactic.Recall
-import stacks_project.Chap06.Definition_6_26_1
-import stacks_project.Chap06.Lemma_6_20_3
-import stacks_project.Chap06.Lemma_6_22_1
+import StacksProject_2024.Chap06.Definition_6_26_1
+import StacksProject_2024.Chap06.Lemma_6_20_3
+import StacksProject_2024.Chap06.Lemma_6_22_1
 
 open CategoryTheory TopologicalSpace Opposite
 open scoped AlgebraicGeometry

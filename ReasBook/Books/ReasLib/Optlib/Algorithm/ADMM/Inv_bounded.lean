@@ -1,4 +1,4 @@
-import Reaslib.Optlib.Function.Proximal
+import ReasLib.Optlib.Function.Proximal
 import Mathlib.Topology.MetricSpace.Sequences
 
 noncomputable section

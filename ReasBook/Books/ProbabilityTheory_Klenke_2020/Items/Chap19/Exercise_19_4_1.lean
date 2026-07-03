@@ -1,6 +1,6 @@
-import AchimKlenkeLean.Items.Chap02.Theorem_2_47
-import AchimKlenkeLean.Items.Chap17.Theorem_17_39
-import AchimKlenkeLean.Items.Chap19.Definition_19_23
+import ProbabilityTheory_Klenke_2020.Items.Chap02.Theorem_2_47
+import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_39
+import ProbabilityTheory_Klenke_2020.Items.Chap19.Definition_19_23
 import Mathlib
 
 -- Declarations for this item will be appended below by the statement pipeline.

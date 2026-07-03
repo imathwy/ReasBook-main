@@ -1,5 +1,5 @@
-import Nesterov.Chap03.Definition_3_52
-import Nesterov.Chap03.Definition_3_53
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_52
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_53
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

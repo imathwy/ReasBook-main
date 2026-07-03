@@ -3,7 +3,7 @@ import Mathlib
 -- Declarations for this item will be appended below by the statement pipeline.
 
 /- Source/core/bridge triage:
-- `source-facing`: Serre's presentation of the finite dihedral group by the generators `r` and `s`
+- `source-facing`: LinearRepresentations_Serre_1977's presentation of the finite dihedral group by the generators `r` and `s`
   with the relations `r^n = 1`, `s^2 = 1`, and `srs = r⁻¹`;
 - `core/canonical`: mathlib's owner `DihedralGroup n`, together with its canonical constructors
   `DihedralGroup.r`, `DihedralGroup.sr` and the upstream formulas for multiplication, inversion,

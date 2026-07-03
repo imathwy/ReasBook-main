@@ -1,8 +1,8 @@
 import Mathlib
-import stacks_project.Chap13.Lemma_13_35_7
+import StacksProject_2024.Chap13.Lemma_13_35_7
 import Mathlib.CategoryTheory.Retract
-import stacks_project.Chap13.Definition_13_37_1
-import stacks_project.Chap13.Remark_13_35_5
+import StacksProject_2024.Chap13.Definition_13_37_1
+import StacksProject_2024.Chap13.Remark_13_35_5
 
 open CategoryTheory
 open CategoryTheory.Limits

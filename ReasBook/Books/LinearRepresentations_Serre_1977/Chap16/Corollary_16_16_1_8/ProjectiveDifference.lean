@@ -1,10 +1,10 @@
 import Mathlib
-import Serre.Chap14.Corollary_14_14_4_3
-import Serre.Chap15.Definition_15_15_1_1
-import Serre.Chap15.Definition_15_15_3_1
-import Serre.Chap15.Theorem_15_15_2_2
-import Serre.Chap16.Corollary_16_16_1_8_ProjectiveTriangleSupport
-import Serre.Chap16.Proposition_16_16_4_1
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_8_ProjectiveTriangleSupport
+import LinearRepresentations_Serre_1977.Chap16.Proposition_16_16_4_1
 
 noncomputable section
 
@@ -160,7 +160,7 @@ local notation "k" => IsLocalRing.ResidueField A
 local notation:max "P₀[" A "](" G ")" =>
   finiteProjectiveGroupAlgebraGrothendieckGroup A G
 
-/-- Helper for Corollary 16-16.1-8: on an actual lifted projective generator, Serre's
+/-- Helper for Corollary 16-16.1-8: on an actual lifted projective generator, LinearRepresentations_Serre_1977's
 `d ∘ e = c` triangle should identify the decomposition class with the Cartan class of the reduced
 projective module. -/
 private theorem decompositionHom_projective_scalarExtension_class_eq_cartan_reduction_class_of_lift_data
@@ -192,7 +192,7 @@ private abbrev projective_scalarExtension_literal_map
     Q.V →ₗ[A] K ⊗[A] Q.V :=
   TensorProduct.mk A K Q.V 1
 
-/-- Helper for Corollary 16-16.1-8: on an actual lifted projective generator, Serre's
+/-- Helper for Corollary 16-16.1-8: on an actual lifted projective generator, LinearRepresentations_Serre_1977's
 `d ∘ e = c` triangle identifies the decomposition class of the scalar extension with the
 Cartan class of the reduced projective module.
 
@@ -205,14 +205,14 @@ private theorem decompositionHom_projective_scalarExtension_class_eq_cartan_redu
     (Q : FiniteProjectiveGroupAlgebraModule A G) :
     decompositionHom A K G [Q.scalarExtension K]₀ =
       cartanHom k G [Q.residueFieldReduction]ₚ₀ := by
-  -- Source route, Serre 16.1: this is the projective-generator case of the c-d-e triangle.
+  -- Source route, LinearRepresentations_Serre_1977 16.1: this is the projective-generator case of the c-d-e triangle.
   -- The stable lattice is `Q` itself inside its scalar extension, and its reduction is
   -- `Q.residueFieldReduction`.
   exact
     decompositionHom_projective_scalarExtension_class_eq_cartan_reduction_class_support
       (A := A) (K := K) (G := G) Q
 
-/-- Helper for Corollary 16-16.1-8: once the honest-projective generator case is known, Serre's
+/-- Helper for Corollary 16-16.1-8: once the honest-projective generator case is known, LinearRepresentations_Serre_1977's
 `d ∘ e = c` triangle follows on all of `P₀[k](G)` by transporting to `P₀[A](G)` and expanding the
 pulled-back class as a difference of actual projective generators. -/
 theorem decompositionHom_comp_projectiveGrothendieckScalarExtensionHom_eq_cartanHom_local

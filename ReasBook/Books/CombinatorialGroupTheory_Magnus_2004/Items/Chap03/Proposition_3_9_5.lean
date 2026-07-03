@@ -1,5 +1,5 @@
 import Mathlib
-import CombinatorialGroupTheory.Items.Chap01.Proposition_1_7_4
+import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_7_4
 
 -- Declarations for this item are recorded in this dedicated item file.
 

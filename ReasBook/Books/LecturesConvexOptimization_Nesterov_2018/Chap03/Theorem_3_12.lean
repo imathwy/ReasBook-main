@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap03.Corollary_3_1_2_1
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Corollary_3_1_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

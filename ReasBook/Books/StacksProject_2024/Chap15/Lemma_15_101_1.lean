@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.CategoryTheory.Functor.OfSequence
-import stacks_project.Chap04.Example_4_22_6
-import stacks_project.Chap12.Definition_12_31_2
-import stacks_project.Chap15.Lemma_15_87_4
-import stacks_project.Chap15.Lemma_15_98_6_Koll_r_Kov_cs
+import StacksProject_2024.Chap04.Example_4_22_6
+import StacksProject_2024.Chap12.Definition_12_31_2
+import StacksProject_2024.Chap15.Lemma_15_87_4
+import StacksProject_2024.Chap15.Lemma_15_98_6_Koll_r_Kov_cs
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

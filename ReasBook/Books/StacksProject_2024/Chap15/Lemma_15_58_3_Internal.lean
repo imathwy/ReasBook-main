@@ -6,8 +6,8 @@ import Mathlib.Algebra.Homology.Monoidal
 import Mathlib.Algebra.Homology.Localization
 import Mathlib.CategoryTheory.Localization.Monoidal.Braided
 import Mathlib.CategoryTheory.Monoidal.Preadditive
-import stacks_project.Chap13.Remark_13_10_9
-import stacks_project.Chap15.Lemma_15_58_1
+import StacksProject_2024.Chap13.Remark_13_10_9
+import StacksProject_2024.Chap15.Lemma_15_58_1
 
 -- Internal owner file for the monoidal structure used in Lemma 15.58.3 and its direct closure.
 

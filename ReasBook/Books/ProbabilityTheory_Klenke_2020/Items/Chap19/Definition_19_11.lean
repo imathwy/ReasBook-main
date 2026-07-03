@@ -1,4 +1,4 @@
-import AchimKlenkeLean.Items.Chap17.Definition_17_16
+import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_16
 import Mathlib
 
 open scoped ENNReal

@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap06.Definition_6_30_2
-import stacks_project.Chap06.Stalks_as_filtered_colimits_over_basis_neighbourhoods
+import StacksProject_2024.Chap06.Definition_6_30_2
+import StacksProject_2024.Chap06.Stalks_as_filtered_colimits_over_basis_neighbourhoods
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

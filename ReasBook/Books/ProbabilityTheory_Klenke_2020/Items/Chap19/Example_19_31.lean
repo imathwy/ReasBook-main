@@ -1,5 +1,5 @@
-import AchimKlenkeLean.Items.Chap17.Theorem_17_41
-import AchimKlenkeLean.Items.Chap18.Theorem_18_8
+import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_41
+import ProbabilityTheory_Klenke_2020.Items.Chap18.Theorem_18_8
 import Mathlib
 
 open MeasureTheory ProbabilityTheory

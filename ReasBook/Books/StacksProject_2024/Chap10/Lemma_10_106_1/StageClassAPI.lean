@@ -1,4 +1,4 @@
-import stacks_project.Chap10.Lemma_10_150_6.AssociatedGradedAPI
+import StacksProject_2024.Chap10.Lemma_10_150_6.AssociatedGradedAPI
 
 -- Proof rescue support for Lemma 10.106.1: quotient-Rees stage classes and the
 -- degree-piece comparison `gr_I(R)_n ≃ I^n / I^(n + 1)`.

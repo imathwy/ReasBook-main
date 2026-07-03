@@ -1,5 +1,5 @@
-import Serre.Chap12.Corollary_12_12_4_2
-import Serre.Chap12.Exercise_12_12_7_8.ScalarExtensionTransport
+import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_4_2
+import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_7_8.ScalarExtensionTransport
 
 open scoped Representation
 
@@ -107,7 +107,7 @@ private theorem
             Submodule ((⊥ : Ideal A).ResidueField) (G → K)).smul_mem b hg
 
 /-- Helper for Exercise 12-12.7-8: extending scalars from `A` to a coefficient field `F` mapping
-to `K` preserves Serre's scalar-extension owner `A ⊗ R_K(G)` inside `G → K`. This is the
+to `K` preserves LinearRepresentations_Serre_1977's scalar-extension owner `A ⊗ R_K(G)` inside `G → K`. This is the
 coefficient half of the fiber-first route before quotient functions enter the picture. -/
 private theorem mem_characterRingOverFieldAlgebraScalarExtension_of_mem_baseChange
     {F : Type*} [Field F] [Algebra A F] [Algebra F K] [IsScalarTower A F K] {f : G → K}
@@ -131,7 +131,7 @@ private theorem mem_characterRingOverFieldAlgebraScalarExtension_of_mem_baseChan
 
 /-- Helper for Exercise 12-12.7-8: after changing coefficients from `A` to the bottom residue
 field `((0).ResidueField)`, the resulting fiber owner is linearly the same as the coefficient
-changed scalar-extension owner. This certifies the span-theoretic part of Serre's zero-fiber
+changed scalar-extension owner. This certifies the span-theoretic part of LinearRepresentations_Serre_1977's zero-fiber
 normalization route. -/
 private noncomputable def
     botFiber_characterRingOverFieldAlgebraScalarExtensionSubalgebra_to_baseChangeLinearEquiv :
@@ -377,7 +377,7 @@ private noncomputable def
       ext g
       rfl }
 
-/-- Helper for Exercise 12-12.7-8: over the coefficient field `K` itself, Serre's owner
+/-- Helper for Exercise 12-12.7-8: over the coefficient field `K` itself, LinearRepresentations_Serre_1977's owner
 `K ⊗ R_K(G)` is exactly the `K`-algebra of `K`-valued functions on `Γ_K`-classes. This is the
 endpoint owner equivalence needed before transporting back to the bottom fiber. -/
 private theorem
@@ -395,7 +395,7 @@ private theorem
       simpa [Pi.smul_apply, Algebra.smul_def, mul_assoc, mul_left_comm, mul_comm] using
         (K ⊗R[K](G) : Submodule K (G → K)).smul_mem (algebraMap ℚ K a) hg
 
-/-- Helper for Exercise 12-12.7-8: over the coefficient field `K` itself, Serre's owner
+/-- Helper for Exercise 12-12.7-8: over the coefficient field `K` itself, LinearRepresentations_Serre_1977's owner
 `K ⊗ R_K(G)` is exactly the `K`-algebra of `K`-valued functions on `Γ_K`-classes. This is the
 endpoint owner equivalence needed before transporting back to the bottom fiber. -/
 private theorem
@@ -435,7 +435,7 @@ private theorem
       (classFunction_mem_characterRingOverFieldScalarExtension_iff_gammaSubgroup_invariant
         G K φ).2 hpow
 
-/-- Helper for Exercise 12-12.7-8: Serre's `K`-coefficient owner `K ⊗ R_K(G)` is canonically the
+/-- Helper for Exercise 12-12.7-8: LinearRepresentations_Serre_1977's `K`-coefficient owner `K ⊗ R_K(G)` is canonically the
 full function algebra on `Γ_K`-classes. This packages the quotient-function endpoint
 multiplicatively before the bottom-fiber transport is applied. -/
 private noncomputable def
@@ -543,7 +543,7 @@ private noncomputable def
   simpa using hφ.lift_mk g
 
 /-- Helper for Exercise 12-12.7-8: this is the canonical linear zero-fiber composite promised by
-Serre's source route. The only remaining work afterwards is to upgrade this fixed linear
+LinearRepresentations_Serre_1977's source route. The only remaining work afterwards is to upgrade this fixed linear
 normalization to an algebra equivalence by proving multiplicativity on the fiber. -/
 private noncomputable def zero_fiber_linearEquiv_galoisPowerClass_functions :
     (((⊥ : Ideal A).Fiber
@@ -652,7 +652,7 @@ private theorem zero_fiber_linearEquiv_galoisPowerClass_functions_mul_apply_mk
           zero_fiber_linearEquiv_galoisPowerClass_functions (A := A) (K := K) (G := G) η)
           (galoisPowerClassMk ΓK g)) := by
   -- Route correction: prove multiplicativity at each chosen `Γ_K`-class by tensor induction,
-  -- staying on Serre's source-level pure-tensor formulas instead of unfolding the whole fiber.
+  -- staying on LinearRepresentations_Serre_1977's source-level pure-tensor formulas instead of unfolding the whole fiber.
   refine TensorProduct.induction_on ξ ?_ ?_ ?_
   · intro η g
     simp
@@ -702,7 +702,7 @@ private theorem zero_fiber_linearEquiv_galoisPowerClass_functions_mul_apply_mk
     -- The left tensor variable is handled by the same distributivity argument.
     simp [add_mul, map_add, hξ₁ η g, hξ₂ η g, Pi.mul_apply, left_distrib]
 
-/-- Helper for Exercise 12-12.7-8: Serre's zero branch first identifies the bottom fiber over
+/-- Helper for Exercise 12-12.7-8: LinearRepresentations_Serre_1977's zero branch first identifies the bottom fiber over
 `(0)` with the function ring on `Γ_K`-classes. This is the structural bottom-fiber equivalence
 that turns the ambient zero-prime classification into pure fiber transport. -/
 noncomputable def zero_fiber_algEquiv_galoisPowerClass_functions :
@@ -788,7 +788,7 @@ private noncomputable def transported_zero_fiber_evalAlgHom
 
 /-- Helper for Exercise 12-12.7-8: the residue-field-valued transported evaluation map before
 postcomposing with the canonical coefficient embedding `((0).ResidueField) → K`. This isolates
-the pure bottom-fiber coordinate evaluation from the later comparison with Serre's defining
+the pure bottom-fiber coordinate evaluation from the later comparison with LinearRepresentations_Serre_1977's defining
 `K`-valued evaluation map. -/
 private noncomputable def transported_zero_fiber_residue_evalRingHom
     (e : (((⊥ : Ideal A).Fiber
@@ -852,7 +852,7 @@ private theorem transportedZeroFiberEvalPrimeAsIdeal_eq_ker_residue_evalRingHom
     transported_zero_fiber_residue_evalRingHom, RingHom.mem_ker, RingHom.comp_apply] using h
 
 /-- Helper for Exercise 12-12.7-8: once the transported bottom-fiber evaluation map agrees with
-Serre's defining evaluation map for `P₀,c`, the corresponding transported coordinate prime is
+LinearRepresentations_Serre_1977's defining evaluation map for `P₀,c`, the corresponding transported coordinate prime is
 already exactly `P₀,c`. This isolates the final kernel comparison from the still-missing
 structural bottom-fiber equivalence. -/
 theorem transported_zero_fiber_eval_prime_eq_zero_prime_of_evalAlgHom_eq
@@ -869,7 +869,7 @@ theorem transported_zero_fiber_eval_prime_eq_zero_prime_of_evalAlgHom_eq
         (zero_fiber_lift (A := A) (K := K) (G := G) e c) =
       galoisPowerClassScalarExtensionZeroPrimeIdeal K c := by
   apply PrimeSpectrum.ext
-  -- Matching the transported evaluation map with Serre's owner map identifies their kernels.
+  -- Matching the transported evaluation map with LinearRepresentations_Serre_1977's owner map identifies their kernels.
   have hker :
       RingHom.ker (transported_zero_fiber_evalAlgHom (A := A) (K := K) (G := G) e c).toRingHom =
         RingHom.ker (galoisPowerClassScalarExtensionZeroPrimeIdealEval K c) := by
@@ -921,7 +921,7 @@ private theorem transported_zero_fiber_evalAlgHom_apply_mk
       (A := A) (K := K) (G := G) (L := L)
       (a := (1 : ((⊥ : Ideal A).ResidueField))) (x := x) g)
 
-/-- Helper for Exercise 12-12.7-8: Serre's defining owner map for `P₀,c` may be evaluated on
+/-- Helper for Exercise 12-12.7-8: LinearRepresentations_Serre_1977's defining owner map for `P₀,c` may be evaluated on
 any representative of the `Γ_K`-class `c`. -/
 private theorem galoisPowerClassScalarExtensionZeroPrimeIdealEval_apply_mk
     (x : characterRingOverFieldAlgebraScalarExtensionSubalgebra A K G)
@@ -947,7 +947,7 @@ private theorem galoisPowerClassScalarExtensionZeroPrimeIdealEval_apply_mk
           exact hxconst.eq_of_mk_eq hg'
 
 /-- Helper for Exercise 12-12.7-8: for the canonical bottom-fiber equivalence fixed above, the
-transported coordinate evaluation map at `c` is exactly Serre's defining `K`-valued owner map for
+transported coordinate evaluation map at `c` is exactly LinearRepresentations_Serre_1977's defining `K`-valued owner map for
 `P₀,c`. This is the last zero-branch interface step before the kernel comparison closes. -/
 theorem transported_zero_fiber_evalAlgHom_eq_zeroPrimeIdealEval
     (c : GaloisPowerClass ΓK) :

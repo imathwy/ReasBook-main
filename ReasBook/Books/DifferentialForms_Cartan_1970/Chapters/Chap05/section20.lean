@@ -1,7 +1,7 @@
-import cartan.V.section20.0001_Definition_V_3_extra_1
-import cartan.V.section20.0002_Definition_V_3_extra_2
-import cartan.V.section20.0003_Theorem_1
-import cartan.V.section20.0004_Theorem_2
-import cartan.V.section20.0005_Example_V_3_extra_3
-import cartan.V.section20.0006_Definition_V_3_extra_4
-import cartan.V.section20.0007_Remark_V_3_extra_5
+import DifferentialForms_Cartan_1970.V.section20.0001_Definition_V_3_extra_1
+import DifferentialForms_Cartan_1970.V.section20.0002_Definition_V_3_extra_2
+import DifferentialForms_Cartan_1970.V.section20.0003_Theorem_1
+import DifferentialForms_Cartan_1970.V.section20.0004_Theorem_2
+import DifferentialForms_Cartan_1970.V.section20.0005_Example_V_3_extra_3
+import DifferentialForms_Cartan_1970.V.section20.0006_Definition_V_3_extra_4
+import DifferentialForms_Cartan_1970.V.section20.0007_Remark_V_3_extra_5

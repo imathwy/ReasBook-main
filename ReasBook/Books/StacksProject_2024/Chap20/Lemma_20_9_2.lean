@@ -1,4 +1,4 @@
-import stacks_project.Chap20.Lemma_20_9_3
+import StacksProject_2024.Chap20.Lemma_20_9_3
 
 open CategoryTheory Opposite TopCat TopCat.Presheaf TopologicalSpace
 open CategoryTheory.Limits

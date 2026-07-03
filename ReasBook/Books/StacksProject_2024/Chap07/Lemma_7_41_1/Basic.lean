@@ -2,8 +2,8 @@ import Mathlib.CategoryTheory.Adjunction.Limits
 import Mathlib.CategoryTheory.Sites.LocallyBijective
 import Mathlib.CategoryTheory.Sites.CoverLifting
 import Mathlib.CategoryTheory.Sites.LeftExact
-import stacks_project.Chap07.Definition_7_15_1_Topoi
-import stacks_project.Chap07.Lemma_7_17_6
+import StacksProject_2024.Chap07.Definition_7_15_1_Topoi
+import StacksProject_2024.Chap07.Lemma_7_17_6
 
 open CategoryTheory
 open CategoryTheory.Limits

@@ -1,12 +1,12 @@
-import Serre.Chap14.Corollary_14_14_4_3.GrothendieckBasics
-import Serre.Chap14.Corollary_14_14_4_4
-import Serre.Chap14.Proposition_14_14_3_1
-import Serre.Chap14.Infra_14_4_ProjectiveLift
-import Serre.Chap15.Definition_15_15_1_1
-import Serre.Chap15.Definition_15_15_3_1
-import Serre.Chap15.Theorem_15_15_2_2
-import Serre.Chap16.Corollary_16_16_1_8_ProjectiveTriangleSupport
-import Serre.Chap16.Remark_16_16_3_5
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3.GrothendieckBasics
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_4
+import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_3_1
+import LinearRepresentations_Serre_1977.Chap14.Infra_14_4_ProjectiveLift
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_8_ProjectiveTriangleSupport
+import LinearRepresentations_Serre_1977.Chap16.Remark_16_16_3_5
 
 noncomputable section
 
@@ -459,7 +459,7 @@ private theorem decompositionHom_projective_scalarExtension_class_eq_residueFiel
 /-- Infrastructure for Theorem 16-16.1-1: the class of a residue-field reduction of a lifted
 finite projective module lies in the image of the decomposition homomorphism.
 
-Proof route from Serre, Ch. 16, Sec. 1:
+Proof route from LinearRepresentations_Serre_1977, Ch. 16, Sec. 1:
 1. Start with a finite projective `A[G]`-module `Q`.  Scalar extension to the fraction field gives
    the finite-dimensional `K[G]`-representation `Q.scalarExtension K`.
 2. The decomposition homomorphism `d : R_K(G) -> R_k(G)` is defined by choosing a stable lattice
@@ -484,8 +484,8 @@ theorem residueFieldReduction_toFiniteRep_class_mem_range_decompositionHom
 projective module and the kernel class is already in the image of `decompositionHom`, then the
 simple class is also in the image.
 
-Proof route from Serre, Ch. 16, Sec. 1:
-1. Serre lifts a projective envelope of a simple `k[G]`-module to characteristic zero, then uses
+Proof route from LinearRepresentations_Serre_1977, Ch. 16, Sec. 1:
+1. LinearRepresentations_Serre_1977 lifts a projective envelope of a simple `k[G]`-module to characteristic zero, then uses
    the exact sequence `0 -> Ker -> Q_bar -> S -> 0` after reduction.
 2. In the Grothendieck group this exact sequence is the identity
    `[Q_bar] = [Ker] + [S]`, here supplied as `hshort`.
@@ -694,9 +694,9 @@ theorem exists_preimage_of_simple_class_of_hasEnoughRootsOfUnity
 /-- Infrastructure for Theorem 16-16.1-1: under the large-field hypothesis, every simple
 residue-field class belongs to the image of the decomposition homomorphism.
 
-Proof route from Serre, Ch. 16, Sec. 1:
+Proof route from LinearRepresentations_Serre_1977, Ch. 16, Sec. 1:
 1. Under `[HasEnoughRootsOfUnity K (Monoid.exponent G)]`, the existing Chapter `16` theorem
-   `satisfiesConditionRPrime_of_sufficiently_large` gives Serre's `(R')` witness for any simple
+   `satisfiesConditionRPrime_of_sufficiently_large` gives LinearRepresentations_Serre_1977's `(R')` witness for any simple
    `k[G]`-representation `S`.
 2. Unpack that witness as a characteristic-zero representation `X` together with a stable lattice
    `L` whose reduction is isomorphic to `S`.
@@ -708,7 +708,7 @@ theorem simple_class_mem_range_decompositionHom_of_hasEnoughRootsOfUnity
     [HasEnoughRootsOfUnity K (Monoid.exponent G)]
     (S : FDRep k G) [Simple S] :
     [S]₀ ∈ Set.range (decompositionHom A K G) := by
-  -- Route correction: once the large-field `(R')` witness is available, Serre's basis argument
+  -- Route correction: once the large-field `(R')` witness is available, LinearRepresentations_Serre_1977's basis argument
   -- only needs the simple class itself to have a preimage under `decompositionHom`.
   rcases
       exists_preimage_of_simple_class_of_hasEnoughRootsOfUnity
@@ -718,7 +718,7 @@ theorem simple_class_mem_range_decompositionHom_of_hasEnoughRootsOfUnity
 /-- Infrastructure for Theorem 16-16.1-1: once all simple basis vectors lie in the image, the
 decomposition homomorphism is surjective.
 
-Proof route from Serre, Ch. 16, Sec. 1:
+Proof route from LinearRepresentations_Serre_1977, Ch. 16, Sec. 1:
 1. A complete pairwise-nonisomorphic family of simple `k[G]`-representations gives the standard
    `ℤ`-basis of `R₀[k](G)` by
    `simple_finiteRep_classes_basis_of_complete_family`.
@@ -729,7 +729,7 @@ Proof route from Serre, Ch. 16, Sec. 1:
 4. Lift this expansion termwise to `R₀[K](G)` using the chosen preimages and the same integer
    coefficients.
 5. Since `decompositionHom` is additive and commutes with integer scalar multiplication, the image
-   of the lifted linear combination is exactly `y`.  This is the formal final step in Serre's proof
+   of the lifted linear combination is exactly `y`.  This is the formal final step in LinearRepresentations_Serre_1977's proof
    after all simple classes have been shown to lift. -/
 theorem decompositionHom_surjective_of_complete_simple_family
     {ι : Type*} (π : ι → FDRep k G)

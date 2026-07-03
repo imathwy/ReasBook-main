@@ -1,9 +1,9 @@
 import Mathlib
-import stacks_project.Chap06.Definition_6_15_1
-import stacks_project.Chap06.Glueing_data_for_sheaves_on_an_open_cover
-import stacks_project.Chap06.Lemma_6_21_6
-import stacks_project.Chap06.Lemma_6_15_2
-import stacks_project.Chap06.Restriction_and_extension_by_zero_for_module_valued_sheaves
+import StacksProject_2024.Chap06.Definition_6_15_1
+import StacksProject_2024.Chap06.Glueing_data_for_sheaves_on_an_open_cover
+import StacksProject_2024.Chap06.Lemma_6_21_6
+import StacksProject_2024.Chap06.Lemma_6_15_2
+import StacksProject_2024.Chap06.Restriction_and_extension_by_zero_for_module_valued_sheaves
 
 open CategoryTheory CategoryTheory.Limits Opposite TopCat TopologicalSpace Topology
 open TopologicalSpace.Opens

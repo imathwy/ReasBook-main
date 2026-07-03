@@ -1,6 +1,6 @@
 import Mathlib
-import stacks_project.Chap15.Definition_15_92_4
-import stacks_project.Chap15.PrincipalIdeal
+import StacksProject_2024.Chap15.Definition_15_92_4
+import StacksProject_2024.Chap15.PrincipalIdeal
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

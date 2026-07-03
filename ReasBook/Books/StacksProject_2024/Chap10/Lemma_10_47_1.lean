@@ -1,6 +1,6 @@
 import Mathlib.RingTheory.LocalRing.ResidueField.Fiber
 import Mathlib.RingTheory.Spectrum.Prime.Chevalley
-import stacks_project.Chap05.Lemma_5_8_14
+import StacksProject_2024.Chap05.Lemma_5_8_14
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

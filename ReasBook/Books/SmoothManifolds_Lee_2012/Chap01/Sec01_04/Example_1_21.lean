@@ -1,5 +1,5 @@
 import Mathlib
-import SmoothManifoldsLee.Chap01.Sec01.Definition_1_extra_1
+import SmoothManifolds_Lee_2012.Chap01.Sec01.Definition_1_extra_1
 
 open scoped Manifold ContDiff
 open ChartedSpace

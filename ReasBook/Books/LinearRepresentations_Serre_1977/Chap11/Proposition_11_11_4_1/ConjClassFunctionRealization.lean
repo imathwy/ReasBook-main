@@ -1,6 +1,6 @@
-import Serre.Chap11.Proposition_11_11_4_1.OwnersAndPrimeFibers
-import Serre.Chap09.Theorem_9_9_2_1
-import Serre.Chap11.Theorem_11_11_2_2
+import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_1.OwnersAndPrimeFibers
+import LinearRepresentations_Serre_1977.Chap09.Theorem_9_9_2_1
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_2
 
 -- Stable conjugacy-class function-ring realization helpers extracted from Proposition 11-11.4-1.
 
@@ -122,7 +122,7 @@ lemma conjClassIndicator_mem_characterRingScalarExtension_field
     (characterRingScalarExtension K G).smul_mem ((orderOf x : K)⁻¹) hwK
 
 /-- Helper for Proposition 11-11.4-1: each conjugacy-class indicator already belongs to the
-complex realization of Serre's tensor character ring. This is the basis vector used to identify
+complex realization of LinearRepresentations_Serre_1977's tensor character ring. This is the basis vector used to identify
 the zero fiber with functions on `ConjClasses G`. -/
 lemma conjClassIndicator_mem_characterRingScalarExtension_complex
     (c : ConjClasses G) :
@@ -133,7 +133,7 @@ lemma conjClassIndicator_mem_characterRingScalarExtension_complex
       (G := G) (K := ℂ) c
 
 /-- Helper for Proposition 11-11.4-1: every complex-valued class function on `G` belongs to the
-complex realization of Serre's tensor character ring. This turns the zero branch into a function
+complex realization of LinearRepresentations_Serre_1977's tensor character ring. This turns the zero branch into a function
 ring on conjugacy classes once the bottom fiber is transported to the complex realization. -/
 lemma classFunction_mem_characterRingScalarExtension_complex
     (f : G → ℂ) (hf : _root_.IsClassFunction f) :
@@ -316,7 +316,7 @@ lemma bijective_classFunctionSubalgebraEvalConjClasses_complex :
       obtain ⟨g, rfl⟩ := ConjClasses.mk_surjective c
       simp [classFunctionSubalgebraEvalConjClasses_complex]
 
-/-- Helper for Proposition 11-11.4-1: the complex realization of Serre's tensor character ring is
+/-- Helper for Proposition 11-11.4-1: the complex realization of LinearRepresentations_Serre_1977's tensor character ring is
 canonically the full function ring on conjugacy classes. The zero branch is therefore reduced to
 transporting the bottom fiber into this already-identified complex realization. -/
 noncomputable def classFunctionSubalgebraAlgEquivConjClasses_complex :
@@ -513,7 +513,7 @@ noncomputable def pregular_deltaFunction
     let _ : DecidableEq (PRegularConjClass G p) := Classical.decEq _
     if d = c then 1 else 0
 
-/-- Helper for Proposition 11-11.4-1: descend a tensor character to Serre's owner
+/-- Helper for Proposition 11-11.4-1: descend a tensor character to LinearRepresentations_Serre_1977's owner
 `PRegularConjClass G p` by first viewing it as a class function on `G`. -/
 def tensorCharacterRingPRegularLift
     {K : Type*} [Field K] [CharZero K] [Algebra K ℂ]

@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.Chap14.Corollary_14_14_4_3.ProjectiveModules
+import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3.ProjectiveModules
 
 noncomputable section
 
@@ -26,7 +26,7 @@ def finiteProjectiveGroupAlgebraGrothendieckRelations :
       { S : ShortComplex (FiniteProjectiveGroupAlgebraModule A G) // S.ShortExact } ↦
       FreeAbelianGroup.of S.1.X₂ - FreeAbelianGroup.of S.1.X₁ - FreeAbelianGroup.of S.1.X₃
 
-/-- Serre's Grothendieck group `P_A(G)`, realized as the Grothendieck group of the exact category
+/-- LinearRepresentations_Serre_1977's Grothendieck group `P_A(G)`, realized as the Grothendieck group of the exact category
 of finite projective `A[G]`-modules. -/
 abbrev finiteProjectiveGroupAlgebraGrothendieckGroup :=
   FreeAbelianGroup (FiniteProjectiveGroupAlgebraModule A G) ⧸

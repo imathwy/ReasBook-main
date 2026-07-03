@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import stacks_project.Chap09.Example_9_7_4_Degree_of_a_rational_function_field
+import StacksProject_2024.Chap09.Example_9_7_4_Degree_of_a_rational_function_field
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

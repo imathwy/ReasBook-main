@@ -1,4 +1,4 @@
-import Serre.Chap16.Exercise_16_16_1_11.Common
+import LinearRepresentations_Serre_1977.Chap16.Exercise_16_16_1_11.Common
 
 noncomputable section
 
@@ -60,7 +60,7 @@ theorem cyclicSubgroupOfIndex_index
   simpa [cyclicSubgroupOfIndex, Nat.gcd_eq_right hdvd] using
     (IsCyclic.index_powMonoidHom_range (G := G) d'.1)
 
-/-- Helper for Exercise 16-16.1-11: Serre's permutation character `ψ_d` is the induction of the
+/-- Helper for Exercise 16-16.1-11: LinearRepresentations_Serre_1977's permutation character `ψ_d` is the induction of the
 trivial character from the canonical subgroup `G_d`. -/
 noncomputable def cyclicSubgroupIndexInducedTrivialRationalCharacter
     (d' : DivisorIndex) : R[ℚ](G) :=

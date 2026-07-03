@@ -1,4 +1,4 @@
-import stacks_project.Chap15.Lemma_15_82_10
+import StacksProject_2024.Chap15.Lemma_15_82_10
 
 noncomputable section
 

@@ -1,8 +1,8 @@
 import Mathlib
-import Serre.Chap12.Proposition_12_12_1_3
-import Serre.Chap15.Definition_15_15_3_1
-import Serre.Chap15.Definition_15_15_3_1.FiniteRepScalarExtension
-import Serre.Chap16.Theorem_16_16_2_1
+import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_3
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1.FiniteRepScalarExtension
+import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -27,7 +27,7 @@ local notation "k" => IsLocalRing.ResidueField A
 local notation:max "P_k(" G ")" => finiteProjectiveGroupAlgebraGrothendieckGroup k G
 
 /- Domain-style sampling for Theorem 16-16.2-2:
-* primary domain: modular representation theory on Grothendieck groups, combining Serre's
+* primary domain: modular representation theory on Grothendieck groups, combining LinearRepresentations_Serre_1977's
   projective scalar-extension map over a finite extension field with ordinary characters;
 * relevant owner declarations inspected in this domain:
   `projectiveGrothendieckScalarExtensionHom`,

@@ -1,5 +1,5 @@
-import stacks_project.Chap12.Lemma_12_24_13
-import stacks_project.Chap15.Definition_15_59_13
+import StacksProject_2024.Chap12.Lemma_12_24_13
+import StacksProject_2024.Chap15.Definition_15_59_13
 
 open scoped BigOperators
 open scoped DerivedTensorProduct

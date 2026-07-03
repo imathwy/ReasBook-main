@@ -1,5 +1,5 @@
-import Nesterov.Chap02.Remark_2_35_1
-import Nesterov.Chap02.Text_2_1
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Remark_2_35_1
+import LecturesConvexOptimization_Nesterov_2018.Chap02.Text_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

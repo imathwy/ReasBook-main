@@ -1,4 +1,4 @@
-import AchimKlenkeLean.Items.Chap02.Example_2_8
+import ProbabilityTheory_Klenke_2020.Items.Chap02.Example_2_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

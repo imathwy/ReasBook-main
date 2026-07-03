@@ -1,7 +1,7 @@
-import AchimKlenkeLean.Items.Chap20.Definition_20_24
-import AchimKlenkeLean.Items.Chap20.Example_20_9
-import AchimKlenkeLean.Items.Chap20.Example_20_28
-import AchimKlenkeLean.Items.Chap20.Example_20_36
+import ProbabilityTheory_Klenke_2020.Items.Chap20.Definition_20_24
+import ProbabilityTheory_Klenke_2020.Items.Chap20.Example_20_9
+import ProbabilityTheory_Klenke_2020.Items.Chap20.Example_20_28
+import ProbabilityTheory_Klenke_2020.Items.Chap20.Example_20_36
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

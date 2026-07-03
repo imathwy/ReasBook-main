@@ -1,13 +1,13 @@
 import Mathlib
 import Mathlib.NumberTheory.NumberField.Cyclotomic.Basic
 import Mathlib.NumberTheory.NumberField.InfinitePlace.Embeddings
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap01.Definition_1_1_4_1
-import Serre.Chap02.Proposition_2_2_2_1
-import Serre.Chap02.Theorem_2_2_3_5
-import Serre.Chap05.Exercise_5_5_7_1
-import Serre.Chap07.Exercise_7_7_2_4
-import Serre.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap01.Definition_1_1_4_1
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_2_1
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Chap05.Exercise_5_5_7_1
+import LinearRepresentations_Serre_1977.Chap07.Exercise_7_7_2_4
+import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -195,13 +195,13 @@ lemma a4_target_finrank_twelve :
     Module.finrank_matrix]
   norm_num
 
-/-- Helper for Exercise 12-12.2-4: Serre's induced nonlinear constituent of `A₄`. -/
+/-- Helper for Exercise 12-12.2-4: LinearRepresentations_Serre_1977's induced nonlinear constituent of `A₄`. -/
 abbrev a4_augmentationRepresentation :
     Representation ℂ A4 (IndV (Subgroup.subtype V4) a4_theta.toRepresentation) :=
   ind (Subgroup.subtype V4) a4_theta.toRepresentation
 
 /-- Helper for Exercise 12-12.2-4: the nonlinear `3`-dimensional complex constituent of `A₄`
-coming from Serre's induced character `θ` is irreducible. -/
+coming from LinearRepresentations_Serre_1977's induced character `θ` is irreducible. -/
 lemma a4_augmentation_representation_isIrreducible :
     a4_augmentationRepresentation.IsIrreducible := by
   -- Route correction: use the earlier Chapter 5 induced-model proof of the nonlinear constituent,
@@ -451,7 +451,7 @@ noncomputable def a4_cyclotomic_group_character :
     A4 →* (CyclotomicField 3 ℚ)ˣ :=
   a4_cyclotomic_quotient_character.comp (QuotientGroup.mk' V4)
 
-/-- Helper for Exercise 12-12.2-4: Serre's rational degree-`3` constituent is the augmentation
+/-- Helper for Exercise 12-12.2-4: LinearRepresentations_Serre_1977's rational degree-`3` constituent is the augmentation
 representation for the natural action of `A₄` on `Fin 4`. -/
 abbrev a4_rational_augmentationRepresentation :
     Representation ℚ A4
@@ -1336,9 +1336,9 @@ lemma a4_rational_decomposition_algHom_injective :
 /- Domain-style sampling for this item:
 * `IsSemisimpleRing.exists_algEquiv_pi_matrix_divisionRing_finite` is the mathlib
   `core/canonical` Wedderburn-Artin owner for semisimple algebras.
-* `Serre.Chap06.Proposition_6_6_2_1.irreducibleFamilyEndAlgEquiv` is the project's explicit
+* `LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_2_1.irreducibleFamilyEndAlgEquiv` is the project's explicit
   decomposition owner once a complete irreducible family has been fixed.
-* `Serre.Chap12.Corollary_12_12_2_2.IsQuasisplitGroupAlgebra` is derived Chapter 12 input
+* `LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_2_2.IsQuasisplitGroupAlgebra` is derived Chapter 12 input
   controlling why the simple factors of `ℚ[A₄]` split over the stated fields.
 
 This exercise remains `source-facing`: its primitive public data are the stated Artin-Wedderburn

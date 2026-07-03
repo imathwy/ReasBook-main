@@ -1,4 +1,4 @@
-import Nesterov.Chap07.Proposition_7_41
+import LecturesConvexOptimization_Nesterov_2018.Chap07.Proposition_7_41
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

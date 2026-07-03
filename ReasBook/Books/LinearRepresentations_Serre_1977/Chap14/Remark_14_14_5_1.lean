@@ -20,7 +20,7 @@ local notation "k" => IsLocalRing.ResidueField A
 
 /-- Remark 14-14.5-1: if `K` is sufficiently large, then for every simple finite-dimensional
 `k[G]`-representation `S`, the endomorphism space `S ⟶ S` is one-dimensional over
-`k = IsLocalRing.ResidueField A`. This is the direct project realization of Serre's statement
+`k = IsLocalRing.ResidueField A`. This is the direct project realization of LinearRepresentations_Serre_1977's statement
 `d_E = 1`. -/
 theorem simple_finiteRep_endomorphism_finrank_eq_one_of_sufficiently_large
     [HasEnoughRootsOfUnity K (Monoid.exponent G)]

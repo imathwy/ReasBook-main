@@ -1,6 +1,6 @@
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Definition_1_3_12
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_3_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -11,7 +11,7 @@ open MeasureTheory intervalIntegral
 Relevant owner-style declarations sampled before refining:
 * `∫ x in (0 : ℝ)..1, f x`, the canonical mathlib interval-integral owner for the exact quantity
   on `[0, 1]`;
-* `uniformGridRiemannSum` in `Nesterov/Chap01/Definition_1_3_12.lean`, the chapter owner of the
+* `uniformGridRiemannSum` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_3_12.lean`, the chapter owner of the
   source-facing right-endpoint uniform-grid approximation;
 * `Finset.range`, the canonical finite owner for the `N` right-endpoint sample cells.
 

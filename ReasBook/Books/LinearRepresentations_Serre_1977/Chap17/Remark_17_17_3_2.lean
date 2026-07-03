@@ -1,4 +1,4 @@
-import Serre.Chap15.Exercise_15_15_5_3
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_5_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -26,7 +26,7 @@ local instance : IsScalarTower A k V :=
   IsScalarTower.of_algebraMap_smul fun _ _ ↦ rfl
 
 -- Source/core/bridge triage:
--- * source-facing: Serre's elementary direct-product lifting remark, whose mathematically active
+-- * source-facing: LinearRepresentations_Serre_1977's elementary direct-product lifting remark, whose mathematically active
 --   content is that a trivial `P`-action lets one inflate a lift of the left-factor
 --   `k[C]`-representation back to `C × P`.
 -- * core/canonical: `LinearMap.IsResidueFieldReduction` from Chapter 14 is the reduction owner.

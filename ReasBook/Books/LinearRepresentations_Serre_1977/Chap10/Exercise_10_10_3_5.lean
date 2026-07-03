@@ -1,4 +1,4 @@
-import Serre.Chap10.Exercise_10_10_3_5
+import LinearRepresentations_Serre_1977.Chap10.Exercise_10_10_3_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

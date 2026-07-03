@@ -1,7 +1,7 @@
 import Mathlib
-import stacks_project.Chap10.Definition_10_157_1
-import stacks_project.Chap10.Lemma_10_112_7
-import stacks_project.Chap10.Lemma_10_112_8
+import StacksProject_2024.Chap10.Definition_10_157_1
+import StacksProject_2024.Chap10.Lemma_10_112_7
+import StacksProject_2024.Chap10.Lemma_10_112_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -19,7 +19,7 @@ variable {k : ℕ}
 variable [SerreConditionR R k] [IsNoetherianRing S] [Module.Flat R S]
 
 /- Domain sampling pass:
-* primary domain: commutative algebra of Serre's condition `(R_k)` under flat ring maps and
+* primary domain: commutative algebra of LinearRepresentations_Serre_1977's condition `(R_k)` under flat ring maps and
   fiberwise regularity;
 * sampled owner declarations:
   - `SerreConditionR`, the chapter owner predicate for `(R_k)` from
@@ -433,7 +433,7 @@ lemma isRegularLocalRing_closedFiber_of_fiberPrimeAt_bound
     isRegularLocalRing_closedFiber_of_localized_quotient_regular
       (R := R) (S := S) q
 
-/-- Lemma 10.163.5: for a flat ring map `R → S`, if `R` satisfies Serre's condition `(R_k)`, `S`
+/-- Lemma 10.163.5: for a flat ring map `R → S`, if `R` satisfies LinearRepresentations_Serre_1977's condition `(R_k)`, `S`
 is Noetherian, and every fiber ring `κ(𝔭) ⊗[R] S`, formalized as `p.asIdeal.Fiber S`, satisfies
 `(R_k)`, then `S` satisfies `(R_k)`. -/
 theorem serreConditionR_of_flat_of_fiber

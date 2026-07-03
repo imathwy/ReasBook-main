@@ -1,8 +1,8 @@
 import Mathlib.RingTheory.Flat.Basic
 import Mathlib.RingTheory.LocalRing.ResidueField.Fiber
 import Mathlib.RingTheory.Noetherian.Basic
-import stacks_project.Chap05.Definition_5_10_5
-import stacks_project.Chap10.Lemma_10_105_2
+import StacksProject_2024.Chap05.Definition_5_10_5
+import StacksProject_2024.Chap10.Lemma_10_105_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

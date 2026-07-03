@@ -1,5 +1,5 @@
-import cartan.VI.section25.«0007_Theorem_VI_4_extra_7»
-import cartan.VI.section25.«0008_Proposition_4_I»
+import DifferentialForms_Cartan_1970.VI.section25.«0007_Theorem_VI_4_extra_7»
+import DifferentialForms_Cartan_1970.VI.section25.«0008_Proposition_4_I»
 
 open scoped Manifold Topology
 

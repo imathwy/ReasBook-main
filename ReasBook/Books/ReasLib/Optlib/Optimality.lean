@@ -1,3 +1,3 @@
-import Reaslib.Optlib.Optimality.Constrained_Problem
-import Reaslib.Optlib.Optimality.OptimalityConditionOfUnconstrainedProblem
-import Reaslib.Optlib.Optimality.Weak_Duality
+import ReasLib.Optlib.Optimality.Constrained_Problem
+import ReasLib.Optlib.Optimality.OptimalityConditionOfUnconstrainedProblem
+import ReasLib.Optlib.Optimality.Weak_Duality

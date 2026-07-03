@@ -9,7 +9,7 @@ import Mathlib.CategoryTheory.Limits.Types.Multiequalizer
 import Mathlib.CategoryTheory.UnivLE
 import Mathlib.Logic.Small.Basic
 import Mathlib.Tactic.Recall
-import stacks_project.Chap07.Definition_7_42_3
+import StacksProject_2024.Chap07.Definition_7_42_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

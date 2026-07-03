@@ -1,4 +1,4 @@
-import AchimKlenkeLean.Items.Chap04.Theorem_4_23
+import ProbabilityTheory_Klenke_2020.Items.Chap04.Theorem_4_23
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

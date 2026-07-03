@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import Nesterov.Chap01.Definition_1_2_7
+import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_2_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -15,13 +15,13 @@ Primary domain:
 * quadratic recurrence bounds for real-valued error sequences
 
 Relevant owner-style declarations sampled before refining:
-* `HasEventuallySuperlinearErrorBound` in `Nesterov/Chap01/Definition_1_2_7.lean`, the chapter
+* `HasEventuallySuperlinearErrorBound` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_2_7.lean`, the chapter
   owner abstraction for eventual superlinear scalar recurrences;
-* `HasSuperlinearRateOfConvergence` in `Nesterov/Chap01/Definition_1_8_15.lean`, which reuses
+* `HasSuperlinearRateOfConvergence` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_8_15.lean`, which reuses
   that owner for trajectory-level superlinear convergence;
-* `HasConvergenceRateOfOrder` in `Nesterov/Chap01/Definition_1_6_9.lean`, a neighboring
+* `HasConvergenceRateOfOrder` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Definition_1_6_9.lean`, a neighboring
   source-facing owner for eventual scalar comparison rates;
-* `quadratic_tail_bound` in `Nesterov/Chap01/Proposition_1_7_6.lean`, a downstream owner-level
+* `quadratic_tail_bound` in `LecturesConvexOptimization_Nesterov_2018/Chap01/Proposition_1_7_6.lean`, a downstream owner-level
   consequence of the same quadratic recurrence.
 
 Best owner abstraction:

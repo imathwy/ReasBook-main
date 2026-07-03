@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory.Basic
+import CombinatorialGroupTheory_Magnus_2004.Basic
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -18,7 +18,7 @@ section
 -- 1. `PresentedGroup (Set.singleton r)` is the project's canonical owner for a
 --    one-relator group on generators `X`.
 -- 2. `IsMulTorsionFree` is mathlib's owner predicate for the torsion-free property of a group.
--- 3. `IsProperPower` from `CombinatorialGroupTheory.Basic` is the shared owner predicate for the
+-- 3. `IsProperPower` from `CombinatorialGroupTheory_Magnus_2004.Basic` is the shared owner predicate for the
 --    proper-power condition on an element of a monoid.
 -- 4. Nearby one-relator items in this chapter already state source-facing results directly on
 --    `PresentedGroup (Set.singleton r)`, so this proposition follows the same owner level.

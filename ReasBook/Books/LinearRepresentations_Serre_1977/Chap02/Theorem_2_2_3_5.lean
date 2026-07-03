@@ -1,5 +1,5 @@
 import Mathlib
-import Serre.RepresentationTheory.GroupFunctionPairing
+import LinearRepresentations_Serre_1977.RepresentationTheory.GroupFunctionPairing
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -303,7 +303,7 @@ endomorphism space of the associated `FDRep`. -/
 lemma self_pairing_eq_finrank_end
     (ρ : Representation ℂ G V) :
     ⟪ρ.character, ρ.character⟫ = (Module.finrank ℂ (FDRep.of ρ ⟶ FDRep.of ρ) : ℂ) := by
-  -- Rewrite Serre's normalized pairing into the owner-level scalar-product formula.
+  -- Rewrite LinearRepresentations_Serre_1977's normalized pairing into the owner-level scalar-product formula.
   calc
     ⟪ρ.character, ρ.character⟫ =
         (Fintype.card G : ℂ)⁻¹ * ∑ g : G, ρ.character g * ρ.character g⁻¹ := by

@@ -1,1 +1,1 @@
-import stacks_project.Chapters.ChapInternal.section01
+import StacksProject_2024.Chapters.ChapInternal.section01

@@ -1,5 +1,5 @@
-import Nesterov.Chap04.Algorithm_4_1_5
-import Nesterov.Chap04.Lemma_4_1_5
+import LecturesConvexOptimization_Nesterov_2018.Chap04.Algorithm_4_1_5
+import LecturesConvexOptimization_Nesterov_2018.Chap04.Lemma_4_1_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

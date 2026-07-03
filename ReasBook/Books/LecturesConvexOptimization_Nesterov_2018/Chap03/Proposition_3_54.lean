@@ -1,4 +1,4 @@
-import Nesterov.Chap03.Proposition_3_52
+import LecturesConvexOptimization_Nesterov_2018.Chap03.Proposition_3_52
 
 universe u
 

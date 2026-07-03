@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.CategoryTheory.Functor.Derived.Adjunction
-import stacks_project.Chap13.Lemma_13_16_1
-import stacks_project.Chap18.Lemma_18_28_7
-import stacks_project.Chap18.Lemma_18_41_1
+import StacksProject_2024.Chap13.Lemma_13_16_1
+import StacksProject_2024.Chap18.Lemma_18_28_7
+import StacksProject_2024.Chap18.Lemma_18_41_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

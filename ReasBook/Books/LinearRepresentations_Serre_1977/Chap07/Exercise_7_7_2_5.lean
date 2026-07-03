@@ -1,12 +1,12 @@
 import Mathlib
-import Serre.Chap01.Definition_1_1_2_1
-import Serre.Chap01.Definition_1_1_4_1
-import Serre.Chap03.Theorem_3_3_2_1
-import Serre.Chap02.Proposition_2_2_4_1
-import Serre.Chap06.Exercise_6_6_5_7
-import Serre.Chap02.Remark_2_2_2_5
-import Serre.Chap02.Theorem_2_2_3_5
-import Serre.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Chap01.Definition_1_1_2_1
+import LinearRepresentations_Serre_1977.Chap01.Definition_1_1_4_1
+import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_4_1
+import LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_5_7
+import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_2_5
+import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -1619,7 +1619,7 @@ private theorem pairing_eq_sum_diagonal_matrix_coefficient_pairings_local
           simp_rw [Representation.groupFunctionPairingOverField]
 
 /-- Helper for Exercise 7-7.2-5: characters of nonisomorphic irreducible representations are
-orthogonal for Serre's normalized pairing. -/
+orthogonal for LinearRepresentations_Serre_1977's normalized pairing. -/
 private theorem character_pairing_eq_zero_of_not_isomorphic_irreducible_local
     {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     {W : Type*} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]

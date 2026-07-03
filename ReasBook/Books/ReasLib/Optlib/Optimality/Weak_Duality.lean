@@ -1,5 +1,5 @@
-import Reaslib.Optlib.Optimality.Constrained_Problem
-import Reaslib.Optlib.Convex.ConvexFunction
+import ReasLib.Optlib.Optimality.Constrained_Problem
+import ReasLib.Optlib.Convex.ConvexFunction
 
 section Duality
 

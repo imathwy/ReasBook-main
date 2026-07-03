@@ -1,1 +1,1 @@
-import stacks_project.LinearAlgebra.PowerOperations
+import StacksProject_2024.LinearAlgebra.PowerOperations

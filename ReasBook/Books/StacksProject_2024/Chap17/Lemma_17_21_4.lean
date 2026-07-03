@@ -1,5 +1,5 @@
-import stacks_project.Chap10.Lemma_10_13_2
-import stacks_project.Chap17.Lemma_17_21_1
+import StacksProject_2024.Chap10.Lemma_10_13_2
+import StacksProject_2024.Chap17.Lemma_17_21_1
 
 open CategoryTheory
 open AlgebraicGeometry

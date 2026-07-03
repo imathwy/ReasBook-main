@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.GroupTheory.ConjClassesPower
-import Serre.Chap11.Theorem_11_11_2_3
+import LinearRepresentations_Serre_1977.GroupTheory.ConjClassesPower
+import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

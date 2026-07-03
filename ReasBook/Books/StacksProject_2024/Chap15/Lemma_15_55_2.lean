@@ -1,6 +1,6 @@
 import Mathlib.Tactic.Recall
-import stacks_project.Chap12.Lemma_12_6_3
-import stacks_project.Chap12.Lemma_12_6_4
+import StacksProject_2024.Chap12.Lemma_12_6_3
+import StacksProject_2024.Chap12.Lemma_12_6_4
 
 namespace CategoryTheory.Abelian.Ext
 
@@ -19,7 +19,7 @@ namespace CategoryTheory.Abelian.Ext
   `addEquiv₀`;
 - best owner abstraction: the source-facing extension group is `ExtensionClass`, the canonical
   owner is `Ext`, the project-level bridge is owned by
-  `stacks_project.Chap12.Lemma_12_6_3`, and the surrounding long exact sequences are owned by
+  `StacksProject_2024.Chap12.Lemma_12_6_3`, and the surrounding long exact sequences are owned by
   `Mathlib.Algebra.Homology.DerivedCategory.Ext.ExactSequences`;
 - primitive data: the ambient module category and the two module objects;
 - derived API: the additive comparison `ExtensionClass N M ≃+ Ext M N 1`, its pullback/pushout

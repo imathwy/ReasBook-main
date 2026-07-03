@@ -1,7 +1,7 @@
 import Mathlib
-import cartan.III.section12.CircleSupNorm
-import cartan.II.section06.«0010_Theorem_3»
-import cartan.III.section07.«0001_Remark_III_1_extra_1»
+import DifferentialForms_Cartan_1970.III.section12.CircleSupNorm
+import DifferentialForms_Cartan_1970.II.section06.«0010_Theorem_3»
+import DifferentialForms_Cartan_1970.III.section07.«0001_Remark_III_1_extra_1»
 
 -- Semantic recall tool `lean_leansearch` was unavailable in this environment; I used local
 -- Mathlib source inspection instead for `Real.circleAverage`, `ContinuousOn.circleAverage`,

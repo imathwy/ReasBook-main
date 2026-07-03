@@ -1,22 +1,22 @@
 import Mathlib
-import Serre.Chap02.Exercise_2_2_6_3
-import Serre.Chap01.Theorem_1_1_4_2
-import Serre.GroupTheory.PSolvable
-import Serre.Chap07.Proposition_7_7_1_3
-import Serre.Chap07.Remark_7_7_1_4
-import Serre.Chap14.Remark_14_14_5_1
-import Serre.Chap15.Exercise_15_15_5_3
-import Serre.Chap17.Theorem_17_17_3_1.CyclicNormalByPGroupBasics
-import Serre.Chap17.Theorem_17_17_3_1.CliffordIsotypicTransport
-import Serre.Chap17.Theorem_17_17_3_1.ResidueFieldLiftTransport
-import Serre.Chap17.Theorem_17_17_3_1.ProperOvergroupRecursion
-import Serre.Chap17.Theorem_17_17_3_1.CyclicOrbitSpan
-import Serre.Chap17.Theorem_17_17_3_1.SameUniverseInductionPackaging
-import Serre.Chap17.Theorem_17_17_3_1.InducedSubrepresentationLift
-import Serre.Chap17.Theorem_17_17_6_1.HallKernelOwnerTransport
-import Serre.Chap17.Theorem_17_17_6_1.QuotientHeightRecursion
-import Serre.Chap17.Theorem_17_17_6_1.HallKernelCliffordSplit
-import Serre.Chap17.Theorem_17_17_6_1.FixedProjectiveCoverData
+import LinearRepresentations_Serre_1977.Chap02.Exercise_2_2_6_3
+import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_4_2
+import LinearRepresentations_Serre_1977.GroupTheory.PSolvable
+import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_1_3
+import LinearRepresentations_Serre_1977.Chap07.Remark_7_7_1_4
+import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1
+import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_5_3
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.CyclicNormalByPGroupBasics
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.CliffordIsotypicTransport
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.ResidueFieldLiftTransport
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.ProperOvergroupRecursion
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.CyclicOrbitSpan
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.SameUniverseInductionPackaging
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.InducedSubrepresentationLift
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_6_1.HallKernelOwnerTransport
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_6_1.QuotientHeightRecursion
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_6_1.HallKernelCliffordSplit
+import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_6_1.FixedProjectiveCoverData
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -125,7 +125,7 @@ private noncomputable def scalar_representation_self_equiv
     (a • LinearEquiv.refl k W)
     (scalar_representation_self_equiv_isIntertwining σ a)
 
-/-- Helper for Theorem 17-17.6-1: once Serre's constituent `S̄` is fixed, the literal
+/-- Helper for Theorem 17-17.6-1: once LinearRepresentations_Serre_1977's constituent `S̄` is fixed, the literal
 multiplicity-space carrier is `Hom^I(S̄, V)`. Naming this owner avoids reopening the carrier
 choice in later projective-extension lemmas. -/
 private abbrev fixed_isotypic_multiplicity_space
@@ -134,7 +134,7 @@ private abbrev fixed_isotypic_multiplicity_space
     (Sbar : Subrepresentation (ρ.comp I.subtype)) : Type x :=
   Sbar.toRepresentation.IntertwiningMap (ρ.comp I.subtype)
 
-/-- Helper for Theorem 17-17.6-1: Serre's multiplicity space `Hom^I(S̄, V)` is finite-dimensional,
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's multiplicity space `Hom^I(S̄, V)` is finite-dimensional,
 since it sits inside the finite-dimensional space of all linear maps from `S̄` to `V`. -/
 private noncomputable def fixed_isotypic_multiplicity_space_finiteDimensional
     (I : Subgroup G)
@@ -147,7 +147,7 @@ private noncomputable def fixed_isotypic_multiplicity_space_finiteDimensional
   infer_instance
 
 /-- Helper for Theorem 17-17.6-1: changing the source constituent by an `I`-equivariant
-equivalence transports Serre's multiplicity space by precomposition. This is the basic source-side
+equivalence transports LinearRepresentations_Serre_1977's multiplicity space by precomposition. This is the basic source-side
 bridge needed before descending the `G₂`-action to the quotient module `τ`. -/
 private noncomputable def fixed_isotypic_multiplicity_space_precompose_linearEquiv
     (I : Subgroup G)
@@ -725,7 +725,7 @@ private theorem exists_residueFieldLift_of_isInducedFromSubrepresentation_local
       (red : W' →ₗ[A] V),
         IsResidueFieldLift ρ ρA red := by
   -- Route correction: this is the standard induced-model transport from Chapter `7`, isolated as
-  -- a separate frontier so the Hall-kernel proof can keep its focus on Serre's projective
+  -- a separate frontier so the Hall-kernel proof can keep its focus on LinearRepresentations_Serre_1977's projective
   -- extension branch rather than on induced-model packaging.
   let ρU :
       Representation k G (ULift.{max (max u v) x, x} V) :=
@@ -873,7 +873,7 @@ private theorem exists_residueFieldLift_of_proper_overgroup_induced_hall
   exact ⟨P'', hP''add, hP''mod, hP''free, hP''finite, ρA, red, hLift⟩
 
 /-- Helper for Theorem 17-17.6-1: in the isotypic Hall-kernel branch, one can already choose
-Serre's irreducible constituent `S̄` and show that its owner isotypic component is all of the
+LinearRepresentations_Serre_1977's irreducible constituent `S̄` and show that its owner isotypic component is all of the
 restricted module. -/
 theorem exists_irreducible_constituent_with_isotypic_component_top_of_isotypic_restriction
     (hp : Nat.Prime p)
@@ -896,7 +896,7 @@ theorem exists_irreducible_constituent_with_isotypic_component_top_of_isotypic_r
   letI : IsSemisimpleModule (MonoidAlgebra k I) V := hsemisimple
   have hV_nontrivial : Nontrivial V := nontrivial_of_isIrreducible_local (ρ := ρ)
   letI : Nontrivial V := hV_nontrivial
-  -- Route correction: choose Serre's constituent first as a simple owner `k[I]`-submodule of the
+  -- Route correction: choose LinearRepresentations_Serre_1977's constituent first as a simple owner `k[I]`-submodule of the
   -- restricted module, and only then repackage it as a bundled irreducible subrepresentation.
   obtain ⟨N, -, hNsimple⟩ :=
     (IsSemisimpleModule.eq_bot_or_exists_simple_le
@@ -928,7 +928,7 @@ private theorem chosen_constituent_owner_simple
     IsSimpleModule (MonoidAlgebra k I) Sbar.asSubmodule := by
   let ρS : Representation k I Sbar.toSubmodule := Sbar.toRepresentation
   letI : Module (MonoidAlgebra k I) ρS.asModule := ρS.instModuleMonoidAlgebraAsModule
-  -- Move Serre's chosen constituent from the intrinsic carrier `S̄.toSubmodule` to the owner
+  -- Move LinearRepresentations_Serre_1977's chosen constituent from the intrinsic carrier `S̄.toSubmodule` to the owner
   -- submodule `S̄.asSubmodule` using the canonical owner/intrinsic linear equivalence.
   exact
     @IsSimpleModule.congr (MonoidAlgebra k I) inferInstance Sbar.asSubmodule
@@ -939,7 +939,7 @@ private theorem chosen_constituent_owner_simple
 
 /-- Helper for Theorem 17-17.6-1: once the chosen constituent `S̄` fills the whole isotypic
 component of the restricted module, the owner `k[I]`-module `V` can already be rigidified onto a
-finite coordinate model `Fin n → S̄`. This is Serre's first fixed-object checkpoint before the
+finite coordinate model `Fin n → S̄`. This is LinearRepresentations_Serre_1977's first fixed-object checkpoint before the
 projective-extension cover is introduced. -/
 private theorem exists_linearEquiv_pi_of_isotypic_component_top
     (hp : Nat.Prime p)
@@ -977,7 +977,7 @@ private theorem exists_linearEquiv_pi_of_isotypic_component_top
   exact ⟨n, e⟩
 
 /-- Helper for Theorem 17-17.6-1: since the Hall kernel `I` has order prime to `p`, the chosen
-constituent `S̄` already admits an `A[I]`-lift. This supplies the lifted constituent that Serre
+constituent `S̄` already admits an `A[I]`-lift. This supplies the lifted constituent that LinearRepresentations_Serre_1977
 uses before constructing the finite projective cover `G₂`. -/
 private theorem exists_residueFieldLift_of_fixed_constituent
     (hp : Nat.Prime p)
@@ -1030,7 +1030,7 @@ private theorem isIrreducible_comp_of_mulEquiv
   simpa [U'] using congrArg Subrepresentation.toSubmodule hU'_top
 
 /-- Helper for Theorem 17-17.6-1: if the Hall-kernel restriction is isotypic of type `S̄`, then
-every conjugate transport of `S̄` is equivariantly isomorphic to `S̄` itself. This is Serre's
+every conjugate transport of `S̄` is equivariantly isomorphic to `S̄` itself. This is LinearRepresentations_Serre_1977's
 `U_s ≠ ∅` checkpoint before the finite projective extension is built. -/
 private theorem transported_constituent_equiv_of_isotypic_component_top
     (hp : Nat.Prime p)
@@ -1089,7 +1089,7 @@ private theorem transported_constituent_equiv_of_isotypic_component_top
   exact
     ⟨(subrepresentation_equiv_of_asSubmoduleLinearEquiv_local T Sbar hOwnerEquiv.some).symm⟩
 
-/-- Helper for Theorem 17-17.6-1: once a quotient already has height `h`, Serre's bookkeeping can
+/-- Helper for Theorem 17-17.6-1: once a quotient already has height `h`, LinearRepresentations_Serre_1977's bookkeeping can
 always pad it to height `h + 1` by inserting the trivial normal subgroup. -/
 private lemma isPSolvableOfHeight_succ_of_isPSolvableOfHeight
     {G' : Type*} [Group G'] [Finite G']
@@ -1102,7 +1102,7 @@ private lemma isPSolvableOfHeight_succ_of_isPSolvableOfHeight
     IsPSolvableOfHeight.succ_iff.mpr
       ⟨⊥, inferInstance, Or.inl (by simpa using Nat.coprime_one_right p), hquotBot⟩
 
-/-- Helper for Theorem 17-17.6-1: Serre's transported constituent lift can be compared to the
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's transported constituent lift can be compared to the
 conjugated fixed lift by Chapter `15` uniqueness, producing an actual `A`-linear automorphism on
 the chosen lift carrier `P_S`. -/
 private theorem conjugated_fixed_constituent_lift
@@ -1123,7 +1123,7 @@ private theorem conjugated_fixed_constituent_lift
   let c_s : I →* I := (MulAut.conjNormal s⁻¹).toMonoidHom
   let ρS_conj : Representation k I Sbar.toSubmodule := Sbar.toRepresentation.comp c_s
   let ρA_conj : Representation A I P_S := ρA_I.comp c_s
-  -- Restrict Serre's fixed lift along the conjugation hom before transporting the target.
+  -- Restrict LinearRepresentations_Serre_1977's fixed lift along the conjugation hom before transporting the target.
   change IsResidueFieldLift ρS_conj ρA_conj red_S
   simpa [c_s, ρS_conj, ρA_conj] using
     (Representation.isResidueFieldLift_comp hLiftSbar c_s)
@@ -1155,7 +1155,7 @@ private theorem transported_fixed_constituent_lift_of_conjugation
           (A := A) (G := G) (V := V) I ρ Sbar ρA_I red_S hLiftSbar s)
       (transportedSubrepresentation_rep_equiv_local ρ Sbar s)
 
-/-- Helper for Theorem 17-17.6-1: Serre's transported constituent lift can be compared to the
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's transported constituent lift can be compared to the
 conjugated fixed lift by Chapter `15` uniqueness, producing an actual `A`-linear automorphism on
 the chosen lift carrier `P_S`. -/
 private theorem exists_fixed_constituent_transport_aut_of_lift
@@ -1257,7 +1257,7 @@ private theorem exists_fixed_constituent_transport_aut_of_lift
   exact hu
 
 /-- Helper for Theorem 17-17.6-1: choose the source-faithful lifted conjugation automorphism on
-the fixed carrier `P_S`; later stages use this concrete carrier automorphism to define Serre's
+the fixed carrier `P_S`; later stages use this concrete carrier automorphism to define LinearRepresentations_Serre_1977's
 finite projective cover. -/
 private noncomputable def fixed_constituent_transport_aut_of_lift
     (hp : Nat.Prime p)
@@ -1289,7 +1289,7 @@ private noncomputable def fixed_constituent_transport_aut_of_lift
       (p := p) (A := A) (G := G) (V := V)
       hp I hIcop ρ Sbar ρA_I red_S hLiftSbar hTransport hTransportLift s
 
-/-- Helper for Theorem 17-17.6-1: Serre's transport fiber `U_s` on the fixed lifted constituent
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's transport fiber `U_s` on the fixed lifted constituent
 carrier is the type of `A[I]`-equivariant identifications between the conjugated fixed lift and
 the fixed lift itself. Naming this owner restores the source proof's literal `U_s` language before
 the later scalar-coset and determinant analysis. -/
@@ -1303,7 +1303,7 @@ private abbrev fixed_constituent_transport_fiber
     (ρA_I.comp (MulAut.conjNormal s⁻¹).toMonoidHom) ρA_I
 
 /-- Helper for Theorem 17-17.6-1: the fixed transport fiber `U_s` is nonempty. This is exactly
-Serre's source step asserting that every conjugate of the fixed constituent lift is identified
+LinearRepresentations_Serre_1977's source step asserting that every conjugate of the fixed constituent lift is identified
 with the original lift on the same carrier. -/
 private theorem fixed_constituent_transport_fiber_nonempty
     (hp : Nat.Prime p)
@@ -1331,7 +1331,7 @@ private theorem fixed_constituent_transport_fiber_nonempty
     Nonempty
       (fixed_constituent_transport_fiber
         (A := A) (G := G) I ρA_I s) := by
-  -- Reuse the chosen transport automorphism as Serre's witness that the fiber `U_s` is inhabited.
+  -- Reuse the chosen transport automorphism as LinearRepresentations_Serre_1977's witness that the fiber `U_s` is inhabited.
   exact
     ⟨fixed_constituent_transport_aut_of_lift
       (p := p) (A := A) (G := G) (V := V)
@@ -1377,7 +1377,7 @@ private theorem fixed_constituent_transport_aut_of_lift_reduction
         hp I hIcop ρ Sbar ρA_I red_S hLiftSbar hTransport hTransportLift s
 
 /-- Helper for Theorem 17-17.6-1: the chosen transport family on the fixed lift already satisfies
-Serre's projective cocycle relation up to a literal self-equivalence of `ρA_I`. This isolates the
+LinearRepresentations_Serre_1977's projective cocycle relation up to a literal self-equivalence of `ρA_I`. This isolates the
 remaining finite-cover frontier to classifying these self-equivalences and controlling their
 determinants. -/
 private noncomputable def fixed_constituent_transport_aut_discrepancy
@@ -1421,7 +1421,7 @@ private noncomputable def fixed_constituent_transport_aut_discrepancy
         (ρA_I.comp (MulAut.conjNormal (s * t)⁻¹).toMonoidHom)
         (ρA_I.comp (MulAut.conjNormal s⁻¹).toMonoidHom) := by
     -- The same carrier automorphism `u_t` still intertwines after conjugating both source actions
-    -- by `s`; this is the literal projective-cocycle step before Serre's scalar reduction.
+    -- by `s`; this is the literal projective-cocycle step before LinearRepresentations_Serre_1977's scalar reduction.
     refine Representation.Equiv.mk u_t.toLinearEquiv ?_
     intro a
     ext x
@@ -1435,7 +1435,7 @@ private noncomputable def fixed_constituent_transport_aut_discrepancy
   -- Compare the two literal lifts of the `(s * t)`-transport: the composed one and the chosen one.
   exact composed.symm.trans u_st
 
-/-- Helper for Theorem 17-17.6-1: Serre's literal source object `G₁` is the total space of the
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's literal source object `G₁` is the total space of the
 transport fibers `U_s`, i.e. pairs `(s, u)` with `u : U_s`. Naming the carrier now keeps the
 remaining finite-cover work focused on the group law and determinant normalization. -/
 private abbrev fixed_constituent_transport_total_space
@@ -1456,7 +1456,7 @@ private abbrev fixed_constituent_transport_total_space_proj
   Sigma.fst
 
 /-- Helper for Theorem 17-17.6-1: the chosen lifted transport automorphisms give a set-theoretic
-section of Serre's projection `G₁ → G`. This is the exact source-faithful choice of one element
+section of LinearRepresentations_Serre_1977's projection `G₁ → G`. This is the exact source-faithful choice of one element
 in each nonempty fiber `U_s`. -/
 private noncomputable def fixed_constituent_transport_total_space_section
     (hp : Nat.Prime p)
@@ -1487,7 +1487,7 @@ private noncomputable def fixed_constituent_transport_total_space_section
         (p := p) (A := A) (G := G) (V := V)
         hp I hIcop ρ Sbar ρA_I red_S hLiftSbar hTransport hTransportLift s⟩
 
-/-- Helper for Theorem 17-17.6-1: Serre's projection `G₁ → G` is surjective because each fiber
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's projection `G₁ → G` is surjective because each fiber
 `U_s` is inhabited by the chosen lifted transport automorphism. -/
 private theorem fixed_constituent_transport_total_space_proj_surjective
     (hp : Nat.Prime p)
@@ -1521,7 +1521,7 @@ private theorem fixed_constituent_transport_total_space_proj_surjective
       (p := p) (A := A) (G := G) (V := V)
       hp I hIcop ρ Sbar ρA_I red_S hLiftSbar hTransport hTransportLift s, rfl⟩
 
-/-- Helper for Theorem 17-17.6-1: Serre's transport fibers compose directly on the literal lifted
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's transport fibers compose directly on the literal lifted
 constituent carrier. This is the source-faithful multiplication rule on the intermediate total
 space `G₁ = Σ s, U_s` before any determinant normalization. -/
 private noncomputable def fixed_constituent_transport_fiber_comp
@@ -1543,7 +1543,7 @@ private noncomputable def fixed_constituent_transport_fiber_comp
         (ρA_I.comp (MulAut.conjNormal (s * t)⁻¹).toMonoidHom)
         (ρA_I.comp (MulAut.conjNormal s⁻¹).toMonoidHom) := by
     -- Reuse the same linear transport operator `v`, but now view it after conjugating the source
-    -- action by `s`; this is Serre's literal composition law on the transport fibers `U_s`.
+    -- action by `s`; this is LinearRepresentations_Serre_1977's literal composition law on the transport fibers `U_s`.
     refine Representation.Equiv.mk v.toLinearEquiv ?_
     intro a
     ext x
@@ -1553,7 +1553,7 @@ private noncomputable def fixed_constituent_transport_fiber_comp
   exact v_over_s.trans u
 
 /-- Helper for Theorem 17-17.6-1: the identity transport belongs to the fiber `U_1`. This gives
-the neutral element on Serre's literal total space `G₁`. -/
+the neutral element on LinearRepresentations_Serre_1977's literal total space `G₁`. -/
 private noncomputable def fixed_constituent_transport_fiber_one
     (I : Subgroup G) [I.Normal]
     {P_S : Type (max u v x)} [AddCommGroup P_S] [Module A P_S]
@@ -1568,7 +1568,7 @@ private noncomputable def fixed_constituent_transport_fiber_one
 
 /-- Helper for Theorem 17-17.6-1: an element of the kernel fiber `U₁` is literally an
 `A[I]`-equivariant endomorphism of the fixed lift `ρA_I`. This is the source-faithful bridge from
-Serre's kernel notation to the owner endomorphism space used by the Chapter `14` reduction API. -/
+LinearRepresentations_Serre_1977's kernel notation to the owner endomorphism space used by the Chapter `14` reduction API. -/
 private theorem fixed_constituent_transport_kernel_isIntertwiningMap
     (I : Subgroup G) [I.Normal]
     {P_S : Type (max u v x)} [AddCommGroup P_S] [Module A P_S]
@@ -1601,7 +1601,7 @@ private noncomputable def fixed_constituent_transport_kernel_intertwiningEnd
       (A := A) (G := G) (I := I) ρA_I u).isIntertwining
 
 /-- Helper for Theorem 17-17.6-1: Schur's lemma on the reduced fixed constituent says that every
-`k[I]`-equivariant endomorphism of `S̄` is scalar. This is Serre's reduced-side input before the
+`k[I]`-equivariant endomorphism of `S̄` is scalar. This is LinearRepresentations_Serre_1977's reduced-side input before the
 scalar line is lifted back across the fixed projective cover. -/
 private theorem fixed_constituent_reduced_scalar_id_surjective
     (I : Subgroup G)
@@ -1612,7 +1612,7 @@ private theorem fixed_constituent_reduced_scalar_id_surjective
     ∃ c : k, u = c • Representation.IntertwiningMap.id Sbar.toRepresentation := by
   have hfinrank :
       Module.finrank k (Sbar.toRepresentation.IntertwiningMap Sbar.toRepresentation) = 1 := by
-    -- Serre's reduced-side Schur lemma is exactly the one-dimensionality of
+    -- LinearRepresentations_Serre_1977's reduced-side Schur lemma is exactly the one-dimensionality of
     -- `End_{k[I]}(S̄)`.
     simpa using
       Representation.IsIrreducible.finrank_intertwiningMap_self (ρ := Sbar.toRepresentation)
@@ -1635,7 +1635,7 @@ private theorem fixed_constituent_reduced_scalar_id_surjective
   exact ⟨c, hc.symm⟩
 
 /-- Helper for Theorem 17-17.6-1: every `A[I]`-equivariant endomorphism of the fixed lift is a
-scalar multiple of the identity. This is Serre's literal bridge from the kernel fiber `U₁` to the
+scalar multiple of the identity. This is LinearRepresentations_Serre_1977's literal bridge from the kernel fiber `U₁` to the
 scalar group `Aˣ`. -/
 private theorem fixed_constituent_endAlgHom_scalar_id_transport
     (I : Subgroup G) [I.Normal]
@@ -1649,14 +1649,14 @@ private theorem fixed_constituent_endAlgHom_scalar_id_transport
     (a : A) :
     hLiftSbar.endAlgHom (a • Representation.IntertwiningMap.id ρA_I) =
       (IsLocalRing.residue A a) • Representation.IntertwiningMap.id Sbar.toRepresentation := by
-  -- The reduction algebra hom carries Serre's scalar line `A · id` to the reduced scalar line
+  -- The reduction algebra hom carries LinearRepresentations_Serre_1977's scalar line `A · id` to the reduced scalar line
   -- `k · id` by compatibility with scalar multiplication and the identity.
   simpa [IsLocalRing.ResidueField.algebraMap_eq] using
     hLiftSbar.endAlgHom.map_smul a (Representation.IntertwiningMap.id ρA_I)
 
 /-- Helper for Theorem 17-17.6-1: the scalar line `A · id` in `End_{A[I]}(P_S)` already maps onto
 the whole reduced endomorphism algebra `End_{k[I]}(S̄)`. This is the exact closed-fiber statement
-Serre uses before invoking Nakayama on the fixed lift. -/
+LinearRepresentations_Serre_1977 uses before invoking Nakayama on the fixed lift. -/
 private theorem fixed_constituent_scalar_line_closed_fiber_top
     (hp : Nat.Prime p)
     (I : Subgroup G) [I.Normal]
@@ -1679,7 +1679,7 @@ private theorem fixed_constituent_scalar_line_closed_fiber_top
   rw [eq_top_iff]
   intro ubar hubar
   -- Route correction: the old route stalled on transport wrappers. The source-faithful object is
-  -- the scalar line `A · id`, and Serre's reduced Schur lemma already shows its reduction is all
+  -- the scalar line `A · id`, and LinearRepresentations_Serre_1977's reduced Schur lemma already shows its reduction is all
   -- of `End_{k[I]}(S̄)`.
   obtain ⟨c, hc⟩ :=
     fixed_constituent_reduced_scalar_id_surjective
@@ -1697,7 +1697,7 @@ private theorem fixed_constituent_scalar_line_closed_fiber_top
         ρA_I red_S hLiftSbar a
 
 /-- Helper for Theorem 17-17.6-1: every `A[I]`-equivariant endomorphism of the fixed lift is a
-scalar multiple of the identity. This is Serre's literal bridge from the kernel fiber `U₁` to the
+scalar multiple of the identity. This is LinearRepresentations_Serre_1977's literal bridge from the kernel fiber `U₁` to the
 scalar group `Aˣ`. -/
 private theorem fixed_constituent_lift_equivariant_endomorphism_scalar
     (hp : Nat.Prime p)
@@ -1734,7 +1734,7 @@ private theorem fixed_constituent_lift_equivariant_endomorphism_scalar
     Submodule.span A ({Representation.IntertwiningMap.id ρA_I} :
       Set (ρA_I.IntertwiningMap ρA_I))
   have hmapRed : Submodule.map hLiftSbar.endAlgHom.toLinearMap N = ⊤ := by
-    -- Serre's reduced Schur lemma says the reduction of the scalar line already fills
+    -- LinearRepresentations_Serre_1977's reduced Schur lemma says the reduction of the scalar line already fills
     -- `End_{k[I]}(S̄)`.
     simpa [N] using
       fixed_constituent_scalar_line_closed_fiber_top
@@ -1780,7 +1780,7 @@ private theorem fixed_constituent_lift_equivariant_endomorphism_scalar
 
 /-- Helper for Theorem 17-17.6-1: if an automorphism of a finite free `A`-module is a scalar
 multiple of the identity map, then that scalar is automatically a unit. This is the exact linear
-algebra step needed to turn a scalar classification of `End_{A[I]}(P_S)` into Serre's literal
+algebra step needed to turn a scalar classification of `End_{A[I]}(P_S)` into LinearRepresentations_Serre_1977's literal
 kernel statement `U₁ = Aˣ`. -/
 private theorem linearEquiv_eq_unit_smul_refl_of_linearMap_eq_smul_id
     {M : Type*} [AddCommGroup M] [Module A M]
@@ -1828,7 +1828,7 @@ private theorem linearEquiv_eq_unit_smul_refl_of_linearMap_eq_smul_id
     simp [h']
 
 /-- Helper for Theorem 17-17.6-1: once every equivariant endomorphism of the fixed lift `ρA_I`
-is scalar, Serre's literal kernel fiber `U₁` is exactly the scalar unit group `Aˣ`. This isolates
+is scalar, LinearRepresentations_Serre_1977's literal kernel fiber `U₁` is exactly the scalar unit group `Aˣ`. This isolates
 the only remaining source-faithful gap before the determinant-normalized cover construction. -/
 private theorem fixed_constituent_transport_kernel_eq_unit_smul_id_of_endomorphism_scalar
     (I : Subgroup G) [I.Normal]
@@ -1858,7 +1858,7 @@ private theorem fixed_constituent_transport_kernel_eq_unit_smul_id_of_endomorphi
     congrArg (fun f : ρA_I.IntertwiningMap ρA_I => (f : P_S →ₗ[A] P_S)) ha
 
 /-- Helper for Theorem 17-17.6-1: inverting a transport operator moves from `U_s` to `U_{s⁻¹}`.
-This is the literal inverse operation on Serre's total space `G₁`. -/
+This is the literal inverse operation on LinearRepresentations_Serre_1977's total space `G₁`. -/
 private noncomputable def fixed_constituent_transport_fiber_inv
     (I : Subgroup G) [I.Normal]
     {P_S : Type (max u v x)} [AddCommGroup P_S] [Module A P_S]
@@ -1887,7 +1887,7 @@ private noncomputable def fixed_constituent_transport_fiber_inv
     simpa [LinearMap.comp_apply] using htransport0
   exact u.toLinearEquiv.symm_apply_eq.mpr htransport
 
-/-- Helper for Theorem 17-17.6-1: Serre's literal total space `G₁ = Σ s, U_s` already carries the
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's literal total space `G₁ = Σ s, U_s` already carries the
 transport-composition multiplication before the scalar-kernel analysis that cuts out `G₂`. -/
 private noncomputable def fixed_constituent_transport_total_space_mul
     (I : Subgroup G) [I.Normal]
@@ -1902,7 +1902,7 @@ private noncomputable def fixed_constituent_transport_total_space_mul
       fixed_constituent_transport_fiber_comp
         (A := A) (G := G) (I := I) (ρA_I := ρA_I) g.2 h.2⟩
 
-/-- Helper for Theorem 17-17.6-1: the chosen section of Serre's projection `G₁ → G` is a genuine
+/-- Helper for Theorem 17-17.6-1: the chosen section of LinearRepresentations_Serre_1977's projection `G₁ → G` is a genuine
 right inverse on the nose. This stabilizes the source-level surjectivity data before the later
 determinant-normalized subgroup `G₂` is introduced. -/
 private theorem fixed_constituent_transport_total_space_proj_section
@@ -1935,7 +1935,7 @@ private theorem fixed_constituent_transport_total_space_proj_section
           hp I hIcop ρ Sbar ρA_I red_S hLiftSbar hTransport hTransportLift s) =
       s := rfl
 
-/-- Helper for Theorem 17-17.6-1: the literal multiplication on Serre's total space `G₁`
+/-- Helper for Theorem 17-17.6-1: the literal multiplication on LinearRepresentations_Serre_1977's total space `G₁`
 projects to the ambient group multiplication in `G`. This isolates the first group-theoretic
 compatibility needed before the determinant-normalized cover data can be packaged. -/
 private theorem fixed_constituent_transport_total_space_proj_mul
@@ -1954,7 +1954,7 @@ private theorem fixed_constituent_transport_total_space_proj_mul
           (A := A) (G := G) (I := I) (ρA_I := ρA_I) h := by
   rfl
 
-/-- Helper for Theorem 17-17.6-1: the literal inverse on Serre's total space `G₁` projects to the
+/-- Helper for Theorem 17-17.6-1: the literal inverse on LinearRepresentations_Serre_1977's total space `G₁` projects to the
 inverse in the ambient group `G`. This keeps the group package on `G₁` aligned with the source
 projection `G₁ → G`. -/
 private theorem fixed_constituent_transport_total_space_proj_inv
@@ -1972,7 +1972,7 @@ private theorem fixed_constituent_transport_total_space_proj_inv
         (A := A) (G := G) (I := I) (ρA_I := ρA_I) g)⁻¹ := by
   rfl
 
-/-- Helper for Theorem 17-17.6-1: Serre's literal total space `G₁ = Σ s, U_s` already carries
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's literal total space `G₁ = Σ s, U_s` already carries
 the obvious group law coming from fiber composition, before the determinant normalization that
 cuts out the finite subgroup `G₂`. -/
 private noncomputable instance fixed_constituent_transport_total_space_group
@@ -2047,7 +2047,7 @@ private noncomputable def fixed_constituent_transport_total_space_proj_hom
 
 /-- Helper for Theorem 17-17.6-1: a Hall-kernel element `x ∈ I` acts on the fixed lift carrier by
 `ρA_I x`, and this literal action already lies in the transport fiber over `(x : G)`. This is the
-source-faithful embedding of Serre's subgroup `I` into the total-space cover `G₁`. -/
+source-faithful embedding of LinearRepresentations_Serre_1977's subgroup `I` into the total-space cover `G₁`. -/
 private noncomputable def fixed_constituent_transport_fiber_of_hall_kernel_element
     (I : Subgroup G) [I.Normal]
     {P_S : Type (max u v x)} [AddCommGroup P_S] [Module A P_S]
@@ -2061,7 +2061,7 @@ private noncomputable def fixed_constituent_transport_fiber_of_hall_kernel_eleme
   refine Representation.Equiv.mk ex ?_
   intro a
   ext v
-  -- Route correction: use Serre's literal `I`-action map `ρA_I x` itself as the transport
+  -- Route correction: use LinearRepresentations_Serre_1977's literal `I`-action map `ρA_I x` itself as the transport
   -- operator. The only work is the conjugation rewrite
   -- `x * (x⁻¹ * a * x) = a * x` inside `I`.
   calc
@@ -2076,7 +2076,7 @@ private noncomputable def fixed_constituent_transport_fiber_of_hall_kernel_eleme
           simpa using LinearMap.congr_fun (ρA_I.map_mul a x) v
 
 /-- Helper for Theorem 17-17.6-1: the literal Hall-kernel copy `x ↦ (x, ρA_I x)` is a monoid
-homomorphism from `I` into Serre's total-space cover `G₁`. This is the generator family used
+homomorphism from `I` into LinearRepresentations_Serre_1977's total-space cover `G₁`. This is the generator family used
 later to define the source-faithful subgroup `G₂`. -/
 private noncomputable def fixed_constituent_transport_total_space_embed_hall_kernel
     (I : Subgroup G) [I.Normal]
@@ -2106,7 +2106,7 @@ private noncomputable def fixed_constituent_transport_total_space_embed_hall_ker
         fixed_constituent_transport_fiber_of_hall_kernel_element]
       simpa using LinearMap.congr_fun (ρA_I.map_mul x y) v
 
-/-- Helper for Theorem 17-17.6-1: Serre's determinant subgroup `C` is generated by the
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's determinant subgroup `C` is generated by the
 determinants of the lifted `I`-action on the fixed constituent lift. This isolates the later
 determinant-normalization step defining the finite subgroup `G₂ ≤ G₁`. -/
 private noncomputable def fixed_constituent_action_det
@@ -2122,7 +2122,7 @@ private noncomputable def fixed_constituent_action_det
       · ext y
         simp).unit
 
-/-- Helper for Theorem 17-17.6-1: Serre's determinant subgroup `C` is generated by the
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's determinant subgroup `C` is generated by the
 determinants of the lifted `I`-action on the fixed constituent lift. This isolates the later
 determinant-normalization step defining the finite subgroup `G₂ ≤ G₁`. -/
 private noncomputable def fixed_constituent_determinant_subgroup
@@ -2134,7 +2134,7 @@ private noncomputable def fixed_constituent_determinant_subgroup
     (Set.range fun x : I ↦ fixed_constituent_action_det (A := A) (G := G) I ρA_I x)
 
 /-- Helper for Theorem 17-17.6-1: the determinant of a transport-fiber element is the scalar data
-that Serre uses to cut the finite subgroup `G₂` out of `G₁`. -/
+that LinearRepresentations_Serre_1977 uses to cut the finite subgroup `G₂` out of `G₁`. -/
 private noncomputable def fixed_constituent_transport_fiber_det
     (I : Subgroup G) [I.Normal]
     {P_S : Type (max u v x)} [AddCommGroup P_S] [Module A P_S]
@@ -2147,7 +2147,7 @@ private noncomputable def fixed_constituent_transport_fiber_det
   LinearEquiv.det u.toLinearEquiv
 
 /-- Helper for Theorem 17-17.6-1: inverting a transport operator in `U_s` inverts its
-determinant. This records the determinant behavior of Serre's literal inverse operation before
+determinant. This records the determinant behavior of LinearRepresentations_Serre_1977's literal inverse operation before
 the scalar-kernel analysis of `U₁`. -/
 private theorem fixed_constituent_transport_fiber_det_inv
     (I : Subgroup G) [I.Normal]
@@ -2170,7 +2170,7 @@ private theorem fixed_constituent_transport_fiber_det_inv
   simpa using (LinearEquiv.det_symm u.toLinearEquiv)
 
 /-- Helper for Theorem 17-17.6-1: composing transport operators multiplies their determinants.
-This is the determinant bookkeeping for Serre's literal multiplication on the total space
+This is the determinant bookkeeping for LinearRepresentations_Serre_1977's literal multiplication on the total space
 `G₁ = Σ s, U_s`. -/
 private theorem fixed_constituent_transport_fiber_det_comp
     (I : Subgroup G) [I.Normal]
@@ -2200,7 +2200,7 @@ private theorem fixed_constituent_transport_fiber_det_comp
   ac_rfl
 
 /-- Helper for Theorem 17-17.6-1: comparing two points in the same transport fiber `U_s`
-produces a point in the kernel fiber `U₁`. This is Serre's literal reduction of same-fiber
+produces a point in the kernel fiber `U₁`. This is LinearRepresentations_Serre_1977's literal reduction of same-fiber
 comparison to the kernel before classifying `U₁ = Aˣ`. -/
 private noncomputable def fixed_constituent_transport_fiber_reindex
     (I : Subgroup G) [I.Normal]
@@ -2239,7 +2239,7 @@ fiber `U_{s s⁻¹}` to the kernel fiber `U₁`. -/
   rfl
 
 /-- Helper for Theorem 17-17.6-1: comparing two points in the same transport fiber `U_s`
-produces a point in the kernel fiber `U₁`. This is Serre's literal reduction of same-fiber
+produces a point in the kernel fiber `U₁`. This is LinearRepresentations_Serre_1977's literal reduction of same-fiber
 comparison to the kernel before classifying `U₁ = Aˣ`. -/
 private noncomputable def fixed_constituent_transport_fiber_ratio
     (I : Subgroup G) [I.Normal]
@@ -2380,7 +2380,7 @@ private theorem fixed_constituent_transport_fiber_det_eq_ratio_mul
 
 /-- Helper for Theorem 17-17.6-1: once an element of the kernel fiber `U₁` is identified with a
 unit scalar homothety on the fixed lift carrier, its determinant is the corresponding `d`-th
-power. This is Serre's literal determinant computation inside the scalar kernel `Aˣ`. -/
+power. This is LinearRepresentations_Serre_1977's literal determinant computation inside the scalar kernel `Aˣ`. -/
 private theorem linearEquiv_det_unit_smul_refl
     {M : Type*} [AddCommGroup M] [Module A M] [Module.Free A M]
     (a : Aˣ) :
@@ -2399,7 +2399,7 @@ private theorem linearEquiv_det_unit_smul_refl
 
 /-- Helper for Theorem 17-17.6-1: once an element of the kernel fiber `U₁` is identified with a
 unit scalar homothety on the fixed lift carrier, its determinant is the corresponding `d`-th
-power. This is Serre's literal determinant computation inside the scalar kernel `Aˣ`. -/
+power. This is LinearRepresentations_Serre_1977's literal determinant computation inside the scalar kernel `Aˣ`. -/
 private theorem fixed_constituent_transport_kernel_det_eq_unit_pow
     (I : Subgroup G) [I.Normal]
     {P_S : Type (max u v x)} [AddCommGroup P_S] [Module A P_S]
@@ -2419,7 +2419,7 @@ private theorem fixed_constituent_transport_kernel_det_eq_unit_pow
   -- Delegate the scalar determinant calculation to the generic homothety lemma above.
   exact linearEquiv_det_unit_smul_refl (A := A) (M := P_S) a
 
-/-- Helper for Theorem 17-17.6-1: assuming Serre's kernel statement `U₁ = Aˣ`, every determinant
+/-- Helper for Theorem 17-17.6-1: assuming LinearRepresentations_Serre_1977's kernel statement `U₁ = Aˣ`, every determinant
 in a fiber `U_s` differs from the determinant of the chosen section element by a `d`-th power of
 a unit. This isolates the determinant-coset step before the later normalization to `G₂`. -/
 private theorem fixed_constituent_transport_fiber_det_eq_section_det_mul_unit_pow_of_kernel_scalar
@@ -2498,7 +2498,7 @@ private theorem fixed_constituent_transport_fiber_det_eq_section_det_mul_unit_po
   simpa [u0, hratio_det] using hratio
 
 /-- Helper for Theorem 17-17.6-1: this structure isolates the finite central-extension stage in
-Serre's source proof before the final lower-height recursion on the quotient module `τ`. -/
+LinearRepresentations_Serre_1977's source proof before the final lower-height recursion on the quotient module `τ`. -/
 private structure ConstituentProjectiveExtensionQuotientData
     (I : Subgroup G) [I.Normal]
     (ρ : Representation k G V)
@@ -2542,7 +2542,7 @@ attribute [instance]
 
 /-- Helper for Theorem 17-17.6-1: if a free `A[N]`-representation reduces to the trivial
 `k[N]`-representation and `|N|` is prime to `p`, then the lifted `A[N]`-representation is already
-trivial. This isolates the Chapter `15` descent step used after building Serre's finite projective
+trivial. This isolates the Chapter `15` descent step used after building LinearRepresentations_Serre_1977's finite projective
 cover. -/
 private theorem isTrivial_of_residueFieldLift_trivial_of_coprime_card
     (hp : Nat.Prime p)
@@ -2638,7 +2638,7 @@ private theorem isTrivial_of_residueFieldLift_trivial_of_coprime_card
   simpa using hEq'
 
 /-- Helper for Theorem 17-17.6-1: the determinant of the fixed lifted `I`-action is a genuine
-group homomorphism `I → Aˣ`. This is the owner used to identify Serre's determinant subgroup `C`
+group homomorphism `I → Aˣ`. This is the owner used to identify LinearRepresentations_Serre_1977's determinant subgroup `C`
 with a finite image subgroup. -/
 private noncomputable def fixed_constituent_action_det_hom
     (I : Subgroup G) [I.Normal]
@@ -2652,12 +2652,12 @@ private noncomputable def fixed_constituent_action_det_hom
     change LinearMap.det (ρA_I 1) = 1
     simp
   map_mul' x y := by
-    -- Determinant turns Serre's multiplicative `I`-action into multiplication in `Aˣ`.
+    -- Determinant turns LinearRepresentations_Serre_1977's multiplicative `I`-action into multiplication in `Aˣ`.
     apply Units.ext
     change LinearMap.det (ρA_I (x * y)) = LinearMap.det (ρA_I x) * LinearMap.det (ρA_I y)
     rw [map_mul, LinearMap.det_mul]
 
-/-- Helper for Theorem 17-17.6-1: Serre's determinant subgroup `C` is exactly the range of the
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's determinant subgroup `C` is exactly the range of the
 determinant homomorphism on the fixed lifted `I`-action. This packages the earlier closure
 definition into a finite subgroup owner. -/
 private theorem fixed_constituent_determinant_subgroup_eq_range
@@ -2677,7 +2677,7 @@ private theorem fixed_constituent_determinant_subgroup_eq_range
     exact Subgroup.subset_closure ⟨x, rfl⟩
 
 /-- Helper for Theorem 17-17.6-1: the determinant subgroup `C` of the fixed lifted Hall-kernel
-action has order dividing `|I|`. This is the finite-group part of Serre's determinant
+action has order dividing `|I|`. This is the finite-group part of LinearRepresentations_Serre_1977's determinant
 normalization stage. -/
 private theorem fixed_constituent_determinant_subgroup_card_dvd
     (I : Subgroup G) [I.Normal]
@@ -2745,7 +2745,7 @@ private theorem fixed_constituent_lift_finrank_coprime
   letI : FiniteDimensional k Sbar.toSubmodule :=
     IsIrreducible.finiteDimensional_of_finite Sbar.toRepresentation
   have hdim_dvd : Module.finrank k Sbar.toSubmodule ∣ Nat.card I := by
-    -- Serre's Chapter `6` divisibility theorem applies directly to the reduced irreducible
+    -- LinearRepresentations_Serre_1977's Chapter `6` divisibility theorem applies directly to the reduced irreducible
     -- constituent `S̄`.
     exact Representation.finrank_dvd_card (ρ := Sbar.toRepresentation)
   rw [fixed_constituent_lift_finrank_eq
@@ -2901,7 +2901,7 @@ private theorem exists_dth_root_of_unit_of_residue_eq_one_with_residue
     simpa [ha_unit.unit_spec] using ha_res
 
 /-- Helper for Theorem 17-17.6-1: a residue-field root of unity of order prime to `p` lifts to an
-actual unit root of unity in `A`. This is the algebraic input behind Serre's determinant
+actual unit root of unity in `A`. This is the algebraic input behind LinearRepresentations_Serre_1977's determinant
 normalization after enlarging the coefficient field. -/
 private theorem lift_roots_of_unity_unit_of_coprime_char
     (hp : Nat.Prime p)
@@ -2996,7 +2996,7 @@ private theorem exists_dth_root_of_unit_of_residue_eq_dth_power
           simp [u₀, mul_assoc, mul_left_comm, mul_comm]
     _ = u := by simp
 
-/-- Helper for Theorem 17-17.6-1: the determinants of the chosen section elements in Serre's
+/-- Helper for Theorem 17-17.6-1: the determinants of the chosen section elements in LinearRepresentations_Serre_1977's
 literal transport cover `G₁ → G` are multiplicative up to a `d`-th power, where
 `d = finrank_A(P_S)`. This packages the cocycle discrepancy into the scalar kernel `Aˣ`. -/
 private theorem fixed_constituent_section_det_mul_eq_unit_pow
@@ -3373,7 +3373,7 @@ private theorem section_determinant_class_pow_card_eq_one_mod_dth_powers
       ((powMonoidHom d : kˣ →* kˣ) (Units.map (IsLocalRing.residue A) a))).2
       ⟨Units.map (IsLocalRing.residue A) a, rfl⟩
 
-/-- Helper for Theorem 17-17.6-1: reduce the determinant of the chosen section element in Serre's
+/-- Helper for Theorem 17-17.6-1: reduce the determinant of the chosen section element in LinearRepresentations_Serre_1977's
 transport cover to its class modulo `d`-th powers in the residue-field units. This gives the
 literal section-side generator family for the candidate subgroup that will later define `G₂`. -/
 private noncomputable def fixed_constituent_section_determinant_class
@@ -3409,7 +3409,7 @@ private noncomputable def fixed_constituent_section_determinant_class
             (p := p) (A := A) (G := G) (V := V)
             hp I hIcop ρ Sbar ρA_I red_S hLiftSbar hTransport hTransportLift s).2)))
 
-/-- Helper for Theorem 17-17.6-1: reduce an element of Serre's determinant subgroup `C` to the
+/-- Helper for Theorem 17-17.6-1: reduce an element of LinearRepresentations_Serre_1977's determinant subgroup `C` to the
 same residue-field quotient modulo `d`-th powers. This is the second generator family for the
 explicit candidate subgroup containing the determinant-normalization data. -/
 private noncomputable def fixed_constituent_determinant_subgroup_residue_class
@@ -3424,7 +3424,7 @@ private noncomputable def fixed_constituent_determinant_subgroup_residue_class
       ((powMonoidHom (Module.finrank A P_S) : kˣ →* kˣ).range)
       (Units.map (IsLocalRing.residue A) c)
 
-/-- Helper for Theorem 17-17.6-1: the first explicit approximation to Serre's finite subgroup is
+/-- Helper for Theorem 17-17.6-1: the first explicit approximation to LinearRepresentations_Serre_1977's finite subgroup is
 the subgroup of the residue-field quotient generated by the chosen section determinant classes and
 the image of the determinant subgroup `C`. The remaining blocker is to prove this candidate is
 cyclic of order prime to `p`. -/
@@ -3494,7 +3494,7 @@ private theorem fixed_constituent_section_determinant_class_mem_candidate
   -- The section classes are built in as generators of the candidate subgroup.
   exact Subgroup.subset_closure (Or.inl ⟨s, rfl⟩)
 
-/-- Helper for Theorem 17-17.6-1: the residue-field image of every element of Serre's determinant
+/-- Helper for Theorem 17-17.6-1: the residue-field image of every element of LinearRepresentations_Serre_1977's determinant
 subgroup `C` already lies in the same explicit candidate subgroup. This isolates the remaining
 work to proving that the generated subgroup has the expected finite cyclic prime-to-`p` shape. -/
 private theorem fixed_constituent_determinant_subgroup_residue_class_mem_candidate
@@ -3592,7 +3592,7 @@ private theorem fixed_constituent_determinant_subgroup_residue_class_isOfFinOrde
   rw [← MonoidHom.map_pow]
   simp [fixed_constituent_determinant_subgroup_residue_class, pow_card_eq_one' (x := c)]
 
-/-- Helper for Theorem 17-17.6-1: every explicit generator coming from Serre's determinant
+/-- Helper for Theorem 17-17.6-1: every explicit generator coming from LinearRepresentations_Serre_1977's determinant
 subgroup `C` is already represented by an actual `(card C)`-th root of unity in the residue
 field, not merely by an abstract torsion quotient class. -/
 private theorem determinant_subgroup_residue_class_mem_card_rootsOfUnity_image
@@ -3624,7 +3624,7 @@ private theorem determinant_subgroup_residue_class_mem_card_rootsOfUnity_image
   simpa [ξ, ζ]
 
 /-- Helper for Theorem 17-17.6-1: the same determinant-subgroup generator family already lands in
-the common `lcm`-bounded roots-of-unity subgroup that will later host Serre's full candidate
+the common `lcm`-bounded roots-of-unity subgroup that will later host LinearRepresentations_Serre_1977's full candidate
 subgroup `N̄`. -/
 private theorem determinant_subgroup_residue_class_mem_lcm_rootsOfUnity_image
     (I : Subgroup G) [I.Normal]
@@ -3657,7 +3657,7 @@ private theorem determinant_subgroup_residue_class_mem_lcm_rootsOfUnity_image
 
 /-- Helper for Theorem 17-17.6-1: transporting the fixed constituent first by `t` and then by `s`
 is the same subrepresentation as transporting it once by `s * t`. This is the ambient carrier
-identity underlying Serre's repeated section cycle. -/
+identity underlying LinearRepresentations_Serre_1977's repeated section cycle. -/
 private theorem transportedSubrepresentation_mul
     (I : Subgroup G) [I.Normal]
     (ρ : Representation k G V)
@@ -3757,7 +3757,7 @@ private theorem transportedSubrepresentation_rep_equiv_local_subtype_pow_succ
             simpa [pow_succ, LinearMap.comp_assoc] using
               congrArg (fun f : V →ₗ[k] V => f.comp Sbar.toSubmodule.subtype) (ρ.map_mul s (s ^ n))
 
-/-- Helper for Theorem 17-17.6-1: the literal `n`-fold section cycle in Serre's transport cover
+/-- Helper for Theorem 17-17.6-1: the literal `n`-fold section cycle in LinearRepresentations_Serre_1977's transport cover
 `G₁` is obtained by repeatedly composing the chosen section value at `s` inside the transport
 fiber over `s ^ n`. This is the source-faithful controlling object behind the remaining section
 normalization step. -/
@@ -3806,7 +3806,7 @@ private noncomputable def fixed_constituent_section_cycle_fiber
 
 /-- Helper for Theorem 17-17.6-1: the determinant of the literal section cycle is the expected
 power of the determinant of the chosen section element. This records the multiplicative part of
-Serre's cycle argument before the reduced-action comparison is imposed. -/
+LinearRepresentations_Serre_1977's cycle argument before the reduced-action comparison is imposed. -/
 private theorem fixed_constituent_section_cycle_fiber_det
     (hp : Nat.Prime p)
     (I : Subgroup G) [I.Normal]
@@ -4201,7 +4201,7 @@ private theorem fixed_constituent_transport_family_normalization
             rfl
 
 /-- Helper for Theorem 17-17.6-1: once the reduced-side section has been normalized so that the
-chosen comparison at `1` is the canonical one, Serre's literal `|G|`-cycle in the kernel fiber
+chosen comparison at `1` is the canonical one, LinearRepresentations_Serre_1977's literal `|G|`-cycle in the kernel fiber
 `U₁` should reduce to the identity endomorphism of the fixed constituent `S̄`. Isolating this
 bridge keeps the remaining section-normalization blocker separate from the later roots-of-unity
 packaging. -/
@@ -4247,7 +4247,7 @@ private theorem fixed_constituent_section_cycle_reduction_in_ambient_zero
         (I := I) (ρ := ρ) (Sbar := Sbar) (1 : G))
 
 /-- Helper for Theorem 17-17.6-1: once the reduced-side section has been normalized so that the
-chosen comparison at `1` is canonical, Serre's literal `n`-step section cycle reduces to the
+chosen comparison at `1` is canonical, LinearRepresentations_Serre_1977's literal `n`-step section cycle reduces to the
 canonical ambient transport over `s ^ n`. The normalization hypothesis is necessary already at
 `n = 0`, where the empty cycle forces the endpoint comparison at `1` to be the canonical one. -/
 private theorem fixed_constituent_section_step_reduction_in_ambient
@@ -4313,7 +4313,7 @@ private theorem fixed_constituent_section_step_reduction_in_ambient
                   (I := I) (ρ := ρ) (Sbar := Sbar) s)
 
 /-- Helper for Theorem 17-17.6-1: once the reduced-side section has been normalized so that the
-chosen comparison at `1` is canonical, Serre's literal `n`-step section cycle reduces to the
+chosen comparison at `1` is canonical, LinearRepresentations_Serre_1977's literal `n`-step section cycle reduces to the
 canonical ambient transport over `s ^ n`. The normalization hypothesis is necessary already at
 `n = 0`, where the empty cycle forces the endpoint comparison at `1` to be the canonical one. -/
 private theorem fixed_constituent_section_cycle_fiber_succ_toLinearMap
@@ -4364,7 +4364,7 @@ private theorem fixed_constituent_section_cycle_fiber_succ_toLinearMap
   rfl
 
 /-- Helper for Theorem 17-17.6-1: once the reduced-side section has been normalized so that the
-chosen comparison at `1` is canonical, Serre's literal `n`-step section cycle reduces to the
+chosen comparison at `1` is canonical, LinearRepresentations_Serre_1977's literal `n`-step section cycle reduces to the
 canonical ambient transport over `s ^ n`. The normalization hypothesis is necessary already at
 `n = 0`, where the empty cycle forces the endpoint comparison at `1` to be the canonical one. -/
 private theorem fixed_constituent_section_cycle_source_lift
@@ -4532,7 +4532,7 @@ private noncomputable def fixed_constituent_section_step_over_shifted_cycle_sour
 
 /-- Helper for Theorem 17-17.6-1: on the common carrier `P_S`, the shifted source-step map is
 exactly the consecutive-cycle comparison from the `(n + 1)`-cycle back to the `n`-cycle. This is
-the source-faithful object Serre controls, so later proofs can avoid introducing a fresh shifted
+the source-faithful object LinearRepresentations_Serre_1977 controls, so later proofs can avoid introducing a fresh shifted
 transport witness. -/
 private theorem fixed_constituent_section_step_over_shifted_cycle_source_toLinearMap
     (hp : Nat.Prime p)
@@ -4587,7 +4587,7 @@ private theorem fixed_constituent_section_step_over_shifted_cycle_source_toLinea
     LinearMap.comp_assoc]
 
 /-- Helper for Theorem 17-17.6-1: once the reduced-side section has been normalized so that the
-chosen comparison at `1` is canonical, Serre's literal `n`-step section cycle reduces to the
+chosen comparison at `1` is canonical, LinearRepresentations_Serre_1977's literal `n`-step section cycle reduces to the
 canonical ambient transport over `s ^ n`. The normalization hypothesis is necessary already at
 `n = 0`, where the empty cycle forces the endpoint comparison at `1` to be the canonical one. -/
 private theorem fixed_constituent_section_cycle_succ_reduction_in_ambient
@@ -4651,7 +4651,7 @@ private theorem fixed_constituent_section_cycle_succ_reduction_in_ambient
     transportedSubrepresentation_rep_equiv_local_subtype]
 
 /-- Helper for Theorem 17-17.6-1: once the reduced-side section has been normalized so that the
-chosen comparison at `1` is canonical, Serre's literal `n`-step section cycle reduces to the
+chosen comparison at `1` is canonical, LinearRepresentations_Serre_1977's literal `n`-step section cycle reduces to the
 canonical ambient transport over `s ^ n`. The normalization hypothesis is necessary already at
 `n = 0`, where the empty cycle forces the endpoint comparison at `1` to be the canonical one. -/
 private theorem fixed_constituent_section_step_reduction_after_cycle_precompose
@@ -4711,7 +4711,7 @@ private theorem fixed_constituent_section_step_reduction_after_cycle_precompose
     using hx
 
 /-- Helper for Theorem 17-17.6-1: once the reduced-side section has been normalized so that the
-chosen comparison at `1` is canonical, Serre's literal `n`-step section cycle reduces to the
+chosen comparison at `1` is canonical, LinearRepresentations_Serre_1977's literal `n`-step section cycle reduces to the
 canonical ambient transport over `s ^ n`. The normalization hypothesis is necessary already at
 `n = 0`, where the empty cycle forces the endpoint comparison at `1` to be the canonical one. -/
 private theorem fixed_constituent_section_cycle_reduction_in_ambient
@@ -4827,7 +4827,7 @@ private theorem fixed_constituent_section_cycle_reduction_in_ambient
                   (ρ.map_mul s (s ^ n))
 
 /-- Helper for Theorem 17-17.6-1: once the reduced-side section has been normalized so that the
-chosen comparison at `1` is the canonical one, Serre's literal `|G|`-cycle in the kernel fiber
+chosen comparison at `1` is the canonical one, LinearRepresentations_Serre_1977's literal `|G|`-cycle in the kernel fiber
 `U₁` reduces to the identity after composing into the ambient representation. This is the ambient
 specialization of the source cycle argument before canceling the subtype inclusion of `S̄`. -/
 private theorem fixed_constituent_section_card_cycle_kernel_reduction_comp_eq
@@ -4947,7 +4947,7 @@ private theorem fixed_constituent_section_card_cycle_kernel_reduction_eq_id
     simpa using hLiftSbar
   have hcomp :
       red_S.comp cycle.toLinearMap = red_S := by
-    -- This is the remaining literal cycle-reduction identity in Serre's source route.
+    -- This is the remaining literal cycle-reduction identity in LinearRepresentations_Serre_1977's source route.
     simpa [cycle] using
       fixed_constituent_section_card_cycle_kernel_reduction_comp_eq
         (p := p) (A := A) (G := G) (V := V)
@@ -4976,7 +4976,7 @@ private theorem fixed_constituent_section_card_cycle_kernel_reduction_eq_id
 
 /-- Helper for Theorem 17-17.6-1: a kernel-fiber element `u ∈ U₁` whose reduction fixes `S̄`
 pointwise already reduces to the identity intertwining endomorphism. This is the generic
-`U₁` version of the cycle-specific argument used earlier for Serre's section cycles. -/
+`U₁` version of the cycle-specific argument used earlier for LinearRepresentations_Serre_1977's section cycles. -/
 private theorem fixed_constituent_transport_kernel_reduction_eq_id_of_comp_eq
     (I : Subgroup G) [I.Normal]
     (ρ : Representation k G V)
@@ -5042,7 +5042,7 @@ private theorem fixed_constituent_transport_fiber_det_residue_eq_one_of_reductio
   have hscalar :
       ∀ f : ρA_I.IntertwiningMap ρA_I,
         ∃ a : A, f = a • Representation.IntertwiningMap.id ρA_I := by
-    -- Serre's lifted fixed constituent still has only scalar equivariant endomorphisms.
+    -- LinearRepresentations_Serre_1977's lifted fixed constituent still has only scalar equivariant endomorphisms.
     intro f
     exact
       fixed_constituent_lift_equivariant_endomorphism_scalar
@@ -5218,7 +5218,7 @@ private theorem normalized_section_determinant_class_mem_card_rootsOfUnity_image
   have hscalar :
       ∀ f : ρA_I.IntertwiningMap ρA_I,
         ∃ a : A, f = a • Representation.IntertwiningMap.id ρA_I := by
-    -- Serre's fixed lift has only scalar equivariant endomorphisms.
+    -- LinearRepresentations_Serre_1977's fixed lift has only scalar equivariant endomorphisms.
     intro f
     exact
       fixed_constituent_lift_equivariant_endomorphism_scalar
@@ -5574,7 +5574,7 @@ private theorem fixed_constituent_projective_extension_candidate_isTorsion
 
 /-- Helper for Theorem 17-17.6-1: the explicit candidate subgroup in the residue-field quotient is
 already finite, because it is a finitely generated torsion subgroup of a commutative group. This
-closes the finiteness half of Serre's determinant-normalization stage before cyclicity is imposed.
+closes the finiteness half of LinearRepresentations_Serre_1977's determinant-normalization stage before cyclicity is imposed.
 -/
 private theorem fixed_constituent_projective_extension_candidate_finite
     (hp : Nat.Prime p)
@@ -5630,7 +5630,7 @@ private theorem fixed_constituent_projective_extension_candidate_finite
         (p := p) (A := A) (G := G) (V := V)
         hp I hIcop ρ Sbar hSbar_irred ρA_I red_S hLiftSbar hTransport hTransportLift)
 
-/-- Helper for Theorem 17-17.6-1: once Serre's determinant normalization produces an actual
+/-- Helper for Theorem 17-17.6-1: once LinearRepresentations_Serre_1977's determinant normalization produces an actual
 finite subgroup `D ≤ kˣ`, cyclicity is automatic because `D` embeds in the multiplicative group of
 the residue field. This isolates the later cyclicity step from the current quotient-to-upstairs
 lifting blocker. -/
@@ -5651,7 +5651,7 @@ private theorem finite_subgroup_of_residue_units_isCyclic
 
 /-- Helper for Theorem 17-17.6-1: in characteristic `p`, the only `p`-th root of unity in the
 residue field is `1`. This is the local reduced-ring input behind the prime-to-`p` cardinal bound
-for Serre's canonical bounded-exponent subgroup `D`. -/
+for LinearRepresentations_Serre_1977's canonical bounded-exponent subgroup `D`. -/
 private theorem roots_of_unity_prime_eq_bot
     (hp : Nat.Prime p) :
     rootsOfUnity p k = ⊥ := by
@@ -5667,7 +5667,7 @@ private theorem roots_of_unity_prime_eq_bot
     simpa [Subgroup.mem_bot] using hζ
 
 /-- Helper for Theorem 17-17.6-1: the canonical subgroup of `n`-th roots of unity in the residue
-field has order prime to `p`. This is Serre's closing prime-to-`p` control once the determinant
+field has order prime to `p`. This is LinearRepresentations_Serre_1977's closing prime-to-`p` control once the determinant
 classes are placed inside a bounded-exponent subgroup `D := rootsOfUnity n k`. -/
 private theorem roots_of_unity_card_coprime_charP
     (hp : Nat.Prime p)
@@ -5702,7 +5702,7 @@ private theorem roots_of_unity_card_coprime_charP
     simpa [hP_bot] using (Subgroup.card_bot : Nat.card (⊥ : Subgroup (rootsOfUnity n k)) = 1)
   exact hp.ne_one (hPcard.trans hcard_bot')
 
-/-- Helper for Theorem 17-17.6-1: Serre's finite-cover subgroup `G₂` is the closure of the chosen
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's finite-cover subgroup `G₂` is the closure of the chosen
 section image together with the embedded Hall kernel inside the total-space cover `G₁`. Naming
 this subgroup isolates the literal source generators before quotienting by `I₂`. -/
 private noncomputable def fixed_constituent_generated_cover_subgroup
@@ -5777,7 +5777,7 @@ private theorem fixed_constituent_section_mem_generated_cover
         ⟨s, rfl⟩
 
 /-- Helper for Theorem 17-17.6-1: the embedded Hall-kernel copy lies in the generated-cover
-subgroup `G₂`. This is the second source generator family in Serre's definition of `G₂`. -/
+subgroup `G₂`. This is the second source generator family in LinearRepresentations_Serre_1977's definition of `G₂`. -/
 private theorem fixed_constituent_embed_hall_kernel_mem_generated_cover
     (hp : Nat.Prime p)
     (I : Subgroup G) [I.Normal]
@@ -5846,14 +5846,14 @@ private theorem fixed_constituent_generated_cover_proj_surjective
             hp I hIcop ρ Sbar ρA_I red_S hLiftSbar hTransport hTransportLift))) := by
   intro s
   refine ⟨⟨_, ?_⟩, rfl⟩
-  -- Serre's chosen section already lands in the generating family of `G₂`.
+  -- LinearRepresentations_Serre_1977's chosen section already lands in the generating family of `G₂`.
   exact
     fixed_constituent_section_mem_generated_cover
       (p := p) (A := A) (G := G) (V := V)
       hp I hIcop ρ Sbar ρA_I red_S hLiftSbar hTransport hTransportLift s
 
 /-- Helper for Theorem 17-17.6-1: the literal Hall-kernel embedding `I → G₁` restricts to the
-generated-cover subgroup `G₂`. This is the canonical source-faithful map used to define Serre's
+generated-cover subgroup `G₂`. This is the canonical source-faithful map used to define LinearRepresentations_Serre_1977's
 subgroup `I₂ ≤ G₂`. -/
 private noncomputable def fixed_constituent_generated_cover_embed_hall_kernel
     (hp : Nat.Prime p)
@@ -5931,7 +5931,7 @@ the original Hall-kernel element in `G`. This fixes the projection formula befor
   -- The codomain restriction to `G₂` leaves the original Hall-kernel embedding unchanged.
   rfl
 
-/-- Helper for Theorem 17-17.6-1: Serre's subgroup `I₂ ≤ G₂` is the range of the embedded
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's subgroup `I₂ ≤ G₂` is the range of the embedded
 Hall-kernel copy. Naming it now isolates the first quotient object in the finite-cover package. -/
 private noncomputable def fixed_constituent_generated_cover_hall_kernel_subgroup
     (hp : Nat.Prime p)
@@ -5963,7 +5963,7 @@ private noncomputable def fixed_constituent_generated_cover_hall_kernel_subgroup
     (p := p) (A := A) (G := G) (V := V)
     hp I hIcop ρ Sbar ρA_I red_S hLiftSbar hTransport hTransportLift).range
 
-/-- Helper for Theorem 17-17.6-1: after restricting Serre's total-space projection to `G₂`,
+/-- Helper for Theorem 17-17.6-1: after restricting LinearRepresentations_Serre_1977's total-space projection to `G₂`,
 quotienting by `I` on the `G`-side yields the source map `G₂ → G ⧸ I` used before introducing
 the kernel `N̄`. -/
 private noncomputable def fixed_constituent_generated_cover_proj_to_quotient
@@ -6001,7 +6001,7 @@ private noncomputable def fixed_constituent_generated_cover_proj_to_quotient
           hp I hIcop ρ Sbar ρA_I red_S hLiftSbar hTransport hTransportLift)))
 
 /-- Helper for Theorem 17-17.6-1: the restricted projection `G₂ → G` is still surjective after
-passing to `G ⧸ I`, so Serre's literal map `G₂ → G ⧸ I` already hits every quotient class. -/
+passing to `G ⧸ I`, so LinearRepresentations_Serre_1977's literal map `G₂ → G ⧸ I` already hits every quotient class. -/
 private theorem fixed_constituent_generated_cover_proj_to_quotient_surjective
     (hp : Nat.Prime p)
     (I : Subgroup G) [I.Normal]
@@ -6074,7 +6074,7 @@ private theorem fixed_constituent_generated_cover_hall_kernel_subgroup_le_ker_pr
   simp [fixed_constituent_generated_cover_hall_kernel_subgroup,
     fixed_constituent_generated_cover_proj_to_quotient]
 
-/-- Helper for Theorem 17-17.6-1: Serre's literal quotient map `G₂ → G ⧸ I` descends through the
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's literal quotient map `G₂ → G ⧸ I` descends through the
 embedded Hall-kernel subgroup `I₂`, yielding the source-faithful map `pi₂ : G₂ ⧸ I₂ → G ⧸ I`
 that defines the later kernel `N̄`. -/
 private noncomputable def generated_cover_proj_to_quotient_descends
@@ -6106,7 +6106,7 @@ private noncomputable def generated_cover_proj_to_quotient_descends
         (p := p) (A := A) (G := G) (V := V)
         hp I hIcop ρ Sbar ρA_I red_S hLiftSbar hTransport hTransportLift) →*
       G ⧸ I :=
-  -- Route correction: freeze the first quotient object exactly as in Serre's source before any
+  -- Route correction: freeze the first quotient object exactly as in LinearRepresentations_Serre_1977's source before any
   -- determinant normalization. The only input here is the already proved containment
   -- `I₂ ≤ ker(G₂ → G ⧸ I)`.
   QuotientGroup.lift
@@ -6165,7 +6165,7 @@ private theorem generated_cover_proj_to_quotient_descends_surjective
 
 /-- Helper for Theorem 17-17.6-1: once the first quotient map `pi₂ : G₂ ⧸ I₂ → G ⧸ I` is fixed,
 the quotient by its kernel is formally identified with `G ⧸ I`. This closes the purely
-quotient-theoretic half of Serre's `G₂ / I₂ / N̄` package before any kernel normalization. -/
+quotient-theoretic half of LinearRepresentations_Serre_1977's `G₂ / I₂ / N̄` package before any kernel normalization. -/
 private noncomputable def generated_cover_kernel_quotient_equiv
     (hp : Nat.Prime p)
     (I : Subgroup G) [I.Normal]
@@ -6217,7 +6217,7 @@ private noncomputable def generated_cover_kernel_quotient_equiv
       ((MulEquiv.subgroupCongr hrange).trans Subgroup.topEquiv)
 
 /-- Helper for Theorem 17-17.6-1: the actual kernel of `pi : G₂ → G` is identified with
-Serre's quotient kernel `N̄ = ker(pi₂)` by sending a quotient-kernel class to its unique
+LinearRepresentations_Serre_1977's quotient kernel `N̄ = ker(pi₂)` by sending a quotient-kernel class to its unique
 normalized representative over `1 ∈ G`. This is the exact interface bridge needed later when the
 tensor lift is descended from `G₂` back to `G`. -/
 private noncomputable def generated_cover_kernel_equiv_nbar
@@ -6464,7 +6464,7 @@ private theorem generated_cover_kernel_normalized_representative_exists
       _ = q.1 := hg
 
 /-- Helper for Theorem 17-17.6-1: once the candidate determinant subgroup is placed inside the
-bounded roots-of-unity owner `D̄`, the remaining work is the literal Serre package
+bounded roots-of-unity owner `D̄`, the remaining work is the literal LinearRepresentations_Serre_1977 package
 `G₂`, `I₂`, `N̄`, `τ`, and tensor descent. This keeps the final blocker separate from the already
 formalized closure step. -/
 private theorem generated_cover_kernel_has_normalized_representative
@@ -6539,7 +6539,7 @@ private theorem generated_cover_kernel_has_normalized_representative
       hp I hIcop ρ Sbar ρA_I red_S hLiftSbar hTransport hTransportLift q g hg
 
 /-- Helper for Theorem 17-17.6-1: for a fixed class `q ∈ N̄ = ker(pi₂)`, the representative in
-`G₂` lying over `1 ∈ G` is unique. This is the structural step in Serre's source route that makes
+`G₂` lying over `1 ∈ G` is unique. This is the structural step in LinearRepresentations_Serre_1977's source route that makes
 the later scalar unit attached to `q` independent of choices. -/
 private theorem normalized_kernel_representative_unique
     (hp : Nat.Prime p)
@@ -6930,7 +6930,7 @@ private theorem normalized_kernel_representative_mk_eq
     hspec.2.2
 
 /-- Helper for Theorem 17-17.6-1: the fiber coordinate of the normalized representative lies in
-Serre's kernel fiber `U₁ = Aˣ`, so the existing scalar-classification theorem already produces a
+LinearRepresentations_Serre_1977's kernel fiber `U₁ = Aˣ`, so the existing scalar-classification theorem already produces a
 unit homothety for it. This is the first scalar bridge needed for the later kernel package on
 `N̄`. -/
 private theorem normalized_kernel_scalar_exists
@@ -7211,7 +7211,7 @@ private theorem normalized_kernel_representative_mul
       hproj_mul
 
 /-- Helper for Theorem 17-17.6-1: after normalizing representatives inside `N̄ = ker(pi₂)`,
-their second coordinates compose exactly as Serre's total-space multiplication says they should.
+their second coordinates compose exactly as LinearRepresentations_Serre_1977's total-space multiplication says they should.
 This is the transport-stable bridge from representative multiplication to scalar multiplication on
 the fixed lifted constituent carrier. -/
 private theorem normalized_kernel_second_coordinate_mul
@@ -7252,7 +7252,7 @@ private theorem normalized_kernel_second_coordinate_mul
           (p := p) (A := A) (G := G) (V := V)
           hp I hIcop ρ Sbar ρA_I red_S hLiftSbar hTransport hTransportLift q₁).1.2
           .toLinearEquiv) := by
-  -- Read off the second coordinate from representative multiplication, then unfold Serre's
+  -- Read off the second coordinate from representative multiplication, then unfold LinearRepresentations_Serre_1977's
   -- total-space product only once so the composition order stays source-faithful.
   have hmul :=
     congrArg
@@ -7324,7 +7324,7 @@ private theorem normalized_kernel_scalar_unique
       (A := A) (M := P_S) (ha.symm.trans hb)
 
 /-- Helper for Theorem 17-17.6-1: scalar homotheties on a free module compose by multiplying the
-underlying units. This is the linear-algebra normalization needed when Serre's kernel
+underlying units. This is the linear-algebra normalization needed when LinearRepresentations_Serre_1977's kernel
 representatives are multiplied upstairs in `G₂`. -/
 private theorem unit_smul_linearEquiv_refl_trans
     {M : Type*} [AddCommGroup M] [Module A M]
@@ -7336,7 +7336,7 @@ private theorem unit_smul_linearEquiv_refl_trans
   simp [smul_smul, mul_assoc]
 
 /-- Helper for Theorem 17-17.6-1: the scalar extracted from the normalized representative of
-`q ∈ N̄` is multiplicative. This packages Serre's kernel object `U₁ = Aˣ` as an actual monoid
+`q ∈ N̄` is multiplicative. This packages LinearRepresentations_Serre_1977's kernel object `U₁ = Aˣ` as an actual monoid
 homomorphism on `N̄`, ready for the later residue-class comparison. -/
 private noncomputable def kernel_scalar_unit
     (hp : Nat.Prime p)
@@ -7542,7 +7542,7 @@ private theorem kernel_scalar_unit_spec
         hp I hIcop ρ Sbar hSbar_irred ρA_I red_S hLiftSbar hTransport hTransportLift q))
 
 /-- Helper for Theorem 17-17.6-1: once the candidate determinant subgroup is placed inside the
-bounded roots-of-unity owner `D̄`, the remaining work is the literal Serre package
+bounded roots-of-unity owner `D̄`, the remaining work is the literal LinearRepresentations_Serre_1977 package
 `G₂`, `I₂`, `N̄`, `τ`, and tensor descent. This keeps the final blocker separate from the already
 formalized closure step. -/
 private theorem candidate_subgroup_cyclic_and_coprime_of_bounded_containment
@@ -7597,7 +7597,7 @@ private theorem candidate_subgroup_cyclic_and_coprime_of_bounded_containment
     exact finite_subgroup_of_residue_units_isCyclic (A := A)
       (rootsOfUnity (Nat.lcm (Nat.card G) (Nat.card C)) k)
   have hDbar_cyclic : IsCyclic Dbar := by
-    -- Serre's bounded owner `D̄` is a quotient image of that cyclic roots-of-unity group.
+    -- LinearRepresentations_Serre_1977's bounded owner `D̄` is a quotient image of that cyclic roots-of-unity group.
     dsimp [Dbar]
     exact
       isCyclic_of_surjective
@@ -7621,7 +7621,7 @@ private theorem candidate_subgroup_cyclic_and_coprime_of_bounded_containment
     exact hDbar_coprime.of_dvd_right
       (Subgroup.card_dvd_of_le (show Candidate ≤ Dbar by simpa [Candidate, C, Qd, Dbar] using hcandidate_le))
 
-/-- Helper for Theorem 17-17.6-1: every residue class coming from Serre's determinant subgroup
+/-- Helper for Theorem 17-17.6-1: every residue class coming from LinearRepresentations_Serre_1977's determinant subgroup
 `C` has order dividing the cardinal of the explicit candidate subgroup. This freezes the
 finite-order input needed before converting quotient-level determinant identities into literal
 upstairs statements. -/
@@ -7677,7 +7677,7 @@ private theorem fixed_constituent_determinant_subgroup_residue_class_pow_card_eq
 
 /-- Helper for Theorem 17-17.6-1: the raw determinant class of the quotient-out representative of
 `q ∈ N̄` also has order dividing the cardinal of the candidate subgroup, because it agrees with
-the literal Hall-kernel correction class in Serre's determinant subgroup `C`. -/
+the literal Hall-kernel correction class in LinearRepresentations_Serre_1977's determinant subgroup `C`. -/
 private theorem kernel_out_representative_det_residue_class_pow_card_eq_one
     (hp : Nat.Prime p)
     (I : Subgroup G) [I.Normal]
@@ -7773,7 +7773,7 @@ private theorem kernel_out_representative_det_residue_class_pow_card_eq_one
 
 /-- Helper for Theorem 17-17.6-1: the normalized scalar attached to `q ∈ N̄` determines `q`
 itself. This packages the already normalized representative-level uniqueness into an injective
-map `N̄ → Aˣ`, leaving only the bounded-image step before Serre's cyclic prime-to-`p` kernel
+map `N̄ → Aˣ`, leaving only the bounded-image step before LinearRepresentations_Serre_1977's cyclic prime-to-`p` kernel
 package closes. -/
 private theorem kernel_scalar_unit_injective
     (hp : Nat.Prime p)
@@ -7914,7 +7914,7 @@ private theorem kernel_scalar_unit_injective
   exact Subtype.ext hclass
 
 /-- Helper for Theorem 17-17.6-1: a scalar homothety on the fixed lifted constituent is an
-element of Serre's kernel fiber `U₁`. This keeps the later centrality argument at the literal
+element of LinearRepresentations_Serre_1977's kernel fiber `U₁`. This keeps the later centrality argument at the literal
 total-space level instead of reopening the transport normalization data each time. -/
 private theorem scalar_transport_fiber_one_isIntertwining
     (I : Subgroup G) [I.Normal]
@@ -7932,7 +7932,7 @@ private theorem scalar_transport_fiber_one_isIntertwining
   simp [MulAut.conjNormal_apply, mul_assoc]
 
 /-- Helper for Theorem 17-17.6-1: package a scalar unit as the corresponding element of the
-kernel fiber `U₁` in Serre's transport total space. -/
+kernel fiber `U₁` in LinearRepresentations_Serre_1977's transport total space. -/
 private noncomputable def scalar_transport_fiber_one
     (I : Subgroup G) [I.Normal]
     {P_S : Type (max u v x)} [AddCommGroup P_S] [Module A P_S]
@@ -7946,7 +7946,7 @@ private noncomputable def scalar_transport_fiber_one
     (scalar_transport_fiber_one_isIntertwining
       (A := A) (G := G) (I := I) ρA_I a)
 
-/-- Helper for Theorem 17-17.6-1: scalar elements in Serre's kernel fiber commute with every
+/-- Helper for Theorem 17-17.6-1: scalar elements in LinearRepresentations_Serre_1977's kernel fiber commute with every
 element of the transport total space. This is the literal source-level reason that the later
 kernel subgroup is central after quotienting by the embedded Hall kernel. -/
 private theorem scalar_transport_total_space_commutes
@@ -7975,7 +7975,7 @@ private theorem scalar_transport_total_space_commutes
       MulAut.conjNormal_apply, mul_assoc]
 
 /-- Helper for Theorem 17-17.6-1: every normalized representative of a class in `N̄` is literally
-the scalar point `(1, a • id)` in Serre's transport total space. This is the transport-stable
+the scalar point `(1, a • id)` in LinearRepresentations_Serre_1977's transport total space. This is the transport-stable
 form of the scalar extraction used in the centrality argument. -/
 private theorem normalized_kernel_representative_eq_scalar_total_space
     (hp : Nat.Prime p)
@@ -8089,7 +8089,7 @@ private theorem normalized_kernel_representative_eq_scalar_fiber
 
 /-- Helper for Theorem 17-17.6-1: after rewriting a normalized kernel representative as the
 literal scalar point `(1, a • id)`, its determinant is exactly `a^d`. This isolates the scalar
-determinant computation before the remaining comparison with Serre's determinant subgroup `C`. -/
+determinant computation before the remaining comparison with LinearRepresentations_Serre_1977's determinant subgroup `C`. -/
 private theorem normalized_kernel_representative_det_eq_kernel_scalar_pow
     (hp : Nat.Prime p)
     (I : Subgroup G) [I.Normal]
@@ -8140,7 +8140,7 @@ private theorem normalized_kernel_representative_det_eq_kernel_scalar_pow
 
 /-- Helper for Theorem 17-17.6-1: the determinant-membership goal for a normalized kernel
 representative is exactly the source statement that the attached scalar `kernelScalar(q)` has
-`d`-th power in Serre's determinant subgroup `C`. -/
+`d`-th power in LinearRepresentations_Serre_1977's determinant subgroup `C`. -/
 private theorem normalized_kernel_representative_det_mem_determinant_subgroup_iff_kernel_scalar_pow_mem
     (hp : Nat.Prime p)
     (I : Subgroup G) [I.Normal]
@@ -8185,7 +8185,7 @@ private theorem normalized_kernel_representative_det_mem_determinant_subgroup_if
     hp I hIcop ρ Sbar hSbar_irred ρA_I red_S hLiftSbar hTransport hTransportLift q]
 
 /-- Helper for Theorem 17-17.6-1: the determinant of the embedded Hall-kernel element attached to
-`x ∈ I` is exactly the determinant generator used to define Serre's subgroup `C`. -/
+`x ∈ I` is exactly the determinant generator used to define LinearRepresentations_Serre_1977's subgroup `C`. -/
 private theorem fixed_constituent_transport_fiber_det_of_hall_kernel_element
     (I : Subgroup G) [I.Normal]
     {P_S : Type (max u v x)} [AddCommGroup P_S] [Module A P_S]
@@ -8199,7 +8199,7 @@ private theorem fixed_constituent_transport_fiber_det_of_hall_kernel_element
       fixed_constituent_action_det (A := A) (G := G) I ρA_I x := rfl
 
 /-- Helper for Theorem 17-17.6-1: the determinant contributed by the Hall-kernel correction used
-to normalize a class `q ∈ N̄` already lies in Serre's determinant subgroup `C`. -/
+to normalize a class `q ∈ N̄` already lies in LinearRepresentations_Serre_1977's determinant subgroup `C`. -/
 private theorem normalized_kernel_representative_correction_det_mem_determinant_subgroup
     (hp : Nat.Prime p)
     (I : Subgroup G) [I.Normal]
@@ -8244,7 +8244,7 @@ private theorem normalized_kernel_representative_correction_det_mem_determinant_
         (p := p) (A := A) (G := G) (V := V)
         hp I hIcop ρ Sbar ρA_I red_S hLiftSbar hTransport hTransportLift q, rfl⟩
 
-/-- Helper for Theorem 17-17.6-1: when Serre's chosen section is evaluated on an element of the
+/-- Helper for Theorem 17-17.6-1: when LinearRepresentations_Serre_1977's chosen section is evaluated on an element of the
 Hall kernel `I`, its determinant class already agrees modulo `d`-th powers with the corresponding
 generator from the determinant subgroup `C`. -/
 private theorem section_determinant_class_eq_determinant_subgroup_residue_class_of_mem_I
@@ -8294,7 +8294,7 @@ private theorem section_determinant_class_eq_determinant_subgroup_residue_class_
         fixed_constituent_transport_fiber
           (A := A) (G := G) I ρA_I (1 : G),
         ∃ a : Aˣ, u.toLinearEquiv = a • LinearEquiv.refl A P_S := by
-    -- Serre's kernel fiber `U₁` is exactly the scalar unit group.
+    -- LinearRepresentations_Serre_1977's kernel fiber `U₁` is exactly the scalar unit group.
     intro u
     exact
       fixed_constituent_transport_kernel_eq_unit_smul_id_of_endomorphism_scalar
@@ -8344,7 +8344,7 @@ private theorem section_determinant_class_eq_determinant_subgroup_residue_class_
             fixed_constituent_transport_fiber_det_of_hall_kernel_element
               (A := A) (G := G) (I := I) (ρA_I := ρA_I)]
 
-/-- Helper for Theorem 17-17.6-1: Serre's section determinant classes multiply in the quotient
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's section determinant classes multiply in the quotient
 `kˣ / (kˣ)^d`. This is the algebraic source-side owner behind the later quotient-by-`C` route:
 the discrepancy between `sec (s * t)` and `sec s * sec t` lies in `U₁`, hence contributes only a
 `d`-th power to the determinant class. -/
@@ -8466,7 +8466,7 @@ private theorem fixed_constituent_section_determinant_class_mul
             rw [mul_comm]
 
 /-- Helper for Theorem 17-17.6-1: the section determinant class at `1` is the neutral element of
-`kˣ / (kˣ)^d`. Together with multiplicativity, this packages Serre's chosen section determinants
+`kˣ / (kˣ)^d`. Together with multiplicativity, this packages LinearRepresentations_Serre_1977's chosen section determinants
 as a genuine monoid morphism before quotienting by the determinant subgroup image. -/
 private theorem fixed_constituent_section_determinant_class_one
     (hp : Nat.Prime p)
@@ -8556,7 +8556,7 @@ private noncomputable def fixed_constituent_section_determinant_class_hom
 
 /-- Helper for Theorem 17-17.6-1: the quotient-out representative `q.1.out` of a class
 `q ∈ N̄ = ker(pi₂)` already contributes no new determinant class modulo `d`-th powers; its class
-comes from Serre's determinant subgroup `C`. -/
+comes from LinearRepresentations_Serre_1977's determinant subgroup `C`. -/
 private theorem kernel_out_representative_det_residue_class_mem_determinant_subgroup
     (hp : Nat.Prime p)
     (I : Subgroup G) [I.Normal]
@@ -8844,7 +8844,7 @@ private theorem kernel_out_representative_det_residue_class_eq_correction_residu
         (A := A) (G := G) (I := I) ρA_I c := by
           rw [hc_eq]
 
-/-- Helper for Theorem 17-17.6-1: the determinant of Serre's normalized representative is the
+/-- Helper for Theorem 17-17.6-1: the determinant of LinearRepresentations_Serre_1977's normalized representative is the
 determinant of the raw quotient-out representative multiplied by the inverse determinant of the
 chosen Hall-kernel correction. This keeps the later kernel calculation transport-stable. -/
 private theorem normalized_kernel_representative_det_eq_raw_det_mul_correction_inv
@@ -9014,7 +9014,7 @@ private theorem normalized_kernel_determinant_class_eq_one
           rw [fixed_constituent_determinant_subgroup_residue_class]
     _ = 1 := by simp
 
-/-- Helper for Theorem 17-17.6-1: the quotient-trivial determinant class of Serre's normalized
+/-- Helper for Theorem 17-17.6-1: the quotient-trivial determinant class of LinearRepresentations_Serre_1977's normalized
 representative is already witnessed by an explicit `d`-th power in the residue-field units. This
 freezes the quotient-level endpoint in a rewrite-friendly form before the remaining literal
 determinant-subgroup upgrade. -/
@@ -9120,7 +9120,7 @@ private theorem kernel_scalar_pow_residue_class_eq_one
             hp I hIcop ρ Sbar hSbar_irred ρA_I red_S hLiftSbar hTransport hTransportLift q) ^
             Module.finrank A P_S)) =
       1 := by
-  -- Rewrite Serre's scalar determinant as the determinant of the normalized representative, then
+  -- Rewrite LinearRepresentations_Serre_1977's scalar determinant as the determinant of the normalized representative, then
   -- apply the quotient-level cancellation already proved above.
   calc
     QuotientGroup.mk'
@@ -9148,7 +9148,7 @@ private theorem kernel_scalar_pow_residue_class_eq_one
               (p := p) (A := A) (G := G) (V := V)
               hp I hIcop ρ Sbar hSbar_irred ρA_I red_S hLiftSbar hTransport hTransportLift q
 
-/-- Helper for Theorem 17-17.6-1: in the notation of Serre's finite kernel package, every
+/-- Helper for Theorem 17-17.6-1: in the notation of LinearRepresentations_Serre_1977's finite kernel package, every
 `q ∈ N̄ = ker(pi₂)` already satisfies the quotient-side scalar identity
 `res((kernelScalar q)^d) = 1` in `kˣ / (kˣ)^d`. This repackages the scalar rewrite theorem at the
 actual kernel object used later in the projective-extension package. -/
@@ -9225,7 +9225,7 @@ private theorem kernel_scalar_pow_residue_class_eq_one_on_kernel_subgroup
 
 /-- Helper for Theorem 17-17.6-1: the normalized determinant of a kernel representative is already
 an actual `d`-th power in `Aˣ`. This packages the Hensel-lifting step separately from the later
-literal-membership argument in Serre's determinant subgroup `C`. -/
+literal-membership argument in LinearRepresentations_Serre_1977's determinant subgroup `C`. -/
 private theorem normalized_kernel_representative_det_exists_dth_root
     (hp : Nat.Prime p)
     (I : Subgroup G) [I.Normal]
@@ -9291,7 +9291,7 @@ private theorem normalized_kernel_representative_det_exists_dth_root
 
 /-- Helper for Theorem 17-17.6-1: once the normalized representatives of `N̄ = ker(pi₂)` are
 rewritten as literal scalar points `(1, a • id)`, their classes commute with the whole quotient
-`G₂ ⧸ I₂`. This closes the centrality half of Serre's finite kernel package. -/
+`G₂ ⧸ I₂`. This closes the centrality half of LinearRepresentations_Serre_1977's finite kernel package. -/
 private theorem kernel_subgroup_central_of_normalized_representatives
     (hp : Nat.Prime p)
     (I : Subgroup G) [I.Normal]
@@ -9702,7 +9702,7 @@ private theorem fixed_constituent_transport_fiber_reduction_equiv_unique
 
 /-- Helper for Theorem 17-17.6-1: when the transport fiber element is the distinguished lift-side
 automorphism `fixed_constituent_transport_aut_of_lift s`, the chosen reduction equivalence on
-`S̄` is exactly Serre's fixed comparison `hTransport s`. This freezes the cover-side source
+`S̄` is exactly LinearRepresentations_Serre_1977's fixed comparison `hTransport s`. This freezes the cover-side source
 transport before the later `G₂`-action on the multiplicity space. -/
 private theorem fixed_constituent_transport_fiber_reduction_equiv_eq_chosen_transport
     (hp : Nat.Prime p)
@@ -9806,7 +9806,7 @@ private theorem fixed_constituent_transport_fiber_reduction_equiv_eq_identity_tr
     ext x
     simp [fixed_constituent_transport_fiber_one, LinearMap.comp_apply]
 
-/-- Helper for Theorem 17-17.6-1: precomposing Serre's multiplicity space by the reduction
+/-- Helper for Theorem 17-17.6-1: precomposing LinearRepresentations_Serre_1977's multiplicity space by the reduction
 equivalence attached to the distinguished lift-side transport automorphism agrees with the
 earlier transported-constituent linear equivalence. This packages the exact source-side
 identification needed before defining the upstairs `G₂`-action on `Hom^I(S̄, V)`. -/
@@ -10058,7 +10058,7 @@ private theorem fixed_isotypic_cover_source_correction_multiplicity_linearEquiv_
     (p := p) (A := A) (G := G) (V := V)
     hp I hIcop ρ Sbar hSbar_irred ρA_I red_S hLiftSbar hTransport hTransportLift]
 
-/-- Helper for Theorem 17-17.6-1: Serre's literal determinant-normalized cover is the subgroup of
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's literal determinant-normalized cover is the subgroup of
 the total transport space cut out by the source condition `det(t) ∈ C`. This names the source
 object that the later finite cover should use, instead of rebuilding it ad hoc inside the kernel
 proof. -/
@@ -10157,7 +10157,7 @@ private theorem fixed_constituent_generated_cover_hall_kernel_subgroup_mem_liter
     fixed_constituent_embed_hall_kernel_mem_literal_determinant_cover_local
       (A := A) (G := G) (I := I) ρA_I x
 
-/-- Helper for Theorem 17-17.6-1: restricting the total-space projection `G₁ → G` to Serre's
+/-- Helper for Theorem 17-17.6-1: restricting the total-space projection `G₁ → G` to LinearRepresentations_Serre_1977's
 literal determinant cover gives the source-faithful projection `G₂(det) → G`. This packages the
 literal owner before quotienting by the Hall-kernel image. -/
 private noncomputable def fixed_constituent_literal_determinant_cover_proj_hom
@@ -10174,7 +10174,7 @@ private noncomputable def fixed_constituent_literal_determinant_cover_proj_hom
         (A := A) (G := G) (I := I) ρA_I))
 
 /-- Helper for Theorem 17-17.6-1: if the chosen section determinant class at `s` already matches
-one class coming from Serre's determinant subgroup `C`, then a single scalar kernel correction
+one class coming from LinearRepresentations_Serre_1977's determinant subgroup `C`, then a single scalar kernel correction
 moves the chosen section value into the literal determinant cover over `s`. This isolates the
 exact adjustment step needed before proving surjectivity of `G₂(det) → G`. -/
 private theorem section_value_mem_literal_determinant_cover_of_section_class_eq
@@ -10312,7 +10312,7 @@ private theorem section_value_mem_literal_determinant_cover_of_section_class_eq
   refine ⟨⟨⟨s, adjustedFiber⟩, hadjusted_det⟩, rfl⟩
 
 /-- Helper for Theorem 17-17.6-1: once every chosen section determinant class is known to come
-from Serre's determinant subgroup `C`, the literal determinant-cover projection `G₂(det) → G` is
+from LinearRepresentations_Serre_1977's determinant subgroup `C`, the literal determinant-cover projection `G₂(det) → G` is
 surjective by applying the previous scalar-adjustment step fiberwise. This leaves the remaining
 literal-cover pivot blocked only on proving the section-class equality itself. -/
 private theorem
@@ -10361,7 +10361,7 @@ private theorem
       hp I hIcop ρ Sbar hSbar_irred ρA_I red_S hLiftSbar hTransport hTransportLift s c hc
 
 /-- Helper for Theorem 17-17.6-1: the literal Hall-kernel embedding `I → G₁` already lands in
-the determinant-normalized cover, so it cod-restricts to Serre's literal owner `G₂(det)`. -/
+the determinant-normalized cover, so it cod-restricts to LinearRepresentations_Serre_1977's literal owner `G₂(det)`. -/
 private noncomputable def fixed_constituent_literal_determinant_cover_embed_hall_kernel
     (I : Subgroup G) [I.Normal]
     {P_S : Type (max u v x)} [AddCommGroup P_S] [Module A P_S]
@@ -10396,7 +10396,7 @@ embedded Hall-kernel point still projects to the original Hall-kernel element in
   -- Hall-kernel element in `G`.
   rfl
 
-/-- Helper for Theorem 17-17.6-1: Serre's literal subgroup `I₂(det) ≤ G₂(det)` is the range of
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's literal subgroup `I₂(det) ≤ G₂(det)` is the range of
 the Hall-kernel embedding into the determinant-normalized cover. This isolates the literal owner
 that the remaining quotient package should use. -/
 private noncomputable def fixed_constituent_literal_determinant_cover_hall_kernel_subgroup
@@ -10428,7 +10428,7 @@ private theorem fixed_constituent_literal_determinant_cover_hall_kernel_subgroup
   -- The literal Hall-kernel image still projects to the trivial class in `G / I`.
   simp [fixed_constituent_literal_determinant_cover_hall_kernel_subgroup]
 
-/-- Helper for Theorem 17-17.6-1: Serre's literal projection `G₂(det) → G` descends through the
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's literal projection `G₂(det) → G` descends through the
 embedded Hall-kernel range to a quotient map `G₂(det) / I₂(det) → G / I`. This isolates the
 formal quotient owner used in the literal-cover pivot before any finite-kernel analysis. -/
 private noncomputable def fixed_constituent_literal_determinant_cover_proj_to_quotient
@@ -10475,7 +10475,7 @@ private theorem fixed_constituent_literal_determinant_cover_proj_to_quotient_sur
 
 /-- Helper for Theorem 17-17.6-1: surjectivity of the literal determinant-cover projection gives
 the first-isomorphism equivalence `((G₂(det) / I₂(det)) / ker(pi₂(det))) ≃ G / I`. This packages
-the quotient-kernel part of Serre's literal finite cover independently of the later cyclicity and
+the quotient-kernel part of LinearRepresentations_Serre_1977's literal finite cover independently of the later cyclicity and
 coprimality analysis on the kernel. -/
 private noncomputable def fixed_constituent_literal_determinant_cover_kernel_quotient_equiv_of_proj_surjective
     (I : Subgroup G) [I.Normal]
@@ -10597,7 +10597,7 @@ private theorem determinant_root_subgroup_cyclic_and_coprime
     exact hrange_coprime
 
 /-- Helper for Theorem 17-17.6-1: once the literal inclusion
-`kernelScalar(q) ^ d ∈ C` is available, the rest of Serre's finite-kernel package is a formal
+`kernelScalar(q) ^ d ∈ C` is available, the rest of LinearRepresentations_Serre_1977's finite-kernel package is a formal
 transport along the injective scalar map `N̄ → Aˣ`. This keeps the remaining blocker confined to
 the single upstairs membership step. -/
 private theorem principal_unit_eq_one_of_power_mem_fixed_constituent_determinant_subgroup
@@ -10638,7 +10638,7 @@ private theorem principal_unit_eq_one_of_power_mem_fixed_constituent_determinant
     unit_eq_one_of_pow_eq_one_of_residue_eq_one
       (A := A) (p := p) hp hncop' hpow_ring hres
 
-/-- Helper for Theorem 17-17.6-1: after freezing Serre's Hall-kernel correction determinant
+/-- Helper for Theorem 17-17.6-1: after freezing LinearRepresentations_Serre_1977's Hall-kernel correction determinant
 `corrDet ∈ C`, the extra ratio `u = det(normalizedRepresentative q) * corrDet⁻¹` still has
 residue class of order dividing `|Candidate|` in `kˣ / (kˣ)^d`. This packages the quotient-level
 torsion input that remains before upgrading to literal membership in `C`. -/
@@ -10767,7 +10767,7 @@ private theorem normalized_kernel_correction_ratio_residue_class_pow_card_eq_one
     _ = 1 := by
           simp [hcorr_class_pow_one]
 
-/-- Helper for Theorem 17-17.6-1: the `|Candidate|`-power of Serre's normalized correction ratio
+/-- Helper for Theorem 17-17.6-1: the `|Candidate|`-power of LinearRepresentations_Serre_1977's normalized correction ratio
 is already a literal `d`-th power in `Aˣ`. This isolates the quotient-torsion lifting step from
 the still-open principal-unit rigidity argument in the determinant-normalization branch. -/
 private theorem normalized_kernel_correction_ratio_pow_candidate_order_is_dth_power
@@ -10873,7 +10873,7 @@ private theorem normalized_kernel_correction_ratio_pow_candidate_order_is_dth_po
     exists_dth_root_of_unit_of_residue_eq_dth_power
       (A := A) (p := p) hp hdcop hres_dth_power
 
-/-- Helper for Theorem 17-17.6-1: the determinant of Serre's normalized representative is
+/-- Helper for Theorem 17-17.6-1: the determinant of LinearRepresentations_Serre_1977's normalized representative is
 exactly the determinant of the same-fiber ratio between the raw quotient-out representative and
 the chosen Hall-kernel correction. This freezes the source-faithful comparison object before the
 remaining literal-membership step in the determinant subgroup `C`. -/
@@ -10946,7 +10946,7 @@ private theorem normalized_kernel_representative_eq_raw_correction_ratio
   let corr :=
     fixed_constituent_transport_fiber_of_hall_kernel_element
       (A := A) (G := G) (I := I) (ρA_I := ρA_I) x
-  -- Route correction: read Serre's normalized representative directly as the same-fiber ratio
+  -- Route correction: read LinearRepresentations_Serre_1977's normalized representative directly as the same-fiber ratio
   -- `raw / corr`, instead of hiding it behind the later determinant bookkeeping.
   apply Representation.Equiv.toLinearEquiv_injective
   ext v
@@ -10955,7 +10955,7 @@ private theorem normalized_kernel_representative_eq_raw_correction_ratio
     fixed_constituent_transport_fiber_comp, fixed_constituent_transport_fiber_inv,
     normalized_kernel_representative_correction_val_eq_out_proj]
 
-/-- Helper for Theorem 17-17.6-1: after identifying the normalized representative with Serre's
+/-- Helper for Theorem 17-17.6-1: after identifying the normalized representative with LinearRepresentations_Serre_1977's
 kernel scalar `kernelScalar q`, multiplying the Hall-kernel correction by that scalar literally
 recovers the raw quotient-out representative. This is the source-level collapse from the
 comparison object `raw / corr` to the actual scalar in `U₁ = Aˣ`. -/
@@ -11094,7 +11094,7 @@ private theorem raw_eq_kernel_scalar_adjusted_hall_kernel_correction
   exact LinearMap.congr_fun hcomp v
 
 /-- Helper for Theorem 17-17.6-1: the raw quotient-out representative over the Hall-kernel
-correction has determinant equal to the correction determinant times Serre's scalar
+correction has determinant equal to the correction determinant times LinearRepresentations_Serre_1977's scalar
 `kernelScalar(q)^d`. This is the literal determinant identity coming from
 `raw = (kernelScalar q) • id ∘ corr`, and it replaces the previously over-strong attempt to
 identify the correction determinant itself with the scalar power. -/
@@ -11194,7 +11194,7 @@ private theorem raw_hall_kernel_det_eq_correction_det_mul_kernel_scalar_pow
           (scalar_transport_fiber_one
             (A := A) (G := G) (I := I) ρA_I kernelScalar) =
         kernelScalar ^ Module.finrank A P_S := by
-    -- The scalar factor lives in Serre's kernel fiber `U₁`, so its determinant is the literal
+    -- The scalar factor lives in LinearRepresentations_Serre_1977's kernel fiber `U₁`, so its determinant is the literal
     -- `d`-th power of the scalar.
     simpa [kernelScalar] using
       fixed_constituent_transport_kernel_det_eq_unit_pow
@@ -11230,7 +11230,7 @@ private theorem raw_hall_kernel_det_eq_correction_det_mul_kernel_scalar_pow
         kernelScalar ^ Module.finrank A P_S := by
             rw [hscalar]
 
-/-- Helper for Theorem 17-17.6-1: the determinant of Serre's normalized representative is
+/-- Helper for Theorem 17-17.6-1: the determinant of LinearRepresentations_Serre_1977's normalized representative is
 exactly the determinant of the same-fiber ratio between the raw quotient-out representative and
 the chosen Hall-kernel correction. This freezes the source-faithful comparison object before the
 remaining literal-membership step in the determinant subgroup `C`. -/
@@ -11318,7 +11318,7 @@ private theorem normalized_kernel_representative_det_eq_raw_correction_ratio_det
           (fixed_constituent_transport_fiber_det
             (A := A) (G := G) (I := I) (ρA_I := ρA_I) corr)⁻¹ := by
     -- Repackage the existing raw-times-correction-inverse determinant formula in the same-fiber
-    -- notation that Serre uses for the comparison ratio.
+    -- notation that LinearRepresentations_Serre_1977 uses for the comparison ratio.
     simpa [raw, corr, G2, pi, x] using
       normalized_kernel_representative_det_eq_raw_det_mul_correction_inv
         (p := p) (A := A) (G := G) (V := V)
@@ -11333,7 +11333,7 @@ private theorem normalized_kernel_representative_det_eq_raw_correction_ratio_det
             (fixed_constituent_transport_fiber_ratio
               (A := A) (G := G) (I := I) (ρA_I := ρA_I) raw corr) := by
     -- The raw point and the correction point lie in the same fiber over `x`, so their quotient
-    -- in that fiber is Serre's kernel ratio.
+    -- in that fiber is LinearRepresentations_Serre_1977's kernel ratio.
     exact
       fixed_constituent_transport_fiber_det_eq_ratio_mul
         (A := A) (G := G) (I := I) (ρA_I := ρA_I) raw corr
@@ -11503,7 +11503,7 @@ private theorem hall_kernel_comparison_reduction_smul
 /-- Helper for Theorem 17-17.6-1: the reduced Hall-kernel comparison scalar is automatically a
 unit of `k`, and one may choose an upstairs unit lift of it in `A`. This isolates the source
 bridge from the reduced Schur scalar ambiguity to the scalar-adjusted transport-fiber correction
-used in Serre's normalization argument. -/
+used in LinearRepresentations_Serre_1977's normalization argument. -/
 private theorem hall_kernel_comparison_scalar_unit_lift_exists
     (hp : Nat.Prime p)
     (I : Subgroup G) [I.Normal]
@@ -11612,7 +11612,7 @@ private theorem hall_kernel_comparison_scalar_unit_lift_exists
   -- Replace the scalar from the reduced comparison by the corresponding residue-field unit.
   simpa [cbar] using hc
 
-/-- Helper for Theorem 17-17.6-1: once the candidate subgroup is placed inside Serre's bounded
+/-- Helper for Theorem 17-17.6-1: once the candidate subgroup is placed inside LinearRepresentations_Serre_1977's bounded
 roots-of-unity owner, its cardinal is automatically prime to `p`. This packages the prime-to-`p`
 exponent used in the remaining principal-unit upgrade. -/
 private theorem scalar_transport_fiber_one_reduction_comp
@@ -11637,7 +11637,7 @@ private theorem scalar_transport_fiber_one_reduction_comp
 
 /-- Helper for Theorem 17-17.6-1: if two points of the same transport fiber differ on reduction
 by the scalar `c`, then after multiplying the second point by any scalar lift `a` of `c`, the
-two reduced maps coincide. This is the transport-stable bridge from Serre's reduced scalar
+two reduced maps coincide. This is the transport-stable bridge from LinearRepresentations_Serre_1977's reduced scalar
 comparison to the identity-reduction input needed for the principal-unit step. -/
 private theorem same_fiber_scalar_adjustment_has_equal_reduction
     (I : Subgroup G) [I.Normal]
@@ -11858,7 +11858,7 @@ private theorem scalar_adjusted_hall_kernel_ratio_det_eq_raw_discrepancy
           a ^ Module.finrank A P_S)⁻¹ := by
             rw [hdet_corrAdjusted]
 
-/-- Helper for Theorem 17-17.6-1: once the candidate subgroup is placed inside Serre's bounded
+/-- Helper for Theorem 17-17.6-1: once the candidate subgroup is placed inside LinearRepresentations_Serre_1977's bounded
 roots-of-unity owner, its cardinal is automatically prime to `p`. This packages the prime-to-`p`
 exponent used in the remaining principal-unit upgrade. -/
 private theorem candidate_order_coprime_of_bounded_containment
@@ -11905,7 +11905,7 @@ private theorem candidate_order_coprime_of_bounded_containment
       hcandidate_le).2
 
 /-- Helper for Theorem 17-17.6-1: the Hall-kernel correction determinant already lies in
-Serre's determinant subgroup `C`, so its `|Candidate|`-th power stays in `C`. This isolates the
+LinearRepresentations_Serre_1977's determinant subgroup `C`, so its `|Candidate|`-th power stays in `C`. This isolates the
 literal subgroup-membership half of the remaining normalization argument. -/
 private theorem normalized_kernel_representative_correction_det_pow_candidate_order_mem_determinant_subgroup
     (hp : Nat.Prime p)
@@ -11970,7 +11970,7 @@ private theorem normalized_kernel_representative_correction_det_pow_candidate_or
   -- immediate.
   simpa [Candidate, n, C, corrDet, c] using C.pow_mem c.2 n
 
-/-- Helper for Theorem 17-17.6-1: after freezing Serre's normalized kernel representative and the
+/-- Helper for Theorem 17-17.6-1: after freezing LinearRepresentations_Serre_1977's normalized kernel representative and the
 chosen Hall-kernel correction, the remaining determinant discrepancy
 `u = normalizedDet * corrDet⁻¹` already satisfies the two power statements isolated earlier:
 `u ^ |Candidate|` is a `d`-th power, and `corrDet ^ |Candidate|` lies in `C`. This packages the
@@ -12072,7 +12072,7 @@ private theorem hall_kernel_scalar_discrepancy_power_package
 /-- Helper for Theorem 17-17.6-1: after lifting the reduced Schur scalar comparing the raw
 kernel representative with the Hall-kernel correction, the adjusted normalized determinant is
 already a principal unit. This is the source-faithful reduction-side conclusion available before
-identifying that scalar correction with Serre's final discrepancy unit. -/
+identifying that scalar correction with LinearRepresentations_Serre_1977's final discrepancy unit. -/
 private theorem hall_kernel_normalized_det_scalar_adjustment_residue_eq_one
     (hp : Nat.Prime p)
     (I : Subgroup G) [I.Normal]
@@ -12220,7 +12220,7 @@ private theorem hall_kernel_normalized_det_scalar_adjustment_residue_eq_one
 
 /-- Helper for Theorem 17-17.6-1: package the scalar-adjusted normalized determinant into the
 exact principal-unit input shape used in the Hall-kernel branch. This isolates the only remaining
-source-faithful algebraic gap between the adjusted-ratio comparison and Serre's literal
+source-faithful algebraic gap between the adjusted-ratio comparison and LinearRepresentations_Serre_1977's literal
 discrepancy unit `u`. -/
 private theorem hall_kernel_adjusted_normalized_det_power_mem_determinant_subgroup
     (hp : Nat.Prime p)
@@ -12284,7 +12284,7 @@ private theorem hall_kernel_adjusted_normalized_det_power_mem_determinant_subgro
       hp I hIcop ρ Sbar hSbar_irred ρA_I red_S hLiftSbar hTransport hTransportLift q
   have hdet :
       normalizedDet = a ^ d := by
-    -- Route correction: use the already normalized scalar point in Serre's kernel fiber.
+    -- Route correction: use the already normalized scalar point in LinearRepresentations_Serre_1977's kernel fiber.
     -- The determinant of the normalized representative is literally the `d`-th power of
     -- `kernelScalar(q)`, so the adjusted unit can be chosen to be `1` on the nose.
     simpa [normalizedDet, a, d] using
@@ -12303,7 +12303,7 @@ private theorem hall_kernel_adjusted_normalized_det_power_mem_determinant_subgro
 /-- Helper for Theorem 17-17.6-1: after rewriting the normalized kernel representative by its
 literal scalar coordinate `kernelScalar(q)`, the adjusted determinant
 `det(normalizedRepresentative q) * kernelScalar(q)^{-d}` is already `1`. This freezes the
-normalized side of Serre's Hall-kernel comparison before the final correction-determinant
+normalized side of LinearRepresentations_Serre_1977's Hall-kernel comparison before the final correction-determinant
 identification. -/
 private theorem hall_kernel_adjusted_normalized_det_eq_one
     (hp : Nat.Prime p)
@@ -12356,7 +12356,7 @@ private theorem hall_kernel_adjusted_normalized_det_eq_one
       (p := p) (A := A) (G := G) (V := V)
       hp I hIcop ρ Sbar hSbar_irred ρA_I red_S hLiftSbar hTransport hTransportLift q
   have hdet : normalizedDet = a ^ d := by
-    -- Route correction: once the normalized representative is rewritten as Serre's scalar point
+    -- Route correction: once the normalized representative is rewritten as LinearRepresentations_Serre_1977's scalar point
     -- `(1, kernelScalar(q) • id)`, its determinant is literally the expected `d`-th power.
     simpa [normalizedDet, a, d] using
       normalized_kernel_representative_det_eq_kernel_scalar_pow
@@ -12366,7 +12366,7 @@ private theorem hall_kernel_adjusted_normalized_det_eq_one
   rw [hdet]
   simp
 
-/-- Helper for Theorem 17-17.6-1: after rewriting Serre's normalized determinant as the literal
+/-- Helper for Theorem 17-17.6-1: after rewriting LinearRepresentations_Serre_1977's normalized determinant as the literal
 scalar power `kernelScalar(q)^d`, the comparison-scalar adjustment still produces a principal
 unit. This records the reduction-side statement in the source language actually attached to the
 kernel scalar. -/
@@ -12523,7 +12523,7 @@ private theorem hall_kernel_scalar_ratio_pow_candidate_order_is_dth_power
   -- statement after this single rewrite.
   simpa [Candidate, n, d, corrDet, normalizedDet, kernelScalar, hdet] using ha
 
-/-- Helper for Theorem 17-17.6-1: Serre's actual kernel invariant is that the scalar attached to a
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's actual kernel invariant is that the scalar attached to a
 normalized kernel representative already lies in the determinant root subgroup, i.e.
 `kernelScalar(q)^d ∈ C`. This is the source-faithful replacement for the older over-strong route
 that tried to identify the Hall-kernel correction determinant itself with that scalar power. -/
@@ -12657,7 +12657,7 @@ private theorem normalized_kernel_representative_det_mem_determinant_subgroup_of
           (p := p) (A := A) (G := G) (V := V)
           hp I hIcop ρ Sbar ρA_I red_S hLiftSbar hTransport hTransportLift q).1.2 ∈
       fixed_constituent_determinant_subgroup (A := A) (G := G) (I := I) ρA_I := by
-  -- Route correction: the determinant-membership theorem should consume Serre's literal scalar
+  -- Route correction: the determinant-membership theorem should consume LinearRepresentations_Serre_1977's literal scalar
   -- invariant `kernelScalar(q)^d ∈ C`, not the older discrepancy-unit equality route.
   rw [normalized_kernel_representative_det_eq_kernel_scalar_pow
     (p := p) (A := A) (G := G) (V := V)
@@ -12669,7 +12669,7 @@ private theorem normalized_kernel_representative_det_mem_determinant_subgroup_of
       hcandidate_le q
 
 /-- Helper for Theorem 17-17.6-1: the normalized representative of a kernel class in `N̄`
-already lies in Serre's literal determinant cover once the determinant upgrade is established. This
+already lies in LinearRepresentations_Serre_1977's literal determinant cover once the determinant upgrade is established. This
 packages the source-faithful pivot requested by the current plan. -/
 private theorem normalized_kernel_representative_mem_literal_determinant_cover_of_candidate_order
     (hp : Nat.Prime p)
@@ -12727,7 +12727,7 @@ private theorem normalized_kernel_representative_mem_literal_determinant_cover_o
       hcandidate_le q
 
 /-- Helper for Theorem 17-17.6-1: once the literal inclusion
-`kernelScalar(q) ^ d ∈ C` is available, the rest of Serre's finite-kernel package is a formal
+`kernelScalar(q) ^ d ∈ C` is available, the rest of LinearRepresentations_Serre_1977's finite-kernel package is a formal
 transport along the injective scalar map `N̄ → Aˣ`. This keeps the remaining blocker confined to
 the single upstairs membership step. -/
 private theorem kernel_scalar_mem_determinant_root_subgroup_local
@@ -12821,7 +12821,7 @@ private theorem kernel_scalar_mem_determinant_root_subgroup_local
       (p := p) (A := A) (G := G) (V := V)
       hp I hIcop ρ Sbar hSbar_irred ρA_I red_S hLiftSbar hTransport hTransportLift
   intro q
-  -- Once Serre's scalar power is known to lie in `C`, membership in the root subgroup `S` is
+  -- Once LinearRepresentations_Serre_1977's scalar power is known to lie in `C`, membership in the root subgroup `S` is
   -- immediate by unfolding the definition of `S`.
   change kernelScalar q ^ d ∈ C
   simpa [G2, I2, pi2, Nbar, C, d, kernelScalar] using
@@ -12831,7 +12831,7 @@ private theorem kernel_scalar_mem_determinant_root_subgroup_local
       hcandidate_le q
 
 /-- Helper for Theorem 17-17.6-1: once the literal inclusion
-`kernelScalar(q) ^ d ∈ C` is available, the rest of Serre's finite-kernel package is a formal
+`kernelScalar(q) ^ d ∈ C` is available, the rest of LinearRepresentations_Serre_1977's finite-kernel package is a formal
 transport along the injective scalar map `N̄ → Aˣ`. This keeps the remaining blocker confined to
 the single upstairs membership step. -/
 private theorem kernel_subgroup_cyclic_and_coprime_of_bounded_generator_containment
@@ -12928,7 +12928,7 @@ private theorem kernel_subgroup_cyclic_and_coprime_of_bounded_generator_containm
       fixed_constituent_lift_finrank_coprime
         (A := A) (G := G) (I := I) hIcop ρ Sbar hSbar_irred ρA_I red_S hLiftSbar
   have hS_cyclic_coprime : IsCyclic S ∧ Nat.Coprime p (Nat.card S) := by
-    -- Once Serre's root subgroup is named explicitly, its cyclic prime-to-`p` nature is
+    -- Once LinearRepresentations_Serre_1977's root subgroup is named explicitly, its cyclic prime-to-`p` nature is
     -- independent of the kernel package itself.
     letI : Finite C := by
       exact finite_of_card_ne_zero (Nat.Coprime.ne_zero_right hCcop)
@@ -12947,7 +12947,7 @@ private theorem kernel_subgroup_cyclic_and_coprime_of_bounded_generator_containm
   let kernelScalarS : Nbar →* S :=
     MonoidHom.codRestrict kernelScalar S hkernelScalar_mem_S
   constructor
-  · -- After codomain restriction, cyclicity transports from Serre's root subgroup to `N̄`.
+  · -- After codomain restriction, cyclicity transports from LinearRepresentations_Serre_1977's root subgroup to `N̄`.
     exact isCyclic_of_injective kernelScalarS <| by
       intro q₁ q₂ hq
       exact hkernelScalar_injective <| congrArg Subtype.val hq
@@ -13041,7 +13041,7 @@ private theorem fixed_isotypic_cover_section_action_postcompose_precompose_isInt
                 (ρ.map_mul (a : G) s)
                 (f ((transportedSubrepresentation_rep_equiv_local ρ Sbar s).symm v))
 
-/-- Helper for Theorem 17-17.6-1: Serre's first missing object in the fixed-constituent branch is
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's first missing object in the fixed-constituent branch is
 the explicit upstairs operator of a cover element `g ∈ G₂` on the multiplicity space
 `F = Hom^I(S̄, V)`. Naming it separately keeps the transport/coercion frontier out of the quotient
 construction `τ`. -/
@@ -13071,7 +13071,7 @@ private noncomputable def fixed_isotypic_cover_section_action_linearEquiv
     (s : G) :
     fixed_isotypic_multiplicity_space (I := I) (ρ := ρ) Sbar ≃ₗ[k]
       fixed_isotypic_multiplicity_space (I := I) (ρ := ρ) Sbar :=
-  -- Route correction: this is Serre's chosen-section operator on `Hom^I(S̄, V)` before the
+  -- Route correction: this is LinearRepresentations_Serre_1977's chosen-section operator on `Hom^I(S̄, V)` before the
   -- same-fiber source correction for an arbitrary lift in `U_s` is inserted.
   -- TODO: the canonical closure lemma above now proves the source-faithful transported operator
   -- lands in `Hom^I(sS̄, V)`. What remains is to compare the chosen comparison `hTransport s`
@@ -13079,7 +13079,7 @@ private noncomputable def fixed_isotypic_cover_section_action_linearEquiv
   -- equivalence, and then transport it back to `Hom^I(S̄, V)` as planned.
   sorry
 
-/-- Helper for Theorem 17-17.6-1: Serre's first missing object in the fixed-constituent branch is
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's first missing object in the fixed-constituent branch is
 the explicit upstairs operator of a cover element `g ∈ G₂` on the multiplicity space
 `F = Hom^I(S̄, V)`. Naming it separately keeps the transport/coercion frontier out of the quotient
 construction `τ`. -/
@@ -13114,7 +13114,7 @@ private noncomputable def fixed_isotypic_cover_action_linearEquiv
       fixed_isotypic_multiplicity_space (I := I) (ρ := ρ) Sbar ≃ₗ[k]
         fixed_isotypic_multiplicity_space (I := I) (ρ := ρ) Sbar :=
   fun g ↦
-    -- Route correction: follow Serre's source-faithful factorization. First apply the chosen
+    -- Route correction: follow LinearRepresentations_Serre_1977's source-faithful factorization. First apply the chosen
     -- section action over `g.1.1`, then remove the discrepancy between the arbitrary fiber
     -- component `g.1.2` and the chosen section by the inverse source-correction operator.
     (fixed_isotypic_cover_section_action_linearEquiv
@@ -13127,7 +13127,7 @@ private noncomputable def fixed_isotypic_cover_action_linearEquiv
         g.1.1 g.1.2).symm)
 
 /-- Helper for Theorem 17-17.6-1: once the explicit upstairs operator is named, the only group-law
-data needed to build Serre's cover representation is the normalization at `1`. This keeps the
+data needed to build LinearRepresentations_Serre_1977's cover representation is the normalization at `1`. This keeps the
 representation packaging independent of the later quotient descent. -/
 private theorem fixed_isotypic_cover_action_toLinearMap_one
     (hp : Nat.Prime p)
@@ -13212,7 +13212,7 @@ private theorem fixed_isotypic_cover_action_toLinearMap_mul
   -- rather than being buried inside the quotient representation hole.
   sorry
 
-/-- Helper for Theorem 17-17.6-1: once the operator and its group law are separated out, Serre's
+/-- Helper for Theorem 17-17.6-1: once the operator and its group law are separated out, LinearRepresentations_Serre_1977's
 upstairs cover action on `F = Hom^I(S̄, V)` is an ordinary representation of `G₂`. This freezes
 the pre-quotient object before proving that `I₂` acts trivially. -/
 private noncomputable def fixed_isotypic_cover_representation
@@ -13261,7 +13261,7 @@ private noncomputable def fixed_isotypic_cover_representation
         (p := p) (A := A) (G := G) (V := V)
         hp I hIcop ρ Sbar hSbar_irred ρA_I red_S hLiftSbar hTransport hTransportLift }
 
-/-- Helper for Theorem 17-17.6-1: Serre's Hall-kernel subgroup `I₂ ≤ G₂` should act trivially on
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's Hall-kernel subgroup `I₂ ≤ G₂` should act trivially on
 the upstairs multiplicity-space representation before the quotient `τ` is defined. Isolating this
 fact leaves `Representation.ofQuotient` as a purely formal step. -/
 private theorem fixed_isotypic_cover_action_isTrivial_on_hall_kernel
@@ -13301,10 +13301,10 @@ private theorem fixed_isotypic_cover_action_isTrivial_on_hall_kernel
         hp I hIcop ρ Sbar hSbar_irred ρA_I red_S hLiftSbar hTransport hTransportLift
     Representation.IsTrivial (coverRep.comp I2.subtype) := by
   -- Route correction: Hall-kernel triviality is now a standalone source-level statement on the
-  -- explicit upstairs action, exactly matching Serre's `I₂`-descent step.
+  -- explicit upstairs action, exactly matching LinearRepresentations_Serre_1977's `I₂`-descent step.
   sorry
 
-/-- Helper for Theorem 17-17.6-1: Serre's multiplicity space `F = Hom^I(S̄, V)` carries a natural
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's multiplicity space `F = Hom^I(S̄, V)` carries a natural
 `G₂ / I₂`-action once the transport action of `G₂` on `S̄` and `V` is descended through the
 embedded Hall kernel. This isolates the quotient-module construction `τ`. -/
 private noncomputable def fixed_isotypic_multiplicity_space_quotient_representation
@@ -13361,7 +13361,7 @@ private noncomputable def fixed_isotypic_multiplicity_space_quotient_representat
   -- Hall-kernel triviality statement are separated out. The quotient step itself is formal.
   coverRep.ofQuotient I2
 
-/-- Helper for Theorem 17-17.6-1: Serre's quotient module `τ` on the multiplicity space is
+/-- Helper for Theorem 17-17.6-1: LinearRepresentations_Serre_1977's quotient module `τ` on the multiplicity space is
 irreducible because the isotypic decomposition identifies `V` with `S̄ ⊗ F` equivariantly for the
 finite cover. This isolates the irreducibility transfer needed before lower-height recursion. -/
 private theorem fixed_isotypic_multiplicity_space_quotient_irreducible
@@ -13400,7 +13400,7 @@ private theorem fixed_isotypic_multiplicity_space_quotient_irreducible
   -- `S̄ ⊗ Hom^I(S̄, V) ≃ V`, then transfer irreducibility of `ρ` to `τ`.
   sorry
 
-/-- Helper for Theorem 17-17.6-1: once the quotient-side multiplicity module `τ` is lifted, Serre
+/-- Helper for Theorem 17-17.6-1: once the quotient-side multiplicity module `τ` is lifted, LinearRepresentations_Serre_1977
 recovers a lift of `ρ` by tensoring with the fixed constituent lift, killing the central
 prime-to-`p` kernel, and descending back from the finite cover to `G`. -/
 private theorem descend_lift_of_fixed_constituent_tensor
@@ -13459,7 +13459,7 @@ private theorem descend_lift_of_fixed_constituent_tensor
   sorry
 
 /-- Helper for Theorem 17-17.6-1: once the candidate determinant subgroup is placed inside the
-bounded roots-of-unity owner `D̄`, the remaining work is the literal Serre package
+bounded roots-of-unity owner `D̄`, the remaining work is the literal LinearRepresentations_Serre_1977 package
 `G₂`, `I₂`, `N̄`, `τ`, and tensor descent. This keeps the final blocker separate from the already
 formalized closure step. -/
 private noncomputable def projective_extension_kernel_quotient_data_from_bounded_generator_containment
@@ -13613,7 +13613,7 @@ private noncomputable def projective_extension_kernel_quotient_data_from_bounded
                 hp I hIcop ρ Sbar ρA_I red_S hLiftSbar hTransport hTransportLift q)) ∈
           fixed_constituent_determinant_subgroup
             (A := A) (G := G) (I := I) ρA_I := by
-    -- The Hall-kernel correction already contributes a determinant inside Serre's subgroup `C`.
+    -- The Hall-kernel correction already contributes a determinant inside LinearRepresentations_Serre_1977's subgroup `C`.
     intro q
     simpa using
       normalized_kernel_representative_correction_det_mem_determinant_subgroup
@@ -13702,10 +13702,10 @@ private noncomputable def projective_extension_kernel_quotient_data_from_bounded
       kernel_scalar_pow_residue_class_eq_one_on_kernel_subgroup
         (p := p) (A := A) (G := G) (V := V)
         hp I hIcop ρ Sbar hSbar_irred ρA_I red_S hLiftSbar hTransport hTransportLift
-  -- TODO: follow Serre's literal route from this stabilized quotient skeleton. The remaining
+  -- TODO: follow LinearRepresentations_Serre_1977's literal route from this stabilized quotient skeleton. The remaining
   -- source-faithful blocker is now downstream of the scalar extraction step on `N̄ := ker pi₂`:
   -- the representative is frozen as `normalizedRepresentative`, `kernelScalar : N̄ →* Aˣ`
-  -- already packages the literal scalar in Serre's kernel `U₁ = Aˣ`,
+  -- already packages the literal scalar in LinearRepresentations_Serre_1977's kernel `U₁ = Aˣ`,
   -- `hnormalizedRepresentative_det` computes its determinant as `kernelScalar q ^ d`,
   -- `hnormalizedRepresentative_det_rewrite` rewrites that determinant as raw determinant times
   -- inverse correction determinant, `hkernelOutDetCorrectionClass` identifies the raw class with
@@ -13754,7 +13754,7 @@ private noncomputable def projective_extension_kernel_quotient_data_from_bounded
           hp I hIcop ρ Sbar hSbar_irred hSbar_top ρA_I red_S hLiftSbar hTransport
           hTransportLift }
 
-/-- Helper for Theorem 17-17.6-1: package Serre's finite projective extension on the fixed lifted
+/-- Helper for Theorem 17-17.6-1: package LinearRepresentations_Serre_1977's finite projective extension on the fixed lifted
 constituent `S̄` and descend the literal multiplicity space to the quotient representation `τ`. -/
 private noncomputable def exists_constituent_projective_extension_quotient_data
     (hp : Nat.Prime p)
@@ -13803,7 +13803,7 @@ private noncomputable def exists_constituent_projective_extension_quotient_data
   have hscalar :
       ∀ f : ρA_I.IntertwiningMap ρA_I,
         ∃ a : A, f = a • Representation.IntertwiningMap.id ρA_I := by
-    -- The fixed lift now satisfies Serre's scalar endomorphism classification.
+    -- The fixed lift now satisfies LinearRepresentations_Serre_1977's scalar endomorphism classification.
     intro f
     exact
       fixed_constituent_lift_equivariant_endomorphism_scalar
@@ -13834,7 +13834,7 @@ private noncomputable def exists_constituent_projective_extension_quotient_data
                     hp I hIcop ρ Sbar ρA_I red_S hLiftSbar hTransport hTransportLift s).2) *
                 a ^ Module.finrank A P_S := by
     -- Same-fiber determinants are now reduced to the chosen section determinant up to a `d`-th
-    -- power of a unit, exactly as in Serre's determinant-normalization step.
+    -- power of a unit, exactly as in LinearRepresentations_Serre_1977's determinant-normalization step.
     intro s u
     exact
       fixed_constituent_transport_fiber_det_eq_section_det_mul_unit_pow_of_kernel_scalar
@@ -13848,7 +13848,7 @@ private noncomputable def exists_constituent_projective_extension_quotient_data
       fixed_constituent_determinant_subgroup_coprime
         (A := A) (G := G) (I := I) hIcop ρA_I
   have hdimcop : Nat.Coprime p (Module.finrank A P_S) := by
-    -- The fixed lifted constituent has degree prime to `p`, exactly as in Serre's argument before
+    -- The fixed lifted constituent has degree prime to `p`, exactly as in LinearRepresentations_Serre_1977's argument before
     -- the determinant-normalized subgroup `G₂` is carved out.
     exact
       fixed_constituent_lift_finrank_coprime
@@ -13890,7 +13890,7 @@ private noncomputable def exists_constituent_projective_extension_quotient_data
             (fixed_constituent_transport_fiber_det
               (A := A) (G := G) (I := I) (ρA_I := ρA_I) (sec s).2))) ^
           Nat.card G = 1 := by
-    -- This is the exact quotient-owner frontier from the current Serre route: the chosen section
+    -- This is the exact quotient-owner frontier from the current LinearRepresentations_Serre_1977 route: the chosen section
     -- determinants are torsion only modulo `d`-th powers, not as literal residue units.
     intro s
     exact
@@ -13927,7 +13927,7 @@ private noncomputable def exists_constituent_projective_extension_quotient_data
           (rootsOfUnity (Nat.lcm (Nat.card G) (Nat.card C)) k).map (QuotientGroup.mk' Qd) := by
     intro c
     -- The determinant-subgroup generator family is now fully normalized into the common bounded
-    -- roots-of-unity subgroup predicted by Serre.
+    -- roots-of-unity subgroup predicted by LinearRepresentations_Serre_1977.
     simpa [C, Qd] using
       determinant_subgroup_residue_class_mem_lcm_rootsOfUnity_image
         (A := A) (G := G) (I := I) (ρA_I := ρA_I) c
@@ -13955,7 +13955,7 @@ private noncomputable def exists_constituent_projective_extension_quotient_data
       hp I hIcop ρ Sbar hSbar_irred hSbar_top ρA_I red_S hLiftSbar hTransport hTransportLift
       hcandidate_le
 
-/-- Helper for Theorem 17-17.6-1: in Serre's successor-height quotient branch, the recursive
+/-- Helper for Theorem 17-17.6-1: in LinearRepresentations_Serre_1977's successor-height quotient branch, the recursive
 height witness on `H ⧸ N` already exposes the next normal step `M / N` whose order is either
 prime to `p` or a `p`-power. -/
 private theorem exists_quotient_normal_step_of_psolvableHeight_succ
@@ -13966,11 +13966,11 @@ private theorem exists_quotient_normal_step_of_psolvableHeight_succ
       ∃ _ : Mbar.Normal,
         (Nat.Coprime p (Nat.card Mbar) ∨ IsPGroup p Mbar) ∧
           IsPSolvableOfHeight p h ((H ⧸ N) ⧸ Mbar) := by
-  -- Unfold the successor-height witness once so the remaining work can focus on Serre's two
+  -- Unfold the successor-height witness once so the remaining work can focus on LinearRepresentations_Serre_1977's two
   -- quotient-side cases for the chosen step `M / N`.
   simpa [Nat.succ_eq_add_one] using IsPSolvableOfHeight.succ_iff.mp hquot
 
-/-- Helper for Theorem 17-17.6-1: pulling back Serre's fixed quotient step `M̄ ≤ H ⧸ N` along the
+/-- Helper for Theorem 17-17.6-1: pulling back LinearRepresentations_Serre_1977's fixed quotient step `M̄ ≤ H ⧸ N` along the
 quotient map recovers the literal subgroup `M ≤ H`, and the corresponding double quotient is
 canonically `H ⧸ M`. -/
 private noncomputable def quotient_preimage_equiv_of_quotient_normal_step
@@ -13982,7 +13982,7 @@ private noncomputable def quotient_preimage_equiv_of_quotient_normal_step
   letI : M.Normal := by infer_instance
   have hNM : N ≤ M := QuotientGroup.le_comap_mk' N Mbar
   have hmap : M.map (QuotientGroup.mk' N) = Mbar := by
-    -- The quotient map is surjective, so Serre's fixed step is recovered exactly after pullback.
+    -- The quotient map is surjective, so LinearRepresentations_Serre_1977's fixed step is recovered exactly after pullback.
     simpa [M] using
       Subgroup.map_comap_eq_self_of_surjective (QuotientGroup.mk'_surjective N) Mbar
   -- Route correction: normalize the iterated quotient first, then hand the remaining branch work
@@ -13991,7 +13991,7 @@ private noncomputable def quotient_preimage_equiv_of_quotient_normal_step
     (QuotientGroup.quotientMulEquivOfEq hmap.symm).trans
       (QuotientGroup.quotientQuotientEquivQuotient N M hNM)
 
-/-- Helper for Theorem 17-17.6-1: if Serre's quotient step `M̄ = M / N` has order prime to `p`,
+/-- Helper for Theorem 17-17.6-1: if LinearRepresentations_Serre_1977's quotient step `M̄ = M / N` has order prime to `p`,
 then the literal pullback subgroup `M ≤ H` also has order prime to `p`, because `|M| = |M̄| |N|`.
 -/
 private theorem coprime_card_preimage_of_quotient_normal_step
@@ -14025,19 +14025,19 @@ private theorem coprime_card_preimage_of_quotient_normal_step
     -- The pullback contains `N`, so the restricted kernel subgroup has the same cardinality.
     exact Nat.card_congr (Subgroup.subgroupOfEquivOfLe hNM).toEquiv
   have hcardMquot : Nat.card (M ⧸ N.subgroupOf M) = Nat.card Mbar := by
-    -- The quotient of the literal pullback by `N` is exactly Serre's chosen step `M̄`.
+    -- The quotient of the literal pullback by `N` is exactly LinearRepresentations_Serre_1977's chosen step `M̄`.
     simpa [hker] using
       (Nat.card_congr
         (((QuotientGroup.quotientKerEquivRange φ).trans
             (MulEquiv.subgroupCongr hrange)).toEquiv))
-  -- Route correction: keep Serre's literal subgroup `M` and use the exact cardinal factorization
+  -- Route correction: keep LinearRepresentations_Serre_1977's literal subgroup `M` and use the exact cardinal factorization
   -- `|M| = |M / N| |N|` instead of introducing a transport-heavy surrogate subgroup.
   rw [show Nat.card M = Nat.card (M ⧸ N.subgroupOf M) * Nat.card (N.subgroupOf M) by
       exact Subgroup.card_eq_card_quotient_mul_card_subgroup (N.subgroupOf M)]
   rw [hcardMquot, hcardNsub]
   exact Nat.Coprime.mul_right hMbar_cop hNcop
 
-/-- Helper for Theorem 17-17.6-1: if Serre's chosen quotient step `M̄ = M / N` has order prime to
+/-- Helper for Theorem 17-17.6-1: if LinearRepresentations_Serre_1977's chosen quotient step `M̄ = M / N` has order prime to
 `p`, then the literal pullback subgroup `M ≤ H` already gives a same-height recursive call on `H`.
 -/
 private theorem
@@ -14070,7 +14070,7 @@ private theorem
   let M : Subgroup H := Subgroup.comap (QuotientGroup.mk' N) Mbar
   letI : M.Normal := by infer_instance
   have hMcop : Nat.Coprime p (Nat.card M) := by
-    -- Serre's literal subgroup `M` inherits prime-to-`p` order from `M / N` and `N`.
+    -- LinearRepresentations_Serre_1977's literal subgroup `M` inherits prime-to-`p` order from `M / N` and `N`.
     simpa [M] using
       coprime_card_preimage_of_quotient_normal_step
         (p := p) (N := N) hNcop Mbar hMbar_cop
@@ -14081,7 +14081,7 @@ private theorem
   -- The coprime branch is now exactly the recursive same-height call on `H`.
   exact hrecLower hHsolv τ
 
-/-- Helper for Theorem 17-17.6-1: in Serre's `p`-group quotient branch, Schur-Zassenhaus may be
+/-- Helper for Theorem 17-17.6-1: in LinearRepresentations_Serre_1977's `p`-group quotient branch, Schur-Zassenhaus may be
 applied inside the literal pullback subgroup `M := preimage(M̄)` to split off a `p`-group
 complement to `N`. This isolates the concrete subgroup data before the later quotient descent. -/
 private theorem pgroup_preimage_complement_data_of_quotient_normal_step
@@ -14123,7 +14123,7 @@ private theorem pgroup_preimage_complement_data_of_quotient_normal_step
     -- Passing to the subgroup-of-subgroup view does not change the kernel cardinality.
     exact Nat.card_congr (Subgroup.subgroupOfEquivOfLe hNM).toEquiv
   have hcardMquot : Nat.card (M ⧸ Nsub) = Nat.card Mbar := by
-    -- The quotient of the literal pullback by `N` is exactly Serre's chosen quotient step `M̄`.
+    -- The quotient of the literal pullback by `N` is exactly LinearRepresentations_Serre_1977's chosen quotient step `M̄`.
     simpa [hker] using
       (Nat.card_congr
         (((QuotientGroup.quotientKerEquivRange φ).trans
@@ -14138,7 +14138,7 @@ private theorem pgroup_preimage_complement_data_of_quotient_normal_step
     exact hNcop.symm.pow_right n
   obtain ⟨Q, hQcomp⟩ := Subgroup.exists_right_complement'_of_coprime (N := Nsub) hcopNsub
   have hMquot_p : IsPGroup p (M ⧸ Nsub) := by
-    -- Serre's quotient step `M / N` is literally the chosen `p`-group `M̄`.
+    -- LinearRepresentations_Serre_1977's quotient step `M / N` is literally the chosen `p`-group `M̄`.
     have hMquot_p' : IsPGroup p (M ⧸ φ.ker) := by
       exact
         hMp.of_equiv
@@ -14170,10 +14170,10 @@ private theorem pgroup_preimage_complement_data_of_quotient_normal_step
         simpa [MonoidHom.range_eq_map] using M.range_subtype
   refine ⟨P, hP_le_M, ?_, hP_disjoint, hP_sup⟩
   -- The concrete complement subgroup `P ≤ H` is a `p`-group because it comes from the quotient
-  -- `M / N ≃ M̄`, which is already the `p`-group step in Serre's recursion.
+  -- `M / N ≃ M̄`, which is already the `p`-group step in LinearRepresentations_Serre_1977's recursion.
   simpa [P] using hQp.map M.subtype
 
-/-- Helper for Theorem 17-17.6-1: once Serre's literal split `M = N × P` is fixed with `N`
+/-- Helper for Theorem 17-17.6-1: once LinearRepresentations_Serre_1977's literal split `M = N × P` is fixed with `N`
 central and of order prime to `p`, the complement `P` is already normal in `H`. The proof keeps
 the source route: first show `P` is normal in `M` because conjugation by `n * p` reduces to
 conjugation by `p`, then upgrade to `H` by identifying `P` with the unique Sylow `p`-subgroup of
@@ -14258,7 +14258,7 @@ private theorem normal_of_pgroup_preimage_complement
   letI : Fact (Nat.Prime p) := ⟨hp⟩
   let PsubSylow : Sylow p M := IsPGroup.toSylow (P := Psub) hPsub_p hPsub_not_dvd
   have hPsub_char : Psub.Characteristic := by
-    -- A normal Sylow subgroup is characteristic, so Serre's complement is fixed by all
+    -- A normal Sylow subgroup is characteristic, so LinearRepresentations_Serre_1977's complement is fixed by all
     -- automorphisms of `M`.
     exact
       Sylow.characteristic_of_normal PsubSylow
@@ -14321,7 +14321,7 @@ private noncomputable def central_cyclic_image_quotient_data_of_pgroup_preimage_
       _ = N.map q ⊔ ⊥ := by rw [QuotientGroup.map_mk'_self P]
       _ = N' := by simp [N']
   have hcomapN' : Subgroup.comap q N' = M := by
-    -- The image subgroup `N'` pulls back to the original Serre step `M`.
+    -- The image subgroup `N'` pulls back to the original LinearRepresentations_Serre_1977 step `M`.
     calc
       Subgroup.comap q N' = Subgroup.comap q (M.map q) := by rw [hmapM]
       _ = M := by
@@ -14367,7 +14367,7 @@ private noncomputable def central_cyclic_image_quotient_data_of_pgroup_preimage_
       ((QuotientGroup.quotientMulEquivOfEq hφker.symm).trans
         ((QuotientGroup.quotientKerEquivRange φ).trans (MulEquiv.subgroupCongr hφrange)))
   have hN'_cyclic : IsCyclic N' := by
-    -- Injectivity on `N` transports Serre's cyclic kernel to the quotient image `N'`.
+    -- Injectivity on `N` transports LinearRepresentations_Serre_1977's cyclic kernel to the quotient image `N'`.
     letI : IsCyclic N := hNcyclic
     exact isCyclic_of_surjective eN eN.surjective
   have hcardN' : Nat.card N' = Nat.card N := by
@@ -14379,19 +14379,19 @@ private noncomputable def central_cyclic_image_quotient_data_of_pgroup_preimage_
   have hquotEquiv :
       ((H ⧸ P) ⧸ N') ≃* H ⧸ M := by
     -- Reuse the existing third-isomorphism step with kernel `P` and then rewrite the pullback
-    -- subgroup back to the literal Serre step `M`.
+    -- subgroup back to the literal LinearRepresentations_Serre_1977 step `M`.
     exact
       (quotient_preimage_equiv_of_quotient_normal_step (N := P) N').trans
         (QuotientGroup.quotientMulEquivOfEq hcomapN')
   have hQuotLower : IsPSolvableOfHeight p h ((H ⧸ P) ⧸ N') := by
-    -- Transport Serre's lower-height witness through the concrete quotient equivalence.
+    -- Transport LinearRepresentations_Serre_1977's lower-height witness through the concrete quotient equivalence.
     exact IsPSolvableOfHeight.of_equiv hquotEquiv.symm hMquot
   refine
     ⟨hN'_central, hN'_cyclic, hN'_cop, ?_, hquotEquiv⟩
-  -- The quotient by `P` is again one Serre step above the lower-height quotient by `N'`.
+  -- The quotient by `P` is again one LinearRepresentations_Serre_1977 step above the lower-height quotient by `N'`.
   exact IsPSolvableOfHeight.succ_iff.mpr ⟨N', inferInstance, Or.inl hN'_cop, hQuotLower⟩
 
-/-- Helper for Theorem 17-17.6-1: if Serre's chosen quotient step `M̄ = M / N` is a `p`-group,
+/-- Helper for Theorem 17-17.6-1: if LinearRepresentations_Serre_1977's chosen quotient step `M̄ = M / N` is a `p`-group,
 the remaining work is the source-faithful Schur-Zassenhaus split `M = N × P` inside the literal
 pullback subgroup `M ≤ H`. -/
 private theorem
@@ -14432,7 +14432,7 @@ private theorem
         IsPGroup p P ∧
         Disjoint N P ∧
         N ⊔ P = M := by
-    -- First isolate Serre's literal subgroup decomposition `M = N × P`; the remaining blocker is
+    -- First isolate LinearRepresentations_Serre_1977's literal subgroup decomposition `M = N × P`; the remaining blocker is
     -- only the quotient descent through this concrete complement.
     simpa [M] using
       pgroup_preimage_complement_data_of_quotient_normal_step
@@ -14463,14 +14463,14 @@ private theorem
         (ρA : Representation A (H ⧸ P) P')
         (red : P' →ₗ[A] W),
           IsResidueFieldLift τP ρA red := by
-    -- The recursive content is now exactly Serre's lower-height step on `H ⧸ P`.
+    -- The recursive content is now exactly LinearRepresentations_Serre_1977's lower-height step on `H ⧸ P`.
     exact hrecLower hHPsolv τP
   -- Inflate the recursive quotient lift back to `τ` in the already prepared witness universe.
   exact
     exists_residueFieldLift_of_ofQuotient_of_isTrivial_witness
       (A := A) (ρ := τ) (I := P) hLiftQuot
 
-/-- Helper for Theorem 17-17.6-1: once Serre's quotient module `τ` over `H / N̄` is in hand, the
+/-- Helper for Theorem 17-17.6-1: once LinearRepresentations_Serre_1977's quotient module `τ` over `H / N̄` is in hand, the
 remaining source-faithful step is a lower-height induction across the central cyclic coprime
 kernel `N̄`. -/
 private theorem
@@ -14512,7 +14512,7 @@ private theorem
           have hxq : (QuotientGroup.mk x : H ⧸ N) = 1 := Subsingleton.elim _ _
           exact (QuotientGroup.eq_one_iff (N := N) (x := x)).mp hxq
       have hHcop : ¬ p ∣ Nat.card H := by
-        -- In Serre's base case `H = N`, so the whole group has order prime to `p`.
+        -- In LinearRepresentations_Serre_1977's base case `H = N`, so the whole group has order prime to `p`.
         rcases CharP.char_is_prime_or_zero k p with hp | hp0
         · simpa [hN_top] using (hp.coprime_iff_not_dvd.mp hNcop)
         · subst hp0
@@ -14524,7 +14524,7 @@ private theorem
         ⟨P, hPadd, hPmod, hPfree, hPfinite, ρA, red, hLift⟩
       exact ⟨P, hPadd, hPmod, hPfree, hPfinite, ρA, red, hLift⟩
   | succ h =>
-      -- Route correction: the remaining source-faithful work is only Serre's successor-height
+      -- Route correction: the remaining source-faithful work is only LinearRepresentations_Serre_1977's successor-height
       -- split inside `H / N`. One must choose the normal step `M / N`, handle the `p`-group case
       -- by killing the normal `p`-subgroup action, and handle the prime-to-`p` case by lowering
       -- the ambient quotient height before feeding the result to `hrecLower`.
@@ -14537,7 +14537,7 @@ private theorem
       letI : M.Normal := by infer_instance
       have hMquot : IsPSolvableOfHeight p h (H ⧸ M) := by
         -- First move the quotient-height witness from `((H ⧸ N) ⧸ M̄)` to the literal pullback
-        -- subgroup `M ≤ H`; the remaining work is now the genuine Serre branch split on `M / N`.
+        -- subgroup `M ≤ H`; the remaining work is now the genuine LinearRepresentations_Serre_1977 branch split on `M / N`.
         change IsPSolvableOfHeight p h (H ⧸ Subgroup.comap (QuotientGroup.mk' N) Mbar)
         simpa [M] using
           IsPSolvableOfHeight.of_equiv
@@ -14546,7 +14546,7 @@ private theorem
       have hMcop_preimage :
           Nat.Coprime p (Nat.card Mbar) →
             Nat.Coprime p (Nat.card M) := by
-        -- In the prime-to-`p` branch, Serre's literal subgroup `M` inherits coprime order from
+        -- In the prime-to-`p` branch, LinearRepresentations_Serre_1977's literal subgroup `M` inherits coprime order from
         -- the exact factorization `|M| = |M / N| |N|`.
         intro hMbar_cop
         exact
@@ -14560,7 +14560,7 @@ private theorem
         exact
           exists_residueFieldLift_of_central_cyclic_coprime_kernel_coprime_preimage_branch
             (p := p) (A := A) (h := h) (N := N) hNcop hrecLower τ Mbar hMbar_cop hMquot
-      · -- In the `p`-group branch, the only remaining blocker is Serre's explicit
+      · -- In the `p`-group branch, the only remaining blocker is LinearRepresentations_Serre_1977's explicit
         -- Schur-Zassenhaus complement construction on the literal pullback subgroup `M`.
         exact
           exists_residueFieldLift_of_central_cyclic_coprime_kernel_pgroup_preimage_branch
@@ -14592,7 +14592,7 @@ theorem exists_residueFieldLift_of_restriction_isotypic_via_projective_extension
         (ρA : Representation A G P)
         (red : P →ₗ[A] V),
         IsResidueFieldLift ρ ρA red := by
-  -- Route correction: this branch must follow Serre's `S̄ ⊗ F` route through the finite central
+  -- Route correction: this branch must follow LinearRepresentations_Serre_1977's `S̄ ⊗ F` route through the finite central
   -- extension `G₂`; replacing it by an ad hoc recursion would lose the source proof's main
   -- controlling object and the lower-height quotient `H = G₂ / I`.
   -- The verified prefix in this file already handles the two outer recursive branches:
@@ -14609,7 +14609,7 @@ theorem exists_residueFieldLift_of_restriction_isotypic_via_projective_extension
   let F := fixed_isotypic_multiplicity_space (I := I) (ρ := ρ) Sbar
   have hCoord :
       ∃ n : ℕ, Nonempty (V ≃ₗ[MonoidAlgebra k I] Fin n → Sbar.asSubmodule) := by
-    -- Rigidify Serre's chosen constituent onto a coordinate model before building `G₂`.
+    -- Rigidify LinearRepresentations_Serre_1977's chosen constituent onto a coordinate model before building `G₂`.
     exact
       exists_linearEquiv_pi_of_isotypic_component_top
         (p := p) (A := A) (G := G) (V := V) hp I hIcop ρ Sbar hSbar_irred
@@ -14620,7 +14620,7 @@ theorem exists_residueFieldLift_of_restriction_isotypic_via_projective_extension
         (ρA : Representation A I P)
         (red : P →ₗ[A] Sbar.toSubmodule),
           IsResidueFieldLift Sbar.toRepresentation ρA red := by
-    -- Serre's source route lifts the fixed constituent before defining the finite cover `G₂`.
+    -- LinearRepresentations_Serre_1977's source route lifts the fixed constituent before defining the finite cover `G₂`.
     exact
       exists_residueFieldLift_of_fixed_constituent
         (p := p) (A := A) (G := G) (V := V) hp I hIcop ρ Sbar
@@ -14664,7 +14664,7 @@ theorem exists_residueFieldLift_of_restriction_isotypic_via_projective_extension
   letI : pkg.I2.Normal := pkg.instNormalI2
   letI : pkg.Nbar.Normal := pkg.instNormalNbar
   have hquotPkg : IsPSolvableOfHeight p h ((pkg.G2 ⧸ pkg.I2) ⧸ pkg.Nbar) := by
-    -- The quotient in Serre's finite cover is designed to recover the original lower-height
+    -- The quotient in LinearRepresentations_Serre_1977's finite cover is designed to recover the original lower-height
     -- quotient `G / I`.
     exact IsPSolvableOfHeight.of_equiv pkg.quotientEquiv.symm hquot
   letI : pkg.tau.IsIrreducible := pkg.tau_irred
@@ -14688,7 +14688,7 @@ theorem exists_residueFieldLift_of_restriction_isotypic_via_projective_extension
   exact
     pkg.descendLift hP_tau_add hP_tau_mod hP_tau_free hP_tau_finite ρA_tau red_tau hLift_tau
 
-/-- Helper for Theorem 17-17.6-1: the coprime-kernel branch packages Serre's isotypic
+/-- Helper for Theorem 17-17.6-1: the coprime-kernel branch packages LinearRepresentations_Serre_1977's isotypic
 decomposition and projective-extension argument for a normal Hall subgroup. -/
 theorem exists_residueFieldLift_of_isIrreducible_of_normal_coprime_kernel
     (hp : Nat.Prime p)
@@ -14724,7 +14724,7 @@ theorem exists_residueFieldLift_of_isIrreducible_of_normal_coprime_kernel
   letI : I.Normal := hI
   -- Route correction: the trivial-quotient case is already covered by the Chapter `15` Hall lift.
   -- The only remaining frontier is the genuine proper Hall-kernel case, which needs the
-  -- Clifford/stabilizer split and Serre's projective-extension descent.
+  -- Clifford/stabilizer split and LinearRepresentations_Serre_1977's projective-extension descent.
   by_cases hItop : I = ⊤
   · -- If `I = G`, then `|G|` is itself prime to `p`, so the Chapter `15` lifting theorem applies
     -- directly without any quotient recursion.
@@ -14741,7 +14741,7 @@ theorem exists_residueFieldLift_of_isIrreducible_of_normal_coprime_kernel
   let ρI : Representation k I V := ρ.comp I.subtype
   letI : Module (MonoidAlgebra k I) V := ρI.instModuleMonoidAlgebraAsModule
   by_cases hsub : Subsingleton (isotypicComponents (MonoidAlgebra k I) V)
-  · -- If the restricted module has a single isotypic component, we are exactly in Serre's
+  · -- If the restricted module has a single isotypic component, we are exactly in LinearRepresentations_Serre_1977's
     -- projective-extension branch.
     have hIsotypic : IsIsotypic (MonoidAlgebra k I) V := by
       exact
@@ -14768,7 +14768,7 @@ theorem exists_residueFieldLift_of_isIrreducible_of_normal_coprime_kernel
         exists_residueFieldLift_of_proper_overgroup_induced_hall
           (p := p) (A := A) (h := h) (G := G) (V := V)
           hp I hIcop hquot hrecSame ρ hproper
-    · -- In the isotypic branch, Serre's projective-extension construction is the remaining step.
+    · -- In the isotypic branch, LinearRepresentations_Serre_1977's projective-extension construction is the remaining step.
       exact
         exists_residueFieldLift_of_restriction_isotypic_via_projective_extension
           (p := p) (A := A) (h := h) (G := G) (V := V)

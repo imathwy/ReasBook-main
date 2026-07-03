@@ -3,7 +3,7 @@ import Mathlib.Algebra.Category.ModuleCat.ChangeOfRings
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
 import Mathlib.RingTheory.Ideal.Quotient.Operations
 import Mathlib.RingTheory.RingHom.FaithfullyFlat
-import stacks_project.Chap15.Lemma_15_89_5
+import StacksProject_2024.Chap15.Lemma_15_89_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.CategoryTheory.Sites.Over
 import Mathlib.Data.List.TFAE
-import stacks_project.Chap18.Definition_18_28_1
-import stacks_project.Chap18.Lemma_18_19_2
+import StacksProject_2024.Chap18.Definition_18_28_1
+import StacksProject_2024.Chap18.Lemma_18_19_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

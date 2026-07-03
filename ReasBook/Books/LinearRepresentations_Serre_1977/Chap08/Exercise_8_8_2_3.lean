@@ -18,7 +18,7 @@ obtained by mapping the canonical owner along the inclusion `A₄ ↪ S₄`. -/
 local notation "V4InS4" => Subgroup.map (Subgroup.subtype A4) V4
 
 /- Source/core/bridge triage for Exercise 8-8.2-3:
-* `source-facing`: the existence of subgroup complements realizing Serre's semidirect-product
+* `source-facing`: the existence of subgroup complements realizing LinearRepresentations_Serre_1977's semidirect-product
   decompositions for `D_n`, `A₄`, and `S₄`.
 * `core/canonical`: the rotation subgroup owner `Subgroup.zpowers (DihedralGroup.r (1 : ZMod n))`,
   the canonical Klein four subgroup owner `alternatingGroup.kleinFour (Fin 4)`, and the

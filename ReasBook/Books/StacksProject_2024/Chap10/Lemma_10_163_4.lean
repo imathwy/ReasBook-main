@@ -1,7 +1,7 @@
 import Mathlib
-import stacks_project.Chap10.Definition_10_157_1
-import stacks_project.Chap10.Lemma_10_112_7
-import stacks_project.Chap10.Lemma_10_163_2
+import StacksProject_2024.Chap10.Definition_10_157_1
+import StacksProject_2024.Chap10.Lemma_10_112_7
+import StacksProject_2024.Chap10.Lemma_10_163_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -15,7 +15,7 @@ variable [SerreConditionS R k] [IsNoetherianRing S] [Module.Flat R S]
 
 /-
 Domain-style sampling pass:
-* primary domain: Serre's condition `(S_k)` in commutative algebra under flat base change and
+* primary domain: LinearRepresentations_Serre_1977's condition `(S_k)` in commutative algebra under flat base change and
   fiberwise hypotheses;
 * sampled owner declarations:
   - `SerreConditionS`, the chapter owner for the ring-theoretic `(S_k)` condition from
@@ -53,7 +53,7 @@ Source/core/bridge triage:
 -- `R_p → S_q` and the local dimension formula
 -- `ringKrullDim_localizationAtPrime_eq_ringKrullDim_localizationAtPrime_under_add_ringKrullDim_fiberLocalRingAt_of_hasGoingDown`
 -- combine these two bounds to yield `depth S_q ≥ min(k, dim S_q)`.
-/-- Lemma 10.163.4: for a flat ring map `R → S`, if `R` satisfies Serre's condition `(S_k)`, `S`
+/-- Lemma 10.163.4: for a flat ring map `R → S`, if `R` satisfies LinearRepresentations_Serre_1977's condition `(S_k)`, `S`
 is Noetherian, and every fiber ring `κ(𝔭) ⊗[R] S`, formalized as `p.asIdeal.Fiber S`, satisfies
 `(S_k)`, then `S` satisfies `(S_k)`. -/
 theorem serreConditionS_of_flat_of_fiber

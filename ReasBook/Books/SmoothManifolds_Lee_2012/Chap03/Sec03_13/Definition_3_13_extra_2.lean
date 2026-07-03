@@ -1,5 +1,5 @@
 import Mathlib.Analysis.InnerProductSpace.PiL2
-import SmoothManifoldsLee.Chap03.Sec03_13.Definition_3_13_extra_3
+import SmoothManifolds_Lee_2012.Chap03.Sec03_13.Definition_3_13_extra_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

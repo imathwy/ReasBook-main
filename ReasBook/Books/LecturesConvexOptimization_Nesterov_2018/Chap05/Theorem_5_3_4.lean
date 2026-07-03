@@ -1,7 +1,7 @@
 import Mathlib
-import Nesterov.Chap05.Corollary_5_1_3
-import Nesterov.Chap05.Proposition_5_3_3
-import Nesterov.Chap05.Theorem_5_1_4
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Corollary_5_1_3
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Proposition_5_3_3
+import LecturesConvexOptimization_Nesterov_2018.Chap05.Theorem_5_1_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
-import FirstOrderMethodsinOptimization.Chap08.Lemma_8_47
-import FirstOrderMethodsinOptimization.Chap08.Lemma_8_27
+import FirstOrderMethodsOptimization_Beck_2017.Chap08.Lemma_8_47
+import FirstOrderMethodsOptimization_Beck_2017.Chap08.Lemma_8_27
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

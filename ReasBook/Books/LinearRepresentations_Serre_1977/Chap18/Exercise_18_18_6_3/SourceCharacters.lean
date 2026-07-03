@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap16.Corollary_16_16_1_6.Bases
-import Serre.Chap18.Corollary_18_18_2_5
-import Serre.Chap18.Remark_18_18_6_1
+import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_6.Bases
+import LinearRepresentations_Serre_1977.Chap18.Corollary_18_18_2_5
+import LinearRepresentations_Serre_1977.Chap18.Remark_18_18_6_1
 
 noncomputable section
 
@@ -222,7 +222,7 @@ private theorem alternating_group_fin5_orderOf_representative_ofSubtype_modTwo
   simpa using hc.orderOf_eq
 
 /-- Helper for Exercise 18-18.6-3: code the four `2`-regular conjugacy classes of `A₅` by the
-Brauer labels from Serre's table. -/
+Brauer labels from LinearRepresentations_Serre_1977's table. -/
 private noncomputable def alternating_group_fin5_pRegular_code_modTwo
     (c : PRegularConjClass A5 2) : BrauerProjectiveModTwo :=
   let g := (alternating_group_fin5_pRegular_representative_modTwo c).1
@@ -456,7 +456,7 @@ private theorem alternating_group_fin5_pRegular_code_modTwo_left_inv
         _ = c.1 := alternating_group_fin5_pRegular_representative_modTwo_spec c
 
 /-- Helper for Exercise 18-18.6-3: the `2`-regular conjugacy classes of `A₅` can be indexed by
-Serre's four Brauer labels. -/
+LinearRepresentations_Serre_1977's four Brauer labels. -/
 noncomputable def alternating_group_fin5_pRegularConjClass_modTwo_equiv_brauer_labels :
     PRegularConjClass A5 2 ≃ BrauerProjectiveModTwo :=
   { toFun := alternating_group_fin5_pRegular_code_modTwo
@@ -547,7 +547,7 @@ private theorem a5_exists_complete_simple_family_on_pRegular_classes_modTwo
       exact ⟨eκ i, by simpa [Function.comp] using hi⟩
 
 /-- Helper for Exercise 18-18.6-3: after making the four `2`-regular classes explicit, a
-complete simple family may be reindexed by Serre's Brauer labels. -/
+complete simple family may be reindexed by LinearRepresentations_Serre_1977's Brauer labels. -/
 theorem a5_exists_complete_simple_family_on_brauer_labels_modTwo
     {Ω : Type*} [Field Ω] [IsAlgClosed Ω] [CharP Ω 2] [Algebra 𝔽₄ Ω] :
     ∃ π : BrauerProjectiveModTwo → FDRep Ω A5,

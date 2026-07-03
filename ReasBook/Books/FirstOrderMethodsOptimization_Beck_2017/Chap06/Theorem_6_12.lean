@@ -1,5 +1,5 @@
 import Mathlib
-import FirstOrderMethodsinOptimization.Chap06.Theorem_6_11
+import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

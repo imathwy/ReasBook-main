@@ -1,7 +1,7 @@
 import Mathlib
-import Serre.Chap10.Definition_10_10_1_3
-import Serre.Chap10.Theorem_10_10_2_2
-import Serre.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_2_2
+import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -19,7 +19,7 @@ variable {A : Type v} [CommRing A] [Algebra A ℂ]
 
 local instance : Fintype G := Fintype.ofFinite G
 
-/-- Helper for Proof 10-10.4-1: Serre's tensor owner `A ⊗ V_p` for the ambient finite group `G`.
+/-- Helper for Proof 10-10.4-1: LinearRepresentations_Serre_1977's tensor owner `A ⊗ V_p` for the ambient finite group `G`.
 -/
 scoped[Representation] notation:max A " ⊗V[" p "](" G ")" => TensorProduct ℤ A (V[p](G))
 
@@ -68,7 +68,7 @@ lemma smul_trivialCharacter_eq_constant (l : ℕ) :
 -- Route correction: the proof now reuses the existing Chapter 10.2 theorem `l • 1 ∈ V_p`,
 -- while keeping only the small local tensor-realization bridge needed to evaluate `1 ⊗ (l • 1)`.
 /-- Proof 10-10.4-1: if `|G| = p^n l` with `l` prime to `p`, then the constant class function with
-value `l` is realized by an element of Serre's tensor product `A ⊗V[p](G)`. -/
+value `l` is realized by an element of LinearRepresentations_Serre_1977's tensor product `A ⊗V[p](G)`. -/
 theorem exists_constant_tensorPElementaryInducedCharacter_of_primeToPart_card
     (n l : ℕ) (hcard : Nat.card G = p ^ n * l) (hl : Nat.Coprime p l) :
     ∃ ψ : A ⊗V[p](G), (ψ : G → ℂ) = fun _ ↦ (l : ℂ) := by

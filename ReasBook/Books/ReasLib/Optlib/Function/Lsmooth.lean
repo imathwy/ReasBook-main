@@ -6,8 +6,8 @@ Authors: Chenyi Li, Ziyu Wang, Yuxuan Wu, Junda Ying,
 -/
 import Mathlib.Topology.EMetricSpace.Lipschitz
 import Mathlib.Analysis.Calculus.Deriv.Pow
-import Reaslib.Optlib.Optimality.OptimalityConditionOfUnconstrainedProblem
-import Reaslib.Optlib.Differential.Lemmas
+import ReasLib.Optlib.Optimality.OptimalityConditionOfUnconstrainedProblem
+import ReasLib.Optlib.Differential.Lemmas
 
 /-!
 # Lsmooth

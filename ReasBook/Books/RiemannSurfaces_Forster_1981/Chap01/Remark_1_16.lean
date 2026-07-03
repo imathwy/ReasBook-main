@@ -1,5 +1,5 @@
-import RiemannSurfaces.Chap01.Theorem_1_11
-import RiemannSurfaces.Chap01.Theorem_1_15
+import RiemannSurfaces_Forster_1981.Chap01.Theorem_1_11
+import RiemannSurfaces_Forster_1981.Chap01.Theorem_1_15
 
 open scoped Manifold OnePoint
 

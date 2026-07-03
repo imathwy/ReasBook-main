@@ -1,6 +1,6 @@
 import Mathlib
-import Serre.Chap10.Definition_10_10_1_3
-import Serre.Chap12.Theorem_12_12_4_1.GammaSubgroupAction
+import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_4_1.GammaSubgroupAction
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -210,7 +210,7 @@ theorem IsGammaElementary.exists_prime_and_pElementary
 
 -- Proof sketch: if `Γ_K = {1}`, then the only allowed power map is the identity modulo
 -- `Monoid.exponent G`, so the conjugation condition says that the cyclic factor commutes with the
--- `p`-group factor; this is exactly Serre's earlier definition of an ordinary `p`-elementary
+-- `p`-group factor; this is exactly LinearRepresentations_Serre_1977's earlier definition of an ordinary `p`-elementary
 -- subgroup, and conversely.
 /-- For the trivial subgroup `Γ_K = {1}`, `Γ_K`-`p`-elementary subgroups are exactly the ordinary
 `p`-elementary subgroups from Chapter 10. -/
