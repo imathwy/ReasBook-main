@@ -51,23 +51,23 @@ jobs:
       fail-fast: false
       matrix:
         module:
-          - Books/AchimKlenkeLean
+          - Books/ProbabilityTheory_Klenke_2020
           - Books/Analysis2_Tao_2022/Book
-          - Books/BauschkeLean
-          - Books/CombinatorialGroupTheory
+          - Books/ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017
+          - Books/CombinatorialGroupTheory_Magnus_2004
           - Books/ConvexAnalysis_Rockafellar_1970/Book
-          - Books/FirstOrderMethodsinOptimization
+          - Books/FirstOrderMethodsOptimization_Beck_2017
           - Books/IntegerProgramming_Conforti_2014/Book
           - Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Book
-          - Books/MayConciseRevised
-          - Books/Nesterov
-          - Books/Reaslib
-          - Books/RiemannSurfaces
-          - Books/Serre
-          - Books/SmoothManifoldsLee
-          - Books/cartan
+          - Books/AlgebraicTopology_May_1999
+          - Books/LecturesConvexOptimization_Nesterov_2018
+          - Books/ReasLib
+          - Books/RiemannSurfaces_Forster_1981
+          - Books/LinearRepresentations_Serre_1977
+          - Books/SmoothManifolds_Lee_2012
+          - Books/DifferentialForms_Cartan_1970
           - Books/chapter1_reference_format
-          - Books/stacks_project
+          - Books/StacksProject_2024
           - Papers/OnSomeLocalRings_Maassaran_2025/Paper
           - Papers/SmoothMinimization_Nesterov_2004/Paper
 

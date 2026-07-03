@@ -679,8 +679,8 @@ lemma discrete_two_point_ball_not_connected :
   classical
   have hdist_false_true : dist false true = 1 := by
     calc
-      dist false true = dist (0 : ℝ) 1 := by
-        simp [discretePseudoMetricSpaceBool, PseudoMetricSpace.induced]
+      dist false true = dist (0 : ℝ) (1 : ℝ) := rfl
+      _ = |(0 : ℝ) - 1| := Real.dist_eq _ _
       _ = 1 := by norm_num
   have hdist_true_false : dist true false = 1 := by
     simpa [dist_comm] using hdist_false_true

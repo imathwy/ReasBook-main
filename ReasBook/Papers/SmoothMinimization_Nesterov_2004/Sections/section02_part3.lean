@@ -1381,7 +1381,7 @@ theorem smoothedMaxFunction_differentiable_of_isSmoothedMaximizer {E1 E2 : Type*
     (smoothedMaxFunction_contDiff_of_isSmoothedMaximizer
       (Q2 := Q2) (A := A) (phihat := phihat) (d2 := d2) (μ := μ) (σ2 := σ2)
       (hμ := hμ) (hσ2 := hσ2) (hconv := hconv) (hphi := hphi) (uμ := uμ)
-      (hmax := hmax)).differentiable le_rfl
+      (hmax := hmax)).differentiable (by decide)
 
 /-- Canonical differentiability theorem for the smoothed max-function, using
 `u_μ := smoothedMaximizer ...`. -/
@@ -1405,7 +1405,7 @@ theorem smoothedMaxFunction_differentiable {E1 E2 : Type*}
         (hμ := hμ) (hσ2 := hσ2) (hconv := hconv) (hphi := hphi)
         (hQ2_closed := hQ2_closed) (hQ2_bdd := hQ2_bdd) (hQ2_nonempty := hQ2_nonempty)
         (hphihat := hphihat) (hd2 := hd2))
-  exact hContDiff.differentiable le_rfl
+  exact hContDiff.differentiable (by decide)
 
 /-- Convexity of the smoothed max-function along an abstract maximizing branch. -/
 theorem smoothedMaxFunction_convex_of_isSmoothedMaximizer {E1 E2 : Type*}

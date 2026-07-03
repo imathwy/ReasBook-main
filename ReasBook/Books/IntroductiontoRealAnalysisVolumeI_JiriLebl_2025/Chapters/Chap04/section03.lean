@@ -1,6 +1,7 @@
 import Mathlib
 
 open Set SignType
+open scoped Interval
 
 section Chap04
 section Section03
@@ -79,27 +80,38 @@ lemma taylor_with_remainder_pos {f : ℝ → ℝ} {x0 x : ℝ} {n : ℕ}
           (iteratedDeriv (n + 1) f c) / (Nat.factorial (n + 1)) *
             (x - x0) ^ (n + 1) := by
   classical
-  rcases taylor_mean_remainder_lagrange_iteratedDeriv hx0x hcont with ⟨c, hc, hceq⟩
+  have h_le : x0 ≤ x := le_of_lt hx0x
+  have h_interval_eq : (uIcc x0 x : Set ℝ) = Set.Icc x0 x := uIcc_of_le h_le
+  have hcont_uIcc : ContDiffOn ℝ (n + 1) f (uIcc x0 x) :=
+    h_interval_eq.symm ▸ hcont
+  have htemp := taylor_mean_remainder_lagrange_iteratedDeriv hx0x.ne hcont_uIcc
+  rcases htemp with ⟨c, hcmem, hceq⟩
+  have hcIoo : c ∈ Set.Ioo x0 x := by
+    rwa [uIoo_of_le h_le] at hcmem
+  have hcIcc : c ∈ Set.Icc x0 x := Set.Ioo_subset_Icc_self hcIoo
   have hpoly := taylorWithinEval_eq_taylorPolynomial (n := n) hx0x hcontAt
-  have hcIcc : c ∈ Set.Icc x0 x := Set.Ioo_subset_Icc_self hc
   have hceq' :
       f x =
-        taylorWithinEval f n (Set.Icc x0 x) x0 x +
+        taylorWithinEval f n (uIcc x0 x) x0 x +
           iteratedDeriv (n + 1) f c * (x - x0) ^ (n + 1) /
             (Nat.factorial (n + 1)) := by
-    have h := eq_add_of_sub_eq hceq
-    simpa [add_comm] using h
+    linarith [hceq]
   refine ⟨c, hcIcc, ?_⟩
   calc
     f x =
-        taylorWithinEval f n (Set.Icc x0 x) x0 x +
+        taylorWithinEval f n (uIcc x0 x) x0 x +
           iteratedDeriv (n + 1) f c * (x - x0) ^ (n + 1) /
             (Nat.factorial (n + 1)) := hceq'
+    _ =
+        taylorWithinEval f n (Set.Icc x0 x) x0 x +
+          iteratedDeriv (n + 1) f c * (x - x0) ^ (n + 1) /
+            (Nat.factorial (n + 1)) := by
+      rw [h_interval_eq]
     _ =
         (taylorPolynomial f x0 n).eval x +
           iteratedDeriv (n + 1) f c * (x - x0) ^ (n + 1) /
             (Nat.factorial (n + 1)) := by
-      simp [hpoly]
+      rw [hpoly]
     _ =
         (taylorPolynomial f x0 n).eval x +
           (iteratedDeriv (n + 1) f c) / (Nat.factorial (n + 1)) *

@@ -32,33 +32,31 @@ lean_lib Books where
 lean_lib Papers where
 
 -- Books from ALLBOOKS (sources live under Books/<LibName>/)
-lean_lib AchimKlenkeLean where
+lean_lib ProbabilityTheory_Klenke_2020 where
   srcDir := "Books"
-lean_lib BauschkeLean where
+lean_lib ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017 where
   srcDir := "Books"
-lean_lib CombinatorialGroupTheory where
+lean_lib CombinatorialGroupTheory_Magnus_2004 where
   srcDir := "Books"
-lean_lib FirstOrderMethodsinOptimization where
+lean_lib FirstOrderMethodsOptimization_Beck_2017 where
   srcDir := "Books"
-lean_lib MayConciseRevised where
+lean_lib AlgebraicTopology_May_1999 where
   srcDir := "Books"
-lean_lib Nesterov where
+lean_lib LecturesConvexOptimization_Nesterov_2018 where
   srcDir := "Books"
-lean_lib OptimizationResearch where
+lean_lib ReasLib where
   srcDir := "Books"
-lean_lib Reaslib where
+lean_lib RiemannSurfaces_Forster_1981 where
   srcDir := "Books"
-lean_lib RiemannSurfaces where
+lean_lib LinearRepresentations_Serre_1977 where
   srcDir := "Books"
-lean_lib Serre where
+lean_lib SmoothManifolds_Lee_2012 where
   srcDir := "Books"
-lean_lib SmoothManifoldsLee where
-  srcDir := "Books"
-lean_lib cartan where
+lean_lib DifferentialForms_Cartan_1970 where
   srcDir := "Books"
 lean_lib chapter1_reference_format where
   srcDir := "Books"
-lean_lib stacks_project where
+lean_lib StacksProject_2024 where
   srcDir := "Books"
 lean_lib stacks_proof where
   srcDir := "Books"

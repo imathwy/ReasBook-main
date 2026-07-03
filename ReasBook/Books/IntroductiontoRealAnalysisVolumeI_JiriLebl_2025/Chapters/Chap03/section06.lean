@@ -465,7 +465,7 @@ lemma antitoneOn_left_limit_inf {S : Set ℝ} {g : ℝ → ℝ} {c : ℝ}
       Tendsto g (nhdsWithin c (S ∩ Set.Iio c))
         (nhds (- sSup (- (g '' (S ∩ Set.Iio c))))) := by
     simpa [himage] using hneg
-  simpa [Real.sInf_def] using hneg_set
+  rw [Real.sInf_def]; exact hneg_set
 
 lemma antitoneOn_left_limit_atBot {S : Set ℝ} {g : ℝ → ℝ} {c : ℝ}
     (hg : AntitoneOn g S) (hc : c ∈ closure (S ∩ Set.Iio c))
@@ -518,7 +518,7 @@ lemma antitoneOn_right_limit_sup {S : Set ℝ} {g : ℝ → ℝ} {c : ℝ}
       Tendsto g (nhdsWithin c (S ∩ Set.Ioi c))
         (nhds (- sInf (- (g '' (S ∩ Set.Ioi c))))) := by
     simpa [himage] using hneg
-  simpa [Real.sInf_def] using hneg_set
+  simpa [Real.sSup_def] using hneg_set
 
 lemma antitoneOn_right_limit_atTop {S : Set ℝ} {g : ℝ → ℝ} {c : ℝ}
     (hg : AntitoneOn g S) (hc : c ∈ closure (S ∩ Set.Ioi c))
@@ -576,7 +576,7 @@ lemma antitoneOn_limit_atTop_cases {S : Set ℝ} {g : ℝ → ℝ}
         Tendsto g ((Filter.atTop : Filter ℝ) ⊓ Filter.principal S)
           (nhds (- sSup (- (g '' S)))) := by
       simpa [himage] using hneg
-    simpa [Real.sInf_def] using hneg_set
+    rw [Real.sInf_def]; exact hneg_set
   · intro hUnb
     have hUnb' : ¬ BddAbove ((-g) '' S) := by
       intro h
@@ -627,7 +627,7 @@ lemma antitoneOn_limit_atBot_cases {S : Set ℝ} {g : ℝ → ℝ}
         Tendsto g ((Filter.atBot : Filter ℝ) ⊓ Filter.principal S)
           (nhds (- sInf (- (g '' S)))) := by
       simpa [himage] using hneg
-    simpa [Real.sInf_def] using hneg_set
+    simpa [Real.sSup_def] using hneg_set
   · intro hUnb
     have hUnb' : ¬ BddBelow ((-g) '' S) := by
       intro h

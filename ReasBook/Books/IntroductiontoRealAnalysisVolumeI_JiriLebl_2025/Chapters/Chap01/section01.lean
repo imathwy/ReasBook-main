@@ -26,20 +26,26 @@ def le (x y : α) : Prop :=
   S.lt x y ∨ x = y
 
 /-- The axioms of an ordered set give a strict total order in mathlib's sense. -/
-theorem toStrictTotalOrder : IsStrictTotalOrder α S.lt := by
-  refine { trichotomous := S.trichotomous, irrefl := S.irrefl, trans := ?_ }
-  intro a b c h1 h2
-  exact S.trans h1 h2
+theorem toStrictTotalOrder : IsStrictTotalOrder α S.lt :=
+  { trichotomous := by
+      intro a b hnab hnba
+      rcases S.trichotomous a b with (hlt | heq | hlt)
+      · exact (hnab hlt).elim
+      · exact heq
+      · exact (hnba hlt).elim
+    irrefl := fun a => S.irrefl a
+    trans := fun a b c h1 h2 => S.trans h1 h2
+  }
 
 /-- A strict total order in mathlib yields the ordered-set structure described
 in Definition 1.1.1. -/
 def ofStrictTotalOrder {lt : α → α → Prop}
-    (h : IsStrictTotalOrder α lt) : OrderedSet α := by
-  refine { lt := lt, trichotomous := ?_, irrefl := ?_, trans := ?_ }
-  · exact h.trichotomous
-  · exact h.irrefl
-  · intro x y z hxy hyz
-    exact h.trans x y z hxy hyz
+    (h : IsStrictTotalOrder α lt) : OrderedSet α :=
+  { lt := lt,
+    trichotomous := λ x y => Std.Trichotomous.rel_or_eq_or_rel_swap (a := x) (b := y),
+    irrefl := h.irrefl,
+    trans := λ h1 h2 => h.trans _ _ _ h1 h2
+  }
 
 end OrderedSet
 

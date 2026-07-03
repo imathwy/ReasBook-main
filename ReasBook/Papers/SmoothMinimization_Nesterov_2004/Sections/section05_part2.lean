@@ -37,7 +37,7 @@ lemma simplexProximalValue_exists_primalMinimizer_fin (n : ℕ) (xbar gbar : Fin
       simpa using (continuous_const.mul hcont2')
     simpa [Φ, mul_assoc] using hcont1.add hcont3
   have hcompact : IsCompact (standardSimplex n) := by
-    simpa [standardSimplex_eq_stdSimplex] using (isCompact_stdSimplex (ι := Fin n))
+    simpa [standardSimplex_eq_stdSimplex] using (isCompact_stdSimplex ℝ (ι := Fin n))
   have hne : (standardSimplex n).Nonempty := standardSimplex_nonempty_of_pos hn
   exact hcompact.exists_isMinOn hne hcont.continuousOn
 

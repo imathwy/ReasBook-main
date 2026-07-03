@@ -478,15 +478,10 @@ lemma exp_series_abs_convergent (x : ℝ) :
       Summable (fun n : ℕ => ‖x ^ n / (Nat.factorial n : ℝ)‖) := by
     simpa [h_norm_eq] using h_summable_abs
   have htsum : tsum (fun n : ℕ => x ^ n / (Nat.factorial n : ℝ)) = Real.exp x := by
-    have h_exp := congrArg (fun f => f x) (Real.exp_eq_exp_ℝ)
-    have h_series :=
-        congrArg (fun f => f x) (NormedSpace.exp_eq_tsum_div (𝕂 := ℝ) (𝔸 := ℝ))
     calc
-      tsum (fun n : ℕ => x ^ n / (Nat.factorial n : ℝ)) =
-          (NormedSpace.exp ℝ) x := by
-            simpa using h_series.symm
-      _ = Real.exp x := by
-            simpa using h_exp.symm
+      tsum (fun n : ℕ => x ^ n / (Nat.factorial n : ℝ)) = NormedSpace.exp x := by
+        rw [NormedSpace.exp_eq_tsum_div (𝔸 := ℝ)]
+      _ = Real.exp x := by rw [Real.exp_eq_exp_ℝ]
   exact ⟨hsum_norm, htsum⟩
 
 /-- Example 2.6.8. The power series `∑_{n=1}^∞ (1 / n) x^n` converges absolutely for

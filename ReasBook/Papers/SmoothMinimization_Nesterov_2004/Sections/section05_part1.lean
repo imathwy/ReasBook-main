@@ -39,7 +39,7 @@ lemma exists_dual_norming_functional_DualNormDef {E : Type*} [NormedAddCommGroup
     [NormedSpace ℝ E] [FiniteDimensional ℝ E] (h : E) (hh : h ≠ 0) :
     ∃ s0 : Module.Dual ℝ E, DualNormDef s0 ≤ 1 ∧ DualPairing s0 h = ‖h‖ := by
   classical
-  obtain ⟨g, hg_norm, hg_eval⟩ := exists_dual_vector ℝ h hh
+  obtain ⟨g, hg_norm, hg_eval⟩ := exists_dual_vector ℝ h (norm_ne_zero_iff.mpr hh)
   let s0 : Module.Dual ℝ E := g.toLinearMap
   have hpair : DualPairing s0 h = ‖h‖ := by
     simpa [DualPairing, s0] using hg_eval
