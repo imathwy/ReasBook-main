@@ -1,8 +1,21 @@
--- This module serves as the root of the `ReasBook` library.
--- Import modules here that should be built as part of the library.
-import Books.Analysis2_Tao_2022.Book
--- import Books.ConvexAnalysis_Rockafellar_1970.Book
--- import Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Book
-
--- import Papers.SmoothMinimization_Nesterov_2004.Paper
--- import Papers.OnSomeLocalRings_Maassaran_2025.Paper
+-- Root module for ReasBook
+import Mathlib
+import AlgebraicTopology_May_1999.Book
+import Analysis2_Tao_2022.Book
+import CombinatorialGroupTheory_Magnus_2004.Book
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Book
+import ConvexAnalysis_Rockafellar_1970.Book
+import DifferentialForms_Cartan_1970.Book
+import FirstOrderMethodsOptimization_Beck_2017.Book
+import IntegerProgramming_Conforti_2014.Book
+import IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Book
+import LecturesConvexOptimization_Nesterov_2018.Book
+import LinearRepresentations_Serre_1977.Book
+import OnSomeLocalRings_Maassaran_2025.Book
+import ProbabilityTheory_Klenke_2020.Book
+import RiemannSurfaces_Forster_1981.Book
+import SmoothManifolds_Lee_2012.Book
+import SmoothMinimization_Nesterov_2004.Book
+import StacksProject_2024.Book
+import chapter1_reference_format.Book
+import stacks_proof.Book
