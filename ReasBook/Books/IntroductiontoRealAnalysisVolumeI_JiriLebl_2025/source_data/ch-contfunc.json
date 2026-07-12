@@ -1,0 +1,1243 @@
+[
+  {
+    "index": 1,
+    "label": "Definition 3.1.1",
+    "env": "defn",
+    "number_components": [
+      3,
+      1,
+      1
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits of functions",
+      "subsection": "Cluster points",
+      "chapter_number": 3,
+      "section_number": "3.1"
+    },
+    "content": "\\begin{defn}\nLet $S \\subset \\R$ be a set.  A number $x \\in \\R$ is called\na \\emph{\\myindex{cluster point}} of $S$\nif for every $\\epsilon > 0$, the set $(x-\\epsilon,x+\\epsilon) \\cap S\n\\setminus \\{ x \\}$ is not empty.\n\\end{defn}"
+  },
+  {
+    "index": 2,
+    "label": "Proposition 3.1.2",
+    "env": "prop",
+    "number_components": [
+      3,
+      1,
+      2
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits of functions",
+      "subsection": "Cluster points",
+      "chapter_number": 3,
+      "section_number": "3.1"
+    },
+    "content": "\\begin{prop}\nLet $S \\subset \\R$.  Then $x \\in \\R$ is a cluster point of $S$\nif and only if\nthere exists a convergent sequence of numbers $\\{ x_n \\}_{n=1}^\\infty$ such that\n$x_n \\not= x$ and $x_n \\in S$ for all $n$, and $\\lim\\limits_{n\\to\\infty} x_n = x$.\n\\end{prop}"
+  },
+  {
+    "index": 3,
+    "label": "Definition 3.1.3",
+    "env": "defn",
+    "number_components": [
+      3,
+      1,
+      3
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits of functions",
+      "subsection": "Limits of functions",
+      "chapter_number": 3,
+      "section_number": "3.1"
+    },
+    "content": "\\begin{defn}\n\\index{limit!of a function}%\nLet $f \\colon S \\to \\R$ be a function and $c$ a cluster point of\n$S \\subset \\R$.\nSuppose there exists an $L \\in \\R$ and for every $\\epsilon > 0$,\nthere exists a $\\delta > 0$ such that whenever $x \\in S \\setminus \\{ c \\}$\nand $\\sabs{x - c} < \\delta$, we have\n\\begin{equation*}\n\\babs{f(x) - L} < \\epsilon .\n\\end{equation*}\nWe then say $f(x)$ \\emph{converges}\\index{converges!function} to $L$ as $x$ goes\nto $c$, and we write\n\\glsadd{not:limitasarrows}%\n\\begin{equation*}\nf(x) \\to L \\quad\\text{as}\\quad x \\to c .\n\\end{equation*}\nWe say $L$ is a \\emph{limit} of $f(x)$ as $x$\ngoes to $c$, and if $L$ is unique (it is), we write\n\\glsadd{not:limfunc}%\n\\begin{equation*}\n\\lim_{x \\to c} f(x) \\coloneqq L .\n\\end{equation*}\nIf no such $L$ exists, then we say that the limit does not exist or\nthat $f$ \\emph{\\myindex{diverges}} at $c$.\n\\end{defn}"
+  },
+  {
+    "index": 4,
+    "label": "Proposition 3.1.4",
+    "env": "prop",
+    "number_components": [
+      3,
+      1,
+      4
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits of functions",
+      "subsection": "Limits of functions",
+      "chapter_number": 3,
+      "section_number": "3.1"
+    },
+    "content": "\\begin{prop}\nLet $c$ be a cluster point of $S \\subset \\R$ and let $f \\colon S \\to \\R$\nbe a function such that $f(x)$ converges as $x$ goes to $c$.  Then\nthe limit of $f(x)$ as $x$ goes to $c$ is unique.\n\\end{prop}"
+  },
+  {
+    "index": 5,
+    "label": "Example 3.1.5",
+    "env": "example",
+    "number_components": [
+      3,
+      1,
+      5
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits of functions",
+      "subsection": "Limits of functions",
+      "chapter_number": 3,
+      "section_number": "3.1"
+    },
+    "content": "\\begin{example}\nConsider $f \\colon \\R \\to \\R$ defined by $f(x) \\coloneqq x^2$.  Then\nfor any $c \\in \\R$,\n\\begin{equation*}\n\\lim_{x\\to c} f(x) = \\lim_{x\\to c} x^2 = c^2 .\n\\end{equation*}\n\nProof: Let $c \\in \\R$ be fixed, and suppose $\\epsilon > 0$ is given.  Write\n\\begin{equation*}\n\\delta \\coloneqq \\min \\left\\{ 1 , \\, \\frac{\\epsilon}{2\\sabs{c}+1} \\right\\} .\n\\end{equation*}\nTake $x \\not= c$ such that $\\sabs{x-c} < \\delta$.  In particular,\n$\\sabs{x-c} < 1$.  By reverse triangle inequality,\n\\begin{equation*}\n\\sabs{x}-\\sabs{c} \\leq \\sabs{x-c} < 1 .\n\\end{equation*}\nAdding $2\\sabs{c}$ to both sides, we obtain\n$\\sabs{x} + \\sabs{c} < 2\\sabs{c} + 1$.  Estimate\n\\begin{equation*}\n\\begin{split}\n\\babs{f(x) - c^2} &= \\sabs{x^2-c^2} \\\\\n&= \\babs{(x+c)(x-c)} \\\\\n&= \\sabs{x+c}\\sabs{x-c} \\\\\n&\\leq \\bigl(\\sabs{x}+\\sabs{c}\\bigr)\\sabs{x-c} \\\\\n&< \\bigl(2\\sabs{c}+1\\bigr)\\sabs{x-c} \\\\\n&< \\bigl(2\\sabs{c}+1\\bigr)\\frac{\\epsilon}{2\\sabs{c}+1} = \\epsilon .\n\\end{split}\n\\end{equation*}\n\\end{example}"
+  },
+  {
+    "index": 6,
+    "label": "Example 3.1.6",
+    "env": "example",
+    "number_components": [
+      3,
+      1,
+      6
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits of functions",
+      "subsection": "Limits of functions",
+      "chapter_number": 3,
+      "section_number": "3.1"
+    },
+    "content": "\\begin{example}\nDefine $f \\colon [0,1) \\to \\R$ by\n\\begin{equation*}\nf(x) \\coloneqq \n\\begin{cases}\nx & \\text{if } x > 0 , \\\\\n1 & \\text{if } x = 0 .\n\\end{cases}\n\\end{equation*}\nThen\n$\\lim\\limits_{x\\to 0} f(x) = 0$,\neven though $f(0) = 1$.  See \\figureref{fig:limvaldiff}.\n\\begin{myfigureht}\n\\includegraphics{figures/limvaldiff}\n\\caption{Function with a different limit and value at $0$.\\label{fig:limvaldiff}}\n\\end{myfigureht}\n\nProof:  Let $\\epsilon > 0$ be given.  Let $\\delta \\coloneqq \\epsilon$.\nFor $x \\in [0,1)$, $x \\not= 0$, and $\\sabs{x-0} < \\delta$, we get\n\\begin{equation*}\n\\babs{f(x) - 0} = \\sabs{x} < \\delta = \\epsilon .\n\\end{equation*}\n\\end{example}"
+  },
+  {
+    "index": 7,
+    "label": "Lemma 3.1.7",
+    "env": "lemma",
+    "number_components": [
+      3,
+      1,
+      7
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits of functions",
+      "subsection": "Sequential limits",
+      "chapter_number": 3,
+      "section_number": "3.1"
+    },
+    "content": "\\begin{lemma}\\label{seqflimit:lemma}\nLet $S \\subset \\R$, let $c$ be a cluster point of $S$, let $f \\colon S \\to\n\\R$ be a function, and let $L \\in \\R$.\n\nThen\n$f(x) \\to L$ as $x \\to c$ if and only if for every sequence\n$\\{ x_n \\}_{n=1}^\\infty$\nsuch that $x_n \\in S \\setminus \\{c\\}$ for all $n$,\nand such that $\\lim_{n\\to\\infty} x_n = c$,\nwe have that the sequence $\\bigl\\{ f(x_n) \\bigr\\}_{n=1}^\\infty$ converges to $L$.\n\\end{lemma}"
+  },
+  {
+    "index": 8,
+    "label": "Corollary 3.1.9",
+    "env": "cor",
+    "number_components": [
+      3,
+      1,
+      9
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits of functions",
+      "subsection": "Sequential limits",
+      "chapter_number": 3,
+      "section_number": "3.1"
+    },
+    "content": "\\begin{cor}\nLet $S \\subset \\R$ and let $c$ be a cluster point of $S$.  \nSuppose $f \\colon S \\to\n\\R$ and $g \\colon S \\to \\R$ are functions\nsuch that\nthe limits of $f(x)$ and $g(x)$ as $x$ goes to $c$ both exist,\nand\n\\begin{equation*}\nf(x) \\leq g(x) \\qquad \\text{for all } x \\in S \\setminus \\{ c \\}.\n\\end{equation*}\nThen\n\\begin{equation*}\n\\lim_{x\\to c} f(x) \\leq \\lim_{x\\to c} g(x) .\n\\end{equation*}\n\\end{cor}"
+  },
+  {
+    "index": 9,
+    "label": "Definition 3.1.14",
+    "env": "defn",
+    "number_components": [
+      3,
+      1,
+      14
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits of functions",
+      "subsection": "Limits of restrictions and one-sided limits",
+      "chapter_number": 3,
+      "section_number": "3.1"
+    },
+    "content": "\\begin{defn}\nLet $f \\colon S \\to \\R$ be a function and $A \\subset S$.  Define the\nfunction $f|_A \\colon A \\to \\R$ by\n\\begin{equation*}\nf|_A (x) \\coloneqq f(x)  \\qquad \\text{for } x \\in A.\n\\end{equation*}\nWe call $f|_A$ the \\emph{\\myindex{restriction}} of $f$ to $A$.\n\\end{defn}"
+  },
+  {
+    "index": 10,
+    "label": "Definition 3.1.16",
+    "env": "defn",
+    "number_components": [
+      3,
+      1,
+      16
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits of functions",
+      "subsection": "Limits of restrictions and one-sided limits",
+      "chapter_number": 3,
+      "section_number": "3.1"
+    },
+    "content": "\\begin{defn} \\label{defn:onesidedlimits}\nLet $f \\colon S \\to \\R$ be function and let $c \\in \\R$.  If\n$c$ is a cluster point of\n$S \\cap (c,\\infty)$\nand the limit\nof the restriction of $f$ to $S \\cap (c,\\infty)$ \n as $x \\to c$ exists, define\n\\glsadd{not:onesidedlim}\n\\begin{equation*}\n\\lim_{x \\to c^+} f(x) \\coloneqq \\lim_{x\\to c} f|_{S \\cap (c,\\infty)}(x) .\n\\end{equation*}\nSimilarly, if $c$ is a cluster point of \n$S \\cap (-\\infty,c)$ and the limit of the restriction as $x \\to c$\nexists, define\n\\begin{equation*}\n\\lim_{x \\to c^-} f(x) \\coloneqq \\lim_{x\\to c} f|_{S \\cap (-\\infty,c)}(x) .\n\\end{equation*}\n\\end{defn}"
+  },
+  {
+    "index": 11,
+    "label": "Corollary 3.1.10",
+    "env": "cor",
+    "number_components": [
+      3,
+      1,
+      10
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits of functions",
+      "subsection": "Sequential limits",
+      "chapter_number": 3,
+      "section_number": "3.1"
+    },
+    "content": "\\begin{cor} \\label{fconstineq:cor}\nLet $S \\subset \\R$ and let $c$ be a cluster point of $S$.  Suppose $f \\colon S \\to\n\\R$ is a function such that the limit of $f(x)$ as $x$ goes to $c$\nexists.\nSuppose there are two real numbers $a$ and $b$ such that\n\\begin{equation*}\na \\leq f(x) \\leq b \\qquad \\text{for all } x \\in S \\setminus \\{ c \\}.\n\\end{equation*}\nThen\n\\begin{equation*}\na \\leq \\lim_{x\\to c} f(x) \\leq b .\n\\end{equation*}\n\\end{cor}"
+  },
+  {
+    "index": 12,
+    "label": "Corollary 3.1.11",
+    "env": "cor",
+    "number_components": [
+      3,
+      1,
+      11
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits of functions",
+      "subsection": "Sequential limits",
+      "chapter_number": 3,
+      "section_number": "3.1"
+    },
+    "content": "\\begin{cor} \\label{fsqueeze:cor}\nLet $S \\subset \\R$ and let $c$ be a cluster point of $S$.\nSuppose $f \\colon S \\to \\R$,\n$g \\colon S \\to \\R$, and $h \\colon S \\to \\R$ are functions such that\n\\begin{equation*}\nf(x) \\leq g(x) \\leq h(x) \\qquad \\text{for all } x \\in S \\setminus \\{ c \\}.\n\\end{equation*}\nSuppose the limits of $f(x)$ and $h(x)$ as $x$ goes to $c$ both exist, and\n\\begin{equation*}\n\\lim_{x\\to c} f(x) = \\lim_{x\\to c} h(x) .\n\\end{equation*}\nThen the limit of $g(x)$ as $x$ goes to $c$ exists and\n\\begin{equation*}\n\\lim_{x\\to c} g(x) =\n\\lim_{x\\to c} f(x) = \\lim_{x\\to c} h(x) .\n\\end{equation*}\n\\end{cor}"
+  },
+  {
+    "index": 13,
+    "label": "Corollary 3.1.13",
+    "env": "cor",
+    "number_components": [
+      3,
+      1,
+      13
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits of functions",
+      "subsection": "Sequential limits",
+      "chapter_number": 3,
+      "section_number": "3.1"
+    },
+    "content": "\\begin{cor} \\label{fabs:cor}\nLet $S \\subset \\R$ and let $c$ be a cluster point of $S$.\nSuppose $f \\colon S \\to \\R$ is a function such that the limit of $f(x)$ as $x$ goes to $c$\nexists.\nThen\n\\begin{equation*}\n\\lim_{x\\to c} \\babs{f(x)} =\n\\abs{\\lim_{x\\to c} f(x)}.\n\\end{equation*}\n\\end{cor}"
+  },
+  {
+    "index": 14,
+    "label": "Definition 3.2.1",
+    "env": "defn",
+    "number_components": [
+      3,
+      2,
+      1
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Continuous functions",
+      "subsection": "Definition and basic properties",
+      "chapter_number": 3,
+      "section_number": "3.2"
+    },
+    "content": "\\begin{defn}\nSuppose $S \\subset \\R$ and $c \\in S$.\nWe say $f \\colon S \\to \\R$\nis \\emph{continuous at $c$}\\index{continuous at $c$}\nif for every $\\epsilon > 0$\nthere is a $\\delta > 0$ such that whenever $x \\in S$ and $\\sabs{x-c} <\n\\delta$, we have\n$\\babs{f(x)-f(c)} < \\epsilon$.\n\n%\\medskip\n\nWhen $f \\colon S \\to \\R$ is continuous at all $c \\in S$, then we simply say\n$f$ is a \\emph{\\myindex{continuous function}}\\index{function!continuous}.\n\\end{defn}"
+  },
+  {
+    "index": 15,
+    "label": "Example 3.2.3",
+    "env": "example",
+    "number_components": [
+      3,
+      2,
+      3
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Continuous functions",
+      "subsection": "Definition and basic properties",
+      "chapter_number": 3,
+      "section_number": "3.2"
+    },
+    "content": "\\begin{example}\nThe function $f \\colon (0,\\infty) \\to \\R$\ndefined by $f(x) \\coloneqq \\nicefrac{1}{x}$ is continuous.\n\nProof: Fix $c \\in (0,\\infty)$.  \nLet $\\{ x_n \\}_{n=1}^\\infty$ be a sequence in $(0,\\infty)$ such that\n$\\lim_{n\\to\\infty} x_n = c$.  Then\n\\begin{equation*}\nf(c) = \\frac{1}{c}\n=\n\\frac{1}{\\lim_{n\\to\\infty} x_n}\n=\n\\lim_{n \\to \\infty} \\frac{1}{x_n}\n=\n\\lim_{n \\to \\infty} f(x_n) .\n\\end{equation*}\nThus $f$ is continuous at $c$.  As $f$ is continuous at all $c \\in\n(0,\\infty)$, $f$ is continuous.\n\\end{example}"
+  },
+  {
+    "index": 16,
+    "label": "Proposition 3.2.4",
+    "env": "prop",
+    "number_components": [
+      3,
+      2,
+      4
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Continuous functions",
+      "subsection": "Definition and basic properties",
+      "chapter_number": 3,
+      "section_number": "3.2"
+    },
+    "content": "\\begin{prop}\nLet $f \\colon \\R \\to \\R$ be a \\emph{\\myindex{polynomial}}.  That is,\n\\begin{equation*}\nf(x) = a_d x^d + a_{d-1} x^{d-1} + \\cdots + a_1 x + a_0 ,\n\\end{equation*}\nfor some constants $a_0, a_1, \\ldots, a_d$.\nThen $f$ is continuous.\n\\end{prop}"
+  },
+  {
+    "index": 17,
+    "label": "Corollary 3.1.12",
+    "env": "cor",
+    "number_components": [
+      3,
+      1,
+      12
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits of functions",
+      "subsection": "Sequential limits",
+      "chapter_number": 3,
+      "section_number": "3.1"
+    },
+    "content": "\\begin{cor} \\label{falg:cor}\nLet $S \\subset \\R$ and let $c$ be a cluster point of $S$.  \nSuppose $f \\colon S \\to \\R$ and\n$g \\colon S \\to \\R$ are functions\nsuch that \nthe limits of $f(x)$ and $g(x)$ as $x$ goes to $c$ both exist.\nThen\n\\begin{enumerate}[(i)]\n\\item\n$\\displaystyle\n\\lim_{x\\to c} \\bigl(f(x)+g(x)\\bigr) = \\left(\\lim_{x\\to c} f(x)\\right) + \n\\left(\\lim_{x\\to c} g(x)\\right) .\n$\n\\item\n$\\displaystyle\n\\lim_{x\\to c} \\bigl(f(x)-g(x)\\bigr) = \\left(\\lim_{x\\to c} f(x)\\right) -\n\\left(\\lim_{x\\to c} g(x)\\right) .\n$\n\\item\n$\\displaystyle\n\\lim_{x\\to c} \\bigl(f(x)g(x)\\bigr) = \\left(\\lim_{x\\to c} f(x)\\right)\n\\left(\\lim_{x\\to c} g(x)\\right) .\n$\n\\item \\label{falg:cor:iv} If\n$\\displaystyle \\lim_{x\\to c} g(x) \\not= 0$\nand $g(x) \\not= 0$ for all $x \\in S \\setminus \\{ c \\}$, then\n\\begin{equation*}\n\\lim_{x\\to c} \\frac{f(x)}{g(x)} =\n\\frac{\\lim_{x\\to c} f(x)}{\\lim_{x\\to c} g(x)} .\n\\end{equation*}\n\\end{enumerate}\n\\end{cor}"
+  },
+  {
+    "index": 18,
+    "label": "Proposition 3.2.7",
+    "env": "prop",
+    "number_components": [
+      3,
+      2,
+      7
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Continuous functions",
+      "subsection": "Composition of continuous functions",
+      "chapter_number": 3,
+      "section_number": "3.2"
+    },
+    "content": "\\begin{prop} \\label{prop:compositioncont}\nLet $A, B \\subset \\R$ and $f \\colon B \\to \\R$ and $g \\colon A \\to B$ be\nfunctions.  If $g$ is continuous at $c \\in A$ and\n$f$ is continuous at $g(c)$, then $f \\circ g \\colon A \\to \\R$ is continuous\nat $c$.\n\\end{prop}"
+  },
+  {
+    "index": 19,
+    "label": "Example 3.2.8",
+    "env": "example",
+    "number_components": [
+      3,
+      2,
+      8
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Continuous functions",
+      "subsection": "Composition of continuous functions",
+      "chapter_number": 3,
+      "section_number": "3.2"
+    },
+    "content": "\\begin{example}\nClaim: \\emph{${\\bigl(\\sin(\\nicefrac{1}{x})\\bigr)}^2$ is a continuous\nfunction on $(0,\\infty)$.}\n\nProof: The function $\\nicefrac{1}{x}$ is continuous on\n$(0,\\infty)$ and $\\sin(x)$ is continuous on $(0,\\infty)$ (actually\non $\\R$, but $(0,\\infty)$ is the range for $\\nicefrac{1}{x}$).\nHence the composition $\\sin(\\nicefrac{1}{x})$ is continuous.  Also,\n$x^2$ is continuous on the interval $[-1,1]$ (the range of $\\sin$).  Thus\nthe composition\n${\\bigl(\\sin(\\nicefrac{1}{x})\\bigr)}^2$ is continuous on $(0,\\infty)$.\n\\end{example}"
+  },
+  {
+    "index": 20,
+    "label": "Proposition 3.2.2",
+    "env": "prop",
+    "number_components": [
+      3,
+      2,
+      2
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Continuous functions",
+      "subsection": "Definition and basic properties",
+      "chapter_number": 3,
+      "section_number": "3.2"
+    },
+    "content": "\\begin{prop} \\label{contbasic:prop}\nConsider a function $f \\colon S \\to \\R$ defined on a set  $S \\subset \\R$\nand let $c \\in S$.\nThen:\n%\\begin{enumerate}[(i),itemsep=0.5\\itemsep,parsep=0.5\\parsep,topsep=0.5\\topsep,partopsep=0.5\\partopsep]\n\\begin{enumerate}[(i)]\n\\item \\label{contbasic:prop:i}\nIf $c$ is not a cluster point of $S$, then $f$ is continuous at $c$.\n\\item \\label{contbasic:prop:ii}\nIf $c$ is a cluster point of $S$, then $f$ is continuous at $c$\nif and only if the limit of $f(x)$ as $x \\to c$ exists and\n\\begin{equation*}\n\\lim_{x\\to c} f(x) = f(c) .\n\\end{equation*}\n\\item \\label{contbasic:prop:iii}\nThe function $f$ is continuous at $c$ if and only if for every sequence\n$\\{ x_n \\}_{n=1}^\\infty$\nwhere $x_n \\in S$ and $\\lim\\limits_{n\\to\\infty} x_n = c$, the sequence\n$\\bigl\\{ f(x_n) \\bigr\\}_{n=1}^\\infty$ converges\nto $f(c)$.\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 21,
+    "label": "Proposition 3.2.9",
+    "env": "prop",
+    "number_components": [
+      3,
+      2,
+      9
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Continuous functions",
+      "subsection": "Discontinuous functions",
+      "chapter_number": 3,
+      "section_number": "3.2"
+    },
+    "content": "\\begin{prop}\nLet $f \\colon S \\to \\R$ be a function and $c \\in S$.  Suppose \nthere exists a sequence $\\{ x_n \\}_{n=1}^\\infty$, $x_n \\in S$ for all $n$,\nand $\\lim_{n\\to\\infty} x_n = c$\nsuch that $\\bigl\\{ f(x_n) \\bigr\\}_{n=1}^\\infty$\ndoes not converge to $f(c)$.\nThen $f$ is discontinuous at $c$.\n\\end{prop}"
+  },
+  {
+    "index": 22,
+    "label": "Example 3.2.11",
+    "env": "example",
+    "number_components": [
+      3,
+      2,
+      11
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Continuous functions",
+      "subsection": "Discontinuous functions",
+      "chapter_number": 3,
+      "section_number": "3.2"
+    },
+    "content": "\\begin{example}\nFor an extreme example, take the so-called\n\\emph{\\myindex{Dirichlet function}}\\footnote{Named after the German\nmathematician\n\\href{https://en.wikipedia.org/wiki/Peter_Gustav_Lejeune_Dirichlet}{Johann Peter Gustav Lejeune\nDirichlet}\n(1805--1859).}.\n\\begin{equation*}\nf(x) \\coloneqq\n\\begin{cases}\n1 & \\text{if } x \\text{ is rational,} \\\\\n0 & \\text{if } x \\text{ is irrational.}\n\\end{cases}\n\\avoidbreak\n\\end{equation*}\nThe function $f$ is discontinuous at all $c \\in \\R$.\n\nProof:\nIf $c$ is rational, take a sequence $\\{ x_n \\}_{n=1}^\\infty$\nof irrational numbers such that $\\lim_{n\\to\\infty} x_n = c$ (why can we?).  Then $f(x_n) = 0$\nand so $\\lim_{n\\to\\infty} f(x_n) = 0$, but $f(c) = 1$.\nIf $c$ is irrational, take a sequence of rational numbers\n$\\{ x_n \\}_{n=1}^\\infty$\nthat converges to $c$ (why can we?).  Then $\\lim_{n\\to\\infty} f(x_n) = 1$, but $f(c) = 0$.\n\\end{example}"
+  },
+  {
+    "index": 23,
+    "label": "Example 3.2.12",
+    "env": "example",
+    "number_components": [
+      3,
+      2,
+      12
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Continuous functions",
+      "subsection": "Discontinuous functions",
+      "chapter_number": 3,
+      "section_number": "3.2"
+    },
+    "content": "\\begin{example} \\label{popcornfunction:example}\nDefine $f \\colon (0,1) \\to \\R$ as\n\\begin{equation*}\nf(x) \\coloneqq \n\\begin{cases}\n\\nicefrac{1}{k} & \\text{if } x=\\nicefrac{m}{k}, \\text{ where } m,k \\in \\N\n\\text{ and have no common divisors (lowest terms),} \\\\\n0 & \\text{if } x \\text{ is irrational.}\n\\end{cases}\n\\end{equation*}\nSee the graph of $f$\nin \\figureref{popcornfig}.\nWe claim that\n$f$ is continuous at all irrational $c$ and \ndiscontinuous at all rational $c$.\n\\begin{myfigureht}\n\\includegraphics{figures/popcornfig}\n\\caption{Graph of the \\myquote{popcorn function.}\\label{popcornfig}}\n\\end{myfigureht}\n\nProof:\nLet $c = \\nicefrac{m}{k}$ be rational and in lowest terms.  Take a sequence of\nirrational numbers $\\{ x_n \\}_{n=1}^\\infty$ such that $\\lim_{n\\to\\infty} x_n = c$.  Then\n$\\lim_{n\\to\\infty} f(x_n) = \\lim_{n\\to\\infty} 0 = 0$, but $f(c) = \\nicefrac{1}{k} \\not= 0$.  So $f$\nis discontinuous at $c$.\n\nNow let $c$ be irrational, so $f(c) = 0$.  Take a sequence \n$\\{ x_n \\}_{n=1}^\\infty$ in $(0,1)$ such that $\\lim_{n\\to\\infty} x_n = c$.\nGiven $\\epsilon > 0$, find $K \\in \\N$ such\nthat $\\nicefrac{1}{K} < \\epsilon$\nby the \\hyperref[thm:arch:i]{Archimedean property}.\nIf $\\nicefrac{m}{k} \\in (0,1)$ and $m,k \\in \\N$, then $0 < m < k$.\nSo there are only finitely many rational numbers in $(0,1)$\nwhose denominator $k$ in lowest terms is less than $K$.\nAs $\\lim_{n\\to\\infty} x_n = c$, every number not equal to $c$ can appear at most\nfinitely many times in $\\{ x_n \\}_{n=1}^\\infty$.\nHence,\nthere is an $M$ such that for $n \\geq M$, all the numbers $x_n$\nthat are rational\nhave a denominator larger than or equal to $K$.  Thus for $n \\geq M$,\n\\begin{equation*}\n\\babs{f(x_n) - 0} = f(x_n) \\leq \\nicefrac{1}{K} < \\epsilon .\n\\end{equation*}\nTherefore, $f$ is continuous at irrational $c$.\n\\end{example}"
+  },
+  {
+    "index": 24,
+    "label": "Example 3.2.13",
+    "env": "example",
+    "number_components": [
+      3,
+      2,
+      13
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Continuous functions",
+      "subsection": "Discontinuous functions",
+      "chapter_number": 3,
+      "section_number": "3.2"
+    },
+    "content": "\\begin{example} \\label{example:removablediscont}\nDefine\n$g \\colon \\R \\to \\R$ by $g(x) \\coloneqq 0$ if $x \\not= 0$ and\n$g(0) \\coloneqq 1$.  Then $g$ is not continuous at zero, but continuous everywhere else (why?).\nThe point $x=0$ is called a \\emph{\\myindex{removable discontinuity}}.  That\nis because if we would change the definition of $g$, by insisting that\n$g(0)$ be $0$, we would obtain a continuous function.  On the other hand,\nlet $f$ be the function of \\exampleref{example:jumpdiscont}.\nThen $f$ does not have a\nremovable discontinuity at $0$.  No matter how we would define $f(0)$ the function\nwould still fail to be continuous.  The difference is that \n$\\lim_{x\\to 0} g(x)$ exists while\n$\\lim_{x\\to 0} f(x)$ does not.\n\nWe stay with this example to show another phenomenon.\nLet $A \\coloneqq \\{ 0 \\}$, then $g|_A$ is continuous (why?), while $g$ is not continuous on $A$.\nSimilarly, if $B \\coloneqq \\R \\setminus \\{0 \\}$, then $g|_B$ is also continuous,\nand $g$ is in fact continuous on $B$.\n\\end{example}"
+  },
+  {
+    "index": 25,
+    "label": "Example 3.2.10",
+    "env": "example",
+    "number_components": [
+      3,
+      2,
+      10
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Continuous functions",
+      "subsection": "Discontinuous functions",
+      "chapter_number": 3,
+      "section_number": "3.2"
+    },
+    "content": "\\begin{example} \\label{example:jumpdiscont}\nThe function $f \\colon \\R \\to \\R$ defined by\n\\begin{equation*}\nf(x) \\coloneqq \n\\begin{cases}\n-1 & \\text{if } x < 0, \\\\\n1 & \\text{if } x \\geq 0\n\\end{cases}\n\\end{equation*}\nis not continuous at 0.\n\nProof: Consider $\\{ \\nicefrac{-1}{n} \\}_{n=1}^\\infty$, which converges to 0.  Then\n$f(\\nicefrac{-1}{n}) = -1$ for every $n$,\nand so\n$\\lim_{n\\to\\infty} f(\\nicefrac{-1}{n}) = -1$, but $f(0) = 1$.  Thus the function is\nnot continuous at 0.  See\n\\figureref{fig:jumpdiscont}.\n\n\\begin{myfigureht}\n\\includegraphics{figures/jumpdiscont}\n\\caption{Jump discontinuity.  The values of\n$f(\\nicefrac{-1}{n})$ and $f(0)$ are marked as black dots.\\label{fig:jumpdiscont}}\n\\end{myfigureht}\n\nNotice that $f(\\nicefrac{1}{n}) = 1$ for all $n \\in \\N$.\nHence, $\\lim_{n\\to\\infty} f(\\nicefrac{1}{n}) = f(0) = 1$.  So\n$\\bigl\\{ f(x_n) \\bigr\\}_{n=1}^\\infty$ may converge to $f(0)$\nfor some specific\nsequence $\\{ x_n \\}_{n=1}^\\infty$ going to 0,\ndespite the function being discontinuous at 0.\n\nFinally, consider $f\\Bigl(\\frac{{(-1)}^n}{n}\\Bigr) = {(-1)}^n$.\nThis sequence diverges.\n\\end{example}"
+  },
+  {
+    "index": 26,
+    "label": "Proposition 3.2.5",
+    "env": "prop",
+    "number_components": [
+      3,
+      2,
+      5
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Continuous functions",
+      "subsection": "Definition and basic properties",
+      "chapter_number": 3,
+      "section_number": "3.2"
+    },
+    "content": "\\begin{prop} \\label{contalg:prop}\nLet $f \\colon S \\to \\R$ and $g \\colon S \\to \\R$ be functions\ncontinuous at $c \\in S$.\n\\begin{enumerate}[(i)]\n\\item The function $h \\colon S \\to \\R$ defined by\n$h(x) \\coloneqq f(x)+g(x)$ is continuous at $c$.\n\\item The function $h \\colon S \\to \\R$ defined by\n$h(x) \\coloneqq f(x)-g(x)$ is continuous at $c$.\n\\item The function $h \\colon S \\to \\R$ defined by\n$h(x) \\coloneqq f(x)g(x)$ is continuous at $c$.\n\\item If $g(x)\\not=0$ for all $x \\in S$, the function $h \\colon S \\to \\R$\ngiven by $h(x) \\coloneqq \\frac{f(x)}{g(x)}$ is continuous at $c$.\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 27,
+    "label": "Lemma 3.3.1",
+    "env": "lemma",
+    "number_components": [
+      3,
+      3,
+      1
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Extreme and intermediate value theorems",
+      "subsection": "Min-max or extreme value theorem",
+      "chapter_number": 3,
+      "section_number": "3.3"
+    },
+    "content": "\\begin{lemma}\nA continuous function $f \\colon [a,b] \\to \\R$ is bounded.\n\\end{lemma}"
+  },
+  {
+    "index": 28,
+    "label": "Theorem 3.3.2",
+    "env": "thm",
+    "number_components": [
+      3,
+      3,
+      2
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Extreme and intermediate value theorems",
+      "subsection": "Min-max or extreme value theorem",
+      "chapter_number": 3,
+      "section_number": "3.3"
+    },
+    "content": "\\begin{thm}[Minimum-maximum theorem / Extreme value theorem]\n\\index{minimum-maximum theorem}%\n\\index{maximum-minimum theorem}%\n\\index{extreme value theorem}%\nA continuous function $f \\colon [a,b] \\to \\R$\nachieves both an absolute minimum and an absolute maximum on $[a,b]$.\n\\end{thm}"
+  },
+  {
+    "index": 29,
+    "label": "Example 3.3.3",
+    "env": "example",
+    "number_components": [
+      3,
+      3,
+      3
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Extreme and intermediate value theorems",
+      "subsection": "Min-max or extreme value theorem",
+      "chapter_number": 3,
+      "section_number": "3.3"
+    },
+    "content": "\\begin{example}\nThe function $f(x) \\coloneqq x^2+1$ defined on the interval $[-1,2]$ achieves a minimum\nat $x=0$ when $f(0) = 1$.  It achieves a maximum at $x=2$ where $f(2) = 5$.\nDo note that the domain of definition matters.  If we instead took the domain\nto be $[-10,10]$, then $f$ would no longer have a maximum at $x=2$.\nInstead,\nthe maximum would be achieved at either $x=10$ or $x=-10$.\n\\end{example}"
+  },
+  {
+    "index": 30,
+    "label": "Example 3.3.4",
+    "env": "example",
+    "number_components": [
+      3,
+      3,
+      4
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Extreme and intermediate value theorems",
+      "subsection": "Min-max or extreme value theorem",
+      "chapter_number": 3,
+      "section_number": "3.3"
+    },
+    "content": "\\begin{example}\nThe function $f \\colon \\R \\to \\R$ defined by $f(x) \\coloneqq x$\nachieves neither a minimum, nor a maximum.  So it is important that\nwe are looking at a bounded interval.\n\\end{example}"
+  },
+  {
+    "index": 31,
+    "label": "Example 3.3.5",
+    "env": "example",
+    "number_components": [
+      3,
+      3,
+      5
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Extreme and intermediate value theorems",
+      "subsection": "Min-max or extreme value theorem",
+      "chapter_number": 3,
+      "section_number": "3.3"
+    },
+    "content": "\\begin{example}\nThe function $f \\colon (0,1) \\to \\R$ defined by $f(x) \\coloneqq \\nicefrac{1}{x}$\nachieves neither a minimum, nor a maximum.\nIt is continuous, but $(0,1)$ is not closed.\nThe values of the function are\nunbounded as we approach $0$.  Also as we approach $x=1$, the values of the\nfunction approach $1$, but $f(x) > 1$ for all $x \\in (0,1)$.  There is\nno $x \\in (0,1)$ such that $f(x) = 1$.  So it is important that\nwe are looking at a closed interval.\n\\end{example}"
+  },
+  {
+    "index": 32,
+    "label": "Example 3.3.6",
+    "env": "example",
+    "number_components": [
+      3,
+      3,
+      6
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Extreme and intermediate value theorems",
+      "subsection": "Min-max or extreme value theorem",
+      "chapter_number": 3,
+      "section_number": "3.3"
+    },
+    "content": "\\begin{example}\nContinuity is important.\nDefine $f \\colon [0,1] \\to \\R$ by \n$f(x) \\coloneqq \\nicefrac{1}{x}$ for $x > 0$ and let $f(0) \\coloneqq 0$.\nThe function does not achieve a maximum.  The domain $[0,1]$ is closed and\nbounded, but the problem is that\nthe function is not continuous at 0.\n\\end{example}"
+  },
+  {
+    "index": 33,
+    "label": "Lemma 3.3.7",
+    "env": "lemma",
+    "number_components": [
+      3,
+      3,
+      7
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Extreme and intermediate value theorems",
+      "subsection": "Bolzano's intermediate value theorem",
+      "chapter_number": 3,
+      "section_number": "3.3"
+    },
+    "content": "\\begin{lemma} \\label{IVT:lemma}\nLet $f \\colon [a,b] \\to \\R$ be a continuous function.\nSuppose $f(a) < 0$ and $f(b) > 0$. \nThen there exists a number $c \\in (a,b)$\nsuch that $f(c) = 0$.\n\\end{lemma}"
+  },
+  {
+    "index": 34,
+    "label": "Theorem 3.3.8",
+    "env": "thm",
+    "number_components": [
+      3,
+      3,
+      8
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Extreme and intermediate value theorems",
+      "subsection": "Bolzano's intermediate value theorem",
+      "chapter_number": 3,
+      "section_number": "3.3"
+    },
+    "content": "\\begin{thm}[Bolzano's intermediate value theorem] \\label{IVT:thm}\n\\index{Bolzano's theorem}\n\\index{Bolzano's intermediate value theorem}\n\\index{intermediate value theorem}\nLet $f \\colon [a,b] \\to \\R$ be a continuous function.\nSuppose $y \\in \\R$ is such that $f(a) < y < f(b)$\nor $f(a) > y > f(b)$.  Then there exists a $c \\in (a,b)$\nsuch that $f(c) = y$.\n\\end{thm}"
+  },
+  {
+    "index": 35,
+    "label": "Example 3.3.9",
+    "env": "example",
+    "number_components": [
+      3,
+      3,
+      9
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Extreme and intermediate value theorems",
+      "subsection": "Bolzano's intermediate value theorem",
+      "chapter_number": 3,
+      "section_number": "3.3"
+    },
+    "content": "\\begin{example}[Bisection method] %\\index{bisection method}\nThe polynomial $f(x) \\coloneqq x^3-2x^2+x-1$ has a real root in $(1,2)$.  We simply\nnotice that $f(1) = -1$ and $f(2) = 1$.  Hence there must exist a point $c\n\\in (1,2)$ such that $f(c) = 0$.  To find a better approximation of\nthe root we follow the proof of \\lemmaref{IVT:lemma}.  \nWe look at 1.5 and find that $f(1.5) = -0.625$.  Therefore,\nthere is a root of the polynomial in $(1.5,2)$.  Next we look at 1.75\nand note that $f(1.75) \\approx -0.016$.  Hence there is a root of $f$ in\n$(1.75,2)$.  Next we look at 1.875 and find that $f(1.875) \\approx 0.44$,\nthus there is a root in $(1.75,1.875)$.  We follow this procedure until we gain\nsufficient precision.  In fact, the root is at $c \\approx 1.7549$.\n\\end{example}"
+  },
+  {
+    "index": 36,
+    "label": "Proposition 3.3.10",
+    "env": "prop",
+    "number_components": [
+      3,
+      3,
+      10
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Extreme and intermediate value theorems",
+      "subsection": "Bolzano's intermediate value theorem",
+      "chapter_number": 3,
+      "section_number": "3.3"
+    },
+    "content": "\\begin{prop}\nLet $f(x)$ be a polynomial of odd degree.  Then $f$ has a real root.\n\\end{prop}"
+  },
+  {
+    "index": 37,
+    "label": "Example 3.3.11",
+    "env": "example",
+    "number_components": [
+      3,
+      3,
+      11
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Extreme and intermediate value theorems",
+      "subsection": "Bolzano's intermediate value theorem",
+      "chapter_number": 3,
+      "section_number": "3.3"
+    },
+    "content": "\\begin{example}\nYou may recall how hard we worked\nin \\exampleref{example:sqrt2}\nto show that $\\sqrt{2}$ exists.\nWith Bolzano's\ntheorem, we can prove the existence $k$th root of any positive number\n$y > 0$ without any effort.\nWe claim that for any $k \\in \\N$ and any $y > 0$,\nthere exists a number $x > 0$ such that $x^k = y$.\n\nProof: If $y=1$, then it is clear, so assume $y\\not= 1$.\nLet $f(x) \\coloneqq x^k - y$.  We notice $f(0) = -y < 0$.\nIf $y < 1$, then $f(1) = 1^k -y > 0$.  If $y > 1$,\nthen $f(y) = y^k-y = y(y^{k-1}-1) > 0$.\nIn either case, apply Bolzano's theorem to find an $x > 0$ such that $f(x) = 0$,\nor in other words $x^k = y$.\n\\end{example}"
+  },
+  {
+    "index": 38,
+    "label": "Example 3.3.12",
+    "env": "example",
+    "number_components": [
+      3,
+      3,
+      12
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Extreme and intermediate value theorems",
+      "subsection": "Bolzano's intermediate value theorem",
+      "chapter_number": 3,
+      "section_number": "3.3"
+    },
+    "content": "\\begin{example}\nInterestingly,\nthere exist discontinuous functions with\nthe intermediate value property.\nThe function\n\\begin{equation*}\nf(x) \\coloneqq\n\\begin{cases}\n\\sin(\\nicefrac{1}{x}) & \\text{if } x \\not= 0, \\\\\n0 & \\text{if } x=0,\n\\end{cases}\n\\end{equation*}\nis not continuous at $0$; however, $f$ has the intermediate value property:\nWhenever $a < b$ and $y$ is such that $f(a) < y < f(b)$\nor $f(a) > y > f(b)$,\nthere exists a $c \\in (a,b)$ such that $f(c) = y$.\nSee \\figureref{figsin1x} for a graph of $\\sin(\\nicefrac{1}{x})$.\nProof is left as \\exerciseref{exercise:meanvaluepropsin1x}.\n\\end{example}"
+  },
+  {
+    "index": 39,
+    "label": "Example 3.1.8",
+    "env": "example",
+    "number_components": [
+      3,
+      1,
+      8
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits of functions",
+      "subsection": "Sequential limits",
+      "chapter_number": 3,
+      "section_number": "3.1"
+    },
+    "content": "\\begin{example}\n$\\displaystyle \\lim_{x \\to 0} \\sin( \\nicefrac{1}{x} )$\ndoes not exist, but \n$\\displaystyle \\lim_{x \\to 0} x\\sin( \\nicefrac{1}{x} ) = 0$.\nSee \\figureref{figsin1x}.\n\n\\begin{myfigureht}\n%left guy also used in 10.4\n\\subimport*{figures/}{sin1x_xsin1x.pdf_t}\n\\caption{Graphs of $\\sin(\\nicefrac{1}{x})$ and $x \\sin(\\nicefrac{1}{x})$.\nNote that the computer cannot properly graph $\\sin(\\nicefrac{1}{x})$\nnear zero as it oscillates too fast.\\label{figsin1x}}\n\\end{myfigureht}\n\nProof:\nWe start with $\\sin(\\nicefrac{1}{x})$.  Define a sequence\nby\n$x_n \\coloneqq \\frac{1}{\\pi n + \\nicefrac{\\pi}{2}}$.  It is not hard to see\nthat $\\lim_{n\\to\\infty} x_n = 0$.  Furthermore,\n\\begin{equation*}\n\\sin ( \\nicefrac{1}{x_n} )\n=\n\\sin (\\pi n + \\nicefrac{\\pi}{2})\n= {(-1)}^n .\n\\end{equation*}\nTherefore, $\\bigl\\{ \\sin ( \\nicefrac{1}{x_n} ) \\bigr\\}_{n=1}^\\infty$ does not converge.\nBy\n\\lemmaref{seqflimit:lemma}, \n$\\displaystyle \\lim_{x \\to 0} \\sin( \\nicefrac{1}{x} )$ does not exist.\n\nNow consider $x\\sin(\\nicefrac{1}{x})$.  Let $\\{ x_n \\}_{n=1}^\\infty$ be a sequence\nsuch that $x_n \\not= 0$ for all $n$, and such that $\\lim_{n\\to\\infty} x_n = 0$.\nNotice that $\\babs{\\sin(t)} \\leq 1$ for all $t \\in \\R$.  Therefore,\n\\begin{equation*}\n\\babs{x_n\\sin(\\nicefrac{1}{x_n})-0}\n=\n\\sabs{x_n}\\babs{\\sin(\\nicefrac{1}{x_n})}\n\\leq\n\\sabs{x_n} .\n\\end{equation*}\nAs $x_n$ goes to 0, then $\\sabs{x_n}$ goes to zero, and hence\n$\\bigl\\{ x_n\\sin(\\nicefrac{1}{x_n}) \\bigr\\}_{n=1}^\\infty$ converges to zero.  By\n\\lemmaref{seqflimit:lemma}, \n$\\displaystyle \\lim_{x \\to 0} x\\sin( \\nicefrac{1}{x} ) = 0$.\n\\end{example}"
+  },
+  {
+    "index": 40,
+    "label": "Corollary 3.3.13",
+    "env": "cor",
+    "number_components": [
+      3,
+      3,
+      13
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Extreme and intermediate value theorems",
+      "subsection": "Bolzano's intermediate value theorem",
+      "chapter_number": 3,
+      "section_number": "3.3"
+    },
+    "content": "\\begin{cor} \\label{cor:imageofinterval}\nIf $f \\colon [a,b] \\to \\R$ is continuous, then the direct image\n$f\\bigl([a,b]\\bigr)$\nis a closed and bounded interval or a single number.\n\\end{cor}"
+  },
+  {
+    "index": 41,
+    "label": "Definition 3.4.1",
+    "env": "defn",
+    "number_components": [
+      3,
+      4,
+      1
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Uniform continuity",
+      "subsection": "Uniform continuity",
+      "chapter_number": 3,
+      "section_number": "3.4"
+    },
+    "content": "\\begin{defn}\nLet $S \\subset \\R$, and let $f \\colon S \\to \\R$ be a function.\nSuppose for every $\\epsilon > 0$ there exists a $\\delta > 0$\nsuch that whenever $x, c \\in S$ and\n$\\sabs{x-c} < \\delta$, then $\\babs{f(x)-f(c)} < \\epsilon$.\nThen we say $f$ is \\emph{\\myindex{uniformly continuous}}.\n\\end{defn}"
+  },
+  {
+    "index": 42,
+    "label": "Example 3.4.2",
+    "env": "example",
+    "number_components": [
+      3,
+      4,
+      2
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Uniform continuity",
+      "subsection": "Uniform continuity",
+      "chapter_number": 3,
+      "section_number": "3.4"
+    },
+    "content": "\\begin{example}\n$f \\colon [0,1] \\to \\R$ defined by $f(x) \\coloneqq x^2$ is uniformly continuous.\n\nProof: Note that $0 \\leq x,c \\leq 1$.  Then\n\\begin{equation*}\n\\sabs{x^2-c^2} = \\sabs{x+c}\\sabs{x-c}\n\\leq \\bigl(\\sabs{x}+\\sabs{c}\\bigr) \\sabs{x-c}\n\\leq (1+1)\\sabs{x-c} .\n\\end{equation*}\nTherefore, given $\\epsilon > 0$, let $\\delta \\coloneqq \\nicefrac{\\epsilon}{2}$.\nIf $\\sabs{x-c} < \\delta$, then $\\sabs{x^2-c^2} \\leq 2 \\sabs{x-c} < \\epsilon$.\n\n\\medskip\n\nOn the other hand, $g \\colon \\R \\to \\R$ defined by $g(x) \\coloneqq x^2$ is not uniformly\ncontinuous.\n\nProof: Suppose it is uniformly continuous, then for every $\\epsilon > 0$,\nthere would exist a $\\delta > 0$ such that\nif $\\sabs{x-c} < \\delta$, then $\\sabs{x^2 -c^2} < \\epsilon$.\nTake $x > 0$ and let\n$c \\coloneqq x+\\nicefrac{\\delta}{2}$.  Write\n\\begin{equation*}\n\\epsilon >\n\\sabs{x^2-c^2} = \\sabs{x+c}\\sabs{x-c}\n=\n(2x+\\nicefrac{\\delta}{2})\\nicefrac{\\delta}{2} \n\\geq \n\\delta x .\n\\end{equation*}\nTherefore, $x < \\nicefrac{\\epsilon}{\\delta}$ for all $x > 0$, which is a\ncontradiction.\n\\end{example}"
+  },
+  {
+    "index": 43,
+    "label": "Example 3.4.3",
+    "env": "example",
+    "number_components": [
+      3,
+      4,
+      3
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Uniform continuity",
+      "subsection": "Uniform continuity",
+      "chapter_number": 3,
+      "section_number": "3.4"
+    },
+    "content": "\\begin{example}\nThe function $f \\colon (0,1) \\to \\R$ defined by $f(x) \\coloneqq \\nicefrac{1}{x}$ is not\nuniformly continuous.\n\nProof: Given $\\epsilon > 0$, then $\\epsilon >\n\\abs{\\nicefrac{1}{x}-\\nicefrac{1}{y}}$ holds if and only if\n\\begin{equation*}\n\\epsilon >\n\\abs{\\nicefrac{1}{x}-\\nicefrac{1}{y}}\n=\n\\frac{\\sabs{y-x}}{\\sabs{xy}} \n=\n\\frac{\\sabs{y-x}}{xy} ,\n\\end{equation*}\nor\n\\begin{equation*}\n\\sabs{x-y} < xy \\epsilon .\n\\end{equation*}\nSuppose $\\epsilon < 1$, and we wish to see if a \nsmall $\\delta > 0$ would work.\nIf $x \\in (0,1)$ and \n$y = x+\\nicefrac{\\delta}{2} \\in (0,1)$,\nthen $\\sabs{x-y} = \\nicefrac{\\delta}{2} < \\delta$.\nWe plug $y$ into the inequality above to get $\\nicefrac{\\delta}{2} <\nx \\bigl( x+\\nicefrac{\\delta}{2} \\bigr) \\epsilon < x$.\nIf the definition of uniform continuity is satisfied, then\nthe inequality $\\nicefrac{\\delta}{2} < x$ holds for all $x > 0$.   But then $\\delta \\leq 0$.\nTherefore, no single $\\delta > 0$ works for all points.\n\\end{example}"
+  },
+  {
+    "index": 44,
+    "label": "Lemma 3.4.5",
+    "env": "lemma",
+    "number_components": [
+      3,
+      4,
+      5
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Uniform continuity",
+      "subsection": "Continuous extension",
+      "chapter_number": 3,
+      "section_number": "3.4"
+    },
+    "content": "\\begin{lemma} \\label{unifcauchycauchy:lemma}\nLet $S \\subset \\R$ and let $f \\colon S \\to \\R$ be a uniformly continuous function.  Let\n$\\{ x_n \\}_{n=1}^\\infty$ be a Cauchy sequence in $S$.\nThen $\\bigl\\{ f(x_n) \\bigr\\}_{n=1}^\\infty$ is Cauchy.\n\\end{lemma}"
+  },
+  {
+    "index": 45,
+    "label": "Proposition 3.1.15",
+    "env": "prop",
+    "number_components": [
+      3,
+      1,
+      15
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits of functions",
+      "subsection": "Limits of restrictions and one-sided limits",
+      "chapter_number": 3,
+      "section_number": "3.1"
+    },
+    "content": "\\begin{prop} \\label{prop:limrest}\nLet $S \\subset \\R$, $c \\in \\R$, and\nlet $f \\colon S\n\\to \\R$ be a function.\nSuppose\n$A \\subset S$ is such that there is some $\\alpha > 0$ such that\n$(A \\setminus \\{ c \\}) \\cap (c-\\alpha,c+\\alpha) = (S \\setminus \\{ c \\}) \\cap (c-\\alpha,c+\\alpha)$.\n\\begin{enumerate}[(i)]\n\\item The point $c$ is a cluster point of $A$ if and only if $c$ is a cluster point\nof $S$.\n\\item Supposing $c$ is a cluster point of $S$, then $f(x) \\to L$ as $x \\to c$ if and only if\n$f|_A(x) \\to L$ as $x \\to c$.\n\\end{enumerate}\n\\end{prop}"
+  },
+  {
+    "index": 46,
+    "label": "Definition 3.4.7",
+    "env": "defn",
+    "number_components": [
+      3,
+      4,
+      7
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Uniform continuity",
+      "subsection": "Lipschitz continuous functions",
+      "chapter_number": 3,
+      "section_number": "3.4"
+    },
+    "content": "\\begin{defn}\nA function $f \\colon S \\to \\R$\nis \\emph{\\myindex{Lipschitz continuous}}\\index{function!Lipschitz}%\n\\footnote{Named after the German mathematician\n\\href{https://en.wikipedia.org/wiki/Rudolf_Lipschitz}{Rudolf Otto Sigismund Lipschitz}\n(1832--1903).}, if there exists a $K \\in \\R$, such that\n\\begin{equation*}\n\\babs{f(x)-f(y)} \\leq K \\sabs{x-y} \n\\qquad \\text{for all } x \\text{ and } y \\text{ in } S.\n\\end{equation*}\n\\end{defn}"
+  },
+  {
+    "index": 47,
+    "label": "Proposition 3.4.8",
+    "env": "prop",
+    "number_components": [
+      3,
+      4,
+      8
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Uniform continuity",
+      "subsection": "Lipschitz continuous functions",
+      "chapter_number": 3,
+      "section_number": "3.4"
+    },
+    "content": "\\begin{prop}\nA Lipschitz continuous function is uniformly continuous.\n\\end{prop}"
+  },
+  {
+    "index": 48,
+    "label": "Example 3.4.9",
+    "env": "example",
+    "number_components": [
+      3,
+      4,
+      9
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Uniform continuity",
+      "subsection": "Lipschitz continuous functions",
+      "chapter_number": 3,
+      "section_number": "3.4"
+    },
+    "content": "\\begin{example}\nThe functions $\\sin(x)$ and $\\cos(x)$ are Lipschitz continuous.\nIn \\exampleref{sincos:example} we have seen the following two inequalities.\n\\begin{equation*}\n\\babs{\\sin(x)-\\sin(y)} \n\\leq \\sabs{x-y}\n\\qquad \\text{and} \\qquad\n\\babs{\\cos(x)-\\cos(y)}\n\\leq \\sabs{x-y} .\n\\end{equation*}\n\nHence sine and cosine are Lipschitz continuous with $K=1$.\n\\end{example}"
+  },
+  {
+    "index": 49,
+    "label": "Example 3.2.6",
+    "env": "example",
+    "number_components": [
+      3,
+      2,
+      6
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Continuous functions",
+      "subsection": "Definition and basic properties",
+      "chapter_number": 3,
+      "section_number": "3.2"
+    },
+    "content": "\\begin{example} \\label{sincos:example}\nThe functions $\\sin(x)$ and $\\cos(x)$ are continuous.\nIn the following computations we use the sum-to-product\ntrigonometric identities.  We also use the simple facts that\n$\\babs{\\sin(x)} \\leq \\sabs{x}$, $\\babs{\\cos(x)} \\leq 1$,\nand $\\babs{\\sin(x)} \\leq 1$.\n\\begin{equation*}\n\\begin{split}\n\\babs{\\sin(x)-\\sin(c)} & =\n\\abs{\n2 \\sin \\left( \\frac{x-c}{2} \\right) \\cos \\left( \\frac{x+c}{2} \\right)\n}\n\\\\\n& =\n2\n\\abs{ \\sin \\left( \\frac{x-c}{2} \\right) }\n\\abs{ \\cos \\left( \\frac{x+c}{2} \\right) }\n\\\\\n& \\leq\n2\n\\abs{ \\sin \\left( \\frac{x-c}{2} \\right) }\n\\\\\n& \\leq\n2\n\\abs{ \\frac{x-c}{2} }\n= \\sabs{x-c}\n\\end{split}\n\\end{equation*}\n\\begin{equation*}\n\\begin{split}\n\\babs{\\cos(x)-\\cos(c)} & =\n\\abs{\n-2 \\sin \\left( \\frac{x-c}{2} \\right) \\sin \\left( \\frac{x+c}{2} \\right)\n}\n\\\\\n& =\n2\n\\abs{ \\sin \\left( \\frac{x-c}{2} \\right) }\n\\abs{ \\sin \\left( \\frac{x+c}{2} \\right) }\n\\\\\n& \\leq\n2\n\\abs{ \\sin \\left( \\frac{x-c}{2} \\right) }\n\\\\\n& \\leq\n2\n\\abs{ \\frac{x-c}{2} }\n= \\sabs{x-c}\n\\end{split}\n\\end{equation*}\n\nThe claim that $\\sin$ and $\\cos$ are continuous follows by taking an\narbitrary sequence $\\{ x_n \\}_{n=1}^\\infty$ converging to $c$, or by applying the\ndefinition of continuity directly.  Details are left to the\nreader.\n\\end{example}"
+  },
+  {
+    "index": 50,
+    "label": "Example 3.4.10",
+    "env": "example",
+    "number_components": [
+      3,
+      4,
+      10
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Uniform continuity",
+      "subsection": "Lipschitz continuous functions",
+      "chapter_number": 3,
+      "section_number": "3.4"
+    },
+    "content": "\\begin{example}\nThe function $f \\colon [1,\\infty) \\to \\R$ defined by $f(x) \\coloneqq \\sqrt{x}$\nis Lipschitz continuous. Proof:\n\\begin{equation*}\n\\abs{\\sqrt{x}-\\sqrt{y}} = \n\\abs{\\frac{x-y}{\\sqrt{x}+\\sqrt{y}}}\n=\n\\frac{\\sabs{x-y}}{\\sqrt{x}+\\sqrt{y}} .\n\\end{equation*}\nAs $x \\geq 1$ and $y \\geq 1$, we see that $\\frac{1}{\\sqrt{x}+\\sqrt{y}}\n\\leq \\frac{1}{2}$.  Therefore,\n\\begin{equation*}\n\\abs{\\sqrt{x}-\\sqrt{y}} = \n\\abs{\\frac{x-y}{\\sqrt{x}+\\sqrt{y}}}\n\\leq\n\\frac{1}{2}\n\\sabs{x-y}.\n\\end{equation*}\n\nOn the other hand, $g \\colon [0,\\infty) \\to \\R$ defined by\n$g(x) \\coloneqq \\sqrt{x}$ is not Lipschitz continuous.  Proof:\nSuppose for all $x,y \\in [0,\\infty)$,\n\\begin{equation*}\n\\abs{\\sqrt{x}-\\sqrt{y}} \n\\leq\nK \\sabs{x-y} ,\n\\end{equation*}\nfor some $K$.  Set $y=0$ to obtain\n$\\sqrt{x} \\leq K x$.   If $K > 0$, then for $x > 0$ we get\n$\\nicefrac{1}{K} \\leq \\sqrt{x}$ or $\\nicefrac{1}{K^2} \\leq x$.\nThis cannot possibly be true for all\n$x > 0$.  Thus no such $K > 0$ exists and $g$ is not\nLipschitz continuous.  See \\figureref{fig:sqrtgraph} and note how secant\nlines would be more and more vertical as we get closer to $x=0$.\n\\begin{myfigureht}\n\\includegraphics{figures/sqrtgraph}\n\\caption{Graph of $\\sqrt{x}$ and some secant lines through $(0,0)$ and\n$(x,\\sqrt{x})$.\\label{fig:sqrtgraph}}\n\\end{myfigureht}\n\nThe last example $g$ is a function that is uniformly\ncontinuous but not Lipschitz continuous.\nTo see that $\\sqrt{x}$ is\nuniformly continuous as a function on $[0,\\infty)$,\nnote that it is uniformly continuous when restricted to $[0,1]$ by \\thmref{unifcont:thm}.\nIt is also Lipschitz (and so uniformly continuous) when restricted to $[1,\\infty)$.\nIt is not hard (exercise) to show that this means that $\\sqrt{x}$ is a\nuniformly continuous function on $[0,\\infty)$.\n\\end{example}"
+  },
+  {
+    "index": 51,
+    "label": "Theorem 3.4.4",
+    "env": "thm",
+    "number_components": [
+      3,
+      4,
+      4
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Uniform continuity",
+      "subsection": "Uniform continuity",
+      "chapter_number": 3,
+      "section_number": "3.4"
+    },
+    "content": "\\begin{thm} \\label{unifcont:thm}\nLet $f \\colon [a,b] \\to \\R$ be a continuous function.  Then $f$\nis uniformly continuous.\n\\end{thm}"
+  },
+  {
+    "index": 52,
+    "label": "Proposition 3.4.6",
+    "env": "prop",
+    "number_components": [
+      3,
+      4,
+      6
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Uniform continuity",
+      "subsection": "Continuous extension",
+      "chapter_number": 3,
+      "section_number": "3.4"
+    },
+    "content": "\\begin{prop} \\label{context:prop}\nA function $f \\colon (a,b) \\to \\R$ is uniformly continuous if and only if\nthe limits \n\\begin{equation*}\nL_a \\coloneqq \\lim_{x \\to a} f(x) \\qquad \\text{and} \\qquad\nL_b \\coloneqq \\lim_{x \\to b} f(x)\n\\end{equation*}\nexist and the function $\\widetilde{f} \\colon [a,b] \\to \\R$\ndefined by\n\\begin{equation*}\n\\widetilde{f}(x) \\coloneqq\n\\begin{cases}\nf(x) & \\text{if } x \\in (a,b), \\\\\nL_a & \\text{if } x = a, \\\\\nL_b & \\text{if } x = b\n\\end{cases}\n\\end{equation*}\nis continuous.\n\\end{prop}"
+  },
+  {
+    "index": 53,
+    "label": "Definition 3.5.1",
+    "env": "defn",
+    "number_components": [
+      3,
+      5,
+      1
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits at infinity",
+      "subsection": "Limits at infinity",
+      "chapter_number": 3,
+      "section_number": "3.5"
+    },
+    "content": "\\begin{defn}\nWe say $\\infty$ is a \\emph{\\myindex{cluster point}} of $S \\subset \\R$ if for every\n$M \\in \\R$, there exists an $x \\in S$ such that $x \\geq M$.  Similarly,\n$- \\infty$ is a \\emph{cluster point} of $S \\subset \\R$ if for every\n$M \\in \\R$, there exists an $x \\in S$ such that $x \\leq M$.\n\n\\index{limit!of a function at infinity}%\nLet $f \\colon S \\to \\R$ be a function, where \n$\\infty$ is a cluster point of $S$.\nIf there exists an $L \\in \\R$\nsuch that for every $\\epsilon > 0$, there is an $M \\in \\R$ such that\n\\begin{equation*}\n\\babs{f(x) - L} < \\epsilon \n\\end{equation*}\nwhenever $x \\in S$ and $x \\geq M$, then we say $f(x)$\n\\emph{converges}\\index{converges!function} to $L$\nas $x$ goes to $\\infty$.  We call $L$ the \\emph{limit}\nand write\n\\glsadd{not:limfuncinf}\n\\begin{equation*}\n\\lim_{x \\to \\infty} f(x) \\coloneqq L .\n\\end{equation*}\nAlternatively we write $f(x) \\to L$ as $x \\to \\infty$.\n\nSimilarly, if $-\\infty$ is a cluster point of $S$\nand\nthere exists an $L \\in \\R$\nsuch that for every $\\epsilon > 0$, there is an $M \\in \\R$ such that\n\\begin{equation*}\n\\babs{f(x) - L} < \\epsilon \n\\end{equation*}\nwhenever $x \\in S$ and $x \\leq M$, then we say $f(x)$ \\emph{converges} to $L$\nas $x$ goes to $-\\infty$.\nAlternatively, we write $f(x) \\to L$ as $x \\to -\\infty$.\nWe call $L$ a \\emph{limit} and, if unique, write\n\\begin{equation*}\n\\lim_{x \\to -\\infty} f(x) \\coloneqq L .\n\\end{equation*}\n\\end{defn}"
+  },
+  {
+    "index": 54,
+    "label": "Example 3.5.3",
+    "env": "example",
+    "number_components": [
+      3,
+      5,
+      3
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits at infinity",
+      "subsection": "Limits at infinity",
+      "chapter_number": 3,
+      "section_number": "3.5"
+    },
+    "content": "\\begin{example}\nLet $f(x) \\coloneqq \\frac{1}{\\sabs{x}+1}$.  Then\n\\begin{equation*}\n\\lim_{x\\to \\infty} f(x) = 0 \\qquad \\text{and} \\qquad\n\\lim_{x\\to -\\infty} f(x) = 0 .\n\\end{equation*}\n\nProof:\nLet $\\epsilon > 0$ be given.  Find $M > 0$ large enough\nso that $\\frac{1}{M+1} < \\epsilon$.  If\n$x \\geq M$, then $0 < \\frac{1}{\\sabs{x}+1} = \\frac{1}{x+1} \\leq \\frac{1}{M+1} < \\epsilon$.\nThe first limit follows.\nThe proof for $-\\infty$ is left to the reader.\n\\end{example}"
+  },
+  {
+    "index": 55,
+    "label": "Example 3.5.4",
+    "env": "example",
+    "number_components": [
+      3,
+      5,
+      4
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits at infinity",
+      "subsection": "Limits at infinity",
+      "chapter_number": 3,
+      "section_number": "3.5"
+    },
+    "content": "\\begin{example}\nLet $f(x) \\coloneqq \\sin(\\pi x)$.  Then $\\lim_{x\\to\\infty} f(x)$ does not exist.\nTo prove this fact note that if $x = 2n+\\nicefrac{1}{2}$ for some $n \\in\n\\N$, then $f(x)=1$,\nwhile if $x = 2n+\\nicefrac{3}{2}$, then $f(x)=-1$.  So they cannot both be\nwithin a small $\\epsilon$ of a single real number.\n\nBe careful not to confuse continuous limits with limits of sequences.\nWe could say\n\\begin{equation*}\n\\lim_{n \\to \\infty} \\sin(\\pi n) = 0, \\qquad \\text{but} \\qquad\n\\lim_{x \\to \\infty} \\sin(\\pi x) \\enspace \\text{does not exist}.\n\\end{equation*}\nOf course the notation is ambiguous:  Are we thinking of the\nsequence $\\bigl\\{ \\sin (\\pi n) \\bigr\\}_{n=1}^\\infty$ or the function $\\sin(\\pi x)$\nof a real variable?  We are simply using the convention\nthat $n \\in \\N$, while $x \\in \\R$.  When the notation is not clear,\nit is good to explicitly mention where the variable lives, or what kind\nof limit are you using.  If there is possibility of confusion, one can\nwrite, for example,\n\\begin{equation*}\n\\lim_{\\substack{n \\to \\infty\\\\n \\in \\N}} \\sin(\\pi n) .\n\\end{equation*}\n\\end{example}"
+  },
+  {
+    "index": 56,
+    "label": "Lemma 3.5.5",
+    "env": "lemma",
+    "number_components": [
+      3,
+      5,
+      5
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits at infinity",
+      "subsection": "Limits at infinity",
+      "chapter_number": 3,
+      "section_number": "3.5"
+    },
+    "content": "\\begin{lemma} \\label{seqflimitinf:lemma}\nSuppose $f \\colon S \\to \\R$ is a function, $\\infty$ is a cluster\npoint of $S \\subset \\R$, and $L \\in \\R$.  Then\n\\begin{equation*}\n\\lim_{x\\to\\infty} f(x) = L\n\\qquad \\text{if and only if} \\qquad\n\\lim_{n\\to\\infty} f(x_n) = L\n\\end{equation*}\nfor all sequences $\\{ x_n \\}_{n=1}^\\infty$ in $S$ such that $\\lim\\limits_{n\\to\\infty} x_n = \\infty$.\n\\end{lemma}"
+  },
+  {
+    "index": 57,
+    "label": "Definition 3.5.6",
+    "env": "defn",
+    "number_components": [
+      3,
+      5,
+      6
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits at infinity",
+      "subsection": "Infinite limit",
+      "chapter_number": 3,
+      "section_number": "3.5"
+    },
+    "content": "\\begin{defn}\n\\index{infinite limit!of a function}\\index{limit!infinite}%\nLet $f \\colon S \\to \\R$ be a function and suppose \n$S$ has $\\infty$ as a cluster point.\nWe say $f(x)$\n\\emph{\\myindex{diverges to infinity}} \nas $x$ goes to $\\infty$\nif for every $N \\in \\R$\nthere exists an $M \\in \\R$ such that\n\\begin{equation*}\nf(x) > N\n\\end{equation*}\nwhenever $x \\in S$ and $x \\geq M$.\nWe write\n\\begin{equation*}\n\\lim_{x \\to \\infty} f(x) \\coloneqq \\infty ,\n\\end{equation*}\nor we say that $f(x) \\to \\infty$ as $x \\to \\infty$.\n\\end{defn}"
+  },
+  {
+    "index": 58,
+    "label": "Example 3.5.7",
+    "env": "example",
+    "number_components": [
+      3,
+      5,
+      7
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits at infinity",
+      "subsection": "Infinite limit",
+      "chapter_number": 3,
+      "section_number": "3.5"
+    },
+    "content": "\\begin{example}\nLet us show that $\\lim\\limits_{x \\to \\infty} \\frac{1+x^2}{1+x} = \\infty$.\n\nProof: For $x \\geq 1$, we have\n\\begin{equation*}\n\\frac{1+x^2}{1+x} \\geq \n\\frac{x^2}{x+x}  = \n\\frac{x}{2} .\n\\end{equation*}\nGiven $N \\in \\R$, take $M = \\max \\{ 2N+1 , 1 \\}$.\nIf $x \\geq M$, then $x \\geq 1$ and $\\nicefrac{x}{2} > N$.\nSo\n\\begin{equation*}\n\\frac{1+x^2}{1+x} \\geq \n\\frac{x}{2} > N .\n\\end{equation*}\n\\end{example}"
+  },
+  {
+    "index": 59,
+    "label": "Example 3.5.9",
+    "env": "example",
+    "number_components": [
+      3,
+      5,
+      9
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits at infinity",
+      "subsection": "Compositions",
+      "chapter_number": 3,
+      "section_number": "3.5"
+    },
+    "content": "\\begin{example}\nLet $h(x) \\coloneqq e^{-x^2+x}$.  Then\n\\begin{equation*}\n\\lim_{x\\to \\infty} h(x) = 0 .\n\\end{equation*}\n\nProof:\nThe claim follows once we know\n\\begin{equation*}\n\\lim_{x\\to \\infty} -x^2+x = -\\infty\n\\end{equation*}\nand\n\\begin{equation*}\n\\lim_{y\\to -\\infty} e^y = 0 ,\n\\end{equation*}\nwhich is usually proved when the exponential function is defined.\n\\end{example}"
+  },
+  {
+    "index": 60,
+    "label": "Proposition 3.5.2",
+    "env": "prop",
+    "number_components": [
+      3,
+      5,
+      2
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits at infinity",
+      "subsection": "Limits at infinity",
+      "chapter_number": 3,
+      "section_number": "3.5"
+    },
+    "content": "\\begin{prop} \\label{liminfty:unique}\nThe limit at $\\infty$ or $-\\infty$ as defined above is unique if it exists.\n\\end{prop}"
+  },
+  {
+    "index": 61,
+    "label": "Proposition 3.5.8",
+    "env": "prop",
+    "number_components": [
+      3,
+      5,
+      8
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits at infinity",
+      "subsection": "Compositions",
+      "chapter_number": 3,
+      "section_number": "3.5"
+    },
+    "content": "\\begin{prop} \\label{prop:inflimcompositions}\nSuppose $f \\colon A \\to B$, $g \\colon B \\to \\R$, $A, B \\subset \\R$, \n$a \\in \\R \\cup \\{ -\\infty, \\infty\\}$ is a cluster point of $A$,\nand $b \\in \\R \\cup \\{ -\\infty, \\infty\\}$ is a cluster point of $B$.\nSuppose \n\\begin{equation*}\n\\lim_{x \\to a} f(x) = b\\qquad \\text{and} \\qquad \\lim_{y \\to b} g(y) = c\n\\end{equation*}\nfor some $c \\in \\R \\cup \\{ -\\infty, \\infty \\}$.\nIf $b \\in B$, then suppose $g(b) = c$.\nThen\n\\begin{equation*}\n\\lim_{x \\to a} g\\bigl(f(x)\\bigr) = c .\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 62,
+    "label": "Definition 3.6.1",
+    "env": "defn",
+    "number_components": [
+      3,
+      6,
+      1
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Monotone functions and continuity",
+      "chapter_number": 3,
+      "section_number": "3.6"
+    },
+    "content": "\\begin{defn}\nLet $S \\subset \\R$.\nWe say $f \\colon S \\to \\R$ is \\emph{\\myindex{increasing}}\n(resp.\\  \\emph{\\myindex{strictly increasing}}) if $x,y \\in S$ with\n$x < y$ implies $f(x) \\leq f(y)$ (resp.\\ $f(x) < f(y)$).\nWe define\n\\emph{\\myindex{decreasing}} and\n\\emph{\\myindex{strictly decreasing}} in the same way by switching the\ninequalities for $f$.\n\nIf a function is either increasing or decreasing, we say it is\n\\emph{monotone}\\index{monotone function}.  If it is\nstrictly increasing or strictly decreasing, we say it is\n\\emph{strictly monotone}\\index{strictly monotone function}.\n\\end{defn}"
+  },
+  {
+    "index": 63,
+    "label": "Proposition 3.1.17",
+    "env": "prop",
+    "number_components": [
+      3,
+      1,
+      17
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Limits of functions",
+      "subsection": "Limits of restrictions and one-sided limits",
+      "chapter_number": 3,
+      "section_number": "3.1"
+    },
+    "content": "\\begin{prop} \\label{prop:onesidedlimits}\nLet $S \\subset \\R$ be such that $c$ is a cluster point\nof both $S \\cap (-\\infty,c)$ and $S \\cap (c,\\infty)$, let\n$f \\colon S \\to \\R$ be a function, and let $L \\in \\R$.  Then $c$ is a cluster point of $S$ and\n\\begin{equation*}\n\\lim_{x \\to c} f(x) = L\n\\qquad \\text{if and only if} \\qquad\n\\lim_{x \\to c^-} f(x) =\n\\lim_{x \\to c^+} f(x) =\nL .\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 64,
+    "label": "Corollary 3.6.4",
+    "env": "cor",
+    "number_components": [
+      3,
+      6,
+      4
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Monotone functions and continuity",
+      "subsection": "Continuity of monotone functions",
+      "chapter_number": 3,
+      "section_number": "3.6"
+    },
+    "content": "\\begin{cor} \\label{cor:monotcountcont}\nLet $I \\subset \\R$ be an interval and\n$f \\colon I \\to \\R$ be monotone.  Then $f$ has at most\ncountably many discontinuities.\n\\end{cor}"
+  },
+  {
+    "index": 65,
+    "label": "Example 3.6.7",
+    "env": "example",
+    "number_components": [
+      3,
+      6,
+      7
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Monotone functions and continuity",
+      "subsection": "Continuity of inverse functions",
+      "chapter_number": 3,
+      "section_number": "3.6"
+    },
+    "content": "\\begin{example}\nThe proposition does not require $f$ itself to be continuous.  Let\n$f \\colon \\R \\to \\R$ be defined by\n\\begin{equation*}\nf(x) \\coloneqq\n\\begin{cases}\nx & \\text{if } x < 0, \\\\\nx+1 & \\text{if } x \\geq 0. \\\\\n\\end{cases}\n\\end{equation*}\nThe function $f$ is not continuous at $0$.\nThe image of $I = \\R$ is the set \n$(-\\infty,0)\\cup [1,\\infty)$, not an interval.\nThen $f^{-1} \\colon (-\\infty,0)\\cup [1,\\infty)\n\\to \\R$ can be written as\n\\begin{equation*}\nf^{-1}(y) =\n\\begin{cases}\ny & \\text{if } y < 0, \\\\\ny-1 & \\text{if } y \\geq 1. \n\\end{cases}\n\\end{equation*}\nIt is not difficult to see that $f^{-1}$ is a continuous function.  See\n\\figureref{invcontfig} for the graphs.\n\\begin{myfigureht}\n\\subimport*{figures/}{invcontfigAB.pdf_t}\n\\caption{Graph of $f$ on the left and $f^{-1}$ on the right.\\label{invcontfig}}\n\\end{myfigureht}\n\\end{example}"
+  },
+  {
+    "index": 66,
+    "label": "Proposition 3.6.2",
+    "env": "prop",
+    "number_components": [
+      3,
+      6,
+      2
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Monotone functions and continuity",
+      "subsection": "Continuity of monotone functions",
+      "chapter_number": 3,
+      "section_number": "3.6"
+    },
+    "content": "\\begin{prop} \\label{prop:monotlimits}\nLet $S \\subset \\R$, $c \\in \\R$,\n$f \\colon S \\to \\R$ be increasing,\nand\n$g \\colon S \\to \\R$ be decreasing.\nIf $c$ is a cluster point of $S \\cap (-\\infty,c)$, then\n\\begin{equation*}\n\\lim_{x \\to c^-} f(x) = \\sup \\{ f(x) : x < c, x \\in S \\}\n%mbxSTARTIGNORE\n\\qquad \\text{and} \\qquad\n%mbxENDIGNORE\n%mbxlatex \\quad \\text{and} \\quad\n\\lim_{x \\to c^-} g(x) = \\inf \\{ g(x) : x < c, x \\in S \\} .\n\\end{equation*}\nIf $c$ is a cluster point of $S \\cap (c,\\infty)$, then\n\\begin{equation*}\n\\lim_{x \\to c^+} f(x) = \\inf \\{ f(x) : x > c, x \\in S \\}\n%mbxSTARTIGNORE\n\\qquad \\text{and} \\qquad\n%mbxENDIGNORE\n%mbxlatex \\quad \\text{and} \\quad\n\\lim_{x \\to c^+} g(x) = \\sup \\{ g(x) : x > c, x \\in S \\} .\n\\end{equation*}\nIf $\\infty$ is a cluster point of $S$, then\n\\begin{equation*}\n\\lim_{x \\to \\infty} f(x) = \\sup \\{ f(x) : x \\in S \\}\n%mbxSTARTIGNORE\n\\qquad \\text{and} \\qquad\n%mbxENDIGNORE\n%mbxlatex \\quad \\text{and} \\quad\n\\lim_{x \\to \\infty} g(x) = \\inf \\{ g(x) : x \\in S \\} .\n\\end{equation*}\nIf $-\\infty$ is a cluster point of $S$, then\n\\begin{equation*}\n\\lim_{x \\to -\\infty} f(x) = \\inf \\{ f(x) : x \\in S \\}\n%mbxSTARTIGNORE\n\\qquad \\text{and} \\qquad\n%mbxENDIGNORE\n%mbxlatex \\quad \\text{and} \\quad\n\\lim_{x \\to -\\infty} g(x) = \\sup \\{ g(x) : x \\in S \\} .\n\\end{equation*}\n\\end{prop}"
+  },
+  {
+    "index": 67,
+    "label": "Corollary 3.6.3",
+    "env": "cor",
+    "number_components": [
+      3,
+      6,
+      3
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Monotone functions and continuity",
+      "subsection": "Continuity of monotone functions",
+      "chapter_number": 3,
+      "section_number": "3.6"
+    },
+    "content": "\\begin{cor} \\label{cor:continterval}\nIf $I \\subset \\R$ is an interval and $f \\colon I \\to \\R$ is \nmonotone and not constant, then $f(I)$ is an interval if and only if $f$\nis continuous.\n\\end{cor}"
+  },
+  {
+    "index": 68,
+    "label": "Example 3.6.5",
+    "env": "example",
+    "number_components": [
+      3,
+      6,
+      5
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Monotone functions and continuity",
+      "subsection": "Continuity of monotone functions",
+      "chapter_number": 3,
+      "section_number": "3.6"
+    },
+    "content": "\\begin{example} \\label{example:countdiscont}\nBy $\\lfloor x \\rfloor$ denote the largest integer less than or equal to $x$.\nDefine $f \\colon [0,1] \\to \\R$ by\n\\begin{equation*}\nf(x) \\coloneqq\nx +\n\\sum_{n=0}^{\\lfloor 1/(1-x) \\rfloor}\n2^{-n} ,\n\\end{equation*}\nfor $x < 1$ and $f(1) \\coloneqq 3$.\nIt is an exercise to show that $f$ is strictly increasing, bounded, and\nhas a discontinuity at all points $1-\\nicefrac{1}{k}$ for $k \\in \\N$.  In particular,\nthere are countably many discontinuities, but the function is bounded and\ndefined on a closed bounded interval.  See \\figureref{fig:countdiscont}.\n\\begin{myfigureht}\n\\includegraphics{figures/increasing-discont-fig}\n\\caption{Strictly increasing function on $[0,1]$ with countably many\ndiscontinuities.\\label{fig:countdiscont}}\n\\end{myfigureht}\n\nSimilarly, one can find an example of a monotone function discontinuous on a dense set\nsuch as the rational numbers.  See the exercises.\n\\end{example}"
+  },
+  {
+    "index": 69,
+    "label": "Proposition 3.6.6",
+    "env": "prop",
+    "number_components": [
+      3,
+      6,
+      6
+    ],
+    "context": {
+      "chapter": "Continuous Functions",
+      "section": "Monotone functions and continuity",
+      "subsection": "Continuity of inverse functions",
+      "chapter_number": 3,
+      "section_number": "3.6"
+    },
+    "content": "\\begin{prop} \\label{prop:invcont}\nIf $I \\subset \\R$ is an interval and $f \\colon I \\to \\R$ is strictly\nmonotone, then the inverse $f^{-1} \\colon f(I) \\to I$ is continuous.\n\\end{prop}"
+  }
+]

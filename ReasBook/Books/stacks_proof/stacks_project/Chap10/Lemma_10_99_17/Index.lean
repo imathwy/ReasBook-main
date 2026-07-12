@@ -1,0 +1,10 @@
+import StacksProject_2024.Chap10.Lemma_10_99_17.QuotientModule
+import StacksProject_2024.Chap10.Lemma_10_99_17.TorLongExact
+import StacksProject_2024.Chap10.Lemma_10_99_17.TorDegreeZero
+import StacksProject_2024.Chap10.Lemma_10_99_17.QuotientKernel
+import StacksProject_2024.Chap10.Lemma_10_99_17.TorOneExact
+import StacksProject_2024.Chap10.Lemma_10_99_17.LocalizationFaithful
+import StacksProject_2024.Chap10.Lemma_10_99_17.FinsuppExact
+import StacksProject_2024.Chap10.Lemma_10_99_17.ScalarMultiplication
+import StacksProject_2024.Chap10.Lemma_10_99_17.ModuleFirstDescent
+import StacksProject_2024.Chap10.Lemma_10_99_17.GeneratorAnnihilator

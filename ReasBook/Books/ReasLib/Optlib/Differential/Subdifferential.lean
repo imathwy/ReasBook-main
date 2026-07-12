@@ -1107,3 +1107,4 @@ theorem rela_proximal_operator_partial (f : E → ℝ) (x : E) (u : E) :
   assumption
 
 end
+

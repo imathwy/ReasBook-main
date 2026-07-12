@@ -1,0 +1,380 @@
+import Mathlib
+import Mathlib.Algebra.Category.ModuleCat.Monoidal.Basic
+import StacksProject_2024.Chap18.Definition_18_43_1
+import StacksProject_2024.Chap18.Lemma_18_43_2
+import StacksProject_2024.Chap07.Proposition_7_44_3
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+open CategoryTheory
+open CategoryTheory.Limits
+open CategoryTheory.MonoidalCategory
+
+noncomputable section
+
+universe u v w
+
+namespace CategoryTheory
+
+namespace Sheaf
+
+section Modules
+
+variable {C : Type u} [Category.{v} C] {J : GrothendieckTopology C}
+variable {Λ : Type w} [CommRing Λ]
+variable [HasWeakSheafify J (ModuleCat.{w} Λ)]
+variable [∀ U : C, HasWeakSheafify (J.over U) (ModuleCat.{w} Λ)]
+variable [((J.W : MorphismProperty (Cᵒᵖ ⥤ ModuleCat.{w} Λ))).IsMonoidal]
+
+/- Domain-style sampling for Lemma 18.43.6:
+- primary domain: locally constant sheaves on a site and their behavior under the monoidal tensor on
+  `Sheaf J (ModuleCat Λ)`;
+- sampled owner declarations:
+  `Sheaf.IsConstant`,
+  `Sheaf.IsLocallyConstant`,
+  `constantModuleTensorComparison_app_isIso`,
+  `((J.W : MorphismProperty (Cᵒᵖ ⥤ ModuleCat Λ))).IsMonoidal`,
+  `Sheaf.monoidalCategory`;
+- best owner abstraction: the source-facing owner for local triviality is the earlier chapter
+  declaration `Sheaf.IsLocallyConstant`; the tensor product is the canonical sheaf monoidal owner
+  `Sheaf.monoidalCategory J (ModuleCat Λ)` induced from the site-level monoidal condition on
+  `J.W`, not an arbitrary ambient monoidal structure on the sheaf category;
+- primitive data: two sheaves `F`, `G` that are locally constant;
+- derived API: the closure theorem asserting local constancy of `F ⊗ G`; the finite-presentation
+  constant-sheaf tensor comparison from Lemma `18.42.2` is only an auxiliary proof bridge, not
+  part of the public input data.
+
+Source/core/bridge triage:
+- `source-facing`: closure of locally constant sheaves of `Λ`-modules under tensor product;
+- `core/canonical`: `Sheaf.IsLocallyConstant` from `Definition_18_43_1`;
+- `bridge/view`: the canonical passage from the site-level monoidal hypothesis on `J.W` to the
+  sheaf tensor via `Sheaf.monoidalCategory`.
+-/
+
+attribute [local instance] Sheaf.monoidalCategory
+
+/-- Helper for Lemma 18.43.6: restricting a constant module-valued sheaf to a slice site preserves
+constancy. -/
+theorem isConstant_over_of_isConstant
+    {H : Sheaf J (ModuleCat.{w} Λ)}
+    [IsConstant J H]
+    (U : C) :
+    IsConstant (J.over U) (H.over U) := by
+  -- Route correction: pass through the set-valued restriction theorem, which avoids the missing
+  -- `WEqualsLocallyBijective (ModuleCat Λ)` side condition.
+  have hforget :
+      IsConstant J ((sheafCompose J (forget (ModuleCat.{w} Λ))).obj H) := by
+    -- Proof comment: constancy of a module-valued sheaf is reflected by forgetting to the
+    -- underlying sheaf of types on the ambient site.
+    exact
+      (Sheaf.isConstant_iff_forget
+        (J := J) (U := forget (ModuleCat.{w} Λ)) (F := H) (hT := Over.mkIdTerminal)).mp
+        inferInstance
+  letI : IsConstant J ((sheafCompose J (forget (ModuleCat.{w} Λ))).obj H) := hforget
+  have hsliceforget :
+      IsConstant (J.over U)
+        (((sheafCompose J (forget (ModuleCat.{w} Λ))).obj H).over U) := by
+    -- Proof comment: once the underlying sheaf of sets is constant, Lemma 18.43.2 restricts it to
+    -- the slice site `J.over U`.
+    exact CategoryTheory.isConstant_over_of_isConstant (JC := J) (U := U)
+  have hcomp :
+      (((sheafCompose J (forget (ModuleCat.{w} Λ))).obj H).over U) =
+        (sheafCompose (J.over U) (forget (ModuleCat.{w} Λ))).obj (H.over U) := rfl
+  rw [hcomp] at hsliceforget
+  -- Proof comment: on the slice site, forgetting to sets reflects constancy because `Over U` has
+  -- the terminal object `Over.mk (𝟙 U)`.
+  exact
+    (Sheaf.isConstant_iff_forget
+      (J := J.over U) (U := forget (ModuleCat.{w} Λ)) (F := H.over U)
+      (hT := Over.mkIdTerminal)).mpr hsliceforget
+
+/-- Helper for Lemma 18.43.6: the slice topology on `Over U` carries the canonical monoidal
+localization structure for module-valued sheaves. -/
+theorem slice_module_w_isMonoidal
+    (U : C) :
+    ((J.over U).W : MorphismProperty ((Over U)ᵒᵖ ⥤ ModuleCat.{w} Λ)).IsMonoidal := by
+  -- Proof comment: `ModuleCat Λ` is braided monoidal, so the generic site-level monoidal
+  -- localization instance applies directly to the slice topology.
+  exact inferInstanceAs
+    (((J.over U).W : MorphismProperty ((Over U)ᵒᵖ ⥤ ModuleCat.{w} Λ)).IsMonoidal)
+
+/-- Helper for Lemma 18.43.6: if `H` is constant above `V`, then it remains constant after
+restricting further along an object of `Over V`. -/
+theorem isConstant_over_of_isConstant_over
+    {H : Sheaf J (ModuleCat.{w} Λ)}
+    {V : C} (X : Over V)
+    [IsConstant (J.over V) (H.over V)] :
+    IsConstant (J.over X.left) (H.over X.left) := by
+  -- Route correction: transport constancy through the iterated-slice equivalence only after
+  -- forgetting to sets, so no module-valued weak-sheafify instances on the iterated slice are
+  -- needed.
+  let E :=
+    X.iteratedSliceEquiv.sheafCongr ((J.over V).over X) (J.over X.left) (Type w)
+  let A : Sheaf ((J.over V).over X) (Type w) :=
+    ((sheafCompose (J.over V) (forget (ModuleCat.{w} Λ))).obj (H.over V)).over X
+  let TX : Over X := Over.mk (𝟙 X)
+  let hTX : IsTerminal TX := Over.mkIdTerminal
+  let hTX' : IsTerminal ((X.iteratedSliceEquiv).functor.obj TX) := by
+    simpa [TX] using (Over.mkIdTerminal : IsTerminal (Over.mk (𝟙 X.left)))
+  letI : IsConstant (J.over V)
+      ((sheafCompose (J.over V) (forget (ModuleCat.{w} Λ))).obj (H.over V)) := inferInstance
+  -- Proof comment: first restrict the constant forgotten sheaf to the iterated slice site.
+  letI : IsConstant ((J.over V).over X) A :=
+    CategoryTheory.isConstant_over_of_isConstant (JC := J.over V) (U := X)
+  have hUnit : A ≅ E.inverse.obj (E.functor.obj A) := by
+    -- Proof comment: the iterated-slice comparison is an equivalence, so its unit identifies the
+    -- original forgotten restriction with the inverse image of the transported sheaf.
+    exact E.unitIso.app A
+  have hInv :
+      IsConstant ((J.over V).over X) (E.inverse.obj (E.functor.obj A)) := by
+    -- Proof comment: transport constancy from `A` across the unit isomorphism before invoking the
+    -- equivalence-level reflection theorem.
+    exact Sheaf.isConstant_congr (J := (J.over V).over X) hUnit
+  letI : IsConstant ((J.over V).over X) (E.inverse.obj (E.functor.obj A)) := hInv
+  have hTransport : IsConstant (J.over X.left) (E.functor.obj A) := by
+    -- Proof comment: the iterated slice `((J.over V).over X)` is equivalent to `J.over X.left`,
+    -- so constancy of the forgotten sheaf transfers across that equivalence.
+    exact
+      (Sheaf.isConstant_iff_of_equivalence
+        (J := (J.over V).over X) (K := J.over X.left)
+        (G := (X.iteratedSliceEquiv).functor)
+        (D := Type w) (hT := hTX) (hT' := hTX') (F := E.functor.obj A)).mp
+        inferInstance
+  have e :
+      E.functor.obj A ≅
+        (sheafCompose (J.over X.left) (forget (ModuleCat.{w} Λ))).obj (H.over X.left) :=
+    (fullyFaithfulSheafToPresheaf (J.over X.left) (Type w)).preimageIso <|
+      by
+        simpa [A, Sheaf.over, GrothendieckTopology.overPullback,
+          Equivalence.sheafCongr, Equivalence.sheafCongr.functor] using
+          (Functor.isoWhiskerRight
+            (eqToIso (congrArg Functor.op (Over.iteratedSliceBackward_forget X)))
+            (((sheafCompose (J.over V) (forget (ModuleCat.{w} Λ))).obj (H.over V)).obj))
+  have hsliceForget :
+      IsConstant (J.over X.left)
+        ((sheafCompose (J.over X.left) (forget (ModuleCat.{w} Λ))).obj (H.over X.left)) := by
+    -- Proof comment: rewrite the transported forgotten sheaf into the direct forgotten
+    -- restriction `H.over X.left`.
+    exact Sheaf.isConstant_congr (J := J.over X.left) e
+  -- Proof comment: the canonical iterated-slice comparison identifies the transported sheaf with
+  -- the direct module-valued restriction `H.over X.left`.
+  exact
+    (Sheaf.isConstant_iff_forget
+      (J := J.over X.left) (U := forget (ModuleCat.{w} Λ)) (F := H.over X.left)
+      (hT := Over.mkIdTerminal)).mpr hsliceForget
+
+/-- Helper for Lemma 18.43.6: the sieve on `U` generated by a slice-site family agrees with the
+ambient sieve generated by the underlying arrows. -/
+private theorem overSieveOfObjectsEqOfArrows
+    {U : C} {I : Type (max u v)} (X : I → Over U) :
+    (Sieve.overEquiv (Over.mk (𝟙 U)))
+        (Sieve.ofObjects X (Over.mk (𝟙 U))) =
+      Sieve.ofArrows (fun i ↦ (X i).left) (fun i ↦ (X i).hom) := by
+  -- A factorization in the slice category forgets to the same factorization in the ambient site.
+  ext W g
+  constructor
+  · intro hg
+    rw [Sieve.overEquiv_iff] at hg
+    rw [Sieve.mem_ofObjects_iff] at hg
+    rcases hg with ⟨i, ⟨f⟩⟩
+    rw [Sieve.mem_ofArrows_iff]
+    exact ⟨i, f.left, by simpa using f.w.symm⟩
+  · intro hg
+    -- Conversely, any ambient factorization lifts uniquely to the slice category.
+    rw [Sieve.overEquiv_iff]
+    rw [Sieve.mem_ofArrows_iff] at hg
+    rcases hg with ⟨i, f, hf⟩
+    rw [Sieve.mem_ofObjects_iff]
+    exact ⟨i, ⟨Over.homMk f (by simpa using hf.symm)⟩⟩
+
+/-- Helper for Lemma 18.43.6: composing a covering family of `U` with covering families on each
+member yields a sigma-indexed covering family of `U`. -/
+theorem coversTop_sigma_comp
+    {U : C} {I : Type (max u v)} {X : I → Over U}
+    (hX : (J.over U).CoversTop X)
+    {K : I → Type (max u v)} {Y : ∀ i : I, K i → Over (X i).left}
+    (hY : ∀ i : I, (J.over (X i).left).CoversTop (Y i)) :
+    (J.over U).CoversTop
+      (fun a : Σ i : I, K i ↦ Over.mk ((Y a.1 a.2).hom ≫ (X a.1).hom)) := by
+  -- We convert both slice covers to ambient covering sieves and compose them with `bindOfArrows`.
+  rw [GrothendieckTopology.coversTop_iff_of_isTerminal
+    (J := J.over U) (X := Over.mk (𝟙 U)) (hX := Over.mkIdTerminal)]
+  rw [GrothendieckTopology.mem_over_iff, overSieveOfObjectsEqOfArrows]
+  have hX' :
+      Sieve.ofArrows (fun i ↦ (X i).left) (fun i ↦ (X i).hom) ∈ J U := by
+    have hXTerminal :
+        Sieve.ofObjects X (Over.mk (𝟙 U)) ∈ (J.over U) (Over.mk (𝟙 U)) :=
+      (GrothendieckTopology.coversTop_iff_of_isTerminal
+        (J := J.over U) (X := Over.mk (𝟙 U)) (hX := Over.mkIdTerminal) X).1 hX
+    rw [GrothendieckTopology.mem_over_iff, overSieveOfObjectsEqOfArrows] at hXTerminal
+    exact hXTerminal
+  have hY' :
+      ∀ i : I,
+        Sieve.ofArrows (fun k ↦ (Y i k).left) (fun k ↦ (Y i k).hom) ∈ J (X i).left := by
+    intro i
+    have hYTerminal :
+        Sieve.ofObjects (Y i) (Over.mk (𝟙 (X i).left)) ∈
+          (J.over (X i).left) (Over.mk (𝟙 (X i).left)) :=
+      (GrothendieckTopology.coversTop_iff_of_isTerminal
+        (J := J.over (X i).left) (X := Over.mk (𝟙 (X i).left))
+        (hX := Over.mkIdTerminal) (Y i)).1 (hY i)
+    rw [GrothendieckTopology.mem_over_iff, overSieveOfObjectsEqOfArrows] at hYTerminal
+    exact hYTerminal
+  simpa [Presieve.bindOfArrows_ofArrows] using
+    J.bindOfArrows
+      (h := hX')
+      (R := fun i ↦ Presieve.ofArrows (fun k ↦ (Y i k).left) (fun k ↦ (Y i k).hom))
+      (fun i ↦ by simpa using hY' i)
+
+/-- Helper for Lemma 18.43.6: once the slice restriction functor is monoidal, restriction
+identifies the tensor product with the tensor of the restrictions. -/
+private noncomputable def tensor_over_iso
+    (U : C)
+    [MonoidalCategory (Sheaf (J.over U) (ModuleCat.{w} Λ))]
+    [Functor.Monoidal (J.overPullback (ModuleCat.{w} Λ) U)]
+    (F G : Sheaf J (ModuleCat.{w} Λ)) :
+    ((F ⊗ G).over U) ≅ (F.over U ⊗ G.over U) :=
+  -- Proof comment: the restriction functor is monoidal on the fixed slice site, so its
+  -- structural tensor comparison gives the required iso after reversing the canonical direction.
+  (Functor.Monoidal.μIso (J.overPullback (ModuleCat.{w} Λ) U) F G).symm
+
+/-- Helper for Lemma 18.43.6: on a fixed slice site, constant module-valued sheaves are closed
+under tensor once the constant-sheaf functor is monoidal. -/
+theorem isConstant_tensor_of_isConstant
+    (U : C)
+    [MonoidalCategory (Sheaf (J.over U) (ModuleCat.{w} Λ))]
+    [Functor.Monoidal (constantSheaf (J.over U) (ModuleCat.{w} Λ))]
+    {A B : Sheaf (J.over U) (ModuleCat.{w} Λ)}
+    [IsConstant (J.over U) A]
+    [IsConstant (J.over U) B] :
+    IsConstant (J.over U) (A ⊗ B) := by
+  -- We choose constant models for both tensor factors on the fixed slice site.
+  obtain ⟨M, ⟨eA⟩⟩ := Sheaf.mem_essImage_of_isConstant (J := J.over U) A
+  obtain ⟨N, ⟨eB⟩⟩ := Sheaf.mem_essImage_of_isConstant (J := J.over U) B
+  -- Tensor those models and identify the tensor of constant sheaves with the constant tensor.
+  exact Sheaf.isConstant_of_iso (J := J.over U)
+    (MonoidalCategory.tensorIso eA.symm eB.symm ≪≫
+      Functor.Monoidal.μIso (constantSheaf (J.over U) (ModuleCat.{w} Λ)) M N)
+
+/-- Helper for Lemma 18.43.6: a constant sheaf on a slice site comes with an explicit constant
+model. -/
+private theorem explicitConstantModel_of_isConstant
+    {U : C} {H : Sheaf (J.over U) (ModuleCat.{w} Λ)}
+    [IsConstant (J.over U) H] :
+    ∃ M : ModuleCat.{w} Λ,
+      Nonempty (H ≅ (constantSheaf (J.over U) (ModuleCat.{w} Λ)).obj M) := by
+  -- Proof comment: `IsConstant` is defined as membership in the essential image of
+  -- `constantSheaf`, so the owner extractor returns the required explicit model directly.
+  obtain ⟨M, ⟨e⟩⟩ := Sheaf.mem_essImage_of_isConstant (J := J.over U) H
+  exact ⟨M, ⟨e.symm⟩⟩
+
+/-- Helper for Lemma 18.43.6: on a fixed refinement chart, the tensor restriction is constant once
+the two restricted factors are constant on the relevant slice sites. -/
+private theorem tensorOverRefinementChart_isConstant
+    {U : C} {X : Over U} {Y : Over X.left}
+    {F G : Sheaf J (ModuleCat.{w} Λ)}
+    [MonoidalCategory (Sheaf (J.over Y.left) (ModuleCat.{w} Λ))]
+    [Functor.Monoidal (J.overPullback (ModuleCat.{w} Λ) Y.left)]
+    [Functor.Monoidal (constantSheaf (J.over Y.left) (ModuleCat.{w} Λ))]
+    [IsConstant (J.over X.left) (F.over X.left)]
+    [IsConstant (J.over Y.left) (G.over Y.left)] :
+    IsConstant (J.over Y.left) ((F ⊗ G).over Y.left) := by
+  -- Proof comment: first restrict the constant chart of `F` from `X.left` to `Y.left`.
+  letI : IsConstant (J.over Y.left) (F.over Y.left) :=
+    isConstant_over_of_isConstant_over (J := J) (Λ := Λ) (H := F) Y
+  -- Proof comment: then the tensor of the two constant slice models is constant on `J.over Y.left`.
+  letI : IsConstant (J.over Y.left) (F.over Y.left ⊗ G.over Y.left) :=
+    isConstant_tensor_of_isConstant (J := J) (Λ := Λ) Y.left
+  -- Proof comment: finally transport the tensor-constant model back across the monoidal
+  -- restriction comparison.
+  exact Sheaf.isConstant_congr (J := J.over Y.left)
+    ((tensor_over_iso (J := J) (Λ := Λ) Y.left F G).symm)
+
+/-- Helper for Lemma 18.43.6: a fixed refinement chart carries an explicit constant model for the
+restricted tensor sheaf. -/
+private theorem tensorConstantModelOnRefinementChart
+    {U : C} {X : Over U} {Y : Over X.left}
+    {F G : Sheaf J (ModuleCat.{w} Λ)}
+    [MonoidalCategory (Sheaf (J.over Y.left) (ModuleCat.{w} Λ))]
+    [Functor.Monoidal (J.overPullback (ModuleCat.{w} Λ) Y.left)]
+    [Functor.Monoidal (constantSheaf (J.over Y.left) (ModuleCat.{w} Λ))]
+    [IsConstant (J.over X.left) (F.over X.left)]
+    [IsConstant (J.over Y.left) (G.over Y.left)] :
+    ∃ M : ModuleCat.{w} Λ,
+      Nonempty (((F ⊗ G).over Y.left) ≅
+        (constantSheaf (J.over Y.left) (ModuleCat.{w} Λ)).obj M) := by
+  -- Proof comment: the previous lemma supplies constancy of the restricted tensor sheaf.
+  letI : IsConstant (J.over Y.left) ((F ⊗ G).over Y.left) :=
+    tensorOverRefinementChart_isConstant
+      (J := J) (Λ := Λ) (X := X) (Y := Y) (F := F) (G := G)
+  -- Proof comment: unpack the constant object from the essential-image witness and reorient the
+  -- resulting iso to match the explicit-model format used by local constancy.
+  obtain ⟨M, ⟨e⟩⟩ :=
+    explicitConstantModel_of_isConstant (J := J) (Λ := Λ) (U := Y.left)
+      (H := (F ⊗ G).over Y.left)
+  exact ⟨M, ⟨e⟩⟩
+
+/-- Helper for Lemma 18.43.6: after refining the local trivializing cover of `F` by local
+trivializing covers of `G`, the tensor sheaf has explicit constant models on each refined chart. -/
+private theorem tensorExplicitConstantModels
+    {F G : Sheaf J (ModuleCat.{w} Λ)}
+    [IsLocallyConstant F]
+    [IsLocallyConstant G]
+    (U : C) :
+    ∃ (I : Type (max u v)) (X : I → Over U), (J.over U).CoversTop X ∧
+      ∀ i : I,
+        ∃ M : ModuleCat.{w} Λ,
+          Nonempty (((F ⊗ G).over (X i).left) ≅
+            (constantSheaf (J.over (X i).left) (ModuleCat.{w} Λ)).obj M) := by
+  classical
+  obtain ⟨I, X, hX, hF⟩ := IsLocallyConstant.exists_constant_cover (F := F) U
+  -- Proof comment: over each chart of the `F`-cover, choose a further trivializing cover for `G`.
+  choose K Y hY hG using fun i : I ↦ IsLocallyConstant.exists_constant_cover (F := G) (X i).left
+  refine
+    ⟨Sigma K, fun a ↦ Over.mk ((Y a.1 a.2).hom ≫ (X a.1).hom),
+      coversTop_sigma_comp (J := J) hX hY, ?_⟩
+  intro a
+  let T : C := (Y a.1 a.2).left
+  letI : IsConstant (J.over (X a.1).left) (F.over (X a.1).left) := hF a.1
+  letI : IsConstant (J.over T) (G.over T) := hG a.1 a.2
+  -- Proof comment: fix the slice site over the refined chart and let instance search recover the
+  -- monoidal structure used by the chartwise tensor-constant model.
+  letI : ((J.over T).W : MorphismProperty ((Over T)ᵒᵖ ⥤ ModuleCat.{w} Λ)).IsMonoidal :=
+    slice_module_w_isMonoidal (J := J) (Λ := Λ) T
+  letI : MonoidalCategory (Sheaf (J.over T) (ModuleCat.{w} Λ)) :=
+    inferInstanceAs (MonoidalCategory (Sheaf (J.over T) (ModuleCat.{w} Λ)))
+  letI : Functor.Monoidal (J.overPullback (ModuleCat.{w} Λ) T) :=
+    inferInstanceAs (Functor.Monoidal (J.overPullback (ModuleCat.{w} Λ) T))
+  letI : Functor.Monoidal (constantSheaf (J.over T) (ModuleCat.{w} Λ)) :=
+    inferInstanceAs (Functor.Monoidal (constantSheaf (J.over T) (ModuleCat.{w} Λ)))
+  -- Proof comment: on that refined chart, the previous tensor helper packages the explicit
+  -- constant model for the restricted tensor sheaf.
+  simpa [T] using
+    tensorConstantModelOnRefinementChart
+      (J := J) (Λ := Λ) (X := X a.1) (Y := Y a.1 a.2) (F := F) (G := G)
+
+-- Proof sketch: choose a common refinement of local trivializing covers for `F` and `G`. On each
+-- member of that refinement the restricted sheaves are constant. The site-level monoidal
+-- hypothesis identifies the tensor product of constant sheaves with the constant sheaf of the
+-- tensor product module on each chart, so the restricted tensor sheaf is constant on the refined
+-- cover.
+/-- Lemma 18.43.6: if `\mathcal F` and `\mathcal G` are locally constant sheaves of
+`\Lambda`-modules, then `\mathcal F \otimes \mathcal G` is locally constant. -/
+@[stacks 093V]
+theorem isLocallyConstant_tensor
+    {F G : Sheaf J (ModuleCat.{w} Λ)}
+    [IsLocallyConstant F]
+    [IsLocallyConstant G] :
+    IsLocallyConstant (F ⊗ G) :=
+  by
+  -- Proof comment: explicit constant models on the refined cover give local constancy of the
+  -- tensor sheaf via the standard owner constructor.
+  exact Sheaf.isLocallyConstant_of_explicit_constant_models
+    (J := J) (D := ModuleCat.{w} Λ)
+    (tensorExplicitConstantModels (J := J) (Λ := Λ) (F := F) (G := G))
+
+end Modules
+
+end Sheaf
+
+end CategoryTheory

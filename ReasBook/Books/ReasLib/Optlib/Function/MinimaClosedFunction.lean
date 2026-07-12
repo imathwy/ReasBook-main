@@ -139,3 +139,4 @@ theorem isMinOn_unique {x y : E} (hf' : strong_quasi f 𝕜)
   apply not_le_of_gt h hy
 
 end
+

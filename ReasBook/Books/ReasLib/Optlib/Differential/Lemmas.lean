@@ -848,3 +848,4 @@ instance instIsBoundedLinearMapL2equiv :
       linarith [h, le_max_left ‖z.1‖ ‖z.2‖, le_max_right ‖z.1‖ ‖z.2‖]
 
 end ProdLp_diff
+

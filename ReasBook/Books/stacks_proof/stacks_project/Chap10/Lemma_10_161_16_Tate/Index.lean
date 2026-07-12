@@ -1,0 +1,5 @@
+import StacksProject_2024.Chap10.Lemma_10_161_16_Tate.BasicN2AndRoots
+import StacksProject_2024.Chap10.Lemma_10_161_16_Tate.PrincipalPrimeRoot
+import StacksProject_2024.Chap10.Lemma_10_161_16_Tate.ResidueFieldBridge
+import StacksProject_2024.Chap10.Lemma_10_161_16_Tate.PrincipalAdicSeparated
+import StacksProject_2024.Chap10.Lemma_10_161_16_Tate.LocalizedNormalization

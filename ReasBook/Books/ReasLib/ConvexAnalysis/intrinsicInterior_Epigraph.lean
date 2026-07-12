@@ -161,3 +161,4 @@ theorem lt_real_in_ridom_nonempty (f : E → EReal) (hf : ConvexOn ℝ (dom univ
   sorry
 
 end intrinsicinterior_epigraph
+

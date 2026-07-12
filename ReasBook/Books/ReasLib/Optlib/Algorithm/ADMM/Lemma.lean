@@ -963,7 +963,7 @@ lemma expended_u_gt_zero [Setting E₁ E₂ F admm admm_kkt] :
    let x_diff := x₁ (n + 1) - x₁'
    let succ_n := Nat.toPNat' (n + 1)
    calc
-      _= inner (𝕜 := ℝ) block Ae1 := by rfl
+      _= inner block Ae1 := by rfl
       _= inner ℝ (A₁† block) (e') := by rw [ContinuousLinearMap.adjoint_inner_left]
       _= inner ℝ (u' + A₁† y') (x_diff) := by
          let block₁ := y (n + 1) + ((1-τ) * ρ) • (A₁ (e₁ (n + 1)) + A₂ (e₂ (n + 1)))
@@ -1705,3 +1705,4 @@ lemma Φ_isdescending [Setting E₁ E₂ F admm admm_kkt] :
       at this;exact this
 
 end ADMM_Converge_Proof
+

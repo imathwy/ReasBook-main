@@ -280,3 +280,4 @@ theorem Banach_SubderivWithinAt.Nonempty (hf : ConvexOn ℝ s f)
   have : h' ∈ (Banach_SubderivWithinAt f s x) :=
     fun a ha => (by linarith [key2 (a, f a) ⟨ha, Eq.le rfl⟩])
   use h'
+

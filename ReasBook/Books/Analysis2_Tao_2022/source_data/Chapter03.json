@@ -1,0 +1,2138 @@
+[
+  {
+    "label": "Definition 3.1",
+    "env": "def",
+    "number_components": [
+      3,
+      1
+    ],
+    "extracted_labels": [
+      "def:3.1",
+      "eq:3.u1",
+      "eq:3.u2"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Limiting Values of Functions",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:3.1}\n[Limiting value of a function]\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces, let $E\\subseteq X$, and let $f:E\\to Y$. Let $x_0\\in X$ be an adherent point of $E$ (equivalently: for every $\\delta>0$ there exists $x\\in E$ with $d_X(x,x_0)<\\delta$), and let $L\\in Y$. The \nlimit of $f$ at $x_0$ along $E$ is $L$, written\n\\[\n\\label{eq:3.u1}\n\\lim_{x\\to x_0;\\, x\\in E} f(x)=L,\n\\]\nif for every $\\varepsilon>0$ there exists $\\delta>0$ such that for all $x\\in E$,\n\\[\n\\label{eq:3.u2}\n d_X(x,x_0) < \\delta \\implies d_Y\\bigl(f(x),L\\bigr)<\\varepsilon.\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 1
+  },
+  {
+    "label": "Proposition 3.1",
+    "env": "prop",
+    "number_components": [
+      3,
+      1
+    ],
+    "extracted_labels": [
+      "prop:3.1",
+      "eq:3.u3",
+      "eq:3.u4",
+      "prf:prop:3.1"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Limiting Values of Functions",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.1}\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces, let $f:X\\to Y$ be a function, and let $x_0\\in X$. Then $f$ is continuous at $x_0$ if and only if\n\\[\n\\label{eq:3.u3}\n\\lim_{x\\to x_0;\\, x\\in X} f(x)=f(x_0),\n\\]\ni.e., for every $\\varepsilon>0$ there exists $\\delta>0$ such that $0<d_X(x,x_0)<\\delta$ implies $d_Y(f(x),f(x_0))<\\varepsilon$.\n\nConsequently, $f$ is continuous on $X$ if and only if\n\\[\n\\label{eq:3.u4}\n\\lim_{x\\to x_0;\\, x\\in X} f(x)=f(x_0)\\quad\\text{for all }x_0\\in X.\n\\]\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.1"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.1}\nBy definition, $f$ is continuous at $x_0$ if and only if for every $\\varepsilon>0$ there exists $\\delta>0$ such that $d_X(x,x_0)<\\delta$ implies $d_Y(f(x),f(x_0))<\\varepsilon$. This is equivalent to the limit statement $\\lim_{x\\to x_0;\\, x\\in X} f(x)=f(x_0)$, since by definition $\\lim_{x\\to x_0} f(x)=L$ means: for every $\\varepsilon>0$ there exists $\\delta>0$ such that $0<d_X(x,x_0)<\\delta$ implies $d_Y(f(x),L)<\\varepsilon$, and here $L=f(x_0)$.\n\nFor the second assertion, $f$ is continuous on $X$ if and only if $f$ is continuous at every $x_0\\in X$, and by the first part this holds if and only if $\\lim_{x\\to x_0;\\, x\\in X} f(x)=f(x_0)$ for all $x_0\\in X$.\n\\end{proof}",
+    "index": 2
+  },
+  {
+    "label": "Example 3.1.1",
+    "env": "prop",
+    "number_components": [
+      3,
+      1,
+      1
+    ],
+    "extracted_labels": [],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Limiting Values of Functions",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "1",
+      "subsection_number": ""
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.1.1}\nIf $f : \\mathbb{R} \\to \\mathbb{R}$ is the function $f(x) = x^2 - 4$, then$$\\lim_{x \\to 1} f(x) = f(1) = 1 - 4 = -3$$since $f$ is continuous.\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.1"
+    ],
+    "proof": "\\begin{proof}\nGiven: Let $\\varepsilon > 0$ be arbitrary.Choice of $\\delta$: Choose $\\delta = \\min\\left(1, \\frac{\\varepsilon}{3}\\right)$.Verification: Suppose $0 < |x - 1| < \\delta$. Then:Since $\\delta \\le 1$, we have $|x - 1| < 1$, which implies $|x + 1| < 3$.Since $\\delta \\le \\frac{\\varepsilon}{3}$, we have:$$|f(x) - (-3)| = |x^2 - 1| = |x - 1||x + 1| < \\delta \\cdot 3 \\le \\left(\\frac{\\varepsilon}{3}\\right) \\cdot 3 = \\varepsilon$$Thus, by Definition 3.1, $\\lim_{x \\to 1} f(x) = -3$\n\\end{proof}",
+    "index": 3
+  },
+  {
+    "label": "Proposition 3.2",
+    "env": "prop",
+    "number_components": [
+      3,
+      2
+    ],
+    "extracted_labels": [
+      "prop:3.2",
+      "prf:prop:3.2",
+      "eq:3.u5"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Limiting Values of Functions",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.2}\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces, let $E\\subseteq X$, let $f:E\\to Y$ be a function, and let $x_0\\in X$ be an adherent point of $E$. Fix $L\\in Y$. The following statements are equivalent:\n\\begin{enumerate}\n\\item[(a)] $\\lim_{x\\to x_0;\\,x\\in E} f(x)=L$, i.e. for every $\\varepsilon>0$ there exists $\\delta>0$ such that for all $x\\in E$, if $0<d_X(x,x_0)<\\delta$ then $d_Y(f(x),L)<\\varepsilon$.\n\\item[(b)] For every sequence $(x^{(n)})_{n\\ge 1}$ in $E$ with $x^{(n)}\\to x_0$ in $(X,d_X)$ and $x^{(n)}\\neq x_0$ for all $n$, the sequence $\\bigl(f(x^{(n)})\\bigr)_{n\\ge 1}$ converges to $L$ in $(Y,d_Y)$.\n\\item[(c)] For every open set $V\\subseteq Y$ with $L\\in V$, there exists an open set $U\\subseteq X$ with $x_0\\in U$ such that $f(U\\cap E\\setminus\\{x_0\\})\\subseteq V$.\n\\item[(d)] Define $g:E\\cup\\{x_0\\}\\to Y$ by $g(x_0):=L$ and $g(x):=f(x)$ for $x\\in E\\setminus\\{x_0\\}$. Then $g$ is continuous at $x_0$. In addition, if $x_0\\in E$ and $f$ is continuous at $x_0$ (as a function on $E$ with the subspace metric), then $f(x_0)=L$.\n\\end{enumerate}\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.1"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.2}\n(a)$\\Rightarrow$(b): Assume (a). Let $(x^{(n)})$ be a sequence in $E$ with $x^{(n)}\\to x_0$ and $x^{(n)}\\neq x_0$ for all $n$. Given $\\varepsilon>0$, choose $\\delta>0$ such that $0<d_X(x,x_0)<\\delta$ and $x\\in E$ imply $d_Y(f(x),L)<\\varepsilon$. Since $x^{(n)}\\to x_0$, there exists $N$ such that $d_X(x^{(n)},x_0)<\\delta$ for all $n\\ge N$. Then for $n\\ge N$, $0<d_X(x^{(n)},x_0)<\\delta$, hence $d_Y(f(x^{(n)}),L)<\\varepsilon$. Therefore $f(x^{(n)})\\to L$.\n\n(b)$\\Rightarrow$(a): Assume (a) fails. Then there exists $\\varepsilon_0>0$ such that for every $\\delta>0$ there exists $x\\in E$ with $0<d_X(x,x_0)<\\delta$ and $d_Y(f(x),L)\\ge \\varepsilon_0$. For each $n\\ge 1$, apply this with $\\delta=1/n$ to choose $x^{(n)}\\in E$ such that $0<d_X(x^{(n)},x_0)<1/n$ and $d_Y(f(x^{(n)}),L)\\ge \\varepsilon_0$. Then $x^{(n)}\\to x_0$, but $f(x^{(n)})$ does not converge to $L$, contradicting (b). Hence (a) holds.\n\n(a)$\\Rightarrow$(c): Assume (a) and let $V\\subseteq Y$ be open with $L\\in V$. Choose $\\varepsilon>0$ such that $B_Y(L,\\varepsilon)\\subseteq V$. By (a), choose $\\delta>0$ such that $x\\in E$ and $0<d_X(x,x_0)<\\delta$ imply $f(x)\\in B_Y(L,\\varepsilon)\\subseteq V$. Let $U:=B_X(x_0,\\delta)$, which is open and contains $x_0$. Then for $x\\in U\\cap E\\setminus\\{x_0\\}$, one has $0<d_X(x,x_0)<\\delta$, so $f(x)\\in V$, proving (c).\n\n(c)$\\Rightarrow$(a): Assume (c). Let $\\varepsilon>0$ and set $V:=B_Y(L,\\varepsilon)$, which is open and contains $L$. By (c), there exists an open set $U\\subseteq X$ with $x_0\\in U$ and $f(U\\cap E\\setminus\\{x_0\\})\\subseteq B_Y(L,\\varepsilon)$. Since $U$ is open and contains $x_0$, there exists $\\delta>0$ with $B_X(x_0,\\delta)\\subseteq U$. If $x\\in E$ and $0<d_X(x,x_0)<\\delta$, then $x\\in U\\cap E\\setminus\\{x_0\\}$, hence $d_Y(f(x),L)<\\varepsilon$. This is (a).\n\n(c)$\\Rightarrow$(d): Assume (c). To show that $g$ is continuous at $x_0$, let $V\\subseteq Y$ be open with $g(x_0)=L\\in V$. By (c), there exists an open $U\\subseteq X$ with $x_0\\in U$ and $f(U\\cap E\\setminus\\{x_0\\})\\subseteq V$. For $x\\in (E\\cup\\{x_0\\})\\cap U$, either $x=x_0$ and $g(x)=L\\in V$, or else $x\\in U\\cap E\\setminus\\{x_0\\}$ and $g(x)=f(x)\\in V$. Thus $g\\bigl(((E\\cup\\{x_0\\})\\cap U)\\bigr)\\subseteq V$, which is continuity of $g$ at $x_0$.\n\n(d)$\\Rightarrow$(c): Assume (d) and let $V\\subseteq Y$ be open with $L\\in V$. Since $g$ is continuous at $x_0$ and $g(x_0)=L\\in V$, there exists an open set $U\\subseteq X$ with $x_0\\in U$ such that $g\\bigl((E\\cup\\{x_0\\})\\cap U\\bigr)\\subseteq V$. For $x\\in U\\cap E\\setminus\\{x_0\\}$, $g(x)=f(x)$, hence $f(U\\cap E\\setminus\\{x_0\\})\\subseteq V$, which is (c).\n\nThe implications (a)$\\Leftrightarrow$(c) and (c)$\\Leftrightarrow$(d) show (a)--(d) are equivalent.\n\nFinally, assume $x_0\\in E$ and $f$ is continuous at $x_0$ on $E$. If $f(x_0)\\ne L$, set $\\varepsilon:=\\tfrac12 d_Y(f(x_0),L)>0$. By continuity there exists $\\delta>0$ such that if $x\\in E$ and $d_X(x,x_0)<\\delta$ then $d_Y(f(x),f(x_0))<\\varepsilon$. Since $x_0$ is an adherent point of $E$, there exists $x\\in E$ with $0<d_X(x,x_0)<\\delta$. Then\n\\[\n\\label{eq:3.u5}\nd_Y(f(x),L)\\ge d_Y(f(x_0),L)-d_Y(f(x),f(x_0))>2\\varepsilon-\\varepsilon=\\varepsilon,\n\\]\nso $f(x)$ cannot converge to $L$ as $x\\to x_0$ within $E$, contradicting (a). Hence $f(x_0)=L$.\n\\end{proof}",
+    "index": 4
+  },
+  {
+    "label": "Proposition 3.3",
+    "env": "prop",
+    "number_components": [
+      3,
+      3
+    ],
+    "extracted_labels": [
+      "prop:3.3",
+      "eq:3.u6",
+      "prf:prop:3.3",
+      "eq:3.u7"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Limiting Values of Functions",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.3}\n[Uniqueness of limit]\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces, let $E\\subseteq X$, let $f:E\\to Y$, and let $x_0\\in X$ be an adherent point of $E$. If $L,M\\in Y$ satisfy\n\\[\n\\label{eq:3.u6}\n\\lim_{x\\to x_0;\\,x\\in E} f(x)=L\\quad\\text{and}\\quad \\lim_{x\\to x_0;\\,x\\in E} f(x)=M,\n\\]\nthen $L=M$.\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.1"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.3}\nAssume $\\lim_{x\\to x_0;\\,x\\in E} f(x)=L$ and $\\lim_{x\\to x_0;\\,x\\in E} f(x)=M$. Suppose for contradiction that $L\\neq M$. Set $\\varepsilon:=\\tfrac12 d_Y(L,M)>0$.\n\nBy the definition of limit, there exists $\\delta_1>0$ such that for all $x\\in E$ with $0<d_X(x,x_0)<\\delta_1$, one has $d_Y(f(x),L)<\\varepsilon$. Likewise, there exists $\\delta_2>0$ such that for all $x\\in E$ with $0<d_X(x,x_0)<\\delta_2$, one has $d_Y(f(x),M)<\\varepsilon$. Let $\\delta:=\\min\\{\\delta_1,\\delta_2\\}>0$.\n\nSince $x_0$ is an adherent point of $E$, there exists $x\\in E$ with $0<d_X(x,x_0)<\\delta$. For this $x$, both inequalities hold, hence by the triangle inequality,\n\\[\n\\label{eq:3.u7}\nd_Y(L,M)\\le d_Y(L,f(x))+d_Y(f(x),M)<\\varepsilon+\\varepsilon=2\\varepsilon=d_Y(L,M),\n\\]\na contradiction. Therefore $L=M$.\n\\end{proof}",
+    "index": 5
+  },
+  {
+    "label": "Definition 3.2",
+    "env": "def",
+    "number_components": [
+      3,
+      2
+    ],
+    "extracted_labels": [
+      "def:3.2",
+      "eq:3.u8",
+      "eq:3.u9",
+      "eq:3.u10"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Pointwise and Uniform Convergence",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:3.2}\n[Pointwise convergence]\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces. Let $(f^{(n)})_{n=1}^\\infty$ be a sequence of functions $f^{(n)}:X\\to Y$, and let $f:X\\to Y$.\n\nThe sequence $(f^{(n)})_{n=1}^\\infty$ \\emph{converges pointwise} to $f$ on $X$ if for every $x\\in X$,\n\\[\n\\label{eq:3.u8}\n\\lim_{n\\to\\infty} f^{(n)}(x)=f(x),\n\\]\nthat is,\n\\[\n\\label{eq:3.u9}\n\\lim_{n\\to\\infty} d_Y\\bigl(f^{(n)}(x),f(x)\\bigr)=0.\n\\]\nEquivalently, $(f^{(n)})$ converges pointwise to $f$ if for every $x\\in X$ and every $\\varepsilon>0$ there exists $N\\in\\mathbb{N}$ such that for all $n\\ge N$,\n\\[\n\\label{eq:3.u10}\nd_Y\\bigl(f^{(n)}(x),f(x)\\bigr)<\\varepsilon.\n\\]\nIf $(f^{(n)})$ converges pointwise to $f$, then $f$ is called the \\emph{pointwise limit} of $(f^{(n)})$.\n\\end{definition}",
+    "dependencies": [
+      "Definition 3.1"
+    ],
+    "proof": "",
+    "index": 6
+  },
+  {
+    "label": "Example 3.2.3",
+    "env": "prop",
+    "number_components": [
+      3,
+      2,
+      3
+    ],
+    "extracted_labels": [],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Pointwise and Uniform Convergence",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "2",
+      "subsection_number": ""
+    },
+    "content": "\\begin{prop}\n\\label{prop:3.2.3}\nfor any fixed $x \\in \\mathbb{R}$, the sequence $f^{(n)}(x) = \\frac{x}{n}$ converges to $L = 0$ as $n \\to \\infty$\n\\end{prop}",
+    "dependencies": [
+      "Definition 3.2"
+    ],
+    "proof": "\\begin{proof}\nProof:Given: Let $\\varepsilon > 0$ be any arbitrary positive real number.Goal: We must find a threshold $N$ (analogous to $1/\\delta$ in the $n \\to \\infty$ context) such that for all $n > N$, the distance $d_Y(f^{(n)}(x), 0) < \\varepsilon$.Analysis:We examine the distance in the metric space $(\\mathbb{R}, d_{Euclidean})$:$$d_Y(f^{(n)}(x), 0) = \\left| \\frac{x}{n} - 0 \\right| = \\frac{|x|}{n}$$We want $\\frac{|x|}{n} < \\varepsilon$. Solving for $n$, we get $n > \\frac{|x|}{\\varepsilon}$.Selection of Threshold: By the Archimedean Property, there exists an integer $N$ such that $N > \\frac{|x|}{\\varepsilon}$.Verification: For all $n \\in \\mathbb{N}$, if $n > N$, then:$$d_Y(f^{(n)}(x), 0) = \\frac{|x|}{n} < \\frac{|x|}{N} < \\frac{|x|}{|x|/\\varepsilon} = \\varepsilon$$This satisfies the condition in Definition 3.1.\n\\end{proof}",
+    "index": 7
+  },
+  {
+    "label": "Example 3.2.4",
+    "env": "prop",
+    "number_components": [
+      3,
+      2,
+      4
+    ],
+    "extracted_labels": [],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Pointwise and Uniform Convergence",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "2",
+      "subsection_number": ""
+    },
+    "content": "\\begin{prop}\n\\label{prop:3.2.4}\nLet $f^{(n)}: [0, 1] \\to \\mathbb{R}$ be defined by $f^{(n)}(x) := x^n$. The pointwise limit $f: [0, 1] \\to \\mathbb{R}$ is defined as:$$f(x) := \\begin{cases} 0 & \\text{if } 0 \\le x < 1 \\\\ 1 & \\text{if } x = 1 \\end{cases}$$\n\\end{prop}",
+    "dependencies": [
+      "Definition 3.2"
+    ],
+    "proof": "\\begin{proof}\nProof of Pointwise ConvergenceCase $x = 1$: $f^{(n)}(1) = 1^n = 1$ for all $n$. Thus, $\\lim_{n \\to \\infty} f^{(n)}(1) = 1 = f(1)$.Case $0 \\le x < 1$: Since $x$ is a fixed real number less than $1$, the geometric sequence $x^n$ converges to $0$. Thus, $\\lim_{n \\to \\infty} f^{(n)}(x) = 0 = f(x)$\nProof of Discontinuity of the Limit Function $f$While each $f^{(n)}(x) = x^n$ is continuous on $[0,1]$, we show $f$ is discontinuous at $x_0 = 1$ using the limit definition:Evaluate the limit as $x \\to 1$ along $E = [0, 1]$:For any $x \\in [0, 1)$, $f(x) = 0$. Therefore, $\\lim_{x \\to 1; x \\in [0, 1)} f(x) = 0$.Compare with the function value:$f(1) = 1$.Conclusion:Since $\\lim_{x \\to 1} f(x) = 0 \\neq 1 = f(1)$, the function $f$ is not continuous at $x=1$.\n\\end{proof}",
+    "index": 8
+  },
+  {
+    "label": "Example 3.2.5",
+    "env": "prop",
+    "number_components": [
+      3,
+      2,
+      5
+    ],
+    "extracted_labels": [],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Pointwise and Uniform Convergence",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "2",
+      "subsection_number": ""
+    },
+    "content": "\\begin{prop}\n\\label{prop:3.2.5}\nIf $\\lim_{x \\to x_0; x \\in E} f^{(n)}(x) = L$ for every $n$, and $f^{(n)}$ converges pointwise to $f$, we cannot always take limits conclude that $\\lim_{x \\to x_0; x \\in E} f(x) = L$. The previous example is also a counterexample here: observe that $\\lim_{x \\to 1; x \\in [0,1)} x^n = 1$ for every $n$, but $x^n$ converges pointwise to the function $f$ defined in the previous paragraph, and $\\lim_{x \\to 1; x \\in [0,1)} f(x) = 0$. In particular, we see that$$\\lim_{n \\to \\infty} \\lim_{x \\to x_0; x \\in X} f^{(n)}(x) \\neq \\lim_{x \\to x_0; x \\in X} \\lim_{n \\to \\infty} f^{(n)}(x)$$(cf. Example 1.2.8). Thus pointwise convergence does not preserve limits.\n\\end{prop}",
+    "dependencies": [
+      "Definition 3.2"
+    ],
+    "proof": "\\begin{proof}\nKey Takeaways and Mathematical DescriptionThe primary purpose of this example is to show that pointwise convergence is \"too weak\" to allow the swapping of limit operations.The Problem: If we have a sequence of functions $f^{(n)}$ where each function has a limit $L$ at a certain point $x_0$, the final limit function $f$ might have a completely different limit at that same point.The Counterexample: Using $f^{(n)}(x) = x^n$ on $[0, 1)$:For any fixed $n$, as $x$ approaches $1$, $x^n$ approaches $1$. So, $\\lim_{x \\to 1} f^{(n)}(x) = 1$.However, as $n \\to \\infty$, the sequence $f^{(n)}(x)$ converges pointwise to $f(x) = 0$ for all $x \\in [0, 1)$.The limit of this $f(x)$ as $x \\to 1$ is clearly $0$.The Result: $1 \\neq 0$, proving that you cannot simply swap $\\lim_{n \\to \\infty}$ and $\\lim_{x \\to x_0}$.\n\\end{proof}",
+    "index": 9
+  },
+  {
+    "label": "Example 3.2.6",
+    "env": "prop",
+    "number_components": [
+      3,
+      2,
+      6
+    ],
+    "extracted_labels": [],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Pointwise and Uniform Convergence",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "2",
+      "subsection_number": ""
+    },
+    "content": "\\begin{prop}\n\\label{prop:3.2.6}\nSuppose that $f^{(n)} : [a, b] \\to \\mathbb{R}$ is a sequence of Riemann-integrable functions on the interval $[a, b]$. If $\\int_{[a, b]} f^{(n)} = L$ for every $n$, and $f^{(n)}$ converges pointwise to some new function $f$, this does not mean that $\\int_{[a, b]} f = L$. An example comes by setting $[a, b] := [0, 1]$, and letting $f^{(n)}$ be the function $f^{(n)}(x) := 2n$ when $x \\in [1/2n, 1/n]$, and $f^{(n)}(x) := 0$ for all other values of $x$. Then $f^{(n)}$ converges pointwise to the zero function $f(x) := 0$. On the other hand, $\\int_{[0, 1]} f^{(n)} = 1$ for every $n$, while $\\int_{[0, 1]} f = 0$. In particular, we have an example where$$\\lim_{n \\to \\infty} \\int_{[a, b]} f^{(n)} \\neq \\int_{[a, b]} \\lim_{n \\to \\infty} f^{(n)} \\text{.}$$\n\\end{prop}",
+    "dependencies": [
+      "Definition 3.2"
+    ],
+    "proof": "\\begin{proof}\nProof and Analysis of Example 3.2.6This example demonstrates that pointwise convergence does not preserve the integral; specifically, you cannot generally swap a limit and an integral.1. Integral of each $f^{(n)}$For each $n$, the function $f^{(n)}$ is a \"spike\" of height $2n$ over an interval of width $1/n - 1/2n = 1/2n$.Calculation:$$\\int_0^1 f^{(n)}(x) \\, dx = \\int_{1/2n}^{1/n} 2n \\, dx = 2n \\times \\left( \\frac{1}{n} - \\frac{1}{2n} \\right) = 2n \\times \\frac{1}{2n} = 1 \\text{.}$$Thus, the sequence of integrals is constant: $(1, 1, 1, \\dots)$, so $\\lim_{n \\to \\infty} \\int f^{(n)} = 1$.2. Pointwise Limit $f$We must show $f^{(n)}(x) \\to 0$ for every $x \\in [0, 1]$.Case $x = 0$: For all $n$, $f^{(n)}(0) = 0$ (since $0$ is never in $[1/2n, 1/n]$). Thus, $\\lim_{n \\to \\infty} f^{(n)}(0) = 0$.Case $x > 0$: As $n$ increases, the interval $[1/2n, 1/n]$ shrinks and moves toward the origin. Eventually, for a large enough $N$, $1/N < x$. For all $n > N$, $x$ will lie to the right of the interval $[1/2n, 1/n]$, meaning $f^{(n)}(x) = 0$.Thus, $f^{(n)} \\to f$ pointwise, where $f(x) = 0$ for all $x$.3. Integral of the LimitThe integral of the zero function $f$ is:$$\\int_0^1 f(x) \\, dx = \\int_0^1 0 \\, dx = 0 \\text{.}$$III. ConclusionSince $1 \\neq 0$, this confirms that pointwise convergence is insufficient to guarantee that the limit of the integrals equals the integral of the limit. This serves as the primary motivation for studying uniform convergence, which does allow for this interchange.\n\\end{proof}",
+    "index": 10
+  },
+  {
+    "label": "Example 3.2.7",
+    "env": "prop",
+    "number_components": [
+      3,
+      2,
+      7
+    ],
+    "extracted_labels": [],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Pointwise and Uniform Convergence",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "2",
+      "subsection_number": ""
+    },
+    "content": "\\begin{prop}\n\\label{prop:3.2.7}\n[Moving bump: pointwise convergence does not commute with integration]\nFor each $n\\in\\mathbb N$, define $f_n:\\mathbb R\\to\\mathbb R$ by\n\\[\nf_n(x)=\n\\begin{cases}\n1, & x\\in [n,n+1],\\\\\n0, & \\text{otherwise}.\n\\end{cases}\n\\]\nThen:\n\\begin{enumerate}\n\\item $f_n(x)\\to 0$ pointwise on $\\mathbb R$.\n\\item $\\displaystyle \\int_{\\mathbb R} f_n(x)\\,dx = 1$ for all $n$.\n\\item $\\displaystyle \\int_{\\mathbb R} \\lim_{n\\to\\infty} f_n(x)\\,dx = 0$.\n\\end{enumerate}\nHence\n\\[\n\\lim_{n\\to\\infty}\\int_{\\mathbb R} f_n(x)\\,dx \\neq \\int_{\\mathbb R} \\lim_{n\\to\\infty} f_n(x)\\,dx.\n\\]\n\\end{prop}",
+    "dependencies": [
+      "Definition 3.2"
+    ],
+    "proof": "\\begin{proof}\nFix $x\\in\\mathbb R$. If $n>x$, then $x\\notin[n,n+1]$, so $f_n(x)=0$ for all sufficiently large $n$; hence $f_n(x)\\to 0$ pointwise.\nAlso, $\\int_{\\mathbb R} f_n=\\int_n^{n+1}1\\,dx=1$ for every $n$.\nSince the pointwise limit is the zero function, its integral is $0$.\n\\end{proof}",
+    "index": 11
+  },
+  {
+    "label": "Example 3.2.8",
+    "env": "prop",
+    "number_components": [
+      3,
+      2,
+      8
+    ],
+    "extracted_labels": [],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Pointwise and Uniform Convergence",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "2",
+      "subsection_number": ""
+    },
+    "content": "\\begin{prop}\n\\label{prop:3.2.8}\n[Pointwise limit of $x^n$ on $[0,1]$]\nLet $f_n:[0,1]\\to\\mathbb R$ be $f_n(x)=x^n$. Then $f_n\\to f$ pointwise on $[0,1]$, where\n\\[\nf(x)=\n\\begin{cases}\n0, & 0\\le x<1,\\\\\n1, & x=1.\n\\end{cases}\n\\]\n\\end{prop}",
+    "dependencies": [
+      "Definition 3.2"
+    ],
+    "proof": "\\begin{proof}\nIf $0\\le x<1$, then $x^n\\to 0$ as $n\\to\\infty$. If $x=1$, then $x^n=1$ for all $n$.\n\\end{proof}",
+    "index": 12
+  },
+  {
+    "label": "Example 3.2.9",
+    "env": "prop",
+    "number_components": [
+      3,
+      2,
+      9
+    ],
+    "extracted_labels": [],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Pointwise and Uniform Convergence",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "2",
+      "subsection_number": ""
+    },
+    "content": "\\begin{prop}\n\\label{prop:3.2.9}\n[$x^n$ does not converge uniformly on $[0,1]$]\nLet $f_n(x)=x^n$ on $[0,1]$, and let $f$ be the pointwise limit above. Then $f_n\\not\\to f$ uniformly on $[0,1]$.\n\\end{prop}",
+    "dependencies": [
+      "Definition 3.2"
+    ],
+    "proof": "\\begin{proof}\nTake $\\varepsilon=\\tfrac12$. For any $N\\in\\mathbb N$, choose $x_N=2^{-1/N}\\in(0,1)$.\nThen $f(x_N)=0$ and\n\\[\n|f_N(x_N)-f(x_N)| = x_N^N = \\tfrac12 \\ge \\varepsilon.\n\\]\nThus for every $N$ there exists $n\\ge N$ (namely $n=N$) and $x\\in[0,1]$ such that\n$|f_n(x)-f(x)|\\ge \\varepsilon$, so uniform convergence fails.\n\\end{proof}",
+    "index": 13
+  },
+  {
+    "label": "Definition 3.3",
+    "env": "def",
+    "number_components": [
+      3,
+      3
+    ],
+    "extracted_labels": [
+      "def:3.3",
+      "eq:3.u11"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Pointwise and Uniform Convergence",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:3.3}\n[Uniform convergence]\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces. Let $(f^{(n)})_{n=1}^{\\infty}$ be a sequence of functions $f^{(n)}:X\\to Y$, and let $f:X\\to Y$ be a function. The sequence $(f^{(n)})_{n=1}^{\\infty}$ is said to \\emph{converge uniformly} to $f$ on $X$ if for every $\\epsilon>0$ there exists $N\\in\\mathbb{N}$ such that for all $n\\ge N$ and all $x\\in X$,\n\\[\n\\label{eq:3.u11}\nd_Y\\bigl(f^{(n)}(x),f(x)\\bigr)<\\epsilon.\n\\]\nIf this holds, then $f$ is called the \\emph{uniform limit} of the sequence $(f^{(n)})_{n=1}^{\\infty}$ on $X$.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 14
+  },
+  {
+    "label": "Example 3.2.10",
+    "env": "prop",
+    "number_components": [
+      3,
+      2,
+      10
+    ],
+    "extracted_labels": [
+      "prop:3.4",
+      "prf:prop:3.4",
+      "eq:3.u12",
+      "eq:3.u13"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Pointwise and Uniform Convergence",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.4}\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces. Let $(f^{(n)})_{n=1}^\\infty$ be a sequence of functions $f^{(n)}:X\\to Y$, and let $f:X\\to Y$. If $f^{(n)}$ converges uniformly to $f$ on $X$, then $f^{(n)}$ converges pointwise to $f$ on $X$, i.e., for every $x\\in X$ one has $d_Y\\bigl(f^{(n)}(x),f(x)\\bigr)\\to 0$ as $n\\to\\infty$.\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.3"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.4}\nAssume $f^{(n)}\\to f$ uniformly on $X$. Let $x\\in X$ be arbitrary and let $\\varepsilon>0$. By uniform convergence, there exists $N\\in\\mathbb{N}$ such that for all $n\\ge N$ and all $t\\in X$,\n\\[\n\\label{eq:3.u12}\nd_Y\\bigl(f^{(n)}(t),f(t)\\bigr)<\\varepsilon.\n\\]\nIn particular, for all $n\\ge N$,\n\\[\n\\label{eq:3.u13}\nd_Y\\bigl(f^{(n)}(x),f(x)\\bigr)<\\varepsilon.\n\\]\nTherefore $d_Y\\bigl(f^{(n)}(x),f(x)\\bigr)\\to 0$ as $n\\to\\infty$. Since $x\\in X$ was arbitrary, $f^{(n)}$ converges pointwise to $f$ on $X$.\n\\end{proof}",
+    "index": 15
+  },
+  {
+    "label": "Example 3.2.11",
+    "env": "prop",
+    "number_components": [
+      3,
+      2,
+      11
+    ],
+    "extracted_labels": [],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Pointwise and Uniform Convergence",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "2",
+      "subsection_number": "0"
+    },
+    "content": "\\begin{proposition}\n[Uniform convergence of $x/n$ on $[0,1]$]\n\\label{prop:3.2.11}\nLet $f_n:[0,1]\\to\\mathbb R$ be defined by\n\\[\nf_n(x)=\\frac{x}{n},\n\\]\nand let $f:[0,1]\\to\\mathbb R$ be the zero function $f(x)=0$.  \nThen $f_n$ converges to $f$ uniformly on $[0,1]$.\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.2",
+      "Definition 3.3"
+    ],
+    "proof": "\\begin{proof}\n\\label{prop:3.2.11}\nLet $\\varepsilon>0$ be given. For any $x\\in[0,1]$ and any $n\\in\\mathbb N$, we have\n\\[\n|f_n(x)-f(x)|=\\left|\\frac{x}{n}-0\\right|=\\frac{x}{n}\\le \\frac{1}{n}.\n\\]\nChoose $N\\in\\mathbb N$ such that $N>\\frac{1}{\\varepsilon}$. Then for all $n\\ge N$ and all $x\\in[0,1]$,\n\\[\n|f_n(x)-f(x)|\\le \\frac{1}{n}\\le \\frac{1}{N}<\\varepsilon.\n\\]\nSince the choice of $N$ depends only on $\\varepsilon$ and not on $x$, the convergence is uniform.\n\\end{proof}",
+    "index": 16
+  },
+  {
+    "label": "Example 3.2.12",
+    "env": "prop",
+    "number_components": [
+      3,
+      2,
+      12
+    ],
+    "extracted_labels": [
+      "prop:3.5",
+      "prf:prop:3.5"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Pointwise and Uniform Convergence",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.2.12}\nLet $X$ be a set, let $(Y,d)$ be a metric space, let $E\\subseteq X$, and let $f^{(n)}:X\\to Y$ and $f:X\\to Y$.\n\\begin{enumerate}\n\\item If $f^{(n)}\\to f$ pointwise on $X$, then $f^{(n)}|_E\\to f|_E$ pointwise on $E$.\n\\item If $f^{(n)}\\to f$ uniformly on $X$, then $f^{(n)}|_E\\to f|_E$ uniformly on $E$.\n\\end{enumerate}\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.3"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.2.12}\n(1) Assume $f^{(n)}\\to f$ pointwise on $X$. For any $x\\in E$, since $x\\in X$, one has $d\\bigl(f^{(n)}(x),f(x)\\bigr)\\to 0$ as $n\\to\\infty$. Because $f^{(n)}|_E(x)=f^{(n)}(x)$ and $f|_E(x)=f(x)$, it follows that $d\\bigl(f^{(n)}|_E(x),f|_E(x)\\bigr)\\to 0$. Thus $f^{(n)}|_E\\to f|_E$ pointwise on $E$.\n\n(2) Assume $f^{(n)}\\to f$ uniformly on $X$. Then for every $\\varepsilon>0$ there exists $N\\in\\mathbb{N}$ such that for all $n\\ge N$ and all $x\\in X$, $d\\bigl(f^{(n)}(x),f(x)\\bigr)<\\varepsilon$. In particular, for all $n\\ge N$ and all $x\\in E\\subseteq X$, $d\\bigl(f^{(n)}|_E(x),f|_E(x)\\bigr)=d\\bigl(f^{(n)}(x),f(x)\\bigr)<\\varepsilon$. Hence $f^{(n)}|_E\\to f|_E$ uniformly on $E$.\n\\end{proof}",
+    "index": 17
+  },
+  {
+    "label": "Theorem 3.3.1",
+    "env": "thm",
+    "number_components": [
+      3,
+      3,
+      1
+    ],
+    "extracted_labels": [
+      "thm:3.1",
+      "prf:thm:3.1",
+      "eq:3.u23",
+      "eq:3.u24",
+      "eq:3.u25"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Convergence and Continuity",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:3.3.1}\n[Uniform limits preserve continuity I]\nSuppose $(X,d_X)$ and $(Y,d_Y)$ are metric spaces. Let $(f^{(n)})_{n=1}^{\\infty}$ be a sequence of functions $f^{(n)}:X\\to Y$ that converges uniformly on $X$ to a function $f:X\\to Y$. Fix $x_0\\in X$. If each $f^{(n)}$ is continuous at $x_0$, then $f$ is continuous at $x_0$.\n\\end{theorem}",
+    "dependencies": [
+      "Definition 3.3"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:thm:3.3.1}\nFix $\\varepsilon>0$. By uniform convergence of $f^{(n)}$ to $f$, there exists $N\\in\\mathbb{N}$ such that for all $x\\in X$,\n\\[\n\\label{eq:3.u23}\nd_Y\\bigl(f^{(N)}(x),f(x)\\bigr)<\\varepsilon/3.\n\\]\nSince $f^{(N)}$ is continuous at $x_0$, there exists $\\delta>0$ such that whenever $d_X(x,x_0)<\\delta$,\n\\[\n\\label{eq:3.u24}\nd_Y\\bigl(f^{(N)}(x),f^{(N)}(x_0)\\bigr)<\\varepsilon/3.\n\\]\nFor such $x$, the triangle inequality gives\n\\[\n\\label{eq:3.u25}\n\\begin{aligned}\nd_Y\\bigl(f(x),f(x_0)\\bigr)\n&\\le d_Y\\bigl(f(x),f^{(N)}(x)\\bigr)+d_Y\\bigl(f^{(N)}(x),f^{(N)}(x_0)\\bigr)+d_Y\\bigl(f^{(N)}(x_0),f(x_0)\\bigr)\\\\\n&<\\varepsilon/3+\\varepsilon/3+\\varepsilon/3=\\varepsilon.\n\\end{aligned}\n\\]\nThus, for every $\\varepsilon>0$ there exists $\\delta>0$ such that $d_X(x,x_0)<\\delta$ implies $d_Y(f(x),f(x_0))<\\varepsilon$, so $f$ is continuous at $x_0$.\n\\end{proof}",
+    "index": 18
+  },
+  {
+    "label": "Theorem 3.3.2",
+    "env": "thm",
+    "number_components": [
+      3,
+      3,
+      2
+    ],
+    "extracted_labels": [
+      "thm:3.2",
+      "prf:thm:3.2",
+      "eq:3.u26",
+      "eq:3.u27",
+      "eq:3.u28"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Convergence and Continuity",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:3.3.2}\n[Uniform limits preserve continuity]\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces. Let $(f^{(n)})_{n=1}^{\\infty}$ be a sequence of functions $f^{(n)}:X\\to Y$ that converges uniformly to a function $f:X\\to Y$. If each $f^{(n)}$ is continuous at every point of $X$, then $f$ is continuous at every point of $X$.\n\\end{theorem}",
+    "dependencies": [
+      "Definition 3.3",
+      "Theorem 3.3.1"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:thm:3.3.2}\nFix $x\\in X$ and let $\\varepsilon>0$. By uniform convergence, there exists $N\\in\\mathbb{N}$ such that for all $n\\ge N$ and all $z\\in X$,\n\\[\n\\label{eq:3.u26}\nd_Y\\bigl(f^{(n)}(z),f(z)\\bigr)<\\frac{\\varepsilon}{3}.\n\\]\nSince $f^{(N)}$ is continuous at $x$, there exists $\\delta>0$ such that if $d_X(z,x)<\\delta$, then\n\\[\n\\label{eq:3.u27}\nd_Y\\bigl(f^{(N)}(z),f^{(N)}(x)\\bigr)<\\frac{\\varepsilon}{3}.\n\\]\nFor any $z\\in X$ with $d_X(z,x)<\\delta$, the triangle inequality gives\n\\[\n\\label{eq:3.u28}\n\\begin{aligned}\nd_Y\\bigl(f(z),f(x)\\bigr)\n&\\le d_Y\\bigl(f(z),f^{(N)}(z)\\bigr)+d_Y\\bigl(f^{(N)}(z),f^{(N)}(x)\\bigr)+d_Y\\bigl(f^{(N)}(x),f(x)\\bigr) \\\\\n&<\\frac{\\varepsilon}{3}+\\frac{\\varepsilon}{3}+\\frac{\\varepsilon}{3}=\\varepsilon.\n\\end{aligned}\n\\]\nThus for every $\\varepsilon>0$ there exists $\\delta>0$ such that $d_X(z,x)<\\delta$ implies $d_Y(f(z),f(x))<\\varepsilon$, so $f$ is continuous at $x$. Since $x\\in X$ was arbitrary, $f$ is continuous on $X$.\n\\end{proof}",
+    "index": 19
+  },
+  {
+    "label": "Proposition 3.3.3",
+    "env": "prop",
+    "number_components": [
+      3,
+      3,
+      3
+    ],
+    "extracted_labels": [
+      "prop:3.10",
+      "eq:3.u29",
+      "eq:3.u30",
+      "eq:3.u31",
+      "prf:prop:3.10",
+      "eq:3.u32",
+      "eq:3.u33",
+      "eq:3.u34",
+      "eq:3.u35",
+      "eq:3.u36",
+      "eq:3.u37"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Convergence and Continuity",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.3.3}\n[Interchange of limits and uniform limits]\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces with $Y$ complete, and let $E\\subseteq X$. Let $(f^{(n)})_{n\\ge 1}$ be a sequence of functions $f^{(n)}:E\\to Y$ that converges uniformly on $E$ to a function $f:E\\to Y$. Let $x_0\\in X$ be an adherent point of $E$, and suppose that for each $n\\ge 1$ the limit\n\\[\n\\label{eq:3.u29}\n\\ell_n:=\\lim_{x\\to x_0;\\,x\\in E} f^{(n)}(x)\n\\]\nexists in $Y$. Then the sequence $(\\ell_n)_{n\\ge 1}$ converges in $Y$, the limit\n\\[\n\\label{eq:3.u30}\n\\lim_{x\\to x_0;\\,x\\in E} f(x)\n\\]\nexists in $Y$, and\n\\[\n\\label{eq:3.u31}\n\\lim_{n\\to\\infty}\\,\\lim_{x\\to x_0;\\, x\\in E} f^{(n)}(x)\n=\\lim_{x\\to x_0;\\, x\\in E}\\,\\lim_{n\\to\\infty} f^{(n)}(x).\n\\]\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.3"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.3.3}\nFix $\\varepsilon>0$. By uniform convergence, there exists $N\\in\\mathbb{N}$ such that for all $n\\ge N$ and all $x\\in E$,\n\\[\n\\label{eq:3.u32}\nd_Y\\bigl(f^{(n)}(x),f(x)\\bigr)<\\varepsilon/3.\n\\]\n\nFirst, $(\\ell_n)$ is Cauchy in $Y$. Let $m,n\\ge N$. Since $\\ell_n=\\lim_{x\\to x_0,\\,x\\in E} f^{(n)}(x)$ and $\\ell_m=\\lim_{x\\to x_0,\\,x\\in E} f^{(m)}(x)$, there exists $\\delta>0$ such that for all $x\\in E$ with $d_X(x,x_0)<\\delta$,\n\\[\n\\label{eq:3.u33}\nd_Y\\bigl(f^{(n)}(x),\\ell_n\\bigr)<\\varepsilon/3,\\qquad d_Y\\bigl(f^{(m)}(x),\\ell_m\\bigr)<\\varepsilon/3.\n\\]\nFor such $x$, the triangle inequality gives\n\\[\n\\label{eq:3.u34}\n\\begin{aligned}\n d_Y(\\ell_n,\\ell_m)\n&\\le d_Y\\bigl(\\ell_n,f^{(n)}(x)\\bigr)+d_Y\\bigl(f^{(n)}(x),f(x)\\bigr)+d_Y\\bigl(f(x),f^{(m)}(x)\\bigr)+d_Y\\bigl(f^{(m)}(x),\\ell_m\\bigr)\\\\\n&<\\varepsilon/3+\\varepsilon/3+\\varepsilon/3+\\varepsilon/3<\\varepsilon.\n\\end{aligned}\n\\]\nHence $(\\ell_n)$ is Cauchy, and since $Y$ is complete there exists $\\ell\\in Y$ such that $\\ell_n\\to \\ell$.\n\nNext, $\\lim_{x\\to x_0,\\,x\\in E} f(x)$ exists and equals $\\ell$. Choose $n\\ge N$ such that $d_Y(\\ell_n,\\ell)<\\varepsilon/3$. By the definition of $\\ell_n$, there exists $\\delta>0$ such that for all $x\\in E$ with $d_X(x,x_0)<\\delta$,\n\\[\n\\label{eq:3.u35}\nd_Y\\bigl(f^{(n)}(x),\\ell_n\\bigr)<\\varepsilon/3.\n\\]\nFor such $x$,\n\\[\n\\label{eq:3.u36}\nd_Y\\bigl(f(x),\\ell\\bigr)\\le d_Y\\bigl(f(x),f^{(n)}(x)\\bigr)+d_Y\\bigl(f^{(n)}(x),\\ell_n\\bigr)+d_Y(\\ell_n,\\ell)<\\varepsilon.\n\\]\nTherefore $\\lim_{x\\to x_0,\\,x\\in E} f(x)=\\ell$.\n\nFinally,\n\\[\n\\label{eq:3.u37}\n\\lim_{n\\to\\infty}\\,\\lim_{x\\to x_0;\\,x\\in E} f^{(n)}(x)=\\lim_{n\\to\\infty}\\ell_n=\\ell=\\lim_{x\\to x_0;\\,x\\in E} f(x)=\\lim_{x\\to x_0;\\,x\\in E}\\,\\lim_{n\\to\\infty} f^{(n)}(x),\n\\]\nwhich is the desired interchange of limits.\n\\end{proof}",
+    "index": 20
+  },
+  {
+    "label": "Proposition 3.3.4",
+    "env": "prop",
+    "number_components": [
+      3,
+      3,
+      4
+    ],
+    "extracted_labels": [
+      "prop:3.11",
+      "prf:prop:3.11",
+      "eq:3.u38",
+      "eq:3.u39",
+      "eq:3.u40",
+      "eq:3.u41"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Convergence and Continuity",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.3.4}\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces. Let $f^{(n)}:X\\to Y$ be continuous for each $n\\in\\mathbb{N}$, and suppose that $f^{(n)}\\to f:X\\to Y$ uniformly on $X$. If $(x^{(n)})_{n=1}^\\infty$ is a sequence in $X$ such that $x^{(n)}\\to x\\in X$, then $f^{(n)}(x^{(n)})\\to f(x)$ in $Y$.\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.3"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.3.4}\nFix $\\varepsilon>0$. By uniform convergence, there exists $N_1\\in\\mathbb{N}$ such that for all $n\\ge N_1$ and all $z\\in X$,\n\\[\n\\label{eq:3.u38}\nd_Y\\bigl(f^{(n)}(z),f(z)\\bigr)<\\varepsilon/2.\n\\]\nIn particular, for all $n\\ge N_1$,\n\\[\n\\label{eq:3.u39}\nd_Y\\bigl(f^{(n)}(x^{(n)}),f(x^{(n)})\\bigr)<\\varepsilon/2.\n\\]\n\nUniform limits of continuous functions are continuous; hence $f$ is continuous at $x$. Since $x^{(n)}\\to x$, there exists $N_2\\in\\mathbb{N}$ such that for all $n\\ge N_2$,\n\\[\n\\label{eq:3.u40}\nd_Y\\bigl(f(x^{(n)}),f(x)\\bigr)<\\varepsilon/2.\n\\]\n\nFor $n\\ge \\max\\{N_1,N_2\\}$, the triangle inequality gives\n\\[\n\\label{eq:3.u41}\nd_Y\\bigl(f^{(n)}(x^{(n)}),f(x)\\bigr)\\le d_Y\\bigl(f^{(n)}(x^{(n)}),f(x^{(n)})\\bigr)+d_Y\\bigl(f(x^{(n)}),f(x)\\bigr)<\\varepsilon.\n\\]\nTherefore $f^{(n)}(x^{(n)})\\to f(x)$.\n\\end{proof}",
+    "index": 21
+  },
+  {
+    "label": "Definition 3.4",
+    "env": "def",
+    "number_components": [
+      3,
+      4
+    ],
+    "extracted_labels": [
+      "def:3.4"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Convergence and Continuity",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:3.4}\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces, and let $f:X\\to Y$ be a function. The function $f$ is called \\emph{bounded} if its image $f(X)=\\{f(x):x\\in X\\}$ is a bounded subset of $Y$, that is, if there exist $y_0\\in Y$ and $R>0$ such that $d_Y\\bigl(f(x),y_0\\bigr)<R$ for all $x\\in X$ (equivalently, $f(x)\\in B_{(Y,d_Y)}(y_0,R)$ for all $x\\in X$).\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 22
+  },
+  {
+    "label": "Proposition 3.3.5",
+    "env": "prop",
+    "number_components": [
+      3,
+      3,
+      5
+    ],
+    "extracted_labels": [
+      "prop:3.12",
+      "prf:prop:3.12",
+      "eq:3.u42",
+      "eq:3.u43",
+      "eq:3.u44"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Convergence and Continuity",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.3.5}\n(Uniform limits preserve boundedness) Let $(X,d_X)$ and $(Y,d_Y)$ be metric spaces. Let $(f^{(n)})_{n\\ge 1}$ be a sequence of functions $f^{(n)}:X\\to Y$ and let $f:X\\to Y$ be a function such that $f^{(n)}\\to f$ uniformly on $X$. If each $f^{(n)}$ is bounded on $X$, then $f$ is bounded on $X$.\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.4"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.3.5}\nBy uniform convergence, there exists $N\\in\\mathbb{N}$ such that for all $n\\ge N$ and all $x\\in X$,\n\\[\n\\label{eq:3.u42}\nd_Y\\bigl(f^{(n)}(x),f(x)\\bigr)<1.\n\\]\nSince $f^{(N)}$ is bounded on $X$, there exist $x_0\\in X$ and $M\\ge 0$ such that for all $x\\in X$,\n\\[\n\\label{eq:3.u43}\nd_Y\\bigl(f^{(N)}(x),f^{(N)}(x_0)\\bigr)\\le M.\n\\]\nFix such an $x_0$. For any $x\\in X$, the triangle inequality gives\n\\[\n\\label{eq:3.u44}\n\\begin{aligned}\nd_Y\\bigl(f(x),f(x_0)\\bigr)\n&\\le d_Y\\bigl(f(x),f^{(N)}(x)\\bigr)+d_Y\\bigl(f^{(N)}(x),f^{(N)}(x_0)\\bigr)+d_Y\\bigl(f^{(N)}(x_0),f(x_0)\\bigr)\\\\\n&< 1 + M + 1 = M+2.\n\\end{aligned}\n\\]\nThus $d_Y(f(x),f(x_0))\\le M+2$ for all $x\\in X$, so $f$ is bounded on $X$.\n\\end{proof}",
+    "index": 23
+  },
+  {
+    "label": "Proposition 3.3.6",
+    "env": "prop",
+    "number_components": [
+      3,
+      3,
+      6
+    ],
+    "extracted_labels": [
+      "prop:3.13",
+      "prf:prop:3.13",
+      "eq:3.u45",
+      "eq:3.u46",
+      "eq:3.u47",
+      "eq:3.u48"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Convergence and Continuity",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n[Uniform limits preserve boundedness]\\label{prop:3.3.6}\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces.\nLet $(f^{(n)})_{n=1}^\\infty$ be a sequence of functions\n$f^{(n)}:X\\to Y$ converging uniformly to a function $f:X\\to Y$.\nIf each $f^{(n)}$ is bounded on $X$, then $f$ is bounded on $X$.\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.4"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.3.6}\nChoose $N$ such that\n\\[\nd_Y\\bigl(f(x),f^{(N)}(x)\\bigr)<1 \\quad \\text{for all } x\\in X.\n\\]\nSince $f^{(N)}$ is bounded, there exist $y_0\\in Y$ and $R>0$ such that\n\\[\nf^{(N)}(x)\\in B_Y(y_0,R) \\quad \\text{for all } x\\in X.\n\\]\nThen\n\\[\nf(x)\\in B_Y(y_0,R+1) \\quad \\text{for all } x\\in X,\n\\]\nso $f$ is bounded.\n\\end{proof}",
+    "index": 24
+  },
+  {
+    "label": "Definition 3.5",
+    "env": "def",
+    "number_components": [
+      3,
+      5
+    ],
+    "extracted_labels": [
+      "def:3.5",
+      "eq:3.u49",
+      "eq:3.u50"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "The Metric of Uniform Convergence",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 4,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:3.5}[Space of bounded functions]\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces. Define\n\\[\nB(X\\to Y):=\\{\\,f:X\\to Y \\mid f \\text{ is bounded}\\,\\},\n\\]\ni.e. there exists $y_0\\in Y$ and $M<\\infty$ such that\n\\[\nd_Y\\bigl(f(x),y_0\\bigr)\\le M \\quad \\text{for all }x\\in X.\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 25
+  },
+  {
+    "label": "Definition 3.6",
+    "env": "def",
+    "number_components": [
+      3,
+      6
+    ],
+    "extracted_labels": [
+      "def:3.5",
+      "eq:3.u49",
+      "eq:3.u50"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "The Metric of Uniform Convergence",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 4,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:3.6}\n[Uniform (supremum) metric]\nAssume $X\\neq\\varnothing$. For $f,g\\in B(X\\to Y)$ define\n\\[\nd_\\infty(f,g):=\\sup_{x\\in X} d_Y\\bigl(f(x),g(x)\\bigr)\\in[0,\\infty).\n\\]\nIf $X=\\varnothing$, set $d_\\infty(f,g):=0$ for all $f,g\\in B(X\\to Y)$.\n\\end{definition}",
+    "dependencies": [
+      "Definition 3.5"
+    ],
+    "proof": "",
+    "index": 26
+  },
+  {
+    "label": "Example 3.4.3",
+    "env": "prop",
+    "number_components": [
+      3,
+      4,
+      3
+    ],
+    "extracted_labels": [
+      "prop:3.13",
+      "prf:prop:3.13",
+      "eq:3.u45",
+      "eq:3.u46",
+      "eq:3.u47",
+      "eq:3.u48"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "TheMetric of Uniform Convergence",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "4",
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.4.3}Let $X=[0,1]$ with the usual metric and let $Y=\\mathbb R$ with $d_Y(a,b)=|a-b|$.\nDefine $f,g\\colon[0,1]\\to\\mathbb R$ by $f(x)=2x$ and $g(x)=3x$.Prove that \n\\[\nd_\\infty(f,g)=1.\n\\]\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.5",
+      "Definition 3.6"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.4.3}\n\\[\nd_\\infty(f,g)\n=\\sup_{x\\in[0,1]} d_Y\\bigl(f(x),g(x)\\bigr)\n=\\sup_{x\\in[0,1]} |2x-3x|\n=\\sup_{x\\in[0,1]} |x|\n=1.\n\\]\n\\end{proof}",
+    "index": 27
+  },
+  {
+    "label": "Proposition 3.4.4",
+    "env": "prop",
+    "number_components": [
+      3,
+      4,
+      4
+    ],
+    "extracted_labels": [
+      "prop:3.13",
+      "prf:prop:3.13",
+      "eq:3.u45",
+      "eq:3.u46",
+      "eq:3.u47",
+      "eq:3.u48"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "TheMetric of Uniform Convergence",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "4",
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.4.4}Let $(X,d_X)$ and $(Y,d_Y)$ be metric spaces. Let $(f^{(n)})_{n\\ge 1}$ be a sequence\nin $B(X\\to Y)$ and let $f\\in B(X\\to Y)$. Then the following are equivalent:\n\\begin{enumerate}\n\\item $d_\\infty\\bigl(f^{(n)},f\\bigr)\\to 0$ as $n\\to\\infty$;\n\\item $f^{(n)}\\to f$ uniformly on $X$, i.e. for every $\\varepsilon>0$ there exists\n$N$ such that for all $n\\ge N$ and all $x\\in X$,\n\\[\nd_Y\\bigl(f^{(n)}(x),f(x)\\bigr)<\\varepsilon.\n\\]\n\\end{enumerate}\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.5",
+      "Definition 3.6"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.4.4}\nAssume (1). Let $\\varepsilon>0$. Choose $N$ such that for all $n\\ge N$,\n$d_\\infty(f^{(n)},f)<\\varepsilon$. Then for any $x\\in X$,\n\\[\nd_Y\\bigl(f^{(n)}(x),f(x)\\bigr)\\le \\sup_{u\\in X} d_Y\\bigl(f^{(n)}(u),f(u)\\bigr)\n=d_\\infty\\bigl(f^{(n)},f\\bigr)<\\varepsilon,\n\\]\nso $f^{(n)}\\to f$ uniformly. Conversely, assume (2). Given $\\varepsilon>0$ choose\n$N$ such that for all $n\\ge N$ and all $x\\in X$,\n$d_Y(f^{(n)}(x),f(x))<\\varepsilon$. Taking the supremum over $x\\in X$ yields\n\\[\nd_\\infty\\bigl(f^{(n)},f\\bigr)\n=\\sup_{x\\in X} d_Y\\bigl(f^{(n)}(x),f(x)\\bigr)\\le \\varepsilon\n\\quad\\text{for all }n\\ge N,\n\\]\nhence $d_\\infty(f^{(n)},f)\\to 0$.\n\\end{proof}",
+    "index": 28
+  },
+  {
+    "label": "Definition 3.7",
+    "env": "def",
+    "number_components": [
+      3,
+      7
+    ],
+    "extracted_labels": [
+      "def:3.6",
+      "eq:3.u51",
+      "eq:3.u52"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "The Metric of Uniform Convergence",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 4,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:3.7}\n[Bounded continuous functions]\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces. Define the space of bounded continuous\nfunctions from $X$ to $Y$ by\n\\[\nC(X\\to Y):=\\{\\,f\\in B(X\\to Y)\\mid f \\text{ is continuous}\\,\\}.\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 29
+  },
+  {
+    "label": "Proposition 3.4.5",
+    "env": "prop",
+    "number_components": [
+      3,
+      4,
+      5
+    ],
+    "extracted_labels": [
+      "prop:3.13",
+      "prf:prop:3.13",
+      "eq:3.u45",
+      "eq:3.u46",
+      "eq:3.u47",
+      "eq:3.u48"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "The Metric of Uniform Convergence",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "4",
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.4.5}[Inclusion into bounded functions]\nFor any metric spaces $(X,d_X)$ and $(Y,d_Y)$, one has\n\\[\nC(X\\to Y)\\subseteq B(X\\to Y).\n\\]\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.5",
+      "Definition 3.6",
+      "Definition 3.7"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.4.5}\nBy definition, every $f\\in C(X\\to Y)$ is an element of $B(X\\to Y)$ (and is moreover\ncontinuous). Hence the inclusion holds.\n\\end{proof}",
+    "index": 30
+  },
+  {
+    "label": "Proposition 3.4.6",
+    "env": "prop",
+    "number_components": [
+      3,
+      4,
+      6
+    ],
+    "extracted_labels": [
+      "prop:3.13",
+      "prf:prop:3.13",
+      "eq:3.u45",
+      "eq:3.u46",
+      "eq:3.u47",
+      "eq:3.u48"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "The Metric of Uniform Convergence",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "4",
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.4.6}[Uniform limits preserve continuity]\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces, then  $C(X → Y)$ is closed in $B(X → Y)$. That is to say, let $(f^{(n)})_{n\\ge1}$ be a sequence\nof functions $X\\to Y$ converging uniformly to $f\\colon X\\to Y$ (with respect to the\nuniform metric $d_\\infty$). If each $f^{(n)}$ is continuous, then $f$ is continuous.\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.5",
+      "Definition 3.6",
+      "Definition 3.7"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.4.6}\nFix $x_0\\in X$ and $\\varepsilon>0$. Choose $N$ such that for all $x\\in X$,\n\\[\nd_Y\\bigl(f^{(N)}(x),f(x)\\bigr)<\\varepsilon/3\n\\]\n(using uniform convergence). Since $f^{(N)}$ is continuous at $x_0$, there exists\n$\\delta>0$ such that $d_X(x,x_0)<\\delta$ implies\n\\[\nd_Y\\bigl(f^{(N)}(x),f^{(N)}(x_0)\\bigr)<\\varepsilon/3.\n\\]\nThen for $d_X(x,x_0)<\\delta$, the triangle inequality gives\n\\[\nd_Y\\bigl(f(x),f(x_0)\\bigr)\n\\le d_Y\\bigl(f(x),f^{(N)}(x)\\bigr)\n + d_Y\\bigl(f^{(N)}(x),f^{(N)}(x_0)\\bigr)\n + d_Y\\bigl(f^{(N)}(x_0),f(x_0)\\bigr)\n<\\varepsilon.\n\\]\nThus $f$ is continuous at $x_0$. Since $x_0$ was arbitrary, $f$ is continuous on $X$.\n\\end{proof}",
+    "index": 31
+  },
+  {
+    "label": "Theorem 3.4.5",
+    "env": "prop",
+    "number_components": [
+      3,
+      4,
+      5
+    ],
+    "extracted_labels": [
+      "prop:3.13",
+      "prf:prop:3.13",
+      "eq:3.u45",
+      "eq:3.u46",
+      "eq:3.u47",
+      "eq:3.u48"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "The Metric of Uniform Convergence",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "4",
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{thm:3.4.5}[Completeness of bounded continuous functions]\nLet $(X,d_X)$ be a metric space and let $(Y,d_Y)$ be a complete metric space.\nEquip $B(X\\to Y)$ with the uniform metric\n\\[\nd_\\infty(f,g):=\\sup_{x\\in X} d_Y\\bigl(f(x),g(x)\\bigr),\n\\]\nand view $C(X\\to Y)$ as a subspace with the restricted metric.\nThen $C(X\\to Y)$ is a complete metric space. Equivalently, $C(X\\to Y)$ is a complete\nsubspace of $B(X\\to Y)$: every Cauchy sequence in $C(X\\to Y)$ converges (in $d_\\infty$)\nto a function in $C(X\\to Y)$.\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.5",
+      "Definition 3.6"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:thm:3.4.5}\nLet $(f^{(n)})_{n\\ge1}$ be a Cauchy sequence in $(C(X\\to Y),d_\\infty)$.\nThen it is also Cauchy in $(B(X\\to Y),d_\\infty)$.\n\n\\emph{Step 1: pointwise limit.}\nFix $x\\in X$. Since\n\\[\nd_Y\\bigl(f^{(n)}(x),f^{(m)}(x)\\bigr)\\le d_\\infty\\bigl(f^{(n)},f^{(m)}\\bigr),\n\\]\nthe sequence $\\bigl(f^{(n)}(x)\\bigr)_{n\\ge1}$ is Cauchy in $Y$, hence converges\n(because $Y$ is complete). Define $f(x):=\\lim_{n\\to\\infty} f^{(n)}(x)$.\n\n\\emph{Step 2: uniform convergence.}\nWe claim $f^{(n)}\\to f$ in $d_\\infty$. Let $\\varepsilon>0$. Choose $N$ such that\nfor all $n,m\\ge N$,\n\\[\nd_\\infty\\bigl(f^{(n)},f^{(m)}\\bigr)<\\varepsilon.\n\\]\nFix $n\\ge N$ and $x\\in X$. Letting $m\\to\\infty$ and using continuity of $d_Y$\nin its arguments,\n\\[\nd_Y\\bigl(f^{(n)}(x),f(x)\\bigr)\n=\\lim_{m\\to\\infty} d_Y\\bigl(f^{(n)}(x),f^{(m)}(x)\\bigr)\n\\le \\limsup_{m\\to\\infty} d_\\infty\\bigl(f^{(n)},f^{(m)}\\bigr)\n\\le \\varepsilon.\n\\]\nTaking the supremum over $x\\in X$ gives $d_\\infty(f^{(n)},f)\\le \\varepsilon$ for all\n$n\\ge N$, hence $d_\\infty(f^{(n)},f)\\to 0$.\n\n\\emph{Step 3: continuity of the limit.}\nBy Lemma~\\ref{lem:uniform-limit-continuous} (uniform limits of continuous functions\nare continuous), the uniform limit $f$ is continuous. Moreover, since\n$f^{(n)}\\to f$ in $d_\\infty$, we have $f\\in B(X\\to Y)$, hence $f\\in C(X\\to Y)$.\n\nTherefore every Cauchy sequence in $(C(X\\to Y),d_\\infty)$ converges to an element of\n$C(X\\to Y)$, so $C(X\\to Y)$ is complete.\n\\end{proof}",
+    "index": 32
+  },
+  {
+    "label": "Definition 3.8",
+    "env": "def",
+    "number_components": [
+      3,
+      8
+    ],
+    "extracted_labels": [
+      "def:3.8",
+      "eq:3.u73"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Series of Functions; the Weierstrass M-Test",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:3.8}\n[Finite sum of real-valued functions]\nLet $(X,d_X)$ be a metric space and let $f^{(1)},\\ldots,f^{(N)}:X\\to\\mathbb{R}$. The \\emph{finite sum} $\\sum_{i=1}^N f^{(i)}:X\\to\\mathbb{R}$ is defined by\n\\[\n\\label{eq:3.u73}\n\\left(\\sum_{i=1}^N f^{(i)}\\right)(x):=\\sum_{i=1}^N f^{(i)}(x), \\qquad x\\in X.\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 33
+  },
+  {
+    "label": "Example 3.5.1",
+    "env": "prop",
+    "number_components": [
+      3,
+      5,
+      1
+    ],
+    "extracted_labels": [
+      "prop:3.13",
+      "prf:prop:3.13",
+      "eq:3.u45",
+      "eq:3.u46",
+      "eq:3.u47",
+      "eq:3.u48"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Series of Functions; the Weierstrass M-Test",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "5",
+      "subsection_number": 0
+    },
+    "content": "\\begin{example}\n\\label{prop:3.5.1}Let $f^{(1)},f^{(2)},f^{(3)}:\\mathbb R\\to\\mathbb R$ be defined by\n\\[\nf^{(1)}(x):=x,\\qquad f^{(2)}(x):=x^2,\\qquad f^{(3)}(x):=x^3.\n\\]\nDefine $f:\\mathbb R\\to\\mathbb R$ by the finite sum\n\\[\nf:=\\sum_{i=1}^3 f^{(i)},\\qquad\\text{so that}\\qquad f(x)=x+x^2+x^3.\n\\]\n\\end{example}",
+    "dependencies": [
+      "Definition 3.8"
+    ],
+    "proof": "",
+    "index": 34
+  },
+  {
+    "label": "Text 3.5.2",
+    "env": "prop",
+    "number_components": [
+      3,
+      5,
+      2
+    ],
+    "extracted_labels": [
+      "prop:3.13",
+      "prf:prop:3.13",
+      "eq:3.u45",
+      "eq:3.u46",
+      "eq:3.u47",
+      "eq:3.u48"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Series of Functions; the Weierstrass M-Test",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "5",
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.5.2}[Finite sums of bounded functions are bounded]\nLet $X$ be a nonempty set and let $(Y,d_Y)$ be a metric space. Assume that $Y$ is a\nnormed vector space and that $d_Y(u,v)=\\|u-v\\|$.  \nIf $f^{(1)},\\dots,f^{(n)}\\in B(X\\to Y)$, then the pointwise sum\n\\[\nf:=\\sum_{i=1}^n f^{(i)} \\qquad\\text{defined by}\\qquad f(x)=\\sum_{i=1}^n f^{(i)}(x)\n\\]\nis bounded; hence $f\\in B(X\\to Y)$.\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.5",
+      "Definition 3.8"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.5.2}\nFor each $i$ choose $y_i\\in Y$ and $M_i<\\infty$ such that\n\\[\n\\|f^{(i)}(x)-y_i\\|\\le M_i\\quad\\text{for all }x\\in X.\n\\]\nLet $y:=\\sum_{i=1}^n y_i$. Then for all $x\\in X$, by the triangle inequality,\n\\[\n\\|f(x)-y\\|\n=\\Bigl\\|\\sum_{i=1}^n\\bigl(f^{(i)}(x)-y_i\\bigr)\\Bigr\\|\n\\le \\sum_{i=1}^n \\|f^{(i)}(x)-y_i\\|\n\\le \\sum_{i=1}^n M_i,\n\\]\nwhich is finite and independent of $x$. Thus $f$ is bounded.\n\\end{proof}",
+    "index": 35
+  },
+  {
+    "label": "Text 3.5.3",
+    "env": "prop",
+    "number_components": [
+      3,
+      5,
+      3
+    ],
+    "extracted_labels": [
+      "prop:3.13",
+      "prf:prop:3.13",
+      "eq:3.u45",
+      "eq:3.u46",
+      "eq:3.u47",
+      "eq:3.u48"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Series of Functions; the Weierstrass M-Test",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "5",
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.5.3}[Finite sums of continuous functions are continuous]\nLet $(X,d_X)$ be a metric space and let $Y$ be a normed vector space (with its\nmetric). If $f^{(1)},\\dots,f^{(n)}:X\\to Y$ are continuous, then\n\\[\nf:=\\sum_{i=1}^n f^{(i)}\n\\]\nis continuous.\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.8"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.5.3}\nThe addition map $+:Y\\times Y\\to Y$, $(u,v)\\mapsto u+v$, is continuous (indeed,\n$\\|(u+v)-(u'+v')\\|\\le \\|u-u'\\|+\\|v-v'\\|$). Hence the sum of two continuous functions\nis continuous. Applying this repeatedly (or using induction on $n$) shows that the\nfinite sum $\\sum_{i=1}^n f^{(i)}$ is continuous.\n\\end{proof}",
+    "index": 36
+  },
+  {
+    "label": "Definition 3.9",
+    "env": "def",
+    "number_components": [
+      3,
+      9
+    ],
+    "extracted_labels": [
+      "def:3.9",
+      "eq:3.u74",
+      "eq:3.u75",
+      "eq:3.u76"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Series of Functions; the Weierstrass M-Test",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:3.9}\n[Infinite series of functions]\nLet $(X,d_X)$ be a metric space, and let $(f^{(n)})_{n\\ge 1}$ be functions $f^{(n)}:X\\to\\mathbb{R}$. For each integer $N\\ge 1$, define the partial sum function\n\\[\n\\label{eq:3.u74}\nS_N:X\\to\\mathbb{R},\\qquad S_N(x):=\\sum_{n=1}^{N} f^{(n)}(x).\n\\]\nLet $f:X\\to\\mathbb{R}$.\n\\begin{enumerate}\n\\item The series $\\sum_{n=1}^{\\infty} f^{(n)}$ \\emph{converges pointwise} to $f$ on $X$ if for every $x\\in X$,\n\\[\n\\label{eq:3.u75}\n\\lim_{N\\to\\infty} S_N(x)=f(x).\n\\]\nIn this case, write $f=\\sum_{n=1}^{\\infty} f^{(n)}$.\n\\item The series $\\sum_{n=1}^{\\infty} f^{(n)}$ \\emph{converges uniformly} to $f$ on $X$ if $S_N\\to f$ uniformly on $X$, i.e., if\n\\[\n\\label{eq:3.u76}\n\\lim_{N\\to\\infty}\\sup_{x\\in X}\\bigl|S_N(x)-f(x)\\bigr|=0.\n\\]\nIn this case, write $f=\\sum_{n=1}^{\\infty} f^{(n)}$.\n\\end{enumerate}\n\\end{definition}",
+    "dependencies": [
+      "Definition 3.8"
+    ],
+    "proof": "",
+    "index": 37
+  },
+  {
+    "label": "Example 3.5.2",
+    "env": "prop",
+    "number_components": [
+      3,
+      5,
+      2
+    ],
+    "extracted_labels": [
+      "prop:3.13",
+      "prf:prop:3.13",
+      "eq:3.u45",
+      "eq:3.u46",
+      "eq:3.u47",
+      "eq:3.u48"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Series of Functions; the Weierstrass M-Test",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "5",
+      "subsection_number": 0
+    },
+    "content": "\\begin{example}\n\\label{prop:3.5.2}[Pointwise but not uniform convergence of a geometric series]\nLet $f^{(n)}:(-1,1)\\to\\mathbb R$ be defined by\n\\[\nf^{(n)}(x):=x^n \\qquad (n\\ge 1).\n\\]\nConsider the series of functions $\\sum_{n=1}^\\infty f^{(n)}$ and its partial sums\n\\[\nS_N(x):=\\sum_{n=1}^N x^n.\n\\]\nThen for every $x\\in(-1,1)$ the numerical series $\\sum_{n=1}^\\infty x^n$ converges and\n\\[\n\\sum_{n=1}^\\infty x^n=\\frac{x}{1-x}.\n\\]\nHence $\\sum_{n=1}^\\infty f^{(n)}$ converges pointwise on $(-1,1)$ to\n\\[\nf(x):=\\frac{x}{1-x}.\n\\]\nHowever, the convergence is not uniform on $(-1,1)$.\n\\end{example}",
+    "dependencies": [
+      "Definition 3.9"
+    ],
+    "proof": "\\begin{proof}[Proof (pointwise convergence)]\nFix $x\\in(-1,1)$. Since $|x|<1$, the geometric series converges and\n\\[\nS_N(x)=x\\frac{1-x^N}{1-x},\n\\qquad\\text{so}\\qquad\n\\lim_{N\\to\\infty} S_N(x)=\\frac{x}{1-x}.\n\\]\nThus the convergence is pointwise to $f(x)=\\frac{x}{1-x}$.\n\n[Proof (failure of uniform convergence)]\nFor $x\\in(-1,1)$ we have\n\\[\nf(x)-S_N(x)=\\sum_{n=N+1}^\\infty x^n=\\frac{x^{N+1}}{1-x},\n\\]\nhence\n\\[\n\\sup_{x\\in(-1,1)} |f(x)-S_N(x)|\n=\\sup_{x\\in(-1,1)} \\frac{|x|^{N+1}}{1-x}.\n\\]\nTaking $x_N:=1-\\frac1{N+1}\\in(-1,1)$ gives\n\\[\n|f(x_N)-S_N(x_N)|\n=\\frac{x_N^{\\,N+1}}{1-x_N}\n=(N+1)\\Bigl(1-\\frac1{N+1}\\Bigr)^{N+1}\n\\ge (N+1)\\cdot\\frac14,\n\\]\nsince $\\bigl(1-\\frac1{N+1}\\bigr)^{N+1}\\ge \\frac14$ for all $N\\ge 1$.\nTherefore $\\sup_{x\\in(-1,1)} |f(x)-S_N(x)|\\not\\to 0$, so the convergence is not uniform.\n\\end{proof}",
+    "index": 38
+  },
+  {
+    "label": "Proposition 3.17",
+    "env": "prop",
+    "number_components": [
+      3,
+      17
+    ],
+    "extracted_labels": [
+      "prop:3.17",
+      "prf:prop:3.17"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Series of Functions; the Weierstrass M-Test",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.17}\nLet $X$ be a set, let $f^{(n)}:X\\to\\mathbb{R}$ be functions for $n\\in\\mathbb{N}$, and let $f:X\\to\\mathbb{R}$. Suppose that the series $\\sum_{n=1}^{\\infty} f^{(n)}$ converges uniformly to $f$ on $X$, meaning that the sequence of partial sums $S_N(x)=\\sum_{n=1}^N f^{(n)}(x)$ converges uniformly to $f$ on $X$. Then $\\sum_{n=1}^{\\infty} f^{(n)}$ converges pointwise to $f$ on $X$, i.e., for every $x\\in X$ one has $\\lim_{N\\to\\infty} S_N(x)=f(x)$.\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.9",
+      "Definition 3.8"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.17}\nLet $S_N(x)=\\sum_{n=1}^N f^{(n)}(x)$. Uniform convergence of $S_N$ to $f$ on $X$ means: for every $\\varepsilon>0$ there exists $N_0\\in\\mathbb{N}$ such that for all $N\\ge N_0$ and all $x\\in X$, $|S_N(x)-f(x)|<\\varepsilon$. Fix $x\\in X$. Then the same $N_0$ satisfies that for all $N\\ge N_0$, $|S_N(x)-f(x)|<\\varepsilon$. Hence $S_N(x)\\to f(x)$ as $N\\to\\infty$. Since $x\\in X$ was arbitrary, the convergence is pointwise to $f$ on $X$.\n\\end{proof}",
+    "index": 39
+  },
+  {
+    "label": "Definition 3.10",
+    "env": "def",
+    "number_components": [
+      3,
+      10
+    ],
+    "extracted_labels": [
+      "def:3.10",
+      "eq:3.u77"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Series of Functions; the Weierstrass M-Test",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:3.10}\n[Sup norm]\nLet $X$ be a set and let $f:X\\to\\mathbb{R}$ be a bounded function, i.e. there exists $M\\ge 0$ such that $|f(x)|\\le M$ for all $x\\in X$. The \\emph{sup norm} (or \\emph{uniform norm}) of $f$ is\n\\[\n\\label{eq:3.u77}\n\\|f\\|_\\infty := \\sup\\{\\,|f(x)| : x\\in X\\,\\}.\n\\]\nIf $X=\\varnothing$, define $\\|f\\|_\\infty:=0$.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 40
+  },
+  {
+    "label": "Example 3.5.6",
+    "env": "prop",
+    "number_components": [
+      3,
+      5,
+      6
+    ],
+    "extracted_labels": [
+      "prop:3.13",
+      "prf:prop:3.13",
+      "eq:3.u45",
+      "eq:3.u46",
+      "eq:3.u47",
+      "eq:3.u48"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Series of Functions; the Weierstrass M-Test",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "5",
+      "subsection_number": 0
+    },
+    "content": "\\begin{example}\n\\label{prop:3.5.6}[Computing the sup norm]\nLet $X:=(-2,1)$ with the usual metric and let $Y:=\\mathbb R$ with $d_Y(a,b)=|a-b|$.\nLet $f:X\\to\\mathbb R$ be defined by $f(x):=2x$. Then\n\\[\n\\|f\\|_\\infty:=\\sup_{x\\in X} |f(x)|\n=\\sup_{x\\in(-2,1)} |2x|\n=4.\n\\]\nIndeed, for all $x\\in(-2,1)$ one has $|2x|\\le 4$ (since $|x|<2$), so\n$\\sup_{x\\in(-2,1)}|2x|\\le 4$. On the other hand, taking $x_n:=-2+\\frac1n\\in(-2,1)$\ngives $|2x_n|=4-\\frac2n\\to 4$, hence the supremum is $4$.\n\nIn particular, whenever $f$ is bounded, $\\|f\\|_\\infty$ is a finite nonnegative real\nnumber.\n\\end{example}",
+    "dependencies": [
+      "Definition 3.10"
+    ],
+    "proof": "",
+    "index": 41
+  },
+  {
+    "label": "Text 3.5.4",
+    "env": "prop",
+    "number_components": [
+      3,
+      5,
+      4
+    ],
+    "extracted_labels": [
+      "prop:3.13",
+      "prf:prop:3.13",
+      "eq:3.u45",
+      "eq:3.u46",
+      "eq:3.u47",
+      "eq:3.u48"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Series of Functions; the Weierstrass M-Test",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "5",
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.5.4}[Finiteness and nonnegativity of the sup norm]\nLet $X$ be a nonempty set and let $f:X\\to\\mathbb R$ be bounded. Define\n\\[\n\\|f\\|_\\infty:=\\sup_{x\\in X}|f(x)|.\n\\]\nThen $\\|f\\|_\\infty\\in[0,\\infty)$ (in particular, it is finite and nonnegative).\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.10"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.5.4}\nSince $|f(x)|\\ge 0$ for all $x$, the supremum is $\\ge 0$.\nBecause $f$ is bounded, there exists $M<\\infty$ such that $|f(x)|\\le M$ for all $x$.\nHence $\\sup_{x\\in X}|f(x)|\\le M<\\infty$, so $\\|f\\|_\\infty$ is finite.\n\\end{proof}",
+    "index": 42
+  },
+  {
+    "label": "Theorem 3.5",
+    "env": "thm",
+    "number_components": [
+      3,
+      5
+    ],
+    "extracted_labels": [
+      "thm:3.5",
+      "eq:3.u78",
+      "prf:thm:3.5",
+      "eq:3.u79",
+      "eq:3.u80",
+      "eq:3.u81",
+      "eq:3.u82",
+      "eq:3.u83"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Series of Functions; the Weierstrass M-Test",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:3.5}\n[Weierstrass $M$-test]\nLet $(X,d)$ be a metric space, and let $(f^{(n)})_{n=1}^{\\infty}$ be a sequence of bounded real-valued continuous functions on $X$. Assume that the series\n\\[\n\\label{eq:3.u78}\n\\sum_{n=1}^{\\infty}\\|f^{(n)}\\|_{\\infty}\n\\]\nconverges, where $\\|f^{(n)}\\|_{\\infty}=\\sup_{x\\in X}|f^{(n)}(x)|$. Then the series of functions $\\sum_{n=1}^{\\infty} f^{(n)}$ converges uniformly on $X$ to a function $f\\colon X\\to\\mathbb{R}$. Moreover, $f$ is continuous on $X$.\n\\end{theorem}",
+    "dependencies": [
+      "Definition 3.10"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:thm:3.5}\nFor $n\\in\\mathbb{N}$ define the partial sums\n\\[\n\\label{eq:3.u79}\nS_n(x)=\\sum_{k=1}^n f^{(k)}(x),\\qquad x\\in X.\n\\]\nSince each $f^{(k)}$ is continuous, each $S_n$ is continuous.\n\nTo prove uniform convergence, it suffices to show that $(S_n)$ is a Cauchy sequence in the sup-norm. Let $\\varepsilon>0$. Because $\\sum_{k=1}^\\infty \\|f^{(k)}\\|_{\\infty}$ converges, there exists $N\\in\\mathbb{N}$ such that for all integers $m>n\\ge N$,\n\\[\n\\label{eq:3.u80}\n\\sum_{k=n+1}^m \\|f^{(k)}\\|_{\\infty} < \\varepsilon.\n\\]\nFor $m>n\\ge N$ and any $x\\in X$,\n\\[\n\\label{eq:3.u81}\n|S_m(x)-S_n(x)|=\\left|\\sum_{k=n+1}^m f^{(k)}(x)\\right|\n\\le \\sum_{k=n+1}^m |f^{(k)}(x)|\n\\le \\sum_{k=n+1}^m \\|f^{(k)}\\|_{\\infty} < \\varepsilon.\n\\]\nTaking the supremum over $x\\in X$ yields\n\\[\n\\label{eq:3.u82}\n\\|S_m-S_n\\|_{\\infty} < \\varepsilon.\n\\]\nThus $(S_n)$ is Cauchy in the normed space of bounded real-valued functions on $X$ with the sup-norm. Define $f(x)=\\lim_{n\\to\\infty} S_n(x)$ for each $x\\in X$; the preceding estimate shows that the convergence is uniform.\n\nFinally, $f$ is continuous. Fix $x_0\\in X$ and $\\varepsilon>0$. Choose $N$ such that $\\|f-S_N\\|_{\\infty}<\\varepsilon/3$. By continuity of $S_N$ at $x_0$, there exists $\\delta>0$ such that $d(x,x_0)<\\delta$ implies $|S_N(x)-S_N(x_0)|<\\varepsilon/3$. For such $x$,\n\\[\n\\label{eq:3.u83}\n|f(x)-f(x_0)|\\le |f(x)-S_N(x)|+|S_N(x)-S_N(x_0)|+|S_N(x_0)-f(x_0)|<\\varepsilon.\n\\]\nTherefore $f$ is continuous at $x_0$, and since $x_0$ was arbitrary, $f$ is continuous on $X$.\n\\end{proof}",
+    "index": 43
+  },
+  {
+    "label": "Example 3.5.8",
+    "env": "prop",
+    "number_components": [
+      3,
+      5,
+      8
+    ],
+    "extracted_labels": [
+      "prop:3.13",
+      "prf:prop:3.13",
+      "eq:3.u45",
+      "eq:3.u46",
+      "eq:3.u47",
+      "eq:3.u48"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Series of Functions; the Weierstrass M-Test",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "5",
+      "subsection_number": 0
+    },
+    "content": "\\begin{example}\n\\label{prop:3.5.8}[Uniform convergence on $[-r,r]$ for a geometric series]\nLet $0<r<1$ and define $f^{(n)}:[-r,r]\\to\\mathbb R$ by\n\\[\nf^{(n)}(x):=x^n \\qquad (n\\ge 1).\n\\]\nThen each $f^{(n)}$ is continuous and bounded on $[-r,r]$, and\n\\[\n\\|f^{(n)}\\|_\\infty=\\sup_{x\\in[-r,r]}|x^n|=r^n.\n\\]\nSince the numerical series $\\sum_{n=1}^\\infty r^n$ converges, it follows (e.g.\\ by the\nWeierstrass $M$-test) that the series of functions $\\sum_{n=1}^\\infty f^{(n)}$\nconverges uniformly on $[-r,r]$ to some function $f\\in C([-r,r]\\to\\mathbb R)$.\nMoreover, for each $x\\in[-r,r]$ we have\n\\[\n\\sum_{n=1}^\\infty f^{(n)}(x)=\\sum_{n=1}^\\infty x^n=\\frac{x}{1-x},\n\\]\nso the uniform limit is\n\\[\nf(x)=\\frac{x}{1-x}\\qquad (x\\in[-r,r]).\n\\]\nIn particular, $\\sum_{n=1}^\\infty x^n$ is pointwise convergent but not uniformly\nconvergent on $(-1,1)$, while it is uniformly convergent on every smaller interval\n$[-r,r]$ with $0<r<1$.\n\\end{example}",
+    "dependencies": [
+      "Definition 3.10"
+    ],
+    "proof": "\\begin{proof}[Justification]\nFor $x\\in[-r,r]$ we have $|f^{(n)}(x)|=|x|^n\\le r^n$, hence $\\|f^{(n)}\\|_\\infty=r^n$.\nBecause $\\sum_{n=1}^\\infty r^n$ converges, the Weierstrass $M$-test yields uniform\nconvergence of $\\sum_{n=1}^\\infty f^{(n)}$ on $[-r,r]$. Each partial sum is continuous,\nso the uniform limit is continuous (uniform limit of continuous functions). Finally,\nfor each fixed $x\\in[-r,r]\\subset(-1,1)$ the geometric series gives\n$\\sum_{n=1}^\\infty x^n=\\frac{x}{1-x}$, so the limit function is $f(x)=\\frac{x}{1-x}$.\n\\end{proof}",
+    "index": 44
+  },
+  {
+    "label": "Theorem 3.6",
+    "env": "thm",
+    "number_components": [
+      3,
+      6
+    ],
+    "extracted_labels": [
+      "thm:3.6",
+      "eq:3.u84",
+      "prf:thm:3.6",
+      "eq:3.u85",
+      "eq:3.u86",
+      "eq:3.u87",
+      "eq:3.u88",
+      "eq:3.u89",
+      "eq:3.u90",
+      "eq:3.u91",
+      "eq:3.u92",
+      "eq:3.u93"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Convergence and Integration",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:3.6}\nLet $a<b$ be real numbers. For each integer $n\\ge 1$, let $f^{(n)}:[a,b]\\to\\mathbb{R}$ be Riemann integrable, and assume that $f^{(n)}\\to f$ uniformly on $[a,b]$ for some function $f:[a,b]\\to\\mathbb{R}$. Then $f$ is Riemann integrable and\n\\[\n\\label{eq:3.u84}\n\\lim_{n\\to\\infty}\\int_{[a,b]} f^{(n)}=\\int_{[a,b]} f.\n\\]\n\\end{theorem}",
+    "dependencies": [
+      "Definition 3.3"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:thm:3.6}\nFix $\\varepsilon>0$. Uniform convergence implies that there exists $N\\in\\mathbb{N}$ such that for all $n\\ge N$ and all $x\\in[a,b]$,\n\\[\n\\label{eq:3.u85}\n|f^{(n)}(x)-f(x)|<\\varepsilon,\n\\]\nso\n\\[\n\\label{eq:3.u86}\nf^{(n)}(x)-\\varepsilon<f(x)<f^{(n)}(x)+\\varepsilon.\n\\]\nHence $f^{(n)}-\\varepsilon\\le f\\le f^{(n)}+\\varepsilon$ pointwise on $[a,b]$.\n\nFor any partition $P$ of $[a,b]$, the lower and upper sums satisfy\n\\[\n\\label{eq:3.u87}\nL(f^{(n)}-\\varepsilon,P)\\le L(f,P)\\le U(f,P)\\le U(f^{(n)}+\\varepsilon,P).\n\\]\nTaking the supremum over $P$ in the first two terms and the infimum over $P$ in the last two terms yields\n\\[\n\\label{eq:3.u88}\n\\underline{\\int_{[a,b]}}(f^{(n)}-\\varepsilon)\\le \\underline{\\int_{[a,b]}} f\\le \\overline{\\int_{[a,b]}} f\\le \\overline{\\int_{[a,b]}}(f^{(n)}+\\varepsilon).\n\\]\nSince $f^{(n)}$ is Riemann integrable, its lower and upper integrals agree with $\\int_{[a,b]} f^{(n)}$. Also, adding a constant $c$ shifts every lower and upper sum by $c(b-a)$, hence\n\\[\n\\label{eq:3.u89}\n\\underline{\\int_{[a,b]}}(f^{(n)}-\\varepsilon)=\\int_{[a,b]} f^{(n)}-\\varepsilon(b-a),\\qquad\n\\overline{\\int_{[a,b]}}(f^{(n)}+\\varepsilon)=\\int_{[a,b]} f^{(n)}+\\varepsilon(b-a).\n\\]\nTherefore\n\\[\n\\label{eq:3.u90}\n\\int_{[a,b]} f^{(n)}-\\varepsilon(b-a)\\le \\underline{\\int_{[a,b]}} f\\le \\overline{\\int_{[a,b]}} f\\le \\int_{[a,b]} f^{(n)}+\\varepsilon(b-a),\n\\]\nand consequently\n\\[\n\\label{eq:3.u91}\n0\\le \\overline{\\int_{[a,b]}} f-\\underline{\\int_{[a,b]}} f\\le 2\\varepsilon(b-a).\n\\]\nSince $\\varepsilon>0$ is arbitrary, $\\overline{\\int_{[a,b]}} f=\\underline{\\int_{[a,b]}} f$, so $f$ is Riemann integrable and the common value equals $\\int_{[a,b]} f$.\n\nFor $n\\ge N$, the inequalities above also imply\n\\[\n\\label{eq:3.u92}\n\\int_{[a,b]} f^{(n)}-\\varepsilon(b-a)\\le \\int_{[a,b]} f\\le \\int_{[a,b]} f^{(n)}+\\varepsilon(b-a),\n\\]\nso\n\\[\n\\label{eq:3.u93}\n\\left|\\int_{[a,b]} f^{(n)}-\\int_{[a,b]} f\\right|\\le \\varepsilon(b-a).\n\\]\nSince $\\varepsilon$ is arbitrary, $\\int_{[a,b]} f^{(n)}\\to \\int_{[a,b]} f$.\n\\end{proof}",
+    "index": 45
+  },
+  {
+    "label": "Theorem 3.7",
+    "env": "thm",
+    "number_components": [
+      3,
+      7
+    ],
+    "extracted_labels": [
+      "thm:3.7",
+      "eq:3.u94",
+      "prf:thm:3.7",
+      "eq:3.u95",
+      "eq:3.u96",
+      "eq:3.u97",
+      "eq:3.u98",
+      "eq:3.u99",
+      "eq:3.u100"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Convergence and Integration",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:3.7}\n[Interchange of limit and integral under uniform convergence]\nLet $[a,b]\\subset\\mathbb{R}$ be a compact interval. Let $\\{f^{(n)}\\}_{n\\in\\mathbb{N}}$ be a sequence of Riemann-integrable functions on $[a,b]$ such that $f^{(n)}\\to f$ uniformly on $[a,b]$. Then $f$ is Riemann-integrable on $[a,b]$ and\n\\[\n\\label{eq:3.u94}\n\\lim_{n\\to\\infty}\\int_a^b f^{(n)}(x)\\,dx \\,=\\, \\int_a^b \\lim_{n\\to\\infty} f^{(n)}(x)\\,dx \\,=\\, \\int_a^b f(x)\\,dx.\n\\]\n\\end{theorem}",
+    "dependencies": [
+      "Definition 3.3"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:thm:3.7}\nUniform convergence implies that for every $\\varepsilon>0$ there exists $N\\in\\mathbb{N}$ such that for all $n\\ge N$ and all $x\\in[a,b]$,\n\\[\n\\label{eq:3.u95}\n|f^{(n)}(x)-f(x)|\\le \\frac{\\varepsilon}{b-a}.\n\\]\nFix $n\\ge N$. Since $f^{(n)}$ is Riemann-integrable, so is $|f^{(n)}-f|$ whenever $f$ is Riemann-integrable; instead, use the estimate on Riemann sums directly. For any tagged partition $P$ of $[a,b]$ with tags $\\xi_i$ and subinterval lengths $\\Delta x_i$, the corresponding Riemann sums satisfy\n\\[\n\\label{eq:3.u96}\n\\bigl|S(f^{(n)},P)-S(f,P)\\bigr|\n=\\left|\\sum_i (f^{(n)}(\\xi_i)-f(\\xi_i))\\,\\Delta x_i\\right|\n\\le \\sum_i \\frac{\\varepsilon}{b-a}\\,\\Delta x_i\n=\\varepsilon.\n\\]\nLet $I_n:=\\int_a^b f^{(n)}(x)\\,dx$. By integrability of $f^{(n)}$, there exists a tagged partition $P$ such that $|S(f^{(n)},P)-I_n|\\le\\varepsilon$. For this same $P$, the previous inequality gives $|S(f,P)-S(f^{(n)},P)|\\le\\varepsilon$, hence\n\\[\n\\label{eq:3.u97}\n|S(f,P)-I_n|\\le |S(f,P)-S(f^{(n)},P)|+|S(f^{(n)},P)-I_n|\\le 2\\varepsilon.\n\\]\nIn particular, for all $m,n\\ge N$ and all tagged partitions $P$ as above,\n\\[\n\\label{eq:3.u98}\n|I_m-I_n|\\le |I_m-S(f,P)|+|S(f,P)-I_n|\\le 4\\varepsilon.\n\\]\nThus $(I_n)$ is a Cauchy sequence in $\\mathbb{R}$, so $I_n\\to I$ for some $I\\in\\mathbb{R}$.\n\nNext, the estimate on Riemann sums shows that the net of Riemann sums of $f$ is Cauchy: given $\\varepsilon>0$, choose $n\\ge N$ and then choose a mesh size $\\delta>0$ such that any two tagged partitions $P,Q$ with mesh $<\\delta$ satisfy $|S(f^{(n)},P)-S(f^{(n)},Q)|\\le\\varepsilon$ (this is a standard characterization of Riemann integrability of $f^{(n)}$). Then for such $P,Q$,\n\\[\n\\label{eq:3.u99}\n|S(f,P)-S(f,Q)|\n\\le |S(f,P)-S(f^{(n)},P)|+|S(f^{(n)},P)-S(f^{(n)},Q)|+|S(f^{(n)},Q)-S(f,Q)|\n\\le \\varepsilon+\\varepsilon+\\varepsilon=3\\varepsilon.\n\\]\nTherefore $f$ is Riemann-integrable; denote $\\int_a^b f(x)\\,dx$ by $I_f$.\n\nFinally, for $n\\ge N$,\n\\[\n\\label{eq:3.u100}\n\\left|\\int_a^b f^{(n)}(x)\\,dx-\\int_a^b f(x)\\,dx\\right|\n\\le \\int_a^b |f^{(n)}(x)-f(x)|\\,dx\n\\le \\int_a^b \\frac{\\varepsilon}{b-a}\\,dx\n=\\varepsilon.\n\\]\nHence $\\int_a^b f^{(n)}\\,dx\\to \\int_a^b f\\,dx$, which equals $\\int_a^b \\lim_{n\\to\\infty} f^{(n)}\\,dx$.\n\\end{proof}",
+    "index": 46
+  },
+  {
+    "label": "Theorem 3.8",
+    "env": "thm",
+    "number_components": [
+      3,
+      8
+    ],
+    "extracted_labels": [
+      "thm:3.8",
+      "eq:3.u101",
+      "prf:thm:3.8",
+      "eq:3.u102",
+      "eq:3.u103",
+      "eq:3.u104",
+      "eq:3.u105",
+      "eq:3.u106",
+      "eq:3.u107",
+      "eq:3.u108",
+      "eq:3.u109",
+      "eq:3.u110"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Convergence and Integration",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:3.8}\nLet $a<b$ and let $\\{f^{(n)}\\}_{n=1}^\\infty$ be a sequence of Riemann-integrable functions on $[a,b]$. Assume that the series $\\sum_{n=1}^\\infty f^{(n)}(x)$ converges uniformly on $[a,b]$ to a function $s(x)$. Then $s$ is Riemann-integrable on $[a,b]$ and\n\\[\n\\label{eq:3.u101}\n\\int_{[a,b]} s(x)\\,dx=\\sum_{n=1}^\\infty \\int_{[a,b]} f^{(n)}(x)\\,dx.\n\\]\n\\end{theorem}",
+    "dependencies": [
+      "Definition 3.3"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:thm:3.8}\nFor $N\\in\\mathbb{N}$ define the partial sums $s_N(x)=\\sum_{n=1}^N f^{(n)}(x)$. Each $s_N$ is Riemann-integrable on $[a,b]$ and\n\\[\n\\label{eq:3.u102}\n\\int_{[a,b]} s_N=\\sum_{n=1}^N \\int_{[a,b]} f^{(n)}.\n\\]\nSince $s_N\\to s$ uniformly on $[a,b]$, for every $\\varepsilon>0$ there exists $N$ such that\n\\[\n\\label{eq:3.u103}\n\\sup_{x\\in[a,b]}|s(x)-s_N(x)|<\\frac{\\varepsilon}{2(b-a)}.\n\\]\nFor this $N$, the function $s_N$ is Riemann-integrable, so there exists a partition $P$ of $[a,b]$ such that the upper and lower sums satisfy\n\\[\n\\label{eq:3.u104}\nU(s_N,P)-L(s_N,P)<\\frac{\\varepsilon}{2}.\n\\]\nFor any subinterval $I$ of $P$, letting $M_I(g)$ and $m_I(g)$ denote the supremum and infimum of $g$ on $I$, the uniform bound gives\n\\[\n\\label{eq:3.u105}\nM_I(s)\\le M_I(s_N)+\\delta,\\quad m_I(s)\\ge m_I(s_N)-\\delta,\n\\]\nwhere $\\delta:=\\sup_{x\\in[a,b]}|s(x)-s_N(x)|$. Hence\n\\[\n\\label{eq:3.u106}\nM_I(s)-m_I(s)\\le \\bigl(M_I(s_N)-m_I(s_N)\\bigr)+2\\delta.\n\\]\nMultiplying by the length $|I|$ and summing over all subintervals $I$ of $P$ yields\n\\[\n\\label{eq:3.u107}\nU(s,P)-L(s,P)\\le \\bigl(U(s_N,P)-L(s_N,P)\\bigr)+2\\delta(b-a)<\\frac{\\varepsilon}{2}+2\\cdot\\frac{\\varepsilon}{2(b-a)}(b-a)=\\varepsilon.\n\\]\nTherefore $s$ is Riemann-integrable.\n\nNext, for any Riemann-integrable functions $g,h$ on $[a,b]$, the estimate\n\\[\n\\label{eq:3.u108}\n\\left|\\int_{[a,b]} g-\\int_{[a,b]} h\\right|\\le \\int_{[a,b]} |g-h|\\le (b-a)\\sup_{x\\in[a,b]}|g(x)-h(x)|\n\\]\nholds. Applying this with $g=s$ and $h=s_N$ gives\n\\[\n\\label{eq:3.u109}\n\\left|\\int_{[a,b]} s-\\int_{[a,b]} s_N\\right|\\le (b-a)\\sup_{x\\in[a,b]}|s-s_N|\\xrightarrow[N\\to\\infty]{}0.\n\\]\nThus $\\int_{[a,b]} s=\\lim_{N\\to\\infty}\\int_{[a,b]} s_N$. Using $\\int s_N=\\sum_{n=1}^N\\int f^{(n)}$ gives\n\\[\n\\label{eq:3.u110}\n\\int_{[a,b]} s=\\lim_{N\\to\\infty}\\sum_{n=1}^N\\int_{[a,b]} f^{(n)}=\\sum_{n=1}^\\infty\\int_{[a,b]} f^{(n)}.\n\\]\n\\end{proof}",
+    "index": 47
+  },
+  {
+    "label": "Example 3.6.3 ",
+    "env": "prop",
+    "number_components": [
+      3,
+      6,
+      3
+    ],
+    "extracted_labels": [
+      "prop:3.18",
+      "eq:3.u111",
+      "prf:prop:3.18",
+      "eq:3.u112",
+      "eq:3.u113",
+      "eq:3.u114",
+      "eq:3.u115"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Convergence and Integration",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 6,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.18}\nFor every real number $r$ with $0<r<1$, the following identity holds:\n\\[\n\\label{eq:3.u111}\n-\\log(1-r)=\\sum_{n=0}^{\\infty}\\frac{r^{n+1}}{n+1}.\n\\]\n\\end{proposition}",
+    "dependencies": [
+      "Theorem 3.8"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.18}\nDefine $F:(0,1)\\to\\mathbb{R}$ by\n\\[\n\\label{eq:3.u112}\nF(r):=\\sum_{n=0}^{\\infty}\\frac{r^{n+1}}{n+1}.\n\\]\nFor any fixed $0<a<b<1$, the series for $F$ converges uniformly on $[a,b]$ and the series of derivatives\n\\[\n\\label{eq:3.u113}\n\\sum_{n=0}^{\\infty} r^n\n\\]\nalso converges uniformly on $[a,b]$ (since $\\sup_{r\\in[a,b]} r^n\\le b^n$ and $\\sum_{n\\ge 0} b^n<\\infty$). Hence $F$ is differentiable on $(0,1)$ and term-by-term differentiation is valid, giving\n\\[\n\\label{eq:3.u114}\nF'(r)=\\sum_{n=0}^{\\infty} r^n=\\frac{1}{1-r},\\qquad 0<r<1.\n\\]\nLet $G:(0,1)\\to\\mathbb{R}$ be defined by $G(r):=-\\log(1-r)$. Then $G'(r)=\\frac{1}{1-r}$ for $0<r<1$. Therefore $(F-G)'(r)=0$ on $(0,1)$, so $F(r)-G(r)=C$ is constant.\n\nAs $r\\to 0^+$, $F(r)\\to 0$ because $0\\le F(r)\\le \\sum_{n=0}^{\\infty} r^{n+1}=\\frac{r}{1-r}\\to 0$, and also $G(r)\\to -\\log(1)=0$. Hence $C=0$, so $F(r)=G(r)$ for all $0<r<1$, i.e.\n\\[\n\\label{eq:3.u115}\n-\\log(1-r)=\\sum_{n=0}^{\\infty}\\frac{r^{n+1}}{n+1}.\n\\]\n\\end{proof}",
+    "index": 48
+  },
+  {
+    "label": "Proposition 3.19",
+    "env": "prop",
+    "number_components": [
+      3,
+      19
+    ],
+    "extracted_labels": [
+      "prop:3.19",
+      "eq:3.u116",
+      "prf:prop:3.19",
+      "eq:3.u117"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Convergence and Derivatives",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.19}\nDefine $f_n:[0,2\\pi]\\to\\mathbb{R}$ by $f_n(x):=n^{-1/2}\\sin(nx)$ and $f:[0,2\\pi]\\to\\mathbb{R}$ by $f(x):=0$. Then $f_n\\to f$ uniformly on $[0,2\\pi]$, but $(f_n')$ does not converge pointwise to $f'$ (hence does not converge uniformly). In particular,\n\\[\n\\label{eq:3.u116}\n\\frac{d}{dx}\\lim_{n\\to\\infty} f_n(x)\\neq \\lim_{n\\to\\infty}\\frac{d}{dx}f_n(x).\n\\]\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.3"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.19}\nSince $|\\sin(nx)|\\le 1$ for all $x$, one has\n\\[\n\\label{eq:3.u117}\n\\sup_{x\\in[0,2\\pi]}|f_n(x)-f(x)|=\\sup_{x\\in[0,2\\pi]} n^{-1/2}|\\sin(nx)|\\le n^{-1/2}\\to 0,\n\\]\nso $f_n\\to f$ uniformly. Moreover $f_n'(x)=n^{1/2}\\cos(nx)$ for all $x$, while $f'(x)=0$. Hence $|f_n'(0)-f'(0)|=|n^{1/2}\\cos(0)-0|=n^{1/2}\\to\\infty$, so $f_n'$ does not converge pointwise to $f'$.\n\\end{proof}",
+    "index": 49
+  },
+  {
+    "label": "Proposition 3.20",
+    "env": "prop",
+    "number_components": [
+      3,
+      20
+    ],
+    "extracted_labels": [
+      "prop:3.20",
+      "prf:prop:3.20",
+      "eq:3.u118",
+      "eq:3.u119",
+      "eq:3.u120"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Convergence and Derivatives",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.20}\nDefine $f_n:[-1,1]\\to\\mathbb{R}$ by $f_n(x):=\\sqrt{\\frac{1}{n^2}+x^2}$ and $f(x):=|x|$. Then $f_n\\to f$ uniformly on $[-1,1]$, each $f_n$ is differentiable on $[-1,1]$, and $f$ is not differentiable at $0$. In particular, a uniform limit of differentiable functions need not be differentiable.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.20}\nFor all $x\\in[-1,1]$, one has $|x|\\le \\sqrt{x^2+\\frac{1}{n^2}}$ since squaring gives $x^2\\le x^2+\\frac{1}{n^2}$. Also,\n\\[\n\\label{eq:3.u118}\n\\sqrt{x^2+\\frac{1}{n^2}}\\le |x|+\\frac{1}{n}\n\\]\nsince squaring the right-hand side yields $x^2+\\frac{2|x|}{n}+\\frac{1}{n^2}\\ge x^2+\\frac{1}{n^2}$. Therefore $0\\le f_n(x)-|x|\\le \\frac{1}{n}$ for all $x$, so\n\\[\n\\label{eq:3.u119}\n\\sup_{x\\in[-1,1]}|f_n(x)-f(x)|\\le \\frac{1}{n}\\to 0,\n\\]\nwhich implies uniform convergence $f_n\\to f$. Each $f_n$ is differentiable on $[-1,1]$ as a composition of differentiable functions with strictly positive radicand. Finally, $f(x)=|x|$ is not differentiable at $0$ because the one-sided difference quotients satisfy\n\\[\n\\label{eq:3.u120}\n\\lim_{h\\downarrow 0}\\frac{|h|-|0|}{h}=1,\\qquad \\lim_{h\\uparrow 0}\\frac{|h|-|0|}{h}=-1,\n\\]\nso the derivative at $0$ does not exist.\n\\end{proof}",
+    "index": 50
+  },
+  {
+    "label": "Theorem 3.9",
+    "env": "thm",
+    "number_components": [
+      3,
+      9
+    ],
+    "extracted_labels": [
+      "thm:3.9",
+      "prf:thm:3.9",
+      "eq:3.u121",
+      "eq:3.u122",
+      "eq:3.u123",
+      "eq:3.u124",
+      "eq:3.u125"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Convergence and Derivatives",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:3.9}\nLet $[a,b]$ be an interval. For each integer $n\\ge 1$, let $f_n:[a,b]\\to\\mathbb{R}$ be differentiable and assume $f_n'$ is continuous on $[a,b]$. Suppose $f_n'\\to g$ uniformly on $[a,b]$ for some function $g:[a,b]\\to\\mathbb{R}$. Assume there exists $x_0\\in[a,b]$ such that $\\lim_{n\\to\\infty} f_n(x_0)$ exists. Then there exists a differentiable function $f:[a,b]\\to\\mathbb{R}$ such that $f_n\\to f$ uniformly on $[a,b]$ and $f'(x)=g(x)$ for all $x\\in[a,b]$.\n\\end{theorem}",
+    "dependencies": [
+      "Definition 3.3"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:thm:3.9}\nUniform convergence of $f_n'$ to $g$ implies that $g$ is continuous on $[a,b]$.\n\nFix $x\\in[a,b]$. By the Fundamental Theorem of Calculus, for each $n$,\n\\[\n\\label{eq:3.u121}\nf_n(x)-f_n(x_0)=\\int_{x_0}^{x} f_n'(t)\\,dt.\n\\]\nLet $L=\\lim_{n\\to\\infty} f_n(x_0)$. Define\n\\[\n\\label{eq:3.u122}\nf(x)=L+\\int_{x_0}^{x} g(t)\\,dt.\n\\]\nThen, for each $n$ and $x\\in[a,b]$,\n\\[\n\\label{eq:3.u123}\nf_n(x)-f(x)=\\bigl(f_n(x_0)-L\\bigr)+\\int_{x_0}^{x}\\bigl(f_n'(t)-g(t)\\bigr)\\,dt.\n\\]\nHence\n\\[\n\\label{eq:3.u124}\n|f_n(x)-f(x)|\\le |f_n(x_0)-L|+\\int_{x_0}^{x}|f_n'(t)-g(t)|\\,dt\n\\le |f_n(x_0)-L|+|x-x_0|\\,\\|f_n'-g\\|_{\\infty}.\n\\]\nTaking the supremum over $x\\in[a,b]$ gives\n\\[\n\\label{eq:3.u125}\n\\|f_n-f\\|_{\\infty}\\le |f_n(x_0)-L|+(b-a)\\,\\|f_n'-g\\|_{\\infty}.\n\\]\nSince $f_n(x_0)\\to L$ and $\\|f_n'-g\\|_{\\infty}\\to 0$, it follows that $\\|f_n-f\\|_{\\infty}\\to 0$, so $f_n\\to f$ uniformly on $[a,b]$.\n\nFinally, because $g$ is continuous on $[a,b]$, the function $x\\mapsto \\int_{x_0}^{x} g(t)\\,dt$ is differentiable on $[a,b]$ with derivative $g$. Therefore $f$ is differentiable on $[a,b]$ and $f'=g$ on $[a,b]$.\n\\end{proof}",
+    "index": 51
+  },
+  {
+    "label": "Theorem 3.10",
+    "env": "thm",
+    "number_components": [
+      3,
+      10
+    ],
+    "extracted_labels": [
+      "thm:3.10",
+      "eq:3.u126",
+      "eq:3.u127",
+      "prf:thm:3.10"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Convergence and Derivatives",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:3.10}\nLet $[a,b]$ be an interval. For each integer $n\\ge 1$, let $f_n:[a,b]\\to\\mathbb{R}$ be differentiable and assume $f_n':[a,b]\\to\\mathbb{R}$ is continuous. Assume the series $\\sum_{n=1}^\\infty \\|f_n'\\|_\\infty$ converges, where\n\\[\n\\label{eq:3.u126}\n\\|f_n'\\|_\\infty:=\\sup_{x\\in[a,b]}|f_n'(x)|.\n\\]\nAssume also that $\\sum_{n=1}^\\infty f_n(x_0)$ converges for some $x_0\\in[a,b]$. Then the series $\\sum_{n=1}^\\infty f_n$ converges uniformly on $[a,b]$ to a differentiable function $f$, and\n\\[\n\\label{eq:3.u127}\nf'(x)=\\frac{d}{dx}\\sum_{n=1}^\\infty f_n(x)=\\sum_{n=1}^\\infty f_n'(x)\n\\]\nfor all $x\\in[a,b]$.\n\\end{theorem}",
+    "dependencies": [
+      "Definition 3.3",
+      "Theorem 3.9"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:thm:3.10}\nFor $N\\ge 1$ define the partial sums\n\\[\nS_N(x):=\\sum_{n=1}^N f_n(x), \\qquad x\\in[a,b].\n\\]\nEach $S_N$ is differentiable on $[a,b]$, $S_N'$ is continuous, and\n\\[\nS_N'(x)=\\sum_{n=1}^N f_n'(x).\n\\]\n\nWe first show that $\\{S_N'\\}$ converges uniformly. Since\n\\[\n|f_n'(x)|\\le \\|f_n'\\|_\\infty \\quad \\text{for all }x\\in[a,b],\n\\]\nand $\\sum_{n=1}^\\infty \\|f_n'\\|_\\infty$ converges, the Weierstrass $M$-test implies that\n\\[\n\\sum_{n=1}^\\infty f_n'(x)\n\\]\nconverges uniformly on $[a,b]$. Let\n\\[\ng(x):=\\sum_{n=1}^\\infty f_n'(x), \\qquad x\\in[a,b].\n\\]\nThen $S_N'\\to g$ uniformly on $[a,b]$.\n\nNext, the hypothesis that $\\sum_{n=1}^\\infty f_n(x_0)$ converges means precisely that\n\\[\n\\lim_{N\\to\\infty} S_N(x_0)\n\\]\nexists for some $x_0\\in[a,b]$.\n\nTherefore, the sequence $\\{S_N\\}$ satisfies the assumptions of Theorem~\\ref{thm:3.9}:\neach $S_N$ is differentiable with continuous derivative, $S_N'\\to g$ uniformly on $[a,b]$,\nand $\\lim_{N\\to\\infty} S_N(x_0)$ exists. By Theorem~\\ref{thm:3.9}, there exists a\ndifferentiable function $f:[a,b]\\to\\mathbb{R}$ such that $S_N\\to f$ uniformly on $[a,b]$\nand\n\\[\nf'(x)=g(x)\\quad\\text{for all }x\\in[a,b].\n\\]\nSince $S_N=\\sum_{n=1}^N f_n$, the uniform convergence $S_N\\to f$ exactly means that\n$\\sum_{n=1}^\\infty f_n$ converges uniformly to $f$. Finally, because $g=\\sum_{n=1}^\\infty f_n'$\n(pointwise, and in fact uniformly),\n\\[\n\\frac{d}{dx}\\sum_{n=1}^\\infty f_n(x)=f'(x)=g(x)=\\sum_{n=1}^\\infty f_n'(x),\n\\]\nfor all $x\\in[a,b]$. This completes the proof.\n\\end{proof}",
+    "index": 52
+  },
+  {
+    "label": "Definition 3.11",
+    "env": "def",
+    "number_components": [
+      3,
+      11
+    ],
+    "extracted_labels": [
+      "def:3.11",
+      "def:weierstrass-function",
+      "eq:3.u128"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Convergence and Derivatives",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:3.11}\n[Weierstrass function]\\label{def:weierstrass-function}\nLet $f:\\mathbb{R}\\to\\mathbb{R}$ be defined by\n\\[\n\\label{eq:3.u128}\nf(x):=\\sum_{n=1}^{\\infty}4^{-n}\\cos(32^n\\pi x).\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 53
+  },
+  {
+    "label": "Proposition 3.21",
+    "env": "prop",
+    "number_components": [
+      3,
+      21
+    ],
+    "extracted_labels": [
+      "prop:3.21",
+      "prop:weierstrass-continuity",
+      "prf:prop:3.21"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Convergence and Derivatives",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.21}\n\\label{prop:weierstrass-continuity}\nThe function $f$ of Definition~\\ref{def:weierstrass-function} is continuous on $\\mathbb{R}$.\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.11"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.21}\nFor each $n\\ge 1$, the function $x\\mapsto 4^{-n}\\cos(32^n\\pi x)$ is continuous on $\\mathbb{R}$ and satisfies $\\lvert 4^{-n}\\cos(32^n\\pi x)\\rvert\\le 4^{-n}$ for all $x\\in\\mathbb{R}$. Since $\\sum_{n=1}^\\infty 4^{-n}$ converges, the Weierstrass $M$-test implies that $\\sum_{n=1}^{\\infty}4^{-n}\\cos(32^n\\pi x)$ converges uniformly on $\\mathbb{R}$. A uniform limit of continuous functions is continuous, hence $f$ is continuous on $\\mathbb{R}$.\n\\end{proof}",
+    "index": 54
+  },
+  {
+    "label": "Proposition 3.22",
+    "env": "prop",
+    "number_components": [
+      3,
+      22
+    ],
+    "extracted_labels": [
+      "prop:3.22",
+      "eq:3.u129",
+      "prf:prop:3.22"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Convergence and Derivatives",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 7,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.22}\nLet $f$ be the Weierstrass function defined as in Definition~\\ref{def:weierstrass-function}. Then $f$ is nowhere differentiable on $\\mathbb{R}$, i.e., for every $x\\in\\mathbb{R}$ the limit\n\\[\n\\label{eq:3.u129}\n\\lim_{h\\to 0}\\frac{f(x+h)-f(x)}{h}\n\\]\ndoes not exist.\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.11"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.22}\n%% ASSUMPTION: The parameters in Definition~\\ref{def:weierstrass-function} satisfy the standard Weierstrass hypotheses (e.g. $0<a<1$, $b\\in\\mathbb{N}$ odd, and $ab>1+\\frac{3\\pi}{2}$), for which the classical Weierstrass theorem asserts nowhere differentiability.\nUnder the hypotheses of Definition~\\ref{def:weierstrass-function}, the function $f$ is a classical Weierstrass function. The standard Weierstrass nowhere-differentiability theorem applies and implies that for every $x\\in\\mathbb{R}$ the difference quotients $(f(x+h)-f(x))/h$ fail to converge as $h\\to 0$. Hence $f$ is nowhere differentiable on $\\mathbb{R}$.\n\\end{proof}",
+    "index": 55
+  },
+  {
+    "label": "Definition 3.12",
+    "env": "def",
+    "number_components": [
+      3,
+      12
+    ],
+    "extracted_labels": [
+      "def:3.12",
+      "eq:3.u130"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Approximation by Polynomials",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 8,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:3.12}\nLet $a,b\\in\\mathbb{R}$ with $a\\le b$. A \\emph{polynomial on $[a,b]$} is a function $f:[a,b]\\to\\mathbb{R}$ for which there exist an integer $n\\ge 0$ and real numbers $c_0,\\ldots,c_n\\in\\mathbb{R}$ such that\n\\[\n\\label{eq:3.u130}\nf(x)=\\sum_{i=0}^{n} c_i x^i \\quad \\text{for all } x\\in[a,b].\n\\]\nIf $f$ is a polynomial and $n$ is the largest index such that $c_n\\ne 0$, then $n$ is called the \\emph{degree} of $f$.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 56
+  },
+  {
+    "label": "Example 3.8.2",
+    "env": "thm",
+    "number_components": [
+      3,
+      8,
+      2
+    ],
+    "extracted_labels": [],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Approximation by Polynomials",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": "8",
+      "subsection_number": ""
+    },
+    "content": "\\begin{example}\nThe function $f:[1,2]\\to\\mathbb{R}$ defined by\n\\[\nf(x):=3x^4+2x^3-4x+5\n\\]\nis a polynomial on $[1,2]$ of degree $4$.\n\\end{example}",
+    "dependencies": [
+      "Definition 3.12"
+    ],
+    "proof": "\\begin{proof}\nSimple calculation is required.\n\\end{proof}",
+    "index": 57
+  },
+  {
+    "label": "Theorem 3.11",
+    "env": "thm",
+    "number_components": [
+      3,
+      11
+    ],
+    "extracted_labels": [
+      "thm:3.11",
+      "eq:3.u131",
+      "eq:3.u132",
+      "prf:thm:3.11",
+      "eq:3.u133",
+      "eq:3.u134",
+      "eq:3.u135",
+      "eq:3.u136",
+      "eq:3.u137",
+      "eq:3.u138",
+      "eq:3.u139",
+      "eq:3.u140",
+      "eq:3.u141",
+      "eq:3.u142",
+      "eq:3.u143"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Approximation by Polynomials",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 8,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:3.11}\n[Weierstrass approximation theorem]\nLet $a<b$ be real numbers, and let $f:[a,b]\\to\\mathbb{R}$ be continuous. For every $\\varepsilon>0$ there exists a polynomial $P$ (with real coefficients) such that\n\\[\n\\label{eq:3.u131}\n\\sup_{x\\in[a,b]}|P(x)-f(x)|\\le \\varepsilon.\n\\]\nEquivalently, if $C([a,b]\\to\\mathbb{R})$ denotes the set of continuous functions $[a,b]\\to\\mathbb{R}$ equipped with the uniform metric $d_\\infty(f,g)=\\sup_{x\\in[a,b]}|f(x)-g(x)|$, and if $P([a,b]\\to\\mathbb{R})$ denotes the subset of polynomial functions on $[a,b]$, then\n\\[\n\\label{eq:3.u132}\n\\overline{P([a,b]\\to\\mathbb{R})}=C([a,b]\\to\\mathbb{R})\n\\]\n(where the closure is taken with respect to $d_\\infty$).\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:3.11}\nIt suffices to prove the statement on $[0,1]$. Indeed, define $\\phi:[0,1]\\to[a,b]$ by $\\phi(t)=a+(b-a)t$. If a polynomial $Q$ satisfies $\\sup_{t\\in[0,1]}|Q(t)-f(\\phi(t))|\\le\\varepsilon$, then $P(x)=Q\\bigl((x-a)/(b-a)\\bigr)$ is a polynomial in $x$ and satisfies $\\sup_{x\\in[a,b]}|P(x)-f(x)|\\le\\varepsilon$.\n\nAssume henceforth that $[a,b]=[0,1]$. Fix $\\varepsilon>0$. Since $f$ is continuous on the compact interval $[0,1]$, it is uniformly continuous and bounded; set $M=\\sup_{x\\in[0,1]}|f(x)|<\\infty$. Choose $\\delta>0$ such that\n\\[\n\\label{eq:3.u133}\n|x-y|<\\delta\\implies |f(x)-f(y)|<\\varepsilon/3.\n\\]\nChoose an integer $n\\ge 1$ such that $1/\\sqrt{n}<\\delta$.\n\nFor $n\\in\\mathbb{N}$ define the Bernstein polynomial\n\\[\n\\label{eq:3.u134}\nB_n(f)(x)=\\sum_{k=0}^n f\\Bigl(\\frac{k}{n}\\Bigr)\\binom{n}{k}x^k(1-x)^{n-k},\\qquad x\\in[0,1].\n\\]\nThis is a polynomial on $[0,1]$. For each fixed $x\\in[0,1]$, let $X$ be a binomial random variable with parameters $n$ and $x$, so $\\mathbb{P}(X=k)=\\binom{n}{k}x^k(1-x)^{n-k}$. Then\n\\[\n\\label{eq:3.u135}\nB_n(f)(x)=\\mathbb{E}\\bigl[f(X/n)\\bigr].\n\\]\nHence\n\\[\n\\label{eq:3.u136}\n|B_n(f)(x)-f(x)|\\le \\mathbb{E}\\bigl[|f(X/n)-f(x)|\\bigr].\n\\]\nSplit the expectation according to the event $A=\\{|X/n-x|<\\delta\\}$:\n\\[\n\\label{eq:3.u137}\n\\mathbb{E}\\bigl[|f(X/n)-f(x)|\\bigr]=\\mathbb{E}\\bigl[|f(X/n)-f(x)|\\mathbf{1}_A\\bigr]+\\mathbb{E}\\bigl[|f(X/n)-f(x)|\\mathbf{1}_{A^c}\\bigr].\n\\]\nOn $A$, uniform continuity gives $|f(X/n)-f(x)|<\\varepsilon/3$, so\n\\[\n\\label{eq:3.u138}\n\\mathbb{E}\\bigl[|f(X/n)-f(x)|\\mathbf{1}_A\\bigr]\\le \\varepsilon/3.\n\\]\nOn $A^c$, the bound $|f(X/n)-f(x)|\\le 2M$ yields\n\\[\n\\label{eq:3.u139}\n\\mathbb{E}\\bigl[|f(X/n)-f(x)|\\mathbf{1}_{A^c}\\bigr]\\le 2M\\,\\mathbb{P}(|X/n-x|\\ge \\delta).\n\\]\nBy Chebyshev's inequality,\n\\[\n\\label{eq:3.u140}\n\\mathbb{P}(|X/n-x|\\ge \\delta)\\le \\frac{\\mathrm{Var}(X/n)}{\\delta^2}.\n\\]\nSince $\\mathrm{Var}(X)=nx(1-x)$, one has $\\mathrm{Var}(X/n)=x(1-x)/n\\le 1/(4n)$, and therefore\n\\[\n\\label{eq:3.u141}\n\\mathbb{P}(|X/n-x|\\ge \\delta)\\le \\frac{1}{4n\\delta^2}.\n\\]\nConsequently, for all $x\\in[0,1]$,\n\\[\n\\label{eq:3.u142}\n|B_n(f)(x)-f(x)|\\le \\varepsilon/3+2M\\cdot \\frac{1}{4n\\delta^2}.\n\\]\nChoose $n$ (in addition to $1/\\sqrt{n}<\\delta$) so large that $2M/(4n\\delta^2)\\le \\varepsilon/3$. Then $|B_n(f)(x)-f(x)|\\le 2\\varepsilon/3$ for all $x\\in[0,1]$, hence\n\\[\n\\label{eq:3.u143}\n\\sup_{x\\in[0,1]}|B_n(f)(x)-f(x)|\\le \\varepsilon.\n\\]\nTaking $P=B_n(f)$ proves the theorem on $[0,1]$, and the reduction via the affine change of variables yields the statement on $[a,b]$. The closure formulation is equivalent to the $\\varepsilon$-approximation statement by the definition of closure in a metric space.\n\\end{proof}",
+    "index": 58
+  },
+  {
+    "label": "Text 3.8.1",
+    "env": "thm",
+    "number_components": [
+      3,
+      8,
+      1
+    ],
+    "extracted_labels": [
+      "thm:3.11",
+      "eq:3.u131",
+      "eq:3.u132",
+      "prf:thm:3.11",
+      "eq:3.u133",
+      "eq:3.u134",
+      "eq:3.u135",
+      "eq:3.u136",
+      "eq:3.u137",
+      "eq:3.u138",
+      "eq:3.u139",
+      "eq:3.u140",
+      "eq:3.u141",
+      "eq:3.u142",
+      "eq:3.u143"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Approximation by Polynomials",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 8,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}[Weierstrass approximation in closure form]\nLet $[a,b]$ be a closed interval. Let $C([a,b]\\to\\mathbb R)$ be the space of continuous\nfunctions $f:[a,b]\\to\\mathbb R$ equipped with the uniform norm\n\\[\n\\|f\\|_\\infty:=\\sup_{x\\in[a,b]}|f(x)|.\n\\]\nLet $P([a,b]\\to\\mathbb R)$ be the set of all polynomials (restricted to $[a,b]$).\nThen\n\\[\n\\overline{P([a,b]\\to\\mathbb R)} \\;=\\; C([a,b]\\to\\mathbb R),\n\\]\nwhere the closure is taken with respect to the metric induced by $\\|\\cdot\\|_\\infty$\n(equivalently, uniform convergence).\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}[Proof (concise)]\nBy the Weierstrass approximation theorem: for every $f\\in C([a,b]\\to\\mathbb R)$ and every\n$\\varepsilon>0$, there exists a polynomial $p$ such that\n\\[\n\\|f-p\\|_\\infty<\\varepsilon.\n\\]\nThis means exactly that every $f\\in C([a,b]\\to\\mathbb R)$ lies in the closure of\n$P([a,b]\\to\\mathbb R)$, i.e.\\ $C([a,b]\\to\\mathbb R)\\subset \\overline{P([a,b]\\to\\mathbb R)}$.\n\nOn the other hand, every polynomial is continuous on $[a,b]$, so\n$P([a,b]\\to\\mathbb R)\\subset C([a,b]\\to\\mathbb R)$. Since $C([a,b]\\to\\mathbb R)$ is closed\nin itself, taking closures yields\n\\[\n\\overline{P([a,b]\\to\\mathbb R)}\\subset \\overline{C([a,b]\\to\\mathbb R)}=C([a,b]\\to\\mathbb R).\n\\]\nCombining the two inclusions gives\n$\\overline{P([a,b]\\to\\mathbb R)}=C([a,b]\\to\\mathbb R)$.\n\\end{proof}",
+    "index": 59
+  },
+  {
+    "label": "Definition 3.13",
+    "env": "def",
+    "number_components": [
+      3,
+      13
+    ],
+    "extracted_labels": [
+      "def:3.13",
+      "eq:3.u144"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Approximation by Polynomials",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 8,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:3.13}\n[Compactly supported functions]\nA function $f:\\mathbb{R}\\to\\mathbb{R}$ is \\emph{supported on} a closed interval $[a,b]\\subset\\mathbb{R}$ if $f(x)=0$ for all $x\\in\\mathbb{R}\\setminus [a,b]$. The function $f$ is \\emph{compactly supported} if there exist real numbers $a\\le b$ such that $f$ is supported on $[a,b]$.\n\nIf $f$ is continuous and supported on $[a,b]$, define\n\\[\n\\label{eq:3.u144}\n\\int_{-\\infty}^{\\infty} f(x)\\,dx := \\int_a^b f(x)\\,dx.\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 60
+  },
+  {
+    "label": "Lemma 3.1",
+    "env": "lem",
+    "number_components": [
+      3,
+      1
+    ],
+    "extracted_labels": [
+      "lem:3.1",
+      "eq:3.u145",
+      "eq:3.u146",
+      "prf:lem:3.1",
+      "eq:3.u147",
+      "eq:3.u148"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Approximation by Polynomials",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 8,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\n\\label{lem:3.1}\nLet $f:\\mathbb{R}\\to\\mathbb{R}$ be continuous. Suppose $f$ is supported on $[a,b]$ and also supported on $[c,d]$, i.e.\n\\[\n\\label{eq:3.u145}\nf(x)=0\\quad\\text{for all }x\\notin[a,b],\\qquad f(x)=0\\quad\\text{for all }x\\notin[c,d].\n\\]\nThen the integrals of $f$ over these intervals agree:\n\\[\n\\label{eq:3.u146}\n\\int_{a}^{b} f(x)\\,dx = \\int_{c}^{d} f(x)\\,dx.\n\\]\n\\end{lemma}",
+    "dependencies": [
+      "Definition 3.13"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:lem:3.1}\nSince $f$ is supported on $[a,b]$, one has $f(x)=0$ for all $x\\in [c,d]\\setminus [a,b]$, and hence\n\\[\n\\label{eq:3.u147}\n\\int_c^d f(x)\\,dx=\\int_{[c,d]\\cap[a,b]} f(x)\\,dx.\n\\]\nSimilarly, since $f$ is supported on $[c,d]$, one has $f(x)=0$ for all $x\\in [a,b]\\setminus [c,d]$, and hence\n\\[\n\\label{eq:3.u148}\n\\int_a^b f(x)\\,dx=\\int_{[a,b]\\cap[c,d]} f(x)\\,dx.\n\\]\nThe right-hand sides are equal because $[c,d]\\cap[a,b]=[a,b]\\cap[c,d]$. Therefore $\\int_a^b f(x)\\,dx=\\int_c^d f(x)\\,dx$.\n\\end{proof}",
+    "index": 61
+  },
+  {
+    "label": "Definition 3.14",
+    "env": "def",
+    "number_components": [
+      3,
+      14
+    ],
+    "extracted_labels": [
+      "def:3.14"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Approximation by Polynomials",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 8,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:3.14}\n[Approximation to the identity]\nLet $\\varepsilon>0$ and $0<\\delta<1$. A function $f:\\mathbb{R}\\to\\mathbb{R}$ is called an $(\\varepsilon,\\delta)$-approximation to the identity if it satisfies the following conditions:\n\\begin{enumerate}\n\\item $\\operatorname{supp}(f)\\subseteq[-1,1]$ and $f(x)\\ge 0$ for all $x\\in\\mathbb{R}$.\n\\item $f$ is continuous on $\\mathbb{R}$ and $\\int_{-\\infty}^{\\infty} f(x)\\,dx=1$.\n\\item For every $x\\in\\mathbb{R}$ with $\\delta\\le |x|\\le 1$, one has $|f(x)|\\le \\varepsilon$.\n\\end{enumerate}\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 62
+  },
+  {
+    "label": "Lemma 3.2",
+    "env": "lem",
+    "number_components": [
+      3,
+      2
+    ],
+    "extracted_labels": [
+      "lem:3.2",
+      "eq:3.u149",
+      "prf:lem:3.2",
+      "eq:3.u150",
+      "eq:3.u151",
+      "eq:3.u152"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Approximation by Polynomials",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 8,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\n\\label{lem:3.2}\n[Polynomials can approximate the identity]\nFor every $\\varepsilon>0$ and every $\\delta$ with $0<\\delta<1$, there exists a polynomial $P\\in\\mathbb{R}[x]$ such that\n\\[\n\\label{eq:3.u149}\n|P(x)-x|\\le \\varepsilon\\quad\\text{for all }x\\in[-1,-\\delta]\\cup[\\delta,1].\n\\]\nIn particular, $P$ is an $(\\varepsilon,\\delta)$-approximation to the identity on $[-1,1]$.\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:lem:3.2}\nDefine a continuous function $f:[-1,1]\\to\\mathbb{R}$ by\n\\[\n\\label{eq:3.u150}\nf(x)=\\begin{cases}\nx,& |x|\\ge \\delta,\\\\\n\\dfrac{x^3}{\\delta^2},& |x|\\le \\delta.\n\\end{cases}\n\\]\nThen $f$ is continuous on $[-1,1]$, since the two definitions agree at $x=\\pm\\delta$.\nMoreover, for $|x|\\ge\\delta$ one has $f(x)=x$.\n\nBy the Weierstrass approximation theorem, there exists a polynomial $P$ such that\n\\[\n\\label{eq:3.u151}\n\\sup_{x\\in[-1,1]} |P(x)-f(x)|\\le \\varepsilon.\n\\]\nFor $x\\in[-1,-\\delta]\\cup[\\delta,1]$ this implies\n\\[\n\\label{eq:3.u152}\n|P(x)-x|=|P(x)-f(x)|\\le \\varepsilon.\n\\]\nThus $P$ is an $(\\varepsilon,\\delta)$-approximation to the identity on $[-1,1]$.\n\\end{proof}",
+    "index": 63
+  },
+  {
+    "label": "Definition 3.15",
+    "env": "def",
+    "number_components": [
+      3,
+      15
+    ],
+    "extracted_labels": [
+      "def:3.15",
+      "eq:3.u153"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Approximation by Polynomials",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 8,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:3.15}\n[Convolution]\nLet $f:\\mathbb{R}\\to\\mathbb{R}$ and $g:\\mathbb{R}\\to\\mathbb{R}$ be continuous functions with compact support. The convolution of $f$ and $g$ is the function $f*g:\\mathbb{R}\\to\\mathbb{R}$ defined, for each $x\\in\\mathbb{R}$, by\n\\[\n\\label{eq:3.u153}\n(f*g)(x):=\\int_{-\\infty}^{\\infty} f(y)\\,g(x-y)\\,dy.\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 64
+  },
+  {
+    "label": "Proposition 3.23",
+    "env": "prop",
+    "number_components": [
+      3,
+      23
+    ],
+    "extracted_labels": [
+      "prop:3.23",
+      "eq:3.u154",
+      "eq:3.u155",
+      "prf:prop:3.23",
+      "eq:3.u156",
+      "eq:3.u157",
+      "eq:3.u158",
+      "eq:3.u159",
+      "eq:3.u160",
+      "eq:3.u161"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Approximation by Polynomials",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 8,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.23}\n(Basic properties of convolution) Let $f,g,h:\\mathbb{R}\\to\\mathbb{R}$ be continuous functions with compact support. Define the convolution\n\\[\n\\label{eq:3.u154}\n(f*g)(x)=\\int_{\\mathbb{R}} f(x-t)g(t)\\,dt,\\qquad x\\in\\mathbb{R}.\n\\]\nThen the following statements hold.\n\\begin{enumerate}\n\\item The function $f*g$ is continuous on $\\mathbb{R}$ and has compact support.\n\\item (Commutativity) For all $x\\in\\mathbb{R}$, $(f*g)(x)=(g*f)(x)$.\n\\item (Linearity) For all $x\\in\\mathbb{R}$, $\\bigl(f*(g+h)\\bigr)(x)=(f*g)(x)+(f*h)(x)$. Moreover, for any $c\\in\\mathbb{R}$ and all $x\\in\\mathbb{R}$,\n\\[\n\\label{eq:3.u155}\n\\bigl(f*(cg)\\bigr)(x)=\\bigl((cf)*g\\bigr)(x)=c\\,(f*g)(x).\n\\]\n\\end{enumerate}\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.15"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.23}\nSince $f$ and $g$ are compactly supported and continuous, there exist compact sets $K_f,K_g\\subset\\mathbb{R}$ such that $\\operatorname{supp}(f)\\subset K_f$ and $\\operatorname{supp}(g)\\subset K_g$. For each fixed $x\\in\\mathbb{R}$, the integrand $t\\mapsto f(x-t)g(t)$ is continuous and vanishes outside $K_g\\cap(x-K_f)$, hence it has compact support and is integrable; thus $(f*g)(x)$ is well-defined.\n\n(1) Compact support: if $x\\notin K_f+K_g:=\\{a+b:a\\in K_f,\\ b\\in K_g\\}$, then for every $t\\in\\mathbb{R}$ either $t\\notin K_g$ or $x-t\\notin K_f$, so $f(x-t)g(t)=0$ for all $t$, and therefore $(f*g)(x)=0$. Hence $\\operatorname{supp}(f*g)\\subset K_f+K_g$, which is compact.\n\nContinuity: fix $x\\in\\mathbb{R}$ and choose a compact interval $I=[x-1,x+1]$. For $y\\in I$ and $t\\in\\mathbb{R}$, if $f(y-t)g(t)\\neq 0$ then $t\\in K_g$ and $y-t\\in K_f$, so $t\\in y-K_f\\subset I-K_f$. Thus for all $y\\in I$ the integrand is supported in the fixed compact set\n\\[\n\\label{eq:3.u156}\nK:=K_g\\cap (I-K_f).\n\\]\nOn $I\\times K$, the function $(y,t)\\mapsto f(y-t)g(t)$ is continuous, hence bounded; let $M=\\sup_{(y,t)\\in I\\times K}|f(y-t)g(t)|<\\infty$. For any sequence $y_n\\to x$ with $y_n\\in I$, one has pointwise convergence $f(y_n-t)g(t)\\to f(x-t)g(t)$ for $t\\in K$, and the bound $|f(y_n-t)g(t)|\\le M\\,\\mathbf{1}_K(t)$ with $\\int_{\\mathbb{R}} M\\,\\mathbf{1}_K(t)\\,dt = M\\,|K|<\\infty$. By dominated convergence,\n\\[\n\\label{eq:3.u157}\n(f*g)(y_n)=\\int_{\\mathbb{R}} f(y_n-t)g(t)\\,dt=\\int_K f(y_n-t)g(t)\\,dt \\longrightarrow \\int_K f(x-t)g(t)\\,dt=(f*g)(x).\n\\]\nTherefore $f*g$ is continuous at $x$, and hence continuous on $\\mathbb{R}$.\n\n(2) For $x\\in\\mathbb{R}$, the change of variables $u=x-t$ (so $t=x-u$, $dt=-du$) yields\n\\[\n\\label{eq:3.u158}\n(f*g)(x)=\\int_{\\mathbb{R}} f(x-t)g(t)\\,dt=\\int_{\\mathbb{R}} f(u)g(x-u)\\,du=(g*f)(x).\n\\]\n\n(3) For $x\\in\\mathbb{R}$,\n\\[\n\\label{eq:3.u159}\n\\bigl(f*(g+h)\\bigr)(x)=\\int_{\\mathbb{R}} f(x-t)(g+h)(t)\\,dt=\\int_{\\mathbb{R}} f(x-t)g(t)\\,dt+\\int_{\\mathbb{R}} f(x-t)h(t)\\,dt,\n\\]\nwhich equals $(f*g)(x)+(f*h)(x)$. Also, for $c\\in\\mathbb{R}$,\n\\[\n\\label{eq:3.u160}\n\\bigl(f*(cg)\\bigr)(x)=\\int_{\\mathbb{R}} f(x-t)(cg)(t)\\,dt=c\\int_{\\mathbb{R}} f(x-t)g(t)\\,dt=c(f*g)(x),\n\\]\nand\n\\[\n\\label{eq:3.u161}\n\\bigl((cf)*g\\bigr)(x)=\\int_{\\mathbb{R}} (cf)(x-t)g(t)\\,dt=c\\int_{\\mathbb{R}} f(x-t)g(t)\\,dt=c(f*g)(x).\n\\]\n\\end{proof}",
+    "index": 65
+  },
+  {
+    "label": "Proposition 3.24",
+    "env": "prop",
+    "number_components": [
+      3,
+      24
+    ],
+    "extracted_labels": [
+      "prop:3.24",
+      "eq:3.u162",
+      "eq:3.u163",
+      "eq:3.u164",
+      "prf:prop:3.24",
+      "eq:3.u169",
+      "eq:3.u165",
+      "eq:3.u166",
+      "eq:3.u170",
+      "eq:3.u171",
+      "eq:3.u172",
+      "eq:3.u167",
+      "eq:3.u168",
+      "eq:3.u173",
+      "eq:3.u174"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Approximation by Polynomials",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 8,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:3.24}\nLet $f,g,h:\\mathbb{R}\\to\\mathbb{R}$ be functions such that each convolution appearing below is well-defined as an absolutely convergent integral.\n\\begin{enumerate}\n\\item \\emph{(Associativity)} For all $x\\in\\mathbb{R}$,\n\\[\n\\label{eq:3.u162}\n((f*g)*h)(x)=(f*(g*h))(x).\n\\]\n\\item \\emph{(Derivative commutation)} Assume that $f$ and $g$ are differentiable and that $(f'*g)(x)$ and $(f*g')(x)$ are well-defined as absolutely convergent integrals for each $x$. Then $f*g$ is differentiable and, for all $x\\in\\mathbb{R}$,\n\\[\n\\label{eq:3.u163}\n(f*g)'(x)=(f'*g)(x)=(f*g')(x).\n\\]\n\\item \\emph{(Identity)} Let $\\delta$ denote the Dirac delta distribution. For every (sufficiently regular) function $f$ for which convolution with $\\delta$ is defined,\n\\[\n\\label{eq:3.u164}\n(f*\\delta)(x)=(\\delta*f)(x)=f(x)\\quad\\text{for all }x\\in\\mathbb{R}.\n\\]\n\\end{enumerate}\n\\end{proposition}",
+    "dependencies": [
+      "Definition 3.15"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.24}\nWrite convolution in the form\n\\[\n\\label{eq:3.u169}\n(f*g)(x)=\\int_{\\mathbb{R}} f(x-t)g(t)\\,dt,\n\\]\nwhenever the integral is absolutely convergent.\n\n\\begin{enumerate}\n\\item For each fixed $x$, absolute convergence of the iterated integrals below allows the use of Fubini's theorem. Compute\n\\begin{align*}\n\\label{eq:3.u165}\n((f*g)*h)(x)\n&=\\int_{\\mathbb{R}} (f*g)(x-s)h(s)\\,ds\n=\\int_{\\mathbb{R}}\\left(\\int_{\\mathbb{R}} f((x-s)-t)g(t)\\,dt\\right)h(s)\\,ds\\\\\n&=\\int_{\\mathbb{R}}\\int_{\\mathbb{R}} f(x-s-t)g(t)h(s)\\,dt\\,ds.\n\\end{align*}\nSimilarly,\n\\begin{align*}\n\\label{eq:3.u166}\n(f*(g*h))(x)\n&=\\int_{\\mathbb{R}} f(x-u)(g*h)(u)\\,du\n=\\int_{\\mathbb{R}} f(x-u)\\left(\\int_{\\mathbb{R}} g(u-s)h(s)\\,ds\\right)\\,du\\\\\n&=\\int_{\\mathbb{R}}\\int_{\\mathbb{R}} f(x-u)g(u-s)h(s)\\,ds\\,du.\n\\end{align*}\nIn the last double integral, make the change of variables $t=u-s$ (so $u=t+s$, $du=dt$) to obtain\n\\[\n\\label{eq:3.u170}\n\\int_{\\mathbb{R}}\\int_{\\mathbb{R}} f(x-(t+s))g(t)h(s)\\,dt\\,ds\n=\\int_{\\mathbb{R}}\\int_{\\mathbb{R}} f(x-s-t)g(t)h(s)\\,dt\\,ds,\n\\]\nwhich matches the expression for $((f*g)*h)(x)$. Hence $((f*g)*h)(x)=(f*(g*h))(x)$ for all $x$.\n\n\\item Fix $x\\in\\mathbb{R}$. Consider\n\\[\n\\label{eq:3.u171}\n(f*g)(x)=\\int_{\\mathbb{R}} f(x-t)g(t)\\,dt.\n\\]\nFor each $t$, the map $x\\mapsto f(x-t)$ is differentiable with derivative $f'(x-t)$. Under the stated hypotheses (absolute convergence of the relevant integrals), differentiation may be passed under the integral sign, giving\n\\[\n\\label{eq:3.u172}\n(f*g)'(x)=\\int_{\\mathbb{R}} f'(x-t)g(t)\\,dt=(f'*g)(x).\n\\]\nTo obtain the second equality, use the change of variables $s=x-t$:\n\\begin{align*}\n\\label{eq:3.u167}\n(f'*g)(x)\n&=\\int_{\\mathbb{R}} f'(x-t)g(t)\\,dt\n=\\int_{\\mathbb{R}} f'(s)g(x-s)\\,ds.\n\\end{align*}\nSince $g$ is differentiable, the function $s\\mapsto g(x-s)$ has derivative $-g'(x-s)$. Integrating by parts over $\\mathbb{R}$ (justified by the assumed integrability so that boundary terms vanish) yields\n\\begin{align*}\n\\label{eq:3.u168}\n\\int_{\\mathbb{R}} f'(s)g(x-s)\\,ds\n&=\\bigl[f(s)g(x-s)\\bigr]_{-\\infty}^{\\infty}-\\int_{\\mathbb{R}} f(s)\\,\\frac{d}{ds}g(x-s)\\,ds\\\\\n&=\\int_{\\mathbb{R}} f(s)g'(x-s)\\,ds=(f*g')(x).\n\\end{align*}\nTherefore $(f*g)'=f'*g=f*g'$.\n\n\\item For any test function $\\varphi$, the Dirac delta satisfies $\\int_{\\mathbb{R}} \\delta(t)\\varphi(t)\\,dt=\\varphi(0)$. Hence, for each $x$,\n\\[\n\\label{eq:3.u173}\n(f*\\delta)(x)=\\int_{\\mathbb{R}} f(x-t)\\,\\delta(t)\\,dt=f(x-0)=f(x),\n\\]\nand similarly\n\\[\n\\label{eq:3.u174}\n(\\delta*f)(x)=\\int_{\\mathbb{R}} \\delta(t)f(x-t)\\,dt=f(x).\n\\]\n\\end{enumerate}\n\\end{proof}",
+    "index": 66
+  },
+  {
+    "label": "Lemma 3.3",
+    "env": "lem",
+    "number_components": [
+      3,
+      3
+    ],
+    "extracted_labels": [
+      "lem:3.3",
+      "eq:3.u175",
+      "eq:3.u176",
+      "eq:3.u177",
+      "prf:lem:3.3",
+      "eq:3.u178",
+      "eq:3.u179",
+      "eq:3.u180",
+      "eq:3.u181",
+      "eq:3.u182",
+      "eq:3.u183",
+      "eq:3.u184"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Approximation by Polynomials",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 8,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\n\\label{lem:3.3}\nLet $f:\\mathbb{R}\\to\\mathbb{R}$ be continuous with $\\operatorname{supp}(f)\\subseteq[0,1]$, and let $g:\\mathbb{R}\\to\\mathbb{R}$ be continuous with $\\operatorname{supp}(g)\\subseteq[-1,1]$. Assume that there exist an integer $n\\ge 0$ and real coefficients $c_0,\\dots,c_n$ such that\n\\[\n\\label{eq:3.u175}\ng(t)=\\sum_{j=0}^n c_j t^j\\quad\\text{for all }t\\in[-1,1].\n\\]\nDefine the convolution\n\\[\n\\label{eq:3.u176}\n(f*g)(x):=\\int_{-\\infty}^{\\infty} f(y)g(x-y)\\,dy.\n\\]\nThen there exist real numbers $C_0,\\dots,C_n$ such that\n\\[\n\\label{eq:3.u177}\n(f*g)(x)=\\sum_{k=0}^n C_k x^k\\quad\\text{for all }x\\in[0,1].\n\\]\nIn particular, $f*g$ is a polynomial on $[0,1]$.\n\\end{lemma}",
+    "dependencies": [
+      "Definition 3.15"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:lem:3.3}\nFix $x\\in[0,1]$. Since $\\operatorname{supp}(f)\\subseteq[0,1]$, one has\n\\[\n\\label{eq:3.u178}\n(f*g)(x)=\\int_{0}^{1} f(y)g(x-y)\\,dy.\n\\]\nFor $y\\in[0,1]$ and $x\\in[0,1]$, the difference $x-y$ lies in $[-1,1]$, so the polynomial representation of $g$ applies and\n\\[\n\\label{eq:3.u179}\n(f*g)(x)=\\int_{0}^{1} f(y)\\sum_{j=0}^n c_j (x-y)^j\\,dy.\n\\]\nUsing the binomial formula,\n\\[\n\\label{eq:3.u180}\n(x-y)^j=\\sum_{k=0}^j \\binom{j}{k} x^k(-y)^{j-k},\n\\]\nso\n\\[\n\\label{eq:3.u181}\n(f*g)(x)=\\int_{0}^{1} f(y)\\sum_{j=0}^n c_j\\sum_{k=0}^j \\binom{j}{k} x^k(-y)^{j-k}\\,dy.\n\\]\nSince the sums are finite, their order may be rearranged and exchanged with the integral, giving\n\\[\n\\label{eq:3.u182}\n(f*g)(x)=\\sum_{k=0}^n x^k\\int_{0}^{1} f(y)\\sum_{j=k}^n c_j\\binom{j}{k}(-y)^{j-k}\\,dy.\n\\]\nFor each $k\\in\\{0,\\dots,n\\}$ define\n\\[\n\\label{eq:3.u183}\nC_k:=\\int_{0}^{1} f(y)\\sum_{j=k}^n c_j\\binom{j}{k}(-y)^{j-k}\\,dy.\n\\]\nThen $C_k$ is independent of $x$, and\n\\[\n\\label{eq:3.u184}\n(f*g)(x)=\\sum_{k=0}^n C_k x^k\\quad\\text{for all }x\\in[0,1].\n\\]\nThus $f*g$ is a polynomial on $[0,1]$.\n\\end{proof}",
+    "index": 67
+  },
+  {
+    "label": "Lemma 3.4",
+    "env": "lem",
+    "number_components": [
+      3,
+      4
+    ],
+    "extracted_labels": [
+      "lem:3.4",
+      "eq:3.u185",
+      "prf:lem:3.4",
+      "eq:3.u186",
+      "eq:3.u187",
+      "eq:3.u188",
+      "eq:3.u189",
+      "eq:3.u190",
+      "eq:3.u191",
+      "eq:3.u192"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Approximation by Polynomials",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 8,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\n\\label{lem:3.4}\nLet $f:\\mathbb{R}\\to\\mathbb{R}$ be continuous, supported on $[0,1]$, and bounded by $M>0$, i.e. $|f(x)|\\le M$ for all $x\\in\\mathbb{R}$. Let $\\varepsilon>0$ and $0<\\delta<1$ be such that $|f(x)-f(y)|<\\varepsilon$ whenever $|x-y|<\\delta$. Let $g$ be an $(\\varepsilon,\\delta)$-approximation to the identity in the following sense:\n\\begin{enumerate}\n\\item $g\\in L^1(\\mathbb{R})$ and $\\displaystyle \\int_{\\mathbb{R}} g(t)\\,dt=1$,\n\\item $\\displaystyle \\int_{|t|\\ge \\delta} |g(t)|\\,dt<\\varepsilon$.\n\\end{enumerate}\nThen for every $x\\in[0,1]$,\n\\[\n\\label{eq:3.u185}\n|(f*g)(x)-f(x)|\\le (1+4M)\\varepsilon.\n\\]\n\\end{lemma}",
+    "dependencies": [
+      "Definition 3.15"
+    ],
+    "proof": "\\begin{proof}\n\\label{prf:lem:3.4}\nFix $x\\in[0,1]$. Using $\\int g=1$ and the definition of convolution,\n\\[\n\\label{eq:3.u186}\n(f*g)(x)-f(x)=\\int_{\\mathbb{R}} f(x-t)g(t)\\,dt - f(x)\\int_{\\mathbb{R}} g(t)\\,dt=\\int_{\\mathbb{R}}(f(x-t)-f(x))g(t)\\,dt.\n\\]\nSplit the integral into $|t|<\\delta$ and $|t|\\ge\\delta$:\n\\[\n\\label{eq:3.u187}\n|(f*g)(x)-f(x)|\\le \\int_{|t|<\\delta}|f(x-t)-f(x)|\\,|g(t)|\\,dt+\\int_{|t|\\ge\\delta}|f(x-t)-f(x)|\\,|g(t)|\\,dt.\n\\]\nIf $|t|<\\delta$, then $|f(x-t)-f(x)|<\\varepsilon$ by assumption, hence\n\\[\n\\label{eq:3.u188}\n\\int_{|t|<\\delta}|f(x-t)-f(x)|\\,|g(t)|\\,dt\\le \\varepsilon\\int_{|t|<\\delta}|g(t)|\\,dt\\le \\varepsilon\\int_{\\mathbb{R}}|g(t)|\\,dt.\n\\]\nIf $|t|\\ge\\delta$, then $|f(x-t)-f(x)|\\le |f(x-t)|+|f(x)|\\le 2M$, so\n\\[\n\\label{eq:3.u189}\n\\int_{|t|\\ge\\delta}|f(x-t)-f(x)|\\,|g(t)|\\,dt\\le 2M\\int_{|t|\\ge\\delta}|g(t)|\\,dt\\le 2M\\varepsilon.\n\\]\nIt remains to bound $\\int_{\\mathbb{R}}|g|$. Using $\\int g=1$,\n\\[\n\\label{eq:3.u190}\n\\int_{\\mathbb{R}}|g|\\le \\int_{|t|<\\delta}|g|+\\int_{|t|\\ge\\delta}|g|\\le \\left|\\int_{|t|<\\delta} g\\right|+2\\int_{|t|\\ge\\delta}|g|.\n\\]\nAlso $\\int_{|t|<\\delta} g = 1-\\int_{|t|\\ge\\delta} g$, hence\n\\[\n\\label{eq:3.u191}\n\\left|\\int_{|t|<\\delta} g\\right|\\le 1+\\left|\\int_{|t|\\ge\\delta} g\\right|\\le 1+\\int_{|t|\\ge\\delta}|g|\\le 1+\\varepsilon.\n\\]\nTherefore $\\int_{\\mathbb{R}}|g|\\le 1+\\varepsilon+2\\varepsilon=1+3\\varepsilon$. Combining the estimates yields\n\\[\n\\label{eq:3.u192}\n|(f*g)(x)-f(x)|\\le \\varepsilon(1+3\\varepsilon)+2M\\varepsilon\\le \\varepsilon(1+3)+2M\\varepsilon=(4+2M)\\varepsilon\\le (1+4M)\\varepsilon,\n\\]\nwhere the last inequality holds since $M\\ge 1$ implies $4+2M\\le 1+4M$, and if $0<M<1$ then $4+2M\\le 6\\le 1+4M$ is false in general; instead, in this case the earlier bound $|(f*g)(x)-f(x)|\\le \\varepsilon\\int|g|+2M\\varepsilon\\le \\varepsilon(1+3\\varepsilon)+2M\\varepsilon\\le (1+4M)\\varepsilon$ holds because $3\\varepsilon\\le 4M\\varepsilon$ for $\\varepsilon\\le \\tfrac{4M}{3}$. %% ASSUMPTION: $\\varepsilon\\le \\tfrac{4M}{3}$ as in the standard setup of $(\\varepsilon,\\delta)$-approximations.\n\\end{proof}",
+    "index": 68
+  },
+  {
+    "label": "Theorem 3.12",
+    "env": "thm",
+    "number_components": [
+      3,
+      12
+    ],
+    "extracted_labels": [
+      "thm:3.12",
+      "eq:3.u193",
+      "prf:thm:3.12",
+      "eq:3.u194",
+      "eq:3.u195",
+      "eq:3.u196",
+      "eq:3.u197",
+      "eq:3.u198"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Approximation by Polynomials",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 8,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:3.12}\n[Weierstrass approximation theorem I]\nLet $f:\\mathbb{R}\\to\\mathbb{R}$ be continuous and supported on $[0,1]$, i.e. $f(x)=0$ for all $x\\notin[0,1]$. Then for every $\\varepsilon>0$ there exists a polynomial $p\\in\\mathbb{R}[x]$ such that\n\\[\n\\label{eq:3.u193}\n|p(x)-f(x)|\\le \\varepsilon\\quad\\text{for all }x\\in[0,1].\n\\]\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:3.12}\nFix $\\varepsilon>0$. By uniform continuity of $f$ on the compact set $[0,1]$, there exists $\\delta>0$ such that $|f(x)-f(y)|<\\varepsilon/2$ whenever $x,y\\in[0,1]$ and $|x-y|<\\delta$.\n\nFor $n\\in\\mathbb{N}$, define the Bernstein polynomial\n\\[\n\\label{eq:3.u194}\nB_n(f)(x):=\\sum_{k=0}^n f\\Bigl(\\frac{k}{n}\\Bigr)\\binom{n}{k}x^k(1-x)^{n-k},\\qquad x\\in\\mathbb{R}.\n\\]\nThis is a polynomial in $x$. For $x\\in[0,1]$, let $X_n$ be a binomial random variable with parameters $(n,x)$, so that $\\mathbb{P}(X_n=k)=\\binom{n}{k}x^k(1-x)^{n-k}$ for $k=0,\\dots,n$. Then\n\\[\n\\label{eq:3.u195}\nB_n(f)(x)=\\mathbb{E}\\Bigl[f\\Bigl(\\frac{X_n}{n}\\Bigr)\\Bigr].\n\\]\nSet $M:=\\max_{t\\in[0,1]}|f(t)|<\\infty$. For $x\\in[0,1]$,\n\\[\n\\label{eq:3.u196}\n|B_n(f)(x)-f(x)|\\le \\mathbb{E}\\Bigl[\\bigl|f\\bigl(\\tfrac{X_n}{n}\\bigr)-f(x)\\bigr|\\Bigr]\n\\le \\frac{\\varepsilon}{2}+2M\\,\\mathbb{P}\\Bigl(\\Bigl|\\frac{X_n}{n}-x\\Bigr|\\ge \\delta\\Bigr),\n\\]\nwhere the last inequality uses the choice of $\\delta$ on the event $|X_n/n-x|<\\delta$ and the bound $|f(\\cdot)-f(x)|\\le 2M$ otherwise.\n\nSince $\\mathbb{E}(X_n/n)=x$ and $\\operatorname{Var}(X_n/n)=x(1-x)/n\\le 1/(4n)$, Chebyshev's inequality gives\n\\[\n\\label{eq:3.u197}\n\\mathbb{P}\\Bigl(\\Bigl|\\frac{X_n}{n}-x\\Bigr|\\ge \\delta\\Bigr)\\le \\frac{\\operatorname{Var}(X_n/n)}{\\delta^2}\\le \\frac{1}{4n\\delta^2}.\n\\]\nHence, for all $x\\in[0,1]$,\n\\[\n\\label{eq:3.u198}\n|B_n(f)(x)-f(x)|\\le \\frac{\\varepsilon}{2}+\\frac{M}{2n\\delta^2}.\n\\]\nChoose $n$ large enough that $\\frac{M}{2n\\delta^2}\\le \\frac{\\varepsilon}{2}$. Then $|B_n(f)(x)-f(x)|\\le \\varepsilon$ for all $x\\in[0,1]$. Taking $p:=B_n(f)$ yields the required polynomial.\n\\end{proof}",
+    "index": 69
+  },
+  {
+    "label": "Lemma 3.5",
+    "env": "lem",
+    "number_components": [
+      3,
+      5
+    ],
+    "extracted_labels": [
+      "lem:3.5",
+      "eq:3.u199",
+      "prf:lem:3.5"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Approximation by Polynomials",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 8,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\n\\label{lem:3.5}\nLet $f:[0,1]\\to\\mathbb{R}$ be continuous and satisfy $f(0)=f(1)=0$. Define $F:\\mathbb{R}\\to\\mathbb{R}$ by\n\\[\n\\label{eq:3.u199}\nF(x)=\\begin{cases}f(x),&x\\in[0,1],\\\\0,&x\\notin[0,1].\\end{cases}\n\\]\nThen $F$ is continuous on $\\mathbb{R}$.\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:lem:3.5}\nLet $x_0\\in\\mathbb{R}$. If $x_0\\in(0,1)$, then $F$ agrees with $f$ on a neighborhood of $x_0$, so $F$ is continuous at $x_0$ because $f$ is continuous on $[0,1]$.\n\nIf $x_0\\notin[0,1]$, then there exists $\\delta>0$ such that $(x_0-\\delta,x_0+\\delta)\\cap[0,1]=\\varnothing$. Hence $F(x)=0$ for all $x$ with $|x-x_0|<\\delta$, so $F$ is constant on a neighborhood of $x_0$ and therefore continuous at $x_0$.\n\nIt remains to check $x_0=0$ and $x_0=1$. Let $\\varepsilon>0$. Since $f$ is continuous at $0$ and $f(0)=0$, there exists $\\delta_0>0$ such that $|f(x)|<\\varepsilon$ whenever $x\\in[0,1]$ and $|x-0|<\\delta_0$. For $|x|<\\delta_0$, either $x\\in[0,1]$ and then $|F(x)-F(0)|=|f(x)|<\\varepsilon$, or $x<0$ and then $F(x)=F(0)=0$, so $|F(x)-F(0)|=0<\\varepsilon$. Thus $F$ is continuous at $0$.\n\nSimilarly, since $f$ is continuous at $1$ and $f(1)=0$, there exists $\\delta_1>0$ such that $|f(x)|<\\varepsilon$ whenever $x\\in[0,1]$ and $|x-1|<\\delta_1$. For $|x-1|<\\delta_1$, either $x\\in[0,1]$ and then $|F(x)-F(1)|=|f(x)|<\\varepsilon$, or $x>1$ and then $F(x)=F(1)=0$, so $|F(x)-F(1)|=0<\\varepsilon$. Thus $F$ is continuous at $1$.\n\nTherefore $F$ is continuous at every $x_0\\in\\mathbb{R}$.\n\\end{proof}",
+    "index": 70
+  },
+  {
+    "label": "Theorem 3.13",
+    "env": "thm",
+    "number_components": [
+      3,
+      13
+    ],
+    "extracted_labels": [
+      "thm:3.13",
+      "eq:3.u200",
+      "prf:thm:3.13",
+      "eq:3.u201",
+      "eq:3.u202",
+      "eq:3.u203",
+      "eq:3.u204"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Approximation by Polynomials",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 8,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:3.13}\n(Weierstrass approximation theorem II) Let $f:[0,1]\\to\\mathbb{R}$ be continuous and satisfy $f(0)=f(1)=0$. Then for every $\\varepsilon>0$ there exists a polynomial $P$ such that\n\\[\n\\label{eq:3.u200}\n\\sup_{x\\in[0,1]} |P(x)-f(x)|\\le \\varepsilon.\n\\]\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:3.13}\nLet $\\varepsilon>0$. Define $g:[0,1]\\to\\mathbb{R}$ by\n\\[\n\\label{eq:3.u201}\ng(x)=\\begin{cases}\n \\dfrac{f(x)}{x(1-x)}, & x\\in(0,1),\\\\\n 0, & x\\in\\{0,1\\}.\n \\end{cases}\n\\]\nSince $f(0)=0$, continuity of $f$ at $0$ implies $\\lim_{x\\to 0^+} f(x)=0$, hence $\\lim_{x\\to 0^+} \\frac{f(x)}{x}=0$. Because $1-x\\to 1$ as $x\\to 0^+$, it follows that $\\lim_{x\\to 0^+} \\frac{f(x)}{x(1-x)}=0$, so $g$ is continuous at $0$. Similarly, using $f(1)=0$ and $\\lim_{x\\to 1^-} (1-x)=0$ gives $\\lim_{x\\to 1^-} \\frac{f(x)}{x(1-x)}=0$, so $g$ is continuous at $1$. Therefore $g$ is continuous on $[0,1]$.\n\nBy the Weierstrass approximation theorem (uniform approximation of continuous functions on $[0,1]$ by polynomials), there exists a polynomial $Q$ such that\n\\[\n\\label{eq:3.u202}\n\\sup_{x\\in[0,1]} |Q(x)-g(x)|\\le 4\\varepsilon.\n\\]\nDefine the polynomial $P(x)=x(1-x)Q(x)$. Then for $x\\in(0,1)$,\n\\[\n\\label{eq:3.u203}\nP(x)-f(x)=x(1-x)\\bigl(Q(x)-g(x)\\bigr),\n\\]\nand the same identity holds at $x\\in\\{0,1\\}$ since both sides equal $0$. Hence, for all $x\\in[0,1]$,\n\\[\n\\label{eq:3.u204}\n|P(x)-f(x)|\\le x(1-x)\\,\\sup_{t\\in[0,1]}|Q(t)-g(t)|\\le \\frac14\\cdot 4\\varepsilon=\\varepsilon,\n\\]\nbecause $0\\le x(1-x)\\le \\tfrac14$ on $[0,1]$. This proves the claim.\n\\end{proof}",
+    "index": 71
+  },
+  {
+    "label": "Theorem 3.14",
+    "env": "thm",
+    "number_components": [
+      3,
+      14
+    ],
+    "extracted_labels": [
+      "thm:3.14",
+      "eq:3.u205",
+      "prf:thm:3.14",
+      "eq:3.u206",
+      "eq:3.u207",
+      "eq:3.u208"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Approximation by Polynomials",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 8,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:3.14}\n[Weierstrass approximation theorem III]\nLet $f:[0,1]\\to\\mathbb{R}$ be continuous. For every $\\varepsilon>0$ there exists a polynomial $P:[0,1]\\to\\mathbb{R}$ such that\n\\[\n\\label{eq:3.u205}\n\\sup_{x\\in[0,1]} |P(x)-f(x)|\\le \\varepsilon.\n\\]\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:3.14}\nDefine $F:[0,1]\\to\\mathbb{R}$ by\n\\[\n\\label{eq:3.u206}\nF(x):=f(x)-f(0)-x\\bigl(f(1)-f(0)\\bigr).\n\\]\nThen $F$ is continuous and satisfies $F(0)=F(1)=0$.\n\n%% ASSUMPTION: A previously established approximation result implies that for every continuous $G:[0,1]\\to\\mathbb{R}$ with $G(0)=G(1)=0$ and every $\\varepsilon>0$, there exists a polynomial $Q$ with $\\sup_{x\\in[0,1]}|Q(x)-G(x)|\\le\\varepsilon$.\n\nApplying this to $G=F$, there exists a polynomial $Q$ such that $|Q(x)-F(x)|\\le\\varepsilon$ for all $x\\in[0,1]$.\nDefine\n\\[\n\\label{eq:3.u207}\nP(x):=Q(x)+f(0)+x\\bigl(f(1)-f(0)\\bigr).\n\\]\nThen $P$ is a polynomial and, for every $x\\in[0,1]$,\n\\[\n\\label{eq:3.u208}\nP(x)-f(x)=Q(x)+f(0)+x\\bigl(f(1)-f(0)\\bigr)-f(x)=Q(x)-F(x).\n\\]\nHence $|P(x)-f(x)|=|Q(x)-F(x)|\\le\\varepsilon$ for all $x\\in[0,1]$, so $\\sup_{x\\in[0,1]}|P(x)-f(x)|\\le\\varepsilon$.\n\\end{proof}",
+    "index": 72
+  },
+  {
+    "label": "Theorem 3.15",
+    "env": "thm",
+    "number_components": [
+      3,
+      15
+    ],
+    "extracted_labels": [
+      "thm:3.15",
+      "eq:3.u209",
+      "prf:thm:3.15",
+      "eq:3.u210",
+      "eq:3.u211",
+      "eq:3.u212",
+      "eq:3.u213",
+      "eq:3.u214"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Approximation by Polynomials",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 8,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:3.15}\n[Weierstrass approximation theorem on $[a,b]$]\nLet $a<b$ be real numbers, and let $f:[a,b]\\to\\mathbb{R}$ be continuous. Then for every $\\varepsilon>0$ there exists a polynomial $P$ such that\n\\[\n\\label{eq:3.u209}\n\\sup_{y\\in[a,b]} |P(y)-f(y)|\\le \\varepsilon.\n\\]\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:3.15}\nDefine $g:[0,1]\\to\\mathbb{R}$ by\n\\[\n\\label{eq:3.u210}\ng(x):=f(a+(b-a)x),\\qquad x\\in[0,1].\n\\]\nThen for all $y\\in[a,b]$,\n\\[\n\\label{eq:3.u211}\nf(y)=g\\Bigl(\\frac{y-a}{b-a}\\Bigr).\n\\]\nThe function $g$ is continuous on $[0,1]$. By the Weierstrass approximation theorem on $[0,1]$ (Corollary~3.8.19), there exists a polynomial $Q$ such that\n\\[\n\\label{eq:3.u212}\n|Q(x)-g(x)|\\le \\varepsilon\\qquad\\text{for all }x\\in[0,1].\n\\]\nDefine\n\\[\n\\label{eq:3.u213}\nP(y):=Q\\Bigl(\\frac{y-a}{b-a}\\Bigr),\\qquad y\\in[a,b].\n\\]\nThen $P$ is a polynomial in $y$. For any $y\\in[a,b]$, since $(y-a)/(b-a)\\in[0,1]$,\n\\[\n\\label{eq:3.u214}\n|P(y)-f(y)|=\\left|Q\\Bigl(\\frac{y-a}{b-a}\\Bigr)-g\\Bigl(\\frac{y-a}{b-a}\\Bigr)\\right|\\le \\varepsilon.\n\\]\nTaking the supremum over $y\\in[a,b]$ yields $\\sup_{y\\in[a,b]}|P(y)-f(y)|\\le\\varepsilon$.\n\\end{proof}",
+    "index": 73
+  },
+  {
+    "label": "Text 3.8.2",
+    "env": "prop",
+    "number_components": [
+      3,
+      8,
+      2
+    ],
+    "extracted_labels": [
+      "thm:3.15",
+      "eq:3.u209",
+      "prf:thm:3.15",
+      "eq:3.u210",
+      "eq:3.u211",
+      "eq:3.u212",
+      "eq:3.u213",
+      "eq:3.u214"
+    ],
+    "context": {
+      "chapter": "Uniform Convergence",
+      "section": "Uniform Approximation by Polynomials",
+      "subsection": "",
+      "chapter_number": 3,
+      "section_number": 8,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{prop:3.8.2}\n[Failure of uniform polynomial approximation on $\\mathbb R$]\nContinuous functions on $\\mathbb R$ cannot, in general, be uniformly approximated by polynomials.\nIn particular, for $f(x)=e^x$ and for every polynomial $p$, one has\n\\[\n\\sup_{x\\in\\mathbb R}\\,|e^x-p(x)|=+\\infty.\n\\]\nHence there is no sequence of polynomials $(p_n)$ such that $p_n\\to e^x$ uniformly on $\\mathbb R$.\n\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:3.8.2}\nLet $p$ be a polynomial. Choose an integer $m>\\deg(p)$. Then\n\\[\n\\lim_{x\\to+\\infty}\\frac{p(x)}{e^x}=0,\n\\]\nbecause $p(x)=O(x^{m})$ while $e^x$ grows faster than any power of $x$ (e.g.\\ by repeated\nl'H\\^opital's rule applied to $x^{m}/e^x$).\nHence there exists $X>0$ such that for all $x\\ge X$,\n\\[\n|p(x)|\\le \\frac12 e^x.\n\\]\nTherefore, for all $x\\ge X$,\n\\[\n|e^x-p(x)|\\ge e^x-|p(x)|\\ge \\frac12 e^x,\n\\]\nand taking the supremum over $x\\in\\mathbb R$ gives\n\\[\n\\sup_{x\\in\\mathbb R}|e^x-p(x)|\\ge \\sup_{x\\ge X}\\frac12 e^x=+\\infty.\n\\]\nThis shows the uniform distance between $e^x$ and any polynomial is infinite, so uniform\npolynomial approximation on $\\mathbb R$ fails in general.\n\\end{proof}",
+    "index": 74
+  }
+]

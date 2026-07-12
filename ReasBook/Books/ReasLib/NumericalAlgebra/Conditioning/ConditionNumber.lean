@@ -45,3 +45,4 @@ theorem conditionNumber_ge_one (A : Matrix n n α) (hA : Invertible A) :
 
 end ConditionNumber
 end Matrix
+

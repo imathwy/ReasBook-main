@@ -187,3 +187,4 @@ theorem Strong_Convex_second_lower (hsc : StrongConvexOn s m f)
   linarith
 
 end
+

@@ -1,0 +1,7 @@
+-- Theorem-local support index for Lemma 8.11.3.
+import StacksProject_2024.Chap08.Lemma_8_11_3.InheritedTopologyAndLocalLifting
+import StacksProject_2024.Chap08.Lemma_8_11_3.InheritedCoverProjection
+import StacksProject_2024.Chap08.Lemma_8_11_3.FactorizationEssentialImage
+import StacksProject_2024.Chap08.Lemma_8_11_3.TargetPullbackNormalForm
+import StacksProject_2024.Chap08.Lemma_8_11_3.SourceLiftToTargetPullback
+import StacksProject_2024.Chap08.Lemma_8_11_3.CanonicalGerbeCriterion

@@ -1,1 +1,0 @@
-import LinearRepresentations_Serre_1977.LinearAlgebra.TensorPower.Symmetric

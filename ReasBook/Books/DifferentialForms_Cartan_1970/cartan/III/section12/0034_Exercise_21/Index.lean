@@ -1,0 +1,13 @@
+import DifferentialForms_Cartan_1970.III.section12.«0034_Exercise_21».NegativeAxisKeyholeSegments
+import DifferentialForms_Cartan_1970.III.section12.«0034_Exercise_21».NegativeAxisKeyholeBranchGeometry
+import DifferentialForms_Cartan_1970.III.section12.«0034_Exercise_21».NegativeAxisKeyholeCornerFibers
+import DifferentialForms_Cartan_1970.III.section12.«0034_Exercise_21».NegativeAxisKeyholeSimplicity
+import DifferentialForms_Cartan_1970.III.section12.«0034_Exercise_21».NegativeAxisKeyholeRegularParameters
+import DifferentialForms_Cartan_1970.III.section12.«0034_Exercise_21».NegativeAxisKeyholeRange
+import DifferentialForms_Cartan_1970.III.section12.«0034_Exercise_21».Exercise21ResidueIntegrand
+import DifferentialForms_Cartan_1970.III.section12.«0034_Exercise_21».NegativeAxisWedgeAnnulus
+import DifferentialForms_Cartan_1970.III.section12.«0034_Exercise_21».NegativeWedgePoleBallData
+import DifferentialForms_Cartan_1970.III.section12.«0034_Exercise_21».Exercise21ResidueNormalizations
+import DifferentialForms_Cartan_1970.III.section12.«0034_Exercise_21».Exercise21ContourToRealIntegral
+
+-- Re-export the theorem-local support modules for Exercise 21.

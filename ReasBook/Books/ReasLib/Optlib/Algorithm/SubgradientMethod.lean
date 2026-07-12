@@ -604,3 +604,4 @@ lemma subgradient_method_diminishing_step_size (hm : IsMinOn f univ xm)
   simp at h₁'; simp; apply h₁'
 
 end
+

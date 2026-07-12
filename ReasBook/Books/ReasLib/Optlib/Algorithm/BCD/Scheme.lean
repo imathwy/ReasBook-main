@@ -307,3 +307,4 @@ theorem BCD.coordinate_lip {self : BCD f g H l x0 y0} : (∀ y, LipschitzWith l 
   simp at h; rwa [sub_prod, sub_self, norm_prod_left_zero] at h;
 
 end Assumption
+

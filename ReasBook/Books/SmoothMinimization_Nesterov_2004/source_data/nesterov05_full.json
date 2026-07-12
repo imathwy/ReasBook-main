@@ -1,0 +1,2096 @@
+[
+  {
+    "label": "Definition 1.1.1",
+    "env": "def",
+    "number_components": [
+      1,
+      1,
+      1
+    ],
+    "extracted_labels": [
+      "def:1.1",
+      "eq:1.1"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Introduction",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "1",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:1.1}\n(Classical complexity benchmark for subgradient schemes.)\nA classical worst-case iteration-complexity estimate for subgradient-type schemes for non-smooth convex minimization in the black-box oracle model is of order\n\\begin{equation}\\label{eq:1.1}\nO\\!\\left(\\frac{1}{\\varepsilon^{2}}\\right),\n\\end{equation}\nwhere \\(\\varepsilon>0\\) is the desired absolute accuracy in objective value.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 1
+  },
+  {
+    "label": "Definition 1.1.2",
+    "env": "def",
+    "number_components": [
+      1,
+      1,
+      2
+    ],
+    "extracted_labels": [
+      "def:1.3",
+      "eq:intro:hard_instance"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Introduction",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "1",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:1.3}\n(Constructive lower-bound illustration in the black-box model.)\nIn the black-box oracle model for non-smooth convex minimization, the complexity rate suggested by \\eqref{eq:1.1} cannot be uniformly improved in the dimension.\nA constructive hard instance cited in the paper is\n\\begin{equation}\\label{eq:intro:hard_instance}\n\\min_{x\\in\\mathbb{R}^{n}}\\left\\{\\max_{1\\le i\\le n}x^{(i)}:\\ \\sum_{i=1}^{n}(x^{(i)})^{2}\\le 1\\right\\},\n\\end{equation}\nwhich is stated to be difficult for all numerical schemes in the black-box setting.\n\\end{definition}\n(depend on: \"Definition 1.1.1\")",
+    "dependencies": [
+      "Definition 1.1.1"
+    ],
+    "proof": "",
+    "index": 2
+  },
+  {
+    "label": "Definition 1.1.3",
+    "env": "def",
+    "number_components": [
+      1,
+      1,
+      3
+    ],
+    "extracted_labels": [
+      "def:1.4",
+      "eq:intro:smooth_complexity"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Introduction",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "1",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:1.4}\n(Complexity benchmark for smooth convex minimization.)\nFor minimizing a convex function with \\(L\\)-Lipschitz continuous gradient by an optimal first-order method, the paper cites the iteration complexity estimate\n\\begin{equation}\\label{eq:intro:smooth_complexity}\nO\\!\\left(\\sqrt{\\frac{L}{\\varepsilon}}\\right),\n\\end{equation}\nfor reaching absolute accuracy \\(\\varepsilon>0\\) in objective value.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 3
+  },
+  {
+    "label": "Definition 1.1.4",
+    "env": "def",
+    "number_components": [
+      1,
+      1,
+      4
+    ],
+    "extracted_labels": [
+      "def:1.7"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Introduction",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "1",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:1.7}\n(Spaces, duals, and pairing.)\nLet \\(E\\) be a finite-dimensional real vector space endowed with a norm \\(\\|\\cdot\\|\\).\nLet \\(E^{*}\\) be the dual space of linear functionals on \\(E\\).\nFor \\(s\\in E^{*}\\) and \\(x\\in E\\), denote by \\(\\langle s,x\\rangle\\) the value of \\(s\\) at \\(x\\).\nWhen an inner product is used, it is denoted by the same bracket notation, with an index when necessary.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 4
+  },
+  {
+    "label": "Definition 1.1.5",
+    "env": "def",
+    "number_components": [
+      1,
+      1,
+      5
+    ],
+    "extracted_labels": [
+      "def:1.8",
+      "eq:dual_norm_def"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Introduction",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "1",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:1.8}\n(Dual norm.)\nGiven a norm \\(\\|\\cdot\\|\\) on \\(E\\), define the dual norm \\(\\|\\cdot\\|_{*}\\) on \\(E^{*}\\) by\n\\begin{equation}\\label{eq:dual_norm_def}\n\\|s\\|_{*}=\\max\\{\\langle s,x\\rangle: x\\in E,\\ \\|x\\|=1\\}.\n\\end{equation}\n\\end{definition}\n(depend on: \"Definition 1.1.4\")",
+    "dependencies": [
+      "Definition 1.1.4"
+    ],
+    "proof": "",
+    "index": 5
+  },
+  {
+    "label": "Definition 1.1.6",
+    "env": "def",
+    "number_components": [
+      1,
+      1,
+      6
+    ],
+    "extracted_labels": [
+      "def:1.9",
+      "eq:adjoint_def"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Introduction",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "1",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:1.9}\n(Adjoint operator.)\nLet \\(A:E_1\\to E_2^{*}\\) be a linear operator. Define the adjoint \\(A^{*}:E_2\\to E_1^{*}\\) by\n\\begin{equation}\\label{eq:adjoint_def}\n\\langle Ax,u\\rangle_{2}=\\langle A^{*}u,x\\rangle_{1}\\qquad \\forall x\\in E_1,\\ \\forall u\\in E_2.\n\\end{equation}\n\\end{definition}\n(depend on: \"Definition 1.1.4\")",
+    "dependencies": [
+      "Definition 1.1.4"
+    ],
+    "proof": "",
+    "index": 6
+  },
+  {
+    "label": "Definition 1.1.7",
+    "env": "def",
+    "number_components": [
+      1,
+      1,
+      7
+    ],
+    "extracted_labels": [
+      "def:1.10",
+      "eq:operator_norm_def"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Introduction",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "1",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:1.10}\n(Operator norm \\(\\|A\\|_{1,2}\\).)\nFor a linear operator \\(A:E_1\\to E_2^{*}\\), define\n\\begin{equation}\\label{eq:operator_norm_def}\n\\|A\\|_{1,2}=\\max\\{\\langle Ax,u\\rangle_2: \\|x\\|_1=1,\\ \\|u\\|_2=1\\}.\n\\end{equation}\n\\end{definition}\n(depend on: \"Definition 1.1.6\")",
+    "dependencies": [
+      "Definition 1.1.6"
+    ],
+    "proof": "",
+    "index": 7
+  },
+  {
+    "label": "Proposition 1.1.1",
+    "env": "prop",
+    "number_components": [
+      1,
+      1,
+      1
+    ],
+    "extracted_labels": [
+      "prop:1.2",
+      "eq:1.2",
+      "proof:prop:1.2"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Introduction",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "1",
+      "subsection_number": ""
+    },
+    "content": "\\begin{proposition}\\label{prop:1.2}\nFor any \\(u\\in E_2\\), the adjoint operator satisfies\n\\begin{equation}\\label{eq:1.2}\n\\|A^{*}u\\|_{1,*}\\le \\|A\\|_{1,2}\\,\\|u\\|_{2}.\n\\end{equation}\n\\end{proposition}\n(depend on: \"Definition 1.1.5\", \"Definition 1.1.7\", \"Definition 1.1.6\")",
+    "dependencies": [
+      "Definition 1.1.5",
+      "Definition 1.1.7",
+      "Definition 1.1.6"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:1.2}\nIf \\(u=0\\), then \\(A^{*}u=0\\) and \\eqref{eq:1.2} is trivial.\nAssume \\(u\\ne 0\\) and set \\(\\bar u = u/\\|u\\|_2\\), so \\(\\|\\bar u\\|_2=1\\).\nBy the dual-norm definition \\eqref{eq:dual_norm_def} and the adjoint identity \\eqref{eq:adjoint_def}, we have\n\\[\n\\|A^{*}u\\|_{1,*}\n=\\max_{\\|x\\|_1=1}\\langle A^{*}u,x\\rangle_1\n=\\max_{\\|x\\|_1=1}\\langle Ax,u\\rangle_2\n=\\|u\\|_2\\max_{\\|x\\|_1=1}\\langle Ax,\\bar u\\rangle_2.\n\\]\nSince \\(\\|\\bar u\\|_2=1\\), for every \\(x\\) with \\(\\|x\\|_1=1\\) we have\n\\(\\langle Ax,\\bar u\\rangle_2\\le \\max_{\\|v\\|_2=1}\\langle Ax,v\\rangle_2\\).\nTaking the maximum over \\(\\|x\\|_1=1\\) yields\n\\[\n\\max_{\\|x\\|_1=1}\\langle Ax,\\bar u\\rangle_2\n\\le \\max_{\\|x\\|_1=1,\\ \\|v\\|_2=1}\\langle Ax,v\\rangle_2\n=\\|A\\|_{1,2}\n\\]\nby \\eqref{eq:operator_norm_def}. Combining the displays gives\n\\(\\|A^{*}u\\|_{1,*}\\le \\|u\\|_2\\,\\|A\\|_{1,2}\\), i.e. \\eqref{eq:1.2}.\n\\end{proof}",
+    "index": 8
+  },
+  {
+    "label": "Definition 1.2.1",
+    "env": "def",
+    "number_components": [
+      1,
+      2,
+      1
+    ],
+    "extracted_labels": [
+      "def:2.1",
+      "eq:2.1"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Smooth approximations of non-differentiable functions",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "2",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:2.1}\n(Main problem.)\nLet \\(Q_1\\) be a bounded closed convex set in a finite-dimensional real vector space \\(E_1\\), and let \\(f:Q_1\\to\\mathbb{R}\\) be continuous and convex.\nThe main optimization problem is\n\\begin{equation}\\label{eq:2.1}\nf^{*}=\\min\\{f(x):x\\in Q_1\\}.\n\\end{equation}\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 9
+  },
+  {
+    "label": "Definition 1.2.2",
+    "env": "def",
+    "number_components": [
+      1,
+      2,
+      2
+    ],
+    "extracted_labels": [
+      "def:2.2",
+      "eq:2.2",
+      "eq:conjugate_representation"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Smooth approximations of non-differentiable functions",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "2",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:2.2}\n(Explicit max-structure model.)\nWe say that \\(f\\) admits an explicit max-structure if there exist:\n- a finite-dimensional real vector space \\(E_2\\),\n- a closed convex bounded set \\(Q_2\\subseteq E_2\\),\n- a linear operator \\(A:E_1\\to E_2^{*}\\),\n- a continuous convex function \\(\\hat f:Q_1\\to\\mathbb{R}\\), and\n- a continuous convex function \\(\\hat\\phi:Q_2\\to\\mathbb{R}\\),\n\nsuch that for all \\(x\\in Q_1\\),\n\\begin{equation}\\label{eq:2.2}\nf(x)=\\hat f(x)+\\max\\{\\langle Ax,u\\rangle_{2}-\\hat\\phi(u):u\\in Q_2\\}.\n\\end{equation}\n\n(Implicit simplicity assumption.) It is assumed that \\(\\hat\\phi\\) and \\(Q_2\\) are simple enough that the maximization problem in \\eqref{eq:2.2} can be solved in closed form.\n\n(Non-uniqueness illustration.) For example, one may take \\(Q_2\\equiv E_2\\equiv E_1^{*}\\), \\(\\hat f\\equiv 0\\), \\(A=I\\), and define\n\\begin{equation}\\label{eq:conjugate_representation}\n\\hat\\phi(u)\\equiv f^{*}(u)=\\max\\{\\langle u,x\\rangle_{1}-f(x):x\\in E_1\\}.\n\\end{equation}\n\\end{definition}\n(depend on: \"Definition 1.2.1\")",
+    "dependencies": [
+      "Definition 1.2.1"
+    ],
+    "proof": "",
+    "index": 10
+  },
+  {
+    "label": "Definition 1.2.3",
+    "env": "def",
+    "number_components": [
+      1,
+      2,
+      3
+    ],
+    "extracted_labels": [
+      "def:2.3",
+      "eq:2.3",
+      "eq:adjoint_problem"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Smooth approximations of non-differentiable functions",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "2",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:2.3}\n(Adjoint form.)\nAssume \\eqref{eq:2.2}. Define \\(\\phi:Q_2\\to\\mathbb{R}\\) by\n\\begin{equation}\\label{eq:2.3}\n\\phi(u)=-\\hat\\phi(u)+\\min\\{\\langle Ax,u\\rangle_2+\\hat f(x):x\\in Q_1\\}.\n\\end{equation}\nThe associated adjoint optimization problem is\n\\begin{equation}\\label{eq:adjoint_problem}\n\\max\\{\\phi(u):u\\in Q_2\\}.\n\\end{equation}\n\\end{definition}\n(depend on: \"Definition 1.2.2\")",
+    "dependencies": [
+      "Definition 1.2.2"
+    ],
+    "proof": "",
+    "index": 11
+  },
+  {
+    "label": "Proposition 1.2.1",
+    "env": "prop",
+    "number_components": [
+      1,
+      2,
+      1
+    ],
+    "extracted_labels": [
+      "prop:ex1",
+      "eq:ex1:f_def",
+      "eq:ex1:phi_hat_conjugate_like",
+      "eq:ex1:Rm_representation",
+      "eq:ex1:simplex_representation",
+      "proof:prop:ex1",
+      "eq:ex1:l1_duality"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Smooth approximations of non-differentiable functions",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "2",
+      "subsection_number": ""
+    },
+    "content": "\\begin{proposition}\\label{prop:ex1}\nLet \\(a_1,\\dots,a_m\\in E_1^{*}\\) and \\(b\\in\\mathbb{R}^{m}\\). Define\n\\begin{equation}\\label{eq:ex1:f_def}\nf(x)=\\max_{1\\le j\\le m}\\bigl|\\langle a_j,x\\rangle_{1}-b^{(j)}\\bigr|.\n\\end{equation}\nThen \\(f\\) admits representations of the explicit max-structure form \\eqref{eq:2.2}. In particular:\n\n1) (Conjugate-style representation.) Taking \\(A=I\\), \\(E_2=E_1^{*}\\), one can define \\(\\hat\\phi\\) by\n\\begin{equation}\\label{eq:ex1:phi_hat_conjugate_like}\n\\hat\\phi(u)=\\min_{s\\in\\mathbb{R}^{m}}\\left\\{\\sum_{j=1}^{m}s^{(j)}b^{(j)}:\\ u=\\sum_{j=1}^{m}s^{(j)}a_j,\\ \\sum_{j=1}^{m}|s^{(j)}|\\le 1\\right\\}.\n\\end{equation}\n\n2) (\\(\\mathbb{R}^m\\) representation.) One can write\n\\begin{equation}\\label{eq:ex1:Rm_representation}\nf(x)=\\max_{u\\in\\mathbb{R}^{m}}\\left\\{\\sum_{j=1}^{m}u^{(j)}\\bigl(\\langle a_j,x\\rangle_{1}-b^{(j)}\\bigr):\\ \\sum_{j=1}^{m}|u^{(j)}|\\le 1\\right\\},\n\\end{equation}\nso that \\(E_2=\\mathbb{R}^m\\), \\(Q_2=\\{u:\\sum_{j=1}^{m}|u^{(j)}|\\le 1\\}\\), and one may take \\(\\hat f\\equiv 0\\), \\(\\hat\\phi(u)=\\langle b,u\\rangle_2\\).\n\n3) (Simplex lifting.) Let \\(u=(u_1,u_2)\\in\\mathbb{R}^{2m}\\) with \\(u\\ge 0\\) and \\(\\sum_{j=1}^{m}(u_1^{(j)}+u_2^{(j)})=1\\). Then\n\\begin{equation}\\label{eq:ex1:simplex_representation}\nf(x)=\\max_{u\\in\\mathbb{R}^{2m}}\\left\\{\\sum_{j=1}^{m}\\bigl(u_1^{(j)}-u_2^{(j)}\\bigr)\\bigl(\\langle a_j,x\\rangle_{1}-b^{(j)}\\bigr):\\ \\sum_{j=1}^{m}(u_1^{(j)}+u_2^{(j)})=1,\\ u\\ge 0\\right\\},\n\\end{equation}\nwhich yields \\(Q_2\\) as a simplex and \\(\\hat\\phi\\) linear.\n\\end{proposition}\n(depend on: \"Definition 1.2.2\")",
+    "dependencies": [
+      "Definition 1.2.2"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:ex1}\nWe follow the computations shown in Example~1 of the paper.\n\nLet \\(t\\in\\mathbb{R}^m\\) be the vector with components \\(t^{(j)}=\\langle a_j,x\\rangle_1-b^{(j)}\\).\nA standard (and directly checkable) identity is\n\\begin{equation}\\label{eq:ex1:l1_duality}\n\\max_{1\\le j\\le m}|t^{(j)}|\\;=\\;\\max\\left\\{\\sum_{j=1}^m s^{(j)}t^{(j)}:\\ \\sum_{j=1}^m|s^{(j)}|\\le 1\\right\\}.\n\\end{equation}\nIndeed, for any \\(s\\) with \\(\\sum|s^{(j)}|\\le 1\\) we have\n\\(\\sum s^{(j)}t^{(j)}\\le \\sum |s^{(j)}|\\,\\max_i|t^{(i)}|\\le \\max_i|t^{(i)}|\\),\nso the right-hand side is \\(\\le\\max_i|t^{(i)}|\\). Equality is attained by taking \\(s\\) supported on an index \\(j\\) achieving the maximum, with sign matching \\(t^{(j)}\\).\n\n(2) Applying \\eqref{eq:ex1:l1_duality} with \\(t^{(j)}=\\langle a_j,x\\rangle_1-b^{(j)}\\) gives\n\\(\n f(x)=\\max_{\\sum|u^{(j)}|\\le 1}\\sum_{j=1}^m u^{(j)}(\\langle a_j,x\\rangle_1-b^{(j)})\n\\),\nwhich is exactly \\eqref{eq:ex1:Rm_representation}. This is of the form \\eqref{eq:2.2} with \\(E_2=\\mathbb{R}^m\\), \\(Q_2=\\{u:\\sum|u^{(j)}|\\le 1\\}\\), \\(\\hat f\\equiv 0\\), and \\(\\hat\\phi(u)=\\langle b,u\\rangle_2\\).\n\n(3) For simplex lifting, write each \\(u^{(j)}\\) as a difference of nonnegative parts:\n\\(u^{(j)}=u_1^{(j)}-u_2^{(j)}\\) with \\(u_1^{(j)},u_2^{(j)}\\ge 0\\).\nThen \\(\\sum_{j=1}^m|u^{(j)}|\\le 1\\) is equivalent to the existence of such \\((u_1,u_2)\\) with\n\\(\\sum_{j=1}^m(u_1^{(j)}+u_2^{(j)})=1\\) (after possibly adding slack so the sum is exactly 1).\nSubstituting \\(u=u_1-u_2\\) into \\eqref{eq:ex1:Rm_representation} yields \\eqref{eq:ex1:simplex_representation}.\n\n(1) For the conjugate-style representation, take \\(A=I\\) and define\n\\(\\hat\\phi(u)=\\max_x\\{\\langle u,x\\rangle_1-f(x)\\}\\).\nUsing \\eqref{eq:ex1:l1_duality} to expand \\(f(x)\\) and then exchanging \\(\\max_x\\) with \\(\\min_s\\) exactly as carried out in the paper's displayed computation, one obtains the explicit form \\eqref{eq:ex1:phi_hat_conjugate_like}.\nThis completes the construction of explicit max-structure representations.\n\\end{proof}",
+    "index": 12
+  },
+  {
+    "label": "Definition 1.2.4",
+    "env": "def",
+    "number_components": [
+      1,
+      2,
+      4
+    ],
+    "extracted_labels": [
+      "def:2.4",
+      "eq:prox_center_def"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Smooth approximations of non-differentiable functions",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "2",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:2.4}\n(Prox-function and prox-center.)\nLet \\(Q_2\\subseteq E_2\\) be closed, convex, and bounded.\nA function \\(d_2:Q_2\\to\\mathbb{R}\\) is called a prox-function for \\(Q_2\\) if it is continuous and \\(\\sigma_2\\)-strongly convex on \\(Q_2\\) for some \\(\\sigma_2>0\\).\nA prox-center \\(u_0\\in Q_2\\) is any minimizer\n\\begin{equation}\\label{eq:prox_center_def}\nu_0\\in\\arg\\min\\{d_2(u):u\\in Q_2\\}.\n\\end{equation}\nWe may normalize \\(d_2\\) so that \\(d_2(u_0)=0\\).\n\\end{definition}\n(depend on: \"Definition 1.2.2\")",
+    "dependencies": [
+      "Definition 1.2.2"
+    ],
+    "proof": "",
+    "index": 13
+  },
+  {
+    "label": "Proposition 1.2.2",
+    "env": "prop",
+    "number_components": [
+      1,
+      2,
+      2
+    ],
+    "extracted_labels": [
+      "prop:2.4",
+      "eq:2.4",
+      "proof:prop:2.4",
+      "eq:strong_convex_subgrad"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Smooth approximations of non-differentiable functions",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "2",
+      "subsection_number": ""
+    },
+    "content": "\\begin{proposition}\\label{prop:2.4}\nAssume \\(d_2\\) is \\(\\sigma_2\\)-strongly convex on \\(Q_2\\), and let \\(u_0\\in\\arg\\min_{u\\in Q_2} d_2(u)\\) be a prox-center normalized by \\(d_2(u_0)=0\\).\nThen for all \\(u\\in Q_2\\),\n\\begin{equation}\\label{eq:2.4}\nd_2(u)\\ge \\frac{1}{2}\\sigma_2\\,\\|u-u_0\\|_2^2.\n\\end{equation}\n\\end{proposition}\n(depend on: \"Definition 1.2.4\")",
+    "dependencies": [
+      "Definition 1.2.4"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:2.4}\nFix any \\(u\\in Q_2\\). For any \\(t\\in(0,1)\\), define \\(u_t=(1-t)u_0+t u\\). Since \\(Q_2\\) is convex, \\(u_t\\in Q_2\\).\nBecause \\(u_0\\) minimizes \\(d_2\\) over \\(Q_2\\), we have\n\\(d_2(u_0)\\le d_2(u_t)\\).\n\nBy \\(\\sigma_2\\)-strong convexity of \\(d_2\\) on \\(Q_2\\), for all \\(v,w\\in Q_2\\) and all \\(t\\in[0,1]\\) we have\n\\begin{equation}\\label{eq:strong_convex_subgrad}\nd_2((1-t)v+t w)\\le (1-t)d_2(v)+t d_2(w)-\\frac{\\sigma_2}{2}\\,t(1-t)\\,\\|w-v\\|_2^2.\n\\end{equation}\nApplying \\eqref{eq:strong_convex_subgrad} with \\(v=u_0\\) and \\(w=u\\) gives\n\\[\n d_2(u_t)\\le (1-t)d_2(u_0)+t d_2(u)-\\frac{\\sigma_2}{2}\\,t(1-t)\\,\\|u-u_0\\|_2^2.\n\\]\nCombining this with \\(d_2(u_0)\\le d_2(u_t)\\) yields\n\\[\n d_2(u_0)\\le (1-t)d_2(u_0)+t d_2(u)-\\frac{\\sigma_2}{2}\\,t(1-t)\\,\\|u-u_0\\|_2^2.\n\\]\nRearranging and dividing by \\(t>0\\) gives\n\\[\n d_2(u)\\ge d_2(u_0)+\\frac{\\sigma_2}{2}(1-t)\\,\\|u-u_0\\|_2^2.\n\\]\nSince this holds for all \\(t\\in(0,1)\\), letting \\(t\\to 0^{+}\\) gives\n\\(d_2(u)\\ge d_2(u_0)+\\frac{\\sigma_2}{2}\\|u-u_0\\|_2^2\\).\nUsing the normalization \\(d_2(u_0)=0\\) yields \\eqref{eq:2.4}.\n\\end{proof}",
+    "index": 14
+  },
+  {
+    "label": "Definition 1.2.5",
+    "env": "def",
+    "number_components": [
+      1,
+      2,
+      5
+    ],
+    "extracted_labels": [
+      "def:2.5",
+      "eq:2.5"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Smooth approximations of non-differentiable functions",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "2",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:2.5}\n(Smoothed max-function.)\nLet \\(\\mu>0\\). Define\n\\begin{equation}\\label{eq:2.5}\nf_\\mu(x)=\\max\\{\\langle Ax,u\\rangle_2-\\hat\\phi(u)-\\mu d_2(u):u\\in Q_2\\}.\n\\end{equation}\nDenote by \\(u_\\mu(x)\\in Q_2\\) an optimal solution (a maximizer) of \\eqref{eq:2.5}.\nSince \\(d_2\\) is strongly convex, the function \\(u\\mapsto -\\hat\\phi(u)-\\mu d_2(u)\\) is strictly concave on \\(Q_2\\) (using convexity of \\(\\hat\\phi\\)), hence the maximizer \\(u_\\mu(x)\\) is unique.\n\\end{definition}\n(depend on: \"Definition 1.2.2\", \"Definition 1.2.4\")",
+    "dependencies": [
+      "Definition 1.2.2",
+      "Definition 1.2.4"
+    ],
+    "proof": "",
+    "index": 15
+  },
+  {
+    "label": "Theorem 1.2.1",
+    "env": "thm",
+    "number_components": [
+      1,
+      2,
+      1
+    ],
+    "extracted_labels": [
+      "thm:1",
+      "eq:2.6",
+      "eq:L_mu",
+      "proof:thm:1",
+      "eq:thm1:opt1",
+      "eq:thm1:opt2",
+      "eq:thm1:add",
+      "eq:thm1:monotone_phi",
+      "eq:thm1:strong_monotone_d2",
+      "eq:thm1:key",
+      "eq:thm1:Astar_bound",
+      "eq:thm1:square1",
+      "eq:thm1:square2",
+      "eq:thm1:CS",
+      "eq:thm1:lipschitz"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Smooth approximations of non-differentiable functions",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "2",
+      "subsection_number": ""
+    },
+    "content": "\\begin{theorem}\\label{thm:1}\nAssume \\(\\mu>0\\) and that \\(d_2\\) is \\(\\sigma_2\\)-strongly convex on \\(Q_2\\). Then \\(f_\\mu\\) defined by \\eqref{eq:2.5} is well-defined and continuously differentiable for all \\(x\\in E_1\\). Moreover, \\(f_\\mu\\) is convex and\n\\begin{equation}\\label{eq:2.6}\n\\nabla f_\\mu(x)=A^{*}u_\\mu(x).\n\\end{equation}\nThe gradient is Lipschitz continuous with constant\n\\begin{equation}\\label{eq:L_mu}\nL_\\mu=\\frac{1}{\\mu\\sigma_2}\\,\\|A\\|_{1,2}^{2}.\n\\end{equation}\n\\end{theorem}\n(depend on: \"Definition 1.2.5\", \"Proposition 1.2\", \"Definition 1.1.6\", \"Proposition 1.1.1\")",
+    "dependencies": [
+      "Definition 1.2.5",
+      "Proposition 1.2",
+      "Definition 1.1.6",
+      "Proposition 1.1.1"
+    ],
+    "proof": "\\begin{proof}\\label{proof:thm:1}\n(Convexity and differentiability.)\nFor every fixed \\(u\\in Q_2\\), the function\n\\(x\\mapsto \\langle Ax,u\\rangle_2-\\hat\\phi(u)-\\mu d_2(u)\\) is affine (hence convex) in \\(x\\).\nTherefore, the pointwise maximum over \\(u\\in Q_2\\) in \\eqref{eq:2.5} is convex.\nThe maximizer \\(u_\\mu(x)\\) is unique by Definition~\\ref{def:2.5}; in this situation the maximum in \\eqref{eq:2.5} is differentiable and its gradient equals the coefficient of \\(x\\) in the unique active affine function, namely \\(A^{*}u_\\mu(x)\\), yielding \\eqref{eq:2.6}.\n\n(Lipschitz continuity of the gradient: proof as in the paper.)\nFix two points \\(x_1,x_2\\in E_1\\). For brevity, denote\n\\(u_1=u_\\mu(x_1)\\) and \\(u_2=u_\\mu(x_2)\\).\nFor the sake of notation, as in the paper we assume without loss of generality that \\(\\hat\\phi\\) and \\(d_2\\) are differentiable; otherwise one can write the same argument using subgradients.\n\nSince \\(u_1\\) maximizes \\(u\\mapsto \\langle Ax_1,u\\rangle_2-\\hat\\phi(u)-\\mu d_2(u)\\) over the convex set \\(Q_2\\), the first-order optimality condition gives\n\\begin{equation}\\label{eq:thm1:opt1}\n\\langle Ax_1-\\nabla\\hat\\phi(u_1)-\\mu\\nabla d_2(u_1),\\ u_2-u_1\\rangle_2\\le 0.\n\\end{equation}\nSimilarly, optimality of \\(u_2\\) for \\(x_2\\) yields\n\\begin{equation}\\label{eq:thm1:opt2}\n\\langle Ax_2-\\nabla\\hat\\phi(u_2)-\\mu\\nabla d_2(u_2),\\ u_1-u_2\\rangle_2\\le 0.\n\\end{equation}\nAdding \\eqref{eq:thm1:opt1} and \\eqref{eq:thm1:opt2} and rearranging terms, we obtain\n\\begin{align}\n\\label{eq:thm1:add}\n\\langle A(x_1-x_2),u_1-u_2\\rangle_2\n&\\ge \\langle \\nabla\\hat\\phi(u_1)-\\nabla\\hat\\phi(u_2)+\\mu(\\nabla d_2(u_1)-\\nabla d_2(u_2)),\\ u_1-u_2\\rangle_2.\n\\end{align}\nBy convexity of \\(\\hat\\phi\\), the gradient is monotone, hence\n\\begin{equation}\\label{eq:thm1:monotone_phi}\n\\langle \\nabla\\hat\\phi(u_1)-\\nabla\\hat\\phi(u_2),\\ u_1-u_2\\rangle_2\\ge 0.\n\\end{equation}\nBy \\(\\sigma_2\\)-strong convexity of \\(d_2\\) (in the differentiable case), we have the strong monotonicity estimate\n\\begin{equation}\\label{eq:thm1:strong_monotone_d2}\n\\langle \\nabla d_2(u_1)-\\nabla d_2(u_2),\\ u_1-u_2\\rangle_2\\ge \\sigma_2\\,\\|u_1-u_2\\|_2^2.\n\\end{equation}\nCombining \\eqref{eq:thm1:add}, \\eqref{eq:thm1:monotone_phi}, and \\eqref{eq:thm1:strong_monotone_d2}, we get exactly the inequality chain written in the paper:\n\\begin{equation}\\label{eq:thm1:key}\n\\langle A(x_1-x_2),u_1-u_2\\rangle_2\\ge \\mu\\,\\sigma_2\\,\\|u_1-u_2\\|_2^2.\n\\end{equation}\n\nNow apply Proposition~\\ref{prop:1.2} to \\(u=u_1-u_2\\):\n\\begin{equation}\\label{eq:thm1:Astar_bound}\n\\|A^{*}(u_1-u_2)\\|_{1,*}\\le \\|A\\|_{1,2}\\,\\|u_1-u_2\\|_2.\n\\end{equation}\nSquaring \\eqref{eq:thm1:Astar_bound} gives\n\\begin{equation}\\label{eq:thm1:square1}\n\\|A^{*}(u_1-u_2)\\|_{1,*}^{2}\\le \\|A\\|_{1,2}^{2}\\,\\|u_1-u_2\\|_2^{2}.\n\\end{equation}\nUsing \\eqref{eq:thm1:key} to bound \\(\\|u_1-u_2\\|_2^{2}\\) from above yields\n\\begin{equation}\\label{eq:thm1:square2}\n\\|A^{*}(u_1-u_2)\\|_{1,*}^{2}\n\\le \\frac{\\|A\\|_{1,2}^{2}}{\\mu\\sigma_2}\\,\\langle A(x_1-x_2),u_1-u_2\\rangle_2.\n\\end{equation}\nFinally, by the adjoint relation \\eqref{eq:adjoint_def},\n\\(\\langle A(x_1-x_2),u_1-u_2\\rangle_2=\\langle A^{*}(u_1-u_2),x_1-x_2\\rangle_1\\).\nHence, by Cauchy--Schwarz for the dual pairing (i.e. \\(\\langle s,h\\rangle_1\\le \\|s\\|_{1,*}\\,\\|h\\|_1\\)), we have\n\\begin{equation}\\label{eq:thm1:CS}\n\\langle A^{*}(u_1-u_2),x_1-x_2\\rangle_1\n\\le \\|A^{*}(u_1-u_2)\\|_{1,*}\\,\\|x_1-x_2\\|_1.\n\\end{equation}\nSubstituting \\eqref{eq:thm1:CS} into \\eqref{eq:thm1:square2} yields\n\\[\n\\|A^{*}(u_1-u_2)\\|_{1,*}^{2}\n\\le \\frac{\\|A\\|_{1,2}^{2}}{\\mu\\sigma_2}\\,\\|A^{*}(u_1-u_2)\\|_{1,*}\\,\\|x_1-x_2\\|_1.\n\\]\nIf \\(\\|A^{*}(u_1-u_2)\\|_{1,*}=0\\), the Lipschitz inequality holds trivially.\nOtherwise, cancel one factor \\(\\|A^{*}(u_1-u_2)\\|_{1,*}\\) to get\n\\begin{equation}\\label{eq:thm1:lipschitz}\n\\|A^{*}u_1-A^{*}u_2\\|_{1,*}\n=\\|A^{*}(u_1-u_2)\\|_{1,*}\n\\le \\frac{\\|A\\|_{1,2}^{2}}{\\mu\\sigma_2}\\,\\|x_1-x_2\\|_1.\n\\end{equation}\nUsing \\eqref{eq:2.6}, \\eqref{eq:thm1:lipschitz} becomes\n\\(\\|\\nabla f_\\mu(x_1)-\\nabla f_\\mu(x_2)\\|_{1,*}\\le L_\\mu\\,\\|x_1-x_2\\|_1\\)\nwith \\(L_\\mu\\) given by \\eqref{eq:L_mu}. This completes the proof.\n\\end{proof}",
+    "index": 16
+  },
+  {
+    "label": "Proposition 1.2.3",
+    "env": "prop",
+    "number_components": [
+      1,
+      2,
+      3
+    ],
+    "extracted_labels": [
+      "prop:2.7",
+      "eq:D2_def",
+      "eq:f0_def",
+      "eq:2.7",
+      "proof:prop:2.7"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Smooth approximations of non-differentiable functions",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "2",
+      "subsection_number": ""
+    },
+    "content": "\\begin{proposition}\\label{prop:2.7}\nDefine\n\\begin{equation}\\label{eq:D2_def}\nD_2=\\max\\{d_2(u):u\\in Q_2\\},\n\\end{equation}\nand\n\\begin{equation}\\label{eq:f0_def}\nf_0(x)=\\max\\{\\langle Ax,u\\rangle_2-\\hat\\phi(u):u\\in Q_2\\}.\n\\end{equation}\nThen for all \\(x\\in E_1\\),\n\\begin{equation}\\label{eq:2.7}\nf_\\mu(x)\\le f_0(x)\\le f_\\mu(x)+\\mu D_2.\n\\end{equation}\n\\end{proposition}\n(depend on: \"Definition 1.2.5\", \"Definition 1.2.4\")",
+    "dependencies": [
+      "Definition 1.2.5",
+      "Definition 1.2.4"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:2.7}\nFix any \\(x\\in E_1\\).\n\n(First inequality \\(f_\\mu(x)\\le f_0(x)\\).)\nFor every \\(u\\in Q_2\\), we have\n\\(\\langle Ax,u\\rangle_2-\\hat\\phi(u)-\\mu d_2(u)\\le \\langle Ax,u\\rangle_2-\\hat\\phi(u)\\)\nbecause \\(\\mu>0\\) and \\(d_2(u)\\ge 0\\) (after normalization at the prox-center, the minimum value is \\(0\\), so all values are nonnegative).\nTaking the maximum over \\(u\\in Q_2\\) gives\n\\(f_\\mu(x)\\le f_0(x)\\).\n\n(Second inequality \\(f_0(x)\\le f_\\mu(x)+\\mu D_2\\).)\nBy definition of \\(D_2\\) in \\eqref{eq:D2_def}, for every \\(u\\in Q_2\\) we have \\(d_2(u)\\le D_2\\), hence\n\\[\n\\langle Ax,u\\rangle_2-\\hat\\phi(u)\n\\le \\langle Ax,u\\rangle_2-\\hat\\phi(u)-\\mu d_2(u)+\\mu D_2.\n\\]\nTaking the maximum over \\(u\\in Q_2\\) on the left yields \\(f_0(x)\\), and on the right yields \\(f_\\mu(x)+\\mu D_2\\). Therefore\n\\(f_0(x)\\le f_\\mu(x)+\\mu D_2\\).\n\nCombining both inequalities proves \\eqref{eq:2.7}.\n\\end{proof}",
+    "index": 17
+  },
+  {
+    "label": "Proposition 1.3.1",
+    "env": "prop",
+    "number_components": [
+      1,
+      3,
+      1
+    ],
+    "extracted_labels": [
+      "prop:3.1",
+      "eq:grad_lipschitz",
+      "eq:3.1",
+      "proof:prop:3.1",
+      "eq:prop31:phi_prime",
+      "eq:prop31:ftc",
+      "eq:prop31:diff",
+      "eq:prop31:bound_pointwise",
+      "eq:prop31:bound_pointwise2",
+      "eq:prop31:integrate"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Optimal scheme for smooth optimization",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "3",
+      "subsection_number": ""
+    },
+    "content": "\\begin{proposition}\\label{prop:3.1}\nLet \\(Q\\subseteq E\\) be a closed convex set in a finite-dimensional real normed space \\((E,\\|\\cdot\\|)\\). Let \\(f:Q\\to\\mathbb{R}\\) be convex and differentiable on \\(Q\\). Assume that the gradient is Lipschitz continuous with constant \\(L>0\\), namely\n\\begin{equation}\\label{eq:grad_lipschitz}\n\\|\\nabla f(x)-\\nabla f(y)\\|_{*}\\le L\\,\\|x-y\\|\\qquad \\forall x,y\\in Q.\n\\end{equation}\nThen for any \\(x,y\\in Q\\),\n\\begin{equation}\\label{eq:3.1}\nf(y)\\le f(x)+\\langle \\nabla f(x),y-x\\rangle+\\frac{L}{2}\\,\\|y-x\\|^{2}.\n\\end{equation}\n\\end{proposition}\n(depend on: \"Definition 1.1.4\", \"Definition 1.1.5\")",
+    "dependencies": [
+      "Definition 1.1.4",
+      "Definition 1.1.5"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:3.1}\nFix \\(x,y\\in Q\\) and define \\(\\gamma(t)=x+t(y-x)\\) for \\(t\\in[0,1]\\). Since \\(Q\\) is convex, \\(\\gamma(t)\\in Q\\) for all \\(t\\in[0,1]\\).\nDefine \\(\\varphi(t)=f(\\gamma(t))\\). Then \\(\\varphi\\) is differentiable and\n\\begin{equation}\\label{eq:prop31:phi_prime}\n\\varphi'(t)=\\langle \\nabla f(\\gamma(t)),y-x\\rangle.\n\\end{equation}\nUsing the fundamental theorem of calculus,\n\\begin{equation}\\label{eq:prop31:ftc}\nf(y)-f(x)=\\varphi(1)-\\varphi(0)=\\int_0^1 \\langle \\nabla f(\\gamma(t)),y-x\\rangle\\,dt.\n\\end{equation}\nSubtract \\(\\langle \\nabla f(x),y-x\\rangle\\) from both sides and use \\eqref{eq:prop31:ftc}:\n\\begin{equation}\\label{eq:prop31:diff}\nf(y)-f(x)-\\langle \\nabla f(x),y-x\\rangle\n=\\int_0^1 \\langle \\nabla f(\\gamma(t))-\\nabla f(x),y-x\\rangle\\,dt.\n\\end{equation}\nBy the duality inequality \\(\\langle s,h\\rangle\\le \\|s\\|_*\\,\\|h\\|\\) and \\eqref{eq:grad_lipschitz}, we obtain for each \\(t\\in[0,1]\\)\n\\begin{equation}\\label{eq:prop31:bound_pointwise}\n\\langle \\nabla f(\\gamma(t))-\\nabla f(x),y-x\\rangle\n\\le \\|\\nabla f(\\gamma(t))-\\nabla f(x)\\|_*\\,\\|y-x\\|\n\\le L\\,\\|\\gamma(t)-x\\|\\,\\|y-x\\|.\n\\end{equation}\nSince \\(\\gamma(t)-x=t(y-x)\\), we have \\(\\|\\gamma(t)-x\\|=t\\,\\|y-x\\|\\). Substituting into \\eqref{eq:prop31:bound_pointwise} gives\n\\begin{equation}\\label{eq:prop31:bound_pointwise2}\n\\langle \\nabla f(\\gamma(t))-\\nabla f(x),y-x\\rangle\\le Lt\\,\\|y-x\\|^2.\n\\end{equation}\nIntegrating \\eqref{eq:prop31:bound_pointwise2} over \\([0,1]\\) and using \\eqref{eq:prop31:diff}, we get\n\\begin{equation}\\label{eq:prop31:integrate}\nf(y)-f(x)-\\langle \\nabla f(x),y-x\\rangle\\le \\int_0^1 Lt\\,\\|y-x\\|^2\\,dt=\\frac{L}{2}\\,\\|y-x\\|^2.\n\\end{equation}\nRearranging \\eqref{eq:prop31:integrate} yields \\eqref{eq:3.1}.\n\\end{proof}",
+    "index": 18
+  },
+  {
+    "label": "Definition 1.3.1",
+    "env": "def",
+    "number_components": [
+      1,
+      3,
+      1
+    ],
+    "extracted_labels": [
+      "def:3.2",
+      "eq:3.2"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Optimal scheme for smooth optimization",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "3",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:3.2}\nLet \\(f\\) satisfy the assumptions of Proposition~\\ref{prop:3.1}. For \\(x\\in Q\\), define \\(T_Q(x)\\in Q\\) to be any minimizer of\n\\begin{equation}\\label{eq:3.2}\n\\min_{y\\in Q}\\left\\{\\langle \\nabla f(x),y-x\\rangle+\\frac{L}{2}\\,\\|y-x\\|^2\\right\\}.\n\\end{equation}\nIf the norm \\(\\|\\cdot\\|\\) is not strictly convex, the minimizer may be non-unique; in that case \\(T_Q(x)\\) denotes an arbitrary choice of minimizer.\n\\end{definition}\n(depend on: \"Proposition 1.3.1\")",
+    "dependencies": [
+      "Proposition 1.3.1"
+    ],
+    "proof": "",
+    "index": 19
+  },
+  {
+    "label": "Proposition 1.3.2",
+    "env": "prop",
+    "number_components": [
+      1,
+      3,
+      2
+    ],
+    "extracted_labels": [
+      "prop:3.3",
+      "eq:3.3",
+      "proof:prop:3.3",
+      "eq:prop33:apply31",
+      "eq:prop33:minimizer"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Optimal scheme for smooth optimization",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "3",
+      "subsection_number": ""
+    },
+    "content": "\\begin{proposition}\\label{prop:3.3}\nUnder the assumptions of Proposition~\\ref{prop:3.1}, for any \\(x\\in Q\\) we have\n\\begin{equation}\\label{eq:3.3}\nf(T_Q(x))\\le f(x)+\\min_{y\\in Q}\\left\\{\\langle \\nabla f(x),y-x\\rangle+\\frac{L}{2}\\,\\|y-x\\|^2\\right\\}.\n\\end{equation}\n\\end{proposition}\n(depend on: \"Proposition 1.3.1\", \"Definition 1.3.1\")",
+    "dependencies": [
+      "Proposition 1.3.1",
+      "Definition 1.3.1"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:3.3}\nApply Proposition~\\ref{prop:3.1} with \\(y=T_Q(x)\\). This gives\n\\begin{equation}\\label{eq:prop33:apply31}\nf(T_Q(x))\\le f(x)+\\left\\langle \\nabla f(x),T_Q(x)-x\\right\\rangle+\\frac{L}{2}\\,\\|T_Q(x)-x\\|^2.\n\\end{equation}\nBy Definition~\\ref{def:3.2}, \\(T_Q(x)\\) minimizes the expression in \\eqref{eq:3.2}, hence\n\\begin{equation}\\label{eq:prop33:minimizer}\n\\left\\langle \\nabla f(x),T_Q(x)-x\\right\\rangle+\\frac{L}{2}\\,\\|T_Q(x)-x\\|^2\n=\\min_{y\\in Q}\\left\\{\\langle \\nabla f(x),y-x\\rangle+\\frac{L}{2}\\,\\|y-x\\|^2\\right\\}.\n\\end{equation}\nSubstituting \\eqref{eq:prop33:minimizer} into \\eqref{eq:prop33:apply31} yields \\eqref{eq:3.3}.\n\\end{proof}",
+    "index": 20
+  },
+  {
+    "label": "Definition 1.3.2",
+    "env": "def",
+    "number_components": [
+      1,
+      3,
+      2
+    ],
+    "extracted_labels": [
+      "def:3.4",
+      "eq:prox_center_3"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Optimal scheme for smooth optimization",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "3",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:3.4}\nLet \\(Q\\subseteq E\\) be closed and convex. A function \\(d:Q\\to\\mathbb{R}\\) is called a prox-function for \\(Q\\) if it is continuous and \\(\\sigma\\)-strongly convex on \\(Q\\) for some \\(\\sigma>0\\).\nDefine the prox-center \\(x_0\\in Q\\) by\n\\begin{equation}\\label{eq:prox_center_3}\nx_0\\in\\arg\\min_{x\\in Q} d(x).\n\\end{equation}\nAssume the normalization \\(d(x_0)=0\\).\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 21
+  },
+  {
+    "label": "Proposition 1.3.3",
+    "env": "prop",
+    "number_components": [
+      1,
+      3,
+      3
+    ],
+    "extracted_labels": [
+      "prop:3.4",
+      "eq:3.4",
+      "proof:prop:3.4",
+      "eq:prop34:strong_convex",
+      "eq:prop34:at_center"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Optimal scheme for smooth optimization",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "3",
+      "subsection_number": ""
+    },
+    "content": "\\begin{proposition}\\label{prop:3.4}\nAssume \\(d\\) is \\(\\sigma\\)-strongly convex on \\(Q\\) and \\(x_0\\in\\arg\\min_{x\\in Q} d(x)\\) with \\(d(x_0)=0\\). Then for all \\(x\\in Q\\),\n\\begin{equation}\\label{eq:3.4}\nd(x)\\ge \\frac{\\sigma}{2}\\,\\|x-x_0\\|^2.\n\\end{equation}\n\\end{proposition}\n(depend on: \"Definition 1.3.2\")",
+    "dependencies": [
+      "Definition 1.3.2"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:3.4}\nFix \\(x\\in Q\\). For any \\(t\\in(0,1)\\), set\n\\(x_t=(1-t)x_0+t x\\). Since \\(Q\\) is convex, \\(x_t\\in Q\\).\nBecause \\(x_0\\) minimizes \\(d\\) over \\(Q\\), we have \\(d(x_0)\\le d(x_t)\\).\n\nBy \\(\\sigma\\)-strong convexity of \\(d\\) on \\(Q\\), for all \\(t\\in(0,1)\\) we have\n\\begin{equation}\\label{eq:prop34:strong_convex}\nd(x_t)\\le (1-t)d(x_0)+t d(x)-\\frac{\\sigma}{2}\\,t(1-t)\\,\\|x-x_0\\|^2.\n\\end{equation}\nCombining \\(d(x_0)\\le d(x_t)\\) with \\eqref{eq:prop34:strong_convex} and rearranging yields\n\\begin{equation}\\label{eq:prop34:at_center}\nd(x)\\ge d(x_0)+\\frac{\\sigma}{2}(1-t)\\,\\|x-x_0\\|^2.\n\\end{equation}\nLetting \\(t\\to 0^+\\) gives\n\\(d(x)\\ge d(x_0)+\\frac{\\sigma}{2}\\|x-x_0\\|^2\\).\nUsing the normalization \\(d(x_0)=0\\) yields \\eqref{eq:3.4}.\n\\end{proof}",
+    "index": 22
+  },
+  {
+    "label": "Definition 1.3.3",
+    "env": "def",
+    "number_components": [
+      1,
+      3,
+      3
+    ],
+    "extracted_labels": [
+      "def:3.5",
+      "eq:3.5"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Optimal scheme for smooth optimization",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "3",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:3.5}\nConsider the smooth convex minimization problem\n\\begin{equation}\\label{eq:3.5}\n\\min_{x\\in Q} f(x),\n\\end{equation}\nwhere \\(Q\\subseteq E\\) is closed and convex, and \\(f\\) is convex and differentiable on \\(Q\\) with \\(L\\)-Lipschitz continuous gradient as in \\eqref{eq:grad_lipschitz}.\n\\end{definition}\n(depend on: \"Proposition 1.3.1\")",
+    "dependencies": [
+      "Proposition 1.3.1"
+    ],
+    "proof": "",
+    "index": 23
+  },
+  {
+    "label": "Definition 1.3.4",
+    "env": "def",
+    "number_components": [
+      1,
+      3,
+      4
+    ],
+    "extracted_labels": [
+      "def:3.6",
+      "eq:Ak_def",
+      "eq:psi_k_def",
+      "eq:Rk"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Optimal scheme for smooth optimization",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "3",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:3.6}\nLet \\(\\{\\alpha_i\\}_{i\\ge 0}\\) be positive step-size parameters and define\n\\begin{equation}\\label{eq:Ak_def}\nA_k=\\sum_{i=0}^k \\alpha_i.\n\\end{equation}\nGiven points \\(x_0,\\dots,x_k\\in Q\\), define the function\n\\begin{equation}\\label{eq:psi_k_def}\n\\psi_k\\;=\\;\\min_{x\\in Q}\\left\\{\\frac{L}{\\sigma}d(x)+\\sum_{i=0}^k \\alpha_i\\bigl[f(x_i)+\\langle \\nabla f(x_i),x-x_i\\rangle\\bigr]\\right\\}.\n\\end{equation}\nGiven a sequence \\(\\{y_k\\}_{k\\ge 0}\\subseteq Q\\), define the relation\n\\begin{equation}\\label{eq:Rk}\n(R_k):\\qquad A_k f(y_k)\\le \\psi_k.\n\\end{equation}\n\\end{definition}\n(depend on: \"Definition 1.3.2\", \"Definition 1.3.3\")",
+    "dependencies": [
+      "Definition 1.3.2",
+      "Definition 1.3.3"
+    ],
+    "proof": "",
+    "index": 24
+  },
+  {
+    "label": "Proposition 1.3.4",
+    "env": "prop",
+    "number_components": [
+      1,
+      3,
+      4
+    ],
+    "extracted_labels": [
+      "prop:3.7",
+      "eq:y0_def",
+      "proof:prop:3.7",
+      "eq:prop37:psi0",
+      "eq:prop37:lb1",
+      "eq:prop37:lb2",
+      "eq:prop37:lb3",
+      "eq:prop37:apply31",
+      "eq:prop37:min_ge"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Optimal scheme for smooth optimization",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "3",
+      "subsection_number": ""
+    },
+    "content": "\\begin{proposition}\\label{prop:3.7}\nAssume \\(\\alpha_0\\in(0,1]\\). Let \\(x_0\\) be the prox-center of \\(Q\\) from Definition~\\ref{def:3.4}, and set\n\\begin{equation}\\label{eq:y0_def}\ny_0=T_Q(x_0).\n\\end{equation}\nThen the relation \\((R_0)\\) in \\eqref{eq:Rk} holds.\n\\end{proposition}\n(depend on: \"Definition 1.3.4\", \"Proposition 1.3.3\", \"Proposition 1.3.1\", \"Definition 1.3.1\", \"Definition 1.3.2\")",
+    "dependencies": [
+      "Definition 1.3.4",
+      "Proposition 1.3.3",
+      "Proposition 1.3.1",
+      "Definition 1.3.1",
+      "Definition 1.3.2"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:3.7}\nBy Definition~\\ref{def:3.6} with \\(k=0\\),\n\\begin{equation}\\label{eq:prop37:psi0}\n\\psi_0=\\min_{x\\in Q}\\left\\{\\frac{L}{\\sigma}d(x)+\\alpha_0\\bigl[f(x_0)+\\langle \\nabla f(x_0),x-x_0\\rangle\\bigr]\\right\\}.\n\\end{equation}\nBy Proposition~\\ref{prop:3.4}, \\(\\frac{L}{\\sigma}d(x)\\ge \\frac{L}{2}\\|x-x_0\\|^2\\) for all \\(x\\in Q\\). Hence\n\\begin{equation}\\label{eq:prop37:lb1}\n\\psi_0\\ge \\min_{x\\in Q}\\left\\{\\frac{L}{2}\\|x-x_0\\|^2+\\alpha_0\\bigl[f(x_0)+\\langle \\nabla f(x_0),x-x_0\\rangle\\bigr]\\right\\}.\n\\end{equation}\nFactor out \\(\\alpha_0\\) to obtain\n\\begin{equation}\\label{eq:prop37:lb2}\n\\psi_0\\ge \\alpha_0\\min_{x\\in Q}\\left\\{f(x_0)+\\langle \\nabla f(x_0),x-x_0\\rangle+\\frac{L}{2\\alpha_0}\\|x-x_0\\|^2\\right\\}.\n\\end{equation}\nSince \\(\\alpha_0\\le 1\\), we have \\(\\frac{L}{2\\alpha_0}\\|x-x_0\\|^2\\ge \\frac{L}{2}\\|x-x_0\\|^2\\) for all \\(x\\in Q\\). Therefore\n\\begin{equation}\\label{eq:prop37:lb3}\n\\min_{x\\in Q}\\left\\{f(x_0)+\\langle \\nabla f(x_0),x-x_0\\rangle+\\frac{L}{2\\alpha_0}\\|x-x_0\\|^2\\right\\}\n\\ge\n\\min_{x\\in Q}\\left\\{f(x_0)+\\langle \\nabla f(x_0),x-x_0\\rangle+\\frac{L}{2}\\|x-x_0\\|^2\\right\\}.\n\\end{equation}\nLet \\(y_0=T_Q(x_0)\\). By Proposition~\\ref{prop:3.1} applied to \\(x=x_0\\) and \\(y=y_0\\),\n\\begin{equation}\\label{eq:prop37:apply31}\nf(y_0)\\le f(x_0)+\\langle \\nabla f(x_0),y_0-x_0\\rangle+\\frac{L}{2}\\|y_0-x_0\\|^2.\n\\end{equation}\nBy definition of \\(T_Q(x_0)\\), the right-hand side of \\eqref{eq:prop37:apply31} equals\n\\(f(x_0)+\\min_{x\\in Q}\\{\\langle \\nabla f(x_0),x-x_0\\rangle+\\frac{L}{2}\\|x-x_0\\|^2\\}\\).\nThus\n\\begin{equation}\\label{eq:prop37:min_ge}\n\\min_{x\\in Q}\\left\\{f(x_0)+\\langle \\nabla f(x_0),x-x_0\\rangle+\\frac{L}{2}\\|x-x_0\\|^2\\right\\}\\ge f(y_0).\n\\end{equation}\nCombining \\eqref{eq:prop37:lb2}, \\eqref{eq:prop37:lb3}, and \\eqref{eq:prop37:min_ge} yields \\(\\psi_0\\ge \\alpha_0 f(y_0)\\). Since \\(A_0=\\alpha_0\\), this is exactly \\((R_0)\\).\n\\end{proof}",
+    "index": 25
+  },
+  {
+    "label": "Definition 1.3.5",
+    "env": "def",
+    "number_components": [
+      1,
+      3,
+      5
+    ],
+    "extracted_labels": [
+      "def:3.8",
+      "eq:zk_def"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Optimal scheme for smooth optimization",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "3",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:3.8}\nFor \\(k\\ge 0\\), define \\(z_k\\in Q\\) to be any minimizer achieving \\(\\psi_k\\) in \\eqref{eq:psi_k_def}, namely\n\\begin{equation}\\label{eq:zk_def}\nz_k\\in\\arg\\min_{x\\in Q}\\left\\{\\frac{L}{\\sigma}d(x)+\\sum_{i=0}^k \\alpha_i\\bigl[f(x_i)+\\langle \\nabla f(x_i),x-x_i\\rangle\\bigr]\\right\\}.\n\\end{equation}\n\\end{definition}\n(depend on: \"Definition 1.3.4\")",
+    "dependencies": [
+      "Definition 1.3.4"
+    ],
+    "proof": "",
+    "index": 26
+  },
+  {
+    "label": "Lemma 1.3.1",
+    "env": "lem",
+    "number_components": [
+      1,
+      3,
+      1
+    ],
+    "extracted_labels": [
+      "lem:1",
+      "eq:3.6",
+      "eq:tau_def",
+      "eq:3.7",
+      "proof:lem:1",
+      "eq:Fk_def",
+      "eq:lem1:strong_lb",
+      "eq:Fk1_def",
+      "eq:lem1:psi_k1_lb",
+      "eq:lem1:convex_support",
+      "eq:lem1:Akfy",
+      "eq:3.8",
+      "eq:lem1:psi_k1_lb2",
+      "eq:lem1:factor",
+      "eq:lem1:tau_relation",
+      "eq:3.9",
+      "eq:lem1:y_def",
+      "eq:lem1:shift",
+      "eq:lem1:change_var",
+      "eq:lem1:min_change",
+      "eq:lem1:min_value",
+      "eq:lem1:apply31",
+      "eq:lem1:conclude"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Optimal scheme for smooth optimization",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "3",
+      "subsection_number": ""
+    },
+    "content": "\\begin{lemma}\\label{lem:1}\nLet \\(\\{\\alpha_k\\}_{k\\ge 0}\\) be positive numbers satisfying\n\\begin{equation}\\label{eq:3.6}\n\\alpha_0\\in(0,1],\\qquad \\alpha_{k+1}^2\\le A_{k+1}\\ \\ \\text{for all }k\\ge 0,\n\\end{equation}\nwhere \\(A_{k+1}=\\sum_{i=0}^{k+1}\\alpha_i\\). Suppose that \\((R_k)\\) in \\eqref{eq:Rk} holds for some \\(k\\ge 0\\).\nDefine\n\\begin{equation}\\label{eq:tau_def}\n\\tau_k=\\frac{\\alpha_{k+1}}{A_{k+1}},\n\\end{equation}\nand update\n\\begin{equation}\\label{eq:3.7}\nx_{k+1}=\\tau_k z_k+(1-\\tau_k)y_k,\\qquad y_{k+1}=T_Q(x_{k+1}).\n\\end{equation}\nThen \\((R_{k+1})\\) holds.\n\\end{lemma}\n(depend on: \"Definition 1.3.4\", \"Definition 1.3.5\", \"Definition 1.3.1\", \"Proposition 1.3.2\", \"Definition 1.3.2\", \"Proposition 1.3.1\")",
+    "dependencies": [
+      "Definition 1.3.4",
+      "Definition 1.3.5",
+      "Definition 1.3.1",
+      "Proposition 1.3.2",
+      "Definition 1.3.2",
+      "Proposition 1.3.1"
+    ],
+    "proof": "\\begin{proof}\\label{proof:lem:1}\nAssume \\((R_k)\\) holds.\nDefine\n\\begin{equation}\\label{eq:Fk_def}\nF_k(x)=\\frac{L}{\\sigma}d(x)+\\sum_{i=0}^k \\alpha_i\\bigl[f(x_i)+\\langle \\nabla f(x_i),x-x_i\\rangle\\bigr].\n\\end{equation}\nThen \\(\\psi_k=\\min_{x\\in Q}F_k(x)\\) and \\(z_k\\) is a minimizer of \\(F_k\\) by Definition~\\ref{def:3.8}.\nSince \\(d\\) is \\(\\sigma\\)-strongly convex, the function \\(\\frac{L}{\\sigma}d\\) is \\(L\\)-strongly convex. Hence \\(F_k\\) is \\(L\\)-strongly convex on \\(Q\\), and therefore for all \\(x\\in Q\\),\n\\begin{equation}\\label{eq:lem1:strong_lb}\nF_k(x)\\ge F_k(z_k)+\\frac{L}{2}\\|x-z_k\\|^2=\\psi_k+\\frac{L}{2}\\|x-z_k\\|^2.\n\\end{equation}\nNow\n\\begin{equation}\\label{eq:Fk1_def}\nF_{k+1}(x)=F_k(x)+\\alpha_{k+1}\\bigl[f(x_{k+1})+\\langle \\nabla f(x_{k+1}),x-x_{k+1}\\rangle\\bigr],\n\\end{equation}\nso using \\eqref{eq:lem1:strong_lb} we get\n\\begin{equation}\\label{eq:lem1:psi_k1_lb}\n\\psi_{k+1}=\\min_{x\\in Q}F_{k+1}(x)\n\\ge \\min_{x\\in Q}\\left\\{\\psi_k+\\frac{L}{2}\\|x-z_k\\|^2+\\alpha_{k+1}\\bigl[f(x_{k+1})+\\langle \\nabla f(x_{k+1}),x-x_{k+1}\\rangle\\bigr]\\right\\}.\n\\end{equation}\nUsing \\((R_k)\\), we have \\(\\psi_k\\ge A_k f(y_k)\\). By convexity of \\(f\\), for any \\(u,v\\in Q\\),\n\\begin{equation}\\label{eq:lem1:convex_support}\nf(u)\\ge f(v)+\\langle \\nabla f(v),u-v\\rangle.\n\\end{equation}\nApply \\eqref{eq:lem1:convex_support} with \\(u=y_k\\) and \\(v=x_{k+1}\\), and multiply by \\(A_k\\), obtaining\n\\begin{equation}\\label{eq:lem1:Akfy}\nA_k f(y_k)\\ge A_k\\bigl[f(x_{k+1})+\\langle \\nabla f(x_{k+1}),y_k-x_{k+1}\\rangle\\bigr].\n\\end{equation}\nTherefore, for all \\(x\\in Q\\),\n\\begin{align}\n\\label{eq:3.8}\n\\psi_k+\\alpha_{k+1}\\bigl[f(x_{k+1})+\\langle \\nabla f(x_{k+1}),x-x_{k+1}\\rangle\\bigr]\n&\\ge A_k f(y_k)+\\alpha_{k+1}\\bigl[f(x_{k+1})+\\langle \\nabla f(x_{k+1}),x-x_{k+1}\\rangle\\bigr]\\\\\n&\\ge A_k\\bigl[f(x_{k+1})+\\langle \\nabla f(x_{k+1}),y_k-x_{k+1}\\rangle\\bigr]\n+\\alpha_{k+1}\\bigl[f(x_{k+1})+\\langle \\nabla f(x_{k+1}),x-x_{k+1}\\rangle\\bigr]\\\\\n&=A_{k+1}f(x_{k+1})+\\alpha_{k+1}\\langle \\nabla f(x_{k+1}),x-z_k\\rangle.\n\\end{align}\nSubstitute \\eqref{eq:3.8} into \\eqref{eq:lem1:psi_k1_lb}:\n\\begin{equation}\\label{eq:lem1:psi_k1_lb2}\n\\psi_{k+1}\\ge \\min_{x\\in Q}\\left\\{A_{k+1}f(x_{k+1})+\\frac{L}{2}\\|x-z_k\\|^2+\\alpha_{k+1}\\langle \\nabla f(x_{k+1}),x-z_k\\rangle\\right\\}.\n\\end{equation}\nRewrite the minimization term by factoring \\(A_{k+1}\\):\n\\begin{equation}\\label{eq:lem1:factor}\n\\psi_{k+1}\\ge A_{k+1}\\left[f(x_{k+1})+\\min_{x\\in Q}\\left\\{\\frac{L}{2A_{k+1}}\\|x-z_k\\|^2+\\tau_k\\langle \\nabla f(x_{k+1}),x-z_k\\rangle\\right\\}\\right].\n\\end{equation}\nFrom \\eqref{eq:3.6} and \\eqref{eq:tau_def},\n\\begin{equation}\\label{eq:lem1:tau_relation}\n\\tau_k^2=\\frac{\\alpha_{k+1}^2}{A_{k+1}^2}\\le \\frac{1}{A_{k+1}}.\n\\end{equation}\nHence \\(\\frac{L}{2A_{k+1}}\\|x-z_k\\|^2\\ge \\frac{L}{2}\\tau_k^2\\|x-z_k\\|^2\\), and therefore\n\\begin{equation}\\label{eq:3.9}\n\\psi_{k+1}\\ge A_{k+1}\\left[f(x_{k+1})+\\min_{x\\in Q}\\left\\{\\frac{L}{2}\\tau_k^2\\|x-z_k\\|^2+\\tau_k\\langle \\nabla f(x_{k+1}),x-z_k\\rangle\\right\\}\\right].\n\\end{equation}\nDefine, for an arbitrary \\(x\\in Q\\),\n\\begin{equation}\\label{eq:lem1:y_def}\ny=\\tau_k x+(1-\\tau_k)y_k.\n\\end{equation}\nSince \\(Q\\) is convex and \\(\\tau_k\\in[0,1]\\), we have \\(y\\in Q\\). By \\eqref{eq:3.7},\n\\begin{equation}\\label{eq:lem1:shift}\ny-x_{k+1}=\\tau_k(x-z_k).\n\\end{equation}\nUsing \\eqref{eq:lem1:shift}, for any \\(x\\in Q\\) we have\n\\begin{equation}\\label{eq:lem1:change_var}\n\\frac{L}{2}\\tau_k^2\\|x-z_k\\|^2+\\tau_k\\langle \\nabla f(x_{k+1}),x-z_k\\rangle\n=\\frac{L}{2}\\|y-x_{k+1}\\|^2+\\langle \\nabla f(x_{k+1}),y-x_{k+1}\\rangle.\n\\end{equation}\nTherefore\n\\begin{equation}\\label{eq:lem1:min_change}\n\\min_{x\\in Q}\\left\\{\\frac{L}{2}\\tau_k^2\\|x-z_k\\|^2+\\tau_k\\langle \\nabla f(x_{k+1}),x-z_k\\rangle\\right\\}\n\\ge\n\\min_{y\\in Q}\\left\\{\\frac{L}{2}\\|y-x_{k+1}\\|^2+\\langle \\nabla f(x_{k+1}),y-x_{k+1}\\rangle\\right\\}.\n\\end{equation}\nBy Definition~\\ref{def:3.2}, \\(y_{k+1}=T_Q(x_{k+1})\\) minimizes the right-hand side of \\eqref{eq:lem1:min_change}, hence\n\\begin{equation}\\label{eq:lem1:min_value}\n\\min_{y\\in Q}\\left\\{\\frac{L}{2}\\|y-x_{k+1}\\|^2+\\langle \\nabla f(x_{k+1}),y-x_{k+1}\\rangle\\right\\}\n=\\frac{L}{2}\\|y_{k+1}-x_{k+1}\\|^2+\\langle \\nabla f(x_{k+1}),y_{k+1}-x_{k+1}\\rangle.\n\\end{equation}\nBy Proposition~\\ref{prop:3.1} applied to \\(x=x_{k+1}\\) and \\(y=y_{k+1}\\),\n\\begin{equation}\\label{eq:lem1:apply31}\n\\frac{L}{2}\\|y_{k+1}-x_{k+1}\\|^2+\\langle \\nabla f(x_{k+1}),y_{k+1}-x_{k+1}\\rangle\\ge f(y_{k+1})-f(x_{k+1}).\n\\end{equation}\nCombine \\eqref{eq:3.9}, \\eqref{eq:lem1:min_change}, \\eqref{eq:lem1:min_value}, and \\eqref{eq:lem1:apply31} to obtain\n\\begin{equation}\\label{eq:lem1:conclude}\n\\psi_{k+1}\\ge A_{k+1}\\left[f(x_{k+1})+f(y_{k+1})-f(x_{k+1})\\right]=A_{k+1}f(y_{k+1}).\n\\end{equation}\nThis is \\((R_{k+1})\\).\n\\end{proof}",
+    "index": 27
+  },
+  {
+    "label": "Lemma 1.3.2",
+    "env": "lem",
+    "number_components": [
+      1,
+      3,
+      2
+    ],
+    "extracted_labels": [
+      "lem:2",
+      "eq:alpha_k_def",
+      "eq:3.10",
+      "proof:lem:2",
+      "eq:lem2:Ak",
+      "eq:lem2:tau_sq",
+      "eq:lem2:invAk1"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Optimal scheme for smooth optimization",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "3",
+      "subsection_number": ""
+    },
+    "content": "\\begin{lemma}\\label{lem:2}\nFor \\(k\\ge 0\\), define\n\\begin{equation}\\label{eq:alpha_k_def}\n\\alpha_k=\\frac{k+1}{2}.\n\\end{equation}\nThen\n\\begin{equation}\\label{eq:3.10}\n\\tau_k=\\frac{2}{k+3},\\qquad A_k=\\frac{(k+1)(k+2)}{4},\n\\end{equation}\nand the conditions \\eqref{eq:3.6} are satisfied.\n\\end{lemma}\n(depend on: \"Lemma 1.3.1\", \"Definition 1.3.4\")",
+    "dependencies": [
+      "Lemma 1.3.1",
+      "Definition 1.3.4"
+    ],
+    "proof": "\\begin{proof}\\label{proof:lem:2}\nBy \\eqref{eq:alpha_k_def},\n\\begin{equation}\\label{eq:lem2:Ak}\nA_k=\\sum_{i=0}^k \\frac{i+1}{2}=\\frac{1}{2}\\sum_{j=1}^{k+1} j=\\frac{(k+1)(k+2)}{4}.\n\\end{equation}\nThus \\eqref{eq:3.10} holds. Moreover,\n\\begin{equation}\\label{eq:lem2:tau_sq}\n\\tau_k^2=\\left(\\frac{\\alpha_{k+1}}{A_{k+1}}\\right)^2=\\frac{\\left(\\frac{k+2}{2}\\right)^2}{\\left(\\frac{(k+2)(k+3)}{4}\\right)^2}=\\frac{4}{(k+3)^2}.\n\\end{equation}\nAlso\n\\begin{equation}\\label{eq:lem2:invAk1}\n\\frac{1}{A_{k+1}}=\\frac{4}{(k+2)(k+3)}.\n\\end{equation}\nSince \\((k+3)^2\\ge (k+2)(k+3)\\) for \\(k\\ge 0\\), we have \\(\\tau_k^2\\le 1/A_{k+1}\\), which is equivalent to \\(\\alpha_{k+1}^2\\le A_{k+1}\\). Also \\(\\alpha_0=1/2\\in(0,1]\\). Hence \\eqref{eq:3.6} holds.\n\\end{proof}",
+    "index": 28
+  },
+  {
+    "label": "Algorithm 1.3.1",
+    "env": "algo",
+    "number_components": [
+      1,
+      3,
+      1
+    ],
+    "extracted_labels": [
+      "alg:3.11",
+      "eq:alg311:zk",
+      "eq:3.11"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Optimal scheme for smooth optimization",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "3",
+      "subsection_number": ""
+    },
+    "content": "\\begin{algorithm}\\label{alg:3.11}\nAssume \\(f\\) satisfies \\eqref{eq:grad_lipschitz} on \\(Q\\), and let \\(d\\) be a prox-function for \\(Q\\) with parameter \\(\\sigma\\).\nInitialize at the prox-center \\(x_0\\) of \\(Q\\) and set \\(y_0=T_Q(x_0)\\).\nFor \\(k\\ge 0\\), iterate:\n\\begin{enumerate}\n\\item Compute \\(f(x_k)\\) and \\(\\nabla f(x_k)\\).\n\\item Compute \\(y_k=T_Q(x_k)\\).\n\\item Compute\n\\begin{equation}\\label{eq:alg311:zk}\nz_k\\in\\arg\\min_{x\\in Q}\\left\\{\\frac{L}{\\sigma}d(x)+\\sum_{i=0}^k \\frac{i+1}{2}\\bigl[f(x_i)+\\langle \\nabla f(x_i),x-x_i\\rangle\\bigr]\\right\\}.\n\\end{equation}\n\\item Set\n\\begin{equation}\\label{eq:3.11}\nx_{k+1}=\\frac{2}{k+3}z_k+\\frac{k+1}{k+3}y_k.\n\\end{equation}\n\\end{enumerate}\n\\end{algorithm}\n(depend on: \"Lemma 1.3.2\", \"Definition 1.3.1\", \"Definition 1.3.2\", \"Proposition 1.3.1\")",
+    "dependencies": [
+      "Lemma 1.3.2",
+      "Definition 1.3.1",
+      "Definition 1.3.2",
+      "Proposition 1.3.1"
+    ],
+    "proof": "",
+    "index": 29
+  },
+  {
+    "label": "Theorem 1.3.1",
+    "env": "thm",
+    "number_components": [
+      1,
+      3,
+      1
+    ],
+    "extracted_labels": [
+      "thm:2",
+      "eq:3.12",
+      "eq:3.13",
+      "proof:thm:2",
+      "eq:thm2:Rk",
+      "eq:thm2:convex",
+      "eq:thm2:support_at_xstar",
+      "eq:thm2:psi_bound",
+      "eq:thm2:gap"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Optimal scheme for smooth optimization",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "3",
+      "subsection_number": ""
+    },
+    "content": "\\begin{theorem}\\label{thm:2}\nLet sequences \\(\\{x_k\\}_{k\\ge 0}\\subseteq Q\\) and \\(\\{y_k\\}_{k\\ge 0}\\subseteq Q\\) be generated by Algorithm~\\ref{alg:3.11}. Then for any \\(k\\ge 0\\),\n\\begin{equation}\\label{eq:3.12}\n\\frac{(k+1)(k+2)}{4}\\,f(y_k)\n\\le\n\\min_{x\\in Q}\\left\\{\\frac{L}{\\sigma}d(x)+\\sum_{i=0}^k \\frac{i+1}{2}\\bigl[f(x_i)+\\langle \\nabla f(x_i),x-x_i\\rangle\\bigr]\\right\\}.\n\\end{equation}\nLet \\(x^*\\in\\arg\\min_{x\\in Q} f(x)\\). Then\n\\begin{equation}\\label{eq:3.13}\nf(y_k)-f(x^*)\\le \\frac{4L\\,d(x^*)}{\\sigma (k+1)(k+2)}.\n\\end{equation}\n\\end{theorem}\n(depend on: \"Algorithm 1.3.1\", \"Lemma 1.3.1\", \"Lemma 1.3.2\", \"Definition 1.3.4\", \"Proposition 1.3.4\")",
+    "dependencies": [
+      "Algorithm 1.3.1",
+      "Lemma 1.3.1",
+      "Lemma 1.3.2",
+      "Definition 1.3.4",
+      "Proposition 1.3.4"
+    ],
+    "proof": "\\begin{proof}\\label{proof:thm:2}\nLet \\(\\alpha_k=(k+1)/2\\) and \\(A_k=(k+1)(k+2)/4\\) as in Lemma~\\ref{lem:2}. By Proposition~\\ref{prop:3.7} we have \\((R_0)\\). By Lemma~\\ref{lem:1}, if \\((R_k)\\) holds then \\((R_{k+1})\\) holds for the updates used in Algorithm~\\ref{alg:3.11}. Hence \\((R_k)\\) holds for all \\(k\\ge 0\\).\n\nFor each \\(k\\), \\((R_k)\\) states that\n\\begin{equation}\\label{eq:thm2:Rk}\nA_k f(y_k)\\le \\psi_k.\n\\end{equation}\nUsing the definition \\eqref{eq:psi_k_def} with \\(\\alpha_i=(i+1)/2\\) and the identity \\(A_k=(k+1)(k+2)/4\\), we obtain exactly \\eqref{eq:3.12}.\n\nTo derive \\eqref{eq:3.13}, note that for any \\(x\\in Q\\) and any \\(i\\), convexity of \\(f\\) gives\n\\begin{equation}\\label{eq:thm2:convex}\nf(x)\\ge f(x_i)+\\langle \\nabla f(x_i),x-x_i\\rangle.\n\\end{equation}\nSubstituting \\(x=x^*\\) into \\eqref{eq:thm2:convex} yields\n\\begin{equation}\\label{eq:thm2:support_at_xstar}\nf(x_i)+\\langle \\nabla f(x_i),x^*-x_i\\rangle\\le f(x^*).\n\\end{equation}\nHence\n\\begin{equation}\\label{eq:thm2:psi_bound}\n\\psi_k\n\\le \\frac{L}{\\sigma}d(x^*)+\\sum_{i=0}^k \\alpha_i f(x^*)\n=\\frac{L}{\\sigma}d(x^*)+A_k f(x^*).\n\\end{equation}\nCombine \\eqref{eq:thm2:Rk} with \\eqref{eq:thm2:psi_bound} to get\n\\begin{equation}\\label{eq:thm2:gap}\nA_k\\bigl(f(y_k)-f(x^*)\\bigr)\\le \\frac{L}{\\sigma}d(x^*).\n\\end{equation}\nDivide by \\(A_k=(k+1)(k+2)/4\\) to obtain \\eqref{eq:3.13}.\n\\end{proof}",
+    "index": 30
+  },
+  {
+    "label": "Definition 1.3.6",
+    "env": "def",
+    "number_components": [
+      1,
+      3,
+      6
+    ],
+    "extracted_labels": [
+      "def:3.14",
+      "eq:3.14"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Optimal scheme for smooth optimization",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "3",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:3.14}\nDefine a modified selection rule for \\(y_k\\) as follows. Given \\(y_{k-1}\\), compute\n\\begin{equation}\\label{eq:3.14}\n\\tilde y_k=T_Q(x_k),\\qquad y_k\\in\\arg\\min\\{f(x):x\\in\\{y_{k-1},x_k,\\tilde y_k\\}\\}.\n\\end{equation}\n\\end{definition}\n(depend on: \"Definition 1.3.1\", \"Algorithm 1.3.1\")",
+    "dependencies": [
+      "Definition 1.3.1",
+      "Algorithm 1.3.1"
+    ],
+    "proof": "",
+    "index": 31
+  },
+  {
+    "label": "Proposition 1.3.5",
+    "env": "prop",
+    "number_components": [
+      1,
+      3,
+      5
+    ],
+    "extracted_labels": [
+      "prop:3.15",
+      "eq:3.15",
+      "proof:prop:3.15"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Optimal scheme for smooth optimization",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "3",
+      "subsection_number": ""
+    },
+    "content": "\\begin{proposition}\\label{prop:3.15}\nIf \\(\\{y_k\\}\\) is chosen by the rule \\eqref{eq:3.14}, then\n\\begin{equation}\\label{eq:3.15}\nf(y_k)\\le f(y_{k-1})\\le\\cdots\\le f(x_0).\n\\end{equation}\n\\end{proposition}\n(depend on: \"Definition 1.3.6\")",
+    "dependencies": [
+      "Definition 1.3.6"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:3.15}\nBy \\eqref{eq:3.14}, the point \\(y_k\\) is chosen from the set \\(\\{y_{k-1},x_k,\\tilde y_k\\}\\) to minimize \\(f\\) on that set. Hence \\(f(y_k)\\le f(y_{k-1})\\). Iterating this inequality over \\(k\\) yields \\eqref{eq:3.15}.\n\\end{proof}",
+    "index": 32
+  },
+  {
+    "label": "Definition 1.4.1",
+    "env": "def",
+    "number_components": [
+      1,
+      4,
+      1
+    ],
+    "extracted_labels": [
+      "def:4.1",
+      "eq:auto_Definition_4_1_content_1",
+      "eq:4.1"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Application examples",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "4",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:4.1}\nAssume that $\\hat f:Q_1\\to\\mathbb{R}$ is convex and continuously differentiable, and that its gradient is Lipschitz continuous on $Q_1$ with some constant $M\\ge 0$ in the norm $\\|\\cdot\\|_1$:\n\\begin{equation}\\label{eq:auto_Definition_4_1_content_1}\n\\|\\nabla \\hat f(x)-\\nabla \\hat f(y)\\|_{1,*}\\le M\\|x-y\\|_1 \\quad \\forall x,y\\in Q_1.\n\\end{equation}\nLet $f_\\mu$ be the smoothed function defined in \\eqref{eq:2.5}. Define the smoothed objective\n\\begin{equation}\\label{eq:4.1}\n\\bar f_\\mu(x) := \\hat f(x) + f_\\mu(x),\n\\qquad\\text{and consider}\\qquad\n\\min_{x\\in Q_1}\\ \\bar f_\\mu(x).\n\\tag{4.1}\n\\end{equation}\n\\end{definition}\n(depend on: \"Definition 1.2.5\")",
+    "dependencies": [
+      "Definition 1.2.5"
+    ],
+    "proof": "",
+    "index": 33
+  },
+  {
+    "label": "Proposition 1.4.1",
+    "env": "prop",
+    "number_components": [
+      1,
+      4,
+      1
+    ],
+    "extracted_labels": [
+      "prop:4.2",
+      "eq:4.2_Lmu",
+      "proof:prop:4.2",
+      "eq:auto_Proposition_4_2_proof_1"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Application examples",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "4",
+      "subsection_number": ""
+    },
+    "content": "\\begin{proposition}\\label{prop:4.2}\nUnder the assumptions of Definition 4.1, the function $\\bar f_\\mu$ has Lipschitz continuous gradient on $Q_1$ with Lipschitz constant\n\\begin{equation}\\label{eq:4.2_Lmu}\nL_\\mu := M + \\frac{1}{\\mu\\sigma_2}\\|A\\|_{1,2}^2,\n\\end{equation}\nwhere $\\sigma_2$ is the strong convexity parameter of the prox-function $d_2$ on $Q_2$.\n\\end{proposition}\n(depend on: \"Definition 1.4.1\", \"Theorem 1\")",
+    "dependencies": [
+      "Definition 1.4.1",
+      "Theorem 1"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:4.2}\nFor any $x,y\\in Q_1$,\n\\begin{equation}\\label{eq:auto_Proposition_4_2_proof_1}\n\\|\\nabla \\bar f_\\mu(x)-\\nabla \\bar f_\\mu(y)\\|_{1,*}\n\\le \\|\\nabla \\hat f(x)-\\nabla \\hat f(y)\\|_{1,*} + \\|\\nabla f_\\mu(x)-\\nabla f_\\mu(y)\\|_{1,*}.\n\\end{equation}\nBy the assumption of Definition 4.1, the first term is bounded by $M\\|x-y\\|_1$.\nBy Theorem~1, $\\nabla f_\\mu$ is Lipschitz continuous with constant $\\frac{1}{\\mu\\sigma_2}\\|A\\|_{1,2}^2$, hence the second term is bounded by $\\frac{1}{\\mu\\sigma_2}\\|A\\|_{1,2}^2\\|x-y\\|_1$.\nCombining the two bounds yields \\eqref{eq:4.2_Lmu}.\n\\end{proof}",
+    "index": 34
+  },
+  {
+    "label": "Definition 1.4.2",
+    "env": "def",
+    "number_components": [
+      1,
+      4,
+      2
+    ],
+    "extracted_labels": [
+      "def:4.3",
+      "eq:4.3_D1"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Application examples",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "4",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:4.3}\nLet $Q_1\\subseteq E_1$ be a bounded closed convex set, and let $d_1:Q_1\\to\\mathbb{R}$ be a prox-function of $Q_1$, meaning that $d_1$ is continuous and $\\sigma_1$-strongly convex on $Q_1$ for some $\\sigma_1>0$ with respect to $\\|\\cdot\\|_1$.\nAssume the (finite) prox-diameter bound $D_1$ satisfies\n\\begin{equation}\\label{eq:4.3_D1}\n\\max_{x\\in Q_1} d_1(x) \\;\\le\\; D_1 \\;<\\; +\\infty.\n\\end{equation}\n\\end{definition}\n(depend on: \"Definition 1.3.5\")",
+    "dependencies": [
+      "Definition 1.3.5"
+    ],
+    "proof": "",
+    "index": 35
+  },
+  {
+    "label": "Theorem 1.4.1",
+    "env": "thm",
+    "number_components": [
+      1,
+      4,
+      1
+    ],
+    "extracted_labels": [
+      "thm:3",
+      "eq:thm3_muN",
+      "eq:4.2",
+      "eq:4.3",
+      "eq:4.4",
+      "proof:thm:3",
+      "eq:4.5",
+      "eq:thm3_fmu_def",
+      "eq:thm3_fmu_at_um",
+      "eq:thm3_grad_fmu",
+      "eq:4.6",
+      "eq:thm3_sum_bound1",
+      "eq:thm3_sum_bound2",
+      "eq:thm3_sum_bound3",
+      "eq:auto_Theorem_3_proof_1",
+      "eq:4.7"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Application examples",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "4",
+      "subsection_number": ""
+    },
+    "content": "\\begin{theorem}\\label{thm:3}\nAssume the structural model \\eqref{eq:2.2} and that $\\hat f$ in \\eqref{eq:2.2} is differentiable with $M$-Lipschitz continuous gradient on $Q_1$.\nLet $d_1$ be a prox-function of $Q_1$ with parameter $\\sigma_1>0$ and prox-diameter $D_1$ as in \\eqref{eq:4.3_D1}.\nLet $d_2$ be a prox-function of $Q_2$ with strong convexity parameter $\\sigma_2>0$ and define $D_2:=\\max_{u\\in Q_2} d_2(u)$ as in Proposition~2.7.\nApply Algorithm~3.11 to the smoothed problem \\eqref{eq:4.1} with the smoothness parameter\n\\begin{equation}\\label{eq:thm3_muN}\n\\mu=\\mu(N):=\\frac{2\\|A\\|_{1,2}}{N+1}\\sqrt{\\frac{D_1}{\\sigma_1\\sigma_2 D_2}}.\n\\end{equation}\nAfter $N$ iterations, define\n\\begin{equation}\\label{eq:4.2}\n\\hat x := y_N \\in Q_1,\n\\qquad\n\\hat u := \\sum_{i=0}^{N} \\frac{2(i+1)}{(N+1)(N+2)}\\,u_\\mu(x_i)\\in Q_2.\n\\tag{4.2}\n\\end{equation}\nThen $\\hat x$ and $\\hat u$ are approximate solutions to the primal problem \\eqref{eq:2.1} and the adjoint problem \\eqref{eq:2.3} and satisfy the duality-gap estimate\n\\begin{equation}\\label{eq:4.3}\n0 \\le f(\\hat x)-\\phi(\\hat u)\\le\n\\frac{4\\|A\\|_{1,2}}{N+1}\\sqrt{\\frac{D_1D_2}{\\sigma_1\\sigma_2}}\n+\\frac{4MD_1}{\\sigma_1(N+1)^2}.\n\\tag{4.3}\n\\end{equation}\nConsequently, the number of iterations sufficient to produce an $\\varepsilon$-solution in the sense $f(\\hat x)-\\phi(\\hat u)\\le\\varepsilon$ satisfies the bound\n\\begin{equation}\\label{eq:4.4}\nN \\;\\le\\;\n\\frac{4\\|A\\|_{1,2}}{\\varepsilon}\\sqrt{\\frac{D_1D_2}{\\sigma_1\\sigma_2}}\n+2\\sqrt{\\frac{MD_1}{\\sigma_1\\varepsilon}}.\n\\tag{4.4}\n\\end{equation}\n\\end{theorem}\n(depend on: \"Definition 1.4.1\", \"Proposition 1.4.1\", \"Definition 1.4.2\", \"Theorem 2\", \"Theorem 1\", \"Proposition 2.7\", \"Algorithm 3.11\", \"Definition 1.2.2\", \"Definition 1.2.1\", \"Definition 1.2.3\", \"Proposition 1.2.3\")",
+    "dependencies": [
+      "Definition 1.4.1",
+      "Proposition 1.4.1",
+      "Definition 1.4.2",
+      "Theorem 2",
+      "Theorem 1",
+      "Proposition 2.7",
+      "Algorithm 3.11",
+      "Definition 1.2.2",
+      "Definition 1.2.1",
+      "Definition 1.2.3",
+      "Proposition 1.2.3"
+    ],
+    "proof": "\\begin{proof}\\label{proof:thm:3}\nFix an arbitrary $\\mu>0$.\nApply Theorem~2 to the problem \\eqref{eq:4.1} with $L=L_\\mu$ and prox-function $d_1$.\nAfter $N$ iterations, we obtain $\\hat x=y_N$ such that\n\\begin{equation}\\label{eq:4.5}\n\\bar f_\\mu(\\hat x)\\le\n\\frac{L_\\mu D_1}{\\sigma_1(N+1)^2}\n+\n\\min_{x\\in Q_1}\n\\sum_{i=0}^{N}\\frac{2(i+1)}{(N+1)(N+2)}\n\\bigl[\\bar f_\\mu(x_i)+\\langle \\nabla \\bar f_\\mu(x_i),x-x_i\\rangle_1\\bigr].\n\\tag{4.5}\n\\end{equation}\n\nFor each $x\\in E_1$, by definition of $f_\\mu$ and the maximizer $u_\\mu(x)$,\n\\begin{align}\nf_\\mu(x)\n&=\\max_{u\\in Q_2}\\{\\langle Ax,u\\rangle_2-\\hat\\phi(u)-\\mu d_2(u)\\}\\label{eq:thm3_fmu_def}\\\\\n&=\\langle Ax,u_\\mu(x)\\rangle_2-\\hat\\phi(u_\\mu(x))-\\mu d_2(u_\\mu(x)).\\label{eq:thm3_fmu_at_um}\n\\end{align}\nMoreover, by Theorem~1,\n\\begin{equation}\\label{eq:thm3_grad_fmu}\n\\langle \\nabla f_\\mu(x),x\\rangle_1=\\langle A^\\ast u_\\mu(x),x\\rangle_1.\n\\end{equation}\nTherefore, for each $i=0,\\dots,N$,\n\\begin{equation}\\label{eq:4.6}\nf_\\mu(x_i)-\\langle \\nabla f_\\mu(x_i),x_i\\rangle_1\n=-\\hat\\phi(u_\\mu(x_i))-\\mu d_2(u_\\mu(x_i)).\n\\tag{4.6}\n\\end{equation}\n\nLet $\\hat u$ be the convex combination defined in \\eqref{eq:4.2}. Since $Q_2$ is convex, we indeed have $\\hat u\\in Q_2$.\nUsing \\eqref{eq:4.6} and the convexity of $\\hat f$, we estimate, for any $x\\in Q_1$,\n\\begin{align}\n&\\sum_{i=0}^{N}(i+1)\\bigl[\\bar f_\\mu(x_i)+\\langle \\nabla \\bar f_\\mu(x_i),x-x_i\\rangle_1\\bigr]\\nonumber\\\\\n&\\le\n\\sum_{i=0}^{N}(i+1)\\bigl[f_\\mu(x_i)-\\langle \\nabla f_\\mu(x_i),x_i\\rangle_1\\bigr]\n+\\frac{(N+1)(N+2)}{2}\\bigl[\\hat f(x)+\\langle A^\\ast \\hat u,x\\rangle_1\\bigr]\\label{eq:thm3_sum_bound1}\\\\\n&\\le\n-\\sum_{i=0}^{N}(i+1)\\hat\\phi(u_\\mu(x_i))\n+\\frac{(N+1)(N+2)}{2}\\bigl[\\hat f(x)+\\langle A^\\ast \\hat u,x\\rangle_1\\bigr]\\label{eq:thm3_sum_bound2}\\\\\n&\\le\n\\frac{(N+1)(N+2)}{2}\\bigl[-\\hat\\phi(\\hat u)+\\hat f(x)+\\langle Ax,\\hat u\\rangle_2\\bigr].\\label{eq:thm3_sum_bound3}\n\\end{align}\nIn the last step we used the convexity of $\\hat\\phi$ and $d_2$ together with the definition of $\\hat u$ as an average.\n\nSubstituting \\eqref{eq:thm3_sum_bound3} into \\eqref{eq:4.5} and using the adjoint definition \\eqref{eq:2.3}, we obtain\n\\begin{equation}\\label{eq:auto_Theorem_3_proof_1}\n\\frac{L_\\mu D_1}{\\sigma_1(N+1)^2}\n\\ge\n\\bar f_\\mu(\\hat x)-\\phi(\\hat u).\n\\end{equation}\nFinally, by the approximation bound \\eqref{eq:2.7} we have $f(\\hat x)\\le \\bar f_\\mu(\\hat x)+\\mu D_2$, hence\n\\begin{equation}\\label{eq:4.7}\n0\\le f(\\hat x)-\\phi(\\hat u)\\le\n\\mu D_2+\\frac{4\\|A\\|_{1,2}^2D_1}{\\mu\\sigma_1\\sigma_2(N+1)^2}\n+\\frac{4MD_1}{\\sigma_1(N+1)^2}.\n\\tag{4.7}\n\\end{equation}\n\nMinimizing the right-hand side of \\eqref{eq:4.7} over $\\mu>0$ gives the choice \\eqref{eq:thm3_muN} and yields the bound \\eqref{eq:4.3}.\n\nTo obtain \\eqref{eq:4.4}, it suffices to choose $N$ such that the two terms in the right-hand side of \\eqref{eq:4.3} are each at most $\\varepsilon/2$ and solve the resulting inequalities for $N$.\n\\end{proof}",
+    "index": 36
+  },
+  {
+    "label": "Proposition 1.4.2",
+    "env": "prop",
+    "number_components": [
+      1,
+      4,
+      2
+    ],
+    "extracted_labels": [
+      "prop:4.4",
+      "eq:4.8",
+      "proof:prop:4.4",
+      "eq:auto_Proposition_4_4_proof_1",
+      "eq:auto_Proposition_4_4_proof_2"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Application examples",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "4",
+      "subsection_number": ""
+    },
+    "content": "\\begin{proposition}\\label{prop:4.4}\nAssume $M=0$ in Theorem~3. An optimal (order-wise) choice of the smoothing parameter $\\mu$, the corresponding Lipschitz constant $L_\\mu$, and the iteration count $N$ as a function of accuracy $\\varepsilon>0$ is\n\\begin{equation}\\label{eq:4.8}\n\\mu=\\frac{\\varepsilon}{2D_2},\n\\qquad\nL_\\mu=\\frac{D_2}{2\\sigma_2}\\cdot\\frac{\\|A\\|_{1,2}^2}{\\varepsilon},\n\\qquad\nN+1=\\frac{4\\|A\\|_{1,2}}{\\varepsilon}\\sqrt{\\frac{D_1D_2}{\\sigma_1\\sigma_2}}.\n\\tag{4.8}\n\\end{equation}\n\\end{proposition}\n(depend on: \"Theorem 1.4.1\", \"Proposition 1.4.1\")",
+    "dependencies": [
+      "Theorem 1.4.1",
+      "Proposition 1.4.1"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:4.4}\nWhen $M=0$, the bound \\eqref{eq:4.7} becomes\n\\begin{equation}\\label{eq:auto_Proposition_4_4_proof_1}\nf(\\hat x)-\\phi(\\hat u)\\le \\mu D_2+\\frac{4\\|A\\|_{1,2}^2D_1}{\\mu\\sigma_1\\sigma_2(N+1)^2}.\n\\end{equation}\nChoose $\\mu$ so that the smoothing error term satisfies $\\mu D_2=\\varepsilon/2$, namely $\\mu=\\varepsilon/(2D_2)$.\nWith this choice, enforce the remaining term to be at most $\\varepsilon/2$, which is achieved by\n\\begin{equation}\\label{eq:auto_Proposition_4_4_proof_2}\n\\frac{4\\|A\\|_{1,2}^2D_1}{\\mu\\sigma_1\\sigma_2(N+1)^2}\\le\\frac{\\varepsilon}{2}.\n\\end{equation}\nSubstituting $\\mu=\\varepsilon/(2D_2)$ and solving for $N$ gives the value of $N+1$ in \\eqref{eq:4.8}.\nFinally, for $M=0$, Proposition~4.2 gives $L_\\mu=\\frac{1}{\\mu\\sigma_2}\\|A\\|_{1,2}^2$, and substituting $\\mu=\\varepsilon/(2D_2)$ yields the stated expression for $L_\\mu$.\n\\end{proof}",
+    "index": 37
+  },
+  {
+    "label": "Definition 1.4.1.1",
+    "env": "def",
+    "number_components": [
+      1,
+      4,
+      1,
+      1
+    ],
+    "extracted_labels": [
+      "def:4.5",
+      "eq:Delta_n",
+      "eq:4.9"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Minimax strategies for matrix games",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 4,
+      "subsection_number": 1
+    },
+    "content": "\\begin{definition}\\label{def:4.5}\nDefine the standard simplex in $\\mathbb{R}^n$ by\n\\begin{equation}\\label{eq:Delta_n}\n\\Delta_n := \\Bigl\\{x\\in\\mathbb{R}^n: x^{(i)}\\ge 0\\ \\forall i,\\ \\sum_{i=1}^n x^{(i)}=1\\Bigr\\}.\n\\end{equation}\nLet $A:\\mathbb{R}^n\\to\\mathbb{R}^m$, and let $c\\in\\mathbb{R}^n$, $b\\in\\mathbb{R}^m$.\nConsider the matrix-game saddle-point problem\n\\begin{equation}\\label{eq:4.9}\n\\min_{x\\in\\Delta_n}\\ \\max_{u\\in\\Delta_m}\\ \\bigl\\{\\langle Ax,u\\rangle_2+\\langle c,x\\rangle_1+\\langle b,u\\rangle_2\\bigr\\}.\n\\tag{4.9}\n\\end{equation}\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 38
+  },
+  {
+    "label": "Definition 1.4.1.2",
+    "env": "def",
+    "number_components": [
+      1,
+      4,
+      1,
+      2
+    ],
+    "extracted_labels": [
+      "def:4.6",
+      "eq:4.10",
+      "eq:4.10_dual"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Minimax strategies for matrix games",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 4,
+      "subsection_number": 1
+    },
+    "content": "\\begin{definition}\\label{def:4.6}\nLet $a_j\\in\\mathbb{R}^n$ denote the rows of $A$ and $\\hat a_i\\in\\mathbb{R}^m$ denote the columns of $A$.\nThe saddle-point problem \\eqref{eq:4.9} is equivalent to the pair of optimization problems\n\\begin{equation}\\label{eq:4.10}\n\\min_{x\\in\\Delta_n}\\ f(x),\n\\qquad\nf(x):=\\langle c,x\\rangle_1+\\max_{1\\le j\\le m}\\bigl[\\langle a_j,x\\rangle_1+b^{(j)}\\bigr],\n\\end{equation}\nand\n\\begin{equation}\\label{eq:4.10_dual}\n\\max_{u\\in\\Delta_m}\\ \\phi(u),\n\\qquad\n\\phi(u):=\\langle b,u\\rangle_2+\\min_{1\\le i\\le n}\\bigl[\\langle \\hat a_i,u\\rangle_2+c^{(i)}\\bigr].\n\\tag{4.10}\n\\end{equation}\n\\end{definition}\n(depend on: \"Definition 1.4.1.1\")",
+    "dependencies": [
+      "Definition 1.4.1.1"
+    ],
+    "proof": "",
+    "index": 39
+  },
+  {
+    "label": "Proposition 1.4.1.1",
+    "env": "prop",
+    "number_components": [
+      1,
+      4,
+      1,
+      1
+    ],
+    "extracted_labels": [
+      "prop:4.7",
+      "eq:auto_Proposition_4_7_content_1",
+      "eq:auto_Proposition_4_7_content_2",
+      "eq:auto_Proposition_4_7_content_3",
+      "eq:4.11",
+      "proof:prop:4.7",
+      "eq:auto_Proposition_4_7_proof_1",
+      "eq:auto_Proposition_4_7_proof_2"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Minimax strategies for matrix games",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 4,
+      "subsection_number": 1
+    },
+    "content": "\\begin{proposition}\\label{prop:4.7}\nIn the setting of Definition 4.6, choose the Euclidean norms on $\\mathbb{R}^n$ and $\\mathbb{R}^m$,\n\\begin{equation}\\label{eq:auto_Proposition_4_7_content_1}\n\\|x\\|_1:=\\Bigl(\\sum_{i=1}^n (x^{(i)})^2\\Bigr)^{1/2},\n\\qquad\n\\|u\\|_2:=\\Bigl(\\sum_{j=1}^m (u^{(j)})^2\\Bigr)^{1/2},\n\\end{equation}\nand the prox-functions on $\\Delta_n$ and $\\Delta_m$,\n\\begin{equation}\\label{eq:auto_Proposition_4_7_content_2}\nd_1(x):=\\frac12\\sum_{i=1}^n\\Bigl(x^{(i)}-\\frac1n\\Bigr)^2,\n\\qquad\nd_2(u):=\\frac12\\sum_{j=1}^m\\Bigl(u^{(j)}-\\frac1m\\Bigr)^2.\n\\end{equation}\nThen $\\sigma_1=\\sigma_2=1$, $D_1=1-\\frac1n<1$, $D_2=1-\\frac1m<1$, and\n\\begin{equation}\\label{eq:auto_Proposition_4_7_content_3}\n\\|A\\|_{1,2}=\\max_{\\|x\\|_1=1}\\|Ax\\|_{2}=\\lambda_{\\max}^{1/2}(A^\\top A).\n\\end{equation}\nMoreover, since $\\hat f(x)=\\langle c,x\\rangle_1$ is linear, we have $M=0$, and Theorem~3 yields the bound\n\\begin{equation}\\label{eq:4.11}\n0\\le f(\\hat x)-\\phi(\\hat u)\\le \\frac{4\\,\\lambda_{\\max}^{1/2}(A^\\top A)}{N+1}.\n\\tag{4.11}\n\\end{equation}\n\\end{proposition}\n(depend on: \"Theorem 1.4.1\", \"Definition 1.4.1.2\")",
+    "dependencies": [
+      "Theorem 1.4.1",
+      "Definition 1.4.1.2"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:4.7}\nThe strong convexity parameters are $\\sigma_1=\\sigma_2=1$ because $d_1$ and $d_2$ are quadratic functions with Hessian equal to the identity on the ambient Euclidean spaces.\nSince $\\Delta_n$ and $\\Delta_m$ are compact, the prox-diameters are finite; in particular one may take $D_1=1-\\frac1n$ and $D_2=1-\\frac1m$.\nWith Euclidean norms, the operator norm is the spectral norm:\n\\begin{equation}\\label{eq:auto_Proposition_4_7_proof_1}\n\\|A\\|_{1,2}=\\max_{\\|x\\|_2=1}\\|Ax\\|_2=\\sqrt{\\lambda_{\\max}(A^\\top A)}.\n\\end{equation}\nFinally, in \\eqref{eq:4.3} of Theorem~3 we have $M=0$, $\\sigma_1=\\sigma_2=1$ and $D_1,D_2<1$, hence\n\\begin{equation}\\label{eq:auto_Proposition_4_7_proof_2}\nf(\\hat x)-\\phi(\\hat u)\\le \\frac{4\\|A\\|_{1,2}}{N+1}\n\\le \\frac{4\\lambda_{\\max}^{1/2}(A^\\top A)}{N+1},\n\\end{equation}\nwhich is \\eqref{eq:4.11}.\n\\end{proof}",
+    "index": 40
+  },
+  {
+    "label": "Lemma 1.4.1.1",
+    "env": "lem",
+    "number_components": [
+      1,
+      4,
+      1,
+      1
+    ],
+    "extracted_labels": [
+      "lem:3",
+      "eq:auto_Lemma_3_content_1",
+      "eq:auto_Lemma_3_content_2",
+      "eq:auto_Lemma_3_content_3",
+      "proof:lem:3",
+      "eq:auto_Lemma_3_proof_1",
+      "eq:lem3_cs",
+      "eq:auto_Lemma_3_proof_2",
+      "eq:auto_Lemma_3_proof_3"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Minimax strategies for matrix games",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 4,
+      "subsection_number": 1
+    },
+    "content": "\\begin{lemma}\\label{lem:3}\nIn the setting of Definition 4.6, choose the $\\ell_1$ norms on $\\mathbb{R}^n$ and $\\mathbb{R}^m$,\n\\begin{equation}\\label{eq:auto_Lemma_3_content_1}\n\\|x\\|_1:=\\sum_{i=1}^n |x^{(i)}|,\n\\qquad\n\\|u\\|_2:=\\sum_{j=1}^m |u^{(j)}|,\n\\end{equation}\nand the entropy prox-functions on $\\Delta_n$ and $\\Delta_m$,\n\\begin{equation}\\label{eq:auto_Lemma_3_content_2}\nd_1(x):=\\ln n+\\sum_{i=1}^n x^{(i)}\\ln x^{(i)},\n\\qquad\nd_2(u):=\\ln m+\\sum_{j=1}^m u^{(j)}\\ln u^{(j)}.\n\\end{equation}\nThen the strong convexity parameters and prox-diameters satisfy\n\\begin{equation}\\label{eq:auto_Lemma_3_content_3}\n\\sigma_1=\\sigma_2=1,\n\\qquad\nD_1=\\ln n,\n\\qquad\nD_2=\\ln m.\n\\end{equation}\n\\end{lemma}\n(depend on: \"Definition 1.4.1.2\")",
+    "dependencies": [
+      "Definition 1.4.1.2"
+    ],
+    "proof": "\\begin{proof}\\label{proof:lem:3}\nThe function $d_1$ is twice continuously differentiable on the relative interior of $\\Delta_n$ and its Hessian is diagonal:\n\\begin{equation}\\label{eq:auto_Lemma_3_proof_1}\n\\langle d_1''(x)h,h\\rangle=\\sum_{i=1}^n \\frac{(h^{(i)})^2}{x^{(i)}}.\n\\end{equation}\nFor $x$ with positive components, the following variant of the Cauchy--Schwarz inequality holds:\n\\begin{equation}\\label{eq:lem3_cs}\n\\Bigl(\\sum_{i=1}^n |h^{(i)}|\\Bigr)^2\n\\le\n\\Bigl(\\sum_{i=1}^n x^{(i)}\\Bigr)\\Bigl(\\sum_{i=1}^n \\frac{(h^{(i)})^2}{x^{(i)}}\\Bigr).\n\\end{equation}\nSince $\\sum_i x^{(i)}=1$ for $x\\in\\Delta_n$, \\eqref{eq:lem3_cs} implies\n\\begin{equation}\\label{eq:auto_Lemma_3_proof_2}\n\\langle d_1''(x)h,h\\rangle\\ge \\Bigl(\\sum_{i=1}^n |h^{(i)}|\\Bigr)^2=\\|h\\|_1^2,\n\\end{equation}\nwhich is the strong convexity condition with parameter $\\sigma_1=1$ for the $\\ell_1$ norm.\nThe same reasoning applies to $d_2$ on $\\Delta_m$ and yields $\\sigma_2=1$.\n\nFor $x\\in\\Delta_n$, we have $\\sum_i x^{(i)}\\ln x^{(i)}\\le 0$ and equality holds at the vertices; thus\n\\begin{equation}\\label{eq:auto_Lemma_3_proof_3}\n\\max_{x\\in\\Delta_n} d_1(x)=\\ln n+\\max_{x\\in\\Delta_n}\\sum_i x^{(i)}\\ln x^{(i)}=\\ln n.\n\\end{equation}\nSimilarly, $\\max_{u\\in\\Delta_m} d_2(u)=\\ln m$.\n\\end{proof}",
+    "index": 41
+  },
+  {
+    "label": "Proposition 1.4.1.2",
+    "env": "prop",
+    "number_components": [
+      1,
+      4,
+      1,
+      2
+    ],
+    "extracted_labels": [
+      "prop:4.8",
+      "eq:opnorm_entropy",
+      "eq:4.12",
+      "proof:prop:4.8",
+      "eq:auto_Proposition_4_8_proof_1"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Minimax strategies for matrix games",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 4,
+      "subsection_number": 1
+    },
+    "content": "\\begin{proposition}\\label{prop:4.8}\nUnder the entropy-distance setup of Lemma~3, the operator norm of $A$ satisfies\n\\begin{equation}\\label{eq:opnorm_entropy}\n\\|A\\|_{1,2}\n=\\max_{\\|x\\|_1=1}\\|Ax\\|_{2,*}\n=\\max_{i,j}|A^{(i,j)}|.\n\\end{equation}\nConsequently, since $M=0$ for the linear term $\\hat f(x)=\\langle c,x\\rangle_1$, the estimate \\eqref{eq:4.3} of Theorem~3 becomes\n\\begin{equation}\\label{eq:4.12}\n0\\le f(\\hat x)-\\phi(\\hat u)\\le\n\\frac{4\\sqrt{\\ln n\\,\\ln m}}{N+1}\\cdot \\max_{i,j}|A^{(i,j)}|.\n\\tag{4.12}\n\\end{equation}\n\\end{proposition}\n(depend on: \"Lemma 1.4.1.1\", \"Theorem 1.4.1\")",
+    "dependencies": [
+      "Lemma 1.4.1.1",
+      "Theorem 1.4.1"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:4.8}\nFor the $\\ell_1$ norms, the dual norms are $\\ell_\\infty$. Hence\n\\begin{equation}\\label{eq:auto_Proposition_4_8_proof_1}\n\\|A\\|_{1,2}=\\max_{\\|x\\|_1=1}\\|Ax\\|_\\infty\n=\\max_{1\\le j\\le m}\\ \\max_{\\|x\\|_1=1} |\\langle a_j,x\\rangle_1|\n=\\max_{1\\le j\\le m}\\ \\|a_j\\|_\\infty\n=\\max_{i,j}|A^{(i,j)}|.\n\\end{equation}\nWith Lemma~3 we have $\\sigma_1=\\sigma_2=1$, $D_1=\\ln n$, $D_2=\\ln m$, and $M=0$. Substituting these values into \\eqref{eq:4.3} yields \\eqref{eq:4.12}.\n\\end{proof}",
+    "index": 42
+  },
+  {
+    "label": "Lemma 1.4.1.2",
+    "env": "lem",
+    "number_components": [
+      1,
+      4,
+      1,
+      2
+    ],
+    "extracted_labels": [
+      "lem:4",
+      "eq:4.13",
+      "eq:4.14",
+      "eq:auto_Lemma_4_content_1",
+      "proof:lem:4",
+      "eq:auto_Lemma_4_proof_1",
+      "eq:auto_Lemma_4_proof_2"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Minimax strategies for matrix games",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 4,
+      "subsection_number": 1
+    },
+    "content": "\\begin{lemma}\\label{lem:4}\nLet $\\mu>0$ and $s\\in\\mathbb{R}^m$. Consider the optimization problem\n\\begin{equation}\\label{eq:4.13}\n\\Phi_\\mu(s):=\\max_{u\\in\\Delta_m}\\Bigl\\{\\sum_{j=1}^m u^{(j)}s^{(j)}-\\mu\\sum_{j=1}^m u^{(j)}\\ln u^{(j)}\\Bigr\\}.\n\\tag{4.13}\n\\end{equation}\nThen the maximizer is the vector $u_\\mu(s)\\in\\Delta_m$ with entries\n\\begin{equation}\\label{eq:4.14}\nu_\\mu^{(j)}(s)=\\frac{e^{s^{(j)}/\\mu}}{\\sum_{l=1}^m e^{s^{(l)}/\\mu}},\\qquad j=1,\\dots,m,\n\\tag{4.14}\n\\end{equation}\nand the optimal value is\n\\begin{equation}\\label{eq:auto_Lemma_4_content_1}\n\\Phi_\\mu(s)=\\mu\\ln\\Bigl(\\sum_{j=1}^m e^{s^{(j)}/\\mu}\\Bigr).\n\\end{equation}\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\\label{proof:lem:4}\nThe objective in \\eqref{eq:4.13} is strictly concave in $u$ on the relative interior of $\\Delta_m$, hence the maximizer is characterized by the first-order optimality conditions with a Lagrange multiplier $\\lambda$ for the constraint $\\sum_j u^{(j)}=1$:\n\\begin{equation}\\label{eq:auto_Lemma_4_proof_1}\ns^{(j)}-\\mu\\bigl(1+\\ln u^{(j)}\\bigr)=\\lambda,\\qquad j=1,\\dots,m,\n\\qquad\n\\sum_{j=1}^m u^{(j)}=1.\n\\end{equation}\nSolving for $u^{(j)}$ gives $u^{(j)}=\\exp\\bigl((s^{(j)}-\\lambda-\\mu)/\\mu\\bigr)$.\nImposing $\\sum_j u^{(j)}=1$ yields\n\\begin{equation}\\label{eq:auto_Lemma_4_proof_2}\ne^{-(\\lambda+\\mu)/\\mu}\\sum_{j=1}^m e^{s^{(j)}/\\mu}=1,\n\\qquad\\text{so}\\qquad\n\\lambda=\\mu\\ln\\Bigl(\\sum_{j=1}^m e^{s^{(j)}/\\mu}\\Bigr)-\\mu.\n\\end{equation}\nSubstituting this back gives \\eqref{eq:4.14}.\nFinally, substituting $u_\\mu(s)$ into the objective of \\eqref{eq:4.13} yields $\\Phi_\\mu(s)=\\mu\\ln\\bigl(\\sum_j e^{s^{(j)}/\\mu}\\bigr).\n\\end{proof}",
+    "index": 43
+  },
+  {
+    "label": "Proposition 1.4.1.3",
+    "env": "prop",
+    "number_components": [
+      1,
+      4,
+      1,
+      3
+    ],
+    "extracted_labels": [
+      "prop:4.9",
+      "eq:matrixgame_smooth",
+      "proof:prop:4.9",
+      "eq:auto_Proposition_4_9_proof_1",
+      "eq:auto_Proposition_4_9_proof_2",
+      "eq:auto_Proposition_4_9_proof_3"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Minimax strategies for matrix games",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 4,
+      "subsection_number": 1
+    },
+    "content": "\\begin{proposition}\\label{prop:4.9}\nIn the matrix-game setting \\eqref{eq:4.10}, under the entropy-distance setup of Lemma~3 the smoothed objective \\eqref{eq:4.1} for the primal problem can be written explicitly as\n\\begin{equation}\\label{eq:matrixgame_smooth}\n\\bar f_\\mu(x)=\\langle c,x\\rangle_1+\\mu\\ln\\Bigl(\\frac1m\\sum_{j=1}^m \\exp\\Bigl(\\frac{\\langle a_j,x\\rangle_1+b^{(j)}}{\\mu}\\Bigr)\\Bigr),\n\\qquad \\min_{x\\in\\Delta_n}\\ \\bar f_\\mu(x).\n\\end{equation}\n\\end{proposition}\n(depend on: \"Lemma 1.4.1.1\", \"Lemma 1.4.1.2\", \"Definition 1.4.1\", \"Definition 1.4.1.2\")",
+    "dependencies": [
+      "Lemma 1.4.1.1",
+      "Lemma 1.4.1.2",
+      "Definition 1.4.1",
+      "Definition 1.4.1.2"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:4.9}\nBy definition of the entropy prox-function $d_2(u)=\\ln m+\\sum_j u^{(j)}\\ln u^{(j)}$, the smoothed objective for \\eqref{eq:4.10} is\n\\begin{equation}\\label{eq:auto_Proposition_4_9_proof_1}\n\\bar f_\\mu(x)=\\langle c,x\\rangle_1+\\max_{u\\in\\Delta_m}\\Bigl\\{\\sum_{j=1}^m u^{(j)}\\bigl(\\langle a_j,x\\rangle_1+b^{(j)}\\bigr)-\\mu\\sum_{j=1}^m u^{(j)}\\ln u^{(j)}-\\mu\\ln m\\Bigr\\}.\n\\end{equation}\nLet $s^{(j)}:=\\langle a_j,x\\rangle_1+b^{(j)}$. Lemma~4 gives\n\\begin{equation}\\label{eq:auto_Proposition_4_9_proof_2}\n\\max_{u\\in\\Delta_m}\\Bigl\\{\\sum_{j=1}^m u^{(j)}s^{(j)}-\\mu\\sum_{j=1}^m u^{(j)}\\ln u^{(j)}\\Bigr\\}\n=\\mu\\ln\\Bigl(\\sum_{j=1}^m e^{s^{(j)}/\\mu}\\Bigr).\n\\end{equation}\nTherefore,\n\\begin{equation}\\label{eq:auto_Proposition_4_9_proof_3}\n\\bar f_\\mu(x)=\\langle c,x\\rangle_1+\\mu\\ln\\Bigl(\\sum_{j=1}^m e^{(\\langle a_j,x\\rangle_1+b^{(j)})/\\mu}\\Bigr)-\\mu\\ln m\n=\\langle c,x\\rangle_1+\\mu\\ln\\Bigl(\\frac1m\\sum_{j=1}^m e^{(\\langle a_j,x\\rangle_1+b^{(j)})/\\mu}\\Bigr),\n\\end{equation}\nwhich is \\eqref{eq:matrixgame_smooth}.\n\\end{proof}",
+    "index": 44
+  },
+  {
+    "label": "Definition 1.4.2.1",
+    "env": "def",
+    "number_components": [
+      1,
+      4,
+      2,
+      1
+    ],
+    "extracted_labels": [
+      "def:4.10",
+      "eq:4.15"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuous location problem",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 4,
+      "subsection_number": 2
+    },
+    "content": "\\begin{definition}\\label{def:4.10}\nLet $p\\ge 1$ and let $m_j>0$ be weights. Given locations $c_j\\in\\mathbb{R}^n$ for $j=1,\\dots,p$ and a radius $\\bar r>0$, consider the continuous location problem\n\\begin{equation}\\label{eq:4.15}\nf^\\ast := \\min_{x}\\Bigl\\{ f(x):=\\sum_{j=1}^p m_j\\|x-c_j\\|_1 \\ :\\ \\|x\\|_1\\le \\bar r \\Bigr\\}.\n\\tag{4.15}\n\\end{equation}\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 45
+  },
+  {
+    "label": "Proposition 1.4.2.1",
+    "env": "prop",
+    "number_components": [
+      1,
+      4,
+      2,
+      1
+    ],
+    "extracted_labels": [
+      "prop:4.11",
+      "eq:auto_Proposition_4_11_content_1",
+      "eq:auto_Proposition_4_11_content_2",
+      "eq:auto_Proposition_4_11_content_3",
+      "eq:auto_Proposition_4_11_content_4",
+      "eq:auto_Proposition_4_11_content_5",
+      "eq:4.16",
+      "proof:prop:4.11",
+      "eq:auto_Proposition_4_11_proof_1",
+      "eq:auto_Proposition_4_11_proof_2"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuous location problem",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 4,
+      "subsection_number": 2
+    },
+    "content": "\\begin{proposition}\\label{prop:4.11}\nIn the setting of Definition 4.10, choose $\\|\\cdot\\|_1$ to be the Euclidean norm on $\\mathbb{R}^n$ and take\n\\begin{equation}\\label{eq:auto_Proposition_4_11_content_1}\nd_1(x)=\\frac12\\|x\\|_1^2 \\quad\\text{on}\\quad Q_1:=\\{x:\\|x\\|_1\\le \\bar r\\}.\n\\end{equation}\nThen $\\sigma_1=1$ and\n\\begin{equation}\\label{eq:auto_Proposition_4_11_content_2}\nD_1=\\max_{x\\in Q_1} d_1(x)=\\frac12\\bar r^2.\n\\end{equation}\nLet $E_2=(E_1^\\ast)^p$ and\n\\begin{equation}\\label{eq:auto_Proposition_4_11_content_3}\nQ_2=\\{u=(u_1,\\dots,u_p)\\in E_2:\\ \\|u_j\\|_{1,*}\\le 1,\\ j=1,\\dots,p\\}.\n\\end{equation}\nChoose\n\\begin{equation}\\label{eq:auto_Proposition_4_11_content_4}\n\\|u\\|_2:=\\Bigl(\\sum_{j=1}^p m_j\\|u_j\\|_{1,*}^2\\Bigr)^{1/2},\n\\qquad\nd_2(u):=\\frac12\\|u\\|_2^2.\n\\end{equation}\nThen $\\sigma_2=1$ and, with $P:=\\sum_{j=1}^p m_j$,\n\\begin{equation}\\label{eq:auto_Proposition_4_11_content_5}\nD_2=\\max_{u\\in Q_2} d_2(u)=\\frac12P,\n\\qquad\n\\|A\\|_{1,2}=P^{1/2}.\n\\end{equation}\nSince $\\hat f\\equiv 0$ in \\eqref{eq:4.1}, we have $M=0$, and the estimate \\eqref{eq:4.3} yields the rate\n\\begin{equation}\\label{eq:4.16}\nf(\\hat x)-f^\\ast\\le \\frac{2P\\bar r}{N+1}.\n\\tag{4.16}\n\\end{equation}\nIn particular, for the average objective $\\tilde f(x):=\\frac{1}{P}f(x)$ we have $\\tilde f(\\hat x)-\\tilde f^\\ast\\le \\frac{2\\bar r}{N+1}$.\n\\end{proposition}\n(depend on: \"Definition 1.4.2.1\", \"Theorem 1.4.1\", \"Definition 1.4.1\")",
+    "dependencies": [
+      "Definition 1.4.2.1",
+      "Theorem 1.4.1",
+      "Definition 1.4.1"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:4.11}\nWith $d_1(x)=\\frac12\\|x\\|_1^2$ and Euclidean norm, $d_1$ is $1$-strongly convex, hence $\\sigma_1=1$, and the maximum of $d_1$ over the ball $\\|x\\|_1\\le \\bar r$ is $\\frac12\\bar r^2$, giving $D_1=\\frac12\\bar r^2$.\n\nFor $d_2(u)=\\frac12\\|u\\|_2^2$ with $\\|u\\|_2^2=\\sum_j m_j\\|u_j\\|_{1,*}^2$, the function $d_2$ is quadratic and therefore $1$-strongly convex with respect to $\\|\\cdot\\|_2$, so $\\sigma_2=1$. Over $Q_2$ we have $\\|u_j\\|_{1,*}\\le 1$, hence $\\|u\\|_2^2\\le \\sum_j m_j=P$, so $D_2=\\frac12P$.\n\nThe operator in the max-representation of $f(x)$ is $A x=(m_1 x,\\dots,m_p x)$ acting into $E_2$. Thus\n\\begin{equation}\\label{eq:auto_Proposition_4_11_proof_1}\n\\|A\\|_{1,2}\n=\\max_{\\|x\\|_1=1}\\|Ax\\|_{2,*}\n=\\max_{\\|x\\|_1=1}\\Bigl(\\sum_{j=1}^p m_j\\|x\\|_1^2\\Bigr)^{1/2}\n=\\sqrt{\\sum_{j=1}^p m_j}=P^{1/2}.\n\\end{equation}\nFinally, substituting $M=0$, $\\sigma_1=\\sigma_2=1$, $D_1=\\frac12\\bar r^2$, $D_2=\\frac12P$, and $\\|A\\|_{1,2}=P^{1/2}$ into \\eqref{eq:4.3} gives\n\\begin{equation}\\label{eq:auto_Proposition_4_11_proof_2}\nf(\\hat x)-f^\\ast\\le \\frac{4P^{1/2}}{N+1}\\sqrt{\\frac{(\\bar r^2/2)(P/2)}{1\\cdot 1}}\n=\\frac{2P\\bar r}{N+1},\n\\end{equation}\nwhich is \\eqref{eq:4.16}. Dividing by $P$ yields the bound for $\\tilde f$.\n\\end{proof}",
+    "index": 46
+  },
+  {
+    "label": "Proposition 1.4.2.2",
+    "env": "prop",
+    "number_components": [
+      1,
+      4,
+      2,
+      2
+    ],
+    "extracted_labels": [
+      "prop:4.12",
+      "eq:auto_Proposition_4_12_content_1",
+      "eq:4.17",
+      "proof:prop:4.12",
+      "eq:auto_Proposition_4_12_proof_1",
+      "eq:auto_Proposition_4_12_proof_2"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuous location problem",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 4,
+      "subsection_number": 2
+    },
+    "content": "\\begin{proposition}\\label{prop:4.12}\nIn the setting of Proposition~4.11, the smoothed function $f_\\mu$ admits the explicit representation\n\\begin{equation}\\label{eq:auto_Proposition_4_12_content_1}\nf_\\mu(x)=\\sum_{j=1}^p m_j\\,\\psi_\\mu(\\|x-c_j\\|_1),\n\\end{equation}\nwhere $\\psi_\\mu:[0,\\infty)\\to\\mathbb{R}$ is given by\n\\begin{equation}\\label{eq:4.17}\n\\psi_\\mu(\\tau):=\\max_{\\gamma\\in[0,1]}\\Bigl\\{\\gamma\\tau-\\frac12\\mu\\gamma^2\\Bigr\\}\n=\n\\begin{cases}\n\\frac{\\tau^2}{2\\mu}, & 0\\le \\tau\\le \\mu,\\\\[4pt]\n\\tau-\\frac{\\mu}{2}, & \\mu\\le \\tau.\n\\end{cases}\n\\tag{4.17}\n\\end{equation}\n\\end{proposition}\n(depend on: \"Proposition 1.4.2.1\", \"Definition 1.2.5\")",
+    "dependencies": [
+      "Proposition 1.4.2.1",
+      "Definition 1.2.5"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:4.12}\nFor fixed $x$, the maximization defining $f_\\mu(x)$ separates across $j=1,\\dots,p$ because $d_2(u)=\\frac12\\sum_j m_j\\|u_j\\|_{1,*}^2$ and $\\langle Ax,u\\rangle_2-\\hat\\phi(u)$ becomes $\\sum_j m_j\\langle u_j,x-c_j\\rangle_1$.\nThus,\n\\begin{equation}\\label{eq:auto_Proposition_4_12_proof_1}\nf_\\mu(x)=\\sum_{j=1}^p m_j \\max_{\\|u_j\\|_{1,*}\\le 1}\\Bigl\\{\\langle u_j,x-c_j\\rangle_1-\\frac{\\mu}{2}\\|u_j\\|_{1,*}^2\\Bigr\\}.\n\\end{equation}\nFor each $j$, let $\\tau_j:=\\|x-c_j\\|_1$. Writing $u_j=\\gamma v_j$ with $\\gamma\\in[0,1]$ and $\\|v_j\\|_{1,*}=1$, we have $\\max_{\\|v_j\\|_{1,*}=1}\\langle v_j,x-c_j\\rangle_1=\\tau_j$ by definition of the dual norm.\nTherefore,\n\\begin{equation}\\label{eq:auto_Proposition_4_12_proof_2}\n\\max_{\\|u_j\\|_{1,*}\\le 1}\\Bigl\\{\\langle u_j,x-c_j\\rangle_1-\\frac{\\mu}{2}\\|u_j\\|_{1,*}^2\\Bigr\\}\n=\\max_{\\gamma\\in[0,1]}\\Bigl\\{\\gamma\\tau_j-\\frac{\\mu}{2}\\gamma^2\\Bigr\\}\n=\\psi_\\mu(\\tau_j).\n\\end{equation}\nThe closed-form expression \\eqref{eq:4.17} follows by maximizing a concave quadratic over $\\gamma\\in[0,1]$: the unconstrained maximizer is $\\gamma^\\ast=\\tau/\\mu$, which lies in $[0,1]$ precisely when $\\tau\\le \\mu$.\n\\end{proof}",
+    "index": 47
+  },
+  {
+    "label": "Definition 1.4.3.1",
+    "env": "def",
+    "number_components": [
+      1,
+      4,
+      3,
+      1
+    ],
+    "extracted_labels": [
+      "def:4.13",
+      "eq:auto_Definition_4_13_content_1",
+      "eq:auto_Definition_4_13_content_2",
+      "eq:4.18"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Variational inequalities with linear operator",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 4,
+      "subsection_number": 3
+    },
+    "content": "\\begin{definition}\\label{def:4.13}\nLet $E$ be a finite-dimensional normed space with norm $\\|\\cdot\\|_1$ and dual norm $\\|\\cdot\\|_{1,*}$ on $E^\\ast$.\nLet $Q\\subseteq E$ be a bounded closed convex set.\nLet $B:E\\to E^\\ast$ be an affine operator of the form\n\\begin{equation}\\label{eq:auto_Definition_4_13_content_1}\nB(w)=\\mathcal{B}w+b,\n\\end{equation}\nwhere $\\mathcal{B}:E\\to E^\\ast$ is linear and $b\\in E^\\ast$.\nAssume that $\\mathcal{B}$ is monotone:\n\\begin{equation}\\label{eq:auto_Definition_4_13_content_2}\n\\langle \\mathcal{B}h,h\\rangle_1\\ge 0\\qquad \\forall h\\in E.\n\\end{equation}\nThe associated variational inequality problem is\n\\begin{equation}\\label{eq:4.18}\n\\text{find } w^\\ast\\in Q \\text{ such that }\\ \\langle B(w^\\ast),w-w^\\ast\\rangle_1\\ge 0\\quad \\forall w\\in Q.\n\\tag{4.18}\n\\end{equation}\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 48
+  },
+  {
+    "label": "Definition 1.4.3.2",
+    "env": "def",
+    "number_components": [
+      1,
+      4,
+      3,
+      2
+    ],
+    "extracted_labels": [
+      "def:4.14",
+      "eq:auto_Definition_4_14_content_1",
+      "eq:4.19"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Variational inequalities with linear operator",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 4,
+      "subsection_number": 3
+    },
+    "content": "\\begin{definition}\\label{def:4.14}\nDefine the gap function\n\\begin{equation}\\label{eq:auto_Definition_4_14_content_1}\n\\psi(w):=\\max_{v\\in Q}\\langle B(v),w-v\\rangle_1.\n\\end{equation}\nConsider the convex optimization problem\n\\begin{equation}\\label{eq:4.19}\n\\min_{w\\in Q}\\ \\psi(w).\n\\tag{4.19}\n\\end{equation}\n\\end{definition}\n(depend on: \"Definition 1.4.3.1\")",
+    "dependencies": [
+      "Definition 1.4.3.1"
+    ],
+    "proof": "",
+    "index": 49
+  },
+  {
+    "label": "Lemma 1.4.3.1",
+    "env": "lem",
+    "number_components": [
+      1,
+      4,
+      3,
+      1
+    ],
+    "extracted_labels": [
+      "lem:5",
+      "proof:lem:5",
+      "eq:auto_Lemma_5_proof_1",
+      "eq:auto_Lemma_5_proof_2",
+      "eq:auto_Lemma_5_proof_3"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Variational inequalities with linear operator",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 4,
+      "subsection_number": 3
+    },
+    "content": "\\begin{lemma}\\label{lem:5}\nA point $w^\\ast$ is a solution of the optimization problem \\eqref{eq:4.19} if and only if it solves the variational inequality \\eqref{eq:4.18}.\nMoreover, for every solution $w^\\ast$ of \\eqref{eq:4.18} we have $\\psi(w^\\ast)=0$.\n\\end{lemma}\n(depend on: \"Definition 1.4.3.1\", \"Definition 1.4.3.2\")",
+    "dependencies": [
+      "Definition 1.4.3.1",
+      "Definition 1.4.3.2"
+    ],
+    "proof": "\\begin{proof}\\label{proof:lem:5}\nFirst, note that $\\psi(w)\\ge 0$ for all $w\\in Q$ because the maximization defining $\\psi(w)$ includes $v=w$, which yields value $0$.\n\nAssume $w^\\ast$ solves \\eqref{eq:4.18}. For any $v\\in Q$, the monotonicity of $\\mathcal{B}$ implies\n\\begin{equation}\\label{eq:auto_Lemma_5_proof_1}\n\\langle B(v)-B(w^\\ast),v-w^\\ast\\rangle_1=\\langle \\mathcal{B}(v-w^\\ast),v-w^\\ast\\rangle_1\\ge 0,\n\\end{equation}\nhence $\\langle B(v),v-w^\\ast\\rangle_1\\ge \\langle B(w^\\ast),v-w^\\ast\\rangle_1$.\nBy \\eqref{eq:4.18}, $\\langle B(w^\\ast),v-w^\\ast\\rangle_1\\ge 0$, so $\\langle B(v),v-w^\\ast\\rangle_1\\ge 0$, equivalently $\\langle B(v),w^\\ast-v\\rangle_1\\le 0$.\nTaking the maximum over $v\\in Q$ gives $\\psi(w^\\ast)\\le 0$. Since $\\psi(w^\\ast)\\ge 0$, we conclude $\\psi(w^\\ast)=0$, so $w^\\ast$ minimizes $\\psi$ in \\eqref{eq:4.19}.\n\nConversely, suppose $w^\\ast$ minimizes \\eqref{eq:4.19}. Then $\\psi(w^\\ast)=\\min_{w\\in Q}\\psi(w)\\ge 0$ and, by choosing $v=w^\\ast$ in the definition of $\\psi(w^\\ast)$, we also have $\\psi(w^\\ast)\\ge 0$, hence $\\psi(w^\\ast)=0$.\nIn particular, for all $v\\in Q$,\n\\begin{equation}\\label{eq:auto_Lemma_5_proof_2}\n\\langle B(v),w^\\ast-v\\rangle_1\\le 0\n\\qquad\\Longleftrightarrow\\qquad\n\\langle B(v),v-w^\\ast\\rangle_1\\ge 0.\n\\end{equation}\nIf $w^\\ast$ did not satisfy \\eqref{eq:4.18}, there would exist $v_1\\in Q$ such that $\\langle B(w^\\ast),v_1-w^\\ast\\rangle_1<0$.\nFor $\\alpha\\in[0,1]$, define $v_\\alpha:=w^\\ast+\\alpha(v_1-w^\\ast)\\in Q$ by convexity of $Q$.\nThen\n\\begin{equation}\\label{eq:auto_Lemma_5_proof_3}\n0\\le \\langle B(v_\\alpha),v_\\alpha-w^\\ast\\rangle_1\n=\\alpha\\langle B(w^\\ast),v_1-w^\\ast\\rangle_1+\\alpha^2\\langle \\mathcal{B}(v_1-w^\\ast),v_1-w^\\ast\\rangle_1.\n\\end{equation}\nThe second term is nonnegative by monotonicity of $\\mathcal{B}$, while the first term is strictly negative for $\\alpha>0$.\nFor $\\alpha$ sufficiently small, the right-hand side becomes negative, contradicting the inequality. Therefore $w^\\ast$ must satisfy \\eqref{eq:4.18}.\n\\end{proof}",
+    "index": 50
+  },
+  {
+    "label": "Proposition 1.4.3.1",
+    "env": "prop",
+    "number_components": [
+      1,
+      4,
+      3,
+      1
+    ],
+    "extracted_labels": [
+      "prop:4.15",
+      "eq:auto_Proposition_4_15_content_1",
+      "eq:auto_Proposition_4_15_content_2",
+      "eq:4.20",
+      "proof:prop:4.15",
+      "eq:auto_Proposition_4_15_proof_1"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Variational inequalities with linear operator",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 4,
+      "subsection_number": 3
+    },
+    "content": "\\begin{proposition}\\label{prop:4.15}\nA primal max-structure representation of the objective $\\psi$ in \\eqref{eq:4.19} can be obtained by taking\n\\begin{equation}\\label{eq:auto_Proposition_4_15_content_1}\nE_1=E_2=E,\\quad Q_1=Q_2=Q,\\quad d_1=d_2=d,\\quad A=\\mathcal{B},\n\\end{equation}\n\\begin{equation}\\label{eq:auto_Proposition_4_15_content_2}\n\\hat f(x)=\\langle b,x\\rangle_1,\n\\qquad\n\\hat\\phi(u)=\\langle b,u\\rangle_1+\\langle \\mathcal{B}u,u\\rangle_1.\n\\end{equation}\nThen the smoothed oracle computation for $f_\\mu(x)$ reduces to solving\n\\begin{equation}\\label{eq:4.20}\n\\max_{u\\in Q}\\ \\bigl\\{\\langle \\mathcal{B}x,u\\rangle_1-\\mu d(u)-\\langle b,u\\rangle_1+\\langle \\mathcal{B}u,u\\rangle_1\\bigr\\}.\n\\tag{4.20}\n\\end{equation}\n\\end{proposition}\n(depend on: \"Definition 1.4.3.2\", \"Definition 1.2.2\", \"Definition 1.2.5\")",
+    "dependencies": [
+      "Definition 1.4.3.2",
+      "Definition 1.2.2",
+      "Definition 1.2.5"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:4.15}\nBy definition,\n\\begin{equation}\\label{eq:auto_Proposition_4_15_proof_1}\n\\psi(w)=\\max_{v\\in Q}\\langle B(v),w-v\\rangle_1\n=\\max_{v\\in Q}\\bigl[\\langle \\mathcal{B}v+b,w\\rangle_1-\\langle \\mathcal{B}v+b,v\\rangle_1\\bigr]\n=\\langle b,w\\rangle_1+\\max_{v\\in Q}\\bigl[\\langle \\mathcal{B}w,v\\rangle_1-\\langle b,v\\rangle_1+\\langle \\mathcal{B}v,v\\rangle_1\\bigr].\n\\end{equation}\nThis is of the form \\eqref{eq:2.2} with $\\hat f(w)=\\langle b,w\\rangle_1$, $A=\\mathcal{B}$ and $\\hat\\phi(v)=\\langle b,v\\rangle_1+\\langle \\mathcal{B}v,v\\rangle_1$.\nApplying the smoothing definition \\eqref{eq:2.5} to this max-term yields exactly the maximization problem \\eqref{eq:4.20}.\n\\end{proof}",
+    "index": 51
+  },
+  {
+    "label": "Proposition 1.4.3.2",
+    "env": "prop",
+    "number_components": [
+      1,
+      4,
+      3,
+      2
+    ],
+    "extracted_labels": [
+      "prop:4.16",
+      "eq:4.21",
+      "proof:prop:4.16",
+      "eq:auto_Proposition_4_16_proof_1"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Variational inequalities with linear operator",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 4,
+      "subsection_number": 3
+    },
+    "content": "\\begin{proposition}\\label{prop:4.16}\nAssume that $\\hat f(x)=\\langle b,x\\rangle_1$ in Proposition~4.15 so that $M=0$. Then Theorem~3 yields the following estimate for the iteration complexity of solving the variational inequality \\eqref{eq:4.18} to accuracy $\\varepsilon>0$:\n\\begin{equation}\\label{eq:4.21}\nN\\ \\le\\ \\frac{4D_1\\|\\mathcal{B}\\|_{1,2}}{\\sigma_1\\,\\varepsilon}.\n\\tag{4.21}\n\\end{equation}\n\\end{proposition}\n(depend on: \"Proposition 1.4.3.1\", \"Theorem 1.4.1\", \"Definition 1.4.2\", \"Definition 1.4.3.1\")",
+    "dependencies": [
+      "Proposition 1.4.3.1",
+      "Theorem 1.4.1",
+      "Definition 1.4.2",
+      "Definition 1.4.3.1"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:4.16}\nIn this setting, the smooth part $\\hat f$ is linear, hence $M=0$.\nApplying \\eqref{eq:4.4} with $A=\\mathcal{B}$, $M=0$, and $D_2=D_1$, $\\sigma_2=\\sigma_1$ (because $Q_1=Q_2=Q$ and $d_1=d_2=d$) gives\n\\begin{equation}\\label{eq:auto_Proposition_4_16_proof_1}\nN\\le \\frac{4\\|\\mathcal{B}\\|_{1,2}}{\\varepsilon}\\sqrt{\\frac{D_1D_2}{\\sigma_1\\sigma_2}}\n=\\frac{4\\|\\mathcal{B}\\|_{1,2}}{\\varepsilon}\\cdot\\frac{D_1}{\\sigma_1},\n\\end{equation}\nwhich is \\eqref{eq:4.21}.\n\\end{proof}",
+    "index": 52
+  },
+  {
+    "label": "Proposition 1.4.3.3",
+    "env": "prop",
+    "number_components": [
+      1,
+      4,
+      3,
+      3
+    ],
+    "extracted_labels": [
+      "prop:4.17",
+      "eq:auto_Proposition_4_17_content_1",
+      "eq:auto_Proposition_4_17_content_2",
+      "eq:auto_Proposition_4_17_content_3",
+      "eq:auto_Proposition_4_17_content_4",
+      "proof:prop:4.17"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Variational inequalities with linear operator",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 4,
+      "subsection_number": 3
+    },
+    "content": "\\begin{proposition}\\label{prop:4.17}\nA dual max-structure representation of \\eqref{eq:4.19} is obtained from the identity\n\\begin{equation}\\label{eq:auto_Proposition_4_17_content_1}\n\\min_{w\\in Q}\\max_{v\\in Q}\\langle B(v),w-v\\rangle_1\n=\\max_{v\\in Q}\\min_{w\\in Q}\\langle B(v),w-v\\rangle_1\n=-\\min_{v\\in Q}\\max_{w\\in Q}\\langle B(v),v-w\\rangle_1.\n\\end{equation}\nEquivalently, we may take $E_1=E_2=E$, $Q_1=Q_2=Q$, $d_1=d_2=d$, $A=\\mathcal{B}$ and\n\\begin{equation}\\label{eq:auto_Proposition_4_17_content_2}\n\\hat f(x)=\\langle b,x\\rangle_1+\\langle \\mathcal{B}x,x\\rangle_1,\n\\qquad\n\\hat\\phi(u)=\\langle b,u\\rangle_1.\n\\end{equation}\nThen the oracle computation becomes\n\\begin{equation}\\label{eq:auto_Proposition_4_17_content_3}\nf_\\mu(x)=\\max_{u\\in Q}\\bigl\\{\\langle \\mathcal{B}x,u\\rangle_1-\\mu d(u)-\\langle b,u\\rangle_1\\bigr\\}.\n\\end{equation}\nIn this dual representation the smoothness constant becomes $M=\\|\\mathcal{B}\\|_{1,2}$, and the complexity bound corresponding to \\eqref{eq:4.21} increases to\n\\begin{equation}\\label{eq:auto_Proposition_4_17_content_4}\nN\\ \\le\\ \\frac{4D_1\\|\\mathcal{B}\\|_{1,2}}{\\sigma_1\\,\\varepsilon}\n+\\sqrt{\\frac{D_1\\|\\mathcal{B}\\|_{1,2}}{\\sigma_1\\,\\varepsilon}}.\n\\end{equation}\n\\end{proposition}\n(depend on: \"Definition 1.4.3.2\", \"Theorem 1.4.1\", \"Definition 1.2.5\", \"Proposition 1.4.3.2\")",
+    "dependencies": [
+      "Definition 1.4.3.2",
+      "Theorem 1.4.1",
+      "Definition 1.2.5",
+      "Proposition 1.4.3.2"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:4.17}\nThe minimax identity follows from the bilinearity of $\\langle B(v),w-v\\rangle_1$ in the variables $(w,v)$ and convexity/compactness of $Q$.\nExpanding $\\langle B(v),w-v\\rangle_1=\\langle \\mathcal{B}v+b,w\\rangle_1-\\langle \\mathcal{B}v+b,v\\rangle_1$ shows that the term $\\langle \\mathcal{B}x,x\\rangle_1$ becomes part of the smooth component $\\hat f$ in the dual variant, while the max-part uses $\\hat\\phi(u)=\\langle b,u\\rangle_1$.\nThe oracle formula for $f_\\mu$ follows by applying the smoothing definition \\eqref{eq:2.5}.\n\nSince $\\hat f(x)=\\langle b,x\\rangle_1+\\langle \\mathcal{B}x,x\\rangle_1$ has gradient Lipschitz constant $\\|\\mathcal{B}\\|_{1,2}$, we have $M=\\|\\mathcal{B}\\|_{1,2}$ in Theorem~3.\nSubstituting this into \\eqref{eq:4.4} yields the stated bound with an additional $\\sqrt{MD_1/(\\sigma_1\\varepsilon)}$ term compared to \\eqref{eq:4.21}.\n\\end{proof}",
+    "index": 53
+  },
+  {
+    "label": "Definition 1.4.4.1",
+    "env": "def",
+    "number_components": [
+      1,
+      4,
+      4,
+      1
+    ],
+    "extracted_labels": [
+      "def:4.18",
+      "eq:4.22"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Piece-wise linear optimization",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 4,
+      "subsection_number": 4
+    },
+    "content": "\\begin{definition}\\label{def:4.18}\nLet $a_j\\in E_1^\\ast$ and $b^{(j)}\\in\\mathbb{R}$ for $j=1,\\dots,m$. Consider the piecewise linear minimization problem\n\\begin{equation}\\label{eq:4.22}\n\\min_{x\\in Q_1}\\ f(x),\n\\qquad\nf(x):=\\max_{1\\le j\\le m}\\bigl|\\langle a_j,x\\rangle_1-b^{(j)}\\bigr|.\n\\tag{4.22}\n\\end{equation}\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 54
+  },
+  {
+    "label": "Proposition 1.4.4.1",
+    "env": "prop",
+    "number_components": [
+      1,
+      4,
+      4,
+      1
+    ],
+    "extracted_labels": [
+      "prop:4.19",
+      "eq:auto_Proposition_4_19_content_1",
+      "eq:auto_Proposition_4_19_content_2",
+      "eq:auto_Proposition_4_19_content_3",
+      "eq:auto_Proposition_4_19_content_4",
+      "eq:auto_Proposition_4_19_content_5",
+      "eq:auto_Proposition_4_19_content_6",
+      "eq:4.22_smooth",
+      "proof:prop:4.19",
+      "eq:auto_Proposition_4_19_proof_1",
+      "eq:auto_Proposition_4_19_proof_2",
+      "eq:auto_Proposition_4_19_proof_3",
+      "eq:auto_Proposition_4_19_proof_4"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Piece-wise linear optimization",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 4,
+      "subsection_number": 4
+    },
+    "content": "\\begin{proposition}\\label{prop:4.19}\nIn the setting of Definition 4.18, choose the Euclidean norm on $E_1=\\mathbb{R}^n$ and the quadratic prox-function\n\\begin{equation}\\label{eq:auto_Proposition_4_19_content_1}\n\\|x\\|_1:=\\Bigl(\\sum_{i=1}^n (x^{(i)})^2\\Bigr)^{1/2},\n\\qquad\nd_1(x):=\\frac12\\|x\\|_1^2,\n\\qquad\n\\bar r:=\\max_{x\\in Q_1}\\|x\\|_1.\n\\end{equation}\nIntroduce $E_2=\\mathbb{R}^{2m}$, $\\Delta_{2m}\\subset\\mathbb{R}^{2m}$, and define\n\\begin{equation}\\label{eq:auto_Proposition_4_19_content_2}\n\\hat A:=\\begin{pmatrix}A\\\\-A\\end{pmatrix},\n\\qquad\n\\hat b:=\\begin{pmatrix}b\\\\-b\\end{pmatrix},\n\\end{equation}\nwhere $A$ is the matrix with rows $a_j$ and $b\\in\\mathbb{R}^m$ collects the scalars $b^{(j)}$.\nThen\n\\begin{equation}\\label{eq:auto_Proposition_4_19_content_3}\nf(x)=\\max_{u\\in\\Delta_{2m}}\\bigl\\{\\langle \\hat A x,u\\rangle_2-\\langle \\hat b,u\\rangle_2\\bigr\\}.\n\\end{equation}\nWith the entropy prox-function on $\\Delta_{2m}$,\n\\begin{equation}\\label{eq:auto_Proposition_4_19_content_4}\nd_2(u):=\\ln(2m)+\\sum_{j=1}^{2m} u^{(j)}\\ln u^{(j)},\n\\end{equation}\nwe have $\\sigma_1=\\sigma_2=1$, $D_1=\\frac12\\bar r^2$, $D_2=\\ln(2m)$ and\n\\begin{equation}\\label{eq:auto_Proposition_4_19_content_5}\n\\|\\hat A\\|_{1,2}=\\max_{1\\le j\\le m}\\|a_j\\|_{1,*}.\n\\end{equation}\nTherefore, the complexity estimate \\eqref{eq:4.4} yields that \\eqref{eq:4.22} can be solved to accuracy $\\varepsilon$ in at most\n\\begin{equation}\\label{eq:auto_Proposition_4_19_content_6}\nN \\le 2\\sqrt{2}\\,\\bar r\\Bigl(\\max_{1\\le j\\le m}\\|a_j\\|_{1,*}\\Bigr)\\sqrt{\\ln(2m)}\\cdot\\frac{1}{\\varepsilon}\n\\end{equation}\niterations of Algorithm~3.11.\nMoreover, the smooth approximation of the objective in \\eqref{eq:4.22} takes the explicit form\n\\begin{equation}\\label{eq:4.22_smooth}\n\\bar f_\\mu(x)=\\mu\\ln\\Bigl(\\frac1m\\sum_{j=1}^m \\xi\\Bigl(\\frac{1}{\\mu}\\bigl[\\langle a_j,x\\rangle_1+b^{(j)}\\bigr]\\Bigr)\\Bigr),\n\\qquad\n\\xi(\\tau):=\\frac12\\bigl(e^\\tau+e^{-\\tau}\\bigr).\n\\end{equation}\n\\end{proposition}\n(depend on: \"Definition 1.4.4.1\", \"Lemma 1.4.1.1\", \"Lemma 1.4.1.2\", \"Theorem 1.4.1\", \"Algorithm 3.11\")",
+    "dependencies": [
+      "Definition 1.4.4.1",
+      "Lemma 1.4.1.1",
+      "Lemma 1.4.1.2",
+      "Theorem 1.4.1",
+      "Algorithm 3.11"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:4.19}\nThe identity\n\\begin{equation}\\label{eq:auto_Proposition_4_19_proof_1}\n\\max_{1\\le j\\le m}|\\langle a_j,x\\rangle_1-b^{(j)}|\n=\\max\\Bigl\\{\\max_{1\\le j\\le m}(\\langle a_j,x\\rangle_1-b^{(j)}),\\ \\max_{1\\le j\\le m}(-\\langle a_j,x\\rangle_1+b^{(j)})\\Bigr\\}\n\\end{equation}\ncan be written as a single maximum over $2m$ affine functions, which yields\n\\begin{equation}\\label{eq:auto_Proposition_4_19_proof_2}\nf(x)=\\max_{u\\in\\Delta_{2m}}\\{\\langle \\hat A x,u\\rangle_2-\\langle \\hat b,u\\rangle_2\\}.\n\\end{equation}\nWith Euclidean norm and quadratic prox $d_1$, we have $\\sigma_1=1$ and $D_1=\\frac12\\bar r^2$.\nWith the entropy prox on $\\Delta_{2m}$, Lemma~3 implies $\\sigma_2=1$ and $D_2=\\ln(2m)$.\n\nTo compute $\\|\\hat A\\|_{1,2}$, note that for $\\|x\\|_1=1$,\n\\begin{equation}\\label{eq:auto_Proposition_4_19_proof_3}\n\\|\\hat A x\\|_\\infty=\\max\\Bigl\\{\\max_{1\\le j\\le m}|\\langle a_j,x\\rangle_1|,\\ \\max_{1\\le j\\le m}|\\langle -a_j,x\\rangle_1|\\Bigr\\}\n=\\max_{1\\le j\\le m}|\\langle a_j,x\\rangle_1|.\n\\end{equation}\nMaximizing over $\\|x\\|_1=1$ gives $\\|\\hat A\\|_{1,2}=\\max_{1\\le j\\le m}\\|a_j\\|_{1,*}$.\n\nSince the smooth part is absent here ($M=0$), applying \\eqref{eq:4.4} yields\n\\begin{equation}\\label{eq:auto_Proposition_4_19_proof_4}\nN\\le \\frac{4\\|\\hat A\\|_{1,2}}{\\varepsilon}\\sqrt{\\frac{D_1D_2}{\\sigma_1\\sigma_2}}\n=\\frac{4}{\\varepsilon}\\Bigl(\\max_{1\\le j\\le m}\\|a_j\\|_{1,*}\\Bigr)\\sqrt{\\frac{(\\bar r^2/2)\\ln(2m)}{1}}\n=2\\sqrt{2}\\,\\bar r\\Bigl(\\max_{1\\le j\\le m}\\|a_j\\|_{1,*}\\Bigr)\\sqrt{\\ln(2m)}\\cdot\\frac{1}{\\varepsilon}.\n\\end{equation}\n\nFinally, the formula \\eqref{eq:4.22_smooth} follows by applying Lemma~4 to the $2m$ affine pieces with the entropy prox-function, and rewriting the resulting log-sum-exp in terms of $\\xi(\\tau)=\\frac12(e^\\tau+e^{-\\tau})$.\n\\end{proof}",
+    "index": 55
+  },
+  {
+    "label": "Definition 1.4.4.2",
+    "env": "def",
+    "number_components": [
+      1,
+      4,
+      4,
+      2
+    ],
+    "extracted_labels": [
+      "def:4.20",
+      "eq:4.23"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Piece-wise linear optimization",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 4,
+      "subsection_number": 4
+    },
+    "content": "\\begin{definition}\\label{def:4.20}\nLet $a_j\\in E_1^\\ast$ and $b^{(j)}\\in\\mathbb{R}$ for $j=1,\\dots,m$. Consider the problem of minimizing the sum of absolute values\n\\begin{equation}\\label{eq:4.23}\n\\min_{x\\in Q_1}\\ f(x),\n\\qquad\nf(x):=\\sum_{j=1}^m\\bigl|\\langle a_j,x\\rangle_1-b^{(j)}\\bigr|.\n\\tag{4.23}\n\\end{equation}\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 56
+  },
+  {
+    "label": "Proposition 1.4.4.2",
+    "env": "prop",
+    "number_components": [
+      1,
+      4,
+      4,
+      2
+    ],
+    "extracted_labels": [
+      "prop:4.21",
+      "eq:auto_Proposition_4_21_content_1",
+      "eq:auto_Proposition_4_21_content_2",
+      "eq:auto_Proposition_4_21_content_3",
+      "eq:auto_Proposition_4_21_content_4",
+      "eq:auto_Proposition_4_21_content_5",
+      "proof:prop:4.21",
+      "eq:auto_Proposition_4_21_proof_1",
+      "eq:auto_Proposition_4_21_proof_2",
+      "eq:auto_Proposition_4_21_proof_3",
+      "eq:auto_Proposition_4_21_proof_4",
+      "eq:auto_Proposition_4_21_proof_5",
+      "eq:auto_Proposition_4_21_proof_6"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Piece-wise linear optimization",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 4,
+      "subsection_number": 4
+    },
+    "content": "\\begin{proposition}\\label{prop:4.21}\nIn the setting of Definition 4.20, let $A$ be the matrix with rows $a_j$ and choose\n\\begin{equation}\\label{eq:auto_Proposition_4_21_content_1}\nE_2=\\mathbb{R}^m,\n\\qquad\nQ_2=\\{u\\in\\mathbb{R}^m:\\ |u^{(j)}|\\le 1,\\ j=1,\\dots,m\\},\n\\end{equation}\n\\begin{equation}\\label{eq:auto_Proposition_4_21_content_2}\nd_2(u)=\\frac12\\|u\\|_2^2\n=\\frac12\\sum_{j=1}^m \\|a_j\\|_{1,*}\\,\\bigl(u^{(j)}\\bigr)^2.\n\\end{equation}\nThen the smooth approximation of $f$ can be written as\n\\begin{equation}\\label{eq:auto_Proposition_4_21_content_3}\nf_\\mu(x)=\\max_{u\\in Q_2}\\{\\langle Ax-b,u\\rangle_2-\\mu d_2(u)\\}\n=\\sum_{j=1}^m \\|a_j\\|_{1,*}\\,\\psi_\\mu\\Bigl(\\frac{|\\langle a_j,x\\rangle_1-b^{(j)}|}{\\|a_j\\|_{1,*}}\\Bigr),\n\\end{equation}\nwhere $\\psi_\\mu$ is the function in \\eqref{eq:4.17}.\nMoreover, with $D:=\\sum_{j=1}^m \\|a_j\\|_{1,*}$ we have $D_2=\\frac12 D$ and $\\sigma_2=1$, and the operator norm satisfies\n\\begin{equation}\\label{eq:auto_Proposition_4_21_content_4}\n\\|A\\|_{1,2}\\le D^{1/2}.\n\\end{equation}\nTherefore, in the case $M=0$ the complexity bound of Theorem~3 yields\n\\begin{equation}\\label{eq:auto_Proposition_4_21_content_5}\nN\\ \\le\\ \\frac{2}{\\varepsilon}\\sqrt{\\frac{2D_1}{\\sigma_1}}\\ \\sum_{j=1}^m \\|a_j\\|_{1,*}.\n\\end{equation}\n\\end{proposition}\n(depend on: \"Definition 1.4.4.2\", \"Proposition 1.4.2.2\", \"Theorem 1.4.1\", \"Definition 1.2.5\")",
+    "dependencies": [
+      "Definition 1.4.4.2",
+      "Proposition 1.4.2.2",
+      "Theorem 1.4.1",
+      "Definition 1.2.5"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:4.21}\nFor $x\\in Q_1$,\n\\begin{equation}\\label{eq:auto_Proposition_4_21_proof_1}\nf(x)=\\sum_{j=1}^m |\\langle a_j,x\\rangle_1-b^{(j)}|\n=\\max_{u\\in Q_2}\\ \\langle Ax-b,u\\rangle_2,\n\\end{equation}\nbecause the maximizer chooses $u^{(j)}=\\operatorname{sign}(\\langle a_j,x\\rangle_1-b^{(j)})$ with $|u^{(j)}|\\le 1$.\nApplying the smoothing definition \\eqref{eq:2.5} with the quadratic prox-function $d_2$ gives\n\\begin{equation}\\label{eq:auto_Proposition_4_21_proof_2}\nf_\\mu(x)=\\max_{u\\in Q_2}\\{\\langle Ax-b,u\\rangle_2-\\mu d_2(u)\\}.\n\\end{equation}\nThis maximization separates over coordinates $u^{(j)}$ and, after scaling by $\\|a_j\\|_{1,*}$, reduces to the one-dimensional maximization defining $\\psi_\\mu$ in \\eqref{eq:4.17}, which yields the stated sum representation.\n\nSince $|u^{(j)}|\\le 1$ on $Q_2$, we have\n\\begin{equation}\\label{eq:auto_Proposition_4_21_proof_3}\nd_2(u)=\\frac12\\sum_{j=1}^m \\|a_j\\|_{1,*}(u^{(j)})^2\\le \\frac12\\sum_{j=1}^m \\|a_j\\|_{1,*}=\\frac12D,\n\\end{equation}\nhence $D_2=\\frac12D$. The function $d_2$ is quadratic, so $\\sigma_2=1$.\n\nTo bound the operator norm, note that by Cauchy--Schwarz,\n\\begin{equation}\\label{eq:auto_Proposition_4_21_proof_4}\n\\langle Ax,u\\rangle_2=\\sum_{j=1}^m u^{(j)}\\langle a_j,x\\rangle_1\n\\le \\sum_{j=1}^m \\|a_j\\|_{1,*}|u^{(j)}|\\,\\|x\\|_1.\n\\end{equation}\nIf $\\|x\\|_1=1$ and $\\|u\\|_2=1$, then $\\sum_j \\|a_j\\|_{1,*}(u^{(j)})^2\\le 1$ and hence\n\\begin{equation}\\label{eq:auto_Proposition_4_21_proof_5}\n\\sum_{j=1}^m \\|a_j\\|_{1,*}|u^{(j)}|\n\\le \\Bigl(\\sum_{j=1}^m \\|a_j\\|_{1,*}\\Bigr)^{1/2}\\Bigl(\\sum_{j=1}^m \\|a_j\\|_{1,*}(u^{(j)})^2\\Bigr)^{1/2}\n\\le D^{1/2}.\n\\end{equation}\nTherefore $\\|A\\|_{1,2}\\le D^{1/2}$.\n\nFinally, when $M=0$, Theorem~3 gives $N+1\\le \\frac{4\\|A\\|_{1,2}}{\\varepsilon}\\sqrt{\\frac{D_1D_2}{\\sigma_1\\sigma_2}}$.\nSubstituting $\\|A\\|_{1,2}\\le D^{1/2}$, $D_2=\\frac12D$, and $\\sigma_2=1$ yields\n\\begin{equation}\\label{eq:auto_Proposition_4_21_proof_6}\nN+1\\le \\frac{4D^{1/2}}{\\varepsilon}\\sqrt{\\frac{D_1(D/2)}{\\sigma_1}}\n=\\frac{2D}{\\varepsilon}\\sqrt{\\frac{2D_1}{\\sigma_1}}\n=\\frac{2}{\\varepsilon}\\sqrt{\\frac{2D_1}{\\sigma_1}}\\sum_{j=1}^m \\|a_j\\|_{1,*}.\n\\end{equation}\n\\end{proof}",
+    "index": 57
+  },
+  {
+    "label": "Lemma 1.5.1",
+    "env": "lem",
+    "number_components": [
+      1,
+      5,
+      1
+    ],
+    "extracted_labels": [
+      "lem:6",
+      "eq:lem6",
+      "proof:lem:6",
+      "eq:auto_Lemma_6_proof_1",
+      "eq:auto_Lemma_6_proof_2",
+      "eq:auto_Lemma_6_proof_3",
+      "eq:auto_Lemma_6_proof_4"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Implementation issues",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "5",
+      "subsection_number": ""
+    },
+    "content": "\\begin{lemma}\\label{lem:6}\nFor any $g\\in E^\\ast$ and $h\\in E$ and any $L>0$, we have\n\\begin{equation}\\label{eq:lem6}\n\\langle g,h\\rangle_1+\\frac12L\\|h\\|_1^2\n=\n\\max_{s\\in E^\\ast}\\Bigl\\{\\langle s,h\\rangle_1-\\frac{1}{2L}\\|s-g\\|_{1,*}^2\\Bigr\\}.\n\\end{equation}\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\\label{proof:lem:6}\nFor any $h\\in E$,\n\\begin{equation}\\label{eq:auto_Lemma_6_proof_1}\n\\frac12L\\|h\\|_1^2=\\max_{r\\ge 0}\\Bigl\\{r\\|h\\|_1-\\frac{1}{2L}r^2\\Bigr\\},\n\\end{equation}\nbecause the right-hand side is a concave quadratic in $r$ with maximizer $r=L\\|h\\|_1$.\nUsing the definition of the dual norm, $\\|h\\|_1=\\max_{\\|s\\|_{1,*}=1}\\langle s,h\\rangle_1$, we obtain\n\\begin{equation}\\label{eq:auto_Lemma_6_proof_2}\n\\langle g,h\\rangle_1+\\frac12L\\|h\\|_1^2\n=\\max_{r\\ge 0}\\max_{\\|s\\|_{1,*}=1}\\Bigl\\{\\langle g,h\\rangle_1+r\\langle s,h\\rangle_1-\\frac{1}{2L}r^2\\Bigr\\}.\n\\end{equation}\nLetting $t=rs$ ranges over all $t\\in E^\\ast$ and yields\n\\begin{equation}\\label{eq:auto_Lemma_6_proof_3}\n\\langle g,h\\rangle_1+\\frac12L\\|h\\|_1^2\n=\\max_{t\\in E^\\ast}\\Bigl\\{\\langle g+t,h\\rangle_1-\\frac{1}{2L}\\|t\\|_{1,*}^2\\Bigr\\}.\n\\end{equation}\nFinally, substitute $s=g+t$ (equivalently, $t=s-g$) to get\n\\begin{equation}\\label{eq:auto_Lemma_6_proof_4}\n\\langle g,h\\rangle_1+\\frac12L\\|h\\|_1^2\n=\\max_{s\\in E^\\ast}\\Bigl\\{\\langle s,h\\rangle_1-\\frac{1}{2L}\\|s-g\\|_{1,*}^2\\Bigr\\},\n\\end{equation}\nwhich is \\eqref{eq:lem6}.\n\\end{proof}",
+    "index": 58
+  },
+  {
+    "label": "Definition 1.5.1",
+    "env": "def",
+    "number_components": [
+      1,
+      5,
+      1
+    ],
+    "extracted_labels": [
+      "def:5.1",
+      "eq:5.1"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Implementation issues",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "5",
+      "subsection_number": ""
+    },
+    "content": "\\begin{definition}\\label{def:5.1}\nLet $\\bar x\\in\\Delta_n$ and $\\bar g\\in\\mathbb{R}^n$. Consider the problem that appears in the computation of the proximal mapping $T_Q$ for the simplex with the $\\ell_1$ norm:\n\\begin{equation}\\label{eq:5.1}\n\\psi^\\ast\n:=\n\\min_{x\\in\\Delta_n}\\Bigl\\{\\langle \\bar g,x-\\bar x\\rangle_1+\\frac12L\\|x-\\bar x\\|_1^2\\Bigr\\}.\n\\tag{5.1}\n\\end{equation}\n\\end{definition}\n(depend on: \"Definition 1.4.1.1\")",
+    "dependencies": [
+      "Definition 1.4.1.1"
+    ],
+    "proof": "",
+    "index": 59
+  },
+  {
+    "label": "Proposition 1.5.1",
+    "env": "prop",
+    "number_components": [
+      1,
+      5,
+      1
+    ],
+    "extracted_labels": [
+      "prop:5.2",
+      "eq:5.2",
+      "proof:prop:5.2"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Implementation issues",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "5",
+      "subsection_number": ""
+    },
+    "content": "\\begin{proposition}\\label{prop:5.2}\nIn the setting of Definition 5.1, without loss of generality we may assume that\n\\begin{equation}\\label{eq:5.2}\n\\min_{1\\le i\\le n}\\ \\bar g^{(i)}=0.\n\\tag{5.2}\n\\end{equation}\n\\end{proposition}\n(depend on: \"Definition 1.5.1\")",
+    "dependencies": [
+      "Definition 1.5.1"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:5.2}\nLet $\\alpha:=\\min_i \\bar g^{(i)}$ and define $\\bar g':=\\bar g-\\alpha \\mathbf{1}$, where $\\mathbf{1}=(1,\\dots,1)\\in\\mathbb{R}^n$.\nFor any $x\\in\\Delta_n$, we have $\\langle \\mathbf{1},x-\\bar x\\rangle_1=\\sum_i (x^{(i)}-\\bar x^{(i)})=0$ because both $x$ and $\\bar x$ lie in the simplex.\nTherefore $\\langle \\bar g',x-\\bar x\\rangle_1=\\langle \\bar g,x-\\bar x\\rangle_1$ for all feasible $x$, so the objective in \\eqref{eq:5.1} is unchanged by replacing $\\bar g$ with $\\bar g'$.\nBy construction, $\\min_i \\bar g'^{(i)}=0$, which proves \\eqref{eq:5.2}.\n\\end{proof}",
+    "index": 60
+  },
+  {
+    "label": "Proposition 1.5.2",
+    "env": "prop",
+    "number_components": [
+      1,
+      5,
+      2
+    ],
+    "extracted_labels": [
+      "prop:5.3",
+      "eq:5.3",
+      "proof:prop:5.3",
+      "eq:auto_Proposition_5_3_proof_1",
+      "eq:auto_Proposition_5_3_proof_2",
+      "eq:auto_Proposition_5_3_proof_3",
+      "eq:auto_Proposition_5_3_proof_4"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Implementation issues",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "5",
+      "subsection_number": ""
+    },
+    "content": "\\begin{proposition}\\label{prop:5.3}\nAssume the setup of Definition~5.1 and the normalization \\eqref{eq:5.2}.\nLet $\\|\\cdot\\|$ denote the $\\ell_\\infty$ norm on $\\mathbb{R}^n$, so that $\\|s\\|=\\max_i |s^{(i)}|$.\nThen the optimal value $\\psi^\\ast$ of \\eqref{eq:5.1} satisfies the dual representation\n\\begin{equation}\\label{eq:5.3}\n-\\psi^\\ast\n=\n\\min_{\\tau\\ge 0}\n\\Bigl\\{\n\\sum_{i=1}^n \\bar x^{(i)}\\,(\\bar g^{(i)}-2\\tau)_+\n+\\frac{\\tau^2}{2L}\n\\Bigr\\},\n\\qquad (a)_+:=\\max\\{a,0\\}.\n\\end{equation}\nConsequently, $\\psi^\\ast$ can be computed by a one-dimensional search over $\\tau\\ge 0$ after sorting the components of $\\bar g$.\n\\end{proposition}\n(depend on: \"Lemma 1.5.1\", \"Definition 1.5.1\", \"Proposition 1.5.1\")",
+    "dependencies": [
+      "Lemma 1.5.1",
+      "Definition 1.5.1",
+      "Proposition 1.5.1"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:5.3}\nBy Lemma~6 applied with $h=x-\\bar x$ and $g=\\bar g$, we can rewrite \\eqref{eq:5.1} as\n\\begin{equation}\\label{eq:auto_Proposition_5_3_proof_1}\n\\psi^\\ast=\\min_{x\\in\\Delta_n}\\max_{s\\in\\mathbb{R}^n}\\Bigl\\{\\langle \\bar g+s,x-\\bar x\\rangle_1-\\frac{1}{2L}\\|s\\|_\\infty^2\\Bigr\\}.\n\\end{equation}\nExchanging $\\min$ and $\\max$ yields\n\\begin{equation}\\label{eq:auto_Proposition_5_3_proof_2}\n\\psi^\\ast=\\max_{s\\in\\mathbb{R}^n}\\Bigl\\{-\\langle \\bar g+s,\\bar x\\rangle_1-\\frac{1}{2L}\\|s\\|_\\infty^2+\\min_{x\\in\\Delta_n}\\langle \\bar g+s,x\\rangle_1\\Bigr\\}.\n\\end{equation}\nThe inner minimization over the simplex equals $\\min_i (\\bar g^{(i)}+s^{(i)})$.\nUsing the normalization \\eqref{eq:5.2}, we can enforce $\\min_i (\\bar g^{(i)}+s^{(i)})=0$ by shifting all components of $s$ by the same constant, and thus we arrive at the equivalent minimization form\n\\begin{equation}\\label{eq:auto_Proposition_5_3_proof_3}\n-\\psi^\\ast\n=\n\\min_{s\\in\\mathbb{R}^n,\\ \\lambda\\ge 0}\n\\Bigl\\{\\langle s,\\bar x\\rangle_1+\\frac{1}{2L}\\|s-\\bar g\\|_\\infty^2-\\lambda:\\ s^{(i)}\\ge \\lambda,\\ i=1,\\dots,n\\Bigr\\}.\n\\end{equation}\nNow introduce $\\tau:=\\|s-\\bar g\\|_\\infty\\ge 0$. The constraint $\\|s-\\bar g\\|_\\infty\\le\\tau$ is equivalent to the coordinate-wise inequalities $\\bar g^{(i)}-\\tau\\le s^{(i)}\\le \\bar g^{(i)}+\\tau$.\nTogether with $s^{(i)}\\ge\\lambda$, the optimal $s^{(i)}$ equals $\\max\\{\\lambda,\\bar g^{(i)}-\\tau\\}$.\nThe feasibility conditions imply $\\lambda\\le \\tau$.\nSubstituting the optimal $s$ and minimizing in $\\lambda$ gives $\\lambda^\\ast=\\tau$, and hence\n\\begin{equation}\\label{eq:auto_Proposition_5_3_proof_4}\n-\\psi^\\ast\n=\n\\min_{\\tau\\ge 0}\\Bigl\\{\n\\sum_{i=1}^n \\bar x^{(i)}\\max\\{\\tau,\\bar g^{(i)}-\\tau\\}+\\frac{\\tau^2}{2L}-\\tau\n\\Bigr\\}\n=\n\\min_{\\tau\\ge 0}\\Bigl\\{\n\\sum_{i=1}^n \\bar x^{(i)}(\\bar g^{(i)}-2\\tau)_++\\frac{\\tau^2}{2L}\n\\Bigr\\},\n\\end{equation}\nwhich is \\eqref{eq:5.3}.\nThe objective is piecewise differentiable with breakpoints at $\\tau_i=\\bar g^{(i)}/2$, so sorting the components of $\\bar g$ enables a finite check of candidate intervals.\n\\end{proof}",
+    "index": 61
+  },
+  {
+    "label": "Definition 1.5.2.1",
+    "env": "def",
+    "number_components": [
+      1,
+      5,
+      2,
+      1
+    ],
+    "extracted_labels": [
+      "def:5.4",
+      "eq:5.4"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Computational stability",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 5,
+      "subsection_number": 2
+    },
+    "content": "\\begin{definition}\\label{def:5.4}\nFor $\\mu>0$ and $u\\in\\mathbb{R}^m$, define the log-sum-exp smoothing function\n\\begin{equation}\\label{eq:5.4}\n\\eta(u):=\\mu\\ln\\Bigl(\\sum_{j=1}^m e^{u^{(j)}/\\mu}\\Bigr).\n\\tag{5.4}\n\\end{equation}\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 62
+  },
+  {
+    "label": "Proposition 1.5.2.1",
+    "env": "prop",
+    "number_components": [
+      1,
+      5,
+      2,
+      1
+    ],
+    "extracted_labels": [
+      "prop:5.5",
+      "eq:auto_Proposition_5_5_content_1",
+      "proof:prop:5.5",
+      "eq:auto_Proposition_5_5_proof_1",
+      "eq:auto_Proposition_5_5_proof_2",
+      "eq:auto_Proposition_5_5_proof_3"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Computational stability",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 5,
+      "subsection_number": 2
+    },
+    "content": "\\begin{proposition}\\label{prop:5.5}\nLet $\\eta$ be defined by \\eqref{eq:5.4}. For any $u\\in\\mathbb{R}^m$, let $\\bar u:=\\max_{1\\le j\\le m}u^{(j)}$ and define $v\\in\\mathbb{R}^m$ by $v^{(j)}:=u^{(j)}-\\bar u$.\nThen\n\\begin{equation}\\label{eq:auto_Proposition_5_5_content_1}\n\\eta(u)=\\bar u+\\eta(v),\n\\qquad\n\\nabla \\eta(u)=\\nabla \\eta(v).\n\\end{equation}\n\\end{proposition}\n(depend on: \"Definition 1.5.2.1\")",
+    "dependencies": [
+      "Definition 1.5.2.1"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:5.5}\nWe have\n\\begin{equation}\\label{eq:auto_Proposition_5_5_proof_1}\n\\sum_{j=1}^m e^{u^{(j)}/\\mu}\n=\\sum_{j=1}^m e^{(v^{(j)}+\\bar u)/\\mu}\n=e^{\\bar u/\\mu}\\sum_{j=1}^m e^{v^{(j)}/\\mu}.\n\\end{equation}\nTaking logarithms and multiplying by $\\mu$ yields\n\\begin{equation}\\label{eq:auto_Proposition_5_5_proof_2}\n\\eta(u)=\\mu\\ln\\Bigl(e^{\\bar u/\\mu}\\sum_{j=1}^m e^{v^{(j)}/\\mu}\\Bigr)\n=\\bar u+\\mu\\ln\\Bigl(\\sum_{j=1}^m e^{v^{(j)}/\\mu}\\Bigr)\n=\\bar u+\\eta(v).\n\\end{equation}\nThe gradient of $\\eta$ is the softmax:\n\\begin{equation}\\label{eq:auto_Proposition_5_5_proof_3}\n\\frac{\\partial \\eta}{\\partial u^{(j)}}(u)\n=\\frac{e^{u^{(j)}/\\mu}}{\\sum_{\\ell=1}^m e^{u^{(\\ell)}/\\mu}}\n=\\frac{e^{v^{(j)}/\\mu}}{\\sum_{\\ell=1}^m e^{v^{(\\ell)}/\\mu}}\n=\\frac{\\partial \\eta}{\\partial v^{(j)}}(v),\n\\end{equation}\nhence $\\nabla\\eta(u)=\\nabla\\eta(v)$.\n\\end{proof}",
+    "index": 63
+  },
+  {
+    "label": "Definition 1.5.3.1",
+    "env": "def",
+    "number_components": [
+      1,
+      5,
+      3,
+      1
+    ],
+    "extracted_labels": [
+      "def:5.6",
+      "eq:auto_Definition_5_6_content_1",
+      "eq:auto_Definition_5_6_content_2"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Modified method",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 5,
+      "subsection_number": 3
+    },
+    "content": "\\begin{definition}\\label{def:5.6}\nAssume that the prox-function $d:Q\\to\\mathbb{R}$ is differentiable and $\\sigma$-strongly convex on $Q$ with respect to $\\|\\cdot\\|$.\nDefine the Bregman distance associated with $d$ by\n\\begin{equation}\\label{eq:auto_Definition_5_6_content_1}\n\\xi(z,x):=d(x)-d(z)-\\langle \\nabla d(z),x-z\\rangle,\\qquad z,x\\in Q.\n\\end{equation}\nThen $\\xi(z,x)\\ge \\frac{\\sigma}{2}\\|x-z\\|^2$ for all $z,x\\in Q$.\nDefine the mapping\n\\begin{equation}\\label{eq:auto_Definition_5_6_content_2}\nV_Q(z,g):=\\arg\\min_{x\\in Q}\\bigl\\{\\langle g,x-z\\rangle+\\xi(z,x)\\bigr\\}.\n\\end{equation}\n\\end{definition}\n(depend on: \"Definition 1.3.5\")",
+    "dependencies": [
+      "Definition 1.3.5"
+    ],
+    "proof": "",
+    "index": 64
+  },
+  {
+    "label": "Lemma 1.5.3.1",
+    "env": "lem",
+    "number_components": [
+      1,
+      5,
+      3,
+      1
+    ],
+    "extracted_labels": [
+      "lem:7",
+      "eq:auto_Lemma_7_content_1",
+      "eq:5.5",
+      "proof:lem:7",
+      "eq:auto_Lemma_7_proof_1",
+      "eq:lem7_opt_zk",
+      "eq:auto_Lemma_7_proof_2",
+      "eq:lem7_main1",
+      "eq:auto_Lemma_7_proof_3",
+      "eq:lem7_main2",
+      "eq:auto_Lemma_7_proof_4",
+      "eq:auto_Lemma_7_proof_5"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Modified method",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 5,
+      "subsection_number": 3
+    },
+    "content": "\\begin{lemma}\\label{lem:7}\nLet the sequence $\\{\\alpha_k\\}_{k=0}^\\infty$ satisfy condition \\eqref{eq:3.6} and suppose that relation \\eqref{eq:Rk} holds for some $k\\ge 0$.\nChoose\n\\begin{equation}\\label{eq:auto_Lemma_7_content_1}\n\\gamma_k:=\\frac{\\sigma}{L}\\alpha_{k+1}.\n\\end{equation}\nDefine\n\\begin{equation}\\label{eq:5.5}\nx_{k+1}=\\tau_k z_k+(1-\\tau_k)y_k,\n\\qquad\n\\hat x_{k+1}=V_Q\\bigl(z_k,\\gamma_k\\nabla f(x_{k+1})\\bigr),\n\\qquad\ny_{k+1}=\\tau_k\\hat x_{k+1}+(1-\\tau_k)y_k.\n\\tag{5.5}\n\\end{equation}\nThen the relation $(R_{k+1})$ holds.\n\\end{lemma}\n(depend on: \"Definition 1.5.3.1\", \"Lemma 2\", \"Proposition 1.3.4\", \"Lemma 1.3.1\", \"Definition 1.3.4\")",
+    "dependencies": [
+      "Definition 1.5.3.1",
+      "Lemma 2",
+      "Proposition 1.3.4",
+      "Lemma 1.3.1",
+      "Definition 1.3.4"
+    ],
+    "proof": "\\begin{proof}\\label{proof:lem:7}\nDenote\n\\begin{equation}\\label{eq:auto_Lemma_7_proof_1}\nl_k(x)=\\beta_k+\\langle l_k,x-z_k\\rangle\n:=\\sum_{i=0}^{k}\\alpha_i\\bigl[f(x_i)+\\langle \\nabla f(x_i),x-x_i\\rangle\\bigr].\n\\end{equation}\nSince $z_k$ minimizes $\\frac{L}{\\sigma}d(x)+l_k(x)$ over $x\\in Q$, the first-order optimality condition gives\n\\begin{equation}\\label{eq:lem7_opt_zk}\n\\Bigl\\langle \\frac{L}{\\sigma}\\nabla d(z_k)+l_k,\\ x-z_k\\Bigr\\rangle\\ge 0\\qquad \\forall x\\in Q.\n\\end{equation}\nLet $\\psi_k:=\\frac{L}{\\sigma}d(z_k)+\\beta_k$. Using the identity\n\\begin{equation}\\label{eq:auto_Lemma_7_proof_2}\nd(x)=\\xi(z_k,x)+d(z_k)+\\langle \\nabla d(z_k),x-z_k\\rangle,\n\\end{equation}\nwe obtain for any $x\\in Q$:\n\\begin{align}\n\\frac{L}{\\sigma}d(x)+l_k(x)+\\alpha_{k+1}\\langle \\nabla f(x_{k+1}),x-x_{k+1}\\rangle\n&=\\frac{L}{\\sigma}\\xi(z_k,x)+\\psi_k+\\Bigl\\langle \\frac{L}{\\sigma}\\nabla d(z_k)+l_k,\\ x-z_k\\Bigr\\rangle\\nonumber\\\\\n&\\quad+\\alpha_{k+1}\\langle \\nabla f(x_{k+1}),x-x_{k+1}\\rangle\\nonumber\\\\\n&\\ge \\frac{L}{\\sigma}\\xi(z_k,x)+\\psi_k+\\alpha_{k+1}\\langle \\nabla f(x_{k+1}),x-x_{k+1}\\rangle,\\label{eq:lem7_main1}\n\\end{align}\nwhere we used \\eqref{eq:lem7_opt_zk}.\n\nSince $(R_k)$ holds and $A_{k+1}=A_k+\\alpha_{k+1}$, we have $\\psi_k\\ge A_{k+1}f(x_{k+1})$ and hence\n\\begin{equation}\\label{eq:auto_Lemma_7_proof_3}\n\\frac{L}{\\sigma}d(x)+l_k(x)+\\alpha_{k+1}\\langle \\nabla f(x_{k+1}),x-x_{k+1}\\rangle\n\\ge \\frac{L}{\\sigma}\\xi(z_k,x)+A_{k+1}f(x_{k+1})+\\alpha_{k+1}\\langle \\nabla f(x_{k+1}),x-z_k\\rangle.\n\\end{equation}\nTaking the minimum over $x\\in Q$ yields\n\\begin{align}\n\\psi_{k+1}\n&\\ge \\min_{x\\in Q}\\Bigl\\{\\frac{L}{\\sigma}\\xi(z_k,x)+A_{k+1}f(x_{k+1})+\\alpha_{k+1}\\langle \\nabla f(x_{k+1}),x-z_k\\rangle\\Bigr\\}\\nonumber\\\\\n&=\\frac{L}{\\sigma}\\xi(z_k,\\hat x_{k+1})+A_{k+1}f(x_{k+1})\n+\\alpha_{k+1}\\langle \\nabla f(x_{k+1}),\\hat x_{k+1}-z_k\\rangle,\\label{eq:lem7_main2}\n\\end{align}\nwhere $\\hat x_{k+1}$ is defined by \\eqref{eq:5.5} and the choice of $\\gamma_k$.\n\nBy strong convexity of $d$, we have $\\xi(z_k,\\hat x_{k+1})\\ge \\frac{\\sigma}{2}\\|\\hat x_{k+1}-z_k\\|^2$. Using $\\tau_k=\\alpha_{k+1}/A_{k+1}$ and the definition of $y_{k+1}$, we obtain\n\\begin{equation}\\label{eq:auto_Lemma_7_proof_4}\ny_{k+1}-x_{k+1}=\\tau_k(\\hat x_{k+1}-z_k).\n\\end{equation}\nCombining this identity with \\eqref{eq:lem7_main2} shows that\n\\begin{equation}\\label{eq:auto_Lemma_7_proof_5}\n\\psi_{k+1}\\ge A_{k+1}\\Bigl(f(x_{k+1})+\\langle \\nabla f(x_{k+1}),y_{k+1}-x_{k+1}\\rangle\\Bigr).\n\\end{equation}\nBy convexity of $f$, the right-hand side is at least $A_{k+1}f(y_{k+1})$, hence $(R_{k+1})$ holds.\n\\end{proof}",
+    "index": 65
+  },
+  {
+    "label": "Algorithm 1.5.3.1",
+    "env": "algo",
+    "number_components": [
+      1,
+      5,
+      3,
+      1
+    ],
+    "extracted_labels": [
+      "alg:5.6",
+      "eq:5.6_init",
+      "eq:5.6"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Modified method",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 5,
+      "subsection_number": 3
+    },
+    "content": "\\begin{algorithm}\\label{alg:5.6}\nChoose an initial point\n\\begin{equation}\\label{eq:5.6_init}\ny_0=z_0=\\arg\\min_{x\\in Q}\\Bigl\\{\\frac{L}{\\sigma}d(x)+\\frac12\\bigl[f(x_0)+\\langle \\nabla f(x_0),x-x_0\\rangle\\bigr]\\Bigr\\}.\n\\end{equation}\nFor $k\\ge 0$, iterate:\n\\begin{equation}\\label{eq:5.6}\n\\begin{aligned}\n\\text{(a)}\\quad &z_k=\\arg\\min_{x\\in Q}\\Bigl\\{\\frac{L}{\\sigma}d(x)+\\sum_{i=0}^k\\frac{i+1}{2}\\bigl[f(x_i)+\\langle \\nabla f(x_i),x-x_i\\rangle\\bigr]\\Bigr\\},\\\\\n\\text{(b)}\\quad &\\tau_k=\\frac{2}{k+3},\\qquad x_{k+1}=\\tau_k z_k+(1-\\tau_k)y_k,\\\\\n\\text{(c)}\\quad &\\hat x_{k+1}=V_Q\\Bigl(z_k,\\frac{\\sigma}{L}\\tau_k\\nabla f(x_{k+1})\\Bigr),\\\\\n\\text{(d)}\\quad &y_{k+1}=\\tau_k\\hat x_{k+1}+(1-\\tau_k)y_k.\n\\end{aligned}\n\\tag{5.6}\n\\end{equation}\n\\end{algorithm}\n(depend on: \"Definition 1.5.3.1\", \"Lemma 1.5.3.1\")",
+    "dependencies": [
+      "Definition 1.5.3.1",
+      "Lemma 1.5.3.1"
+    ],
+    "proof": "",
+    "index": 66
+  },
+  {
+    "label": "Proposition 1.5.3.1",
+    "env": "prop",
+    "number_components": [
+      1,
+      5,
+      3,
+      1
+    ],
+    "extracted_labels": [
+      "prop:5.7",
+      "eq:auto_Proposition_5_7_content_1",
+      "eq:5.7",
+      "proof:prop:5.7",
+      "eq:auto_Proposition_5_7_proof_1",
+      "eq:auto_Proposition_5_7_proof_2",
+      "eq:auto_Proposition_5_7_proof_3",
+      "eq:auto_Proposition_5_7_proof_4"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Modified method",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": 5,
+      "subsection_number": 3
+    },
+    "content": "\\begin{proposition}\\label{prop:5.7}\nLet $Q=\\Delta_n$ and let the prox-function be the entropy distance\n\\begin{equation}\\label{eq:auto_Proposition_5_7_content_1}\nd(x)=\\ln n+\\sum_{i=1}^n x^{(i)}\\ln x^{(i)}.\n\\end{equation}\nThen for $z\\in\\Delta_n$ and $g\\in\\mathbb{R}^n$, the mapping $V_Q(z,g)$ from Definition~5.6 has the explicit form\n\\begin{equation}\\label{eq:5.7}\nV_Q^{(i)}(z,g)\n=\nz^{(i)}e^{-g^{(i)}}\\Bigl[\\sum_{j=1}^n z^{(j)}e^{-g^{(j)}}\\Bigr]^{-1},\n\\qquad i=1,\\dots,n.\n\\tag{5.7}\n\\end{equation}\n\\end{proposition}\n(depend on: \"Definition 1.5.3.1\", \"Lemma 1.4.1.1\")",
+    "dependencies": [
+      "Definition 1.5.3.1",
+      "Lemma 1.4.1.1"
+    ],
+    "proof": "\\begin{proof}\\label{proof:prop:5.7}\nBy definition,\n\\begin{equation}\\label{eq:auto_Proposition_5_7_proof_1}\nV_Q(z,g)=\\arg\\min_{x\\in\\Delta_n}\\{\\langle g,x-z\\rangle+\\xi(z,x)\\}.\n\\end{equation}\nFor the entropy prox-function, the Bregman distance equals the Kullback--Leibler divergence:\n\\begin{equation}\\label{eq:auto_Proposition_5_7_proof_2}\n\\xi(z,x)=\\sum_{i=1}^n x^{(i)}\\ln\\frac{x^{(i)}}{z^{(i)}},\n\\end{equation}\nup to an additive constant independent of $x$.\nTherefore, the optimization becomes\n\\begin{equation}\\label{eq:auto_Proposition_5_7_proof_3}\n\\min_{x\\in\\Delta_n}\\ \\sum_{i=1}^n\\Bigl(g^{(i)}x^{(i)}+x^{(i)}\\ln\\frac{x^{(i)}}{z^{(i)}}\\Bigr).\n\\end{equation}\nIntroducing a Lagrange multiplier $\\lambda$ for $\\sum_i x^{(i)}=1$ and differentiating gives\n\\begin{equation}\\label{eq:auto_Proposition_5_7_proof_4}\ng^{(i)}+\\ln\\frac{x^{(i)}}{z^{(i)}}+1=\\lambda,\\qquad i=1,\\dots,n,\n\\end{equation}\nhence $x^{(i)}=z^{(i)}e^{\\lambda-1}e^{-g^{(i)}}$.\nEnforcing $\\sum_i x^{(i)}=1$ yields $e^{\\lambda-1}=\\bigl(\\sum_{j=1}^n z^{(j)}e^{-g^{(j)}}\\bigr)^{-1}$, and substituting back gives \\eqref{eq:5.7}.\n\\end{proof}",
+    "index": 67
+  }
+]

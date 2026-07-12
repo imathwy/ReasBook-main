@@ -219,3 +219,4 @@ lemma gradient_method_strong_convex (hm : m > 0) (min : IsMinOn f univ xm)
     _ = (1 - alg.a * (2 * m * alg.l / (m + alg.l))) ^ Nat.succ q * ‖x₀ - xm‖ ^ 2 := by simp
 
 end Strongly_Convex_Gradient_Descent
+

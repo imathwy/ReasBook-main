@@ -571,3 +571,4 @@ theorem uniformized_KL_property {f : E → ℝ} {Ω : Set E} (h_compact : IsComp
         exact h_exist
 
 end uniformized_KL
+

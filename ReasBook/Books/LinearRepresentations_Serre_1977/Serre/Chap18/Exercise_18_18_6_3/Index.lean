@@ -1,0 +1,4 @@
+-- Theorem-local support index for Exercise 18-18.6-3.
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_3.Shared
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_3.Chi3Reduction
+import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_3.SpecialLinearIdentification

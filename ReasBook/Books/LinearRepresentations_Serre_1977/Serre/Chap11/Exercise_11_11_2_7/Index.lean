@@ -1,0 +1,2 @@
+import LinearRepresentations_Serre_1977.Chap11.Exercise_11_11_2_7.CyclicPowerInvariant
+import LinearRepresentations_Serre_1977.Chap11.Exercise_11_11_2_7.RestrictionAndPairing

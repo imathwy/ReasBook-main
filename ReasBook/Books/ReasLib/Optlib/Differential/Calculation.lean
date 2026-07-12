@@ -408,3 +408,4 @@ theorem gradient_const_mul' (ha : DifferentiableAt ℝ a x) :
   gradient_const_mul b ha
 
 end Mul_const
+

@@ -253,3 +253,4 @@ lemma gradient_method (hfun : ConvexOn ℝ Set.univ f) (step₂ : alg.a ≤ 1 / 
   exact le_mul_of_le_mul_of_nonneg_left h (by simp) (by linarith)
 
 end gradient_descent
+

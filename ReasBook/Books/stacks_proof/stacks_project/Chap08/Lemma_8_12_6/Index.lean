@@ -1,0 +1,7 @@
+import StacksProject_2024.Chap08.Lemma_8_12_6.SourcePrecomposition
+import StacksProject_2024.Chap08.Lemma_8_12_6.StrictProjection
+import StacksProject_2024.Chap08.Lemma_8_12_6.IsoCommaModel
+import StacksProject_2024.Chap08.Lemma_8_12_6.FractionSourceCharts
+import StacksProject_2024.Chap08.Lemma_8_12_6.FixedFractionCandidate
+import StacksProject_2024.Chap08.Lemma_8_12_6.SectionCompositeLifts
+import StacksProject_2024.Chap08.Lemma_8_12_6.SourceReplacementFrontier

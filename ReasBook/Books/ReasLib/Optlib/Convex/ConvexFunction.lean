@@ -569,3 +569,4 @@ theorem second_order_convex_univ (h1 : ∀ x, HasFDerivAt f (f' x) x)
   SecondOrderConvex convex_univ isOpen_univ (fun x _ ↦ h1 x) (fun x _ ↦ h2 x) (fun x _ v ↦ hpos x v)
 
 end SecondOrderCondition
+

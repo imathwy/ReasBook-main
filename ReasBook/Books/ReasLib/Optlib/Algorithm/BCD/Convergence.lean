@@ -1452,3 +1452,4 @@ theorem Convergence_to_critpt (γ : ℝ) (hγ : γ > 1)
 end Limited_length
 
 end Convergence
+

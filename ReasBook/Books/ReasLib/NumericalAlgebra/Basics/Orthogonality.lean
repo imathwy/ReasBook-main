@@ -541,3 +541,4 @@ lemma Orthonormal.exists_orthonormalBasis_span_range [Fintype ι] {v : ι → V}
   simp [b]
 
 end Matrix
+

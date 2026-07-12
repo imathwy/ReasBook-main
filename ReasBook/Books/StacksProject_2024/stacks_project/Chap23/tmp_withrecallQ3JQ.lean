@@ -1,0 +1,4 @@
+import Mathlib.RingTheory.DividedPowers.SubDPIdeal
+import Mathlib.Tactic.Recall
+import StacksProject_2024.Chap23.Definition_23_4_1
+recall DividedPowers.isSubDPIdeal_ker

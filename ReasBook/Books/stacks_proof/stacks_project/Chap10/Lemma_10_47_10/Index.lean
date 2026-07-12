@@ -1,0 +1,2 @@
+import StacksProject_2024.Chap10.Lemma_10_47_10.PrimeSpectrumIrreducibility
+import StacksProject_2024.Chap10.Lemma_10_47_10.RatFuncTensorCollapse

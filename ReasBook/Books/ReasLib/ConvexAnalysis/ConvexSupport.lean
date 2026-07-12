@@ -694,3 +694,4 @@ theorem closure_eq_conjugate_of_positive_homogeneous_of_convex_ne_top [FiniteDim
 end cl_eq_support
 
 end zero_or_top_iff_positive_homogeneous
+

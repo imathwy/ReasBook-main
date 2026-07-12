@@ -169,3 +169,4 @@ theorem closed_conic (s : Finset ℕ) (V : ℕ → (EuclideanSpace ℝ (Fin n)))
   simp [V₀]; apply τidp
 
 end ClosedCone
+

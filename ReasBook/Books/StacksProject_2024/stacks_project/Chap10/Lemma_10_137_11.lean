@@ -1,0 +1,84 @@
+import Mathlib
+import StacksProject_2024.Chap10.Definition_10_137_10
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+open scoped TensorProduct
+
+universe u v
+
+namespace Algebra
+
+variable {R : Type u} [CommRing R]
+variable {S : Type v} [CommRing S] [Algebra R S]
+
+/- Domain-style sampling for the local smoothness criterion:
+- primary domain: commutative algebra of smooth ring maps, localized cotangent homology, and
+  localized Kähler differentials at a prime;
+- sampled owner declarations:
+  `Algebra.SmoothAtPrime`,
+  `Algebra.smoothAtPrime_iff_isSmoothAt`,
+  `Algebra.smoothLocus_eq_compl_support_inter`,
+  `Module.free_of_flat_of_isLocalRing`,
+  `module_finite_projective_iff_finitePresentation_and_flat`;
+- best owner abstraction: the source-facing owner at this stage is `Algebra.SmoothAtPrime`,
+  with `Algebra.IsSmoothAt` used only as the canonical local bridge;
+- primitive data: the prime `q`, the local ring `S_q`, the localized cotangent homology, and the
+  localized module of Kähler differentials;
+- derived API: the finite-free/projective/flat reformulations of the same localized criterion.
+
+Source/core/bridge triage:
+- `source-facing`: the textbook `List.TFAE` statement with first clause `SmoothAtPrime R S q`;
+- `core/canonical`: `Algebra.IsSmoothAt`, the localized cotangent-homology support criterion, and
+  the local-ring projective/free criterion;
+- `bridge/view`: `smoothAtPrime_iff_isSmoothAt`, used internally to pass from the source-facing
+  predicate to the canonical local owner.
+
+This file remains `source-facing`: it keeps the textbook `List.TFAE` packaging while exposing the
+canonical local criterion only through a private bridge theorem.
+-/
+
+variable [FinitePresentation R S]
+
+section
+
+variable (q : PrimeSpectrum S)
+
+local notation "S₍q₎" => Localization.AtPrime q.asIdeal
+local notation "H¹₍q₎" => LocalizedModule.AtPrime q.asIdeal (H1Cotangent R S)
+local notation "Ω₍q₎" => LocalizedModule.AtPrime q.asIdeal Ω[S⁄R]
+
+private theorem isSmoothAt_iff_subsingleton_localizedH1Cotangent_and_localizedKaehler_free
+    :
+    IsSmoothAt R q.asIdeal ↔
+      Subsingleton H¹₍q₎ ∧
+        Module.Free S₍q₎ Ω₍q₎ := by
+  sorry
+
+-- Proof sketch: use `Algebra.smoothLocus_eq_compl_support_inter` to identify `IsSmoothAt R q.asIdeal`
+-- with vanishing of the localized cotangent homology and freeness of the localized Kähler
+-- differentials. Since `R → S` is finitely presented, `Ω[S⁄R]` is finitely presented over `S`, so
+-- after localizing at `q` the local module criterion for finite projective modules identifies the
+-- finite-free, projective, and flat clauses over the local ring `S_q`.
+/-- Lemma 10.137.11: for a finitely presented ring map `R → S` and a prime `q` of `S`, the
+following are equivalent: `R → S` is smooth at `q` in the source-facing sense `SmoothAtPrime R S q`;
+the localized first cotangent homology `H¹(L_{S/R})_q` vanishes and the localized module of Kähler
+differentials `Ω[S⁄R]_q` is finite free over `S_q`; `H¹(L_{S/R})_q` vanishes and `Ω[S⁄R]_q` is
+projective over `S_q`; and `H¹(L_{S/R})_q` vanishes and `Ω[S⁄R]_q` is flat over `S_q`. -/
+theorem smoothAtPrime_tfae_subsingleton_localizedH1Cotangent_and_localizedKaehler_finiteFree_projective_flat
+    :
+    List.TFAE
+      [ SmoothAtPrime R S q
+      , Subsingleton H¹₍q₎ ∧
+          Module.Finite S₍q₎ Ω₍q₎ ∧
+          Module.Free S₍q₎ Ω₍q₎
+      , Subsingleton H¹₍q₎ ∧
+          Module.Projective S₍q₎ Ω₍q₎
+      , Subsingleton H¹₍q₎ ∧
+          Module.Flat S₍q₎ Ω₍q₎
+      ] := by
+  sorry
+
+end
+
+end Algebra

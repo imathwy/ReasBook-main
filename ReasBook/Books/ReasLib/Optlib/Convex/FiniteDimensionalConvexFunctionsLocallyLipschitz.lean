@@ -595,3 +595,4 @@ theorem FiniteDimensionalConvexFunctionsContinous
   apply FiniteDimensionalConvexFunctionsLocallyLipschitz hs_convex hs_isopen hf
 
 end Continuity
+

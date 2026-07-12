@@ -675,3 +675,4 @@ theorem prox_iff_subderiv_smul (f : E → ℝ) {t : ℝ} (hfun : ConvexOn ℝ un
   exact gconv
 
 end
+

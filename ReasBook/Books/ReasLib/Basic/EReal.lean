@@ -1349,3 +1349,4 @@ lemma coe_sum_sub_distrib {c : ℕ} {f : Fin c → ℝ} {g : Fin c → EReal} (p
     rfl
 
 end sum
+

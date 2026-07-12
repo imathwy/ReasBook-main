@@ -2160,12 +2160,12 @@ theorem intrinsicInterior_convexHull_iUnion_eq' (a b : Set E)
 
   change intrinsicInterior ℝ ab = _; ext x; calc
     _ ↔ (1, x) ∈ intrinsicInterior ℝ (Kab:Set (ℝ × E)) := by
-      rw [mem_intrinsicInterior_prod_convexCone_iff' convex_ab ne_ab (K := Kab) rfl,
+      rw [mem_intrinsicInterior_prod_convexCone_iff' convex_ab ne_ab rfl,
         ← (Eq.symm rfl : ab = convexHull ℝ (a ∪ b))]; simp
     _ ↔ (1, x) ∈ intrinsicInterior ℝ (Ka:Set (ℝ × E)) + intrinsicInterior ℝ (Kb:Set (ℝ × E)) := by
       rw [K_sum, ← intrinsicInterior_sum_eq (ConvexCone.convex Ka) (ConvexCone.convex Kb)]
-  rw [@mem_add, mem_intrinsicInterior_prod_convexCone_iff' ha hnea (K := Ka) rfl,
-      mem_intrinsicInterior_prod_convexCone_iff' hb hneb (K := Kb) rfl]
+  rw [@mem_add, mem_intrinsicInterior_prod_convexCone_iff' ha hnea rfl,
+      mem_intrinsicInterior_prod_convexCone_iff' hb hneb rfl]
 
   constructor
   · rintro ⟨p, hp, q, hq, hpq⟩; simp
@@ -2284,3 +2284,4 @@ theorem intrinsicInterior_convexHull_iUnion_eq {ι : Type} [Fintype ι] (C : ι 
             convert hy using 2; congr; rw [div_eq_inv_mul, smul_eq_mul]
 
 end Thm_6_9
+

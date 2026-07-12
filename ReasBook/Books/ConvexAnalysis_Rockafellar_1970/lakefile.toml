@@ -1,0 +1,24 @@
+name = "ConvexAnalysis"
+version = "0.1.0"
+keywords = ["math"]
+defaultTargets = ["ConvexAnalysis"]
+
+[leanOptions]
+pp.unicode.fun = true # pretty-prints `fun a ↦ b`
+relaxedAutoImplicit = false
+weak.linter.mathlibStandardSet = true
+maxSynthPendingDepth = 3
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.30.0-rc1"
+
+[[lean_lib]]
+name = "ConvexAnalysis"
+
+[[lean_lib]]
+name = "ConvexAnalysis_Rockafellar_1970"
+
+[[lean_lib]]
+name = "item_statement_json_runner"

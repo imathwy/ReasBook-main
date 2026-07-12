@@ -1,0 +1,7 @@
+-- Theorem-local support for Chap08 Lemma 8 6 11.
+import StacksProject_2024.Chap08.Lemma_8_6_11.FaithfulSliceSetoids
+import StacksProject_2024.Chap08.Lemma_8_6_11.LocalizedTerminalCover
+import StacksProject_2024.Chap08.Lemma_8_6_11.SliceYonedaEvaluation
+import StacksProject_2024.Chap08.Lemma_8_6_11.SliceLocalClasses
+import StacksProject_2024.Chap08.Lemma_8_6_11.EssentialSurjCompatibility
+import StacksProject_2024.Chap08.Lemma_8_6_11.FixedCoverFullness

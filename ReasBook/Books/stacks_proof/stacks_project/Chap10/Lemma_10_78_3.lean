@@ -1,0 +1,978 @@
+import StacksProject_2024.Chap10.Lemma_10_25_2
+import StacksProject_2024.Chap10.Definition_10_78_1
+import StacksProject_2024.Chap10.Lemma_10_20_2
+import StacksProject_2024.Chap10.Lemma_10_23_2
+import Mathlib.Tactic.StacksAttribute
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+open scoped TensorProduct
+
+universe u v
+
+section
+
+variable {R : Type u} [CommRing R] [IsReduced R]
+variable {M : Type v} [AddCommGroup M] [Module R M]
+
+/-- Helper for Lemma 10.78.3: every minimal prime carries its canonical prime-ideal instance. -/
+local instance minimalPrime_isPrime {A : Type*} [CommRing A] (p : minimalPrimes A) : p.1.IsPrime :=
+  Ideal.minimalPrimes_isPrime p.2
+
+/- Domain triage:
+- primary domain: finite projective modules and the fiber-rank function on `Spec R`;
+- sampled owner-style declarations of the same kind:
+  `Module.Projective`,
+  residue-field fiber ranks `dim_{κ(p)} (κ(p) ⊗[R] M)`,
+  `module_finite_projective_tfae`;
+- owner abstraction: `Module.Projective R M` together with `Module.Finite R M`;
+- primitive data: the reduced ring `R` and the module `M`;
+- derived API: local constancy of the integer-valued fiber-rank function.
+
+This item is a `bridge/view` lemma: under the reducedness hypothesis, it removes the extra
+`Module.freeLocus R M = Set.univ` clause that appears in the owner-level TFAE from Lemma `10.78.2`.
+Its public statement therefore uses the owner predicates directly, rather than parallel local
+wrapper abbreviations for the same conditions.
+-/
+
+-- Proof sketch: after assuming `Module.Finite R M`, the forward implication is local constancy
+-- of the residue-field fiber dimension for a finite projective module. Conversely, over a reduced
+-- ring a finite module with locally constant fiber rank is locally free on a standard-open
+-- neighborhood of every prime, so Lemma `10.78.2` yields projectivity.
+omit [IsReduced R] in
+/-- Helper for Lemma 10.78.3: the source fiber dimension agrees with `Module.rankAtStalk`,
+after coercing both sides to `ℤ`. -/
+private theorem fiberRank_int_eq_rankAtStalk_int [Module.Finite R M] [Module.Flat R M]
+    (p : PrimeSpectrum R) :
+    (Module.finrank p.asIdeal.ResidueField
+      (TensorProduct R p.asIdeal.ResidueField M) : ℤ) =
+      (Module.rankAtStalk (R := R) M p : ℤ) := by
+  -- Rewrite the source-facing fiber dimension by the canonical stalk-rank formula.
+  simpa using congrArg (fun n : ℕ ↦ (n : ℤ))
+    ((Module.rankAtStalk_eq (R := R) (M := M) p).symm)
+
+omit [IsReduced R] in
+/-- Helper for Lemma 10.78.3: finite projective modules have locally constant fiber rank. -/
+private theorem isLocallyConstant_fiberRank_of_projective
+    (hM : Module.Finite R M) (hproj : Module.Projective R M) :
+    IsLocallyConstant (fun p : PrimeSpectrum R ↦
+      (Module.finrank p.asIdeal.ResidueField
+        (TensorProduct R p.asIdeal.ResidueField M) : ℤ)) := by
+  letI : Module.Finite R M := hM
+  letI : Module.Projective R M := hproj
+  letI : Module.FinitePresentation R M := Module.finitePresentation_of_projective R M
+  letI : Module.Flat R M := inferInstance
+  -- Transport the owner-level locally constant stalk rank to the source fiber-rank function.
+  simpa [fiberRank_int_eq_rankAtStalk_int] using
+    (Module.isLocallyConstant_rankAtStalk (R := R) (M := M)).comp
+      (fun n : ℕ ↦ (n : ℤ))
+
+omit [IsReduced R] in
+/-- Helper for Chap10 Lemma 10 78 3: a finite locally free module is projective. -/
+private theorem projective_of_finiteLocallyFree [Module.FiniteLocallyFree R M] :
+    Module.Projective R M := by
+  have hfp : Module.FinitePresentation R M := by
+    rcases Module.FiniteLocallyFree.exists_standardOpen_cover (R := R) (M := M) with
+      ⟨s, hs, hloc⟩
+    have hone : (1 : R) ∈ Ideal.span s := (Ideal.eq_top_iff_one _).mp hs
+    obtain ⟨t, hts, h1⟩ := Submodule.mem_span_finite_of_mem_span hone
+    have ht : Ideal.span (t : Set R) = ⊤ := by
+      exact (Ideal.eq_top_iff_one _).mpr h1
+    have hlocal :
+        ∀ f : t,
+          Module.FinitePresentation (Localization.Away f.1) (LocalizedModule.Away f.1 M) := by
+      intro f
+      letI : Module.Free (Localization.Away f.1) (LocalizedModule.Away f.1 M) :=
+        (hloc f.1 (hts f.2)).1
+      letI : Module.Finite (Localization.Away f.1) (LocalizedModule.Away f.1 M) :=
+        (hloc f.1 (hts f.2)).2
+      exact Module.finitePresentation_of_projective _ _
+    -- Descend finite presentation from a finite subcover of finite free standard opens.
+    exact module_finitePresentation_of_localizationAway (R := R) (M := M) t ht hlocal
+  letI : Module.FinitePresentation R M := hfp
+  have hfree : Module.freeLocus R M = Set.univ := by
+    rcases Module.FiniteLocallyFree.exists_standardOpen_cover (R := R) (M := M) with
+      ⟨s, hs, hloc⟩
+    ext p
+    constructor
+    · intro _
+      simp
+    · intro _
+      have hbasic : ∃ f ∈ s, f ∉ p.asIdeal := by
+        by_contra h
+        have hs_le : Ideal.span s ≤ p.asIdeal := by
+          refine Ideal.span_le.mpr ?_
+          intro f hf
+          by_contra hf'
+          exact h ⟨f, hf, hf'⟩
+        have hp_top : p.asIdeal = ⊤ := top_le_iff.mp (hs ▸ hs_le)
+        exact p.isPrime.ne_top hp_top
+      rcases hbasic with ⟨f, hf, hfp⟩
+      have hsubset : (PrimeSpectrum.basicOpen f : Set (PrimeSpectrum R)) ⊆
+          Module.freeLocus R M := by
+        rw [Module.basicOpen_subset_freeLocus_iff]
+        letI : Module.Free (Localization.Away f) (LocalizedModule.Away f M) := (hloc f hf).1
+        infer_instance
+      -- The selected standard open contains `p`, so the stalk at `p` is free.
+      exact hsubset ((PrimeSpectrum.mem_basicOpen f p).2 hfp)
+  -- Finite presentation turns the full free locus into projectivity.
+  exact (Module.freeLocus_eq_univ_iff (R := R) (M := M)).1 hfree
+
+omit [IsReduced R] in
+/-- Helper for Lemma 10.78.3: at a maximal ideal, the quotient `M / mM` has the same finite
+dimension as the residue-field fiber `κ(m) ⊗[R] M`. -/
+private theorem quotient_finrank_eq_fiber_finrank_at_maximal
+    [Module.Finite R M] (m : Ideal R) [m.IsMaximal] :
+    Module.finrank (R ⧸ m) (M ⧸ m • (⊤ : Submodule R M)) =
+      Module.finrank m.ResidueField (TensorProduct R m.ResidueField M) := by
+  let e : (R ⧸ m) ≃ₐ[R] m.ResidueField :=
+    AlgEquiv.ofBijective (IsScalarTower.toAlgHom R (R ⧸ m) m.ResidueField)
+      (Ideal.bijective_algebraMap_quotient_residueField m)
+  let j : TensorProduct R (R ⧸ m) M ≃ₗ[R] TensorProduct R m.ResidueField M :=
+    TensorProduct.congr e.toLinearEquiv (LinearEquiv.refl R M)
+  let eQ : TensorProduct R (R ⧸ m) M ≃ₗ[R ⧸ m] (M ⧸ m • (⊤ : Submodule R M)) :=
+    (TensorProduct.quotTensorEquivQuotSMul M m).extendScalarsOfSurjective
+      Ideal.Quotient.mk_surjective
+  have hj :
+      ∀ (r : R ⧸ m) (x : TensorProduct R (R ⧸ m) M),
+        j (r • x) = e r • j x := by
+    -- Compare the scalar actions before transporting finrank across the quotient-residue-field
+    -- equivalence.
+    intro r x
+    refine TensorProduct.induction_on x ?_ ?_ ?_
+    · simp
+    · intro a y
+      change e (r * a) ⊗ₜ[R] y = e r • (e a ⊗ₜ[R] y)
+      rw [map_mul]
+      rfl
+    · intro x y hx hy
+      simp [smul_add, hx, hy]
+  have htensor :
+      Module.finrank (R ⧸ m) (TensorProduct R (R ⧸ m) M) =
+        Module.finrank m.ResidueField (TensorProduct R m.ResidueField M) := by
+    -- Transport rank across the quotient-residue-field equivalence and then convert to finrank.
+    have hrank :
+        Module.rank (R ⧸ m) (TensorProduct R (R ⧸ m) M) =
+          Module.rank m.ResidueField (TensorProduct R m.ResidueField M) :=
+      rank_eq_of_equiv_equiv e.toRingEquiv j.toAddEquiv e.toRingEquiv.bijective hj
+    change
+      Cardinal.toNat (Module.rank (R ⧸ m) (TensorProduct R (R ⧸ m) M)) =
+        Cardinal.toNat (Module.rank m.ResidueField (TensorProduct R m.ResidueField M))
+    exact congrArg Cardinal.toNat hrank
+  -- First identify the quotient with the tensor over `R ⧸ m`, then pass from `R ⧸ m` to the
+  -- residue field.
+  calc
+    Module.finrank (R ⧸ m) (M ⧸ m • (⊤ : Submodule R M)) =
+        Module.finrank (R ⧸ m) (TensorProduct R (R ⧸ m) M) := by
+          exact eQ.finrank_eq.symm
+    _ = Module.finrank m.ResidueField (TensorProduct R m.ResidueField M) := htensor
+
+omit [IsReduced R] in
+/-- Helper for Lemma 10.78.3: a locally constant integer-valued fiber-rank function is constant on
+some basic-open neighborhood of any given prime. -/
+private theorem exists_basicOpen_eq_fiberRank
+    (hrank : IsLocallyConstant (fun p : PrimeSpectrum R ↦
+      (Module.finrank p.asIdeal.ResidueField
+        (TensorProduct R p.asIdeal.ResidueField M) : ℤ)))
+    (p : PrimeSpectrum R) :
+    ∃ g : R, g ∉ p.asIdeal ∧
+      ∀ q ∈ (PrimeSpectrum.basicOpen g : Set (PrimeSpectrum R)),
+        Module.finrank q.asIdeal.ResidueField
+          (TensorProduct R q.asIdeal.ResidueField M) =
+            Module.finrank p.asIdeal.ResidueField
+              (TensorProduct R p.asIdeal.ResidueField M) := by
+  rcases hrank.exists_open p with ⟨U, hU, hpU, hconst⟩
+  obtain ⟨V, ⟨g, rfl⟩, hpV, hVU⟩ :=
+    PrimeSpectrum.isTopologicalBasis_basic_opens.isOpen_iff.mp hU p hpU
+  refine ⟨g, (PrimeSpectrum.mem_basicOpen g p).1 hpV, ?_⟩
+  intro q hq
+  exact Int.ofNat.inj (hconst q (hVU hq))
+
+/-- Helper for Chap10 Lemma 10 78 3: a surjective map from `A^r` to a finite free module of
+finrank `r` is bijective. -/
+private theorem linearMap_bijective_of_surjective_fin_fun_of_finrank_eq
+    {A : Type*} [CommRing A] [Nontrivial A] {N : Type*} [AddCommGroup N] [Module A N] {r : ℕ}
+    (φ : (Fin r → A) →ₗ[A] N) (hφ : Function.Surjective φ)
+    [Module.Free A N] [Module.Finite A N] (hr : Module.finrank A N = r) :
+    Function.Bijective φ := by
+  let e : N ≃ₗ[A] (Fin r → A) :=
+    (Module.finBasisOfFinrankEq A N hr).repr ≪≫ₗ Finsupp.linearEquivFunOnFinite A A (Fin r)
+  let ψ : Module.End A (Fin r → A) := e.toLinearMap.comp φ
+  have hψ_surj : Function.Surjective ψ := e.surjective.comp hφ
+  have hψ_inj : Function.Injective ψ :=
+    Module.End.injective_of_surjective_fin (f := ψ) hψ_surj
+  -- Transport injectivity from the finite free endomorphism back across the equivalence `e`.
+  refine ⟨fun x y hxy ↦ ?_, hφ⟩
+  have hψxy : ψ x = ψ y := by
+    simpa [ψ] using hxy
+  exact hψ_inj hψxy
+
+omit [IsReduced R] in
+/-- Helper for Lemma 10.78.3: localizing a linear map is surjective exactly when the localized
+cokernel is trivial. -/
+private theorem localized_map_surjective_iff_subsingleton_cokernel
+    {P : Type*} [AddCommGroup P] [Module R P]
+    {N : Type*} [AddCommGroup N] [Module R N]
+    (φ : P →ₗ[R] N) (S : Submonoid R) :
+    Function.Surjective (LocalizedModule.map S φ) ↔
+      Subsingleton (LocalizedModule S (N ⧸ LinearMap.range φ)) := by
+  let ψ : LocalizedModule S P →ₗ[Localization S] LocalizedModule S N := LocalizedModule.map S φ
+  have hRange :
+      LinearMap.range ψ = (LinearMap.range φ).localized S := by
+    -- Rewrite the localized range through the canonical range-localization compatibility theorem.
+    symm
+    simpa [ψ, Submodule.localized] using
+      (LinearMap.localized'_range_eq_range_localizedMap
+        (S := Localization S)
+        (p := S)
+        (f := LocalizedModule.mkLinearMap S P)
+        (f' := LocalizedModule.mkLinearMap S N)
+        φ)
+  let eQuot :
+      (LocalizedModule S N ⧸ (LinearMap.range φ).localized S) ≃ₗ[Localization S]
+        LocalizedModule S (N ⧸ LinearMap.range φ) :=
+    localizedQuotientEquiv
+      (p := S)
+      (M' := LinearMap.range φ)
+  let e :
+      (LocalizedModule S N ⧸ LinearMap.range ψ) ≃ₗ[Localization S]
+        LocalizedModule S (N ⧸ LinearMap.range φ) :=
+    (Submodule.quotEquivOfEq _ _ hRange).trans eQuot
+  constructor
+  · intro hφ
+    have hsub :
+        Subsingleton (LocalizedModule S N ⧸ LinearMap.range ψ) := by
+      -- A surjective localized map has trivial quotient by its range.
+      exact (Submodule.Quotient.subsingleton_iff).2 (LinearMap.range_eq_top.2 hφ)
+    exact (e.toEquiv.subsingleton_congr).1 hsub
+  · intro hsub
+    have hsub' :
+        Subsingleton (LocalizedModule S N ⧸ LinearMap.range ψ) :=
+      (e.toEquiv.subsingleton_congr).2 hsub
+    -- Triviality of the localized cokernel says that the localized range is the whole codomain.
+    exact LinearMap.range_eq_top.1 ((Submodule.Quotient.subsingleton_iff).1 hsub')
+
+omit [IsReduced R] in
+/-- Helper for Lemma 10.78.3: if a linear map is surjective after localizing at every prime of the
+basic open `D(a)`, then it is already surjective after inverting `a`. -/
+private theorem map_surjective_away_of_basicOpen_localized_surjective
+    {P : Type*} [AddCommGroup P] [Module R P]
+    {N : Type*} [AddCommGroup N] [Module R N]
+    (φ : P →ₗ[R] N) (a : R)
+    (hlocal :
+      ∀ q ∈ (PrimeSpectrum.basicOpen a : Set (PrimeSpectrum R)),
+        Function.Surjective (LocalizedModule.map q.asIdeal.primeCompl φ)) :
+    Function.Surjective (LocalizedModule.map (.powers a) φ) := by
+  -- Descend surjectivity by showing that the cokernel support misses the whole basic open `D(a)`.
+  have hsub :
+      Subsingleton (LocalizedModule (.powers a) (N ⧸ LinearMap.range φ)) := by
+    rw [LocalizedModule.subsingleton_iff_disjoint]
+    refine Set.disjoint_left.2 ?_
+    intro q hq_basic hq_support
+    have hqCoker :
+        Subsingleton (LocalizedModule q.asIdeal.primeCompl (N ⧸ LinearMap.range φ)) :=
+      (localized_map_surjective_iff_subsingleton_cokernel
+        (R := R) (P := P) (N := N) φ q.asIdeal.primeCompl).mp
+        (hlocal q hq_basic)
+    -- A trivial localized cokernel means that `q` is outside the cokernel support.
+    exact ((Module.notMem_support_iff).2 hqCoker) hq_support
+  -- Convert the vanishing of the away-localized cokernel back into surjectivity of the away map.
+  exact
+    (localized_map_surjective_iff_subsingleton_cokernel
+      (R := R) (P := P) (N := N) φ (.powers a)).mpr hsub
+
+/-- Helper for Lemma 10.78.3: localizing the free module `(Fin r → R)` yields the canonical
+`Fin r`-indexed free module over the localized ring. -/
+private noncomputable def localized_fin_fun_equiv
+    (S : Submonoid R) (r : ℕ) :
+    LocalizedModule S (Fin r → R) ≃ₗ[Localization S] (Fin r → Localization S) :=
+  let fS : (Fin r → R) →ₗ[R] (Fin r → Localization S) :=
+    .pi fun i : Fin r ↦ (LocalizedModule.mkLinearMap S R) ∘ₗ LinearMap.proj i
+  (IsLocalizedModule.iso S fS).extendScalarsOfIsLocalization S (Localization S)
+
+/-- Helper for Lemma 10.78.3: at a prime, the localized source `(Fin r → R)` is canonically the
+standard free `Fin r`-module over the local ring. -/
+private noncomputable def localized_fin_fun_equiv_atPrime
+    (q : PrimeSpectrum R) (r : ℕ) :
+    LocalizedModule q.asIdeal.primeCompl (Fin r → R) ≃ₗ[Localization.AtPrime q.asIdeal]
+      (Fin r → Localization.AtPrime q.asIdeal) :=
+  localized_fin_fun_equiv (R := R) q.asIdeal.primeCompl r
+
+/-- Helper for Lemma 10.78.3: localizing first away from `t` and then at a prime `I` identifies
+the two local rings. -/
+private noncomputable def away_atPrime_algEquiv_to_contracted
+    {A : Type*} [CommRing A] {t : A} (I : Ideal (Localization.Away t)) [I.IsPrime] :
+    Localization.AtPrime (Ideal.comap (algebraMap A (Localization.Away t)) I) ≃ₐ[A]
+      Localization.AtPrime I :=
+  IsLocalization.localizationLocalizationAtPrimeIsoLocalization (M := Submonoid.powers t) I
+
+/-- Helper for Lemma 10.78.3: the iterated stalk of `M_t` at `I` is the localization of `M` at
+the contracted prime. -/
+private theorem localizedAway_stalk_isLocalizedModule_of_contracted_prime
+    {A : Type*} [CommRing A]
+    {N : Type*} [AddCommGroup N] [Module A N]
+    {t : A} (I : Ideal (Localization.Away t)) [I.IsPrime] :
+    let J : Ideal A := Ideal.comap (algebraMap A (Localization.Away t)) I
+    let κ :
+      N →ₗ[A] LocalizedModule.AtPrime I (LocalizedModule.Away t N) :=
+      ((LocalizedModule.mkLinearMap I.primeCompl (LocalizedModule.Away t N)).restrictScalars A).comp
+        (LocalizedModule.mkLinearMap (.powers t) N)
+    IsLocalizedModule J.primeCompl κ := by
+  let J : Ideal A := Ideal.comap (algebraMap A (Localization.Away t)) I
+  let B := Localization.AtPrime I
+  let κ :
+      N →ₗ[A] LocalizedModule.AtPrime I (LocalizedModule.Away t N) :=
+    ((LocalizedModule.mkLinearMap I.primeCompl (LocalizedModule.Away t N)).restrictScalars A).comp
+      (LocalizedModule.mkLinearMap (.powers t) N)
+  let eOuter :
+      LocalizedModule.AtPrime I (LocalizedModule.Away t N) ≃ₗ[B]
+        (B ⊗[Localization.Away t] (LocalizedModule.Away t N)) :=
+    LocalizedModule.equivTensorProduct I.primeCompl (LocalizedModule.Away t N)
+  let eInner :
+      (B ⊗[Localization.Away t] (LocalizedModule.Away t N)) ≃ₗ[B] (B ⊗[A] N) :=
+    (LinearEquiv.baseChange
+      (R := Localization.Away t) (A := B)
+      (M := LocalizedModule.Away t N) (N := Localization.Away t ⊗[A] N)
+      (LocalizedModule.equivTensorProduct (.powers t) N)).trans
+      (TensorProduct.AlgebraTensorModule.cancelBaseChange A (Localization.Away t) B B N)
+  let e :
+      LocalizedModule.AtPrime I (LocalizedModule.Away t N) ≃ₗ[A] B ⊗[A] N :=
+    (eOuter.trans eInner).restrictScalars A
+  have hcomp :
+      e.toLinearMap.comp κ = TensorProduct.mk A B N 1 := by
+    -- Route correction: collapse the iterated localization to the tensor model before proving the
+    -- `IsLocalizedModule` instance, so the comparison map is the standard tensor generator.
+    ext x
+    change (TensorProduct.AlgebraTensorModule.cancelBaseChange A (Localization.Away t) B B N)
+        ((LinearEquiv.baseChange
+          (R := Localization.Away t) (A := B)
+          (M := LocalizedModule.Away t N) (N := Localization.Away t ⊗[A] N)
+          (LocalizedModule.equivTensorProduct (Submonoid.powers t) N))
+          ((LocalizedModule.equivTensorProduct I.primeCompl (LocalizedModule.Away t N))
+            (LocalizedModule.mk (LocalizedModule.mk x 1) 1))) =
+      1 ⊗ₜ[A] x
+    rw [LocalizedModule.equivTensorProduct_apply_mk, LinearEquiv.baseChange_tmul,
+      LocalizedModule.equivTensorProduct_apply_mk,
+      TensorProduct.AlgebraTensorModule.cancelBaseChange_tmul]
+    congr 1
+    rw [Localization.mk_one_eq_algebraMap, Localization.mk_one_eq_algebraMap, Algebra.smul_def,
+      map_one, map_one, one_mul]
+  letI : IsLocalization.AtPrime B J := by
+    dsimp [B, J]
+    infer_instance
+  have hκ :
+      e.symm.toLinearMap.comp (TensorProduct.mk A B N 1) = κ := by
+    -- Pull the standard tensor localization map back through the comparison equivalence.
+    ext x
+    apply e.injective
+    simpa [LinearMap.comp_assoc] using
+      (congrArg (fun f : N →ₗ[A] B ⊗[A] N => f x) hcomp).symm
+  -- Transport the canonical tensor-product localization model to the iterated away-then-prime
+  -- stalk.
+  convert
+    (inferInstance : IsLocalizedModule J.primeCompl
+      (e.symm.toLinearMap.comp (TensorProduct.mk A B N 1))) using 1
+  exact hκ.symm
+
+/-- Helper for Lemma 10.78.3: on a localized free module, the canonical `Fin r`-equivalence sends
+`mk v 1` to the coordinatewise localization of `v`. -/
+private theorem localized_fin_fun_equiv_atPrime_mk_one
+    {A : Type*} [CommRing A] (q : PrimeSpectrum A) (r : ℕ) (v : Fin r → A) :
+    localized_fin_fun_equiv_atPrime (R := A) q r
+      (LocalizedModule.mk v (1 : q.asIdeal.primeCompl)) =
+        fun i ↦ algebraMap A (Localization.AtPrime q.asIdeal) (v i) := by
+  -- Evaluate the canonical localization/free-module comparison on the numerator `v` with trivial
+  -- denominator, then read off each coordinate.
+  ext i
+  simpa [localized_fin_fun_equiv_atPrime, localized_fin_fun_equiv, LinearMap.proj_apply,
+    LinearMap.comp_apply] using
+      Localization.mk_one_eq_algebraMap (M := q.asIdeal.primeCompl) (v i)
+
+/-- Helper for Lemma 10.78.3: a vector over a reduced ring is zero once all of its coordinates
+vanish in every minimal-prime localization. -/
+private theorem fin_fun_eq_zero_of_forall_minimalPrime_localization_eq_zero
+    {A : Type*} [CommRing A] [IsReduced A] {r : ℕ} (v : Fin r → A)
+    (hzero :
+      ∀ q : minimalPrimes A, ∀ i : Fin r,
+        algebraMap A (Localization.AtPrime q.1) (v i) = 0) :
+    v = 0 := by
+  ext i
+  -- Descend coefficientwise through the injective map into the product of minimal-prime fields.
+  exact (algebraMap_embedding_into_product_of_fields (R := A)).1 <| by
+    ext q
+    simpa using hzero q i
+
+/-- Helper for Lemma 10.78.3: injectivity on all minimal-prime localizations descends to the
+original map out of the free source `A^r`. -/
+private theorem injective_of_minimalPrime_localizations_for_fin_fun_source
+    {A : Type*} [CommRing A] [IsReduced A]
+    {N : Type*} [AddCommGroup N] [Module A N]
+    {r : ℕ} (φ : (Fin r → A) →ₗ[A] N)
+    (hlocal :
+      ∀ q : minimalPrimes A, Function.Injective (LocalizedModule.map q.1.primeCompl φ)) :
+    Function.Injective φ := by
+  intro v w hvw
+  have hzero :
+      v - w = 0 := by
+    apply fin_fun_eq_zero_of_forall_minimalPrime_localization_eq_zero (A := A) (r := r) (v - w)
+    intro q i
+    let qSpec : PrimeSpectrum A := ⟨q.1, inferInstance⟩
+    have hvq :
+        LocalizedModule.map q.1.primeCompl φ
+          (LocalizedModule.mk (v - w) (1 : q.1.primeCompl)) =
+            LocalizedModule.map q.1.primeCompl φ 0 := by
+      simp [map_sub, hvw]
+    have hz :
+        LocalizedModule.mk (v - w) (1 : q.1.primeCompl) = 0 := hlocal q hvq
+    have hz' := congrArg
+        (fun z ↦ localized_fin_fun_equiv_atPrime (R := A) qSpec r z i) hz
+    simpa [Pi.sub_apply, localized_fin_fun_equiv_atPrime_mk_one] using hz'
+  exact sub_eq_zero.mp hzero
+
+omit [IsReduced R] in
+/-- Helper for Chap10 Lemma 10 78 3: the contraction of a minimal prime of an away localization
+is a minimal prime of the original ring. -/
+private theorem minimalPrime_under_away_mem_minimalPrimes {t : R}
+    (q : minimalPrimes (Localization.Away t)) :
+    q.1.under R ∈ minimalPrimes R := by
+  have hq : q.1 ∈ (⊥ : Ideal (Localization.Away t)).minimalPrimes := q.2
+  have hmap : q.1 ∈ ((⊥ : Ideal R).map (algebraMap R (Localization.Away t))).minimalPrimes := by
+    simpa using hq
+  -- Pull minimality back through the localization-minimal-prime correspondence.
+  rw [IsLocalization.minimalPrimes_map (Submonoid.powers t) (Localization.Away t)
+    (⊥ : Ideal R)] at hmap
+  simpa [Ideal.under_def] using hmap
+
+omit [IsReduced R] in
+/-- Helper for Chap10 Lemma 10 78 3: the inverted element is not in the contraction of a prime of
+`R_t`. -/
+private theorem notMem_under_away_of_mem_minimalPrimes {t : R}
+    (q : minimalPrimes (Localization.Away t)) :
+    t ∉ q.1.under R := by
+  intro ht
+  have ht' : algebraMap R (Localization.Away t) t ∈ q.1 := ht
+  have hunit : IsUnit (algebraMap R (Localization.Away t) t) :=
+    IsLocalization.Away.isUnit_of_dvd (S := Localization.Away t) t (dvd_refl t)
+  -- A proper prime ideal cannot contain a unit.
+  exact (show q.1.IsPrime from inferInstance).ne_top (q.1.eq_top_of_isUnit_mem ht' hunit)
+
+/-- Helper for Chap10 Lemma 10 78 3: at a minimal prime of a reduced ring, stalk dimension agrees
+with residue-field fiber dimension. -/
+private theorem minimalPrime_localizedModule_finrank_eq_residueField_tensor
+    {A : Type*} [CommRing A] [IsReduced A]
+    {N : Type*} [AddCommGroup N] [Module A N] [Module.Finite A N]
+    (q : minimalPrimes A) :
+    Module.finrank (Localization.AtPrime q.1) (LocalizedModule.AtPrime q.1 N) =
+      Module.finrank q.1.ResidueField (q.1.ResidueField ⊗[A] N) := by
+  let K := Localization.AtPrime q.1
+  have hField : IsField K := by
+    simpa [K] using isField_localizationAtPrime_of_minimalPrime (R := A) q
+  letI : Field K := hField.toField
+  let eLoc : LocalizedModule.AtPrime q.1 N ≃ₗ[K] K ⊗[A] N :=
+    LocalizedModule.equivTensorProduct q.1.primeCompl N
+  have hres_bij : Function.Bijective (algebraMap K q.1.ResidueField) := by
+    change Function.Bijective (IsLocalRing.residue K)
+    constructor
+    · rw [RingHom.injective_iff_ker_eq_bot]
+      change RingHom.ker (Ideal.Quotient.mk (IsLocalRing.maximalIdeal K)) = ⊥
+      rw [Ideal.mk_ker]
+      exact (IsLocalRing.isField_iff_maximalIdeal_eq (R := K)).1 hField
+    · exact Ideal.Quotient.mk_surjective
+  let eκ : K ≃ₐ[A] q.1.ResidueField :=
+    AlgEquiv.ofBijective (IsScalarTower.toAlgHom A K q.1.ResidueField) hres_bij
+  let eTensor : K ⊗[A] N ≃ₗ[A] q.1.ResidueField ⊗[A] N :=
+    TensorProduct.congr eκ.toLinearEquiv (LinearEquiv.refl A N)
+  have hsemilin :
+      ∀ (c : K) (x : K ⊗[A] N), eTensor (c • x) = eκ c • eTensor x := by
+    intro c x
+    refine TensorProduct.induction_on x ?_ ?_ ?_
+    · simp
+    · intro a n
+      change eκ (c * a) ⊗ₜ[A] n = eκ c • (eκ a ⊗ₜ[A] n)
+      rw [map_mul]
+      rfl
+    · intro x y hx hy
+      simp [smul_add, hx, hy]
+  calc
+    Module.finrank K (LocalizedModule.AtPrime q.1 N) = Module.finrank K (K ⊗[A] N) := by
+      exact eLoc.finrank_eq
+    _ = Module.finrank q.1.ResidueField (q.1.ResidueField ⊗[A] N) := by
+      have hrank : Module.rank K (K ⊗[A] N) =
+          Module.rank q.1.ResidueField (q.1.ResidueField ⊗[A] N) :=
+        rank_eq_of_equiv_equiv eκ.toRingEquiv eTensor.toAddEquiv eκ.toRingEquiv.bijective
+          hsemilin
+      change Cardinal.toNat (Module.rank K (K ⊗[A] N)) =
+        Cardinal.toNat (Module.rank q.1.ResidueField (q.1.ResidueField ⊗[A] N))
+      exact congrArg Cardinal.toNat hrank
+
+omit [IsReduced R] in
+/-- Helper for Chap10 Lemma 10 78 3: the residue-field fiber of an away localization has the same
+dimension as the original fiber at the contracted prime. -/
+private theorem away_residueField_fiber_finrank_eq_under
+    [Module.Finite R M] {t : R} (q : PrimeSpectrum (Localization.Away t)) :
+    Module.finrank q.asIdeal.ResidueField
+      (q.asIdeal.ResidueField ⊗[Localization.Away t] LocalizedModule.Away t M) =
+    Module.finrank (q.asIdeal.under R).ResidueField
+      ((q.asIdeal.under R).ResidueField ⊗[R] M) := by
+  let A := Localization.Away t
+  let p : Ideal R := q.asIdeal.under R
+  let K := q.asIdeal.ResidueField
+  let k := p.ResidueField
+  have hpdef : p = Ideal.comap (algebraMap R A) q.asIdeal := by rfl
+  have hmap_bij :
+      Function.Bijective (Ideal.ResidueField.map p q.asIdeal (algebraMap R A) hpdef) := by
+    have hsurj : (algebraMap R A).SurjectiveOnStalks :=
+      RingHom.surjectiveOnStalks_of_isLocalization (Submonoid.powers t) A
+    exact hsurj.residueFieldMap_bijective p q.asIdeal hpdef
+  let eκ : k ≃ₐ[R] K :=
+    AlgEquiv.ofBijective (Ideal.ResidueField.mapₐ p q.asIdeal (Algebra.ofId R A) hpdef)
+      hmap_bij
+  let eAway : K ⊗[A] LocalizedModule.Away t M ≃ₗ[K] K ⊗[R] M :=
+    (LinearEquiv.baseChange
+      (R := A) (A := K)
+      (M := LocalizedModule.Away t M) (N := A ⊗[R] M)
+      (LocalizedModule.equivTensorProduct (.powers t) M)).trans
+      (TensorProduct.AlgebraTensorModule.cancelBaseChange R A K K M)
+  let eTensor : k ⊗[R] M ≃ₗ[R] K ⊗[R] M :=
+    TensorProduct.congr eκ.toLinearEquiv (LinearEquiv.refl R M)
+  have hsemilin :
+      ∀ (c : k) (x : k ⊗[R] M), eTensor (c • x) = eκ c • eTensor x := by
+    intro c x
+    refine TensorProduct.induction_on x ?_ ?_ ?_
+    · simp
+    · intro a n
+      change eκ (c * a) ⊗ₜ[R] n = eκ c • (eκ a ⊗ₜ[R] n)
+      rw [map_mul]
+      rfl
+    · intro x y hx hy
+      simp [smul_add, hx, hy]
+  have hfieldRank : Module.finrank K (K ⊗[R] M) = Module.finrank k (k ⊗[R] M) := by
+    have hrank : Module.rank k (k ⊗[R] M) = Module.rank K (K ⊗[R] M) :=
+      rank_eq_of_equiv_equiv eκ.toRingEquiv eTensor.toAddEquiv eκ.toRingEquiv.bijective
+        hsemilin
+    change Cardinal.toNat (Module.rank K (K ⊗[R] M)) =
+      Cardinal.toNat (Module.rank k (k ⊗[R] M))
+    exact congrArg Cardinal.toNat hrank.symm
+  calc
+    Module.finrank K (K ⊗[A] LocalizedModule.Away t M) =
+        Module.finrank K (K ⊗[R] M) := by
+          exact eAway.finrank_eq
+    _ = Module.finrank k (k ⊗[R] M) := hfieldRank
+
+/-- Helper for Chap10 Lemma 10 78 3: the minimal-prime stalk of `M_t` has dimension equal to the
+fiber dimension over the contracted prime of `R`. -/
+private theorem minimalPrime_localizedAway_finrank_eq_under_fiber
+    [Module.Finite R M] {t : R} (q : minimalPrimes (Localization.Away t)) :
+    Module.finrank (Localization.AtPrime q.1)
+      (LocalizedModule.AtPrime q.1 (LocalizedModule.Away t M)) =
+    Module.finrank (q.1.under R).ResidueField
+      ((q.1.under R).ResidueField ⊗[R] M) := by
+  let qSpec : PrimeSpectrum (Localization.Away t) := ⟨q.1, inferInstance⟩
+  -- First use that the local ring at a minimal prime is a field, then transport the away fiber
+  -- back to the contracted prime of `R`.
+  calc
+    Module.finrank (Localization.AtPrime q.1)
+        (LocalizedModule.AtPrime q.1 (LocalizedModule.Away t M)) =
+      Module.finrank q.1.ResidueField
+        (q.1.ResidueField ⊗[Localization.Away t] LocalizedModule.Away t M) := by
+          exact minimalPrime_localizedModule_finrank_eq_residueField_tensor
+            (A := Localization.Away t) (N := LocalizedModule.Away t M) q
+    _ = Module.finrank (q.1.under R).ResidueField
+        ((q.1.under R).ResidueField ⊗[R] M) := by
+          exact away_residueField_fiber_finrank_eq_under (R := R) (M := M) qSpec
+
+/-- Helper for Lemma 10.78.3: at a minimal prime of the away localization, the localized
+comparison map is bijective. -/
+private theorem minimal_prime_localized_away_comparison_bijective
+    [Module.Finite R M] {r : ℕ} {t : R}
+    (φA : (Fin r → Localization.Away t) →ₗ[Localization.Away t] LocalizedModule.Away t M)
+    (hφA_surj : Function.Surjective φA)
+    (hrank :
+      ∀ q ∈ (PrimeSpectrum.basicOpen t : Set (PrimeSpectrum R)),
+        Module.finrank q.asIdeal.ResidueField
+          (TensorProduct R q.asIdeal.ResidueField M) = r)
+    (q : minimalPrimes (Localization.Away t)) :
+    Function.Bijective (LocalizedModule.map q.1.primeCompl φA) := by
+  let A := Localization.Away t
+  let qSpec : PrimeSpectrum A := ⟨q.1, inferInstance⟩
+  let K := Localization.AtPrime q.1
+  let φq :
+      LocalizedModule.AtPrime q.1 (Fin r → A) →ₗ[K]
+        LocalizedModule.AtPrime q.1 (LocalizedModule.Away t M) :=
+    LocalizedModule.map q.1.primeCompl φA
+  have hφq_surj : Function.Surjective φq :=
+    LocalizedModule.map_surjective q.1.primeCompl φA hφA_surj
+  have hunder_min : q.1.under R ∈ minimalPrimes R :=
+    minimalPrime_under_away_mem_minimalPrimes (R := R) q
+  have hp_basic :
+      (⟨q.1.under R, inferInstance⟩ : PrimeSpectrum R) ∈
+        (PrimeSpectrum.basicOpen t : Set (PrimeSpectrum R)) := by
+    -- The contracted prime misses `t` because `t` is inverted in `R_t`.
+    exact (PrimeSpectrum.mem_basicOpen t ⟨q.1.under R, inferInstance⟩).2
+      (notMem_under_away_of_mem_minimalPrimes (R := R) q)
+  have hfinrank :
+      Module.finrank K (LocalizedModule.AtPrime q.1 (LocalizedModule.Away t M)) = r := by
+    calc
+      Module.finrank K (LocalizedModule.AtPrime q.1 (LocalizedModule.Away t M)) =
+        Module.finrank (q.1.under R).ResidueField
+          ((q.1.under R).ResidueField ⊗[R] M) := by
+            exact minimalPrime_localizedAway_finrank_eq_under_fiber (R := R) (M := M) q
+      _ = r := by
+            exact hrank ⟨q.1.under R, inferInstance⟩ hp_basic
+  letI : Field K := by
+    exact (isField_localizationAtPrime_of_minimalPrime (R := A) q).toField
+  letI : Module.Free K (LocalizedModule.AtPrime q.1 (LocalizedModule.Away t M)) := by
+    infer_instance
+  let e :
+      LocalizedModule.AtPrime q.1 (Fin r → A) ≃ₗ[K] (Fin r → K) :=
+    localized_fin_fun_equiv_atPrime (R := A) qSpec r
+  let ψ : (Fin r → K) →ₗ[K] LocalizedModule.AtPrime q.1 (LocalizedModule.Away t M) :=
+    φq.comp e.symm.toLinearMap
+  have hψ_surj : Function.Surjective ψ := hφq_surj.comp e.symm.surjective
+  have hψ_bij : Function.Bijective ψ :=
+    linearMap_bijective_of_surjective_fin_fun_of_finrank_eq
+      (A := K)
+      (N := LocalizedModule.AtPrime q.1 (LocalizedModule.Away t M))
+      (r := r) ψ hψ_surj hfinrank
+  -- Normalize the source to `K^r`, prove bijectivity there, and transfer injectivity back.
+  refine ⟨?_, hφq_surj⟩
+  intro u v huv
+  apply e.injective
+  have hψuv : ψ (e u) = ψ (e v) := by
+    simpa [ψ, φq] using huv
+  exact hψ_bij.1 hψuv
+
+omit [IsReduced R] in
+/-- Helper for Lemma 10.78.3: if the family `x` generates after inverting `f`, then the
+comparison map is surjective over `R_f`. -/
+private theorem comparisonMap_surjective_away_of_span_localized_eq_top
+    {r : ℕ} (x : Fin r → M) {f : R}
+    (hspan : (Submodule.span R (Set.range x)).localized (.powers f) = ⊤) :
+    Function.Surjective (LocalizedModule.map (.powers f) (Fintype.linearCombination R x)) := by
+  let φx : (Fin r → R) →ₗ[R] M := Fintype.linearCombination R x
+  have hrange :
+      LinearMap.range (LocalizedModule.map (.powers f) φx) =
+        (Submodule.span R (Set.range x)).localized (.powers f) := by
+    -- Rewrite the range of the localized comparison map as the localization of the original span.
+    calc
+      LinearMap.range (LocalizedModule.map (.powers f) φx)
+          = (LinearMap.range φx).localized (.powers f) := by
+              symm
+              simpa [Submodule.localized] using
+                (LinearMap.localized'_range_eq_range_localizedMap
+                  (S := Localization (.powers f))
+                  (p := .powers f)
+                  (f := LocalizedModule.mkLinearMap (.powers f) (Fin r → R))
+                  (f' := LocalizedModule.mkLinearMap (.powers f) M)
+                  φx)
+      _ = (Submodule.span R (Set.range x)).localized (.powers f) := by
+            rw [Fintype.range_linearCombination]
+  -- Surjectivity is equivalent to the localized range being all of `M_f`.
+  exact LinearMap.range_eq_top.1 (hrange.trans hspan)
+
+omit [IsReduced R] in
+/-- Helper for Lemma 10.78.3: if the family `x` generates after inverting `f`, then at every
+prime of `D(f)` the localized comparison map is surjective. -/
+private theorem comparisonMap_surjective_atPrime_of_span_localized_eq_top
+    {r : ℕ} (x : Fin r → M) {f : R}
+    (hspan : (Submodule.span R (Set.range x)).localized (.powers f) = ⊤)
+    (q : PrimeSpectrum R) (hfq : f ∉ q.asIdeal) :
+    Function.Surjective (LocalizedModule.map q.asIdeal.primeCompl (Fintype.linearCombination R x)) := by
+  let N : Submodule R M := Submodule.span R (Set.range x)
+  have hpq : Submonoid.powers f ≤ q.asIdeal.primeCompl := by
+    simpa [Submonoid.powers_le, Ideal.primeCompl] using hfq
+  have hNq : N.localized q.asIdeal.primeCompl = ⊤ := by
+    refine top_unique ?_
+    intro z _
+    induction z using LocalizedModule.induction_on with
+    | _ m s =>
+        have hm_f :
+            LocalizedModule.mkLinearMap (.powers f) M m ∈ N.localized (.powers f) := by
+          rw [hspan]
+          simp [LocalizedModule.mkLinearMap_apply]
+        rcases (Submodule.mem_localized'
+            (S := Localization (.powers f))
+            (p := .powers f)
+            (f := LocalizedModule.mkLinearMap (.powers f) M)
+            (M' := N)
+            (LocalizedModule.mkLinearMap (.powers f) M m)).1 hm_f with
+          ⟨n, hn, t, ht⟩
+        let l :
+            LocalizedModule.Away f M →ₗ[R] LocalizedModule.AtPrime q.asIdeal M :=
+          IsLocalizedModule.liftOfLE (.powers f) q.asIdeal.primeCompl hpq
+            (LocalizedModule.mkLinearMap (.powers f) M)
+            (LocalizedModule.mkLinearMap q.asIdeal.primeCompl M)
+        have hlm :
+            l (LocalizedModule.mk m (1 : Submonoid.powers f)) =
+              IsLocalizedModule.mk' (LocalizedModule.mkLinearMap q.asIdeal.primeCompl M) m
+                (1 : q.asIdeal.primeCompl) := by
+          change l (LocalizedModule.mkLinearMap (.powers f) M m) =
+            IsLocalizedModule.mk' (LocalizedModule.mkLinearMap q.asIdeal.primeCompl M) m
+              (1 : q.asIdeal.primeCompl)
+          simpa [IsLocalizedModule.mk'_one, l] using
+            (IsLocalizedModule.liftOfLE_apply
+              (S₁ := .powers f)
+              (S₂ := q.asIdeal.primeCompl)
+              (h := hpq)
+              (f₁ := LocalizedModule.mkLinearMap (.powers f) M)
+              (f₂ := LocalizedModule.mkLinearMap q.asIdeal.primeCompl M)
+              (x := m))
+        have hnum :
+            IsLocalizedModule.mk' (LocalizedModule.mkLinearMap q.asIdeal.primeCompl M) n
+                ⟨t.1, hpq t.2⟩ =
+              IsLocalizedModule.mk' (LocalizedModule.mkLinearMap q.asIdeal.primeCompl M) m
+                (1 : q.asIdeal.primeCompl) := by
+          calc
+            IsLocalizedModule.mk' (LocalizedModule.mkLinearMap q.asIdeal.primeCompl M) n
+                ⟨t.1, hpq t.2⟩ =
+                  l (LocalizedModule.mk m (1 : Submonoid.powers f)) := by
+                    simpa [LocalizedModule.mkLinearMap_apply, l] using congrArg l ht
+            _ =
+                IsLocalizedModule.mk' (LocalizedModule.mkLinearMap q.asIdeal.primeCompl M) m
+                  (1 : q.asIdeal.primeCompl) := hlm
+        have hm_one :
+            IsLocalizedModule.mk' (LocalizedModule.mkLinearMap q.asIdeal.primeCompl M) m
+                (1 : q.asIdeal.primeCompl) ∈ N.localized q.asIdeal.primeCompl := by
+          refine (Submodule.mem_localized'
+            (S := Localization.AtPrime q.asIdeal)
+            (p := q.asIdeal.primeCompl)
+            (f := LocalizedModule.mkLinearMap q.asIdeal.primeCompl M)
+            (M' := N)
+            (IsLocalizedModule.mk' (LocalizedModule.mkLinearMap q.asIdeal.primeCompl M) m
+              (1 : q.asIdeal.primeCompl))).2 ?_
+          exact ⟨n, hn, ⟨t.1, hpq t.2⟩, by simpa using hnum⟩
+        have hmk :
+            LocalizedModule.mk m s =
+              IsLocalization.mk' (Localization.AtPrime q.asIdeal) 1 s •
+                IsLocalizedModule.mk'
+                  (LocalizedModule.mkLinearMap q.asIdeal.primeCompl M) m
+                  (1 : q.asIdeal.primeCompl) := by
+          rw [IsLocalizedModule.mk_eq_mk']
+          symm
+          simpa using
+            (IsLocalizedModule.mk'_smul_mk'
+              (A := Localization.AtPrime q.asIdeal)
+              (f := LocalizedModule.mkLinearMap q.asIdeal.primeCompl M)
+              1 m s (1 : q.asIdeal.primeCompl))
+        rw [hmk]
+        exact Submodule.smul_mem _ _ hm_one
+  let φx : (Fin r → R) →ₗ[R] M := Fintype.linearCombination R x
+  have hrange :
+      LinearMap.range (LocalizedModule.map q.asIdeal.primeCompl φx) =
+        N.localized q.asIdeal.primeCompl := by
+    -- Rewrite the localized range and identify the original range with the span of the generators.
+    calc
+      LinearMap.range (LocalizedModule.map q.asIdeal.primeCompl φx)
+          = (LinearMap.range φx).localized q.asIdeal.primeCompl := by
+              symm
+              simpa [Submodule.localized] using
+                (LinearMap.localized'_range_eq_range_localizedMap
+                  (S := Localization.AtPrime q.asIdeal)
+                  (p := q.asIdeal.primeCompl)
+                  (f := LocalizedModule.mkLinearMap q.asIdeal.primeCompl (Fin r → R))
+                  (f' := LocalizedModule.mkLinearMap q.asIdeal.primeCompl M)
+                  φx)
+      _ = N.localized q.asIdeal.primeCompl := by
+            rw [Fintype.range_linearCombination]
+  -- Once the localized span is all of `M_q`, the localized comparison map is surjective.
+  exact LinearMap.range_eq_top.1 (hrange.trans hNq)
+
+omit [IsReduced R] in
+/-- Helper for Lemma 10.78.3: a basis of `M / mM` lifts to generators on some basic open missing
+`m`. -/
+private theorem exists_away_span_eq_top_of_basis_mod_maximal
+    [Module.Finite R M] (m : Ideal R) [m.IsMaximal] {r : ℕ} (x : Fin r → M)
+    (hspan :
+      Submodule.span (R ⧸ m)
+        (Set.range ((Submodule.mkQ (m • (⊤ : Submodule R M))) ∘ x)) = ⊤) :
+    ∃ f : R, f ∉ m ∧
+      (Submodule.span R (Set.range x)).localized (.powers f) = ⊤ := by
+  let N : Submodule R M := m • (⊤ : Submodule R M)
+  have hgen :
+      (Submodule.span (R ⧸ m) (Set.range ((Submodule.mkQ N) ∘ x))).localized
+        (Algebra.algebraMapSubmonoid (R ⧸ m) (.powers (1 : R))) = ⊤ := by
+    -- Localizing the quotient span at powers of `1` does not change the top submodule.
+    rw [hspan]
+    simp
+  obtain ⟨f, hfmem, htop⟩ :=
+    exists_mem_submonoid_add_ideal_and_span_localizedAway_eq_top_of_quotient_span_eq_top
+      (R := R) (M := M) (I := m) (S := .powers (1 : R)) x (by simpa [N] using hgen)
+  have hf : f ∉ m := by
+    -- An element of `{1} + m` cannot lie in the maximal ideal `m`.
+    intro hfm
+    rcases hfmem with ⟨s, hs, t, ht, hst⟩
+    have hs1 : s = 1 := by
+      simpa using hs
+    subst s
+    have hone : (1 : R) ∈ m := by
+      have hsub : f - t ∈ m := m.sub_mem hfm ht
+      rw [← hst, add_sub_cancel_right] at hsub
+      simpa using hsub
+    have hmne : m ≠ ⊤ := Ideal.IsMaximal.ne_top (show m.IsMaximal from inferInstance)
+    exact hmne (m.eq_top_of_isUnit_mem hone (by simpa using (isUnit_one : IsUnit (1 : R))))
+  exact ⟨f, hf, htop⟩
+
+/-- Helper for Lemma 10.78.3: at each maximal ideal, local constancy of the source fiber-rank
+function should produce a basic-open neighborhood where the localized module is finite free. -/
+private theorem exists_away_free_finite_of_isLocallyConstant_fiberRank_at_maximal
+    [Module.Finite R M]
+    (hrank : IsLocallyConstant (fun p : PrimeSpectrum R ↦
+      (Module.finrank p.asIdeal.ResidueField
+        (TensorProduct R p.asIdeal.ResidueField M) : ℤ)))
+    (m : Ideal R) [m.IsMaximal] :
+    ∃ f : R, f ∉ m ∧
+      Module.Free (Localization.Away f) (LocalizedModule.Away f M) ∧
+      Module.Finite (Localization.Away f) (LocalizedModule.Away f M) := by
+  classical
+  letI : Field (R ⧸ m) := Ideal.Quotient.field m
+  let r : ℕ :=
+    Module.finrank m.ResidueField (TensorProduct R m.ResidueField M)
+  let N : Submodule R M := m • (⊤ : Submodule R M)
+  have hrank_m :
+      Module.finrank (R ⧸ m) (M ⧸ N) = r := by
+    -- Measure the quotient dimension by the residue-field fiber dimension at `m`.
+    simpa [r, N] using
+      quotient_finrank_eq_fiber_finrank_at_maximal (R := R) (M := M) m
+  haveI : Module.Finite (R ⧸ m) (M ⧸ N) :=
+    Module.Finite.of_restrictScalars_finite R (R ⧸ m) (M ⧸ N)
+  letI : Module.Free (R ⧸ m) (M ⧸ N) := by
+    infer_instance
+  let b :=
+    Module.finBasisOfFinrankEq (R ⧸ m) (M ⧸ N) hrank_m
+  choose x hx using fun i : Fin r ↦ Submodule.mkQ_surjective N (b i)
+  have hspan_q :
+      Submodule.span (R ⧸ m) (Set.range ((Submodule.mkQ N) ∘ x)) = ⊤ := by
+    -- The lifted family has the same quotient images as the chosen basis.
+    have hrange : Set.range ((Submodule.mkQ N) ∘ x) = Set.range b := by
+      ext y
+      constructor
+      · rintro ⟨i, rfl⟩
+        exact ⟨i, by simpa [Function.comp_def, hx i]⟩
+      · rintro ⟨i, rfl⟩
+        exact ⟨i, by simpa [Function.comp_def, hx i]⟩
+    rw [hrange, b.span_eq]
+  obtain ⟨f, hf, hspan⟩ :=
+    exists_away_span_eq_top_of_basis_mod_maximal
+      (R := R) (M := M) m x (by simpa [N] using hspan_q)
+  obtain ⟨g, hg, hgrank⟩ :=
+    exists_basicOpen_eq_fiberRank (R := R) (M := M) hrank ⟨m, inferInstance⟩
+  have hrank_fg :
+      ∀ q ∈ (PrimeSpectrum.basicOpen (f * g) : Set (PrimeSpectrum R)),
+        Module.finrank q.asIdeal.ResidueField
+          (TensorProduct R q.asIdeal.ResidueField M) = r := by
+    -- Restrict the constant fiber-rank chart from `D(g)` to the smaller basic open `D(f * g)`.
+    intro q hq
+    have hfgq : f * g ∉ q.asIdeal := (PrimeSpectrum.mem_basicOpen (f * g) q).1 hq
+    have hgq : g ∉ q.asIdeal := by
+      intro hgq
+      exact hfgq (q.asIdeal.mul_mem_left f hgq)
+    simpa [r] using hgrank q ((PrimeSpectrum.mem_basicOpen g q).2 hgq)
+  let φ : (Fin r → R) →ₗ[R] M := Fintype.linearCombination R x
+  have hsurj_local :
+      ∀ q ∈ (PrimeSpectrum.basicOpen (f * g) : Set (PrimeSpectrum R)),
+        Function.Surjective (LocalizedModule.map q.asIdeal.primeCompl φ) := by
+    intro q hq
+    have hfgq : f * g ∉ q.asIdeal := (PrimeSpectrum.mem_basicOpen (f * g) q).1 hq
+    have hfq : f ∉ q.asIdeal := by
+      intro hfq
+      exact hfgq (q.asIdeal.mul_mem_right g hfq)
+    -- The generator chart on `D(f)` stays surjective after localizing further to `q`.
+    exact comparisonMap_surjective_atPrime_of_span_localized_eq_top
+      (R := R) (M := M) x hspan q hfq
+  have hsurj :
+      Function.Surjective (LocalizedModule.map (.powers (f * g)) φ) :=
+    map_surjective_away_of_basicOpen_localized_surjective
+      (R := R) (P := (Fin r → R)) (N := M) φ (f * g) hsurj_local
+  have hfg : f * g ∉ m := by
+    have hmprime : m.IsPrime := Ideal.IsMaximal.isPrime (show m.IsMaximal from inferInstance)
+    intro hfg
+    exact hg ((hmprime.mem_or_mem hfg).resolve_left hf)
+  -- Route correction: the old attempt tried to reuse the stronger free-locus chart from
+  -- `Lemma 10.78.2`. Here the remaining work is exactly the reduced minimal-prime injectivity
+  -- descent for the away-localized comparison map on `D(f * g)`.
+  have hbij :
+      Function.Bijective (LocalizedModule.map (.powers (f * g)) φ) := by
+    let A := Localization.Away (f * g)
+    let eAway :
+        LocalizedModule.Away (f * g) (Fin r → R) ≃ₗ[A] (Fin r → A) :=
+      localized_fin_fun_equiv (R := R) (.powers (f * g)) r
+    let φA : (Fin r → A) →ₗ[A] LocalizedModule.Away (f * g) M :=
+      (LocalizedModule.map (.powers (f * g)) φ).comp eAway.symm.toLinearMap
+    have hφA_surj : Function.Surjective φA := by
+      intro y
+      rcases hsurj y with ⟨x, hx⟩
+      refine ⟨eAway x, ?_⟩
+      simpa [φA, eAway] using hx
+    have hφA_inj :
+        Function.Injective φA :=
+      injective_of_minimalPrime_localizations_for_fin_fun_source
+        (A := A) (N := LocalizedModule.Away (f * g) M) (r := r) φA
+        (fun q ↦
+          (minimal_prime_localized_away_comparison_bijective
+            (R := R) (M := M) (r := r) (t := f * g) φA hφA_surj hrank_fg q).1)
+    refine ⟨?_ , hsurj⟩
+    intro u v huv
+    apply eAway.injective
+    exact hφA_inj (by simpa [φA, eAway] using huv)
+  let e :
+      LocalizedModule.Away (f * g) M ≃ₗ[Localization.Away (f * g)]
+        (Fin r → Localization.Away (f * g)) :=
+    (LinearEquiv.ofBijective (LocalizedModule.map (.powers (f * g)) φ) hbij).symm.trans
+      (localized_fin_fun_equiv (R := R) (.powers (f * g)) r)
+  have hffree :
+      Module.Free (Localization.Away (f * g)) (LocalizedModule.Away (f * g) M) :=
+    (Module.free_and_finite_of_equiv_fin_fun e).1
+  have hffin :
+      Module.Finite (Localization.Away (f * g)) (LocalizedModule.Away (f * g) M) :=
+    (Module.free_and_finite_of_equiv_fin_fun e).2
+  exact ⟨f * g, hfg, hffree, hffin⟩
+
+/-- Helper for Lemma 10.78.3: maximal finite-free charts package into a finite locally free
+structure. -/
+private theorem finiteLocallyFree_of_isLocallyConstant_fiberRank
+    (hM : Module.Finite R M)
+    (hrank : IsLocallyConstant (fun p : PrimeSpectrum R ↦
+      (Module.finrank p.asIdeal.ResidueField
+        (TensorProduct R p.asIdeal.ResidueField M) : ℤ))) :
+    Module.FiniteLocallyFree R M := by
+  letI : Module.Finite R M := hM
+  let t : Set R := { f : R |
+    Module.Free (Localization.Away f) (LocalizedModule.Away f M) ∧
+      Module.Finite (Localization.Away f) (LocalizedModule.Away f M) }
+  have ht_span : Ideal.span t = ⊤ := by
+    -- If the span were proper, a maximal ideal containing it would miss the required finite-free
+    -- chart from the source local argument.
+    by_contra htop
+    obtain ⟨m, hm, hle⟩ := (Ideal.span t).exists_le_maximal htop
+    letI : m.IsMaximal := hm
+    obtain ⟨f, hf, hffree, hffin⟩ :=
+      exists_away_free_finite_of_isLocallyConstant_fiberRank_at_maximal
+        (R := R) (M := M) hrank m
+    exact hf (hle (Ideal.subset_span ⟨hffree, hffin⟩))
+  -- Package the standard-open finite-free charts into the `FiniteLocallyFree` witness.
+  refine ⟨⟨t, ht_span, ?_⟩⟩
+  intro f hf
+  exact hf
+
+/-- Chap10 Lemma 10 78 3: if `M` is a finite `R`-module over a reduced ring, then `M` is projective
+if and only if the fiber-rank function `ρ_M : Spec(R) → ℤ`, `p ↦ dim_{κ(p)}(M ⊗[R] κ(p))`, is
+locally constant. -/
+@[stacks 0FWG]
+theorem projective_iff_isLocallyConstant_rankAtStalk_of_finite
+    (hM : Module.Finite R M) :
+    Module.Projective R M ↔
+      IsLocallyConstant (fun p : PrimeSpectrum R ↦
+        (Module.finrank p.asIdeal.ResidueField
+          (TensorProduct R p.asIdeal.ResidueField M) : ℤ)) := by
+  constructor
+  · intro hproj
+    -- The forward implication is the source fiber-rank local-constancy statement.
+    exact isLocallyConstant_fiberRank_of_projective (R := R) (M := M) hM hproj
+  · intro hrank
+    letI : Module.FiniteLocallyFree R M :=
+      finiteLocallyFree_of_isLocallyConstant_fiberRank (R := R) (M := M) hM hrank
+    -- Once the source local argument provides finite free charts on a standard-open cover,
+    -- projectivity follows from finite presentation plus the free-locus criterion.
+    exact projective_of_finiteLocallyFree (R := R) (M := M)
+
+end

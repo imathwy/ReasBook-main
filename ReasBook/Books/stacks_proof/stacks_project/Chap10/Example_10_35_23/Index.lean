@@ -1,0 +1,4 @@
+import StacksProject_2024.Chap10.Example_10_35_23.CoordinateRings
+import StacksProject_2024.Chap10.Example_10_35_23.NodeAxes
+import StacksProject_2024.Chap10.Example_10_35_23.MatrixAmbientIdeals
+import StacksProject_2024.Chap10.Example_10_35_23.RankOneParametrization

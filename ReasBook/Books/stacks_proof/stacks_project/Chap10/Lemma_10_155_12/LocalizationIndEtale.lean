@@ -1,0 +1,414 @@
+import StacksProject_2024.Chap10.Lemma_10_155_12.IndEtaleBaseChange
+
+open IsLocalRing
+open CategoryTheory Limits
+
+universe u
+
+noncomputable section
+
+section EtaleIndEtale
+
+variable {A : Type u} [CommRing A]
+
+/-- Helper for Chap10 Lemma 10 155 12: the elements of a submonoid, ordered by divisibility in
+the ambient ring, index the principal localizations used to build an arbitrary localization. -/
+private abbrev AwayLocalizationIndex (M : Submonoid A) := M
+
+namespace AwayLocalizationIndex
+
+/-- Helper for Chap10 Lemma 10 155 12: divisibility gives the preorder on principal-localization
+indices. -/
+private instance instLE (M : Submonoid A) : LE (AwayLocalizationIndex (A := A) M) where
+  le m n := (m : A) ∣ (n : A)
+
+/-- Helper for Chap10 Lemma 10 155 12: divisibility in the ambient ring is transitive and
+reflexive on submonoid elements. -/
+private instance instPreorder (M : Submonoid A) : Preorder (AwayLocalizationIndex (A := A) M) where
+  le_refl _ := dvd_rfl
+  le_trans _ _ _ hmn hnk := dvd_trans hmn hnk
+  lt m n := (m : A) ∣ (n : A) ∧ ¬ (n : A) ∣ (m : A)
+  lt_iff_le_not_ge _ _ := Iff.rfl
+
+/-- Helper for Chap10 Lemma 10 155 12: multiplication in a submonoid gives common upper bounds
+for the divisibility preorder. -/
+private instance instDirectedOrder (M : Submonoid A) :
+    IsDirectedOrder (AwayLocalizationIndex (A := A) M) where
+  -- The product `m * n` is divisible by both `m` and `n`, so the index category is filtered.
+  directed m n := by
+    refine ⟨m * n, ?_, ?_⟩
+    · refine ⟨(n : A), ?_⟩
+      rfl
+    · refine ⟨(m : A), ?_⟩
+      change (m : A) * (n : A) = (n : A) * (m : A)
+      rw [mul_comm]
+
+/-- Helper for Chap10 Lemma 10 155 12: if `m` divides `n`, then the localization away from `n`
+inverts every power of `m`. -/
+private lemma transition_mapsUnits {M : Submonoid A}
+    {m n : AwayLocalizationIndex (A := A) M} (h : m ≤ n) :
+    ∀ y : Submonoid.powers (m : A),
+      IsUnit (algebraMap A (Localization.Away (n : A)) y) := by
+  -- Powers preserve divisibility, so every denominator for `A[1/m]` divides a power of `n`.
+  intro y
+  rw [IsLocalization.Away.algebraMap_isUnit_iff
+    (S := Localization.Away (n : A)) (x := (n : A))]
+  rcases (Submonoid.mem_powers_iff y.1 (m : A)).mp y.2 with ⟨k, hk⟩
+  refine ⟨k, ?_⟩
+  rw [← hk]
+  exact pow_dvd_pow_of_dvd h k
+
+/-- Helper for Chap10 Lemma 10 155 12: the transition map between principal localizations
+associated to a divisibility relation. -/
+private noncomputable def transition {M : Submonoid A}
+    {m n : AwayLocalizationIndex (A := A) M} (h : m ≤ n) :
+    Localization.Away (m : A) →ₐ[A] Localization.Away (n : A) :=
+  IsLocalization.liftAlgHom (A := A) (R := A) (M := Submonoid.powers (m : A))
+    (S := Localization.Away (m : A)) (P := Localization.Away (n : A))
+    (f := Algebra.ofId A (Localization.Away (n : A))) (transition_mapsUnits h)
+
+/-- Helper for Chap10 Lemma 10 155 12: a principal-localization transition agrees with the
+target algebra map on the source ring. -/
+private lemma transition_comp_algebraMap {M : Submonoid A}
+    {m n : AwayLocalizationIndex (A := A) M} (h : m ≤ n) :
+    (transition h).toRingHom.comp (algebraMap A (Localization.Away (m : A))) =
+      algebraMap A (Localization.Away (n : A)) := by
+  -- This is the computation rule for the localization lift defining the transition.
+  exact IsLocalization.lift_comp (M := Submonoid.powers (m : A))
+    (S := Localization.Away (m : A)) (g := algebraMap A (Localization.Away (n : A)))
+    (transition_mapsUnits h)
+
+/-- Helper for Chap10 Lemma 10 155 12: the identity divisibility relation gives the identity
+transition map. -/
+private lemma transition_refl {M : Submonoid A} (m : AwayLocalizationIndex (A := A) M) :
+    transition (show m ≤ m from le_rfl) = AlgHom.id A (Localization.Away (m : A)) := by
+  -- Localization maps out of `A[1/m]` are determined by their values on `A`.
+  apply IsLocalization.algHom_ext (Submonoid.powers (m : A))
+  exact AlgHom.coe_ringHom_injective (transition_comp_algebraMap (show m ≤ m from le_rfl))
+
+/-- Helper for Chap10 Lemma 10 155 12: principal-localization transitions compose along
+divisibility chains. -/
+private lemma transition_trans {M : Submonoid A}
+    {m n k : AwayLocalizationIndex (A := A) M} (hmn : m ≤ n) (hnk : n ≤ k) :
+    transition (le_trans hmn hnk) = (transition hnk).comp (transition hmn) := by
+  -- Both composites are maps out of `A[1/m]`, and both restrict to the same algebra map from `A`.
+  apply IsLocalization.algHom_ext (Submonoid.powers (m : A))
+  ext
+
+/-- Helper for Chap10 Lemma 10 155 12: the canonical map from a principal localization
+`A[1/m]` to the localization `M⁻¹A` exists because every power of `m` lies in `M`. -/
+private lemma toLocalization_mapsUnits {M : Submonoid A}
+    (m : AwayLocalizationIndex (A := A) M) :
+    ∀ y : Submonoid.powers (m : A),
+      IsUnit (algebraMap A (Localization M) y) := by
+  -- The denominator submonoid generated by `m` is contained in `M`, so the universal
+  -- localization at `M` inverts every principal denominator.
+  intro y
+  exact IsLocalization.map_units (M := M) (Localization M)
+    ⟨y.1, (Submonoid.powers_le.mpr m.2) y.2⟩
+
+/-- Helper for Chap10 Lemma 10 155 12: the canonical map `A[1/m] → M⁻¹A`. -/
+private noncomputable def toLocalization {M : Submonoid A}
+    (m : AwayLocalizationIndex (A := A) M) :
+    Localization.Away (m : A) →ₐ[A] Localization M :=
+  IsLocalization.liftAlgHom (A := A) (R := A) (M := Submonoid.powers (m : A))
+    (S := Localization.Away (m : A)) (P := Localization M)
+    (f := Algebra.ofId A (Localization M)) (toLocalization_mapsUnits m)
+
+/-- Helper for Chap10 Lemma 10 155 12: the canonical map `A[1/m] → M⁻¹A` restricts to the
+localization map from `A`. -/
+private lemma toLocalization_comp_algebraMap {M : Submonoid A}
+    (m : AwayLocalizationIndex (A := A) M) :
+    (toLocalization m).toRingHom.comp (algebraMap A (Localization.Away (m : A))) =
+      algebraMap A (Localization M) := by
+  -- This is the computation rule for the localization lift defining `toLocalization`.
+  exact IsLocalization.lift_comp (M := Submonoid.powers (m : A))
+    (S := Localization.Away (m : A)) (g := algebraMap A (Localization M))
+    (toLocalization_mapsUnits m)
+
+/-- Helper for Chap10 Lemma 10 155 12: the maps `A[1/m] → M⁻¹A` are compatible with
+principal-localization transition maps. -/
+private lemma toLocalization_comp_transition {M : Submonoid A}
+    {m n : AwayLocalizationIndex (A := A) M} (h : m ≤ n) :
+    (toLocalization n).comp (transition h) = toLocalization m := by
+  -- The two maps out of `A[1/m]` are equal because they have the same restriction to `A`.
+  apply IsLocalization.algHom_ext (Submonoid.powers (m : A))
+  ext
+
+/-- Helper for Chap10 Lemma 10 155 12: the identity morphism law for the principal-localization
+diagram. -/
+private lemma diagram_map_id {M : Submonoid A}
+    (m : AwayLocalizationIndex (A := A) M) :
+    CommRingCat.ofHom (transition (leOfHom (𝟙 m))).toRingHom =
+      𝟙 (CommRingCat.of (Localization.Away (m : A))) := by
+  -- Compare both endomorphisms on the source ring `A`.
+  apply CommRingCat.hom_ext
+  apply IsLocalization.ringHom_ext (Submonoid.powers (m : A))
+  simpa using transition_comp_algebraMap (leOfHom (𝟙 m))
+
+/-- Helper for Chap10 Lemma 10 155 12: the composition law for the principal-localization
+diagram. -/
+private lemma diagram_map_comp {M : Submonoid A}
+    {m n k : AwayLocalizationIndex (A := A) M} (hmn : m ⟶ n) (hnk : n ⟶ k) :
+    CommRingCat.ofHom (transition (leOfHom (hmn ≫ hnk))).toRingHom =
+      CommRingCat.ofHom (transition (leOfHom hmn)).toRingHom ≫
+        CommRingCat.ofHom (transition (leOfHom hnk)).toRingHom := by
+  -- Compare the long transition with the categorical composite after restricting to `A`.
+  apply CommRingCat.hom_ext
+  apply IsLocalization.ringHom_ext (Submonoid.powers (m : A))
+  calc
+    (CommRingCat.Hom.hom
+        (CommRingCat.ofHom (transition (leOfHom (hmn ≫ hnk))).toRingHom)).comp
+        (algebraMap A (Localization.Away (m : A))) =
+      algebraMap A (Localization.Away (k : A)) := by
+        simpa using transition_comp_algebraMap (leOfHom (hmn ≫ hnk))
+    _ = ((transition (leOfHom hnk)).toRingHom.comp
+        (transition (leOfHom hmn)).toRingHom).comp
+        (algebraMap A (Localization.Away (m : A))) := by
+        rw [RingHom.comp_assoc, transition_comp_algebraMap, transition_comp_algebraMap]
+    _ = (CommRingCat.Hom.hom
+        (CommRingCat.ofHom (transition (leOfHom hmn)).toRingHom ≫
+          CommRingCat.ofHom (transition (leOfHom hnk)).toRingHom)).comp
+        (algebraMap A (Localization.Away (m : A))) := by
+        rfl
+
+/-- Helper for Chap10 Lemma 10 155 12: the filtered diagram of principal localizations
+`A[1/m]`, indexed by elements of `M` ordered by divisibility. -/
+private noncomputable def diagram (M : Submonoid A) :
+    AwayLocalizationIndex (A := A) M ⥤ CommRingCat where
+  obj m := CommRingCat.of (Localization.Away (m : A))
+  map {_ _} h := CommRingCat.ofHom (transition (leOfHom h)).toRingHom
+  map_id := diagram_map_id
+  map_comp := diagram_map_comp
+
+/-- Helper for Chap10 Lemma 10 155 12: the canonical maps `A[1/m] → M⁻¹A` form a cocone over
+the principal-localization diagram. -/
+private lemma cocone_naturality {M : Submonoid A}
+    {m n : AwayLocalizationIndex (A := A) M} (h : m ⟶ n) :
+    (diagram M).map h ≫ CommRingCat.ofHom (toLocalization n).toRingHom =
+      CommRingCat.ofHom (toLocalization m).toRingHom := by
+  -- Naturality is exactly compatibility of `toLocalization` with the transition map.
+  apply CommRingCat.hom_ext
+  exact congrArg AlgHom.toRingHom (toLocalization_comp_transition (leOfHom h))
+
+/-- Helper for Chap10 Lemma 10 155 12: the cocone from the principal-localization diagram to
+`M⁻¹A`. -/
+private noncomputable def cocone (M : Submonoid A) : Cocone (diagram (A := A) M) where
+  pt := CommRingCat.of (Localization M)
+  ι :=
+    { app := fun m => CommRingCat.ofHom (toLocalization m).toRingHom
+      naturality := fun _ _ h => cocone_naturality h }
+
+/-- Helper for Chap10 Lemma 10 155 12: the algebra maps from `A` to the principal
+localizations form a natural transformation from the constant `A` diagram. -/
+private lemma sourceNat_naturality {M : Submonoid A}
+    {m n : AwayLocalizationIndex (A := A) M} (h : m ⟶ n) :
+    CommRingCat.ofHom (algebraMap A (Localization.Away (m : A))) ≫
+        (diagram M).map h =
+      CommRingCat.ofHom (algebraMap A (Localization.Away (n : A))) := by
+  -- This is the same computation rule for the transition map, now read as naturality.
+  apply CommRingCat.hom_ext
+  exact transition_comp_algebraMap (leOfHom h)
+
+/-- Helper for Chap10 Lemma 10 155 12: the fixed source map `A → A[1/m]` for the
+principal-localization diagram. -/
+private noncomputable def sourceNat (M : Submonoid A) :
+    (Functor.const (AwayLocalizationIndex (A := A) M)).obj (CommRingCat.of A) ⟶
+      diagram (A := A) M where
+  app m := CommRingCat.ofHom (algebraMap A (Localization.Away (m : A)))
+  naturality := fun _ _ h => (sourceNat_naturality h).symm
+
+/-- Helper for Chap10 Lemma 10 155 12: the principal-localization cocone is compatible with
+the fixed source `A`. -/
+private lemma sourceNat_comp_cocone {M : Submonoid A}
+    (m : AwayLocalizationIndex (A := A) M) :
+    (sourceNat M).app m ≫ (cocone M).ι.app m =
+      CommRingCat.ofHom (algebraMap A (Localization M)) := by
+  -- Compatibility follows from the computation rule for `A[1/m] → M⁻¹A`.
+  apply CommRingCat.hom_ext
+  exact toLocalization_comp_algebraMap m
+
+/-- Helper for Chap10 Lemma 10 155 12: in any cocone over principal localizations, the map from
+the stage `A[1]` agrees with the map from every stage after restricting to `A`. -/
+private lemma coconeBaseMap_eq_stage {M : Submonoid A}
+    (s : Cocone (diagram (A := A) M)) (m : AwayLocalizationIndex (A := A) M)
+    (x : A) :
+    ((s.ι.app (1 : AwayLocalizationIndex (A := A) M)).hom.comp
+        (algebraMap A (Localization.Away (1 : A)))) x =
+      (s.ι.app m).hom ((algebraMap A (Localization.Away (m : A))) x) := by
+  -- Use the transition `1 ≤ m` and the cocone identity to move the `A[1]` leg to the `m`-stage.
+  let h : (1 : AwayLocalizationIndex (A := A) M) ≤ m := ⟨(m : A), by simp⟩
+  have hnat' :
+      ((s.ι.app m).hom.comp ((diagram M).map (homOfLE h)).hom) =
+        (s.ι.app (1 : AwayLocalizationIndex (A := A) M)).hom := by
+    exact congrArg CommRingCat.Hom.hom (s.w (homOfLE h))
+  have htrans' :
+      ((diagram M).map (homOfLE h)).hom
+          ((algebraMap A (Localization.Away (1 : A))) x) =
+        (algebraMap A (Localization.Away (m : A))) x := by
+    exact congrFun (congrArg DFunLike.coe (transition_comp_algebraMap h)) x
+  calc
+    ((s.ι.app (1 : AwayLocalizationIndex (A := A) M)).hom.comp
+        (algebraMap A (Localization.Away (1 : A)))) x =
+      (((s.ι.app m).hom.comp ((diagram M).map (homOfLE h)).hom).comp
+        (algebraMap A (Localization.Away (1 : A)))) x := by
+        rw [hnat']
+        rfl
+    _ = (s.ι.app m).hom ((algebraMap A (Localization.Away (m : A))) x) := by
+        exact congrArg (fun z => (s.ι.app m).hom z) htrans'
+
+/-- Helper for Chap10 Lemma 10 155 12: the base map from `A[1]` into an arbitrary cocone point
+inverts every element of `M`. -/
+private lemma coconeBaseMap_mapsUnits {M : Submonoid A}
+    (s : Cocone (diagram (A := A) M)) :
+    ∀ y : M, IsUnit (((s.ι.app (1 : AwayLocalizationIndex (A := A) M)).hom.comp
+      (algebraMap A (Localization.Away (1 : A)))) y) := by
+  -- Compare with the `y`-stage, where `y` is inverted by the away localization.
+  intro y
+  rw [coconeBaseMap_eq_stage s y (y : A)]
+  have hunitAway : IsUnit ((algebraMap A (Localization.Away (y : A))) (y : A)) :=
+    IsLocalization.Away.algebraMap_isUnit (y : A)
+  exact IsUnit.map (s.ι.app y).hom hunitAway
+
+/-- Helper for Chap10 Lemma 10 155 12: the universal morphism from `M⁻¹A` to an arbitrary
+cocone point over the principal-localization diagram. -/
+private noncomputable def coconeDesc {M : Submonoid A}
+    (s : Cocone (diagram (A := A) M)) : (cocone (A := A) M).pt ⟶ s.pt :=
+  CommRingCat.ofHom (IsLocalization.lift (coconeBaseMap_mapsUnits s))
+
+/-- Helper for Chap10 Lemma 10 155 12: the universal morphism factors the canonical cocone
+through each principal-localization stage. -/
+private lemma cocone_fac {M : Submonoid A}
+    (s : Cocone (diagram (A := A) M)) (m : AwayLocalizationIndex (A := A) M) :
+    (cocone M).ι.app m ≫ coconeDesc s = s.ι.app m := by
+  -- The factorization through a principal stage is checked after restricting to `A`.
+  apply CommRingCat.hom_ext
+  apply IsLocalization.ringHom_ext (R := A) (S := Localization.Away (m : A))
+    (Submonoid.powers (m : A))
+  calc
+    (CommRingCat.Hom.hom
+        (CommRingCat.ofHom (toLocalization m).toRingHom ≫
+          CommRingCat.ofHom (IsLocalization.lift (coconeBaseMap_mapsUnits s)))).comp
+        (algebraMap A (Localization.Away (m : A))) =
+      ((IsLocalization.lift (coconeBaseMap_mapsUnits s)).comp
+        (toLocalization m).toRingHom).comp
+        (algebraMap A (Localization.Away (m : A))) := by
+        rfl
+    _ =
+      (IsLocalization.lift (coconeBaseMap_mapsUnits s)).comp
+        (algebraMap A (Localization M)) := by
+        rw [RingHom.comp_assoc]
+        rw [toLocalization_comp_algebraMap]
+    _ = (s.ι.app (1 : AwayLocalizationIndex (A := A) M)).hom.comp
+        (algebraMap A (Localization.Away (1 : A))) := by
+        exact IsLocalization.lift_comp (M := M) (S := Localization M)
+          (g := (s.ι.app (1 : AwayLocalizationIndex (A := A) M)).hom.comp
+            (algebraMap A (Localization.Away (1 : A))))
+          (coconeBaseMap_mapsUnits s)
+    _ = (s.ι.app m).hom.comp (algebraMap A (Localization.Away (m : A))) := by
+        ext x
+        exact coconeBaseMap_eq_stage s m x
+
+/-- Helper for Chap10 Lemma 10 155 12: the universal morphism from `M⁻¹A` is unique among
+morphisms factoring the principal-localization cocone. -/
+private lemma cocone_uniq {M : Submonoid A}
+    (s : Cocone (diagram (A := A) M)) (f : (cocone (A := A) M).pt ⟶ s.pt)
+    (hf : ∀ m : AwayLocalizationIndex (A := A) M, (cocone M).ι.app m ≫ f = s.ι.app m) :
+    f = coconeDesc s := by
+  -- Uniqueness follows by localization extensionality from the factorization at the `A[1]`
+  -- stage.
+  apply CommRingCat.hom_ext
+  apply IsLocalization.ringHom_ext (R := A) (S := Localization M) M
+  calc
+    (CommRingCat.Hom.hom f).comp (algebraMap A (Localization M)) =
+      ((CommRingCat.Hom.hom f).comp
+        (toLocalization (1 : AwayLocalizationIndex (A := A) M)).toRingHom).comp
+        (algebraMap A (Localization.Away (1 : A))) := by
+        exact congrArg (fun g => (CommRingCat.Hom.hom f).comp g)
+          (toLocalization_comp_algebraMap (1 : AwayLocalizationIndex (A := A) M)).symm
+    _ =
+      ((CommRingCat.ofHom (toLocalization
+          (1 : AwayLocalizationIndex (A := A) M)).toRingHom ≫ f).hom).comp
+        (algebraMap A (Localization.Away (1 : A))) := by
+        rfl
+    _ = (s.ι.app (1 : AwayLocalizationIndex (A := A) M)).hom.comp
+        (algebraMap A (Localization.Away (1 : A))) := by
+        exact congrArg (fun g => g.comp (algebraMap A (Localization.Away (1 : A))))
+          (congrArg CommRingCat.Hom.hom
+            (hf (1 : AwayLocalizationIndex (A := A) M)))
+    _ = (IsLocalization.lift (coconeBaseMap_mapsUnits s)).comp
+        (algebraMap A (Localization M)) := by
+        exact (IsLocalization.lift_comp (M := M) (S := Localization M)
+          (g := (s.ι.app (1 : AwayLocalizationIndex (A := A) M)).hom.comp
+            (algebraMap A (Localization.Away (1 : A))))
+          (coconeBaseMap_mapsUnits s)).symm
+
+/-- Helper for Chap10 Lemma 10 155 12: the principal-localization cocone has colimit
+`M⁻¹A` in commutative rings. -/
+private noncomputable def cocone_isColimit (M : Submonoid A) :
+    IsColimit (cocone (A := A) M) :=
+  IsColimit.mk (fun s => coconeDesc s) (fun s m => cocone_fac s m)
+    (fun s f hf => cocone_uniq s f hf)
+
+end AwayLocalizationIndex
+
+/-- Helper for Chap10 Lemma 10 155 12: an arbitrary localization map is ind-étale over its
+source. -/
+theorem isFilteredColimitOfEtale_localizationMap (M : Submonoid A) :
+    RingHom.IsFilteredColimitOfEtale.{u, u, u} (algebraMap A (Localization M)) := by
+  -- Lift the concrete colimit of principal localizations to the fixed-source under category, then
+  -- apply the chapter theorem flattening filtered colimits of étale stages.
+  let F : AwayLocalizationIndex (A := A) M ⥤ Under (CommRingCat.of A) :=
+    Under.lift (AwayLocalizationIndex.diagram (A := A) M)
+      (AwayLocalizationIndex.sourceNat (A := A) M)
+  let c : Cocone F :=
+    Under.liftCocone (AwayLocalizationIndex.diagram (A := A) M)
+      (AwayLocalizationIndex.sourceNat (A := A) M)
+      (AwayLocalizationIndex.cocone (A := A) M)
+      (CommRingCat.ofHom (algebraMap A (Localization M)))
+      (AwayLocalizationIndex.sourceNat_comp_cocone (A := A))
+  have hc : IsColimit c := by
+    exact Under.isColimitLiftCocone
+      (AwayLocalizationIndex.diagram (A := A) M)
+      (AwayLocalizationIndex.sourceNat (A := A) M)
+      (AwayLocalizationIndex.cocone (A := A) M)
+      (CommRingCat.ofHom (algebraMap A (Localization M)))
+      (AwayLocalizationIndex.sourceNat_comp_cocone (A := A))
+      (AwayLocalizationIndex.cocone_isColimit (A := A) M)
+  have hStages :
+      ∀ m : AwayLocalizationIndex (A := A) M,
+        CategoryTheory.MorphismProperty.ind.{u, u, u + 1} CommRingCat.etale
+          (F.obj m).hom := by
+    intro m
+    -- Each stage is the principal localization `A[1/m]`, which is étale and hence ind-étale.
+    simpa [F, AwayLocalizationIndex.sourceNat] using
+      (RingHom.raw_ind_etale_algebraMap_iff_isFilteredColimitOfEtale.2
+        (isFilteredColimitOfEtale_of_isLocalizationAway
+          (A := A) (B := Localization.Away (m : A)) (r := (m : A))))
+  exact RingHom.algebraMap_isFilteredColimitOfEtale_of_isColimit
+    (F := F) c hc (Iso.refl _) hStages
+
+end EtaleIndEtale
+
+section LocalRingLocalization
+
+variable {A : Type u} [CommRing A] [IsLocalRing A]
+
+/-- Helper for Chap10 Lemma 10 155 12: a local ring is already a localization at the complement
+of its maximal ideal. -/
+instance self_isLocalization_primeCompl_maximalIdeal :
+    IsLocalization (maximalIdeal A).primeCompl A := by
+  -- The localization criterion reduces the statement to the fact that elements outside the
+  -- maximal ideal of a local ring are units.
+  rw [isLocalization_iff]
+  refine ⟨?_, ?_, ?_⟩
+  · intro y
+    exact IsLocalRing.notMem_maximalIdeal.mp y.2
+  · intro z
+    refine ⟨⟨z, 1⟩, ?_⟩
+    simp
+  · intro x y hxy
+    refine ⟨1, ?_⟩
+    simpa using hxy
+
+end LocalRingLocalization

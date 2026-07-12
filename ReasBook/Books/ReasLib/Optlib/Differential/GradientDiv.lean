@@ -432,3 +432,4 @@ theorem HasGradientAt.one_div (hf : HasGradientAt f grad x) (h₁ : ¬ f x = (0 
     exact norm_sub_rev x x'
   rw [l1]
   apply p₁
+

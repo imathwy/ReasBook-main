@@ -1,0 +1,5 @@
+import Papers.SmoothMinimization_Nesterov_2004.Sections.section05_part1
+import Papers.SmoothMinimization_Nesterov_2004.Sections.section05_part2
+import Papers.SmoothMinimization_Nesterov_2004.Sections.section05_part3
+import Papers.SmoothMinimization_Nesterov_2004.Sections.section05_part4
+import Papers.SmoothMinimization_Nesterov_2004.Sections.section05_part5

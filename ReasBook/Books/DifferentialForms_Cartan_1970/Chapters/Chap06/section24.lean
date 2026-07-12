@@ -1,6 +1,0 @@
-import DifferentialForms_Cartan_1970.VI.section24.0001_Theorem_VI_3_extra_1
-import DifferentialForms_Cartan_1970.VI.section24.0002_Corollary_1
-import DifferentialForms_Cartan_1970.VI.section24.0003_Corollary_2
-import DifferentialForms_Cartan_1970.VI.section24.0004_Proposition_2_1
-import DifferentialForms_Cartan_1970.VI.section24.0005_Proposition_3_1
-import DifferentialForms_Cartan_1970.VI.section24.0006_Lemma_VI_3_extra_2

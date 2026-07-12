@@ -1,0 +1,290 @@
+import Mathlib
+import StacksProject_2024.Chap18.Definition_18_23_1
+import StacksProject_2024.Chap18.Example_18_29_1
+import StacksProject_2024.Chap18.Lemma_18_23_3
+import StacksProject_2024.Chap18.Lemma_18_28_6
+import StacksProject_2024.Chap18.Lemma_18_28_14
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+open CategoryTheory
+
+noncomputable section
+
+universe u v
+
+namespace SheafOfModules.RingedSite
+
+variable {C : Type u} [Category.{v} C] {J : GrothendieckTopology C}
+variable [J.HasSheafCompose (forget₂ CommRingCat RingCat)]
+variable [HasWeakSheafify J AddCommGrpCat]
+variable [J.WEqualsLocallyBijective AddCommGrpCat]
+variable {𝒪 : Sheaf J CommRingCat.{max u v}}
+variable [MonoidalCategory (ringedSiteModuleCategory J 𝒪)]
+
+/-- Helper for Lemma 18.29.3: the relation morphism of a presentation is the kernel map from the
+relation free module into the generator free module. -/
+private noncomputable def presentationRelationMap
+    {D : Type u} [Category.{v} D] {K : GrothendieckTopology D}
+    [K.HasSheafCompose (forget₂ CommRingCat RingCat)]
+    {ℛ : Sheaf K CommRingCat.{max u v}}
+    {M : ringedSiteModuleCategory K ℛ} (P : M.Presentation) :
+    (SheafOfModules.free P.relations.I : ringedSiteModuleCategory K ℛ) ⟶
+      (SheafOfModules.free P.generators.I : ringedSiteModuleCategory K ℛ) :=
+  P.relations.π ≫ kernel.ι P.generators.π
+
+/-- Helper for Lemma 18.29.3: the relation morphism of a presentation composes trivially with the
+chosen generator surjection. -/
+private theorem presentationRelationMap_comp_generators
+    {D : Type u} [Category.{v} D] {K : GrothendieckTopology D}
+    [K.HasSheafCompose (forget₂ CommRingCat RingCat)]
+    {ℛ : Sheaf K CommRingCat.{max u v}}
+    {M : ringedSiteModuleCategory K ℛ} (P : M.Presentation) :
+    presentationRelationMap P ≫ P.generators.π = 0 := by
+  -- Proof comment: the relation map lands in the kernel of the generator morphism by
+  -- construction.
+  simp [presentationRelationMap]
+
+/-- Helper for Lemma 18.29.3: if a factorization of the presentation generator map kills the
+presentation relations, then the induced surjection already has a section. -/
+private theorem sectionOfFactorizationKillingPresentationRelations
+    {D : Type u} [Category.{v} D] {K : GrothendieckTopology D}
+    [K.HasSheafCompose (forget₂ CommRingCat RingCat)]
+    {ℛ : Sheaf K CommRingCat.{max u v}}
+    {M : ringedSiteModuleCategory K ℛ} (P : M.Presentation)
+    {α : Type (max u v)}
+    (A :
+      (SheafOfModules.free P.generators.I : ringedSiteModuleCategory K ℛ) ⟶
+        (SheafOfModules.free α : ringedSiteModuleCategory K ℛ))
+    (π :
+      (SheafOfModules.free α : ringedSiteModuleCategory K ℛ) ⟶
+        M)
+    (hkill : presentationRelationMap P ≫ A = 0)
+    (hπ : A ≫ π = P.generators.π) :
+    ∃ ι : M ⟶ (SheafOfModules.free α : ringedSiteModuleCategory K ℛ),
+      ι ≫ π = 𝟙 M := by
+  -- Proof comment: descend the factorization across the cokernel presentation carried by `P`.
+  let ι : M ⟶ (SheafOfModules.free α : ringedSiteModuleCategory K ℛ) :=
+    P.isColimit.desc (CokernelCofork.ofπ A hkill)
+  refine ⟨ι, ?_⟩
+  -- Proof comment: the descended morphism is a section because the generator map is epimorphic.
+  apply (cancel_epi P.generators.π).1
+  calc
+    P.generators.π ≫ ι ≫ π = A ≫ π := by
+      rw [← Category.assoc]
+      exact congrArg (fun f ↦ f ≫ π) <| by
+        simpa [ι] using
+          P.isColimit.fac (CokernelCofork.ofπ A hkill) WalkingParallelPair.one
+    _ = P.generators.π := hπ
+    _ = P.generators.π ≫ 𝟙 M := by simp
+
+/-- Helper for Lemma 18.29.3: restricting a finite presentation on an iterated slice to a
+further slice keeps the same finite generator and relation index types. -/
+private theorem presentationMapIsFiniteOnIteratedSlice
+    {U : C} {X : Over U}
+    [HasWeakSheafify ((J.over U).over X) AddCommGrpCat]
+    [((J.over U).over X).WEqualsLocallyBijective AddCommGrpCat]
+    [((J.over U).over X).HasSheafCompose (forget₂ RingCat AddCommGrpCat)]
+    {M : ringedSiteModuleCategory ((J.over U).over X) ((𝒪.over U).over X)}
+    (P : M.Presentation) [P.IsFinite] (Y : Over X) :
+    ((P.map (pushforward (𝟙 ((((𝒪.over U).over X).over Y)))) (by rfl))).IsFinite := by
+  refine ⟨?_, ?_⟩
+  · -- Proof comment: `Presentation.map` preserves the chosen generator index type on the
+    -- iterated slice, so the generator side stays finite after restriction.
+    dsimp [SheafOfModules.Presentation.map, SheafOfModules.presentationOfIsCokernelFree,
+      SheafOfModules.generatorsOfIsCokernelFree]
+    refine ⟨?_⟩
+    change Finite P.generators.I
+    infer_instance
+  · -- Proof comment: the same unfolding shows that the relation index type is unchanged as well.
+    dsimp [SheafOfModules.Presentation.map, SheafOfModules.presentationOfIsCokernelFree,
+      SheafOfModules.relationsOfIsCokernelFree]
+    infer_instance
+
+/-- Helper for Lemma 18.29.3: the sieve generated in a slice site by a family of slice objects is
+the ordinary sieve generated by their underlying arrows. -/
+private theorem overSieveOfObjectsEqOfArrows
+    {U : C} {ι : Type (max u v)} (Uᵢ : ι → C) (π : ∀ i : ι, Uᵢ i ⟶ U) :
+    (Sieve.overEquiv (Over.mk (𝟙 U)))
+        (Sieve.ofObjects (fun i ↦ Over.mk (π i)) (Over.mk (𝟙 U))) =
+      Sieve.ofArrows Uᵢ π := by
+  -- Proof comment: forgetting the over-structure turns a slice factorization into the same
+  -- factorization in the ambient category, and conversely every such factorization lifts.
+  ext W g
+  constructor
+  · intro hg
+    rw [Sieve.overEquiv_iff] at hg
+    rw [Sieve.mem_ofObjects_iff] at hg
+    rcases hg with ⟨i, ⟨a⟩⟩
+    rw [Sieve.mem_ofArrows_iff]
+    exact ⟨i, a.left, by simpa using a.w.symm⟩
+  · intro hg
+    rw [Sieve.overEquiv_iff]
+    rw [Sieve.mem_ofArrows_iff] at hg
+    rcases hg with ⟨i, a, ha⟩
+    rw [Sieve.mem_ofObjects_iff]
+    exact ⟨i, ⟨Over.homMk a (by simpa using ha.symm)⟩⟩
+
+/-- Helper for Lemma 18.29.3: composing a cover of `U` with covers of each cover member yields a
+sigma-indexed cover of `U`. -/
+private theorem coversTopSigmaComp
+    {U : C} {I : Type (max u v)} {X : I → Over U}
+    (hX : (J.over U).CoversTop X)
+    {K : I → Type (max u v)} {Y : ∀ i : I, K i → Over (X i).left}
+    (hY : ∀ i : I, (J.over (X i).left).CoversTop (Y i)) :
+    (J.over U).CoversTop
+      (fun a : Sigma K ↦ Over.mk ((Y a.1 a.2).hom ≫ (X a.1).hom)) := by
+  -- Proof comment: this is the standard transitivity of covering sieves, expressed on explicit
+  -- covering families in the slice categories.
+  rw [GrothendieckTopology.coversTop_iff_of_isTerminal
+    (J := J.over U) (X := Over.mk (𝟙 U)) (hX := Over.mkIdTerminal)]
+  rw [GrothendieckTopology.mem_over_iff, overSieveOfObjectsEqOfArrows]
+  have hX' :
+      Sieve.ofArrows (fun i ↦ (X i).left) (fun i ↦ (X i).hom) ∈ J U := by
+    have hXTerminal :
+        Sieve.ofObjects X (Over.mk (𝟙 U)) ∈ (J.over U) (Over.mk (𝟙 U)) :=
+      (GrothendieckTopology.coversTop_iff_of_isTerminal
+        (J := J.over U) (X := Over.mk (𝟙 U)) (hX := Over.mkIdTerminal)).1 hX
+    rw [GrothendieckTopology.mem_over_iff, overSieveOfObjectsEqOfArrows] at hXTerminal
+    exact hXTerminal
+  have hY' :
+      ∀ i : I,
+        Sieve.ofArrows (fun k ↦ (Y i k).left) (fun k ↦ (Y i k).hom) ∈ J (X i).left := by
+    intro i
+    have hYTerminal :
+        Sieve.ofObjects (Y i) (Over.mk (𝟙 (X i).left)) ∈
+          (J.over (X i).left) (Over.mk (𝟙 (X i).left)) :=
+      (GrothendieckTopology.coversTop_iff_of_isTerminal
+        (J := J.over (X i).left) (X := Over.mk (𝟙 (X i).left))
+        (hX := Over.mkIdTerminal)).1 (hY i)
+    rw [GrothendieckTopology.mem_over_iff, overSieveOfObjectsEqOfArrows] at hYTerminal
+    exact hYTerminal
+  simpa [Presieve.bindOfArrows_ofArrows] using
+    J.bindOfArrows
+      (h := hX')
+      (R := fun i ↦ Presieve.ofArrows (fun k ↦ (Y i k).left) (fun k ↦ (Y i k).hom))
+      (fun i ↦ by simpa using hY' i)
+
+/-- Helper for Lemma 18.29.3: a covering family in the iterated slice over `X : Over U`
+descends to the corresponding covering family of underlying arrows over `X.left`. -/
+private theorem coversTopUnderlyingOfIteratedSlice
+    {U : C} {X : Over U} {K : Type (max u v)} (Y : K → Over X)
+    (hY : ((J.over U).over X).CoversTop Y) :
+    (J.over X.left).CoversTop (fun k ↦ Over.mk (Y k).hom.left) := by
+  -- Proof comment: first view the iterated cover as a covering sieve on `X` inside `Over U`,
+  -- then apply `GrothendieckTopology.mem_over_iff` once more to read it as a cover of `X.left`
+  -- by the underlying arrows.
+  rw [GrothendieckTopology.coversTop_iff_of_isTerminal
+    (J := J.over X.left) (X := Over.mk (𝟙 X.left)) (hX := Over.mkIdTerminal)]
+  rw [GrothendieckTopology.mem_over_iff, overSieveOfObjectsEqOfArrows]
+  have hYTerminal :
+      Sieve.ofObjects Y (Over.mk (𝟙 X)) ∈ ((J.over U).over X) (Over.mk (𝟙 X)) :=
+    (GrothendieckTopology.coversTop_iff_of_isTerminal
+      (J := (J.over U).over X) (X := Over.mk (𝟙 X)) (hX := Over.mkIdTerminal)).1 hY
+  rw [GrothendieckTopology.mem_over_iff,
+    overSieveOfObjectsEqOfArrows
+      (Uᵢ := fun k ↦ (Y k).left) (π := fun k ↦ (Y k).hom)] at hYTerminal
+  simpa using hYTerminal
+
+/- Domain-style sampling for Lemma 18.29.3:
+- primary domain: finitely presented flat sheaves of modules on a ringed site and their local
+  finite-free splitting behavior on iterated slice sites;
+- sampled owner declarations:
+  `ringedSiteModuleCategory`,
+  `SheafOfModules.RingedSite.IsFinitePresentation`,
+  `SheafOfModules.RingedSite.IsFlat`,
+  `SheafOfModules.free`;
+- best owner abstraction: the chapter owner `ringedSiteModuleCategory J 𝒪`, with the source
+  hypotheses carried by the ringed-site owners `IsFinitePresentation` and `IsFlat`;
+- primitive data: a module `ℱ : ringedSiteModuleCategory J 𝒪`, the localized restrictions
+  `ℱ.over U` and `((ℱ.over U).over V)`, and finite free modules on the iterated localized site
+  `((J.over U).over V, ((𝒪.over U).over V))`;
+- derived API: the local split inclusion/retraction maps exhibiting each iterated restriction as a
+  direct summand of a finite free module.
+
+Source/core/bridge triage:
+- `source-facing`: the local direct-summand criterion for finitely presented flat modules on a
+  ringed site;
+- `core/canonical`: `ringedSiteModuleCategory J 𝒪`,
+  `SheafOfModules.RingedSite.IsFinitePresentation`,
+  `SheafOfModules.RingedSite.IsFlat`, and `SheafOfModules.free`;
+- `bridge/view`: the explicit split maps on the iterated slice sites.
+
+The chapter owner for the local direct-summand condition is already
+`IsLocallyDirectSummandOfFiniteFree` from Example `18.29.1`, with
+`isLocallyDirectSummandOfFiniteFree_iff` as its explicit split-map companion. This file therefore
+keeps the owner theorem primary and derives the textbook split-map form from that owner instead of
+maintaining a parallel coordinate-level public API.
+-/
+
+-- Proof sketch: finite presentation is local on the ringed site, so after restricting to each
+-- object `U` and refining by a cover one obtains a finite global presentation of `ℱ.over U`.
+-- Apply the local factorization criterion for flat modules to the relation morphism and the
+-- resulting surjection; after refining once more, the surjection factors through a finite free
+-- module with zero composite from the relations, so the induced surjection admits a section and
+-- `ℱ` becomes locally a direct summand of a finite free module.
+/-- Lemma 18.29.3: a finitely presented flat `\mathcal O`-module on a ringed site is locally a
+direct summand of a finite free module. -/
+@[stacks 08FD]
+theorem isLocallyDirectSummandOfFiniteFree_of_isFinitePresentation_of_flat
+    (ℱ : ringedSiteModuleCategory J 𝒪)
+    [ℱ.IsFinitePresentation] [IsFlat 𝒪 ℱ] :
+    IsLocallyDirectSummandOfFiniteFree ℱ := by
+  classical
+  rw [isLocallyDirectSummandOfFiniteFree_iff]
+  intro U
+  let _ : IsFlat (𝒪.over U) (ℱ.over U) :=
+    isFlat_over (J := J) 𝒪 U ℱ
+  have hMatrix :
+      flatMatrixFactorization (J := J.over U) (𝒪 := 𝒪.over U) (ℱ.over U) :=
+    ((isFlat_tfae_factorizationCriteria (J := J.over U) (𝒪 := 𝒪.over U) (ℱ.over U)).out 0 2).mp
+      inferInstance
+  rcases
+      (isFinitePresentation_iff_exists_cover_finitePresentation_over
+        (J := J.over U) (𝒪 := 𝒪.over U) (ℱ.over U)).mp inferInstance with
+    ⟨I, X, hX, hP⟩
+  choose P hPfinite using hP
+  -- Route correction: the full chartwise argument now has two stable pieces.
+  -- First, each finite presentation can be reindexed by finite ordinals and fed to `hMatrix`.
+  -- Second, `presentationMapIsFiniteOnIteratedSlice` and
+  -- `coversTopUnderlyingOfIteratedSlice` control the two stable transport boundaries: the mapped
+  -- presentation stays finite on further slices, and the iterated-slice cover becomes an ordinary
+  -- slice cover for `coversTopSigmaComp`.
+  -- TODO: finish the remaining transport step by expressing the restricted presentation map
+  -- `((P i).map (pushforward (𝟙 ...)) (by rfl))` in terms of the restricted reindexed relation and
+  -- generator maps, then apply `sectionOfFactorizationKillingPresentationRelations` chartwise.
+  sorry
+
+-- Proof sketch: apply the owner theorem above and then unpack the owner through
+-- `isLocallyDirectSummandOfFiniteFree_iff`.
+/-- Unfolding Lemma 18.29.3 recovers the explicit local split-map data on a covering of each
+object. -/
+theorem exists_cover_directSummandOfFiniteFree_of_isFinitePresentation_of_flat
+    (ℱ : ringedSiteModuleCategory J 𝒪)
+    [ℱ.IsFinitePresentation] [IsFlat 𝒪 ℱ]
+    (U : C) :
+    ∃ (I : Type (max u v)) (Ui : I → Over U), (J.over U).CoversTop Ui ∧
+      ∀ i : I,
+        ∃ (α : Type (max u v)) (_ : Finite α),
+          ∃ ι :
+              (ℱ.over U).over (Ui i) ⟶
+                (SheafOfModules.free α :
+                  ringedSiteModuleCategory ((J.over U).over (Ui i))
+                    ((𝒪.over U).over (Ui i))),
+            ∃ π :
+                (SheafOfModules.free α :
+                  ringedSiteModuleCategory ((J.over U).over (Ui i))
+                    ((𝒪.over U).over (Ui i))) ⟶
+                  (ℱ.over U).over (Ui i),
+              ι ≫ π = 𝟙 ((ℱ.over U).over (Ui i)) := by
+  let _ : IsLocallyDirectSummandOfFiniteFree ℱ :=
+    isLocallyDirectSummandOfFiniteFree_of_isFinitePresentation_of_flat
+      (J := J) (𝒪 := 𝒪) ℱ
+  rcases (isLocallyDirectSummandOfFiniteFree_iff ℱ).mp inferInstance U with
+    ⟨I, Ui, hUi, hsplit⟩
+  refine ⟨I, Ui, hUi, ?_⟩
+  intro i
+  rcases hsplit i with ⟨α, hα, ι, π, hπ⟩
+  exact ⟨α, hα, ι, π, hπ⟩
+
+end SheafOfModules.RingedSite

@@ -423,3 +423,4 @@ theorem Farkas :
   constructor
   · intro i hi; specialize hb {val := i, property := hi}; simp at hb; simp; exact hb
   exact hc
+

@@ -661,3 +661,4 @@ lemma convex_on_p_top' [NormedAddCommGroup E] [SMul ℝ E] {f : E → EReal}
   ext x; exact h x
 
 end Convex
+

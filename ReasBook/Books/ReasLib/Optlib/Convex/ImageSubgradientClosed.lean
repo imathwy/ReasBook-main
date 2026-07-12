@@ -125,3 +125,4 @@ theorem Image_subgradient_closed (nonempty : ∀ n, (g n) ∈ SubderivAt f (x n)
     (g_converge : Tendsto g atTop (𝓝 g')) : g' ∈ SubderivAt f x' :=by
   intro y
   exact inequ₄ y nonempty lscf x_converge g_converge
+

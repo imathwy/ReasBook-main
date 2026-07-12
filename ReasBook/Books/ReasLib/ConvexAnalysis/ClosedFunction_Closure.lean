@@ -1276,3 +1276,4 @@ theorem f_mono_closure_mono_univ {f₁ f₂ : E → EReal}
   intro x; apply f_mono_closure_mono (by simpa using mono) (by simp); simp
 
 end cl_mono
+

@@ -1585,3 +1585,4 @@ theorem ADMM_convergence
    y_converge fullrank₁ fullrank₂⟩
 
 end ADMM_Converge_Proof
+

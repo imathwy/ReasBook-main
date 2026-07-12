@@ -8,8 +8,9 @@ import ReasLib.Optlib.Algorithm.BCD.Scheme
 import ReasLib.Optlib.Algorithm.GD.GradientDescent
 import ReasLib.Optlib.Algorithm.GD.GradientDescentStronglyConvex
 import ReasLib.Optlib.Algorithm.LASSO
-import ReasLib.Optlib.Algorithm.LecturesConvexOptimization_Nesterov_2018.NesterovAccelerationFirst
-import ReasLib.Optlib.Algorithm.LecturesConvexOptimization_Nesterov_2018.NesterovAccelerationSecond
-import ReasLib.Optlib.Algorithm.LecturesConvexOptimization_Nesterov_2018.NesterovSmooth
+import ReasLib.Optlib.Algorithm.Nesterov.NesterovAccelerationFirst
+import ReasLib.Optlib.Algorithm.Nesterov.NesterovAccelerationSecond
+import ReasLib.Optlib.Algorithm.Nesterov.NesterovSmooth
 import ReasLib.Optlib.Algorithm.ProximalGradient
 import ReasLib.Optlib.Algorithm.SubgradientMethod
+

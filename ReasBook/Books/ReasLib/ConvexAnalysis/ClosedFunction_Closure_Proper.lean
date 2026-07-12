@@ -338,3 +338,4 @@ theorem univ_convex_closure_intrinsicInterior [FiniteDimensional ℝ E]
   sorry
 
 end closed_convex_affinesup
+

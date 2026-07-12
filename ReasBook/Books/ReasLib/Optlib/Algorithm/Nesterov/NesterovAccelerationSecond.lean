@@ -10,7 +10,7 @@ import ReasLib.Optlib.Function.Proximal
 
 ## Main results
 
-  This file mainly concentrates on the second version of LecturesConvexOptimization_Nesterov_2018 algorithm
+  This file mainly concentrates on the second version of Nesterov algorithm
   for composite optimization problems.
 
   We prove the O(1 / k ^ 2) rate for this algorithm.
@@ -450,3 +450,4 @@ theorem Nesterov_second_fix_stepsize_converge (minφ : IsMinOn (f + h) Set.univ 
       linarith
 
 end Nesterov_second_fix_stepsize
+

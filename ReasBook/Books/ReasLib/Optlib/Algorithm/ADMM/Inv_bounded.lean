@@ -70,3 +70,4 @@ lemma inv_bounded₂ [FiniteDimensional ℝ X] (fullrank : Injective A) :
       _ ≤ C₁ * ‖(A†.comp A) x‖ := h₁.2 x
       _ ≤ C₁ * (C₂ * ‖A x‖) := (mul_le_mul_iff_of_pos_left h₁.1).2 (h₂.2 x)
       _ = (C₁ * C₂) * ‖A x‖ := Mathlib.Tactic.RingNF.mul_assoc_rev C₁ C₂ ‖A x‖
+

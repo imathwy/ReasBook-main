@@ -1,0 +1,14 @@
+import StacksProject_2024.Chap08.Lemma_8_12_2.CoverDescent
+import StacksProject_2024.Chap08.Lemma_8_12_2.TargetFiberEquivalence
+import StacksProject_2024.Chap08.Lemma_8_12_2.TargetRestriction
+import StacksProject_2024.Chap08.Lemma_8_12_2.OverPostContinuous
+import StacksProject_2024.Chap08.Lemma_8_12_2.TargetRestrictionNaturality
+import StacksProject_2024.Chap08.Lemma_8_12_2.PullHomPostcomposition
+import StacksProject_2024.Chap08.Lemma_8_12_2.PullHomConjugationPair
+import StacksProject_2024.Chap08.Lemma_8_12_2.PullHomConjugation
+import StacksProject_2024.Chap08.Lemma_8_12_2.HomPresheafPrestack
+import StacksProject_2024.Chap08.Lemma_8_12_2.CoverEquivalence
+import StacksProject_2024.Chap08.Lemma_8_12_2.ChosenOverlaps
+import StacksProject_2024.Chap08.Lemma_8_12_2.PrimeStrictification
+import StacksProject_2024.Chap08.Lemma_8_12_2.TargetPrimeSquares
+import StacksProject_2024.Chap08.Lemma_8_12_2.SourcePrimeEffectivity

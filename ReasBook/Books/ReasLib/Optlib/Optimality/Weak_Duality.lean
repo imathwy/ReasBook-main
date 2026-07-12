@@ -347,3 +347,4 @@ theorem optimal_multipliers_solution_dual_problem {p : Constrained_OptimizationP
 end Convex
 
 end Duality
+

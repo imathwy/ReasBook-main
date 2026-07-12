@@ -1,0 +1,5 @@
+-- This file is mechanically generated as the aggregate import for Chap19.
+import LinearRepresentations_Serre_1977.Chap19.Definition_19_19_3_1
+import LinearRepresentations_Serre_1977.Chap19.Proposition_19_19_3_2
+import LinearRepresentations_Serre_1977.Chap19.Remark_19_19_2_1
+import LinearRepresentations_Serre_1977.Chap19.Theorem_19_19_1_1

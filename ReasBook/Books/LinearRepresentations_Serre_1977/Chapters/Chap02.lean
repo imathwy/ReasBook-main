@@ -1,9 +1,0 @@
-import Chapters.Chap02.section02_part1
-import Chapters.Chap02.section02_part2
-import Chapters.Chap02.section02_part3
-import Chapters.Chap02.section02_part4
-import Chapters.Chap02.section02_part5
-import Chapters.Chap02.section02_part6
-import Chapters.Chap02.section02_part7
-import Chapters.Chap02.section02_part8
-import Chapters.Chap02.section02_part9

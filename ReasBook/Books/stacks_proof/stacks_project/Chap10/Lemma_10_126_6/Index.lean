@@ -1,0 +1,12 @@
+import StacksProject_2024.Chap10.Lemma_10_126_6.LocalProduct
+import StacksProject_2024.Chap10.Lemma_10_126_6.PolynomialShift
+import StacksProject_2024.Chap10.Lemma_10_126_6.PolynomialLocalization
+import StacksProject_2024.Chap10.Lemma_10_126_6.AwayTransport
+import StacksProject_2024.Chap10.Lemma_10_126_6.PresentationDenominators
+import StacksProject_2024.Chap10.Lemma_10_126_6.ZeroSection
+import StacksProject_2024.Chap10.Lemma_10_126_6.SourceQuotientBasic
+import StacksProject_2024.Chap10.Lemma_10_126_6.SourceQuotientCoeffChart
+import StacksProject_2024.Chap10.Lemma_10_126_6.SourceQuotientFinalAway
+import StacksProject_2024.Chap10.Lemma_10_126_6.TargetChartTransport
+import StacksProject_2024.Chap10.Lemma_10_126_6.TargetAuxiliary
+import StacksProject_2024.Chap10.Lemma_10_126_6.SemilocalSubalgebra

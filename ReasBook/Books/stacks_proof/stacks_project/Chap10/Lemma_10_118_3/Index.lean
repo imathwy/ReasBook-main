@@ -1,0 +1,5 @@
+import StacksProject_2024.Chap10.Lemma_10_118_3.GenericFiber
+import StacksProject_2024.Chap10.Lemma_10_118_3.FinitelyPresentedModels
+import StacksProject_2024.Chap10.Lemma_10_118_3.PolynomialLocalization
+import StacksProject_2024.Chap10.Lemma_10_118_3.PolynomialModels
+import StacksProject_2024.Chap10.Lemma_10_118_3.FinitelyPresentedGenericFreeness

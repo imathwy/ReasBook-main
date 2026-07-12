@@ -1,0 +1,3 @@
+import LinearRepresentations_Serre_1977.Chap16.Infra_16_1_DecompositionSurjectivity.ProjectiveLiteralReduction
+
+-- Proof rescue support index.

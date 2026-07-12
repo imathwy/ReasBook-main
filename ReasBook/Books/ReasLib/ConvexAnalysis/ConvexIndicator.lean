@@ -156,3 +156,4 @@ lemma lowerSemicontinuous_convex_indicator_of_closed {C : Set E} (hc : IsClosed 
   exact ⟨isOpen_compl_iff.mpr hc, Set.mem_compl xc⟩
 
 end lowerSemicontinuous
+

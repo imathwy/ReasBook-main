@@ -121,3 +121,4 @@ theorem Quasiconvex_first_order_condition_right (h : HasFDerivAt f (f' x) x) (xs
   have true: b * ε * ‖x - y‖ > 0 :=by
     positivity
   linarith
+

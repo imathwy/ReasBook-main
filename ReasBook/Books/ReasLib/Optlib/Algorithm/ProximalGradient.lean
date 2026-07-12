@@ -208,3 +208,4 @@ theorem proximal_gradient_method_converge : ∀ (k : ℕ+),
   linarith
 
 end method
+

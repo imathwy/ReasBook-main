@@ -1,4 +1,0 @@
-import StacksProject_2024.Internal.Chap04.FibredInGroupoidsTwoFibreProductSquare
-import StacksProject_2024.Internal.Chap04.FibredInSetoidsTwoFibreProduct
-import StacksProject_2024.Internal.Chap08.StackInGroupoidsTwoFibreProductSquare
-import StacksProject_2024.Internal.Chap08.StackInSetoidsTwoFibreProductSquare

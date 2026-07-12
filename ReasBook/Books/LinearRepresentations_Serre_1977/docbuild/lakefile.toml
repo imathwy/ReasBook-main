@@ -1,0 +1,18 @@
+name = "docbuild"
+reservoir = false
+version = "0.1.0"
+packagesDir = "../.lake/packages"
+
+[[require]]
+scope = "leanprover"
+name = "doc-gen4"
+rev = "v4.30.0-rc2"
+
+[[require]]
+name = "Serre"
+path = "../"
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "5450b53e5ddc75d46418fabb605edbf36bd0beb6"

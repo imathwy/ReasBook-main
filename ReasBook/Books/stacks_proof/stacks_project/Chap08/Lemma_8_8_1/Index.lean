@@ -1,0 +1,17 @@
+import StacksProject_2024.Chap08.Lemma_8_8_1.PlusConstruction
+import StacksProject_2024.Chap08.Lemma_8_8_1.CatPresheafSeparated
+import StacksProject_2024.Chap08.Lemma_8_8_1.CartesianEmbedding
+import StacksProject_2024.Chap08.Lemma_8_8_1.CartesianComposition
+import StacksProject_2024.Chap08.Lemma_8_8_1.BaseChange
+import StacksProject_2024.Chap08.Lemma_8_8_1.HomSheaf
+import StacksProject_2024.Chap08.Lemma_8_8_1.StackBundle
+import StacksProject_2024.Chap08.Lemma_8_8_1.Criteria
+import StacksProject_2024.Chap08.Lemma_8_8_1.Precomposition
+import StacksProject_2024.Chap08.Lemma_8_8_1.CoverDescent
+import StacksProject_2024.Chap08.Lemma_8_8_1.HomPresheafComparison
+import StacksProject_2024.Chap08.Lemma_8_8_1.FiberTransport
+import StacksProject_2024.Chap08.Lemma_8_8_1.CoverwiseHomLift
+import StacksProject_2024.Chap08.Lemma_8_8_1.ForcedComparisonComponents
+import StacksProject_2024.Chap08.Lemma_8_8_1.ComparisonFullFaithfulness
+import StacksProject_2024.Chap08.Lemma_8_8_1.ComparisonEquivalence
+import StacksProject_2024.Chap08.Lemma_8_8_1.Assembly

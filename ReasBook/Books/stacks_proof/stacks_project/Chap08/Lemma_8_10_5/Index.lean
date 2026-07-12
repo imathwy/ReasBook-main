@@ -1,0 +1,16 @@
+-- Proof rescue support index.
+import StacksProject_2024.Chap08.Lemma_8_10_5.InheritedProjectionDescent
+import StacksProject_2024.Chap08.Lemma_8_10_5.ForgetToSource
+import StacksProject_2024.Chap08.Lemma_8_10_5.ForgetToSourceDescent
+import StacksProject_2024.Chap08.Lemma_8_10_5.PullbackNaturality
+import StacksProject_2024.Chap08.Lemma_8_10_5.LiteralBaseReindex
+import StacksProject_2024.Chap08.Lemma_8_10_5.LiteralBaseDescentLaws
+import StacksProject_2024.Chap08.Lemma_8_10_5.TargetTransfer
+import StacksProject_2024.Chap08.Lemma_8_10_5.TargetPathTransport
+import StacksProject_2024.Chap08.Lemma_8_10_5.TargetPathLift
+import StacksProject_2024.Chap08.Lemma_8_10_5.TargetPathOverlap
+import StacksProject_2024.Chap08.Lemma_8_10_5.TargetPathTail
+import StacksProject_2024.Chap08.Lemma_8_10_5.TargetOverlap
+import StacksProject_2024.Chap08.Lemma_8_10_5.TargetReconstruction
+import StacksProject_2024.Chap08.Lemma_8_10_5.Gluing
+import StacksProject_2024.Chap08.Lemma_8_10_5.Reconstruction

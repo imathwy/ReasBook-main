@@ -131,3 +131,4 @@ theorem conic_Caratheodory (s : Finset ℕ) (V : ℕ → (EuclideanSpace ℝ (Fi
   · intro σ σsubs; specialize τcardmin σ
     simp [idx, to_card] at τcardmin
     apply τcardmin σsubs
+

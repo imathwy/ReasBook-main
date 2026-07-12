@@ -848,3 +848,4 @@ lemma disj [hsf : ProperFunction s f] (htop : f x < ⊤) (hx : x ∈ s) :
   nth_rw 2 [← EReal.coe_toReal (x := f x) (LT.lt.ne_top htop) (LT.lt.ne_bot (hsf.uninfinity x hx))]
   change (f x).toReal.toEReal - (1 : ℝ) < (f x).toReal
   rw[← EReal.coe_sub, EReal.coe_lt_coe_iff]; simp
+

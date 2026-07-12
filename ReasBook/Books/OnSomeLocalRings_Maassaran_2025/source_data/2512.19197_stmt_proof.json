@@ -1,0 +1,287 @@
+[
+  {
+    "label": "Lemma 1.1",
+    "env": "lem",
+    "context": {
+      "chapter": "ON SOME LOCAL RINGS",
+      "section": "separable case",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "1"
+    },
+    "content": "Let $\\Bbbk$ be a field and $P$ be an irreducible polynomial over $\\Bbbk$. For $Q\\in\\Bbbk[X]$, we have :\n$P(X+Q(X))=P(X)+P^{\\prime}(X)Q(X)+R(X)Q(X)^{2},$\nfor some $R\\in\\Bbbk[X]$.",
+    "dependencies": [],
+    "proof": "Set $P(X)=\\sum a_{i}X^{i}$. We get\n$P(X+Q(X))=\\sum a_{i}(X+Q(X))^{i}=\\sum a_{i}(X^{i}+iX^{i-1}Q(X)+R_{i}(X)Q(X)^{2}),$\nfor some $R_{i}\\in\\Bbbk[X]$. But $\\sum_{i>0}ia_{i}x^{i-1}=P^{\\prime}(X)$ and $\\sum a_{i}X^{i}=P(X)$. This proves the proposition. ∎",
+    "index": 1
+  },
+  {
+    "label": "Lemma 1.2",
+    "env": "lem",
+    "context": {
+      "chapter": "ON SOME LOCAL RINGS",
+      "section": "separable case",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "1"
+    },
+    "content": "Let $\\Bbbk$ be a field and $P$ be an irreducible polynomial over $\\Bbbk$. If $P^{\\prime}\\neq 0$, then we have an infinite sequence of pairs of polynomials $(Q_{0},R_{0}),(Q_{1},R_{1}),\\cdots$ such that for $k\\geq 0$ we have : $P(X+\\sum_{i=1}^{k}Q_{i}(X)P(X)^{i})=R_{k}(X)P(X)^{k+1}.$",
+    "dependencies": ["Lemma 1.1"],
+    "proof": "For $k=0$, the equation is $P(X)=R_{0}(X)P(X)$. We can take any $Q_{0}$ and we take $R_{0}(X)=1$. We will prove the propostion by induction. Assume that the pairs $(Q_{0},R_{0}),\\cdots,(Q_{n},R_{n})$ are constructed, we will constuct $(Q_{n+1},R_{n+1})$. Applying the previous lemma we get that for $U$ and $S$ in $\\Bbbk[X]$, we have:\n\n$P(U(X)+S(X)P(X)^{n+1})=P(U(X))+P^{\\prime}(U(X))S(X)P(X)^{n+1}+T(X)P(X)^{2n+2}.$\n\nFor $U(X)=X+\\sum_{i=1}^{n}Q_{i}(X)P(X)^{i}$ the eqution is reduced by the induction hypothesis to :\n\n$P(U(X)+S(X)P(X)^{n+1})=(R_{n}(X)+P^{\\prime}(U(X))S(X))P(X)^{n+1}+T(X)P(X)^{2n+2},$\n\nand we get a pair $(Q_{n+1},S_{n+1})$ if we find $S(X)$ such that $R_{n}(X)+P^{\\prime}(U(X))S(X)$ is zero modulo $P(X)$ (i.e. a multiple of $P(X)$). But $P$ is irreducible. Hence $\\Bbbk[X]/(P)$ is a field and the class of $P^{\\prime}\\circ U$ in this field is equal to the class of $P^{\\prime}$ wich is invertible since $P^{\\prime}\\neq 0$. So $P^{\\prime}\\circ U$ is invertible modulo $P$ and therefore we can find an $S(X)$ such that $R_{n}(X)+P^{\\prime}(U(X))S(X)$ is zero modulo $P$. This proves the proposition. ∎",
+    "index": 2
+  },
+  {
+    "label": "Proposition 1.3",
+    "env": "prop",
+    "context": {
+      "chapter": "ON SOME LOCAL RINGS",
+      "section": "separable case",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "1"
+    },
+    "content": "Let $\\Bbbk$ be a field and $P$ be an irreducible polynomial over $\\Bbbk$. If $P^{\\prime}\\neq 0$, then we have an injective $\\Bbbk$-algebra morphism from the field $\\Bbbk[X]/(P)$ into $\\Bbbk[X]/(P^{k})$, for $k\\geq 1$.",
+    "dependencies": ["Lemma 1.2"],
+    "proof": "Let $Q_{0},Q_{1},\\cdots,Q_{k-1}$ be as in the previous proposition and let $\\phi_{k}:\\Bbbk[X]\\to\\Bbbk[X]/(P^{k})$ be the $\\Bbbk$-algebra morphism given by\n\n$X\\mapsto X+\\sum_{i=1}^{k-1}Q_{i}(X)P(X)^{i}.$\n\nBy the previous proposition $\\phi_{k}$ maps $P$ to $0$ and hence induces an algebra morphism $\\bar{\\phi}_{k}:\\Bbbk[X]/(P)\\to\\Bbbk[X]/(P^{k})$. To see that $\\bar{\\phi}_{k}$ is injective, notice that $\\pi_{k}\\circ\\bar{\\phi}_{k}(X)=X$, where $\\pi_{k}$ is the projection $\\Bbbk[X]/(P^{k})\\mapsto\\Bbbk[X]/(P),\\ X\\mapsto X$.",
+    "index": 3
+  },
+  {
+    "label": "Corollary 1.4",
+    "env": "cor",
+    "context": {
+      "chapter": "ON SOME LOCAL RINGS",
+      "section": "separable case",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "1"
+    },
+    "content": "Let $\\Bbbk$ be a field and $P$ be an irreducible polynomial over $\\Bbbk$. If $P^{\\prime}\\neq 0$, then the local ring $\\Bbbk[X]/(P^{k})$ contains its residue field $\\Bbbk[X]/(P)$ as a $\\Bbbk$-subalgebra.",
+    "dependencies": [],
+    "proof": "",
+    "index": 4
+  },
+  {
+    "label": "Corollary 1.5",
+    "env": "cor",
+    "context": {
+      "chapter": "ON SOME LOCAL RINGS",
+      "section": "separable case",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "1"
+    },
+    "content": "Let $\\Bbbk$ be a field and $P$ be an irreducible polynomial over $\\Bbbk$. If $P^{\\prime}\\neq 0$, then the local ring $\\Bbbk[X]/(P^{k})$ is a $\\Bbbk[X]/(P)$-algebra.",
+    "dependencies": [],
+    "proof": "",
+    "index": 5
+  },
+  {
+    "label": "Lemma 1.6",
+    "env": "lem",
+    "context": {
+      "chapter": "ON SOME LOCAL RINGS",
+      "section": "separable case",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "1"
+    },
+    "content": "Let $\\Bbbk$ be a field and $P$ be an irreducible polynomial over $\\Bbbk$. If $P^{\\prime}\\neq 0$, then the family $1,P,P^{2},\\cdots,P^{k-1}$ of $K[X]/(P^{k})$ is free over $\\Bbbk[X]/(P)$.",
+    "dependencies": [],
+    "proof": "Assume that $a_{0}1+a_{1}P+\\cdots a_{k-1}P^{k-1}=0$ for given $a_{i}\\in\\Bbbk[X]/(P)$. We want to prove that $a_{0}=\\cdots=a_{k-1}=0$. To see that multiply the equation $P^{k-1}$, we get $a_{0}P^{k-1}=0..$ Hence $a_{0}=0$. Since $a_{0}=0$, multuplying the first equation of the proof by $P^{k-2}$, we get that $a_{1}P^{k-1}=0$ and hence as before we deduce that $a_{1}=0$. We show that $a_{i}=0$ for all the remaining $i$’s by multiplying successively by $P^{k-3},P^{k-4},\\dots$.",
+    "index": 6
+  },
+  {
+    "label": "Theorem 1.7",
+    "env": "thm",
+    "context": {
+      "chapter": "ON SOME LOCAL RINGS",
+      "section": "separable case",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "1"
+    },
+    "content": "Let $\\Bbbk$ be a field and $P$ be an irreducible polynomial over $\\Bbbk$. If $P^{\\prime}\\neq 0$, then $\\Bbbk[X]/(P^{k})$ is isomorphic as a $\\Bbbk[X]/(P)$-algebra and as a $\\Bbbk$-algebra to $(\\Bbbk[X]/(P))[Y]/(Y^{k}).$ The isomorphism is given by $Y\\mapsto P$.",
+    "dependencies": ["Lemma 1.6"],
+    "proof": "One has a unique $\\Bbbk[X]/(P)$-algebra morphism $\\psi_{k}:(\\Bbbk[X]/(P))[Y]/(Y^{k})\\to\\Bbbk[X]/(P^{k})$ given by $Y\\mapsto P$. This morphism is injective by the previous lemma. The morphism $\\psi_{k}$, is also a $\\Bbbk$-algebra morphism. The dimension of $\\Bbbk[X]/(P^{k})$ over $\\Bbbk$ is equal to the degree of $P^{k}$, hence equal to $k\\cdot deg(P)$ ($deg(P)$ is the degree of $P$). The algebra $(\\Bbbk[X]/(P))[Y]/(Y^{k})$ is also of dimension $k\\cdot deg(P)$ over $\\Bbbk$. We therefore have that $\\psi_{k}$ is an injective $\\Bbbk$-linear map between two vector spaces having the same dimension over $\\Bbbk$. This proves that $\\psi_{k}$ is an isomorphism. ∎",
+    "index": 7
+  },
+  {
+    "label": "Theorem 1.8",
+    "env": "thm",
+    "context": {
+      "chapter": "ON SOME LOCAL RINGS",
+      "section": "separable case",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "1"
+    },
+    "content": "Let $\\Bbbk$ be a field. Let $P_{1}$ and $P_{2}$ be two irreducible polynomials over $\\Bbbk$ and $k$ a positive integer. If $P_{1}$ and $P_{2}$ are separable (i.e. $P^{\\prime}_{i} \\neq 0$), then the local rings $\\Bbbk[X]/(P^{k}_{1})$ and $\\Bbbk[X]/(P^{k}_{2})$ are isomorphic if and only if their residue fields $\\Bbbk[X]/(P_{1})$ and $\\Bbbk[X]/(P_{2})$ are isomorphic.",
+    "dependencies": ["Theorem 1.7"],
+    "proof": "If the local rings are isomorphic, then the residue fields are isomorphic. Since we assume that $P_i' \\neq 0$, by the previous theorem we have that $\\Bbbk[X]/(P_i^k)$ is isomorphic to $(\\Bbbk[X]/(P_i))[Y]/(Y^n)$. The \"only if\" part of the statement follows. ∎",
+    "index": 8
+  },
+  {
+    "label": "Proposition 1.10",
+    "env": "prop",
+    "context": {
+      "chapter": "ON SOME LOCAL RINGS",
+      "section": "separable case",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "1"
+    },
+    "content": "Let $P_{1}$ and $P_{2}$ be two irreducible polynomials over $\\Bbbk$ and $k$ a positive integer. If $P_{1}$ and $P_{2}$ are seprable ($i.e.$ $P^{\\prime}_{i}\\neq 0$), then the local rings $\\Bbbk[X]/(P^{k}_{1})$ and $\\Bbbk[X]/(P^{k}_{2})$ are isomorphic as $\\Bbbk$-algebras if and only if their residue fileds $\\Bbbk[X]/(P_{1})$ and $\\Bbbk[X]/(P_{2})$ are isomorphic as $\\Bbbk$-algebras.",
+    "dependencies": [],
+    "proof": "The proof of the previous theorem can be adapted to obtain the proposition. ∎",
+    "index": 9
+  },
+  {
+    "label": "Definition 2.1",
+    "env": "def",
+    "context": {
+      "chapter": "ON SOME LOCAL RINGS",
+      "section": "non-separable case",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "2"
+    },
+    "content": "For $A$ and $B$ two $\\Bbbk$-algebras, we say that a ring morphism $f:A\\to B$ stabilizes $\\Bbbk$ if there exists a field automorphism $\\sigma_f:\\Bbbk\\to\\Bbbk$ such that $f(a)=\\sigma_f(a)$ for all $a\\in\\Bbbk$.",
+    "dependencies": [],
+    "proof": "",
+    "index": 10
+  },
+  {
+    "label": "Proposition 2.2",
+    "env": "prop",
+    "context": {
+      "chapter": "ON SOME LOCAL RINGS",
+      "section": "non-separable case",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "2"
+    },
+    "content": "$\\Bbbk$ is a field. Let $A$ and $B$ be two finite dimensional algebras over $\\Bbbk$ and $f:A\\to B$ be a ring morphism stabilizing $\\Bbbk$.\n\n1. $Im(f)$ is a vector subspace of $B$.\n2. If $f$ is injective then $dim(Im(f))=dim(A)$.\n3. If $f$ is injective and $dim(A)=dim(B)$ then $f$ is an isomorphism.\n4. If $f$ is an isomorphism then $f^{-1}$ stabilizes $\\Bbbk$ and $\\sigma_{f^{-1}}=\\sigma_{f}^{-1}$.\n5. If $f$ is an isomorphism then $dim(A)=dim(B)$.\n6. Let $I$ be a proper ideal of $B$, and let $\\pi:B\\mapsto B/I$ be the projection. The ring morphism $\\pi\\circ f$ stabilizes $\\Bbbk$ and $\\sigma_{\\pi\\circ f}=\\sigma_{f}$.\n7. Let $J$ be an ideal of $A$ lying in the kernel of $f$. The morphism $\\bar{f}:A/J\\to B$ factorising $f$ stabilizes $\\Bbbk$ and $\\sigma_{\\bar{f}}=\\sigma_{f}$.",
+    "dependencies": [],
+    "proof": "This can be proved as for $\\Bbbk$-algebra morphisms, we only need to use $\\sigma_{f}$ and $\\sigma_{f}^{-1}$. ∎",
+    "index": 11
+  },
+  {
+    "label": "Proposition 2.3",
+    "env": "prop",
+    "context": {
+      "chapter": "ON SOME LOCAL RINGS",
+      "section": "non-separable case",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "2"
+    },
+    "content": "$\\Bbbk$ is a field. Let $\\sigma:\\Bbbk\\to\\Bbbk$ be a field automorphism. We have a unique well defined ring automorphism $\\sigma^{X}:\\Bbbk[X]\\to\\Bbbk[X]$ stabilizing $\\Bbbk$ given by the data $\\sigma^{X}(X)=X$ and $\\sigma_{\\sigma^{X}}=\\sigma$.",
+    "dependencies": ["Proposition 2.2"],
+    "proof": "This can be readly checked.",
+    "index": 12
+  },
+  {
+    "label": "Proposition 2.4",
+    "env": "prop",
+    "context": {
+      "chapter": "ON SOME LOCAL RINGS",
+      "section": "non-separable case",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "2"
+    },
+    "content": "$\\Bbbk$ is a field and $P_{1},P_{2}$ are irreducible polynomials in $\\Bbbk[X]$. If $f:\\Bbbk[X]/(P_{1})\\to\\Bbbk[X]/(P_{2})$ is a ring isomorphism stabilizing $\\Bbbk$ then :\n\n1. The degree of $P_{1}$ is equal to the degree of $P_{2}$.\n2. There exist a unique polynomial $Q_{f}\\in\\Bbbk[X]$ of degree less than the degree of $P_{1}$ (the degree of $P_{2}$) and greater or equal to $1$ such that $f$ is induced by the ring morphism stabilizing $\\Bbbk$ $f_{X}:\\Bbbk[X]\\to\\Bbbk[X]$ defined by $X\\mapsto Q_{f}$ and $\\sigma_{f_{X}}=\\sigma_{f}$ i.e. $P\\mapsto\\sigma_{f}^{X}(P)\\circ Q_{f}$, where $\\sigma_{f}^{X}$ is as in the previous proposition.\n3. $\\sigma_{f}^{X}(P_{1})\\circ Q_{f}=S_{f}P_{2}$ for a given $S_{f}\\in\\Bbbk[X]$.\n4. For $P\\in K[X]$, if $\\sigma_{f}^{X}(P)\\circ Q_{f}=SP_{2}$ for some $S\\in\\Bbbk[X]$ then $P=RP_{1}$ for some $R\\in\\Bbbk[X]$.\n5. The morphism $f_{X}$ maps $(P_{1}^{n})$ into $(P_{2}^{n})$ and hence induces a ring morphism stabilizing $\\Bbbk$ : $f_{X,n}:\\Bbbk[X]/(P_{1}^{n})\\to\\Bbbk[X]/(P_{2}^{n})$ induced by $P\\mapsto\\sigma_{f}^{X}(P)\\circ Q_{f}$.",
+    "dependencies": [],
+    "proof": "Point 1) follows from the fact that the dimension of $\\Bbbk[X]/(P_{1})$ and $\\Bbbk[X]/(P_{2})$ as $\\Bbbk$-vector spaces are respectively the degree of $P_{1}$ and the degree of $P_{2}$. Now, there is a unique polynomial $Q_{f}$ of $\\Bbbk[X]$ of degree less than the degree of $P_{2}$ (degree of $P_{1}$) such that $f(X_{1})=Q_{f}(X_{2})$ where $X_{1}$ is the class of $X$ in $\\Bbbk[X]/(P_{1})$ and $X_{2}$ is the class of $X$ in $\\Bbbk[X]/(P_{2})$. This polynomial has a degree greater or equal to $1$ otherwise the image of $f$ will lie in $\\Bbbk$ ($f$ stabilizes $\\Bbbk$). For $P\\in K[X]$ we have $f(P(X_{1}))=\\sigma_{f}^{X}(P)\\circ Q_{f}(X_{2})$. This proves 2). Since $P_{1}(X_{1})=0$, $f(P_{1}(X_{1}))=\\sigma_{f}^{X}(P)\\circ Q_{f}(X_{2})=0$. Hence, $\\sigma_{f}^{X}(P)\\circ Q_{f}$ lies in the ideal $(P_{2})$. This proves 3). The statement in 4) is equivalent to the injectivity of $f$. Finally 3) imples that $\\sigma_{f}^{X}(P_{1}^{n})\\circ Q_{f}=S_{f}^{n}P_{2}^{n}$. This proves 5). We have proved the proposition. ∎",
+    "index": 13
+  },
+  {
+    "label": "Proposition 2.5",
+    "env": "prop",
+    "context": {
+      "chapter": "ON SOME LOCAL RINGS",
+      "section": "non-separable case",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "2"
+    },
+    "content": "$\\Bbbk$ is a field and $P_{1},P_{2}$ are irreducible polynomials in $\\Bbbk[X]$. Let $f:\\Bbbk[X]/(P_{1})\\to\\Bbbk[X]/(P_{2})$ be a ring isomorphism stabilizing $\\Bbbk$ and let $S_{f}$ and $f_{X,n}$ be as in the previous proposition. For $n>1$, $S_{f}$ is prime to $P_{2}$ if and only if $f_{X,n}:\\Bbbk[X]/(P_{1}^{n})\\to\\Bbbk[X]/(P_{2}^{n})$ is an isomorphism.",
+    "dependencies": ["Proposition 2.4"],
+    "proof": "We first prove that if $S_{f}$ is prime to $P_{2}$ then the map $f_{X,n}$ is an isomorphism. Assume that $S_{f}$ is prime to $P_{2}$ and take $P\\in K[X]$ such that its class $\\bar{P}$ in $\\Bbbk[X]/(P_{1}^{n})$ lies in the\n\n### Page 5\nkernel of $f_{X,n}$, i.e. $\\sigma_f^X (P)\\circ Q_f = SP_2^n$ for some $S\\in K[X]$ ($Q_{f}$ of the previous proposition). Let $m$ be the largest integer for wich $P_1^m$ divides $P$. We have $P = TP_1^m$ for some $T\\in \\mathbb{k}[X]$. Combining the last two equation and by applying 3) of the previous proposition we get :\n\n$$\\sigma_ {f} ^ {X} (P) \\circ Q _ {f} = \\sigma_ {f} ^ {X} (T P _ {1} ^ {m}) \\circ Q _ {f} = (\\sigma_ {f} ^ {X} (T) \\circ Q _ {f}) S _ {f} ^ {m} P _ {2} ^ {m} = S P _ {2} ^ {n}.$$\n\nAssume $m < n$. Since we assumed that $S_{f}$ is prime to $P_{2}$, we get that $\\sigma_{f}^{X}(T) \\circ Q_{f} = S' P_{2}^{n - m}$ with $n - m \\geq 1$ and hence by 4) of the previous proposition $T = RP_{1}$ for some $R \\in \\mathbb{k}[X]$. Since $P = TP_{1}^{m}$, we now have $P = R_{1}P_{1}^{m + 1}$. This leads to a contradiction, since $m$ is the largest integer for wich $P_{1}^{m}$ divides $P$. Therefore the assumption $m < n$ is false and $P = TP_{1}^{m}$ with $m \\geq n$. This proves that $P \\in (P_{1}^{n})$ and the class $\\bar{P}$ of $P$ in $\\mathbb{k}[X] / (P_1^n)$ is 0. We have proved that if $S_{f}$ is prime to $P$ then $f_{X,n}$ is injective. Since, $\\mathbb{k}[X] / (P_1^n)$ and $\\mathbb{k}[X] / (P_2^n)$ have the same dimensions as vector spaces over $\\mathbb{k}$ (follows from 1) of the previous proposition). We deduce that if $S_{f}$ is prime to $P$ then the morphism $f_{X,n}$ is an isomorphism. Let us prove the converse. For that assume that $S_{f}$ is not prime to $P_{2}$. Hence, (by 3) of the previous proposition) and the fact that $P_{2}$ is irreducible, we have :\n\n$$\\sigma_ {f} ^ {X} (P _ {1}) \\circ Q _ {f} = S P _ {2} ^ {m},$$\n\nfor some $m > 1$ and some $S \\in \\mathbb{k}[X]$. If $n = 2$, we see from the equation that the (nonzero) class of $P_{1}$ in $\\mathbb{k}[X] / (P_1^2)$ lies in the kernel of $f_{X,n}$. For $n > 2$, denote by $q_{n,m}$ the quotient of the division of $n$ by $m$. We have $(q_{n,m} + 1)m \\geq n$ and $q_{n,m} + 1 < n$. With these conditions, we remark by raising the last equation to the power $q_{n,m} + 1$ that the nonzero class of $P_1^{q_{n,m} + 1}$ in $\\mathbb{k}[X] / (P_1^n)$ lies in the kernel of $f_{X,n}$. We have proved that if $S_f$ is not prime to $P_2$ then the morphism $f_{X,n}$ is not an isomorphism.\n\nFor $f: \\mathbb{k}[X] / (P_1) \\to \\mathbb{k}[X] / (P_2)$ a ring isomorphisms stabilizing $\\mathbb{k}$, we will use $Q_f$ and $S_f$ and $\\sigma_f^X$ without refrencing.",
+    "index": 14
+  },
+  {
+    "label": "Proposition 2.6",
+    "env": "prop",
+    "context": {
+      "chapter": "ON SOME LOCAL RINGS",
+      "section": "non-separable case",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "2"
+    },
+    "content": "$\\Bbbk$ is a field and $P_{1},P_{2}$ are irreducible polynomials in $\\Bbbk[X]$. Let $f: \\mathbb{k}[X] / (P_1) \\to \\mathbb{k}[X] / (P_2)$ be a ring isomorphism stabilizing $\\mathbb{k}$.\n\n1) If $\\alpha$ is a root of $P_{2}$ then $Q_{f}(\\alpha)$ is a root of $\\sigma_f^X (P_1)$.\n2) We have a bijection $\\{\\text{roots of } P_2\\} \\to \\{\\text{roots of } \\sigma_f^X(P_1)\\}$ given by $\\alpha \\mapsto Q_f(\\alpha)$.",
+    "dependencies": ["Proposition 2.4"],
+    "proof": "1) follows from the equation $\\sigma_f^X(P_1) \\circ Q = S_f P_2$ of proposition 2.4 and it follows from 1) that we have a map $g: \\{\\text{roots of } P_2\\} \\to \\{\\text{roots of } \\sigma_f^X(P_1)\\}$ given by $\\alpha \\mapsto Q_f(\\alpha)$. To prove 2) we will define an inverse to $g$. Applying 3) of proposition 2.4 to $f^{-1}$ we get that:\n\n$$\n(\\sigma_ {f} ^ {X}) ^ {- 1} (P _ {2}) \\circ Q _ {f ^ {- 1}} = S _ {f ^ {- 1}} P _ {1},\n$$\n\nand hence\n\n$$\nP _ {2} \\circ \\sigma_ {f} ^ {X} (Q _ {f ^ {- 1}}) = \\sigma_ {f} ^ {X} (S _ {f ^ {- 1}}) \\sigma_ {f} ^ {X} (P _ {1}).\n$$\n\nTherefore we have a well defined map $h: \\{\\text{roots of } \\sigma_f^X(P_1)\\} \\to \\{\\text{roots of } P_2\\}$ given by $\\alpha \\mapsto \\sigma_f^X(Q_{f^{-1}})(\\alpha)$. We will prove that $h$ and $g$ are inverse to each other. Since $f$ and $f^{-1}$ are inverse to each other, we have:\n\n$$\n\\sigma_ {f} ^ {X} (Q _ {f ^ {- 1}}) \\circ Q _ {f} = X + S _ {2} P _ {2} \\quad \\text{and} \\quad (\\sigma_ {f} ^ {X}) ^ {- 1} (Q _ {f}) \\circ Q _ {f ^ {- 1}} = X + S _ {1} P _ {1},\n$$\n\nfor some $S_1, S_2 \\in \\mathbb{k}[X]$. The first equation shows that $hg$ is the identity of $\\{\\text{roots of } P_2\\}$. Composing the second equation by $\\sigma_f^X$ we obtain that $gh$ is the identity of $\\{\\text{roots of } \\sigma_f^X(P_1)\\}$. We have proved 2).",
+    "index": 15
+  },
+  {
+    "label": "Proposition 2.7",
+    "env": "prop",
+    "context": {
+      "chapter": "ON SOME LOCAL RINGS",
+      "section": "non-separable case",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "2"
+    },
+    "content": "$\\Bbbk$ is a field and $P_{1},P_{2}$ are irreducible polynomials in $\\Bbbk[X]$. Let $f:\\Bbbk[X]/(P_{1})\\to\\Bbbk[X]/(P_{2})$ be a ring isomorphism stabilizing $\\Bbbk$. $S_{f}$ is prime to $P_{2}$ If and only if $Q^{\\prime}_{f}\\neq 0$.",
+    "dependencies": ["Proposition 2.4"],
+    "proof": "We first note that $\\sigma^{X}_{f}(P_{1})$ is irreducible since $P_{1}$ is irreducible and $\\sigma^{X}_{f}$ is an automorphism of $\\Bbbk[X]$. Since that $\\sigma^{X}_{f}(P_{1})$ and $P_{2}$ have the same degree ( 1) of proposition 2.4), that $\\sigma^{X}_{f}(P_{1})$ and $P_{2}$ have the same number of roots (previous proposition) and that roots of an irreducible polynomial has the same multiplicity, we have by the previous proposition that :\n\n$\\sigma^{X}_{f}(P_{1})(X)=\\prod_{k=1}^{m}(X-Q_{f}(\\alpha_{k}))^{r}\\quad\\text{and}\\quad P_{2}(X)=\\prod_{k=1}^{m}(X-\\alpha_{k})^{r}$\n\nWhere $\\alpha_{1},\\ldots,\\alpha_{m}$ are the distinct roots of $P_{2}$ and $r$ is the degree of $P_{2}$ over $m$. Hence, we have :\n\n$(\\sigma^{X}_{f}(P_{1})\\circ Q)(X)=\\prod_{k=1}^{m}(Q(X)-Q_{f}(\\alpha_{k}))^{r}.$\n\nThe $Q_{f}(\\alpha_{k})$’s are distinct (previous proposition). Hence, the multplicity of $\\alpha_{k}$ as a root $\\sigma^{X}_{f}(P_{1})\\circ Q$ is equal to the multiplicity of $\\alpha_{k}$ for the factor $(Q(X)-Q_{f}(\\alpha_{k}))^{r}$. By proposition 2.4 $\\sigma^{X}_{f}(P_{1})\\circ Q=S_{f}P_{2}$; we have seen that $P_{2}(X)=\\prod_{k=1}^{m}(X-\\alpha_{k})^{r}$ and $P_{2}$ is irreducible. Hence, $S_{f}$ is prime to $P_{2}$ if and only $f$ the multiplicity of $\\alpha_{k}$ for the factor $(Q(X)-Q_{f}(\\alpha_{k}))^{r}$ is $r$. This last condition is equivalent to $Q^{\\prime}(\\alpha_{k})\\neq 0$. Since $P_{2}$ is irreducible and $\\alpha_{k}$ is a root of $P_{2}$ and degree of $Q_{f}$ is less than the degree of $P_{2}$, the condition $Q^{\\prime}(\\alpha_{k})\\neq 0$ is equivalent to the condition $Q^{\\prime}\\neq 0$. We have proved that $S_{f}$ is prime to $P_{2}$ if and only if $Q^{\\prime}\\neq 0$. ∎",
+    "index": 16
+  },
+  {
+    "label": "Theorem 2.8",
+    "env": "thm",
+    "context": {
+      "chapter": "ON SOME LOCAL RINGS",
+      "section": "non-separable case",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "2"
+    },
+    "content": "$\\Bbbk$ is a field and $P_{1},P_{2}$ are irreducible polynomials in $\\Bbbk[X]$. Take $n>1$. If $f:\\Bbbk[X]/(P_{1})\\to\\Bbbk[X]/(P_{2})$ is a ring isomorphism stabilising $\\Bbbk$, then $f_{X,n}:\\Bbbk[X]/(P_{1}^{n})\\to\\Bbbk[X]/(P_{2}^{n})$ of Proposition 2.4 is a ring isomorphism stabilising $\\Bbbk$ if and only if $Q^{\\prime}_{f}\\neq 0$.",
+    "dependencies": ["Proposition 2.4", "Proposition 2.5", "Proposition 2.7"],
+    "proof": "This is obtained by combining the last proposition with proposition 2.5 ∎",
+    "index": 17
+  },
+  {
+    "label": "Corollary 2.9",
+    "env": "cor",
+    "context": {
+      "chapter": "ON SOME LOCAL RINGS",
+      "section": "non-separable case",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "2"
+    },
+    "content": "$\\Bbbk$ is a field and $P_{1},P_{2}$ are irreducible polynomials in $\\Bbbk[X]$. If $f:\\Bbbk[X]/(P_{1})\\to\\Bbbk[X]/(P_{2})$ is a ring isomorphism stabilising $\\Bbbk$ such that $Q^{\\prime}_{f}\\neq 0$, then $\\Bbbk[X]/(P_{1}^{n})\\to\\Bbbk[X]/(P_{2}^{n})$ are isomorphic for al $n\\geq 1$.",
+    "dependencies": [],
+    "proof": "",
+    "index": 18
+  },
+  {
+    "label": "Theorem 2.10",
+    "env": "thm",
+    "context": {
+      "chapter": "ON SOME LOCAL RINGS",
+      "section": "non-separable case",
+      "subsection": "",
+      "chapter_number": 1,
+      "section_number": "2"
+    },
+    "content": "$\\Bbbk$ is a field and $P_{1},P_{2}$ are irreducible polynomials in $\\Bbbk[X]$. Let $f_{m}:\\Bbbk[X]/(P_{1}^{m})\\to\\Bbbk[X]/(P_{2}^{m})$ be a ring isomorphism stabilizing $\\Bbbk$ for a given $m\\geq 1$.The map $f_{m}$ maps the class of $X$ onto the class of some $R\\in\\Bbbk[X]$. Let $Q$ be the reminder of the division of $R$ by $P_{2}$ ($Q$ does not depend on the choice of $R$). If $Q^{\\prime}\\neq 0$, then the rings $\\Bbbk[X]/(P_{1}^{n})$ and $\\Bbbk[X]/(P_{2}^{n})$ are isomorphic for all $n\\geq 1$.",
+    "dependencies": ["Theorem 2.8"],
+    "proof": "Since $\\Bbbk[X]/(P_{1}^{m})$ and $\\Bbbk[X]/(P_{1}^{m})$ have a unique maximal ideal, $f_{m}$ induces a ring isomorphism stabilising $\\Bbbk$ $f:\\Bbbk[X]/(P_{1})\\to\\Bbbk[X]/(P_{2})$ of the residue fields. Now $Q_{f}=Q$ and hence $Q^{\\prime}_{f}\\neq 0$ and by the previous theorem the morphisms $f_{X,n}:\\Bbbk[X]/(P_{1})\\to\\Bbbk[X]/(P_{1}^{n})$ are isomorphisms.",
+    "index": 19
+  }
+]

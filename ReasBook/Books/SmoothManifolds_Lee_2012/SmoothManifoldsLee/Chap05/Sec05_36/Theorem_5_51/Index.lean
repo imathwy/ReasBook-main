@@ -1,0 +1,1 @@
+import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Theorem_5_51.EuclideanHalfSlice

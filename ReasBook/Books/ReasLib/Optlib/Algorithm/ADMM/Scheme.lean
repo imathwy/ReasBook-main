@@ -59,3 +59,4 @@ class Convex_KKT (x₁ : E₁) (x₂ : E₂) (y : F) (opt : OptProblem E₁ E₂
    subgrad₁ : -(ContinuousLinearMap.adjoint opt.A₁) y ∈ SubderivAt opt.f₁ x₁
    subgrad₂ : -(ContinuousLinearMap.adjoint opt.A₂) y ∈ SubderivAt opt.f₂ x₂
    eq       :  (opt.A₁ x₁) + (opt.A₂ x₂) = opt.b
+

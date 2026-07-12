@@ -1,0 +1,4 @@
+import StacksProject_2024.Chap10.Lemma_10_64_3.SemilocalPrime
+import StacksProject_2024.Chap10.Lemma_10_64_3.TensorQuotient
+import StacksProject_2024.Chap10.Lemma_10_64_3.SemilocalLocalization
+import StacksProject_2024.Chap10.Lemma_10_64_3.SemilocalRegularitySetup

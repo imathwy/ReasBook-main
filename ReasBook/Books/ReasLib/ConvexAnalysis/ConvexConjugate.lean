@@ -1096,3 +1096,4 @@ theorem linearMap_convex_conjugate {a a' : E} {α : EReal} (g : E → EReal)
     fun y ↦ (convex_conjugate univ g) (A.adjoint.symm (y - a')) + ⟪y, a⟫ - α - ⟪a, a'⟫ := sorry
 
 end linearMap_convex_conjugate
+

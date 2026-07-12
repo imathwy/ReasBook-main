@@ -10,7 +10,7 @@ import ReasLib.Optlib.Function.Lsmooth
 
 ## Main results
 
-  This file mainly concentrates on the LecturesConvexOptimization_Nesterov_2018 algorithm for smooth convex optimization problems.
+  This file mainly concentrates on the Nesterov algorithm for smooth convex optimization problems.
 
   We prove the O(1 / k ^ 2) rate for this algorithm.
 
@@ -21,7 +21,7 @@ section
 
 open Set
 
-class LecturesConvexOptimization_Nesterov_2018 (f : E → ℝ) (f' : E → E) (γ : ℕ+ → ℝ) (initial_point : E) where
+class Nesterov (f : E → ℝ) (f' : E → E) (γ : ℕ+ → ℝ) (initial_point : E) where
   x : ℕ → E
   y : ℕ+ → E
   v : ℕ → E
@@ -35,7 +35,7 @@ class LecturesConvexOptimization_Nesterov_2018 (f : E → ℝ) (f' : E → E) (�
   initial1 : γ 1 = (1 : ℝ)
   initial2 : v 0 = initial_point
 
-variable {f : E → ℝ} {f' : E → E} {xm x₀ : E} {γ : ℕ+ → ℝ} {alg : LecturesConvexOptimization_Nesterov_2018 f f' γ x₀}
+variable {f : E → ℝ} {f' : E → E} {xm x₀ : E} {γ : ℕ+ → ℝ} {alg : Nesterov f f' γ x₀}
 
 lemma one_iter (hfun : ConvexOn ℝ Set.univ f) (hg : ∀ (k : ℕ+), γ k = 2 / (k + 1)) :
     ∀ (k : ℕ+), f (alg.x k) - f xm - (1 - γ k) * (f (alg.x (k - 1)) - f xm) ≤
@@ -274,3 +274,4 @@ theorem nesterov_algorithm_smooth (hfun : ConvexOn ℝ Set.univ f)
     · simp only [zero_lt_two, pow_pos]
 
 end
+

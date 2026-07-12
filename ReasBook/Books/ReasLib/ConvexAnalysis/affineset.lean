@@ -852,3 +852,4 @@ theorem tucker_representation_of_orthogonal_complement
         ((- (LinearMap.adjoint A)).toAffineMap) (fun (i : T.dependent_indices) => y i) := by
   sorry
 -/
+

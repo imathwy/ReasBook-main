@@ -433,3 +433,4 @@ theorem lower_iff_lnorm_sub_convex (h₁ : ∀ x, HasGradientAt f (f' x) x)
   rw [lower_iff_lipschitz h₁ hfun hl]
 
 end Convex
+

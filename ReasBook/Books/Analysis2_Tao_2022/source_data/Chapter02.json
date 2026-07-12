@@ -1,0 +1,1475 @@
+[
+  {
+    "label": "Definition 2.1",
+    "env": "def",
+    "number_components": [
+      2,
+      1
+    ],
+    "extracted_labels": [
+      "def:2.1",
+      "eq:2.u1"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuous Functions",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:2.1}\n[Continuous functions]\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces, and let $f\\colon X\\to Y$.\n\\begin{enumerate}\n\\item For $x_0\\in X$, the function $f$ is \\emph{continuous at $x_0$} if for every $\\varepsilon>0$ there exists $\\delta>0$ such that for all $x\\in X$,\n\\[\n\\label{eq:2.u1}\nd_X(x,x_0)<\\delta\\implies d_Y\\bigl(f(x),f(x_0)\\bigr)<\\varepsilon.\n\\]\n\\item The function $f$ is \\emph{continuous} (on $X$) if $f$ is continuous at every $x\\in X$.\n\\end{enumerate}\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 1
+  },
+  {
+    "label": "Theorem 2.1",
+    "env": "thm",
+    "number_components": [
+      2,
+      1
+    ],
+    "extracted_labels": [
+      "thm:2.1",
+      "prf:thm:2.1",
+      "eq:2.u2"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuous Functions",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:2.1}\n[Continuity preserves convergence]\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces, let $f:X\\to Y$ be a function, and let $x_0\\in X$. The following statements are equivalent:\n\\begin{enumerate}\n\\item[(a)] $f$ is continuous at $x_0$, i.e., for every $\\varepsilon>0$ there exists $\\delta>0$ such that $d_X(x,x_0)<\\delta$ implies $d_Y(f(x),f(x_0))<\\varepsilon$.\n\\item[(b)] For every sequence $(x^{(n)})_{n=1}^\\infty$ in $X$ with $x^{(n)}\\to x_0$ in $(X,d_X)$, one has $f(x^{(n)})\\to f(x_0)$ in $(Y,d_Y)$.\n\\item[(c)] For every open set $V\\subseteq Y$ with $f(x_0)\\in V$, there exists an open set $U\\subseteq X$ with $x_0\\in U$ such that $f(U)\\subseteq V$.\n\\end{enumerate}\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:2.1}\n(a)$\\Rightarrow$(b). Assume (a). Let $(x^{(n)})$ be a sequence in $X$ with $x^{(n)}\\to x_0$. Let $\\varepsilon>0$. By (a), there exists $\\delta>0$ such that if $d_X(x,x_0)<\\delta$ then $d_Y(f(x),f(x_0))<\\varepsilon$. Since $x^{(n)}\\to x_0$, there exists $N\\in\\mathbb{N}$ such that for all $n\\ge N$ one has $d_X(x^{(n)},x_0)<\\delta$. Hence for all $n\\ge N$, $d_Y(f(x^{(n)}),f(x_0))<\\varepsilon$. This shows $f(x^{(n)})\\to f(x_0)$.\n\n(b)$\\Rightarrow$(a). Assume (b). Suppose, for contradiction, that (a) fails. Then there exists $\\varepsilon_0>0$ such that for every $\\delta>0$ there exists $x\\in X$ with $d_X(x,x_0)<\\delta$ and $d_Y(f(x),f(x_0))\\ge \\varepsilon_0$. For each $n\\in\\mathbb{N}$, apply this with $\\delta=1/n$ to obtain $x^{(n)}\\in X$ such that\n\\[\n\\label{eq:2.u2}\nd_X(x^{(n)},x_0)<\\frac{1}{n}\\quad\\text{and}\\quad d_Y(f(x^{(n)}),f(x_0))\\ge \\varepsilon_0.\n\\]\nThen $x^{(n)}\\to x_0$ in $X$, but $f(x^{(n)})\\not\\to f(x_0)$ in $Y$ because the distance from $f(x^{(n)})$ to $f(x_0)$ is bounded below by $\\varepsilon_0$ for all $n$, contradicting (b). Therefore (a) holds.\n\n(a)$\\Rightarrow$(c). Assume (a). Let $V\\subseteq Y$ be open with $f(x_0)\\in V$. Since $V$ is open, there exists $\\varepsilon>0$ such that the open ball $B_Y(f(x_0),\\varepsilon)=\\{y\\in Y: d_Y(y,f(x_0))<\\varepsilon\\}$ satisfies $B_Y(f(x_0),\\varepsilon)\\subseteq V$. By (a), there exists $\\delta>0$ such that $d_X(x,x_0)<\\delta$ implies $d_Y(f(x),f(x_0))<\\varepsilon$, i.e., $f(B_X(x_0,\\delta))\\subseteq B_Y(f(x_0),\\varepsilon)\\subseteq V$. Setting $U=B_X(x_0,\\delta)$ gives an open set $U\\subseteq X$ with $x_0\\in U$ and $f(U)\\subseteq V$.\n\n(c)$\\Rightarrow$(a). Assume (c). Let $\\varepsilon>0$ and define the open set $V=B_Y(f(x_0),\\varepsilon)\\subseteq Y$, which contains $f(x_0)$. By (c), there exists an open set $U\\subseteq X$ with $x_0\\in U$ and $f(U)\\subseteq V$. Since $U$ is open and contains $x_0$, there exists $\\delta>0$ such that $B_X(x_0,\\delta)\\subseteq U$. Then for any $x\\in X$ with $d_X(x,x_0)<\\delta$, one has $x\\in B_X(x_0,\\delta)\\subseteq U$, hence $f(x)\\in f(U)\\subseteq V=B_Y(f(x_0),\\varepsilon)$, which means $d_Y(f(x),f(x_0))<\\varepsilon$. This is exactly continuity of $f$ at $x_0$.\n\nTherefore (a), (b), and (c) are equivalent.\n\\end{proof}",
+    "index": 2
+  },
+  {
+    "label": "Theorem 2.2",
+    "env": "thm",
+    "number_components": [
+      2,
+      2
+    ],
+    "extracted_labels": [
+      "thm:2.2",
+      "prf:thm:2.2"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuous Functions",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "Let \\((X, d_X)\\) be a metric space, and let \\((Y, d_Y)\\) be another metric space. Let \\( f : X \\to Y \\) be a function. Then the following four statements are equivalent:\n\n(a) \\( f \\) is continuous.\n\n(b) Whenever \\((x^{(n)})_{n=1}^{\\infty}\\) is a sequence in \\( X \\) which converges to some point \\( x_0 \\in X \\) with respect to the metric \\( d_X \\), the sequence \\((f(x^{(n)}))_{n=1}^{\\infty}\\) converges to \\( f(x_0) \\) with respect to the metric \\( d_Y \\).\n\n(c) Whenever \\( V \\) is an open set in \\( Y \\), the set \\( f^{-1}(V) := \\{ x \\in X : f(x) \\in V \\} \\) is an open set in \\( X \\).\n\n(d) Whenever \\( F \\) is a closed set in \\( Y \\), the set \\( f^{-1}(F) := \\{ x \\in X : f(x) \\in F \\} \\) is a closed set in \\( X \\).\n",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:2.2}\n(a)$\\Rightarrow$(b). Assume $f$ is continuous. Let $x^{(n)}\\to x_0$ in $X$ and let $\\varepsilon>0$. By continuity of $f$ at $x_0$, there exists $\\delta>0$ such that $d_X(x,x_0)<\\delta$ implies $d_Y(f(x),f(x_0))<\\varepsilon$. Since $x^{(n)}\\to x_0$, there exists $N$ such that $d_X(x^{(n)},x_0)<\\delta$ for all $n\\ge N$. Hence $d_Y(f(x^{(n)}),f(x_0))<\\varepsilon$ for all $n\\ge N$, so $f(x^{(n)})\\to f(x_0)$.\n\n(b)$\\Rightarrow$(a). Assume (b). Fix $x_0\\in X$. If $f$ is not continuous at $x_0$, then there exists $\\varepsilon_0>0$ such that for every $\\delta>0$ there exists $x\\in X$ with $d_X(x,x_0)<\\delta$ and $d_Y(f(x),f(x_0))\\ge \\varepsilon_0$. For each $n\\in\\mathbb{N}$, choose $x^{(n)}\\in X$ such that $d_X(x^{(n)},x_0)<1/n$ and $d_Y(f(x^{(n)}),f(x_0))\\ge \\varepsilon_0$. Then $x^{(n)}\\to x_0$, but $f(x^{(n)})$ does not converge to $f(x_0)$, contradicting (b). Therefore $f$ is continuous at $x_0$, and since $x_0$ was arbitrary, $f$ is continuous on $X$.\n\n(a)$\\Rightarrow$(c). Assume $f$ is continuous and let $V\\subseteq Y$ be open. Let $x_0\\in f^{-1}(V)$, so $f(x_0)\\in V$. Since $V$ is open, there exists $\\varepsilon>0$ such that $B_Y(f(x_0),\\varepsilon):=\\{y\\in Y: d_Y(y,f(x_0))<\\varepsilon\\}\\subseteq V$. By continuity of $f$ at $x_0$, there exists $\\delta>0$ such that $d_X(x,x_0)<\\delta$ implies $d_Y(f(x),f(x_0))<\\varepsilon$, hence $f(x)\\in B_Y(f(x_0),\\varepsilon)\\subseteq V$. Therefore $B_X(x_0,\\delta)\\subseteq f^{-1}(V)$, showing that $f^{-1}(V)$ is open.\n\n(c)$\\Rightarrow$(a). Assume (c). Fix $x_0\\in X$ and $\\varepsilon>0$. The set $V:=B_Y(f(x_0),\\varepsilon)$ is open in $Y$, hence $U:=f^{-1}(V)$ is open in $X$ by (c). Since $x_0\\in U$ and $U$ is open, there exists $\\delta>0$ such that $B_X(x_0,\\delta)\\subseteq U$. If $d_X(x,x_0)<\\delta$, then $x\\in U$, so $f(x)\\in V$, i.e., $d_Y(f(x),f(x_0))<\\varepsilon$. This proves continuity of $f$ at $x_0$, and thus on $X$.\n\n(c)$\\Rightarrow$(d). Assume (c) and let $F\\subseteq Y$ be closed. Then $Y\\setminus F$ is open, so $f^{-1}(Y\\setminus F)$ is open in $X$. Since $f^{-1}(Y\\setminus F)=X\\setminus f^{-1}(F)$, the complement of $f^{-1}(F)$ is open, hence $f^{-1}(F)$ is closed.\n\n(d)$\\Rightarrow$(c). Assume (d) and let $V\\subseteq Y$ be open. Then $Y\\setminus V$ is closed, so $f^{-1}(Y\\setminus V)$ is closed in $X$. Since $f^{-1}(Y\\setminus V)=X\\setminus f^{-1}(V)$, the complement of $f^{-1}(V)$ is closed, hence $f^{-1}(V)$ is open.\n\nThe implications above show that (a), (b), (c), and (d) are equivalent.\n\\end{proof}",
+    "index": 3
+  },
+  {
+    "label": "Theorem 2.3",
+    "env": "thm",
+    "number_components": [
+      2,
+      3
+    ],
+    "extracted_labels": [
+      "thm:2.3",
+      "prf:thm:2.3",
+      "eq:2.u3",
+      "eq:2.u4",
+      "eq:2.u5"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuous Functions",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:2.3}\n(Continuity preserved by composition) Let $(X,d_X)$, $(Y,d_Y)$, and $(Z,d_Z)$ be metric spaces.\n\\begin{enumerate}\n\\item[(a)] Let $f\\colon X\\to Y$ and $g\\colon Y\\to Z$. If $f$ is continuous at $x_0\\in X$ and $g$ is continuous at $f(x_0)\\in Y$, then the composition $g\\circ f\\colon X\\to Z$, defined by $(g\\circ f)(x)=g(f(x))$, is continuous at $x_0$.\n\\item[(b)] Let $f\\colon X\\to Y$ and $g\\colon Y\\to Z$. If $f$ is continuous on $X$ and $g$ is continuous on $Y$, then $g\\circ f$ is continuous on $X$.\n\\end{enumerate}\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:2.3}\n(a) Let $\\varepsilon>0$. Since $g$ is continuous at $f(x_0)$, there exists $\\eta>0$ such that for all $y\\in Y$,\n\\[\n\\label{eq:2.u3}\nd_Y(y,f(x_0))<\\eta \\implies d_Z(g(y),g(f(x_0)))<\\varepsilon.\n\\]\nSince $f$ is continuous at $x_0$, there exists $\\delta>0$ such that for all $x\\in X$,\n\\[\n\\label{eq:2.u4}\nd_X(x,x_0)<\\delta \\implies d_Y(f(x),f(x_0))<\\eta.\n\\]\nTherefore, for all $x\\in X$, if $d_X(x,x_0)<\\delta$, then $d_Y(f(x),f(x_0))<\\eta$, hence\n\\[\n\\label{eq:2.u5}\nd_Z\\bigl((g\\circ f)(x),(g\\circ f)(x_0)\\bigr)=d_Z\\bigl(g(f(x)),g(f(x_0))\\bigr)<\\varepsilon.\n\\]\nThus $g\\circ f$ is continuous at $x_0$.\n\n(b) Fix $x_0\\in X$. Since $f$ is continuous at $x_0$ and $g$ is continuous at $f(x_0)$, part (a) implies that $g\\circ f$ is continuous at $x_0$. Since $x_0$ was arbitrary, $g\\circ f$ is continuous on $X$.\n\\end{proof}",
+    "index": 4
+  },
+  {
+    "label": "Proposition 2.1",
+    "env": "prop",
+    "number_components": [
+      2,
+      1
+    ],
+    "extracted_labels": [
+      "prop:2.1",
+      "prf:prop:2.1"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuous Functions",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.1}\nLet $X$ be a topological space and let $f\\colon X\\to\\mathbb{R}$ be continuous. Define $f^2\\colon X\\to\\mathbb{R}$ by $f^2(x):=f(x)^2$. Then $f^2$ is continuous.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.1}\nLet $g\\colon\\mathbb{R}\\to\\mathbb{R}$ be defined by $g(t):=t^2$. Then $g$ is continuous and $f^2=g\\circ f$. Since the composition of continuous functions is continuous, $f^2$ is continuous.\n\\end{proof}",
+    "index": 5
+  },
+  {
+    "label": "Proposition 2.2",
+    "env": "prop",
+    "number_components": [
+      2,
+      2
+    ],
+    "extracted_labels": [
+      "prop:2.2",
+      "prf:prop:2.2"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuous Functions",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.2}\n Let \\( (X, d) \\) be a metric space, and let \\( (E, d|_{E \\times E}) \\) be a subspace of \\( (X, d) \\). Let \\( \\iota_{E \\to X} : E \\to X \\) be the inclusion map, defined by setting \\( \\iota_{E \\to X}(x) := x \\) for all \\( x \\in E \\). Show that \\( \\iota_{E \\to X} \\) is continuous.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.2}\nFix $x\\in E$ and $\\varepsilon>0$. Choose $\\delta:=\\varepsilon$. If $y\\in E$ satisfies $d_E(x,y)<\\delta$, then by definition of $d_E$ one has $d(\\iota_{E\\to X}(x),\\iota_{E\\to X}(y))=d(x,y)=d_E(x,y)<\\varepsilon$. This verifies continuity of $\\iota_{E\\to X}$ at $x$. Since $x\\in E$ was arbitrary, $\\iota_{E\\to X}$ is continuous on $E$.\n\\end{proof}",
+    "index": 6
+  },
+  {
+    "label": "Proposition 2.3",
+    "env": "prop",
+    "number_components": [
+      2,
+      3
+    ],
+    "extracted_labels": [
+      "prop:2.3",
+      "prf:prop:2.3"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuous Functions",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.3}\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces, let $f\\colon X\\to Y$ be a function, and let $E\\subseteq X$ be equipped with the induced metric $d_X|_{E\\times E}$. Fix $x_0\\in E$. If $f$ is continuous at $x_0$ (as a map on $X$), then the restriction $f|_E\\colon E\\to Y$ is continuous at $x_0$ (as a map on $E$). In particular, if $f$ is continuous on $X$, then $f|_E$ is continuous on $E$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.3}\nAssume that $f$ is continuous at $x_0\\in E$. Let $\\varepsilon>0$ be given. By continuity of $f$ at $x_0$ in $X$, there exists $\\delta>0$ such that for all $x\\in X$, if $d_X(x,x_0)<\\delta$, then $d_Y(f(x),f(x_0))<\\varepsilon$.\n\nNow let $x\\in E$ satisfy $d_X|_{E\\times E}(x,x_0)<\\delta$. Since $d_X|_{E\\times E}(x,x_0)=d_X(x,x_0)$, it follows that $d_Y(f|_E(x),f|_E(x_0))=d_Y(f(x),f(x_0))<\\varepsilon$. This is exactly the $\\varepsilon$--$\\delta$ condition for continuity of $f|_E$ at $x_0$.\n\nFor the final statement, if $f$ is continuous on $X$, then $f$ is continuous at every $x_0\\in E$, hence $f|_E$ is continuous at every $x_0\\in E$ by the first part.\n\\end{proof}",
+    "index": 7
+  },
+  {
+    "label": "Proposition 2.4",
+    "env": "prop",
+    "number_components": [
+      2,
+      4
+    ],
+    "extracted_labels": [
+      "prop:2.4",
+      "prf:prop:2.4",
+      "eq:2.u6",
+      "eq:2.u7"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuous Functions",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 1,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.4}\nLet \\( f : X \\to Y \\) be a function from one metric space \\( (X, d_X) \\) to another \\( (Y, d_Y) \\). Suppose that the image \\( f(X) \\) of \\( X \\) is contained in some subset \\( E \\subseteq Y \\) of \\( Y \\). Let \\( g : X \\to E \\) be the function which is the same as \\( f \\) but with the codomain restricted from \\( Y \\) to \\( E \\), thus \\( g(x) = f(x) \\) for all \\( x \\in X \\). We give \\( E \\) the metric \\( d_Y|_{E \\times E} \\) induced from \\( Y \\). For any \\( x_0 \\in X \\), that \\( f \\) is continuous at \\( x_0 \\) if and only if \\( g \\) is continuous at \\( x_0 \\).\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.4}\nFix $x_0\\in X$.\n\nAssume that $f$ is continuous at $x_0$. Let $\\varepsilon>0$. By continuity of $f$ at $x_0$, there exists $\\delta>0$ such that for all $x\\in X$, if $d_X(x,x_0)<\\delta$ then $d_Y\\bigl(f(x),f(x_0)\\bigr)<\\varepsilon$. Since $g(x)=f(x)$ and $d_E$ is the restriction of $d_Y$, this implies that if $d_X(x,x_0)<\\delta$ then\n\\[\n\\label{eq:2.u6}\nd_E\\bigl(g(x),g(x_0)\\bigr)=d_Y\\bigl(f(x),f(x_0)\\bigr)<\\varepsilon,\n\\]\nso $g$ is continuous at $x_0$.\n\nAssume conversely that $g$ is continuous at $x_0$. Let $\\varepsilon>0$. By continuity of $g$ at $x_0$, there exists $\\delta>0$ such that for all $x\\in X$, if $d_X(x,x_0)<\\delta$ then $d_E\\bigl(g(x),g(x_0)\\bigr)<\\varepsilon$. Using $g(x)=f(x)$ and $d_E=d_Y|_{E\\times E}$ gives\n\\[\n\\label{eq:2.u7}\nd_Y\\bigl(f(x),f(x_0)\\bigr)=d_E\\bigl(g(x),g(x_0)\\bigr)<\\varepsilon,\n\\]\nso $f$ is continuous at $x_0$.\n\nThe pointwise equivalence for all $x_0\\in X$ implies the equivalence of continuity on $X$.\n\\end{proof}",
+    "index": 8
+  },
+  {
+    "label": "Definition 2.2",
+    "env": "def",
+    "number_components": [
+      2,
+      2
+    ],
+    "extracted_labels": [
+      "def:2.2",
+      "eq:2.u8"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Product Spaces",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:2.2}\n[Pairing of functions]\nLet $f\\colon X\\to Y$ and $g\\colon X\\to Z$ be functions. The \\emph{pairing} of $f$ and $g$ is the function $(f,g)\\colon X\\to Y\\times Z$ defined by\n\\[\n\\label{eq:2.u8}\n(f,g)(x):=(f(x),g(x))\\qquad (x\\in X).\n\\]\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 9
+  },
+  {
+    "label": "Lemma 2.1",
+    "env": "lem",
+    "number_components": [
+      2,
+      1
+    ],
+    "extracted_labels": [
+      "lem:2.1",
+      "prf:lem:2.1",
+      "eq:2.u11",
+      "eq:2.u12"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Product Spaces",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\n\\label{lem:2.1}\nLet \\( f : X \\to \\mathbb{R} \\) and \\( g : X \\to \\mathbb{R} \\) be functions, and let \\( (f, g) : X \\to \\mathbb{R}^2 \\) be their direct sum. We give \\( \\mathbb{R}^2 \\) the Euclidean metric.\n\n(a) If \\( x_0 \\in X \\), then \\( f \\) and \\( g \\) are both continuous at \\( x_0 \\) if and only if \\( (f, g) \\) is continuous at \\( x_0 \\).\n\n(b) \\( f \\) and \\( g \\) are both continuous if and only if \\( (f, g) \\) is continuous.\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:lem:2.1}\n(a) ($\\Rightarrow$) Assume $f$ and $g$ are continuous at $x_0$. Let $\\varepsilon>0$. By continuity of $f$ at $x_0$, there exists $\\delta_f>0$ such that $d_X(x,x_0)<\\delta_f$ implies $|f(x)-f(x_0)|<\\varepsilon/\\sqrt{2}$. By continuity of $g$ at $x_0$, there exists $\\delta_g>0$ such that $d_X(x,x_0)<\\delta_g$ implies $|g(x)-g(x_0)|<\\varepsilon/\\sqrt{2}$. Let $\\delta=\\min\\{\\delta_f,\\delta_g\\}$. If $d_X(x,x_0)<\\delta$, then\n\\[\n\\label{eq:2.u11}\nd_2\\bigl((f,g)(x),(f,g)(x_0)\\bigr)=\\sqrt{|f(x)-f(x_0)|^2+|g(x)-g(x_0)|^2}<\\sqrt{\\frac{\\varepsilon^2}{2}+\\frac{\\varepsilon^2}{2}}=\\varepsilon.\n\\]\nHence $(f,g)$ is continuous at $x_0$.\n\n($\\Leftarrow$) Assume $(f,g)$ is continuous at $x_0$. Let $\\varepsilon>0$. There exists $\\delta>0$ such that $d_X(x,x_0)<\\delta$ implies $d_2((f,g)(x),(f,g)(x_0))<\\varepsilon$. For such $x$,\n\\[\n\\label{eq:2.u12}\n|f(x)-f(x_0)|\\le d_2\\bigl((f,g)(x),(f,g)(x_0)\\bigr)<\\varepsilon,\n\\qquad\n|g(x)-g(x_0)|\\le d_2\\bigl((f,g)(x),(f,g)(x_0)\\bigr)<\\varepsilon.\n\\]\nThus $f$ and $g$ are continuous at $x_0$.\n\n(b) This follows immediately from (a) by applying it at each point $x_0\\in X$.\n\\end{proof}",
+    "index": 10
+  },
+  {
+    "label": "Lemma 2.2",
+    "env": "lem",
+    "number_components": [
+      2,
+      2
+    ],
+    "extracted_labels": [
+      "lem:2.2",
+      "eq:2.u13",
+      "eq:2.u14",
+      "prf:lem:2.2",
+      "eq:2.u15",
+      "eq:2.u16",
+      "eq:2.u17",
+      "eq:2.u18",
+      "eq:2.u19",
+      "eq:2.u20",
+      "eq:2.u21",
+      "eq:2.u22",
+      "eq:2.u23",
+      "eq:2.u24",
+      "eq:2.u25"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Product Spaces",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{lemma}\n\\label{lem:2.2}\nThe functions $+:\\mathbb{R}^2\\to\\mathbb{R}$, $-:\\mathbb{R}^2\\to\\mathbb{R}$, $\\cdot:\\mathbb{R}^2\\to\\mathbb{R}$, $\\max:\\mathbb{R}^2\\to\\mathbb{R}$, and $\\min:\\mathbb{R}^2\\to\\mathbb{R}$ defined by\n\\[\n\\label{eq:2.u13}\n+(x,y)=x+y,\\qquad -(x,y)=x-y,\\qquad \\cdot(x,y)=xy,\\qquad \\max(x,y)=\\max\\{x,y\\},\\qquad \\min(x,y)=\\min\\{x,y\\}\n\\]\nare continuous. The function $/:\\mathbb{R}\\times(\\mathbb{R}\\setminus\\{0\\})\\to\\mathbb{R}$ defined by\n\\[\n\\label{eq:2.u14}\n/(x,y)=x/y\n\\]\nis continuous on its domain. For each $c\\in\\mathbb{R}$, the function $m_c:\\mathbb{R}\\to\\mathbb{R}$ defined by $m_c(x)=cx$ is continuous.\n\\end{lemma}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:lem:2.2}\nFix $(x_0,y_0)\\in\\mathbb{R}^2$. For addition, let $\\varepsilon>0$ and set $\\delta=\\varepsilon/2$. If $\\|(x,y)-(x_0,y_0)\\|<\\delta$, then $|x-x_0|<\\delta$ and $|y-y_0|<\\delta$, hence\n\\[\n\\label{eq:2.u15}\n|(x+y)-(x_0+y_0)|\\le |x-x_0|+|y-y_0|<2\\delta=\\varepsilon.\n\\]\nThus $(x,y)\\mapsto x+y$ is continuous at $(x_0,y_0)$.\n\nFor subtraction,\n\\[\n\\label{eq:2.u16}\n|(x-y)-(x_0-y_0)|\\le |x-x_0|+|y-y_0|,\n\\]\nso the same choice $\\delta=\\varepsilon/2$ proves continuity.\n\nFor multiplication, note that\n\\[\n\\label{eq:2.u17}\n|xy-x_0y_0|=|x(y-y_0)+y_0(x-x_0)|\\le |x|\\,|y-y_0|+|y_0|\\,|x-x_0|.\n\\]\nAssume $\\|(x,y)-(x_0,y_0)\\|<1$, so $|x-x_0|<1$ and therefore $|x|\\le |x_0|+1$. Given $\\varepsilon>0$, choose\n\\[\n\\label{eq:2.u18}\n\\delta=\\min\\left\\{1,\\ \\frac{\\varepsilon}{|x_0|+1+|y_0|}\\right\\}.\n\\]\nIf $\\|(x,y)-(x_0,y_0)\\|<\\delta$, then\n\\[\n\\label{eq:2.u19}\n|xy-x_0y_0|\\le (|x_0|+1)\\,|y-y_0|+|y_0|\\,|x-x_0|\\le (|x_0|+1+|y_0|)\\delta\\le \\varepsilon,\n\\]\nso multiplication is continuous.\n\nFor the maximum function, for all real numbers $a,b,c,d$,\n\\[\n\\label{eq:2.u20}\n|\\max(a,b)-\\max(c,d)|\\le \\max\\{|a-c|,|b-d|\\}.\n\\]\nIndeed, if $\\max(a,b)=a$ then $\\max(c,d)\\ge c$, so $\\max(a,b)-\\max(c,d)\\le a-c$, and also $\\max(c,d)\\ge d$, so $\\max(a,b)-\\max(c,d)\\le a-d$; hence $\\max(a,b)-\\max(c,d)\\le \\max\\{a-c,a-d\\}$. A symmetric argument with the roles swapped yields the absolute value bound above. Applying this with $(a,b)=(x,y)$ and $(c,d)=(x_0,y_0)$ gives\n\\[\n\\label{eq:2.u21}\n|\\max(x,y)-\\max(x_0,y_0)|\\le \\max\\{|x-x_0|,|y-y_0|\\}\\le \\|(x,y)-(x_0,y_0)\\|,\n\\]\nso $\\max$ is continuous. Since $\\min(x,y)=-\\max(-x,-y)$, continuity of $\\min$ follows from continuity of $\\max$ and of $x\\mapsto -x$.\n\nFor division, fix $(x_0,y_0)\\in\\mathbb{R}\\times(\\mathbb{R}\\setminus\\{0\\})$. Choose $\\delta_0=|y_0|/2$. If $\\|(x,y)-(x_0,y_0)\\|<\\delta_0$, then $|y-y_0|<\\delta_0$ and therefore $|y|\\ge |y_0|-|y-y_0|>|y_0|/2$. Then\n\\[\n\\label{eq:2.u22}\n\\left|\\frac{x}{y}-\\frac{x_0}{y_0}\\right|=\\left|\\frac{xy_0-x_0y}{yy_0}\\right|=\\left|\\frac{y_0(x-x_0)+x_0(y_0-y)}{yy_0}\\right|\n\\le \\frac{|y_0|\\,|x-x_0|+|x_0|\\,|y-y_0|}{|y|\\,|y_0|}.\n\\]\nUnder $|y|\\ge |y_0|/2$, this yields\n\\[\n\\label{eq:2.u23}\n\\left|\\frac{x}{y}-\\frac{x_0}{y_0}\\right|\\le \\frac{2}{|y_0|}|x-x_0|+\\frac{2|x_0|}{|y_0|^2}|y-y_0|.\n\\]\nGiven $\\varepsilon>0$, choose\n\\[\n\\label{eq:2.u24}\n\\delta=\\min\\left\\{\\frac{|y_0|}{2},\\ \\frac{\\varepsilon}{\\frac{2}{|y_0|}+\\frac{2|x_0|}{|y_0|^2}}\\right\\}.\n\\]\nIf $\\|(x,y)-(x_0,y_0)\\|<\\delta$, then $|x-x_0|<\\delta$ and $|y-y_0|<\\delta$, so the right-hand side is at most $\\varepsilon$. Thus $(x,y)\\mapsto x/y$ is continuous at $(x_0,y_0)$.\n\nFinally, fix $c\\in\\mathbb{R}$ and $x_0\\in\\mathbb{R}$. For any $x\\in\\mathbb{R}$,\n\\[\n\\label{eq:2.u25}\n|cx-cx_0|=|c|\\,|x-x_0|.\n\\]\nGiven $\\varepsilon>0$, take $\\delta=\\varepsilon/|c|$ if $c\\ne 0$, and any $\\delta>0$ if $c=0$. Then $|x-x_0|<\\delta$ implies $|cx-cx_0|<\\varepsilon$, so $x\\mapsto cx$ is continuous.\n\\end{proof}",
+    "index": 11
+  },
+  {
+    "label": "Theorem 2.4",
+    "env": "thm",
+    "number_components": [
+      2,
+      4
+    ],
+    "extracted_labels": [
+      "thm:2.4",
+      "prf:thm:2.4",
+      "eq:2.u26",
+      "eq:2.u27",
+      "eq:2.u28"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Product Spaces",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:2.4}\nLet $(X, d)$ be a metric space, and let $f : X \\to \\mathbb{R}$ and $g : X \\to \\mathbb{R}$ be functions. Let $c$ be a real number.\n\n(a) If $x_0 \\in X$ and $f$ and $g$ are continuous at $x_0$, then the functions $f + g : X \\to \\mathbb{R}$, $f - g : X \\to \\mathbb{R}$, $fg : X \\to \\mathbb{R}$, $\\max(f, g) : X \\to \\mathbb{R}$, $\\min(f, g) : X \\to \\mathbb{R}$, and $cf : X \\to \\mathbb{R}$ (see Definition 9.2.1 for definitions) are also continuous at $x_0$. If $g(x) \\neq 0$ for all $x \\in X$, then $f/g : X \\to \\mathbb{R}$ is also continuous.\n\n(b) If $f$ and $g$ are continuous, then the functions $f + g : X \\to \\mathbb{R}$, $f - g : X \\to \\mathbb{R}$, $fg : X \\to \\mathbb{R}$, $\\max(f, g) : X \\to \\mathbb{R}$, $\\min(f, g) : X \\to \\mathbb{R}$, and $cf : X \\to \\mathbb{R}$ are also continuous at $x_0$. If $g(x) \\neq 0$ for all $x \\in X$, then $f/g : X \\to \\mathbb{R}$ is also continuous at $x_0$.\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:2.4}\n(a) Since $f$ and $g$ are continuous at $x_0$, the map $F:X\\to\\mathbb{R}^2$ defined by $F(x)=(f(x),g(x))$ is continuous at $x_0$. Define continuous functions $\\phi_1,\\phi_2,\\phi_3,\\phi_4,\\phi_5:\\mathbb{R}^2\\to\\mathbb{R}$ and $\\psi:\\mathbb{R}\\to\\mathbb{R}$ by\n\\[\n\\label{eq:2.u26}\n\\phi_1(u,v)=u+v,\\quad \\phi_2(u,v)=u-v,\\quad \\phi_3(u,v)=uv,\\quad \\phi_4(u,v)=\\max\\{u,v\\},\\quad \\phi_5(u,v)=\\min\\{u,v\\},\n\\]\n\\[\n\\label{eq:2.u27}\n\\psi(u)=cu.\n\\]\nThen\n\\[\n\\label{eq:2.u28}\nf+g=\\phi_1\\circ F,\\quad f-g=\\phi_2\\circ F,\\quad fg=\\phi_3\\circ F,\\quad \\max(f,g)=\\phi_4\\circ F,\\quad \\min(f,g)=\\phi_5\\circ F,\\quad cf=\\psi\\circ f.\n\\]\nEach right-hand side is a composition of functions continuous at the relevant point, hence each left-hand side is continuous at $x_0$.\n\nIf $g(x)\\neq 0$ for all $x\\in X$, the reciprocal map $r:\\mathbb{R}\\setminus\\{0\\}\\to\\mathbb{R}$, $r(t)=1/t$, is continuous, and $r\\circ g$ is continuous at $x_0$. Since $f/g=f\\cdot (r\\circ g)$ and the product of two functions continuous at $x_0$ is continuous at $x_0$, the quotient $f/g$ is continuous at $x_0$.\n\n(b) For each $x_0\\in X$, the hypotheses imply that $f$ and $g$ are continuous at $x_0$. Applying part (a) at each $x_0$ gives continuity at every point of $X$ for the listed combinations, hence continuity on $X$.\n\\end{proof}",
+    "index": 12
+  },
+  {
+    "label": "Proposition 2.6",
+    "env": "prop",
+    "number_components": [
+      2,
+      6
+    ],
+    "extracted_labels": [
+      "prop:2.6",
+      "prf:prop:2.6",
+      "eq:2.u29",
+      "eq:2.u30"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Product Spaces",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.6}\nLet $(X,d)$ be a metric space and let $f:X\\to\\mathbb{R}$ be continuous. Define $|f|:X\\to\\mathbb{R}$ by $|f|(x)=|f(x)|$ for all $x\\in X$. Then $|f|$ is continuous on $X$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.6}\nFix $x_0\\in X$. Since $f$ is continuous at $x_0$, for every $\\varepsilon>0$ there exists $\\delta>0$ such that $d(x,x_0)<\\delta$ implies $|f(x)-f(x_0)|<\\varepsilon$. For all $a,b\\in\\mathbb{R}$, the reverse triangle inequality gives $\\bigl||a|-|b|\\bigr|\\le |a-b|$. Applying this with $a=f(x)$ and $b=f(x_0)$ yields\n\\[\n\\label{eq:2.u29}\n\\bigl||f(x)|-|f(x_0)|\\bigr|\\le |f(x)-f(x_0)|.\n\\]\nHence, if $d(x,x_0)<\\delta$, then\n\\[\n\\label{eq:2.u30}\n\\bigl||f|(x)-|f|(x_0)\\bigr|=\\bigl||f(x)|-|f(x_0)|\\bigr|<\\varepsilon.\n\\]\nTherefore $|f|$ is continuous at $x_0$. Since $x_0$ was arbitrary, $|f|$ is continuous on $X$.\n\\end{proof}",
+    "index": 13
+  },
+  {
+    "label": "Proposition 2.7",
+    "env": "prop",
+    "number_components": [
+      2,
+      7
+    ],
+    "extracted_labels": [
+      "prop:2.7",
+      "prf:prop:2.7",
+      "eq:2.u31",
+      "eq:2.u32"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Product Spaces",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.7}\nLet $\\pi_1,\\pi_2:\\mathbb{R}^2\\to\\mathbb{R}$ be defined by $\\pi_1(x,y)=x$ and $\\pi_2(x,y)=y$. Then $\\pi_1$ and $\\pi_2$ are continuous (with respect to the Euclidean metrics on $\\mathbb{R}^2$ and $\\mathbb{R}$).\n\nMoreover, let $(X,d)$ be a metric space and let $f:\\mathbb{R}\\to X$ be continuous. Define $g_1,g_2:\\mathbb{R}^2\\to X$ by $g_1(x,y)=f(x)$ and $g_2(x,y)=f(y)$. Then $g_1$ and $g_2$ are continuous (with respect to the Euclidean metric on $\\mathbb{R}^2$ and the metric $d$ on $X$).\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.7}\nFor $\\pi_1$, let $(x_0,y_0)\\in\\mathbb{R}^2$ and let $\\varepsilon>0$. If $\\sqrt{(x-x_0)^2+(y-y_0)^2}<\\varepsilon$, then $|x-x_0|\\le \\sqrt{(x-x_0)^2+(y-y_0)^2}<\\varepsilon$, hence\n\\[\n\\label{eq:2.u31}\n|\\pi_1(x,y)-\\pi_1(x_0,y_0)|=|x-x_0|<\\varepsilon.\n\\]\nThus $\\pi_1$ is continuous at $(x_0,y_0)$, and therefore continuous on $\\mathbb{R}^2$. The same argument with $y$ in place of $x$ shows that $\\pi_2$ is continuous.\n\nFor $g_1$, fix $(x_0,y_0)\\in\\mathbb{R}^2$ and $\\varepsilon>0$. Since $f$ is continuous at $x_0$, there exists $\\delta>0$ such that $|x-x_0|<\\delta$ implies $d(f(x),f(x_0))<\\varepsilon$. If $\\sqrt{(x-x_0)^2+(y-y_0)^2}<\\delta$, then $|x-x_0|<\\delta$, hence\n\\[\n\\label{eq:2.u32}\nd\\bigl(g_1(x,y),g_1(x_0,y_0)\\bigr)=d\\bigl(f(x),f(x_0)\\bigr)<\\varepsilon.\n\\]\nTherefore $g_1$ is continuous at $(x_0,y_0)$ and hence continuous on $\\mathbb{R}^2$. The proof for $g_2$ is identical, using continuity of $f$ at $y_0$ and the estimate $|y-y_0|\\le \\sqrt{(x-x_0)^2+(y-y_0)^2}$.\n\\end{proof}",
+    "index": 14
+  },
+  {
+    "label": "Proposition 2.8",
+    "env": "prop",
+    "number_components": [
+      2,
+      8
+    ],
+    "extracted_labels": [
+      "prop:2.8",
+      "eq:2.u34",
+      "eq:2.u35",
+      "prf:prop:2.8",
+      "eq:2.u36",
+      "eq:2.u37"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Product Spaces",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.8}\nLet $n,m\\ge 0$ be integers, and let $c_{ij}\\in\\mathbb{R}$ for $0\\le i\\le n$, $0\\le j\\le m$. Define $P:\\mathbb{R}^2\\to\\mathbb{R}$ by\n\\[\n\\label{eq:2.u34}\nP(x,y):=\\sum_{i=0}^{n}\\sum_{j=0}^{m} c_{ij} x^i y^j.\n\\]\nThen $P$ is continuous on $\\mathbb{R}^2$. Moreover, if $(X,d)$ is a metric space and $f,g:X\\to\\mathbb{R}$ are continuous, then the map $P(f,g):X\\to\\mathbb{R}$ defined by\n\\[\n\\label{eq:2.u35}\nP(f,g)(x):=P(f(x),g(x))\n\\]\nis continuous.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.8}\nFor each pair $(i,j)$ with $0\\le i\\le n$ and $0\\le j\\le m$, define $h_{ij}:\\mathbb{R}^2\\to\\mathbb{R}$ by $h_{ij}(x,y)=x^i y^j$. The coordinate projections $(x,y)\\mapsto x$ and $(x,y)\\mapsto y$ are continuous, and the map $t\\mapsto t^k$ is continuous on $\\mathbb{R}$ for each integer $k\\ge 0$. Hence $(x,y)\\mapsto x^i$ and $(x,y)\\mapsto y^j$ are continuous, and therefore $h_{ij}$ is continuous as a product of continuous functions. Since scalar multiples and finite sums of continuous functions are continuous, the finite sum\n\\[\n\\label{eq:2.u36}\nP=\\sum_{i=0}^{n}\\sum_{j=0}^{m} c_{ij} h_{ij}\n\\]\nis continuous on $\\mathbb{R}^2$.\n\nNow let $(X,d)$ be a metric space and let $f,g:X\\to\\mathbb{R}$ be continuous. Define $H:X\\to\\mathbb{R}^2$ by $H(x)=(f(x),g(x))$. For any $x_0\\in X$ and $\\varepsilon>0$, continuity of $f$ and $g$ at $x_0$ yields $\\delta_1,\\delta_2>0$ such that $d(x,x_0)<\\delta_1$ implies $|f(x)-f(x_0)|<\\varepsilon$, and $d(x,x_0)<\\delta_2$ implies $|g(x)-g(x_0)|<\\varepsilon$. With $\\delta=\\min\\{\\delta_1,\\delta_2\\}$, if $d(x,x_0)<\\delta$ then\n\\[\n\\label{eq:2.u37}\n\\|(f(x),g(x))-(f(x_0),g(x_0))\\|_\\infty=\\max\\{|f(x)-f(x_0)|,|g(x)-g(x_0)|\\}<\\varepsilon,\n\\]\nso $H$ is continuous. Since $P$ is continuous on $\\mathbb{R}^2$, the composition $P\\circ H$ is continuous on $X$. As $(P\\circ H)(x)=P(f(x),g(x))=P(f,g)(x)$, the map $P(f,g)$ is continuous.\n\\end{proof}",
+    "index": 15
+  },
+  {
+    "label": "Proposition 2.9",
+    "env": "prop",
+    "number_components": [
+      2,
+      9
+    ],
+    "extracted_labels": [
+      "prop:2.9",
+      "eq:2.u38",
+      "prf:prop:2.9",
+      "eq:2.u39"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Product Spaces",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.9}\nLet $X$ be a topological space and let $m,n\\ge 0$ be integers. Suppose that $f:X\\to\\mathbb{R}^m$ and $g:X\\to\\mathbb{R}^n$ are continuous (with the standard Euclidean topologies). Define $(f,g):X\\to\\mathbb{R}^{m+n}$ by\n\\[\n\\label{eq:2.u38}\n(f,g)(x) := (f(x),g(x))\\in \\mathbb{R}^m\\times \\mathbb{R}^n \\cong \\mathbb{R}^{m+n}.\n\\]\nThen $(f,g)$ is continuous.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.9}\nLet $\\pi_1:\\mathbb{R}^m\\times\\mathbb{R}^n\\to\\mathbb{R}^m$ and $\\pi_2:\\mathbb{R}^m\\times\\mathbb{R}^n\\to\\mathbb{R}^n$ be the coordinate projections. The product topology on $\\mathbb{R}^m\\times\\mathbb{R}^n$ has a basis consisting of sets of the form $U\\times V$ with $U\\subseteq\\mathbb{R}^m$ open and $V\\subseteq\\mathbb{R}^n$ open.\n\nFix such a basic open set $U\\times V$. Then\n\\[\n\\label{eq:2.u39}\n(f,g)^{-1}(U\\times V)=\\{x\\in X: f(x)\\in U\\text{ and } g(x)\\in V\\}=f^{-1}(U)\\cap g^{-1}(V).\n\\]\nSince $f$ and $g$ are continuous, $f^{-1}(U)$ and $g^{-1}(V)$ are open in $X$, hence their intersection is open. Therefore the preimage of every basic open set in $\\mathbb{R}^m\\times\\mathbb{R}^n$ is open in $X$, so $(f,g):X\\to\\mathbb{R}^m\\times\\mathbb{R}^n$ is continuous.\n\nUnder the standard identification $\\mathbb{R}^m\\times\\mathbb{R}^n\\cong\\mathbb{R}^{m+n}$, the topologies agree, so $(f,g):X\\to\\mathbb{R}^{m+n}$ is continuous.\n\\end{proof}",
+    "index": 16
+  },
+  {
+    "label": "Proposition 2.10",
+    "env": "prop",
+    "number_components": [
+      2,
+      10
+    ],
+    "extracted_labels": [
+      "prop:2.10",
+      "eq:2.u41",
+      "prf:prop:2.10",
+      "eq:2.u42"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Product Spaces",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.10}\nLet $k\\ge 1$, let $I\\subseteq\\mathbb{N}^k$ be finite, let $c:I\\to\\mathbb{R}$, and define $P:\\mathbb{R}^k\\to\\mathbb{R}$ by\n\\[\n\\label{eq:2.u41}\nP(x_1,\\ldots,x_k):=\\sum_{(i_1,\\ldots,i_k)\\in I} c(i_1,\\ldots,i_k)\\, x_1^{i_1}\\cdots x_k^{i_k}.\n\\]\nThen $P$ is continuous on $\\mathbb{R}^k$ (with the usual Euclidean topology).\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.10}\nFix $\\alpha=(i_1,\\ldots,i_k)\\in I$ and write $c_\\alpha:=c(i_1,\\ldots,i_k)$. The coordinate projection $\\pi_j:\\mathbb{R}^k\\to\\mathbb{R}$ given by $\\pi_j(x_1,\\ldots,x_k)=x_j$ is continuous for each $j$. For each $n\\in\\mathbb{N}$, the map $p_n:\\mathbb{R}\\to\\mathbb{R}$ defined by $p_n(t)=t^n$ is continuous (for example, by induction using that multiplication on $\\mathbb{R}$ is continuous). Hence $x\\mapsto (\\pi_j(x))^{i_j}=x_j^{i_j}$ is continuous on $\\mathbb{R}^k$ for each $j$, and therefore the product\n\\[\n\\label{eq:2.u42}\nM_\\alpha(x):=x_1^{i_1}\\cdots x_k^{i_k}\n\\]\nis continuous as a finite product of continuous functions. Multiplication by the scalar $c_\\alpha$ is continuous, so $x\\mapsto c_\\alpha M_\\alpha(x)$ is continuous.\n\nSince $I$ is finite, $P$ is a finite sum of the continuous functions $x\\mapsto c_\\alpha M_\\alpha(x)$, and a finite sum of continuous functions is continuous. Thus $P$ is continuous on $\\mathbb{R}^k$.\n\\end{proof}",
+    "index": 17
+  },
+  {
+    "label": "Proposition 2.11",
+    "env": "prop",
+    "number_components": [
+      2,
+      11
+    ],
+    "extracted_labels": [
+      "prop:2.11",
+      "eq:2.u44",
+      "prf:prop:2.11",
+      "eq:2.u45",
+      "eq:2.u46"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Product Spaces",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.11}\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces. Define a function $d_{X\\times Y}:(X\\times Y)\\times (X\\times Y)\\to [0, \\infty)$ by\n\\[\n\\label{eq:2.u44}\nd_{X\\times Y}\\bigl((x,y),(x',y')\\bigr):=d_X(x,x')+d_Y(y,y')\n\\]\nfor all $(x,y),(x',y')\\in X\\times Y$. Then $d_{X\\times Y}$ is a metric on $X\\times Y$, and hence $(X\\times Y,d_{X\\times Y})$ is a metric space.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.11}\nLet $(x,y),(x',y'),(x'',y'')\\in X\\times Y$.\n\nNonnegativity holds since $d_X$ and $d_Y$ are nonnegative, so $d_{X\\times Y}((x,y),(x',y'))\\ge 0$.\n\nIf $d_{X\\times Y}((x,y),(x',y'))=0$, then $d_X(x,x')+d_Y(y,y')=0$. As each term is nonnegative, $d_X(x,x')=0$ and $d_Y(y,y')=0$, hence $x=x'$ and $y=y'$; thus $(x,y)=(x',y')$. Conversely, if $(x,y)=(x',y')$, then $d_{X\\times Y}((x,y),(x',y'))=d_X(x,x)+d_Y(y,y)=0$.\n\nSymmetry follows from symmetry of $d_X$ and $d_Y$:\n\\[\n\\label{eq:2.u45}\nd_{X\\times Y}((x,y),(x',y'))=d_X(x,x')+d_Y(y,y')=d_X(x',x)+d_Y(y',y)=d_{X\\times Y}((x',y'),(x,y)).\n\\]\n\nFor the triangle inequality, apply the triangle inequality in $X$ and in $Y$:\n\\[\n\\label{eq:2.u46}\n\\begin{aligned}\nd_{X\\times Y}((x,y),(x'',y''))\n&= d_X(x,x'')+d_Y(y,y'')\\\\\n&\\le \\bigl(d_X(x,x')+d_X(x',x'')\\bigr)+\\bigl(d_Y(y,y')+d_Y(y',y'')\\bigr)\\\\\n&= d_{X\\times Y}((x,y),(x',y'))+d_{X\\times Y}((x',y'),(x'',y'')).\n\\end{aligned}\n\\]\n\nTherefore $d_{X\\times Y}$ is a metric on $X\\times Y$.\n\\end{proof}",
+    "index": 18
+  },
+  {
+    "label": "Proposition 2.12",
+    "env": "prop",
+    "number_components": [
+      2,
+      12
+    ],
+    "extracted_labels": [
+      "prop:2.12",
+      "eq:2.u47",
+      "eq:2.u48",
+      "eq:2.u49",
+      "prf:prop:2.12",
+      "eq:2.u50",
+      "eq:2.u51",
+      "eq:2.u52",
+      "eq:2.u53",
+      "eq:2.u54"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Product Spaces",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.12}\nLet \\(f : \\mathbb{R}^2 \\to \\mathbb{R}\\) be a function from \\(\\mathbb{R}^2\\) to \\(\\mathbb{R}\\). Let \\((x_0, y_0)\\) be a point in \\(\\mathbb{R}^2\\). If \\(f\\) is continuous at \\((x_0, y_0)\\), show that\n\n\\[\n\\lim_{x \\to x_0} \\underset{y \\to y_0}{\\lim\\sup} f(x, y) = \\lim_{y \\to y_0} \\underset{x\\to x_0}{\\lim\\sup}f(x, y) = f(x_0, y_0)\n\\]\n\nand\n\n\\[\n\\lim_{x \\to x_0} \\underset{y \\to y_0}{\\lim\\inf}f(x, y) = \\lim_{y \\to y_0} \\underset{x\\to x_0}{\\lim\\inf}f(x, y) = f(x_0, y_0).\n\\]\nIn particular, we have\n\n\\[\n\\lim_{x \\to x_0} \\lim_{y \\to y_0} f(x, y) = \\lim_{y \\to y_0} \\lim_{x \\to x_0} f(x, y)\n\\]\n\nwhenever the limits on both sides exist.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.12}\nFix $\\varepsilon>0$. By continuity of $f$ at $(x_0,y_0)$, there exists $\\delta>0$ such that\n\\[\n\\label{eq:2.u50}\n\\sqrt{(x-x_0)^2+(y-y_0)^2}<\\delta \\implies |f(x,y)-f(x_0,y_0)|<\\varepsilon.\n\\]\n\nFirst, fix any $x$ with $|x-x_0|<\\delta$. Then for any $y$ with $|y-y_0|<\\sqrt{\\delta^2-(x-x_0)^2}$ one has\n\\[\n\\label{eq:2.u51}\n\\sqrt{(x-x_0)^2+(y-y_0)^2}<\\delta,\n\\]\nhence $|f(x,y)-f(x_0,y_0)|<\\varepsilon$. Therefore\n\\[\n\\label{eq:2.u52}\n\\lim_{y\\to y_0} f(x,y)=f(x_0,y_0).\n\\]\nDefine $g(x)=\\lim_{y\\to y_0} f(x,y)$ for $|x-x_0|<\\delta$; then $g(x)=f(x_0,y_0)$ on this neighborhood. Consequently,\n\\[\n\\label{eq:2.u53}\n\\lim_{x\\to x_0} \\lim_{y\\to y_0} f(x,y)=\\lim_{x\\to x_0} g(x)=f(x_0,y_0).\n\\]\n\nBy symmetry (interchanging the roles of $x$ and $y$), for every $y$ with $|y-y_0|<\\delta$ the limit $\\lim_{x\\to x_0} f(x,y)$ exists and equals $f(x_0,y_0)$, and thus\n\\[\n\\label{eq:2.u54}\n\\lim_{y\\to y_0} \\lim_{x\\to x_0} f(x,y)=f(x_0,y_0).\n\\]\nThis proves the stated equalities. The final claim follows immediately: if both iterated limits exist, then each equals $f(x_0,y_0)$ and hence they are equal to each other.\n\\end{proof}",
+    "index": 19
+  },
+  {
+    "label": "Proposition 2.13",
+    "env": "prop",
+    "number_components": [
+      2,
+      13
+    ],
+    "extracted_labels": [
+      "prop:2.13",
+      "prf:prop:2.13",
+      "eq:2.u55",
+      "eq:2.u56"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Product Spaces",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.13}\nLet \\(f: \\mathbb{R}^2 \\to \\mathbb{R}\\) be a continuous function. For each \\(x \\in \\mathbb{R}\\), the function \\(y \\mapsto f(x, y)\\) is continuous on \\(\\mathbb{R}\\), and for each \\(y \\in \\mathbb{R}\\), the function \\(x \\mapsto f(x, y)\\) is continuous on \\(\\mathbb{R}\\). Thus a function \\(f(x, y)\\) which is jointly continuous in \\((x, y)\\) is also continuous in each variable \\(x, y\\) separately.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.13}\nFix $x_0\\in\\mathbb{R}$ and set $g=g_{x_0}$. To prove that $g$ is continuous at an arbitrary $y_0\\in\\mathbb{R}$, let $\\varepsilon>0$ be given. Since $f$ is continuous at $(x_0,y_0)\\in\\mathbb{R}^2$, there exists $\\delta>0$ such that for all $(x,y)\\in\\mathbb{R}^2$,\n\\[\n\\label{eq:2.u55}\n\\sqrt{(x-x_0)^2+(y-y_0)^2}<\\delta \\quad\\Rightarrow\\quad |f(x,y)-f(x_0,y_0)|<\\varepsilon.\n\\]\nIf $|y-y_0|<\\delta$, then\n\\[\n\\label{eq:2.u56}\n\\sqrt{(x_0-x_0)^2+(y-y_0)^2}=|y-y_0|<\\delta,\n\\]\nso $|g(y)-g(y_0)|=|f(x_0,y)-f(x_0,y_0)|<\\varepsilon$. This proves that $g$ is continuous at $y_0$, and since $y_0$ was arbitrary, $g$ is continuous on $\\mathbb{R}$.\n\nThe proof for $h_{y_0}(x)=f(x,y_0)$ is analogous: continuity of $f$ at $(x_0,y_0)$ implies that for $|x-x_0|<\\delta$ one has $\\sqrt{(x-x_0)^2+(y_0-y_0)^2}=|x-x_0|<\\delta$, hence $|h_{y_0}(x)-h_{y_0}(x_0)|<\\varepsilon$.\n\\end{proof}",
+    "index": 20
+  },
+  {
+    "label": "Proposition 2.14",
+    "env": "prop",
+    "number_components": [
+      2,
+      14
+    ],
+    "extracted_labels": [
+      "prop:2.14",
+      "eq:2.u57",
+      "prf:prop:2.14",
+      "eq:2.u58",
+      "eq:2.u59",
+      "eq:2.u60"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Product Spaces",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 2,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.14}\nDefine $f:\\mathbb{R}^2\\to\\mathbb{R}$ by\n\\[\n\\label{eq:2.u57}\nf(x,y)=\\begin{cases}\n\\dfrac{xy}{x^2+y^2}, & (x,y)\\neq(0,0),\\\\\n0, & (x,y)=(0,0).\n\\end{cases}\n\\]\nThen the following statements hold.\n\\begin{enumerate}\n\\item For each fixed $x\\in\\mathbb{R}$, the function $g_x:\\mathbb{R}\\to\\mathbb{R}$ defined by $g_x(y)=f(x,y)$ is continuous on $\\mathbb{R}$.\n\\item For each fixed $y\\in\\mathbb{R}$, the function $h_y:\\mathbb{R}\\to\\mathbb{R}$ defined by $h_y(x)=f(x,y)$ is continuous on $\\mathbb{R}$.\n\\end{enumerate}\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.14}\n(1) Fix $x\\in\\mathbb{R}$. If $x=0$, then $g_0(y)=f(0,y)=0$ for all $y$, so $g_0$ is continuous. If $x\\neq 0$, then for $y\\neq 0$ one has $g_x(y)=\\dfrac{xy}{x^2+y^2}$, a quotient of polynomials with nonzero denominator, hence continuous at such $y$. At $y=0$, $g_x(0)=f(x,0)=0$ and\n\\[\n\\label{eq:2.u58}\n\\lim_{y\\to 0} g_x(y)=\\lim_{y\\to 0}\\frac{xy}{x^2+y^2}=\\lim_{y\\to 0}\\frac{xy}{x^2\\left(1+\\frac{y^2}{x^2}\\right)}=\\frac{1}{x}\\lim_{y\\to 0}\\frac{y}{1+\\frac{y^2}{x^2}}=0=g_x(0),\n\\]\nso $g_x$ is continuous at $0$ as well. Thus $g_x$ is continuous on $\\mathbb{R}$.\n\n(2) The proof is symmetric. Fix $y\\in\\mathbb{R}$. If $y=0$, then $h_0(x)=f(x,0)=0$ for all $x$, hence continuous. If $y\\neq 0$, then $h_y(x)=\\dfrac{xy}{x^2+y^2}$ for $x\\neq 0$ is continuous, and at $x=0$ one has $h_y(0)=f(0,y)=0$ and\n\\[\n\\label{eq:2.u59}\n\\lim_{x\\to 0} h_y(x)=\\lim_{x\\to 0}\\frac{xy}{x^2+y^2}=\\frac{1}{y}\\lim_{x\\to 0}\\frac{x}{1+\\frac{x^2}{y^2}}=0=h_y(0),\n\\]\nso $h_y$ is continuous on $\\mathbb{R}$.\n\n(3) To test continuity at $(0,0)$, consider the sequences $p_n=(1/n,1/n)$ and $q_n=(1/n,-1/n)$ in $\\mathbb{R}^2$. Both satisfy $p_n\\to(0,0)$ and $q_n\\to(0,0)$ as $n\\to\\infty$. However,\n\\[\n\\label{eq:2.u60}\nf\\left(\\frac{1}{n},\\frac{1}{n}\\right)=\\frac{\\frac{1}{n^2}}{\\frac{1}{n^2}+\\frac{1}{n^2}}=\\frac12,\n\\qquad\nf\\left(\\frac{1}{n},-\\frac{1}{n}\\right)=\\frac{-\\frac{1}{n^2}}{\\frac{1}{n^2}+\\frac{1}{n^2}}=-\\frac12.\n\\]\nThus $f(p_n)\\to \\frac12$ and $f(q_n)\\to -\\frac12$, so $\\lim_{(x,y)\\to(0,0)} f(x,y)$ does not exist. Since $f(0,0)=0$, $f$ is not continuous at $(0,0)$.\n\\end{proof}",
+    "index": 21
+  },
+  {
+    "label": "Theorem 2.5",
+    "env": "thm",
+    "number_components": [
+      2,
+      5
+    ],
+    "extracted_labels": [
+      "thm:2.5",
+      "prf:thm:2.5"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Compactness",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:2.5}\n[Continuous maps preserve compactness]\nLet \\(f: X \\to Y\\) be a continuous map from one metric space \\((X, d_X)\\) to another \\((Y, d_Y)\\). Let \\(K \\subseteq X\\) be any compact subset of \\(X\\). Then the image \\(f(K) := \\{f(x) : x \\in K\\}\\) of \\(K\\) is also compact.\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:2.5}\nLet $(y_n)$ be a sequence in $f(K)$. For each $n$ choose $x_n\\in K$ such that $y_n=f(x_n)$. Since $K$ is compact, it is sequentially compact, so there exist a subsequence $(x_{n_k})$ and a point $x\\in K$ such that $x_{n_k}\\to x$ in $X$. By continuity of $f$, $f(x_{n_k})\\to f(x)$ in $Y$. Since $f(x_{n_k})=y_{n_k}$ and $f(x)\\in f(K)$, the subsequence $(y_{n_k})$ converges to a point of $f(K)$. Thus every sequence in $f(K)$ has a convergent subsequence with limit in $f(K)$, so $f(K)$ is sequentially compact. In metric spaces, sequential compactness is equivalent to compactness; hence $f(K)$ is compact.\n\\end{proof}",
+    "index": 22
+  },
+  {
+    "label": "Proposition 2.15",
+    "env": "prop",
+    "number_components": [
+      2,
+      15
+    ],
+    "extracted_labels": [
+      "prop:2.15",
+      "eq:2.u61",
+      "prf:prop:2.15"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Compactness",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.15}\n[Maximum principle]\nLet $(X,d)$ be a compact metric space and let $f:X\\to\\mathbb{R}$ be continuous.\n\\begin{enumerate}\n\\item The function $f$ is bounded on $X$.\n\\item If $X\\neq\\emptyset$, then there exist points $x_{\\max},x_{\\min}\\in X$ such that\n\\[\n\\label{eq:2.u61}\nf(x_{\\max})=\\max_{x\\in X} f(x),\\qquad f(x_{\\min})=\\min_{x\\in X} f(x).\n\\]\n\\end{enumerate}\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.15}\nIf $X=\\emptyset$, then $f(X)=\\emptyset$ is bounded and the second assertion is vacuous.\n\nAssume $X\\neq\\emptyset$. Consider the image set $K:=f(X)\\subset\\mathbb{R}$. Since $f$ is continuous and $X$ is compact, $K$ is compact. In particular, $K$ is bounded, so there exists $M>0$ such that $|y|\\le M$ for all $y\\in K$. Hence $|f(x)|\\le M$ for all $x\\in X$, so $f$ is bounded.\n\nSince $K\\subset\\mathbb{R}$ is nonempty and compact, it is closed and bounded, and therefore attains its supremum and infimum. Set $m:=\\min K$ and $M:=\\max K$. By definition of image, there exist $x_{\\min},x_{\\max}\\in X$ such that $f(x_{\\min})=m$ and $f(x_{\\max})=M$. Then for all $x\\in X$, one has $m\\le f(x)\\le M$, so $f(x_{\\min})=\\min_{x\\in X} f(x)$ and $f(x_{\\max})=\\max_{x\\in X} f(x)$.\n\\end{proof}",
+    "index": 23
+  },
+  {
+    "label": "Definition 2.6",
+    "env": "def",
+    "number_components": [
+      2,
+      6
+    ],
+    "extracted_labels": [
+      "def:2.6",
+      "eq:2.u62"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Compactness",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:2.6}\n[Uniform continuity]\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces, and let $f:X\\to Y$ be a function. The function $f$ is \\emph{uniformly continuous} on $X$ if for every $\\varepsilon>0$ there exists $\\delta>0$ such that for all $x,x'\\in X$, the implication\n\\[\n\\label{eq:2.u62}\nd_X(x,x')<\\delta \\;\\Longrightarrow\\; d_Y\\bigl(f(x),f(x')\\bigr)<\\varepsilon\n\\]\nholds.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 24
+  },
+  {
+    "label": "Theorem 2.7",
+    "env": "thm",
+    "number_components": [
+      2,
+      7
+    ],
+    "extracted_labels": [
+      "thm:2.7",
+      "prf:thm:2.7",
+      "eq:2.u63",
+      "eq:2.u64",
+      "eq:2.u65",
+      "eq:2.u66",
+      "eq:2.u67"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Compactness",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:2.7}\nLet $(X,d_X)$ and $(Y,d_Y)$ be metric spaces, and assume that $X$ is compact. For a function $f\\colon X\\to Y$, $f$ is continuous on $X$ if and only if $f$ is uniformly continuous on $X$.\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:2.7}\nAssume that $f$ is uniformly continuous on $X$. For any $x_0\\in X$ and any $\\varepsilon>0$, there exists $\\delta>0$ such that $d_Y(f(x),f(x'))<\\varepsilon$ whenever $d_X(x,x')<\\delta$. In particular, if $d_X(x,x_0)<\\delta$, then $d_Y(f(x),f(x_0))<\\varepsilon$, so $f$ is continuous at $x_0$. Hence $f$ is continuous on $X$.\n\nConversely, assume that $f$ is continuous on $X$. Fix $\\varepsilon>0$. For each $x_0\\in X$, continuity at $x_0$ implies the existence of $\\delta(x_0)>0$ such that\n\\[\n\\label{eq:2.u63}\nd_Y\\bigl(f(x),f(x_0)\\bigr)<\\varepsilon/2 \\quad\\text{whenever } d_X(x,x_0)<\\delta(x_0).\n\\]\nIf $x\\in B_{(X,d_X)}(x_0,\\delta(x_0)/2)$ and $d_X(x',x)<\\delta(x_0)/2$, then\n\\[\n\\label{eq:2.u64}\nd_X(x',x_0)\\le d_X(x',x)+d_X(x,x_0)<\\delta(x_0),\n\\]\nand therefore\n\\[\n\\label{eq:2.u65}\nd_Y\\bigl(f(x),f(x')\\bigr)\\le d_Y\\bigl(f(x),f(x_0)\\bigr)+d_Y\\bigl(f(x_0),f(x')\\bigr)<\\varepsilon.\n\\]\nThe family $\\{B_{(X,d_X)}(x_0,\\delta(x_0)/2):x_0\\in X\\}$ is an open cover of $X$. By compactness, there exist $x_1,\\dots,x_n\\in X$ such that\n\\[\n\\label{eq:2.u66}\nX\\subseteq\\bigcup_{j=1}^n B_{(X,d_X)}\\bigl(x_j,\\delta(x_j)/2\\bigr).\n\\]\nSet\n\\[\n\\label{eq:2.u67}\n\\delta:=\\min_{1\\le j\\le n}\\frac{\\delta(x_j)}{2}>0.\n\\]\nIf $x,x'\\in X$ satisfy $d_X(x,x')<\\delta$, choose $j\\in\\{1,\\dots,n\\}$ such that $x\\in B_{(X,d_X)}(x_j,\\delta(x_j)/2)$. Then $d_X(x',x)<\\delta\\le \\delta(x_j)/2$, and the estimate above (with $x_0=x_j$) yields $d_Y(f(x),f(x'))<\\varepsilon$. Since $\\varepsilon>0$ was arbitrary, $f$ is uniformly continuous on $X$.\n\\end{proof}",
+    "index": 25
+  },
+  {
+    "label": "Proposition 2.16",
+    "env": "prop",
+    "number_components": [
+      2,
+      16
+    ],
+    "extracted_labels": [
+      "prop:2.16",
+      "prf:prop:2.16",
+      "eq:2.u68"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Compactness",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.16}\nLet $(X,d_X)$, $(Y,d_Y)$, and $(Z,d_Z)$ be metric spaces. If $f\\colon X\\to Y$ and $g\\colon Y\\to Z$ are uniformly continuous, then $g\\circ f\\colon X\\to Z$ is uniformly continuous.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.16}\nLet $\\varepsilon>0$. Since $g$ is uniformly continuous, there exists $\\eta>0$ such that for all $y_1,y_2\\in Y$, if $d_Y(y_1,y_2)<\\eta$ then $d_Z(g(y_1),g(y_2))<\\varepsilon$.\n\nSince $f$ is uniformly continuous, there exists $\\delta>0$ such that for all $x_1,x_2\\in X$, if $d_X(x_1,x_2)<\\delta$ then $d_Y(f(x_1),f(x_2))<\\eta$.\n\nNow for any $x_1,x_2\\in X$ with $d_X(x_1,x_2)<\\delta$, one has $d_Y(f(x_1),f(x_2))<\\eta$, hence\n\\[\n\\label{eq:2.u68}\nd_Z\\bigl((g\\circ f)(x_1),(g\\circ f)(x_2)\\bigr)=d_Z\\bigl(g(f(x_1)),g(f(x_2))\\bigr)<\\varepsilon.\n\\]\nTherefore $g\\circ f$ is uniformly continuous.\n\\end{proof}",
+    "index": 26
+  },
+  {
+    "label": "Proposition 2.17",
+    "env": "prop",
+    "number_components": [
+      2,
+      17
+    ],
+    "extracted_labels": [
+      "prop:2.17",
+      "eq:2.u69",
+      "prf:prop:2.17",
+      "eq:2.u70"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Compactness",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.17}\nLet $(X,d_X)$ be a metric space, and let $f,g\\colon X\\to\\mathbb{R}$ be uniformly continuous. Equip $\\mathbb{R}^2$ with the standard metric\n\\[\n\\label{eq:2.u69}\nd_{\\mathbb{R}^2}((a,b),(c,d)):=\\sqrt{(a-c)^2+(b-d)^2}.\n\\]\nDefine $(f,g)\\colon X\\to\\mathbb{R}^2$ by $(f,g)(x):=(f(x),g(x))$. Then $(f,g)$ is uniformly continuous.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.17}\nLet $\\varepsilon>0$. Since $f$ is uniformly continuous, there exists $\\delta_1>0$ such that for all $x,y\\in X$, if $d_X(x,y)<\\delta_1$ then $|f(x)-f(y)|<\\varepsilon/\\sqrt{2}$. Since $g$ is uniformly continuous, there exists $\\delta_2>0$ such that for all $x,y\\in X$, if $d_X(x,y)<\\delta_2$ then $|g(x)-g(y)|<\\varepsilon/\\sqrt{2}$.\n\nLet $\\delta:=\\min\\{\\delta_1,\\delta_2\\}$. If $d_X(x,y)<\\delta$, then both inequalities hold, and hence\n\\[\n\\label{eq:2.u70}\nd_{\\mathbb{R}^2}\\bigl((f(x),g(x)),(f(y),g(y))\\bigr)\n=\\sqrt{|f(x)-f(y)|^2+|g(x)-g(y)|^2}\n<\\sqrt{\\frac{\\varepsilon^2}{2}+\\frac{\\varepsilon^2}{2}}=\\varepsilon.\n\\]\nTherefore, for all $x,y\\in X$, $d_X(x,y)<\\delta$ implies $d_{\\mathbb{R}^2}((f,g)(x),(f,g)(y))<\\varepsilon$, so $(f,g)$ is uniformly continuous.\n\\end{proof}",
+    "index": 27
+  },
+  {
+    "label": "Proposition 2.18",
+    "env": "prop",
+    "number_components": [
+      2,
+      18
+    ],
+    "extracted_labels": [
+      "prop:2.18",
+      "eq:2.u71",
+      "prf:prop:2.18",
+      "eq:2.u72",
+      "eq:2.u73",
+      "eq:2.u74",
+      "eq:2.u75",
+      "eq:2.u76"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Compactness",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.18}\nLet $\\mathbb{R}^2$ be equipped with the Euclidean metric $d((x,y),(x',y'))=\\sqrt{(x-x')^2+(y-y')^2}$ and let $\\mathbb{R}$ have the usual metric. Define maps $a,s,m\\colon\\mathbb{R}^2\\to\\mathbb{R}$ by\n\\[\n\\label{eq:2.u71}\na(x,y)=x+y,\\qquad s(x,y)=x-y,\\qquad m(x,y)=xy.\n\\]\nThen $a$ and $s$ are uniformly continuous on $\\mathbb{R}^2$, whereas $m$ is not uniformly continuous on $\\mathbb{R}^2$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.18}\nFor $a$, for any $(x,y),(x',y')\\in\\mathbb{R}^2$,\n\\[\n\\label{eq:2.u72}\n|a(x,y)-a(x',y')|=|(x-x')+(y-y')|\\le |x-x'|+|y-y'|.\n\\]\nSince $|x-x'|\\le d((x,y),(x',y'))$ and $|y-y'|\\le d((x,y),(x',y'))$, it follows that\n\\[\n\\label{eq:2.u73}\n|a(x,y)-a(x',y')|\\le 2\\,d((x,y),(x',y')).\n\\]\nThus $a$ is Lipschitz, hence uniformly continuous.\n\nFor $s$, similarly,\n\\[\n\\label{eq:2.u74}\n|s(x,y)-s(x',y')|=|(x-x')-(y-y')|\\le |x-x'|+|y-y'|\\le 2\\,d((x,y),(x',y')),\n\\]\nso $s$ is Lipschitz and therefore uniformly continuous.\n\nTo show $m$ is not uniformly continuous, define sequences $p_n=(n,n)\\in\\mathbb{R}^2$ and $q_n=(n+1/n,\\,n)\\in\\mathbb{R}^2$. Then\n\\[\n\\label{eq:2.u75}\nd(p_n,q_n)=\\sqrt{(1/n)^2+0^2}=\\frac1n\\to 0,\n\\]\nbut\n\\[\n\\label{eq:2.u76}\n|m(p_n)-m(q_n)|=|n\\cdot n-(n+1/n)\\cdot n|=|n^2-(n^2+1)|=1.\n\\]\nHence there exists $\\varepsilon=1/2$ such that for every $\\delta>0$ one can choose $n>1/\\delta$ with $d(p_n,q_n)<\\delta$ while $|m(p_n)-m(q_n)|\\ge \\varepsilon$. Therefore $m$ is not uniformly continuous on $\\mathbb{R}^2$.\n\\end{proof}",
+    "index": 28
+  },
+  {
+    "label": "Proposition 2.19",
+    "env": "prop",
+    "number_components": [
+      2,
+      19
+    ],
+    "extracted_labels": [
+      "prop:2.19",
+      "prf:prop:2.19",
+      "eq:2.u77",
+      "eq:2.u78"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Compactness",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 3,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.19}\nLet $(X,d)$ be a metric space and let $f,g\\colon X\\to\\mathbb{R}$ be uniformly continuous. Then the functions $f+g$ and $f-g$, defined by $(f\\pm g)(x)=f(x)\\pm g(x)$ for $x\\in X$, are uniformly continuous on $X$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.19}\nFix $\\varepsilon>0$. Since $f$ is uniformly continuous, there exists $\\delta_f>0$ such that for all $x,y\\in X$, if $d(x,y)<\\delta_f$ then $|f(x)-f(y)|<\\varepsilon/2$. Since $g$ is uniformly continuous, there exists $\\delta_g>0$ such that for all $x,y\\in X$, if $d(x,y)<\\delta_g$ then $|g(x)-g(y)|<\\varepsilon/2$.\n\nLet $\\delta=\\min\\{\\delta_f,\\delta_g\\}$. For any $x,y\\in X$ with $d(x,y)<\\delta$, both inequalities hold, and therefore\n\\[\n\\label{eq:2.u77}\n|(f+g)(x)-(f+g)(y)|\\le |f(x)-f(y)|+|g(x)-g(y)|<\\varepsilon/2+\\varepsilon/2=\\varepsilon.\n\\]\nHence $f+g$ is uniformly continuous.\n\nSimilarly,\n\\[\n\\label{eq:2.u78}\n|(f-g)(x)-(f-g)(y)|=|(f(x)-f(y))-(g(x)-g(y))|\\le |f(x)-f(y)|+|g(x)-g(y)|<\\varepsilon,\n\\]\nso $f-g$ is uniformly continuous.\n\\end{proof}",
+    "index": 29
+  },
+  {
+    "label": "Definition 2.7",
+    "env": "def",
+    "number_components": [
+      2,
+      7
+    ],
+    "extracted_labels": [
+      "def:2.7"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Connectedness",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 4,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:2.7}\n[Connected and disconnected metric spaces]\n Let $(X, d)$ be a metric space. We say that $X$ is disconnected iff there exist disjoint non-empty open sets $V$ and $W$ in $X$ such that $V \\cup W = X$. (Equivalently, $X$ is disconnected if and only if $X$ contains a non-empty proper subset which is simultaneously closed and open.) We say that $X$ is connected iff it is non-empty and not disconnected.\n\nWe declare the empty set $\\varnothing$ as being special---it is neither connected nor disconnected; one could think of the empty set as ``unconnected''.\n\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 30
+  },
+  {
+    "label": "Definition 2.8",
+    "env": "def",
+    "number_components": [
+      2,
+      8
+    ],
+    "extracted_labels": [
+      "def:2.8"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Connectedness",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 4,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:2.8}\n[Connected sets]\nLet $(X,d)$ be a metric space and let $Y\\subseteq X$. Equip $Y$ with the subspace metric $d_Y:=d|_{Y\\times Y}$. The subset $Y$ is called \\emph{connected} if the metric space $(Y,d_Y)$ is connected. The subset $Y$ is called \\emph{disconnected} if the metric space $(Y,d_Y)$ is disconnected.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 31
+  },
+  {
+    "label": "Theorem 2.8",
+    "env": "thm",
+    "number_components": [
+      2,
+      8
+    ],
+    "extracted_labels": [
+      "thm:2.8",
+      "prf:thm:2.8",
+      "eq:2.u79"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Connectedness",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 4,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:2.8}\nLet \\( X \\) be a non-empty subset of the real line \\( \\mathbb{R} \\). Then the following statements are equivalent.\n\n(a) \\( X \\) is connected.\n(b) Whenever \\( x, y \\in X \\) and \\( x < y \\), the interval \\([x, y]\\) is also contained in \\( X \\).\n(c) \\( X \\) is an interval \n\\end{enumerate}\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:2.8}\n(a)$\\Rightarrow$(b). Assume $X$ is connected. Let $x,y\\in X$ with $x<y$. If $[x,y]\\not\\subseteq X$, then there exists $z$ with $x<z<y$ and $z\\notin X$. Define\n\\[\n\\label{eq:2.u79}\nA:=(-\\infty,z)\\cap X,\\qquad B:=(z,\\infty)\\cap X.\n\\]\nThen $A\\cup B=X$ and $A\\cap B=\\varnothing$. Moreover, $A$ and $B$ are non-empty since $x\\in A$ and $y\\in B$. They are open in the subspace topology on $X$ because $(-\\infty,z)$ and $(z,\\infty)$ are open in $\\mathbb{R}$ and $A=X\\cap(-\\infty,z)$, $B=X\\cap(z,\\infty)$. This is a separation of $X$, contradicting connectedness. Hence $[x,y]\\subseteq X$.\n\n(b)$\\Rightarrow$(a). Assume (b). Suppose that $X$ is not connected. Then there exist disjoint non-empty sets $V,W\\subseteq X$ that are open in the subspace topology on $X$ and satisfy $V\\cup W=X$. Choose $x\\in V$ and $y\\in W$. Without loss of generality, $x<y$. By (b), $[x,y]\\subseteq X$.\n\nSet $S:=[x,y]\\cap V$. Then $S$ is non-empty (since $x\\in S$) and bounded above by $y$, hence $z:=\\sup S$ exists in $\\mathbb{R}$ and satisfies $x\\le z\\le y$, so $z\\in[x,y]\\subseteq X$.\n\nIf $z\\in V$, then $z\\ne y$ since $y\\in W$ and $V\\cap W=\\varnothing$. Since $V$ is open in $X$ and $z\\in V$, there exists $\\varepsilon>0$ such that $(z-\\varepsilon,z+\\varepsilon)\\cap X\\subseteq V$. Because $z<y$, choose $t\\in\\mathbb{R}$ with $z<t<\\min\\{z+\\varepsilon,y\\}$. Then $t\\in[x,y]\\subseteq X$ and $t\\in(z-\\varepsilon,z+\\varepsilon)\\cap X\\subseteq V$, hence $t\\in S$ with $t>z$, contradicting that $z$ is an upper bound of $S$.\n\nIf $z\\in W$, then $z\\ne x$ since $x\\in V$. Since $W$ is open in $X$ and $z\\in W$, there exists $\\varepsilon>0$ such that $(z-\\varepsilon,z+\\varepsilon)\\cap X\\subseteq W$. Choose $s\\in\\mathbb{R}$ with $\\max\\{x,z-\\varepsilon\\}<s<z$. Then $s\\in[x,y]\\subseteq X$ and $s\\in(z-\\varepsilon,z+\\varepsilon)\\cap X\\subseteq W$, so $s\\notin V$; thus $s$ is an upper bound of $S$. This contradicts the definition of $z=\\sup S$, since $s<z$.\n\nBoth cases yield contradictions, so $X$ is connected.\n\n(b)$\\Leftrightarrow$(c). Statement (c) is exactly statement (b) written with an explicit quantifier for points between $x$ and $y$.\n\\end{proof}",
+    "index": 32
+  },
+  {
+    "label": "Theorem 2.9",
+    "env": "thm",
+    "number_components": [
+      2,
+      9
+    ],
+    "extracted_labels": [
+      "thm:2.9",
+      "prf:thm:2.9",
+      "eq:2.u80",
+      "eq:2.u81",
+      "eq:2.u82",
+      "eq:2.u83"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Connectedness",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 4,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:2.9}\n[Continuity preserves connectedness]\nLet \\( f : X \\to Y \\) be a continuous map from one metric space \\((X, d_X)\\) to another \\((Y, d_Y)\\). Let \\( E \\) be any connected subset of \\( X \\). Then \\( f(E) \\) is also connected.\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:2.9}\nSuppose for contradiction that $f(E)$ is not connected. Then there exist nonempty disjoint sets $A,B\\subseteq f(E)$ such that $f(E)=A\\cup B$ and $A$ and $B$ are separated in the subspace $f(E)$; equivalently,\n\\[\n\\label{eq:2.u80}\n\\overline{A}^{\\,f(E)}\\cap B=\\varnothing\\quad\\text{and}\\quad A\\cap \\overline{B}^{\\,f(E)}=\\varnothing,\n\\]\nwhere closures are taken in the subspace $f(E)$.\n\nLet $C=f^{-1}(A)\\cap E$ and $D=f^{-1}(B)\\cap E$. Then $C$ and $D$ are disjoint, nonempty, and $E=C\\cup D$.\n\nIt remains to show that $C$ and $D$ are separated in the subspace $E$. Since $f$ is continuous, the restriction $f|_E\\colon E\\to Y$ is continuous. The subspace $A\\subseteq f(E)$ is closed in $f(E)$ if and only if $A=F\\cap f(E)$ for some closed set $F\\subseteq Y$; in general, for any $S\\subseteq f(E)$,\n\\[\n\\label{eq:2.u81}\n\\overline{S}^{\\,f(E)}=\\overline{S}^{\\,Y}\\cap f(E).\n\\]\nUsing this identity and continuity,\n\\[\n\\label{eq:2.u82}\n\\overline{C}^{\\,E}\\subseteq (f|_E)^{-1}\\bigl(\\overline{A}^{\\,f(E)}\\bigr),\n\\]\nso\n\\[\n\\label{eq:2.u83}\n\\overline{C}^{\\,E}\\cap D \\subseteq (f|_E)^{-1}\\bigl(\\overline{A}^{\\,f(E)}\\bigr)\\cap (f|_E)^{-1}(B)=(f|_E)^{-1}\\bigl(\\overline{A}^{\\,f(E)}\\cap B\\bigr)=\\varnothing.\n\\]\nSimilarly, $C\\cap \\overline{D}^{\\,E}=\\varnothing$. Thus $C$ and $D$ are separated in $E$, contradicting that $E$ is connected. Therefore $f(E)$ is connected.\n\\end{proof}",
+    "index": 33
+  },
+  {
+    "label": "Theorem 2.10",
+    "env": "thm",
+    "number_components": [
+      2,
+      10
+    ],
+    "extracted_labels": [
+      "thm:2.10",
+      "prf:thm:2.10",
+      "eq:2.u84"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Connectedness",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 4,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:2.10}\n[Intermediate value theorem]\nLet $(X,d_X)$ be a metric space, let $f:X\\to\\mathbb{R}$ be continuous, and let $E\\subseteq X$ be connected. For any $a,b\\in E$ and any $y\\in\\mathbb{R}$ satisfying either $f(a)\\le y\\le f(b)$ or $f(a)\\ge y\\ge f(b)$, there exists $c\\in E$ such that $f(c)=y$.\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:2.10}\nAssume $f(a)\\le y\\le f(b)$; the other case follows by interchanging $a$ and $b$.\n\nDefine\n\\[\n\\label{eq:2.u84}\nA:=E\\cap f^{-1}(( -\\infty,y))=\\{x\\in E: f(x)<y\\},\\qquad B:=E\\cap f^{-1}((y,\\infty))=\\{x\\in E: f(x)>y\\}.\n\\]\nSince $f$ is continuous, the sets $f^{-1}(( -\\infty,y))$ and $f^{-1}((y,\\infty))$ are open in $X$, hence $A$ and $B$ are open in the subspace topology on $E$. If there exists $c\\in E$ with $f(c)=y$, the conclusion holds, so assume for contradiction that no such $c$ exists. Then $E\\subseteq A\\cup B$, and because $f(a)<y$ would imply $a\\in A$ while $f(a)=y$ would contradict the assumption, it follows that $a\\in A$. Similarly, $b\\in B$ (since $f(b)\\ge y$ and $f(b)=y$ is excluded).\n\nMoreover, $A\\cap B=\\varnothing$ and $A,B\\ne\\varnothing$, so $E=A\\cup B$ is a separation of $E$ into two disjoint nonempty open subsets of $E$, contradicting connectedness of $E$. Therefore there exists $c\\in E$ with $f(c)=y$.\n\\end{proof}",
+    "index": 34
+  },
+  {
+    "label": "Theorem 2.11",
+    "env": "thm",
+    "number_components": [
+      2,
+      11
+    ],
+    "extracted_labels": [
+      "thm:2.11",
+      "prf:thm:2.11",
+      "eq:2.u85"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Connectedness",
+      "subsection": "Exercises",
+      "chapter_number": 2,
+      "section_number": 4,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:2.11}\nLet $X$ be a set with the discrete metric $d_{\\mathrm{disc}}$. If $E\\subseteq X$ contains at least two distinct points, then $E$ is disconnected (in the subspace topology induced by $d_{\\mathrm{disc}}$).\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:2.11}\nChoose distinct points $a,b\\in E$. Define\n\\[\n\\label{eq:2.u85}\nA=\\{a\\},\\qquad B=E\\setminus\\{a\\}.\n\\]\nThen $A$ and $B$ are nonempty, disjoint, and $E=A\\cup B$. In the discrete metric, the open ball $B_{1/2}(a)=\\{x\\in X: d_{\\mathrm{disc}}(x,a)<1/2\\}$ equals $\\{a\\}$, so $\\{a\\}$ is open in $X$. Hence $A=E\\cap\\{a\\}$ is open in the subspace $E$. Similarly, for any $x\\in B$ one has $\\{x\\}$ open in $X$, so $B=\\bigcup_{x\\in B}(E\\cap\\{x\\})$ is open in $E$.\n\nThus $E$ is the union of two disjoint nonempty open subsets $A$ and $B$, so $E$ is disconnected.\n\\end{proof}",
+    "index": 35
+  },
+  {
+    "label": "Theorem 2.12",
+    "env": "thm",
+    "number_components": [
+      2,
+      12
+    ],
+    "extracted_labels": [
+      "thm:2.12",
+      "eq:2.u86",
+      "prf:thm:2.12",
+      "eq:2.u87"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Connectedness",
+      "subsection": "Exercises",
+      "chapter_number": 2,
+      "section_number": 4,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:2.12}\nLet $(X,d)$ be a connected metric space and let $(Y,d_{\\mathrm{disc}})$ be a metric space equipped with the discrete metric, i.e.\n\\[\n\\label{eq:2.u86}\nd_{\\mathrm{disc}}(y_1,y_2)=\\begin{cases}0,&y_1=y_2,\\\\1,&y_1\\neq y_2.\\end{cases}\n\\]\nFor a function $f\\colon X\\to Y$, the following are equivalent:\n\\begin{enumerate}\n\\item $f$ is continuous;\n\\item $f$ is constant.\n\\end{enumerate}\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:2.12}\n$(2)\\Rightarrow(1)$: If $f$ is constant, then $f$ is continuous.\n\n$(1)\\Rightarrow(2)$: Assume that $f$ is continuous. For each $y\\in Y$, the singleton $\\{y\\}$ is open in $(Y,d_{\\mathrm{disc}})$, since $B(y,1/2)=\\{y\\}$. Hence for each $y\\in Y$ the set\n\\[\n\\label{eq:2.u87}\nU_y:=f^{-1}(\\{y\\})\n\\]\nis open in $X$ by continuity of $f$. If $f$ is not constant, there exist distinct $y_1,y_2\\in Y$ with $U_{y_1}\\neq\\varnothing$ and $U_{y_2}\\neq\\varnothing$. Then $U_{y_1}$ and $X\\setminus U_{y_1}=\\bigcup_{y\\in Y\\setminus\\{y_1\\}}U_y$ are disjoint nonempty open subsets of $X$ whose union is $X$, so $X$ is disconnected. This contradicts connectedness of $X$. Therefore $f$ is constant.\n\\end{proof}",
+    "index": 36
+  },
+  {
+    "label": "Definition 2.9",
+    "env": "def",
+    "number_components": [
+      2,
+      9
+    ],
+    "extracted_labels": [],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Connectedness",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": "4",
+      "subsection_number": "0"
+    },
+    "content": "\\begin{definition}\n\\label{def:2.9}\n Let \\((X, d)\\) be a metric space, and let \\( E \\) be a subset of \\( X \\). We say that \\( E \\) is path-connected iff, for every \\( x, y \\in E \\), there exists a continuous function \\( \\gamma : [0, 1] \\to E \\) from the unit interval \\([0, 1]\\) to \\( E \\) such that \\( \\gamma(0) = x \\) and \\( \\gamma(1) = y \\). \n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 37
+  },
+  {
+    "label": "Proposition 2.20",
+    "env": "prop",
+    "number_components": [
+      2,
+      20
+    ],
+    "extracted_labels": [
+      "prop:2.20",
+      "prf:prop:2.20",
+      "eq:2.u88"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Connectedness",
+      "subsection": "Exercises",
+      "chapter_number": 2,
+      "section_number": 4,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.20}\nShow that every non-empty path-connected set is connected. \n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.20}\nChoose a point $x_0 \\in \\bigcap_{\\alpha\\in I} E_{\\alpha}$. Suppose for contradiction that $E$ is not connected. Then there exist nonempty disjoint open subsets $U,V$ of $E$ (with the subspace topology) such that $E = U \\cup V$.\n\nSince $x_0 \\in E$, either $x_0 \\in U$ or $x_0 \\in V$. By symmetry, assume $x_0 \\in U$. Fix $\\alpha \\in I$. The set $E_{\\alpha}$ is connected and satisfies\n\\[\n\\label{eq:2.u88}\nE_{\\alpha} = (E_{\\alpha} \\cap U) \\cup (E_{\\alpha} \\cap V),\n\\]\nwhere $E_{\\alpha} \\cap U$ and $E_{\\alpha} \\cap V$ are disjoint and open in the subspace topology on $E_{\\alpha}$ (as intersections with open sets of $E$). Moreover, $E_{\\alpha} \\cap U$ is nonempty because $x_0 \\in E_{\\alpha} \\cap U$. By connectedness of $E_{\\alpha}$, it follows that $E_{\\alpha} \\cap V = \\varnothing$, hence $E_{\\alpha} \\subseteq U$.\n\nSince $\\alpha \\in I$ was arbitrary, $E = \\bigcup_{\\alpha\\in I} E_{\\alpha} \\subseteq U$, which implies $V=\\varnothing$, contradicting the choice of $V$ as nonempty. Therefore $E$ is connected.\n\\end{proof}",
+    "index": 38
+  },
+  {
+    "label": "Theorem 2.13",
+    "env": "thm",
+    "number_components": [
+      2,
+      13
+    ],
+    "extracted_labels": [
+      "thm:2.13",
+      "prf:thm:2.13",
+      "eq:2.u89",
+      "eq:2.u90"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Connectedness",
+      "subsection": "Exercises",
+      "chapter_number": 2,
+      "section_number": 4,
+      "subsection_number": 0
+    },
+    "content": "\\begin{theorem}\n\\label{thm:2.13}\nLet $(X,d)$ be a metric space and let $E\\subseteq X$ be nonempty. If $E$ is path-connected, then the closure $\\bar{E}$ of  $E$ is connected.\n\\end{theorem}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:thm:2.13}\nAssume that $E$ is path-connected and suppose, for contradiction, that $E$ is not connected. Then there exist nonempty disjoint sets $A,B\\subseteq E$ such that $E=A\\cup B$ and $A$ and $B$ are open in the subspace topology on $E$.\n\nFix $a\\in A$ and $b\\in B$. By path-connectedness, there exists a continuous map $\\gamma:[0,1]\\to E$ such that $\\gamma(0)=a$ and $\\gamma(1)=b$. Set\n\\[\n\\label{eq:2.u89}\nU:=\\gamma^{-1}(A),\\qquad V:=\\gamma^{-1}(B).\n\\]\nSince $A$ and $B$ are open in $E$ and $\\gamma$ is continuous, $U$ and $V$ are open in $[0,1]$. Moreover, $U$ and $V$ are disjoint and\n\\[\n\\label{eq:2.u90}\n[0,1]=\\gamma^{-1}(E)=\\gamma^{-1}(A\\cup B)=U\\cup V.\n\\]\nAlso $0\\in U$ and $1\\in V$, so $U$ and $V$ are nonempty. Thus $[0,1]$ is the union of two disjoint nonempty open sets, contradicting the connectedness of $[0,1]$.\n\nTherefore such a separation of $E$ does not exist, and $E$ is connected.\n\\end{proof}",
+    "index": 39
+  },
+  {
+    "label": "Proposition 2.21",
+    "env": "prop",
+    "number_components": [
+      2,
+      21
+    ],
+    "extracted_labels": [
+      "prop:2.21",
+      "prf:prop:2.21",
+      "eq:2.u91",
+      "eq:2.u92"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Connectedness",
+      "subsection": "Exercises",
+      "chapter_number": 2,
+      "section_number": 4,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.21}\nLet $(X,d)$ be a metric space and let $E\\subseteq X$ be connected. Then the closure $\\overline{E}$ is connected.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.21}\nSuppose that $\\overline{E}$ is not connected. Then there exist nonempty disjoint open sets $U,V\\subseteq X$ such that\n\\[\n\\label{eq:2.u91}\n\\overline{E}\\subseteq U\\cup V,\\qquad \\overline{E}\\cap U\\neq\\varnothing,\\qquad \\overline{E}\\cap V\\neq\\varnothing,\n\\]\nand\n\\[\n\\label{eq:2.u92}\n\\overline{E}\\cap U\\cap V=\\varnothing.\n\\]\nSet $A=E\\cap U$ and $B=E\\cap V$. Since $E\\subseteq\\overline{E}\\subseteq U\\cup V$, it follows that $E=A\\cup B$, and $A\\cap B=\\varnothing$.\n\nTo show $A\\neq\\varnothing$, choose $x\\in \\overline{E}\\cap U$. Because $U$ is open and $x\\in\\overline{E}$, every open ball centered at $x$ meets $E$, so in particular $U$ meets $E$; hence $A\\neq\\varnothing$. Similarly, choosing $y\\in \\overline{E}\\cap V$ yields $B\\neq\\varnothing$.\n\nThe sets $A$ and $B$ are open in the subspace topology on $E$ because $A=E\\cap U$ and $B=E\\cap V$ with $U,V$ open in $X$. Thus $E$ is a union of two disjoint nonempty sets that are open in $E$, contradicting that $E$ is connected. Therefore $\\overline{E}$ is connected.\n\\end{proof}",
+    "index": 40
+  },
+  {
+    "label": "Proposition 2.22",
+    "env": "prop",
+    "number_components": [
+      2,
+      22
+    ],
+    "extracted_labels": [
+      "prop:2.22",
+      "eq:2.u94",
+      "prf:prop:2.22",
+      "eq:2.u95",
+      "eq:2.u96"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Continuity and Connectedness",
+      "subsection": "Exercises",
+      "chapter_number": 2,
+      "section_number": 4,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.22}\nLet $(X,d)$ be a metric space. Define a relation $\\sim$ on $X$ by declaring $x\\sim y$ if and only if there exists a connected subset $C\\subseteq X$ such that $x\\in C$ and $y\\in C$. Then $\\sim$ is an equivalence relation on $X$. Moreover, for each $x\\in X$, the equivalence class\n\\[\n\\label{eq:2.u94}\n[x]=\\{y\\in X: y\\sim x\\}\n\\]\nis connected and closed in $X$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.22}\nReflexivity holds because for any $x\\in X$, the singleton $\\{x\\}$ is connected and contains $x$, so $x\\sim x$. Symmetry holds because if $x\\sim y$ via a connected set $C$ containing $x$ and $y$, then the same $C$ shows $y\\sim x$.\n\nFor transitivity, assume $x\\sim y$ and $y\\sim z$. Then there exist connected sets $C_1,C_2\\subseteq X$ with $x,y\\in C_1$ and $y,z\\in C_2$. Since $C_1\\cap C_2$ contains $y$, it is nonempty, so $C_1\\cup C_2$ is connected. The set $C_1\\cup C_2$ contains $x$ and $z$, hence $x\\sim z$. Therefore $\\sim$ is an equivalence relation.\n\nFix $x\\in X$. For each $y\\in [x]$, choose a connected set $C_y\\subseteq X$ with $x,y\\in C_y$. Then\n\\[\n\\label{eq:2.u95}\n[x]=\\bigcup_{y\\in [x]} C_y.\n\\]\nEach $C_y$ is connected and contains $x$, hence the family $\\{C_y\\}_{y\\in [x]}$ has nonempty intersection (indeed, $x\\in \\bigcap_{y\\in [x]} C_y$). A union of connected sets with a common point is connected, so $[x]$ is connected.\n\nTo prove that $[x]$ is closed, let $p\\in \\overline{[x]}$. Set $A=[x]\\cup\\{p\\}$. Suppose, for contradiction, that $A$ is disconnected. Then there exist disjoint nonempty sets $U,V$ that are open in the subspace $A$ such that $A=U\\cup V$. Since $[x]$ is connected and $[x]\\subseteq A$, it follows that $[x]$ is contained in one of the sets, say $[x]\\subseteq U$. As $p\\in A$ and $p\\notin U$ (otherwise $V$ would be empty), one has $p\\in V$. Because $V$ is open in the subspace $A$, there exists an open set $W\\subseteq X$ such that $V=A\\cap W$. Then $W$ is an open neighborhood of $p$ in $X$ and\n\\[\n\\label{eq:2.u96}\nW\\cap [x]=W\\cap A\\cap [x]=V\\cap [x]=\\varnothing,\n\\]\ncontradicting $p\\in \\overline{[x]}$. Hence $A$ is connected.\n\nSince $A$ is a connected subset of $X$ containing both $x$ and $p$, the definition of $\\sim$ gives $p\\sim x$, so $p\\in [x]$. Thus $\\overline{[x]}\\subseteq [x]$, proving that $[x]$ is closed.\n\\end{proof}",
+    "index": 41
+  },
+  {
+    "label": "Definition 2.12",
+    "env": "def",
+    "number_components": [
+      2,
+      12
+    ],
+    "extracted_labels": [
+      "def:2.12"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Topological Spaces (Optional)",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:2.12}\n[Topological space]\nA \\emph{topological space} is a pair $(X,\\mathcal{F})$ consisting of a set $X$ and a collection $\\mathcal{F}\\subseteq 2^X$ such that:\n\\begin{enumerate}\n\\item $\\emptyset\\in\\mathcal{F}$ and $X\\in\\mathcal{F}$.\n\\item For every $n\\in\\mathbb{N}$ and all $V_1,\\dots,V_n\\in\\mathcal{F}$, the intersection $\\bigcap_{i=1}^n V_i$ belongs to $\\mathcal{F}$.\n\\item For every index set $I$ and every family $(V_\\alpha)_{\\alpha\\in I}$ with $V_\\alpha\\in\\mathcal{F}$ for all $\\alpha\\in I$, the union $\\bigcup_{\\alpha\\in I} V_\\alpha$ belongs to $\\mathcal{F}$.\n\\end{enumerate}\nThe elements of $\\mathcal{F}$ are called \\emph{open sets}, and $\\mathcal{F}$ is called a \\emph{topology} on $X$.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 42
+  },
+  {
+    "label": "Definition 2.13",
+    "env": "def",
+    "number_components": [
+      2,
+      13
+    ],
+    "extracted_labels": [
+      "def:2.13"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Topological Spaces (Optional)",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:2.13}\n[Neighborhood]\nLet $(X,\\mathcal{F})$ be a topological space and let $x\\in X$. A set $U\\subseteq X$ is called a \\emph{neighborhood} of $x$ if $U\\in\\mathcal{F}$ and $x\\in U$.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 43
+  },
+  {
+    "label": "Proposition 2.23",
+    "env": "prop",
+    "number_components": [
+      2,
+      23
+    ],
+    "extracted_labels": [
+      "prop:2.23",
+      "eq:2.u98",
+      "prf:prop:2.23"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Topological Spaces (Optional)",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.23}\nLet $(X,d)$ be a metric space, let $x\\in X$, and let $r>0$. Then the open ball\n$ B(x,r)= \\{ y\\in X: d(x,y)<r \\}$\nis a neighborhood of $x$.\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.23}\nSince $r>0$, one has $d(x,x)=0<r$, hence $x\\in B(x,r)$. Moreover, by definition of an open ball, $B(x,r)$ is an open subset of $X$. Therefore $B(x,r)$ is an open set containing $x$, so it is a neighborhood of $x$.\n\\end{proof}",
+    "index": 44
+  },
+  {
+    "label": "Definition 2.14",
+    "env": "def",
+    "number_components": [
+      2,
+      14
+    ],
+    "extracted_labels": [
+      "def:2.14"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Topological Spaces (Optional)",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:2.14}\n[Topological convergence]\nLet $(X,\\mathcal{F})$ be a topological space, let $m\\in\\mathbb{Z}$, and let $(x^{(n)})_{n=m}^{\\infty}$ be a sequence in $X$. For $x\\in X$, the sequence $(x^{(n)})_{n=m}^{\\infty}$ \\emph{converges to} $x$ if and only if for every neighborhood $V\\subseteq X$ of $x$ there exists an integer $N\\ge m$ such that $x^{(n)}\\in V$ for all integers $n\\ge N$.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 45
+  },
+  {
+    "label": "Definition 2.15",
+    "env": "def",
+    "number_components": [
+      2,
+      15
+    ],
+    "extracted_labels": [
+      "def:2.15"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Topological Spaces (Optional)",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:2.15}\n[Interior point, exterior point, boundary point]\nLet $(X,\\mathcal F)$ be a topological space, let $E\\subseteq X$, and let $x_0\\in X$.\n\\begin{enumerate}\n\\item The point $x_0$ is an \\emph{interior point} of $E$ if there exists a neighborhood $V$ of $x_0$ such that $V\\subseteq E$.\n\\item The point $x_0$ is an \\emph{exterior point} of $E$ if there exists a neighborhood $V$ of $x_0$ such that $V\\cap E=\\emptyset$.\n\\item The point $x_0$ is a \\emph{boundary point} of $E$ if $x_0$ is neither an interior point of $E$ nor an exterior point of $E$; equivalently, for every neighborhood $V$ of $x_0$, both $V\\cap E\\neq\\emptyset$ and $V\\cap (X\\setminus E)\\neq\\emptyset$.\n\\end{enumerate}\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 46
+  },
+  {
+    "label": "Definition 2.16",
+    "env": "def",
+    "number_components": [
+      2,
+      16
+    ],
+    "extracted_labels": [
+      "def:2.16",
+      "eq:2.u99",
+      "eq:2.u100"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Topological Spaces (Optional)",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:2.16}\n(Closure point) Let $(X,\\mathcal{F})$ be a topological space and let $E\\subseteq X$.\n\\begin{enumerate}\n\\item A point $x_0\\in X$ is an \\emph{adherent point} of $E$ if for every neighborhood $V$ of $x_0$ (that is, every set $V\\subseteq X$ containing an open set that contains $x_0$), one has\n\\[\n\\label{eq:2.u99}\nV\\cap E\\neq\\varnothing.\n\\]\n\\item The \\emph{closure} of $E$, denoted $\\overline{E}$, is the set of all adherent points of $E$:\n\\[\n\\label{eq:2.u100}\n\\overline{E}=\\{x\\in X:\\text{for every neighborhood }V\\text{ of }x,\\; V\\cap E\\neq\\varnothing\\}.\n\\]\n\\end{enumerate}\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 47
+  },
+  {
+    "label": "Definition 2.17",
+    "env": "def",
+    "number_components": [
+      2,
+      17
+    ],
+    "extracted_labels": [
+      "def:2.17"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Topological Spaces (Optional)",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:2.17}\nLet $(X,\\mathcal{F})$ be a topological space and let $K\\subseteq X$. The set $K$ is \\emph{closed} if and only if its complement $X\\setminus K$ is open, i.e. if $X\\setminus K\\in\\mathcal{F}$.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 48
+  },
+  {
+    "label": "Definition 2.18",
+    "env": "def",
+    "number_components": [
+      2,
+      18
+    ],
+    "extracted_labels": [
+      "def:2.18",
+      "eq:2.u101"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Topological Spaces (Optional)",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:2.18}\n[Relative topology]\nLet $(X,\\mathcal F)$ be a topological space and let $Y\\subseteq X$. Define\n\\[\n\\label{eq:2.u101}\n\\mathcal F_Y := \\{V\\cap Y : V\\in \\mathcal F\\}.\n\\]\nThe collection $\\mathcal F_Y$ is called the \\emph{relative topology} (or \\emph{subspace topology}) on $Y$ induced by $(X,\\mathcal F)$. The pair $(Y,\\mathcal F_Y)$ is called a \\emph{topological subspace} of $(X,\\mathcal F)$.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 49
+  },
+  {
+    "label": "Definition 2.19",
+    "env": "def",
+    "number_components": [
+      2,
+      19
+    ],
+    "extracted_labels": [
+      "def:2.19"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Topological Spaces (Optional)",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:2.19}\n(Continuous functions) Let $(X,\\mathcal{F}_X)$ and $(Y,\\mathcal{F}_Y)$ be topological spaces, and let $f\\colon X\\to Y$ be a function. For $x_0\\in X$, the function $f$ is \\emph{continuous at $x_0$} if and only if for every neighborhood $V\\in\\mathcal{F}_Y$ of $f(x_0)$ there exists a neighborhood $U\\in\\mathcal{F}_X$ of $x_0$ such that $f(U)\\subseteq V$. The function $f$ is \\emph{continuous} if and only if it is continuous at every point $x\\in X$.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 50
+  },
+  {
+    "label": "Definition 2.20",
+    "env": "def",
+    "number_components": [
+      2,
+      20
+    ],
+    "extracted_labels": [
+      "def:2.20"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Topological Spaces (Optional)",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:2.20}\nLet $(X,\\mathcal{F})$ be a topological space.\n\\begin{enumerate}\n\\item The space $(X,\\mathcal{F})$ is \\emph{compact} if for every open cover of $X$ has a finite subcover, i.e. $(U_i)_{i\\in I}\\subseteq \\mathcal{F}$ satisfying $X\\subseteq \\bigcup_{i\\in I} U_i$, there exists a finite subset $J\\subseteq I$ such that $X\\subseteq \\bigcup_{i\\in J} U_i$.\n\\item A subset $Y\\subseteq X$ is \\emph{compact} if the topological space $\\bigl(Y,\\{U\\cap Y: U\\in \\mathcal{F}\\}\\bigr)$ is compact.\n\\end{enumerate}\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 51
+  },
+  {
+    "label": "Proposition 2.25",
+    "env": "prop",
+    "number_components": [
+      2,
+      25
+    ],
+    "extracted_labels": [
+      "def:2.21",
+      "def:trivial-topology"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Topological Spaces (Optional)",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\nLet $X$ be a set and define $\\mathcal{F}:=\\{\\emptyset,X\\}$. Show that the pair $(X,\\mathcal{F})$ is a topology on $X$.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 52
+  },
+  {
+    "label": "Definition 2.22",
+    "env": "def",
+    "number_components": [
+      2,
+      22
+    ],
+    "extracted_labels": [
+      "def:2.22",
+      "def:hausdorff"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Topological Spaces (Optional)",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:2.22}\n[Hausdorff topological space]\\label{def:hausdorff}\nA topological space $(X,\\mathcal{F})$ is \\emph{Hausdorff} if for any distinct points $x,y\\in X$ there exist neighborhoods $V$ of $x$ and $W$ of $y$ such that $V\\cap W=\\emptyset$.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 53
+  },
+  {
+    "label": "Definition 2.23",
+    "env": "def",
+    "number_components": [
+      2,
+      23
+    ],
+    "extracted_labels": [
+      "def:2.23",
+      "def:order-topology"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Topological Spaces (Optional)",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:2.23}\n[Order topology]\\label{def:order-topology}\nLet $(X,\\leq)$ be a totally ordered set. A set $V\\subseteq X$ is \\emph{open} if for every $x\\in V$ there exists a set $I$ containing $x$ and contained in $V$, where $I$ is one of the following:\n\\begin{itemize}\n\\item an interval $\\{y\\in X: a<y<b\\}$ for some $a,b\\in X$,\n\\item a ray $\\{y\\in X: a<y\\}$ for some $a\\in X$,\n\\item a ray $\\{y\\in X: y<b\\}$ for some $b\\in X$,\n\\item the whole space $X$.\n\\end{itemize}\nLet $\\mathcal{F}$ be the collection of all such open sets. Then $(X,\\mathcal{F})$ is called the \\emph{order topology} on $(X,\\leq)$.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 54
+  },
+  {
+    "label": "Proposition 2.24",
+    "env": "prop",
+    "number_components": [
+      2,
+      24
+    ],
+    "extracted_labels": [
+      "prop:2.24",
+      "eq:2.u102",
+      "eq:2.u103",
+      "prf:prop:2.24",
+      "eq:2.u104",
+      "eq:2.u105"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Topological Spaces (Optional)",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{proposition}\n\\label{prop:2.24}\nLet $(x_n)_{n=1}^\\infty$ be a sequence in $\\mathbb{R}$, viewed as a sequence in the extended real line $\\overline{\\mathbb{R}}=\\mathbb{R}\\cup\\{-\\infty,+\\infty\\}$. Then $x_n\\to +\\infty$ if and only if\n\\[\n\\label{eq:2.u102}\n\\liminf_{n\\to\\infty} x_n = +\\infty.\n\\]\nSimilarly, $x_n\\to -\\infty$ if and only if\n\\[\n\\label{eq:2.u103}\n\\limsup_{n\\to\\infty} x_n = -\\infty.\n\\]\n\\end{proposition}",
+    "dependencies": [],
+    "proof": "\\begin{proof}\n\\label{prf:prop:2.24}\nFirst assume $x_n\\to +\\infty$. Then for every $M\\in\\mathbb{R}$ there exists $N$ such that $x_n\\ge M$ for all $n\\ge N$. Fix such an $M$ and $N$. For each $n\\ge N$ one has $\\inf_{k\\ge n} x_k\\ge M$, hence $\\sup_{n\\ge N}\\inf_{k\\ge n} x_k\\ge M$. Therefore\n\\[\n\\label{eq:2.u104}\n\\liminf_{n\\to\\infty} x_n = \\sup_{n\\ge 1}\\inf_{k\\ge n} x_k \\ge M.\n\\]\nSince $M$ is arbitrary, $\\liminf_{n\\to\\infty} x_n=+\\infty$.\n\nConversely assume $\\liminf_{n\\to\\infty} x_n=+\\infty$. Let $M\\in\\mathbb{R}$. By definition of $\\liminf$ as $\\sup_{n\\ge 1}\\inf_{k\\ge n} x_k$, there exists $N$ such that $\\inf_{k\\ge N} x_k\\ge M$. Then for every $n\\ge N$ one has $x_n\\ge \\inf_{k\\ge N} x_k\\ge M$. This holds for every $M\\in\\mathbb{R}$, hence $x_n\\to +\\infty$.\n\nFor the second equivalence, assume $x_n\\to -\\infty$. Then for every $M\\in\\mathbb{R}$ there exists $N$ such that $x_n\\le M$ for all $n\\ge N$. For $n\\ge N$, $\\sup_{k\\ge n} x_k\\le M$, hence $\\inf_{n\\ge N}\\sup_{k\\ge n} x_k\\le M$. Therefore\n\\[\n\\label{eq:2.u105}\n\\limsup_{n\\to\\infty} x_n = \\inf_{n\\ge 1}\\sup_{k\\ge n} x_k \\le M.\n\\]\nSince $M$ is arbitrary, $\\limsup_{n\\to\\infty} x_n=-\\infty$.\n\nConversely assume $\\limsup_{n\\to\\infty} x_n=-\\infty$. Let $M\\in\\mathbb{R}$. From $\\limsup_{n\\to\\infty} x_n=\\inf_{n\\ge 1}\\sup_{k\\ge n} x_k$ there exists $N$ such that $\\sup_{k\\ge N} x_k\\le M$. Then for all $n\\ge N$, $x_n\\le \\sup_{k\\ge N} x_k\\le M$. Since this holds for every $M\\in\\mathbb{R}$, $x_n\\to -\\infty$.\n\\end{proof}",
+    "index": 55
+  },
+  {
+    "label": "Definition 2.24",
+    "env": "def",
+    "number_components": [
+      2,
+      24
+    ],
+    "extracted_labels": [
+      "def:2.24",
+      "def:cofinite-topology"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Topological Spaces (Optional)",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:2.24}\n[Cofinite topology]\\label{def:cofinite-topology}\nLet $X$ be a set. Define $\\mathcal{F}:=\\{E\\subseteq X: E=\\emptyset\\ \\text{or}\\ X\\setminus E\\ \\text{is finite}\\}$. The pair $(X,\\mathcal{F})$ is called the \\emph{cofinite topology} on $X$.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 56
+  },
+  {
+    "label": "Definition 2.25",
+    "env": "def",
+    "number_components": [
+      2,
+      25
+    ],
+    "extracted_labels": [
+      "def:2.25",
+      "def:cocountable-topology"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Topological Spaces (Optional)",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:2.25}\n[Cocountable topology]\\label{def:cocountable-topology}\nLet $X$ be a set. Define $\\mathcal{F}:=\\{E\\subseteq X: E=\\emptyset\\ \\text{or}\\ X\\setminus E\\ \\text{is at most countable}\\}$. The pair $(X,\\mathcal{F})$ is called the \\emph{cocountable topology} on $X$.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 57
+  },
+  {
+    "label": "Definition 2.26",
+    "env": "def",
+    "number_components": [
+      2,
+      26
+    ],
+    "extracted_labels": [
+      "def:2.26",
+      "def:first-countable"
+    ],
+    "context": {
+      "chapter": "",
+      "section": "Topological Spaces (Optional)",
+      "subsection": "",
+      "chapter_number": 2,
+      "section_number": 5,
+      "subsection_number": 0
+    },
+    "content": "\\begin{definition}\n\\label{def:2.26}\n[First countable topological space]\\label{def:first-countable}\nA topological space $(X,\\mathcal{F})$ is \\emph{first countable} if for every $x\\in X$ there exists a countable collection of neighborhoods $V_1,V_2,\\ldots$ of $x$ such that every neighborhood of $x$ contains at least one $V_n$.\n\\end{definition}",
+    "dependencies": [],
+    "proof": "",
+    "index": 58
+  }
+]

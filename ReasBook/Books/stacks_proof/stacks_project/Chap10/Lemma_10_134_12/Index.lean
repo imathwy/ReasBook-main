@@ -1,0 +1,2 @@
+import StacksProject_2024.Chap10.Lemma_10_134_12.TensorModel
+import StacksProject_2024.Chap10.Lemma_10_134_12.LocalizedSelfPresentation

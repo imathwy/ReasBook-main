@@ -114,3 +114,4 @@ theorem intrinsicInterior_of_level_set_lt
   [NormedAddCommGroup E] [InnerProductSpace ℝ E] (f : E → EReal)
   [ProperFunction univ f] (hf : ConvexOn ℝ (dom univ f) f) (α : ℝ) :
   intrinsicInterior ℝ {x | f x < α} = {x ∈ intrinsicInterior ℝ (dom univ f) | f x < α} := sorry
+

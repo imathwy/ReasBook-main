@@ -1,7 +1,7 @@
 import Mathlib.LinearAlgebra.Matrix.PosDef
 import Mathlib.Analysis.InnerProductSpace.Basic
 
-import Mathlib.LinearAlgebra.Matrix.Spectrum
+import Mathlib.Analysis.Matrix.Spectrum
 import Mathlib.Data.Matrix.ColumnRowPartitioned
 import Mathlib.Analysis.Matrix
 import Mathlib.Analysis.CStarAlgebra.Matrix
@@ -66,7 +66,7 @@ lemma exists_max_norm_apply [Nontrivial V] [FiniteDimensional 𝕜 V] (T : V →
     ∃ u : V, ‖u‖ = 1 ∧ ∀ v : V, ‖v‖ = 1 → ‖T v‖ ≤ ‖T u‖ := by
   let S : Set V := Metric.sphere 0 1
   have h_compact : IsCompact S := by
-    have : ProperSpace V := FiniteDimensional.proper (𝕜 := 𝕜) (E := V)
+    have : ProperSpace V := FiniteDimensional.proper (E := V)
     exact isCompact_sphere 0 1
   have h_nonempty : S.Nonempty := by
     obtain ⟨a, ha⟩ := @NormedSpace.sphere_nonempty_rclike 𝕜 _ V _ _ _ 1 zero_le_one
@@ -893,3 +893,4 @@ noncomputable def smallestSingularValue (A : Matrix (Fin m) (Fin n) 𝕜) : ℝ�
   else 0
 
 end Matrix
+

@@ -313,3 +313,4 @@ noncomputable def recessionFunction (f : E → EReal) :=
   fun y => ⨆ x ∈ {x | x ∈ dom s f}, (f (x + y) - f x)
 
 end recessionfunction_def
+

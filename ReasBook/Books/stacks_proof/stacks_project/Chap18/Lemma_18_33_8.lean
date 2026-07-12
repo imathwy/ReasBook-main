@@ -1,0 +1,1165 @@
+import Mathlib
+import StacksProject_2024.Chap10.Lemma_10_131_9
+import StacksProject_2024.Chap18.Lemma_18_11_4
+import StacksProject_2024.Chap18.Lemma_18_33_2
+import StacksProject_2024.Chap18.Lemma_18_33_4
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+open CategoryTheory
+open PresheafOfModules.DifferentialsConstruction
+open scoped SheafOfModules.RingedSite TensorProduct
+
+noncomputable section
+
+universe u
+
+namespace SheafOfModules.RingedSite
+
+variable {C : Type u} [SmallCategory C] {J : GrothendieckTopology C}
+variable [J.HasSheafCompose (forget₂ CommRingCat RingCat.{u})]
+variable [HasWeakSheafify J AddCommGrpCat.{u}]
+variable [J.WEqualsLocallyBijective AddCommGrpCat.{u}]
+variable {O₁ O₂ O₂' : Sheaf J CommRingCat.{u}}
+
+/- Domain-style sampling for Lemma 18.33.8:
+- primary domain: the conormal exact sequence for a locally surjective morphism of sheaves of
+  commutative rings on a Grothendieck site;
+- sampled owner declarations:
+  `ringedSiteStructureMap`,
+  `Ω(φ)`,
+  `KaehlerDifferential.kerCotangentToTensor`,
+  `KaehlerDifferential.mapBaseChange`,
+  `SheafOfModules.pullback`;
+- best owner abstraction: the site-level scalar-extended conormal sequence of `O₂'`-module sheaves
+  attached to a composable pair `φ : O₁ ⟶ O₂`, `α : O₂ ⟶ O₂'`;
+- primitive data: the source-side kernel ideal presheaf of `α`, its cotangent presheaf
+  `Ker(α)/Ker(α)^2` over `O₂`, and the canonical Kähler maps on sections;
+- derived API: the sheaf-level maps
+  `conormalMap φ α : conormalSource α ⟶ conormalTensorTerm φ α` and
+  `conormalToDifferentials φ α : conormalTensorTerm φ α ⟶ Ω(φ ≫ α)`, their exactness under local
+  surjectivity of `α`, and the objectwise formula sending the class of `f` to `1 ⊗ df`.
+
+Source/core/bridge triage:
+- `source-facing`: the scalar-extended conormal sequence
+  `conormalSource α ⟶ O₂' ⊗[O₂] Ω(O₂/O₁) ⟶ Ω(O₂'/O₁) ⟶ 0`, which agrees with the textbook
+  `Ker(α)/Ker(α)^2` sequence once local surjectivity identifies the left term with the intrinsic
+  target-side conormal module;
+- `core/canonical`: `Ω(φ)`, `ringedSiteStructureMap α`, `SheafOfModules.pullback`, and the
+  ring-level Kähler maps from mathlib/Chapter 10;
+- `bridge/view`: the objectwise section maps and the internal presheaf-level realizations used to
+  build the sheaf morphisms.
+
+Accordingly, this file keeps the scalar-extended sheaf-level conormal sequence as the public owner
+and relegates the sectionwise maps to companion bridge API. It also reuses the chapter owner
+`Ω(φ)` instead of rephrasing the lemma purely as objectwise ring statements. -/
+
+private abbrev conormalScalarPresheaf (α : O₂ ⟶ O₂') :
+    PresheafOfModules (ringSheaf J O₂).obj :=
+  (PresheafOfModules.restrictScalars (ringSheafMap α).hom).obj
+    (PresheafOfModules.unit (ringSheaf J O₂').obj)
+
+private abbrev conormalTensorSpacePresheaf (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') :
+    PresheafOfModules (ringSheaf J O₂).obj :=
+  PresheafOfModules.Monoidal.tensorObj
+    (conormalScalarPresheaf α)
+    (relativeDifferentials' φ.hom)
+
+private abbrev conormalTensorTermOverSource
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') :
+    SheafOfModules (ringSheaf J O₂) :=
+  (PresheafOfModules.sheafification
+      (𝟙 (ringSheaf J O₂).obj)).obj
+    (conormalTensorSpacePresheaf φ α)
+
+private abbrev conormalIdeal
+    (α : O₂ ⟶ O₂') (U : Cᵒᵖ) :
+    Ideal (O₂.obj.obj U) :=
+  RingHom.ker ((α.hom.app U).hom)
+
+private theorem conormalIdeal_le_comap
+    (α : O₂ ⟶ O₂') {U V : Cᵒᵖ} (i : U ⟶ V) :
+    conormalIdeal α U ≤
+      (conormalIdeal α V).comap ((O₂.obj.map i).hom) := by
+  -- Proof comment: kernel membership is preserved by restriction because `α.hom` is natural.
+  intro x hx
+  change (α.hom.app V).hom ((O₂.obj.map i).hom x) = 0
+  have hnat :=
+    DFunLike.congr_fun
+      (congrArg CommRingCat.Hom.hom (α.hom.naturality i)) x
+  have hx' : (α.hom.app U).hom x = 0 := hx
+  simpa [hx'] using hnat
+
+private abbrev conormalObj
+    (α : O₂ ⟶ O₂') (U : Cᵒᵖ) :
+    ModuleCat (O₂.obj.obj U) :=
+  ModuleCat.of (O₂.obj.obj U) (conormalIdeal α U).Cotangent
+
+private abbrev conormalRestriction
+    (α : O₂ ⟶ O₂') {U V : Cᵒᵖ} (i : U ⟶ V) :
+    conormalObj α U ⟶
+      (ModuleCat.restrictScalars
+        (((ringSheaf J O₂).obj.map i).hom)).obj
+        (conormalObj α V) :=
+  let R := O₂.obj.obj U
+  let S := O₂.obj.obj V
+  let _ : Algebra R S := (O₂.obj.map i).hom.toAlgebra
+  ModuleCat.ofHom
+    (Ideal.mapCotangent
+      (conormalIdeal α U)
+      (conormalIdeal α V)
+      { toRingHom := (O₂.obj.map i).hom
+        commutes' := by
+          intro r
+          rfl }
+      (conormalIdeal_le_comap α i))
+
+/-- Helper for Lemma 18.33.8: the cotangent restriction maps send a generator to the generator
+induced by restricting its representative section. -/
+private theorem conormalRestriction_toCotangent
+    (α : O₂ ⟶ O₂') {U V : Cᵒᵖ} (i : U ⟶ V) (x : conormalIdeal α U) :
+    conormalRestriction α i ((conormalIdeal α U).toCotangent x) =
+      (conormalIdeal α V).toCotangent
+        ⟨((O₂.obj.map i).hom) x, conormalIdeal_le_comap α i x.2⟩ := by
+  let _ : Algebra (O₂.obj.obj U) (O₂.obj.obj V) := (O₂.obj.map i).hom.toAlgebra
+  -- Proof comment: this is the canonical generator formula for `Ideal.mapCotangent`.
+  change
+    Ideal.mapCotangent
+        (conormalIdeal α U)
+        (conormalIdeal α V)
+        { toRingHom := (O₂.obj.map i).hom
+          commutes' := by
+            intro r
+            rfl }
+        (conormalIdeal_le_comap α i)
+        ((conormalIdeal α U).toCotangent x) =
+      (conormalIdeal α V).toCotangent
+        ⟨((O₂.obj.map i).hom) x, conormalIdeal_le_comap α i x.2⟩
+  rfl
+
+private theorem conormalRestriction_id
+    (α : O₂ ⟶ O₂') (U : Cᵒᵖ) :
+    conormalRestriction α (𝟙 U) =
+      (ModuleCat.restrictScalarsId'
+        (((ringSheaf J O₂).obj.map (𝟙 U)).hom)
+        (congrArg RingCat.Hom.hom
+          ((ringSheaf J O₂).obj.map_id U))).inv.app _ := by
+  -- Route correction: compare the two maps on cotangent generators instead of unfolding the
+  -- restriction-of-scalars coherence isomorphism.
+  refine ModuleCat.hom_ext ?_
+  ext z
+  -- Proof comment: the cotangent module is generated by the image of the kernel ideal.
+  obtain ⟨x, rfl⟩ := Ideal.toCotangent_surjective (conormalIdeal α U) z
+  have hmap :
+      ((O₂.obj.map (𝟙 U)).hom) (x : O₂.obj.obj U) = x := by
+    -- The section ring restriction along the identity is the identity map.
+    simpa using congrArg (fun h ↦ h (x : O₂.obj.obj U))
+      (congrArg RingCat.Hom.hom ((ringSheaf J O₂).obj.map_id U))
+  have hx :
+      (conormalIdeal α U).toCotangent
+          ⟨((O₂.obj.map (𝟙 U)).hom) x, conormalIdeal_le_comap α (𝟙 U) x.2⟩ =
+        (conormalIdeal α U).toCotangent x := by
+    exact congrArg (Ideal.toCotangent (conormalIdeal α U)) (Subtype.ext hmap)
+  -- Proof comment: both maps now reduce to the same cotangent generator after rewriting the
+  -- identity section restriction and the restriction-of-scalars coherence map.
+  rw [conormalRestriction_toCotangent]
+  rw [hx]
+  symm
+  exact ModuleCat.restrictScalarsId'App_inv_apply
+    (((ringSheaf J O₂).obj.map (𝟙 U)).hom)
+    (congrArg RingCat.Hom.hom ((ringSheaf J O₂).obj.map_id U))
+    (conormalObj α U)
+    ((conormalIdeal α U).toCotangent x)
+
+/-- Helper for Lemma 18.33.8: the cotangent restriction maps satisfy the functorial composition
+formula on generators. -/
+private theorem conormalRestriction_comp_on_toCotangent
+    (α : O₂ ⟶ O₂') {U V W : Cᵒᵖ} (i : U ⟶ V) (j : V ⟶ W)
+    (x : conormalIdeal α U) :
+    conormalRestriction α (i ≫ j) ((conormalIdeal α U).toCotangent x) =
+      (conormalRestriction α i ≫
+        (ModuleCat.restrictScalars
+          (((ringSheaf J O₂).obj.map i).hom)).map
+          (conormalRestriction α j) ≫
+        (ModuleCat.restrictScalarsComp'
+          (((ringSheaf J O₂).obj.map i).hom)
+          (((ringSheaf J O₂).obj.map j).hom)
+          (((ringSheaf J O₂).obj.map (i ≫ j)).hom)
+          (congrArg RingCat.Hom.hom
+            ((ringSheaf J O₂).obj.map_comp i j))).inv.app _)
+        ((conormalIdeal α U).toCotangent x) := by
+  have hmap :
+      ((O₂.obj.map (i ≫ j)).hom) (x : O₂.obj.obj U) =
+        ((O₂.obj.map j).hom) (((O₂.obj.map i).hom) x) := by
+    -- The sheaf restriction maps compose on sections.
+    simpa using congrArg (fun h ↦ h (x : O₂.obj.obj U))
+      (congrArg RingCat.Hom.hom ((ringSheaf J O₂).obj.map_comp i j))
+  -- Proof comment: after evaluating both maps on a generator, only the sectionwise
+  -- composition identity remains.
+  rw [conormalRestriction_toCotangent]
+  simp only [conormalRestriction_toCotangent, ModuleCat.restrictScalarsComp'App_inv_apply]
+  exact congrArg (Ideal.toCotangent (conormalIdeal α W)) (Subtype.ext hmap)
+
+private theorem conormalRestriction_comp
+    (α : O₂ ⟶ O₂') {U V W : Cᵒᵖ} (i : U ⟶ V) (j : V ⟶ W) :
+    conormalRestriction α (i ≫ j) =
+      conormalRestriction α i ≫
+        (ModuleCat.restrictScalars
+          (((ringSheaf J O₂).obj.map i).hom)).map
+          (conormalRestriction α j) ≫
+        (ModuleCat.restrictScalarsComp'
+          (((ringSheaf J O₂).obj.map i).hom)
+          (((ringSheaf J O₂).obj.map j).hom)
+          (((ringSheaf J O₂).obj.map (i ≫ j)).hom)
+          (congrArg RingCat.Hom.hom
+            ((ringSheaf J O₂).obj.map_comp i j))).inv.app _ := by
+  -- Route correction: prove composition on cotangent generators first.
+  apply ModuleCat.hom_ext
+  ext z
+  -- Proof comment: equality of maps out of the cotangent module is reduced to its generators.
+  obtain ⟨x, rfl⟩ := Ideal.toCotangent_surjective (conormalIdeal α U) z
+  -- Proof comment: the generator-level composition formula already computes both sides.
+  simpa using conormalRestriction_comp_on_toCotangent α i j x
+
+private def conormalPresheaf (α : O₂ ⟶ O₂') :
+    PresheafOfModules (ringSheaf J O₂).obj :=
+  { obj := conormalObj α
+    map := conormalRestriction α
+    map_id := conormalRestriction_id α
+    map_comp := conormalRestriction_comp α }
+
+private noncomputable def conormalSourceOverSource
+    (α : O₂ ⟶ O₂') :
+    SheafOfModules (ringSheaf J O₂) :=
+  (PresheafOfModules.sheafification
+      (𝟙 (ringSheaf J O₂).obj)).obj
+    (conormalPresheaf α)
+
+/-- The objectwise left map in the conormal sequence on sections over `U`. -/
+abbrev sectionConormalMap
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') (U : Cᵒᵖ) :
+    let _ : Algebra (O₁.obj.obj U) (O₂.obj.obj U) := ((φ.hom.app U).hom).toAlgebra
+    let _ : Algebra (O₂.obj.obj U) (O₂'.obj.obj U) := ((α.hom.app U).hom).toAlgebra
+    (RingHom.ker ((α.hom.app U).hom)).Cotangent →ₗ[O₂.obj.obj U]
+      O₂'.obj.obj U ⊗[O₂.obj.obj U] Ω[O₂.obj.obj U⁄O₁.obj.obj U] :=
+  let _ : Algebra (O₁.obj.obj U) (O₂.obj.obj U) := ((φ.hom.app U).hom).toAlgebra
+  let _ : Algebra (O₂.obj.obj U) (O₂'.obj.obj U) := ((α.hom.app U).hom).toAlgebra
+  KaehlerDifferential.kerCotangentToTensor
+    (O₁.obj.obj U) (O₂.obj.obj U) (O₂'.obj.obj U)
+
+private abbrev sectionConormalHom
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') (U : Cᵒᵖ) :
+    conormalObj α U ⟶
+      (conormalTensorSpacePresheaf φ α).obj U := by
+  let _ : Algebra (O₁.obj.obj U) (O₂.obj.obj U) := ((φ.hom.app U).hom).toAlgebra
+  let _ : Algebra (O₂.obj.obj U) (O₂'.obj.obj U) := ((α.hom.app U).hom).toAlgebra
+  change conormalObj α U ⟶
+    ModuleCat.of (O₂.obj.obj U)
+      (O₂'.obj.obj U ⊗[O₂.obj.obj U] Ω[O₂.obj.obj U⁄O₁.obj.obj U])
+  exact ModuleCat.ofHom (sectionConormalMap φ α U)
+
+/-- Helper for Lemma 18.33.8: objectwise, the wrapped left map sends a cotangent generator to
+`1 ⊗ d x`. -/
+private theorem sectionConormalHom_on_toCotangent
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') (U : Cᵒᵖ) (x : conormalIdeal α U) :
+    let _ : Algebra (O₁.obj.obj U) (O₂.obj.obj U) := ((φ.hom.app U).hom).toAlgebra
+    let _ : Algebra (O₂.obj.obj U) (O₂'.obj.obj U) := ((α.hom.app U).hom).toAlgebra
+    sectionConormalHom φ α U ((conormalIdeal α U).toCotangent x) =
+      (1 : O₂'.obj.obj U) ⊗ₜ[O₂.obj.obj U]
+        KaehlerDifferential.D (O₁.obj.obj U) (O₂.obj.obj U) x := by
+  let _ : Algebra (O₁.obj.obj U) (O₂.obj.obj U) := ((φ.hom.app U).hom).toAlgebra
+  let _ : Algebra (O₂.obj.obj U) (O₂'.obj.obj U) := ((α.hom.app U).hom).toAlgebra
+  let x' : RingHom.ker (algebraMap (O₂.obj.obj U) (O₂'.obj.obj U)) := x
+  -- Proof comment: the wrapped section map is definitionally the canonical owner
+  -- `kerCotangentToTensor`, so its generator formula is the ring-level owner theorem.
+  change
+    KaehlerDifferential.kerCotangentToTensor
+        (O₁.obj.obj U) (O₂.obj.obj U) (O₂'.obj.obj U)
+        (Ideal.toCotangent
+          (RingHom.ker (algebraMap (O₂.obj.obj U) (O₂'.obj.obj U))) x') =
+      (1 : O₂'.obj.obj U) ⊗ₜ[O₂.obj.obj U]
+        KaehlerDifferential.D (O₁.obj.obj U) (O₂.obj.obj U) x'
+  exact KaehlerDifferential.kerCotangentToTensor_toCotangent
+    (O₁.obj.obj U) (O₂.obj.obj U) (O₂'.obj.obj U) x'
+
+/-- Helper for Lemma 18.33.8: restricting scalars along `α` does not change the underlying
+section restriction map on `O₂'`. -/
+private theorem conormalScalarPresheaf_map_apply
+    (α : O₂ ⟶ O₂') {U V : Cᵒᵖ} (i : U ⟶ V) (b : O₂'.obj.obj U) :
+    (ConcreteCategory.hom ((conormalScalarPresheaf α).map i)) b =
+      (O₂'.obj.map i).hom b := by
+  -- Proof comment: `conormalScalarPresheaf α` is only a restriction-of-scalars wrapper around
+  -- the unit `O₂'`-module, so its section restriction is definitionally the same map.
+  rfl
+
+/-- Helper for Lemma 18.33.8: the tensor-presheaf restriction map sends a pure tensor to the pure
+tensor of the restricted factors. -/
+private theorem conormalTensorSpacePresheaf_map_tmul
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') {U V : Cᵒᵖ} (i : U ⟶ V)
+    (b : O₂'.obj.obj U) (x : O₂.obj.obj U) :
+    let _ : Algebra (O₁.obj.obj U) (O₂.obj.obj U) := ((φ.hom.app U).hom).toAlgebra
+    let _ : Algebra (O₂.obj.obj U) (O₂'.obj.obj U) := ((α.hom.app U).hom).toAlgebra
+    let _ : Algebra (O₁.obj.obj V) (O₂.obj.obj V) := ((φ.hom.app V).hom).toAlgebra
+    let _ : Algebra (O₂.obj.obj V) (O₂'.obj.obj V) := ((α.hom.app V).hom).toAlgebra
+    ((conormalTensorSpacePresheaf φ α).map i).hom
+        (b ⊗ₜ[O₂.obj.obj U]
+          KaehlerDifferential.D (O₁.obj.obj U) (O₂.obj.obj U) x) =
+      ((O₂'.obj.map i).hom b) ⊗ₜ[O₂.obj.obj V]
+        KaehlerDifferential.D (O₁.obj.obj V) (O₂.obj.obj V) ((O₂.obj.map i).hom x) := by
+  -- Proof comment: the tensor-presheaf restriction is computed by the owner formula on pure
+  -- tensors, after which the two factors reduce to the wrapped unit-module map and the standard
+  -- differential restriction formula.
+  rw [PresheafOfModules.Monoidal.tensorObj_map_tmul]
+  rw [conormalScalarPresheaf_map_apply]
+  simpa using relativeDifferentials'_map_d φ.hom i x
+
+private theorem sectionConormalHom_naturality
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') {U V : Cᵒᵖ} (i : U ⟶ V) :
+    (conormalPresheaf α).map i ≫
+        (ModuleCat.restrictScalars
+          (((ringSheaf J O₂).obj.map i).hom)).map
+          (sectionConormalHom φ α V) =
+      sectionConormalHom φ α U ≫
+        (conormalTensorSpacePresheaf φ α).map i := by
+  apply ModuleCat.hom_ext
+  ext z
+  -- Proof comment: the cotangent source is generated by kernel classes, so it is enough to
+  -- compare the two branches on one generator.
+  obtain ⟨x, rfl⟩ := Ideal.toCotangent_surjective (conormalIdeal α U) z
+  -- Proof comment: the left branch first restricts the kernel section and then applies the
+  -- objectwise conormal map, while the right branch restricts the resulting tensor.
+  rw [LinearMap.comp_apply]
+  rw [conormalRestriction_toCotangent]
+  rw [sectionConormalHom_on_toCotangent]
+  rw [sectionConormalHom_on_toCotangent]
+  simpa using
+    conormalTensorSpacePresheaf_map_tmul φ α i (1 : O₂'.obj.obj U) (x : O₂.obj.obj U)
+
+private def conormalPresheafHom
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') :
+    conormalPresheaf α ⟶ conormalTensorSpacePresheaf φ α where
+  app U := sectionConormalHom φ α U
+  naturality i := sectionConormalHom_naturality φ α i
+
+private noncomputable def conormalMapOverSource
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') :
+    conormalSourceOverSource α ⟶
+      conormalTensorTermOverSource φ α :=
+  ((PresheafOfModules.sheafificationAdjunction
+      (𝟙 (ringSheaf J O₂).obj)).homEquiv
+      (conormalPresheaf α)
+      (conormalTensorTermOverSource φ α)).symm
+    (conormalPresheafHom φ α ≫
+      by
+        simpa [conormalTensorTermOverSource, conormalTensorSpacePresheaf] using
+          (PresheafOfModules.sheafificationAdjunction
+            (𝟙 (ringSheaf J O₂).obj)).unit.app
+            (conormalTensorSpacePresheaf φ α))
+
+/-- The objectwise right map in the conormal sequence on sections over `U`. -/
+abbrev sectionBaseChangeMap
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') (U : Cᵒᵖ) :
+    let _ : Algebra (O₁.obj.obj U) (O₂.obj.obj U) := ((φ.hom.app U).hom).toAlgebra
+    let _ : Algebra (O₂.obj.obj U) (O₂'.obj.obj U) := ((α.hom.app U).hom).toAlgebra
+    let _ : Algebra (O₁.obj.obj U) (O₂'.obj.obj U) :=
+      (((α.hom.app U).hom).comp ((φ.hom.app U).hom)).toAlgebra
+    let _ : IsScalarTower (O₁.obj.obj U) (O₂.obj.obj U) (O₂'.obj.obj U) :=
+      IsScalarTower.of_algebraMap_eq' rfl
+    O₂'.obj.obj U ⊗[O₂.obj.obj U] Ω[O₂.obj.obj U⁄O₁.obj.obj U] →ₗ[O₂'.obj.obj U]
+      Ω[O₂'.obj.obj U⁄O₁.obj.obj U] :=
+  let _ : Algebra (O₁.obj.obj U) (O₂.obj.obj U) := ((φ.hom.app U).hom).toAlgebra
+  let _ : Algebra (O₂.obj.obj U) (O₂'.obj.obj U) := ((α.hom.app U).hom).toAlgebra
+  let _ : Algebra (O₁.obj.obj U) (O₂'.obj.obj U) :=
+    (((α.hom.app U).hom).comp ((φ.hom.app U).hom)).toAlgebra
+  let _ : IsScalarTower (O₁.obj.obj U) (O₂.obj.obj U) (O₂'.obj.obj U) :=
+    IsScalarTower.of_algebraMap_eq' rfl
+  KaehlerDifferential.mapBaseChange
+    (O₁.obj.obj U) (O₂.obj.obj U) (O₂'.obj.obj U)
+
+private theorem conormalTensorSpacePresheaf_obj_eq
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') (U : Cᵒᵖ) :
+    let _ : Algebra (O₁.obj.obj U) (O₂.obj.obj U) := ((φ.hom.app U).hom).toAlgebra
+    let _ : Algebra (O₂.obj.obj U) (O₂'.obj.obj U) := ((α.hom.app U).hom).toAlgebra
+    (conormalTensorSpacePresheaf φ α).obj U =
+      ModuleCat.of (O₂.obj.obj U)
+        (O₂'.obj.obj U ⊗[O₂.obj.obj U] Ω[O₂.obj.obj U⁄O₁.obj.obj U]) := by
+  -- Proof comment: this is the objectwise description of the tensor presheaf by definition.
+  rfl
+
+private theorem restrictedDifferentialsPresheaf_obj_eq
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') (U : Cᵒᵖ) :
+    let _ : Algebra (O₁.obj.obj U) (O₂.obj.obj U) := ((φ.hom.app U).hom).toAlgebra
+    let _ : Algebra (O₂.obj.obj U) (O₂'.obj.obj U) := ((α.hom.app U).hom).toAlgebra
+    let _ : Algebra (O₁.obj.obj U) (O₂'.obj.obj U) :=
+      (((α.hom.app U).hom).comp ((φ.hom.app U).hom)).toAlgebra
+    ((PresheafOfModules.restrictScalars (ringSheafMap α).hom).obj
+      (relativeDifferentials' (φ ≫ α).hom)).obj U =
+      ModuleCat.of (O₂.obj.obj U) Ω[O₂'.obj.obj U⁄O₁.obj.obj U] := by
+  -- Proof comment: restricting scalars does not change the underlying objectwise differential
+  -- module; only the base ring action is viewed through `α`.
+  rfl
+
+-- TODO: construct the wrapped base-change morphism from the objectwise Kähler map once the
+-- restriction-of-scalars instance bookkeeping is stabilized.
+private abbrev sectionBaseChangeHom
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') (U : Cᵒᵖ) :
+    (conormalTensorSpacePresheaf φ α).obj U ⟶
+      ((PresheafOfModules.restrictScalars (ringSheafMap α).hom).obj
+        (relativeDifferentials' (φ ≫ α).hom)).obj U := by
+  let _ : Algebra (O₁.obj.obj U) (O₂.obj.obj U) := ((φ.hom.app U).hom).toAlgebra
+  let _ : Algebra (O₂.obj.obj U) (O₂'.obj.obj U) := ((α.hom.app U).hom).toAlgebra
+  let _ : Algebra (O₁.obj.obj U) (O₂'.obj.obj U) :=
+    (((α.hom.app U).hom).comp ((φ.hom.app U).hom)).toAlgebra
+  let _ : IsScalarTower (O₁.obj.obj U) (O₂.obj.obj U) (O₂'.obj.obj U) :=
+    IsScalarTower.of_algebraMap_eq' rfl
+  change ModuleCat.of (O₂.obj.obj U)
+      (O₂'.obj.obj U ⊗[O₂.obj.obj U] Ω[O₂.obj.obj U⁄O₁.obj.obj U]) ⟶
+    ModuleCat.of (O₂.obj.obj U) Ω[O₂'.obj.obj U⁄O₁.obj.obj U]
+  exact ModuleCat.ofHom
+    ((sectionBaseChangeMap φ α U).restrictScalars (O₂.obj.obj U))
+
+/-- Helper for Lemma 18.33.8: objectwise, the wrapped right map is exactly the sectionwise Kähler
+base-change map. -/
+private theorem sectionBaseChangeHom_typed
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') (U : Cᵒᵖ) :
+    sectionBaseChangeHom φ α U =
+      let _ : Algebra (O₁.obj.obj U) (O₂.obj.obj U) := ((φ.hom.app U).hom).toAlgebra
+      let _ : Algebra (O₂.obj.obj U) (O₂'.obj.obj U) := ((α.hom.app U).hom).toAlgebra
+      let _ : Algebra (O₁.obj.obj U) (O₂'.obj.obj U) :=
+        (((α.hom.app U).hom).comp ((φ.hom.app U).hom)).toAlgebra
+      let _ : IsScalarTower (O₁.obj.obj U) (O₂.obj.obj U) (O₂'.obj.obj U) :=
+        IsScalarTower.of_algebraMap_eq' rfl
+      ModuleCat.ofHom
+        ((sectionBaseChangeMap φ α U).restrictScalars (O₂.obj.obj U)) := by
+  -- Proof comment: `sectionBaseChangeHom` is defined by this wrapped base-change map.
+  rfl
+
+/-- Helper for Lemma 18.33.8: on a pure tensor `b ⊗ d x`, the sectionwise right map is the
+expected Kähler base-change formula `b • d(α(x))`. -/
+private theorem sectionBaseChangeHom_on_tmul_d
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') (U : Cᵒᵖ) :
+    let _ : Algebra (O₁.obj.obj U) (O₂.obj.obj U) := ((φ.hom.app U).hom).toAlgebra
+    let _ : Algebra (O₂.obj.obj U) (O₂'.obj.obj U) := ((α.hom.app U).hom).toAlgebra
+    let _ : Algebra (O₁.obj.obj U) (O₂'.obj.obj U) :=
+      (((α.hom.app U).hom).comp ((φ.hom.app U).hom)).toAlgebra
+    let _ : IsScalarTower (O₁.obj.obj U) (O₂.obj.obj U) (O₂'.obj.obj U) :=
+      IsScalarTower.of_algebraMap_eq' rfl
+    ∀ (b : O₂'.obj.obj U) (x : O₂.obj.obj U),
+      sectionBaseChangeHom φ α U
+          (b ⊗ₜ[O₂.obj.obj U]
+            KaehlerDifferential.D (O₁.obj.obj U) (O₂.obj.obj U) x) =
+        b • KaehlerDifferential.D (O₁.obj.obj U) (O₂'.obj.obj U)
+          ((α.hom.app U).hom x) := by
+  let _ : Algebra (O₁.obj.obj U) (O₂.obj.obj U) := ((φ.hom.app U).hom).toAlgebra
+  let _ : Algebra (O₂.obj.obj U) (O₂'.obj.obj U) := ((α.hom.app U).hom).toAlgebra
+  let _ : Algebra (O₁.obj.obj U) (O₂'.obj.obj U) :=
+    (((α.hom.app U).hom).comp ((φ.hom.app U).hom)).toAlgebra
+  let _ : IsScalarTower (O₁.obj.obj U) (O₂.obj.obj U) (O₂'.obj.obj U) :=
+    IsScalarTower.of_algebraMap_eq' rfl
+  simpa using
+    (fun b x ↦ by
+      -- Proof comment: unfold the wrapped morphism and apply the ring-level base-change formulas.
+      rw [sectionBaseChangeHom_typed]
+      change
+        KaehlerDifferential.mapBaseChange
+            (O₁.obj.obj U) (O₂.obj.obj U) (O₂'.obj.obj U)
+            (b ⊗ₜ[O₂.obj.obj U]
+              KaehlerDifferential.D (O₁.obj.obj U) (O₂.obj.obj U) x) =
+          b • KaehlerDifferential.D (O₁.obj.obj U) (O₂'.obj.obj U) ((α.hom.app U).hom x)
+      rw [KaehlerDifferential.mapBaseChange_tmul, KaehlerDifferential.map_D]
+      rfl)
+
+/-- Helper for Lemma 18.33.8: the presheaf-level right map naturality square agrees on the pure
+tensors `b ⊗ d x`. -/
+private theorem sectionBaseChangeHom_naturality_on_tmul_d
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') {U V : Cᵒᵖ} (i : U ⟶ V) :
+    let _ : Algebra (O₁.obj.obj U) (O₂.obj.obj U) := ((φ.hom.app U).hom).toAlgebra
+    let _ : Algebra (O₂.obj.obj U) (O₂'.obj.obj U) := ((α.hom.app U).hom).toAlgebra
+    let _ : Algebra (O₁.obj.obj U) (O₂'.obj.obj U) :=
+      (((α.hom.app U).hom).comp ((φ.hom.app U).hom)).toAlgebra
+    let _ : IsScalarTower (O₁.obj.obj U) (O₂.obj.obj U) (O₂'.obj.obj U) :=
+      IsScalarTower.of_algebraMap_eq' rfl
+    let _ : Algebra (O₁.obj.obj V) (O₂.obj.obj V) := ((φ.hom.app V).hom).toAlgebra
+    let _ : Algebra (O₂.obj.obj V) (O₂'.obj.obj V) := ((α.hom.app V).hom).toAlgebra
+    let _ : Algebra (O₁.obj.obj V) (O₂'.obj.obj V) :=
+      (((α.hom.app V).hom).comp ((φ.hom.app V).hom)).toAlgebra
+    let _ : IsScalarTower (O₁.obj.obj V) (O₂.obj.obj V) (O₂'.obj.obj V) :=
+      IsScalarTower.of_algebraMap_eq' rfl
+    ∀ (b : O₂'.obj.obj U) (x : O₂.obj.obj U),
+      ((conormalTensorSpacePresheaf φ α).map i ≫
+          (ModuleCat.restrictScalars
+            (((ringSheaf J O₂).obj.map i).hom)).map
+            (sectionBaseChangeHom φ α V))
+          (b ⊗ₜ[O₂.obj.obj U]
+            KaehlerDifferential.D (O₁.obj.obj U) (O₂.obj.obj U) x) =
+        (sectionBaseChangeHom φ α U ≫
+          ((PresheafOfModules.restrictScalars (ringSheafMap α).hom).obj
+            (relativeDifferentials' (φ ≫ α).hom)).map i)
+          (b ⊗ₜ[O₂.obj.obj U]
+            KaehlerDifferential.D (O₁.obj.obj U) (O₂.obj.obj U) x) := by
+  intro b x
+  have hα :
+      ((α.hom.app V).hom) (((O₂.obj.map i).hom) x) =
+        ((O₂'.obj.map i).hom) (((α.hom.app U).hom) x) := by
+    exact DFunLike.congr_fun
+      (congrArg CommRingCat.Hom.hom (α.hom.naturality i)) x
+  -- Proof comment: the left branch first restricts the tensor and then applies the objectwise
+  -- base-change map, so it simplifies using the two generator formulas already proved.
+  calc
+    ((conormalTensorSpacePresheaf φ α).map i ≫
+        (ModuleCat.restrictScalars
+          (((ringSheaf J O₂).obj.map i).hom)).map
+          (sectionBaseChangeHom φ α V))
+        (b ⊗ₜ[O₂.obj.obj U]
+          KaehlerDifferential.D (O₁.obj.obj U) (O₂.obj.obj U) x)
+      = (sectionBaseChangeHom φ α V)
+          ((((conormalTensorSpacePresheaf φ α).map i).hom)
+            (b ⊗ₜ[O₂.obj.obj U]
+              KaehlerDifferential.D (O₁.obj.obj U) (O₂.obj.obj U) x)) := by
+          rfl
+    _ = (sectionBaseChangeHom φ α V)
+          (((O₂'.obj.map i).hom b) ⊗ₜ[O₂.obj.obj V]
+            KaehlerDifferential.D (O₁.obj.obj V) (O₂.obj.obj V) ((O₂.obj.map i).hom x)) := by
+          rw [conormalTensorSpacePresheaf_map_tmul]
+    _ = ((O₂'.obj.map i).hom b) •
+          KaehlerDifferential.D (O₁.obj.obj V) (O₂'.obj.obj V)
+            (((α.hom.app V).hom) (((O₂.obj.map i).hom) x)) := by
+          rw [sectionBaseChangeHom_on_tmul_d]
+    _ = ((O₂'.obj.map i).hom b) •
+          KaehlerDifferential.D (O₁.obj.obj V) (O₂'.obj.obj V)
+            (((O₂'.obj.map i).hom) (((α.hom.app U).hom) x)) := by
+          rw [hα]
+    _ = (((PresheafOfModules.restrictScalars (ringSheafMap α).hom).obj
+            (relativeDifferentials' (φ ≫ α).hom)).map i)
+          (((α.hom.app U).hom b) •
+            KaehlerDifferential.D (O₁.obj.obj U) (O₂'.obj.obj U)
+              (((α.hom.app U).hom) x)) := by
+          simp only [relativeDifferentials'_map_d, LinearMap.map_smul]
+    _ = (sectionBaseChangeHom φ α U ≫
+          ((PresheafOfModules.restrictScalars (ringSheafMap α).hom).obj
+            (relativeDifferentials' (φ ≫ α).hom)).map i)
+          (b ⊗ₜ[O₂.obj.obj U]
+            KaehlerDifferential.D (O₁.obj.obj U) (O₂.obj.obj U) x) := by
+          rw [LinearMap.comp_apply, sectionBaseChangeHom_on_tmul_d]
+
+-- TODO: assemble the presheaf-level right map once the objectwise wrapped base-change map and its
+-- naturality are proved.
+private def tensorToDifferentialsPresheafHom
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') :
+    conormalTensorSpacePresheaf φ α ⟶
+      (PresheafOfModules.restrictScalars (ringSheafMap α).hom).obj
+        (relativeDifferentials' (φ ≫ α).hom) where
+  app U := sectionBaseChangeHom φ α U
+  naturality {U V} i := by
+    -- Proof comment: both sides are `O₂(U)`-linear maps out of a tensor product, so equality is
+    -- reduced first to pure tensors and then to generators `d x` of the Kähler differentials.
+    apply ModuleCat.hom_ext
+    refine TensorProduct.ext ?_
+    intro b
+    apply CommRingCat.KaehlerDifferential.ext
+    intro x
+    simpa using sectionBaseChangeHom_naturality_on_tmul_d φ α i b x
+
+private abbrev restrictedDifferentialsUnit
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') :
+    (PresheafOfModules.restrictScalars (ringSheafMap α).hom).obj
+        (relativeDifferentials' (φ ≫ α).hom) ⟶
+      ((restrictionAlong α).obj Ω(φ ≫ α)).val :=
+  (PresheafOfModules.restrictScalars (ringSheafMap α).hom).map
+    ((PresheafOfModules.sheafificationAdjunction (𝟙 (ringSheaf J O₂').obj)).unit.app
+      (relativeDifferentials' (φ ≫ α).hom))
+
+private noncomputable def tensorToDifferentialsOverSource
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') :
+    conormalTensorTermOverSource φ α ⟶
+      (restrictionAlong α).obj Ω(φ ≫ α) :=
+  ((PresheafOfModules.sheafificationAdjunction (𝟙 (ringSheaf J O₂).obj)).homEquiv
+      (conormalTensorSpacePresheaf φ α)
+      ((restrictionAlong α).obj Ω(φ ≫ α))).symm
+    (tensorToDifferentialsPresheafHom φ α ≫
+      restrictedDifferentialsUnit φ α)
+
+/-- Helper for Lemma 18.33.8: the source-side conormal map is defined by transposing the
+presheaf-level conormal morphism across sheafification. -/
+private theorem conormalMapOverSource_def
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') :
+    conormalMapOverSource φ α =
+      ((PresheafOfModules.sheafificationAdjunction (𝟙 (ringSheaf J O₂).obj)).homEquiv
+          (conormalPresheaf α)
+          (conormalTensorTermOverSource φ α)).symm
+        (conormalPresheafHom φ α ≫
+          ((PresheafOfModules.sheafificationAdjunction
+              (𝟙 (ringSheaf J O₂).obj)).unit.app
+            (conormalTensorSpacePresheaf φ α))) := by
+  -- Proof comment: this is exactly the defining adjoint transpose.
+  rfl
+
+/-- Helper for Lemma 18.33.8: under the sheafification adjunction, the source-side tensor-to-
+differentials map recovers the presheaf morphism used in its definition. -/
+private theorem tensorToDifferentialsOverSource_def
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') :
+    tensorToDifferentialsOverSource φ α =
+      ((PresheafOfModules.sheafificationAdjunction (𝟙 (ringSheaf J O₂).obj)).homEquiv
+          (conormalTensorSpacePresheaf φ α)
+          ((restrictionAlong α).obj Ω(φ ≫ α))).symm
+        (tensorToDifferentialsPresheafHom φ α ≫
+          restrictedDifferentialsUnit φ α) := by
+  -- Proof comment: this is exactly the defining adjoint transpose.
+  rfl
+
+/-- Helper for Lemma 18.33.8: sectionwise, the composite of the left conormal map with the right
+base-change map kills every cotangent generator coming from the kernel ideal. -/
+private theorem sectionComposite_zero_on_generator
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') (U : Cᵒᵖ) (x : conormalIdeal α U) :
+    sectionBaseChangeHom φ α U
+        ((sectionConormalHom φ α U).hom ((conormalIdeal α U).toCotangent x)) = 0 := by
+  -- Proof comment: the left map sends the cotangent generator to `1 ⊗ d x`.
+  rw [sectionConormalHom_on_toCotangent]
+  -- Proof comment: the right map then computes to the differential of `α(x)`, which vanishes
+  -- because `x` lies in the kernel ideal.
+  have h :=
+    sectionBaseChangeHom_on_tmul_d φ α U (1 : O₂'.obj.obj U) (x : O₂.obj.obj U)
+  simpa [RingHom.mem_ker.mp x.2, map_zero] using h
+
+/-- Helper for Lemma 18.33.8: the presheaf-level conormal composite is zero. -/
+private theorem conormalPresheafComposite_zero
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') :
+    conormalPresheafHom φ α ≫ tensorToDifferentialsPresheafHom φ α = 0 := by
+  ext U z
+  -- Proof comment: the cotangent source is generated by kernel classes, so the composite is
+  -- determined by its value on one generator.
+  obtain ⟨x, rfl⟩ := Ideal.toCotangent_surjective (conormalIdeal α U) z
+  exact sectionComposite_zero_on_generator φ α U x
+
+/-- Helper for Lemma 18.33.8: after sheafifying the source-side presheaf row, the composite is
+still zero. -/
+private theorem conormalOverSourceCompZero
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') :
+    conormalMapOverSource φ α ≫ tensorToDifferentialsOverSource φ α = 0 := by
+  apply (PresheafOfModules.sheafificationHomEquiv (𝟙 (ringSheaf J O₂).obj)).injective
+  -- Proof comment: after transporting through the sheafification adjunction, the source-side
+  -- sheaf composite is exactly the already vanishing presheaf composite.
+  rw [conormalMapOverSource_def, tensorToDifferentialsOverSource]
+  simp [PresheafOfModules.sheafificationAdjunction_homEquiv_apply,
+    restrictedDifferentialsUnit, conormalPresheafComposite_zero]
+
+private abbrev conormalPullback (α : O₂ ⟶ O₂') :
+    SheafOfModules (ringSheaf J O₂) ⥤
+      SheafOfModules (ringSheaf J O₂') :=
+  SheafOfModules.pullback (SheafOfModules.RingedSite.ringedSiteStructureMap α)
+
+/-- The pullback of the source-side conormal module `Ker(α) / Ker(α)^2` along `α`, viewed as a
+sheaf of `O₂'`-modules.
+
+This is the scalar-extended left term used in the site-level conormal sequence below. When `α` is
+locally surjective, it models the textbook `O₂'`-module conormal sheaf. -/
+abbrev conormalSource
+    (α : O₂ ⟶ O₂') :
+    SheafOfModules (ringSheaf J O₂') :=
+  (conormalPullback α).obj (conormalSourceOverSource α)
+
+/-- The tensor middle term `O₂' \otimes_{O₂} \Omega_{O₂/O₁}`, viewed as a sheaf of
+`O₂'`-modules. -/
+abbrev conormalTensorTerm
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') :
+    SheafOfModules (ringSheaf J O₂') :=
+  (conormalPullback α).obj (conormalTensorTermOverSource φ α)
+
+/-- The left map in the scalar-extended site-level conormal sequence attached to
+`O₁ ⟶ O₂ ⟶ O₂'`. -/
+noncomputable def conormalMap
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') :
+    conormalSource α ⟶ conormalTensorTerm φ α :=
+  (conormalPullback α).map (conormalMapOverSource φ α)
+
+/-- The canonical map `O₂' \otimes_{O₂} \Omega_{O₂/O₁} \to \Omega_{O₂'/O₁}`. -/
+noncomputable def conormalToDifferentials
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') :
+    conormalTensorTerm φ α ⟶ Ω(φ ≫ α) :=
+  ((SheafOfModules.pullbackPushforwardAdjunction
+      (SheafOfModules.RingedSite.ringedSiteStructureMap α)).homEquiv
+      (conormalTensorTermOverSource φ α)
+      Ω(φ ≫ α)).symm
+    (tensorToDifferentialsOverSource φ α)
+
+-- Proof sketch: the composite is obtained by sheafifying the objectwise identity
+-- `mapBaseChange ∘ kerCotangentToTensor = 0`.
+/-- The scalar-extended canonical conormal sequence of sheaves has zero composite. -/
+theorem conormal_comp_zero
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') :
+    conormalMap φ α ≫ conormalToDifferentials φ α = 0 := by
+  apply ((SheafOfModules.pullbackPushforwardAdjunction
+    (SheafOfModules.RingedSite.ringedSiteStructureMap α)).homEquiv _ _).injective
+  -- Proof comment: under the pullback-pushforward adjunction, the public composite is exactly
+  -- the source-side composite already shown to vanish after sheafification.
+  rw [conormalMap]
+  rw [CategoryTheory.Adjunction.homEquiv_naturality_left
+    (SheafOfModules.pullbackPushforwardAdjunction
+      (SheafOfModules.RingedSite.ringedSiteStructureMap α))
+    (conormalMapOverSource φ α) (conormalToDifferentials φ α)]
+  rw [conormalToDifferentials, Equiv.apply_symm_apply]
+  exact conormalOverSourceCompZero φ α
+
+/-- Helper for Chap18 Lemma 18 33 8: evaluation functors jointly reflect isomorphisms in a
+functor category. -/
+private theorem evaluationJointlyReflectsIsomorphisms
+    (A : Type*) [Category A] (B : Type*) [Category B] :
+    JointlyReflectIsomorphisms ((evaluation A B).obj : A → (A ⥤ B) ⥤ B) := by
+  -- Proof comment: a natural transformation is an isomorphism exactly when all of its components
+  -- are isomorphisms, so the evaluation family jointly detects isomorphisms.
+  refine ⟨fun {F G} τ hτ ↦ ?_⟩
+  rw [NatTrans.isIso_iff_isIso_app]
+  intro a
+  simpa using (inferInstance : IsIso (((evaluation A B).obj a).map τ))
+
+/-- Helper for Chap18 Lemma 18 33 8: exactness in a functor category is detected by all
+evaluations. -/
+private theorem functorCategory_exact_iff_evaluationExact
+    {A : Type*} [Category A] {B : Type*} [Category B] [Abelian B]
+    (S : ShortComplex (A ⥤ B)) :
+    S.Exact ↔ ∀ a : A, (S.map ((evaluation A B).obj a)).Exact := by
+  constructor
+  · intro hS a
+    -- Proof comment: exactness is preserved by each exact evaluation functor.
+    exact hS.map ((evaluation A B).obj a)
+  · intro hS
+    -- Proof comment: once the mapped rows are exact at every evaluation, the family of
+    -- evaluations jointly reflects exactness back to the functor category.
+    exact ((evaluationJointlyReflectsIsomorphisms A B).exact_iff S).2 hS
+
+local notation "toAddPresheaf" 𝒪 =>
+  PresheafOfModules.toPresheaf (R := (ringSheaf J 𝒪).obj)
+
+/-- Helper for Chap18 Lemma 18 33 8: a short complex of `\mathcal O₂`-module presheaves is exact
+once its underlying additive presheaf row is exact on every section object. -/
+private theorem presheafModule_exact_of_objectwiseExact
+    (S : ShortComplex (PresheafOfModules (ringSheaf J O₂).obj))
+    (hS :
+      ∀ U : Cᵒᵖ,
+        ((S.map (toAddPresheaf O₂)).map
+          ((evaluation Cᵒᵖ AddCommGrpCat.{u}).obj U)).Exact) :
+    S.Exact := by
+  apply (toAddPresheaf O₂).reflects_exact_of_faithful
+  -- Proof comment: after forgetting module structure, exactness in the additive presheaf
+  -- category can be checked objectwise by the evaluation family.
+  exact (functorCategory_exact_iff_evaluationExact
+    (S.map (toAddPresheaf O₂))).2 hS
+
+/-- Helper for Chap18 Lemma 18 33 8: the objectwise image ring of the section map
+`α(U) : O₂(U) → O₂'(U)`. -/
+private abbrev sectionImageRing
+    (α : O₂ ⟶ O₂') (U : Cᵒᵖ) :
+    CommRingCat :=
+  CommRingCat.of (RingHom.range ((α.hom.app U).hom))
+
+/-- Helper for Chap18 Lemma 18 33 8: the section map `α(U)` factored through its image ring. -/
+private abbrev sectionImageFactor
+    (α : O₂ ⟶ O₂') (U : Cᵒᵖ) :
+    O₂.obj.obj U →+* sectionImageRing α U :=
+  ((α.hom.app U).hom).rangeRestrict
+
+/-- Helper for Chap18 Lemma 18 33 8: the canonical inclusion of the image ring of `α(U)` into the
+target section ring `O₂'(U)`. -/
+private abbrev sectionImageInclusion
+    (α : O₂ ⟶ O₂') (U : Cᵒᵖ) :
+    sectionImageRing α U →+* O₂'.obj.obj U :=
+  (RingHom.range ((α.hom.app U).hom)).subtype
+
+/-- Helper for Chap18 Lemma 18 33 8: restricting a target section carries the image of `α(U)`
+into the image of `α(V)`. -/
+private theorem sectionImageRestriction_mem
+    (α : O₂ ⟶ O₂') {U V : Cᵒᵖ} (i : U ⟶ V) :
+    ∀ x : sectionImageRing α U,
+      ((O₂'.obj.map i).hom) x.1 ∈ RingHom.range ((α.hom.app V).hom) := by
+  intro x
+  rcases x.2 with ⟨y, rfl⟩
+  -- Proof comment: naturality of `α.hom` rewrites the restricted target section as the image of
+  -- the restricted source section.
+  refine ⟨((O₂.obj.map i).hom y), ?_⟩
+  exact DFunLike.congr_fun
+    (congrArg CommRingCat.Hom.hom (α.hom.naturality i)) y
+
+/-- Helper for Chap18 Lemma 18 33 8: the restriction map on the objectwise image rings induced by
+the sheaf restriction on `O₂'`. -/
+private noncomputable abbrev sectionImageRestriction
+    (α : O₂ ⟶ O₂') {U V : Cᵒᵖ} (i : U ⟶ V) :
+    sectionImageRing α U →+* sectionImageRing α V :=
+  RingHom.codRestrict
+    (((O₂'.obj.map i).hom).comp (sectionImageInclusion α U))
+    (RingHom.range ((α.hom.app V).hom))
+    (sectionImageRestriction_mem α i)
+
+/-- Helper for Chap18 Lemma 18 33 8: the sectionwise image factor commutes with restriction. -/
+private theorem sectionImageFactor_naturality
+    (α : O₂ ⟶ O₂') {U V : Cᵒᵖ} (i : U ⟶ V) :
+    (sectionImageRestriction α i).comp (sectionImageFactor α U) =
+      (sectionImageFactor α V).comp ((O₂.obj.map i).hom) := by
+  ext x
+  apply Subtype.ext
+  -- Proof comment: after forgetting the image proofs, this is exactly the naturality square for
+  -- `α.hom` on the section `x`.
+  exact DFunLike.congr_fun
+    (congrArg CommRingCat.Hom.hom (α.hom.naturality i)) x
+
+/-- Helper for Chap18 Lemma 18 33 8: the canonical image inclusion commutes with restriction. -/
+private theorem sectionImageInclusion_naturality
+    (α : O₂ ⟶ O₂') {U V : Cᵒᵖ} (i : U ⟶ V) :
+    (sectionImageInclusion α V).comp (sectionImageRestriction α i) =
+      ((O₂'.obj.map i).hom).comp (sectionImageInclusion α U) := by
+  ext x
+  -- Proof comment: both composites forget the same image proof and then apply the restriction
+  -- map on `O₂'`.
+  rfl
+
+/-- Helper for Chap18 Lemma 18 33 8: the image-ring restriction map is the identity on each
+object for the identity arrow. -/
+private theorem sectionImageRestriction_id
+    (α : O₂ ⟶ O₂') (U : Cᵒᵖ) :
+    sectionImageRestriction α (𝟙 U) = 𝟙 (sectionImageRing α U) := by
+  ext x
+  apply Subtype.ext
+  -- Proof comment: after forgetting the range proof, this is the identity restriction map on the
+  -- target sheaf.
+  change ((O₂'.obj.map (𝟙 U)).hom) x.1 = x.1
+  simpa using
+    congrArg (fun h ↦ h x.1) (congrArg RingCat.Hom.hom (O₂'.obj.map_id U))
+
+/-- Helper for Chap18 Lemma 18 33 8: the image-ring restriction maps compose in the expected
+functorial order. -/
+private theorem sectionImageRestriction_comp
+    (α : O₂ ⟶ O₂') {U V W : Cᵒᵖ} (i : U ⟶ V) (j : V ⟶ W) :
+    sectionImageRestriction α (i ≫ j) =
+      (sectionImageRestriction α j).comp (sectionImageRestriction α i) := by
+  ext x
+  apply Subtype.ext
+  -- Proof comment: after forgetting the range proof, this is the composition law for the target
+  -- sheaf restriction maps.
+  change ((O₂'.obj.map (i ≫ j)).hom) x.1 =
+      ((O₂'.obj.map j).hom) (((O₂'.obj.map i).hom) x.1)
+  simpa using
+    congrArg (fun h ↦ h x.1) (congrArg RingCat.Hom.hom (O₂'.obj.map_comp i j))
+
+/-- Helper for Chap18 Lemma 18 33 8: the objectwise image rings of `α` assemble into a presheaf
+of commutative rings. -/
+private noncomputable def sectionImagePresheaf
+    (α : O₂ ⟶ O₂') :
+    Cᵒᵖ ⥤ CommRingCat.{u} where
+  obj := sectionImageRing α
+  map {U V} i := sectionImageRestriction α i
+  map_id := sectionImageRestriction_id α
+  map_comp := sectionImageRestriction_comp α
+
+/-- Helper for Chap18 Lemma 18 33 8: the sectionwise factorization `O₂(U) → im(α(U))` is natural
+in `U`. -/
+private theorem sectionImageFactorNatTrans_naturality
+    (α : O₂ ⟶ O₂') {U V : Cᵒᵖ} (i : U ⟶ V) :
+    sectionImageFactor α U ≫ sectionImageRestriction α i =
+      (O₂.obj.map i).hom ≫ sectionImageFactor α V := by
+  -- Proof comment: this is the category-theoretic restatement of the ring-hom equality already
+  -- proved for the sectionwise factor maps.
+  simpa using sectionImageFactor_naturality α i
+
+/-- Helper for Chap18 Lemma 18 33 8: the sectionwise image-factor maps assemble into a presheaf
+morphism from `O₂` to the image presheaf. -/
+private def sectionImageFactorNatTrans
+    (α : O₂ ⟶ O₂') :
+    O₂.obj ⟶ sectionImagePresheaf α where
+  app U := sectionImageFactor α U
+  naturality {U V} i := sectionImageFactorNatTrans_naturality α i
+
+/-- Helper for Chap18 Lemma 18 33 8: the sectionwise image inclusions are natural in `U`. -/
+private theorem sectionImageInclusionNatTrans_naturality
+    (α : O₂ ⟶ O₂') {U V : Cᵒᵖ} (i : U ⟶ V) :
+    sectionImageRestriction α i ≫ sectionImageInclusion α V =
+      sectionImageInclusion α U ≫ (O₂'.obj.map i).hom := by
+  -- Proof comment: this is the category-theoretic restatement of the ring-hom compatibility for
+  -- the sectionwise image inclusions.
+  simpa using sectionImageInclusion_naturality α i
+
+/-- Helper for Chap18 Lemma 18 33 8: the sectionwise image inclusions assemble into a presheaf
+morphism from the image presheaf to `O₂'`. -/
+private def sectionImageInclusionNatTrans
+    (α : O₂ ⟶ O₂') :
+    sectionImagePresheaf α ⟶ O₂'.obj where
+  app U := sectionImageInclusion α U
+  naturality {U V} i := sectionImageInclusionNatTrans_naturality α i
+
+/-- Helper for Chap18 Lemma 18 33 8: the objectwise image factorization of `α` is recovered by
+composing the factor and inclusion natural transformations. -/
+private theorem sectionImageFactorNatTrans_comp_inclusion
+    (α : O₂ ⟶ O₂') :
+    sectionImageFactorNatTrans α ≫ sectionImageInclusionNatTrans α = α.hom := by
+  ext U x
+  -- Proof comment: on each object this is the defining factorization through the image ring.
+  rfl
+
+/-- Helper for Chap18 Lemma 18 33 8: each sectionwise image inclusion is injective. -/
+private theorem sectionImageInclusion_injective
+    (α : O₂ ⟶ O₂') (U : Cᵒᵖ) :
+    Function.Injective (sectionImageInclusion α U) := by
+  intro x y hxy
+  -- Proof comment: the inclusion forgets only the range proof, so equality in the ambient ring
+  -- already forces equality in the image subring.
+  exact Subtype.ext hxy
+
+/-- Helper for Chap18 Lemma 18 33 8: the presheaf image inclusion is locally injective because it
+is objectwise injective. -/
+private theorem sectionImageInclusionNatTrans_isLocallyInjective
+    (α : O₂ ⟶ O₂') :
+    Presheaf.IsLocallyInjective J (sectionImageInclusionNatTrans α) := by
+  apply Presheaf.isLocallyInjective_of_injective
+  -- Proof comment: mathlib promotes objectwise injectivity of a presheaf morphism to local
+  -- injectivity on the site.
+  intro U
+  exact sectionImageInclusion_injective α U
+
+/-- Helper for Chap18 Lemma 18 33 8: composing the sectionwise image factor with the inclusion
+recovers the original section map `α(U)`. -/
+private theorem sectionImageFactor_comp_inclusion
+    (α : O₂ ⟶ O₂') (U : Cᵒᵖ) :
+    (sectionImageInclusion α U).comp (sectionImageFactor α U) =
+      (α.hom.app U).hom := by
+  -- Proof comment: `rangeRestrict` is the canonical factorization of a ring hom through its
+  -- image subring, so the composite with the subtype inclusion is definitionally the original map.
+  ext x
+  rfl
+
+/-- Helper for Chap18 Lemma 18 33 8: the sectionwise image factor is surjective by construction. -/
+private theorem sectionImageFactor_surjective
+    (α : O₂ ⟶ O₂') (U : Cᵒᵖ) :
+    Function.Surjective (sectionImageFactor α U) := by
+  -- Proof comment: every element of the range subring is represented by a preimage in the source.
+  simpa [sectionImageFactor] using
+    (RingHom.rangeRestrict_surjective ((α.hom.app U).hom))
+
+/-- Helper for Chap18 Lemma 18 33 8: factoring `α(U)` through its image does not change the
+kernel ideal. -/
+private theorem sectionImageFactor_ker_eq_conormalIdeal
+    (α : O₂ ⟶ O₂') (U : Cᵒᵖ) :
+    RingHom.ker (sectionImageFactor α U) = conormalIdeal α U := by
+  -- Proof comment: `rangeRestrict` only changes the codomain from `O₂'(U)` to the image subring,
+  -- so the vanishing locus is the same kernel ideal.
+  simpa [sectionImageFactor, conormalIdeal] using
+    (RingHom.ker_rangeRestrict ((α.hom.app U).hom))
+
+/-- Helper for Chap18 Lemma 18 33 8: after factoring `α(U)` through its image, the ring-level
+conormal sequence is exact and the base-change map is surjective. -/
+private theorem sectionImageFactor_exact
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') (U : Cᵒᵖ) :
+    let _ : Algebra (O₁.obj.obj U) (O₂.obj.obj U) := ((φ.hom.app U).hom).toAlgebra
+    let _ : Algebra (O₂.obj.obj U) (sectionImageRing α U) := (sectionImageFactor α U).toAlgebra
+    let _ : Algebra (O₁.obj.obj U) (sectionImageRing α U) :=
+      ((sectionImageFactor α U).comp ((φ.hom.app U).hom)).toAlgebra
+    let _ : IsScalarTower (O₁.obj.obj U) (O₂.obj.obj U) (sectionImageRing α U) :=
+      IsScalarTower.of_algebraMap_eq' rfl
+    Function.Exact
+        ((KaehlerDifferential.kerCotangentToTensor
+            (O₁.obj.obj U) (O₂.obj.obj U) (sectionImageRing α U)).comp
+          (Ideal.Cotangent.equivOfEq
+            (conormalIdeal α U)
+            (RingHom.ker (algebraMap (O₂.obj.obj U) (sectionImageRing α U)))
+            (sectionImageFactor_ker_eq_conormalIdeal α U).symm).toLinearMap)
+        (KaehlerDifferential.mapBaseChange
+          (O₁.obj.obj U) (O₂.obj.obj U) (sectionImageRing α U)) ∧
+      Function.Surjective
+        (KaehlerDifferential.mapBaseChange
+          (O₁.obj.obj U) (O₂.obj.obj U) (sectionImageRing α U)) := by
+  let _ : Algebra (O₁.obj.obj U) (O₂.obj.obj U) := ((φ.hom.app U).hom).toAlgebra
+  let _ : Algebra (O₂.obj.obj U) (sectionImageRing α U) := (sectionImageFactor α U).toAlgebra
+  let _ : Algebra (O₁.obj.obj U) (sectionImageRing α U) :=
+    ((sectionImageFactor α U).comp ((φ.hom.app U).hom)).toAlgebra
+  let _ : IsScalarTower (O₁.obj.obj U) (O₂.obj.obj U) (sectionImageRing α U) :=
+    IsScalarTower.of_algebraMap_eq' rfl
+  -- Proof comment: the image factor makes the section map surjective, so Lemma `10.131.9`
+  -- applies directly to the kernel-identified conormal sequence over the image ring.
+  simpa [sectionImageRing, sectionImageFactor] using
+    (kaehlerDifferential_exact_cotangent_tensor_of_surjective
+      (R := O₁.obj.obj U) (S := O₂.obj.obj U) (S' := sectionImageRing α U)
+      (I := conormalIdeal α U)
+      (sectionImageFactor_ker_eq_conormalIdeal α U)
+      (sectionImageFactor_surjective α U))
+
+-- Proof sketch: let `O₂''` be the image presheaf of `α.hom`. Algebra, Lemma `10.131.9` gives the
+-- exact objectwise sequences for `O₂(U) → O₂''(U)`. Sheafifying those sequences and using local
+-- surjectivity of `α` identifies `(O₂'')^#` with `O₂'`; Lemma `18.33.4` identifies the
+-- sheafification of the right term with `Ω(φ ≫ α)`.
+/-- Helper for Lemma 18.33.8: isolate the remaining source-side exactness package before the final
+scalar-extension transport. -/
+private theorem conormalOverSource_exact
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂')
+    (hα : Sheaf.IsLocallySurjective α) :
+    (ShortComplex.mk
+      (conormalMapOverSource φ α)
+      (tensorToDifferentialsOverSource φ α)
+      (conormalOverSourceCompZero φ α)).Exact ∧
+      Epi (tensorToDifferentialsOverSource φ α) := by
+  letI : Sheaf.IsLocallySurjective α := hα
+  letI :
+      (SheafOfModules.restrictScalars α).FullyFaithful :=
+    SheafOfModules.restrictScalars_fullyFaithful_ofIsLocallySurjective α
+  -- Route correction: the unresolved work is entirely on the source side.
+  -- TODO: package the objectwise image-factor data from `sectionImageFactor_exact`,
+  -- `sectionImageFactorNatTrans`, `sectionImageInclusionNatTrans`,
+  -- `sectionImageFactorNatTrans_comp_inclusion`, and
+  -- `sectionImageInclusionNatTrans_isLocallyInjective` into an image-presheaf short complex; use
+  -- `presheafModule_exact_of_objectwiseExact` to sheafify that exact row; and only then compare
+  -- the sheafified image row back to `conormalMapOverSource φ α` /
+  -- `tensorToDifferentialsOverSource φ α` using local surjectivity and
+  -- `moduleSheafification_relativeDifferentials_iso`.
+  sorry
+
+/-- Helper for Lemma 18.33.8: once the source-side exactness package is available, the public
+conormal exact sequence follows by right-exact pullback transport and the pullback-pushforward
+adjunction counit. -/
+private theorem conormalSequence_exact_from_overSource
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂')
+    (hα : Sheaf.IsLocallySurjective α)
+    (hOver :
+      (ShortComplex.mk
+        (conormalMapOverSource φ α)
+        (tensorToDifferentialsOverSource φ α)
+        (conormalOverSourceCompZero φ α)).Exact ∧
+        Epi (tensorToDifferentialsOverSource φ α)) :
+    (ShortComplex.mk
+      (conormalMap φ α)
+      (conormalToDifferentials φ α)
+      (conormal_comp_zero φ α)).Exact ∧
+      Epi (conormalToDifferentials φ α) := by
+  letI : Sheaf.IsLocallySurjective α := hα
+  letI :
+      (SheafOfModules.restrictScalars α).FullyFaithful :=
+    SheafOfModules.restrictScalars_fullyFaithful_ofIsLocallySurjective α
+  let adj :=
+    SheafOfModules.pullbackPushforwardAdjunction
+      (SheafOfModules.RingedSite.ringedSiteStructureMap α)
+  let SOver :
+      ShortComplex (SheafOfModules (ringSheaf J O₂)) :=
+    ShortComplex.mk
+      (conormalMapOverSource φ α)
+      (tensorToDifferentialsOverSource φ α)
+      (conormalOverSourceCompZero φ α)
+  let SPublic :
+      ShortComplex (SheafOfModules (ringSheaf J O₂')) :=
+    ShortComplex.mk
+      (conormalMap φ α)
+      (conormalToDifferentials φ α)
+      (conormal_comp_zero φ α)
+  have hPulledExact : (SOver.map (conormalPullback α)).Exact := by
+    haveI : Epi SOver.g := by
+      simpa [SOver] using hOver.2
+    -- Proof comment: pullback is a left adjoint, hence preserves cokernels; exactness at the
+    -- middle term survives because the source-side right map is epi.
+    exact ShortComplex.Exact.map_of_epi_of_preservesCokernel hOver.1
+      (conormalPullback α) (by infer_instance) (by infer_instance)
+  let η : SOver.map (conormalPullback α) ⟶ SPublic where
+    τ₁ := 𝟙 _
+    τ₂ := 𝟙 _
+    τ₃ := adj.counit.app Ω(φ ≫ α)
+    comm₁₂ := by
+      -- Proof comment: the public left map is definitionally the pullback of the source-side
+      -- conormal map.
+      simp [SOver, SPublic, conormalMap]
+    comm₂₃ := by
+      -- Proof comment: the public right map is the adjoint transpose of the source-side map, so
+      -- the comparison square is exactly the counit formula for `homEquiv.symm`.
+      rw [SPublic, conormalToDifferentials, Adjunction.homEquiv_symm_apply]
+  have hPublicExact : SPublic.Exact := by
+    -- Proof comment: the only difference between the pulled source-side row and the public row is
+    -- the adjunction counit on the last term, which is an isomorphism because
+    -- `restrictionAlong α` is fully faithful under local surjectivity.
+    exact (ShortComplex.exact_iff_of_epi_of_isIso_of_mono η).2 hPulledExact
+  haveI : Epi ((conormalPullback α).map (tensorToDifferentialsOverSource φ α)) := by
+    infer_instance
+  haveI : Epi (conormalToDifferentials φ α) := by
+    -- Proof comment: the public right map is the composite of the pulled source-side epi with the
+    -- adjunction counit isomorphism.
+    rw [conormalToDifferentials, Adjunction.homEquiv_symm_apply]
+    infer_instance
+  exact ⟨by simpa [SPublic] using hPublicExact, inferInstance⟩
+
+/-- Helper for Lemma 18.33.8: package the remaining image-factor/sheafification/local-surjectivity
+route as one theorem-local bridge before exposing the public source-facing statement. -/
+private theorem conormalSequence_exact_ofLocalSurjectivityBridge
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂')
+    (hα : Sheaf.IsLocallySurjective α) :
+    (ShortComplex.mk
+      (conormalMap φ α)
+      (conormalToDifferentials φ α)
+      (conormal_comp_zero φ α)).Exact ∧
+      Epi (conormalToDifferentials φ α) := by
+  letI : Sheaf.IsLocallySurjective α := hα
+  letI :
+      (SheafOfModules.restrictScalars α).FullyFaithful :=
+    SheafOfModules.restrictScalars_fullyFaithful_ofIsLocallySurjective α
+  -- Proof comment: all remaining source-side work is isolated in `conormalOverSource_exact`; the
+  -- present theorem only applies the already verified right-exact pullback/adjunction transport.
+  exact conormalSequence_exact_from_overSource φ α hα
+    (conormalOverSource_exact φ α hα)
+
+/-- Lemma 18.33.8: if `α : O₂ ⟶ O₂'` is locally surjective, then the scalar-extended canonical
+conormal sequence of `O₂'`-modules
+`conormalSource α ⟶ O₂' \otimes_{O₂} \Omega_{O₂/O₁} ⟶ \Omega_{O₂'/O₁} ⟶ 0`
+is exact.
+
+Here `conormalSource α` is, by definition, the pullback along `α` of the source-side conormal
+module `Ker(α)/Ker(α)^2`; under local surjectivity this matches the textbook target-side conormal
+module. -/
+@[stacks 08TS]
+theorem conormalSequence_exact
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂')
+    (hα : Sheaf.IsLocallySurjective α) :
+    (ShortComplex.mk
+      (conormalMap φ α)
+      (conormalToDifferentials φ α)
+      (conormal_comp_zero φ α)).Exact ∧
+      Epi (conormalToDifferentials φ α) := by
+  -- Proof comment: the public theorem is just the source-facing wrapper around the theorem-local
+  -- bridge that isolates the remaining image-factor/sheafification transport.
+  exact conormalSequence_exact_ofLocalSurjectivityBridge φ α hα
+
+-- Proof sketch: objectwise surjectivity is a special case of local surjectivity of sheaves, so
+-- the main sheaf-level exactness theorem applies directly.
+/-- Companion bridge: sectionwise-surjective maps satisfy the hypotheses of the scalar-extended
+conormal exact sequence. -/
+theorem conormalSequence_exact_of_sectionwiseSurjective
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂')
+    (hα : ∀ U : Cᵒᵖ, Function.Surjective ((α.hom.app U).hom)) :
+    (ShortComplex.mk
+      (conormalMap φ α)
+      (conormalToDifferentials φ α)
+      (conormal_comp_zero φ α)).Exact ∧
+      Epi (conormalToDifferentials φ α) := by
+  have hloc : Sheaf.IsLocallySurjective α := by
+    exact Presheaf.isLocallySurjective_of_surjective J α.hom hα
+  exact conormalSequence_exact φ α hloc
+
+-- Proof sketch: this is exactly
+-- `KaehlerDifferential.kerCotangentToTensor_toCotangent` for the section ring map
+-- `O₂(U) → O₂'(U)`.
+/-- Lemma 18.33.8, formula for the left map: in library tensor order, the class of a local section
+`f` of the kernel ideal over `U` maps to `1 ⊗ df`. -/
+@[stacks 08TS]
+theorem sectionConormalMap_toCotangent
+    (φ : O₁ ⟶ O₂) (α : O₂ ⟶ O₂') (U : Cᵒᵖ)
+    (x : conormalIdeal α U) :
+    let _ : Algebra (O₁.obj.obj U) (O₂.obj.obj U) := ((φ.hom.app U).hom).toAlgebra
+    let _ : Algebra (O₂.obj.obj U) (O₂'.obj.obj U) := ((α.hom.app U).hom).toAlgebra
+    sectionConormalMap φ α U (Ideal.toCotangent (conormalIdeal α U) x) =
+      (1 : O₂'.obj.obj U) ⊗ₜ[O₂.obj.obj U]
+        KaehlerDifferential.D (O₁.obj.obj U) (O₂.obj.obj U) x := by
+  let _ : Algebra (O₁.obj.obj U) (O₂.obj.obj U) := ((φ.hom.app U).hom).toAlgebra
+  let _ : Algebra (O₂.obj.obj U) (O₂'.obj.obj U) := ((α.hom.app U).hom).toAlgebra
+  let x' : RingHom.ker (algebraMap (O₂.obj.obj U) (O₂'.obj.obj U)) := x
+  -- Proof comment: `conormalIdeal α U` is definitionally the kernel ideal of the section ring
+  -- map, so the textbook formula is exactly the owner theorem on generators.
+  change
+    KaehlerDifferential.kerCotangentToTensor
+        (O₁.obj.obj U) (O₂.obj.obj U) (O₂'.obj.obj U)
+        (Ideal.toCotangent
+          (RingHom.ker (algebraMap (O₂.obj.obj U) (O₂'.obj.obj U))) x') =
+      (1 : O₂'.obj.obj U) ⊗ₜ[O₂.obj.obj U]
+        KaehlerDifferential.D (O₁.obj.obj U) (O₂.obj.obj U) x'
+  exact KaehlerDifferential.kerCotangentToTensor_toCotangent
+    (O₁.obj.obj U) (O₂.obj.obj U) (O₂'.obj.obj U) x'
+
+end SheafOfModules.RingedSite

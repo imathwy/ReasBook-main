@@ -343,3 +343,4 @@ theorem sigma_is_injective : Function.Injective σ (α := α) := by
   have h1 : (bs.repr z) i * ‖(Module.finBasis ℝ α) i‖ = 0 := by
     rw[← hi , h, PiLp.zero_apply]
   apply eq_zero_of_ne_zero_of_mul_right_eq_zero this h1
+

@@ -349,3 +349,4 @@ theorem th_7_5_1 [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] (hp : Prope
   sorry
 
 end Th_7_5
+

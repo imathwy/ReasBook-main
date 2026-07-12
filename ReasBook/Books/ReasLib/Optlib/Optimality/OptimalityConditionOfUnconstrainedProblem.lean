@@ -132,3 +132,4 @@ theorem first_order_convex_iff (hf : ∀ x : E, HasGradientAt f (f' x) x) (hcon 
     exact first_order_unconstrained hf hmin hfc
   · intro hgrad
     apply first_order_convex hf hcon hgrad
+

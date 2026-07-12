@@ -1,1 +1,0 @@
-import LinearRepresentations_Serre_1977.Items.Chap02.Theorem_2_2_5_2

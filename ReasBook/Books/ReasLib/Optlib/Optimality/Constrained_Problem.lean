@@ -1550,3 +1550,4 @@ theorem first_order_neccessary_LinearCQ
   · exact hdomain
 
 end Constrained_OptimizationProblem_property_linear
+
