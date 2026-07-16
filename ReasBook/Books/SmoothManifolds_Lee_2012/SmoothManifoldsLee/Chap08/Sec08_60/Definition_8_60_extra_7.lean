@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import SmoothManifolds_Lee_2012.Chap08.Sec08_55.Definition_8_55_extra_3
-import SmoothManifolds_Lee_2012.Chap08.Sec08_60.Corollary_8_38
-import SmoothManifolds_Lee_2012.Chap08.Sec08_60.Definition_8_60_extra_1
-import SmoothManifolds_Lee_2012.Chap08.Sec08_60.Notation_8_60_extra_6
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_55.Definition_8_55_extra_3
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_60.Corollary_8_38
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_60.Definition_8_60_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_60.Notation_8_60_extra_6
 
 open scoped Manifold ContDiff
 

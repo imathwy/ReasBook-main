@@ -1,5 +1,5 @@
 import Mathlib.Topology.Algebra.OpenSubgroup
-import SmoothManifolds_Lee_2012.Chap07.Sec07_46.Definition_7_46_extra_3
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_46.Definition_7_46_extra_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

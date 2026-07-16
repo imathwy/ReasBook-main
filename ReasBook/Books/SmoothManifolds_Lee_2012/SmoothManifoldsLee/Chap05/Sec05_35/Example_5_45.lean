@@ -1,8 +1,8 @@
-import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Proposition_5_2
-import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Proposition_5_4
-import SmoothManifolds_Lee_2012.Chap05.Sec05_35.Definition_5_35_extra_4
-import SmoothManifolds_Lee_2012.Chap05.Sec05_35.Proposition_5_35
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Proposition_5_49
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_28.Proposition_5_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_28.Proposition_5_4
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_35.Definition_5_35_extra_4
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_35.Proposition_5_35
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Proposition_5_49
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

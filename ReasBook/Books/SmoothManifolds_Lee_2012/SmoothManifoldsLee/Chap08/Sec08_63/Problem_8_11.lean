@@ -1,6 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.PolarCoord
-import SmoothManifolds_Lee_2012.Chap08.Sec08_54.Example_8_3
-import SmoothManifolds_Lee_2012.Chap08.Sec08_57.Example_8_17
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_54.Example_8_3
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_57.Example_8_17
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

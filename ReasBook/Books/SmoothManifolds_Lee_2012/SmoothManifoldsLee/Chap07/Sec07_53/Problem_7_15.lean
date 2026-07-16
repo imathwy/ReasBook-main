@@ -2,7 +2,7 @@ import Mathlib.Analysis.Complex.Circle
 import Mathlib.Analysis.Matrix.Normed
 import Mathlib.Geometry.Manifold.Instances.Sphere
 import Mathlib.LinearAlgebra.UnitaryGroup
-import SmoothManifolds_Lee_2012.Chap07.Sec07_47.Definition_7_47_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_47.Definition_7_47_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

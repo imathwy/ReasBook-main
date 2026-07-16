@@ -1,5 +1,5 @@
 import Mathlib
-import SmoothManifolds_Lee_2012.Chap04.Sec04_26.Definition_4_26_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_26.Definition_4_26_extra_1
 
 universe u v
 

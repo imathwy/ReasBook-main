@@ -1,9 +1,9 @@
 import Mathlib.Analysis.Matrix.Normed
 import Mathlib.Geometry.Manifold.Instances.UnitsOfNormedAlgebra
 import Mathlib.Topology.Algebra.Group.Matrix
-import SmoothManifolds_Lee_2012.Chap02.Sec02_08.Proposition_2_12
-import SmoothManifolds_Lee_2012.Chap07.Sec07_47.Definition_7_47_extra_1
-import SmoothManifolds_Lee_2012.Chap07.Sec07_47.Example_7_4_torus
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_08.Proposition_2_12
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_47.Definition_7_47_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_47.Example_7_4_torus
 
 noncomputable section
 

@@ -1,6 +1,6 @@
 import Mathlib.Geometry.Manifold.Instances.Real
 import Mathlib.Topology.Sets.Opens
-import SmoothManifolds_Lee_2012.Chap05.Sec05_31.Definition_5_31_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_31.Definition_5_31_extra_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

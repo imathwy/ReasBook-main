@@ -1,8 +1,8 @@
 import Mathlib.Topology.Homeomorph.Lemmas
 import Mathlib.Topology.Covering.Basic
-import SmoothManifolds_Lee_2012.Chap01.Sec01.Example_1_5
-import SmoothManifolds_Lee_2012.Chap01.Sec01_07.Problem_1_8
-import SmoothManifolds_Lee_2012.Chap04.Sec04_22.Proposition_4_6
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01.Example_1_5
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_07.Problem_1_8
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_22.Proposition_4_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

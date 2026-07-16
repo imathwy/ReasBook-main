@@ -1,6 +1,6 @@
 import Mathlib
-import SmoothManifolds_Lee_2012.Chap03.Sec03_17.Definition_3_17_extra_1
-import SmoothManifolds_Lee_2012.Chap04.Sec04_25.Proposition_4_28
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap03.Sec03_17.Definition_3_17_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_25.Proposition_4_28
 
 -- Declarations for this item will be appended below by the statement pipeline.
 -- Semantic recall note: `lean_leansearch` was unavailable in this environment, so the statement

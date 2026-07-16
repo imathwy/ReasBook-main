@@ -1,7 +1,7 @@
 import Mathlib
-import SmoothManifolds_Lee_2012.Chap03.Sec03_14.Proposition_3_9
-import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Proposition_5_1
-import SmoothManifolds_Lee_2012.Chap08.Sec08_57.Proposition_8_19
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap03.Sec03_14.Proposition_3_9
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_28.Proposition_5_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_57.Proposition_8_19
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

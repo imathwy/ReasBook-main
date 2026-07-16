@@ -1,6 +1,6 @@
-import SmoothManifolds_Lee_2012.Chap01.Sec01_05.Proposition_1_38
-import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Definition_1_6_extra_2
-import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Definition_5_28_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_05.Proposition_1_38
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_06.Definition_1_6_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_28.Definition_5_28_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 -- Semantic recall note: the source-facing owner is the Chapter 5 predicate

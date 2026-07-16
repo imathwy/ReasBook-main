@@ -1,6 +1,6 @@
-import SmoothManifolds_Lee_2012.Chap03.Sec03_16.Proposition_3_20
-import SmoothManifolds_Lee_2012.Chap05.Sec05_29.Theorem_5_8
-import SmoothManifolds_Lee_2012.Chap06.Sec06_42.Definition_6_42_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap03.Sec03_16.Proposition_3_20
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_29.Theorem_5_8
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_42.Definition_6_42_extra_2
 
 open Manifold
 open scoped ContDiff Manifold NormalBundle RealInnerProductSpace

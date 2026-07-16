@@ -1,5 +1,5 @@
 import Mathlib
-import SmoothManifolds_Lee_2012.Chap08.Sec08_62.Theorem_8_49
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_62.Theorem_8_49
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,7 +1,7 @@
 import Mathlib.Geometry.Manifold.Instances.Real
 import Mathlib.Geometry.Manifold.Instances.Sphere
 import Mathlib.LinearAlgebra.AffineSpace.AffineMap
-import SmoothManifolds_Lee_2012.Chap01.Sec01_02.Proposition_1_17
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_02.Proposition_1_17
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

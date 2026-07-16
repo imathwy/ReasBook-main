@@ -1,6 +1,6 @@
 import Mathlib.Geometry.Manifold.BumpFunction
 import Mathlib.Tactic.Recall
-import SmoothManifolds_Lee_2012.Chap02.Sec02_10.Lemma_2_22
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_10.Lemma_2_22
 
 /- Definition 2.10-extra-2: The Euclidean cutoff from `Lemma_2.22` is a bundled
 `ContDiffBump`, and `SmoothBumpFunction` is the canonical manifold-level generalization used

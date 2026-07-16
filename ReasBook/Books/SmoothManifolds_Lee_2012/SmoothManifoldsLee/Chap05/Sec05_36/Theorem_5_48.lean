@@ -1,11 +1,11 @@
-import SmoothManifolds_Lee_2012.Chap02.Sec02_10.Lemma_2_21
-import SmoothManifolds_Lee_2012.Chap02.Sec02_11.Definition_2_11_extra_3
-import SmoothManifolds_Lee_2012.Chap02.Sec02_11.Proposition_2_28
-import SmoothManifolds_Lee_2012.Chap05.Sec05_30.Definition_5_30_extra_2
-import SmoothManifolds_Lee_2012.Chap05.Sec05_35.Proposition_5_43
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Definition_5_36_extra_2
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Definition_5_36_extra_3
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Proposition_5_46
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_10.Lemma_2_21
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_11.Definition_2_11_extra_3
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_11.Proposition_2_28
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_30.Definition_5_30_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_35.Proposition_5_43
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Definition_5_36_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Definition_5_36_extra_3
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Proposition_5_46
 
 -- Declarations for this item will be appended below by the statement pipeline.
 -- Semantic recall note: `lean_leansearch` returned only partition-of-unity and bump-function

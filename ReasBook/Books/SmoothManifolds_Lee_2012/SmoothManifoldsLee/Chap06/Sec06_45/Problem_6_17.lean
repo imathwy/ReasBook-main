@@ -1,5 +1,5 @@
 import Mathlib
-import SmoothManifolds_Lee_2012.Chap06.Sec06_45.Problem_6_16
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_45.Problem_6_16
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

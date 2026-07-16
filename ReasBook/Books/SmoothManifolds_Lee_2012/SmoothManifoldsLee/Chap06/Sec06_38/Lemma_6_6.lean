@@ -1,4 +1,4 @@
-import SmoothManifolds_Lee_2012.Chap06.Sec06_38.Definition_6_38_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_38.Definition_6_38_extra_2
 import Mathlib.MeasureTheory.Measure.Haar.Unique
 import Mathlib.MeasureTheory.Function.Jacobian
 

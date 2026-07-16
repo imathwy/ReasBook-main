@@ -1,7 +1,7 @@
-import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Definition_5_28_extra_1
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Definition_5_36_extra_2
-import SmoothManifolds_Lee_2012.Chap06.Sec06_42.Definition_6_42_extra_2
-import SmoothManifolds_Lee_2012.Chap06.Sec06_45.Problem_6_5
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_28.Definition_5_28_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Definition_5_36_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_42.Definition_6_42_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_45.Problem_6_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

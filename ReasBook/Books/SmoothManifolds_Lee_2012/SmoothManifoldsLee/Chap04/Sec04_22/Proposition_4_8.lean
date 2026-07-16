@@ -1,9 +1,9 @@
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Geometry.Manifold.Immersion
 import Mathlib.Geometry.Manifold.LocalDiffeomorph
-import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Theorem_1_46
-import SmoothManifolds_Lee_2012.Chap04.Sec04_21.Definition_4_21_extra_1
-import SmoothManifolds_Lee_2012.Chap04.Sec04_22.Theorem_4_5
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_06.Theorem_1_46
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_21.Definition_4_21_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_22.Theorem_4_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

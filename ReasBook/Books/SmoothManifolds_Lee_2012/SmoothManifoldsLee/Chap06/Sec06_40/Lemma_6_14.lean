@@ -2,16 +2,16 @@ import Mathlib.Geometry.Manifold.Instances.Real
 import Mathlib.Geometry.Manifold.SmoothEmbedding
 import Mathlib.Topology.Maps.Proper.Basic
 import Mathlib.Topology.Maps.Proper.CompactlyGenerated
-import SmoothManifolds_Lee_2012.Chap01.Sec01_05.Proposition_1_40
-import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Definition_1_6_extra_2
-import SmoothManifolds_Lee_2012.Chap02.Sec02_09.Example_2_14
-import SmoothManifolds_Lee_2012.Chap02.Sec02_12.Problem_2_4
-import SmoothManifolds_Lee_2012.Chap02.Sec02_11.Definition_2_11_extra_3
-import SmoothManifolds_Lee_2012.Chap02.Sec02_11.Proposition_2_28
-import SmoothManifolds_Lee_2012.Chap04.Sec04_21.Definition_4_21_extra_1
-import SmoothManifolds_Lee_2012.Chap04.Sec04_22.Proposition_4_8
-import SmoothManifolds_Lee_2012.Chap04.Sec04_24.Proposition_4_22
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Definition_5_36_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_05.Proposition_1_40
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_06.Definition_1_6_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_09.Example_2_14
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_12.Problem_2_4
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_11.Definition_2_11_extra_3
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_11.Proposition_2_28
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_21.Definition_4_21_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_22.Proposition_4_8
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_24.Proposition_4_22
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Definition_5_36_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,10 +1,10 @@
 import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
 import Mathlib.Topology.Homotopy.Lifting
 import Mathlib.Topology.Homotopy.Product
-import SmoothManifolds_Lee_2012.Chap04.Sec04_26.Definition_4_26_extra_1
-import SmoothManifolds_Lee_2012.Chap04.Sec04_26.Corollary_4_43
-import SmoothManifolds_Lee_2012.Chap04.Sec04_22.Exercise_4_10
-import SmoothManifolds_Lee_2012.Chap07.Sec07_47.Definition_7_47_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_26.Definition_4_26_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_26.Corollary_4_43
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_22.Exercise_4_10
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_47.Definition_7_47_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

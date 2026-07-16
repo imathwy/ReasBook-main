@@ -2,7 +2,7 @@ import Mathlib.Geometry.Manifold.Instances.Real
 import Mathlib.Geometry.Manifold.ContMDiffMFDeriv
 import Mathlib.Geometry.Manifold.ContMDiffMap
 import Mathlib.Geometry.Manifold.SmoothEmbedding
-import SmoothManifolds_Lee_2012.Chap05.Sec05_35.Notation_5_35_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_35.Notation_5_35_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

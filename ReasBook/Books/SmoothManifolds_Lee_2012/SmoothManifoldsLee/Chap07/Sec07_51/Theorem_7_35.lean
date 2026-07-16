@@ -1,6 +1,6 @@
-import SmoothManifolds_Lee_2012.Chap07.Sec07_47.Definition_7_47_extra_1
-import SmoothManifolds_Lee_2012.Chap07.Sec07_49.Definition_7_49_extra_1
-import SmoothManifolds_Lee_2012.Chap07.Sec07_51.Exercise_7_31
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_47.Definition_7_47_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_49.Definition_7_49_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_51.Exercise_7_31
 
 -- `lean_leansearch` is unavailable in this environment; the statement below uses the canonical
 -- owners `MulAut.conjNormal`, `semidirectProductGroup`, `semidirectProductLieGroup`, and

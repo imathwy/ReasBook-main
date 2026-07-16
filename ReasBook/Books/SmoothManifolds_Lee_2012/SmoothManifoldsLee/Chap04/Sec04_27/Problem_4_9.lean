@@ -1,6 +1,6 @@
 import Mathlib.Geometry.Manifold.Instances.Real
 import Mathlib.Tactic.Recall
-import SmoothManifolds_Lee_2012.Chap04.Sec04_26.Proposition_4_40
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_26.Proposition_4_40
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

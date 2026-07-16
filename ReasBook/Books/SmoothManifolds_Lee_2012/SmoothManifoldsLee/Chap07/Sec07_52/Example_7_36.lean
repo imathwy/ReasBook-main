@@ -1,13 +1,13 @@
 import Mathlib
 import Mathlib.Analysis.Matrix.Normed
 import Mathlib.Geometry.Manifold.Instances.Sphere
-import SmoothManifolds_Lee_2012.Chap01.Sec01.Example_1_8
-import SmoothManifolds_Lee_2012.Chap02.Sec02_08.Proposition_2_12
-import SmoothManifolds_Lee_2012.Chap04.Sec04_26.Example_4_35
-import SmoothManifolds_Lee_2012.Chap07.Sec07_46.Proposition_7_1
-import SmoothManifolds_Lee_2012.Chap07.Sec07_49.Definition_7_49_extra_1
-import SmoothManifolds_Lee_2012.Chap07.Sec07_51.Example_7_32
-import SmoothManifolds_Lee_2012.Chap07.Sec07_52.Definition_7_52_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01.Example_1_8
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_08.Proposition_2_12
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_26.Example_4_35
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_46.Proposition_7_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_49.Definition_7_49_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_51.Example_7_32
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_52.Definition_7_52_extra_1
 
 open scoped Matrix Torus Manifold ContDiff
 open Matrix.GeneralLinearGroup

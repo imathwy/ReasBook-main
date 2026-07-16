@@ -1,4 +1,4 @@
-import SmoothManifolds_Lee_2012.Chap07.Sec07_51.Theorem_7_35
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_51.Theorem_7_35
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

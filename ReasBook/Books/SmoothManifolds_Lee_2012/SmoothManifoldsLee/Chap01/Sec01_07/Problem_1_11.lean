@@ -1,5 +1,5 @@
 import Mathlib.Geometry.Manifold.IsManifold.InteriorBoundary
-import SmoothManifolds_Lee_2012.Chap02.Sec02_12.Problem_2_4
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_12.Problem_2_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,7 +1,7 @@
 import Mathlib.Analysis.InnerProductSpace.Calculus
 import Mathlib.Analysis.InnerProductSpace.GramSchmidtOrtho
 import Mathlib.Analysis.InnerProductSpace.Projection.Basic
-import SmoothManifolds_Lee_2012.Chap08.Sec08_55.Definition_8_55_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_55.Definition_8_55_extra_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

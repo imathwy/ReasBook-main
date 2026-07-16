@@ -1,7 +1,7 @@
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Calculus.ContDiff.WithLp
 import Mathlib.Analysis.Calculus.FDeriv.WithLp
-import SmoothManifolds_Lee_2012.Chap08.Sec08_59.Definition_8_59_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_59.Definition_8_59_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

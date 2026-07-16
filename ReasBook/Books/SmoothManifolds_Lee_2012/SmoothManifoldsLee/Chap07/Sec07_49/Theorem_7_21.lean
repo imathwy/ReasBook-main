@@ -1,9 +1,9 @@
 import Mathlib
-import SmoothManifolds_Lee_2012.Chap05.Sec05_33.Theorem_5_33
-import SmoothManifolds_Lee_2012.Chap05.Sec05_31.Proposition_5_22
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Proposition_5_49
-import SmoothManifolds_Lee_2012.Chap07.Sec07_49.Definition_7_49_extra_1
-import SmoothManifolds_Lee_2012.Chap07.Sec07_53.Problem_7_6
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_33.Theorem_5_33
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_31.Proposition_5_22
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Proposition_5_49
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_49.Definition_7_49_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_53.Problem_7_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib.Topology.Algebra.OpenSubgroup
 import Mathlib.Topology.Connected.Clopen
-import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Proposition_5_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_28.Proposition_5_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

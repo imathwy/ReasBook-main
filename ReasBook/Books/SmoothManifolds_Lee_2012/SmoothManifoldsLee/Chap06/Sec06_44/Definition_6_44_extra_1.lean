@@ -1,8 +1,8 @@
 import Mathlib.Geometry.Manifold.MFDeriv.Basic
-import SmoothManifolds_Lee_2012.Chap04.Sec04_25.Proposition_4_28
-import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Definition_5_28_extra_1
-import SmoothManifolds_Lee_2012.Chap05.Sec05_35.Notation_5_35_extra_1
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Definition_5_36_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_25.Proposition_4_28
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_28.Definition_5_28_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_35.Notation_5_35_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Definition_5_36_extra_1
 
 open scoped ContDiff Manifold
 open Manifold Set

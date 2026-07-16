@@ -1,7 +1,7 @@
 import Mathlib
-import SmoothManifolds_Lee_2012.Chap04.Sec04_21.Exercise_4_4
-import SmoothManifolds_Lee_2012.Chap04.Sec04_22.Proposition_4_8
-import SmoothManifolds_Lee_2012.Chap04.Sec04_23.Theorem_4_12
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_21.Exercise_4_4
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_22.Proposition_4_8
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_23.Theorem_4_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 -- Semantic recall note: `lean_leansearch` was unavailable in this environment, so the statement

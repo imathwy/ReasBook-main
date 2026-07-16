@@ -1,9 +1,9 @@
 import Mathlib.Geometry.Manifold.ContMDiffMFDeriv
 import Mathlib.Geometry.Manifold.SmoothEmbedding
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
-import SmoothManifolds_Lee_2012.Chap04.Sec04_21.Exercise_4_4
-import SmoothManifolds_Lee_2012.Chap05.Sec05_35.Notation_5_35_extra_1
-import SmoothManifolds_Lee_2012.Chap05.Sec05_35.Proposition_5_38
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_21.Exercise_4_4
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_35.Notation_5_35_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_35.Proposition_5_38
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

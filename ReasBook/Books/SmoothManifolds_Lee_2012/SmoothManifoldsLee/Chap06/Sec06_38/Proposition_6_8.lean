@@ -1,4 +1,4 @@
-import SmoothManifolds_Lee_2012.Chap06.Sec06_38.Exercise_6_7
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_38.Exercise_6_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

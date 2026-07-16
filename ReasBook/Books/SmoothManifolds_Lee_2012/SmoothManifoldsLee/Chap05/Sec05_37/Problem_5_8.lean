@@ -1,15 +1,15 @@
 import Mathlib.Geometry.Manifold.Diffeomorph
 import Mathlib.Geometry.Manifold.Instances.Real
 import Mathlib.Geometry.Manifold.Instances.Sphere
-import SmoothManifolds_Lee_2012.Chap01.Sec01.Definition_1_extra_1
-import SmoothManifolds_Lee_2012.Chap01.Sec01_03.Definition_1_3_extra_1
-import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Definition_1_6_extra_2
-import SmoothManifolds_Lee_2012.Chap02.Sec02_12.Problem_2_4
-import SmoothManifolds_Lee_2012.Chap05.Sec05_29.Theorem_5_8.Common
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Definition_5_36_extra_2
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Definition_5_36_extra_4
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Proposition_5_46
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Theorem_5_51
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01.Definition_1_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_03.Definition_1_3_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_06.Definition_1_6_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_12.Problem_2_4
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_29.Theorem_5_8.Common
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Definition_5_36_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Definition_5_36_extra_4
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Proposition_5_46
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Theorem_5_51
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

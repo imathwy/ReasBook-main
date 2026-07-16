@@ -1,6 +1,6 @@
-import SmoothManifolds_Lee_2012.Chap05.Sec05_30.Definition_5_30_extra_2
-import SmoothManifolds_Lee_2012.Chap06.Sec06_38.Definition_6_38_extra_2
-import SmoothManifolds_Lee_2012.Chap06.Sec06_38.Lemma_6_6
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_30.Definition_5_30_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_38.Definition_6_38_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_38.Lemma_6_6
 import Mathlib.MeasureTheory.Function.Jacobian
 import Mathlib.MeasureTheory.Measure.Haar.Unique
 import Mathlib.Topology.MetricSpace.HausdorffDimension

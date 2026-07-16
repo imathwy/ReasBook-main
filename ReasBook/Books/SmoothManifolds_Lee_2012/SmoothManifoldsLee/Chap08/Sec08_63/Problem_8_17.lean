@@ -1,6 +1,6 @@
-import SmoothManifolds_Lee_2012.Chap08.Sec08_59.Definition_8_59_extra_1
-import SmoothManifolds_Lee_2012.Chap08.Sec08_57.Proposition_8_16
-import SmoothManifolds_Lee_2012.Chap08.Sec08_59.Proposition_8_30
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_59.Definition_8_59_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_57.Proposition_8_16
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_59.Proposition_8_30
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,4 +1,4 @@
-import SmoothManifolds_Lee_2012.Chap05.Sec05_33.Theorem_5_33
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_33.Theorem_5_33
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,9 +1,9 @@
 import Mathlib.Topology.Separation.Hausdorff
 import Mathlib.Geometry.Manifold.Instances.Real
 import Mathlib.MeasureTheory.Measure.Prod
-import SmoothManifolds_Lee_2012.Chap01.Sec01.Example_1_3
-import SmoothManifolds_Lee_2012.Chap04.Sec04_27.Problem_4_1
-import SmoothManifolds_Lee_2012.Chap06.Sec06_38.Lemma_6_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01.Example_1_3
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_27.Problem_4_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_38.Lemma_6_2
 
 open MeasureTheory
 open EuclideanSpace

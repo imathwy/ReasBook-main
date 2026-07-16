@@ -2,7 +2,7 @@ import Mathlib
 import Mathlib.Analysis.Matrix.Normed
 import Mathlib.Geometry.Manifold.Instances.UnitsOfNormedAlgebra
 import Mathlib.Tactic.Recall
-import SmoothManifolds_Lee_2012.Chap01.Sec01_04.Example_1_33
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_04.Example_1_33
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

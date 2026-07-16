@@ -3,11 +3,11 @@ import Mathlib.Analysis.Calculus.FDeriv.WithLp
 import Mathlib.Analysis.Calculus.FDeriv.Pow
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Geometry.Manifold.Instances.Sphere
-import SmoothManifolds_Lee_2012.Chap04.Sec04_21.Definition_4_21_extra_1
-import SmoothManifolds_Lee_2012.Chap04.Sec04_24.Proposition_4_22
-import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Proposition_5_2
-import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Definition_5_28_extra_1
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Definition_5_36_extra_3
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_21.Definition_4_21_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_24.Proposition_4_22
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_28.Proposition_5_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_28.Definition_5_28_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Definition_5_36_extra_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

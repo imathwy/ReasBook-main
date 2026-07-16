@@ -1,4 +1,4 @@
-import SmoothManifolds_Lee_2012.Chap06.Sec06_45.Problem_6_10
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_45.Problem_6_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

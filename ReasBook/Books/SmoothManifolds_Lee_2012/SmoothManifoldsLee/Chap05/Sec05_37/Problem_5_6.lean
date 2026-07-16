@@ -1,7 +1,7 @@
 import Mathlib.Geometry.Manifold.MFDeriv.Tangent
 import Mathlib.Geometry.Manifold.Instances.Real
 import Mathlib.Geometry.Manifold.SmoothEmbedding
-import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Definition_5_28_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_28.Definition_5_28_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 -- Semantic search tool unavailable in this environment; local mathlib and repository APIs were

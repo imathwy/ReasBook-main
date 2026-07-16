@@ -1,7 +1,7 @@
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Geometry.Manifold.VectorBundle.Tangent
-import SmoothManifolds_Lee_2012.Chap08.Sec08_60.Example_8_36
-import SmoothManifolds_Lee_2012.Chap08.Sec08_63.Problem_8_19
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_60.Example_8_36
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_63.Problem_8_19
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

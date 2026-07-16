@@ -1,6 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
-import SmoothManifolds_Lee_2012.Chap08.Sec08_57.Definition_8_57_extra_1
-import SmoothManifolds_Lee_2012.Chap08.Sec08_57.Example_8_17_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_57.Definition_8_57_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_57.Example_8_17_extra_1
 
 open scoped ContDiff Manifold
 open NormedSpace

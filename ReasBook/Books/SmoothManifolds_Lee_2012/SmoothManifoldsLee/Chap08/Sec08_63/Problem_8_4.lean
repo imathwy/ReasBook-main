@@ -1,8 +1,8 @@
 import Mathlib
-import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Definition_1_6_extra_2
-import SmoothManifolds_Lee_2012.Chap01.Sec01_05.Proposition_1_40
-import SmoothManifolds_Lee_2012.Chap05.Sec05_35.Definition_5_35_extra_2
-import SmoothManifolds_Lee_2012.Chap05.Sec05_35.Proposition_5_41
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_06.Definition_1_6_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_05.Proposition_1_40
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_35.Definition_5_35_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_35.Proposition_5_41
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

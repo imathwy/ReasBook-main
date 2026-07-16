@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Geometry.Manifold.ContMDiff.Atlas
-import SmoothManifolds_Lee_2012.Chap04.Sec04_24.Exercise_4_16
-import SmoothManifolds_Lee_2012.Chap05.Sec05_31.Example_5_26
-import SmoothManifolds_Lee_2012.Chap05.Sec05_35.Definition_5_35_extra_4
-import SmoothManifolds_Lee_2012.Chap04.Sec04_24.Example_4_19
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_24.Exercise_4_16
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_31.Example_5_26
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_35.Definition_5_35_extra_4
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_24.Example_4_19
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
