@@ -1,7 +1,7 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap03.Proposition_3_3_4
-import AlgebraicTopology_May_1999.Chap03.Theorem_3_5_6
-import AlgebraicTopology_May_1999.Chap03.Theorem_3_7_6
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Proposition_3_3_4
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Theorem_3_5_6
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Theorem_3_7_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -84,15 +84,15 @@ private theorem fundamental_groupoid_source_mem_of_mapOfEq_mem
     (hγ : γ ∈ (FundamentalGroup.mapOfEq p rfl).range) :
     let ξ : hp.fundamentalGroupoidMap.Fiber (FundamentalGroupoid.mk (p e₀)) :=
       ⟨FundamentalGroupoid.mk e₀, rfl⟩
-    γ ∈ ξ.2 ▸ (Functor.mapVertexGroup hp.fundamentalGroupoidMap ξ.1).range := by
+    γ ∈ ξ.2 ▸ (hp.fundamentalGroupoidMap.mapVertexGroup ξ.1).range := by
   -- Rewrite transported membership to the literal basepoint and use the same loop witness.
   dsimp
   have hγ' :
       eqToHom rfl ≫ γ ≫ eqToHom rfl.symm ∈
-        (Functor.mapVertexGroup hp.fundamentalGroupoidMap (FundamentalGroupoid.mk e₀)).range := by
+        (hp.fundamentalGroupoidMap.mapVertexGroup (FundamentalGroupoid.mk e₀)).range := by
     rcases MonoidHom.mem_range.mp hγ with ⟨δ, rfl⟩
     exact MonoidHom.mem_range.mpr ⟨δ, by
-      change (Functor.mapVertexGroup (FundamentalGroupoid.map p) (FundamentalGroupoid.mk e₀)) δ =
+      change ((FundamentalGroupoid.map p).mapVertexGroup (FundamentalGroupoid.mk e₀)) δ =
         eqToHom rfl ≫ (FundamentalGroup.mapOfEq p rfl) δ ≫ eqToHom rfl.symm
       rw [← fundamental_group_map_eq_mapOfEq_rfl_local (f := p) (x := e₀)]
       simp⟩
@@ -107,7 +107,7 @@ private theorem mapOfEq_mem_of_fundamental_groupoid_target_mem
     (hp' : IsPathConnectedCoveringMap p') (e₀ : E)
     (ξ' : hp'.fundamentalGroupoidMap.Fiber (FundamentalGroupoid.mk (p e₀)))
     (γ : FundamentalGroup B (p e₀))
-    (hγ : γ ∈ ξ'.2 ▸ (Functor.mapVertexGroup hp'.fundamentalGroupoidMap ξ'.1).range) :
+    (hγ : γ ∈ ξ'.2 ▸ (hp'.fundamentalGroupoidMap.mapVertexGroup ξ'.1).range) :
     γ ∈ (FundamentalGroup.mapOfEq p'
       (hp'.fundamentalGroupoidMapFiberEquiv (p e₀) ξ').2).range := by
   -- Unpack the categorical fiber point and conjugate the witness through the transport equality.
@@ -116,7 +116,7 @@ private theorem mapOfEq_mem_of_fundamental_groupoid_target_mem
     simpa [IsPathConnectedCoveringMap.fundamentalGroupoidMap] using congrArg FundamentalGroupoid.as hx
   have hγ' :
       eqToHom hx ≫ γ ≫ eqToHom hx.symm ∈
-        (Functor.mapVertexGroup hp'.fundamentalGroupoidMap (FundamentalGroupoid.mk x)).range := by
+        (hp'.fundamentalGroupoidMap.mapVertexGroup (FundamentalGroupoid.mk x)).range := by
     exact
       (mapVertexGroup_range_transport_iff
         (p := hp'.fundamentalGroupoidMap) (e := FundamentalGroupoid.mk x) (h := hx) γ).1 hγ
@@ -125,7 +125,7 @@ private theorem mapOfEq_mem_of_fundamental_groupoid_target_mem
   have hmk : congrArg FundamentalGroupoid.mk hx' = hx := by
     apply Subsingleton.elim
   change eqToHom (congrArg FundamentalGroupoid.mk hx').symm ≫
-      (Functor.mapVertexGroup hp'.fundamentalGroupoidMap (FundamentalGroupoid.mk x)) δ ≫
+      (hp'.fundamentalGroupoidMap.mapVertexGroup (FundamentalGroupoid.mk x)) δ ≫
       eqToHom (congrArg FundamentalGroupoid.mk hx') = γ
   rw [hmk]
   simpa [Category.assoc] using congrArg (fun η ↦ eqToHom hx.symm ≫ η ≫ eqToHom hx) hδ
@@ -147,8 +147,8 @@ theorem subgroup_condition_topological_of_groupoid
     -- The over-category relation says the induced functors commute with the projection to `Π(B)`.
     simpa using congrArg (fun F ↦ F.toFunctor) (Over.w k)
   have hsub_groupoid :
-      ξ.2 ▸ (Functor.mapVertexGroup hp.fundamentalGroupoidMap ξ.1).range ≤
-        ξ'.2 ▸ (Functor.mapVertexGroup hp'.fundamentalGroupoidMap ξ'.1).range := by
+      ξ.2 ▸ (hp.fundamentalGroupoidMap.mapVertexGroup ξ.1).range ≤
+        ξ'.2 ▸ (hp'.fundamentalGroupoidMap.mapVertexGroup ξ'.1).range := by
     -- Apply the covering-groupoid lifting criterion at the chosen source point `ξ`.
     simpa [ξ, hξ] using
       (Functor.mapVertexGroup_range_le_of_lift
@@ -156,10 +156,10 @@ theorem subgroup_condition_topological_of_groupoid
         (g := k.left.toFunctor) ξ.1 ξ' hk hξ.symm)
   intro γ hγ
   have hγ_source :
-      γ ∈ ξ.2 ▸ (Functor.mapVertexGroup hp.fundamentalGroupoidMap ξ.1).range :=
+      γ ∈ ξ.2 ▸ (hp.fundamentalGroupoidMap.mapVertexGroup ξ.1).range :=
     fundamental_groupoid_source_mem_of_mapOfEq_mem hp e₀ γ hγ
   have hγ_target :
-      γ ∈ ξ'.2 ▸ (Functor.mapVertexGroup hp'.fundamentalGroupoidMap ξ'.1).range :=
+      γ ∈ ξ'.2 ▸ (hp'.fundamentalGroupoidMap.mapVertexGroup ξ'.1).range :=
     hsub_groupoid hγ_source
   -- Convert the transported categorical target membership back into the topological subgroup.
   exact mapOfEq_mem_of_fundamental_groupoid_target_mem hp' e₀ ξ' γ hγ_target
@@ -212,14 +212,14 @@ theorem toFundamentalGroupoidCoveringHom_bijective
       have hobj := congrArg
         (fun F : FundamentalGroupoid E ⥤ FundamentalGroupoid B ↦ F.obj ξ.1)
         (congrArg (fun F => F.toFunctor) (Over.w k))
-      simpa [ξ] using hobj
+      exact hobj
     let e' : p' ⁻¹' {p e₀} := hp'.fundamentalGroupoidMapFiberEquiv (p e₀) ξ'
     have hsub_groupoid :=
       -- The given morphism of covering functors is already a lift, so it yields the subgroup inclusion.
       Functor.mapVertexGroup_range_le_of_lift
         (p := hp'.fundamentalGroupoidMap) (f := hp.fundamentalGroupoidMap)
         (g := k.left.toFunctor) ξ.1 ξ' (by
-          simpa using congrArg (fun F => F.toFunctor) (Over.w k)) rfl
+          exact congrArg (fun F => F.toFunctor) (Over.w k)) rfl
     rcases
         (existsUnique_coveringSpaceMorphism_iff_fundamentalGroup_range_le
           hp hp' (p e₀) e e').mpr

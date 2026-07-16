@@ -1,7 +1,9 @@
-import AlgebraicTopology_May_1999.Chap03.Corollary_3_7_8
-import AlgebraicTopology_May_1999.Chap03.Lemma_3_8_11
-import AlgebraicTopology_May_1999.Chap03.Theorem_3_6_1
-import AlgebraicTopology_May_1999.Chap03.Theorem_3_8_2
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Corollary_3_7_8
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Lemma_3_8_11
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Theorem_3_6_1
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Theorem_3_8_2
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Construction_3_6_3
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Lemma_3_6_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -229,7 +231,8 @@ private theorem mem_fundamentalGroup_range_iff_toPath_mem_mapVertexGroup_range
     (hp : IsPathConnectedCoveringMap p) (e : E) (γ : FundamentalGroup B (p e)) :
     γ ∈ (FundamentalGroup.map p e).range ↔
       γ.toPath ∈
-        (Functor.mapVertexGroup hp.fundamentalGroupoidMap (FundamentalGroupoid.mk e)).range := by
+        (Groupoid.CategoryTheory.Functor.mapVertexGroup hp.fundamentalGroupoidMap
+          (FundamentalGroupoid.mk e)).range := by
   constructor
   · rintro ⟨δ, rfl⟩
     exact ⟨δ.toPath, rfl⟩
@@ -243,11 +246,13 @@ the subgroup `H`. -/
 private theorem universal_cover_orbit_mapVertexGroup_range_eq_subgroup
     {E : Type u} [TopologicalSpace E] [LocPathConnectedSpace E] {p : C(E, B)}
     (hp : IsUniversalCoveringMap p) (e : E) (H : O(FundamentalGroup B (p e))) :
-    (Functor.mapVertexGroup
-      ((((IsUniversalCoveringMap.universalCoverOrbitFunctor hp e).obj H).isPathConnectedCoveringMap)
-        .fundamentalGroupoidMap)
-      (FundamentalGroupoid.mk (IsUniversalCoveringMap.universalCoverOrbitPoint hp e H))).range =
+    let hpH := ((IsUniversalCoveringMap.universalCoverOrbitFunctor hp e).obj H).isPathConnectedCoveringMap
+    loopSubgroupToEndSubgroup (FundamentalGroupoid.mk (p e))
+      (Groupoid.CategoryTheory.Functor.mapVertexGroup
+        (IsPathConnectedCoveringMap.fundamentalGroupoidMap hpH)
+        (FundamentalGroupoid.mk (IsUniversalCoveringMap.universalCoverOrbitPoint hp e H))).range =
         (H : Subgroup (FundamentalGroup B (p e))) := by
+  dsimp only
   ext γ
   -- Convert the vertex-group statement back to the ordinary based fundamental-group image.
   exact
@@ -256,16 +261,21 @@ private theorem universal_cover_orbit_mapVertexGroup_range_eq_subgroup
       (e := IsUniversalCoveringMap.universalCoverOrbitPoint hp e H)
       (γ := γ)).symm.trans <| by
         -- Lemma 3.8.11 computes that ordinary subgroup at the canonical orbit point.
+        change γ ∈ (FundamentalGroup.map
+          (IsUniversalCoveringMap.universalCoverOrbitProjection hp e H)
+          (IsUniversalCoveringMap.universalCoverOrbitPoint hp e H)).range ↔ γ ∈ H
         rw [IsUniversalCoveringMap.universalCoverOrbitProjection_associatedSubgroup_eq hp e H]
+        rfl
 
 /-- Helper for Corollary 3.8.12: the orbit-model cover over `Π(B)` realizes the subgroup `H`
 at its canonical identity-class basepoint. -/
 private theorem orbit_model_mapVertexGroup_range_eq_subgroup
     [CategoryTheory.IsConnected (FundamentalGroupoid B)]
     (b : FundamentalGroupoid B) (H : O(End b)) :
-    (Functor.mapVertexGroup
-      ((orbitCategoryToConnectedCovering b).obj H).obj.hom
-      (orbitSubgroupCoveringObjOfHom b (H : Subgroup (End b)) (𝟙 b))).range =
+    loopSubgroupToEndSubgroup b
+      (Groupoid.CategoryTheory.Functor.mapVertexGroup
+        ((orbitCategoryToConnectedCovering b).obj H).obj.hom
+        (orbitSubgroupCoveringObjOfHom b (H : Subgroup (End b)) (𝟙 b))).range =
         (H : Subgroup (End b)) := by
   ext γ
   -- Unfold the orbit-cover model just enough to reuse the standard basepoint classifier.
@@ -278,21 +288,19 @@ private theorem transport_mapVertexGroup_range_eq_of_eq_subgroup
     {X Y : ConnectedCovering (FundamentalGroupoid B)} {b : FundamentalGroupoid B}
     (ξ : X.obj.hom.Fiber b) (η : Y.obj.hom.Fiber b)
     (H : Subgroup (End b))
-    (hξ : (Functor.mapVertexGroup X.obj.hom ξ.1).range = H)
-    (hη : (Functor.mapVertexGroup Y.obj.hom η.1).range = H) :
-    ξ.2 ▸ (Functor.mapVertexGroup X.obj.hom ξ.1).range =
-      η.2 ▸ (Functor.mapVertexGroup Y.obj.hom η.1).range := by
-  -- Rewrite each transported range to the common subgroup `H`.
-  calc
-    ξ.2 ▸ (Functor.mapVertexGroup X.obj.hom ξ.1).range = H := by
-      simpa using hξ
-    _ = η.2 ▸ (Functor.mapVertexGroup Y.obj.hom η.1).range := by
-      simpa using hη.symm
+    (hξ : loopSubgroupToEndSubgroup b
+      (ξ.2 ▸ (Groupoid.CategoryTheory.Functor.mapVertexGroup X.obj.hom ξ.1).range) = H)
+    (hη : loopSubgroupToEndSubgroup b
+      (η.2 ▸ (Groupoid.CategoryTheory.Functor.mapVertexGroup Y.obj.hom η.1).range) = H) :
+    ξ.2 ▸ (Groupoid.CategoryTheory.Functor.mapVertexGroup X.obj.hom ξ.1).range =
+      η.2 ▸ (Groupoid.CategoryTheory.Functor.mapVertexGroup Y.obj.hom η.1).range := by
+  apply loopSubgroupToEndSubgroup_injective b
+  exact hξ.trans hη.symm
 
 /-- Helper for Corollary 3.8.12: for a fixed subgroup `H`, the quotient universal-cover model and
 the orbit-model cover over `Π(B)` are isomorphic because they determine the same subgroup at the
 same base object. -/
-private noncomputable theorem universal_cover_orbit_groupoid_covering_iso_orbit_model
+private noncomputable def universal_cover_orbit_groupoid_covering_iso_orbit_model
     {E : Type u} [TopologicalSpace E] [LocPathConnectedSpace E] {p : C(E, B)}
     [CategoryTheory.IsConnected (FundamentalGroupoid B)]
     (hp : IsUniversalCoveringMap p) (e : E) (H : O(End (FundamentalGroupoid.mk (p e)))) :
@@ -300,6 +308,7 @@ private noncomputable theorem universal_cover_orbit_groupoid_covering_iso_orbit_
         ((IsUniversalCoveringMap.universalCoverOrbitFunctor hp e).obj
           (show O(FundamentalGroup B (p e)) from H)) ≅
       (orbitCategoryToConnectedCovering (FundamentalGroupoid.mk (p e))).obj H := by
+  classical
   let X : ConnectedCovering (FundamentalGroupoid B) :=
     fundamentalGroupoidFunctor.obj
       ((IsUniversalCoveringMap.universalCoverOrbitFunctor hp e).obj
@@ -320,49 +329,37 @@ private noncomputable theorem universal_cover_orbit_groupoid_covering_iso_orbit_
   let _ : CategoryTheory.IsConnected X.obj.left := ConnectedCovering.isConnected X
   let _ : IsPreconnected Y.obj.left := (ConnectedCovering.isConnected Y).toIsPreconnected
   have hsource :
-      (Functor.mapVertexGroup X.obj.hom ξ.1).range =
+      loopSubgroupToEndSubgroup (FundamentalGroupoid.mk (p e))
+        (Groupoid.CategoryTheory.Functor.mapVertexGroup X.obj.hom ξ.1).range =
         (H : Subgroup (End (FundamentalGroupoid.mk (p e)))) := by
     -- The quotient-cover model keeps the same subgroup after applying `Π`.
-    change
-      (Functor.mapVertexGroup
-        ((((IsUniversalCoveringMap.universalCoverOrbitFunctor hp e).obj
-            (show O(FundamentalGroup B (p e)) from H)).isPathConnectedCoveringMap)
-          .fundamentalGroupoidMap)
-        (FundamentalGroupoid.mk
-          (IsUniversalCoveringMap.universalCoverOrbitPoint hp e
-            (show O(FundamentalGroup B (p e)) from H)))).range =
-        (H : Subgroup (End (FundamentalGroupoid.mk (p e))))
-    exact
+    simpa [X, ξ] using
       universal_cover_orbit_mapVertexGroup_range_eq_subgroup hp e
         (show O(FundamentalGroup B (p e)) from H)
   have htarget :
-      (Functor.mapVertexGroup Y.obj.hom η.1).range =
+      loopSubgroupToEndSubgroup (FundamentalGroupoid.mk (p e))
+        (Groupoid.CategoryTheory.Functor.mapVertexGroup Y.obj.hom η.1).range =
         (H : Subgroup (End (FundamentalGroupoid.mk (p e)))) := by
     -- The orbit-cover model realizes `H` at the identity coset.
-    change
-      (Functor.mapVertexGroup
-        ((orbitCategoryToConnectedCovering (FundamentalGroupoid.mk (p e))).obj H).obj.hom
-        (orbitSubgroupCoveringObjOfHom
-          (FundamentalGroupoid.mk (p e))
-          (H : Subgroup (End (FundamentalGroupoid.mk (p e))))
-          (𝟙 (FundamentalGroupoid.mk (p e))))).range =
-        (H : Subgroup (End (FundamentalGroupoid.mk (p e))))
-    exact orbit_model_mapVertexGroup_range_eq_subgroup
+    simpa [Y, η] using orbit_model_mapVertexGroup_range_eq_subgroup
       (B := B) (FundamentalGroupoid.mk (p e)) H
   have hEq :
-      ξ.2 ▸ (Functor.mapVertexGroup X.obj.hom ξ.1).range =
-        η.2 ▸ (Functor.mapVertexGroup Y.obj.hom η.1).range := by
+      ξ.2 ▸ (Groupoid.CategoryTheory.Functor.mapVertexGroup X.obj.hom ξ.1).range =
+        η.2 ▸ (Groupoid.CategoryTheory.Functor.mapVertexGroup Y.obj.hom η.1).range := by
     -- Both classifiers reduce to the same literal subgroup `H`.
     exact
       transport_mapVertexGroup_range_eq_of_eq_subgroup
         (X := X) (Y := Y) ξ η
         (H := (H : Subgroup (End (FundamentalGroupoid.mk (p e)))))
         hsource htarget
-  obtain ⟨h, hh, _⟩ :=
+  have hex :=
     (CategoryTheory.Functor.IsCovering.existsUnique_map_iff_mapVertexGroup_range_le
       (ConnectedCovering.isCovering Y)
       (FundamentalGroupoid.mk (p e))
       ξ η).2 hEq.le
+  let h := Classical.choose hex
+  have hex' := Classical.choose_spec hex
+  let hh := hex'.1
   have hIso : IsIso h :=
     (CategoryTheory.Functor.IsCovering.isIso_map_iff_mapVertexGroup_range_eq
       (ConnectedCovering.isCovering X)
@@ -371,12 +368,25 @@ private noncomputable theorem universal_cover_orbit_groupoid_covering_iso_orbit_
       ξ η h hh).2 hEq
   -- Package the owner-level isomorphism into the full subcategory of connected coverings.
   let _ : IsIso h := hIso
-  exact ObjectProperty.isoMk _ (asIso h)
+  let h' : X.obj ⟶ Y.obj := GroupoidFunctorOver.homMk h.left.toFunctor
+    (congrArg (fun F => F.toFunctor) (Over.w h))
+  let i' : Y.obj ⟶ X.obj := GroupoidFunctorOver.homMk (inv h).left.toFunctor
+    (congrArg (fun F => F.toFunctor) (Over.w (inv h)))
+  let e' : X.obj ≅ Y.obj :=
+    { hom := h'
+      inv := i'
+      hom_inv_id := by
+        apply GroupoidFunctorOver.Hom.ext
+        exact congrArg (fun k => k.left.toFunctor) (IsIso.hom_inv_id h)
+      inv_hom_id := by
+        apply GroupoidFunctorOver.Hom.ext
+        exact congrArg (fun k => k.left.toFunctor) (IsIso.inv_hom_id h) }
+  exact ObjectProperty.isoMk _ e'
 
 /-- Helper for Corollary 3.8.12: after fixing a universal cover and basepoint, every connected
 covering of `Π(B)` comes from the corresponding orbit object because the orbit-model cover and the
 universal-cover quotient realize the same subgroup at the chosen basepoint. -/
-private noncomputable theorem universal_cover_orbit_comp_essSurj
+private theorem universal_cover_orbit_comp_essSurj
     [ConnectedSpace B] [LocPathConnectedSpace B]
     {E : Type u} [TopologicalSpace E] [LocPathConnectedSpace E] {p : C(E, B)}
     (hp : IsUniversalCoveringMap p) (e : E) :
@@ -408,7 +418,7 @@ private noncomputable theorem universal_cover_orbit_comp_essSurj
 /-- Helper for Corollary 3.8.12: once the universal-cover orbit functor is fixed, the comparison
 functor to connected coverings of `Π(B)` is an equivalence because it is full, faithful, and the
 source-faithful orbit comparison above is essentially surjective. -/
-private noncomputable theorem universal_cover_orbit_comp_isEquivalence
+private theorem universal_cover_orbit_comp_isEquivalence
     [ConnectedSpace B] [LocPathConnectedSpace B]
     {E : Type u} [TopologicalSpace E] [LocPathConnectedSpace E] {p : C(E, B)}
     (hp : IsUniversalCoveringMap p) (e : E) :
@@ -416,6 +426,8 @@ private noncomputable theorem universal_cover_orbit_comp_isEquivalence
       (((IsUniversalCoveringMap.universalCoverOrbitFunctor hp e) ⋙
           fundamentalGroupoidFunctor :
             O(FundamentalGroup B (p e)) ⥤ ConnectedCovering (FundamentalGroupoid B))) := by
+  let _ : Functor.IsEquivalence (IsUniversalCoveringMap.universalCoverOrbitFunctor hp e) :=
+    IsUniversalCoveringMap.universalCoverOrbitFunctor_isEquivalence hp e
   let _ : (fundamentalGroupoidFunctor :
       ConnectedCoveringSpace B ⥤ ConnectedCovering (FundamentalGroupoid B)).Faithful :=
     fundamentalGroupoidFunctor_faithful (B := B)
@@ -436,7 +448,7 @@ private noncomputable theorem universal_cover_orbit_comp_isEquivalence
 /-- Helper for Corollary 3.8.12: after fixing a universal cover and a point above the chosen
 base object, cancel the known orbit-category equivalence on the left to conclude that `Π`
 itself is an equivalence. -/
-private noncomputable theorem fundamentalGroupoidFunctor_isEquivalence_of_universalCover
+private theorem fundamentalGroupoidFunctor_isEquivalence_of_universalCover
     [ConnectedSpace B] [LocPathConnectedSpace B]
     {E : Type u} [TopologicalSpace E] [LocPathConnectedSpace E] {p : C(E, B)}
     (hp : IsUniversalCoveringMap p) (e : E) :

@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import AlgebraicTopology_May_1999.Chap03.Definition_3_4_7
-import AlgebraicTopology_May_1999.Chap03.Lemma_3_4_3
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_4_7
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Lemma_3_4_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -17,7 +17,7 @@ action on `G ⧸ H`. -/
 private def orbitCategoryToAction : O(G) ⥤ Action (Type u) G where
   obj H := Action.ofMulAction G (G ⧸ H)
   map {H K} f :=
-    { hom := f.toFun
+    { hom := TypeCat.ofHom f.toFun
       comm := fun g ↦ by
         ext x
         simpa [Action.ofMulAction_apply] using f.map_smul' g x }
@@ -41,10 +41,10 @@ abbrev orbitCategoryToTransitiveGSet :
 the orbit category. -/
 private def action_hom_to_orbit_morphism {H K : O(G)}
     (φ : Action.ofMulAction G (G ⧸ H) ⟶ Action.ofMulAction G (G ⧸ K)) : H ⟶ K where
-  toFun := φ.hom
+  toFun x := φ.hom x
   map_smul' g x := by
     -- The orbit-category morphism condition is exactly equivariance of the underlying function.
-    have h := congrFun (φ.comm g) x
+    have h := congrArg (fun k ↦ k x) (φ.comm g)
     simpa [Action.ofMulAction_apply] using h
 
 /-- Helper for Remark 3.6.7: a transitive bundled `G`-action is isomorphic to the quotient by the
@@ -92,13 +92,14 @@ theorem orbitCategoryToTransitiveGSet_isEquivalence :
         -- Faithfulness reduces to equality of the underlying equivariant functions.
         apply MulActionHom.ext
         intro x
-        exact congrFun (congrArg Action.Hom.hom hfg) x }
+        exact congrArg (fun k ↦ k.hom.hom x) hfg }
   let _ : (orbitCategoryToAction G).Full :=
     { map_surjective := by
         intro H K φ
         -- Fullness uses the adapter turning an `Action` morphism back into an orbit morphism.
         refine ⟨action_hom_to_orbit_morphism (G := G) φ, ?_⟩
         apply Action.hom_ext
+        ext x
         rfl }
   let _ : (orbitCategoryToTransitiveGSet G).EssSurj :=
     { mem_essImage := by

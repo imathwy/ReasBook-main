@@ -1,6 +1,6 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap03.Example_3_1_7
-import AlgebraicTopology_May_1999.Chap03.Definition_3_2_7
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Example_3_1_7
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_2_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -50,11 +50,9 @@ private theorem sphereModel_pathConnectedSpace_of_two_le {n : ℕ} (hn : 2 ≤ n
   -- Convert the dimension hypothesis into the rank hypothesis needed by `isPathConnected_sphere`.
   have hdim : 1 < Module.rank ℝ (EuclideanSpace ℝ (Fin (n + 1))) := by
     rw [← Module.finrank_eq_rank, finrank_euclideanSpace]
-    have hcard : 1 < (n + 1 : Cardinal) := by
-      have hnat : 1 < n + 1 := by
-        omega
-      exact_mod_cast hnat
-    simpa using hcard
+    have hnat : 1 < n + 1 := by
+      omega
+    simpa using hnat
   have hs : IsPathConnected (SphereModel n) := by
     simpa [SphereModel] using
       (isPathConnected_sphere

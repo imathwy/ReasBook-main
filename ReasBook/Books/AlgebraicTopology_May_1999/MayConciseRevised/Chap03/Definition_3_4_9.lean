@@ -45,19 +45,26 @@ by `T.map`. -/
 noncomputable abbrev vertexGroupMulAction (T : B ⥤ Type w) (b : B) :
     MulAction (CategoryTheory.End b) (T.obj b) :=
   MulAction.ofEndHom
-    { toFun := T.map
-      map_one' := T.map_id b
+    { toFun := fun g x ↦ T.map g x
+      map_one' := by
+        change (fun x ↦ T.map (𝟙 b) x) = id
+        funext x
+        simp
       map_mul' := by
         intro g h
-        change T.map (h ≫ g) = T.map g ∘ T.map h
-        exact T.map_comp h g }
+        change
+          (fun x ↦ T.map (h ≫ g) x) =
+            (fun x ↦ T.map g (T.map h x))
+        funext x
+        rw [T.map_comp]
+        rfl }
 
 /-- The vertex-group action attached to `T` evaluates a loop by applying `T.map`. -/
 @[simp] theorem vertexGroupMulAction_smul_eq_map (T : B ⥤ Type w) (b : B)
     (g : CategoryTheory.End b) (x : T.obj b) :
     letI := vertexGroupMulAction T b
     g • x = T.map g x := by
-  change (vertexGroupMulAction T b).smul g x = T.map g x
+  change (fun y ↦ T.map g y) x = T.map g x
   rfl
 
 end CategoryTheory.Functor

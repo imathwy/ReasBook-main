@@ -1,7 +1,7 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap03.Definition_3_3_3
-import AlgebraicTopology_May_1999.Chap03.ProofStep_3_5_2
-import AlgebraicTopology_May_1999.Chap03.Remark_3_3_13
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_3_3
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.ProofStep_3_5_2
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Remark_3_3_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -28,7 +28,7 @@ lemma fiberTranslationMap_eqToHom {p : E ⥤ B} (hp : Functor.IsCovering p) {b b
     fiberTranslationMap hp (eqToHom h) x = h ▸ x := by
   -- After reducing to `h = rfl`, this is exactly the identity action on the fiber.
   cases h
-  simp
+  exact congrFun (fiberTranslationMap_id hp b) x
 
 /-- Helper for Theorem 3.5.1: a fiber translation from a general fiber point can be normalized to
 the literal basepoint `⟨e, rfl⟩` by precomposing the base arrow with the equality witness. -/
@@ -66,9 +66,10 @@ lemma fiberTranslationMap_eq_self_of_mem_transport_range {p : E ⥤ B} (hp : Fun
         𝟙 (p.obj e) * (eqToHom h ≫ δ ≫ eqToHom h.symm)⁻¹ ∈
           (Functor.mapVertexGroup p e).range := by
       simpa using Subgroup.inv_mem (Functor.mapVertexGroup p e).range hδ'
-    simpa using
+    exact
       (fiberTranslation_basepoint_eq_of_mem_mapVertexGroup_range hp e
-        (eqToHom h ≫ δ ≫ eqToHom h.symm) (𝟙 (p.obj e)) hmemInv)
+        (eqToHom h ≫ δ ≫ eqToHom h.symm) (𝟙 (p.obj e)) hmemInv).trans
+        (congrFun (fiberTranslationMap_id hp (p.obj e)) ⟨e, rfl⟩)
   -- Transport the literal-basepoint fixed-point statement back to the original fiber point.
   calc
     fiberTranslationMap hp δ ⟨e, h⟩ =
@@ -194,8 +195,12 @@ theorem existsUnique_lift_iff_mapVertexGroup_range_le {p : E ⥤ B} (hp : Functo
       exact chosen_lift_obj_comp hp x₀ e₀ hsub a β
     have hgObj₀ : gObj x₀ = e₀ := by
       -- Path independence already identifies the chosen endpoint at `x₀` with the basepoint.
-      simpa [gObj, chosen_lift_obj] using
-        lift_endpoint_eq_of_subgroup_inclusion hp x₀ e₀ hsub (a x₀) (𝟙 x₀)
+      have hid : fiberTranslationMap hp (f.map (𝟙 x₀)) e₀ = e₀ := by
+        rw [f.map_id]
+        exact congrFun (fiberTranslationMap_id hp (f.obj x₀)) e₀
+      exact
+        (lift_endpoint_eq_of_subgroup_inclusion hp x₀ e₀ hsub (a x₀) (𝟙 x₀)).trans
+          hid
     have hgObj_val_comp : ∀ {x y : X} (β : x ⟶ y),
         (fiberTranslationMap hp (f.map β) (gObj x)).1 = (gObj y).1 := by
       intro x y β

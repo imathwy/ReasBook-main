@@ -1,6 +1,6 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap03.Definition_3_2_7
-import AlgebraicTopology_May_1999.Chap03.Definition_3_8_1
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_2_7
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_8_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -1054,6 +1054,7 @@ lemma exists_pathConnectedCovering_with_trivial_fundamentalGroup_range
   classical
   let b0 : B := Classical.choice inferInstance
   let E : Type u := universal_cover_candidate (B := B) b0
+  letI : TopologicalSpace E := universal_cover_candidate_topologicalSpace (B := B) b0
   let p : C(E, B) := universal_cover_candidate_projectionMap (B := B) b0
   have hsurj : Function.Surjective p := universal_cover_candidate_projectionMap_surjective
     (B := B) b0
@@ -1161,9 +1162,13 @@ lemma exists_pathConnectedCovering_with_trivial_fundamentalGroup_range
   have hbot :
       (FundamentalGroup.map p e₀).range = ⊥ := by
     -- A loop at `e₀` projects to the trivial class because its covering lift closes up at `e₀`.
-    simpa [p, e₀] using
-      universal_cover_candidate_fundamentalGroup_range_eq_bot
-        (B := B) (b0 := b0) hp
+    change
+      (FundamentalGroup.map
+        (universal_cover_candidate_projectionMap (B := B) b0)
+        (⟨b0, Path.Homotopic.Quotient.refl b0⟩ : universal_cover_candidate (B := B) b0)).range =
+        ⊥
+    exact universal_cover_candidate_fundamentalGroup_range_eq_bot
+      (B := B) (b0 := b0) hp
   exact ⟨E, inferInstance, hEpath, p, hp, e₀, hbot⟩
 
 /-- Theorem 3.8.2: a connected, locally path connected, semilocally simply connected space admits

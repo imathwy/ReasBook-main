@@ -1,7 +1,7 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap03.Definition_3_3_11
-import AlgebraicTopology_May_1999.Chap03.Lemma_3_3_12
-import AlgebraicTopology_May_1999.Chap03.Lemma_3_4_11
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_3_11
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Lemma_3_3_12
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Lemma_3_4_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,8 +1,8 @@
 import Mathlib.Analysis.Complex.Circle
 import Mathlib.Topology.ContinuousMap.Basic
-import AlgebraicTopology_May_1999.Chap01.Lemma_1_4_2
-import AlgebraicTopology_May_1999.Chap01.Lemma_1_6_1
-import AlgebraicTopology_May_1999.Chap01.Theorem_1_5_11
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap01.Lemma_1_4_2
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap01.Lemma_1_6_1
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap01.Theorem_1_5_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

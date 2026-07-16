@@ -1,6 +1,8 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap03.Definition_3_3_7
-import AlgebraicTopology_May_1999.Chap03.Lemma_3_4_11
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_3_7
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Lemma_3_4_11
+
+set_option maxHeartbeats 1000000
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -21,7 +23,7 @@ lemma fiberTranslationMap_eqToHom {p : E ⥤ B} (hp : Functor.IsCovering p) {b b
     fiberTranslationMap hp (eqToHom h) x = h ▸ x := by
   -- After reducing to the reflexive equality, this is the identity action on the fiber.
   cases h
-  simp
+  exact congrFun (fiberTranslationMap_id hp b) x
 
 /-- Helper for ProofStep 3.5.3: a fiber translation from a general fiber point can be normalized
 to the literal basepoint `⟨e, rfl⟩` by precomposing with the equality witness. -/
@@ -60,18 +62,20 @@ private theorem mem_mapVertexGroup_range_iff_fiberTranslationMap_basepoint_eq
     calc
       fiberTranslationMap hp γ x₀ = fiberTranslationMap hp γ (fiberTranslationMap hp γ⁻¹ x₀) := by
         rw [hstab]
-      _ = x₀ := by
-        simpa using
-          (FunctorToTypes.map_hom_map_inv_apply (fiberTranslationFunctor hp) (asIso γ) x₀)
+      _ = fiberTranslationMap hp (γ⁻¹ ≫ γ) x₀ := by
+        symm
+        exact congrFun (fiberTranslationMap_comp hp γ⁻¹ γ) x₀
+      _ = x₀ := by simp [fiberTranslationMap_id]
   · intro hγ
     have hinv : fiberTranslationMap hp γ⁻¹ x₀ = x₀ := by
       calc
         fiberTranslationMap hp γ⁻¹ x₀ =
             fiberTranslationMap hp γ⁻¹ (fiberTranslationMap hp γ x₀) := by
           rw [hγ]
-        _ = x₀ := by
-          simpa using
-            (FunctorToTypes.map_inv_map_hom_apply (fiberTranslationFunctor hp) (asIso γ) x₀)
+        _ = fiberTranslationMap hp (γ ≫ γ⁻¹) x₀ := by
+          symm
+          exact congrFun (fiberTranslationMap_comp hp γ γ⁻¹) x₀
+        _ = x₀ := by simp [fiberTranslationMap_id]
     have hstab : γ ∈ MulAction.stabilizer (p.obj e ⟶ p.obj e) x₀ := by
       change fiberTranslationMap hp γ⁻¹ x₀ = x₀
       exact hinv

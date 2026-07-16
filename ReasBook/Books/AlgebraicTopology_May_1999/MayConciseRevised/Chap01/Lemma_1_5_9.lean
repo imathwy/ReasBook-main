@@ -1,7 +1,7 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap01.Construction_1_5_5
-import AlgebraicTopology_May_1999.Chap01.Lemma_1_5_4
-import AlgebraicTopology_May_1999.Chap01.Definition_1_5_8
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap01.Construction_1_5_5
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap01.Lemma_1_5_4
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap01.Definition_1_5_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

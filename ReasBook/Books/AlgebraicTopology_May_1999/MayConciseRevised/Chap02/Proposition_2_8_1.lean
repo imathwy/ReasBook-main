@@ -1,8 +1,8 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap02.Lemma_2_4_2
-import AlgebraicTopology_May_1999.Chap02.Lemma_2_4_4
-import AlgebraicTopology_May_1999.Chap02.Proposition_2_4_6
-import AlgebraicTopology_May_1999.Chap02.Theorem_2_7_5
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap02.Lemma_2_4_2
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap02.Lemma_2_4_4
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap02.Proposition_2_4_6
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap02.Theorem_2_7_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -183,7 +183,7 @@ noncomputable def wedge_wide_pushout_is_colimit
     cases j with
     | none =>
         -- The descended map is a morphism in `Under`, so it preserves the common basepoint leg.
-        exact (Sigma.desc p).w.symm
+        exact (Sigma.desc p).w
     | some i =>
         -- On each summand, the descended map agrees with the specified cocone leg by coproduct
         -- universal property in `Under`.
@@ -191,7 +191,7 @@ noncomputable def wedge_wide_pushout_is_colimit
   · intro m hm
     let δ : ∀ k : Fin 2, ∐ X ⟶ Under.mk (s.ι.app none)
       | 0 => Under.homMk m (hm none)
-      | 1 => Under.homMk (Sigma.desc p).right ((Sigma.desc p).w.symm)
+      | 1 => Under.homMk (Sigma.desc p).right (Sigma.desc p).w
     have hδ :
         δ 0 = δ 1 := by
       apply Sigma.hom_ext
@@ -1297,8 +1297,8 @@ private theorem open_subtype_wide_pushout_extension_comm
   have hbase : underTopBasepoint (X j) ∈ U j :=
     open_subtype_wide_pushout_branch_basepoint_mem X W U hhead hsummand j
   have hfac :=
-    congrFun (s.w (WidePushoutShape.Hom.init j))
-      (TopCat.terminalIsoPUnit.inv PUnit.unit)
+    congrArg (fun k ↦ k.hom (TopCat.terminalIsoPUnit.inv PUnit.unit))
+      (s.w (WidePushoutShape.Hom.init j))
   have hbranch :
       open_subtype_wide_pushout_extension_branch X W U hhead hsummand s j
           (underTopBasepoint (X j)) =
@@ -1330,9 +1330,12 @@ private noncomputable def open_subtype_wide_pushout_extension_cocone
         (fun j ↦ (X j).right)
         (fun j ↦ (X j).hom)) ⋙ forget TopCat) :=
   WidePushoutShape.mkCocone
-    (open_subtype_wide_pushout_extension_head X W U hhead hsummand s)
-    (open_subtype_wide_pushout_extension_branch X W U hhead hsummand s)
-    (open_subtype_wide_pushout_extension_comm X W U hhead hsummand s)
+    (TypeCat.ofHom (open_subtype_wide_pushout_extension_head X W U hhead hsummand s))
+    (fun j ↦ TypeCat.ofHom
+      (open_subtype_wide_pushout_extension_branch X W U hhead hsummand s j))
+    (fun j ↦ by
+      ext u
+      exact congrFun (open_subtype_wide_pushout_extension_comm X W U hhead hsummand s j) u)
 
 /-- Helper for Proposition 2.8.1: a map out of `W` is determined by its value at the wedge
 basepoint and on each prescribed branch inclusion `U j ⟶ W`. -/
@@ -1382,21 +1385,21 @@ private noncomputable def open_subtype_wide_pushout_is_colimit_type
   refine IsColimit.ofExistsUnique fun s ↦ ?_
   let hambient := isColimitOfPreserves (forget TopCat) (wedge_wide_pushout_is_colimit X)
   let sExt := open_subtype_wide_pushout_extension_cocone X W U hhead hsummand s
-  let Φ : (∐ X).right → s.pt := hambient.desc sExt
+  let Φ : (∐ X).right → s.pt := (hambient.desc sExt).hom
   let desc : W → s.pt := fun x ↦ Φ x.1
   have hdescFac :
       ∀ j,
         ((forget TopCat).mapCocone
-          (open_subtype_wide_pushout_cocone X W U hhead hsummand)).ι.app j ≫ desc =
+          (open_subtype_wide_pushout_cocone X W U hhead hsummand)).ι.app j ≫ TypeCat.ofHom desc =
             s.ι.app j := by
     intro j
     cases j with
     | none =>
-        funext u
+        ext u
         -- The head leg is the ambient wedge basepoint, so the ambient descended map can be read
         -- off from the head face of the extension cocone.
         have hfac :=
-          congrArg (fun f : (⊤_ TopCat) → s.pt => f u) (hambient.fac sExt none)
+          congrArg (fun f ↦ f.hom u) (hambient.fac sExt none)
         have hΦ :
             Φ (underTopBasepoint (∐ X)) = Φ ((∐ X).hom u) := by
           exact congrArg Φ (wedge_head_eq_basepoint X u).symm
@@ -1405,23 +1408,29 @@ private noncomputable def open_subtype_wide_pushout_is_colimit_type
           open_subtype_wide_pushout_extension_cocone,
           open_subtype_wide_pushout_extension_head] using hΦ.trans hfac
     | some j =>
-        funext y
+        ext y
         -- On a branch point `y : U j`, the discrete extension agrees with the original branch leg.
         have hfac :=
-          congrArg (fun f : (X j).right → s.pt => f y.1) (hambient.fac sExt (some j))
+          congrArg (fun f ↦ f.hom y.1) (hambient.fac sExt (some j))
+        change
+          Φ ((Sigma.ι X j).right y.1) =
+            open_subtype_wide_pushout_extension_branch X W U hhead hsummand s j y.1 at hfac
         change Φ ((Sigma.ι X j).right y.1) = s.ι.app (some j) y
-        simpa [hambient, sExt, open_subtype_wide_pushout_extension_cocone,
+        simpa [Φ, hambient, sExt, open_subtype_wide_pushout_extension_cocone,
           open_subtype_wide_pushout_extension_branch, y.2] using hfac
-  refine ⟨desc, hdescFac, ?_⟩
+  refine ⟨TypeCat.ofHom desc, hdescFac, ?_⟩
   intro m hm
   -- Uniqueness is now the map-ext principle for functions out of `W`.
-  apply open_subtype_wide_pushout_hom_ext X W U hhead hsummand m desc
-  · have hmBase := congrFun (hm none) (TopCat.terminalIsoPUnit.inv PUnit.unit)
-    have hdescBase := congrFun (hdescFac none) (TopCat.terminalIsoPUnit.inv PUnit.unit)
+  apply ConcreteCategory.hom_ext
+  intro x
+  apply congrFun
+  apply open_subtype_wide_pushout_hom_ext X W U hhead hsummand m.hom desc
+  · have hmBase := congrArg (fun f ↦ f.hom (TopCat.terminalIsoPUnit.inv PUnit.unit)) (hm none)
+    have hdescBase := congrArg (fun f ↦ f.hom (TopCat.terminalIsoPUnit.inv PUnit.unit)) (hdescFac none)
     exact hmBase.trans hdescBase.symm
   · intro j y
-    have hmBranch := congrFun (hm (some j)) y
-    have hdescBranch := congrFun (hdescFac (some j)) y
+    have hmBranch := congrArg (fun f ↦ f.hom y) (hm (some j))
+    have hdescBranch := congrArg (fun f ↦ f.hom y) (hdescFac (some j))
     exact hmBranch.trans hdescBranch.symm
 
 /-- Helper for Proposition 2.8.1: an open subset of the subtype `W` is open exactly when its

@@ -1,9 +1,9 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap03.Definition_3_2_6
-import AlgebraicTopology_May_1999.Chap03.Definition_3_2_7
-import AlgebraicTopology_May_1999.Chap03.Definition_3_7_10
-import AlgebraicTopology_May_1999.Chap03.Lemma_3_4_5
-import AlgebraicTopology_May_1999.Chap03.Theorem_3_7_9
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_2_6
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_2_7
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_7_10
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Lemma_3_4_5
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Theorem_3_7_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -118,7 +118,7 @@ private theorem mem_fundamentalGroup_range_iff_toPath_mem_mapVertexGroup_range
     (hp : IsPathConnectedCoveringMap p) (e : E) (γ : FundamentalGroup B (p e)) :
     γ ∈ (FundamentalGroup.map p e).range ↔
       γ.toPath ∈
-        (Functor.mapVertexGroup hp.fundamentalGroupoidMap (FundamentalGroupoid.mk e)).range := by
+        (hp.fundamentalGroupoidMap.mapVertexGroup (FundamentalGroupoid.mk e)).range := by
   constructor
   · rintro ⟨δ, rfl⟩
     exact ⟨δ.toPath, rfl⟩
@@ -220,7 +220,7 @@ theorem fiberMonodromyMulAction_stabilizer_eq_fundamentalGroupRange
     ⟨FundamentalGroupoid.mk e, rfl⟩
   have hstab_groupoid :
       MulAction.stabilizer (FundamentalGroupoid.mk (p e) ⟶ FundamentalGroupoid.mk (p e)) ξ₀ =
-        (Functor.mapVertexGroup hp.fundamentalGroupoidMap (FundamentalGroupoid.mk e)).range := by
+        (hp.fundamentalGroupoidMap.mapVertexGroup (FundamentalGroupoid.mk e)).range := by
     -- The categorical fiber-translation stabilizer is the image of the upstairs vertex group.
     simpa [ξ₀] using
       (CategoryTheory.Functor.IsCovering.fiberTranslation_basepoint_stabilizer_eq_mapVertexGroup_range
@@ -268,7 +268,7 @@ theorem fiberMonodromyMulAction_stabilizer_eq_fundamentalGroupRange
       -- Fixing the distinguished categorical fiber point is stabilizer membership.
       rwa [MulAction.mem_stabilizer_iff]
     have hmem_groupoid_inv : δ⁻¹ ∈
-        (Functor.mapVertexGroup hp.fundamentalGroupoidMap (FundamentalGroupoid.mk e)).range := by
+        (hp.fundamentalGroupoidMap.mapVertexGroup (FundamentalGroupoid.mk e)).range := by
       -- Rewrite categorical stabilizer membership using the standard basepoint theorem.
       simpa [hstab_groupoid] using hmem_stab
     have hmem_ordinary_inv : γ⁻¹ ∈ (FundamentalGroup.map p e).range :=
@@ -282,7 +282,7 @@ theorem fiberMonodromyMulAction_stabilizer_eq_fundamentalGroupRange
       -- The image subgroup is closed under inversion.
       simpa using Subgroup.inv_mem ((FundamentalGroup.map p e).range) hγ
     have hmem_groupoid_inv : δ⁻¹ ∈
-        (Functor.mapVertexGroup hp.fundamentalGroupoidMap (FundamentalGroupoid.mk e)).range :=
+        (hp.fundamentalGroupoidMap.mapVertexGroup (FundamentalGroupoid.mk e)).range :=
       (mem_fundamentalGroup_range_iff_toPath_mem_mapVertexGroup_range hp e (γ⁻¹)).1
         hmem_ordinary_inv
     have hmem_stab : δ⁻¹ ∈
@@ -391,7 +391,8 @@ theorem coveringSpaceAutToFiberAutHom_bijective
           φ.hom.hom (γ • x) = γ • (show p ⁻¹' {p e} from φ.hom.hom x) := by
       intro γ x
       -- The forward fiber automorphism is equivariant by definition.
-      simpa [Action.ofMulAction_apply] using congrFun (φ.hom.comm γ) x
+      simpa [Action.ofMulAction_apply] using
+        congrArg (fun k ↦ k.hom x) (φ.hom.comm γ)
     let φhom : (p ⁻¹' {p e}) →[FundamentalGroup B (p e)] (p ⁻¹' {p e}) :=
       { toFun := φ.hom.hom
         map_smul' := hφ_hom_smul }
@@ -400,7 +401,8 @@ theorem coveringSpaceAutToFiberAutHom_bijective
           φ.inv.hom (γ • x) = γ • (show p ⁻¹' {p e} from φ.inv.hom x) := by
       intro γ x
       -- The inverse fiber automorphism is equivariant for the same monodromy action.
-      simpa [Action.ofMulAction_apply] using congrFun (φ.inv.comm γ) x
+      simpa [Action.ofMulAction_apply] using
+        congrArg (fun k ↦ k.hom x) (φ.inv.comm γ)
     let φinv : (p ⁻¹' {p e}) →[FundamentalGroup B (p e)] (p ⁻¹' {p e}) :=
       { toFun := φ.inv.hom
         map_smul' := hφ_inv_smul }
@@ -437,7 +439,7 @@ theorem coveringSpaceAutToFiberAutHom_bijective
           _ = φ.inv.hom (φ.hom.hom x) := by
                 rw [hh_apply x, hi_apply (φ.hom.hom x)]
       have hidentity : φ.inv.hom (φ.hom.hom x) = x := by
-        simpa [Function.comp] using congrFun (Action.hom_inv_hom φ) x
+        exact congrArg (fun k ↦ k.hom x) (Action.hom_inv_hom φ)
       exact hcompose.trans hidentity
     have hih : i ≫ h = 𝟙 (Over.mk (TopCat.ofHom p)) := by
       apply (coveringSpaceHomToFiber_bijective hp hp (p e)).1
@@ -456,7 +458,7 @@ theorem coveringSpaceAutToFiberAutHom_bijective
           _ = φ.hom.hom (φ.inv.hom x) := by
                 rw [hi_apply x, hh_apply (φ.inv.hom x)]
       have hidentity : φ.hom.hom (φ.inv.hom x) = x := by
-        simpa [Function.comp] using congrFun (Action.inv_hom_hom φ) x
+        exact congrArg (fun k ↦ k.hom x) (Action.inv_hom_hom φ)
       exact hcompose.trans hidentity
     have hIso : IsIso h := IsIso.mk ⟨i, hhi, hih⟩
     refine ⟨asIso h, ?_⟩

@@ -1,9 +1,9 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap01.Lemma_1_4_2
-import AlgebraicTopology_May_1999.Chap01.Problem_1_8_3
-import AlgebraicTopology_May_1999.Chap01.Theorem_1_2_9
-import AlgebraicTopology_May_1999.Chap02.Lemma_2_8_4
-import AlgebraicTopology_May_1999.Chap03.Theorem_3_7_1
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap01.Lemma_1_4_2
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap01.Problem_1_8_3
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap01.Theorem_1_2_9
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap02.Lemma_2_8_4
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Theorem_3_7_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

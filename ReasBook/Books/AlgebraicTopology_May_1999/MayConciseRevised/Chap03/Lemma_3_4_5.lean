@@ -1,6 +1,6 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap03.Definition_3_4_4
-import AlgebraicTopology_May_1999.Chap03.Lemma_3_4_3
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_4_4
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Lemma_3_4_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -24,9 +24,13 @@ private noncomputable def autToPerm (f : Aut_ G S) : Equiv.Perm S where
   toFun := f.hom.hom
   invFun := f.inv.hom
   left_inv x := by
-    simpa using congrFun (Action.hom_inv_hom f) x
+    change (f.hom.hom ≫ f.inv.hom) x = x
+    rw [Action.hom_inv_hom]
+    rfl
   right_inv x := by
-    simpa using congrFun (Action.inv_hom_hom f) x
+    change (f.inv.hom ≫ f.hom.hom) x = x
+    rw [Action.inv_hom_hom]
+    rfl
 
 private noncomputable def autToGSetAut (f : Aut_ G S) : gSetAut G S :=
   ⟨autToPerm f, by
@@ -34,7 +38,7 @@ private noncomputable def autToGSetAut (f : Aut_ G S) : gSetAut G S :=
     rcases hτ with ⟨g, rfl⟩
     ext x
     simpa [Action.ofMulAction_apply, autToPerm] using
-      (congrFun (f.hom.comm g) x).symm⟩
+      (congrArg (fun k ↦ k x) (f.hom.comm g)).symm⟩
 
 private noncomputable def gSetAutToAut (σ : gSetAut G S) : Aut_ G S :=
   Action.mkIso σ.1.toIso fun g ↦ by

@@ -1,8 +1,8 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap03.Definition_3_3_11
-import AlgebraicTopology_May_1999.Chap03.Definition_3_4_4
-import AlgebraicTopology_May_1999.Chap03.Lemma_3_4_5
-import AlgebraicTopology_May_1999.Chap03.Theorem_3_5_8
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_3_11
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_4_4
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Lemma_3_4_5
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Theorem_3_5_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -176,7 +176,8 @@ theorem coveringAutToFiberAutHom_bijective [IsConnected E]
           φ.hom.hom (γ • x) = γ • (show p.Fiber (p.obj e) from φ.hom.hom x) := by
       intro γ x
       -- The forward automorphism of the fiber is equivariant by definition.
-      simpa [Action.ofMulAction_apply] using congrFun (φ.hom.comm γ) x
+      simpa [Action.ofMulAction_apply] using
+        congrArg (fun k ↦ k.hom x) (φ.hom.comm γ)
     let φhom : p.Fiber (p.obj e) →[(p.obj e ⟶ p.obj e)] p.Fiber (p.obj e) :=
       { toFun := φ.hom.hom
         map_smul' := hφ_hom_smul }
@@ -185,7 +186,8 @@ theorem coveringAutToFiberAutHom_bijective [IsConnected E]
           φ.inv.hom (γ • x) = γ • (show p.Fiber (p.obj e) from φ.inv.hom x) := by
       intro γ x
       -- The inverse automorphism is equivariant for the same fiber action.
-      simpa [Action.ofMulAction_apply] using congrFun (φ.inv.comm γ) x
+      simpa [Action.ofMulAction_apply] using
+        congrArg (fun k ↦ k.hom x) (φ.inv.comm γ)
     let φinv : p.Fiber (p.obj e) →[(p.obj e ⟶ p.obj e)] p.Fiber (p.obj e) :=
       { toFun := φ.inv.hom
         map_smul' := hφ_inv_smul }
@@ -222,7 +224,7 @@ theorem coveringAutToFiberAutHom_bijective [IsConnected E]
           _ = φ.inv.hom (φ.hom.hom x) := by
                 rw [hh_apply x, hi_apply (φ.hom.hom x)]
       have hidentity : φ.inv.hom (φ.hom.hom x) = x := by
-        simpa [Function.comp] using congrFun (Action.hom_inv_hom φ) x
+        exact congrArg (fun k ↦ k.hom x) (Action.hom_inv_hom φ)
       exact hcompose.trans hidentity
     have hih : i ≫ h = 𝟙 (Over.mk p.toCatHom) := by
       apply (mapOfCoveringsToFiber_bijective hp hp (p.obj e)).1
@@ -241,7 +243,7 @@ theorem coveringAutToFiberAutHom_bijective [IsConnected E]
           _ = φ.hom.hom (φ.inv.hom x) := by
                 rw [hi_apply x, hh_apply (φ.inv.hom x)]
       have hidentity : φ.hom.hom (φ.inv.hom x) = x := by
-        simpa [Function.comp] using congrFun (Action.inv_hom_hom φ) x
+        exact congrArg (fun k ↦ k.hom x) (Action.inv_hom_hom φ)
       exact hcompose.trans hidentity
     have hIso : IsIso h := IsIso.mk ⟨i, hhi, hih⟩
     refine ⟨asIso h, ?_⟩

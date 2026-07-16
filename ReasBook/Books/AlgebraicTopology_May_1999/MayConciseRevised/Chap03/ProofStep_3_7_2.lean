@@ -1,6 +1,6 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap03.Proposition_3_3_4
-import AlgebraicTopology_May_1999.Chap03.Theorem_3_5_1
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Proposition_3_3_4
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Theorem_3_5_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -30,8 +30,8 @@ theorem existsUnique_fundamentalGroupoidLift_iff_mapVertexGroup_range_le
     (∃! g : FundamentalGroupoid X ⥤ FundamentalGroupoid E,
       g ⋙ hp.fundamentalGroupoidMap = FundamentalGroupoid.map f ∧
         g.obj (mk x) = e₀.1) ↔
-      (Functor.mapVertexGroup (FundamentalGroupoid.map f) (mk x)).range ≤
-        e₀.2 ▸ (Functor.mapVertexGroup hp.fundamentalGroupoidMap e₀.1).range := by
+      ((FundamentalGroupoid.map f).mapVertexGroup (mk x)).range ≤
+        e₀.2 ▸ (hp.fundamentalGroupoidMap.mapVertexGroup e₀.1).range := by
   letI : CategoryTheory.IsConnected (FundamentalGroupoid X) := by
     refine CategoryTheory.IsConnected.of_any_functor_const_on_obj ?_
     intro α F x y

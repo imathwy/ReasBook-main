@@ -1,4 +1,4 @@
-import AlgebraicTopology_May_1999.Chap03.Definition_3_3_3
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_3_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

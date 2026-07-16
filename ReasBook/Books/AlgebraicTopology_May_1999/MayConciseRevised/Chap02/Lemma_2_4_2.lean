@@ -15,13 +15,10 @@ noncomputable def underTopBasepoint (X : Under (⊤_ TopCat)) : X.right :=
 -- of the terminal space, namely `TopCat.terminalIsoPUnit.inv PUnit.unit`.
 theorem fundamentalGroupFunctorMap_basepoint {X Y : Under (⊤_ TopCat)} (f : X ⟶ Y) :
     f.right.hom (underTopBasepoint X) = underTopBasepoint Y := by
-  -- Evaluate the defining commutative triangle of a morphism in `Under (⊤_ TopCat)` at the unique
-  -- point of the terminal object.
-  have hw :=
-    congrArg
-      (fun k : (⊤_ TopCat) ⟶ Y.right ↦ k (TopCat.terminalIsoPUnit.inv PUnit.unit))
-      (CategoryTheory.Under.w f)
-  simpa [underTopBasepoint] using hw
+  change
+    (X.hom ≫ f.right) (TopCat.terminalIsoPUnit.inv PUnit.unit) =
+      Y.hom (TopCat.terminalIsoPUnit.inv PUnit.unit)
+  rw [CategoryTheory.Under.w f]
 
 /-- The induced homomorphism on fundamental groups respects identity morphisms. -/
 -- Proof sketch: the identity map of a based space induces the identity endomorphism on its

@@ -1,5 +1,40 @@
 import Mathlib
 
+namespace Set.Icc
+
+/-- Compatibility wrapper for the `convexCombo` to `convexComb` API rename. -/
+def convexCombo {a b : ℝ} (x y : Icc a b) (t : unitInterval) : Icc a b :=
+  convexComb x y t
+
+@[simp] theorem coe_convexCombo {a b : ℝ} (x y : Icc a b) (t : unitInterval) :
+    (convexCombo x y t : ℝ) = (1 - t) * x + t * y := rfl
+
+@[simp] theorem convexCombo_zero {a b : ℝ} (x y : Icc a b) :
+    convexCombo x y 0 = x := by simp [convexCombo]
+
+@[simp] theorem convexCombo_one {a b : ℝ} (x y : Icc a b) :
+    convexCombo x y 1 = y := by simp [convexCombo]
+
+@[simp] theorem convexCombo_eq {a b : ℝ} (x : Icc a b) (t : unitInterval) :
+    convexCombo x x t = x := by simp [convexCombo]
+
+theorem le_convexCombo {a b : ℝ} {x y : Icc a b} (h : x ≤ y) (t : unitInterval) :
+    x ≤ convexCombo x y t := by simpa [convexCombo] using le_convexComb h t
+
+theorem convexCombo_le {a b : ℝ} {x y : Icc a b} (h : x ≤ y) (t : unitInterval) :
+    convexCombo x y t ≤ y := by simpa [convexCombo] using convexComb_le h t
+
+@[continuity, fun_prop] theorem continuous_convexCombo {a b : ℝ} (x y : Icc a b) :
+    Continuous (convexCombo x y) := by
+  simpa [convexCombo] using continuous_convexComb x y
+
+@[continuity, fun_prop] theorem continuous_convexCombo_prod {a b : ℝ} :
+    Continuous fun x : Icc a b × Icc a b × unitInterval ↦
+      convexCombo x.1 x.2.1 x.2.2 := by
+  simpa [convexCombo] using (continuous_convexComb_prod (a := a) (b := b))
+
+end Set.Icc
+
 -- Declarations for this item will be appended below by the statement pipeline.
 
 universe u v

@@ -1,5 +1,5 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap03.Definition_3_4_10
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_4_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -81,8 +81,13 @@ theorem isTransitive_iff_comp_of_isEquivalence
     let eEnd := (hF.mulEquivEnd c).trans i.conj
     have hc : MulAction.IsTransitive (End c) (T.obj (F.obj c)) := hFT c
     exact (MulAction.isTransitive_iff_of_mulEquiv eEnd (T.mapIso i).toEquiv fun g x ↦ by
-      simpa [eEnd, vertexGroupMulAction_smul_eq_map, MulEquiv.trans_apply, Iso.conj_apply] using
-        congrArg (T.map i.hom) (vertexGroupMulAction_smul_eq_map (F ⋙ T) c g x)).mp hc
+      change
+        T.map i.hom (T.map (F.map g) x) =
+          T.map (i.inv ≫ F.map g ≫ i.hom) (T.map i.hom x)
+      have hi : T.map i.inv (T.map i.hom x) = x := by
+        rw [← T.map_comp_apply]
+        simp
+      rw [T.map_comp_apply, T.map_comp_apply, hi]).mp hc
 
 end CategoryTheory.Functor
 
