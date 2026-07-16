@@ -176,10 +176,10 @@ lemma FormalPowerSeriesCenteredAt.helperForTheorem_4_1_3_continuousAt_inside_rad
     FormalPowerSeriesCenteredAt.helperForTheorem_4_1_3_shiftedHasFPowerSeriesOnBall p hpPos
   have hxRadius : ENNReal.ofReal |x - a| < p.radius := by
     simpa [hRadiusEq] using hx
-  have hxBall : x ∈ EMetric.ball a p.radius := by
+  have hxBall : x ∈ Metric.eball a p.radius := by
     have hxDist : ENNReal.ofReal (dist x a) < p.radius := by
       simpa [Real.dist_eq] using hxRadius
-    simpa [EMetric.mem_ball, edist_dist] using hxDist
+    exact Metric.mem_eball.mpr (by simpa [edist_dist] using hxDist)
   have hAnalytic : AnalyticAt ℝ (fun y : ℝ => p.sum (y - a)) x :=
     hShifted.analyticAt_of_mem hxBall
   have hCont : ContinuousAt (fun y : ℝ => p.sum (y - a)) x :=
@@ -323,13 +323,13 @@ theorem FormalPowerSeriesCenteredAt.uniformly_converges_on_compact_subintervals 
 /-- Helper for Theorem 4.1.4: identify the convergence-radius set with the corresponding emetric ball. -/
 lemma FormalPowerSeriesCenteredAt.helperForTheorem_4_1_4_ball_eq_insideRadiusSet
     {a : ℝ} (f : FormalPowerSeriesCenteredAt a) :
-    EMetric.ball a (FormalMultilinearSeries.ofScalars ℝ f.coeff).radius =
+    Metric.eball a (FormalMultilinearSeries.ofScalars ℝ f.coeff).radius =
       {x : ℝ | ENNReal.ofReal |x - a| < f.radiusOfConvergence} := by
   ext x
   constructor
   · intro hx
     have hxDist : ENNReal.ofReal (dist x a) < (FormalMultilinearSeries.ofScalars ℝ f.coeff).radius := by
-      simpa [EMetric.mem_ball, edist_dist] using hx
+      simpa [edist_dist] using Metric.mem_eball.mp hx
     have hxAbs : ENNReal.ofReal |x - a| < (FormalMultilinearSeries.ofScalars ℝ f.coeff).radius := by
       simpa [Real.dist_eq] using hxDist
     simpa [FormalPowerSeriesCenteredAt.radiusOfConvergence_eq_ofScalarsRadius] using hxAbs
@@ -338,7 +338,7 @@ lemma FormalPowerSeriesCenteredAt.helperForTheorem_4_1_4_ball_eq_insideRadiusSet
       simpa [FormalPowerSeriesCenteredAt.radiusOfConvergence_eq_ofScalarsRadius] using hx
     have hxDist : ENNReal.ofReal (dist x a) < (FormalMultilinearSeries.ofScalars ℝ f.coeff).radius := by
       simpa [Real.dist_eq] using hxAbs
-    simpa [EMetric.mem_ball, edist_dist] using hxDist
+    exact Metric.mem_eball.mpr (by simpa [edist_dist] using hxDist)
 
 /-- Helper for Theorem 4.1.4: derivative power-series expansion on the convergence ball. -/
 lemma FormalPowerSeriesCenteredAt.helperForTheorem_4_1_4_derivHasFPowerSeriesOnBall

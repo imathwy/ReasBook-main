@@ -3,6 +3,45 @@ import Mathlib
 section Chap06
 section Section08
 
+namespace IsContDiffImplicitAt
+
+/-- Compatibility reconstruction of the pre-4.30 implicit-function data, preserving the
+`(x, f x)` target-coordinate order used by this chapter. -/
+def implicitFunctionData
+    {𝕜 : Type*} [RCLike 𝕜]
+    {E F G : Type*}
+    [NormedAddCommGroup E] [NormedSpace 𝕜 E] [CompleteSpace E]
+    [NormedAddCommGroup F] [NormedSpace 𝕜 F] [CompleteSpace F]
+    [NormedAddCommGroup G] [NormedSpace 𝕜 G] [CompleteSpace G]
+    {n : WithTop ℕ∞} {f : E × F → G} {f' : E × F →L[𝕜] G} {a : E × F}
+    (h : IsContDiffImplicitAt n f f' a) :
+    ImplicitFunctionData 𝕜 (E × F) E G where
+  leftFun := Prod.fst
+  leftDeriv := ContinuousLinearMap.fst 𝕜 E F
+  rightFun := f
+  rightDeriv := f'
+  pt := a
+  hasStrictFDerivAt_leftFun := by fun_prop
+  hasStrictFDerivAt_rightFun := h.contDiffAt.hasStrictFDerivAt' h.hasFDerivAt h.ne_zero
+  range_leftDeriv := LinearMap.range_eq_top_of_surjective _ fun x ↦ ⟨(x, 0), rfl⟩
+  range_rightDeriv := by
+    apply top_unique
+    rw [← LinearMap.range_eq_top_of_surjective _ h.bijective.surjective]
+    exact LinearMap.range_comp_le_range _ _
+  isCompl_ker := by
+    apply IsCompl.of_eq
+    · ext ⟨x, y⟩
+      rw [Submodule.mem_inf, Submodule.mem_bot, LinearMap.mem_ker,
+        ContinuousLinearMap.coe_fst, LinearMap.coe_fst, LinearMap.mem_ker, Prod.ext_iff,
+        ← h.bijective.injective.eq_iff]
+      simp +contextual [Prod.mk_zero_zero]
+    · ext x
+      simp only [Submodule.mem_sup, Submodule.mem_top, iff_true]
+      obtain ⟨y, hy⟩ := h.bijective.surjective (f' x)
+      exact ⟨(0, y), by simp, x - (0, y), by simp [map_sub, ← hy], by abel⟩
+
+end IsContDiffImplicitAt
+
 /-- Definition 6.16 (Graph of a function): for `f : ℝ^n → ℝ`, the graph of `f` is
 the subset `{(x, f x) : x ∈ ℝ^n}` of `ℝ^(n+1)`. -/
 def graphOfFunction {n : ℕ} (f : (Fin n → ℝ) → ℝ) : Set (Fin (n + 1) → ℝ) :=
@@ -183,7 +222,7 @@ theorem implicitFunctionTheorem
         (fderiv ℝ (fun p : (Fin n → ℝ) × ℝ => f (Fin.snoc p.1 p.2)) (y', yLast))
         (y', yLast) := by
     let F : (Fin n → ℝ) × ℝ → ℝ := fun p => f (Fin.snoc p.1 p.2)
-    have hOneLe : (1 : WithTop ℕ∞) ≤ 1 := le_rfl
+    have hOneNeZero : (1 : WithTop ℕ∞) ≠ 0 := one_ne_zero
     have hcontAtf : ContDiffAt ℝ 1 f (Fin.snoc y' yLast) :=
       hf.contDiffAt (hEopen.mem_nhds hy)
     have hcontAtSnoc :
@@ -205,7 +244,7 @@ theorem implicitFunctionTheorem
     have hcontAtF : ContDiffAt ℝ 1 F (y', yLast) := by
       simpa [F] using hcontAtf.comp (y', yLast) hcontAtSnoc
     have hdiffAtF : DifferentiableAt ℝ F (y', yLast) :=
-      hcontAtF.differentiableAt hOneLe
+      hcontAtF.differentiableAt hOneNeZero
     have hHasFDerivAtF : HasFDerivAt F (fderiv ℝ F (y', yLast)) (y', yLast) :=
       hdiffAtF.hasFDerivAt
     let L : ℝ →L[ℝ] ℝ :=
@@ -225,7 +264,7 @@ theorem implicitFunctionTheorem
       · intro j
         simpa [M, Fin.snoc_castSucc] using (hasFDerivAt_const (c := y' j) (x := yLast))
     have hdiffAtf : DifferentiableAt ℝ f (Fin.snoc y' yLast) :=
-      hcontAtf.differentiableAt hOneLe
+      hcontAtf.differentiableAt hOneNeZero
     have hDerivLineDirect :
         HasFDerivAt (fun t : ℝ => f (Fin.snoc y' t))
           ((fderiv ℝ f (Fin.snoc y' yLast)).comp M) yLast := by
@@ -256,7 +295,7 @@ theorem implicitFunctionTheorem
     · simpa [F] using hHasFDerivAtF
     · simpa [F] using hcontAtF
     · simpa [F, L] using hBij
-    · exact hOneLe
+    · exact hOneNeZero
   have hMainData :
       ∃ U : Set (Fin n → ℝ),
         IsOpen U ∧ y' ∈ U ∧
@@ -976,7 +1015,7 @@ theorem regularLevelSetAsLocalGraph
                       {x | x ∈ W ∧ f x = 0} = (fun x' => j.insertNth (g x') x') '' U := by
   intro hReg
   rcases hReg with ⟨j, hj⟩
-  have hOneLe : (1 : WithTop ℕ∞) ≤ 1 := le_rfl
+  have hOneNeZero : (1 : WithTop ℕ∞) ≠ 0 := one_ne_zero
   let Φ : (Fin (m + 1) → ℝ) → (Fin (m + 1) → ℝ) :=
     fun y =>
       Fin.insertNth (α := fun _ : Fin (m + 1) => ℝ) j (y (Fin.last m))
@@ -1038,7 +1077,8 @@ theorem regularLevelSetAsLocalGraph
       simpa [Φ, L, Fin.insertNth_apply_succAbove] using
         ((ContinuousLinearMap.proj (R := ℝ) (ι := Fin (m + 1)) (i := Fin.castSucc k) :
           (Fin (m + 1) → ℝ) →L[ℝ] ℝ).hasFDerivAt)
-  have hfDiffAt : DifferentiableAt ℝ f x₀ := (hf.contDiffAt (x := x₀)).differentiableAt hOneLe
+  have hfDiffAt : DifferentiableAt ℝ f x₀ :=
+    (hf.contDiffAt (x := x₀)).differentiableAt hOneNeZero
   have hfDerivAtX0 : HasFDerivAt f (fderiv ℝ f x₀) x₀ := hfDiffAt.hasFDerivAt
   have hfDerivAtΦy0 : HasFDerivAt f (fderiv ℝ f x₀) (Φ y0) := by
     simpa [hΦAty0] using hfDerivAtX0
@@ -1079,7 +1119,7 @@ theorem regularLevelSetAsLocalGraph
       hPartialTilde
   rcases hIFT with ⟨U, hUopen, -, V, hVopen, hyV, -, g, hgA, hgB, -⟩
   have hGraphEqTilde : {y | y ∈ V ∧ fTilde y = 0} = (fun x' => Fin.snoc x' (g x')) '' U := hgA.2
-  have hDiffOn : DifferentiableOn ℝ g U := hgB.1.differentiableOn hOneLe
+  have hDiffOn : DifferentiableOn ℝ g U := hgB.1.differentiableOn hOneNeZero
   let W : Set (Fin (m + 1) → ℝ) := Ψ ⁻¹' V
   have hΨContDiff : ContDiff ℝ 1 Ψ := by
     refine contDiff_pi.2 ?_

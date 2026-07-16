@@ -1,5 +1,5 @@
-import Books.Analysis2_Tao_2022.Chapters.Chap04.section05_part1
-import Books.Analysis2_Tao_2022.Chapters.Chap04.section05_part2
+import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Chapters.Chap04.section05_part1
+import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Chapters.Chap04.section05_part2
 
 /-!
 Overview page for 4.5 The Exponential and Logarithm Functions.

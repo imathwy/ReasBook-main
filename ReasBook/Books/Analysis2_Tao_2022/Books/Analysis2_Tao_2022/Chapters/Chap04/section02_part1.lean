@@ -414,7 +414,7 @@ lemma helperForProposition_4_2_2_hasFPowerSeriesWithinOnBall_of_seriesData
       (FormalMultilinearSeries.ofScalars ℝ c) hsummable_norm_series
   · intro y hy_mem hy_ball
     have hy_abs : |y| < r := by
-      rw [EMetric.mem_ball, edist_dist] at hy_ball
+      rw [Metric.mem_eball, edist_dist] at hy_ball
       have hy_dist : dist y 0 < r := (ENNReal.ofReal_lt_ofReal_iff hr).1 hy_ball
       simpa [Real.dist_eq] using hy_dist
     have hy_lt : -r < y ∧ y < r := by
@@ -553,15 +553,15 @@ lemma helperForProposition_4_2_2_iteratedDerivWithin_series_formula
   let p : FormalMultilinearSeries ℝ ℝ ℝ := FormalMultilinearSeries.ofScalars ℝ c
   let hpow : HasFPowerSeriesWithinOnBall g p E a (ENNReal.ofReal r) :=
     helperForProposition_4_2_2_hasFPowerSeriesWithinOnBall_of_seriesData hr f c hc
-  have hSubsetBall : E ⊆ EMetric.ball a (ENNReal.ofReal r) := by
+  have hSubsetBall : E ⊆ Metric.eball a (ENNReal.ofReal r) := by
     intro y hy
     rcases hy with ⟨hy_left, hy_right⟩
-    rw [EMetric.mem_ball, edist_dist, Real.dist_eq, abs_sub_comm, ENNReal.ofReal_lt_ofReal_iff hr]
+    rw [Metric.mem_eball, edist_dist, Real.dist_eq, abs_sub_comm, ENNReal.ofReal_lt_ofReal_iff hr]
     exact abs_lt.2 (by constructor <;> linarith)
   have ha_mem : a ∈ E := by
     change a ∈ Set.Ioo (a - r) (a + r)
     constructor <;> linarith
-  have hAnalyticAux : AnalyticOn ℝ g (insert a E ∩ EMetric.ball a (ENNReal.ofReal r)) :=
+  have hAnalyticAux : AnalyticOn ℝ g (insert a E ∩ Metric.eball a (ENNReal.ofReal r)) :=
     hpow.analyticOn
   have hAnalytic : AnalyticOn ℝ g E := by
     refine hAnalyticAux.mono ?_
@@ -572,14 +572,14 @@ lemma helperForProposition_4_2_2_iteratedDerivWithin_series_formula
   have hpowk : HasFPowerSeriesWithinOnBall (iteratedFDerivWithin ℝ k g E)
       (p.iteratedFDerivSeries k) E a (ENNReal.ofReal r) :=
     hpow.iteratedFDerivWithin hAnalytic k hUnique ha_mem
-  have hxBall : x ∈ EMetric.ball a (ENNReal.ofReal r) := by
+  have hxBall : x ∈ Metric.eball a (ENNReal.ofReal r) := by
     rcases hx with ⟨hxL, hxR⟩
-    rw [EMetric.mem_ball, edist_dist, Real.dist_eq, ENNReal.ofReal_lt_ofReal_iff hr]
+    rw [Metric.mem_eball, edist_dist, Real.dist_eq, ENNReal.ofReal_lt_ofReal_iff hr]
     exact abs_lt.2 (by constructor <;> linarith)
   have hHasSumMultilin :
       HasSum (fun n : ℕ => p.iteratedFDerivSeries k n (fun _ : Fin n => x - a))
         (iteratedFDerivWithin ℝ k g E x) := by
-    have hy : x ∈ (insert a E) ∩ EMetric.ball a (ENNReal.ofReal r) :=
+    have hy : x ∈ (insert a E) ∩ Metric.eball a (ENNReal.ofReal r) :=
       ⟨Or.inr (by simpa [E] using hx), hxBall⟩
     simpa [E] using hpowk.hasSum_sub (y := x) hy
   let evalOnes : (ℝ [×k]→L[ℝ] ℝ) →L[ℝ] ℝ :=
@@ -635,12 +635,12 @@ lemma helperForProposition_4_2_2_onceDifferentiable_all_orders_of_analytic
   have ha_mem : a ∈ E := by
     change a ∈ Set.Ioo (a - r) (a + r)
     constructor <;> linarith
-  have hSubsetBall : E ⊆ EMetric.ball a (ENNReal.ofReal r) := by
+  have hSubsetBall : E ⊆ Metric.eball a (ENNReal.ofReal r) := by
     intro x hx
     rcases hx with ⟨hx_left, hx_right⟩
-    rw [EMetric.mem_ball, edist_dist, Real.dist_eq, abs_sub_comm, ENNReal.ofReal_lt_ofReal_iff hr]
+    rw [Metric.mem_eball, edist_dist, Real.dist_eq, abs_sub_comm, ENNReal.ofReal_lt_ofReal_iff hr]
     exact abs_lt.2 (by constructor <;> linarith)
-  have hAnalyticAux : AnalyticOn ℝ (SubtypeExtension E f) (insert a E ∩ EMetric.ball a (ENNReal.ofReal r)) :=
+  have hAnalyticAux : AnalyticOn ℝ (SubtypeExtension E f) (insert a E ∩ Metric.eball a (ENNReal.ofReal r)) :=
     hpow.analyticOn
   have hAnalytic : AnalyticOn ℝ (SubtypeExtension E f) E := by
     refine hAnalyticAux.mono ?_

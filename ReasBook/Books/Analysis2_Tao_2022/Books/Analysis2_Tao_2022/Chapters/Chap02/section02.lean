@@ -3,6 +3,8 @@ import Mathlib
 section Chap02
 section Section02
 
+open Filter
+
 /-- Definition 2.2: Pairing of functions. For functions `f : X → Y` and
 `g : X → Z`, the pairing `(f,g)` is the function `X → Y × Z` given by
 `x ↦ (f x, g x)`. -/

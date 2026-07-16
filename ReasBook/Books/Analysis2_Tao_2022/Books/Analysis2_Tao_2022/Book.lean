@@ -1,12 +1,12 @@
 
-import Books.Analysis2_Tao_2022.Chapters.Chap01
-import Books.Analysis2_Tao_2022.Chapters.Chap02
-import Books.Analysis2_Tao_2022.Chapters.Chap03
-import Books.Analysis2_Tao_2022.Chapters.Chap04
-import Books.Analysis2_Tao_2022.Chapters.Chap05
-import Books.Analysis2_Tao_2022.Chapters.Chap06
-import Books.Analysis2_Tao_2022.Chapters.Chap07
-import Books.Analysis2_Tao_2022.Chapters.Chap08
+import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Chapters.Chap01
+import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Chapters.Chap02
+import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Chapters.Chap03
+import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Chapters.Chap04
+import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Chapters.Chap05
+import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Chapters.Chap06
+import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Chapters.Chap07
+import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Chapters.Chap08
 
 /-!
 Overview page for Analysis II (Tao, 2022).
