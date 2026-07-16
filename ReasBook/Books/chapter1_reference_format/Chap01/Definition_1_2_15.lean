@@ -66,9 +66,9 @@ lemma completionEmbedding_norm_eq (x : K) : ‖completionEmbedding v x‖ = v x 
 lemma completionEmbedding_denseRange : DenseRange (completionEmbedding v) := by
   -- Rewrite the image of `completionEmbedding` through the surjective equivalence
   -- `K ≃+* WithAbs v` so density reduces to the standard completion coercion.
-  simpa [completionEmbedding, DenseRange] using
-    (((equiv v).symm.surjective.range_comp ((↑) : WithAbs v → v.Completion)) ▸
-      (UniformSpace.Completion.denseRange_coe : DenseRange ((↑) : WithAbs v → v.Completion)))
+  change DenseRange (((↑) : WithAbs v → v.Completion) ∘ (equiv v).symm)
+  rw [DenseRange, (equiv v).symm.surjective.range_comp]
+  exact UniformSpace.Completion.denseRange_coe
 
 /-- The canonical completion `v.Completion` is a completion of the absolute value `v`. -/
 instance : IsCompletion v (completionEmbedding v) where

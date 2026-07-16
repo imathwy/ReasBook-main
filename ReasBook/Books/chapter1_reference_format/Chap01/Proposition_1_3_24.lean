@@ -9,46 +9,6 @@ open AdjoinRoot
 
 variable {p : ℕ} [Fact p.Prime]
 
-/-- Helper for Proposition 1.3.24: reduction on unit groups modulo `P^e → P` is surjective. -/
-lemma pow_unit_reduction_surjective
-    {P : (ZMod p)[X]} (hP : Irreducible P) (e : ℕ+) :
-    Function.Surjective (powUnitReduction P e) := by
-  letI : Fact (Irreducible P) := ⟨hP⟩
-  intro y
-  -- Lift the residue-field unit to a polynomial representative.
-  obtain ⟨Q, hQ⟩ := AdjoinRoot.mk_surjective (g := P) (y : AdjoinRoot P)
-  have hQnot : Q ∉ Ideal.span ({P} : Set (ZMod p)[X]) := by
-    intro hmem
-    have hdiv : P ∣ Q := Ideal.mem_span_singleton.mp hmem
-    have hzero : (AdjoinRoot.mk P Q : AdjoinRoot P) = 0 := (AdjoinRoot.mk_eq_zero).2 hdiv
-    exact y.ne_zero (hQ.symm.trans hzero)
-  letI : (Ideal.span ({P} : Set (ZMod p)[X])).IsMaximal :=
-    PrincipalIdealRing.isMaximal_of_irreducible hP
-  have hQunitPow :
-      IsUnit (Ideal.Quotient.mk ((Ideal.span ({P} : Set (ZMod p)[X])) ^ (e : ℕ)) Q) :=
-    (Ideal.Quotient.isUnit_mk_pow_iff_notMem (I := Ideal.span ({P} : Set (ZMod p)[X]))
-      (n := (e : ℕ)) (Nat.ne_of_gt e.2)).2 hQnot
-  have hEq :
-      (Ideal.span ({P} : Set (ZMod p)[X])) ^ (e : ℕ) =
-        Ideal.span ({P ^ (e : ℕ)} : Set (ZMod p)[X]) := by
-    simpa using (Ideal.span_singleton_pow P (e : ℕ))
-  have hQunitPe : IsUnit (AdjoinRoot.mk (P ^ (e : ℕ)) Q) := by
-    simpa [AdjoinRoot.mk] using hQunitPow.map (Ideal.quotEquivOfEq hEq)
-  refine ⟨hQunitPe.unit, ?_⟩
-  apply Units.ext
-  -- The lifted unit reduces to the original class because `powReduction` sends `mk` to `mk`.
-  change
-    (powReduction P e)
-        (((hQunitPe.unit : (AdjoinRoot (P ^ (e : ℕ)))ˣ) :
-          AdjoinRoot (P ^ (e : ℕ)))) = y
-  rw [show
-      (((hQunitPe.unit : (AdjoinRoot (P ^ (e : ℕ)))ˣ) :
-          AdjoinRoot (P ^ (e : ℕ)))) = AdjoinRoot.mk (P ^ (e : ℕ)) Q by
-      exact hQunitPe.unit_spec]
-  rw [powReduction, AdjoinRoot.coe_algHomOfDvd, AdjoinRoot.liftAlgHom_mk]
-  change aeval (AdjoinRoot.root P) Q = y
-  rw [AdjoinRoot.aeval_eq, hQ]
-
 /-- Helper for Proposition 1.3.24: every element of the reduction kernel is killed by a
 `p`-power. -/
 lemma pow_unit_reduction_kernel_pow_eq_one
@@ -110,40 +70,6 @@ lemma pow_unit_reduction_kernel_pow_eq_one
   change
     (((u : (AdjoinRoot (P ^ (e : ℕ)))ˣ) : AdjoinRoot (P ^ (e : ℕ))) ^ (p ^ (e : ℕ))) = 1
   rw [hx_eq, add_pow_char_pow, one_pow, hnil, add_zero]
-
-/-- Helper for Proposition 1.3.24: the reduction kernel is a finite `p`-group. -/
-lemma pow_unit_reduction_ker_isPGroup
-    {P : (ZMod p)[X]} (hP : Irreducible P) (e : ℕ+) :
-    IsPGroup p ((powUnitReduction P e).ker) := by
-  rw [IsPGroup.iff_orderOf]
-  intro x
-  -- The previous lemma gives a concrete `p`-power annihilating every kernel element.
-  have hxpow : x ^ (p ^ (e : ℕ)) = 1 := pow_unit_reduction_kernel_pow_eq_one hP e x
-  have hdvd : orderOf x ∣ p ^ (e : ℕ) := orderOf_dvd_of_pow_eq_one hxpow
-  obtain ⟨n, -, hn⟩ := (Nat.dvd_prime_pow Fact.out).1 hdvd
-  exact ⟨n, hn⟩
-
-/-- Helper for Proposition 1.3.24: the residue-field unit group has order prime to the
-characteristic `p`. -/
-lemma residue_field_unit_card_not_dvd_char
-    {P : (ZMod p)[X]} (hP : Irreducible P) :
-    ¬ p ∣ Nat.card ((AdjoinRoot P)ˣ) := by
-  letI : Fact (Irreducible P) := ⟨hP⟩
-  letI : Module.Finite (ZMod p) (AdjoinRoot P) := (AdjoinRoot.powerBasis hP.ne_zero).finite
-  letI : Finite (AdjoinRoot P) := Module.finite_of_finite (ZMod p)
-  letI : Fintype (AdjoinRoot P) := Fintype.ofFinite (AdjoinRoot P)
-  haveI : CharP (AdjoinRoot P) p :=
-    charP_of_injective_algebraMap (AdjoinRoot.coe_injective' (f := P)) p
-  let hp : Nat.Prime p := Fact.out
-  obtain ⟨n, _, hcard⟩ := FiniteField.card (AdjoinRoot P) p
-  -- The order is `p^n - 1`, so it is coprime to `p`.
-  rw [Nat.card_eq_fintype_card, Fintype.card_units, hcard]
-  have hcop_pow : Nat.Coprime (p ^ (n : ℕ)) (p ^ (n : ℕ) - 1) := by
-    rw [Nat.coprime_self_sub_right (Nat.succ_le_of_lt (pow_pos hp.pos _))]
-    exact Nat.coprime_one_right _
-  have hcop : Nat.Coprime p (p ^ (n : ℕ) - 1) :=
-    (Nat.coprime_pow_left_iff n.2 p (p ^ (n : ℕ) - 1)).mp hcop_pow
-  exact hp.coprime_iff_not_dvd.mp hcop
 
 /-- Helper for Proposition 1.3.24: a `k`-th root modulo `P^e` exists exactly when a `k`-th root
 exists after reduction modulo `P`. -/

@@ -30,7 +30,7 @@ theorem reflClosure_of_strictOrder_isPartialOrder (lt : S → S → Prop) [IsStr
     { le := Relation.ReflGen lt
       le_refl := fun _ ↦ Relation.ReflGen.refl
       le_trans := fun _ _ _ hab hbc ↦ by
-        rw [← Relation.reflTransGen_eq_reflGen inferInstance] at hab hbc ⊢
+        rw [← Relation.reflTransGen_eq_reflGen] at hab hbc ⊢
         exact Relation.ReflTransGen.trans hab hbc
       le_antisymm := fun a b hab hba ↦ by
         rw [Relation.reflGen_iff] at hab hba
