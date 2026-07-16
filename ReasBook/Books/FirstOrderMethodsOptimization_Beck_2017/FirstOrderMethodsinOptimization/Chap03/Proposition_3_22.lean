@@ -16,7 +16,8 @@ variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDi
 variable (C : Set E) (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C)
   (hC_convex : Convex ℝ C)
 
-local notation "P" => fun y ↦ (metricProjection C hC_nonempty hC_closed hC_convex y : E)
+local notation "P" => fun y ↦
+  (metricProjection C hC_nonempty hC_closed.isComplete hC_convex y : E)
 
 -- Proof sketch: if `x ∉ C`, use Proposition 3.12 to identify the gradient of
 -- `y ↦ (infDist y C)^2 / 2` with `y - P_C(y)` and combine it with the singleton-subdifferential
