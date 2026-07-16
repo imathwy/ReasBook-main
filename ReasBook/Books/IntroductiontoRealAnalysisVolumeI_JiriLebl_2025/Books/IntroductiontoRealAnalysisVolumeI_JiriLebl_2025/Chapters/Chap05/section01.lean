@@ -1304,13 +1304,16 @@ noncomputable def stepPartition (ε : ℝ) (hε : 0 < ε ∧ ε < 1) : IntervalP
       intro i
       fin_cases i
       · have h : (0 : ℝ) < 1 - ε := by linarith [hε.2]
-        simpa [Matrix.vecCons] using h
+        change (0 : ℝ) < 1 - ε
+        exact h
       · have h : (1 - ε : ℝ) < 1 + ε := by linarith [hε.1]
-        simpa [Matrix.vecCons] using h
+        change (1 - ε : ℝ) < 1 + ε
+        exact h
       · have h : (1 + ε : ℝ) < 2 := by linarith [hε.2]
-        simpa [Matrix.vecCons] using h
+        change (1 + ε : ℝ) < 2
+        exact h
     left_eq := by
-      simp [Matrix.vecCons]
+      rfl
     right_eq := by
       rfl }
 
@@ -1492,12 +1495,16 @@ lemma stepPartition_sums {ε : ℝ} (hε : 0 < ε ∧ ε < 1) :
       simpa [upperTag, I2] using this
     exact le_antisymm hle hge
   have hdelta0 : P.delta 0 = 1 - ε := by
-    simp [IntervalPartition.delta, hP0, hP1]
+    change P.points 1 - P.points 0 = 1 - ε
+    rw [hP0, hP1]
+    ring
   have hdelta1 : P.delta 1 = 2 * ε := by
-    simp [IntervalPartition.delta, hP1, hP2]
+    change P.points 2 - P.points 1 = 2 * ε
+    rw [hP1, hP2]
     ring
   have hdelta2 : P.delta 2 = 1 - ε := by
-    simp [IntervalPartition.delta, hP2, hP3]
+    change P.points 3 - P.points 2 = 1 - ε
+    rw [hP2, hP3]
     ring
   have hlow_sum : lowerDarbouxSum stepFunctionExample P = 1 - ε := by
     calc
@@ -1505,7 +1512,9 @@ lemma stepPartition_sums {ε : ℝ} (hε : 0 < ε ∧ ε < 1) :
           = lowerTag stepFunctionExample P 0 * P.delta 0 +
               lowerTag stepFunctionExample P 1 * P.delta 1 +
               lowerTag stepFunctionExample P 2 * P.delta 2 := by
-                simp [lowerDarbouxSum, P, stepPartition, Fin.sum_univ_three]
+                dsimp [lowerDarbouxSum, P, stepPartition]
+                rw [Fin.sum_univ_three]
+                rfl
       _ = 1 * (1 - ε) + 0 * (2 * ε) + 0 * (1 - ε) := by
             simp [hlow0, hlow1, hlow2, hdelta0, hdelta1, hdelta2]
       _ = 1 - ε := by ring
@@ -1515,7 +1524,9 @@ lemma stepPartition_sums {ε : ℝ} (hε : 0 < ε ∧ ε < 1) :
           = upperTag stepFunctionExample P 0 * P.delta 0 +
               upperTag stepFunctionExample P 1 * P.delta 1 +
               upperTag stepFunctionExample P 2 * P.delta 2 := by
-                simp [upperDarbouxSum, P, stepPartition, Fin.sum_univ_three]
+                dsimp [upperDarbouxSum, P, stepPartition]
+                rw [Fin.sum_univ_three]
+                rfl
       _ = 1 * (1 - ε) + 1 * (2 * ε) + 0 * (1 - ε) := by
             simp [hupp0, hupp1, hupp2, hdelta0, hdelta1, hdelta2]
       _ = 1 + ε := by ring
@@ -1793,11 +1804,7 @@ lemma reciprocal_integrable_on_interval {b : ℝ} (hb : 0 < b) :
         left_eq := by
           simp
         right_eq := by
-          calc
-            (N : ℝ) * (b / (N : ℝ)) = (N : ℝ) * b / (N : ℝ) := by
-              simp [mul_div_assoc]
-            _ = b := by
-              simp [mul_comm] }
+          field_simp }
     have hdelta : ∀ i : Fin P.n, P.delta i = b / (N : ℝ) := by
       intro i
       have :
