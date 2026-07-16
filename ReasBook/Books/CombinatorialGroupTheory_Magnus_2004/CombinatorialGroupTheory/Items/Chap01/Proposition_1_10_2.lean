@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_4_10
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_4_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -39,14 +39,16 @@ the theorem is stated directly under the owner assumption `[IsFreeGroup F]`. -/
 -- `F ⧸ lowerCentralSeries F m` is not conjugate to `1`. But membership of `g` in
 -- `lowerCentralSeries F m` forces that image to be `1`, contradiction.
 theorem iInf_lowerCentralSeries_eq_bot_of_isFreeGroup :
-    (⨅ m : ℕ, lowerCentralSeries F m) = (⊥ : Subgroup F) := by
+    (⨅ m : ℕ, Subgroup.lowerCentralSeries F m) = (⊥ : Subgroup F) := by
   rw [Subgroup.eq_bot_iff_forall]
   intro g hg
   by_contra hg1
   obtain ⟨m, hm⟩ :=
     exists_lowerCentralSeries_quotient_separating_nonconjugate g 1 <|
       by simpa [isConj_one_left] using hg1
-  have hgq : (mk' (lowerCentralSeries F m) g : F ⧸ lowerCentralSeries F m) = 1 :=
+  have hgq :
+      (mk' (Subgroup.lowerCentralSeries F m) g :
+        F ⧸ Subgroup.lowerCentralSeries F m) = 1 :=
     (QuotientGroup.eq_one_iff g).mpr <| Subgroup.mem_iInf.mp hg m
   exact hm <| by
     simpa using isConj_one_left.mpr hgq

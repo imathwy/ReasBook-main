@@ -1,9 +1,9 @@
 import Mathlib
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap02.Definition_2_1_3
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap02.Definition_2_1_4
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_2_1
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_2_3
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_4_10
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap02.Definition_2_1_3
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap02.Definition_2_1_4
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap05.Definition_5_2_1
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap05.Definition_5_2_3
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap05.Definition_5_4_10
 
 universe u
 
@@ -17,7 +17,7 @@ section
 
 variable {X : Type u}
 
-local instance : DecidableEq X := Classical.decEq X
+local instance theorem_5_5_4_decidableEq : DecidableEq X := Classical.decEq X
 local instance instDecidableProp_5_5_4 (p : Prop) : Decidable p := Classical.propDecidable p
 
 local notation "basis" => FreeGroupBasis.ofFreeGroup X

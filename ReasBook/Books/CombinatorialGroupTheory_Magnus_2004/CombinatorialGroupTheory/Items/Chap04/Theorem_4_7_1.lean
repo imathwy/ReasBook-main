@@ -1,6 +1,6 @@
 import Mathlib
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap02.Definition_2_1_1
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap02.Definition_2_1_3
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap02.Definition_2_1_1
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap02.Definition_2_1_3
 
 -- Declarations for this item are recorded in this dedicated item file.
 
@@ -68,7 +68,7 @@ finitely many generators. -/
 theorem fg (hG : IsRecursivelyPresented G) : FG G := by
   rcases hG with ⟨n, R, P, _⟩
   letI : FG (PresentedGroup R) := PresentedGroup.instFG R
-  exact Group.fg_of_surjective P.surjective
+  exact Group.fg_of_surjective (f := P.toMonoidHom) P.surjective
 
 end IsRecursivelyPresented
 

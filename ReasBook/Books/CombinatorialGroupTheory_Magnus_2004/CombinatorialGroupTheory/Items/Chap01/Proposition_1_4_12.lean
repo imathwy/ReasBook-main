@@ -1,5 +1,5 @@
-import CombinatorialGroupTheory_Magnus_2004.Basic
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Lemma_1_4_11
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Basic
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Lemma_1_4_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
 import Mathlib
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_11_3
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap05.Definition_5_11_3
 
 universe u
 

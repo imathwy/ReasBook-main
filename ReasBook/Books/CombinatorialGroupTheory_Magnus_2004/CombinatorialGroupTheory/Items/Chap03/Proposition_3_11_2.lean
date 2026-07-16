@@ -1,7 +1,7 @@
 import Mathlib
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Definition_1_4_17
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_7_6
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_7_9
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Definition_1_4_17
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_7_6
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_7_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -15,7 +15,7 @@ namespace GroupPresentation
 
 variable {X : Type u}
 
-local instance : DecidableEq X := Classical.decEq X
+local instance proposition_3_11_2_decidableEq : DecidableEq X := Classical.decEq X
 
 /-!
 Primary domain: small-cancellation style control of the normal closure of a relator family in a

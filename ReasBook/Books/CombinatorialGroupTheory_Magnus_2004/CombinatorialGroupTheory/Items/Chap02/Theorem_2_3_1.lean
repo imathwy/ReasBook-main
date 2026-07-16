@@ -54,8 +54,8 @@ instance (π : F →* G) : CommGroup (hopfFormulaQuotient π) := by
     exact (Subgroup.commutator_mono
       (by simp)
       (by simp [H])) hx'
-  letI : CommGroup (H ⧸ K) :=
-    ⟨(Subgroup.Normal.quotient_commutative_iff_commutator_le.2 hcomm).comm⟩
+  let hmulComm := Subgroup.Normal.quotient_commutative_iff_commutator_le.2 hcomm
+  letI : CommGroup (H ⧸ K) := ⟨hmulComm.is_comm.comm⟩
   simpa [hopfFormulaQuotient, H, K]
 
 /-- Theorem 2-3-1: for a surjection `π : F →* G` from a free group, Hopf's formula identifies the

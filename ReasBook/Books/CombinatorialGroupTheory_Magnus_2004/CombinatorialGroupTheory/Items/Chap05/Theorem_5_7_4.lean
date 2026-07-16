@@ -1,6 +1,6 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Corollary_5_3_5
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Corollary_5_7_3
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Lemma_5_6_1
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap05.Corollary_5_3_5
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap05.Corollary_5_7_3
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap05.Lemma_5_6_1
 
 set_option autoImplicit false
 

@@ -1,5 +1,5 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_4_24
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_5_6
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_4_24
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_5_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -13,7 +13,7 @@ section
 
 variable {X : Type u}
 
-local instance : DecidableEq X := Classical.decEq X
+local instance proposition_2_5_11_decidableEq : DecidableEq X := Classical.decEq X
 
 -- Layer triage:
 -- `source-facing`: two relators in a free group that are automorphism-equivalent and each have

@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Corollary_1_4_14
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Corollary_1_4_14
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

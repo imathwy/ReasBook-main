@@ -1,5 +1,5 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Lemma_1_4_8
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_4_10
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Lemma_1_4_8
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_4_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -51,6 +51,6 @@ theorem isConj_basisElement_of_mem_IA_of_pow_mem_inner
   obtain ⟨k, hkconj⟩ :=
     basis.exists_isConj_basisElement_mul_of_mem_IA_of_pow_mem_inner α x n hN hIA hInner
   exact hn <| by
-    simpa [k.2] using (mk' (lowerCentralSeries F n)).map_isConj hkconj
+    simpa [k.2] using (mk' (Subgroup.lowerCentralSeries F n)).map_isConj hkconj
 
 end

@@ -1,5 +1,5 @@
 import Mathlib
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_2_1
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap05.Definition_5_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -13,7 +13,7 @@ section
 
 variable {X : Type u} {F : Type v} [Group F]
 
-local instance : DecidableEq X := Classical.decEq X
+local instance definition_5_4_6_decidableEq : DecidableEq X := Classical.decEq X
 
 /-!
 Primary domain: small-cancellation theory for relator sets in a free group with a chosen basis.

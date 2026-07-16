@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Lemma_1_11_14
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Lemma_1_11_14
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -44,8 +44,10 @@ theorem baseConjugate_mem_shortSyllableConjugates_of_eq_conjugate_of_syllableLen
     (d : Transversal φ) {u h p : PushoutI φ} (a : H)
     (hu : u = p⁻¹ * h * p) (hh : syllableLength d h = 1) :
     (base φ a)⁻¹ * u * base φ a ∈ shortSyllableConjugates d := by
-  refine ⟨h, p * base φ a, Nat.le_of_eq hh, ?_⟩
-  simp [hu, mul_assoc]
+  refine ⟨h, Nat.le_of_eq hh, toUnits (p * base φ a), ?_⟩
+  dsimp [SemiconjBy]
+  rw [hu]
+  group
 
 -- Proof sketch: the shorter base conjugate is still in `shortSyllableConjugates d` by the
 -- preceding owner bridge. If the conjugating word `p` had positive syllable length, the textbook

@@ -1,5 +1,5 @@
 import Mathlib
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Lemma_1_11_16
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Lemma_1_11_16
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

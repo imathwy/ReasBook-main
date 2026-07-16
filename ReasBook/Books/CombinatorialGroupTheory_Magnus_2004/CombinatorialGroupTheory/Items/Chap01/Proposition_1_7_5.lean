@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_7_4
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_7_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -10,7 +10,7 @@ section
 
 variable {X : Type u} {F : Type v} [Group F]
 
-local instance : DecidableEq X := Classical.decEq X
+local instance proposition_1_7_5_decidableEq : DecidableEq X := Classical.decEq X
 
 -- Layer triage:
 -- `source-facing`: finite connected quadratic word sets over a chosen free basis that are not

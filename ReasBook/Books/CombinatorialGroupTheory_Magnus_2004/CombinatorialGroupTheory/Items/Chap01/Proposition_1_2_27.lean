@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Definition_1_1_1
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Definition_1_1_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -38,7 +38,7 @@ and the hypothesis that `A` lies in some free basis. The completion set `B`, the
 
 -- Keep the `DecidableEq` requirement local: it is only needed to form `FreeGroup.norm` on the
 -- reduced words `basis.repr x`, and it should not leak into the public theorem interface.
-local instance : DecidableEq ι := Classical.decEq ι
+local instance proposition_1_2_27_decidableEq : DecidableEq ι := Classical.decEq ι
 
 /-- Proposition 1-2-27: let `basis : FreeGroupBasis ι F` be a finite basis of the free group `F`,
 and let `A` be a nonempty subset of `F` contained in some free basis. Then `F` has a basis

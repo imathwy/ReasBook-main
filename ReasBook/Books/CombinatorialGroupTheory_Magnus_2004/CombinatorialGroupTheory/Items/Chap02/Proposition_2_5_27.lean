@@ -1,5 +1,5 @@
 import Mathlib
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_7_4
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_7_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -11,7 +11,7 @@ section
 
 variable {X : Type u}
 
-local instance : DecidableEq X := Classical.decEq X
+local instance proposition_2_5_27_decidableEq : DecidableEq X := Classical.decEq X
 local notation "basis" => FreeGroupBasis.ofFreeGroup X
 
 variable (s : FreeGroup X) (n : ℕ)

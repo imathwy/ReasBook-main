@@ -1,5 +1,5 @@
 import Mathlib
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_10_2
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_10_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -34,10 +34,10 @@ theorem iInf_derivedSeries_eq_bot_of_isFreeGroup :
     (⨅ n : ℕ, derivedSeries F n) = ⊥ := by
   rw [Subgroup.eq_bot_iff_forall]
   intro g hg
-  have hg_lower : g ∈ ⨅ n : ℕ, lowerCentralSeries F n := by
+  have hg_lower : g ∈ ⨅ n : ℕ, Subgroup.lowerCentralSeries F n := by
     rw [Subgroup.mem_iInf]
     intro n
-    exact derived_le_lower_central n <| Subgroup.mem_iInf.mp hg n
+    exact Subgroup.derived_le_lower_central n <| Subgroup.mem_iInf.mp hg n
   simpa [iInf_lowerCentralSeries_eq_bot_of_isFreeGroup] using hg_lower
 
 end

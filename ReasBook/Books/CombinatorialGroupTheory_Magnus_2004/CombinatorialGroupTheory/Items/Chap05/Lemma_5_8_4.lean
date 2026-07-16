@@ -1,6 +1,6 @@
 import Mathlib
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Theorem_5_6_3
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Theorem_5_7_6
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap05.Theorem_5_6_3
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap05.Theorem_5_7_6
 
 universe u
 

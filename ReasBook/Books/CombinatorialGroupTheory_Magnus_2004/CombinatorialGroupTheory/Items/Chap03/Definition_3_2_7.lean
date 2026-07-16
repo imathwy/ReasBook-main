@@ -1,5 +1,5 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Definition_3_2_4
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Definition_3_2_6
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap03.Definition_3_2_4
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap03.Definition_3_2_6
 
 universe u v w
 

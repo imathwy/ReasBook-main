@@ -1,5 +1,5 @@
 import Mathlib
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Definition_1_2_28
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Definition_1_2_28
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -55,8 +55,17 @@ finite-order automorphism into the ambient free group is split. -/
 theorem fixed_eqLocus_subtype_isSplitMono_of_isOfFinOrder
     (α : MulAut F) (hα : IsOfFinOrder α) :
     IsSplitMono (GrpCat.ofHom (Fix[α]).subtype) := by
-  simpa using
+  have hsplit :=
     (fixed_eqLocus_isFreeFactorOf_top_of_isOfFinOrder α hα).isSplitMono
+  rw [Subgroup.subtype_isSplitMono_iff_exists_leftInverse] at hsplit ⊢
+  rcases hsplit with ⟨ρ, hρ⟩
+  let e : (Fix[α]).subgroupOf (⊤ : Subgroup F) ≃* Fix[α] :=
+    Subgroup.subgroupOfEquivOfLe le_top
+  let ρ' : F →* Fix[α] :=
+    e.toMonoidHom.comp (ρ.comp Subgroup.topEquiv.symm.toMonoidHom)
+  refine ⟨ρ', ?_⟩
+  intro x
+  simpa [ρ', e] using congrArg e (hρ (e.symm x))
 
 end MulAut
 

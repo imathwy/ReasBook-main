@@ -1,6 +1,6 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_2_9
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_3_5
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_4_5
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_2_9
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_3_5
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_4_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -88,7 +88,7 @@ private theorem rank_eq_nat_card_generators :
 /-- A rank-two finitely generated free group admits a basis indexed by `Fin 2`. This bridge
 converts the intrinsic rank statement `Group.rank F = 2` into the basis owner used by the
 chapter's basis-dependent automorphism results. -/
-private theorem exists_basis_fin_two_of_rank_eq_two (h_rank : Group.rank F = 2) :
+theorem exists_basis_fin_two_of_rank_eq_two (h_rank : Group.rank F = 2) :
     Nonempty (FreeGroupBasis (Fin 2) F) := by
   letI : Finite (IsFreeGroup.Generators F) := IsFreeGroup.finite_generators F
   have hcard : Group.rank F = Nat.card (IsFreeGroup.Generators F) :=

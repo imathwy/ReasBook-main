@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap02.Theorem_2_6_1
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap02.Theorem_2_6_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -10,7 +10,7 @@ section
 
 variable {X : Type u} (r : FreeGroup X)
 
-local instance : DecidableEq X := Classical.decEq X
+local instance theorem_4_5_1_decidableEq : DecidableEq X := Classical.decEq X
 
 local notation "basis" => FreeGroupBasis.ofFreeGroup X
 local notation "G" => PresentedGroup (Set.singleton r)

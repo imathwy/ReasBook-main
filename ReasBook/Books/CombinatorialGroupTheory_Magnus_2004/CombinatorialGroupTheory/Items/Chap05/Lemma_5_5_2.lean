@@ -1,6 +1,6 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Lemma_5_5_1
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_1_5
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_2_5
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap05.Lemma_5_5_1
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap05.Definition_5_1_5
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap05.Definition_5_2_5
 
 universe u
 
@@ -14,7 +14,7 @@ section
 
 variable {X : Type u}
 
-local instance : DecidableEq X := Classical.decEq X
+local instance lemma_5_5_2_decidableEq : DecidableEq X := Classical.decEq X
 
 local notation "basis" => FreeGroupBasis.ofFreeGroup X
 
