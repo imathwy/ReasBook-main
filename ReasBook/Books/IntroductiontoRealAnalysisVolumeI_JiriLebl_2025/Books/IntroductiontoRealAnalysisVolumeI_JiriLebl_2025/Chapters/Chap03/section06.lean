@@ -32,7 +32,7 @@ def monotoneOn (f : ℝ → ℝ) (S : Set ℝ) : Prop :=
 def strictlyMonotoneOn (f : ℝ → ℝ) (S : Set ℝ) : Prop :=
   strictlyIncreasingOn f S ∨ strictlyDecreasingOn f S
 
-lemma increasingOn_iff_monotoneOn {f : ℝ → ℝ} {S : Set ℝ} :
+lemma increasingOn_iff_monotoneOn_real {f : ℝ → ℝ} {S : Set ℝ} :
     increasingOn f S ↔ MonotoneOn f S := by
   constructor
   · intro h x hx y hy hxy
@@ -42,7 +42,7 @@ lemma increasingOn_iff_monotoneOn {f : ℝ → ℝ} {S : Set ℝ} :
   · intro h x y hx hy hxy
     exact h hx hy (le_of_lt hxy)
 
-lemma strictlyIncreasingOn_iff_strictMonoOn {f : ℝ → ℝ} {S : Set ℝ} :
+lemma strictlyIncreasingOn_iff_strictMonoOn_real {f : ℝ → ℝ} {S : Set ℝ} :
     strictlyIncreasingOn f S ↔ StrictMonoOn f S := by
   constructor
   · intro h x hx y hy hxy
@@ -50,7 +50,7 @@ lemma strictlyIncreasingOn_iff_strictMonoOn {f : ℝ → ℝ} {S : Set ℝ} :
   · intro h x y hx hy hxy
     exact h hx hy hxy
 
-lemma decreasingOn_iff_antitoneOn {f : ℝ → ℝ} {S : Set ℝ} :
+lemma decreasingOn_iff_antitoneOn_real {f : ℝ → ℝ} {S : Set ℝ} :
     decreasingOn f S ↔ AntitoneOn f S := by
   constructor
   · intro h x hx y hy hxy
@@ -60,7 +60,7 @@ lemma decreasingOn_iff_antitoneOn {f : ℝ → ℝ} {S : Set ℝ} :
   · intro h x y hx hy hxy
     exact h hx hy (le_of_lt hxy)
 
-lemma strictlyDecreasingOn_iff_strictAntiOn {f : ℝ → ℝ} {S : Set ℝ} :
+lemma strictlyDecreasingOn_iff_strictAntiOn_real {f : ℝ → ℝ} {S : Set ℝ} :
     strictlyDecreasingOn f S ↔ StrictAntiOn f S := by
   constructor
   · intro h x hx y hy hxy
@@ -74,15 +74,15 @@ lemma monotoneOn_iff_monotoneOrAntitone {f : ℝ → ℝ} {S : Set ℝ} :
   · intro h
     rcases h with h | h
     · left
-      exact (increasingOn_iff_monotoneOn).1 h
+      exact (increasingOn_iff_monotoneOn_real).1 h
     · right
-      exact (decreasingOn_iff_antitoneOn).1 h
+      exact (decreasingOn_iff_antitoneOn_real).1 h
   · intro h
     rcases h with h | h
     · left
-      exact (increasingOn_iff_monotoneOn).2 h
+      exact (increasingOn_iff_monotoneOn_real).2 h
     · right
-      exact (decreasingOn_iff_antitoneOn).2 h
+      exact (decreasingOn_iff_antitoneOn_real).2 h
 
 lemma strictlyMonotoneOn_iff_strictMonoOrStrictAnti {f : ℝ → ℝ} {S : Set ℝ} :
     strictlyMonotoneOn f S ↔ StrictMonoOn f S ∨ StrictAntiOn f S := by
@@ -90,15 +90,15 @@ lemma strictlyMonotoneOn_iff_strictMonoOrStrictAnti {f : ℝ → ℝ} {S : Set �
   · intro h
     rcases h with h | h
     · left
-      exact (strictlyIncreasingOn_iff_strictMonoOn).1 h
+      exact (strictlyIncreasingOn_iff_strictMonoOn_real).1 h
     · right
-      exact (strictlyDecreasingOn_iff_strictAntiOn).1 h
+      exact (strictlyDecreasingOn_iff_strictAntiOn_real).1 h
   · intro h
     rcases h with h | h
     · left
-      exact (strictlyIncreasingOn_iff_strictMonoOn).2 h
+      exact (strictlyIncreasingOn_iff_strictMonoOn_real).2 h
     · right
-      exact (strictlyDecreasingOn_iff_strictAntiOn).2 h
+      exact (strictlyDecreasingOn_iff_strictAntiOn_real).2 h
 
 /-- A technical lemma: if `f` is monotone on `S`, then the left limit along
 `S ∩ (-∞, c)` converges to the supremum of the left slice when that slice is

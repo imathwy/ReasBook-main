@@ -11,8 +11,7 @@ import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Book
 -- import DifferentialForms_Cartan_1970.Book
 -- repair-pending: book:FirstOrderMethodsOptimization_Beck_2017; last-run=20260715T185132Z-root-allowlist-audit-474f1971; status=infrastructure-failure
 -- import FirstOrderMethodsOptimization_Beck_2017.Book
--- repair-pending: book:IntroductiontoRealAnalysisVolumeI_JiriLebl_2025; last-run=20260715T234602Z-root-allowlist-audit-474f1971; status=repair-incomplete
--- import IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Book
+import IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Book
 -- repair-pending: book:LecturesConvexOptimization_Nesterov_2018; last-run=20260715T234921Z-root-allowlist-audit-474f1971; status=repair-incomplete
 -- import LecturesConvexOptimization_Nesterov_2018.Book
 -- repair-pending: book:LinearRepresentations_Serre_1977; last-run=20260715T234823Z-root-allowlist-audit-474f1971; status=repair-incomplete

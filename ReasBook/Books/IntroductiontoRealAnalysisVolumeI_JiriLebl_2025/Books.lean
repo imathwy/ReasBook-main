@@ -1,3 +1,1 @@
-import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Book
-import ConvexAnalysis_Rockafellar_1970.Book
 import IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Book
