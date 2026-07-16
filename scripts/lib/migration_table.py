@@ -1,5 +1,4 @@
-"""
-Known mathlib API migrations between versions.
+"""Known mathlib API migrations between versions.
 
 Each entry maps an old identifier to its new form and the version
 where the change occurred.  Used by fix_errors.py for safe
@@ -13,7 +12,16 @@ Format:
     }
 
 new can be None if the API was removed with no replacement.
+
+This is a legacy v4.30.0 table. New mechanical rules may be promoted only
+after the multi-fixture gate described in docs/compatibility/README.md.
 """
+
+import json
+import os
+from pathlib import Path
+
+MIGRATION_PROVENANCE = "legacy-v4.30.0-table; review against docs/compatibility/v4.30.0.md"
 
 MIGRATIONS = {
     # ------------------------------------------------------------------
@@ -531,6 +539,25 @@ MIGRATIONS = {
 }
 
 
+def _load_verified_promotions() -> None:
+    """Load deterministic, version-scoped rules promoted from compatibility tips."""
+    root = Path(os.environ.get("REASBOOK_ROOT", Path(__file__).resolve().parents[2])).resolve()
+    toolchain_file = root / "ReasBook" / "lean-toolchain"
+    try:
+        version = toolchain_file.read_text(encoding="utf-8").strip().rsplit(":v", 1)[-1]
+        path = root / "docs" / "compatibility" / f"migrations-v{version}.json"
+        promoted = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError, IndexError):
+        return
+    for old_name, rule in promoted.items():
+        if not isinstance(rule, dict) or not {"new", "since", "note", "provenance"} <= rule.keys():
+            continue
+        MIGRATIONS[old_name] = rule
+
+
+_load_verified_promotions()
+
+
 def find_migration(identifier: str) -> dict | None:
     """Look up a known migration for an identifier.
 
@@ -539,13 +566,17 @@ def find_migration(identifier: str) -> dict | None:
     """
     # Exact match
     if identifier in MIGRATIONS:
-        return MIGRATIONS[identifier]
+        result = dict(MIGRATIONS[identifier])
+        result.setdefault("provenance", MIGRATION_PROVENANCE)
+        return result
 
     # Suffix match (e.g. "Mathlib.Topology.Basic.TopologicalSpace"
     # matches "TopologicalSpace")
     for old_name, migration in MIGRATIONS.items():
         if identifier.endswith("." + old_name) or identifier == old_name:
-            return migration
+            result = dict(migration)
+            result.setdefault("provenance", MIGRATION_PROVENANCE)
+            return result
 
     return None
 
@@ -555,5 +586,7 @@ def list_migrations_since(version: str) -> list[dict]:
     result = []
     for old_name, migration in MIGRATIONS.items():
         if migration["since"] >= version:
-            result.append({"old": old_name, **migration})
+            item = {"old": old_name, **migration}
+            item.setdefault("provenance", MIGRATION_PROVENANCE)
+            result.append(item)
     return result

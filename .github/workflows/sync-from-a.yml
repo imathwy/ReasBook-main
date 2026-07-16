@@ -6,44 +6,18 @@ on:
   workflow_dispatch:
     inputs:
       book:
-        description: 'Sync a specific book (use new name)'
+        description: Exact mapped book name; empty means all
         required: false
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   sync:
-    runs-on: self-hosted
-    steps:
-      - name: Checkout B
-        uses: actions/checkout@v4
-
-      - name: Checkout A (ALLBOOKS)
-        uses: actions/checkout@v4
-        with:
-          repository: wl-ma/ALLBOOKS
-          token: ${{ secrets.A_REPO_PAT }}
-          path: /tmp/repo-A
-          ref: main
-
-      - name: Sync from A
-        run: |
-          if [ -n "${{ inputs.book }}" ]; then
-            python3 scripts/sync_from_a.py --source /tmp/repo-A --book "${{ inputs.book }}"
-          else
-            python3 scripts/sync_from_a.py --source /tmp/repo-A --all
-          fi
-
-      - name: Commit and push
-        run: |
-          git add -A
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-          else
-            git commit -m "sync: automated sync from ALLBOOKS ($(date -I))"
-            git push
-          fi
-
-      - name: Upload sync report
-        uses: actions/upload-artifact@v4
-        with:
-          name: sync-report
-          path: docs/sync-reports/
+    uses: ./.github/workflows/automation.yml
+    with:
+      operation: sync
+      book: ${{ inputs.book }}
+    secrets:
+      A_REPO_PAT: ${{ secrets.A_REPO_PAT }}
