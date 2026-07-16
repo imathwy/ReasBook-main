@@ -1,5 +1,5 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.III.section12.CircleSupNorm
+import DifferentialForms_Cartan_1970.cartan.III.section12.CircleSupNorm
 
 -- Semantic recall tool `lean_leansearch` was unavailable in this environment; I matched the
 -- statement surface against nearby local precedent in this section using `AnalyticOnNhd` and

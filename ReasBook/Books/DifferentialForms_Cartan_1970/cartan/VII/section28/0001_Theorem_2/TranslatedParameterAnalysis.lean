@@ -1,6 +1,6 @@
-import DifferentialForms_Cartan_1970.VII.section27.«0001_Theorem_I»
-import DifferentialForms_Cartan_1970.VII.section28.«0001_Theorem_2».BanachFormalSeries
-import DifferentialForms_Cartan_1970.VII.section28.«0001_Theorem_2».LocalHolomorphicSystems
+import DifferentialForms_Cartan_1970.cartan.VII.section27.«0001_Theorem_I»
+import DifferentialForms_Cartan_1970.cartan.VII.section28.«0001_Theorem_2».BanachFormalSeries
+import DifferentialForms_Cartan_1970.cartan.VII.section28.«0001_Theorem_2».LocalHolomorphicSystems
 import Mathlib
 
 open Filter

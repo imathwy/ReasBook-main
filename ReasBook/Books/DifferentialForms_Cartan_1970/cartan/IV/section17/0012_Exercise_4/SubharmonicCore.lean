@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Analysis.Complex.Harmonic.MeanValue
-import DifferentialForms_Cartan_1970.II.section05.«0033_Definition_II_1_extra_20»
-import DifferentialForms_Cartan_1970.II.section05.«0035_Theorem_II_1_extra_22»
-import DifferentialForms_Cartan_1970.IV.section16.«0002_Theorem_IV_4_extra_2»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0033_Definition_II_1_extra_20»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0035_Theorem_II_1_extra_22»
+import DifferentialForms_Cartan_1970.cartan.IV.section16.«0002_Theorem_IV_4_extra_2»
 
 open Filter InnerProductSpace Laplacian Metric Real Set Topology
 open scoped BigOperators InnerProductSpace

@@ -1,5 +1,5 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section05.«0034_Example_II_1_extra_21».BoundaryStraightening
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0034_Example_II_1_extra_21».BoundaryStraightening
 
 open scoped unitInterval
 

@@ -1,7 +1,7 @@
-import DifferentialForms_Cartan_1970.I.section02.«0012_Proposition_6_1»
-import DifferentialForms_Cartan_1970.I.section02.«0016_Proposition_9_1»
-import DifferentialForms_Cartan_1970.IV.section13.«0001_Definition_IV_1_extra_1»
-import DifferentialForms_Cartan_1970.IV.section13.«0007_Proposition_3_I»
+import DifferentialForms_Cartan_1970.cartan.I.section02.«0012_Proposition_6_1»
+import DifferentialForms_Cartan_1970.cartan.I.section02.«0016_Proposition_9_1»
+import DifferentialForms_Cartan_1970.cartan.IV.section13.«0001_Definition_IV_1_extra_1»
+import DifferentialForms_Cartan_1970.cartan.IV.section13.«0007_Proposition_3_I»
 import Mathlib
 
 open Filter

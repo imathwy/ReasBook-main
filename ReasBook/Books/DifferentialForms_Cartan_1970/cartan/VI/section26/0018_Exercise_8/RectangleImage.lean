@@ -1,4 +1,4 @@
-import DifferentialForms_Cartan_1970.VI.section26.«0018_Exercise_8».BoundaryFrontier
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0018_Exercise_8».BoundaryFrontier
 
 open Set
 open scoped UpperHalfPlane

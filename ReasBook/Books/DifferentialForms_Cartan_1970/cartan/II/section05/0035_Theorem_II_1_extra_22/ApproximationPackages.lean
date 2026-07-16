@@ -1,6 +1,6 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section05.«0005_Proposition_2_1»
-import DifferentialForms_Cartan_1970.II.section05.«0033_Definition_II_1_extra_20»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0005_Proposition_2_1»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0033_Definition_II_1_extra_20»
 
 open MeasureTheory
 open scoped BigOperators

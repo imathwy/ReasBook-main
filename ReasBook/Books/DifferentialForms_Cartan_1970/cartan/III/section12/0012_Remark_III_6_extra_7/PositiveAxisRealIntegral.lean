@@ -1,6 +1,6 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section05.«0003_Lemma_II_1_extra_3»
-import DifferentialForms_Cartan_1970.III.section12.«0012_Remark_III_6_extra_7».ShiftedLogResidueData
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0003_Lemma_II_1_extra_3»
+import DifferentialForms_Cartan_1970.cartan.III.section12.«0012_Remark_III_6_extra_7».ShiftedLogResidueData
 
 open Filter MeasureTheory Bornology
 open scoped unitInterval

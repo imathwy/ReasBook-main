@@ -1,11 +1,11 @@
-import DifferentialForms_Cartan_1970.III.section11.«0013_Proposition_5_2».ConstantShift
-import DifferentialForms_Cartan_1970.III.section11.«0013_Proposition_5_2».NormalFormSupport
-import DifferentialForms_Cartan_1970.III.section11.«0013_Proposition_5_2».RectangleBoundaryBridge
-import DifferentialForms_Cartan_1970.III.section11.«0013_Proposition_5_2».WeightedLogResidues
-import DifferentialForms_Cartan_1970.III.section11.«0013_Proposition_5_2».WeightedLogPeriodicity
-import DifferentialForms_Cartan_1970.III.section11.«0013_Proposition_5_2».PeriodParallelogramBoundary
-import DifferentialForms_Cartan_1970.III.section11.«0013_Proposition_5_2».PeriodParallelogramCoordinates
-import DifferentialForms_Cartan_1970.III.section11.«0013_Proposition_5_2».BoundaryWeightedSums
-import DifferentialForms_Cartan_1970.III.section11.«0013_Proposition_5_2».AbelSumRelation
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0013_Proposition_5_2».ConstantShift
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0013_Proposition_5_2».NormalFormSupport
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0013_Proposition_5_2».RectangleBoundaryBridge
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0013_Proposition_5_2».WeightedLogResidues
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0013_Proposition_5_2».WeightedLogPeriodicity
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0013_Proposition_5_2».PeriodParallelogramBoundary
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0013_Proposition_5_2».PeriodParallelogramCoordinates
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0013_Proposition_5_2».BoundaryWeightedSums
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0013_Proposition_5_2».AbelSumRelation
 
 -- Re-export the theorem-local support modules for Proposition 5.2.

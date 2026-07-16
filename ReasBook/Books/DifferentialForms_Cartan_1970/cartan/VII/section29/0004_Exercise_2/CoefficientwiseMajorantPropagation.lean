@@ -1,4 +1,4 @@
-import DifferentialForms_Cartan_1970.VII.section29.«0004_Exercise_2».OuterGeometricMajorant
+import DifferentialForms_Cartan_1970.cartan.VII.section29.«0004_Exercise_2».OuterGeometricMajorant
 
 open scoped BigOperators MvPowerSeries PowerSeries MvPowerSeries.WithPiTopology
 open PowerSeries

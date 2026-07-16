@@ -1,5 +1,5 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.III.section12.«0014_Exercise_2».Index
+import DifferentialForms_Cartan_1970.cartan.III.section12.«0014_Exercise_2».Index
 
 -- Semantic search tool `lean_leansearch` was unavailable in this environment; notation was
 -- verified locally against mathlib and nearby repository precedent. The holomorphic-neighborhood

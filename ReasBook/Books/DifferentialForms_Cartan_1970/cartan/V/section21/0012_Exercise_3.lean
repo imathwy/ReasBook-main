@@ -1,8 +1,8 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.I.section04.«0013_Proposition_4_1»
-import DifferentialForms_Cartan_1970.III.section11.«0008_Proposition_4_1»
-import DifferentialForms_Cartan_1970.III.section11.«0013_Proposition_5_2»
-import DifferentialForms_Cartan_1970.V.section21.«0012_Exercise_3».Index
+import DifferentialForms_Cartan_1970.cartan.I.section04.«0013_Proposition_4_1»
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0008_Proposition_4_1»
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0013_Proposition_5_2»
+import DifferentialForms_Cartan_1970.cartan.V.section21.«0012_Exercise_3».Index
 
 -- Semantic Lean search tool `lean_leansearch` was unavailable in this session; the statement shape
 -- below was chosen from local mathlib and repository inspection.

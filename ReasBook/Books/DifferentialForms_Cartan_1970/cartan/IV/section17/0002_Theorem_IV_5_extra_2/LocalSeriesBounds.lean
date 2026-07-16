@@ -1,4 +1,4 @@
-import DifferentialForms_Cartan_1970.IV.section17.«0002_Theorem_IV_5_extra_2».ParametricPowerSeries
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0002_Theorem_IV_5_extra_2».ParametricPowerSeries
 
 /-- Helper for Theorem IV.5-extra-2: on the quarter-radius ball around `w0`, the shifted monomial
 is bounded by the corresponding half-radius geometric factor. -/

@@ -1,6 +1,6 @@
-import DifferentialForms_Cartan_1970.VI.section26.«0017_Exercise_7».CassiniCore
-import DifferentialForms_Cartan_1970.VI.section26.«0018_Exercise_8».AbelIntegralCore
-import DifferentialForms_Cartan_1970.VI.section26.«0018_Exercise_8».BoundaryTrace
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0017_Exercise_7».CassiniCore
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0018_Exercise_8».AbelIntegralCore
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0018_Exercise_8».BoundaryTrace
 
 open Set
 open scoped UpperHalfPlane

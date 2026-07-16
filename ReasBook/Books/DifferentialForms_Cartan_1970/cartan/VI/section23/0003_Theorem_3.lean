@@ -1,7 +1,7 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.VI.RiemannSphere
-import DifferentialForms_Cartan_1970.VI.section23.«0002_Theorem_2»
-import DifferentialForms_Cartan_1970.VI.section23.«0004_Lemma_VI_2_extra_1»
+import DifferentialForms_Cartan_1970.cartan.VI.RiemannSphere
+import DifferentialForms_Cartan_1970.cartan.VI.section23.«0002_Theorem_2»
+import DifferentialForms_Cartan_1970.cartan.VI.section23.«0004_Lemma_VI_2_extra_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

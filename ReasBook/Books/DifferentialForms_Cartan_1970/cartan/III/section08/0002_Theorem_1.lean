@@ -1,4 +1,4 @@
-import DifferentialForms_Cartan_1970.III.section08.«0001_Definition_III_2_extra_1»
+import DifferentialForms_Cartan_1970.cartan.III.section08.«0001_Definition_III_2_extra_1»
 
 open Complex Metric Real Set
 open scoped Topology

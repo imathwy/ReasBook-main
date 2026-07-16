@@ -1,7 +1,7 @@
-import DifferentialForms_Cartan_1970.IV.section17.«0003_Proposition_2_1»
-import DifferentialForms_Cartan_1970.I.section02.«0015_Proposition_I_2_extra_8»
-import DifferentialForms_Cartan_1970.IV.section13.«0005_Proposition_2_2»
-import DifferentialForms_Cartan_1970.IV.section13.«0006_Lemma_IV_1_extra_4»
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0003_Proposition_2_1»
+import DifferentialForms_Cartan_1970.cartan.I.section02.«0015_Proposition_I_2_extra_8»
+import DifferentialForms_Cartan_1970.cartan.IV.section13.«0005_Proposition_2_2»
+import DifferentialForms_Cartan_1970.cartan.IV.section13.«0006_Lemma_IV_1_extra_4»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

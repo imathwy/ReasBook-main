@@ -1,16 +1,16 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section05.«0003_Lemma_II_1_extra_3»
-import DifferentialForms_Cartan_1970.II.section05.«0005_Proposition_2_1»
-import DifferentialForms_Cartan_1970.II.section05.«0009_Definition_II_1_extra_6»
-import DifferentialForms_Cartan_1970.II.section05.«0010_Proposition_4_1»
-import DifferentialForms_Cartan_1970.II.section05.«0018_Theorem_2»
-import DifferentialForms_Cartan_1970.II.section05.«0019_Theorem_2»
-import DifferentialForms_Cartan_1970.II.section05.«0033_Definition_II_1_extra_20»
-import DifferentialForms_Cartan_1970.II.section05.«0036_Corollary_II_1_extra_23».BoundaryComponentGeometry
-import DifferentialForms_Cartan_1970.II.section05.«0036_Corollary_II_1_extra_23».ClosedPathTransportBasics
-import DifferentialForms_Cartan_1970.II.section05.«0036_Corollary_II_1_extra_23».ClosedFormBoundaryReductions
-import DifferentialForms_Cartan_1970.II.section05.«0036_Corollary_II_1_extra_23».RectangleStageReduction
-import DifferentialForms_Cartan_1970.II.section05.«0036_Corollary_II_1_extra_23».RootedBoundaryLoops
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0003_Lemma_II_1_extra_3»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0005_Proposition_2_1»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0009_Definition_II_1_extra_6»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0010_Proposition_4_1»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0018_Theorem_2»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0019_Theorem_2»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0033_Definition_II_1_extra_20»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0036_Corollary_II_1_extra_23».BoundaryComponentGeometry
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0036_Corollary_II_1_extra_23».ClosedPathTransportBasics
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0036_Corollary_II_1_extra_23».ClosedFormBoundaryReductions
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0036_Corollary_II_1_extra_23».RectangleStageReduction
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0036_Corollary_II_1_extra_23».RootedBoundaryLoops
 
 open scoped BigOperators Interval unitInterval
 

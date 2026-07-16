@@ -1,5 +1,5 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.VI.section26.«0008_Problem_VI_5_extra_8»
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0008_Problem_VI_5_extra_8»
 
 open scoped Manifold
 

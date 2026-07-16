@@ -1,5 +1,5 @@
-import DifferentialForms_Cartan_1970.II.section05.«0035_Theorem_II_1_extra_22».RectangleExhaustion
-import DifferentialForms_Cartan_1970.II.section05.«0035_Theorem_II_1_extra_22».RootedBoundaryLoops
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0035_Theorem_II_1_extra_22».RectangleExhaustion
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0035_Theorem_II_1_extra_22».RootedBoundaryLoops
 
 open MeasureTheory
 open scoped BigOperators

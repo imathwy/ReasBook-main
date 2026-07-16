@@ -1,6 +1,6 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section06.«0010_Theorem_3»
-import DifferentialForms_Cartan_1970.III.section07.«0001_Remark_III_1_extra_1»
+import DifferentialForms_Cartan_1970.cartan.II.section06.«0010_Theorem_3»
+import DifferentialForms_Cartan_1970.cartan.III.section07.«0001_Remark_III_1_extra_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 -- Semantic search tool `lean_leansearch` was unavailable in this environment; the statement uses

@@ -1,4 +1,4 @@
-import DifferentialForms_Cartan_1970.VII.section29.«0004_Exercise_2».RecursiveCoefficientVariableBounds
+import DifferentialForms_Cartan_1970.cartan.VII.section29.«0004_Exercise_2».RecursiveCoefficientVariableBounds
 
 open scoped BigOperators MvPowerSeries PowerSeries MvPowerSeries.WithPiTopology
 open PowerSeries

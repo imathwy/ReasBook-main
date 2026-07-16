@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Analysis.Complex.Harmonic.Poisson
 import Mathlib.Analysis.InnerProductSpace.Harmonic.Constructions
-import DifferentialForms_Cartan_1970.III.section11.«0008_Proposition_4_1»
-import DifferentialForms_Cartan_1970.III.section12.«0008_Example_III_6_extra_3»
-import DifferentialForms_Cartan_1970.III.section12.«0033_Exercise_20».Index
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0008_Proposition_4_1»
+import DifferentialForms_Cartan_1970.cartan.III.section12.«0008_Example_III_6_extra_3»
+import DifferentialForms_Cartan_1970.cartan.III.section12.«0033_Exercise_20».Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 -- Semantic search tool `lean_leansearch` was unavailable in this environment.

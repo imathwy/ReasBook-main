@@ -1,6 +1,6 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section05.«0001_Definition_II_1_extra_1»
-import DifferentialForms_Cartan_1970.II.section05.«0026_Definition_II_1_extra_16»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0001_Definition_II_1_extra_1»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0026_Definition_II_1_extra_16»
 
 open scoped unitInterval
 

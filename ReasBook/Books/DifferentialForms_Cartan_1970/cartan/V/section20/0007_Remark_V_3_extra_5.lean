@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Tactic.Recall
 import Mathlib.Order.Filter.AtTopBot.Tendsto
-import DifferentialForms_Cartan_1970.V.section20.«0002_Definition_V_3_extra_2»
-import DifferentialForms_Cartan_1970.V.section20.«0003_Theorem_1»
-import DifferentialForms_Cartan_1970.V.section20.«0004_Theorem_2»
+import DifferentialForms_Cartan_1970.cartan.V.section20.«0002_Definition_V_3_extra_2»
+import DifferentialForms_Cartan_1970.cartan.V.section20.«0003_Theorem_1»
+import DifferentialForms_Cartan_1970.cartan.V.section20.«0004_Theorem_2»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

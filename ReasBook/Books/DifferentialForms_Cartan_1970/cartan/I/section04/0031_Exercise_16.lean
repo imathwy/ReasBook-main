@@ -7,7 +7,7 @@ import Mathlib.Analysis.SpecialFunctions.Complex.LogDeriv
 import Mathlib.Analysis.SpecialFunctions.Complex.Log
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 import Mathlib.Topology.Algebra.InfiniteSum.TsumUniformlyOn
-import DifferentialForms_Cartan_1970.I.section02.«0013_Proposition_7_1»
+import DifferentialForms_Cartan_1970.cartan.I.section02.«0013_Proposition_7_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
-import DifferentialForms_Cartan_1970.III.section10.«0001_Definition_III_4_extra_1»
-import DifferentialForms_Cartan_1970.VI.section26.«0015_Exercise_5»
+import DifferentialForms_Cartan_1970.cartan.III.section10.«0001_Definition_III_4_extra_1»
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0015_Exercise_5»
 
 open Set
 

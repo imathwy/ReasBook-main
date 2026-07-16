@@ -1,5 +1,5 @@
-import DifferentialForms_Cartan_1970.IV.section17.«0002_Theorem_IV_5_extra_2»
-import DifferentialForms_Cartan_1970.VII.section28.«0001_Theorem_2».TranslatedParameterOwners
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0002_Theorem_IV_5_extra_2»
+import DifferentialForms_Cartan_1970.cartan.VII.section28.«0001_Theorem_2».TranslatedParameterOwners
 import Mathlib
 
 open Filter

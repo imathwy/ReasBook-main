@@ -1,4 +1,4 @@
-import DifferentialForms_Cartan_1970.IV.section17.«0002_Theorem_IV_5_extra_2».LocalSeriesBounds
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0002_Theorem_IV_5_extra_2».LocalSeriesBounds
 
 /-- Helper for Cartan section17 0002_Theorem_IV_5_extra_2: on a fixed boundary circle in the last
 coordinate, the lower-dimensional induction hypothesis already gives joint analyticity of the

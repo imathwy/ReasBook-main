@@ -1,10 +1,10 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section06.«0013_Corollary_II_2_extra_5»
-import DifferentialForms_Cartan_1970.II.section06.«0015_Remark_II_2_extra_6»
-import DifferentialForms_Cartan_1970.III.section11.«0009_Proposition_4_2»
-import DifferentialForms_Cartan_1970.VI.section22.«0005_Corollary_VI_1_extra_3»
-import DifferentialForms_Cartan_1970.VI.section22.«0006_Definition_VI_1_extra_4»
-import DifferentialForms_Cartan_1970.VI.section26.«0016_Exercise_6».Index
+import DifferentialForms_Cartan_1970.cartan.II.section06.«0013_Corollary_II_2_extra_5»
+import DifferentialForms_Cartan_1970.cartan.II.section06.«0015_Remark_II_2_extra_6»
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0009_Proposition_4_2»
+import DifferentialForms_Cartan_1970.cartan.VI.section22.«0005_Corollary_VI_1_extra_3»
+import DifferentialForms_Cartan_1970.cartan.VI.section22.«0006_Definition_VI_1_extra_4»
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0016_Exercise_6».Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.IV.section17.«0014_Exercise_5»
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0014_Exercise_5»
 
 -- Domain sampling note: in this chapter, holomorphic-on-open-set statements use the source-facing
 -- owner `DifferentiableOn ℂ`, Exercise 4 provides the bridge

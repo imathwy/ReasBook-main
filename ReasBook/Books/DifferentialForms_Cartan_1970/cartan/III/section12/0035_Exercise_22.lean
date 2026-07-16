@@ -1,6 +1,6 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section05.«0034_Example_II_1_extra_21»
-import DifferentialForms_Cartan_1970.III.section11.frozen_0003_Theorem_III_5_extra_2
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0034_Example_II_1_extra_21»
+import DifferentialForms_Cartan_1970.cartan.III.section11.frozen_0003_Theorem_III_5_extra_2
 
 open Complex MeasureTheory
 open scoped Real

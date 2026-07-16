@@ -1,10 +1,10 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section05.«0003_Lemma_II_1_extra_3»
-import DifferentialForms_Cartan_1970.II.section05.«0004_Definition_II_1_extra_4»
-import DifferentialForms_Cartan_1970.II.section05.«0007_Theorem_II_1_extra_5»
-import DifferentialForms_Cartan_1970.II.section05.«0014_Remark_II_1_extra_8»
-import DifferentialForms_Cartan_1970.II.section05.«0008_Proposition_3_1».PrimitiveSegments
-import DifferentialForms_Cartan_1970.II.section05.«0008_Proposition_3_1».RectangleBoundary
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0003_Lemma_II_1_extra_3»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0004_Definition_II_1_extra_4»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0007_Theorem_II_1_extra_5»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0014_Remark_II_1_extra_8»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0008_Proposition_3_1».PrimitiveSegments
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0008_Proposition_3_1».RectangleBoundary
 
 noncomputable section
 

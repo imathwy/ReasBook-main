@@ -1,6 +1,6 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.III.section11.«0009_Proposition_4_2»
-import DifferentialForms_Cartan_1970.VI.section25.«0013_Definition_VI_4_extra_11»
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0009_Proposition_4_2»
+import DifferentialForms_Cartan_1970.cartan.VI.section25.«0013_Definition_VI_4_extra_11»
 
 universe uX uY
 

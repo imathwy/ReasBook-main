@@ -1,4 +1,4 @@
-import DifferentialForms_Cartan_1970.VII.section28.«0001_Theorem_2»
+import DifferentialForms_Cartan_1970.cartan.VII.section28.«0001_Theorem_2»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

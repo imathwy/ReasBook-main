@@ -1,5 +1,5 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.III.section11.«0001_Proposition_2_1».LaurentTailAPI
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0001_Proposition_2_1».LaurentTailAPI
 
 -- Semantic recall note: `lean_leansearch` was unavailable in this environment; the statement shape
 -- was verified against local mathlib interval-integral and circle-integral notation, together with

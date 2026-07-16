@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Analysis.Complex.Harmonic.MeanValue
-import DifferentialForms_Cartan_1970.IV.section16.«0002_Theorem_IV_4_extra_2»
+import DifferentialForms_Cartan_1970.cartan.IV.section16.«0002_Theorem_IV_4_extra_2»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

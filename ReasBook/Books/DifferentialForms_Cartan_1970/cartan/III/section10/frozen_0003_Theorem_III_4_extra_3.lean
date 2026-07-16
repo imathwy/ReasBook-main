@@ -1,6 +1,6 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section06.«0009_Example_II_2_extra_3»
-import DifferentialForms_Cartan_1970.III.section10.«0002_Definition_III_4_extra_2»
+import DifferentialForms_Cartan_1970.cartan.II.section06.«0009_Example_II_2_extra_3»
+import DifferentialForms_Cartan_1970.cartan.III.section10.«0002_Definition_III_4_extra_2»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

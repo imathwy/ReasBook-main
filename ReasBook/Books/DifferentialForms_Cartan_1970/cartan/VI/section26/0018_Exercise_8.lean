@@ -2,25 +2,25 @@ import Mathlib.Topology.Compactification.OnePoint.Basic
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Isometric
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev.Orthogonality
 import Mathlib.Analysis.Complex.AbsMax
-import DifferentialForms_Cartan_1970.I.section04.«0012_Definition_I_4_extra_4»
-import DifferentialForms_Cartan_1970.III.section11.PeriodLattice
-import DifferentialForms_Cartan_1970.III.section11.«0012_Corollary_III_5_extra_8»
-import DifferentialForms_Cartan_1970.II.section05.«0001_Definition_II_1_extra_1»
-import DifferentialForms_Cartan_1970.V.section21.«0012_Exercise_3»
-import DifferentialForms_Cartan_1970.V.section21.«0012_Exercise_3».ThetaConvergenceAndTranslations
-import DifferentialForms_Cartan_1970.VI.section26.«0016_Exercise_6»
-import DifferentialForms_Cartan_1970.VI.section26.«0017_Exercise_7».CassiniCore
-import DifferentialForms_Cartan_1970.VI.section26.«0018_Exercise_8».PeriodData
-import DifferentialForms_Cartan_1970.VI.section26.«0018_Exercise_8».BoundaryTrace
-import DifferentialForms_Cartan_1970.VI.section26.«0018_Exercise_8».ClosedExtensionCore
-import DifferentialForms_Cartan_1970.VI.section26.«0018_Exercise_8».AbelIntegralCore
-import DifferentialForms_Cartan_1970.VI.section26.«0018_Exercise_8».BoundarySliceTransport
-import DifferentialForms_Cartan_1970.VI.section26.«0018_Exercise_8».InnerStripBoundary
-import DifferentialForms_Cartan_1970.VI.section26.«0018_Exercise_8».RightTopStripBoundary
-import DifferentialForms_Cartan_1970.VI.section26.«0018_Exercise_8».StripBoundaryLimits
-import DifferentialForms_Cartan_1970.VI.section26.«0018_Exercise_8».SchwarzReflection
-import DifferentialForms_Cartan_1970.VI.section26.«0018_Exercise_8».BoundaryTraceContinuity
-import DifferentialForms_Cartan_1970.VI.section26.«0018_Exercise_8».BoundaryFrontier
+import DifferentialForms_Cartan_1970.cartan.I.section04.«0012_Definition_I_4_extra_4»
+import DifferentialForms_Cartan_1970.cartan.III.section11.PeriodLattice
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0012_Corollary_III_5_extra_8»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0001_Definition_II_1_extra_1»
+import DifferentialForms_Cartan_1970.cartan.V.section21.«0012_Exercise_3»
+import DifferentialForms_Cartan_1970.cartan.V.section21.«0012_Exercise_3».ThetaConvergenceAndTranslations
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0016_Exercise_6»
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0017_Exercise_7».CassiniCore
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0018_Exercise_8».PeriodData
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0018_Exercise_8».BoundaryTrace
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0018_Exercise_8».ClosedExtensionCore
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0018_Exercise_8».AbelIntegralCore
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0018_Exercise_8».BoundarySliceTransport
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0018_Exercise_8».InnerStripBoundary
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0018_Exercise_8».RightTopStripBoundary
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0018_Exercise_8».StripBoundaryLimits
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0018_Exercise_8».SchwarzReflection
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0018_Exercise_8».BoundaryTraceContinuity
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0018_Exercise_8».BoundaryFrontier
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

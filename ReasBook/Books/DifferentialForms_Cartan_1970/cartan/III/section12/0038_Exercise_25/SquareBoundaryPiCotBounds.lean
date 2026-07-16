@@ -1,7 +1,7 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section05.«0010_Proposition_4_1»
-import DifferentialForms_Cartan_1970.I.section04.«0029_Exercise_14»
-import DifferentialForms_Cartan_1970.III.section12.«0038_Exercise_25».PiCotKernel
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0010_Proposition_4_1»
+import DifferentialForms_Cartan_1970.cartan.I.section04.«0029_Exercise_14»
+import DifferentialForms_Cartan_1970.cartan.III.section12.«0038_Exercise_25».PiCotKernel
 
 noncomputable section
 

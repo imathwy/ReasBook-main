@@ -1,6 +1,6 @@
-import DifferentialForms_Cartan_1970.III.section11.«0003_Theorem_III_5_extra_2».FiniteExcisionBoundary
-import DifferentialForms_Cartan_1970.III.section12.«0012_Remark_III_6_extra_7».ShiftedLogResidueData
-import DifferentialForms_Cartan_1970.III.section12.«0012_Remark_III_6_extra_7».PositiveAxisKeyholeRange
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0003_Theorem_III_5_extra_2».FiniteExcisionBoundary
+import DifferentialForms_Cartan_1970.cartan.III.section12.«0012_Remark_III_6_extra_7».ShiftedLogResidueData
+import DifferentialForms_Cartan_1970.cartan.III.section12.«0012_Remark_III_6_extra_7».PositiveAxisKeyholeRange
 
 open Filter MeasureTheory Bornology
 open scoped unitInterval

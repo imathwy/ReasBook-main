@@ -1,4 +1,4 @@
-import DifferentialForms_Cartan_1970.IV.section17.«0002_Theorem_IV_5_extra_2».BoundaryCauchySeries
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0002_Theorem_IV_5_extra_2».BoundaryCauchySeries
 
 /-- Helper for Theorem IV.5-extra-2: updating two distinct coordinates of a fixed finite vector
 is analytic in the two inserted scalar variables. -/

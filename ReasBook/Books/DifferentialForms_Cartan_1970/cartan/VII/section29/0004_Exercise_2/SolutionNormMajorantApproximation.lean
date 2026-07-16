@@ -1,6 +1,6 @@
-import DifferentialForms_Cartan_1970.VII.section29.«0004_Exercise_2».ScalarQuadraticTailBounds
-import DifferentialForms_Cartan_1970.VII.section29.«0004_Exercise_2».SolutionNormMajorant
-import DifferentialForms_Cartan_1970.VII.section29.«0004_Exercise_2».FormalImplicitExistence
+import DifferentialForms_Cartan_1970.cartan.VII.section29.«0004_Exercise_2».ScalarQuadraticTailBounds
+import DifferentialForms_Cartan_1970.cartan.VII.section29.«0004_Exercise_2».SolutionNormMajorant
+import DifferentialForms_Cartan_1970.cartan.VII.section29.«0004_Exercise_2».FormalImplicitExistence
 
 open scoped BigOperators MvPowerSeries PowerSeries MvPowerSeries.WithPiTopology
 open PowerSeries

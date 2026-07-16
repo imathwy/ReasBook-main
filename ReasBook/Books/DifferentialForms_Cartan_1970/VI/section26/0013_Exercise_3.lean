@@ -1,6 +1,6 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.III.section09.«0001_Theorem_III_3_extra_1»
-import DifferentialForms_Cartan_1970.III.section12.«0022_Exercise_10»
+import DifferentialForms_Cartan_1970.cartan.III.section09.«0001_Theorem_III_3_extra_1»
+import DifferentialForms_Cartan_1970.cartan.III.section12.«0022_Exercise_10»
 import DifferentialForms_Cartan_1970.VI.section22.«0005_Corollary_VI_1_extra_3»
 import DifferentialForms_Cartan_1970.VI.section22.«0006_Definition_VI_1_extra_4»
 import DifferentialForms_Cartan_1970.VI.section26.«0011_Exercise_1»

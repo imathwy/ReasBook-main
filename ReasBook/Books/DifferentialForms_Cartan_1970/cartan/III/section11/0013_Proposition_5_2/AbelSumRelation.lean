@@ -1,17 +1,17 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section05.«0015_Proposition_5_1»
-import DifferentialForms_Cartan_1970.II.section06.«0018_Exercise_3»
-import DifferentialForms_Cartan_1970.III.section11.frozen_0003_Theorem_III_5_extra_2
-import DifferentialForms_Cartan_1970.III.section11.«0010_Definition_III_5_extra_7»
-import DifferentialForms_Cartan_1970.III.section11.«frozen_0011_Proposition_5_1»
-import DifferentialForms_Cartan_1970.III.section11.«0007_Remark_III_5_extra_6»
-import DifferentialForms_Cartan_1970.III.section11.«0013_Proposition_5_2».ConstantShift
-import DifferentialForms_Cartan_1970.III.section11.«0013_Proposition_5_2».NormalFormSupport
-import DifferentialForms_Cartan_1970.III.section11.«0013_Proposition_5_2».WeightedLogResidues
-import DifferentialForms_Cartan_1970.III.section11.«0013_Proposition_5_2».WeightedLogPeriodicity
-import DifferentialForms_Cartan_1970.III.section11.«0013_Proposition_5_2».PeriodParallelogramBoundary
-import DifferentialForms_Cartan_1970.III.section11.«0013_Proposition_5_2».PeriodParallelogramCoordinates
-import DifferentialForms_Cartan_1970.III.section11.«0013_Proposition_5_2».BoundaryWeightedSums
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0015_Proposition_5_1»
+import DifferentialForms_Cartan_1970.cartan.II.section06.«0018_Exercise_3»
+import DifferentialForms_Cartan_1970.cartan.III.section11.frozen_0003_Theorem_III_5_extra_2
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0010_Definition_III_5_extra_7»
+import DifferentialForms_Cartan_1970.cartan.III.section11.«frozen_0011_Proposition_5_1»
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0007_Remark_III_5_extra_6»
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0013_Proposition_5_2».ConstantShift
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0013_Proposition_5_2».NormalFormSupport
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0013_Proposition_5_2».WeightedLogResidues
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0013_Proposition_5_2».WeightedLogPeriodicity
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0013_Proposition_5_2».PeriodParallelogramBoundary
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0013_Proposition_5_2».PeriodParallelogramCoordinates
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0013_Proposition_5_2».BoundaryWeightedSums
 
 open Filter
 open scoped BigOperators Topology unitInterval

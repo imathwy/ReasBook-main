@@ -1,7 +1,7 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section05.«0003_Lemma_II_1_extra_3»
-import DifferentialForms_Cartan_1970.III.section12.SectorArc
-import DifferentialForms_Cartan_1970.III.section11.frozen_0003_Theorem_III_5_extra_2
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0003_Lemma_II_1_extra_3»
+import DifferentialForms_Cartan_1970.cartan.III.section12.SectorArc
+import DifferentialForms_Cartan_1970.cartan.III.section11.frozen_0003_Theorem_III_5_extra_2
 
 noncomputable section
 

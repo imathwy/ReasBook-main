@@ -1,5 +1,5 @@
-import DifferentialForms_Cartan_1970.III.section11.«0003_Theorem_III_5_extra_2».BoundaryCircleIntegrals
-import DifferentialForms_Cartan_1970.III.section11.«0003_Theorem_III_5_extra_2».LocalResidueExcision
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0003_Theorem_III_5_extra_2».BoundaryCircleIntegrals
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0003_Theorem_III_5_extra_2».LocalResidueExcision
 
 open scoped BigOperators Topology unitInterval
 

@@ -1,6 +1,6 @@
-import DifferentialForms_Cartan_1970.IV.section14.«0002_Definition_IV_2_extra_2»
-import DifferentialForms_Cartan_1970.IV.section17.«0001_Definition_IV_5_extra_1»
-import DifferentialForms_Cartan_1970.IV.section17.«0002_Theorem_IV_5_extra_2».TransportedSlices
+import DifferentialForms_Cartan_1970.cartan.IV.section14.«0002_Definition_IV_2_extra_2»
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0001_Definition_IV_5_extra_1»
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0002_Theorem_IV_5_extra_2».TransportedSlices
 
 /-- Helper for Theorem IV.5-extra-2: on a transported cylinder, the explicit last-variable Cauchy
 transform agrees with the original function throughout the interior last disc. -/

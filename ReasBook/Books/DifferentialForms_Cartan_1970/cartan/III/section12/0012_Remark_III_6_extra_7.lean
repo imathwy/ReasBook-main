@@ -1,7 +1,7 @@
-import DifferentialForms_Cartan_1970.III.section12.«0012_Remark_III_6_extra_7».ShiftedLogResidueData
-import DifferentialForms_Cartan_1970.III.section12.«0012_Remark_III_6_extra_7».PositiveAxisRealIntegral
-import DifferentialForms_Cartan_1970.III.section12.«0012_Remark_III_6_extra_7».PositiveAxisResidueLocalization
-import DifferentialForms_Cartan_1970.III.section12.«0012_Remark_III_6_extra_7».PositiveAxisShiftedLogContour
+import DifferentialForms_Cartan_1970.cartan.III.section12.«0012_Remark_III_6_extra_7».ShiftedLogResidueData
+import DifferentialForms_Cartan_1970.cartan.III.section12.«0012_Remark_III_6_extra_7».PositiveAxisRealIntegral
+import DifferentialForms_Cartan_1970.cartan.III.section12.«0012_Remark_III_6_extra_7».PositiveAxisResidueLocalization
+import DifferentialForms_Cartan_1970.cartan.III.section12.«0012_Remark_III_6_extra_7».PositiveAxisShiftedLogContour
 
 open Filter MeasureTheory Bornology
 open scoped BigOperators Topology unitInterval

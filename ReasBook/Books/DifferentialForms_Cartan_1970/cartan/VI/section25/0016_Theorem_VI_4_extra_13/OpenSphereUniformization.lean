@@ -1,10 +1,10 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.VI.RiemannSphere
-import DifferentialForms_Cartan_1970.VI.section23.«0003_Theorem_3»
-import DifferentialForms_Cartan_1970.VI.section24.«0001_Theorem_VI_3_extra_1»
-import DifferentialForms_Cartan_1970.VI.section25.«0007_Theorem_VI_4_extra_7»
-import DifferentialForms_Cartan_1970.VI.section25.«0008_Proposition_4_I»
-import DifferentialForms_Cartan_1970.VI.section25.«0014_Proposition_6_1»
+import DifferentialForms_Cartan_1970.cartan.VI.RiemannSphere
+import DifferentialForms_Cartan_1970.cartan.VI.section23.«0003_Theorem_3»
+import DifferentialForms_Cartan_1970.cartan.VI.section24.«0001_Theorem_VI_3_extra_1»
+import DifferentialForms_Cartan_1970.cartan.VI.section25.«0007_Theorem_VI_4_extra_7»
+import DifferentialForms_Cartan_1970.cartan.VI.section25.«0008_Proposition_4_I»
+import DifferentialForms_Cartan_1970.cartan.VI.section25.«0014_Proposition_6_1»
 
 universe u
 

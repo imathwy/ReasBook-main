@@ -1,20 +1,20 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.I.section04.«0031_Exercise_16»
-import DifferentialForms_Cartan_1970.II.section05.«0005_Proposition_2_1»
-import DifferentialForms_Cartan_1970.II.section05.«0015_Proposition_5_1»
-import DifferentialForms_Cartan_1970.II.section05.«0019_Theorem_2»
-import DifferentialForms_Cartan_1970.II.section05.«0027_Remark_II_1_extra_17»
-import DifferentialForms_Cartan_1970.II.section06.«0005_Corollary_1»
-import DifferentialForms_Cartan_1970.II.section06.«0018_Exercise_3»
-import DifferentialForms_Cartan_1970.II.section06.«0029_Exercise_14»
-import DifferentialForms_Cartan_1970.III.section10.«0001_Definition_III_4_extra_1»
-import DifferentialForms_Cartan_1970.III.section10.«0006_Proposition_4_1»
-import DifferentialForms_Cartan_1970.III.section10.«0008_Definition_III_4_extra_6»
-import DifferentialForms_Cartan_1970.III.section10.«0009_Theorem_III_4_extra_7»
-import DifferentialForms_Cartan_1970.III.section10.«0010_Remark_III_4_extra_8»
-import DifferentialForms_Cartan_1970.III.section10.frozen_0011_Theorem_III_4_extra_9.ImageNormalization
-import DifferentialForms_Cartan_1970.III.section10.frozen_0011_Theorem_III_4_extra_9.PuncturedBallConnectivity
-import DifferentialForms_Cartan_1970.III.section10.frozen_0011_Theorem_III_4_extra_9.LoopHomotopy
+import DifferentialForms_Cartan_1970.cartan.I.section04.«0031_Exercise_16»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0005_Proposition_2_1»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0015_Proposition_5_1»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0019_Theorem_2»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0027_Remark_II_1_extra_17»
+import DifferentialForms_Cartan_1970.cartan.II.section06.«0005_Corollary_1»
+import DifferentialForms_Cartan_1970.cartan.II.section06.«0018_Exercise_3»
+import DifferentialForms_Cartan_1970.cartan.II.section06.«0029_Exercise_14»
+import DifferentialForms_Cartan_1970.cartan.III.section10.«0001_Definition_III_4_extra_1»
+import DifferentialForms_Cartan_1970.cartan.III.section10.«0006_Proposition_4_1»
+import DifferentialForms_Cartan_1970.cartan.III.section10.«0008_Definition_III_4_extra_6»
+import DifferentialForms_Cartan_1970.cartan.III.section10.«0009_Theorem_III_4_extra_7»
+import DifferentialForms_Cartan_1970.cartan.III.section10.«0010_Remark_III_4_extra_8»
+import DifferentialForms_Cartan_1970.cartan.III.section10.frozen_0011_Theorem_III_4_extra_9.ImageNormalization
+import DifferentialForms_Cartan_1970.cartan.III.section10.frozen_0011_Theorem_III_4_extra_9.PuncturedBallConnectivity
+import DifferentialForms_Cartan_1970.cartan.III.section10.frozen_0011_Theorem_III_4_extra_9.LoopHomotopy
 
 open Metric Set
 open scoped Topology unitInterval

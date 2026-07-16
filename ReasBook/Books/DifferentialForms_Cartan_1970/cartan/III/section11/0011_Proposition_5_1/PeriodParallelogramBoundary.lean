@@ -1,9 +1,9 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section05.«0003_Lemma_II_1_extra_3»
-import DifferentialForms_Cartan_1970.II.section05.«0005_Proposition_2_1»
-import DifferentialForms_Cartan_1970.II.section05.«0034_Example_II_1_extra_21»
-import DifferentialForms_Cartan_1970.III.section11.«0008_Proposition_4_1»
-import DifferentialForms_Cartan_1970.III.section11.«0010_Definition_III_5_extra_7»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0003_Lemma_II_1_extra_3»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0005_Proposition_2_1»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0034_Example_II_1_extra_21»
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0008_Proposition_4_1»
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0010_Definition_III_5_extra_7»
 
 open scoped BigOperators unitInterval
 open MeromorphicOn

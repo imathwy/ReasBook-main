@@ -1,5 +1,5 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.V.section20.«0007_Remark_V_3_extra_5»
+import DifferentialForms_Cartan_1970.cartan.V.section20.«0007_Remark_V_3_extra_5»
 
 open scoped BigOperators
 

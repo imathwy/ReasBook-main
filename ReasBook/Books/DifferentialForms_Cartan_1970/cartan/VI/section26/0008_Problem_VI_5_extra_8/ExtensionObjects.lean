@@ -1,6 +1,6 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.VI.section25.«0008_Proposition_4_I»
-import DifferentialForms_Cartan_1970.VI.section26.«0002_Definition_VI_5_extra_2»
+import DifferentialForms_Cartan_1970.cartan.VI.section25.«0008_Proposition_4_I»
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0002_Definition_VI_5_extra_2»
 
 open scoped Manifold
 open Set

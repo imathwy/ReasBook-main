@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Analysis.Complex.Harmonic.Poisson
 import Mathlib.Analysis.InnerProductSpace.Harmonic.Constructions
-import DifferentialForms_Cartan_1970.III.section12.«0008_Example_III_6_extra_3»
+import DifferentialForms_Cartan_1970.cartan.III.section12.«0008_Example_III_6_extra_3»
 
 open MeasureTheory
 open InnerProductSpace

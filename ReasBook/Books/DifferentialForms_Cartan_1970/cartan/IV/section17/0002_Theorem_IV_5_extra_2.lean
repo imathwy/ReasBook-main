@@ -1,13 +1,13 @@
-import DifferentialForms_Cartan_1970.IV.section14.«0002_Definition_IV_2_extra_2»
-import DifferentialForms_Cartan_1970.IV.section17.«0001_Definition_IV_5_extra_1»
-import DifferentialForms_Cartan_1970.IV.section17.«0002_Theorem_IV_5_extra_2».DimensionTransport
-import DifferentialForms_Cartan_1970.IV.section17.«0002_Theorem_IV_5_extra_2».TransportedSlices
-import DifferentialForms_Cartan_1970.IV.section17.«0002_Theorem_IV_5_extra_2».WeightedTransport
-import DifferentialForms_Cartan_1970.IV.section17.«0002_Theorem_IV_5_extra_2».TransportedCauchyTransform
-import DifferentialForms_Cartan_1970.IV.section17.«0002_Theorem_IV_5_extra_2».BoundaryCauchySeries
-import DifferentialForms_Cartan_1970.IV.section17.«0002_Theorem_IV_5_extra_2».ParametricPowerSeries
-import DifferentialForms_Cartan_1970.IV.section17.«0002_Theorem_IV_5_extra_2».LocalSeriesBounds
-import DifferentialForms_Cartan_1970.IV.section17.«0002_Theorem_IV_5_extra_2».HigherDimensionalHartogs
+import DifferentialForms_Cartan_1970.cartan.IV.section14.«0002_Definition_IV_2_extra_2»
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0001_Definition_IV_5_extra_1»
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0002_Theorem_IV_5_extra_2».DimensionTransport
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0002_Theorem_IV_5_extra_2».TransportedSlices
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0002_Theorem_IV_5_extra_2».WeightedTransport
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0002_Theorem_IV_5_extra_2».TransportedCauchyTransform
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0002_Theorem_IV_5_extra_2».BoundaryCauchySeries
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0002_Theorem_IV_5_extra_2».ParametricPowerSeries
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0002_Theorem_IV_5_extra_2».LocalSeriesBounds
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0002_Theorem_IV_5_extra_2».HigherDimensionalHartogs
 
 open scoped BigOperators
 

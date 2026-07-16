@@ -1,5 +1,5 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.I.section01.«frozen_0014_Proposition_7_1»
+import DifferentialForms_Cartan_1970.cartan.I.section01.«frozen_0014_Proposition_7_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

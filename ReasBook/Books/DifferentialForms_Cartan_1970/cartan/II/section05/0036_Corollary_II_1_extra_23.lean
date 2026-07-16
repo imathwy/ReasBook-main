@@ -1,8 +1,8 @@
-import DifferentialForms_Cartan_1970.II.section05.«0009_Definition_II_1_extra_6»
-import DifferentialForms_Cartan_1970.II.section05.«0033_Definition_II_1_extra_20»
-import DifferentialForms_Cartan_1970.II.section05.«0036_Corollary_II_1_extra_23».BoundaryComponentGeometry
-import DifferentialForms_Cartan_1970.II.section05.«0036_Corollary_II_1_extra_23».ClosedFormBoundaryReductions
-import DifferentialForms_Cartan_1970.II.section05.«0036_Corollary_II_1_extra_23».ConnectedOpenContourReductions
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0009_Definition_II_1_extra_6»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0033_Definition_II_1_extra_20»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0036_Corollary_II_1_extra_23».BoundaryComponentGeometry
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0036_Corollary_II_1_extra_23».ClosedFormBoundaryReductions
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0036_Corollary_II_1_extra_23».ConnectedOpenContourReductions
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

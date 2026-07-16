@@ -1,5 +1,5 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.VI.section24.«0002_Corollary_1»
+import DifferentialForms_Cartan_1970.cartan.VI.section24.«0002_Corollary_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

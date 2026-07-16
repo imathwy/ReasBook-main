@@ -1,8 +1,8 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section05.«0035_Theorem_II_1_extra_22».BoundaryGeometry
-import DifferentialForms_Cartan_1970.II.section05.«0035_Theorem_II_1_extra_22».RectangleIntegrals
-import DifferentialForms_Cartan_1970.II.section05.«0035_Theorem_II_1_extra_22».ApproximationPackages
-import DifferentialForms_Cartan_1970.II.section05.«0035_Theorem_II_1_extra_22».ApproximationPackageBridges
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0035_Theorem_II_1_extra_22».BoundaryGeometry
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0035_Theorem_II_1_extra_22».RectangleIntegrals
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0035_Theorem_II_1_extra_22».ApproximationPackages
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0035_Theorem_II_1_extra_22».ApproximationPackageBridges
 
 open MeasureTheory
 open scoped BigOperators

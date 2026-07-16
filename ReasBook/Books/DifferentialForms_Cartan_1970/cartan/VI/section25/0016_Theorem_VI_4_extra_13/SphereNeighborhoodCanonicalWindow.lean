@@ -1,4 +1,4 @@
-import DifferentialForms_Cartan_1970.VI.section25.«0016_Theorem_VI_4_extra_13».SphereNeighborhoodContinuation
+import DifferentialForms_Cartan_1970.cartan.VI.section25.«0016_Theorem_VI_4_extra_13».SphereNeighborhoodContinuation
 
 universe u
 
