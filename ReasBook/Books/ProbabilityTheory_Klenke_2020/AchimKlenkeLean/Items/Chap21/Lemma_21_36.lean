@@ -1,6 +1,6 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap21.Theorem_21_31
-import ProbabilityTheory_Klenke_2020.Items.Chap21.Theorem_21_38
-import ProbabilityTheory_Klenke_2020.Items.Chap01.Lemma_1_42
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap21.Theorem_21_31
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap21.Theorem_21_38
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap01.Lemma_1_42
 import Mathlib.MeasureTheory.Constructions.Projective
 
 -- Declarations for this item will be appended below by the statement pipeline.

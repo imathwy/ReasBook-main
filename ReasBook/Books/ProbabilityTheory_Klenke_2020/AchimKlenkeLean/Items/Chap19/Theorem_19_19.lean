@@ -1,5 +1,5 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap19.Definition_19_17
-import ProbabilityTheory_Klenke_2020.Items.Chap19.Theorem_19_15
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap19.Definition_19_17
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap19.Theorem_19_15
 
 open scoped BigOperators ENNReal
 

@@ -1,5 +1,5 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap01.Example_1_44
-import ProbabilityTheory_Klenke_2020.Items.Chap01.Theorem_1_60
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap01.Example_1_44
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap01.Theorem_1_60
 
 open MeasureTheory Filter
 open ProbabilityTheory

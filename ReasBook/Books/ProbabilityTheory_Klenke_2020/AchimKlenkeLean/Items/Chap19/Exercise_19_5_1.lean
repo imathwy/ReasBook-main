@@ -1,4 +1,4 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap19.Theorem_19_19
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap19.Theorem_19_19
 import Mathlib
 
 open scoped BigOperators ENNReal

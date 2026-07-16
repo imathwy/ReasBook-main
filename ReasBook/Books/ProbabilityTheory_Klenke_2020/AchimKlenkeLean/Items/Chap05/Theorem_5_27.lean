@@ -1,6 +1,6 @@
 import Mathlib
-import ProbabilityTheory_Klenke_2020.Items.Chap05.Definition_5_25
-import ProbabilityTheory_Klenke_2020.Items.Chap05.Lemma_5_26
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap05.Definition_5_25
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap05.Lemma_5_26
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

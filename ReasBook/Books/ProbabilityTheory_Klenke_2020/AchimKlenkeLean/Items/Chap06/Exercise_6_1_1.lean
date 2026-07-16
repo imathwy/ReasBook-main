@@ -1,4 +1,4 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap06.Definition_6_2
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap06.Definition_6_2
 import Mathlib.MeasureTheory.Measure.Dirac
 
 -- Declarations for this item will be appended below by the statement pipeline.

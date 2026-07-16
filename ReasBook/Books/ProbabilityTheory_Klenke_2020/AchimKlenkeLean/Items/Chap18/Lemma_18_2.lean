@@ -1,4 +1,4 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap18.Definition_18_1
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap18.Definition_18_1
 import Mathlib
 
 open MeasureTheory ProbabilityTheory

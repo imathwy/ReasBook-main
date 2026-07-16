@@ -1,4 +1,4 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap08.Exercise_8_3_6
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap08.Exercise_8_3_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

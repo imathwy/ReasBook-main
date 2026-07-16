@@ -1,5 +1,5 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap21.Remark_21_54
-import ProbabilityTheory_Klenke_2020.Items.Chap25.Corollary_25_32
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap21.Remark_21_54
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap25.Corollary_25_32
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

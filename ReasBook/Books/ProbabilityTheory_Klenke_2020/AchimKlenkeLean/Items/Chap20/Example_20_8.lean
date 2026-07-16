@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Dynamics.Ergodic.Ergodic
-import ProbabilityTheory_Klenke_2020.Items.Chap20.Definition_20_5
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap20.Definition_20_5
 
 open MeasureTheory ProbabilityTheory
 open scoped Pointwise

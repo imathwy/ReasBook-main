@@ -1,4 +1,4 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap20.Theorem_20_35
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap20.Theorem_20_35
 import Mathlib
 
 -- Declarations for this item will be appended below by the statement pipeline.

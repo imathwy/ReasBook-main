@@ -1,7 +1,7 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap08.Example_8_27
-import ProbabilityTheory_Klenke_2020.Items.Chap19.Definition_19_1
-import ProbabilityTheory_Klenke_2020.Items.Chap19.Definition_19_11
-import ProbabilityTheory_Klenke_2020.Items.Chap19.Definition_19_13
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap08.Example_8_27
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap19.Definition_19_1
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap19.Definition_19_11
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap19.Definition_19_13
 
 open MeasureTheory ProbabilityTheory
 open scoped BigOperators ENNReal

@@ -1,6 +1,6 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Lemma_14_27
-import ProbabilityTheory_Klenke_2020.Items.Chap18.Theorem_18_8
-import ProbabilityTheory_Klenke_2020.Items.Chap18.Theorem_18_9
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap14.Lemma_14_27
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap18.Theorem_18_8
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap18.Theorem_18_9
 import Mathlib
 
 -- Declarations for this item will be appended below by the statement pipeline.

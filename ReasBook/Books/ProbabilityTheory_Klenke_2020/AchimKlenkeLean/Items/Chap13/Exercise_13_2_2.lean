@@ -1,5 +1,5 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap07.Corollary_7_45
-import ProbabilityTheory_Klenke_2020.Items.Chap13.Remark_13_14
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap07.Corollary_7_45
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap13.Remark_13_14
 import Mathlib
 
 -- Declarations for this item will be appended below by the statement pipeline.

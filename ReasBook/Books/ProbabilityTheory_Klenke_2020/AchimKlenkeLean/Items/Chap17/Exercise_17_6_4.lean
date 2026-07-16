@@ -1,4 +1,4 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Remark_17_31
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap17.Remark_17_31
 import Mathlib
 
 -- Declarations for this item will be appended below by the statement pipeline.

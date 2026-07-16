@@ -2,8 +2,8 @@ import Mathlib
 import Mathlib.Dynamics.Ergodic.Ergodic
 import Mathlib.Probability.IdentDistrib
 import Mathlib.Probability.Independence.ZeroOne
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Definition_2_14
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Definition_2_34
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap02.Definition_2_14
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap02.Definition_2_34
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

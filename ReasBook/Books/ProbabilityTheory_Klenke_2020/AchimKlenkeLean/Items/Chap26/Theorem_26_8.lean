@@ -1,9 +1,9 @@
 import Mathlib
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_12
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_8
-import ProbabilityTheory_Klenke_2020.Items.Chap25.StandardBrownianMotionVector
-import ProbabilityTheory_Klenke_2020.Items.Chap26.Definition_26_4
-import ProbabilityTheory_Klenke_2020.Items.Chap26.Remark_26_2
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap17.Definition_17_12
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap17.Theorem_17_8
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap25.StandardBrownianMotionVector
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap26.Definition_26_4
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap26.Remark_26_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

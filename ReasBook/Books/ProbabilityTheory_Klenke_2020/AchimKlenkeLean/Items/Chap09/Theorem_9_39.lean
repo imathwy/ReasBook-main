@@ -1,4 +1,4 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Definition_9_37
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap09.Definition_9_37
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

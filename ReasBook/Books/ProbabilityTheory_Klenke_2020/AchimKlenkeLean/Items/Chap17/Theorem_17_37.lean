@@ -1,7 +1,7 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_16
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_36
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_17
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_35
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap17.Definition_17_16
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap17.Definition_17_36
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap17.Theorem_17_17
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap17.Theorem_17_35
 import Mathlib
 
 open MeasureTheory

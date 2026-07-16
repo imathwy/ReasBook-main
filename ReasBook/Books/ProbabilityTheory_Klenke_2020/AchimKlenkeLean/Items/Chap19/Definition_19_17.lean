@@ -1,4 +1,4 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap19.Definition_19_13
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap19.Definition_19_13
 import Mathlib
 
 universe u

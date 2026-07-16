@@ -1,4 +1,4 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Definition_14_9
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap14.Definition_14_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

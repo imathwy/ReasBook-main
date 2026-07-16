@@ -1,4 +1,4 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap15.Definition_15_27
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap15.Definition_15_27
 
 open Complex MeasureTheory
 open scoped BigOperators Topology

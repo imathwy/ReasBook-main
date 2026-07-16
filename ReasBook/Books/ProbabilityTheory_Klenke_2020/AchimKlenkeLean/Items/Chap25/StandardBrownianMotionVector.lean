@@ -1,6 +1,6 @@
 import Mathlib
-import ProbabilityTheory_Klenke_2020.Items.Chap21.Definition_21_8
-import ProbabilityTheory_Klenke_2020.Items.Chap21.Theorem_21_18
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap21.Definition_21_8
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap21.Theorem_21_18
 
 open MeasureTheory ProbabilityTheory
 

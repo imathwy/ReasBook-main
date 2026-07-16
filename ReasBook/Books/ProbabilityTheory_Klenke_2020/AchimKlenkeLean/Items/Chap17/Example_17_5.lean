@@ -1,5 +1,5 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap14.Definition_14_6
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_8
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap14.Definition_14_6
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap17.Theorem_17_8
 
 open MeasureTheory ProbabilityTheory
 open scoped BigOperators ProbabilityTheory

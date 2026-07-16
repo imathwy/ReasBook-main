@@ -1,10 +1,10 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap08.Example_8_27
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Example_17_55
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_11
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_8
-import ProbabilityTheory_Klenke_2020.Items.Chap13.Exercise_13_2_2
-import ProbabilityTheory_Klenke_2020.Items.Chap07.Corollary_7_45
-import ProbabilityTheory_Klenke_2020.Items.Chap18.Definition_18_1
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap08.Example_8_27
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap17.Example_17_55
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap17.Theorem_17_11
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap17.Theorem_17_8
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap13.Exercise_13_2_2
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap07.Corollary_7_45
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap18.Definition_18_1
 import Mathlib
 
 open Filter MeasureTheory ProbabilityTheory

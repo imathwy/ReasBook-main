@@ -1,8 +1,8 @@
 import Mathlib
-import ProbabilityTheory_Klenke_2020.Items.Chap04.Example_4_22
-import ProbabilityTheory_Klenke_2020.Items.Chap05.Theorem_5_28
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Definition_9_37
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Example_9_13
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap04.Example_4_22
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap05.Theorem_5_28
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap09.Definition_9_37
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap09.Example_9_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

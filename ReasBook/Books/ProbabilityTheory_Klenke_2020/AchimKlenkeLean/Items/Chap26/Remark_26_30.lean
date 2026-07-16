@@ -1,9 +1,9 @@
 import Mathlib
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Example_17_22
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_2_1
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_17
-import ProbabilityTheory_Klenke_2020.Items.Chap21.Definition_21_35
-import ProbabilityTheory_Klenke_2020.Items.Chap26.Example_26_29
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap17.Example_17_22
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap17.Exercise_17_2_1
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap17.Theorem_17_17
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap21.Definition_21_35
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap26.Example_26_29
 
 open Filter MeasureTheory ProbabilityTheory
 open scoped ENNReal ProbabilityTheory
