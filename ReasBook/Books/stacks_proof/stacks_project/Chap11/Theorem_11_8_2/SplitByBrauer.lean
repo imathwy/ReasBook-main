@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.LinearAlgebra.Matrix.ToLin
-import StacksProject_2024.Chap11.Definition_11_8_1
-import StacksProject_2024.Chap11.Lemma_11_5_1
-import StacksProject_2024.Chap11.Lemma_11_7_3
-import StacksProject_2024.Chap11.Theorem_11_8_2.BaseChangeMatrix
+import stacks_proof.stacks_project.Chap11.Definition_11_8_1
+import stacks_proof.stacks_project.Chap11.Lemma_11_5_1
+import stacks_proof.stacks_project.Chap11.Lemma_11_7_3
+import stacks_proof.stacks_project.Chap11.Theorem_11_8_2.BaseChangeMatrix
 
 -- Declarations for this theorem-local support file are maintained manually during proof rescue.
 

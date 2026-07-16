@@ -4,8 +4,8 @@ import Mathlib.Algebra.Module.LocalizedModule.Submodule
 import Mathlib.RingTheory.Localization.AtPrime.Basic
 import Mathlib.RingTheory.Localization.Away.Basic
 import Mathlib.RingTheory.Localization.BaseChange
-import StacksProject_2024.Chap10.Definition_10_69_1
-import StacksProject_2024.Chap10.Lemma_10_69_4.Index
+import stacks_proof.stacks_project.Chap10.Definition_10_69_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_69_4.Index
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

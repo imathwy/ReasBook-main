@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_126_6.AwayTransport
+import stacks_proof.stacks_project.Chap10.Lemma_10_126_6.AwayTransport
 
 universe u v w
 

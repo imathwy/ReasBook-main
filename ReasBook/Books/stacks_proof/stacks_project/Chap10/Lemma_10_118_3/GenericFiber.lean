@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap10.«10_118_3_1»
-import StacksProject_2024.Chap10.Lemma_10_5_3
-import StacksProject_2024.Chap10.Lemma_10_24_1
-import StacksProject_2024.Chap10.Lemma_10_36_23
+import stacks_proof.stacks_project.Chap10.«10_118_3_1»
+import stacks_proof.stacks_project.Chap10.Lemma_10_5_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_24_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_36_23
 import Mathlib.Algebra.Module.FinitePresentation
 import Mathlib.Algebra.Module.LocalizedModule.Submodule
 import Mathlib.RingTheory.FinitePresentation

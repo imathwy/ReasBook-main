@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.«10_69_0_1».QuasiRegularMonomialAction
+import stacks_proof.stacks_project.Chap10.«10_69_0_1».QuasiRegularMonomialAction
 
 open Polynomial
 open scoped BigOperators TensorProduct Pointwise

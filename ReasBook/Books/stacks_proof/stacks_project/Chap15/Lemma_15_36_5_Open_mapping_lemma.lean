@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap15.Lemma_15_36_5_Open_mapping_lemma.Index
+import stacks_proof.stacks_project.Chap15.Lemma_15_36_5_Open_mapping_lemma.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

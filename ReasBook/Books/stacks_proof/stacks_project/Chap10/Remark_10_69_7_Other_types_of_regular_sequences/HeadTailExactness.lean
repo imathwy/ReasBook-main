@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Remark_10_69_7_Other_types_of_regular_sequences.SingletonDifferential
+import stacks_proof.stacks_project.Chap10.Remark_10_69_7_Other_types_of_regular_sequences.SingletonDifferential
 
 noncomputable section
 

@@ -4,8 +4,8 @@ import Mathlib.Algebra.Homology.HomotopyCategory.Triangulated
 import Mathlib.Algebra.Homology.Localization
 import Mathlib.Algebra.Homology.QuasiIso
 import Mathlib.CategoryTheory.Triangulated.Subcategory
-import StacksProject_2024.Chap13.Remark_13_10_9
-import StacksProject_2024.Chap15.Definition_15_59_1
+import stacks_proof.stacks_project.Chap13.Remark_13_10_9
+import stacks_proof.stacks_project.Chap15.Definition_15_59_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap06.Lemma_6_33_3_Part10_BasisExtension
-import StacksProject_2024.Chap06.Lemma_6_33_3_Part10_Cocycle
+import stacks_proof.stacks_project.Chap06.Lemma_6_33_3_Part10_BasisExtension
+import stacks_proof.stacks_project.Chap06.Lemma_6_33_3_Part10_Cocycle
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory CategoryTheory.Limits Opposite TopCat TopologicalSpace Topology

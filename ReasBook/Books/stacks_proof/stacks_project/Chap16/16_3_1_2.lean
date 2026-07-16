@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap16.«16_3_1_1»
+import stacks_proof.stacks_project.Chap16.«16_3_1_1»
 
 /- Domain-style sampling for `16_3_1_2`:
 - primary domain: conormal exact sequences coming from presentations of algebras;

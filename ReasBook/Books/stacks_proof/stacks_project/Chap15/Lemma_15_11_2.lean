@@ -1,13 +1,13 @@
 import Mathlib
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import StacksProject_2024.Chap10.Definition_10_32_1
-import StacksProject_2024.Chap10.Lemma_10_32_3
-import StacksProject_2024.Chap10.Lemma_10_32_6
-import StacksProject_2024.Chap10.Lemma_10_138_17
-import StacksProject_2024.Chap10.Lemma_10_143_10
-import StacksProject_2024.Chap10.Lemma_10_151_4
-import StacksProject_2024.Chap10.Lemma_10_154_3
-import StacksProject_2024.Chap15.Lemma_15_9_5
+import stacks_proof.stacks_project.Chap10.Definition_10_32_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_32_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_32_6
+import stacks_proof.stacks_project.Chap10.Lemma_10_138_17
+import stacks_proof.stacks_project.Chap10.Lemma_10_143_10
+import stacks_proof.stacks_project.Chap10.Lemma_10_151_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_154_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_9_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

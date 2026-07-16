@@ -1,6 +1,6 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap07.PlusNotation
-import StacksProject_2024.Chap07.Theorem_7_10_10
+import stacks_proof.stacks_project.Chap07.PlusNotation
+import stacks_proof.stacks_project.Chap07.Theorem_7_10_10
 
 /- Domain-style sampling for Theorem 7.49.3:
 - primary domain: the plus construction and sheafification for set-valued presheaves on a

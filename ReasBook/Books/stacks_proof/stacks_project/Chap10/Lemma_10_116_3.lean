@@ -1,10 +1,10 @@
 import Mathlib
-import StacksProject_2024.Chap05.Definition_5_10_1
-import StacksProject_2024.Chap10.Lemma_10_17_7
-import StacksProject_2024.Chap10.Lemma_10_112_4
-import StacksProject_2024.Chap10.Lemma_10_113_1.DimensionEquality
-import StacksProject_2024.Chap10.Theorem_10_34_1_Hilbert_Nullstellensatz
-import StacksProject_2024.Chap10.Lemma_10_114_5
+import stacks_proof.stacks_project.Chap05.Definition_5_10_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_17_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_112_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_113_1.DimensionEquality
+import stacks_proof.stacks_project.Chap10.Theorem_10_34_1_Hilbert_Nullstellensatz
+import stacks_proof.stacks_project.Chap10.Lemma_10_114_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

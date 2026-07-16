@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap13.Definition_13_8_1
-import StacksProject_2024.Chap12.Definition_12_19_3
-import StacksProject_2024.Chap13.Definition_13_13_1
-import StacksProject_2024.Chap13.Definition_13_13_2
+import stacks_proof.stacks_project.Chap13.Definition_13_8_1
+import stacks_proof.stacks_project.Chap12.Definition_12_19_3
+import stacks_proof.stacks_project.Chap13.Definition_13_13_1
+import stacks_proof.stacks_project.Chap13.Definition_13_13_2
 
 open CategoryTheory
 open CategoryTheory.ObjectProperty

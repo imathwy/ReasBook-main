@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap10.Lemma_10_82_13
-import StacksProject_2024.Chap10.Lemma_10_99_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_82_13
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_1
 
 open IsLocalRing
 open CategoryTheory

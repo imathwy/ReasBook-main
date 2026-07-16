@@ -1,6 +1,6 @@
 import Mathlib.Topology.Separation.Hausdorff
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap05.Definition_5_8_6
+import stacks_proof.stacks_project.Chap05.Definition_5_8_6
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

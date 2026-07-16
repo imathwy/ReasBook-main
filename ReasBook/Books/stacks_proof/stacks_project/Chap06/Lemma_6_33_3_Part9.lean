@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap06.Lemma_6_30_13
-import StacksProject_2024.Chap06.Lemma_6_33_3_Part8
+import stacks_proof.stacks_project.Chap06.Lemma_6_30_13
+import stacks_proof.stacks_project.Chap06.Lemma_6_33_3_Part8
 
 open CategoryTheory CategoryTheory.Limits Opposite TopCat TopologicalSpace Topology
 open CategoryTheory.Presheaf

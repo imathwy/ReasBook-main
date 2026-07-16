@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Algebra.BigOperators.Intervals
-import StacksProject_2024.Chap13.Remark_13_33_2
+import stacks_proof.stacks_project.Chap13.Remark_13_33_2
 
 noncomputable section
 

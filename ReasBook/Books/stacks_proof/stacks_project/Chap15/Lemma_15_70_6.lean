@@ -1,13 +1,13 @@
 import Mathlib
-import StacksProject_2024.Chap10.Example_10_28_7
-import StacksProject_2024.Chap10.Lemma_10_20_1_Nakayama_s_lemma
-import StacksProject_2024.Chap10.Lemma_10_62_1
-import StacksProject_2024.Chap10.Lemma_10_71_9
-import StacksProject_2024.Chap13.Definition_13_11_3
-import StacksProject_2024.Chap13.Definition_13_27_1
-import StacksProject_2024.Chap13.Lemma_13_27_3
-import StacksProject_2024.Chap15.Definition_15_70_1
-import StacksProject_2024.Chap15.Lemma_15_70_2
+import stacks_proof.stacks_project.Chap10.Example_10_28_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_20_1_Nakayama_s_lemma
+import stacks_proof.stacks_project.Chap10.Lemma_10_62_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_71_9
+import stacks_proof.stacks_project.Chap13.Definition_13_11_3
+import stacks_proof.stacks_project.Chap13.Definition_13_27_1
+import stacks_proof.stacks_project.Chap13.Lemma_13_27_3
+import stacks_proof.stacks_project.Chap15.Definition_15_70_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_70_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

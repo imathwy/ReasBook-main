@@ -1,8 +1,8 @@
-import StacksProject_2024.Chap10.Lemma_10_118_3
-import StacksProject_2024.Chap10.Lemma_10_118_4
-import StacksProject_2024.Chap10.Lemma_10_118_5
-import StacksProject_2024.Chap10.Lemma_10_118_6
-import StacksProject_2024.Chap10.Lemma_10_30_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_118_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_118_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_118_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_118_6
+import stacks_proof.stacks_project.Chap10.Lemma_10_30_2
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

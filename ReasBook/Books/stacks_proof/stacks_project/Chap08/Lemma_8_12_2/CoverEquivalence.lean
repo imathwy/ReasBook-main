@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_12_2.CoverDescent
-import StacksProject_2024.Chap08.Lemma_8_12_2.HomPresheafPrestack
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_2.CoverDescent
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_2.HomPresheafPrestack
 
 open CategoryTheory.Limits
 open CategoryTheory.GrothendieckTopology.Cover

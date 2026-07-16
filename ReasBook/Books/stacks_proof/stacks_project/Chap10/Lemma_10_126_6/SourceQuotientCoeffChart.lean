@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_126_6.SourceQuotientBasic
+import stacks_proof.stacks_project.Chap10.Lemma_10_126_6.SourceQuotientBasic
 
 universe u v w
 

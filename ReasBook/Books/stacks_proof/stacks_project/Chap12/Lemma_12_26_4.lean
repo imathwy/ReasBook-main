@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.CategoryTheory.Limits.Shapes.Opposites.Products
-import StacksProject_2024.Chap10.Lemma_10_86_3
-import StacksProject_2024.Chap12.Lemma_12_13_9
-import StacksProject_2024.Chap12.Lemma_12_25_4
-import StacksProject_2024.Chap12.Lemma_12_26_1
-import StacksProject_2024.Chap12.Lemma_12_26_ProductTotalAPI
+import stacks_proof.stacks_project.Chap10.Lemma_10_86_3
+import stacks_proof.stacks_project.Chap12.Lemma_12_13_9
+import stacks_proof.stacks_project.Chap12.Lemma_12_25_4
+import stacks_proof.stacks_project.Chap12.Lemma_12_26_1
+import stacks_proof.stacks_project.Chap12.Lemma_12_26_ProductTotalAPI
 
 open CategoryTheory Limits ComplexShape HomologicalComplex HomologicalComplex₂ Opposite
 

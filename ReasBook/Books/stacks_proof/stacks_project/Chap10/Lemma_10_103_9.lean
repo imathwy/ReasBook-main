@@ -1,16 +1,16 @@
 import Mathlib
-import StacksProject_2024.Chap05.Definition_5_11_4
-import StacksProject_2024.Chap10.Definition_10_103_1
-import StacksProject_2024.Chap10.Lemma_10_15_2_Prime_avoidance
-import StacksProject_2024.Chap10.Lemma_10_40_9
-import StacksProject_2024.Chap10.Lemma_10_60_13
-import StacksProject_2024.Chap10.Lemma_10_63_8
-import StacksProject_2024.Chap10.Lemma_10_63_13
-import StacksProject_2024.Chap10.Lemma_10_72_8
-import StacksProject_2024.Chap10.Lemma_10_103_5
-import StacksProject_2024.Chap10.Lemma_10_103_6
-import StacksProject_2024.Chap10.Lemma_10_103_7
-import StacksProject_2024.Chap10.Proposition_10_103_4
+import stacks_proof.stacks_project.Chap05.Definition_5_11_4
+import stacks_proof.stacks_project.Chap10.Definition_10_103_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_15_2_Prime_avoidance
+import stacks_proof.stacks_project.Chap10.Lemma_10_40_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_60_13
+import stacks_proof.stacks_project.Chap10.Lemma_10_63_8
+import stacks_proof.stacks_project.Chap10.Lemma_10_63_13
+import stacks_proof.stacks_project.Chap10.Lemma_10_72_8
+import stacks_proof.stacks_project.Chap10.Lemma_10_103_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_103_6
+import stacks_proof.stacks_project.Chap10.Lemma_10_103_7
+import stacks_proof.stacks_project.Chap10.Proposition_10_103_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

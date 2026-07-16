@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap07.Lemma_7_42_4.TypeLocalBijectivity
+import stacks_proof.stacks_project.Chap07.Lemma_7_42_4.TypeLocalBijectivity
 
 open CategoryTheory Opposite CategoryTheory.GrothendieckTopology.Plus
 

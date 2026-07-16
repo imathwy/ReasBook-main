@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_131_10
-import StacksProject_2024.Chap10.Lemma_10_20_1_Nakayama_s_lemma
+import stacks_proof.stacks_project.Chap10.Lemma_10_131_10
+import stacks_proof.stacks_project.Chap10.Lemma_10_20_1_Nakayama_s_lemma
 
 open Algebra
 open scoped TensorProduct

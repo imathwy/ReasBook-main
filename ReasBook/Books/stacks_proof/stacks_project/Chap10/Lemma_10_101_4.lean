@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_99_8
-import StacksProject_2024.Chap10.Lemma_10_99_9.NilpotentCriterion
-import StacksProject_2024.Chap10.Lemma_10_99_17
-import StacksProject_2024.Chap10.Remark_10_75_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_8
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_9.NilpotentCriterion
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_17
+import stacks_proof.stacks_project.Chap10.Remark_10_75_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

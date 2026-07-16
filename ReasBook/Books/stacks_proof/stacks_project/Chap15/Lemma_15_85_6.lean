@@ -1,11 +1,11 @@
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
 import Mathlib.CategoryTheory.Triangulated.TStructure.TruncLTGE
-import StacksProject_2024.Chap13.Lemma_13_16_7_Leray_s_acyclicity_lemma
-import StacksProject_2024.Chap13.Lemma_13_35_7
-import StacksProject_2024.Chap15.«15_60_1_1»
-import StacksProject_2024.Chap15.Lemma_15_85_3
-import StacksProject_2024.Chap15.Lemma_15_60_3
-import StacksProject_2024.Chap15.Lemma_15_67_9
+import stacks_proof.stacks_project.Chap13.Lemma_13_16_7_Leray_s_acyclicity_lemma
+import stacks_proof.stacks_project.Chap13.Lemma_13_35_7
+import stacks_proof.stacks_project.Chap15.«15_60_1_1»
+import stacks_proof.stacks_project.Chap15.Lemma_15_85_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_60_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_67_9
 import Mathlib.Tactic.StacksAttribute
 
 noncomputable section

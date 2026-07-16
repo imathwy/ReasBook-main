@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_126_6.SourceQuotientFinalAway
+import stacks_proof.stacks_project.Chap10.Lemma_10_126_6.SourceQuotientFinalAway
 
 universe u v w
 

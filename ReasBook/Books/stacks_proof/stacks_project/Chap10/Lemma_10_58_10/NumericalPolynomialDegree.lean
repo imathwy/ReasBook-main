@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_58_3
+import stacks_proof.stacks_project.Chap10.Definition_10_58_3
 
 open Filter
 open scoped BigOperators

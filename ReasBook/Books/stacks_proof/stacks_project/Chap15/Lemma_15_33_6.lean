@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_134_2
-import StacksProject_2024.Chap10.Lemma_10_134_4_Jacobi_Zariski_sequence
-import StacksProject_2024.Chap15.Lemma_15_30_3
-import StacksProject_2024.Chap15.Lemma_15_32_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_134_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_134_4_Jacobi_Zariski_sequence
+import stacks_proof.stacks_project.Chap15.Lemma_15_30_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_32_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

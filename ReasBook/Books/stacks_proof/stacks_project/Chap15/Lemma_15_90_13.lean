@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap12.Remark_12_29_2
-import StacksProject_2024.Chap15.Lemma_15_90_11
+import stacks_proof.stacks_project.Chap12.Remark_12_29_2
+import stacks_proof.stacks_project.Chap15.Lemma_15_90_11
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

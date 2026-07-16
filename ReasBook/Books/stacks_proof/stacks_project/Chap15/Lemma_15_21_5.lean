@@ -5,12 +5,12 @@ import Mathlib.RingTheory.Flat.Basic
 import Mathlib.RingTheory.Noetherian.Defs
 import Mathlib.RingTheory.Noetherian.Nilpotent
 import Mathlib.RingTheory.RingHom.FaithfullyFlat
-import StacksProject_2024.Chap10.Lemma_10_36_17
-import StacksProject_2024.Chap10.Lemma_10_39_8
-import StacksProject_2024.Chap10.Lemma_10_101_5
-import StacksProject_2024.Chap15.Lemma_15_16_1
-import StacksProject_2024.Chap15.Lemma_15_21_3
-import StacksProject_2024.Chap15.Lemma_15_21_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_36_17
+import stacks_proof.stacks_project.Chap10.Lemma_10_39_8
+import stacks_proof.stacks_project.Chap10.Lemma_10_101_5
+import stacks_proof.stacks_project.Chap15.Lemma_15_16_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_21_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_21_4
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

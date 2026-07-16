@@ -1,13 +1,13 @@
 import Mathlib
-import StacksProject_2024.Chap04.Definition_4_42_3
-import StacksProject_2024.Chap04.Definition_4_40_1
-import StacksProject_2024.Chap04.Lemma_4_42_6.SliceRepresentable
-import StacksProject_2024.Chap04.Lemma_4_42_6.Core
-import StacksProject_2024.Chap04.Lemma_4_42_6.Pasting
-import StacksProject_2024.Chap04.Lemma_4_40_3
-import StacksProject_2024.Chap04.Lemma_4_35_7
-import StacksProject_2024.Chap04.Remark_4_35_8
-import StacksProject_2024.Chap04.Lemma_4_31_13
+import stacks_proof.stacks_project.Chap04.Definition_4_42_3
+import stacks_proof.stacks_project.Chap04.Definition_4_40_1
+import stacks_proof.stacks_project.Chap04.Lemma_4_42_6.SliceRepresentable
+import stacks_proof.stacks_project.Chap04.Lemma_4_42_6.Core
+import stacks_proof.stacks_project.Chap04.Lemma_4_42_6.Pasting
+import stacks_proof.stacks_project.Chap04.Lemma_4_40_3
+import stacks_proof.stacks_project.Chap04.Lemma_4_35_7
+import stacks_proof.stacks_project.Chap04.Remark_4_35_8
+import stacks_proof.stacks_project.Chap04.Lemma_4_31_13
 
 /-!
 # Pasting support II for Lemma 4.42.6 — the diagonal collapse at the `⊡` level

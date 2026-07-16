@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_8_1.Criteria
-import StacksProject_2024.Chap08.Lemma_8_4_8
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.Criteria
+import stacks_proof.stacks_project.Chap08.Lemma_8_4_8
 import Mathlib.Tactic.StacksAttribute
 
 universe u v

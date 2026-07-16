@@ -3,7 +3,7 @@ import Mathlib.Algebra.Homology.HomologicalComplex
 import Mathlib.LinearAlgebra.CliffordAlgebra.Contraction
 import Mathlib.LinearAlgebra.ExteriorAlgebra.Grading
 import Mathlib.Tactic.Recall
-import StacksProject_2024.LinearAlgebra.PowerOperations
+import stacks_proof.stacks_project.LinearAlgebra.PowerOperations
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_110_3.MinimalResolution
+import stacks_proof.stacks_project.Chap10.Lemma_10_110_3.MinimalResolution
 
 universe u
 

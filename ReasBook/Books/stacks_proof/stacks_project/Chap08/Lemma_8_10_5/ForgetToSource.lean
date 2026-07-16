@@ -1,9 +1,9 @@
-import StacksProject_2024.Chap08.Definition_8_2_2
-import StacksProject_2024.Chap08.Definition_8_3_5
-import StacksProject_2024.Chap08.Definition_8_5_5
-import StacksProject_2024.Chap04.Lemma_4_33_3
-import StacksProject_2024.Chap04.Lemma_4_33_8
-import StacksProject_2024.Chap08.Lemma_8_4_2
+import stacks_proof.stacks_project.Chap08.Definition_8_2_2
+import stacks_proof.stacks_project.Chap08.Definition_8_3_5
+import stacks_proof.stacks_project.Chap08.Definition_8_5_5
+import stacks_proof.stacks_project.Chap04.Lemma_4_33_3
+import stacks_proof.stacks_project.Chap04.Lemma_4_33_8
+import stacks_proof.stacks_project.Chap08.Lemma_8_4_2
 
 universe uC uX vC vX
 

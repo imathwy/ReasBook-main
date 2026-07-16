@@ -3,12 +3,12 @@ import Mathlib.Algebra.Category.Grp.Abelian
 import Mathlib.Algebra.Category.Grp.FilteredColimits
 import Mathlib.CategoryTheory.Abelian.Opposite
 import Mathlib.CategoryTheory.Triangulated.HomologicalFunctor
-import StacksProject_2024.Chap13.Definition_13_37_5
-import StacksProject_2024.Chap13.Lemma_13_33_8
-import StacksProject_2024.Chap13.Lemma_13_33_9
-import StacksProject_2024.Chap13.Lemma_13_37_2
-import StacksProject_2024.Chap13.Lemma_13_37_3
-import StacksProject_2024.Chap13.Lemma_13_39_1
+import stacks_proof.stacks_project.Chap13.Definition_13_37_5
+import stacks_proof.stacks_project.Chap13.Lemma_13_33_8
+import stacks_proof.stacks_project.Chap13.Lemma_13_33_9
+import stacks_proof.stacks_project.Chap13.Lemma_13_37_2
+import stacks_proof.stacks_project.Chap13.Lemma_13_37_3
+import stacks_proof.stacks_project.Chap13.Lemma_13_39_1
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory Limits Opposite

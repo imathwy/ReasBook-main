@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap08.Lemma_8_8_1.PlusConstruction.Stage3DescentEffective.Frontier
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.PlusConstruction.Stage3DescentEffective.Frontier
 
 universe u v uX vX
 

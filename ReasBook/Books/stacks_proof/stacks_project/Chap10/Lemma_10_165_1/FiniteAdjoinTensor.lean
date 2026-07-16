@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_37_17
+import stacks_proof.stacks_project.Chap10.Lemma_10_37_17
 
 -- Support lemmas for the finite-adjoin tensor reduction in Lemma 10.165.1.
 

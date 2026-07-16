@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap17.Definition_17_14_1
+import stacks_proof.stacks_project.Chap17.Definition_17_14_1
 
 open scoped AlgebraicGeometry
 

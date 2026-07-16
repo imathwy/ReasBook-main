@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.RingTheory.Unramified.LocalStructure
-import StacksProject_2024.Chap10.Definition_10_151_1
-import StacksProject_2024.Chap10.Proposition_10_152_1
-import StacksProject_2024.Chap15.Definition_15_107_1
+import stacks_proof.stacks_project.Chap10.Definition_10_151_1
+import stacks_proof.stacks_project.Chap10.Proposition_10_152_1
+import stacks_proof.stacks_project.Chap15.Definition_15_107_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

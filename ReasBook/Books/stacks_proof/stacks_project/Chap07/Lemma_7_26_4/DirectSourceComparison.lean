@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap07.Lemma_7_26_4.DirectSourceComparison.Index
-import StacksProject_2024.Chap07.Lemma_7_26_4.DirectSourceComparison.ComponentRestriction
+import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.DirectSourceComparison.Index
+import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.DirectSourceComparison.ComponentRestriction
 
 open CategoryTheory
 

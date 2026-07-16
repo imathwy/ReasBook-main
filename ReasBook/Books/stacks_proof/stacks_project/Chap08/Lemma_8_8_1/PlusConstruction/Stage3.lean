@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap08.Lemma_8_8_1.StackBundle
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.StackBundle
 
 universe u v uX vX
 

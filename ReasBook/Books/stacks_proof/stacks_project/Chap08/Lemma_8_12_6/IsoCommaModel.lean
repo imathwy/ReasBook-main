@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap08.Lemma_8_12_6.StrictProjection
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_6.StrictProjection
 open CategoryTheory.Limits
 open CategoryTheory.MorphismProperty
 open Bicategory

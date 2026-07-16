@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_161_16_Tate.ResidueFieldBridge
+import stacks_proof.stacks_project.Chap10.Lemma_10_161_16_Tate.ResidueFieldBridge
 universe u
 
 open Ideal

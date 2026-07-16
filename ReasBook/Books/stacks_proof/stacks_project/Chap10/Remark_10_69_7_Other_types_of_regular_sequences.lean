@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap15.Lemma_15_30_2
-import StacksProject_2024.Chap15.Lemma_15_30_3
-import StacksProject_2024.Chap15.Lemma_15_30_6
-import StacksProject_2024.Chap10.Remark_10_69_7_Other_types_of_regular_sequences.Index
+import stacks_proof.stacks_project.Chap15.Lemma_15_30_2
+import stacks_proof.stacks_project.Chap15.Lemma_15_30_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_30_6
+import stacks_proof.stacks_project.Chap10.Remark_10_69_7_Other_types_of_regular_sequences.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

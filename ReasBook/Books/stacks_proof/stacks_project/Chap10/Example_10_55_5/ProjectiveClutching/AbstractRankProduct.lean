@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap10.Example_10_55_5.ProjectiveRank
-import StacksProject_2024.Chap10.Example_10_55_5.MilnorUnits
+import stacks_proof.stacks_project.Chap10.Example_10_55_5.ProjectiveRank
+import stacks_proof.stacks_project.Chap10.Example_10_55_5.MilnorUnits
 
 noncomputable section
 

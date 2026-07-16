@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Stalk
-import StacksProject_2024.Chap10.Lemma_10_13_5
-import StacksProject_2024.Chap17.AlgebraSheafConstructions
-import StacksProject_2024.Chap17.Lemma_17_3_2
-import StacksProject_2024.Chap18.Lemma_18_36_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_13_5
+import stacks_proof.stacks_project.Chap17.AlgebraSheafConstructions
+import stacks_proof.stacks_project.Chap17.Lemma_17_3_2
+import stacks_proof.stacks_project.Chap18.Lemma_18_36_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

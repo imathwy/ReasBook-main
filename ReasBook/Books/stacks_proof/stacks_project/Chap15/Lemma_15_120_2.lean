@@ -1,12 +1,12 @@
 import Mathlib
 import Mathlib.CategoryTheory.ObjectProperty.Shift
 import Mathlib.CategoryTheory.Triangulated.Subcategory
-import StacksProject_2024.Chap13.Lemma_13_28_2
-import StacksProject_2024.Chap13.Lemma_13_35_7
-import StacksProject_2024.Chap10.Lemma_10_55_6
-import StacksProject_2024.Chap15.Definition_15_75_1
-import StacksProject_2024.Chap15.Lemma_15_120_1
-import StacksProject_2024.Chap15.Lemma_15_79_1
+import stacks_proof.stacks_project.Chap13.Lemma_13_28_2
+import stacks_proof.stacks_project.Chap13.Lemma_13_35_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_55_6
+import stacks_proof.stacks_project.Chap15.Definition_15_75_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_120_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_79_1
 
 noncomputable section
 

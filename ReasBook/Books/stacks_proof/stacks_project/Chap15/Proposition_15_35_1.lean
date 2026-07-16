@@ -1,13 +1,13 @@
 import Mathlib
 import Mathlib.Data.List.TFAE
-import StacksProject_2024.Chap10.Definition_10_110_7
-import StacksProject_2024.Chap10.Definition_10_42_1
-import StacksProject_2024.Chap10.Lemma_10_131_9
-import StacksProject_2024.Chap10.Lemma_10_44_2
-import StacksProject_2024.Chap10.Lemma_10_158_6
-import StacksProject_2024.Chap10.Lemma_10_158_7
-import StacksProject_2024.Chap10.Lemma_10_164_4
-import StacksProject_2024.Chap10.Lemma_10_166_5
+import stacks_proof.stacks_project.Chap10.Definition_10_110_7
+import stacks_proof.stacks_project.Chap10.Definition_10_42_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_131_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_44_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_158_6
+import stacks_proof.stacks_project.Chap10.Lemma_10_158_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_164_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_166_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

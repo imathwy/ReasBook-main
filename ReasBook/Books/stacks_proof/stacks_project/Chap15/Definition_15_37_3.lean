@@ -2,9 +2,9 @@ import Mathlib
 import Mathlib.Data.List.TFAE
 import Mathlib.Data.PNat.Notation
 import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
-import StacksProject_2024.Chap15.Definition_15_36_1_Topological_rings
-import StacksProject_2024.Chap15.Definition_15_37_1
-import StacksProject_2024.Chap15.Lemma_15_36_2
+import stacks_proof.stacks_project.Chap15.Definition_15_36_1_Topological_rings
+import stacks_proof.stacks_project.Chap15.Definition_15_37_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_36_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

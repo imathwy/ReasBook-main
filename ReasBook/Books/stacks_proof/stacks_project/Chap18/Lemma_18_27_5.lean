@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.Abelian
-import StacksProject_2024.Chap12.Lemma_12_7_2
-import StacksProject_2024.Chap18.Lemma_18_27_4
+import stacks_proof.stacks_project.Chap12.Lemma_12_7_2
+import stacks_proof.stacks_project.Chap18.Lemma_18_27_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,8 +1,8 @@
-import StacksProject_2024.Chap08.Lemma_8_4_3.Fibered
-import StacksProject_2024.Chap08.Lemma_8_4_3.AmbientIsoClosure
-import StacksProject_2024.Chap08.Lemma_8_4_3.PullbackComparison
-import StacksProject_2024.Chap08.Lemma_8_2_3.PullbackComparisonNaturality
-import StacksProject_2024.Chap08.Lemma_8_4_3.RestrictedDescentForward
+import stacks_proof.stacks_project.Chap08.Lemma_8_4_3.Fibered
+import stacks_proof.stacks_project.Chap08.Lemma_8_4_3.AmbientIsoClosure
+import stacks_proof.stacks_project.Chap08.Lemma_8_4_3.PullbackComparison
+import stacks_proof.stacks_project.Chap08.Lemma_8_2_3.PullbackComparisonNaturality
+import stacks_proof.stacks_project.Chap08.Lemma_8_4_3.RestrictedDescentForward
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory

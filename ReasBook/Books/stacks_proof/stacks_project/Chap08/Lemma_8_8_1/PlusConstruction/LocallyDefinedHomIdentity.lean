@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_8_1.PlusConstruction.LocallyDefinedHomCast
-import StacksProject_2024.Chap08.Lemma_8_8_1.PlusConstruction.LocallyDefinedHomIdentityCoherence
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.PlusConstruction.LocallyDefinedHomCast
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.PlusConstruction.LocallyDefinedHomIdentityCoherence
 
 universe u v uX vX
 

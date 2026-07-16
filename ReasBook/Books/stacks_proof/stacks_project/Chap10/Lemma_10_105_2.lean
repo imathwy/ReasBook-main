@@ -1,5 +1,5 @@
 import Mathlib.RingTheory.Spectrum.Prime.Topology
-import StacksProject_2024.Chap05.Definition_5_11_4
+import stacks_proof.stacks_project.Chap05.Definition_5_11_4
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

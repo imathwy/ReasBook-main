@@ -2,7 +2,7 @@ import Mathlib.Topology.LocallyClosed
 import Mathlib.Topology.Sober
 import Mathlib.Tactic.Recall
 import Mathlib.Tactic.StacksAttribute
-import StacksProject_2024.Chap05.Definition_5_8_6
+import stacks_proof.stacks_project.Chap05.Definition_5_8_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

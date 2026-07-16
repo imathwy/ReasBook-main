@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.LinearAlgebra.PowerOperations
+import stacks_proof.stacks_project.LinearAlgebra.PowerOperations
 
 universe u v w z
 

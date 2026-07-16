@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_132_2
-import StacksProject_2024.Chap06.Definition_6_26_1
-import StacksProject_2024.Chap17.Definition_17_28_3
-import StacksProject_2024.Chap17.Lemma_17_21_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_132_2
+import stacks_proof.stacks_project.Chap06.Definition_6_26_1
+import stacks_proof.stacks_project.Chap17.Definition_17_28_3
+import stacks_proof.stacks_project.Chap17.Lemma_17_21_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

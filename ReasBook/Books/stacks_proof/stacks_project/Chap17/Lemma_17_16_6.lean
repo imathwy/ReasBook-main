@@ -1,11 +1,11 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap17.Definition_17_8_1
-import StacksProject_2024.Chap17.Definition_17_12_1
-import StacksProject_2024.Chap17.Definition_17_14_1
-import StacksProject_2024.Chap17.Lemma_17_16_2
-import StacksProject_2024.Chap18.Lemma_18_23_3
-import StacksProject_2024.Chap18.Lemma_18_26_3
+import stacks_proof.stacks_project.Chap17.Definition_17_8_1
+import stacks_proof.stacks_project.Chap17.Definition_17_12_1
+import stacks_proof.stacks_project.Chap17.Definition_17_14_1
+import stacks_proof.stacks_project.Chap17.Lemma_17_16_2
+import stacks_proof.stacks_project.Chap18.Lemma_18_23_3
+import stacks_proof.stacks_project.Chap18.Lemma_18_26_3
 
 open AlgebraicGeometry
 open TopologicalSpace

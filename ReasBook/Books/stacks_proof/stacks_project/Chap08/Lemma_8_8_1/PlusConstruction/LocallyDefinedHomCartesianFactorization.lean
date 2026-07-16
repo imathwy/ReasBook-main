@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap04.Definition_4_33_1
-import StacksProject_2024.Chap08.Lemma_8_8_1.PlusConstruction.LocallyDefinedHomOldObjectComposition
+import stacks_proof.stacks_project.Chap04.Definition_4_33_1
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.PlusConstruction.LocallyDefinedHomOldObjectComposition
 
 universe u v uX vX
 

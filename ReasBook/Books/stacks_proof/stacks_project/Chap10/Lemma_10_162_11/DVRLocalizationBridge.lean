@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_97_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_97_3
 
 universe u
 

@@ -1,10 +1,10 @@
-import StacksProject_2024.Chap10.Lemma_10_127_7.BackendComparison
-import StacksProject_2024.Chap10.Lemma_10_138_5
-import StacksProject_2024.Chap10.Lemma_10_138_15
-import StacksProject_2024.Chap10.Lemma_10_168_5.DirectedRingLimit
-import StacksProject_2024.Chap10.Lemma_10_168_5.TensorColimitDirectLimit
-import StacksProject_2024.Chap10.Lemma_10_168_6
-import StacksProject_2024.Chap10.Lemma_10_168_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_7.BackendComparison
+import stacks_proof.stacks_project.Chap10.Lemma_10_138_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_138_15
+import stacks_proof.stacks_project.Chap10.Lemma_10_168_5.DirectedRingLimit
+import stacks_proof.stacks_project.Chap10.Lemma_10_168_5.TensorColimitDirectLimit
+import stacks_proof.stacks_project.Chap10.Lemma_10_168_6
+import stacks_proof.stacks_project.Chap10.Lemma_10_168_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,9 +1,9 @@
 import Mathlib.LinearAlgebra.Matrix.Vec
 import Mathlib.RingTheory.IntegralDomain
 import Mathlib.RingTheory.QuasiFinite.Basic
-import StacksProject_2024.Chap10.Lemma_10_107_3
-import StacksProject_2024.Chap10.Lemma_10_107_8
-import StacksProject_2024.Chap10.Remark_10_107_12
+import stacks_proof.stacks_project.Chap10.Lemma_10_107_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_107_8
+import stacks_proof.stacks_project.Chap10.Remark_10_107_12
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

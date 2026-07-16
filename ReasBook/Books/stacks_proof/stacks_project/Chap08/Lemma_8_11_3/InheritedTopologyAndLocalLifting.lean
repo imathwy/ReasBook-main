@@ -1,13 +1,13 @@
 import Mathlib
-import StacksProject_2024.Chap04.Lemma_4_35_17
-import StacksProject_2024.Chap08.Lemma_8_2_3
-import StacksProject_2024.Chap08.Definition_8_5_5
-import StacksProject_2024.Chap08.Definition_8_11_1
-import StacksProject_2024.Chap08.Lemma_8_5_4
-import StacksProject_2024.Chap08.Lemma_8_10_1
-import StacksProject_2024.Chap08.Lemma_8_10_5.Index
-import StacksProject_2024.Chap08.Lemma_8_10_5
-import StacksProject_2024.Chap08.Lemma_8_10_4.ProjectionFamilyCovering
+import stacks_proof.stacks_project.Chap04.Lemma_4_35_17
+import stacks_proof.stacks_project.Chap08.Lemma_8_2_3
+import stacks_proof.stacks_project.Chap08.Definition_8_5_5
+import stacks_proof.stacks_project.Chap08.Definition_8_11_1
+import stacks_proof.stacks_project.Chap08.Lemma_8_5_4
+import stacks_proof.stacks_project.Chap08.Lemma_8_10_1
+import stacks_proof.stacks_project.Chap08.Lemma_8_10_5.Index
+import stacks_proof.stacks_project.Chap08.Lemma_8_10_5
+import stacks_proof.stacks_project.Chap08.Lemma_8_10_4.ProjectionFamilyCovering
 
 open CategoryTheory
 open BasedFunctor

@@ -1,6 +1,6 @@
 import Mathlib.CategoryTheory.ObjectProperty.Retract
 import Mathlib.CategoryTheory.Triangulated.Orthogonal
-import StacksProject_2024.Chap13.Definition_13_40_1
+import stacks_proof.stacks_project.Chap13.Definition_13_40_1
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

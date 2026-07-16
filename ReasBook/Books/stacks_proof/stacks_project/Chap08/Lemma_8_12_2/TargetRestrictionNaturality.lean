@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_12_2.TargetRestriction
-import StacksProject_2024.Chap08.Lemma_8_2_3.PullbackComparisonNaturality
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_2.TargetRestriction
+import stacks_proof.stacks_project.Chap08.Lemma_8_2_3.PullbackComparisonNaturality
 
 open CategoryTheory.Limits
 open CategoryTheory.GrothendieckTopology.Cover

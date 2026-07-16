@@ -1,11 +1,11 @@
-import StacksProject_2024.Chap15.Definition_15_8_3
-import StacksProject_2024.Chap10.Definition_10_78_1
-import StacksProject_2024.Chap15.Lemma_15_3_2
-import StacksProject_2024.Chap15.Lemma_15_26_4
-import StacksProject_2024.Chap15.Lemma_15_26_5
-import StacksProject_2024.Chap15.Lemma_15_96_2
-import StacksProject_2024.Chap15.BerthelotOgusEtaReductionNatPairMap
-import StacksProject_2024.Chap15.Lemma_15_97_1
+import stacks_proof.stacks_project.Chap15.Definition_15_8_3
+import stacks_proof.stacks_project.Chap10.Definition_10_78_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_3_2
+import stacks_proof.stacks_project.Chap15.Lemma_15_26_4
+import stacks_proof.stacks_project.Chap15.Lemma_15_26_5
+import stacks_proof.stacks_project.Chap15.Lemma_15_96_2
+import stacks_proof.stacks_project.Chap15.BerthelotOgusEtaReductionNatPairMap
+import stacks_proof.stacks_project.Chap15.Lemma_15_97_1
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

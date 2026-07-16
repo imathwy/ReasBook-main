@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.CategoryTheory.Limits.Shapes.Opposites.Products
-import StacksProject_2024.Chap12.Lemma_12_5_16
-import StacksProject_2024.Chap12.Lemma_12_24_13
-import StacksProject_2024.Chap12.Lemma_12_25_1
-import StacksProject_2024.Chap12.Lemma_12_25_3
-import StacksProject_2024.Chap12.Definition_12_18_3
+import stacks_proof.stacks_project.Chap12.Lemma_12_5_16
+import stacks_proof.stacks_project.Chap12.Lemma_12_24_13
+import stacks_proof.stacks_project.Chap12.Lemma_12_25_1
+import stacks_proof.stacks_project.Chap12.Lemma_12_25_3
+import stacks_proof.stacks_project.Chap12.Definition_12_18_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

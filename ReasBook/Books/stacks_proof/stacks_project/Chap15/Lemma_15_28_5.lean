@@ -1,5 +1,5 @@
 import Mathlib.Algebra.Homology.Homotopy
-import StacksProject_2024.Chap15.Definition_15_28_1
+import stacks_proof.stacks_project.Chap15.Definition_15_28_1
 import Mathlib.Tactic.StacksAttribute
 
 noncomputable section

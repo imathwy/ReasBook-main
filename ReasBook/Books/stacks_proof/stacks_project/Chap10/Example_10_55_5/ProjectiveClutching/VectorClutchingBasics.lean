@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Example_10_55_5.ProjectiveClutching.RankProduct
+import stacks_proof.stacks_project.Chap10.Example_10_55_5.ProjectiveClutching.RankProduct
 
 noncomputable section
 

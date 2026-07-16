@@ -1,9 +1,9 @@
 import Mathlib
-import StacksProject_2024.Chap04.Lemma_4_31_13.Basic
-import StacksProject_2024.Chap04.Lemma_4_31_6
-import StacksProject_2024.Chap04.Lemma_4_31_8
-import StacksProject_2024.Chap04.Lemma_4_31_10
-import StacksProject_2024.Chap04.Lemma_4_31_11
+import stacks_proof.stacks_project.Chap04.Lemma_4_31_13.Basic
+import stacks_proof.stacks_project.Chap04.Lemma_4_31_6
+import stacks_proof.stacks_project.Chap04.Lemma_4_31_8
+import stacks_proof.stacks_project.Chap04.Lemma_4_31_10
+import stacks_proof.stacks_project.Chap04.Lemma_4_31_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

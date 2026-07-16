@@ -4,7 +4,7 @@ import Mathlib.CategoryTheory.Subobject.ArtinianObject
 import Mathlib.CategoryTheory.Subobject.HasCardinalLT
 import Mathlib.CategoryTheory.Subobject.NoetherianObject
 import Mathlib.SetTheory.Cardinal.Ordinal
-import StacksProject_2024.Chap19.Definition_19_10_1
+import stacks_proof.stacks_project.Chap19.Definition_19_10_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

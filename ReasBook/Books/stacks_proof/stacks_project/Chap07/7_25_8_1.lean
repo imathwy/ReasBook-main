@@ -1,6 +1,6 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap07.Definition_7_25_1
-import StacksProject_2024.Chap07.Lemma_7_21_2
+import stacks_proof.stacks_project.Chap07.Definition_7_25_1
+import stacks_proof.stacks_project.Chap07.Lemma_7_21_2
 
 open CategoryTheory Opposite
 open scoped MorphismOfTopoiIn

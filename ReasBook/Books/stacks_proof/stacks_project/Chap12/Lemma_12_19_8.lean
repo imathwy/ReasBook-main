@@ -2,7 +2,7 @@ import Mathlib.Algebra.Category.FGModuleCat.Abelian
 import Mathlib.Algebra.Category.FGModuleCat.EssentiallySmall
 import Mathlib.CategoryTheory.Abelian.Transfer
 import Mathlib.CategoryTheory.Category.ULift
-import StacksProject_2024.Chap12.Lemma_12_19_7
+import stacks_proof.stacks_project.Chap12.Lemma_12_19_7
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory

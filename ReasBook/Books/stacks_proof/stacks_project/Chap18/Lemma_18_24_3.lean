@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap17.Lemma_17_10_2
-import StacksProject_2024.Chap18.Lemma_18_23_3
-import StacksProject_2024.Chap18.RingedSiteModuleCategory
+import stacks_proof.stacks_project.Chap17.Lemma_17_10_2
+import stacks_proof.stacks_project.Chap18.Lemma_18_23_3
+import stacks_proof.stacks_project.Chap18.RingedSiteModuleCategory
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

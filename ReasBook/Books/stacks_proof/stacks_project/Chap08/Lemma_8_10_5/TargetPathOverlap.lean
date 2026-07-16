@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap08.Lemma_8_10_5.TargetPathTransport
+import stacks_proof.stacks_project.Chap08.Lemma_8_10_5.TargetPathTransport
 
 
 universe uC uX vC vX

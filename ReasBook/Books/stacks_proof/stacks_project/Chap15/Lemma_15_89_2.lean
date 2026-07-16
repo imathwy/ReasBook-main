@@ -4,7 +4,7 @@ import Mathlib.Algebra.Homology.QuasiIso
 import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
 import Mathlib.Algebra.Homology.Single
 import Mathlib.Algebra.Homology.SingleHomology
-import StacksProject_2024.Chap15.Definition_15_89_1
+import stacks_proof.stacks_project.Chap15.Definition_15_89_1
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

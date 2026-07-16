@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_149_2
+import stacks_proof.stacks_project.Chap10.Definition_10_149_2
 
 open Algebra
 open Algebra.Extension

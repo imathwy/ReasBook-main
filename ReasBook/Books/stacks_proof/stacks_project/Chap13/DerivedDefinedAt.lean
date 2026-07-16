@@ -1,7 +1,7 @@
 import Mathlib.CategoryTheory.Functor.Derived.PointwiseLeftDerived
 import Mathlib.CategoryTheory.Functor.Derived.PointwiseRightDerived
 import Mathlib.CategoryTheory.Localization.CalculusOfFractions
-import StacksProject_2024.Chap04.Lemma_4_22_3
+import stacks_proof.stacks_project.Chap04.Lemma_4_22_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

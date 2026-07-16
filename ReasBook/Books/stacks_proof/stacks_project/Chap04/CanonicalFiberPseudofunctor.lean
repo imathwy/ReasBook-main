@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap04.CanonicalFiberPseudofunctor.Coherence
+import stacks_proof.stacks_project.Chap04.CanonicalFiberPseudofunctor.Coherence
 
 /-!
 # Canonical fiber pseudofunctor owner

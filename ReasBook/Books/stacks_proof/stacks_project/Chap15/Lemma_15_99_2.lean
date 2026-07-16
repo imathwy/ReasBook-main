@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
 import Mathlib.CategoryTheory.Triangulated.Opposite.Pretriangulated
-import StacksProject_2024.Chap13.Lemma_13_16_1
-import StacksProject_2024.Chap15.Definition_15_67_1
-import StacksProject_2024.Chap15.Lemma_15_67_4
-import StacksProject_2024.Chap15.Lemma_15_99_1
+import stacks_proof.stacks_project.Chap13.Lemma_13_16_1
+import stacks_proof.stacks_project.Chap15.Definition_15_67_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_67_4
+import stacks_proof.stacks_project.Chap15.Lemma_15_99_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

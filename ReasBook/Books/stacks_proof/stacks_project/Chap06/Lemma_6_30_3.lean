@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap06.Definition_6_30_2
+import stacks_proof.stacks_project.Chap06.Definition_6_30_2
 import Mathlib.CategoryTheory.Sites.Hypercover.IsSheaf
 import Mathlib.CategoryTheory.Sites.Hypercover.SheafOfTypes
 import Mathlib.Tactic.StacksAttribute

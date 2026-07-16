@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_143_10
-import StacksProject_2024.Chap10.Proposition_10_138_13
+import stacks_proof.stacks_project.Chap10.Lemma_10_143_10
+import stacks_proof.stacks_project.Chap10.Proposition_10_138_13
 
 -- Declarations moved out of `Lemma_10_143_11.lean` to keep the active proof file small.
 

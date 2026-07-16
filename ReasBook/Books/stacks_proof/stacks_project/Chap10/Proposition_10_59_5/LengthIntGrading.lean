@@ -1,11 +1,11 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_58_3
-import StacksProject_2024.Chap10.Definition_10_59_1
-import StacksProject_2024.Chap10.Lemma_10_52_8
-import StacksProject_2024.Chap10.Lemma_10_58_5
-import StacksProject_2024.Chap10.Lemma_10_59_2
-import StacksProject_2024.Chap10.Proposition_10_58_7
-import StacksProject_2024.Chap10.Proposition_10_59_5.TextbookPieceAction
+import stacks_proof.stacks_project.Chap10.Definition_10_58_3
+import stacks_proof.stacks_project.Chap10.Definition_10_59_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_52_8
+import stacks_proof.stacks_project.Chap10.Lemma_10_58_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_59_2
+import stacks_proof.stacks_project.Chap10.Proposition_10_58_7
+import stacks_proof.stacks_project.Chap10.Proposition_10_59_5.TextbookPieceAction
 
 universe u v
 

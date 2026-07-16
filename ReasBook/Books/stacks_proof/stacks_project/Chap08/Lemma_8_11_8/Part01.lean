@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.CategoryTheory.Sites.Over
-import StacksProject_2024.Chap08.Lemma_8_3_7
-import StacksProject_2024.Chap08.Definition_8_5_5
-import StacksProject_2024.Chap08.Definition_8_11_1
-import StacksProject_2024.Chap08.Lemma_8_11_8.Part01.CanonicalAutomorphismSheaf
+import stacks_proof.stacks_project.Chap08.Lemma_8_3_7
+import stacks_proof.stacks_project.Chap08.Definition_8_5_5
+import stacks_proof.stacks_project.Chap08.Definition_8_11_1
+import stacks_proof.stacks_project.Chap08.Lemma_8_11_8.Part01.CanonicalAutomorphismSheaf
 
 universe u v w uD vD
 

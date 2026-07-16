@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap06.Lemma_6_33_3_Part10_RealizationAux
-import StacksProject_2024.Chap06.Lemma_6_33_3_Part10_BridgeKeystone
+import stacks_proof.stacks_project.Chap06.Lemma_6_33_3_Part10_RealizationAux
+import stacks_proof.stacks_project.Chap06.Lemma_6_33_3_Part10_BridgeKeystone
 
 /-!
 # Lemma 6.33.3 (module case): the via-left / via-right `toSheaf`-bridge coherences

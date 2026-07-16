@@ -1,1 +1,1 @@
-import StacksProject_2024.Chap10.Lemma_10_75_3_Support.RowBoundary
+import stacks_proof.stacks_project.Chap10.Lemma_10_75_3_Support.RowBoundary

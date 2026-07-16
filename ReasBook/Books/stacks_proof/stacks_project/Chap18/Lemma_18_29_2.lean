@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Presheaf.Monoidal
 import Mathlib.CategoryTheory.Sites.Monoidal
-import StacksProject_2024.Chap17.SheafOfModulesTensorUnit
-import StacksProject_2024.Chap18.LocallyDirectSummandOfFiniteFree
+import stacks_proof.stacks_project.Chap17.SheafOfModulesTensorUnit
+import stacks_proof.stacks_project.Chap18.LocallyDirectSummandOfFiniteFree
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,3 +1,3 @@
-import StacksProject_2024.Chap10.Lemma_10_162_11.CompleteLocalQuotient
-import StacksProject_2024.Chap10.Lemma_10_162_11.DVRLocalizationBridge
-import StacksProject_2024.Chap10.Lemma_10_162_11.PrincipalRegularLocal
+import stacks_proof.stacks_project.Chap10.Lemma_10_162_11.CompleteLocalQuotient
+import stacks_proof.stacks_project.Chap10.Lemma_10_162_11.DVRLocalizationBridge
+import stacks_proof.stacks_project.Chap10.Lemma_10_162_11.PrincipalRegularLocal

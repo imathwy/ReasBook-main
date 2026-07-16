@@ -4,14 +4,14 @@ import Mathlib.Algebra.Homology.DerivedCategory.Linear
 import Mathlib.Algebra.Module.LocalizedModule.Away
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
 import Mathlib.RingTheory.Localization.Away.Basic
-import StacksProject_2024.Chap13.Proposition_13_4_23
-import StacksProject_2024.Chap15.Definition_15_67_1
-import StacksProject_2024.Chap15.Lemma_15_59_15
-import StacksProject_2024.Chap15.Lemma_15_60_3
-import StacksProject_2024.Chap15.Lemma_15_67_2
-import StacksProject_2024.Chap15.Lemma_15_67_6
-import StacksProject_2024.Chap15.Lemma_15_67_17
-import StacksProject_2024.Chap15.Lemma_15_103_6
+import stacks_proof.stacks_project.Chap13.Proposition_13_4_23
+import stacks_proof.stacks_project.Chap15.Definition_15_67_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_59_15
+import stacks_proof.stacks_project.Chap15.Lemma_15_60_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_67_2
+import stacks_proof.stacks_project.Chap15.Lemma_15_67_6
+import stacks_proof.stacks_project.Chap15.Lemma_15_67_17
+import stacks_proof.stacks_project.Chap15.Lemma_15_103_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

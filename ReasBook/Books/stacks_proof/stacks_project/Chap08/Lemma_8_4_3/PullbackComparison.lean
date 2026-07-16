@@ -1,3 +1,3 @@
-import StacksProject_2024.Chap08.Lemma_8_4_3.PullbackComparisonBase
-import StacksProject_2024.Chap08.Lemma_8_4_3.PullbackComparisonIso
-import StacksProject_2024.Chap08.Lemma_8_4_3.PullbackComparisonNaturality
+import stacks_proof.stacks_project.Chap08.Lemma_8_4_3.PullbackComparisonBase
+import stacks_proof.stacks_project.Chap08.Lemma_8_4_3.PullbackComparisonIso
+import stacks_proof.stacks_project.Chap08.Lemma_8_4_3.PullbackComparisonNaturality

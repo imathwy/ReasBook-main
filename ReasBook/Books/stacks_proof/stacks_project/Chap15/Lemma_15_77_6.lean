@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
 import Mathlib.CategoryTheory.Triangulated.TStructure.TruncLEGT
-import StacksProject_2024.Chap13.Lemma_13_27_3
-import StacksProject_2024.Chap13.Lemma_13_27_9
-import StacksProject_2024.Chap15.Lemma_15_77_5
+import stacks_proof.stacks_project.Chap13.Lemma_13_27_3
+import stacks_proof.stacks_project.Chap13.Lemma_13_27_9
+import stacks_proof.stacks_project.Chap15.Lemma_15_77_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

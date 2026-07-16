@@ -1,9 +1,9 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_60_10
-import StacksProject_2024.Chap10.Lemma_10_99_10_Variant_of_the_local_criterion
-import StacksProject_2024.Chap10.Lemma_10_100_2
-import StacksProject_2024.Chap10.Lemma_10_106_3
-import StacksProject_2024.Chap10.Lemma_10_106_6
+import stacks_proof.stacks_project.Chap10.Definition_10_60_10
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_10_Variant_of_the_local_criterion
+import stacks_proof.stacks_project.Chap10.Lemma_10_100_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_106_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_106_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

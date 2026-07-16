@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_134_12.Index
+import stacks_proof.stacks_project.Chap10.Lemma_10_134_12.Index
 open Algebra
 open Algebra.Extension
 open Algebra.Generators

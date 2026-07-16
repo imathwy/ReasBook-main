@@ -2,10 +2,10 @@ import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Presheaf.Monoidal
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.PushforwardContinuous
 import Mathlib.CategoryTheory.Sites.Monoidal
-import StacksProject_2024.Chap12.Lemma_12_7_2
-import StacksProject_2024.Chap18.Definition_18_28_1
-import StacksProject_2024.Chap18.«18_19_2_1»
-import StacksProject_2024.Chap18.Remark_18_19_7
+import stacks_proof.stacks_project.Chap12.Lemma_12_7_2
+import stacks_proof.stacks_project.Chap18.Definition_18_28_1
+import stacks_proof.stacks_project.Chap18.«18_19_2_1»
+import stacks_proof.stacks_project.Chap18.Remark_18_19_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

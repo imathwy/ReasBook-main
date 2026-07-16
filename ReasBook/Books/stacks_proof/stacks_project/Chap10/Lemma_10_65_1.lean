@@ -1,13 +1,13 @@
 import Mathlib.RingTheory.Localization.BaseChange
 import Mathlib.RingTheory.TensorProduct.DirectLimitFG
-import StacksProject_2024.Chap10.Definition_10_63_1
-import StacksProject_2024.Chap10.Definition_10_65_2
-import StacksProject_2024.Chap10.Lemma_10_62_1
-import StacksProject_2024.Chap10.Lemma_10_63_3
-import StacksProject_2024.Chap10.Lemma_10_63_4
-import StacksProject_2024.Chap10.Lemma_10_63_14
-import StacksProject_2024.Chap10.Lemma_10_63_16
-import StacksProject_2024.Chap10.Lemma_10_63_17
+import stacks_proof.stacks_project.Chap10.Definition_10_63_1
+import stacks_proof.stacks_project.Chap10.Definition_10_65_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_62_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_63_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_63_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_63_14
+import stacks_proof.stacks_project.Chap10.Lemma_10_63_16
+import stacks_proof.stacks_project.Chap10.Lemma_10_63_17
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

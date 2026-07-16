@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap06.Definition_6_8_1
-import StacksProject_2024.Chap12.Definition_12_27_5
+import stacks_proof.stacks_project.Chap06.Definition_6_8_1
+import stacks_proof.stacks_project.Chap12.Definition_12_27_5
 
 open CategoryTheory
 open TopologicalSpace

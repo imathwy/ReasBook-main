@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap07.Lemma_7_17_10.Glue
+import stacks_proof.stacks_project.Chap07.Lemma_7_17_10.Glue
 
 set_option linter.unreachableTactic false
 set_option linter.unusedTactic false

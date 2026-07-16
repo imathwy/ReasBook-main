@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap08.Lemma_8_10_5.LiteralBaseDescentLaws
+import stacks_proof.stacks_project.Chap08.Lemma_8_10_5.LiteralBaseDescentLaws
 
 universe uC uX vC vX
 

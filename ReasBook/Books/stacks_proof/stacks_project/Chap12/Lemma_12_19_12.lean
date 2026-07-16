@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap12.Lemma_12_19_2
-import StacksProject_2024.Chap12.Lemma_12_19_4
-import StacksProject_2024.Chap12.Lemma_12_5_16
-import StacksProject_2024.Chap12.Definition_12_16_1
+import stacks_proof.stacks_project.Chap12.Lemma_12_19_2
+import stacks_proof.stacks_project.Chap12.Lemma_12_19_4
+import stacks_proof.stacks_project.Chap12.Lemma_12_5_16
+import stacks_proof.stacks_project.Chap12.Definition_12_16_1
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory

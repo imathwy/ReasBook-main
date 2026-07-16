@@ -9,7 +9,7 @@ import Mathlib.Algebra.Group.ULift
 import Mathlib.Algebra.Group.Action.End
 import Mathlib.Algebra.Group.Action.Prod
 import Mathlib.GroupTheory.GroupAction.Basic
-import StacksProject_2024.Chap04.Definition_4_19_1
+import stacks_proof.stacks_project.Chap04.Definition_4_19_1
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap07.Lemma_7_39_2.RequestScheduling
-import StacksProject_2024.Chap07.Lemma_7_39_2.PackagedStages
-import StacksProject_2024.Chap07.Lemma_7_39_2.DiagramUnionCore
-import StacksProject_2024.Chap07.Lemma_7_39_2.DiagramUnionLimit
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_2.RequestScheduling
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_2.PackagedStages
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_2.DiagramUnionCore
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_2.DiagramUnionLimit
 
 /-
 Natural (colimit) directed union for Lemma 7.39.2.

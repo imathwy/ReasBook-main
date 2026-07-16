@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.CategoryTheory.ObjectProperty.Small
-import StacksProject_2024.Chap08.Lemma_8_4_3
+import stacks_proof.stacks_project.Chap08.Lemma_8_4_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

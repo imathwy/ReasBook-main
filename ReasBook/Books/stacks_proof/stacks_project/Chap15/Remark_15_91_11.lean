@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.CategoryTheory.Monoidal.Tor
-import StacksProject_2024.Chap15.Definition_15_61_1
-import StacksProject_2024.Chap15.Definition_15_89_1
-import StacksProject_2024.Chap15.Lemma_15_91_10
+import stacks_proof.stacks_project.Chap15.Definition_15_61_1
+import stacks_proof.stacks_project.Chap15.Definition_15_89_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_91_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

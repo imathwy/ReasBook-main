@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap10.Lemma_10_102_2.Recoordinate
-import StacksProject_2024.Chap10.Lemma_10_102_2.PivotNormalization
+import stacks_proof.stacks_project.Chap10.Lemma_10_102_2.Recoordinate
+import stacks_proof.stacks_project.Chap10.Lemma_10_102_2.PivotNormalization
 
 open CategoryTheory CategoryTheory.Limits ChainComplex Matrix
 

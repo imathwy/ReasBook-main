@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_46_7
-import StacksProject_2024.Chap10.Lemma_10_161_11
-import StacksProject_2024.Chap10.Lemma_10_161_12
+import stacks_proof.stacks_project.Chap10.Lemma_10_46_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_161_11
+import stacks_proof.stacks_project.Chap10.Lemma_10_161_12
 universe u
 
 open Ideal

@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap08.Lemma_8_8_1.HomSheaf
-import StacksProject_2024.Chap08.Lemma_8_8_1.PlusConstruction.Stage3
-import StacksProject_2024.Chap08.Lemma_8_8_1.PlusConstruction.Stage3DescentEffective.GluedDatum
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.HomSheaf
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.PlusConstruction.Stage3
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.PlusConstruction.Stage3DescentEffective.GluedDatum
 
 universe u v uX vX
 

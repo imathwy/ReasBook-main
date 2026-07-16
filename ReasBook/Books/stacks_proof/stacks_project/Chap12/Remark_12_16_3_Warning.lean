@@ -14,8 +14,8 @@ import Mathlib.Topology.Sheaves.LocalPredicate
 import Mathlib.Topology.Sheaves.LocallySurjective
 import Mathlib.Topology.Sheaves.Skyscraper
 import Mathlib.Topology.UniformSpace.Real
-import StacksProject_2024.Chap12.Definition_12_16_1
-import StacksProject_2024.Chap12.Lemma_12_16_2
+import stacks_proof.stacks_project.Chap12.Definition_12_16_1
+import stacks_proof.stacks_project.Chap12.Lemma_12_16_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

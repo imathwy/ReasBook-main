@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap07.Lemma_7_38_3.BasicULift
+import stacks_proof.stacks_project.Chap07.Lemma_7_38_3.BasicULift
 
 open CategoryTheory Opposite
 open CategoryTheory.Limits

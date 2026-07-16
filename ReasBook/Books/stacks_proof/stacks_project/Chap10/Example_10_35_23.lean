@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap05.Lemma_5_8_4
-import StacksProject_2024.Chap10.Example_10_35_23.Index
+import stacks_proof.stacks_project.Chap05.Lemma_5_8_4
+import stacks_proof.stacks_project.Chap10.Example_10_35_23.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

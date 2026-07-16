@@ -1,8 +1,8 @@
 import Mathlib.Data.List.TFAE
-import StacksProject_2024.Chap10.Proposition_10_63_6
-import StacksProject_2024.Chap10.Lemma_10_157_2
-import StacksProject_2024.Chap15.Definition_15_22_1
-import StacksProject_2024.Chap15.Lemma_15_22_7
+import stacks_proof.stacks_project.Chap10.Proposition_10_63_6
+import stacks_proof.stacks_project.Chap10.Lemma_10_157_2
+import stacks_proof.stacks_project.Chap15.Definition_15_22_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_22_7
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

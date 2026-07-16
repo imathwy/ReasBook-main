@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap07.Definition_7_29_2
-import StacksProject_2024.Chap07.Lemma_7_28_1
-import StacksProject_2024.Chap07.Lemma_7_28_4
+import stacks_proof.stacks_project.Chap07.Definition_7_29_2
+import stacks_proof.stacks_project.Chap07.Lemma_7_28_1
+import stacks_proof.stacks_project.Chap07.Lemma_7_28_4
 -- Declarations for this item will be appended below by the statement pipeline.
 
 universe u₁ u₂ v₁ v₂

@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.CategoryTheory.Limits.ExactFunctor
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap18.Definition_18_9_1
-import StacksProject_2024.Chap18.Definition_18_10_1
+import stacks_proof.stacks_project.Chap18.Definition_18_9_1
+import stacks_proof.stacks_project.Chap18.Definition_18_10_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

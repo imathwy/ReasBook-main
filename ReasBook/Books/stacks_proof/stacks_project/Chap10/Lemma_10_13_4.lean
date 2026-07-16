@@ -1,5 +1,5 @@
 import Mathlib.Tactic.StacksAttribute
-import StacksProject_2024.Chap10.Lemma_10_13_4.RelationSets
+import stacks_proof.stacks_project.Chap10.Lemma_10_13_4.RelationSets
 
 open scoped TensorProduct
 open PiTensorProduct exteriorPower

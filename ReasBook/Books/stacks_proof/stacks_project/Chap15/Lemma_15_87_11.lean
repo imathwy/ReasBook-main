@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap15.«15_87_1_1»
-import StacksProject_2024.Chap19.Theorem_19_12_6
+import stacks_proof.stacks_project.Chap15.«15_87_1_1»
+import stacks_proof.stacks_project.Chap19.Theorem_19_12_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

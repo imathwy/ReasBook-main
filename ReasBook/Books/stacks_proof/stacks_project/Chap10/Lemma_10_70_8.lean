@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_70_8.Index
+import stacks_proof.stacks_project.Chap10.Lemma_10_70_8.Index
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

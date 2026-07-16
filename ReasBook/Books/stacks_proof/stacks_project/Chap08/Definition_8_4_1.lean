@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap04.CanonicalFiberPseudofunctor
+import stacks_proof.stacks_project.Chap04.CanonicalFiberPseudofunctor
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

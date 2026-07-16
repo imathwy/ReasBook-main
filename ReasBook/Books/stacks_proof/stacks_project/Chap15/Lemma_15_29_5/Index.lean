@@ -1,1 +1,1 @@
-import StacksProject_2024.Chap15.Lemma_15_29_5.UniverseBridges
+import stacks_proof.stacks_project.Chap15.Lemma_15_29_5.UniverseBridges

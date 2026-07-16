@@ -1,11 +1,11 @@
 import Mathlib.Tactic.StacksAttribute
-import StacksProject_2024.Chap12.Lemma_12_19_4
-import StacksProject_2024.Chap12.Lemma_12_19_7
-import StacksProject_2024.Chap12.Lemma_12_19_8
-import StacksProject_2024.Chap12.Lemma_12_19_12
-import StacksProject_2024.Chap12.Lemma_12_19_15
-import StacksProject_2024.Chap13.Definition_13_13_2
-import StacksProject_2024.Chap13.Lemma_13_26_6
+import stacks_proof.stacks_project.Chap12.Lemma_12_19_4
+import stacks_proof.stacks_project.Chap12.Lemma_12_19_7
+import stacks_proof.stacks_project.Chap12.Lemma_12_19_8
+import stacks_proof.stacks_project.Chap12.Lemma_12_19_12
+import stacks_proof.stacks_project.Chap12.Lemma_12_19_15
+import stacks_proof.stacks_project.Chap13.Definition_13_13_2
+import stacks_proof.stacks_project.Chap13.Lemma_13_26_6
 
 open CategoryTheory
 open CategoryTheory.Limits

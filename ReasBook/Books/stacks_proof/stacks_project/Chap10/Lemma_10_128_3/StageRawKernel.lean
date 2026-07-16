@@ -1,8 +1,8 @@
-import StacksProject_2024.Chap10.Lemma_10_127_13.TailApproximation
-import StacksProject_2024.Chap10.Lemma_10_127_5
-import StacksProject_2024.Chap10.Remark_10_75_9
-import StacksProject_2024.Chap10.Lemma_10_99_14
-import StacksProject_2024.Chap10.Lemma_10_100_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_13.TailApproximation
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_5
+import stacks_proof.stacks_project.Chap10.Remark_10_75_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_14
+import stacks_proof.stacks_project.Chap10.Lemma_10_100_2
 import Mathlib.Tactic.StacksAttribute
 
 universe uR uS uM

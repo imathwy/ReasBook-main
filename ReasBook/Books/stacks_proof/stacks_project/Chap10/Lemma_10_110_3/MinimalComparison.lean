@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap10.Lemma_10_99_1
-import StacksProject_2024.Chap10.Lemma_10_110_3.KoszulFirstOrder
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_110_3.KoszulFirstOrder
 
 universe u
 

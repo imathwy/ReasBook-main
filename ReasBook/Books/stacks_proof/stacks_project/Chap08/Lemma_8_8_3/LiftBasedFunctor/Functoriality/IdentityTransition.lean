@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.Functoriality.IdentityFront
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.Functoriality.IdentityFront
 
 universe u v uS vS
 

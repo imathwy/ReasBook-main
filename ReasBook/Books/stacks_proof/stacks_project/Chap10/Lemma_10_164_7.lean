@@ -1,10 +1,10 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_140_3
-import StacksProject_2024.Chap10.Lemma_10_162_2
-import StacksProject_2024.Chap10.Lemma_10_163_6
-import StacksProject_2024.Chap10.Definition_10_162_1
-import StacksProject_2024.Chap10.Lemma_10_164_1
-import StacksProject_2024.Chap10.Proposition_10_162_15_Nagata
+import stacks_proof.stacks_project.Chap10.Lemma_10_140_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_162_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_163_6
+import stacks_proof.stacks_project.Chap10.Definition_10_162_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_164_1
+import stacks_proof.stacks_project.Chap10.Proposition_10_162_15_Nagata
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

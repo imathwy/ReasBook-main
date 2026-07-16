@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.CategoryTheory.Sites.Over
-import StacksProject_2024.Chap08.Lemma_8_11_8.CoherenceAPI
+import stacks_proof.stacks_project.Chap08.Lemma_8_11_8.CoherenceAPI
 
 universe u v w
 

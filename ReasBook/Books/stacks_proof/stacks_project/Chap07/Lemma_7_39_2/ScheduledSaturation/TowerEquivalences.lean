@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap07.Lemma_7_39_2.ScheduledSaturation.LimitTransport
-import StacksProject_2024.Chap07.Lemma_7_39_2.ScheduledSaturation.RecursiveNodes
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_2.ScheduledSaturation.LimitTransport
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_2.ScheduledSaturation.RecursiveNodes
 
 open CategoryTheory
 open CategoryTheory.SemiRepresentableFamily.Over

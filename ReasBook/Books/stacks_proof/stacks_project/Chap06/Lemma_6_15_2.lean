@@ -3,8 +3,8 @@ import Mathlib.Algebra.Category.Grp.Colimits
 import Mathlib.Algebra.Category.Grp.FilteredColimits
 import Mathlib.Algebra.Category.ModuleCat.FilteredColimits
 import Mathlib.CategoryTheory.Limits.Preserves.Over
-import StacksProject_2024.Chap06.Definition_6_15_1
-import StacksProject_2024.Chap06.LieAlgebraCat
+import stacks_proof.stacks_project.Chap06.Definition_6_15_1
+import stacks_proof.stacks_project.Chap06.LieAlgebraCat
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

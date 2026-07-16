@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap07.Lemma_7_26_4.FixedCoverDescent
-import StacksProject_2024.Chap07.Lemma_7_26_4.RestrictionCompatibility
-import StacksProject_2024.Chap07.Lemma_7_26_4.GlueFamilies
-import StacksProject_2024.Chap07.Lemma_7_26_4.GluedDescentConstruction
-import StacksProject_2024.Chap07.Lemma_7_26_4.DirectSourceComparison.Index
+import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.FixedCoverDescent
+import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.RestrictionCompatibility
+import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.GlueFamilies
+import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.GluedDescentConstruction
+import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.DirectSourceComparison.Index

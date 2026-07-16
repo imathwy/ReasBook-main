@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_11_5.FiberIso
-import StacksProject_2024.Chap08.Lemma_8_11_5.StackPullback
+import stacks_proof.stacks_project.Chap08.Lemma_8_11_5.FiberIso
+import stacks_proof.stacks_project.Chap08.Lemma_8_11_5.StackPullback
 
 universe u v
 

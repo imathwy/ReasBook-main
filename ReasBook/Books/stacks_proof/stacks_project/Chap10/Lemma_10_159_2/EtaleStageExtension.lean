@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap10.Lemma_10_154_2
-import StacksProject_2024.Chap10.Lemma_10_154_3
-import StacksProject_2024.Chap10.Lemma_10_159_1.Index
+import stacks_proof.stacks_project.Chap10.Lemma_10_154_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_154_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_159_1.Index
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory MorphismProperty

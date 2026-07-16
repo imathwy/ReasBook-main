@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap07.Lemma_7_26_1
-import StacksProject_2024.Chap07.Lemma_7_26_4.RestrictionCompatibility
-import StacksProject_2024.Chap07.Lemma_7_26_4.GlueFamilies
+import stacks_proof.stacks_project.Chap07.Lemma_7_26_1
+import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.RestrictionCompatibility
+import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.GlueFamilies
 
 open CategoryTheory
 

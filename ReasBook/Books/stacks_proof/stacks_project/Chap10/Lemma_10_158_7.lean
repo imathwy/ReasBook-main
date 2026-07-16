@@ -1,9 +1,9 @@
-import StacksProject_2024.Chap09.Definition_9_26_1
-import StacksProject_2024.Chap10.Definition_10_42_1
-import StacksProject_2024.Chap10.Lemma_10_150_4
-import StacksProject_2024.Chap10.Lemma_10_158_6
-import StacksProject_2024.Chap10.Lemma_10_127_9
-import StacksProject_2024.Chap10.Lemma_10_158_7.DirectLimitSupport
+import stacks_proof.stacks_project.Chap09.Definition_9_26_1
+import stacks_proof.stacks_project.Chap10.Definition_10_42_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_150_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_158_6
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_158_7.DirectLimitSupport
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

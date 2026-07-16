@@ -1,19 +1,19 @@
-import StacksProject_2024.Chap04.Lemma_4_35_17
-import StacksProject_2024.Chap04.Lemma_4_2_18
-import StacksProject_2024.Chap04.Definition_4_2_17
-import StacksProject_2024.Chap04.Definition_4_35_1
-import StacksProject_2024.Chap04.Lemma_4_33_3
-import StacksProject_2024.Chap04.Lemma_4_33_7
-import StacksProject_2024.Chap04.Lemma_4_33_8
-import StacksProject_2024.Chap07.Definition_7_13_1
-import StacksProject_2024.Chap08.Definition_8_2_2
-import StacksProject_2024.Chap08.Definition_8_3_5
-import StacksProject_2024.Chap08.Definition_8_5_5
-import StacksProject_2024.Chap08.Lemma_8_5_3_PullbackNaturality
-import StacksProject_2024.Chap08.Lemma_8_4_2
-import StacksProject_2024.Chap08.Lemma_8_10_1
-import StacksProject_2024.Chap08.Lemma_8_10_4
-import StacksProject_2024.Chap08.Lemma_8_10_5.LiteralBaseReindex
+import stacks_proof.stacks_project.Chap04.Lemma_4_35_17
+import stacks_proof.stacks_project.Chap04.Lemma_4_2_18
+import stacks_proof.stacks_project.Chap04.Definition_4_2_17
+import stacks_proof.stacks_project.Chap04.Definition_4_35_1
+import stacks_proof.stacks_project.Chap04.Lemma_4_33_3
+import stacks_proof.stacks_project.Chap04.Lemma_4_33_7
+import stacks_proof.stacks_project.Chap04.Lemma_4_33_8
+import stacks_proof.stacks_project.Chap07.Definition_7_13_1
+import stacks_proof.stacks_project.Chap08.Definition_8_2_2
+import stacks_proof.stacks_project.Chap08.Definition_8_3_5
+import stacks_proof.stacks_project.Chap08.Definition_8_5_5
+import stacks_proof.stacks_project.Chap08.Lemma_8_5_3_PullbackNaturality
+import stacks_proof.stacks_project.Chap08.Lemma_8_4_2
+import stacks_proof.stacks_project.Chap08.Lemma_8_10_1
+import stacks_proof.stacks_project.Chap08.Lemma_8_10_4
+import stacks_proof.stacks_project.Chap08.Lemma_8_10_5.LiteralBaseReindex
 
 universe uC uX vC vX
 

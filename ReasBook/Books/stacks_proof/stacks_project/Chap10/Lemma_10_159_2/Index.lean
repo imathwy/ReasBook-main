@@ -1,1 +1,1 @@
-import StacksProject_2024.Chap10.Lemma_10_159_2.EtaleStageExtension
+import stacks_proof.stacks_project.Chap10.Lemma_10_159_2.EtaleStageExtension

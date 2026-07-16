@@ -1,6 +1,6 @@
 import Mathlib.CategoryTheory.Sites.Closed
 import Mathlib.CategoryTheory.Sites.Sheaf
-import StacksProject_2024.Chap04.Definition_4_3_3
+import stacks_proof.stacks_project.Chap04.Definition_4_3_3
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

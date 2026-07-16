@@ -1,12 +1,12 @@
 import Mathlib
-import StacksProject_2024.Chap04.Definition_4_22_1
-import StacksProject_2024.Chap04.Lemma_4_22_11
-import StacksProject_2024.Chap04.Lemma_4_22_13
-import StacksProject_2024.Chap04.Definition_4_27_20
-import StacksProject_2024.Chap04.Remark_4_27_7
-import StacksProject_2024.Chap04.Remark_4_27_15
-import StacksProject_2024.Chap13.Lemma_13_5_8
-import StacksProject_2024.Chap13.Lemma_13_14_14
+import stacks_proof.stacks_project.Chap04.Definition_4_22_1
+import stacks_proof.stacks_project.Chap04.Lemma_4_22_11
+import stacks_proof.stacks_project.Chap04.Lemma_4_22_13
+import stacks_proof.stacks_project.Chap04.Definition_4_27_20
+import stacks_proof.stacks_project.Chap04.Remark_4_27_7
+import stacks_proof.stacks_project.Chap04.Remark_4_27_15
+import stacks_proof.stacks_project.Chap13.Lemma_13_5_8
+import stacks_proof.stacks_project.Chap13.Lemma_13_14_14
 
 open CategoryTheory.MorphismProperty
 open CategoryTheory.ObjectProperty

@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap10.Lemma_10_99_17.TorOneExact
-import StacksProject_2024.Chap10.Lemma_10_99_17.LocalizationFaithful
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_17.TorOneExact
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_17.LocalizationFaithful
 
 open CategoryTheory CategoryTheory.Limits CategoryTheory.MonoidalCategory
 open scoped TensorProduct

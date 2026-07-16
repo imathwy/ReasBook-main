@@ -1,12 +1,12 @@
 import Mathlib.Algebra.Module.FinitePresentation
 import Mathlib.LinearAlgebra.DirectSum.Finsupp
 import Mathlib.RingTheory.Valuation.ValuationRing
-import StacksProject_2024.Chap10.Lemma_10_5_3
-import StacksProject_2024.Chap10.Lemma_10_90_3
-import StacksProject_2024.Chap10.Lemma_10_20_1_Nakayama_s_lemma
-import StacksProject_2024.Chap15.Lemma_15_125_1
-import StacksProject_2024.Chap15.Lemma_15_125_2_Generalized_valuation_rings
-import StacksProject_2024.Chap15.PrincipalIdeal
+import stacks_proof.stacks_project.Chap10.Lemma_10_5_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_90_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_20_1_Nakayama_s_lemma
+import stacks_proof.stacks_project.Chap15.Lemma_15_125_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_125_2_Generalized_valuation_rings
+import stacks_proof.stacks_project.Chap15.PrincipalIdeal
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap08.Definition_8_4_1
-import StacksProject_2024.Chap08.Lemma_8_4_2
-import StacksProject_2024.Chap08.Lemma_8_12_1
+import stacks_proof.stacks_project.Chap08.Definition_8_4_1
+import stacks_proof.stacks_project.Chap08.Lemma_8_4_2
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_1
 
 open CategoryTheory.Limits
 open CategoryTheory.GrothendieckTopology.Cover

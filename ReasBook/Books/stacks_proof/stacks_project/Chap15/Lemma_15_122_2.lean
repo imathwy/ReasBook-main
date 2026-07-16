@@ -1,9 +1,9 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_106_2
-import StacksProject_2024.Chap10.Lemma_10_120_6
-import StacksProject_2024.Chap10.Lemma_10_120_7_Nagata_s_criterion_for_factoriality
-import StacksProject_2024.Chap15.Lemma_15_10_5
-import StacksProject_2024.Chap15.Lemma_15_48_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_106_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_120_6
+import stacks_proof.stacks_project.Chap10.Lemma_10_120_7_Nagata_s_criterion_for_factoriality
+import stacks_proof.stacks_project.Chap15.Lemma_15_10_5
+import stacks_proof.stacks_project.Chap15.Lemma_15_48_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

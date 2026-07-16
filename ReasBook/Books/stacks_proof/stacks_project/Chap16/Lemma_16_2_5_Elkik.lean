@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap16.Definition_16_2_1
-import StacksProject_2024.Chap16.Lemma_16_2_2
+import stacks_proof.stacks_project.Chap16.Definition_16_2_1
+import stacks_proof.stacks_project.Chap16.Lemma_16_2_2
 import Mathlib.Tactic.StacksAttribute
 
 universe u v

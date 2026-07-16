@@ -1,3 +1,3 @@
-import StacksProject_2024.Chap10.Lemma_10_163_1.ClosedFiberDepthZero
-import StacksProject_2024.Chap10.Lemma_10_163_1.RegularSequenceDepthDrop
-import StacksProject_2024.Chap10.Lemma_10_163_1.TargetQuotientReduction
+import stacks_proof.stacks_project.Chap10.Lemma_10_163_1.ClosedFiberDepthZero
+import stacks_proof.stacks_project.Chap10.Lemma_10_163_1.RegularSequenceDepthDrop
+import stacks_proof.stacks_project.Chap10.Lemma_10_163_1.TargetQuotientReduction

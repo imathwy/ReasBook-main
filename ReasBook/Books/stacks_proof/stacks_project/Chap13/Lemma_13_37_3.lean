@@ -1,12 +1,12 @@
 import Mathlib
 import Mathlib.Algebra.Category.Grp.AB
-import StacksProject_2024.Chap04.Lemma_4_19_5
-import StacksProject_2024.Chap13.Definition_13_36_3
-import StacksProject_2024.Chap13.Definition_13_33_1
-import StacksProject_2024.Chap13.Definition_13_37_1
-import StacksProject_2024.Chap13.Lemma_13_37_2
-import StacksProject_2024.Chap13.Lemma_13_33_6
-import StacksProject_2024.Chap13.Remark_13_33_2
+import stacks_proof.stacks_project.Chap04.Lemma_4_19_5
+import stacks_proof.stacks_project.Chap13.Definition_13_36_3
+import stacks_proof.stacks_project.Chap13.Definition_13_33_1
+import stacks_proof.stacks_project.Chap13.Definition_13_37_1
+import stacks_proof.stacks_project.Chap13.Lemma_13_37_2
+import stacks_proof.stacks_project.Chap13.Lemma_13_33_6
+import stacks_proof.stacks_project.Chap13.Remark_13_33_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

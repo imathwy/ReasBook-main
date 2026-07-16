@@ -1,14 +1,14 @@
 import Mathlib
 import Mathlib.CategoryTheory.Limits.ExactFunctor
 import Mathlib.Topology.Sheaves.Abelian
-import StacksProject_2024.Chap06.Lemma_6_26_4
-import StacksProject_2024.Chap06.Lemma_6_32_1
-import StacksProject_2024.Chap12.Remark_12_29_2
-import StacksProject_2024.Chap06.Definition_6_26_1
-import StacksProject_2024.Chap17.Definition_17_13_1
-import StacksProject_2024.Chap17.Lemma_17_4_2
-import StacksProject_2024.Chap17.Lemma_17_6_3
-import StacksProject_2024.Chap17.ModuleRestrictionAndStalks
+import stacks_proof.stacks_project.Chap06.Lemma_6_26_4
+import stacks_proof.stacks_project.Chap06.Lemma_6_32_1
+import stacks_proof.stacks_project.Chap12.Remark_12_29_2
+import stacks_proof.stacks_project.Chap06.Definition_6_26_1
+import stacks_proof.stacks_project.Chap17.Definition_17_13_1
+import stacks_proof.stacks_project.Chap17.Lemma_17_4_2
+import stacks_proof.stacks_project.Chap17.Lemma_17_6_3
+import stacks_proof.stacks_project.Chap17.ModuleRestrictionAndStalks
 
 open CategoryTheory Opposite
 open CategoryTheory.Limits

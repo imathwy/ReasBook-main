@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap19.Lemma_19_13_6
+import stacks_proof.stacks_project.Chap19.Lemma_19_13_6
 
 open CategoryTheory
 open CategoryTheory.Limits

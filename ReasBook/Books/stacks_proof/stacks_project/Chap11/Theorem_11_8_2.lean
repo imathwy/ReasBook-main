@@ -1,15 +1,15 @@
 import Mathlib
 import Mathlib.FieldTheory.IntermediateField.Algebraic
 import Mathlib.LinearAlgebra.Matrix.ToLin
-import StacksProject_2024.Chap11.Definition_11_8_1
-import StacksProject_2024.Chap11.Lemma_11_4_8
-import StacksProject_2024.Chap11.Lemma_11_4_10
-import StacksProject_2024.Chap11.Lemma_11_5_1
-import StacksProject_2024.Chap11.Lemma_11_7_2
-import StacksProject_2024.Chap11.Lemma_11_7_3
-import StacksProject_2024.Chap11.Definition_11_5_2
-import StacksProject_2024.Chap11.Theorem_11_8_2.BaseChangeMatrix
-import StacksProject_2024.Chap11.Theorem_11_8_2.SplitByBrauer
+import stacks_proof.stacks_project.Chap11.Definition_11_8_1
+import stacks_proof.stacks_project.Chap11.Lemma_11_4_8
+import stacks_proof.stacks_project.Chap11.Lemma_11_4_10
+import stacks_proof.stacks_project.Chap11.Lemma_11_5_1
+import stacks_proof.stacks_project.Chap11.Lemma_11_7_2
+import stacks_proof.stacks_project.Chap11.Lemma_11_7_3
+import stacks_proof.stacks_project.Chap11.Definition_11_5_2
+import stacks_proof.stacks_project.Chap11.Theorem_11_8_2.BaseChangeMatrix
+import stacks_proof.stacks_project.Chap11.Theorem_11_8_2.SplitByBrauer
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

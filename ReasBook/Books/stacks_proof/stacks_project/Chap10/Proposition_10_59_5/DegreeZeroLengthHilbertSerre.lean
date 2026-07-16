@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap10.Proposition_10_59_5.LengthMapOwner
-import StacksProject_2024.Chap10.Proposition_10_59_5.LengthIntGrading
-import StacksProject_2024.Chap10.Proposition_10_59_5.DegreeOneGeneration
+import stacks_proof.stacks_project.Chap10.Proposition_10_59_5.LengthMapOwner
+import stacks_proof.stacks_project.Chap10.Proposition_10_59_5.LengthIntGrading
+import stacks_proof.stacks_project.Chap10.Proposition_10_59_5.DegreeOneGeneration
 
 -- Proof rescue support for Proposition 10.59.5: convert the K0-valued Hilbert-Serre theorem
 -- from Proposition 10.58.7 into a length-valued statement over the degree-zero ring.

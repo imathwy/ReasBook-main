@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_8_1.ComparisonEquivalence
-import StacksProject_2024.Chap08.Lemma_8_8_1.ForcedComparisonComponents
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.ComparisonEquivalence
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.ForcedComparisonComponents
 import Mathlib.Tactic.StacksAttribute
 
 universe u v

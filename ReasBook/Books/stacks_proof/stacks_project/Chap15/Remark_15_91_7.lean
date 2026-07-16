@@ -1,7 +1,7 @@
 import Mathlib.RingTheory.AdicCompletion.Algebra
 import Mathlib.RingTheory.Ideal.Quotient.Operations
-import StacksProject_2024.Chap10.Lemma_10_96_4
-import StacksProject_2024.Chap15.PrincipalIdeal
+import stacks_proof.stacks_project.Chap10.Lemma_10_96_4
+import stacks_proof.stacks_project.Chap15.PrincipalIdeal
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

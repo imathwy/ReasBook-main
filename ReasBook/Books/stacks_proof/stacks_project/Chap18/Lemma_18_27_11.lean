@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap17.Lemma_17_22_7
+import stacks_proof.stacks_project.Chap17.Lemma_17_22_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

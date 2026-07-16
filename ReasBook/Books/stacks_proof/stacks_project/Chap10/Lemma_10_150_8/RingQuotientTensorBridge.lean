@@ -1,9 +1,9 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_133_1
-import StacksProject_2024.Chap10.Lemma_10_133_9
-import StacksProject_2024.Chap10.Lemma_10_150_7
-import StacksProject_2024.Chap10.Lemma_10_150_8.PrincipalPartsBaseChange
-import StacksProject_2024.Chap10.Lemma_10_150_8.SourceQuotientBaseChange
+import stacks_proof.stacks_project.Chap10.Definition_10_133_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_133_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_150_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_150_8.PrincipalPartsBaseChange
+import stacks_proof.stacks_project.Chap10.Lemma_10_150_8.SourceQuotientBaseChange
 
 open scoped PrincipalParts TensorProduct
 open LinearMap

@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_15_4_Chinese_remainder
-import StacksProject_2024.Chap15.Lemma_15_111_1
-import StacksProject_2024.Chap15.Lemma_15_111_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_15_4_Chinese_remainder
+import stacks_proof.stacks_project.Chap15.Lemma_15_111_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_111_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

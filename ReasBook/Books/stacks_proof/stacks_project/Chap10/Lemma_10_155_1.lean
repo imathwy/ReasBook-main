@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.RingTheory.Henselian
-import StacksProject_2024.Chap10.Lemma_10_143_5
-import StacksProject_2024.Chap10.Lemma_10_154_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_143_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_154_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

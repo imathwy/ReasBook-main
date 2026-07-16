@@ -2,12 +2,12 @@ import Mathlib
 import Mathlib.CategoryTheory.Localization.LocalizerMorphism
 import Mathlib.CategoryTheory.Shift.Localization
 import Mathlib.CategoryTheory.Triangulated.Subcategory
-import StacksProject_2024.Chap04.Definition_4_27_20
-import StacksProject_2024.Chap04.Lemma_4_27_21
-import StacksProject_2024.Chap04.Remark_4_27_15
-import StacksProject_2024.Chap13.Lemma_13_5_4
-import StacksProject_2024.Chap13.Lemma_13_5_7
-import StacksProject_2024.Chap13.Remark_13_5_3
+import stacks_proof.stacks_project.Chap04.Definition_4_27_20
+import stacks_proof.stacks_project.Chap04.Lemma_4_27_21
+import stacks_proof.stacks_project.Chap04.Remark_4_27_15
+import stacks_proof.stacks_project.Chap13.Lemma_13_5_4
+import stacks_proof.stacks_project.Chap13.Lemma_13_5_7
+import stacks_proof.stacks_project.Chap13.Remark_13_5_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

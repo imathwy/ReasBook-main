@@ -3,9 +3,9 @@ import Mathlib.Algebra.Module.LocalizedModule.Submodule
 import Mathlib.RingTheory.Finiteness.Defs
 import Mathlib.RingTheory.Idempotents
 import Mathlib.RingTheory.Localization.Away.Basic
-import StacksProject_2024.Chap10.Lemma_10_21_5
-import StacksProject_2024.Chap10.Lemma_10_23_2
-import StacksProject_2024.Chap15.Lemma_15_9_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_21_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_23_2
+import stacks_proof.stacks_project.Chap15.Lemma_15_9_5
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

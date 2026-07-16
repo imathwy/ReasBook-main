@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Algebra.Homology.ShortComplex.Abelian
 import Mathlib.CategoryTheory.Limits.Shapes.ZeroObjects
-import StacksProject_2024.Chap15.Definition_15_28_2
+import stacks_proof.stacks_project.Chap15.Definition_15_28_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

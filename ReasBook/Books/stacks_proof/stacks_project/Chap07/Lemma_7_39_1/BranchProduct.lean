@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap07.Lemma_7_39_1.TailSectionBranches
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_1.TailSectionBranches
 
 open CategoryTheory CategoryTheory.Limits Opposite
 open GrothendieckTopology.Point

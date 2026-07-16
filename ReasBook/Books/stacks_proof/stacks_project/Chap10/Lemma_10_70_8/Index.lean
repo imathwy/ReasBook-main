@@ -1,3 +1,3 @@
-import StacksProject_2024.Chap10.Lemma_10_70_8.ScaledReesAlgebra
-import StacksProject_2024.Chap10.Lemma_10_70_8.LocalizationTransport
-import StacksProject_2024.Chap10.Lemma_10_70_8.ScaledChartRaw
+import stacks_proof.stacks_project.Chap10.Lemma_10_70_8.ScaledReesAlgebra
+import stacks_proof.stacks_project.Chap10.Lemma_10_70_8.LocalizationTransport
+import stacks_proof.stacks_project.Chap10.Lemma_10_70_8.ScaledChartRaw

@@ -1,8 +1,8 @@
-import StacksProject_2024.Chap13.Lemma_13_17_1
-import StacksProject_2024.Chap12.Lemma_12_10_6
-import StacksProject_2024.Chap13.Lemma_13_5_4
-import StacksProject_2024.Chap13.Lemma_13_6_10
-import StacksProject_2024.Chap13.Lemma_13_11_2
+import stacks_proof.stacks_project.Chap13.Lemma_13_17_1
+import stacks_proof.stacks_project.Chap12.Lemma_12_10_6
+import stacks_proof.stacks_project.Chap13.Lemma_13_5_4
+import stacks_proof.stacks_project.Chap13.Lemma_13_6_10
+import stacks_proof.stacks_project.Chap13.Lemma_13_11_2
 import Mathlib.CategoryTheory.Functor.Derived.Adjunction
 import Mathlib.CategoryTheory.Localization.Adjunction
 import Mathlib.Tactic.StacksAttribute

@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap16.Definition_16_2_3
+import stacks_proof.stacks_project.Chap16.Definition_16_2_3
 
 /- Domain-style sampling for `16_2_3_4`:
 - primary domain: tail ideal-membership conditions for strictly standard elements in finite

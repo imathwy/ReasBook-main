@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap04.Lemma_4_27_14
-import StacksProject_2024.Chap08.Lemma_8_12_5
-import StacksProject_2024.Chap08.Lemma_8_12_6.Index
-import StacksProject_2024.Chap08.Lemma_8_12_6_Support.NormalizedFrontier
+import stacks_proof.stacks_project.Chap04.Lemma_4_27_14
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_5
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_6.Index
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_6_Support.NormalizedFrontier
 
 open CategoryTheory.Limits
 open CategoryTheory.MorphismProperty

@@ -1,1 +1,1 @@
-import StacksProject_2024.Chap10.Lemma_10_134_4_Jacobi_Zariski_sequence.Rows
+import stacks_proof.stacks_project.Chap10.Lemma_10_134_4_Jacobi_Zariski_sequence.Rows

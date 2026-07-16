@@ -4,9 +4,9 @@ import Mathlib.Algebra.Category.ModuleCat.Sheaf.ChangeOfRings
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.PullbackContinuous
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.PushforwardContinuous
 import Mathlib.CategoryTheory.Limits.ExactFunctor
-import StacksProject_2024.Chap17.SheafOfModulesTensorUnit
-import StacksProject_2024.Chap18.RingedSiteModuleCategory
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
+import stacks_proof.stacks_project.Chap17.SheafOfModulesTensorUnit
+import stacks_proof.stacks_project.Chap18.RingedSiteModuleCategory
+import stacks_proof.stacks_project.Chap18.RingedSiteModuleCategoryBasic
 
 open CategoryTheory MonoidalCategory Opposite PresheafOfModules.Monoidal
 open CategoryTheory.Limits

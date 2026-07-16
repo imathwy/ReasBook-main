@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap06.Lemma_6_33_4
+import stacks_proof.stacks_project.Chap06.Lemma_6_33_4
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory TopCat TopologicalSpace

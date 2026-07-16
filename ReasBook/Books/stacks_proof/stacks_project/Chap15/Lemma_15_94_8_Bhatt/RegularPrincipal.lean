@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap15.Definition_15_89_1
-import StacksProject_2024.Chap15.PrincipalIdeal
+import stacks_proof.stacks_project.Chap15.Definition_15_89_1
+import stacks_proof.stacks_project.Chap15.PrincipalIdeal
 
 -- Declarations for this helper file are theorem-local to Lemma 15.94.8 (Bhatt).
 

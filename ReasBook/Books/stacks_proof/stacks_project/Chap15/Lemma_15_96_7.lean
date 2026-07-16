@@ -4,8 +4,8 @@ import Mathlib.Algebra.Homology.Embedding.CochainComplex
 import Mathlib.Algebra.Homology.Embedding.ExtendHomology
 import Mathlib.Algebra.Homology.Embedding.RestrictionHomology
 import Mathlib.RingTheory.Regular.IsSMulRegular
-import StacksProject_2024.Chap15.PrincipalIdeal
-import StacksProject_2024.Chap15.«15_96_5_1»
+import stacks_proof.stacks_project.Chap15.PrincipalIdeal
+import stacks_proof.stacks_project.Chap15.«15_96_5_1»
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

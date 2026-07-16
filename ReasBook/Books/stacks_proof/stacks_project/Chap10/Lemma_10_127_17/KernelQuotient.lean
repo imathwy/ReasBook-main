@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_127_17.RangeTail
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_17.RangeTail
 
 open scoped TensorProduct
 

@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap10.Example_10_28_6
+import stacks_proof.stacks_project.Chap10.Example_10_28_6
 
 noncomputable section
 

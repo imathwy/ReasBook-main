@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap08.Lemma_8_11_8.Part16.FixedAbsoluteGlueingAddCommData
-import StacksProject_2024.Chap08.Lemma_8_11_8.Part16.SourceAbsoluteGlueingData
-import StacksProject_2024.Chap08.Lemma_8_11_8.Part16.TerminalSectionAdditive
+import stacks_proof.stacks_project.Chap08.Lemma_8_11_8.Part16.FixedAbsoluteGlueingAddCommData
+import stacks_proof.stacks_project.Chap08.Lemma_8_11_8.Part16.SourceAbsoluteGlueingData
+import stacks_proof.stacks_project.Chap08.Lemma_8_11_8.Part16.TerminalSectionAdditive
 
 /- Theorem-local support index for `Chap08 Lemma 8 11 8/Part16`.
 

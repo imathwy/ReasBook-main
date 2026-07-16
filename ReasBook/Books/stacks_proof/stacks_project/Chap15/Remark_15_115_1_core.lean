@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap15.Definition_15_112_1
+import stacks_proof.stacks_project.Chap15.Definition_15_112_1
 
 -- Core owner declarations extracted from Remark 15.115.1.
 

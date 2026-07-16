@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap10.Lemma_10_127_14
-import StacksProject_2024.Chap10.Lemma_10_127_11_Pre
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_14
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_11_Pre
 import Mathlib.Tactic.StacksAttribute
 
 open scoped TensorProduct

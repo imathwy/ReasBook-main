@@ -1,11 +1,11 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
 import Mathlib.CategoryTheory.Triangulated.TStructure.TruncLEGT
-import StacksProject_2024.Chap15.Definition_15_65_1
-import StacksProject_2024.Chap15.Definition_15_75_1
-import StacksProject_2024.Chap15.Lemma_15_60_3
-import StacksProject_2024.Chap15.Lemma_15_67_4
-import StacksProject_2024.Chap15.Lemma_15_77_2
+import stacks_proof.stacks_project.Chap15.Definition_15_65_1
+import stacks_proof.stacks_project.Chap15.Definition_15_75_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_60_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_67_4
+import stacks_proof.stacks_project.Chap15.Lemma_15_77_2
 
 noncomputable section
 

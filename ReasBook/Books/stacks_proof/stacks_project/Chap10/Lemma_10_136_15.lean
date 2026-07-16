@@ -1,17 +1,17 @@
 import Mathlib.Data.List.TFAE
-import StacksProject_2024.Chap10.Definition_10_125_1
-import StacksProject_2024.Chap10.Definition_10_135_5
-import StacksProject_2024.Chap10.Definition_10_136_1
-import StacksProject_2024.Chap10.Definition_10_136_5
-import StacksProject_2024.Chap10.Lemma_10_6_2
-import StacksProject_2024.Chap10.Lemma_10_20_1_Nakayama_s_lemma
-import StacksProject_2024.Chap10.Lemma_10_39_12
-import StacksProject_2024.Chap10.Lemma_10_135_4
-import StacksProject_2024.Chap10.Lemma_10_135_8
-import StacksProject_2024.Chap10.Lemma_10_136_4
-import StacksProject_2024.Chap10.Lemma_10_136_9
-import StacksProject_2024.Chap10.Lemma_10_136_10
-import StacksProject_2024.Chap10.Lemma_10_136_13
+import stacks_proof.stacks_project.Chap10.Definition_10_125_1
+import stacks_proof.stacks_project.Chap10.Definition_10_135_5
+import stacks_proof.stacks_project.Chap10.Definition_10_136_1
+import stacks_proof.stacks_project.Chap10.Definition_10_136_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_6_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_20_1_Nakayama_s_lemma
+import stacks_proof.stacks_project.Chap10.Lemma_10_39_12
+import stacks_proof.stacks_project.Chap10.Lemma_10_135_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_135_8
+import stacks_proof.stacks_project.Chap10.Lemma_10_136_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_136_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_136_10
+import stacks_proof.stacks_project.Chap10.Lemma_10_136_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

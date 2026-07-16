@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.FunctorialityCore
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.Vertical.Functoriality
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.FunctorialityCore
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.Vertical.Functoriality
 
 universe u v uS vS w wD vD
 

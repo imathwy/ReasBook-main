@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_15_4_Chinese_remainder
-import StacksProject_2024.Chap10.Lemma_10_20_1_Nakayama_s_lemma
-import StacksProject_2024.Chap10.Lemma_10_78_8.Index
+import stacks_proof.stacks_project.Chap10.Lemma_10_15_4_Chinese_remainder
+import stacks_proof.stacks_project.Chap10.Lemma_10_20_1_Nakayama_s_lemma
+import stacks_proof.stacks_project.Chap10.Lemma_10_78_8.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

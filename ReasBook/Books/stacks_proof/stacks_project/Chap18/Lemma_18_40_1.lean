@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Data.List.TFAE
-import StacksProject_2024.Chap18.Definition_18_40_4
+import stacks_proof.stacks_project.Chap18.Definition_18_40_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

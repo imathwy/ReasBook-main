@@ -5,7 +5,7 @@ import Mathlib.Algebra.Homology.Embedding.ExtendHomology
 import Mathlib.Algebra.Homology.Embedding.RestrictionHomology
 import Mathlib.RingTheory.AdicCompletion.Functoriality
 import Mathlib.RingTheory.Regular.IsSMulRegular
-import StacksProject_2024.Chap15.PrincipalIdeal
+import stacks_proof.stacks_project.Chap15.PrincipalIdeal
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

@@ -1,10 +1,10 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_105_3
-import StacksProject_2024.Chap10.Lemma_10_25_1
-import StacksProject_2024.Chap10.Lemma_10_105_5
-import StacksProject_2024.Chap10.Lemma_10_105_9
-import StacksProject_2024.Chap10.Lemma_10_113_1.ExactDrop
-import StacksProject_2024.Chap10.Lemma_10_113_1
+import stacks_proof.stacks_project.Chap10.Definition_10_105_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_25_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_105_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_105_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_113_1.ExactDrop
+import stacks_proof.stacks_project.Chap10.Lemma_10_113_1
 
 -- Acyclic support for the equality part of Lemma 10.113.1.
 

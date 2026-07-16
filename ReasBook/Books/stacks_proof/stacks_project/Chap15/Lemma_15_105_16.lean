@@ -1,12 +1,12 @@
 import Mathlib
 import Mathlib.Data.List.TFAE
-import StacksProject_2024.Chap10.Lemma_10_154_3
-import StacksProject_2024.Chap10.Lemma_10_17_2
-import StacksProject_2024.Chap10.Lemma_10_30_5
-import StacksProject_2024.Chap10.Lemma_10_35_9
-import StacksProject_2024.Chap10.Theorem_10_34_1_Hilbert_Nullstellensatz
-import StacksProject_2024.Chap15.Definition_15_105_1
-import StacksProject_2024.Chap15.Lemma_15_105_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_154_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_17_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_30_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_35_9
+import stacks_proof.stacks_project.Chap10.Theorem_10_34_1_Hilbert_Nullstellensatz
+import stacks_proof.stacks_project.Chap15.Definition_15_105_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_105_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,7 +1,7 @@
 import Mathlib.CategoryTheory.Limits.Shapes.Countable
 import Mathlib.CategoryTheory.Limits.Types.Yoneda
-import StacksProject_2024.Chap14.Definition_14_17_1
-import StacksProject_2024.Chap14.Lemma_14_13_2
+import stacks_proof.stacks_project.Chap14.Definition_14_17_1
+import stacks_proof.stacks_project.Chap14.Lemma_14_13_2
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

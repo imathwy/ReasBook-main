@@ -6,8 +6,8 @@ import Mathlib.CategoryTheory.Action.Basic
 import Mathlib.CategoryTheory.Functor.Category
 import Mathlib.Topology.Sheaves.Sheaf
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap04.Definition_4_3_3
-import StacksProject_2024.Chapters.Chap23.section03
+import stacks_proof.stacks_project.Chap04.Definition_4_3_3
+import stacks_proof.stacks_project.Chapters.Chap23.section03
 
 universe u
 

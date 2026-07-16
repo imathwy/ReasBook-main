@@ -1,3 +1,3 @@
-import StacksProject_2024.Chap10.Remark_10_127_12.OneStageSystems
-import StacksProject_2024.Chap10.Remark_10_127_12.TwoStageDualNumber
-import StacksProject_2024.Chap10.Remark_10_127_12.Reindex
+import stacks_proof.stacks_project.Chap10.Remark_10_127_12.OneStageSystems
+import stacks_proof.stacks_project.Chap10.Remark_10_127_12.TwoStageDualNumber
+import stacks_proof.stacks_project.Chap10.Remark_10_127_12.Reindex

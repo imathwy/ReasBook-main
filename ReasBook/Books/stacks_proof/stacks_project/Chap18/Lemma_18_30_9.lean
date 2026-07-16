@@ -1,11 +1,11 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.PushforwardContinuous
 import Mathlib.CategoryTheory.Sites.Over
-import StacksProject_2024.Chap07.Definition_7_17_1
-import StacksProject_2024.Chap18.Lemma_18_14_2
-import StacksProject_2024.Chap18.Lemma_18_19_2
-import StacksProject_2024.Chap18.Lemma_18_30_1
-import StacksProject_2024.Chap18.Situation_18_30_5
+import stacks_proof.stacks_project.Chap07.Definition_7_17_1
+import stacks_proof.stacks_project.Chap18.Lemma_18_14_2
+import stacks_proof.stacks_project.Chap18.Lemma_18_19_2
+import stacks_proof.stacks_project.Chap18.Lemma_18_30_1
+import stacks_proof.stacks_project.Chap18.Situation_18_30_5
 
 open CategoryTheory CategoryTheory.Limits Opposite
 

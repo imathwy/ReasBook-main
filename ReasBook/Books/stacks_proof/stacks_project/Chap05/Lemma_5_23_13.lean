@@ -1,8 +1,8 @@
 import Mathlib.Topology.ContinuousMap.T0Sierpinski
-import StacksProject_2024.Chap05.Lemma_5_23_3
-import StacksProject_2024.Chap05.Lemma_5_23_5
-import StacksProject_2024.Chap05.Lemma_5_23_10
-import StacksProject_2024.Chap05.Lemma_5_23_12
+import stacks_proof.stacks_project.Chap05.Lemma_5_23_3
+import stacks_proof.stacks_project.Chap05.Lemma_5_23_5
+import stacks_proof.stacks_project.Chap05.Lemma_5_23_10
+import stacks_proof.stacks_project.Chap05.Lemma_5_23_12
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

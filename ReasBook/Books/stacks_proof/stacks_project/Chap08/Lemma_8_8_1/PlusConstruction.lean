@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap08.Lemma_8_8_1.PlusConstruction.SourceTextPlusConstruction
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.PlusConstruction.SourceTextPlusConstruction
 
 /-!
 Current import boundary for the active Lemma 8.8.1 plus construction surface.

@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap15.«15_18_0_1»
-import StacksProject_2024.Chap10.Lemma_10_100_1
+import stacks_proof.stacks_project.Chap15.«15_18_0_1»
+import stacks_proof.stacks_project.Chap10.Lemma_10_100_1
 import Mathlib.RingTheory.Etale.QuasiFinite
 import Mathlib.RingTheory.Flat.FaithfullyFlat.Algebra
 import Mathlib.Tactic.StacksAttribute

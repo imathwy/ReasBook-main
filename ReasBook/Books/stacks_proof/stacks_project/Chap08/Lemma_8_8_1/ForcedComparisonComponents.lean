@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap08.Lemma_8_8_1.FiberTransport
-import StacksProject_2024.Chap08.Lemma_8_8_1.CoverwiseHomLift
-import StacksProject_2024.Chap08.Lemma_8_8_1.CoverDescent
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.FiberTransport
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.CoverwiseHomLift
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.CoverDescent
 import Mathlib.Tactic.StacksAttribute
 
 universe u v uD vD uY vY

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_159_1.LocalAlgebra
+import stacks_proof.stacks_project.Chap10.Lemma_10_159_1.LocalAlgebra
 
 universe u v w
 

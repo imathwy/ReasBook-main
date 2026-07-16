@@ -1,6 +1,6 @@
 import Mathlib.RingTheory.Finiteness.Basic
 import Mathlib.RingTheory.IntegralClosure.Algebra.Basic
-import StacksProject_2024.Chap10.IdempotentMap
+import stacks_proof.stacks_project.Chap10.IdempotentMap
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

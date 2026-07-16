@@ -1,8 +1,8 @@
-import StacksProject_2024.Chap07.Lemma_7_39_2.RequestScheduling
-import StacksProject_2024.Chap07.Lemma_7_39_2.PackagedStages
-import StacksProject_2024.Chap07.Lemma_7_39_2.FiniteFrontier
-import StacksProject_2024.Chap07.Lemma_7_39_2.OmegaSystem
-import StacksProject_2024.Chap07.Lemma_7_39_2.DiagramUnionCore
-import StacksProject_2024.Chap07.Lemma_7_39_2.DiagramUnionLimit
-import StacksProject_2024.Chap07.Lemma_7_39_2.OmegaTerminal
-import StacksProject_2024.Chap07.Lemma_7_39_2.TransfiniteAdvance
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_2.RequestScheduling
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_2.PackagedStages
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_2.FiniteFrontier
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_2.OmegaSystem
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_2.DiagramUnionCore
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_2.DiagramUnionLimit
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_2.OmegaTerminal
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_2.TransfiniteAdvance

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Definition_10_84_1
+import stacks_proof.stacks_project.Chap10.Definition_10_84_1
 import Mathlib.Tactic.StacksAttribute
 
 open scoped DirectSum

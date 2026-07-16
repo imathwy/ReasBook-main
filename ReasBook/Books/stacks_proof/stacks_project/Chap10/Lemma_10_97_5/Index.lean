@@ -1,2 +1,2 @@
-import StacksProject_2024.Chap10.Lemma_10_97_5.CompletionIdeal
-import StacksProject_2024.Chap10.Lemma_10_97_5.QuotientIdealFiniteness
+import stacks_proof.stacks_project.Chap10.Lemma_10_97_5.CompletionIdeal
+import stacks_proof.stacks_project.Chap10.Lemma_10_97_5.QuotientIdealFiniteness

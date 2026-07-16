@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap06.Lemma_6_33_3_Part10_BasisModule
+import stacks_proof.stacks_project.Chap06.Lemma_6_33_3_Part10_BasisModule
 
 /-!
 SCRATCH: prove `algebraicMemberSpaceBasisComponentIsoOfRep_hom_smul` (and `_inv_smul`).

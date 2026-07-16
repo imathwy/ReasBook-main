@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_32_6
+import stacks_proof.stacks_project.Chap10.Lemma_10_32_6
 
 -- Theorem-local support for Lemma 10.77.5.
 

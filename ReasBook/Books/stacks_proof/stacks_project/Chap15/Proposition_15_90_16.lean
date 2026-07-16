@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap13.Lemma_13_7_2
-import StacksProject_2024.Chap15.Lemma_15_90_11
-import StacksProject_2024.Chap15.Lemma_15_90_12
+import stacks_proof.stacks_project.Chap13.Lemma_13_7_2
+import stacks_proof.stacks_project.Chap15.Lemma_15_90_11
+import stacks_proof.stacks_project.Chap15.Lemma_15_90_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.LinearAlgebra.PowerOperations
-import StacksProject_2024.Chap10.Lemma_10_13_2
-import StacksProject_2024.Chap10.Definition_10_133_1
+import stacks_proof.stacks_project.LinearAlgebra.PowerOperations
+import stacks_proof.stacks_project.Chap10.Lemma_10_13_2
+import stacks_proof.stacks_project.Chap10.Definition_10_133_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_161_1
+import stacks_proof.stacks_project.Chap10.Definition_10_161_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

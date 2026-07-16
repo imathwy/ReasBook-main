@@ -1,14 +1,14 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_25_1
-import StacksProject_2024.Chap10.Definition_10_66_1
-import StacksProject_2024.Chap10.Lemma_10_40_4
-import StacksProject_2024.Chap10.Lemma_10_42_3
-import StacksProject_2024.Chap10.Lemma_10_43_6
-import StacksProject_2024.Chap10.Lemma_10_66_2
-import StacksProject_2024.Chap10.Lemma_10_66_13
-import StacksProject_2024.Chap10.Lemma_10_66_4
-import StacksProject_2024.Chap10.Lemma_10_66_15
-import StacksProject_2024.Chap10.Lemma_10_66_16
+import stacks_proof.stacks_project.Chap10.Lemma_10_25_1
+import stacks_proof.stacks_project.Chap10.Definition_10_66_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_40_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_42_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_43_6
+import stacks_proof.stacks_project.Chap10.Lemma_10_66_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_66_13
+import stacks_proof.stacks_project.Chap10.Lemma_10_66_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_66_15
+import stacks_proof.stacks_project.Chap10.Lemma_10_66_16
 
 open scoped TensorProduct
 

@@ -2,7 +2,7 @@ import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.PullbackContinuous
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.PushforwardContinuous
 import Mathlib.CategoryTheory.Sites.Over
-import StacksProject_2024.Chap18.RingedSiteModuleCategory
+import stacks_proof.stacks_project.Chap18.RingedSiteModuleCategory
 
 open CategoryTheory Opposite
 open CategoryTheory.Limits

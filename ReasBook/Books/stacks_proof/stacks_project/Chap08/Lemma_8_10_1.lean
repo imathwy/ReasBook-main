@@ -1,7 +1,7 @@
 import Mathlib.CategoryTheory.FiberedCategory.Fibered
 import Mathlib.CategoryTheory.Sites.Precoverage
-import StacksProject_2024.Chap04.Lemma_4_33_4
-import StacksProject_2024.Chap04.Lemma_4_33_13
+import stacks_proof.stacks_project.Chap04.Lemma_4_33_4
+import stacks_proof.stacks_project.Chap04.Lemma_4_33_13
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

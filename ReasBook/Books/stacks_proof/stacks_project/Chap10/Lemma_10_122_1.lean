@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.Data.List.TFAE
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap05.Definition_5_10_1
-import StacksProject_2024.Chap10.Definition_10_17_1
-import StacksProject_2024.Chap10.Lemma_10_33_2
-import StacksProject_2024.Chap10.Lemma_10_116_3
+import stacks_proof.stacks_project.Chap05.Definition_5_10_1
+import stacks_proof.stacks_project.Chap10.Definition_10_17_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_33_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_116_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

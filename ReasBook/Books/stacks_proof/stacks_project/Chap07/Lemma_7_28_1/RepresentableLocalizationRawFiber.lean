@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap07.Lemma_7_28_1.RepresentableLocalizationSigma
+import stacks_proof.stacks_project.Chap07.Lemma_7_28_1.RepresentableLocalizationSigma
 
 open CategoryTheory
 open Opposite

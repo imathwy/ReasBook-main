@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap15.Definition_15_105_3
+import stacks_proof.stacks_project.Chap15.Definition_15_105_3
 
 -- Theorem-local helper module for Lemma 15.105.20.
 

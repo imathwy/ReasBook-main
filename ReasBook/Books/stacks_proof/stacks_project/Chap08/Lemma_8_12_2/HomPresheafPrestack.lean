@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap08.Lemma_8_12_2.OverPostContinuous
-import StacksProject_2024.Chap08.Lemma_8_12_2.PullHomPostcomposition
-import StacksProject_2024.Chap08.Lemma_8_12_2.PullHomConjugation
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_2.OverPostContinuous
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_2.PullHomPostcomposition
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_2.PullHomConjugation
 
 open CategoryTheory.Limits
 open CategoryTheory.GrothendieckTopology.Cover

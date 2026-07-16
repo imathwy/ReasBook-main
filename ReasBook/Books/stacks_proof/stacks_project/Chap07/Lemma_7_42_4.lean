@@ -9,8 +9,8 @@ import Mathlib.CategoryTheory.Limits.Types.Multiequalizer
 import Mathlib.CategoryTheory.UnivLE
 import Mathlib.Logic.Small.Basic
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap07.Definition_7_42_3
-import StacksProject_2024.Chap07.Lemma_7_42_4.Index
+import stacks_proof.stacks_project.Chap07.Definition_7_42_3
+import stacks_proof.stacks_project.Chap07.Lemma_7_42_4.Index
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

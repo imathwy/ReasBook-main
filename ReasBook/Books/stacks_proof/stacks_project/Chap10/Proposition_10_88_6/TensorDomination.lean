@@ -3,13 +3,13 @@ import Mathlib.Algebra.Category.ModuleCat.Monoidal.Basic
 import Mathlib.CategoryTheory.Monoidal.Limits.Preserves
 import Mathlib.Data.List.TFAE
 import Mathlib.Tactic.TFAE
-import StacksProject_2024.Chap10.Definition_10_88_2
-import StacksProject_2024.Chap10.Lemma_10_11_1
-import StacksProject_2024.Chap10.Lemma_10_11_4
-import StacksProject_2024.Chap10.Lemma_10_79_4
-import StacksProject_2024.Chap10.Lemma_10_82_14
-import StacksProject_2024.Chap10.Lemma_10_88_3
-import StacksProject_2024.Chap10.Lemma_10_88_5
+import stacks_proof.stacks_project.Chap10.Definition_10_88_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_11_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_11_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_79_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_82_14
+import stacks_proof.stacks_project.Chap10.Lemma_10_88_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_88_5
 
 open CategoryTheory
 open CategoryTheory.Limits

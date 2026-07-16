@@ -2,9 +2,9 @@ import Mathlib
 import Mathlib.CategoryTheory.Limits.Preserves.Ulift
 import Mathlib.CategoryTheory.Limits.Types.Multiequalizer
 import Mathlib.CategoryTheory.UnivLE
-import StacksProject_2024.Chap07.Lemma_7_20_3
-import StacksProject_2024.Chap07.Lemma_7_28.BeckChevalley
-import StacksProject_2024.Chap07.Lemma_7_28_5.Index
+import stacks_proof.stacks_project.Chap07.Lemma_7_20_3
+import stacks_proof.stacks_project.Chap07.Lemma_7_28.BeckChevalley
+import stacks_proof.stacks_project.Chap07.Lemma_7_28_5.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

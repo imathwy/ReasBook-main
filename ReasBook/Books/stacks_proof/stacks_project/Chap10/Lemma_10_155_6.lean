@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_154_2
-import StacksProject_2024.Chap10.Lemma_10_154_7
-import StacksProject_2024.Chap10.Lemma_10_155_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_154_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_154_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_155_1
 
 open CategoryTheory MorphismProperty
 open IsLocalRing

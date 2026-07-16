@@ -1,1 +1,1 @@
-import StacksProject_2024.Chap15.Lemma_15_126_8.ReducedDiagonal
+import stacks_proof.stacks_project.Chap15.Lemma_15_126_8.ReducedDiagonal

@@ -1,12 +1,12 @@
 import Mathlib
 import Mathlib.CategoryTheory.Monoidal.Tor
 import Mathlib.Algebra.Module.LocalizedModule.Submodule
-import StacksProject_2024.Chap15.Definition_15_61_1
-import StacksProject_2024.Chap10.Lemma_10_75_2
-import StacksProject_2024.Chap10.Lemma_10_76_2
-import StacksProject_2024.Chap15.Lemma_15_89_9
-import StacksProject_2024.Chap15.Lemma_15_91_6
-import StacksProject_2024.Chap15.Lemma_15_91_14
+import stacks_proof.stacks_project.Chap15.Definition_15_61_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_75_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_76_2
+import stacks_proof.stacks_project.Chap15.Lemma_15_89_9
+import stacks_proof.stacks_project.Chap15.Lemma_15_91_6
+import stacks_proof.stacks_project.Chap15.Lemma_15_91_14
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

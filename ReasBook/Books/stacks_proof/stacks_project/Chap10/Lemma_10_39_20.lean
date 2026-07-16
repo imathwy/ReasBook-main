@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Algebra.Category.CommAlgCat.Basic
-import StacksProject_2024.Chap10.Lemma_10_37_17
-import StacksProject_2024.Chap10.Lemma_10_39_3
-import StacksProject_2024.Chap10.Lemma_10_39_16
+import stacks_proof.stacks_project.Chap10.Lemma_10_37_17
+import stacks_proof.stacks_project.Chap10.Lemma_10_39_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_39_16
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

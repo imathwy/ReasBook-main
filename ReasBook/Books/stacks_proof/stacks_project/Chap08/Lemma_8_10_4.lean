@@ -1,6 +1,6 @@
 import Mathlib.CategoryTheory.Sites.Over
-import StacksProject_2024.Chap04.Definition_4_35_1
-import StacksProject_2024.Chap08.Lemma_8_10_4.ChosenPullbackEquivalence
+import stacks_proof.stacks_project.Chap04.Definition_4_35_1
+import stacks_proof.stacks_project.Chap08.Lemma_8_10_4.ChosenPullbackEquivalence
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

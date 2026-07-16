@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.AB
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap13.Lemma_13_33_7
-import StacksProject_2024.Chap13.Lemma_13_33_9
+import stacks_proof.stacks_project.Chap13.Lemma_13_33_7
+import stacks_proof.stacks_project.Chap13.Lemma_13_33_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

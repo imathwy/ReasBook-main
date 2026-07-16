@@ -1,5 +1,5 @@
 import Mathlib.CategoryTheory.Filtered.Final
-import StacksProject_2024.Chap04.Lemma_4_22_11
+import stacks_proof.stacks_project.Chap04.Lemma_4_22_11
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

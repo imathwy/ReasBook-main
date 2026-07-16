@@ -1,6 +1,6 @@
 import Mathlib.Tactic.Recall
 import Mathlib.Algebra.Homology.ShortComplex.ExactFunctor
-import StacksProject_2024.Chap12.Definition_12_19_3
+import stacks_proof.stacks_project.Chap12.Definition_12_19_3
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory CategoryTheory.Limits

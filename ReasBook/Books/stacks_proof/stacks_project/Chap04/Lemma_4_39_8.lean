@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap04.Definition_4_31_2
-import StacksProject_2024.Chap04.Lemma_4_32_3
-import StacksProject_2024.Chap04.Lemma_4_39_6
-import StacksProject_2024.Chap04.Lemma_4_39_4
+import stacks_proof.stacks_project.Chap04.Definition_4_31_2
+import stacks_proof.stacks_project.Chap04.Lemma_4_32_3
+import stacks_proof.stacks_project.Chap04.Lemma_4_39_6
+import stacks_proof.stacks_project.Chap04.Lemma_4_39_4
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

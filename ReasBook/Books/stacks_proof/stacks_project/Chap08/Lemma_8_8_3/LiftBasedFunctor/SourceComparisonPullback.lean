@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.SourceComparisonLocal
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.PullbackCompatibility.VerticalNaturality
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.PullbackCompatibility.MapCompCocycle
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.SourceComparisonLocal
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.PullbackCompatibility.VerticalNaturality
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.PullbackCompatibility.MapCompCocycle
 
 universe u v uS vS w wD vD
 

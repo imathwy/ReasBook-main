@@ -1,8 +1,8 @@
-import StacksProject_2024.Chap10.Lemma_10_20_1_Nakayama_s_lemma
-import StacksProject_2024.Chap10.Lemma_10_39_10
-import StacksProject_2024.Chap10.Lemma_10_39_15
-import StacksProject_2024.Chap10.Lemma_10_99_4
-import StacksProject_2024.Chap10.Lemma_10_99_10_Variant_of_the_local_criterion
+import stacks_proof.stacks_project.Chap10.Lemma_10_20_1_Nakayama_s_lemma
+import stacks_proof.stacks_project.Chap10.Lemma_10_39_10
+import stacks_proof.stacks_project.Chap10.Lemma_10_39_15
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_10_Variant_of_the_local_criterion
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

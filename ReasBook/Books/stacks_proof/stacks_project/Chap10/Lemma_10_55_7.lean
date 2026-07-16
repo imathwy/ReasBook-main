@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_55_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_55_1
 import Mathlib.RingTheory.HopkinsLevitzki
 import Mathlib.Tactic.StacksAttribute
 

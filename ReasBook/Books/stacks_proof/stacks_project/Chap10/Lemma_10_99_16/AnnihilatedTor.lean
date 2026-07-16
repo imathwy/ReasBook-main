@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_99_16.SourceTorExact
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_16.SourceTorExact
 
 open CategoryTheory CategoryTheory.Limits CategoryTheory.MonoidalCategory Pointwise
 open scoped TensorProduct

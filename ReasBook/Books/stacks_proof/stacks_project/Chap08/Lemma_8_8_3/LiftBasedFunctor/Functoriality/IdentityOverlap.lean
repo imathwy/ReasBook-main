@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.Functoriality.IdentityTransition
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.Functoriality.IdentityTransition
 
 universe u v uS vS v' u'
 

@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap12.Definition_12_24_9
+import stacks_proof.stacks_project.Chap12.Definition_12_24_9
 
 open CategoryTheory
 

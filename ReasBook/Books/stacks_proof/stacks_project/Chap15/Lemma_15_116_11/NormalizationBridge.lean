@@ -1,9 +1,9 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_143_1
-import StacksProject_2024.Chap10.Lemma_10_37_12
-import StacksProject_2024.Chap10.Lemma_10_143_5
-import StacksProject_2024.Chap15.Definition_15_112_7
-import StacksProject_2024.Chap15.Lemma_15_44_4
+import stacks_proof.stacks_project.Chap10.Definition_10_143_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_37_12
+import stacks_proof.stacks_project.Chap10.Lemma_10_143_5
+import stacks_proof.stacks_project.Chap15.Definition_15_112_7
+import stacks_proof.stacks_project.Chap15.Lemma_15_44_4
 
 open Polynomial
 open IsLocalRing

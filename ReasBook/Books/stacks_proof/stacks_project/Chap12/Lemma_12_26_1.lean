@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap12.Lemma_12_25_4
+import stacks_proof.stacks_project.Chap12.Lemma_12_25_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

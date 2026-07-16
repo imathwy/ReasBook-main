@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap07.Lemma_7_26_4.HomPresheafTransport
+import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.HomPresheafTransport
 
 open CategoryTheory
 

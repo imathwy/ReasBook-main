@@ -1,23 +1,23 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_36_23
-import StacksProject_2024.Chap10.Lemma_10_127_18
-import StacksProject_2024.Chap13.Definition_13_8_1
-import StacksProject_2024.Chap13.Lemma_13_15_5
-import StacksProject_2024.Chap15.Lemma_15_59_3
-import StacksProject_2024.Chap15.Lemma_15_65_4
-import StacksProject_2024.Chap15.Lemma_15_65_17
-import StacksProject_2024.Chap15.Lemma_15_65_9
-import StacksProject_2024.Chap15.Lemma_15_82_7
-import StacksProject_2024.Chap15.Lemma_15_66_6
-import StacksProject_2024.Chap15.Lemma_15_67_2
-import StacksProject_2024.Chap15.Lemma_15_67_3
-import StacksProject_2024.Chap15.Lemma_15_67_4
-import StacksProject_2024.Chap15.Lemma_15_67_13
-import StacksProject_2024.Chap15.Lemma_15_67_20
-import StacksProject_2024.Chap15.Lemma_15_67_8
-import StacksProject_2024.Chap15.Lemma_15_83_2
-import StacksProject_2024.Chap15.Lemma_15_83_4
-import StacksProject_2024.Chap15.Lemma_15_83_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_36_23
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_18
+import stacks_proof.stacks_project.Chap13.Definition_13_8_1
+import stacks_proof.stacks_project.Chap13.Lemma_13_15_5
+import stacks_proof.stacks_project.Chap15.Lemma_15_59_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_65_4
+import stacks_proof.stacks_project.Chap15.Lemma_15_65_17
+import stacks_proof.stacks_project.Chap15.Lemma_15_65_9
+import stacks_proof.stacks_project.Chap15.Lemma_15_82_7
+import stacks_proof.stacks_project.Chap15.Lemma_15_66_6
+import stacks_proof.stacks_project.Chap15.Lemma_15_67_2
+import stacks_proof.stacks_project.Chap15.Lemma_15_67_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_67_4
+import stacks_proof.stacks_project.Chap15.Lemma_15_67_13
+import stacks_proof.stacks_project.Chap15.Lemma_15_67_20
+import stacks_proof.stacks_project.Chap15.Lemma_15_67_8
+import stacks_proof.stacks_project.Chap15.Lemma_15_83_2
+import stacks_proof.stacks_project.Chap15.Lemma_15_83_4
+import stacks_proof.stacks_project.Chap15.Lemma_15_83_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

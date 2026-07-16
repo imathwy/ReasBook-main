@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_99_17.QuotientKernel
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_17.QuotientKernel
 
 open CategoryTheory CategoryTheory.Limits CategoryTheory.MonoidalCategory
 open scoped TensorProduct

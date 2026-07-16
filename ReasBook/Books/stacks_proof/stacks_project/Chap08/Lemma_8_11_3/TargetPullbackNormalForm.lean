@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap08.Lemma_8_11_3.FactorizationEssentialImage
+import stacks_proof.stacks_project.Chap08.Lemma_8_11_3.FactorizationEssentialImage
 
 open CategoryTheory
 open BasedFunctor

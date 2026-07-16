@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap13.Lemma_13_37_2
-import StacksProject_2024.Chap15.Definition_15_75_1
-import StacksProject_2024.Chap15.«15_74_0_2»
-import StacksProject_2024.Chap15.Proposition_15_79_3
+import stacks_proof.stacks_project.Chap13.Lemma_13_37_2
+import stacks_proof.stacks_project.Chap15.Definition_15_75_1
+import stacks_proof.stacks_project.Chap15.«15_74_0_2»
+import stacks_proof.stacks_project.Chap15.Proposition_15_79_3
 
 noncomputable section
 

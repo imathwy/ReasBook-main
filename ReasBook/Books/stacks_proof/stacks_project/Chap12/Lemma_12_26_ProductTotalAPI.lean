@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.CategoryTheory.Limits.Shapes.Opposites.Products
-import StacksProject_2024.Chap12.Definition_12_18_3
+import stacks_proof.stacks_project.Chap12.Definition_12_18_3
 
 open CategoryTheory Limits ComplexShape HomologicalComplex HomologicalComplex₂ Opposite
 open scoped HomologicalComplex₂

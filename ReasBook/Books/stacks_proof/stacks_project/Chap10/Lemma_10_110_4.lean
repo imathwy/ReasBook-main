@@ -1,11 +1,11 @@
 import Mathlib.CategoryTheory.Abelian.Projective.Dimension
 import Mathlib.RingTheory.RegularLocalRing.Defs
-import StacksProject_2024.Chap10.Lemma_10_15_5
-import StacksProject_2024.Chap10.Lemma_10_71_4
-import StacksProject_2024.Chap10.Lemma_10_72_3
-import StacksProject_2024.Chap10.Lemma_10_109_7
-import StacksProject_2024.Chap10.Lemma_10_110_3
-import StacksProject_2024.Chap10.Proposition_10_102_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_15_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_71_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_72_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_109_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_110_3
+import stacks_proof.stacks_project.Chap10.Proposition_10_102_9
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_11_8.Part11.CompositionLocalObjectCore
-import StacksProject_2024.Chap08.Lemma_8_11_8.Part11.TransitionComponentRaw
+import stacks_proof.stacks_project.Chap08.Lemma_8_11_8.Part11.CompositionLocalObjectCore
+import stacks_proof.stacks_project.Chap08.Lemma_8_11_8.Part11.TransitionComponentRaw
 
 universe u v w
 

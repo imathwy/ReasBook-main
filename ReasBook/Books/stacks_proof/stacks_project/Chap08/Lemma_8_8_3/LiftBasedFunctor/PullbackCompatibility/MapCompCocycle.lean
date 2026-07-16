@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap08.Lemma_8_8_3.Prelude
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.Prelude
 
 universe u v uS vS
 

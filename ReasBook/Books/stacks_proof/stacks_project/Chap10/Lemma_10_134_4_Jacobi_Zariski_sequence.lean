@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_75_2
-import StacksProject_2024.Chap10.Lemma_10_134_4_Jacobi_Zariski_sequence.Index
+import stacks_proof.stacks_project.Chap10.Lemma_10_75_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_134_4_Jacobi_Zariski_sequence.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

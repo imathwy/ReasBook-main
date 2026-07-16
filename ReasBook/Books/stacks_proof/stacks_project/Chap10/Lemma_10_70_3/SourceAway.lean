@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_70_3.BaseChangeMap
+import stacks_proof.stacks_project.Chap10.Lemma_10_70_3.BaseChangeMap
 
 open HomogeneousLocalization
 open IsLocalization

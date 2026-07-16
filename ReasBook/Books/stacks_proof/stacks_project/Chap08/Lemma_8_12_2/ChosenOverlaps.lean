@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap08.Lemma_8_12_1
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_1
 
 open CategoryTheory.Limits
 open CategoryTheory.GrothendieckTopology.Cover

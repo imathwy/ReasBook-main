@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap15.Lemma_15_29_2
-import StacksProject_2024.Chap15.Lemma_15_29_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_29_2
+import stacks_proof.stacks_project.Chap15.Lemma_15_29_3
 
 noncomputable section
 

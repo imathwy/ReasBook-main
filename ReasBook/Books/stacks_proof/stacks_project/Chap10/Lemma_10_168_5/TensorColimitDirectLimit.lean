@@ -1,9 +1,9 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_127_5
-import StacksProject_2024.Chap10.Lemma_10_131_9
-import StacksProject_2024.Chap10.Lemma_10_131_14
-import StacksProject_2024.Chap10.Lemma_10_151_2
-import StacksProject_2024.Chap10.Lemma_10_168_5.DirectedRingLimit
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_131_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_131_14
+import stacks_proof.stacks_project.Chap10.Lemma_10_151_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_168_5.DirectedRingLimit
 
 -- Stable helper declarations split out for Lemma 10.168.5.
 

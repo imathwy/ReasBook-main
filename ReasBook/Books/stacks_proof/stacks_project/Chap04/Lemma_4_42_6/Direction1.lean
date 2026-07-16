@@ -1,9 +1,9 @@
 import Mathlib
-import StacksProject_2024.Chap04.Definition_4_42_3
-import StacksProject_2024.Chap04.Definition_4_40_1
-import StacksProject_2024.Chap04.Lemma_4_42_6.SliceRepresentable
-import StacksProject_2024.Chap04.Lemma_4_42_6.Core
-import StacksProject_2024.Chap04.Lemma_4_42_6.Pasting2
+import stacks_proof.stacks_project.Chap04.Definition_4_42_3
+import stacks_proof.stacks_project.Chap04.Definition_4_40_1
+import stacks_proof.stacks_project.Chap04.Lemma_4_42_6.SliceRepresentable
+import stacks_proof.stacks_project.Chap04.Lemma_4_42_6.Core
+import stacks_proof.stacks_project.Chap04.Lemma_4_42_6.Pasting2
 
 /-!
 # Lemma 4.42.6 (tag 02YA), direction (1) → (2)

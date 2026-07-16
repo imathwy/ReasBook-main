@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Tactic.TFAE
-import StacksProject_2024.Chap15.Definition_15_61_1
-import StacksProject_2024.Chap10.Lemma_10_23_1
-import StacksProject_2024.Chap15.Lemma_15_61_4
-import StacksProject_2024.Chap15.Lemma_15_61_3
+import stacks_proof.stacks_project.Chap15.Definition_15_61_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_23_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_61_4
+import stacks_proof.stacks_project.Chap15.Lemma_15_61_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

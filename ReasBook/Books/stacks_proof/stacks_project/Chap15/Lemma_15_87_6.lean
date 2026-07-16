@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.CategoryTheory.Triangulated.Yoneda
-import StacksProject_2024.Chap13.Remark_13_34_4
-import StacksProject_2024.Chap15.Lemma_15_87_4
+import stacks_proof.stacks_project.Chap13.Remark_13_34_4
+import stacks_proof.stacks_project.Chap15.Lemma_15_87_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

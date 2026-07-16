@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_134_1
-import StacksProject_2024.Chap10.Lemma_10_134_3
-import StacksProject_2024.Chap10.Lemma_10_134_10
+import stacks_proof.stacks_project.Chap10.Definition_10_134_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_134_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_134_10
 open Algebra
 open Algebra.Extension
 open Algebra.Generators

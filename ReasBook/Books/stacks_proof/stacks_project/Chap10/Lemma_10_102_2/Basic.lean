@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap10.Situation_10_102_1
+import stacks_proof.stacks_project.Chap10.Situation_10_102_1
 
 open CategoryTheory CategoryTheory.Limits ChainComplex Matrix
 

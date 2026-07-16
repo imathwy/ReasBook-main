@@ -1,2 +1,2 @@
-import StacksProject_2024.Chap10.Lemma_10_24_5.GlueingComparisons
-import StacksProject_2024.Chap10.Lemma_10_24_5.TargetBranchNormalForms
+import stacks_proof.stacks_project.Chap10.Lemma_10_24_5.GlueingComparisons
+import stacks_proof.stacks_project.Chap10.Lemma_10_24_5.TargetBranchNormalForms

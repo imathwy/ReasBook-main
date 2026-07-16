@@ -1,14 +1,14 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_105_3
-import StacksProject_2024.Chap10.Lemma_10_17_2
-import StacksProject_2024.Chap10.Lemma_10_155_1
-import StacksProject_2024.Chap15.Lemma_15_45_3
-import StacksProject_2024.Chap15.Lemma_15_45_5
-import StacksProject_2024.Chap15.Lemma_15_107_3
-import StacksProject_2024.Chap15.Lemma_15_107_7
-import StacksProject_2024.Chap15.Lemma_15_109_2
-import StacksProject_2024.Chap15.Lemma_15_109_8
-import StacksProject_2024.Chap15.Proposition_15_110_5_Ratliff
+import stacks_proof.stacks_project.Chap10.Definition_10_105_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_17_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_155_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_45_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_45_5
+import stacks_proof.stacks_project.Chap15.Lemma_15_107_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_107_7
+import stacks_proof.stacks_project.Chap15.Lemma_15_109_2
+import stacks_proof.stacks_project.Chap15.Lemma_15_109_8
+import stacks_proof.stacks_project.Chap15.Proposition_15_110_5_Ratliff
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

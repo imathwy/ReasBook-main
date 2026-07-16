@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap14.Definition_14_18_1
+import stacks_proof.stacks_project.Chap14.Definition_14_18_1
 import Mathlib.Tactic.Recall
 
 -- Declarations for this item will be appended below by the statement pipeline.

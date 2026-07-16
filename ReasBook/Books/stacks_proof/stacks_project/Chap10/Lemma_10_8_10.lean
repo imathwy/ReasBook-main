@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Category.Grp.AB
 import Mathlib.CategoryTheory.Abelian.GrothendieckAxioms.Colim
-import StacksProject_2024.Chap04.Lemma_4_19_8
-import StacksProject_2024.Chap04.Lemma_4_21_5
+import stacks_proof.stacks_project.Chap04.Lemma_4_19_8
+import stacks_proof.stacks_project.Chap04.Lemma_4_21_5
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

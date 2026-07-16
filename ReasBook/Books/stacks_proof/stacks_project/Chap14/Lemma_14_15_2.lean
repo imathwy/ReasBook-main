@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap14.Example_14_5_6
-import StacksProject_2024.Chap14.Definition_14_15_1
+import stacks_proof.stacks_project.Chap14.Example_14_5_6
+import stacks_proof.stacks_project.Chap14.Definition_14_15_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

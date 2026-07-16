@@ -1,12 +1,12 @@
-import StacksProject_2024.Chap10.Definition_10_103_1
-import StacksProject_2024.Chap10.Definition_10_125_1
-import StacksProject_2024.Chap10.Lemma_10_112_6
-import StacksProject_2024.Chap10.Lemma_10_112_9
-import StacksProject_2024.Chap10.Lemma_10_113_1
-import StacksProject_2024.Chap10.Lemma_10_114_7
-import StacksProject_2024.Chap10.Lemma_10_122_4
-import StacksProject_2024.Chap10.Lemma_10_125_4
-import StacksProject_2024.Chap10.Lemma_10_128_1
+import stacks_proof.stacks_project.Chap10.Definition_10_103_1
+import stacks_proof.stacks_project.Chap10.Definition_10_125_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_112_6
+import stacks_proof.stacks_project.Chap10.Lemma_10_112_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_113_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_114_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_122_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_125_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_128_1
 
 universe u v
 

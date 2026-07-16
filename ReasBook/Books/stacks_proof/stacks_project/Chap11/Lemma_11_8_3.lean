@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap11.Lemma_11_7_4
-import StacksProject_2024.Chap11.Theorem_11_8_2.SplitByBrauer
+import stacks_proof.stacks_project.Chap11.Lemma_11_7_4
+import stacks_proof.stacks_project.Chap11.Theorem_11_8_2.SplitByBrauer
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Algebra.Category.Ring.Limits
-import StacksProject_2024.Chap10.Lemma_10_19_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_19_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

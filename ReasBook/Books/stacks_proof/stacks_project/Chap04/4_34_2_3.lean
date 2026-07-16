@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap04.«4_34_2_4»
+import stacks_proof.stacks_project.Chap04.«4_34_2_4»
 import Mathlib.Tactic.StacksAttribute
 
 universe u v u₁ u₁' u₂ u₂'

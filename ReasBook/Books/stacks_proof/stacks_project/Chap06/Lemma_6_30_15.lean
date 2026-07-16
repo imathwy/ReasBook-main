@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap06.Definition_6_26_1
-import StacksProject_2024.Chap06.Lemma_6_30_13
+import stacks_proof.stacks_project.Chap06.Definition_6_26_1
+import stacks_proof.stacks_project.Chap06.Lemma_6_30_13
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory TopologicalSpace

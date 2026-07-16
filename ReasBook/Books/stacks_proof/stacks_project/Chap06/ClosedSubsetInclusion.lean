@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap06.Lemma_6_21_5
+import stacks_proof.stacks_project.Chap06.Lemma_6_21_5
 
 open TopCat TopologicalSpace
 

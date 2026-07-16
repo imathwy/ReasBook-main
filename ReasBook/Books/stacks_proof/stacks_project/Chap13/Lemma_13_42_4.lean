@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap04.Example_4_22_6
-import StacksProject_2024.Chap04.Lemma_4_22_10
-import StacksProject_2024.Chap12.Definition_12_31_2
+import stacks_proof.stacks_project.Chap04.Example_4_22_6
+import stacks_proof.stacks_project.Chap04.Lemma_4_22_10
+import stacks_proof.stacks_project.Chap12.Definition_12_31_2
 
 open CategoryTheory
 open CategoryTheory.Limits

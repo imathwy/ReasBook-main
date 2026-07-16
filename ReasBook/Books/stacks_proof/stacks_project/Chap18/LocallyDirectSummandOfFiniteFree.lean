@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
+import stacks_proof.stacks_project.Chap18.RingedSiteModuleCategoryBasic
 
 open CategoryTheory
 open CategoryTheory.MonoidalCategory

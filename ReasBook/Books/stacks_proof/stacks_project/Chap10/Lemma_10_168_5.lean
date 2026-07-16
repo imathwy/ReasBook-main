@@ -6,12 +6,12 @@ import Mathlib.CategoryTheory.Comma.LocallySmall
 import Mathlib.CategoryTheory.Filtered.Basic
 import Mathlib.CategoryTheory.Limits.Preserves.Ulift
 import Mathlib.CategoryTheory.Presentable.Finite
-import StacksProject_2024.Chap10.Lemma_10_127_5
-import StacksProject_2024.Chap10.Lemma_10_127_7.BackendComparison
-import StacksProject_2024.Chap10.Lemma_10_131_9
-import StacksProject_2024.Chap10.Lemma_10_131_14
-import StacksProject_2024.Chap10.Lemma_10_151_2
-import StacksProject_2024.Chap10.Lemma_10_168_5.Index
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_7.BackendComparison
+import stacks_proof.stacks_project.Chap10.Lemma_10_131_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_131_14
+import stacks_proof.stacks_project.Chap10.Lemma_10_151_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_168_5.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

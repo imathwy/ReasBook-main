@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_82_13
-import StacksProject_2024.Chap15.Lemma_15_3_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_82_13
+import stacks_proof.stacks_project.Chap15.Lemma_15_3_3
 
 universe u
 

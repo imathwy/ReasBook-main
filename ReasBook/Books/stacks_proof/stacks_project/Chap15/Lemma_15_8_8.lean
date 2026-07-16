@@ -1,10 +1,10 @@
 import Mathlib.Data.List.TFAE
-import StacksProject_2024.Chap10.Definition_10_78_1
-import StacksProject_2024.Chap10.Lemma_10_23_1
+import stacks_proof.stacks_project.Chap10.Definition_10_78_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_23_1
 import Mathlib.RingTheory.Localization.Away.Basic
-import StacksProject_2024.Chap15.Definition_15_8_3
-import StacksProject_2024.Chap15.Lemma_15_4_3
-import StacksProject_2024.Chap15.Lemma_15_8_7
+import stacks_proof.stacks_project.Chap15.Definition_15_8_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_4_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_8_7
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

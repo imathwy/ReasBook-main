@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap13.Lemma_13_26_2
-import StacksProject_2024.Chap13.Lemma_13_26_5
+import stacks_proof.stacks_project.Chap13.Lemma_13_26_2
+import stacks_proof.stacks_project.Chap13.Lemma_13_26_5
 
 open CategoryTheory
 open CategoryTheory.Limits

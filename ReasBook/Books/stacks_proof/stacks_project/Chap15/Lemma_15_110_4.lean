@@ -1,21 +1,21 @@
 import Mathlib
 import Mathlib.Topology.Sets.Closeds
-import StacksProject_2024.Chap10.Definition_10_54_1
-import StacksProject_2024.Chap10.Lemma_10_54_5
-import StacksProject_2024.Chap10.Definition_10_105_3
-import StacksProject_2024.Chap10.Lemma_10_18_4
-import StacksProject_2024.Chap10.Lemma_10_97_3
-import StacksProject_2024.Chap10.Lemma_10_97_5
-import StacksProject_2024.Chap10.Lemma_10_105_4
-import StacksProject_2024.Chap10.Lemma_10_105_6
-import StacksProject_2024.Chap10.Lemma_10_105_7
-import StacksProject_2024.Chap10.Lemma_10_105_8
-import StacksProject_2024.Chap10.Lemma_10_156_2
-import StacksProject_2024.Chap10.Lemma_10_160_2
-import StacksProject_2024.Chap10.Remark_10_160_9
-import StacksProject_2024.Chap15.Definition_15_110_1
-import StacksProject_2024.Chap15.Lemma_15_43_1
-import StacksProject_2024.Chap15.Lemma_15_90_1
+import stacks_proof.stacks_project.Chap10.Definition_10_54_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_54_5
+import stacks_proof.stacks_project.Chap10.Definition_10_105_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_18_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_97_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_97_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_105_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_105_6
+import stacks_proof.stacks_project.Chap10.Lemma_10_105_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_105_8
+import stacks_proof.stacks_project.Chap10.Lemma_10_156_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_160_2
+import stacks_proof.stacks_project.Chap10.Remark_10_160_9
+import stacks_proof.stacks_project.Chap15.Definition_15_110_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_43_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_90_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

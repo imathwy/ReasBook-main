@@ -1,5 +1,5 @@
 import Mathlib.FieldTheory.SeparableDegree
-import StacksProject_2024.Chap09.Situation_9_12_7
+import stacks_proof.stacks_project.Chap09.Situation_9_12_7
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

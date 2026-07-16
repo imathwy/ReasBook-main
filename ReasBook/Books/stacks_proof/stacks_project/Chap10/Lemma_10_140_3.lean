@@ -6,16 +6,16 @@ import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.Smooth.Fiber
 import Mathlib.RingTheory.Smooth.Locus
 import Mathlib.RingTheory.Smooth.StandardSmoothOfFree
-import StacksProject_2024.Chap10.Definition_10_42_1
-import StacksProject_2024.Chap10.Lemma_10_106_4
-import StacksProject_2024.Chap10.Theorem_10_34_1_Hilbert_Nullstellensatz
-import StacksProject_2024.Chap10.Lemma_10_114_5
-import StacksProject_2024.Chap10.Lemma_10_140_3.LocalDimension
-import StacksProject_2024.Chap10.Lemma_10_116_6
-import StacksProject_2024.Chap10.Lemma_10_135_6
-import StacksProject_2024.Chap10.Lemma_10_137_18
-import StacksProject_2024.Chap10.Lemma_10_140_1
-import StacksProject_2024.Chap10.«10_138_12_1»
+import stacks_proof.stacks_project.Chap10.Definition_10_42_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_106_4
+import stacks_proof.stacks_project.Chap10.Theorem_10_34_1_Hilbert_Nullstellensatz
+import stacks_proof.stacks_project.Chap10.Lemma_10_114_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_140_3.LocalDimension
+import stacks_proof.stacks_project.Chap10.Lemma_10_116_6
+import stacks_proof.stacks_project.Chap10.Lemma_10_135_6
+import stacks_proof.stacks_project.Chap10.Lemma_10_137_18
+import stacks_proof.stacks_project.Chap10.Lemma_10_140_1
+import stacks_proof.stacks_project.Chap10.«10_138_12_1»
 
 open scoped TensorProduct
 

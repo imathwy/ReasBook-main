@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.CategoryTheory.Functor.OfSequence
-import StacksProject_2024.Chap04.Example_4_22_6
-import StacksProject_2024.Chap15.Definition_15_59_13
-import StacksProject_2024.Chap15.Remark_15_96_5
+import stacks_proof.stacks_project.Chap04.Example_4_22_6
+import stacks_proof.stacks_project.Chap15.Definition_15_59_13
+import stacks_proof.stacks_project.Chap15.Remark_15_96_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

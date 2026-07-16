@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap10.Lemma_10_39_9
-import StacksProject_2024.Chap10.Lemma_10_99_7_Local_criterion_for_flatness
-import StacksProject_2024.Chap10.Lemma_10_99_10_Variant_of_the_local_criterion
+import stacks_proof.stacks_project.Chap10.Lemma_10_39_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_7_Local_criterion_for_flatness
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_10_Variant_of_the_local_criterion
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

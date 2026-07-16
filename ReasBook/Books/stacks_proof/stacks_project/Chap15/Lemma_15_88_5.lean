@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap15.Lemma_15_88_5_Bridge
+import stacks_proof.stacks_project.Chap15.Lemma_15_88_5_Bridge
 import Mathlib.Tactic.StacksAttribute
 
 noncomputable section

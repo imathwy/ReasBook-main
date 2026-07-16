@@ -7,8 +7,8 @@ import Mathlib.Algebra.Homology.Localization
 import Mathlib.CategoryTheory.Localization.Monoidal.Braided
 import Mathlib.CategoryTheory.Monoidal.Limits.Preserves
 import Mathlib.CategoryTheory.Monoidal.Preadditive
-import StacksProject_2024.Chap13.Remark_13_10_9
-import StacksProject_2024.Chap15.Lemma_15_58_1
+import stacks_proof.stacks_project.Chap13.Remark_13_10_9
+import stacks_proof.stacks_project.Chap15.Lemma_15_58_1
 
 open CategoryTheory
 open CategoryTheory.Limits

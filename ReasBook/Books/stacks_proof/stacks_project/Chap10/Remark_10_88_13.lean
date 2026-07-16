@@ -1,13 +1,13 @@
 import Mathlib
 import Mathlib.Algebra.Module.Presentation.Tautological
 import Mathlib.LinearAlgebra.TensorProduct.Quotient
-import StacksProject_2024.Chap10.Definition_10_88_7
-import StacksProject_2024.Chap10.Lemma_10_36_23
-import StacksProject_2024.Chap10.Proposition_10_88_6.TensorDomination
-import StacksProject_2024.Chap10.Proposition_10_88_6.HomMittagLeffler
-import StacksProject_2024.Chap10.Proposition_10_89_3
-import StacksProject_2024.Chap10.Lemma_10_94_1
-import StacksProject_2024.Chap10.Example_10_91_1
+import stacks_proof.stacks_project.Chap10.Definition_10_88_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_36_23
+import stacks_proof.stacks_project.Chap10.Proposition_10_88_6.TensorDomination
+import stacks_proof.stacks_project.Chap10.Proposition_10_88_6.HomMittagLeffler
+import stacks_proof.stacks_project.Chap10.Proposition_10_89_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_94_1
+import stacks_proof.stacks_project.Chap10.Example_10_91_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

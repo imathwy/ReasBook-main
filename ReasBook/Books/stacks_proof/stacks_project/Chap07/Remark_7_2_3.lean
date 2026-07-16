@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap07.Definition_7_2_2
+import stacks_proof.stacks_project.Chap07.Definition_7_2_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

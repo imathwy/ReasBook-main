@@ -1,7 +1,7 @@
 import Mathlib.RingTheory.Jacobson.Ideal
 import Mathlib.RingTheory.LocalProperties.Basic
-import StacksProject_2024.Chap10.IdempotentMap
-import StacksProject_2024.Chap10.Lemma_10_23_1
+import stacks_proof.stacks_project.Chap10.IdempotentMap
+import stacks_proof.stacks_project.Chap10.Lemma_10_23_1
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

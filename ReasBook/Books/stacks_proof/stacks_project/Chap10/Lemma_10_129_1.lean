@@ -1,9 +1,9 @@
-import StacksProject_2024.Chap05.Definition_5_10_5
-import StacksProject_2024.Chap05.Lemma_5_10_2
-import StacksProject_2024.Chap10.Lemma_10_104_2
-import StacksProject_2024.Chap10.Lemma_10_17_7
-import StacksProject_2024.Chap10.Lemma_10_114_5
-import StacksProject_2024.Chap10.Definition_10_104_6
+import stacks_proof.stacks_project.Chap05.Definition_5_10_5
+import stacks_proof.stacks_project.Chap05.Lemma_5_10_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_104_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_17_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_114_5
+import stacks_proof.stacks_project.Chap10.Definition_10_104_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

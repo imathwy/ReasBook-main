@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap15.BerthelotOgusEtaReductionNatPairMap
-import StacksProject_2024.Chap15.LinearMapIdentifiesWithProdSubmodules
+import stacks_proof.stacks_project.Chap15.BerthelotOgusEtaReductionNatPairMap
+import stacks_proof.stacks_project.Chap15.LinearMapIdentifiesWithProdSubmodules
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

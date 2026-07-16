@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap18.Lemma_18_32_4
+import stacks_proof.stacks_project.Chap18.Lemma_18_32_4
 
 open AlgebraicGeometry
 open scoped SheafOfModules.RingedSite

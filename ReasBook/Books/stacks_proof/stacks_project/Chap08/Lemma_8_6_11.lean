@@ -1,12 +1,12 @@
 import Mathlib
-import StacksProject_2024.Chap04.Lemma_4_42_5
-import StacksProject_2024.Chap07.Lemma_7_26_4.TerminalCovers
-import StacksProject_2024.Chap08.Definition_8_5_1
-import StacksProject_2024.Chap08.Definition_8_6_1
-import StacksProject_2024.Chap08.Lemma_8_2_3.PullbackComparisonNaturality
-import StacksProject_2024.Chap08.Lemma_8_4_6.FixedCoverEquivalenceBridge
-import StacksProject_2024.Chap08.Lemma_8_6_3
-import StacksProject_2024.Chap08.Lemma_8_6_11.Index
+import stacks_proof.stacks_project.Chap04.Lemma_4_42_5
+import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.TerminalCovers
+import stacks_proof.stacks_project.Chap08.Definition_8_5_1
+import stacks_proof.stacks_project.Chap08.Definition_8_6_1
+import stacks_proof.stacks_project.Chap08.Lemma_8_2_3.PullbackComparisonNaturality
+import stacks_proof.stacks_project.Chap08.Lemma_8_4_6.FixedCoverEquivalenceBridge
+import stacks_proof.stacks_project.Chap08.Lemma_8_6_3
+import stacks_proof.stacks_project.Chap08.Lemma_8_6_11.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

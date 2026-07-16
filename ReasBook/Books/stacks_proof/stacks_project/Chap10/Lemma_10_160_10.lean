@@ -1,9 +1,9 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_60_10
-import StacksProject_2024.Chap10.Definition_10_160_1
-import StacksProject_2024.Chap10.Lemma_10_135_6
-import StacksProject_2024.Chap10.Remark_10_160_9
-import StacksProject_2024.Chap10.Theorem_10_160_8_Cohen_structure_theorem
+import stacks_proof.stacks_project.Chap10.Definition_10_60_10
+import stacks_proof.stacks_project.Chap10.Definition_10_160_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_135_6
+import stacks_proof.stacks_project.Chap10.Remark_10_160_9
+import stacks_proof.stacks_project.Chap10.Theorem_10_160_8_Cohen_structure_theorem
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

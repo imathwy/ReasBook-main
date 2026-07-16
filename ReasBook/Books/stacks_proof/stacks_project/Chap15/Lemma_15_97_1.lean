@@ -4,11 +4,11 @@ import Mathlib.LinearAlgebra.Isomorphisms
 import Mathlib.LinearAlgebra.TensorProduct.Basis
 import Mathlib.LinearAlgebra.TensorProduct.Prod
 import Mathlib.LinearAlgebra.TensorProduct.RightExactness
-import StacksProject_2024.Chap15.Definition_15_8_3
-import StacksProject_2024.Chap15.Definition_15_65_1
-import StacksProject_2024.Chap15.Lemma_15_8_4
-import StacksProject_2024.Chap15.PrincipalIdeal
-import StacksProject_2024.Chap15.Lemma_15_76_8
+import stacks_proof.stacks_project.Chap15.Definition_15_8_3
+import stacks_proof.stacks_project.Chap15.Definition_15_65_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_8_4
+import stacks_proof.stacks_project.Chap15.PrincipalIdeal
+import stacks_proof.stacks_project.Chap15.Lemma_15_76_8
 import Mathlib.Data.Int.Range
 import Mathlib.Tactic.StacksAttribute
 

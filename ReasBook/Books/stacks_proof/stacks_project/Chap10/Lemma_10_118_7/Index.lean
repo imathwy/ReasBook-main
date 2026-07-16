@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_118_7.GoodLocusDensity
-import StacksProject_2024.Chap10.Lemma_10_118_7.PolynomialLocalization
-import StacksProject_2024.Chap10.Lemma_10_118_7.CyclicQuotientTransport
-import StacksProject_2024.Chap10.Lemma_10_118_7.CyclicQuotientFinitePresentation
+import stacks_proof.stacks_project.Chap10.Lemma_10_118_7.GoodLocusDensity
+import stacks_proof.stacks_project.Chap10.Lemma_10_118_7.PolynomialLocalization
+import stacks_proof.stacks_project.Chap10.Lemma_10_118_7.CyclicQuotientTransport
+import stacks_proof.stacks_project.Chap10.Lemma_10_118_7.CyclicQuotientFinitePresentation

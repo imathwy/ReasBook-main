@@ -1,9 +1,9 @@
 import Mathlib
-import StacksProject_2024.Chap13.Definition_13_13_2
-import StacksProject_2024.Chap12.Lemma_12_19_7
-import StacksProject_2024.Chap12.Lemma_12_19_15
-import StacksProject_2024.Chap13.Lemma_13_26_3
-import StacksProject_2024.Chap13.Lemma_13_26_4
+import stacks_proof.stacks_project.Chap13.Definition_13_13_2
+import stacks_proof.stacks_project.Chap12.Lemma_12_19_7
+import stacks_proof.stacks_project.Chap12.Lemma_12_19_15
+import stacks_proof.stacks_project.Chap13.Lemma_13_26_3
+import stacks_proof.stacks_project.Chap13.Lemma_13_26_4
 
 open CategoryTheory
 open CochainComplex

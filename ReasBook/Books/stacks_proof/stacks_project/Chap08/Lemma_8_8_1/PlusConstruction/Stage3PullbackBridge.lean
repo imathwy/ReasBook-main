@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_8_1.BaseChange
-import StacksProject_2024.Chap08.Lemma_8_8_1.PlusConstruction.Stage3LocalEssentialSurjectivity
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.BaseChange
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.PlusConstruction.Stage3LocalEssentialSurjectivity
 
 universe u v uX vX
 

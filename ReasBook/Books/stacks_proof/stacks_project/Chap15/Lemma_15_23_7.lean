@@ -1,9 +1,9 @@
 import Mathlib.LinearAlgebra.TensorProduct.RightExactness
 import Mathlib.RingTheory.TensorProduct.Finite
 import Mathlib.RingTheory.TensorProduct.Pi
-import StacksProject_2024.Chap15.Lemma_15_22_4
-import StacksProject_2024.Chap15.Lemma_15_23_5
-import StacksProject_2024.Chap15.Lemma_15_23_6
+import stacks_proof.stacks_project.Chap15.Lemma_15_22_4
+import stacks_proof.stacks_project.Chap15.Lemma_15_23_5
+import stacks_proof.stacks_project.Chap15.Lemma_15_23_6
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

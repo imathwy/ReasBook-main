@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap07.Example_7_14_3
-import StacksProject_2024.Chap18.Lemma_18_15_3
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
+import stacks_proof.stacks_project.Chap07.Example_7_14_3
+import stacks_proof.stacks_project.Chap18.Lemma_18_15_3
+import stacks_proof.stacks_project.Chap18.RingedSiteModuleCategoryBasic
 
 open CategoryTheory
 open CategoryTheory.Limits

@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap04.Example_4_22_6
-import StacksProject_2024.Chap15.Definition_15_61_1
+import stacks_proof.stacks_project.Chap04.Example_4_22_6
+import stacks_proof.stacks_project.Chap15.Definition_15_61_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

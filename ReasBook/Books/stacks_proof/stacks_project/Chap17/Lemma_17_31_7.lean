@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap18.RingedSiteModuleCategory
+import stacks_proof.stacks_project.Chap18.RingedSiteModuleCategory
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
