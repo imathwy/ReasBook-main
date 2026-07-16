@@ -1,8 +1,7 @@
 -- Root module for ReasBook
 import Mathlib
 import AlgebraicTopology_May_1999.Book
--- repair-pending: book:Analysis2_Tao_2022; last-run=20260715T185012Z-root-allowlist-audit-474f1971; status=repair-incomplete
--- import Analysis2_Tao_2022.Book
+import Analysis2_Tao_2022.Book
 import CombinatorialGroupTheory_Magnus_2004.Book
 import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Book
 -- repair-pending: book:ConvexAnalysis_Rockafellar_1970; last-run=20260715T185041Z-root-allowlist-audit-474f1971; status=repair-incomplete
