@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_2_1.ProjectiveSubgroupInduction
+import LinearRepresentations_Serre_1977.Serre.Chap16.Theorem_16_16_2_1.ProjectiveSubgroupInduction
 
 noncomputable section
 

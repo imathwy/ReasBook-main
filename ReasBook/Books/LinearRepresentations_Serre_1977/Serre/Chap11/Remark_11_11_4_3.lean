@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_1
+import LinearRepresentations_Serre_1977.Serre.Chap11.Proposition_11_11_4_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

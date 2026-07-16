@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_5
+import LinearRepresentations_Serre_1977.Serre.Chap12.Lemma_12_12_7_5
 
 /-!
 # The generator-field character as a `Γ_K`-twist orbit sum

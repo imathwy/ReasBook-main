@@ -1,7 +1,7 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.RealizationCore
-import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.MixedRealizationAssembly
-import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.SpanningAssembly
+import LinearRepresentations_Serre_1977.Serre.Chap18.Theorem_18_18_2_1.RealizationCore
+import LinearRepresentations_Serre_1977.Serre.Chap18.Theorem_18_18_2_1.MixedRealizationAssembly
+import LinearRepresentations_Serre_1977.Serre.Chap18.Theorem_18_18_2_1.SpanningAssembly
 
 /-!
 Source-faithful coefficient setting for Definition 18-18.1-1 and Theorem 18-18.2-1.

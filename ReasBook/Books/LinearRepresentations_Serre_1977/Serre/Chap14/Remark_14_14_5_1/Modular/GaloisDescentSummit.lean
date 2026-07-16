@@ -1,8 +1,8 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.GaloisDescent
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.CoefficientTwist
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.DefinedOverSubfield
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.SemilinearGaloisRepresentation
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.GaloisDescent
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.CoefficientTwist
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.DefinedOverSubfield
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.SemilinearGaloisRepresentation
 
 /-!
 # The characteristic-`p` modular Galois-descent summit (assembly)

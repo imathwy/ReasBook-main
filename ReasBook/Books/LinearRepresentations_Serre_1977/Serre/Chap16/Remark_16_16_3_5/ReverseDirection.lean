@@ -1,9 +1,9 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap16.Remark_16_16_3_5.Core
-import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_1_1
-import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1.FiniteRepScalarExtension
-import LinearRepresentations_Serre_1977.Chap16.Lemma_16_16_3_1.PositiveConeBridge
-import LinearRepresentations_Serre_1977.Chap16.Proposition_16_16_3_3.PositiveBasics
+import LinearRepresentations_Serre_1977.Serre.Chap16.Remark_16_16_3_5.Core
+import LinearRepresentations_Serre_1977.Serre.Chap14.Proposition_14_14_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap15.Definition_15_15_3_1.FiniteRepScalarExtension
+import LinearRepresentations_Serre_1977.Serre.Chap16.Lemma_16_16_3_1.PositiveConeBridge
+import LinearRepresentations_Serre_1977.Serre.Chap16.Proposition_16_16_3_3.PositiveBasics
 
 /-!
 # Remark 16-16.3-5, reverse direction `(R') ⟹ (R)`

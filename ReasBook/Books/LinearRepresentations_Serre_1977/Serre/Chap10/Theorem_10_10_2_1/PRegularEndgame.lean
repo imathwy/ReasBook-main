@@ -1,9 +1,9 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_1
-import LinearRepresentations_Serre_1977.Chap10.Lemma_10_10_3_1
-import LinearRepresentations_Serre_1977.Chap10.Lemma_10_10_3_2
-import LinearRepresentations_Serre_1977.Chap10.Lemma_10_10_3_3
-import LinearRepresentations_Serre_1977.FiniteToFintype
+import LinearRepresentations_Serre_1977.Serre.Chap06.Proposition_6_6_5_1
+import LinearRepresentations_Serre_1977.Serre.Chap10.Lemma_10_10_3_1
+import LinearRepresentations_Serre_1977.Serre.Chap10.Lemma_10_10_3_2
+import LinearRepresentations_Serre_1977.Serre.Chap10.Lemma_10_10_3_3
+import LinearRepresentations_Serre_1977.Serre.FiniteToFintype
 
 /-!
 # Support file for Theorem 10-10.2-1: Serre's §10.4 endgame

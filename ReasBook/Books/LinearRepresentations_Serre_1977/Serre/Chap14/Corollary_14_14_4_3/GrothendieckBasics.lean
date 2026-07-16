@@ -1,5 +1,5 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3.ProjectiveModules
+import LinearRepresentations_Serre_1977.Serre.Chap14.Corollary_14_14_4_3.ProjectiveModules
 
 noncomputable section
 

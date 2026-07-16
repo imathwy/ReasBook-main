@@ -1,8 +1,8 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap09.Corollary_9_9_2_2
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_6_4
-import LinearRepresentations_Serre_1977.Chap13.Corollary_13_13_1_2
-import LinearRepresentations_Serre_1977.Chap13.Theorem_13_13_1_3
+import LinearRepresentations_Serre_1977.Serre.Chap09.Corollary_9_9_2_2
+import LinearRepresentations_Serre_1977.Serre.Chap12.Proposition_12_12_6_4
+import LinearRepresentations_Serre_1977.Serre.Chap13.Corollary_13_13_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap13.Theorem_13_13_1_3
 
 open scoped BigOperators
 

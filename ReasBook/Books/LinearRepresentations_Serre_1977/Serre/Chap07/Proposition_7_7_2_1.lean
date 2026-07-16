@@ -1,6 +1,6 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_1_2
-import LinearRepresentations_Serre_1977.FiniteToFintype
+import LinearRepresentations_Serre_1977.Serre.Chap02.Remark_2_2_1_2
+import LinearRepresentations_Serre_1977.Serre.FiniteToFintype
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

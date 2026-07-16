@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap11.Remark_11_11_1_3.IntegralRestrictionSplitting
+import LinearRepresentations_Serre_1977.Serre.Chap11.Remark_11_11_1_3.IntegralRestrictionSplitting
 
 /-!
 # Chain-independent helpers for Corollary 11-11.4-5

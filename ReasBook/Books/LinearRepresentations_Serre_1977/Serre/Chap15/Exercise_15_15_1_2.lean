@@ -1,7 +1,7 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_1
-import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
-import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_1_2.Index
+import LinearRepresentations_Serre_1977.Serre.Chap14.Lemma_14_14_4_1
+import LinearRepresentations_Serre_1977.Serre.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap15.Exercise_15_15_1_2.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

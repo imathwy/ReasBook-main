@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_1.OwnersAndPrimeFibers
+import LinearRepresentations_Serre_1977.Serre.Chap11.Proposition_11_11_4_1.OwnersAndPrimeFibers
 
 -- Stable regular-owner incidence helpers extracted from Proposition 11-11.4-1.
 

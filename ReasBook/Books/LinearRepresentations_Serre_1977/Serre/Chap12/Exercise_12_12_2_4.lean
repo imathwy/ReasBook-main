@@ -1,13 +1,13 @@
 import Mathlib
 import Mathlib.NumberTheory.NumberField.Cyclotomic.Basic
 import Mathlib.NumberTheory.NumberField.InfinitePlace.Embeddings
-import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
-import LinearRepresentations_Serre_1977.Chap01.Definition_1_1_4_1
-import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_2_1
-import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
-import LinearRepresentations_Serre_1977.Chap05.Exercise_5_5_7_1
-import LinearRepresentations_Serre_1977.Chap07.Exercise_7_7_2_4
-import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Serre.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap01.Definition_1_1_4_1
+import LinearRepresentations_Serre_1977.Serre.Chap02.Proposition_2_2_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Serre.Chap05.Exercise_5_5_7_1
+import LinearRepresentations_Serre_1977.Serre.Chap07.Exercise_7_7_2_4
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.RealizableOver
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

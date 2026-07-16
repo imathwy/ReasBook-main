@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap16.Exercise_16_16_1_11.RationalInfrastructure
+import LinearRepresentations_Serre_1977.Serre.Chap16.Exercise_16_16_1_11.RationalInfrastructure
 
 noncomputable section
 

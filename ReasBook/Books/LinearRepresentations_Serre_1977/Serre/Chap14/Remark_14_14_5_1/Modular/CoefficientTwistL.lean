@@ -1,6 +1,6 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.CoefficientTwist
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.CoefficientTwist
 
 /-!
 # The `L`-level coefficient twist `LTwist` and its commutation with scalar extension (Brick C2)

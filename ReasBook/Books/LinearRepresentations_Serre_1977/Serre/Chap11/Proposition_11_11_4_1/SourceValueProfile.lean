@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap10.Lemma_10_10_2_3
-import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_1.FixedClassEvaluation
+import LinearRepresentations_Serre_1977.Serre.Chap10.Lemma_10_10_2_3
+import LinearRepresentations_Serre_1977.Serre.Chap11.Proposition_11_11_4_1.FixedClassEvaluation
 
 -- Stable source value-profile helpers extracted from Proposition 11-11.4-1.
 

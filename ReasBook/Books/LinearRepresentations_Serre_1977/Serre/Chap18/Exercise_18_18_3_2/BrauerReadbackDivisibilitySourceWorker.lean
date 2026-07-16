@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.BrauerResidualMatrixClosureFinal
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.BrauerResidualSourceValuationWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.BrauerResidualMatrixClosureFinal
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.BrauerResidualSourceValuationWorker
 
 /-!
 Source-side providers for the visible fixed-coordinate Brauer readback divisibility.

@@ -1,11 +1,11 @@
 import Mathlib.MeasureTheory.Measure.Haar.Basic
 import Mathlib.RepresentationTheory.Irreducible
 import Mathlib.Algebra.DirectSum.Module
-import LinearRepresentations_Serre_1977.Chap02.Exercise_2_2_6_3
-import LinearRepresentations_Serre_1977.Chap04.Definition_4_23
-import LinearRepresentations_Serre_1977.Chap04.Definition_4_31
-import LinearRepresentations_Serre_1977.Chap04.Definition_4_9
-import LinearRepresentations_Serre_1977.Chap04.Theorem_4_5
+import LinearRepresentations_Serre_1977.Serre.Chap02.Exercise_2_2_6_3
+import LinearRepresentations_Serre_1977.Serre.Chap04.Definition_4_23
+import LinearRepresentations_Serre_1977.Serre.Chap04.Definition_4_31
+import LinearRepresentations_Serre_1977.Serre.Chap04.Definition_4_9
+import LinearRepresentations_Serre_1977.Serre.Chap04.Theorem_4_5
 
 open MeasureTheory
 open scoped ENNReal MonoidAlgebra Representation

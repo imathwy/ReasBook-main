@@ -1,7 +1,7 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_3_1
-import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_4
-import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_5.DualEnvelopeBridge
+import LinearRepresentations_Serre_1977.Serre.Chap14.Proposition_14_14_3_1
+import LinearRepresentations_Serre_1977.Serre.Chap14.Exercise_14_14_5_4
+import LinearRepresentations_Serre_1977.Serre.Chap14.Exercise_14_14_5_5.DualEnvelopeBridge
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

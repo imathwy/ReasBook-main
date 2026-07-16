@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap16.Proposition_16_16_3_3.PositiveBasics
+import LinearRepresentations_Serre_1977.Serre.Chap16.Proposition_16_16_3_3.PositiveBasics
 
 noncomputable section
 

@@ -1,5 +1,5 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap18.Definition_18_18_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap18.Definition_18_18_1_1
 
 /-!
 Support for Theorem 18-18.2-1, Serre part `(a)`: the "mixed characteristic realization" layer.

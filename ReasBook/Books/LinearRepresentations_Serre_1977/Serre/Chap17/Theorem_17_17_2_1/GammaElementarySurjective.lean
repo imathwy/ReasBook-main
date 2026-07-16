@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_2_1.GammaElementaryDescent
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_2_1.HindComplete
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_2_1.GammaElementaryDescent
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_2_1.HindComplete
 
 /-!
 # Theorem 17-17.2-1: induction from `Γ_K`-elementary subgroups is surjective (DVR framework)

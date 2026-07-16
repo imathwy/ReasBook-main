@@ -1,11 +1,11 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap01.Definition_1_1_2_1
-import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_3_4
-import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
-import LinearRepresentations_Serre_1977.Chap07.Exercise_7_7_2_5
-import LinearRepresentations_Serre_1977.Chap10.MonomialCharacter
-import LinearRepresentations_Serre_1977.Chap18.Remark_18_18_6_1
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_5.PointStabilizerBridge
+import LinearRepresentations_Serre_1977.Serre.Chap01.Definition_1_1_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap03.Theorem_3_3_3_4
+import LinearRepresentations_Serre_1977.Serre.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap07.Exercise_7_7_2_5
+import LinearRepresentations_Serre_1977.Serre.Chap10.MonomialCharacter
+import LinearRepresentations_Serre_1977.Serre.Chap18.Remark_18_18_6_1
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_6_5.PointStabilizerBridge
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

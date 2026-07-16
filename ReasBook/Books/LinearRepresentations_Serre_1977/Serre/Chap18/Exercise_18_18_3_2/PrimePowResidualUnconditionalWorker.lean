@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.BrauerResidualValuationInfraWorker
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.BrauerResidualValuationSourceProofWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.BrauerResidualValuationInfraWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.BrauerResidualValuationSourceProofWorker
 
 /-!
 Prime-power residual source boundary.

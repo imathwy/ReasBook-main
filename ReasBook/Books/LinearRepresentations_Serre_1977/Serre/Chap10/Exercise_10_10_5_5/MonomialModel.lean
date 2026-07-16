@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap10.Exercise_10_10_5_5.SupersolvableBridge
-import LinearRepresentations_Serre_1977.Chap10.MonomialCharacter
+import LinearRepresentations_Serre_1977.Serre.Chap10.Exercise_10_10_5_5.SupersolvableBridge
+import LinearRepresentations_Serre_1977.Serre.Chap10.MonomialCharacter
 
 noncomputable section
 

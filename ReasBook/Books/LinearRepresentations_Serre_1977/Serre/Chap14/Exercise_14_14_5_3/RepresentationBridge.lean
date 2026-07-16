@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_2
-import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_1
+import LinearRepresentations_Serre_1977.Serre.Chap14.Exercise_14_14_5_2
+import LinearRepresentations_Serre_1977.Serre.Chap14.Lemma_14_14_4_1
 import Mathlib.LinearAlgebra.Basis.VectorSpace
 import Mathlib.LinearAlgebra.PerfectPairing.Basic
 

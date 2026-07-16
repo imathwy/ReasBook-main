@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_4_6.EquivariantEndomorphismFreeness
+import LinearRepresentations_Serre_1977.Serre.Chap14.Exercise_14_14_4_6.EquivariantEndomorphismFreeness
 
 open scoped BigOperators MonoidAlgebra Representation TensorProduct
 open CategoryTheory

@@ -1,1 +1,1 @@
-import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_3_1.OrdinaryGrothendieckCharacter
+import LinearRepresentations_Serre_1977.Serre.Chap18.Theorem_18_18_3_1.OrdinaryGrothendieckCharacter

@@ -5,10 +5,10 @@ prevented `Theorem_12_12_6_2` from reusing the cyclic-descent infrastructure (Se
 Lemma 15).  The definitions below use nothing from `Theorem_12_12_6_2`.
 -/
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap07.Exercise_7_7_2_5
-import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1
-import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_4_2
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap07.Exercise_7_7_2_5
+import LinearRepresentations_Serre_1977.Serre.Chap11.Theorem_11_11_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap12.Corollary_12_12_4_2
+import LinearRepresentations_Serre_1977.Serre.Chap12.Proposition_12_12_1_1
 
 noncomputable section
 

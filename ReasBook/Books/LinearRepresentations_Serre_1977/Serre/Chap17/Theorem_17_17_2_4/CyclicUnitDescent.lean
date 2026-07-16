@@ -1,6 +1,6 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap09.Corollary_9_9_2_2
-import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap09.Corollary_9_9_2_2
+import LinearRepresentations_Serre_1977.Serre.Chap14.Proposition_14_14_1_1
 
 open scoped Representation TensorProduct
 open CategoryTheory

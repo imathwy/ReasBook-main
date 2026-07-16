@@ -1,6 +1,6 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_1
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_3
+import LinearRepresentations_Serre_1977.Serre.Chap10.Definition_10_10_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap12.Proposition_12_12_1_3
 -- `Serre.Chap12.Proposition_12_12_6_5` is intentionally not imported: it declares the *abbrev*
 -- `Representation.IsQuasisplitGroupAlgebra K G := R[K](G) = R̄[K](G)`, whose name now clashes with
 -- the homonymous *class* `Representation.IsQuasisplitGroupAlgebra` from
@@ -9,14 +9,14 @@ import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_3
 -- 'Representation.IsQuasisplitGroupAlgebra'" collision.  This file only used the abbrev as the
 -- `Fact`-wrapped quasisplitness hypothesis, so we spell that hypothesis out directly as
 -- `Fact (R[K](G) = R̄[K](G))` (definitionally the abbrev) and drop the import.
-import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
-import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1.FiniteRepScalarExtension
-import LinearRepresentations_Serre_1977.Chap16.Exercise_16_16_1_11
-import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_3.CharacterDescent
-import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_3.GrothendieckCharacter
-import LinearRepresentations_Serre_1977.Chap15.Proposition_15_15_5_1.MatrixPrimeToP
-import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_2
-import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Serre.Chap15.Definition_15_15_3_1.FiniteRepScalarExtension
+import LinearRepresentations_Serre_1977.Serre.Chap16.Exercise_16_16_1_11
+import LinearRepresentations_Serre_1977.Serre.Chap16.Corollary_16_16_1_3.CharacterDescent
+import LinearRepresentations_Serre_1977.Serre.Chap16.Corollary_16_16_1_3.GrothendieckCharacter
+import LinearRepresentations_Serre_1977.Serre.Chap15.Proposition_15_15_5_1.MatrixPrimeToP
+import LinearRepresentations_Serre_1977.Serre.Chap16.Theorem_16_16_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap16.Theorem_16_16_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

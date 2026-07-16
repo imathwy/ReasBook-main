@@ -1,7 +1,7 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_6
-import LinearRepresentations_Serre_1977.Chap17.Corollary_17_17_2_2.Index
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_2_4.ScalarMultipleDescent
+import LinearRepresentations_Serre_1977.Serre.Chap16.Corollary_16_16_1_6
+import LinearRepresentations_Serre_1977.Serre.Chap17.Corollary_17_17_2_2.Index
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_2_4.ScalarMultipleDescent
 
 open scoped MonoidAlgebra Representation TensorProduct
 open CategoryTheory

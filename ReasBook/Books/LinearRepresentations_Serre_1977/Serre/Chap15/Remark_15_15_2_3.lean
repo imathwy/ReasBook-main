@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Serre.Chap15.Theorem_15_15_2_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

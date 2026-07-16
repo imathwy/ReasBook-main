@@ -1,9 +1,9 @@
-import LinearRepresentations_Serre_1977.Chap04.Definition_4_9
-import LinearRepresentations_Serre_1977.Chap04.Definition_4_12
-import LinearRepresentations_Serre_1977.Chap04.Theorem_4_5
-import LinearRepresentations_Serre_1977.Chap04.Theorem_4_14
-import LinearRepresentations_Serre_1977.Chap04.Theorem_4_15
-import LinearRepresentations_Serre_1977.Chap04.Theorem_4_16
+import LinearRepresentations_Serre_1977.Serre.Chap04.Definition_4_9
+import LinearRepresentations_Serre_1977.Serre.Chap04.Definition_4_12
+import LinearRepresentations_Serre_1977.Serre.Chap04.Theorem_4_5
+import LinearRepresentations_Serre_1977.Serre.Chap04.Theorem_4_14
+import LinearRepresentations_Serre_1977.Serre.Chap04.Theorem_4_15
+import LinearRepresentations_Serre_1977.Serre.Chap04.Theorem_4_16
 import Mathlib.MeasureTheory.Group.Integral
 import Mathlib.MeasureTheory.Measure.Haar.Basic
 import Mathlib.RepresentationTheory.Character

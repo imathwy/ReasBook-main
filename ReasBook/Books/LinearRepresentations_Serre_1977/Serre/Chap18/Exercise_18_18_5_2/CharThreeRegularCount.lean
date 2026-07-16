@@ -1,6 +1,6 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_1
-import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.RegularConjClassCore
+import LinearRepresentations_Serre_1977.Serre.Chap10.Definition_10_10_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap18.Theorem_18_18_2_1.RegularConjClassCore
 
 -- The Fong–Swan import chain re-introduces the global `Field.henselian` instance, which makes
 -- typeclass search loop on local rings.  Disable it locally, mirroring the sibling files in this

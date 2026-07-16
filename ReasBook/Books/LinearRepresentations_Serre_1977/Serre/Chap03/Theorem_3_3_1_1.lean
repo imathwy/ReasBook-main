@@ -1,10 +1,10 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_4_2
-import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
-import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_4_2
-import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_4_3
-import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_4_4
-import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_5_3
+import LinearRepresentations_Serre_1977.Serre.Chap01.Theorem_1_1_4_2
+import LinearRepresentations_Serre_1977.Serre.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Serre.Chap02.Corollary_2_2_4_2
+import LinearRepresentations_Serre_1977.Serre.Chap02.Corollary_2_2_4_3
+import LinearRepresentations_Serre_1977.Serre.Chap02.Remark_2_2_4_4
+import LinearRepresentations_Serre_1977.Serre.Chap02.Theorem_2_2_5_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.CanonicalBrauerRowTransportWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.CanonicalBrauerRowTransportWorker
 
 /-!
 Worker B: source-side completion boundary for the direct Brauer-row route.

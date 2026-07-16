@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldRestriction
+import LinearRepresentations_Serre_1977.Serre.Chap12.CharacterRingOverFieldRestriction
 
 /-!
 This file now reuses the canonical restriction API from

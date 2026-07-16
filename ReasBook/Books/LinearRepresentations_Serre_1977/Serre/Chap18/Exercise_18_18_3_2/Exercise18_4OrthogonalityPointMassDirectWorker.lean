@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.BrauerBasisReadbackSourceFaithful
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.OrthogonalityResidualMicroWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.BrauerBasisReadbackSourceFaithful
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.OrthogonalityResidualMicroWorker
 
 /-!
 Direct Exercise `18.4` / orthogonality attempt for the point-mass row congruence.

@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.PrimeToPIndicatorBasisCoefficientWorker
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.PairingResidualDirectWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.PrimeToPIndicatorBasisCoefficientWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.PairingResidualDirectWorker
 
 /-!
 Coefficient-side completion helpers for the inverse prime-to-`p` indicator route.

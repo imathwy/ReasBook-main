@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_4_2
-import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_7_8.ScalarExtensionTransport
+import LinearRepresentations_Serre_1977.Serre.Chap12.Corollary_12_12_4_2
+import LinearRepresentations_Serre_1977.Serre.Chap12.Exercise_12_12_7_8.ScalarExtensionTransport
 
 open scoped Representation
 

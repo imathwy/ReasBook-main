@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.PointMassExplicitRowsSourceWorker
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.PointMassProjectiveRestrictionConstructionWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.PointMassExplicitRowsSourceWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.PointMassProjectiveRestrictionConstructionWorker
 
 /-!
 Full representative worker for the coordinate-normalized point-mass residual rows.

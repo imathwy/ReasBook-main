@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.ResidualClassSumAValuedCompletionWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.ResidualClassSumAValuedCompletionWorker
 
 /-!
 Source-side audit for the residual class-sum `A`-valued blocker.

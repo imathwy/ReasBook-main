@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.LinearAlgebra.TensorProduct.RightExactness
-import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_2
-import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_3_1
-import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3.SplitExactBridge
+import LinearRepresentations_Serre_1977.Serre.Chap14.Lemma_14_14_4_2
+import LinearRepresentations_Serre_1977.Serre.Chap14.Proposition_14_14_3_1
+import LinearRepresentations_Serre_1977.Serre.Chap14.Corollary_14_14_4_3.SplitExactBridge
 
 noncomputable section
 

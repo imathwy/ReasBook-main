@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.PointwiseSourceDivisibilityWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.PointwiseSourceDivisibilityWorker
 
 /-!
 Worker H direct source-side bridges for the pointwise divisibility input.

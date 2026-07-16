@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_14.Obstruction
+import LinearRepresentations_Serre_1977.Serre.Chap13.Exercise_13_13_1_14.Obstruction
 
 noncomputable section
 

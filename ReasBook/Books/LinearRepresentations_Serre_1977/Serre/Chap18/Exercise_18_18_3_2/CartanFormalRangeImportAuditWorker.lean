@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.ProjectiveCartanCoordinateSpanProducer
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.CartanRingEquivTransport
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.ProjectiveCartanCoordinateSpanProducer
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.CartanRingEquivTransport
 
 /-!
 Import-cycle audit for the support theorem at `CartanFormalRange.lean:43`.

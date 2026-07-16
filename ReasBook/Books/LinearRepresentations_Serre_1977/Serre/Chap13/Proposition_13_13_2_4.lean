@@ -1,8 +1,8 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.RepresentationTheory.GroupFunctionPairing
-import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1
-import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_1_3
-import LinearRepresentations_Serre_1977.Chap13.Proposition_13_13_2_3
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.GroupFunctionPairing
+import LinearRepresentations_Serre_1977.Serre.Chap11.Theorem_11_11_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap02.Proposition_2_2_1_3
+import LinearRepresentations_Serre_1977.Serre.Chap13.Proposition_13_13_2_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

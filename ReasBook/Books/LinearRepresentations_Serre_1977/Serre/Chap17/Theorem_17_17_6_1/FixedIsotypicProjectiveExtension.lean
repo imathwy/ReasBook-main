@@ -1,6 +1,6 @@
 import Mathlib.GroupTheory.Index
-import LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_5_4
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_6_1.FixedIsotypicCoverAction
+import LinearRepresentations_Serre_1977.Serre.Chap06.Corollary_6_6_5_4
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_6_1.FixedIsotypicCoverAction
 
 universe u v w x
 

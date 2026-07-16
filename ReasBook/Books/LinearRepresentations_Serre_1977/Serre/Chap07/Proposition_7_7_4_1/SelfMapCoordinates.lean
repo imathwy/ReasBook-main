@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_4_1.MackeySeedTransport
+import LinearRepresentations_Serre_1977.Serre.Chap07.Proposition_7_7_4_1.MackeySeedTransport
 
 noncomputable section
 

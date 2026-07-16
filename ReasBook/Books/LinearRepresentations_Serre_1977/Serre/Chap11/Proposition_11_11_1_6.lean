@@ -1,6 +1,6 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_6_4
-import LinearRepresentations_Serre_1977.Chap11.Remark_11_11_1_3.RestrictionFamily
+import LinearRepresentations_Serre_1977.Serre.Chap12.Proposition_12_12_6_4
+import LinearRepresentations_Serre_1977.Serre.Chap11.Remark_11_11_1_3.RestrictionFamily
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

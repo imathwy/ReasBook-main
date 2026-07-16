@@ -1,5 +1,5 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Serre.Chap02.Theorem_2_2_3_5
 
 noncomputable section
 universe u

@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap04.Theorem_4_5
+import LinearRepresentations_Serre_1977.Serre.Chap04.Theorem_4_5
 import Mathlib.Analysis.Complex.Tietze
 import Mathlib.MeasureTheory.Function.LpSpace.ContinuousFunctions
 import Mathlib.MeasureTheory.Function.L2Space

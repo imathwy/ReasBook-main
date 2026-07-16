@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.RepresentationTheory.Intertwining
-import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_1
-import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Serre.Chap14.Lemma_14_14_4_1
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.RealizableOver
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

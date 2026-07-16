@@ -1,7 +1,7 @@
-import LinearRepresentations_Serre_1977.Chap02.Exercise_2_2_6_3
-import LinearRepresentations_Serre_1977.Chap04.Lemma_4_22
-import LinearRepresentations_Serre_1977.Chap04.Proposition_4_27
-import LinearRepresentations_Serre_1977.Chap04.Theorem_4_33
+import LinearRepresentations_Serre_1977.Serre.Chap02.Exercise_2_2_6_3
+import LinearRepresentations_Serre_1977.Serre.Chap04.Lemma_4_22
+import LinearRepresentations_Serre_1977.Serre.Chap04.Proposition_4_27
+import LinearRepresentations_Serre_1977.Serre.Chap04.Theorem_4_33
 
 noncomputable section
 

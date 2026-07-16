@@ -1,10 +1,10 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1.TensorCharacterBridge
-import LinearRepresentations_Serre_1977.RepresentationTheory.GroupFunctionPairing
-import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_1_2
-import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_4_4
-import LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_5_7
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap11.Theorem_11_11_2_1.TensorCharacterBridge
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.GroupFunctionPairing
+import LinearRepresentations_Serre_1977.Serre.Chap02.Proposition_2_2_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap02.Remark_2_2_4_4
+import LinearRepresentations_Serre_1977.Serre.Chap06.Exercise_6_6_5_7
+import LinearRepresentations_Serre_1977.Serre.Chap12.Proposition_12_12_1_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

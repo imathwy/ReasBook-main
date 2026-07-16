@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap18.Remark_18_18_6_1
+import LinearRepresentations_Serre_1977.Serre.Chap18.Remark_18_18_6_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

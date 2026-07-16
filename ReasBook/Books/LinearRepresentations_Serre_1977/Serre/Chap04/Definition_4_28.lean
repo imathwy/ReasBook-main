@@ -2,7 +2,7 @@ import Mathlib.Analysis.InnerProductSpace.Subspace
 import Mathlib.Analysis.Normed.Group.Submodule
 import Mathlib.MeasureTheory.Function.L2Space
 import Mathlib.MeasureTheory.Measure.Haar.Unique
-import LinearRepresentations_Serre_1977.Chap04.Theorem_4_5
+import LinearRepresentations_Serre_1977.Serre.Chap04.Theorem_4_5
 import Mathlib.Topology.Algebra.Module.ClosedSubmodule
 
 -- Declarations for this item will be appended below by the statement pipeline.

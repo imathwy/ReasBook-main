@@ -1,5 +1,5 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap09.Theorem_9_9_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap09.Theorem_9_9_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap03.Lemma_3_3_3_2
+import LinearRepresentations_Serre_1977.Serre.Chap03.Lemma_3_3_3_2
 import Mathlib.CategoryTheory.Yoneda
 
 open CategoryTheory Rep

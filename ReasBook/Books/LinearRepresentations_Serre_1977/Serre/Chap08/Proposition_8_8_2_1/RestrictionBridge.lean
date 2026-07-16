@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap03.Lemma_3_3_3_2
+import LinearRepresentations_Serre_1977.Serre.Chap03.Lemma_3_3_3_2
 
 /-!
 This wrapper keeps the Proposition `8-8.2-1` import path stable while delegating the induced

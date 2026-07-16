@@ -1,10 +1,10 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap03.Exercise_3_3_3_6
-import LinearRepresentations_Serre_1977.Chap08.Definition_8_8_3_2
-import LinearRepresentations_Serre_1977.Chap08.Exercise_8_8_3_9
-import LinearRepresentations_Serre_1977.Chap08.Lemma_8_8_5_1
-import LinearRepresentations_Serre_1977.Chap08.Proposition_8_8_1_1
-import LinearRepresentations_Serre_1977.Chap08.Remark_8_8_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap03.Exercise_3_3_3_6
+import LinearRepresentations_Serre_1977.Serre.Chap08.Definition_8_8_3_2
+import LinearRepresentations_Serre_1977.Serre.Chap08.Exercise_8_8_3_9
+import LinearRepresentations_Serre_1977.Serre.Chap08.Lemma_8_8_5_1
+import LinearRepresentations_Serre_1977.Serre.Chap08.Proposition_8_8_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap08.Remark_8_8_1_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.EisensteinAdjoinRootPackage
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.EisensteinAdjoinRootPackage
 
 /-!
 # Exercise 18-18.3-2: the full mixed-characteristic model with enough roots of unity

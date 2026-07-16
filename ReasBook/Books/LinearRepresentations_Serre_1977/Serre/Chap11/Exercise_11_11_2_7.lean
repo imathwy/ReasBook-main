@@ -1,9 +1,9 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap09.Proposition_9_9_4_2
-import LinearRepresentations_Serre_1977.Chap09.Corollary_9_9_2_2
-import LinearRepresentations_Serre_1977.Chap09.Theorem_9_9_2_1
-import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1
-import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_2
+import LinearRepresentations_Serre_1977.Serre.Chap09.Proposition_9_9_4_2
+import LinearRepresentations_Serre_1977.Serre.Chap09.Corollary_9_9_2_2
+import LinearRepresentations_Serre_1977.Serre.Chap09.Theorem_9_9_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap11.Theorem_11_11_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap11.Theorem_11_11_2_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

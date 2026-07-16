@@ -1,7 +1,7 @@
 import Mathlib.MeasureTheory.Function.L2Space
 import Mathlib.RepresentationTheory.Character
-import LinearRepresentations_Serre_1977.Chap04.Definition_4_9
-import LinearRepresentations_Serre_1977.Chap04.Example_4_7
+import LinearRepresentations_Serre_1977.Serre.Chap04.Definition_4_9
+import LinearRepresentations_Serre_1977.Serre.Chap04.Example_4_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

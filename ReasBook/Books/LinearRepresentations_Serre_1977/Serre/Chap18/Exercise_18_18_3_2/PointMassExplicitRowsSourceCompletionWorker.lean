@@ -1,6 +1,6 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.PointMassResidualFullRepresentativeWorker
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.RegularValueSourceCompletion
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.Serre18_5ASupportValueCriterionWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.PointMassResidualFullRepresentativeWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.RegularValueSourceCompletion
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.Serre18_5ASupportValueCriterionWorker
 
 /-!
 Completion helpers for the source-side support/value route of Serre `18.5(a)`.

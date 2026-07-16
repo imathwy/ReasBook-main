@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap04.Definition_4_9
-import LinearRepresentations_Serre_1977.Chap04.Theorem_4_5
+import LinearRepresentations_Serre_1977.Serre.Chap04.Definition_4_9
+import LinearRepresentations_Serre_1977.Serre.Chap04.Theorem_4_5
 import Mathlib.Analysis.InnerProductSpace.Subspace
 import Mathlib.MeasureTheory.Function.L2Space
 import Mathlib.MeasureTheory.Group.Measure

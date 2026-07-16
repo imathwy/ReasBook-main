@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.ExplicitResidualBasisAlgebraWorker
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.ExplicitResidualPairingSumWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.ExplicitResidualBasisAlgebraWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.ExplicitResidualPairingSumWorker
 
 /-!
 Brauer basis-entry congruence frontier for the point-mass residual route.

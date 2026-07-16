@@ -1,7 +1,7 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
-import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_5.SubgroupInduction
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_2_1.DecompositionInductionBridge
+import LinearRepresentations_Serre_1977.Serre.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Serre.Chap16.Theorem_16_16_1_5.SubgroupInduction
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_2_1.DecompositionInductionBridge
 
 /-!
 # The induced stable lattice (part 1 of the induced-lattice/reduction bridge `hind`)

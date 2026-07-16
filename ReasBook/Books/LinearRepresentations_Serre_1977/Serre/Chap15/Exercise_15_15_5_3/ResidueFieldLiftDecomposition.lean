@@ -1,6 +1,6 @@
-import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_5_3.ResidueFieldLift
-import LinearRepresentations_Serre_1977.Chap15.Proposition_15_15_5_1.ReductionMkQ
-import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Serre.Chap15.Exercise_15_15_5_3.ResidueFieldLift
+import LinearRepresentations_Serre_1977.Serre.Chap15.Proposition_15_15_5_1.ReductionMkQ
+import LinearRepresentations_Serre_1977.Serre.Chap15.Theorem_15_15_2_2
 
 noncomputable section
 

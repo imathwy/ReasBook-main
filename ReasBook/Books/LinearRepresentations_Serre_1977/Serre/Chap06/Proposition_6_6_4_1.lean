@@ -1,5 +1,5 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap06.Remark_6_6_4_4
+import LinearRepresentations_Serre_1977.Serre.Chap06.Remark_6_6_4_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

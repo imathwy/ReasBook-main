@@ -1,8 +1,8 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_2
-import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_2
-import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1.TensorCharacterBridge
+import LinearRepresentations_Serre_1977.Serre.Chap10.Theorem_10_10_5_2
+import LinearRepresentations_Serre_1977.Serre.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Serre.Chap12.Proposition_12_12_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap11.Theorem_11_11_2_1.TensorCharacterBridge
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

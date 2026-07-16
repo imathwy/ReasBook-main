@@ -1,9 +1,9 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.RealizationCore
-import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.KSideSpanning
-import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.CommutatorFrobenius
-import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.MixedRealizationAssembly
-import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.FiniteTransportCore
+import LinearRepresentations_Serre_1977.Serre.Chap18.Theorem_18_18_2_1.RealizationCore
+import LinearRepresentations_Serre_1977.Serre.Chap18.Theorem_18_18_2_1.KSideSpanning
+import LinearRepresentations_Serre_1977.Serre.Chap18.Theorem_18_18_2_1.CommutatorFrobenius
+import LinearRepresentations_Serre_1977.Serre.Chap18.Theorem_18_18_2_1.MixedRealizationAssembly
+import LinearRepresentations_Serre_1977.Serre.Chap18.Theorem_18_18_2_1.FiniteTransportCore
 
 /-!
 Assembly of Serre part `(b)` of Theorem 18-18.2-1.

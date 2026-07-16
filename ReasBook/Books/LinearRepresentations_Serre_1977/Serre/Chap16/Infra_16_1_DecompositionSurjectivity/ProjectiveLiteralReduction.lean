@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap15.Proposition_15_15_5_1.ProjectiveLiteralReduction
+import LinearRepresentations_Serre_1977.Serre.Chap15.Proposition_15_15_5_1.ProjectiveLiteralReduction
 
 noncomputable section
 

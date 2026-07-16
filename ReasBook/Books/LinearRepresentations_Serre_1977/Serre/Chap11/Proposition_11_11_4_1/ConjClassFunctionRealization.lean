@@ -1,6 +1,6 @@
-import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_1.OwnersAndPrimeFibers
-import LinearRepresentations_Serre_1977.Chap09.Theorem_9_9_2_1
-import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_2
+import LinearRepresentations_Serre_1977.Serre.Chap11.Proposition_11_11_4_1.OwnersAndPrimeFibers
+import LinearRepresentations_Serre_1977.Serre.Chap09.Theorem_9_9_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap11.Theorem_11_11_2_2
 
 -- Stable conjugacy-class function-ring realization helpers extracted from Proposition 11-11.4-1.
 

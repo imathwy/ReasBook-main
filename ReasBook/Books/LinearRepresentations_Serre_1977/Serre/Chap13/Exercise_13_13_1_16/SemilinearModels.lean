@@ -1,6 +1,6 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_16.GammaActions
-import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_15
+import LinearRepresentations_Serre_1977.Serre.Chap13.Exercise_13_13_1_16.GammaActions
+import LinearRepresentations_Serre_1977.Serre.Chap13.Exercise_13_13_1_15
 
 open CategoryTheory
 open IsCyclotomicExtension.Rat

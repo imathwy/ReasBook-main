@@ -1,7 +1,7 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_2_1
-import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_5_3.MaximalIdealPowSquareZero
-import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_5_3.TransitionLiftBridge
+import LinearRepresentations_Serre_1977.Serre.Chap15.Definition_15_15_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap15.Exercise_15_15_5_3.MaximalIdealPowSquareZero
+import LinearRepresentations_Serre_1977.Serre.Chap15.Exercise_15_15_5_3.TransitionLiftBridge
 
 open scoped MonoidAlgebra
 

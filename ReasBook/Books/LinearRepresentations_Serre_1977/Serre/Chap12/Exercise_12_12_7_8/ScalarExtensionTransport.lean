@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap12.GaloisPowerClasses
+import LinearRepresentations_Serre_1977.Serre.Chap12.GaloisPowerClasses
 
 open scoped Representation
 

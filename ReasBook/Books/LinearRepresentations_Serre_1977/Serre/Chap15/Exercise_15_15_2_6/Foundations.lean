@@ -1,8 +1,8 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
-import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_2_1
-import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_2_5
-import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Serre.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Serre.Chap15.Definition_15_15_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap15.Exercise_15_15_2_5
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.RealizableOver
 
 noncomputable section
 

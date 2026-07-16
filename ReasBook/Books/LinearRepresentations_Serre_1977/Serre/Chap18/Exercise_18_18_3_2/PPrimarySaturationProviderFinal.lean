@@ -1,7 +1,7 @@
-import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_3_1
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.CartanCokernelSaturation
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.CartanCoordinateRangeGenerators
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.CartanPPrimaryBridge
+import LinearRepresentations_Serre_1977.Serre.Chap18.Theorem_18_18_3_1
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.CartanCokernelSaturation
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.CartanCoordinateRangeGenerators
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.CartanPPrimaryBridge
 
 /-!
 Negative bridge for the attempted Theorem 35' route.

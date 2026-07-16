@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.Serre18_5ASupportValueCriterionWorker
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.SupportValueToFormalRangeWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.Serre18_5ASupportValueCriterionWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.SupportValueToFormalRangeWorker
 
 /-!
 Direct support/value boundary for the Cartan formal range target.

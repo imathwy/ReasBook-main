@@ -1,6 +1,6 @@
-import LinearRepresentations_Serre_1977.Chap18.Proposition_18_18_1_2
-import LinearRepresentations_Serre_1977.Chap17.Corollary_17_17_2_2
-import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_3_4
+import LinearRepresentations_Serre_1977.Serre.Chap18.Proposition_18_18_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap17.Corollary_17_17_2_2
+import LinearRepresentations_Serre_1977.Serre.Chap03.Theorem_3_3_3_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

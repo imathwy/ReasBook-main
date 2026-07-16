@@ -1,6 +1,6 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_2_1
-import LinearRepresentations_Serre_1977.Chap08.Corollary_8_8_3_8
+import LinearRepresentations_Serre_1977.Serre.Chap06.Proposition_6_6_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap08.Corollary_8_8_3_8
 
 noncomputable section
 

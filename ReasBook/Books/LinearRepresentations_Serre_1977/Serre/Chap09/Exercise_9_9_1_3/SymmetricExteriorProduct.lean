@@ -1,8 +1,8 @@
 import Mathlib.RingTheory.TensorProduct.Basic
 import Mathlib.RingTheory.Flat.FaithfullyFlat.Algebra
-import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_3.ExteriorDeterminants
-import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_3.SymmetricBaseChangeFinrank
-import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_3.CharacterSeriesDefs
+import LinearRepresentations_Serre_1977.Serre.Chap09.Exercise_9_9_1_3.ExteriorDeterminants
+import LinearRepresentations_Serre_1977.Serre.Chap09.Exercise_9_9_1_3.SymmetricBaseChangeFinrank
+import LinearRepresentations_Serre_1977.Serre.Chap09.Exercise_9_9_1_3.CharacterSeriesDefs
 
 open scoped Representation
 open scoped TensorProduct

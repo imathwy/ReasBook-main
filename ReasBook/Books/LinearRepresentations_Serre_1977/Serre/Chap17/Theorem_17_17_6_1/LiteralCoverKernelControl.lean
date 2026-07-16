@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_6_1.SameFiberScalarAdjustments
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_6_1.SameFiberScalarAdjustments
 
 /-!
 This module contains the source-faithful kernel control for Serre's literal determinant cover.

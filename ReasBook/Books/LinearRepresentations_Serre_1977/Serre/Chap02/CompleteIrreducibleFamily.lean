@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap03.Theorem_3_3_2_1
 import Mathlib.RepresentationTheory.FDRep
 
 -- Declarations for this item will be appended below by the statement pipeline.

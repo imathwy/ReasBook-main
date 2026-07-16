@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap08.Proposition_8_8_2_1.InductionBridge
+import LinearRepresentations_Serre_1977.Serre.Chap08.Proposition_8_8_2_1.InductionBridge
 
 open CategoryTheory
 

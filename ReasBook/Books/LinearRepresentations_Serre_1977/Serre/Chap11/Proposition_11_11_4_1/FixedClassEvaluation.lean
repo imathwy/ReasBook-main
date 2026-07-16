@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_1
-import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_1.ConjClassFunctionRealization
+import LinearRepresentations_Serre_1977.Serre.Chap06.Proposition_6_6_5_1
+import LinearRepresentations_Serre_1977.Serre.Chap11.Proposition_11_11_4_1.ConjClassFunctionRealization
 
 -- Stable fixed-class evaluation helpers extracted from Proposition 11-11.4-1.
 

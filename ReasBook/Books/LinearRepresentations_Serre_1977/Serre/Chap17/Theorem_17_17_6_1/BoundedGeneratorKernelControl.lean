@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_6_1.LiteralCoverKernelControl
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_6_1.LiteralCoverKernelControl
 
 /-!
 This module remains as the dependency-order bridge to the fixed-isotypic cover-action layer. The

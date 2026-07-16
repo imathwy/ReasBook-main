@@ -1,5 +1,5 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_2_6.PrimeLocalizationBridge
+import LinearRepresentations_Serre_1977.Serre.Chap15.Exercise_15_15_2_6.PrimeLocalizationBridge
 
 noncomputable section
 

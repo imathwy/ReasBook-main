@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap16.Proposition_16_16_4_1.MatrixUnitBridge
+import LinearRepresentations_Serre_1977.Serre.Chap16.Proposition_16_16_4_1.MatrixUnitBridge
 
 noncomputable section
 

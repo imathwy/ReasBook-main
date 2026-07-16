@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.FixedRowReadbackCompletionWorker
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.SupportValueResidualRowsDirectWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.FixedRowReadbackCompletionWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.SupportValueResidualRowsDirectWorker
 
 /-!
 Source proof for the fixed-row projective-envelope pairing functional readout.

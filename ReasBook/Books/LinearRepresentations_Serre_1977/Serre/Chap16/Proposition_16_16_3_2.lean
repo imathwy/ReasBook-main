@@ -1,8 +1,8 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap16.Lemma_16_16_3_1
-import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_2
-import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_2_1
-import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_2_2
+import LinearRepresentations_Serre_1977.Serre.Chap16.Lemma_16_16_3_1
+import LinearRepresentations_Serre_1977.Serre.Chap16.Theorem_16_16_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap16.Theorem_16_16_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap16.Theorem_16_16_2_2
 
 noncomputable section
 

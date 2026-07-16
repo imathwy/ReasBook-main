@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.CentralizerUnitDenominatorWorker
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.PairingFunctionalPointMassRowWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.CentralizerUnitDenominatorWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.PairingFunctionalPointMassRowWorker
 
 /-!
 Pairing-functional readout completion boundary.

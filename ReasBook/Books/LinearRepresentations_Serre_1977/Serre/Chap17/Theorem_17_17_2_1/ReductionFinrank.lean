@@ -1,5 +1,5 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap15.Definition_15_15_2_1
 
 /-!
 # Dimension of the reduction of a stable lattice

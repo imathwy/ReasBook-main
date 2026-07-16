@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_5.GeneratorFieldModel
+import LinearRepresentations_Serre_1977.Serre.Chap12.Lemma_12_12_7_5.GeneratorFieldModel
 
 open Representation
 open scoped Pointwise Representation

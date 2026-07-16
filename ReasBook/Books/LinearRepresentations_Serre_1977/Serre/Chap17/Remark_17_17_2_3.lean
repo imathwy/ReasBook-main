@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap17.Corollary_17_17_2_2
+import LinearRepresentations_Serre_1977.Serre.Chap17.Corollary_17_17_2_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

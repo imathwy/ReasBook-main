@@ -1,6 +1,6 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_2_1.CharacterGrothendieck
-import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_6_2
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_2_1.CharacterGrothendieck
+import LinearRepresentations_Serre_1977.Serre.Chap12.Theorem_12_12_6_2
 
 /-!
 # Characteristic-zero Brauer induction in the Grothendieck group

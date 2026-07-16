@@ -1,6 +1,6 @@
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_6_1.QuotientStepReduction
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_6_1.QuotientHeightRecursion
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_6_1.HallKernelCliffordSplit
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_6_1.QuotientStepReduction
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_6_1.QuotientHeightRecursion
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_6_1.HallKernelCliffordSplit
 
 universe u v w x
 

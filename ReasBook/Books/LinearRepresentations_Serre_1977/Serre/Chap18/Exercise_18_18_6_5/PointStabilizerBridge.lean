@@ -1,8 +1,8 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_4
+import LinearRepresentations_Serre_1977.Serre.Chap12.Exercise_12_12_2_4
 -- `a4_quotient_by_kleinFour_card` is owned (public) by Exercise 12.2.3; the copy in 12.2.4 is
 -- privatized (dedup), so import the owner to consume it here.
-import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_3
+import LinearRepresentations_Serre_1977.Serre.Chap12.Exercise_12_12_2_3
 
 noncomputable section
 

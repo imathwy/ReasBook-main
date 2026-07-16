@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap16.Exercise_16_16_3_9.ModSevenDegree
+import LinearRepresentations_Serre_1977.Serre.Chap16.Exercise_16_16_3_9.ModSevenDegree
 
 open scoped TensorProduct
 

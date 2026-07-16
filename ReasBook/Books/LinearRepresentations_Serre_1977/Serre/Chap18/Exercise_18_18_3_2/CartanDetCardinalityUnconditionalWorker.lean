@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.CartanCoordinateDivisibilityClosureWorker
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.CartanCokernelProductSourceProof
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.CartanCoordinateDivisibilityClosureWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.CartanCokernelProductSourceProof
 
 /-!
 Determinant/cardinality packaging below the remaining regular-value source input.

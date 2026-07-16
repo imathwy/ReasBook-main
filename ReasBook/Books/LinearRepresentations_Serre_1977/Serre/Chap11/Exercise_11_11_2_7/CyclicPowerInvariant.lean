@@ -1,8 +1,8 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap09.Proposition_9_9_4_2
-import LinearRepresentations_Serre_1977.Chap09.Theorem_9_9_2_1
-import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_1_2
-import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_2
+import LinearRepresentations_Serre_1977.Serre.Chap09.Proposition_9_9_4_2
+import LinearRepresentations_Serre_1977.Serre.Chap09.Theorem_9_9_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap11.Theorem_11_11_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap11.Theorem_11_11_2_2
 
 -- Stable cyclic restriction helpers extracted from Exercise 11-11.2-7.
 

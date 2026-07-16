@@ -1,6 +1,6 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
-import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Serre.Chap02.Theorem_2_2_3_5
 
 /-!
 # Defining a representation over a finite Galois subextension (Brick 2, step G2)

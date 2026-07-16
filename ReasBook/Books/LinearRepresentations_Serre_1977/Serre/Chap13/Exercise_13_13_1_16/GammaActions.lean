@@ -1,7 +1,7 @@
 import Mathlib
 import LinearRepresentations_Serre_1977.GroupTheory.ConjClassesPower
-import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_4_1.GaloisPowerAction
-import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_4_1.GammaSubgroupAction
+import LinearRepresentations_Serre_1977.Serre.Chap12.Theorem_12_12_4_1.GaloisPowerAction
+import LinearRepresentations_Serre_1977.Serre.Chap12.Theorem_12_12_4_1.GammaSubgroupAction
 
 open CategoryTheory
 open IsCyclotomicExtension.Rat

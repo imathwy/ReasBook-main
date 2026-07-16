@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap16.Exercise_16_16_2_3.LocalTraceVanishing
+import LinearRepresentations_Serre_1977.Serre.Chap16.Exercise_16_16_2_3.LocalTraceVanishing
 
 noncomputable section
 

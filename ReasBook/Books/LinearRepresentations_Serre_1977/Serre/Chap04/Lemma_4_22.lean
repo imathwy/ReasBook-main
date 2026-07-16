@@ -2,9 +2,9 @@ import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
 import Mathlib.MeasureTheory.Group.Integral
 import Mathlib.RepresentationTheory.Irreducible
-import LinearRepresentations_Serre_1977.Chap04.Definition_4_9
-import LinearRepresentations_Serre_1977.Chap04.Proposition_4_21
-import LinearRepresentations_Serre_1977.Chap04.Theorem_4_5
+import LinearRepresentations_Serre_1977.Serre.Chap04.Definition_4_9
+import LinearRepresentations_Serre_1977.Serre.Chap04.Proposition_4_21
+import LinearRepresentations_Serre_1977.Serre.Chap04.Theorem_4_5
 
 noncomputable section
 

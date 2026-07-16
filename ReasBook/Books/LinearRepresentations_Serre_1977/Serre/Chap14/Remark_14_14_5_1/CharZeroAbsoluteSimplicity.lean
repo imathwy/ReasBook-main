@@ -1,8 +1,8 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_2_1.ScaledCharacterPacket
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_3
-import LinearRepresentations_Serre_1977.Chap12.SplittingFieldOfEnoughRoots
-import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.CharacterBasisCoefficients
+import LinearRepresentations_Serre_1977.Serre.Chap12.Proposition_12_12_2_1.ScaledCharacterPacket
+import LinearRepresentations_Serre_1977.Serre.Chap12.Proposition_12_12_1_3
+import LinearRepresentations_Serre_1977.Serre.Chap12.SplittingFieldOfEnoughRoots
+import LinearRepresentations_Serre_1977.Serre.Chap12.Exercise_12_12_2_6.CharacterBasisCoefficients
 
 /-!
 # Absolute simplicity over a char-`0` splitting field

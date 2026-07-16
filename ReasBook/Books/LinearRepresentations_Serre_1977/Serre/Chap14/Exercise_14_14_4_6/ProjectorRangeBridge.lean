@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_4_6.RestrictedEndomorphismBaseChange
+import LinearRepresentations_Serre_1977.Serre.Chap14.Exercise_14_14_4_6.RestrictedEndomorphismBaseChange
 
 open scoped BigOperators MonoidAlgebra Representation TensorProduct
 open CategoryTheory

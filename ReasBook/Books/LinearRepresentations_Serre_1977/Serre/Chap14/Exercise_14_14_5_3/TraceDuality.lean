@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_3.FiniteFreeAverage
+import LinearRepresentations_Serre_1977.Serre.Chap14.Exercise_14_14_5_3.FiniteFreeAverage
 
 open scoped MonoidAlgebra
 

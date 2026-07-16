@@ -1,5 +1,5 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap16.Infra_16_1_DecompositionSurjectivity
+import LinearRepresentations_Serre_1977.Serre.Chap16.Infra_16_1_DecompositionSurjectivity
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
