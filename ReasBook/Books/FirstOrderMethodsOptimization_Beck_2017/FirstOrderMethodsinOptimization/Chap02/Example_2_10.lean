@@ -1,4 +1,4 @@
-import FirstOrderMethodsOptimization_Beck_2017.Chap02.Proposition_2_13
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap02.Proposition_2_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

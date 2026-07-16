@@ -1,13 +1,14 @@
 import Mathlib
-import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_30
-import FirstOrderMethodsOptimization_Beck_2017.Chap03.Definition_3_7
-import FirstOrderMethodsOptimization_Beck_2017.Chap03.Definition_3_10
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Definition_12_14
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Definition_12_15
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Definition_12_17
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Algorithm_12_15
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Lemma_12_7
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Lemma_12_15
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap06.Theorem_6_30
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap03.Definition_3_7
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap03.Definition_3_10
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Definition_12_14
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Definition_12_15
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Definition_12_17
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Algorithm_12_15
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Lemma_12_7
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Lemma_12_15
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Theorem_12_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -247,7 +248,7 @@ lemma dual_value_mem_finite_domain_of_mem_effective_domain_separable_dual
         change (((InnerProductSpace.toDual ℝ E) ((InnerProductSpace.toDual ℝ E).symm φc)) :
             StrongDual ℝ E) x = φ x
         have hsymm := (InnerProductSpace.toDual ℝ E).apply_symm_apply φc
-        simpa using congrArg (fun ψ : StrongDual ℝ E => ψ x) hsymm
+        exact congrArg (fun ψ : StrongDual ℝ E => ψ x) hsymm
       refine ⟨-((InnerProductSpace.toDual ℝ E).symm φc), ?_⟩
       simpa [G, mem_effective_domain, conjugate_function_primal_apply, hφ_repr] using hφ
   have hb_ne_bot : separableSum G v ≠ ⊥ := by
@@ -806,6 +807,7 @@ lemma dual_gap_toReal_eq_of_mem_finite_domain
   -- With both endpoints finite, `EReal.toReal_sub` gives the scalar dual-gap identity directly.
   rw [EReal.toReal_sub hqOpt_ne_top hqOpt_ne_bot hyBar_ne_top hyBar_ne_bot]
 
+set_option maxHeartbeats 800000 in
 /-- Helper for Theorem 12.17: every iterate of the cyclic dual block proximal-gradient trajectory
 stays in the finite domain of the source-facing dual objective `q`. -/
 lemma cyclic_dbpg_dual_iterate_mem_finite_domain
@@ -826,40 +828,60 @@ lemma cyclic_dbpg_dual_iterate_mem_finite_domain
           y (n + 1) ∈ dual_block_proximal_gradient_primal_y_step g σ (x n) (y n) i := by
         -- Read the source trajectory at step `n` and keep only the block-update clause.
         simpa [i] using (is_dual_block_proximal_gradient_primal_trajectory_step h_traj n).2
-      have hdual_step :
-          y (n + 1) ∈
-            dual_block_proximal_gradient_dual_step
-              (fun j z ↦ ((g j)∗) (-z))
-              (∇ fun z : E ↦ (((f∗) z).toReal))
-              σ
-              i
-              (y n) := by
+      have hx_argmax :
+          x n ∈ dual_proximal_gradient_primal_x_argmax
+            f LinearMap.id (∑ j : Fin p, y n j) :=
+        (is_dual_block_proximal_gradient_primal_trajectory_step h_traj n).1
+      have hsingle :
+          IsDualBasedProximalGradientProblem f (g i) LinearMap.id σ := by
+        refine
+          { toIsProperExtendedRealFunction := h_problem.toIsProperExtendedRealFunction
+            f_closed := h_problem.f_closed
+            f_strongly_convex := h_problem.f_strongly_convex
+            g_proper := h_problem.g_proper i
+            g_closed := h_problem.g_closed i
+            g_convex := h_problem.g_convex i
+            qualification := ?_ }
+        rcases h_problem.exists_mem_intrinsicInterior with ⟨xHat, hxf, hg⟩
+        exact ⟨xHat, hxf, by simpa using hg i⟩
+      have hx_eq :
+          x n = gradient (fun z : E ↦ ((f∗) z).toReal) (∑ j : Fin p, y n j) := by
+        have hsub :
+            Module.Dual.eval ℝ E (x n) ∈
+              subdifferential (conjugate_function f)
+                (InnerProductSpace.toDualMap ℝ E (∑ j : Fin p, y n j)) := by
+          exact
+            eval_mem_conjugate_subdifferential_of_mem_dual_primal_x_argmax
+              (E := E) (V := E) (f := f) (g := g i) (A := LinearMap.id) (σ := σ)
+              hsingle hx_argmax
+        exact
+          conjugate_subgradient_eval_eq_gradient_point
+            (E := E) (V := E) (f := f) (g := g i) (A := LinearMap.id) (σ := σ)
+            hsingle hsub
+      have hprimal_step_grad :
+          y (n + 1) ∈ dual_block_proximal_gradient_primal_y_step g σ
+            (gradient (fun z : E ↦ ((f∗) z).toReal) (∑ j : Fin p, y n j)) (y n) i := by
+        simpa [hx_eq] using hprimal_step
+      have hdual_step :=
         -- Route correction: pass through Lemma 12.15 so the active block is controlled by the
         -- canonical dual-step owner on the minimization view.
-        exact
-          (dual_block_proximal_gradient_dual_step_iff_mem_dual_block_proximal_gradient_primal_y_step
-            (f := f)
-            (g := g)
-            (σ := σ)
-            (hf_proper := h_problem.toIsProperExtendedRealFunction)
-            (hf_closed := h_problem.f_closed)
-            (hf_strong := h_problem.f_strongly_convex)
-            (hg_proper := h_problem.g_proper)
-            (hg_closed := h_problem.g_closed)
-            (hg_convex := h_problem.g_convex)
-            i
-            (y (n + 1))
-            (y n)).2 hprimal_step
-      have hstep :
-          y (n + 1) i ∈
-              prox[(((σ : ℝ) : EReal) • (fun z : E ↦ ((g i)∗) (-z)))]
-                (y n i -
-                  (σ : ℝ) • ((∇ fun z : E ↦ (((f∗) z).toReal)) (∑ j : Fin p, y n j))) ∧
-            ∀ j : Fin p, j ≠ i → y (n + 1) j = y n j := by
+        (dual_block_proximal_gradient_dual_step_iff_mem_dual_block_proximal_gradient_primal_y_step
+          (f := f)
+          (g := g)
+          (σ := σ)
+          (hf_proper := h_problem.toIsProperExtendedRealFunction)
+          (hf_closed := h_problem.f_closed)
+          (hf_strong := h_problem.f_strongly_convex)
+          (hg_proper := h_problem.g_proper)
+          (hg_closed := h_problem.g_closed)
+          (hg_convex := h_problem.g_convex)
+          i
+          (y (n + 1))
+          (y n)).2 hprimal_step_grad
+      have hstep :=
         -- Unfold the one-block dual owner into the active proximal membership plus the unchanged
         -- off-block coordinates.
-        simpa [i] using
-          (mem_dual_block_proximal_gradient_dual_step_iff.mp hdual_step)
+        mem_dual_block_proximal_gradient_dual_step_iff.mp hdual_step
       have hi_mem :
           y (n + 1) i ∈ effective_domain (fun z : E ↦ ((g i)∗) (-z)) := by
         -- The active block is produced by a positive scaled proximal step of `g_i^* ∘ (-id)`,
@@ -873,7 +895,7 @@ lemma cyclic_dbpg_dual_iterate_mem_finite_domain
                 (h_problem.g_proper i)
                 (h_problem.g_convex i))
             (x := y n i -
-              (σ : ℝ) • ((∇ fun z : E ↦ (((f∗) z).toReal)) (∑ j : Fin p, y n j)))
+              (σ : ℝ) • gradient (fun z : E ↦ ((f∗) z).toReal) (∑ j : Fin p, y n j))
             (lam := σ)
             hstep.1
       have hdual_eff :

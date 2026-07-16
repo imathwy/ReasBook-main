@@ -1,4 +1,4 @@
-import FirstOrderMethodsOptimization_Beck_2017.Chap08.Theorem_8_35
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Theorem_8_35
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,14 +1,14 @@
 import Mathlib
-import FirstOrderMethodsOptimization_Beck_2017.Chap01.Definition_1_37
-import FirstOrderMethodsOptimization_Beck_2017.Chap03.Definition_3_10
-import FirstOrderMethodsOptimization_Beck_2017.Chap04.Theorem_4_15
-import FirstOrderMethodsOptimization_Beck_2017.Chap05.Theorem_5_26
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Definition_12_14
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Definition_12_1_1
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Definition_12_15
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Algorithm_12_15
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Definition_12_17
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Lemma_12_15
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap01.Definition_1_37
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap03.Definition_3_10
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap04.Theorem_4_15
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap05.Theorem_5_26
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Definition_12_14
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Definition_12_1_1
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Definition_12_15
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Algorithm_12_15
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Definition_12_17
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Lemma_12_15
 
 noncomputable section
 
@@ -688,7 +688,7 @@ lemma dual_value_mem_finite_domain_of_coordinatewise_dual_term
         change (((InnerProductSpace.toDual ℝ E) ((InnerProductSpace.toDual ℝ E).symm φc)) :
             StrongDual ℝ E) x = φ x
         have hsymm := (InnerProductSpace.toDual ℝ E).apply_symm_apply φc
-        simpa using congrArg (fun ψ : StrongDual ℝ E => ψ x) hsymm
+        exact congrArg (fun ψ : StrongDual ℝ E => ψ x) hsymm
       refine ⟨-((InnerProductSpace.toDual ℝ E).symm φc), ?_⟩
       simpa [G, mem_effective_domain, conjugate_function_primal_apply, hφ_repr] using hφ
   have hb_ne_bot : separableSum G v ≠ ⊥ := by
@@ -772,7 +772,7 @@ lemma block_dual_term_mem_effective_domain_of_mem_finite_domain
         change (((InnerProductSpace.toDual ℝ E) ((InnerProductSpace.toDual ℝ E).symm φc)) :
             StrongDual ℝ E) x = φ x
         have hsymm := (InnerProductSpace.toDual ℝ E).apply_symm_apply φc
-        simpa using congrArg (fun ψ : StrongDual ℝ E => ψ x) hsymm
+        exact congrArg (fun ψ : StrongDual ℝ E => ψ x) hsymm
       refine ⟨-((InnerProductSpace.toDual ℝ E).symm φc), ?_⟩
       simpa [G, mem_effective_domain, conjugate_function_primal_apply, hφ_repr] using hφ
   have hview :

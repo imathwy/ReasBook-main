@@ -1,7 +1,7 @@
 import Mathlib
-import FirstOrderMethodsOptimization_Beck_2017.Chap03.Proposition_3_12
-import FirstOrderMethodsOptimization_Beck_2017.Chap06.Definition_6_1
-import FirstOrderMethodsOptimization_Beck_2017.Chap06.Example_6_19
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap03.Proposition_3_12
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap06.Definition_6_1
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap06.Example_6_19
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -204,7 +204,7 @@ downstream specialization obtained from `IsClosed.isComplete`. The endpoint `λ 
 canonically: if `x ∉ C`, then the first branch becomes `lineMap x (P_C x) 0 = x`, while if
 `x ∈ C`, then both branches reduce to `x`. -/
 theorem prox_infDist_eq_singleton_piecewise_metricProjection
-    (lam : ℝ) (hlam : 0 ≤ lam) (x : E) :
+    [Nontrivial E] (lam : ℝ) (hlam : 0 ≤ lam) (x : E) :
     prox[fun y : E ↦ ((lam * infDist y C : ℝ) : EReal)] x =
       {if lam < infDist x C then
         lineMap x (P x) (lam / infDist x C)

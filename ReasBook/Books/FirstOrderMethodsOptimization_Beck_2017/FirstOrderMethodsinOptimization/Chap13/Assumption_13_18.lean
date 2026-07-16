@@ -1,5 +1,5 @@
 import Mathlib
-import FirstOrderMethodsOptimization_Beck_2017.Chap01.Definition_1_22
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap01.Definition_1_22
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -191,7 +191,8 @@ theorem IsStrictVertexSublevelInitialPoint.mem_interior_feasible_set
           congrArg (fun t : ℝ ↦ (β * t) • b p)
             (by
               rw [show y = Finset.univ.centroid ℝ b by rfl]
-              exact b.coord_apply_centroid (Finset.mem_univ p))
+              simpa [Finset.card_univ] using
+                b.coord_apply_centroid (Finset.mem_univ p))
       _ = ∑ p : s, m • b p := by
         apply Finset.sum_congr rfl
         intro p hp

@@ -1,7 +1,7 @@
 import Mathlib
-import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_19.TrajectoryWeights
-import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_19.InteriorWeightedSum
-import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_19.ClusterConvergence
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap13.Lemma_13_19.TrajectoryWeights
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap13.Lemma_13_19.InteriorWeightedSum
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap13.Lemma_13_19.ClusterConvergence
 
 -- Theorem-local partial-sum divergence helpers for Lemma 13.19.
 

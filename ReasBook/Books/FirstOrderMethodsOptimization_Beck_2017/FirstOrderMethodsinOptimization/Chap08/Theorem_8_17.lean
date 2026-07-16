@@ -1,7 +1,7 @@
 import Mathlib
-import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_7
-import FirstOrderMethodsOptimization_Beck_2017.Chap08.Theorem_8_13
-import FirstOrderMethodsOptimization_Beck_2017.Chap08.Theorem_8_16
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap02.Definition_2_7
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Theorem_8_13
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Theorem_8_16
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

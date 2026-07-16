@@ -1,18 +1,18 @@
 import Mathlib
-import FirstOrderMethodsOptimization_Beck_2017.Chap03.Theorem_3_1
-import FirstOrderMethodsOptimization_Beck_2017.Chap03.Theorem_3_13
-import FirstOrderMethodsOptimization_Beck_2017.Chap03.Theorem_3_19
-import FirstOrderMethodsOptimization_Beck_2017.Chap04.Theorem_4_12
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_6
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_13
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Lemma_10_33
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Definition_12_1_1
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Algorithm_12_3
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Algorithm_12_4
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Definition_12_4
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Definition_12_5
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Lemma_12_3
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Lemma_12_5
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap03.Theorem_3_1
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap03.Theorem_3_13
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap03.Theorem_3_19
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap04.Theorem_4_12
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap10.Algorithm_10_6
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap10.Algorithm_10_13
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap10.Lemma_10_33
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Definition_12_1_1
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Algorithm_12_3
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Algorithm_12_4
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Definition_12_4
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Definition_12_5
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Lemma_12_3
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Lemma_12_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -671,6 +671,7 @@ lemma dual_trajectory_step_mem_proximal_gradient_step
     (yk := w k)] at hstep
   simpa using hstep
 
+set_option maxHeartbeats 800000 in
 /-- Helper for Theorem 12.9: every positive-index dual iterate lies in the effective domain of
 `G(y) = g*(-y)` because it is a prox-gradient step. -/
 lemma dual_trajectory_iterate_succ_mem_effective_domain
@@ -695,50 +696,16 @@ lemma dual_trajectory_iterate_succ_mem_effective_domain
   have hstep_mem :=
     dual_trajectory_step_mem_proximal_gradient_step
       (f := f) (g := g) (A := A) h_problem htraj k
-  have hsingleton :
-      proximal_gradient_step
-          (Function.toEReal (fun z : V ↦ ((f∗) (A.adjoint z)).toReal))
-          (fun z : V ↦ (g∗) (-z))
-          (w k)
-          (L : PosReal) =
-        {T[(L : PosReal); Function.toEReal (fun z : V ↦ ((f∗) (A.adjoint z)).toReal),
-          (fun z : V ↦ (g∗) (-z))]
-          (interior_effective_domain_point_of_real
-            (fun z : V ↦ ((f∗) (A.adjoint z)).toReal)
-            (w k))} :=
-    prox_grad_operator_eq_singleton
-      (f := Function.toEReal (fun z : V ↦ ((f∗) (A.adjoint z)).toReal))
-      (g := fun z : V ↦ (g∗) (-z))
-      (L := (L : PosReal))
-      (x := interior_effective_domain_point_of_real
-        (fun z : V ↦ ((f∗) (A.adjoint z)).toReal)
-        (w k))
-  have hmem_step :
-      y (k + 1) ∈
-        {T[(L : PosReal); Function.toEReal (fun z : V ↦ ((f∗) (A.adjoint z)).toReal),
-          (fun z : V ↦ (g∗) (-z))]
-          (interior_effective_domain_point_of_real
-            (fun z : V ↦ ((f∗) (A.adjoint z)).toReal)
-            (w k))} := by
-    simpa [hsingleton] using hstep_mem
-  have hy_eq :
-      y (k + 1) =
-        T[(L : PosReal); Function.toEReal (fun z : V ↦ ((f∗) (A.adjoint z)).toReal),
-          (fun z : V ↦ (g∗) (-z))]
-          (interior_effective_domain_point_of_real
-            (fun z : V ↦ ((f∗) (A.adjoint z)).toReal)
-            (w k)) := by
-    simpa using hmem_step
-  -- Rewrite the iterate to the prox-gradient operator and use the Chapter 10 domain lemma.
-  simpa [hy_eq] using
-    (prox_grad_step_mem_effective_domain_g
-      (f := Function.toEReal (fun z : V ↦ ((f∗) (A.adjoint z)).toReal))
-      (g := fun z : V ↦ (g∗) (-z))
-      (y := interior_effective_domain_point_of_real
-        (fun z : V ↦ ((f∗) (A.adjoint z)).toReal)
-        (w k))
-      (L := (L : PosReal)))
+  rw [mem_proximal_gradient_step_iff] at hstep_mem
+  exact
+    mem_effective_domain_of_mem_scaled_prox_of_pos
+      (f := fun z : V ↦ (g∗) (-z))
+      (hf_proper := inferInstance)
+      (x := _)
+      (lam := (1 / (L : PosReal)))
+      hstep_mem
 
+set_option maxHeartbeats 800000 in
 /-- Helper for Theorem 12.9: the global dual smoothness bound and the admissible parameter `L`
 make the Chapter 10 upper-model test hold at every dual base point `w`. -/
 lemma dual_upper_model_accepts_at_w
@@ -775,9 +742,10 @@ lemma dual_upper_model_accepts_at_w
           =
           dual_based_proximal_gradient_dual_lipschitz_constant A.toContinuousLinearMap σ := by
             rw [dual_based_proximal_gradient_dual_lipschitz_constant_eq]
-            have hσ_nonneg : 0 ≤ 1 / (σ : ℝ) := by positivity
-            simp [Real.toNNReal_of_nonneg hσ_nonneg, div_eq_mul_inv, mul_comm, mul_left_comm,
-              mul_assoc]
+            have hσ_nonneg : 0 ≤ 1 / (σ : ℝ) := div_nonneg zero_le_one σ.2.le
+            simp only [NNReal.coe_mul, Real.coe_toNNReal _ hσ_nonneg, NNReal.coe_pow,
+              coe_nnnorm]
+            ring
       _ ≤ (L : ℝ) := DualBasedProximalGradientDualStepsizeParameter.lower_bound L
   have hdescentLf :
       Fdual xNext ≤
@@ -786,15 +754,19 @@ lemma dual_upper_model_accepts_at_w
             (((Real.toNNReal (1 / (σ : ℝ)) * ‖A.toContinuousLinearMap‖₊ ^ (2 : ℕ) : NNReal) : ℝ) /
               2) * ‖xNext - wPoint‖ ^ (2 : ℕ) := by
     -- Apply the descent lemma to the split smooth term at the concrete base point `wPoint`.
-    simpa [Fdual, xNext, norm_sub_rev] using
-      (is_l_smooth_on_descent_lemma
+    have hraw :=
+      is_l_smooth_on_descent_lemma
         (L := Real.toNNReal (1 / (σ : ℝ)) * ‖A.toContinuousLinearMap‖₊ ^ (2 : ℕ))
         (D := Set.univ)
         (f := Fdual)
         convex_univ
         hsmooth
+        (x := wPoint)
+        (y := xNext)
         (by simp)
-        (by simp))
+        (by simp)
+    rw [norm_sub_rev] at hraw
+    exact hraw
   have hnorm_nonneg : 0 ≤ ‖xNext - wPoint‖ ^ (2 : ℕ) := by
     positivity
   have hdescentL :
@@ -850,7 +822,7 @@ lemma dual_optimum_mem_effective_domain
       (f := f) (g := g) (A := A) σ h_problem hy1_eff
   have hHy1_ne_top : Hdual (y 1) ≠ ⊤ := by
     rw [hy1_obj]
-    simp
+    exact EReal.coe_ne_top _
   have hHyStar_ne_top : Hdual yStar ≠ ⊤ := by
     intro htop
     have htop_le : (⊤ : EReal) ≤ Hdual (y 1) := by
@@ -893,8 +865,7 @@ lemma chapter12_dual_combination_objective_upper_bound
   let θ : ℝ := (fista_momentum_sequence (k + 1))⁻¹
   let z : V := θ • yStar + (1 - θ) • yk
   have hθ_mem : θ ∈ Set.Icc (0 : ℝ) 1 := by
-    simpa [θ] using chapter12_one_div_momentum_mem_Icc
-      (f := f) (g := g) (A := A) k
+    simpa [θ] using chapter12_one_div_momentum_mem_Icc k
   have hθ_nonneg : 0 ≤ θ := hθ_mem.1
   have hθ_le_one : θ ≤ 1 := hθ_mem.2
   have hone_sub_nonneg : 0 ≤ 1 - θ := sub_nonneg.mpr hθ_le_one
@@ -970,7 +941,7 @@ lemma chapter12_dual_combination_objective_upper_bound
     have hg_convex' :
         (((((g∗) (-z)).toReal : ℝ)) : EReal) ≤
           (((((θ * ((g∗) (-yStar)).toReal + (1 - θ) * ((g∗) (-yk)).toReal : ℝ))) : EReal)) := by
-      rw [hgz_val, hgStar_val, hgk_val] at hg_convexE
+      rw [← hgz_val, ← hgStar_val, ← hgk_val] at hg_convexE
       simpa [EReal.coe_add, EReal.coe_mul] using hg_convexE
     exact EReal.coe_le_coe_iff.mp hg_convex'
   have hf_convex :
@@ -1101,7 +1072,7 @@ theorem fast_dual_proximal_gradient_dual_objective_gap_le_of_dual_trajectory
   have hyk_eff :
       y k ∈ effective_domain (fun z : V ↦ (g∗) (-z)) := by
     rcases Nat.exists_eq_add_of_le hk with ⟨m, rfl⟩
-    simpa using
+    simpa [Nat.add_comm] using
       dual_trajectory_iterate_succ_mem_effective_domain
         (f := f) (g := g) (A := A) h_problem htraj m
   have hcomparison_upper :
