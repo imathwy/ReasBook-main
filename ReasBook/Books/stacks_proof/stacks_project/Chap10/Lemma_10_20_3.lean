@@ -1,5 +1,5 @@
 import Mathlib.RingTheory.Ideal.Cotangent
-import StacksProject_2024.Chap10.Lemma_10_20_1_Nakayama_s_lemma
+import stacks_proof.stacks_project.Chap10.Lemma_10_20_1_Nakayama_s_lemma
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

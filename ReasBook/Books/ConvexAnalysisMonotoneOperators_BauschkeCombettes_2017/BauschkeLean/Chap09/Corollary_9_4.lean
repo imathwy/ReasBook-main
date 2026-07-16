@@ -1,5 +1,5 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09.Definition_9_2
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap09.Definition_9_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -144,7 +144,7 @@ lemma familySum_eq_iSup_nonemptyFinitePartialSums (f : I → H → EReal) (hI : 
 
 /-- Helper for Corollary 9.4: a weighted pointwise supremum is bounded by the corresponding
 weighted sum of the separate suprema when the weights are nonnegative. -/
-lemma weighted_iSup_le_weighted_iSup {J : Type*} {u v : J → EReal} {a b : ℝ}
+lemma weighted_iSup_le_weighted_iSup_cor94 {J : Type*} {u v : J → EReal} {a b : ℝ}
     (ha : 0 ≤ a) (hb : 0 ≤ b) :
     (⨆ j, (a : EReal) * u j + (b : EReal) * v j) ≤
       (a : EReal) * (⨆ j, u j) + (b : EReal) * (⨆ j, v j) := by
@@ -167,7 +167,8 @@ lemma weighted_iSup_le_weighted_iSup {J : Type*} {u v : J → EReal} {a b : ℝ}
 
 /-- Helper for Corollary 9.4: the pointwise supremum of Jensen-convex extended-real-valued
 functions is Jensen-convex. -/
-lemma isConvex_iSup_of_isConvex {J : Type*} (f : J → H → EReal) (hf : ∀ j, IsConvex (f j)) :
+lemma isConvex_iSup_of_isConvex_cor94 {J : Type*} (f : J → H → EReal)
+    (hf : ∀ j, IsConvex (f j)) :
     IsConvex (fun x ↦ ⨆ j, f j x) := by
   intro x y a ha0 ha1
   have hpointwise :
@@ -182,11 +183,11 @@ lemma isConvex_iSup_of_isConvex {J : Type*} (f : J → H → EReal) (hf : ∀ j,
     (⨆ j, f j (a • x + (1 - a) • y))
         ≤ ⨆ j, (a : EReal) * f j x + (1 - a : EReal) * f j y := hpointwise
     _ ≤ (a : EReal) * (⨆ j, f j x) + (1 - a : EReal) * (⨆ j, f j y) :=
-      weighted_iSup_le_weighted_iSup ha0 hone_sub
+      weighted_iSup_le_weighted_iSup_cor94 ha0 hone_sub
 
 /-- Helper for Corollary 9.4: the pointwise supremum of a family in `Γ(ℋ)` is lower
 semicontinuous. -/
-lemma lowerSemicontinuous_iSup_of_mem_gamma {J : Type*} (f : J → H → EReal)
+lemma lowerSemicontinuous_iSup_of_mem_gamma_cor94 {J : Type*} (f : J → H → EReal)
     (hf : ∀ j, f j ∈ gamma H) :
     LowerSemicontinuous (fun x ↦ ⨆ j, f j x) := by
   -- Extract lower semicontinuity from each `gamma` hypothesis and pass to the supremum.
@@ -218,11 +219,11 @@ theorem familySum_mem_gamma
     rw [familySum_eq_iSup_nonemptyFinitePartialSums f hI, mem_gamma_iff]
     refine ⟨?_, ?_⟩
     · -- Each nonempty finite partial sum is convex, so their pointwise supremum is convex.
-      exact isConvex_iSup_of_isConvex (J := {s : Finset I // s.Nonempty})
+      exact isConvex_iSup_of_isConvex_cor94 (J := {s : Finset I // s.Nonempty})
         (fun J x ↦ Finset.sum (J : Finset I) (fun i ↦ f i x))
         (fun J ↦ (mem_gamma_iff _).mp (finset_sum_mem_gamma f (J : Finset I) hf) |>.1)
     · -- Each nonempty finite partial sum is lower semicontinuous, so their supremum is too.
-      exact lowerSemicontinuous_iSup_of_mem_gamma (J := {s : Finset I // s.Nonempty})
+      exact lowerSemicontinuous_iSup_of_mem_gamma_cor94 (J := {s : Finset I // s.Nonempty})
         (fun J x ↦ Finset.sum (J : Finset I) (fun i ↦ f i x))
         (fun J ↦ finset_sum_mem_gamma f (J : Finset I) hf)
 

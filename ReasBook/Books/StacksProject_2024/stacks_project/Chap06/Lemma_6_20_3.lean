@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap06.Lemma_6_14_2
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_14_2
 
 open CategoryTheory TopCat TopologicalSpace
 open TopCat.Presheaf

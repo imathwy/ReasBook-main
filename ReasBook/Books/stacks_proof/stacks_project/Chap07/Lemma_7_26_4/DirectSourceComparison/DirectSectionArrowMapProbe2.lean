@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap07.Lemma_7_26_4.DirectSourceComparison.Index
+import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.DirectSourceComparison.Index
 
 /-!
 This file used to contain an exploratory probe for the direct-section arrow-map comparison.

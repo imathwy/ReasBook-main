@@ -1,7 +1,7 @@
 import Mathlib
 import LinearRepresentations_Serre_1977.GroupTheory.PSolvable
-import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_2_5
-import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_5_3.ResidueFieldLiftDecomposition
+import LinearRepresentations_Serre_1977.Serre.Chap15.Exercise_15_15_2_5
+import LinearRepresentations_Serre_1977.Serre.Chap15.Exercise_15_15_5_3.ResidueFieldLiftDecomposition
 -- `Serre.Chap16.Proposition_16_16_3_3` is intentionally not imported: it transitively re-exports
 -- `Proposition_16_16_3_3.PositiveBasics`, which declares the scoped notation `R⁺[_](_)` (and a
 -- `SatisfiesConditionR`) already provided here by `Remark_16_16_3_5.ReverseDirection`/`Core`.
@@ -9,8 +9,8 @@ import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_5_3.ResidueFieldLi
 -- collision.  All owner predicates used below (`SatisfiesConditionR`, `SatisfiesConditionRPrime`,
 -- `FDRep.HasRPrimeLift`, `satisfiesConditionRPrime_imp_satisfiesConditionR`, and the `R⁺` notation)
 -- come from the `Remark_16_16_3_5` cluster.
-import LinearRepresentations_Serre_1977.Chap16.Remark_16_16_3_5.ReverseDirection
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_6_1
+import LinearRepresentations_Serre_1977.Serre.Chap16.Remark_16_16_3_5.ReverseDirection
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_6_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

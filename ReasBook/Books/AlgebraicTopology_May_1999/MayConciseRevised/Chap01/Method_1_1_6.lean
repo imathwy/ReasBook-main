@@ -1,5 +1,5 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap01.Principle_1_1_5
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap01.Principle_1_1_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

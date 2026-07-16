@@ -3,12 +3,12 @@ import Mathlib.RingTheory.Flat.Basic
 import Mathlib.RingTheory.Localization.AtPrime.Basic
 import Mathlib.RingTheory.Localization.BaseChange
 import Mathlib.RingTheory.MvPolynomial.Basic
-import StacksProject_2024.Chap10.Lemma_10_23_2
-import StacksProject_2024.Chap10.Lemma_10_24_5
-import StacksProject_2024.Chap10.Lemma_10_126_4
-import StacksProject_2024.Chap10.Theorem_10_129_4
-import StacksProject_2024.Chap15.Lemma_15_18_3
-import StacksProject_2024.Chap15.Remark_15_25_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_23_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_24_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_126_4
+import stacks_proof.stacks_project.Chap10.Theorem_10_129_4
+import stacks_proof.stacks_project.Chap15.Lemma_15_18_3
+import stacks_proof.stacks_project.Chap15.Remark_15_25_5
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

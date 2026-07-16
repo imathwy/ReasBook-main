@@ -1,6 +1,6 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_4
-import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_5_3.SameUniverseModel
+import LinearRepresentations_Serre_1977.Serre.Chap14.Corollary_14_14_4_4
+import LinearRepresentations_Serre_1977.Serre.Chap15.Exercise_15_15_5_3.SameUniverseModel
 
 open CategoryTheory
 open scoped MonoidAlgebra

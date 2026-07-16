@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap07.Proposition_7_14_7
+import stacks_proof.stacks_project.Chap07.Proposition_7_14_7
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

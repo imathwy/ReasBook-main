@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap06.Lemma_6_33_3_Part10_BasisModule
-import StacksProject_2024.Chap06.Lemma_6_33_3_Part10_ComponentSmul
+import stacks_proof.stacks_project.Chap06.Lemma_6_33_3_Part10_BasisModule
+import stacks_proof.stacks_project.Chap06.Lemma_6_33_3_Part10_ComponentSmul
 
 /-!
 # Lemma 6.33.3 (module case), Phase 2: the realization isomorphisms (scratch)

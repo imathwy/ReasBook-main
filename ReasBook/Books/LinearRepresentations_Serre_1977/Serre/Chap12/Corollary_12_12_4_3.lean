@@ -1,11 +1,11 @@
 import Mathlib
 import LinearRepresentations_Serre_1977.GroupTheory.ConjClassesPower
-import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_1
-import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_1.OwnersAndPrimeFibers
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
-import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_4_2
-import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_4_1
-import LinearRepresentations_Serre_1977.Chap12.GaloisPowerClasses
+import LinearRepresentations_Serre_1977.Serre.Chap10.Definition_10_10_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap11.Proposition_11_11_4_1.OwnersAndPrimeFibers
+import LinearRepresentations_Serre_1977.Serre.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap12.Corollary_12_12_4_2
+import LinearRepresentations_Serre_1977.Serre.Chap12.Theorem_12_12_4_1
+import LinearRepresentations_Serre_1977.Serre.Chap12.GaloisPowerClasses
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

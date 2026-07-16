@@ -2,9 +2,9 @@ import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.PullbackContinuous
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.PushforwardContinuous
 import Mathlib.CategoryTheory.Sites.Over
-import StacksProject_2024.Chap07.Lemma_7_28_1
-import StacksProject_2024.Chap18.Lemma_18_14_2
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_28_1
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_14_2
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategoryBasic
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

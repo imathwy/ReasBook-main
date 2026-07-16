@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_102_2.ReducedFiniteFree
+import stacks_proof.stacks_project.Chap10.Lemma_10_102_2.ReducedFiniteFree
 
 open CategoryTheory CategoryTheory.Limits ChainComplex Matrix
 

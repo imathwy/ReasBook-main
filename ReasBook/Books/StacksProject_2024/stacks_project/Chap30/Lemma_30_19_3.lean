@@ -1,8 +1,8 @@
 import Mathlib.CategoryTheory.Presentable.Finite
-import StacksProject_2024.Chap24.Definition_24_4_1
-import StacksProject_2024.Chap30.Lemma_30_14_3
-import StacksProject_2024.Chap30.Lemma_30_16_2
-import StacksProject_2024.Chap30.Lemma_30_19_2
+import StacksProject_2024.stacks_project.Chap24.Definition_24_4_1
+import StacksProject_2024.stacks_project.Chap30.Lemma_30_14_3
+import StacksProject_2024.stacks_project.Chap30.Lemma_30_16_2
+import StacksProject_2024.stacks_project.Chap30.Lemma_30_19_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

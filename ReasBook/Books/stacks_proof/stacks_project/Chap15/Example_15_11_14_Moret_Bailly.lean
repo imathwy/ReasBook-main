@@ -5,7 +5,7 @@ import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.TensorProduct.Basic
 import Mathlib.RingTheory.TensorProduct.Maps
 import Mathlib.RingTheory.TensorProduct.Quotient
-import StacksProject_2024.Chap15.Definition_15_11_1
+import stacks_proof.stacks_project.Chap15.Definition_15_11_1
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

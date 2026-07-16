@@ -1,7 +1,7 @@
-import DifferentialForms_Cartan_1970.II.section05.«0007_Theorem_II_1_extra_5»
-import DifferentialForms_Cartan_1970.II.section05.«0010_Proposition_4_1»
-import DifferentialForms_Cartan_1970.II.section05.«0035_Theorem_II_1_extra_22».ApproximationPackages
-import DifferentialForms_Cartan_1970.II.section05.«0035_Theorem_II_1_extra_22».BoundaryGeometry
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0007_Theorem_II_1_extra_5»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0010_Proposition_4_1»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0035_Theorem_II_1_extra_22».ApproximationPackages
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0035_Theorem_II_1_extra_22».BoundaryGeometry
 
 open scoped BigOperators
 

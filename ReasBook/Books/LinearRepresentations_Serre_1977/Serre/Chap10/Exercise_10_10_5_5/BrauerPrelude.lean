@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap10.Exercise_10_10_5_5.AutoSplit
-import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap10.Exercise_10_10_5_5.AutoSplit
+import LinearRepresentations_Serre_1977.Serre.Chap10.Theorem_10_10_2_1
 
 noncomputable section
 

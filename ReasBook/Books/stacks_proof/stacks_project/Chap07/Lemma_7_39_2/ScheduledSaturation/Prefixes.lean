@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap07.Lemma_7_39_2.ScheduledSaturation.Basic
-import StacksProject_2024.Chap07.Lemma_7_39_2.FiniteFrontier
-import StacksProject_2024.Chap07.Lemma_7_39_2.DiagramUnionCore
-import StacksProject_2024.Chap07.Lemma_7_39_2.DiagramUnionLimit
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_2.ScheduledSaturation.Basic
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_2.FiniteFrontier
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_2.DiagramUnionCore
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_2.DiagramUnionLimit
 
 open CategoryTheory
 open CategoryTheory.SemiRepresentableFamily.Over

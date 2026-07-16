@@ -8,7 +8,7 @@ section
 
 variable {F : Type u} [Group F] [IsFreeGroup F]
 
-local notation "Γ" => lowerCentralSeries F
+local notation "Γ" => Subgroup.lowerCentralSeries F
 
 -- Layer triage:
 -- `source-facing`: an element `w` of a free group which is both a product of two square elements

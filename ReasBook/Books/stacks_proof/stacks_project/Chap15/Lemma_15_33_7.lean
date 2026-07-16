@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.AB
 import Mathlib.CategoryTheory.Abelian.GrothendieckAxioms.Colim
-import StacksProject_2024.Chap10.Lemma_10_8_8
-import StacksProject_2024.Chap10.Lemma_10_134_9
-import StacksProject_2024.Chap15.Definition_15_33_2
-import StacksProject_2024.Chap15.Lemma_15_33_6
+import stacks_proof.stacks_project.Chap10.Lemma_10_8_8
+import stacks_proof.stacks_project.Chap10.Lemma_10_134_9
+import stacks_proof.stacks_project.Chap15.Definition_15_33_2
+import stacks_proof.stacks_project.Chap15.Lemma_15_33_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

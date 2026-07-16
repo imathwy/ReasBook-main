@@ -3,9 +3,9 @@ import Mathlib.Algebra.Homology.ShortComplex.HomologicalComplex
 import Mathlib.CategoryTheory.Abelian.RightDerived
 import Mathlib.CategoryTheory.Sites.Continuous
 import Mathlib.CategoryTheory.Sites.SheafCohomology.Basic
-import StacksProject_2024.Chap13.Definition_13_15_3
-import StacksProject_2024.Chap19.AdditiveFunctorTotalRightDerived
-import StacksProject_2024.Chap21.SiteAbelianSheaf
+import StacksProject_2024.stacks_project.Chap13.Definition_13_15_3
+import StacksProject_2024.stacks_project.Chap19.AdditiveFunctorTotalRightDerived
+import StacksProject_2024.stacks_project.Chap21.SiteAbelianSheaf
 
 open CategoryTheory
 open CategoryTheory.Limits

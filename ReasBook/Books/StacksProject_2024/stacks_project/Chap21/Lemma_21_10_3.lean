@@ -1,11 +1,11 @@
-import StacksProject_2024.Chap13.Definition_13_8_1
-import StacksProject_2024.Chap13.Definition_13_15_3
-import StacksProject_2024.Chap13.Definition_13_16_2
-import StacksProject_2024.Chap13.Lemma_13_11_6
-import StacksProject_2024.Chap13.Lemma_13_20_2
-import StacksProject_2024.Chap20.«20_2_0_3»
-import StacksProject_2024.Chap21.SiteAbelianDerived
-import StacksProject_2024.Chap21.Lemma_21_10_2
+import StacksProject_2024.stacks_project.Chap13.Definition_13_8_1
+import StacksProject_2024.stacks_project.Chap13.Definition_13_15_3
+import StacksProject_2024.stacks_project.Chap13.Definition_13_16_2
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_11_6
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_20_2
+import StacksProject_2024.stacks_project.Chap20.«20_2_0_3»
+import StacksProject_2024.stacks_project.Chap21.SiteAbelianDerived
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_10_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

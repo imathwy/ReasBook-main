@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap07.Definition_7_42_3
-import StacksProject_2024.Chap07.Lemma_7_28_5.TypeSheafification
-import StacksProject_2024.Chap07.Lemma_7_42_4
+import stacks_proof.stacks_project.Chap07.Definition_7_42_3
+import stacks_proof.stacks_project.Chap07.Lemma_7_28_5.TypeSheafification
+import stacks_proof.stacks_project.Chap07.Lemma_7_42_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

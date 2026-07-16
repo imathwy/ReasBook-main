@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_14_1
-import StacksProject_2024.Chap10.Lemma_10_133_13
-import StacksProject_2024.Chap10.Remark_10_133_7
+import stacks_proof.stacks_project.Chap10.Definition_10_14_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_133_13
+import stacks_proof.stacks_project.Chap10.Remark_10_133_7
 
 open scoped PrincipalParts TensorProduct
 open TensorProduct.AlgebraTensorModule

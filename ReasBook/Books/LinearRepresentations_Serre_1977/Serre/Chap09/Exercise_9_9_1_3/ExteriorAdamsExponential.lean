@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_3.NewtonIdentities
+import LinearRepresentations_Serre_1977.Serre.Chap09.Exercise_9_9_1_3.NewtonIdentities
 
 open scoped Representation
 

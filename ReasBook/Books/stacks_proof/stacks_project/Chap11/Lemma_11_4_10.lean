@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap11.Lemma_11_4_8
+import stacks_proof.stacks_project.Chap11.Lemma_11_4_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

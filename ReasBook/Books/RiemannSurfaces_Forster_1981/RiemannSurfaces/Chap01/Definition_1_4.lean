@@ -1,4 +1,4 @@
-import RiemannSurfaces_Forster_1981.Chap01.Definition_1_3
+import RiemannSurfaces_Forster_1981.RiemannSurfaces.Chap01.Definition_1_3
 
 open scoped ContDiff Manifold
 

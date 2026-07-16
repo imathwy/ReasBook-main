@@ -1,5 +1,5 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Proposition_3_9_5
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Definition_3_10_1
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap03.Proposition_3_9_5
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap03.Definition_3_10_1
 
 -- Declarations for this item are recorded in this dedicated item file.
 
@@ -59,8 +59,7 @@ presentation `(X₀; r)` is aspherical. -/
 theorem isAspherical_of_staggered_presentation
     (X₀ : Set X) (r : J → FreeGroup X) (hstaggered : IsStaggeredPresentation X₀ r)
     {C : TwoComplex}
-    (coords : CayleyComplex.Coordinates C (PresentedGroup.of : X → PresentedGroup (Set.range r))
-      ↥(Set.range r)) :
+    (coords : CayleyComplex.Coordinates.PresentationCoordinates C (Set.range r)) :
     CayleyComplex.Coordinates.IsAspherical coords := sorry
 
 end

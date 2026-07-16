@@ -1,9 +1,9 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_39_15
-import StacksProject_2024.Chap10.Lemma_10_75_2
-import StacksProject_2024.Chap10.Lemma_10_75_8
-import StacksProject_2024.Chap10.Lemma_10_76_1
-import StacksProject_2024.Chap10.Lemma_10_77_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_39_15
+import stacks_proof.stacks_project.Chap10.Lemma_10_75_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_75_8
+import stacks_proof.stacks_project.Chap10.Lemma_10_76_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_77_5
 
 open CategoryTheory CategoryTheory.Limits CategoryTheory.MonoidalCategory
 open scoped TensorProduct

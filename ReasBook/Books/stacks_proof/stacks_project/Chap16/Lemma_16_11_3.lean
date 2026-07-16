@@ -1,13 +1,13 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_144_3
-import StacksProject_2024.Chap10.Lemma_10_159_1
-import StacksProject_2024.Chap10.Lemma_10_101_8_Crit_re_de_platitude_par_fibres_Nilpotent_case
-import StacksProject_2024.Chap10.Definition_10_137_10
-import StacksProject_2024.Chap10.Lemma_10_97_7
-import StacksProject_2024.Chap10.Lemma_10_153_10
-import StacksProject_2024.Chap10.Lemma_10_153_11
-import StacksProject_2024.Chap15.Lemma_15_116_10
-import StacksProject_2024.Chap15.Lemma_15_116_12
+import stacks_proof.stacks_project.Chap10.Lemma_10_144_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_159_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_101_8_Crit_re_de_platitude_par_fibres_Nilpotent_case
+import stacks_proof.stacks_project.Chap10.Definition_10_137_10
+import stacks_proof.stacks_project.Chap10.Lemma_10_97_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_153_10
+import stacks_proof.stacks_project.Chap10.Lemma_10_153_11
+import stacks_proof.stacks_project.Chap15.Lemma_15_116_10
+import stacks_proof.stacks_project.Chap15.Lemma_15_116_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

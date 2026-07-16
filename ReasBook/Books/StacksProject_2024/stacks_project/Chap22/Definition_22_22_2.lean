@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Homology.DerivedCategory.HomologySequence
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap22.DGModuleModel
-import StacksProject_2024.Chap22.ModuleCatHasDerivedCategory
+import StacksProject_2024.stacks_project.Chap22.DGModuleModel
+import StacksProject_2024.stacks_project.Chap22.ModuleCatHasDerivedCategory
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

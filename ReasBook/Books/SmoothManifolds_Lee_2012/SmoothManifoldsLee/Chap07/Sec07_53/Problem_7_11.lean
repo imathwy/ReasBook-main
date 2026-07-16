@@ -3,7 +3,7 @@ import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Normed.Module.Ball.Action
 import Mathlib.Geometry.Manifold.Instances.Sphere
 import Mathlib.Tactic.Recall
-import SmoothManifolds_Lee_2012.Chap07.Sec07_50.Definition_7_50_extra_4
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_50.Definition_7_50_extra_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

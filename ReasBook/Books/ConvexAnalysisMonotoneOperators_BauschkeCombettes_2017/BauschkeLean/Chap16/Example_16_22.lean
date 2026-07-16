@@ -1,10 +1,10 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Corollary_8_39
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09.Example_9_13
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap11.Definition_11_11
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Definition_13_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Definition_16_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_17
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap08.Corollary_8_39
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap09.Example_9_13
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap11.Definition_11_11
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap13.Definition_13_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap16.Definition_16_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap16.Proposition_16_17
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -12,7 +12,7 @@ noncomputable section
 
 namespace ERealFunction
 
-local notation "L2pos" => ℓ²(ℕ+, ℝ)
+local notation "L2pos" => lp (fun _ : ℕ+ ↦ ℝ) 2
 
 /-- The one-variable coordinate function `t ↦ n * t^(2n)` from Example 16.22. -/
 def positiveNatWeightedEvenPowerCoordinate (n : ℕ+) : ℝ → ℝ :=

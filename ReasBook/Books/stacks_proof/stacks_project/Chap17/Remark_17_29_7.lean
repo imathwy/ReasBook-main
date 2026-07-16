@@ -2,13 +2,13 @@ import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Presheaf.Monoidal
 import Mathlib.Algebra.Category.ModuleCat.Presheaf.Sheafification
 import Mathlib.CategoryTheory.Sites.Monoidal
-import StacksProject_2024.Chap10.Lemma_10_133_6
-import StacksProject_2024.Chap10.Remark_10_150_9
-import StacksProject_2024.Chap17.Definition_17_29_1
-import StacksProject_2024.Chap17.Lemma_17_28_4
-import StacksProject_2024.Chap17.Lemma_17_28_8
-import StacksProject_2024.Chap17.Lemma_17_29_5
-import StacksProject_2024.Chap17.Lemma_17_29_6
+import stacks_proof.stacks_project.Chap10.Lemma_10_133_6
+import stacks_proof.stacks_project.Chap10.Remark_10_150_9
+import stacks_proof.stacks_project.Chap17.Definition_17_29_1
+import stacks_proof.stacks_project.Chap17.Lemma_17_28_4
+import stacks_proof.stacks_project.Chap17.Lemma_17_28_8
+import stacks_proof.stacks_project.Chap17.Lemma_17_29_5
+import stacks_proof.stacks_project.Chap17.Lemma_17_29_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib.Topology.Sets.Opens
 import Mathlib.Tactic.StacksAttribute
-import StacksProject_2024.Chap05.Definition_5_5_1
+import stacks_proof.stacks_project.Chap05.Definition_5_5_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

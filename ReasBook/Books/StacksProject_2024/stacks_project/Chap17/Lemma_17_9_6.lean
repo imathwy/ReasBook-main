@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap17.Definition_17_5_1
-import StacksProject_2024.Chap17.Lemma_17_9_5
+import StacksProject_2024.stacks_project.Chap17.Definition_17_5_1
+import StacksProject_2024.stacks_project.Chap17.Lemma_17_9_5
 
 open CategoryTheory Limits Opposite TopCat TopologicalSpace
 open AlgebraicGeometry

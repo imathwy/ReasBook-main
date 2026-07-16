@@ -1,7 +1,7 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap02.Theorem_2_7_1
-import AlgebraicTopology_May_1999.Chap02.Lemma_2_4_2
-import AlgebraicTopology_May_1999.Chap02.Proposition_2_5_7
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap02.Theorem_2_7_1
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap02.Lemma_2_4_2
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap02.Proposition_2_5_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

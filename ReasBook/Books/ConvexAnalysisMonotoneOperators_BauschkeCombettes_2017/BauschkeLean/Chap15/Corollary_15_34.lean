@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap02.Fact_2_26
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap02.Fact_2_26
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

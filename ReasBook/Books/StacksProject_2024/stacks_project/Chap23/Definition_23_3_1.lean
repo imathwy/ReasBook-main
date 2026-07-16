@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chapters.Chap23.section03
+import StacksProject_2024.stacks_project.Chapters.Chap23.section03
 
 open CategoryTheory
 open DividedPowers

@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap21.Lemma_21_9_4
-import StacksProject_2024.Chap20.«20_9_0_1»
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_9_4
+import StacksProject_2024.stacks_project.Chap20.«20_9_0_1»
 import Mathlib.Algebra.Homology.Functor
 import Mathlib.Algebra.Homology.Opposite
 import Mathlib.CategoryTheory.Adjunction.Whiskering

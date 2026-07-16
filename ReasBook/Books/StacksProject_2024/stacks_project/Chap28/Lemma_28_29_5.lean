@@ -1,6 +1,6 @@
 import Mathlib.AlgebraicGeometry.QuasiAffine
 import Mathlib.AlgebraicGeometry.ProjectiveSpectrum.Scheme
-import StacksProject_2024.Chap28.Proposition_28_26_13
+import StacksProject_2024.stacks_project.Chap28.Proposition_28_26_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap21.Definition_21_8_1
+import StacksProject_2024.stacks_project.Chap21.Definition_21_8_1
 
 open CategoryTheory.Limits
 open AlgebraicTopology

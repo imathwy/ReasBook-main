@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap17.Lemma_17_6_3
-import StacksProject_2024.Chap18.Lemma_18_14_2
-import StacksProject_2024.Chap20.«20_11_0_1»
-import StacksProject_2024.Chap20.Lemma_20_34_4
+import StacksProject_2024.stacks_project.Chap17.Lemma_17_6_3
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_14_2
+import StacksProject_2024.stacks_project.Chap20.«20_11_0_1»
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_34_4
 
 open CategoryTheory
 open CategoryTheory.Limits

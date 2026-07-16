@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.CategoryTheory.Comma.StructuredArrow.Small
-import StacksProject_2024.Chap07.Definition_7_3_1
-import StacksProject_2024.Chap07.Definition_7_17_4
-import StacksProject_2024.Chap07.Lemma_7_11_3
-import StacksProject_2024.Chap07.Lemma_7_17_5
-import StacksProject_2024.Chap07.Lemma_7_17_6
+import stacks_proof.stacks_project.Chap07.Definition_7_3_1
+import stacks_proof.stacks_project.Chap07.Definition_7_17_4
+import stacks_proof.stacks_project.Chap07.Lemma_7_11_3
+import stacks_proof.stacks_project.Chap07.Lemma_7_17_5
+import stacks_proof.stacks_project.Chap07.Lemma_7_17_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import LecturesConvexOptimization_Nesterov_2018.Chap01.Theorem_1_4_13
-import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_0_13
-import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_3_2
-import LecturesConvexOptimization_Nesterov_2018.Chap05.Theorem_5_1_5
-import LecturesConvexOptimization_Nesterov_2018.Chap05.Theorem_5_3_8
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap01.Theorem_1_4_13
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap05.Definition_5_0_13
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap05.Definition_5_3_2
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap05.Theorem_5_1_5
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap05.Theorem_5_3_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

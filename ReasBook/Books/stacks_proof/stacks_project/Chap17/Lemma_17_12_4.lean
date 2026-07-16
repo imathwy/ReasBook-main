@@ -1,13 +1,13 @@
 import Mathlib
 import Mathlib.CategoryTheory.Limits.ExactFunctor
-import StacksProject_2024.Chap06.Definition_6_26_1
-import StacksProject_2024.Chap17.Definition_17_12_1
-import StacksProject_2024.Chap17.Lemma_17_9_3
-import StacksProject_2024.Chap17.Lemma_17_11_3
-import StacksProject_2024.Chap17.Lemma_17_11_4
-import StacksProject_2024.Chap17.Lemma_17_12_2
-import StacksProject_2024.Chap17.Lemma_17_9_8
-import StacksProject_2024.Chap12.Lemma_12_10_3
+import stacks_proof.stacks_project.Chap06.Definition_6_26_1
+import stacks_proof.stacks_project.Chap17.Definition_17_12_1
+import stacks_proof.stacks_project.Chap17.Lemma_17_9_3
+import stacks_proof.stacks_project.Chap17.Lemma_17_11_3
+import stacks_proof.stacks_project.Chap17.Lemma_17_11_4
+import stacks_proof.stacks_project.Chap17.Lemma_17_12_2
+import stacks_proof.stacks_project.Chap17.Lemma_17_9_8
+import stacks_proof.stacks_project.Chap12.Lemma_12_10_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

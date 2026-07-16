@@ -1,5 +1,5 @@
-import SmoothManifolds_Lee_2012.Chap01.Sec01_05.Definition_1_5_extra_1
-import SmoothManifolds_Lee_2012.Chap01.Sec01_04.Lemma_1_35
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_05.Definition_1_5_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_04.Lemma_1_35
 
 -- Declarations for this item will be appended below by the statement pipeline.
 -- Domain sampling: the primary domain here is the `ChartedSpaceCore` owner API from `Lemma_1_35`.

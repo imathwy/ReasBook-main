@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_2_2
-import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_3.InvariantCharpoly
+import LinearRepresentations_Serre_1977.Serre.Chap06.Proposition_6_6_2_2
+import LinearRepresentations_Serre_1977.Serre.Chap09.Exercise_9_9_1_3.InvariantCharpoly
 import Mathlib.RingTheory.Morita.Matrix
 
 noncomputable section

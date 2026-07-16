@@ -1,8 +1,8 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_6_1
-import LinearRepresentations_Serre_1977.Chap03.Definition_3_3_3_1
-import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_1_3
-import LinearRepresentations_Serre_1977.Chap07.Remark_7_7_1_4
+import LinearRepresentations_Serre_1977.Serre.Chap02.Theorem_2_2_6_1
+import LinearRepresentations_Serre_1977.Serre.Chap03.Definition_3_3_3_1
+import LinearRepresentations_Serre_1977.Serre.Chap07.Proposition_7_7_1_3
+import LinearRepresentations_Serre_1977.Serre.Chap07.Remark_7_7_1_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

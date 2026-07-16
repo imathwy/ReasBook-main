@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Example_10_55_3
+import StacksProject_2024.stacks_project.Chap10.Example_10_55_3
 
 noncomputable section
 

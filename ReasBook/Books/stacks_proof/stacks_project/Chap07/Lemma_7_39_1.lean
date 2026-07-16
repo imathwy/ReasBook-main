@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap04.Lemma_4_19_2
-import StacksProject_2024.Chap07.«7_32_1_1»
-import StacksProject_2024.Chap07.Definition_7_8_2
-import StacksProject_2024.Chap07.Lemma_7_39_1.Index
+import stacks_proof.stacks_project.Chap04.Lemma_4_19_2
+import stacks_proof.stacks_project.Chap07.«7_32_1_1»
+import stacks_proof.stacks_project.Chap07.Definition_7_8_2
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_1.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

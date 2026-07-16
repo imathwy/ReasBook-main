@@ -1,8 +1,8 @@
-import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_3_1
-import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_4_2
-import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_1_2
-import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_3_3
-import LinearRepresentations_Serre_1977.RepresentationTheory.SubrepresentationInvariant
+import LinearRepresentations_Serre_1977.Serre.Chap01.Theorem_1_1_3_1
+import LinearRepresentations_Serre_1977.Serre.Chap01.Theorem_1_1_4_2
+import LinearRepresentations_Serre_1977.Serre.Chap02.Proposition_2_2_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap02.Corollary_2_2_3_3
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.SubrepresentationInvariant
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

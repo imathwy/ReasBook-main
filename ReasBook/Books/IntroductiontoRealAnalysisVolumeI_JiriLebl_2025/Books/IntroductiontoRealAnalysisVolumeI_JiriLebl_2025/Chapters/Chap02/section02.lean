@@ -1,5 +1,5 @@
 import Mathlib
-import Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap02.section01
+import IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap02.section01
 
 section Chap02
 section Section02

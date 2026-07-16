@@ -3,9 +3,9 @@ import Mathlib.RingTheory.Localization.AtPrime.Basic
 import Mathlib.RingTheory.Localization.Away.Basic
 import Mathlib.RingTheory.Spectrum.Prime.Topology
 import Mathlib.Tactic.StacksAttribute
-import StacksProject_2024.Chap10.Lemma_10_122_10
-import StacksProject_2024.Chap10.Lemma_10_6_2
-import StacksProject_2024.Chap10.Lemma_10_126_6.Index
+import stacks_proof.stacks_project.Chap10.Lemma_10_122_10
+import stacks_proof.stacks_project.Chap10.Lemma_10_6_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_126_6.Index
 
 universe u v w
 

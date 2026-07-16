@@ -1,9 +1,9 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_3
-import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_3_3
-import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_6_2.ShrinkTransport
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.FieldIndependence.CharacterRingFieldIndependence
+import LinearRepresentations_Serre_1977.Serre.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap12.Proposition_12_12_1_3
+import LinearRepresentations_Serre_1977.Serre.Chap12.Exercise_12_12_3_3
+import LinearRepresentations_Serre_1977.Serre.Chap12.Theorem_12_12_6_2.ShrinkTransport
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.FieldIndependence.CharacterRingFieldIndependence
 
 /-!
 # Serre's Theorem 24 over an abstract characteristic-`0` field (cyclotomic descent endgame)

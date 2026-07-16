@@ -1,5 +1,5 @@
-import DifferentialForms_Cartan_1970.III.section10.«0008_Definition_III_4_extra_6»
-import DifferentialForms_Cartan_1970.III.section10.frozen_0011_Theorem_III_4_extra_9.Index
+import DifferentialForms_Cartan_1970.cartan.III.section10.«0008_Definition_III_4_extra_6»
+import DifferentialForms_Cartan_1970.cartan.III.section10.frozen_0011_Theorem_III_4_extra_9.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

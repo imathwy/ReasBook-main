@@ -619,7 +619,7 @@ lemma complex_tendsto_iff_re_im_tendsto (zSeq : ℕ → ℂ) (z : ℂ) :
   · constructor
     · intro h
       have hz : Filter.Tendsto zSeq Filter.atTop (nhds z) :=
-        (Metric.tendsto_atTop.2 h)
+        Metric.tendsto_atTop.2 (by simpa [dist_eq_norm] using h)
       constructor
       · exact (Complex.continuous_re.tendsto z).comp hz
       · exact (Complex.continuous_im.tendsto z).comp hz
@@ -636,7 +636,7 @@ lemma complex_tendsto_iff_re_im_tendsto (zSeq : ℕ → ℂ) (z : ℂ) :
         hsymm.comp hpair
       have hz' : Filter.Tendsto zSeq Filter.atTop (nhds z) := by
         simpa [Complex.equivRealProdCLM_symm_apply, Complex.re_add_im] using hz
-      exact (Metric.tendsto_atTop.1 hz')
+      simpa [dist_eq_norm] using Metric.tendsto_atTop.1 hz'
 
 /-- Helper for Lemma 4.6.14: bundled arithmetic limit laws in `ℂ`
 for sum, difference, scalar multiplication, and product. -/

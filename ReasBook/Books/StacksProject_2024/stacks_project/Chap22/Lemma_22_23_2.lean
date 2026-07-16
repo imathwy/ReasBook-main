@@ -1,8 +1,8 @@
 import Mathlib.Algebra.Category.ModuleCat.AB
 import Mathlib.Algebra.Category.ModuleCat.Colimits
-import StacksProject_2024.Chap13.Lemma_13_33_7
-import StacksProject_2024.Chap22.DGModuleModel
-import StacksProject_2024.Chap22.ModuleCatHasDerivedCategory
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_33_7
+import StacksProject_2024.stacks_project.Chap22.DGModuleModel
+import StacksProject_2024.stacks_project.Chap22.ModuleCatHasDerivedCategory
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

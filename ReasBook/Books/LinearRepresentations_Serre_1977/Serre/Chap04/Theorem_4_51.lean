@@ -1,14 +1,14 @@
 import Mathlib.MeasureTheory.Function.LpSpace.ContinuousFunctions
 import Mathlib.MeasureTheory.Group.Prod
 import Mathlib.MeasureTheory.Group.Integral
-import LinearRepresentations_Serre_1977.Chap04.Definition_4_23
-import LinearRepresentations_Serre_1977.Chap04.Definition_4_28
-import LinearRepresentations_Serre_1977.Chap04.Lemma_4_22
-import LinearRepresentations_Serre_1977.Chap04.Lemma_4_48
-import LinearRepresentations_Serre_1977.Chap04.Lemma_4_50
-import LinearRepresentations_Serre_1977.Chap04.Theorem_4_11
-import LinearRepresentations_Serre_1977.Chap04.Theorem_4_14
-import LinearRepresentations_Serre_1977.Chap04.Theorem_4_15
+import LinearRepresentations_Serre_1977.Serre.Chap04.Definition_4_23
+import LinearRepresentations_Serre_1977.Serre.Chap04.Definition_4_28
+import LinearRepresentations_Serre_1977.Serre.Chap04.Lemma_4_22
+import LinearRepresentations_Serre_1977.Serre.Chap04.Lemma_4_48
+import LinearRepresentations_Serre_1977.Serre.Chap04.Lemma_4_50
+import LinearRepresentations_Serre_1977.Serre.Chap04.Theorem_4_11
+import LinearRepresentations_Serre_1977.Serre.Chap04.Theorem_4_14
+import LinearRepresentations_Serre_1977.Serre.Chap04.Theorem_4_15
 
 open MeasureTheory
 open scoped ComplexConjugate ENNReal Representation

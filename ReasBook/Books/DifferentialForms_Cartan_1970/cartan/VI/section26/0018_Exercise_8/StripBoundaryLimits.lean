@@ -1,4 +1,4 @@
-import DifferentialForms_Cartan_1970.VI.section26.«0018_Exercise_8».RightTopStripBoundary
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0018_Exercise_8».RightTopStripBoundary
 
 open Set
 open scoped UpperHalfPlane ComplexOrder

@@ -1,9 +1,9 @@
-import StacksProject_2024.Chap15.Definition_15_59_13
-import StacksProject_2024.Chap20.Definition_20_26_14
-import StacksProject_2024.Chap20.Lemma_20_33_4
-import StacksProject_2024.Chap21.Lemma_21_33_1_core
-import StacksProject_2024.Chap20.Sections_on_open_global
-import StacksProject_2024.Chap20.OpensInstances
+import StacksProject_2024.stacks_project.Chap15.Definition_15_59_13
+import StacksProject_2024.stacks_project.Chap20.Definition_20_26_14
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_33_4
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_33_1_core
+import StacksProject_2024.stacks_project.Chap20.Sections_on_open_global
+import StacksProject_2024.stacks_project.Chap20.OpensInstances
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

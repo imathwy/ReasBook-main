@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_6_14
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_6_14
 
 universe u
 
@@ -43,14 +43,6 @@ inductive RelatorSetReduction :
   | singular {ι : Type u} (W : Set (FreeGroup ι)) (i : ι) :
       RelatorSetReduction W (specializeWordSetAtGenerator i W)
 
-/-- Internal relation between the singular-step counts before and after one primitive relator-set
-reduction. -/
-private def RelatorSetReduction.NextSingularCount :
-    {ι : Type u} → {W : Set (FreeGroup ι)} → {ι' : Type u} → {W' : Set (FreeGroup ι')} →
-      RelatorSetReduction W W' → ℕ → ℕ → Prop
-  | _, _, _, _, .regular _ _, s, t => t = s
-  | _, _, _, _, .singular _ _, s, t => t = s + 1
-
 private abbrev RelatorSetState :=
   Σ ι : Type u, Set (FreeGroup ι)
 
@@ -61,10 +53,12 @@ private abbrev relatorSetState {ι : Type u} (W : Set (FreeGroup ι)) : RelatorS
 while singular steps increment it by `1`. -/
 private inductive RelatorSetReductionCountedStep :
     (RelatorSetState × ℕ) → (RelatorSetState × ℕ) → Prop
-  | step {ι : Type u} {W : Set (FreeGroup ι)} {ι' : Type u} {W' : Set (FreeGroup ι')}
-      {s t : ℕ} (h : RelatorSetReduction W W') (ht : h.NextSingularCount s t) :
+  | regular {ι : Type u} (W : Set (FreeGroup ι)) (α : MulAut (FreeGroup ι)) (s : ℕ) :
       RelatorSetReductionCountedStep (relatorSetState W, s)
-        (relatorSetState W', t)
+        (relatorSetState (α '' W), s)
+  | singular {ι : Type u} (W : Set (FreeGroup ι)) (i : ι) (s : ℕ) :
+      RelatorSetReductionCountedStep (relatorSetState W, s)
+        (relatorSetState (specializeWordSetAtGenerator i W), s + 1)
 
 /-- `RelatorSetReductionSequenceWithSingularCount W s W'` means that `W'` is obtained from `W` by
 a finite relator-set reduction sequence with exactly `s` singular transformations. -/

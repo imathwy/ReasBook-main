@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import SmoothManifolds_Lee_2012.Chap05.Sec05_35.Notation_5_35_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_35.Notation_5_35_extra_1
 
 open Manifold
 open scoped ContDiff Manifold RealInnerProductSpace

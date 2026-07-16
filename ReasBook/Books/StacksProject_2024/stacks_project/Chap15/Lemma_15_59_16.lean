@@ -3,9 +3,9 @@ import Mathlib.Algebra.Category.ModuleCat.Monoidal.Basic
 import Mathlib.Algebra.Homology.HomotopyCategory.Triangulated
 import Mathlib.CategoryTheory.ObjectProperty.ClosedUnderIsomorphisms
 import Mathlib.CategoryTheory.Triangulated.Subcategory
-import StacksProject_2024.Chap13.Lemma_13_10_7
-import StacksProject_2024.Chap15.Definition_15_59_1
-import StacksProject_2024.Chap15.Lemma_15_59_10
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_10_7
+import StacksProject_2024.stacks_project.Chap15.Definition_15_59_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_59_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

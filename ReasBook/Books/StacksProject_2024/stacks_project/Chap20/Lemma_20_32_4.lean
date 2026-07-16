@@ -1,10 +1,10 @@
-import StacksProject_2024.Chap20.«20_14_1_1»
-import StacksProject_2024.Chap18.Lemma_18_41_3
-import StacksProject_2024.Chap20.Lemma_20_32_2
-import StacksProject_2024.Chap20.Open_subspace_module_core
-import StacksProject_2024.Chap20.Open_subspace_module_pushforward_core
-import StacksProject_2024.Chap20.Open_subspace_module_pushforward_along_derived
-import StacksProject_2024.Chap20.RingedSpaceOpensModuleCategory
+import StacksProject_2024.stacks_project.Chap20.«20_14_1_1»
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_41_3
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_32_2
+import StacksProject_2024.stacks_project.Chap20.Open_subspace_module_core
+import StacksProject_2024.stacks_project.Chap20.Open_subspace_module_pushforward_core
+import StacksProject_2024.stacks_project.Chap20.Open_subspace_module_pushforward_along_derived
+import StacksProject_2024.stacks_project.Chap20.RingedSpaceOpensModuleCategory
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

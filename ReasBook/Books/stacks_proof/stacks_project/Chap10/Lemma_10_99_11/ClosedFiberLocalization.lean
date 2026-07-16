@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_99_11.LocalCriterionUniverse
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_11.LocalCriterionUniverse
 
 open CategoryTheory.Limits IsLocalRing
 open scoped TensorProduct Pointwise

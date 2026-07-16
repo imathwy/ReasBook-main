@@ -1,4 +1,4 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap06.Theorem_6_24
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap06.Theorem_6_24
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

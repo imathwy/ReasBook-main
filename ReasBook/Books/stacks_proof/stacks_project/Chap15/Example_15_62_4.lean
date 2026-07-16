@@ -3,15 +3,15 @@ import Mathlib.Algebra.Category.ModuleCat.Monoidal.Basic
 import Mathlib.Algebra.Category.ModuleCat.Projective
 import Mathlib.Algebra.Homology.CochainComplexOpposite
 import Mathlib.CategoryTheory.Abelian.Projective.Extend
-import StacksProject_2024.Chap12.Definition_12_24_9
-import StacksProject_2024.Chap12.Definition_12_24_5
-import StacksProject_2024.Chap12.Lemma_12_24_11
-import StacksProject_2024.Chap12.Lemma_12_25_1
-import StacksProject_2024.Chap13.Definition_13_11_3
-import StacksProject_2024.Chap13.Lemma_13_19_3
-import StacksProject_2024.Chap13.Situation_13_15_1
-import StacksProject_2024.Chap15.Definition_15_59_13
-import StacksProject_2024.Chap15.Lemma_15_59_14
+import stacks_proof.stacks_project.Chap12.Definition_12_24_9
+import stacks_proof.stacks_project.Chap12.Definition_12_24_5
+import stacks_proof.stacks_project.Chap12.Lemma_12_24_11
+import stacks_proof.stacks_project.Chap12.Lemma_12_25_1
+import stacks_proof.stacks_project.Chap13.Definition_13_11_3
+import stacks_proof.stacks_project.Chap13.Lemma_13_19_3
+import stacks_proof.stacks_project.Chap13.Situation_13_15_1
+import stacks_proof.stacks_project.Chap15.Definition_15_59_13
+import stacks_proof.stacks_project.Chap15.Lemma_15_59_14
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

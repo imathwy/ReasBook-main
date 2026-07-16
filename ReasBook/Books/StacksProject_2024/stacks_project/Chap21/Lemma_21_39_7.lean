@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap21.CategoryOverPointDerivedColimit
+import StacksProject_2024.stacks_project.Chap21.CategoryOverPointDerivedColimit
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

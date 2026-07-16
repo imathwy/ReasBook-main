@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap10.KernelIsGeneratedByRegularSequence
-import StacksProject_2024.Chap10.Lemma_10_112_8
-import StacksProject_2024.Chap10.Lemma_10_97_7
-import StacksProject_2024.Chap15.Definition_15_33_2
+import StacksProject_2024.stacks_project.Chap10.KernelIsGeneratedByRegularSequence
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_112_8
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_97_7
+import StacksProject_2024.stacks_project.Chap15.Definition_15_33_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

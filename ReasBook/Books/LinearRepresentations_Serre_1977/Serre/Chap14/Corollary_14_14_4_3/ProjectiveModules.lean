@@ -1,5 +1,5 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_2
+import LinearRepresentations_Serre_1977.Serre.Chap14.Lemma_14_14_4_2
 
 noncomputable section
 

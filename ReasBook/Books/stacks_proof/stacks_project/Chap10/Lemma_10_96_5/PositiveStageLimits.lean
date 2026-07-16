@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_96_5.StageSystems
+import stacks_proof.stacks_project.Chap10.Lemma_10_96_5.StageSystems
 
 universe u
 

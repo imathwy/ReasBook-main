@@ -1,5 +1,5 @@
 import Mathlib.Algebra.Homology.DerivedCategory.KInjective
-import StacksProject_2024.Chap24.Lemma_24_25_12
+import StacksProject_2024.stacks_project.Chap24.Lemma_24_25_12
 
 open CategoryTheory
 open CategoryTheory.Limits

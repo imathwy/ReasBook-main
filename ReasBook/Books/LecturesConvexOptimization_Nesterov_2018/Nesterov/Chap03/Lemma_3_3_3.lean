@@ -1,7 +1,7 @@
 import Mathlib
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Lemma_2_14
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_68
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Lemma_3_3_1
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Lemma_2_14
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Definition_3_68
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Lemma_3_3_1
 
 noncomputable section
 

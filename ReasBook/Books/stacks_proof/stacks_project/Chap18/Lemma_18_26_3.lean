@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.CategoryTheory.Sites.CoversTop
-import StacksProject_2024.Chap17.Lemma_17_4_3
-import StacksProject_2024.Chap18.Lemma_18_19_2
-import StacksProject_2024.Chap18.Definition_18_23_1
+import stacks_proof.stacks_project.Chap17.Lemma_17_4_3
+import stacks_proof.stacks_project.Chap18.Lemma_18_19_2
+import stacks_proof.stacks_project.Chap18.Definition_18_23_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

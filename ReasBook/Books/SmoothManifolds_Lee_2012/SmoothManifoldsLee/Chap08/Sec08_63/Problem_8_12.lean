@@ -1,9 +1,9 @@
 import Mathlib.Geometry.Manifold.VectorBundle.ContMDiffSection
 import Mathlib.Geometry.Manifold.VectorField.Pullback
-import SmoothManifolds_Lee_2012.Chap03.Sec03_14.Proposition_3_9
-import SmoothManifolds_Lee_2012.Chap01.Sec01_04.Example_1_33
-import SmoothManifolds_Lee_2012.Chap08.Sec08_57.Definition_8_57_extra_1
-import SmoothManifolds_Lee_2012.Chap08.Sec08_63.Problem_8_18
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap03.Sec03_14.Proposition_3_9
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_04.Example_1_33
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_57.Definition_8_57_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_63.Problem_8_18
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

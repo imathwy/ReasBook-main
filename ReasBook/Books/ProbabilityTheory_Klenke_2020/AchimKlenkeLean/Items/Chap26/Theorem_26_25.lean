@@ -1,10 +1,10 @@
 import Mathlib
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Definition_9_10
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_3
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_12
-import ProbabilityTheory_Klenke_2020.Items.Chap26.Definition_26_23
-import ProbabilityTheory_Klenke_2020.Items.Chap26.Theorem_26_18
-import ProbabilityTheory_Klenke_2020.Items.Chap26.Theorem_26_21
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap09.Definition_9_10
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap17.Definition_17_3
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap17.Definition_17_12
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap26.Definition_26_23
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap26.Theorem_26_18
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap26.Theorem_26_21
 
 open MeasureTheory ProbabilityTheory
 open scoped Topology

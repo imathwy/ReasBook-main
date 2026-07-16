@@ -3,7 +3,7 @@ import Mathlib.Algebra.Category.ModuleCat.Sheaf.PushforwardContinuous
 import Mathlib.CategoryTheory.Sites.Over
 import Mathlib.CategoryTheory.Limits.Shapes.BinaryProducts
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategoryBasic
 
 open CategoryTheory
 open CategoryTheory.Limits

@@ -1,9 +1,9 @@
 import Mathlib.Tactic
-import StacksProject_2024.Chap12.Lemma_12_25_3
-import StacksProject_2024.Chap13.CochainComplexTruncationFiltration
-import StacksProject_2024.Chap13.Definition_13_21_1
-import StacksProject_2024.Chap20.Lemma_20_29_1
-import StacksProject_2024.Chap20.Sections_on_open
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_25_3
+import StacksProject_2024.stacks_project.Chap13.CochainComplexTruncationFiltration
+import StacksProject_2024.stacks_project.Chap13.Definition_13_21_1
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_29_1
+import StacksProject_2024.stacks_project.Chap20.Sections_on_open
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

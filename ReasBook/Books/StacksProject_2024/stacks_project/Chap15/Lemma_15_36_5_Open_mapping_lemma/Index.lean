@@ -1,1 +1,1 @@
-import StacksProject_2024.Chap15.Lemma_15_36_5_Open_mapping_lemma.LimitComparison
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_36_5_Open_mapping_lemma.LimitComparison

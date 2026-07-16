@@ -1,13 +1,19 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09.Proposition_9_18
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap09.Proposition_9_18
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
 open scoped InnerProductSpace
+open WithLp
 
 universe u
 
 namespace ERealFunction
+
+attribute [-instance] Prod.toNorm Prod.seminormedAddCommGroup Prod.normedAddCommGroup
+attribute [-instance] Prod.normedSpace Prod.pseudoMetricSpaceMax
+attribute [local instance] prod_pseudoMetricSpace_l2 prod_normedAddCommGroup_l2
+  prod_normedSpace_l2 prod_completeSpace_l2 prod_innerProductSpace_l2
 
 variable {H : Type u} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
 

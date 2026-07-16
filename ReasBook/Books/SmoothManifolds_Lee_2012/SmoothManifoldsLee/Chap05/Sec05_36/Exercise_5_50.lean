@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Proposition_5_49
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Proposition_5_49
 
 open TopologicalSpace
 open scoped Manifold

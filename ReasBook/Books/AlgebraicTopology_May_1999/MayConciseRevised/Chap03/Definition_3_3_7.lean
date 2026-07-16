@@ -1,7 +1,7 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap03.Definition_3_3_3
-import AlgebraicTopology_May_1999.Chap03.Definition_3_4_2
-import AlgebraicTopology_May_1999.Chap03.Definition_3_4_9
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_3_3
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_4_2
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_4_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -143,15 +143,15 @@ fiber and each morphism to the target map of the unique lifted arrow starting at
 fiber. -/
 noncomputable def fiberTranslationFunctor (hp : Functor.IsCovering p) : B ⥤ Type u₁ where
   obj b := p.Fiber b
-  map f x := ⟨(starLift hp f x).right, starLift_obj hp f x⟩
+  map f := TypeCat.ofHom fun x ↦ ⟨(starLift hp f x).right, starLift_obj hp f x⟩
   map_id b := by
-    funext x
+    ext x
     rcases x with ⟨e, rfl⟩
     -- The identity arrow lifts to the identity at the chosen basepoint.
     apply Subtype.ext
     simpa using congrArg Comma.right (starLift_id_eq hp e)
   map_comp f g := by
-    funext x
+    ext x
     rcases x with ⟨e, rfl⟩
     -- Compare the endpoint of the chosen lift of `f ≫ g` with the endpoint of the explicit
     -- composite lift obtained by first lifting `f` and then `g`.
@@ -161,7 +161,7 @@ noncomputable def fiberTranslationFunctor (hp : Functor.IsCovering p) : B ⥤ Ty
 /-- Fiber translation along a base morphism sends a point to the endpoint of its lifted arrow. -/
 noncomputable abbrev fiberTranslationMap (hp : Functor.IsCovering p) {b b' : B} (f : b ⟶ b') :
     p.Fiber b → p.Fiber b' :=
-  (fiberTranslationFunctor hp).map f
+  ((fiberTranslationFunctor hp).map f).hom
 
 /-- The canonical vertex-group action on a fiber induced by fiber translation. -/
 noncomputable abbrev fiberTranslationMulAction (hp : Functor.IsCovering p) (b : B) :
@@ -189,15 +189,18 @@ end fiberTranslationMulAction
 
 /-- Fiber translation along an identity arrow is the identity map on the fiber. -/
 theorem fiberTranslationMap_id (hp : Functor.IsCovering p) (b : B) :
-    fiberTranslationMap hp (𝟙 b) = 𝟙 (p.Fiber b) :=
-  (fiberTranslationFunctor hp).map_id b
+    fiberTranslationMap hp (𝟙 b) = id := by
+  funext x
+  exact congrArg (fun k ↦ k.hom x) ((fiberTranslationFunctor hp).map_id b)
 
 /-- Fiber translation along a composite is the composite of the corresponding fiber maps. -/
 theorem fiberTranslationMap_comp (hp : Functor.IsCovering p) {b₁ b₂ b₃ : B} (f : b₁ ⟶ b₂)
     (g : b₂ ⟶ b₃) :
     fiberTranslationMap hp (f ≫ g) =
       fiberTranslationMap hp g ∘ fiberTranslationMap hp f :=
-  (fiberTranslationFunctor hp).map_comp f g
+  by
+    funext x
+    exact congrArg (fun k ↦ k.hom x) ((fiberTranslationFunctor hp).map_comp f g)
 
 /-- The fiber translation functor sends an object of the base groupoid to its fiber. -/
 @[simp] theorem fiberTranslationFunctor_obj (hp : Functor.IsCovering p) (b : B) :
@@ -205,12 +208,12 @@ theorem fiberTranslationMap_comp (hp : Functor.IsCovering p) {b₁ b₂ b₃ : B
 
 /-- The fiber translation functor acts on a morphism by fiber translation along that morphism. -/
 @[simp] theorem fiberTranslationFunctor_map (hp : Functor.IsCovering p) {b b' : B} (f : b ⟶ b') :
-    (fiberTranslationFunctor hp).map f = fiberTranslationMap hp f := rfl
+    (fiberTranslationFunctor hp).map f = TypeCat.ofHom (fiberTranslationMap hp f) := rfl
 
 /-- The fiber translation functor applies to a point of the fiber by the corresponding fiber
 translation map. -/
 @[simp] theorem fiberTranslationFunctor_map_apply (hp : Functor.IsCovering p) {b b' : B}
     (f : b ⟶ b') (x : p.Fiber b) :
-    (fiberTranslationFunctor hp).map f x = fiberTranslationMap hp f x := rfl
+    ((fiberTranslationFunctor hp).map f).hom x = fiberTranslationMap hp f x := rfl
 
 end CategoryTheory.Functor.IsCovering

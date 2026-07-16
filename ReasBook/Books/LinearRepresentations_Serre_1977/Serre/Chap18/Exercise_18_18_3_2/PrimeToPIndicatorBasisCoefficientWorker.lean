@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.BrauerBasisResidualDirectProof
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.PointMassBrauerBasisEntryCongruenceWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.BrauerBasisResidualDirectProof
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.PointMassBrauerBasisEntryCongruenceWorker
 
 /-!
 Prime-to-`p` indicator coefficients in the Exercise `18.4` Brauer basis.

@@ -1,8 +1,8 @@
 import Mathlib.Geometry.Manifold.Immersion
 import Mathlib.Geometry.Manifold.Instances.Real
-import SmoothManifolds_Lee_2012.Chap01.Sec01.Definition_1_extra_1
-import SmoothManifolds_Lee_2012.Chap06.Sec06_40.Theorem_6_18
-import SmoothManifolds_Lee_2012.Chap06.Sec06_40.Theorem_6_19
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01.Definition_1_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_40.Theorem_6_18
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_40.Theorem_6_19
 
 -- Declarations for this item will be appended below by the statement pipeline.
 -- Semantic recall note: `lean_leansearch` pointed to mathlib's `WhitneyEmbedding` existence

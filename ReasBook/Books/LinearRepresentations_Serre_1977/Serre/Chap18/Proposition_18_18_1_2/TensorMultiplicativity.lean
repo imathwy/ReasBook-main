@@ -1,7 +1,7 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap18.Definition_18_18_1_1
-import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.FiniteOrderEigenbasis
-import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1.RealizationCore
+import LinearRepresentations_Serre_1977.Serre.Chap18.Definition_18_18_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap18.Theorem_18_18_2_1.FiniteOrderEigenbasis
+import LinearRepresentations_Serre_1977.Serre.Chap18.Theorem_18_18_2_1.RealizationCore
 
 noncomputable section
 

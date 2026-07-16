@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_135_1
+import stacks_proof.stacks_project.Chap10.Definition_10_135_1
 
 -- Basic syntomic API split out so later proofs can use the owner predicate without importing
 -- field-extension comparison results.

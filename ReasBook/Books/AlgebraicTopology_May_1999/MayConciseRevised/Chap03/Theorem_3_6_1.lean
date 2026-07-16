@@ -2,16 +2,16 @@ import Mathlib
 import Mathlib.CategoryTheory.Action.Basic
 import Mathlib.CategoryTheory.Groupoid.VertexGroup
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import AlgebraicTopology_May_1999.Chap03.Construction_3_6_2
-import AlgebraicTopology_May_1999.Chap03.Definition_3_3_3
-import AlgebraicTopology_May_1999.Chap03.Definition_3_3_7
-import AlgebraicTopology_May_1999.Chap03.Definition_3_4_7
-import AlgebraicTopology_May_1999.Chap03.Definition_3_4_10
-import AlgebraicTopology_May_1999.Chap03.Lemma_3_4_3
-import AlgebraicTopology_May_1999.Chap03.Lemma_3_4_8
-import AlgebraicTopology_May_1999.Chap03.Lemma_3_4_11
-import AlgebraicTopology_May_1999.Chap03.Remark_3_3_13
-import AlgebraicTopology_May_1999.Chap03.Theorem_3_5_6
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Construction_3_6_2
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_3_3
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_3_7
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_4_7
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_4_10
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Lemma_3_4_3
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Lemma_3_4_8
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Lemma_3_4_11
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Remark_3_3_13
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Theorem_3_5_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -107,15 +107,15 @@ def associatedActionMap {x y : B} (f : x ⟶ y) :
 /-- The `B`-action associated to a `π(B,b)`-set by the standard twisted-product construction. -/
 def associatedAction : B ⥤ Type v where
   obj := associatedActionObj b S
-  map := associatedActionMap b S
+  map f := TypeCat.ofHom (associatedActionMap b S f)
   map_id x := by
-    funext q
+    ext q
     refine Quotient.inductionOn' q ?_
     intro p
     change Quotient.mk'' (p.1 ≫ 𝟙 x, p.2) = Quotient.mk'' p
     simp
   map_comp f g := by
-    funext q
+    ext q
     refine Quotient.inductionOn' q ?_
     intro p
     change Quotient.mk'' (p.1 ≫ (f ≫ g), p.2) = Quotient.mk'' ((p.1 ≫ f) ≫ g, p.2)
@@ -125,16 +125,16 @@ def associatedAction : B ⥤ Type v where
 def associatedActionHom {S T : Type v} [MulAction (End b) S] [MulAction (End b) T]
     (φ : S →[End b] T) :
     associatedAction b S ⟶ associatedAction b T where
-  app x := Quotient.map' (fun p : (b ⟶ x) × S ↦ (p.1, φ p.2)) <| by
-    intro p q hp
-    rw [MulAction.orbitRel_apply] at hp ⊢
-    rcases hp with ⟨g, rfl⟩
-    refine ⟨g, ?_⟩
-    ext
-    · rfl
-    · simpa using map_smulₛₗ φ g q.2
+  app x := TypeCat.ofHom <| Quotient.map' (fun p : (b ⟶ x) × S ↦ (p.1, φ p.2)) <| by
+      intro p q hp
+      rw [MulAction.orbitRel_apply] at hp ⊢
+      rcases hp with ⟨g, rfl⟩
+      refine ⟨g, ?_⟩
+      ext
+      · rfl
+      · simpa using map_smulₛₗ φ g q.2
   naturality {x} {y} f := by
-    funext q
+    ext q
     refine Quotient.inductionOn' q ?_
     intro p
     rfl
@@ -460,7 +460,7 @@ private noncomputable def associated_action_to_orbit_morphism
           (associatedAction_base_equiv b (End b ⧸ H)).symm (g • x) := by
       apply (associatedAction_base_equiv b (End b ⧸ H)).injective
       simpa [q, associatedAction_base_equiv_smul]
-    have hnat := congrFun (η.naturality g) q
+    have hnat := congrArg (fun k ↦ k.hom q) (η.naturality g)
     calc
       associatedAction_base_equiv b (End b ⧸ K)
           (η.app b ((associatedAction_base_equiv b (End b ⧸ H)).symm (g • x))) =
@@ -539,7 +539,7 @@ private theorem associatedAction_hom_surjective_to_nattrans
       η.app x
         ((associatedAction b (End b ⧸ H)).map p.1 (Quotient.mk'' (𝟙 b, p.2))) := by
         symm
-        exact congrFun (η.naturality p.1) (Quotient.mk'' (𝟙 b, p.2))
+        exact congrArg (fun k ↦ k.hom (Quotient.mk'' (𝟙 b, p.2))) (η.naturality p.1)
     _ = η.app x (Quotient.mk'' p) := by
         have hrepr :
             (associatedAction b (End b ⧸ H)).map p.1 (Quotient.mk'' (𝟙 b, p.2)) =
@@ -580,7 +580,7 @@ private theorem associatedAction_of_vertexGroupMulAction_iso
   let a : ∀ x : B, b ⟶ x := fun x ↦
     Classical.choice (CategoryTheory.nonempty_hom_of_preconnected_groupoid b x)
   let forward : associatedAction b (T.obj b) ⟶ T :=
-    { app := fun x ↦
+    { app := fun x ↦ TypeCat.ofHom <|
         Quotient.lift
           (fun p : (b ⟶ x) × T.obj b ↦ T.map p.1 p.2)
           (by
@@ -596,23 +596,25 @@ private theorem associatedAction_of_vertexGroupMulAction_iso
               congrArg (T.map q.1) hg)
       naturality := by
         intro x y f
-        funext q
+        apply ConcreteCategory.hom_ext
+        intro q
         refine Quotient.inductionOn' q ?_
         intro p
         -- Naturality is exactly compatibility of `T.map` with composition.
         change T.map (p.1 ≫ f) p.2 = T.map f (T.map p.1 p.2)
         simp [FunctorToTypes.map_comp_apply] }
   let inverse : T ⟶ associatedAction b (T.obj b) :=
-    { app := fun x t ↦ Quotient.mk'' (a x, T.map (inv (a x)) t)
+    { app := fun x ↦ TypeCat.ofHom fun t ↦ Quotient.mk'' (a x, T.map (inv (a x)) t)
       naturality := by
         intro x y f
-        funext t
+        apply ConcreteCategory.hom_ext
+        intro t
         -- Route correction: use the chosen-path class normalization instead of quotient transport.
         calc
           Quotient.mk'' (a y, T.map (inv (a y)) (T.map f t)) =
               Quotient.mk'' (a x ≫ f, T.map (inv (a x)) t) := by
                 have hx : T.map (a x) (inv (T.map (a x)) t) = t := by
-                  simpa using (FunctorToTypes.map_hom_map_inv_apply T (asIso (a x)) t)
+                  simpa using (Functor.map_inv_hom_apply T (a x) t)
                 have hx' : T.map f (T.map (a x) (inv (T.map (a x)) t)) = T.map f t := by
                   exact congrArg (T.map f) hx
                 simpa [hx'] using
@@ -634,7 +636,7 @@ private theorem associatedAction_of_vertexGroupMulAction_iso
         ext x t
         -- The chosen inverse path cancels immediately under `T.map`.
         simpa [forward, inverse] using
-          (FunctorToTypes.map_hom_map_inv_apply T (asIso (a x)) t) }⟩
+          (Functor.map_inv_hom_apply T (a x) t) }⟩
 
 /-- Helper for Theorem 3.6.1: an equivariant equivalence of `π(B,b)`-sets induces an isomorphism
 between the corresponding associated `B`-actions. -/
@@ -716,11 +718,12 @@ object of every element, so its second component defines a natural transformatio
 private noncomputable def elementsFunctorOver_natTrans_of_over_hom
     {T U : B ⥤ Type v} (F : elementsFunctorOver T ⟶ elementsFunctorOver U) :
     T ⟶ U where
-  app x t :=
+  app x := TypeCat.ofHom fun t ↦
     let h := elementsFunctorOver_obj_fst_eq (F := F) ⟨x, t⟩
     U.map (eqToHom h) (F.left.obj ⟨x, t⟩).2
   naturality {x} {y} f := by
-    funext t
+    apply ConcreteCategory.hom_ext
+    intro t
     let xt : T.Elements := ⟨x, t⟩
     let yt : T.Elements := ⟨y, T.map f t⟩
     let m : xt ⟶ yt := CategoryOfElements.homMk xt yt f rfl
@@ -753,9 +756,13 @@ private theorem elementsFunctorOver_natTrans_of_over_hom_spec
       ∀ z : T.Elements, (CategoryOfElements.map α).obj z = F.left.obj z := by
     intro z
     rcases z with ⟨x, t⟩
-    apply Functor.Elements.ext _ _ ((elementsFunctorOver_obj_fst_eq (F := F) ⟨x, t⟩).symm)
+    let h := elementsFunctorOver_obj_fst_eq (F := F) ⟨x, t⟩
+    apply Functor.Elements.ext _ _ h.symm
     -- On each object, the reconstructed second component is exactly the original one.
-    simpa [α, elementsFunctorOver_natTrans_of_over_hom, elementsFunctorOver_obj_fst_eq]
+    change U.map (eqToHom h.symm)
+        (U.map (eqToHom h) (F.left.obj ⟨x, t⟩).2) = (F.left.obj ⟨x, t⟩).2
+    rw [← U.map_comp_apply]
+    simp
   refine CategoryTheory.Functor.ext hObj ?_
   intro z₁ z₂ k
   apply CategoryOfElements.ext U
@@ -944,8 +951,8 @@ private theorem existsUnique_lift_functor_iff_mapVertexGroup_range_le_large
     {X Y : GroupoidFunctorOver B} [IsConnected X.left] (hy : Functor.IsCovering Y.hom)
     (e : X.hom.Fiber b) (e' : Y.hom.Fiber b) :
     (∃! F : X.left ⥤ Y.left, F ⋙ Y.hom = X.hom ∧ F.obj e.1 = e'.1) ↔
-      e.2 ▸ (Functor.mapVertexGroup X.hom e.1).range ≤
-        e'.2 ▸ (Functor.mapVertexGroup Y.hom e'.1).range := by
+      e.2 ▸ (X.hom.mapVertexGroup e.1).range ≤
+        e'.2 ▸ (Y.hom.mapVertexGroup e'.1).range := by
   rcases e with ⟨e, rfl⟩
   -- The large-universe statement is exactly Theorem 3.5.1 on the underlying functors.
   simpa using
@@ -959,8 +966,8 @@ private theorem groupoidFunctorOver_existsUnique_hom_iff_mapVertexGroup_range_le
     {X Y : GroupoidFunctorOver B} [IsConnected X.left] (hy : Functor.IsCovering Y.hom)
     (e : X.hom.Fiber b) (e' : Y.hom.Fiber b) :
     (∃! h : X ⟶ Y, h.left.obj e.1 = e'.1) ↔
-      e.2 ▸ (Functor.mapVertexGroup X.hom e.1).range ≤
-        e'.2 ▸ (Functor.mapVertexGroup Y.hom e'.1).range := by
+      e.2 ▸ (X.hom.mapVertexGroup e.1).range ≤
+        e'.2 ▸ (Y.hom.mapVertexGroup e'.1).range := by
   rcases e with ⟨e, rfl⟩
   constructor
   · rintro ⟨h, hh, huniq⟩
@@ -996,8 +1003,8 @@ private theorem groupoidFunctorOver_isIso_iff_mapVertexGroup_range_eq_large
     (e : X.hom.Fiber b) (e' : Y.hom.Fiber b)
     (h : X ⟶ Y) (hh : h.left.obj e.1 = e'.1) :
     IsIso h ↔
-      e.2 ▸ (Functor.mapVertexGroup X.hom e.1).range =
-        e'.2 ▸ (Functor.mapVertexGroup Y.hom e'.1).range := by
+      e.2 ▸ (X.hom.mapVertexGroup e.1).range =
+        e'.2 ▸ (Y.hom.mapVertexGroup e'.1).range := by
   rcases e with ⟨e, rfl⟩
   constructor
   · intro hIso
@@ -1019,35 +1026,35 @@ private theorem groupoidFunctorOver_isIso_iff_mapVertexGroup_range_eq_large
     have hhOver : hF ⋙ Y.hom = X.hom := by
       simpa [hF] using h.comm
     have hle :
-        (Functor.mapVertexGroup X.hom e).range ≤
-          e'.2 ▸ (Functor.mapVertexGroup Y.hom e'.1).range :=
+        (X.hom.mapVertexGroup e).range ≤
+          e'.2 ▸ (Y.hom.mapVertexGroup e'.1).range :=
       Functor.mapVertexGroup_range_le_of_lift
         (p := Y.hom) (f := X.hom) (g := hF) e e' hhOver hhF
     have hgOver : gF ⋙ X.hom = Y.hom := by
       simpa [gF] using (CategoryTheory.inv h).comm
     have hle'₀ :
-        (Functor.mapVertexGroup Y.hom e'.1).range ≤
-          e'.2.symm ▸ (Functor.mapVertexGroup X.hom e).range :=
+        (Y.hom.mapVertexGroup e'.1).range ≤
+          e'.2.symm ▸ (X.hom.mapVertexGroup e).range :=
       Functor.mapVertexGroup_range_le_of_lift
         (p := X.hom) (f := Y.hom) (g := gF) e'.1 ⟨e, e'.2.symm⟩ hgOver hgF
     have hle' :
-        e'.2 ▸ (Functor.mapVertexGroup Y.hom e'.1).range ≤
-          (Functor.mapVertexGroup X.hom e).range := by
+        e'.2 ▸ (Y.hom.mapVertexGroup e'.1).range ≤
+          (X.hom.mapVertexGroup e).range := by
       intro γ hγ
       have hγ' :
           eqToHom e'.2 ≫ γ ≫ eqToHom e'.2.symm ∈
-            (Functor.mapVertexGroup Y.hom e'.1).range := by
+            (Y.hom.mapVertexGroup e'.1).range := by
         exact
           (CategoryTheory.Functor.IsCovering.mapVertexGroup_range_transport_iff e'.2 γ).1 hγ
       have hγ'' :
           eqToHom e'.2 ≫ γ ≫ eqToHom e'.2.symm ∈
-            e'.2.symm ▸ (Functor.mapVertexGroup X.hom e).range :=
+            e'.2.symm ▸ (X.hom.mapVertexGroup e).range :=
         hle'₀ hγ'
       have hγ''' :
           eqToHom e'.2.symm ≫
               (eqToHom e'.2 ≫ γ ≫ eqToHom e'.2.symm) ≫
               eqToHom e'.2 ∈
-            (Functor.mapVertexGroup X.hom e).range := by
+            (X.hom.mapVertexGroup e).range := by
         exact
           (CategoryTheory.Functor.IsCovering.mapVertexGroup_range_transport_iff e'.2.symm
             (eqToHom e'.2 ≫ γ ≫ eqToHom e'.2.symm)).1 hγ''
@@ -1097,9 +1104,10 @@ private theorem identity_coset_stabilizer_eq_subgroup
   -- The quotient action fixes the identity coset exactly along the subgroup itself.
   simpa using MulAction.stabilizer_quotient (H : Subgroup (End b))
 
+omit [IsConnected B] in
 /-- Helper for Theorem 3.6.1: a subgroup of the source-facing loop group can be viewed inside the
 reversed endomorphism group `End b` by keeping the same carrier. -/
-private def loopSubgroupToEndSubgroup (b : B) (K : Subgroup (b ⟶ b)) : Subgroup (End b) where
+def loopSubgroupToEndSubgroup (b : B) (K : Subgroup (b ⟶ b)) : Subgroup (End b) where
   carrier := K.carrier
   one_mem' := K.one_mem
   mul_mem' ha hb := by
@@ -1113,9 +1121,10 @@ private theorem loopSubgroupToEndSubgroup_le_iff
     A ≤ C ↔ loopSubgroupToEndSubgroup b A ≤ loopSubgroupToEndSubgroup b C := by
   rfl
 
+omit [IsConnected B] in
 /-- Helper for Theorem 3.6.1: the carrier-preserving passage from loop subgroups to `End`
 subgroups is injective. -/
-private theorem loopSubgroupToEndSubgroup_injective
+theorem loopSubgroupToEndSubgroup_injective
     (b : B) :
     Function.Injective (loopSubgroupToEndSubgroup b) := by
   intro A C hAC
@@ -1154,7 +1163,7 @@ private theorem fiber_point_stabilizer_eq_mapVertexGroup_range_end
           Functor.vertexGroupMulAction (Functor.IsCovering.fiberTranslationFunctor hp) b
       letI := hact
       exact MulAction.stabilizer (End b) x =
-        loopSubgroupToEndSubgroup b (x.2 ▸ (Functor.mapVertexGroup p x.1).range) := by
+        loopSubgroupToEndSubgroup b (x.2 ▸ (p.mapVertexGroup x.1).range) := by
   rcases x with ⟨e, rfl⟩
   -- At the distinguished basepoint, Lemma 3.4.11 computes the stabilizer exactly.
   simpa [loopSubgroupToEndSubgroup] using
@@ -1376,10 +1385,10 @@ private theorem orbit_covering_iso_of_connected_covering
   letI := hactY
   -- Compute the orbit-cover basepoint subgroup on the source side inside `End b`.
   have hsource_end :
-      loopSubgroupToEndSubgroup b (y0.2 ▸ (Functor.mapVertexGroup Y.hom y0.1).range) =
+      loopSubgroupToEndSubgroup b (y0.2 ▸ (Y.hom.mapVertexGroup y0.1).range) =
         H.toSubgroup := by
     calc
-      loopSubgroupToEndSubgroup b (y0.2 ▸ (Functor.mapVertexGroup Y.hom y0.1).range) =
+      loopSubgroupToEndSubgroup b (y0.2 ▸ (Y.hom.mapVertexGroup y0.1).range) =
           MulAction.stabilizer (End b) y0 := by
             symm
             simpa [Y, y0] using
@@ -1390,27 +1399,27 @@ private theorem orbit_covering_iso_of_connected_covering
               orbitCategoryAssociatedAction_basepoint_stabilizer_eq_subgroup (b := b) H
   -- Compute the chosen subgroup carried by the target basepoint in the same owner.
   have htarget_end :
-      loopSubgroupToEndSubgroup b (x0.2 ▸ (Functor.mapVertexGroup X.obj.hom x0.1).range) =
+      loopSubgroupToEndSubgroup b (x0.2 ▸ (X.obj.hom.mapVertexGroup x0.1).range) =
         H.toSubgroup := by
-    change loopSubgroupToEndSubgroup b (x0.2 ▸ (Functor.mapVertexGroup X.obj.hom x0.1).range) =
+    change loopSubgroupToEndSubgroup b (x0.2 ▸ (X.obj.hom.mapVertexGroup x0.1).range) =
       MulAction.stabilizer (End b) x0
     symm
     simpa [H, hpX] using
       fiber_point_stabilizer_eq_mapVertexGroup_range_end
         (b := b) (p := X.obj.hom) hpX x0
   have hEq_end :
-      loopSubgroupToEndSubgroup b (y0.2 ▸ (Functor.mapVertexGroup Y.hom y0.1).range) =
-        loopSubgroupToEndSubgroup b (x0.2 ▸ (Functor.mapVertexGroup X.obj.hom x0.1).range) := by
+      loopSubgroupToEndSubgroup b (y0.2 ▸ (Y.hom.mapVertexGroup y0.1).range) =
+        loopSubgroupToEndSubgroup b (x0.2 ▸ (X.obj.hom.mapVertexGroup x0.1).range) := by
     calc
-      loopSubgroupToEndSubgroup b (y0.2 ▸ (Functor.mapVertexGroup Y.hom y0.1).range) =
+      loopSubgroupToEndSubgroup b (y0.2 ▸ (Y.hom.mapVertexGroup y0.1).range) =
           H.toSubgroup := hsource_end
       _ =
-          loopSubgroupToEndSubgroup b (x0.2 ▸ (Functor.mapVertexGroup X.obj.hom x0.1).range) := by
+          loopSubgroupToEndSubgroup b (x0.2 ▸ (X.obj.hom.mapVertexGroup x0.1).range) := by
             exact htarget_end.symm
   -- Convert the `End`-owner equality back to the loop-owner equality used by the classifiers.
   have hEq :
-      y0.2 ▸ (Functor.mapVertexGroup Y.hom y0.1).range =
-        x0.2 ▸ (Functor.mapVertexGroup X.obj.hom x0.1).range :=
+      y0.2 ▸ (Y.hom.mapVertexGroup y0.1).range =
+        x0.2 ▸ (X.obj.hom.mapVertexGroup x0.1).range :=
     (loopSubgroupToEndSubgroup_injective (b := b)) hEq_end
   letI : IsConnected Y.left := ConnectedCovering.isConnected Ycov
   obtain ⟨h, hh, _⟩ :=

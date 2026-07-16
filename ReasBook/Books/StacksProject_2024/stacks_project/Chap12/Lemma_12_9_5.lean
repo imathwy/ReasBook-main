@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap12.Lemma_12_9_4
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_9_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap31.Lemma_31_17_5
+import StacksProject_2024.stacks_project.Chap31.Lemma_31_17_5
 import Mathlib.AlgebraicGeometry.Morphisms.Flat
 import Mathlib.AlgebraicGeometry.Morphisms.FinitePresentation
-import StacksProject_2024.Chap28.Definition_28_7_1
+import StacksProject_2024.stacks_project.Chap28.Definition_28_7_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
 import Mathlib.Algebra.Homology.QuasiIso
-import StacksProject_2024.Chap22.Lemma_22_20_3
+import StacksProject_2024.stacks_project.Chap22.Lemma_22_20_3
 
 open CategoryTheory
 open HomologicalComplex

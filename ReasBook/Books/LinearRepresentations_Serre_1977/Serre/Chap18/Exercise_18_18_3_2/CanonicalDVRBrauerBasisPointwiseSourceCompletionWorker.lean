@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.Exercise18_4PointMassRowSourceProofWorker
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.ExplicitResidualBasisAlgebraWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.Exercise18_4PointMassRowSourceProofWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.ExplicitResidualBasisAlgebraWorker
 
 /-!
 Definition-level completion for the canonical DVR Brauer-basis pointwise source residual.

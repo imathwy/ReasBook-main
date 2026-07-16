@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap21.Lemma_21_28_6
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_28_6
 
 open CategoryTheory
 open CategoryTheory.GrothendieckTopology

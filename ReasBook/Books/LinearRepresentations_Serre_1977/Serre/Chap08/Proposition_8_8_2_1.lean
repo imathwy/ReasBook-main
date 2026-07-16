@@ -1,6 +1,6 @@
-import LinearRepresentations_Serre_1977.Chap08.Proposition_8_8_2_1.Index
-import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_4_1
-import LinearRepresentations_Serre_1977.Chap08.Remark_8_8_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap08.Proposition_8_8_2_1.Index
+import LinearRepresentations_Serre_1977.Serre.Chap07.Proposition_7_7_4_1
+import LinearRepresentations_Serre_1977.Serre.Chap08.Remark_8_8_1_2
 
 open CategoryTheory
 open scoped BigOperators Representation

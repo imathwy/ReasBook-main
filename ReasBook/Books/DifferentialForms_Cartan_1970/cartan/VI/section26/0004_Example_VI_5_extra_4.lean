@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import DifferentialForms_Cartan_1970.II.section05.«0024_Example_II_1_extra_14»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0024_Example_II_1_extra_14»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

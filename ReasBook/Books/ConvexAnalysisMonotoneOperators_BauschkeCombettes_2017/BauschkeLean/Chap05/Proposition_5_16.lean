@@ -1,8 +1,10 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Theorem_3_34
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04.Definition_4_33
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Definition_5_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Theorem_5_5
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap03.Theorem_3_34
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap04.Definition_4_33
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap05.Definition_5_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap05.Proposition_5_13
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap05.Theorem_5_5
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap05.Theorem_5_15
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -10,6 +12,8 @@ open Filter Function
 open scoped BigOperators InnerProductSpace Topology
 
 universe u
+
+namespace Proposition516KM
 
 section
 
@@ -472,6 +476,10 @@ theorem krasnoselskiiMannIteration_residual_tendsto_zero
 
 end
 
+end Proposition516KM
+
+namespace Proposition516WeakKM
+
 section
 
 variable {H : Type u} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
@@ -757,6 +765,10 @@ theorem krasnoselskiiMannIteration_tendsto_weakly_to_fixedPoint
 
 end
 
+end Proposition516WeakKM
+
+namespace Proposition516Relaxed
+
 section
 
 variable {H : Type u} [AddCommGroup H] [Module ℝ H]
@@ -788,6 +800,8 @@ def relaxedOperatorIteration (T : ℕ → H → H) (lam : ℕ → ℝ) (x0 : H) 
   rfl
 
 end
+
+end Proposition516Relaxed
 
 section
 

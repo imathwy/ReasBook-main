@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap20.Lemma_20_9_3
-import StacksProject_2024.Chap20.Lemma_20_23_4
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_9_3
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_23_4
 
 open CategoryTheory Opposite TopCat.Presheaf TopologicalSpace HomologicalComplex
 open CategoryTheory.Limits

@@ -1,9 +1,9 @@
 import Mathlib.CategoryTheory.Limits.Shapes.ZeroMorphisms
 import Mathlib.CategoryTheory.Retract
-import StacksProject_2024.Chap20.Definition_20_46_1
-import StacksProject_2024.Chap18.Definition_18_6_1
-import StacksProject_2024.Chap18.Definition_18_17_1
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
+import StacksProject_2024.stacks_project.Chap20.Definition_20_46_1
+import StacksProject_2024.stacks_project.Chap18.Definition_18_6_1
+import StacksProject_2024.stacks_project.Chap18.Definition_18_17_1
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategoryBasic
 
 open CategoryTheory
 open CategoryTheory.Limits

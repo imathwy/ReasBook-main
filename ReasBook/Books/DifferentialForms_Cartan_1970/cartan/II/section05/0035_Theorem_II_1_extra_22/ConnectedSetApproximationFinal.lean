@@ -1,5 +1,5 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section05.«0035_Theorem_II_1_extra_22».ConnectedSetApproximation
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0035_Theorem_II_1_extra_22».ConnectedSetApproximation
 
 open MeasureTheory
 open scoped BigOperators

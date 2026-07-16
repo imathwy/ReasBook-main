@@ -1,7 +1,7 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_2
-import LinearRepresentations_Serre_1977.Chap11.Remark_11_11_1_3.TensorCharacterRingRestriction
-import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1.TensorCharacterBridge
+import LinearRepresentations_Serre_1977.Serre.Chap10.Definition_10_10_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap11.Remark_11_11_1_3.TensorCharacterRingRestriction
+import LinearRepresentations_Serre_1977.Serre.Chap11.Theorem_11_11_2_1.TensorCharacterBridge
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

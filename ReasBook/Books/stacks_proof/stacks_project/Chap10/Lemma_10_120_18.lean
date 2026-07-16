@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap10.Lemma_10_106_4
-import StacksProject_2024.Chap10.Lemma_10_112_4
-import StacksProject_2024.Chap10.Lemma_10_119_10
-import StacksProject_2024.Chap10.Lemma_10_119_12_Krull_Akizuki
-import StacksProject_2024.Chap10.Lemma_10_120_17
+import stacks_proof.stacks_project.Chap10.Lemma_10_106_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_112_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_119_10
+import stacks_proof.stacks_project.Chap10.Lemma_10_119_12_Krull_Akizuki
+import stacks_proof.stacks_project.Chap10.Lemma_10_120_17
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,10 +1,10 @@
 import Mathlib.CategoryTheory.Localization.Adjunction
 import Mathlib.CategoryTheory.Localization.Equivalence
-import StacksProject_2024.Chap13.Lemma_13_6_6
-import StacksProject_2024.Chap13.Lemma_13_5_8
-import StacksProject_2024.Chap13.Lemma_13_10_6
-import StacksProject_2024.Chap13.Lemma_13_11_6
-import StacksProject_2024.Chap13.«13_17_1_1»
+import stacks_proof.stacks_project.Chap13.Lemma_13_6_6
+import stacks_proof.stacks_project.Chap13.Lemma_13_5_8
+import stacks_proof.stacks_project.Chap13.Lemma_13_10_6
+import stacks_proof.stacks_project.Chap13.Lemma_13_11_6
+import stacks_proof.stacks_project.Chap13.«13_17_1_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

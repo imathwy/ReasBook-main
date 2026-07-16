@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap04.Lemma_4_42_6.Direction2AbsFamily
-import StacksProject_2024.Chap04.Lemma_4_42_6.Direction2Left
-import StacksProject_2024.Chap04.Lemma_4_42_6.Direction2Right
+import stacks_proof.stacks_project.Chap04.Lemma_4_42_6.Direction2AbsFamily
+import stacks_proof.stacks_project.Chap04.Lemma_4_42_6.Direction2Left
+import stacks_proof.stacks_project.Chap04.Lemma_4_42_6.Direction2Right
 
 universe v u
 

@@ -1,10 +1,10 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap01.Definition_1_4
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09.Example_9_36
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09.Definition_9_12
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Example_12_2
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Corollary_13_38
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Example_13_2
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap01.Definition_1_4
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap09.Example_9_36
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap09.Definition_9_12
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap12.Example_12_2
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap13.Corollary_13_38
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap13.Example_13_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -80,7 +80,7 @@ theorem positiveReciprocalBarrier_and_conjugate_mem_gammaZero :
 -- `y ↦ 1 / y - 2 * sqrt (-(x - y))` on the admissible region, whose infimum is `0`.
 /-- The infimal convolution of the reciprocal barrier with its conjugate is the zero function. -/
 theorem positiveReciprocalBarrier_infimalConvolution_eq_zero :
-    reciprocalBarrier □ reciprocalBarrier∗ = 0 := sorry
+    infimalConvolution reciprocalBarrier reciprocalBarrier∗ = 0 := sorry
 
 -- Proof sketch: if exactness held at some `x`, there would be a minimizing decomposition
 -- achieving the infimum in the previous theorem. The explicit formula for the summands shows the
@@ -116,7 +116,8 @@ theorem positiveReciprocalEpigraph_sum_eq_openUpperHalfPlane :
 /-- The infimal convolution of the two epigraph indicators is the indicator of the open upper
 half-plane. -/
 theorem positiveReciprocalEpigraphIndicators_infimalConvolution_eq_openUpperHalfPlaneIndicator :
-    ι[epigraph reciprocalBarrier] □ ι[epigraph reciprocalBarrier∗] =
+    infimalConvolution (ι[epigraph reciprocalBarrier]).asEReal
+        (ι[epigraph reciprocalBarrier∗]).asEReal =
       (ι[univ ×ˢ Ioi (0 : ℝ)]).asEReal := sorry
 
 -- Proof sketch: rewrite the infimal convolution as the indicator of the open upper half-plane. An
@@ -125,6 +126,7 @@ theorem positiveReciprocalEpigraphIndicators_infimalConvolution_eq_openUpperHalf
 /-- The infimal convolution of the two epigraph indicators is not lower semicontinuous. -/
 theorem positiveReciprocalEpigraphIndicators_infimalConvolution_not_lowerSemicontinuous :
     ¬ LowerSemicontinuous
-      (ι[epigraph reciprocalBarrier] □ ι[epigraph reciprocalBarrier∗]) := sorry
+      (infimalConvolution (ι[epigraph reciprocalBarrier]).asEReal
+        (ι[epigraph reciprocalBarrier∗]).asEReal) := sorry
 
 end ERealFunction

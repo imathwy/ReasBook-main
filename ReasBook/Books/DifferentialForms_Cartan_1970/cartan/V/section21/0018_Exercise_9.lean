@@ -1,5 +1,5 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.V.section19.«0011_Proposition_5_2»
+import DifferentialForms_Cartan_1970.cartan.V.section19.«0011_Proposition_5_2»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

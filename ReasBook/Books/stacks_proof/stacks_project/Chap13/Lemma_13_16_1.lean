@@ -1,14 +1,14 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.HomologySequence
-import StacksProject_2024.Chap04.Definition_4_22_1
-import StacksProject_2024.Chap04.Definition_4_22_2
-import StacksProject_2024.Chap04.Lemma_4_22_3
-import StacksProject_2024.Chap04.Lemma_4_22_9
-import StacksProject_2024.Chap04.Lemma_4_22_11
-import StacksProject_2024.Chap13.Lemma_13_14_3
-import StacksProject_2024.Chap13.Lemma_13_14_6
-import StacksProject_2024.Chap13.Remark_13_12_4
-import StacksProject_2024.Chap13.Situation_13_15_1
+import stacks_proof.stacks_project.Chap04.Definition_4_22_1
+import stacks_proof.stacks_project.Chap04.Definition_4_22_2
+import stacks_proof.stacks_project.Chap04.Lemma_4_22_3
+import stacks_proof.stacks_project.Chap04.Lemma_4_22_9
+import stacks_proof.stacks_project.Chap04.Lemma_4_22_11
+import stacks_proof.stacks_project.Chap13.Lemma_13_14_3
+import stacks_proof.stacks_project.Chap13.Lemma_13_14_6
+import stacks_proof.stacks_project.Chap13.Remark_13_12_4
+import stacks_proof.stacks_project.Chap13.Situation_13_15_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

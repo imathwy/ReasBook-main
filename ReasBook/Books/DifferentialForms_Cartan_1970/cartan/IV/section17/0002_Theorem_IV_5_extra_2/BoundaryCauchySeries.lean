@@ -1,6 +1,6 @@
-import DifferentialForms_Cartan_1970.IV.section14.«0002_Definition_IV_2_extra_2»
-import DifferentialForms_Cartan_1970.IV.section17.«0001_Definition_IV_5_extra_1»
-import DifferentialForms_Cartan_1970.IV.section17.«0002_Theorem_IV_5_extra_2».TransportedCauchyTransform
+import DifferentialForms_Cartan_1970.cartan.IV.section14.«0002_Definition_IV_2_extra_2»
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0001_Definition_IV_5_extra_1»
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0002_Theorem_IV_5_extra_2».TransportedCauchyTransform
 
 /-- Helper for Theorem IV.5-extra-2: the fixed closed ball of radius `ρ / 8` around the
 transported center stays inside the smaller boundary cylinder. -/

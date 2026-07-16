@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap13.Definition_13_3_5
+import stacks_proof.stacks_project.Chap13.Definition_13_3_5
 import Mathlib.CategoryTheory.Triangulated.Yoneda
 import Mathlib.Tactic.StacksAttribute
 

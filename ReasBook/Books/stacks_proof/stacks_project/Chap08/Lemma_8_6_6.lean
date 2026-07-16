@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Internal.Chap04.FibredInSetoidsTwoFibreProduct
-import StacksProject_2024.Internal.Chap08.StackInSetoidsTwoFibreProductSquare
-import StacksProject_2024.Chap08.Lemma_8_5_6
+import stacks_proof.stacks_project.Internal.Chap04.FibredInSetoidsTwoFibreProduct
+import stacks_proof.stacks_project.Internal.Chap08.StackInSetoidsTwoFibreProductSquare
+import stacks_proof.stacks_project.Chap08.Lemma_8_5_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

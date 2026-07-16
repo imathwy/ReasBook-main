@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_159_1.WellOrderedPrefix
+import stacks_proof.stacks_project.Chap10.Lemma_10_159_1.WellOrderedPrefix
 
 universe u v w
 

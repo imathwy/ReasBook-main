@@ -1,6 +1,6 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
-import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_2_5
+import LinearRepresentations_Serre_1977.Serre.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Serre.Chap15.Exercise_15_15_2_5
 
 noncomputable section
 

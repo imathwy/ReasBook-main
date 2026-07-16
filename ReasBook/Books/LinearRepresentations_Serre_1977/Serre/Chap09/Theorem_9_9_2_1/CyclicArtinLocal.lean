@@ -1,6 +1,6 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
-import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Serre.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap12.CharacterRingOverFieldScalarExtension
 
 open scoped BigOperators Pointwise Representation SubgroupInduction
 open Representation

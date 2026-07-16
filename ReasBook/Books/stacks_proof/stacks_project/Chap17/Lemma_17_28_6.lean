@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.CategoryTheory.Sites.PreservesSheafification
-import StacksProject_2024.Chap17.Definition_17_28_3
+import stacks_proof.stacks_project.Chap17.Definition_17_28_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

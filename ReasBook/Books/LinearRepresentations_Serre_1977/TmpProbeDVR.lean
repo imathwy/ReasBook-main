@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_1.Index
-import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_4_6
+import LinearRepresentations_Serre_1977.Serre.Chap11.Proposition_11_11_4_1.Index
+import LinearRepresentations_Serre_1977.Serre.Chap14.Exercise_14_14_4_6
 
 noncomputable section
 universe u

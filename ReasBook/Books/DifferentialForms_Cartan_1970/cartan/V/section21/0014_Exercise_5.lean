@@ -1,9 +1,9 @@
-import DifferentialForms_Cartan_1970.V.section19.«0006_Example_3»
-import DifferentialForms_Cartan_1970.V.section19.«0007_Example_4»
-import DifferentialForms_Cartan_1970.V.section19.«0005_Proposition_2_1»
-import DifferentialForms_Cartan_1970.V.section20.«0004_Theorem_2»
-import DifferentialForms_Cartan_1970.V.section20.«0005_Example_V_3_extra_3»
-import DifferentialForms_Cartan_1970.V.section21.«0013_Exercise_4»
+import DifferentialForms_Cartan_1970.cartan.V.section19.«0006_Example_3»
+import DifferentialForms_Cartan_1970.cartan.V.section19.«0007_Example_4»
+import DifferentialForms_Cartan_1970.cartan.V.section19.«0005_Proposition_2_1»
+import DifferentialForms_Cartan_1970.cartan.V.section20.«0004_Theorem_2»
+import DifferentialForms_Cartan_1970.cartan.V.section20.«0005_Example_V_3_extra_3»
+import DifferentialForms_Cartan_1970.cartan.V.section21.«0013_Exercise_4»
 import Mathlib
 
 -- Declarations for this item will be appended below by the statement pipeline.

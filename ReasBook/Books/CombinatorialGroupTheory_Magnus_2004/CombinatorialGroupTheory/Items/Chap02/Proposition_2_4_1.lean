@@ -1,6 +1,6 @@
 import Mathlib
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_3_20
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap02.Definition_2_1_1
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_3_20
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap02.Definition_2_1_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -182,11 +182,10 @@ theorem reidemeister_schreier_presentation
       generatorImage Q = schreierGeneratorImageOfPresentation P K T := by
   rcases reidemeister_schreier_presentation_presentedGroup hT with ⟨Q, hQ⟩
   refine ⟨Q.trans (presentationSubgroupEquiv P K), ?_⟩
-  ext y
-  change ((presentationSubgroupEquiv P K) (generatorImage Q y) : K) =
-      ((presentationSubgroupEquiv P K) (schreierGeneratorImage T y) : K)
-  exact congrArg (fun z : K.comap P.toMonoidHom ↦ ((presentationSubgroupEquiv P K) z : K))
-    (congrFun hQ y)
+  funext y
+  simpa only [generatorImage, MulEquiv.trans_apply,
+    schreierGeneratorImageOfPresentation, Function.comp_apply] using
+    congrArg (presentationSubgroupEquiv P K) (congrFun hQ y)
 
 end
 

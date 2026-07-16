@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.Colimits
 import Mathlib.CategoryTheory.Sites.SheafCohomology.Basic
 import Mathlib.Topology.Sheaves.SheafCondition.Sites
-import StacksProject_2024.Chap20.«20_2_0_2»
+import StacksProject_2024.stacks_project.Chap20.«20_2_0_2»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,20 +1,20 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_109_10
-import StacksProject_2024.Chap10.Lemma_10_109_8
-import StacksProject_2024.Chap10.Lemma_10_109_12
-import StacksProject_2024.Chap10.Definition_10_110_7
-import StacksProject_2024.Chap10.Lemma_10_110_8
-import StacksProject_2024.Chap13.Lemma_13_19_8
-import StacksProject_2024.Chap13.Lemma_13_19_11
-import StacksProject_2024.Chap13.Lemma_13_27_3
-import StacksProject_2024.Chap13.Lemma_13_35_4
-import StacksProject_2024.Chap13.Lemma_13_36_1
-import StacksProject_2024.Chap15.Definition_15_65_1
-import StacksProject_2024.Chap15.Lemma_15_65_11
-import StacksProject_2024.Chap15.Lemma_15_65_17
-import StacksProject_2024.Chap15.Lemma_15_66_1
-import StacksProject_2024.Chap15.Lemma_15_79_1
-import StacksProject_2024.Chap15.Lemma_15_80_1
+import StacksProject_2024.stacks_project.Chap10.Definition_10_109_10
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_109_8
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_109_12
+import StacksProject_2024.stacks_project.Chap10.Definition_10_110_7
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_110_8
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_19_8
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_19_11
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_27_3
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_35_4
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_36_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_65_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_65_11
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_65_17
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_66_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_79_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_80_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

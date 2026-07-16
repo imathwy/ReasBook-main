@@ -4,12 +4,12 @@ import Mathlib.Algebra.Module.Torsion.Basic
 import Mathlib.Algebra.Ring.NonZeroDivisors
 import Mathlib.CategoryTheory.Abelian.Projective.Dimension
 import Mathlib.RingTheory.Flat.TorsionFree
-import StacksProject_2024.Chap10.Lemma_10_78_2
-import StacksProject_2024.Chap10.Lemma_10_109_9
-import StacksProject_2024.Chap10.Definition_10_78_1
-import StacksProject_2024.Chap15.Definition_15_8_3
-import StacksProject_2024.Chap15.Lemma_15_3_2
-import StacksProject_2024.Chap15.PrincipalIdeal
+import stacks_proof.stacks_project.Chap10.Lemma_10_78_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_109_9
+import stacks_proof.stacks_project.Chap10.Definition_10_78_1
+import stacks_proof.stacks_project.Chap15.Definition_15_8_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_3_2
+import stacks_proof.stacks_project.Chap15.PrincipalIdeal
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

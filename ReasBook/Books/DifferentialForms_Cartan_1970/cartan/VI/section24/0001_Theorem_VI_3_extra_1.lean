@@ -1,16 +1,16 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.I.section04.«0010_Corollary_1»
-import DifferentialForms_Cartan_1970.V.section18.«0004_Theorem_1»
-import DifferentialForms_Cartan_1970.V.section18.«0006_Theorem_2»
-import DifferentialForms_Cartan_1970.V.section18.«0011_Proposition_2_2»
-import DifferentialForms_Cartan_1970.V.section18.«0012_Proposition_3_1»
-import DifferentialForms_Cartan_1970.V.section18.«0014_Remark_V_1_extra_8»
-import DifferentialForms_Cartan_1970.V.section21.«0001_Definition_V_4_extra_1»
-import DifferentialForms_Cartan_1970.V.section21.«0002_Proposition_1_1»
-import DifferentialForms_Cartan_1970.V.section21.«0005_Theorem_V_4_extra_3»
-import DifferentialForms_Cartan_1970.VI.section22.«0006_Definition_VI_1_extra_4»
-import DifferentialForms_Cartan_1970.VI.section24.«0004_Proposition_2_1»
-import DifferentialForms_Cartan_1970.VI.section24.«0005_Proposition_3_1»
+import DifferentialForms_Cartan_1970.cartan.I.section04.«0010_Corollary_1»
+import DifferentialForms_Cartan_1970.cartan.V.section18.«0004_Theorem_1»
+import DifferentialForms_Cartan_1970.cartan.V.section18.«0006_Theorem_2»
+import DifferentialForms_Cartan_1970.cartan.V.section18.«0011_Proposition_2_2»
+import DifferentialForms_Cartan_1970.cartan.V.section18.«0012_Proposition_3_1»
+import DifferentialForms_Cartan_1970.cartan.V.section18.«0014_Remark_V_1_extra_8»
+import DifferentialForms_Cartan_1970.cartan.V.section21.«0001_Definition_V_4_extra_1»
+import DifferentialForms_Cartan_1970.cartan.V.section21.«0002_Proposition_1_1»
+import DifferentialForms_Cartan_1970.cartan.V.section21.«0005_Theorem_V_4_extra_3»
+import DifferentialForms_Cartan_1970.cartan.VI.section22.«0006_Definition_VI_1_extra_4»
+import DifferentialForms_Cartan_1970.cartan.VI.section24.«0004_Proposition_2_1»
+import DifferentialForms_Cartan_1970.cartan.VI.section24.«0005_Proposition_3_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap06.Definition_6_6_1
-import StacksProject_2024.Chap19.Theorem_19_8_4
-import StacksProject_2024.Chap21.SheafOfModulesForgetPreservesInjectiveObjects
-import StacksProject_2024.Chap21.Lemma_21_10_5
+import StacksProject_2024.stacks_project.Chap06.Definition_6_6_1
+import StacksProject_2024.stacks_project.Chap19.Theorem_19_8_4
+import StacksProject_2024.stacks_project.Chap21.SheafOfModulesForgetPreservesInjectiveObjects
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_10_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

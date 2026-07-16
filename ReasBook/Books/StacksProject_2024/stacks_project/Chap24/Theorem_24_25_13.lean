@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap24.Definition_24_13_1
-import StacksProject_2024.Chap24.Definition_24_25_2
-import StacksProject_2024.Chap24.Lemma_24_13_2
+import StacksProject_2024.stacks_project.Chap24.Definition_24_13_1
+import StacksProject_2024.stacks_project.Chap24.Definition_24_25_2
+import StacksProject_2024.stacks_project.Chap24.Lemma_24_13_2
 
 open CategoryTheory
 open CategoryTheory.Limits

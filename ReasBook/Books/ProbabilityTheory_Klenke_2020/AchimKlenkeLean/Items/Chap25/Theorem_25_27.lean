@@ -1,8 +1,8 @@
 import Mathlib
-import ProbabilityTheory_Klenke_2020.Items.Chap21.Corollary_21_76
-import ProbabilityTheory_Klenke_2020.Items.Chap25.ContinuousLocalMartingaleIto
-import ProbabilityTheory_Klenke_2020.Items.Chap25.Definition_25_23
-import ProbabilityTheory_Klenke_2020.Items.Chap25.Theorem_25_24
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap21.Corollary_21_76
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap25.ContinuousLocalMartingaleIto
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap25.Definition_25_23
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap25.Theorem_25_24
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

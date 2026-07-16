@@ -1,7 +1,7 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_2.SemisimpleCompleteness
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_2.PrimeFieldTransport
-import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_5_2.SemisimpleCompleteness
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_5_2.PrimeFieldTransport
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.RealizableOver
 
 /-!
 # Semisimple-branch assembly for Exercise 18.5.2

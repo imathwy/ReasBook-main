@@ -1,8 +1,8 @@
-import LinearRepresentations_Serre_1977.Chap08.Exercise_8_8_5_4
-import LinearRepresentations_Serre_1977.Chap07.Exercise_7_7_2_5
-import LinearRepresentations_Serre_1977.Chap10.MonomialCharacter
-import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1
-import LinearRepresentations_Serre_1977.RepresentationTheory.GroupFunctionPairing
+import LinearRepresentations_Serre_1977.Serre.Chap08.Exercise_8_8_5_4
+import LinearRepresentations_Serre_1977.Serre.Chap07.Exercise_7_7_2_5
+import LinearRepresentations_Serre_1977.Serre.Chap10.MonomialCharacter
+import LinearRepresentations_Serre_1977.Serre.Chap11.Theorem_11_11_2_1
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.GroupFunctionPairing
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

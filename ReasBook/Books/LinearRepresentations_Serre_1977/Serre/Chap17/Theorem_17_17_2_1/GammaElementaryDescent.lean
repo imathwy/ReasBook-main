@@ -1,9 +1,9 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_2_1.CharZeroBrauer
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_2_1.DecompositionUnit
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_2_1.DecompositionInductionBridge
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_2_1.ProjectionFormulaClass
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_2_1.SubgroupRestriction
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_2_1.CharZeroBrauer
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_2_1.DecompositionUnit
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_2_1.DecompositionInductionBridge
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_2_1.ProjectionFormulaClass
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_2_1.SubgroupRestriction
 
 /-!
 # Theorem 17-17.2-1, assembled modulo the induced-lattice bridge `hind`

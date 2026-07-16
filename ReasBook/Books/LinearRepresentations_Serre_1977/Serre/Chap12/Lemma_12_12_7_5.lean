@@ -1,6 +1,6 @@
 import Mathlib.FieldTheory.Normal.Basic
-import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_5.Index
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_2_1.ScaledCharacterPacket
+import LinearRepresentations_Serre_1977.Serre.Chap12.Lemma_12_12_7_5.Index
+import LinearRepresentations_Serre_1977.Serre.Chap12.Proposition_12_12_2_1.ScaledCharacterPacket
 
 open Representation
 open scoped Pointwise Representation

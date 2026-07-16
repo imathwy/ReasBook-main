@@ -1,7 +1,7 @@
 import Mathlib.CategoryTheory.Limits.Constructions.EventuallyConstant
-import StacksProject_2024.Chap07.HasEnoughObjectsWithProperty
-import StacksProject_2024.Chap15.Lemma_15_87_3
-import StacksProject_2024.Chap21.RingedSiteCohomologyTowers
+import StacksProject_2024.stacks_project.Chap07.HasEnoughObjectsWithProperty
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_87_3
+import StacksProject_2024.stacks_project.Chap21.RingedSiteCohomologyTowers
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

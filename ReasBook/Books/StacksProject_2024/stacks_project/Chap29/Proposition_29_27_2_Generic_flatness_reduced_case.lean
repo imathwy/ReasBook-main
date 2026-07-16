@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap29.Proposition_29_27_1_Generic_flatness
+import StacksProject_2024.stacks_project.Chap29.Proposition_29_27_1_Generic_flatness
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

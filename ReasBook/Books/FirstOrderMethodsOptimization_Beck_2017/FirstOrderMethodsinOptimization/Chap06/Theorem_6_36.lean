@@ -5,11 +5,11 @@ import Mathlib.Data.EReal.Inv
 import Mathlib.Data.EReal.Operations
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 import Mathlib.Order.Filter.Extr
-import FirstOrderMethodsOptimization_Beck_2017.Chap02.Theorem_2_2
-import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_7
-import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_30
-import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_13
-import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_15
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap02.Theorem_2_2
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap02.Definition_2_7
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap06.Theorem_6_30
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap06.Theorem_6_13
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap06.Theorem_6_15
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

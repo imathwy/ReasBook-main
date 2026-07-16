@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Analysis.Analytic.Order
 import Mathlib.Analysis.SpecialFunctions.Log.Summable
-import DifferentialForms_Cartan_1970.V.section20.«0002_Definition_V_3_extra_2»
+import DifferentialForms_Cartan_1970.cartan.V.section20.«0002_Definition_V_3_extra_2»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

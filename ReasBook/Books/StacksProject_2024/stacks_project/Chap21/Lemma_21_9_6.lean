@@ -1,9 +1,9 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap12.Lemma_12_7_2
-import StacksProject_2024.Chap13.Definition_13_16_2
-import StacksProject_2024.Chap13.Lemma_13_11_6
-import StacksProject_2024.Chap13.Lemma_13_16_6
-import StacksProject_2024.Chap21.Lemma_21_9_2
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_7_2
+import StacksProject_2024.stacks_project.Chap13.Definition_13_16_2
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_11_6
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_16_6
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_9_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

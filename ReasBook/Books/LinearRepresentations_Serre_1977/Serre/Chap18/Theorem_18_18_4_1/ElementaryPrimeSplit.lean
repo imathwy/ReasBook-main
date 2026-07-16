@@ -1,8 +1,8 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap08.Proposition_8_8_3_7
-import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_2
-import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
-import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_5.PGroupBridges
+import LinearRepresentations_Serre_1977.Serre.Chap08.Proposition_8_8_3_7
+import LinearRepresentations_Serre_1977.Serre.Chap10.Definition_10_10_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Serre.Chap16.Theorem_16_16_1_5.PGroupBridges
 
 noncomputable section
 

@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.CategoryTheory.Preadditive.Yoneda.Limits
 import Mathlib.CategoryTheory.Triangulated.Yoneda
-import StacksProject_2024.Chap13.Lemma_13_38_1
-import StacksProject_2024.Chap13.Definition_13_3_5
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_38_1
+import StacksProject_2024.stacks_project.Chap13.Definition_13_3_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

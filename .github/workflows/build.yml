@@ -2,40 +2,16 @@ name: Build
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
 
-concurrency:
-  group: build-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
-  build:
-    name: Build ReasBook
-    runs-on: [self-hosted, Linux, X64]
-    timeout-minutes: 60
-    env:
-      PERSIST_ROOT: ${{ vars.REASBOOK_PERSIST_ROOT }}
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Link persistent .lake directory
-        run: |
-          set -euo pipefail
-          persist_root="${PERSIST_ROOT:-/data/reasbook-ci}"
-          mkdir -p "$persist_root/reasbook_lake"
-          rm -rf ReasBook/.lake
-          ln -sfn "$persist_root/reasbook_lake" ReasBook/.lake
-
-      - name: Resolve dependencies
-        run: cd ReasBook && lake resolve-deps
-
-      - name: Prime mathlib cache
-        run: cd ReasBook && lake exe cache get || true
-
-      - name: Build ReasBook
-        run: cd ReasBook && lake build
+  full-import-gate:
+    uses: ./.github/workflows/automation.yml
+    with:
+      operation: validate
+      allow_degradation: true

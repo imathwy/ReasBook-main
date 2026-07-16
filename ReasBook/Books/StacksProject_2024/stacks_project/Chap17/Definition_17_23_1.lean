@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.CategoryTheory.Monoidal.Closed.Basic
-import StacksProject_2024.Chap17.SheafOfModulesTensorUnit
-import StacksProject_2024.Chap17.ModuleRestrictionAndStalks
+import StacksProject_2024.stacks_project.Chap17.SheafOfModulesTensorUnit
+import StacksProject_2024.stacks_project.Chap17.ModuleRestrictionAndStalks
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

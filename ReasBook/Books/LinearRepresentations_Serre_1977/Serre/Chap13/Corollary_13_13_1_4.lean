@@ -1,9 +1,9 @@
 import Mathlib
 import LinearRepresentations_Serre_1977.GroupTheory.ConjClassesPower
-import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_4_2
-import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_1_4
-import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_4_1
-import LinearRepresentations_Serre_1977.Chap13.Corollary_13_13_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap12.Corollary_12_12_4_2
+import LinearRepresentations_Serre_1977.Serre.Chap12.Lemma_12_12_1_4
+import LinearRepresentations_Serre_1977.Serre.Chap12.Theorem_12_12_4_1
+import LinearRepresentations_Serre_1977.Serre.Chap13.Corollary_13_13_1_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

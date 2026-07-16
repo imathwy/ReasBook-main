@@ -1,10 +1,10 @@
 import Mathlib
-import StacksProject_2024.Chap07.Example_7_14_3
-import StacksProject_2024.Chap18.Definition_18_6_1
-import StacksProject_2024.Chap18.Definition_18_13_1
-import StacksProject_2024.Chap18.Definition_18_31_1
-import StacksProject_2024.Chap18.Lemma_18_15_3
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
+import StacksProject_2024.stacks_project.Chap07.Example_7_14_3
+import StacksProject_2024.stacks_project.Chap18.Definition_18_6_1
+import StacksProject_2024.stacks_project.Chap18.Definition_18_13_1
+import StacksProject_2024.stacks_project.Chap18.Definition_18_31_1
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_15_3
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategoryBasic
 
 open CategoryTheory
 open CategoryTheory.Limits

@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap19.AdditiveFunctorTotalRightDerived
-import StacksProject_2024.Chap13.Situation_13_15_1
-import StacksProject_2024.Chap21.Lemma_21_19_1_core
+import StacksProject_2024.stacks_project.Chap19.AdditiveFunctorTotalRightDerived
+import StacksProject_2024.stacks_project.Chap13.Situation_13_15_1
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_19_1_core
 
 open CategoryTheory
 open ComplexShape

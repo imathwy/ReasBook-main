@@ -1,8 +1,8 @@
 import Mathlib.Algebra.Homology.AlternatingConst
 import Mathlib.Algebra.Homology.Homotopy
-import StacksProject_2024.Chap14.Lemma_14_28_5
-import StacksProject_2024.Chap14.Lemma_14_28_7
-import StacksProject_2024.Chap15.Lemma_15_29_1
+import StacksProject_2024.stacks_project.Chap14.Lemma_14_28_5
+import StacksProject_2024.stacks_project.Chap14.Lemma_14_28_7
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_29_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

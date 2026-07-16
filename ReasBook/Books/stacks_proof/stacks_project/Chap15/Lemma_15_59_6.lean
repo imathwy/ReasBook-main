@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap10.Lemma_10_39_12
-import StacksProject_2024.Chap15.Definition_15_59_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_39_12
+import stacks_proof.stacks_project.Chap15.Definition_15_59_1
 import Mathlib.Algebra.Category.ModuleCat.AB
 import Mathlib.Algebra.Homology.HomologicalComplexAbelian
 import Mathlib.Tactic.StacksAttribute

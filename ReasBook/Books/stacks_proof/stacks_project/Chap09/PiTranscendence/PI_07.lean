@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap09.PiTranscendence.PI_01
+import stacks_proof.stacks_project.Chap09.PiTranscendence.PI_01
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

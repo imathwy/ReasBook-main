@@ -1,7 +1,7 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_4
-import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_6.OrbitSupportedLift
-import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_5.AssociatedElementaryCore
+import LinearRepresentations_Serre_1977.Serre.Chap12.Lemma_12_12_7_4
+import LinearRepresentations_Serre_1977.Serre.Chap12.Lemma_12_12_7_6.OrbitSupportedLift
+import LinearRepresentations_Serre_1977.Serre.Chap12.Lemma_12_12_7_5.AssociatedElementaryCore
 
 noncomputable section
 

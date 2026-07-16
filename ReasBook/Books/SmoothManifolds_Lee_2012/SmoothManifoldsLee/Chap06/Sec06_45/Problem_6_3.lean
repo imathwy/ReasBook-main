@@ -1,7 +1,7 @@
 import Mathlib.Geometry.Manifold.Algebra.LieGroup
 import Mathlib.Geometry.Manifold.Algebra.SmoothFunctions
-import SmoothManifolds_Lee_2012.Chap02.Sec02_11.Theorem_2_29
-import SmoothManifolds_Lee_2012.Chap06.Sec06_41.Corollary_6_22
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_11.Theorem_2_29
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_41.Corollary_6_22
 
 -- Declarations for this item will be appended below by the statement pipeline.
 -- Domain sampling pass:

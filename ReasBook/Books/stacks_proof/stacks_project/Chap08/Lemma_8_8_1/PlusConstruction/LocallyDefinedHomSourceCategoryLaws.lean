@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap08.Lemma_8_8_1.PlusConstruction.LocallyDefinedHomSourceIdentityLaws
-import StacksProject_2024.Chap08.Lemma_8_8_1.PlusConstruction.LocallyDefinedHomCategoryLaws
-import StacksProject_2024.Chap08.Lemma_8_8_1.PlusConstruction.LocallyDefinedHomAssociativityLocal
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.PlusConstruction.LocallyDefinedHomSourceIdentityLaws
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.PlusConstruction.LocallyDefinedHomCategoryLaws
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.PlusConstruction.LocallyDefinedHomAssociativityLocal
 
 universe u v uX vX
 

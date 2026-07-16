@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.CategoryTheory.Localization.Predicate
-import StacksProject_2024.Chap04.Lemma_4_2_18
-import StacksProject_2024.Chap13.Definition_13_8_1
-import StacksProject_2024.Chap13.Definition_13_11_3
+import stacks_proof.stacks_project.Chap04.Lemma_4_2_18
+import stacks_proof.stacks_project.Chap13.Definition_13_8_1
+import stacks_proof.stacks_project.Chap13.Definition_13_11_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

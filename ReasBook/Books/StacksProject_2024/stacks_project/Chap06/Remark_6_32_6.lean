@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap17.Definition_17_13_1
+import StacksProject_2024.stacks_project.Chap17.Definition_17_13_1
 
 /- Domain-style sampling for Remark 6.32.6:
 - primary domain: closed immersions of ringed spaces and their relation to the underlying closed

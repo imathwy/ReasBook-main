@@ -1,5 +1,5 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Proposition_13_24
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap13.Proposition_13_24
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -23,13 +23,15 @@ conjugate of its infimal convolution with `g` is `(f* ∘ L*) + g*`. -/
 theorem conjugate_infimalConvolution_infimalPostcomposition_eq
     (f : H → Set.Ioi (⊥ : EReal)) (g : K → Set.Ioi (⊥ : EReal)) (L : H →L[ℝ] K)
     (hL : (⊥ : EReal) ∉ Set.range (L ▷ f)) :
-    ((L ▷ f) □ g)∗ = f.asEReal∗ ∘ L.adjoint + g.asEReal∗ := by
+    (infimalConvolution (L ▷ f) g.asEReal)∗ =
+      f.asEReal∗ ∘ L.adjoint + g.asEReal∗ := by
   let Lf : K → Set.Ioi (⊥ : EReal) := fun y ↦
     ⟨(L ▷ f) y, by
       by_contra hy
       exact hL ⟨y, le_antisymm (not_lt.mp hy) bot_le⟩⟩
   calc
-    ((L ▷ f) □ g)∗ = (Lf □ g)∗ := by rfl
+    (infimalConvolution (L ▷ f) g.asEReal)∗ =
+        (infimalConvolution Lf.asEReal g.asEReal)∗ := by rfl
     _ = Lf.asEReal∗ + g.asEReal∗ := conjugate_infimalConvolution_eq Lf g
     _ = f.asEReal∗ ∘ L.adjoint + g.asEReal∗ := by
       simpa [Lf] using
@@ -42,17 +44,21 @@ theorem conjugate_infimalConvolution_infimalPostcomposition_eq
 `f* □ (L* ▷ g*)`. -/
 theorem conjugate_add_comp_le_infimalConvolution_infimalPostcomposition_adjoint_conjugate
     (f : H → Set.Ioi (⊥ : EReal)) (g : K → Set.Ioi (⊥ : EReal)) (L : H →L[ℝ] K) :
-    (f.asEReal + g.asEReal ∘ L)∗ ≤ f.asEReal∗ □ (L.adjoint ▷ g.asEReal∗) := by
+    (f.asEReal + g.asEReal ∘ L)∗ ≤
+      infimalConvolution f.asEReal∗ (L.adjoint ▷ g.asEReal∗) := by
   have hadd :
-      (f.asEReal + g.asEReal ∘ L)∗ ≤ f.asEReal∗ □ (g ∘ L).asEReal∗ := by
+      (f.asEReal + g.asEReal ∘ L)∗ ≤
+        infimalConvolution f.asEReal∗ (g ∘ L).asEReal∗ := by
     simpa using conjugate_add_le_infimalConvolution_conjugate f (g ∘ L)
   have hcomp :
       (g ∘ L).asEReal∗ ≤ L.adjoint ▷ g.asEReal∗ := by
     simpa using conjugate_comp_le_fiberInf_conjugate g L
   have hinf :
-      f.asEReal∗ □ (g ∘ L).asEReal∗ ≤ f.asEReal∗ □ (L.adjoint ▷ g.asEReal∗) := by
+      infimalConvolution f.asEReal∗ (g ∘ L).asEReal∗ ≤
+        infimalConvolution f.asEReal∗ (L.adjoint ▷ g.asEReal∗) := by
     intro x
-    rw [infimalConvolution_apply, infimalConvolution_apply]
+    change (⨅ y : H, f.asEReal∗ y + (g ∘ L).asEReal∗ (x - y)) ≤
+      ⨅ y : H, f.asEReal∗ y + (L.adjoint ▷ g.asEReal∗) (x - y)
     refine iInf_mono fun y ↦ ?_
     exact add_le_add le_rfl (hcomp (x - y))
   exact le_trans hadd hinf

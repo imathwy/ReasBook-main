@@ -233,7 +233,7 @@ theorem clf_improper_have_no_finite_point (f : E → EReal)
     -- exact
 
 theorem inter_nonempty [FiniteDimensional ℝ E] [FiniteDimensional ℝ F]
-    (C : Set (WithLp 2 (E × F))) (hc : Convex ℝ C) :
+    (C : Set (E × F)) (hc : Convex ℝ C) :
     ∀ y ∈ intrinsicInterior ℝ (D C), {(y, z) | z : F} ∩ intrinsicInterior ℝ C ≠ ∅ := by
   sorry
   -- rw [D_eq_projection,
@@ -266,7 +266,7 @@ lemma affine_set_ri_eq_self [FiniteDimensional ℝ E] (M : Set E)
   (hp : affineSpan ℝ M = M) (he : M.Nonempty) :
     intrinsicInterior ℝ M = M := by sorry
 
-def MM (x : E) : AffineSubspace ℝ (WithLp 2 (E × ℝ)) where
+def MM (x : E) : AffineSubspace ℝ (E × ℝ) where
   carrier := Set.prod {x} univ
   smul_vsub_vadd_mem := by
     refine fun c {p₁ p₂ p₃} a a_1 a_2 ↦ ?_
@@ -338,4 +338,3 @@ theorem univ_convex_closure_intrinsicInterior [FiniteDimensional ℝ E]
   sorry
 
 end closed_convex_affinesup
-

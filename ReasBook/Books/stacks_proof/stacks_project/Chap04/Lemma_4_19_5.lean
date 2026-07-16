@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Category.Grp.Colimits
 import Mathlib.Algebra.Category.Grp.EpiMono
-import StacksProject_2024.Chap04.Lemma_4_19_4
+import stacks_proof.stacks_project.Chap04.Lemma_4_19_4
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

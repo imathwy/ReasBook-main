@@ -1,5 +1,5 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_2_9
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_4_6
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_2_9
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_4_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -26,7 +26,7 @@ variable {F : Type u} [Group F] [IsFreeGroup F]
 -- `core/canonical`: `FreeGroupBasis (Fin 2) F`, `Group.rank`, `MulAut F`, `IsOfFinOrder`,
 -- `orderOf`, `ConjClasses (MulAut F)`, and `ConjClasses.mk`.
 -- `bridge/view`: a chosen basis `basis : FreeGroupBasis (Fin 2) F` obtained from
--- `FreeGroupBasis.nonempty_of_rank_eq_two h_rank` is internal bridge data used to pass to
+-- `exists_basis_fin_two_of_rank_eq_two h_rank` is internal bridge data used to pass to
 -- `basis.toGL`; the basis-relative classification lemmas below stay private because the public
 -- textbook content is the intrinsic rank-two statement.
 
@@ -67,40 +67,40 @@ include h_rank
 
 /-- Proposition 1-4-7: in the automorphism group of a rank-two free group, every finite-order
 automorphism has order `1`, `2`, `3`, or `4`. -/
--- Proof sketch: use `FreeGroupBasis.nonempty_of_rank_eq_two` to obtain a basis
+-- Proof sketch: use `exists_basis_fin_two_of_rank_eq_two` to obtain a basis
 -- `FreeGroupBasis (Fin 2) F`, then apply the basis-dependent owner theorem above. Its proof uses
 -- the canonical bridge `basis.toGL` from Corollary `1-4-16`.
 theorem orderOf_eq_one_or_two_or_three_or_four_of_finite_order
     {α : MulAut F} (hα : IsOfFinOrder α) :
     orderOf α = 1 ∨ orderOf α = 2 ∨ orderOf α = 3 ∨ orderOf α = 4 := by
-  rcases FreeGroupBasis.nonempty_of_rank_eq_two h_rank with ⟨basis⟩
+  rcases exists_basis_fin_two_of_rank_eq_two h_rank with ⟨basis⟩
   simpa using orderOf_eq_one_or_two_or_three_or_four_of_finite_order_basis basis hα
 
 /-- The conjugacy classes in `Aut(F)` represented by involutions of a rank-two free group form a
 four-element set. -/
--- Proof sketch: use `FreeGroupBasis.nonempty_of_rank_eq_two` and then apply the
+-- Proof sketch: use `exists_basis_fin_two_of_rank_eq_two` and then apply the
 -- basis-dependent count theorem, whose proof uses the canonical bridge `basis.toGL`.
 theorem orderTwo_conjClasses_encard :
     (ConjClasses.mk '' { α : MulAut F | orderOf α = 2 }).encard = 4 := by
-  rcases FreeGroupBasis.nonempty_of_rank_eq_two h_rank with ⟨basis⟩
+  rcases exists_basis_fin_two_of_rank_eq_two h_rank with ⟨basis⟩
   simpa using orderTwo_conjClasses_encard_basis basis
 
 /-- The conjugacy classes in `Aut(F)` represented by elements of order `3` in a rank-two free
 group form a singleton. -/
--- Proof sketch: use `FreeGroupBasis.nonempty_of_rank_eq_two` and then apply the
+-- Proof sketch: use `exists_basis_fin_two_of_rank_eq_two` and then apply the
 -- basis-dependent count theorem, whose proof uses the canonical bridge `basis.toGL`.
 theorem orderThree_conjClasses_encard :
     (ConjClasses.mk '' { α : MulAut F | orderOf α = 3 }).encard = 1 := by
-  rcases FreeGroupBasis.nonempty_of_rank_eq_two h_rank with ⟨basis⟩
+  rcases exists_basis_fin_two_of_rank_eq_two h_rank with ⟨basis⟩
   simpa using orderThree_conjClasses_encard_basis basis
 
 /-- The conjugacy classes in `Aut(F)` represented by elements of order `4` in a rank-two free
 group form a singleton. -/
--- Proof sketch: use `FreeGroupBasis.nonempty_of_rank_eq_two` and then apply the
+-- Proof sketch: use `exists_basis_fin_two_of_rank_eq_two` and then apply the
 -- basis-dependent count theorem, whose proof uses the canonical bridge `basis.toGL`.
 theorem orderFour_conjClasses_encard :
     (ConjClasses.mk '' { α : MulAut F | orderOf α = 4 }).encard = 1 := by
-  rcases FreeGroupBasis.nonempty_of_rank_eq_two h_rank with ⟨basis⟩
+  rcases exists_basis_fin_two_of_rank_eq_two h_rank with ⟨basis⟩
   simpa using orderFour_conjClasses_encard_basis basis
 
 omit h_rank

@@ -1,9 +1,9 @@
-import StacksProject_2024.Chap10.Example_10_162_17
-import StacksProject_2024.Chap10.Lemma_10_43_6
-import StacksProject_2024.Chap10.Lemma_10_83_2
-import StacksProject_2024.Chap10.Lemma_10_161_11
-import StacksProject_2024.Chap10.Lemma_10_161_12
-import StacksProject_2024.Chap15.Definition_15_112_1
+import stacks_proof.stacks_project.Chap10.Example_10_162_17
+import stacks_proof.stacks_project.Chap10.Lemma_10_43_6
+import stacks_proof.stacks_project.Chap10.Lemma_10_83_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_161_11
+import stacks_proof.stacks_project.Chap10.Lemma_10_161_12
+import stacks_proof.stacks_project.Chap15.Definition_15_112_1
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

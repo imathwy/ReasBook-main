@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Category.ModuleCat.Presheaf.Colimits
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.Limits
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.Colimits
-import StacksProject_2024.Chap18.Definition_18_10_1
+import StacksProject_2024.stacks_project.Chap18.Definition_18_10_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

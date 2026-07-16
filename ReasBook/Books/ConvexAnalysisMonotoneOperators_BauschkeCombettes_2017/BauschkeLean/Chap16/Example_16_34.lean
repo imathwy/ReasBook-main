@@ -1,8 +1,8 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap07.Definition_7_8
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Corollary_12_31
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Example_13_3
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_33
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap07.Definition_7_8
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap12.Corollary_12_31
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap13.Example_13_3
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap16.Proposition_16_33
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -40,7 +40,8 @@ theorem subdifferential_supportFunction_eq_self_at_zero_of_nonempty_isClosed_con
       by_cases hy : y ∈ C <;> simp [indicator_apply, hx, hy]
   calc
     (∂ σ[C]) 0 = (∂ (((ι[C]).asEReal)∗)) 0 := by
-      simp [ERealFunction.subdifferential, conjugate_indicator_eq_supportFunction]
+      exact congrArg (fun h : H → EReal ↦ (∂ h) 0)
+        (conjugate_indicator_eq_supportFunction C).symm
     _ = Argmin ((ι[C]).asEReal) := by
       simpa [gammaZeroConjugate_apply] using
         (argmin_eq_subdifferential_gammaZeroConjugate_zero (ι[C]) hC_gamma).symm

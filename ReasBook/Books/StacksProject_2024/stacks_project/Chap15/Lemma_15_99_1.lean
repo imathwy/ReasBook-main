@@ -2,17 +2,17 @@ import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.AB
 import Mathlib.Algebra.Category.ModuleCat.EnoughInjectives
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
-import StacksProject_2024.Chap10.Proposition_10_89_3
-import StacksProject_2024.Chap13.Lemma_13_19_8
-import StacksProject_2024.Chap13.Definition_13_18_1
-import StacksProject_2024.Chap13.Lemma_13_34_7
-import StacksProject_2024.Chap15.Definition_15_65_1
-import StacksProject_2024.Chap15.Definition_15_70_1
-import StacksProject_2024.Chap15.Definition_15_75_1
-import StacksProject_2024.Chap15.Lemma_15_70_2
-import StacksProject_2024.Chap15.Lemma_15_72_3
-import StacksProject_2024.Chap15.Lemma_15_74_3
-import StacksProject_2024.Chap15.«15_74_0_2»
+import StacksProject_2024.stacks_project.Chap10.Proposition_10_89_3
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_19_8
+import StacksProject_2024.stacks_project.Chap13.Definition_13_18_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_34_7
+import StacksProject_2024.stacks_project.Chap15.Definition_15_65_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_70_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_75_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_70_2
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_72_3
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_74_3
+import StacksProject_2024.stacks_project.Chap15.«15_74_0_2»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

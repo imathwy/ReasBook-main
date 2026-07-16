@@ -1,6 +1,6 @@
-import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_7_8.ScalarExtensionTransport
-import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_1
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap12.Exercise_12_12_7_8.ScalarExtensionTransport
+import LinearRepresentations_Serre_1977.Serre.Chap12.Lemma_12_12_7_1
+import LinearRepresentations_Serre_1977.Serre.Chap12.Proposition_12_12_1_2
 
 open scoped Representation
 open Lean Elab Term Meta

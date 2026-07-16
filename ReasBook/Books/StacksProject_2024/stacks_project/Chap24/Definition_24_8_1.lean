@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap24.Definition_24_4_1
-import StacksProject_2024.Chap24.Definition_24_8_1_Core
+import StacksProject_2024.stacks_project.Chap24.Definition_24_4_1
+import StacksProject_2024.stacks_project.Chap24.Definition_24_8_1_Core
 
 open CategoryTheory
 open scoped SheafOfModules.RingedSite.GradedModuleSheaf

@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap17.Definition_17_14_1
-import StacksProject_2024.Chap17.Lemma_17_3_1
-import StacksProject_2024.Chap06.Lemma_6_26_4
+import stacks_proof.stacks_project.Chap17.Definition_17_14_1
+import stacks_proof.stacks_project.Chap17.Lemma_17_3_1
+import stacks_proof.stacks_project.Chap06.Lemma_6_26_4
 
 open CategoryTheory Opposite TopologicalSpace
 open CategoryTheory Limits

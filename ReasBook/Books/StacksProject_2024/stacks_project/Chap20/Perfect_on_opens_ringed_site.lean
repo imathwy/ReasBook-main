@@ -1,8 +1,8 @@
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.Abelian
 import Mathlib.CategoryTheory.Limits.Preserves.Finite
-import StacksProject_2024.Chap20.Definition_20_49_1
-import StacksProject_2024.Chap20.RingedSpaceOpensModuleCategory
-import StacksProject_2024.Chap21.Definition_21_47_1
+import StacksProject_2024.stacks_project.Chap20.Definition_20_49_1
+import StacksProject_2024.stacks_project.Chap20.RingedSpaceOpensModuleCategory
+import StacksProject_2024.stacks_project.Chap21.Definition_21_47_1
 
 open AlgebraicGeometry
 open CategoryTheory

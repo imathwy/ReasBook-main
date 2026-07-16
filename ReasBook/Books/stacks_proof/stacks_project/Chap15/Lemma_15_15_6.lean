@@ -1,17 +1,17 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_63_1
-import StacksProject_2024.Chap10.Lemma_10_63_18
-import StacksProject_2024.Chap10.Lemma_10_66_2
-import StacksProject_2024.Chap10.Lemma_10_66_5
-import StacksProject_2024.Chap10.Lemma_10_15_5
-import StacksProject_2024.Chap10.Lemma_10_23_1
-import StacksProject_2024.Chap10.Lemma_10_72_2
-import StacksProject_2024.Chap10.Lemma_10_82_13
-import StacksProject_2024.Chap10.Proposition_10_102_9
-import StacksProject_2024.Chap15.Definition_15_15_1
-import StacksProject_2024.Chap15.Lemma_15_3_3
-import StacksProject_2024.Chap15.Lemma_15_15_2
-import StacksProject_2024.Chap15.Lemma_15_15_3
+import stacks_proof.stacks_project.Chap10.Definition_10_63_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_63_18
+import stacks_proof.stacks_project.Chap10.Lemma_10_66_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_66_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_15_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_23_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_72_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_82_13
+import stacks_proof.stacks_project.Chap10.Proposition_10_102_9
+import stacks_proof.stacks_project.Chap15.Definition_15_15_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_3_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_15_2
+import stacks_proof.stacks_project.Chap15.Lemma_15_15_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,7 +1,7 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap12.GaloisPowerClasses
-import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_5.AssociatedElementaryCore
-import LinearRepresentations_Serre_1977.Chap12.Infra_12_7_CyclicDescent
+import LinearRepresentations_Serre_1977.Serre.Chap12.GaloisPowerClasses
+import LinearRepresentations_Serre_1977.Serre.Chap12.Lemma_12_12_7_5.AssociatedElementaryCore
+import LinearRepresentations_Serre_1977.Serre.Chap12.Infra_12_7_CyclicDescent
 
 noncomputable section
 

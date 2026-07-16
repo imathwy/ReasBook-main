@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap04.Lemma_4_35_7
-import StacksProject_2024.Chap04.Remark_4_35_8
+import stacks_proof.stacks_project.Chap04.Lemma_4_35_7
+import stacks_proof.stacks_project.Chap04.Remark_4_35_8
 
 /-!
 # Product-of-slices (pasting support for Lemma 4.42.6)

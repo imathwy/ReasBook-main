@@ -7,8 +7,8 @@ import Mathlib.LinearAlgebra.Alternating.DomCoprod
 import Mathlib.LinearAlgebra.TensorProduct.Submodule
 import Mathlib.LinearAlgebra.Pi
 import Mathlib.Logic.Equiv.Fin.Basic
-import StacksProject_2024.Chap15.Definition_15_28_2
-import StacksProject_2024.Chap15.Lemma_15_28_3
+import stacks_proof.stacks_project.Chap15.Definition_15_28_2
+import stacks_proof.stacks_project.Chap15.Lemma_15_28_3
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

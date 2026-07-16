@@ -1,4 +1,4 @@
-import SmoothManifolds_Lee_2012.Chap02.Sec02_08.Notation_2_8_extra_3
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_08.Notation_2_8_extra_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

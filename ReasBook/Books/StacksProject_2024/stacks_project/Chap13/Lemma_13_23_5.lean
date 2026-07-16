@@ -5,9 +5,9 @@ import Mathlib.Algebra.Homology.HomotopyCategory.Pretriangulated
 import Mathlib.Algebra.Homology.HomotopyCategory.Triangulated
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
 import Mathlib.CategoryTheory.Triangulated.Subcategory
-import StacksProject_2024.Chap13.Definition_13_8_1
-import StacksProject_2024.Chap13.Lemma_13_10_5
-import StacksProject_2024.Chap13.Definition_13_11_3
+import StacksProject_2024.stacks_project.Chap13.Definition_13_8_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_10_5
+import StacksProject_2024.stacks_project.Chap13.Definition_13_11_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

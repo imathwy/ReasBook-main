@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Group.ConjFinite
 import Mathlib.Data.Complex.Basic
 import Mathlib.RepresentationTheory.Character
-import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_5_2
+import LinearRepresentations_Serre_1977.Serre.Chap02.Theorem_2_2_5_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

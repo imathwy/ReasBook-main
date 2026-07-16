@@ -1,8 +1,9 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Definition_3_8
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Definition_3_49
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Theorem_3_16_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Theorem_3_16_2
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap03.Definition_3_8
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap03.Definition_3_49
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap03.Theorem_3_16_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap03.Theorem_3_16_2
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap07.Definition_7_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -16,8 +17,6 @@ variable {𝓗 : Type u} [NormedAddCommGroup 𝓗] [InnerProductSpace ℝ 𝓗] 
 product functional on `C`. -/
 noncomputable abbrev supportFunctionEReal (C : Set 𝓗) (u : 𝓗) : EReal :=
   sSup ((fun x : 𝓗 ↦ (⟪x, u⟫_ℝ : EReal)) '' C)
-
-notation "σ[" C "]" => supportFunctionEReal C
 
 -- Proof sketch: unfold `supportFunctionEReal`.
 /-- The support function `σ[C]` is the supremum of the image of `C` under the functional
@@ -44,8 +43,7 @@ theorem mem_supportFunctionHalfspace_iff (C : Set 𝓗) (u x : 𝓗) :
 `innerSupremumOn`. -/
 private theorem supportFunctionEReal_eq_innerSupremumOn (C : Set 𝓗) (u : 𝓗) :
     σ[C] u = innerSupremumOn C u := by
-  -- Both sides unfold to the same `EReal` supremum of the image of `C`.
-  rw [supportFunctionEReal_eq_sSup_image, innerSupremumOn_eq_sSup_image]
+  rfl
 
 /-- Helper for Proposition 7.11: every point of `C` lies in each support halfspace of `C`. -/
 private theorem supportFunctionHalfspace_contains_set (C : Set 𝓗) (u : 𝓗) :

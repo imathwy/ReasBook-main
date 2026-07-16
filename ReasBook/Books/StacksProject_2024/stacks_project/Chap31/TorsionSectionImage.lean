@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap06.Definition_6_27_1
+import StacksProject_2024.stacks_project.Chap06.Definition_6_27_1
 
 -- Definitions for Lemma 31.11.1 and Definition 31.11.2.
 

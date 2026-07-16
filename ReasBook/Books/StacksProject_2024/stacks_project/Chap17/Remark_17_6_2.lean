@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Topology.Sheaves.Abelian
-import StacksProject_2024.Chap06.ClosedSubsetInclusion
-import StacksProject_2024.Chap06.Lemma_6_32_1
-import StacksProject_2024.Chap17.Definition_17_5_1
+import StacksProject_2024.stacks_project.Chap06.ClosedSubsetInclusion
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_32_1
+import StacksProject_2024.stacks_project.Chap17.Definition_17_5_1
 
 open CategoryTheory CategoryTheory.Limits Opposite TopCat TopologicalSpace
 

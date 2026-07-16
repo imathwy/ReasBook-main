@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_6_1.FixedConstituentCycleGeometry
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_6_1.FixedConstituentCycleGeometry
 
 universe u v w x
 

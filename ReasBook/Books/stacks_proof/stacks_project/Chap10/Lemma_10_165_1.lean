@@ -1,15 +1,15 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_37_11
-import StacksProject_2024.Chap10.Definition_10_42_1
-import StacksProject_2024.Chap10.Definition_10_54_1
-import StacksProject_2024.Chap10.Lemma_10_37_13
-import StacksProject_2024.Chap10.Lemma_10_37_17
-import StacksProject_2024.Chap10.Lemma_10_165_1.FiniteAdjoinTensor
-import StacksProject_2024.Chap10.Lemma_10_42_4
-import StacksProject_2024.Chap10.Lemma_10_44_3
-import StacksProject_2024.Chap10.Lemma_10_140_9
-import StacksProject_2024.Chap10.Lemma_10_163_9
-import StacksProject_2024.Chap10.Lemma_10_164_3
+import stacks_proof.stacks_project.Chap10.Definition_10_37_11
+import stacks_proof.stacks_project.Chap10.Definition_10_42_1
+import stacks_proof.stacks_project.Chap10.Definition_10_54_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_37_13
+import stacks_proof.stacks_project.Chap10.Lemma_10_37_17
+import stacks_proof.stacks_project.Chap10.Lemma_10_165_1.FiniteAdjoinTensor
+import stacks_proof.stacks_project.Chap10.Lemma_10_42_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_44_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_140_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_163_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_164_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

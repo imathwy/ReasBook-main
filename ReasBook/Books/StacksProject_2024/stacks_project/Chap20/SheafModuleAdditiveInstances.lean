@@ -1,5 +1,5 @@
 import Mathlib.Topology.Sheaves.Abelian
-import StacksProject_2024.Chap20.Open_subspace_module_core
+import StacksProject_2024.stacks_project.Chap20.Open_subspace_module_core
 
 open CategoryTheory
 open CategoryTheory.Limits

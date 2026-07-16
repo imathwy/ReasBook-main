@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap12.Lemma_12_5_13
-import StacksProject_2024.Chap12.Lemma_12_19_10
-import StacksProject_2024.Chap13.Lemma_13_26_3
+import stacks_proof.stacks_project.Chap12.Lemma_12_5_13
+import stacks_proof.stacks_project.Chap12.Lemma_12_19_10
+import stacks_proof.stacks_project.Chap13.Lemma_13_26_3
 
 noncomputable section
 

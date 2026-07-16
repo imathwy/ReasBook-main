@@ -1,9 +1,9 @@
 import Mathlib.AlgebraicGeometry.Fiber
 import Mathlib.AlgebraicGeometry.Modules.Sheaf
-import StacksProject_2024.Chap06.Definition_6_26_1
-import StacksProject_2024.Chap29.Definition_29_50_1
-import StacksProject_2024.Chap29.Definition_29_25_1
-import StacksProject_2024.Chap31.Definition_31_5_1
+import StacksProject_2024.stacks_project.Chap06.Definition_6_26_1
+import StacksProject_2024.stacks_project.Chap29.Definition_29_50_1
+import StacksProject_2024.stacks_project.Chap29.Definition_29_25_1
+import StacksProject_2024.stacks_project.Chap31.Definition_31_5_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

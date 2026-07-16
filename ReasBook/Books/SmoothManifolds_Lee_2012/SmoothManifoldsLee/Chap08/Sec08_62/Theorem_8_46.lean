@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Lie.Subalgebra
-import SmoothManifolds_Lee_2012.Chap07.Sec07_49.Definition_7_49_extra_1
-import SmoothManifolds_Lee_2012.Chap08.Sec08_61.Definition_8_61_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_49.Definition_7_49_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_61.Definition_8_61_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

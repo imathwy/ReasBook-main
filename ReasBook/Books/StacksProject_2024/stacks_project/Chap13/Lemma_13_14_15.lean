@@ -1,10 +1,10 @@
 import Mathlib
-import StacksProject_2024.Chap04.Definition_4_22_1
-import StacksProject_2024.Chap04.Definition_4_27_20
-import StacksProject_2024.Chap04.Remark_4_27_7
-import StacksProject_2024.Chap04.Remark_4_27_15
-import StacksProject_2024.Chap13.Lemma_13_5_8
-import StacksProject_2024.Chap13.Lemma_13_14_14
+import StacksProject_2024.stacks_project.Chap04.Definition_4_22_1
+import StacksProject_2024.stacks_project.Chap04.Definition_4_27_20
+import StacksProject_2024.stacks_project.Chap04.Remark_4_27_7
+import StacksProject_2024.stacks_project.Chap04.Remark_4_27_15
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_5_8
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_14_14
 
 open CategoryTheory.MorphismProperty
 open CategoryTheory.ObjectProperty

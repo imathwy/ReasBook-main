@@ -1,10 +1,10 @@
 import Mathlib
-import StacksProject_2024.Chap04.Lemma_4_33_10
-import StacksProject_2024.Chap04.Lemma_4_33_11
-import StacksProject_2024.Chap04.Lemma_4_32_5
-import StacksProject_2024.Chap04.Lemma_4_39_6
-import StacksProject_2024.Chap04.Lemma_4_41_1_2_Yoneda_lemma_for_fibred_categories
-import StacksProject_2024.Chap08.Definition_8_2_2
+import stacks_proof.stacks_project.Chap04.Lemma_4_33_10
+import stacks_proof.stacks_project.Chap04.Lemma_4_33_11
+import stacks_proof.stacks_project.Chap04.Lemma_4_32_5
+import stacks_proof.stacks_project.Chap04.Lemma_4_39_6
+import stacks_proof.stacks_project.Chap04.Lemma_4_41_1_2_Yoneda_lemma_for_fibred_categories
+import stacks_proof.stacks_project.Chap08.Definition_8_2_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

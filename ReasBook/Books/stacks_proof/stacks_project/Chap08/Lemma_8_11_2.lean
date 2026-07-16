@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap04.Lemma_4_35_9
-import StacksProject_2024.Chap08.Definition_8_5_5
-import StacksProject_2024.Chap08.Definition_8_11_1
-import StacksProject_2024.Chap08.Lemma_8_2_3.PullbackComparisonNaturality
+import stacks_proof.stacks_project.Chap04.Lemma_4_35_9
+import stacks_proof.stacks_project.Chap08.Definition_8_5_5
+import stacks_proof.stacks_project.Chap08.Definition_8_11_1
+import stacks_proof.stacks_project.Chap08.Lemma_8_2_3.PullbackComparisonNaturality
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap10.Exercise_10_10_5_5.BrauerPrelude
+import LinearRepresentations_Serre_1977.Serre.Chap10.Exercise_10_10_5_5.BrauerPrelude
 
 noncomputable section
 

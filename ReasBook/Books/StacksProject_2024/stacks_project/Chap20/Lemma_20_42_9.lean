@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap20.Lemma_20_42_5
-import StacksProject_2024.Chap20.Tensor_internal_hom_to_iterated_internal_hom
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_42_5
+import StacksProject_2024.stacks_project.Chap20.Tensor_internal_hom_to_iterated_internal_hom
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

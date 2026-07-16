@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap21.Lemma_21_20_3
-import StacksProject_2024.Chap21.Lemma_21_20_4
-import StacksProject_2024.Chap21.Lemma_21_20_5_core
-import StacksProject_2024.Chap21.Lemma_21_20_7_core
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_20_3
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_20_4
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_20_5_core
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_20_7_core
 
 open CategoryTheory
 open CategoryTheory.Limits

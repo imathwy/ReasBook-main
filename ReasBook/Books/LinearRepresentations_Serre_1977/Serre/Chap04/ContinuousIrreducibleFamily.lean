@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
-import LinearRepresentations_Serre_1977.Chap04.Definition_4_9
+import LinearRepresentations_Serre_1977.Serre.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap04.Definition_4_9
 
 noncomputable section
 

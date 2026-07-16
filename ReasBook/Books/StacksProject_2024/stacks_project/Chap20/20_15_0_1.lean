@@ -3,8 +3,8 @@ import Mathlib.CategoryTheory.Limits.Lattice
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
 import Mathlib.Topology.Sets.OpenCover
 import Mathlib.Topology.Sheaves.AddCommGrpCat
-import StacksProject_2024.Chap20.Definition_20_9_1
-import StacksProject_2024.Chap20.OpensInstances
+import StacksProject_2024.stacks_project.Chap20.Definition_20_9_1
+import StacksProject_2024.stacks_project.Chap20.OpensInstances
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

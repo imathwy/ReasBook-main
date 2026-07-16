@@ -292,8 +292,7 @@ theorem SubderivWithinAt_eq_gradient {f'x : E} (hx : x ∈ interior s)
   have : Tendsto (fun (t : ℝ) => (f (x + t • v) - f x - ⟪g, t • v⟫) * ‖t • v‖⁻¹)
       (𝓝[>] 0) (𝓝 0) := by
     rw [Metric.tendsto_nhdsWithin_nhds]; intro ε εpos
-    unfold HasFDerivAt at h'
-    rw [hasFDerivAtFilter_iff_tendsto, Metric.tendsto_nhds_nhds] at h'
+    rw [hasFDerivAt_iff_tendsto, Metric.tendsto_nhds_nhds] at h'
     obtain ⟨δ, δpos, hδ⟩ := h' ε εpos
     use (δ * ‖v‖⁻¹)
     obtain pos := mul_pos δpos (inv_pos.mpr (norm_pos_iff.mpr vneq))
@@ -749,4 +748,3 @@ theorem SubderivAt_abs (x : ℝ) :
 end
 
 end
-

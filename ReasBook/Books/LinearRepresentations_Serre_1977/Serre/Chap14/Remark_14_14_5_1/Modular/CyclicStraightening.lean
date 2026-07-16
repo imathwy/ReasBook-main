@@ -1,5 +1,5 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.SemilinearGaloisDescent
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.SemilinearGaloisDescent
 
 /-!
 # Cyclic-Frobenius straightening (Speiser / Hilbert 90 for cyclic groups)

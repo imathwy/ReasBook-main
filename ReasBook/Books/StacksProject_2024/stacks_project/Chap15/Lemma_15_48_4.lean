@@ -1,8 +1,8 @@
 import Mathlib.RingTheory.AdjoinRoot
 import Mathlib.RingTheory.Derivation.MapCoeffs
-import StacksProject_2024.Chap10.Definition_10_110_7
-import StacksProject_2024.Chap10.Lemma_10_163_10
-import StacksProject_2024.Chap15.Lemma_15_48_2
+import StacksProject_2024.stacks_project.Chap10.Definition_10_110_7
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_163_10
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_48_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

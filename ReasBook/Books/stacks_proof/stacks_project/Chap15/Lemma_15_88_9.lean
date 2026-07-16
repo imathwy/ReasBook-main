@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Homology.Localization
 import Mathlib.CategoryTheory.Localization.Monoidal.Braided
-import StacksProject_2024.Chap15.Lemma_15_58_1
-import StacksProject_2024.Chap15.Lemma_15_88_1_Core
+import stacks_proof.stacks_project.Chap15.Lemma_15_58_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_88_1_Core
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

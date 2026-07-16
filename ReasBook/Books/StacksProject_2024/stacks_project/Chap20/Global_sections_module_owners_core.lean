@@ -1,9 +1,9 @@
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
 import Mathlib.CategoryTheory.Abelian.GrothendieckAxioms.Sheaf
-import StacksProject_2024.Chap06.Definition_6_26_1
-import StacksProject_2024.Chap18.Definition_18_6_1
-import StacksProject_2024.Chap18.Lemma_18_14_2
-import StacksProject_2024.Chap19.AdditiveFunctorTotalRightDerived
+import StacksProject_2024.stacks_project.Chap06.Definition_6_26_1
+import StacksProject_2024.stacks_project.Chap18.Definition_18_6_1
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_14_2
+import StacksProject_2024.stacks_project.Chap19.AdditiveFunctorTotalRightDerived
 
 open CategoryTheory
 open CategoryTheory.DerivedCategory

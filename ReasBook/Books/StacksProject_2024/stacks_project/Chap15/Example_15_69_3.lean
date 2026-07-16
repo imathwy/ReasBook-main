@@ -5,7 +5,7 @@ import Mathlib.Algebra.Homology.Single
 import Mathlib.Algebra.TrivSqZeroExt.Ideal
 import Mathlib.LinearAlgebra.Isomorphisms
 import Mathlib.RingTheory.Ideal.Quotient.Operations
-import StacksProject_2024.Chap10.Lemma_10_109_9
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_109_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

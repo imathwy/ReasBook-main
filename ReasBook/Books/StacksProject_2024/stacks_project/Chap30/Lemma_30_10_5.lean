@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap30.Lemma_30_10_3_Artin_Rees
+import StacksProject_2024.stacks_project.Chap30.Lemma_30_10_3_Artin_Rees
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

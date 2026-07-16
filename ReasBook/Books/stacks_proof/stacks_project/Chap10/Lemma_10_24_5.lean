@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_24_5.Index
+import stacks_proof.stacks_project.Chap10.Lemma_10_24_5.Index
 
 open CategoryTheory LinearMap LocalizedModule IsLocalizedModule
 

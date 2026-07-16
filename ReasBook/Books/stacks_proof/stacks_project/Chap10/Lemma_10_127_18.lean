@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap10.Lemma_10_127_17
-import StacksProject_2024.Chap10.Lemma_10_118_3.PolynomialModels
-import StacksProject_2024.Chap10.Lemma_10_127_6
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_17
+import stacks_proof.stacks_project.Chap10.Lemma_10_118_3.PolynomialModels
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_6
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

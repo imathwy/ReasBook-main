@@ -1,9 +1,9 @@
 import Mathlib
-import StacksProject_2024.Chap07.Definition_7_8_2
-import StacksProject_2024.Chap34.Definition_34_4_1
-import StacksProject_2024.Chap34.Definition_34_5_1
-import StacksProject_2024.Chap34.Definition_34_5_6
-import StacksProject_2024.Chap34.Definition_34_5_5
+import StacksProject_2024.stacks_project.Chap07.Definition_7_8_2
+import StacksProject_2024.stacks_project.Chap34.Definition_34_4_1
+import StacksProject_2024.stacks_project.Chap34.Definition_34_5_1
+import StacksProject_2024.stacks_project.Chap34.Definition_34_5_6
+import StacksProject_2024.stacks_project.Chap34.Definition_34_5_5
 
 open CategoryTheory
 open CategoryTheory.SemiRepresentableFamily.Over

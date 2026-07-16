@@ -1,8 +1,8 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap02.Lemma_2_47
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04.Corollary_4_28
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Definition_5_32
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Lemma_5_31
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap02.Lemma_2_47
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap04.Corollary_4_28
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap05.Definition_5_32
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap05.Lemma_5_31
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -537,7 +537,8 @@ theorem inexactKrasnoselskiiMannOrbit_residual_tendsto_zero
     have hcoer :
         Tendsto (fun n ↦ ((αres n : ℝ≥0) : ℝ)) atTop (𝓝 (lNN : ℝ)) :=
       (NNReal.tendsto_coe').2 ⟨lNN.2, hαres⟩
-    simpa [αres, residualNorm] using hcoer
+    change Tendsto (fun n ↦ ((αres n : ℝ≥0) : ℝ)) atTop (𝓝 (lNN : ℝ))
+    exact hcoer
   have hlNN_eq_zero : lNN = 0 := by
     by_contra hne
     have hposNN : 0 < lNN := pos_iff_ne_zero.mpr hne
@@ -643,7 +644,13 @@ private theorem quasiFejerMonotone_norm_tendsto {C : Set H} {x : ℕ → H} {z :
       Tendsto (fun n ↦ Real.sqrt (((α n : ℝ≥0) : ℝ))) atTop (𝓝 (Real.sqrt (l : ℝ))) :=
     (Real.continuous_sqrt.tendsto _).comp hαreal
   -- Taking square roots converts convergence of squared distances into convergence of distances.
-  simpa [α, Real.sqrt_sq_eq_abs, abs_of_nonneg (norm_nonneg _)] using hsqrt
+  have hsqrt_apply :
+      (fun n ↦ Real.sqrt (((α n : ℝ≥0) : ℝ))) = (fun n ↦ ‖x n - z‖) := by
+    funext n
+    change Real.sqrt (‖x n - z‖ ^ 2) = ‖x n - z‖
+    rw [Real.sqrt_sq_eq_abs, abs_of_nonneg (norm_nonneg _)]
+  rw [hsqrt_apply] at hsqrt
+  exact hsqrt
 
 /-- Helper for Proposition 5.34: every weak sequential cluster point of the inexact orbit belongs
 to `Function.fixedPoints T` once the residuals converge strongly to `0`. -/

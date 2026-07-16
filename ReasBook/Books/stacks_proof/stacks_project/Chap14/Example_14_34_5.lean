@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap14.Definition_14_26_6
-import StacksProject_2024.Chap14.Lemma_14_26_9
+import stacks_proof.stacks_project.Chap14.Definition_14_26_6
+import stacks_proof.stacks_project.Chap14.Lemma_14_26_9
 
 open CategoryTheory
 open CategoryTheory.SimplicialObject

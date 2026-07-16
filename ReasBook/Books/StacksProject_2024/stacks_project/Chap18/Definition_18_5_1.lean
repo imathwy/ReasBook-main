@@ -2,7 +2,7 @@ import Mathlib.CategoryTheory.Sites.PreservesSheafification
 import Mathlib.CategoryTheory.Sites.Sheafification
 import Mathlib.CategoryTheory.Sites.Whiskering
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap18.Definition_18_4_1
+import StacksProject_2024.stacks_project.Chap18.Definition_18_4_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

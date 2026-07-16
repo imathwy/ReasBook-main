@@ -18,7 +18,8 @@ private def unitsIntEquivBool : ℤˣ ≃ Bool where
   right_inv b := by
     cases b <;> simp
 
-local instance : Primcodable ℤˣ := Primcodable.ofEquiv Bool unitsIntEquivBool
+local instance corollary_4_2_5_primcodableUnitsInt : Primcodable ℤˣ :=
+  Primcodable.ofEquiv Bool unitsIntEquivBool
 
 /-!
 Primary domain: algorithmic solvability of the word problem for HNN extensions.

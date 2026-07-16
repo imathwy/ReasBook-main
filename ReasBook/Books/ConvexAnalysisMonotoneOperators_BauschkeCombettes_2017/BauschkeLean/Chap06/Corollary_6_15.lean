@@ -1,6 +1,6 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Definition_6_9
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Fact_6_14
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap06.Definition_6_9
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap06.Fact_6_14
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -106,7 +106,8 @@ lemma affineSpan_prod_eq_prod_affineSpan {C D : Set H} (hC_nonempty : C.Nonempty
 
 /-- Helper for Corollary 6.15: the intrinsic interior of a nonempty product is the product of the
 intrinsic interiors. -/
-lemma intrinsicInterior_prod_eq_prod_intrinsicInterior {C D : Set H} (hC_nonempty : C.Nonempty)
+lemma bauschke_intrinsicInterior_prod_eq_prod_intrinsicInterior {C D : Set H}
+    (hC_nonempty : C.Nonempty)
     (hD_nonempty : D.Nonempty) :
     intrinsicInterior ℝ (C ×ˢ D : Set (H × H)) =
       intrinsicInterior ℝ C ×ˢ intrinsicInterior ℝ D := by
@@ -298,7 +299,7 @@ theorem relativeInterior_sub_eq_sub_relativeInterior_of_finiteDimensional
           (affineEquiv_image_intrinsicInterior_of_finiteDimensional
             (φ := e.symm.toAffineEquiv) (s := (C ×ˢ D : Set (H × H))))
       _ = e.symm.toAffineEquiv '' (intrinsicInterior ℝ C ×ˢ intrinsicInterior ℝ D) := by
-        rw [intrinsicInterior_prod_eq_prod_intrinsicInterior hC_nonempty hD_nonempty]
+        rw [bauschke_intrinsicInterior_prod_eq_prod_intrinsicInterior hC_nonempty hD_nonempty]
       _ = e.symm '' (ri C ×ˢ ri D : Set (H × H)) := by
         rw [← relativeInterior_eq_intrinsicInterior_of_finiteDimensional hC_convex,
           ← relativeInterior_eq_intrinsicInterior_of_finiteDimensional hD_convex]

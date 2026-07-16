@@ -1,10 +1,10 @@
 import Mathlib
-import StacksProject_2024.Chap05.Example_5_8_12
-import StacksProject_2024.Chap06.Definition_6_26_1
-import StacksProject_2024.Chap06.Definition_6_27_1
-import StacksProject_2024.Chap17.Definition_17_10_1
-import StacksProject_2024.Chap17.Lemma_17_10_2
-import StacksProject_2024.Chap17.Example_17_10_9
+import stacks_proof.stacks_project.Chap05.Example_5_8_12
+import stacks_proof.stacks_project.Chap06.Definition_6_26_1
+import stacks_proof.stacks_project.Chap06.Definition_6_27_1
+import stacks_proof.stacks_project.Chap17.Definition_17_10_1
+import stacks_proof.stacks_project.Chap17.Lemma_17_10_2
+import stacks_proof.stacks_project.Chap17.Example_17_10_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

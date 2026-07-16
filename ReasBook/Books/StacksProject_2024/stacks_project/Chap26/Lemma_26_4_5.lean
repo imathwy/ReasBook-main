@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap26.Definition_26_4_4
+import StacksProject_2024.stacks_project.Chap26.Definition_26_4_4
 
 open CategoryTheory
 open AlgebraicGeometry

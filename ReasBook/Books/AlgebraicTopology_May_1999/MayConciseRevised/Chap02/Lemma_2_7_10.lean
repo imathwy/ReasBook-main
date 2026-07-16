@@ -1,6 +1,6 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap02.ProofStep_2_7_9
-import AlgebraicTopology_May_1999.Chap02.Theorem_2_7_5
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap02.ProofStep_2_7_9
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap02.Theorem_2_7_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

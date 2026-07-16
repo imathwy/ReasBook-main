@@ -1,6 +1,6 @@
 import Mathlib.Tactic.Recall
-import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Theorem_1_46
-import SmoothManifolds_Lee_2012.Chap02.Sec02_09.Theorem_2_18
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_06.Theorem_1_46
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_09.Theorem_2_18
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

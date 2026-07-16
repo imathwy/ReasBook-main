@@ -1,4 +1,4 @@
-import DifferentialForms_Cartan_1970.III.section12.«0034_Exercise_21».Exercise21ResidueIntegrand
+import DifferentialForms_Cartan_1970.cartan.III.section12.«0034_Exercise_21».Exercise21ResidueIntegrand
 
 noncomputable section
 

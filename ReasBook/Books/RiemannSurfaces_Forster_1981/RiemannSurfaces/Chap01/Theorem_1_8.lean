@@ -1,4 +1,4 @@
-import RiemannSurfaces_Forster_1981.Chap01.Definition_1_6
+import RiemannSurfaces_Forster_1981.RiemannSurfaces.Chap01.Definition_1_6
 import Mathlib.Topology.Bornology.Basic
 import Mathlib.Order.Filter.ZeroAndBoundedAtFilter
 

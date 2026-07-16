@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap26.Lemma_26_11_2
+import StacksProject_2024.stacks_project.Chap26.Lemma_26_11_2
 
 open AlgebraicGeometry
 

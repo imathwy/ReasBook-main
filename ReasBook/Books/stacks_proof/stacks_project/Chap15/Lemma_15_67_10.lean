@@ -1,15 +1,15 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Projective
-import StacksProject_2024.Chap12.Lemma_12_24_11
-import StacksProject_2024.Chap12.Lemma_12_25_1
-import StacksProject_2024.Chap10.Lemma_10_71_1
-import StacksProject_2024.Chap13.Lemma_13_15_5
-import StacksProject_2024.Chap13.Lemma_13_19_3
-import StacksProject_2024.Chap15.Definition_15_67_1
-import StacksProject_2024.Chap15.Lemma_15_59_3
-import StacksProject_2024.Chap15.Lemma_15_59_14
-import StacksProject_2024.Chap15.Lemma_15_59_15
-import StacksProject_2024.Chap15.Lemma_15_67_3
+import stacks_proof.stacks_project.Chap12.Lemma_12_24_11
+import stacks_proof.stacks_project.Chap12.Lemma_12_25_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_71_1
+import stacks_proof.stacks_project.Chap13.Lemma_13_15_5
+import stacks_proof.stacks_project.Chap13.Lemma_13_19_3
+import stacks_proof.stacks_project.Chap15.Definition_15_67_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_59_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_59_14
+import stacks_proof.stacks_project.Chap15.Lemma_15_59_15
+import stacks_proof.stacks_project.Chap15.Lemma_15_67_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

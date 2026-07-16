@@ -1,4 +1,4 @@
-import StacksProject_2024.LinearAlgebra.PowerOperations
+import stacks_proof.stacks_project.LinearAlgebra.PowerOperations
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

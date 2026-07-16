@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap04.Example_4_31_3
-import StacksProject_2024.Chap04.Lemma_4_31_11
-import StacksProject_2024.Chap04.Lemma_4_35_7
+import StacksProject_2024.stacks_project.Chap04.Example_4_31_3
+import StacksProject_2024.stacks_project.Chap04.Lemma_4_31_11
+import StacksProject_2024.stacks_project.Chap04.Lemma_4_35_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

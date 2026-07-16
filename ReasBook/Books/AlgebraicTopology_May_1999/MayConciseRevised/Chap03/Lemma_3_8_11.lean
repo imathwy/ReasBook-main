@@ -1,5 +1,5 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap03.Theorem_3_8_10
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Theorem_3_8_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -53,44 +53,6 @@ noncomputable def universal_cover_orbit_quotient_map_hom
       ext x
       rfl)
 
-/-- Helper for Lemma 3.8.11: internal name of the already-proved range computation from
-Theorem 3.8.10. -/
-private def universal_cover_orbit_projection_range_eq_subgroup_name : Name :=
-  Name.str
-    (Name.str
-      (Name.num
-        (Name.str
-          (Name.str
-            (Name.str
-              (Name.str Name.anonymous "_private")
-              "MayConciseRevised")
-            "Chap03")
-          "Theorem_3_8_10")
-        0)
-      "IsUniversalCoveringMap")
-    "universalCoverOrbitProjection_range_eq_subgroup"
-
-/-- Helper for Lemma 3.8.11: solve the `mapOfEq` range goal by reusing the private proof already
-established in Theorem 3.8.10. -/
-elab "exact_private_universal_cover_orbit_projection_range_eq_subgroup" : tactic => do
-  withMainContext do
-    let lctx ← getLCtx
-    let some hp := lctx.findFromUserName? `hp
-      | throwError "expected a local hypothesis named `hp`"
-    let some e := lctx.findFromUserName? `e
-      | throwError "expected a local variable named `e`"
-    let some H := lctx.findFromUserName? `H
-      | throwError "expected a local variable named `H`"
-    let eId := mkIdent e.userName
-    let HId := mkIdent H.userName
-    let Hobj ←
-      Term.elabTerm (← `(show O(FundamentalGroup B (p $eId)) from ⟨$HId⟩)) none
-    let proof ←
-      mkAppM universal_cover_orbit_projection_range_eq_subgroup_name #[hp.toExpr, e.toExpr, Hobj]
-    let goal ← getMainGoal
-    goal.assign proof
-    replaceMainGoal []
-
 /-- Helper for Lemma 3.8.11: the imported proof of Theorem 3.8.10 already computes the subgroup
 associated to the canonical orbit point when the basepoint is written using `mapOfEq`. -/
 theorem universal_cover_orbit_projection_mapOfEq_range_eq_subgroup
@@ -107,7 +69,7 @@ theorem universal_cover_orbit_projection_mapOfEq_range_eq_subgroup
         rfl)).range = H := by
   -- Reuse the already-verified range computation from Theorem 3.8.10 instead of rebuilding the
   -- same orbit-stabilizer comparison in this single-item file.
-  exact_private_universal_cover_orbit_projection_range_eq_subgroup
+  exact universalCoverOrbitProjection_range_eq_subgroup hp e ⟨H⟩
 
 /-- Lemma 3.8.11: for the quotient covering `E / H → B` attached to a subgroup
 `H ≤ π₁(B, p e)` of a universal cover, the subgroup associated to the canonical orbit class of

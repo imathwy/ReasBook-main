@@ -1,6 +1,6 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_9
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Proposition_2_7
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_30
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Definition_2_9
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Proposition_2_7
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Theorem_2_30
 
 open scoped Gradient lp StrongConvexSmooth
 

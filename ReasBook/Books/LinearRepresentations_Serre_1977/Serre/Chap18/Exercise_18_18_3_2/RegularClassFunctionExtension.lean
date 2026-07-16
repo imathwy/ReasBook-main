@@ -1,6 +1,6 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.ProjectiveEnvelopeHom
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.PrimeToPRootLift
-import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_4_1
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.ProjectiveEnvelopeHom
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.PrimeToPRootLift
+import LinearRepresentations_Serre_1977.Serre.Chap18.Theorem_18_18_4_1
 
 noncomputable section
 

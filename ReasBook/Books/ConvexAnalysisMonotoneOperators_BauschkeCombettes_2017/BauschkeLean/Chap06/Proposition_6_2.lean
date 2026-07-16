@@ -1,5 +1,5 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Definition_6_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap06.Definition_6_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -8,6 +8,8 @@ open scoped Pointwise
 universe u
 
 namespace Set
+
+local notation "cone" => Set.conicalHull
 
 section
 

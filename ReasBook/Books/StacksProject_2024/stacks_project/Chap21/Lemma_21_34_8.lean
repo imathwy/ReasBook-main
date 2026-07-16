@@ -3,14 +3,14 @@ import Mathlib.CategoryTheory.Limits.Shapes.Countable
 import Mathlib.CategoryTheory.Limits.Shapes.Products
 import Mathlib.CategoryTheory.Limits.Shapes.ZeroObjects
 import Mathlib.CategoryTheory.Monoidal.Category
-import StacksProject_2024.Chap12.Lemma_12_7_2
-import StacksProject_2024.Chap13.Lemma_13_30_1
-import StacksProject_2024.Chap13.Definition_13_31_1
-import StacksProject_2024.Chap15.Lemma_15_58_1
-import StacksProject_2024.Chap15.Definition_15_59_1
-import StacksProject_2024.Chap18.RingedSiteModuleCategory
-import StacksProject_2024.Chap21.«21_34_0_2»
-import StacksProject_2024.Chap21.Lemma_21_34_1
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_7_2
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_30_1
+import StacksProject_2024.stacks_project.Chap13.Definition_13_31_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_58_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_59_1
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategory
+import StacksProject_2024.stacks_project.Chap21.«21_34_0_2»
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_34_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

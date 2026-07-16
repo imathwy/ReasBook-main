@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap08.Lemma_8_8_5.InertiaCartesian
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_5.InertiaCartesian
 
 universe u v
 

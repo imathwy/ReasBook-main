@@ -1,7 +1,7 @@
 import Mathlib.CategoryTheory.Sites.SheafCohomology.Basic
 import Mathlib.Topology.Constructible
-import StacksProject_2024.Chap05.Lemma_5_24_8
-import StacksProject_2024.Chap06.ClosedSubsetInclusion
+import StacksProject_2024.stacks_project.Chap05.Lemma_5_24_8
+import StacksProject_2024.stacks_project.Chap06.ClosedSubsetInclusion
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

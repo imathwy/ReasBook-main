@@ -2,7 +2,7 @@ import Mathlib.Algebra.DirectSum.Module
 import Mathlib.Algebra.Module.Torsion.Basic
 import Mathlib.Algebra.Module.Torsion.PrimaryComponent
 import Mathlib.Data.PNat.Basic
-import StacksProject_2024.Chap15.PrincipalIdeal
+import StacksProject_2024.stacks_project.Chap15.PrincipalIdeal
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_105_3
-import StacksProject_2024.Chap10.Lemma_10_105_10
+import stacks_proof.stacks_project.Chap10.Definition_10_105_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_105_10
 
 noncomputable section
 

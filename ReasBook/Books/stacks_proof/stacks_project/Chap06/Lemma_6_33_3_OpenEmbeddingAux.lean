@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap06.Glueing_data_for_sheaves_on_an_open_cover
-import StacksProject_2024.Chap06.Definition_6_30_2
-import StacksProject_2024.Chap06.Lemma_6_30_6
+import stacks_proof.stacks_project.Chap06.Glueing_data_for_sheaves_on_an_open_cover
+import stacks_proof.stacks_project.Chap06.Definition_6_30_2
+import stacks_proof.stacks_project.Chap06.Lemma_6_30_6
 
 open CategoryTheory Opposite TopCat TopologicalSpace Topology
 open CategoryTheory.Presheaf

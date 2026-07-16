@@ -3,11 +3,11 @@ import Mathlib.Algebra.Module.Torsion.Basic
 import Mathlib.RingTheory.Artinian.Module
 import Mathlib.RingTheory.Jacobson.Semiprimary
 import Mathlib.RingTheory.SimpleModule.Isotypic
-import LinearRepresentations_Serre_1977.Chap01.Theorem_1_1_4_2
-import LinearRepresentations_Serre_1977.Chap02.CompleteIrreducibleFamily
-import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
-import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_4_2
-import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_4_1
+import LinearRepresentations_Serre_1977.Serre.Chap01.Theorem_1_1_4_2
+import LinearRepresentations_Serre_1977.Serre.Chap02.CompleteIrreducibleFamily
+import LinearRepresentations_Serre_1977.Serre.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Serre.Chap02.Corollary_2_2_4_2
+import LinearRepresentations_Serre_1977.Serre.Chap02.Proposition_2_2_4_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

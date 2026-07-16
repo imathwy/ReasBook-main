@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap12.Definition_12_27_5
-import StacksProject_2024.Chap19.«19_2_0_1»
-import StacksProject_2024.Chap19.Lemma_19_2_7
+import StacksProject_2024.stacks_project.Chap12.Definition_12_27_5
+import StacksProject_2024.stacks_project.Chap19.«19_2_0_1»
+import StacksProject_2024.stacks_project.Chap19.Lemma_19_2_7
 
 open CategoryTheory Limits Opposite
 open CategoryTheory.SmallObject

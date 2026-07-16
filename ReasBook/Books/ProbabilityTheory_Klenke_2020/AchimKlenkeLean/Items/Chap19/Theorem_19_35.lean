@@ -1,5 +1,5 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Definition_2_14
-import ProbabilityTheory_Klenke_2020.Items.Chap19.Theorem_19_33
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap02.Definition_2_14
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap19.Theorem_19_33
 import Mathlib
 
 open Filter MeasureTheory ProbabilityTheory

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap18.Lemma_18_33_2
+import stacks_proof.stacks_project.Chap18.Lemma_18_33_2
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

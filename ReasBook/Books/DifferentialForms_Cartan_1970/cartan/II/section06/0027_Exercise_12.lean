@@ -1,9 +1,9 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section05.«0001_Definition_II_1_extra_1»
-import DifferentialForms_Cartan_1970.II.section05.«0005_Proposition_2_1»
-import DifferentialForms_Cartan_1970.II.section05.«0017_Definition_II_1_extra_10»
-import DifferentialForms_Cartan_1970.II.section05.«0026_Definition_II_1_extra_16»
-import DifferentialForms_Cartan_1970.II.section05.«0033_Definition_II_1_extra_20»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0001_Definition_II_1_extra_1»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0005_Proposition_2_1»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0017_Definition_II_1_extra_10»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0026_Definition_II_1_extra_16»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0033_Definition_II_1_extra_20»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

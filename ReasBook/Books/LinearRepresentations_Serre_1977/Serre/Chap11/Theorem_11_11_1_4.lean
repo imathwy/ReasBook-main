@@ -1,9 +1,9 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.FiniteToFintype
-import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_5_2
-import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
-import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_5_2
-import LinearRepresentations_Serre_1977.RepresentationTheory.FrobeniusCharacterPairing
+import LinearRepresentations_Serre_1977.Serre.FiniteToFintype
+import LinearRepresentations_Serre_1977.Serre.Chap02.Theorem_2_2_5_2
+import LinearRepresentations_Serre_1977.Serre.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap10.Theorem_10_10_5_2
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.FrobeniusCharacterPairing
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,9 +1,9 @@
 import Mathlib.CategoryTheory.Functor.Derived.LeftDerived
-import StacksProject_2024.Chap13.Situation_13_15_1
-import StacksProject_2024.Chap18.Definition_18_28_1
-import StacksProject_2024.Chap18.RingedSiteModuleCategory
-import StacksProject_2024.Chap21.«21_18_0_1»
-import StacksProject_2024.Chap21.Lemma_21_19_1_core
+import StacksProject_2024.stacks_project.Chap13.Situation_13_15_1
+import StacksProject_2024.stacks_project.Chap18.Definition_18_28_1
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategory
+import StacksProject_2024.stacks_project.Chap21.«21_18_0_1»
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_19_1_core
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

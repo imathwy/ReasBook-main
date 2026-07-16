@@ -1,9 +1,9 @@
-import StacksProject_2024.Chap10.Definition_10_78_1
-import StacksProject_2024.Chap17.Definition_17_12_1
-import StacksProject_2024.Chap17.ModuleRestrictionAndStalks
-import StacksProject_2024.Chap17.SheafOfModulesTensorUnit
-import StacksProject_2024.Chap28.Definition_28_7_1
-import StacksProject_2024.Chap31.Definition_31_12_1
+import StacksProject_2024.stacks_project.Chap10.Definition_10_78_1
+import StacksProject_2024.stacks_project.Chap17.Definition_17_12_1
+import StacksProject_2024.stacks_project.Chap17.ModuleRestrictionAndStalks
+import StacksProject_2024.stacks_project.Chap17.SheafOfModulesTensorUnit
+import StacksProject_2024.stacks_project.Chap28.Definition_28_7_1
+import StacksProject_2024.stacks_project.Chap31.Definition_31_12_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

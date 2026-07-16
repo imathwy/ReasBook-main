@@ -1,9 +1,9 @@
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import AlgebraicTopology_May_1999.Chap03.Example_3_1_7
-import AlgebraicTopology_May_1999.Chap03.Definition_3_1_6
-import AlgebraicTopology_May_1999.Chap03.Corollary_3_7_11
-import AlgebraicTopology_May_1999.Chap03.Lemma_3_8_8
-import AlgebraicTopology_May_1999.Chap03.Proposition_3_8_9
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Example_3_1_7
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_1_6
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Corollary_3_7_11
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Lemma_3_8_8
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Proposition_3_8_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -3089,7 +3089,7 @@ private theorem universalCoverOrbitFiberPointMap_stabilizer_eq
 
 /-- Helper for Theorem 3.8.10: the quotient cover `E / H → B` realizes the subgroup `H` at the
 canonical orbit point of `e`. -/
-private theorem universalCoverOrbitProjection_range_eq_subgroup
+theorem universalCoverOrbitProjection_range_eq_subgroup
     (hp : IsUniversalCoveringMap p) (e : E)
     (H : O(FundamentalGroup B (p e))) :
     letI : SimplyConnectedSpace E := hp.simplyConnectedSpace
@@ -3184,7 +3184,7 @@ private theorem universalCoverOrbitFunctor_full
       (fun f : TopCat.of (universalCoverOrbit hp e H) ⟶ TopCat.of B =>
         f.hom (universalCoverOrbitPoint hp e H))
       (Over.w F.hom)
-    simpa [ContinuousMap.comp_apply] using hcomm
+    exact hcomm
   let y : (universalCoverOrbitProjection hp e K) ⁻¹' ({p e} : Set B) :=
     ⟨TopCat.Hom.hom F.hom.left (universalCoverOrbitPoint hp e H), hy_mem⟩
   obtain ⟨q, hq⟩ := (universalCoverOrbitFiberPointMap_bijective hp e K).2 y

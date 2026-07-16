@@ -1,5 +1,5 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.VI.section22.«0006_Definition_VI_1_extra_4»
+import DifferentialForms_Cartan_1970.cartan.VI.section22.«0006_Definition_VI_1_extra_4»
 
 -- Semantic recall note: the dedicated `lean_leansearch` tool was unavailable in this runner, so
 -- the owner/API choice was verified directly against mathlib's `OpenPartialHomeomorph` atlas

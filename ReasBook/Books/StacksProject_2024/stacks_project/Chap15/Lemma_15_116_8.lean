@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.FieldTheory.KummerPolynomial
-import StacksProject_2024.Chap10.Lemma_10_119_7
-import StacksProject_2024.Chap15.Definition_15_112_1
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_119_7
+import StacksProject_2024.stacks_project.Chap15.Definition_15_112_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

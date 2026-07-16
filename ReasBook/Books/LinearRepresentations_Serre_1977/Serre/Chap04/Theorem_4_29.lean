@@ -1,6 +1,6 @@
-import LinearRepresentations_Serre_1977.Chap04.ContinuousIrreducibleFamily
-import LinearRepresentations_Serre_1977.Chap04.Definition_4_12
-import LinearRepresentations_Serre_1977.Chap04.Definition_4_28
+import LinearRepresentations_Serre_1977.Serre.Chap04.ContinuousIrreducibleFamily
+import LinearRepresentations_Serre_1977.Serre.Chap04.Definition_4_12
+import LinearRepresentations_Serre_1977.Serre.Chap04.Definition_4_28
 
 noncomputable section
 

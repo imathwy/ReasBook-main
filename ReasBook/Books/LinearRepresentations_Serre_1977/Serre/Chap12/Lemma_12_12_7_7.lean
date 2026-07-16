@@ -1,7 +1,7 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap12.Lemma_12_12_7_1
-import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_6_2
-import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_6_2.SeparatorSupport
+import LinearRepresentations_Serre_1977.Serre.Chap12.Lemma_12_12_7_1
+import LinearRepresentations_Serre_1977.Serre.Chap12.Theorem_12_12_6_2
+import LinearRepresentations_Serre_1977.Serre.Chap12.Theorem_12_12_6_2.SeparatorSupport
 
 noncomputable section
 

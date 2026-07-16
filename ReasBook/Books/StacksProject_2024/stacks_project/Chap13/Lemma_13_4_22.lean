@@ -1,6 +1,6 @@
 import Mathlib.CategoryTheory.Triangulated.HomologicalFunctor
-import StacksProject_2024.Chap12.Definition_12_12_1
-import StacksProject_2024.Chap13.Definition_13_3_6
+import StacksProject_2024.stacks_project.Chap12.Definition_12_12_1
+import StacksProject_2024.stacks_project.Chap13.Definition_13_3_6
 
 open CategoryTheory
 open CategoryTheory.Limits

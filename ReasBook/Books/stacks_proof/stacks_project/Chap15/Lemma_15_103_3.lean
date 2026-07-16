@@ -1,13 +1,13 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.AB
-import StacksProject_2024.Chap13.Definition_13_11_3
-import StacksProject_2024.Chap13.Definition_13_34_1
-import StacksProject_2024.Chap15.Definition_15_59_13
-import StacksProject_2024.Chap15.Definition_15_65_1
-import StacksProject_2024.Chap15.Lemma_15_66_5
-import StacksProject_2024.Chap15.Lemma_15_88_1_FixedBase
-import StacksProject_2024.Chap15.Lemma_15_88_3
-import StacksProject_2024.Chap19.Lemma_19_13_6
+import stacks_proof.stacks_project.Chap13.Definition_13_11_3
+import stacks_proof.stacks_project.Chap13.Definition_13_34_1
+import stacks_proof.stacks_project.Chap15.Definition_15_59_13
+import stacks_proof.stacks_project.Chap15.Definition_15_65_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_66_5
+import stacks_proof.stacks_project.Chap15.Lemma_15_88_1_FixedBase
+import stacks_proof.stacks_project.Chap15.Lemma_15_88_3
+import stacks_proof.stacks_project.Chap19.Lemma_19_13_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

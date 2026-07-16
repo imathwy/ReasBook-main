@@ -1,5 +1,5 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap01.Lemma_1_5_10
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_5
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap01.Lemma_1_5_10
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Theorem_2_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

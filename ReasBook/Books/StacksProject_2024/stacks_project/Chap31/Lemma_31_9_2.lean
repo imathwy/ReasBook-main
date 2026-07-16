@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap10.Lemma_10_40_8
-import StacksProject_2024.Chap31.FittingIdealSheaf
-import StacksProject_2024.Chap31.Lemma_31_9_1
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_40_8
+import StacksProject_2024.stacks_project.Chap31.FittingIdealSheaf
+import StacksProject_2024.stacks_project.Chap31.Lemma_31_9_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Category.Grp.Limits
-import StacksProject_2024.Chap20.Lemma_20_4_3
-import StacksProject_2024.Chap20.Definition_20_9_1
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_4_3
+import StacksProject_2024.stacks_project.Chap20.Definition_20_9_1
 
 open CategoryTheory TopologicalSpace
 open TopCat.Presheaf

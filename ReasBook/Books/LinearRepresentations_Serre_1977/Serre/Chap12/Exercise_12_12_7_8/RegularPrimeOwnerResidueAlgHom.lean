@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_7_8.RegularPrimeResidueEvaluation
+import LinearRepresentations_Serre_1977.Serre.Chap12.Exercise_12_12_7_8.RegularPrimeResidueEvaluation
 
 open scoped Representation
 

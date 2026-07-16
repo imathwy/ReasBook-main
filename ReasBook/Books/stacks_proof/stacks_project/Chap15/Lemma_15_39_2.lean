@@ -5,13 +5,13 @@ import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.RingTheory.AdicCompletion.RingHom
 import Mathlib.RingTheory.KrullDimension.Regular
 import Mathlib.Topology.Algebra.Nonarchimedean.AdicTopology
-import StacksProject_2024.Chap10.Definition_10_70_1
-import StacksProject_2024.Chap10.«10_69_0_1»
-import StacksProject_2024.Chap10.Definition_10_60_10
-import StacksProject_2024.Chap10.Lemma_10_106_3
-import StacksProject_2024.Chap10.Definition_10_160_5
-import StacksProject_2024.Chap10.Remark_10_160_9
-import StacksProject_2024.Chap15.Definition_15_36_1_Topological_rings
+import stacks_proof.stacks_project.Chap10.Definition_10_70_1
+import stacks_proof.stacks_project.Chap10.«10_69_0_1»
+import stacks_proof.stacks_project.Chap10.Definition_10_60_10
+import stacks_proof.stacks_project.Chap10.Lemma_10_106_3
+import stacks_proof.stacks_project.Chap10.Definition_10_160_5
+import stacks_proof.stacks_project.Chap10.Remark_10_160_9
+import stacks_proof.stacks_project.Chap15.Definition_15_36_1_Topological_rings
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

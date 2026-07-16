@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Homology.DerivedCategory.KInjective
-import StacksProject_2024.Chap13.Lemma_13_14_15
-import StacksProject_2024.Chap13.Lemma_13_31_6
-import StacksProject_2024.Chap24.Lemma_24_26_7
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_14_15
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_31_6
+import StacksProject_2024.stacks_project.Chap24.Lemma_24_26_7
 
 open CategoryTheory
 open CategoryTheory.Limits

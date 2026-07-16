@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.CategoryTheory.Functor.Derived.LeftDerived
-import StacksProject_2024.Chap13.Lemma_13_14_16
+import stacks_proof.stacks_project.Chap13.Lemma_13_14_16
 
 -- Auxiliary owner declarations split from `Lemma_15_60_1`.
 

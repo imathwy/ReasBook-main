@@ -1,4 +1,4 @@
-import DifferentialForms_Cartan_1970.IV.section13.«0001_Definition_IV_1_extra_1»
+import DifferentialForms_Cartan_1970.cartan.IV.section13.«0001_Definition_IV_1_extra_1»
 import Mathlib.Algebra.MvPolynomial.PDeriv
 import Mathlib.RingTheory.Derivation.Basic
 import Mathlib.RingTheory.MvPowerSeries.Trunc

@@ -1,8 +1,8 @@
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 import Mathlib.Geometry.Manifold.VectorBundle.Tangent
 import Mathlib.Geometry.Manifold.VectorBundle.ContMDiffSection
-import SmoothManifolds_Lee_2012.Chap02.Sec02_12.Problem_2_7
-import SmoothManifolds_Lee_2012.Chap08.Sec08_54.Lemma_8_6
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_12.Problem_2_7
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_54.Lemma_8_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

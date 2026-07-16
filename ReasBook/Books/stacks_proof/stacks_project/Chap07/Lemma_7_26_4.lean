@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap07.Lemma_7_26_1
-import StacksProject_2024.Chap07.Lemma_7_26_4.Index
-import StacksProject_2024.Chap07.Lemma_7_26_4.DirectSourceComparison
+import stacks_proof.stacks_project.Chap07.Lemma_7_26_1
+import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.Index
+import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.DirectSourceComparison
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

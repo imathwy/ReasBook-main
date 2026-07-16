@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_6_1
+import LinearRepresentations_Serre_1977.Serre.Chap02.Theorem_2_2_6_1
 
 open scoped MonoidAlgebra
 

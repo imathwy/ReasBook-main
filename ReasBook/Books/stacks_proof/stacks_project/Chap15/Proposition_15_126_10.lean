@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_37_11
-import StacksProject_2024.Chap10.Lemma_10_105_2
-import StacksProject_2024.Chap15.Lemma_15_126_9
-import StacksProject_2024.Chap15.PrincipalIdeal
+import stacks_proof.stacks_project.Chap10.Definition_10_37_11
+import stacks_proof.stacks_project.Chap10.Lemma_10_105_2
+import stacks_proof.stacks_project.Chap15.Lemma_15_126_9
+import stacks_proof.stacks_project.Chap15.PrincipalIdeal
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

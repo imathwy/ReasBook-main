@@ -1,12 +1,12 @@
-import StacksProject_2024.Chap06.Definition_6_26_1
-import StacksProject_2024.Chap13.Lemma_13_11_6
-import StacksProject_2024.Chap13.Lemma_13_14_16
-import StacksProject_2024.Chap13.Lemma_13_14_15
-import StacksProject_2024.Chap13.Lemma_13_15_2
-import StacksProject_2024.Chap13.Lemma_13_20_2
-import StacksProject_2024.Chap17.Lemma_17_20_2
-import StacksProject_2024.Chap20.«20_3_0_4»
-import StacksProject_2024.Chap20.Global_sections_module_owners_core
+import StacksProject_2024.stacks_project.Chap06.Definition_6_26_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_11_6
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_14_16
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_14_15
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_15_2
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_20_2
+import StacksProject_2024.stacks_project.Chap17.Lemma_17_20_2
+import StacksProject_2024.stacks_project.Chap20.«20_3_0_4»
+import StacksProject_2024.stacks_project.Chap20.Global_sections_module_owners_core
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

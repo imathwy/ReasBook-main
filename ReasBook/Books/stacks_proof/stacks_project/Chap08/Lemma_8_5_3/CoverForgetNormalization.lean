@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap08.Lemma_8_5_3_PullbackNaturality
+import stacks_proof.stacks_project.Chap08.Lemma_8_5_3_PullbackNaturality
 
 universe u₁ u₂ v₁ v₂
 

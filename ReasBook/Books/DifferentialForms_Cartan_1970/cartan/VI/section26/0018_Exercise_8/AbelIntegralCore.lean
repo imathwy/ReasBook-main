@@ -1,4 +1,4 @@
-import DifferentialForms_Cartan_1970.VI.section26.«0018_Exercise_8».ClosedExtensionCore
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0018_Exercise_8».ClosedExtensionCore
 
 open Set
 open scoped UpperHalfPlane

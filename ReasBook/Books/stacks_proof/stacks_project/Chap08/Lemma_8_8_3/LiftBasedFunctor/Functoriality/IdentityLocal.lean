@@ -1,8 +1,8 @@
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.Functoriality.IdentityCommon
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.Functoriality.IdentityPullback
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.Functoriality.IdentityTail
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.Functoriality.IdentityTailAfterFront
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.Functoriality.IdentityTransition
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.Functoriality.IdentityCommon
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.Functoriality.IdentityPullback
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.Functoriality.IdentityTail
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.Functoriality.IdentityTailAfterFront
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.Functoriality.IdentityTransition
 
 universe u v uS vS w wD vD
 

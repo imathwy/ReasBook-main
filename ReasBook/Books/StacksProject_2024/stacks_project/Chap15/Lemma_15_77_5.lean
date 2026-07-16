@@ -1,11 +1,11 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
 import Mathlib.CategoryTheory.Triangulated.TStructure.TruncLEGT
-import StacksProject_2024.Chap13.Definition_13_27_1
-import StacksProject_2024.Chap13.Situation_13_15_1
-import StacksProject_2024.Chap13.Remark_13_12_4
-import StacksProject_2024.Chap15.Definition_15_69_1
-import StacksProject_2024.Chap15.Lemma_15_77_1
+import StacksProject_2024.stacks_project.Chap13.Definition_13_27_1
+import StacksProject_2024.stacks_project.Chap13.Situation_13_15_1
+import StacksProject_2024.stacks_project.Chap13.Remark_13_12_4
+import StacksProject_2024.stacks_project.Chap15.Definition_15_69_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_77_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

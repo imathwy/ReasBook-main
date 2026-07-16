@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap04.Definition_4_1_2
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap04.Definition_4_1_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -18,7 +18,7 @@ Layer triage:
   the factors generating the whole group with trivial intersection.
 - `core/canonical`: `Monoid.Coprod` with notation `A ∗ B` is mathlib's owner for the free
   product, `MulEquiv.coprodCongr` is the canonical invariance theorem under factor isomorphisms,
-  and the canonical injections `inl`, `inr` together with `Subgroup.ofLeftInverse` and
+  and the canonical injections `inl`, `inr` together with `MonoidHom.ofInjective` and
   `range_inl_sup_range_inr` give the range-level factor API.
 - `bridge/view`: the subgroup-valued view of the two factors inside `A ∗ B` is obtained by passing
   from the canonical injections to their ranges.
@@ -27,8 +27,8 @@ Domain sampling:
 1. `Monoid.Coprod` is the canonical free-product owner abstraction in mathlib.
 2. `MulEquiv.coprodCongr` is the canonical statement that free products are preserved by
    equivalences of factors.
-3. `Subgroup.ofLeftInverse` is the canonical equivalence from a group to the range of a
-   homomorphism equipped with a specified left inverse.
+3. `MonoidHom.ofInjective` is the canonical equivalence from a group to the range of an
+   injective homomorphism; the canonical projections prove injectivity here.
 4. `Monoid.Coprod.range_inl_sup_range_inr` is the canonical generation statement for the two
    factor ranges inside a free product.
 
@@ -49,13 +49,15 @@ section
 variable (A : Type u) (B : Type v) [Group A] [Group B]
 
 /- Lemma 4-1-3 (1): the canonical left factor subgroup of `A ∗ B` is isomorphic to `A`. -/
-#check (Subgroup.ofLeftInverse
-  (show Function.LeftInverse (fst : A ∗ B →* A) (inl : A →* A ∗ B) from fst_apply_inl) :
+#check (MonoidHom.ofInjective
+  (show Function.LeftInverse (fst : A ∗ B →* A) (inl : A →* A ∗ B) from
+      fst_apply_inl).injective :
     A ≃* (inl : A →* A ∗ B).range)
 
 /- Lemma 4-1-3 (2): the canonical right factor subgroup of `A ∗ B` is isomorphic to `B`. -/
-#check (Subgroup.ofLeftInverse
-  (show Function.LeftInverse (snd : A ∗ B →* B) (inr : B →* A ∗ B) from snd_apply_inr) :
+#check (MonoidHom.ofInjective
+  (show Function.LeftInverse (snd : A ∗ B →* B) (inr : B →* A ∗ B) from
+      snd_apply_inr).injective :
     B ≃* (inr : B →* A ∗ B).range)
 
 /-- Lemma 4-1-3 (3): the canonical left and right factor subgroups generate the free product

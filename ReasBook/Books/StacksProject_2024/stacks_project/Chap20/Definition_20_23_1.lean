@@ -1,8 +1,8 @@
 import Mathlib.CategoryTheory.Limits.Lattice
-import StacksProject_2024.Chap20.«20_9_0_1»
-import StacksProject_2024.Chap20.Definition_20_23_1.DeletedIndex
-import StacksProject_2024.Chap20.Lemma_20_9_3
-import StacksProject_2024.Chap20.OpensInstances
+import StacksProject_2024.stacks_project.Chap20.«20_9_0_1»
+import StacksProject_2024.stacks_project.Chap20.Definition_20_23_1.DeletedIndex
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_9_3
+import StacksProject_2024.stacks_project.Chap20.OpensInstances
 
 open CategoryTheory Opposite TopCat TopologicalSpace
 open CategoryTheory.Limits

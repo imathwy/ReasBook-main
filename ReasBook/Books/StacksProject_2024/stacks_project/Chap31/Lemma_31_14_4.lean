@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap31.Definition_31_14_1
+import StacksProject_2024.stacks_project.Chap31.Definition_31_14_1
 
 open CategoryTheory
 open CategoryTheory.MonoidalCategory

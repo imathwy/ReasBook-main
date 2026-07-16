@@ -1,9 +1,9 @@
 import Mathlib.Geometry.Manifold.ContMDiff.Constructions
-import SmoothManifolds_Lee_2012.Chap04.Sec04_21.Definition_4_21_extra_1
-import SmoothManifolds_Lee_2012.Chap04.Sec04_25.Theorem_4_29
-import SmoothManifolds_Lee_2012.Chap05.Sec05_31.Definition_5_31_extra_1
-import SmoothManifolds_Lee_2012.Chap05.Sec05_31.Proposition_5_21
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Definition_5_36_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_21.Definition_4_21_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_25.Theorem_4_29
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_31.Definition_5_31_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_31.Proposition_5_21
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Definition_5_36_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

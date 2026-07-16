@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap07.Definition_7_15_1_Topoi
+import StacksProject_2024.stacks_project.Chap07.Definition_7_15_1_Topoi
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

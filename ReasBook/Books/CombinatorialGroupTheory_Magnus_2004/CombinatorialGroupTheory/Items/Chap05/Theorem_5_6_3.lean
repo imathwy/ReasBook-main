@@ -1,7 +1,7 @@
 import Mathlib
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap02.Definition_2_1_4
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_2_2
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_2_3
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap02.Definition_2_1_4
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap05.Definition_5_2_2
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap05.Definition_5_2_3
 
 universe u
 

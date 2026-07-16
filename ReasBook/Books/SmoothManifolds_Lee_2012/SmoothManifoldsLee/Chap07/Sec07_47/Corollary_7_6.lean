@@ -1,5 +1,5 @@
-import SmoothManifolds_Lee_2012.Chap04.Sec04_23.Theorem_4_14
-import SmoothManifolds_Lee_2012.Chap07.Sec07_47.Theorem_7_5
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_23.Theorem_4_14
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_47.Theorem_7_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

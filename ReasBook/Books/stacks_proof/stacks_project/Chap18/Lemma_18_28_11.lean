@@ -2,8 +2,8 @@ import Mathlib
 import Mathlib.CategoryTheory.Distributive.Monoidal
 import Mathlib.CategoryTheory.Monoidal.Limits.Preserves
 import Mathlib.CategoryTheory.Monoidal.Preadditive
-import StacksProject_2024.Chap12.Lemma_12_7_2
-import StacksProject_2024.Chap18.Definition_18_28_1
+import stacks_proof.stacks_project.Chap12.Lemma_12_7_2
+import stacks_proof.stacks_project.Chap18.Definition_18_28_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section05.«0028_Proposition_8_1»
-import DifferentialForms_Cartan_1970.II.section06.«0008_Theorem_2»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0028_Proposition_8_1»
+import DifferentialForms_Cartan_1970.cartan.II.section06.«0008_Theorem_2»
 
 open scoped BigOperators unitInterval
 

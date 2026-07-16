@@ -1,10 +1,10 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.SplitBaseChange.FDRepBridge
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.SplitBaseChange.SplitQuotient
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.SplitBaseChange.BaseChange
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.SplitBaseChange.SimpleModuleEnd
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.SplitBaseChange.PiMatrixEnd
-import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.SplitBaseChange.FDRepBridge
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.SplitBaseChange.SplitQuotient
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.SplitBaseChange.BaseChange
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.SplitBaseChange.SimpleModuleEnd
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.SplitBaseChange.PiMatrixEnd
+import LinearRepresentations_Serre_1977.Serre.Chap02.Theorem_2_2_3_5
 
 /-!
 # Splitting ascends along any field extension (modular case)

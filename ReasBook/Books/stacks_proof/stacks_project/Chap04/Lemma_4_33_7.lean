@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap04.CanonicalFiberPseudofunctor
+import stacks_proof.stacks_project.Chap04.CanonicalFiberPseudofunctor
 
 /-!
 # Lemma 4.33.7

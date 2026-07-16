@@ -1,7 +1,7 @@
 import Mathlib.Geometry.Manifold.Instances.Real
 import Mathlib.Geometry.Manifold.ContMDiff.Basic
 import Mathlib.Geometry.Manifold.MFDeriv.Basic
-import SmoothManifolds_Lee_2012.Chap03.Sec03_17.Definition_3_17_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap03.Sec03_17.Definition_3_17_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

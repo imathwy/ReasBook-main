@@ -5,9 +5,9 @@ import Mathlib.Algebra.Category.ModuleCat.Monoidal.Basic
 import Mathlib.Algebra.Ring.ULift
 import Mathlib.CategoryTheory.Monoidal.Functor
 import Mathlib.CategoryTheory.Sites.Monoidal
-import StacksProject_2024.Chap07.Lemma_7_30_3
-import StacksProject_2024.Chap18.Definition_18_5_1
-import StacksProject_2024.Chap18.Lemma_18_27_6
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_30_3
+import StacksProject_2024.stacks_project.Chap18.Definition_18_5_1
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_27_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

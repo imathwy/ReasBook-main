@@ -1,9 +1,9 @@
 import Mathlib.Algebra.Module.Projective
 import Mathlib.LinearAlgebra.Isomorphisms
 import Mathlib.RingTheory.Jacobson.Ring
-import StacksProject_2024.Chap10.Lemma_10_16_4
-import StacksProject_2024.Chap10.Lemma_10_20_1_Nakayama_s_lemma
-import StacksProject_2024.Chap10.Lemma_10_82_13
+import stacks_proof.stacks_project.Chap10.Lemma_10_16_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_20_1_Nakayama_s_lemma
+import stacks_proof.stacks_project.Chap10.Lemma_10_82_13
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

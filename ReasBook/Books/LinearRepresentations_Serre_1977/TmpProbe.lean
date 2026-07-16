@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_3.Index
-import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap16.Corollary_16_16_1_3.Index
+import LinearRepresentations_Serre_1977.Serre.Chap16.Theorem_16_16_1_2
 
 noncomputable section
 open CategoryTheory

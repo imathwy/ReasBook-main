@@ -1,7 +1,7 @@
 import Mathlib
-import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_4_16
-import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_4_17
-import LecturesConvexOptimization_Nesterov_2018.Chap01.Lemma_1_8_5
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap01.Definition_1_4_16
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap01.Definition_1_4_17
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap01.Lemma_1_8_5
 
 open scoped Gradient
 

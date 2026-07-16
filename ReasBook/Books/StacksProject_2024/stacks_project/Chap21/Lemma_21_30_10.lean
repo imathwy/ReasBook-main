@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap13.Lemma_13_17_1
-import StacksProject_2024.Chap21.SiteAbelianDerived
-import StacksProject_2024.Chap21.Situation_21_30_1
-import StacksProject_2024.Chap21.«21_30_0_1»
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_17_1
+import StacksProject_2024.stacks_project.Chap21.SiteAbelianDerived
+import StacksProject_2024.stacks_project.Chap21.Situation_21_30_1
+import StacksProject_2024.stacks_project.Chap21.«21_30_0_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

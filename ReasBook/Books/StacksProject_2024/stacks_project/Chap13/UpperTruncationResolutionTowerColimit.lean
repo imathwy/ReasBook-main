@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap13.Lemma_13_29_1
-import StacksProject_2024.Chap21.Lemma_21_17_10.ColimitHomology
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_29_1
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_17_10.ColimitHomology
 
 open CategoryTheory CategoryTheory.Limits
 open AlgebraicGeometry Opposite TopCat TopologicalSpace

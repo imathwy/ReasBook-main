@@ -1,6 +1,6 @@
-import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
-import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_1
-import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_2
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Serre.Chap14.Lemma_14_14_4_1
+import LinearRepresentations_Serre_1977.Serre.Chap14.Lemma_14_14_4_2
 import Mathlib.LinearAlgebra.TensorProduct.Tower
 import Mathlib.RingTheory.LocalProperties.Projective
 import Mathlib.RingTheory.LocalRing.ResidueField.Ideal

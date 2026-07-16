@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import StacksProject_2024.Chap13.Definition_13_11_3
+import StacksProject_2024.stacks_project.Chap13.Definition_13_11_3
 
 open CategoryTheory
 open CategoryTheory.ObjectProperty

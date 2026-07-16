@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Analysis.Matrix.Order
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Definition_6_22
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap06.Definition_6_22
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -2,7 +2,7 @@ import Mathlib.Algebra.Homology.BifunctorShift
 import Mathlib.Algebra.Homology.HomotopyCategory.Triangulated
 import Mathlib.CategoryTheory.ObjectProperty.ClosedUnderIsomorphisms
 import Mathlib.CategoryTheory.Triangulated.Subcategory
-import StacksProject_2024.Chap15.Definition_15_59_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_59_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

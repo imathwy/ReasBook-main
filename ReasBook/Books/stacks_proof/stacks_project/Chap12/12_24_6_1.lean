@@ -1,6 +1,6 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap12.«12_23_5_1»
-import StacksProject_2024.Chap12.Lemma_12_24_10
+import stacks_proof.stacks_project.Chap12.«12_23_5_1»
+import stacks_proof.stacks_project.Chap12.Lemma_12_24_10
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

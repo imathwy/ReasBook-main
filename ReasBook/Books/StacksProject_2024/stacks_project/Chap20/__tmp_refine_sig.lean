@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap20.Theorem_20_18_2_Proper_base_change
+import StacksProject_2024.stacks_project.Chap20.Theorem_20_18_2_Proper_base_change
 
 open CategoryTheory
 

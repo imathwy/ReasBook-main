@@ -31,6 +31,7 @@ local notation "‖" x "‖₂" => @Norm.norm (EuclideanSpace ℝ (Fin m)) (PiLp
 local notation "‖" x "‖₁" => (Finset.sum Finset.univ (fun (i : Fin n) => ‖x i‖))
 
 open Set Real Matrix Finset
+open scoped Matrix.Norms.L2Operator
 
 /- `u ⬝ Av = Aᵀu ⬝ v` for u v in EuclideanSpace -/
 
@@ -59,14 +60,13 @@ lemma real_inner_eq_dot (x y : EuclideanSpace ℝ (Fin m)) : @inner ℝ _ _ x y 
   simp only [star_trivial, dotProduct]
   congr 1
   ext i
-  simp
   ring
 
 /- gradient of a quadratic in ℝⁿ -/
 
 lemma quadratic_gradient : ∀ x : (EuclideanSpace ℝ (Fin n)),
     HasGradientAt (fun x : (EuclideanSpace ℝ (Fin n)) => ((A *ᵥ x) ⬝ᵥ (A *ᵥ x)))
-    ((2 : ℝ) • Aᵀ *ᵥ A *ᵥ x) x := by
+    (WithLp.toLp 2 ((2 : ℝ) • Aᵀ *ᵥ A *ᵥ x.ofLp)) x := by
   by_cases hA : A = 0
   · intro x
     rw [hA]; simp; apply hasGradientAt_const
@@ -74,7 +74,8 @@ lemma quadratic_gradient : ∀ x : (EuclideanSpace ℝ (Fin n)),
   rw [HasGradient_iff_Convergence_Point]
   intro ε εpos
   let normA := ‖(Matrix.toEuclideanLin ≪≫ₗ LinearMap.toContinuousLinearMap) A‖
-  have norm_mul (x : EuclideanSpace ℝ (Fin n)) :  ‖A *ᵥ x‖₂ ≤ normA * ‖x‖ := by
+  have norm_mul (x : EuclideanSpace ℝ (Fin n)) :
+      ‖WithLp.toLp 2 (A *ᵥ x.ofLp)‖₂ ≤ normA * ‖x‖ := by
     apply Matrix.l2_opNorm_mulVec A
   have normApos : 0 < normA := by
     contrapose! hA
@@ -85,18 +86,21 @@ lemma quadratic_gradient : ∀ x : (EuclideanSpace ℝ (Fin n)),
   constructor
   · apply div_pos εpos; rw [sq_pos_iff]; linarith [normApos]
   intro y ydist;
-  rw [inner_smul_left, real_inner_eq_dot]
+  rw [WithLp.toLp_smul, inner_smul_left, real_inner_eq_dot]
   simp only [starRingEnd_apply, star_trivial]
-  rw [← dot_mul_eq_transpose_mul_dot _ (y - x), Matrix.mulVec_sub, dotProduct_sub]
+  rw [← dot_mul_eq_transpose_mul_dot _ (y - x)]
+  simp only [WithLp.ofLp_toLp, WithLp.ofLp_sub]
+  rw [Matrix.mulVec_sub, dotProduct_sub]
   have eq1 : (A *ᵥ y) ⬝ᵥ (A *ᵥ y) = A *ᵥ y ⬝ᵥ A *ᵥ y := rfl
   rw [eq1]
   ring_nf
   have aux2 (u v : Fin m → ℝ) : u ⬝ᵥ u + (v ⬝ᵥ v - v ⬝ᵥ u * 2) = (u - v) ⬝ᵥ (u - v) := by
     rw [dotProduct_sub, sub_dotProduct, sub_dotProduct, ← sub_add, sub_sub, dotProduct_comm u v]
     rw [← mul_two, add_comm_sub]
-  rw [aux2, ← norm2eq_dot]; simp; rw [← Matrix.mulVec_sub]
+  rw [add_sub_assoc, aux2, ← norm2eq_dot]; simp
+  rw [← WithLp.toLp_sub, ← Matrix.mulVec_sub]
   calc
-    ‖(A *ᵥ (y - x))‖₂ ^ 2 ≤ (normA * ‖x - y‖) ^ 2 := by
+    ‖WithLp.toLp 2 (A *ᵥ (y - x).ofLp)‖₂ ^ 2 ≤ (normA * ‖x - y‖) ^ 2 := by
       rw [norm_sub_rev]
       apply sq_le_sq' _ (norm_mul (y - x))
       · calc
@@ -105,7 +109,7 @@ lemma quadratic_gradient : ∀ x : (EuclideanSpace ℝ (Fin n)),
             apply mul_nonneg
             · linarith [normApos]
             · apply norm_nonneg
-          _ ≤ ‖A *ᵥ (y - x)‖₂ := by
+          _ ≤ ‖WithLp.toLp 2 (A *ᵥ (y - x).ofLp)‖₂ := by
             apply norm_nonneg
     _ ≤ ε * ‖x - y‖ := by
       rw [pow_two, ← mul_assoc]; apply mul_le_mul_of_nonneg_right
@@ -121,7 +125,7 @@ lemma quadratic_gradient : ∀ x : (EuclideanSpace ℝ (Fin n)),
 
 private lemma linear_gradient : ∀ x : (EuclideanSpace ℝ (Fin n)),
     HasGradientAt (fun x : (EuclideanSpace ℝ (Fin n)) => (b ⬝ᵥ (A *ᵥ x)))
-    (Aᵀ *ᵥ b) x := by
+    (WithLp.toLp 2 (Aᵀ *ᵥ b)) x := by
   intro x
   rw [HasGradient_iff_Convergence_Point]
   intro ε εpos
@@ -140,22 +144,26 @@ private lemma linear_gradient : ∀ x : (EuclideanSpace ℝ (Fin n)),
 /- gradient of the square of an affine map in ℝⁿ -/
 
 theorem affine_sq_gradient :  ∀ x : (EuclideanSpace ℝ (Fin n)),
-    HasGradientAt (fun x : (EuclideanSpace ℝ (Fin n)) => ((1 / 2) * ‖A *ᵥ x - b‖₂ ^ 2))
-    (Aᵀ *ᵥ (A *ᵥ x - b)) x := by
+    HasGradientAt (fun x : (EuclideanSpace ℝ (Fin n)) =>
+      ((1 / 2) * ‖WithLp.toLp 2 (A *ᵥ x.ofLp - b)‖₂ ^ 2))
+    (WithLp.toLp 2 (Aᵀ *ᵥ (A *ᵥ x.ofLp - b))) x := by
   intro x
   let f := fun x : (EuclideanSpace ℝ (Fin n)) => (1 / 2) * (A *ᵥ x) ⬝ᵥ (A *ᵥ x)
-  let f' := fun x : (EuclideanSpace ℝ (Fin n)) => Aᵀ *ᵥ A *ᵥ x
+  let f' := fun x : (EuclideanSpace ℝ (Fin n)) => WithLp.toLp 2 (Aᵀ *ᵥ A *ᵥ x.ofLp)
   have fgradient : HasGradientAt f (f' x) x := by
-    let g := fun x : (EuclideanSpace ℝ (Fin n)) => (1 / (2 : ℝ)) • (2 : ℝ) • Aᵀ *ᵥ A *ᵥ x
+    let g := fun x : (EuclideanSpace ℝ (Fin n)) =>
+      (1 / (2 : ℝ)) • WithLp.toLp 2 ((2 : ℝ) • Aᵀ *ᵥ A *ᵥ x.ofLp)
     have f'eqg (x : (EuclideanSpace ℝ (Fin n))): f' x = g x := by
-      change Aᵀ *ᵥ A *ᵥ x = (1 / (2 : ℝ)) • (2 : ℝ) • Aᵀ *ᵥ A *ᵥ x; simp
+      simp [f', g]
     rw [f'eqg]
     apply HasGradientAt.const_mul' (1 / 2) (quadratic_gradient x)
   let h := fun x : (EuclideanSpace ℝ (Fin n)) => (b ⬝ᵥ (A *ᵥ x))
-  let h' := fun _ : (EuclideanSpace ℝ (Fin n)) => (Aᵀ *ᵥ b)
+  let h' := fun _ : (EuclideanSpace ℝ (Fin n)) => WithLp.toLp 2 (Aᵀ *ᵥ b)
   have hgradient : HasGradientAt h (h' x) x := by apply linear_gradient
-  let φ := fun x : (EuclideanSpace ℝ (Fin n)) => ((1 / 2) * ‖A *ᵥ x - b‖₂ ^ 2)
-  let φ' := fun x : (EuclideanSpace ℝ (Fin n)) => (Aᵀ *ᵥ (A *ᵥ x - b))
+  let φ := fun x : (EuclideanSpace ℝ (Fin n)) =>
+    ((1 / 2) * ‖WithLp.toLp 2 (A *ᵥ x.ofLp - b)‖₂ ^ 2)
+  let φ' := fun x : (EuclideanSpace ℝ (Fin n)) =>
+    WithLp.toLp 2 (Aᵀ *ᵥ (A *ᵥ x.ofLp - b))
   have φeq : φ = fun x : (EuclideanSpace ℝ (Fin n)) => f x - h x + (1 / 2) * b ⬝ᵥ b := by
     ext z; simp [φ]; rw [norm2eq_dot]; simp [f, h]
     rw [← sub_add, dotProduct_comm _ b, sub_sub, ← two_mul, mul_add, mul_sub, ← mul_assoc]
@@ -172,14 +180,18 @@ theorem affine_sq_gradient :  ∀ x : (EuclideanSpace ℝ (Fin n)),
 /- the square of an affine map is convex on ℝⁿ-/
 
 lemma affine_sq_convex :
-    ConvexOn ℝ univ (fun x : (EuclideanSpace ℝ (Fin n)) => ((1 / 2) * ‖A *ᵥ x - b‖₂ ^ 2)) := by
+    ConvexOn ℝ univ (fun x : (EuclideanSpace ℝ (Fin n)) =>
+      ((1 / 2) * ‖WithLp.toLp 2 (A *ᵥ x.ofLp - b)‖₂ ^ 2)) := by
   apply monotone_gradient_convex'
   · apply convex_univ
   · exact (fun x _ => affine_sq_gradient x)
   · intro x _ y _
-    rw [Matrix.mulVec_sub, Matrix.mulVec_sub, ← sub_add, sub_add_eq_add_sub, sub_add_cancel,
+    rw [← WithLp.toLp_sub, ← Matrix.mulVec_sub, sub_sub_sub_cancel_right,
       ← Matrix.mulVec_sub, real_inner_eq_dot]
-    rw [← dot_mul_eq_transpose_mul_dot,← Matrix.mulVec_sub, ← norm2eq_dot]
+    simp only [WithLp.ofLp_sub]
+    rw [← dot_mul_eq_transpose_mul_dot (WithLp.toLp 2 (A *ᵥ (x.ofLp - y.ofLp)))
+      (WithLp.toLp 2 (x.ofLp - y.ofLp))]
+    rw [← norm2eq_dot (WithLp.toLp 2 (A *ᵥ (x.ofLp - y.ofLp)))]
     apply sq_nonneg
 
 /- ‖ ‖₁ is convex on ℝⁿ -/
@@ -334,6 +346,7 @@ local notation "‖" x "‖₂" => @Norm.norm (EuclideanSpace ℝ (Fin m)) (PiLp
 local notation "‖" x "‖₁" => (Finset.sum Finset.univ (fun (i : Fin n) => ‖x i‖))
 
 open Set Real Matrix Finset NNReal
+open scoped Matrix.Norms.L2Operator
 
 
 structure LASSO (A : Matrix (Fin m) (Fin n) ℝ) (b : (Fin m) → ℝ) (μ : ℝ)
@@ -341,8 +354,10 @@ structure LASSO (A : Matrix (Fin m) (Fin n) ℝ) (b : (Fin m) → ℝ) (μ : ℝ
   (f h : (EuclideanSpace ℝ (Fin n)) → ℝ)
   (f' : (EuclideanSpace ℝ (Fin n)) → (EuclideanSpace ℝ (Fin n)))
   (L : ℝ≥0) (t : ℝ) (xm : (EuclideanSpace ℝ (Fin n))) (x y : ℕ → (EuclideanSpace ℝ (Fin n)))
-  (feq : f = fun x : (EuclideanSpace ℝ (Fin n)) => (1 / 2) * ‖A *ᵥ x - b‖₂ ^ 2)
-  (f'eq : f' = fun x : (EuclideanSpace ℝ (Fin n)) => (Aᵀ *ᵥ (A *ᵥ x - b)))
+  (feq : f = fun x : (EuclideanSpace ℝ (Fin n)) =>
+    (1 / 2) * ‖WithLp.toLp 2 (A *ᵥ x.ofLp - b)‖₂ ^ 2)
+  (f'eq : f' = fun x : (EuclideanSpace ℝ (Fin n)) =>
+    WithLp.toLp 2 (Aᵀ *ᵥ (A *ᵥ x.ofLp - b)))
   (heq : h = fun y => μ • ‖y‖₁) (teq : t = 1 / L)
   (Leq : L = ‖(Matrix.toEuclideanLin ≪≫ₗ LinearMap.toContinuousLinearMap) (Aᵀ * A)‖₊)
   (minphi : IsMinOn (f + h) Set.univ xm)
@@ -369,11 +384,13 @@ instance {A : Matrix (Fin m) (Fin n) ℝ} {b : (Fin m) → ℝ} {μ : ℝ} {μpo
     exact (fun x => affine_sq_gradient x)
   h₂ : LipschitzWith p.L p.f' := by
     rw [lipschitzWith_iff_norm_sub_le]; intro x y
-    rw [p.f'eq]; simp
-    rw [← Matrix.mulVec_sub, ← sub_add, sub_add_eq_add_sub, sub_add_cancel]
-    rw [← Matrix.mulVec_sub]
+    rw [p.f'eq, ← WithLp.toLp_sub, ← Matrix.mulVec_sub, sub_sub_sub_cancel_right,
+      ← Matrix.mulVec_sub]
     rw [p.Leq]; simp
-    apply Matrix.l2_opNorm_mulVec (Aᵀ * A)
+    rw [← Matrix.toLpLin_mul_same]
+    change ‖WithLp.toLp 2 ((Aᵀ * A) *ᵥ (x.ofLp - y.ofLp))‖ ≤
+      ‖Aᵀ * A‖ * ‖x - y‖
+    simpa only [WithLp.ofLp_sub] using Matrix.l2_opNorm_mulVec (Aᵀ * A) (x - y)
   h₃ : ContinuousOn p.h univ := by
     rw [ContinuousOn]
     intro x _
@@ -429,22 +446,31 @@ instance {A : Matrix (Fin m) (Fin n) ℝ} {b : (Fin m) → ℝ} {μ : ℝ} {μpo
   tpos : 0 < p.t := by
     rw [p.teq]; simp
     rw [p.Leq]; simp
-    rw [Transpose_mul_self_eq_zero]
-    exact Ane0
+    intro h
+    apply Ane0
+    apply Transpose_mul_self_eq_zero.mp
+    apply (Matrix.toLpLin 2 2).injective
+    simpa [Matrix.toLpLin_mul_same] using h
   step : p.t ≤ 1 / p.L := by rw [p.teq]
   ori : p.x 0 = x₀ := p.ori
   hL : p.L > (0 : ℝ) := by
     rw [p.Leq]; simp
-    rw [Transpose_mul_self_eq_zero]
-    exact Ane0
+    intro h
+    apply Ane0
+    apply Transpose_mul_self_eq_zero.mp
+    apply (Matrix.toLpLin 2 2).injective
+    simpa [Matrix.toLpLin_mul_same] using h
   update : ∀ (k : ℕ), prox_prop (p.t • p.h) (p.x k - p.t • p.f' (p.x k)) (p.x (k + 1)) := by
     intro k
     apply norm_one_proximal
     · rw [p.heq]
     · rw [p.teq]; simp
       rw [p.Leq]; simp
-      rw [Transpose_mul_self_eq_zero]
-      exact Ane0
+      intro h
+      apply Ane0
+      apply Transpose_mul_self_eq_zero.mp
+      apply (Matrix.toLpLin 2 2).injective
+      simpa [Matrix.toLpLin_mul_same] using h
     · linarith
     · intro i; rw [p.update2 k, p.update1 k]
 
@@ -471,4 +497,3 @@ theorem LASSO_converge : ∀ (k : ℕ+), (alg.f (alg.x k) + alg.h (alg.x k)
   apply proximal_gradient_method_converge k
 
 end LASSO
-

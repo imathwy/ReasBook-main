@@ -4,13 +4,13 @@ import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
 import Mathlib.RingTheory.TensorProduct.Quotient
 import Mathlib.RingTheory.Ideal.Quotient.Operations
 import Mathlib.RingTheory.RingHom.FaithfullyFlat
-import StacksProject_2024.Chap10.Lemma_10_39_7
-import StacksProject_2024.Chap10.Lemma_10_39_14
-import StacksProject_2024.Chap10.Lemma_10_39_16
-import StacksProject_2024.Chap12.Lemma_12_10_3
-import StacksProject_2024.Chap12.Lemma_12_10_7
-import StacksProject_2024.Chap15.Lemma_15_89_5
-import StacksProject_2024.Chap15.Lemma_15_89_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_39_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_39_14
+import stacks_proof.stacks_project.Chap10.Lemma_10_39_16
+import stacks_proof.stacks_project.Chap12.Lemma_12_10_3
+import stacks_proof.stacks_project.Chap12.Lemma_12_10_7
+import stacks_proof.stacks_project.Chap15.Lemma_15_89_5
+import stacks_proof.stacks_project.Chap15.Lemma_15_89_9
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap04.Lemma_4_19_2
-import StacksProject_2024.Chap07.«7_32_1_1»
-import StacksProject_2024.Chap07.Definition_7_8_2
+import stacks_proof.stacks_project.Chap04.Lemma_4_19_2
+import stacks_proof.stacks_project.Chap07.«7_32_1_1»
+import stacks_proof.stacks_project.Chap07.Definition_7_8_2
 
 open CategoryTheory CategoryTheory.Limits Opposite
 open GrothendieckTopology.Point

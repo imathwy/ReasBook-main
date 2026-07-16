@@ -1,7 +1,7 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.III.section11.«0008_Proposition_4_1»
-import DifferentialForms_Cartan_1970.III.section11.«0010_Definition_III_5_extra_7»
-import DifferentialForms_Cartan_1970.III.section11.«0011_Proposition_5_1».PeriodParallelogramBoundary
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0008_Proposition_4_1»
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0010_Definition_III_5_extra_7»
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0011_Proposition_5_1».PeriodParallelogramBoundary
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

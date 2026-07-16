@@ -1,7 +1,7 @@
 import Mathlib.CategoryTheory.Sites.Closed
 import Mathlib.CategoryTheory.Sites.Coverage
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap07.Remark_7_48_4
+import StacksProject_2024.stacks_project.Chap07.Remark_7_48_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

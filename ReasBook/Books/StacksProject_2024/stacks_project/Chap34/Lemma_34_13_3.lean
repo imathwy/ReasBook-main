@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap34.Lemma_34_13_1
-import StacksProject_2024.Chap34.Lemma_34_13_2
-import StacksProject_2024.Chap34.Definition_34_6_1
+import StacksProject_2024.stacks_project.Chap34.Lemma_34_13_1
+import StacksProject_2024.stacks_project.Chap34.Lemma_34_13_2
+import StacksProject_2024.stacks_project.Chap34.Definition_34_6_1
 import Mathlib.AlgebraicGeometry.Sites.Fpqc
 
 -- Declarations for this item will be appended below by the statement pipeline.

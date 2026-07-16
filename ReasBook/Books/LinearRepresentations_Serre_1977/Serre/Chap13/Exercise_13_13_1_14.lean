@@ -1,8 +1,8 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
-import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
-import LinearRepresentations_Serre_1977.Chap13.Exercise_13_13_1_14.Index
+import LinearRepresentations_Serre_1977.Serre.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Serre.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap13.Exercise_13_13_1_14.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

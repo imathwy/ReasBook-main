@@ -1,6 +1,6 @@
-import DifferentialForms_Cartan_1970.VII.section27.«0003_Definition_VII_1_extra_1»
+import DifferentialForms_Cartan_1970.cartan.VII.section27.«0003_Definition_VII_1_extra_1»
 import Mathlib
-import DifferentialForms_Cartan_1970.VII.section29.«0004_Exercise_2».Index
+import DifferentialForms_Cartan_1970.cartan.VII.section29.«0004_Exercise_2».Index
 -- Declarations for this item will be appended below by the statement pipeline.
 
 open scoped BigOperators MvPowerSeries PowerSeries MvPowerSeries.WithPiTopology

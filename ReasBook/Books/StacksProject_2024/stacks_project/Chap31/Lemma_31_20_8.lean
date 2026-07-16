@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Data.List.TFAE
-import StacksProject_2024.Chap10.Lemma_10_68_6
-import StacksProject_2024.Chap10.Lemma_10_69_6
-import StacksProject_2024.Chap31.Lemma_31_20_3
-import StacksProject_2024.Chap31.Lemma_31_20_7
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_68_6
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_69_6
+import StacksProject_2024.stacks_project.Chap31.Lemma_31_20_3
+import StacksProject_2024.stacks_project.Chap31.Lemma_31_20_7
 
 open AlgebraicGeometry
 open CategoryTheory

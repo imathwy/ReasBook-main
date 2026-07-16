@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_106_1
-import StacksProject_2024.Chap10.Lemma_10_106_2
-import StacksProject_2024.Chap15.Lemma_15_48_2
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_106_1
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_106_2
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_48_2
 
 -- Shared support for Lemmas 15.122.1 and 15.122.2.
 

@@ -2,14 +2,14 @@ import Mathlib.Data.List.TFAE
 import Mathlib.RingTheory.Etale.Basic
 import Mathlib.RingTheory.Henselian
 import Mathlib.Tactic.Ring
-import StacksProject_2024.Chap10.Lemma_10_19_1
-import StacksProject_2024.Chap15.Definition_15_11_1
-import StacksProject_2024.Chap15.IdempotentLifting
-import StacksProject_2024.Chap15.Lemma_15_9_10
-import StacksProject_2024.Chap15.Lemma_15_10_2
-import StacksProject_2024.Chap15.Lemma_15_10_4
-import StacksProject_2024.Chap15.Lemma_15_11_5
-import StacksProject_2024.Chap15.«15_11_6_1»
+import stacks_proof.stacks_project.Chap10.Lemma_10_19_1
+import stacks_proof.stacks_project.Chap15.Definition_15_11_1
+import stacks_proof.stacks_project.Chap15.IdempotentLifting
+import stacks_proof.stacks_project.Chap15.Lemma_15_9_10
+import stacks_proof.stacks_project.Chap15.Lemma_15_10_2
+import stacks_proof.stacks_project.Chap15.Lemma_15_10_4
+import stacks_proof.stacks_project.Chap15.Lemma_15_11_5
+import stacks_proof.stacks_project.Chap15.«15_11_6_1»
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

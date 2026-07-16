@@ -1,12 +1,12 @@
 import Mathlib.Geometry.Manifold.ContMDiff.Atlas
 import Mathlib.Geometry.Manifold.Instances.Real
-import SmoothManifolds_Lee_2012.Chap04.Sec04_21.Definition_4_21_extra_1
-import SmoothManifolds_Lee_2012.Chap02.Sec02_11.Theorem_2_29
-import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Definition_5_28_extra_2
-import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Proposition_5_2
-import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Proposition_5_4
-import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Proposition_5_7
-import SmoothManifolds_Lee_2012.Chap05.Sec05_31.Definition_5_31_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_21.Definition_4_21_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_11.Theorem_2_29
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_28.Definition_5_28_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_28.Proposition_5_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_28.Proposition_5_4
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_28.Proposition_5_7
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_31.Definition_5_31_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

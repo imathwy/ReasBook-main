@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap21.Lemma_21_23_2
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_23_2
 
 /- Domain-style sampling for 21.23.4.1:
 - primary domain: Milnor short exact sequences for objectwise derived sections on a ringed site;

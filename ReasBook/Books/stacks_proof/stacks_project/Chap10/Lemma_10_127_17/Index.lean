@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap10.Lemma_10_127_17.TensorBaseChange
-import StacksProject_2024.Chap10.Lemma_10_127_17.DescendedStageModel
-import StacksProject_2024.Chap10.Lemma_10_127_17.RawTail
-import StacksProject_2024.Chap10.Lemma_10_127_17.ShrinkRawTail
-import StacksProject_2024.Chap10.Lemma_10_127_17.RangeTail
-import StacksProject_2024.Chap10.Lemma_10_127_17.KernelQuotient
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_17.TensorBaseChange
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_17.DescendedStageModel
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_17.RawTail
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_17.ShrinkRawTail
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_17.RangeTail
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_17.KernelQuotient

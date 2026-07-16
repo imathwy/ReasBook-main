@@ -1,10 +1,10 @@
 import Mathlib
-import StacksProject_2024.Chap06.Definition_6_26_1
-import StacksProject_2024.Chap10.Lemma_10_134_4_Jacobi_Zariski_sequence
-import StacksProject_2024.Chap10.Remark_10_134_5
-import StacksProject_2024.Chap13.Lemma_13_9_3
-import StacksProject_2024.Chap17.Lemma_17_28_8
-import StacksProject_2024.Chap18.RingedSiteModuleCategory
+import stacks_proof.stacks_project.Chap06.Definition_6_26_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_134_4_Jacobi_Zariski_sequence
+import stacks_proof.stacks_project.Chap10.Remark_10_134_5
+import stacks_proof.stacks_project.Chap13.Lemma_13_9_3
+import stacks_proof.stacks_project.Chap17.Lemma_17_28_8
+import stacks_proof.stacks_project.Chap18.RingedSiteModuleCategory
 
 open PresheafOfModules.DifferentialsConstruction
 open CategoryTheory CategoryTheory.Limits TopCat ComplexShape

@@ -1,4 +1,4 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Algorithm_2_6
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Algorithm_2_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

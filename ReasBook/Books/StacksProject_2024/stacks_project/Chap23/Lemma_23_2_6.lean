@@ -1,6 +1,6 @@
 import Mathlib.RingTheory.DividedPowers.Basic
 import Mathlib.RingTheory.Ideal.Quotient.Basic
-import StacksProject_2024.Chap10.Definition_10_32_1
+import StacksProject_2024.stacks_project.Chap10.Definition_10_32_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

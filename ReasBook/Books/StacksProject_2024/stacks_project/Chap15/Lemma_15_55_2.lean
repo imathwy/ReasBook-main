@@ -1,6 +1,6 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap12.Lemma_12_6_3
-import StacksProject_2024.Chap12.Lemma_12_6_4
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_6_3
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_6_4
 
 namespace CategoryTheory.Abelian.Ext
 

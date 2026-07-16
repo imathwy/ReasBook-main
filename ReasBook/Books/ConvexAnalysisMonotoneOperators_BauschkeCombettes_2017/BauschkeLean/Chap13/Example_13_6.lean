@@ -1,4 +1,4 @@
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Example_13_5
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap13.Example_13_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

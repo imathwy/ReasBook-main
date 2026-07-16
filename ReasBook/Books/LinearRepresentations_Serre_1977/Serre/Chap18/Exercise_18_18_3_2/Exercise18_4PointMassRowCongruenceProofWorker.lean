@@ -1,6 +1,6 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.Serre18_5ASourceTextRouteWorker
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.BrauerPointMassRowsReadbackSourceHelper
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.OrthogonalityPointMassSourceProofWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.Serre18_5ASourceTextRouteWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.BrauerPointMassRowsReadbackSourceHelper
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.OrthogonalityPointMassSourceProofWorker
 
 /-!
 Worker for the Exercise `18.4` point-mass row congruence in the source route for

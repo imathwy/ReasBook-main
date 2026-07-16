@@ -1,5 +1,5 @@
-import SmoothManifolds_Lee_2012.Chap08.Sec08_60.Corollary_8_38
-import SmoothManifolds_Lee_2012.Chap08.Sec08_59.Proposition_8_30
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_60.Corollary_8_38
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_59.Proposition_8_30
 
 open scoped ContDiff Manifold
 open VectorField

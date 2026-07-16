@@ -1,9 +1,9 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3.ProjectiveModules
-import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_2_1
-import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
-import LinearRepresentations_Serre_1977.Chap15.Proposition_15_15_5_1.StableLatticeExactOwner
-import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_2.HomFiber
+import LinearRepresentations_Serre_1977.Serre.Chap14.Corollary_14_14_4_3.ProjectiveModules
+import LinearRepresentations_Serre_1977.Serre.Chap15.Definition_15_15_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Serre.Chap15.Proposition_15_15_5_1.StableLatticeExactOwner
+import LinearRepresentations_Serre_1977.Serre.Chap16.Theorem_16_16_1_2.HomFiber
 
 /-!
 # Brauer reciprocity entry bridge for Theorem 16-16.1-2

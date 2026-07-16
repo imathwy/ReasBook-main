@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap28.Lemma_28_24_5
+import StacksProject_2024.stacks_project.Chap28.Lemma_28_24_5
 
 open AlgebraicGeometry
 

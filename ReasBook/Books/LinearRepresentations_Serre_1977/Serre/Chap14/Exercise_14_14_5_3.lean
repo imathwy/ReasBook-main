@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_3.Index
-import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_3.ProjectiveOwner
+import LinearRepresentations_Serre_1977.Serre.Chap14.Exercise_14_14_5_3.Index
+import LinearRepresentations_Serre_1977.Serre.Chap14.Exercise_14_14_5_3.ProjectiveOwner
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

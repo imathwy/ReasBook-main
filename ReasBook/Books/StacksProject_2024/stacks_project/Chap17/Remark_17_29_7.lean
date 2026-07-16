@@ -2,9 +2,9 @@ import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Presheaf.Monoidal
 import Mathlib.Algebra.Category.ModuleCat.Presheaf.Sheafification
 import Mathlib.CategoryTheory.Sites.Monoidal
-import StacksProject_2024.Chap10.Remark_10_150_9
-import StacksProject_2024.Chap17.Lemma_17_28_8
-import StacksProject_2024.Chap17.Lemma_17_29_5
+import StacksProject_2024.stacks_project.Chap10.Remark_10_150_9
+import StacksProject_2024.stacks_project.Chap17.Lemma_17_28_8
+import StacksProject_2024.stacks_project.Chap17.Lemma_17_29_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap10.Lemma_10_127_10
-import StacksProject_2024.Chap10.Lemma_10_127_11
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_10
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_11
 import Mathlib.RingTheory.DualNumber
 
 universe u v w w₀

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap07.Lemma_7_28_5.TypeSheafification
+import stacks_proof.stacks_project.Chap07.Lemma_7_28_5.TypeSheafification
 
 open CategoryTheory
 open CategoryTheory.Limits

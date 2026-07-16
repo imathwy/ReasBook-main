@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.BrauerPointwiseResidualWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.BrauerPointwiseResidualWorker
 
 /-!
 Explicit source-side normalization for the residual `p`-primary divisibility route.

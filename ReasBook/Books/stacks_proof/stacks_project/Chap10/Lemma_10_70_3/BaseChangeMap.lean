@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_70_3.ReesLocalization
+import stacks_proof.stacks_project.Chap10.Lemma_10_70_3.ReesLocalization
 
 open HomogeneousLocalization
 open IsLocalization

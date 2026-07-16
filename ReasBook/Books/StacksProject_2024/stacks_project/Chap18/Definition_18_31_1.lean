@@ -2,8 +2,8 @@ import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.PullbackContinuous
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.PushforwardContinuous
 import Mathlib.CategoryTheory.Limits.ExactFunctor
-import StacksProject_2024.Chap18.Definition_18_13_1
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
+import StacksProject_2024.stacks_project.Chap18.Definition_18_13_1
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategoryBasic
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

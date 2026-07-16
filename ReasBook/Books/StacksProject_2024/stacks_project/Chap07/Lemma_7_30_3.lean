@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap07.LocalizationProjection
+import StacksProject_2024.stacks_project.Chap07.LocalizationProjection
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

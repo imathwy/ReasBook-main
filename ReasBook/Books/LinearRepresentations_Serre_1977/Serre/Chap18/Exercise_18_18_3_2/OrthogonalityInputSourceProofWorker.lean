@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.BrauerBasisPairingResidualSourceWorker
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.ExplicitResidualPairingSumWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.BrauerBasisPairingResidualSourceWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.ExplicitResidualPairingSumWorker
 
 /-!
 Source-side boundary for the full mixed orthogonality input.

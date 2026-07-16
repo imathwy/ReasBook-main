@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap13.Definition_13_41_1
-import StacksProject_2024.Chap13.Lemma_13_4_8
-import StacksProject_2024.Chap13.Lemma_13_9_5
-import StacksProject_2024.Chap13.Remark_13_9_11
+import stacks_proof.stacks_project.Chap13.Definition_13_41_1
+import stacks_proof.stacks_project.Chap13.Lemma_13_4_8
+import stacks_proof.stacks_project.Chap13.Lemma_13_9_5
+import stacks_proof.stacks_project.Chap13.Remark_13_9_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,4 +1,4 @@
-import SmoothManifolds_Lee_2012.Chap05.Sec05_31.Proposition_5_23
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_31.Proposition_5_23
 import Mathlib.Tactic.Recall
 
 open TopologicalSpace

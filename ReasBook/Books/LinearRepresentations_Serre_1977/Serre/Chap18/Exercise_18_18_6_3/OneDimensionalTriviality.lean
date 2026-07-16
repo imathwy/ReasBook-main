@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_3.API
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_3.Shared
+import LinearRepresentations_Serre_1977.Serre.Chap12.Exercise_12_12_2_3.API
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_6_3.Shared
 
 noncomputable section
 

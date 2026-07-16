@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap20.Remark_20_28_3
+import StacksProject_2024.stacks_project.Chap20.Remark_20_28_3
 
 open CategoryTheory
 open ComplexShape

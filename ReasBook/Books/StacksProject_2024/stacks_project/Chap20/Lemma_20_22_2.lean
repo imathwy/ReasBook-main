@@ -2,8 +2,8 @@ import Mathlib.CategoryTheory.Sites.SheafCohomology.Basic
 import Mathlib.Topology.Constructible
 import Mathlib.Topology.Sheaves.Functors
 import Mathlib.Topology.Sheaves.Stalks
-import StacksProject_2024.Chap06.ClosedSubsetInclusion
-import StacksProject_2024.Chap20.«20_2_0_2»
+import StacksProject_2024.stacks_project.Chap06.ClosedSubsetInclusion
+import StacksProject_2024.stacks_project.Chap20.«20_2_0_2»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

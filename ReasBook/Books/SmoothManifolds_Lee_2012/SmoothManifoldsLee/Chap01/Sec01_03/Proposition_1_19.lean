@@ -1,4 +1,4 @@
-import SmoothManifolds_Lee_2012.Chap01.Sec01_03.Definition_1_3_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_03.Definition_1_3_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 -- Semantic search note: `lean_leansearch` was unavailable here.

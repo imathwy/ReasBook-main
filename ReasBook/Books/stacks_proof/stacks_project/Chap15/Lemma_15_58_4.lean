@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Category.ModuleCat.Biproducts
 import Mathlib.Algebra.Category.ModuleCat.Monoidal.Basic
 import Mathlib.Algebra.Homology.Monoidal
-import StacksProject_2024.Chap13.Remark_13_10_9
+import stacks_proof.stacks_project.Chap13.Remark_13_10_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

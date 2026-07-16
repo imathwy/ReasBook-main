@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap15.Lemma_15_28_11
-import StacksProject_2024.Chap15.Definition_15_30_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_28_11
+import stacks_proof.stacks_project.Chap15.Definition_15_30_1
 
 noncomputable section
 

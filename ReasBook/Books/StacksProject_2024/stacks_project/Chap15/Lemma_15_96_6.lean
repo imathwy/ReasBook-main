@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Homology.QuasiIso
-import StacksProject_2024.Chap15.Remark_15_96_5
-import StacksProject_2024.Chap15.«15_96_5_2»
+import StacksProject_2024.stacks_project.Chap15.Remark_15_96_5
+import StacksProject_2024.stacks_project.Chap15.«15_96_5_2»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

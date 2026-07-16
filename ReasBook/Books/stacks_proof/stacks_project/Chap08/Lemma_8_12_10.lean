@@ -1,10 +1,10 @@
 import Mathlib
-import StacksProject_2024.Chap08.Definition_8_12_9
-import StacksProject_2024.Chap08.Lemma_8_8_3
-import StacksProject_2024.Chap08.Lemma_8_12_2
-import StacksProject_2024.Chap08.Lemma_8_12_6
-import StacksProject_2024.Chap08.Lemma_8_12_8.PushforwardMap
-import StacksProject_2024.Chap08.Lemma_8_12_8
+import stacks_proof.stacks_project.Chap08.Definition_8_12_9
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_2
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_6
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_8.PushforwardMap
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

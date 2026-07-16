@@ -4,9 +4,9 @@ import Mathlib.Analysis.InnerProductSpace.Basic
 import Mathlib.Dynamics.FixedPoints.Basic
 import Mathlib.Topology.MetricSpace.Contracting
 import Mathlib.Topology.MetricSpace.Lipschitz
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap02.Fact_2_37
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Theorem_3_34
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04.Theorem_4_27
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap02.Fact_2_37
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap03.Theorem_3_34
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap04.Theorem_4_27
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

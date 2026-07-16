@@ -6,11 +6,11 @@ import Mathlib.RingTheory.IntegralClosure.Algebra.Defs
 import Mathlib.RingTheory.Jacobson.Ring
 import Mathlib.RingTheory.RingHom.Flat
 import Mathlib.RingTheory.TensorProduct.Quotient
-import StacksProject_2024.Chap10.Lemma_10_16_4
-import StacksProject_2024.Chap10.Lemma_10_20_1_Nakayama_s_lemma
-import StacksProject_2024.Chap10.Lemma_10_36_5
-import StacksProject_2024.Chap10.Lemma_10_36_23
-import StacksProject_2024.Chap10.Lemma_10_82_13
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_16_4
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_20_1_Nakayama_s_lemma
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_36_5
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_36_23
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_82_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

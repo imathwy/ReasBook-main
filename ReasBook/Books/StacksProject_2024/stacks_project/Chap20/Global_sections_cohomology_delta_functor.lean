@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.CategoryTheory.Localization.DerivabilityStructure.Constructor
-import StacksProject_2024.Chap13.Lemma_13_4_21
-import StacksProject_2024.Chap13.Lemma_13_4_22
-import StacksProject_2024.Chap13.Lemma_13_16_3
-import StacksProject_2024.Chap20.Bounded_below_derived_sections_at_open
-import StacksProject_2024.Chap20.Global_sections_module_owners_core
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_4_21
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_4_22
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_16_3
+import StacksProject_2024.stacks_project.Chap20.Bounded_below_derived_sections_at_open
+import StacksProject_2024.stacks_project.Chap20.Global_sections_module_owners_core
 
 open CategoryTheory
 open CategoryTheory.CohomologicalDeltaFunctor

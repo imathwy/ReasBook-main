@@ -1,5 +1,5 @@
-import Books.Analysis2_Tao_2022.Chapters.Chap08.section02_part1
-import Books.Analysis2_Tao_2022.Chapters.Chap08.section02_part2
+import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Chapters.Chap08.section02_part1
+import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Chapters.Chap08.section02_part2
 
 /-!
 Overview page for 8.2 Integration of Non-negative Measurable Functions.

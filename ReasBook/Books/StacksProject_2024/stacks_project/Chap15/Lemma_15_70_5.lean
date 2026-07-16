@@ -1,16 +1,16 @@
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
 import Mathlib.CategoryTheory.Triangulated.TStructure.TruncLEGT
-import StacksProject_2024.Chap13.Definition_13_8_1
-import StacksProject_2024.Chap13.Definition_13_11_3
-import StacksProject_2024.Chap13.Definition_13_27_1
-import StacksProject_2024.Chap13.Lemma_13_27_9
-import StacksProject_2024.Chap13.Lemma_13_21_2
-import StacksProject_2024.Chap13.Lemma_13_21_3
-import StacksProject_2024.Chap13.Lemma_13_27_3
-import StacksProject_2024.Chap13.Lemma_13_35_7
-import StacksProject_2024.Chap15.Definition_15_70_1
-import StacksProject_2024.Chap15.Lemma_15_65_16.SpectralComparison
-import StacksProject_2024.Chap15.Lemma_15_70_2
+import StacksProject_2024.stacks_project.Chap13.Definition_13_8_1
+import StacksProject_2024.stacks_project.Chap13.Definition_13_11_3
+import StacksProject_2024.stacks_project.Chap13.Definition_13_27_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_27_9
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_21_2
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_21_3
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_27_3
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_35_7
+import StacksProject_2024.stacks_project.Chap15.Definition_15_70_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_65_16.SpectralComparison
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_70_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

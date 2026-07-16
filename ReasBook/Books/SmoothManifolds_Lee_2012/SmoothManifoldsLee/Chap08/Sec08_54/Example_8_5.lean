@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Geometry.Manifold.Instances.Sphere
-import SmoothManifolds_Lee_2012.Chap01.Sec01.Example_1_8
-import SmoothManifolds_Lee_2012.Chap04.Sec04_26.Example_4_35
-import SmoothManifolds_Lee_2012.Chap08.Sec08_54.Example_8_4
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01.Example_1_8
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_26.Example_4_35
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_54.Example_8_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

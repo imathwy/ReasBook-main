@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap15.LinearMapIdentifiesWithProdSubmodules
-import StacksProject_2024.Chap15.Lemma_15_4_3
+import stacks_proof.stacks_project.Chap15.LinearMapIdentifiesWithProdSubmodules
+import stacks_proof.stacks_project.Chap15.Lemma_15_4_3
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

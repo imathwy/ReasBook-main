@@ -1,6 +1,6 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_2
-import LecturesConvexOptimization_Nesterov_2018.Chap06.Definition_6_30
-import LecturesConvexOptimization_Nesterov_2018.Chap06.Lemma_6_7
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Definition_2_2
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap06.Definition_6_30
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap06.Lemma_6_7
 
 noncomputable section
 

@@ -4,17 +4,17 @@ import Mathlib.LinearAlgebra.Finsupp.Supported
 import Mathlib.LinearAlgebra.DirectSum.Finsupp
 import Mathlib.RingTheory.Bezout
 import Mathlib.RingTheory.Flat.TorsionFree
-import StacksProject_2024.Chap10.Lemma_10_10_2
-import StacksProject_2024.Chap10.Lemma_10_23_1
-import StacksProject_2024.Chap15.Lemma_15_22_2
-import StacksProject_2024.Chap15.Lemma_15_3_2
-import StacksProject_2024.Chap15.Lemma_15_3_3
-import StacksProject_2024.Chap15.Lemma_15_71_2
-import StacksProject_2024.Chap15.Lemma_15_22_7
-import StacksProject_2024.Chap15.Lemma_15_125_1
-import StacksProject_2024.Chap15.Lemma_15_125_2_Generalized_valuation_rings
-import StacksProject_2024.Chap15.Lemma_15_125_7
-import StacksProject_2024.Chap15.PrincipalIdeal
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_10_2
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_23_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_22_2
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_3_2
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_3_3
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_71_2
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_22_7
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_125_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_125_2_Generalized_valuation_rings
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_125_7
+import StacksProject_2024.stacks_project.Chap15.PrincipalIdeal
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

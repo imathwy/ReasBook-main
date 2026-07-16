@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap13.Definition_13_36_3
-import StacksProject_2024.Chap13.Definition_13_37_1
-import StacksProject_2024.Chap22.RLinearTriangulatedEquivalence
-import StacksProject_2024.Chap22.Remark_22_37_3
+import StacksProject_2024.stacks_project.Chap13.Definition_13_36_3
+import StacksProject_2024.stacks_project.Chap13.Definition_13_37_1
+import StacksProject_2024.stacks_project.Chap22.RLinearTriangulatedEquivalence
+import StacksProject_2024.stacks_project.Chap22.Remark_22_37_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

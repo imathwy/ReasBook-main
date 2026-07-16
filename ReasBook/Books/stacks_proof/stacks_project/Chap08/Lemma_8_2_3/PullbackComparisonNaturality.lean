@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap04.Definition_4_33_9
-import StacksProject_2024.Chap04.Definition_4_32_1
-import StacksProject_2024.Chap04.CanonicalFiberPseudofunctor
+import stacks_proof.stacks_project.Chap04.Definition_4_33_9
+import stacks_proof.stacks_project.Chap04.Definition_4_32_1
+import stacks_proof.stacks_project.Chap04.CanonicalFiberPseudofunctor
 
 /-!
 # Pullback-comparison naturality owner for Lemma 8.2.3

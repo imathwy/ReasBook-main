@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap17.Lemma_17_17_7
-import StacksProject_2024.Chap13.UpperTruncationResolutionTowerColimit
+import StacksProject_2024.stacks_project.Chap17.Lemma_17_17_7
+import StacksProject_2024.stacks_project.Chap13.UpperTruncationResolutionTowerColimit
 
 open CategoryTheory CategoryTheory.Limits
 open AlgebraicGeometry

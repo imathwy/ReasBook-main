@@ -5,7 +5,7 @@ import Mathlib.Analysis.SpecialFunctions.Log.Deriv
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv
 import Mathlib.Geometry.Manifold.SmoothEmbedding
-import SmoothManifolds_Lee_2012.Chap01.Sec01.Example_1_3
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01.Example_1_3
 
 open Topology
 open scoped Manifold ContDiff

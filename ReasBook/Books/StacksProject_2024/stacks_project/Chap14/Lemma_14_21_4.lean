@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap14.Lemma_14_18_4
-import StacksProject_2024.Chap14.Lemma_14_21_3
+import StacksProject_2024.stacks_project.Chap14.Lemma_14_18_4
+import StacksProject_2024.stacks_project.Chap14.Lemma_14_21_3
 
 open CategoryTheory
 open Opposite

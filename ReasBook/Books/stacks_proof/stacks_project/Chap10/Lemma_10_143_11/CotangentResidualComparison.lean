@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_143_11.KernelIdealTransport
+import stacks_proof.stacks_project.Chap10.Lemma_10_143_11.KernelIdealTransport
 
 -- Declarations moved out of `Lemma_10_143_11.lean` to keep the active proof file small.
 

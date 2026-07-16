@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap10.Definition_10_104_6
-import StacksProject_2024.Chap28.Definition_28_4_1
+import StacksProject_2024.stacks_project.Chap10.Definition_10_104_6
+import StacksProject_2024.stacks_project.Chap28.Definition_28_4_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

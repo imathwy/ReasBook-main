@@ -111,7 +111,14 @@ lemma rowVec_orthonormal_iff_mul_conjTranspose_eq_one {ι ι'}
       exact h₂ (Ne.symm ij)
   · intro hA
     refine ⟨fun i => ?_, fun i j hij => ?_⟩
-    · simp [norm_eq_sqrt_re_inner (𝕜:=𝕜), hA]
+    · have hs : ‖V.rowVec i‖ ^ 2 = 1 := by
+        calc
+          ‖V.rowVec i‖ ^ 2 = RCLike.re (⟪V.rowVec i, V.rowVec i⟫_𝕜) :=
+            norm_sq_eq_re_inner (𝕜 := 𝕜) (V.rowVec i)
+          _ = 1 := by simpa using congrArg RCLike.re (hA i i)
+      rcases sq_eq_one_iff.mp hs with hs | hs
+      · exact hs
+      · nlinarith [norm_nonneg (V.rowVec i)]
     · simp [hA, hij.symm]
 
 omit [Fintype n] [DecidableEq m] in
@@ -130,7 +137,14 @@ lemma colVec_orthonormal_iff_conjTranspose_mul_eq_one
     · simp [hij, h₂ hij]
   · intro hA
     refine ⟨fun i => ?_ , fun i j hij => ?_⟩
-    · simp [norm_eq_sqrt_re_inner (𝕜:=𝕜), hA]
+    · have hs : ‖A.colVec i‖ ^ 2 = 1 := by
+        calc
+          ‖A.colVec i‖ ^ 2 = RCLike.re (⟪A.colVec i, A.colVec i⟫_𝕜) :=
+            norm_sq_eq_re_inner (𝕜 := 𝕜) (A.colVec i)
+          _ = 1 := by simpa using congrArg RCLike.re (hA i i)
+      rcases sq_eq_one_iff.mp hs with hs | hs
+      · exact hs
+      · nlinarith [norm_nonneg (A.colVec i)]
     · simp [hA, hij] -- branch `i ≠ j`
 
 /-- If `A * Aᴴ = 1`, then `A` is row-independent -/
@@ -199,10 +213,12 @@ lemma EuclideanSpace.Submodule.rowOrthonormalMatrix
     exact finrank_eq_card_basis b.toBasis
   let b' := b.reindex e -- `b'` is the index we need
   let A' (i : m) : EuclideanSpace 𝕜 n := (b' i).val -- `A'` is the family of vectors we need
-  let A : Matrix m n 𝕜 := A' -- `A` is the matrix of `A'` (as its row vectors)
+  let A : Matrix m n 𝕜 := fun i j => A' i j -- `A` has `A'` as its row vectors
   use A -- now the goal is `Orthonormal 𝕜 A.rowVec ∧ V = A.rowSubmodule`
   have ONA : Orthonormal 𝕜 A' := b'.orthonormal
-  refine ⟨ONA, ?_⟩
+  have ONArow : Orthonormal 𝕜 A.rowVec := by
+    simpa [A, rowVec, row] using ONA
+  refine ⟨ONArow, ?_⟩
   symm -- now the goal is `A.rowSubmodule = V`
   apply Submodule.eq_of_le_of_finrank_eq
   -- the plan is to prove `A` is a subspace of `V` and their dimensions are equal
@@ -216,7 +232,7 @@ lemma EuclideanSpace.Submodule.rowOrthonormalMatrix
   case h.hd =>
     rw [← h]
     apply finrank_rowSubmodule_of_mul_conjTranspose_eq_one
-    exact rowVec_orthonormal_iff_mul_conjTranspose_eq_one.1 ONA
+    exact rowVec_orthonormal_iff_mul_conjTranspose_eq_one.1 ONArow
 
 /--
 For a subspace in a Euclidean space, get a matrix whose colVecs orthonormally span it.
@@ -478,7 +494,7 @@ by
   rw [norm_sq_eq_re_inner (𝕜:=𝕜)]
   congr
   simp [inner_smul_left, Orthonormal.inner_right_fintype, hv]
-  ring
+  simpa only [RCLike.star_def] using RCLike.conj_mul (a j)
 
 
 
@@ -541,4 +557,3 @@ lemma Orthonormal.exists_orthonormalBasis_span_range [Fintype ι] {v : ι → V}
   simp [b]
 
 end Matrix
-

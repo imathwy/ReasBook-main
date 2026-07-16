@@ -1,4 +1,4 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Proposition_2_6
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Proposition_2_6
 
 open scoped BigOperators lp
 

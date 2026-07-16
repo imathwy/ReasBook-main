@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
-import LinearRepresentations_Serre_1977.Chap12.Corollary_12_12_3_2
+import LinearRepresentations_Serre_1977.Serre.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap12.Corollary_12_12_3_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

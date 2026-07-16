@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap22.AdmissibleShortExact
-import StacksProject_2024.Chap22.PropertyI
+import StacksProject_2024.stacks_project.Chap22.AdmissibleShortExact
+import StacksProject_2024.stacks_project.Chap22.PropertyI
 
 open CategoryTheory
 

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap13.Definition_13_3_5
+import StacksProject_2024.stacks_project.Chap13.Definition_13_3_5
 import Mathlib.CategoryTheory.Triangulated.Yoneda
 
 -- Declarations for this item will be appended below by the statement pipeline.

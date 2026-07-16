@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap07.Definition_7_8_1
-import StacksProject_2024.Chap07.Definition_7_8_2
-import StacksProject_2024.Chap07.Definition_7_12_1
+import StacksProject_2024.stacks_project.Chap07.Definition_7_8_1
+import StacksProject_2024.stacks_project.Chap07.Definition_7_8_2
+import StacksProject_2024.stacks_project.Chap07.Definition_7_12_1
 
 open Opposite
 open CategoryTheory.Limits

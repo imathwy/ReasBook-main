@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
 import Mathlib.Algebra.Module.Projective
 import Mathlib.LinearAlgebra.DirectSum.Finsupp
-import StacksProject_2024.Chap15.PrincipalIdeal
+import stacks_proof.stacks_project.Chap15.PrincipalIdeal
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

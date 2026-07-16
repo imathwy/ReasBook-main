@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.Arrows
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.PullbackCompatibility.DescentComparison
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.PullbackCompatibility.PulledGluedVertical
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.PullbackCompatibility.VerticalNaturalityCore
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.Arrows
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.PullbackCompatibility.DescentComparison
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.PullbackCompatibility.PulledGluedVertical
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.PullbackCompatibility.VerticalNaturalityCore
 
 universe u v uS vS w wD vD
 

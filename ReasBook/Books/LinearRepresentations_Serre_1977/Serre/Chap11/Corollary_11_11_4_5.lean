@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_4
-import LinearRepresentations_Serre_1977.Chap11.Corollary_11_11_4_5.CoefficientRing
+import LinearRepresentations_Serre_1977.Serre.Chap11.Proposition_11_11_4_4
+import LinearRepresentations_Serre_1977.Serre.Chap11.Corollary_11_11_4_5.CoefficientRing
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap15.Definition_15_124_1
-import StacksProject_2024.Chap34.Definition_34_10_7
+import StacksProject_2024.stacks_project.Chap15.Definition_15_124_1
+import StacksProject_2024.stacks_project.Chap34.Definition_34_10_7
 
 open AlgebraicGeometry CategoryTheory CategoryTheory.Limits TopologicalSpace
 

@@ -1,0 +1,174 @@
+name: Reusable Lean automation
+
+on:
+  workflow_call:
+    inputs:
+      operation:
+        type: string
+        default: validate
+      book:
+        type: string
+        required: false
+      paper:
+        type: string
+        required: false
+      version:
+        type: string
+        required: false
+      allow_degradation:
+        type: boolean
+        default: false
+    secrets:
+      A_REPO_PAT:
+        required: false
+  workflow_dispatch:
+    inputs:
+      operation:
+        type: choice
+        options: [validate, repair]
+        default: validate
+      book:
+        description: Exact book name; leave both scopes empty to validate all
+        required: false
+      paper:
+        description: Exact paper name; mutually exclusive with book
+        required: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: lean-resource-lock
+  cancel-in-progress: false
+
+jobs:
+  automation:
+    runs-on: [self-hosted, Linux, X64]
+    timeout-minutes: 360
+    env:
+      PERSIST_ROOT: ${{ vars.REASBOOK_PERSIST_ROOT }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout ALLBOOKS source
+        id: source_checkout
+        continue-on-error: true
+        if: inputs.operation == 'sync'
+        uses: actions/checkout@v4
+        with:
+          repository: wl-ma/ALLBOOKS
+          token: ${{ secrets.A_REPO_PAT }}
+          path: .automation/source-a
+          ref: main
+
+      - name: Run operation preflight
+        id: preflight
+        env:
+          OPERATION: ${{ inputs.operation }}
+          BOOK: ${{ inputs.book }}
+          PAPER: ${{ inputs.paper }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          set -uo pipefail
+          mkdir -p .automation
+          source_commit="$(git rev-parse HEAD)"
+          printf '%s\n' "$source_commit" > .automation/source-commit
+          set +e
+          (
+            set -euo pipefail
+            persist_root="${PERSIST_ROOT:-/data/reasbook-ci}"
+            mkdir -p "$persist_root/reasbook_lake" .automation
+            rm -rf ReasBook/.lake
+            ln -sfn "$persist_root/reasbook_lake" ReasBook/.lake
+            case "$OPERATION" in
+              sync)
+                test "${{ steps.source_checkout.outcome }}" = success
+                if [ -n "${BOOK:-}" ]; then
+                  python3 scripts/sync_from_a.py --source .automation/source-a --book "$BOOK"
+                else
+                  python3 scripts/sync_from_a.py --source .automation/source-a --all
+                fi
+                ;;
+              upgrade)
+                test -n "${VERSION:-}"
+                python3 scripts/upgrade_toolchain.py --target "$VERSION"
+                python3 scripts/restore_full_imports.py --all
+                ;;
+              repair)
+                if [ -n "${BOOK:-}" ] && [ -z "${PAPER:-}" ]; then
+                  python3 scripts/restore_full_imports.py --book "$BOOK"
+                elif [ -n "${PAPER:-}" ] && [ -z "${BOOK:-}" ]; then
+                  python3 scripts/restore_full_imports.py --paper "$PAPER"
+                else
+                  echo 'repair requires exactly one book or paper' >&2; exit 2
+                fi
+                ;;
+              validate) ;;
+              *) echo "unsupported operation: $OPERATION" >&2; exit 2 ;;
+            esac
+            cd ReasBook
+            lake resolve-deps
+            cd ..
+            scripts/build_reasbook_cache.sh || echo 'cache download failed; continuing with source build'
+            python3 scripts/verify_agent_config.py --allow-missing-local
+          ) > .automation/preflight.log 2>&1
+          rc=$?
+          set -e
+          echo "exit_code=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Run full-import automation
+        id: validate
+        continue-on-error: true
+        env:
+          OPERATION: ${{ inputs.operation }}
+          BOOK: ${{ inputs.book }}
+          PAPER: ${{ inputs.paper }}
+          PREFLIGHT_EXIT: ${{ steps.preflight.outputs.exit_code }}
+        run: |
+          set -euo pipefail
+          run_id="$(date -u +%Y%m%dT%H%M%SZ)-${OPERATION}-${GITHUB_SHA::8}"
+          args=(--run-id "$run_id" --trigger "$OPERATION"
+                --source-commit "$(cat .automation/source-commit)"
+                --preflight-exit-code "$PREFLIGHT_EXIT"
+                --preflight-log .automation/preflight.log)
+          if [ -n "${BOOK:-}" ] && [ -z "${PAPER:-}" ]; then
+            args+=(--book "$BOOK")
+          elif [ -n "${PAPER:-}" ] && [ -z "${BOOK:-}" ]; then
+            args+=(--paper "$PAPER")
+          elif [ -z "${BOOK:-}" ] && [ -z "${PAPER:-}" ]; then
+            args+=(--all)
+          else
+            echo 'choose only one book or paper' >&2; exit 2
+          fi
+          if [ "$OPERATION" = repair ]; then args+=(--repair); fi
+          if [ "${{ inputs.allow_degradation }}" = true ]; then args+=(--allow-approved-degradation); fi
+          echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
+          scripts/ci_heartbeat.sh automation python3 scripts/run_automation.py "${args[@]}"
+
+      - name: Create or update automation PR
+        if: always() && (inputs.operation == 'sync' || inputs.operation == 'upgrade' || inputs.operation == 'repair')
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: automation/${{ inputs.operation }}-${{ inputs.book || inputs.paper || inputs.version || 'all' }}
+          delete-branch: true
+          commit-message: '${{ inputs.operation }}: automated ReasBook update'
+          title: '${{ inputs.operation }}: automated ReasBook update'
+          body: |
+            Full-import automation run `${{ steps.validate.outputs.run_id }}` was executed.
+            Required checks determine whether this PR is mergeable. Detailed reports remain local on the runner.
+
+      - name: Publish concise job summary
+        if: always()
+        run: |
+          echo "### ReasBook automation" >> "$GITHUB_STEP_SUMMARY"
+          echo "- operation: \`${{ inputs.operation }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- local run ID: \`${{ steps.validate.outputs.run_id }}\`" >> "$GITHUB_STEP_SUMMARY"
+          echo "- validation outcome: \`${{ steps.validate.outcome }}\`" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Enforce automation result
+        if: steps.validate.outcome != 'success'
+        run: exit 1

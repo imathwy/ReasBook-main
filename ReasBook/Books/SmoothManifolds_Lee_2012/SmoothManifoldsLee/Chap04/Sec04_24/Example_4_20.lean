@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.Geometry.Manifold.Immersion
-import SmoothManifolds_Lee_2012.Chap01.Sec01.Example_1_9
-import SmoothManifolds_Lee_2012.Chap01.Sec01_07.Problem_1_8
-import SmoothManifolds_Lee_2012.Chap04.Sec04_21.Definition_4_21_extra_1
-import SmoothManifolds_Lee_2012.Chap04.Sec04_22.Proposition_4_6
-import SmoothManifolds_Lee_2012.Chap04.Sec04_24.Lemma_4_21
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01.Example_1_9
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_07.Problem_1_8
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_21.Definition_4_21_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_22.Proposition_4_6
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_24.Lemma_4_21
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

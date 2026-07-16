@@ -1,4 +1,4 @@
-import DifferentialForms_Cartan_1970.VI.section26.«0008_Problem_VI_5_extra_8».ExtensionObjects
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0008_Problem_VI_5_extra_8».ExtensionObjects
 
 open scoped Manifold
 open Set

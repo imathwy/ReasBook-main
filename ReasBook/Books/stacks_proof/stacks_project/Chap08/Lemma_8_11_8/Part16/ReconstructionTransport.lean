@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_11_8.Part16.CommonOwnerForget
-import StacksProject_2024.Chap08.Lemma_8_11_8.Part16.UnderlyingAbsoluteGlueingBand
+import stacks_proof.stacks_project.Chap08.Lemma_8_11_8.Part16.CommonOwnerForget
+import stacks_proof.stacks_project.Chap08.Lemma_8_11_8.Part16.UnderlyingAbsoluteGlueingBand
 
 universe u v w
 

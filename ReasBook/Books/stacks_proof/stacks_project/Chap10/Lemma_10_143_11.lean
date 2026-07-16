@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap10.Lemma_10_143_10
-import StacksProject_2024.Chap10.Proposition_10_138_13
-import StacksProject_2024.Chap10.Lemma_10_143_11.Index
+import stacks_proof.stacks_project.Chap10.Lemma_10_143_10
+import stacks_proof.stacks_project.Chap10.Proposition_10_138_13
+import stacks_proof.stacks_project.Chap10.Lemma_10_143_11.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
 import Mathlib.LinearAlgebra.LeftExact
-import StacksProject_2024.Chap15.Definition_15_55_5
+import stacks_proof.stacks_project.Chap15.Definition_15_55_5
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory ModuleCat

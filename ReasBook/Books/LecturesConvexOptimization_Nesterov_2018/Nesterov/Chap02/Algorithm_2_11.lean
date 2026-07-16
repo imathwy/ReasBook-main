@@ -1,6 +1,6 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Algorithm_2_10
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_48
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_47
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Algorithm_2_10
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Definition_2_48
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Definition_2_47
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

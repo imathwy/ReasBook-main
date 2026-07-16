@@ -4,8 +4,8 @@ import Mathlib.CategoryTheory.Functor.ReflectsIso.Basic
 import Mathlib.CategoryTheory.Limits.Constructions.EpiMono
 import Mathlib.CategoryTheory.Sites.CoverLifting
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap07.Lemma_7_11_2
-import StacksProject_2024.Chap07.Definition_7_15_1_Topoi
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_11_2
+import StacksProject_2024.stacks_project.Chap07.Definition_7_15_1_Topoi
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Presheaf.Sheafification
-import StacksProject_2024.Chap17.SheafOfModulesTensorUnit
-import StacksProject_2024.Chap18.Definition_18_23_1
+import stacks_proof.stacks_project.Chap17.SheafOfModulesTensorUnit
+import stacks_proof.stacks_project.Chap18.Definition_18_23_1
 
 open CategoryTheory
 open CategoryTheory.MonoidalCategory

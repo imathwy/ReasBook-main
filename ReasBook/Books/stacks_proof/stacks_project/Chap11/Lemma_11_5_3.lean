@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap11.Definition_11_5_2
+import stacks_proof.stacks_project.Chap11.Definition_11_5_2
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap04.Definition_4_3_2
+import StacksProject_2024.stacks_project.Chap04.Definition_4_3_2
 
 universe uC vC uA vA
 

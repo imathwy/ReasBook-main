@@ -1,10 +1,10 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap08.Corollary_8_8_3_8
-import LinearRepresentations_Serre_1977.Chap07.Exercise_7_7_2_4
-import LinearRepresentations_Serre_1977.Chap08.Exercise_8_8_2_3
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_1
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_2.LinearCharacters
-import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Serre.Chap08.Corollary_8_8_3_8
+import LinearRepresentations_Serre_1977.Serre.Chap07.Exercise_7_7_2_4
+import LinearRepresentations_Serre_1977.Serre.Chap08.Exercise_8_8_2_3
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_5_1
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_5_2.LinearCharacters
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.RealizableOver
 
 -- The Fong–Swan import chain (via `Serre.Chap18.Exercise_18_18_5_1`) brings the global instance
 -- `Field.henselian` (every field is a Henselian local ring) into scope.  That instance makes

@@ -1,9 +1,9 @@
 import Mathlib
-import StacksProject_2024.Chap07.Definition_7_15_1_Topoi
-import StacksProject_2024.Chap07.Lemma_7_21_1
-import StacksProject_2024.Chap07.Lemma_7_21_5
-import StacksProject_2024.Chap07.Lemma_7_21_6
-import StacksProject_2024.Chap34.Lemma_34_3_9
+import StacksProject_2024.stacks_project.Chap07.Definition_7_15_1_Topoi
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_21_1
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_21_5
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_21_6
+import StacksProject_2024.stacks_project.Chap34.Lemma_34_3_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

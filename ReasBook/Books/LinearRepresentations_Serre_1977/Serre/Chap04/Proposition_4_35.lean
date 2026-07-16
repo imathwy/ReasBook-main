@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import LinearRepresentations_Serre_1977.Chap04.Proposition_4_34
+import LinearRepresentations_Serre_1977.Serre.Chap04.Proposition_4_34
 
 noncomputable section
 

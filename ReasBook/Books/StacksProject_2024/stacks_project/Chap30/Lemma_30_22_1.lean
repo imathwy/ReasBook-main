@@ -1,10 +1,10 @@
-import StacksProject_2024.Chap15.«15_60_1_1»
-import StacksProject_2024.Chap15.Definition_15_75_1
-import StacksProject_2024.Chap20.Lemma_20_27_1
-import StacksProject_2024.Chap21.Remark_21_19_3_core
-import StacksProject_2024.Chap29.Definition_29_25_1
-import StacksProject_2024.Chap30.Lemma_30_7_2
-import StacksProject_2024.Chap30.Lemma_30_19_2
+import StacksProject_2024.stacks_project.Chap15.«15_60_1_1»
+import StacksProject_2024.stacks_project.Chap15.Definition_15_75_1
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_27_1
+import StacksProject_2024.stacks_project.Chap21.Remark_21_19_3_core
+import StacksProject_2024.stacks_project.Chap29.Definition_29_25_1
+import StacksProject_2024.stacks_project.Chap30.Lemma_30_7_2
+import StacksProject_2024.stacks_project.Chap30.Lemma_30_19_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

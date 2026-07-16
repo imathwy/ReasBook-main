@@ -1,6 +1,6 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap03.Definition_3_4_2
-import AlgebraicTopology_May_1999.Chap03.Definition_3_4_9
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_4_2
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_4_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -136,16 +136,28 @@ theorem vertexGroupMulAction_isTransitive_iff_of_iso
     -- Transport both loops and points along the isomorphism `i`.
     exact isTransitive_of_equivariant_equiv i.conj (T.mapIso i).toEquiv
       (fun g x ↦ by
-        simpa [vertexGroupMulAction_smul_eq_map, Iso.conj_apply] using
-          congrArg (T.map i.hom) (vertexGroupMulAction_smul_eq_map T b g x))
+        change
+          T.map i.hom (T.map g x) =
+            T.map (i.inv ≫ g ≫ i.hom) (T.map i.hom x)
+        have hi : T.map i.inv (T.map i.hom x) = x := by
+          rw [← T.map_comp_apply]
+          simp
+        rw [T.map_comp_apply, T.map_comp_apply]
+        rw [hi])
       h
   · intro h
     change MulAction.IsTransitive (End b) (T.obj b)
     -- Apply the same transport argument to the inverse isomorphism.
     exact isTransitive_of_equivariant_equiv i.symm.conj (T.mapIso i.symm).toEquiv
       (fun g x ↦ by
-        simpa [vertexGroupMulAction_smul_eq_map, Iso.conj_apply] using
-          congrArg (T.map i.inv) (vertexGroupMulAction_smul_eq_map T b' g x))
+        change
+          T.map i.inv (T.map g x) =
+            T.map (i.hom ≫ g ≫ i.inv) (T.map i.inv x)
+        have hi : T.map i.hom (T.map i.inv x) = x := by
+          rw [← T.map_comp_apply]
+          simp
+        rw [T.map_comp_apply, T.map_comp_apply]
+        rw [hi])
       h
 
 /-- Helper for Definition 3.4.10: in a connected groupoid, transitivity of the `End`-action at one

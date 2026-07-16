@@ -4,7 +4,7 @@ import Mathlib.MeasureTheory.Integral.Lebesgue.Countable
 import Mathlib.Probability.ProbabilityMassFunction.Constructions
 import Mathlib.NumberTheory.ZetaValues
 import Mathlib.Analysis.PSeries
-import ProbabilityTheory_Klenke_2020.Items.Chap08.Remark_8_16
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap08.Remark_8_16
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

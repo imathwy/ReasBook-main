@@ -1,5 +1,5 @@
-import DifferentialForms_Cartan_1970.VI.section25.«0016_Theorem_VI_4_extra_13».SeededSphereIntervalPropagation
-import DifferentialForms_Cartan_1970.VI.section25.«0016_Theorem_VI_4_extra_13».SphereNeighborhoodCanonicalWindow
+import DifferentialForms_Cartan_1970.cartan.VI.section25.«0016_Theorem_VI_4_extra_13».SeededSphereIntervalPropagation
+import DifferentialForms_Cartan_1970.cartan.VI.section25.«0016_Theorem_VI_4_extra_13».SphereNeighborhoodCanonicalWindow
 
 universe u
 

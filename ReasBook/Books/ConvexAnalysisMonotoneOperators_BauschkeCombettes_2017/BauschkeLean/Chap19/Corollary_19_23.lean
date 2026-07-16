@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Analysis.InnerProductSpace.ProdL2
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap19.Remark_19_22
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap19.Remark_19_22
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

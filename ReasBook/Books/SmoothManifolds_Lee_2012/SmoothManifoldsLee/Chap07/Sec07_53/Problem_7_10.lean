@@ -2,8 +2,8 @@ import Mathlib
 import Mathlib.Analysis.Matrix.Normed
 import Mathlib.Geometry.Manifold.Instances.UnitsOfNormedAlgebra
 import Mathlib.Tactic.Recall
-import SmoothManifolds_Lee_2012.Chap01.Sec01_07.Problem_1_9
-import SmoothManifolds_Lee_2012.Chap04.Sec04_27.Problem_4_5
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_07.Problem_1_9
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_27.Problem_4_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

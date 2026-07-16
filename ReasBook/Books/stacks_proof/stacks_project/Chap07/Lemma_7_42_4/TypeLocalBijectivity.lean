@@ -8,7 +8,7 @@ import Mathlib.CategoryTheory.Limits.Preserves.Ulift
 import Mathlib.CategoryTheory.Limits.Types.Multiequalizer
 import Mathlib.CategoryTheory.UnivLE
 import Mathlib.Logic.Small.Basic
-import StacksProject_2024.Chap07.Definition_7_42_3
+import stacks_proof.stacks_project.Chap07.Definition_7_42_3
 
 open CategoryTheory Opposite CategoryTheory.GrothendieckTopology.Plus
 

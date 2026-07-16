@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap12.Lemma_12_19_4
-import StacksProject_2024.Chap12.Lemma_12_19_7
+import stacks_proof.stacks_project.Chap12.Lemma_12_19_4
+import stacks_proof.stacks_project.Chap12.Lemma_12_19_7
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory CategoryTheory.Limits

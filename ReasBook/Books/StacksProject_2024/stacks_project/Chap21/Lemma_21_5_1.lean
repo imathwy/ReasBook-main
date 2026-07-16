@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap21.Lemma_21_12_4
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_12_4
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategoryBasic
 
 open CategoryTheory
 open CategoryTheory.Abelian

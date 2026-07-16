@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap21.Remark_21_19_3_core
-import StacksProject_2024.Chap21.Remark_21_35_11
+import StacksProject_2024.stacks_project.Chap21.Remark_21_19_3_core
+import StacksProject_2024.stacks_project.Chap21.Remark_21_35_11
 
 open CategoryTheory
 open CategoryTheory.MonoidalCategory

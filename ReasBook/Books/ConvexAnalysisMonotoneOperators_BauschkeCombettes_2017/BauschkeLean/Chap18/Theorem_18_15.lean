@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Data.List.TFAE
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04.Definition_4_10
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap14.Proposition_14_2
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap14.Theorem_14_3
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap04.Definition_4_10
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap14.Proposition_14_2
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap14.Theorem_14_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

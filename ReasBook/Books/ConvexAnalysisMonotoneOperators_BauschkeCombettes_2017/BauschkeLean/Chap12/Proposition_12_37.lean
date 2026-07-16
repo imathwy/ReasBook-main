@@ -1,7 +1,7 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09.Proposition_9_30
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Definition_12_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_36
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap09.Proposition_9_30
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap12.Definition_12_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap12.Proposition_12_36
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -21,9 +21,9 @@ variable {H : Type u} [AddCommGroup H]
 `(y, z) ↦ f y + g z` by the product-sum map `(y, z) ↦ y + z`. -/
 theorem infimalConvolution_eq_infimalPostcomposition_separableSum
     (f g : H → Set.Ioi (⊥ : EReal)) :
-    f □ g = (Prod.fst + Prod.snd) ▷ (f ⊕ g) := by
+    infimalConvolution f.asEReal g.asEReal = (Prod.fst + Prod.snd) ▷ (f ⊕ g) := by
   ext x
-  rw [infimalConvolution_apply]
+  change (⨅ y : H, (f y : EReal) + (g (x - y) : EReal)) = _
   rw [show ((Prod.fst + Prod.snd) ▷ (f ⊕ g)) x =
       sInf ((fun yz : H × H ↦ ((f ⊕ g) yz : EReal)) '' ((Prod.fst + Prod.snd) ⁻¹' {x})) by
       simpa using infimalPostcomposition_apply (Prod.fst + Prod.snd) (f ⊕ g) x]

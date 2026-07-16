@@ -1,5 +1,7 @@
 import Mathlib.Analysis.Convex.Intrinsic
 import Mathlib.Analysis.NormedSpace.HahnBanach.Separation
+import Mathlib.Analysis.LocallyConvex.Separation
+import Mathlib.Geometry.Convex.Cone.Basic
 import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Basic
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 import Mathlib.Analysis.InnerProductSpace.Projection.Basic
@@ -313,4 +315,3 @@ noncomputable def recessionFunction (f : E → EReal) :=
   fun y => ⨆ x ∈ {x | x ∈ dom s f}, (f (x + y) - f x)
 
 end recessionfunction_def
-

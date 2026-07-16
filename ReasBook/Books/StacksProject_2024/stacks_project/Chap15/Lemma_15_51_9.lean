@@ -1,15 +1,15 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_43_2
-import StacksProject_2024.Chap10.Lemma_10_43_7
-import StacksProject_2024.Chap10.Lemma_10_163_6
-import StacksProject_2024.Chap10.Lemma_10_164_2
-import StacksProject_2024.Chap10.Lemma_10_164_4
-import StacksProject_2024.Chap10.Lemma_10_44_4
-import StacksProject_2024.Chap10.Lemma_10_43_9
-import StacksProject_2024.Chap10.Lemma_10_166_1
-import StacksProject_2024.Chap15.Lemma_15_41_3_Regular_maps_and_base_change
-import StacksProject_2024.Chap15.Lemma_15_41_7
-import StacksProject_2024.Chap15.Lemma_15_42_1
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_43_2
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_43_7
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_163_6
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_164_2
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_164_4
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_44_4
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_43_9
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_166_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_41_3_Regular_maps_and_base_change
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_41_7
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_42_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

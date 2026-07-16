@@ -1,13 +1,13 @@
 import Mathlib.FieldTheory.IsPerfectClosure
 import Mathlib.FieldTheory.PurelyInseparable.Basic
 import Mathlib.FieldTheory.PurelyInseparable.PerfectClosure
-import StacksProject_2024.Chap09.Lemma_9_14_5
-import StacksProject_2024.Chap09.Lemma_9_26_11
-import StacksProject_2024.Chap09.Lemma_9_28_2
-import StacksProject_2024.Chap10.Definition_10_42_1
-import StacksProject_2024.Chap10.Lemma_10_42_3
+import stacks_proof.stacks_project.Chap09.Lemma_9_14_5
+import stacks_proof.stacks_project.Chap09.Lemma_9_26_11
+import stacks_proof.stacks_project.Chap09.Lemma_9_28_2
+import stacks_proof.stacks_project.Chap10.Definition_10_42_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_42_3
 import Mathlib.Tactic.StacksAttribute
-import StacksProject_2024.Chap10.Lemma_10_42_4.Index
+import stacks_proof.stacks_project.Chap10.Lemma_10_42_4.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

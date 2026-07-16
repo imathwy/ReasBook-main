@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.FixedRowReadbackCompletionWorker
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.OrthogonalityInputSourceProofWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.FixedRowReadbackCompletionWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.OrthogonalityInputSourceProofWorker
 
 /-!
 Source proof boundary for the fixed-row readout input.

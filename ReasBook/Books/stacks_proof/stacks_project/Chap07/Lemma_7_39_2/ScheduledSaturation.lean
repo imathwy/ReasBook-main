@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap07.Lemma_7_39_2.PackagedStages
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_2.PackagedStages
 
 /-
 The former aggregate module carried an abandoned exact open-prefix saturation route.  This

@@ -1,10 +1,10 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_4.IrreducibleCharacterTransport
-import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_2
-import LinearRepresentations_Serre_1977.Chap12.Definition_12_12_6_1
-import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_2_1
-import LinearRepresentations_Serre_1977.Chap18.Remark_18_18_1_3
-import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_4_1
+import LinearRepresentations_Serre_1977.Serre.Chap09.Exercise_9_9_1_4.IrreducibleCharacterTransport
+import LinearRepresentations_Serre_1977.Serre.Chap10.Definition_10_10_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap12.Definition_12_12_6_1
+import LinearRepresentations_Serre_1977.Serre.Chap16.Theorem_16_16_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap18.Remark_18_18_1_3
+import LinearRepresentations_Serre_1977.Serre.Chap18.Theorem_18_18_4_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

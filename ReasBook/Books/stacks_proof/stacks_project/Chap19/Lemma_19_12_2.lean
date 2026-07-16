@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.CategoryTheory.Limits.MonoCoprod
-import StacksProject_2024.Chap13.Definition_13_8_1
-import StacksProject_2024.Chap19.Lemma_19_12_1
+import stacks_proof.stacks_project.Chap13.Definition_13_8_1
+import stacks_proof.stacks_project.Chap19.Lemma_19_12_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,7 +1,7 @@
 import Mathlib
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Algorithm_12_14
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Algorithm_12_15
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Lemma_12_5
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Algorithm_12_14
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Algorithm_12_15
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Lemma_12_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

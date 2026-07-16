@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap05.Definition_5_22_1
+import stacks_proof.stacks_project.Chap05.Definition_5_22_1
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory Limits

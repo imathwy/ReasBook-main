@@ -1,8 +1,8 @@
 import Mathlib.AlgebraicTopology.SimplicialObject.Coskeletal
 import Mathlib.CategoryTheory.Sites.Grothendieck
 import Mathlib.Logic.Small.Basic
-import StacksProject_2024.Chap07.Definition_7_8_2
-import StacksProject_2024.Chap25.Definition_25_2_1
+import StacksProject_2024.stacks_project.Chap07.Definition_7_8_2
+import StacksProject_2024.stacks_project.Chap25.Definition_25_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

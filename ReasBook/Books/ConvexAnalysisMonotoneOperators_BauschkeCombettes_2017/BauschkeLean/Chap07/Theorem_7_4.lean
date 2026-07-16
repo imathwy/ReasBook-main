@@ -1,49 +1,13 @@
 import Mathlib
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap03.Definition_3_8
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap03.Definition_3_49
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap07.Definition_7_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
 universe u
 
 open scoped InnerProductSpace
-
-/-- A point `p` is a best approximation to `x` from `C` when it lies in `C` and realizes the
-distance from `x` to `C`. -/
-abbrev IsBestApproximation {X : Type u} [PseudoMetricSpace X] (x : X) (C : Set X) (p : X) : Prop :=
-  p ∈ C ∧ dist x p = Metric.infDist x C
-
--- Proof sketch: unfold `IsBestApproximation`.
-/-- A best approximation is exactly a point of `C` whose distance to `x` equals `Metric.infDist x
-C`. -/
-theorem isBestApproximation_iff_mem_and_dist_eq_infDist {X : Type u} [PseudoMetricSpace X]
-    (x : X) (C : Set X) (p : X) :
-    IsBestApproximation x C p ↔ p ∈ C ∧ dist x p = Metric.infDist x C :=
-  Iff.rfl
-
-/-- A set is Chebyshev when every point of the ambient space has a unique best approximation in
-that set. -/
-def IsChebyshev {X : Type u} [PseudoMetricSpace X] (C : Set X) : Prop :=
-  ∀ x : X, ∃! p : X, IsBestApproximation x C p
-
--- Proof sketch: unfold `IsChebyshev`.
-/-- A set is Chebyshev exactly when each point admits a unique best approximation from the set. -/
-theorem isChebyshev_iff_forall_existsUnique_bestApproximation {X : Type u} [PseudoMetricSpace X]
-    (C : Set X) :
-    IsChebyshev C ↔ ∀ x : X, ∃! p : X, IsBestApproximation x C p :=
-  Iff.rfl
-
-/-- For a Chebyshev set, the projection point of `x` onto `C` is the unique best approximation in
-the ambient space. -/
-noncomputable def projectionPoint {X : Type u} [PseudoMetricSpace X] (C : Set X) (hC : IsChebyshev C)
-    (x : X) : X :=
-  (hC x).choose
-
--- Proof sketch: use the defining choice of `projectionPoint` from the unique best approximation
--- supplied by `hC x`.
-/-- The chosen projection point is a best approximation. -/
-theorem projectionPoint_isBestApproximation {X : Type u} [PseudoMetricSpace X] (C : Set X)
-    (hC : IsChebyshev C) (x : X) :
-    IsBestApproximation x C (projectionPoint C hC x) :=
-  (hC x).choose_spec.1
 
 variable {𝓗 : Type u} [NormedAddCommGroup 𝓗] [InnerProductSpace ℝ 𝓗] [CompleteSpace 𝓗]
 
@@ -118,36 +82,12 @@ theorem isChebyshev_of_nonempty_isClosed_convex {𝓗 : Type u} [NormedAddCommGr
   intro q hq
   exact (eq_of_isBestApproximation_of_convex hC_convex hp hq).symm
 
-/-- The `EReal`-valued supremum of the functional `x ↦ ⟪x, u⟫` on `C`. -/
-noncomputable abbrev innerSupremumOn {𝓗 : Type u} [NormedAddCommGroup 𝓗] [InnerProductSpace ℝ 𝓗]
-    (C : Set 𝓗) (u : 𝓗) : EReal :=
-  sSup ((fun x : 𝓗 ↦ (⟪x, u⟫_ℝ : EReal)) '' C)
-
--- Proof sketch: unfold `innerSupremumOn`.
-/-- The inner-product supremum on `C` is the supremum of the image of `C` under `x ↦ ⟪x, u⟫`. -/
-theorem innerSupremumOn_eq_sSup_image {𝓗 : Type u} [NormedAddCommGroup 𝓗]
-    [InnerProductSpace ℝ 𝓗] (C : Set 𝓗) (u : 𝓗) :
-    innerSupremumOn C u = sSup ((fun x : 𝓗 ↦ (⟪x, u⟫_ℝ : EReal)) '' C) :=
-  rfl
-
 namespace Set
 
 section
 
 variable {𝓗 : Type u} [NormedAddCommGroup 𝓗] [InnerProductSpace ℝ 𝓗] [CompleteSpace 𝓗]
 variable {C : Set 𝓗} (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C) (hC_convex : Convex ℝ C)
-
-/-- The support points of `C` are the points of `C` at which some nonzero direction attains the
-support value of `C`. -/
-noncomputable def supportPoints (C : Set 𝓗) : Set 𝓗 :=
-  {x : 𝓗 | x ∈ C ∧ ∃ u : 𝓗, u ≠ 0 ∧ innerSupremumOn C u = (⟪x, u⟫_ℝ : EReal)}
-
--- Proof sketch: unfold `supportPoints` and simplify the resulting membership statement.
-/-- A point belongs to `supportPoints C` exactly when it lies in `C` and some nonzero direction
-attains the support value of `C` at that point. -/
-theorem mem_supportPoints_iff {C : Set 𝓗} {x : 𝓗} :
-    x ∈ supportPoints C ↔ x ∈ C ∧ ∃ u : 𝓗, u ≠ 0 ∧ innerSupremumOn C u = (⟪x, u⟫_ℝ : EReal) :=
-  Iff.rfl
 
 local notation "P" =>
   projectionPoint C (isChebyshev_of_nonempty_isClosed_convex hC_nonempty hC_closed hC_convex)
@@ -207,31 +147,27 @@ theorem mem_supportPoints_iff_exists_nonzero_inner_sub_right_nonpos {x : 𝓗} :
   -- reverse inequality.
   rw [mem_supportPoints_iff]
   constructor
-  · rintro ⟨hxC, u, hu_ne, hu_eq⟩
+  · rintro ⟨hxC, u, hu_ne, hu_le⟩
     refine ⟨hxC, u, hu_ne, ?_⟩
     intro y hy
     have hy_le : (⟪y, u⟫_ℝ : EReal) ≤ innerSupremumOn C u := by
       rw [innerSupremumOn_eq_sSup_image]
       exact le_sSup ⟨y, hy, rfl⟩
     have hyx_le : (⟪y, u⟫_ℝ : EReal) ≤ (⟪x, u⟫_ℝ : EReal) := by
-      simpa [hu_eq] using hy_le
+      exact hy_le.trans hu_le
     have hyx_le' : ⟪y, u⟫_ℝ ≤ ⟪x, u⟫_ℝ := by
       exact_mod_cast hyx_le
     simpa [inner_sub_left] using sub_nonpos.mpr hyx_le'
   · rintro ⟨hxC, u, hu_ne, hu_nonpos⟩
-    refine ⟨hxC, u, hu_ne, le_antisymm ?_ ?_⟩
-    · -- The pointwise support inequalities make `⟪x, u⟫` an upper bound for the image set.
-      rw [innerSupremumOn_eq_sSup_image]
-      refine (isLUB_sSup _).2 ?_
-      rintro _ ⟨y, hy, rfl⟩
-      have hyx_le : ⟪y, u⟫_ℝ ≤ ⟪x, u⟫_ℝ := by
-        have := hu_nonpos y hy
-        simpa [inner_sub_left] using this
-      exact show ((⟪y, u⟫_ℝ : EReal) ≤ (⟪x, u⟫_ℝ : EReal)) by
-        exact_mod_cast hyx_le
-    · -- Membership of `x` in `C` gives the reverse inequality by definition of the supremum.
-      rw [innerSupremumOn_eq_sSup_image]
-      exact le_sSup ⟨x, hxC, rfl⟩
+    refine ⟨hxC, u, hu_ne, ?_⟩
+    rw [innerSupremumOn_eq_sSup_image]
+    refine (isLUB_sSup _).2 ?_
+    rintro _ ⟨y, hy, rfl⟩
+    have hyx_le : ⟪y, u⟫_ℝ ≤ ⟪x, u⟫_ℝ := by
+      have := hu_nonpos y hy
+      simpa [inner_sub_left] using this
+    exact show ((⟪y, u⟫_ℝ : EReal) ≤ (⟪x, u⟫_ℝ : EReal)) by
+      exact_mod_cast hyx_le
 
 /-- Helper for Theorem 7.4: every support point lies on the frontier of the ambient set. -/
 theorem supportPoints_subset_frontier :

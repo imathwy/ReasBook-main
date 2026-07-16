@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap13.Lemma_13_6_10
-import StacksProject_2024.Chap24.Definition_24_26_4
-import StacksProject_2024.Chap24.Lemma_24_26_2
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_6_10
+import StacksProject_2024.stacks_project.Chap24.Definition_24_26_4
+import StacksProject_2024.stacks_project.Chap24.Lemma_24_26_2
 
 open CategoryTheory
 open ComplexShape

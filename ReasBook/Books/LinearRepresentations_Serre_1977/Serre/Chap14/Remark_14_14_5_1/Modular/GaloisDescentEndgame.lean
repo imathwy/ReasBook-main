@@ -1,9 +1,9 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.GaloisDescentSummit
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.TwistIso
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.CoefficientTwistL
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.CyclicStraightening
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.SeparableSemisimple
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.GaloisDescentSummit
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.TwistIso
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.CoefficientTwistL
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.CyclicStraightening
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.SeparableSemisimple
 
 /-!
 # The characteristic-`p` modular Galois-descent capstone (assembly)

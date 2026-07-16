@@ -1,6 +1,6 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Definition_13_34
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap14.Definition_14_6
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap13.Definition_13_34
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap14.Definition_14_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

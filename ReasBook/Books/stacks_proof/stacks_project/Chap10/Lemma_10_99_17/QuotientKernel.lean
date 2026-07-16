@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_99_17.TorDegreeZero
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_17.TorDegreeZero
 
 open CategoryTheory CategoryTheory.Limits CategoryTheory.MonoidalCategory
 open scoped TensorProduct

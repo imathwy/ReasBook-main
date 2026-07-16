@@ -1,12 +1,12 @@
 import Mathlib
 import Mathlib.Data.ZMod.QuotientRing
-import LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_5_10
-import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
-import LinearRepresentations_Serre_1977.Chap10.Lemma_10_10_3_3
-import LinearRepresentations_Serre_1977.Chap12.CharacterRingOverFieldScalarExtension
-import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
-import LinearRepresentations_Serre_1977.Chap10.Theorem_10_10_2_1.PRegularEndgame
-import LinearRepresentations_Serre_1977.FiniteToFintype
+import LinearRepresentations_Serre_1977.Serre.Chap06.Exercise_6_6_5_10
+import LinearRepresentations_Serre_1977.Serre.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap10.Lemma_10_10_3_3
+import LinearRepresentations_Serre_1977.Serre.Chap12.CharacterRingOverFieldScalarExtension
+import LinearRepresentations_Serre_1977.Serre.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Serre.Chap10.Theorem_10_10_2_1.PRegularEndgame
+import LinearRepresentations_Serre_1977.Serre.FiniteToFintype
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

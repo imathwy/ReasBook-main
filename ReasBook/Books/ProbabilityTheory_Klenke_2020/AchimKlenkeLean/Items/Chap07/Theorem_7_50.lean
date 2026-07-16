@@ -1,4 +1,4 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap07.Lemma_7_49
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap07.Lemma_7_49
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

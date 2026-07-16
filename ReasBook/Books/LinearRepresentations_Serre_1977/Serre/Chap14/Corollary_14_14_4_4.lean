@@ -1,6 +1,6 @@
-import LinearRepresentations_Serre_1977.Chap14.Infra_14_4_ProjectiveLift
-import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3
-import LinearRepresentations_Serre_1977.Chap14.Lemma_14_14_4_2
+import LinearRepresentations_Serre_1977.Serre.Chap14.Infra_14_4_ProjectiveLift
+import LinearRepresentations_Serre_1977.Serre.Chap14.Corollary_14_14_4_3
+import LinearRepresentations_Serre_1977.Serre.Chap14.Lemma_14_14_4_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -2,9 +2,9 @@ import Mathlib
 import Mathlib.Algebra.Category.FGModuleCat.Basic
 import Mathlib.CategoryTheory.Monoidal.Internal.Module
 import Mathlib.CategoryTheory.Monoidal.Transport
-import StacksProject_2024.Chap15.Proposition_15_90_16
-import StacksProject_2024.Chap15.Theorem_15_90_18
-import StacksProject_2024.Chap15.Proposition_15_90_19
+import StacksProject_2024.stacks_project.Chap15.Proposition_15_90_16
+import StacksProject_2024.stacks_project.Chap15.Theorem_15_90_18
+import StacksProject_2024.stacks_project.Chap15.Proposition_15_90_19
 
 open CategoryTheory CategoryTheory.Limits ModuleCat
 open scoped TensorProduct

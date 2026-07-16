@@ -1,4 +1,4 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_8_3
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap01.Definition_1_8_3
 import Mathlib.Analysis.Matrix.Order
 import Mathlib.Analysis.Normed.Module.FiniteDimension
 

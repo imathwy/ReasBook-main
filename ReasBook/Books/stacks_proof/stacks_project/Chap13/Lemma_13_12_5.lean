@@ -1,8 +1,8 @@
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
 import Mathlib.Algebra.Homology.DerivedCategory.HomologySequence
 import Mathlib.CategoryTheory.Triangulated.TStructure.TruncLEGT
-import StacksProject_2024.Chap13.Remark_13_12_4
-import StacksProject_2024.Chap13.Lemma_13_35_7
+import stacks_proof.stacks_project.Chap13.Remark_13_12_4
+import stacks_proof.stacks_project.Chap13.Lemma_13_35_7
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory

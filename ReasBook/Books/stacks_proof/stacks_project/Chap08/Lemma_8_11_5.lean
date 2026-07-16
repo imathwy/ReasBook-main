@@ -1,10 +1,10 @@
 import Mathlib
-import StacksProject_2024.Chap04.Definition_4_31_2
-import StacksProject_2024.Internal.Chap08.StackInGroupoidsTwoFibreProductSquare
-import StacksProject_2024.Chap08.Lemma_8_4_6
-import StacksProject_2024.Chap08.Lemma_8_11_2
-import StacksProject_2024.Chap08.Definition_8_11_4
-import StacksProject_2024.Chap08.Lemma_8_11_5.Index
+import stacks_proof.stacks_project.Chap04.Definition_4_31_2
+import stacks_proof.stacks_project.Internal.Chap08.StackInGroupoidsTwoFibreProductSquare
+import stacks_proof.stacks_project.Chap08.Lemma_8_4_6
+import stacks_proof.stacks_project.Chap08.Lemma_8_11_2
+import stacks_proof.stacks_project.Chap08.Definition_8_11_4
+import stacks_proof.stacks_project.Chap08.Lemma_8_11_5.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

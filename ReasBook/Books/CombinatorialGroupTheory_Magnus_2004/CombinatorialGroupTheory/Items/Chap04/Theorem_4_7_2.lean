@@ -1,5 +1,5 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap04.Theorem_4_4_8
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap04.Theorem_4_7_1
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap04.Theorem_4_4_8
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap04.Theorem_4_7_1
 
 universe u
 

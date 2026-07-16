@@ -38,7 +38,7 @@ section
 
 variable {α : Type u}
 
-local instance : DecidableEq α := Classical.decEq α
+local instance proposition_1_2_17_decidableEq_alpha : DecidableEq α := Classical.decEq α
 
 /-- Proposition 1-2-17 on the canonical free-group model: if the reduced word of `w` is
 cyclically reduced, then every power is represented by the concatenation of the expected number of
@@ -63,7 +63,7 @@ namespace FreeGroupBasis
 
 variable {ι : Type v} {F : Type u} [Group F]
 
-local instance : DecidableEq ι := Classical.decEq ι
+local instance proposition_1_2_17_decidableEq_iota : DecidableEq ι := Classical.decEq ι
 
 /-- Proposition 1-2-17: relative to a chosen free basis, powers of an element whose reduced word
 is cyclically reduced have exactly linear reduced-word length growth. -/

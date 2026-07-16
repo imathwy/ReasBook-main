@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap10.Proposition_10_102_9
-import StacksProject_2024.Chap10.Lemma_10_20_1_Nakayama_s_lemma
-import StacksProject_2024.Chap10.Lemma_10_72_5
-import StacksProject_2024.Chap10.Lemma_10_74_1
+import stacks_proof.stacks_project.Chap10.Proposition_10_102_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_20_1_Nakayama_s_lemma
+import stacks_proof.stacks_project.Chap10.Lemma_10_72_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_74_1
 
 -- Theorem-local support for `Remark_10_102_10`.
 

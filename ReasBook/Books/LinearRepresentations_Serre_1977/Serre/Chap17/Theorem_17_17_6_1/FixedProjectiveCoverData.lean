@@ -1,6 +1,6 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_4_6
-import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_5_3
+import LinearRepresentations_Serre_1977.Serre.Chap14.Exercise_14_14_4_6
+import LinearRepresentations_Serre_1977.Serre.Chap15.Exercise_15_15_5_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

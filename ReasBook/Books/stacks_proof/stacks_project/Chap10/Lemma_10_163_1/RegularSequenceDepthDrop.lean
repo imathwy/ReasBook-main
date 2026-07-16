@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_163_1.ClosedFiberDepthZero
+import stacks_proof.stacks_project.Chap10.Lemma_10_163_1.ClosedFiberDepthZero
 
 attribute [local instance] Algebra.TensorProduct.rightAlgebra
 

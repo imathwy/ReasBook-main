@@ -2,7 +2,7 @@ import Mathlib.Algebra.Category.ModuleCat.ProjectiveDimension
 import Mathlib.Order.Disjoint
 import Mathlib.RingTheory.Ideal.Cotangent
 import Mathlib.RingTheory.Regular.RegularSequence
-import StacksProject_2024.Chap10.Definition_10_78_1
+import StacksProject_2024.stacks_project.Chap10.Definition_10_78_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

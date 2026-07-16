@@ -25,8 +25,8 @@ theorem real_exists_complete_ordered_field :
 /-- Any two ordered fields with the least-upper-bound property that contain
 the rationals are isomorphic as ordered fields. -/
 theorem real_unique_complete_ordered_field
-    (R : Type u) [ConditionallyCompleteLinearOrderedField R]
-    (S : Type v) [ConditionallyCompleteLinearOrderedField S] :
+    (R : Type u) [Field R] [ConditionallyCompleteLinearOrder R] [IsStrictOrderedRing R]
+    (S : Type v) [Field S] [ConditionallyCompleteLinearOrder S] [IsStrictOrderedRing S] :
     Nonempty (R ≃+* S) := by
   classical
   refine ⟨(LinearOrderedField.inducedOrderRingIso R S).toRingEquiv⟩

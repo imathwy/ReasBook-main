@@ -1,4 +1,4 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap04.Text_4_2_11
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap04.Text_4_2_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

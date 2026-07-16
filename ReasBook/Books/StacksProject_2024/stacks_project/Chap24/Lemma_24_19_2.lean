@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap24.Lemma_24_10_2
-import StacksProject_2024.Chap24.Lemma_24_17_2
-import StacksProject_2024.Chap24.Lemma_24_17_3
+import StacksProject_2024.stacks_project.Chap24.Lemma_24_10_2
+import StacksProject_2024.stacks_project.Chap24.Lemma_24_17_2
+import StacksProject_2024.stacks_project.Chap24.Lemma_24_17_3
 
 open SheafOfModules.RingedSite
 

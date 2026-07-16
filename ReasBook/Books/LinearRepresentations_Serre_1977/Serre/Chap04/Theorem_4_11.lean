@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap04.Definition_4_10
+import LinearRepresentations_Serre_1977.Serre.Chap04.Definition_4_10
 import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.RepresentationTheory.Subrepresentation
 

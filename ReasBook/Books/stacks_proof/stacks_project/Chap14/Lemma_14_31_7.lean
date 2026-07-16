@@ -1,5 +1,5 @@
 import Mathlib.Algebra.Category.Grp.Zero
-import StacksProject_2024.Chap14.Definition_14_31_1
+import stacks_proof.stacks_project.Chap14.Definition_14_31_1
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

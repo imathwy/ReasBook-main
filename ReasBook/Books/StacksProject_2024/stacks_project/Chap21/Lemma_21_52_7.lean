@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap13.Definition_13_37_1
-import StacksProject_2024.Chap07.Lemma_7_17_7
-import StacksProject_2024.Chap21.Definition_21_47_1
+import StacksProject_2024.stacks_project.Chap13.Definition_13_37_1
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_17_7
+import StacksProject_2024.stacks_project.Chap21.Definition_21_47_1
 import Mathlib.CategoryTheory.Sites.SheafCohomology.Basic
 
 open CategoryTheory

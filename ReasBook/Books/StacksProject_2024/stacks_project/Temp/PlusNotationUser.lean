@@ -1,4 +1,4 @@
-import StacksProject_2024.Temp.PlusNotationOwner
+import StacksProject_2024.stacks_project.Temp.PlusNotationOwner
 open CategoryTheory Opposite
 open scoped CategoryTheory.GrothendieckTopology
 universe v u

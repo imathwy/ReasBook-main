@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap10.Lemma_10_118_7.GoodLocusDensity
-import StacksProject_2024.Chap10.Lemma_10_6_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_118_7.GoodLocusDensity
+import stacks_proof.stacks_project.Chap10.Lemma_10_6_4
 
 universe u v w
 

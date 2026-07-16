@@ -1,7 +1,7 @@
 import Mathlib.Algebra.DirectSum.Module
 import Mathlib.RingTheory.FiniteLength
 import Mathlib.RepresentationTheory.Irreducible
-import LinearRepresentations_Serre_1977.Chap04.Theorem_4_13
+import LinearRepresentations_Serre_1977.Serre.Chap04.Theorem_4_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

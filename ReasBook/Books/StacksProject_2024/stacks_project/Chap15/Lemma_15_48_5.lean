@@ -1,14 +1,14 @@
 import Mathlib
 import Mathlib.RingTheory.LocalRing.ResidueField.Basic
-import StacksProject_2024.Chap10.Definition_10_160_1
-import StacksProject_2024.Chap10.Lemma_10_115_7
-import StacksProject_2024.Chap10.Lemma_10_158_2
-import StacksProject_2024.Chap10.Lemma_10_160_2
-import StacksProject_2024.Chap10.Lemma_10_160_10
-import StacksProject_2024.Chap10.Lemma_10_160_11
-import StacksProject_2024.Chap15.Lemma_15_46_4
-import StacksProject_2024.Chap15.Lemma_15_46_5
-import StacksProject_2024.Chap15.Lemma_15_48_1
+import StacksProject_2024.stacks_project.Chap10.Definition_10_160_1
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_115_7
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_158_2
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_160_2
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_160_10
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_160_11
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_46_4
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_46_5
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_48_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

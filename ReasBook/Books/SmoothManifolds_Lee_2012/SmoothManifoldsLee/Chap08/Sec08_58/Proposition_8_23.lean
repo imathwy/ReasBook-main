@@ -1,9 +1,9 @@
 import Mathlib.Geometry.Manifold.VectorBundle.ContMDiffSection
-import SmoothManifolds_Lee_2012.Chap05.Sec05_32.Definition_5_32_extra_2
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Definition_5_36_extra_1
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Proposition_5_49
-import SmoothManifolds_Lee_2012.Chap08.Sec08_57.Definition_8_57_extra_1
-import SmoothManifolds_Lee_2012.Chap08.Sec08_58.Definition_8_58_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_32.Definition_5_32_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Definition_5_36_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Proposition_5_49
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_57.Definition_8_57_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_58.Definition_8_58_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

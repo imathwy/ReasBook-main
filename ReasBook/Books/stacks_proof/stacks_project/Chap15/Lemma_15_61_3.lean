@@ -4,10 +4,10 @@ import Mathlib.Algebra.Category.ModuleCat.Monoidal.Adjunction
 import Mathlib.CategoryTheory.Monoidal.Tor
 import Mathlib.CategoryTheory.Functor.Derived.PointwiseLeftDerived
 import Mathlib.RingTheory.TensorProduct.Maps
-import StacksProject_2024.Chap10.Lemma_10_76_1
-import StacksProject_2024.Chap15.«15_60_1_1»
-import StacksProject_2024.Chap15.Lemma_15_60_3
-import StacksProject_2024.Chap15.Definition_15_61_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_76_1
+import stacks_proof.stacks_project.Chap15.«15_60_1_1»
+import stacks_proof.stacks_project.Chap15.Lemma_15_60_3
+import stacks_proof.stacks_project.Chap15.Definition_15_61_1
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

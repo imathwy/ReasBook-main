@@ -1,9 +1,9 @@
 import Mathlib.CategoryTheory.Limits.ExactFunctor
 import Mathlib.CategoryTheory.Limits.Shapes.IsTerminal
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap07.Lemma_7_21_7
-import StacksProject_2024.Chap18.Lemma_18_16_6
-import StacksProject_2024.Chap07.Example_7_14_3
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_21_7
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_16_6
+import StacksProject_2024.stacks_project.Chap07.Example_7_14_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap04.Lemma_4_42_6.Pasting2
+import stacks_proof.stacks_project.Chap04.Lemma_4_42_6.Pasting2
 
 universe v u
 

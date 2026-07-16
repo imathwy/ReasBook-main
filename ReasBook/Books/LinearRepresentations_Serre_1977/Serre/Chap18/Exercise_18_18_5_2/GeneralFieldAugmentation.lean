@@ -1,6 +1,6 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap07.Exercise_7_7_2_4
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.SemisimpleSchur
+import LinearRepresentations_Serre_1977.Serre.Chap07.Exercise_7_7_2_4
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.SemisimpleSchur
 
 -- The Fong–Swan import chain (via `Serre.Chap14.Remark_14_14_5_1.SemisimpleSchur` / Chap07) brings
 -- the global instance `Field.henselian` (every field is a Henselian local ring) into scope.  That

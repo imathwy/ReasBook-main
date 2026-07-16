@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap07.GSetForgetfulPoint
-import StacksProject_2024.Chap07.Lemma_7_32_7
-import StacksProject_2024.Chap07.Lemma_7_32_9
-import StacksProject_2024.Chap07.Proposition_7_9_1
+import StacksProject_2024.stacks_project.Chap07.GSetForgetfulPoint
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_32_7
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_32_9
+import StacksProject_2024.stacks_project.Chap07.Proposition_7_9_1
 
 open CategoryTheory Limits Opposite
 open GrothendieckTopology.Point

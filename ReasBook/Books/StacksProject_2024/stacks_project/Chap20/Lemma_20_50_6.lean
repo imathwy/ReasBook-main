@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap15.Lemma_15_58_3
-import StacksProject_2024.Chap20.Definition_20_26_14_Core
-import StacksProject_2024.Chap20.RingedSpaceModuleHasDerivedCategory
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_58_3
+import StacksProject_2024.stacks_project.Chap20.Definition_20_26_14_Core
+import StacksProject_2024.stacks_project.Chap20.RingedSpaceModuleHasDerivedCategory
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

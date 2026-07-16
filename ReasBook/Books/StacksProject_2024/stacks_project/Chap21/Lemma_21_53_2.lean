@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap15.Definition_15_75_1
-import StacksProject_2024.Chap21.Lemma_21_53_Support
+import StacksProject_2024.stacks_project.Chap15.Definition_15_75_1
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_53_Support
 
 open CategoryTheory
 open ComplexShape

@@ -1,8 +1,8 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
-import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
-import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
-import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Serre.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Serre.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Serre.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.RealizableOver
 
 /-!
 # Reduction commutes with base change of the DVR (support for Remark 16-16.3-5)

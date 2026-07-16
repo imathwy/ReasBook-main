@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_1_3
+import LinearRepresentations_Serre_1977.Serre.Chap02.Proposition_2_2_1_3
 
 /- Source/core/bridge triage:
 - `source-facing`: Proposition 4-20 records the symmetric/alternating-square character formulas

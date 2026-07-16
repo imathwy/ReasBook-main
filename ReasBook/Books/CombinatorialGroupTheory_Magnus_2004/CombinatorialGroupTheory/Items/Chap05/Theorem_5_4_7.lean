@@ -1,7 +1,7 @@
 import Mathlib
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_2_2
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_2_3
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap05.Definition_5_4_6
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap05.Definition_5_2_2
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap05.Definition_5_2_3
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap05.Definition_5_4_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -17,7 +17,7 @@ variable {X : Type u}
 
 open FreeGroupBasis GroupPresentation
 
-local instance : DecidableEq X := Classical.decEq X
+local instance theorem_5_4_7_decidableEq : DecidableEq X := Classical.decEq X
 
 private abbrev basis : FreeGroupBasis X (FreeGroup X) := FreeGroupBasis.ofFreeGroup X
 

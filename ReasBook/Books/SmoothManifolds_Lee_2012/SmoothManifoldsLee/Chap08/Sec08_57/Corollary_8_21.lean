@@ -1,6 +1,6 @@
 import Mathlib.Geometry.Manifold.Algebra.SmoothFunctions
-import SmoothManifolds_Lee_2012.Chap08.Sec08_57.Proposition_8_19
-import SmoothManifolds_Lee_2012.Chap08.Sec08_57.Proposition_8_16
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_57.Proposition_8_19
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_57.Proposition_8_16
 
 open scoped ContDiff Manifold
 

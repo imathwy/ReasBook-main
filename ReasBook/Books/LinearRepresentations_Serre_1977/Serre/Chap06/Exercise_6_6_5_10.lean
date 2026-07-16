@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import LinearRepresentations_Serre_1977.Chap08.Exercise_8_8_3_10
+import LinearRepresentations_Serre_1977.Serre.Chap08.Exercise_8_8_3_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,13 +1,13 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_55_6
-import StacksProject_2024.Chap13.Definition_13_37_1
-import StacksProject_2024.Chap13.Remark_13_4_4
-import StacksProject_2024.Chap13.Lemma_13_35_7
-import StacksProject_2024.Chap13.Lemma_13_37_2
-import StacksProject_2024.Chap13.Proposition_13_37_6
-import StacksProject_2024.Chap15.Definition_15_75_1
-import StacksProject_2024.Chap15.Lemma_15_75_4
-import StacksProject_2024.Chap15.RingSingle
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_55_6
+import StacksProject_2024.stacks_project.Chap13.Definition_13_37_1
+import StacksProject_2024.stacks_project.Chap13.Remark_13_4_4
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_35_7
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_37_2
+import StacksProject_2024.stacks_project.Chap13.Proposition_13_37_6
+import StacksProject_2024.stacks_project.Chap15.Definition_15_75_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_75_4
+import StacksProject_2024.stacks_project.Chap15.RingSingle
 
 noncomputable section
 

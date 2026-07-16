@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap14.Infra_14_4_ProjectiveLift.ResidueFieldReductionOwner
+import LinearRepresentations_Serre_1977.Serre.Chap14.Infra_14_4_ProjectiveLift.ResidueFieldReductionOwner
 
 noncomputable section
 

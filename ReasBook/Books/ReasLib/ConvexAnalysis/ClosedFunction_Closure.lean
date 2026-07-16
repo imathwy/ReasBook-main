@@ -415,10 +415,10 @@ for every `x ∈ s` and every `y < f x`,
 there exists an open neighborhood `u` of `x` such that for all `z ∈ u ∩ s`, we have `y < f z`.
 Purpose: give a open set characterization of lower semicontinuity.
 -/
-theorem lowerSemicontinuousOn_iff :
+theorem lowerSemicontinuousOn_iff_open_neighborhood :
     LowerSemicontinuousOn f s ↔
     ∀ x ∈ s, ∀ y, f x ∈ Ioi y → ∃ u, IsOpen u ∧ x ∈ u ∧ u ∩ s ⊆ f ⁻¹' Ioi y := by
-  simp [LowerSemicontinuousOn, LowerSemicontinuousWithinAt]
+  simp [LowerSemicontinuousOn]
   exact forall₃_congr fun a _ c ↦
     imp_congr_right fun _ ↦ ⟨fun hx ↦ mem_nhdsWithin.mp hx,
     fun ⟨u, hu⟩ ↦ eventually_iff_exists_mem.mpr
@@ -663,12 +663,12 @@ Purpose: show that lower semicontinuity is preserved under pointwise equality on
 theorem lowerSemicontinuousOn.congr_mono {α : Type*} {β : Type*} [TopologicalSpace α]
     [TopologicalSpace β] [Preorder β] {f g : α → β} {s s₁ : Set α} (h : LowerSemicontinuousOn f s)
     (h' : EqOn g f s₁) (h₁ : s₁ ⊆ s) :
-    LowerSemicontinuousOn g s₁ := by
+  LowerSemicontinuousOn g s₁ := by
   intro x hx
-  unfold LowerSemicontinuousWithinAt
+  change ∀ y, y < g x → ∀ᶠ z in 𝓝[s₁] x, y < g z
   -- A : LowerSemicontinuousWithinAt f s₁ x
   have A := (h x (h₁ hx)).mono h₁
-  unfold LowerSemicontinuousWithinAt at A
+  change ∀ y, y < f x → ∀ᶠ z in 𝓝[s₁] x, y < f z at A
   rw [← h' hx] at A
   intro y hy
   apply Filter.Eventually.congr (A y hy)
@@ -708,7 +708,7 @@ theorem lowerSemicontinuousOn_tfae :
     ∀ y, ∃ u, IsClosed u ∧ f ⁻¹' Iic y ∩ s = u ∩ s,
     ∀ x ∈ s, (f.LowerSemicontinuousHull s) x = f x].TFAE := by
   tfae_have 1 ↔ 2 := lowerSemicontinuousOn_iff_le_liminf
-  tfae_have 1 ↔ 3 := lowerSemicontinuousOn_iff
+  tfae_have 1 ↔ 3 := lowerSemicontinuousOn_iff_open_neighborhood
   tfae_have 1 ↔ 4 := lowerSemicontinuousOn_iff_isOpen_preimage
   tfae_have 1 ↔ 5 := lowerSemicontinuousOn_iff_isClosed_preimage
   tfae_have 1 ↔ 6 := ⟨fun a x a_1 ↦ lowersemicontinuoushull_eq_self_of_proper a x a_1,
@@ -1276,4 +1276,3 @@ theorem f_mono_closure_mono_univ {f₁ f₂ : E → EReal}
   intro x; apply f_mono_closure_mono (by simpa using mono) (by simp); simp
 
 end cl_mono
-

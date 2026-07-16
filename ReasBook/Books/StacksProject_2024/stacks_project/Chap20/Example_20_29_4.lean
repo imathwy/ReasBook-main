@@ -1,8 +1,8 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap12.Lemma_12_25_3
-import StacksProject_2024.Chap13.CochainComplexStupidFiltration
-import StacksProject_2024.Chap13.Definition_13_21_1
-import StacksProject_2024.Chap20.Remark_20_29_2
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_25_3
+import StacksProject_2024.stacks_project.Chap13.CochainComplexStupidFiltration
+import StacksProject_2024.stacks_project.Chap13.Definition_13_21_1
+import StacksProject_2024.stacks_project.Chap20.Remark_20_29_2
 
 open CategoryTheory
 open CategoryTheory.Limits

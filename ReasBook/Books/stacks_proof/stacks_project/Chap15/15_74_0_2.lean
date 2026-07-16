@@ -3,9 +3,9 @@ import Mathlib.Algebra.Homology.DerivedCategory.HomologySequence
 import Mathlib.Algebra.Homology.DerivedCategory.Ext.EnoughProjectives
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
 import Mathlib.CategoryTheory.Triangulated.TStructure.TruncLEGT
-import StacksProject_2024.Chap13.Lemma_13_35_7
-import StacksProject_2024.Chap15.Lemma_15_59_14
-import StacksProject_2024.Chap15.RingSingle
+import stacks_proof.stacks_project.Chap13.Lemma_13_35_7
+import stacks_proof.stacks_project.Chap15.Lemma_15_59_14
+import stacks_proof.stacks_project.Chap15.RingSingle
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

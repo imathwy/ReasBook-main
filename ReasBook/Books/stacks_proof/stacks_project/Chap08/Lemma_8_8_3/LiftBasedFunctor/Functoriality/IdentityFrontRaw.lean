@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.Functoriality.IdentityOverlap
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.Functoriality.IdentityOverlap
 
 universe u v uS vS
 

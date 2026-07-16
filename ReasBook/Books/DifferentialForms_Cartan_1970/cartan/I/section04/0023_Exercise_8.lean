@@ -4,8 +4,8 @@ import Mathlib.Analysis.Analytic.OfScalars
 import Mathlib.Analysis.Normed.Module.Completion
 import Mathlib.RingTheory.Polynomial.SmallDegreeVieta
 import Mathlib.Topology.Algebra.InfiniteSum.GroupCompletion
-import DifferentialForms_Cartan_1970.I.section02.«0004_Definition_I_2_extra_3»
-import DifferentialForms_Cartan_1970.I.section02.«0008_Proposition_4_1»
+import DifferentialForms_Cartan_1970.cartan.I.section02.«0004_Definition_I_2_extra_3»
+import DifferentialForms_Cartan_1970.cartan.I.section02.«0008_Proposition_4_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

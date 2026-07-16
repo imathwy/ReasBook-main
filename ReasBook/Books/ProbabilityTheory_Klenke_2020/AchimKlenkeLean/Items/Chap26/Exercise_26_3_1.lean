@@ -1,5 +1,5 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap21.Lemma_21_44
-import ProbabilityTheory_Klenke_2020.Items.Chap26.Example_26_11
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap21.Lemma_21_44
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap26.Example_26_11
 import Mathlib
 
 -- Declarations for this item will be appended below by the statement pipeline.

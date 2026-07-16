@@ -1,12 +1,12 @@
 import Mathlib
 import Mathlib.CategoryTheory.Limits.ExactFunctor
-import StacksProject_2024.Chap10.Lemma_10_107_14
-import StacksProject_2024.Chap07.Definition_7_43_7
-import StacksProject_2024.Chap07.Lemma_7_43_8
-import StacksProject_2024.Chap15.Lemma_15_67_20
-import StacksProject_2024.Chap18.Definition_18_7_1
-import StacksProject_2024.Chap18.Definition_18_13_1
-import StacksProject_2024.Chap18.Lemma_18_14_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_107_14
+import stacks_proof.stacks_project.Chap07.Definition_7_43_7
+import stacks_proof.stacks_project.Chap07.Lemma_7_43_8
+import stacks_proof.stacks_project.Chap15.Lemma_15_67_20
+import stacks_proof.stacks_project.Chap18.Definition_18_7_1
+import stacks_proof.stacks_project.Chap18.Definition_18_13_1
+import stacks_proof.stacks_project.Chap18.Lemma_18_14_1
 
 open CategoryTheory
 open CategoryTheory.Limits

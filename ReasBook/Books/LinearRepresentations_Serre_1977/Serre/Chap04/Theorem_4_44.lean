@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap04.Definition_4_43
+import LinearRepresentations_Serre_1977.Serre.Chap04.Definition_4_43
 
 -- Theorem 4-44 keeps the textbook coinduced function model as its source-facing predicate,
 -- and adds the finite-index bridge to the canonical owner `Representation.ind H.subtype θ`.

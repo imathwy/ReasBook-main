@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap20.«20_9_0_1»
-import StacksProject_2024.Chap20.«20_9_0_2»
-import StacksProject_2024.Chap20.«20_25_3_2»
-import StacksProject_2024.Chap20.OpensInstances
+import StacksProject_2024.stacks_project.Chap20.«20_9_0_1»
+import StacksProject_2024.stacks_project.Chap20.«20_9_0_2»
+import StacksProject_2024.stacks_project.Chap20.«20_25_3_2»
+import StacksProject_2024.stacks_project.Chap20.OpensInstances
 
 open CategoryTheory Opposite TopologicalSpace ComplexShape HomologicalComplex₂
 open CategoryTheory.Limits

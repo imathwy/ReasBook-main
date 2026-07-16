@@ -1,4 +1,4 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap01.Theorem_1_23
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap01.Theorem_1_23
 
 open MeasureTheory MeasurableSpace Set
 

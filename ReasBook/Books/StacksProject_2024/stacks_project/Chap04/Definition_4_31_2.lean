@@ -3,7 +3,7 @@ import Mathlib.CategoryTheory.Bicategory.Extension
 import Mathlib.CategoryTheory.Bicategory.Strict.Basic
 import Mathlib.CategoryTheory.CatCommSq
 import Mathlib.CategoryTheory.Limits.Shapes.Pullback.Categorical.Basic
-import StacksProject_2024.Chap04.Definition_4_31_1
+import StacksProject_2024.stacks_project.Chap04.Definition_4_31_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

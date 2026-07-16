@@ -1,1 +1,1 @@
-import StacksProject_2024.Chap18.Definition_18_32_1.UnitIsoTensorUnit
+import stacks_proof.stacks_project.Chap18.Definition_18_32_1.UnitIsoTensorUnit

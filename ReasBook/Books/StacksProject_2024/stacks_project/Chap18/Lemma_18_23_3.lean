@@ -1,8 +1,8 @@
-import StacksProject_2024.Chap17.Definition_17_9_1
-import StacksProject_2024.Chap17.Definition_17_10_1
-import StacksProject_2024.Chap17.Definition_17_11_1
-import StacksProject_2024.Chap18.Definition_18_17_1
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
+import StacksProject_2024.stacks_project.Chap17.Definition_17_9_1
+import StacksProject_2024.stacks_project.Chap17.Definition_17_10_1
+import StacksProject_2024.stacks_project.Chap17.Definition_17_11_1
+import StacksProject_2024.stacks_project.Chap18.Definition_18_17_1
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategoryBasic
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

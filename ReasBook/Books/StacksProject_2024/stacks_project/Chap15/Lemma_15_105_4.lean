@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap15.Definition_15_105_1
-import StacksProject_2024.Chap15.Definition_15_105_3
+import StacksProject_2024.stacks_project.Chap15.Definition_15_105_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_105_3
 
 open CategoryTheory
 open scoped TensorProduct

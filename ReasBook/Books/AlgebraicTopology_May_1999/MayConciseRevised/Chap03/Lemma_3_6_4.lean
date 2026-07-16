@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.CategoryTheory.Groupoid.VertexGroup
-import AlgebraicTopology_May_1999.Chap03.Construction_3_6_3
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Construction_3_6_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -23,8 +23,7 @@ recall orbitCategoryAssociatedAction_elements_isCovering
 of the vertex group under the covering projection exactly when it lies in `H`. -/
 theorem orbitCategoryAssociatedAction_basepoint_mem_mapVertexGroup_range_iff_mem (b : B)
     (H : O(End b)) (γ : End b) :
-    γ ∈ (Functor.mapVertexGroup
-      (CategoryOfElements.π (associatedAction b (End b ⧸ H)))
+    γ ∈ ((CategoryOfElements.π (associatedAction b (End b ⧸ H))).mapVertexGroup
       (orbitSubgroupCoveringObjOfHom b (H : Subgroup (End b)) (𝟙 b))).range ↔ γ ∈ H := by
   simpa [MonoidHom.mem_range] using
     (exists_orbitSubgroupCoveringHom_iff b (H : Subgroup (End b)) (𝟙 b) (𝟙 b) γ)

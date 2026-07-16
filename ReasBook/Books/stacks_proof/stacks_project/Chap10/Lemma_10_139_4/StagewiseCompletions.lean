@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_139_4.TruncationKernels
+import stacks_proof.stacks_project.Chap10.Lemma_10_139_4.TruncationKernels
 
 open Algebra
 open scoped TensorProduct

@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap07.Definition_7_15_1_Topoi
-import StacksProject_2024.Chap18.Definition_18_8_1
-import StacksProject_2024.Chap21.Situation_21_38_1
+import StacksProject_2024.stacks_project.Chap07.Definition_7_15_1_Topoi
+import StacksProject_2024.stacks_project.Chap18.Definition_18_8_1
+import StacksProject_2024.stacks_project.Chap21.Situation_21_38_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

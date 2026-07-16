@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Category.ModuleCat.Presheaf
 import Mathlib.Algebra.Homology.ShortComplex.HomologicalComplex
 import Mathlib.CategoryTheory.Sites.SheafCohomology.Cech
-import StacksProject_2024.Chap06.Definition_6_26_1
+import StacksProject_2024.stacks_project.Chap06.Definition_6_26_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

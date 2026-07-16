@@ -1,8 +1,8 @@
 import Mathlib
-import Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap02.section03
-import Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap03.section03
-import Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05.section01
-import Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05.section02_part3
+import IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap02.section03
+import IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap03.section03
+import IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05.section01
+import IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05.section02_part3
 
 open Filter Topology
 open scoped Matrix
@@ -791,13 +791,16 @@ theorem riemannIntegrableOn_of_finite_discontinuities {a b : ℝ} {f : ℝ → �
           intro x hx
           by_contra hnot
           have hx' : x ∈ hfinite.toFinset := (hfinite.mem_toFinset).2 ⟨hx, hnot⟩
-          simp [hempty] at hx'
+          rw [hempty] at hx'
+          simpa using hx'
         exact riemannIntegrableOn_of_continuousAt_Ioo hbound hcont
     | succ n =>
         let D : Finset ℝ := hfinite.toFinset
+        have hDcard : D.card = n + 1 := by
+          simpa [D] using hcard
         have hD_nonempty : D.Nonempty := by
           apply Finset.card_pos.mp
-          simp [D, hcard]
+          omega
         set c : ℝ := D.min' hD_nonempty with hc_def
         have hc_mem : c ∈ D := by
           simpa [c] using (Finset.min'_mem D hD_nonempty)
@@ -861,13 +864,17 @@ theorem riemannIntegrableOn_of_finite_discontinuities {a b : ℝ} {f : ℝ → �
           refine ⟨hsubset, ?_⟩
           intro hEq
           have : c ∈ hfinite_right.toFinset := by
-            simpa [hEq, D] using hc_mem
+            rw [hEq]
+            exact hc_mem
           exact hc_not_right this
         have hcard_lt : hfinite_right.toFinset.card < D.card :=
           Finset.card_lt_card hsubset'
         have hf_cb : RiemannIntegrableOn f c b :=
           ih (m := hfinite_right.toFinset.card)
-            (by simpa [D, hcard] using hcard_lt)
+            (by
+              calc
+                hfinite_right.toFinset.card < D.card := hcard_lt
+                _ = n + 1 := hDcard)
             (a := c) (b := b) (f := f) hbound_right hfinite_right rfl
         exact (riemannIntegrableOn_interval_split hac hcb).2 ⟨hf_ac, hf_cb⟩
   exact aux (hfinite_int.toFinset.card) (a := a) (b := b) (f := f) hbound hfinite_int rfl

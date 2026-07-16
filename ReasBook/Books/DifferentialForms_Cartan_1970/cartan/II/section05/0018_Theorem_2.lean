@@ -1,7 +1,7 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section05.«0009_Definition_II_1_extra_6»
-import DifferentialForms_Cartan_1970.II.section05.«0014_Remark_II_1_extra_8»
-import DifferentialForms_Cartan_1970.II.section05.«0021_Lemma_II_1_extra_12»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0009_Definition_II_1_extra_6»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0014_Remark_II_1_extra_8»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0021_Lemma_II_1_extra_12»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

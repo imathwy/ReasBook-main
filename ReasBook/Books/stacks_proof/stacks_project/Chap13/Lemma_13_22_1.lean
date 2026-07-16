@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap13.Definition_13_15_3
-import StacksProject_2024.Chap13.Lemma_13_14_16
-import StacksProject_2024.Chap13.Lemma_13_16_7_Leray_s_acyclicity_lemma
-import StacksProject_2024.Chap13.Lemma_13_20_1
+import stacks_proof.stacks_project.Chap13.Definition_13_15_3
+import stacks_proof.stacks_project.Chap13.Lemma_13_14_16
+import stacks_proof.stacks_project.Chap13.Lemma_13_16_7_Leray_s_acyclicity_lemma
+import stacks_proof.stacks_project.Chap13.Lemma_13_20_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap26.Example_26_14_3_Affine_space_with_zero_doubled
+import StacksProject_2024.stacks_project.Chap26.Example_26_14_3_Affine_space_with_zero_doubled
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

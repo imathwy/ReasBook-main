@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap19.Lemma_19_13_6
-import StacksProject_2024.Chap20.Global_sections_module_owners_core
-import StacksProject_2024.Chap20.Sections_on_open
-import StacksProject_2024.Chap20.«20_11_0_1»
+import StacksProject_2024.stacks_project.Chap19.Lemma_19_13_6
+import StacksProject_2024.stacks_project.Chap20.Global_sections_module_owners_core
+import StacksProject_2024.stacks_project.Chap20.Sections_on_open
+import StacksProject_2024.stacks_project.Chap20.«20_11_0_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap20.Lemma_20_11_2
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_11_2
 
 open CategoryTheory
 open CategoryTheory.Limits

@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.CanonicalDVRBrauerBasisPointwiseSourceCompletionWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.CanonicalDVRBrauerBasisPointwiseSourceCompletionWorker
 
 /-!
 Source-level case split for the final visible point-mass row congruence.

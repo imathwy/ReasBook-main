@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.SourceComparisonNaturality
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.SourceComparisonHomLift
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.SourceComparisonNaturality
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.SourceComparisonHomLift
 
 universe u v uS vS w wD vD
 

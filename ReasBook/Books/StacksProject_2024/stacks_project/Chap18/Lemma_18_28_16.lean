@@ -1,9 +1,9 @@
 import Mathlib
-import StacksProject_2024.Chap15.Lemma_15_90_1
-import StacksProject_2024.Chap18.IdealQuotientSheaf
-import StacksProject_2024.Chap18.Lemma_18_25_1
-import StacksProject_2024.Chap18.Lemma_18_28_6
-import StacksProject_2024.Chap18.RingedSiteModuleCategory
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_90_1
+import StacksProject_2024.stacks_project.Chap18.IdealQuotientSheaf
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_25_1
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_28_6
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategory
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

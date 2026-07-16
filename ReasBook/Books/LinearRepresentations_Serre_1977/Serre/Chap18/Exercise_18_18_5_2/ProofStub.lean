@@ -1,12 +1,12 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_2.Index
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_2.SemisimpleAssembly
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_2.ModularDescent
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_2.CharTwoBaseChange
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_2.CharTwoS3
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_2.CharThreeCompleteness
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_2.CharThreeBaseChange
-import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_5_2.Index
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_5_2.SemisimpleAssembly
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_5_2.ModularDescent
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_5_2.CharTwoBaseChange
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_5_2.CharTwoS3
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_5_2.CharThreeCompleteness
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_5_2.CharThreeBaseChange
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.RealizableOver
 
 -- The support chain (via Fong–Swan, `Serre.Chap18.Exercise_18_18_5_1`) re-introduces the global
 -- `Field.henselian` instance, which makes typeclass search diverge on trivial `Module …` goals.

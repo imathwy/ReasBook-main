@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap20.Definition_20_47_1_Core
-import StacksProject_2024.Chap20.Definition_20_48_1_Core
-import StacksProject_2024.Chap20.Definition_20_49_1
+import StacksProject_2024.stacks_project.Chap20.Definition_20_47_1_Core
+import StacksProject_2024.stacks_project.Chap20.Definition_20_48_1_Core
+import StacksProject_2024.stacks_project.Chap20.Definition_20_49_1
 
 open AlgebraicGeometry
 open CategoryTheory

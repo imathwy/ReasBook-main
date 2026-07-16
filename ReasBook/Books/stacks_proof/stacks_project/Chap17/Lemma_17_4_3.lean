@@ -1,11 +1,11 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Presheaf.Monoidal
 import Mathlib.CategoryTheory.Sites.Monoidal
-import StacksProject_2024.Chap06.Lemma_6_16_1
-import StacksProject_2024.Chap17.Definition_17_23_1
-import StacksProject_2024.Chap17.Lemma_17_4_2
-import StacksProject_2024.Chap17.Lemma_17_3_1
-import StacksProject_2024.Chap17.ModuleRestrictionAndStalks
+import stacks_proof.stacks_project.Chap06.Lemma_6_16_1
+import stacks_proof.stacks_project.Chap17.Definition_17_23_1
+import stacks_proof.stacks_project.Chap17.Lemma_17_4_2
+import stacks_proof.stacks_project.Chap17.Lemma_17_3_1
+import stacks_proof.stacks_project.Chap17.ModuleRestrictionAndStalks
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

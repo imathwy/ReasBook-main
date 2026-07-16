@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Algebra.Homology.HomotopyCategory.Triangulated
-import StacksProject_2024.Chap13.Definition_13_6_7
-import StacksProject_2024.Chap13.Lemma_13_13_4
+import stacks_proof.stacks_project.Chap13.Definition_13_6_7
+import stacks_proof.stacks_project.Chap13.Lemma_13_13_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

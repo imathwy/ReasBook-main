@@ -1,9 +1,9 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.GenericCharacterDescent
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.AbsoluteSimplicity
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.QuasisplitAbsoluteSimplicity
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.FieldIndependence.Endgame
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.CharPPerfect
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.GenericCharacterDescent
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.AbsoluteSimplicity
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.QuasisplitAbsoluteSimplicity
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.FieldIndependence.Endgame
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.CharPPerfect
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

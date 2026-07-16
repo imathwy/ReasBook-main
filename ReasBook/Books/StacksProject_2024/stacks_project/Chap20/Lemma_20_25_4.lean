@@ -4,7 +4,7 @@ import Mathlib.Algebra.Homology.ShortComplex.HomologicalComplex
 import Mathlib.Algebra.Homology.ShortComplex.ShortExact
 import Mathlib.CategoryTheory.Abelian.Basic
 import Mathlib.CategoryTheory.Monoidal.Preadditive
-import StacksProject_2024.Chap20.«20_25_3_1»
+import StacksProject_2024.stacks_project.Chap20.«20_25_3_1»
 
 noncomputable section
 

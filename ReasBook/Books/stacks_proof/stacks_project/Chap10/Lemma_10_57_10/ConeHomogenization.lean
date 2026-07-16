@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_57_10.ModelPresentation
+import stacks_proof.stacks_project.Chap10.Lemma_10_57_10.ModelPresentation
 
 open scoped BigOperators DirectSum
 open HomogeneousLocalization

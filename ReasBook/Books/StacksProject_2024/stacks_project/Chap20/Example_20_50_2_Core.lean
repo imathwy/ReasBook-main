@@ -1,9 +1,9 @@
-import StacksProject_2024.Chap20.«20_9_0_1»
-import StacksProject_2024.Chap06.Definition_6_26_1
-import StacksProject_2024.Chap06.Restriction_and_extension_by_zero_for_module_valued_sheaves
-import StacksProject_2024.Chap20.Definition_20_46_1
-import StacksProject_2024.Chap21.Example_21_48_2_Core
-import StacksProject_2024.Chap20.OpensInstances
+import StacksProject_2024.stacks_project.Chap20.«20_9_0_1»
+import StacksProject_2024.stacks_project.Chap06.Definition_6_26_1
+import StacksProject_2024.stacks_project.Chap06.Restriction_and_extension_by_zero_for_module_valued_sheaves
+import StacksProject_2024.stacks_project.Chap20.Definition_20_46_1
+import StacksProject_2024.stacks_project.Chap21.Example_21_48_2_Core
+import StacksProject_2024.stacks_project.Chap20.OpensInstances
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

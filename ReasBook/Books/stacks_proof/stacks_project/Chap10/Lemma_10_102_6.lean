@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap10.Situation_10_102_1
-import StacksProject_2024.Chap10.Lemma_10_102_2.BiproductBlock
-import StacksProject_2024.Chap10.Definition_10_102_5
-import StacksProject_2024.Chap10.IsDirectSumOfTrivialComplexes
+import stacks_proof.stacks_project.Chap10.Situation_10_102_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_102_2.BiproductBlock
+import stacks_proof.stacks_project.Chap10.Definition_10_102_5
+import stacks_proof.stacks_project.Chap10.IsDirectSumOfTrivialComplexes
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

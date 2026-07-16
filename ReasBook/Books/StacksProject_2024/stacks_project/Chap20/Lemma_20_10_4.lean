@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap20.Lemma_20_10_3
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_10_3
 
 open CategoryTheory Opposite TopologicalSpace PresheafOfModules
 open CategoryTheory.Limits

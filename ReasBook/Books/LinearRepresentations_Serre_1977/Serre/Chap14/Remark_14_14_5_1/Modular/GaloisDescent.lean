@@ -1,9 +1,9 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
-import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1
-import LinearRepresentations_Serre_1977.Chap18.Corollary_18_18_2_5
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.FieldIndependence
-import LinearRepresentations_Serre_1977.Chap16.Remark_16_16_3_5.SimpleClassBridge
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Serre.Chap18.Theorem_18_18_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap18.Corollary_18_18_2_5
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.FieldIndependence
+import LinearRepresentations_Serre_1977.Serre.Chap16.Remark_16_16_3_5.SimpleClassBridge
 
 /-!
 # Galois module descent for modular Brauer characters (Brick 2, the summit)

@@ -1,7 +1,7 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.FiniteToFintype
-import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_2_1
-import LinearRepresentations_Serre_1977.Chap09.Corollary_9_9_2_2
+import LinearRepresentations_Serre_1977.Serre.FiniteToFintype
+import LinearRepresentations_Serre_1977.Serre.Chap07.Proposition_7_7_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap09.Corollary_9_9_2_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

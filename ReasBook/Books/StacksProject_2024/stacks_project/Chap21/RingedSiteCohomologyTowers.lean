@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap12.Definition_12_31_2
-import StacksProject_2024.Chap21.Lemma_21_20_7_core
+import StacksProject_2024.stacks_project.Chap12.Definition_12_31_2
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_20_7_core
 
 open CategoryTheory
 

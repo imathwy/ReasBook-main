@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_8_1.CartesianComposition
-import StacksProject_2024.Chap08.Lemma_8_8_1.PlusConstruction.Stage3LocalModelInverse
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.CartesianComposition
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.PlusConstruction.Stage3LocalModelInverse
 
 universe u v uX vX uY vY
 

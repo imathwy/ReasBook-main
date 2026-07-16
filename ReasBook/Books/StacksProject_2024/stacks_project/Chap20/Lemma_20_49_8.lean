@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap20.Definition_20_26_14_Core
-import StacksProject_2024.Chap20.Perfect_on_opens_ringed_site
-import StacksProject_2024.Chap21.Lemma_21_47_7
+import StacksProject_2024.stacks_project.Chap20.Definition_20_26_14_Core
+import StacksProject_2024.stacks_project.Chap20.Perfect_on_opens_ringed_site
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_47_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.CategoryTheory.Sites.Over
-import StacksProject_2024.Chap08.Lemma_8_8_1.PlusConstruction.LocallyDefinedHomIdentityCoherence
-import StacksProject_2024.Chap08.Lemma_8_11_8.Part07
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.PlusConstruction.LocallyDefinedHomIdentityCoherence
+import stacks_proof.stacks_project.Chap08.Lemma_8_11_8.Part07
 
 universe u v w
 

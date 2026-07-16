@@ -1,11 +1,11 @@
 import Mathlib
-import SmoothManifolds_Lee_2012.Chap04.Sec04_22.Theorem_4_5
-import SmoothManifolds_Lee_2012.Chap04.Sec04_24.Exercise_4_16
-import SmoothManifolds_Lee_2012.Chap04.Sec04_25.Proposition_4_28
-import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Definition_5_28_extra_1
-import SmoothManifolds_Lee_2012.Chap05.Sec05_30.Corollary_5_13
-import SmoothManifolds_Lee_2012.Chap05.Sec05_35.Definition_5_35_extra_4
-import SmoothManifolds_Lee_2012.Chap05.Sec05_37.Problem_5_4
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_22.Theorem_4_5
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_24.Exercise_4_16
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_25.Proposition_4_28
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_28.Definition_5_28_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_30.Corollary_5_13
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_35.Definition_5_35_extra_4
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_37.Problem_5_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

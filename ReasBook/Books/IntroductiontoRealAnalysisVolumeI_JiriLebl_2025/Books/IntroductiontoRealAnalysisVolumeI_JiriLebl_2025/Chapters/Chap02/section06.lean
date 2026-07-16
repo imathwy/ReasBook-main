@@ -480,10 +480,10 @@ lemma exp_series_abs_convergent (x : ℝ) :
   have htsum : tsum (fun n : ℕ => x ^ n / (Nat.factorial n : ℝ)) = Real.exp x := by
     have h_exp := congrArg (fun f => f x) (Real.exp_eq_exp_ℝ)
     have h_series :=
-        congrArg (fun f => f x) (NormedSpace.exp_eq_tsum_div (𝕂 := ℝ) (𝔸 := ℝ))
+        congrArg (fun f => f x) (NormedSpace.exp_eq_tsum_div (𝔸 := ℝ))
     calc
       tsum (fun n : ℕ => x ^ n / (Nat.factorial n : ℝ)) =
-          (NormedSpace.exp ℝ) x := by
+          NormedSpace.exp x := by
             simpa using h_series.symm
       _ = Real.exp x := by
             simpa using h_exp.symm

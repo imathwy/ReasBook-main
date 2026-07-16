@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap04.Definition_4_33_9
-import StacksProject_2024.Chap04.Definition_4_32_1
-import StacksProject_2024.Chap04.CanonicalFiberPseudofunctor
-import StacksProject_2024.Chap08.Lemma_8_2_3.PullbackComparisonNaturality
+import stacks_proof.stacks_project.Chap04.Definition_4_33_9
+import stacks_proof.stacks_project.Chap04.Definition_4_32_1
+import stacks_proof.stacks_project.Chap04.CanonicalFiberPseudofunctor
+import stacks_proof.stacks_project.Chap08.Lemma_8_2_3.PullbackComparisonNaturality
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap20.«20_14_1_1»
-import StacksProject_2024.Chap20.Lemma_20_36_1
-import StacksProject_2024.Chap20.Lemma_20_39_2
+import StacksProject_2024.stacks_project.Chap20.«20_14_1_1»
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_36_1
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_39_2
 
 open CategoryTheory
 open CategoryTheory.SequentialInverseSystem

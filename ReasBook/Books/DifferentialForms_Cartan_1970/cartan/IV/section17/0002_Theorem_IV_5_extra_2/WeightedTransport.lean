@@ -1,4 +1,4 @@
-import DifferentialForms_Cartan_1970.IV.section17.«0002_Theorem_IV_5_extra_2».TransportedSlices
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0002_Theorem_IV_5_extra_2».TransportedSlices
 
 /-- Helper for Theorem IV.5-extra-2: fixing the transported last coordinate and staying away from
 the Cauchy pole keeps the weighted block slice analytic in the chosen block coordinate. -/

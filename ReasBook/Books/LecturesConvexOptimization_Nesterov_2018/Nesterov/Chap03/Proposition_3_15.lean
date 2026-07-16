@@ -1,5 +1,5 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Lemma_3_13
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Lemma_3_1_7
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Lemma_3_13
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Lemma_3_1_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib.MeasureTheory.Function.ContinuousMapDense
 import Mathlib.MeasureTheory.Function.LpSpace.ContinuousFunctions
-import LinearRepresentations_Serre_1977.Chap04.Theorem_4_5
+import LinearRepresentations_Serre_1977.Serre.Chap04.Theorem_4_5
 
 open MeasureTheory
 open scoped ENNReal

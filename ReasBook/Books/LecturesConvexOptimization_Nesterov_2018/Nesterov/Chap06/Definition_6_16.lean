@@ -1,5 +1,5 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap06.Definition_6_30
-import LecturesConvexOptimization_Nesterov_2018.Chap06.Text_6_1_4_2_Population_Interpretation
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap06.Definition_6_30
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap06.Text_6_1_4_2_Population_Interpretation
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap20.Open_cover_module_cech_core
+import StacksProject_2024.stacks_project.Chap20.Open_cover_module_cech_core
 
 open AlgebraicGeometry
 open CategoryTheory

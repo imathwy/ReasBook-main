@@ -1,5 +1,5 @@
 import Mathlib
-import ProbabilityTheory_Klenke_2020.Items.Chap05.Theorem_5_27
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap05.Theorem_5_27
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.Functoriality.IdentityCommon
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.Functoriality.IdentityPullback
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.Functoriality.IdentityCommon
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.Functoriality.IdentityPullback
 
 universe u v uS vS
 

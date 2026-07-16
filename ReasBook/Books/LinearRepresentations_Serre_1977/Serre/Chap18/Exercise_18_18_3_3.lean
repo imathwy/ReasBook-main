@@ -1,11 +1,11 @@
 import Mathlib
 import LinearRepresentations_Serre_1977.GroupTheory.PSolvable
-import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_2
-import LinearRepresentations_Serre_1977.Chap18.Proposition_18_18_1_2
-import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_2_1
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_6_1
-import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_5_3.ResidueFieldLiftDecomposition
-import LinearRepresentations_Serre_1977.Chap15.Exercise_15_15_2_5
+import LinearRepresentations_Serre_1977.Serre.Chap16.Theorem_16_16_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap18.Proposition_18_18_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap18.Theorem_18_18_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_6_1
+import LinearRepresentations_Serre_1977.Serre.Chap15.Exercise_15_15_5_3.ResidueFieldLiftDecomposition
+import LinearRepresentations_Serre_1977.Serre.Chap15.Exercise_15_15_2_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

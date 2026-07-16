@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap13.Lemma_13_33_4.SubsequenceCoproductData
+import stacks_proof.stacks_project.Chap13.Lemma_13_33_4.SubsequenceCoproductData
 
 noncomputable section
 

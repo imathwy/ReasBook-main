@@ -1,9 +1,9 @@
 import Mathlib
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Algorithm_2_2
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Algorithm_2_4
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_17
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Lemma_2_10
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_20
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Algorithm_2_2
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Algorithm_2_4
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Definition_2_17
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Lemma_2_10
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Theorem_2_20
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

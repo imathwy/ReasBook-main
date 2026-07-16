@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap15.Lemma_15_72_6
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_72_6
 
 open CategoryTheory
 open MonoidalCategory

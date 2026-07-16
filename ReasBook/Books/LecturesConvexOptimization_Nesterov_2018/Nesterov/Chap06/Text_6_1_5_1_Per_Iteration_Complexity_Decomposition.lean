@@ -1,6 +1,6 @@
 import Mathlib.Tactic.Recall
-import LecturesConvexOptimization_Nesterov_2018.Chap06.Definition_6_26
-import LecturesConvexOptimization_Nesterov_2018.Chap06.Definition_6_30
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap06.Definition_6_26
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap06.Definition_6_30
 
 open scoped ConstrainedArgmin
 

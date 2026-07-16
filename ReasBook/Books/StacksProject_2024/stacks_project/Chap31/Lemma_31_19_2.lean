@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.«10_69_0_1_Core»
+import StacksProject_2024.stacks_project.Chap10.«10_69_0_1_Core»
 
 open AlgebraicGeometry
 

@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.FinalSourceBlockerEquivalenceWorker
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.Serre18_5ASupportValueCriterionWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.FinalSourceBlockerEquivalenceWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.Serre18_5ASupportValueCriterionWorker
 
 /-!
 Source-text route for Serre Exercise `18.5(a)`.

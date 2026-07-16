@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap07.Lemma_7_13_5
-import StacksProject_2024.Chap07.Lemma_7_25_2
-import StacksProject_2024.Chap07.SheafSectionFiber
-import StacksProject_2024.Chap07.Lemma_7_28_1.RepresentableLocalizationRawFiber
+import stacks_proof.stacks_project.Chap07.Lemma_7_13_5
+import stacks_proof.stacks_project.Chap07.Lemma_7_25_2
+import stacks_proof.stacks_project.Chap07.SheafSectionFiber
+import stacks_proof.stacks_project.Chap07.Lemma_7_28_1.RepresentableLocalizationRawFiber
 
 open CategoryTheory
 open CategoryTheory.Limits

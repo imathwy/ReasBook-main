@@ -1,8 +1,8 @@
 import Mathlib.CategoryTheory.Functor.Derived.Adjunction
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
-import StacksProject_2024.Chap13.Lemma_13_30_1
-import StacksProject_2024.Chap21.Lemma_21_19_1_core
-import StacksProject_2024.Chap21.RingedSiteFlatPullbackExact
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_30_1
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_19_1_core
+import StacksProject_2024.stacks_project.Chap21.RingedSiteFlatPullbackExact
 
 open CategoryTheory
 open CategoryTheory.Limits

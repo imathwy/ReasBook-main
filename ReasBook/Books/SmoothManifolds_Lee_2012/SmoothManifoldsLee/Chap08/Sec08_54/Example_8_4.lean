@@ -1,6 +1,6 @@
 import Mathlib.Geometry.Manifold.VectorBundle.ContMDiffSection
-import SmoothManifolds_Lee_2012.Chap01.Sec01_07.Problem_1_8
-import SmoothManifolds_Lee_2012.Chap03.Sec03_20.Problem_3_4
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_07.Problem_1_8
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap03.Sec03_20.Problem_3_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

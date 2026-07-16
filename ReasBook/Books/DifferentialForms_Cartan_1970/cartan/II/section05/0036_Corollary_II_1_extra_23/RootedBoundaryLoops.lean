@@ -1,5 +1,5 @@
-import DifferentialForms_Cartan_1970.II.section05.«0036_Corollary_II_1_extra_23».BoundaryComponentGeometry
-import DifferentialForms_Cartan_1970.II.section05.«0036_Corollary_II_1_extra_23».ClosedPathTransportBasics
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0036_Corollary_II_1_extra_23».BoundaryComponentGeometry
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0036_Corollary_II_1_extra_23».ClosedPathTransportBasics
 
 open scoped BigOperators unitInterval
 

@@ -1,6 +1,6 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
-import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_4_1.GammaSubgroupAction
+import LinearRepresentations_Serre_1977.Serre.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Serre.Chap12.Theorem_12_12_4_1.GammaSubgroupAction
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

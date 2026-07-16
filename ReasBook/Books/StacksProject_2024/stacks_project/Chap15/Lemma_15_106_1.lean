@@ -1,16 +1,16 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap10.Lemma_10_154_1
-import StacksProject_2024.Chap10.Lemma_10_154_2
-import StacksProject_2024.Chap10.Lemma_10_154_5
-import StacksProject_2024.Chap10.Lemma_10_143_9
-import StacksProject_2024.Chap15.Definition_15_105_1
-import StacksProject_2024.Chap15.Lemma_15_45_6
-import StacksProject_2024.Chap15.Lemma_15_105_7
-import StacksProject_2024.Chap15.Lemma_15_105_5
-import StacksProject_2024.Chap15.Lemma_15_105_9
-import StacksProject_2024.Chap15.Lemma_15_105_16
-import StacksProject_2024.Chap15.Lemma_15_105_15
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_154_1
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_154_2
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_154_5
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_143_9
+import StacksProject_2024.stacks_project.Chap15.Definition_15_105_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_45_6
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_105_7
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_105_5
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_105_9
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_105_16
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_105_15
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

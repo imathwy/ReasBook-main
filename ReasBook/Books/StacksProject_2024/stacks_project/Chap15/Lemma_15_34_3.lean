@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_136_5
-import StacksProject_2024.Chap15.Definition_15_33_2
-import StacksProject_2024.Chap15.Lemma_15_34_1_Cartier_equality
-import StacksProject_2024.Chap15.Lemma_15_34_2
+import StacksProject_2024.stacks_project.Chap10.Definition_10_136_5
+import StacksProject_2024.stacks_project.Chap15.Definition_15_33_2
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_34_1_Cartier_equality
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_34_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.CategoryTheory.CommSq
-import StacksProject_2024.Chap15.Definition_15_89_1
-import StacksProject_2024.Chap15.Proposition_15_90_16
-import StacksProject_2024.Chap15.Remark_15_90_10
+import stacks_proof.stacks_project.Chap15.Definition_15_89_1
+import stacks_proof.stacks_project.Chap15.Proposition_15_90_16
+import stacks_proof.stacks_project.Chap15.Remark_15_90_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

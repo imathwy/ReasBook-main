@@ -1,10 +1,10 @@
 import Mathlib
-import StacksProject_2024.Chap13.Definition_13_11_3
-import StacksProject_2024.Chap13.Lemma_13_27_9
-import StacksProject_2024.Chap13.Remark_13_12_4
-import StacksProject_2024.Chap13.Situation_13_15_1
-import StacksProject_2024.Chap15.Definition_15_65_1
-import StacksProject_2024.Chap15.Lemma_15_65_2
+import stacks_proof.stacks_project.Chap13.Definition_13_11_3
+import stacks_proof.stacks_project.Chap13.Lemma_13_27_9
+import stacks_proof.stacks_project.Chap13.Remark_13_12_4
+import stacks_proof.stacks_project.Chap13.Situation_13_15_1
+import stacks_proof.stacks_project.Chap15.Definition_15_65_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_65_2
 
 noncomputable section
 

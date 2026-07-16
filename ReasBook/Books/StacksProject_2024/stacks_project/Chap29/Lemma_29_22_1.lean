@@ -1,6 +1,6 @@
 import Mathlib.AlgebraicGeometry.Morphisms.FinitePresentation
 import Mathlib.Topology.Constructible
-import StacksProject_2024.Chap28.Lemma_28_2_1
+import StacksProject_2024.stacks_project.Chap28.Lemma_28_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

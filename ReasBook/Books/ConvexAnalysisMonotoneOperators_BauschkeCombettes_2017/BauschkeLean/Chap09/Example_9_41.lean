@@ -1,6 +1,7 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09.Proposition_9_40
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09.Remark_9_37
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap09.Example_9_35
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap09.Proposition_9_40
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap09.Remark_9_37
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -16,6 +17,8 @@ namespace ERealFunction
 attribute [local instance] Classical.propDecidable
 
 variable {Ω : Type u} [MeasurableSpace Ω] {μ : Measure Ω}
+
+namespace Example941EntropyCopy
 
 /-- Helper for Example 9.41: the `]-∞,+∞]`-valued entropy integrand `x ↦ x \log x - x` on the
 nonnegative half-line, extended by `0` at the origin and by `+∞` on negative inputs. -/
@@ -231,6 +234,15 @@ theorem boltzmannEntropy_mem_gammaZero :
   · exact boltzmannEntropy_lowerSemicontinuous
   · exact convexOn_effectiveDomain_of_strictlyConvex
       boltzmannEntropy_isProper boltzmannEntropy_strictlyConvex
+
+end Example941EntropyCopy
+
+/-- Nonnegative inputs use the finite real branch of the canonical Boltzmann entropy. -/
+@[simp] theorem boltzmannEntropy_apply_of_nonneg {x : ℝ} (hx : 0 ≤ x) :
+    (boltzmannEntropy x : EReal) = ((x * Real.log x - x : ℝ) : EReal) := by
+  rcases hx.eq_or_lt with rfl | hxpos
+  · simp
+  · exact boltzmannEntropy_apply_of_pos hxpos
 
 /-- Helper for Example 9.41: a finite sum of real `EReal` casts is the cast of the real sum. -/
 theorem finset_sum_coe_real_entropy {ι : Type*} (s : Finset ι) (r : ι → ℝ) :

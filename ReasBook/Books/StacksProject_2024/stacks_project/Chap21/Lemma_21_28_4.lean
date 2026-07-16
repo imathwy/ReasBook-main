@@ -1,10 +1,10 @@
 import Mathlib.Tactic
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
 import Mathlib.Algebra.Homology.DerivedCategory.HomologySequence
-import StacksProject_2024.Chap13.Lemma_13_35_7
-import StacksProject_2024.Chap21.DerivedCategoryExact
-import StacksProject_2024.Chap21.Lemma_21_19_1_impl
-import StacksProject_2024.Chap21.Lemma_21_28_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_35_7
+import StacksProject_2024.stacks_project.Chap21.DerivedCategoryExact
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_19_1_impl
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_28_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

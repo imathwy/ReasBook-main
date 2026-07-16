@@ -1,13 +1,13 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.AB
 import Mathlib.CategoryTheory.Abelian.GrothendieckAxioms.Colim
-import StacksProject_2024.Chap13.Definition_13_19_1
-import StacksProject_2024.Chap13.Definition_13_27_1
-import StacksProject_2024.Chap13.«13_3_5_1»
-import StacksProject_2024.Chap13.Lemma_13_19_8
-import StacksProject_2024.Chap13.Lemma_13_27_3
-import StacksProject_2024.Chap15.Definition_15_65_1
-import StacksProject_2024.Chap15.Lemma_15_65_3
+import StacksProject_2024.stacks_project.Chap13.Definition_13_19_1
+import StacksProject_2024.stacks_project.Chap13.Definition_13_27_1
+import StacksProject_2024.stacks_project.Chap13.«13_3_5_1»
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_19_8
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_27_3
+import StacksProject_2024.stacks_project.Chap15.Definition_15_65_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_65_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,9 +1,9 @@
-import StacksProject_2024.Chap15.Definition_15_59_13
-import StacksProject_2024.Chap15.Lemma_15_59_14
-import StacksProject_2024.Chap21.Lemma_21_33_1_core
-import StacksProject_2024.Chap20.Definition_20_26_14
-import StacksProject_2024.Chap20.Lemma_20_34_4
-import StacksProject_2024.Chap20.Remark_20_34_9
+import StacksProject_2024.stacks_project.Chap15.Definition_15_59_13
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_59_14
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_33_1_core
+import StacksProject_2024.stacks_project.Chap20.Definition_20_26_14
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_34_4
+import StacksProject_2024.stacks_project.Chap20.Remark_20_34_9
 
 open CategoryTheory
 open CategoryTheory.Limits

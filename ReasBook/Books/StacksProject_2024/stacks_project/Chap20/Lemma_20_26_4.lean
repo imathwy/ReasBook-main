@@ -1,10 +1,10 @@
-import StacksProject_2024.Chap17.ModuleRestrictionAndStalks
-import StacksProject_2024.Chap17.Lemma_17_3_1
-import StacksProject_2024.Chap17.Lemma_17_16_1
-import StacksProject_2024.Chap17.Definition_17_20_1
-import StacksProject_2024.Chap18.Lemma_18_15_3
-import StacksProject_2024.Chap15.Lemma_15_59_3
-import StacksProject_2024.Chap20.Definition_20_26_2
+import StacksProject_2024.stacks_project.Chap17.ModuleRestrictionAndStalks
+import StacksProject_2024.stacks_project.Chap17.Lemma_17_3_1
+import StacksProject_2024.stacks_project.Chap17.Lemma_17_16_1
+import StacksProject_2024.stacks_project.Chap17.Definition_17_20_1
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_15_3
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_59_3
+import StacksProject_2024.stacks_project.Chap20.Definition_20_26_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

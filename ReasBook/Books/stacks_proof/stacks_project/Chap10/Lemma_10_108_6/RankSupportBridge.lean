@@ -1,10 +1,10 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_78_1
-import StacksProject_2024.Chap10.Lemma_10_78_2
-import StacksProject_2024.Chap10.Lemma_10_108_4
-import StacksProject_2024.Chap10.Remark_10_78_4
-import StacksProject_2024.Chap10.Lemma_10_21_1
-import StacksProject_2024.LinearAlgebra.PowerOperations
+import stacks_proof.stacks_project.Chap10.Definition_10_78_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_78_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_108_4
+import stacks_proof.stacks_project.Chap10.Remark_10_78_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_21_1
+import stacks_proof.stacks_project.LinearAlgebra.PowerOperations
 
 universe u v w z
 

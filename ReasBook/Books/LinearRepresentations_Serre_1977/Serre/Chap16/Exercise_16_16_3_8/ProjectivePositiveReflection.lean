@@ -1,6 +1,6 @@
-import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_4_6.ProjectorRangeBridge
-import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3
-import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_4
+import LinearRepresentations_Serre_1977.Serre.Chap14.Exercise_14_14_4_6.ProjectorRangeBridge
+import LinearRepresentations_Serre_1977.Serre.Chap14.Corollary_14_14_4_3
+import LinearRepresentations_Serre_1977.Serre.Chap14.Corollary_14_14_4_4
 
 noncomputable section
 

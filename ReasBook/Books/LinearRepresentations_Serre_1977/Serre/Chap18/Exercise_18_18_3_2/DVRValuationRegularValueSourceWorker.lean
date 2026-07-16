@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.Exercise18_4PointMassRowCongruenceProofWorker
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.BrauerResidualSourceValuationWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.Exercise18_4PointMassRowCongruenceProofWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.BrauerResidualSourceValuationWorker
 
 /-!
 High-order DVR valuation route for the remaining Serre `18.5(a)` source input.

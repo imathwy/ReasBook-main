@@ -1,6 +1,6 @@
-import CombinatorialGroupTheory_Magnus_2004.Basic
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap02.Proposition_2_3_2
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Corollary_3_10_5
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Basic
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap02.Proposition_2_3_2
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap03.Corollary_3_10_5
 
 universe u
 

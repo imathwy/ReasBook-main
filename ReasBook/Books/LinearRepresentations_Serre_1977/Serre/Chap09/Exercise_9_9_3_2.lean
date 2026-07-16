@@ -1,7 +1,7 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_3_1
-import LinearRepresentations_Serre_1977.Chap09.Theorem_9_9_2_1
-import LinearRepresentations_Serre_1977.Chap11.Theorem_11_11_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap09.Exercise_9_9_3_1
+import LinearRepresentations_Serre_1977.Serre.Chap09.Theorem_9_9_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap11.Theorem_11_11_2_1
 
 open scoped BigOperators Pointwise Representation SubgroupInduction TensorProduct
 

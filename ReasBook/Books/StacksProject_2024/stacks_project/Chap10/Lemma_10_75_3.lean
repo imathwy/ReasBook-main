@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_71_2
+import StacksProject_2024.stacks_project.Chap10.Definition_10_71_2
 
 open CategoryTheory CategoryTheory.Limits HomologicalComplex HomologicalComplex₂ ComplexShape
 

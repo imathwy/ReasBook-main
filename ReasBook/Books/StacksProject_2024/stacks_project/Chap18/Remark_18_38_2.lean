@@ -1,11 +1,11 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.PushforwardContinuous
 import Mathlib.CategoryTheory.Sites.Over
-import StacksProject_2024.Chap07.Example_7_33_8
-import StacksProject_2024.Chap07.Lemma_7_27_2
-import StacksProject_2024.Chap07.Remark_7_35_4
-import StacksProject_2024.Chap18.Definition_18_28_1
-import StacksProject_2024.Chap18.Lemma_18_36_3
+import StacksProject_2024.stacks_project.Chap07.Example_7_33_8
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_27_2
+import StacksProject_2024.stacks_project.Chap07.Remark_7_35_4
+import StacksProject_2024.stacks_project.Chap18.Definition_18_28_1
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_36_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

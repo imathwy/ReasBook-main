@@ -5,8 +5,8 @@ import Mathlib.Algebra.Category.ModuleCat.FilteredColimits
 import Mathlib.Algebra.Category.ModuleCat.Monoidal.Basic
 import Mathlib.CategoryTheory.Monoidal.Limits.Preserves
 import Mathlib.CategoryTheory.Monoidal.Tor
-import StacksProject_2024.Chap04.Lemma_4_21_5
-import StacksProject_2024.Chap10.Lemma_10_8_8
+import stacks_proof.stacks_project.Chap04.Lemma_4_21_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_8_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

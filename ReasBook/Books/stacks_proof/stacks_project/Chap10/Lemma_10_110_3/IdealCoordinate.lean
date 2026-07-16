@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap10.Lemma_10_110_3.LocalKoszul
-import StacksProject_2024.Chap10.Lemma_10_96_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_110_3.LocalKoszul
+import stacks_proof.stacks_project.Chap10.Lemma_10_96_1
 
 universe u
 

@@ -1,6 +1,6 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap06.Definition_6_26_1
-import StacksProject_2024.Chap13.Lemma_13_29_3
+import StacksProject_2024.stacks_project.Chap06.Definition_6_26_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_29_3
 
 open CategoryTheory
 open CategoryTheory.Limits

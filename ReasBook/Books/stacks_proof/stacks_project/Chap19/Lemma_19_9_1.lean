@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap19.Remark_19_9_6
+import stacks_proof.stacks_project.Chap19.Remark_19_9_6
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

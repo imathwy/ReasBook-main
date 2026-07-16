@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap23.DividedPowerRingExtendsTo
+import StacksProject_2024.stacks_project.Chap23.DividedPowerRingExtendsTo
 import Mathlib.RingTheory.RingHom.Flat
 import Mathlib.RingTheory.Ideal.IsPrincipal
 

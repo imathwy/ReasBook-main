@@ -1,10 +1,10 @@
 import Mathlib.Algebra.Category.Ring.Limits
 import Mathlib.CategoryTheory.Sites.PreservesSheafification
-import StacksProject_2024.Chap20.Open_subspace_module_core
-import StacksProject_2024.Chap20.Open_subspace_module_extension_derived
-import StacksProject_2024.Chap20.Global_sections_module_owners_core
-import StacksProject_2024.Chap20.Sections_on_open
-import StacksProject_2024.Chap20.«20_11_0_1»
+import StacksProject_2024.stacks_project.Chap20.Open_subspace_module_core
+import StacksProject_2024.stacks_project.Chap20.Open_subspace_module_extension_derived
+import StacksProject_2024.stacks_project.Chap20.Global_sections_module_owners_core
+import StacksProject_2024.stacks_project.Chap20.Sections_on_open
+import StacksProject_2024.stacks_project.Chap20.«20_11_0_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

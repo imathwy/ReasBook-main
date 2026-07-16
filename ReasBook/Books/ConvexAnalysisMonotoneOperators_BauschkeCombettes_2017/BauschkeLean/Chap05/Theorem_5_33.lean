@@ -1,7 +1,7 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Lemma_5_31
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Proposition_5_4
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Theorem_5_5
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap05.Lemma_5_31
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap05.Proposition_5_4
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap05.Theorem_5_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -17,17 +17,18 @@ variable {C : Set H} {x : ℕ → H}
 
 /-- A sequence is quasi-Fejér monotone with respect to `C` if its squared distance to each point
 of `C` is controlled by a summable nonnegative error sequence. -/
-def QuasiFejerMonotone (C : Set H) (x : ℕ → H) : Prop :=
+def UniformQuasiFejerMonotone (C : Set H) (x : ℕ → H) : Prop :=
   ∃ ε : ℕ → ℝ,
     Summable ε ∧
       (∀ n : ℕ, 0 ≤ ε n) ∧
         ∀ c ∈ C, ∀ n : ℕ, ‖x (n + 1) - c‖ ^ 2 ≤ ‖x n - c‖ ^ 2 + ε n
 
--- Proof sketch: unfold `QuasiFejerMonotone` and retain the summable nonnegative error sequence
+-- Proof sketch: unfold `UniformQuasiFejerMonotone` and retain the summable nonnegative error sequence
 -- together with its one-step squared-distance estimate.
 /-- A quasi-Fejér monotone sequence admits a summable nonnegative error sequence controlling each
 one-step squared-distance increment. -/
-theorem QuasiFejerMonotone.exists_summable_sq_error (h : QuasiFejerMonotone C x) :
+theorem UniformQuasiFejerMonotone.exists_summable_sq_error
+    (h : UniformQuasiFejerMonotone C x) :
     ∃ ε : ℕ → ℝ,
       Summable ε ∧
         (∀ n : ℕ, 0 ≤ ε n) ∧
@@ -66,7 +67,8 @@ theorem tendsto_of_nonneg_summable_perturbation
       Tendsto (fun n ↦ ((αNN n : NNReal) : ℝ)) atTop (𝓝 (l : ℝ)) :=
     (NNReal.tendsto_coe').2 ⟨l.2, hαNN⟩
   -- Coercing back to `ℝ` recovers the original scalar sequence.
-  simpa [αNN] using hαreal
+  change Tendsto (fun n ↦ ((αNN n : NNReal) : ℝ)) atTop (𝓝 (l : ℝ))
+  exact hαreal
 
 -- Proof sketch: rewrite `Metric.infDist x C` as the infimum of `dist x z`, apply the monotone
 -- continuous map `r ↦ max r 0 ^ 2` to move the square inside the infimum, and then note that all
@@ -103,7 +105,7 @@ theorem sq_infDist_eq_iInf_sq_dist_nonempty (x : H) (C : Set H) (hC : C.Nonempty
 /-- Theorem 5.33 (1): clause (i). For every `z ∈ C`, the distance sequence
 `n ↦ ‖x n - z‖` converges. -/
 theorem quasiFejerMonotone_norm_tendsto {z : H}
-    (hquasi : QuasiFejerMonotone C x) (hz : z ∈ C) :
+    (hquasi : UniformQuasiFejerMonotone C x) (hz : z ∈ C) :
     ∃ l : ℝ, Tendsto (fun n ↦ ‖x n - z‖) atTop (𝓝 l) := by
   rcases hquasi.exists_summable_sq_error with ⟨ε, hεsumm, hεnonneg, hstep⟩
   let α : ℕ → ℝ := fun n ↦ ‖x n - z‖ ^ 2
@@ -127,7 +129,7 @@ theorem quasiFejerMonotone_norm_tendsto {z : H}
 /-- Theorem 5.33 (2): clause (ii). A quasi-Fejér monotone sequence with respect to a nonempty set
 is bounded. -/
 theorem quasiFejerMonotone_bounded
-    (hC : C.Nonempty) (hquasi : QuasiFejerMonotone C x) :
+    (hC : C.Nonempty) (hquasi : UniformQuasiFejerMonotone C x) :
     Bornology.IsBounded (Set.range x) := by
   rcases hC with ⟨z, hz⟩
   rcases quasiFejerMonotone_norm_tendsto hquasi hz with ⟨l, hl⟩
@@ -152,7 +154,7 @@ theorem quasiFejerMonotone_bounded
 /-- Helper for Theorem 5.33: when `C` is nonempty, the squared distance-to-set sequence satisfies
 the same summable perturbed-descent inequality as the squared distances to points of `C`. -/
 theorem quasiFejerMonotone_infDist_sq_step
-    (hC : C.Nonempty) (hquasi : QuasiFejerMonotone C x) :
+    (hC : C.Nonempty) (hquasi : UniformQuasiFejerMonotone C x) :
     ∃ ε : ℕ → ℝ,
       Summable ε ∧
         (∀ n : ℕ, 0 ≤ ε n) ∧
@@ -213,7 +215,7 @@ theorem quasiFejerMonotone_infDist_sq_step
 /-- Theorem 5.33 (3): clause (iii). The distance sequence
 `n ↦ Metric.infDist (x n) C` converges. -/
 theorem quasiFejerMonotone_infDist_tendsto
-    (hquasi : QuasiFejerMonotone C x) :
+    (hquasi : UniformQuasiFejerMonotone C x) :
     ∃ l : ℝ, Tendsto (fun n ↦ Metric.infDist (x n) C) atTop (𝓝 l) := by
   by_cases hC : C.Nonempty
   · rcases quasiFejerMonotone_infDist_sq_step hC hquasi with ⟨ε, hεsumm, hεnonneg, hstep⟩
@@ -252,7 +254,7 @@ variable {C : Set H} {x : ℕ → H}
 /-- Theorem 5.33 (4): clause (iv). If every weak sequential cluster point of a quasi-Fejér
 monotone sequence belongs to `C`, then the sequence converges weakly to a point of `C`. -/
 theorem tendsto_weakly_of_quasiFejerMonotone_of_weakSequentialClusterPts_mem
-    (hC : C.Nonempty) (hquasi : QuasiFejerMonotone C x)
+    (hC : C.Nonempty) (hquasi : UniformQuasiFejerMonotone C x)
     (hcluster :
       ∀ z : H,
         IsSequentialClusterPt (fun n ↦ toWeakSpace ℝ H (x n)) (toWeakSpace ℝ H z) → z ∈ C) :

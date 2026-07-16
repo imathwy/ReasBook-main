@@ -1,4 +1,4 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap02.Definition_2_44
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap02.Definition_2_44
 
 open scoped unitInterval
 open unitInterval

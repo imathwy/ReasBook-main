@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.FunctorialityCore
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.Arrows.CompositionFactor
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.PullbackCompatibility.CompositionCocycle
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.FunctorialityCore
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.Arrows.CompositionFactor
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.PullbackCompatibility.CompositionCocycle
 
 universe u v uS vS w wD vD
 

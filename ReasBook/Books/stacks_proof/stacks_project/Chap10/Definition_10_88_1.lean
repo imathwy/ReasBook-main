@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap10.Proposition_10_88_6.HomInverseSystem
+import stacks_proof.stacks_project.Chap10.Proposition_10_88_6.HomInverseSystem
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

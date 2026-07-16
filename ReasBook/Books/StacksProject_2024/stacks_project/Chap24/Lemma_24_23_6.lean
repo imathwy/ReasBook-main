@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap24.Definition_24_13_1
-import StacksProject_2024.Chap24.Lemma_24_23_2
-import StacksProject_2024.Chap24.Remark_24_23_5
+import StacksProject_2024.stacks_project.Chap24.Definition_24_13_1
+import StacksProject_2024.stacks_project.Chap24.Lemma_24_23_2
+import StacksProject_2024.stacks_project.Chap24.Remark_24_23_5
 
 open CategoryTheory
 open CategoryTheory.MonoidalCategory

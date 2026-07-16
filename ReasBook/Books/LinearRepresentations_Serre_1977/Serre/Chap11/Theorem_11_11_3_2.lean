@@ -1,9 +1,9 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_1
-import LinearRepresentations_Serre_1977.Chap09.Theorem_9_9_2_1
-import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_3
-import LinearRepresentations_Serre_1977.Chap10.Definition_10_10_1_4
-import LinearRepresentations_Serre_1977.Chap11.Lemma_11_11_3_1
+import LinearRepresentations_Serre_1977.Serre.Chap06.Proposition_6_6_5_1
+import LinearRepresentations_Serre_1977.Serre.Chap09.Theorem_9_9_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap10.Definition_10_10_1_3
+import LinearRepresentations_Serre_1977.Serre.Chap10.Definition_10_10_1_4
+import LinearRepresentations_Serre_1977.Serre.Chap11.Lemma_11_11_3_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

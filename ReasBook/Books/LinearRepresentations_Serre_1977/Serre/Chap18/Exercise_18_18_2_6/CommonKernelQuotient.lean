@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap09.Exercise_9_9_1_3.ExteriorDeterminants
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap09.Exercise_9_9_1_3.ExteriorDeterminants
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_1_2
 
 noncomputable section
 

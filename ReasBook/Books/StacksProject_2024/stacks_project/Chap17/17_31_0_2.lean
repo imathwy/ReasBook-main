@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap17.«17_31_0_1»
+import StacksProject_2024.stacks_project.Chap17.«17_31_0_1»
 
 open CategoryTheory Limits TopCat TopologicalSpace
 open SheafOfModules.RingedSite

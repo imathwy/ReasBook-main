@@ -1,13 +1,13 @@
-import StacksProject_2024.Chap10.Definition_10_109_2
-import StacksProject_2024.Chap10.Definition_10_72_1
-import StacksProject_2024.Chap10.Lemma_10_55_8
-import StacksProject_2024.Chap10.Lemma_10_20_1_Nakayama_s_lemma
-import StacksProject_2024.Chap10.Lemma_10_82_13
-import StacksProject_2024.Chap10.Lemma_10_109_3
-import StacksProject_2024.Chap10.Lemma_10_109_5
-import StacksProject_2024.Chap10.Proposition_10_110_1
-import StacksProject_2024.Chap10.Lemma_10_72_5
-import StacksProject_2024.Chap10.Lemma_10_72_6
+import stacks_proof.stacks_project.Chap10.Definition_10_109_2
+import stacks_proof.stacks_project.Chap10.Definition_10_72_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_55_8
+import stacks_proof.stacks_project.Chap10.Lemma_10_20_1_Nakayama_s_lemma
+import stacks_proof.stacks_project.Chap10.Lemma_10_82_13
+import stacks_proof.stacks_project.Chap10.Lemma_10_109_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_109_5
+import stacks_proof.stacks_project.Chap10.Proposition_10_110_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_72_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_72_6
 import Mathlib.Algebra.Category.ModuleCat.Ulift
 
 -- Declarations for this item will be appended below by the statement pipeline.

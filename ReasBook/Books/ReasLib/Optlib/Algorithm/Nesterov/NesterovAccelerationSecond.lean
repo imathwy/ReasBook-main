@@ -92,7 +92,6 @@ theorem Nesterov_second_convergence (minφ : IsMinOn (f + h) Set.univ xm) :
         constructor
         · linarith [(alg.γbound k).2]
         · contrapose eq1
-          push_neg at *
           linarith [eq1]
       specialize fall mem1 mem2 pos ((alg.γbound k).1) (by linarith)
       rw [← (alg.update3 k)] at fall
@@ -197,7 +196,6 @@ theorem Nesterov_second_convergence (minφ : IsMinOn (f + h) Set.univ xm) :
             constructor
             · linarith [(alg.γbound k).2]
             · contrapose eq1
-              push_neg at *
               linarith [eq1]
           apply (mul_le_mul_iff_right₀ pos).mpr
           apply Convex_first_order_condition' (alg.h₁ (alg.z k)) alg.convf
@@ -450,4 +448,3 @@ theorem Nesterov_second_fix_stepsize_converge (minφ : IsMinOn (f + h) Set.univ 
       linarith
 
 end Nesterov_second_fix_stepsize
-

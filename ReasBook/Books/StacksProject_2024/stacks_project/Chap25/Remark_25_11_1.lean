@@ -1,7 +1,7 @@
 import Mathlib.AlgebraicTopology.SimplicialSet.Basic
 import Mathlib.CategoryTheory.Subfunctor.Basic
 import Mathlib.Topology.Sets.OpenCover
-import StacksProject_2024.Chap25.«25_11_0_3»
+import StacksProject_2024.stacks_project.Chap25.«25_11_0_3»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

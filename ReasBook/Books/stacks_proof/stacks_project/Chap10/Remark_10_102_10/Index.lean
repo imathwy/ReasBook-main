@@ -1,2 +1,2 @@
-import StacksProject_2024.Chap10.Remark_10_102_10.InductionBridge
-import StacksProject_2024.Chap10.Remark_10_102_10.MinimalLocalBranch
+import stacks_proof.stacks_project.Chap10.Remark_10_102_10.InductionBridge
+import stacks_proof.stacks_project.Chap10.Remark_10_102_10.MinimalLocalBranch

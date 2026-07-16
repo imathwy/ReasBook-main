@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.CartanSmithRange
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.CartanSmithRange
 import Mathlib.GroupTheory.PGroup
 import Mathlib.GroupTheory.Index
 import Mathlib.GroupTheory.QuotientGroup.Basic

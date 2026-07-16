@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap08.Lemma_8_12_6.SourcePrecomposition
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_6.SourcePrecomposition
 open CategoryTheory.Limits
 open CategoryTheory.MorphismProperty
 open Bicategory

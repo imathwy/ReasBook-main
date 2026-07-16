@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_128_3.StageRawKernel
+import stacks_proof.stacks_project.Chap10.Lemma_10_128_3.StageRawKernel
 
 universe uR uS uM
 

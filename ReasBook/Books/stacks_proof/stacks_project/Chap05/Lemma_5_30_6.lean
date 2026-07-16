@@ -4,7 +4,7 @@ import Mathlib.CategoryTheory.Monad.Limits
 import Mathlib.Topology.Category.TopCat.Monoidal
 import Mathlib.Topology.Category.TopCat.Adjunctions
 import Mathlib.Topology.Algebra.Group.GroupTopology
-import StacksProject_2024.Chap05.Lemma_5_30_3
+import stacks_proof.stacks_project.Chap05.Lemma_5_30_3
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

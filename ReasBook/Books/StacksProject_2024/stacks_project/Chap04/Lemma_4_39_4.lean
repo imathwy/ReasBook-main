@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Internal.Chap04.FibredInSetoidsTwoFibreProduct
+import StacksProject_2024.stacks_project.Internal.Chap04.FibredInSetoidsTwoFibreProduct
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,8 +1,8 @@
-import StacksProject_2024.Chap22.CompactDGModule
-import StacksProject_2024.Chap22.PropertyPDGModule
-import StacksProject_2024.Chap22.Lemma_22_28_5
-import StacksProject_2024.Chap13.Lemma_13_33_7
-import StacksProject_2024.Chap13.Proposition_13_37_6
+import StacksProject_2024.stacks_project.Chap22.CompactDGModule
+import StacksProject_2024.stacks_project.Chap22.PropertyPDGModule
+import StacksProject_2024.stacks_project.Chap22.Lemma_22_28_5
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_33_7
+import StacksProject_2024.stacks_project.Chap13.Proposition_13_37_6
 
 open CategoryTheory CategoryTheory.Limits ComplexShape DerivedCategory
 open scoped DirectSum

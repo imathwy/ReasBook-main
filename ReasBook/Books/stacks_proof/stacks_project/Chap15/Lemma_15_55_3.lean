@@ -1,5 +1,5 @@
 import Mathlib.Algebra.Category.ModuleCat.Basic
-import StacksProject_2024.Chap12.Lemma_12_27_2
+import stacks_proof.stacks_project.Chap12.Lemma_12_27_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

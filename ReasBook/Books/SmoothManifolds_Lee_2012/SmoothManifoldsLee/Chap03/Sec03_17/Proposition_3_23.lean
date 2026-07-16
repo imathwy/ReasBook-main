@@ -1,5 +1,5 @@
-import SmoothManifolds_Lee_2012.Chap03.Sec03_17.Definition_3_17_extra_1
-import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Definition_1_6_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap03.Sec03_17.Definition_3_17_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_06.Definition_1_6_extra_2
 import Mathlib.Geometry.Manifold.IsManifold.InteriorBoundary
 
 -- Declarations for this item will be appended below by the statement pipeline.

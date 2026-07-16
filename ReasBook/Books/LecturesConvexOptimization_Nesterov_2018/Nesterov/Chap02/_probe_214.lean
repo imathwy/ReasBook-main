@@ -1,4 +1,4 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_14
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Theorem_2_14
 #check summable_geometric_of_abs_lt_1
 #check tsum_geometric_of_abs_lt_1
 #check Memℓp

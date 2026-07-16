@@ -1,9 +1,9 @@
 import Mathlib.CategoryTheory.CommSq
 import Mathlib.CategoryTheory.Functor.Derived.LeftDerived
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap20.Lemma_20_27_1
-import StacksProject_2024.Chap20.Lemma_20_34_1
-import StacksProject_2024.Chap21.Remark_21_19_3_core
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_27_1
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_34_1
+import StacksProject_2024.stacks_project.Chap21.Remark_21_19_3_core
 
 open CategoryTheory
 open AlgebraicGeometry

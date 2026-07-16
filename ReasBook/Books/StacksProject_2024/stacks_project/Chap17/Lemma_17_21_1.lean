@@ -3,8 +3,8 @@ import Mathlib.Algebra.Category.ModuleCat.Presheaf.Monoidal
 import Mathlib.Algebra.Category.ModuleCat.Presheaf.Sheafification
 import Mathlib.Algebra.Category.ModuleCat.ExteriorPower
 import Mathlib.CategoryTheory.Sites.Monoidal
-import StacksProject_2024.LinearAlgebra.PowerOperations
-import StacksProject_2024.Chap06.Definition_6_26_1
+import StacksProject_2024.stacks_project.LinearAlgebra.PowerOperations
+import StacksProject_2024.stacks_project.Chap06.Definition_6_26_1
 
 open scoped AlgebraicGeometry TensorProduct
 open CategoryTheory Opposite TensorProduct

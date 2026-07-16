@@ -1,5 +1,5 @@
 import Mathlib
-import ProbabilityTheory_Klenke_2020.Items.Chap03.Exercise_3_1_1
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap03.Exercise_3_1_1
 
 open MeasureTheory ProbabilityTheory
 open scoped ProbabilityTheory unitInterval

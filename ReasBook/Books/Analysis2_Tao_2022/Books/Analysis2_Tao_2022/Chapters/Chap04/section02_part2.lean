@@ -1,5 +1,5 @@
 import Mathlib
-import Books.Analysis2_Tao_2022.Chapters.Chap04.section02_part1
+import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Chapters.Chap04.section02_part1
 
 open Classical
 
@@ -208,7 +208,8 @@ lemma helperForTheorem_4_2_1_isRealAnalyticAt_of_analyticWithinAtSubtypeExtensio
         (ENNReal.ofReal_lt_ofReal_iff hρpos).2 hdistρ
       exact lt_trans hdistρ' hρltR
     have hxBall : x ∈ EMetric.ball (a : ℝ) R := by
-      simpa [EMetric.mem_ball, edist_dist] using hdistR
+      change edist x (a : ℝ) < R
+      simpa [edist_dist] using hdistR
     have hHasSumG : HasSum (fun n : ℕ => p n (fun _ : Fin n => x - (a : ℝ))) (G x) :=
       hR.hasSum_sub hxBall
     have hTermEq :
@@ -250,7 +251,8 @@ lemma helperForTheorem_4_2_1_isRealAnalyticAt_of_analyticWithinAtSubtypeExtensio
         (ENNReal.ofReal_lt_ofReal_iff hρpos).2 hdistρ
       exact lt_trans hdistρ' hρltR
     have hxBall : x ∈ EMetric.ball (a : ℝ) R := by
-      simpa [EMetric.mem_ball, edist_dist] using hdistR
+      change edist x (a : ℝ) < R
+      simpa [edist_dist] using hdistR
     have hHasSumG : HasSum (fun n : ℕ => p n (fun _ : Fin n => x - (a : ℝ))) (G x) :=
       hR.hasSum_sub hxBall
     have hTermEq :

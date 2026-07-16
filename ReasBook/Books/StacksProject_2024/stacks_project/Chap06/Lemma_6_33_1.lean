@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap06.Definition_6_31_2
-import StacksProject_2024.Chap06.Lemma_6_21_6
-import StacksProject_2024.Chap06.Glueing_data_for_sheaves_on_an_open_cover
+import StacksProject_2024.stacks_project.Chap06.Definition_6_31_2
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_21_6
+import StacksProject_2024.stacks_project.Chap06.Glueing_data_for_sheaves_on_an_open_cover
 
 open CategoryTheory Opposite TopCat TopologicalSpace
 open CategoryTheory.Presheaf

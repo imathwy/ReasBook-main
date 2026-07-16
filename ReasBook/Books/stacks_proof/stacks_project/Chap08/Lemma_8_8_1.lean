@@ -1,14 +1,14 @@
-import StacksProject_2024.Chap04.Lemma_4_35_9
-import StacksProject_2024.Chap04.Lemma_4_36_4
-import StacksProject_2024.Chap04.Definition_4_36_2
-import StacksProject_2024.Chap08.Lemma_8_2_3
-import StacksProject_2024.Chap08.Definition_8_4_1
-import StacksProject_2024.Chap08.Definition_8_4_5
-import StacksProject_2024.Chap08.Lemma_8_4_4
-import StacksProject_2024.Chap07.Lemma_7_10_17
-import StacksProject_2024.Chap08.Lemma_8_8_1.Index
-import StacksProject_2024.Chap08.Lemma_8_4_8
-import StacksProject_2024.Chap08.Lemma_8_8_3
+import stacks_proof.stacks_project.Chap04.Lemma_4_35_9
+import stacks_proof.stacks_project.Chap04.Lemma_4_36_4
+import stacks_proof.stacks_project.Chap04.Definition_4_36_2
+import stacks_proof.stacks_project.Chap08.Lemma_8_2_3
+import stacks_proof.stacks_project.Chap08.Definition_8_4_1
+import stacks_proof.stacks_project.Chap08.Definition_8_4_5
+import stacks_proof.stacks_project.Chap08.Lemma_8_4_4
+import stacks_proof.stacks_project.Chap07.Lemma_7_10_17
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.Index
+import stacks_proof.stacks_project.Chap08.Lemma_8_4_8
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

@@ -33,23 +33,22 @@ variable [NormedAddCommGroup F] [InnerProductSpace ℝ F]
 variable {H : WithLp 2 (E × F) → ℝ}
 
 lemma diff_from_l2 (h : Differentiable ℝ H) :
-    Differentiable ℝ (fun p : E × F => H (WithLp.equiv 2 (E × F) p)) := by
-  have h1 : Differentiable ℝ (fun p : E × F => (WithLp.equiv 2 (E × F) p : WithLp 2 (E × F))) :=
-    @IsBoundedLinearMap.differentiable ℝ _ (E × F) _ _ (WithLp 2 (E × F)) _ _ id
-      instIsBoundedLinearMapL2equiv
+    Differentiable ℝ (fun p : E × F => H (WithLp.toLp 2 p)) := by
+  have h1 : Differentiable ℝ (fun p : E × F => WithLp.toLp 2 p) :=
+    IsBoundedLinearMap.differentiable instIsBoundedLinearMapL2equiv
   exact Differentiable.comp h h1
 
 theorem diff_prod₁ (h : Differentiable ℝ H) (y : F) :
-    Differentiable ℝ (fun x ↦ H (x, y)) := by
+    Differentiable ℝ (fun x ↦ H (WithLp.toLp 2 (x, y))) := by
   have h2 : Differentiable ℝ (fun x : E => ((x, y) : E × F)) :=
     Differentiable.prodMk differentiable_fun_id (differentiable_const y)
-  exact Differentiable.comp (diff_from_l2 h) h2
+  exact (diff_from_l2 h).comp h2
 
 theorem diff_prod₂ (h : Differentiable ℝ H) (x : E) :
-    Differentiable ℝ (fun y ↦ H (x, y)) := by
+    Differentiable ℝ (fun y ↦ H (WithLp.toLp 2 (x, y))) := by
   have h2 : Differentiable ℝ (fun y : F => ((x, y) : E × F)) :=
     Differentiable.prodMk (differentiable_const x) differentiable_fun_id
-  exact Differentiable.comp (diff_from_l2 h) h2
+  exact (diff_from_l2 h).comp h2
 
 end diff
 
@@ -63,35 +62,46 @@ variable {H : WithLp 2 (E × F) → ℝ} {x : E} {y : F} {z : WithLp 2 (E × F)}
 open Set Bornology Filter BigOperators Topology
 
 /- The gradient of the first component -/
-def grad_fst (H : WithLp 2 (E × F) → ℝ) (y : F) : E → E := gradient (fun t ↦ H (t, y))
+def grad_fst (H : WithLp 2 (E × F) → ℝ) (y : F) : E → E :=
+  gradient (fun t ↦ H (WithLp.toLp 2 (t, y)))
 
 /- The gradient function of the second component -/
 def grad_fun_fst (H : WithLp 2 (E × F) → ℝ) := fun (x, y) ↦ (grad_fst H y x)
 
 /- The gradient of the second component -/
-def grad_snd (H : WithLp 2 (E × F) → ℝ) (x : E) : F → F := gradient (fun t ↦ H (x, t))
+def grad_snd (H : WithLp 2 (E × F) → ℝ) (x : E) : F → F :=
+  gradient (fun t ↦ H (WithLp.toLp 2 (x, t)))
 
 /- The gradient function of the second component -/
 def grad_fun_snd (H : WithLp 2 (E × F) → ℝ) := fun (x, y) ↦ (grad_snd H x y)
 
 /- The gradient of the prod domain -/
 def grad_comp (H : WithLp 2 (E × F) → ℝ) (z : WithLp 2 (E × F)) : WithLp 2 (E × F) :=
-    (WithLp.equiv 2 (E × F)).symm (grad_fst H z.2 z.1, grad_snd H z.1 z.2)
+    WithLp.toLp 2 (grad_fst H z.ofLp.2 z.ofLp.1, grad_snd H z.ofLp.1 z.ofLp.2)
 
 /- The gradient function of the prod domain -/
 def grad_fun_comp (H : WithLp 2 (E × F) → ℝ) := fun z ↦ (grad_comp H z)
 
 theorem grad_fst_eq (h : Differentiable ℝ H) (z : WithLp 2 (E × F)) :
-    (gradient H z).1 = grad_fst H z.2 z.1 := by
-  have h₁ : HasGradientAt (fun x ↦ H (x, z.2)) (grad_fst H z.2 z.1) z.1 := by
+    (gradient H z).ofLp.1 = grad_fst H z.ofLp.2 z.ofLp.1 := by
+  have h₁ : HasGradientAt (fun x ↦ H (WithLp.toLp 2 (x, z.ofLp.2)))
+      (grad_fst H z.ofLp.2 z.ofLp.1) z.ofLp.1 := by
     apply DifferentiableAt.hasGradientAt
     apply diff_prod₁ h
-  have h₂ : HasGradientAt (fun x ↦ H (x, z.2)) (gradient H z).1 z.1 := by
+  have h₂ : HasGradientAt (fun x ↦ H (WithLp.toLp 2 (x, z.ofLp.2)))
+      (gradient H z).ofLp.1 z.ofLp.1 := by
     have h₃ : HasGradientAt H (gradient H z) z := DifferentiableAt.hasGradientAt (h z)
     rw [hasGradientAt_iff_isLittleO, Asymptotics.isLittleO_iff] at h₃ ⊢
     intro c hc
     specialize h₃ hc
-    obtain h₃' := Filter.Eventually.curry_nhds h₃
+    have hto : Continuous (WithLp.toLp 2 : (E × F) → WithLp 2 (E × F)) :=
+      IsBoundedLinearMap.continuous instIsBoundedLinearMapL2equiv
+    have h₃p := hto.continuousAt.tendsto.eventually h₃
+    change ∀ᶠ p : E × F in 𝓝 z.ofLp,
+      ‖H (WithLp.toLp 2 p) - H z -
+        inner ℝ (gradient H z) (WithLp.toLp 2 p - z)‖ ≤
+          c * ‖WithLp.toLp 2 p - z‖ at h₃p
+    obtain h₃' := Filter.Eventually.curry_nhds h₃p
     rw [Filter.eventually_iff_exists_mem] at h₃' ⊢
     rcases h₃' with ⟨v, ⟨hv1, hv2⟩⟩
     use v
@@ -100,25 +110,32 @@ theorem grad_fst_eq (h : Differentiable ℝ H) (z : WithLp 2 (E × F)) :
     · intro y yv
       specialize hv2 y yv
       obtain hv2' := Filter.Eventually.self_of_nhds hv2
-      have : z = (z.1, z.2) := rfl
-      rw [this] at hv2'
-      rw [Prod.mk_sub_mk y z.1 z.2 z.2] at hv2'
-      simp at hv2'
-      rw [norm_prod_right_zero] at hv2'
-      exact hv2'
+      rw [show z = WithLp.toLp 2 (z.ofLp.1, z.ofLp.2) from rfl,
+        ← WithLp.toLp_sub, Prod.mk_sub_mk, sub_self] at hv2'
+      rw [WithLp.prod_inner_apply, norm_prod_right_zero] at hv2'
+      simpa using hv2'
   exact HasGradientAt.unique h₂ h₁
 
 theorem grad_snd_eq (h : Differentiable ℝ H) (z : WithLp 2 (E × F)) :
-    (gradient H z).2 = grad_snd H z.1 z.2 := by
-  have h₁ : HasGradientAt (fun y ↦ H (z.1, y)) (grad_snd H z.1 z.2) z.2 := by
+    (gradient H z).ofLp.2 = grad_snd H z.ofLp.1 z.ofLp.2 := by
+  have h₁ : HasGradientAt (fun y ↦ H (WithLp.toLp 2 (z.ofLp.1, y)))
+      (grad_snd H z.ofLp.1 z.ofLp.2) z.ofLp.2 := by
     apply DifferentiableAt.hasGradientAt
     apply diff_prod₂ h
-  have h₂ : HasGradientAt (fun y ↦ H (z.1, y)) (gradient H z).2 z.2 := by
+  have h₂ : HasGradientAt (fun y ↦ H (WithLp.toLp 2 (z.ofLp.1, y)))
+      (gradient H z).ofLp.2 z.ofLp.2 := by
     have h₃ : HasGradientAt H (gradient H z) z := DifferentiableAt.hasGradientAt (h z)
     rw [hasGradientAt_iff_isLittleO, Asymptotics.isLittleO_iff] at h₃ ⊢
     intro c hc
     specialize h₃ hc
-    obtain h₃' := Filter.Eventually.curry_nhds h₃
+    have hto : Continuous (WithLp.toLp 2 : (E × F) → WithLp 2 (E × F)) :=
+      IsBoundedLinearMap.continuous instIsBoundedLinearMapL2equiv
+    have h₃p := hto.continuousAt.tendsto.eventually h₃
+    change ∀ᶠ p : E × F in 𝓝 z.ofLp,
+      ‖H (WithLp.toLp 2 p) - H z -
+        inner ℝ (gradient H z) (WithLp.toLp 2 p - z)‖ ≤
+          c * ‖WithLp.toLp 2 p - z‖ at h₃p
+    obtain h₃' := Filter.Eventually.curry_nhds h₃p
     obtain h₃'' := Filter.Eventually.self_of_nhds h₃'
     rw [Filter.eventually_iff_exists_mem] at h₃'' ⊢
     rcases h₃'' with ⟨v, ⟨hv1, hv2⟩⟩
@@ -127,40 +144,37 @@ theorem grad_snd_eq (h : Differentiable ℝ H) (z : WithLp 2 (E × F)) :
     · exact hv1
     · intro y yv
       specialize hv2 y yv
-      have : z = (z.1, z.2) := rfl
-      nth_rw 5 [this] at hv2
-      simp at hv2
-      nth_rw 6 [this] at hv2
-      rw [Prod.mk_sub_mk z.1 z.1 y z.2] at hv2
-      simp at hv2
-      rw [norm_prod_left_zero] at hv2
-      exact hv2
+      rw [show z = WithLp.toLp 2 (z.ofLp.1, z.ofLp.2) from rfl,
+        ← WithLp.toLp_sub, Prod.mk_sub_mk, sub_self] at hv2
+      rw [WithLp.prod_inner_apply, norm_prod_left_zero] at hv2
+      simpa using hv2
   exact HasGradientAt.unique h₂ h₁
 
 theorem grad_eq_block_grad (h : Differentiable ℝ H) : gradient H = grad_fun_comp H := by
   ext z
   calc
-    gradient H z = ((gradient H z).1, (gradient H z).2) := rfl
-    _ = (grad_fst H z.2 z.1, grad_snd H z.1 z.2) := by rw [← grad_fst_eq h, ← grad_snd_eq h]
+    gradient H z = WithLp.toLp 2 ((gradient H z).ofLp.1, (gradient H z).ofLp.2) := rfl
+    _ = WithLp.toLp 2 (grad_fst H z.ofLp.2 z.ofLp.1, grad_snd H z.ofLp.1 z.ofLp.2) := by
+      rw [← grad_fst_eq h, ← grad_snd_eq h]
     _ = grad_fun_comp H z := rfl
 
 theorem lip_grad_fst_of_lip (h : Differentiable ℝ H) (hl : LipschitzWith l (gradient H)) :
-    LipschitzWith l (fun (z : WithLp 2 (E × F)) ↦ grad_fst H z.2 z.1) := by
+    LipschitzWith l (fun (z : WithLp 2 (E × F)) ↦ grad_fst H z.ofLp.2 z.ofLp.1) := by
   rw [lipschitzWith_iff_norm_sub_le] at *
   intro z z'
   calc
-    _ = ‖(gradient H z).1 - (gradient H z').1‖ := by rw [grad_fst_eq h, grad_fst_eq h]
-    _ = ‖(gradient H z - gradient H z').1‖ := rfl
+    _ = ‖(gradient H z).ofLp.1 - (gradient H z').ofLp.1‖ := by rw [grad_fst_eq h, grad_fst_eq h]
+    _ = ‖(gradient H z - gradient H z').ofLp.1‖ := rfl
     _ ≤ ‖(gradient H z - gradient H z')‖ := fst_norm_le_prod_L2 _
     _ ≤ _ := hl z z'
 
 theorem lip_grad_snd_of_lip (h : Differentiable ℝ H) (hl : LipschitzWith l (gradient H)) :
-    LipschitzWith l (fun (z : WithLp 2 (E × F)) ↦ grad_snd H z.1 z.2) := by
+    LipschitzWith l (fun (z : WithLp 2 (E × F)) ↦ grad_snd H z.ofLp.1 z.ofLp.2) := by
   rw [lipschitzWith_iff_norm_sub_le] at *
   intro z z'
   calc
-    _ = ‖(gradient H z).2 - (gradient H z').2‖ := by rw [grad_snd_eq h, grad_snd_eq h]
-    _ = ‖(gradient H z - gradient H z').2‖ := rfl
+    _ = ‖(gradient H z).ofLp.2 - (gradient H z').ofLp.2‖ := by rw [grad_snd_eq h, grad_snd_eq h]
+    _ = ‖(gradient H z - gradient H z').ofLp.2‖ := rfl
     _ ≤ ‖(gradient H z - gradient H z')‖ := snd_norm_le_prod_L2 _
     _ ≤ _ := hl z z'
 
@@ -178,12 +192,16 @@ variable {H : (WithLp 2 (E × F)) → ℝ} {x0 : E} {y0 : F} {l : NNReal}
 
 instance Proper_Prod : ProperSpace (WithLp 2 (E × F)) where
   isCompact_closedBall := by
-    rintro ⟨x, y⟩ r
-    obtain h := IsCompact.prod (isCompact_closedBall x r) (isCompact_closedBall y r)
+    rintro ⟨⟨x, y⟩⟩ r
+    have hprod := IsCompact.prod (isCompact_closedBall x r) (isCompact_closedBall y r)
+    have hto : Continuous (WithLp.toLp 2 : (E × F) → WithLp 2 (E × F)) :=
+      IsBoundedLinearMap.continuous instIsBoundedLinearMapL2equiv
+    have h := hprod.image hto
     have {a b : ℝ} : a ≤ √(a ^ 2 + b ^ 2) := by apply Real.le_sqrt_of_sq_le; linarith [sq_nonneg b]
-    have hsub : @Metric.closedBall (WithLp 2 (E × F)) _ ⟨x, y⟩ r
-        ⊆ Metric.closedBall x r ×ˢ Metric.closedBall y r := by
-      rintro ⟨x', y'⟩ hball
+    have hsub : @Metric.closedBall (WithLp 2 (E × F)) _ (WithLp.toLp 2 (x, y)) r
+        ⊆ WithLp.toLp 2 '' (Metric.closedBall x r ×ˢ Metric.closedBall y r) := by
+      rintro ⟨⟨x', y'⟩⟩ hball
+      refine ⟨(x', y'), ?_, rfl⟩
       rw [mem_prod]
       simp only [mem_closedBall_iff_norm, WithLp.prod_norm_eq_of_L2] at *
       constructor
@@ -223,13 +241,14 @@ def BCD.z {self : BCD f g H l x0 y0} : ℕ → WithLp 2 (E × F) :=
   fun n ↦ (WithLp.equiv 2 (E × F)).symm (self.x n, self.y n)
 
 /- the notation ψ in BCD -/
-def BCD.ψ {_ : BCD f g H l x0 y0} := fun z : WithLp 2 (E × F) ↦ f z.1 + g z.2 + H z
+def BCD.ψ {_ : BCD f g H l x0 y0} :=
+  fun z : WithLp 2 (E × F) ↦ f z.ofLp.1 + g z.ofLp.2 + H z
 
 variable {alg : BCD f g H l x0 y0}
 
 omit [ProperSpace E] [ProperSpace F] in
 lemma BCD.Hdiff {self : BCD f g H l x0 y0} : Differentiable ℝ H :=
-    self.conf.differentiable (Preorder.le_refl 1)
+    self.conf.differentiable one_ne_zero
 
 omit [InnerProductSpace ℝ E] [CompleteSpace E] [ProperSpace E]
   [InnerProductSpace ℝ F] [CompleteSpace F] [ProperSpace F] in
@@ -259,7 +278,8 @@ lemma BCD.dpos (γ : ℝ) (hγ : γ > 1) (dk : ∀ k, alg.d k = 1 / (γ * l)) : 
 omit [InnerProductSpace ℝ E] [CompleteSpace E] [ProperSpace E]
   [InnerProductSpace ℝ F] [CompleteSpace F] [ProperSpace F] in
 private lemma sub_prod (x x1 : E) (y y1 : F) :
-  ((x, y) : WithLp 2 (E × F)) - (x1, y1) = (x - x1, y - y1) := rfl
+  WithLp.toLp 2 (x, y) - WithLp.toLp 2 (x1, y1) =
+    WithLp.toLp 2 (x - x1, y - y1) := rfl
 
 /- Define the A^k_x -/
 def BCD.A_kx k := (alg.c k)⁻¹ • (alg.x k - alg.x (k + 1)) - (grad_fst H (alg.y k) (alg.x k))
@@ -268,10 +288,10 @@ def BCD.A_kx k := (alg.c k)⁻¹ • (alg.x k - alg.x (k + 1)) - (grad_fst H (al
 def BCD.A_ky k := (alg.d k)⁻¹ • (alg.y k - alg.y (k + 1)) - (grad_snd H (alg.x (k + 1)) (alg.y k))
 
 /- Define the A^k = (A^k_x, A^k_y) -/
-def BCD.A_k (k : ℕ) : WithLp 2 (E × F) := (alg.A_kx k, alg.A_ky k)
+def BCD.A_k (k : ℕ) : WithLp 2 (E × F) := WithLp.toLp 2 (alg.A_kx k, alg.A_ky k)
 
 /- Define the gradient of A^k -/
-def BCD.subdiff k := alg.A_k k + gradient H (alg.x (k + 1), alg.y (k + 1))
+def BCD.subdiff k := alg.A_k k + gradient H (WithLp.toLp 2 (alg.x (k + 1), alg.y (k + 1)))
 
 end algorithm
 
@@ -296,15 +316,16 @@ theorem BCD.coordinate_lip {self : BCD f g H l x0 y0} : (∀ y, LipschitzWith l 
   · intro y
     rw [lipschitzWith_iff_norm_sub_le]
     intro x1 x2
-    obtain h := h (x1, y) (x2, y); simp [grad_fun_comp, grad_comp] at h
+    obtain h := h (WithLp.toLp 2 (x1, y)) (WithLp.toLp 2 (x2, y))
+    simp [grad_fun_comp, grad_comp] at h
     apply le_trans (fst_norm_le_prod_L2 _) at h
     simp at h; rwa [sub_prod, sub_self, norm_prod_right_zero] at h;
   intro x
   rw [lipschitzWith_iff_norm_sub_le]
-  intro y1 y2; obtain h := h (x, y1) (x, y2)
+  intro y1 y2
+  obtain h := h (WithLp.toLp 2 (x, y1)) (WithLp.toLp 2 (x, y2))
   simp [grad_fun_comp,grad_comp] at h
   apply le_trans (snd_norm_le_prod_L2 _) at h
   simp at h; rwa [sub_prod, sub_self, norm_prod_left_zero] at h;
 
 end Assumption
-

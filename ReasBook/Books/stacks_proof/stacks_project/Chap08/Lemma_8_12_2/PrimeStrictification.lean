@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_12_2.PullHomConjugation
-import StacksProject_2024.Chap08.Lemma_8_12_2.ChosenOverlaps
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_2.PullHomConjugation
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_2.ChosenOverlaps
 
 open CategoryTheory.Limits
 open CategoryTheory.GrothendieckTopology.Cover

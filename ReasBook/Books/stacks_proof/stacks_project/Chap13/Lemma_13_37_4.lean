@@ -1,7 +1,7 @@
 import Mathlib.Tactic.StacksAttribute
 import Mathlib.Algebra.Category.Grp.AB
-import StacksProject_2024.Chap13.Lemma_13_35_4
-import StacksProject_2024.Chap13.Lemma_13_37_3
+import stacks_proof.stacks_project.Chap13.Lemma_13_35_4
+import stacks_proof.stacks_project.Chap13.Lemma_13_37_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

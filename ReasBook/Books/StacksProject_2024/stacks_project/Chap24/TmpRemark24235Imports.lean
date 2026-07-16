@@ -4,4 +4,4 @@ import Mathlib.Algebra.Homology.HomologicalComplex
 import Mathlib.CategoryTheory.Comma.Over.Basic
 import Mathlib.CategoryTheory.GradedObject
 import Mathlib.CategoryTheory.Sites.ConstantSheaf
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategoryBasic

@@ -1,5 +1,5 @@
 import Mathlib
-import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_19.TrajectoryCore
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap13.Lemma_13_19.TrajectoryCore
 
 -- Theorem-local cluster-point and convergence helpers for Lemma 13.19.
 

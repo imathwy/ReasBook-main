@@ -2,12 +2,12 @@
 -- Route correction: the old monolithic proof was split into the support modules
 -- imported below, so stale placeholder reports against line numbers in this
 -- index file no longer correspond to live proof holes.
-import StacksProject_2024.Chap10.Proposition_10_88_6.CommonUniverseOwners
-import StacksProject_2024.Chap10.Proposition_10_88_6.HomInverseSystem
-import StacksProject_2024.Chap10.Proposition_10_88_6.TensorDomination
-import StacksProject_2024.Chap10.Proposition_10_88_6.ModuleCatFactorization
-import StacksProject_2024.Chap10.Proposition_10_88_6.StageTensorKernels
-import StacksProject_2024.Chap10.Proposition_10_88_6.HomMittagLeffler
+import stacks_proof.stacks_project.Chap10.Proposition_10_88_6.CommonUniverseOwners
+import stacks_proof.stacks_project.Chap10.Proposition_10_88_6.HomInverseSystem
+import stacks_proof.stacks_project.Chap10.Proposition_10_88_6.TensorDomination
+import stacks_proof.stacks_project.Chap10.Proposition_10_88_6.ModuleCatFactorization
+import stacks_proof.stacks_project.Chap10.Proposition_10_88_6.StageTensorKernels
+import stacks_proof.stacks_project.Chap10.Proposition_10_88_6.HomMittagLeffler
 
 open CategoryTheory
 open CategoryTheory.Limits

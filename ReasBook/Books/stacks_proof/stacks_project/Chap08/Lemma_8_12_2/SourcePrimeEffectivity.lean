@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_12_2.TargetPrimeSquares
-import StacksProject_2024.Chap08.Lemma_8_12_2.CoverEquivalence
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_2.TargetPrimeSquares
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_2.CoverEquivalence
 
 open CategoryTheory.Limits
 open CategoryTheory.GrothendieckTopology.Cover

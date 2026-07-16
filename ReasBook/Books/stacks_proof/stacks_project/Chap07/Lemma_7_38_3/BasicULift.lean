@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap07.Lemma_7_11_2
-import StacksProject_2024.Chap07.Lemma_7_12_4
-import StacksProject_2024.Chap07.Lemma_7_38_2
+import stacks_proof.stacks_project.Chap07.Lemma_7_11_2
+import stacks_proof.stacks_project.Chap07.Lemma_7_12_4
+import stacks_proof.stacks_project.Chap07.Lemma_7_38_2
 
 open CategoryTheory Opposite
 open CategoryTheory.Limits

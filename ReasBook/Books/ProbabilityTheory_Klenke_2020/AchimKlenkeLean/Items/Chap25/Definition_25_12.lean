@@ -1,5 +1,5 @@
 import Mathlib
-import ProbabilityTheory_Klenke_2020.Items.Chap25.Definition_25_10
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap25.Definition_25_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

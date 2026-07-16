@@ -1,6 +1,6 @@
 import Mathlib.Geometry.Manifold.ContMDiff.Basic
 import Mathlib.Geometry.Manifold.Instances.Real
-import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Definition_1_6_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_06.Definition_1_6_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

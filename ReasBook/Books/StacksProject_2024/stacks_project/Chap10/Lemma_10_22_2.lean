@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap10.Lemma_10_21_4
-import StacksProject_2024.Chap10.Lemma_10_17_7
-import StacksProject_2024.Chap10.Lemma_10_22_1
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_21_4
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_17_7
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_22_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

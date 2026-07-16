@@ -1,1 +1,1 @@
-import StacksProject_2024.Book
+import stacks_proof.stacks_project.Book

@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.CategoryTheory.Sites.Point.Skyscraper
-import StacksProject_2024.Chap07.Example_7_6_5
-import StacksProject_2024.Chap07.Proposition_7_33_3
+import stacks_proof.stacks_project.Chap07.Example_7_6_5
+import stacks_proof.stacks_project.Chap07.Proposition_7_33_3
 
 open CategoryTheory Limits Opposite
 

@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_112_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_112_7
 
 -- Acyclic support for the inequality part of Lemma 10.113.1.
 

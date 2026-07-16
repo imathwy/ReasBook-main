@@ -1,5 +1,5 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap16.Theorem_16_16_2_1
 
 open scoped MonoidAlgebra Representation
 open CategoryTheory

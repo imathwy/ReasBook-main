@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_2_17
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_2_17
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -10,7 +10,7 @@ noncomputable section
 
 variable {ι : Type v} {F : Type u} [Group F]
 
-local instance : DecidableEq ι := Classical.decEq ι
+local instance proposition_1_2_30_decidableEq : DecidableEq ι := Classical.decEq ι
 
 /-!
 Primary domain: conjugacy growth in free groups measured by reduced-word length.

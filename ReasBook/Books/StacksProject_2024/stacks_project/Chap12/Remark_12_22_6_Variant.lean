@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap12.Aux_12_20_3_1
-import StacksProject_2024.Chap12.Remark_12_21_5_Variant
+import StacksProject_2024.stacks_project.Chap12.Aux_12_20_3_1
+import StacksProject_2024.stacks_project.Chap12.Remark_12_21_5_Variant
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

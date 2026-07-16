@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Category.ModuleCat.Basic
 import Mathlib.CategoryTheory.Equivalence
-import StacksProject_2024.Chap22.Definition_22_11_1
+import StacksProject_2024.stacks_project.Chap22.Definition_22_11_1
 
 open CategoryTheory
 open CochainDGAlgebra

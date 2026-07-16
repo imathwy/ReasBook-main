@@ -1,5 +1,5 @@
 import Mathlib.CategoryTheory.Limits.Constructions.Over.Products
-import StacksProject_2024.Chap34.Definition_34_4_8
+import StacksProject_2024.stacks_project.Chap34.Definition_34_4_8
 
 open CategoryTheory
 open CategoryTheory.Limits

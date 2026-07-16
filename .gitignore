@@ -2,8 +2,21 @@
 *.olean
 *.ilean
 *.trace
-docs/
 CLAUDE.md
 ReasBook/Books/OptimizationResearch/
 .lake-compressed.img
-memory/
+
+# Local documentation and harness state.
+docs/
+.openharness/
+
+# Local agent configuration requested for this workspace.
+AGENTS.md
+.agents/skills/
+
+# Python build artifacts.
+__pycache__/
+*.py[cod]
+
+# Ephemeral same-workspace CI checkout and preflight logs.
+.automation/

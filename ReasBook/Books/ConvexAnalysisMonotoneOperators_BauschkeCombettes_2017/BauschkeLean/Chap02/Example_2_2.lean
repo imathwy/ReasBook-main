@@ -16,13 +16,13 @@ recall lp.single
 
 /-- The standard unit vector is `1` at its defining index and `0` at every other coordinate. -/
 theorem standard_unit_vector_apply [DecidableEq I] (i j : I) :
-    ((lp.single 2 i (1 : ℝ) : ℓ²(I, ℝ)) j = if j = i then 1 else 0) := by
+    ((lp.single 2 i (1 : ℝ) : lp (fun _ : I ↦ ℝ) 2) j = if j = i then 1 else 0) := by
   simp [lp.single_apply, Pi.single_apply, eq_comm]
 
 -- Proof sketch: apply the canonical formula `lp.inner_eq_tsum` for the Hilbert sum `ℓ²(I, ℝ)` and
 -- simplify the real inner product on each coordinate to multiplication.
 /-- In real `ℓ²(I)`, the inner product is the sum of the pointwise products of the coordinates. -/
-theorem l2_inner_eq_tsum_mul (ξ η : ℓ²(I, ℝ)) :
+theorem l2_inner_eq_tsum_mul (ξ η : lp (fun _ : I ↦ ℝ) 2) :
     inner ℝ ξ η = ∑' j, ξ j * η j := by
   rw [lp.inner_eq_tsum]
   refine tsum_congr fun j ↦ ?_

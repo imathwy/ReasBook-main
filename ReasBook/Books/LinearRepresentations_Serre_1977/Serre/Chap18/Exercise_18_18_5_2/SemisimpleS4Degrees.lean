@@ -1,7 +1,7 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_2.LinearCharacters
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_2.OrdinaryExplicitModels
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_2.SemisimpleDegrees
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_5_2.LinearCharacters
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_5_2.OrdinaryExplicitModels
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_5_2.SemisimpleDegrees
 
 /-!
 # Characteristic-uniform degrees of the five `S₄` models (support for Exercise 18.5.2)

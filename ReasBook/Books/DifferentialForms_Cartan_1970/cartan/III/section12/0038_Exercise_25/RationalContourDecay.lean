@@ -1,7 +1,7 @@
-import DifferentialForms_Cartan_1970.III.section11.«0003_Theorem_III_5_extra_2».Index
-import DifferentialForms_Cartan_1970.III.section12.«0038_Exercise_25».RationalDecay
-import DifferentialForms_Cartan_1970.III.section12.«0038_Exercise_25».SquareBoundaryPiCotBounds
-import DifferentialForms_Cartan_1970.III.section12.«0038_Exercise_25».SquareBoundaryIntegrability
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0003_Theorem_III_5_extra_2».Index
+import DifferentialForms_Cartan_1970.cartan.III.section12.«0038_Exercise_25».RationalDecay
+import DifferentialForms_Cartan_1970.cartan.III.section12.«0038_Exercise_25».SquareBoundaryPiCotBounds
+import DifferentialForms_Cartan_1970.cartan.III.section12.«0038_Exercise_25».SquareBoundaryIntegrability
 
 noncomputable section
 

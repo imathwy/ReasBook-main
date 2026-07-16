@@ -1,16 +1,16 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
-import StacksProject_2024.Chap13.Lemma_13_11_6
-import StacksProject_2024.Chap13.Lemma_13_42_3
-import StacksProject_2024.Chap13.Lemma_13_33_7
-import StacksProject_2024.Chap13.Lemma_13_38_1
-import StacksProject_2024.Chap13.Remark_13_12_4
-import StacksProject_2024.Chap15.Definition_15_65_1
-import StacksProject_2024.Chap15.Definition_15_59_13
-import StacksProject_2024.Chap15.Lemma_15_59_14
-import StacksProject_2024.Chap15.Lemma_15_67_8
-import StacksProject_2024.Chap15.Lemma_15_67_20
-import StacksProject_2024.Chap15.Definition_15_89_1
+import stacks_proof.stacks_project.Chap13.Lemma_13_11_6
+import stacks_proof.stacks_project.Chap13.Lemma_13_42_3
+import stacks_proof.stacks_project.Chap13.Lemma_13_33_7
+import stacks_proof.stacks_project.Chap13.Lemma_13_38_1
+import stacks_proof.stacks_project.Chap13.Remark_13_12_4
+import stacks_proof.stacks_project.Chap15.Definition_15_65_1
+import stacks_proof.stacks_project.Chap15.Definition_15_59_13
+import stacks_proof.stacks_project.Chap15.Lemma_15_59_14
+import stacks_proof.stacks_project.Chap15.Lemma_15_67_8
+import stacks_proof.stacks_project.Chap15.Lemma_15_67_20
+import stacks_proof.stacks_project.Chap15.Definition_15_89_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

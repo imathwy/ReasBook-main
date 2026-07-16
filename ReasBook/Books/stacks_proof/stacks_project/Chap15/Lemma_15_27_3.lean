@@ -1,10 +1,10 @@
 import Mathlib.RingTheory.AdicCompletion.Basic
 import Mathlib.RingTheory.Noetherian.Basic
-import StacksProject_2024.Chap10.Definition_10_5_1
-import StacksProject_2024.Chap10.Lemma_10_51_2_Artin_Rees
-import StacksProject_2024.Chap10.Remark_10_75_9
-import StacksProject_2024.Chap12.Definition_12_31_2
-import StacksProject_2024.Chap15.Definition_15_61_1
+import stacks_proof.stacks_project.Chap10.Definition_10_5_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_51_2_Artin_Rees
+import stacks_proof.stacks_project.Chap10.Remark_10_75_9
+import stacks_proof.stacks_project.Chap12.Definition_12_31_2
+import stacks_proof.stacks_project.Chap15.Definition_15_61_1
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

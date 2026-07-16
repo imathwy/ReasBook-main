@@ -1,8 +1,8 @@
 import Mathlib.Analysis.InnerProductSpace.Subspace
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_9
-import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_4_4_2
-import LecturesConvexOptimization_Nesterov_2018.Chap07.Definition_7_17
-import LecturesConvexOptimization_Nesterov_2018.Chap07.Definition_7_19
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Definition_3_9
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap05.Definition_5_4_4_2
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap07.Definition_7_17
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap07.Definition_7_19
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap23.Lemma_23_5_3
+import StacksProject_2024.stacks_project.Chap23.Lemma_23_5_3
 
 open scoped BigOperators
 open Nat Ring

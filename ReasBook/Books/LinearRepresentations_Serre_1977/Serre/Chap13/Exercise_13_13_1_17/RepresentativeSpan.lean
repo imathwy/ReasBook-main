@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap13.Theorem_13_13_1_6
+import LinearRepresentations_Serre_1977.Serre.Chap13.Theorem_13_13_1_6
 
 noncomputable section
 

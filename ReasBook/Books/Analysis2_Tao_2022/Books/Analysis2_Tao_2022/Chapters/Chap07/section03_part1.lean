@@ -1,5 +1,5 @@
 import Mathlib
-import Books.Analysis2_Tao_2022.Chapters.Chap07.Vitali
+import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Chapters.Chap07.Vitali
 
 open scoped BigOperators
 
@@ -99,7 +99,7 @@ lemma helperForProposition_7_12_isCaratheodory_implies_nullMeasurable
   have hV_meas : MeasurableSet V := by
     exact MeasurableSet.iUnion hU_meas
   have hV_diff_zero : (MeasureTheory.volume : MeasureTheory.Measure ℝ) (V \ E) = 0 := by
-    refine le_antisymm ?_ (zero_le _)
+    refine le_antisymm ?_ zero_le
     calc
       (MeasureTheory.volume : MeasureTheory.Measure ℝ) (V \ E) =
           (MeasureTheory.volume : MeasureTheory.Measure ℝ) (⋃ n : ℕ, U n \ E) := by
@@ -177,9 +177,9 @@ lemma helperForProposition_7_12_exists_notMeasurableSet_real :
     exact hCountable.le_aleph0.trans Cardinal.aleph0_le_continuum
   have hMeasurableCard :
       Cardinal.mk { s : Set ℝ // MeasurableSet s } ≤ Cardinal.continuum := by
-    simpa [MeasurableSpace.generateFrom_countableGeneratingSet (α := ℝ)] using
-      (MeasurableSpace.cardinal_measurableSet_le_continuum
-        (s := MeasurableSpace.countableGeneratingSet ℝ) hGeneratorCard)
+    rw [← MeasurableSpace.generateFrom_countableGeneratingSet (α := ℝ)]
+    exact MeasurableSpace.cardinal_measurableSet_le_continuum
+      (s := MeasurableSpace.countableGeneratingSet ℝ) hGeneratorCard
   have hSetToMeasurable :
       Cardinal.mk (Set ℝ) ≤ Cardinal.mk { s : Set ℝ // MeasurableSet s } := by
     refine Cardinal.mk_le_of_injective
@@ -653,7 +653,7 @@ lemma helperForProposition_7_12_positiveComplement_of_nonNullMeasurable_IccFullO
       have hA_null : MeasureTheory.NullMeasurableSet A μ :=
         hB_meas.nullMeasurableSet.congr hAaeB.symm
       exact hA_nonNull (by simpa [μ] using hA_null)
-    exact lt_of_le_of_ne (zero_le _) (Ne.symm hDiff_ne_zero)
+    exact lt_of_le_of_ne zero_le (Ne.symm hDiff_ne_zero)
   have hComp_eq :
       (Set.Icc (0 : ℝ) 1 \ helperForProposition_7_12_IccFullOuterMeasureCandidate A) = B \ A := by
     simpa [B] using
@@ -929,7 +929,7 @@ lemma helperForProposition_7_12_positiveComplement_of_fixedIcc_strictSplitWitnes
   have hComp_zero :
       ((MeasureTheory.volume : MeasureTheory.Measure ℝ).toOuterMeasure)
           ((Set.Icc (0 : ℝ) 1) \ E) = 0 := by
-    exact le_antisymm (le_of_not_gt hComp_nonpos) (zero_le _)
+    exact le_antisymm (le_of_not_gt hComp_nonpos) zero_le
   have hInter_le :
       ((MeasureTheory.volume : MeasureTheory.Measure ℝ).toOuterMeasure)
           ((Set.Icc (0 : ℝ) 1) ∩ E) ≤

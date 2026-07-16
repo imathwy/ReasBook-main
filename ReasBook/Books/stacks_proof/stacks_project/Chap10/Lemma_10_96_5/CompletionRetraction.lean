@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_96_5.PositiveStageLimits
+import stacks_proof.stacks_project.Chap10.Lemma_10_96_5.PositiveStageLimits
 
 universe u
 

@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_3.GrothendieckCharacter
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_2_6.Index
+import LinearRepresentations_Serre_1977.Serre.Chap16.Corollary_16_16_1_3.GrothendieckCharacter
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_2_6.Index
 
 noncomputable section
 

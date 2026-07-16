@@ -69,7 +69,7 @@ theorem Nesterov_first_converge (minφ : IsMinOn (f + h) univ xm) :
           - ⟪alg.y k - alg.x (k + 1) - (alg.t k) • (f' (alg.y k)), z - alg.x (k + 1)⟫) := by
         have hpos : 0 < 1 / alg.t k := by simp; linarith [(alg.tbound k).1]
         apply mul_le_mul_of_nonneg_left _ (le_of_lt hpos)
-        apply add_le_add_right; exact hieq1 z k
+        apply add_le_add_left; exact hieq1 z k
       _ = h z +
           ⟪(f' (alg.y k)) + (1 / alg.t k) • (alg.x (k + 1) - alg.y k), z - alg.x (k + 1)⟫ := by
         rw [sub_eq_add_neg, ← inner_neg_left, mul_add, ← mul_assoc, one_div_mul_cancel]
@@ -84,7 +84,7 @@ theorem Nesterov_first_converge (minφ : IsMinOn (f + h) univ xm) :
           + alg.l / 2 * ‖x - y‖ ^ 2 := by
         apply lipschitz_continuos_upper_bound' alg.h₁ alg.h₂ y x
       _ ≤ f y + ⟪f' y, x - y⟫ + 1 / (2 * alg.t k) * ‖x - y‖ ^ 2 := by
-        apply add_le_add_left; apply mul_le_mul_of_nonneg_right
+        apply add_le_add_right; apply mul_le_mul_of_nonneg_right
         calc (alg.l : ℝ) / 2
             = (1 / 2) * (alg.l : ℝ) := by ring
           _ ≤ (1 / 2) * (1 / alg.t k) := by
@@ -103,11 +103,11 @@ theorem Nesterov_first_converge (minφ : IsMinOn (f + h) univ xm) :
     calc
       _ ≤ f (alg.y k) + ⟪f' (alg.y k), alg.x (k + 1) - alg.y k⟫
           + 1 / (2 * alg.t k) * ‖alg.x (k + 1) - alg.y k‖ ^ 2 + h (alg.x (k + 1)) := by
-        apply add_le_add_right; exact fieq1 k (alg.x (k + 1)) (alg.y k)
+        apply add_le_add_left; exact fieq1 k (alg.x (k + 1)) (alg.y k)
       _ ≤ f (alg.y k) + ⟪f' (alg.y k), alg.x (k + 1) - alg.y k⟫
           + 1 / (2 * alg.t k) * ‖alg.x (k + 1) - alg.y k‖ ^ 2 + h z
           + ⟪(f' (alg.y k)) + (1 / alg.t k) • (alg.x (k + 1) - alg.y k), z - alg.x (k + 1)⟫ := by
-        rw [add_assoc _ (h z)]; apply add_le_add_left; exact hieq2 z k
+        rw [add_assoc _ (h z)]; apply add_le_add_right; exact hieq2 z k
       _ = f (alg.y k) + ⟪f' (alg.y k), z - alg.y k⟫
           + (1 / alg.t k) * ⟪alg.x (k + 1) - alg.y k, z - alg.x (k + 1)⟫
           + 1 / (2 * alg.t k) * ‖alg.x (k + 1) - alg.y k‖ ^ 2 + h z := by
@@ -117,8 +117,8 @@ theorem Nesterov_first_converge (minφ : IsMinOn (f + h) univ xm) :
       _ ≤ φ z + (1 / alg.t k) *
           ⟪alg.x (k + 1) - alg.y k, z - alg.x (k + 1)⟫
           + (1 / (2 * alg.t k)) * ‖alg.x (k + 1) - alg.y k‖ ^ 2 := by
-        rw [add_comm _ (h z)]; repeat rw [← add_assoc]; repeat apply add_le_add_right
-        simp [φ]; rw [add_comm _ (h z), add_assoc]; apply add_le_add_left
+        rw [add_comm _ (h z)]; repeat rw [← add_assoc]; repeat apply add_le_add_left
+        simp [φ]; rw [add_comm _ (h z), add_assoc]; apply add_le_add_right
         apply Convex_first_order_condition'
         exact alg.h₁ (alg.y k); exact alg.convf; repeat simp
   have φieq3 (k : ℕ) : φ (alg.x (k + 1)) - φ xm - (1 - alg.γ k) * (φ (alg.x k) - φ xm) ≤
@@ -242,16 +242,14 @@ theorem Nesterov_first_converge (minφ : IsMinOn (f + h) univ xm) :
       _ ≤ (α n) * ((alg.γ n) ^ 2 / (2 * alg.t n)
           * (‖v n - xm‖ ^ 2 - ‖v (n + 1) - xm‖ ^ 2))
           + (α n) * ((1 - alg.γ n) * (φ (alg.x n) - φ xm)) + ‖v (n + 1) - xm‖ ^ 2 := by
-        rw [mul_add]; repeat apply add_le_add_right
-        rw [mul_le_mul_iff_right₀]
-        · exact φieq4 n
-        · exact αpos n
+        rw [mul_add]; repeat apply add_le_add_left
+        exact mul_le_mul_of_nonneg_left (φieq4 n) (le_of_lt (αpos n))
       _ = ‖v n - xm‖ ^ 2 - ‖v (n + 1) - xm‖ ^ 2 +
           (α n) * ((1 - alg.γ n) * (φ (alg.x n) - φ xm)) + ‖v (n + 1) - xm‖ ^ 2 := by
         rw [← mul_assoc, h10, one_mul]
       _ ≤ ‖v n - xm‖ ^ 2 - ‖v (n + 1) - xm‖ ^ 2 +
           (α (n - 1)) * (φ (alg.x n) - φ xm) + ‖v (n + 1) - xm‖ ^ 2 := by
-        apply add_le_add_right; apply add_le_add_left
+        apply add_le_add_left; apply add_le_add_right
         rw [← mul_assoc]; apply mul_le_mul_of_nonneg_right; rw [mul_comm]
         exact cond' n
         simp
@@ -297,7 +295,7 @@ theorem Nesterov_first_converge (minφ : IsMinOn (f + h) univ xm) :
             * ((alg.t 0)⁻¹ * ⟪alg.x 1 - alg.y 0, xm - alg.x 1⟫
             + (alg.t 0)⁻¹ * 2⁻¹ * ‖alg.x 1 - alg.y 0‖ ^ 2 + φ xm - φ xm)
             + ‖alg.x 1 - xm‖ ^ 2 := by
-          apply add_le_add_right
+          apply add_le_add_left
           have h2pos : 0 < 2 * alg.t 0 := by linarith [alg.tbound 0]
           apply mul_le_mul_of_nonneg_left _ (le_of_lt h2pos)
           simp; linarith [φieq3]
@@ -399,4 +397,3 @@ theorem Nesterov_first_fix_stepsize_converge (minφ : IsMinOn (f + h) univ xm) :
       · apply sq_nonneg
 
 end Nesterov_first_fix_stepsize
-

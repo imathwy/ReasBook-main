@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap28.Lemma_28_20_2
+import StacksProject_2024.stacks_project.Chap28.Lemma_28_20_2
 
 open AlgebraicGeometry
 open scoped AlgebraicGeometry TensorProduct

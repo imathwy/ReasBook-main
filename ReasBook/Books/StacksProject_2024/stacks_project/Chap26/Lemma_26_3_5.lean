@@ -1,5 +1,5 @@
 import Mathlib.Geometry.RingedSpace.OpenImmersion
-import StacksProject_2024.Chap06.Definition_6_25_1
+import StacksProject_2024.stacks_project.Chap06.Definition_6_25_1
 
 open CategoryTheory
 open TopologicalSpace

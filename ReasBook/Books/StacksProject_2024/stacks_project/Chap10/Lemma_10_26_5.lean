@@ -1,5 +1,5 @@
 import Mathlib.Data.List.TFAE
-import StacksProject_2024.Chap05.Lemma_5_23_8
+import StacksProject_2024.stacks_project.Chap05.Lemma_5_23_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

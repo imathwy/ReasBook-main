@@ -1,6 +1,6 @@
 import Mathlib.CategoryTheory.Limits.ExactFunctor
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.PushforwardContinuous
-import StacksProject_2024.Chap07.Lemma_7_42_5
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_42_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,8 +1,8 @@
-import StacksProject_2024.Chap13.Definition_13_8_1
-import StacksProject_2024.Chap13.Lemma_13_35_7
-import StacksProject_2024.Chap12.Lemma_12_25_1
-import StacksProject_2024.Chap15.Definition_15_59_1
-import StacksProject_2024.Chap15.Lemma_15_59_6
+import StacksProject_2024.stacks_project.Chap13.Definition_13_8_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_35_7
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_25_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_59_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_59_6
 import Mathlib.Algebra.Homology.BifunctorShift
 import Mathlib.CategoryTheory.Limits.ExactFunctor
 import Mathlib.CategoryTheory.Limits.Preserves.Finite

@@ -1,6 +1,6 @@
-import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3
-import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1
-import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_5.SubgroupInduction
+import LinearRepresentations_Serre_1977.Serre.Chap14.Corollary_14_14_4_3
+import LinearRepresentations_Serre_1977.Serre.Chap15.Definition_15_15_3_1
+import LinearRepresentations_Serre_1977.Serre.Chap16.Theorem_16_16_1_5.SubgroupInduction
 
 noncomputable section
 

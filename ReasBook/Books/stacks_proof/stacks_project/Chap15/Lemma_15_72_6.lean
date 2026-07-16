@@ -1,5 +1,5 @@
 import Mathlib.Algebra.Homology.Monoidal
-import StacksProject_2024.Chap15.Lemma_15_72_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_72_1
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory

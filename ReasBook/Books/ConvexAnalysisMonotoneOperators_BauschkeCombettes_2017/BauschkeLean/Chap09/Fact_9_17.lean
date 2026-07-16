@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Analysis.InnerProductSpace.ProdL2
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap01.Lemma_1_24
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Fact_6_13
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_4
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09.Definition_9_12
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap01.Lemma_1_24
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap06.Fact_6_13
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap08.Proposition_8_4
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap09.Definition_9_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -15,6 +15,20 @@ universe u
 noncomputable section
 
 namespace ERealFunction
+
+namespace Set
+
+abbrev core {E : Type*} [AddCommGroup E] [Module ℝ E] (C : _root_.Set E) : _root_.Set E :=
+  Proposition612Absorbent.Set.core C
+
+theorem mem_core_iff {E : Type*} [AddCommGroup E] [Module ℝ E]
+    {C : _root_.Set E} {x : E} :
+    x ∈ core C ↔
+      ∀ y : E, ∃ ε > (0 : ℝ), ∀ t : ℝ, t ∈ _root_.Set.Icc (0 : ℝ) ε →
+        x + t • y ∈ C :=
+  Proposition612Absorbent.Set.mem_core_iff
+
+end Set
 
 variable {H : Type u} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
 
@@ -229,7 +243,7 @@ theorem interior_sub_effectiveDomain_eq_core_sub_effectiveDomain
       _ = interior (e '' epigraph F - e '' epigraph G) := by
         rw [himage_sub]
       _ = Set.core (e '' epigraph F - e '' epigraph G) := by
-        exact interior_sub_eq_core_sub_of_isClosed_of_convex
+        exact Proposition612Absorbent.interior_sub_eq_core_sub_of_isClosed_of_convex
           hF_closed' hG_closed' hF_convex' hG_convex'
       _ = Set.core (e '' (epigraph F - epigraph G)) := by
         rw [himage_sub]

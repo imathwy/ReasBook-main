@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap10.Example_10_136_8.Index
+import stacks_proof.stacks_project.Chap10.Example_10_136_8.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

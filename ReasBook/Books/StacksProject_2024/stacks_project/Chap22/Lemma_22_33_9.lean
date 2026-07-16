@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap13.Definition_13_37_1
-import StacksProject_2024.Chap22.Lemma_22_31_2
-import StacksProject_2024.Chap22.Lemma_22_33_2
+import StacksProject_2024.stacks_project.Chap13.Definition_13_37_1
+import StacksProject_2024.stacks_project.Chap22.Lemma_22_31_2
+import StacksProject_2024.stacks_project.Chap22.Lemma_22_33_2
 
 open CategoryTheory
 open CategoryTheory.Limits

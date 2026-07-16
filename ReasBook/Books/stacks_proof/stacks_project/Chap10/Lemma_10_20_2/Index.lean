@@ -1,3 +1,3 @@
-import StacksProject_2024.Chap10.Lemma_10_20_2.FiniteQuotientGeneration
-import StacksProject_2024.Chap10.Lemma_10_20_2.AwayProductMaps
-import StacksProject_2024.Chap10.Lemma_10_20_2.SingleDenominator
+import stacks_proof.stacks_project.Chap10.Lemma_10_20_2.FiniteQuotientGeneration
+import stacks_proof.stacks_project.Chap10.Lemma_10_20_2.AwayProductMaps
+import stacks_proof.stacks_project.Chap10.Lemma_10_20_2.SingleDenominator

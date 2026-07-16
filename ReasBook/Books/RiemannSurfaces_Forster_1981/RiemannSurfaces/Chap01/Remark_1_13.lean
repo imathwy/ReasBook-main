@@ -1,4 +1,4 @@
-import RiemannSurfaces_Forster_1981.Chap01.Definition_1_12
+import RiemannSurfaces_Forster_1981.RiemannSurfaces.Chap01.Definition_1_12
 
 open scoped ContDiff Manifold
 open TopologicalSpace

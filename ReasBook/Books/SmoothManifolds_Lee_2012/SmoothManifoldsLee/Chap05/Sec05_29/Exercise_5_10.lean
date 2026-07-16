@@ -3,7 +3,7 @@ import Mathlib.Analysis.SpecialFunctions.PolarCoord
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.InverseDeriv
 import Mathlib.Analysis.Calculus.ContDiff.WithLp
 import Mathlib.Analysis.InnerProductSpace.Calculus
-import SmoothManifolds_Lee_2012.Chap05.Sec05_29.Definition_5_29_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_29.Definition_5_29_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

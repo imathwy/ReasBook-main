@@ -9,12 +9,12 @@ variable {X Y : Type*}
 [NormedAddCommGroup Y] [InnerProductSpace ℝ Y]
 (A : X →L[ℝ] Y) (fullrank : Injective A)
 
-lemma KerA_bot (fullrank : Injective A) : ker A = ⊥ := ker_eq_bot.2 fullrank
+lemma KerA_bot (fullrank : Injective A) : ker A.toLinearMap = ⊥ := ker_eq_bot.2 fullrank
 
 variable [CompleteSpace X] --[ProperSpace X] [FiniteDimensional ℝ X]
 [CompleteSpace Y] --[ProperSpace Y] [FiniteDimensional ℝ Y]
 --byf
-lemma KerA_eq_KerA'A : ker A = ker (A†.comp A) := by
+lemma KerA_eq_KerA'A : ker A.toLinearMap = ker (A†.comp A).toLinearMap := by
    ext x; constructor
    ·  simp; intro h; rw[h]; continuity
    ·  intro h; simp at h
@@ -24,7 +24,7 @@ lemma KerA_eq_KerA'A : ker A = ker (A†.comp A) := by
             _ = (0:ℝ) := by rw [h, inner_zero_right]
       apply inner_self_eq_zero.1 this
 
-lemma KerA'A_bot (fullrank : Injective A) : ker (A†.comp A) = ⊥ := by
+lemma KerA'A_bot (fullrank : Injective A) : ker (A†.comp A).toLinearMap = ⊥ := by
    rw[← KerA_eq_KerA'A]
    apply KerA_bot A fullrank
 
@@ -70,4 +70,3 @@ lemma inv_bounded₂ [FiniteDimensional ℝ X] (fullrank : Injective A) :
       _ ≤ C₁ * ‖(A†.comp A) x‖ := h₁.2 x
       _ ≤ C₁ * (C₂ * ‖A x‖) := (mul_le_mul_iff_of_pos_left h₁.1).2 (h₂.2 x)
       _ = (C₁ * C₂) * ‖A x‖ := Mathlib.Tactic.RingNF.mul_assoc_rev C₁ C₂ ‖A x‖
-

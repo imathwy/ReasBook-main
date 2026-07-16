@@ -1,8 +1,8 @@
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
-import StacksProject_2024.Chap20.«20_11_0_1»
-import StacksProject_2024.Chap20.Sections_on_open
-import StacksProject_2024.Chap20.Sections_on_open_global
-import StacksProject_2024.Chap21.DerivedCategoryExact
+import StacksProject_2024.stacks_project.Chap20.«20_11_0_1»
+import StacksProject_2024.stacks_project.Chap20.Sections_on_open
+import StacksProject_2024.stacks_project.Chap20.Sections_on_open_global
+import StacksProject_2024.stacks_project.Chap21.DerivedCategoryExact
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

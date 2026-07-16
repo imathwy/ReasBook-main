@@ -1,5 +1,5 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap09.Example_9_36
-import ProbabilityTheory_Klenke_2020.Items.Chap10.Example_10_16
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap09.Example_9_36
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap10.Example_10_16
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

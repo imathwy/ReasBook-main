@@ -1,6 +1,6 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.III.section12.«0031_Exercise_19»
-import DifferentialForms_Cartan_1970.IV.section17.«0012_Exercise_4»
+import DifferentialForms_Cartan_1970.cartan.III.section12.«0031_Exercise_19»
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0012_Exercise_4»
 
 -- Domain sampling note: this item lives in one-variable complex analysis. The canonical owner
 -- abstractions already present in the chapter/project are the Rouché theorem

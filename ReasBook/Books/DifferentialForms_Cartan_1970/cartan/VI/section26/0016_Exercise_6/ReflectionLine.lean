@@ -1,6 +1,6 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section06.«0013_Corollary_II_2_extra_5»
-import DifferentialForms_Cartan_1970.VI.section26.«0015_Exercise_5»
+import DifferentialForms_Cartan_1970.cartan.II.section06.«0013_Corollary_II_2_extra_5»
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0015_Exercise_5»
 
 open scoped ComplexConjugate
 open EuclideanGeometry

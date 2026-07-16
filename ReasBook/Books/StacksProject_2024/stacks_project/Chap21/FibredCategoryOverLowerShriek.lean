@@ -1,7 +1,7 @@
 import Mathlib.CategoryTheory.Adjunction.Mates
-import StacksProject_2024.Chap18.RingedSiteModuleCategory
-import StacksProject_2024.Chap21.Lemma_21_20_3
-import StacksProject_2024.Chap21.Situation_21_38_3
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategory
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_20_3
+import StacksProject_2024.stacks_project.Chap21.Situation_21_38_3
 
 open CategoryTheory
 open CategoryTheory.FibredCategoryMor

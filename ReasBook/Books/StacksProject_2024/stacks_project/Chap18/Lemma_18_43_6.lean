@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Monoidal.Basic
-import StacksProject_2024.Chap18.Definition_18_43_1
+import StacksProject_2024.stacks_project.Chap18.Definition_18_43_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

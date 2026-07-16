@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.DVRValuationRegularValueSourceWorker
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.PointMassRowsSourceClosureWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.DVRValuationRegularValueSourceWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.PointMassRowsSourceClosureWorker
 
 /-!
 Direct source-side adapters for the high-order prime-power pairing residual.

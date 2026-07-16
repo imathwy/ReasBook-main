@@ -1,6 +1,6 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.SemilinearGaloisDescent
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.SemilinearGaloisDescent
 
 /-!
 # `G`-equivariant Galois descent of representations

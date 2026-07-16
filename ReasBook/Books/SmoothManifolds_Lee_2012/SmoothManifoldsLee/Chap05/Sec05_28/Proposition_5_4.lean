@@ -1,5 +1,5 @@
 import Mathlib
-import SmoothManifolds_Lee_2012.Chap01.Sec01.Example_1_3
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01.Example_1_3
 
 universe uE uF uG uM uN
 

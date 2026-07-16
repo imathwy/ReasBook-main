@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap22.PropertyI
+import StacksProject_2024.stacks_project.Chap22.PropertyI
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

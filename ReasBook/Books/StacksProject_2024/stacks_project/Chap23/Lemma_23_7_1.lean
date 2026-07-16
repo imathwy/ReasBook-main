@@ -1,7 +1,7 @@
 import Mathlib.RingTheory.Ideal.Operations
 import Mathlib.RingTheory.Ideal.Over
 import Mathlib.RingTheory.Ideal.Quotient.Operations
-import StacksProject_2024.Chap23.Lemma_23_6_11
+import StacksProject_2024.stacks_project.Chap23.Lemma_23_6_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

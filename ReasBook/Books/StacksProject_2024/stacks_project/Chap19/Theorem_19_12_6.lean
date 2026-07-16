@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap12.Definition_12_27_5
-import StacksProject_2024.Chap19.Lemma_19_12_4
+import StacksProject_2024.stacks_project.Chap12.Definition_12_27_5
+import StacksProject_2024.stacks_project.Chap19.Lemma_19_12_4
 
 open CategoryTheory
 

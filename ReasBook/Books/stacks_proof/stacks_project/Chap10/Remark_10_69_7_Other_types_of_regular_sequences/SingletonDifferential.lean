@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap10.Remark_10_69_7_Other_types_of_regular_sequences.SingletonTensorTerms
-import StacksProject_2024.Chap15.Lemma_15_30_2
+import stacks_proof.stacks_project.Chap10.Remark_10_69_7_Other_types_of_regular_sequences.SingletonTensorTerms
+import stacks_proof.stacks_project.Chap15.Lemma_15_30_2
 
 noncomputable section
 

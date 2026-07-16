@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.IntegerDivisibilityDescent
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.IntegerDivisibilityDescent
 import Mathlib.Data.ZMod.QuotientGroup
 
 noncomputable section

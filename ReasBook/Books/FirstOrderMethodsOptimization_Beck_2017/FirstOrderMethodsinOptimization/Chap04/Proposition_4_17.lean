@@ -1,4 +1,4 @@
-import FirstOrderMethodsOptimization_Beck_2017.Chap04.Proposition_4_16
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap04.Proposition_4_16
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

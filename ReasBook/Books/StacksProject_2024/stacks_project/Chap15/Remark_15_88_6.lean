@@ -1,11 +1,11 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap13.Definition_13_34_1
-import StacksProject_2024.Chap15.Lemma_15_87_6
-import StacksProject_2024.Chap15.Lemma_15_88_1
-import StacksProject_2024.Chap15.Lemma_15_88_3
-import StacksProject_2024.Chap15.Lemma_15_88_1_Base
-import StacksProject_2024.Chap15.Lemma_15_88_5_Bridge
-import StacksProject_2024.Chap15.Lemma_15_88_5_TowerBridge
+import StacksProject_2024.stacks_project.Chap13.Definition_13_34_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_87_6
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_88_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_88_3
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_88_1_Base
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_88_5_Bridge
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_88_5_TowerBridge
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,10 +1,10 @@
-import StacksProject_2024.Chap10.Definition_10_60_10
-import StacksProject_2024.Chap10.Lemma_10_150_6.AssociatedGradedAPI
-import StacksProject_2024.Chap10.Lemma_10_58_10
-import StacksProject_2024.Chap10.Lemma_10_59_9
-import StacksProject_2024.Chap10.Proposition_10_59_5.OwnerPackaging
-import StacksProject_2024.Chap10.Proposition_10_60_9
-import StacksProject_2024.Chap10.Lemma_10_106_1.Index
+import stacks_proof.stacks_project.Chap10.Definition_10_60_10
+import stacks_proof.stacks_project.Chap10.Lemma_10_150_6.AssociatedGradedAPI
+import stacks_proof.stacks_project.Chap10.Lemma_10_58_10
+import stacks_proof.stacks_project.Chap10.Lemma_10_59_9
+import stacks_proof.stacks_project.Chap10.Proposition_10_59_5.OwnerPackaging
+import stacks_proof.stacks_project.Chap10.Proposition_10_60_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_106_1.Index
 import Mathlib.RingTheory.GradedAlgebra.Homogeneous.Maps
 import Mathlib.Tactic.StacksAttribute
 

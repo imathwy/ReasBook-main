@@ -2,8 +2,8 @@ import Mathlib.Algebra.Order.Hom.Units
 import Mathlib.NumberTheory.RamificationInertia.Basic
 import Mathlib.Tactic.Recall
 import Mathlib.RingTheory.Valuation.Discrete.Basic
-import StacksProject_2024.Chap15.Definition_15_112_1
-import StacksProject_2024.Chap15.Lemma_15_124_2
+import StacksProject_2024.stacks_project.Chap15.Definition_15_112_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_124_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

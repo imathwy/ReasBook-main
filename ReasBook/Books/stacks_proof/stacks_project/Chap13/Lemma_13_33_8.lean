@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap13.Remark_13_33_2
-import StacksProject_2024.Chap13.Lemma_13_33_6
+import stacks_proof.stacks_project.Chap13.Remark_13_33_2
+import stacks_proof.stacks_project.Chap13.Lemma_13_33_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

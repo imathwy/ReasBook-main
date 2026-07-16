@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap04.Remark_4_22_7
+import stacks_proof.stacks_project.Chap04.Remark_4_22_7
 
 open CategoryTheory Limits Opposite
 open scoped CategoryTheory

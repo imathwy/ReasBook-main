@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap06.Lemma_6_31_7
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_31_7
 
 open CategoryTheory TopCat
 open TopologicalSpace.Opens

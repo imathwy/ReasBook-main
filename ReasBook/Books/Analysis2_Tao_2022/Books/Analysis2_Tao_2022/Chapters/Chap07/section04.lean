@@ -635,7 +635,13 @@ lemma helperForLemma_7_8_isOpen_eq_iUnion_countable_coordinateOpenBoxes_fun (n :
   calc
     E = ⋃ k ∈ T, {x : Fin n → ℝ | ∀ i : Fin n, k.1.1 i < x i ∧ x i < k.1.2 i} := hCover
     _ = ⋃ k : T, {x : Fin n → ℝ | ∀ i : Fin n, k.1.1.1 i < x i ∧ x i < k.1.1.2 i} := by
-          simp [Set.iUnion_subtype]
+          ext x
+          simp only [Set.mem_iUnion, Set.mem_setOf_eq]
+          constructor
+          · rintro ⟨k, hk, hx⟩
+            exact ⟨⟨k, hk⟩, hx⟩
+          · rintro ⟨⟨k, hk⟩, hx⟩
+            exact ⟨k, hk, hx⟩
 
 /-- Lemma 7.8: if `E ⊆ ℝ^n` is open in the Euclidean topology, then `E` is the union of a
 finite or countable family of coordinate open boxes

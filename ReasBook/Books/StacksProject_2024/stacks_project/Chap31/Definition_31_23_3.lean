@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
-import StacksProject_2024.Chap18.RingedSiteModuleCategory
-import StacksProject_2024.Chap31.Definition_31_23_1
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategoryBasic
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategory
+import StacksProject_2024.stacks_project.Chap31.Definition_31_23_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

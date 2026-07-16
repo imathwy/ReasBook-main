@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
-import StacksProject_2024.Chap17.Definition_17_28_1
+import stacks_proof.stacks_project.Chap18.RingedSiteModuleCategoryBasic
+import stacks_proof.stacks_project.Chap17.Definition_17_28_1
 
 open CategoryTheory
 open PresheafOfModules.DifferentialsConstruction

@@ -1,9 +1,9 @@
-import StacksProject_2024.Chap19.Lemma_19_12_2
-import StacksProject_2024.Chap19.Lemma_19_11_3
-import StacksProject_2024.Chap12.Lemma_12_9_6
-import StacksProject_2024.Chap12.Lemma_12_31_6
-import StacksProject_2024.Chap13.«13_18_6_1»
-import StacksProject_2024.Chap13.Definition_13_31_1
+import stacks_proof.stacks_project.Chap19.Lemma_19_12_2
+import stacks_proof.stacks_project.Chap19.Lemma_19_11_3
+import stacks_proof.stacks_project.Chap12.Lemma_12_9_6
+import stacks_proof.stacks_project.Chap12.Lemma_12_31_6
+import stacks_proof.stacks_project.Chap13.«13_18_6_1»
+import stacks_proof.stacks_project.Chap13.Definition_13_31_1
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

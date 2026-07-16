@@ -7,11 +7,11 @@ import Mathlib.RingTheory.Finiteness.Finsupp
 import Mathlib.RingTheory.LocalRing.Basic
 import Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous
 import Mathlib.RingTheory.Noetherian.Basic
-import StacksProject_2024.Chap10.Lemma_10_5_3
-import StacksProject_2024.Chap10.Lemma_10_6_4
-import StacksProject_2024.Chap10.Lemma_10_20_1_Nakayama_s_lemma
-import StacksProject_2024.Chap10.Lemma_10_39_13
-import StacksProject_2024.Chap10.Lemma_10_78_5
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_5_3
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_6_4
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_20_1_Nakayama_s_lemma
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_39_13
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_78_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

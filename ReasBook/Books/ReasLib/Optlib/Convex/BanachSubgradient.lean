@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Author: Wanyi He, Chenyi Li, Zichen Wang
 -/
 import Mathlib.Analysis.NormedSpace.HahnBanach.Separation
+import Mathlib.Analysis.LocallyConvex.Separation
 import Mathlib.Analysis.Normed.Operator.Basic
 import Mathlib.LinearAlgebra.Dual.Lemmas
 import Mathlib.Analysis.Normed.Operator.Basic
@@ -201,7 +202,8 @@ theorem Banach_SubderivWithinAt.Nonempty (hf : ConvexOn ℝ s f)
     let an : ℕ → E × ℝ := fun n => (a.1, f a.1 + 1 / (n + 1))
     have can2 : Tendsto (fun n => (an n).2) atTop (nhds (f a.1)) := by
       obtain hh := Tendsto.add
-        (tendsto_const_nhds) (tendsto_one_div_add_atTop_nhds_zero_nat)
+        (tendsto_const_nhds : Tendsto (fun _ : ℕ => f a.1) atTop (nhds (f a.1)))
+        tendsto_one_div_add_atTop_nhds_zero_nat
       simp only [add_zero] at hh; exact hh
     have hxn : ∀ (n : ℕ), h' ((an n).1 - x) + f x ≤ (an n).2 := by
       intro n
@@ -280,4 +282,3 @@ theorem Banach_SubderivWithinAt.Nonempty (hf : ConvexOn ℝ s f)
   have : h' ∈ (Banach_SubderivWithinAt f s x) :=
     fun a ha => (by linarith [key2 (a, f a) ⟨ha, Eq.le rfl⟩])
   use h'
-

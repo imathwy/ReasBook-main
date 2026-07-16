@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Homology.ShortComplex.HomologicalComplex
 import Mathlib.CategoryTheory.Sites.SheafCohomology.Cech
 import Mathlib.Topology.Sheaves.AddCommGrpCat
-import StacksProject_2024.Chap20.OpensInstances
+import StacksProject_2024.stacks_project.Chap20.OpensInstances
 
 open CategoryTheory TopologicalSpace
 

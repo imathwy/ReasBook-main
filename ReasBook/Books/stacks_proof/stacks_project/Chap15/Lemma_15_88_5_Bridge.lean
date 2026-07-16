@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap15.«15_60_1_1»
-import StacksProject_2024.Chap15.Lemma_15_88_1_Core
+import stacks_proof.stacks_project.Chap15.«15_60_1_1»
+import stacks_proof.stacks_project.Chap15.Lemma_15_88_1_Core
 
 open CategoryTheory
 open CategoryTheory.Limits

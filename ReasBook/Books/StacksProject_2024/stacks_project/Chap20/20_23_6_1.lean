@@ -3,7 +3,7 @@ import Mathlib.Data.Fin.Tuple.Sort
 import Mathlib.GroupTheory.Perm.Sign
 import Mathlib.Logic.Equiv.Fin.Basic
 import Mathlib.Topology.Sheaves.AddCommGrpCat
-import StacksProject_2024.Chap20.Lemma_20_9_3
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_9_3
 
 open CategoryTheory Opposite TopologicalSpace
 open scoped BigOperators

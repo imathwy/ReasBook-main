@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.CentralizerPPartDivisibilityInfraFinal
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.PrimeToPRootLift
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.CentralizerPPartDivisibilityInfraFinal
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.PrimeToPRootLift
 
 /-!
 Unit denominator lemmas for Serre `18.5(a)`.

@@ -38,7 +38,7 @@ theorem dist_foldl_smul_le_sum_dist_smul (v : V) (gs : List G) :
   | append_singleton hs g ih =>
     calc
       dist v ((hs ++ [g]).foldl (fun x g ↦ g • x) v)
-          = dist v (g • (hs.foldl successiveTranslate v)) := by
+          = dist v (g • (hs.foldl (fun x h ↦ h • x) v)) := by
               simp [List.foldl_append]
       _ ≤ dist v (g • v) + dist (g • v) (g • (hs.foldl (fun x g ↦ g • x) v)) := by
             simpa using dist_triangle v (g • v) (g • (hs.foldl (fun x g ↦ g • x) v))

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap24.Definition_24_22_2
+import StacksProject_2024.stacks_project.Chap24.Definition_24_22_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap29.RelativeProjProjectiveBundleHypothesis
+import StacksProject_2024.stacks_project.Chap29.RelativeProjProjectiveBundleHypothesis
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,9 +1,9 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap02.Exercise_2_2_1_5
-import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_1_2
-import LinearRepresentations_Serre_1977.Chap02.Theorem_2_2_3_5
-import LinearRepresentations_Serre_1977.Chap08.Corollary_8_8_1_3
-import LinearRepresentations_Serre_1977.FiniteToFintype
+import LinearRepresentations_Serre_1977.Serre.Chap02.Exercise_2_2_1_5
+import LinearRepresentations_Serre_1977.Serre.Chap02.Proposition_2_2_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap02.Theorem_2_2_3_5
+import LinearRepresentations_Serre_1977.Serre.Chap08.Corollary_8_8_1_3
+import LinearRepresentations_Serre_1977.Serre.FiniteToFintype
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

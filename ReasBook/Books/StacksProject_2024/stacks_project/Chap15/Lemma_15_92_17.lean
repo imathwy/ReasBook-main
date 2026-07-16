@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.CategoryTheory.Abelian.Exact
 import Mathlib.CategoryTheory.Triangulated.Yoneda
-import StacksProject_2024.Chap13.Lemma_13_35_7
-import StacksProject_2024.Chap15.Situation_15_92_15
-import StacksProject_2024.Chap15.Lemma_15_92_16
-import StacksProject_2024.Chap15.«15_74_0_2»
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_35_7
+import StacksProject_2024.stacks_project.Chap15.Situation_15_92_15
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_92_16
+import StacksProject_2024.stacks_project.Chap15.«15_74_0_2»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

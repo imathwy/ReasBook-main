@@ -1,4 +1,4 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_37
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap17.Theorem_17_37
 import Mathlib
 
 open MeasureTheory ProbabilityTheory

@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap20.Lemma_20_34_4
-import StacksProject_2024.Chap20.Remark_20_34_12
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_34_4
+import StacksProject_2024.stacks_project.Chap20.Remark_20_34_12
 
 open CategoryTheory
 open AlgebraicGeometry

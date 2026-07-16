@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap10.Definition_10_60_10
-import StacksProject_2024.Chap10.Definition_10_70_1
-import StacksProject_2024.Chap10.«10_69_0_1»
+import StacksProject_2024.stacks_project.Chap10.Definition_10_60_10
+import StacksProject_2024.stacks_project.Chap10.Definition_10_70_1
+import StacksProject_2024.stacks_project.Chap10.«10_69_0_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

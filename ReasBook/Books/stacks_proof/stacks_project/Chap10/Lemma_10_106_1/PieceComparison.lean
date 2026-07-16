@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap10.Definition_10_60_10
-import StacksProject_2024.Chap10.Lemma_10_59_9
-import StacksProject_2024.Chap10.Lemma_10_106_1.StageClassAPI
+import stacks_proof.stacks_project.Chap10.Definition_10_60_10
+import stacks_proof.stacks_project.Chap10.Lemma_10_59_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_106_1.StageClassAPI
 
 open IsLocalRing
 

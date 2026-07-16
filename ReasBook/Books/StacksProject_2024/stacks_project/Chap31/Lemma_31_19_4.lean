@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap31.Lemma_31_19_3
+import StacksProject_2024.stacks_project.Chap31.Lemma_31_19_3
 
 open AlgebraicGeometry
 open CategoryTheory

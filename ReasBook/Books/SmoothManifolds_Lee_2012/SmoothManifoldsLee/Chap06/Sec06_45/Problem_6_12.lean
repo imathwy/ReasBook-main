@@ -3,12 +3,12 @@ import Mathlib.Geometry.Manifold.Immersion
 import Mathlib.Geometry.Manifold.Instances.Real
 import Mathlib.Geometry.Manifold.SmoothEmbedding
 import Mathlib.Geometry.Manifold.WhitneyEmbedding
-import SmoothManifolds_Lee_2012.Chap01.Sec01.Definition_1_extra_1
-import SmoothManifolds_Lee_2012.Chap03.Sec03_14.Proposition_3_10
-import SmoothManifolds_Lee_2012.Chap04.Sec04_21.Definition_4_21_extra_1
-import SmoothManifolds_Lee_2012.Chap04.Sec04_24.Proposition_4_22
-import SmoothManifolds_Lee_2012.Chap04.Sec04_24.Exercise_4_16
-import SmoothManifolds_Lee_2012.Chap05.Sec05_37.Problem_5_6
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01.Definition_1_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap03.Sec03_14.Proposition_3_10
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_21.Definition_4_21_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_24.Proposition_4_22
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_24.Exercise_4_16
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_37.Problem_5_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

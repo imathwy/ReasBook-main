@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap07.Definition_7_15_1_Topoi
-import StacksProject_2024.Chap07.Lemma_7_12_4
+import stacks_proof.stacks_project.Chap07.Definition_7_15_1_Topoi
+import stacks_proof.stacks_project.Chap07.Lemma_7_12_4
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

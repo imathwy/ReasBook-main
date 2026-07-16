@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap26.Definition_26_4_1
-import StacksProject_2024.Chap26.Lemma_26_3_5
+import StacksProject_2024.stacks_project.Chap26.Definition_26_4_1
+import StacksProject_2024.stacks_project.Chap26.Lemma_26_3_5
 
 open AlgebraicGeometry
 open CategoryTheory TopologicalSpace

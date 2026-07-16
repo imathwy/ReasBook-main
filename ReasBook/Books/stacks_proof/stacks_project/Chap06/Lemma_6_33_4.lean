@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap06.Glueing_data_for_sheaves_on_an_open_cover
-import StacksProject_2024.Chap06.Lemma_6_33_1
-import StacksProject_2024.Chap06.Lemma_6_33_2
-import StacksProject_2024.Chap04.Lemma_4_2_18
+import stacks_proof.stacks_project.Chap06.Glueing_data_for_sheaves_on_an_open_cover
+import stacks_proof.stacks_project.Chap06.Lemma_6_33_1
+import stacks_proof.stacks_project.Chap06.Lemma_6_33_2
+import stacks_proof.stacks_project.Chap04.Lemma_4_2_18
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory Opposite TopologicalSpace TopCat

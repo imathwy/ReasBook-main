@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap04.Lemma_4_27_5
+import stacks_proof.stacks_project.Chap04.Lemma_4_27_5
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory

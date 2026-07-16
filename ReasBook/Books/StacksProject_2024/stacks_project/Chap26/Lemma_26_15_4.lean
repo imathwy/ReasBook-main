@@ -1,5 +1,5 @@
 import Mathlib.AlgebraicGeometry.Sites.Representability
-import StacksProject_2024.Chap26.Definition_26_15_3
+import StacksProject_2024.stacks_project.Chap26.Definition_26_15_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

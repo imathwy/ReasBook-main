@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Algebra.Module.FinitePresentation
 import Mathlib.CategoryTheory.Functor.OfSequence
-import StacksProject_2024.Chap10.Definition_10_5_1
-import StacksProject_2024.Chap15.Lemma_15_3_3
-import StacksProject_2024.Chap15.Lemma_15_101_1
+import stacks_proof.stacks_project.Chap10.Definition_10_5_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_3_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_101_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

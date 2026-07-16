@@ -1,6 +1,6 @@
-import DifferentialForms_Cartan_1970.II.section05.«0035_Theorem_II_1_extra_22».SubtypeBoundaryBlocks
-import DifferentialForms_Cartan_1970.II.section05.«0035_Theorem_II_1_extra_22».ConnectedAmbientReduction
-import DifferentialForms_Cartan_1970.II.section05.«0035_Theorem_II_1_extra_22».ComponentApproximationAssembly
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0035_Theorem_II_1_extra_22».SubtypeBoundaryBlocks
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0035_Theorem_II_1_extra_22».ConnectedAmbientReduction
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0035_Theorem_II_1_extra_22».ComponentApproximationAssembly
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

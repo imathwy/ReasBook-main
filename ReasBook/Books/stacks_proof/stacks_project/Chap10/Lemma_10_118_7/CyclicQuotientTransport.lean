@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap10.Lemma_10_118_7.PolynomialLocalization
-import StacksProject_2024.Chap10.Lemma_10_30_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_118_7.PolynomialLocalization
+import stacks_proof.stacks_project.Chap10.Lemma_10_30_2
 
 universe u v w
 

@@ -1,8 +1,8 @@
 import Mathlib.Geometry.Manifold.IsManifold.Basic
 import Mathlib.Topology.Covering.Basic
-import SmoothManifolds_Lee_2012.Chap04.Sec04_26.Definition_4_26_extra_1
-import SmoothManifolds_Lee_2012.Chap04.Sec04_26.Exercise_4_37
-import SmoothManifolds_Lee_2012.Chap04.Sec04_26.Proposition_4_36
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_26.Definition_4_26_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_26.Exercise_4_37
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_26.Proposition_4_36
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

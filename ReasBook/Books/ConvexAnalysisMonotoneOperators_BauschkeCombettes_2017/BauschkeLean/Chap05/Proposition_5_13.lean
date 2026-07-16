@@ -1,9 +1,10 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap01.Text_1_0_46
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04.Definition_4_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Definition_5_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Theorem_5_5
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Theorem_5_11
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap01.Text_1_0_46
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap04.Definition_4_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap05.Definition_5_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap05.Theorem_5_5
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap05.Proposition_5_10
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap05.Theorem_5_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -492,6 +493,8 @@ section
 
 variable {H : Type u} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
 
+namespace Proposition513Fejer
+
 namespace FejerMonotone
 
 /-- Helper for Proposition 5.13: the interior-direction auxiliary point lies in the chosen open
@@ -656,6 +659,8 @@ theorem exists_tendsto_and_summable_norm_sub_of_interior_nonempty
   exact ⟨x, hx, hsummable⟩
 
 end FejerMonotone
+
+end Proposition513Fejer
 
 -- Proof sketch: clause (ii) supplies Fejér monotonicity of the relaxed iteration, and then
 -- Theorem 5.5 applies once all weak sequential cluster points are known to lie in the common

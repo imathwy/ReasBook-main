@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap13.Lemma_13_31_9
-import StacksProject_2024.Chap18.Definition_18_31_1
-import StacksProject_2024.Chap18.RingedSiteModuleCategory
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_31_9
+import StacksProject_2024.stacks_project.Chap18.Definition_18_31_1
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategory
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

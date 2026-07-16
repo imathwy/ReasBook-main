@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap05.Theorem_5_17_5
+import StacksProject_2024.stacks_project.Chap05.Theorem_5_17_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

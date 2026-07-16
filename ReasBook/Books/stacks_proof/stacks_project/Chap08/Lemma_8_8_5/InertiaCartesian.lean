@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap04.Lemma_4_34_1
-import StacksProject_2024.Chap04.«4_34_2_3»
-import StacksProject_2024.Chap08.Lemma_8_8_1
-import StacksProject_2024.Chap08.Lemma_8_8_4
+import stacks_proof.stacks_project.Chap04.Lemma_4_34_1
+import stacks_proof.stacks_project.Chap04.«4_34_2_3»
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_4
 
 universe u v
 

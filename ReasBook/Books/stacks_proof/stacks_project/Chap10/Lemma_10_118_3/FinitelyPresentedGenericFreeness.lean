@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_118_3.FinitelyPresentedGenericFreeness.Index
+import stacks_proof.stacks_project.Chap10.Lemma_10_118_3.FinitelyPresentedGenericFreeness.Index
 
 universe u v w
 

@@ -3,11 +3,11 @@ import Mathlib.Algebra.Homology.Monoidal
 import Mathlib.Algebra.Homology.Localization
 import Mathlib.CategoryTheory.Localization.Monoidal.Braided
 import Mathlib.CategoryTheory.Functor.Derived.LeftDerived
-import StacksProject_2024.Chap15.Lemma_15_58_3_Owner
-import StacksProject_2024.Chap17.Definition_17_5_1
-import StacksProject_2024.Chap13.Remark_13_10_9
-import StacksProject_2024.Chap13.Situation_13_15_1
-import StacksProject_2024.Chap20.Definition_20_26_2
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_58_3_Owner
+import StacksProject_2024.stacks_project.Chap17.Definition_17_5_1
+import StacksProject_2024.stacks_project.Chap13.Remark_13_10_9
+import StacksProject_2024.stacks_project.Chap13.Situation_13_15_1
+import StacksProject_2024.stacks_project.Chap20.Definition_20_26_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

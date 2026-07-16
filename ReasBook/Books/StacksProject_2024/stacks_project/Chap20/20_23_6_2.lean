@@ -1,6 +1,6 @@
 import Mathlib.Tactic
-import StacksProject_2024.Chap20.«20_23_6_1»
-import StacksProject_2024.Chap20.Definition_20_23_2
+import StacksProject_2024.stacks_project.Chap20.«20_23_6_1»
+import StacksProject_2024.stacks_project.Chap20.Definition_20_23_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

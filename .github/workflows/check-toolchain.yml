@@ -1,45 +1,33 @@
-name: Check Toolchain
+name: Check toolchain
 
 on:
   schedule:
     - cron: '0 0 * * 1'
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
-  check:
-    runs-on: self-hosted
+  detect:
+    runs-on: [self-hosted, Linux, X64]
+    outputs:
+      version: ${{ steps.release.outputs.version }}
     steps:
       - uses: actions/checkout@v4
-
-      - name: Check for new Lean release
-        id: check
+      - name: Detect stable Lean release
+        id: release
         run: |
-          LATEST=$(python3 scripts/upgrade_toolchain.py --latest-check 2>/dev/null)
-          CURRENT=$(cat ReasBook/lean-toolchain | sed 's/leanprover\/lean4:v//')
-          echo "Current: v$CURRENT"
-          echo "Latest:  v$LATEST"
-          if [ "$LATEST" != "$CURRENT" ] && [ -n "$LATEST" ]; then
-            echo "new_version=$LATEST" >> $GITHUB_OUTPUT
-            echo "New version available: v$LATEST"
-          else
-            echo "Already at latest version."
-          fi
+          set -euo pipefail
+          latest="$(python3 scripts/upgrade_toolchain.py --latest-check)"
+          current="$(sed 's/leanprover\/lean4:v//' ReasBook/lean-toolchain)"
+          if [ "$latest" != "$current" ]; then echo "version=$latest" >> "$GITHUB_OUTPUT"; fi
 
-      - name: Run upgrade (if new version found)
-        if: steps.check.outputs.new_version != ''
-        run: |
-          python3 scripts/upgrade_toolchain.py --target ${{ steps.check.outputs.new_version }}
-
-      - name: Commit and push
-        if: steps.check.outputs.new_version != ''
-        run: |
-          git add -A
-          git commit -m "upgrade: toolchain v${{ steps.check.outputs.new_version }}" || true
-          git push
-
-      - name: Upload upgrade report
-        if: steps.check.outputs.new_version != ''
-        uses: actions/upload-artifact@v4
-        with:
-          name: upgrade-report
-          path: docs/upgrade-reports/
+  upgrade:
+    needs: detect
+    if: needs.detect.outputs.version != ''
+    uses: ./.github/workflows/automation.yml
+    with:
+      operation: upgrade
+      version: ${{ needs.detect.outputs.version }}

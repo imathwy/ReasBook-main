@@ -1,16 +1,16 @@
 import Mathlib
-import StacksProject_2024.Chap10.Proposition_10_110_1
-import StacksProject_2024.Chap15.Definition_15_65_1
-import StacksProject_2024.Chap15.Definition_15_67_1
-import StacksProject_2024.Chap15.Definition_15_105_3
-import StacksProject_2024.Chap15.Definition_15_75_1
-import StacksProject_2024.Chap15.Lemma_15_60_1
-import StacksProject_2024.Chap15.Lemma_15_51_11
-import StacksProject_2024.Chap15.Lemma_15_67_18
-import StacksProject_2024.Chap15.Lemma_15_67_11
-import StacksProject_2024.Chap15.Lemma_15_67_3
-import StacksProject_2024.Chap15.Lemma_15_78_2
-import StacksProject_2024.Chap15.Lemma_15_105_5
+import StacksProject_2024.stacks_project.Chap10.Proposition_10_110_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_65_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_67_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_105_3
+import StacksProject_2024.stacks_project.Chap15.Definition_15_75_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_60_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_51_11
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_67_18
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_67_11
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_67_3
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_78_2
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_105_5
 
 noncomputable section
 

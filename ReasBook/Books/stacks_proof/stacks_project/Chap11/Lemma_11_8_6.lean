@@ -1,11 +1,11 @@
 import Mathlib
 import Mathlib.Data.List.TFAE
-import StacksProject_2024.Chap09.Lemma_9_21_5
-import StacksProject_2024.Chap11.Definition_11_8_1
-import StacksProject_2024.Chap11.Lemma_11_5_1
-import StacksProject_2024.Chap11.Lemma_11_4_2
-import StacksProject_2024.Chap11.Lemma_11_4_3
-import StacksProject_2024.Chap11.Lemma_11_7_4
+import stacks_proof.stacks_project.Chap09.Lemma_9_21_5
+import stacks_proof.stacks_project.Chap11.Definition_11_8_1
+import stacks_proof.stacks_project.Chap11.Lemma_11_5_1
+import stacks_proof.stacks_project.Chap11.Lemma_11_4_2
+import stacks_proof.stacks_project.Chap11.Lemma_11_4_3
+import stacks_proof.stacks_project.Chap11.Lemma_11_7_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

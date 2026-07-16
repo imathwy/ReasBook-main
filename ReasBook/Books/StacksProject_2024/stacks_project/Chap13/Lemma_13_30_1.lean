@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap04.Remark_4_27_7
-import StacksProject_2024.Chap13.Lemma_13_14_3
-import StacksProject_2024.Chap13.Lemma_13_14_16
+import StacksProject_2024.stacks_project.Chap04.Remark_4_27_7
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_14_3
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_14_16
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

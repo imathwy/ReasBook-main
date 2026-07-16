@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Lemma_3_13_5
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap03.Lemma_3_13_5
 
 universe u v w
 
@@ -51,6 +51,8 @@ variable
   (hstep : HasBoundedStepWordRealization generators d k)
   (hstab : HasBoundedDistinguishedStabilizerWords generators X₀ o d)
 
+include hdesc hstep hstab
+
 /-- Corollary 3-13-6: for a positive generator word of length at most `3`, the correction word
 from Lemma `3-13-5` may be chosen with the same bounded-prefix-distance control, and every letter
 in the tail `correction.drop (3 * k)` lies in the distinguished subset `X₀`. -/
@@ -67,7 +69,11 @@ theorem exists_correction_word_with_bounded_prefix_distance_of_length_le_three
     ⟨correction, hprod, htail, hprefix⟩
   refine ⟨correction, hprod, ?_, hprefix⟩
   intro x hx
-  exact htail x <| by
-    simpa [List.drop_drop, Nat.add_sub_of_le (Nat.mul_le_mul_right k hg)] using hx
+  have hle : g.length * k ≤ 3 * k := Nat.mul_le_mul_right k hg
+  have hx' :
+      x ∈ (correction.drop (g.length * k)).drop (3 * k - g.length * k) := by
+    rw [List.drop_drop, Nat.add_sub_of_le hle]
+    exact hx
+  exact htail x (List.mem_of_mem_drop hx')
 
 end

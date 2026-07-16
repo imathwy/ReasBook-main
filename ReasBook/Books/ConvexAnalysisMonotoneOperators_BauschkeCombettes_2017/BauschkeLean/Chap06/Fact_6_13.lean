@@ -1,5 +1,5 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Proposition_6_12
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap06.Proposition_6_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -7,6 +7,8 @@ open Set Topology
 open scoped Pointwise
 
 universe u
+
+namespace Proposition612Absorbent
 
 variable {H : Type u} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
 
@@ -47,3 +49,5 @@ theorem interior_sub_eq_core_sub_of_isClosed_of_convex {C D : Set H} (hC_closed 
   simpa [himage] using
     (interior_image_eq_core_image_of_isClosed_of_convex_of_surjective
       (L := L) hL_surj hprod_closed hprod_convex)
+
+end Proposition612Absorbent

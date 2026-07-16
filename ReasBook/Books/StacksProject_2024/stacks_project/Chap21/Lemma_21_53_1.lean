@@ -1,8 +1,8 @@
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
-import StacksProject_2024.Chap13.Definition_13_8_1
-import StacksProject_2024.Chap13.Aux_13_17_1
-import StacksProject_2024.Chap18.Definition_18_43_1_Finite
-import StacksProject_2024.Chap21.SheafModuleDerivedRestriction
+import StacksProject_2024.stacks_project.Chap13.Definition_13_8_1
+import StacksProject_2024.stacks_project.Chap13.Aux_13_17_1
+import StacksProject_2024.stacks_project.Chap18.Definition_18_43_1_Finite
+import StacksProject_2024.stacks_project.Chap21.SheafModuleDerivedRestriction
 
 open CategoryTheory
 open CategoryTheory.Limits

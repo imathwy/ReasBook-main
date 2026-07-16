@@ -1,4 +1,4 @@
-import DifferentialForms_Cartan_1970.VII.section28.«0001_Theorem_2».TranslatedMixedCoefficientOwners
+import DifferentialForms_Cartan_1970.cartan.VII.section28.«0001_Theorem_2».TranslatedMixedCoefficientOwners
 
 open Filter
 open Set

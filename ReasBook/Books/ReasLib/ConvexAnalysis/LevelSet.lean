@@ -7,7 +7,7 @@ open Set
 variable {E : Type*}
 
 def M_affine [NormedAddCommGroup E] [NormedSpace ℝ E] (α : ℝ) :
-   AffineSubspace ℝ (WithLp 2 (E × ℝ)) where
+   AffineSubspace ℝ (E × ℝ) where
   carrier := Set.prod univ {α}
   smul_vsub_vadd_mem := by
     refine fun c {p₁ p₂ p₃} a a_1 a_2 ↦ ?_
@@ -114,4 +114,3 @@ theorem intrinsicInterior_of_level_set_lt
   [NormedAddCommGroup E] [InnerProductSpace ℝ E] (f : E → EReal)
   [ProperFunction univ f] (hf : ConvexOn ℝ (dom univ f) f) (α : ℝ) :
   intrinsicInterior ℝ {x | f x < α} = {x ∈ intrinsicInterior ℝ (dom univ f) | f x < α} := sorry
-

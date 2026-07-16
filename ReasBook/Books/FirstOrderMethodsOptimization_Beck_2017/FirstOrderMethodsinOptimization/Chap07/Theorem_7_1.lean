@@ -1651,7 +1651,13 @@ lemma permMatrix_mem_orthogonalGroup
     (σ : Equiv.Perm (Fin n)) :
     (σ.permMatrix ℝ : Mₙ) ∈ Matrix.orthogonalGroup (Fin n) ℝ := by
   refine (Matrix.mem_orthogonalGroup_iff (A := (σ.permMatrix ℝ : Mₙ)) (R := ℝ)).2 ?_
-  simpa using (Matrix.permMatrix_mul (R := ℝ) (σ := σ.symm) (τ := σ)).symm
+  have hσ : σ.symm * σ = (1 : Equiv.Perm (Fin n)) := inv_mul_cancel σ
+  calc
+    (σ.permMatrix ℝ : Mₙ) * (σ.permMatrix ℝ)ᵀ =
+        Equiv.Perm.permMatrix ℝ (σ.symm * σ) := by
+      rw [Matrix.transpose_permMatrix]
+      exact (Matrix.permMatrix_mul (R := ℝ) (σ := σ.symm) (τ := σ)).symm
+    _ = 1 := by rw [hσ]; exact Matrix.permMatrix_one
 
 /-- Helper for Theorem 7.1: an ordered common diagonalization of the reindexed relative conjugate
 transports back to a theorem-coordinate common diagonalization of `X` and `Y`. -/
@@ -1699,8 +1705,14 @@ lemma ordered_transport_common_diagonalization_to_theorem_coordinates
       Matrix.mul_assoc]
   have hPmat_right : Pmatᵀ * Pmat = (1 : Mₙ) := by
     -- The permutation matrix also satisfies the right orthogonality relation.
-    simpa [Pmat, Matrix.transpose_permMatrix] using
-      (Matrix.permMatrix_mul (R := ℝ) (σ := σ₀) (τ := σ₀.symm)).symm
+    have hσ₀ : σ₀ * σ₀.symm = (1 : Equiv.Perm (Fin n)) := mul_inv_cancel σ₀
+    calc
+      Pmatᵀ * Pmat =
+          (σ₀.permMatrix ℝ)ᵀ * σ₀.permMatrix ℝ := rfl
+      _ = Equiv.Perm.permMatrix ℝ (σ₀ * σ₀.symm) := by
+        rw [Matrix.transpose_permMatrix]
+        exact (Matrix.permMatrix_mul (R := ℝ) (σ := σ₀) (τ := σ₀.symm)).symm
+      _ = 1 := by rw [hσ₀]; exact Matrix.permMatrix_one
   have hQt : (Q : Mₙ)ᵀ = (W : Mₙ)ᵀ * (U : Mₙ) := by
     -- Transpose the relative-basis identity `Q = Uᵀ W`.
     simpa [Matrix.transpose_mul] using congrArg Matrix.transpose hQ

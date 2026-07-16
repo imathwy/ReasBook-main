@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Proposition_10_59_5.OwnerPackaging
+import stacks_proof.stacks_project.Chap10.Proposition_10_59_5.OwnerPackaging
 
 universe u
 

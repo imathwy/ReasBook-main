@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap18.Lemma_18_28_8
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_28_8
 
 open CategoryTheory CategoryTheory.Limits
 open scoped SheafOfModules.RingedSite.LocalizedStructureModuleExtensionByZero

@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap13.Definition_13_37_1
-import StacksProject_2024.Chap22.ModuleCatHasDerivedCategory
-import StacksProject_2024.Chap22.Lemma_22_36_3
+import StacksProject_2024.stacks_project.Chap13.Definition_13_37_1
+import StacksProject_2024.stacks_project.Chap22.ModuleCatHasDerivedCategory
+import StacksProject_2024.stacks_project.Chap22.Lemma_22_36_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

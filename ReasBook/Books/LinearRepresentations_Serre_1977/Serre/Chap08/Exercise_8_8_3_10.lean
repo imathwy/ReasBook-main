@@ -1,12 +1,12 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.FiniteToFintype
-import LinearRepresentations_Serre_1977.Chap01.Definition_1_1_4_1
-import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_1_1
-import LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_5_3
-import LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_5_6
-import LinearRepresentations_Serre_1977.Chap06.Exercise_6_6_5_8
-import LinearRepresentations_Serre_1977.Chap06.Proposition_6_6_5_1
-import LinearRepresentations_Serre_1977.Chap08.Definition_8_8_3_2
+import LinearRepresentations_Serre_1977.Serre.FiniteToFintype
+import LinearRepresentations_Serre_1977.Serre.Chap01.Definition_1_1_4_1
+import LinearRepresentations_Serre_1977.Serre.Chap03.Theorem_3_3_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap06.Corollary_6_6_5_3
+import LinearRepresentations_Serre_1977.Serre.Chap06.Exercise_6_6_5_6
+import LinearRepresentations_Serre_1977.Serre.Chap06.Exercise_6_6_5_8
+import LinearRepresentations_Serre_1977.Serre.Chap06.Proposition_6_6_5_1
+import LinearRepresentations_Serre_1977.Serre.Chap08.Definition_8_8_3_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

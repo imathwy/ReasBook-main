@@ -2,9 +2,9 @@ import Mathlib
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
 import Mathlib.CategoryTheory.Filtered.Final
 import Mathlib.CategoryTheory.Triangulated.Rotate
-import StacksProject_2024.Chap04.Definition_4_27_20
-import StacksProject_2024.Chap04.Lemma_4_27_21
-import StacksProject_2024.Chap04.Remark_4_27_7
+import stacks_proof.stacks_project.Chap04.Definition_4_27_20
+import stacks_proof.stacks_project.Chap04.Lemma_4_27_21
+import stacks_proof.stacks_project.Chap04.Remark_4_27_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

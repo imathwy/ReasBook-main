@@ -1,5 +1,5 @@
 import Mathlib.Algebra.DirectSum.Module
-import LinearRepresentations_Serre_1977.Chap04.Proposition_4_37
+import LinearRepresentations_Serre_1977.Serre.Chap04.Proposition_4_37
 
 noncomputable section
 

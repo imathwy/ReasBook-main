@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_155_6
-import StacksProject_2024.Chap15.Lemma_15_12_3
-import StacksProject_2024.Chap15.Lemma_15_12_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_155_6
+import stacks_proof.stacks_project.Chap15.Lemma_15_12_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_12_4
 
 -- Shared owner-level API extracted from `Lemma_15_109_1.lean`.
 

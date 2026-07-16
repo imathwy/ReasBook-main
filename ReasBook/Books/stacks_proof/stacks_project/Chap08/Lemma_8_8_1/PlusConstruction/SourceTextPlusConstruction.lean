@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap08.Lemma_8_8_1.PlusConstruction.NaiveConstruction
-import StacksProject_2024.Chap08.Lemma_8_8_1.PlusConstruction.Stage2HomSheafBridge
-import StacksProject_2024.Chap08.Lemma_8_8_1.PlusConstruction.Stage3DescentEffective.RealizationLocalInverseTotal
-import StacksProject_2024.Chap08.Lemma_8_8_1.PlusConstruction.Stage2HomSheafTruePlusFrontier
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.PlusConstruction.NaiveConstruction
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.PlusConstruction.Stage2HomSheafBridge
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.PlusConstruction.Stage3DescentEffective.RealizationLocalInverseTotal
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.PlusConstruction.Stage2HomSheafTruePlusFrontier
 
 universe u v uX vX
 

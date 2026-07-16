@@ -5,8 +5,8 @@ import Mathlib.RingTheory.AdicCompletion.Completeness
 import Mathlib.RingTheory.Derivation.Basic
 import Mathlib.RingTheory.FiniteType
 import Mathlib.RingTheory.Localization.Away.Basic
-import StacksProject_2024.Chap10.Lemma_10_96_3
-import StacksProject_2024.Chap10.Lemma_10_96_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_96_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_96_4
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

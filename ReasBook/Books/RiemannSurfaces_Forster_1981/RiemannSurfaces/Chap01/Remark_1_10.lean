@@ -1,5 +1,5 @@
-import RiemannSurfaces_Forster_1981.Chap01.Definition_1_9
-import RiemannSurfaces_Forster_1981.Chap01.Remark_1_7
+import RiemannSurfaces_Forster_1981.RiemannSurfaces.Chap01.Definition_1_9
+import RiemannSurfaces_Forster_1981.RiemannSurfaces.Chap01.Remark_1_7
 
 open scoped Manifold
 open TopologicalSpace

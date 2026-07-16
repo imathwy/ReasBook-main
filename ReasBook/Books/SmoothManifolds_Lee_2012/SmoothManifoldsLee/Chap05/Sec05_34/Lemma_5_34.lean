@@ -1,7 +1,7 @@
-import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Definition_5_28_extra_1
-import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Definition_5_28_extra_2
-import SmoothManifolds_Lee_2012.Chap05.Sec05_34.Notation_5_34_extra_1
-import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Theorem_1_46
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_28.Definition_5_28_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_28.Definition_5_28_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_34.Notation_5_34_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_06.Theorem_1_46
 import Mathlib.Geometry.Manifold.PartitionOfUnity
 
 -- Declarations for this item will be appended below by the statement pipeline.

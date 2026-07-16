@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.Abelian
 import Mathlib.CategoryTheory.Limits.Preserves.Finite
-import StacksProject_2024.Chap06.OpensMapFinal
-import StacksProject_2024.Chap06.RingedSpaceModuleCore
+import StacksProject_2024.stacks_project.Chap06.OpensMapFinal
+import StacksProject_2024.stacks_project.Chap06.RingedSpaceModuleCore
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

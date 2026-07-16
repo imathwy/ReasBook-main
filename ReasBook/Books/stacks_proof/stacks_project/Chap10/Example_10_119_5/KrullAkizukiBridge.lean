@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap10.Definition_10_161_1
-import StacksProject_2024.Chap10.Lemma_10_161_16_Tate
-import StacksProject_2024.Chap10.Example_10_119_5.PowerSeriesModuleBridge
+import stacks_proof.stacks_project.Chap10.Definition_10_161_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_161_16_Tate
+import stacks_proof.stacks_project.Chap10.Example_10_119_5.PowerSeriesModuleBridge
 
 noncomputable section
 

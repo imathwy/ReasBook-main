@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap14.Lemma_14_2_4
+import StacksProject_2024.stacks_project.Chap14.Lemma_14_2_4
 import Mathlib.AlgebraicTopology.SimplicialObject.Basic
 import Mathlib.Tactic.Recall
 

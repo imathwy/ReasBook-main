@@ -1,6 +1,6 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section05.«0035_Theorem_II_1_extra_22».ConnectedAmbientReduction
-import DifferentialForms_Cartan_1970.II.section05.«0035_Theorem_II_1_extra_22».SubtypeBoundaryBlocks
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0035_Theorem_II_1_extra_22».ConnectedAmbientReduction
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0035_Theorem_II_1_extra_22».SubtypeBoundaryBlocks
 
 open MeasureTheory
 open scoped BigOperators

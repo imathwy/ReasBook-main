@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.ChangeOfRings
-import StacksProject_2024.Chap18.Definition_18_34_1
-import StacksProject_2024.Chap18.Lemma_18_34_2
+import StacksProject_2024.stacks_project.Chap18.Definition_18_34_1
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_34_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

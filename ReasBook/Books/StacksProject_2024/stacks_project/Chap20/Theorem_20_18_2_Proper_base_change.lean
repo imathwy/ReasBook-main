@@ -1,8 +1,8 @@
-import StacksProject_2024.Chap05.Definition_5_17_2
-import StacksProject_2024.Chap06.Lemma_6_21_6
-import StacksProject_2024.Chap13.Lemma_13_14_16
-import StacksProject_2024.Chap13.Lemma_13_20_2
-import StacksProject_2024.Chap20.Bounded_below_homotopy_category_comp_iso
+import StacksProject_2024.stacks_project.Chap05.Definition_5_17_2
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_21_6
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_14_16
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_20_2
+import StacksProject_2024.stacks_project.Chap20.Bounded_below_homotopy_category_comp_iso
 import Mathlib.CategoryTheory.Whiskering
 
 -- Declarations for this item will be appended below by the statement pipeline.

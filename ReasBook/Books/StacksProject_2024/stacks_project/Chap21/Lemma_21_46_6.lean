@@ -7,10 +7,10 @@ import Mathlib.CategoryTheory.Shift.Localization
 import Mathlib.CategoryTheory.Shift.Quotient
 import Mathlib.CategoryTheory.Triangulated.Functor
 import Mathlib.CategoryTheory.Triangulated.Subcategory
-import StacksProject_2024.Chap15.Lemma_15_58_3
-import StacksProject_2024.Chap18.RingedSiteModuleCategory
-import StacksProject_2024.Chap21.Definition_21_17_13_Core
-import StacksProject_2024.Chap21.Definition_21_46_1_Core
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_58_3
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategory
+import StacksProject_2024.stacks_project.Chap21.Definition_21_17_13_Core
+import StacksProject_2024.stacks_project.Chap21.Definition_21_46_1_Core
 
 open CategoryTheory
 open CategoryTheory.Limits

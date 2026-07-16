@@ -2,20 +2,20 @@ import Mathlib.RingTheory.Flat.Basic
 import Mathlib.RingTheory.Flat.FaithfullyFlat.Algebra
 import Mathlib.RingTheory.LocalRing.ResidueField.Fiber
 import Mathlib.RingTheory.Noetherian.Basic
-import StacksProject_2024.Chap05.Definition_5_10_5
-import StacksProject_2024.Chap05.Definition_5_11_4
-import StacksProject_2024.Chap05.Lemma_5_20_2
-import StacksProject_2024.Chap10.Lemma_10_17_7
-import StacksProject_2024.Chap10.Lemma_10_25_1
-import StacksProject_2024.Chap10.Lemma_10_26_3
-import StacksProject_2024.Chap10.Lemma_10_105_2
-import StacksProject_2024.Chap10.Lemma_10_105_10
-import StacksProject_2024.Chap10.Lemma_10_112_7
-import StacksProject_2024.Chap10.Lemma_10_39_19
-import StacksProject_2024.Chap10.Definition_10_162_9
-import StacksProject_2024.Chap10.Lemma_10_164_1
-import StacksProject_2024.Chap15.Lemma_15_10_5
-import StacksProject_2024.Chap05.Lemma_5_20_3
+import stacks_proof.stacks_project.Chap05.Definition_5_10_5
+import stacks_proof.stacks_project.Chap05.Definition_5_11_4
+import stacks_proof.stacks_project.Chap05.Lemma_5_20_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_17_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_25_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_26_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_105_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_105_10
+import stacks_proof.stacks_project.Chap10.Lemma_10_112_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_39_19
+import stacks_proof.stacks_project.Chap10.Definition_10_162_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_164_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_10_5
+import stacks_proof.stacks_project.Chap05.Lemma_5_20_3
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

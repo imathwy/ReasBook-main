@@ -1,11 +1,11 @@
-import SmoothManifolds_Lee_2012.Chap01.Sec01.Definition_1_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01.Definition_1_extra_1
 import Mathlib.Geometry.Manifold.SmoothApprox
 import Mathlib.Topology.Homotopy.Affine
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Proposition_5_49
-import SmoothManifolds_Lee_2012.Chap05.Sec05_32.Definition_5_32_extra_2
-import SmoothManifolds_Lee_2012.Chap06.Sec06_40.Corollary_6_16
-import SmoothManifolds_Lee_2012.Chap06.Sec06_41.Definition_6_41_extra_1
-import SmoothManifolds_Lee_2012.Chap06.Sec06_45.Problem_6_3
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Proposition_5_49
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_32.Definition_5_32_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_40.Corollary_6_16
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_41.Definition_6_41_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_45.Problem_6_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

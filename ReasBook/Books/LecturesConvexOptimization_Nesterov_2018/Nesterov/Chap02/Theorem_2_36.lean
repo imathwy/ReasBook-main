@@ -1,6 +1,6 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_17
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_35
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Lemma_2_13
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Definition_2_17
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Definition_2_35
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Lemma_2_13
 
 open scoped Gradient ProjectedGradient StrongConvexSmooth
 

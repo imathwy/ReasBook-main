@@ -1,11 +1,12 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Definition_8_7
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Definition_12_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Definition_12_5
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap08.Definition_8_7
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap12.Definition_12_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap12.Definition_12_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
 open scoped Pointwise InnerProductSpace
+open ERealFunction
 
 universe u
 
@@ -34,7 +35,7 @@ variable {H : Type u} [AddCommGroup H]
 /-- Proposition 12.6 (iii): infimal convolution is commutative. -/
 -- Proof sketch: reindex the infimum by swapping a decomposition `x = y + z` with `x = z + y`.
 theorem infimalConvolution_comm (f g : H → EReal) :
-    f □ g = g □ f := sorry
+    infimalConvolution f g = infimalConvolution g f := sorry
 
 end Commutative
 
@@ -72,7 +73,8 @@ theorem infimalConvolution_assoc_of_commonSlopeMinorants
     (hf : HasContinuousAffineMinorantWithSlope f u)
     (hg : HasContinuousAffineMinorantWithSlope g u)
     (hh : HasContinuousAffineMinorantWithSlope h u) :
-    f □ (g □ h) = (f □ g) □ h := sorry
+    infimalConvolution f (infimalConvolution g h) =
+      infimalConvolution (infimalConvolution f g) h := sorry
 
 end AffineMinorants
 

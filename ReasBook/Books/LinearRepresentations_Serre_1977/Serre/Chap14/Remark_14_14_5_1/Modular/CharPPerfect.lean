@@ -1,9 +1,9 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.CharPMain
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.SplitBaseChange
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.FieldIndependence.CharPReduction
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.SeparableSemisimple
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.Modular.HomBaseChange
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.CharPMain
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.SplitBaseChange
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.FieldIndependence.CharPReduction
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.SeparableSemisimple
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.Modular.HomBaseChange
 
 /-!
 # Characteristic-`p` absolute simplicity over a *general perfect* field

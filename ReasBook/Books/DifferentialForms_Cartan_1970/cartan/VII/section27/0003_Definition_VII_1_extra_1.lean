@@ -1,4 +1,4 @@
-import DifferentialForms_Cartan_1970.IV.section13.«0007_Proposition_3_I»
+import DifferentialForms_Cartan_1970.cartan.IV.section13.«0007_Proposition_3_I»
 import Mathlib
 
 -- Declarations for this item will be appended below by the statement pipeline.

@@ -1,6 +1,6 @@
 import Mathlib.AlgebraicGeometry.Scheme
-import StacksProject_2024.Chap10.Definition_10_157_1
-import StacksProject_2024.Chap30.Lemma_30_9_1
+import StacksProject_2024.stacks_project.Chap10.Definition_10_157_1
+import StacksProject_2024.stacks_project.Chap30.Lemma_30_9_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

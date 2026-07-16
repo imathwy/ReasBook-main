@@ -1,14 +1,14 @@
 import Mathlib
-import StacksProject_2024.Chap12.Definition_12_5_3
-import StacksProject_2024.Chap13.Definition_13_15_3
-import StacksProject_2024.Chap13.Lemma_13_4_9
-import StacksProject_2024.Chap13.Lemma_13_14_15
-import StacksProject_2024.Chap13.Lemma_13_15_2
-import StacksProject_2024.Chap13.Lemma_13_15_4
-import StacksProject_2024.Chap13.Lemma_13_15_5
-import StacksProject_2024.Chap13.Lemma_13_15_6
-import StacksProject_2024.Chap13.Lemma_13_16_5
-import StacksProject_2024.Chap13.Lemma_13_16_7_Leray_s_acyclicity_lemma
+import StacksProject_2024.stacks_project.Chap12.Definition_12_5_3
+import StacksProject_2024.stacks_project.Chap13.Definition_13_15_3
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_4_9
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_14_15
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_15_2
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_15_4
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_15_5
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_15_6
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_16_5
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_16_7_Leray_s_acyclicity_lemma
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

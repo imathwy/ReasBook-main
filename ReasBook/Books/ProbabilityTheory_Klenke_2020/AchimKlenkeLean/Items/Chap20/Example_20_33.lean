@@ -1,5 +1,5 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap20.Definition_20_30
-import ProbabilityTheory_Klenke_2020.Items.Chap20.Example_20_8
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap20.Definition_20_30
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap20.Example_20_8
 import Mathlib
 
 open MeasureTheory ProbabilityTheory

@@ -1,8 +1,8 @@
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import StacksProject_2024.Chap13.Lemma_13_17_1
-import StacksProject_2024.Chap17.Definition_17_5_1
-import StacksProject_2024.Chap20.Lemma_20_33_6
-import StacksProject_2024.Chap20.Lemma_20_34_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_17_1
+import StacksProject_2024.stacks_project.Chap17.Definition_17_5_1
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_33_6
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_34_1
 
 open CategoryTheory
 open CategoryTheory.Adjunction

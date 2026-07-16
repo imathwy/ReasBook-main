@@ -1,8 +1,8 @@
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
 import Mathlib.CategoryTheory.Functor.Derived.RightDerived
-import StacksProject_2024.Chap13.Definition_13_11_3
-import StacksProject_2024.Chap18.Lemma_18_41_3
-import StacksProject_2024.Chap21.Lemma_21_19_1
+import StacksProject_2024.stacks_project.Chap13.Definition_13_11_3
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_41_3
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_19_1
 
 open CategoryTheory
 open DerivedCategory.TStructure

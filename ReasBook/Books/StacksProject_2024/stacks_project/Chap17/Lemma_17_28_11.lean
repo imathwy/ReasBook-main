@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap18.Lemma_18_33_9
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_33_9
 
 open CategoryTheory
 open TopCat

@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap11.Proposition_11_11_4_1.ConjClassFunctionRealization
+import LinearRepresentations_Serre_1977.Serre.Chap11.Proposition_11_11_4_1.ConjClassFunctionRealization
 
 -- Stable zero-fiber transport helpers extracted from Proposition 11-11.4-1.
 

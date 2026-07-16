@@ -1,5 +1,5 @@
 import Mathlib
-import FirstOrderMethodsOptimization_Beck_2017.Chap12.Proposition_12_4
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap12.Proposition_12_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -64,6 +64,37 @@ local instance : NormedAddCommGroup TVSpace := inferInstance
 /-- Scalar multiplication on the `L²` product of horizontal and vertical difference matrices is
 compatible with those Frobenius norms. -/
 local instance : NormedSpace ℝ TVSpace := inferInstance
+
+/-- Addition on the `L²` product is continuous for its induced product topology. -/
+local instance : ContinuousAdd TVSpace := ⟨by
+  change Continuous (fun p : TVSpace × TVSpace =>
+    WithLp.toLp 2 (WithLp.ofLp p.1 + WithLp.ofLp p.2))
+  have hfst : Continuous (fun p : TVSpace × TVSpace => WithLp.ofLp p.1) :=
+    (WithLp.prod_continuous_ofLp (p := 2) (α := Hmn) (β := Vmn)).comp continuous_fst
+  have hsnd : Continuous (fun p : TVSpace × TVSpace => WithLp.ofLp p.2) :=
+    (WithLp.prod_continuous_ofLp (p := 2) (α := Hmn) (β := Vmn)).comp continuous_snd
+  exact (WithLp.prod_continuous_toLp (p := 2) (α := Hmn) (β := Vmn)).comp
+    (Continuous.add hfst hsnd)⟩
+
+/-- Negation on the `L²` product is continuous for its induced product topology. -/
+local instance : ContinuousNeg TVSpace := ⟨by
+  change Continuous (fun x : TVSpace => WithLp.toLp 2 (-WithLp.ofLp x))
+  exact (WithLp.prod_continuous_toLp (p := 2) (α := Hmn) (β := Vmn)).comp
+    (continuous_neg.comp
+      (WithLp.prod_continuous_ofLp (p := 2) (α := Hmn) (β := Vmn)))⟩
+
+local instance : IsTopologicalAddGroup TVSpace := {}
+
+/-- Scalar multiplication is continuous for the induced `L²` product topology. -/
+local instance : ContinuousSMul ℝ TVSpace := ⟨by
+  change Continuous (fun p : ℝ × TVSpace => WithLp.toLp 2 (p.1 • WithLp.ofLp p.2))
+  have hx : Continuous (fun p : ℝ × TVSpace => WithLp.ofLp p.2) :=
+    (WithLp.prod_continuous_ofLp (p := 2) (α := Hmn) (β := Vmn)).comp continuous_snd
+  exact (WithLp.prod_continuous_toLp (p := 2) (α := Hmn) (β := Vmn)).comp
+    (Continuous.smul continuous_fst hx)⟩
+
+/-- The operator norm specialized to the local Frobenius/`L²` structures. -/
+local instance : Norm (Mmn →L[ℝ] TVSpace) := ContinuousLinearMap.hasOpNorm
 
 /-- Helper for Proposition 12.6: squaring the Frobenius norm of a real matrix recovers the sum of
 the squares of its entries. -/
@@ -346,6 +377,7 @@ theorem two_dimensional_total_variation_difference_norm_sq_le_eight_mul_norm_sq
 -- Proof sketch: divide the pointwise estimate
 -- `‖A x‖² ≤ 8 ‖x‖²` by `‖x‖²` for `x ≠ 0`, then apply `ContinuousLinearMap.opNorm_le_bound` to
 -- the continuous linear map `A[m, n]`.
+set_option maxHeartbeats 800000 in
 /-- Proposition 12.6: the discrete horizontal-vertical first-difference operator `A` on
 `ℝ^(m × n)` satisfies the operator-norm bound `‖A‖² ≤ 8`. -/
 theorem two_dimensional_total_variation_difference_opNorm_sq_le_eight :
@@ -377,7 +409,10 @@ theorem two_dimensional_total_variation_difference_opNorm_sq_le_eight :
   -- Square the operator bound and simplify `(\sqrt 8)^2`.
   calc
     ‖(A[m, n]).toContinuousLinearMap‖ ^ (2 : ℕ) ≤ (Real.sqrt 8) ^ (2 : ℕ) := by
-      exact pow_le_pow_left₀ (norm_nonneg _) hopNorm 2
+      have hnorm_nonneg : 0 ≤ ‖(A[m, n]).toContinuousLinearMap‖ :=
+        ContinuousLinearMap.opNorm_nonneg (A[m, n]).toContinuousLinearMap
+      have hsqrt_nonneg : 0 ≤ Real.sqrt 8 := Real.sqrt_nonneg 8
+      nlinarith
     _ = 8 := by
       rw [Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 8)]
 

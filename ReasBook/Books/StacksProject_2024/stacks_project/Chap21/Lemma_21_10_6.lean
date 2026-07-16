@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap13.Lemma_13_22_2_Grothendieck_spectral_sequence
-import StacksProject_2024.Chap21.Definition_21_8_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_22_2_Grothendieck_spectral_sequence
+import StacksProject_2024.stacks_project.Chap21.Definition_21_8_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -2,12 +2,12 @@ import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Monoidal.Basic
 import Mathlib.Algebra.Category.ModuleCat.Monoidal.Closed
 import Mathlib.CategoryTheory.Adjunction.Limits
-import StacksProject_2024.Chap10.Lemma_10_39_5
-import StacksProject_2024.Chap10.Lemma_10_71_1
-import StacksProject_2024.Chap10.Remark_10_75_9
-import StacksProject_2024.Chap12.Lemma_12_31_4
-import StacksProject_2024.Chap12.Lemma_12_31_7
-import StacksProject_2024.Chap15.Lemma_15_27_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_39_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_71_1
+import stacks_proof.stacks_project.Chap10.Remark_10_75_9
+import stacks_proof.stacks_project.Chap12.Lemma_12_31_4
+import stacks_proof.stacks_project.Chap12.Lemma_12_31_7
+import stacks_proof.stacks_project.Chap15.Lemma_15_27_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

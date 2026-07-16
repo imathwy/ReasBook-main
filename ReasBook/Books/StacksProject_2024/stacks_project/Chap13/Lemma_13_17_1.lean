@@ -2,9 +2,9 @@ import Mathlib.Algebra.Homology.DerivedCategory.TStructure
 import Mathlib.CategoryTheory.ObjectProperty.ColimitsOfShape
 import Mathlib.CategoryTheory.ObjectProperty.Retract
 import Mathlib.CategoryTheory.Triangulated.Subcategory
-import StacksProject_2024.Chap13.Aux_13_17_1
-import StacksProject_2024.Chap12.Definition_12_10_1
-import StacksProject_2024.Chap13.Definition_13_11_3
+import StacksProject_2024.stacks_project.Chap13.Aux_13_17_1
+import StacksProject_2024.stacks_project.Chap12.Definition_12_10_1
+import StacksProject_2024.stacks_project.Chap13.Definition_13_11_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

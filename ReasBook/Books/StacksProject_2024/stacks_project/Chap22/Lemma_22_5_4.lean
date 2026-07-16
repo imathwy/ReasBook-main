@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap22.Lemma_22_4_2
-import StacksProject_2024.Chap22.DGModuleModel
+import StacksProject_2024.stacks_project.Chap22.Lemma_22_4_2
+import StacksProject_2024.stacks_project.Chap22.DGModuleModel
 import Mathlib.Algebra.Category.ModuleCat.Colimits
 import Mathlib.Algebra.Category.ModuleCat.Limits
 import Mathlib.Algebra.Homology.HomologicalComplexLimits

@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.CategoryTheory.Sites.Limits
-import StacksProject_2024.Chap05.Lemma_5_24_5
-import StacksProject_2024.Chap05.Lemma_5_27_1
-import StacksProject_2024.Chap06.Lemma_6_21_6
-import StacksProject_2024.Chap06.Lemma_6_29_1
-import StacksProject_2024.Chap06.Lemma_6_29_3
+import stacks_proof.stacks_project.Chap05.Lemma_5_24_5
+import stacks_proof.stacks_project.Chap05.Lemma_5_27_1
+import stacks_proof.stacks_project.Chap06.Lemma_6_21_6
+import stacks_proof.stacks_project.Chap06.Lemma_6_29_1
+import stacks_proof.stacks_project.Chap06.Lemma_6_29_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

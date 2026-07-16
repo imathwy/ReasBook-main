@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap10.Example_10_82_2
-import StacksProject_2024.Chap10.Theorem_10_82_3
+import StacksProject_2024.stacks_project.Chap10.Example_10_82_2
+import StacksProject_2024.stacks_project.Chap10.Theorem_10_82_3
 
 universe u
 

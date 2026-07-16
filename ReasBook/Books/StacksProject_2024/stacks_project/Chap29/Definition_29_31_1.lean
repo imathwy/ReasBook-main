@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap29.Lemma_29_31_3
+import StacksProject_2024.stacks_project.Chap29.Lemma_29_31_3
 
 open AlgebraicGeometry
 

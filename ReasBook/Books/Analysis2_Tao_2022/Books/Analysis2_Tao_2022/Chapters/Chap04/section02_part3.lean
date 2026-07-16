@@ -1,5 +1,5 @@
 import Mathlib
-import Books.Analysis2_Tao_2022.Chapters.Chap04.section02_part2
+import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Chapters.Chap04.section02_part2
 
 open Classical
 
@@ -54,7 +54,7 @@ lemma helperForProposition_4_2_6_iteratedDeriv_constMul_shiftedMonomial_fallingP
   have hConstMul :
       iteratedDeriv k (fun y : ℝ => c * (y - a) ^ n) x =
         c * iteratedDeriv k (fun y : ℝ => (y - a) ^ n) x :=
-    iteratedDeriv_const_mul (x := x) (n := k) (f := fun y : ℝ => (y - a) ^ n) hContDiffAtK c
+    iteratedDeriv_const_mul (x := x) (n := k) (f := fun y : ℝ => (y - a) ^ n) c hContDiffAtK
   calc
     iteratedDeriv k (fun y : ℝ => c * (y - a) ^ n) x
         = c * iteratedDeriv k (fun y : ℝ => (y - a) ^ n) x := hConstMul

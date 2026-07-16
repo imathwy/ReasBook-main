@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap16.Corollary_16_16_1_3.CharacterDescent
+import LinearRepresentations_Serre_1977.Serre.Chap16.Corollary_16_16_1_3.CharacterDescent
 
 noncomputable section
 

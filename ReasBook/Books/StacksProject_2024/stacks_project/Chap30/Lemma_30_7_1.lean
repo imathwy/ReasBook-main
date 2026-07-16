@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap20.Open_cover_module_cech_core
-import StacksProject_2024.Chap20.Lemma_20_24_1
+import StacksProject_2024.stacks_project.Chap20.Open_cover_module_cech_core
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_24_1
 
 open AlgebraicGeometry
 open CategoryTheory

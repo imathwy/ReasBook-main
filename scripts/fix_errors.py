@@ -2,7 +2,7 @@
 """
 Apply safe auto-fixes to compilation errors.
 
-Reads an error report from sync or upgrade workflows, analyzes each error,
+Reads an automation diagnostic report, analyzes each error,
 and applies only safe fixes (import, open, universe).  Never modifies
 declaration signatures or proof bodies.  Each fix is verified individually
 via lake build — if a fix does not reduce error count, it is rolled back.
@@ -20,21 +20,22 @@ Usage:
     # Bootstrap mode: run lake build, capture errors, generate report, fix
     python3 scripts/fix_errors.py --bootstrap AlgebraicTopology_May_1999
 
-    # Normal mode: read an existing error report
-    python3 scripts/fix_errors.py --source docs/upgrade-reports/v4.31.0.md
-    python3 scripts/fix_errors.py --source docs/sync-reports/2026-07-06-Serre.md
+    # Normal mode: read one local automation diagnostic report
+    python3 scripts/fix_errors.py --source docs/automation-reports/v4.30.0/RUN/summary.md
 
     # Single book mode (universe dedup only)
     python3 scripts/fix_errors.py --book AlgebraicTopology_May_1999
 
     # Dry run: preview fixes without modifying files
-    python3 scripts/fix_errors.py --source docs/sync-reports/2026-07-06-Serre.md --dry-run
+    python3 scripts/fix_errors.py --source docs/automation-reports/v4.30.0/RUN/summary.md --dry-run
 
     # All books (recursive)
     python3 scripts/fix_errors.py --all
 """
 
 import argparse
+import json
+import os
 import re
 import subprocess
 import sys
@@ -47,11 +48,29 @@ from typing import Optional
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
-REPO_ROOT = SCRIPT_DIR.parent
-BOOKS_DIR = REPO_ROOT / "ReasBook" / "Books"
-REPORTS_DIR = REPO_ROOT / "docs" / "error-fix-reports"
-SYNC_REPORTS_DIR = REPO_ROOT / "docs" / "sync-reports"
+from lib.project_scope import resolve
+
+REPO_ROOT = Path(os.environ.get("REASBOOK_ROOT", SCRIPT_DIR.parent)).resolve()
+PROJECT_ROOT = REPO_ROOT / "ReasBook"
+ERROR_REPORTS_DIR = REPO_ROOT / "docs" / "automation-reports" / "repairs"
 MATHLIB_PATH = REPO_ROOT / "ReasBook" / ".lake" / "packages" / "mathlib"
+REPORT_OUTPUT_DIR: Path | None = None
+ACTIVE_KIND = "book"
+
+
+def _report_output_dir() -> Path:
+    return REPORT_OUTPUT_DIR or ERROR_REPORTS_DIR
+
+
+def _source_module_name(book_name: str, relative_file: str) -> str:
+    parts = Path(relative_file).with_suffix("").parts
+    quoted = tuple(f"«{part}»" if part and part[0].isdigit() else part for part in parts)
+    prefix = resolve(PROJECT_ROOT, ACTIVE_KIND, book_name).module_prefix
+    return ".".join((prefix, *quoted))
+
+
+def _project_module_prefix(name: str) -> str:
+    return resolve(PROJECT_ROOT, ACTIVE_KIND, name).module_prefix
 
 try:
     from lib.migration_table import find_migration
@@ -766,7 +785,9 @@ def analyze_error(
             # Replace old module prefix with correct book name.
             # Works on ChapNN.lean aggregators AND section files.
             return {
-                "apply": lambda c: replace_import_prefix(c, old_prefix, book_dir.name),
+                "apply": lambda c: replace_import_prefix(
+                    c, old_prefix, _project_module_prefix(book_dir.name)
+                ),
                 "description": f"replace module prefix '{old_prefix}' with '{book_dir.name}'",
             }
         return {"reject": "unknown module prefix — cannot determine correct prefix"}
@@ -876,8 +897,7 @@ def parse_error_report(report_path: Path) -> dict[str, list[dict]]:
             error_text = error_match.group(1)
             file_path = None
             file_match_in_error = re.search(
-                r'(?:Chapters/Chap\d+/[\w.]+\.lean|Chapters/Chap\d+\.lean|'
-                r'Items/Chap\d+/[\w.]+\.lean)', error_text)
+                r'([\w/]+\.lean)', error_text)
             if file_match_in_error:
                 file_path = file_match_in_error.group(1)
             errors_by_book[current_book].append({
@@ -889,7 +909,7 @@ def parse_error_report(report_path: Path) -> dict[str, list[dict]]:
         # File-prefixed error: path:line:col: error: ...
         file_prefix_match = re.match(
             r'^\s*(?:[-*]\s+)?'
-            r'((?:Chapters|Items)/[\w/]+\.lean):'
+            r'([\w/]+\.lean):'
             r'(\d+):(\d+):\s*(?:error|warning):\s*(.+)',
             line,
         )
@@ -906,7 +926,7 @@ def parse_error_report(report_path: Path) -> dict[str, list[dict]]:
 
         # Lake build output format: path:line:col: error: ...
         lake_match = re.match(
-            r'^\s*((?:Chapters|Items)/[\w/]+\.lean):(\d+):(\d+):\s*'
+            r'^\s*([\w/]+\.lean):(\d+):(\d+):\s*'
             r'(?:error|warning):\s*(.+)',
             line,
         )
@@ -937,8 +957,9 @@ def bootstrap_error_report(book_name: str) -> Optional[Path]:
     print(f"Bootstrap: building {book_name} to capture errors...")
     print(f"{'=' * 60}")
 
+    spec = resolve(PROJECT_ROOT, ACTIVE_KIND, book_name)
     result = subprocess.run(
-        ["lake", "build", f"Books.{book_name}.Book"],
+        ["lake", "build", spec.target],
         cwd=REPO_ROOT / "ReasBook",
         capture_output=True, text=True,
     )
@@ -946,17 +967,42 @@ def bootstrap_error_report(book_name: str) -> Optional[Path]:
     output = result.stdout + result.stderr
     errors_by_file: dict[str, list[dict]] = defaultdict(list)
 
-    # Parse lake build error lines
+    # Build the prefix to strip.  Lake reports paths as
+    #   error: Books/<BookName>/path/to/file.lean:line:col: message
+    # or (on stderr) just
+    #   Books/<BookName>/path/to/file.lean:line:col: error: message
+    area = "Books" if ACTIVE_KIND == "book" else "Papers"
+    book_prefix = f"{area}/{book_name}/"
+
+    # Parse lake build error lines.  Two formats:
+    #   error: Books/Lib/file.lean:42:18: message
+    #   Books/Lib/file.lean:42:18: error: message
     for line in output.split('\n'):
-        # Match: path:line:col: error: message
-        m = re.match(
-            r'^((?:Chapters|Items)/[\w/]*\.lean):(\d+):(\d+):\s*'
-            r'(?:error|warning):\s*(.+)', line)
-        if m:
-            file_path = m.group(1)
-            error_text = m.group(4).strip()
+        # Try format 1: "error: Books/Lib/..."
+        m1 = re.match(
+            r'^error:\s+(' + re.escape(book_prefix) + r'(.+\.lean)):(\d+):(\d+):\s*(.+)',
+            line,
+        )
+        if m1:
+            file_path = m1.group(2)   # relative path after Books/Lib/
+            error_text = m1.group(5).strip()
             errors_by_file[file_path].append({
-                "error": f"{file_path}:{m.group(2)}:{m.group(3)}: {error_text}",
+                "error": f"{file_path}:{m1.group(3)}:{m1.group(4)}: {error_text}",
+                "file": file_path,
+            })
+            continue
+
+        # Try format 2: "Books/Lib/file.lean:42:18: error: message"
+        m2 = re.match(
+            r'^' + re.escape(book_prefix) + r'(.+\.lean):(\d+):(\d+):\s*'
+            r'(?:error|warning):\s*(.+)',
+            line,
+        )
+        if m2:
+            file_path = m2.group(1)
+            error_text = m2.group(4).strip()
+            errors_by_file[file_path].append({
+                "error": f"{file_path}:{m2.group(2)}:{m2.group(3)}: {error_text}",
                 "file": file_path,
             })
 
@@ -965,9 +1011,10 @@ def bootstrap_error_report(book_name: str) -> Optional[Path]:
         return None
 
     # Generate the grouped report
-    SYNC_REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+    output_dir = _report_output_dir()
+    output_dir.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now(timezone.utc).strftime('%Y-%m-%d-%H%M%S')
-    report_path = SYNC_REPORTS_DIR / f"bootstrap-{timestamp}-{book_name}.md"
+    report_path = output_dir / f"repair-bootstrap-{timestamp}-{ACTIVE_KIND}-{book_name}.md"
 
     total_errors = sum(len(v) for v in errors_by_file.values())
 
@@ -975,7 +1022,8 @@ def bootstrap_error_report(book_name: str) -> Optional[Path]:
         f"# Bootstrap Error Report: {book_name}",
         "",
         f"**Date**: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')}",
-        f"**Source**: lake build Books.{book_name}.Book",
+        f"**Source**: lake build {spec.target}",
+        f"**Kind**: {ACTIVE_KIND}",
         f"**Total errors**: {total_errors}",
         "",
         f"## {book_name} ({total_errors} errors)",
@@ -1250,14 +1298,14 @@ def fix_ambiguous_term_in_file(content: str) -> str | None:
     return None
 
 
-# ── Book-level fix orchestrator ─────────────────────────────────────────────
+# ── Project-level fix orchestrator ──────────────────────────────────────────
 
 def fix_book_errors(
     book_name: str,
     errors: list[dict],
     dry_run: bool,
 ) -> dict:
-    """Apply safe fixes to a book's errors with per-fix verification.
+    """Apply safe fixes to a book or paper's errors with per-fix verification.
 
     Each fix is applied individually, the book is rebuilt, and the error
     count for the target file is checked:
@@ -1268,13 +1316,14 @@ def fix_book_errors(
     Returns a fix report dict with keys: book, total_errors, fixed, cannot_fix.
     """
     report: dict = {
+        "kind": ACTIVE_KIND,
         "book": book_name,
         "total_errors": len(errors),
         "fixed": [],
         "cannot_fix": [],
     }
 
-    book_dir = BOOKS_DIR / book_name
+    book_dir = resolve(PROJECT_ROOT, ACTIVE_KIND, book_name).directory
     if not book_dir.exists():
         report["cannot_fix"].append({
             "file": "N/A",
@@ -1405,8 +1454,7 @@ def fix_book_errors(
 
             # Write the fix and rebuild — use single-section build for speed.
             # Module path: per-statement file
-            section_module = sf_rel.replace('/', '.').replace('.lean', '')
-            section_target = f"Books.{book_name}.{section_module}"
+            section_target = _source_module_name(book_name, sf_rel)
 
             sf_path.write_text(new_content, encoding='utf-8')
 
@@ -1510,6 +1558,86 @@ def fix_book_errors(
 
 
 # ==========================================================================
+#  Local repair report management
+# ==========================================================================
+
+def _current_toolchain_version() -> str:
+    """Read the current Lean toolchain version from ReasBook/lean-toolchain."""
+    tc = REPO_ROOT / "ReasBook" / "lean-toolchain"
+    if tc.exists():
+        return tc.read_text().strip().removeprefix("leanprover/lean4:v")
+    return "unknown"
+
+
+def _version_report_path() -> Path:
+    """Return the path for the version-based error report."""
+    version = _current_toolchain_version()
+    return _report_output_dir() / f"repair-report-v{version}.md"
+
+
+def write_cannot_fix_json(book_name: str, cannot_fix: list[dict]) -> Path:
+    """Write cannot_fix items as structured JSON for LLM handoff.
+
+    Returns the path to the JSON file.
+    """
+    output_dir = _report_output_dir()
+    output_dir.mkdir(parents=True, exist_ok=True)
+    toolchain = _current_toolchain_version()
+    # Legacy reports sometimes use a source-relative file name as the grouping
+    # key.  Keep the handoff as one file in output_dir instead of accidentally
+    # interpreting separators in that key as directories.
+    safe_name = re.sub(r"[^A-Za-z0-9._-]+", "_", book_name).strip("._-") or "unknown"
+    json_path = output_dir / f"repair-handoff-v{toolchain}-{ACTIVE_KIND}-{safe_name}.json"
+
+    items = []
+    book_dir = resolve(PROJECT_ROOT, ACTIVE_KIND, book_name).directory
+    for item in cannot_fix:
+        entry = {
+            "file": item.get("file", ""),
+            "error": item.get("error", ""),
+            "reason": item.get("reason", ""),
+        }
+        # Include file content snippet for LLM context
+        fp = item.get("file", "")
+        if fp and book_dir.exists():
+            sf = book_dir / fp
+            if sf.exists():
+                try:
+                    content = sf.read_text(encoding="utf-8")
+                    # Extract error line and surrounding context
+                    err_line_match = re.search(r':(\d+):', item.get("error", ""))
+                    if err_line_match:
+                        line_num = int(err_line_match.group(1))
+                        lines = content.split('\n')
+                        start = max(0, line_num - 20)
+                        end = min(len(lines), line_num + 10)
+                        entry["context"] = '\n'.join(
+                            f"{i + 1}: {l}"
+                            for i, l in enumerate(lines[start:end], start=start)
+                        )
+                    entry["content_length"] = len(content)
+                except Exception:
+                    entry["context"] = "[could not read file]"
+        items.append(entry)
+
+    json_path.write_text(
+        json.dumps(
+            {
+                "toolchain": f"v{toolchain}",
+                "kind": ACTIVE_KIND,
+                "book": book_name,
+                "total_cannot_fix": len(items),
+                "items": items,
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    return json_path
+
+
+# ==========================================================================
 #  Report generation
 # ==========================================================================
 
@@ -1518,38 +1646,99 @@ def generate_fix_report(
     source_path: str,
     dry_run: bool,
 ) -> str:
-    """Generate a markdown error-fix report and write it to disk.
+    """Generate a version-based markdown error report and write it to disk.
+
+    The report is placed under the ignored local automation report tree and
+    overwritten on subsequent runs for the same toolchain version.  This
+    keeps one authoritative report per version rather than accumulating
+    timestamped files.
+
+    Failing imports are never changed here. A JSON handoff is written for
+    review and the separate degradation command may later apply an approved
+    proposal.
 
     Returns the path to the generated report file.
     """
-    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
-    timestamp = datetime.now(timezone.utc).strftime('%Y-%m-%d-%H%M%S')
-    report_path = REPORTS_DIR / f"{timestamp}.md"
+    _report_output_dir().mkdir(parents=True, exist_ok=True)
+    report_path = _version_report_path()
+
+    # If a report already exists for this version, merge: remove books
+    # we are refreshing and re-append their updated data.
+    existing_books: set[str] = set()
+    existing_lines: list[str] = []
+    if report_path.exists():
+        existing_content = report_path.read_text(encoding="utf-8")
+        # Keep everything up to the first "## " after the summary
+        in_book_section = False
+        for line in existing_content.split('\n'):
+            if line.startswith("## ") and not line.startswith("## Summary"):
+                in_book_section = True
+            if not in_book_section:
+                existing_lines.append(line)
+            if in_book_section:
+                book_name_in_existing = line.removeprefix("## ").strip()
+                existing_books.add(book_name_in_existing)
+        # Remove trailing blank lines before appending
+        while existing_lines and existing_lines[-1] == '':
+            existing_lines.pop()
+        existing_lines.append('')
 
     total_fixed = sum(len(r["fixed"]) for r in reports)
     total_cannot = sum(len(r["cannot_fix"]) for r in reports)
     total_processed = total_fixed + total_cannot
 
     now = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
+    toolchain = _current_toolchain_version()
 
-    lines: list[str] = [
-        "# Error Fix Report",
-        "",
-        f"**Date**: {now}",
-        f"**Source**: {source_path}",
-        f"**Mode**: {'DRY RUN (no changes applied)' if dry_run else 'LIVE'}",
-        "",
-        "## Summary",
-        "",
-        f"- Total errors processed: {total_processed}",
-        f"- Auto-fixed: {total_fixed}",
-        f"- Cannot fix (needs manual review): {total_cannot}",
-        "",
-    ]
+    # Build report header (reuse existing_lines if merging)
+    if existing_lines:
+        lines = list(existing_lines)
+    else:
+        lines = [
+            f"# Error Report — toolchain v{toolchain}",
+            "",
+            f"**Last updated**: {now}",
+            f"**Source**: {source_path}",
+            "",
+            "## Summary",
+            "",
+            f"- Total errors processed: {total_processed}",
+            f"- Auto-fixed: {total_fixed}",
+            f"- Cannot fix (needs manual review): {total_cannot}",
+            "",
+        ]
+
+    # Update summary counts in existing report
+    if existing_lines:
+        new_summary_lines = [
+            f"# Error Report — toolchain v{toolchain}",
+            "",
+            f"**Last updated**: {now}",
+            f"**Source**: {source_path}",
+            "",
+            "## Summary",
+            "",
+            f"- Total errors processed: {total_processed}",
+            f"- Auto-fixed: {total_fixed}",
+            f"- Cannot fix (needs manual review): {total_cannot}",
+            "",
+        ]
+        # Replace from first line through Summary section
+        # Find the index of the first "## " after Summary
+        summary_end = 0
+        for i, line in enumerate(lines):
+            if line.startswith("## ") and "Summary" not in line:
+                summary_end = i
+                break
+        if summary_end > 0:
+            lines = new_summary_lines + lines[summary_end:]
+        else:
+            lines = new_summary_lines
 
     for report_data in reports:
+        book_name = report_data['book']
         lines += [
-            f"## {report_data['book']}",
+            f"## {book_name}",
             "",
             f"- Total errors: {report_data['total_errors']}",
             f"- Fixed: {len(report_data['fixed'])}",
@@ -1576,6 +1765,14 @@ def generate_fix_report(
         if report_data["cannot_fix"]:
             lines.append("### Requires Manual Review")
             lines.append("")
+            # Record the book-level error count for the summary note
+            book_cannot_count = len(report_data["cannot_fix"])
+            lines.append(
+                f"These {book_cannot_count} errors could not be auto-fixed. "
+                "Their imports remain active; review the automation run's "
+                "degradation proposal if a temporary subset is required."
+            )
+            lines.append("")
             for item in report_data["cannot_fix"]:
                 lines.append(
                     f"- **`{item.get('file', 'unknown')}`**: "
@@ -1589,7 +1786,16 @@ def generate_fix_report(
     content = '\n'.join(lines) + '\n'
 
     if not dry_run:
-        report_path.write_text(content, encoding='utf-8')
+        report_path.write_text(content, encoding="utf-8")
+        print(f"\n  Error report: {report_path}")
+
+        # Write JSON handoff for LLM
+        for report_data in reports:
+            if report_data["cannot_fix"]:
+                jp = write_cannot_fix_json(
+                    report_data["book"], report_data["cannot_fix"]
+                )
+                print(f"  LLM handoff: {jp}")
     else:
         print(f"\n[DRY RUN] Would write report to: {report_path}")
         print(content)
@@ -1609,6 +1815,7 @@ def _truncate(text: str, max_len: int) -> str:
 # ==========================================================================
 
 def main():
+    global REPORT_OUTPUT_DIR, ACTIVE_KIND
     parser = argparse.ArgumentParser(
         description="Apply safe auto-fixes to compilation errors",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -1617,13 +1824,19 @@ def main():
     parser.add_argument("--source", help="Path to error report (.md)")
     parser.add_argument("--book", help="Process a single book")
     parser.add_argument("--bootstrap", help="Bootstrap mode: lake build → report → fix")
+    parser.add_argument("--kind", choices=("book", "paper"), default="book")
     parser.add_argument("--all", action="store_true", help="Process all books with reports")
     parser.add_argument("--dry-run", action="store_true", help="Preview only")
     parser.add_argument("--analyze", action="store_true",
                         help="Analyze only: generate fix plan, no lake build, no file writes")
     parser.add_argument("--apply", action="store_true",
-                        help="Apply mode: execute the fix plan (requires --analyze first)")
+                        help="Apply mode: execute candidates with per-file verification")
+    parser.add_argument("--output-dir", type=Path,
+                        help="write auxiliary repair evidence into this exact run directory")
     args = parser.parse_args()
+    ACTIVE_KIND = args.kind
+    if args.output_dir:
+        REPORT_OUTPUT_DIR = args.output_dir.resolve()
 
     # ── Mode dispatch ──
     if args.analyze:
@@ -1698,7 +1911,7 @@ def _run_legacy_mode(args):
         book_name = args.book
         # Try to find a matching error report
         report_path = None
-        for dir_path in [SYNC_REPORTS_DIR, REPO_ROOT / "docs" / "upgrade-reports"]:
+        for dir_path in [ERROR_REPORTS_DIR]:
             if dir_path.exists():
                 for fp in dir_path.glob("*.md"):
                     if book_name in fp.name:
@@ -1765,14 +1978,12 @@ def _run_legacy_mode(args):
     elif args.all:
         # Scan all error report directories for .md files
         all_report_paths: list[Path] = []
-        for dir_path in [SYNC_REPORTS_DIR,
-                         REPO_ROOT / "docs" / "upgrade-reports"]:
+        for dir_path in [ERROR_REPORTS_DIR]:
             if dir_path.exists():
                 all_report_paths.extend(sorted(dir_path.glob("*.md")))
 
         if not all_report_paths:
-            print("No error reports found in docs/sync-reports/ or "
-                  "docs/upgrade-reports/")
+            print("No repair reports found in docs/automation-reports/repairs/")
             sys.exit(1)
 
         all_reports: list[dict] = []

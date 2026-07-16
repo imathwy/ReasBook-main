@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap20.Remark_20_34_10
+import StacksProject_2024.stacks_project.Chap20.Remark_20_34_10
 
 open CategoryTheory
 open CategoryTheory.Limits

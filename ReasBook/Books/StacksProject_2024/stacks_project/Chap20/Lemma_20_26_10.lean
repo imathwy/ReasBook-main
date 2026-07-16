@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap17.Definition_17_17_3
-import StacksProject_2024.Chap20.RingedSpaceOpensModuleCategory
-import StacksProject_2024.Chap21.Lemma_21_17_9
+import StacksProject_2024.stacks_project.Chap17.Definition_17_17_3
+import StacksProject_2024.stacks_project.Chap20.RingedSpaceOpensModuleCategory
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_17_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

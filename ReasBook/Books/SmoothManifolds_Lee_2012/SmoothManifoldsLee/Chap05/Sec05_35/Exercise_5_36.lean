@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import SmoothManifolds_Lee_2012.Chap05.Sec05_35.Proposition_5_35
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_35.Proposition_5_35
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

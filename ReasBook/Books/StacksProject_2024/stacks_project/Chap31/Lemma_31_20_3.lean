@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap31.Definition_31_20_2
-import StacksProject_2024.Chap31.Lemma_31_20_1
+import StacksProject_2024.stacks_project.Chap31.Definition_31_20_2
+import StacksProject_2024.stacks_project.Chap31.Lemma_31_20_1
 
 open AlgebraicGeometry
 open CategoryTheory

@@ -1,4 +1,4 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_4_9
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_4_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -44,27 +44,29 @@ conjugate. -/
 theorem exists_lowerCentralSeries_quotient_separating_nonconjugate
     (u v : F) (huv : ¬ IsConj u v) :
     ∃ n : ℕ,
-      ¬ IsConj ((u : F ⧸ lowerCentralSeries F n)) (v : F ⧸ lowerCentralSeries F n) := by
+      ¬ IsConj ((u : F ⧸ Subgroup.lowerCentralSeries F n))
+        (v : F ⧸ Subgroup.lowerCentralSeries F n) := by
   haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
   obtain ⟨N, hNpq, huvN⟩ :=
     exists_finite_pGroup_quotient_separating_nonconjugate 2 u v huv
   letI : Group.IsNilpotent (F ⧸ N.toSubgroup) := hNpq.isNilpotent
   let n : ℕ := Group.nilpotencyClass (F ⧸ N.toSubgroup)
-  have hle : lowerCentralSeries F n ≤ N.toSubgroup := by
+  have hle : Subgroup.lowerCentralSeries F n ≤ N.toSubgroup := by
     rw [← ker_mk' N.toSubgroup]
     exact (Subgroup.map_eq_bot_iff _).mp <| by
       apply eq_bot_iff.mpr
       calc
-        Subgroup.map (mk' N.toSubgroup) (lowerCentralSeries F n) ≤
-            lowerCentralSeries (F ⧸ N.toSubgroup) n :=
-          lowerCentralSeries.map _ n
+        Subgroup.map (mk' N.toSubgroup) (Subgroup.lowerCentralSeries F n) ≤
+            Subgroup.lowerCentralSeries (F ⧸ N.toSubgroup) n :=
+          Subgroup.lowerCentralSeries.map _ n
         _ = ⊥ := by
           dsimp [n]
-          simp [lowerCentralSeries_nilpotencyClass]
+          exact Subgroup.lowerCentralSeries_nilpotencyClass
   refine ⟨n, ?_⟩
   intro huvLower
   exact huvN <| by
     simpa using
-      (QuotientGroup.map (lowerCentralSeries F n) N.toSubgroup (.id F) hle).map_isConj huvLower
+      (QuotientGroup.map (Subgroup.lowerCentralSeries F n) N.toSubgroup (.id F) hle).map_isConj
+        huvLower
 
 end

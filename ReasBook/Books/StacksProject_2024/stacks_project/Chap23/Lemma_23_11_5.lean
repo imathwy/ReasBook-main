@@ -1,6 +1,6 @@
 import Mathlib.Data.List.TFAE
-import StacksProject_2024.Chap15.Lemma_15_33_5
-import StacksProject_2024.Chap23.Lemma_23_11_4
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_33_5
+import StacksProject_2024.stacks_project.Chap23.Lemma_23_11_4
 
 noncomputable section
 

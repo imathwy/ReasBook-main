@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap07.Lemma_7_26_4.DirectSourceComparison.DirectSourceReindexing
-import StacksProject_2024.Chap07.Lemma_7_26_4.DirectSourceComparison.GlueRestrictionPresheaf
+import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.DirectSourceComparison.DirectSourceReindexing
+import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.DirectSourceComparison.GlueRestrictionPresheaf
 
 open CategoryTheory
 

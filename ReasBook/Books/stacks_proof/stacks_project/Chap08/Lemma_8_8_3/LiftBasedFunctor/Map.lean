@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.Vertical
-import StacksProject_2024.Chap08.Lemma_8_8_3.LiftBasedFunctor.PullbackCompatibility
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.Vertical
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_3.LiftBasedFunctor.PullbackCompatibility
 
 universe u v uS vS w wD vD
 

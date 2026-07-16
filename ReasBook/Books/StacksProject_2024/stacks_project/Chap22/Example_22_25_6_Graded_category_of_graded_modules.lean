@@ -1,8 +1,8 @@
 import Mathlib.Algebra.Category.ModuleCat.Basic
 import Mathlib.Algebra.Ring.Opposite
 import Mathlib.CategoryTheory.Category.Basic
-import StacksProject_2024.Chap22.Definition_22_25_3
-import StacksProject_2024.Chap22.Definition_22_28_1
+import StacksProject_2024.stacks_project.Chap22.Definition_22_25_3
+import StacksProject_2024.stacks_project.Chap22.Definition_22_28_1
 
 open scoped DirectSum
 

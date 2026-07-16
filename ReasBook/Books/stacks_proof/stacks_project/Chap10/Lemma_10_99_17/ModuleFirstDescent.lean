@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap10.Lemma_10_99_17.FinsuppExact
-import StacksProject_2024.Chap10.Lemma_10_99_17.TorOneExact
-import StacksProject_2024.Chap10.Lemma_10_99_17.ScalarMultiplication
-import StacksProject_2024.Chap10.Lemma_10_99_17.GeneratorAnnihilator
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_17.FinsuppExact
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_17.TorOneExact
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_17.ScalarMultiplication
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_17.GeneratorAnnihilator
 
 open CategoryTheory CategoryTheory.Limits CategoryTheory.MonoidalCategory
 open scoped TensorProduct

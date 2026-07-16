@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
-import StacksProject_2024.Chap13.Lemma_13_14_16
-import StacksProject_2024.Chap13.Lemma_13_16_9
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_14_16
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_16_9
 
 open CategoryTheory
 

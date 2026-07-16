@@ -4,11 +4,11 @@ import Mathlib.Geometry.Manifold.Instances.Real
 import Mathlib.Geometry.Manifold.SmoothEmbedding
 import Mathlib.MeasureTheory.Measure.OpenPos
 import Mathlib.Topology.Maps.Proper.Basic
-import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Definition_1_6_extra_2
-import SmoothManifolds_Lee_2012.Chap03.Sec03_14.Proposition_3_10
-import SmoothManifolds_Lee_2012.Chap04.Sec04_21.Definition_4_21_extra_1
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Definition_5_36_extra_1
-import SmoothManifolds_Lee_2012.Chap06.Sec06_39.Corollary_6_11
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_06.Definition_1_6_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap03.Sec03_14.Proposition_3_10
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_21.Definition_4_21_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Definition_5_36_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_39.Corollary_6_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 -- Semantic recall note: `lean_leansearch` was unavailable in this environment, so the local

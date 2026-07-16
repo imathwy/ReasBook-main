@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_56_1
-import StacksProject_2024.Chap10.Lemma_10_57_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_56_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_57_9
 
 open scoped BigOperators DirectSum
 open HomogeneousLocalization

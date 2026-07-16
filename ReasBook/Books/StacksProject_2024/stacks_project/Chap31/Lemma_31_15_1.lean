@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap17.SectionNonvanishingLocus
-import StacksProject_2024.Chap31.Definition_31_2_1
-import StacksProject_2024.Chap31.Definition_31_14_6
+import StacksProject_2024.stacks_project.Chap17.SectionNonvanishingLocus
+import StacksProject_2024.stacks_project.Chap31.Definition_31_2_1
+import StacksProject_2024.stacks_project.Chap31.Definition_31_14_6
 
 open AlgebraicGeometry
 open CategoryTheory

@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.ChangeOfRings
 import Mathlib.LinearAlgebra.TensorProduct.Basis
-import StacksProject_2024.Chap15.Definition_15_65_1
-import StacksProject_2024.Chap15.Lemma_15_65_2
-import StacksProject_2024.Chap15.Lemma_15_65_6
-import StacksProject_2024.Chap15.«15_60_1_1»
+import stacks_proof.stacks_project.Chap15.Definition_15_65_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_65_2
+import stacks_proof.stacks_project.Chap15.Lemma_15_65_6
+import stacks_proof.stacks_project.Chap15.«15_60_1_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

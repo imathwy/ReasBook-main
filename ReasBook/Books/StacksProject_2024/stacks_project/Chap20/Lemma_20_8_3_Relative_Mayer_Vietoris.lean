@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap20.«20_2_0_4»
-import StacksProject_2024.Chap20.Open_subspace_module_pushforward_core
+import StacksProject_2024.stacks_project.Chap20.«20_2_0_4»
+import StacksProject_2024.stacks_project.Chap20.Open_subspace_module_pushforward_core
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

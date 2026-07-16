@@ -1,8 +1,8 @@
 import Mathlib.RepresentationTheory.Semisimple
-import LinearRepresentations_Serre_1977.Chap01.Remark_1_1_3_2
-import LinearRepresentations_Serre_1977.Chap04.Definition_4_9
-import LinearRepresentations_Serre_1977.Chap04.Theorem_4_5
-import LinearRepresentations_Serre_1977.RepresentationTheory.SubrepresentationInvariant
+import LinearRepresentations_Serre_1977.Serre.Chap01.Remark_1_1_3_2
+import LinearRepresentations_Serre_1977.Serre.Chap04.Definition_4_9
+import LinearRepresentations_Serre_1977.Serre.Chap04.Theorem_4_5
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.SubrepresentationInvariant
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

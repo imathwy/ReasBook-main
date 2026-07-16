@@ -1,9 +1,9 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_2_1
-import LinearRepresentations_Serre_1977.Chap03.Theorem_3_3_2_1
-import LinearRepresentations_Serre_1977.Chap06.Corollary_6_6_5_4
-import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_3.API
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap02.Proposition_2_2_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap03.Theorem_3_3_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap06.Corollary_6_6_5_4
+import LinearRepresentations_Serre_1977.Serre.Chap12.Exercise_12_12_2_3.API
+import LinearRepresentations_Serre_1977.Serre.Chap12.Proposition_12_12_2_1
 
 noncomputable section
 

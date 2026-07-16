@@ -1,12 +1,12 @@
 import Mathlib.Algebra.Homology.ShortComplex.ExactFunctor
 import Mathlib.CategoryTheory.Limits.ExactFunctor
-import StacksProject_2024.Chap05.Lemma_5_22_4
-import StacksProject_2024.Chap06.Remark_6_7_2
-import StacksProject_2024.Chap12.Lemma_12_7_2
-import StacksProject_2024.Chap18.Lemma_18_3_1
-import StacksProject_2024.Chap20.OpensInstances
-import StacksProject_2024.Chap20.«20_2_0_3»
-import StacksProject_2024.Chap21.SiteAbelianDerived
+import StacksProject_2024.stacks_project.Chap05.Lemma_5_22_4
+import StacksProject_2024.stacks_project.Chap06.Remark_6_7_2
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_7_2
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_3_1
+import StacksProject_2024.stacks_project.Chap20.OpensInstances
+import StacksProject_2024.stacks_project.Chap20.«20_2_0_3»
+import StacksProject_2024.stacks_project.Chap21.SiteAbelianDerived
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -13,12 +13,12 @@ import Mathlib.CategoryTheory.Sites.LeftExact
 import Mathlib.CategoryTheory.Sites.Adjunction
 import Mathlib.CategoryTheory.Sites.Equivalence
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap07.Lemma_7_12_4
-import StacksProject_2024.Chap07.Lemma_7_11_2
-import StacksProject_2024.Chap07.Lemma_7_11_3
-import StacksProject_2024.Chap07.Lemma_7_17_6
-import StacksProject_2024.Chap07.Lemma_7_38_3.LargeTypeLocalBijective
-import StacksProject_2024.Chap07.Definition_7_15_1_Topoi
+import stacks_proof.stacks_project.Chap07.Lemma_7_12_4
+import stacks_proof.stacks_project.Chap07.Lemma_7_11_2
+import stacks_proof.stacks_project.Chap07.Lemma_7_11_3
+import stacks_proof.stacks_project.Chap07.Lemma_7_17_6
+import stacks_proof.stacks_project.Chap07.Lemma_7_38_3.LargeTypeLocalBijective
+import stacks_proof.stacks_project.Chap07.Definition_7_15_1_Topoi
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

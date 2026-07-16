@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Descent
-import StacksProject_2024.Chap04.Lemma_4_43_3
-import StacksProject_2024.Chap15.Definition_15_75_1
-import StacksProject_2024.Chap15.Lemma_15_60_1
-import StacksProject_2024.Chap15.Lemma_15_127_3
-import StacksProject_2024.Chap15.«15_74_0_2»
+import stacks_proof.stacks_project.Chap04.Lemma_4_43_3
+import stacks_proof.stacks_project.Chap15.Definition_15_75_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_60_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_127_3
+import stacks_proof.stacks_project.Chap15.«15_74_0_2»
 
 noncomputable section
 

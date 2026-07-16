@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap10.Lemma_10_102_2
-import StacksProject_2024.Chap10.Situation_10_102_1
-import StacksProject_2024.Chap10.Definition_10_72_1
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_102_2
+import StacksProject_2024.stacks_project.Chap10.Situation_10_102_1
+import StacksProject_2024.stacks_project.Chap10.Definition_10_72_1
 
 open CategoryTheory CategoryTheory.Limits ChainComplex HomologicalComplex
 

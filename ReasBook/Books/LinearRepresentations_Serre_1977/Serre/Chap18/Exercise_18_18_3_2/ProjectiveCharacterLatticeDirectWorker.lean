@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.ProjectiveCharacterLatticeSourceFaithful
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.RegularValueSourceStatementSourceWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.ProjectiveCharacterLatticeSourceFaithful
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.RegularValueSourceStatementSourceWorker
 
 /-!
 Direct source-representative blocker for the Serre `18.5(a)` projective-character lattice route.

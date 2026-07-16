@@ -3,8 +3,8 @@ import Mathlib.Algebra.Category.Grp.Abelian
 import Mathlib.Algebra.Category.Grp.FilteredColimits
 import Mathlib.CategoryTheory.Abelian.Opposite
 import Mathlib.CategoryTheory.Triangulated.HomologicalFunctor
-import StacksProject_2024.Chap13.Definition_13_37_5
-import StacksProject_2024.Chap13.Lemma_13_37_2
+import StacksProject_2024.stacks_project.Chap13.Definition_13_37_5
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_37_2
 
 open CategoryTheory Limits Opposite
 

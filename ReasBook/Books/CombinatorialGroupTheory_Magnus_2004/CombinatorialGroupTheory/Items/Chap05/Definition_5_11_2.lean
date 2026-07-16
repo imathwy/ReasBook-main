@@ -1,5 +1,5 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap04.Definition_4_2_9
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap04.Theorem_4_2_12
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap04.Definition_4_2_9
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap04.Theorem_4_2_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

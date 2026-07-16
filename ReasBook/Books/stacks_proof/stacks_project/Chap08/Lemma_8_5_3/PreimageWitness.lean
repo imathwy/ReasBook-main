@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap08.Lemma_8_5_3.Support
+import stacks_proof.stacks_project.Chap08.Lemma_8_5_3.Support
 
 universe u₁ u₂ v₁ v₂
 

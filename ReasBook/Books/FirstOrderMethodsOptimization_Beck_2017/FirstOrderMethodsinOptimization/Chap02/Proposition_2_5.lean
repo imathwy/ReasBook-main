@@ -1,4 +1,4 @@
-import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_9
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap02.Definition_2_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap10.«Lemma_10_101_8_Critère_de_platitude_par_fibres_Nilpotent_case»
+import StacksProject_2024.stacks_project.Chap10.«Lemma_10_101_8_Critère_de_platitude_par_fibres_Nilpotent_case»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

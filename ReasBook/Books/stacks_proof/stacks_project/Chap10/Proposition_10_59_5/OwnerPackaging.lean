@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_150_6.AssociatedGradedAPI
+import stacks_proof.stacks_project.Chap10.Lemma_10_150_6.AssociatedGradedAPI
 
 -- Proof rescue support for Proposition 10.59.5: descend the Rees decomposition for `gr_I(R)`
 -- through the quotient defining the associated graded ring.

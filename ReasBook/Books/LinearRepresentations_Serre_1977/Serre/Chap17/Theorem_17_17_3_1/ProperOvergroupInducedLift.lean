@@ -1,6 +1,6 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.ProperOvergroupRecursion
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_3_1.InducedSubrepresentationLift
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_3_1.ProperOvergroupRecursion
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_3_1.InducedSubrepresentationLift
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap15.Lemma_15_23_4
-import StacksProject_2024.Chap15.Lemma_15_23_11
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_23_4
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_23_11
 import Mathlib.Algebra.Module.FinitePresentation
 import Mathlib.Tactic.Recall
 

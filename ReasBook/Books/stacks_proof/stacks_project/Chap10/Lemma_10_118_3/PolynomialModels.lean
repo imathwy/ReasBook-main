@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_118_3.PolynomialLocalization
+import stacks_proof.stacks_project.Chap10.Lemma_10_118_3.PolynomialLocalization
 
 universe u v w
 

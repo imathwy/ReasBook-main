@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Homology.HomotopyCategory.DegreewiseSplit
-import StacksProject_2024.Chap12.Lemma_12_14_12
-import StacksProject_2024.Chap22.Definition_22_7_1
-import StacksProject_2024.Chap22.Lemma_22_7_3
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_14_12
+import StacksProject_2024.stacks_project.Chap22.Definition_22_7_1
+import StacksProject_2024.stacks_project.Chap22.Lemma_22_7_3
 
 open CategoryTheory
 open CategoryTheory.CochainComplex

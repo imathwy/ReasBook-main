@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap08.Lemma_8_12_8.PushforwardUnit
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_8.PushforwardUnit
 
 open CategoryTheory
 open CategoryTheory.Limits

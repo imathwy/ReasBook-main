@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.CategoryTheory.Limits.ExactFunctor
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap07.Lemma_7_23_1
+import stacks_proof.stacks_project.Chap07.Lemma_7_23_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

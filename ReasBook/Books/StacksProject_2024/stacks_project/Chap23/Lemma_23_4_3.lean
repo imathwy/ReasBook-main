@@ -1,6 +1,6 @@
 import Mathlib.RingTheory.DividedPowers.SubDPIdeal
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap23.Definition_23_4_1
+import StacksProject_2024.stacks_project.Chap23.Definition_23_4_1
 
 universe u
 

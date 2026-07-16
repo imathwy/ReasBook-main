@@ -1,10 +1,10 @@
-import StacksProject_2024.Chap12.Lemma_12_24_12
-import StacksProject_2024.Chap13.Lemma_13_15_2
-import StacksProject_2024.Chap13.Lemma_13_16_4
-import StacksProject_2024.Chap21.«21_3_0_2»
-import StacksProject_2024.Chap21.Lemma_21_12_4
-import StacksProject_2024.Chap21.Lemma_21_14_5_Leray_spectral_sequence
-import StacksProject_2024.Chap21.Lemma_21_7_4_core
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_24_12
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_15_2
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_16_4
+import StacksProject_2024.stacks_project.Chap21.«21_3_0_2»
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_12_4
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_14_5_Leray_spectral_sequence
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_7_4_core
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

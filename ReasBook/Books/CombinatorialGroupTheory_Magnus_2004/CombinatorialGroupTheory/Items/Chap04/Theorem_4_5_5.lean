@@ -1,5 +1,5 @@
 import Mathlib
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap04.Definition_4_5_4
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap04.Definition_4_5_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -36,7 +36,7 @@ noncomputable section
 variable {X : Type u}
 variable (r : FreeGroup X)
 
-local instance : DecidableEq X := Classical.decEq X
+local instance theorem_4_5_5_decidableEq : DecidableEq X := Classical.decEq X
 
 local notation "G" => PresentedGroup (Set.singleton r)
 

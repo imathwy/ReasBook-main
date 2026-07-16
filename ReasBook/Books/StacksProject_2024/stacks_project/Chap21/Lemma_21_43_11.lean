@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap13.Aux_13_17_1
-import StacksProject_2024.Chap21.Definition_21_43_1
+import StacksProject_2024.stacks_project.Chap13.Aux_13_17_1
+import StacksProject_2024.stacks_project.Chap21.Definition_21_43_1
 
 open CategoryTheory
 open CategoryTheory.ObjectProperty

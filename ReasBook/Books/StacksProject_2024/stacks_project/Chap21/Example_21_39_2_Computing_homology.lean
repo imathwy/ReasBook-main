@@ -1,6 +1,6 @@
 import Mathlib.AlgebraicTopology.AlternatingFaceMapComplex
 import Mathlib.AlgebraicTopology.SimplicialSet.Nerve
-import StacksProject_2024.Chap21.Example_21_39_1_Category_over_point
+import StacksProject_2024.stacks_project.Chap21.Example_21_39_1_Category_over_point
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

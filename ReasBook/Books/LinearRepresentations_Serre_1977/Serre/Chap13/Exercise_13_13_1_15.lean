@@ -1,8 +1,8 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap02.Exercise_2_2_1_5
-import LinearRepresentations_Serre_1977.Chap02.Corollary_2_2_3_4
-import LinearRepresentations_Serre_1977.Chap07.Exercise_7_7_2_4
-import LinearRepresentations_Serre_1977.Chap09.Proposition_9_9_4_1
+import LinearRepresentations_Serre_1977.Serre.Chap02.Exercise_2_2_1_5
+import LinearRepresentations_Serre_1977.Serre.Chap02.Corollary_2_2_3_4
+import LinearRepresentations_Serre_1977.Serre.Chap07.Exercise_7_7_2_4
+import LinearRepresentations_Serre_1977.Serre.Chap09.Proposition_9_9_4_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

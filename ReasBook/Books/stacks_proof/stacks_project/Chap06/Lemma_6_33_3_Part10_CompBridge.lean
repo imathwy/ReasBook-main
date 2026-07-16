@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap06.Lemma_6_33_3_Part10_RealizationAux
+import stacks_proof.stacks_project.Chap06.Lemma_6_33_3_Part10_RealizationAux
 set_option linter.unusedSimpArgs false
 set_option linter.unusedVariables false
 open CategoryTheory CategoryTheory.Limits Opposite TopCat TopologicalSpace Topology

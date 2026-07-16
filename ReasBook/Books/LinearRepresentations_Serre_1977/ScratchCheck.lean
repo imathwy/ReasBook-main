@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap12.Theorem_12_12_3_1
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap12.Theorem_12_12_3_1
+import LinearRepresentations_Serre_1977.Serre.Chap12.Proposition_12_12_1_1
 
 #check Representation.characterRingOverFieldInExtension_eq_characterRing_of_hasEnoughRootsOfUnity
 #check Representation.characterRingOverField

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap20.Open_subspace_module_owners
+import StacksProject_2024.stacks_project.Chap20.Open_subspace_module_owners
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

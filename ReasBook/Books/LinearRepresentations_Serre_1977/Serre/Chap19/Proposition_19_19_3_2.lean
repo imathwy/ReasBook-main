@@ -1,9 +1,9 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_5_3.RepresentationBridge
-import LinearRepresentations_Serre_1977.Chap02.Remark_2_2_1_2
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
-import LinearRepresentations_Serre_1977.Chap18.Proposition_18_18_1_2
-import LinearRepresentations_Serre_1977.Chap19.Definition_19_19_3_1
+import LinearRepresentations_Serre_1977.Serre.Chap14.Exercise_14_14_5_3.RepresentationBridge
+import LinearRepresentations_Serre_1977.Serre.Chap02.Remark_2_2_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap18.Proposition_18_18_1_2
+import LinearRepresentations_Serre_1977.Serre.Chap19.Definition_19_19_3_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

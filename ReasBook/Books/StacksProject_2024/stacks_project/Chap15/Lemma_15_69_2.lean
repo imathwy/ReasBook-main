@@ -2,17 +2,17 @@ import Mathlib.Data.List.TFAE
 import Mathlib.Algebra.Homology.HomotopyCategory.HomComplexSingle
 import Mathlib.Algebra.Category.ModuleCat.Injective
 import Mathlib.Tactic.TFAE
-import StacksProject_2024.Chap10.Lemma_10_77_2
-import StacksProject_2024.Chap13.Lemma_13_11_5
-import StacksProject_2024.Chap13.Definition_13_27_1
-import StacksProject_2024.Chap13.Lemma_13_18_3
-import StacksProject_2024.Chap13.Lemma_13_19_3
-import StacksProject_2024.Chap13.Lemma_13_19_10
-import StacksProject_2024.Chap13.Remark_13_24_3
-import StacksProject_2024.Chap13.Lemma_13_27_3
-import StacksProject_2024.Chap13.Lemma_13_35_7
-import StacksProject_2024.Chap15.Definition_15_69_1
-import StacksProject_2024.Chap15.Lemma_15_66_6
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_77_2
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_11_5
+import StacksProject_2024.stacks_project.Chap13.Definition_13_27_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_18_3
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_19_3
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_19_10
+import StacksProject_2024.stacks_project.Chap13.Remark_13_24_3
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_27_3
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_35_7
+import StacksProject_2024.stacks_project.Chap15.Definition_15_69_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_66_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

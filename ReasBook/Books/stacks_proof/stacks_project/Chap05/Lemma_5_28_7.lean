@@ -1,5 +1,5 @@
 import Mathlib.Topology.Constructible
-import StacksProject_2024.Chap05.Remark_5_28_5
+import stacks_proof.stacks_project.Chap05.Remark_5_28_5
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

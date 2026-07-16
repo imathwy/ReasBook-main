@@ -1,9 +1,9 @@
 import Mathlib.AlgebraicGeometry.Morphisms.QuasiCompact
-import StacksProject_2024.Chap24.Definition_24_3_1
-import StacksProject_2024.Chap29.Definition_29_15_1
-import StacksProject_2024.Chap29.Lemma_29_43_10
-import StacksProject_2024.Chap29.RelativeProjPresentation
-import StacksProject_2024.Chap31.Lemma_31_30_5
+import StacksProject_2024.stacks_project.Chap24.Definition_24_3_1
+import StacksProject_2024.stacks_project.Chap29.Definition_29_15_1
+import StacksProject_2024.stacks_project.Chap29.Lemma_29_43_10
+import StacksProject_2024.stacks_project.Chap29.RelativeProjPresentation
+import StacksProject_2024.stacks_project.Chap31.Lemma_31_30_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

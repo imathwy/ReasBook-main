@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap06.RingedSpaceModuleCore
-import StacksProject_2024.Chap13.Remark_13_10_9
+import StacksProject_2024.stacks_project.Chap06.RingedSpaceModuleCore
+import StacksProject_2024.stacks_project.Chap13.Remark_13_10_9
 
 open CategoryTheory CategoryTheory.Limits ComplexShape HomotopyCategory MonoidalCategory
 open AlgebraicGeometry

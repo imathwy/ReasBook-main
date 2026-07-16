@@ -1,6 +1,6 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap19.Theorem_19_15
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Definition_17_28
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Theorem_17_8
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap19.Theorem_19_15
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap17.Definition_17_28
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap17.Theorem_17_8
 
 open MeasureTheory ProbabilityTheory
 open scoped ENNReal ProbabilityTheory

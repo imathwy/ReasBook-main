@@ -1,4 +1,4 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_33
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Theorem_2_33
 
 open scoped Gradient
 

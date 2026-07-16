@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap13.Lemma_13_34_6
-import StacksProject_2024.Chap21.Lemma_21_23_10
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_34_6
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_23_10
 
 open CategoryTheory
 open CategoryTheory.Limits

@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import SmoothManifolds_Lee_2012.Chap01.Sec01.Example_1_5
-import SmoothManifolds_Lee_2012.Chap01.Sec01.Example_1_8
-import SmoothManifolds_Lee_2012.Chap01.Sec01.Example_1_9
-import SmoothManifolds_Lee_2012.Chap01.Sec01_04.Example_1_33
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01.Example_1_5
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01.Example_1_8
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01.Example_1_9
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_04.Example_1_33
 
 open Projectivization
 open scoped ContDiff LinearAlgebra.Projectivization Manifold Torus

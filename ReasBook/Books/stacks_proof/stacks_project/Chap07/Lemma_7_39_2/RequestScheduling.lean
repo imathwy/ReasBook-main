@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap07.Definition_7_8_2
-import StacksProject_2024.Chap07.Lemma_7_39_1
+import stacks_proof.stacks_project.Chap07.Definition_7_8_2
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_1
 
 open CategoryTheory
 open CategoryTheory.SemiRepresentableFamily.Over

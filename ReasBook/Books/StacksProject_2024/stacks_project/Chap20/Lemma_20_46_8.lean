@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap20.Open_subspace_module_core
-import StacksProject_2024.Chap21.Lemma_21_44_8
+import StacksProject_2024.stacks_project.Chap20.Open_subspace_module_core
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_44_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

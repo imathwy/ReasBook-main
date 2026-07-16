@@ -1,5 +1,5 @@
-import Books.Analysis2_Tao_2022.Chapters.Chap05.section02_part1
-import Books.Analysis2_Tao_2022.Chapters.Chap05.section02_part2
+import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Chapters.Chap05.section02_part1
+import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Chapters.Chap05.section02_part2
 
 /-!
 Overview page for 5.2 Inner Products on Periodic Functions.

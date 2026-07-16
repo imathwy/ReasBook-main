@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap22.ModuleCatHasDerivedCategory
-import StacksProject_2024.Chap22.Remark_22_36_1
-import StacksProject_2024.Chap22.Remark_22_36_2
+import StacksProject_2024.stacks_project.Chap22.ModuleCatHasDerivedCategory
+import StacksProject_2024.stacks_project.Chap22.Remark_22_36_1
+import StacksProject_2024.stacks_project.Chap22.Remark_22_36_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

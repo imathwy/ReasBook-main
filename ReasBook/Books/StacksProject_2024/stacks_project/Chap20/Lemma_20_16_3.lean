@@ -1,6 +1,6 @@
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
 import Mathlib.CategoryTheory.Sites.SheafCohomology.Basic
-import StacksProject_2024.Chap06.ClosedSubsetInclusion
+import StacksProject_2024.stacks_project.Chap06.ClosedSubsetInclusion
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

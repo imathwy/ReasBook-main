@@ -1,7 +1,7 @@
-import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Definition_1_6_extra_2
-import SmoothManifolds_Lee_2012.Chap05.Sec05_29.Theorem_5_8.Common
-import SmoothManifolds_Lee_2012.Chap05.Sec05_29.Theorem_5_8.LocalSliceAtlas
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Definition_5_36_extra_4
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_06.Definition_1_6_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_29.Theorem_5_8.Common
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_29.Theorem_5_8.LocalSliceAtlas
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Definition_5_36_extra_4
 
 -- Declarations for Euclidean half-slice helper geometry used by Theorem 5.51.
 

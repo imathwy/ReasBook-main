@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap29.HasFiniteIrreducibleComponentsOnCompactOpens
+import StacksProject_2024.stacks_project.Chap29.HasFiniteIrreducibleComponentsOnCompactOpens
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

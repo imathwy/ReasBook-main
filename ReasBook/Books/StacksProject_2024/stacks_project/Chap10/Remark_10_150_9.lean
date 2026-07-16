@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_133_2
-import StacksProject_2024.Chap10.Lemma_10_150_8
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_133_2
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_150_8
 
 open scoped PrincipalParts TensorProduct
 open LinearMap

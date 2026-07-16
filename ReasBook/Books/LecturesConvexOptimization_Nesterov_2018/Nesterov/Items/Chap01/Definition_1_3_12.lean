@@ -1,6 +1,6 @@
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Tactic.Recall
-import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_3_12
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap01.Definition_1_3_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

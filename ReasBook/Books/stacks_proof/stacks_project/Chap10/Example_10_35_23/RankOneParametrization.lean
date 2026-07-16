@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Example_10_35_23.MatrixAmbientIdeals
+import stacks_proof.stacks_project.Chap10.Example_10_35_23.MatrixAmbientIdeals
 
 open Matrix MvPolynomial PrimeSpectrum
 

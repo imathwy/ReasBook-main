@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_11_8.Part11.TransitionSquare
-import StacksProject_2024.Chap08.Lemma_8_11_8.Part11.IdentityBaseChange
+import stacks_proof.stacks_project.Chap08.Lemma_8_11_8.Part11.TransitionSquare
+import stacks_proof.stacks_project.Chap08.Lemma_8_11_8.Part11.IdentityBaseChange
 
 universe u v w
 

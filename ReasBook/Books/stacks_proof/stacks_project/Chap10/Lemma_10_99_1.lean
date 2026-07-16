@@ -1,13 +1,13 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_51_4_Krull_s_intersection_theorem
-import StacksProject_2024.Chap10.Lemma_10_75_2
-import StacksProject_2024.Chap10.Lemma_10_75_8
-import StacksProject_2024.Chap10.Lemma_10_39_12
-import StacksProject_2024.Chap10.Lemma_10_79_4
-import StacksProject_2024.Chap10.Lemma_10_82_13
-import StacksProject_2024.Chap10.Lemma_10_82_7
-import StacksProject_2024.Chap10.Lemma_10_96_1
-import StacksProject_2024.Chap10.Lemma_10_77_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_51_4_Krull_s_intersection_theorem
+import stacks_proof.stacks_project.Chap10.Lemma_10_75_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_75_8
+import stacks_proof.stacks_project.Chap10.Lemma_10_39_12
+import stacks_proof.stacks_project.Chap10.Lemma_10_79_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_82_13
+import stacks_proof.stacks_project.Chap10.Lemma_10_82_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_96_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_77_5
 
 open IsLocalRing
 open CategoryTheory

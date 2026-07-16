@@ -1,8 +1,8 @@
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.Generators
 import Mathlib.AlgebraicGeometry.Noetherian
 import Mathlib.AlgebraicGeometry.Morphisms.Proper
-import StacksProject_2024.Chap29.Definition_29_15_1
-import StacksProject_2024.Chap31.Definition_31_31_6
+import StacksProject_2024.stacks_project.Chap29.Definition_29_15_1
+import StacksProject_2024.stacks_project.Chap31.Definition_31_31_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

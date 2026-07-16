@@ -1,7 +1,7 @@
 import Mathlib.AlgebraicGeometry.Morphisms.FiniteType
 import Mathlib.AlgebraicGeometry.Morphisms.Immersion
-import StacksProject_2024.Chap28.Definition_28_26_1
-import StacksProject_2024.Chap29.Lemma_29_39_1
+import StacksProject_2024.stacks_project.Chap28.Definition_28_26_1
+import StacksProject_2024.stacks_project.Chap29.Lemma_29_39_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

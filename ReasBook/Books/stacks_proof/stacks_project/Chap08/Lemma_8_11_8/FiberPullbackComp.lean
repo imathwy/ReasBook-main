@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap04.CanonicalPullbackChoice
+import stacks_proof.stacks_project.Chap04.CanonicalPullbackChoice
 
 /-!
 # Fiber pullback-composition coherence

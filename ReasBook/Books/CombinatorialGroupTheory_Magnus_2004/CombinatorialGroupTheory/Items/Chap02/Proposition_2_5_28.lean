@@ -10,7 +10,7 @@ section
 
 variable {X : Type u} {F : Type v} [Group F]
 
-local instance : DecidableEq X := Classical.decEq X
+local instance proposition_2_5_28_decidableEq : DecidableEq X := Classical.decEq X
 
 open Subgroup (normalClosure)
 

@@ -1,7 +1,7 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap07.Exercise_7_7_2_4
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_2.SemisimpleDegrees
-import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Serre.Chap07.Exercise_7_7_2_4
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_5_2.SemisimpleDegrees
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.RealizableOver
 
 /-!
 # Base change of the permutation-augmentation representation (support for Exercise 18.5.2)

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap15.Lemma_15_129_2
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_129_2
 import Mathlib.Algebra.Module.Submodule.Equiv
 import Mathlib.LinearAlgebra.Finsupp.Supported
 

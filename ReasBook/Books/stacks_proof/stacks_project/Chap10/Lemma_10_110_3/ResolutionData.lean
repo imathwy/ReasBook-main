@@ -2,13 +2,13 @@ import Mathlib.CategoryTheory.Abelian.Projective.Dimension
 import Mathlib.Algebra.Module.Projective
 import Mathlib.LinearAlgebra.ExteriorPower.Basis
 import Mathlib.RingTheory.Ideal.Cotangent
-import StacksProject_2024.Chap10.Lemma_10_71_4
-import StacksProject_2024.Chap10.Lemma_10_75_7
-import StacksProject_2024.Chap10.Lemma_10_82_13
-import StacksProject_2024.Chap10.Lemma_10_102_2
-import StacksProject_2024.Chap10.Lemma_10_108_6.ExteriorPowerBaseChange
-import StacksProject_2024.Chap10.Lemma_10_109_7
-import StacksProject_2024.Chap10.Situation_10_102_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_71_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_75_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_82_13
+import stacks_proof.stacks_project.Chap10.Lemma_10_102_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_108_6.ExteriorPowerBaseChange
+import stacks_proof.stacks_project.Chap10.Lemma_10_109_7
+import stacks_proof.stacks_project.Chap10.Situation_10_102_1
 import Mathlib.Tactic.StacksAttribute
 
 universe u

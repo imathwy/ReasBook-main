@@ -1,4 +1,4 @@
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap02.Definition_2_54
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap02.Definition_2_54
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

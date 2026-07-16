@@ -2,11 +2,11 @@ import Mathlib
 import Mathlib.CategoryTheory.Limits.ExactFunctor
 import Mathlib.Topology.Sheaves.Abelian
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap12.Lemma_12_7_2
-import StacksProject_2024.Chap06.Lemma_6_21_5
-import StacksProject_2024.Chap06.Lemma_6_32_1
-import StacksProject_2024.Chap06.Lemma_6_32_3
-import StacksProject_2024.Chap17.Definition_17_5_1
+import stacks_proof.stacks_project.Chap12.Lemma_12_7_2
+import stacks_proof.stacks_project.Chap06.Lemma_6_21_5
+import stacks_proof.stacks_project.Chap06.Lemma_6_32_1
+import stacks_proof.stacks_project.Chap06.Lemma_6_32_3
+import stacks_proof.stacks_project.Chap17.Definition_17_5_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

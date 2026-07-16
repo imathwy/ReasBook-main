@@ -1,8 +1,8 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Example_8_3
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_4
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Example_12_2
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_11
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap08.Example_8_3
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap08.Proposition_8_4
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap12.Example_12_2
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap12.Proposition_12_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -53,8 +53,16 @@ theorem convex_epigraph_distanceToSet (C : Set H) (hC : Convex ℝ C) :
         (by simp [κ, dom, scaledNormKernel])
         (by simp [κ, dom, scaledNormKernel])
         hα0 hα1
-    simpa [κ, distanceToSet_eq_indicator_infimalConvolution_norm C] using
-      convex_epigraph_infimalConvolution (ι[C]) κ hindicator hscaledNorm
+    have hconv := convex_epigraph_infimalConvolution (ι[C]) κ hindicator hscaledNorm
+    change Convex ℝ (epigraph (infimalConvolution
+      (fun x ↦ (ι[C] x : EReal)) (fun x ↦ (κ x : EReal)))) at hconv
+    dsimp [κ] at hconv
+    have hdist := distanceToSet_eq_indicator_infimalConvolution_norm C
+    change (fun x ↦ (Metric.infEDist x C : EReal)) =
+      infimalConvolution (fun x ↦ (ι[C] x : EReal))
+        (fun x ↦ (scaledNormKernel (1 : NNReal) x : EReal)) at hdist
+    rw [← hdist] at hconv
+    exact hconv
   · simpa [epigraph, Set.not_nonempty_iff_eq_empty.mp hC_nonempty, Metric.infEDist_empty] using
       (convex_empty : Convex ℝ (∅ : Set (H × ℝ)))
 

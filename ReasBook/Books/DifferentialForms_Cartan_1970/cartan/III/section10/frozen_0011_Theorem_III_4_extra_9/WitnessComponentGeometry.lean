@@ -1,4 +1,4 @@
-import DifferentialForms_Cartan_1970.III.section10.frozen_0011_Theorem_III_4_extra_9.SelectorGeometry
+import DifferentialForms_Cartan_1970.cartan.III.section10.frozen_0011_Theorem_III_4_extra_9.SelectorGeometry
 
 open Metric Set
 open scoped Topology unitInterval

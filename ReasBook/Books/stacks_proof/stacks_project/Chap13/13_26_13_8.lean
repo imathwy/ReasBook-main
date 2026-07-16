@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap13.Definition_13_14_10
-import StacksProject_2024.Chap13.«13_26_13_1»
-import StacksProject_2024.Chap13.Lemma_13_20_1
-import StacksProject_2024.Chap13.Lemma_13_20_2
-import StacksProject_2024.Chap13.Lemma_13_26_12
+import stacks_proof.stacks_project.Chap13.Definition_13_14_10
+import stacks_proof.stacks_project.Chap13.«13_26_13_1»
+import stacks_proof.stacks_project.Chap13.Lemma_13_20_1
+import stacks_proof.stacks_project.Chap13.Lemma_13_20_2
+import stacks_proof.stacks_project.Chap13.Lemma_13_26_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

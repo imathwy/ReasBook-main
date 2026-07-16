@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_11_8.Part16.FixedAbsoluteGlueingAddCommData
-import StacksProject_2024.Chap08.Lemma_8_11_8.Part15
+import stacks_proof.stacks_project.Chap08.Lemma_8_11_8.Part16.FixedAbsoluteGlueingAddCommData
+import stacks_proof.stacks_project.Chap08.Lemma_8_11_8.Part15
 
 universe u v w
 

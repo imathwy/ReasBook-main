@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.RingTheory.FiniteType
-import StacksProject_2024.Chap10.Lemma_10_57_10
-import StacksProject_2024.Chap10.Lemma_10_6_4
-import StacksProject_2024.Chap15.Definition_15_22_1
-import StacksProject_2024.Chap15.Lemma_15_22_10
-import StacksProject_2024.Chap15.Lemma_15_25_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_57_10
+import stacks_proof.stacks_project.Chap10.Lemma_10_6_4
+import stacks_proof.stacks_project.Chap15.Definition_15_22_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_22_10
+import stacks_proof.stacks_project.Chap15.Lemma_15_25_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

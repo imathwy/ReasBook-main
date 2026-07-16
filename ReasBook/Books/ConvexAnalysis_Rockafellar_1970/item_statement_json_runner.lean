@@ -1,5 +1,5 @@
 import Mathlib
-import item_statement_json_runner.Book
+import Mathlib
 
 /-!
 # item_statement_json_runner

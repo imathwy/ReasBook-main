@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Group.Conj
 import Mathlib.RepresentationTheory.Irreducible
-import LinearRepresentations_Serre_1977.Chap04.ContinuousIrreducibleFamily
+import LinearRepresentations_Serre_1977.Serre.Chap04.ContinuousIrreducibleFamily
 
 noncomputable section
 

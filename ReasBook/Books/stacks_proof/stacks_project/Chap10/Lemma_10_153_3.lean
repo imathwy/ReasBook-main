@@ -3,12 +3,12 @@ import Mathlib.RingTheory.Flat.Rank
 import Mathlib.RingTheory.PolynomialAlgebra
 import Mathlib.RingTheory.TensorProduct.Pi
 import Mathlib.RingTheory.TensorProduct.Quotient
-import StacksProject_2024.Chap10.Definition_10_122_3
-import StacksProject_2024.Chap10.Lemma_10_122_11
-import StacksProject_2024.Chap10.Lemma_10_143_13
-import StacksProject_2024.Chap10.Proposition_10_144_4
-import StacksProject_2024.Chap10.Lemma_10_145_3
-import StacksProject_2024.Chap10.Lemma_10_153_2
+import stacks_proof.stacks_project.Chap10.Definition_10_122_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_122_11
+import stacks_proof.stacks_project.Chap10.Lemma_10_143_13
+import stacks_proof.stacks_project.Chap10.Proposition_10_144_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_145_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_153_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

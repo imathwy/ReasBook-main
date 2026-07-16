@@ -1,6 +1,6 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_2_1.InducedLattice
+import LinearRepresentations_Serre_1977.Serre.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_2_1.InducedLattice
 
 /-!
 # The reduction-of-induced isomorphism (part 2 of `hind`) — construction in progress

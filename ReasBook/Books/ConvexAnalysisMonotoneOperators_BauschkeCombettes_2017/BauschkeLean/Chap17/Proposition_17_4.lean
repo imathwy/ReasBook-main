@@ -1,7 +1,7 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap02.Definition_2_54
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Theorem_16_3
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_31
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap02.Definition_2_54
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap16.Theorem_16_3
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap17.Proposition_17_31
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -29,7 +29,7 @@ theorem mem_argmin_iff_gateauxGradient_eq_zero
       HasGateauxDerivativeAt (fun z ↦ (f z : EReal).toReal) (toDual ℝ H gradf) x) :
     x ∈ Argmin f ↔ gradf = 0 := by
   rw [argmin_eq_zeros_subdifferential, SetValuedOperator.mem_zeros_iff,
-    subdifferential_eq_singleton_of_hasGateauxDerivativeAt f hconv hx gradf hgrad]
+    subdifferential_eq_singleton_of_hasGateauxDerivativeAt f hx gradf hgrad]
   simp [eq_comm]
 
 end DifferentiabilityOfConvexFunctions

@@ -1,13 +1,13 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_75_8
-import StacksProject_2024.Chap12.Lemma_12_19_13
-import StacksProject_2024.Chap12.Lemma_12_24_8
-import StacksProject_2024.Chap12.Lemma_12_24_12
-import StacksProject_2024.Chap15.Lemma_15_22_11
-import StacksProject_2024.Chap15.Definition_15_61_1
-import StacksProject_2024.Chap15.Lemma_15_67_2
-import StacksProject_2024.Chap15.Lemma_15_67_6
-import StacksProject_2024.Chap15.Lemma_15_64_4_K_nneth_Spectral_Sequence
+import stacks_proof.stacks_project.Chap10.Lemma_10_75_8
+import stacks_proof.stacks_project.Chap12.Lemma_12_19_13
+import stacks_proof.stacks_project.Chap12.Lemma_12_24_8
+import stacks_proof.stacks_project.Chap12.Lemma_12_24_12
+import stacks_proof.stacks_project.Chap15.Lemma_15_22_11
+import stacks_proof.stacks_project.Chap15.Definition_15_61_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_67_2
+import stacks_proof.stacks_project.Chap15.Lemma_15_67_6
+import stacks_proof.stacks_project.Chap15.Lemma_15_64_4_K_nneth_Spectral_Sequence
 
 open scoped BigOperators
 open scoped DerivedTensorProduct

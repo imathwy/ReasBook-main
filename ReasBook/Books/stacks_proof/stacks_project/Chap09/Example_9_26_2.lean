@@ -1,13 +1,13 @@
 import Mathlib
-import StacksProject_2024.Chap09.Definition_9_26_1
-import StacksProject_2024.Chap09.PiTranscendence.PI_02
-import StacksProject_2024.Chap09.PiTranscendence.PI_04
-import StacksProject_2024.Chap09.PiTranscendence.PI_07
-import StacksProject_2024.Chap09.PiTranscendence.PI_10
-import StacksProject_2024.Chap09.PiTranscendence.PI_12
-import StacksProject_2024.Chap09.PiTranscendence.PI_13
-import StacksProject_2024.Chap09.PiTranscendence.PI_14
-import StacksProject_2024.Chap09.PiTranscendence.PI_15
+import stacks_proof.stacks_project.Chap09.Definition_9_26_1
+import stacks_proof.stacks_project.Chap09.PiTranscendence.PI_02
+import stacks_proof.stacks_project.Chap09.PiTranscendence.PI_04
+import stacks_proof.stacks_project.Chap09.PiTranscendence.PI_07
+import stacks_proof.stacks_project.Chap09.PiTranscendence.PI_10
+import stacks_proof.stacks_project.Chap09.PiTranscendence.PI_12
+import stacks_proof.stacks_project.Chap09.PiTranscendence.PI_13
+import stacks_proof.stacks_project.Chap09.PiTranscendence.PI_14
+import stacks_proof.stacks_project.Chap09.PiTranscendence.PI_15
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

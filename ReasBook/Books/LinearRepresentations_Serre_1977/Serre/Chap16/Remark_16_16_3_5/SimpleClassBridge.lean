@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap16.Remark_16_16_3_5.ReverseDirection
+import LinearRepresentations_Serre_1977.Serre.Chap16.Remark_16_16_3_5.ReverseDirection
 
 noncomputable section
 

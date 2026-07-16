@@ -1,6 +1,6 @@
 import Mathlib.RingTheory.Henselian
 import Mathlib.RingTheory.Ideal.Quotient.Operations
-import StacksProject_2024.Chap10.IdempotentMap
+import stacks_proof.stacks_project.Chap10.IdempotentMap
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

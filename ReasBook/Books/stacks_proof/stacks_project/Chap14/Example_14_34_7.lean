@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap14.Example_14_33_1
+import stacks_proof.stacks_project.Chap14.Example_14_33_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

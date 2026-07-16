@@ -1,9 +1,9 @@
 import Mathlib.Data.List.TFAE
-import StacksProject_2024.Chap17.Definition_17_23_1
-import StacksProject_2024.Chap17.ModuleRestrictionAndStalks
-import StacksProject_2024.Chap20.IdealSheafStalkIdeal
-import StacksProject_2024.Chap20.Lemma_20_26_4
-import StacksProject_2024.Chap20.Situation_20_55_2
+import StacksProject_2024.stacks_project.Chap17.Definition_17_23_1
+import StacksProject_2024.stacks_project.Chap17.ModuleRestrictionAndStalks
+import StacksProject_2024.stacks_project.Chap20.IdealSheafStalkIdeal
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_26_4
+import StacksProject_2024.stacks_project.Chap20.Situation_20_55_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.CategoryTheory.Sites.Over
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategoryBasic
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -3,8 +3,8 @@ import Mathlib.Algebra.Azumaya.Basic
 import Mathlib.Algebra.Algebra.Equiv
 import Mathlib.LinearAlgebra.Matrix.ToLin
 import Mathlib.LinearAlgebra.Matrix.Unique
-import StacksProject_2024.Chap11.Lemma_11_4_8
-import StacksProject_2024.Chap11.Lemma_11_4_10
+import stacks_proof.stacks_project.Chap11.Lemma_11_4_8
+import stacks_proof.stacks_project.Chap11.Lemma_11_4_10
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

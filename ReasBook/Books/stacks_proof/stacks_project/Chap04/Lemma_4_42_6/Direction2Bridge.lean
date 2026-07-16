@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap04.Lemma_4_42_6.SliceRepresentable
-import StacksProject_2024.Chap04.Lemma_4_42_6.Core
+import stacks_proof.stacks_project.Chap04.Lemma_4_42_6.SliceRepresentable
+import stacks_proof.stacks_project.Chap04.Lemma_4_42_6.Core
 
 universe v u
 

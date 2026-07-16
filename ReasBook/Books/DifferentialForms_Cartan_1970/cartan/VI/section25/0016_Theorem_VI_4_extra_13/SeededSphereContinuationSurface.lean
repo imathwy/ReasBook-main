@@ -1,6 +1,6 @@
-import DifferentialForms_Cartan_1970.VI.section25.«0016_Theorem_VI_4_extra_13».OpenSphereUniformization
-import DifferentialForms_Cartan_1970.VI.section25.«0016_Theorem_VI_4_extra_13».SeededSphereGluing
-import DifferentialForms_Cartan_1970.VI.section25.«0016_Theorem_VI_4_extra_13».SeededSphereReducedIntervalWindow
+import DifferentialForms_Cartan_1970.cartan.VI.section25.«0016_Theorem_VI_4_extra_13».OpenSphereUniformization
+import DifferentialForms_Cartan_1970.cartan.VI.section25.«0016_Theorem_VI_4_extra_13».SeededSphereGluing
+import DifferentialForms_Cartan_1970.cartan.VI.section25.«0016_Theorem_VI_4_extra_13».SeededSphereReducedIntervalWindow
 
 open scoped Manifold
 open CategoryTheory Limits

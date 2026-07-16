@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Homology.DerivedCategory.KInjective
 import Mathlib.Algebra.Homology.DerivedCategory.KProjective
-import StacksProject_2024.Chap22.ModuleCatHasDerivedCategory
+import StacksProject_2024.stacks_project.Chap22.ModuleCatHasDerivedCategory
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

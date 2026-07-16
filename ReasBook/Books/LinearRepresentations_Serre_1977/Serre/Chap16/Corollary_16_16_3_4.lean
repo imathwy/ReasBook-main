@@ -1,9 +1,9 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap14.Infra_14_4_ProjectiveLift
-import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_3_1.FiniteRepScalarExtension
-import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
-import LinearRepresentations_Serre_1977.Chap16.Proposition_16_16_3_3
-import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_2_1
+import LinearRepresentations_Serre_1977.Serre.Chap14.Infra_14_4_ProjectiveLift
+import LinearRepresentations_Serre_1977.Serre.Chap15.Definition_15_15_3_1.FiniteRepScalarExtension
+import LinearRepresentations_Serre_1977.Serre.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Serre.Chap16.Proposition_16_16_3_3
+import LinearRepresentations_Serre_1977.Serre.Chap16.Theorem_16_16_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

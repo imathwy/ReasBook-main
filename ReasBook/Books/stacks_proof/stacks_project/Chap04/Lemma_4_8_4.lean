@@ -1,5 +1,5 @@
 import Mathlib.Data.List.TFAE
-import StacksProject_2024.Chap04.Definition_4_8_2
+import stacks_proof.stacks_project.Chap04.Definition_4_8_2
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

@@ -1,8 +1,8 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section05.«0001_Definition_II_1_extra_1»
-import DifferentialForms_Cartan_1970.II.section05.«0005_Proposition_2_1»
-import DifferentialForms_Cartan_1970.II.section05.«0019_Theorem_2»
-import DifferentialForms_Cartan_1970.II.section06.«0005_Corollary_1»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0001_Definition_II_1_extra_1»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0005_Proposition_2_1»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0019_Theorem_2»
+import DifferentialForms_Cartan_1970.cartan.II.section06.«0005_Corollary_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import SmoothManifolds_Lee_2012.Chap07.Sec07_48.Theorem_7_9
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_48.Theorem_7_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

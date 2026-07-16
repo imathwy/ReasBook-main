@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_8_1.PlusConstruction.SharedCore
-import StacksProject_2024.Chap08.Lemma_8_8_1.PlusConstruction.Stage3DescentEffective.LocalRefinement
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.PlusConstruction.SharedCore
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.PlusConstruction.Stage3DescentEffective.LocalRefinement
 
 universe u v uX vX
 

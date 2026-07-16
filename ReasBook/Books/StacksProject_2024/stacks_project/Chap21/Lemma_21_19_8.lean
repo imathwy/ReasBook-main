@@ -1,8 +1,8 @@
-import StacksProject_2024.Chap13.«13_17_1_1»
-import StacksProject_2024.Chap18.Lemma_18_5_2
-import StacksProject_2024.Chap12.Lemma_12_9_6
-import StacksProject_2024.Chap21.Lemma_21_10_1
-import StacksProject_2024.Chap21.SiteAbelianSheaf
+import StacksProject_2024.stacks_project.Chap13.«13_17_1_1»
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_5_2
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_9_6
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_10_1
+import StacksProject_2024.stacks_project.Chap21.SiteAbelianSheaf
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

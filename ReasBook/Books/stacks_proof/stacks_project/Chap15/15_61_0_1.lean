@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
 import Mathlib.CategoryTheory.Functor.Derived.PointwiseLeftDerived
-import StacksProject_2024.Chap12.Remark_12_29_2
-import StacksProject_2024.Chap13.Situation_13_15_1
-import StacksProject_2024.Chap15.«15_60_1_1»
+import stacks_proof.stacks_project.Chap12.Remark_12_29_2
+import stacks_proof.stacks_project.Chap13.Situation_13_15_1
+import stacks_proof.stacks_project.Chap15.«15_60_1_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

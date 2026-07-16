@@ -1,8 +1,8 @@
 import Mathlib.Analysis.Convex.Function
 import Mathlib.Data.EReal.Operations
 import Mathlib.Algebra.Module.Basic
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_4
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Definition_13_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap08.Proposition_8_4
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap13.Definition_13_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

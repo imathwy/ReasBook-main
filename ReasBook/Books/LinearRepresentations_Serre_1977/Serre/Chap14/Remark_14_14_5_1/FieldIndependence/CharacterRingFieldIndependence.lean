@@ -1,9 +1,9 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_1
-import LinearRepresentations_Serre_1977.Chap12.Proposition_12_12_1_3
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.FieldIndependence.AbsoluteIrreducibleAscends
-import LinearRepresentations_Serre_1977.Chap14.Remark_14_14_5_1.FieldIndependence.Surjectivity
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Serre.Chap12.Proposition_12_12_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap12.Proposition_12_12_1_3
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.FieldIndependence.AbsoluteIrreducibleAscends
+import LinearRepresentations_Serre_1977.Serre.Chap14.Remark_14_14_5_1.FieldIndependence.Surjectivity
 
 /-!
 # Field-independence of the characteristic-`0` character ring (central theorem)

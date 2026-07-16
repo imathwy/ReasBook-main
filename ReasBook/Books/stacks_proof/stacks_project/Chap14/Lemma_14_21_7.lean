@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap14.Lemma_14_18_3
+import stacks_proof.stacks_project.Chap14.Lemma_14_18_3
 
 open CategoryTheory Limits Opposite Simplicial
 

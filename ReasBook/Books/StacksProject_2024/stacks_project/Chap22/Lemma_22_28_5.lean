@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap22.Lemma_22_20_1
-import StacksProject_2024.Chap22.AdmissibleShortExact
-import StacksProject_2024.Chap22.Definition_22_7_1
-import StacksProject_2024.Chap22.PropertyPDGModule
+import StacksProject_2024.stacks_project.Chap22.Lemma_22_20_1
+import StacksProject_2024.stacks_project.Chap22.AdmissibleShortExact
+import StacksProject_2024.stacks_project.Chap22.Definition_22_7_1
+import StacksProject_2024.stacks_project.Chap22.PropertyPDGModule
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

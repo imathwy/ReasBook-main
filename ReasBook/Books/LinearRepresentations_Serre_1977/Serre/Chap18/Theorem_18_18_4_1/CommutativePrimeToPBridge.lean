@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap18.Theorem_18_18_4_1.CharacterTransformCore
+import LinearRepresentations_Serre_1977.Serre.Chap18.Theorem_18_18_4_1.CharacterTransformCore
 
 noncomputable section
 

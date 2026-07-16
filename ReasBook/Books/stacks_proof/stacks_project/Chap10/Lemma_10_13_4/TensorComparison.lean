@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_13_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_13_3
 
 -- Tensor-power scalar-restriction comparison helpers for Lemma 10.13.4.
 

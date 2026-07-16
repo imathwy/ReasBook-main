@@ -1,5 +1,5 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_2.GeneralFieldAugmentation
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_5_2.GeneralFieldAugmentation
 
 /-!
 # Irreducibility of the standard module of a full symmetric group (support for Exercise 18.5.2)

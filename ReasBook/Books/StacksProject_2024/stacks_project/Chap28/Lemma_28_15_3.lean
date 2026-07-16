@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap10.Definition_10_155_3
-import StacksProject_2024.Chap28.Definition_28_15_1
+import StacksProject_2024.stacks_project.Chap10.Definition_10_155_3
+import StacksProject_2024.stacks_project.Chap28.Definition_28_15_1
 import Mathlib.Topology.Sober
 
 -- Declarations for this item will be appended below by the statement pipeline.

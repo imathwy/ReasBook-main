@@ -1,9 +1,9 @@
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.Abelian
-import StacksProject_2024.Chap20.Lemma_20_28_1
-import StacksProject_2024.Chap20.Perfect_on_opens_ringed_site
-import StacksProject_2024.Chap20.Lemma_20_50_6
-import StacksProject_2024.Chap20.«20_54_2_1»
-import StacksProject_2024.Chap21.Lemma_21_50_1
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_28_1
+import StacksProject_2024.stacks_project.Chap20.Perfect_on_opens_ringed_site
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_50_6
+import StacksProject_2024.stacks_project.Chap20.«20_54_2_1»
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_50_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap18.Definition_18_43_1
-import StacksProject_2024.Chap07.Definition_7_15_1_Topoi
-import StacksProject_2024.Chap07.Lemma_7_29_3
-import StacksProject_2024.Chap07.Remark_7_29_7
+import stacks_proof.stacks_project.Chap18.Definition_18_43_1
+import stacks_proof.stacks_project.Chap07.Definition_7_15_1_Topoi
+import stacks_proof.stacks_project.Chap07.Lemma_7_29_3
+import stacks_proof.stacks_project.Chap07.Remark_7_29_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

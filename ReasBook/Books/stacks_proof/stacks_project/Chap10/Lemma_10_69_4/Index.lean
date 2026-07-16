@@ -1,3 +1,3 @@
-import StacksProject_2024.Chap10.Lemma_10_69_4.FiniteKernel
-import StacksProject_2024.Chap10.Lemma_10_69_4.QuotientPolynomialLocalization
-import StacksProject_2024.Chap10.Lemma_10_69_4.SourceTensorLocalization
+import stacks_proof.stacks_project.Chap10.Lemma_10_69_4.FiniteKernel
+import stacks_proof.stacks_project.Chap10.Lemma_10_69_4.QuotientPolynomialLocalization
+import stacks_proof.stacks_project.Chap10.Lemma_10_69_4.SourceTensorLocalization

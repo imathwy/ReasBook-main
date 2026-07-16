@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.VisibleReadbackCaseSplitSourceWorker
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.PairingFunctionalPointMassRowWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.VisibleReadbackCaseSplitSourceWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.PairingFunctionalPointMassRowWorker
 
 /-!
 Diagonal source-side worker for the visible point-mass readback.

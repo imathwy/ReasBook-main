@@ -1,5 +1,7 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04.FirmlyNonexpansiveOn
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap04.FirmlyNonexpansiveOn
+
+open SubtypeFirmness
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

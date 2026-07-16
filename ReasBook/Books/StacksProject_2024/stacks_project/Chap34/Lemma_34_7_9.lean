@@ -1,5 +1,5 @@
 import Mathlib.CategoryTheory.ObjectProperty.LimitsOfShape
-import StacksProject_2024.Chap34.Definition_34_7_8
+import StacksProject_2024.stacks_project.Chap34.Definition_34_7_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

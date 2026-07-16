@@ -1,10 +1,10 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap03.Definition_3_2_6
-import AlgebraicTopology_May_1999.Chap03.Definition_3_8_7
-import AlgebraicTopology_May_1999.Chap03.Proposition_3_3_6
-import AlgebraicTopology_May_1999.Chap03.Corollary_3_7_8
-import AlgebraicTopology_May_1999.Chap03.Example_3_3_9
-import AlgebraicTopology_May_1999.Chap03.Theorem_3_5_8
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_2_6
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Definition_3_8_7
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Proposition_3_3_6
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Corollary_3_7_8
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Example_3_3_9
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap03.Theorem_3_5_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -86,7 +86,7 @@ transporting the image of the corresponding vertex-group map to the chosen base 
 private def fiberPointSubgroup
     {E' B' : Type u} [Groupoid E'] [Groupoid B'] {q : E' ⥤ B'} {b : B'}
     (x : q.Fiber b) : Subgroup (b ⟶ b) :=
-  x.2 ▸ (Functor.mapVertexGroup q x.1).range
+  x.2 ▸ (q.mapVertexGroup x.1).range
 
 /-- Helper for Proposition 3.8.9: for any fiber point of a covering functor, the transported
 vertex-group image subgroup is exactly the stabilizer of that point under fiber translation. -/
@@ -226,7 +226,7 @@ transported subgroup is the image of the induced vertex-group map. -/
 private theorem fiberPointSubgroup_basepoint_eq_mapVertexGroup_range
     (hp : IsPathConnectedCoveringMap p) (e : E) :
     fiberPointSubgroup ((hp.fundamentalGroupoidMapFiberEquiv (p e)).symm ⟨e, rfl⟩) =
-      (Functor.mapVertexGroup hp.fundamentalGroupoidMap (mk e)).range := by
+      (hp.fundamentalGroupoidMap.mapVertexGroup (mk e)).range := by
   -- At the literal basepoint, the transported subgroup is definitionally the induced image.
   rfl
 
@@ -268,14 +268,14 @@ theorem coveringSpaceAut_transitiveOnFiber_normal_fundamentalGroup_map_range
       simpa [MulAut.conj_apply] using hmem
     -- Transport the conjugated element back to the original subgroup at the basepoint.
     simpa using (hconj ▸ hmem')
-  have hnormal' : (Functor.mapVertexGroup hp.fundamentalGroupoidMap (mk e)).range.Normal := by
+  have hnormal' : (hp.fundamentalGroupoidMap.mapVertexGroup (mk e)).range.Normal := by
     simpa [ξ₀, fiberPointSubgroup_basepoint_eq_mapVertexGroup_range] using hnormal
   have hnormal'' : (((FundamentalGroupoid.map p).mapEnd (mk e)).range).Normal := by
     let q : C(E, B) := ⟨p, hp.isCoveringMap.continuous⟩
     have hq : q = p := by
       ext x
       rfl
-    have hnormalqv : (Functor.mapVertexGroup (FundamentalGroupoid.map q) (mk e)).range.Normal := by
+    have hnormalqv : ((FundamentalGroupoid.map q).mapVertexGroup (mk e)).range.Normal := by
       simpa [q, IsPathConnectedCoveringMap.fundamentalGroupoidMap] using hnormal'
     have hnormalq : (((FundamentalGroupoid.map q).mapEnd (mk e)).range).Normal := by
       constructor
@@ -283,7 +283,7 @@ theorem coveringSpaceAut_transitiveOnFiber_normal_fundamentalGroup_map_range
       rcases (Subgroup.Normal.conj_mem' hnormalqv n hn g) with ⟨x, hx⟩
       refine ⟨x, ?_⟩
       change Path.Homotopic.Quotient.map x q = g⁻¹ ≫ n ≫ g
-      simpa [Functor.mapVertexGroup] using hx
+      simpa [CategoryTheory.Functor.mapVertexGroup] using hx
     simpa [hq] using hnormalq
   -- Rewrite the distinguished categorical subgroup as the ordinary fundamental-group image.
   simpa [FundamentalGroup.map] using hnormal''

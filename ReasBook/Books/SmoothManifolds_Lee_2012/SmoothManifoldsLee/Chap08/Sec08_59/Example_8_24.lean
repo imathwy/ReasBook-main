@@ -1,6 +1,6 @@
 import Mathlib
-import SmoothManifolds_Lee_2012.Chap08.Sec08_56.Definition_8_56_extra_2
-import SmoothManifolds_Lee_2012.Chap08.Sec08_56.Notation_8_56_extra_3
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_56.Definition_8_56_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_56.Notation_8_56_extra_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

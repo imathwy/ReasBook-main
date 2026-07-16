@@ -1,7 +1,7 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.III.section11.frozen_0003_Theorem_III_5_extra_2
-import DifferentialForms_Cartan_1970.III.section11.«0003_Theorem_III_5_extra_2».BoundaryCircleIntegrals
-import DifferentialForms_Cartan_1970.IV.section17.«0012_Exercise_4».CircleBoundaryGeometry
+import DifferentialForms_Cartan_1970.cartan.III.section11.frozen_0003_Theorem_III_5_extra_2
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0003_Theorem_III_5_extra_2».BoundaryCircleIntegrals
+import DifferentialForms_Cartan_1970.cartan.IV.section17.«0012_Exercise_4».CircleBoundaryGeometry
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

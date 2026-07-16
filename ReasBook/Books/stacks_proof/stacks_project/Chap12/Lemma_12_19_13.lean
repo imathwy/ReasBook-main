@@ -1,6 +1,6 @@
 import Mathlib.Data.List.TFAE
 import Mathlib.CategoryTheory.Functor.ReflectsIso.Exact
-import StacksProject_2024.Chap12.Lemma_12_19_12
+import stacks_proof.stacks_project.Chap12.Lemma_12_19_12
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory CategoryTheory.Limits

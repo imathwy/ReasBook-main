@@ -1,5 +1,5 @@
 import Mathlib.RingTheory.DividedPowers.Padic
-import StacksProject_2024.Chap23.Lemma_23_4_2
+import StacksProject_2024.stacks_project.Chap23.Lemma_23_4_2
 
 universe u
 

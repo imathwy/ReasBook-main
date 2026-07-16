@@ -1,5 +1,5 @@
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.Generators
-import StacksProject_2024.Chap06.RingedSpaceModuleCore
+import StacksProject_2024.stacks_project.Chap06.RingedSpaceModuleCore
 
 open CategoryTheory CategoryTheory.Limits TopologicalSpace Topology
 open TopCat.Presheaf

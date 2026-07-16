@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.RingTheory.DiscreteValuationRing.Basic
-import StacksProject_2024.Chap09.Lemma_9_26_11
-import StacksProject_2024.Chap10.Lemma_10_42_3
-import StacksProject_2024.Chap10.Lemma_10_119_1
-import StacksProject_2024.Chap10.Lemma_10_119_12_Krull_Akizuki
-import StacksProject_2024.Chap10.Lemma_10_119_7
+import stacks_proof.stacks_project.Chap09.Lemma_9_26_11
+import stacks_proof.stacks_project.Chap10.Lemma_10_42_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_119_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_119_12_Krull_Akizuki
+import stacks_proof.stacks_project.Chap10.Lemma_10_119_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

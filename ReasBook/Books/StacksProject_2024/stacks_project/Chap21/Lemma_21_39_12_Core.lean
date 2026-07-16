@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
-import StacksProject_2024.Chap18.Lemma_18_14_2
-import StacksProject_2024.Chap18.RingedSiteModuleCategory
-import StacksProject_2024.Chap21.Lemma_21_39_7
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_14_2
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategory
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_39_7
 
 open CategoryTheory Opposite SheafOfModules.RingedSite
 open CategoryTheory.Limits

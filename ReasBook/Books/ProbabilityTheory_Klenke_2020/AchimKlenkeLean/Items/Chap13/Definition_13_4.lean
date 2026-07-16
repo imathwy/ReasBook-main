@@ -1,4 +1,4 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap13.Definition_13_3
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap13.Definition_13_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

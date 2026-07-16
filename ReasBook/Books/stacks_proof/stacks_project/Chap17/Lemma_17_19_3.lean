@@ -1,11 +1,11 @@
 import Mathlib
-import StacksProject_2024.Chap06.Lemma_6_21_5
-import StacksProject_2024.Chap06.Lemma_6_29_3
-import StacksProject_2024.Chap05.Definition_5_8_6
-import StacksProject_2024.Chap05.Lemma_5_23_14
-import StacksProject_2024.Chap05.Lemma_5_24_5
-import StacksProject_2024.Chap05.Lemma_5_24_6
-import StacksProject_2024.Chap17.«17_19_2_1»
+import stacks_proof.stacks_project.Chap06.Lemma_6_21_5
+import stacks_proof.stacks_project.Chap06.Lemma_6_29_3
+import stacks_proof.stacks_project.Chap05.Definition_5_8_6
+import stacks_proof.stacks_project.Chap05.Lemma_5_23_14
+import stacks_proof.stacks_project.Chap05.Lemma_5_24_5
+import stacks_proof.stacks_project.Chap05.Lemma_5_24_6
+import stacks_proof.stacks_project.Chap17.«17_19_2_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap04.Example_4_3_4
-import StacksProject_2024.Chap04.Definition_4_40_1
-import StacksProject_2024.Chap04.Example_4_38_5
-import StacksProject_2024.Chap04.Lemma_4_35_9
+import stacks_proof.stacks_project.Chap04.Example_4_3_4
+import stacks_proof.stacks_project.Chap04.Definition_4_40_1
+import stacks_proof.stacks_project.Chap04.Example_4_38_5
+import stacks_proof.stacks_project.Chap04.Lemma_4_35_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

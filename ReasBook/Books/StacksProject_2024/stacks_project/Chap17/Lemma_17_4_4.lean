@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap17.ModuleRestrictionAndStalks
-import StacksProject_2024.Chap06.Lemma_6_15_4
-import StacksProject_2024.Chap06.Lemma_6_26_4
-import StacksProject_2024.Chap06.Lemma_6_17_6
-import StacksProject_2024.Chap06.Lemma_6_20_1
+import StacksProject_2024.stacks_project.Chap17.ModuleRestrictionAndStalks
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_15_4
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_26_4
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_17_6
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_20_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

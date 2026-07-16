@@ -1,7 +1,7 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap15.Theorem_15_15_2_2
-import LinearRepresentations_Serre_1977.Chap16.Theorem_16_16_1_5.SubgroupInduction
-import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap15.Theorem_15_15_2_2
+import LinearRepresentations_Serre_1977.Serre.Chap16.Theorem_16_16_1_5.SubgroupInduction
+import LinearRepresentations_Serre_1977.Serre.Chap14.Proposition_14_14_1_1
 
 /-!
 # Decomposition commutes with subgroup induction (modulo the induced-lattice bridge)

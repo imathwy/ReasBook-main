@@ -1,5 +1,5 @@
 import Mathlib
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap04.Theorem_4_6_6
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap04.Theorem_4_6_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

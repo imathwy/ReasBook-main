@@ -1,5 +1,5 @@
 import Mathlib.CategoryTheory.Functor.Derived.LeftDerived
-import StacksProject_2024.Chap22.Lemma_22_33_2
+import StacksProject_2024.stacks_project.Chap22.Lemma_22_33_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

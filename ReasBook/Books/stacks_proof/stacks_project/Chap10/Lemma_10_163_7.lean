@@ -1,13 +1,13 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_25_1
-import StacksProject_2024.Chap10.Lemma_10_63_18
-import StacksProject_2024.Chap10.Lemma_10_72_9
-import StacksProject_2024.Chap10.Lemma_10_106_2
-import StacksProject_2024.Chap10.Lemma_10_140_3
-import StacksProject_2024.Chap10.Lemma_10_157_2
-import StacksProject_2024.Chap10.Lemma_10_157_4_Serre_s_criterion_for_normality
-import StacksProject_2024.Chap10.Lemma_10_163_4
-import StacksProject_2024.Chap10.Lemma_10_163_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_25_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_63_18
+import stacks_proof.stacks_project.Chap10.Lemma_10_72_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_106_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_140_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_157_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_157_4_Serre_s_criterion_for_normality
+import stacks_proof.stacks_project.Chap10.Lemma_10_163_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_163_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

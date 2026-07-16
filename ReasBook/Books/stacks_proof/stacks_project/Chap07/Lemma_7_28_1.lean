@@ -1,11 +1,11 @@
 import Mathlib
-import StacksProject_2024.Chap07.Lemma_7_12_4
-import StacksProject_2024.Chap07.Definition_7_14_1
-import StacksProject_2024.Chap07.Lemma_7_25_2
-import StacksProject_2024.Chap07.Lemma_7_25_9
-import StacksProject_2024.Chap07.Lemma_7_25_8
-import StacksProject_2024.Chap07.Remark_7_25_10
-import StacksProject_2024.Chap07.Lemma_7_28_1.Index
+import stacks_proof.stacks_project.Chap07.Lemma_7_12_4
+import stacks_proof.stacks_project.Chap07.Definition_7_14_1
+import stacks_proof.stacks_project.Chap07.Lemma_7_25_2
+import stacks_proof.stacks_project.Chap07.Lemma_7_25_9
+import stacks_proof.stacks_project.Chap07.Lemma_7_25_8
+import stacks_proof.stacks_project.Chap07.Remark_7_25_10
+import stacks_proof.stacks_project.Chap07.Lemma_7_28_1.Index
 
 open CategoryTheory
 open CategoryTheory.Limits

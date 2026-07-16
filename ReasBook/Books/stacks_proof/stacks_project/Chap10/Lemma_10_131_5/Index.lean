@@ -1,3 +1,3 @@
-import StacksProject_2024.Chap10.Lemma_10_131_5.StageDifferentialBridge
-import StacksProject_2024.Chap10.Lemma_10_131_5.SourceGeneratorBasic
-import StacksProject_2024.Chap10.Lemma_10_131_5.TargetSquareZeroLift
+import stacks_proof.stacks_project.Chap10.Lemma_10_131_5.StageDifferentialBridge
+import stacks_proof.stacks_project.Chap10.Lemma_10_131_5.SourceGeneratorBasic
+import stacks_proof.stacks_project.Chap10.Lemma_10_131_5.TargetSquareZeroLift

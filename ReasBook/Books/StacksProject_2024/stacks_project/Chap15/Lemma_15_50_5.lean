@@ -1,15 +1,15 @@
 import Mathlib
-import StacksProject_2024.Chap09.Lemma_9_14_2
-import StacksProject_2024.Chap09.Lemma_9_14_5
-import StacksProject_2024.Chap10.Lemma_10_97_8
-import StacksProject_2024.Chap10.Lemma_10_164_4
-import StacksProject_2024.Chap10.Remark_10_160_9
-import StacksProject_2024.Chap15.Lemma_15_43_4
-import StacksProject_2024.Chap15.Lemma_15_46_5
-import StacksProject_2024.Chap15.Lemma_15_48_1
-import StacksProject_2024.Chap15.Lemma_15_48_4
-import StacksProject_2024.Chap15.Lemma_15_48_5
-import StacksProject_2024.Chap15.Definition_15_50_1
+import StacksProject_2024.stacks_project.Chap09.Lemma_9_14_2
+import StacksProject_2024.stacks_project.Chap09.Lemma_9_14_5
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_97_8
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_164_4
+import StacksProject_2024.stacks_project.Chap10.Remark_10_160_9
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_43_4
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_46_5
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_48_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_48_4
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_48_5
+import StacksProject_2024.stacks_project.Chap15.Definition_15_50_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

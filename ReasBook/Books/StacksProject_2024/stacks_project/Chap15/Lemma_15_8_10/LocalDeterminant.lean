@@ -1,8 +1,8 @@
 import Mathlib.Algebra.Module.FinitePresentation
 import Mathlib.Algebra.Ring.NonZeroDivisors
-import StacksProject_2024.Chap15.Definition_15_8_3
-import StacksProject_2024.Chap15.Lemma_15_8_9
-import StacksProject_2024.Chap15.PrincipalIdeal
+import StacksProject_2024.stacks_project.Chap15.Definition_15_8_3
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_8_9
+import StacksProject_2024.stacks_project.Chap15.PrincipalIdeal
 
 open scoped FittingIdeal
 

@@ -1,6 +1,6 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap10.Example_10_8_5
-import StacksProject_2024.Chap10.Lemma_10_8_8
+import stacks_proof.stacks_project.Chap10.Example_10_8_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_8_8
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory

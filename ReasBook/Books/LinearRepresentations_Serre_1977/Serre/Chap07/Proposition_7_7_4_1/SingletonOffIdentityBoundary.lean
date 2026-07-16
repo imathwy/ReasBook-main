@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap07.Proposition_7_7_4_1.IdentityProjectionTransport
+import LinearRepresentations_Serre_1977.Serre.Chap07.Proposition_7_7_4_1.IdentityProjectionTransport
 
 noncomputable section
 

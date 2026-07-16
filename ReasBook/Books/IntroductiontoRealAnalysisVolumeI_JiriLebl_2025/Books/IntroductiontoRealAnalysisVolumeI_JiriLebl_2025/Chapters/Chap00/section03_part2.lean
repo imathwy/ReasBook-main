@@ -90,7 +90,7 @@ theorem principle_of_strong_induction (P : ℕ → Prop) (h₁ : P 1)
         cases hlt_or_eq with
         | inl hlt =>
             have hk_le' : k ≤ n + 1 := by
-              exact Nat.le_of_lt_succ (by simpa using hlt)
+              omega
             exact ih k hk1 hk_le'
         | inr hk_eq =>
             have hnext : P (n + 2) := by

@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap04.Lemma_4_34_1
-import StacksProject_2024.Chap08.Lemma_8_4_2
+import stacks_proof.stacks_project.Chap04.Lemma_4_34_1
+import stacks_proof.stacks_project.Chap08.Lemma_8_4_2
 
 open CategoryTheory
 

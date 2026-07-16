@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap10.«10_69_0_1»
-import StacksProject_2024.Chap12.Definition_12_31_2
-import StacksProject_2024.Chap20.SiteModuleCohomologyTower
+import StacksProject_2024.stacks_project.Chap10.«10_69_0_1»
+import StacksProject_2024.stacks_project.Chap12.Definition_12_31_2
+import StacksProject_2024.stacks_project.Chap20.SiteModuleCohomologyTower
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

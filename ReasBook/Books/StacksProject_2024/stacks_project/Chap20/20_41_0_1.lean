@@ -1,5 +1,5 @@
 import Mathlib.Algebra.Homology.HomotopyCategory.HomComplexCohomology
-import StacksProject_2024.Chap20.Open_subspace_module_core
+import StacksProject_2024.stacks_project.Chap20.Open_subspace_module_core
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

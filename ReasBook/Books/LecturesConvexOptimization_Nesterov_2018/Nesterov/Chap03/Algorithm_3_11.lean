@@ -1,6 +1,6 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Algorithm_3_10
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Lemma_3_3_4
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Proposition_3_52
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Algorithm_3_10
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Lemma_3_3_4
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Proposition_3_52
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

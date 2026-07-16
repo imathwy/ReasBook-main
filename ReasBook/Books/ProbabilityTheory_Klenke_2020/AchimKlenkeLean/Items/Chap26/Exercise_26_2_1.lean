@@ -1,6 +1,6 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap17.Exercise_17_6_2
-import ProbabilityTheory_Klenke_2020.Items.Chap26.Example_26_11
-import ProbabilityTheory_Klenke_2020.Items.Chap26.Theorem_26_10
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap17.Exercise_17_6_2
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap26.Example_26_11
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap26.Theorem_26_10
 import Mathlib
 
 -- Declarations for this item will be appended below by the statement pipeline.

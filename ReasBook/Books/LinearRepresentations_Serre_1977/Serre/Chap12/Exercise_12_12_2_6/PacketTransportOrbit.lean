@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap12.Exercise_12_12_2_6.CanonicalPacketFrontier
+import LinearRepresentations_Serre_1977.Serre.Chap12.Exercise_12_12_2_6.CanonicalPacketFrontier
 
 noncomputable section
 

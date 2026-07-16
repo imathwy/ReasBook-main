@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap08.Lemma_8_4_6.CanonicalPullbackComparison
+import stacks_proof.stacks_project.Chap08.Lemma_8_4_6.CanonicalPullbackComparison
 
 universe u v
 

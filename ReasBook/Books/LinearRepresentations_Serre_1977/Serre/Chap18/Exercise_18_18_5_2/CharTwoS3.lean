@@ -1,6 +1,6 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap07.Exercise_7_7_2_4
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_5_2.SemisimpleEquivTransport
+import LinearRepresentations_Serre_1977.Serre.Chap07.Exercise_7_7_2_4
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_5_2.SemisimpleEquivTransport
 
 /-!
 # Classification of the irreducible `S₃`-representations in characteristic `2` (support for 18.5.2)

@@ -1,5 +1,5 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Definition_1_4_17
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.SignedLetter
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Definition_1_4_17
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.SignedLetter
 
 universe u
 

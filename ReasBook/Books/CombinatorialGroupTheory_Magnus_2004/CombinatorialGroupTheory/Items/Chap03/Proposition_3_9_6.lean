@@ -1,6 +1,6 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Proposition_3_4_3
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Proposition_3_9_1
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap03.Proposition_3_9_5
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap03.Proposition_3_4_3
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap03.Proposition_3_9_1
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap03.Proposition_3_9_5
 
 universe u v w z
 

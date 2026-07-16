@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap04.Lemma_4_19_8
+import stacks_proof.stacks_project.Chap04.Lemma_4_19_8
 import Mathlib.Logic.Small.Basic
 import Mathlib.CategoryTheory.EssentiallySmall
 import Mathlib.CategoryTheory.Limits.Preserves.Grothendieck

@@ -1,5 +1,5 @@
 import Mathlib
-import Books.Analysis2_Tao_2022.Chapters.Chap04.section02_part3
+import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Chapters.Chap04.section02_part3
 
 open Classical
 

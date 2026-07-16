@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap10.Lemma_10_13_2
-import StacksProject_2024.Chap17.Lemma_17_3_1
-import StacksProject_2024.Chap17.Lemma_17_21_1
-import StacksProject_2024.Chap17.ModuleRestrictionAndStalks
+import stacks_proof.stacks_project.Chap10.Lemma_10_13_2
+import stacks_proof.stacks_project.Chap17.Lemma_17_3_1
+import stacks_proof.stacks_project.Chap17.Lemma_17_21_1
+import stacks_proof.stacks_project.Chap17.ModuleRestrictionAndStalks
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory

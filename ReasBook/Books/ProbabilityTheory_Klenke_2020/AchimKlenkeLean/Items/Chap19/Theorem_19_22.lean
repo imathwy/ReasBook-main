@@ -1,5 +1,5 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap19.Definition_19_21
-import ProbabilityTheory_Klenke_2020.Items.Chap19.Theorem_19_20
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap19.Definition_19_21
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap19.Theorem_19_20
 
 open scoped BigOperators ProbabilityTheory
 

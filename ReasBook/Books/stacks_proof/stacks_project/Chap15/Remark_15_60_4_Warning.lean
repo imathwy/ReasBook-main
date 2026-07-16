@@ -1,13 +1,13 @@
-import StacksProject_2024.Chap15.Lemma_15_60_1
-import StacksProject_2024.Chap15.Lemma_15_92_16
-import StacksProject_2024.Chap15.Definition_15_65_1
-import StacksProject_2024.Chap15.PrincipalIdeal
-import StacksProject_2024.Chap10.Lemma_10_109_4
-import StacksProject_2024.Chap10.Lemma_10_109_9
-import StacksProject_2024.Chap15.Lemma_15_60_2
-import StacksProject_2024.Chap15.Lemma_15_75_3
-import StacksProject_2024.Chap15.Lemma_15_75_4
-import StacksProject_2024.Chap15.Lemma_15_75_5
+import stacks_proof.stacks_project.Chap15.Lemma_15_60_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_92_16
+import stacks_proof.stacks_project.Chap15.Definition_15_65_1
+import stacks_proof.stacks_project.Chap15.PrincipalIdeal
+import stacks_proof.stacks_project.Chap10.Lemma_10_109_4
+import stacks_proof.stacks_project.Chap10.Lemma_10_109_9
+import stacks_proof.stacks_project.Chap15.Lemma_15_60_2
+import stacks_proof.stacks_project.Chap15.Lemma_15_75_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_75_4
+import stacks_proof.stacks_project.Chap15.Lemma_15_75_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

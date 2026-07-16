@@ -1,5 +1,5 @@
 import Mathlib.CategoryTheory.Adjunction.Mates
-import StacksProject_2024.Chap07.Definition_7_15_1_Topoi
+import stacks_proof.stacks_project.Chap07.Definition_7_15_1_Topoi
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

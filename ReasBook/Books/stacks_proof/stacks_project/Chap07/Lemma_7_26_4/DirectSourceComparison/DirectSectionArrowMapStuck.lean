@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap07.Lemma_7_26_4.DirectSourceComparison.Index
+import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.DirectSourceComparison.Index
 
 /-!
 Historical compatibility path for the old direct-section arrow-map blocker.

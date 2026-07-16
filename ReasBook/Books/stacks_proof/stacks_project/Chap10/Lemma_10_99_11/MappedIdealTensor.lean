@@ -1,9 +1,9 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_39_18
-import StacksProject_2024.Chap10.Lemma_10_51_5
-import StacksProject_2024.Chap10.Remark_10_75_9
-import StacksProject_2024.Chap10.Lemma_10_79_2
-import StacksProject_2024.Chap10.Lemma_10_99_10_Variant_of_the_local_criterion
+import stacks_proof.stacks_project.Chap10.Lemma_10_39_18
+import stacks_proof.stacks_project.Chap10.Lemma_10_51_5
+import stacks_proof.stacks_project.Chap10.Remark_10_75_9
+import stacks_proof.stacks_project.Chap10.Lemma_10_79_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_10_Variant_of_the_local_criterion
 
 open CategoryTheory.Limits IsLocalRing
 open scoped TensorProduct Pointwise

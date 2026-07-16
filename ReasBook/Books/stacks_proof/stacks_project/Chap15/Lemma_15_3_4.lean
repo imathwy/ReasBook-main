@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap10.Theorem_10_95_6
-import StacksProject_2024.Chap10.Lemma_10_97_3
-import StacksProject_2024.Chap10.Lemma_10_97_9
+import stacks_proof.stacks_project.Chap10.Theorem_10_95_6
+import stacks_proof.stacks_project.Chap10.Lemma_10_97_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_97_9
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

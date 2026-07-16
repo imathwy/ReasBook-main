@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Homology.HomotopyCategory.HomComplexCohomology
 import Mathlib.CategoryTheory.Preadditive.Biproducts
-import StacksProject_2024.Chap22.Definition_22_26_1
-import StacksProject_2024.Chap22.Lemma_22_26_5
+import StacksProject_2024.stacks_project.Chap22.Definition_22_26_1
+import StacksProject_2024.stacks_project.Chap22.Lemma_22_26_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

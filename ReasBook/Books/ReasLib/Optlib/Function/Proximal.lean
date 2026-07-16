@@ -381,8 +381,8 @@ lemma convex_of_norm_sq {s : Set E} (x : E) (conv : Convex ℝ s) :
     rw [norm_smul, norm_smul, mul_pow, mul_pow]; simp
     nth_rw 3 [← mul_one a]; nth_rw 3 [← one_mul b]
     rw [← absum1]; ring_nf; rw [add_right_comm]
-    apply add_le_add_right
-    rw [add_comm]; apply add_le_add_right
+    apply add_le_add_left
+    rw [add_comm]; apply add_le_add_left
     calc
       inner ℝ (a • u) (b • v) * 2 ≤ ‖a • u‖ * ‖b • v‖ * 2 := by
         rw [mul_le_mul_iff_left₀]
@@ -675,4 +675,3 @@ theorem prox_iff_subderiv_smul (f : E → ℝ) {t : ℝ} (hfun : ConvexOn ℝ un
   exact gconv
 
 end
-

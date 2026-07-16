@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap04.Definition_4_42_3
-import StacksProject_2024.Chap04.Lemma_4_42_6.Core
-import StacksProject_2024.Chap04.Lemma_4_42_6.Direction2
-import StacksProject_2024.Chap04.Lemma_4_42_6.Direction1
+import stacks_proof.stacks_project.Chap04.Definition_4_42_3
+import stacks_proof.stacks_project.Chap04.Lemma_4_42_6.Core
+import stacks_proof.stacks_project.Chap04.Lemma_4_42_6.Direction2
+import stacks_proof.stacks_project.Chap04.Lemma_4_42_6.Direction1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

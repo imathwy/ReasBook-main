@@ -55,9 +55,10 @@ theorem clairaut_mixed_partials_within
         ContDiffWithinAt ℝ 1
           (fun x => fderivWithin ℝ f E x (EuclideanSpace.single k (1 : ℝ))) E x₀ := by
       exact hcd.fderivWithin_right_apply (m := 1) contDiffWithinAt_const hUniqueOn le_rfl hx₀
-    exact hContDiff.differentiableWithinAt le_rfl
+    exact hContDiff.differentiableWithinAt one_ne_zero
   have hFderivWithinDiff : DifferentiableWithinAt ℝ (fderivWithin ℝ f E) E x₀ := by
-    exact (hcd.fderivWithin_right (m := 1) hUniqueOn le_rfl hx₀).differentiableWithinAt le_rfl
+    exact (hcd.fderivWithin_right (m := 1) hUniqueOn le_rfl hx₀).differentiableWithinAt
+      one_ne_zero
   have hDirectionalSecondRewrite :
       ∀ a b : Fin n,
         fderivWithin ℝ

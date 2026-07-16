@@ -1,9 +1,9 @@
 import Mathlib
-import StacksProject_2024.Chap13.Definition_13_34_1
-import StacksProject_2024.Chap13.Lemma_13_31_7
-import StacksProject_2024.Chap13.Lemma_13_34_2
-import StacksProject_2024.Chap13.Lemma_13_34_7
-import StacksProject_2024.Chap19.Lemma_19_13_4
+import stacks_proof.stacks_project.Chap13.Definition_13_34_1
+import stacks_proof.stacks_project.Chap13.Lemma_13_31_7
+import stacks_proof.stacks_project.Chap13.Lemma_13_34_2
+import stacks_proof.stacks_project.Chap13.Lemma_13_34_7
+import stacks_proof.stacks_project.Chap19.Lemma_19_13_4
 
 open CategoryTheory
 open CategoryTheory.Limits

@@ -1,9 +1,9 @@
 import Mathlib
-import StacksProject_2024.Chap08.Lemma_8_8_1.Criteria
-import StacksProject_2024.Chap08.Lemma_8_8_1.CoverDescent
-import StacksProject_2024.Chap08.Lemma_8_8_1.FiberTransport
-import StacksProject_2024.Chap08.Lemma_8_8_1.HomPresheafComparison
-import StacksProject_2024.Chap08.Lemma_8_8_1.Precomposition
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.Criteria
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.CoverDescent
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.FiberTransport
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.HomPresheafComparison
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.Precomposition
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

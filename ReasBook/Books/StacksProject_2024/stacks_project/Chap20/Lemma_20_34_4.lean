@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap13.Lemma_13_14_16
-import StacksProject_2024.Chap20.Global_sections_module_owners_core
-import StacksProject_2024.Chap20.Lemma_20_34_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_14_16
+import StacksProject_2024.stacks_project.Chap20.Global_sections_module_owners_core
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_34_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

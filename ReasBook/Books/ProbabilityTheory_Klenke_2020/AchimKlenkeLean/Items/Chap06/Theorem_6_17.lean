@@ -1,4 +1,4 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap06.Definition_6_16
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap06.Definition_6_16
 
 open MeasureTheory
 open scoped ENNReal NNReal

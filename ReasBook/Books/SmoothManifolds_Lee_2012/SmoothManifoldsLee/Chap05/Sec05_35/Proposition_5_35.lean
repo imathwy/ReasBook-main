@@ -1,9 +1,9 @@
 import Mathlib.Geometry.Manifold.ContMDiffMFDeriv
 import Mathlib.Geometry.Manifold.Immersion
-import SmoothManifolds_Lee_2012.Chap03.Sec03_17.Definition_3_17_extra_1
-import SmoothManifolds_Lee_2012.Chap03.Sec03_17.Proposition_3_24
-import SmoothManifolds_Lee_2012.Chap03.Sec03_18.Definition_3_18_extra_3
-import SmoothManifolds_Lee_2012.Chap05.Sec05_35.Notation_5_35_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap03.Sec03_17.Definition_3_17_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap03.Sec03_17.Proposition_3_24
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap03.Sec03_18.Definition_3_18_extra_3
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_35.Notation_5_35_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

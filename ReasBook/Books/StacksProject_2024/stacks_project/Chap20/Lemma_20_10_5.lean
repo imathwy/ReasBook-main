@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap13.Definition_13_16_2
-import StacksProject_2024.Chap13.Lemma_13_16_6
-import StacksProject_2024.Chap20.Lemma_20_10_2
-import StacksProject_2024.Chap20.OpensInstances
+import StacksProject_2024.stacks_project.Chap13.Definition_13_16_2
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_16_6
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_10_2
+import StacksProject_2024.stacks_project.Chap20.OpensInstances
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

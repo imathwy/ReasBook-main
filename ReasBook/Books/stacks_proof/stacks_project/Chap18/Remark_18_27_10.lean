@@ -8,9 +8,9 @@ import Mathlib.CategoryTheory.Monoidal.Braided.Transport
 import Mathlib.CategoryTheory.Monoidal.Closed.Transport
 import Mathlib.CategoryTheory.Monoidal.Functor
 import Mathlib.CategoryTheory.Sites.Monoidal
-import StacksProject_2024.Chap07.Lemma_7_30_3
-import StacksProject_2024.Chap18.Definition_18_5_1
-import StacksProject_2024.Chap18.Lemma_18_27_6
+import stacks_proof.stacks_project.Chap07.Lemma_7_30_3
+import stacks_proof.stacks_project.Chap18.Definition_18_5_1
+import stacks_proof.stacks_project.Chap18.Lemma_18_27_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,2 +1,2 @@
-import DifferentialForms_Cartan_1970.VI.section26.«0018_Exercise_8»
+import DifferentialForms_Cartan_1970.cartan.VI.section26.«0018_Exercise_8»
 #print exercise8_theta_quotient_boundary_trace

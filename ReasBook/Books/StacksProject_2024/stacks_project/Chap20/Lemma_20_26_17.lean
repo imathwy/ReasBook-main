@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap20.Lemma_20_26_12
-import StacksProject_2024.Chap21.Lemma_21_17_17
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_26_12
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_17_17
 
 open AlgebraicGeometry
 open CategoryTheory HomologicalComplex

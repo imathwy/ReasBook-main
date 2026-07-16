@@ -553,7 +553,7 @@ lemma add_le_add_left (γ : ℝ) : ∀ a b : EReal, γ + a ≤ γ + b ↔ a ≤ 
   · intro h
     have h' : - γ + γ + a ≤ - γ + γ + b := by
       rw [add_assoc, add_assoc]
-      exact _root_.add_le_add_left h (-↑γ)
+      exact _root_.add_le_add_right h (-↑γ)
     have hzero : -γ.toEReal + γ = 0 := by
       rw [← EReal.coe_neg, ← EReal.coe_add]
       simp only [neg_add_cancel, coe_zero]
@@ -561,7 +561,7 @@ lemma add_le_add_left (γ : ℝ) : ∀ a b : EReal, γ + a ≤ γ + b ↔ a ≤ 
     simp only [zero_add] at h'
     exact h'
   intro h
-  exact _root_.add_le_add_left h γ
+  exact _root_.add_le_add_right h γ
 
 /-
 Lemma. Adding a fixed real on the right preserves and reflects order on extended reals.
@@ -745,7 +745,7 @@ lemma sInf_neg (s : Set EReal) : sInf (-s) = -sSup s := by
   apply le_antisymm_iff.mpr
   constructor
   · have : ∀ a ∈ -s,  sInf (-s) ≤ a := by
-      exact CompleteSemilatticeInf.sInf_le (-s)
+      exact fun _ ha => sInf_le ha
     have : ∀ a ∈ s, -sInf (-s) ≥ a := by
       intro a ah
       simp at ah
@@ -1349,4 +1349,3 @@ lemma coe_sum_sub_distrib {c : ℕ} {f : Fin c → ℝ} {g : Fin c → EReal} (p
     rfl
 
 end sum
-

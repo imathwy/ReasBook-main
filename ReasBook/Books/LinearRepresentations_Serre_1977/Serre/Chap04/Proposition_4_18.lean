@@ -1,8 +1,8 @@
 import Mathlib.Analysis.Matrix.Normed
 import Mathlib.RepresentationTheory.Character
 import Mathlib.Tactic.Recall
-import LinearRepresentations_Serre_1977.Chap02.Proposition_2_2_1_1
-import LinearRepresentations_Serre_1977.Chap04.Definition_4_9
+import LinearRepresentations_Serre_1977.Serre.Chap02.Proposition_2_2_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap04.Definition_4_9
 
 /- Source/core/bridge triage:
 - `source-facing`: Proposition 4-18 packages three character identities for finite-dimensional

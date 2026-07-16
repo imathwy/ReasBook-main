@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_6_1.HallKernelCorrectionRatios
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_6_1.HallKernelCorrectionRatios
 
 /-!
 This module remains as the dependency-order bridge into the literal-cover kernel-control layer.

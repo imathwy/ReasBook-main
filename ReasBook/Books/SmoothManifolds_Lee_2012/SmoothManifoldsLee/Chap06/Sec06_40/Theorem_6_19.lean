@@ -1,16 +1,16 @@
 import Mathlib.Geometry.Manifold.SmoothEmbedding
 import Mathlib.Geometry.Manifold.Instances.Real
 import Mathlib.Topology.Maps.Proper.Basic
-import SmoothManifolds_Lee_2012.Chap01.Sec01.Definition_1_extra_1
-import SmoothManifolds_Lee_2012.Chap02.Sec02_11.Proposition_2_28
-import SmoothManifolds_Lee_2012.Chap04.Sec04_24.Exercise_4_16
-import SmoothManifolds_Lee_2012.Chap04.Sec04_22.Proposition_4_8
-import SmoothManifolds_Lee_2012.Chap04.Sec04_24.Proposition_4_22
-import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Definition_5_28_extra_2
-import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Proposition_5_2
-import SmoothManifolds_Lee_2012.Chap06.Sec06_40.Corollary_6_16
-import SmoothManifolds_Lee_2012.Chap06.Sec06_40.Theorem_6_18
-import SmoothManifolds_Lee_2012.Chap06.Sec06_40.Theorem_6_15
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01.Definition_1_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_11.Proposition_2_28
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_24.Exercise_4_16
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_22.Proposition_4_8
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_24.Proposition_4_22
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_28.Definition_5_28_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_28.Proposition_5_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_40.Corollary_6_16
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_40.Theorem_6_18
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_40.Theorem_6_15
 
 -- Declarations for this item will be appended below by the statement pipeline.
 -- Semantic recall note: `lean_leansearch` was unavailable in this environment, so local Whitney

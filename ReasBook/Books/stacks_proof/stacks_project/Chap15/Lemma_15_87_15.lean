@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Algebra.Category.Grp.ZModuleEquivalence
-import StacksProject_2024.Chap12.Definition_12_31_2
+import stacks_proof.stacks_project.Chap12.Definition_12_31_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

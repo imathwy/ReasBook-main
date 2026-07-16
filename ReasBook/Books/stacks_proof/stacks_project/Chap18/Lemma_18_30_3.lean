@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.Colimits
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.Limits
-import StacksProject_2024.Chap07.Definition_7_17_1
-import StacksProject_2024.Chap18.Lemma_18_3_1
-import StacksProject_2024.Chap07.Lemma_7_17_7
+import stacks_proof.stacks_project.Chap07.Definition_7_17_1
+import stacks_proof.stacks_project.Chap18.Lemma_18_3_1
+import stacks_proof.stacks_project.Chap07.Lemma_7_17_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

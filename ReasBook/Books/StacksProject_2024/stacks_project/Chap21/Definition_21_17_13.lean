@@ -5,7 +5,7 @@ import Mathlib.CategoryTheory.Functor.Derived.PointwiseLeftDerived
 import Mathlib.CategoryTheory.Shift.Localization
 import Mathlib.CategoryTheory.Shift.Quotient
 import Mathlib.CategoryTheory.Triangulated.Functor
-import StacksProject_2024.Chap21.Definition_21_17_13_Core
+import StacksProject_2024.stacks_project.Chap21.Definition_21_17_13_Core
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

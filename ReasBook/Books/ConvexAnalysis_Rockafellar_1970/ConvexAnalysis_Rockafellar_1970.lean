@@ -1,5 +1,4 @@
 import Mathlib
-import ConvexAnalysis_Rockafellar_1970.Book
 
 /-!
 # ConvexAnalysis_Rockafellar_1970

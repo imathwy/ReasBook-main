@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Monoidal.Adjunction
-import StacksProject_2024.Chap13.Situation_13_15_1
-import StacksProject_2024.Chap15.Definition_15_67_1
-import StacksProject_2024.Chap15.Lemma_15_59_14
-import StacksProject_2024.Chap15.Lemma_15_60_1
-import StacksProject_2024.Chap15.Lemma_15_67_11
+import stacks_proof.stacks_project.Chap13.Situation_13_15_1
+import stacks_proof.stacks_project.Chap15.Definition_15_67_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_59_14
+import stacks_proof.stacks_project.Chap15.Lemma_15_60_1
+import stacks_proof.stacks_project.Chap15.Lemma_15_67_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

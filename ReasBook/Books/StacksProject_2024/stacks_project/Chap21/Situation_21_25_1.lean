@@ -4,7 +4,7 @@ import Mathlib.CategoryTheory.ObjectProperty.Basic
 import Mathlib.CategoryTheory.Sites.CoversTop
 import Mathlib.CategoryTheory.Sites.Over
 import Mathlib.CategoryTheory.Sites.SheafCohomology.Basic
-import StacksProject_2024.Chap07.HasEnoughObjectsWithProperty
+import StacksProject_2024.stacks_project.Chap07.HasEnoughObjectsWithProperty
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

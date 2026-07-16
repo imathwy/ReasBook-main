@@ -1,7 +1,7 @@
 import Mathlib.Geometry.Manifold.ContMDiff.Constructions
 import Mathlib.Geometry.Manifold.Immersion
 import Mathlib.Geometry.Manifold.LocalDiffeomorph
-import SmoothManifolds_Lee_2012.Chap04.Sec04_25.Proposition_4_28
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_25.Proposition_4_28
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

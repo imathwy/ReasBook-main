@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_8_1.HomPresheafComparison
-import StacksProject_2024.Chap08.Lemma_8_8_1.Precomposition
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.HomPresheafComparison
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.Precomposition
 import Mathlib.Tactic.StacksAttribute
 
 universe u v

@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap12.Infra_12_7_CyclicDescent
+import LinearRepresentations_Serre_1977.Serre.Chap12.Infra_12_7_CyclicDescent
 
 open scoped Representation SubgroupInduction
 

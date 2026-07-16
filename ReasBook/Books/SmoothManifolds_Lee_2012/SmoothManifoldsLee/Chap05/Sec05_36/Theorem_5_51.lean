@@ -1,18 +1,18 @@
 import Mathlib
 import Mathlib.Geometry.Manifold.ContMDiff.Atlas
-import SmoothManifolds_Lee_2012.Chap01.Sec01_04.Example_1_21
-import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Definition_1_6_extra_1
-import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Definition_1_6_extra_2
-import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Exercise_1_44
-import SmoothManifolds_Lee_2012.Chap01.Sec01_06.Theorem_1_46
-import SmoothManifolds_Lee_2012.Chap02.Sec02_09.Example_2_14
-import SmoothManifolds_Lee_2012.Chap02.Sec02_09.Proposition_2_15
-import SmoothManifolds_Lee_2012.Chap04.Sec04_23.Theorem_4_12
-import SmoothManifolds_Lee_2012.Chap04.Sec04_24.Exercise_4_16
-import SmoothManifolds_Lee_2012.Chap05.Sec05_29.Theorem_5_8.Common
-import SmoothManifolds_Lee_2012.Chap05.Sec05_29.Theorem_5_8.LocalSliceAtlas
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Definition_5_36_extra_4
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Theorem_5_51.EuclideanHalfSlice
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_04.Example_1_21
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_06.Definition_1_6_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_06.Definition_1_6_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_06.Exercise_1_44
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_06.Theorem_1_46
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_09.Example_2_14
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_09.Proposition_2_15
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_23.Theorem_4_12
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_24.Exercise_4_16
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_29.Theorem_5_8.Common
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_29.Theorem_5_8.LocalSliceAtlas
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Definition_5_36_extra_4
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Theorem_5_51.EuclideanHalfSlice
 
 -- Declarations for this item will be appended below by the statement pipeline.
 -- The source-facing local-slice owner is `Set.SatisfiesLocalSliceConditionWithBoundary`, and the

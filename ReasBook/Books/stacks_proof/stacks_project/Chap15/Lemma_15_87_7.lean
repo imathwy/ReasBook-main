@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.CategoryTheory.Triangulated.Yoneda
-import StacksProject_2024.Chap13.Definition_13_3_5
-import StacksProject_2024.Chap13.«13_3_5_1»
-import StacksProject_2024.Chap13.Definition_13_33_1
-import StacksProject_2024.Chap13.Lemma_13_4_2
-import StacksProject_2024.Chap15.Lemma_15_87_4
+import stacks_proof.stacks_project.Chap13.Definition_13_3_5
+import stacks_proof.stacks_project.Chap13.«13_3_5_1»
+import stacks_proof.stacks_project.Chap13.Definition_13_33_1
+import stacks_proof.stacks_project.Chap13.Lemma_13_4_2
+import stacks_proof.stacks_project.Chap15.Lemma_15_87_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

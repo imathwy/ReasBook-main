@@ -1,7 +1,7 @@
 import Mathlib.AlgebraicGeometry.ValuativeCriterion
-import StacksProject_2024.Chap26.Example_26_14_4_Projective_line
-import StacksProject_2024.Chap26.Proposition_26_20_6_Valuative_criterion_of_universal_closedness
-import StacksProject_2024.Chap29.ProjectiveSpaceBasic
+import StacksProject_2024.stacks_project.Chap26.Example_26_14_4_Projective_line
+import StacksProject_2024.stacks_project.Chap26.Proposition_26_20_6_Valuative_criterion_of_universal_closedness
+import StacksProject_2024.stacks_project.Chap29.ProjectiveSpaceBasic
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Tactic.Recall
 import Mathlib.Algebra.Module.LocalizedModule.Submodule
-import StacksProject_2024.Chap10.Lemma_10_67_2
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_67_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap07.Lemma_7_17_7
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_17_7
 
 open CategoryTheory
 open CategoryTheory.GrothendieckTopology

@@ -1,14 +1,14 @@
 import Mathlib
-import StacksProject_2024.Chap13.Lemma_13_4_9
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_4_9
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import StacksProject_2024.Chap13.Lemma_13_31_7
-import StacksProject_2024.Chap13.Lemma_13_30_1
-import StacksProject_2024.Chap15.Lemma_15_56_1
-import StacksProject_2024.Chap15.Lemma_15_56_3
-import StacksProject_2024.Chap15.Lemma_15_60_3
-import StacksProject_2024.Chap15.Lemma_15_90_4
-import StacksProject_2024.Chap15.Lemma_15_92_1
-import StacksProject_2024.Chap15.Lemma_15_92_24
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_31_7
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_30_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_56_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_56_3
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_60_3
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_90_4
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_92_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_92_24
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap09.Definition_9_20_8
+import stacks_proof.stacks_project.Chap09.Definition_9_20_8
 import Mathlib.FieldTheory.IntermediateField.Adjoin.Algebra
 import Mathlib.FieldTheory.PurelyInseparable.Exponent
 import Mathlib.RingTheory.Adjoin.PowerBasis

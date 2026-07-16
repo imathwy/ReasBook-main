@@ -1,5 +1,5 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap07.Proposition_7_12
-import LecturesConvexOptimization_Nesterov_2018.Chap07.Proposition_7_14
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap07.Proposition_7_12
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap07.Proposition_7_14
 
 noncomputable section
 

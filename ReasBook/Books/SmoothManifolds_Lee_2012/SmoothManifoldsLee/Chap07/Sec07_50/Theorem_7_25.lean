@@ -3,8 +3,8 @@ import Mathlib.Geometry.Manifold.Algebra.SMul
 import Mathlib.Geometry.Manifold.Diffeomorph
 import Mathlib.GroupTheory.GroupAction.Hom
 import Mathlib.GroupTheory.GroupAction.Transitive
-import SmoothManifolds_Lee_2012.Chap04.Sec04_21.Exercise_4_4
-import SmoothManifolds_Lee_2012.Chap04.Sec04_23.Theorem_4_14
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_21.Exercise_4_4
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap04.Sec04_23.Theorem_4_14
 
 -- Declarations for this item will be appended below by the statement pipeline.
 -- `lean_leansearch` was unavailable in this environment; the statement shape was verified against

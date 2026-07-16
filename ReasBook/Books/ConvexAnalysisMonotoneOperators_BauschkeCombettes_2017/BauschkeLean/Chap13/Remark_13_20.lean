@@ -1,9 +1,9 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Example_13_2
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Example_13_3
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Proposition_13_19
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Proposition_13_23
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap07.Example_7_15
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap13.Example_13_2
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap13.Example_13_3
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap13.Proposition_13_19
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap13.Proposition_13_23
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap07.Example_7_15
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -48,11 +48,11 @@ theorem isCone_ne_polarCone_of_nontrivial
   have hxval := congrFun hhalf x
   by_cases hxK : x ∈ K
   · simp [ERealFunction.indicator, hxK] at hxval
-    have hzero : ((‖x‖ ^ 2) / 2 : ℝ) = 0 := by
-      exact_mod_cast hxval.symm
-    have hnorm : 0 < ‖x‖ := norm_pos_iff.mpr hx
-    nlinarith
+    exact hx hxval
   · simp [ERealFunction.indicator, hxK] at hxval
+    have hne : (⊤ : EReal) ≠ (((2 : ℝ)⁻¹ * ‖x‖ ^ 2 : ℝ) : EReal) :=
+      EReal.top_ne_coe _
+    exact hne (by simpa using hxval)
 
 -- Proof sketch: a linear subspace is a convex cone, so the previous theorem excludes equality
 -- between the subspace and the corresponding polar object; for subspaces this is the

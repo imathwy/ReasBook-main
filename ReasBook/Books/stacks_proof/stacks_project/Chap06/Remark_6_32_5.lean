@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Topology.Sheaves.Limits
-import StacksProject_2024.Chap06.ClosedSubsetInclusion
-import StacksProject_2024.Chap06.Lemma_6_32_1
+import stacks_proof.stacks_project.Chap06.ClosedSubsetInclusion
+import stacks_proof.stacks_project.Chap06.Lemma_6_32_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

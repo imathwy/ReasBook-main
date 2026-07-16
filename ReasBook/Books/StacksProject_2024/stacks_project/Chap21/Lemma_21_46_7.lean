@@ -1,10 +1,10 @@
-import StacksProject_2024.Chap15.Lemma_15_58_3
-import StacksProject_2024.Chap15.Lemma_15_59_7
-import StacksProject_2024.Chap18.Lemma_18_28_12
-import StacksProject_2024.Chap21.Definition_21_17_2
-import StacksProject_2024.Chap21.Definition_21_17_13_Core
-import StacksProject_2024.Chap21.Definition_21_46_1_Core
-import StacksProject_2024.Chap21.Lemma_21_46_3
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_58_3
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_59_7
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_28_12
+import StacksProject_2024.stacks_project.Chap21.Definition_21_17_2
+import StacksProject_2024.stacks_project.Chap21.Definition_21_17_13_Core
+import StacksProject_2024.stacks_project.Chap21.Definition_21_46_1_Core
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_46_3
 
 open CategoryTheory
 open CategoryTheory.Limits

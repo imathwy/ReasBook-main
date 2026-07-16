@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap15.Definition_15_75_1
-import StacksProject_2024.Chap15.Proposition_15_79_3
-import StacksProject_2024.Chap22.CompactDGModule
-import StacksProject_2024.Chap22.ModuleCatHasDerivedCategory
+import StacksProject_2024.stacks_project.Chap15.Definition_15_75_1
+import StacksProject_2024.stacks_project.Chap15.Proposition_15_79_3
+import StacksProject_2024.stacks_project.Chap22.CompactDGModule
+import StacksProject_2024.stacks_project.Chap22.ModuleCatHasDerivedCategory
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

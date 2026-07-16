@@ -1,8 +1,8 @@
 import Mathlib
-import ProbabilityTheory_Klenke_2020.Items.Chap21.Definition_21_1
-import ProbabilityTheory_Klenke_2020.Items.Chap25.Corollary_25_19
-import ProbabilityTheory_Klenke_2020.Items.Chap25.StandardBrownianMotionVector
-import ProbabilityTheory_Klenke_2020.Items.Chap25.Theorem_25_30
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap21.Definition_21_1
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap25.Corollary_25_19
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap25.StandardBrownianMotionVector
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap25.Theorem_25_30
 
 open MeasureTheory ProbabilityTheory Laplacian InnerProductSpace
 open scoped BigOperators ENNReal ProbabilityTheory Topology

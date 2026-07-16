@@ -5,8 +5,8 @@ import Mathlib.Geometry.Manifold.VectorBundle.ContMDiffSection
 import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 import Mathlib.LinearAlgebra.Dimension.Constructions
 import Mathlib.LinearAlgebra.Matrix.ToLin
-import SmoothManifolds_Lee_2012.Chap08.Sec08_59.Lemma_8_25
-import SmoothManifolds_Lee_2012.Chap08.Sec08_60.Definition_8_60_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_59.Lemma_8_25
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap08.Sec08_60.Definition_8_60_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap07.Lemma_7_21_7
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_21_7
 
 open Opposite
 

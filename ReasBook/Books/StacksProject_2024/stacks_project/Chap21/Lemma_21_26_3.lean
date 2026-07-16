@@ -1,9 +1,9 @@
 import Mathlib.Algebra.Category.Grp.Abelian
-import StacksProject_2024.Chap07.Lemma_7_12_4
-import StacksProject_2024.Chap18.Lemma_18_5_2
-import StacksProject_2024.Chap19.AdditiveFunctorTotalRightDerived
-import StacksProject_2024.Chap21.Lemma_21_26_1
-import StacksProject_2024.Chap21.SiteAbelianDerived
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_12_4
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_5_2
+import StacksProject_2024.stacks_project.Chap19.AdditiveFunctorTotalRightDerived
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_26_1
+import StacksProject_2024.stacks_project.Chap21.SiteAbelianDerived
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

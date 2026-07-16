@@ -1,5 +1,5 @@
 import Mathlib
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Lemma_10_61
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap10.Lemma_10_61
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

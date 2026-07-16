@@ -1,6 +1,6 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_3.DirectSL2F4
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_6_3.Shared
-import LinearRepresentations_Serre_1977.Chap08.Proposition_8_8_3_7
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_6_3.DirectSL2F4
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_6_3.Shared
+import LinearRepresentations_Serre_1977.Serre.Chap08.Proposition_8_8_3_7
 
 open scoped MatrixGroups
 

@@ -107,11 +107,12 @@ lemma cone_eq_finite_union (s : Finset ℕ) (V : ℕ → (EuclideanSpace ℝ (Fi
 lemma closed_conic_idp (s : Finset ℕ) (V : s → (EuclideanSpace ℝ (Fin n)))
     (idp : LinearIndependent ℝ V) : IsClosed (cone' s V) := by
   simp [cone']
-  let M : Matrix s (Fin n) ℝ := fun i ↦ V i
   let f := fun x : s → ℝ ↦ Finset.sum univ (fun i => x i • V i)
-  let F := Matrix.mulVecLin Mᵀ
+  let F : (s → ℝ) →ₗ[ℝ] EuclideanSpace ℝ (Fin n) :=
+    Fintype.linearCombination ℝ V
   have eq2 : f = F := by
-      simp [F]; ext x j; simp; apply Finset.sum_apply
+    funext x
+    simp [f, F, Fintype.linearCombination_apply]
   suffices IsClosed (f '' (quadrant' s)) by exact this
   rw [eq2]
   have iscF : Continuous f := by
@@ -134,9 +135,11 @@ lemma closed_conic_idp (s : Finset ℕ) (V : s → (EuclideanSpace ℝ (Fin n)))
   have isclosed : IsClosedMap F := by
     have injF : Function.Injective F := by
       simp only [F]
-      suffices Function.Injective Mᵀ.mulVec by exact this
-      rw [Matrix.mulVec_injective_iff]; simp
+      rw [← Finsupp.linearCombination_eq_fintype_linearCombination]
+      intro x y hxy
+      apply (Finsupp.linearEquivFunOnFinite ℝ ℝ s).symm.injective
       apply idp
+      exact hxy
     have closeEmbF: Topology.IsClosedEmbedding F := by
       apply LinearMap.isClosedEmbedding_of_injective
       rw [LinearMap.ker_eq_bot]
@@ -169,4 +172,3 @@ theorem closed_conic (s : Finset ℕ) (V : ℕ → (EuclideanSpace ℝ (Fin n)))
   simp [V₀]; apply τidp
 
 end ClosedCone
-

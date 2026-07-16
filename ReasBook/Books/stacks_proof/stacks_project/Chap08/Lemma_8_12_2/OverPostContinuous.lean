@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap07.Lemma_7_28_1
+import stacks_proof.stacks_project.Chap07.Lemma_7_28_1
 
 universe uC uD vC vD vS
 

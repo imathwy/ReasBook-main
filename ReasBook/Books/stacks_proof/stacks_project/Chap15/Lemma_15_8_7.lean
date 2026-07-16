@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Data.List.TFAE
-import StacksProject_2024.Chap10.Lemma_10_20_1_Nakayama_s_lemma
-import StacksProject_2024.Chap15.Definition_15_8_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_20_1_Nakayama_s_lemma
+import stacks_proof.stacks_project.Chap15.Definition_15_8_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

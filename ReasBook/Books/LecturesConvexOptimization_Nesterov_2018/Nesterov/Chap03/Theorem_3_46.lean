@@ -1,5 +1,5 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_30
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_45
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Theorem_2_30
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Theorem_3_45
 import Mathlib.Tactic.Recall
 
 -- Declarations for this item will be appended below by the statement pipeline.

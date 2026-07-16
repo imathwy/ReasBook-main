@@ -1,5 +1,5 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section06.«0015_Remark_II_2_extra_6»
+import DifferentialForms_Cartan_1970.cartan.II.section06.«0015_Remark_II_2_extra_6»
 
 open scoped ComplexConjugate
 

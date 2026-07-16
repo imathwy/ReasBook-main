@@ -1,8 +1,8 @@
-import StacksProject_2024.Chap06.Definition_6_26_1
-import StacksProject_2024.Chap13.Definition_13_34_1
-import StacksProject_2024.Chap13.Lemma_13_34_3
-import StacksProject_2024.Chap20.Sections_on_open
-import StacksProject_2024.Chap20.Lemma_20_37_1
+import StacksProject_2024.stacks_project.Chap06.Definition_6_26_1
+import StacksProject_2024.stacks_project.Chap13.Definition_13_34_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_34_3
+import StacksProject_2024.stacks_project.Chap20.Sections_on_open
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_37_1
 
 open CategoryTheory
 open CategoryTheory.Limits

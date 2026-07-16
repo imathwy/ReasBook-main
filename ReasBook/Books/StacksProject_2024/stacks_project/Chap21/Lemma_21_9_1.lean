@@ -4,7 +4,7 @@ import Mathlib.Algebra.Category.Grp.Limits
 import Mathlib.CategoryTheory.Functor.ReflectsIso.Exact
 import Mathlib.CategoryTheory.Limits.ExactFunctor
 import Mathlib.CategoryTheory.Sites.SheafCohomology.Cech
-import StacksProject_2024.Chap21.«21_9_0_1»
+import StacksProject_2024.stacks_project.Chap21.«21_9_0_1»
 
 open CategoryTheory CategoryTheory.Limits
 

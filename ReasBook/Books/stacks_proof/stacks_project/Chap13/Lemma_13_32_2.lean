@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap13.Definition_13_14_10
-import StacksProject_2024.Chap13.Definition_13_15_3
-import StacksProject_2024.Chap13.Lemma_13_15_5
-import StacksProject_2024.Chap13.Situation_13_15_1
+import stacks_proof.stacks_project.Chap13.Definition_13_14_10
+import stacks_proof.stacks_project.Chap13.Definition_13_15_3
+import stacks_proof.stacks_project.Chap13.Lemma_13_15_5
+import stacks_proof.stacks_project.Chap13.Situation_13_15_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

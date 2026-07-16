@@ -1,4 +1,4 @@
-import ProbabilityTheory_Klenke_2020.Items.Chap04.Remark_4_18
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap04.Remark_4_18
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

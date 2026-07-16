@@ -1,9 +1,9 @@
 import Mathlib.CategoryTheory.Abelian.NonPreadditive
-import StacksProject_2024.Chap12.Definition_12_19_3
-import StacksProject_2024.Chap13.Definition_13_8_1
-import StacksProject_2024.Chap18.RingedSiteModuleCategory
-import StacksProject_2024.Chap21.Definition_21_17_2
-import StacksProject_2024.Chap21.Lemma_21_17_15
+import StacksProject_2024.stacks_project.Chap12.Definition_12_19_3
+import StacksProject_2024.stacks_project.Chap13.Definition_13_8_1
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategory
+import StacksProject_2024.stacks_project.Chap21.Definition_21_17_2
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_17_15
 
 open CategoryTheory
 open CategoryTheory.Limits

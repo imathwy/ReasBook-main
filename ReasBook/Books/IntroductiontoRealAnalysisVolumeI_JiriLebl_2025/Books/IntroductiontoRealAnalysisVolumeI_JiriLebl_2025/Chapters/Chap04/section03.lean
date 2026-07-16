@@ -79,16 +79,20 @@ lemma taylor_with_remainder_pos {f : ℝ → ℝ} {x0 x : ℝ} {n : ℕ}
           (iteratedDeriv (n + 1) f c) / (Nat.factorial (n + 1)) *
             (x - x0) ^ (n + 1) := by
   classical
-  rcases taylor_mean_remainder_lagrange_iteratedDeriv hx0x hcont with ⟨c, hc, hceq⟩
+  have hcont' : ContDiffOn ℝ (n + 1) f (Set.uIcc x0 x) := by
+    simpa [Set.uIcc_of_lt hx0x] using hcont
+  rcases taylor_mean_remainder_lagrange_iteratedDeriv hx0x.ne hcont' with ⟨c, hc, hceq⟩
   have hpoly := taylorWithinEval_eq_taylorPolynomial (n := n) hx0x hcontAt
-  have hcIcc : c ∈ Set.Icc x0 x := Set.Ioo_subset_Icc_self hc
+  have hc' : c ∈ Set.Ioo x0 x := by
+    simpa [Set.uIoo_of_lt hx0x] using hc
+  have hcIcc : c ∈ Set.Icc x0 x := Set.Ioo_subset_Icc_self hc'
   have hceq' :
       f x =
         taylorWithinEval f n (Set.Icc x0 x) x0 x +
           iteratedDeriv (n + 1) f c * (x - x0) ^ (n + 1) /
             (Nat.factorial (n + 1)) := by
     have h := eq_add_of_sub_eq hceq
-    simpa [add_comm] using h
+    simpa [Set.uIcc_of_lt hx0x, add_comm] using h
   refine ⟨c, hcIcc, ?_⟩
   calc
     f x =

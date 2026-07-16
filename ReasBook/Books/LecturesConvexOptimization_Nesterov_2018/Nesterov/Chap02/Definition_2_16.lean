@@ -1,6 +1,6 @@
 import Mathlib
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Definition_2_17
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Proposition_2_4
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Definition_2_17
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Proposition_2_4
 
 open scoped Gradient MatrixOrder StrongConvexSmooth
 

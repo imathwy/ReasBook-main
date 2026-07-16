@@ -1,12 +1,12 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.II.section05.«0010_Proposition_4_1»
-import DifferentialForms_Cartan_1970.II.section05.«0034_Example_II_1_extra_21»
-import DifferentialForms_Cartan_1970.I.section04.«0029_Exercise_14»
-import DifferentialForms_Cartan_1970.III.section11.«0003_Theorem_III_5_extra_2».Index
-import DifferentialForms_Cartan_1970.III.section11.«0008_Proposition_4_1»
-import DifferentialForms_Cartan_1970.III.section11.«0004_Remark_III_5_extra_3»
-import DifferentialForms_Cartan_1970.III.section12.«0038_Exercise_25».Index
-import DifferentialForms_Cartan_1970.III.section12.«0038_Exercise_25».RationalNormalFormBridge
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0010_Proposition_4_1»
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0034_Example_II_1_extra_21»
+import DifferentialForms_Cartan_1970.cartan.I.section04.«0029_Exercise_14»
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0003_Theorem_III_5_extra_2».Index
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0008_Proposition_4_1»
+import DifferentialForms_Cartan_1970.cartan.III.section11.«0004_Remark_III_5_extra_3»
+import DifferentialForms_Cartan_1970.cartan.III.section12.«0038_Exercise_25».Index
+import DifferentialForms_Cartan_1970.cartan.III.section12.«0038_Exercise_25».RationalNormalFormBridge
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

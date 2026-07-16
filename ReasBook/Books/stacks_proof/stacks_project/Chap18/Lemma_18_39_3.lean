@@ -4,15 +4,15 @@ import Mathlib.Algebra.Category.ModuleCat.Sheaf.ChangeOfRings
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.PullbackContinuous
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.PushforwardContinuous
 import Mathlib.CategoryTheory.Limits.ExactFunctor
-import StacksProject_2024.Chap06.Definition_6_27_1
-import StacksProject_2024.Chap07.Example_7_33_5
-import StacksProject_2024.Chap12.Remark_12_29_2
-import StacksProject_2024.Chap12.Lemma_12_7_2
-import StacksProject_2024.Chap17.Definition_17_17_1
-import StacksProject_2024.Chap17.Lemma_17_17_2
-import StacksProject_2024.Chap18.Definition_18_31_1
-import StacksProject_2024.Chap18.Lemma_18_14_4
-import StacksProject_2024.Chap18.Lemma_18_36_3
+import stacks_proof.stacks_project.Chap06.Definition_6_27_1
+import stacks_proof.stacks_project.Chap07.Example_7_33_5
+import stacks_proof.stacks_project.Chap12.Remark_12_29_2
+import stacks_proof.stacks_project.Chap12.Lemma_12_7_2
+import stacks_proof.stacks_project.Chap17.Definition_17_17_1
+import stacks_proof.stacks_project.Chap17.Lemma_17_17_2
+import stacks_proof.stacks_project.Chap18.Definition_18_31_1
+import stacks_proof.stacks_project.Chap18.Lemma_18_14_4
+import stacks_proof.stacks_project.Chap18.Lemma_18_36_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_6_11.FaithfulSliceSetoids
-import StacksProject_2024.Chap08.Lemma_8_6_11.SliceYonedaEvaluation
+import stacks_proof.stacks_project.Chap08.Lemma_8_6_11.FaithfulSliceSetoids
+import stacks_proof.stacks_project.Chap08.Lemma_8_6_11.SliceYonedaEvaluation
 
 universe u v
 

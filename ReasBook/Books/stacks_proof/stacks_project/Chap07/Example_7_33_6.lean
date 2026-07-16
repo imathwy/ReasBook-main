@@ -5,7 +5,7 @@ import Mathlib.CategoryTheory.Sites.Point.Category
 import Mathlib.Topology.Sheaves.Points
 import Mathlib.Topology.Sheaves.Stalks
 import Mathlib.Topology.Sober
-import StacksProject_2024.Chap07.Proposition_7_33_3
+import stacks_proof.stacks_project.Chap07.Proposition_7_33_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

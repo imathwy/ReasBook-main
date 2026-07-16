@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Category.Ring.Basic
 import Mathlib.Algebra.Category.Grp.Zero
-import StacksProject_2024.Chap06.Definition_6_26_1
+import StacksProject_2024.stacks_project.Chap06.Definition_6_26_1
 
 noncomputable section
 

@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap15.Lemma_15_88_1_FixedBase
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_88_1_FixedBase
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

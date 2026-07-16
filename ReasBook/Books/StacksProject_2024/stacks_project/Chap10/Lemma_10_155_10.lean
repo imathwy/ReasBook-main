@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_154_6
-import StacksProject_2024.Chap10.Lemma_10_155_2
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_154_6
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_155_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

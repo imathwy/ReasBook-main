@@ -1,7 +1,7 @@
 import Mathlib.LinearAlgebra.TensorProduct.Tower
-import StacksProject_2024.Chap15.Lemma_15_96_10
-import StacksProject_2024.Chap15.Lemma_15_97_3
-import StacksProject_2024.Chap15.Lemma_15_97_5
+import stacks_proof.stacks_project.Chap15.Lemma_15_96_10
+import stacks_proof.stacks_project.Chap15.Lemma_15_97_3
+import stacks_proof.stacks_project.Chap15.Lemma_15_97_5
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

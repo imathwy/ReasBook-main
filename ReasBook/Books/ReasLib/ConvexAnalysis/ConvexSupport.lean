@@ -319,7 +319,8 @@ lemma convex_conjugate_eq_bot {f : E → EReal}
   specialize h x; by_contra hx1
   push_neg at hx1
   by_cases hx2 : f x = ⊥
-  · simp [hx2] at h;
+  · rw [hx2, EReal.coe_sub_bot] at h
+    exact top_ne_bot h
   push_neg at hx2
   lift f x to ℝ with fx;
   · exact ⟨hx1, hx2⟩
@@ -694,4 +695,3 @@ theorem closure_eq_conjugate_of_positive_homogeneous_of_convex_ne_top [FiniteDim
 end cl_eq_support
 
 end zero_or_top_iff_positive_homogeneous
-

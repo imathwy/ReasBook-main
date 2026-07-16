@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_98_2.QuotientKernelSystem
+import stacks_proof.stacks_project.Chap10.Lemma_10_98_2.QuotientKernelSystem
 
 open CategoryTheory
 open CategoryTheory.Limits

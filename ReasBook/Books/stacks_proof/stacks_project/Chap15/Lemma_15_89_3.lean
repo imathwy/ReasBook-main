@@ -1,6 +1,6 @@
 import Mathlib.Data.List.TFAE
-import StacksProject_2024.Chap10.Lemma_10_24_4
-import StacksProject_2024.Chap15.Definition_15_89_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_24_4
+import stacks_proof.stacks_project.Chap15.Definition_15_89_1
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

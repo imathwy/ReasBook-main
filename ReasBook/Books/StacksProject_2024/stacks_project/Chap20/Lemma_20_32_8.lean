@@ -3,9 +3,9 @@ import Mathlib.Algebra.Homology.DerivedCategory.FullyFaithful
 import Mathlib.CategoryTheory.Adjunction.FullyFaithful
 import Mathlib.CategoryTheory.Limits.Shapes.FiniteLimits
 import Mathlib.CategoryTheory.Functor.Derived.Adjunction
-import StacksProject_2024.Chap06.Lemma_6_31_12
-import StacksProject_2024.Chap13.Lemma_13_30_3
-import StacksProject_2024.Chap20.Open_subspace_module_extension_derived
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_31_12
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_30_3
+import StacksProject_2024.stacks_project.Chap20.Open_subspace_module_extension_derived
 
 open AlgebraicGeometry
 open CategoryTheory

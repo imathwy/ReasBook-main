@@ -1,6 +1,6 @@
 import Mathlib.Topology.Constructible
 import Mathlib.Topology.JacobsonSpace
-import StacksProject_2024.Chap05.FiniteUnionOfLocallyClosed
+import stacks_proof.stacks_project.Chap05.FiniteUnionOfLocallyClosed
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

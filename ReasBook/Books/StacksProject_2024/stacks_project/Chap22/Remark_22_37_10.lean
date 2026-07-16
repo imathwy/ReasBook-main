@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Group.Equiv.Basic
 import Mathlib.CategoryTheory.Preadditive.AdditiveFunctor
-import StacksProject_2024.Chap22.Remark_22_37_5
-import StacksProject_2024.Chap22.RLinearTriangulatedEquivalence
+import StacksProject_2024.stacks_project.Chap22.Remark_22_37_5
+import StacksProject_2024.stacks_project.Chap22.RLinearTriangulatedEquivalence
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

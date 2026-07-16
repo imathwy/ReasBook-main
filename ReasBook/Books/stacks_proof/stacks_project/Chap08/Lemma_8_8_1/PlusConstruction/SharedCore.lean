@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap08.Lemma_8_8_1.Criteria
-import StacksProject_2024.Chap07.Lemma_7_42_4.TypeLocalBijectivity
+import stacks_proof.stacks_project.Chap08.Lemma_8_8_1.Criteria
+import stacks_proof.stacks_project.Chap07.Lemma_7_42_4.TypeLocalBijectivity
 import Mathlib.CategoryTheory.Category.Cat
 
 universe u v uX vX

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap06.Glueing_data_for_sheaves_on_an_open_cover
+import StacksProject_2024.stacks_project.Chap06.Glueing_data_for_sheaves_on_an_open_cover
 
 open TopCat TopologicalSpace
 open TopologicalSpace.Opens

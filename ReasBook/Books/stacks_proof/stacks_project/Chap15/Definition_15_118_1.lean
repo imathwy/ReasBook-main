@@ -1,7 +1,7 @@
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
 import Mathlib.CategoryTheory.Core
 import Mathlib.RingTheory.PicardGroup
-import StacksProject_2024.Chap04.Definition_4_43_4
+import stacks_proof.stacks_project.Chap04.Definition_4_43_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

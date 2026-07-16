@@ -1,5 +1,5 @@
-import SmoothManifolds_Lee_2012.Chap01.Sec01.Example_1_9
-import SmoothManifolds_Lee_2012.Chap07.Sec07_47.Example_7_4_torus
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01.Example_1_9
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_47.Example_7_4_torus
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

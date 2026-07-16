@@ -1,6 +1,6 @@
 import Mathlib.CategoryTheory.Bicategory.Extension
 import Mathlib.CategoryTheory.Limits.Shapes.Terminal
-import StacksProject_2024.Chap04.Definition_4_30_1
+import StacksProject_2024.stacks_project.Chap04.Definition_4_30_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

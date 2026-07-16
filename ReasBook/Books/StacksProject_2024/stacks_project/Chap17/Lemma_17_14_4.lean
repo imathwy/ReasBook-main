@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap17.Definition_17_14_1
-import StacksProject_2024.Chap07.Example_7_33_5
-import StacksProject_2024.Chap18.Lemma_18_36_3
+import StacksProject_2024.stacks_project.Chap17.Definition_17_14_1
+import StacksProject_2024.stacks_project.Chap07.Example_7_33_5
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_36_3
 
 open AlgebraicGeometry
 open CategoryTheory TopologicalSpace

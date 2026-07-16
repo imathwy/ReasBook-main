@@ -9,9 +9,9 @@ import Mathlib.RingTheory.AdicCompletion.Algebra
 import Mathlib.RingTheory.AdicCompletion.Completeness
 import Mathlib.RingTheory.Ideal.Quotient.Operations
 import Mathlib.RingTheory.TensorProduct.Quotient
-import StacksProject_2024.Chap10.Lemma_10_8_2
-import StacksProject_2024.Chap10.Lemma_10_96_3
-import StacksProject_2024.Chap15.Definition_15_89_1
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_8_2
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_96_3
+import StacksProject_2024.stacks_project.Chap15.Definition_15_89_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

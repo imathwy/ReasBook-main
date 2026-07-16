@@ -1,8 +1,8 @@
 import Mathlib.Geometry.Manifold.ContMDiff.Atlas
 import Mathlib.Geometry.Manifold.ContMDiff.NormedSpace
 import Mathlib.Geometry.Manifold.Instances.Real
-import SmoothManifolds_Lee_2012.Chap01.Sec01.Example_1_5
-import SmoothManifolds_Lee_2012.Chap01.Sec01_04.Example_1_33
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01.Example_1_5
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_04.Example_1_33
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

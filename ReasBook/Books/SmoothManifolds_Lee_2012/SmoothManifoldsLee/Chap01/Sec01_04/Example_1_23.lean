@@ -3,7 +3,7 @@ import Mathlib.Geometry.Manifold.Instances.Real
 import Mathlib.Analysis.Calculus.Deriv.Pow
 import Mathlib.Topology.Order.IntermediateValue
 import Mathlib.Order.Filter.AtTopBot.Ring
-import SmoothManifolds_Lee_2012.Chap01.Sec01_04.Example_1_23_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_04.Example_1_23_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

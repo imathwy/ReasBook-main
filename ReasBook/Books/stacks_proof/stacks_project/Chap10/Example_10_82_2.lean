@@ -4,7 +4,7 @@ import Mathlib.Algebra.Homology.ShortComplex.FunctorEquivalence
 import Mathlib.Algebra.Homology.ShortComplex.Limits
 import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
 import Mathlib.CategoryTheory.Abelian.GrothendieckAxioms.Colim
-import StacksProject_2024.Chap10.Definition_10_82_1
+import stacks_proof.stacks_project.Chap10.Definition_10_82_1
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory Limits MonoidalCategory

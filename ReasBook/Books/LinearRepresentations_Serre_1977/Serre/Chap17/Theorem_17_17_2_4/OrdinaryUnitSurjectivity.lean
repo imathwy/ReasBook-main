@@ -1,7 +1,7 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_2_4.CharacterTransport
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_2_1.ProjectionFormulaClass
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_2_1.DecompositionUnit
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_2_4.CharacterTransport
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_2_1.ProjectionFormulaClass
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_2_1.DecompositionUnit
 
 /-!
 # Ordinary row: unit preimage implies surjectivity

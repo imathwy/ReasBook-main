@@ -1,1 +1,1 @@
-import StacksProject_2024.Chap07.Lemma_7_39_2.ScheduledSaturation.TowerEquivalences
+import stacks_proof.stacks_project.Chap07.Lemma_7_39_2.ScheduledSaturation.TowerEquivalences

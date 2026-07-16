@@ -1,6 +1,6 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Corollary_1_4_13
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_2_18
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_2_21
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Corollary_1_4_13
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_2_18
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_2_21
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -81,7 +81,7 @@ private instance innerAutomorphismSubgroup_isMulTorsionFree :
     IsMulTorsionFree (JA(F)) := by
   by_cases hcyc : IsCyclic F
   · letI : IsCyclic F := hcyc
-    letI : Std.Commutative (· * · : F → F → F) := IsCyclic.commutative
+    letI : Std.Commutative (· * · : F → F → F) := IsCyclic.isMulCommutative.is_comm
     letI : Subsingleton ↥(JA(F)) := by
       refine ⟨fun α β ↦ ?_⟩
       apply Subtype.ext

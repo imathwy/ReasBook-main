@@ -66,8 +66,6 @@ lean_lib Analysis2_Tao_2022 where
   srcDir := "Books"
 lean_lib ConvexAnalysis_Rockafellar_1970 where
   srcDir := "Books"
-lean_lib IntegerProgramming_Conforti_2014 where
-  srcDir := "Books"
 lean_lib IntroductiontoRealAnalysisVolumeI_JiriLebl_2025 where
   srcDir := "Books"
 

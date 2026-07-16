@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap10.Lemma_10_161_16_Tate.PrincipalPrimeRoot
-import StacksProject_2024.Chap10.Lemma_10_119_10
-import StacksProject_2024.Chap10.Lemma_10_25_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_161_16_Tate.PrincipalPrimeRoot
+import stacks_proof.stacks_project.Chap10.Lemma_10_119_10
+import stacks_proof.stacks_project.Chap10.Lemma_10_25_3
 universe u
 
 open Ideal

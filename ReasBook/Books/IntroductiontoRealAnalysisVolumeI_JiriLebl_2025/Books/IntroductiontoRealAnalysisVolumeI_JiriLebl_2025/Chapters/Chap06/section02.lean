@@ -1,7 +1,7 @@
 import Mathlib
-import Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap03.section02
-import Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05.section01
-import Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05.section02
+import IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap03.section02
+import IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05.section01
+import IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap05.section02
 
 section Chap06
 section Section02
@@ -1387,13 +1387,7 @@ theorem uniform_limit_of_uniform_deriv
         exact hf_deriv x hx
       exact hcont_g.congr hEq
     have hf_contDiff : ContDiffOn ℝ 1 f (Set.Icc a b) := by
-      have hcontDeriv : ContDiffOn ℝ 0 (derivWithin f (Set.Icc a b)) (Set.Icc a b) := by
-        simpa [contDiffOn_zero] using hcont_deriv
-      refine (contDiffOn_succ_iff_derivWithin
-        (s₂ := Set.Icc a b) (f₂ := f) (n := 0) h_unique).2 ?_
-      refine ⟨hf_diff, ?_, hcontDeriv⟩
-      intro hω
-      cases hω
+      exact (contDiffOn_one_iff_derivWithin h_unique).2 ⟨hf_diff, hcont_deriv⟩
     have hfSeq_eq :
         ∀ n, ∀ x ∈ Set.Icc a b,
           fSeq n x = fSeq n c +
@@ -2360,7 +2354,7 @@ theorem deriv_powerSeries_eq_series {a ρ : ℝ} {c : ℕ → ℝ}
     have hdiff_on :
         DifferentiableOn ℝ (fun y : ℝ => tsum fun n => c n * (y - a) ^ n)
           (Set.Icc (a - r) (a + r)) := by
-        simpa using (htsum_contDiff.differentiableOn (by exact le_rfl))
+        exact htsum_contDiff.differentiableOn_one
     have hdiff_within :
         DifferentiableWithinAt ℝ (fun y : ℝ => tsum fun n => c n * (y - a) ^ n)
           (Set.Icc (a - r) (a + r)) x := hdiff_on x hxIcc
@@ -2507,10 +2501,10 @@ lemma example6_2_14_series_eq_real_exp (x : ℝ) :
     example6_2_14_series x = Real.exp x := by
   have h_exp := congrArg (fun f => f x) (Real.exp_eq_exp_ℝ)
   have h_series :=
-    congrArg (fun f => f x) (NormedSpace.exp_eq_tsum_div (𝕂 := ℝ) (𝔸 := ℝ))
+    congrArg (fun f => f x) (NormedSpace.exp_eq_tsum_div (𝔸 := ℝ))
   calc
     example6_2_14_series x = ∑' n : ℕ, x ^ n / (Nat.factorial n) := rfl
-    _ = (NormedSpace.exp ℝ) x := by
+    _ = NormedSpace.exp x := by
           simpa using h_series.symm
     _ = Real.exp x := by
           simpa using h_exp.symm

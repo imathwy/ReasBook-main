@@ -1,6 +1,6 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap15.Lemma_15_58_1
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_58_1
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategoryBasic
 
 open CategoryTheory
 open CategoryTheory.Limits

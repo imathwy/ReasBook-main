@@ -1,8 +1,8 @@
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
 import Mathlib.CategoryTheory.Functor.Derived.Adjunction
-import StacksProject_2024.Chap19.AdditiveFunctorTotalRightDerived
-import StacksProject_2024.Chap21.SiteAbelianDerived
-import StacksProject_2024.Chap21.Situation_21_38_3
+import StacksProject_2024.stacks_project.Chap19.AdditiveFunctorTotalRightDerived
+import StacksProject_2024.stacks_project.Chap21.SiteAbelianDerived
+import StacksProject_2024.stacks_project.Chap21.Situation_21_38_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

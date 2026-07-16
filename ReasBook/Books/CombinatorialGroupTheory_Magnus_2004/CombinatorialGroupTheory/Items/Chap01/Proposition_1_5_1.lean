@@ -1,5 +1,5 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Corollary_1_4_16
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_5_2
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Corollary_1_4_16
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_5_2
 
 open MulAction Matrix.GeneralLinearGroup
 open scoped commutatorElement

@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap14.Lemma_14_21_10
+import stacks_proof.stacks_project.Chap14.Lemma_14_21_10
 open CategoryTheory
 #check Subobject.underlying
 #check Subobject.topIso

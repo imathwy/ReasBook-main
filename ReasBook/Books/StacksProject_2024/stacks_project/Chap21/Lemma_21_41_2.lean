@@ -1,9 +1,9 @@
-import StacksProject_2024.Chap13.Lemma_13_14_16_Homotopy
-import StacksProject_2024.Chap12.Lemma_12_7_2
-import StacksProject_2024.Chap18.Lemma_18_14_1
-import StacksProject_2024.Chap21.Definition_21_41_1
-import StacksProject_2024.Chap21.Lemma_21_18_2
-import StacksProject_2024.Chap21.SiteAbelianDerived
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_14_16_Homotopy
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_7_2
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_14_1
+import StacksProject_2024.stacks_project.Chap21.Definition_21_41_1
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_18_2
+import StacksProject_2024.stacks_project.Chap21.SiteAbelianDerived
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

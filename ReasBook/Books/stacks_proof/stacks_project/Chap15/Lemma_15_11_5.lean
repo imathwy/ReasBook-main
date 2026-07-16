@@ -9,7 +9,7 @@ import Mathlib.RingTheory.QuasiFinite.Basic
 import Mathlib.RingTheory.Spectrum.Prime.Topology
 import Mathlib.RingTheory.TensorProduct.Quotient
 import Mathlib.RingTheory.ZariskisMainTheorem
-import StacksProject_2024.Chap10.Lemma_10_17_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_17_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

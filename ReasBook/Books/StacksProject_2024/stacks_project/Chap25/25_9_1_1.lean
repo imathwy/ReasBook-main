@@ -1,5 +1,5 @@
 import Mathlib.CategoryTheory.CommSq
-import StacksProject_2024.Chap14.Definition_14_17_1
+import StacksProject_2024.stacks_project.Chap14.Definition_14_17_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

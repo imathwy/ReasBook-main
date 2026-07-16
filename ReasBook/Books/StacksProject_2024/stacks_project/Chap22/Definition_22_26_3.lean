@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Module.Submodule.Basic
 import Mathlib.CategoryTheory.Preadditive.Basic
 import Mathlib.CategoryTheory.Functor.Basic
-import StacksProject_2024.Chap22.Definition_22_26_1
+import StacksProject_2024.stacks_project.Chap22.Definition_22_26_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,13 +1,13 @@
-import StacksProject_2024.Chap13.Lemma_13_16_6
-import StacksProject_2024.Chap13.Lemma_13_30_1
-import StacksProject_2024.Chap20.Bounded_below_derived_sections_at_open
-import StacksProject_2024.Chap20.Global_sections_module_owners_core
-import StacksProject_2024.Chap20.Lemma_20_9_3
-import StacksProject_2024.Chap20.Lemma_20_10_2
-import StacksProject_2024.Chap20.«20_11_0_1»
-import StacksProject_2024.Chap20.Lemma_20_11_1
-import StacksProject_2024.Chap20.Sections_on_open
-import StacksProject_2024.Chap20.OpensInstances
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_16_6
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_30_1
+import StacksProject_2024.stacks_project.Chap20.Bounded_below_derived_sections_at_open
+import StacksProject_2024.stacks_project.Chap20.Global_sections_module_owners_core
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_9_3
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_10_2
+import StacksProject_2024.stacks_project.Chap20.«20_11_0_1»
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_11_1
+import StacksProject_2024.stacks_project.Chap20.Sections_on_open
+import StacksProject_2024.stacks_project.Chap20.OpensInstances
 
 open CategoryTheory Opposite TopologicalSpace AlgebraicGeometry HomologicalComplex
 open CategoryTheory.Limits

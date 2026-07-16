@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap17.Theorem_17_17_6_1.ShiftedCycleTransport
+import LinearRepresentations_Serre_1977.Serre.Chap17.Theorem_17_17_6_1.ShiftedCycleTransport
 
 universe u v w x
 

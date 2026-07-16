@@ -1,11 +1,11 @@
 import Mathlib.Tactic.TFAE
 import Mathlib.Tactic.StacksAttribute
-import StacksProject_2024.Chap10.Definition_10_110_7
-import StacksProject_2024.Chap10.Lemma_10_72_3
-import StacksProject_2024.Chap10.Lemma_10_109_13
-import StacksProject_2024.Chap10.Lemma_10_110_2
-import StacksProject_2024.Chap10.Proposition_10_110_5
-import StacksProject_2024.Chap10.Proposition_10_110_1.SameUniverseProjective
+import stacks_proof.stacks_project.Chap10.Definition_10_110_7
+import stacks_proof.stacks_project.Chap10.Lemma_10_72_3
+import stacks_proof.stacks_project.Chap10.Lemma_10_109_13
+import stacks_proof.stacks_project.Chap10.Lemma_10_110_2
+import stacks_proof.stacks_project.Chap10.Proposition_10_110_5
+import stacks_proof.stacks_project.Chap10.Proposition_10_110_1.SameUniverseProjective
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

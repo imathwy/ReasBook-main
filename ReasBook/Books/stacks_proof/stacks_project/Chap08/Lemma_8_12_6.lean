@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap08.Lemma_8_12_6_Support
+import stacks_proof.stacks_project.Chap08.Lemma_8_12_6_Support
 import Mathlib.Tactic.StacksAttribute
 
 open CategoryTheory.Limits

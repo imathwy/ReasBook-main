@@ -1,5 +1,5 @@
 import Mathlib.CategoryTheory.Limits.HasLimits
-import StacksProject_2024.Chapters.Chap23.section03
+import StacksProject_2024.stacks_project.Chapters.Chap23.section03
 
 open CategoryTheory
 open CategoryTheory.Limits

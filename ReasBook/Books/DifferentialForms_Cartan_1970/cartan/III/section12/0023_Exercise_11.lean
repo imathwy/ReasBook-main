@@ -1,5 +1,5 @@
 import Mathlib
-import DifferentialForms_Cartan_1970.III.section12.CircleSupNorm
+import DifferentialForms_Cartan_1970.cartan.III.section12.CircleSupNorm
 
 -- Semantic recall note: `lean_leansearch` was unavailable in this environment, so the statement
 -- surface was checked against Mathlib's `AnalyticOnNhd`, `Metric.closedBall`, and nearby

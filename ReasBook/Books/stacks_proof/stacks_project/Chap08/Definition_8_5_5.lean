@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.CategoryTheory.Widesubcategory
-import StacksProject_2024.Chap04.Definition_4_35_6
-import StacksProject_2024.Chap08.Definition_8_4_5
-import StacksProject_2024.Chap08.Definition_8_5_1
+import stacks_proof.stacks_project.Chap04.Definition_4_35_6
+import stacks_proof.stacks_project.Chap08.Definition_8_4_5
+import stacks_proof.stacks_project.Chap08.Definition_8_5_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

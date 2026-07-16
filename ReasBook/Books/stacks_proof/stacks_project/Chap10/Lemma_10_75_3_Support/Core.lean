@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_75_3_Support.Base
+import stacks_proof.stacks_project.Chap10.Lemma_10_75_3_Support.Base
 
 open CategoryTheory CategoryTheory.Limits HomologicalComplex HomologicalComplex₂ ComplexShape
 

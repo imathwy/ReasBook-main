@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Remark_10_28_13.Index
+import stacks_proof.stacks_project.Chap10.Remark_10_28_13.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

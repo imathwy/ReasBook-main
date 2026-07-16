@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap10.Theorem_10_34_1_Hilbert_Nullstellensatz
+import stacks_proof.stacks_project.Chap10.Theorem_10_34_1_Hilbert_Nullstellensatz
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

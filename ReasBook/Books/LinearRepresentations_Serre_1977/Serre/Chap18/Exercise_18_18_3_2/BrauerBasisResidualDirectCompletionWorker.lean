@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.BrauerBasisReadbackResidualProof
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.PointwiseReadbackDirectProofWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.BrauerBasisReadbackResidualProof
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.PointwiseReadbackDirectProofWorker
 
 /-!
 Direct completion frontier for the fixed-family A-side pairing residual.

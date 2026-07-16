@@ -1,5 +1,5 @@
 import Mathlib.Algebra.Homology.HomotopyCategory.Pretriangulated
-import StacksProject_2024.Chap22.Lemma_22_27_12
+import StacksProject_2024.stacks_project.Chap22.Lemma_22_27_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

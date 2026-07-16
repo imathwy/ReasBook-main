@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Analysis.Matrix.PosDef
-import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_3_3
-import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_1_1
-import LinearRepresentations_Serre_1977.Chap15.Definition_15_15_1_1
-import LinearRepresentations_Serre_1977.Chap15.Proposition_15_15_5_1
+import LinearRepresentations_Serre_1977.Serre.Chap14.Corollary_14_14_3_3
+import LinearRepresentations_Serre_1977.Serre.Chap14.Proposition_14_14_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap15.Definition_15_15_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap15.Proposition_15_15_5_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

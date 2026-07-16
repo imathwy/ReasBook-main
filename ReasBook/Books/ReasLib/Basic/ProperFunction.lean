@@ -314,7 +314,7 @@ noncomputable instance ProperFunction.sum {α : Type*} {s : Set α} {n : ℕ} {f
       use x
       simp;
       simp at hxi
-      exact hxi 0
+      exact hxi
     | succ n _ =>
       refine Set.nonempty_iff_ne_empty.mp ?_
       use x
@@ -360,54 +360,25 @@ lemma ProperFunctionConvexOn.sum' {α} [AddCommMonoid α] [SMul ℝ α]
     (hdti : ⋂ i, dom d (t i) ≠ ∅)
     (h : ∀ i, ConvexOn ℝ d (t i)) (hd : Convex ℝ d) :
     ConvexOn ℝ d (∑ i, t i) := by
-  induction τ using Finset.induction with
-  | empty =>
-    simp;
-    exact ⟨hd, fun x _ y _ a b _ _ _ => by simp⟩
-  | insert i s hi hs =>
-    let t1 := fun i1 : { x // x ∈ s } ↦ t ⟨i1.1, by simp⟩
-    suffices hp : ConvexOn ℝ d (∑ i1 : { x // x ∈ s }, t1 ⟨i1, by simp⟩ + t ⟨i, by simp⟩) by
-      convert hp
-      simp [hi]
-      rw [add_comm]
-    have hpro : ∀ (i : { x // x ∈ s }), ProperFunction d (t1 i) := by
-      intro j
-      simp [t1]; exact hst ⟨j.1, by simp⟩
-    have hinter : ⋂ i, dom d (t1 i) ≠ ∅ := by
-      refine Set.nonempty_iff_ne_empty.mp ?h.a
-      obtain ⟨x1, hx1⟩ := Set.nonempty_def.mp <| Set.nonempty_iff_ne_empty.mpr hdti
-      simp only [t1]; use x1
-      apply Set.mem_iInter.mpr
-      rw [Set.mem_iInter] at hx1
-      intro j
-      exact hx1 ⟨j, by simp⟩
-    obtain hs1 := @hs t1 hpro hinter (fun i ↦ (h ⟨i, by simp⟩))
-    haveI : ProperFunction d (∑ i1 : { x // x ∈ s }, t1 ⟨i1, by simp⟩) := by
-      classical
-      let n := Fintype.card { x // x ∈ s }
-      let e : Fin n ≃ { x // x ∈ s } := (Fintype.equivFin _).symm
-      let f : Fin n → α → EReal := fun j => t1 (e j)
-      have hpro' : ∀ j : Fin n, ProperFunction d (f j) := by
-        intro j
-        simpa [f] using hpro (e j)
-      have hinter' : ⋂ j, dom d (f j) ≠ ∅ := by
-        refine Set.nonempty_iff_ne_empty.mp ?_
-        obtain ⟨x, hx⟩ := Set.nonempty_iff_ne_empty.mpr hinter
-        refine ⟨x, ?_⟩
-        apply Set.mem_iInter.mpr
-        intro j
-        have hx' : ∀ i : { x // x ∈ s }, x ∈ dom d (t1 i) := by
-          simpa [Set.mem_iInter] using hx
-        simpa [f] using hx' (e j)
-      haveI : ProperFunction d (∑ j, f j) := ProperFunction.sum hpro' hinter'
-      have hfun :
-          (∑ j, f j) = (∑ i1 : { x // x ∈ s }, t1 ⟨i1, by simp⟩) := by
-        funext x
-        have hsum : (∑ j, f j) x = (∑ i1 : { x // x ∈ s }, t1 i1) x := by
-          simpa [f] using (Equiv.sum_comp e (fun i : { x // x ∈ s } => t1 i x))
-        simpa using hsum
-      simpa [hfun] using (show ProperFunction d (∑ j, f j) from inferInstance)
-    apply ProperFunctionConvexOn.add hs1 (h ⟨i, by simp⟩)
+  classical
+  let n := Fintype.card τ
+  let e : Fin n ≃ τ := (Fintype.equivFin _).symm
+  let f : Fin n → α → EReal := fun j => t (e j)
+  have hf : ∀ j, ProperFunction d (f j) := fun j => by simpa [f] using hst (e j)
+  have hinter : ⋂ j, dom d (f j) ≠ ∅ := by
+    obtain ⟨x, hx⟩ := Set.nonempty_iff_ne_empty.mpr hdti
+    refine Set.nonempty_iff_ne_empty.mp ⟨x, ?_⟩
+    apply Set.mem_iInter.mpr
+    intro j
+    have hx' : ∀ i : τ, x ∈ dom d (t i) := by
+      simpa only [Set.mem_iInter] using hx
+    simpa [f] using hx' (e j)
+  have hfin : ConvexOn ℝ d (∑ j, f j) :=
+    @ProperFunctionConvexOn.sum α _ _ n f d hf hinter (fun j => by simpa [f] using h (e j)) hd
+  have hfun : (∑ j, f j) = ∑ i, t i := by
+    funext x
+    simpa [f] using (Equiv.sum_comp e (fun i : τ => t i x))
+  simpa [hfun] using hfin
 
 
 noncomputable instance ProperFunction.congr {α : Type*} {s : Set α} {f g : α → EReal}
@@ -661,4 +632,3 @@ lemma convex_on_p_top' [NormedAddCommGroup E] [SMul ℝ E] {f : E → EReal}
   ext x; exact h x
 
 end Convex
-

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap05.Definition_5_13_1
+import StacksProject_2024.stacks_project.Chap05.Definition_5_13_1
 import Mathlib.Topology.Separation.Hausdorff
 import Mathlib.Tactic.Recall
 

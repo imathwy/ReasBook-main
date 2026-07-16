@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap10.Lemma_10_118_3
-import StacksProject_2024.Chap10.«10_118_3_2»
-import StacksProject_2024.Chap10.Lemma_10_118_5
-import StacksProject_2024.Chap10.Lemma_10_30_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_118_3
+import stacks_proof.stacks_project.Chap10.«10_118_3_2»
+import stacks_proof.stacks_project.Chap10.Lemma_10_118_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_30_2
 import Mathlib.RingTheory.Localization.Away.Basic
 import Mathlib.Tactic.StacksAttribute
 

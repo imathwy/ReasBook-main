@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap04.Lemma_4_2_18
-import StacksProject_2024.Chap08.Lemma_8_10_5.Gluing
+import stacks_proof.stacks_project.Chap04.Lemma_4_2_18
+import stacks_proof.stacks_project.Chap08.Lemma_8_10_5.Gluing
 
 universe uC uX vC vX
 

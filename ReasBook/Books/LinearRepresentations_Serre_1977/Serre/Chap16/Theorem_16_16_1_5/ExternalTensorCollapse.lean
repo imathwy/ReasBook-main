@@ -1,7 +1,7 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.Chap14.Proposition_14_14_1_1
-import LinearRepresentations_Serre_1977.Chap14.Corollary_14_14_4_3
-import LinearRepresentations_Serre_1977.RepresentationTheory.ExternalTensor
+import LinearRepresentations_Serre_1977.Serre.Chap14.Proposition_14_14_1_1
+import LinearRepresentations_Serre_1977.Serre.Chap14.Corollary_14_14_4_3
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.ExternalTensor
 
 /-!
 # External-tensor collapse infrastructure for Theorem 16-16.1-5

@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.ProjectiveCartanSpanProviderFinal
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.CartanRingEquivTransport
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.ProjectiveCartanSpanProviderFinal
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.CartanRingEquivTransport
 
 /-!
 Brauer-stability integration adapter for the support theorem in `CartanFormalRange.lean`.

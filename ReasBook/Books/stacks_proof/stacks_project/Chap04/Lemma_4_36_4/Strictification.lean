@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap04.Lemma_4_36_4.Strictification.Presentation
-import StacksProject_2024.Chap04.Lemma_4_2_18
+import stacks_proof.stacks_project.Chap04.Lemma_4_36_4.Strictification.Presentation
+import stacks_proof.stacks_project.Chap04.Lemma_4_2_18
 
 universe v₁ v₂ v₃ vS u₁ u₂ u₃ w
 

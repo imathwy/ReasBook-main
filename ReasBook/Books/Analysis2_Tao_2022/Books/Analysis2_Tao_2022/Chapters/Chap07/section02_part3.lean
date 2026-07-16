@@ -1,5 +1,5 @@
 import Mathlib
-import Books.Analysis2_Tao_2022.Chapters.Chap07.section02_part2
+import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Chapters.Chap07.section02_part2
 
 open scoped BigOperators
 

@@ -2,9 +2,9 @@ import Mathlib.Geometry.Manifold.Diffeomorph
 import Mathlib.Geometry.Manifold.ContMDiff.Atlas
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 import Mathlib.LinearAlgebra.Projectivization.Action
-import SmoothManifolds_Lee_2012.Chap01.Sec01_02.Proposition_1_17
-import SmoothManifolds_Lee_2012.Chap01.Sec01_07.Problem_1_9
-import SmoothManifolds_Lee_2012.Chap02.Sec02_12.Problem_2_11
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_02.Proposition_1_17
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap01.Sec01_07.Problem_1_9
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_12.Problem_2_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

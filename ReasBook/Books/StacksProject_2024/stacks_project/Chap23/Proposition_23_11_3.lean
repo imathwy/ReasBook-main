@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Category.ModuleCat.ProjectiveDimension
 import Mathlib.RingTheory.Ideal.Cotangent
-import StacksProject_2024.Chap10.Definition_10_78_1
-import StacksProject_2024.Chap15.Definition_15_32_1
+import StacksProject_2024.stacks_project.Chap10.Definition_10_78_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_32_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

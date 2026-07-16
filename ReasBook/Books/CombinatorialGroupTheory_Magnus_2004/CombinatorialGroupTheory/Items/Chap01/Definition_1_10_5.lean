@@ -1,5 +1,5 @@
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.Proposition_1_10_6
-import CombinatorialGroupTheory_Magnus_2004.Items.Chap01.SignedLetter
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.Proposition_1_10_6
+import CombinatorialGroupTheory_Magnus_2004.CombinatorialGroupTheory.Items.Chap01.SignedLetter
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -34,7 +34,7 @@ owning a second public Fox-derivative owner parallel to that canonical different
 section
 
 local notation "R" => FreeGroupRing X
-local instance : DecidableEq X := Classical.decEq X
+local instance definition_1_10_5_decidableEq : DecidableEq X := Classical.decEq X
 
 /-- The Fox derivative of a single signed letter with respect to the generator `x`. -/
 def foxLetterDerivative (x : X) : SignedLetter X → R :=

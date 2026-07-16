@@ -1,6 +1,6 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Chap02.Proposition_2_8_1
-import AlgebraicTopology_May_1999.Chap01.Theorem_1_5_11
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap02.Proposition_2_8_1
+import AlgebraicTopology_May_1999.MayConciseRevised.Chap01.Theorem_1_5_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

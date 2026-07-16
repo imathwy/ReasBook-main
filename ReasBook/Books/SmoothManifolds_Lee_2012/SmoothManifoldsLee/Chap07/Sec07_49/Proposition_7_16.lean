@@ -1,11 +1,11 @@
-import SmoothManifolds_Lee_2012.Chap03.Sec03_14.Proposition_3_6
-import SmoothManifolds_Lee_2012.Chap05.Sec05_30.Theorem_5_12
-import SmoothManifolds_Lee_2012.Chap05.Sec05_28.Definition_5_28_extra_2
-import SmoothManifolds_Lee_2012.Chap05.Sec05_36.Theorem_5_53
-import SmoothManifolds_Lee_2012.Chap07.Sec07_46.Definition_7_46_extra_3
-import SmoothManifolds_Lee_2012.Chap07.Sec07_47.Definition_7_47_extra_1
-import SmoothManifolds_Lee_2012.Chap07.Sec07_49.Proposition_7_11
-import SmoothManifolds_Lee_2012.Chap07.Sec07_49.Definition_7_49_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap03.Sec03_14.Proposition_3_6
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_30.Theorem_5_12
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_28.Definition_5_28_extra_2
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap05.Sec05_36.Theorem_5_53
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_46.Definition_7_46_extra_3
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_47.Definition_7_47_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_49.Proposition_7_11
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap07.Sec07_49.Definition_7_49_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

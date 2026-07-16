@@ -1,2 +1,2 @@
-import StacksProject_2024.Chap15.Lemma_15_116_11.ResidueLifts
-import StacksProject_2024.Chap15.Lemma_15_116_11.NormalizationBridge
+import stacks_proof.stacks_project.Chap15.Lemma_15_116_11.ResidueLifts
+import stacks_proof.stacks_project.Chap15.Lemma_15_116_11.NormalizationBridge

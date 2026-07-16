@@ -1,8 +1,8 @@
-import StacksProject_2024.Chap09.Definition_9_8_1
-import StacksProject_2024.Chap09.Definition_9_12_2
-import StacksProject_2024.Chap09.Definition_9_14_1
-import StacksProject_2024.Chap09.Definition_9_15_1
-import StacksProject_2024.Chap09.Definition_9_21_1
+import stacks_proof.stacks_project.Chap09.Definition_9_8_1
+import stacks_proof.stacks_project.Chap09.Definition_9_12_2
+import stacks_proof.stacks_project.Chap09.Definition_9_14_1
+import stacks_proof.stacks_project.Chap09.Definition_9_15_1
+import stacks_proof.stacks_project.Chap09.Definition_9_21_1
 import Mathlib.Tactic.Recall
 
 -- Declarations for this item will be appended below by the statement pipeline.

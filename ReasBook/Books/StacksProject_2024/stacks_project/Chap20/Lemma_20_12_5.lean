@@ -1,8 +1,8 @@
 import Mathlib.CategoryTheory.Limits.Shapes.ZeroObjects
-import StacksProject_2024.Chap20.«20_2_0_4»
-import StacksProject_2024.Chap20.«20_11_0_1»
-import StacksProject_2024.Chap20.Lemma_20_12_3
-import StacksProject_2024.Chap20.Lemma_20_7_3
+import StacksProject_2024.stacks_project.Chap20.«20_2_0_4»
+import StacksProject_2024.stacks_project.Chap20.«20_11_0_1»
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_12_3
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_7_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

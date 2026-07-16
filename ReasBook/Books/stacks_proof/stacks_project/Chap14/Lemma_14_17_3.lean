@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap14.Definition_14_17_1
-import StacksProject_2024.Chap14.Lemma_14_13_2
+import stacks_proof.stacks_project.Chap14.Definition_14_17_1
+import stacks_proof.stacks_project.Chap14.Lemma_14_13_2
 import Mathlib.CategoryTheory.FinCategory.Basic
 import Mathlib.CategoryTheory.Limits.Final
 import Mathlib.CategoryTheory.Limits.Elements

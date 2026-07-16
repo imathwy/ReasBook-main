@@ -1,6 +1,6 @@
 import Mathlib
-import ProbabilityTheory_Klenke_2020.Items.Chap25.Corollary_25_19
-import ProbabilityTheory_Klenke_2020.Items.Chap25.StandardBrownianMotionVector
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap25.Corollary_25_19
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap25.StandardBrownianMotionVector
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

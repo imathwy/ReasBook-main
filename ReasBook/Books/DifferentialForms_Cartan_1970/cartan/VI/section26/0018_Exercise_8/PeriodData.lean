@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Isometric
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev.Orthogonality
-import DifferentialForms_Cartan_1970.III.section11.PeriodLattice
-import DifferentialForms_Cartan_1970.II.section05.«0001_Definition_II_1_extra_1»
+import DifferentialForms_Cartan_1970.cartan.III.section11.PeriodLattice
+import DifferentialForms_Cartan_1970.cartan.II.section05.«0001_Definition_II_1_extra_1»
 
 open Set
 open scoped UpperHalfPlane

@@ -1,5 +1,5 @@
 import Mathlib.RingTheory.Support
-import StacksProject_2024.Chap10.Lemma_10_51_4_Krull_s_intersection_theorem
+import stacks_proof.stacks_project.Chap10.Lemma_10_51_4_Krull_s_intersection_theorem
 import Mathlib.Tactic.StacksAttribute
 
 -- Declarations for this item will be appended below by the statement pipeline.

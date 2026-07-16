@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap06.ClosedSubsetInclusion
-import StacksProject_2024.Chap06.Definition_6_26_1
-import StacksProject_2024.Chap06.Restriction_and_extension_by_zero_for_module_valued_sheaves
+import StacksProject_2024.stacks_project.Chap06.ClosedSubsetInclusion
+import StacksProject_2024.stacks_project.Chap06.Definition_6_26_1
+import StacksProject_2024.stacks_project.Chap06.Restriction_and_extension_by_zero_for_module_valued_sheaves
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap13.Definition_13_33_1
+import StacksProject_2024.stacks_project.Chap13.Definition_13_33_1
 import Mathlib.Algebra.Homology.DerivedCategory.HomologySequence
-import StacksProject_2024.Chap22.CompactDGModule
-import StacksProject_2024.Chap22.ShiftedFreeDGModule
+import StacksProject_2024.stacks_project.Chap22.CompactDGModule
+import StacksProject_2024.stacks_project.Chap22.ShiftedFreeDGModule
 
 open CategoryTheory
 open CategoryTheory.Limits

@@ -2,9 +2,9 @@ import Mathlib.CategoryTheory.Sites.GlobalSections
 import Mathlib.Algebra.Homology.TotalComplex
 import Mathlib.Algebra.Homology.Embedding.CochainComplex
 import Mathlib.Topology.Sheaves.AddCommGrpCat
-import StacksProject_2024.Chap12.Lemma_12_25_4
-import StacksProject_2024.Chap20.Definition_20_23_1
-import StacksProject_2024.Chap20.OpensInstances
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_25_4
+import StacksProject_2024.stacks_project.Chap20.Definition_20_23_1
+import StacksProject_2024.stacks_project.Chap20.OpensInstances
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

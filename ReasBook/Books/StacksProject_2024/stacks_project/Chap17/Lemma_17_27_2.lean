@@ -2,8 +2,8 @@ import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Presheaf.Monoidal
 import Mathlib.Algebra.Category.ModuleCat.Presheaf.Sheafification
 import Mathlib.CategoryTheory.Sites.Monoidal
-import StacksProject_2024.Chap18.«18_44_1_1»
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
+import StacksProject_2024.stacks_project.Chap18.«18_44_1_1»
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategoryBasic
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

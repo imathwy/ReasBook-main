@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.ProjectiveCharacterDivisibility
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.ProjectiveCharacterDivisibility
 
 /-!
 Zero-extension API for the Exercise 18.4 route.

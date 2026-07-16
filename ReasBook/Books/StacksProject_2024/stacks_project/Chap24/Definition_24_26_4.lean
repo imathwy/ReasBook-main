@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap24.Lemma_24_26_3
+import StacksProject_2024.stacks_project.Chap24.Lemma_24_26_3
 
 open CategoryTheory
 open ComplexShape

@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_155_12
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_155_12
 
 open scoped TensorProduct
 open CategoryTheory MorphismProperty Limits

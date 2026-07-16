@@ -1,5 +1,5 @@
 import Mathlib
-import LinearRepresentations_Serre_1977.RepresentationTheory.RealizableOver
+import LinearRepresentations_Serre_1977.Serre.RepresentationTheory.RealizableOver
 
 /-!
 # Separable Maschke averaging (finite separable case)

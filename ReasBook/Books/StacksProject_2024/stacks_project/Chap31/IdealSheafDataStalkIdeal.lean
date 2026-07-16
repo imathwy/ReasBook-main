@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap20.IdealSheafStalkIdeal
-import StacksProject_2024.Chap31.ClosedImmersionIdealSubobject
+import StacksProject_2024.stacks_project.Chap20.IdealSheafStalkIdeal
+import StacksProject_2024.stacks_project.Chap31.ClosedImmersionIdealSubobject
 
 open AlgebraicGeometry
 open CategoryTheory

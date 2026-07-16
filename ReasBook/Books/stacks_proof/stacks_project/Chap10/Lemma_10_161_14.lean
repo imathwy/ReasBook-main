@@ -1,15 +1,15 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_25_1
-import StacksProject_2024.Chap10.Lemma_10_37_12
-import StacksProject_2024.Chap10.Lemma_10_37_13
-import StacksProject_2024.Chap10.Lemma_10_37_17
-import StacksProject_2024.Chap10.Lemma_10_63_15
-import StacksProject_2024.Chap10.Lemma_10_63_16
-import StacksProject_2024.Chap10.Lemma_10_119_2_Koll_r
-import StacksProject_2024.Chap10.Lemma_10_119_3
-import StacksProject_2024.Chap10.Proposition_10_110_1
-import StacksProject_2024.Chap10.Lemma_10_157_2
-import StacksProject_2024.Chap10.Lemma_10_157_4_Serre_s_criterion_for_normality
+import stacks_proof.stacks_project.Chap10.Lemma_10_25_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_37_12
+import stacks_proof.stacks_project.Chap10.Lemma_10_37_13
+import stacks_proof.stacks_project.Chap10.Lemma_10_37_17
+import stacks_proof.stacks_project.Chap10.Lemma_10_63_15
+import stacks_proof.stacks_project.Chap10.Lemma_10_63_16
+import stacks_proof.stacks_project.Chap10.Lemma_10_119_2_Koll_r
+import stacks_proof.stacks_project.Chap10.Lemma_10_119_3
+import stacks_proof.stacks_project.Chap10.Proposition_10_110_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_157_2
+import stacks_proof.stacks_project.Chap10.Lemma_10_157_4_Serre_s_criterion_for_normality
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

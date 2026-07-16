@@ -1,5 +1,5 @@
 import Mathlib
-import Books.Analysis2_Tao_2022.Chapters.Chap07.section05_part1
+import Analysis2_Tao_2022.Books.Analysis2_Tao_2022.Chapters.Chap07.section05_part1
 
 section Chap07
 section Section05

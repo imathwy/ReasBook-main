@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap14.Definition_14_15_1
+import stacks_proof.stacks_project.Chap14.Definition_14_15_1
 
 open Opposite
 open CategoryTheory

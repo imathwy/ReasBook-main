@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap10.Definition_10_54_1
-import StacksProject_2024.Chap10.Lemma_10_99_1
-import StacksProject_2024.Chap10.Lemma_10_127_13
+import stacks_proof.stacks_project.Chap10.Definition_10_54_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_99_1
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_13
 import Mathlib.Tactic.StacksAttribute
 
 open IsLocalRing

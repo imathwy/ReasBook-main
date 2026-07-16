@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import StacksProject_2024.Chap15.Situation_15_7_1
-import StacksProject_2024.Chap15.Lemma_15_7_3
+import StacksProject_2024.stacks_project.Chap15.Situation_15_7_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_7_3
 
 open CategoryTheory
 open CategoryTheory.Limits

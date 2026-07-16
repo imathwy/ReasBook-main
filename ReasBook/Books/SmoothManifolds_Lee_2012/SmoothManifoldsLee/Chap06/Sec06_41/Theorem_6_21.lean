@@ -1,7 +1,7 @@
 import Mathlib.Geometry.Manifold.Instances.Real
 import Mathlib.Geometry.Manifold.SmoothApprox
-import SmoothManifolds_Lee_2012.Chap02.Sec02_11.Lemma_2_26
-import SmoothManifolds_Lee_2012.Chap06.Sec06_41.Definition_6_41_extra_1
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap02.Sec02_11.Lemma_2_26
+import SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_41.Definition_6_41_extra_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 -- Domain sampling pass:

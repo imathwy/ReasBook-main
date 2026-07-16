@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap06.Lemma_6_33_3_RingPullbackAux
+import stacks_proof.stacks_project.Chap06.Lemma_6_33_3_RingPullbackAux
 
 open CategoryTheory CategoryTheory.Limits Opposite TopCat TopologicalSpace Topology
 open CategoryTheory.Presheaf

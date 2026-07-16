@@ -1,5 +1,5 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.EisensteinAdjoinRootDVR
-import LinearRepresentations_Serre_1977.Chap14.Exercise_14_14_4_6.AdicNewtonIdempotent
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.EisensteinAdjoinRootDVR
+import LinearRepresentations_Serre_1977.Serre.Chap14.Exercise_14_14_4_6.AdicNewtonIdempotent
 
 /-!
 # Adic completeness for Eisenstein `AdjoinRoot`

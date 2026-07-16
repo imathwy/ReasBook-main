@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap16.Exercise_16_16_3_8.ConditionRBasic
+import LinearRepresentations_Serre_1977.Serre.Chap16.Exercise_16_16_3_8.ConditionRBasic
 
 noncomputable section
 

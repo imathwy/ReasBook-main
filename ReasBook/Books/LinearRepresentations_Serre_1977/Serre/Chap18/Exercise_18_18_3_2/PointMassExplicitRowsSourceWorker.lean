@@ -1,4 +1,4 @@
-import LinearRepresentations_Serre_1977.Chap18.Exercise_18_18_3_2.ExplicitResidualRegularValueRowsWorker
+import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.ExplicitResidualRegularValueRowsWorker
 
 /-!
 Source-side support/value bridge for the explicit point-mass residual rows.

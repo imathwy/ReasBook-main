@@ -3,7 +3,7 @@ import Mathlib.RingTheory.Localization.Away.Basic
 import Mathlib.Algebra.Ring.NonZeroDivisors
 import Mathlib.Algebra.Category.Ring.Basic
 import Mathlib.CategoryTheory.CommSq
-import StacksProject_2024.Chap15.PrincipalIdeal
+import StacksProject_2024.stacks_project.Chap15.PrincipalIdeal
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_127_5
-import StacksProject_2024.Chap10.Lemma_10_127_7.TensorBasic
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_5
+import stacks_proof.stacks_project.Chap10.Lemma_10_127_7.TensorBasic
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
