@@ -1,6 +1,6 @@
 import Mathlib.CategoryTheory.Limits.FilteredColimitCommutesFiniteLimit
 import Mathlib.CategoryTheory.Limits.Shapes.FunctorToTypes
-import StacksProject_2024.Chap04.Definition_4_19_1
+import StacksProject_2024.stacks_project.Chap04.Definition_4_19_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

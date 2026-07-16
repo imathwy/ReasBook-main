@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap20.«20_11_0_1»
-import StacksProject_2024.Chap20.Sections_on_open
-import StacksProject_2024.Chap21.Lemma_21_12_3
+import StacksProject_2024.stacks_project.Chap20.«20_11_0_1»
+import StacksProject_2024.stacks_project.Chap20.Sections_on_open
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_12_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

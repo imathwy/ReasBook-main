@@ -1,9 +1,9 @@
-import StacksProject_2024.Chap07.Example_7_14_3
-import StacksProject_2024.Chap07.Lemma_7_12_4
-import StacksProject_2024.Chap13.Situation_13_15_1
-import StacksProject_2024.Chap18.Lemma_18_15_3
-import StacksProject_2024.Chap21.Lemma_21_26_3
-import StacksProject_2024.Chap21.SiteAbelianDerived
+import StacksProject_2024.stacks_project.Chap07.Example_7_14_3
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_12_4
+import StacksProject_2024.stacks_project.Chap13.Situation_13_15_1
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_15_3
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_26_3
+import StacksProject_2024.stacks_project.Chap21.SiteAbelianDerived
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap13.Definition_13_14_10
-import StacksProject_2024.Chap13.Lemma_13_14_5
+import StacksProject_2024.stacks_project.Chap13.Definition_13_14_10
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_14_5
 
 open CategoryTheory.MorphismProperty
 open CategoryTheory.ObjectProperty

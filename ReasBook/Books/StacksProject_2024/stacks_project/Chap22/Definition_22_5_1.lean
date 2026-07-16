@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap22.DGModuleModel
+import StacksProject_2024.stacks_project.Chap22.DGModuleModel
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

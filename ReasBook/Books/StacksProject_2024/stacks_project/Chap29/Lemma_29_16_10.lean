@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap28.Lemma_28_6_4
-import StacksProject_2024.Chap31.Lemma_31_16_1
+import StacksProject_2024.stacks_project.Chap28.Lemma_28_6_4
+import StacksProject_2024.stacks_project.Chap31.Lemma_31_16_1
 
 open AlgebraicGeometry PrimeSpectrum IsLocalRing
 open scoped AlgebraicGeometry

@@ -1,6 +1,6 @@
 import Mathlib.AlgebraicGeometry.Stalk
 import Mathlib.RingTheory.KrullDimension.Basic
-import StacksProject_2024.Chap28.Definition_28_10_1
+import StacksProject_2024.stacks_project.Chap28.Definition_28_10_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

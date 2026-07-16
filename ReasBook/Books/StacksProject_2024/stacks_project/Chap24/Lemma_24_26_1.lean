@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap24.Lemma_24_26_1_Additive
+import StacksProject_2024.stacks_project.Chap24.Lemma_24_26_1_Additive
 
 open CategoryTheory
 open CategoryTheory.Limits

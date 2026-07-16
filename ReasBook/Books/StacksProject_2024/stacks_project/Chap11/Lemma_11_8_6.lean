@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Data.List.TFAE
-import StacksProject_2024.Chap09.Lemma_9_21_5
-import StacksProject_2024.Chap11.Definition_11_8_1
-import StacksProject_2024.Chap11.Proposition_11_8_5
+import StacksProject_2024.stacks_project.Chap09.Lemma_9_21_5
+import StacksProject_2024.stacks_project.Chap11.Definition_11_8_1
+import StacksProject_2024.stacks_project.Chap11.Proposition_11_8_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

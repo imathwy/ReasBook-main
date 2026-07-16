@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Homology.Embedding.StupidTrunc
 import Mathlib.CategoryTheory.Subobject.Lattice
 import Mathlib.Tactic
-import StacksProject_2024.Chap12.Lemma_12_24_11
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_24_11
 
 open CategoryTheory
 open CategoryTheory.Limits

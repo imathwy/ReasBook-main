@@ -2,8 +2,8 @@ import Mathlib.CategoryTheory.Limits.Preorder
 import Mathlib.Topology.Category.TopCat.Opens
 import Mathlib.Topology.Sheaves.SheafCondition.Sites
 import Mathlib.CategoryTheory.Sites.GlobalSections
-import StacksProject_2024.Chap20.«20_2_0_3»
-import StacksProject_2024.Chap20.OpensInstances
+import StacksProject_2024.stacks_project.Chap20.«20_2_0_3»
+import StacksProject_2024.stacks_project.Chap20.OpensInstances
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

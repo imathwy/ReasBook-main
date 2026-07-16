@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
 import Mathlib.CategoryTheory.Adjunction.Limits
-import StacksProject_2024.Chap13.Lemma_13_16_9
-import StacksProject_2024.Chap15.Lemma_15_88_1_Base
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_16_9
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_88_1_Base
 
 open CategoryTheory
 open CategoryTheory.Limits

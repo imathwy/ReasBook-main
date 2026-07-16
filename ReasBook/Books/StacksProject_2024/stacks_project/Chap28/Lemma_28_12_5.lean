@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap28.Definition_28_7_1
-import StacksProject_2024.Chap28.Definition_28_12_1
-import StacksProject_2024.Chap10.Lemma_10_157_4_Serre_s_criterion_for_normality
-import StacksProject_2024.Chap30.Definition_30_11_1_Scheme
+import StacksProject_2024.stacks_project.Chap28.Definition_28_7_1
+import StacksProject_2024.stacks_project.Chap28.Definition_28_12_1
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_157_4_Serre_s_criterion_for_normality
+import StacksProject_2024.stacks_project.Chap30.Definition_30_11_1_Scheme
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

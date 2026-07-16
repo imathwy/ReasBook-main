@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Homology.GrothendieckAbelian
-import StacksProject_2024.Chap18.Lemma_18_14_2
-import StacksProject_2024.Chap18.RingedSiteModuleCategory
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_14_2
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategory
 
 open CategoryTheory CategoryTheory.Limits
 open CochainComplex

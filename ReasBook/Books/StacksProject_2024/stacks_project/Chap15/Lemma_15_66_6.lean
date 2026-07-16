@@ -2,7 +2,7 @@ import Mathlib.Algebra.Homology.DerivedCategory.FullyFaithful
 import Mathlib.Algebra.Homology.HomotopyCategory.HomComplexSingle
 import Mathlib.Algebra.Category.ModuleCat.Abelian
 import Mathlib.Algebra.Module.FinitePresentation
-import StacksProject_2024.Chap15.Definition_15_65_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_65_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

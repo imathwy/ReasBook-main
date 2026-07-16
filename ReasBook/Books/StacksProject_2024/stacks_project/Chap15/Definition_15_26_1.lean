@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Module.Torsion.PrimaryComponent
-import StacksProject_2024.Chap10.Definition_10_70_1
-import StacksProject_2024.Chap15.PrincipalIdeal
+import StacksProject_2024.stacks_project.Chap10.Definition_10_70_1
+import StacksProject_2024.stacks_project.Chap15.PrincipalIdeal
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

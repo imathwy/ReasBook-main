@@ -2,7 +2,7 @@ import Mathlib.AlgebraicGeometry.IdealSheaf.Subscheme
 import Mathlib.AlgebraicGeometry.Morphisms.UniversallyClosed
 import Mathlib.AlgebraicGeometry.Morphisms.UniversallyInjective
 import Mathlib.AlgebraicGeometry.Properties
-import StacksProject_2024.Chap29.Definition_29_45_1
+import StacksProject_2024.stacks_project.Chap29.Definition_29_45_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap12.Definition_12_19_3
+import StacksProject_2024.stacks_project.Chap12.Definition_12_19_3
 
 open CategoryTheory
 open CategoryTheory.Limits

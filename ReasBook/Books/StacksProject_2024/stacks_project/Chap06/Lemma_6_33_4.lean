@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap06.Glueing_data_for_sheaves_on_an_open_cover
-import StacksProject_2024.Chap06.Lemma_6_33_1
-import StacksProject_2024.Chap06.Lemma_6_33_2
+import StacksProject_2024.stacks_project.Chap06.Glueing_data_for_sheaves_on_an_open_cover
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_33_1
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_33_2
 
 open CategoryTheory TopologicalSpace TopCat
 open TopologicalSpace.Opens

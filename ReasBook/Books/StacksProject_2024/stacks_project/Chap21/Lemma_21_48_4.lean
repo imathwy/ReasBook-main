@@ -1,9 +1,9 @@
-import StacksProject_2024.Chap18.RingedSiteModuleCategory
-import StacksProject_2024.Chap13.Definition_13_33_1
-import StacksProject_2024.Chap13.Definition_13_34_1
-import StacksProject_2024.Chap21.RingedSiteDerived
-import StacksProject_2024.Chap21.Definition_21_47_1
-import StacksProject_2024.Chap21.Lemma_21_35_9
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategory
+import StacksProject_2024.stacks_project.Chap13.Definition_13_33_1
+import StacksProject_2024.stacks_project.Chap13.Definition_13_34_1
+import StacksProject_2024.stacks_project.Chap21.RingedSiteDerived
+import StacksProject_2024.stacks_project.Chap21.Definition_21_47_1
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_35_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

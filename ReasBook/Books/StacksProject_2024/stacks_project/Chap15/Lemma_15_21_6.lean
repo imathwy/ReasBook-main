@@ -2,10 +2,10 @@ import Mathlib.Algebra.Module.FinitePresentation
 import Mathlib.RingTheory.Algebraic.Integral
 import Mathlib.RingTheory.Flat.Basic
 import Mathlib.RingTheory.MvPolynomial.Basic
-import StacksProject_2024.Chap10.Lemma_10_36_4
-import StacksProject_2024.Chap10.Lemma_10_168_1
-import StacksProject_2024.Chap10.Lemma_10_39_7
-import StacksProject_2024.Chap15.Lemma_15_21_5
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_36_4
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_168_1
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_39_7
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_21_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

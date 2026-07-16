@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Homology.HomotopyCategory.HomComplexCohomology
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
-import StacksProject_2024.Chap21.Lemma_21_19_1_core
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategoryBasic
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_19_1_core
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap24.Lemma_24_29_6
+import StacksProject_2024.stacks_project.Chap24.Lemma_24_29_6
 
 open CategoryTheory
 open ComplexShape

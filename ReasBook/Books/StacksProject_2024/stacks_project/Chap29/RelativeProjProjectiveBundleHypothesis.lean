@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap29.Definition_29_43_1
-import StacksProject_2024.Chap29.RelativeProjPresentation
+import StacksProject_2024.stacks_project.Chap29.Definition_29_43_1
+import StacksProject_2024.stacks_project.Chap29.RelativeProjPresentation
 
 open AlgebraicGeometry
 open scoped AlgebraicGeometry

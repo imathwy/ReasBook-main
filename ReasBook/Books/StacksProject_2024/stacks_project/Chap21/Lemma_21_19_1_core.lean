@@ -1,9 +1,9 @@
 import Mathlib.Algebra.Homology.DerivedCategory.Basic
 import Mathlib.CategoryTheory.Functor.Derived.LeftDerived
 import Mathlib.CategoryTheory.Functor.Derived.RightDerived
-import StacksProject_2024.Chap18.Definition_18_13_1
-import StacksProject_2024.Chap18.Definition_18_19_1
-import StacksProject_2024.Chap18.RingedSiteModuleCategory
+import StacksProject_2024.stacks_project.Chap18.Definition_18_13_1
+import StacksProject_2024.stacks_project.Chap18.Definition_18_19_1
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategory
 import Mathlib.CategoryTheory.Limits.Shapes.BinaryProducts
 
 open CategoryTheory

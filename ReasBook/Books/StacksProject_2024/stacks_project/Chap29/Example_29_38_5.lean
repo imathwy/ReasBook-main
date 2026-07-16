@@ -1,7 +1,7 @@
 import Mathlib.RingTheory.Ideal.Quotient.Operations
 import Mathlib.RingTheory.MvPolynomial.Basic
 import Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous
-import StacksProject_2024.Chap29.Definition_29_38_1
+import StacksProject_2024.stacks_project.Chap29.Definition_29_38_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

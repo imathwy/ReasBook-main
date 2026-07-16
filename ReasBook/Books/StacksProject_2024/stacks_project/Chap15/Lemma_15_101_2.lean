@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.CategoryTheory.Functor.OfSequence
-import StacksProject_2024.Chap12.Definition_12_31_2
-import StacksProject_2024.Chap15.Definition_15_59_13
-import StacksProject_2024.Chap15.Definition_15_65_1
+import StacksProject_2024.stacks_project.Chap12.Definition_12_31_2
+import StacksProject_2024.stacks_project.Chap15.Definition_15_59_13
+import StacksProject_2024.stacks_project.Chap15.Definition_15_65_1
 
 noncomputable section
 

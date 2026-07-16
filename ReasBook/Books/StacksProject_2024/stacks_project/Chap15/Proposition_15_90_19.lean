@@ -5,14 +5,14 @@ import Mathlib.LinearAlgebra.TensorProduct.Prod
 import Mathlib.RingTheory.Finiteness.Descent
 import Mathlib.RingTheory.Finiteness.Prod
 import Mathlib.RingTheory.Flat.FaithfullyFlat.Algebra
-import StacksProject_2024.Chap10.Lemma_10_17_6
-import StacksProject_2024.Chap10.Lemma_10_17_7
-import StacksProject_2024.Chap10.Lemma_10_90_5
-import StacksProject_2024.Chap10.Lemma_10_96_3
-import StacksProject_2024.Chap10.Lemma_10_97_2
-import StacksProject_2024.Chap10.Proposition_10_90_6
-import StacksProject_2024.Chap15.PrincipalIdeal
-import StacksProject_2024.Chap15.Theorem_15_90_18
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_17_6
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_17_7
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_90_5
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_96_3
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_97_2
+import StacksProject_2024.stacks_project.Chap10.Proposition_10_90_6
+import StacksProject_2024.stacks_project.Chap15.PrincipalIdeal
+import StacksProject_2024.stacks_project.Chap15.Theorem_15_90_18
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

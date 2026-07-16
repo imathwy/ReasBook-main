@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.CategoryTheory.Triangulated.Yoneda
 import Mathlib.CategoryTheory.Abelian.Exact
-import StacksProject_2024.Chap13.Definition_13_34_1
+import StacksProject_2024.stacks_project.Chap13.Definition_13_34_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

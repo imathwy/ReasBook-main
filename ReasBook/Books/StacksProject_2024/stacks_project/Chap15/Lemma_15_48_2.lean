@@ -2,10 +2,10 @@ import Mathlib.Algebra.TrivSqZeroExt.Basic
 import Mathlib.RingTheory.Derivation.Basic
 import Mathlib.RingTheory.Ideal.Cotangent
 import Mathlib.RingTheory.Localization.Away.Basic
-import StacksProject_2024.Chap10.Lemma_10_106_3
-import StacksProject_2024.Chap10.Definition_10_60_10
-import StacksProject_2024.Chap10.Definition_10_110_7
-import StacksProject_2024.Chap15.PrincipalIdeal
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_106_3
+import StacksProject_2024.stacks_project.Chap10.Definition_10_60_10
+import StacksProject_2024.stacks_project.Chap10.Definition_10_110_7
+import StacksProject_2024.stacks_project.Chap15.PrincipalIdeal
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

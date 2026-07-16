@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap10.Proposition_10_89_2
-import StacksProject_2024.Chap10.Proposition_10_89_3
-import StacksProject_2024.Chap10.Proposition_10_89_5
-import StacksProject_2024.Chap10.Lemma_10_89_10
+import StacksProject_2024.stacks_project.Chap10.Proposition_10_89_2
+import StacksProject_2024.stacks_project.Chap10.Proposition_10_89_3
+import StacksProject_2024.stacks_project.Chap10.Proposition_10_89_5
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_89_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

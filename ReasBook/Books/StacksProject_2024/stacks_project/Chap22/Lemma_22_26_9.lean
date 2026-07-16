@@ -1,6 +1,6 @@
 import Mathlib.CategoryTheory.Localization.Predicate
-import StacksProject_2024.Chap22.Definition_22_3_2
-import StacksProject_2024.Chap22.Example_22_26_8_Differential_graded_category_of_differential_graded_modules
+import StacksProject_2024.stacks_project.Chap22.Definition_22_3_2
+import StacksProject_2024.stacks_project.Chap22.Example_22_26_8_Differential_graded_category_of_differential_graded_modules
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

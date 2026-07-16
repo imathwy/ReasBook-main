@@ -1,6 +1,6 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap18.Lemma_18_27_6
-import StacksProject_2024.Chap21.RingedSiteDerivedBasic
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_27_6
+import StacksProject_2024.stacks_project.Chap21.RingedSiteDerivedBasic
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap22.PropertyPDGModule
+import StacksProject_2024.stacks_project.Chap22.PropertyPDGModule
 
 open CategoryTheory CategoryTheory.Limits
 open HomologicalComplex

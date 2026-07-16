@@ -1,8 +1,8 @@
 import Mathlib.CategoryTheory.Adjunction.Mates
-import StacksProject_2024.Chap18.Lemma_18_15_3
-import StacksProject_2024.Chap21.SiteAbelianDerived
-import StacksProject_2024.Chap21.Lemma_21_37_1
-import StacksProject_2024.Chap21.Lemma_21_20_7
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_15_3
+import StacksProject_2024.stacks_project.Chap21.SiteAbelianDerived
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_37_1
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_20_7
 
 open CategoryTheory
 open CategoryTheory.Limits

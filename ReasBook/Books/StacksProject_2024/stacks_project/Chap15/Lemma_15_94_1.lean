@@ -1,11 +1,11 @@
 import Mathlib
-import StacksProject_2024.Chap04.Example_4_22_6
-import StacksProject_2024.Chap12.Definition_12_31_2
-import StacksProject_2024.Chap15.Definition_15_89_1
-import StacksProject_2024.Chap15.Lemma_15_28_8
-import StacksProject_2024.Chap15.Lemma_15_94_1.Index
-import StacksProject_2024.Chap15.PrincipalIdeal
-import StacksProject_2024.Chap15.Situation_15_92_15
+import StacksProject_2024.stacks_project.Chap04.Example_4_22_6
+import StacksProject_2024.stacks_project.Chap12.Definition_12_31_2
+import StacksProject_2024.stacks_project.Chap15.Definition_15_89_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_28_8
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_94_1.Index
+import StacksProject_2024.stacks_project.Chap15.PrincipalIdeal
+import StacksProject_2024.stacks_project.Chap15.Situation_15_92_15
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

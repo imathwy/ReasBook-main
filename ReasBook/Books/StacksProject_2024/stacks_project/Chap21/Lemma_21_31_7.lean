@@ -1,14 +1,14 @@
 import Mathlib.Tactic.Recall
 import Mathlib.CategoryTheory.Sites.Sheafification
-import StacksProject_2024.Chap07.Lemma_7_21_7
-import StacksProject_2024.Chap07.Lemma_7_25_8
-import StacksProject_2024.Chap07.Definition_7_42_3
-import StacksProject_2024.Chap18.Lemma_18_15_3
-import StacksProject_2024.Chap13.Definition_13_11_3
-import StacksProject_2024.Chap19.AdditiveFunctorTotalRightDerived
-import StacksProject_2024.Chap21.«21_30_0_1»
-import StacksProject_2024.Chap21.«21_31_0_1»
-import StacksProject_2024.Chap21.Lemma_21_31_1
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_21_7
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_25_8
+import StacksProject_2024.stacks_project.Chap07.Definition_7_42_3
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_15_3
+import StacksProject_2024.stacks_project.Chap13.Definition_13_11_3
+import StacksProject_2024.stacks_project.Chap19.AdditiveFunctorTotalRightDerived
+import StacksProject_2024.stacks_project.Chap21.«21_30_0_1»
+import StacksProject_2024.stacks_project.Chap21.«21_31_0_1»
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_31_1
 
 open CategoryTheory
 open CategoryTheory.Limits

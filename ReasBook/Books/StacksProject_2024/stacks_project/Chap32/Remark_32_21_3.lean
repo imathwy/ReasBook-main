@@ -1,7 +1,7 @@
 import Mathlib.AlgebraicGeometry.Restrict
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import StacksProject_2024.Chap29.Definition_29_21_1
-import StacksProject_2024.Chap31.Lemma_31_13_3
+import StacksProject_2024.stacks_project.Chap29.Definition_29_21_1
+import StacksProject_2024.stacks_project.Chap31.Lemma_31_13_3
 
 open AlgebraicGeometry
 open CategoryTheory

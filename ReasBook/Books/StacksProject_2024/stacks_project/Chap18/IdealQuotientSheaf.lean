@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap15.Lemma_15_90_1
-import StacksProject_2024.Chap18.IdealSectionIdeal
-import StacksProject_2024.Chap18.Lemma_18_34_5
-import StacksProject_2024.Chap18.RingedSiteModuleCategory
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_90_1
+import StacksProject_2024.stacks_project.Chap18.IdealSectionIdeal
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_34_5
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategory
 
 open CategoryTheory Opposite
 

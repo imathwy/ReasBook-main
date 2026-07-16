@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap18.Lemma_18_28_7
-import StacksProject_2024.Chap18.Lemma_18_30_9
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
-import StacksProject_2024.Chap18.Situation_18_30_5
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_28_7
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_30_9
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategoryBasic
+import StacksProject_2024.stacks_project.Chap18.Situation_18_30_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

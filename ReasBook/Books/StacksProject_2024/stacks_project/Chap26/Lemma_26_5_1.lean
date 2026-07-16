@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Module.LocalizedModule.Away
 import Mathlib.RingTheory.Ideal.Span
 import Mathlib.RingTheory.Localization.Away.Basic
-import StacksProject_2024.Chap10.Definition_10_17_1
+import StacksProject_2024.stacks_project.Chap10.Definition_10_17_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

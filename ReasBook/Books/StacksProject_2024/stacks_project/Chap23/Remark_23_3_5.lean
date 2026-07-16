@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Category.Ring.Constructions
 import Mathlib.LinearAlgebra.TensorProduct.RightExactness
 import Mathlib.RingTheory.Ideal.Quotient.Operations
-import StacksProject_2024.Chapters.Chap23.section03
+import StacksProject_2024.stacks_project.Chapters.Chap23.section03
 
 open CategoryTheory
 open CategoryTheory.Limits

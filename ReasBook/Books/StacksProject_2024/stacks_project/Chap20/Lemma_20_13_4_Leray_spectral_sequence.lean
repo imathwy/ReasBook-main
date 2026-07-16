@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap13.Lemma_13_22_2_Grothendieck_spectral_sequence
-import StacksProject_2024.Chap20.«20_3_0_4»
-import StacksProject_2024.Chap20.Global_sections_module_owners_core
-import StacksProject_2024.Chap20.Sections_on_open
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_22_2_Grothendieck_spectral_sequence
+import StacksProject_2024.stacks_project.Chap20.«20_3_0_4»
+import StacksProject_2024.stacks_project.Chap20.Global_sections_module_owners_core
+import StacksProject_2024.stacks_project.Chap20.Sections_on_open
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.AlgebraicGeometry.Sites.Pretopology
-import StacksProject_2024.Chap34.Definition_34_5_6
-import StacksProject_2024.Chap34.Definition_34_6_1
-import StacksProject_2024.Chap29.Lemma_29_30_5
-import StacksProject_2024.Chap29.Lemma_29_34_7
-import StacksProject_2024.Chap29.Lemma_29_36_10
+import StacksProject_2024.stacks_project.Chap34.Definition_34_5_6
+import StacksProject_2024.stacks_project.Chap34.Definition_34_6_1
+import StacksProject_2024.stacks_project.Chap29.Lemma_29_30_5
+import StacksProject_2024.stacks_project.Chap29.Lemma_29_34_7
+import StacksProject_2024.stacks_project.Chap29.Lemma_29_36_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

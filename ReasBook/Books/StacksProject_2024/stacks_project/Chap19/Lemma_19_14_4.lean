@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.CategoryTheory.Functor.Derived.Adjunction
-import StacksProject_2024.Chap13.Lemma_13_31_7
-import StacksProject_2024.Chap13.Lemma_13_30_1
-import StacksProject_2024.Chap19.AdditiveFunctorTotalRightDerived
-import StacksProject_2024.Chap19.Theorem_19_12_6
-import StacksProject_2024.Chap19.Theorem_19_14_3
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_31_7
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_30_1
+import StacksProject_2024.stacks_project.Chap19.AdditiveFunctorTotalRightDerived
+import StacksProject_2024.stacks_project.Chap19.Theorem_19_12_6
+import StacksProject_2024.stacks_project.Chap19.Theorem_19_14_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

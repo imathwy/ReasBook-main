@@ -2,13 +2,13 @@ import Mathlib.Algebra.Homology.DerivedCategory.FullyFaithful
 import Mathlib.CategoryTheory.Adjunction.FullyFaithful
 import Mathlib.CategoryTheory.Functor.Derived.Adjunction
 import Mathlib.Topology.Sheaves.AddCommGrpCat
-import StacksProject_2024.Chap06.Lemma_6_32_1
-import StacksProject_2024.Chap13.Lemma_13_16_4
-import StacksProject_2024.Chap13.Lemma_13_30_2
-import StacksProject_2024.Chap13.Lemma_13_30_3
-import StacksProject_2024.Chap17.Lemma_17_13_4
-import StacksProject_2024.Chap17.Remark_17_13_5
-import StacksProject_2024.Chap20.Global_sections_module_owners_core
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_32_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_16_4
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_30_2
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_30_3
+import StacksProject_2024.stacks_project.Chap17.Lemma_17_13_4
+import StacksProject_2024.stacks_project.Chap17.Remark_17_13_5
+import StacksProject_2024.stacks_project.Chap20.Global_sections_module_owners_core
 
 open CategoryTheory
 open CategoryTheory.Limits

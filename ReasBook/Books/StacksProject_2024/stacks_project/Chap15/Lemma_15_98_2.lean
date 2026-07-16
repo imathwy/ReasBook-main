@@ -1,12 +1,12 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
 import Mathlib.CategoryTheory.Preadditive.Yoneda.Limits
-import StacksProject_2024.Chap13.Definition_13_34_1
-import StacksProject_2024.Chap15.Definition_15_65_1
-import StacksProject_2024.Chap15.Lemma_15_88_1_Base
-import StacksProject_2024.Chap15.Lemma_15_60_3
-import StacksProject_2024.Chap15.Definition_15_92_4
-import StacksProject_2024.Chap15.Lemma_15_88_5_TowerBridge
+import StacksProject_2024.stacks_project.Chap13.Definition_13_34_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_65_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_88_1_Base
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_60_3
+import StacksProject_2024.stacks_project.Chap15.Definition_15_92_4
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_88_5_TowerBridge
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

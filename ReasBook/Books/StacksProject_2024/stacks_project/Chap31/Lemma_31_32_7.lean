@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap31.Lemma_31_32_5_Universal_property_blowing_up
+import StacksProject_2024.stacks_project.Chap31.Lemma_31_32_5_Universal_property_blowing_up
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

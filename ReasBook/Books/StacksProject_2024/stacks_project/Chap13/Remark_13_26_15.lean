@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap13.CochainComplexStupidFiltration
-import StacksProject_2024.Chap13.Lemma_13_21_3
-import StacksProject_2024.Chap13.Lemma_13_26_14
+import StacksProject_2024.stacks_project.Chap13.CochainComplexStupidFiltration
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_21_3
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_26_14
 
 open CategoryTheory
 open CategoryTheory.Limits

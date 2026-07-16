@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap20.Definition_20_49_1
-import StacksProject_2024.Chap20.«20_42_0_1»
-import StacksProject_2024.Chap20.Open_subspace_module_core
-import StacksProject_2024.Chap20.Tensor_internal_hom_to_iterated_internal_hom
+import StacksProject_2024.stacks_project.Chap20.Definition_20_49_1
+import StacksProject_2024.stacks_project.Chap20.«20_42_0_1»
+import StacksProject_2024.stacks_project.Chap20.Open_subspace_module_core
+import StacksProject_2024.stacks_project.Chap20.Tensor_internal_hom_to_iterated_internal_hom
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

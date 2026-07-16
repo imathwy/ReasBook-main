@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap05.Lemma_5_12_10
-import StacksProject_2024.Chap05.Lemma_5_22_5
+import StacksProject_2024.stacks_project.Chap05.Lemma_5_12_10
+import StacksProject_2024.stacks_project.Chap05.Lemma_5_22_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

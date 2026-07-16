@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap21.SheafModuleDerivedTensor
-import StacksProject_2024.Chap13.Aux_13_17_1
-import StacksProject_2024.Chap18.Definition_18_43_1_Finite
+import StacksProject_2024.stacks_project.Chap21.SheafModuleDerivedTensor
+import StacksProject_2024.stacks_project.Chap13.Aux_13_17_1
+import StacksProject_2024.stacks_project.Chap18.Definition_18_43_1_Finite
 
 open CategoryTheory
 open CategoryTheory.MonoidalCategory

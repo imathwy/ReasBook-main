@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
-import StacksProject_2024.Chap18.Definition_18_28_1
-import StacksProject_2024.Chap21.Definition_21_17_2
-import StacksProject_2024.Chap21.Definition_21_46_1_Core
+import StacksProject_2024.stacks_project.Chap18.Definition_18_28_1
+import StacksProject_2024.stacks_project.Chap21.Definition_21_17_2
+import StacksProject_2024.stacks_project.Chap21.Definition_21_46_1_Core
 
 open CategoryTheory
 open CategoryTheory.Limits

@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap21.Lemma_21_7_4_core
-import StacksProject_2024.Chap21.Lemma_21_14_5_Leray_spectral_sequence
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_7_4_core
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_14_5_Leray_spectral_sequence
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

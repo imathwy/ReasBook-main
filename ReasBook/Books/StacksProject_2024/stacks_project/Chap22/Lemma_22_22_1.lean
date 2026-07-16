@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Category.ModuleCat.Abelian
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap13.Lemma_13_11_2
-import StacksProject_2024.Chap22.ModuleCatHasDerivedCategory
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_11_2
+import StacksProject_2024.stacks_project.Chap22.ModuleCatHasDerivedCategory
 
 open CategoryTheory
 open CategoryTheory.ObjectProperty

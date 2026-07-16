@@ -1,6 +1,6 @@
 import Mathlib.CategoryTheory.CommSq
-import StacksProject_2024.Chap10.«10_69_0_1»
-import StacksProject_2024.Chap31.Lemma_31_19_2
+import StacksProject_2024.stacks_project.Chap10.«10_69_0_1»
+import StacksProject_2024.stacks_project.Chap31.Lemma_31_19_2
 
 open AlgebraicGeometry
 open CategoryTheory

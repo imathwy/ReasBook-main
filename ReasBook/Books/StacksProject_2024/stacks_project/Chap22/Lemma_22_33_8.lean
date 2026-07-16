@@ -1,9 +1,9 @@
 import Mathlib.Algebra.Category.ModuleCat.Monoidal.Basic
 import Mathlib.CategoryTheory.Functor.Derived.LeftDerived
 import Mathlib.CategoryTheory.Functor.Derived.RightDerived
-import StacksProject_2024.Chap15.Definition_15_59_1
-import StacksProject_2024.Chap22.DGModuleModel
-import StacksProject_2024.Chap22.Lemma_22_26_5
+import StacksProject_2024.stacks_project.Chap15.Definition_15_59_1
+import StacksProject_2024.stacks_project.Chap22.DGModuleModel
+import StacksProject_2024.stacks_project.Chap22.Lemma_22_26_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

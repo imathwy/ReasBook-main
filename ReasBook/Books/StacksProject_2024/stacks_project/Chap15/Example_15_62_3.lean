@@ -1,16 +1,16 @@
 import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Monoidal.Basic
-import StacksProject_2024.Chap10.Lemma_10_71_1
-import StacksProject_2024.Chap12.Definition_12_24_5
-import StacksProject_2024.Chap12.Definition_12_24_9
-import StacksProject_2024.Chap12.Definition_12_14_1
-import StacksProject_2024.Chap12.Lemma_12_24_2
-import StacksProject_2024.Chap12.Lemma_12_24_3
-import StacksProject_2024.Chap12.Lemma_12_24_11
-import StacksProject_2024.Chap12.Lemma_12_25_1
-import StacksProject_2024.Chap12.Lemma_12_25_3
-import StacksProject_2024.Chap13.Lemma_13_13_8
-import StacksProject_2024.Chap15.«15_60_1_1»
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_71_1
+import StacksProject_2024.stacks_project.Chap12.Definition_12_24_5
+import StacksProject_2024.stacks_project.Chap12.Definition_12_24_9
+import StacksProject_2024.stacks_project.Chap12.Definition_12_14_1
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_24_2
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_24_3
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_24_11
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_25_1
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_25_3
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_13_8
+import StacksProject_2024.stacks_project.Chap15.«15_60_1_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

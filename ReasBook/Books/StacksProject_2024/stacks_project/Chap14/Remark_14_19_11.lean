@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Tactic.Recall
 import Mathlib.CategoryTheory.Functor.KanExtension.Pointwise
-import StacksProject_2024.Chap04.Lemma_4_18_2
-import StacksProject_2024.Chap14.Lemma_14_19_2
+import StacksProject_2024.stacks_project.Chap04.Lemma_4_18_2
+import StacksProject_2024.stacks_project.Chap14.Lemma_14_19_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

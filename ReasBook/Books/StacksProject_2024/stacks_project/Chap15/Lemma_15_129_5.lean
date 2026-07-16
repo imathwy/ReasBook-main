@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap15.Definition_15_3_1
-import StacksProject_2024.Chap15.Lemma_15_3_2
-import StacksProject_2024.Chap15.Lemma_15_3_3
-import StacksProject_2024.Chap15.Lemma_15_129_4
+import StacksProject_2024.stacks_project.Chap15.Definition_15_3_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_3_2
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_3_3
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_129_4
 import Mathlib.Algebra.Module.Submodule.Equiv
 import Mathlib.LinearAlgebra.Finsupp.Supported
 

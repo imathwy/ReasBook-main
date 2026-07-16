@@ -1,11 +1,11 @@
-import StacksProject_2024.Chap20.Open_subspace_module_core
-import StacksProject_2024.Chap20.OpensInstances
-import StacksProject_2024.Chap20.«20_11_0_1»
-import StacksProject_2024.Chap06.Lemma_6_26_4
-import StacksProject_2024.Chap17.ModuleRestrictionAndStalks
-import StacksProject_2024.Chap17.Lemma_17_4_2
-import StacksProject_2024.Chap17.Lemma_17_14_5.FreeSections
-import StacksProject_2024.Chap21.Definition_21_44_1
+import StacksProject_2024.stacks_project.Chap20.Open_subspace_module_core
+import StacksProject_2024.stacks_project.Chap20.OpensInstances
+import StacksProject_2024.stacks_project.Chap20.«20_11_0_1»
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_26_4
+import StacksProject_2024.stacks_project.Chap17.ModuleRestrictionAndStalks
+import StacksProject_2024.stacks_project.Chap17.Lemma_17_4_2
+import StacksProject_2024.stacks_project.Chap17.Lemma_17_14_5.FreeSections
+import StacksProject_2024.stacks_project.Chap21.Definition_21_44_1
 
 open AlgebraicGeometry
 open CategoryTheory

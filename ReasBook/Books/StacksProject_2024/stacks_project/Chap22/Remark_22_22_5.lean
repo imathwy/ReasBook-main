@@ -1,8 +1,8 @@
 import Mathlib.CategoryTheory.ObjectProperty.ColimitsOfShape
 import Mathlib.Algebra.Homology.DerivedCategory.Basic
 import Mathlib.CategoryTheory.Triangulated.Subcategory
-import StacksProject_2024.Chap22.Lemma_22_20_4
-import StacksProject_2024.Chap22.Lemma_22_22_4
+import StacksProject_2024.stacks_project.Chap22.Lemma_22_20_4
+import StacksProject_2024.stacks_project.Chap22.Lemma_22_22_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

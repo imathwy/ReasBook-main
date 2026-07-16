@@ -1,13 +1,13 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
-import StacksProject_2024.Chap10.Lemma_10_71_1
-import StacksProject_2024.Chap13.Lemma_13_15_4
-import StacksProject_2024.Chap13.Lemma_13_15_5
-import StacksProject_2024.Chap13.Lemma_13_28_2
-import StacksProject_2024.Chap15.Definition_15_65_1
-import StacksProject_2024.Chap15.Lemma_15_65_5
-import StacksProject_2024.Chap15.Lemma_15_65_10
-import StacksProject_2024.Chap15.Lemma_15_70_2
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_71_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_15_4
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_15_5
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_28_2
+import StacksProject_2024.stacks_project.Chap15.Definition_15_65_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_65_5
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_65_10
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_70_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

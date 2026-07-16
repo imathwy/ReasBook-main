@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap24.Definition_24_3_1
+import StacksProject_2024.stacks_project.Chap24.Definition_24_3_1
 
 open CategoryTheory
 

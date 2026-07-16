@@ -2,9 +2,9 @@ import Mathlib.Algebra.Category.Grp.Basic
 import Mathlib.Algebra.Homology.SpectralSequence.Basic
 import Mathlib.LinearAlgebra.DirectSum.Finsupp
 import Mathlib.RingTheory.Derivation.Basic
-import StacksProject_2024.Chap12.Definition_12_19_1
-import StacksProject_2024.Chap12.Definition_12_20_2
-import StacksProject_2024.Chap23.Lemma_23_6_8
+import StacksProject_2024.stacks_project.Chap12.Definition_12_19_1
+import StacksProject_2024.stacks_project.Chap12.Definition_12_20_2
+import StacksProject_2024.stacks_project.Chap23.Lemma_23_6_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

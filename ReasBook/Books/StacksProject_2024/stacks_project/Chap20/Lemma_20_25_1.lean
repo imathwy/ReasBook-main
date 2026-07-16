@@ -1,14 +1,14 @@
 import Mathlib.Algebra.Homology.CochainComplexPlus
 import Mathlib.CategoryTheory.Localization.DerivabilityStructure.Constructor
-import StacksProject_2024.Chap12.Lemma_12_24_11
-import StacksProject_2024.Chap13.Lemma_13_20_3
-import StacksProject_2024.Chap20.Lemma_20_10_2
-import StacksProject_2024.Chap20.Bounded_below_derived_sections_at_open
-import StacksProject_2024.Chap20.Sections_on_open
-import StacksProject_2024.Chap20.«20_11_0_2»
-import StacksProject_2024.Chap20.«20_9_0_1»
-import StacksProject_2024.Chap20.«20_14_1_1»
-import StacksProject_2024.Chap20.«20_25_3_2»
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_24_11
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_20_3
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_10_2
+import StacksProject_2024.stacks_project.Chap20.Bounded_below_derived_sections_at_open
+import StacksProject_2024.stacks_project.Chap20.Sections_on_open
+import StacksProject_2024.stacks_project.Chap20.«20_11_0_2»
+import StacksProject_2024.stacks_project.Chap20.«20_9_0_1»
+import StacksProject_2024.stacks_project.Chap20.«20_14_1_1»
+import StacksProject_2024.stacks_project.Chap20.«20_25_3_2»
 
 open CategoryTheory CategoryTheory.Limits Opposite TopologicalSpace AlgebraicGeometry
 open DerivedCategory.TStructure

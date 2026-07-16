@@ -1,10 +1,10 @@
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.Abelian
 import Mathlib.CategoryTheory.Monoidal.Category
-import StacksProject_2024.Chap20.«20_14_1_1»
-import StacksProject_2024.Chap20.Lemma_20_27_3
-import StacksProject_2024.Chap20.Lemma_20_28_1
-import StacksProject_2024.Chap20.Lemma_20_50_6
-import StacksProject_2024.Chap20.«20_54_2_1»
+import StacksProject_2024.stacks_project.Chap20.«20_14_1_1»
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_27_3
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_28_1
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_50_6
+import StacksProject_2024.stacks_project.Chap20.«20_54_2_1»
 
 open CategoryTheory
 open CategoryTheory.Limits

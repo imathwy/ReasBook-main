@@ -1,8 +1,8 @@
 import Mathlib.Algebra.Category.ModuleCat.Monoidal.Symmetric
 import Mathlib.Algebra.Homology.Monoidal
 import Mathlib.Tactic
-import StacksProject_2024.Chap20.«20_25_3_1»
-import StacksProject_2024.Chap22.Definition_22_3_1
+import StacksProject_2024.stacks_project.Chap20.«20_25_3_1»
+import StacksProject_2024.stacks_project.Chap22.Definition_22_3_1
 
 open CategoryTheory CategoryTheory.GradedObject.Monoidal CategoryTheory.MonoidalCategory
 open ComplexShape HomologicalComplex

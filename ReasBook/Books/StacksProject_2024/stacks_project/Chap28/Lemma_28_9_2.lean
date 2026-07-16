@@ -1,6 +1,6 @@
 import Mathlib.AlgebraicGeometry.Noetherian
 import Mathlib.AlgebraicGeometry.Properties
-import StacksProject_2024.Chap28.Definition_28_9_1
+import StacksProject_2024.stacks_project.Chap28.Definition_28_9_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

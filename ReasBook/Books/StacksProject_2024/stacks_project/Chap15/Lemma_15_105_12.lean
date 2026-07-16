@@ -1,7 +1,7 @@
 import Mathlib.RingTheory.Unramified.Basic
 import Mathlib.RingTheory.Ideal.Pure
 import Mathlib.RingTheory.RingHom.Flat
-import StacksProject_2024.Chap15.Definition_15_105_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_105_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

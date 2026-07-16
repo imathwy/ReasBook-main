@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap23.Definition_23_4_1
-import StacksProject_2024.Chapters.Chap23.section03
+import StacksProject_2024.stacks_project.Chap23.Definition_23_4_1
+import StacksProject_2024.stacks_project.Chapters.Chap23.section03
 
 universe u v
 

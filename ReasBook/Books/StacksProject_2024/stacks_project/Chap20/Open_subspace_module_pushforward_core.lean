@@ -1,11 +1,11 @@
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.Abelian
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
 import Mathlib.CategoryTheory.Limits.Preserves.Finite
-import StacksProject_2024.Chap06.Definition_6_26_1
-import StacksProject_2024.Chap06.Lemma_6_33_3
-import StacksProject_2024.Chap06.Restriction_and_extension_by_zero_for_module_valued_sheaves
-import StacksProject_2024.Chap20.Open_subspace_module_core
-import StacksProject_2024.Chap20.RingedSpaceModuleHasDerivedCategory
+import StacksProject_2024.stacks_project.Chap06.Definition_6_26_1
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_33_3
+import StacksProject_2024.stacks_project.Chap06.Restriction_and_extension_by_zero_for_module_valued_sheaves
+import StacksProject_2024.stacks_project.Chap20.Open_subspace_module_core
+import StacksProject_2024.stacks_project.Chap20.RingedSpaceModuleHasDerivedCategory
 
 open CategoryTheory
 open CategoryTheory.Limits

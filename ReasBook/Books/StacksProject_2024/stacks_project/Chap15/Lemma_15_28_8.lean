@@ -1,7 +1,7 @@
 import Mathlib.LinearAlgebra.Pi
-import StacksProject_2024.Chap15.Definition_15_28_2
-import StacksProject_2024.Chap15.Lemma_15_28_3
-import StacksProject_2024.Chap15.Lemma_15_28_7
+import StacksProject_2024.stacks_project.Chap15.Definition_15_28_2
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_28_3
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_28_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

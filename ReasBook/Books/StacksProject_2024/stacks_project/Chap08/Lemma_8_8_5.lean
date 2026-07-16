@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap04.«4_34_2_3»
-import StacksProject_2024.Chap08.Lemma_8_7_1
-import StacksProject_2024.Chap08.Lemma_8_8_1
+import StacksProject_2024.stacks_project.Chap04.«4_34_2_3»
+import StacksProject_2024.stacks_project.Chap08.Lemma_8_7_1
+import StacksProject_2024.stacks_project.Chap08.Lemma_8_8_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

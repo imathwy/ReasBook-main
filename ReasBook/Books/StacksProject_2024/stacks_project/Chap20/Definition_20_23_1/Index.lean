@@ -1,1 +1,1 @@
-import StacksProject_2024.Chap20.Definition_20_23_1.DeletedIndex
+import StacksProject_2024.stacks_project.Chap20.Definition_20_23_1.DeletedIndex

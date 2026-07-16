@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap20.Remark_20_28_4
+import StacksProject_2024.stacks_project.Chap20.Remark_20_28_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

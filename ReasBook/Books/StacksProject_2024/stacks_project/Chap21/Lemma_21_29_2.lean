@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap21.Lemma_21_29_3
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_29_3
 
 open CategoryTheory
 open CategoryTheory.Limits

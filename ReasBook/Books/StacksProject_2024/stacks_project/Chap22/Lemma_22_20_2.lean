@@ -1,5 +1,5 @@
 import Mathlib.Algebra.Homology.HomotopyCategory.KProjective
-import StacksProject_2024.Chap22.PropertyPDGModule
+import StacksProject_2024.stacks_project.Chap22.PropertyPDGModule
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap15.Lemma_15_36_3_Baire_category_theorem
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_36_3_Baire_category_theorem
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

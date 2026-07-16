@@ -5,10 +5,10 @@ import Mathlib.CategoryTheory.Monoidal.Cartesian.FunctorCategory
 import Mathlib.CategoryTheory.Limits.Lattice
 import Mathlib.CategoryTheory.Monoidal.Preadditive
 import Mathlib.Algebra.Homology.Monoidal
-import StacksProject_2024.Chap20.«20_9_0_1»
-import StacksProject_2024.Chap20.Lemma_20_9_3
-import StacksProject_2024.Chap20.«20_25_3_1»
-import StacksProject_2024.Chap20.OpensInstances
+import StacksProject_2024.stacks_project.Chap20.«20_9_0_1»
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_9_3
+import StacksProject_2024.stacks_project.Chap20.«20_25_3_1»
+import StacksProject_2024.stacks_project.Chap20.OpensInstances
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap20.Lemma_20_37_4
-import StacksProject_2024.Chap20.Lemma_20_37_10
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_37_4
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_37_10
 
 open CategoryTheory
 open CategoryTheory.Limits

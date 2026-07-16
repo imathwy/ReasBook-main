@@ -1,10 +1,10 @@
 import Mathlib.CategoryTheory.Sites.ConstantSheaf
 import Mathlib.CategoryTheory.Sites.GlobalSections
-import StacksProject_2024.Chap12.Lemma_12_6_3
-import StacksProject_2024.Chap06.Lemma_6_15_2
-import StacksProject_2024.Chap18.Lemma_18_5_2
-import StacksProject_2024.Chap18.Lemma_18_3_1
-import StacksProject_2024.Chap21.Definition_21_4_1
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_6_3
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_15_2
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_5_2
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_3_1
+import StacksProject_2024.stacks_project.Chap21.Definition_21_4_1
 
 open CategoryTheory Opposite Limits
 open Sheaf.PseudoTorsor

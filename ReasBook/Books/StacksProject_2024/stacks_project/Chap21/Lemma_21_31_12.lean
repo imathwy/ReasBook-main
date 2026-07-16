@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap21.«21_31_0_1»
-import StacksProject_2024.Chap21.SiteAbelianDerived
+import StacksProject_2024.stacks_project.Chap21.«21_31_0_1»
+import StacksProject_2024.stacks_project.Chap21.SiteAbelianDerived
 
 open CategoryTheory
 open DerivedCategory.TStructure

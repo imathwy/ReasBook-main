@@ -1,12 +1,12 @@
 import Mathlib
 import Mathlib.Algebra.Homology.CochainComplexOpposite
 import Mathlib.CategoryTheory.Abelian.Projective.Extend
-import StacksProject_2024.Chap12.Definition_12_24_5
-import StacksProject_2024.Chap12.Definition_12_24_9
-import StacksProject_2024.Chap13.Definition_13_11_3
-import StacksProject_2024.Chap13.Lemma_13_27_9
-import StacksProject_2024.Chap13.Lemma_13_11_6
-import StacksProject_2024.Chap15.Definition_15_59_13
+import StacksProject_2024.stacks_project.Chap12.Definition_12_24_5
+import StacksProject_2024.stacks_project.Chap12.Definition_12_24_9
+import StacksProject_2024.stacks_project.Chap13.Definition_13_11_3
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_27_9
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_11_6
+import StacksProject_2024.stacks_project.Chap15.Definition_15_59_13
 
 open scoped BigOperators
 open scoped DerivedTensorProduct

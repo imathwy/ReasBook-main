@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap30.ProjectiveSpaceTwistCompatibility
+import StacksProject_2024.stacks_project.Chap30.ProjectiveSpaceTwistCompatibility
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

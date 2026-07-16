@@ -1,10 +1,10 @@
 import Mathlib
-import StacksProject_2024.Chap15.Lemma_15_67_3
-import StacksProject_2024.Chap15.Lemma_15_84_4
-import StacksProject_2024.Chap15.Lemma_15_84_6
-import StacksProject_2024.Chap15.«15_74_0_2»
-import StacksProject_2024.Chap15.«15_60_1_1»
-import StacksProject_2024.Chap15.Lemma_15_84_2
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_67_3
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_84_4
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_84_6
+import StacksProject_2024.stacks_project.Chap15.«15_74_0_2»
+import StacksProject_2024.stacks_project.Chap15.«15_60_1_1»
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_84_2
 
 noncomputable section
 

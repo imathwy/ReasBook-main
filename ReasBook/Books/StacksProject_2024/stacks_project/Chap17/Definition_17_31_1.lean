@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap18.Definition_18_35_1
+import StacksProject_2024.stacks_project.Chap18.Definition_18_35_1
 
 /- Domain-style sampling for Definition 17.31.1:
 - primary domain: naive cotangent complexes of sheaves of commutative rings on the opens site of

@@ -1,8 +1,8 @@
 import Mathlib.Algebra.Homology.BifunctorShift
 import Mathlib.Algebra.Homology.HomotopyCategory.HomComplexShift
 import Mathlib.Tactic
-import StacksProject_2024.Chap22.Lemma_22_13_1
-import StacksProject_2024.Chap22.Lemma_22_13_3
+import StacksProject_2024.stacks_project.Chap22.Lemma_22_13_1
+import StacksProject_2024.stacks_project.Chap22.Lemma_22_13_3
 
 open CochainComplex.HomComplex.Cochain
 

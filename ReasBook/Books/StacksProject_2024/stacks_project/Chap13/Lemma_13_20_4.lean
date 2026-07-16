@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap12.Lemma_12_12_4
-import StacksProject_2024.Chap13.Definition_13_16_2
-import StacksProject_2024.Chap13.Definition_13_3_6
-import StacksProject_2024.Chap13.Lemma_13_4_22
-import StacksProject_2024.Chap13.Lemma_13_20_3
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_12_4
+import StacksProject_2024.stacks_project.Chap13.Definition_13_16_2
+import StacksProject_2024.stacks_project.Chap13.Definition_13_3_6
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_4_22
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_20_3
 
 noncomputable section
 

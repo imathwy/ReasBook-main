@@ -3,13 +3,13 @@ import Mathlib.Algebra.Category.ModuleCat.Monoidal.Symmetric
 import Mathlib.Algebra.Homology.BifunctorFlip
 import Mathlib.Algebra.Homology.BifunctorShift
 import Mathlib.Algebra.Homology.Monoidal
-import StacksProject_2024.Chap10.Lemma_10_11_3
-import StacksProject_2024.Chap10.Lemma_10_8_8
-import StacksProject_2024.Chap10.Lemma_10_12_9_Tensor_products_commute_with_colimits
-import StacksProject_2024.Chap13.Lemma_13_35_7
-import StacksProject_2024.Chap15.Lemma_15_58_1
-import StacksProject_2024.Chap15.Lemma_15_58_4
-import StacksProject_2024.Chap15.Definition_15_59_1
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_11_3
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_8_8
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_12_9_Tensor_products_commute_with_colimits
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_35_7
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_58_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_58_4
+import StacksProject_2024.stacks_project.Chap15.Definition_15_59_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

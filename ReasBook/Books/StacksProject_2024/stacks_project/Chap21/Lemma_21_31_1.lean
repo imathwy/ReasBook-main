@@ -3,8 +3,8 @@ import Mathlib.CategoryTheory.Limits.FullSubcategory
 import Mathlib.CategoryTheory.ObjectProperty.LimitsOfShape
 import Mathlib.Topology.Category.TopCat.Limits.Basic
 import Mathlib.Topology.Category.TopCat.Limits.Pullbacks
-import StacksProject_2024.Chap05.Lemma_5_3_4
-import StacksProject_2024.Chap21.Definition_21_31_2
+import StacksProject_2024.stacks_project.Chap05.Lemma_5_3_4
+import StacksProject_2024.stacks_project.Chap21.Definition_21_31_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

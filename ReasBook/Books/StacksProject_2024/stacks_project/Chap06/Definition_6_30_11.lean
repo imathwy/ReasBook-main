@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap06.Definition_6_6_1
-import StacksProject_2024.Chap06.Definition_6_30_2
-import StacksProject_2024.Chap06.Definition_6_10_1
+import StacksProject_2024.stacks_project.Chap06.Definition_6_6_1
+import StacksProject_2024.stacks_project.Chap06.Definition_6_30_2
+import StacksProject_2024.stacks_project.Chap06.Definition_6_10_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

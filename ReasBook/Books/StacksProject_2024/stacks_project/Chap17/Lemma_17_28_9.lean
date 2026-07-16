@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap18.Lemma_18_33_8
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_33_8
 
 open CategoryTheory TopCat TopologicalSpace
 open TopCat.Presheaf

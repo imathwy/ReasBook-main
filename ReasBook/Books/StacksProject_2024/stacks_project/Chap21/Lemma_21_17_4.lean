@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap15.Definition_15_59_1
-import StacksProject_2024.Chap15.Lemma_15_59_3
-import StacksProject_2024.Chap18.Lemma_18_19_2
+import StacksProject_2024.stacks_project.Chap15.Definition_15_59_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_59_3
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_19_2
 import Mathlib.CategoryTheory.Limits.Preserves.Finite
 
 open CategoryTheory

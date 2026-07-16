@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap18.KernelIdealSheaf
+import StacksProject_2024.stacks_project.Chap18.KernelIdealSheaf
 
 open CategoryTheory
 open CategoryTheory.Limits

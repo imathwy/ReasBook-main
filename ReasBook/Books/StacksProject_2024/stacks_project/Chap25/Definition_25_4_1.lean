@@ -4,7 +4,7 @@ import Mathlib.Algebra.Category.Grp.Abelian
 import Mathlib.AlgebraicTopology.AlternatingFaceMapComplex
 import Mathlib.CategoryTheory.Abelian.GrothendieckAxioms.Sheaf
 import Mathlib.CategoryTheory.Sites.Abelian
-import StacksProject_2024.Chap18.Definition_18_5_1
+import StacksProject_2024.stacks_project.Chap18.Definition_18_5_1
 
 open CategoryTheory
 open AlgebraicTopology

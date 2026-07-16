@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap20.Definition_20_46_1
-import StacksProject_2024.Chap20.Open_subspace_module_core
+import StacksProject_2024.stacks_project.Chap20.Definition_20_46_1
+import StacksProject_2024.stacks_project.Chap20.Open_subspace_module_core
 
 open AlgebraicGeometry
 open CategoryTheory

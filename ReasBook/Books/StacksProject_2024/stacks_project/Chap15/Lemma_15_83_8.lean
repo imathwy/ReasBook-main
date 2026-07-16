@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Data.List.TFAE
-import StacksProject_2024.Chap15.Lemma_15_82_10
-import StacksProject_2024.Chap15.Lemma_15_82_13
-import StacksProject_2024.Chap15.Lemma_15_82_15
-import StacksProject_2024.Chap15.Lemma_15_83_4
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_82_10
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_82_13
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_82_15
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_83_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

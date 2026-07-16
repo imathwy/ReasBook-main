@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap21.Lemma_21_9_4
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_9_4
 import Mathlib.CategoryTheory.Sites.SheafCohomology.Cech
 import Mathlib.Algebra.Category.Grp.Adjunctions
 import Mathlib.Algebra.Category.Grp.Limits

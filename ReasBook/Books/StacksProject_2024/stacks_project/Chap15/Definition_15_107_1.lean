@@ -1,8 +1,8 @@
 import Mathlib.Algebra.Field.TransferInstance
 import Mathlib.RingTheory.IntegralClosure.IntegrallyClosed
 import Mathlib.Topology.Inseparable
-import StacksProject_2024.Chap15.Definition_15_107_1_Basic
-import StacksProject_2024.Chap15.Lemma_15_105_23
+import StacksProject_2024.stacks_project.Chap15.Definition_15_107_1_Basic
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_105_23
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

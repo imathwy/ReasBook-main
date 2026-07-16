@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap22.AdmissibleShortExact
+import StacksProject_2024.stacks_project.Chap22.AdmissibleShortExact
 open CategoryTheory
 open CategoryTheory.Limits
 open CategoryTheory.Pretriangulated

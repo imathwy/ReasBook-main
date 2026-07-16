@@ -1,11 +1,11 @@
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
-import StacksProject_2024.Chap13.Lemma_13_17_1
-import StacksProject_2024.Chap13.Lemma_13_30_3
-import StacksProject_2024.Chap18.Lemma_18_16_6
-import StacksProject_2024.Chap13.Situation_13_15_1
-import StacksProject_2024.Chap21.«21_30_0_1»
-import StacksProject_2024.Chap21.Situation_21_30_1
-import StacksProject_2024.Chap21.Lemma_21_30_7
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_17_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_30_3
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_16_6
+import StacksProject_2024.stacks_project.Chap13.Situation_13_15_1
+import StacksProject_2024.stacks_project.Chap21.«21_30_0_1»
+import StacksProject_2024.stacks_project.Chap21.Situation_21_30_1
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_30_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

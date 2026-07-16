@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap15.Definition_15_8_3
-import StacksProject_2024.Chap17.Lemma_17_11_2
+import StacksProject_2024.stacks_project.Chap15.Definition_15_8_3
+import StacksProject_2024.stacks_project.Chap17.Lemma_17_11_2
 
 open AlgebraicGeometry
 open scoped FittingIdeal

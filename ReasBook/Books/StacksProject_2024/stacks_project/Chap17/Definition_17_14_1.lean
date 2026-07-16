@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap06.Definition_6_26_1
-import StacksProject_2024.Chap18.Lemma_18_17_2
-import StacksProject_2024.Chap18.Lemma_18_19_2
+import StacksProject_2024.stacks_project.Chap06.Definition_6_26_1
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_17_2
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_19_2
 
 open AlgebraicGeometry CategoryTheory Limits TopologicalSpace
 open scoped AlgebraicGeometry

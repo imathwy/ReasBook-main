@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap20.Global_sections_module_owners_core
-import StacksProject_2024.Chap20.Definition_20_48_1_Core
-import StacksProject_2024.Chap20.Lemma_20_31_8
-import StacksProject_2024.Chap20.Open_subspace_module_core
+import StacksProject_2024.stacks_project.Chap20.Global_sections_module_owners_core
+import StacksProject_2024.stacks_project.Chap20.Definition_20_48_1_Core
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_31_8
+import StacksProject_2024.stacks_project.Chap20.Open_subspace_module_core
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

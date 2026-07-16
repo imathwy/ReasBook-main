@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
 import Mathlib.Algebra.Homology.DerivedCategory.HomologySequence
 import Mathlib.CategoryTheory.Triangulated.TStructure.TruncLEGT
-import StacksProject_2024.Chap13.Remark_13_12_4
+import StacksProject_2024.stacks_project.Chap13.Remark_13_12_4
 
 open CategoryTheory
 open CategoryTheory.ComposableArrows

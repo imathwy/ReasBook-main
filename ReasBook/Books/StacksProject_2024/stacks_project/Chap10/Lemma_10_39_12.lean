@@ -1,6 +1,6 @@
 import Mathlib.RingTheory.Flat.CategoryTheory
 import Mathlib.RingTheory.Flat.Equalizer
-import StacksProject_2024.Chap10.Definition_10_82_1
+import StacksProject_2024.stacks_project.Chap10.Definition_10_82_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

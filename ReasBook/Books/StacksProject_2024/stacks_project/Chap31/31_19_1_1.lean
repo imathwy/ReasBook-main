@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap18.Lemma_18_33_9_Owner
-import StacksProject_2024.Chap18.IdealQuotientSheaf
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_33_9_Owner
+import StacksProject_2024.stacks_project.Chap18.IdealQuotientSheaf
 
 open CategoryTheory Opposite
 

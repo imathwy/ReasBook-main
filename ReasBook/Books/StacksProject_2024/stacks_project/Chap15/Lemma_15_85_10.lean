@@ -1,14 +1,14 @@
 import Mathlib
 import Mathlib.Algebra.Module.LocalizedModule.Away
 import Mathlib.Data.List.TFAE
-import StacksProject_2024.Chap13.Definition_13_11_3
-import StacksProject_2024.Chap10.Definition_10_17_1
-import StacksProject_2024.Chap15.Definition_15_71_4
-import StacksProject_2024.Chap15.Lemma_15_65_3
-import StacksProject_2024.Chap15.Lemma_15_67_9
-import StacksProject_2024.Chap15.Lemma_15_71_3
-import StacksProject_2024.Chap15.Definition_15_89_1
-import StacksProject_2024.Chap15.Lemma_15_85_5
+import StacksProject_2024.stacks_project.Chap13.Definition_13_11_3
+import StacksProject_2024.stacks_project.Chap10.Definition_10_17_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_71_4
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_65_3
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_67_9
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_71_3
+import StacksProject_2024.stacks_project.Chap15.Definition_15_89_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_85_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

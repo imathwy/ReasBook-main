@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap13.Definition_13_37_1
-import StacksProject_2024.Chap20.Global_sections_module_owners_core
-import StacksProject_2024.Chap20.Sections_on_open
-import StacksProject_2024.Chap20.Open_subspace_module_extension_derived
+import StacksProject_2024.stacks_project.Chap13.Definition_13_37_1
+import StacksProject_2024.stacks_project.Chap20.Global_sections_module_owners_core
+import StacksProject_2024.stacks_project.Chap20.Sections_on_open
+import StacksProject_2024.stacks_project.Chap20.Open_subspace_module_extension_derived
 
 open AlgebraicGeometry
 open CategoryTheory

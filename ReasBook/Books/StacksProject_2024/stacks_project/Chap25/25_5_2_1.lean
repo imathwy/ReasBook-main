@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Homology.Functor
 import Mathlib.Algebra.Homology.Opposite
 import Mathlib.CategoryTheory.Preadditive.Yoneda.Basic
-import StacksProject_2024.Chap18.Definition_18_5_1
+import StacksProject_2024.stacks_project.Chap18.Definition_18_5_1
 
 open CategoryTheory Opposite
 open AlgebraicTopology

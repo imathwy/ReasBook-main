@@ -2,7 +2,7 @@ import Mathlib.AlgebraicGeometry.Cover.MorphismProperty
 import Mathlib.AlgebraicGeometry.Morphisms.Etale
 import Mathlib.AlgebraicGeometry.Sites.Etale
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap07.Definition_7_8_1
+import StacksProject_2024.stacks_project.Chap07.Definition_7_8_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

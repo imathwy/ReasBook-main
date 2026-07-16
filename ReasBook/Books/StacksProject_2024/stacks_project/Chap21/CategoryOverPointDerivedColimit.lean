@@ -2,9 +2,9 @@ import Mathlib.AlgebraicTopology.SimplicialSet.Monoidal
 import Mathlib.AlgebraicTopology.SimplicialSet.StdSimplex
 import Mathlib.AlgebraicTopology.AlternatingFaceMapComplex
 import Mathlib.Algebra.Homology.Embedding.Extend
-import StacksProject_2024.Chap13.Situation_13_15_1
-import StacksProject_2024.Chap14.Definition_14_26_6
-import StacksProject_2024.Chap21.CategoryOverPointDerivedColimitBasic
+import StacksProject_2024.stacks_project.Chap13.Situation_13_15_1
+import StacksProject_2024.stacks_project.Chap14.Definition_14_26_6
+import StacksProject_2024.stacks_project.Chap21.CategoryOverPointDerivedColimitBasic
 
 open CategoryTheory
 open CategoryTheory.Limits

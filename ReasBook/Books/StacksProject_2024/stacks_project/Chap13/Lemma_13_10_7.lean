@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Homology.HomotopyCategory.DegreewiseSplit
 import Mathlib.Algebra.Homology.HomotopyCategory.Triangulated
-import StacksProject_2024.Chap13.Lemma_13_4_7
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_4_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

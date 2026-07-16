@@ -4,8 +4,8 @@ import Mathlib.Algebra.Homology.Opposite
 import Mathlib.CategoryTheory.Limits.Lattice
 import Mathlib.CategoryTheory.Preadditive.Yoneda.Basic
 import Mathlib.CategoryTheory.Sites.SheafCohomology.Cech
-import StacksProject_2024.Chap20.«20_10_0_1»
-import StacksProject_2024.Chap20.OpensInstances
+import StacksProject_2024.stacks_project.Chap20.«20_10_0_1»
+import StacksProject_2024.stacks_project.Chap20.OpensInstances
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

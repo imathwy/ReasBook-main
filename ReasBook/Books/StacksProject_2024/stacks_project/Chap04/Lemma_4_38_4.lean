@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap04.Definition_4_38_3
-import StacksProject_2024.Chap04.Lemma_4_35_7
+import StacksProject_2024.stacks_project.Chap04.Definition_4_38_3
+import StacksProject_2024.stacks_project.Chap04.Lemma_4_35_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

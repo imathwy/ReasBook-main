@@ -1,9 +1,9 @@
 import Mathlib
-import StacksProject_2024.Chap15.Definition_15_32_1
-import StacksProject_2024.Chap17.Definition_17_5_1
-import StacksProject_2024.Chap20.IdealSheafStalkIdeal
-import StacksProject_2024.Chap18.IdealSectionIdeal
-import StacksProject_2024.Chap17.ModuleRestrictionAndStalks
+import StacksProject_2024.stacks_project.Chap15.Definition_15_32_1
+import StacksProject_2024.stacks_project.Chap17.Definition_17_5_1
+import StacksProject_2024.stacks_project.Chap20.IdealSheafStalkIdeal
+import StacksProject_2024.stacks_project.Chap18.IdealSectionIdeal
+import StacksProject_2024.stacks_project.Chap17.ModuleRestrictionAndStalks
 
 open AlgebraicGeometry
 open CategoryTheory

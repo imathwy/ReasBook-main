@@ -3,7 +3,7 @@ import Mathlib.RingTheory.Ideal.IsPrincipal
 import Mathlib.RingTheory.KrullDimension.Basic
 import Mathlib.Tactic.StacksAttribute
 import Mathlib.Topology.Sober
-import StacksProject_2024.Chap29.ProjectiveSpaceBasic
+import StacksProject_2024.stacks_project.Chap29.ProjectiveSpaceBasic
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

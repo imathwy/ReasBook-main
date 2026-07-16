@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap34.Definition_34_10_11
-import StacksProject_2024.Chap34.Lemma_34_10_4
-import StacksProject_2024.Chap34.Definition_34_10_1
-import StacksProject_2024.Chap34.Lemma_34_9_14
+import StacksProject_2024.stacks_project.Chap34.Definition_34_10_11
+import StacksProject_2024.stacks_project.Chap34.Lemma_34_10_4
+import StacksProject_2024.stacks_project.Chap34.Definition_34_10_1
+import StacksProject_2024.stacks_project.Chap34.Lemma_34_9_14
 
 open CategoryTheory
 open AlgebraicGeometry

@@ -6,8 +6,8 @@ import Mathlib.Algebra.Homology.HomologicalComplexAbelian
 import Mathlib.CategoryTheory.Functor.ReflectsIso.Exact
 import Mathlib.CategoryTheory.Limits.ExactFunctor
 import Mathlib.CategoryTheory.Preadditive.AdditiveFunctor
-import StacksProject_2024.Chap12.Remark_12_29_2
-import StacksProject_2024.Chap20.«20_10_0_1»
+import StacksProject_2024.stacks_project.Chap12.Remark_12_29_2
+import StacksProject_2024.stacks_project.Chap20.«20_10_0_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

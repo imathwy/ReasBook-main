@@ -1,9 +1,9 @@
-import StacksProject_2024.Chap31.ClosedImmersionIdealSubobject
-import StacksProject_2024.Chap18.Lemma_18_32_4
-import StacksProject_2024.Chap31.Definition_31_13_1
-import StacksProject_2024.Chap31.Definition_31_14_1
-import StacksProject_2024.Chap31.Definition_31_14_6
-import StacksProject_2024.Chap31.Definition_31_14_8
+import StacksProject_2024.stacks_project.Chap31.ClosedImmersionIdealSubobject
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_32_4
+import StacksProject_2024.stacks_project.Chap31.Definition_31_13_1
+import StacksProject_2024.stacks_project.Chap31.Definition_31_14_1
+import StacksProject_2024.stacks_project.Chap31.Definition_31_14_6
+import StacksProject_2024.stacks_project.Chap31.Definition_31_14_8
 
 open CategoryTheory
 open CategoryTheory.MonoidalCategory

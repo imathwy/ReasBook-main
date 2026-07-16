@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap04.«4_34_2_1»
+import StacksProject_2024.stacks_project.Chap04.«4_34_2_1»
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap21.Remark_21_37_3
-import StacksProject_2024.Chap21.Lemma_21_38_5
+import StacksProject_2024.stacks_project.Chap21.Remark_21_37_3
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_38_5
 
 namespace CategoryTheory
 namespace FibredCategoryOver

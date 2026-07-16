@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap06.Extension_by_zero_by_the_initial_object
-import StacksProject_2024.Chap20.Definition_20_24_2
-import StacksProject_2024.Chap20.Open_cover_module_cech_explicit
-import StacksProject_2024.Chap20.SheafModuleAdditiveInstances
+import StacksProject_2024.stacks_project.Chap06.Extension_by_zero_by_the_initial_object
+import StacksProject_2024.stacks_project.Chap20.Definition_20_24_2
+import StacksProject_2024.stacks_project.Chap20.Open_cover_module_cech_explicit
+import StacksProject_2024.stacks_project.Chap20.SheafModuleAdditiveInstances
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

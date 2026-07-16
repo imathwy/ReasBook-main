@@ -1,9 +1,9 @@
-import StacksProject_2024.Chap13.Lemma_13_17_1
-import StacksProject_2024.Chap13.Remark_13_34_5
-import StacksProject_2024.Chap21.Lemma_21_7_4_core
-import StacksProject_2024.Chap21.Lemma_21_19_1_core
-import StacksProject_2024.Chap21.Lemma_21_20_3
-import StacksProject_2024.Chap21.Situation_21_25_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_17_1
+import StacksProject_2024.stacks_project.Chap13.Remark_13_34_5
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_7_4_core
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_19_1_core
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_20_3
+import StacksProject_2024.stacks_project.Chap21.Situation_21_25_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

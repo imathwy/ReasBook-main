@@ -1,5 +1,5 @@
 import Mathlib.CategoryTheory.Shift.CommShift
-import StacksProject_2024.Chap20.Lemma_20_25_1
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_25_1
 
 open CategoryTheory
 open TopologicalSpace

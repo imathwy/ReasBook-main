@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap10.Lemma_10_55_6
-import StacksProject_2024.Chap17.Lemma_17_10_5
-import StacksProject_2024.Chap20.Global_sections_module_owners_core
-import StacksProject_2024.Chap20.Definition_20_46_1
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_55_6
+import StacksProject_2024.stacks_project.Chap17.Lemma_17_10_5
+import StacksProject_2024.stacks_project.Chap20.Global_sections_module_owners_core
+import StacksProject_2024.stacks_project.Chap20.Definition_20_46_1
 
 open CategoryTheory
 open Opposite

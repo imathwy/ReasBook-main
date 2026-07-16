@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.CategoryTheory.Limits.ExactFunctor
-import StacksProject_2024.Chap07.Lemma_7_5_1
-import StacksProject_2024.Chap10.Lemma_10_8_10
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_5_1
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_8_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

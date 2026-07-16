@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap06.Lemma_6_31_7
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_31_7
 
 open CategoryTheory CategoryTheory.Limits Opposite TopCat TopologicalSpace
 open TopologicalSpace.Opens

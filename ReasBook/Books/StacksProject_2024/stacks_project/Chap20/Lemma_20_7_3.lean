@@ -1,14 +1,14 @@
 import Mathlib.CategoryTheory.Functor.Derived.Adjunction
 import Mathlib.CategoryTheory.Functor.Derived.RightDerived
-import StacksProject_2024.Chap13.Lemma_13_15_2
-import StacksProject_2024.Chap20.«20_2_0_4»
-import StacksProject_2024.Chap20.«20_3_0_4»
-import StacksProject_2024.Chap20.«20_11_0_1»
-import StacksProject_2024.Chap20.Global_sections_module_owners_core
-import StacksProject_2024.Chap20.RingedSpaceOpensModuleCategory
-import StacksProject_2024.Chap21.Lemma_21_12_2
-import StacksProject_2024.Chap21.Lemma_21_20_6
-import StacksProject_2024.Chap21.Lemma_21_7_4
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_15_2
+import StacksProject_2024.stacks_project.Chap20.«20_2_0_4»
+import StacksProject_2024.stacks_project.Chap20.«20_3_0_4»
+import StacksProject_2024.stacks_project.Chap20.«20_11_0_1»
+import StacksProject_2024.stacks_project.Chap20.Global_sections_module_owners_core
+import StacksProject_2024.stacks_project.Chap20.RingedSpaceOpensModuleCategory
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_12_2
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_20_6
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_7_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

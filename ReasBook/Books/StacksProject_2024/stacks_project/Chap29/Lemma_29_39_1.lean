@@ -1,7 +1,7 @@
 import Mathlib.AlgebraicGeometry.Morphisms.FiniteType
-import StacksProject_2024.Chap29.Definition_29_15_1
-import StacksProject_2024.Chap29.Definition_29_38_1
-import StacksProject_2024.Chap29.Definition_29_43_1
+import StacksProject_2024.stacks_project.Chap29.Definition_29_15_1
+import StacksProject_2024.stacks_project.Chap29.Definition_29_38_1
+import StacksProject_2024.stacks_project.Chap29.Definition_29_43_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

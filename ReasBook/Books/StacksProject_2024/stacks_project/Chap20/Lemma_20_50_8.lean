@@ -1,10 +1,10 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap20.Definition_20_49_1
-import StacksProject_2024.Chap20.OpensInstances
-import StacksProject_2024.Chap20.RingedSpaceOpensModuleCategory
-import StacksProject_2024.Chap20.«20_42_0_1»
-import StacksProject_2024.Chap21.Lemma_21_19_1_core
-import StacksProject_2024.Chap21.Lemma_21_48_7
+import StacksProject_2024.stacks_project.Chap20.Definition_20_49_1
+import StacksProject_2024.stacks_project.Chap20.OpensInstances
+import StacksProject_2024.stacks_project.Chap20.RingedSpaceOpensModuleCategory
+import StacksProject_2024.stacks_project.Chap20.«20_42_0_1»
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_19_1_core
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_48_7
 
 open AlgebraicGeometry
 open CategoryTheory

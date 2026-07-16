@@ -4,8 +4,8 @@ import Mathlib.CategoryTheory.Sites.CoversTop
 import Mathlib.CategoryTheory.Sites.Over
 import Mathlib.CategoryTheory.Sites.Sheaf
 import Mathlib.CategoryTheory.Sites.SheafCohomology.Basic
-import StacksProject_2024.Chap07.Definition_7_8_2
-import StacksProject_2024.Chap21.Definition_21_8_1
+import StacksProject_2024.stacks_project.Chap07.Definition_7_8_2
+import StacksProject_2024.stacks_project.Chap21.Definition_21_8_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

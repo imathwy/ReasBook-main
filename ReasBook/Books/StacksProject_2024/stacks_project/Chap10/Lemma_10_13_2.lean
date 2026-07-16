@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.LinearAlgebra.PowerOperations
+import StacksProject_2024.stacks_project.LinearAlgebra.PowerOperations
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

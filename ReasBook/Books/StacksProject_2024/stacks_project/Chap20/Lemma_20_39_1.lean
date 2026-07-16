@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap20.Global_sections_module_owners_core
-import StacksProject_2024.Chap15.Lemma_15_94_6
+import StacksProject_2024.stacks_project.Chap20.Global_sections_module_owners_core
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_94_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

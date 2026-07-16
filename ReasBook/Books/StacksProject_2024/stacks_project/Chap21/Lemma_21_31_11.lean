@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap21.Lemma_21_30_8
-import StacksProject_2024.Chap21.Lemma_21_31_7
-import StacksProject_2024.Chap21.«21_31_0_1»
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_30_8
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_31_7
+import StacksProject_2024.stacks_project.Chap21.«21_31_0_1»
 
 open CategoryTheory
 open CategoryTheory.Limits

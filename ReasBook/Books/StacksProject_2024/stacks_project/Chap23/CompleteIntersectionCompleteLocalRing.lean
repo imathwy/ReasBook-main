@@ -1,6 +1,6 @@
 import Mathlib.RingTheory.RegularLocalRing.Defs
-import StacksProject_2024.Chap10.CompleteLocalRing
-import StacksProject_2024.Chap10.KernelIsGeneratedByRegularSequence
+import StacksProject_2024.stacks_project.Chap10.CompleteLocalRing
+import StacksProject_2024.stacks_project.Chap10.KernelIsGeneratedByRegularSequence
 
 universe u
 

@@ -1,7 +1,7 @@
 import Mathlib.Data.List.TFAE
-import StacksProject_2024.Chap10.Definition_10_110_7
-import StacksProject_2024.Chap10.Definition_10_135_5
-import StacksProject_2024.Chap23.Definition_23_8_5
+import StacksProject_2024.stacks_project.Chap10.Definition_10_110_7
+import StacksProject_2024.stacks_project.Chap10.Definition_10_135_5
+import StacksProject_2024.stacks_project.Chap23.Definition_23_8_5
 import Mathlib.RingTheory.Ideal.Cotangent
 
 -- Declarations for this item will be appended below by the statement pipeline.

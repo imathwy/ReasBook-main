@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap20.Lemma_20_26_12
-import StacksProject_2024.Chap20.RingedSpaceModuleHasDerivedCategory
-import StacksProject_2024.Chap20.Tor_amplitude_on_opens_ringed_site
-import StacksProject_2024.Chap21.Lemma_21_46_2
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_26_12
+import StacksProject_2024.stacks_project.Chap20.RingedSpaceModuleHasDerivedCategory
+import StacksProject_2024.stacks_project.Chap20.Tor_amplitude_on_opens_ringed_site
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_46_2
 
 open AlgebraicGeometry
 open CategoryTheory

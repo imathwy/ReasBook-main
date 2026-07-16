@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap04.Definition_4_39_3
-import StacksProject_2024.Chap04.Lemma_4_35_7
+import StacksProject_2024.stacks_project.Chap04.Definition_4_39_3
+import StacksProject_2024.stacks_project.Chap04.Lemma_4_35_7
 
 universe u v
 

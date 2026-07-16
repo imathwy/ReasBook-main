@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap06.Definition_6_7_1
-import StacksProject_2024.Chap06.Extension_by_zero_by_the_initial_object
-import StacksProject_2024.Chap06.Lemma_6_31_7
+import StacksProject_2024.stacks_project.Chap06.Definition_6_7_1
+import StacksProject_2024.stacks_project.Chap06.Extension_by_zero_by_the_initial_object
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_31_7
 
 open CategoryTheory CategoryTheory.Limits Opposite TopCat TopologicalSpace
 open TopologicalSpace.Opens

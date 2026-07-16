@@ -1,8 +1,8 @@
-import StacksProject_2024.Chap20.Definition_20_26_14
-import StacksProject_2024.Chap20.«20_55_7_2»
-import StacksProject_2024.Chap20.Lemma_20_55_7
-import StacksProject_2024.Chap20.Lemma_20_55_5
-import StacksProject_2024.Chap20.RingedSpaceModuleHasDerivedCategory
+import StacksProject_2024.stacks_project.Chap20.Definition_20_26_14
+import StacksProject_2024.stacks_project.Chap20.«20_55_7_2»
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_55_7
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_55_5
+import StacksProject_2024.stacks_project.Chap20.RingedSpaceModuleHasDerivedCategory
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,8 +1,8 @@
 import Mathlib.AlgebraicGeometry.Scheme
 import Mathlib.AlgebraicGeometry.Noetherian
 import Mathlib.RingTheory.RegularLocalRing.Defs
-import StacksProject_2024.Chap10.Definition_10_110_7
-import StacksProject_2024.Chap28.Definition_28_4_2
+import StacksProject_2024.stacks_project.Chap10.Definition_10_110_7
+import StacksProject_2024.stacks_project.Chap28.Definition_28_4_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

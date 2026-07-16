@@ -1,8 +1,8 @@
 import Mathlib.Algebra.Module.LocalizedModule.Away
 import Mathlib.Algebra.Homology.ShortComplex.ModuleCat
 import Mathlib.RingTheory.Localization.BaseChange
-import StacksProject_2024.Chap15.PrincipalIdeal
-import StacksProject_2024.Chap15.Theorem_15_90_18
+import StacksProject_2024.stacks_project.Chap15.PrincipalIdeal
+import StacksProject_2024.stacks_project.Chap15.Theorem_15_90_18
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

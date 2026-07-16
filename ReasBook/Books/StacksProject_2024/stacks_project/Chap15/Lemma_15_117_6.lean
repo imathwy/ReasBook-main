@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap09.Lemma_9_14_5
-import StacksProject_2024.Chap09.Lemma_9_14_9_Multiplicativity
-import StacksProject_2024.Chap10.Definition_10_162_1
-import StacksProject_2024.Chap15.Definition_15_116_1
+import StacksProject_2024.stacks_project.Chap09.Lemma_9_14_5
+import StacksProject_2024.stacks_project.Chap09.Lemma_9_14_9_Multiplicativity
+import StacksProject_2024.stacks_project.Chap10.Definition_10_162_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_116_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.CategoryTheory.Sites.Monoidal
-import StacksProject_2024.Chap17.TensorPowerSheaf
-import StacksProject_2024.Chap26.Lemma_26_7_1
-import StacksProject_2024.LinearAlgebra.PowerOperations
+import StacksProject_2024.stacks_project.Chap17.TensorPowerSheaf
+import StacksProject_2024.stacks_project.Chap26.Lemma_26_7_1
+import StacksProject_2024.stacks_project.LinearAlgebra.PowerOperations
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

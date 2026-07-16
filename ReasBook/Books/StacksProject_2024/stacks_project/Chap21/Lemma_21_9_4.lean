@@ -14,7 +14,7 @@ import Mathlib.Algebra.Homology.QuasiIso
 import Mathlib.Algebra.Homology.SingleHomology
 import Mathlib.Algebra.Homology.ShortComplex.Abelian
 import Mathlib.Algebra.Homology.ShortComplex.HomologicalComplex
-import StacksProject_2024.Chap18.Definition_18_4_1
+import StacksProject_2024.stacks_project.Chap18.Definition_18_4_1
 
 open CategoryTheory
 open CategoryTheory.Limits

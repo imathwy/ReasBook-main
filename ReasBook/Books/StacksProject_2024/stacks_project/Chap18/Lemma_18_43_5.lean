@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.CategoryTheory.Sites.Abelian
-import StacksProject_2024.Chap12.Definition_12_10_1
-import StacksProject_2024.Chap18.Definition_18_43_1_Finite
-import StacksProject_2024.Chap18.Lemma_18_43_3
+import StacksProject_2024.stacks_project.Chap12.Definition_12_10_1
+import StacksProject_2024.stacks_project.Chap18.Definition_18_43_1_Finite
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_43_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

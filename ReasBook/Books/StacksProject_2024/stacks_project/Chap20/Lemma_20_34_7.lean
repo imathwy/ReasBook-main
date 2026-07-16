@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap20.Open_subspace_module_pushforward_core
-import StacksProject_2024.Chap20.Lemma_20_34_1
+import StacksProject_2024.stacks_project.Chap20.Open_subspace_module_pushforward_core
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_34_1
 
 open CategoryTheory
 open CategoryTheory.Limits

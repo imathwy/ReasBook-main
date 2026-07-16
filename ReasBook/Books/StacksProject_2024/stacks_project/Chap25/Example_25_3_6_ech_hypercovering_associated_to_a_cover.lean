@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap25.Example_25_3_4_ech_hypercoverings
+import StacksProject_2024.stacks_project.Chap25.Example_25_3_4_ech_hypercoverings
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,13 +1,13 @@
-import StacksProject_2024.Chap07.Definition_7_8_2
-import StacksProject_2024.Chap07.Lemma_7_8_3
-import StacksProject_2024.Chap07.Definition_7_12_1
+import StacksProject_2024.stacks_project.Chap07.Definition_7_8_2
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_8_3
+import StacksProject_2024.stacks_project.Chap07.Definition_7_12_1
 import Mathlib.CategoryTheory.Countable
 import Mathlib.CategoryTheory.ObjectProperty.Small
 import Mathlib.CategoryTheory.ObjectProperty.LimitsClosure
 import Mathlib.CategoryTheory.ObjectProperty.ColimitsCardinalClosure
 import Mathlib.CategoryTheory.Category.ULift
-import StacksProject_2024.Chap21.Definition_21_31_2
-import StacksProject_2024.Chap21.Lemma_21_31_3
+import StacksProject_2024.stacks_project.Chap21.Definition_21_31_2
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_31_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

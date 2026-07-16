@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap15.Definition_15_67_1
-import StacksProject_2024.Chap12.Remark_12_29_2
-import StacksProject_2024.Chap21.Lemma_21_18_6
-import StacksProject_2024.Chap21.Definition_21_46_1_Core
+import StacksProject_2024.stacks_project.Chap15.Definition_15_67_1
+import StacksProject_2024.stacks_project.Chap12.Remark_12_29_2
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_18_6
+import StacksProject_2024.stacks_project.Chap21.Definition_21_46_1_Core
 
 open CategoryTheory
 open CategoryTheory.Limits

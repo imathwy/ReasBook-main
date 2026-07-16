@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap17.AlgebraSheafConstructions
-import StacksProject_2024.Chap17.Definition_17_31_6
-import StacksProject_2024.Chap29.Lemma_29_31_3
-import StacksProject_2024.Chap31.Definition_31_19_1
-import StacksProject_2024.Chap31.Lemma_31_19_2
+import StacksProject_2024.stacks_project.Chap17.AlgebraSheafConstructions
+import StacksProject_2024.stacks_project.Chap17.Definition_17_31_6
+import StacksProject_2024.stacks_project.Chap29.Lemma_29_31_3
+import StacksProject_2024.stacks_project.Chap31.Definition_31_19_1
+import StacksProject_2024.stacks_project.Chap31.Lemma_31_19_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

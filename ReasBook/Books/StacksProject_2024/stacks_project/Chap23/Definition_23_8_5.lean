@@ -1,5 +1,5 @@
 import Mathlib.RingTheory.AdicCompletion.Algebra
-import StacksProject_2024.Chap23.CompleteIntersectionCompleteLocalRing
+import StacksProject_2024.stacks_project.Chap23.CompleteIntersectionCompleteLocalRing
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap07.HasEnoughObjectsWithProperty
-import StacksProject_2024.Chap20.RingedSpaceOpensModuleCategory
-import StacksProject_2024.Chap20.«20_11_0_1»
-import StacksProject_2024.Chap21.Lemma_21_24_2
+import StacksProject_2024.stacks_project.Chap07.HasEnoughObjectsWithProperty
+import StacksProject_2024.stacks_project.Chap20.RingedSpaceOpensModuleCategory
+import StacksProject_2024.stacks_project.Chap20.«20_11_0_1»
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_24_2
 
 open CategoryTheory
 open CategoryTheory.Limits

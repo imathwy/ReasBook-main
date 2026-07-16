@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap22.Lemma_22_7_3
+import StacksProject_2024.stacks_project.Chap22.Lemma_22_7_3
 
 open CategoryTheory
 

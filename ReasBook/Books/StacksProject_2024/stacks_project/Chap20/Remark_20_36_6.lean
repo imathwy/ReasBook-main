@@ -1,16 +1,16 @@
 import Mathlib.CategoryTheory.Localization.DerivabilityStructure.Constructor
-import StacksProject_2024.Chap13.Definition_13_3_6
-import StacksProject_2024.Chap13.Lemma_13_4_21
-import StacksProject_2024.Chap13.Lemma_13_4_22
-import StacksProject_2024.Chap13.Lemma_13_16_3
-import StacksProject_2024.Chap13.Definition_13_34_1
-import StacksProject_2024.Chap15.Lemma_15_87_14_Emmanouil
-import StacksProject_2024.Chap15.Lemma_15_94_9
-import StacksProject_2024.Chap15.Remark_15_94_7
-import StacksProject_2024.Chap20.Global_sections_cohomology_delta_functor
-import StacksProject_2024.Chap20.Lemma_20_11_2
-import StacksProject_2024.Chap20.Lemma_20_36_1
-import StacksProject_2024.Chap20.Lemma_20_36_2
+import StacksProject_2024.stacks_project.Chap13.Definition_13_3_6
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_4_21
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_4_22
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_16_3
+import StacksProject_2024.stacks_project.Chap13.Definition_13_34_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_87_14_Emmanouil
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_94_9
+import StacksProject_2024.stacks_project.Chap15.Remark_15_94_7
+import StacksProject_2024.stacks_project.Chap20.Global_sections_cohomology_delta_functor
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_11_2
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_36_1
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_36_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

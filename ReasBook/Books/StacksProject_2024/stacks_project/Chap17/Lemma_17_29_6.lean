@@ -2,9 +2,9 @@ import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Presheaf.Monoidal
 import Mathlib.Algebra.Category.ModuleCat.Presheaf.Sheafification
 import Mathlib.CategoryTheory.Sites.Monoidal
-import StacksProject_2024.Chap10.Lemma_10_133_6
-import StacksProject_2024.Chap17.Lemma_17_28_4
-import StacksProject_2024.Chap17.Definition_17_29_1
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_133_6
+import StacksProject_2024.stacks_project.Chap17.Lemma_17_28_4
+import StacksProject_2024.stacks_project.Chap17.Definition_17_29_1
 
 open CategoryTheory MonoidalCategory TopologicalSpace
 open Functor.OplaxMonoidal

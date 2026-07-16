@@ -1,6 +1,6 @@
 import Mathlib.CategoryTheory.Limits.Preserves.Basic
 import Mathlib.CategoryTheory.Limits.Shapes.Pullback.Cospan
-import StacksProject_2024.Chapters.Chap23.section03
+import StacksProject_2024.stacks_project.Chapters.Chap23.section03
 
 open CategoryTheory
 open CategoryTheory.Limits

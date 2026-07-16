@@ -1,13 +1,13 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_97_3
-import StacksProject_2024.Chap10.Lemma_10_166_1
-import StacksProject_2024.Chap15.Definition_15_41_1
-import StacksProject_2024.Chap15.Lemma_15_41_2_Regular_is_a_local_property
-import StacksProject_2024.Chap15.Lemma_15_41_3_Regular_maps_and_base_change
-import StacksProject_2024.Chap15.Lemma_15_41_4_Composition_of_regular_maps
-import StacksProject_2024.Chap15.Lemma_15_41_7
-import StacksProject_2024.Chap15.Definition_15_50_1
-import StacksProject_2024.Chap15.Proposition_15_50_6
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_97_3
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_166_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_41_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_41_2_Regular_is_a_local_property
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_41_3_Regular_maps_and_base_change
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_41_4_Composition_of_regular_maps
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_41_7
+import StacksProject_2024.stacks_project.Chap15.Definition_15_50_1
+import StacksProject_2024.stacks_project.Chap15.Proposition_15_50_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

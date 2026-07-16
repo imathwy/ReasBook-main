@@ -1,6 +1,6 @@
 import Mathlib.AlgebraicGeometry.FunctionField
 import Mathlib.RingTheory.OrderOfVanishing
-import StacksProject_2024.Chap31.Definition_31_26_2
+import StacksProject_2024.stacks_project.Chap31.Definition_31_26_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

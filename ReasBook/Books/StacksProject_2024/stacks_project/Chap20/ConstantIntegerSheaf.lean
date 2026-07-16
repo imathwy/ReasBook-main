@@ -2,7 +2,7 @@ import Mathlib.CategoryTheory.Sites.GlobalSections
 import Mathlib.CategoryTheory.Sites.SheafCohomology.Basic
 import Mathlib.Topology.Sheaves.AddCommGrpCat
 import Mathlib.Topology.Sheaves.Sheaf
-import StacksProject_2024.Chap20.OpensInstances
+import StacksProject_2024.stacks_project.Chap20.OpensInstances
 
 open CategoryTheory CategoryTheory.Limits TopCat TopologicalSpace
 

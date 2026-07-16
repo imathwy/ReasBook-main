@@ -1,9 +1,9 @@
 import Mathlib.Algebra.Category.ModuleCat.Projective
 import Mathlib.Algebra.Homology.ShortComplex.Abelian
 import Mathlib.Tactic
-import StacksProject_2024.Chap22.Definition_22_4_3
-import StacksProject_2024.Chap22.Lemma_22_13_3
-import StacksProject_2024.Chap22.Example_22_26_8_Differential_graded_category_of_differential_graded_modules
+import StacksProject_2024.stacks_project.Chap22.Definition_22_4_3
+import StacksProject_2024.stacks_project.Chap22.Lemma_22_13_3
+import StacksProject_2024.stacks_project.Chap22.Example_22_26_8_Differential_graded_category_of_differential_graded_modules
 
 open CategoryTheory
 open DifferentialGradedCategory

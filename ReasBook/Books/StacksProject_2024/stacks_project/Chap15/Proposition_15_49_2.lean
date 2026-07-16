@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap10.Definition_10_160_1
-import StacksProject_2024.Chap15.Lemma_15_41_7
-import StacksProject_2024.Chap15.Theorem_15_49_3_Andr
+import StacksProject_2024.stacks_project.Chap10.Definition_10_160_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_41_7
+import StacksProject_2024.stacks_project.Chap15.Theorem_15_49_3_Andr
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

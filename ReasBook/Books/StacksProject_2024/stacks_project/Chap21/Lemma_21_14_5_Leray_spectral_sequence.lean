@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap13.Lemma_13_22_2_Grothendieck_spectral_sequence
-import StacksProject_2024.Chap21.Lemma_21_19_1_core
-import StacksProject_2024.Chap21.Lemma_21_20_5_core
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_22_2_Grothendieck_spectral_sequence
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_19_1_core
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_20_5_core
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

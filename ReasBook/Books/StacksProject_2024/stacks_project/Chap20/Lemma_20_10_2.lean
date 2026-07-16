@@ -3,8 +3,8 @@ import Mathlib.Algebra.Homology.HomologySequenceLemmas
 import Mathlib.CategoryTheory.Functor.ReflectsIso.Exact
 import Mathlib.CategoryTheory.Limits.ExactFunctor
 import Mathlib.CategoryTheory.Preadditive.AdditiveFunctor
-import StacksProject_2024.Chap12.Definition_12_12_1
-import StacksProject_2024.Chap20.Lemma_20_10_1
+import StacksProject_2024.stacks_project.Chap12.Definition_12_12_1
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_10_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

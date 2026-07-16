@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap07.GSetForgetfulPoint
+import StacksProject_2024.stacks_project.Chap07.GSetForgetfulPoint
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

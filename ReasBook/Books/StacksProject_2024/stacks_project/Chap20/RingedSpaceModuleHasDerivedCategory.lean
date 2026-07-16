@@ -1,5 +1,5 @@
 import Mathlib.Algebra.Homology.DerivedCategory.Basic
-import StacksProject_2024.Chap06.RingedSpaceModuleCore
+import StacksProject_2024.stacks_project.Chap06.RingedSpaceModuleCore
 
 open CategoryTheory
 

@@ -1,18 +1,18 @@
 import Mathlib
 import Mathlib.Algebra.Order.Hom.Units
 import Mathlib.RingTheory.Valuation.Discrete.Basic
-import StacksProject_2024.Chap10.Definition_10_37_11
-import StacksProject_2024.Chap10.Lemma_10_39_2
-import StacksProject_2024.Chap10.Lemma_10_60_11
-import StacksProject_2024.Chap10.Lemma_10_63_5
-import StacksProject_2024.Chap10.Lemma_10_119_7
-import StacksProject_2024.Chap10.Lemma_10_157_6
-import StacksProject_2024.Chap10.Lemma_10_55_8
-import StacksProject_2024.Chap10.Lemma_10_78_6
-import StacksProject_2024.Chap15.Definition_15_124_1
-import StacksProject_2024.Chap15.Definition_15_112_1
-import StacksProject_2024.Chap15.Lemma_15_112_2
-import StacksProject_2024.Chap15.Lemma_15_112_4
+import StacksProject_2024.stacks_project.Chap10.Definition_10_37_11
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_39_2
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_60_11
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_63_5
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_119_7
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_157_6
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_55_8
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_78_6
+import StacksProject_2024.stacks_project.Chap15.Definition_15_124_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_112_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_112_2
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_112_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

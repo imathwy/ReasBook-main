@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
 import Mathlib.CategoryTheory.Monoidal.Functor
-import StacksProject_2024.Chap21.SheafModuleDerivedTensor
-import StacksProject_2024.Chap21.Lemma_21_20_1_Owner
+import StacksProject_2024.stacks_project.Chap21.SheafModuleDerivedTensor
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_20_1_Owner
 
 open CategoryTheory
 open CategoryTheory.Limits

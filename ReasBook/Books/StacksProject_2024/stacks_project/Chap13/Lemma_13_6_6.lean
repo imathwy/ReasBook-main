@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.CategoryTheory.Triangulated.Subcategory
-import StacksProject_2024.Chap04.Definition_4_27_20
+import StacksProject_2024.stacks_project.Chap04.Definition_4_27_20
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

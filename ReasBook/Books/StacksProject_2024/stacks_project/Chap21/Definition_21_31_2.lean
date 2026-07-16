@@ -1,7 +1,7 @@
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
 import Mathlib.Topology.Category.TopCat.Basic
-import StacksProject_2024.Chap05.Lemma_5_13_2
-import StacksProject_2024.Chap07.Definition_7_6_1
+import StacksProject_2024.stacks_project.Chap05.Lemma_5_13_2
+import StacksProject_2024.stacks_project.Chap07.Definition_7_6_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

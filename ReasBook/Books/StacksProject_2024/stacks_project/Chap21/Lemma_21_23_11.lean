@@ -1,9 +1,9 @@
 import Mathlib.Tactic
 import Mathlib.CategoryTheory.Limits.Shapes.ZeroObjects
-import StacksProject_2024.Chap13.Definition_13_34_1
-import StacksProject_2024.Chap13.Lemma_13_35_7
-import StacksProject_2024.Chap13.Lemma_13_42_3
-import StacksProject_2024.Chap21.Lemma_21_23_5
+import StacksProject_2024.stacks_project.Chap13.Definition_13_34_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_35_7
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_42_3
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_23_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

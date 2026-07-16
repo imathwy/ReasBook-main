@@ -1,20 +1,20 @@
 import Mathlib
 import Mathlib.CategoryTheory.Limits.Shapes.ZeroObjects
-import StacksProject_2024.Chap10.Lemma_10_107_14
-import StacksProject_2024.Chap10.Lemma_10_107_1
-import StacksProject_2024.Chap13.Lemma_13_14_15
-import StacksProject_2024.Chap13.Lemma_13_30_2
-import StacksProject_2024.Chap13.Lemma_13_31_6
-import StacksProject_2024.Chap13.Lemma_13_31_7
-import StacksProject_2024.Chap13.Lemma_13_33_7
-import StacksProject_2024.Chap13.Definition_13_34_1
-import StacksProject_2024.Chap15.Lemma_15_56_2
-import StacksProject_2024.Chap15.Lemma_15_59_3
-import StacksProject_2024.Chap15.Lemma_15_60_3
-import StacksProject_2024.Chap15.Lemma_15_67_17
-import StacksProject_2024.Chap15.«15_74_0_2»
-import StacksProject_2024.Chap15.Lemma_15_74_4
-import StacksProject_2024.Chap19.Theorem_19_12_6
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_107_14
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_107_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_14_15
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_30_2
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_31_6
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_31_7
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_33_7
+import StacksProject_2024.stacks_project.Chap13.Definition_13_34_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_56_2
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_59_3
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_60_3
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_67_17
+import StacksProject_2024.stacks_project.Chap15.«15_74_0_2»
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_74_4
+import StacksProject_2024.stacks_project.Chap19.Theorem_19_12_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

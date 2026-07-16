@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap13.Lemma_13_22_2_Grothendieck_spectral_sequence
-import StacksProject_2024.Chap20.Lemma_20_11_2
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_22_2_Grothendieck_spectral_sequence
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_11_2
 
 open CategoryTheory
 open CategoryTheory.Limits

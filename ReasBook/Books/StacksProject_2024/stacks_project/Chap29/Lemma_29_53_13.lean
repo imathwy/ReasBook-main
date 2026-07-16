@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap28.Definition_28_7_1
-import StacksProject_2024.Chap29.Definition_29_50_1
-import StacksProject_2024.Chap29.Remark_29_49_13
+import StacksProject_2024.stacks_project.Chap28.Definition_28_7_1
+import StacksProject_2024.stacks_project.Chap29.Definition_29_50_1
+import StacksProject_2024.stacks_project.Chap29.Remark_29_49_13
 
 open AlgebraicGeometry
 open scoped AlgebraicGeometry

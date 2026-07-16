@@ -1,9 +1,9 @@
 import Mathlib.Algebra.Algebra.Opposite
 import Mathlib.LinearAlgebra.TensorProduct.Basic
 import Mathlib.RingTheory.Flat.Basic
-import StacksProject_2024.Chap13.Definition_13_36_3
-import StacksProject_2024.Chap15.Definition_15_75_1
-import StacksProject_2024.Chap22.RLinearTriangulatedEquivalence
+import StacksProject_2024.stacks_project.Chap13.Definition_13_36_3
+import StacksProject_2024.stacks_project.Chap15.Definition_15_75_1
+import StacksProject_2024.stacks_project.Chap22.RLinearTriangulatedEquivalence
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

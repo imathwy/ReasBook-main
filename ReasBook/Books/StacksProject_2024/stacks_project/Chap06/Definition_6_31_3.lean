@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap06.Extension_by_zero_by_the_initial_object
+import StacksProject_2024.stacks_project.Chap06.Extension_by_zero_by_the_initial_object
 
 open CategoryTheory TopCat TopologicalSpace
 

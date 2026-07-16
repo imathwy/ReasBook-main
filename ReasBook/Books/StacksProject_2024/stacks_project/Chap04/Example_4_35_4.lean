@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap04.Example_4_2_12
-import StacksProject_2024.Chap04.Definition_4_33_5
-import StacksProject_2024.Chap04.Lemma_4_35_2
+import StacksProject_2024.stacks_project.Chap04.Example_4_2_12
+import StacksProject_2024.stacks_project.Chap04.Definition_4_33_5
+import StacksProject_2024.stacks_project.Chap04.Lemma_4_35_2
 
 open CategoryTheory
 open CategoryTheory.Functor IsHomLift Functor.Fiber

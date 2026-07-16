@@ -1,10 +1,10 @@
 import Mathlib
-import StacksProject_2024.Chap12.Lemma_12_5_20
-import StacksProject_2024.Chap20.Lemma_20_8_2_Mayer_Vietoris
-import StacksProject_2024.Chap28.Lemma_28_17_2
-import StacksProject_2024.Chap28.Lemma_28_26_4
-import StacksProject_2024.Chap30.Lemma_30_2_2
-import StacksProject_2024.Chap30.Lemma_30_4_1_Induction_Principle
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_5_20
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_8_2_Mayer_Vietoris
+import StacksProject_2024.stacks_project.Chap28.Lemma_28_17_2
+import StacksProject_2024.stacks_project.Chap28.Lemma_28_26_4
+import StacksProject_2024.stacks_project.Chap30.Lemma_30_2_2
+import StacksProject_2024.stacks_project.Chap30.Lemma_30_4_1_Induction_Principle
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

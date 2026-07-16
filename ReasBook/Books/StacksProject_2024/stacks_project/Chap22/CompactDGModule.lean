@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Category.ModuleCat.Basic
 import Mathlib.Algebra.Homology.DerivedCategory.Basic
 import Mathlib.CategoryTheory.Preadditive.Yoneda.Basic
-import StacksProject_2024.Chap22.ModuleCatHasDerivedCategory
+import StacksProject_2024.stacks_project.Chap22.ModuleCatHasDerivedCategory
 
 open CategoryTheory CategoryTheory.Limits
 open Opposite

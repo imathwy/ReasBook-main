@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap17.Lemma_17_25_4
-import StacksProject_2024.Chap17.Lemma_17_14_5.FreeSections
-import StacksProject_2024.Chap20.Situation_20_55_2
+import StacksProject_2024.stacks_project.Chap17.Lemma_17_25_4
+import StacksProject_2024.stacks_project.Chap17.Lemma_17_14_5.FreeSections
+import StacksProject_2024.stacks_project.Chap20.Situation_20_55_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

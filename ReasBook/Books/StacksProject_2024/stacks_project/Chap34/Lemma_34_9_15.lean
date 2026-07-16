@@ -1,5 +1,5 @@
 import Mathlib.AlgebraicGeometry.Sites.Fpqc
-import StacksProject_2024.Chap07.Definition_7_8_2
+import StacksProject_2024.stacks_project.Chap07.Definition_7_8_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

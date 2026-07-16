@@ -1,8 +1,8 @@
-import StacksProject_2024.Chap07.Lemma_7_27_5
-import StacksProject_2024.Chap13.Lemma_13_30_1
-import StacksProject_2024.Chap19.AdditiveFunctorTotalRightDerived
-import StacksProject_2024.Chap21.SiteAbelianDerived
-import StacksProject_2024.Chap21.Remark_21_19_3_core
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_27_5
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_30_1
+import StacksProject_2024.stacks_project.Chap19.AdditiveFunctorTotalRightDerived
+import StacksProject_2024.stacks_project.Chap21.SiteAbelianDerived
+import StacksProject_2024.stacks_project.Chap21.Remark_21_19_3_core
 import Mathlib.CategoryTheory.Adjunction.Mates
 
 -- Declarations for this item will be appended below by the statement pipeline.

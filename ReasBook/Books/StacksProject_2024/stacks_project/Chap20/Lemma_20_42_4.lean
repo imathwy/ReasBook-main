@@ -1,7 +1,7 @@
 import Mathlib.CategoryTheory.Shift.CommShiftTwo
 import Mathlib.Tactic.Recall
 import Mathlib.CategoryTheory.Triangulated.Adjunction
-import StacksProject_2024.Chap20.«20_42_0_1»
+import StacksProject_2024.stacks_project.Chap20.«20_42_0_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

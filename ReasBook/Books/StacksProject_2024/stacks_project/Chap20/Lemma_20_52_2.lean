@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap20.Lemma_20_6_1
-import StacksProject_2024.Chap20.Global_sections_module_owners_core
-import StacksProject_2024.Chap20.RingedSpaceOpensModuleCategory
-import StacksProject_2024.Chap21.Lemma_21_49_2
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_6_1
+import StacksProject_2024.stacks_project.Chap20.Global_sections_module_owners_core
+import StacksProject_2024.stacks_project.Chap20.RingedSpaceOpensModuleCategory
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_49_2
 
 open AlgebraicGeometry
 open CategoryTheory

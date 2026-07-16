@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap20.Lemma_20_27_3
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_27_3
 
 noncomputable section
 

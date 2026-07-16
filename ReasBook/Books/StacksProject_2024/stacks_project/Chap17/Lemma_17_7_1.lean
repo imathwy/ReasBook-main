@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Topology.Sheaves.Abelian
-import StacksProject_2024.Chap06.Lemma_6_31_6
-import StacksProject_2024.Chap06.Lemma_6_32_1
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_31_6
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_32_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

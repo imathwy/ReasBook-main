@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap10.Lemma_10_134_3
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_134_3
 
 open scoped NaiveCotangent TensorProduct
 open Algebra

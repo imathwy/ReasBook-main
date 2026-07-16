@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap07.Lemma_7_18_4
-import StacksProject_2024.Chap19.Theorem_19_7_4
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_18_4
+import StacksProject_2024.stacks_project.Chap19.Theorem_19_7_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

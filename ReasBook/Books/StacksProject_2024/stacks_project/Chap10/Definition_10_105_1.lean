@@ -1,6 +1,6 @@
 import Mathlib.RingTheory.Spectrum.Prime.Topology
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap10.Lemma_10_105_2
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_105_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,8 +1,8 @@
-import StacksProject_2024.Chap15.Remark_15_96_5
-import StacksProject_2024.Chap15.Lemma_15_94_9
-import StacksProject_2024.Chap15.PrincipalIdeal
-import StacksProject_2024.Chap20.IdealSheafStalkIdeal
-import StacksProject_2024.Chap20.Lemma_20_26_4
+import StacksProject_2024.stacks_project.Chap15.Remark_15_96_5
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_94_9
+import StacksProject_2024.stacks_project.Chap15.PrincipalIdeal
+import StacksProject_2024.stacks_project.Chap20.IdealSheafStalkIdeal
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_26_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

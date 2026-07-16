@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
 import Mathlib.CategoryTheory.ObjectProperty.LimitsOfShape
-import StacksProject_2024.Chap34.Definition_34_6_1
-import StacksProject_2024.Chap34.Definition_34_6_5
+import StacksProject_2024.stacks_project.Chap34.Definition_34_6_1
+import StacksProject_2024.stacks_project.Chap34.Definition_34_6_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap10.Definition_10_59_8
-import StacksProject_2024.Chap10.Lemma_10_59_10
-import StacksProject_2024.Chap10.Lemma_10_62_7
-import StacksProject_2024.Chap10.Proposition_10_60_9
+import StacksProject_2024.stacks_project.Chap10.Definition_10_59_8
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_59_10
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_62_7
+import StacksProject_2024.stacks_project.Chap10.Proposition_10_60_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

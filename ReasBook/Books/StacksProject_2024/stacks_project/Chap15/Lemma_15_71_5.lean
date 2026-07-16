@@ -1,5 +1,5 @@
 import Mathlib.RingTheory.Ideal.Maps
-import StacksProject_2024.Chap15.Definition_15_71_4
+import StacksProject_2024.stacks_project.Chap15.Definition_15_71_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

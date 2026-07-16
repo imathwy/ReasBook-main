@@ -3,8 +3,8 @@ import Mathlib.CategoryTheory.Sites.CoversTop
 import Mathlib.CategoryTheory.Sites.GlobalSections
 import Mathlib.CategoryTheory.Sites.Over
 import Mathlib.CategoryTheory.Sites.Sheaf
-import StacksProject_2024.Chap21.Definition_21_8_1
-import StacksProject_2024.Chap21.Lemma_21_9_2
+import StacksProject_2024.stacks_project.Chap21.Definition_21_8_1
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_9_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

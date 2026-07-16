@@ -3,10 +3,10 @@ import Mathlib.Algebra.Module.LocalizedModule.Away
 import Mathlib.LinearAlgebra.Dual.Lemmas
 import Mathlib.LinearAlgebra.LinearIndependent.Lemmas
 import Mathlib.RingTheory.TensorProduct.IsBaseChangePi
-import StacksProject_2024.Chap10.Lemma_10_10_2
-import StacksProject_2024.Chap10.Lemma_10_78_9
-import StacksProject_2024.Chap10.Lemma_10_79_1
-import StacksProject_2024.Chap15.Situation_15_128_1
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_10_2
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_78_9
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_79_1
+import StacksProject_2024.stacks_project.Chap15.Situation_15_128_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

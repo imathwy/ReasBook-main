@@ -1,12 +1,12 @@
 import Mathlib.CategoryTheory.Limits.Lattice
 import Mathlib.CategoryTheory.Sites.SheafCohomology.Cech
-import StacksProject_2024.Chap06.Definition_6_25_1
-import StacksProject_2024.Chap20.«20_9_0_2»
-import StacksProject_2024.Chap20.«20_14_1_2»
-import StacksProject_2024.Chap20.«20_11_0_2»
-import StacksProject_2024.Chap20.Lemma_20_11_2
-import StacksProject_2024.Chap20.Lemma_20_19_3
-import StacksProject_2024.Chap20.«20_25_0_2»
+import StacksProject_2024.stacks_project.Chap06.Definition_6_25_1
+import StacksProject_2024.stacks_project.Chap20.«20_9_0_2»
+import StacksProject_2024.stacks_project.Chap20.«20_14_1_2»
+import StacksProject_2024.stacks_project.Chap20.«20_11_0_2»
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_11_2
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_19_3
+import StacksProject_2024.stacks_project.Chap20.«20_25_0_2»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap15.Lemma_15_129_1_Eilenberg_s_lemma
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_129_1_Eilenberg_s_lemma
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

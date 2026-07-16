@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.Abelian
-import StacksProject_2024.Chap06.Definition_6_26_1
-import StacksProject_2024.Chap20.Lemma_20_11_8
+import StacksProject_2024.stacks_project.Chap06.Definition_6_26_1
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_11_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

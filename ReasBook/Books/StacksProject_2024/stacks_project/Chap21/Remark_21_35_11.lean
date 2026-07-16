@@ -1,5 +1,5 @@
 import Mathlib.Tactic.StacksAttribute
-import StacksProject_2024.Chap18.Lemma_18_27_6
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_27_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -2,7 +2,7 @@ import Mathlib.CategoryTheory.Limits.Constructions.Over.Products
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
 import Mathlib.CategoryTheory.ObjectProperty.LimitsOfShape
 import Mathlib.AlgebraicGeometry.Sites.Etale
-import StacksProject_2024.Chap34.Definition_34_7_8
+import StacksProject_2024.stacks_project.Chap34.Definition_34_7_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

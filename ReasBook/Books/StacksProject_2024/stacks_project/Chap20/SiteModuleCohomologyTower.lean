@@ -2,7 +2,7 @@ import Mathlib.Algebra.Category.ModuleCat.Sheaf.Colimits
 import Mathlib.CategoryTheory.Abelian.GrothendieckCategory.HasExt
 import Mathlib.CategoryTheory.Sites.SheafCohomology.Basic
 import Mathlib.Topology.Sheaves.Functors
-import StacksProject_2024.Chap12.Definition_12_31_2
+import StacksProject_2024.stacks_project.Chap12.Definition_12_31_2
 
 open Opposite
 

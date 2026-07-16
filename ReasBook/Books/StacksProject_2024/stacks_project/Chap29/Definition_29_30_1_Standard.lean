@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap10.Lemma_10_136_13
-import StacksProject_2024.Chap29.Definition_29_30_1
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_136_13
+import StacksProject_2024.stacks_project.Chap29.Definition_29_30_1
 
 noncomputable section
 

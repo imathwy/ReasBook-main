@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap32.Lemma_32_3_1
+import StacksProject_2024.stacks_project.Chap32.Lemma_32_3_1
 
 open CategoryTheory Limits AlgebraicGeometry
 

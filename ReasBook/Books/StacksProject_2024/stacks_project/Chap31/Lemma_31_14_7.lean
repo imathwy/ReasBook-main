@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap17.SheafOfModulesTensorUnit
-import StacksProject_2024.Chap20.Lemma_20_36_1
-import StacksProject_2024.Chap31.Definition_31_14_6
+import StacksProject_2024.stacks_project.Chap17.SheafOfModulesTensorUnit
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_36_1
+import StacksProject_2024.stacks_project.Chap31.Definition_31_14_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.NumberTheory.RamificationInertia.Ramification
-import StacksProject_2024.Chap10.Lemma_10_120_18
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_120_18
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

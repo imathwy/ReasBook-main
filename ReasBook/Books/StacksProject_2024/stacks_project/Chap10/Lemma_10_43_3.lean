@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap10.Lemma_10_43_2
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_43_2
 
 universe u v
 

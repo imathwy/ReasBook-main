@@ -1,7 +1,7 @@
 import Mathlib.CategoryTheory.Functor.Derived.Adjunction
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
-import StacksProject_2024.Chap13.Lemma_13_30_1
-import StacksProject_2024.Chap21.Lemma_21_20_1_Owner
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_30_1
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_20_1_Owner
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

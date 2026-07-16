@@ -1,6 +1,6 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap04.Lemma_4_23_2
-import StacksProject_2024.Chap07.Definition_7_14_1
+import StacksProject_2024.stacks_project.Chap04.Lemma_4_23_2
+import StacksProject_2024.stacks_project.Chap07.Definition_7_14_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

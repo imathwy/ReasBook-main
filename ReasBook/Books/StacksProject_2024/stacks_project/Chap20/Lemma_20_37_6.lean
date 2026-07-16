@@ -1,10 +1,10 @@
-import StacksProject_2024.Chap12.Definition_12_19_3
-import StacksProject_2024.Chap13.Lemma_13_16_4
-import StacksProject_2024.Chap13.Remark_13_34_5
-import StacksProject_2024.Chap20.AddCommGrpCatHasDerivedCategory
-import StacksProject_2024.Chap20.RingedSpaceModuleHasDerivedCategory
-import StacksProject_2024.Chap20.Lemma_20_37_5
-import StacksProject_2024.Chap20.«20_11_0_1»
+import StacksProject_2024.stacks_project.Chap12.Definition_12_19_3
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_16_4
+import StacksProject_2024.stacks_project.Chap13.Remark_13_34_5
+import StacksProject_2024.stacks_project.Chap20.AddCommGrpCatHasDerivedCategory
+import StacksProject_2024.stacks_project.Chap20.RingedSpaceModuleHasDerivedCategory
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_37_5
+import StacksProject_2024.stacks_project.Chap20.«20_11_0_1»
 
 open CategoryTheory
 open CategoryTheory.Limits

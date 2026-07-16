@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap26.Lemma_26_12_2
-import StacksProject_2024.Chap28.Lemma_28_4_3
-import StacksProject_2024.Chap28.Lemma_28_4_4
+import StacksProject_2024.stacks_project.Chap26.Lemma_26_12_2
+import StacksProject_2024.stacks_project.Chap28.Lemma_28_4_3
+import StacksProject_2024.stacks_project.Chap28.Lemma_28_4_4
 import Mathlib.Tactic.Recall
 import Mathlib.RingTheory.LocalProperties.Reduced
 

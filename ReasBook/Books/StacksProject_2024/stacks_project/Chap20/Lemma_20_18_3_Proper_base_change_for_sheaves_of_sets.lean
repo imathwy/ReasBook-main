@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap05.Definition_5_17_2
-import StacksProject_2024.Chap06.Definition_6_7_1
-import StacksProject_2024.Chap06.Lemma_6_21_6
-import StacksProject_2024.Chap07.Definition_7_15_1_Topoi
+import StacksProject_2024.stacks_project.Chap05.Definition_5_17_2
+import StacksProject_2024.stacks_project.Chap06.Definition_6_7_1
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_21_6
+import StacksProject_2024.stacks_project.Chap07.Definition_7_15_1_Topoi
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

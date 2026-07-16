@@ -1,8 +1,8 @@
 import Mathlib.AlgebraicGeometry.IdealSheaf.Basic
 import Mathlib.AlgebraicGeometry.Modules.Presheaf
 import Mathlib.AlgebraicGeometry.Morphisms.ClosedImmersion
-import StacksProject_2024.Chap06.RingedSpaceModuleCore
-import StacksProject_2024.Chap17.Definition_17_13_1_Owner
+import StacksProject_2024.stacks_project.Chap06.RingedSpaceModuleCore
+import StacksProject_2024.stacks_project.Chap17.Definition_17_13_1_Owner
 
 -- Declarations extracted from Definition 31.13.1 for files that only use the
 -- effective-Cartier owner and its ideal-sheaf-data bridge.

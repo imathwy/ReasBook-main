@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap13.Lemma_13_29_1
-import StacksProject_2024.Chap13.UpperTruncationResolutionTowerColimit
-import StacksProject_2024.Chap18.Lemma_18_28_8
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_29_1
+import StacksProject_2024.stacks_project.Chap13.UpperTruncationResolutionTowerColimit
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_28_8
 
 open CategoryTheory CategoryTheory.Limits CategoryTheory.ObjectProperty CochainComplex
 open Opposite

@@ -1,12 +1,12 @@
-import StacksProject_2024.Chap13.Definition_13_8_1
-import StacksProject_2024.Chap13.Lemma_13_15_4
-import StacksProject_2024.Chap13.Lemma_13_19_10
-import StacksProject_2024.Chap13.Lemma_13_33_6
-import StacksProject_2024.Chap13.Lemma_13_35_7
+import StacksProject_2024.stacks_project.Chap13.Definition_13_8_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_15_4
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_19_10
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_33_6
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_35_7
 import Mathlib.CategoryTheory.Generator.Basic
 import Mathlib.CategoryTheory.Retract
-import StacksProject_2024.Chap13.Definition_13_37_1
-import StacksProject_2024.Chap13.Remark_13_35_5
+import StacksProject_2024.stacks_project.Chap13.Definition_13_37_1
+import StacksProject_2024.stacks_project.Chap13.Remark_13_35_5
 
 open CategoryTheory
 open CategoryTheory.Limits

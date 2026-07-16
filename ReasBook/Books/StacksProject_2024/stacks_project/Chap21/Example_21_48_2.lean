@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap21.Lemma_21_34_3_Owner
-import StacksProject_2024.Chap21.Example_21_48_2_Core
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_34_3_Owner
+import StacksProject_2024.stacks_project.Chap21.Example_21_48_2_Core
 
 open CategoryTheory
 open CategoryTheory.MonoidalCategory

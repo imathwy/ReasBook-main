@@ -1,17 +1,17 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
-import StacksProject_2024.Chap15.Definition_15_84_1
-import StacksProject_2024.Chap15.Definition_15_75_1
-import StacksProject_2024.Chap15.Lemma_15_59_3
-import StacksProject_2024.Chap15.Lemma_15_67_3
-import StacksProject_2024.Chap15.Lemma_15_67_6
-import StacksProject_2024.Chap15.Lemma_15_67_8
-import StacksProject_2024.Chap15.Lemma_15_67_19
-import StacksProject_2024.Chap15.Lemma_15_78_3
-import StacksProject_2024.Chap15.Lemma_15_78_5
-import StacksProject_2024.Chap15.Lemma_15_82_17.RestrictionBridge
-import StacksProject_2024.Chap15.Lemma_15_83_2
-import StacksProject_2024.Chap15.Lemma_15_83_8
+import StacksProject_2024.stacks_project.Chap15.Definition_15_84_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_75_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_59_3
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_67_3
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_67_6
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_67_8
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_67_19
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_78_3
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_78_5
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_82_17.RestrictionBridge
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_83_2
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_83_8
 
 noncomputable section
 

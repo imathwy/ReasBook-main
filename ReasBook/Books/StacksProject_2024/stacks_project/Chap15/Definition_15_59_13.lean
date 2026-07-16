@@ -8,8 +8,8 @@ import Mathlib.Algebra.Homology.Localization
 import Mathlib.CategoryTheory.Functor.Derived.LeftDerived
 import Mathlib.CategoryTheory.Localization.Monoidal.Braided
 import Mathlib.CategoryTheory.Monoidal.Preadditive
-import StacksProject_2024.Chap13.Remark_13_10_9
-import StacksProject_2024.Chap15.Lemma_15_58_3_Internal
+import StacksProject_2024.stacks_project.Chap13.Remark_13_10_9
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_58_3_Internal
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

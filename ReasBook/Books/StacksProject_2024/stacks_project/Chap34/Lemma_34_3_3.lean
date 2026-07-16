@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap34.Definition_34_3_4
+import StacksProject_2024.stacks_project.Chap34.Definition_34_3_4
 
 open AlgebraicGeometry
 

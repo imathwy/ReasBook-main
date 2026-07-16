@@ -2,10 +2,10 @@ import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
 import Mathlib.CategoryTheory.Functor.Derived.Adjunction
 import Mathlib.CategoryTheory.Limits.Connected
 import Mathlib.CategoryTheory.Limits.IsConnected
-import StacksProject_2024.Chap13.Definition_13_14_10
-import StacksProject_2024.Chap13.Lemma_13_30_1
-import StacksProject_2024.Chap13.Situation_13_15_1
-import StacksProject_2024.Chap21.Lemma_21_39_7
+import StacksProject_2024.stacks_project.Chap13.Definition_13_14_10
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_30_1
+import StacksProject_2024.stacks_project.Chap13.Situation_13_15_1
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_39_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

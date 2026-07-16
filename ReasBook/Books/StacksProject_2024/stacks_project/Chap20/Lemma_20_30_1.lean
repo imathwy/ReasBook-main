@@ -1,11 +1,11 @@
-import StacksProject_2024.Chap06.Definition_6_27_1
-import StacksProject_2024.Chap14.Example_14_33_1
-import StacksProject_2024.Chap14.Lemma_14_33_2
-import StacksProject_2024.Chap14.Lemma_14_28_5
-import StacksProject_2024.Chap14.Lemma_14_28_7
-import StacksProject_2024.Chap17.Definition_17_20_1
-import StacksProject_2024.Chap17.ModuleRestrictionAndStalks
-import StacksProject_2024.Chap20.«20_11_0_1»
+import StacksProject_2024.stacks_project.Chap06.Definition_6_27_1
+import StacksProject_2024.stacks_project.Chap14.Example_14_33_1
+import StacksProject_2024.stacks_project.Chap14.Lemma_14_33_2
+import StacksProject_2024.stacks_project.Chap14.Lemma_14_28_5
+import StacksProject_2024.stacks_project.Chap14.Lemma_14_28_7
+import StacksProject_2024.stacks_project.Chap17.Definition_17_20_1
+import StacksProject_2024.stacks_project.Chap17.ModuleRestrictionAndStalks
+import StacksProject_2024.stacks_project.Chap20.«20_11_0_1»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

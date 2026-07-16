@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap32.Situation_32_4_5
+import StacksProject_2024.stacks_project.Chap32.Situation_32_4_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -2,11 +2,11 @@ import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.Colimits
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.Limits
 import Mathlib.CategoryTheory.Limits.Lattice
-import StacksProject_2024.Chap06.ClosedSubsetInclusion
-import StacksProject_2024.Chap06.Definition_6_26_1
-import StacksProject_2024.Chap18.Lemma_18_14_2
-import StacksProject_2024.Chap20.«20_9_0_1»
-import StacksProject_2024.Chap20.OpensInstances
+import StacksProject_2024.stacks_project.Chap06.ClosedSubsetInclusion
+import StacksProject_2024.stacks_project.Chap06.Definition_6_26_1
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_14_2
+import StacksProject_2024.stacks_project.Chap20.«20_9_0_1»
+import StacksProject_2024.stacks_project.Chap20.OpensInstances
 
 open CategoryTheory CategoryTheory.Limits Opposite TopologicalSpace AlgebraicGeometry
 open CategoryTheory.Limits.CompleteLattice

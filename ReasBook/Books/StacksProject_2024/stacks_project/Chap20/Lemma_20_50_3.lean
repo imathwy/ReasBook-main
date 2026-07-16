@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap20.Example_20_50_2_Core
-import StacksProject_2024.Chap20.OpensInstances
-import StacksProject_2024.Chap21.Lemma_21_48_3
+import StacksProject_2024.stacks_project.Chap20.Example_20_50_2_Core
+import StacksProject_2024.stacks_project.Chap20.OpensInstances
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_48_3
 
 open AlgebraicGeometry
 open CategoryTheory

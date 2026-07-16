@@ -1,8 +1,8 @@
 import Mathlib.Algebra.Homology.HomotopyCategory.DegreewiseSplit
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap22.AdmissibleShortExact
-import StacksProject_2024.Chap13.Lemma_13_9_10
-import StacksProject_2024.Chap13.Lemma_13_10_2
+import StacksProject_2024.stacks_project.Chap22.AdmissibleShortExact
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_9_10
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_10_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

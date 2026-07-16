@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Data.List.TFAE
-import StacksProject_2024.Chap10.Lemma_10_53_5
-import StacksProject_2024.Chap10.Lemma_10_153_3
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_53_5
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_153_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

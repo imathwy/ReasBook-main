@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap13.Definition_13_31_1
+import StacksProject_2024.stacks_project.Chap13.Definition_13_31_1
 
 open CategoryTheory
 

@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap13.Lemma_13_31_7
-import StacksProject_2024.Chap19.Theorem_19_12_6
-import StacksProject_2024.Chap21.Lemma_21_20_3
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_31_7
+import StacksProject_2024.stacks_project.Chap19.Theorem_19_12_6
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_20_3
 
 open CategoryTheory
 open Opposite

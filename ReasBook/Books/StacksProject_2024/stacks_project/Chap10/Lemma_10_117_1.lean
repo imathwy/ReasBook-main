@@ -1,9 +1,9 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_57_8
-import StacksProject_2024.Chap10.Definition_10_59_6
-import StacksProject_2024.Chap10.Definition_10_59_8
-import StacksProject_2024.Chap10.Proposition_10_60_9
-import StacksProject_2024.Chap10.Lemma_10_114_6
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_57_8
+import StacksProject_2024.stacks_project.Chap10.Definition_10_59_6
+import StacksProject_2024.stacks_project.Chap10.Definition_10_59_8
+import StacksProject_2024.stacks_project.Chap10.Proposition_10_60_9
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_114_6
 
 open Filter Ideal HomogeneousIdeal IsLocalRing TopologicalSpace
 

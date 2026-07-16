@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap21.Lemma_21_44_9_KFlat
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_44_9_KFlat
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

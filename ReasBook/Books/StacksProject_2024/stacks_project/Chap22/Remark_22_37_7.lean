@@ -1,5 +1,5 @@
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import StacksProject_2024.Chap22.Proposition_22_37_6
+import StacksProject_2024.stacks_project.Chap22.Proposition_22_37_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

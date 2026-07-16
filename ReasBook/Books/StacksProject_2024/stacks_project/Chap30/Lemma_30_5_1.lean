@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap29.Lemma_29_25_4
-import StacksProject_2024.Chap30.Lemma_30_2_3
+import StacksProject_2024.stacks_project.Chap29.Lemma_29_25_4
+import StacksProject_2024.stacks_project.Chap30.Lemma_30_2_3
 
 open AlgebraicGeometry
 open CategoryTheory

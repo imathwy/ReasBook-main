@@ -5,7 +5,7 @@ import Mathlib.LinearAlgebra.Matrix.Unique
 import Mathlib.RingTheory.Artinian.Module
 import Mathlib.RingTheory.SimpleModule.WedderburnArtin
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap11.Lemma_11_4_6
+import StacksProject_2024.stacks_project.Chap11.Lemma_11_4_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

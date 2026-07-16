@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Homology.HomologySequenceLemmas
 import Mathlib.CategoryTheory.Preadditive.AdditiveFunctor
-import StacksProject_2024.Chap12.Definition_12_12_1
-import StacksProject_2024.Chap21.Lemma_21_9_1
+import StacksProject_2024.stacks_project.Chap12.Definition_12_12_1
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_9_1
 
 open CategoryTheory CategoryTheory.Limits
 

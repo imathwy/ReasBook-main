@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap06.Definition_6_7_4
+import StacksProject_2024.stacks_project.Chap06.Definition_6_7_4
 import Mathlib.Tactic.Recall
 
 -- Declarations for this item will be appended below by the statement pipeline.

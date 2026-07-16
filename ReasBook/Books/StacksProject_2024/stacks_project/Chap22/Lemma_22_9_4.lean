@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap13.Lemma_13_9_14
-import StacksProject_2024.Chap22.AdmissibleShortExact
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_9_14
+import StacksProject_2024.stacks_project.Chap22.AdmissibleShortExact
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

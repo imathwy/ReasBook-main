@@ -8,10 +8,10 @@ import Mathlib.RingTheory.Localization.AtPrime.Basic
 import Mathlib.RingTheory.Noetherian.Defs
 import Mathlib.RingTheory.LocalProperties.Projective
 import Mathlib.RingTheory.TensorProduct.Free
-import StacksProject_2024.Chap10.Lemma_10_19_1
-import StacksProject_2024.Chap10.Lemma_10_20_1_Nakayama_s_lemma
-import StacksProject_2024.Chap10.Lemma_10_75_7
-import StacksProject_2024.Chap10.Theorem_10_85_4
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_19_1
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_20_1_Nakayama_s_lemma
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_75_7
+import StacksProject_2024.stacks_project.Chap10.Theorem_10_85_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,10 +1,10 @@
 import Mathlib.CategoryTheory.Functor.Derived.LeftDerived
-import StacksProject_2024.Chap04.Lemma_4_33_14
-import StacksProject_2024.Chap08.Lemma_8_10_3
-import StacksProject_2024.Chap21.Example_21_39_1_Category_over_point
-import StacksProject_2024.Chap21.Example_21_39_3
-import StacksProject_2024.Chap21.Lemma_21_40_1
-import StacksProject_2024.Chap21.Situation_21_38_1
+import StacksProject_2024.stacks_project.Chap04.Lemma_4_33_14
+import StacksProject_2024.stacks_project.Chap08.Lemma_8_10_3
+import StacksProject_2024.stacks_project.Chap21.Example_21_39_1_Category_over_point
+import StacksProject_2024.stacks_project.Chap21.Example_21_39_3
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_40_1
+import StacksProject_2024.stacks_project.Chap21.Situation_21_38_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

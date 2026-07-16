@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap34.Definition_34_8_4
-import StacksProject_2024.Chap34.Definition_34_10_1
+import StacksProject_2024.stacks_project.Chap34.Definition_34_8_4
+import StacksProject_2024.stacks_project.Chap34.Definition_34_10_1
 
 open CategoryTheory
 

@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap21.RingedSiteDerivedBasic
-import StacksProject_2024.Chap21.Remark_21_35_11
+import StacksProject_2024.stacks_project.Chap21.RingedSiteDerivedBasic
+import StacksProject_2024.stacks_project.Chap21.Remark_21_35_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

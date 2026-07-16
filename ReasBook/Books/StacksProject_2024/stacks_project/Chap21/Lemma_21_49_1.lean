@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap10.Lemma_10_55_6
-import StacksProject_2024.Chap20.Definition_20_46_1
-import StacksProject_2024.Chap21.Lemma_21_20_5_core
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_55_6
+import StacksProject_2024.stacks_project.Chap20.Definition_20_46_1
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_20_5_core
 
 open CategoryTheory
 

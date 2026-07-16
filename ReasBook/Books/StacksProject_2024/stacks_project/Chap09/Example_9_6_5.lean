@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap09.Example_9_3_6
+import StacksProject_2024.stacks_project.Chap09.Example_9_3_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

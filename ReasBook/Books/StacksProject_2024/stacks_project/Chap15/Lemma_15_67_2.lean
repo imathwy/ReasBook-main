@@ -1,10 +1,10 @@
-import StacksProject_2024.Chap13.Definition_13_8_1
-import StacksProject_2024.Chap13.Lemma_13_35_7
-import StacksProject_2024.Chap10.Lemma_10_75_8
-import StacksProject_2024.Chap15.Definition_15_59_1
-import StacksProject_2024.Chap15.Definition_15_67_1
-import StacksProject_2024.Chap15.Lemma_15_66_6
-import StacksProject_2024.Chap15.Lemma_15_59_14
+import StacksProject_2024.stacks_project.Chap13.Definition_13_8_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_35_7
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_75_8
+import StacksProject_2024.stacks_project.Chap15.Definition_15_59_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_67_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_66_6
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_59_14
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

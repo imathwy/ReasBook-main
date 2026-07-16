@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap31.Definition_31_13_1_EffectiveCartier
+import StacksProject_2024.stacks_project.Chap31.Definition_31_13_1_EffectiveCartier
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

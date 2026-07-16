@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategoryBasic
 
 -- Lightweight owner API extracted from Lemma 29.11.5 so later local results can reuse the
 -- quasi-coherent algebra-over-a-scheme interface without importing the heavier equivalence file.

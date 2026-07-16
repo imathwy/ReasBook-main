@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap06.Definition_6_26_1
-import StacksProject_2024.Chap31.Definition_31_23_3
-import StacksProject_2024.Chap31.Definition_31_23_4
-import StacksProject_2024.Chap31.Definition_31_23_7
+import StacksProject_2024.stacks_project.Chap06.Definition_6_26_1
+import StacksProject_2024.stacks_project.Chap31.Definition_31_23_3
+import StacksProject_2024.stacks_project.Chap31.Definition_31_23_4
+import StacksProject_2024.stacks_project.Chap31.Definition_31_23_7
 
 open AlgebraicGeometry
 open CategoryTheory

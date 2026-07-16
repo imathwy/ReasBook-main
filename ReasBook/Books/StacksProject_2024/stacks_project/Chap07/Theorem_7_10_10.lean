@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap07.PlusNotation
-import StacksProject_2024.Chap07.Definition_7_10_9
-import StacksProject_2024.Chap07.Definition_7_3_1
+import StacksProject_2024.stacks_project.Chap07.PlusNotation
+import StacksProject_2024.stacks_project.Chap07.Definition_7_10_9
+import StacksProject_2024.stacks_project.Chap07.Definition_7_3_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap06.Extension_by_zero_by_the_initial_object
-import StacksProject_2024.Chap20.ConstantIntegerSheaf
+import StacksProject_2024.stacks_project.Chap06.Extension_by_zero_by_the_initial_object
+import StacksProject_2024.stacks_project.Chap20.ConstantIntegerSheaf
 
 open CategoryTheory TopCat TopologicalSpace
 

@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap12.Definition_12_27_5
-import StacksProject_2024.Chap12.Lemma_12_29_5
-import StacksProject_2024.Chap15.Lemma_15_55_9
+import StacksProject_2024.stacks_project.Chap12.Definition_12_27_5
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_29_5
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_55_9
 
 open CategoryTheory Limits
 open scoped Topology

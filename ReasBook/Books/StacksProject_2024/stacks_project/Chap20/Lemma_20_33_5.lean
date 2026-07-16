@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap20.Lemma_20_33_2
-import StacksProject_2024.Chap20.Open_subspace_module_pushforward_along_derived
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_33_2
+import StacksProject_2024.stacks_project.Chap20.Open_subspace_module_pushforward_along_derived
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

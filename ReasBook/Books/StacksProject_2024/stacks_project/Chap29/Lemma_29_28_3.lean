@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap05.Definition_5_10_1
-import StacksProject_2024.Chap29.Definition_29_28_4
+import StacksProject_2024.stacks_project.Chap05.Definition_5_10_1
+import StacksProject_2024.stacks_project.Chap29.Definition_29_28_4
 -- Declarations for this item will be appended below by the statement pipeline.
 
 open AlgebraicGeometry

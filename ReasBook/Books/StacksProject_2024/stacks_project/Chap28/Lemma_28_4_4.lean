@@ -1,6 +1,6 @@
 import Mathlib.AlgebraicGeometry.Properties
-import StacksProject_2024.Chap28.Definition_28_4_2
-import StacksProject_2024.Chap26.Definition_26_12_1
+import StacksProject_2024.stacks_project.Chap28.Definition_28_4_2
+import StacksProject_2024.stacks_project.Chap26.Definition_26_12_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

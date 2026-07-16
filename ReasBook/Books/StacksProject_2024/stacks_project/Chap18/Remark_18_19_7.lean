@@ -2,9 +2,9 @@ import Mathlib
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.PullbackContinuous
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.PushforwardContinuous
 import Mathlib.CategoryTheory.Sites.Over
-import StacksProject_2024.Chap07.Lemma_7_23_1
-import StacksProject_2024.Chap07.Remark_7_25_10
-import StacksProject_2024.Chap18.Remark_18_19_6
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_23_1
+import StacksProject_2024.stacks_project.Chap07.Remark_7_25_10
+import StacksProject_2024.stacks_project.Chap18.Remark_18_19_6
 
 open CategoryTheory Opposite
 open CategoryTheory.Limits

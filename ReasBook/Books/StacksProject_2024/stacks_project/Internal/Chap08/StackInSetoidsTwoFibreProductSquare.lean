@@ -1,5 +1,5 @@
-import StacksProject_2024.Internal.Chap08.StackInGroupoidsTwoFibreProductSquare
-import StacksProject_2024.Chap08.Definition_8_6_5
+import StacksProject_2024.stacks_project.Internal.Chap08.StackInGroupoidsTwoFibreProductSquare
+import StacksProject_2024.stacks_project.Chap08.Definition_8_6_5
 
 universe u v
 

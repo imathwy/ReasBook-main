@@ -1,6 +1,6 @@
 import Mathlib.CategoryTheory.Limits.Constructions.FiniteProductsOfBinaryProducts
 import Mathlib.AlgebraicTopology.SimplicialSet.Monoidal
-import StacksProject_2024.Chap14.Lemma_14_13_3
+import StacksProject_2024.stacks_project.Chap14.Lemma_14_13_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

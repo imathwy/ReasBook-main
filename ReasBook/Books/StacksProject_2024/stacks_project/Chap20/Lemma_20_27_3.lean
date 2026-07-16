@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap20.Definition_20_26_14_Core
-import StacksProject_2024.Chap20.Lemma_20_26_8
-import StacksProject_2024.Chap20.Lemma_20_26_12
-import StacksProject_2024.Chap20.Lemma_20_27_1
+import StacksProject_2024.stacks_project.Chap20.Definition_20_26_14_Core
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_26_8
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_26_12
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_27_1
 
 noncomputable section
 

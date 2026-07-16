@@ -1,9 +1,9 @@
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
 import Mathlib.CategoryTheory.Sites.Over
-import StacksProject_2024.Chap13.Lemma_13_14_16
-import StacksProject_2024.Chap18.Lemma_18_20_1
-import StacksProject_2024.Chap21.Lemma_21_19_1_core
-import StacksProject_2024.Chap21.RingedSiteDerivedBasic
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_14_16
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_20_1
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_19_1_core
+import StacksProject_2024.stacks_project.Chap21.RingedSiteDerivedBasic
 
 open CategoryTheory
 open CategoryTheory.Limits

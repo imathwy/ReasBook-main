@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap24.Definition_24_4_1
+import StacksProject_2024.stacks_project.Chap24.Definition_24_4_1
 
 open CategoryTheory Limits
 open scoped SheafOfModules.RingedSite.GradedModuleSheaf

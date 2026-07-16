@@ -1,7 +1,7 @@
 import Mathlib.CategoryTheory.Sites.SheafCohomology.Basic
-import StacksProject_2024.Chap18.Lemma_18_3_1
-import StacksProject_2024.Chap19.Theorem_19_7_4
-import StacksProject_2024.Chap21.Lemma_21_7_3.Index
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_3_1
+import StacksProject_2024.stacks_project.Chap19.Theorem_19_7_4
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_7_3.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

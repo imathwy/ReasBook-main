@@ -1,9 +1,9 @@
-import StacksProject_2024.Chap15.PrincipalIdeal
-import StacksProject_2024.Chap15.Lemma_15_89_9
-import StacksProject_2024.Chap20.Global_sections_cohomology_delta_functor
-import StacksProject_2024.Chap20.Lemma_20_11_2
-import StacksProject_2024.Chap20.Lemma_20_35_3
-import StacksProject_2024.Chap20.Lemma_20_36_1
+import StacksProject_2024.stacks_project.Chap15.PrincipalIdeal
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_89_9
+import StacksProject_2024.stacks_project.Chap20.Global_sections_cohomology_delta_functor
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_11_2
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_35_3
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_36_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

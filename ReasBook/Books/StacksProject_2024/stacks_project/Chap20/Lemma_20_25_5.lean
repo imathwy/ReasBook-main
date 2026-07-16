@@ -1,14 +1,14 @@
 import Mathlib.Algebra.Homology.ShortComplex.ShortExact
 import Mathlib.CategoryTheory.Abelian.Ext
 import Mathlib.RingTheory.Derivation.Basic
-import StacksProject_2024.Chap17.Definition_17_28_3
-import StacksProject_2024.Chap18.KernelIdealSheaf
-import StacksProject_2024.Chap18.Lemma_18_33_9_Owner
-import StacksProject_2024.Chap20.«20_11_0_1»
-import StacksProject_2024.Chap20.ConstantIntegerSheaf
-import StacksProject_2024.Chap20.Global_sections_module_owners_core
-import StacksProject_2024.Chap20.Lemma_20_11_2
-import StacksProject_2024.Chap20.OpensInstances
+import StacksProject_2024.stacks_project.Chap17.Definition_17_28_3
+import StacksProject_2024.stacks_project.Chap18.KernelIdealSheaf
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_33_9_Owner
+import StacksProject_2024.stacks_project.Chap20.«20_11_0_1»
+import StacksProject_2024.stacks_project.Chap20.ConstantIntegerSheaf
+import StacksProject_2024.stacks_project.Chap20.Global_sections_module_owners_core
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_11_2
+import StacksProject_2024.stacks_project.Chap20.OpensInstances
 
 open CategoryTheory
 open Opposite

@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap19.Lemma_19_13_6
-import StacksProject_2024.Chap21.SiteAbelianDerived
+import StacksProject_2024.stacks_project.Chap19.Lemma_19_13_6
+import StacksProject_2024.stacks_project.Chap21.SiteAbelianDerived
 
 open CategoryTheory
 open CategoryTheory.Limits

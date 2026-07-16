@@ -1,7 +1,7 @@
 import Mathlib.AlgebraicGeometry.Properties
-import StacksProject_2024.Chap10.Definition_10_43_1
-import StacksProject_2024.Chap10.Definition_10_47_4
-import StacksProject_2024.Chap10.Definition_10_49_1
+import StacksProject_2024.stacks_project.Chap10.Definition_10_43_1
+import StacksProject_2024.stacks_project.Chap10.Definition_10_47_4
+import StacksProject_2024.stacks_project.Chap10.Definition_10_49_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

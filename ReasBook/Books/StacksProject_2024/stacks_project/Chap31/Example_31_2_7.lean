@@ -1,10 +1,10 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import StacksProject_2024.Chap10.Definition_10_32_1
-import StacksProject_2024.Chap10.Remark_10_63_12
-import StacksProject_2024.Chap17.ModuleRestrictionAndStalks
-import StacksProject_2024.Chap15.Example_15_15_5
-import StacksProject_2024.Chap31.Definition_31_2_1
+import StacksProject_2024.stacks_project.Chap10.Definition_10_32_1
+import StacksProject_2024.stacks_project.Chap10.Remark_10_63_12
+import StacksProject_2024.stacks_project.Chap17.ModuleRestrictionAndStalks
+import StacksProject_2024.stacks_project.Chap15.Example_15_15_5
+import StacksProject_2024.stacks_project.Chap31.Definition_31_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

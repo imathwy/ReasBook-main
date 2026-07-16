@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap13.Definition_13_37_1
-import StacksProject_2024.Chap20.Global_sections_cohomology_delta_functor
-import StacksProject_2024.Chap20.Lemma_20_11_5
-import StacksProject_2024.Chap20.Definition_20_49_1
+import StacksProject_2024.stacks_project.Chap13.Definition_13_37_1
+import StacksProject_2024.stacks_project.Chap20.Global_sections_cohomology_delta_functor
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_11_5
+import StacksProject_2024.stacks_project.Chap20.Definition_20_49_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

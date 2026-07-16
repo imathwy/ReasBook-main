@@ -1,10 +1,10 @@
 import Mathlib
-import StacksProject_2024.Chap07.Definition_7_14_1
-import StacksProject_2024.Chap07.Lemma_7_13_5
-import StacksProject_2024.Chap07.Lemma_7_25_9
-import StacksProject_2024.Chap07.Lemma_7_30_7
-import StacksProject_2024.Chap07.Lemma_7_31_2
-import StacksProject_2024.Chap07.Lemma_7_31_3
+import StacksProject_2024.stacks_project.Chap07.Definition_7_14_1
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_13_5
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_25_9
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_30_7
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_31_2
+import StacksProject_2024.stacks_project.Chap07.Lemma_7_31_3
 
 open CategoryTheory Opposite
 open CategoryTheory.Limits

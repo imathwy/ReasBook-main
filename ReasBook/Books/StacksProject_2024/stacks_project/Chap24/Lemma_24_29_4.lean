@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap13.Lemma_13_30_3
-import StacksProject_2024.Chap24.Definition_24_29_2
-import StacksProject_2024.Chap24.Lemma_24_28_4
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_30_3
+import StacksProject_2024.stacks_project.Chap24.Definition_24_29_2
+import StacksProject_2024.stacks_project.Chap24.Lemma_24_28_4
 
 open CategoryTheory
 open ComplexShape

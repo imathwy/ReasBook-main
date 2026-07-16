@@ -1,9 +1,9 @@
 import Mathlib
-import StacksProject_2024.Chap15.Lemma_15_87_10
-import StacksProject_2024.Chap15.Lemma_15_92_17
-import StacksProject_2024.Chap15.Lemma_15_94_6
-import StacksProject_2024.Chap15.PrincipalIdeal
-import StacksProject_2024.Chap15.Remark_15_94_7
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_87_10
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_92_17
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_94_6
+import StacksProject_2024.stacks_project.Chap15.PrincipalIdeal
+import StacksProject_2024.stacks_project.Chap15.Remark_15_94_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

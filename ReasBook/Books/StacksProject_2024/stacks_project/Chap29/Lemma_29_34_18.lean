@@ -1,5 +1,5 @@
 import Mathlib.AlgebraicGeometry.Morphisms.Smooth
-import StacksProject_2024.Chap29.Lemma_29_32_18
+import StacksProject_2024.stacks_project.Chap29.Lemma_29_32_18
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.CategoryTheory.Sites.PreservesSheafification
-import StacksProject_2024.Chap17.Definition_17_28_1
-import StacksProject_2024.Chap18.Lemma_18_33_2
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
+import StacksProject_2024.stacks_project.Chap17.Definition_17_28_1
+import StacksProject_2024.stacks_project.Chap18.Lemma_18_33_2
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategoryBasic
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
 import Mathlib.AlgebraicGeometry.ProjectiveSpectrum.Scheme
-import StacksProject_2024.Chap28.Lemma_28_26_3
+import StacksProject_2024.stacks_project.Chap28.Lemma_28_26_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

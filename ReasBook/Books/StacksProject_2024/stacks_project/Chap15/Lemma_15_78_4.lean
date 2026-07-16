@@ -1,16 +1,16 @@
 import Mathlib
 import Mathlib.Data.List.TFAE
 import Mathlib.Tactic.TFAE
-import StacksProject_2024.Chap10.Lemma_10_11_3
-import StacksProject_2024.Chap13.Definition_13_27_1
-import StacksProject_2024.Chap15.Definition_15_65_1
-import StacksProject_2024.Chap15.Definition_15_67_1
-import StacksProject_2024.Chap15.Definition_15_69_1
-import StacksProject_2024.Chap15.Definition_15_75_1
-import StacksProject_2024.Chap15.Lemma_15_65_2
-import StacksProject_2024.Chap15.Lemma_15_65_5
-import StacksProject_2024.Chap15.Lemma_15_66_1
-import StacksProject_2024.Chap15.Lemma_15_69_2
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_11_3
+import StacksProject_2024.stacks_project.Chap13.Definition_13_27_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_65_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_67_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_69_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_75_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_65_2
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_65_5
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_66_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_69_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

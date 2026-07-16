@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap06.Lemma_6_31_7
-import StacksProject_2024.Chap06.Definition_6_7_4
-import StacksProject_2024.Chap20.ExtensionByZeroConstantIntegerSheaf
+import StacksProject_2024.stacks_project.Chap06.Lemma_6_31_7
+import StacksProject_2024.stacks_project.Chap06.Definition_6_7_4
+import StacksProject_2024.stacks_project.Chap20.ExtensionByZeroConstantIntegerSheaf
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
 import Mathlib.CategoryTheory.Monoidal.Closed.Basic
 import Mathlib.AlgebraicGeometry.Modules.Sheaf
-import StacksProject_2024.Chap17.Definition_17_12_1
+import StacksProject_2024.stacks_project.Chap17.Definition_17_12_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

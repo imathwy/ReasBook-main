@@ -1,5 +1,5 @@
-import StacksProject_2024.Chap06.RingedSpaceModuleCore
-import StacksProject_2024.Chap21.Lemma_21_44_10
+import StacksProject_2024.stacks_project.Chap06.RingedSpaceModuleCore
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_44_10
 
 open AlgebraicGeometry
 open CategoryTheory

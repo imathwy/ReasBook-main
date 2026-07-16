@@ -1,13 +1,13 @@
 import Mathlib
-import StacksProject_2024.Chap12.Lemma_12_19_12
-import StacksProject_2024.Chap12.Lemma_12_24_2
-import StacksProject_2024.Chap12.Lemma_12_24_13
-import StacksProject_2024.Chap12.Definition_12_24_5
-import StacksProject_2024.Chap12.Definition_12_24_9
-import StacksProject_2024.Chap19.Lemma_19_12_3
-import StacksProject_2024.Chap19.Lemma_19_13_12
-import StacksProject_2024.Chap19.Remark_19_13_8
-import StacksProject_2024.Chap19.Theorem_19_12_6
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_19_12
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_24_2
+import StacksProject_2024.stacks_project.Chap12.Lemma_12_24_13
+import StacksProject_2024.stacks_project.Chap12.Definition_12_24_5
+import StacksProject_2024.stacks_project.Chap12.Definition_12_24_9
+import StacksProject_2024.stacks_project.Chap19.Lemma_19_12_3
+import StacksProject_2024.stacks_project.Chap19.Lemma_19_13_12
+import StacksProject_2024.stacks_project.Chap19.Remark_19_13_8
+import StacksProject_2024.stacks_project.Chap19.Theorem_19_12_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

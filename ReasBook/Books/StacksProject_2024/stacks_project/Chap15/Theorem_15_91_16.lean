@@ -1,11 +1,11 @@
 import Mathlib
 import Mathlib.CategoryTheory.ObjectProperty.FullSubcategory
-import StacksProject_2024.Chap15.«15_6_3_1»
-import StacksProject_2024.Chap15.Lemma_15_5_4
-import StacksProject_2024.Chap15.Lemma_15_6_4
-import StacksProject_2024.Chap15.«15_91_16_1»
-import StacksProject_2024.Chap15.«15_91_16_2»
-import StacksProject_2024.Chap15.«15_91_16_3»
+import StacksProject_2024.stacks_project.Chap15.«15_6_3_1»
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_5_4
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_6_4
+import StacksProject_2024.stacks_project.Chap15.«15_91_16_1»
+import StacksProject_2024.stacks_project.Chap15.«15_91_16_2»
+import StacksProject_2024.stacks_project.Chap15.«15_91_16_3»
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

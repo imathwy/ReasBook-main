@@ -1,7 +1,7 @@
-import StacksProject_2024.Chap17.Definition_17_25_9
-import StacksProject_2024.Chap31.Definition_31_27_4
-import StacksProject_2024.Chap31.Definition_31_26_7
-import StacksProject_2024.Chap31.Lemma_31_25_4
+import StacksProject_2024.stacks_project.Chap17.Definition_17_25_9
+import StacksProject_2024.stacks_project.Chap31.Definition_31_27_4
+import StacksProject_2024.stacks_project.Chap31.Definition_31_26_7
+import StacksProject_2024.stacks_project.Chap31.Lemma_31_25_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

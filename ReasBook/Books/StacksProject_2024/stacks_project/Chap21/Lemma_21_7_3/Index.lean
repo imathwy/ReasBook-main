@@ -1,1 +1,1 @@
-import StacksProject_2024.Chap21.Lemma_21_7_3.Comparison
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_7_3.Comparison

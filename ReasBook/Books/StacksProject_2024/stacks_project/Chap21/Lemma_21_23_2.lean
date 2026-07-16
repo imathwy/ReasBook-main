@@ -1,9 +1,9 @@
-import StacksProject_2024.Chap21.Lemma_21_20_5_core
-import StacksProject_2024.Chap21.Lemma_21_20_7_core
-import StacksProject_2024.Chap21.DerivedCategoryExact
-import StacksProject_2024.Chap13.Definition_13_34_1
-import StacksProject_2024.Chap19.Lemma_19_13_6
-import StacksProject_2024.Chap15.Remark_15_87_12
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_20_5_core
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_20_7_core
+import StacksProject_2024.stacks_project.Chap21.DerivedCategoryExact
+import StacksProject_2024.stacks_project.Chap13.Definition_13_34_1
+import StacksProject_2024.stacks_project.Chap19.Lemma_19_13_6
+import StacksProject_2024.stacks_project.Chap15.Remark_15_87_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

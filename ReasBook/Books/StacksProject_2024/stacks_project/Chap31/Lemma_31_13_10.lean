@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.AlgebraicGeometry.IdealSheaf.Functorial
-import StacksProject_2024.Chap29.Definition_29_4_4
-import StacksProject_2024.Chap31.Lemma_31_13_7
+import StacksProject_2024.stacks_project.Chap29.Definition_29_4_4
+import StacksProject_2024.stacks_project.Chap31.Lemma_31_13_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

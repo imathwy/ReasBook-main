@@ -2,9 +2,9 @@ import Mathlib.Algebra.Module.FinitePresentation
 import Mathlib.Data.Finset.NatAntidiagonal
 import Mathlib.LinearAlgebra.TensorProduct.Basic
 import Mathlib.RingTheory.Support
-import StacksProject_2024.Chap10.Definition_10_5_1
-import StacksProject_2024.Chap15.Lemma_15_4_3
-import StacksProject_2024.Chap15.Definition_15_8_3
+import StacksProject_2024.stacks_project.Chap10.Definition_10_5_1
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_4_3
+import StacksProject_2024.stacks_project.Chap15.Definition_15_8_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

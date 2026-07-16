@@ -2,8 +2,8 @@ import Mathlib.Algebra.Homology.BifunctorHomotopy
 import Mathlib.Algebra.Homology.Monoidal
 import Mathlib.Algebra.Homology.Localization
 import Mathlib.CategoryTheory.Functor.Derived.LeftDerived
-import StacksProject_2024.Chap13.Remark_13_10_9
-import StacksProject_2024.Chap18.RingedSiteModuleCategoryBasic
+import StacksProject_2024.stacks_project.Chap13.Remark_13_10_9
+import StacksProject_2024.stacks_project.Chap18.RingedSiteModuleCategoryBasic
 
 noncomputable section
 

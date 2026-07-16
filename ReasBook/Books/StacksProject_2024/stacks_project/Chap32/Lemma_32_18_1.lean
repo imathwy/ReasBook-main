@@ -1,6 +1,6 @@
 import Mathlib
-import StacksProject_2024.Chap29.Definition_29_15_1
-import StacksProject_2024.Chap29.Definition_29_29_1
+import StacksProject_2024.stacks_project.Chap29.Definition_29_15_1
+import StacksProject_2024.stacks_project.Chap29.Definition_29_29_1
 
 open CategoryTheory Limits
 

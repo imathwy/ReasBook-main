@@ -1,8 +1,8 @@
 import Mathlib
-import StacksProject_2024.Chap10.Lemma_10_20_1_Nakayama_s_lemma
-import StacksProject_2024.Chap10.Lemma_10_82_13
-import StacksProject_2024.Chap15.Lemma_15_3_2
-import StacksProject_2024.Chap15.Definition_15_3_1
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_20_1_Nakayama_s_lemma
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_82_13
+import StacksProject_2024.stacks_project.Chap15.Lemma_15_3_2
+import StacksProject_2024.stacks_project.Chap15.Definition_15_3_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

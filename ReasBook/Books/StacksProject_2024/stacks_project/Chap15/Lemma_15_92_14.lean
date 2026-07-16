@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
 import Mathlib.CategoryTheory.Preadditive.Yoneda.Limits
-import StacksProject_2024.Chap13.Definition_13_34_1
-import StacksProject_2024.Chap15.Definition_15_92_4
+import StacksProject_2024.stacks_project.Chap13.Definition_13_34_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_92_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

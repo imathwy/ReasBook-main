@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap10.KernelIsGeneratedByRegularSequence
+import StacksProject_2024.stacks_project.Chap10.KernelIsGeneratedByRegularSequence
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

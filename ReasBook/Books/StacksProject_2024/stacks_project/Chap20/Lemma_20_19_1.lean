@@ -1,7 +1,7 @@
 import Mathlib.CategoryTheory.Sites.SheafCohomology.Basic
 import Mathlib.Algebra.Category.ModuleCat.Sheaf.Colimits
-import StacksProject_2024.Chap06.RingedSpaceModuleCore
-import StacksProject_2024.Chap21.Lemma_21_12_2
+import StacksProject_2024.stacks_project.Chap06.RingedSpaceModuleCore
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_12_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

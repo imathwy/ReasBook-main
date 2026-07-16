@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.CategoryTheory.Limits.ExactFunctor
-import StacksProject_2024.Chap07.Definition_7_14_1
+import StacksProject_2024.stacks_project.Chap07.Definition_7_14_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

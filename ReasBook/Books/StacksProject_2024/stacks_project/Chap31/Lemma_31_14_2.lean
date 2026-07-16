@@ -1,7 +1,7 @@
 import Mathlib
-import StacksProject_2024.Chap29.Lemma_29_31_2
-import StacksProject_2024.Chap31.Definition_31_14_1
-import StacksProject_2024.Chap31.Definition_31_21_1
+import StacksProject_2024.stacks_project.Chap29.Lemma_29_31_2
+import StacksProject_2024.stacks_project.Chap31.Definition_31_14_1
+import StacksProject_2024.stacks_project.Chap31.Definition_31_21_1
 
 open CategoryTheory
 open CategoryTheory.MonoidalCategory

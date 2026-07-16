@@ -1,7 +1,7 @@
 import Mathlib.Algebra.Homology.DerivedCategory.TStructure
 import Mathlib.CategoryTheory.Triangulated.Yoneda
-import StacksProject_2024.Chap24.Lemma_24_25_12
-import StacksProject_2024.Chap24.Lemma_24_29_8
+import StacksProject_2024.stacks_project.Chap24.Lemma_24_25_12
+import StacksProject_2024.stacks_project.Chap24.Lemma_24_29_8
 
 open CategoryTheory
 open DerivedCategory

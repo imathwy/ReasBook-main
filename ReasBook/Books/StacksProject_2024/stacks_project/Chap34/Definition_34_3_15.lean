@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap34.Lemma_34_3_14
+import StacksProject_2024.stacks_project.Chap34.Lemma_34_3_14
 
 open CategoryTheory
 open AlgebraicGeometry

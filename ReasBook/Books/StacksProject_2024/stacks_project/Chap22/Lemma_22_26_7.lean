@@ -1,6 +1,6 @@
 import Mathlib.CategoryTheory.Preadditive.AdditiveFunctor
-import StacksProject_2024.Chap22.Example_22_26_6_Differential_graded_category_of_complexes
-import StacksProject_2024.Chap22.Lemma_22_26_5
+import StacksProject_2024.stacks_project.Chap22.Example_22_26_6_Differential_graded_category_of_complexes
+import StacksProject_2024.stacks_project.Chap22.Lemma_22_26_5
 
 open CategoryTheory
 open CategoryTheory.Limits

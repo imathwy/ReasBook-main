@@ -1,5 +1,5 @@
 import Mathlib
-import StacksProject_2024.Chap07.Remark_7_26_7
+import StacksProject_2024.stacks_project.Chap07.Remark_7_26_7
 
 open CategoryTheory
 open AlgebraicGeometry

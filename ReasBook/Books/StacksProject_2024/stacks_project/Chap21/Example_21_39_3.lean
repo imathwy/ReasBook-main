@@ -1,4 +1,4 @@
-import StacksProject_2024.Chap21.Example_21_39_2_Computing_homology
+import StacksProject_2024.stacks_project.Chap21.Example_21_39_2_Computing_homology
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

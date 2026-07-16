@@ -1,10 +1,10 @@
 import Mathlib.Algebra.Homology.DerivedCategory.ExactFunctor
 import Mathlib.CategoryTheory.Functor.Derived.LeftDerived
-import StacksProject_2024.Chap15.«15_60_1_1»
-import StacksProject_2024.Chap10.Lemma_10_76_1
-import StacksProject_2024.Chap13.Lemma_13_14_16
-import StacksProject_2024.Chap13.Situation_13_15_1
-import StacksProject_2024.Chap21.Lemma_21_39_7
+import StacksProject_2024.stacks_project.Chap15.«15_60_1_1»
+import StacksProject_2024.stacks_project.Chap10.Lemma_10_76_1
+import StacksProject_2024.stacks_project.Chap13.Lemma_13_14_16
+import StacksProject_2024.stacks_project.Chap13.Situation_13_15_1
+import StacksProject_2024.stacks_project.Chap21.Lemma_21_39_7
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,7 +1,7 @@
 import Mathlib.CategoryTheory.Limits.Lattice
-import StacksProject_2024.Chap20.Open_subspace_module_pushforward_core
-import StacksProject_2024.Chap20.Lemma_20_9_3
-import StacksProject_2024.Chap20.OpensInstances
+import StacksProject_2024.stacks_project.Chap20.Open_subspace_module_pushforward_core
+import StacksProject_2024.stacks_project.Chap20.Lemma_20_9_3
+import StacksProject_2024.stacks_project.Chap20.OpensInstances
 
 open CategoryTheory Opposite
 open CategoryTheory.Limits

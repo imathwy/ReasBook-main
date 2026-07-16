@@ -1,6 +1,6 @@
-import StacksProject_2024.Chap17.Definition_17_5_1
-import StacksProject_2024.Chap30.Lemma_30_12_2
-import StacksProject_2024.Chap30.Lemma_30_12_3
+import StacksProject_2024.stacks_project.Chap17.Definition_17_5_1
+import StacksProject_2024.stacks_project.Chap30.Lemma_30_12_2
+import StacksProject_2024.stacks_project.Chap30.Lemma_30_12_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,5 +1,5 @@
 import Mathlib.AlgebraicGeometry.Scheme
-import StacksProject_2024.Chap10.Definition_10_37_11
+import StacksProject_2024.stacks_project.Chap10.Definition_10_37_11
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

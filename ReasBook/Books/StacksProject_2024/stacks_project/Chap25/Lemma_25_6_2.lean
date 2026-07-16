@@ -1,8 +1,8 @@
 import Mathlib.Algebra.Category.Grp.Adjunctions
 import Mathlib.CategoryTheory.Preadditive.Yoneda.Basic
 import Mathlib.CategoryTheory.Sites.Sheafification
-import StacksProject_2024.Chap18.Definition_18_5_1
-import StacksProject_2024.Chap25.Definition_25_6_1
+import StacksProject_2024.stacks_project.Chap18.Definition_18_5_1
+import StacksProject_2024.stacks_project.Chap25.Definition_25_6_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

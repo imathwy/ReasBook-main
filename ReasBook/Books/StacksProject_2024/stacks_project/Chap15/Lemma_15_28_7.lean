@@ -1,6 +1,6 @@
 import Mathlib.Algebra.Category.ModuleCat.Biproducts
 import Mathlib.Algebra.Homology.HomotopyCofiber
-import StacksProject_2024.Chap15.Definition_15_28_1
+import StacksProject_2024.stacks_project.Chap15.Definition_15_28_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
