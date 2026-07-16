@@ -23,8 +23,7 @@ import RiemannSurfaces_Forster_1981.Book
 -- import SmoothManifolds_Lee_2012.Book
 -- repair-pending: book:StacksProject_2024; last-run=20260716T-baseline-inventory-g00-474f1971; status=repair-incomplete
 -- import StacksProject_2024.Book
--- repair-pending: book:chapter1_reference_format; last-run=20260715T234631Z-root-allowlist-audit-474f1971; status=repair-incomplete
--- import chapter1_reference_format.Book
+import chapter1_reference_format.Book
 -- repair-pending: book:stacks_proof; last-run=20260716T-baseline-inventory-g00-474f1971; status=repair-incomplete
 -- import stacks_proof.Book
 import Papers.OnSomeLocalRings_Maassaran_2025.Paper

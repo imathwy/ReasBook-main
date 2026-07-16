@@ -20,7 +20,7 @@ variable {K : Type u} [NormedField K]
 
 /-- A normed field is complete exactly when every Cauchy sequence in its norm-induced metric
 converges. -/
-theorem completeSpace_iff_cauchySeq_tendsto :
+theorem chapter1ReferenceFormat_completeSpace_iff_cauchySeq_tendsto :
     CompleteSpace K ↔ ∀ u : ℕ → K, ∀ (_ : CauchySeq u), ∃ a : K, Tendsto u atTop (𝓝 a) := by
   constructor
   · intro hK u hu
