@@ -1,7 +1,7 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04.Corollary_4_28
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04.Definition_4_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Theorem_5_5
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap04.Corollary_4_28
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap04.Definition_4_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap05.Theorem_5_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -9,6 +9,8 @@ open Filter Function
 open scoped BigOperators InnerProductSpace Topology
 
 universe u
+
+namespace Corollary517KM
 
 section
 
@@ -183,6 +185,10 @@ private theorem krasnoselskiiMannIteration_sub_eq_relax_residual
         abel_nf
 
 end
+
+end Corollary517KM
+
+open Corollary517KM
 
 section
 

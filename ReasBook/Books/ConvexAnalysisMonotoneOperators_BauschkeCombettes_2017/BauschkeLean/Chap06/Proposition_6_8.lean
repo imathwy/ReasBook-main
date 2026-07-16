@@ -1,4 +1,4 @@
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Proposition_6_2
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap06.Proposition_6_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -318,7 +318,8 @@ lemma exists_mem_pointedConeHull_image_finset_erase_of_not_linearIndependent
         intro i hi
         have hij : i ≠ j := (Finset.mem_erase.mp hi).1
         have his : i ∈ s := (Finset.mem_erase.mp hi).2
-        simp [c, Finset.mem_erase, hij, his]
+        simp only [c, dif_pos hi]
+        rfl
       _ = ∑ i ∈ s, δ i • x i := by
         have hsplitted :
             ∑ i ∈ s.erase j, δ i • x i + δ j • x j = ∑ i ∈ s, δ i • x i :=

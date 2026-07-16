@@ -1,4 +1,5 @@
 import Mathlib
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap06.Definition_6_22
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -11,31 +12,6 @@ namespace Set
 section
 
 variable {𝓗 : Type u} [NormedAddCommGroup 𝓗] [InnerProductSpace ℝ 𝓗]
-
-/-- The polar cone `Cᵒ⊖` of `C` consists of the vectors `u` such that the inner-product supremum
-of `C` at `u` is nonpositive. -/
-def polarCone (C : Set 𝓗) : Set 𝓗 :=
-  {u | sSup ((fun x : 𝓗 ↦ (⟪x, u⟫_ℝ : EReal)) '' C) ≤ 0}
-
-scoped postfix:100 "ᵒ⊖" => Set.polarCone
-
-/-- A vector lies in the polar cone exactly when its inner products with all points of `C` are
-nonpositive. -/
-theorem mem_polarCone_iff_forall_inner_nonpos {C : Set 𝓗} {u : 𝓗} :
-    u ∈ Cᵒ⊖ ↔ ∀ x ∈ C, ⟪x, u⟫_ℝ ≤ 0 := by
-  change sSup ((fun x : 𝓗 ↦ (⟪x, u⟫_ℝ : EReal)) '' C) ≤ 0 ↔
-      ∀ x ∈ C, ⟪x, u⟫_ℝ ≤ 0
-  rw [sSup_le_iff]
-  constructor
-  · intro hu x hx
-    have hxu : (⟪x, u⟫_ℝ : EReal) ≤ (0 : EReal) :=
-      hu _ (Set.mem_image_of_mem _ hx)
-    exact_mod_cast hxu
-  · intro hu a ha
-    rcases ha with ⟨x, hx, rfl⟩
-    have hxu : (⟪x, u⟫_ℝ : EReal) ≤ (0 : EReal) := by
-      exact_mod_cast hu x hx
-    simpa using hxu
 
 /-- Helper for Remark 7.17.1: enlarging a set can only shrink its polar cone. -/
 lemma polarCone_subset_of_subset {C D : Set 𝓗} (hCD : C ⊆ D) :

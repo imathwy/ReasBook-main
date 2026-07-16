@@ -1,7 +1,9 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04.Proposition_4_4
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_26
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.ProximityOperator
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap04.Proposition_4_4
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap12.Proposition_12_26
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap12.ProximityOperator
+
+open SubtypeFirmness
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

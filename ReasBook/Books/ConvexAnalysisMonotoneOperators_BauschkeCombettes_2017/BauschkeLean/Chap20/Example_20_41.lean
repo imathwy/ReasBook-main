@@ -1,9 +1,9 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap01.Text_1_0_13
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Proposition_17_50
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap20.Example_20_34
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap20.Proposition_20_22
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap20.Proposition_20_40
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap01.Text_1_0_13
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap17.Proposition_17_50
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap20.Example_20_34
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap20.Proposition_20_22
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap20.Proposition_20_40
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -17,7 +17,7 @@ noncomputable section
 
 namespace HilbertBasis
 
-local notation "L2" => ℓ²(ℕ, ℝ)
+local notation "L2" => lp (fun _ : ℕ ↦ ℝ) 2
 
 variable {H : Type u} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
 

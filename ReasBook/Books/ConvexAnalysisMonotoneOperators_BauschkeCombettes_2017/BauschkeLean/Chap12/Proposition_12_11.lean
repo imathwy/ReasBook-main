@@ -1,6 +1,6 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Definition_8_7
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_37
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap08.Definition_8_7
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap12.Proposition_12_37
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -67,7 +67,7 @@ epigraph of their infimal convolution is convex. -/
 theorem convex_epigraph_infimalConvolution
     (f g : H → Set.Ioi (⊥ : EReal))
     (hf : ConvexOn f (effectiveDomain f)) (hg : ConvexOn g (effectiveDomain g)) :
-    Convex ℝ (epigraph (f □ g)) := by
+    Convex ℝ (epigraph (infimalConvolution f.asEReal g.asEReal)) := by
   let L : (H × H) →ᵃ[ℝ] H :=
     ((LinearMap.fst ℝ H H) + (LinearMap.snd ℝ H H)).toAffineMap
   rw [infimalConvolution_eq_infimalPostcomposition_separableSum]

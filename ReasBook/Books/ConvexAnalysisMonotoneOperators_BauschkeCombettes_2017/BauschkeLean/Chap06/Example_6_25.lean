@@ -1,5 +1,5 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Definition_6_22
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap06.Definition_6_22
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -13,14 +13,16 @@ variable {I : Type u}
 
 /-- Helper for Example 6.25: a vector is in the dual of the `ℓ²` positive orthant exactly when all
 of its coordinates are nonnegative. -/
-private theorem mem_innerDual_ell2PositiveOrthant_iff (x : ℓ²(I, ℝ)) :
-    x ∈ (ProperCone.innerDual ({y : ℓ²(I, ℝ) | ∀ i, 0 ≤ y i} : Set (ℓ²(I, ℝ))) :
-      Set (ℓ²(I, ℝ))) ↔ ∀ i, 0 ≤ x i := by
+private theorem mem_innerDual_ell2PositiveOrthant_iff (x : lp (fun _ : I ↦ ℝ) 2) :
+    x ∈ (ProperCone.innerDual
+      ({y : lp (fun _ : I ↦ ℝ) 2 | ∀ i, 0 ≤ y i} : Set (lp (fun _ : I ↦ ℝ) 2)) :
+      Set (lp (fun _ : I ↦ ℝ) 2)) ↔ ∀ i, 0 ≤ x i := by
   classical
   constructor
   · intro hx i
     -- Test the dual inequality on the `i`-th standard basis vector of `ℓ²(I, ℝ)`.
-    have hvec : lp.single 2 i (1 : ℝ) ∈ ({y : ℓ²(I, ℝ) | ∀ i, 0 ≤ y i} : Set (ℓ²(I, ℝ))) := by
+    have hvec : lp.single 2 i (1 : ℝ) ∈
+        ({y : lp (fun _ : I ↦ ℝ) 2 | ∀ i, 0 ≤ y i} : Set (lp (fun _ : I ↦ ℝ) 2)) := by
       intro j
       by_cases h : j = i
       · subst h
@@ -45,7 +47,8 @@ private theorem mem_innerDual_ell2PositiveOrthant_iff (x : ℓ²(I, ℝ)) :
 -- directly in `lp` by reading coordinates with `lp.single` and summing nonnegative terms.
 /-- Example 6.25: the coordinatewise nonnegative cone `ℓ²₊(I)` in `ℓ²(I, ℝ)` is self-dual. -/
 theorem ell2PositiveOrthant_isSelfDual :
-    ({x : ℓ²(I, ℝ) | ∀ i, 0 ≤ x i} : Set (ℓ²(I, ℝ))).IsSelfDual := by
+    ({x : lp (fun _ : I ↦ ℝ) 2 | ∀ i, 0 ≤ x i} :
+      Set (lp (fun _ : I ↦ ℝ) 2)).IsSelfDual := by
   rw [Set.isSelfDual_iff, Set.dualCone_eq_innerDual]
   ext x
   have hiff := mem_innerDual_ell2PositiveOrthant_iff (x := x)

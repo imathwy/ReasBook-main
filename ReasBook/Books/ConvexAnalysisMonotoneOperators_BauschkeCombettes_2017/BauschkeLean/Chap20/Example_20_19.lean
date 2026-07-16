@@ -1,5 +1,5 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap20.Example_20_16
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap20.Example_20_16
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -82,7 +82,6 @@ private theorem allOnesOperator_isPositive : allOnesOperator.IsPositive := by
     simp only [allOnesMatrix, Matrix.toEuclideanLin]
     rw [euclideanSpace_fin2_eq x]
     norm_num [PiLp.inner_apply, Fin.sum_univ_two]
-    rw [real_inner_eq_mul, real_inner_eq_mul]
     have h : 0 ≤ (x 0 + x 1) ^ 2 := sq_nonneg (x 0 + x 1)
     simpa [pow_two, mul_add, add_mul, add_comm, add_left_comm, add_assoc] using h
 
@@ -96,7 +95,7 @@ private theorem firstCoordinateProjector_isPositive : firstCoordinateProjector.I
     simp only [firstCoordinateProjectorMatrix, Matrix.toEuclideanLin]
     rw [euclideanSpace_fin2_eq x]
     norm_num [PiLp.inner_apply, Fin.sum_univ_two]
-    positivity
+    nlinarith [sq_nonneg (x 0)]
 
 private theorem quarterTurnOperator_adjoint_eq_neg :
     quarterTurnOperator.adjoint = -quarterTurnOperator := by

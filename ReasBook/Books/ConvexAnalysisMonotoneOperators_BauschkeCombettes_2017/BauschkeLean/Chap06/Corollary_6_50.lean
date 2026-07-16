@@ -1,6 +1,6 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Corollary_6_34
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Proposition_6_49
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap06.Corollary_6_34
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap06.Proposition_6_49
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -12,7 +12,7 @@ section
 
 variable {𝓗 : Type u} [NormedAddCommGroup 𝓗] [InnerProductSpace ℝ 𝓗] [CompleteSpace 𝓗]
 
-open scoped Pointwise
+open scoped Pointwise Topology
 
 omit [CompleteSpace 𝓗] in
 /-- Corollary 6.50: the recession cone of a nonempty closed convex cone in a real Hilbert space
@@ -25,12 +25,24 @@ theorem recessionCone_eq_self_of_nonempty_isClosed_convex_isCone {K : Set 𝓗}
   -- through a private local definition, so we realize the same corollary through the equivalent
   -- additive characterization of a convex cone.
   have _hK_closed : IsClosed K := hK_closed
-  have hK_smul : ∀ x ∈ K, ∀ a : ℝ, 0 ≤ a → a • x ∈ K :=
-    (Set.isCone_iff_nonneg_smul_mem.mp hK_cone)
   obtain ⟨x, hx⟩ := hK_nonempty
   have h0 : (0 : 𝓗) ∈ K := by
-    -- A nonempty cone contains the origin by scaling any point by `0`.
-    simpa using hK_smul x hx 0 le_rfl
+    -- The project cone convention only gives positive scaling.  Closedness supplies the missing
+    -- endpoint by sending positive multiples of one point to zero.
+    have hmem : ∀ n : ℕ, (1 / ((n : ℝ) + 1)) • x ∈ K := by
+      intro n
+      rw [Set.isCone_iff_nonneg_smul_mem] at hK_cone
+      rw [hK_cone]
+      exact Set.mem_smul.mpr
+        ⟨1 / ((n : ℝ) + 1), by simpa only [Set.mem_Ioi] using
+          (show 0 < 1 / ((n : ℝ) + 1) by positivity), x, hx, rfl⟩
+    have hcoeff : Filter.Tendsto (fun n : ℕ ↦ 1 / ((n : ℝ) + 1)) Filter.atTop
+        (𝓝 (0 : ℝ)) :=
+      tendsto_one_div_add_atTop_nhds_zero_nat
+    have hlim : Filter.Tendsto (fun n : ℕ ↦ (1 / ((n : ℝ) + 1)) • x) Filter.atTop
+        (𝓝 (0 : 𝓗)) := by
+      simpa using hcoeff.smul_const x
+    exact hK_closed.mem_of_tendsto hlim (Filter.Eventually.of_forall hmem)
   have hAdd : K + K ⊆ K := (Convex.isCone_iff_add_subset hK_convex h0).mp hK_cone
   -- Prove both inclusions: recession vectors preserve `K` under translation, and elements of a
   -- cone translate `K` into itself because the cone is additively closed.

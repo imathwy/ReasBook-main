@@ -7,6 +7,8 @@ open scoped Pointwise
 
 universe u
 
+namespace Proposition612Absorbent
+
 namespace Set
 
 section
@@ -275,3 +277,5 @@ theorem interior_eq_core_of_convex {C : Set E} (hC : Convex ℝ C)
     exact hx_image
 
 end
+
+end Proposition612Absorbent

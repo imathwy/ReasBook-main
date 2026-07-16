@@ -1,9 +1,9 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Definition_8_7
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09.Definition_9_12
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Example_12_2
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Definition_13_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17.Example_17_46
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap08.Definition_8_7
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap09.Definition_9_12
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap12.Example_12_2
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap13.Definition_13_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap17.Example_17_46
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -16,6 +16,8 @@ namespace ERealFunction
 section
 
 variable {H : Type u} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [CompleteSpace H]
+
+local notation "L2Nat" => lp (fun _ : ℕ ↦ ℝ) 2
 
 omit [CompleteSpace H] in
 /-- Coercing the Example 16.26 function to `EReal` recovers the supremum of the coordinate ratios.
@@ -35,7 +37,7 @@ omit [CompleteSpace H] in
 /-- The witness `z = -∑ α_n e_n` from Example 16.26, encoded through the Hilbert-basis
 identification with `ℓ²(ℕ, ℝ)`. -/
 noncomputable def hilbertBasisCoordinateSupremumWitness
-    (b : HilbertBasis ℕ ℝ H) (α : ℓ²(ℕ, ℝ)) : H :=
+    (b : HilbertBasis ℕ ℝ H) (α : L2Nat) : H :=
   -(b.repr.symm α)
 
 -- Proof sketch: each coordinate map `x ↦ ⟪x, b n⟫ / α_n` is a continuous affine functional. The
@@ -80,7 +82,7 @@ theorem zero_le_hilbertBasisCoordinateSupremumWithIndicator
 -- `⟪z, e_n⟫ / α_n` equals `-1` because `α_n ≠ 0`; taking the supremum gives `f(z) = -1`.
 /-- The Example 16.26 witness `z = -∑ α_n e_n` satisfies `f(z) = -1`. -/
 theorem hilbertBasisCoordinateSupremum_apply_witness
-    (α : ℓ²(ℕ, ℝ)) (hα_ne : ∀ n : ℕ, α n ≠ 0) :
+    (α : L2Nat) (hα_ne : ∀ n : ℕ, α n ≠ 0) :
     (affineInnerSupremum (fun n ↦ (α n)⁻¹ • b n) 0).asEReal
         (hilbertBasisCoordinateSupremumWitness b α) =
       (-1 : EReal) := sorry
@@ -89,7 +91,7 @@ theorem hilbertBasisCoordinateSupremum_apply_witness
 -- the witness `z = -∑ α_n e_n` has every coordinate equal to `-α_n ≠ 0` because `α_n ≠ 0`.
 /-- The Example 16.26 witness does not belong to the span `C = span{e_n}`. -/
 theorem hilbertBasisCoordinateSupremumWitness_not_mem_span
-    (α : ℓ²(ℕ, ℝ)) (hα_ne : ∀ n : ℕ, α n ≠ 0) :
+    (α : L2Nat) (hα_ne : ∀ n : ℕ, α n ≠ 0) :
     hilbertBasisCoordinateSupremumWitness b α ∉ C := sorry
 
 -- Proof sketch: the previous helper theorem gives `0 ≤ f + ι_C`, so Proposition 13.16(ii)
@@ -98,7 +100,7 @@ theorem hilbertBasisCoordinateSupremumWitness_not_mem_span
 /-- Example 16.26: for the Hilbert-basis coefficient supremum `f(x) = sup_n ⟪x,e_n⟫ / α_n` and
 the span `C = span{e_n}`, the Fenchel biconjugate of `f + ι_C` does not coincide with `f`. -/
 theorem hilbertBasisCoordinateSupremumWithIndicator_biconjugate_ne
-    (α : ℓ²(ℕ, ℝ)) (hα_ne : ∀ n : ℕ, α n ≠ 0) :
+    (α : L2Nat) (hα_ne : ∀ n : ℕ, α n ≠ 0) :
     ((affineInnerSupremum (fun n ↦ (α n)⁻¹ • b n) 0).asEReal +
         (ι[C]).asEReal)∗∗ ≠
       (affineInnerSupremum (fun n ↦ (α n)⁻¹ • b n) 0).asEReal := sorry

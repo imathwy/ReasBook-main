@@ -1,7 +1,7 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Corollary_8_40
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_14
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Text_8_0_3
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap08.Corollary_8_40
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap08.Proposition_8_14
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap08.Text_8_0_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

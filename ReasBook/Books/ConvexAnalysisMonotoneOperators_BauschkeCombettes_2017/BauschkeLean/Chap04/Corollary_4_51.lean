@@ -1,6 +1,6 @@
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04.Corollary_4_50
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04.Definition_4_33
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04.Remark_4_36
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap04.Corollary_4_50
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap04.Definition_4_33
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap04.Remark_4_36
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

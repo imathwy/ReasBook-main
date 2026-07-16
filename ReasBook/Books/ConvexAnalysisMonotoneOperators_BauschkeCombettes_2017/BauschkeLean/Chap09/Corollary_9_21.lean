@@ -1,8 +1,8 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap01.Lemma_1_24
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03.Theorem_3_16_2
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Proposition_8_4
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09.Definition_9_12
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap01.Lemma_1_24
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap03.Theorem_3_16_2
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap08.Proposition_8_4
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap09.Definition_9_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -22,17 +22,17 @@ variable {H : Type u} [NormedAddCommGroup H] [InnerProductSpace ℝ H] [Complete
 
 /-- Helper for Corollary 9.21: view `H × ℝ` with the `ℓ²` product metric used by the epigraph
 projection argument. -/
-local instance prod_pseudoMetricSpace_l2 : PseudoMetricSpace (H × ℝ) :=
+local instance prod_pseudoMetricSpace_l2_cor921 : PseudoMetricSpace (H × ℝ) :=
   WithLp.pseudoMetricSpaceToProd (p := 2) H ℝ
 
 /-- Helper for Corollary 9.21: equip `H × ℝ` with the `ℓ²` product norm coming from
 `WithLp 2 (H × ℝ)`. -/
-local instance prod_normedAddCommGroup_l2 : NormedAddCommGroup (H × ℝ) :=
+local instance prod_normedAddCommGroup_l2_cor921 : NormedAddCommGroup (H × ℝ) :=
   WithLp.normedAddCommGroupToProd (p := 2) H ℝ
 
 /-- Helper for Corollary 9.21: the `ℓ²` product norm is compatible with scalar multiplication on
 `H × ℝ`. -/
-local instance prod_normedSpace_l2 : NormedSpace ℝ (H × ℝ) := by
+local instance prod_normedSpace_l2_cor921 : NormedSpace ℝ (H × ℝ) := by
   letI : NormedAddCommGroup (H × ℝ) :=
     WithLp.normedAddCommGroupToProd (p := 2) H ℝ
   exact
@@ -41,14 +41,14 @@ local instance prod_normedSpace_l2 : NormedSpace ℝ (H × ℝ) := by
 
 /-- Helper for Corollary 9.21: completeness of `H × ℝ` for the `ℓ²` product metric follows from
 the uniform equivalence with `WithLp 2 (H × ℝ)`. -/
-local instance prod_completeSpace_l2 : CompleteSpace (H × ℝ) := by
+local instance prod_completeSpace_l2_cor921 : CompleteSpace (H × ℝ) := by
   letI : PseudoMetricSpace (H × ℝ) :=
     WithLp.pseudoMetricSpaceToProd (p := 2) H ℝ
   exact (WithLp.uniformEquivProd (p := 2) H ℝ).completeSpace_iff.1 inferInstance
 
 /-- Helper for Corollary 9.21: the product Hilbert structure on `H × ℝ` is the textbook one
 `⟪(u, a), (v, b)⟫ = ⟪u, v⟫ + ab`. -/
-local instance prod_innerProductSpace_l2 : InnerProductSpace ℝ (H × ℝ) where
+local instance prod_innerProductSpace_l2_cor921 : InnerProductSpace ℝ (H × ℝ) where
   inner x y := ⟪x.1, y.1⟫_ℝ + x.2 * y.2
   norm_sq_eq_re_inner x := by
     -- The `ℓ²` product norm is exactly the sum of the squared component norms.

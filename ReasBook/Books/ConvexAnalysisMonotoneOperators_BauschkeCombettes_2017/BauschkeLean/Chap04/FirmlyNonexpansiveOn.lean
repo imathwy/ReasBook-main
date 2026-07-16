@@ -4,6 +4,8 @@ import Mathlib
 
 universe u
 
+namespace SubtypeFirmness
+
 section
 
 variable {H : Type u} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
@@ -49,3 +51,5 @@ theorem firmlyNonexpansive_iff_norm_sq_le_inner {T : H → H} :
   exact firmlyNonexpansiveOn_univ_iff_norm_sq_le_inner
 
 end
+
+end SubtypeFirmness

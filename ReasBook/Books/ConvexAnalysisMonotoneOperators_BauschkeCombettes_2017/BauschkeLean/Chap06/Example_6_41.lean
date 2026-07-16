@@ -1,5 +1,5 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Example_6_40
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap06.Example_6_40
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -11,7 +11,7 @@ section
 
 variable {I : Type u}
 
-local notation "E" => ℓ²(I, ℝ)
+local notation "E" => lp (fun _ : I ↦ ℝ) 2
 
 /-- Helper for Example 6.41: a vector belongs to the negative polar of the `ℓ²` positive orthant
 exactly when all of its coordinates are nonpositive. -/

@@ -1,6 +1,6 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Definition_6_9
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Definition_6_48
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap06.Definition_6_9
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap06.Definition_6_48
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -17,7 +17,7 @@ variable {𝓗 : Type u} [NormedAddCommGroup 𝓗] [InnerProductSpace ℝ 𝓗]
 
 /-- Helper for Corollary 6.53: translating a point of `C` repeatedly by a recession direction keeps
 the whole natural ray inside `C`. -/
-lemma nat_ray_point_mem_of_mem_recessionCone {C : Set 𝓗} {x y : 𝓗}
+lemma nat_ray_point_mem_of_mem_recessionCone_basic {C : Set 𝓗} {x y : 𝓗}
     (hx : x ∈ rec C) (hy : y ∈ C) :
     ∀ n : ℕ, ((n : ℝ) • x + y) ∈ C := by
   intro n
@@ -40,7 +40,7 @@ lemma mem_closure_cone_of_mem_recessionCone {C : Set 𝓗}
   have hz_mem : ∀ n, z n ∈ cone C := by
     intro n
     have hray_mem : ((((n + 1 : ℕ) : ℝ) • x) + y) ∈ C :=
-      nat_ray_point_mem_of_mem_recessionCone hx hy (n + 1)
+      nat_ray_point_mem_of_mem_recessionCone_basic hx hy (n + 1)
     -- Each approximating point is a positive multiple of a point in `C`, hence lies in `cone C`.
     simpa [z, Nat.cast_add] using
       (ConvexCone.mem_hull_of_convex hC_convex).2

@@ -1,6 +1,8 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap07.Definition_7_14
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap07.Proposition_7_13
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap06.Definition_6_22
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap06.Proposition_6_24
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap07.Definition_7_14
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap07.Proposition_7_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -13,46 +15,6 @@ namespace Set
 section
 
 variable {𝓗 : Type u} [NormedAddCommGroup 𝓗] [InnerProductSpace ℝ 𝓗]
-
-/-- The orthogonal set `C^⊥` of `C` consists of the vectors orthogonal to every point of `C`. -/
-def orthogonalSet (C : Set 𝓗) : Set 𝓗 :=
-  {u | ∀ x ∈ C, ⟪x, u⟫_ℝ = 0}
-
-scoped notation:max C "^⊥" => Set.orthogonalSet C
-
-/-- Membership in the orthogonal set means having vanishing inner product with every point of the
-original set. -/
-theorem mem_orthogonalSet {C : Set 𝓗} {u : 𝓗} :
-    u ∈ orthogonalSet C ↔ ∀ x ∈ C, ⟪x, u⟫_ℝ = 0 := by
-  -- Unfold the defining predicate of `orthogonalSet`.
-  simp [orthogonalSet]
-
-/-- The polar cone `Cᵒ⊖` of `C` consists of the vectors whose inner product with every point of
-`C` is nonpositive. -/
-def polarCone (C : Set 𝓗) : Set 𝓗 :=
-  {u | sSup ((fun x : 𝓗 ↦ (⟪x, u⟫_ℝ : EReal)) '' C) ≤ 0}
-
-scoped postfix:100 "ᵒ⊖" => Set.polarCone
-
-/-- Membership in the polar cone is equivalent to the pointwise nonpositivity inequalities on `C`.
--/
-theorem mem_polarCone_iff_forall_inner_nonpos {C : Set 𝓗} {u : 𝓗} :
-    u ∈ Cᵒ⊖ ↔ ∀ x ∈ C, ⟪x, u⟫_ℝ ≤ 0 := by
-  change sSup ((fun x : 𝓗 ↦ (⟪x, u⟫_ℝ : EReal)) '' C) ≤ 0 ↔
-      ∀ x ∈ C, ⟪x, u⟫_ℝ ≤ 0
-  rw [sSup_le_iff]
-  constructor
-  · intro hu x hx
-    -- Specialize the supremum bound to the image point coming from `x ∈ C`.
-    have hxu : (⟪x, u⟫_ℝ : EReal) ≤ (0 : EReal) :=
-      hu _ (Set.mem_image_of_mem _ hx)
-    exact_mod_cast hxu
-  · intro hu a ha
-    -- Conversely, every point in the image is controlled by the assumed pointwise bound.
-    rcases ha with ⟨x, hx, rfl⟩
-    have hxu : (⟪x, u⟫_ℝ : EReal) ≤ (0 : EReal) := by
-      exact_mod_cast hu x hx
-    simpa using hxu
 
 -- Proof sketch: if `u ∈ orthogonalSet C`, then `⟪x, u⟫ = 0` for every `x ∈ C`, hence in particular
 -- `⟪x, u⟫ ≤ 0`; rewriting with `mem_orthogonalSet` and `mem_polarCone_iff_forall_inner_nonpos`

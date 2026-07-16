@@ -1,9 +1,9 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap01.Text_1_0_46
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap02.Lemma_2_46
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap02.Lemma_2_47
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Definition_5_32
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05.Lemma_5_31
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap01.Text_1_0_46
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap02.Lemma_2_46
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap02.Lemma_2_47
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap05.Definition_5_32
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap05.Lemma_5_31
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -53,7 +53,13 @@ private theorem quasiFejerMonotone_norm_tendsto
       Tendsto (fun n ↦ Real.sqrt (((a n : NNReal) : ℝ))) atTop (𝓝 (Real.sqrt (l : ℝ))) :=
     (Real.continuous_sqrt.tendsto _).comp hareal
   -- Taking square roots turns convergence of squared distances back into convergence of norms.
-  simpa [a, Real.sqrt_sq_eq_abs, abs_of_nonneg (norm_nonneg _)] using hsqrt
+  have hsqrt_apply :
+      (fun n ↦ Real.sqrt (((a n : NNReal) : ℝ))) = (fun n ↦ ‖y n - z‖) := by
+    funext n
+    change Real.sqrt (‖y n - z‖ ^ 2) = ‖y n - z‖
+    rw [Real.sqrt_sq_eq_abs, abs_of_nonneg (norm_nonneg _)]
+  rw [hsqrt_apply] at hsqrt
+  exact hsqrt
 
 /-- Helper for Theorem 5.36: a finite prefix can be discarded once the remaining tail has a common
 norm bound. -/

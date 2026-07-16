@@ -9,6 +9,3 @@ universe u v
 `TopologicalSpace.IsTopologicalBasis.continuous_iff`. It states that a map between topological
 spaces is continuous exactly when the preimage of every basis element of the codomain is open. -/
 recall TopologicalSpace.IsTopologicalBasis.continuous_iff
-    {α : Type u} [TopologicalSpace α] {β : Type v} [TopologicalSpace β]
-    {B : Set (Set β)} (hB : TopologicalSpace.IsTopologicalBasis B) {f : α → β} :
-    Continuous f ↔ ∀ s ∈ B, IsOpen (f ⁻¹' s)

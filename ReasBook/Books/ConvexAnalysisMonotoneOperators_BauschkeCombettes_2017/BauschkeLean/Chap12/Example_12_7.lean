@@ -1,6 +1,6 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08.Definition_8_7
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Proposition_12_6
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap08.Definition_8_7
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap12.Proposition_12_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -13,9 +13,8 @@ hypothesis. -/
 -- `y + (-(x - y)) = 2y - x`. Taking `y = -n` sends this quantity to `-∞`,
 -- so the infimum over all `y` is `⊥` for every `x`.
 theorem id_infimalConvolution_neg_id_eq_bot :
-    id.toEReal □ (-id).toEReal = (⊥ : ℝ → EReal) := by
+    infimalConvolution id.toEReal.asEReal (-id).toEReal.asEReal = (⊥ : ℝ → EReal) := by
   ext x
-  rw [infimalConvolution_apply]
   change (⨅ y : ℝ, (id.toEReal y : EReal) + (((-id).toEReal (x - y) : EReal))) = (⊥ : EReal)
   refine (EReal.eq_bot_iff_forall_lt _).2 ?_
   intro r

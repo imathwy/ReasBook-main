@@ -1,5 +1,5 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap19.Proposition_19_25
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap19.Proposition_19_25
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,7 +1,7 @@
 import Mathlib
 import Mathlib.Data.List.TFAE
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap02.Lemma_2_17
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04.Definition_4_33
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap02.Lemma_2_17
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap04.Definition_4_33
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

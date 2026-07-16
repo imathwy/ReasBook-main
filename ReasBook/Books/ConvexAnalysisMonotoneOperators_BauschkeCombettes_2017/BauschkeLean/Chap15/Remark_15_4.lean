@@ -1,8 +1,8 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Definition_6_9
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap11.Definition_11_3
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Definition_12_1
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13.Proposition_13_12
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap06.Definition_6_9
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap11.Definition_11_3
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap12.Definition_12_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap13.Proposition_13_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -36,7 +36,7 @@ theorem attouchBrezis_counterexample_closedCone_not_closedLinearSubspace :
     let Rnonpos : Set E := {x | x 1 ≤ 0}
     let Rneg : Set E := {x | x 1 < 0}
     ((f + g)∗ = (ι[Rnonpos]).asEReal ∧
-      f∗ □ g∗ = (ι[Rneg]).asEReal) ∧
+      infimalConvolution f∗ g∗ = (ι[Rneg]).asEReal) ∧
       (IsClosed (cone (dom f - dom g)) ∧
         ¬ ∃ V : Submodule ℝ E, cone (dom f - dom g) = (V : Set E)) := sorry
 
@@ -59,9 +59,9 @@ theorem attouchBrezis_counterexample_relativeInterior_not_enough
     let g : H → Set.Ioi (⊥ : EReal) := ι[(V : Set H)]
     let W : Submodule ℝ H := Uᗮ ⊔ Vᗮ
     (((f.asEReal + g.asEReal)∗ = (ι[closure (W : Set H)]).asEReal ∧
-      f.asEReal∗ □ g.asEReal∗ = (ι[(W : Set H)]).asEReal ∧
+      infimalConvolution f.asEReal∗ g.asEReal∗ = (ι[(W : Set H)]).asEReal ∧
       ¬ IsClosed (W : Set H)) ∧
-      ((f.asEReal + g.asEReal)∗ ≠ (f.asEReal∗ □ g.asEReal∗)) ∧
+      ((f.asEReal + g.asEReal)∗ ≠ infimalConvolution f.asEReal∗ g.asEReal∗) ∧
       ((0 : H) ∈ ri (effectiveDomain f - effectiveDomain g) ∧
         ¬ IsClosed (effectiveDomain f - effectiveDomain g))) := sorry
 
@@ -79,7 +79,7 @@ theorem attouchBrezis_counterexample_without_lowerSemicontinuity
     let f : H → EReal := (ℓ : H → ℝ).toEReal.asEReal
     let g : H → EReal := (ι[({(0 : H)} : Set H)]).asEReal
     (((f + g)∗ = (0 : H → EReal)) ∧
-      f∗ □ g∗ = (⊤ : H → EReal)) ∧
+      infimalConvolution f∗ g∗ = (⊤ : H → EReal)) ∧
       (dom f - dom g) = (Set.univ : Set H) := sorry
 
 end AttouchBrezisTheorem

@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Analysis.InnerProductSpace.ProdL2
 import Mathlib.Data.List.TFAE
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Corollary_16_30
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16.Proposition_16_16
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap16.Corollary_16_30
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap16.Proposition_16_16
 
 open scoped InnerProductSpace Pointwise Set
 open WithLp

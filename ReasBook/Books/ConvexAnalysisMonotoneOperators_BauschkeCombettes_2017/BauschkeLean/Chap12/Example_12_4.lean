@@ -1,10 +1,11 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap11.Definition_11_3
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Definition_12_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap11.Definition_11_3
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap12.Definition_12_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
 open scoped translate
+open ERealFunction
 
 universe u
 
@@ -19,6 +20,6 @@ variable {H : Type u} [AddCommGroup H]
 translate of `f` by `y`. -/
 theorem indicator_singleton_infimalConvolution_eq_translate
     (f : H → Set.Ioi (⊥ : EReal)) (y : H) :
-    ι[{y}] □ f = τ y f.asEReal := sorry
+    infimalConvolution (ι[{y}]).asEReal f.asEReal = τ y f.asEReal := sorry
 
 end ERealFunction

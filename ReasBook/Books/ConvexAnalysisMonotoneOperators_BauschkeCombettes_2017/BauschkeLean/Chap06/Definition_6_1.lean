@@ -1,5 +1,5 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap01.Text_1_0_2
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap01.Text_1_0_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -58,13 +58,11 @@ hence the smallest cone containing `C`. -/
 def conicalHull (C : Set X) : Set X :=
   sInter {K : Set X | IsCone K ∧ C ⊆ K}
 
-scoped notation "cone" => Set.conicalHull
-
 -- Proof sketch: if `x ∈ C`, then `x` belongs to every cone `K` with `C ⊆ K`; therefore `x`
 -- belongs to the intersection defining `cone C`.
 /-- Every set is contained in its conical hull. -/
 theorem subset_conicalHull (C : Set X) :
-    C ⊆ cone C := by
+    C ⊆ conicalHull C := by
   -- A point of `C` belongs to every cone in the defining intersection.
   refine Set.subset_sInter ?_
   intro K hK
@@ -74,7 +72,7 @@ theorem subset_conicalHull (C : Set X) :
 -- contain `C`, using the companion characterization `isCone_iff_nonneg_smul_mem`.
 /-- The conical hull of a set is a cone. -/
 theorem isCone_conicalHull (C : Set X) :
-    IsCone (cone C) := by
+    IsCone (conicalHull C) := by
   -- The defining family consists entirely of cones, so the generic `sInter` lemma applies.
   simpa [conicalHull] using
     (isCone_sInter
@@ -85,7 +83,7 @@ theorem isCone_conicalHull (C : Set X) :
 -- `C`, so membership in the intersection gives the desired inclusion.
 /-- The conical hull is contained in every cone that contains the original set. -/
 theorem conicalHull_min {C K : Set X} (hK : IsCone K) (hCK : C ⊆ K) :
-    cone C ⊆ K := by
+    conicalHull C ⊆ K := by
   -- The witness `K` belongs to the defining family of the intersection.
   have hmem : K ∈ {K : Set X | IsCone K ∧ C ⊆ K} := And.intro hK hCK
   simpa [conicalHull] using

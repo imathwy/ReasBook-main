@@ -1,6 +1,8 @@
 import Mathlib
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04.Remark_4_37
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap20.Definition_20_1
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap04.Remark_4_37
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap20.Definition_20_1
+
+open SubtypeFirmness
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -26,7 +28,8 @@ all `x, y ∈ D` one has `0 ≤ ⟪x - y, T x - T y⟫_ℝ`. -/
 theorem averagedWith_monotone_of_le_half {D : Set H} {α : ℝ} {T : D → H}
     (hT : AveragedWith α T) (hα : α ≤ (1 / 2 : ℝ)) (x y : D) :
     0 ≤ ⟪(x : H) - y, T x - T y⟫_ℝ := by
-  exact (firmlyNonexpansiveOn_of_averagedWith_le_half hT hα).monotone x y
+  exact FirmlyNonexpansiveOn.monotone
+    (firmlyNonexpansiveOn_of_averagedWith_le_half hT hα) x y
 
 namespace SetValuedOperator
 
@@ -37,7 +40,7 @@ singleton-valued operator. -/
 theorem ofFunction_isMonotone_of_firmlyNonexpansiveOn {D : Set H} {T : D → H}
     (hT : FirmlyNonexpansiveOn D T) :
     (ofFunction D T).IsMonotone := by
-  exact ofFunction_isMonotone_iff.2 hT.monotone
+  exact ofFunction_isMonotone_iff.2 (FirmlyNonexpansiveOn.monotone hT)
 
 -- Proof sketch: Remark 4.37 upgrades `α`-averagedness with `α ≤ 1 / 2` to firm
 -- nonexpansiveness, then rewrite through `ofFunction_isMonotone_iff`.

@@ -1,8 +1,8 @@
 import Mathlib
 import Mathlib.Tactic.Recall
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap01.Lemma_1_10
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap01.Fact_1_11
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap02.Remark_2_31
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap01.Lemma_1_10
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap01.Fact_1_11
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap02.Remark_2_31
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
