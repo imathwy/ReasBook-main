@@ -1,4 +1,4 @@
-import RiemannSurfaces_Forster_1981.Chap01.Remark_1_2
+import RiemannSurfaces_Forster_1981.RiemannSurfaces.Chap01.Remark_1_2
 
 open scoped Manifold
 

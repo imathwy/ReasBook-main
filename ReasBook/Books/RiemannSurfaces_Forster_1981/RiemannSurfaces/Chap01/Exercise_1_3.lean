@@ -1,7 +1,7 @@
 import Mathlib.Analysis.InnerProductSpace.PiL2
-import RiemannSurfaces_Forster_1981.Chap01.Exercise_1_1
-import RiemannSurfaces_Forster_1981.Chap01.Definition_1_9
-import RiemannSurfaces_Forster_1981.Chap01.Example_1_5
+import RiemannSurfaces_Forster_1981.RiemannSurfaces.Chap01.Exercise_1_1
+import RiemannSurfaces_Forster_1981.RiemannSurfaces.Chap01.Definition_1_9
+import RiemannSurfaces_Forster_1981.RiemannSurfaces.Chap01.Example_1_5
 
 open scoped Manifold OnePoint
 
