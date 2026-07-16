@@ -1,5 +1,5 @@
 import Mathlib
-import LecturesConvexOptimization_Nesterov_2018.Chap07.Theorem_7_16
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap07.Theorem_7_16
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

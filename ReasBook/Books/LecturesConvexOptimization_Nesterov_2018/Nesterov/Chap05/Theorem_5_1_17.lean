@@ -1,9 +1,9 @@
 import Mathlib
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_1_1_5
-import LecturesConvexOptimization_Nesterov_2018.Chap05.Definition_5_1_1
-import LecturesConvexOptimization_Nesterov_2018.Chap05.FenchelPrimalExtension
-import LecturesConvexOptimization_Nesterov_2018.Chap05.Lemma_5_1_6
-import LecturesConvexOptimization_Nesterov_2018.Chap05.Proposition_5_0_29
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Definition_3_1_1_5
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap05.Definition_5_1_1
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap05.FenchelPrimalExtension
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap05.Lemma_5_1_6
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap05.Proposition_5_0_29
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

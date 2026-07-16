@@ -1,7 +1,7 @@
 import Mathlib
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Lemma_3_1_14
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_1_8
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_44
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Lemma_3_1_14
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Theorem_3_1_8
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Theorem_3_44
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

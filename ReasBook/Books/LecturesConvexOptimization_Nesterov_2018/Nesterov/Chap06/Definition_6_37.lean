@@ -1,6 +1,6 @@
 import Mathlib
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_1_5
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_47
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Definition_3_1_5
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Definition_3_47
 
 noncomputable section
 

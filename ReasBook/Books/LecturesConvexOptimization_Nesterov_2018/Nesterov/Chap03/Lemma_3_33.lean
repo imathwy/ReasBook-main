@@ -1,4 +1,4 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Lemma_3_3_1
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Lemma_3_3_1
 
 /- Lemma 3.33 lies in the chapter's level-method scalar-history domain.
 

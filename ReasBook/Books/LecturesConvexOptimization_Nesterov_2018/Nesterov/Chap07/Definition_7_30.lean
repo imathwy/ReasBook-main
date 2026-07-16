@@ -1,5 +1,5 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Lemma_3_3
-import LecturesConvexOptimization_Nesterov_2018.Chap07.Definition_7_28
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Lemma_3_3
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap07.Definition_7_28
 
 noncomputable section
 

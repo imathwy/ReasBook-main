@@ -1,5 +1,5 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap04.Assumption_4_3_1
-import LecturesConvexOptimization_Nesterov_2018.Chap04.Lemma_4_3_1
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap04.Assumption_4_3_1
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap04.Lemma_4_3_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

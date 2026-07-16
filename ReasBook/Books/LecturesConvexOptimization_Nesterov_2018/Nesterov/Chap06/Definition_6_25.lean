@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import LecturesConvexOptimization_Nesterov_2018.Chap06.Definition_6_30
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap06.Definition_6_30
 
 /- Definition 6.25 lies in the Chapter 6 smoothed dual-oracle / maximizer domain.
 

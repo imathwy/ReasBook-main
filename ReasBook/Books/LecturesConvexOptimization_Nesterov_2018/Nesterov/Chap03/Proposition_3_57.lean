@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_3_3
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Theorem_3_3_3
 
 noncomputable section
 

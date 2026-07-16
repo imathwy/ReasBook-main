@@ -1,4 +1,4 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap04.Theorem_4_1_5_1
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap04.Theorem_4_1_5_1
 
 open scoped ConstrainedArgmin
 

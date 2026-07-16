@@ -1,6 +1,6 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap06.Lemma_6_3
-import LecturesConvexOptimization_Nesterov_2018.Chap06.Lemma_6_12
-import LecturesConvexOptimization_Nesterov_2018.Chap06.Proposition_6_13
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap06.Lemma_6_3
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap06.Lemma_6_12
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap06.Proposition_6_13
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

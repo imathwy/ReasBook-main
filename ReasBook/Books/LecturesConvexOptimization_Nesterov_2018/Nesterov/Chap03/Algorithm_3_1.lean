@@ -1,7 +1,7 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_35
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_40
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Proposition_3_15
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Proposition_3_28
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Definition_3_35
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Definition_3_40
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Proposition_3_15
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Proposition_3_28
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

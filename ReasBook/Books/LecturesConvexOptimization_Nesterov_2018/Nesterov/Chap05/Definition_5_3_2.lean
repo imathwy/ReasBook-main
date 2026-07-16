@@ -1,5 +1,5 @@
 import Mathlib
-import LecturesConvexOptimization_Nesterov_2018.Chap05.Theorem_5_1_3
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap05.Theorem_5_1_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

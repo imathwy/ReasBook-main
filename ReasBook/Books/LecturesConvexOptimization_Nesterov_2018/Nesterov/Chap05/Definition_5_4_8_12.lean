@@ -1,4 +1,4 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap05.Theorem_5_1_4
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap05.Theorem_5_1_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

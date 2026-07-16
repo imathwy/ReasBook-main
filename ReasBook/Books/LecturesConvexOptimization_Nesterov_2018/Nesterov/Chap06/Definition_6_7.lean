@@ -1,6 +1,6 @@
 import Mathlib.Tactic.Recall
-import LecturesConvexOptimization_Nesterov_2018.Chap06.Definition_6_30
-import LecturesConvexOptimization_Nesterov_2018.Chap06.Definition_6_31
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap06.Definition_6_30
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap06.Definition_6_31
 
 /- Definition 6.7 lies in the chapter's prox-function smoothing domain.
 

@@ -1,4 +1,4 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap07.Lemma_7_4
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap07.Lemma_7_4
 
 noncomputable section
 

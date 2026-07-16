@@ -1,6 +1,6 @@
 import Mathlib
-import LecturesConvexOptimization_Nesterov_2018.Chap01.Proposition_1_10_12
-import LecturesConvexOptimization_Nesterov_2018.Chap01.Theorem_1_10_4
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap01.Proposition_1_10_12
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap01.Theorem_1_10_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,6 +1,6 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_3_7
-import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_10_2
-import LecturesConvexOptimization_Nesterov_2018.Chap03.LinearEqualityFeasibleSet
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap01.Definition_1_3_7
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap01.Definition_1_10_2
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.LinearEqualityFeasibleSet
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

@@ -1,9 +1,9 @@
 import Mathlib
 import Mathlib.Analysis.InnerProductSpace.NormPow
-import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_4_16
-import LecturesConvexOptimization_Nesterov_2018.Chap01.Theorem_1_4_19
-import LecturesConvexOptimization_Nesterov_2018.Chap01.Theorem_1_4_20
-import LecturesConvexOptimization_Nesterov_2018.Chap04.Definition_4_1_3
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap01.Definition_1_4_16
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap01.Theorem_1_4_19
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap01.Theorem_1_4_20
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap04.Definition_4_1_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

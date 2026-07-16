@@ -1,7 +1,7 @@
 import Mathlib
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Algorithm_3_11
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_71
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Theorem_3_3_1
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Algorithm_3_11
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Definition_3_71
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Theorem_3_3_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

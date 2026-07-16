@@ -1,5 +1,5 @@
 import Mathlib.Tactic.Recall
-import LecturesConvexOptimization_Nesterov_2018.Chap06.Lemma_6_2_4
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap06.Lemma_6_2_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

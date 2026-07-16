@@ -1,5 +1,5 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_1_1_6
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_7
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Definition_3_1_1_6
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Definition_3_7
 
 open scoped BigOperators
 open scoped EuclideanSpaceLp

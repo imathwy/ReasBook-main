@@ -1,6 +1,6 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap05.Example_5_1_4
-import LecturesConvexOptimization_Nesterov_2018.Chap05.Example_5_3_1_2
-import LecturesConvexOptimization_Nesterov_2018.Chap05.Proposition_5_3_3
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap05.Example_5_1_4
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap05.Example_5_3_1_2
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap05.Proposition_5_3_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

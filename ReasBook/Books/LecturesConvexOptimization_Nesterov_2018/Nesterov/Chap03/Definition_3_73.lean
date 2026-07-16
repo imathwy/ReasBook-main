@@ -1,4 +1,4 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap03.Definition_3_65
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Definition_3_65
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

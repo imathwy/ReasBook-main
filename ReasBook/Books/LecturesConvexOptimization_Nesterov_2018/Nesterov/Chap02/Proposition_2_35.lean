@@ -1,5 +1,5 @@
-import LecturesConvexOptimization_Nesterov_2018.Chap01.Definition_1_4_17
-import LecturesConvexOptimization_Nesterov_2018.Chap02.Theorem_2_35
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap01.Definition_1_4_17
+import LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap02.Theorem_2_35
 
 /- Proposition 2.35 lies in constrained projected-gradient models on real inner-product spaces.
 
