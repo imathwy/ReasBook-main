@@ -6,9 +6,9 @@ CLAUDE.md
 ReasBook/Books/OptimizationResearch/
 .lake-compressed.img
 
-# Local automation run output (format documentation remains tracked).
-docs/automation-reports/**
-!docs/automation-reports/README.md
+# Local documentation and harness state.
+docs/
+.openharness/
 
 # Local agent configuration requested for this workspace.
 AGENTS.md
