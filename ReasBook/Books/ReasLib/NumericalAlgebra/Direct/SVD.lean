@@ -66,7 +66,7 @@ lemma exists_max_norm_apply [Nontrivial V] [FiniteDimensional 𝕜 V] (T : V →
     ∃ u : V, ‖u‖ = 1 ∧ ∀ v : V, ‖v‖ = 1 → ‖T v‖ ≤ ‖T u‖ := by
   let S : Set V := Metric.sphere 0 1
   have h_compact : IsCompact S := by
-    have : ProperSpace V := FiniteDimensional.proper (E := V)
+    have : ProperSpace V := FiniteDimensional.proper_rclike 𝕜 V
     exact isCompact_sphere 0 1
   have h_nonempty : S.Nonempty := by
     obtain ⟨a, ha⟩ := @NormedSpace.sphere_nonempty_rclike 𝕜 _ V _ _ _ 1 zero_le_one
@@ -195,8 +195,8 @@ theorem finrank_range_decomp_of_norm_attains [FiniteDimensional 𝕜 V]
         simp [v₂, inner_sub_left, inner_smul_right]
         right
         simp [inner_smul_left, a]
-        have h : ⟪e₁, e₁⟫_𝕜 = 1 := by simp [inner_self_eq_norm_sq_to_K, he₁]
-        rw [h, mul_one, sub_self]
+        rw [he₁]
+        norm_num
       simp at T₂
       refine mem_sup.mpr ⟨a • T e₁, ?_, T₂ ⟨v₂, hv₂⟩, by simp, ?_⟩
       · exact mem_span_singleton.mpr ⟨a,rfl⟩
@@ -643,7 +643,12 @@ theorem singular_value_decomposition [FiniteDimensional 𝕜 V] (T : V →ₗ[�
     · -- The equation for operator T
       intro i
       cases i using Fin.cases with
-      | zero => simp [w₁, σ₁, hT_e₁_nonzero]
+      | zero =>
+        have hn : ‖T e₁‖ ≠ 0 := norm_ne_zero_iff.mpr hT_e₁_nonzero
+        have hn' : ((‖T e₁‖ : ℝ) : 𝕜) ≠ 0 := by exact_mod_cast hn
+        simp [w₁, σ₁, smul_smul]
+        change T e₁ = (((‖T e₁‖ : ℝ) : 𝕜) * ((‖T e₁‖ : ℝ) : 𝕜)⁻¹) • T e₁
+        rw [mul_inv_cancel₀ hn', one_smul]
       | succ i' => simp [hT_eq, hTv' i']
     · -- Kernel condition
       apply hT_kernel_condition (by simp [T₂, V₂]) hker'
@@ -893,4 +898,3 @@ noncomputable def smallestSingularValue (A : Matrix (Fin m) (Fin n) 𝕜) : ℝ�
   else 0
 
 end Matrix
-

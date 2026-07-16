@@ -201,18 +201,13 @@ theorem subgradient_method_converge :
             simp
             have : f (alg.x i) ∈ Set.range fun (x : Finset.range (k + 1)) => f (alg.x x) := by
               simp; use i
-              constructor
-              · apply lt_of_le_of_lt hi₂; apply (Nat.lt_succ_self k)
-              · simp
             apply csInf_le _ this; apply Finite.bddBelow_range
           _ ≤ inner ℝ (alg.x i - xm) (alg.g i) := by
             simp; apply le_add_of_sub_left_le
             rw [sub_eq_add_neg, ← inner_neg_left, neg_sub, real_inner_comm]
             apply hxm
       rw [add_assoc, add_assoc]
-      apply add_le_add_left; apply add_le_add
-      · apply neg_le_neg; apply inq₂
-      · apply inq₁
+      linarith
     have h₁' : ∀ ⦃i : ℕ⦄, i ≥ 0 ∧ i ≤ k → alg.a i * (2 * (sInf {f (alg.x i) | i ∈ Finset.range (k +
         1)} - f xm)) ≤ ‖alg.x i - xm‖ ^ 2 - ‖alg.x (i+1) - xm‖ ^ 2 + alg.G ^ 2 * (alg.a i) ^ 2 := by
       intro i ⟨hi₁, hi₂⟩
@@ -263,7 +258,8 @@ theorem subgradient_method_fix_step_size {t : ℝ}
   calc
     2 * ((↑k + 1) * t) * (sInf {x | ∃ i ∈ Finset.range (k + 1), f (alg.x i) = x} - f xm)
       = 2 * ((↑k + 1) * t) * (sInf {x | ∃ i < k + 1, f (alg.x i) = x} - f xm) := by simp
-    _ ≤ ‖x₀ - xm‖ ^ 2 + ↑alg.G ^ 2 * ((↑k + 1) * t ^ 2) := by apply hk
+    _ ≤ ‖x₀ - xm‖ ^ 2 + ↑alg.G ^ 2 * ((↑k + 1) * t ^ 2) := by
+      simpa only [Nat.lt_succ_iff] using hk
     _ = 2 * ((↑k + 1) * t) * (‖x₀ - xm‖ ^ 2 / (2 * (↑k + 1) * t) + ↑alg.G ^ 2 * t / 2) := by
       field_simp
 
@@ -277,7 +273,7 @@ theorem subgradient_method_fixed_distance {s : ℝ} (hm : IsMinOn f univ xm)
   have heq : (Set.range fun (x : Finset.range (k + 1)) => f (alg.x x)) =
       {x | ∃ i ∈ Finset.range (k + 1), f (alg.x i) = x} := by simp [Set.ext_iff]
   have hnek : Nonempty (Finset.range (k + 1)) := by
-    simp; use 0; apply Nat.succ_pos k
+    simp; use 0; exact Nat.zero_le k
   obtain h' := Lipschitz_to_bounded_subgradient alg.lipschitz
   have h₁ :  ∀ ⦃i : ℕ⦄ , i ≥ 0 ∧ i ≤ k → ‖alg.x (i+1) - xm‖ ^ 2 ≤ ‖alg.x i - xm‖ ^ 2 - 2 * (alg.a i)
       * (sInf {f (alg.x i) | i ∈ Finset.range (k + 1)} - f xm) + ‖alg.a i‖ ^ 2 * ‖alg.g i‖ ^ 2:= by
@@ -299,18 +295,12 @@ theorem subgradient_method_fixed_distance {s : ℝ} (hm : IsMinOn f univ xm)
           simp
           have : f (alg.x i) ∈ Set.range fun (x : Finset.range (k + 1)) => f (alg.x x) := by
             simp; use i
-            constructor
-            · apply lt_of_le_of_lt hi₂; apply (Nat.lt_succ_self k)
-            · simp
           apply csInf_le _ this; apply Finite.bddBelow_range
         _ ≤ inner ℝ (alg.x i - xm) (alg.g i) := by
           simp; apply le_add_of_sub_left_le
           rw[sub_eq_add_neg, ← inner_neg_left, neg_sub, real_inner_comm]; apply hxm
     rw[add_assoc, add_assoc]
-    apply add_le_add_left
-    apply add_le_add
-    · apply neg_le_neg; apply inq₂
-    · simp
+    linarith
   have h₁' :  ∀ ⦃i : ℕ⦄ , i ≥ 0 ∧ i ≤ k → alg.a i *
       (2 * (sInf {f (alg.x i) | i ∈ Finset.range (k + 1)} - f xm)) ≤
       ‖alg.x i - xm‖ ^ 2 - ‖alg.x (i+1) - xm‖ ^ 2 + s ^ 2 := by
@@ -358,12 +348,10 @@ theorem subgradient_method_fixed_distance {s : ℝ} (hm : IsMinOn f univ xm)
     · apply hpos₁
   have h₂' : (2 * (k + 1) * (s / ↑alg.G)) * (sInf {x | ∃ i < k + 1, f (alg.x i) = x} - f xm) ≤
       ‖x₀ - xm‖ ^ 2 - ‖alg.x (k + 1) - xm‖ ^ 2 + (↑k + 1) * s ^ 2 := by
+    simp only [Nat.lt_succ_iff]
     apply le_trans _ h₂
     apply mul_le_mul_of_nonneg_right
-    · rw[mul_assoc]
-      apply mul_le_mul_of_nonneg_left
-      · apply inq₁
-      · linarith
+    · nlinarith [inq₁]
     · apply le_sub_right_of_add_le; simp
       apply le_csInf
       · simp at heq
@@ -567,7 +555,7 @@ lemma subgradient_method_diminishing_step_size (hm : IsMinOn f univ xm)
       have heq : (Set.range fun (x : Finset.range (b + 1)) => f (alg.x x)) =
           {x | ∃ i ∈ Finset.range (b + 1), f (alg.x i) = x} := by simp [Set.ext_iff]
       have hneb : Nonempty (Finset.range (b + 1)) := by
-        simp; use 0; apply Nat.succ_pos b
+        simp; use 0; exact Nat.zero_le b
       apply le_sub_right_of_add_le
       simp
       apply le_csInf
@@ -586,11 +574,11 @@ lemma subgradient_method_diminishing_step_size (hm : IsMinOn f univ xm)
     calc
       _ ≤ (‖x₀ - xm‖ ^ 2 + ↑alg.G ^ 2 * Finset.sum (Finset.range (b + 1)) fun i => alg.a i ^ 2) /
               (2 * Finset.sum (Finset.range (b + 1)) alg.a) := by
-        rw [abs_of_nonneg hne]
+        rw [abs_of_nonneg (by simpa only [Nat.lt_succ_iff] using hne)]
         have := @subgradient_method_converge E _ _ f xm x₀ alg b
         simp only [Finset.mem_range] at this
         apply (le_div_iff₀' hpos).mpr
-        exact this
+        simpa only [Nat.lt_succ_iff] using this
       _ = ‖x₀ - xm‖ ^ 2 / (2 * Finset.sum (Finset.range (b + 1)) alg.a) + (↑alg.G ^ 2 *
             Finset.sum (Finset.range (b + 1)) fun i => alg.a i ^ 2) /
             (2 * Finset.sum (Finset.range (b + 1)) alg.a) := by
@@ -604,4 +592,3 @@ lemma subgradient_method_diminishing_step_size (hm : IsMinOn f univ xm)
   simp at h₁'; simp; apply h₁'
 
 end
-

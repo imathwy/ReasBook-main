@@ -152,7 +152,7 @@ theorem lipschitz_continuos_upper_bound'
   have h' : ∀ x : E, HasFDerivAt f (g x) x := h₁
   have equiv : ∀ x y : E, inner (ℝ) (f' x) (y - x) = (g x) (y - x) := by
     intro x y
-    rw [InnerProductSpace.toDual_apply]
+    rw [InnerProductSpace.toDual_apply_apply]
   have h₂' : LipschitzWith l g := by
     simp only [g]
     rw [lipschitzWith_iff_norm_sub_le]
@@ -213,9 +213,10 @@ theorem lipschitz_to_lnorm_sub_convex (hs : Convex ℝ s)
       simp [g']
       rw [← sub_add, sub_right_comm, sub_add, inner_sub_left, ← smul_sub, inner_smul_left]
       simp only [conj_trivial]
+      rw [real_inner_self_eq_norm_sq]
     _ = l * ‖x - y‖ ^ 2 - inner (ℝ) (f' x - f' y) (x - y) := by
-      simp; left
-      apply real_inner_self_eq_norm_sq
+      exact congrArg (fun z : ℝ ↦ (l : ℝ) * z - inner (ℝ) (f' x - f' y) (x - y))
+        (real_inner_self_eq_norm_sq (x - y))
     _ ≥ l * ‖x - y‖ ^ 2 - ‖f' x - f' y‖ * ‖x - y‖ := by
       apply add_le_add; linarith
       simp
@@ -287,7 +288,7 @@ theorem convex_to_lower {l : ℝ} (h₁ : ∀ x : E, HasGradientAt f (f' x) x)
         _ = (l / 2) * ‖a • x₁ + b • y₁‖ ^ 2 - f (a • x₁ + b • y₁) +
             (a * inner (ℝ) (f' s) x₁ + b * inner (ℝ) (f' s) y₁) := by ring_nf
         _ ≤ a • (l / 2 * ‖x₁‖ ^ 2 - f x₁) + b • (l / 2 * ‖y₁‖ ^ 2 - f y₁) +
-            (a * inner (ℝ) (f' s) x₁ + b * inner (ℝ) (f' s) y₁) := by apply add_le_add_right h₂'
+            (a * inner (ℝ) (f' s) x₁ + b * inner (ℝ) (f' s) y₁) := by linarith
         _ = a • (l / 2 * ‖x₁‖ ^ 2 - (f x₁ - inner (ℝ) (f' s) x₁)) + b •
             (l / 2 * ‖y₁‖ ^ 2 - (f y₁ - inner (ℝ) (f' s) y₁)) := by simp; ring_nf
   let gs' := fun s ↦ (fun z ↦ l • z - (fs' s z))
@@ -433,4 +434,3 @@ theorem lower_iff_lnorm_sub_convex (h₁ : ∀ x, HasGradientAt f (f' x) x)
   rw [lower_iff_lipschitz h₁ hfun hl]
 
 end Convex
-

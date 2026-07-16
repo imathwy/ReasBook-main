@@ -290,7 +290,7 @@ lemma inv_eq
     · have h1 : ∏ i, A i i ≠ 0 := by
         exact prod_ne_zero_iff.mpr fun a a_1 ↦ hA a
       exact Ne.isUnit h1
-    · refine Eq.symm (CancelDenoms.inv_subst (hA j) ?_)
+    · refine Eq.symm (Mathlib.Tactic.CancelDenoms.inv_subst (hA j) ?_)
       refine prod_erase_mul univ (fun «x» ↦ A «x» «x») ?_
       exact mem_univ j
   · split_ifs
@@ -521,4 +521,3 @@ lemma Matrix.eignevalue
   sorry
 
 end JacobiFolder
-

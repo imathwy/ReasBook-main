@@ -184,7 +184,8 @@ theorem solution_space_of_linear_system_is_affine' {m n : ℕ} (A : Matrix (Fin 
 
 lemma exists_matrix_representing_submodule_as_kernel (n : ℕ)
   (L : Submodule ℝ (EuclideanSpace ℝ (Fin n))) : ∃ (m : ℕ) (A : Matrix (Fin m) (Fin n) ℝ),
-    (L : Set (EuclideanSpace ℝ (Fin n))) = {x | A.mulVec x = 0} := by
+    (L : Set (EuclideanSpace ℝ (Fin n))) =
+      {x : EuclideanSpace ℝ (Fin n) | A.mulVec x = 0} := by
   let L_orth := L.orthogonal
   let m := finrank ℝ L_orth
   let B := finBasis ℝ L_orth
@@ -202,7 +203,7 @@ lemma exists_matrix_representing_submodule_as_kernel (n : ℕ)
         rw [inner_eq_zero_symm, ← Subtype.coe_mk y hy, ← Basis.sum_repr B ⟨y, hy⟩]
         simp only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul]
         simp_rw [inner_sum, inner_smul_right, h,mul_zero, Finset.sum_const_zero]
-    _ ↔ x ∈ {x | A.mulVec x = 0} := by
+    _ ↔ x ∈ {x : EuclideanSpace ℝ (Fin n) | A.mulVec x = 0} := by
       change (∀ (i : Fin (finrank ℝ ↥L_orth)), ⟪x, ↑(B i)⟫ = 0) ↔ A.mulVec x = 0
       rw [funext_iff]
       apply forall_congr'
@@ -213,12 +214,12 @@ lemma exists_matrix_representing_submodule_as_kernel (n : ℕ)
 theorem affine_representation_of_linear_system' (n : ℕ)
   (H : AffineSubspace ℝ (EuclideanSpace ℝ (Fin n))) :∃ (m : ℕ)
   (A : Matrix (Fin m) (Fin n) ℝ) (b : Fin m → ℝ),
-  {x: (EuclideanSpace ℝ (Fin n)) | A.mulVec x = b} = H := by
-  by_cases h_empty: (H : Set (EuclideanSpace ℝ (Fin n)) ) = ∅
+  {x : EuclideanSpace ℝ (Fin n) | A.mulVec x = b} = H := by
+  by_cases h_empty: (H : Set (EuclideanSpace ℝ (Fin n))) = ∅
   · use 1, 0, fun _ => 1
     rw [h_empty]
     simp only [Matrix.zero_mulVec, funext_iff, Pi.zero_apply, zero_ne_one,forall_const, setOf_false]
-  by_cases h_univ : (H: Set (EuclideanSpace ℝ (Fin n))) = univ
+  by_cases h_univ : (H : Set (EuclideanSpace ℝ (Fin n))) = univ
   · use 0, default, default
     rw [h_univ]
     simp only [Matrix.empty_mulVec, Pi.default_def, funext_iff, IsEmpty.forall_iff, setOf_true]
@@ -252,15 +253,19 @@ theorem affine_representation_of_linear_system : ∀ (H : AffineSubspace ℝ E),
     (by exact Eq.symm finrank_euclideanSpace_fin)
   let H' : AffineSubspace ℝ (EuclideanSpace ℝ (Fin n)) := H.comap (e.toAffineEquiv.symm.toAffineMap)
   rcases affine_representation_of_linear_system' n H' with ⟨m, A', b', h_eq⟩
-  let A : E →ₗ[ℝ] EuclideanSpace ℝ (Fin m) := (Matrix.toLin' A').comp e.toLinearMap
-  refine ⟨EuclideanSpace ℝ (Fin m), inferInstance, inferInstance, inferInstance, A, b', ?_⟩
+  let coords : EuclideanSpace ℝ (Fin n) →ₗ[ℝ] (Fin n → ℝ) :=
+    (EuclideanSpace.equiv (Fin n) ℝ).toLinearMap
+  let A : E →ₗ[ℝ] (Fin m → ℝ) := (Matrix.toLin' A').comp (coords.comp e.toLinearMap)
+  refine ⟨Fin m → ℝ, inferInstance, inferInstance, inferInstance, A, b', ?_⟩
   ext x
   simp only [mem_setOf_eq, SetLike.mem_coe]
   calc
-    A x = b' ↔ (Matrix.toLin' A') (e x) = b' := by
+    A x = b' ↔ (Matrix.toLin' A') (coords (e x)) = b' := by
       simp only [A]; rfl
     _ ↔ A'.mulVec (e x) = b' := by
       rw [Matrix.toLin'_apply]
+      change A'.mulVec ((e x).ofLp) = b' ↔ A'.mulVec ((e x).ofLp) = b'
+      rfl
     _ ↔ e x ∈ H' := by
       rw [← mem_coe, ← h_eq, Set.mem_setOf_eq]
     _ ↔ x ∈ H := by
@@ -297,14 +302,23 @@ theorem affine_is_iInter_of_finite_hyperplane (p : AffineSubspace ℝ E) :
 theorem affine_as_intersection_of_hyperplanes {n : ℕ} (p : AffineSubspace ℝ (Fin n → ℝ)) :
     ∃ (k : ℕ) (A : Matrix (Fin k) (Fin n) ℝ) (b : Fin k → ℝ),
       (p : Set (Fin n → ℝ)) = ⋂ (i : Fin k), {x | (A.mulVec x) i = b i} := by
-  let p' : AffineSubspace ℝ (EuclideanSpace ℝ (Fin n)) := p
+  let e : EuclideanSpace ℝ (Fin n) ≃ₗ[ℝ] (Fin n → ℝ) := EuclideanSpace.equiv (Fin n) ℝ
+  let p' : AffineSubspace ℝ (EuclideanSpace ℝ (Fin n)) :=
+    p.comap e.toLinearMap.toAffineMap
   rcases affine_representation_of_linear_system' n p' with ⟨k, A, b, h⟩
   use k, A, b
-  have : (p : Set (Fin n → ℝ)) = (p' : Set (EuclideanSpace ℝ (Fin n))) := rfl
-  rw [this, h.symm]
   ext x
   simp only [Set.mem_setOf_eq, Set.mem_iInter]
-  exact ⟨fun h i => congr_fun h i, fun h => funext h⟩
+  calc
+    x ∈ p ↔ e.symm x ∈ p' := by
+      change x ∈ p ↔ (EuclideanSpace.equiv (Fin n) ℝ) (WithLp.toLp 2 x) ∈ p
+      rfl
+    _ ↔ A.mulVec (e.symm x) = b := by
+      rw [← SetLike.mem_coe, ← h]
+      rfl
+    _ ↔ A.mulVec x = b := by simp [e]
+    _ ↔ ∀ i, (A.mulVec x) i = b i :=
+      ⟨fun hx i => congr_fun hx i, fun hx => funext hx⟩
 
 
 
@@ -852,4 +866,3 @@ theorem tucker_representation_of_orthogonal_complement
         ((- (LinearMap.adjoint A)).toAffineMap) (fun (i : T.dependent_indices) => y i) := by
   sorry
 -/
-

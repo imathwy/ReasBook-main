@@ -6,6 +6,7 @@ Authors: Chenyi Li, Shengyang Xu, Yuxuan Wu
 import Mathlib.Analysis.Convex.Cone.Basic
 import Mathlib.Analysis.Calculus.LocalExtr.Basic
 import Mathlib.Analysis.NormedSpace.HahnBanach.Separation
+import Mathlib.Analysis.Calculus.TangentCone.Seq
 import Mathlib.LinearAlgebra.Matrix.Rank
 import Mathlib.Analysis.Calculus.Implicit
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
@@ -200,198 +201,11 @@ theorem linearized_feasible_directions_convex (point : E) :
 lemma posTangentCone_localmin_inner_pos {f : E → ℝ} {loc : E} (hl : IsLocalMinOn f p.FeasSet loc)
     (hf : DifferentiableAt ℝ f loc) :
     ∀ v ∈ posTangentConeAt p.FeasSet loc, ⟪gradient f loc, v⟫_ℝ ≥ (0 : ℝ) := by
-  intro v vt; rw [posTangentConeAt] at vt; simp at vt
-  rcases vt with ⟨c, d, ⟨a, ha⟩, ⟨vt1, vt2⟩⟩
-  by_contra proneg; push_neg at proneg
-  rw [IsLocalMinOn, IsMinFilter, eventually_iff_exists_mem] at hl
-  rcases hl with ⟨s, ⟨hs, hs2⟩⟩
-  rw [nhdsWithin] at hs
-  rcases Metric.mem_nhdsWithin_iff.mp hs with ⟨ε, ⟨εpos, εball⟩⟩
-  let s1 := Metric.ball loc ε ∩ p.FeasSet
-  have hmin : ∀ y ∈ s1, f loc ≤ f y := fun y yin => hs2 y (εball yin)
-  let z := fun n ↦ loc + d n
-  have hzd : ∀ n, d n = z n - loc := fun _ => eq_sub_of_add_eq' rfl
-  rw [real_inner_comm] at proneg
-  have hcp : ∀ᶠ (n : ℕ) in atTop, c n > 0 := by
-    rw [Filter.tendsto_atTop] at vt1
-    specialize vt1 (1 : ℝ)
-    apply Filter.Eventually.mp vt1
-    apply Filter.Eventually.of_forall
-    intro n hn; linarith
-  have hz3 : ∀ᶠ (n : ℕ) in atTop, (1 / c n) > 0 := by
-    apply Filter.Eventually.mp hcp
-    apply Filter.Eventually.of_forall
-    intro n hn; exact one_div_pos.mpr hn
-  have hzt : Tendsto z atTop (𝓝 loc) := by
-    have : Tendsto d atTop (𝓝 0) := by
-      rw [Filter.tendsto_atTop] at vt1
-      rw [Filter.tendsto_atTop'] at vt2
-      rw [Metric.tendsto_atTop']; intro ε hε
-      have : Metric.ball v ε ∈ 𝓝 v := by exact Metric.ball_mem_nhds _ hε
-      specialize vt2 (Metric.ball v ε) this
-      rcases vt2 with ⟨a, ha⟩
-      specialize vt1 (2 * (‖v‖ + ε) / ε); simp at vt1
-      rcases vt1 with ⟨a1, ha1⟩
-      let n1 := max a a1
-      use n1; intro n hn
-      specialize ha n (ge_trans (Nat.le_of_lt hn) (a.le_max_left a1))
-      specialize ha1 n (ge_trans (Nat.le_of_lt hn) (a.le_max_right a1))
-      have : ‖d n‖ < ε := by
-        have : ‖c n • d n‖ ≤ ‖v‖ + ε := by
-          rw [Metric.mem_ball, dist_eq_norm] at ha;
-          have t1 : ‖c n • d n - v‖ ≥ ‖c n • d n‖ - ‖v‖ := norm_sub_norm_le _ v
-          linarith
-        have cpos : c n > 0 := by
-          apply lt_of_le_of_lt'
-          · change c n ≥ 2 * (‖v‖ + ε) / ε
-            exact ha1
-          · positivity
-        rw [norm_smul, Real.norm_eq_abs, abs_of_pos cpos] at this;
-        calc _ ≤ (‖v‖ + ε) / c n := (le_div_iff₀' cpos).mpr this
-             _ ≤ (‖v‖ + ε) / (2 * (‖v‖ + ε) / ε) :=
-                div_le_div_of_nonneg_left (by positivity) (by positivity) ha1
-             _ = ε / 2 := by field_simp [εpos]
-             _ < ε := by linarith
-      simp; exact this
-    have h1 : z = (fun n ↦ d n + loc) := by
-      funext n; rw [hzd n, sub_add, sub_self, sub_zero]
-    rw [h1]
-    convert Filter.Tendsto.add_const loc this
-    rw [zero_add]
-  have hz : (fun n ↦ f (z n) - f loc - inner (ℝ) (z n - loc) (gradient f loc))
-      =o[atTop] (fun n ↦ z n - loc) := by
-    have : HasGradientAt f (gradient f loc) loc := hf.hasGradientAt
-    rw [hasGradientAt_iff_isLittleO] at this
-    have heq : (fun n ↦ f (z n) - f loc - inner (ℝ) (z n - loc) (gradient f loc)) =
-        (fun n ↦ f (z n) - f loc - inner (ℝ) (gradient f loc) (z n - loc)) := by
-      ext n; rw [real_inner_comm]
-    rw [heq]
-    apply Asymptotics.IsLittleO.comp_tendsto this hzt
-  have hz1 : (fun n ↦ f (z n) - f loc - (1 / c n) * inner (ℝ) v (gradient f loc))
-      =o[atTop] (fun n ↦ 1 / c n) := by
-    have t1: (fun n ↦ z n - loc) =O[atTop] (fun n ↦ 1 / c n) := by
-      rw [Asymptotics.isBigO_iff]
-      rw [Filter.tendsto_atTop] at vt1
-      rw [Filter.tendsto_atTop'] at vt2
-      have : Metric.ball v 1 ∈ 𝓝 v := by exact Metric.ball_mem_nhds _ (by norm_num)
-      specialize vt2 (Metric.ball v 1) this
-      rcases vt2 with ⟨a, ha⟩
-      specialize vt1 (2 * (‖v‖ + ε) / ε); simp at vt1
-      rcases vt1 with ⟨a1, ha1⟩
-      let n1 := max a a1
-      use (‖v‖ + 1 : ℝ); simp; use n1; intro n hn
-      specialize ha n (ge_trans hn (a.le_max_left a1))
-      specialize ha1 n (ge_trans hn (a.le_max_right a1))
-      have cpos : c n > 0 := by
-          apply lt_of_le_of_lt'
-          · change c n ≥ 2 * (‖v‖ + ε) / ε
-            exact ha1
-          · positivity
-      rw [abs_of_pos]
-      have : ‖d n‖ ≤ (‖v‖ + 1) * (c n)⁻¹ := by
-        have bound : ‖c n • d n‖ ≤ ‖v‖ + 1 := by
-          rw [Metric.mem_ball, dist_eq_norm] at ha
-          linarith [norm_sub_norm_le (c n • d n) v]
-        rw [norm_smul, Real.norm_eq_abs, abs_of_pos cpos] at bound
-        calc ‖d n‖ = (c n)⁻¹ * (c n * ‖d n‖) := by field_simp [ne_of_gt cpos]
-          _ ≤ (c n)⁻¹ * (‖v‖ + 1) := mul_le_mul_of_nonneg_left bound (by positivity)
-          _ = (‖v‖ + 1) * (c n)⁻¹ := by ring
-      rw [← hzd n]; exact this; apply cpos
-    have t2 : (fun n ↦ f (z n) - f loc - inner (ℝ) (z n - loc) (gradient f loc))
-        =o[atTop] (fun n ↦ 1 / c n) := Asymptotics.IsLittleO.trans_isBigO hz t1
-    have t3 : (fun n ↦ (inner (ℝ) (z n - loc - (1 / c n) • v) (gradient f loc) : ℝ))
-        =o[atTop] (fun n ↦ 1 / c n) := by
-      have t5: (fun n ↦ z n - loc - (1 / c n) • v) =o[atTop] (fun n ↦ 1 / c n) := by
-        rw [← Asymptotics.isLittleO_norm_norm]
-        apply (Asymptotics.isLittleO_iff_tendsto' _).mpr
-        · have : (fun x ↦ ‖z x - loc - (1 / c x) • v‖ / ‖1 / c x‖)
-              =ᶠ[atTop] (fun x ↦ ‖c x • (z x - loc) - v‖) := by
-            rw [Filter.EventuallyEq]
-            apply Filter.Eventually.mp hcp
-            apply Filter.Eventually.of_forall
-            intro n hcn1
-            have h1 : ‖1 / c n‖ = 1 / c n := Real.norm_of_nonneg (by positivity)
-            have h2 : z n - loc - (1 / c n) • v = (1 / c n) • (c n • (z n - loc) - v) := by
-              rw [smul_sub, smul_smul, ← one_smul ℝ (z n - loc)]
-              congr 3
-              field_simp [ne_of_gt hcn1]
-              rw [one_smul]
-            rw [h1, h2, norm_smul, Real.norm_of_nonneg (by positivity : 0 ≤ 1 / c n), mul_comm]
-            field_simp [ne_of_gt (by positivity : (0 : ℝ) < 1 / c n)]
-          rw [Filter.tendsto_congr' this];
-          have : Tendsto (fun (n : ℕ) => c n • d n - v) atTop (𝓝 (v - v)) := by
-            apply Filter.Tendsto.sub vt2 tendsto_const_nhds
-          apply Filter.Tendsto.norm at this
-          simp at this; convert this; simp [hzd]
-        · apply Filter.Eventually.mp hcp
-          apply Filter.Eventually.of_forall
-          intro n hcn1 hcn2
-          exfalso; simp at hcn2; linarith
-      rw [Asymptotics.isLittleO_iff]; intro c1 hc1
-      rw [Asymptotics.isLittleO_iff] at t5;
-      have pos1 : ‖gradient f loc‖ ≠ (0 : ℝ) := by
-        by_contra hhh; simp at hhh
-        have : inner (ℝ) v (gradient f loc) = (0 : ℝ) := by rw [hhh, inner_zero_right]
-        linarith
-      have pos2 : ‖gradient f loc‖ > (0 : ℝ) := by positivity
-      have : c1 / ‖gradient f loc‖ > (0 : ℝ) := by positivity
-      specialize t5 this
-      apply Filter.Eventually.mp t5
-      apply Filter.Eventually.of_forall
-      intro n hn;
-      calc _ ≤ ‖z n - loc - (1 / c n) • v‖ * ‖gradient f loc‖ := norm_inner_le_norm _ _
-           _ ≤ c1 / ‖gradient f loc‖ * ‖1 / c n‖ * ‖gradient f loc‖ :=
-              mul_le_mul_of_nonneg_right hn (by positivity)
-           _ = c1 * ‖1 / c n‖ := by ring_nf; field_simp [pos1]
-    have t4 :  (fun n => f (z n) - f loc - 1 / c n * Inner.inner (ℝ) v (gradient f loc)) =
-        (fun n ↦ f (z n) - f loc - inner (ℝ) (z n - loc) (gradient f loc)) +
-        (fun n ↦ (inner (ℝ) (z n - loc - (1 / c n) • v) (gradient f loc) : ℝ)) := by
-      ext n; dsimp; simp [inner_sub_left, inner_smul_left]
-    rw [t4]; apply Asymptotics.IsLittleO.add t2 t3
-  have hz2 : ∀ᶠ (n : ℕ) in atTop, f (z n) ≤ f loc + (1 / 2) *
-      (1 / c n) * inner (ℝ) v (gradient f loc) := by
-    rw [Asymptotics.isLittleO_iff] at hz1
-    have : (- (1 / 2 : ℝ) * inner (ℝ) v (gradient f loc)) > 0 := by
-      simp;rw [mul_comm]; apply mul_neg_of_neg_of_pos proneg (by norm_num)
-    specialize hz1 this
-    apply Filter.Eventually.mp hz1
-    apply Filter.Eventually.mp hz3
-    apply Filter.Eventually.of_forall
-    intro n hn hn1
-    rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_le, abs_of_pos hn] at hn1
-    rcases hn1 with ⟨_, hn1⟩
-    rw [sub_le_iff_le_add, sub_le_iff_le_add] at hn1
-    have : -(1 / 2) * inner (ℝ) v (gradient f loc) * (1 / c n) + 1 / c n * inner (ℝ) v
-        (gradient f loc) + f loc = f loc + 1 / 2 * (1 / c n) * inner (ℝ) v (gradient f loc) := by
-      ring_nf
-    rw [this] at hn1; exact hn1
-  have hz4 : ∀ᶠ (n : ℕ) in atTop, f (z n) < f loc := by
-    apply Filter.Eventually.mp hz2
-    apply Filter.Eventually.mp hz3
-    apply Filter.Eventually.of_forall
-    intro n hn1 hn2
-    have : 1 / 2 * (1 / c n) * (inner (ℝ) v (gradient f loc)) < 0 := by
-      apply mul_neg_of_pos_of_neg
-      · apply Right.mul_pos; simp; exact hn1
-      · exact proneg
-    linarith
-  have hz5 : ∀ᶠ (n : ℕ) in atTop, z n ∈ s1 := by
-    simp only [s1, mem_inter_iff, Metric.mem_ball]
-    apply Filter.Eventually.and
-    · rw [Filter.tendsto_atTop'] at hzt
-      simp;
-      have : Metric.ball loc ε ∈ 𝓝 loc := by exact Metric.ball_mem_nhds loc εpos
-      rcases hzt (Metric.ball loc ε) this with ⟨a, ha⟩
-      use a; intro b hb; specialize ha b (by linarith [hb])
-      simp at ha; exact ha
-    · simp; use a
-  simp at hz5 hz4
-  rcases hz5 with ⟨n, hn1⟩; rcases hz4 with ⟨m, hm1⟩
-  let M := max n m
-  have hh2 : f (z M) < f loc := hm1 M (le_max_right n m)
-  have hh1 : z M ∈ s1 := by simp [s1]; apply hn1 M (le_max_left n m)
-  have hh3 : f loc ≤ f (z M) := hmin (z M) hh1
-  linarith
+  intro v vt
+  have hderiv : HasFDerivWithinAt f ((toDual ℝ E) (gradient f loc)) p.FeasSet loc :=
+    hf.hasGradientAt.hasFDerivAt.hasFDerivWithinAt
+  have hnonneg := hl.hasFDerivWithinAt_nonneg hderiv vt
+  simpa only [InnerProductSpace.toDual_apply_apply] using hnonneg
 
 /-
   Linearized feasible directions contain tagent cone
@@ -660,21 +474,35 @@ lemma LICQ_mlen (x : EuclideanSpace ℝ (Fin n)) (LIx : p.LICQ x)
 
 lemma LICQ_Axfullrank (x : EuclideanSpace ℝ (Fin n)) (LIx : p.LICQ x)
     {M : Matrix (p.active_set x) (Fin n) ℝ}
-    (eq : M = fun i : (p.active_set x) ↦ if i.1 ∈ τ then gradient (p.equality_constraints i) x
-        else gradient (p.inequality_constraints i) x):
+    (eq : M = fun i : (p.active_set x) ↦ if i.1 ∈ τ then
+        (gradient (p.equality_constraints i) x).ofLp
+        else (gradient (p.inequality_constraints i) x).ofLp):
     Matrix.rank M = (Fintype.card (p.active_set x)) := by
   apply LE.le.antisymm
   · apply Matrix.rank_le_card_height
   · simp
     rw [Matrix.rank_eq_finrank_span_row, finrank_span_eq_card]
     · simp
-    rw [eq]; apply LIx
+    rw [eq]
+    have hLI := LIx.map' (WithLp.linearEquiv 2 ℝ (Fin n → ℝ)).toLinearMap
+      (by
+        rw [LinearMap.ker_eq_bot']
+        intro m hm
+        exact (WithLp.ofLp_eq_zero 2).mp hm)
+    change LinearIndependent ℝ (fun i : p.active_set x ↦ if i.1 ∈ τ then
+      (gradient (p.equality_constraints i) x).ofLp
+      else (gradient (p.inequality_constraints i) x).ofLp)
+    change LinearIndependent ℝ (fun i : p.active_set x ↦
+      (if i.1 ∈ τ then gradient (p.equality_constraints i) x
+        else gradient (p.inequality_constraints i) x).ofLp) at hLI
+    simpa only [apply_ite] using hLI
 
 lemma LICQ_existZ (x : EuclideanSpace ℝ (Fin n)) (LIx : p.LICQ x)
     {m : ℕ} (meq : m = (p.active_set x).card)
     {M : Matrix (p.active_set x) (Fin n) ℝ}
-    (eq : M = fun i : (p.active_set x) ↦ if i.1 ∈ τ then gradient (p.equality_constraints i) x
-        else gradient (p.inequality_constraints i) x):
+    (eq : M = fun i : (p.active_set x) ↦ if i.1 ∈ τ then
+        (gradient (p.equality_constraints i) x).ofLp
+        else (gradient (p.inequality_constraints i) x).ofLp):
     ∃ (Z : Matrix (Fin n) (Fin (n - m)) ℝ), M * Z = 0 ∧ Matrix.rank Z = (n - m) := by
   rw [LICQ] at LIx;
   have mlen : m ≤ n := LICQ_mlen x LIx meq
@@ -724,7 +552,7 @@ lemma LICQ_existZ (x : EuclideanSpace ℝ (Fin n)) (LIx : p.LICQ x)
 
 lemma mulVec_eq_toEuclidean {s : Type*} (M : Matrix s (Fin n) ℝ) (y : EuclideanSpace ℝ (Fin n)) :
     M *ᵥ y = (toEuclideanLin M) y := by
-  rw [Matrix.toEuclideanLin_apply]; ext j; simp [Matrix.mulVec]; exact rfl
+  rw [Matrix.toEuclideanLin_apply]
 
 lemma inj_iff_full_finrank {s t : Type*} {M : Matrix s t ℝ} [Fintype s] [Fintype t]
     (hn : Fintype.card s = Fintype.card t) :
@@ -758,7 +586,8 @@ lemma LICQ_injM (z : EuclideanSpace ℝ (Fin n)) (m : ℕ)
   rw [eq1, eq2] at Bzeq0; simp at Bzeq0
   have aux : (p.active_set x).card + (n - m) = n := by
     rw [← meq]; rw [add_comm, Nat.sub_add_cancel]; exact mlen
-  refine (inj_transpose_iff_inj_of_sq ?_).1 ?_ z Bzeq0
+  apply (WithLp.ofLp_eq_zero 2).mp
+  refine (inj_transpose_iff_inj_of_sq ?_).1 ?_ z.ofLp Bzeq0
   · simp; rw [aux]
   · intro v Btveq0
     let y := v ∘ Sum.inl
@@ -795,7 +624,7 @@ lemma LICQ_strictfderiv_Ax_elem {x : EuclideanSpace ℝ (Fin n)}
     (gradceq : gradc = fun z ↦ (fun i : (p.active_set x) ↦ if i.1 ∈ τ then
       gradient (p.equality_constraints i) z else gradient (p.inequality_constraints i) z))
     (A : EuclideanSpace ℝ (Fin n) → Matrix (p.active_set x) (Fin n) ℝ)
-    (Aeq : A = fun z ↦ (fun i ↦ gradc z i))
+    (Aeq : A = fun z ↦ (fun i ↦ (gradc z i).ofLp))
     (Jz : EuclideanSpace ℝ (Fin n)
       → EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (p.active_set x))
     (Jzeq : Jz = fun z ↦ (LinearMap.toContinuousLinearMap (toEuclideanLin (A z))))
@@ -833,17 +662,21 @@ lemma LICQ_strictfderiv_Ax_elem {x : EuclideanSpace ℝ (Fin n)}
     rw [gradceq]
     simp [Matrix.toEuclideanLin_apply, Matrix.mulVec, dotProduct, PiLp.inner_apply, hi, mul_comm]
 
+set_option maxHeartbeats 800000 in
 lemma LICQ_implicit_f {x : EuclideanSpace ℝ (Fin n)} {m : ℕ} (v : EuclideanSpace ℝ (Fin n))
-    {Mx : EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (p.active_set x) × (Fin (n - m) → ℝ)}
-    {Rz : EuclideanSpace ℝ (Fin n) → EuclideanSpace ℝ (p.active_set x) × (Fin (n - m) → ℝ)}
-    {Rt : ℝ → EuclideanSpace ℝ (p.active_set x) × (Fin (n - m) → ℝ)}
+    {Mx : EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (p.active_set x) ×
+      EuclideanSpace ℝ (Fin (n - m))}
+    {Rz : EuclideanSpace ℝ (Fin n) → EuclideanSpace ℝ (p.active_set x) ×
+      EuclideanSpace ℝ (Fin (n - m))}
+    {Rt : ℝ → EuclideanSpace ℝ (p.active_set x) × EuclideanSpace ℝ (Fin (n - m))}
     (Rteq : Rt = fun t ↦ t • Mx v) (Rxeq0 : Rz x = 0)
-    (Rzgrad : HasStrictFDerivAt Rz Mx x) (Mxsurj : LinearMap.range Mx = ⊤) :
+    (Rzgrad : HasStrictFDerivAt Rz Mx x) (Mxsurj : LinearMap.range Mx.toLinearMap = ⊤) :
     ∃ (N : ℕ) (d : ℕ → EuclideanSpace ℝ (Fin n)), (∀ m ≥ N, Rz (d m) = Rt (1 / m)) ∧
       (Filter.Tendsto d atTop (𝓝 x)) := by
   let g := HasStrictFDerivAt.implicitFunction Rz Mx Rzgrad Mxsurj
-  have hfg : ∀ᶠ (p : (EuclideanSpace ℝ (p.active_set x) × (Fin (n - m) → ℝ)) × (LinearMap.ker Mx))
-    in 𝓝 (Rz x, (0 : LinearMap.ker Mx)), Rz (g p.1 p.2) = p.1 := by
+  have hfg : ∀ᶠ (p : (EuclideanSpace ℝ (p.active_set x) × EuclideanSpace ℝ (Fin (n - m))) ×
+    (LinearMap.ker Mx.toLinearMap))
+    in 𝓝 (Rz x, (0 : LinearMap.ker Mx.toLinearMap)), Rz (g p.1 p.2) = p.1 := by
       simp only [g]; apply HasStrictFDerivAt.map_implicitFunction_eq Rzgrad Mxsurj
   rw [Rxeq0] at hfg
   rw [eventually_iff, Metric.mem_nhds_iff] at hfg
@@ -881,7 +714,8 @@ lemma eq_lemma {y z : EuclideanSpace ℝ (Fin n)} {n : ℕ} (h : ‖(n : ℝ) �
   congr 1 <;> field_simp [hy, hn]
 
 lemma comap1 {x : EuclideanSpace ℝ (Fin n)} {m : ℕ}
-    {Mx : EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (p.active_set x) × (Fin (n - m) → ℝ)}
+    {Mx : EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (p.active_set x) ×
+      EuclideanSpace ℝ (Fin (n - m))}
     (v : EuclideanSpace ℝ (Fin n)) (vne0 : v ≠ 0)
     (Mxbij : Function.Bijective Mx) : comap (fun z ↦ ‖Mx z‖) (𝓝 0) ≤ 𝓝 0 := by
   rw [ContinuousLinearMap.bijective_iff_dense_range_and_antilipschitz] at Mxbij
@@ -949,7 +783,8 @@ lemma comap2 (hv : v ≠ 0) :
           rw [add_comm]
           apply norm_le_norm_add_norm_sub'
         _ = μ * ‖z - v‖ + μ * ‖v‖ := by rw [mul_add]
-        _ ≤ μ * ‖z - v‖ + (1 - μ) * a := by apply add_le_add_left; rw [eq]
+        _ ≤ μ * ‖z - v‖ + (1 - μ) * a := by
+          exact add_le_add (le_refl _) (le_of_eq eq)
     rw [← sub_lt_iff_lt_add'] at ieq; nth_rw 1 [← one_mul (‖z - v‖)] at ieq
     rw [← sub_mul] at ieq
     have zinv : ‖z - v‖ < a := by
@@ -960,9 +795,11 @@ lemma comap2 (hv : v ≠ 0) :
     apply ha; rw [Metric.mem_ball, dist_eq_norm]; exact zinv
 
 lemma LICQ_tendsto {x : EuclideanSpace ℝ (Fin n)} {m N : ℕ}
-    {Mx : EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (p.active_set x) × (Fin (n - m) → ℝ)}
-    {Rz : EuclideanSpace ℝ (Fin n) → EuclideanSpace ℝ (p.active_set x) × (Fin (n - m) → ℝ)}
-    {Rt : ℝ → EuclideanSpace ℝ (p.active_set x) × (Fin (n - m) → ℝ)}
+    {Mx : EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (p.active_set x) ×
+      EuclideanSpace ℝ (Fin (n - m))}
+    {Rz : EuclideanSpace ℝ (Fin n) → EuclideanSpace ℝ (p.active_set x) ×
+      EuclideanSpace ℝ (Fin (n - m))}
+    {Rt : ℝ → EuclideanSpace ℝ (p.active_set x) × EuclideanSpace ℝ (Fin (n - m))}
     {d : ℕ → EuclideanSpace ℝ (Fin n)}
     (v : EuclideanSpace ℝ (Fin n)) (vne0 : v ≠ 0)
     (Rteq : Rt = fun t ↦ t • Mx v) (Rxeq0 : Rz x = 0)
@@ -1051,35 +888,38 @@ theorem LICQ_linearized_feasible_directions_sub_posTangentCone
   intro v hv
 
   by_cases veq0 : v = 0
-  · rw [veq0]; rw [posTangentConeAt]; simp
-    use fun n ↦ n; use fun _ ↦ 0; simp; constructor
-    · use 0; exact fun _ _ ↦ xf
-    · exact tendsto_natCast_atTop_atTop
+  · rw [veq0]
+    exact zero_mem_tangentConeAt (subset_closure xf)
 
   let gradc : EuclideanSpace ℝ (Fin n) → ((p.active_set x) → (EuclideanSpace ℝ (Fin n))) :=
     fun z ↦ (fun i ↦ if i.1 ∈ τ then gradient (p.equality_constraints i) z
       else gradient (p.inequality_constraints i) z) -- gradient of the constraints
-  let Ax : Matrix (p.active_set x) (Fin n) ℝ := fun i ↦ gradc x i -- Jacobi at x
+  let Ax : Matrix (p.active_set x) (Fin n) ℝ := fun i ↦ (gradc x i).ofLp -- Jacobi at x
   let m := (p.active_set x).card
   have mlen : m ≤ n := by apply LICQ_mlen x LIx; simp [m]
   have existZ : ∃ (Z : Matrix (Fin n) (Fin (n - m)) ℝ), Ax * Z = 0 ∧ Matrix.rank Z = (n - m) := by
-    apply LICQ_existZ x LIx; simp [m]; simp [Ax, gradc]
+    apply LICQ_existZ x LIx
+    · simp [m]
+    · funext i
+      simp only [Ax, gradc]
+      split <;> rfl
   rw [LICQ] at LIx;
-  rw [posTangentConeAt]; simp only [eventually_atTop, ge_iff_le, mem_setOf_eq]
   rcases existZ with ⟨Z, ⟨eq1, eq2⟩⟩
 
-  let Mx : EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (p.active_set x) × (Fin (n - m) → ℝ) :=
+  let Mx : EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (p.active_set x) ×
+      EuclideanSpace ℝ (Fin (n - m)) :=
     (LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin Ax)).prod
     (LinearMap.toContinuousLinearMap (Matrix.toEuclideanLin Zᵀ)) -- Jacobi of Rz at x
   let c : EuclideanSpace ℝ (Fin n) → ((p.active_set x) → ℝ) :=
     fun z ↦ (fun i ↦ if i.1 ∈ τ then (p.equality_constraints i) z
       else (p.inequality_constraints i) z) -- the constraints
-  let Rz : EuclideanSpace ℝ (Fin n) → EuclideanSpace ℝ (p.active_set x) × (Fin (n - m) → ℝ) :=
-    fun z ↦ (c z, Zᵀ *ᵥ (z - x)) -- z part in R
-  let Rt : ℝ → EuclideanSpace ℝ (p.active_set x) × (Fin (n - m) → ℝ)
+  let Rz : EuclideanSpace ℝ (Fin n) → EuclideanSpace ℝ (p.active_set x) ×
+      EuclideanSpace ℝ (Fin (n - m)) :=
+    fun z ↦ (WithLp.toLp 2 (c z), WithLp.toLp 2 (Zᵀ *ᵥ (z - x).ofLp)) -- z part in R
+  let Rt : ℝ → EuclideanSpace ℝ (p.active_set x) × EuclideanSpace ℝ (Fin (n - m))
     := fun t ↦ t • Mx v -- t part in R
   let A : EuclideanSpace ℝ (Fin n) → Matrix (p.active_set x) (Fin n) ℝ :=
-    fun z ↦ (fun i ↦ gradc z i) -- compose the gradient matrix
+    fun z ↦ (fun i ↦ (gradc z i).ofLp) -- compose the gradient matrix
   let Jz : EuclideanSpace ℝ (Fin n) → EuclideanSpace ℝ (Fin n)
     →L[ℝ] EuclideanSpace ℝ (p.active_set x) :=
       fun z ↦ (LinearMap.toContinuousLinearMap (toEuclideanLin (A z))) -- Jacobian as a linear map
@@ -1094,9 +934,10 @@ theorem LICQ_linearized_feasible_directions_sub_posTangentCone
       rw [hasStrictFDerivAt_euclidean]
       refine LICQ_strictfderiv_Ax_elem c ?_ gradc ?_ A ?_ Jz ?_ conte conti
       repeat simp only [c, gradc, A, Jz]
-    · let N : EuclideanSpace ℝ (Fin n) →L[ℝ] (Fin (n - m) → ℝ) :=
+    · let N : EuclideanSpace ℝ (Fin n) →L[ℝ] EuclideanSpace ℝ (Fin (n - m)) :=
         (LinearMap.toContinuousLinearMap (toEuclideanLin Zᵀ))
-      change HasStrictFDerivAt (fun y : EuclideanSpace ℝ (Fin n) ↦ Zᵀ *ᵥ (y - x)) N x
+      change HasStrictFDerivAt
+        (fun y : EuclideanSpace ℝ (Fin n) ↦ WithLp.toLp 2 (Zᵀ *ᵥ (y - x).ofLp)) N x
       -- The function y ↦ N (y - x) is the composition N ∘ (· - x)
       -- Its derivative at x is N ∘ d/dx(y - x)|_x = N ∘ id = N
       change HasStrictFDerivAt (fun y ↦ N (y - x)) N x
@@ -1116,27 +957,29 @@ theorem LICQ_linearized_feasible_directions_sub_posTangentCone
       rw [Finset.mem_filter] at hi2
       exact hi2.2
 
-  have Mxinj : LinearMap.ker Mx = ⊥ := by
+  have Mxinj : LinearMap.ker Mx.toLinearMap = ⊥ := by
     change LinearMap.ker (Mx : EuclideanSpace ℝ (Fin n) →ₗ[ℝ] EuclideanSpace ℝ
-      (p.active_set x) × (Fin (n - m) → ℝ)) = ⊥
+      (p.active_set x) × EuclideanSpace ℝ (Fin (n - m))) = ⊥
     rw [LinearMap.ker_eq_bot']
     intro z Mzeq0; simp [Mx] at Mzeq0
-    have heq1 : Ax *ᵥ z = 0 := by rw [mulVec_eq_toEuclidean]; apply Mzeq0.1
-    have heq2 : Zᵀ *ᵥ z = 0 := by rw [mulVec_eq_toEuclidean]; apply Mzeq0.2
+    have heq1 : Ax *ᵥ z = 0 := by
+      simpa [Matrix.toEuclideanLin_apply] using congrArg WithLp.ofLp Mzeq0.1
+    have heq2 : Zᵀ *ᵥ z = 0 := by
+      simpa [Matrix.toEuclideanLin_apply] using congrArg WithLp.ofLp Mzeq0.2
     refine LICQ_injM z m Z Ax ?_ mlen ?_ eq2 eq1 ⟨heq1, heq2⟩
     simp [m]
     obtain hAx := LICQ_Axfullrank x LIx; simp at hAx
     change Ax.rank = (active_set x).card; apply hAx; simp only [Ax]
-    rfl
-  have Mxsurj : LinearMap.range Mx = ⊤ := by
+    funext i
+    simp only [gradc]
+    split <;> rfl
+  have Mxsurj : LinearMap.range Mx.toLinearMap = ⊤ := by
     change LinearMap.range (Mx : EuclideanSpace ℝ (Fin n) →ₗ[ℝ] EuclideanSpace ℝ
-      (p.active_set x) × (Fin (n - m) → ℝ)) = ⊤
+      (p.active_set x) × EuclideanSpace ℝ (Fin (n - m))) = ⊤
     rw [← LinearMap.ker_eq_bot_iff_range_eq_top_of_finrank_eq_finrank]
     · apply Mxinj
     · simp; change n = m + (n - m)
       rw [add_comm, Nat.sub_add_cancel]; apply mlen
-
-  use (fun n ↦ n)
 
   have implicit_f: ∃ (N : ℕ) (d : ℕ → EuclideanSpace ℝ (Fin n)), (∀ m ≥ N, Rz (d m) = Rt (1 / m)) ∧
       (Filter.Tendsto d atTop (𝓝 x)) := by
@@ -1146,6 +989,8 @@ theorem LICQ_linearized_feasible_directions_sub_posTangentCone
   simp only [linearized_feasible_directions] at hv
   rcases hv with ⟨hvh1, hvh2⟩
   rcases implicit_f with ⟨N, d, hfd, dtend⟩
+  have dsubtend : Tendsto (fun i ↦ d i - x) atTop (nhds 0) := by
+    simpa using dtend.sub (tendsto_const_nhds : Tendsto (fun _ : ℕ ↦ x) atTop (nhds x))
   rw [LinearMapClass.ker_eq_bot] at Mxinj
   rw [LinearMap.range_eq_top] at Mxsurj
   obtain deriv := (hasFDerivAt_iff_tendsto.1 (HasStrictFDerivAt.hasFDerivAt Rzgrad))
@@ -1155,12 +1000,14 @@ theorem LICQ_linearized_feasible_directions_sub_posTangentCone
   obtain ⟨ε, εpos, inactive⟩ := LICQ_inactive_nhds x xf conti
   obtain ⟨N', dtendx⟩ := dtend ε εpos
 
-  use (fun n ↦ d n - x); constructor
-  · use max N N'; intro nn hnn; simp [FeasSet, FeasPoint]
+  refine mem_tangentConeAt_of_seq atTop (fun i : ℕ ↦ (i : NNReal))
+    (fun i ↦ d i - x) dsubtend ?_ ?_
+  · rw [eventually_atTop]
+    use max N N'; intro nn hnn; simp [FeasSet, FeasPoint]
     specialize hfd nn (le_of_max_le_left hnn); simp [Rz, Rt, Mx] at hfd
-    rw [← mulVec_eq_toEuclidean] at hfd
-    rcases hfd with ⟨hv1, hv2⟩
-    have Axeq : (nn : ℝ)⁻¹ • Ax *ᵥ v = fun i :
+    have hv1 : c (d nn) = (nn : ℝ)⁻¹ • (Ax *ᵥ v.ofLp) := by
+      simpa [Matrix.toEuclideanLin_apply] using congrArg WithLp.ofLp hfd.1
+    have Axeq : (nn : ℝ)⁻¹ • (Ax *ᵥ v.ofLp) = fun i :
       (p.active_set x) ↦ ((nn : ℝ)⁻¹ * (gradc x i) ⬝ᵥ v) := by
         simp [Ax]; ext i; simp; left; simp [mulVec]
     have Axroweq : ∀ i : (p.active_set x), c (d nn) i = (nn : ℝ)⁻¹ * (gradc x i) ⬝ᵥ v := by
@@ -1196,10 +1043,8 @@ theorem LICQ_linearized_feasible_directions_sub_posTangentCone
         specialize dtendx nn (le_of_max_le_right hnn); rw [← dist_eq_norm] at dtendx
         specialize inactive dtendx; linarith [inactive]
 
-  constructor
-  · exact tendsto_natCast_atTop_atTop
   · have Mxbij : Function.Bijective Mx := ⟨Mxinj, Mxsurj⟩
-    refine LICQ_tendsto v veq0 ?_ Rxeq0 hfd dtend Mxbij deriv; simp [Rt]
+    simpa using (LICQ_tendsto v veq0 (by simp [Rt]) Rxeq0 hfd dtend Mxbij deriv)
 
 theorem LICQ_linearized_feasible_directions_eq_posTangentCone
     (x : EuclideanSpace ℝ (Fin n)) (xf : x ∈ p.FeasSet)
@@ -1386,8 +1231,9 @@ theorem first_order_neccessary_general
       rcases heq with hl | hl
       · obtain neq := p1.eq_ine_not_intersect
         exfalso;
-        apply absurd neq; push_neg;
-        apply Finset.ne_empty_of_mem (a := j.1) (by simp [hl])
+        have hmem : j.1 ∈ τ ∩ σ := by simp [hl]
+        rw [neq] at hmem
+        simp at hmem
       exact hl
     simp [ht]
 
@@ -1476,11 +1322,14 @@ theorem Linear_linearized_feasible_directions_eq_posTangentCone
   obtain ⟨t_, ht_, ht⟩ := inactive_constraint x v xf conti
   obtain ⟨hv1, hv2⟩ := hv
   let z := fun (k : ℕ) ↦ (t_ / (k + 1)) • v
-  simp [posTangentConeAt]
-  let c := fun (k : ℕ) ↦ (k + (1 : ℝ)) / t_
-  use c; use z
-  constructor
-  · use 0; intro n hn
+  let c : ℕ → NNReal := fun k ↦ ⟨(k + (1 : ℝ)) / t_, by positivity⟩
+  refine mem_tangentConeAt_of_seq atTop c z ?_ ?_ ?_
+  · have hcoef : Tendsto (fun k : ℕ ↦ t_ / ((k : ℝ) + 1)) atTop (nhds 0) := by
+      convert (tendsto_const_nhds (x := t_)).mul
+        tendsto_one_div_add_atTop_nhds_zero_nat using 1 <;> simp [div_eq_mul_inv]
+    simpa [z] using hcoef.smul_const v
+  · rw [eventually_atTop]
+    use 0; intro n hn
     simp [FeasSet, FeasPoint]; constructor;
     · constructor
       · rw [hdomain]; trivial
@@ -1521,14 +1370,12 @@ theorem Linear_linearized_feasible_directions_eq_posTangentCone
       apply div_le_self (by linarith) (by linarith)
     obtain ht := ht _ this j (Finset.mem_sdiff.mpr ⟨hj, hj1⟩)
     linarith
-  constructor
-  · apply Filter.Tendsto.atTop_div_const ht_
-    apply Filter.Tendsto.atTop_add_zero_eventuallyLE
-    · exact tendsto_natCast_atTop_atTop
-    apply Filter.Eventually.of_forall; exact fun x ↦ zero_le_one' ℝ
   apply tendsto_atTop_of_eventually_const (i₀ := 1)
-  intro i hi; simp [c, z]
-  rw [smul_smul]; field_simp; rw [one_smul]
+  intro i hi
+  change (((i : ℝ) + 1) / t_) • ((t_ / ((i : ℝ) + 1)) • v) = v
+  rw [smul_smul]
+  convert one_smul ℝ v
+  field_simp [ne_of_gt ht_]
 
 theorem first_order_neccessary_LinearCQ
     (p1 : Constrained_OptimizationProblem (EuclideanSpace ℝ (Fin n)) τ σ)
@@ -1550,4 +1397,3 @@ theorem first_order_neccessary_LinearCQ
   · exact hdomain
 
 end Constrained_OptimizationProblem_property_linear
-

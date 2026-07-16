@@ -146,7 +146,8 @@ lemma Lipschitz_of_Bounded [T0Space X] (hf : ConvexOn ℝ (ball x₀ r) f)
   --type conversion
   rw[edist_dist,edist_dist]
   rw[ENNReal.coe_nnreal_eq]
-  simp only [NNReal.coe_mk]
+  change ENNReal.ofReal (dist (f x) (f y)) ≤
+    ENNReal.ofReal K * ENNReal.ofReal (dist x y)
   rw[← ENNReal.ofReal_mul K_pos]
   rw[ENNReal.ofReal_le_ofReal_iff (mul_nonneg K_pos dist_nonneg)]
   --type conversion
@@ -512,7 +513,7 @@ lemma LocallyUpperBounded (hs_convex : Convex ℝ s) (hs_isopen : IsOpen s)
               ≤ w a * f a + (1 - w a) * f (∑ i ∈ t, w' i • i) := by
                 convert hf.2 mem_a sum_in_hull wa_pos (le_of_lt wt_pos) (by ring) using 2
             _ ≤ w a * f a + (1 - w a) * (∑ i ∈ t, w' i * f i) :=
-                add_le_add_left (mul_le_mul_of_nonneg_left IH' (le_of_lt wt_pos)) _
+                add_le_add (le_refl _) (mul_le_mul_of_nonneg_left IH' (le_of_lt wt_pos))
             _ = w a * f a + ∑ i ∈ t, w i * f i := by
                 congr 1; rw [Finset.mul_sum]; congr 1
                 funext i; simp only [w']; field_simp
@@ -595,4 +596,3 @@ theorem FiniteDimensionalConvexFunctionsContinous
   apply FiniteDimensionalConvexFunctionsLocallyLipschitz hs_convex hs_isopen hf
 
 end Continuity
-

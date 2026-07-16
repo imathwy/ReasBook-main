@@ -119,7 +119,8 @@ Lemma. If `x` is in the range of `affSpanCoerce_pre'`,
 then `invFun` followed by the map returns `x`.
 Purpose: provides a partial inverse on the range.
 -/
-lemma inv_eq_self {x} {s : Set V} (hs : s.Nonempty) (hx : x ∈ range (affSpanCoerce_pre' 𝕜 hs)) :
+lemma affSpan_invFun_apply {x} {s : Set V} (hs : s.Nonempty)
+    (hx : x ∈ range (affSpanCoerce_pre' 𝕜 hs)) :
    (affSpanCoerce_pre' 𝕜 hs) (Function.invFun (affSpanCoerce_pre' 𝕜 hs) x) = x := by
   let g := (affSpanCoerce_pre' 𝕜 hs)
   change g (Function.invFun g x) = x
@@ -451,9 +452,9 @@ theorem openSegment_sub_intrinsicInterior {s : Set V} (hsc : Convex 𝕜 s) {x y
       exact mem_image_of_mem g hy
     -- push forward endpoints
     have hgx : h (g x) = x :=
-      inv_eq_self 𝕜 hs (mem_range_of_mem_image _ _ hx)
+      affSpan_invFun_apply 𝕜 hs (mem_range_of_mem_image _ _ hx)
     have hgy : h (g y) = y :=
-      inv_eq_self 𝕜 hs (mem_range_of_mem_image _ _ hy)
+      affSpan_invFun_apply 𝕜 hs (mem_range_of_mem_image _ _ hy)
     change openSegment 𝕜 x y ⊆ h '' interior (h ⁻¹' s)
     -- map open segment through `h`
     have hop : h '' (openSegment 𝕜 (g x) (g y)) = openSegment 𝕜 (h (g x)) (h (g y)) := by
@@ -667,9 +668,9 @@ lemma intrinsicInterior_forall_exist_of_intrinsicInterior {z : V}
     rw [← hgu (interior (h ⁻¹' s))]
     exact mem_image_of_mem g hz
 
-  have hgx : h (g x) = x := inv_eq_self ℝ hs <| sub_range ℝ hs hx
+  have hgx : h (g x) = x := affSpan_invFun_apply ℝ hs <| sub_range ℝ hs hx
 
-  have hgz : h (g z) = z := inv_eq_self ℝ hs <| mem_range_of_mem_image _ _ hz
+  have hgz : h (g z) = z := affSpan_invFun_apply ℝ hs <| mem_range_of_mem_image _ _ hz
 
   have ⟨μ ,hu1, hu⟩:= prolongation_of_interior' hx' (g x)
   use μ ,hu1
@@ -879,7 +880,6 @@ lemma in_affineSpan_openSegment {x y : V} (h : x ≠ y) :
     nth_rw 1 [← one_smul 𝕜 y]
     rw [← sub_smul]
     norm_num
-    rw [smul_right_inj (by norm_num)]
     exact h.symm
 
   let v := z -ᵥ u
@@ -911,7 +911,7 @@ lemma intrinsicClosure_openSegment {x y : V} (hn : x ≠ y) :
   let h := affSpanCoerce_pre 𝕜 hs
   let g := Function.invFun h
   have hgx : h (g x) = x:= by
-    apply inv_eq_self 𝕜 hs
+    apply affSpan_invFun_apply 𝕜 hs
     simp
     have b : x -ᵥ Exists.choose hs ∈ (affineSpan 𝕜 (openSegment 𝕜 x y)).direction := by
       refine (vsub_right_mem_direction_iff_mem ?hp x).mpr ?_
@@ -922,7 +922,7 @@ lemma intrinsicClosure_openSegment {x y : V} (hn : x ≠ y) :
     exact (eq_vadd_iff_vsub_eq x _ _).mpr rfl
 
   have hgy : h (g y) = y := by
-    apply inv_eq_self 𝕜 hs
+    apply affSpan_invFun_apply 𝕜 hs
     simp
     have b : y -ᵥ Exists.choose hs ∈ (affineSpan 𝕜 (openSegment 𝕜 x y)).direction := by
       refine (vsub_right_mem_direction_iff_mem ?hp y).mpr ?_
@@ -1239,15 +1239,9 @@ lemma Fin_two_inter {a b : Set V} {s : (Fin 2) → Set V}
   ext x
   constructor
   · intro hx
-    simp at hx
-    have h1 : x ∈ a := Eq.mp (congrArg (fun _a ↦ x ∈ _a) hs0) (hx 0)
-    have h2 : x ∈ b := Eq.mp (congrArg (fun _a ↦ x ∈ _a) hs1) (hx 1)
-    exact mem_inter h1 h2
-  intro hx
-  simp; intro i
-  by_cases h : i = 0
-  · rw [h, hs0]; exact hx.1
-  rw [Fin.eq_one_of_ne_zero i h, hs1]; exact hx.2
+    simpa [hs0, hs1] using hx
+  · intro hx
+    simpa [hs0, hs1] using hx
 
 /-
 Special case for Theorem 6.5 (first part).
@@ -1673,18 +1667,10 @@ end Thm_6_7
 
 section Thm_6_8
 
-def LinearMap.fst_WithLp2 (M N : Type*) [NormedAddCommGroup M] [NormedSpace ℝ M]
-    [NormedAddCommGroup N] [NormedSpace ℝ N] : WithLp 2 (M × N) →ₗ[ℝ] M where
-  toFun := Prod.fst
-  map_add' _ _ := rfl
-  map_smul' _ _ := rfl
-
 noncomputable def ContinuousLinearMap.fst_WithLp2 (M N : Type*)
     [NormedAddCommGroup M] [NormedSpace ℝ M]
     [NormedAddCommGroup N] [NormedSpace ℝ N] :
-    WithLp 2 (M × N) →L[ℝ] M where
-  cont := continuous_fst
-  toLinearMap := LinearMap.fst_WithLp2 M N
+    WithLp 2 (M × N) →L[ℝ] M := WithLp.fstL 2 ℝ M N
 
 /-
 Theorem 6.8.
@@ -1696,7 +1682,9 @@ def D (C : Set (E × F)) : Set E := Prod.fst '' C
 
 lemma D_eq_projection {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [NormedAddCommGroup F] [NormedSpace ℝ F] (C : Set (E × F)) :
-    D C = ContinuousLinearMap.fst_WithLp2 E F '' C := rfl
+    D C = ContinuousLinearMap.fst_WithLp2 E F '' (WithLp.toLp 2 '' C) := by
+  ext x
+  simp [D, ContinuousLinearMap.fst_WithLp2]
 
 lemma Set.prod_decomp (S : Set (E × F)) : S = ⋃ i ∈ D S, (M i ∩ S) := by
   ext x; simp
@@ -1859,8 +1847,7 @@ theorem mem_intrinsicInterior_prod_convexCone_iff {C : Set E}
   have hCy : ∀ y, Cy y = {z | (y, z) ∈ K} := fun y => by simp [Cy]
   have hCyt : ∀ t > 0, Cy t = t • C := fun t ht => by
     ext z; simp [Cy, hK, Convex.mem_toCone]
-    exact ⟨fun ⟨c, hc, ⟨w, hw⟩⟩ => ⟨w, hw.1, hw.2.1 ▸ hw.2.2⟩,
-           fun ⟨w, hw⟩ => ⟨t, ht, w, hw.1, rfl, hw.2⟩⟩
+    aesop
   have hD : Set.Ioi 0 = {y | (Cy y).Nonempty} := by
     ext t; simp [Cy]; constructor
     · intro h; simp [Cy] at hCyt; exact hCyt t h ▸ hn.smul_set
@@ -1989,15 +1976,15 @@ theorem mem_intrinsicInterior_prod_convexCone_iff' {C : Set E}
   have hCy : ∀ y, Cy y = {z | (y, z) ∈ K} := fun y => by simp [Cy]
   have hCyt : ∀ t ≥ 0, Cy t = t • C := fun t ht => by
     ext z; simp [Cy, hK]; rw [Convex.mem_toCone_Point]; simp
-    exact ⟨fun ⟨c, hc, ⟨w, hw⟩⟩ => ⟨w, hw.1, hw.2.1 ▸ hw.2.2⟩,
-           fun ⟨w, hw⟩ => ⟨t, ht, w, hw.1, rfl, hw.2⟩⟩
+    aesop
     apply hne
   have hD : Set.Ici 0 = {y | (Cy y).Nonempty} := by
     ext t; simp [Cy]; constructor
     · intro h; simp [Cy] at hCyt; exact hCyt t h ▸ hn.smul_set
     · rw [hK, Set.nonempty_def];
       simp; intro x; rw [Convex.mem_toCone_Point _ hne]; simp;
-      intro s hs _ _ hst _; simp_rw [← hst, hs]
+      intro ht _ _ _
+      exact ht
   ext ⟨k, z⟩;
   rw [mem_intrinsicInterior_prod_iff K.convex Cy hCy hD k z]
   have : Ici (0:ℝ) = closure (Ioi 0) := by
@@ -2284,4 +2271,3 @@ theorem intrinsicInterior_convexHull_iUnion_eq {ι : Type} [Fintype ι] (C : ι 
             convert hy using 2; congr; rw [div_eq_inv_mul, smul_eq_mul]
 
 end Thm_6_9
-

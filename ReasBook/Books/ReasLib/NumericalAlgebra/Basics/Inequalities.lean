@@ -991,8 +991,8 @@ lemma rearrangement_ineq_antitone {n : Type*} [Fintype n] [LinearOrder n] (a b :
 -/
 lemma cauchy_schwarz_real {n : ℕ} (u v : Fin n → ℝ) :
     ‖ ∑ i : Fin n, u i * v i‖  ≤ √(∑ i : Fin n, ‖ u i‖  ^ 2) * √(∑ i : Fin n, ‖ v i‖ ^ 2) := by
-  let u' : PiLp 2 (fun _ : Fin n => ℝ) := u
-  let v' : PiLp 2 (fun _ : Fin n => ℝ) := v
+  let u' : PiLp 2 (fun _ : Fin n => ℝ) := WithLp.toLp 2 u
+  let v' : PiLp 2 (fun _ : Fin n => ℝ) := WithLp.toLp 2 v
   have h : ‖⟪u', v'⟫‖ ≤ ‖u'‖ * ‖v'‖ := norm_inner_le_norm u' v'
   have inner_eq : ⟪u', v'⟫ = ∑ i, ⟪u' i, v' i⟫ := PiLp.inner_apply u' v'
   have scalar_inner : ∀ i, ⟪u' i, v' i⟫ = (u i) * v i := by
@@ -1000,9 +1000,9 @@ lemma cauchy_schwarz_real {n : ℕ} (u v : Fin n → ℝ) :
     simp [u',v']
     apply mul_comm
   have norm_u_sq : ‖u'‖ ^ 2 = ∑ i, ‖u i‖ ^ 2 :=
-    PiLp.norm_sq_eq_of_L2 (fun _ : Fin n => ℝ ) u'
+    by simpa [u'] using PiLp.norm_sq_eq_of_L2 (fun _ : Fin n => ℝ) u'
   have norm_v_sq : ‖v'‖ ^ 2 = ∑ i, ‖v i‖ ^ 2 :=
-    PiLp.norm_sq_eq_of_L2 (fun _ : Fin n => ℝ) v'
+    by simpa [v'] using PiLp.norm_sq_eq_of_L2 (fun _ : Fin n => ℝ) v'
   have norm_u_eq : ‖u'‖ = √(∑ i, ‖u i‖ ^ 2) := by
     rw [← Real.sqrt_sq (norm_nonneg u'), norm_u_sq]
   have norm_v_eq : ‖v'‖ = √(∑ i, ‖v i‖ ^ 2) := by
@@ -1328,4 +1328,3 @@ theorem von_neumann_trace_inequality_general
 end von_neumann
 end von_neumann
 end Matrix
-

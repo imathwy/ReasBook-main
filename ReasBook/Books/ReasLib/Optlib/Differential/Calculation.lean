@@ -50,7 +50,8 @@ theorem HasGradientAtFilter.comp
   have eq : (starRingEnd 𝕜) g' • (toDual 𝕜 F) f' =
     (toDual 𝕜 F) (g' • f') := by rw [map_smulₛₗ]
   rw [HasGradientAtFilter, ← eq]
-  exact hg.hasDerivAtFilter.comp_hasFDerivAtFilter x hf hL
+  exact hg.hasDerivAtFilter.comp_hasFDerivAtFilter hf
+    (hL.prodMap (tendsto_pure_pure _ _))
 
 theorem HasGradientWithinAt.comp
     (hg : HasGradientWithinAt g g' t (f x)) (hf : HasGradientWithinAt f f' s x)
@@ -408,4 +409,3 @@ theorem gradient_const_mul' (ha : DifferentiableAt ℝ a x) :
   gradient_const_mul b ha
 
 end Mul_const
-

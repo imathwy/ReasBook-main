@@ -14,9 +14,12 @@ variable {m n k : Type*} [Fintype m] [Fintype n] [Fintype k]
   [DecidableEq m] [DecidableEq n] [DecidableEq k]
 
 -- ℓ¹ ℓ² ℓ∞ vector norm
-local notation "‖" x "‖₁" => @Norm.norm (EuclideanSpace α _) (PiLp.instNorm 1 fun _ => α) x
-local notation "‖" x "‖₂" => @Norm.norm (EuclideanSpace α _) (PiLp.instNorm 2 fun _ => α) x
-local notation "‖" x "‖∞" => @Norm.norm (EuclideanSpace α _) (PiLp.instNorm ⊤ fun _ => α) x
+private noncomputable def vectorNorm (p : ENNReal) {i : Type*} [Fintype i] (x : i → α) :=
+  ‖WithLp.toLp p x‖
+
+local notation "‖" x "‖₁" => vectorNorm 1 x
+local notation "‖" x "‖₂" => vectorNorm 2 x
+local notation "‖" x "‖∞" => vectorNorm ⊤ x
 
 /-! ### 2-norm / spectral norm -/
 
@@ -25,14 +28,15 @@ theorem matrix2Norm_le_vec (A : Matrix m n α) (x : n → α) :
     ‖A.mulVec x‖₂ ≤ ‖A‖₂ * ‖x‖₂ := by
   by_cases hx : x = 0
   · rw [hx]
-    simp only [Matrix.mulVec_zero, norm_zero, MulZeroClass.mul_zero, le_refl]
+    simp [vectorNorm]
   · have h_norm_x_ne_zero : ‖x‖₂ ≠ 0 := by
-      exact norm_ne_zero_iff.mpr hx
+      simpa [vectorNorm] using hx
     let c := ‖x‖₂
+    have hc : 0 ≤ c := norm_nonneg _
     let y := (c⁻¹) • x
     have h_norm_y : ‖y‖₂ = 1 := by
-      rw [norm_smul]
-      rw [norm_inv, norm_norm]
+      unfold vectorNorm y
+      rw [WithLp.toLp_smul, norm_smul, norm_inv, Real.norm_eq_abs, abs_of_nonneg hc]
       exact inv_mul_cancel₀ h_norm_x_ne_zero
     have mul_vec_smul : A.mulVec x = c • A.mulVec y := by
       calc
@@ -44,7 +48,8 @@ theorem matrix2Norm_le_vec (A : Matrix m n α) (x : n → α) :
         _ = c • A.mulVec y := by exact mulVec_smul A c y
     have norm_mul : ‖A.mulVec x‖₂ = c * ‖A.mulVec y‖₂ := by
       rw [mul_vec_smul]
-      rw [norm_smul, norm_norm]
+      unfold vectorNorm
+      rw [WithLp.toLp_smul, norm_smul, Real.norm_eq_abs, abs_of_nonneg hc]
     have le_sup : ‖A.mulVec y‖₂ ≤ ‖A‖₂ := by
         calc
           ‖A.mulVec y‖₂
@@ -194,11 +199,12 @@ theorem frobenius_sq_eq_trace_mul_conjTranspose (A : Matrix m n α) :
 
 omit [DecidableEq m] in
 /-- ℓ∞ ≤ ℓ2 -/
-theorem norm_inf_le_norm2 (x : EuclideanSpace α m) :
+theorem norm_inf_le_norm2 (x : m → α) :
   ‖x‖∞ ≤ ‖x‖₂ := by
-  have h1 : ∀ i, ‖x i‖ ≤ ‖x‖₂ := by
+  unfold vectorNorm
+  rw [PiLp.norm_eq_ciSup, PiLp.norm_eq_of_L2]
+  have h1 : ∀ i, ‖x i‖ ≤ Real.sqrt (∑ j, ‖x j‖ ^ 2) := by
     intro i
-    rw [EuclideanSpace.norm_eq x]
     apply Real.le_sqrt_of_sq_le
     exact Finset.single_le_sum (fun j _ => sq_nonneg (‖x j‖)) (Finset.mem_univ i)
   by_cases h : Nonempty m
@@ -206,11 +212,9 @@ theorem norm_inf_le_norm2 (x : EuclideanSpace α m) :
     exact ciSup_le h1
   · -- Case 2: m is empty
     have : IsEmpty m := by exact not_nonempty_iff.mp h
-    have : ‖x‖∞ = 0 := by
+    have : (⨆ i, ‖x i‖) = 0 := by
       exact Real.iSup_of_isEmpty fun i ↦ ‖x i‖
-    have : ‖x‖₂ = 0 := by
-      rw [EuclideanSpace.norm_eq x]
-      simp only
+    have : Real.sqrt (∑ i, ‖x i‖ ^ 2) = 0 := by
       have h_sum_is_zero : (∑ i, ‖x i‖ ^ 2) = 0 := by
         exact Fintype.sum_empty fun x_1 ↦ ‖x x_1‖ ^ 2
       rw [h_sum_is_zero]
@@ -220,9 +224,10 @@ theorem norm_inf_le_norm2 (x : EuclideanSpace α m) :
 
 omit [DecidableEq m] in
 /-- ℓ2 ≤ √(dim V) ℓ∞ -/
-theorem norm2_le_sqrt_dim_norm_inf (x : EuclideanSpace α m) :
+theorem norm2_le_sqrt_dim_norm_inf (x : m → α) :
   ‖x‖₂ ≤ Real.sqrt (Fintype.card m) * ‖x‖∞ := by
-  rw [EuclideanSpace.norm_eq x]
+  unfold vectorNorm
+  rw [PiLp.norm_eq_of_L2 (WithLp.toLp 2 x)]
   have bdd : BddAbove (Set.range (fun i : m => ‖x i‖)) := by
     refine ⟨⨆ i, ‖x i‖, ?_⟩
     intro r hr
@@ -249,11 +254,12 @@ theorem norm2_le_sqrt_dim_norm_inf (x : EuclideanSpace α m) :
   exact h_sqrt_ineq
 
 /-- ℓ2 ≤ ℓ1 -/
-theorem norm2_le_norm1 (x : EuclideanSpace α m) :
+theorem norm2_le_norm1 (x : m → α) :
   ‖x‖₂ ≤ ‖x‖₁ := by
+  unfold vectorNorm
   have sum_norm_nonneg : 0 ≤ ∑ i, ‖x i‖ := Finset.sum_nonneg fun i _ => norm_nonneg _
-  simp [PiLp.norm_eq_of_L1 x]
-  rw [EuclideanSpace.norm_eq x]
+  rw [PiLp.norm_eq_of_L1 (WithLp.toLp 1 x)]
+  rw [PiLp.norm_eq_of_L2 (WithLp.toLp 2 x)]
   have h4 : ∑ i, ‖x i‖ ^ 2 ≤ (∑ i, ‖x i‖) ^ 2 := by
     calc
       ∑ i, ‖x i‖ ^ 2 ≤ ∑ i, ‖x i‖ * (∑ j, ‖x j‖) :=
@@ -273,11 +279,12 @@ theorem norm2_le_norm1 (x : EuclideanSpace α m) :
 
 omit [DecidableEq m] in
 /-- ℓ1 ≤ √(dim V) ℓ2 -/
-theorem norm1_le_sqrt_dim_norm2 (x : EuclideanSpace α m) :
+theorem norm1_le_sqrt_dim_norm2 (x : m → α) :
   ‖x‖₁ ≤ Real.sqrt (Fintype.card m) * ‖x‖₂ := by
+  unfold vectorNorm
   have sum_norm_nonneg : 0 ≤ ∑ i, ‖x i‖ := Finset.sum_nonneg fun i _ => norm_nonneg _
-  simp [PiLp.norm_eq_of_L1 x]
-  rw [EuclideanSpace.norm_eq x]
+  rw [PiLp.norm_eq_of_L1 (WithLp.toLp 1 x)]
+  rw [PiLp.norm_eq_of_L2 (WithLp.toLp 2 x)]
   -- Applying the Cauchy-Schwarz inequality. We regard the vectors a =
   -- (‖x_i‖) and b = (1) as vectors in R^m.
   have h_cs : (∑ i : m, ‖x i‖ * 1) ^ 2 ≤ (∑ i : m, ‖x i‖ ^ 2) * (∑ i : m, 1 ^ 2) := by
@@ -305,10 +312,10 @@ theorem norm1_le_sqrt_dim_norm2 (x : EuclideanSpace α m) :
     _ = Real.sqrt (Fintype.card m) * Real.sqrt (∑ i, ‖x i‖ ^ 2) := by ring
 
 /-- ℓ∞ ≤ ℓ1 -/
-theorem norm_inf_le_norm1 (x : EuclideanSpace α m) :
+theorem norm_inf_le_norm1 (x : m → α) :
   ‖x‖∞ ≤ ‖x‖₁ := by
-  rw [show ‖x‖∞ = ⨆ i, ‖x i‖ by exact rfl]
-  simp [PiLp.norm_eq_of_L1 x]
+  unfold vectorNorm
+  rw [PiLp.norm_eq_ciSup, PiLp.norm_eq_of_L1]
   have h_le_sum : ∀ i, ‖x i‖ ≤ ∑ j, ‖x j‖ := by
     intro i
     exact Finset.single_le_sum (fun j _ => norm_nonneg (x j)) (Finset.mem_univ i)
@@ -321,8 +328,9 @@ theorem norm_inf_le_norm1 (x : EuclideanSpace α m) :
 
 omit [DecidableEq m] in
 /-- ℓ1 ≤ dim V ℓ∞ -/
-theorem norm1_le_dim_norm_inf (x : EuclideanSpace α m) :
+theorem norm1_le_dim_norm_inf (x : m → α) :
   ‖x‖₁ ≤ (Fintype.card m : ℝ) * ‖x‖∞ := by
+  unfold vectorNorm
   have h_le_inf : ∀ i, ‖x i‖ ≤ ‖x‖∞ := by
     intro i
     have bdd : BddAbove (Set.range (fun i : m => ‖x i‖)) := by
@@ -332,7 +340,7 @@ theorem norm1_le_dim_norm_inf (x : EuclideanSpace α m) :
       rw [← hj]
       exact le_ciSup (f := fun k => ‖x k‖) (by simp) j
     exact le_ciSup bdd i
-  simp [PiLp.norm_eq_of_L1 x]
+  rw [PiLp.norm_eq_of_L1 (WithLp.toLp 1 x)]
   calc
     ∑ i, ‖x i‖ ≤ ∑ i, ‖x‖∞ := Finset.sum_le_sum fun i _ => h_le_inf i
     _ = (Fintype.card m : ℝ) * ‖x‖∞ := by
@@ -426,4 +434,3 @@ sorry
 
 end Invariance
 end Matrix
-

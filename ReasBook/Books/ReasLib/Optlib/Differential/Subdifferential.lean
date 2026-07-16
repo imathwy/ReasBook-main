@@ -414,8 +414,7 @@ theorem f_subdiff_closed (f : E → ℝ) (x : E) : IsClosed (f_subdifferential f
   rw [mem_compl_iff, has_f_subdiff_iff] at hv';
   push_neg at hv'
   rcases hv' with ⟨ε, εpos, hε⟩
-  rw [Filter.Eventually, mem_nhds_iff] at hε
-  push_neg at hε
+  rw [frequently_nhds_iff] at hε
   have hh : f_subdifferential f x =
       {u | ∀ ε > 0, ∀ᶠ (y : E) in 𝓝 x, f y - f x - (inner (ℝ) u (y - x)) ≥ -ε * ‖y - x‖} := by
     ext u
@@ -429,7 +428,8 @@ theorem f_subdiff_closed (f : E → ℝ) (x : E) : IsClosed (f_subdifferential f
   rcases h with ⟨a, amem,anotmem⟩
   rw [notMem_compl_iff, mem_setOf] at anotmem
   specialize anotmem (ε / 2)  ε2pos
-  rw [Filter.Eventually, mem_nhds_iff] at anotmem
+  change {y : E | f y - f x - inner (ℝ) a (y - x) ≥ -(ε / 2) * ‖y - x‖} ∈ 𝓝 x at anotmem
+  rw [mem_nhds_iff] at anotmem
   rcases anotmem with ⟨ta, tasubset,taopen,xinta⟩
   have tasubset': ta ⊆ {x_1 | f x_1 - f x - (inner (ℝ) v (x_1 - x)) ≥ -ε * ‖x_1 - x‖} := by
     intro y yinta; rw [mem_setOf, ge_iff_le]
@@ -446,9 +446,8 @@ theorem f_subdiff_closed (f : E → ℝ) (x : E) : IsClosed (f_subdifferential f
       rw [Metric.ball, mem_setOf] at amem
       exact le_of_lt amem
       apply norm_nonneg
-  specialize hε ta tasubset' taopen
-  apply hε
-  apply xinta
+  rcases hε ta xinta taopen with ⟨y, yinta, hy⟩
+  exact (not_lt_of_ge (tasubset' yinta)) hy
 
 /-- the Frechet subdifferential is a convex set -/
 theorem f_subdiff_convex (f : E → ℝ) (x : E) : Convex ℝ (f_subdifferential f x):= by
@@ -1107,4 +1106,3 @@ theorem rela_proximal_operator_partial (f : E → ℝ) (x : E) (u : E) :
   assumption
 
 end
-

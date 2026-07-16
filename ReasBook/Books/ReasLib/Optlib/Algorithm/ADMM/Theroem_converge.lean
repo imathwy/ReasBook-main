@@ -342,9 +342,7 @@ lemma A₂e₂_isBounded' [Setting E₁ E₂ F admm admm_kkt] :
             exact h3; simp
 
    have h6: dist (A₂ (e₂ n)) 0 < √ (r_Φ / ρ) := by
-      rw[← sub_zero (A₂ (e₂ n))] at h5
-      rw[SeminormedAddGroup.dist_eq (A₂ (e₂ n)) 0]
-      exact h5
+      simpa [dist_eq_norm] using h5
 
    rw [← hr] at h6
    rw [← Metric.mem_ball] at h6
@@ -478,9 +476,7 @@ lemma A₁e₁_A₂e₂_isBounded' [Setting E₁ E₂ F admm admm_kkt] :
 
    have h6: dist (A₁ (e₁ n) + A₂ (e₂ n)) 0 < r := by
       have h_n' := h_n n
-      rw[← sub_zero (A₁ (e₁ n) + A₂ (e₂ n))] at h_n'
-      rw[SeminormedAddGroup.dist_eq (A₁ (e₁ n) + A₂ (e₂ n)) 0]
-      exact h_n'
+      simpa [dist_eq_norm] using h_n'
 
    rw [← Metric.mem_ball] at h6; simp; simp at h6
    exact h6
@@ -530,9 +526,7 @@ lemma A₁e₁_isBounded' [Setting E₁ E₂ F admm admm_kkt] :
          _ = r := hr
 
    have h_dist : dist (A₁ (e₁ n)) 0 < r := by
-      rw[← sub_zero (A₁ (e₁ n))] at h_norm
-      rw[SeminormedAddGroup.dist_eq (A₁ (e₁ n)) 0]
-      exact h_norm
+      simpa [dist_eq_norm] using h_norm
 
    rw [← Metric.mem_ball] at h_dist
    apply h_dist
@@ -1585,4 +1579,3 @@ theorem ADMM_convergence
    y_converge fullrank₁ fullrank₂⟩
 
 end ADMM_Converge_Proof
-

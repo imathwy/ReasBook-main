@@ -172,7 +172,7 @@ lemma const_mul_special_concave : ∀ c > 0,
     · exact inv_ne_zero (ne_of_gt cpos)
   have h₅: ∀ (x : ℝ), 0 < x → x < c / 2 → 0 < deriv (fun t ↦ c⁻¹ * t) x := by
     intro x _ _; rw [deriv_of_const_mul_func]; exact inv_pos.mpr cpos
-  exact ⟨h₁, h₃, h₄, h₅⟩
+  exact ⟨h₁, h₃, h₄, fun _ _ _ ↦ cpos⟩
 
 
 -- Type transformation: ENNReal.ofReal (1 / (↑n + 1)) = (1 / (↑n + 1))
@@ -290,22 +290,7 @@ section aux_lemma_uniform_KL
 
 lemma real_geq_ennreal_ofreal_geq {a b : ℝ} {c : ENNReal} (hgeq : a ≥ b) (apos : a > 0) :
   (ENNReal.ofReal a) * c ≥ (ENNReal.ofReal b) * c := by
-  by_cases hc : c = 0
-  · rw [hc]
-    simp
-  push_neg at hc
-  by_cases hctop : c = ⊤
-  · rw [hctop]
-    have ha : (ENNReal.ofReal a) * ⊤ = ⊤ := by
-      refine ENNReal.mul_top ?h
-      simpa
-    rw [ha]
-    simp
-  push_neg at hctop
-  refine (ENNReal.mul_le_mul_right ?_ ?_).mpr ?_
-  · exact hc
-  · exact hctop
-  · exact ENNReal.ofReal_le_ofReal hgeq
+  exact mul_le_mul_right' (ENNReal.ofReal_le_ofReal hgeq) c
 
 end aux_lemma_uniform_KL
 
@@ -379,7 +364,7 @@ theorem uniformized_KL_property {f : E → ℝ} {Ω : Set E} (h_compact : IsComp
       have contra₁: Ω = ∅ := Set.subset_empty_iff.1 Ω_subset
       have contra₂: Ω ≠ ∅ := Set.Nonempty.ne_empty h_nonempty
       contradiction
-    let φ_sum := ∑' x : ht2.toFinset, φ x
+    let φ_sum : ℝ → ℝ := fun c ↦ ∑ x ∈ ht2.toFinset, φ x c
     have : ∃ η_min ∈ Ioi 0, ∀ x ∈ t, η x ≥ η_min := by
         have nonempty: (Finset.image η ht2.toFinset).Nonempty := by
           simpa using t_nonempty
@@ -542,7 +527,7 @@ theorem uniformized_KL_property {f : E → ℝ} {Ω : Set E} (h_compact : IsComp
             have : (fun c ↦ ∑ x ∈ ht2.toFinset, φ x c) = (∑ x ∈ ht2.toFinset, φ x) := by
               ext c; exact Eq.symm (Finset.sum_apply c ht2.toFinset φ)
             rw [this]
-          rw [← equ₂, equ₁]
+          rw [equ₁]
           -- have : (∑ x ∈ ht2.toFinset, deriv (φ x) (f u - μ)) ≥ deriv (φ ui) (f u - μ) := by
           let g x := deriv (φ x) (f u - μ)
           suffices (∑ x ∈ ht2.toFinset, g x) ≥ g ui by exact this
@@ -571,4 +556,3 @@ theorem uniformized_KL_property {f : E → ℝ} {Ω : Set E} (h_compact : IsComp
         exact h_exist
 
 end uniformized_KL
-

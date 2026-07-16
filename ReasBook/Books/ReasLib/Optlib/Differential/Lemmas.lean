@@ -47,7 +47,8 @@ lemma bounded_lowersemicontinuous_to_epi_closed (f : E → ℝ) (hc : LowerSemic
   rcases xntend with ⟨xtend, ytend⟩
   rw [LowerSemicontinuousOn] at hc
   specialize hc p.1
-  simp at hc; rw [LowerSemicontinuousWithinAt, nhdsWithin_univ] at hc
+  simp at hc
+  rw [semicontinuousWithinAt_univ_iff] at hc
   let linf := liminf (fun n ↦ f (xn n).1) atTop
   have aux : Tendsto (fun n ↦ (xn n).2) atTop (nhds p.2) ↔
         ∀ ε > 0, ∃ N, ∀ n ≥ N, (fun n ↦ (xn n).2) n ∈ Ioo (p.2 - ε) (p.2 + ε) := by
@@ -331,7 +332,7 @@ theorem deriv_function_comp_segment'' {g : E → ℝ} {f : E → (E →L[ℝ] �
 theorem HasFDeriv_Convergence (h : HasFDerivAt f (f' x) x) :
   ∀ ε > (0 : ℝ), ∃ δ > (0 : ℝ), ∀ (x' : E), ‖x - x'‖ ≤ δ
     → ‖f x' - f x - (f' x) (x' - x)‖ ≤ ε * ‖x - x'‖ := by
-  rw [HasFDerivAt, hasFDerivAtFilter_iff_isLittleO, Asymptotics.isLittleO_iff] at h
+  rw [hasFDerivAt_iff_isLittleO, Asymptotics.isLittleO_iff] at h
   intro ε epos
   specialize h epos
   rw [Filter.Eventually] at h
@@ -353,7 +354,7 @@ theorem HasFDeriv_Convergence (h : HasFDerivAt f (f' x) x) :
 theorem Convergence_HasFDeriv (h : ∀ ε > (0 : ℝ), ∃ δ > (0 : ℝ), ∀ (x' : E),
     ‖x - x'‖ ≤ δ → ‖f x' - f x - (f' x) (x' - x)‖ ≤ ε * ‖x - x'‖) :
       HasFDerivAt f (f' x) x := by
-  rw [HasFDerivAt, hasFDerivAtFilter_iff_isLittleO, Asymptotics.isLittleO_iff]
+  rw [hasFDerivAt_iff_isLittleO, Asymptotics.isLittleO_iff]
   intro ε epos
   rw [Filter.Eventually]
   specialize h ε epos
@@ -539,14 +540,15 @@ lemma gradient_norm_sq_eq_two_self (x : E) :
   · linarith
   · intro x' dles
     rw [← norm_neg (x - x'), neg_sub] at dles
-    rw [← real_inner_self_eq_norm_sq, ← real_inner_self_eq_norm_sq, inner_sub_right]
-    rw [real_inner_smul_left, real_inner_smul_left]; ring_nf
-    rw [add_sub, add_sub_right_comm, mul_two, ← sub_sub]
-    rw [← inner_sub_left, sub_add, ← inner_sub_right]
-    rw [real_inner_comm, ← inner_sub_left, real_inner_self_eq_norm_sq]
-    rw [abs_of_nonneg, pow_two, ← norm_neg (x - x'), neg_sub]
-    · apply mul_le_mul_of_nonneg_right dles (norm_nonneg (x' - x))
-    apply pow_two_nonneg
+    have hid : ‖x'‖ ^ 2 - ‖x‖ ^ 2 - inner (ℝ) ((2 : ℝ) • x) (x' - x) =
+        ‖x' - x‖ ^ 2 := by
+      rw [← real_inner_self_eq_norm_sq, ← real_inner_self_eq_norm_sq,
+        ← real_inner_self_eq_norm_sq]
+      simp only [inner_sub_left, inner_sub_right, real_inner_smul_left]
+      rw [real_inner_comm x' x]
+      ring
+    rw [hid, abs_of_nonneg (sq_nonneg _), pow_two, ← norm_neg (x - x'), neg_sub]
+    apply mul_le_mul_of_nonneg_right dles (norm_nonneg (x' - x))
 
 lemma gradient_of_inner_const (x : E) (a : E) :
     HasGradientAt (fun x ↦ (inner (ℝ) a x : ℝ)) a x := by
@@ -585,14 +587,15 @@ lemma gradient_of_sq : ∀ u : E, HasGradientAt (fun u ↦ ‖u - x‖ ^ 2 / 2) 
     have eq1 (u v : E) (e : ℝ) (dle : ‖u - v‖ ≤ e) :
       |‖v‖ ^ 2 - ‖u‖ ^ 2 - inner (ℝ) ((2 : ℝ) • u) (v - u)| ≤ e * ‖u - v‖ := by
       rw [← norm_neg (u - v), neg_sub] at dle;
-      rw [← real_inner_self_eq_norm_sq, ← real_inner_self_eq_norm_sq, inner_sub_right]
-      rw [real_inner_smul_left, real_inner_smul_left]; ring_nf
-      rw [add_sub, add_sub_right_comm, mul_two, ← sub_sub]
-      rw [← inner_sub_left, sub_add, ← inner_sub_right]
-      rw [real_inner_comm, ← inner_sub_left, real_inner_self_eq_norm_sq]
-      rw [abs_of_nonneg, pow_two, ← norm_neg (u - v), neg_sub]
+      have hid : ‖v‖ ^ 2 - ‖u‖ ^ 2 - inner (ℝ) ((2 : ℝ) • u) (v - u) =
+          ‖v - u‖ ^ 2 := by
+        rw [← real_inner_self_eq_norm_sq, ← real_inner_self_eq_norm_sq,
+          ← real_inner_self_eq_norm_sq]
+        simp only [inner_sub_left, inner_sub_right, real_inner_smul_left]
+        rw [real_inner_comm v u]
+        ring
+      rw [hid, abs_of_nonneg (sq_nonneg _), pow_two, ← norm_neg (u - v), neg_sub]
       apply mul_le_mul_of_nonneg_right dle (norm_nonneg (v - u))
-      apply pow_two_nonneg
     let u := s - x
     have hu : u = s - x := rfl
     let v := x' - x
@@ -790,29 +793,33 @@ variable {x : E} {y : F} {z : WithLp 2 (E × F)}
 
 open Set Bornology Filter BigOperators Topology
 
-lemma fst_norm_le_prod_L2 (z : WithLp 2 (E × F)) : ‖z.1‖ ≤ ‖z‖ := by
-  have h : ‖z.1‖ ^ 2 ≤ ‖z‖ ^ 2 := by linarith [WithLp.prod_norm_sq_eq_of_L2 z, sq_nonneg ‖z.2‖]
+lemma fst_norm_le_prod_L2 (z : WithLp 2 (E × F)) : ‖z.fst‖ ≤ ‖z‖ := by
+  have h : ‖z.fst‖ ^ 2 ≤ ‖z‖ ^ 2 := by
+    linarith [WithLp.prod_norm_sq_eq_of_L2 z, sq_nonneg ‖z.snd‖]
   apply nonneg_le_nonneg_of_sq_le_sq (norm_nonneg _)
   rwa [← pow_two, ← pow_two]
 
-lemma snd_norm_le_prod_L2 (z : WithLp 2 (E × F)) : ‖z.2‖ ≤ ‖z‖ := by
-  have h : ‖z.2‖ ^ 2 ≤ ‖z‖ ^ 2 := by linarith [WithLp.prod_norm_sq_eq_of_L2 z, sq_nonneg ‖z.1‖]
+lemma snd_norm_le_prod_L2 (z : WithLp 2 (E × F)) : ‖z.snd‖ ≤ ‖z‖ := by
+  have h : ‖z.snd‖ ^ 2 ≤ ‖z‖ ^ 2 := by
+    linarith [WithLp.prod_norm_sq_eq_of_L2 z, sq_nonneg ‖z.fst‖]
   apply nonneg_le_nonneg_of_sq_le_sq (norm_nonneg _)
   rwa [← pow_two, ← pow_two]
 
-lemma prod_norm_le_block_sum_L2 (z : WithLp 2 (E × F)) : ‖z‖ ≤ ‖z.1‖ + ‖z.2‖ := by
-  have : ‖z‖ ^ 2 ≤ (‖z.1‖ + ‖z.2‖) ^ 2:= by
+lemma prod_norm_le_block_sum_L2 (z : WithLp 2 (E × F)) :
+    ‖z‖ ≤ ‖z.fst‖ + ‖z.snd‖ := by
+  have : ‖z‖ ^ 2 ≤ (‖z.fst‖ + ‖z.snd‖) ^ 2:= by
     simp [WithLp.prod_norm_sq_eq_of_L2, add_sq]
     positivity
-  apply nonneg_le_nonneg_of_sq_le_sq (Left.add_nonneg (norm_nonneg z.1) (norm_nonneg z.2))
+  apply nonneg_le_nonneg_of_sq_le_sq
+    (Left.add_nonneg (norm_nonneg z.fst) (norm_nonneg z.snd))
   rwa [← pow_two, ← pow_two]
 
 lemma norm_prod_right_zero (x : E) :
-    @norm (WithLp 2 (E × F)) _ ((x, (0 : F)) : WithLp 2 (E × F)) = ‖x‖ := by
+    ‖WithLp.toLp 2 (x, (0 : F))‖ = ‖x‖ := by
   rw [WithLp.prod_norm_eq_of_L2] ; simp
 
 lemma norm_prod_left_zero (y : F) :
-    @norm (WithLp 2 (E × F)) _ ((0 : E), y) = ‖y‖ := by
+    ‖WithLp.toLp 2 ((0 : E), y)‖ = ‖y‖ := by
   rw [WithLp.prod_norm_eq_of_L2] ; simp
 
 end ProdLp
@@ -834,7 +841,7 @@ instance instNormedSpaceProdL2 : NormedSpace ℝ (WithLp 2 (E × F)) where
     exact norm_smul_le a b
 
 instance instIsBoundedLinearMapL2equiv :
-    @IsBoundedLinearMap ℝ _ (E × F) _ _ (WithLp 2 (E × F)) _ _ id where
+    IsBoundedLinearMap ℝ (WithLp.toLp 2 : (E × F) → WithLp 2 (E × F)) where
   map_add := fun x ↦ congrFun rfl
   map_smul := fun c ↦ congrFun rfl
   bound := by
@@ -843,9 +850,9 @@ instance instIsBoundedLinearMapL2equiv :
     · norm_num
     · intro z
       rw [Prod.norm_def]
-      have h := prod_norm_le_block_sum_L2 z
-      simp only [id_eq]
+      have h : ‖WithLp.toLp 2 z‖ ≤ ‖z.1‖ + ‖z.2‖ := by
+        simpa only [WithLp.toLp_fst, WithLp.toLp_snd] using
+          prod_norm_le_block_sum_L2 (WithLp.toLp 2 z)
       linarith [h, le_max_left ‖z.1‖ ‖z.2‖, le_max_right ‖z.1‖ ‖z.2‖]
 
 end ProdLp_diff
-

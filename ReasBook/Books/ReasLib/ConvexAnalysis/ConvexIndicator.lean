@@ -132,7 +132,7 @@ variable [TopologicalSpace E]
 
 lemma lowerSemicontinuous_convex_indicator_of_closed {C : Set E} (hc : IsClosed C) :
     LowerSemicontinuous C.convex_indicator := by
-  unfold LowerSemicontinuous LowerSemicontinuousAt Set.convex_indicator
+  unfold LowerSemicontinuous Set.convex_indicator
   intro x y hy
   rw[eventually_nhds_iff]
   by_cases xc : x ∈ C
@@ -156,4 +156,3 @@ lemma lowerSemicontinuous_convex_indicator_of_closed {C : Set E} (hc : IsClosed 
   exact ⟨isOpen_compl_iff.mpr hc, Set.mem_compl xc⟩
 
 end lowerSemicontinuous
-

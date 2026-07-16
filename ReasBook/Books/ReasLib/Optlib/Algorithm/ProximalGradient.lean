@@ -75,7 +75,7 @@ theorem proximal_gradient_method_converge : ∀ (k : ℕ+),
       f (x - alg.t • Gt x) ≤
           f x - alg.t * inner ℝ (f' x) (Gt x) + alg.t ^ 2 * alg.L / 2 * ‖Gt x‖ ^ 2 := fieq1 x
       _ ≤ f x - alg.t * inner ℝ (f' x) (Gt x) + alg.t / 2 * ‖Gt x‖ ^ 2 := by
-        apply add_le_add_left
+        apply add_le_add_right
         apply mul_le_mul_of_nonneg_right
         apply div_le_div_of_nonneg_right _ (by norm_num)
         calc
@@ -208,4 +208,3 @@ theorem proximal_gradient_method_converge : ∀ (k : ℕ+),
   linarith
 
 end method
-

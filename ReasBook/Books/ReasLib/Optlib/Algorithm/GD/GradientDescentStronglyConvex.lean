@@ -164,9 +164,9 @@ lemma gradient_method_strong_convex (hm : m > 0) (min : IsMinOn f univ xm)
           apply Strong_convex_Lipschitz_smooth; apply hsc; apply hm;
           apply alg.diff; apply alg.smooth; apply alg.hl
         rw [sub_mul, one_mul, mul_sub, sub_mul, ← add_comm_sub, ← pow_two]
-        apply add_le_add_right
+        apply add_le_add_left
         rw [sub_eq_add_neg, sub_sub]; rw [sub_eq_add_neg (‖alg.x k - xm‖ ^ 2)]
-        apply add_le_add_left; apply neg_le_neg
+        apply add_le_add_right; apply neg_le_neg
         calc
           _ =
             2 * alg.a * ((m * alg.l / (m + alg.l)) * ‖alg.x k - xm‖ ^ 2 +
@@ -219,4 +219,3 @@ lemma gradient_method_strong_convex (hm : m > 0) (min : IsMinOn f univ xm)
     _ = (1 - alg.a * (2 * m * alg.l / (m + alg.l))) ^ Nat.succ q * ‖x₀ - xm‖ ^ 2 := by simp
 
 end Strongly_Convex_Gradient_Descent
-

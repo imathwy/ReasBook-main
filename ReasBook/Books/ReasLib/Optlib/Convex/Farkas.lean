@@ -6,6 +6,7 @@ Authors: Shengyang Xu, Chenyi Li
 import Mathlib.Analysis.Convex.Cone.Basic
 import Mathlib.Analysis.Calculus.LocalExtr.Basic
 import Mathlib.Analysis.NormedSpace.HahnBanach.Separation
+import Mathlib.Analysis.LocallyConvex.Separation
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.LinearAlgebra.Matrix.Rank
 import Mathlib.Topology.Algebra.Module.FiniteDimension
@@ -121,7 +122,8 @@ private lemma shift_sum (τ : Finset ℕ) (m : ℕ) (f : ℕ → EuclideanSpace 
   rw [Finset.sum_attach, Finset.sum_attach, Finset.sum_image aux, eq]; simp
 
 private lemma shift_not_in (τ : Finset ℕ) (m : ℕ) (hm : ∀ i : τ, i < m): m ∉ τ := by
-  contrapose hm; simp; simp at hm; use m
+  intro hmem
+  exact (Nat.lt_irrefl m) (hm ⟨m, hmem⟩)
 
 private lemma mem_lt_m {m i : ℕ} {σ τ : Finset ℕ} (he : (τ ∪ σ).Nonempty)
     (hm : m = (Finset.max' (τ ∪ σ) he).succ) : (i ∈ (τ ∪ σ)) → (i < m) := by
@@ -134,7 +136,7 @@ private lemma exist_of_mem_shift {x m : ℕ} {τ : Finset ℕ} :
 
 private lemma s_inter_t1_empty {m : ℕ} {σ τ : Finset ℕ} (he : (τ ∪ σ).Nonempty)
     (hm : m = (Finset.max' (τ ∪ σ) he).succ) : σ ∩ (Finset.image (fun x => x + m) τ) = ∅ := by
-  by_contra neq; push_neg at neq; rw [← Finset.nonempty_iff_ne_empty] at neq
+  by_contra neq; push_neg at neq
   rcases neq with ⟨x, xin⟩
   absurd Finset.mem_of_mem_inter_left xin
   apply shift_not_in; intro i
@@ -145,7 +147,7 @@ private lemma s_inter_t1_empty {m : ℕ} {σ τ : Finset ℕ} (he : (τ ∪ σ).
 
 private lemma s_inter_t2_empty {m : ℕ} {σ τ : Finset ℕ} (he : (τ ∪ σ).Nonempty)
     (hm : m = (Finset.max' (τ ∪ σ) he).succ) : σ ∩ (Finset.image (fun x => x + 2 * m) τ) = ∅ := by
-  by_contra neq; push_neg at neq; rw [← Finset.nonempty_iff_ne_empty] at neq
+  by_contra neq; push_neg at neq
   rcases neq with ⟨x, xin⟩
   absurd Finset.mem_of_mem_inter_left xin
   apply shift_not_in; intro i
@@ -158,7 +160,7 @@ private lemma s_inter_t2_empty {m : ℕ} {σ τ : Finset ℕ} (he : (τ ∪ σ).
 private lemma t1_inter_t2_empty {m : ℕ} {σ τ : Finset ℕ} (he : (τ ∪ σ).Nonempty)
     (hm : m = (Finset.max' (τ ∪ σ) he).succ) :
     (Finset.image (fun x => x + m) τ) ∩ (Finset.image (fun x => x + 2 * m) τ) = ∅ := by
-  by_contra neq; push_neg at neq; rw [← Finset.nonempty_iff_ne_empty] at neq
+  by_contra neq; push_neg at neq
   rcases neq with ⟨x, xin⟩
   absurd Finset.mem_of_mem_inter_left xin
   apply shift_not_in; intro i
@@ -241,19 +243,25 @@ lemma general_polyhedra_is_polyhedra_ne (τ σ : Finset ℕ) (he : (τ ∪ σ).N
       nth_rw 2 [← Finset.sum_attach]; simp; congr
       ext x j
       have hns : x.1 ∉ σ := by
-        contrapose mt1emp; simp at mt1emp; push_neg; rw [← Finset.nonempty_iff_ne_empty]
-        use x; simp [τ1, mt1emp, x.2]
+        intro hxs
+        have hx : x.1 ∈ σ ∩ τ1 := Finset.mem_inter.mpr ⟨hxs, x.2⟩
+        rw [mt1emp] at hx
+        simp at hx
       simp [w, c, hns]
     have eq3 : ∑ x : τ, (fun y => lamn y • cτ2 y) x = ∑ x ∈ τ2, (fun y => w y • c y) x := by
       rw [shift_sum τ (2 * m) (fun y => lamn y • cτ2 y)]
       nth_rw 2 [← Finset.sum_attach]; simp; congr
       ext x j
       have hns : x.1 ∉ σ := by
-        contrapose mt2emp; simp at mt2emp; push_neg; rw [← Finset.nonempty_iff_ne_empty]
-        use x; simp [τ2, mt2emp, x.2]
+        intro hxs
+        have hx : x.1 ∈ σ ∩ τ2 := Finset.mem_inter.mpr ⟨hxs, x.2⟩
+        rw [mt2emp] at hx
+        simp at hx
       have hnt : x.1 ∉ τ1 := by
-        contrapose t1t2emp; simp at t1t2emp; push_neg; rw [← Finset.nonempty_iff_ne_empty]
-        use x; simp [τ2, t1t2emp, x.2]
+        intro hxt
+        have hx : x.1 ∈ τ1 ∩ τ2 := Finset.mem_inter.mpr ⟨hxt, x.2⟩
+        rw [t1t2emp] at hx
+        simp at hx
       simp [w, c, hns, hnt]
     rw [eq1, eq2, eq3]; simp [μ]
     rw [Finset.sum_union disj_st, Finset.sum_union disj_tt, add_comm]
@@ -272,8 +280,10 @@ lemma general_polyhedra_is_polyhedra_ne (τ σ : Finset ℕ) (he : (τ ∪ σ).N
       nth_rw 2 [← Finset.sum_attach]; simp; congr
       ext x j
       have hns : x.1 ∉ σ := by
-        contrapose mt1emp; simp at mt1emp; push_neg; rw [← Finset.nonempty_iff_ne_empty]
-        use x; simp [τ1, mt1emp, x.2]
+        intro hxs
+        have hx : x.1 ∈ σ ∩ τ1 := Finset.mem_inter.mpr ⟨hxs, x.2⟩
+        rw [mt1emp] at hx
+        simp at hx
       rcases exist_of_mem_shift x.2 with ⟨a, eq⟩
       have hin : x.1 - m ∈ τ := by rw [eq]; simp
       simp [lamp, c, hns, hin]; rw [eq]; simp
@@ -282,11 +292,15 @@ lemma general_polyhedra_is_polyhedra_ne (τ σ : Finset ℕ) (he : (τ ∪ σ).N
       nth_rw 2 [← Finset.sum_attach]; simp; congr
       ext x j
       have hns : x.1 ∉ σ := by
-        contrapose mt2emp; simp at mt2emp; push_neg; rw [← Finset.nonempty_iff_ne_empty]
-        use x; simp [τ2, mt2emp, x.2]
+        intro hxs
+        have hx : x.1 ∈ σ ∩ τ2 := Finset.mem_inter.mpr ⟨hxs, x.2⟩
+        rw [mt2emp] at hx
+        simp at hx
       have hnt : x.1 ∉ τ1 := by
-        contrapose t1t2emp; simp at t1t2emp; push_neg; rw [← Finset.nonempty_iff_ne_empty]
-        use x; simp [τ2, t1t2emp, x.2]
+        intro hxt
+        have hx : x.1 ∈ τ1 ∩ τ2 := Finset.mem_inter.mpr ⟨hxt, x.2⟩
+        rw [t1t2emp] at hx
+        simp at hx
       rcases exist_of_mem_shift x.2 with ⟨a, eq⟩
       have hin : x.1 - 2 * m ∈ τ := by rw [eq]; simp
       simp [lamn, c, hns, hnt, hin]; rw [eq]; simp
@@ -423,4 +437,3 @@ theorem Farkas :
   constructor
   · intro i hi; specialize hb {val := i, property := hi}; simp at hb; simp; exact hb
   exact hc
-

@@ -158,21 +158,24 @@ theorem weak_duality {p : Constrained_OptimizationProblem E τ σ}
 
 theorem weak_duality_aux {p : Constrained_OptimizationProblem E τ σ} (hp : (p.domain).Nonempty) :
     (p.dual_problem).sup_value ≤ p.inf_value := by
-  unfold sup_value dual_problem; simp
-  intro b x lambda1 lambda2 hl hl2 hl3
-  rw [← hl3, ← hl2]
-  have : ((p.dual_objective lambda1 lambda2).toReal).toEReal
-      = p.dual_objective lambda1 lambda2 := by
+  unfold sup_value
+  apply sSup_le
+  rintro b ⟨a, ⟨x, hx, hxa⟩, hab⟩
+  rw [← hab, ← hxa]
+  have hcoe : ((p.dual_objective x.1 x.2).toReal).toEReal
+      = p.dual_objective x.1 x.2 := by
     apply EReal.coe_toReal
-    · obtain hlt := dual_objective_le_top_nonempty hp lambda1 lambda2
+    · obtain hlt := dual_objective_le_top_nonempty hp x.1 x.2
       exact LT.lt.ne_top hlt
-    unfold FeasSet FeasPoint at hl; simp at hl
-    exact hl.1
-  rw [this]
+    unfold FeasSet FeasPoint dual_problem at hx
+    simpa using hx.1
+  change ((p.dual_objective x.1 x.2).toReal).toEReal ≤ p.inf_value
+  rw [hcoe]
   apply weak_duality
-  unfold FeasSet FeasPoint at hl; simp at hl
+  unfold FeasSet FeasPoint dual_problem at hx
+  simp at hx
   intro j
-  obtain hlj := hl.2 j j.2
+  obtain hlj := hx.2 j j.2
   simp at hlj; simpa
 
 theorem weak_duality' {p : Constrained_OptimizationProblem E τ σ} :
@@ -347,4 +350,3 @@ theorem optimal_multipliers_solution_dual_problem {p : Constrained_OptimizationP
 end Convex
 
 end Duality
-

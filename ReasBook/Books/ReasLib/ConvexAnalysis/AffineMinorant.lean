@@ -7,6 +7,7 @@ import Mathlib.Analysis.Convex.Intrinsic
 import Mathlib.LinearAlgebra.Dual.Basis
 import Mathlib.LinearAlgebra.Dual.Lemmas
 import Mathlib.Analysis.NormedSpace.HahnBanach.Separation
+import Mathlib.Analysis.LocallyConvex.Separation
 import Mathlib.Analysis.InnerProductSpace.Dual
 import ReasLib.ConvexAnalysis.IntrinsicInterior
 import ReasLib.ConvexAnalysis.ClosedFunction_Closure
@@ -448,4 +449,3 @@ theorem closed_convex_function_is_sup_of_affine_bound_univ'
 end Thm_12_1
 
 end closed_convex_affinesup
-

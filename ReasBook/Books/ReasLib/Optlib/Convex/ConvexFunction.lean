@@ -284,8 +284,9 @@ theorem Convex_monotone_gradient' (hfun : ConvexOn ℝ s f) (h : ∀ x ∈ s, Ha
   have h' : ∀ x ∈ s, HasFDerivAt f (g x) x := h
   have equiv : ∀ x y : E, inner ℝ (f' x - f' y) (x - y) = (g x - g y) (x - y) := by
     intro x y
-    rw [← InnerProductSpace.toDual_apply]
-    simp only [map_sub, ContinuousLinearMap.coe_sub', Pi.sub_apply, toDual_apply, g]
+    rw [← InnerProductSpace.toDual_apply_apply]
+    simp only [map_sub, ContinuousLinearMap.coe_sub', Pi.sub_apply,
+      InnerProductSpace.toDual_apply_apply, g]
   intro x hx y hy
   rw [equiv]
   exact Convex_monotone_gradient hfun h' x hx  y hy
@@ -358,7 +359,7 @@ theorem monotone_gradient_convex {f' : E → (E →L[ℝ] ℝ)} (h₁ : Convex �
     exact HasFDerivAt.hasGradientAt (hf x' hx')
   have equiv : ∀ x y : E, inner ℝ (g x - g y) (x - y) = (f' x - f' y) (x - y) := by
     intro x y
-    rw [← InnerProductSpace.toDual_apply]; simp [g]
+    rw [← InnerProductSpace.toDual_apply_apply]; simp [g]
   have mono' : ∀ x ∈ s, ∀ y ∈ s, inner ℝ (g x - g y) (x - y) ≥ (0 : ℝ) := by
     intro x hx y hy
     specialize mono x hx y hy
@@ -417,8 +418,12 @@ theorem monotone_gradient_strict_convex (hs : Convex ℝ s)
   rcases eq2 with ⟨d, din, e2⟩
   have eq3 : b * inner ℝ (f' (z + d • (y - z))) (y - z) -
       a * inner ℝ (f' (x + c • (z - x))) (z - x) = 0 := by
-    rw [e1, e2]; simp [z]; ring_nf; rw [add_comm, ← add_assoc]
-    simp at eq2; rw [← eq2]; nth_rw 1 [← mul_one (f (a • x + b • y))]; rw [← absum1]; ring_nf
+    rw [e1, e2, eq2]
+    simp only [smul_eq_mul]
+    calc
+      b * (f y - (a * f x + b * f y)) - a * (a * f x + b * f y - f x) =
+          (1 - a - b) * (a * f x + b * f y) := by ring
+      _ = 0 := by rw [show 1 - a - b = 0 by linarith [absum1], zero_mul]
   rw [← inner_smul_right, ← inner_smul_right] at eq3
   have this1 : b • (y - z) = a • b • (y - x) := by
     simp [z]; nth_rw 1 [← one_smul ℝ y]; rw [← absum1, add_smul]; simp; rw [← smul_sub, smul_comm]
@@ -569,4 +574,3 @@ theorem second_order_convex_univ (h1 : ∀ x, HasFDerivAt f (f' x) x)
   SecondOrderConvex convex_univ isOpen_univ (fun x _ ↦ h1 x) (fun x _ ↦ h2 x) (fun x _ v ↦ hpos x v)
 
 end SecondOrderCondition
-
