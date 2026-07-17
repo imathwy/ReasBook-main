@@ -1834,6 +1834,8 @@ def main():
     parser.add_argument("--output-dir", type=Path,
                         help="write auxiliary repair evidence into this exact run directory")
     args = parser.parse_args()
+    if args.all and not (args.analyze or args.dry_run):
+        parser.error("--all is read-only; mutating repair requires exactly one project")
     ACTIVE_KIND = args.kind
     if args.output_dir:
         REPORT_OUTPUT_DIR = args.output_dir.resolve()

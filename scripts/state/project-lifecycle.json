@@ -1,0 +1,457 @@
+{
+  "schema_version": 1,
+  "migration_status": "complete",
+  "projects": [
+    {
+      "project": "book:ReasLib",
+      "run_id": "20260717T-reaslib-lifecycle-audit",
+      "run_result": "full-pass",
+      "session_state": "completed",
+      "project_state": "full-pass",
+      "target_revision": "worktree@c09bb801645d860947e859fdd45bb071ea6cc41a:911bb2d749c7df79",
+      "session_history": [
+        {
+          "kind": "lifecycle-migration",
+          "validation_report": "20260717T-reaslib-lifecycle-audit"
+        }
+      ]
+    },
+    {
+      "project": "book:chapter1_reference_format",
+      "run_id": "20260717T114110Z-pilot-baseline-validation-431a8e27",
+      "run_result": "full-pass",
+      "session_state": "completed",
+      "project_state": "full-pass",
+      "target_revision": "431a8e27e0e9373863a83de8815ba58b79e12d47",
+      "session_history": [
+        {
+          "kind": "baseline-pilot",
+          "baseline_report": "20260717T-pilot-chapter1-baseline-final",
+          "sync_plan": "20260717T-pilot-chapter1-noop-sync-plan"
+        }
+      ]
+    },
+    {
+      "project": "book:RiemannSurfaces_Forster_1981",
+      "run_id": "20260717T142059Z-pilot-baseline-validation-3f11ccb2",
+      "run_result": "full-pass",
+      "session_state": "completed",
+      "project_state": "full-pass",
+      "target_revision": "worktree@3f11ccb2e931c87865ba090f0659a7b9da93af07:c3cd3d48795431b9",
+      "session_history": [
+        {
+          "kind": "baseline-pilot",
+          "baseline_report": "20260717T-riemann-baseline-candidate",
+          "sync_plan": "20260717T-riemann-noop-sync-plan"
+        }
+      ]
+    },
+    {
+      "project": "book:CombinatorialGroupTheory_Magnus_2004",
+      "run_id": "20260717T142411Z-pilot-baseline-validation-b8d291bf",
+      "run_result": "full-pass",
+      "session_state": "completed",
+      "project_state": "full-pass",
+      "target_revision": "worktree@b8d291bf0908058af0facdcaf554faee94e158e4:c3cd3d48795431b9",
+      "session_history": [
+        {
+          "kind": "baseline-pilot",
+          "baseline_report": "20260717T-combinatorial-baseline-candidate",
+          "sync_plan": "20260717T-combinatorial-noop-sync-plan",
+          "local_repair_commit": "c149e5b2bcc8d7b29f72bd4f4d635445ea214fe0"
+        }
+      ]
+    },
+    {
+      "project": "book:AlgebraicTopology_May_1999",
+      "run_id": "20260717T144655Z-baseline-expansion-validation-f30135d1",
+      "run_result": "full-pass",
+      "session_state": "completed",
+      "project_state": "full-pass",
+      "target_revision": "worktree@f30135d1c8e7fccdd19d9d2652444d4eb6a4f2ce:911bb2d749c7df79",
+      "session_history": [
+        {
+          "kind": "baseline-expansion",
+          "baseline_report": "20260717T-may-baseline-candidate",
+          "sync_plan": "20260717T-may-noop-sync-plan",
+          "local_repair_commit": "7b9621e9486b8aea33c6c077068b3fce56657733"
+        }
+      ]
+    },
+    {
+      "project": "book:Analysis2_Tao_2022",
+      "run_id": "20260717T172037Z-baseline-expansion-validation-e4bf744e",
+      "run_result": "full-pass",
+      "session_state": "completed",
+      "project_state": "full-pass",
+      "target_revision": "worktree@e4bf744eae7b5338ff47f7d1eb0955ca0c3fa0a8:911bb2d749c7df79",
+      "session_history": [
+        {
+          "kind": "baseline-expansion",
+          "baseline_report": "20260717T-analysis2-baseline",
+          "sync_plan": "20260717T-analysis2-noop-sync-plan",
+          "note": "Reviewed 17-file Lean 4.30 migration/import isolation patch."
+        }
+      ]
+    },
+    {
+      "project": "book:StacksProject_2024",
+      "run_id": "20260717T172621Z-baseline-expansion-validation-bba73919",
+      "run_result": "repair-incomplete",
+      "session_state": "checkpointed",
+      "project_state": "repair-checkpointed",
+      "target_revision": "worktree@bba7391989a561472a53bf7150e8bcdf6c0cbd52:911bb2d749c7df79",
+      "resume": {
+        "last_checkpoint": "20260717T172621Z-baseline-expansion-validation-bba73919",
+        "current_root": "StacksProject_2024.stacks_project.Chap04.Lemma_4_19_5",
+        "next_command": "lake build StacksProject_2024.stacks_project.Chap04.Lemma_4_19_5",
+        "branch": "sync/baseline-stacks-project-20260717",
+        "commit": "bba7391989a561472a53bf7150e8bcdf6c0cbd52"
+      },
+      "checkpoint_reason": "Baseline provenance is complete, but canonical validation has six direct Lean roots, 463 cascades, and one filename coverage mismatch; none has been classified as a hard blocker.",
+      "root_class": "signature-drift/coverage-filename",
+      "session_history": [
+        {
+          "kind": "baseline-expansion",
+          "baseline_report": "20260717T-stacks-project-baseline",
+          "sync_plan": "20260717T-stacks-project-noop-sync-plan"
+        }
+      ]
+    },
+    {
+      "project": "book:stacks_proof",
+      "run_id": "20260717T180227Z-baseline-expansion-validation-395d4ab7",
+      "run_result": "repair-incomplete",
+      "session_state": "checkpointed",
+      "project_state": "repair-checkpointed",
+      "target_revision": "worktree@395d4ab7ac14ce9ebeac2c4e4edd4be28f56664a:911bb2d749c7df79",
+      "resume": {
+        "last_checkpoint": "20260717T180227Z-baseline-expansion-validation-395d4ab7",
+        "current_root": "stacks_proof.Book",
+        "next_command": "lake build stacks_proof.Book",
+        "branch": "sync/baseline-stacks-proof-final-20260717",
+        "commit": "395d4ab7ac14ce9ebeac2c4e4edd4be28f56664a"
+      },
+      "checkpoint_reason": "Baseline provenance is complete, but Book.lean has a cross-chapter duplicate declaration and imports only 1263 of 5636 canonical source modules; neither issue has been classified as a hard blocker.",
+      "root_class": "declaration-collision/import-coverage",
+      "session_history": [
+        {
+          "kind": "baseline-expansion",
+          "baseline_report": "20260717T-stacks-proof-baseline-final",
+          "sync_plan": "20260717T-stacks-proof-noop-sync-plan",
+          "local_repair_commit": "f428accc1541d58ae7ffb258ccad22956fea390b"
+        }
+      ]
+    },
+    {
+      "project": "book:IntroductiontoRealAnalysisVolumeI_JiriLebl_2025",
+      "run_id": "20260717T170900Z-baseline-expansion-validation-f68f9095",
+      "run_result": "full-pass",
+      "session_state": "completed",
+      "project_state": "full-pass",
+      "target_revision": "worktree@f68f9095ce4a037a03c34c6184e2187fac599701:911bb2d749c7df79",
+      "session_history": [
+        {
+          "kind": "baseline-expansion",
+          "baseline_report": "20260717T-real-analysis-baseline",
+          "sync_plan": "20260717T-real-analysis-noop-sync-plan",
+          "note": "Reviewed 12-file Lean 4.30 migration and restored-import patch."
+        }
+      ]
+    },
+    {
+      "project": "paper:SmoothMinimization_Nesterov_2004",
+      "run_id": "20260717T164611Z-baseline-expansion-validation-b53361f3",
+      "run_result": "full-pass",
+      "session_state": "completed",
+      "project_state": "full-pass",
+      "target_revision": "worktree@b53361f3394f1158e1477af3beaeab6d672701ae:911bb2d749c7df79",
+      "session_history": [
+        {
+          "kind": "canonical-paper-validation",
+          "note": "Canonical paper passes 25/25 active imports; ALLBOOKS paper provenance awaits paper-aware sync support."
+        },
+        {
+          "kind": "baseline-expansion",
+          "baseline_report": "20260717T-smooth-minimization-paper-baseline-final",
+          "sync_plan": "20260717T-smooth-minimization-paper-noop-sync-plan",
+          "note": "Reviewed five-file compatibility/documentation patch after paper-aware sync support."
+        }
+      ]
+    },
+    {
+      "project": "paper:OnSomeLocalRings_Maassaran_2025",
+      "run_id": "20260717T165551Z-baseline-expansion-validation-b4510c5e",
+      "run_result": "full-pass",
+      "session_state": "completed",
+      "project_state": "full-pass",
+      "target_revision": "worktree@b4510c5e6f93a1ae745cc78d5a107814346d05cd:911bb2d749c7df79",
+      "session_history": [
+        {
+          "kind": "baseline-expansion",
+          "baseline_report": "20260717T-on-some-local-rings-paper-baseline",
+          "sync_plan": "20260717T-on-some-local-rings-paper-noop-sync-plan",
+          "note": "Lean source matches upstream; reviewed compatibility Book.lean and README as local-only."
+        }
+      ]
+    },
+    {
+      "project": "book:SmoothManifolds_Lee_2012",
+      "run_id": "20260716T122533Z-g10-r2-final-25bc9aca",
+      "run_result": "repair-incomplete",
+      "session_state": "blocked",
+      "project_state": "repair-blocked",
+      "target_revision": "worktree@25bc9acaf6a8670a177c3324e8efe74701fce749:ebfb835e55bb709b",
+      "resume": {
+        "last_checkpoint": "SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_42.Theorem_6_23",
+        "current_root": "SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_43.Theorem_6_26",
+        "next_command": "lake build 'SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_43.Theorem_6_26'",
+        "branch": "repair/book-smooth-manifolds-20260716",
+        "commit": "a43a19d46c3da8832b12467448db614c31fbb921"
+      },
+      "blocker": {
+        "condition": "The public embedded-submanifold owner requires analytic regularity ω while the available smooth embedding supplies ∞, and the tubular-neighborhood result does not expose NormalBundle.CompatibleSmoothStructure.",
+        "attempts": [
+          "Tried Manifold.IsSmoothEmbedding.of_le; it requires the false inequality ω ≤ ∞.",
+          "Tried weakening the local packaging helper to ∞; the public IsEmbeddedSubmanifold field still requires ω.",
+          "Inspected local CompatibleSmoothStructure construction; the existential API does not expose the required product embedding."
+        ],
+        "reproduction": "lake build 'SmoothManifolds_Lee_2012.SmoothManifoldsLee.Chap06.Sec06_43.Theorem_6_26'",
+        "restore_when": "A reviewed public API consistently uses ∞ or genuinely supplies ω data, and the chosen tubular-neighborhood structure provides NormalBundle.CompatibleSmoothStructure.",
+        "only_solution": false
+      },
+      "session_history": [
+        {
+          "kind": "historical-alias",
+          "goals": ["G10", "G10-R2"],
+          "failure_report": "20260716T122533Z-g10-r2-final-25bc9aca/g10-r2-failure.md"
+        },
+        {
+          "kind": "baseline-expansion",
+          "baseline_report": "20260717T-smooth-manifolds-baseline-final",
+          "sync_plan": "20260717T-smooth-manifolds-noop-sync-plan",
+          "note": "Exact provenance baseline only; project remains repair-blocked and no full-pass is claimed."
+        }
+      ]
+    },
+    {
+      "project": "book:DifferentialForms_Cartan_1970",
+      "run_id": "20260716T131238Z-g11-r2-final-f23ce624",
+      "run_result": "repair-incomplete",
+      "session_state": "blocked",
+      "project_state": "repair-blocked",
+      "target_revision": "worktree@f23ce62484a8b8a31fd9d11e7f32711cde9cbf49:42f114d6547b8a9d",
+      "resume": {
+        "last_checkpoint": "DifferentialForms_Cartan_1970.cartan.I.section04.frozen_0030_Exercise_15",
+        "current_root": "DifferentialForms_Cartan_1970.cartan.II.section05.«0035_Theorem_II_1_extra_22».ComponentApproximationAssembly",
+        "next_command": "lake build 'DifferentialForms_Cartan_1970.cartan.II.section05.«0035_Theorem_II_1_extra_22».ComponentApproximationAssembly'",
+        "branch": "repair/book-differential-forms-cartan-20260716",
+        "commit": "a48cc88354e1e789c40024a34c827e489bc88a75"
+      },
+      "blocker": {
+        "condition": "The connected-open component proof needs a public non-cyclic single-block approximation constructor, or the exact total-boundary coordinate half-formulas; no such environment declaration exists.",
+        "attempts": [
+          "Searched the repository owner: the matching declaration text is inside a historical block comment and is not importable.",
+          "Inspected the commented proof: it recursively consumes the same owner and omits the central approximation construction.",
+          "Tried the available coordinate-half-formula theorem route; it consumes rather than constructs the missing single-block package."
+        ],
+        "reproduction": "lake build 'DifferentialForms_Cartan_1970.cartan.II.section05.«0035_Theorem_II_1_extra_22».ComponentApproximationAssembly'",
+        "restore_when": "A reviewed non-cyclic constructor for the connected-ambient single-block approximation package, or the exact total-boundary theorem, is proved publicly.",
+        "only_solution": false
+      },
+      "session_history": [
+        {
+          "kind": "historical-alias",
+          "goals": ["G11", "G11-R2"],
+          "failure_report": "20260716T131238Z-g11-r2-final-f23ce624/g11-r2-failure.md"
+        },
+        {
+          "kind": "baseline-expansion",
+          "baseline_report": "20260717T-cartan-baseline-candidate",
+          "sync_plan": "20260717T-cartan-noop-sync-plan",
+          "note": "Reviewed 12-file hierarchy-disambiguation patch; project remains repair-blocked and no full-pass is claimed."
+        }
+      ]
+    },
+    {
+      "project": "book:FirstOrderMethodsOptimization_Beck_2017",
+      "run_id": "20260716T164200Z-g12-final-preflight-24f4d577",
+      "run_result": "infrastructure-failure",
+      "session_state": "active",
+      "project_state": "repair-pending",
+      "target_revision": "worktree@24f4d577a2329c93cc3d679bff769ae2cff089ae:fbed5316fc221a9d",
+      "resume": {
+        "last_checkpoint": "FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap05.Proposition_5_4",
+        "current_root": "FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap05.Theorem_5_24",
+        "next_command": "lake build 'FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap05.Theorem_5_24'",
+        "branch": "repair/book-first-order-methods-optimization-20260716",
+        "commit": "621de36a4797feb0cb3af92f0a27df511ac9876c"
+      },
+      "infrastructure_failure": {
+        "condition": "The historical managed session lost the long-running automation subprocess across a yield and could not return its real completion status.",
+        "reproduction": "python3 scripts/run_automation.py --book FirstOrderMethodsOptimization_Beck_2017 --trigger g12-current-runner-retest",
+        "restore_when": "A current-runner canonical automation process survives session yield and returns its original completion status."
+      },
+      "session_history": [
+        {
+          "kind": "historical-alias",
+          "goals": ["G12"],
+          "failure_report": "20260716T164200Z-g12-final-preflight-24f4d577/g12-failure.md",
+          "note": "Retest infrastructure before resuming source repair; do not preserve this classification from historical evidence alone."
+        },
+        {
+          "kind": "baseline-expansion",
+          "baseline_report": "20260717T-first-order-baseline-candidate",
+          "sync_plan": "20260717T-first-order-noop-sync-plan",
+          "note": "Reviewed 10-file local compatibility patch; project remains infrastructure-failure/repair-pending and no full-pass is claimed."
+        }
+      ]
+    },
+    {
+      "project": "book:ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017",
+      "run_id": "20260717T144057Z-baseline-expansion-validation-23dd4e04",
+      "run_result": "full-pass",
+      "session_state": "completed",
+      "project_state": "full-pass",
+      "target_revision": "worktree@23dd4e046d5f2c6ba7a8184c795437b61521d4e0:911bb2d749c7df79",
+      "session_history": [
+        {
+          "kind": "historical-alias",
+          "goals": ["G13"],
+          "evidence": "Project tree is unchanged from the exact full-pass target revision."
+        },
+        {
+          "kind": "baseline-expansion",
+          "baseline_report": "20260717T-bauschke-baseline-candidate",
+          "sync_plan": "20260717T-bauschke-noop-sync-plan",
+          "local_repair_commit": "ae2ae3493f5182056e6665041e2a8410aa686c09"
+        }
+      ]
+    },
+    {
+      "project": "book:ProbabilityTheory_Klenke_2020",
+      "run_id": "20260716T182032Z-g14-final-eight-root-budget-24f4d577",
+      "run_result": "repair-incomplete",
+      "session_state": "checkpointed",
+      "project_state": "repair-checkpointed",
+      "target_revision": "worktree@24f4d577a2329c93cc3d679bff769ae2cff089ae:cde7c34c2d839021",
+      "resume": {
+        "last_checkpoint": "20260716T182032Z-g14-final-eight-root-budget-24f4d577",
+        "current_root": "ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap06.Corollary_6_26",
+        "next_command": "lake build ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap06.Corollary_6_26",
+        "branch": "repair/book-probability-theory-klenke-20260717",
+        "commit": "ebdcd97e852f32c74ac1224d233e88a9353f6eec"
+      },
+      "checkpoint_reason": "The prior session stopped only after eight repaired roots. The next theorem-argument-order migration was not attempted and remains a safe concrete next step.",
+      "root_class": "signature-drift",
+      "session_history": [
+        {
+          "kind": "historical-alias",
+          "goals": ["G14", "G14-R2"],
+          "failure_report": "20260716T182032Z-g14-final-eight-root-budget-24f4d577/g14-failure.md"
+        },
+        {
+          "kind": "baseline-expansion",
+          "baseline_report": "20260717T-klenke-baseline-candidate",
+          "sync_plan": "20260717T-klenke-noop-sync-plan",
+          "note": "Reviewed two-file entry/name compatibility patch; project remains repair-checkpointed and no full-pass is claimed."
+        }
+      ]
+    },
+    {
+      "project": "book:ConvexAnalysis_Rockafellar_1970",
+      "run_id": "20260716T190152Z-g15-final-eight-root-budget-24f4d577",
+      "run_result": "repair-incomplete",
+      "session_state": "checkpointed",
+      "project_state": "repair-checkpointed",
+      "target_revision": "worktree@24f4d577a2329c93cc3d679bff769ae2cff089ae:5d5671fef3817bda",
+      "resume": {
+        "last_checkpoint": "20260716T190152Z-g15-final-eight-root-budget-24f4d577",
+        "current_root": "ConvexAnalysis_Rockafellar_1970.Chap02.Corollary_9_2_2",
+        "next_command": "lake build ConvexAnalysis_Rockafellar_1970.Chap02.Corollary_9_2_2",
+        "branch": "repair/book-convex-analysis-rockafellar-20260717",
+        "commit": "e0d43a8914bb129b36e8a8cc6b5934b7944ff726"
+      },
+      "checkpoint_reason": "The prior session stopped only after eight repaired roots. The simplification type mismatch at the next root was not attempted.",
+      "root_class": "tactic-behavior/type-mismatch",
+      "session_history": [
+        {
+          "kind": "historical-alias",
+          "goals": ["G15", "G15-R2"],
+          "failure_report": "20260716T190152Z-g15-final-eight-root-budget-24f4d577/g15-failure.md"
+        },
+        {
+          "kind": "baseline-expansion",
+          "baseline_report": "20260717T-rockafellar-baseline-final",
+          "sync_plan": "20260717T-rockafellar-noop-sync-plan",
+          "local_repair_commit": "10834c51ef6b415a2abe344aa7a1e17dab6b0325",
+          "note": "Reviewed 151-file checkpoint54 migration patch after normalizer layout correction; project remains repair-checkpointed and no full-pass is claimed."
+        }
+      ]
+    },
+    {
+      "project": "book:LinearRepresentations_Serre_1977",
+      "run_id": "20260717T054404Z-g16-final-eight-root-budget-24f4d577",
+      "run_result": "repair-incomplete",
+      "session_state": "checkpointed",
+      "project_state": "repair-checkpointed",
+      "target_revision": "worktree@24f4d577a2329c93cc3d679bff769ae2cff089ae:a04fe7ab9048e704",
+      "resume": {
+        "last_checkpoint": "20260717T054404Z-g16-final-eight-root-budget-24f4d577",
+        "current_root": "LinearRepresentations_Serre_1977.Serre.Chap10.Theorem_10_10_5_2.SubrepresentationTransport",
+        "next_command": "lake build LinearRepresentations_Serre_1977.Serre.Chap10.Theorem_10_10_5_2.SubrepresentationTransport",
+        "branch": "repair/book-linear-representations-serre-20260717",
+        "commit": "344b969356d6a2abac7945fc0c2ca20ed2041025"
+      },
+      "checkpoint_reason": "The eight-root session budget ended. Two instance formulations failed, but an exact-owner membership bridge or explicit asModule equivalence remains an unattempted safe route.",
+      "root_class": "instance-transport",
+      "attempted_routes": [
+        "Named representation alias instances did not unfold to the exact MonoidHom.comp owner.",
+        "An instance stated at the explicit MonoidHom.comp expression did not match the captured subrepresentation module instance."
+      ],
+      "session_history": [
+        {
+          "kind": "historical-alias",
+          "goals": ["G16", "G16-R2"],
+          "failure_report": "20260717T054404Z-g16-final-eight-root-budget-24f4d577/g16-failure.md"
+        },
+        {
+          "kind": "baseline-expansion",
+          "baseline_report": "20260717T-serre-baseline-candidate",
+          "sync_plan": "20260717T-serre-noop-sync-plan",
+          "note": "Reviewed 40-file module-hierarchy disambiguation patch; project remains repair-checkpointed and no full-pass is claimed."
+        }
+      ]
+    },
+    {
+      "project": "book:LecturesConvexOptimization_Nesterov_2018",
+      "run_id": "20260717T063644Z-g17-final-eight-root-budget-24f4d577",
+      "run_result": "repair-incomplete",
+      "session_state": "checkpointed",
+      "project_state": "repair-checkpointed",
+      "target_revision": "worktree@24f4d577a2329c93cc3d679bff769ae2cff089ae:c019eb757effe6bf",
+      "resume": {
+        "last_checkpoint": "20260717T063644Z-g17-final-eight-root-budget-24f4d577",
+        "current_root": "LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Corollary_3_1_4_2",
+        "next_command": "lake build LecturesConvexOptimization_Nesterov_2018.Nesterov.Chap03.Corollary_3_1_4_2",
+        "branch": "repair/book-lectures-convex-optimization-nesterov-20260717",
+        "commit": "2f02320e32cfc59c84bb7fd4457257ece02c6289"
+      },
+      "checkpoint_reason": "The prior session stopped only after eight repaired roots. The next explicit recall signature drift was not attempted and has an already verified bare-recall analogue.",
+      "root_class": "signature-drift",
+      "session_history": [
+        {
+          "kind": "historical-alias",
+          "goals": ["G17", "G17-R2"],
+          "failure_report": "20260717T063644Z-g17-final-eight-root-budget-24f4d577/g17-failure.md"
+        },
+        {
+          "kind": "baseline-expansion",
+          "baseline_report": "20260717T-nesterov-baseline-candidate",
+          "sync_plan": "20260717T-nesterov-noop-sync-plan",
+          "note": "Reviewed three-file entry/prefix patch; project remains repair-checkpointed and no full-pass is claimed."
+        }
+      ]
+    }
+  ]
+}

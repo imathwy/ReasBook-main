@@ -17,6 +17,9 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
 from lib.project_scope import ProjectSpec, discover, module_for, resolve, source_files
+from lib.project_lifecycle import (
+    SESSION_STATES, default_states, project_state_for, require_valid_lifecycle,
+)
 
 ROOT = Path(os.environ.get("REASBOOK_ROOT", SCRIPT_DIR.parent)).resolve()
 PROJECT = ROOT / "ReasBook"
@@ -145,7 +148,7 @@ def coverage_run(
         sys.executable, str(SCRIPT_DIR / "verify_import_coverage.py"),
         *selection, "--json", str(temporary),
     ]
-    manifest = ROOT / "docs" / "degradations.json"
+    manifest = ROOT / "scripts" / "state" / "degradations.json"
     if manifest.exists():
         command.extend(["--approved-degradations", str(manifest)])
     if allow_approved:
@@ -318,7 +321,23 @@ def main() -> int:
     parser.add_argument("--preflight-log", type=Path)
     parser.add_argument("--tip-candidate", type=Path, action="append", default=[])
     parser.add_argument("--allow-approved-degradation", action="store_true")
+    parser.add_argument("--session-state", choices=sorted(SESSION_STATES))
+    parser.add_argument("--last-checkpoint")
+    parser.add_argument("--current-root")
+    parser.add_argument("--next-command")
+    parser.add_argument("--resume-branch")
+    parser.add_argument("--resume-commit")
+    parser.add_argument("--blocker-condition")
+    parser.add_argument("--blocker-attempt", action="append", default=[])
+    parser.add_argument("--blocker-reproduction")
+    parser.add_argument("--blocker-restore-when")
+    parser.add_argument("--blocker-only-solution", action="store_true")
     args = parser.parse_args()
+    if args.all:
+        parser.error(
+            "--all is reserved for read-only inventory/coverage audits; "
+            "run automation for exactly one --book or --paper"
+        )
 
     head_commit = git_value("rev-parse", "HEAD")
     short_commit = head_commit[:8] if head_commit != "unknown" else "unknown"
@@ -443,6 +462,40 @@ def main() -> int:
         })
         if update.returncode:
             status = "repair-incomplete"
+    default_session_state, _ = default_states(status)
+    session_state = args.session_state or default_session_state
+    if selected is None and args.session_state is not None:
+        parser.error("--session-state is available only for one --book or --paper scope")
+    project_state = project_state_for(status, session_state) if selected else None
+    lifecycle = {
+        "project": selected.key if selected else None,
+        "run_result": status,
+        "session_state": session_state,
+        "project_state": project_state,
+        "target_revision": target_revision(),
+        "resume": {
+            "last_checkpoint": args.last_checkpoint,
+            "current_root": args.current_root,
+            "next_command": args.next_command,
+            "branch": args.resume_branch,
+            "commit": args.resume_commit,
+        },
+        "blocker": {
+            "condition": args.blocker_condition,
+            "attempts": args.blocker_attempt,
+            "reproduction": args.blocker_reproduction,
+            "restore_when": args.blocker_restore_when,
+            "only_solution": args.blocker_only_solution,
+        },
+    }
+    if selected:
+        try:
+            require_valid_lifecycle(lifecycle)
+        except ValueError as error:
+            parser.error(str(error))
+    (out_dir / "lifecycle.json").write_text(
+        json.dumps(lifecycle, indent=2, ensure_ascii=False) + "\n", encoding="utf-8"
+    )
     fixes_payload = {
         "requested": args.repair,
         "runs": repair_runs,
@@ -466,6 +519,9 @@ def main() -> int:
         f"- Toolchain: `v{current_toolchain()}`",
         f"- Mathlib revision: `{mathlib_revision()}`",
         f"- Scope: `{selected.key if selected else 'all'}`",
+        f"- Run result: `{status}`",
+        f"- Repair session state: `{session_state}`",
+        f"- Project lifecycle state: `{project_state or 'not-applicable'}`",
         f"- Initial import coverage: `{'pass' if initial_cov_exit == 0 else 'fail'}`",
         f"- Final import coverage: `{'pass' if final_cov_exit == 0 else 'fail'}`",
         f"- Initial build exit code: `{initial_build.returncode}`",

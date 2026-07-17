@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import importlib.util
+import contextlib
+import io
 import json
 import os
 import subprocess
@@ -28,7 +30,10 @@ sync_module = load("sync_from_a", "sync_from_a.py")
 upgrade_module = load("upgrade_toolchain", "upgrade_toolchain.py")
 inventory_module = load("create_baseline_inventory", "create_baseline_inventory.py")
 root_allowlist_module = load("verify_root_allowlist", "verify_root_allowlist.py")
+project_lifecycle_verifier = load("verify_project_lifecycle", "verify_project_lifecycle.py")
+sync_state_verifier = load("verify_sync_state", "verify_sync_state.py")
 import lib.project_scope as scope_module
+import lib.project_lifecycle as lifecycle_module
 
 
 class RepositoryFixture(unittest.TestCase):
@@ -46,7 +51,9 @@ class RepositoryFixture(unittest.TestCase):
         }))
         docs = self.root / "docs"
         docs.mkdir()
-        (docs / "degradations.json").write_text('{"entries": []}\n')
+        state = self.root / "scripts" / "state"
+        state.mkdir(parents=True)
+        (state / "degradations.json").write_text('{"entries": []}\n')
         (self.book / "Bad.lean").write_text("def bad : Nat := 0\n")
         (self.book / "Dependent.lean").write_text("import Fixture.Bad\ndef dependent := bad\n")
         (self.book / "Book.lean").write_text("import Fixture.Bad\nimport Fixture.Dependent\n")
@@ -85,6 +92,48 @@ class RepositoryFixture(unittest.TestCase):
 
 
 class CoverageTests(unittest.TestCase):
+    def test_lifecycle_separates_run_session_and_project_states(self):
+        valid = {
+            "run_result": "repair-incomplete",
+            "session_state": "checkpointed",
+            "project_state": "repair-checkpointed",
+            "resume": {
+                "last_checkpoint": "run-7", "current_root": "Book.Module",
+                "next_command": "lake build Book.Module", "branch": "repair/book",
+                "commit": "01234567",
+            },
+        }
+        self.assertEqual(lifecycle_module.validate_lifecycle(valid), [])
+        invalid = dict(valid, session_state="completed")
+        self.assertIn("invalid lifecycle combination", " ".join(
+            lifecycle_module.validate_lifecycle(invalid)
+        ))
+
+    def test_lifecycle_rejects_budget_as_blocker(self):
+        record = {
+            "run_result": "repair-incomplete",
+            "session_state": "blocked",
+            "project_state": "repair-blocked",
+            "blocker": {
+                "condition": "budget reached after 8 roots",
+                "attempts": ["one", "two"], "reproduction": "lake build X",
+                "restore_when": "API exists",
+            },
+        }
+        self.assertIn("not a hard blocker", " ".join(
+            lifecycle_module.validate_lifecycle(record)
+        ))
+
+    def test_lifecycle_requires_checkpoint_resume_evidence(self):
+        record = {
+            "run_result": "repair-incomplete",
+            "session_state": "checkpointed",
+            "project_state": "repair-checkpointed",
+        }
+        self.assertIn("missing resume fields", " ".join(
+            lifecycle_module.validate_lifecycle(record)
+        ))
+
     def test_baseline_status_counts_group_by_path_and_state(self):
         self.assertEqual(
             inventory_module.status_counts([
@@ -113,6 +162,81 @@ class CoverageTests(unittest.TestCase):
                 root_allowlist_module.PROJECT = old_project
         self.assertIn("import BookFixture.Book", lines)
         self.assertIn("-- import Papers.PaperFixture.Paper", lines)
+
+    def test_root_allowlist_accepts_valid_lifecycle_evidence(self):
+        old_project = root_allowlist_module.PROJECT
+        with tempfile.TemporaryDirectory() as temporary:
+            project = Path(temporary)
+            book = project / "Books" / "BookFixture"
+            book.mkdir(parents=True)
+            (book / "Book.lean").write_text("import Mathlib\n")
+            root_allowlist_module.PROJECT = project
+            try:
+                lines = root_allowlist_module.expected_lines({
+                    "schema_version": 1,
+                    "projects": [{
+                        "project": "book:BookFixture", "run_id": "checkpoint-run",
+                        "run_result": "repair-incomplete",
+                        "session_state": "checkpointed",
+                        "project_state": "repair-checkpointed",
+                        "resume": {
+                            "last_checkpoint": "checkpoint-run", "current_root": "BookFixture.X",
+                            "next_command": "lake build BookFixture.X", "branch": "repair/book",
+                            "commit": "12345678",
+                        },
+                    }],
+                })
+            finally:
+                root_allowlist_module.PROJECT = old_project
+        self.assertIn("-- import BookFixture.Book", lines)
+        self.assertNotIn("import BookFixture.Book", [line for line in lines if not line.startswith("--")])
+
+    def test_root_allowlist_fingerprint_detects_project_drift(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            project = root / "ReasBook"
+            book = project / "Books" / "Fixture"
+            book.mkdir(parents=True)
+            (book / "Book.lean").write_text("import Mathlib\n")
+            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+            subprocess.run(["git", "config", "user.name", "Fixture"], cwd=root, check=True)
+            subprocess.run(["git", "config", "user.email", "fixture@example.test"], cwd=root, check=True)
+            subprocess.run(["git", "add", "."], cwd=root, check=True)
+            subprocess.run(["git", "commit", "-qm", "validated"], cwd=root, check=True)
+            revision = subprocess.run(
+                ["git", "rev-parse", "HEAD"], cwd=root, check=True, text=True,
+                stdout=subprocess.PIPE,
+            ).stdout.strip()
+            spec = root_allowlist_module.discover(project)[0]
+            self.assertTrue(root_allowlist_module.project_matches_revision(
+                spec, revision, repo_root=root,
+            ))
+            (book / "New.lean").write_text("def drift := true\n")
+            self.assertFalse(root_allowlist_module.project_matches_revision(
+                spec, revision, repo_root=root,
+            ))
+
+    def test_project_lifecycle_manifest_rejects_duplicates(self):
+        old_project = project_lifecycle_verifier.PROJECT
+        with tempfile.TemporaryDirectory() as temporary:
+            project = Path(temporary)
+            book = project / "Books" / "BookFixture"
+            book.mkdir(parents=True)
+            (book / "Book.lean").write_text("import Mathlib\n")
+            record = {
+                "project": "book:BookFixture", "run_id": "pass-run",
+                "run_result": "full-pass", "session_state": "completed",
+                "project_state": "full-pass",
+            }
+            project_lifecycle_verifier.PROJECT = project
+            try:
+                findings = project_lifecycle_verifier.inspect_manifest({
+                    "schema_version": 1, "migration_status": "complete",
+                    "projects": [record, record],
+                }, allow_partial=True)
+            finally:
+                project_lifecycle_verifier.PROJECT = old_project
+        self.assertIn("duplicate lifecycle project", " ".join(findings))
 
     def test_disabled_missing_duplicate_and_quoted_module(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -171,6 +295,181 @@ class CoverageTests(unittest.TestCase):
                 ["Other"],
             )
 
+    def test_destructive_sync_is_frozen_for_existing_projects(self):
+        self.assertIn(
+            "destructive synchronization is disabled",
+            sync_module._legacy_mode_error(
+                dry_run=False, legacy_destructive_sync=False,
+                all_books=False, destination_exists=True,
+            ),
+        )
+        self.assertIn(
+            "permanently retired",
+            sync_module._legacy_mode_error(
+                dry_run=False, legacy_destructive_sync=True,
+                all_books=False, destination_exists=True,
+            ),
+        )
+
+    def test_legacy_destructive_sync_is_permanently_retired(self):
+        self.assertIn(
+            "permanently retired",
+            sync_module._legacy_mode_error(
+                dry_run=False, legacy_destructive_sync=True,
+                all_books=True, destination_exists=False,
+            ),
+        )
+        self.assertIn(
+            "permanently retired",
+            sync_module._legacy_mode_error(
+                dry_run=True, legacy_destructive_sync=True,
+                all_books=False, destination_exists=False,
+            ),
+        )
+        self.assertIsNone(sync_module._legacy_mode_error(
+            dry_run=True, legacy_destructive_sync=False,
+            all_books=True, destination_exists=True,
+        ))
+
+    def test_sync_normalization_is_byte_stable(self):
+        from lib.sync_three_way import tree_hash
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "Nesterov"
+            source.mkdir()
+            (source / "A.lean").write_text("def a := 1\n")
+            (source / "B.lean").write_text("import Nesterov.A\ndef b := a\n")
+            paper = source / "Papers" / "Example" / "Paper.lean"
+            paper.parent.mkdir(parents=True)
+            paper.write_text("import Nesterov.A\n")
+            (source / "lakefile.lean").write_text("package Nesterov\n")
+            first, second = root / "first", root / "second"
+            sync_module.normalize_book_tree(source, first, "Nesterov")
+            sync_module.normalize_book_tree(source, second, "Nesterov")
+            self.assertEqual(tree_hash(first), tree_hash(second))
+            self.assertFalse((first / "lakefile.lean").exists())
+            self.assertTrue((first / "Papers" / "Example" / "Paper.lean").is_file())
+            self.assertEqual(
+                (first / "Book.lean").read_text(),
+                "import Mathlib\n"
+                "import LecturesConvexOptimization_Nesterov_2018.A\n"
+                "import LecturesConvexOptimization_Nesterov_2018.B\n",
+            )
+            profile = sync_module.normalization_profile("Nesterov")
+            self.assertEqual(profile["id"], "Nesterov-v1")
+            self.assertEqual(profile, sync_module.normalization_profile("Nesterov"))
+
+    def test_paper_inventory_preview_is_read_only(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            source = Path(temporary) / "PaperSource"
+            source.mkdir()
+            output = io.StringIO()
+            with contextlib.redirect_stdout(output):
+                sync_module.preview_paper(
+                    source.parent, "PaperSource", "CanonicalPaper"
+                )
+            self.assertIn("[DRY RUN]", output.getvalue())
+            self.assertIn("ReasBook/Papers/CanonicalPaper", output.getvalue())
+
+    def test_sync_state_validator_checks_commit_hash_and_profile(self):
+        payload = {
+            "schema_version": 1,
+            "source": {"name": "ALLBOOKS", "url": "https://example.test/ALLBOOKS.git"},
+            "projects": {
+                "book:LecturesConvexOptimization_Nesterov_2018": {
+                    "source_directory": "Nesterov",
+                    "accepted_upstream_commit": "a" * 40,
+                    "normalization_profile": "Nesterov-v1",
+                    "normalizer_commit": "b" * 40,
+                    "normalized_tree_sha256": "c" * 64,
+                    "accepted_in_reasbook_commit": "d" * 40,
+                    "last_sync_report": "run-id",
+                }
+            },
+        }
+        self.assertEqual(sync_state_verifier.inspect(payload), [])
+        payload["projects"]["book:LecturesConvexOptimization_Nesterov_2018"][
+            "accepted_upstream_commit"
+        ] = "short"
+        self.assertIn("full SHA-1", " ".join(sync_state_verifier.inspect(payload)))
+
+    def test_sync_state_validator_accepts_canonical_paper_profile(self):
+        payload = {
+            "schema_version": 1,
+            "source": {"name": "ALLBOOKS", "url": "https://example.test/ALLBOOKS.git"},
+            "projects": {
+                "paper:SmoothMinimization_Nesterov_2004": {
+                    "source_directory": "SmoothMinimization_Nesterov_2004",
+                    "accepted_upstream_commit": "a" * 40,
+                    "normalization_profile": (
+                        "SmoothMinimization_Nesterov_2004-paper-"
+                        "SmoothMinimization_Nesterov_2004-v1"
+                    ),
+                    "normalizer_commit": "b" * 40,
+                    "normalized_tree_sha256": "c" * 64,
+                    "accepted_in_reasbook_commit": "d" * 40,
+                    "last_sync_report": "run-id",
+                }
+            },
+        }
+        self.assertEqual(sync_state_verifier.inspect(payload), [])
+
+    def test_chapter1_profile_flattens_only_its_declared_source_directory(self):
+        from lib.sync_three_way import tree_hash
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "chapter1_reference_format_20260519_statement"
+            nested = source / "chapter1_reference_format" / "Chap01"
+            nested.mkdir(parents=True)
+            (source / "chapter1_reference_format.lean").write_text(
+                "import chapter1_reference_format.Chap01.A\n"
+            )
+            (nested / "A.lean").write_text("def a := 1\n")
+            (source / "chapter1_reference_format" / "Book.lean").write_text("import Mathlib\n")
+            first, second = root / "first", root / "second"
+            for destination in (first, second):
+                sync_module.normalize_book_tree(
+                    source, destination, "chapter1_reference_format_20260519_statement"
+                )
+            self.assertEqual(tree_hash(first), tree_hash(second))
+            self.assertTrue((first / "Chap01" / "A.lean").is_file())
+            self.assertFalse((first / "chapter1_reference_format").exists())
+            self.assertIn(
+                "import chapter1_reference_format.Chap01.A",
+                (first / "Book.lean").read_text(),
+            )
+
+    def test_rockafellar_profile_flattens_double_named_source_directory(self):
+        from lib.sync_three_way import tree_hash
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / "ConvexAnalysis_Rockafellar_1970"
+            nested = source / "ConvexAnalysis_Rockafellar_1970" / "Chap01"
+            nested.mkdir(parents=True)
+            (source / "ConvexAnalysis_Rockafellar_1970.lean").write_text(
+                "import ConvexAnalysis_Rockafellar_1970.ConvexAnalysis_Rockafellar_1970.Chap01.A\n"
+            )
+            (nested / "A.lean").write_text("def a := 1\n")
+            (source / "ConvexAnalysis_Rockafellar_1970" / "Book.lean").write_text(
+                "import Mathlib\n"
+            )
+            first, second = root / "first", root / "second"
+            for destination in (first, second):
+                sync_module.normalize_book_tree(
+                    source, destination, "ConvexAnalysis_Rockafellar_1970"
+                )
+            self.assertEqual(tree_hash(first), tree_hash(second))
+            self.assertTrue((first / "Chap01" / "A.lean").is_file())
+            self.assertFalse((first / "ConvexAnalysis_Rockafellar_1970").exists())
+            self.assertIn(
+                "import ConvexAnalysis_Rockafellar_1970.Chap01.A",
+                (first / "ConvexAnalysis_Rockafellar_1970.lean").read_text(),
+            )
+            self.assertIn(
+                "import ConvexAnalysis_Rockafellar_1970.Chap01.A",
+                (first / "Book.lean").read_text(),
+            )
+
     def test_paper_scope_excludes_compatibility_book_entry(self):
         with tempfile.TemporaryDirectory() as temporary:
             project = Path(temporary) / "ReasBook"
@@ -225,7 +524,7 @@ class AutomationTests(RepositoryFixture):
         self.assertIn("`paper:PaperFixture`", summary.read_text())
 
     def test_stale_degradation_manifest_is_rejected(self):
-        manifest = self.root / "docs/degradations.json"
+        manifest = self.root / "scripts/state/degradations.json"
         manifest.write_text(json.dumps({"entries": [{
             "kind": "book", "name": "Fixture", "modules": ["Fixture.Bad"],
             "source_run_id": "old", "toolchain": "4.30.0", "reason": "fixture",
@@ -250,7 +549,7 @@ class AutomationTests(RepositoryFixture):
         report = self.root / "docs/automation-reports/v4.30.0/exit-fixture"
         self.assertEqual(
             {"summary.md", "diagnostics.json", "fixes.json", "import-coverage.json",
-             "degradation-proposal.json"} - {p.name for p in report.iterdir()},
+             "degradation-proposal.json", "lifecycle.json"} - {p.name for p in report.iterdir()},
             set(),
         )
         proposal = json.loads((report / "degradation-proposal.json").read_text())
@@ -259,6 +558,30 @@ class AutomationTests(RepositoryFixture):
         self.assertEqual(book["diagnostic_modules"], ["Fixture.Bad", "Fixture.Dependent"])
         self.assertEqual(book["cascade_modules"], ["Fixture.Dependent"])
         self.assertIn("Mathlib revision: `fixture-revision`", (report / "summary.md").read_text())
+        lifecycle = json.loads((report / "lifecycle.json").read_text())
+        self.assertEqual(
+            (lifecycle["run_result"], lifecycle["session_state"], lifecycle["project_state"]),
+            ("repair-incomplete", "active", "repair-active"),
+        )
+
+    def test_checkpointed_run_requires_and_records_resume_evidence(self):
+        self.lake("echo 'Books/Fixture/Bad.lean:1:1: error: remains'\nexit 1\n")
+        missing = self.command(
+            "run_automation.py", "--book", "Fixture", "--run-id", "missing-resume",
+            "--session-state", "checkpointed",
+        )
+        self.assertEqual(missing.returncode, 2, missing.stdout)
+        result = self.command(
+            "run_automation.py", "--book", "Fixture", "--run-id", "with-resume",
+            "--session-state", "checkpointed", "--last-checkpoint", "checkpoint-7",
+            "--current-root", "Fixture.Bad", "--next-command", "lake build Fixture.Bad",
+            "--resume-branch", "repair/fixture", "--resume-commit", "12345678",
+        )
+        self.assertEqual(result.returncode, 1, result.stdout)
+        lifecycle = json.loads((
+            self.root / "docs/automation-reports/v4.30.0/with-resume/lifecycle.json"
+        ).read_text())
+        self.assertEqual(lifecycle["project_state"], "repair-checkpointed")
 
     def test_repair_bootstrap_uses_real_library_target_and_run_directory(self):
         marker = self.root / "lake-arguments"
@@ -336,6 +659,11 @@ class AutomationTests(RepositoryFixture):
         self.assertEqual(result.returncode, 0, result.stdout)
         summary = self.root / "docs/automation-reports/v4.30.0/pass-fixture/summary.md"
         self.assertIn("`full-pass`", summary.read_text())
+        lifecycle = json.loads((summary.parent / "lifecycle.json").read_text())
+        self.assertEqual(
+            (lifecycle["session_state"], lifecycle["project_state"]),
+            ("completed", "full-pass"),
+        )
 
     def test_full_pass_can_approve_tip_candidate(self):
         self.lake("exit 0\n")
@@ -436,7 +764,7 @@ class AutomationTests(RepositoryFixture):
         self.assertEqual(len(results), 1)
         self.assertIn("`manually-degraded`", (results[0] / "summary.md").read_text())
         self.assertIn("MANUAL-DEGRADATION", (self.book / "Book.lean").read_text())
-        manifest = json.loads((self.root / "docs/degradations.json").read_text())
+        manifest = json.loads((self.root / "scripts/state/degradations.json").read_text())
         self.assertEqual(manifest["entries"][0]["modules"], ["Fixture.Bad", "Fixture.Dependent"])
         gate = self.command(
             "run_automation.py", "--book", "Fixture", "--run-id", "degraded-gate",
@@ -469,7 +797,7 @@ class AutomationTests(RepositoryFixture):
         self.assertEqual(result.returncode, 0, result.stdout)
         self.assertIn("MANUAL-DEGRADATION", (self.paper / "Paper.lean").read_text())
         self.assertEqual((self.paper / "Book.lean").read_text(), "import Mathlib\n")
-        entry = json.loads((self.root / "docs/degradations.json").read_text())["entries"][0]
+        entry = json.loads((self.root / "scripts/state/degradations.json").read_text())["entries"][0]
         self.assertEqual((entry["kind"], entry["name"]), ("paper", "PaperFixture"))
 
 
@@ -538,6 +866,19 @@ class WorkflowContractTests(unittest.TestCase):
         self.assertIn("args+=(--paper \"$PAPER\")", core)
         repair = (workflows / "repair.yml").read_text()
         self.assertIn("options: [book, paper]", repair)
+
+    def test_sync_workflow_is_single_project_three_way_only(self):
+        workflows = SCRIPTS.parent / ".github" / "workflows"
+        reusable = (workflows / "automation.yml").read_text()
+        wrapper = (workflows / "sync-from-a.yml").read_text()
+        self.assertIn("--to-commit", reusable)
+        self.assertIn("--apply .automation/sync-plan/sync-plan.json", reusable)
+        self.assertIn("--accept-sync .automation/sync-plan/sync-plan.json", reusable)
+        self.assertIn("sync requires exactly one book or paper", reusable)
+        self.assertIn('project_key="paper:$PAPER"', reusable)
+        self.assertNotIn("sync_from_a.py --source .automation/source-a --all", reusable)
+        self.assertIn("required: true", wrapper)
+        self.assertIn("--all --dry-run", wrapper)
 
     def test_heartbeat_preserves_exit_code(self):
         result = subprocess.run(

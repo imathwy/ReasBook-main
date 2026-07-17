@@ -79,13 +79,13 @@ def generate_entry(spec: ProjectSpec) -> int:
 
 
 def clear_degradation(repo_root: Path, kind: str, name: str) -> bool:
-    manifest = repo_root / "docs" / "degradations.json"
+    manifest = repo_root / "scripts" / "state" / "degradations.json"
     if not manifest.exists():
         return False
     data = json.loads(manifest.read_text(encoding="utf-8"))
     entries = data.get("entries")
     if not isinstance(entries, list):
-        raise ValueError("docs/degradations.json has no entries list")
+        raise ValueError("scripts/state/degradations.json has no entries list")
     retained = [
         entry for entry in entries
         if not (entry.get("kind") == kind and entry.get("name") == name)
