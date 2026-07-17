@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://reasbook.local/schemas/normalization-profile.schema.json",
+  "title": "ALLBOOKS to ReasBook normalization profile",
+  "type": "object",
+  "required": [
+    "id", "version", "source_directory", "book_name", "name_map",
+    "artifact_files", "artifact_directories", "flatten_subdirectory",
+    "generate_complete_entry"
+  ],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "version": {"type": "integer", "minimum": 1},
+    "source_directory": {"type": "string", "minLength": 1},
+    "book_name": {"type": "string", "minLength": 1},
+    "name_map": {"type": "object", "additionalProperties": {"type": "string"}},
+    "artifact_files": {"type": "array", "items": {"type": "string"}},
+    "artifact_directories": {"type": "array", "items": {"type": "string"}},
+    "flatten_subdirectory": {"type": ["string", "null"]},
+    "generate_complete_entry": {"const": true}
+  },
+  "additionalProperties": false
+}

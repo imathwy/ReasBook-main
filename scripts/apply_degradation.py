@@ -91,7 +91,7 @@ def main() -> int:
     restore_when = clean_metadata(args.restore_when, "restore condition")
     expires = clean_metadata(args.expires, "expiry")
 
-    manifest_path = ROOT / "docs" / "degradations.json"
+    manifest_path = ROOT / "scripts" / "state" / "degradations.json"
     try:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         entries = manifest["entries"]
