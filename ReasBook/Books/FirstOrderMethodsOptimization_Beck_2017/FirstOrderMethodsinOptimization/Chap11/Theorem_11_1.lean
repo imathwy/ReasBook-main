@@ -29,7 +29,7 @@ variable [FiniteDimensional ℝ ((i : ι) → Ei i)]
 -- block-slice hypotheses
 -- `HasFDerivAt (block_coordinate_slice f x i)
 --    (InnerProductSpace.toDualMap ℝ (Ei i) (block_gradient i x)) 0`, and rewrite the
--- block-separable subdifferential into its coordinatewise Euclidean/vector-side form.
+-- block-separable extendedRealSubdifferential into its coordinatewise Euclidean/vector-side form.
 /-- Theorem 11.1 (1): under the blockwise proper/closed/convex hypotheses on `g_i`, stationarity
 of the composite problem with regularizer `x ↦ ∑ i, g_i(x_i)` is equivalent to the coordinatewise
 block condition `-∇ᵢ f(x) ∈ ∂ g_i(x_i)`, expressed through the Chapter 3 vector-side bridge
@@ -114,7 +114,7 @@ variable [∀ i, ProperSpace (Ei i)]
 
 -- Proof sketch: rewrite `G^i_{M_i}(x) = 0` via the defining residual formula, apply the second
 -- prox theorem blockwise to identify the proximal fixed-point condition with blockwise
--- subdifferential membership, and then invoke part (1) at the same finite-domain interior point.
+-- extendedRealSubdifferential membership, and then invoke part (1) at the same finite-domain interior point.
 section
 
 variable [instBlockInner : InnerProductSpace ℝ ((i : ι) → Ei i)]
@@ -123,7 +123,7 @@ local instance : Module ℝ ((i : ι) → Ei i) := NormedSpace.toModule
 variable [FiniteDimensional ℝ ((i : ι) → Ei i)]
 
 /-- Helper for Theorem 11.1: for a fixed block, vanishing of the block gradient mapping is
-equivalent to the negative block gradient belonging to the Euclidean subdifferential of the
+equivalent to the negative block gradient belonging to the Euclidean extendedRealSubdifferential of the
 corresponding block penalty. -/
 theorem block_partial_gradient_mapping_eq_zero_iff_negative_block_gradient_mem_euclideanSubdifferential
     {g : (i : ι) → Ei i → EReal}
@@ -188,7 +188,7 @@ theorem block_partial_gradient_mapping_eq_zero_iff_negative_block_gradient_mem_e
             (-InnerProductSpace.toDual ℝ (Ei i) (block_gradient i x) :
               Module.Dual ℝ (Ei i))) :
               Module.Dual ℝ (Ei i)) ∈
-          subdifferential ((((1 / M : PosReal) : EReal) • g i)) (x i) := by
+          extendedRealSubdifferential ((((1 / M : PosReal) : EReal) • g i)) (x i) := by
     have hscaled :=
       scaled_function_proper_closed_convex_of_pos
         (g i) (hg_proper i) (hg_closed i) (hg_convex i) (1 / M)
@@ -207,7 +207,7 @@ theorem block_partial_gradient_mapping_eq_zero_iff_negative_block_gradient_mem_e
           hscaled.2.2
           (x i - (1 / M : ℝ) • block_gradient i x)
           (x i))
-    -- Rewrite the strong-dual conclusion into the Chapter 3 owner `subdifferential`.
+    -- Rewrite the strong-dual conclusion into the Chapter 3 owner `extendedRealSubdifferential`.
     simpa [mem_strongDualSubdifferential, InnerProductSpace.toDual_apply_eq_toDualMap_apply,
       sub_eq_add_neg, smul_neg, neg_smul] using hprox
   have hscaled_sub :
@@ -215,18 +215,18 @@ theorem block_partial_gradient_mapping_eq_zero_iff_negative_block_gradient_mem_e
           (-InnerProductSpace.toDual ℝ (Ei i) (block_gradient i x) :
             Module.Dual ℝ (Ei i))) :
             Module.Dual ℝ (Ei i)) ∈
-        subdifferential ((((1 / M : PosReal) : EReal) • g i)) (x i) ↔
+        extendedRealSubdifferential ((((1 / M : PosReal) : EReal) • g i)) (x i) ↔
       (-InnerProductSpace.toDual ℝ (Ei i) (block_gradient i x) :
           Module.Dual ℝ (Ei i)) ∈
-        subdifferential (g i) (x i) := by
+        extendedRealSubdifferential (g i) (x i) := by
     have hM_pos : 0 < (1 / M : ℝ) := one_div_pos.mpr (PosReal.coe_pos M)
     have hscaled :
-        subdifferential ((((1 / M : PosReal) : EReal) • g i)) (x i) =
-          (1 / M : ℝ) • subdifferential (g i) (x i) := by
+        extendedRealSubdifferential ((((1 / M : PosReal) : EReal) • g i)) (x i) =
+          (1 / M : ℝ) • extendedRealSubdifferential (g i) (x i) := by
       simpa [Pi.smul_apply, smul_eq_mul] using
         (subdifferential_pos_real_mul (g i) (1 / M : ℝ) hM_pos (x i))
     have hM_ne : (1 / M : ℝ) ≠ 0 := ne_of_gt hM_pos
-    -- Positive scaling of the block penalty scales the owner subdifferential by the same scalar.
+    -- Positive scaling of the block penalty scales the owner extendedRealSubdifferential by the same scalar.
     constructor
     · intro hmem
       rw [hscaled, Set.mem_smul_set] at hmem
@@ -248,9 +248,9 @@ theorem block_partial_gradient_mapping_eq_zero_iff_negative_block_gradient_mem_e
   have heuclidean :
       (-InnerProductSpace.toDual ℝ (Ei i) (block_gradient i x) :
           Module.Dual ℝ (Ei i)) ∈
-        subdifferential (g i) (x i) ↔
+        extendedRealSubdifferential (g i) (x i) ↔
       -(block_gradient i x) ∈ euclideanSubdifferential (g i) (x i) := by
-    -- The owner subdifferential and the Euclidean/block-vector view are the same via Riesz.
+    -- The owner extendedRealSubdifferential and the Euclidean/block-vector view are the same via Riesz.
     simpa [mem_euclideanSubdifferential_iff, mem_strongDualSubdifferential,
       InnerProductSpace.toDual_apply_eq_toDualMap_apply]
   calc
@@ -264,11 +264,11 @@ theorem block_partial_gradient_mapping_eq_zero_iff_negative_block_gradient_mem_e
             (-InnerProductSpace.toDual ℝ (Ei i) (block_gradient i x) :
               Module.Dual ℝ (Ei i))) :
               Module.Dual ℝ (Ei i)) ∈
-          subdifferential ((((1 / M : PosReal) : EReal) • g i)) (x i) := hprox_sub
+          extendedRealSubdifferential ((((1 / M : PosReal) : EReal) • g i)) (x i) := hprox_sub
     _ ↔
         (-InnerProductSpace.toDual ℝ (Ei i) (block_gradient i x) :
             Module.Dual ℝ (Ei i)) ∈
-          subdifferential (g i) (x i) := hscaled_sub
+          extendedRealSubdifferential (g i) (x i) := hscaled_sub
     _ ↔ -(block_gradient i x) ∈ euclideanSubdifferential (g i) (x i) := heuclidean
 
 /-- Theorem 11.1 (2): for any positive block stepsizes `M i`, stationarity of the block-separable

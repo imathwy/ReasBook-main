@@ -1,4 +1,5 @@
 import Mathlib
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap04.Definition_4_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -18,10 +19,6 @@ local notation "X₂" => WithLp (2 : ENNReal) X
 `quadratic_affine_function A b c` to the canonical `ℓ₂` model of `ℝ^n` and studies strong
 convexity for a symmetric quadratic form. The canonical matrix-side owner abstractions are
 `Matrix.PosSemidef`, `Matrix.PosDef`, and the ordered Hermitian spectrum. -/
-
-/-- The quadratic-affine function `x ↦ (1 / 2) xᵀ A x + bᵀ x + c` on `ℝ^n`. -/
-def quadratic_affine_function (A : Matrix (Fin n) (Fin n) ℝ) (b : X) (c : ℝ) : X → ℝ :=
-  fun x ↦ (1 / 2 : ℝ) * dotProduct x (A *ᵥ x) + dotProduct b x + c
 
 /-- The quadratic-affine function `x ↦ (1 / 2) xᵀ A x + bᵀ x + c`, viewed on the canonical
 `ℓ₂` model of `ℝ^n`. -/

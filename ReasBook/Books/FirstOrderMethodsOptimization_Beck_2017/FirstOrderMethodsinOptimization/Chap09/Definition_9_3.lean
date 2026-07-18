@@ -19,8 +19,8 @@ variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [Complete
 through explicit iterates `x^k`, chosen positive stepsizes `t_k`, chosen Euclidean subgradients
 `f'(x^k)`, and an argmin update over the feasible set `C`. The owner abstractions already present
 in the project for these ingredients are the Euclidean subgradient bridge
-`euclideanSubdifferentialAt`, the source-facing subdifferential domain `subdifferential_domain`
-for the mirror map `ω.toEReal`, Chapter 9's Bregman-distance owner `B[ω]`, and mathlib's
+`euclideanSubdifferentialAt`, the source-facing extendedRealSubdifferential domain `subdifferential_domain`
+for the mirror map `ω.toExtendedReal`, Chapter 9's Bregman-distance owner `B[ω]`, and mathlib's
 minimizer predicate `IsMinOn` for the argmin step. Since no canonical minimizer has been chosen,
 the public object here is a trajectory predicate on the iterate, stepsize, and
 selected-subgradient sequences, together with the explicit one-step mirror-descent objective. -/
@@ -38,8 +38,8 @@ def mirror_descent_update_objective (ω : E → ℝ) (x g : E) (t : ℝ) : E →
     (ω : E → ℝ) (x g y : E) (t : ℝ) :
     mirror_descent_update_objective ω x g t y =
       inner ℝ (t • g - ∇ ω x) y + ω y := by
-  rw [mirror_descent_update_objective, bregmanDistance]
-  have hω : (fun z : E ↦ (Function.toEReal ω z).toReal) = ω := by
+  rw [mirror_descent_update_objective, extendedRealBregmanDistance]
+  have hω : (fun z : E ↦ (Function.toExtendedReal ω z).toReal) = ω := by
     funext z
     simp
   rw [hω]
@@ -56,7 +56,7 @@ the mirror-descent update objective
 def is_mirror_descent_trajectory
     (f ω : E → ℝ) (C : Set E) (x g : ℕ → E) (t : ℕ → ℝ) : Prop :=
   ∀ k,
-    x k ∈ C ∩ subdifferential_domain ω.toEReal ∧
+    x k ∈ C ∩ subdifferential_domain ω.toExtendedReal ∧
       g k ∈ euclideanSubdifferentialAt f (x k) ∧
       0 < t k ∧
       IsMinOn (mirror_descent_update_objective ω (x k) (g k) (t k)) C (x (k + 1))
@@ -68,7 +68,7 @@ one-step minimization conditions at each iteration. -/
 theorem is_mirror_descent_trajectory_step
     {f ω : E → ℝ} {C : Set E} {x g : ℕ → E} {t : ℕ → ℝ}
     (h : is_mirror_descent_trajectory f ω C x g t) (k : ℕ) :
-    x k ∈ C ∩ subdifferential_domain ω.toEReal ∧
+    x k ∈ C ∩ subdifferential_domain ω.toExtendedReal ∧
       g k ∈ euclideanSubdifferentialAt f (x k) ∧
       0 < t k ∧
       IsMinOn (mirror_descent_update_objective ω (x k) (g k) (t k)) C (x (k + 1)) := sorry

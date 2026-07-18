@@ -8,8 +8,8 @@ section
 
 variable {E : Type u} [AddCommGroup E] [Module ℝ E]
 
-/- Definition 3.1 is the `source-facing` primitive predicate for Chapter 3 subdifferential
-theory. The owner set-valued abstraction appears next as `subdifferential`; any finite-valued or
+/- Definition 3.1 is the `source-facing` primitive predicate for Chapter 3 extendedRealSubdifferential
+theory. The owner set-valued abstraction appears next as `extendedRealSubdifferential`; any finite-valued or
 topologized forms should remain derived bridge/view API rather than parallel primitive data. -/
 
 /-- Definition 3.1: a vector `g ∈ E* = Module.Dual ℝ E` is a subgradient of

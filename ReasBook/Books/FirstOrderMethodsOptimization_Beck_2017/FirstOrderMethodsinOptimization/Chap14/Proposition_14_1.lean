@@ -17,7 +17,7 @@ identifies the following owner split.
 - `source-facing` companion owners: the pair section owners
   `two_block_alternating_minimization_x1_objective` and
   `two_block_alternating_minimization_x2_objective` from Algorithm 14.8;
-- `bridge/view`: the canonical coercion `Function.toEReal` from Definition 9.2; and
+- `bridge/view`: the canonical coercion `Function.toExtendedReal` from Definition 9.2; and
 - `bridge/view`: `two_block_alternating_minimization_objective_blocks` and
   `two_block_alternating_minimization_state` from Algorithm 14.8.
 
@@ -28,7 +28,7 @@ coordinatewise-minimality statement therefore uses the Chapter 14 owner
 `is_coordinatewise_minimum` on the canonical two-block block-vector view, while the textbook pair
 sections are kept only as a thin source-facing companion theorem. -/
 
-local notation "F" => alternating_minimization_failure_ii_objective.toEReal
+local notation "F" => alternating_minimization_failure_ii_objective.toExtendedReal
 local notation "g₀" => (0 : ℝ → EReal)
 local notation "F₂" =>
   two_block_alternating_minimization_objective_blocks
@@ -78,6 +78,6 @@ theorem alternating_minimization_counterexample_coordinatewise_minimum
         (3 * α) := by
   let hcoord := alternating_minimization_counterexample_is_coordinatewise_minimum α
   refine ⟨?_, ?_, ?_⟩
-  · simp [effective_domain, Function.toEReal]
+  · simp [effective_domain, Function.toExtendedReal]
   · simpa using hcoord.isMinOn 0
   · simpa using hcoord.isMinOn 1

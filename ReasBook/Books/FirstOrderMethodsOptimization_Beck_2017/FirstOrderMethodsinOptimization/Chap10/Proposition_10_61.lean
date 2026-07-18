@@ -29,7 +29,7 @@ the surrounding `ℓ∞/ℓ¹` pair identifies:
   `subdifferentialAt_l1_norm_eq_coordinatewise_sign_constraints` and
   `l1CoordinateSubgradientVectors` giving its coordinatewise `ℓ¹` sign-cube companion;
 - `primalCounterparts_eq_preimage_subdifferentialAt_norm` from Definition 10.64 as the chapter
-  bridge from `Λ[·]` to the canonical subdifferential owner.
+  bridge from `Λ[·]` to the canonical extendedRealSubdifferential owner.
 
 The primitive data are only the coefficient vector `a : E*`, so the public statement should stay
 on `Λ[LinearMap.toContinuousLinearMap (lpPairingDual (⊤ : ENNReal) (ofLp a))]` rather than
@@ -40,7 +40,7 @@ kept as a companion theorem. -/
 
 -- Proof sketch: use `primalCounterparts_eq_preimage_subdifferentialAt_norm` to identify
 -- `Λ[LinearMap.toContinuousLinearMap (lpPairingDual (⊤ : ENNReal) (ofLp a))]` with the
--- subdifferential of the `ℓ¹` norm in the `ℓ∞/ℓ¹` dual pair, then transport that owner set along
+-- extendedRealSubdifferential of the `ℓ¹` norm in the `ℓ∞/ℓ¹` dual pair, then transport that owner set along
 -- the canonical `WithLp` equivalence between the Euclidean coordinate model `E₂` and the primal
 -- `ℓ∞` model `E`.
 /-- Helper for Proposition 10.61: a point of the `ℓ∞` unit ball has all coordinates in
@@ -187,7 +187,7 @@ lemma mem_primalCounterparts_lpPairingDual_top_iff
 
 /-- Bridge/view form of Proposition 10.61: for a coefficient vector `a` in the `ℓ∞/ℓ¹` coordinate
 dual pair, the source set `Λ_a` is the canonical transport of Chapter 3's Euclidean
-subdifferential owner for the `ℓ¹` norm from the coordinate model to the primal `ℓ∞` model. -/
+extendedRealSubdifferential owner for the `ℓ¹` norm from the coordinate model to the primal `ℓ∞` model. -/
 theorem primalCounterparts_lpPairingDual_top_eq_image_euclideanSubdifferentialAt_l1
     (a : E*) :
     Λ[LinearMap.toContinuousLinearMap (lpPairingDual (⊤ : ENNReal) (ofLp a))] =
@@ -218,7 +218,7 @@ theorem primalCounterparts_lpPairingDual_top_eq_image_euclideanSubdifferentialAt
 `euclideanSubdifferentialAt`, the source set `Λ_a` is the coordinatewise sign cube
 `{z : ℝ^n | z_i = sgn(a_i)` on the nonzero coordinates of `a`, and `|z_j| ≤ 1` on the zero
 coordinates}. In the textbook nonzero case, this is the usual description of
-`∂ h(a)` for `h(x) = ‖x‖₁`. -/
+`∂ h(a)` for `h(x) = l1n[x]`. -/
 theorem primalCounterparts_lpPairingDual_top_eq_coordinatewise_sign_cube
     (a : E*) :
     Λ[LinearMap.toContinuousLinearMap (lpPairingDual (⊤ : ENNReal) (ofLp a))] =

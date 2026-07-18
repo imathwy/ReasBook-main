@@ -126,12 +126,12 @@ lemma mem_qA_unit_ball_argmin_iff_mem_primalCounterparts
         p ∈ B ∧ IsMinOn (fun q ↦ inner ℝ q (∇ qA x)) B p := by
     -- Rewrite the Chapter 13 argmin owner into feasibility plus minimization of the linearized
     -- objective on the unit ball.
-    have hqA_toReal : (fun z : E ↦ (Function.toEReal qA z).toReal) = qA := by
+    have hqA_toReal : (fun z : E ↦ (Function.toExtendedReal qA z).toReal) = qA := by
       funext z
       exact EReal.toReal_coe _
     have hbridge :=
       mem_generalized_conditional_gradient_argmin_extendedIndicator_iff
-        (f := Function.toEReal qA) (C := B) (xk := x) (p := p) hB_nonempty
+        (f := Function.toExtendedReal qA) (C := B) (xk := x) (p := p) hB_nonempty
     rw [hqA_toReal] at hbridge
     exact hbridge
   calc
@@ -327,7 +327,7 @@ lemma exact_line_search_real_compare_endpoint_on_feasible_segment
     {x p : E} {τ : ℝ}
     (hx : x ∈ B) (hp : p ∈ B)
     (ht : τ ∈ conditional_gradient_exact_line_search_stepsizes
-      (composite_model_objective (Function.toEReal qA) (extendedIndicator B)) x p) :
+      (composite_model_objective (Function.toExtendedReal qA) (extendedIndicator B)) x p) :
     qA (x + τ • (p - x)) ≤ qA p := by
   have hg_ne_bot : ∀ y : E, extendedIndicator B y ≠ ⊥ := by
     intro y
@@ -348,9 +348,9 @@ lemma exact_line_search_real_compare_endpoint_on_feasible_segment
   have htrial : x + τ • (p - x) ∈ B := by
     simpa [effective_domain_extendedIndicator] using htrial_dom
   have hcompare :
-      composite_model_objective (Function.toEReal qA) (extendedIndicator B)
+      composite_model_objective (Function.toExtendedReal qA) (extendedIndicator B)
           (x + τ • (p - x)) ≤
-        composite_model_objective (Function.toEReal qA) (extendedIndicator B) p := by
+        composite_model_objective (Function.toExtendedReal qA) (extendedIndicator B) p := by
     -- Route correction: normalize the exact-line-search owner before stripping the indicator and
     -- `EReal` coercions, so the later rewrites only touch feasible points.
     rw [mem_conditional_gradient_exact_line_search_stepsizes_iff, isMinOn_iff] at ht
@@ -372,7 +372,7 @@ lemma exact_line_search_stepsize_eq_one_of_endpoint_improvement
     (hA : A.PosSemidef) {x p : E} {τ : ℝ}
     (hx : x ∈ B) (hp : p ∈ B)
     (ht : τ ∈ conditional_gradient_exact_line_search_stepsizes
-      (composite_model_objective (Function.toEReal qA) (extendedIndicator B)) x p)
+      (composite_model_objective (Function.toExtendedReal qA) (extendedIndicator B)) x p)
     (hend : qA p < qA x) :
     τ = 1 := by
   let φ : ℝ → ℝ := fun s ↦ qA (x + s • (p - x))
@@ -455,12 +455,12 @@ theorem generalized_conditional_gradient_step_eq_power_method_of_not_stationary
     rcases hneg_dir with ⟨y, hyB, hyneg⟩
     have hpmin :
         IsMinOn (fun q ↦ inner ℝ q (∇ qA (x k))) B (p k) := by
-      have hqA_toReal : (fun z : E ↦ (Function.toEReal qA z).toReal) = qA := by
+      have hqA_toReal : (fun z : E ↦ (Function.toExtendedReal qA z).toReal) = qA := by
         funext z
         exact EReal.toReal_coe _
       rcases
         (mem_generalized_conditional_gradient_argmin_extendedIndicator_iff
-          (f := Function.toEReal qA) (C := B) (xk := x k)
+          (f := Function.toExtendedReal qA) (C := B) (xk := x k)
           (p := p k) ⟨0, by simp⟩).mp hpk_argmin with
         ⟨_, hpmin⟩
       rw [hqA_toReal] at hpmin

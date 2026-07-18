@@ -35,7 +35,7 @@ variable {m : ℕ} {f : E → ℝ} {g : Fin m → E → ℝ} {xstar : E}
 -- clauses `0 ≤ 1` and `1 ≠ 0`. In the other direction, assemble the KKT nonnegativity,
 -- stationarity, and complementary-slackness data into the Fritz-John predicate at `lambda0 = 1`.
 /-- A normalized Fritz-John multiplier is exactly a KKT multiplier: componentwise nonnegativity,
-the subdifferential stationarity condition, and complementary slackness. -/
+the extendedRealSubdifferential stationarity condition, and complementary slackness. -/
 @[simp] theorem isFritzJohnMultiplier_one_iff {lambda : Fin m → ℝ} :
     IsFritzJohnMultiplier f g xstar 1 lambda ↔
       (∀ i : Fin m, 0 ≤ lambda i) ∧

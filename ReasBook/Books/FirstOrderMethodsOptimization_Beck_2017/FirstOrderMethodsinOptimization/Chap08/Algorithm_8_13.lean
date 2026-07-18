@@ -146,7 +146,7 @@ def incremental_projected_subgradient_method {m : ℕ} (C : Set E)
 
 /-- A component-selection rule is admissible for the incremental projected subgradient method when
 every stepsize is positive and each chosen direction at the `i`-th inner stage belongs to the
-Euclidean subdifferential of the `i`-th summand at the current inner iterate. -/
+Euclidean extendedRealSubdifferential of the `i`-th summand at the current inner iterate. -/
 def incremental_projected_subgradient_method_is_admissible {m : ℕ}
     (f : Fin m → E → ℝ) (C : Set E) (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C)
     (hC_convex : Convex ℝ C) (t : ℕ → ℝ) (g : ℕ → C → Fin m → E) (x0 : C) : Prop :=

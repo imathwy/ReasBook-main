@@ -39,7 +39,7 @@ variable (hreal : ∀ x, ∃ r : ℝ, (f □r ω) x = (r : EReal))
 -- Proof sketch: for each `x`, pick a minimizer of `u ↦ f u + ω (x - u)`, use first-order
 -- optimality to produce a subgradient of `f` balancing `∇ ω (x - u(x))`, and deduce that this
 -- vector is a subgradient of the real-valued infimal convolution. Monotonicity of the
--- subdifferential of `f` together with cocoercivity of the gradient of the convex `L`-smooth
+-- extendedRealSubdifferential of `f` together with cocoercivity of the gradient of the convex `L`-smooth
 -- kernel `ω` gives the `L`-Lipschitz bound for the resulting gradient field.
 /-- Theorem 5.30 (1): if `f` is proper closed convex, `ω` is a convex `L`-smooth real-valued
 function, and the infimal convolution `f □ ω` is everywhere finite, then the real-valued map

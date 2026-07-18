@@ -43,7 +43,7 @@ Derived API: the scaled conjugate rewrite and the proximal transport needed to e
 The textbook writes a single-valued identity, so the canonical chapter-level rendering is the
 singleton identity for the pointwise sum set. -/
 recall conjugate_function_primal
-recall fenchel_inequality
+recall fenchelYoung_inequality
 recall conjugate_function_pos_real_mul
 recall pairing_eq_add_conjugate_iff_mem_subdifferential
 recall isProperExtendedRealFunction_conjugate_function
@@ -108,7 +108,7 @@ lemma prox_scaled_function_conjugate_eq_singleton_residual
       (prox_eq_singleton_iff_toDualMap_sub_mem_strongDualSubdifferential
         g hg_proper hg_convex x u).mp hprox_g
   have hsub' :
-      (toDualMap ℝ E (x - u) : Module.Dual ℝ E) ∈ subdifferential g u := by
+      (toDualMap ℝ E (x - u) : Module.Dual ℝ E) ∈ extendedRealSubdifferential g u := by
     simpa [mem_strongDualSubdifferential] using hsub
   have hfenchel_eq :
       (toDualMap ℝ E (x - u) u : EReal) = g u + conjugate_function g (toDualMap ℝ E (x - u)) := by
@@ -167,7 +167,7 @@ lemma prox_scaled_function_conjugate_eq_singleton_residual
       -- Fenchel inequality bounds every dual value above by the primal-conjugate sum.
       simpa [ge_iff_le, add_comm, conjugate_function_primal_apply,
         InnerProductSpace.toDualMap_apply_apply] using
-        (fenchel_inequality g u (toDualMap ℝ E z) hg_proper)
+        (fenchelYoung_inequality g u (toDualMap ℝ E z) hg_proper)
     have hfenchel_z_real :
         inner ℝ z u ≤ (g u).toReal + ((g∗) z).toReal := by
       rw [hu_val, hz_val, ← EReal.coe_add] at hfenchel_z

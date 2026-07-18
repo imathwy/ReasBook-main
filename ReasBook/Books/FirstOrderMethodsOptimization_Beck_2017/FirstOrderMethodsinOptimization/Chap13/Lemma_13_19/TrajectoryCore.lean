@@ -63,7 +63,7 @@ theorem is_polytope_quadratic_conditional_gradient_exact_line_search_trajectory_
     (k : ℕ) :
     min (λ[k]) 1 ∈
       conditional_gradient_exact_line_search_stepsizes
-        (polytope_quadratic_objective Q b).toEReal
+        (polytope_quadratic_objective Q b).toExtendedReal
         (x k) (a (i k)) :=
   polytope_quadratic_ratio_clip_mem_conditional_gradient_exact_line_search_stepsizes
     (htraj.directional_derivative_neg k)

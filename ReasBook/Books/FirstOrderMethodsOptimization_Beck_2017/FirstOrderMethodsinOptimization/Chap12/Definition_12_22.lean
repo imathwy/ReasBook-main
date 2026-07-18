@@ -100,7 +100,7 @@ private lemma diagonalOffset_mem_Icc (ij : PixelIndex) :
 their diagonal offset `j - i`. -/
 private lemma sum_pixels_by_diagonal_offset (F : PixelIndex → ℝ) :
     (∑ ij : PixelIndex, F ij) =
-      ∑ k in Finset.Icc (1 - (m : ℤ)) ((n : ℤ) - 1), ∑ ij in D[k], F ij := by
+      ∑ k ∈ Finset.Icc (1 - (m : ℤ)) ((n : ℤ) - 1), ∑ ij ∈ D[k], F ij := by
   -- Regroup the full pixel sum by the map `ij ↦ diagonalOffset ij`.
   simpa [D] using
     (Finset.sum_fiberwise_of_maps_to
@@ -131,12 +131,12 @@ private lemma emod_three_mem_Icc (k : ℤ) : k % 3 ∈ Finset.Icc (0 : ℤ) 2 :=
 /-- Helper for Definition 12.22: the diagonal-offset interval splits into the three residue-class
 blocks `K[0]`, `K[1]`, and `K[2]`. -/
 private lemma sum_diagonal_offsets_by_residue_class (F : ℤ → ℝ) :
-    (∑ k in Finset.Icc (1 - (m : ℤ)) ((n : ℤ) - 1), F k) =
-      ∑ i : Fin 3, ∑ k in K[i], F k := by
+    (∑ k ∈ Finset.Icc (1 - (m : ℤ)) ((n : ℤ) - 1), F k) =
+      ∑ i : Fin 3, ∑ k ∈ K[i], F k := by
   let interval : Finset ℤ := Finset.Icc (1 - (m : ℤ)) ((n : ℤ) - 1)
   calc
-    ∑ k in interval, F k
-      = ∑ r in Finset.Icc (0 : ℤ) 2, ∑ k in interval with k % 3 = r, F k := by
+    ∑ k ∈ interval, F k
+      = ∑ r ∈ Finset.Icc (0 : ℤ) 2, ∑ k ∈ interval with k % 3 = r, F k := by
           -- Partition the offset interval by the remainder map `k ↦ k % 3`.
           simpa [interval] using
             (Finset.sum_fiberwise_of_maps_to
@@ -145,13 +145,13 @@ private lemma sum_diagonal_offsets_by_residue_class (F : ℤ → ℝ) :
               (g := fun k : ℤ ↦ k % 3)
               (fun k _ ↦ emod_three_mem_Icc k)
               F).symm
-    _ = (∑ k in interval with k % 3 = 0, F k) +
-        (∑ k in interval with k % 3 = 1, F k) +
-        (∑ k in interval with k % 3 = 2, F k) := by
+    _ = (∑ k ∈ interval with k % 3 = 0, F k) +
+        (∑ k ∈ interval with k % 3 = 1, F k) +
+        (∑ k ∈ interval with k % 3 = 2, F k) := by
           -- The codomain interval `{0, 1, 2}` has exactly the three expected residues.
           rw [show Finset.Icc (0 : ℤ) 2 = ({0, 1, 2} : Finset ℤ) by decide]
           simp [add_assoc]
-    _ = ∑ i : Fin 3, ∑ k in K[i], F k := by
+    _ = ∑ i : Fin 3, ∑ k ∈ K[i], F k := by
           -- Identify each residue filter with the corresponding textbook block `K[i]`.
           rw [Fin.sum_univ_three]
           simp [K_eq_filter_emod, interval]
@@ -169,19 +169,19 @@ theorem isotropic_two_dimensional_total_variation_eq_sum_ψ
     TV_I x
       = ∑ ij : PixelIndex, isotropic_two_dimensional_total_variation_site_term x ij := by
           simpa using isotropic_two_dimensional_total_variation_eq_sum_site_terms x
-    _ = ∑ k in Finset.Icc (1 - (m : ℤ)) ((n : ℤ) - 1),
-          ∑ ij in D[k], isotropic_two_dimensional_total_variation_site_term x ij := by
+    _ = ∑ k ∈ Finset.Icc (1 - (m : ℤ)) ((n : ℤ) - 1),
+          ∑ ij ∈ D[k], isotropic_two_dimensional_total_variation_site_term x ij := by
           simpa using
             sum_pixels_by_diagonal_offset
               (m := m) (n := n)
               (F := fun ij ↦ isotropic_two_dimensional_total_variation_site_term x ij)
     _ = ∑ i : Fin 3,
-          ∑ k in K[i], ∑ ij in D[k], isotropic_two_dimensional_total_variation_site_term x ij := by
+          ∑ k ∈ K[i], ∑ ij ∈ D[k], isotropic_two_dimensional_total_variation_site_term x ij := by
           simpa using
             sum_diagonal_offsets_by_residue_class
               (m := m) (n := n)
               (F := fun k ↦
-                ∑ ij in D[k], isotropic_two_dimensional_total_variation_site_term x ij)
+                ∑ ij ∈ D[k], isotropic_two_dimensional_total_variation_site_term x ij)
     _ = ∑ i : Fin 3, ψ[i] x := by
           -- Fold the residue-class blocks back into the defining formula for `ψ`.
           simp [ψ_def]

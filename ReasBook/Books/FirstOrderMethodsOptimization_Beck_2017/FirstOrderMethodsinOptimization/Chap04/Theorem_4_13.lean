@@ -33,7 +33,7 @@ clause is the continuous-dual restriction of the owner `conjugate_function`. Thi
 keeps only the textbook `TFAE` statement and no parallel local wrappers. -/
 
 -- Proof sketch: identify clause (i) with clause (ii) using the global/full-domain specialization
--- of the Chapter 3 bounded-subdifferential characterization of Lipschitz continuity. For
+-- of the Chapter 3 bounded-extendedRealSubdifferential characterization of Lipschitz continuity. For
 -- `(iii) → (ii)`, use the conjugate-subgradient theorem: every `g ∈ subdifferentialAt f x` lies
 -- in the effective domain of `f*`, hence in the dual closed ball. For `(i) → (iii)`, bound
 -- `-f x` below by `-f 0 - L * ‖x‖` and then show that if `‖y‖ > L`, scaling along a unit vector

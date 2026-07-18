@@ -27,9 +27,11 @@ local notation "𝕊" => symmetricMatrices n
 local notation "symmetricEigenvalues" => symmetric_eigenvalue_function
 
 /-- The ambient real matrix space is equipped with its Frobenius norm. -/
-local instance : NormedAddCommGroup Mₙ := Matrix.frobeniusNormedAddCommGroup
-local instance : NormedSpace ℝ Mₙ := Matrix.frobeniusNormedSpace
-local instance : InnerProductSpace ℝ Mₙ := Matrix.frobeniusInnerProductSpace
+local instance theorem73FrobeniusNormedAddCommGroup : NormedAddCommGroup Mₙ :=
+  Matrix.frobeniusNormedAddCommGroup
+local instance theorem73FrobeniusNormedSpace : NormedSpace ℝ Mₙ := Matrix.frobeniusNormedSpace
+local instance theorem73FrobeniusInnerProductSpace : InnerProductSpace ℝ Mₙ :=
+  Matrix.frobeniusInnerProductSpace
 
 /-- A real symmetric matrix is Hermitian. -/
 -- Proof sketch: over `ℝ`, the conjugate transpose is the ordinary transpose, so `IsHermitian`

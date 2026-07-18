@@ -37,7 +37,7 @@ This item is `source-facing`: it states the expected sublinear bounds for RGBCG 
 - `is_randomized_generalized_block_conditional_gradient_trajectory` for the realized RGBCG sample
   path;
 - `composite_model_objective f (PiLp.separableSum g)` for `F(x)`;
-- `S[g, blockGradient f](x)` from Definition 13.17 for the chapter quantity `S(x)`;
+- `Sblk[g, blockGradient f](x)` from Definition 13.17 for the chapter quantity `S(x)`;
 - `‖·‖_[Li]` from Chapter 11 Definition 11.14 for the weighted block norm.
 
 The stochastic layer is kept at the same abstraction level as Chapter 11: a probability space
@@ -121,9 +121,9 @@ theorem exists_half_tail_rgbcg_expected_norm_le_sublinear_rate
     {k : ℕ} (hk : 3 ≤ k)
     (h_gap_integrable :
       ∀ n ∈ Set.Icc (k / 2 + 2) k,
-        Integrable (fun ω ↦ (S[g, blockGradient f](x n ω)).toReal) μ) :
+        Integrable (fun ω ↦ (Sblk[g, blockGradient f](x n ω)).toReal) μ) :
     ∃ n ∈ Set.Icc (k / 2 + 2) k,
-      μ[fun ω ↦ (S[g, blockGradient f](x n ω)).toReal] ≤
+      μ[fun ω ↦ (Sblk[g, blockGradient f](x n ω)).toReal] ≤
         ((8 : ℝ) * rateBound) / ((k - 2 : ℕ) : ℝ) := sorry
 
 end

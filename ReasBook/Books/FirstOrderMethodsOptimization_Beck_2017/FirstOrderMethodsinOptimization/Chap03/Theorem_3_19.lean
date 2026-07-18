@@ -13,27 +13,27 @@ variable [AddCommGroup V] [Module ℝ V]
 variable [AddCommGroup E] [Module ℝ E]
 
 /- Theorem 3.19 is `source-facing` at the chapter owner
-`subdifferential : Set (Module.Dual ℝ E)`, while the ambient affine geometry already has the
+`extendedRealSubdifferential : Set (Module.Dual ℝ E)`, while the ambient affine geometry already has the
 canonical owner abstraction `AffineMap`. The pullback acts on subgradients through the linear part
 `φ.linear.dualMap`, so the public theorem stays at the algebraic-dual owner level and downstream
 `StrongDual` and Euclidean files should reuse it through the chapter bridge/view APIs rather than
 repackaging the affine map as primitive data `(A, b)`. -/
 
-recall subdifferential
+recall extendedRealSubdifferential
 
 -- Proof sketch: if `g ∈ ∂ f (φ x)`, then `φ x ∈ effective_domain f` and the defining
 -- subgradient inequality for `g` applied to `φ y` gives
 -- `f (φ y) ≥ f (φ x) + g (φ.linear (y - x))`. Rewrite the last term as
 -- `(φ.linear.dualMap g) (y - x)` using `φ.linearMap_vsub` to obtain the subgradient inequality
 -- for `φ.linear.dualMap g` at `x`.
-/-- Theorem 3.19 (1): weak affine transformation rule of subdifferential calculus. For
+/-- Theorem 3.19 (1): weak affine transformation rule of extendedRealSubdifferential calculus. For
 `h = f ∘ φ`, every subgradient of `f` at `φ x` pulls back along the linear part of `φ` to a
 subgradient of `h` at `x`. Specializing to `φ y = A y + b` recovers the textbook notation
 `Aᵀ (∂ f (A x + b))`. -/
 theorem subdifferential_precompose_affineMap_subset
     (f : E → EReal) (φ : V →ᵃ[ℝ] E) (x : V) :
-    φ.linear.dualMap '' subdifferential f (φ x) ⊆
-      subdifferential (fun y ↦ f (φ y)) x := sorry
+    φ.linear.dualMap '' extendedRealSubdifferential f (φ x) ⊆
+      extendedRealSubdifferential (fun y ↦ f (φ y)) x := sorry
 
 end
 
@@ -53,15 +53,15 @@ recall finite_domain
 -- derivative formula applies without any false `effective_domain`-only shortcut. Then use compact
 -- convexity of both subdifferentials and the equality criterion from support functions to conclude
 -- equality of the sets.
-/-- Theorem 3.19 (2): affine transformation rule of subdifferential calculus. If
-`φ x ∈ interior (finite_domain f)` for `h = f ∘ φ`, then the subdifferential of `h` at `x` is
-exactly the pullback of the subdifferential of `f` at `φ x` along the linear part of `φ`.
+/-- Theorem 3.19 (2): affine transformation rule of extendedRealSubdifferential calculus. If
+`φ x ∈ interior (finite_domain f)` for `h = f ∘ φ`, then the extendedRealSubdifferential of `h` at `x` is
+exactly the pullback of the extendedRealSubdifferential of `f` at `φ x` along the linear part of `φ`.
 Specializing to `φ y = A y + b` recovers the textbook notation `Aᵀ (∂ f (A x + b))`. -/
 theorem subdifferential_precompose_affineMap_eq
     (f : E → EReal) (φ : V →ᵃ[ℝ] E) (x : V)
     (hconvex : is_convex_function f)
     (hφx : φ x ∈ interior (finite_domain f)) :
-    subdifferential (fun y ↦ f (φ y)) x =
-      φ.linear.dualMap '' subdifferential f (φ x) := sorry
+    extendedRealSubdifferential (fun y ↦ f (φ y)) x =
+      φ.linear.dualMap '' extendedRealSubdifferential f (φ x) := sorry
 
 end

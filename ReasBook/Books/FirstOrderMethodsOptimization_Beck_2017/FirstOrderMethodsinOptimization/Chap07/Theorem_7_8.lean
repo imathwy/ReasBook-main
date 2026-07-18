@@ -29,7 +29,7 @@ lemma diagonal_mem_symmetricMatrices_raw (x : Fin n → ℝ) :
 
 /-- Helper for Theorem 7.8: evaluating the spectral lift on a diagonal matrix recovers the vector
 profile, because the diagonal entries and the ordered eigenvalues differ only by a permutation. -/
-lemma symmetric_spectral_diagonal_pullback_eq
+lemma symmetric_spectral_diagonal_pullback_eq_theorem78
     (f : (Fin n → ℝ) → EReal) (hf : IsPermutationSymmetricFunction f) (x : Fin n → ℝ) :
     (f ∘ symmetricEigenvalues) ⟨Matrix.diagonal x, diagonal_mem_symmetricMatrices_raw x⟩ = f x := by
   -- Route correction: work with the older ordered-eigenvalue owner from Theorem 7.2 so the proof
@@ -37,7 +37,7 @@ lemma symmetric_spectral_diagonal_pullback_eq
   -- helper names.
   have hf_desc :
       ∀ z : Fin n → ℝ, f z = f z↓ :=
-    (isPermutationSymmetricFunction_iff_forall_eq_descendingRearrangement f).1 hf
+    ((isPermutationSymmetricFunction_iff_forall_eq_descendingRearrangement f).1 hf).2
   let σ : Equiv.Perm (Fin n) := Fin.revPerm.symm * (Tuple.sort x).symm
   have hσ : ∀ i, x i = x↓ (σ i) := by
     -- The chosen permutation unsorts the decreasing rearrangement back to `x`.
@@ -333,7 +333,7 @@ lemma spectral_segment_jensen_step
 
 /-- Helper for Theorem 7.8: pulling the conjugate back along `dotProductEquiv` preserves
 permutation symmetry. -/
-lemma dotProduct_conjugate_profile_is_permutation_symmetric
+lemma dotProduct_conjugate_profile_is_permutation_symmetric_theorem78
     (f : (Fin n → ℝ) → EReal) (hf : IsPermutationSymmetricFunction f)
     (hfconv : is_convex_function f) :
     IsPermutationSymmetricFunction
@@ -355,11 +355,11 @@ lemma dotProduct_conjugate_profile_is_permutation_symmetric
       simpa [hdual] using hy
   · intro A hA y
     -- Theorem 7.9 gives the orthogonal invariance of the vector-side conjugate.
-    exact conjugate_function_eq_conjugate_function_orthogonal_mulVec Λ[n] f hf A hA y
+    exact conjugate_function_eq_conjugate_function_orthogonal_mulVec Λperm[n] f hf A hA y
 
 /-- Helper for Theorem 7.8: taking the `dotProductEquiv`-pullback conjugate twice recovers the
 Chapter 4 biconjugate. -/
-lemma dotProduct_conjugate_profile_biconjugate_eq
+lemma dotProduct_conjugate_profile_biconjugate_eq_theorem78
     (f : (Fin n → ℝ) → EReal) :
     (fun x : Fin n → ℝ ↦
       conjugate_function
@@ -398,7 +398,7 @@ lemma symmetric_spectral_closed_convex_forward
   let fconj : (Fin n → ℝ) → EReal :=
     fun x ↦ conjugate_function f (dotProductEquiv ℝ (Fin n) x)
   have hfconj_symm : IsPermutationSymmetricFunction fconj :=
-    dotProduct_conjugate_profile_is_permutation_symmetric f hf hf_convex
+    dotProduct_conjugate_profile_is_permutation_symmetric_theorem78 f hf hf_convex
   have hmatrix_conj :
       (fun Y : 𝕊 ↦ conjugate_function (f ∘ symmetricEigenvalues) ↑(toDualMap ℝ 𝕊 Y)) =
         fconj ∘ symmetricEigenvalues := by
@@ -421,7 +421,7 @@ lemma symmetric_spectral_closed_convex_forward
           (fun x : Fin n → ℝ ↦ conjugate_function fconj (dotProductEquiv ℝ (Fin n) x)) ∘
             symmetricEigenvalues := hmatrix_conj_conj
       _ = biconjugate_function f ∘ symmetricEigenvalues := by
-            rw [dotProduct_conjugate_profile_biconjugate_eq f]
+            rw [dotProduct_conjugate_profile_biconjugate_eq_theorem78 f]
       _ = f ∘ symmetricEigenvalues := by
             rw [hself]
   let G : 𝕊 → EReal :=
@@ -469,7 +469,7 @@ theorem symmetric_spectral_function_lowerSemicontinuous_iff
     have hdiagpull : ((f ∘ symmetricEigenvalues) ∘ d) = f := by
       -- The diagonal pullback realizes the vector profile exactly.
       ext x
-      simpa [Function.comp, d] using symmetric_spectral_diagonal_pullback_eq f hf x
+      simpa [Function.comp, d] using symmetric_spectral_diagonal_pullback_eq_theorem78 f hf x
     rw [hdiagpull] at hcomp
     exact hcomp
   · intro hf_closed
@@ -495,9 +495,9 @@ theorem symmetric_spectral_function_is_convex_function_iff
     let Y : 𝕊 := ⟨Matrix.diagonal y, diagonal_mem_symmetricMatrices_raw y⟩
     have hXeq : (f ∘ symmetricEigenvalues) X = f x := by
       -- The diagonal embedding turns the matrix inequality into the vector one.
-      simpa [X] using symmetric_spectral_diagonal_pullback_eq f hf x
+      simpa [X] using symmetric_spectral_diagonal_pullback_eq_theorem78 f hf x
     have hYeq : (f ∘ symmetricEigenvalues) Y = f y := by
-      simpa [Y] using symmetric_spectral_diagonal_pullback_eq f hf y
+      simpa [Y] using symmetric_spectral_diagonal_pullback_eq_theorem78 f hf y
     have hx_top : f x < ⊤ := by
       simpa [mem_effective_domain] using hx
     have hy_top : f y < ⊤ := by
@@ -524,7 +524,7 @@ theorem symmetric_spectral_function_is_convex_function_iff
           f (t • x + (1 - t) • y) := by
       -- The same diagonal pullback applies to the convex combination.
       simpa using
-        symmetric_spectral_diagonal_pullback_eq f hf (t • x + (1 - t) • y)
+        symmetric_spectral_diagonal_pullback_eq_theorem78 f hf (t • x + (1 - t) • y)
     rw [hdiagcombo, hcomboeq, hXeq, hYeq] at hseg
     exact hseg
   · intro hf_convex

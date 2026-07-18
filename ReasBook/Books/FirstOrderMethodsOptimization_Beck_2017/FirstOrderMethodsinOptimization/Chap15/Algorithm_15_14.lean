@@ -156,7 +156,7 @@ theorem ad_lpmm_basis_pursuit_x_succ_mem_adlpmm_x_step
     (x0 : E) (y0 : Y) (k : ℕ) :
     ad_lpmm_basis_pursuit_x ρ A b x0 y0 (k + 1) ∈
       adlpmm_x_step
-        (fun x : E ↦ ((‖x‖₁ : ℝ) : EReal))
+        (fun x : E ↦ ((l1n[x] : ℝ) : EReal))
         ρ
         (ad_lpmm_alpha_parameter A ρ h : PosReal)
         A
@@ -205,7 +205,7 @@ theorem ad_lpmm_basis_pursuit_y_succ_eq
   rw [ad_lpmm_basis_pursuit_y_succ, admm_multiplier_update_linear_composite_eq]
 
 /-- The explicit Algorithm 15.14 basis-pursuit iterates form the canonical linear-composite
-AD-LPMM trajectory with `h₁ x = ‖x‖₁`, `h₂ = δ_{ {b} }`, `α = ρ L`, and the fixed
+AD-LPMM trajectory with `h₁ x = l1n[x]`, `h₂ = δ_{ {b} }`, `α = ρ L`, and the fixed
 `z^k = b`. -/
 theorem ad_lpmm_basis_pursuit_trajectory
     (ρ : PosReal) (A : E →ₗ[ℝ] Y) (b : Y)
@@ -218,7 +218,7 @@ theorem ad_lpmm_basis_pursuit_trajectory
       0
       (ad_lpmm_alpha_parameter A ρ hL)
       (ad_lpmm_beta_parameter ρ)
-      (fun x : E ↦ ((‖x‖₁ : ℝ) : EReal))
+      (fun x : E ↦ ((l1n[x] : ℝ) : EReal))
       (extendedIndicator ({b} : Set Y))
       (ad_lpmm_basis_pursuit_x ρ A b x0 y0)
       (fun _ ↦ b)

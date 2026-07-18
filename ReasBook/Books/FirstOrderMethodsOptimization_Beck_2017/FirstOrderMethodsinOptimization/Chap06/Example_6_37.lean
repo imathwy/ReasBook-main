@@ -22,7 +22,7 @@ Domain sampling for this file uses the owner chain
 - `realEpigraph` from Chapter 2 for the epigraph view,
 - `norm_penalty` and `prox_norm_penalty_eq_singleton_shrinkage` from Example 6.19 for the norm
   penalty and its radial proximal singleton,
-- `P[...]` from Theorem 6.24 for the set-valued projection owner,
+- `Proj[...]` from Theorem 6.24 for the set-valued projection owner,
 - `projection_mapping_realEpigraph_eq_singleton_of_mem` from Theorem 6.36 for the canonical
   feasible-branch epigraph projection theorem.
 
@@ -46,7 +46,7 @@ projection onto that cone is the singleton `{(x, s)}`. This is the norm speciali
 canonical feasible-branch epigraph projection theorem. -/
 theorem projection_mapping_realEpigraph_norm_penalty_one_eq_singleton_of_mem
     (x : E) (s : ℝ) (hxs : ‖x‖ ≤ s) :
-    P[realEpigraph (norm_penalty 1)] (x, s) = {(x, s)} := by
+    Proj[realEpigraph (norm_penalty 1)] (x, s) = {(x, s)} := by
   have hepigraph :
       realEpigraph (norm_penalty 1) = realEpigraph (fun y : E ↦ ((‖y‖ : ℝ) : EReal)) := by
     ext p
@@ -75,7 +75,7 @@ lemma convex_realEpigraph_norm_penalty_one :
 `(x, s)` onto the Lorentz cone. -/
 theorem projection_mapping_realEpigraph_norm_penalty_one_eq_singleton_of_neg_branch
     (x : E) (s : ℝ) (hzero : s < -‖x‖) :
-    P[realEpigraph (norm_penalty 1)] (x, s) = {((0 : E), (0 : ℝ))} := by
+    Proj[realEpigraph (norm_penalty 1)] (x, s) = {((0 : E), (0 : ℝ))} := by
   have hs_neg : s < 0 := by
     linarith [norm_nonneg x, hzero]
   have hx_lt : ‖x‖ < -s := by
@@ -83,7 +83,7 @@ theorem projection_mapping_realEpigraph_norm_penalty_one_eq_singleton_of_neg_bra
   have hzero_mem : ((0 : E), (0 : ℝ)) ∈ realEpigraph (norm_penalty 1) := by
     -- The origin lies on the boundary of the cone.
     simp
-  have hzero_proj : ((0 : E), (0 : ℝ)) ∈ P[realEpigraph (norm_penalty 1)] (x, s) := by
+  have hzero_proj : ((0 : E), (0 : ℝ)) ∈ Proj[realEpigraph (norm_penalty 1)] (x, s) := by
     -- Every feasible cone point has second coordinate `t ≥ 0`, so its distance from `(x, s)` is
     -- at least `-s`; the origin attains exactly that distance.
     rw [mem_projection_mapping_iff, isMinOn_iff]
@@ -261,7 +261,7 @@ theorem active_branch_candidate_distance_eq_half_gap
 is the unique projection of `(x, s)` onto the Lorentz cone. -/
 theorem projection_mapping_realEpigraph_norm_penalty_one_eq_singleton_of_active_branch
     (x : E) (s : ℝ) (hfeas : ¬ ‖x‖ ≤ s) (hzero : ¬ s < -‖x‖) :
-    P[realEpigraph (norm_penalty 1)] (x, s) =
+    Proj[realEpigraph (norm_penalty 1)] (x, s) =
       {((((‖x‖ + s) / (2 * ‖x‖)) • x), (‖x‖ + s) / 2)} := by
   let C : Set (E × ℝ) := realEpigraph (norm_penalty 1 : E → EReal)
   let t0 : ℝ := (‖x‖ + s) / 2
@@ -288,7 +288,7 @@ theorem projection_mapping_realEpigraph_norm_penalty_one_eq_singleton_of_active_
   have hp_dist : ‖p - (x, s)‖ = (‖x‖ - s) / 2 := by
     simpa [p, norm_sub_rev] using
       active_branch_candidate_distance_eq_half_gap x s hfeas hzero
-  have hp_proj : p ∈ P[C] (x, s) := by
+  have hp_proj : p ∈ Proj[C] (x, s) := by
     -- The global lower bound is sharp at `p`, so `p` minimizes the distance to the cone.
     rw [mem_projection_mapping_iff, isMinOn_iff]
     refine ⟨hp_mem, ?_⟩
@@ -343,7 +343,7 @@ theorem projection_mapping_realEpigraph_norm_penalty_one_eq_singleton_of_active_
       exact le_antisymm hy_dist_le hy_dist_lower
     have hy_ball : y ∈ Metric.closedBall (0 : E) t0 := by
       simpa [Metric.mem_closedBall, dist_eq_norm, ht_eq] using hy_memC
-    have hy_proj_ball : y ∈ P[Metric.closedBall (0 : E) t0] x := by
+    have hy_proj_ball : y ∈ Proj[Metric.closedBall (0 : E) t0] x := by
       -- Once the optimal height is fixed, the horizontal component minimizes distance to the
       -- closed ball of radius `t0`.
       rw [mem_projection_mapping_iff, isMinOn_iff]
@@ -371,7 +371,7 @@ theorem projection_mapping_realEpigraph_norm_penalty_one_eq_singleton_of_active_
     have hy_closedBall_eq :
         y = (0 : E) + (t0 / max ‖x - (0 : E)‖ t0) • (x - (0 : E)) := by
       have hclosedBall :
-          P[Metric.closedBall (0 : E) t0] x =
+          Proj[Metric.closedBall (0 : E) t0] x =
             {(0 : E) + (t0 / max ‖x - (0 : E)‖ t0) • (x - (0 : E))} :=
         projection_mapping_closedBall_eq_singleton_radialRetraction (0 : E) x t0 ht0_nonneg
       rw [hclosedBall] at hy_proj_ball
@@ -412,7 +412,7 @@ theorem projection_mapping_realEpigraph_norm_penalty_one_eq_singleton_of_active_
 inner-product-space level, with no finite-dimensional hypothesis in the public API. -/
 theorem projection_mapping_realEpigraph_norm_penalty_one_eq_singleton_piecewise
     (x : E) (s : ℝ) :
-    P[realEpigraph (norm_penalty 1)] (x, s) =
+    Proj[realEpigraph (norm_penalty 1)] (x, s) =
       {if hfeas : ‖x‖ ≤ s then
         (x, s)
       else if hzero : s < -‖x‖ then

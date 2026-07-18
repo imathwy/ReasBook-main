@@ -73,7 +73,7 @@ iterate minus the sampled component subgradient scaled by
 `√(2 Θ m) / (L̃_f √(k + 1))`. -/
 theorem finite_sum_stochastic_projected_subgradient_method_succ (k : ℕ) (ω : Ω) :
     x[k + 1] ω =
-      metricProjection C hC_nonempty hC_closed hC_convex
+      metricProjection C hC_nonempty hC_closed.isComplete hC_convex
         ((x[k] ω : E) -
           (Real.sqrt (2 * Θ * (m : ℝ)) /
               (finite_sum_stochastic_subgradient_bound_constant L * Real.sqrt (k + 1 : ℝ))) •

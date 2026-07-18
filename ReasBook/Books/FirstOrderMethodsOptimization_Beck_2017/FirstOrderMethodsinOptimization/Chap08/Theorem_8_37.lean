@@ -1,6 +1,7 @@
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Algorithm_8_10
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Assumption_8_7
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Assumption_8_34
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Corollary_8_22
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Definition_8_8
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Lemma_8_11
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap05.Theorem_5_4
@@ -76,7 +77,7 @@ lemma toDualMap_mem_subdifferential_of_mem_euclideanSubdifferentialAt_toReal
     (h_problem : IsConstrainedConvexProblem f C XStar fOpt)
     {x v : E} (hx : x ∈ effective_domain f)
     (hv : v ∈ euclideanSubdifferentialAt (fun y ↦ (f y).toReal) x) :
-    (toDualMap ℝ E v : Module.Dual ℝ E) ∈ subdifferential f x := by
+    (toDualMap ℝ E v : Module.Dual ℝ E) ∈ extendedRealSubdifferential f x := by
   -- Rewrite the Euclidean membership into the real-valued subgradient inequality.
   rw [mem_euclideanSubdifferentialAt_iff, subdifferentialAt, mem_strongDualSubdifferential,
     mem_subdifferential, is_subgradient_at_coe_iff] at hv
@@ -383,30 +384,6 @@ lemma condexp_inner_of_aestronglyMeasurable_right
     (MeasureTheory.condExp_bilin_of_aestronglyMeasurable_right
       (μ := μ) (m := m) (B := innerSL ℝ) hv huv hu)
 
-/-- Helper for Theorem 8.37: points already lying in the feasible set are fixed by the metric
-projection onto `C`. -/
-lemma metricProjection_eq_self_of_mem {y : E} (hy : y ∈ C) :
-    (metricProjection C h_problem.feasible_nonempty h_problem.feasible_closed.isComplete
-      h_problem.feasible_convex y : E) = y := by
-  -- The projection variational inequality with test point `y` forces the residual to vanish.
-  have hineq :=
-    inner_sub_metricProjection_le_zero C h_problem.feasible_nonempty
-      h_problem.feasible_closed.isComplete h_problem.feasible_convex y y hy
-  have hnorm_sq_le_zero :
-      ‖y -
-          (metricProjection C h_problem.feasible_nonempty h_problem.feasible_closed.isComplete
-            h_problem.feasible_convex y : E)‖ ^ (2 : ℕ) ≤ 0 := by
-    simpa [real_inner_self_eq_norm_sq] using hineq
-  have hnorm_zero :
-      ‖y -
-          (metricProjection C h_problem.feasible_nonempty h_problem.feasible_closed.isComplete
-            h_problem.feasible_convex y : E)‖ = 0 := by
-    nlinarith [sq_nonneg
-      ‖y -
-          (metricProjection C h_problem.feasible_nonempty h_problem.feasible_closed.isComplete
-            h_problem.feasible_convex y : E)‖, hnorm_sq_le_zero]
-  exact (sub_eq_zero.mp (norm_eq_zero.mp hnorm_zero)).symm
-
 /-- Helper for Theorem 8.37: each stochastic iterate is almost surely strongly measurable. -/
 lemma stochastic_iterate_aestronglyMeasurable
     (h_oracle :
@@ -460,7 +437,8 @@ lemma projected_sqdist_step_growth_bound
     simpa [h_problem.optimal_set_eq] using hxStar
   have hfix : P xStar = xStar := by
     simpa [P] using
-      metricProjection_eq_self_of_mem (h_problem := h_problem) hxStar_data.1
+      metricProjection_eq_self_of_mem h_problem.feasible_nonempty h_problem.feasible_closed
+        h_problem.feasible_convex hxStar_data.1
   have hstep :
       (x[n + 1] ω : E) =
         P ((x[n] ω : E) - t n • g n (x[n] ω) ω) := by
@@ -589,7 +567,8 @@ lemma projected_sqdist_step_pointwise
     simpa [h_problem.optimal_set_eq] using hxStar
   have hfix : P xStar = xStar := by
     simpa [P] using
-      metricProjection_eq_self_of_mem (h_problem := h_problem) hxStar_data.1
+      metricProjection_eq_self_of_mem h_problem.feasible_nonempty h_problem.feasible_closed
+        h_problem.feasible_convex hxStar_data.1
   have hstep :
       (x[n + 1] ω : E) =
         P ((x[n] ω : E) - t n • g n (x[n] ω) ω) := by

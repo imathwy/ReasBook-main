@@ -6,7 +6,7 @@ import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.C
 
 open scoped BigOperators Matrix
 
-/- Proposition 3.28 is `source-facing` in the chapter spectral-subdifferential API. The
+/- Proposition 3.28 is `source-facing` in the chapter spectral-extendedRealSubdifferential API. The
 matrix-side owner declarations are `symmetricMaxEigenvalue` and
 `symmetricRankOne_mem_euclideanSubdifferentialAt_symmetricMaxEigenvalue` from Proposition 3.4,
 while the chapter bridge/view owner is `euclideanSubdifferentialAt` from Theorem 3.4. The affine
@@ -98,7 +98,7 @@ variable [NeZero n]
 -- `(yᵀ A₁ y, …, yᵀ A_m y)`.
 /-- Proposition 3.28: if `y` is a normalized eigenvector of
 `A₀ + ∑ i, xᵢ Aᵢ` for its maximum eigenvalue, then the vector whose coordinates are the quadratic
-forms `yᵀ Aᵢ y` belongs to the Euclidean subdifferential of
+forms `yᵀ Aᵢ y` belongs to the Euclidean extendedRealSubdifferential of
 `x ↦ λ_max (A₀ + ∑ i, xᵢ Aᵢ)` at `x`. -/
 theorem affine_symmetric_max_eigenvalue_subgradient_vector_mem_subdifferential_at
     (A0 : 𝕊) (A : Fin m → 𝕊) (x : Em) (y : En)

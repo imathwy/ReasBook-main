@@ -40,14 +40,14 @@ variable {E : Type u} [NormedAddCommGroup E]
 real-valued function. -/
 theorem mem_interior_effective_domain_of_coe_real
     (f : E → ℝ) (x : E) :
-    x ∈ interior (effective_domain (Function.toEReal f)) := by
+    x ∈ interior (effective_domain (Function.toExtendedReal f)) := by
   simp [effective_domain]
 
 /-- A point of `E` canonically determines a point of the interior effective domain of the
 `EReal` coercion of a real-valued function. -/
 def interior_effective_domain_point_of_real
     (f : E → ℝ) (x : E) :
-    interior (effective_domain (Function.toEReal f)) :=
+    interior (effective_domain (Function.toExtendedReal f)) :=
   ⟨x, mem_interior_effective_domain_of_coe_real f x⟩
 
 end CoeReal
@@ -113,22 +113,22 @@ real-valued smooth term, the source-facing Chapter 10 theorems use the canonical
 `interior_effective_domain_point_of_real` above to view that owner as a map on `E`. -/
 
 /-- The proximal-gradient operator for a real-valued smooth term `f`, obtained by evaluating the
-Chapter 10 owner `prox_grad_operator` of `f.toEReal` at the canonical interior-domain point
+Chapter 10 owner `prox_grad_operator` of `f.toExtendedReal` at the canonical interior-domain point
 associated to `x`. -/
 abbrev prox_gradient_operator
     (f : E → ℝ) (g : E → EReal)
     [IsProperExtendedRealFunction g] [Fact (LowerSemicontinuous g)]
     [Fact (is_convex_function g)] (L : PosReal) : E → E :=
   fun x ↦
-    T[L, f.toEReal, g] (interior_effective_domain_point_of_real f x)
+    T[L, f.toExtendedReal, g] (interior_effective_domain_point_of_real f x)
 
 @[inherit_doc] scoped[Gradient] notation:max "T[" L "; " f ", " g "]" =>
   prox_gradient_operator f g L
 
 /-- Evaluating `prox_gradient_operator` at `x` recovers the Chapter 10 prox-gradient operator of
-`f.toEReal` at the canonical interior-domain point associated to `x`. -/
+`f.toExtendedReal` at the canonical interior-domain point associated to `x`. -/
 @[simp] theorem prox_gradient_operator_apply (L : PosReal) (x : E) :
-    T[L; f, g] x = T[L, f.toEReal, g] (interior_effective_domain_point_of_real f x) := rfl
+    T[L; f, g] x = T[L, f.toExtendedReal, g] (interior_effective_domain_point_of_real f x) := rfl
 
 end CoeReal
 

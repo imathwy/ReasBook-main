@@ -46,7 +46,7 @@ theorem prox_truncated_linear_penalty_eq_singleton
   calc
     prox[truncated_linear_penalty μ α] x
       = prox[extendedIndicator C] (x - μ) := by
-          simpa [truncated_linear_penalty, C, sub_eq_add_neg, hinner] using
+          simpa [truncated_linear_penalty, C, sub_eq_add_neg, hinner, mul_comm] using
             proximal_mapping_quadratic_perturbation
               (extendedIndicator C) 0 (by norm_num) μ x
     _ = {if α = ⊤ then max (x - μ) 0 else min (max (x - μ) 0) α.toReal} := by

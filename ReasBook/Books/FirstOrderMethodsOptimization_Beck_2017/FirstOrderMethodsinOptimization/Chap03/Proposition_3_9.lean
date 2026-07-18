@@ -18,7 +18,7 @@ Chapter 2 owner `effective_domain`; there is no further upstream declaration wit
 conclusion to recall here, so this file should state the proposition directly on that owner API
 instead of introducing a parallel wrapper. The literal textbook wording omits the domain condition
 `x ∈ subdifferential_domain f`, but that hypothesis is mathematically necessary: if
-`x ∉ subdifferential_domain f`, then the subdifferential is empty and hence bounded. The file keeps
+`x ∉ subdifferential_domain f`, then the extendedRealSubdifferential is empty and hence bounded. The file keeps
 that necessary hypothesis explicit in the proposition statement and records the omission only here
 in comments. -/
 recall effective_domain
@@ -34,8 +34,8 @@ recall strongDualSubdifferential
 /-- Proposition 3.9: if the affine hull of the effective domain has direction-space dimension
 strictly smaller than the ambient space, equivalently
 `Module.finrank ℝ (affineSpan ℝ (effective_domain f)).direction < Module.finrank ℝ E`, then every
-point of the owner subdifferential domain `dom(∂ f)` has an unbounded continuous-dual
-subdifferential. -/
+point of the owner extendedRealSubdifferential domain `dom(∂ f)` has an unbounded continuous-dual
+extendedRealSubdifferential. -/
 theorem subdifferential_unbounded_of_affineSpan_effective_domain_direction_finrank_lt
     (f : E → EReal) (x : E)
     (hdim :

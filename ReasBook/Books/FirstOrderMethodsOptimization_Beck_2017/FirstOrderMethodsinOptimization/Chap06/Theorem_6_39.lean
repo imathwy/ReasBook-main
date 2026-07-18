@@ -17,7 +17,7 @@ variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
 recall effective_domain
 recall strongDualSubdifferential
-recall subdifferential
+recall extendedRealSubdifferential
 recall isMinOn_univ_iff_zero_mem_subdifferential
 recall is_subgradient_at_iff_forall_mem_effective_domain
 recall convexOn_toReal_of_is_convex_function
@@ -396,7 +396,7 @@ shows that the canonical owners already exist upstream: Chapter 6's set-valued p
 `prox[f]`, Chapter 3's continuous-dual bridge `strongDualSubdifferential`, and the Riesz map
 `toDualMap ℝ E : E → StrongDual ℝ E`. The primitive data on the theorem surface is therefore the
 canonical strong-dual membership `toDualMap ℝ E (x - u) ∈ strongDualSubdifferential f u`, while
-the algebraic-dual set `subdifferential f u` remains internal supporting API through
+the algebraic-dual set `extendedRealSubdifferential f u` remains internal supporting API through
 `mem_strongDualSubdifferential`. -/
 
 -- Proof sketch: extract the `(ii) ↔ (iii)` part of Theorem 6.39 by specializing the Chapter 3
@@ -472,7 +472,7 @@ theorem prox_eq_singleton_iff_toDualMap_sub_mem_strongDualSubdifferential
 -- support inequality.
 /-- Theorem 6.39: second prox theorem. For a proper convex extended-real-valued function, the
 following are equivalent for fixed `x` and `u`: (i) the proximal set `prox[f] x` is the singleton
-`{u}`, (ii) the Riesz image of `x - u` belongs to the canonical strong-dual subdifferential of
+`{u}`, (ii) the Riesz image of `x - u` belongs to the canonical strong-dual extendedRealSubdifferential of
 `f` at `u`, and (iii) the
 inequality `⟪x - u, y - u⟫ ≤ f(y) - f(u)` holds for every `y`. -/
 theorem prox_eq_singleton_tfae_strongDualSubdifferential_inner_le

@@ -43,7 +43,7 @@ variable [CompleteSpace E]
 /-- The ambient-space point projection `x ↦ P_C(x)` associated to the metric projection onto a
 nonempty closed convex set. This is the canonical chapter-level point-valued bridge from
 `metricProjection`; the closedness hypothesis supplies the derived completeness input. -/
-noncomputable abbrev projectionPoint (C : Set E) (hC_nonempty : C.Nonempty)
+noncomputable abbrev closedConvexProjectionPoint (C : Set E) (hC_nonempty : C.Nonempty)
     (hC_closed : IsClosed C) (hC_convex : Convex ℝ C) : E → E :=
   fun x ↦ (metricProjection C hC_nonempty hC_closed.isComplete hC_convex x : E)
 
@@ -51,7 +51,7 @@ syntax:max "Pp[" term ", " term ", " term ", " term "]" : term
 
 macro_rules
   | `(Pp[$C, $hC_nonempty, $hC_closed, $hC_convex]) =>
-      `(projectionPoint $C $hC_nonempty $hC_closed $hC_convex)
+      `(closedConvexProjectionPoint $C $hC_nonempty $hC_closed $hC_convex)
 
 end PointProjection
 
@@ -124,12 +124,12 @@ variable (C : Set E) (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C)
     (hC_convex : Convex ℝ C)
 
 local notation "Pₛ" => metricProjection C hC_nonempty hC_closed.isComplete hC_convex
-local notation "P" => projectionPoint C hC_nonempty hC_closed hC_convex
+local notation "P" => closedConvexProjectionPoint C hC_nonempty hC_closed hC_convex
 
--- Proof sketch: `projectionPoint` is the ambient-space coercion of `metricProjection`, whose
+-- Proof sketch: `closedConvexProjectionPoint` is the ambient-space coercion of `metricProjection`, whose
 -- values lie in `C` by construction.
 /-- The point projection onto a nonempty closed convex set belongs to that set. -/
-theorem projectionPoint_mem (x : E) :
+theorem closedConvexProjectionPoint_mem (x : E) :
     P x ∈ C :=
   (Pₛ x).2
 
@@ -144,7 +144,7 @@ private theorem eq_projectionPoint_of_mem_of_norm_eq (x : E) {y : E} (hy : y ∈
       _ = ‖P x - x‖ := hnorm
       _ = ‖x - P x‖ := norm_sub_rev _ _
       _ = ⨅ w : C, ‖x - w‖ := by
-        simpa [projectionPoint] using
+        simpa [closedConvexProjectionPoint] using
           norm_sub_metricProjection_eq_iInf C hC_nonempty hC_closed.isComplete hC_convex x
   rcases existsUnique_metricProjection C hC_nonempty hC_closed.isComplete hC_convex x with
     ⟨p, hp, hp_unique⟩
@@ -164,7 +164,7 @@ private theorem eq_projectionPoint_of_mem_of_norm_eq (x : E) {y : E} (hy : y ∈
 -- nonnegative reals then gives the half squared-distance minimizer formulation.
 /-- The point projection onto a nonempty closed convex set minimizes the half squared-distance
 objective over that set. -/
-theorem projectionPoint_isMinOn (x : E) :
+theorem closedConvexProjectionPoint_isMinOn (x : E) :
     IsMinOn (fun y ↦ ‖y - x‖ ^ (2 : ℕ) / 2) C (P x) := by
   rw [isMinOn_iff]
   intro y hy
@@ -172,7 +172,7 @@ theorem projectionPoint_isMinOn (x : E) :
     calc
       ‖P x - x‖ = ‖x - P x‖ := norm_sub_rev _ _
       _ = ⨅ w : C, ‖x - w‖ := by
-        simpa [projectionPoint] using
+        simpa [closedConvexProjectionPoint] using
           norm_sub_metricProjection_eq_iInf C hC_nonempty hC_closed.isComplete hC_convex x
       _ ≤ ‖x - (⟨y, hy⟩ : C)‖ := by
         let f : C → ℝ := fun w ↦ ‖x - w‖
@@ -188,13 +188,13 @@ theorem projectionPoint_isMinOn (x : E) :
 -- distances imply equal distances; uniqueness of the metric projection then identifies the point.
 /-- Any feasible minimizer of the half squared-distance objective over a nonempty closed convex set
 is the point projection onto that set. -/
-theorem eq_projectionPoint_of_mem_isMinOn (x : E) {y : E} (hy : y ∈ C)
+theorem eq_closedConvexProjectionPoint_of_mem_isMinOn (x : E) {y : E} (hy : y ∈ C)
     (hmin : IsMinOn (fun z ↦ ‖z - x‖ ^ (2 : ℕ) / 2) C y) :
     y = P x := by
   have hy_le : ‖y - x‖ ^ (2 : ℕ) / 2 ≤ ‖P x - x‖ ^ (2 : ℕ) / 2 :=
-    (isMinOn_iff.mp hmin) (P x) (projectionPoint_mem C hC_nonempty hC_closed hC_convex x)
+    (isMinOn_iff.mp hmin) (P x) (closedConvexProjectionPoint_mem C hC_nonempty hC_closed hC_convex x)
   have hproj_le : ‖P x - x‖ ^ (2 : ℕ) / 2 ≤ ‖y - x‖ ^ (2 : ℕ) / 2 :=
-    (isMinOn_iff.mp (projectionPoint_isMinOn C hC_nonempty hC_closed hC_convex x)) y hy
+    (isMinOn_iff.mp (closedConvexProjectionPoint_isMinOn C hC_nonempty hC_closed hC_convex x)) y hy
   have hsq : ‖y - x‖ ^ (2 : ℕ) = ‖P x - x‖ ^ (2 : ℕ) := by
     linarith [hy_le, hproj_le]
   have hnorm : ‖y - x‖ = ‖P x - x‖ := by

@@ -25,7 +25,7 @@ theorem subset_subdifferential_domain_of_subset_interior_effective_domain
   intro x hxC
   -- Move from the feasible-set inclusion to interior membership at the chosen point.
   rw [mem_subdifferential_domain]
-  -- The interior-point theorem supplies a nonempty subdifferential.
+  -- The interior-point theorem supplies a nonempty extendedRealSubdifferential.
   exact subdifferential_nonempty_at_interior_point f x hf_convex (hC hxC)
 
 /-- If `C` is closed and `f` is closed, then the feasible lower level set

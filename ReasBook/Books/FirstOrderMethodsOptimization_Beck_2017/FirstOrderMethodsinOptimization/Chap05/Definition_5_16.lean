@@ -1,4 +1,5 @@
 import Mathlib
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap02.Definition_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -8,13 +9,8 @@ section
 
 variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
-/- The source-facing helper `effective_domain` records the finite-valued domain of an
-extended-real-valued function, while mathlib's `StrongConvexOn` supplies the canonical owner
-abstraction for the real-valued bridge. -/
-
-/-- The effective domain of an extended-real-valued function is the set of points where the
-function takes a finite value. -/
-def effective_domain (f : E → EReal) : Set E := {x | f x < ⊤}
+/- Chapter 2's `effective_domain` is the canonical finite-valued-domain owner, while mathlib's
+`StrongConvexOn` supplies the canonical owner abstraction for the real-valued bridge. -/
 
 /-- Definition 5.16: an extended-real-valued function is `σ`-strongly convex if it never takes
 the value `-∞`, its effective domain is convex, and it satisfies the quadratic Jensen inequality on

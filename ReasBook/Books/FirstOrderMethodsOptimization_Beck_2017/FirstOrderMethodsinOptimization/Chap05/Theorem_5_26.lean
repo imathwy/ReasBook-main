@@ -60,7 +60,7 @@ theorem conjugate_function_finite_of_proper_closed_strongConvexOn
       conjugate_function_strongDual f y ≠ ⊥ ∧ conjugate_function_strongDual f y < ⊤ := sorry
 
 -- Proof sketch: after `conjugate_function_finite_of_proper_closed_strongConvexOn`, the conjugate
--- is real-valued on all of `StrongDual ℝ E`. Transfer strong monotonicity of the subdifferential
+-- is real-valued on all of `StrongDual ℝ E`. Transfer strong monotonicity of the extendedRealSubdifferential
 -- across the Fenchel correspondence and apply the Chapter 5 smoothness characterization to obtain
 -- global `1 / σ`-smoothness of the real-valued conjugate.
 /-- Theorem 5.26 (3): source part (b), smoothness clause. If a proper closed extended-real-valued

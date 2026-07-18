@@ -14,7 +14,7 @@ section
 
 variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [ProperSpace E]
 
--- Proof sketch: lift `h` canonically to `f := h.toEReal`. Chapter 6 already provides convexity
+-- Proof sketch: lift `h` canonically to `f := h.toExtendedReal`. Chapter 6 already provides convexity
 -- and `(1 / μ)`-smoothness of `x ↦ (M[μ, f] x).toReal`. The lower bound comes from evaluating the
 -- Moreau infimum at `u = x`. For the upper bound, choose the canonical proximal point `u` of the
 -- scaled lift `μ f` at `x`; the Moreau value then equals `h u + ‖x - u‖² / (2 μ)`, and the
@@ -28,14 +28,14 @@ theorem moreau_envelope_real_is_smooth_approximation
     (μ : PosReal) :
     IsSmoothApproximationNonneg
       h
-      (fun x ↦ (M[μ, h.toEReal] x).toReal)
+      (fun x ↦ (M[μ, h.toExtendedReal] x).toReal)
       1
       (ℓh ^ 2 / 2)
       μ := by
-  let f : E → EReal := h.toEReal
-  have hf_proper : IsProperExtendedRealFunction f := Function.toEReal_isProper h
-  have hf_closed : LowerSemicontinuous f := Function.toEReal_lowerSemicontinuous_of_lipschitz hlip
-  have hf_convex : is_convex_function f := Function.toEReal_isConvexFunction hconv
+  let f : E → EReal := h.toExtendedReal
+  have hf_proper : IsProperExtendedRealFunction f := Function.toExtendedReal_isProper h
+  have hf_closed : LowerSemicontinuous f := Function.toExtendedReal_lowerSemicontinuous_of_lipschitz hlip
+  have hf_convex : is_convex_function f := Function.toExtendedReal_isConvexFunction hconv
   refine
     { convex := ?_
       lower_le := ?_

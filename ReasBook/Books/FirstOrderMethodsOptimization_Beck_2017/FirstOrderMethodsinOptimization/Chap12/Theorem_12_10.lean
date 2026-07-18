@@ -88,7 +88,9 @@ theorem fast_dual_proximal_gradient_primal_sqdist_le
       4 * (L : ℝ) * ‖y0 - yStar‖ ^ (2 : ℕ) / ((σ : ℝ) * ((k + 1 : ℝ) ^ (2 : ℕ))) := by
   simpa using
     fast_dual_proximal_gradient_primal_sqdist_le_of_dual_trajectory
-      f g A σ L h_problem y0 x y w (htraj.toDualTrajectory) hx
+      f g A σ L h_problem y0 x y w
+      (IsFastDualProximalGradientPrimalTrajectory.toDualTrajectory
+        (f := f) (g := g) (A := A) h_problem htraj) hx
       xStar hxStar yStar hyStar k hk
 
 end

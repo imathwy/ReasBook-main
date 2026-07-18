@@ -13,7 +13,7 @@ variable {f : E → ℝ} {g : ℝ → ℝ} {x : E}
 
 /-
 Theorem 3.21 is `source-facing` in the Chapter 3 convex-analysis API. Its `core/canonical` owner
-is the real-valued strong-dual subdifferential `subdifferentialAt` from Theorem 3.4, so this file
+is the real-valued strong-dual extendedRealSubdifferential `subdifferentialAt` from Theorem 3.4, so this file
 keeps only the composition rule for that owner set-valued map and does not introduce any parallel
 wrapper or auxiliary packaged notion.
 -/
@@ -26,9 +26,9 @@ recall subdifferentialAt
 -- functions of the relevant subdifferentials using the Chapter 3 owner bridges for
 -- differentiability and positive scalar multiplication, and conclude from equality of support
 -- functions of closed convex sets.
-/-- Theorem 3.21: chain rule of subdifferential calculus. If `f : E → ℝ` is convex and
+/-- Theorem 3.21: chain rule of extendedRealSubdifferential calculus. If `f : E → ℝ` is convex and
 `g : ℝ → ℝ` is convex and nondecreasing, and if `g` is differentiable at `f x`, then the
-subdifferential of the composition `g ∘ f` at `x` is the scalar multiple of
+extendedRealSubdifferential of the composition `g ∘ f` at `x` is the scalar multiple of
 `subdifferentialAt f x` by the derivative `g'(f x)`. -/
 theorem subdifferentialAt_comp_eq_smul_subdifferentialAt
     (hf : ConvexOn ℝ Set.univ f) (hg : ConvexOn ℝ Set.univ g) (hg_mono : Monotone g)

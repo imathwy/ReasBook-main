@@ -29,7 +29,7 @@ nearby Chapter 14 and Chapter 3 API.
 Layer triage:
 - `source-facing`: the boundedness and cluster-point optimality statement for Algorithm 14.3;
 - `core/canonical`: `composite_model_objective`, `separableSum`,
-  `Function.toEReal`, `IsAlternatingMinimizationCompositeModel`,
+  `Function.toExtendedReal`, `IsAlternatingMinimizationCompositeModel`,
   `is_alternating_minimization_trajectory`, `Bornology.IsBounded`, `MapClusterPt`,
   `alternating_minimization_argmin`, `is_coordinatewise_minimum`, `is_stationary_point`,
   and `IsMinOn`; and
@@ -39,7 +39,7 @@ Layer triage:
 
 Primitive data vs. derived API:
 - primitive public data here are exactly `f`, `g`, the convexity of the real-valued smooth term
-  `f`, the Assumption 14.6 owner `IsAlternatingMinimizationCompositeModel f.toEReal g`, the
+  `f`, the Assumption 14.6 owner `IsAlternatingMinimizationCompositeModel f.toExtendedReal g`, the
   bounded initial sublevel set actually visited by the trajectory, the per-block argmin
   uniqueness hypothesis needed by Theorem 14.3, and the canonical trajectory owner on the
   composite objective; and
@@ -50,11 +50,11 @@ Primitive data vs. derived API:
 variable (f : ((i : Fin p) → Ei i) → ℝ)
 variable (g : (i : Fin p) → Ei i → EReal)
 
-local notation "F" => composite_model_objective f.toEReal (separableSum g)
+local notation "F" => composite_model_objective f.toExtendedReal (separableSum g)
 
 /-- Helper for Theorem 14.5: coercing a finite real sum into `EReal` agrees with summing the
 coerced terms. -/
-lemma ereal_coe_finset_sum {α : Type*} (s : Finset α) (a : α → ℝ) :
+lemma ereal_coe_finset_sum_theorem_14_5 {α : Type*} (s : Finset α) (a : α → ℝ) :
     (((Finset.sum s a : ℝ)) : EReal) = Finset.sum s (fun i ↦ ((a i : ℝ) : EReal)) := by
   classical
   induction s using Finset.induction_on with
@@ -69,7 +69,7 @@ omit [∀ i, InnerProductSpace ℝ (Ei i)]
 -- any convergent sequence through the mapped sequence filter.
 /-- Helper for Theorem 14.5: lower semicontinuity bounds the objective value at a sequential
 limit point by the liminf along the convergent sequence. -/
-lemma lowerSemicontinuous_value_le_liminf_along_sequence
+lemma lowerSemicontinuous_value_le_liminf_along_sequence_theorem_14_5
     (h : ((i : Fin p) → Ei i) → EReal) (hclosed : LowerSemicontinuous h)
     {b : ℕ → (i : Fin p) → Ei i} {bBar : (i : Fin p) → Ei i}
     (hb : Tendsto b atTop (𝓝 bBar)) :
@@ -83,12 +83,12 @@ lemma lowerSemicontinuous_value_le_liminf_along_sequence
       rfl
 
 -- Proof sketch: this is the Chapter 14.4 regularity package specialized from the composite-model
--- owner `hmodel` to the everywhere-finite smooth term `f.toEReal`.
+-- owner `hmodel` to the everywhere-finite smooth term `f.toExtendedReal`.
 omit [InnerProductSpace ℝ ((i : Fin p) → Ei i)] [FiniteDimensional ℝ ((i : Fin p) → Ei i)] in
 /-- Helper for Theorem 14.5: the composite objective is lower semicontinuous and continuous on its
 effective domain. -/
 lemma composite_objective_regular_on_effective_domain
-    (hmodel : IsAlternatingMinimizationCompositeModel f.toEReal g) :
+    (hmodel : IsAlternatingMinimizationCompositeModel f.toExtendedReal g) :
     LowerSemicontinuous F ∧ ContinuousOn F (effective_domain F) := by
   have hseparable_ne_bot :
       ∀ z : (i : Fin p) → Ei i, separableSum g z ≠ ⊥ := by
@@ -109,8 +109,8 @@ lemma composite_objective_regular_on_effective_domain
         hmodel.f_toReal_differentiableOn_interior_effective_domain z
           (hmodel.g_effective_domain_subset_interior_f_effective_domain hz_separable)
       have hz_cont :
-          ContinuousWithinAt f (interior (effective_domain f.toEReal)) z := by
-        simpa [Function.toEReal] using hz_diff.continuousWithinAt
+          ContinuousWithinAt f (interior (effective_domain f.toExtendedReal)) z := by
+        simpa [Function.toExtendedReal] using hz_diff.continuousWithinAt
       exact hz_cont.mono fun y hy ↦
         hmodel.g_effective_domain_subset_interior_f_effective_domain
           (composite_objective_effective_domain_iff_separableSum.mp hy)
@@ -166,7 +166,7 @@ lemma composite_objective_regular_on_effective_domain
             ((hmodel.g_proper i).ne_bot (z i))).symm
       _ = (((∑ i : Fin p, (g i (z i)).toReal : ℝ)) : EReal) := by
         simpa using
-          (ereal_coe_finset_sum (s := Finset.univ)
+          (ereal_coe_finset_sum_theorem_14_5 (s := Finset.univ)
             (a := fun i : Fin p ↦ (g i (z i)).toReal)).symm
   have hcont_toReal :
       ContinuousOn
@@ -184,7 +184,7 @@ lemma composite_objective_regular_on_effective_domain
   have hcont : ContinuousOn F (effective_domain F) := by
     refine hcont_toReal.congr ?_
     intro z hz
-    simp [Function.toEReal]
+    simp [Function.toExtendedReal]
   have hclosed : LowerSemicontinuous F := by
     refine hmodel.f_closed.add' (separableSum_closed g hmodel.g_closed) ?_
     intro z
@@ -261,7 +261,7 @@ omit [InnerProductSpace ℝ ((i : Fin p) → Ei i)] in
 inequality at the cluster point `xBar`. -/
 lemma prefix_state_limit_fixed_base_argmin
     (x : ℕ → (i : Fin p) → Ei i)
-    (hmodel : IsAlternatingMinimizationCompositeModel f.toEReal g)
+    (hmodel : IsAlternatingMinimizationCompositeModel f.toExtendedReal g)
     (htraj : is_alternating_minimization_trajectory F x)
     {ψ : ℕ → ℕ} (_hψ : StrictMono ψ) (i : Fin p)
     {xBar y : (j : Fin p) → Ei j}
@@ -343,7 +343,7 @@ lemma prefix_state_limit_fixed_base_argmin
         F y ≤
             Filter.liminf
               (fun m ↦ F (alternating_minimization_prefix_state x (ψ m) (i.1 + 1))) atTop :=
-          lowerSemicontinuous_value_le_liminf_along_sequence F hclosed hnext
+          lowerSemicontinuous_value_le_liminf_along_sequence_theorem_14_5 F hclosed hnext
         _ ≤
             Filter.liminf
               (fun m ↦ F (Function.update (alternating_minimization_prefix_state x (ψ m) i.1) i z))
@@ -361,7 +361,7 @@ omit [InnerProductSpace ℝ ((i : Fin p) → Ei i)] in
 subproblem, continuity and the objective squeeze identify its objective value with `F xBar`. -/
 lemma prefix_state_limit_value_eq_cluster_value
     (x : ℕ → (i : Fin p) → Ei i)
-    (hmodel : IsAlternatingMinimizationCompositeModel f.toEReal g)
+    (hmodel : IsAlternatingMinimizationCompositeModel f.toExtendedReal g)
     (htraj : is_alternating_minimization_trajectory F x)
     {ψ : ℕ → ℕ} (hψ : StrictMono ψ) (i : Fin p)
     {xBar y : (j : Fin p) → Ei j}
@@ -449,7 +449,7 @@ of the cluster point whose active block lies in the fixed-base argmin set and at
 objective value. -/
 lemma prefix_state_limit_update_argmin_and_value
     (x : ℕ → (i : Fin p) → Ei i)
-    (hmodel : IsAlternatingMinimizationCompositeModel f.toEReal g)
+    (hmodel : IsAlternatingMinimizationCompositeModel f.toExtendedReal g)
     (htraj : is_alternating_minimization_trajectory F x)
     {ψ : ℕ → ℕ} (hψ : StrictMono ψ) (i : Fin p)
     {xBar y : (j : Fin p) → Ei j}
@@ -544,7 +544,7 @@ lemma isMinOn_univ_of_isMinOn_effective_domain_composite
       exact le_antisymm le_top (not_lt.mp (by simpa [effective_domain] using hy))
     have hobjective_top : F y = ⊤ := by
       rw [composite_model_objective_apply, hpenalty_top]
-      exact EReal.add_top_of_ne_bot (by simp [Function.toEReal])
+      exact EReal.add_top_of_ne_bot (by simp [Function.toExtendedReal])
     -- Outside the effective domain, the composite objective is automatically `⊤`.
     rw [hobjective_top]
     exact le_top
@@ -558,7 +558,7 @@ omit [InnerProductSpace ℝ ((i : Fin p) → Ei i)] [FiniteDimensional ℝ ((i :
 the composite objective because the whole trajectory stays in the closed initial sublevel. -/
 lemma cluster_point_mem_effective_domain_of_initial_sublevel
     (x : ℕ → (i : Fin p) → Ei i)
-    (hmodel : IsAlternatingMinimizationCompositeModel f.toEReal g)
+    (hmodel : IsAlternatingMinimizationCompositeModel f.toExtendedReal g)
     (htraj : is_alternating_minimization_trajectory F x)
     {xBar : (i : Fin p) → Ei i}
     (hxBar : MapClusterPt xBar atTop x) :
@@ -586,7 +586,7 @@ strictly monotone subsequence admit a further convergent refinement inside the i
 sublevel. -/
 lemma prefix_state_stage_succ_has_convergent_refinement
     (x : ℕ → (i : Fin p) → Ei i)
-    (hmodel : IsAlternatingMinimizationCompositeModel f.toEReal g)
+    (hmodel : IsAlternatingMinimizationCompositeModel f.toExtendedReal g)
     (htraj : is_alternating_minimization_trajectory F x)
     (hinitial : Bornology.IsBounded {y | F y ≤ F (x 0)})
     {ψ : ℕ → ℕ} (_hψ : StrictMono ψ) {n : ℕ} (hn : n < p) :
@@ -636,7 +636,7 @@ omit [InnerProductSpace ℝ ((i : Fin p) → Ei i)] in
 cluster point and records block-`n` argmin membership at that cluster point. -/
 lemma prefix_state_stage_succ_refine_to_cluster_point
     (x : ℕ → (i : Fin p) → Ei i)
-    (hmodel : IsAlternatingMinimizationCompositeModel f.toEReal g)
+    (hmodel : IsAlternatingMinimizationCompositeModel f.toExtendedReal g)
     (hinitial : Bornology.IsBounded {y | F y ≤ F (x 0)})
     (hunique :
       ∀ xBar ∈ effective_domain F, ∀ i : Fin p,
@@ -696,7 +696,7 @@ keeping both the iterate subsequence and the stage-`n` prefix states convergent 
 cluster point while accumulating the already-certified block argmin facts. -/
 lemma prefix_state_stage_induction_invariant
     (x : ℕ → (i : Fin p) → Ei i)
-    (hmodel : IsAlternatingMinimizationCompositeModel f.toEReal g)
+    (hmodel : IsAlternatingMinimizationCompositeModel f.toExtendedReal g)
     (hinitial : Bornology.IsBounded {y | F y ≤ F (x 0)})
     (hunique :
       ∀ xBar ∈ effective_domain F, ∀ i : Fin p,
@@ -739,7 +739,7 @@ omit [InnerProductSpace ℝ ((i : Fin p) → Ei i)] in
 the bounded initial sublevel is a coordinate-wise minimum of the composite objective. -/
 lemma cluster_point_coordinatewise_minimum_of_initial_sublevel
     (x : ℕ → (i : Fin p) → Ei i)
-    (hmodel : IsAlternatingMinimizationCompositeModel f.toEReal g)
+    (hmodel : IsAlternatingMinimizationCompositeModel f.toExtendedReal g)
     (hinitial : Bornology.IsBounded {y | F y ≤ F (x 0)})
     (hunique :
       ∀ xBar ∈ effective_domain F, ∀ i : Fin p,
@@ -765,23 +765,23 @@ by
 omit [InnerProductSpace ℝ ((i : Fin p) → Ei i)]
   [FiniteDimensional ℝ ((i : Fin p) → Ei i)] in
 /-- Helper for Theorem 14.5: in the canonical pointwise product module, the convex lift
-`f.toEReal` is exactly the Chapter 9 convexity owner associated with the source hypothesis
+`f.toExtendedReal` is exactly the Chapter 9 convexity owner associated with the source hypothesis
 `ConvexOn ℝ Set.univ f`. -/
-lemma toEReal_is_convex_function_pi_module
+lemma toExtendedReal_is_convex_function_pi_module
     (hf_convex : ConvexOn ℝ Set.univ f) :
     @is_convex_function ((i : Fin p) → Ei i) Pi.addCommMonoid (Pi.module (Fin p) Ei ℝ)
-      f.toEReal := by
+      f.toExtendedReal := by
   -- Freeze the canonical pointwise product module so the Chapter 9 convexity bridge applies
   -- without any transport across the later Chapter 3 product-module choice.
   letI : Module ℝ ((i : Fin p) → Ei i) := Pi.module (Fin p) Ei ℝ
-  simpa using (Function.toEReal_isConvexFunction hf_convex)
+  simpa using (Function.toExtendedReal_isConvexFunction hf_convex)
 
 omit [InnerProductSpace ℝ ((i : Fin p) → Ei i)]
   [FiniteDimensional ℝ ((i : Fin p) → Ei i)] in
 /-- Helper for Theorem 14.5: in the canonical pointwise product module, blockwise convexity
 aggregates to convexity of the separable regularizer `x ↦ ∑ i, g_i(x_i)`. -/
 lemma separableSum_is_convex_function_pi_module
-    (hmodel : IsAlternatingMinimizationCompositeModel f.toEReal g) :
+    (hmodel : IsAlternatingMinimizationCompositeModel f.toExtendedReal g) :
     @is_convex_function ((i : Fin p) → Ei i) Pi.addCommMonoid (Pi.module (Fin p) Ei ℝ)
       (separableSum g) := by
   -- Apply the Chapter 11 separable-sum convexity theorem in the canonical pointwise product
@@ -795,18 +795,18 @@ omit [InnerProductSpace ℝ ((i : Fin p) → Ei i)]
   [FiniteDimensional ℝ ((i : Fin p) → Ei i)] in
 /-- Helper for Theorem 14.5: a globally convex real-valued smooth term remains convex after
 coercion to `EReal` in the product Hilbert module used by the Chapter 3 bridge. -/
-lemma toEReal_is_convex_function_of_univ_convexOn
+lemma toExtendedReal_is_convex_function_of_univ_convexOn
     (hf_convex : ConvexOn ℝ Set.univ f) :
-    is_convex_function f.toEReal := by
+    is_convex_function f.toExtendedReal := by
   -- The Chapter 9 convexity bridge applies directly in the current Hilbert product module.
-  simpa using Function.toEReal_isConvexFunction hf_convex
+  simpa using Function.toExtendedReal_isConvexFunction hf_convex
 
 omit [InnerProductSpace ℝ ((i : Fin p) → Ei i)]
   [FiniteDimensional ℝ ((i : Fin p) → Ei i)] in
 /-- Helper for Theorem 14.5: the blockwise convexity assumptions imply convexity of the
 block-separable regularizer in the product Hilbert module used by the Chapter 3 bridge. -/
 lemma separableSum_is_convex_function_of_block_convex
-    (hmodel : IsAlternatingMinimizationCompositeModel f.toEReal g) :
+    (hmodel : IsAlternatingMinimizationCompositeModel f.toExtendedReal g) :
     is_convex_function (separableSum g) := by
   -- The Chapter 11 separable-sum convexity theorem also works directly in the ambient product
   -- Hilbert module.
@@ -845,7 +845,7 @@ lemma product_module_is_convex_function_transport
 composite objective is a global minimum. -/
 lemma coordinatewise_minimum_is_global_minimum
     {xBar : (i : Fin p) → Ei i}
-    (hmodel : IsAlternatingMinimizationCompositeModel f.toEReal g)
+    (hmodel : IsAlternatingMinimizationCompositeModel f.toExtendedReal g)
     (hf_convex : ConvexOn ℝ Set.univ f)
     (hcoord : is_coordinatewise_minimum F xBar) :
     IsMinOn F Set.univ xBar := by
@@ -856,7 +856,7 @@ lemma coordinatewise_minimum_is_global_minimum
   -- Route correction: close through the canonical Chapter 3 equivalence
   -- `coordinatewise minimum -> stationary -> global minimum on dom(g)`.
   have hstat :
-      is_stationary_point f.toEReal (separableSum g) xBar :=
+      is_stationary_point f.toExtendedReal (separableSum g) xBar :=
     is_stationary_point_of_coordinatewise_minimum hmodel hcoord
   have hxBar :
       xBar ∈ effective_domain (separableSum g) :=
@@ -870,9 +870,9 @@ lemma coordinatewise_minimum_is_global_minimum
   have hf_convex_ereal :
       @is_convex_function ((i : Fin p) → Ei i) Pi.addCommMonoid
         ((inferInstance : InnerProductSpace ℝ ((i : Fin p) → Ei i)).toNormedSpace.toModule)
-        f.toEReal :=
+        f.toExtendedReal :=
     product_module_is_convex_function_transport (p := p) (Ei := Ei)
-      (toEReal_is_convex_function_of_univ_convexOn (f := f) hf_convex)
+      (toExtendedReal_is_convex_function_of_univ_convexOn (f := f) hf_convex)
   have hmin_dom :
       IsMinOn F (effective_domain (separableSum g)) xBar := by
     -- Theorem 3.35 converts stationarity to global optimality on the effective domain.
@@ -895,7 +895,7 @@ end StationaryOptimalityBridge
 instances locally and then reuse the established coordinatewise-minimum-to-global-minimum lemma. -/
 lemma coordinatewise_minimum_is_global_minimum_outer
     {xBar : (i : Fin p) → Ei i}
-    (hmodel : IsAlternatingMinimizationCompositeModel f.toEReal g)
+    (hmodel : IsAlternatingMinimizationCompositeModel f.toExtendedReal g)
     (hf_convex : ConvexOn ℝ Set.univ f)
     (hcoord : is_coordinatewise_minimum F xBar) :
     IsMinOn F Set.univ xBar := by
@@ -908,7 +908,7 @@ lemma coordinatewise_minimum_is_global_minimum_outer
 -- 14 trajectory and composite-model owners with the per-block uniqueness hypothesis to obtain the
 -- coordinatewise minimality bridge of Theorem 14.3. Then apply Lemma 14.2 and Theorem 3.35 in
 -- the finite-dimensional product Hilbert setting; the differentiability input needed there is
--- derived canonically from `hmodel`, since `f.toEReal` has full effective domain.
+-- derived canonically from `hmodel`, since `f.toExtendedReal` has full effective domain.
 
 /-- Theorem 14.5: under Assumption 14.6 for the composite objective
 `F(x) = f(x) + ∑ i, g_i(x_i)`, if `f` is convex and the initial sublevel set
@@ -917,10 +917,10 @@ and the product space carries the finite-dimensional Hilbert structure required 
 stationarity-to-optimality bridge, then every alternating-minimization trajectory is bounded and
 each of its limit points is a global minimizer of `F`. The smooth regularity required by the
 optimality argument is supplied canonically by
-`IsAlternatingMinimizationCompositeModel f.toEReal g`. -/
+`IsAlternatingMinimizationCompositeModel f.toExtendedReal g`. -/
 theorem alternating_minimization_bounded_and_cluster_points_optimal
     (x : ℕ → (i : Fin p) → Ei i)
-    (hmodel : IsAlternatingMinimizationCompositeModel f.toEReal g)
+    (hmodel : IsAlternatingMinimizationCompositeModel f.toExtendedReal g)
     (hf_convex : ConvexOn ℝ Set.univ f)
     (hinitial : Bornology.IsBounded {y | F y ≤ F (x 0)})
     (hunique :

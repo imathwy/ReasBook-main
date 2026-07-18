@@ -17,7 +17,7 @@ local notation "E" => EuclideanSpace ℝ ι
 /- Proposition 6.48 is `source-facing`: the textbook statement computes the proximal operator of
 the `ℓ∞` norm on a finite Euclidean product, specialized in the source to `ℝ^n`, through the
 Euclidean projection onto the `ℓ¹` unit ball. Domain sampling points to the existing chapter
-owners `prox[...]`, `P[...]`, and `B₁[α]`; Proposition 6.48 is therefore a `source-facing`
+owners `prox[...]`, `Proj[...]`, and `B₁[α]`; Proposition 6.48 is therefore a `source-facing`
 finite-product specialization of the support-function proximal formula from Theorem 6.46 rather
 than a place to introduce a second coordinate-level projection or ball wrapper. On the coordinate
 model `y.ofLp : ι → ℝ`, the ambient norm is already the canonical `ℓ∞` norm, so the public
@@ -75,7 +75,7 @@ lemma coordinate_sign_vector_norm_le_one (y : E) :
   exact_mod_cast hnn
 
 -- Proof sketch: use Example 6.47's dual-ball criterion. If `y` lies in the dual ball of the
--- coordinate `ℓ∞` seminorm, test against the coordinate sign vector to recover `‖y‖₁ ≤ 1`.
+-- coordinate `ℓ∞` seminorm, test against the coordinate sign vector to recover `l1n[y] ≤ 1`.
 -- Conversely, Hölder's `ℓ¹`/`ℓ∞` estimate bounds every pairing by `‖z.ofLp‖`.
 /-- Helper for Proposition 6.48: the dual unit ball of the coordinate `ℓ∞` seminorm is exactly the
 closed `ℓ¹` unit ball `B₁[(1 : ℝ)]`. -/
@@ -90,7 +90,7 @@ theorem coordinateLinftyDualUnitBall_eq_l1ClosedUnitBall :
       simpa [z] using coordinate_sign_vector_norm_le_one (ι := ι) y
     have hz_norm : ‖z.ofLp‖ ≤ 1 := by
       simpa using hz_norm'
-    have hsum : inner ℝ y z = ‖y‖₁ := by
+    have hsum : inner ℝ y z = l1n[y] := by
       -- Pairing with the coordinate sign vector adds up the absolute values of the coordinates.
       calc
         inner ℝ y z = ∑ i, y.ofLp i * Real.sign (y.ofLp i) := by
@@ -100,10 +100,10 @@ theorem coordinateLinftyDualUnitBall_eq_l1ClosedUnitBall :
           refine Finset.sum_congr rfl ?_
           intro i hi
           exact real_mul_sign_eq_abs (y.ofLp i)
-        _ = ‖y‖₁ := by
+        _ = l1n[y] := by
           symm
           simp [EuclideanSpace.l1Norm_eq_sum_abs]
-    have hbound : ‖y‖₁ ≤ ‖z.ofLp‖ := by
+    have hbound : l1n[y] ≤ ‖z.ofLp‖ := by
       simpa [coordinateLinftySeminorm_apply, hsum] using hy z
     exact hbound.trans hz_norm
   · intro hy z
@@ -130,10 +130,10 @@ theorem coordinateLinftyDualUnitBall_eq_l1ClosedUnitBall :
       _ ≤ ∑ i, |y.ofLp i| * ‖z.ofLp‖ := by
         refine Finset.sum_le_sum fun i hi ↦ ?_
         exact mul_le_mul_of_nonneg_left (hcoord i) (abs_nonneg _)
-      _ = ‖y‖₁ * ‖z.ofLp‖ := by
+      _ = l1n[y] * ‖z.ofLp‖ := by
         rw [← Finset.sum_mul]
         simp [EuclideanSpace.l1Norm_eq_sum_abs]
-      _ = ‖z.ofLp‖ * ‖y‖₁ := by rw [mul_comm]
+      _ = ‖z.ofLp‖ * l1n[y] := by rw [mul_comm]
       _ ≤ ‖z.ofLp‖ * 1 := by
         exact mul_le_mul_of_nonneg_left hy (norm_nonneg _)
       _ = ‖z.ofLp‖ := by ring
@@ -155,12 +155,12 @@ lemma coordinateLinftyPenalty_eq_alphaNormPenalty (lam : ℝ) :
 `ℝ^n` when `ι = Fin n`, the proximal mapping of the scaled `ℓ∞` norm
 `y ↦ λ ‖y.ofLp‖` is the affine image of the projection set onto the closed `ℓ¹` unit ball
 `B₁[(1 : ℝ)]`. This is the chapter's set-valued rendering of the textbook identity
-`prox_{λ ‖·‖∞}(x) = x - λ P_{B_{‖·‖₁}[0,1]}(x / λ)`. -/
+`prox_{λ ‖·‖∞}(x) = x - λ P_{B_{l1n[·]}[0,1]}(x / λ)`. -/
 theorem prox_linftyNorm_eq_sub_smul_projection_mapping_l1ClosedUnitBall
     (lam : ℝ) (hlam : 0 < lam) (x : E) :
     prox[fun y : E ↦ ((lam * ‖y.ofLp‖ : ℝ) : EReal)] x =
       Set.image (fun u : E ↦ x - lam • u)
-        (P[B₁[(1 : ℝ)]] (lam⁻¹ • x)) := by
+        (Proj[B₁[(1 : ℝ)]] (lam⁻¹ • x)) := by
   -- Rewrite the target penalty through Example 6.47's generic seminorm owner.
   rw [coordinateLinftyPenalty_eq_alphaNormPenalty]
   -- Apply the generic prox formula for a norm and identify its dual unit ball with `B₁[1]`.

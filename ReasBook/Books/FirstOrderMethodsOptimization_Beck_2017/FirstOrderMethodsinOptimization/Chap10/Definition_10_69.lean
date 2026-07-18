@@ -1,4 +1,5 @@
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap05.Lemma_5_7
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap10.Algorithm_10_68
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap10.Theorem_10_72.Index
 
 -- Declarations for this item will be appended below by the statement pipeline.
@@ -129,7 +130,7 @@ theorem non_euclidean_proximal_gradient_constant_or_backtracking_B5_stepsize_acc
     (htraj : is_non_euclidean_proximal_gradient_trajectory f g ω x L)
     (hrule :
       non_euclidean_proximal_gradient_constant_or_backtracking_B5_stepsize_rule
-        f g ω Lf hω x L)
+        (f := f) (g := g) (ω := ω) (Lf := Lf) hω x L)
     (k : ℕ) :
     non_euclidean_proximal_gradient_backtracking_B5_accepts f g ω (L k) (x k) := by
   rcases hrule with hLf_rule | ⟨s, η, hB5⟩
@@ -195,7 +196,7 @@ theorem non_euclidean_proximal_gradient_upper_model_of_constant_or_backtracking_
     (htraj : is_non_euclidean_proximal_gradient_trajectory f g ω x L)
     (hrule :
       non_euclidean_proximal_gradient_constant_or_backtracking_B5_stepsize_rule
-        f g ω Lf hω x L)
+        (f := f) (g := g) (ω := ω) (Lf := Lf) hω x L)
     (k : ℕ) :
     f (x (k + 1)) ≤
       f (x k) +

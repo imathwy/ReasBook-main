@@ -38,35 +38,42 @@ Primitive data are therefore only the matrix `x` and the imported operator owner
 statements for that owner. -/
 
 /-- The matrix space `ℝ^(m × n)` carries its canonical Frobenius norm. -/
-local instance : NormedAddCommGroup Mmn := Matrix.frobeniusNormedAddCommGroup
+local instance instNormedAddCommGroupMmnProposition12_6 : NormedAddCommGroup Mmn :=
+  Matrix.frobeniusNormedAddCommGroup
 
 /-- Scalar multiplication on `ℝ^(m × n)` is compatible with the Frobenius norm. -/
-local instance : NormedSpace ℝ Mmn := Matrix.frobeniusNormedSpace
+local instance instNormedSpaceMmnProposition12_6 : NormedSpace ℝ Mmn :=
+  Matrix.frobeniusNormedSpace
 
 /-- The horizontal-difference matrix space carries its canonical Frobenius norm. -/
-local instance : NormedAddCommGroup Hmn := Matrix.frobeniusNormedAddCommGroup
+local instance instNormedAddCommGroupHmnProposition12_6 : NormedAddCommGroup Hmn :=
+  Matrix.frobeniusNormedAddCommGroup
 
 /-- Scalar multiplication on the horizontal-difference matrix space is compatible with the
 Frobenius norm. -/
-local instance : NormedSpace ℝ Hmn := Matrix.frobeniusNormedSpace
+local instance instNormedSpaceHmnProposition12_6 : NormedSpace ℝ Hmn :=
+  Matrix.frobeniusNormedSpace
 
 /-- The vertical-difference matrix space carries its canonical Frobenius norm. -/
-local instance : NormedAddCommGroup Vmn := Matrix.frobeniusNormedAddCommGroup
+local instance instNormedAddCommGroupVmnProposition12_6 : NormedAddCommGroup Vmn :=
+  Matrix.frobeniusNormedAddCommGroup
 
 /-- Scalar multiplication on the vertical-difference matrix space is compatible with the
 Frobenius norm. -/
-local instance : NormedSpace ℝ Vmn := Matrix.frobeniusNormedSpace
+local instance instNormedSpaceVmnProposition12_6 : NormedSpace ℝ Vmn :=
+  Matrix.frobeniusNormedSpace
 
 /-- The codomain `WithLp 2 (Hmn × Vmn)` is measured using the Frobenius norms on the horizontal and
 vertical difference spaces. -/
-local instance : NormedAddCommGroup TVSpace := inferInstance
+local instance instNormedAddCommGroupTVSpaceProposition12_6 : NormedAddCommGroup TVSpace :=
+  inferInstance
 
 /-- Scalar multiplication on the `L²` product of horizontal and vertical difference matrices is
 compatible with those Frobenius norms. -/
-local instance : NormedSpace ℝ TVSpace := inferInstance
+local instance instNormedSpaceTVSpaceProposition12_6 : NormedSpace ℝ TVSpace := inferInstance
 
 /-- Addition on the `L²` product is continuous for its induced product topology. -/
-local instance : ContinuousAdd TVSpace := ⟨by
+local instance instContinuousAddTVSpaceProposition12_6 : ContinuousAdd TVSpace := ⟨by
   change Continuous (fun p : TVSpace × TVSpace =>
     WithLp.toLp 2 (WithLp.ofLp p.1 + WithLp.ofLp p.2))
   have hfst : Continuous (fun p : TVSpace × TVSpace => WithLp.ofLp p.1) :=
@@ -77,16 +84,16 @@ local instance : ContinuousAdd TVSpace := ⟨by
     (Continuous.add hfst hsnd)⟩
 
 /-- Negation on the `L²` product is continuous for its induced product topology. -/
-local instance : ContinuousNeg TVSpace := ⟨by
+local instance instContinuousNegTVSpaceProposition12_6 : ContinuousNeg TVSpace := ⟨by
   change Continuous (fun x : TVSpace => WithLp.toLp 2 (-WithLp.ofLp x))
   exact (WithLp.prod_continuous_toLp (p := 2) (α := Hmn) (β := Vmn)).comp
     (continuous_neg.comp
       (WithLp.prod_continuous_ofLp (p := 2) (α := Hmn) (β := Vmn)))⟩
 
-local instance : IsTopologicalAddGroup TVSpace := {}
+local instance instIsTopologicalAddGroupTVSpaceProposition12_6 : IsTopologicalAddGroup TVSpace := {}
 
 /-- Scalar multiplication is continuous for the induced `L²` product topology. -/
-local instance : ContinuousSMul ℝ TVSpace := ⟨by
+local instance instContinuousSMulTVSpaceProposition12_6 : ContinuousSMul ℝ TVSpace := ⟨by
   change Continuous (fun p : ℝ × TVSpace => WithLp.toLp 2 (p.1 • WithLp.ofLp p.2))
   have hx : Continuous (fun p : ℝ × TVSpace => WithLp.ofLp p.2) :=
     (WithLp.prod_continuous_ofLp (p := 2) (α := Hmn) (β := Vmn)).comp continuous_snd
@@ -94,7 +101,8 @@ local instance : ContinuousSMul ℝ TVSpace := ⟨by
     (Continuous.smul continuous_fst hx)⟩
 
 /-- The operator norm specialized to the local Frobenius/`L²` structures. -/
-local instance : Norm (Mmn →L[ℝ] TVSpace) := ContinuousLinearMap.hasOpNorm
+local instance instNormContinuousLinearMapMmnTVSpaceProposition12_6 :
+    Norm (Mmn →L[ℝ] TVSpace) := ContinuousLinearMap.hasOpNorm
 
 /-- Helper for Proposition 12.6: squaring the Frobenius norm of a real matrix recovers the sum of
 the squares of its entries. -/

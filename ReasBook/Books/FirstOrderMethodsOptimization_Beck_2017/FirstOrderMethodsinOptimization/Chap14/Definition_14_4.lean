@@ -11,7 +11,7 @@ following owner split.
 - `core/canonical`: `convexOn_univ_norm` and `ConvexOn.comp_linearMap` for absolute values of
   linear forms;
 - `core/canonical`: `ConvexOn.add` for the sum; and
-- `bridge/view`: the Chapter 9 coercion `Function.toEReal` for downstream extended-real uses of the
+- `bridge/view`: the Chapter 9 coercion `Function.toExtendedReal` for downstream extended-real uses of the
   same objective.
 
 The primitive data are only the displayed real-valued objective itself. Its evaluation formula,

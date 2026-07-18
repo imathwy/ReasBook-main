@@ -16,15 +16,15 @@ This file keeps only the source-facing variational-inequality restatement. -/
 recall effective_domain
 recall IsProperExtendedRealFunction
 recall is_convex_function
-recall subdifferential
+recall extendedRealSubdifferential
 recall normal_cone
 recall mem_normal_cone
 recall isMinOn_iff_exists_subgradient_neg_mem_normal_cone
 
 -- Proof sketch: replace the constrained problem by the extended-real objective obtained by adding
 -- the indicator of `C`, so minimization on `C` becomes unconstrained minimization on `E`. Under the
--- qualification `ri(dom f) ∩ ri(C) ≠ ∅`, apply the convex subdifferential sum rule together with
--- the identification of the indicator subdifferential with the normal cone. Fermat's criterion for
+-- qualification `ri(dom f) ∩ ri(C) ≠ ∅`, apply the convex extendedRealSubdifferential sum rule together with
+-- the identification of the indicator extendedRealSubdifferential with the normal cone. Fermat's criterion for
 -- the constrained objective then gives `0 ∈ ∂f(xStar) + N_C(xStar)`, which is equivalent to the
 -- existence of a subgradient whose pairing with every feasible displacement `x - xStar` is
 -- nonnegative, and the converse runs the same implications in reverse.
@@ -39,7 +39,7 @@ theorem isMinOn_iff_exists_subgradient_nonneg_on_convex_set
     {xStar : E} (hxStar : xStar ∈ C) :
     IsMinOn f C xStar ↔
       ∃ g : Module.Dual ℝ E,
-        g ∈ subdifferential f xStar ∧ ∀ x ∈ C, 0 ≤ g (x - xStar) := by
+        g ∈ extendedRealSubdifferential f xStar ∧ ∀ x ∈ C, 0 ≤ g (x - xStar) := by
   rw [isMinOn_iff_exists_subgradient_neg_mem_normal_cone (f := f) hf.ne_bot hconv hC hri hxStar]
   constructor
   · rintro ⟨g, hg, hgcone⟩

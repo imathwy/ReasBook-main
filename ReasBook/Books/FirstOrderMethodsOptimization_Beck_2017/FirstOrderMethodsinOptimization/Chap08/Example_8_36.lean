@@ -16,7 +16,7 @@ section SumObjective
 variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
 
 /-- Helper for Example 8.36: a nonempty feasible set contained in the interior of every effective
-domain yields the relative-interior qualification needed for the finite-sum subdifferential rule.
+domain yields the relative-interior qualification needed for the finite-sum extendedRealSubdifferential rule.
 -/
 lemma finset_sum_intrinsicInterior_nonempty_of_nonempty_subset_interior
     {m : ℕ} (f : Fin m → E → EReal) (C : Set E)

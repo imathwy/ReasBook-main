@@ -95,7 +95,7 @@ lemma cbpg_inner_stage_mem_effective_domain
 
 /-- Helper for Theorem 11.7: every outer CBPG iterate remains in the effective domain of the
 block-separable regularizer. -/
-lemma cbpg_outer_iterate_mem_effective_domain
+lemma cbpg_outer_iterate_mem_effective_domain_theorem_11_7
     (k : ℕ) :
     x[k] ∈ effective_domain (separableSum g) := by
   simpa using
@@ -103,11 +103,12 @@ lemma cbpg_outer_iterate_mem_effective_domain
       (hconvex := hconvex) (x0 := x0) k 0 (Nat.zero_le p)
 
 /-- Helper for Theorem 11.7: every CBPG objective value along the outer sequence is finite. -/
-lemma cbpg_objective_value_finite
+lemma cbpg_outer_objective_value_finite
     (k : ℕ) :
     F x[k] ≠ ⊤ ∧ F x[k] ≠ ⊥ := by
   have hxg : x[k] ∈ effective_domain (separableSum g) :=
-    cbpg_outer_iterate_mem_effective_domain (hconvex := hconvex) (x0 := x0) k
+    cbpg_outer_iterate_mem_effective_domain_theorem_11_7
+      (hconvex := hconvex) (x0 := x0) k
   have hxf : x[k] ∈ effective_domain f := by
     -- The regularizer domain lies in `interior (effective_domain f)`, hence `f` is finite there.
     let hbase := hconvex.toBlockProximalGradientAssumptions
@@ -158,14 +159,14 @@ above. -/
 lemma cbpg_objective_value_ne_top
     (k : ℕ) :
     F x[k] ≠ ⊤ := by
-  exact (cbpg_objective_value_finite (hconvex := hconvex) (x0 := x0) k).1
+  exact (cbpg_outer_objective_value_finite (hconvex := hconvex) (x0 := x0) k).1
 
 /-- Helper for Theorem 11.7: every CBPG objective value along the outer sequence is finite from
 below. -/
 lemma cbpg_objective_value_ne_bot
     (k : ℕ) :
     F x[k] ≠ ⊥ := by
-  exact (cbpg_objective_value_finite (hconvex := hconvex) (x0 := x0) k).2
+  exact (cbpg_outer_objective_value_finite (hconvex := hconvex) (x0 := x0) k).2
 
 /-- Helper for Theorem 11.7: the CBPG objective gap sequence is nonnegative. -/
 lemma cbpg_objective_gap_nonneg
@@ -233,8 +234,9 @@ lemma cbpg_objective_gap_step_recurrence
   have hstep_realE :
       (((cbpg_quadratic_gap_constant Lf Li Rα * (Δ[k + 1] ^ (2 : ℕ)) : ℝ) : EReal)) ≤
         ((((F x[k]).toReal - (F x[k + 1]).toReal : ℝ)) : EReal) := by
-    simpa [cbpg_objective_step_decrease_real_form
-      (hconvex := hconvex) (x0 := x0) k] using hstepE
+    rw [cbpg_objective_step_decrease_real_form
+      (hconvex := hconvex) (x0 := x0) k] at hstepE
+    exact hstepE
   have hstep_real :
       (F x[k]).toReal - (F x[k + 1]).toReal ≥
         cbpg_quadratic_gap_constant Lf Li Rα * (Δ[k + 1] ^ (2 : ℕ)) := by

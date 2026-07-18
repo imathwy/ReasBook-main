@@ -44,7 +44,7 @@ section
 
 variable {f : E → ℝ} {g : E → EReal} {Lf : NNReal}
 
-local notation "F" => composite_model_objective f.toEReal g
+local notation "F" => composite_model_objective f.toExtendedReal g
 
 /-- Helper for Lemma 13.7: any minimizer of the generalized conditional-gradient linearized
 subproblem is finite for `g`, hence belongs to `effective_domain g`. -/
@@ -127,7 +127,7 @@ lemma generalized_conditional_gradient_segment_convex_bound
 /-- Lemma 13.7: if `f` is `L_f`-smooth on `dom(g)`, `g` is convex, `x ∈ dom(g)`, `p` minimizes
 the linearized subproblem at `x`, and `t ∈ [0, 1]`, then the composite objective satisfies
 `F(x + t (p - x)) ≤ F(x) - t S(x) + (t^2 L_f / 2) ‖p - x‖^2`. Here
-`F = composite_model_objective f.toEReal g` and
+`F = composite_model_objective f.toExtendedReal g` and
 `S(x) = S[f, g](x)`. The chosen-point formula
 `S[f, g](x) = generalized_conditional_gradient_gap_objective f g x p` follows from `hp` by
 Text 13.2. The textbook assumption

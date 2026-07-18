@@ -40,7 +40,7 @@ theorem negative_entropy_on_stdSimplex_is_one_strongly_convex_l1 (n : ℕ) :
       (fun x : E₁ ↦ coordinatewise_negative_entropy (ofLp x)) := sorry
 
 -- Proof sketch: use the same Hessian formula as in the `ℓ₁` statement and combine the tangent
--- lower bound by `‖h‖₁²` with the norm comparison `‖h‖₂ ≤ ‖h‖₁`. This yields the same modulus `1`
+-- lower bound by `l1n[h]²` with the norm comparison `‖h‖₂ ≤ l1n[h]`. This yields the same modulus `1`
 -- for the Euclidean norm on the simplex.
 /-- Proposition 5.14 (2): the negative entropy on the unit simplex is `1`-strongly convex with
 respect to the `l_2` norm, stated in the canonical real-valued form on the simplex itself. -/

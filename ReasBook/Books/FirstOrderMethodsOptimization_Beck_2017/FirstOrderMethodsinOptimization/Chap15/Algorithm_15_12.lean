@@ -98,12 +98,12 @@ local notation "E" => EuclideanSpace ℝ ι
 /-- The shifted `ℓ¹` regularizer centered at `b`, viewed as the canonical `EReal`-valued owner for
 the linear-composite ADMM `z`-subproblem. -/
 def admm_linear_composite_shifted_l1_regularizer (b : E) : E → EReal :=
-  fun z ↦ ((‖z - b‖₁ : ℝ) : EReal)
+  fun z ↦ ((l1n[z - b] : ℝ) : EReal)
 
 /-- Evaluating the shifted `ℓ¹` regularizer at `z` gives the translated Euclidean `ℓ¹` norm
-`‖z - b‖₁`. -/
+`l1n[z - b]`. -/
 @[simp] theorem admm_linear_composite_shifted_l1_regularizer_apply (b z : E) :
-    admm_linear_composite_shifted_l1_regularizer b z = ((‖z - b‖₁ : ℝ) : EReal) :=
+    admm_linear_composite_shifted_l1_regularizer b z = ((l1n[z - b] : ℝ) : EReal) :=
   rfl
 
 /-- The shared shifted `ℓ¹` soft-threshold `z`-update for the linear-composite split
@@ -125,7 +125,7 @@ formula for `z^(k+1)`. -/
   rfl
 
 /-- The explicit thresholded `z`-update in Algorithm 15.12 is the canonical proximal point of the
-shifted `ℓ¹` regularizer `z ↦ ‖z - b‖₁` at the ADMM center
+shifted `ℓ¹` regularizer `z ↦ l1n[z - b]` at the ADMM center
 `A x^(k+1) + (1 / ρ) y₁^k`. -/
 theorem admm_linear_composite_shifted_l1_z_update_mem_prox
     (ρ : PosReal)
@@ -137,7 +137,7 @@ theorem admm_linear_composite_shifted_l1_z_update_mem_prox
       prox[((((1 / ρ : PosReal) : EReal) • admm_linear_composite_shifted_l1_regularizer b))]
         (A xNext + (1 / (ρ : ℝ)) • yk) := by
   let x : E := A xNext + (1 / (ρ : ℝ)) • yk
-  let g : E → EReal := fun z ↦ (((1 / (ρ : ℝ)) * ‖z‖₁ : ℝ) : EReal)
+  let g : E → EReal := fun z ↦ (((1 / (ρ : ℝ)) * l1n[z] : ℝ) : EReal)
   have hshift :
       ((((1 / ρ : PosReal) : EReal) • admm_linear_composite_shifted_l1_regularizer b)) =
         fun z : E ↦ g (z - b) := by

@@ -10,21 +10,21 @@ section
 
 variable {m n : ℕ}
 
-/- Proposition 3.30 is a `bridge/view` item in the chapter's max-affine subdifferential API. The
+/- Proposition 3.30 is a `bridge/view` item in the chapter's max-affine extendedRealSubdifferential API. The
 source-facing statement is the active-face weight criterion for optimality, while the matrix
 version below is only a coordinate rewrite of the same condition using the owner matrix action
 `Aᵀ *ᵥ weights`. -/
 
 /- Proposition 3.30: for the max-affine function
-`f(x) = max_i (a_i^T x + b_i)` on `ℝ^n`, the vector-side subdifferential at `x` is exactly the
+`f(x) = max_i (a_i^T x + b_i)` on `ℝ^n`, the vector-side extendedRealSubdifferential at `x` is exactly the
 set of convex combinations of the active slope vectors `a_i`, equivalently the image of the active
 face of the standard simplex under the barycentric combination map. -/
 recall isMinOn_univ_iff_zero_mem_subdifferentialAt
 recall subdifferentialAt_piecewiseLinearMax_eq_image_activeCoordinateFace
 
 -- Proof sketch: a point `x` is a global minimizer exactly when the zero vector belongs to the
--- vector-side subdifferential of the max-affine objective at `x`. Then specialize the recalled
--- max-affine subdifferential formula at `g = 0`, which turns membership of the subdifferential
+-- vector-side extendedRealSubdifferential of the max-affine objective at `x`. Then specialize the recalled
+-- max-affine extendedRealSubdifferential formula at `g = 0`, which turns membership of the extendedRealSubdifferential
 -- into the existence of simplex weights in the active coordinate face of the affine-value vector
 -- whose weighted sum of active slopes is zero.
 /-- A point `x` minimizes the max-affine objective globally if and only if there are simplex

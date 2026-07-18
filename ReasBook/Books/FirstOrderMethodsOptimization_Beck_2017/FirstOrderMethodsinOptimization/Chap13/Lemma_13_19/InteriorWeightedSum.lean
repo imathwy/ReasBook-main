@@ -1,4 +1,5 @@
 import Mathlib
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap13.Assumption_13_18
 
 -- Theorem-local interior-geometry helper for Lemma 13.19.
 
@@ -7,11 +8,12 @@ noncomputable section
 open Matrix
 open scoped BigOperators
 
+universe u
+
 section
 
-variable {n l : ℕ}
-
-local notation "E" => Fin n → ℝ
+variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
+variable {l : ℕ}
 
 variable {a : Fin l → E}
 
@@ -88,8 +90,8 @@ theorem strictly_positive_stdSimplex_weighted_sum_mem_interior_convexHull
       _ ≤ ∑ i, w i := by
         exact Finset.sum_le_sum_of_subset_of_nonneg
           (by intro i hi; exact Finset.mem_univ i)
-          (fun i _ _ ↦ stdSimplex.zero_le hw i)
-      _ = 1 := stdSimplex.sum_eq_one hw
+          (fun i _ _ ↦ hw.1 i)
+      _ = 1 := hw.2
   have hcentroid : β • y = ∑ p : s, m • a (σ p) := by
     -- The peeled uniform mass is exactly the centroid contribution of the affine subbasis.
     calc
@@ -109,7 +111,8 @@ theorem strictly_positive_stdSimplex_weighted_sum_mem_interior_convexHull
           congrArg (fun t : ℝ ↦ (β * t) • b p)
             (by
               rw [show y = Finset.univ.centroid ℝ b by rfl]
-              exact b.coord_apply_centroid (Finset.mem_univ p))
+              simpa [Finset.card_univ] using
+                b.coord_apply_centroid (Finset.mem_univ p))
       _ = ∑ p : s, m • b p := by
         apply Finset.sum_congr rfl
         intro p hp
@@ -135,7 +138,7 @@ theorem strictly_positive_stdSimplex_weighted_sum_mem_interior_convexHull
         simpa [t, e] using hi
       rcases hi_range with ⟨p, rfl⟩
       simpa [ρ, hi] using (sub_nonneg.mpr (hm_le p))
-    · simpa [ρ, hi] using stdSimplex.zero_le hw i
+    · simpa [ρ, hi] using hw.1 i
   have hindicator_sum : (∑ i, if i ∈ t then m else 0) = β := by
     -- The indicator sum counts one copy of `m` for each point of the affine subbasis.
     calc
@@ -149,7 +152,7 @@ theorem strictly_positive_stdSimplex_weighted_sum_mem_interior_convexHull
       (∑ i, ρ i) = ∑ i, w i - ∑ i, if i ∈ t then m else 0 := by
         simp [ρ, Finset.sum_sub_distrib]
       _ = 1 - β := by
-        rw [stdSimplex.sum_eq_one hw, hindicator_sum]
+        rw [hw.2, hindicator_sum]
   have hsplit :
       ∑ i, w i • a i = ∑ i, ρ i • a i + β • y := by
     -- Split the original barycentric combination into residual and centroid contributions.

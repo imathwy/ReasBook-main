@@ -25,7 +25,7 @@ recall
 -- extended-real coercions `y ↦ (f i y : EReal)`. Real-valued convexity gives the no-`⊥`
 -- hypothesis and convexity of each coercion, while the effective domain of every summand is all
 -- of `E`, so the relative-interior qualification is automatic.
-/-- Theorem 3.17: for a finite family of real-valued convex functions on `E`, the subdifferential
+/-- Theorem 3.17: for a finite family of real-valued convex functions on `E`, the extendedRealSubdifferential
 at `x` of the pointwise sum is the pointwise sum of the individual subdifferentials at `x`. -/
 theorem subdifferentialAt_finset_sum_eq_sum_subdifferentialAt
     {m : ℕ} (f : Fin m → E → ℝ) (x : E)

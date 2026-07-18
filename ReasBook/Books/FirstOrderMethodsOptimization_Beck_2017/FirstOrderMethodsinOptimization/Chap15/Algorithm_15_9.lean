@@ -95,12 +95,12 @@ theorem l1_regularized_least_squares_admm_v2_w_update_mem_prox
     (ρ : PosReal) (lam : ℝ) (hlam : 0 ≤ lam) (xNext y2k : X) :
     l1_regularized_least_squares_admm_v2_w_update ρ lam xNext y2k ∈
       prox[((((1 / ρ : PosReal) : EReal) •
-        (fun x : X ↦ ((lam * ‖x‖₁ : ℝ) : EReal))))]
+        (fun x : X ↦ ((lam * l1n[x] : ℝ) : EReal))))]
         (xNext + (1 / (ρ : ℝ)) • y2k) := by
   have hscaled :
       ((((1 / ρ : PosReal) : EReal) •
-        (fun x : X ↦ ((lam * ‖x‖₁ : ℝ) : EReal)))) =
-          fun x : X ↦ (((lam / (ρ : ℝ)) * ‖x‖₁ : ℝ) : EReal) := by
+        (fun x : X ↦ ((lam * l1n[x] : ℝ) : EReal)))) =
+          fun x : X ↦ (((lam / (ρ : ℝ)) * l1n[x] : ℝ) : EReal) := by
     funext x
     simp [Pi.smul_apply, smul_eq_mul, EReal.coe_mul, div_eq_mul_inv]
     ac_rfl
@@ -272,7 +272,7 @@ local notation "y1[" k "]" =>
 local notation "y2[" k "]" =>
   l1_regularized_least_squares_admm_v2_y2 A b lam ρ x0 z0 w0 y10 y20 k
 local notation "f1" =>
-  (fun x : X ↦ ((lam * ‖x‖₁ : ℝ) : EReal))
+  (fun x : X ↦ ((lam * l1n[x] : ℝ) : EReal))
 local notation "f2" =>
   (fun z : Y ↦ ((((1 / 2 : ℝ) * ‖z - b‖ ^ (2 : ℕ) : ℝ)) : EReal))
 

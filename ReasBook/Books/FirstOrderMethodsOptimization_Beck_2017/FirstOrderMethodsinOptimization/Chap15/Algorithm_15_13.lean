@@ -29,7 +29,7 @@ Domain sampling against `Algorithm_15_5`, `Algorithm_15_10`, `Algorithm_15_12`, 
 - `bridge/view`: `admm_linear_composite_shifted_l1_z_update` for the shifted `ℓ¹` `z`-step and
   `admm_multiplier_update` for the affine dual step;
 - `source-facing`: only the explicit recursive iterate families specialized to `h₁ = 0` and
-  `h₂(z) = ‖z - b‖₁`, together with the positivity hypothesis
+  `h₂(z) = l1n[z - b]`, together with the positivity hypothesis
   `hL : 0 < adlpmm_linearization_bound (1 : PosReal) A` needed for the source step size
   `1 / L`.
 
@@ -183,7 +183,7 @@ theorem ad_lpmm_l1_residual_y_succ_eq
     admm_multiplier_update_linear_composite_eq]
 
 /-- The explicit Algorithm 15.13 iterates form the canonical linear-composite AD-LPMM trajectory
-for `h₁ = 0` and `h₂(z) = ‖z - b‖₁`, under the source specialization `α = ρ L`
+for `h₁ = 0` and `h₂(z) = l1n[z - b]`, under the source specialization `α = ρ L`
 and `β = ρ`. -/
 theorem ad_lpmm_l1_residual_trajectory
     (A : X →ₗ[ℝ] E) (ρ : PosReal)

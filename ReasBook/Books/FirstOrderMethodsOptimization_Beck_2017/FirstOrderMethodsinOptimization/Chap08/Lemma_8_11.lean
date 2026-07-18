@@ -24,7 +24,7 @@ local notation "x[" k "]" =>
 -- Proof sketch: use nonexpansiveness of the metric projection to compare `‖x[k + 1] - xStar‖`
 -- with `‖x[k] - t_k g_k - xStar‖`, expand the square, and rewrite the cross term with the
 -- subgradient inequality coming from the hypothesis
--- `(toDualMap ℝ E (g k (x[k])) : Module.Dual ℝ E) ∈ subdifferential f (x[k] : E)`. Then use
+-- `(toDualMap ℝ E (g k (x[k])) : Module.Dual ℝ E) ∈ extendedRealSubdifferential f (x[k] : E)`. Then use
 -- `hxStar : xStar ∈ XStar` together with `h_problem.optimal_set_eq` and
 -- `h_problem.optimal_value_isGLB` to identify `xStar` as an optimal feasible point with value
 -- `fOpt`.
@@ -58,7 +58,7 @@ gap by the pairing with the displacement toward an optimal point. -/
 lemma subgradient_gap_le_inner_at_iterate
     (h_subgrad :
       ∀ k,
-        (toDualMap ℝ E (g k (x[k])) : Module.Dual ℝ E) ∈ subdifferential f (x[k] : E))
+        (toDualMap ℝ E (g k (x[k])) : Module.Dual ℝ E) ∈ extendedRealSubdifferential f (x[k] : E))
     {xStar : E} (hxStar : xStar ∈ XStar) (k : ℕ) :
     (f (x[k] : E)).toReal - fOpt ≤ inner ℝ (g k (x[k])) ((x[k] : E) - xStar) := by
   -- Convert optimality of `xStar` into the feasibility data needed by the subgradient inequality.
@@ -114,7 +114,7 @@ subgradient of `f` at `x^k`. -/
 theorem projected_subgradient_method_fundamental_inequality
     (h_subgrad :
       ∀ k,
-        (toDualMap ℝ E (g k (x[k])) : Module.Dual ℝ E) ∈ subdifferential f (x[k] : E))
+        (toDualMap ℝ E (g k (x[k])) : Module.Dual ℝ E) ∈ extendedRealSubdifferential f (x[k] : E))
     {xStar : E} (hxStar : xStar ∈ XStar) (k : ℕ) :
     ‖(x[k + 1] : E) - xStar‖ ^ 2 ≤
       ‖(x[k] : E) - xStar‖ ^ 2 -

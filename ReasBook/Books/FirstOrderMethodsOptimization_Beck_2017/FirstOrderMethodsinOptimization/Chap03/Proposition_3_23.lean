@@ -13,7 +13,7 @@ variable {ι : Type*} [Fintype ι]
 local notation "E" => EuclideanSpace ℝ ι
 
 /- Proposition 3.23 is `source-facing`: the textbook formula is a vector-side description of the
-subdifferential of the coordinatewise maximum on `ℝ^n`. The chapter owner bridge for that
+extendedRealSubdifferential of the coordinatewise maximum on `ℝ^n`. The chapter owner bridge for that
 vector-side view is already `euclideanSubdifferentialAt` from Theorem 3.4, so the main
 declarations below use that owner directly. The continuous-dual image equalities are kept only as
 thin companion reformulations. -/
@@ -37,15 +37,15 @@ supported on the active coordinates of `x`. -/
   Iff.rfl
 
 -- Proof sketch: apply the max rule for subdifferentials to the coordinate projections
--- `x ↦ x i`. Each coordinate map has singleton Euclidean subdifferential given by the
--- corresponding standard basis vector, so the subdifferential of
+-- `x ↦ x i`. Each coordinate map has singleton Euclidean extendedRealSubdifferential given by the
+-- corresponding standard basis vector, so the extendedRealSubdifferential of
 -- the maximum is the convex hull of the active basis vectors, equivalently the active face of the
 -- standard simplex.
 section
 
 variable [Nonempty ι]
 
-/-- Proposition 3.23: the Euclidean/vector-side subdifferential of the coordinatewise maximum on
+/-- Proposition 3.23: the Euclidean/vector-side extendedRealSubdifferential of the coordinatewise maximum on
 `ℝ^n` is exactly the face of the standard simplex supported on the active coordinates. -/
 theorem euclidean_subdifferentialAt_coordinatewiseMax_eq_activeCoordinateFace
     (x : E) :
@@ -62,7 +62,7 @@ theorem subdifferentialAt_coordinatewiseMax_eq_image_activeCoordinateFace
 -- Proof sketch: if `x = fun _ ↦ α`, then every coordinate is active, so
 -- `activeCoordinateFace x` is the whole standard simplex. Substitute this into the preceding
 -- proposition.
-/-- At a constant vector `α e`, every coordinate is active, so the vector-side subdifferential of
+/-- At a constant vector `α e`, every coordinate is active, so the vector-side extendedRealSubdifferential of
 the max function is the whole standard simplex. -/
 theorem euclidean_subdifferentialAt_coordinatewiseMax_const_eq_stdSimplex
     (α : ℝ) :

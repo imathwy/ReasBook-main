@@ -24,7 +24,7 @@ recall subdifferential_nonempty_at_relativeInterior_point
 -- Proof sketch: apply the owner theorem pointwise to each
 -- `x ∈ intrinsicInterior ℝ (effective_domain f)`.
 /-- Proposition 3.7: for a convex extended-real-valued function, the relative interior of `dom(f)`
-is contained in the domain of the subdifferential. -/
+is contained in the domain of the extendedRealSubdifferential. -/
 theorem relativeInterior_effective_domain_subset_subdifferential_domain
     (f : E → EReal) (hconv : is_convex_function f) :
     intrinsicInterior ℝ (effective_domain f) ⊆ subdifferential_domain f :=

@@ -23,11 +23,11 @@ variable [InnerProductSpace ℝ E1] [ProperSpace E1]
 variable [NormedSpace ℝ E2]
 variable (x1 : ℕ → E1) (x2 : ℕ → E2) (k : ℕ)
 
-local notation "F" => two_block_alternating_minimization_objective f.toEReal g1 g2
-local notation "Fblocks" => two_block_alternating_minimization_objective_blocks f.toEReal g1 g2
+local notation "F" => two_block_alternating_minimization_objective f.toExtendedReal g1 g2
+local notation "Fblocks" => two_block_alternating_minimization_objective_blocks f.toExtendedReal g1 g2
 local notation "xkState" => two_block_alternating_minimization_state (x1 k) (x2 k)
 local notation "f1" => fun y1 ↦ f (y1, x2 k)
-local notation "Fx2" => two_block_alternating_minimization_x2_objective f.toEReal g1 g2 (x1 k)
+local notation "Fx2" => two_block_alternating_minimization_x2_objective f.toExtendedReal g1 g2 (x1 k)
 
 /-- Helper for Lemma 14.4: the current `x₂`-slice objective is exactly the canonical owner
 block-`1` objective at the current two-block state. -/
@@ -89,11 +89,11 @@ variable [InnerProductSpace ℝ E2] [ProperSpace E2]
 variable [NormedSpace ℝ E1]
 variable (x1 : ℕ → E1) (x2 : ℕ → E2) (k : ℕ)
 
-local notation "F" => two_block_alternating_minimization_objective f.toEReal g1 g2
-local notation "Fblocks" => two_block_alternating_minimization_objective_blocks f.toEReal g1 g2
+local notation "F" => two_block_alternating_minimization_objective f.toExtendedReal g1 g2
+local notation "Fblocks" => two_block_alternating_minimization_objective_blocks f.toExtendedReal g1 g2
 local notation "xHalfState" => two_block_alternating_minimization_state (x1 (k + 1)) (x2 k)
 local notation "f2" => fun y2 ↦ f (x1 (k + 1), y2)
-local notation "Fx1" => two_block_alternating_minimization_x1_objective f.toEReal g1 g2 (x2 k)
+local notation "Fx1" => two_block_alternating_minimization_x1_objective f.toExtendedReal g1 g2 (x2 k)
 
 /-- Helper for Lemma 14.4: the current `x₁`-slice objective at the half-step is exactly the
 canonical owner block-`0` objective. -/

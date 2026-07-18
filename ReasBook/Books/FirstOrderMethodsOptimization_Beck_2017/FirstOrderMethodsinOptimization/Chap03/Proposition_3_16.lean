@@ -4,7 +4,7 @@ import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.C
 
 section
 
-/- Proposition 3.16 is a `bridge/view` item in the chapter real-valued subdifferential API. The
+/- Proposition 3.16 is a `bridge/view` item in the chapter real-valued extendedRealSubdifferential API. The
 owner abstraction is `subdifferentialAt`, and the source-facing scalar-slope statement is expressed
 through its canonical one-dimensional vector-side bridge `euclideanSubdifferentialAt` from Theorem
 3.4 rather than through an ad hoc encoding of real slopes as elements of `StrongDual ℝ ℝ`. -/
@@ -16,7 +16,7 @@ recall euclideanSubdifferentialAt
 -- slope to be `Real.sign x`, and that slope indeed works. At `x = 0`, the inequality becomes
 -- `|y| ≥ v * y` for all `y`; testing it on `1` and `-1` gives `-1 ≤ v ≤ 1`, and conversely every
 -- `v ∈ [-1, 1]` defines a valid supporting line at the origin.
-/-- Proposition 3.16: for the one-dimensional function `g(x) = |x|`, the subdifferential is the
+/-- Proposition 3.16: for the one-dimensional function `g(x) = |x|`, the extendedRealSubdifferential is the
 singleton with slope `Real.sign x` away from `0`, and at `0` it is the interval `[-1, 1]`. The
 left-hand side is the canonical one-dimensional bridge `euclideanSubdifferentialAt`, so the
 result is stated directly as a set of real slopes. -/

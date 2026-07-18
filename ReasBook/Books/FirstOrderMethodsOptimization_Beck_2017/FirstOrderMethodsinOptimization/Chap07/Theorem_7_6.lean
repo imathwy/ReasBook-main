@@ -26,13 +26,15 @@ variable {m n : ℕ}
 local notation "𝕄" => Matrix (Fin m) (Fin n) ℝ
 
 /-- The ambient real matrix space is equipped with its Frobenius norm. -/
-local instance : NormedAddCommGroup 𝕄 := Matrix.frobeniusNormedAddCommGroup
+local instance theorem76FrobeniusNormedAddCommGroup : NormedAddCommGroup 𝕄 :=
+  Matrix.frobeniusNormedAddCommGroup
 
 /-- The ambient real matrix space is a normed real vector space. -/
-local instance : NormedSpace ℝ 𝕄 := Matrix.frobeniusNormedSpace
+local instance theorem76FrobeniusNormedSpace : NormedSpace ℝ 𝕄 := Matrix.frobeniusNormedSpace
 
 /-- The ambient real matrix space is equipped with its Frobenius inner product. -/
-local instance : InnerProductSpace ℝ 𝕄 := Matrix.frobeniusInnerProductSpace
+local instance theorem76FrobeniusInnerProductSpace : InnerProductSpace ℝ 𝕄 :=
+  Matrix.frobeniusInnerProductSpace
 
 /-- Helper for Theorem 7.6: the rectangular diagonal embedding is continuous. -/
 lemma continuous_rectangularDiagonal :
@@ -415,8 +417,9 @@ lemma rectangularDiagonalProfile_eq_orthogonalRectangularDiagonalProfileMap_abs_
         (1 : Matrix.orthogonalGroup (Fin (min m n)) ℝ) := by
     -- The inverse permutation cancels the sorting permutation inside the orthogonal group.
     apply Subtype.ext
-    simpa [permutationOrthogonalMatrix] using
-      (Matrix.permMatrix_mul (R := ℝ) (σ := τ.symm) (τ := τ)).symm
+    change τ.permMatrix ℝ * (τ⁻¹).permMatrix ℝ = 1
+    rw [← Matrix.permMatrix_mul]
+    simp
   have hunsort_smul :
       permutationOrthogonalMatrix τ • xdesc = (fun i ↦ |x i|) := by
     have happly :=
@@ -622,8 +625,9 @@ lemma dotProduct_conjugate_profile_is_absolutely_permutation_symmetric
               (1 : Matrix.orthogonalGroup (Fin (min m n)) ℝ) := by
           apply Subtype.ext
           -- The inverse permutation matrix cancels the original one inside the orthogonal group.
-          simpa [permutationOrthogonalMatrix] using
-            (Matrix.permMatrix_mul (R := ℝ) (σ := σ.symm) (τ := σ)).symm
+          change σ.permMatrix ℝ * (σ⁻¹).permMatrix ℝ = 1
+          rw [← Matrix.permMatrix_mul]
+          simp
         calc
           permutationOrthogonalMatrix σ • xdesc =
               (permutationOrthogonalMatrix σ * permutationOrthogonalMatrix σ.symm) •
@@ -744,7 +748,7 @@ lemma dotProduct_conjugate_profile_is_absolutely_permutation_symmetric
 
 /-- Helper for Theorem 7.6: taking the `dotProductEquiv`-pullback conjugate twice recovers the
 Chapter 4 biconjugate of the vector profile. -/
-lemma dotProduct_conjugate_profile_biconjugate_eq
+lemma dotProduct_conjugate_profile_biconjugate_eq_theorem76
     (f : (Fin (min m n) → ℝ) → EReal) :
     (fun x : Fin (min m n) → ℝ ↦
       conjugate_function
@@ -811,7 +815,7 @@ lemma absolutely_symmetric_spectral_closed_convex_forward
             conjugate_function fconj (dotProductEquiv ℝ (Fin (min m n)) x)) ∘
             singular_value_function := hmatrix_conj_conj
       _ = biconjugate_function f ∘ singular_value_function := by
-            rw [dotProduct_conjugate_profile_biconjugate_eq f]
+            rw [dotProduct_conjugate_profile_biconjugate_eq_theorem76 f]
       _ = f ∘ singular_value_function := by
             rw [hself]
   let G : 𝕄 → EReal :=

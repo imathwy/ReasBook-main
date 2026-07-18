@@ -25,8 +25,10 @@ variable [∀ i, ProperSpace (Ei i)]
 variable [InnerProductSpace ℝ ((i : ι) → Ei i)]
 variable [ProperSpace ((i : ι) → Ei i)]
 
-local instance : NormedSpace ℝ ((i : ι) → Ei i) := InnerProductSpace.toNormedSpace
-local instance : Module ℝ ((i : ι) → Ei i) := NormedSpace.toModule
+local instance instNormedSpaceRealForallLemma11_1 : NormedSpace ℝ ((i : ι) → Ei i) :=
+  InnerProductSpace.toNormedSpace
+local instance instModuleRealForallLemma11_1 : Module ℝ ((i : ι) → Ei i) :=
+  NormedSpace.toModule
 
 /-
 Lemma 11.1 is `bridge/view`: it compares the Chapter 10 full prox-gradient operator and gradient

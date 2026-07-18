@@ -754,7 +754,7 @@ theorem prox_sum_of_k_largest_values_eq_singleton_sub_smul_metricProjection
   let lamPos : PosReal := ⟨lam, hlam⟩
   have hpenalty :
       (fun y : E ↦ (lam : EReal) * (sum_of_k_largest_values k y : EReal)) =
-        (((lam : ℝ) : EReal) • σ[sum_of_k_largest_constraint_set ι k]) := by
+        (((lam : ℝ) : EReal) • σp[sum_of_k_largest_constraint_set ι k]) := by
     funext y
     -- Rewrite the source-facing top-`k` sum as the support function of the capped simplex.
     rw [Pi.smul_apply, support_function_primal_apply,

@@ -262,7 +262,7 @@ theorem polytope_quadratic_ratio_clip_mem_conditional_gradient_exact_line_search
           (polytope_quadratic_conditional_gradient_direction a xk i))
         1 ∈
       conditional_gradient_exact_line_search_stepsizes
-        (polytope_quadratic_objective Q b).toEReal
+        (polytope_quadratic_objective Q b).toExtendedReal
         xk (a i) := by
   let d : E := polytope_quadratic_conditional_gradient_direction a xk i
   let α : ℝ := dotProduct d (Q *ᵥ xk + b)

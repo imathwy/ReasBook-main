@@ -16,7 +16,7 @@ primal points `x^k = ∑ i, y_i^k + d` for the orthogonal-projection problem ove
 closed convex sets.
 
 Domain sampling against the nearby Chapter 12 owners identifies:
-- `projectionPoint` from Proposition 3.12 as the canonical owner of each component projection
+- `closedConvexProjectionPoint` from Proposition 3.12 as the canonical owner of each component projection
   `P_{C_i}`;
 - `DualBasedProximalGradientDualStepsizeParameter` from Algorithm 12.1 as the canonical admissible
   constant-stepsize owner;

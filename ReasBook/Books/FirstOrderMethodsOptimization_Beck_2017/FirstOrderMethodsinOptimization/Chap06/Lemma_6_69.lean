@@ -26,11 +26,11 @@ The owner-level domain sampling for this file is:
    nonempty index type;
 3. `separableSum` from Theorem 6.6 is the chapter's `core/canonical` owner for the finite
    coordinatewise simplex objective;
-4. the finite-product `ℓ¹` norm written as `‖x‖₁` is the source-facing norm on
+4. the finite-product `ℓ¹` norm written as `l1n[x]` is the source-facing norm on
    `EuclideanSpace ℝ ι`, specializing to `ℝ^n` when `ι = Fin n`;
 5. `IsMinOn` is the owner property for an explicit minimizer of the simplex objective;
 6. `l1_norm_eq_one_of_mem_stdSimplex` from Remark 5.18 is the nearby simplex-side `bridge/view`
-   showing how `‖x‖₁²` reduces on simplex-constrained models.
+   showing how `l1n[x]²` reduces on simplex-constrained models.
 
 Primitive data:
 - `source-facing`: only `x` and the simplex variable `λ`;
@@ -48,16 +48,16 @@ private def l1SquareVariationalOptimizer (x : E) : ι → ℝ :=
   if x = 0 then
     fun _ ↦ (Fintype.card ι : ℝ)⁻¹
   else
-    fun j ↦ |x j| / ‖x‖₁
+    fun j ↦ |x j| / l1n[x]
 
 /-- Helper for Lemma 6.69: a nonzero vector has strictly positive `ℓ¹` norm. -/
-private lemma l1_norm_pos_of_ne_zero (x : E) (hx : x ≠ 0) : 0 < ‖x‖₁ := by
+private lemma l1_norm_pos_of_ne_zero (x : E) (hx : x ≠ 0) : 0 < l1n[x] := by
   -- Rewrite the `ℓ¹` norm as a sum of coordinate absolute values and rule out total cancellation.
   by_contra hnonpos
-  have hnorm_nonneg : 0 ≤ ‖x‖₁ := by
+  have hnorm_nonneg : 0 ≤ l1n[x] := by
     rw [EuclideanSpace.l1Norm_eq_sum_abs]
     exact Finset.sum_nonneg fun i _ ↦ abs_nonneg _
-  have hnorm_eq : ‖x‖₁ = 0 := by
+  have hnorm_eq : l1n[x] = 0 := by
     linarith
   have hzero_abs :
       (fun i ↦ |x i|) = 0 :=
@@ -119,23 +119,23 @@ private lemma l1SquareVariationalOptimizer_mem_stdSimplex (x : E) :
       exact inv_nonneg.mpr hcard_pos.le
     · simp [Finset.card_univ, hcard_pos.ne']
   · -- In the nonzero branch the optimizer is the normalized coordinatewise absolute value.
-    have hnorm_pos : 0 < ‖x‖₁ := l1_norm_pos_of_ne_zero x hx
+    have hnorm_pos : 0 < l1n[x] := l1_norm_pos_of_ne_zero x hx
     rw [l1SquareVariationalOptimizer, if_neg hx, stdSimplex]
     constructor
     · intro j
       exact div_nonneg (abs_nonneg _) hnorm_pos.le
     · calc
-        ∑ j, |x j| / ‖x‖₁ = (∑ j, |x j|) / ‖x‖₁ := by
+        ∑ j, |x j| / l1n[x] = (∑ j, |x j|) / l1n[x] := by
           rw [Finset.sum_div]
-        _ = ‖x‖₁ / ‖x‖₁ := by
+        _ = l1n[x] / l1n[x] := by
           rw [← EuclideanSpace.l1Norm_eq_sum_abs]
         _ = 1 := by
           exact div_self hnorm_pos.ne'
 
-/-- Helper for Lemma 6.69: every simplex point yields a variational value at least `‖x‖₁²`. -/
+/-- Helper for Lemma 6.69: every simplex point yields a variational value at least `l1n[x]²`. -/
 private lemma sq_l1_norm_le_sum_quadratic_over_linear_of_mem_stdSimplex
     (x : E) (lam : ι → ℝ) (hΔ : lam ∈ Δ) :
-    ((‖x‖₁ ^ (2 : ℕ) : ℝ) : EReal) ≤ ∑ j, φ (x j, lam j) := by
+    ((l1n[x] ^ (2 : ℕ) : ℝ) : EReal) ≤ ∑ j, φ (x j, lam j) := by
   classical
   by_cases hbad : ∃ i, lam i = 0 ∧ x i ≠ 0
   · -- A zero weight on a nonzero coordinate forces one summand to be `⊤`, so the whole sum is `⊤`.
@@ -163,7 +163,7 @@ private lemma sq_l1_norm_le_sum_quadratic_over_linear_of_mem_stdSimplex
       rw [hphi_top]
       simpa using EReal.top_add_of_ne_bot hrest_ne_bot
     calc
-      ((‖x‖₁ ^ (2 : ℕ) : ℝ) : EReal) ≤ ⊤ := by simp
+      ((l1n[x] ^ (2 : ℕ) : ℝ) : EReal) ≤ ⊤ := by simp
       _ = ∑ j, φ (x j, lam j) := hsum_top.symm
   · -- On the positive support, apply Titu's lemma exactly as in the source proof.
     have hzero_coord : ∀ i, lam i = 0 → x i = 0 := by
@@ -183,7 +183,7 @@ private lemma sq_l1_norm_le_sum_quadratic_over_linear_of_mem_stdSimplex
         (s := Finset.univ) (p := fun i ↦ 0 < lam i) (f := lam)
       rw [← hs, hΔ.2, hsum_zero] at hsplit
       linarith
-    have hs_abs_sum : Finset.sum s (fun i ↦ |x i|) = ‖x‖₁ := by
+    have hs_abs_sum : Finset.sum s (fun i ↦ |x i|) = l1n[x] := by
       rw [EuclideanSpace.l1Norm_eq_sum_abs]
       have hsum_zero :
           Finset.sum (Finset.univ.filter (fun i ↦ ¬ 0 < lam i)) (fun i ↦ |x i|) = 0 := by
@@ -204,7 +204,7 @@ private lemma sq_l1_norm_le_sum_quadratic_over_linear_of_mem_stdSimplex
         simpa [hs] using hi
       exact (Finset.mem_filter.mp hi').2
     have hreal :
-        ‖x‖₁ ^ (2 : ℕ) ≤ Finset.sum s (fun i ↦ x i ^ (2 : ℕ) / lam i) := by
+        l1n[x] ^ (2 : ℕ) ≤ Finset.sum s (fun i ↦ x i ^ (2 : ℕ) / lam i) := by
       have hsq := Finset.sq_sum_div_le_sum_sq_div
         (s := s) (f := fun i ↦ |x i|) (g := lam) hs_pos
       have habs_sq :
@@ -246,18 +246,18 @@ private lemma sq_l1_norm_le_sum_quadratic_over_linear_of_mem_stdSimplex
           simpa using ereal_coe_finset_sum s (fun j ↦ x j ^ (2 : ℕ) / lam j)
     -- Cast the real Cauchy--Schwarz lower bound into `EReal` and compare with the exact objective.
     have hrealE :
-        ((‖x‖₁ ^ (2 : ℕ) : ℝ) : EReal) ≤
+        ((l1n[x] ^ (2 : ℕ) : ℝ) : EReal) ≤
           ((Finset.sum s (fun i ↦ x i ^ (2 : ℕ) / lam i) : ℝ) : EReal) := by
       exact_mod_cast hreal
     calc
-      ((‖x‖₁ ^ (2 : ℕ) : ℝ) : EReal) ≤
+      ((l1n[x] ^ (2 : ℕ) : ℝ) : EReal) ≤
           ((Finset.sum s (fun i ↦ x i ^ (2 : ℕ) / lam i) : ℝ) : EReal) := hrealE
       _ = ∑ j, φ (x j, lam j) := hobjective_eq.symm
 
-/-- Helper for Lemma 6.69: the explicit optimizer attains objective value `‖x‖₁²`. -/
+/-- Helper for Lemma 6.69: the explicit optimizer attains objective value `l1n[x]²`. -/
 private lemma sum_quadratic_over_linear_at_l1SquareVariationalOptimizer (x : E) :
     ∑ j, φ (x j, l1SquareVariationalOptimizer x j) =
-      ((‖x‖₁ ^ (2 : ℕ) : ℝ) : EReal) := by
+      ((l1n[x] ^ (2 : ℕ) : ℝ) : EReal) := by
   classical
   by_cases hx : x = 0
   · -- At the zero vector, every summand vanishes at the uniform simplex point.
@@ -270,7 +270,7 @@ private lemma sum_quadratic_over_linear_at_l1SquareVariationalOptimizer (x : E) 
       rw [l1SquareVariationalOptimizer, if_pos hx, hxj,
         quadratic_over_linear_of_pos (inv_pos.mpr hcard_pos)]
       simp
-    have hl1_zero : ‖x‖₁ = 0 := by
+    have hl1_zero : l1n[x] = 0 := by
       rw [hx, EuclideanSpace.l1Norm_eq_sum_abs]
       simp
     calc
@@ -278,12 +278,12 @@ private lemma sum_quadratic_over_linear_at_l1SquareVariationalOptimizer (x : E) 
         refine Finset.sum_congr rfl ?_
         intro j hj
         exact hterm j
-      _ = ((‖x‖₁ ^ (2 : ℕ) : ℝ) : EReal) := by
+      _ = ((l1n[x] ^ (2 : ℕ) : ℝ) : EReal) := by
         simp [hl1_zero]
-  · -- Away from zero, each positive-branch summand simplifies to `|x_j| * ‖x‖₁`.
-    have hnorm_pos : 0 < ‖x‖₁ := l1_norm_pos_of_ne_zero x hx
+  · -- Away from zero, each positive-branch summand simplifies to `|x_j| * l1n[x]`.
+    have hnorm_pos : 0 < l1n[x] := l1_norm_pos_of_ne_zero x hx
     have hterm :
-        ∀ j, φ (x j, l1SquareVariationalOptimizer x j) = ((|x j| * ‖x‖₁ : ℝ) : EReal) := by
+        ∀ j, φ (x j, l1SquareVariationalOptimizer x j) = ((|x j| * l1n[x] : ℝ) : EReal) := by
       intro j
       by_cases hxj : x j = 0
       · rw [l1SquareVariationalOptimizer, if_neg hx]
@@ -298,23 +298,23 @@ private lemma sum_quadratic_over_linear_at_l1SquareVariationalOptimizer (x : E) 
           (sq_div_abs_div_eq_abs_mul hnorm_pos.ne')
     calc
       ∑ j, φ (x j, l1SquareVariationalOptimizer x j) =
-          ∑ j, ((|x j| * ‖x‖₁ : ℝ) : EReal) := by
+          ∑ j, ((|x j| * l1n[x] : ℝ) : EReal) := by
             refine Finset.sum_congr rfl ?_
             intro j hj
             exact hterm j
-      _ = ((∑ j, |x j| * ‖x‖₁ : ℝ) : EReal) := by
-            simpa using ereal_coe_finset_sum Finset.univ (fun j ↦ |x j| * ‖x‖₁)
-      _ = (((∑ j, |x j| : ℝ) * ‖x‖₁ : ℝ) : EReal) := by
+      _ = ((∑ j, |x j| * l1n[x] : ℝ) : EReal) := by
+            simpa using ereal_coe_finset_sum Finset.univ (fun j ↦ |x j| * l1n[x])
+      _ = (((∑ j, |x j| : ℝ) * l1n[x] : ℝ) : EReal) := by
             congr 1
             rw [Finset.sum_mul]
-      _ = ((‖x‖₁ ^ (2 : ℕ) : ℝ) : EReal) := by
+      _ = ((l1n[x] ^ (2 : ℕ) : ℝ) : EReal) := by
             congr 1
             rw [EuclideanSpace.l1Norm_eq_sum_abs]
             ring
 
 -- Proof sketch: on the zero vector, the uniform point belongs to `Δ` and every summand vanishes.
 -- For `x ≠ 0`, use Cauchy--Schwarz on the positive coordinates of a simplex vector to show every
--- feasible value is at least `‖x‖₁²`, then evaluate the objective at
+-- feasible value is at least `l1n[x]²`, then evaluate the objective at
 -- `l1SquareVariationalOptimizer x` to obtain equality.
 /-- The explicit optimizer from the variational representation of the squared `ℓ¹` norm attains
 its minimum over the standard simplex. -/
@@ -322,13 +322,13 @@ private theorem l1SquareVariationalOptimizer_isMinOn (x : E) :
     IsMinOn
       (fun lam : ι → ℝ ↦ separableSum (fun j : ι ↦ fun t ↦ φ (x j, t)) (toLp 2 lam)) Δ
       (l1SquareVariationalOptimizer x) := by
-  -- Compare any feasible simplex point with the explicit optimizer through the common value `‖x‖₁²`.
+  -- Compare any feasible simplex point with the explicit optimizer through the common value `l1n[x]²`.
   intro lam hlam
   calc
     separableSum (fun j : ι ↦ fun t ↦ φ (x j, t)) (toLp 2 (l1SquareVariationalOptimizer x)) =
         ∑ j, φ (x j, l1SquareVariationalOptimizer x j) := by
           simp [separableSum]
-    _ = ((‖x‖₁ ^ (2 : ℕ) : ℝ) : EReal) :=
+    _ = ((l1n[x] ^ (2 : ℕ) : ℝ) : EReal) :=
       sum_quadratic_over_linear_at_l1SquareVariationalOptimizer x
     _ ≤ ∑ j, φ (x j, lam j) :=
       sq_l1_norm_le_sum_quadratic_over_linear_of_mem_stdSimplex x lam hlam
@@ -336,15 +336,15 @@ private theorem l1SquareVariationalOptimizer_isMinOn (x : E) :
           simp [separableSum]
 
 -- Proof sketch: combine `l1SquareVariationalOptimizer_isMinOn x` with a direct evaluation of the
--- objective at `l1SquareVariationalOptimizer x`. For `x ≠ 0`, the value is `‖x‖₁²`; for `x = 0`,
+-- objective at `l1SquareVariationalOptimizer x`. For `x ≠ 0`, the value is `l1n[x]²`; for `x = 0`,
 -- every summand vanishes at the uniform simplex point.
 /-- Lemma 6.69: for a finite nonempty index type `ι`, the minimum over the standard simplex
 `Δ = stdSimplex ℝ ι` of the coordinate presentation
 `λ ↦ ∑ j, φ(x_j, λ_j)` of the separable variational objective is the squared `ℓ¹` norm
-`‖x‖₁²`. Specializing to `ι = Fin n` recovers the textbook `Δ_n ⊆ ℝ^n` statement. -/
+`l1n[x]²`. Specializing to `ι = Fin n` recovers the textbook `Δ_n ⊆ ℝ^n` statement. -/
 theorem l1SquareVariationalObjective_sInf_eq_sq_l1_norm (x : E) :
     sInf ((fun lam : ι → ℝ ↦ ∑ j, φ (x j, lam j)) '' Δ) =
-      ((‖x‖₁ ^ (2 : ℕ) : ℝ) : EReal) := by
+      ((l1n[x] ^ (2 : ℕ) : ℝ) : EReal) := by
   have hmem : l1SquareVariationalOptimizer x ∈ Δ :=
     l1SquareVariationalOptimizer_mem_stdSimplex x
   have hmin :
@@ -356,7 +356,7 @@ theorem l1SquareVariationalObjective_sInf_eq_sq_l1_norm (x : E) :
   calc
     (⨅ a, ⨅ (_ : a ∈ Δ), ∑ j, φ (x j, a j)) = ∑ j, φ (x j, l1SquareVariationalOptimizer x j) := by
       simpa [iInf_subtype] using IsMinOn.iInf_eq hmem hmin
-    _ = ((‖x‖₁ ^ (2 : ℕ) : ℝ) : EReal) :=
+    _ = ((l1n[x] ^ (2 : ℕ) : ℝ) : EReal) :=
       sum_quadratic_over_linear_at_l1SquareVariationalOptimizer x
 
 end

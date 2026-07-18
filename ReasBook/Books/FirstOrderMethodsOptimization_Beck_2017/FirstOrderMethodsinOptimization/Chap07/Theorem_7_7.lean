@@ -7,6 +7,7 @@ import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.C
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap06.Theorem_6_3
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap07.Definition_7_9
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap07.Definition_7_15
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap07.Proposition_7_5
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap07.Theorem_7_5
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap07.Theorem_7_6
 
@@ -26,53 +27,15 @@ local notation "Mₘ" => Matrix (Fin m) (Fin m) ℝ
 local notation "Mₙ" => Matrix (Fin n) (Fin n) ℝ
 
 /-- The ambient real matrix space is equipped with its Frobenius norm. -/
-local instance : NormedAddCommGroup 𝕄 := Matrix.frobeniusNormedAddCommGroup
+local instance theorem77FrobeniusNormedAddCommGroup : NormedAddCommGroup 𝕄 :=
+  Matrix.frobeniusNormedAddCommGroup
 
 /-- The ambient real matrix space is a normed real vector space. -/
-local instance : NormedSpace ℝ 𝕄 := Matrix.frobeniusNormedSpace
+local instance theorem77FrobeniusNormedSpace : NormedSpace ℝ 𝕄 := Matrix.frobeniusNormedSpace
 
 /-- The ambient real matrix space is equipped with its Frobenius inner product. -/
-local instance : InnerProductSpace ℝ 𝕄 := Matrix.frobeniusInnerProductSpace
-
-/-- The rectangular diagonal matrix with diagonal entries `x` and off-diagonal entries `0`. -/
-def rectangularDiagonal (x : Fin (min m n) → ℝ) : 𝕄 :=
-  fun i j ↦
-    if h : i.1 = j.1 then
-      x ⟨i.1, Nat.lt_min.mpr ⟨i.2, h ▸ j.2⟩⟩
-    else 0
-
--- Proof sketch: unfold `rectangularDiagonal`; its `(i,j)` entry is the corresponding coordinate
--- of `x` when the row and column indices agree, and `0` otherwise.
-/-- Evaluating `rectangularDiagonal x` returns the corresponding diagonal entry of `x` on the
-common diagonal and `0` away from it. -/
-theorem rectangularDiagonal_apply (x : Fin (min m n) → ℝ) (i : Fin m) (j : Fin n) :
-    rectangularDiagonal x i j =
-      if h : i.1 = j.1 then
-        x ⟨i.1, Nat.lt_min.mpr ⟨i.2, h ▸ j.2⟩⟩
-      else 0 := by
-  -- This is the defining evaluation rule for `rectangularDiagonal`.
-  rfl
-
-/-- The orthogonal image of the rectangular diagonal matrix with diagonal `x`. -/
-def orthogonalRectangularDiagonalMap
-    (U : Matrix.orthogonalGroup (Fin m) ℝ) (V : Matrix.orthogonalGroup (Fin n) ℝ) :
-    (Fin (min m n) → ℝ) → 𝕄 :=
-  fun x ↦
-    (U : Matrix (Fin m) (Fin m) ℝ) * rectangularDiagonal x *
-      ((V : Matrix (Fin n) (Fin n) ℝ)ᵀ)
-
--- Proof sketch: unfold `orthogonalRectangularDiagonalMap`; evaluation at `x` is definitionally
--- the product `U * rectangularDiagonal x * Vᵀ`.
-/-- Evaluating `orthogonalRectangularDiagonalMap U V` at `x` yields
-`U * rectangularDiagonal x * Vᵀ`. -/
-@[simp] theorem orthogonalRectangularDiagonalMap_apply
-    (U : Matrix.orthogonalGroup (Fin m) ℝ) (V : Matrix.orthogonalGroup (Fin n) ℝ)
-    (x : Fin (min m n) → ℝ) :
-    orthogonalRectangularDiagonalMap U V x =
-      (U : Matrix (Fin m) (Fin m) ℝ) * rectangularDiagonal x *
-        ((V : Matrix (Fin n) (Fin n) ℝ)ᵀ) := by
-  -- This is the defining evaluation rule for `orthogonalRectangularDiagonalMap`.
-  rfl
+local instance theorem77FrobeniusInnerProductSpace : InnerProductSpace ℝ 𝕄 :=
+  Matrix.frobeniusInnerProductSpace
 
 /-- The rectangular diagonal reconstruction map with a Euclidean singular-value vector input. -/
 def orthogonalRectangularDiagonalMapEuclidean
@@ -125,7 +88,7 @@ lemma matrixSpectralLift_proper_closed_convex
   exact ⟨hproper, hclosedconv.1, hclosedconv.2⟩
 
 /-- Helper for Theorem 7.7: the Euclidean pullback `y ↦ f y.ofLp` is proper, closed, and convex. -/
-lemma euclidean_pullback_proper_closed_convex
+lemma euclidean_pullback_proper_closed_convex_theorem77
     (f : (Fin (min m n) → ℝ) → EReal) (hf_symm : Function.IsAbsolutelyPermutationSymmetric f)
     (hf_closed : LowerSemicontinuous f) (hf_convex : is_convex_function f) :
     IsProperExtendedRealFunction (fun y : EuclideanSpace ℝ (Fin (min m n)) ↦ f y.ofLp) ∧
@@ -817,7 +780,7 @@ theorem prox_matrixSpectralLift_eq_image_orthogonalRectangularDiagonalMap
   rcases prox_eq_singleton_of_proper_closed_convex
       (f ∘ singular_value_function) hclosedconv.1 hclosedconv.2.1 hclosedconv.2.2 X with
       ⟨Y0, hsingleton⟩
-  have hpullback := euclidean_pullback_proper_closed_convex f hf_symm hf_closed hf_convex
+  have hpullback := euclidean_pullback_proper_closed_convex_theorem77 f hf_symm hf_closed hf_convex
   rcases prox_eq_singleton_of_proper_closed_convex
       (fun y : EuclideanSpace ℝ (Fin (min m n)) ↦ f y.ofLp)
       hpullback.1 hpullback.2.1 hpullback.2.2 σLp with ⟨x0, hvecsingleton⟩

@@ -149,7 +149,7 @@ theorem IsFastDualBlockProximalGradientPrimalTrajectory.acceleration_step_formul
 
 /-- Helper for Algorithm 12.13: the linear adjoint of the block duplication map sums the block
 coordinates. -/
-theorem dual_block_duplication_linear_adjoint_apply
+theorem dual_block_duplication_linear_adjoint_apply_function
     (v : Fin p → E) :
     ((dual_block_duplication E p).toLinearMap).adjoint (WithLp.toLp 2 v) =
       ∑ i : Fin p, v i := by
@@ -274,7 +274,7 @@ theorem mem_dual_primal_x_argmax_duplication_iff
       x ∈ dual_proximal_gradient_primal_x_argmax f LinearMap.id (∑ i : Fin p, v i) := by
   -- TODO: Rewrite both memberships to `isMaxOn_univ_iff`, then bridge the duplication adjoint
   -- to the block sum with an unfolded version of
-  -- `dual_block_duplication_linear_adjoint_apply`. The blocker is a coercion mismatch between
+  -- `dual_block_duplication_linear_adjoint_apply_function`. The blocker is a coercion mismatch between
   -- `((dual_block_duplication E p).toLinearMap).adjoint` and the unfolded linear-map term
   -- produced by `mem_dual_proximal_gradient_primal_x_argmax_iff`.
   sorry

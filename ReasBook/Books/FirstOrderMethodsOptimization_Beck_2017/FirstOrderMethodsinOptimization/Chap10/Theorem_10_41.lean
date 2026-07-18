@@ -21,7 +21,7 @@ variable {Lf σ : PosReal}
 variable [hproblem : IsFastProximalGradientProblem f g XStar FOpt (toNNReal Lf)]
 variable {xStar zMinusOne : E} {N : ℕ+} {R : ℝ}
 
-local notation "F" => composite_model_objective f.toEReal g
+local notation "F" => composite_model_objective f.toExtendedReal g
 local notation "κ" => κ(toNNReal Lf, σ)
 
 /- Theorem 10.41 is `source-facing` in the restarted-FISTA complexity layer.

@@ -16,7 +16,8 @@ theorem permMatrix_mem_orthogonalGroup (σ : Equiv.Perm (Fin n)) :
   refine
     (Matrix.mem_orthogonalGroup_iff
       (A := (σ.permMatrix ℝ : Matrix (Fin n) (Fin n) ℝ)) (R := ℝ)).2 ?_
-  simpa using (Matrix.permMatrix_mul (R := ℝ) (σ := σ.symm) (τ := σ)).symm
+  rw [Matrix.transpose_permMatrix, ← Matrix.permMatrix_mul]
+  simp
 
 /-- The orthogonal transformation of `ℝ^n` induced by a permutation of the coordinates. -/
 noncomputable def permutationOrthogonalMatrix (σ : Equiv.Perm (Fin n)) :
@@ -28,7 +29,7 @@ noncomputable def permutationOrthogonalFamily (n : ℕ) :
     Set (Matrix.orthogonalGroup (Fin n) ℝ) :=
   Set.range permutationOrthogonalMatrix
 
-notation "Λ[" n "]" => permutationOrthogonalFamily n
+notation "Λperm[" n "]" => permutationOrthogonalFamily n
 
 /-- The decreasing rearrangement `x↓` of a vector `x` is obtained by sorting its coordinates in
 weakly decreasing order. -/
@@ -40,7 +41,7 @@ postfix:max "↓" => descendingRearrangement
 /-- Definition 7.8: a proper extended-real-valued function on `ℝ^n` is permutation symmetric when
 it is invariant under every permutation matrix. -/
 abbrev IsPermutationSymmetricFunction (f : (Fin n → ℝ) → EReal) : Prop :=
-  IsSymmetricFunction Λ[n] f
+  IsSymmetricFunction Λperm[n] f
 
 /-- Helper for Definition 7.8: the orthogonal action of a permutation matrix just reindexes the
 coordinates of the vector. -/

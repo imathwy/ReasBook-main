@@ -71,33 +71,33 @@ objective proper after coercion to `EReal`. -/
 theorem IsConvexLipschitzConstrainedMinimizationProblem.objective_toEReal_proper
     {h : E → ℝ} {C : Set E} {ℓh : NNReal}
     (hproblem : IsConvexLipschitzConstrainedMinimizationProblem h C ℓh) :
-    IsProperExtendedRealFunction h.toEReal := by
+    IsProperExtendedRealFunction h.toExtendedReal := by
   rcases hproblem.constraint_nonempty with ⟨x, hx⟩
   let _ : Nonempty E := ⟨x⟩
-  simpa using Function.toEReal_isProper h
+  simpa using Function.toExtendedReal_isProper h
 
 /-- A constrained convex Lipschitz minimization problem makes the real-valued objective
 lower semicontinuous after coercion to `EReal`. -/
 theorem IsConvexLipschitzConstrainedMinimizationProblem.objective_toEReal_lowerSemicontinuous
     {h : E → ℝ} {C : Set E} {ℓh : NNReal}
     (hproblem : IsConvexLipschitzConstrainedMinimizationProblem h C ℓh) :
-    LowerSemicontinuous h.toEReal :=
-  Function.toEReal_lowerSemicontinuous_of_lipschitz hproblem.objective_lipschitz
+    LowerSemicontinuous h.toExtendedReal :=
+  Function.toExtendedReal_lowerSemicontinuous_of_lipschitz hproblem.objective_lipschitz
 
 /-- A constrained convex Lipschitz minimization problem makes the real-valued objective convex
 after coercion to `EReal`. -/
 theorem IsConvexLipschitzConstrainedMinimizationProblem.objective_toEReal_convex
     {h : E → ℝ} {C : Set E} {ℓh : NNReal}
     (hproblem : IsConvexLipschitzConstrainedMinimizationProblem h C ℓh) :
-    is_convex_function h.toEReal :=
-  Function.toEReal_isConvexFunction hproblem.objective_convex
+    is_convex_function h.toExtendedReal :=
+  Function.toExtendedReal_isConvexFunction hproblem.objective_convex
 
 /-- The real-valued objective of a constrained convex Lipschitz minimization problem is proper
 after coercion to `EReal`. -/
 instance instIsProperExtendedRealFunctionToERealOfIsConvexLipschitzConstrainedMinimizationProblem
     {h : E → ℝ} {C : Set E} {ℓh : NNReal}
     (hproblem : IsConvexLipschitzConstrainedMinimizationProblem h C ℓh) :
-    IsProperExtendedRealFunction h.toEReal :=
+    IsProperExtendedRealFunction h.toExtendedReal :=
   hproblem.objective_toEReal_proper
 
 /-- The real-valued objective of a constrained convex Lipschitz minimization problem is lower
@@ -105,7 +105,7 @@ semicontinuous after coercion to `EReal`. -/
 instance instLowerSemicontinuousToERealOfIsConvexLipschitzConstrainedMinimizationProblem
     {h : E → ℝ} {C : Set E} {ℓh : NNReal}
     (hproblem : IsConvexLipschitzConstrainedMinimizationProblem h C ℓh) :
-    LowerSemicontinuous h.toEReal :=
+    LowerSemicontinuous h.toExtendedReal :=
   hproblem.objective_toEReal_lowerSemicontinuous
 
 /-- A constrained convex Lipschitz minimization problem exposes lower semicontinuity of the
@@ -113,7 +113,7 @@ real-valued objective after coercion to `EReal` through `Fact`. -/
 instance instFactLowerSemicontinuousToERealOfIsConvexLipschitzConstrainedMinimizationProblem
     {h : E → ℝ} {C : Set E} {ℓh : NNReal}
     (hproblem : IsConvexLipschitzConstrainedMinimizationProblem h C ℓh) :
-    Fact (LowerSemicontinuous h.toEReal) :=
+    Fact (LowerSemicontinuous h.toExtendedReal) :=
   ⟨hproblem.objective_toEReal_lowerSemicontinuous⟩
 
 /-- The real-valued objective of a constrained convex Lipschitz minimization problem is convex
@@ -121,7 +121,7 @@ after coercion to `EReal`. -/
 instance instIsConvexFunctionToERealOfIsConvexLipschitzConstrainedMinimizationProblem
     {h : E → ℝ} {C : Set E} {ℓh : NNReal}
     (hproblem : IsConvexLipschitzConstrainedMinimizationProblem h C ℓh) :
-    is_convex_function h.toEReal :=
+    is_convex_function h.toExtendedReal :=
   hproblem.objective_toEReal_convex
 
 /-- A constrained convex Lipschitz minimization problem exposes convexity of the real-valued
@@ -129,7 +129,7 @@ objective after coercion to `EReal` through `Fact`. -/
 instance instFactIsConvexFunctionToERealOfIsConvexLipschitzConstrainedMinimizationProblem
     {h : E → ℝ} {C : Set E} {ℓh : NNReal}
     (hproblem : IsConvexLipschitzConstrainedMinimizationProblem h C ℓh) :
-    Fact (is_convex_function h.toEReal) :=
+    Fact (is_convex_function h.toExtendedReal) :=
   ⟨hproblem.objective_toEReal_convex⟩
 
 end

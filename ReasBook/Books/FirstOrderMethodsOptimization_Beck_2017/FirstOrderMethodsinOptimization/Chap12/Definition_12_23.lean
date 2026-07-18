@@ -31,10 +31,12 @@ This file therefore stays at the `bridge/view` layer and reuses those owners dir
 redefining the same diagonal combinatorics or the same raw denoising objective. -/
 
 /-- The real matrix space `ℝ^(m × n)` carries its canonical Frobenius norm. -/
-local instance : NormedAddCommGroup Mmn := Matrix.frobeniusNormedAddCommGroup
+local instance instNormedAddCommGroupMatrixFinRealDefinition12_23 :
+    NormedAddCommGroup Mmn := Matrix.frobeniusNormedAddCommGroup
 
 /-- Scalar multiplication on `ℝ^(m × n)` is compatible with the Frobenius norm. -/
-local instance : NormedSpace ℝ Mmn := Matrix.frobeniusNormedSpace
+local instance instNormedSpaceRealMatrixFinRealDefinition12_23 :
+    NormedSpace ℝ Mmn := Matrix.frobeniusNormedSpace
 
 -- Proof sketch: unfold the Chapter 12.12 denoising owner specialized to `TV_I`, rewrite `TV_I x`
 -- using `isotropic_two_dimensional_total_variation_eq_sum_ψ` from

@@ -21,7 +21,7 @@ variable (f : E → EReal) (μ : PosReal)
 
 recall effective_domain
 recall is_convex_function
-recall subdifferential
+recall extendedRealSubdifferential
 recall strongDualSubdifferential
 recall prox_singleton_implies_effective_domain_and_inner_support
 recall prox_eq_singleton_iff_toDualMap_sub_mem_strongDualSubdifferential

@@ -29,7 +29,7 @@ recall euclidean_subdifferentialAt_fermatWeberObjective_eq_finset_sum_piecewise
 -- the Euclidean bridge `euclideanSubdifferentialAt`. Away from the sites `Set.range a`, each
 -- summand is differentiable, so the zero-subgradient condition becomes the vanishing of the
 -- weighted sum of normalized displacement vectors. At a site `a j`, split off the nonsmooth term
--- indexed by `j`, use the Euclidean-norm subdifferential at the origin for that term, and rewrite
+-- indexed by `j`, use the Euclidean-norm extendedRealSubdifferential at the origin for that term, and rewrite
 -- membership of the zero vector in the resulting translated closed ball as the residual norm bound.
 /-- Proposition 3.33: for pairwise distinct sites and nonnegative weights, a point globally
 minimizes the Fermat--Weber objective if and only if either it is not one of the sites and the

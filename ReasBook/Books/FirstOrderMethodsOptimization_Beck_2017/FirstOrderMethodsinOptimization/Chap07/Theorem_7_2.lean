@@ -19,9 +19,11 @@ variable {n : ℕ}
 local notation "Mₙ" => Matrix (Fin n) (Fin n) ℝ
 local notation "𝕊" => symmetricMatrices n
 
-local instance : NormedAddCommGroup Mₙ := Matrix.frobeniusNormedAddCommGroup
-local instance : NormedSpace ℝ Mₙ := Matrix.frobeniusNormedSpace
-local instance : InnerProductSpace ℝ Mₙ := Matrix.frobeniusInnerProductSpace
+local instance theorem72FrobeniusNormedAddCommGroup : NormedAddCommGroup Mₙ :=
+  Matrix.frobeniusNormedAddCommGroup
+local instance theorem72FrobeniusNormedSpace : NormedSpace ℝ Mₙ := Matrix.frobeniusNormedSpace
+local instance theorem72FrobeniusInnerProductSpace : InnerProductSpace ℝ Mₙ :=
+  Matrix.frobeniusInnerProductSpace
 
 /-- Helper for Theorem 7.2: the Frobenius inner product on real matrices is the entrywise double
 sum. -/

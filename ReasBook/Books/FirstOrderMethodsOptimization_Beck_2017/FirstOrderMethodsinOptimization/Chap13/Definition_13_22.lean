@@ -10,7 +10,7 @@ variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /- Definition 13.22 is `source-facing`: the source definition is a positive-modulus, nonempty
 strongly convex set. Domain sampling against Chapter 5's function-side owner `StrongConvexOn`,
-Chapter 2's set-side owner `IsCone`, and mathlib's `StrongConvexOn` shows that the primitive set
+Chapter 2's set-side owner `IsNonnegativeCone`, and mathlib's `StrongConvexOn` shows that the primitive set
 data is only the closed-ball inclusion property itself. The canonical owner in this chapter is
 therefore `Set.StrongConvex`, while positivity and nonemptiness remain in the source-facing
 wrapper `Set.StronglyConvexWith`. -/

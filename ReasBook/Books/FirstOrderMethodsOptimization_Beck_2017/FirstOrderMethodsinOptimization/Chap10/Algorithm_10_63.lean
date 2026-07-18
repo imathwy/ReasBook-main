@@ -187,7 +187,7 @@ lemma linf_norm_eq_abs_of_coordinate_maximizer
 
 /-- Helper for Algorithm 10.63: the Euclidean Riesz pairing on the coordinate model is the
 coordinate dot product. -/
-lemma toDualMap_apply_eq_dotProduct (u v : E₂) :
+lemma toDualMap_apply_eq_dotProduct_l1_coordinates (u v : E₂) :
     ((InnerProductSpace.toDualMap ℝ E₂ v) u : ℝ) = dotProduct (ofLp u) (ofLp v) := by
   -- Convert the Euclidean inner product to the explicit coordinate formula.
   simpa [InnerProductSpace.toDualMap_apply_apply, dotProduct, mul_comm] using
@@ -204,7 +204,8 @@ lemma toDualMap_apply_coordToL2_eq_lpPairingDual_apply
   calc
     ((InnerProductSpace.toDualMap ℝ E₂ v) (coordToL2 u) : ℝ) =
         dotProduct (ofLp u) (ofLp v) := by
-      simpa using (toDualMap_apply_eq_dotProduct (u := coordToL2 u) (v := v))
+      simpa using
+        (toDualMap_apply_eq_dotProduct_l1_coordinates (u := coordToL2 u) (v := v))
     _ = LinearMap.toContinuousLinearMap (lpPairingDual (1 : ENNReal) (ofLp v)) u := by
       simp [lpPairingDual_apply]
 

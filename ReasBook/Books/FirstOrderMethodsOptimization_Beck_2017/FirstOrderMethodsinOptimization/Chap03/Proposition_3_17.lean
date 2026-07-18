@@ -12,7 +12,7 @@ variable {n : ℕ}
 
 local notation "E" => EuclideanSpace ℝ (Fin n)
 
-/- Proposition 3.17 is a `bridge/view` item in the chapter Euclidean subdifferential API. The
+/- Proposition 3.17 is a `bridge/view` item in the chapter Euclidean extendedRealSubdifferential API. The
 owner abstraction is `subdifferentialAt` from Theorem 3.4, and its canonical vector-side bridge is
 `euclideanSubdifferentialAt`. The only source-facing content here is the coordinate sign-cube
 description of that owner set for the `ℓ₁` norm, now written through mathlib's canonical
@@ -53,7 +53,7 @@ nonzero coordinates of `x` and staying in `[-1, 1]` on the zero coordinates. -/
     simp [l1CoordinateSubgradientVectors, hz']
 
 /-- The canonical coordinatewise sign vector belongs to the coordinate description of the `ℓ₁`
-subdifferential. -/
+extendedRealSubdifferential. -/
 theorem sign_vector_mem_l1CoordinateSubgradientVectors (x : E) :
     toLp 2 (sgn x) ∈ l1CoordinateSubgradientVectors x := by
   rw [mem_l1CoordinateSubgradientVectors_iff]
@@ -74,7 +74,7 @@ theorem sign_vector_mem_l1CoordinateSubgradientVectors (x : E) :
 -- finite products.
 /-- Proposition 3.17: for the `ℓ₁` norm
 `f(x) = ‖toLp 1 (fun i ↦ x i)‖ = ∑ i, |x i|` on `ℝ^n = EuclideanSpace ℝ (Fin n)`, the
-Euclidean/vector-side subdifferential consists exactly of the vectors in
+Euclidean/vector-side extendedRealSubdifferential consists exactly of the vectors in
 `l1CoordinateSubgradientVectors x`, i.e. the vectors whose coordinates equal `Real.sign (x i)` on
 the nonzero coordinates of `x` and lie in `[-1, 1]` on the zero coordinates. -/
 theorem subdifferentialAt_l1_norm_eq_coordinatewise_sign_constraints

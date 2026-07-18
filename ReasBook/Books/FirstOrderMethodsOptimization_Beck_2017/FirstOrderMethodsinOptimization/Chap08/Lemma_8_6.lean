@@ -1,5 +1,6 @@
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Algorithm_8_1
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Definition_8_4
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Lemma_8_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -10,16 +11,6 @@ open scoped Gradient
 noncomputable section
 
 section
-
-/-- The nonsmooth convex objective from Wolfe's example in equation (8.5), written on the
-canonical coordinate model `EuclideanSpace ℝ (Fin 2)` with coordinates `x 0 = x_1` and
-`x 1 = x_2`. -/
-def wolfe_example_function (γ : ℝ) : EuclideanSpace ℝ (Fin 2) → ℝ :=
-  fun x ↦
-    if |x 1| ≤ x 0 then
-      Real.sqrt (x 0 ^ (2 : ℕ) + γ * x 1 ^ (2 : ℕ))
-    else
-      (x 0 + γ * |x 1|) / Real.sqrt (1 + γ)
 
 -- Proof sketch: unfold `wolfe_example_function`; the result is exactly the defining piecewise
 -- formula from equation (8.5).
@@ -533,9 +524,9 @@ theorem wolfe_example_gradient_method_iterate_formula
     (ht :
       ∀ k,
         t k ∈ exact_line_search_stepsizes (wolfe_example_function γ)
-          (gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k)) :
+          (beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k)) :
     ∀ k,
-      gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k =
+      beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k =
         !₂[γ * (((γ - 1) / (γ + 1)) ^ k), (-((γ - 1) / (γ + 1))) ^ k] :=
     by
   let r : ℝ := (γ - 1) / (γ + 1)
@@ -551,32 +542,32 @@ theorem wolfe_example_gradient_method_iterate_formula
       dsimp [r]
       exact div_pos (by linarith) (by linarith)
     have hk0 :
-        gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k 0 =
+        beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k 0 =
           γ * r ^ k := by
       simpa [r] using
         congrArg (fun y : EuclideanSpace ℝ (Fin 2) ↦ y 0) hk
     have hk1 :
-        gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k 1 =
+        beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k 1 =
           (-r) ^ k := by
       simpa [r] using
         congrArg (fun y : EuclideanSpace ℝ (Fin 2) ↦ y 1) hk
     have hkabs :
-        |gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k 1| = r ^ k := by
+        |beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k 1| = r ^ k := by
       rw [hk1]
       simp [abs_pow, abs_of_nonneg (le_of_lt hr_pos)]
     have hray :
-        gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k 0 =
-          γ * |gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k 1| := by
+        beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k 0 =
+          γ * |beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k 1| := by
       rw [hk0, hkabs]
     have hregion :
-        |gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k 1| <
-          gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k 0 := by
+        |beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k 1| <
+          beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k 0 := by
       rw [hk0, hkabs]
       have hrk_pos : 0 < r ^ k := by
         exact pow_pos hr_pos k
       nlinarith
     have hk0_ne :
-        gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k 0 ≠ 0 := by
+        beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k 0 ≠ 0 := by
       rw [hk0]
       exact mul_ne_zero (ne_of_gt hγpos) (pow_ne_zero k (ne_of_gt hr_pos))
     have hupdate :=
@@ -584,15 +575,15 @@ theorem wolfe_example_gradient_method_iterate_formula
         (γ := γ) hγ hray hregion hk0_ne (ht k)
     -- The exact line search gives the one-step recurrence used in the induction.
     calc
-      gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) (k + 1)
-          = gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k -
+      beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) (k + 1)
+          = beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k -
               t k • ∇ (wolfe_example_function γ)
-                (gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k) := by
+                (beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k) := by
               simp [gradient_method_succ]
       _ = !₂[r *
-            (gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k 0),
+            (beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k 0),
             -r *
-            (gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k 1)] := by
+            (beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k 1)] := by
         simpa [r] using hupdate
       _ = !₂[r * (γ * r ^ k), -r * ((-r) ^ k)] := by
         rw [hk0, hk1]
@@ -612,10 +603,10 @@ theorem wolfe_example_gradient_method_iterate_differentiableAt
     (ht :
       ∀ k,
         t k ∈ exact_line_search_stepsizes (wolfe_example_function γ)
-          (gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k)) :
+          (beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k)) :
     ∀ k,
       DifferentiableAt ℝ (wolfe_example_function γ)
-        (gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k) := by
+        (beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k) := by
   intro k
   let r : ℝ := (γ - 1) / (γ + 1)
   have hγpos : 0 < γ := by
@@ -652,10 +643,10 @@ theorem wolfe_example_gradient_method_iterate_abs_snd_le_fst
     (ht :
       ∀ k,
         t k ∈ exact_line_search_stepsizes (wolfe_example_function γ)
-          (gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k)) :
+          (beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k)) :
     ∀ k,
-      |gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k 1| ≤
-        gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k 0 := by
+      |beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k 1| ≤
+        beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k 0 := by
   intro k
   let r : ℝ := (γ - 1) / (γ + 1)
   have hr_pos : 0 < r := by
@@ -664,12 +655,12 @@ theorem wolfe_example_gradient_method_iterate_abs_snd_le_fst
     exact div_pos (by linarith) hden
   have hclosed := wolfe_example_gradient_method_iterate_formula hγ ht k
   have hk0 :
-      gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k 0 =
+      beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k 0 =
         γ * r ^ k := by
     simpa [r] using
       congrArg (fun x : EuclideanSpace ℝ (Fin 2) ↦ x 0) hclosed
   have hk1 :
-      gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k 1 =
+      beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k 1 =
         (-r) ^ k := by
     simpa [r] using
       congrArg (fun x : EuclideanSpace ℝ (Fin 2) ↦ x 1) hclosed
@@ -692,9 +683,9 @@ theorem wolfe_example_gradient_method_iterate_fst_ne_zero
     (ht :
       ∀ k,
         t k ∈ exact_line_search_stepsizes (wolfe_example_function γ)
-          (gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k)) :
+          (beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k)) :
     ∀ k,
-      gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k 0 ≠ 0 := by
+      beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k 0 ≠ 0 := by
   intro k
   let r : ℝ := (γ - 1) / (γ + 1)
   have hγpos : 0 < γ := by
@@ -705,7 +696,7 @@ theorem wolfe_example_gradient_method_iterate_fst_ne_zero
     exact div_pos (by linarith) hden
   have hclosed := wolfe_example_gradient_method_iterate_formula hγ ht k
   have hk0 :
-      gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k 0 =
+      beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k 0 =
         γ * r ^ k := by
     simpa [r] using
       congrArg (fun x : EuclideanSpace ℝ (Fin 2) ↦ x 0) hclosed
@@ -726,9 +717,9 @@ theorem wolfe_example_gradient_method_iterate_eq_closed_form
     (ht :
       ∀ k,
         t k ∈ exact_line_search_stepsizes (wolfe_example_function γ)
-          (gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k)) :
+          (beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k)) :
     ∀ k,
-      gradient_method (wolfe_example_function γ) t (wolfe_initial_point γ) k =
+      beckGradientMethod (wolfe_example_function γ) t (wolfe_initial_point γ) k =
         !₂[γ * (((γ - 1) / (γ + 1)) ^ k), (-((γ - 1) / (γ + 1))) ^ k] := by
   -- The public clause (c) is exactly the helper theorem established above.
   exact wolfe_example_gradient_method_iterate_formula hγ ht

@@ -1,4 +1,5 @@
 import Mathlib
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap05.Definition_5_16
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -13,11 +14,6 @@ consequences of strong convexity for extended-real-valued functions. In item-per
 natural owner abstraction is mathlib's `StrongConvexOn` on the real-valued restriction to the
 finite-valued domain, while the source-side exclusion of the value `-∞` remains an explicit
 separate hypothesis. -/
-
-/-- The effective domain of an extended-real-valued function is the set where the value is finite
-from above. Together with an explicit no-`-∞` hypothesis, this is the finite-valued domain used in
-the source statements. -/
-def effective_domain (f : E → EReal) : Set E := {x | f x < ⊤}
 
 -- Proof sketch: choose `x₀ ∈ effective_domain f` from `hdom`. The owner hypothesis `hstrong`
 -- yields a strictly convex real-valued restriction on `effective_domain f`, so

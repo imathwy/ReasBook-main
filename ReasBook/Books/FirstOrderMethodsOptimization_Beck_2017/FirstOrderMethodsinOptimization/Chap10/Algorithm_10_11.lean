@@ -25,7 +25,7 @@ Domain sampling:
 - `fista_momentum_update` from Algorithm 10.13 is already the local owner for the textbook
   momentum recursion `t_(k+1) = (1 + √(1 + 4 t_k^2)) / 2`;
 - `composite_model_objective` from Definition 10.2 is the chapter owner for the composite value
-  `F = f + g`, and the project already uses the bridge `f.toEReal` for real-valued smooth terms.
+  `F = f + g`, and the project already uses the bridge `f.toExtendedReal` for real-valued smooth terms.
 
 The genuinely new source content is the monotone acceptance clause choosing `x^(k+1)` from the
 two displayed candidates `z^k` and `x^k`. Because this step is a noncanonical choice, the
@@ -72,7 +72,7 @@ class is_mfista_trajectory
   x_next_mem (k : ℕ) :
     x (k + 1) ∈ ({z k, x k} : Set E)
   x_next_isMinOn (k : ℕ) :
-    IsMinOn (composite_model_objective f.toEReal g) ({z k, x k} : Set E) (x (k + 1))
+    IsMinOn (composite_model_objective f.toExtendedReal g) ({z k, x k} : Set E) (x (k + 1))
   t_succ (k : ℕ) : t (k + 1) = fista_momentum_update (t k)
   y_succ (k : ℕ) :
     y (k + 1) =
@@ -117,7 +117,7 @@ theorem is_mfista_trajectory_x_next_mem
 on the two-point candidate set `{z^k, x^k}`. -/
 theorem is_mfista_trajectory_x_next_isMinOn
     (htraj : is_mfista_trajectory f g x y z t L) (k : ℕ) :
-    IsMinOn (composite_model_objective f.toEReal g) ({z k, x k} : Set E) (x (k + 1)) :=
+    IsMinOn (composite_model_objective f.toExtendedReal g) ({z k, x k} : Set E) (x (k + 1)) :=
   htraj.x_next_isMinOn k
 
 /-- At each iteration `k`, the chosen MFISTA iterate `x^(k+1)` is either `z^k` or `x^k`. -/
@@ -131,9 +131,9 @@ theorem is_mfista_trajectory_x_next_eq_or_eq
 `F(x^(k+1)) ≤ min {F(z^k), F(x^k)}`. -/
 theorem is_mfista_trajectory_objective_le_min
     (htraj : is_mfista_trajectory f g x y z t L) (k : ℕ) :
-    composite_model_objective f.toEReal g (x (k + 1)) ≤
-      min (composite_model_objective f.toEReal g (z k))
-        (composite_model_objective f.toEReal g (x k)) := by
+    composite_model_objective f.toExtendedReal g (x (k + 1)) ≤
+      min (composite_model_objective f.toExtendedReal g (z k))
+        (composite_model_objective f.toExtendedReal g (x k)) := by
   have hmin := htraj.x_next_isMinOn k
   rw [isMinOn_iff] at hmin
   exact le_min (hmin (z k) (by simp)) (hmin (x k) (by simp))

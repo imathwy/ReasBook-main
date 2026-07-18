@@ -43,13 +43,13 @@ theorem norm_huber_is_smooth_approximation
       EReal.toReal ∘ M[μ, norm_penalty 1] = (H[μ] : E → ℝ) :=
     moreau_envelope_norm_penalty_toReal_eq_huber_function μ
   have hH :
-      (fun x : E ↦ (M[μ, (fun y : E ↦ ‖y‖).toEReal] x).toReal) = (H[μ] : E → ℝ) := by
+      (fun x : E ↦ (M[μ, (fun y : E ↦ ‖y‖).toExtendedReal] x).toReal) = (H[μ] : E → ℝ) := by
     funext x
     simpa [Function.comp, norm_penalty] using congrFun hMoreau x
   have happrox :
       IsSmoothApproximationNonneg
         (fun x : E ↦ ‖x‖)
-        (fun x ↦ (M[μ, (fun y : E ↦ ‖y‖).toEReal] x).toReal)
+        (fun x ↦ (M[μ, (fun y : E ↦ ‖y‖).toExtendedReal] x).toReal)
         1
         ((1 : NNReal) / 2)
         μ := by
@@ -75,11 +75,11 @@ theorem norm_huber_is_smooth_approximation
   · simpa only [hH] using happrox.convex
   · intro x
     calc
-      H[μ] x = (M[μ, (fun y : E ↦ ‖y‖).toEReal] x).toReal := (congrFun hH x).symm
+      H[μ] x = (M[μ, (fun y : E ↦ ‖y‖).toExtendedReal] x).toReal := (congrFun hH x).symm
       _ ≤ ‖x‖ := happrox.lower_le x
   · intro x
     calc
-      ‖x‖ ≤ (M[μ, (fun y : E ↦ ‖y‖).toEReal] x).toReal + ((((1 : NNReal) / 2 : NNReal) : ℝ) * (μ : ℝ)) :=
+      ‖x‖ ≤ (M[μ, (fun y : E ↦ ‖y‖).toExtendedReal] x).toReal + ((((1 : NNReal) / 2 : NNReal) : ℝ) * (μ : ℝ)) :=
         happrox.upper_le x
       _ = H[μ] x + ((((1 : NNReal) / 2 : NNReal) : ℝ) * (μ : ℝ)) := by
         rw [congrFun hH x]

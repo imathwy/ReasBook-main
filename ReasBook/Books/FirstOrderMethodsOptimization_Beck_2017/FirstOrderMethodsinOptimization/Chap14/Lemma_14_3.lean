@@ -36,7 +36,7 @@ variable [∀ i, NormedAddCommGroup (Ei i)] [∀ i, InnerProductSpace ℝ (Ei i)
 
 /-- Helper for Lemma 14.3: a finite value of the two-block separable regularizer forces the
 selected block penalty to be finite. -/
-lemma block_mem_effective_domain_of_mem_separableSum_effective_domain
+lemma block_mem_effective_domain_of_mem_separableSum_effective_domain_lemma_14_3
     (g : (i : Fin 2) → Ei i → EReal)
     (hg_proper : ∀ i, IsProperExtendedRealFunction (g i))
     {x : (i : Fin 2) → Ei i} (hx : x ∈ effective_domain (separableSum g)) (i : Fin 2) :
@@ -59,86 +59,86 @@ lemma block_mem_effective_domain_of_mem_separableSum_effective_domain
 
 /-- Helper for Lemma 14.3: updating only block `i` by a displacement is the same as replacing the
 block value by `x i + d`. -/
-def block_coordinate_update
+def block_coordinate_update_lemma_14_3
     (x : (i : Fin 2) → Ei i) (i : Fin 2) (d : Ei i) : (i : Fin 2) → Ei i :=
   x + Pi.single i d
 
 /-- Helper for Lemma 14.3: a zero block displacement leaves the ambient point unchanged. -/
 @[simp] theorem block_coordinate_update_zero
     (x : (i : Fin 2) → Ei i) (i : Fin 2) :
-    block_coordinate_update x i 0 = x := by
+    block_coordinate_update_lemma_14_3 x i 0 = x := by
   -- The zero single-coordinate perturbation is the zero function, so the update is trivial.
   ext j
   by_cases hji : j = i
   · subst j
-    simp [block_coordinate_update]
-  · simp [block_coordinate_update]
+    simp [block_coordinate_update_lemma_14_3]
+  · simp [block_coordinate_update_lemma_14_3]
 
 /-- Helper for Lemma 14.3: the updated block takes the shifted value `x i + d`. -/
-@[simp] theorem block_coordinate_update_apply_same
+@[simp] theorem block_coordinate_update_apply_same_lemma_14_3
     (x : (i : Fin 2) → Ei i) (i : Fin 2) (d : Ei i) :
-    block_coordinate_update x i d i = x i + d := by
+    block_coordinate_update_lemma_14_3 x i d i = x i + d := by
   classical
-  simp [block_coordinate_update]
+  simp [block_coordinate_update_lemma_14_3]
 
 /-- Helper for Lemma 14.3: updating block `i` by the residual to a target value reaches that
 target exactly. -/
 @[simp] theorem block_coordinate_update_apply_target
     (x : (i : Fin 2) → Ei i) (i : Fin 2) (yi : Ei i) :
-    block_coordinate_update x i (yi - x i) i = yi := by
+    block_coordinate_update_lemma_14_3 x i (yi - x i) i = yi := by
   -- Replacing the active block by the residual displacement lands exactly at the target.
-  simp [block_coordinate_update, sub_eq_add_neg, add_left_comm]
+  simp [block_coordinate_update_lemma_14_3, sub_eq_add_neg, add_left_comm]
 
 /-- Helper for Lemma 14.3: away from the active block, a block update leaves the point unchanged.
 -/
-@[simp] theorem block_coordinate_update_apply_ne
+@[simp] theorem block_coordinate_update_apply_ne_lemma_14_3
     (x : (i : Fin 2) → Ei i) {i j : Fin 2} (d : Ei i) (hji : j ≠ i) :
-    block_coordinate_update x i d j = x j := by
+    block_coordinate_update_lemma_14_3 x i d j = x j := by
   classical
-  simp [block_coordinate_update, hji]
+  simp [block_coordinate_update_lemma_14_3, hji]
 
 /-- Helper for Lemma 14.3: a one-block displacement update is pointwise the corresponding
 `Function.update`. -/
-theorem block_coordinate_update_eq_update
+theorem block_coordinate_update_eq_update_lemma_14_3
     (x : (i : Fin 2) → Ei i) (i : Fin 2) (d : Ei i) :
-    block_coordinate_update x i d =
+    block_coordinate_update_lemma_14_3 x i d =
       Function.update x i (x i + d) := by
   ext j
   by_cases hj : j = i
   · subst j
-    simp [block_coordinate_update]
-  · simp [block_coordinate_update, Function.update, hj]
+    simp [block_coordinate_update_lemma_14_3]
+  · simp [block_coordinate_update_lemma_14_3, Function.update, hj]
 
 /-- Helper for Lemma 14.3: updating block `i` by the residual to a target value is the direct
 `Function.update` to that target. -/
 theorem block_coordinate_update_eq_update_target
     (x : (i : Fin 2) → Ei i) (i : Fin 2) (yi : Ei i) :
-    block_coordinate_update x i (yi - x i) = Function.update x i yi := by
+    block_coordinate_update_lemma_14_3 x i (yi - x i) = Function.update x i yi := by
   -- Route correction: the comparison theorems are stated with `Function.update`, while the local
   -- prox candidate is built by a displacement update.
   ext j
   by_cases hj : j = i
   · subst j
     simp [Function.update]
-  · simp [block_coordinate_update, Function.update, hj]
+  · simp [block_coordinate_update_lemma_14_3, Function.update, hj]
 
 /-- Helper for Lemma 14.3: freezing all but one block turns `f` into the corresponding one-block
 slice. -/
-def block_coordinate_slice
+def block_coordinate_slice_lemma_14_3
     (f : ((i : Fin 2) → Ei i) → EReal)
     (x : (i : Fin 2) → Ei i) (i : Fin 2) : Ei i → ℝ :=
-  fun d ↦ (f (block_coordinate_update x i d)).toReal
+  fun d ↦ (f (block_coordinate_update_lemma_14_3 x i d)).toReal
 
 /-- Helper for Lemma 14.3: evaluating the frozen one-block slice at a displacement updates only
 the chosen block. -/
-@[simp] theorem block_coordinate_slice_apply
+@[simp] theorem block_coordinate_slice_apply_lemma_14_3
     (f : ((i : Fin 2) → Ei i) → EReal) (x : (i : Fin 2) → Ei i) (i : Fin 2) (d : Ei i) :
-    block_coordinate_slice f x i d = (f (block_coordinate_update x i d)).toReal :=
+    block_coordinate_slice_lemma_14_3 f x i d = (f (block_coordinate_update_lemma_14_3 x i d)).toReal :=
   rfl
 
 /-- Helper for Lemma 14.3: the one-block prox-gradient point is the chosen element of the scaled
 proximal singleton for the active block. -/
-def block_partial_prox_grad_point
+def block_partial_prox_grad_point_lemma_14_3
     (g : (i : Fin 2) → Ei i → EReal)
     (block_gradient : (i : Fin 2) → ((j : Fin 2) → Ei j) → Ei i)
     (hg_proper : ∀ i, IsProperExtendedRealFunction (g i))
@@ -157,7 +157,7 @@ def block_partial_prox_grad_point
 
 /-- Helper for Lemma 14.3: the block gradient mapping is the stepsize-scaled residual between the
 current block and its one-block prox-gradient point. -/
-def block_partial_gradient_mapping
+def block_partial_gradient_mapping_lemma_14_3
     (g : (i : Fin 2) → Ei i → EReal)
     (block_gradient : (i : Fin 2) → ((j : Fin 2) → Ei j) → Ei i)
     (hg_proper : ∀ i, IsProperExtendedRealFunction (g i))
@@ -165,48 +165,48 @@ def block_partial_gradient_mapping
     (hg_convex : ∀ i, is_convex_function (g i))
     (M : PosReal) (i : Fin 2) [ProperSpace (Ei i)] (x : (i : Fin 2) → Ei i) : Ei i :=
   (M : ℝ) •
-    (x i - block_partial_prox_grad_point g block_gradient hg_proper hg_closed hg_convex M i x)
+    (x i - block_partial_prox_grad_point_lemma_14_3 g block_gradient hg_proper hg_closed hg_convex M i x)
 
 set_option quotPrecheck false in
 scoped[Gradient] notation3:max
-    "T[" M "; " g ", " block_gradient ", " hg_proper ", " hg_closed ", " hg_convex "]" =>
-  fun x i ↦ block_partial_prox_grad_point g block_gradient hg_proper hg_closed hg_convex M i x
+    "T14[" M "; " g ", " block_gradient ", " hg_proper ", " hg_closed ", " hg_convex "]" =>
+  fun x i ↦ block_partial_prox_grad_point_lemma_14_3 g block_gradient hg_proper hg_closed hg_convex M i x
 
 set_option quotPrecheck false in
 scoped[Gradient] notation3:max
-    "T[" M "; " g ", " block_gradient ", " hg_proper ", " hg_closed ", " hg_convex "]" x:arg
+    "T14[" M "; " g ", " block_gradient ", " hg_proper ", " hg_closed ", " hg_convex "]" x:arg
       i:arg =>
-  block_partial_prox_grad_point g block_gradient hg_proper hg_closed hg_convex M i x
+  block_partial_prox_grad_point_lemma_14_3 g block_gradient hg_proper hg_closed hg_convex M i x
 
 set_option quotPrecheck false in
 scoped[Gradient] notation3:max
-    "G[" M "; " g ", " block_gradient ", " hg_proper ", " hg_closed ", " hg_convex "]" =>
-  fun x i ↦ block_partial_gradient_mapping g block_gradient hg_proper hg_closed hg_convex M i x
+    "G14[" M "; " g ", " block_gradient ", " hg_proper ", " hg_closed ", " hg_convex "]" =>
+  fun x i ↦ block_partial_gradient_mapping_lemma_14_3 g block_gradient hg_proper hg_closed hg_convex M i x
 
 set_option quotPrecheck false in
 scoped[Gradient] notation3:max
-    "G[" M "; " g ", " block_gradient ", " hg_proper ", " hg_closed ", " hg_convex "]" x:arg
+    "G14[" M "; " g ", " block_gradient ", " hg_proper ", " hg_closed ", " hg_convex "]" x:arg
       i:arg =>
-  block_partial_gradient_mapping g block_gradient hg_proper hg_closed hg_convex M i x
+  block_partial_gradient_mapping_lemma_14_3 g block_gradient hg_proper hg_closed hg_convex M i x
 
 /-- Helper for Lemma 14.3: evaluating the block gradient mapping gives the defining residual
 formula `M • (x_i - T_M^i(x))`. -/
-@[simp] theorem block_partial_gradient_mapping_def
+@[simp] theorem block_partial_gradient_mapping_def_lemma_14_3
     (g : (i : Fin 2) → Ei i → EReal)
     (block_gradient : (i : Fin 2) → ((j : Fin 2) → Ei j) → Ei i)
     (hg_proper : ∀ i, IsProperExtendedRealFunction (g i))
     (hg_closed : ∀ i, LowerSemicontinuous (g i))
     (hg_convex : ∀ i, is_convex_function (g i))
     (M : PosReal) (x : (i : Fin 2) → Ei i) (i : Fin 2) [ProperSpace (Ei i)] :
-    block_partial_gradient_mapping g block_gradient hg_proper hg_closed hg_convex M i x =
+    block_partial_gradient_mapping_lemma_14_3 g block_gradient hg_proper hg_closed hg_convex M i x =
       (M : ℝ) •
         (x i -
-          block_partial_prox_grad_point g block_gradient hg_proper hg_closed hg_convex M i x) :=
+          block_partial_prox_grad_point_lemma_14_3 g block_gradient hg_proper hg_closed hg_convex M i x) :=
   rfl
 
 /-- Helper for Lemma 14.3: the one-block prox-gradient point is the unique proximal point of the
 scaled active block penalty. -/
-theorem block_partial_prox_grad_point_eq_singleton
+theorem block_partial_prox_grad_point_eq_singleton_lemma_14_3
     (g : (i : Fin 2) → Ei i → EReal)
     (block_gradient : (i : Fin 2) → ((j : Fin 2) → Ei j) → Ei i)
     (hg_proper : ∀ i, IsProperExtendedRealFunction (g i))
@@ -215,12 +215,12 @@ theorem block_partial_prox_grad_point_eq_singleton
     (M : PosReal) (x : ((i : Fin 2) → Ei i)) (i : Fin 2) [ProperSpace (Ei i)] :
     prox[((((1 / M : PosReal) : EReal) • g i))]
       (x i - (1 / M : ℝ) • block_gradient i x) =
-        {T[M; g, block_gradient, hg_proper, hg_closed, hg_convex] x i} := by
+        {T14[M; g, block_gradient, hg_proper, hg_closed, hg_convex] x i} := by
   let hscaled :=
     scaled_function_proper_closed_convex_of_pos
       (g i) (hg_proper i) (hg_closed i) (hg_convex i) (1 / M)
   -- The local Chapter 11 prox point is defined by choosing the unique element of this singleton.
-  simpa [block_partial_prox_grad_point, hscaled] using
+  simpa [block_partial_prox_grad_point_lemma_14_3, hscaled] using
     (Classical.choose_spec <|
       prox_eq_singleton_of_proper_closed_convex
         ((((1 / M : PosReal) : EReal) • g i))
@@ -231,40 +231,41 @@ theorem block_partial_prox_grad_point_eq_singleton
 
 /-- Helper for Lemma 14.3: the frozen one-block slice satisfies the standard quadratic descent
 estimate once smoothness and the gradient at the base point are available. -/
-theorem block_coordinate_descent_lemma_of_slice_smooth
+theorem block_coordinate_descent_lemma_of_slice_smooth_lemma_14_3
     (f : ((i : Fin 2) → Ei i) → EReal)
     (block_gradient : (i : Fin 2) → ((j : Fin 2) → Ei j) → Ei i)
     (L : NNReal)
     (i : Fin 2) [ProperSpace (Ei i)]
     {x : (j : Fin 2) → Ei j}
     (h_slice_convex :
-      Convex ℝ {d : Ei i | block_coordinate_update x i d ∈ interior (effective_domain f)})
+      Convex ℝ {d : Ei i | block_coordinate_update_lemma_14_3 x i d ∈ interior (effective_domain f)})
     (h_slice_smooth :
       is_l_smooth_on
-        (block_coordinate_slice f x i)
-        {d : Ei i | block_coordinate_update x i d ∈ interior (effective_domain f)}
+        (block_coordinate_slice_lemma_14_3 f x i)
+        {d : Ei i | block_coordinate_update_lemma_14_3 x i d ∈ interior (effective_domain f)}
         L)
     (h_block_gradient_spec :
-      HasGradientAt (block_coordinate_slice f x i) (block_gradient i x) 0)
+      HasGradientAt (block_coordinate_slice_lemma_14_3 f x i) (block_gradient i x) 0)
     {d : Ei i}
     (hx : x ∈ interior (effective_domain f))
-    (hxd : block_coordinate_update x i d ∈ interior (effective_domain f)) :
-    (f (block_coordinate_update x i d)).toReal ≤
+    (hxd : block_coordinate_update_lemma_14_3 x i d ∈ interior (effective_domain f)) :
+    (f (block_coordinate_update_lemma_14_3 x i d)).toReal ≤
       (f x).toReal + inner ℝ (block_gradient i x) d + ((L : ℝ) / 2) * ‖d‖ ^ (2 : ℕ) := by
   have h0 :
-      (0 : Ei i) ∈ {d : Ei i | block_coordinate_update x i d ∈ interior (effective_domain f)} := by
+      (0 : Ei i) ∈ {d : Ei i | block_coordinate_update_lemma_14_3 x i d ∈ interior (effective_domain f)} := by
     -- The slice descent lemma starts at the zero displacement, which recovers the base point `x`.
     simpa [block_coordinate_update_zero] using hx
   have hdescent :=
     is_l_smooth_on_descent_lemma h_slice_convex h_slice_smooth h0 hxd
   -- Rewrite the frozen slice values at `0` and `d` back into the ambient objective.
   simpa
-      [block_coordinate_slice_apply, block_coordinate_update_zero, h_block_gradient_spec.gradient]
+      [block_coordinate_slice_apply_lemma_14_3, block_coordinate_update_zero,
+        h_block_gradient_spec.gradient]
     using hdescent
 
 /-- Helper for Lemma 14.3: the composite one-block objective of alternating minimization is the
 smooth term evaluated at the mixed state plus the active block penalty. -/
-def alternating_minimization_composite_block_objective
+def alternating_minimization_composite_block_objective_lemma_14_3
     (f : ((i : Fin 2) → Ei i) → EReal)
     (g : (i : Fin 2) → Ei i → EReal)
     (xk xNext : (i : Fin 2) → Ei i) (i : Fin 2) : Ei i → EReal :=
@@ -274,18 +275,18 @@ def alternating_minimization_composite_block_objective
 
 /-- Helper for Lemma 14.3: evaluating the local Chapter 14 block objective gives the textbook
 mixed-state expression. -/
-@[simp] theorem alternating_minimization_composite_block_objective_apply
+@[simp] theorem alternating_minimization_composite_block_objective_apply_lemma_14_3
     (f : ((i : Fin 2) → Ei i) → EReal)
     (g : (i : Fin 2) → Ei i → EReal)
     (xk xNext : (i : Fin 2) → Ei i) (i : Fin 2) (xi : Ei i) :
-    alternating_minimization_composite_block_objective f g xk xNext i xi =
+    alternating_minimization_composite_block_objective_lemma_14_3 f g xk xNext i xi =
       f (alternating_minimization_partial_state xk xNext i xi) + g i xi := by
-  simp [alternating_minimization_composite_block_objective]
+  simp [alternating_minimization_composite_block_objective_lemma_14_3]
 
 /-- Helper for Lemma 14.3: the standing exact alternating-minimization assumptions package the
 blockwise regularizer hypotheses, the non-`⊥` clause for `f`, the convexity of
 `effective_domain f`, and the domain compatibility needed for the Chapter 14 proof. -/
-class IsAlternatingMinimizationCompositeModel
+class IsAlternatingMinimizationCompositeModel_lemma_14_3
     (f : ((i : Fin 2) → Ei i) → EReal)
     (g : (i : Fin 2) → Ei i → EReal) : Prop where
   g_proper (i : Fin 2) : IsProperExtendedRealFunction (g i)
@@ -303,14 +304,14 @@ class IsAlternatingMinimizationCompositeModel
 
 /-- Helper for Lemma 14.3: one exact alternating-minimization step chooses each updated block as
 a global minimizer of the corresponding mixed one-block composite objective. -/
-class IsAlternatingMinimizationCompositeStep
+class IsAlternatingMinimizationCompositeStep_lemma_14_3
     (f : ((i : Fin 2) → Ei i) → EReal)
     (g : (i : Fin 2) → Ei i → EReal)
     (xk xNext : (i : Fin 2) → Ei i) : Prop
-    extends IsAlternatingMinimizationCompositeModel f g where
+    extends IsAlternatingMinimizationCompositeModel_lemma_14_3 f g where
   block_isMinOn (i : Fin 2) :
     IsMinOn
-      (alternating_minimization_composite_block_objective f g xk xNext i)
+      (alternating_minimization_composite_block_objective_lemma_14_3 f g xk xNext i)
       Set.univ
       (xNext i)
 
@@ -327,7 +328,7 @@ variable {Li : (i : Fin 2) → PosReal}
 local notation "F" => composite_model_objective f (separableSum g)
 
 variable {xk : effective_domain (separableSum g)} {xNext : (i : Fin 2) → Ei i}
-variable (hstep : IsAlternatingMinimizationCompositeStep f g xk xNext)
+variable (hstep : IsAlternatingMinimizationCompositeStep_lemma_14_3 f g xk xNext)
 
 local notation "xHalf" => alternating_minimization_partial_state xk xNext 0 (xNext 0)
 
@@ -367,27 +368,27 @@ lemma half_step_update_second_eq_next
 /-- Helper for Lemma 14.3: two successive updates of the same block add their displacements. -/
 lemma block_coordinate_update_add
     {i : Fin 2} (x : (j : Fin 2) → Ei j) (d e : Ei i) :
-    block_coordinate_update (block_coordinate_update x i d) i e =
-      block_coordinate_update x i (d + e) := by
+    block_coordinate_update_lemma_14_3 (block_coordinate_update_lemma_14_3 x i d) i e =
+      block_coordinate_update_lemma_14_3 x i (d + e) := by
   classical
   ext j
   by_cases hji : j = i
   · subst j
-    simp [block_coordinate_update, add_assoc, add_left_comm, add_comm]
-  · simp [block_coordinate_update, hji]
+    simp [block_coordinate_update_lemma_14_3, add_assoc, add_left_comm, add_comm]
+  · simp [block_coordinate_update_lemma_14_3, hji]
 
 /-- Helper for Lemma 14.3: re-updating a block by the residual displacement reaches the target
 value directly. -/
 lemma block_coordinate_update_sub
     {i : Fin 2} (x : (j : Fin 2) → Ei j) (d e : Ei i) :
-    block_coordinate_update (block_coordinate_update x i d) i (e - d) =
-      block_coordinate_update x i e := by
+    block_coordinate_update_lemma_14_3 (block_coordinate_update_lemma_14_3 x i d) i (e - d) =
+      block_coordinate_update_lemma_14_3 x i e := by
   -- Collapse the second displacement into a single update on the original state.
   calc
-    block_coordinate_update (block_coordinate_update x i d) i (e - d) =
-        block_coordinate_update x i (d + (e - d)) := by
+    block_coordinate_update_lemma_14_3 (block_coordinate_update_lemma_14_3 x i d) i (e - d) =
+        block_coordinate_update_lemma_14_3 x i (d + (e - d)) := by
       rw [block_coordinate_update_add]
-    _ = block_coordinate_update x i e := by
+    _ = block_coordinate_update_lemma_14_3 x i e := by
       congr 2
       abel
 
@@ -395,30 +396,30 @@ lemma block_coordinate_update_sub
 lemma block_coordinate_update_affine_combination
     {i : Fin 2} (x : (j : Fin 2) → Ei j) (d e : Ei i)
     {a b : ℝ} (hab : a + b = 1) :
-    a • block_coordinate_update x i d + b • block_coordinate_update x i e =
-      block_coordinate_update x i (a • d + b • e) := by
+    a • block_coordinate_update_lemma_14_3 x i d + b • block_coordinate_update_lemma_14_3 x i e =
+      block_coordinate_update_lemma_14_3 x i (a • d + b • e) := by
   classical
   ext j
   by_cases hji : j = i
   · subst j
     calc
-      a • block_coordinate_update x i d i + b • block_coordinate_update x i e i =
+      a • block_coordinate_update_lemma_14_3 x i d i + b • block_coordinate_update_lemma_14_3 x i e i =
           (a • x i + b • x i) + (a • d + b • e) := by
-            simp [block_coordinate_update, smul_add, add_assoc, add_left_comm, add_comm]
+            simp [block_coordinate_update_lemma_14_3, smul_add, add_assoc, add_left_comm, add_comm]
       _ = (a + b) • x i + (a • d + b • e) := by
         rw [← add_smul]
       _ = x i + (a • d + b • e) := by
         simp [hab]
-      _ = block_coordinate_update x i (a • d + b • e) i := by
-        simp [block_coordinate_update]
+      _ = block_coordinate_update_lemma_14_3 x i (a • d + b • e) i := by
+        simp [block_coordinate_update_lemma_14_3]
   · calc
-      a • block_coordinate_update x i d j + b • block_coordinate_update x i e j =
+      a • block_coordinate_update_lemma_14_3 x i d j + b • block_coordinate_update_lemma_14_3 x i e j =
           a • x j + b • x j := by
-            simp [block_coordinate_update, hji]
+            simp [block_coordinate_update_lemma_14_3, hji]
       _ = (a + b) • x j := by
         rw [← add_smul]
-      _ = block_coordinate_update x i (a • d + b • e) j := by
-        simp [block_coordinate_update, hji, hab]
+      _ = block_coordinate_update_lemma_14_3 x i (a • d + b • e) j := by
+        simp [block_coordinate_update_lemma_14_3, hji, hab]
 
 /-- Helper for Lemma 14.3: finiteness of the two-block separable sum forces finiteness of the
 first block term. -/
@@ -459,7 +460,7 @@ lemma block_coordinate_update_mem_effective_domain_separableSum
     {i : Fin 2} {x : (j : Fin 2) → Ei j}
     (hx : x ∈ effective_domain (separableSum g))
     {yi : Ei i} (hyi : yi ∈ effective_domain (g i)) :
-    block_coordinate_update x i (yi - x i) ∈ effective_domain (separableSum g) := by
+    block_coordinate_update_lemma_14_3 x i (yi - x i) ∈ effective_domain (separableSum g) := by
   -- Route correction: for two blocks it is cheaper to rewrite each branch explicitly than to
   -- rebuild a general inactive-penalty API.
   fin_cases i
@@ -474,11 +475,11 @@ lemma block_coordinate_update_mem_effective_domain_separableSum
     refine mem_effective_domain.mpr (lt_top_iff_ne_top.mpr ?_)
     -- The first updated point has coordinates `(yi, x 1)`, so both regularizer terms stay finite.
     intro htop
-    change separableSum g (block_coordinate_update x 0 (yi - x 0)) = ⊤ at htop
-    have hcoord0 : block_coordinate_update x 0 (yi - x 0) 0 = x 0 + (yi - x 0) := by
-      simp [block_coordinate_update]
-    have hcoord1 : block_coordinate_update x 0 (yi - x 0) 1 = x 1 := by
-      simp [block_coordinate_update]
+    change separableSum g (block_coordinate_update_lemma_14_3 x 0 (yi - x 0)) = ⊤ at htop
+    have hcoord0 : block_coordinate_update_lemma_14_3 x 0 (yi - x 0) 0 = x 0 + (yi - x 0) := by
+      simp [block_coordinate_update_lemma_14_3]
+    have hcoord1 : block_coordinate_update_lemma_14_3 x 0 (yi - x 0) 1 = x 1 := by
+      simp [block_coordinate_update_lemma_14_3]
     rw [separableSum_apply, Fin.sum_univ_two, hcoord0, hcoord1] at htop
     rw [hact] at htop
     have hsum_top : g 0 yi + g 1 (x 1) = ⊤ := htop
@@ -495,11 +496,11 @@ lemma block_coordinate_update_mem_effective_domain_separableSum
     -- The second updated point has coordinates `(x 0, yi)`, so the same finite-sum argument
     -- applies in the other branch.
     intro htop
-    change separableSum g (block_coordinate_update x 1 (yi - x 1)) = ⊤ at htop
-    have hcoord0 : block_coordinate_update x 1 (yi - x 1) 0 = x 0 := by
-      simp [block_coordinate_update]
-    have hcoord1 : block_coordinate_update x 1 (yi - x 1) 1 = x 1 + (yi - x 1) := by
-      simp [block_coordinate_update]
+    change separableSum g (block_coordinate_update_lemma_14_3 x 1 (yi - x 1)) = ⊤ at htop
+    have hcoord0 : block_coordinate_update_lemma_14_3 x 1 (yi - x 1) 0 = x 0 := by
+      simp [block_coordinate_update_lemma_14_3]
+    have hcoord1 : block_coordinate_update_lemma_14_3 x 1 (yi - x 1) 1 = x 1 + (yi - x 1) := by
+      simp [block_coordinate_update_lemma_14_3]
     rw [separableSum_apply, Fin.sum_univ_two, hcoord0, hcoord1] at htop
     rw [hact] at htop
     have hsum_top : g 0 (x 0) + g 1 yi = ⊤ := htop
@@ -509,8 +510,8 @@ lemma block_coordinate_update_mem_effective_domain_separableSum
 the active block term plus the frozen inactive penalty. -/
 lemma block_update_full_objective_split
     {i : Fin 2} {x : (j : Fin 2) → Ei j} (yi : Ei i) :
-    F (block_coordinate_update x i (yi - x i)) =
-      f (block_coordinate_update x i (yi - x i)) + g i yi +
+    F (block_coordinate_update_lemma_14_3 x i (yi - x i)) =
+      f (block_coordinate_update_lemma_14_3 x i (yi - x i)) + g i yi +
         ∑ j ∈ Finset.univ.erase i, g j (x j) := by
   fin_cases i
   · -- For the first block, the inactive penalty is exactly the second coordinate term.
@@ -521,12 +522,12 @@ lemma block_update_full_objective_split
     have hact : x 0 + (yi - x 0) = yi := by
       abel
     calc
-      F (block_coordinate_update x 0 (yi - x 0)) =
-          f (block_coordinate_update x 0 (yi - x 0)) +
+      F (block_coordinate_update_lemma_14_3 x 0 (yi - x 0)) =
+          f (block_coordinate_update_lemma_14_3 x 0 (yi - x 0)) +
             (g 0 (x 0 + (yi - x 0)) + g 1 (x 1)) := by
               rw [composite_model_objective_apply, separableSum_apply, Fin.sum_univ_two]
-              simp [block_coordinate_update]
-      _ = f (block_coordinate_update x 0 (yi - x 0)) + g 0 yi +
+              simp [block_coordinate_update_lemma_14_3]
+      _ = f (block_coordinate_update_lemma_14_3 x 0 (yi - x 0)) + g 0 yi +
             ∑ j ∈ Finset.univ.erase 0, g j (x j) := by
               rw [hact, hsum0]
               simp [add_assoc]
@@ -538,12 +539,12 @@ lemma block_update_full_objective_split
     have hact : x 1 + (yi - x 1) = yi := by
       abel
     calc
-      F (block_coordinate_update x 1 (yi - x 1)) =
-          f (block_coordinate_update x 1 (yi - x 1)) +
+      F (block_coordinate_update_lemma_14_3 x 1 (yi - x 1)) =
+          f (block_coordinate_update_lemma_14_3 x 1 (yi - x 1)) +
             (g 0 (x 0) + g 1 (x 1 + (yi - x 1))) := by
               rw [composite_model_objective_apply, separableSum_apply, Fin.sum_univ_two]
-              simp [block_coordinate_update, add_assoc, add_left_comm, add_comm]
-      _ = f (block_coordinate_update x 1 (yi - x 1)) + g 1 yi +
+              simp [block_coordinate_update_lemma_14_3, add_assoc, add_left_comm, add_comm]
+      _ = f (block_coordinate_update_lemma_14_3 x 1 (yi - x 1)) + g 1 yi +
             ∑ j ∈ Finset.univ.erase 1, g j (x j) := by
               rw [hact, hsum1]
               simp [add_assoc, add_left_comm, add_comm]
@@ -595,14 +596,14 @@ lemma full_objective_sufficient_decrease_of_active_real_inequality
     (hg_proper : ∀ j : Fin 2, IsProperExtendedRealFunction (g j))
     (h_f_ne_bot : ∀ y : ((j : Fin 2) → Ei j), f y ≠ ⊥)
     (hxg : x ∈ effective_domain (separableSum g))
-    (hyg : block_coordinate_update x i (yi - x i) ∈ effective_domain (separableSum g))
+    (hyg : block_coordinate_update_lemma_14_3 x i (yi - x i) ∈ effective_domain (separableSum g))
     (hx : x ∈ interior (effective_domain f))
-    (hy : block_coordinate_update x i (yi - x i) ∈ interior (effective_domain f))
+    (hy : block_coordinate_update_lemma_14_3 x i (yi - x i) ∈ interior (effective_domain f))
     (hreal :
-      c + (f (block_coordinate_update x i (yi - x i))).toReal + (g i yi).toReal ≤
+      c + (f (block_coordinate_update_lemma_14_3 x i (yi - x i))).toReal + (g i yi).toReal ≤
         (f x).toReal + (g i (x i)).toReal) :
-    (((c : ℝ) : EReal)) + F (block_coordinate_update x i (yi - x i)) ≤ F x := by
-  let y := block_coordinate_update x i (yi - x i)
+    (((c : ℝ) : EReal)) + F (block_coordinate_update_lemma_14_3 x i (yi - x i)) ≤ F x := by
+  let y := block_coordinate_update_lemma_14_3 x i (yi - x i)
   let inactive : EReal := ∑ j ∈ Finset.univ.erase i, g j (x j)
   have hx_finite : x ∈ effective_domain f := interior_subset hx
   have hy_finite : y ∈ effective_domain f := interior_subset hy
@@ -610,11 +611,11 @@ lemma full_objective_sufficient_decrease_of_active_real_inequality
       yi ∈ effective_domain (g i) := by
     have hy_block :
         y i ∈ effective_domain (g i) :=
-      block_mem_effective_domain_of_mem_separableSum_effective_domain g hg_proper hyg i
+      block_mem_effective_domain_of_mem_separableSum_effective_domain_lemma_14_3 g hg_proper hyg i
     simpa [y] using hy_block
   have hxi :
       x i ∈ effective_domain (g i) :=
-    block_mem_effective_domain_of_mem_separableSum_effective_domain g hg_proper hxg i
+    block_mem_effective_domain_of_mem_separableSum_effective_domain_lemma_14_3 g hg_proper hxg i
   have hfx_val :
       f x = ((((f x).toReal : ℝ)) : EReal) := by
     exact
@@ -717,23 +718,23 @@ lemma block_coordinate_slice_hasGradientAt_at_update
       ∀ {y : ((j : Fin 2) → Ei j)},
         y ∈ interior (effective_domain f) →
           HasFDerivAt
-            (block_coordinate_slice f y i)
+            (block_coordinate_slice_lemma_14_3 f y i)
             (toDualMap ℝ (Ei i) (block_gradient i y))
             0)
-    (hd : block_coordinate_update x i d ∈ interior (effective_domain f)) :
+    (hd : block_coordinate_update_lemma_14_3 x i d ∈ interior (effective_domain f)) :
     HasGradientAt
-      (block_coordinate_slice f x i)
-      (block_gradient i (block_coordinate_update x i d))
+      (block_coordinate_slice_lemma_14_3 f x i)
+      (block_gradient i (block_coordinate_update_lemma_14_3 x i d))
       d := by
-  let y := block_coordinate_update x i d
+  let y := block_coordinate_update_lemma_14_3 x i d
   have hy :
-      block_coordinate_slice f y i =
-        fun e : Ei i ↦ block_coordinate_slice f x i (d + e) := by
+      block_coordinate_slice_lemma_14_3 f y i =
+        fun e : Ei i ↦ block_coordinate_slice_lemma_14_3 f x i (d + e) := by
     funext e
-    simp [y, block_coordinate_slice_apply, block_coordinate_update_add]
+    simp [y, block_coordinate_slice_apply_lemma_14_3, block_coordinate_update_add]
   have hshift :
       HasGradientAt
-        (fun e : Ei i ↦ block_coordinate_slice f x i (d + e))
+        (fun e : Ei i ↦ block_coordinate_slice_lemma_14_3 f x i (d + e))
         (block_gradient i y)
         0 := by
     -- Recenter the slice at the updated state and use the given block derivative there.
@@ -745,21 +746,21 @@ lemma block_coordinate_slice_hasGradientAt_at_update
 
 /-- Helper for Lemma 14.3: convexity of `effective_domain f` makes the admissible slice-domain
 for a fixed block update convex. -/
-lemma block_coordinate_slice_domain_convex_of_effective_domain_convex
+lemma block_coordinate_slice_domain_convex_of_effective_domain_convex_lemma_14_3
     {i : Fin 2} {x : (j : Fin 2) → Ei j}
     (h_f_effective_domain_convex : Convex ℝ (effective_domain f)) :
-    Convex ℝ {d : Ei i | block_coordinate_update x i d ∈ interior (effective_domain f)} := by
+    Convex ℝ {d : Ei i | block_coordinate_update_lemma_14_3 x i d ∈ interior (effective_domain f)} := by
   let hinterior : Convex ℝ (interior (effective_domain f)) :=
     h_f_effective_domain_convex.interior
   intro d hd e he a b ha hb hab
   -- Push convexity from the ambient interior domain through the fixed block-update map.
   have hcomb := hinterior hd he ha hb hab
   have hcomb' :
-      a • block_coordinate_update x i d + b • block_coordinate_update x i e ∈
+      a • block_coordinate_update_lemma_14_3 x i d + b • block_coordinate_update_lemma_14_3 x i e ∈
         interior (effective_domain f) := by
     simpa using hcomb
   have hcomb'' :
-      block_coordinate_update x i (a • d + b • e) ∈ interior (effective_domain f) := by
+      block_coordinate_update_lemma_14_3 x i (a • d + b • e) ∈ interior (effective_domain f) := by
     simpa [block_coordinate_update_affine_combination (x := x) (d := d) (e := e) hab] using hcomb'
   simpa using hcomb''
 
@@ -771,18 +772,18 @@ lemma block_coordinate_slice_is_l_smooth_on_of_block_lipschitz
       ∀ {y : ((j : Fin 2) → Ei j)},
         y ∈ interior (effective_domain f) →
           HasFDerivAt
-            (block_coordinate_slice f y i)
+            (block_coordinate_slice_lemma_14_3 f y i)
             (toDualMap ℝ (Ei i) (block_gradient i y))
             0)
     (h_block_gradient_lipschitz :
       ∀ {y : ((j : Fin 2) → Ei j)} {d : Ei i},
         y ∈ interior (effective_domain f) →
-          block_coordinate_update y i d ∈ interior (effective_domain f) →
-            ‖block_gradient i y - block_gradient i (block_coordinate_update y i d)‖ ≤
+          block_coordinate_update_lemma_14_3 y i d ∈ interior (effective_domain f) →
+            ‖block_gradient i y - block_gradient i (block_coordinate_update_lemma_14_3 y i d)‖ ≤
               (Li i : ℝ) * ‖d‖) :
     is_l_smooth_on
-      (block_coordinate_slice f x i)
-      {d : Ei i | block_coordinate_update x i d ∈ interior (effective_domain f)}
+      (block_coordinate_slice_lemma_14_3 f x i)
+      {d : Ei i | block_coordinate_update_lemma_14_3 x i d ∈ interior (effective_domain f)}
       (PosReal.toNNReal (Li i)) := by
   rw [is_l_smooth_on_iff_forall_norm_sub_le]
   refine ⟨?_, ?_⟩
@@ -798,27 +799,27 @@ lemma block_coordinate_slice_is_l_smooth_on_of_block_lipschitz
         hd).differentiableAt
   · intro d hd e he
     have hde :
-        block_coordinate_update (block_coordinate_update x i d) i (e - d) =
-          block_coordinate_update x i e := by
+        block_coordinate_update_lemma_14_3 (block_coordinate_update_lemma_14_3 x i d) i (e - d) =
+          block_coordinate_update_lemma_14_3 x i e := by
       simpa using block_coordinate_update_sub (x := x) (i := i) (d := d) (e := e)
     have he' :
-        block_coordinate_update (block_coordinate_update x i d) i (e - d) ∈
+        block_coordinate_update_lemma_14_3 (block_coordinate_update_lemma_14_3 x i d) i (e - d) ∈
           interior (effective_domain f) := by
       rw [hde]
       exact he
     have hlip :
-        ‖block_gradient i (block_coordinate_update x i d) -
+        ‖block_gradient i (block_coordinate_update_lemma_14_3 x i d) -
             block_gradient i
-              (block_coordinate_update
-                (block_coordinate_update x i d)
+              (block_coordinate_update_lemma_14_3
+                (block_coordinate_update_lemma_14_3 x i d)
                 i
                 (e - d))‖ ≤
           (Li i : ℝ) * ‖e - d‖ := by
       exact h_block_gradient_lipschitz hd he'
     have hdgrad :
         HasGradientAt
-          (block_coordinate_slice f x i)
-          (block_gradient i (block_coordinate_update x i d))
+          (block_coordinate_slice_lemma_14_3 f x i)
+          (block_gradient i (block_coordinate_update_lemma_14_3 x i d))
           d :=
       block_coordinate_slice_hasGradientAt_at_update
         (x := x)
@@ -828,8 +829,8 @@ lemma block_coordinate_slice_is_l_smooth_on_of_block_lipschitz
         hd
     have hegrad :
         HasGradientAt
-          (block_coordinate_slice f x i)
-          (block_gradient i (block_coordinate_update x i e))
+          (block_coordinate_slice_lemma_14_3 f x i)
+          (block_gradient i (block_coordinate_update_lemma_14_3 x i e))
           e :=
       block_coordinate_slice_hasGradientAt_at_update
         (x := x)
@@ -847,14 +848,14 @@ lemma block_partial_prox_grad_point_mem_effective_domain
     (hg_proper : ∀ j : Fin 2, IsProperExtendedRealFunction (g j))
     (hg_closed : ∀ j : Fin 2, LowerSemicontinuous (g j))
     (hg_convex : ∀ j : Fin 2, is_convex_function (g j)) :
-    T[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i ∈ effective_domain (g i) := by
+    T14[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i ∈ effective_domain (g i) := by
   have hprox :
       prox[((((1 / Li i : PosReal) : EReal) • g i))]
           (x i - (1 / Li i : ℝ) • block_gradient i x) =
-        {T[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i} := by
+        {T14[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i} := by
     -- Identify the chosen prox point with the singleton proximal set of the scaled block penalty.
     simpa using
-      block_partial_prox_grad_point_eq_singleton
+      block_partial_prox_grad_point_eq_singleton_lemma_14_3
         g
         block_gradient
         hg_proper
@@ -869,7 +870,7 @@ lemma block_partial_prox_grad_point_mem_effective_domain
       (hg_proper i)
       (hg_convex i)
       (x i - (1 / Li i : ℝ) • block_gradient i x)
-      (T[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i)
+      (T14[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i)
       hprox with
     ⟨hmem, _⟩
   simpa using hmem
@@ -882,11 +883,11 @@ lemma block_prox_linear_term_le_toReal
     (hg_closed : ∀ j : Fin 2, LowerSemicontinuous (g j))
     (hg_convex : ∀ j : Fin 2, is_convex_function (g j))
     (hxi : x i ∈ effective_domain (g i)) :
-    let xPlus := T[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i
+    let xPlus := T14[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i
     inner ℝ (block_gradient i x) (xPlus - x i) ≤
       -(Li i : ℝ) * ‖xPlus - x i‖ ^ (2 : ℕ) +
         (g i (x i)).toReal - (g i xPlus).toReal := by
-  let xPlus := T[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i
+  let xPlus := T14[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i
   let z : Ei i := x i - (1 / Li i : ℝ) • block_gradient i x
   have hxPlus_eff :
       xPlus ∈ effective_domain (g i) :=
@@ -900,7 +901,7 @@ lemma block_prox_linear_term_le_toReal
       prox[((((1 / Li i : PosReal) : EReal) • g i))] z = {xPlus} := by
     -- Re-express the local prox point as the unique element of the scaled proximal set.
     simpa [xPlus, z] using
-      block_partial_prox_grad_point_eq_singleton
+      block_partial_prox_grad_point_eq_singleton_lemma_14_3
         g
         block_gradient
         hg_proper
@@ -1003,26 +1004,26 @@ lemma block_prox_candidate_sufficient_decrease
       ∀ {y : ((j : Fin 2) → Ei j)},
         y ∈ interior (effective_domain f) →
           HasFDerivAt
-            (block_coordinate_slice f y i)
+            (block_coordinate_slice_lemma_14_3 f y i)
             (toDualMap ℝ (Ei i) (block_gradient i y))
             0)
     (h_block_gradient_lipschitz :
       ∀ {y : ((j : Fin 2) → Ei j)} {d : Ei i},
         y ∈ interior (effective_domain f) →
-          block_coordinate_update y i d ∈ interior (effective_domain f) →
-            ‖block_gradient i y - block_gradient i (block_coordinate_update y i d)‖ ≤
+          block_coordinate_update_lemma_14_3 y i d ∈ interior (effective_domain f) →
+            ‖block_gradient i y - block_gradient i (block_coordinate_update_lemma_14_3 y i d)‖ ≤
               (Li i : ℝ) * ‖d‖) :
     F x - F
-        (block_coordinate_update x i
-          (T[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i - x i)) ≥
+        (block_coordinate_update_lemma_14_3 x i
+          (T14[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i - x i)) ≥
       ((((1 : ℝ) / (2 * (Li i : ℝ))) *
-          ‖G[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i‖ ^ (2 : ℕ) : ℝ) :
+          ‖G14[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i‖ ^ (2 : ℕ) : ℝ) :
         EReal) := by
-  let xPlus := T[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i
-  let y := block_coordinate_update x i (xPlus - x i)
+  let xPlus := T14[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i
+  let y := block_coordinate_update_lemma_14_3 x i (xPlus - x i)
   have hxi :
       x i ∈ effective_domain (g i) :=
-    block_mem_effective_domain_of_mem_separableSum_effective_domain g hg_proper hxg i
+    block_mem_effective_domain_of_mem_separableSum_effective_domain_lemma_14_3 g hg_proper hxg i
   have hxPlus_eff :
       xPlus ∈ effective_domain (g i) := by
     simpa [xPlus] using
@@ -1050,7 +1051,7 @@ lemma block_prox_candidate_sufficient_decrease
     h_g_effective_domain_subset_interior_f_effective_domain hyg
   have hgrad0 :
       HasGradientAt
-        (block_coordinate_slice f x i)
+        (block_coordinate_slice_lemma_14_3 f x i)
         (block_gradient i x)
         0 := by
     -- The block descent lemma is anchored at the zero displacement of the frozen slice.
@@ -1062,14 +1063,14 @@ lemma block_prox_candidate_sufficient_decrease
           ((Li i : ℝ) / 2) * ‖xPlus - x i‖ ^ (2 : ℕ) := by
     -- Apply the slice descent lemma on the convex admissible block domain.
     simpa [xPlus, y] using
-      block_coordinate_descent_lemma_of_slice_smooth
+      block_coordinate_descent_lemma_of_slice_smooth_lemma_14_3
         (f := f)
         (block_gradient := block_gradient)
         (L := PosReal.toNNReal (Li i))
         (i := i)
         (x := x)
         (d := xPlus - x i)
-        (block_coordinate_slice_domain_convex_of_effective_domain_convex
+        (block_coordinate_slice_domain_convex_of_effective_domain_convex_lemma_14_3
           (f := f)
           (i := i)
           (x := x)
@@ -1103,17 +1104,17 @@ lemma block_prox_candidate_sufficient_decrease
         hxi
   have hcoeff_eq :
       (((1 : ℝ) / (2 * (Li i : ℝ))) *
-          ‖G[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i‖ ^ (2 : ℕ)) =
+          ‖G14[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i‖ ^ (2 : ℕ)) =
         ((Li i : ℝ) / 2) * ‖xPlus - x i‖ ^ (2 : ℕ) := by
     have hLi_nonneg : 0 ≤ (Li i : ℝ) := le_of_lt (Li i).2
     have hLi_ne : (Li i : ℝ) ≠ 0 := ne_of_gt (Li i).2
     -- Rewrite the gradient-mapping norm into the residual norm and simplify the scalar factor.
     calc
       (((1 : ℝ) / (2 * (Li i : ℝ))) *
-          ‖G[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i‖ ^ (2 : ℕ)) =
+          ‖G14[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i‖ ^ (2 : ℕ)) =
           (((1 : ℝ) / (2 * (Li i : ℝ))) *
             (((Li i : ℝ) * ‖xPlus - x i‖) ^ (2 : ℕ))) := by
-              rw [block_partial_gradient_mapping_def]
+              rw [block_partial_gradient_mapping_def_lemma_14_3]
               simp [xPlus, norm_smul, Real.norm_of_nonneg hLi_nonneg, norm_sub_rev]
       _ = ((Li i : ℝ) / 2) * ‖xPlus - x i‖ ^ (2 : ℕ) := by
             field_simp [hLi_ne]
@@ -1126,14 +1127,14 @@ lemma block_prox_candidate_sufficient_decrease
     linarith
   have hreal :
       ((1 : ℝ) / (2 * (Li i : ℝ))) *
-            ‖G[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i‖ ^ (2 : ℕ) +
+            ‖G14[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i‖ ^ (2 : ℕ) +
           (f y).toReal + (g i xPlus).toReal ≤
         (f x).toReal + (g i (x i)).toReal := by
     rw [hcoeff_eq]
     exact hreal_base
   have hbridge :
       ((((1 : ℝ) / (2 * (Li i : ℝ))) *
-            ‖G[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i‖ ^ (2 : ℕ) : ℝ) :
+            ‖G14[Li i; g, block_gradient, hg_proper, hg_closed, hg_convex] x i‖ ^ (2 : ℕ) : ℝ) :
           EReal) +
           F y ≤
         F x := by
@@ -1170,7 +1171,7 @@ lemma block_prox_candidate_sufficient_decrease
 /-- Helper for Lemma 14.3: the exact first-block minimizer beats every first-block competitor in
 the full composite objective. -/
 lemma first_block_exact_step_le_candidate
-    (hstep : IsAlternatingMinimizationCompositeStep f g xk xNext)
+    (hstep : IsAlternatingMinimizationCompositeStep_lemma_14_3 f g xk xNext)
     (xi : Ei 0) :
     F xHalf ≤ F (Function.update (xk : (j : Fin 2) → Ei j) 0 xi) := by
   have hmin := hstep.block_isMinOn 0
@@ -1186,7 +1187,7 @@ lemma first_block_exact_step_le_candidate
 /-- Helper for Lemma 14.3: the exact half-step remains in the effective domain of the
 block-separable regularizer. -/
 lemma half_step_mem_effective_domain :
-    (hstep : IsAlternatingMinimizationCompositeStep f g xk xNext) →
+    (hstep : IsAlternatingMinimizationCompositeStep_lemma_14_3 f g xk xNext) →
     xHalf ∈ effective_domain (separableSum g) := by
   intro hstep
   have hFxHalf_le_Fxk :
@@ -1213,7 +1214,7 @@ lemma half_step_mem_effective_domain :
 /-- Helper for Lemma 14.3: the exact second-block minimizer beats every second-block competitor in
 the full composite objective. -/
 lemma second_block_exact_step_le_candidate
-    (hstep : IsAlternatingMinimizationCompositeStep f g xk xNext)
+    (hstep : IsAlternatingMinimizationCompositeStep_lemma_14_3 f g xk xNext)
     (xi : Ei 1) :
     F xNext ≤ F (Function.update xHalf 1 xi) := by
   have hmin := hstep.block_isMinOn 1
@@ -1242,21 +1243,21 @@ theorem alternating_minimization_two_block_half_step_sufficient_decrease
       ∀ {x : ((j : Fin 2) → Ei j)},
         x ∈ interior (effective_domain f) →
           HasFDerivAt
-            (block_coordinate_slice f x 0)
+            (block_coordinate_slice_lemma_14_3 f x 0)
             (toDualMap ℝ (Ei 0) (block_gradient 0 x))
             0)
     (h_block_gradient_lipschitz :
       ∀ {x : ((j : Fin 2) → Ei j)} {d : Ei 0},
         x ∈ interior (effective_domain f) →
-          block_coordinate_update x 0 d ∈ interior (effective_domain f) →
-            ‖block_gradient 0 x - block_gradient 0 (block_coordinate_update x 0 d)‖ ≤
+          block_coordinate_update_lemma_14_3 x 0 d ∈ interior (effective_domain f) →
+            ‖block_gradient 0 x - block_gradient 0 (block_coordinate_update_lemma_14_3 x 0 d)‖ ≤
               (Li 0 : ℝ) * ‖d‖) :
     F xk - F xHalf ≥
       ((((1 : ℝ) / (2 * (Li 0 : ℝ))) *
-          ‖G[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
+          ‖G14[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
             (2 : ℕ) : ℝ) : EReal) := by
-  let xPlus := T[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0
-  let y := block_coordinate_update (xk : (j : Fin 2) → Ei j) 0 (xPlus - (xk : (j : Fin 2) → Ei j) 0)
+  let xPlus := T14[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0
+  let y := block_coordinate_update_lemma_14_3 (xk : (j : Fin 2) → Ei j) 0 (xPlus - (xk : (j : Fin 2) → Ei j) 0)
   have hxk_int :
       (xk : (j : Fin 2) → Ei j) ∈ interior (effective_domain f) :=
     hstep.g_effective_domain_subset_interior_f_effective_domain xk.2
@@ -1290,7 +1291,7 @@ theorem alternating_minimization_two_block_half_step_sufficient_decrease
   have hcandidate :
       F (xk : (j : Fin 2) → Ei j) - F y ≥
         ((((1 : ℝ) / (2 * (Li 0 : ℝ))) *
-            ‖G[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
+            ‖G14[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
               (2 : ℕ) : ℝ) : EReal) := by
     -- Invoke the finished one-block sufficient-decrease estimate at the current iterate.
     dsimp [xPlus, y]
@@ -1351,14 +1352,14 @@ theorem alternating_minimization_two_block_half_step_sufficient_decrease
       (mem_effective_domain.mp hxHalfg).ne
   have hcandidate_add :
       ((((1 : ℝ) / (2 * (Li 0 : ℝ))) *
-            ‖G[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
+            ‖G14[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
               (2 : ℕ) : ℝ) : EReal) +
           F y ≤
         F xk := by
     exact (EReal.le_sub_iff_add_le (Or.inl hFy_ne_bot) (Or.inl hFy_ne_top)).1 hcandidate
   have hhalf_add :
       ((((1 : ℝ) / (2 * (Li 0 : ℝ))) *
-            ‖G[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
+            ‖G14[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
               (2 : ℕ) : ℝ) : EReal) +
           F xHalf ≤
         F xk := by
@@ -1366,39 +1367,39 @@ theorem alternating_minimization_two_block_half_step_sufficient_decrease
     have hcompare_add :
         F xHalf +
             ((((1 : ℝ) / (2 * (Li 0 : ℝ))) *
-                ‖G[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
+                ‖G14[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
                   (2 : ℕ) : ℝ) : EReal) ≤
           F y +
             ((((1 : ℝ) / (2 * (Li 0 : ℝ))) *
-                ‖G[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
+                ‖G14[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
                   (2 : ℕ) : ℝ) : EReal) := by
       exact add_le_add_left hcompare _
     have hcompare_add' :
         ((((1 : ℝ) / (2 * (Li 0 : ℝ))) *
-              ‖G[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
+              ‖G14[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
                 (2 : ℕ) : ℝ) : EReal) +
             F xHalf ≤
           ((((1 : ℝ) / (2 * (Li 0 : ℝ))) *
-              ‖G[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
+              ‖G14[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
                 (2 : ℕ) : ℝ) : EReal) +
             F y := by
       calc
         ((((1 : ℝ) / (2 * (Li 0 : ℝ))) *
-              ‖G[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
+              ‖G14[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
                 (2 : ℕ) : ℝ) : EReal) +
             F xHalf =
             F xHalf +
               ((((1 : ℝ) / (2 * (Li 0 : ℝ))) *
-                  ‖G[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
+                  ‖G14[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
                     (2 : ℕ) : ℝ) : EReal) := by
               rw [add_comm]
         _ ≤ F y +
               ((((1 : ℝ) / (2 * (Li 0 : ℝ))) *
-                  ‖G[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
+                  ‖G14[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
                     (2 : ℕ) : ℝ) : EReal) := hcompare_add
         _ =
             ((((1 : ℝ) / (2 * (Li 0 : ℝ))) *
-                ‖G[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
+                ‖G14[Li 0; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xk 0‖ ^
                   (2 : ℕ) : ℝ) : EReal) +
               F y := by
               rw [add_comm]
@@ -1421,21 +1422,21 @@ theorem alternating_minimization_two_block_next_step_sufficient_decrease
       ∀ {x : ((j : Fin 2) → Ei j)},
         x ∈ interior (effective_domain f) →
           HasFDerivAt
-            (block_coordinate_slice f x 1)
+            (block_coordinate_slice_lemma_14_3 f x 1)
             (toDualMap ℝ (Ei 1) (block_gradient 1 x))
             0)
     (h_block_gradient_lipschitz :
       ∀ {x : ((j : Fin 2) → Ei j)} {d : Ei 1},
         x ∈ interior (effective_domain f) →
-          block_coordinate_update x 1 d ∈ interior (effective_domain f) →
-            ‖block_gradient 1 x - block_gradient 1 (block_coordinate_update x 1 d)‖ ≤
+          block_coordinate_update_lemma_14_3 x 1 d ∈ interior (effective_domain f) →
+            ‖block_gradient 1 x - block_gradient 1 (block_coordinate_update_lemma_14_3 x 1 d)‖ ≤
               (Li 1 : ℝ) * ‖d‖) :
     F xHalf - F xNext ≥
       ((((1 : ℝ) / (2 * (Li 1 : ℝ))) *
-          ‖G[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
+          ‖G14[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
             (2 : ℕ) : ℝ) : EReal) := by
-  let xPlus := T[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1
-  let y := block_coordinate_update xHalf 1 (xPlus - xHalf 1)
+  let xPlus := T14[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1
+  let y := block_coordinate_update_lemma_14_3 xHalf 1 (xPlus - xHalf 1)
   have hxHalfg :
       xHalf ∈ effective_domain (separableSum g) :=
     half_step_mem_effective_domain
@@ -1473,7 +1474,7 @@ theorem alternating_minimization_two_block_next_step_sufficient_decrease
   have hcandidate :
       F xHalf - F y ≥
         ((((1 : ℝ) / (2 * (Li 1 : ℝ))) *
-            ‖G[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
+            ‖G14[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
               (2 : ℕ) : ℝ) : EReal) := by
     -- Apply the same one-block sufficient-decrease estimate at the exact half-step.
     dsimp [xPlus, y]
@@ -1532,14 +1533,14 @@ theorem alternating_minimization_two_block_next_step_sufficient_decrease
       lt_of_le_of_lt hnext_le_half (lt_top_iff_ne_top.mpr hFxHalf_ne_top)
   have hcandidate_add :
       ((((1 : ℝ) / (2 * (Li 1 : ℝ))) *
-            ‖G[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
+            ‖G14[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
               (2 : ℕ) : ℝ) : EReal) +
           F y ≤
         F xHalf := by
     exact (EReal.le_sub_iff_add_le (Or.inl hFy_ne_bot) (Or.inl hFy_ne_top)).1 hcandidate
   have hnext_add :
       ((((1 : ℝ) / (2 * (Li 1 : ℝ))) *
-            ‖G[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
+            ‖G14[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
               (2 : ℕ) : ℝ) : EReal) +
           F xNext ≤
         F xHalf := by
@@ -1547,39 +1548,39 @@ theorem alternating_minimization_two_block_next_step_sufficient_decrease
     have hcompare_add :
         F xNext +
             ((((1 : ℝ) / (2 * (Li 1 : ℝ))) *
-                ‖G[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
+                ‖G14[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
                   (2 : ℕ) : ℝ) : EReal) ≤
           F y +
             ((((1 : ℝ) / (2 * (Li 1 : ℝ))) *
-                ‖G[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
+                ‖G14[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
                   (2 : ℕ) : ℝ) : EReal) := by
       exact add_le_add_left hcompare _
     have hcompare_add' :
         ((((1 : ℝ) / (2 * (Li 1 : ℝ))) *
-              ‖G[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
+              ‖G14[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
                 (2 : ℕ) : ℝ) : EReal) +
             F xNext ≤
           ((((1 : ℝ) / (2 * (Li 1 : ℝ))) *
-              ‖G[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
+              ‖G14[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
                 (2 : ℕ) : ℝ) : EReal) +
             F y := by
       calc
         ((((1 : ℝ) / (2 * (Li 1 : ℝ))) *
-              ‖G[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
+              ‖G14[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
                 (2 : ℕ) : ℝ) : EReal) +
             F xNext =
             F xNext +
               ((((1 : ℝ) / (2 * (Li 1 : ℝ))) *
-                  ‖G[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
+                  ‖G14[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
                     (2 : ℕ) : ℝ) : EReal) := by
               rw [add_comm]
         _ ≤ F y +
               ((((1 : ℝ) / (2 * (Li 1 : ℝ))) *
-                  ‖G[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
+                  ‖G14[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
                     (2 : ℕ) : ℝ) : EReal) := hcompare_add
         _ =
             ((((1 : ℝ) / (2 * (Li 1 : ℝ))) *
-                ‖G[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
+                ‖G14[Li 1; g, block_gradient, hstep.g_proper, hstep.g_closed, hstep.g_convex] xHalf 1‖ ^
                   (2 : ℕ) : ℝ) : EReal) +
               F y := by
               rw [add_comm]

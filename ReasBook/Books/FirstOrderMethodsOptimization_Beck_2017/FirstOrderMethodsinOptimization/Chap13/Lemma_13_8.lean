@@ -17,7 +17,7 @@ section
 variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [CompleteSpace E]
 variable {f : E → ℝ} {g : E → EReal}
 
-local notation "F" => composite_model_objective f.toEReal g
+local notation "F" => composite_model_objective f.toExtendedReal g
 
 /-- Helper for Lemma 13.8: the composite objective is finite at every point of `effective_domain g`
 because the smooth term is real-valued and `g` does not take the value `⊥`. -/
@@ -521,7 +521,7 @@ The theorem therefore keeps only the primitive source data not already owned ups
 convexity/no-`⊥` hypotheses on `g`, the smoothness of `f` on `effective_domain g`, and the
 explicit diameter bound `Ω` on `effective_domain g`. The descent estimate itself is then expressed
 through the canonical Chapter 13 owners above, with
-`F = composite_model_objective f.toEReal g` as the ambient objective surface. -/
+`F = composite_model_objective f.toExtendedReal g` as the ambient objective surface. -/
 
 -- Proof sketch: let `Sₖ = (generalized_conditional_gradient_gap_objective f g (x k) (p k)).toReal`
 -- and apply the Chapter 13 one-step fundamental inequality to the segment
@@ -537,7 +537,7 @@ each `pᵏ ∈ arg min_p {⟪p, ∇ f(xᵏ)⟫ + g(p)}`, and
 `xᵏ⁺¹ = xᵏ + tₖ (pᵏ - xᵏ)` with stepsizes chosen either by the adaptive rule or by exact line
 search, then every one-step objective decrease is at least
 `(1 / 2) * min {S(xᵏ), S(xᵏ)^2 / (L_f Ω^2)}`, where `S(xᵏ) = (S[f, g](x k)).toReal` and `Ω`
-bounds the diameter of `dom(g)`. Here `F = composite_model_objective f.toEReal g`. The textbook
+bounds the diameter of `dom(g)`. Here `F = composite_model_objective f.toExtendedReal g`. The textbook
 codomain restriction is represented explicitly by `hg_ne_bot : ∀ y, g y ≠ ⊥`. -/
 theorem generalized_conditional_gradient_sufficient_decrease_of_adaptive_or_exact_line_search
     {Lf : NNReal}

@@ -12,7 +12,7 @@ variable {C : Set E} {ω : E → EReal} {σ : ℝ}
 
 /- Lemma 9.4 is `source-facing`: it records the lower quadratic bound, nonnegativity, and
 definiteness properties of the Chapter 9 Bregman distance on `C × (C ∩ dom(∂ ω))`. Its owner
-abstractions are already upstream: `B[ω]` / `bregmanDistance`, `IsBregmanPotentialOn`,
+abstractions are already upstream: `B[ω]` / `extendedRealBregmanDistance`, `IsBregmanPotentialOn`,
 `subdifferential_domain`, and the strong-convexity support inequality behind clause (1). The
 source item is therefore kept as three atomic Bregman lemmas rather than a new wrapper package. -/
 

@@ -356,7 +356,7 @@ private theorem support_function_linear_fiber_eq_eval_add_indicator_dual_range
     (L : E →ₗ[ℝ] F) (x0 : E) (c : F) (hx0 : L x0 = c) (ξ : Module.Dual ℝ E) :
     support_function ({x : E | L x = c}) ξ =
       (ξ x0 : EReal) + extendedIndicator (Set.range L.dualMap) ξ := by
-  have hcone : IsCone ((LinearMap.ker L : Submodule ℝ E) : Set E) := by
+  have hcone : IsNonnegativeCone ((LinearMap.ker L : Submodule ℝ E) : Set E) := by
     intro a x hx
     -- The kernel is closed under nonnegative scaling because it is a submodule.
     change (a : ℝ) • x ∈ LinearMap.ker L

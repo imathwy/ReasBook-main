@@ -82,12 +82,12 @@ variable [IsProperExtendedRealFunction g1] [Fact (LowerSemicontinuous g1)]
 variable (x1 : ℕ → E1) (x2 : ℕ → E2) (xStar : E1 × E2) (k : ℕ)
 variable (L1 : PosReal)
 
-local notation "F" => two_block_alternating_minimization_objective f.toEReal g1 g2
+local notation "F" => two_block_alternating_minimization_objective f.toExtendedReal g1 g2
 local notation "xk" => (x1 k, x2 k)
 local notation "xHalf" => two_block_alternating_minimization_half_step x1 x2 k
 local notation "f1" => fun y1 ↦ f (y1, x2 k)
-local notation "Fx1" => two_block_alternating_minimization_x1_objective f.toEReal g1 g2 (x2 k)
-local notation "Fx2" => two_block_alternating_minimization_x2_objective f.toEReal g1 g2 (x1 k)
+local notation "Fx1" => two_block_alternating_minimization_x1_objective f.toExtendedReal g1 g2 (x2 k)
+local notation "Fx2" => two_block_alternating_minimization_x2_objective f.toExtendedReal g1 g2 (x1 k)
 local notation "phi1" => fun y1 : E1 ↦ sInf (Set.range (fun z2 : E2 ↦ F (y1, z2)))
 
 /-- Helper for Lemma 14.4: the exact first-block half-step cannot exceed the value of the
@@ -185,7 +185,7 @@ lemma x1_scaled_prox_support_inequality :
     -- The Chapter 10 prox-gradient operator is exactly the singleton proximal step for the
     -- scaled penalty at the forward-gradient point.
     simpa [t1, scaledG1, proximal_gradient_step] using
-      (prox_grad_operator_eq_singleton (f := Function.toEReal f1) (g := g1) L1
+      (prox_grad_operator_eq_singleton (f := Function.toExtendedReal f1) (g := g1) L1
         (interior_effective_domain_point_of_real f1 (x1 k)))
   rcases prox_singleton_implies_effective_domain_and_inner_support
       scaledG1 hg1_scaled.1 hg1_scaled.2.2
@@ -262,17 +262,18 @@ lemma x1_gradient_mapping_residual_term_le_norm_product :
         inner ℝ G1 ((x1 k) - xStar.1) -
           ((1 : ℝ) / (2 * (L1 : ℝ))) * ‖G1‖ ^ (2 : ℕ) := by
     -- Normalize the quadratic term to the exact scalar shape appearing in the textbook proof.
-    rw [hstep, inner_smul_left, norm_smul, Real.norm_eq_abs, abs_of_pos hL_pos]
+    rw [hstep, inner_smul_left, starRingEnd_apply, star_trivial, norm_smul,
+      Real.norm_eq_abs, abs_of_pos (one_div_pos.mpr hL_pos)]
     rw [pow_two]
     field_simp [hL_ne]
-    ring
   have hquad_nonneg :
       0 ≤ ((1 : ℝ) / (2 * (L1 : ℝ))) * ‖G1‖ ^ (2 : ℕ) := by
     positivity
   have hcoord :
       ‖(x1 k) - xStar.1‖ ≤ ‖xk - xStar‖ := by
     -- The first coordinate norm is dominated by the product-space norm.
-    simpa [xk] using (norm_fst_le (xk - xStar))
+    change ‖x1 k - xStar.1‖ ≤ ‖(x1 k, x2 k) - xStar‖
+    simpa only using (norm_fst_le ((x1 k, x2 k) - xStar))
   calc
     (L1 : ℝ) * inner ℝ (x1 k - T[L1; f1, g1] (x1 k)) ((x1 k) - xStar.1) -
         ((L1 : ℝ) / 2) * ‖x1 k - T[L1; f1, g1] (x1 k)‖ ^ (2 : ℕ) =
@@ -370,12 +371,12 @@ variable [IsProperExtendedRealFunction g2] [Fact (LowerSemicontinuous g2)]
 variable (x1 : ℕ → E1) (x2 : ℕ → E2) (xStar : E1 × E2) (k : ℕ)
 variable (L2 : PosReal)
 
-local notation "F" => two_block_alternating_minimization_objective f.toEReal g1 g2
+local notation "F" => two_block_alternating_minimization_objective f.toExtendedReal g1 g2
 local notation "xHalf" => two_block_alternating_minimization_half_step x1 x2 k
 local notation "xNext" => (x1 (k + 1), x2 (k + 1))
 local notation "f2" => fun y2 ↦ f (x1 (k + 1), y2)
-local notation "Fx1" => two_block_alternating_minimization_x1_objective f.toEReal g1 g2 (x2 k)
-local notation "Fx2" => two_block_alternating_minimization_x2_objective f.toEReal g1 g2 (x1 (k + 1))
+local notation "Fx1" => two_block_alternating_minimization_x1_objective f.toExtendedReal g1 g2 (x2 k)
+local notation "Fx2" => two_block_alternating_minimization_x2_objective f.toExtendedReal g1 g2 (x1 (k + 1))
 local notation "phi2" => fun y2 : E2 ↦ sInf (Set.range (fun z1 : E1 ↦ F (z1, y2)))
 
 /-- Helper for Lemma 14.4: the exact second-block iterate cannot exceed the value of the
@@ -473,7 +474,7 @@ lemma x2_scaled_prox_support_inequality :
     -- The symmetric `x₂` prox-gradient test point is the singleton proximal step of the scaled
     -- penalty at the forward-gradient point.
     simpa [t2, scaledG2, proximal_gradient_step] using
-      (prox_grad_operator_eq_singleton (f := Function.toEReal f2) (g := g2) L2
+      (prox_grad_operator_eq_singleton (f := Function.toExtendedReal f2) (g := g2) L2
         (interior_effective_domain_point_of_real f2 (x2 k)))
   rcases prox_singleton_implies_effective_domain_and_inner_support
       scaledG2 hg2_scaled.1 hg2_scaled.2.2
@@ -550,17 +551,18 @@ lemma x2_gradient_mapping_residual_term_le_norm_product :
         inner ℝ G2 ((x2 k) - xStar.2) -
           ((1 : ℝ) / (2 * (L2 : ℝ))) * ‖G2‖ ^ (2 : ℕ) := by
     -- Normalize the quadratic term to the exact scalar shape used in the symmetric branch.
-    rw [hstep, inner_smul_left, norm_smul, Real.norm_eq_abs, abs_of_pos hL_pos]
+    rw [hstep, inner_smul_left, starRingEnd_apply, star_trivial, norm_smul,
+      Real.norm_eq_abs, abs_of_pos (one_div_pos.mpr hL_pos)]
     rw [pow_two]
     field_simp [hL_ne]
-    ring
   have hquad_nonneg :
       0 ≤ ((1 : ℝ) / (2 * (L2 : ℝ))) * ‖G2‖ ^ (2 : ℕ) := by
     positivity
   have hcoord :
       ‖(x2 k) - xStar.2‖ ≤ ‖xHalf - xStar‖ := by
     -- The second coordinate norm is dominated by the product-space norm at the half-step.
-    simpa [xHalf] using (norm_snd_le (xHalf - xStar))
+    change ‖x2 k - xStar.2‖ ≤ ‖(x1 (k + 1), x2 k) - xStar‖
+    simpa only using (norm_snd_le ((x1 (k + 1), x2 k) - xStar))
   calc
     (L2 : ℝ) * inner ℝ (x2 k - T[L2; f2, g2] (x2 k)) ((x2 k) - xStar.2) -
         ((L2 : ℝ) / 2) * ‖x2 k - T[L2; f2, g2] (x2 k)‖ ^ (2 : ℕ) =

@@ -19,7 +19,7 @@ variable [∀ i, NormedSpace ℝ (Ei i)]
 variable {f : ((i : Fin p) → Ei i) → ℝ}
 variable {g : (i : Fin p) → Ei i → EReal}
 
-local notation "F" => composite_model_objective f.toEReal (separableSum g)
+local notation "F" => composite_model_objective f.toExtendedReal (separableSum g)
 
 /-- Helper for Chapter 14 composite-domain API: coercing a finite real sum into `EReal` agrees
 with summing the coerced terms. -/
@@ -33,28 +33,28 @@ private lemma ereal_coe_finset_sum_aux {α : Type*} (s : Finset α) (a : α → 
       simp [Finset.sum_insert, hi, ih, EReal.coe_add]
 
 omit [∀ i, NormedAddCommGroup (Ei i)] [∀ i, NormedSpace ℝ (Ei i)] in
--- Proof sketch: the real-valued smooth term `f.toEReal` is finite everywhere, so adding it does
+-- Proof sketch: the real-valued smooth term `f.toExtendedReal` is finite everywhere, so adding it does
 -- not change where the composite objective avoids `⊤`.
 /-- Helper for Chapter 14 composite-domain API: the effective domain of
-`f.toEReal + separableSum g` is exactly the effective domain of `separableSum g`. -/
+`f.toExtendedReal + separableSum g` is exactly the effective domain of `separableSum g`. -/
 lemma composite_objective_effective_domain_iff_separableSum
     {z : (i : Fin p) → Ei i} :
     z ∈ effective_domain F ↔ z ∈ effective_domain (separableSum g) := by
-  have hf_ne_bot : f.toEReal z ≠ ⊥ := by
-    simp [Function.toEReal]
-  have hf_ne_top : f.toEReal z ≠ ⊤ := by
-    simp [Function.toEReal]
+  have hf_ne_bot : f.toExtendedReal z ≠ ⊥ := by
+    simp [Function.toExtendedReal]
+  have hf_ne_top : f.toExtendedReal z ≠ ⊤ := by
+    simp [Function.toExtendedReal]
   -- Finite addition on the left preserves exactly the non-`⊤` points of the separable term.
   simpa [effective_domain, composite_model_objective, lt_top_iff_ne_top] using
-    (EReal.add_ne_top_iff_ne_top_right (x := f.toEReal z) (y := separableSum g z)
+    (EReal.add_ne_top_iff_ne_top_right (x := f.toExtendedReal z) (y := separableSum g z)
       hf_ne_bot hf_ne_top)
 
--- Proof sketch: every block penalty avoids `⊥` by properness, and `f.toEReal` also avoids `⊥`,
+-- Proof sketch: every block penalty avoids `⊥` by properness, and `f.toExtendedReal` also avoids `⊥`,
 -- so their sum never attains `⊥`.
 /-- Helper for Chapter 14 composite-domain API: the composite objective
-`f.toEReal + separableSum g` never takes the value `-∞`. -/
+`f.toExtendedReal + separableSum g` never takes the value `-∞`. -/
 lemma composite_objective_ne_bot
-    (hmodel : IsAlternatingMinimizationCompositeModel f.toEReal g)
+    (hmodel : IsAlternatingMinimizationCompositeModel f.toExtendedReal g)
     (z : (i : Fin p) → Ei i) :
     F z ≠ ⊥ := by
   have hseparable_ne_bot : separableSum g z ≠ ⊥ := by
@@ -63,14 +63,14 @@ lemma composite_objective_ne_bot
         (fun i _ ↦ (hmodel.g_proper i).ne_bot (z i))
   -- The composite value avoids `⊥` once both summands do.
   rw [composite_model_objective_apply, EReal.add_ne_bot_iff]
-  exact ⟨by simp [Function.toEReal], hseparable_ne_bot⟩
+  exact ⟨by simp [Function.toExtendedReal], hseparable_ne_bot⟩
 
 -- Proof sketch: if one block value were `⊤`, then the whole separable sum would be `⊤`,
 -- contradicting finiteness of the composite objective.
 /-- Helper for Chapter 14 composite-domain API: finiteness of the composite objective at `x`
 forces each block value `g_i(x_i)` to be finite. -/
 lemma composite_block_mem_effective_domain_of_mem
-    (hmodel : IsAlternatingMinimizationCompositeModel f.toEReal g)
+    (hmodel : IsAlternatingMinimizationCompositeModel f.toExtendedReal g)
     {x : (i : Fin p) → Ei i}
     (hx : x ∈ effective_domain F) (i : Fin p) :
     x i ∈ effective_domain (g i) := by
@@ -98,9 +98,9 @@ lemma composite_block_mem_effective_domain_of_mem
 -- still finite, so the separable sum is a real coercion and the composite point stays feasible.
 /-- Helper for Chapter 14 composite-domain API: replacing one block by another point of
 `effective_domain (g i)` preserves membership in the effective domain of
-`f.toEReal + separableSum g`. -/
+`f.toExtendedReal + separableSum g`. -/
 lemma composite_update_mem_effective_domain_of_block_mem
-    (hmodel : IsAlternatingMinimizationCompositeModel f.toEReal g)
+    (hmodel : IsAlternatingMinimizationCompositeModel f.toExtendedReal g)
     {x : (i : Fin p) → Ei i} (i : Fin p) {yi : Ei i}
     (hx : x ∈ effective_domain F) (hyi : yi ∈ effective_domain (g i)) :
     Function.update x i yi ∈ effective_domain F := by

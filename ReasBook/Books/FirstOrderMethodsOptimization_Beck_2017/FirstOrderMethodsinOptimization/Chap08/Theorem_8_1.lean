@@ -37,7 +37,7 @@ lemma subgradient_biUnion_subset_closedBall_of_isCompact
     (hC_subset : C ⊆ interior (effective_domain f)) :
     ∃ R : ℝ,
       (⋃ x ∈ C, strongDualSubdifferential f x) ⊆ closedBall (0 : StrongDual ℝ E) R := by
-  -- Apply the Chapter 3 compact-union theorem to the global subdifferential union.
+  -- Apply the Chapter 3 compact-union theorem to the global extendedRealSubdifferential union.
   rcases subdifferential_biUnion_nonempty_and_isBounded_of_isCompact_subset_interior
       (f := f) (X := C) hf_proper.ne_bot hf_convex hC_nonempty hC_compact hC_subset with
     ⟨_, hYbounded⟩

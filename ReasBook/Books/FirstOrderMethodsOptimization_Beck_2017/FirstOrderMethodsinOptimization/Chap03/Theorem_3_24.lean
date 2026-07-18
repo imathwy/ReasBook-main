@@ -165,7 +165,7 @@ theorem valueFunction_isProper_of_primalOptimalValue_and_dualOptimalSolution_exi
 -- Proof sketch: convexity follows directly from the owner theorem `value_function_is_convex`
 -- applied to the Euclidean bridge of the primal data. This clause of Theorem 3.24 depends only on
 -- convexity of the primal data; the strong-duality hypotheses used in the properness and
--- subdifferential clauses are not needed here.
+-- extendedRealSubdifferential clauses are not needed here.
 /-- Theorem 3.24 (2): if the primal data are convex, then the perturbation value function is
 convex. -/
 theorem valueFunction_is_convex_of_convex_primal_problem

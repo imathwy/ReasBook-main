@@ -20,7 +20,7 @@ statement, expressed directly through mathlib's `IsMinOn` and the Chapter 3 owne
 -- `σ`-strongly convex extended-real-valued function on `effective_domain ψ`, then apply the
 -- Chapter 5 unique-minimizer theorem to obtain a unique global minimizer. For domain membership,
 -- properness gives `xStar ∈ effective_domain ψ`, and Fermat's optimality condition together with
--- the convex sum rule for `ψ + ω` yields a nonempty subdifferential of `ω` at `xStar`.
+-- the convex sum rule for `ψ + ω` yields a nonempty extendedRealSubdifferential of `ω` at `xStar`.
 /-- Lemma 9.7: if `ω` is a Bregman potential on `dom(ψ)` and `ψ` is proper, closed, and convex,
 then the composite problem `min_x {ψ(x) + ω(x)}` has a unique minimizer, and that minimizer lies
 in `dom(ψ) ∩ dom(∂ ω)`. -/
