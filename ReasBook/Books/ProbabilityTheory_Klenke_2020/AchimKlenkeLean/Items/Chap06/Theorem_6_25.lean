@@ -79,7 +79,7 @@ private lemma tendstoInMean_yields_limit_in_measure_and_uniformIntegrable
               Finset.sum (Finset.range N) fun i ↦ (eLpNorm (fSeq i) 1 μ).toNNReal := by
           let term : ℕ → NNReal := fun i ↦ (eLpNorm (fSeq i) 1 μ).toNNReal
           have h_prefix' : term n ≤ Finset.sum (Finset.range N) term := by
-            exact Finset.single_le_sum (fun _ _ ↦ by exact zero_le _) h_mem
+            exact Finset.single_le_sum (fun _ _ ↦ by exact zero_le) h_mem
           simpa [term] using h_prefix'
         simpa [Cprefix] using h_prefix
       have h_eq :

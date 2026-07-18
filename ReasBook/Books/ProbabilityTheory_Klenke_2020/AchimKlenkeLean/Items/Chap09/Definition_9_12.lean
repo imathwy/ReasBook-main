@@ -39,7 +39,8 @@ sense. -/
 theorem isPredictableProcess_isPredictable
     [TopologicalSpace E] [MetrizableSpace E] [BorelSpace E] [SecondCountableTopology E]
     {ℱ : DiscreteFiltration} {X : ℕ → Ω → E} (hX : IsPredictableProcess ℱ X) :
-    IsPredictable ℱ X :=
-  isPredictable_of_measurable_add_one hX.measurable_zero (fun n ↦ hX.measurable_add_one n)
+    IsStronglyPredictable ℱ X :=
+  IsStronglyPredictable.of_measurable_add_one hX.measurable_zero.stronglyMeasurable
+    (fun n ↦ (hX.measurable_add_one n).stronglyMeasurable)
 
 end ProbabilityTheory

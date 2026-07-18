@@ -74,8 +74,7 @@ theorem hasLaw_rowFirstSuccessWaitingTime_of_iIndepFun_bernoulliMatrix
       HasLaw (rowFirstSuccessWaitingTime X m)
         (Measure.map (fun n : ℕ ↦ (n : ℕ∞))
           (geometricMeasure
-            (show 0 < (p : ℝ) from hp_pos)
-            (show (p : ℝ) ≤ 1 from hp_lt_one.le)))
+            (⟨(p : ℝ), p.2, (show (p : ℝ) ≤ 1 from hp_lt_one.le)⟩ : unitInterval)))
         P := sorry
 
 /-- Example 2.28: if the entries of a Boolean matrix are independent Bernoulli random variables
@@ -92,8 +91,7 @@ theorem example_2_28
         HasLaw (rowFirstSuccessWaitingTime X m)
           (Measure.map (fun n : ℕ ↦ (n : ℕ∞))
             (geometricMeasure
-              (show 0 < (p : ℝ) from hp_pos)
-              (show (p : ℝ) ≤ 1 from hp_lt_one.le)))
+              (⟨(p : ℝ), p.2, (show (p : ℝ) ≤ 1 from hp_lt_one.le)⟩ : unitInterval)))
           P := by
   exact
     ⟨iIndepFun_rowFirstSuccessWaitingTime_of_iIndepFun_bernoulliMatrix P hp_pos hp_lt_one X

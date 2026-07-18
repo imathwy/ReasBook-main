@@ -25,14 +25,14 @@ local notation "squareProcess" => fun n ω ↦ (X n ω) ^ 2
 local notation "stoppedSquareProcess" => fun n ω ↦ (stoppedProcess X τ n ω) ^ 2
 
 private theorem isPredictable_stoppedProcess {A : ℕ → Ω → ℝ}
-    (hA : IsPredictable ℱ A) (hτ : IsStoppingTime ℱ τ) :
-    IsPredictable ℱ (stoppedProcess A τ) := by
-  refine isPredictable_of_measurable_add_one ?_ ?_
+    (hA : IsStronglyPredictable ℱ A) (hτ : IsStoppingTime ℱ τ) :
+    IsStronglyPredictable ℱ (stoppedProcess A τ) := by
+  refine IsStronglyPredictable.of_measurable_add_one ?_ ?_
   · have hzero : stoppedProcess A τ 0 = A 0 := by
       ext ω
       simp [stoppedProcess]
     rw [hzero]
-    exact (hA.adapted 0).measurable
+    exact hA.stronglyAdapted 0
   · intro n
     rw [stoppedProcess_eq (n + 1)]
     have hsum_fun :
@@ -40,7 +40,7 @@ private theorem isPredictable_stoppedProcess {A : ℕ → Ω → ℝ}
           (fun ω ↦ ∑ i ∈ Finset.range (n + 1), Set.indicator {a | τ a = i} (A i) ω) :=
       Finset.measurable_fun_sum (Finset.range (n + 1)) fun i hi ↦ by
         have hi' : i ≤ n := Nat.lt_succ_iff.mp (Finset.mem_range.mp hi)
-        exact Measurable.indicator (((hA.adapted i).measurable).le <| ℱ.mono hi')
+        exact Measurable.indicator ((hA.stronglyAdapted i).measurable.le <| ℱ.mono hi')
           (hτ.measurableSet_eq_le hi')
     have hsum :
         Measurable[ℱ n] (∑ i ∈ Finset.range (n + 1), Set.indicator {a | τ a = i} (A i)) := by
@@ -49,7 +49,7 @@ private theorem isPredictable_stoppedProcess {A : ℕ → Ω → ℝ}
       simp [Finset.sum_apply]
     have hfirst :
         Measurable[ℱ n] (Set.indicator {a | n + 1 ≤ τ a} (A (n + 1))) :=
-      Measurable.indicator (hA.measurable_add_one n) <| by
+      Measurable.indicator (IsStronglyPredictable.measurable_add_one hA n).measurable <| by
         have h_eq : {a | n + 1 ≤ τ a} = {a | n < τ a} := by
           ext ω
           cases hτω : τ ω with
@@ -64,7 +64,7 @@ private theorem isPredictable_stoppedProcess {A : ℕ → Ω → ℝ}
           (Set.indicator {a | n + 1 ≤ τ a} (A (n + 1)) +
             ∑ i ∈ Finset.range (n + 1), Set.indicator {a | τ a = i} (A i)) :=
       hfirst.add hsum
-    exact hadd
+    exact hadd.stronglyMeasurable
 
 private lemma stoppedProcess_succ_sub_eq_indicator
     (τ : Ω → ℕ∞) (f : ℕ → Ω → ℝ) (n : ℕ) :

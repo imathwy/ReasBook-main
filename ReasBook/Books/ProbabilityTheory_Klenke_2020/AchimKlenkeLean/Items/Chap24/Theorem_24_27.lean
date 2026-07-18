@@ -1,4 +1,5 @@
 import Mathlib
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap24.Corollary_24_28
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -15,7 +16,7 @@ variable {Ω : Type u} [MeasurableSpace Ω]
 
 /-- The open-simplex density on the first `n` coordinates used to define the Dirichlet law with
 parameter vector `θ : Fin (n + 1) → ℝ`. -/
-def dirichletDensity {n : ℕ} (θ : Fin (n + 1) → ℝ) (x : Fin n → ℝ) : ℝ≥0∞ :=
+def dirichletChartDensity {n : ℕ} (θ : Fin (n + 1) → ℝ) (x : Fin n → ℝ) : ℝ≥0∞ :=
   ENNReal.ofReal <|
     if (∀ i : Fin n, 0 < x i) ∧ ((∑ i : Fin n, x i) < 1) then
       (Real.Gamma (∑ i : Fin (n + 1), θ i) / ∏ i : Fin (n + 1), Real.Gamma (θ i)) *
@@ -23,11 +24,11 @@ def dirichletDensity {n : ℕ} (θ : Fin (n + 1) → ℝ) (x : Fin n → ℝ) : 
         (1 - ∑ i : Fin n, x i) ^ (θ (Fin.last n) - 1)
     else 0
 
--- Proof sketch: unfold `dirichletDensity`; it is exactly the indicated Gamma-normalized density on
--- the open simplex chart of the first `n` coordinates.
+-- Proof sketch: unfold `dirichletChartDensity`; it is exactly the indicated Gamma-normalized
+-- density on the open simplex chart of the first `n` coordinates.
 /-- The defining density formula for the chart model of the Dirichlet distribution. -/
-theorem dirichletDensity_def {n : ℕ} (θ : Fin (n + 1) → ℝ) :
-    dirichletDensity θ =
+theorem dirichletChartDensity_def {n : ℕ} (θ : Fin (n + 1) → ℝ) :
+    dirichletChartDensity θ =
       fun x : Fin n → ℝ ↦
         ENNReal.ofReal <|
           if (∀ i : Fin n, 0 < x i) ∧ ((∑ i : Fin n, x i) < 1) then
@@ -36,19 +37,13 @@ theorem dirichletDensity_def {n : ℕ} (θ : Fin (n + 1) → ℝ) :
               (1 - ∑ i : Fin n, x i) ^ (θ (Fin.last n) - 1)
           else 0 := sorry
 
-/-- The Dirichlet law on `Fin (n + 1) → ℝ`, obtained by pushing forward the open-simplex density
-on the first `n` coordinates and recovering the last coordinate from the sum-to-one constraint. -/
-def dirichletMeasure {n : ℕ} (θ : Fin (n + 1) → ℝ) : Measure (Fin (n + 1) → ℝ) :=
-  ((volume : Measure (Fin n → ℝ)).withDensity (dirichletDensity θ)).map
-    (fun x ↦ Fin.snoc x (1 - ∑ i : Fin n, x i))
-
--- Proof sketch: unfold `dirichletMeasure`; by definition it is the pushforward of the chart
--- density along `x ↦ Fin.snoc x (1 - ∑ i, x i)`.
+-- Proof sketch: identify the canonical Dirichlet density on the full simplex with the pushforward
+-- of its open-simplex chart density along `x ↦ Fin.snoc x (1 - ∑ i, x i)`.
 /-- The Dirichlet law is the pushforward of its open-simplex density under the map that adds the
 last coordinate `1 - ∑ i, x i`. -/
-theorem dirichletMeasure_def {n : ℕ} (θ : Fin (n + 1) → ℝ) :
+theorem dirichletMeasure_eq_map_chartDensity {n : ℕ} (θ : Fin (n + 1) → ℝ) :
     dirichletMeasure θ =
-      ((volume : Measure (Fin n → ℝ)).withDensity (dirichletDensity θ)).map
+      ((volume : Measure (Fin n → ℝ)).withDensity (dirichletChartDensity θ)).map
         (fun x ↦ Fin.snoc x (1 - ∑ i : Fin n, x i)) := sorry
 
 -- Proof sketch: write the Dirichlet law in the open-simplex chart on the first `n` coordinates,

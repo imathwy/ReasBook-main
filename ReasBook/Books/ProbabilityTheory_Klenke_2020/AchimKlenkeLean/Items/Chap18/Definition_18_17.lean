@@ -86,7 +86,7 @@ theorem hasPositiveGibbsCoordinateMarginals_of_apply_ne_zero
     rw [gibbsCoordinateMarginal, tsum_fintype]
     simpa using
       (Finset.single_le_sum
-        (fun σ _ ↦ show 0 ≤ π (gibbsCoordinateReplace x i σ) from zero_le _)
+        (fun σ _ ↦ show 0 ≤ π (gibbsCoordinateReplace x i σ) from zero_le)
         (Finset.mem_univ (x i)) :
           π (gibbsCoordinateReplace x i (x i)) ≤ ∑ σ : S, π (gibbsCoordinateReplace x i σ))
   intro hzero

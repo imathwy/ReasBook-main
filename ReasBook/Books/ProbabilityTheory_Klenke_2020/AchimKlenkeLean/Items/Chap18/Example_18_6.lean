@@ -14,7 +14,7 @@ namespace ProbabilityTheory
 
 variable {E : Type u} [MeasurableSpace E] [DiscreteMeasurableSpace E]
 
-local instance : DecidableEq E := Classical.decEq E
+local instance example186DecidableEq : DecidableEq E := Classical.decEq E
 
 /-- Example 18.6: the independent coalescent transition matrix on `E × E`; away from the diagonal
 the two coordinates evolve independently with transition matrix `p`, and once the two coordinates

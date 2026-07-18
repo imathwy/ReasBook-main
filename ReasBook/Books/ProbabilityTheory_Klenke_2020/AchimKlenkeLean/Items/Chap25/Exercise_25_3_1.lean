@@ -97,7 +97,7 @@ theorem pathwiseItoIntegralAlong_indefiniteIntegralPath
 source-facing dyadic Itô realization for each section `v ↦ g(u, v)` against `X`. -/
 theorem hasPathwiseItoIntegralAlong_sectionKernel
     (hX : X ∈ 𝒞_qv)
-    (hsection : ∀ u : NNReal, LocallyBoundedVariationOn (g.curry u) univ)
+    (hsection : ∀ u : NNReal, LocallyBoundedVariationOn (g.curry u) Set.univ)
     (u : NNReal) :
     HasPathwiseItoIntegralAlong
       (g.curry u)
@@ -113,7 +113,7 @@ theorem hasPathwiseItoIntegralAlong_sectionKernel
 /-- Auxiliary owner-level realization for the time-accumulated kernel in Exercise 25.3.1 (1). -/
 theorem hasPathwiseItoIntegralAlong_timeAccumulation
     (hX : X ∈ 𝒞_qv)
-    (hsection : ∀ u : NNReal, LocallyBoundedVariationOn (g.curry u) univ)
+    (hsection : ∀ u : NNReal, LocallyBoundedVariationOn (g.curry u) Set.univ)
     (t : NNReal) :
     HasPathwiseItoIntegralAlong
       (timeAccumulation g t)
@@ -135,7 +135,7 @@ theorem hasPathwiseItoIntegralAlong_timeAccumulation
 time integral of the sectionwise pathwise Itô integrals. -/
 theorem pathwise_stochastic_integral_time_fubini
     (hX : X ∈ 𝒞_qv)
-    (hsection : ∀ u : NNReal, LocallyBoundedVariationOn (g.curry u) univ)
+    (hsection : ∀ u : NNReal, LocallyBoundedVariationOn (g.curry u) Set.univ)
     (t s : NNReal) :
     pathwiseItoIntegralAlong (timeAccumulation g t) X dyadicPartitionSequence s =
       ∫ u in Set.Icc (0 : ℝ) (t : ℝ),
@@ -156,7 +156,7 @@ theorem pathwise_stochastic_integral_time_fubini
 /-- Auxiliary owner-level realization for the triangular kernel in Exercise 25.3.1 (2). -/
 theorem hasPathwiseItoIntegralAlong_triangularAccumulation
     (hX : X ∈ 𝒞_qv)
-    (hsection : ∀ u : NNReal, LocallyBoundedVariationOn (g.curry u) univ)
+    (hsection : ∀ u : NNReal, LocallyBoundedVariationOn (g.curry u) Set.univ)
     :
     HasPathwiseItoIntegralAlong
       (triangularAccumulation g)
@@ -183,7 +183,7 @@ theorem hasPathwiseItoIntegralAlong_triangularAccumulation
 the triangular Fubini expression built from the sectionwise pathwise Itô integrals. -/
 theorem pathwise_stochastic_integral_triangular_fubini
     (hX : X ∈ 𝒞_qv)
-    (hsection : ∀ u : NNReal, LocallyBoundedVariationOn (g.curry u) univ)
+    (hsection : ∀ u : NNReal, LocallyBoundedVariationOn (g.curry u) Set.univ)
     (s : NNReal) :
     pathwiseItoIntegralAlong (triangularAccumulation g) X dyadicPartitionSequence s =
       ∫ u in Set.Icc (0 : ℝ) (s : ℝ),

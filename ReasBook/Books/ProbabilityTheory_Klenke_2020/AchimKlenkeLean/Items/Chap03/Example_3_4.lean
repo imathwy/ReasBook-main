@@ -36,13 +36,16 @@ theorem example_3_4_poisson_conv (lam mu : ℝ≥0) :
 `[0,1]`. -/
 theorem example_3_4_geometric_pgf {p : ℝ} (hp : 0 < p) (hp_le_one : p ≤ 1) {z : ℝ}
     (hz : z ∈ Set.Icc (0 : ℝ) 1) :
-    probabilityGeneratingSeries (geometricMeasure hp hp_le_one) z = p / (1 - (1 - p) * z) := sorry
+    probabilityGeneratingSeries
+      (geometricMeasure (⟨p, hp.le, hp_le_one⟩ : unitInterval)) z =
+        p / (1 - (1 - p) * z) := sorry
 
 /-- The `n`th positive convolution power of the geometric law has the negative binomial point
 masses from the example. -/
 theorem example_3_4_geometric_conv_power_apply {p : ℝ} (hp : 0 < p) (hp_le_one : p ≤ 1)
     (n : ℕ+) (k : ℕ) :
-    measureConvolutionPower (geometricMeasure hp hp_le_one) n {k} =
+    measureConvolutionPower
+      (geometricMeasure (⟨p, hp.le, hp_le_one⟩ : unitInterval)) n {k} =
       ENNReal.ofReal (negativeBinomialMass ((n : ℕ) : ℝ) p k) := sorry
 
 -- Proof sketch: apply the closed formulas for the singleton masses of the binomial, Poisson,
@@ -62,10 +65,12 @@ theorem example_3_4 :
         poissonMeasure lam ∗ poissonMeasure mu = poissonMeasure (lam + mu)) ∧
       (∀ {p : ℝ} (hp : 0 < p) (hp_le_one : p ≤ 1) {z : ℝ},
         z ∈ Set.Icc (0 : ℝ) 1 →
-          probabilityGeneratingSeries (geometricMeasure hp hp_le_one) z =
+          probabilityGeneratingSeries
+            (geometricMeasure (⟨p, hp.le, hp_le_one⟩ : unitInterval)) z =
             p / (1 - (1 - p) * z)) ∧
       (∀ {p : ℝ} (hp : 0 < p) (hp_le_one : p ≤ 1) (n : ℕ+) (k : ℕ),
-        measureConvolutionPower (geometricMeasure hp hp_le_one) n {k} =
+        measureConvolutionPower
+          (geometricMeasure (⟨p, hp.le, hp_le_one⟩ : unitInterval)) n {k} =
           ENNReal.ofReal (negativeBinomialMass ((n : ℕ) : ℝ) p k)) := by
   refine ⟨example_3_4_binomial_pgf, example_3_4_binomial_conv, example_3_4_poisson_pgf,
     example_3_4_poisson_conv, ?_, example_3_4_geometric_conv_power_apply⟩

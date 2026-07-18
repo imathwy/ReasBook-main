@@ -24,7 +24,7 @@ private theorem tendsto_at_of_tendstoInMeasure_of_singleton_ne_zero
     rw [tendstoInMeasure_iff_dist] at h_tendsto ⊢
     intro ε hε
     refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds (h_tendsto ε hε)
-      (fun _ ↦ zero_le _) ?_
+      (fun _ ↦ zero_le) ?_
     intro n
     exact Measure.restrict_apply_le {ω} {x | ε ≤ dist (fSeq n x) (f x)}
   rw [Metric.tendsto_atTop]

@@ -111,7 +111,9 @@ theorem finiteAlphabetEmpiricalMean_hasLargeDeviationsPrinciple {d : ℕ} [Finty
     (hLaw : ∀ n, Measure.map (X n) (P : Measure Ω) = (μ : Measure α)) :
     HasLargeDeviationsPrincipleAlong
       (finiteAlphabetEmpiricalMeanLaw P v X hXmeas)
-      (fun n ↦ ⟨((n + 1 : ℝ)⁻¹), by positivity⟩)
+      (fun n ↦ ⟨((n + 1 : ℝ)⁻¹), by
+        change (0 : ℝ) < (n + 1 : ℝ)⁻¹
+        positivity⟩)
       atTop
       (finiteAlphabetLegendreRateFunction μ v) := sorry
 

@@ -15,11 +15,11 @@ weighted absolute-value series `∑' ω, |f ω| α ω` is finite. -/
 theorem weightedDiscreteMeasure_integrable_iff {f : Ω → EReal} (α : Ω → ℝ≥0∞) :
     erealIntegrable f (Measure.count.withDensity α) ↔
       (∑' ω, (f ω).abs * α ω) < ⊤ := by
-  rw [erealIntegrable, lintegral_withDensity_eq_lintegral_mul _ Measurable.of_discrete
-    Measurable.of_discrete,
+  rw [erealIntegrable, and_iff_right (show Measurable f from Measurable.of_discrete),
+    HasFiniteIntegral,
+    lintegral_withDensity_eq_lintegral_mul _ Measurable.of_discrete Measurable.of_discrete,
     lintegral_count]
-  simpa [mul_comm] using
-    (and_iff_right (show Measurable f from Measurable.of_discrete))
+  simp [mul_comm]
 
 -- Proof sketch: expand `erealIntegral` into the difference of the lower integrals of the positive
 -- and negative parts, compute each lower integral on `Measure.count.withDensity α` as a weighted

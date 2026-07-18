@@ -51,24 +51,24 @@ private def l1SequenceToCountLpCLM :
         simpa [one_mul] using le_of_eq (l1SequenceToCountLp_norm b))
 
 private theorem boundedSequenceMemLp_count
-    (x : ℓ^∞(ℕ)) :
+    (x : ℓ^∞(ℕ, ℝ)) :
     MemLp x ∞ countℕ := by
   refine memLp_top_of_bound (measurable_of_countable fun n : ℕ ↦ x n).aestronglyMeasurable ‖x‖ ?_
   exact Filter.Eventually.of_forall fun n ↦ lp.norm_apply_le_norm ENNReal.top_ne_zero x n
 
 private def boundedSequenceToCountLp
-    (x : ℓ^∞(ℕ)) :
+    (x : ℓ^∞(ℕ, ℝ)) :
     Lp ℝ ∞ countℕ :=
   (boundedSequenceMemLp_count x).toLp x
 
 private theorem boundedSequenceToCountLp_apply
-    (x : ℓ^∞(ℕ)) (n : ℕ) :
+    (x : ℓ^∞(ℕ, ℝ)) (n : ℕ) :
     boundedSequenceToCountLp x n = x n := by
   exact
     ae_iff_of_countable.mp (MemLp.coeFn_toLp (boundedSequenceMemLp_count x)) n (by simp)
 
 private theorem boundedSequenceToCountLp_norm_le
-    (x : ℓ^∞(ℕ)) :
+    (x : ℓ^∞(ℕ, ℝ)) :
     ‖boundedSequenceToCountLp x‖ ≤ ‖x‖ := by
   rw [boundedSequenceToCountLp, Lp.norm_toLp, eLpNorm_exponent_top]
   calc
@@ -80,7 +80,7 @@ private theorem boundedSequenceToCountLp_norm_le
     _ = ‖x‖ := by simp
 
 private def boundedSequenceToCountLpCLM :
-    ℓ^∞(ℕ) →L[ℝ] Lp ℝ ∞ countℕ :=
+    ℓ^∞(ℕ, ℝ) →L[ℝ] Lp ℝ ∞ countℕ :=
   (LinearMap.mkContinuous
       { toFun := boundedSequenceToCountLp
         map_add' := fun x y ↦ by
@@ -98,16 +98,16 @@ private def boundedSequenceToCountLpCLM :
         simpa [one_mul] using boundedSequenceToCountLp_norm_le x)
 
 /-- The canonical pairing map sending an `ℓ¹` sequence to the corresponding continuous linear
-functional on `ℓ^∞(ℕ)` given by coefficientwise summation. -/
+	functional on `ℓ^∞(ℕ, ℝ)` given by coefficientwise summation. -/
 def l1BoundedSequenceDualityMap :
-    lp (fun _ : ℕ ↦ ℝ) 1 →L[ℝ] StrongDual ℝ (ℓ^∞(ℕ)) :=
-  ((precompL (ℓ^∞(ℕ)) (((mul ℝ ℝ).lpPairing countℕ 1 ∞).flip)) boundedSequenceToCountLpCLM).comp
+    lp (fun _ : ℕ ↦ ℝ) 1 →L[ℝ] StrongDual ℝ (ℓ^∞(ℕ, ℝ)) :=
+  ((precompL (ℓ^∞(ℕ, ℝ)) (((mul ℝ ℝ).lpPairing countℕ 1 ∞).flip)) boundedSequenceToCountLpCLM).comp
     l1SequenceToCountLpCLM
 
 /-- Evaluating the canonical `ℓ¹`-pairing functional on a bounded sequence gives the expected
 coefficientwise sum. -/
 theorem l1BoundedSequenceDualityMap_apply
-    (b : lp (fun _ : ℕ ↦ ℝ) 1) (x : ℓ^∞(ℕ)) :
+    (b : lp (fun _ : ℕ ↦ ℝ) 1) (x : ℓ^∞(ℕ, ℝ)) :
     l1BoundedSequenceDualityMap b x = ∑' n, x n * b n := by
   have h_integrable :
       Integrable (fun n : ℕ ↦ l1SequenceToCountLp b n * boundedSequenceToCountLp x n)
@@ -117,7 +117,7 @@ theorem l1BoundedSequenceDualityMap_apply
       (Lp.memLp (boundedSequenceToCountLp x))
   rw [l1BoundedSequenceDualityMap]
   change
-    (((precompL (ℓ^∞(ℕ)) (((mul ℝ ℝ).lpPairing countℕ 1 ∞).flip)) boundedSequenceToCountLpCLM)
+    (((precompL (ℓ^∞(ℕ, ℝ)) (((mul ℝ ℝ).lpPairing countℕ 1 ∞).flip)) boundedSequenceToCountLpCLM)
       (l1SequenceToCountLpCLM b)) x = ∑' n, x n * b n
   rw [ContinuousLinearMap.precompL_apply]
   rw [ContinuousLinearMap.flip_apply]
@@ -135,6 +135,6 @@ ordinary limit on every convergent bounded sequence but does not lie in the rang
 pairing map `ℓ¹(ℕ) → (ℓ^∞(ℕ))'`. Equivalently, it is not given by pairing with any `ℓ¹`
 sequence. -/
 theorem exists_non_l1_representable_limit_extension_on_bounded_sequences :
-    ∃ F : StrongDual ℝ (ℓ^∞(ℕ)),
-      (∀ ⦃x : ℓ^∞(ℕ)⦄ ⦃l : ℝ⦄, Tendsto (fun n ↦ x n) atTop (𝓝 l) → F x = l) ∧
+    ∃ F : StrongDual ℝ (ℓ^∞(ℕ, ℝ)),
+      (∀ ⦃x : ℓ^∞(ℕ, ℝ)⦄ ⦃l : ℝ⦄, Tendsto (fun n ↦ x n) atTop (𝓝 l) → F x = l) ∧
       F ∉ Set.range l1BoundedSequenceDualityMap := sorry

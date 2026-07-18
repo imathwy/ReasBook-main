@@ -3,7 +3,7 @@ import Mathlib
 -- Declarations for this item will be appended below by the statement pipeline.
 
 open MeasureTheory
-open scoped InnerProductSpace
+open scoped InnerProductSpace lp
 
 noncomputable section
 

@@ -16,7 +16,7 @@ local notation "RealProcess" => NNReal → Ω → ℝ
 
 variable {μ : Measure Ω} {ℱ : TimeFiltration} {H : RealProcess}
 
-namespace ProgMeasurable
+namespace IsStronglyProgressive
 
 /-- Remark 25.7: every progressively measurable real-valued process is product measurable. -/
 -- Proof sketch: for each deterministic horizon `t`, progressive measurability gives measurability
@@ -25,18 +25,19 @@ namespace ProgMeasurable
 -- measurable space, and one patches the stripwise statements over the increasing cover
 -- `[0,∞) = ⋃ n, [0,n]`.
 theorem measurable_uncurry
-    (hH : ProgMeasurable ℱ H) :
+    (hH : IsStronglyProgressive ℱ H) :
     Measurable (Function.uncurry H) := sorry
 
 /-- A progressively measurable real-valued process is adapted to the underlying filtration. -/
--- Proof sketch: `ProgMeasurable.stronglyAdapted` upgrades `H` to a strongly adapted process, and
+-- Proof sketch: `IsStronglyProgressive.stronglyAdapted` upgrades `H` to a strongly adapted
+-- process, and
 -- for real-valued processes strong adaptedness implies ordinary adaptedness.
 theorem adapted
-    (hH : ProgMeasurable ℱ H) :
+    (hH : IsStronglyProgressive ℱ H) :
     Adapted ℱ H :=
-  hH.stronglyAdapted.adapted
+  (IsStronglyProgressive.stronglyAdapted hH).adapted
 
-end ProgMeasurable
+end IsStronglyProgressive
 
 namespace Adapted
 
@@ -49,7 +50,7 @@ modification. -/
 theorem exists_progMeasurable_modification_of_productMeasurable
     (hH_adapted : Adapted ℱ H)
     (hH_prod : Measurable (Function.uncurry H)) :
-    ∃ H' : RealProcess, ProgMeasurable ℱ H' ∧ AreModifications μ H H' := sorry
+    ∃ H' : RealProcess, IsStronglyProgressive ℱ H' ∧ AreModifications μ H H' := sorry
 
 end Adapted
 

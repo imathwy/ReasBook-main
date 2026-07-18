@@ -17,13 +17,14 @@ variable {Ω : Type u} [mΩ : MeasurableSpace Ω]
 /-- Remark 9.38: the discrete stochastic integral `H · X` of a predictable real-valued process
 `H` against an adapted real-valued process `X` is itself adapted to the filtration `ℱ`. -/
 theorem stochasticIntegral_adapted {ℱ : Filtration ℕ mΩ} {H X : ℕ → Ω → ℝ}
-    (hH : IsPredictable ℱ H) (hX : Adapted ℱ X) :
+    (hH : IsStronglyPredictable ℱ H) (hX : Adapted ℱ X) :
     Adapted ℱ (stochasticIntegral H X) := by
   intro n
   change Measurable[ℱ n] (fun ω ↦ ∑ k ∈ Finset.range n, H (k + 1) ω * (X (k + 1) ω - X k ω))
   refine Finset.measurable_sum _ fun k hk ↦ ?_
   rw [Finset.mem_range] at hk
-  exact ((hH.measurable_add_one k).mono (ℱ.mono hk.le) (by rfl)).mul
+  exact (((IsStronglyPredictable.measurable_add_one hH k).measurable).mono
+      (ℱ.mono hk.le) (by rfl)).mul
     ((hX.measurable_le (Nat.succ_le_of_lt hk)).sub (hX.measurable_le hk.le))
 
 end ProbabilityTheory

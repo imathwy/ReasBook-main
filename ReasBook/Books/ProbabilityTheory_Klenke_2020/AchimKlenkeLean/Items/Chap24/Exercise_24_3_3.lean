@@ -1,4 +1,5 @@
 import Mathlib
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap24.Theorem_24_33
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -10,30 +11,6 @@ noncomputable section
 universe u v
 
 namespace ProbabilityTheory
-
-/-- The stick-breaking map associated with an infinite sequence of break proportions. -/
-def gemStickBreaking (v : ℕ → ℝ) : ℕ → ℝ :=
-  fun k ↦ (Finset.range k).prod (fun i ↦ (1 - v i)) * v k
-
--- Proof sketch: unfold `gemStickBreaking`; the `k`th coordinate is the product of the preceding
--- residual factors multiplied by the `k`th break proportion.
-/-- The `k`th GEM stick-breaking mass is the product of the previous residual factors times the
-`k`th break proportion. -/
-theorem gemStickBreaking_apply (v : ℕ → ℝ) (k : ℕ) :
-    gemStickBreaking v k = (Finset.range k).prod (fun i ↦ (1 - v i)) * v k := sorry
-
-/-- The canonical `GEM_θ` law obtained by pushing forward an i.i.d. `Beta(1, θ)` sequence through
-the stick-breaking map. -/
-def gemMeasure (θ : ℝ) : Measure (ℕ → ℝ) :=
-  Measure.map gemStickBreaking (Measure.infinitePi fun _ : ℕ ↦ betaMeasure 1 θ)
-
--- Proof sketch: unfold `gemMeasure`; by definition it is the pushforward of the product
--- `Beta(1, θ)` law under `gemStickBreaking`.
-/-- The `GEM_θ` law is the pushforward of the i.i.d. `Beta(1, θ)` product measure by the
-stick-breaking map. -/
-theorem gemMeasure_def (θ : ℝ) :
-    gemMeasure θ = Measure.map gemStickBreaking (Measure.infinitePi fun _ : ℕ ↦ betaMeasure 1 θ) :=
-  sorry
 
 /-- A source-facing realization of the zero-discount Chinese restaurant process with concentration
 parameter `θ`, exposing the table-size coordinates `N_l^n` on a probability space. The Lean table

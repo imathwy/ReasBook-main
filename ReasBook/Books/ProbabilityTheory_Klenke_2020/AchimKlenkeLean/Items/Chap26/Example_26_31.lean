@@ -13,8 +13,8 @@ namespace ProbabilityTheory
 
 local notation "PathSpace" => ContinuousMap NNReal ℝ
 
-local instance pathSpaceMeasurableSpace : MeasurableSpace PathSpace := borel _
-local instance pathSpaceBorelSpace : BorelSpace PathSpace := ⟨rfl⟩
+local instance example2631PathSpaceMeasurableSpace : MeasurableSpace PathSpace := borel _
+local instance example2631PathSpaceBorelSpace : BorelSpace PathSpace := ⟨rfl⟩
 
 -- Proof sketch: this is Theorem 21.51 specialized to the unit initial state corresponding to the
 -- rescaling `N⁻¹ Z₀ᴺ = 1`; the rescaled path law already encodes the textbook linear

@@ -33,7 +33,7 @@ theorem tendstoInMeasureOnFiniteMeasureSets_of_tendstoInMean
   have h_mean_restrict :
       Tendsto (fun n ↦ eLpNorm (fSeq n - f) 1 (μ.restrict A)) atTop (𝓝 0) := by
     refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds h_tendsto_eLpNorm
-      (fun n ↦ zero_le _) ?_
+      (fun n ↦ zero_le) ?_
     intro n
     exact eLpNorm_restrict_le (fSeq n - f) 1 μ A
   exact tendstoInMeasure_of_tendsto_eLpNorm one_ne_zero

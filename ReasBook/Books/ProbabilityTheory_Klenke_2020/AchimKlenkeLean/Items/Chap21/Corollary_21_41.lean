@@ -9,6 +9,9 @@ universe u v
 
 local notation "PathSpace" => ContinuousMap NNReal ℝ
 
+local instance : MeasurableSpace PathSpace := borel PathSpace
+local instance : BorelSpace PathSpace := ⟨rfl⟩
+
 variable {I : Type v}
 
 -- Proof sketch: apply the preceding tightness criterion on `C([0, ∞))`. The bounds needed there

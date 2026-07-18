@@ -1,4 +1,5 @@
 import Mathlib
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap24.Corollary_24_28
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -11,16 +12,11 @@ noncomputable section
 
 namespace ProbabilityTheory
 
-/-- The Dirichlet law with parameter vector `θ` on a finite coordinate set is the pushforward of
-independent Gamma laws by normalization with the total mass. -/
-def dirichletMeasure {n : ℕ} (θ : Fin n → ℝ) : Measure (Fin n → ℝ) :=
-  (Measure.pi fun i ↦ gammaMeasure (θ i) 1).map (fun y i ↦ y i / ∑ j, y j)
-
--- Proof sketch: this is just the defining normalized-Gamma pushforward formula for
--- `dirichletMeasure`.
+-- Proof sketch: identify the density definition of `dirichletMeasure` from Corollary 24.28 with
+-- the pushforward of independent Gamma laws under normalization by their total mass.
 /-- The Dirichlet measure is the pushforward of the independent Gamma product law by the
 normalization map. -/
-theorem dirichletMeasure_def {n : ℕ} (θ : Fin n → ℝ) :
+theorem dirichletMeasure_eq_map_normalizedGamma {n : ℕ} (θ : Fin n → ℝ) :
     dirichletMeasure θ =
       (Measure.pi fun i ↦ gammaMeasure (θ i) 1).map (fun y i ↦ y i / ∑ j, y j) := sorry
 

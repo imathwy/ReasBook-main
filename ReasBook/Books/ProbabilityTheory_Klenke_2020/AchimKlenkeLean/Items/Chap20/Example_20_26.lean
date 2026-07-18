@@ -7,10 +7,12 @@ open MeasureTheory Filter
 
 universe u v
 
-local instance {E : Type u} [MeasurableSpace E] : MeasurableSpace (Stream' E) :=
+local instance example2026MeasurableSpaceStream {E : Type u} [MeasurableSpace E] :
+    MeasurableSpace (Stream' E) :=
   inferInstanceAs (MeasurableSpace (ℕ → E))
 
-local instance {ι : Type*} {E : Type u} [MeasurableSpace E] (μ : Measure E)
+local instance example2026ProbabilityMeasureFamily {ι : Type*} {E : Type u}
+    [MeasurableSpace E] (μ : Measure E)
     [IsProbabilityMeasure μ] :
     ∀ i : ι, IsProbabilityMeasure ((fun _ : ι ↦ μ) i) :=
   fun _ ↦ inferInstance

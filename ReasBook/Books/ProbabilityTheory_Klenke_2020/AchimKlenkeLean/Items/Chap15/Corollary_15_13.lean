@@ -70,4 +70,4 @@ recall negativeBinomialMeasure_conv
 
 /- Corollary 15.13 (6): Item (vi). The Poisson convolution identity is already formalized
 upstream as `poissonMeasure_conv_poissonMeasure`. -/
-recall poissonMeasure_conv_poissonMeasure
+recall _root_.poissonMeasure_conv_poissonMeasure

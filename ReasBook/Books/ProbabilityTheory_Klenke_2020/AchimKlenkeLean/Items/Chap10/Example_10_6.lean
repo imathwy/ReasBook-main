@@ -61,9 +61,9 @@ local notation "A" => fun n ↦ fun _ ↦ ∑ i ∈ Finset.range n, ∫ ξ, (Y i
 /-- Example 10.6 (3): the deterministic variance-sum process
 `Aₙ = ∑_{i=1}^n E[Yᵢ^2]` is predictable for the natural filtration of the partial sums. -/
 theorem independentCenteredPartialSums_deterministicSquareVariation_predictable :
-    IsPredictable ℱY A := by
-  refine isPredictable_of_measurable_add_one measurable_const fun _ ↦ ?_
-  exact measurable_const
+    IsStronglyPredictable ℱY A := by
+  refine IsStronglyPredictable.of_measurable_add_one stronglyMeasurable_const fun _ ↦ ?_
+  exact stronglyMeasurable_const
 
 section
 

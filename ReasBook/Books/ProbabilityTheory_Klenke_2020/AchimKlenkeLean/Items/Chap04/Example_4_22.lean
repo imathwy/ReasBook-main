@@ -98,7 +98,8 @@ with parameter `1 / 2`, pushed forward along `ℕ ↪ ℕ∞`. -/
 theorem hasLaw_petersburgFirstWinWaitingTime :
     HasLaw petersburgFirstWinWaitingTime
       (Measure.map (fun n : ℕ ↦ (n : ℕ∞))
-        (geometricMeasure petersburgHalfPos petersburgHalfLeOne))
+        (geometricMeasure
+          (⟨(1 / 2 : ℝ), petersburgHalfPos.le, petersburgHalfLeOne⟩ : unitInterval)))
       fairBernoulliMeasure := by
   sorry
 

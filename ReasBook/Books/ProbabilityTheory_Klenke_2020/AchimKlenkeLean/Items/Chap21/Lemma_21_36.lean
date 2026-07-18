@@ -54,8 +54,9 @@ private theorem map_restrict_eq_of_continuousPathFiniteDimensionalDistribution_e
         fun ω : Ω ↦ I.restrict (ω : NNReal → ℝ) := by
     funext ω
     ext i
-    change f ω (e.symm i) = ω i
-    simp [f, times]
+    change (Equiv.piCongrLeft (fun _ : I ↦ ℝ) e) (fun j ↦ ω (e j : NNReal)) i = ω i
+    rw [Equiv.piCongrLeft_apply]
+    simp
   calc
     (P : Measure Ω).map (fun ω : Ω ↦ I.restrict (ω : NNReal → ℝ))
       = ((P : Measure Ω).map f).map eπ := by

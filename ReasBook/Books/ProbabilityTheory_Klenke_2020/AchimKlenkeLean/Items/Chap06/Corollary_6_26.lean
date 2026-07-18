@@ -82,4 +82,5 @@ theorem tendsto_integral_of_tendstoInMeasure_of_dominated
     Tendsto (fun n ↦ ∫ x, fSeq n x ∂μ) atTop (nhds (∫ x, f x ∂μ)) := by
   obtain ⟨hf_integrable, hL1⟩ :=
     dominated_convergence_in_measure_in_L1 hfSeq_integrable h_tendsto hg_integrable h_dom
-  exact tendsto_integral_of_L1' f hf_integrable (Filter.Eventually.of_forall hfSeq_integrable) hL1
+  exact tendsto_integral_of_L1' f hf_integrable.aestronglyMeasurable
+    (Filter.Eventually.of_forall hfSeq_integrable) hL1
