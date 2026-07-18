@@ -275,23 +275,11 @@
     },
     {
       "project": "book:FirstOrderMethodsOptimization_Beck_2017",
-      "run_id": "20260716T164200Z-g12-final-preflight-24f4d577",
-      "run_result": "infrastructure-failure",
-      "session_state": "active",
-      "project_state": "repair-pending",
-      "target_revision": "64961606ccdb84cdf984610ef65699d9223b4749",
-      "resume": {
-        "last_checkpoint": "FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap05.Proposition_5_4",
-        "current_root": "FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap05.Theorem_5_24",
-        "next_command": "lake build 'FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap05.Theorem_5_24'",
-        "branch": "repair/book-first-order-methods-optimization-20260716",
-        "commit": "621de36a4797feb0cb3af92f0a27df511ac9876c"
-      },
-      "infrastructure_failure": {
-        "condition": "The historical managed session lost the long-running automation subprocess across a yield and could not return its real completion status.",
-        "reproduction": "python3 scripts/run_automation.py --book FirstOrderMethodsOptimization_Beck_2017 --trigger g12-current-runner-retest",
-        "restore_when": "A current-runner canonical automation process survives session yield and returns its original completion status."
-      },
+      "run_id": "20260718T-p01-final-full-pass-r3",
+      "run_result": "full-pass",
+      "session_state": "completed",
+      "project_state": "full-pass",
+      "target_revision": "2ffd76943443410ada24c9d40ef9b967115c1e1e",
       "session_history": [
         {
           "kind": "historical-alias",
@@ -304,6 +292,16 @@
           "baseline_report": "20260717T-first-order-baseline-candidate",
           "sync_plan": "20260717T-first-order-noop-sync-plan",
           "note": "Reviewed 10-file local compatibility patch; project remains infrastructure-failure/repair-pending and no full-pass is claimed."
+        },
+        {
+          "kind": "single-project-repair",
+          "validation_report": "20260718T-p01-final-full-pass-r2",
+          "note": "Canonical P01 automation passed 834/834 active imports, the complete Book build, proof-bypass audit, and diff check."
+        },
+        {
+          "kind": "single-project-repair",
+          "validation_report": "20260718T-p01-final-full-pass-r3",
+          "note": "Final canonical P01 automation passed after shared-root compatibility repairs; coverage is 834/834, the complete Book and shared root build pass, proof-bypass findings are empty, and diff check passes."
         }
       ]
     },

@@ -8,8 +8,7 @@ import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Book
 -- import ConvexAnalysis_Rockafellar_1970.Book
 -- repair-pending: book:DifferentialForms_Cartan_1970; last-run=20260716T131238Z-g11-r2-final-f23ce624; status=repair-incomplete
 -- import DifferentialForms_Cartan_1970.Book
--- repair-pending: book:FirstOrderMethodsOptimization_Beck_2017; last-run=20260716T164200Z-g12-final-preflight-24f4d577; status=infrastructure-failure
--- import FirstOrderMethodsOptimization_Beck_2017.Book
+import FirstOrderMethodsOptimization_Beck_2017.Book
 import IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Book
 -- repair-pending: book:LecturesConvexOptimization_Nesterov_2018; last-run=20260717T063644Z-g17-final-eight-root-budget-24f4d577; status=repair-incomplete
 -- import LecturesConvexOptimization_Nesterov_2018.Book
