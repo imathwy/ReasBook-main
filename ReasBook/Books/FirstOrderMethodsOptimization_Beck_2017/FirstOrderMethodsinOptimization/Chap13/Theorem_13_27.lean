@@ -446,7 +446,8 @@ lemma conditional_gradient_adaptive_trial_drop_ge_lambda_gap
         (σ := σ) (δ := δ) (Lf := Lf) htraj k
   have hs_mem : s ∈ Set.Icc (0 : ℝ) 1 := by
     dsimp [s, Sx]
-    exact conditional_gradient_adaptive_stepsize_mem_Icc hS_nonneg (x k) (p k)
+    exact conditional_gradient_adaptive_stepsize_mem_Icc_theorem_13_14
+      hS_nonneg (x k) (p k)
   have htrialC : xTilde ∈ C := by
     have hcombo :
         s • p k + (1 - s) • x k ∈ effective_domain (extendedIndicator C) :=
@@ -463,11 +464,11 @@ lemma conditional_gradient_adaptive_trial_drop_ge_lambda_gap
           (((s ^ (2 : ℕ) * (Lf : ℝ)) / 2) * ‖p k - x k‖ ^ (2 : ℕ)) := by
     -- Rewrite the generalized composite objective back to `f` on feasible points.
     have hfund_raw :
-        composite_model_objective (Function.toEReal f₀) (extendedIndicator C) xTilde ≤
-          composite_model_objective (Function.toEReal f₀) (extendedIndicator C) (x k) -
+        composite_model_objective (Function.toExtendedReal f₀) (extendedIndicator C) xTilde ≤
+          composite_model_objective (Function.toExtendedReal f₀) (extendedIndicator C) (x k) -
             (s : EReal) * S[f₀, extendedIndicator C](x k) +
               ((((s ^ (2 : ℕ) * (Lf : ℝ)) / 2) * ‖p k - x k‖ ^ (2 : ℕ) : ℝ) : EReal) := by
-      simpa [Function.toEReal, xTilde, pow_two, mul_assoc, mul_left_comm, mul_comm] using
+      simpa [Function.toExtendedReal, xTilde, pow_two, mul_assoc, mul_left_comm, mul_comm] using
         (generalized_conditional_gradient_fundamental_inequality
           (f := f₀)
           (g := extendedIndicator C)
@@ -485,15 +486,15 @@ lemma conditional_gradient_adaptive_trial_drop_ge_lambda_gap
           (htraj.argmin_mem k)
           hs_mem)
     have hxk_aux :
-        composite_model_objective (Function.toEReal f₀) (extendedIndicator C) (x k) =
+        composite_model_objective (Function.toExtendedReal f₀) (extendedIndicator C) (x k) =
           (((f (x k)).toReal : ℝ) : EReal) := by
-      simpa [Function.toEReal] using
+      simpa [Function.toExtendedReal] using
         (conditional_gradient_auxiliary_objective_eq_coe_toReal
           (σ := σ) (δ := δ) (Lf := Lf) hxk)
     have htrial_aux :
-        composite_model_objective (Function.toEReal f₀) (extendedIndicator C) xTilde =
+        composite_model_objective (Function.toExtendedReal f₀) (extendedIndicator C) xTilde =
           (((f xTilde).toReal : ℝ) : EReal) := by
-      simpa [Function.toEReal] using
+      simpa [Function.toExtendedReal] using
         (conditional_gradient_auxiliary_objective_eq_coe_toReal
           (σ := σ) (δ := δ) (Lf := Lf) htrialC)
     have hgap_aux :
@@ -628,7 +629,8 @@ lemma conditional_gradient_step_drop_ge_lambda_gap
       (σ := σ) (δ := δ) (Lf := Lf) htraj k
   have hs_mem : s ∈ Set.Icc (0 : ℝ) 1 := by
     dsimp [s]
-    exact conditional_gradient_adaptive_stepsize_mem_Icc hS_nonneg (x k) (p k)
+    exact conditional_gradient_adaptive_stepsize_mem_Icc_theorem_13_14
+      hS_nonneg (x k) (p k)
   have htrial :
       λ * (S[f₀, extendedIndicator C](x k)).toReal ≤
         (f (x k)).toReal - (f xTilde).toReal := by

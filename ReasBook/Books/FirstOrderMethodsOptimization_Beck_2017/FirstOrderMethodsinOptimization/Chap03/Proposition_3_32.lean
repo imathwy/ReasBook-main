@@ -10,7 +10,7 @@ open InnerProductSpace
 open Metric
 
 /- Proposition 3.32 is a `source-facing` computation for the owner objective
-`fermatWeberObjective`. The `core/canonical` owner is the chapter subdifferential
+`fermatWeberObjective`. The `core/canonical` owner is the chapter extendedRealSubdifferential
 `subdifferentialAt`, and the Euclidean bridge/view owner is `euclideanSubdifferentialAt`. The
 supporting declarations are the finite-sum rule
 `subdifferentialAt_finset_sum_eq_sum_subdifferentialAt`, the affine Euclidean-norm formula
@@ -32,7 +32,7 @@ recall subdifferentialAt_finset_sum_eq_sum_subdifferentialAt
 
 -- Proof sketch: rewrite the weighted one-site distance `y ↦ ω * dist y a` using `dist_eq_norm`
 -- into `y ↦ ω * ‖y - a‖`, then obtain its Euclidean
--- subdifferential from the affine `ℓ₂` formula and the scalar-composition rule for the
+-- extendedRealSubdifferential from the affine `ℓ₂` formula and the scalar-composition rule for the
 -- nonnegative factor `ω`.
 private theorem euclidean_subdifferentialAt_weighted_dist_eq_piecewise
     (ω : ℝ) (hω : 0 ≤ ω) (a x : E) :
@@ -47,7 +47,7 @@ private theorem euclidean_subdifferentialAt_weighted_dist_eq_piecewise
 -- terms `fun y ↦ ω i * dist y (a i)` using `fermatWeberObjective_apply`. Apply the owner
 -- finite-sum rule for subdifferentials, then transport each summand through the private
 -- one-site bridge above.
-/-- Proposition 3.32: the vector-side subdifferential of the Fermat-Weber objective
+/-- Proposition 3.32: the vector-side extendedRealSubdifferential of the Fermat-Weber objective
 `x ↦ ∑ i, ω_i ‖x - a_i‖₂` is the finite Minkowski sum of the single-term subdifferentials, so each
 summand contributes the normalized vector `ω_i (x - a_i) / ‖x - a_i‖₂` away from its site and the
 closed Euclidean ball of radius `ω_i` at its site; this remains valid for nonnegative weights,

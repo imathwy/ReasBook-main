@@ -24,7 +24,7 @@ variable {f : E → ℝ} {g : E → EReal} {XStar : Set E} {FOpt : ℝ}
 variable {Lf σ : PosReal}
 variable {x0 xStar : E}
 
-local notation "F" => composite_model_objective f.toEReal g
+local notation "F" => composite_model_objective f.toExtendedReal g
 local notation "κ" => κ(toNNReal Lf, σ)
 local notation "t" => Real.sqrt κ
 
@@ -89,10 +89,10 @@ lemma smooth_upper_model_accepts_at_real_point
     (hfast : IsFastProximalGradientProblem f g XStar FOpt (toNNReal Lf))
     (y : E) :
     proximal_gradient_backtracking_B2_accepts
-      f.toEReal g Lf
+      f.toExtendedReal g Lf
       (interior_effective_domain_point_of_real f y) := by
   let yBase := interior_effective_domain_point_of_real f y
-  let xNext : E := T[Lf, f.toEReal, g] yBase
+  let xNext : E := T[Lf, f.toExtendedReal, g] yBase
   have hy_mem : y ∈ Set.univ := by
     simp
   have hxNext_mem : xNext ∈ Set.univ := by
@@ -113,9 +113,9 @@ lemma smooth_upper_model_accepts_at_real_point
         hy_mem
         hxNext_mem)
   -- Repackage the real-valued upper model as the Chapter 10 B2 acceptance predicate.
-  refine (proximal_gradient_backtracking_B2_accepts_iff (f := f.toEReal) (g := g) Lf yBase).2 ?_
+  refine (proximal_gradient_backtracking_B2_accepts_iff (f := f.toExtendedReal) (g := g) Lf yBase).2 ?_
   exact EReal.coe_le_coe_iff.mpr <| by
-    simpa [xNext, yBase, Function.toEReal, add_assoc] using hdescent
+    simpa [xNext, yBase, Function.toExtendedReal, add_assoc] using hdescent
 
 /-- Helper for Theorem 10.42: the global `L_f`-smoothness assumption makes the fixed curvature
 `L_f` satisfy the Chapter 10 upper-model test at every V-FISTA extrapolated point `y^k`. -/
@@ -125,7 +125,7 @@ lemma vfista_upper_model_accepts
     (hfast : IsFastProximalGradientProblem f g XStar FOpt (toNNReal Lf))
     (k : ℕ) :
     proximal_gradient_backtracking_B2_accepts
-      f.toEReal g Lf
+      f.toExtendedReal g Lf
       (interior_effective_domain_point_of_real f (vfista_y f g x0 Lf σ k)) := by
   -- Specialize the global smoothness acceptance lemma to the V-FISTA extrapolated point.
   simpa using
@@ -271,7 +271,7 @@ lemma strong_convexity_linearization_defect_lower_bound
     (hstrong : StrongConvexOn Set.univ (σ : ℝ) f)
     (x y : E) :
     ((((σ : ℝ) / 2) * ‖x - y‖ ^ (2 : ℕ) : ℝ) : EReal) ≤
-      ℓ[f.toEReal, x, interior_effective_domain_point_of_real f y] := by
+      ℓ[f.toExtendedReal, x, interior_effective_domain_point_of_real f y] := by
   have hreal :
       ((σ : ℝ) / 2) * ‖x - y‖ ^ (2 : ℕ) ≤
         f x - f y - inner ℝ (∇ f y) (x - y) :=
@@ -280,7 +280,7 @@ lemma strong_convexity_linearization_defect_lower_bound
       (Lf := Lf) (σ := σ) hproblem hstrong x y
   -- Rewrite the Chapter 10 defect once, then coerce the real inequality into `EReal`.
   rw [prox_gradient_linearization_defect_eq]
-  simpa [Function.toEReal] using (EReal.coe_le_coe_iff.mpr hreal)
+  simpa [Function.toExtendedReal] using (EReal.coe_le_coe_iff.mpr hreal)
 
 /-- Helper for Theorem 10.42: combining the accepted upper model with the strong-convex
 linearization bound yields the source one-step prox-gap inequality `(10.54)`. -/
@@ -291,26 +291,26 @@ lemma vfista_prox_gap_strongly_convex
     (hstrong : StrongConvexOn Set.univ (σ : ℝ) f)
     (x y : E) :
     let yI := interior_effective_domain_point_of_real f y
-    let xPlus := T[Lf, f.toEReal, g] yI
+    let xPlus := T[Lf, f.toExtendedReal, g] yI
     F x - F xPlus ≥
       (((((Lf : ℝ) / 2) * ‖x - xPlus‖ ^ (2 : ℕ) -
           (((Lf : ℝ) - (σ : ℝ)) / 2) * ‖x - y‖ ^ (2 : ℕ) : ℝ)) : EReal) := by
   let yI := interior_effective_domain_point_of_real f y
-  let xPlus : E := T[Lf, f.toEReal, g] yI
+  let xPlus : E := T[Lf, f.toExtendedReal, g] yI
   have hfund :
       F x - F xPlus ≥
         (((((Lf : ℝ) / 2) * ‖x - xPlus‖ ^ (2 : ℕ) -
             ((Lf : ℝ) / 2) * ‖x - y‖ ^ (2 : ℕ) : ℝ)) : EReal) +
-          ℓ[f.toEReal, x, yI] := by
+          ℓ[f.toExtendedReal, x, yI] := by
     -- Specialize the fundamental prox-gradient inequality at the real base point `y`.
     simpa [yI, xPlus] using
       (fundamental_prox_grad_inequality
-        (f := f.toEReal) (g := g) (x := x) (y := yI) Lf
+        (f := f.toExtendedReal) (g := g) (x := x) (y := yI) Lf
         (smooth_upper_model_accepts_at_real_point
           (f := f) (g := g) (Lf := Lf) hproblem y))
   have hlin :
       ((((σ : ℝ) / 2) * ‖x - y‖ ^ (2 : ℕ) : ℝ) : EReal) ≤
-        ℓ[f.toEReal, x, yI] := by
+        ℓ[f.toExtendedReal, x, yI] := by
     -- Insert the strong-convexity lower bound for the linearization defect.
     simpa [yI] using
       (strong_convexity_linearization_defect_lower_bound
@@ -321,17 +321,17 @@ lemma vfista_prox_gap_strongly_convex
           (((Lf : ℝ) - (σ : ℝ)) / 2) * ‖x - y‖ ^ (2 : ℕ) : ℝ)) : EReal) ≤
         (((((Lf : ℝ) / 2) * ‖x - xPlus‖ ^ (2 : ℕ) -
             ((Lf : ℝ) / 2) * ‖x - y‖ ^ (2 : ℕ) : ℝ)) : EReal) +
-          ℓ[f.toEReal, x, yI] := by
+          ℓ[f.toExtendedReal, x, yI] := by
     let q0 : ℝ :=
       ((Lf : ℝ) / 2) * ‖x - xPlus‖ ^ (2 : ℕ) -
         ((Lf : ℝ) / 2) * ‖x - y‖ ^ (2 : ℕ)
     have hadd :
         ((((σ : ℝ) / 2) * ‖x - y‖ ^ (2 : ℕ) : ℝ) : EReal) + (q0 : EReal) ≤
-          ℓ[f.toEReal, x, yI] + (q0 : EReal) := by
+          ℓ[f.toExtendedReal, x, yI] + (q0 : EReal) := by
       simpa [add_comm] using add_le_add_right hlin ((q0 : ℝ) : EReal)
     have hadd' :
         (q0 : EReal) + ((((σ : ℝ) / 2) * ‖x - y‖ ^ (2 : ℕ) : ℝ) : EReal) ≤
-          (q0 : EReal) + ℓ[f.toEReal, x, yI] := by
+          (q0 : EReal) + ℓ[f.toExtendedReal, x, yI] := by
       simpa [add_comm, add_left_comm, add_assoc] using hadd
     -- Collapse the added quadratic term into the source coefficient `(L_f - σ) / 2`.
     have hq :
@@ -624,7 +624,7 @@ lemma vfista_optimal_point_mem_effective_domain
   have hg_top : g xStar ≠ ⊤ := by
     intro hg_top
     have hFx_top : F xStar = ⊤ := by
-      rw [composite_model_objective_apply, Function.toEReal, hg_top]
+      rw [composite_model_objective_apply, Function.toExtendedReal, hg_top]
       simpa using (EReal.coe_add_top (f xStar))
     rw [hFx_top] at hxStar_value
     simpa using hxStar_value
@@ -641,7 +641,7 @@ lemma vfista_iterate_succ_mem_effective_domain
   rw [vfista_x_succ (f := f) (g := g) (x0 := x0) (Lf := Lf) (σ := σ) k]
   simpa using
     (prox_grad_step_mem_effective_domain_g
-      (f := f.toEReal) (g := g)
+      (f := f.toExtendedReal) (g := g)
       (y := interior_effective_domain_point_of_real f (yv k)) Lf)
 
 /-- Helper for Theorem 10.42: on `effective_domain g`, the composite objective is the real sum
@@ -655,7 +655,7 @@ lemma vfista_objective_eq_real_of_mem_effective_domain
       g x = (((g x).toReal : ℝ) : EReal) :=
     (EReal.coe_toReal (mem_effective_domain.mp hx).ne (hg_proper.ne_bot x)).symm
   -- Once `g x` is finite, the composite objective is just the sum of two real casts.
-  rw [composite_model_objective_apply, Function.toEReal, hgx_val]
+  rw [composite_model_objective_apply, Function.toExtendedReal, hgx_val]
   simp
 
 /-- Helper for Theorem 10.42: the source combination point has a finite-valued objective upper
@@ -920,18 +920,18 @@ lemma vfista_prox_gap_real_of_finite_values
     (hstrong : StrongConvexOn Set.univ (σ : ℝ) f)
     (x y : E) (hx : x ∈ effective_domain g) :
     let yI := interior_effective_domain_point_of_real f y
-    let xPlus : E := T[Lf, f.toEReal, g] yI
+    let xPlus : E := T[Lf, f.toExtendedReal, g] yI
     (((Lf : ℝ) / 2) * ‖x - xPlus‖ ^ (2 : ℕ) -
         (((Lf : ℝ) - (σ : ℝ)) / 2) * ‖x - y‖ ^ (2 : ℕ)) ≤
       (F x).toReal - (F xPlus).toReal := by
   let yI := interior_effective_domain_point_of_real f y
-  let xPlus : E := T[Lf, f.toEReal, g] yI
+  let xPlus : E := T[Lf, f.toExtendedReal, g] yI
   have hxPlus :
       xPlus ∈ effective_domain g := by
     -- The prox-gradient step at a real base point always lands in `effective_domain g`.
     simpa [xPlus, yI] using
       (prox_grad_step_mem_effective_domain_g
-        (f := f.toEReal) (g := g) (y := yI) Lf)
+        (f := f.toExtendedReal) (g := g) (y := yI) Lf)
   have hgapE :
       (((((Lf : ℝ) / 2) * ‖x - xPlus‖ ^ (2 : ℕ) -
           (((Lf : ℝ) - (σ : ℝ)) / 2) * ‖x - y‖ ^ (2 : ℕ) : ℝ)) : EReal) ≤

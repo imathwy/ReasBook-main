@@ -12,11 +12,11 @@ Domain sampling identifies the owner abstraction and the primitive/derived split
 
 - `moreau_envelope` from Definition 6.7 is the `core/canonical` owner `M[μ, f]`;
 - `moreau_envelope_apply` is the owner's canonical pointwise infimum formula;
-- `Function.toEReal` from Definition 9.2 is the canonical bridge from a real-valued function `h`
+- `Function.toExtendedReal` from Definition 9.2 is the canonical bridge from a real-valued function `h`
   to the extended-real input expected by `M[μ, f]`.
 
 The primitive data are only the smoothing parameter `μ` and the real-valued function `h`. The
-numbered item adds no new owner-level construction beyond the specialization `M[μ, h.toEReal]`,
+numbered item adds no new owner-level construction beyond the specialization `M[μ, h.toExtendedReal]`,
 so this file should present that specialized chapter object directly rather than recalling only the
 generic ingredients or reintroducing a parallel wrapper. -/
 
@@ -26,8 +26,8 @@ variable {E : Type u} [NormedAddCommGroup E]
 variable (μ : PosReal) (h : E → ℝ)
 
 /- Definition 10.29: for a real-valued function `h`, the Chapter 10 Moreau smoothing is exactly
-the specialized Chapter 6 owner `M[μ, h.toEReal]`. -/
-#check M[μ, h.toEReal]
+the specialized Chapter 6 owner `M[μ, h.toExtendedReal]`. -/
+#check M[μ, h.toExtendedReal]
 
 end
 
@@ -37,11 +37,11 @@ variable {E : Type u} [NormedAddCommGroup E]
 variable (μ : PosReal) (h : E → ℝ) (x : E)
 
 /- Its pointwise formula is the corresponding specialization of
-`moreau_envelope_apply` to `h.toEReal`. -/
+`moreau_envelope_apply` to `h.toExtendedReal`. -/
 #check
   (by
-    simpa using (moreau_envelope_apply μ h.toEReal x) :
-      M[μ, h.toEReal] x =
+    simpa using (moreau_envelope_apply μ h.toExtendedReal x) :
+      M[μ, h.toExtendedReal] x =
         ⨅ u : E, (h u : EReal) + ((((1 / (2 * μ) : ℝ) * ‖x - u‖ ^ (2 : ℕ)) : ℝ) : EReal))
 
 end

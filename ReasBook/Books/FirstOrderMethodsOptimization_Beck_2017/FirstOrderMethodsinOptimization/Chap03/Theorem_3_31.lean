@@ -13,14 +13,14 @@ variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensio
 
 /- Theorem 3.31 is `source-facing` in the chapter constrained convex-optimization API. The owner
 abstractions are already upstream: `effective_domain` from Definition 2.5,
-`is_convex_function` from Definition 2.6, `subdifferential` from Definition 3.2,
+`is_convex_function` from Definition 2.6, `extendedRealSubdifferential` from Definition 3.2,
 `normal_cone` from Definition 3.3, and mathlib's `IsMinOn` for minimizers on a set. The theorem
 therefore stays as the textbook optimality criterion itself, with no parallel local wrapper API.
 As in the chapter sum rule, the relative-interior qualification already forces
 `(effective_domain f).Nonempty`, so only the no-`⊥` half of properness is primitive data. -/
 recall effective_domain
 recall is_convex_function
-recall subdifferential
+recall extendedRealSubdifferential
 recall normal_cone
 recall IsMinOn
 
@@ -42,6 +42,6 @@ theorem isMinOn_iff_exists_subgradient_neg_mem_normal_cone
     (hri : (intrinsicInterior ℝ (effective_domain f) ∩ intrinsicInterior ℝ C).Nonempty)
     {xStar : E} (hxStar : xStar ∈ C) :
     IsMinOn f C xStar ↔
-      ∃ g : Module.Dual ℝ E, g ∈ subdifferential f xStar ∧ -g ∈ normal_cone C xStar := sorry
+      ∃ g : Module.Dual ℝ E, g ∈ extendedRealSubdifferential f xStar ∧ -g ∈ normal_cone C xStar := sorry
 
 end

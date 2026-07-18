@@ -249,7 +249,7 @@ lemma generated_iterate_mem_interior_and_objective_lt_vertices
         have hline_search :
             t ∈
               conditional_gradient_exact_line_search_stepsizes
-                (polytope_quadratic_objective Q b).toEReal
+                (polytope_quadratic_objective Q b).toExtendedReal
                 (x k) (a i0) := by
           simpa [t, polytope_quadratic_conditional_gradient_direction_eq] using
             polytope_quadratic_ratio_clip_mem_conditional_gradient_exact_line_search_stepsizes
@@ -258,7 +258,7 @@ lemma generated_iterate_mem_interior_and_objective_lt_vertices
             t ∈ Set.Icc (0 : ℝ) 1 ∧
               IsMinOn
                 (fun u ↦
-                  (polytope_quadratic_objective Q b).toEReal
+                  (polytope_quadratic_objective Q b).toExtendedReal
                     ((x k : E) + u • ((a i0) - (x k : E))))
                 (Set.Icc (0 : ℝ) 1) t := by
           simpa [conditional_gradient_exact_line_search_stepsizes,

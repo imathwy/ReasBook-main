@@ -23,7 +23,7 @@ Domain sampling:
 
 Primitive data here are only the textbook clauses special to the fast proximal-gradient regime:
 the regularity of `g`, the real-valued convex/global-smoothness clauses on `f`, and the
-optimizer/value data. The Chapter 10 convex composite owner for `f.toEReal` is derived API and
+optimizer/value data. The Chapter 10 convex composite owner for `f.toExtendedReal` is derived API and
 should be recovered canonically rather than rebuilt later from duplicate field-level instances. -/
 
 /-- Assumption 10.31: clauses (A)-(C) for the fast proximal-gradient method mean that
@@ -39,66 +39,66 @@ class IsFastProximalGradientProblem
   f_convex : ConvexOn ℝ Set.univ f
   f_smooth : is_l_smooth_on f Set.univ Lf
   optimal_set_eq :
-    XStar = unconstrained_problem_solutions (composite_model_objective f.toEReal g)
+    XStar = unconstrained_problem_solutions (composite_model_objective f.toExtendedReal g)
   optimal_set_nonempty : XStar.Nonempty
   optimal_value_isGLB :
-    IsGLB (Set.range (composite_model_objective f.toEReal g)) (FOpt : EReal)
+    IsGLB (Set.range (composite_model_objective f.toExtendedReal g)) (FOpt : EReal)
 
 -- Proof sketch for the bridge theorem below: a real-valued `L_f`-smooth convex function is
 -- continuous, hence lower
 -- semicontinuous, and its `EReal` coercion never takes the value `-∞` and has full effective
 -- domain `Set.univ`. Combine these derived facts with the source-facing fields of
--- `IsFastProximalGradientProblem` and the convexity bridge `Function.toEReal_isConvexFunction`.
+-- `IsFastProximalGradientProblem` and the convexity bridge `Function.toExtendedReal_isConvexFunction`.
 /-- Helper for Assumption 10.31: the `EReal` lift of the smooth term never attains `-∞`. -/
-theorem IsFastProximalGradientProblem.toEReal_ne_bot
+theorem IsFastProximalGradientProblem.toExtendedReal_ne_bot
     {f : E → ℝ} {g : E → EReal} {XStar : Set E} {FOpt : ℝ} {Lf : NNReal}
     (_h : IsFastProximalGradientProblem f g XStar FOpt Lf) :
-    ∀ x, f.toEReal x ≠ ⊥ := by
+    ∀ x, f.toExtendedReal x ≠ ⊥ := by
   -- The canonical `EReal` lift of a real-valued function is always finite.
   intro x
-  simp [Function.toEReal]
+  simp [Function.toExtendedReal]
 
 /-- Helper for Assumption 10.31: global smoothness makes the `EReal` lift of `f` lower
 semicontinuous. -/
-theorem IsFastProximalGradientProblem.toEReal_lowerSemicontinuous
+theorem IsFastProximalGradientProblem.toExtendedReal_lowerSemicontinuous
     {f : E → ℝ} {g : E → EReal} {XStar : Set E} {FOpt : ℝ} {Lf : NNReal}
     (h : IsFastProximalGradientProblem f g XStar FOpt Lf) :
-    LowerSemicontinuous f.toEReal := by
+    LowerSemicontinuous f.toExtendedReal := by
   -- Global smoothness on `Set.univ` gives differentiability, hence continuity, everywhere.
   have hcont : Continuous f := by
     refine continuous_iff_continuousAt.2 ?_
     intro x
     exact (h.f_smooth.1 x (by simp)).continuousAt
   -- Continuous real-valued maps are lower semicontinuous after coercion to `EReal`.
-  exact Function.toEReal_lowerSemicontinuous_of_continuous hcont
+  exact Function.toExtendedReal_lowerSemicontinuous_of_continuous hcont
 
 /-- Helper for Assumption 10.31: convexity of the real-valued smooth term passes to its `EReal`
 lift. -/
-theorem IsFastProximalGradientProblem.toEReal_convex
+theorem IsFastProximalGradientProblem.toExtendedReal_convex
     {f : E → ℝ} {g : E → EReal} {XStar : Set E} {FOpt : ℝ} {Lf : NNReal}
     (h : IsFastProximalGradientProblem f g XStar FOpt Lf) :
-    is_convex_function f.toEReal := by
-  -- The Chapter 9 coercion lemma transports convexity from `f` to `f.toEReal`.
-  exact Function.toEReal_isConvexFunction h.f_convex
+    is_convex_function f.toExtendedReal := by
+  -- The Chapter 9 coercion lemma transports convexity from `f` to `f.toExtendedReal`.
+  exact Function.toExtendedReal_isConvexFunction h.f_convex
 
 /-- Helper for Assumption 10.31: every effective point of `g` lies in the interior of the full
-effective domain of `f.toEReal`. -/
+effective domain of `f.toExtendedReal`. -/
 theorem IsFastProximalGradientProblem.g_effective_domain_subset_interior_toEReal_effective_domain
     {f : E → ℝ} {g : E → EReal} {XStar : Set E} {FOpt : ℝ} {Lf : NNReal}
     (_h : IsFastProximalGradientProblem f g XStar FOpt Lf) :
-    effective_domain g ⊆ interior (effective_domain f.toEReal) := by
+    effective_domain g ⊆ interior (effective_domain f.toExtendedReal) := by
   -- The `EReal` lift of a real-valued function has effective domain `Set.univ`.
   intro x hx
-  simp [effective_domain, Function.toEReal]
+  simp [effective_domain, Function.toExtendedReal]
 
-/-- Helper for Assumption 10.31: after identifying the effective domain of `f.toEReal` with
+/-- Helper for Assumption 10.31: after identifying the effective domain of `f.toExtendedReal` with
 `Set.univ`, the Chapter 10 smoothness field is exactly the stored global smoothness of `f`. -/
-theorem IsFastProximalGradientProblem.toEReal_smooth_on_interior_effective_domain
+theorem IsFastProximalGradientProblem.toExtendedReal_smooth_on_interior_effective_domain
     {f : E → ℝ} {g : E → EReal} {XStar : Set E} {FOpt : ℝ} {Lf : NNReal}
     (h : IsFastProximalGradientProblem f g XStar FOpt Lf) :
-    is_l_smooth_on (fun x ↦ (f.toEReal x).toReal) (interior (effective_domain f.toEReal)) Lf := by
+    is_l_smooth_on (fun x ↦ (f.toExtendedReal x).toReal) (interior (effective_domain f.toExtendedReal)) Lf := by
   -- The lifted function is finite everywhere, so its `toReal` is just `f` on `Set.univ`.
-  simpa [effective_domain, Function.toEReal] using h.f_smooth
+  simpa [effective_domain, Function.toExtendedReal] using h.f_smooth
 
 /-- Assumption 10.31: a fast proximal-gradient problem canonically induces the Chapter 10 convex
 composite smooth minimization assumptions after coercing the real-valued smooth term to `EReal`.
@@ -106,19 +106,19 @@ composite smooth minimization assumptions after coercing the real-valued smooth 
 theorem IsFastProximalGradientProblem.toIsConvexCompositeSmoothMinimizationProblem
     {f : E → ℝ} {g : E → EReal} {XStar : Set E} {FOpt : ℝ} {Lf : NNReal}
     (h : IsFastProximalGradientProblem f g XStar FOpt Lf) :
-    IsConvexCompositeSmoothMinimizationProblem f.toEReal g XStar FOpt Lf := by
-  -- Package the derived `f.toEReal` facts with the stored `g`-side and optimizer data.
+    IsConvexCompositeSmoothMinimizationProblem f.toExtendedReal g XStar FOpt Lf := by
+  -- Package the derived `f.toExtendedReal` facts with the stored `g`-side and optimizer data.
   refine
-    { f_ne_bot := h.toEReal_ne_bot
+    { f_ne_bot := h.toExtendedReal_ne_bot
       g_proper := h.g_proper
-      f_closed := h.toEReal_lowerSemicontinuous
+      f_closed := h.toExtendedReal_lowerSemicontinuous
       g_closed := h.g_closed
-      f_convex := h.toEReal_convex
+      f_convex := h.toExtendedReal_convex
       g_convex := h.g_convex
       g_effective_domain_subset_interior_f_effective_domain :=
         h.g_effective_domain_subset_interior_toEReal_effective_domain
       f_toReal_smooth_on_interior_effective_domain :=
-        h.toEReal_smooth_on_interior_effective_domain
+        h.toExtendedReal_smooth_on_interior_effective_domain
       optimal_set_eq := h.optimal_set_eq
       optimal_set_nonempty := h.optimal_set_nonempty
       optimal_value_isGLB := h.optimal_value_isGLB }
@@ -128,7 +128,7 @@ minimization assumptions after coercing the real-valued smooth term to `EReal`. 
 theorem IsFastProximalGradientProblem.toIsCompositeSmoothMinimizationProblem
     {f : E → ℝ} {g : E → EReal} {XStar : Set E} {FOpt : ℝ} {Lf : NNReal}
     (h : IsFastProximalGradientProblem f g XStar FOpt Lf) :
-    IsCompositeSmoothMinimizationProblem f.toEReal g XStar FOpt Lf :=
+    IsCompositeSmoothMinimizationProblem f.toExtendedReal g XStar FOpt Lf :=
   h.toIsConvexCompositeSmoothMinimizationProblem.toIsCompositeSmoothMinimizationProblem
 
 /-- In Assumption 10.31, the nonsmooth term `g` is proper. -/

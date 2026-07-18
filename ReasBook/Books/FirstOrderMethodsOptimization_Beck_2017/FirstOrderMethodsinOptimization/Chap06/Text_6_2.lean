@@ -10,7 +10,7 @@ semantic closure shows that the relevant owner-level declarations are:
 2. Chapter 6's `prox` / `prox[...]`,
 3. Chapter 6's source-facing projection owner `projection_mapping`,
 4. the bridge theorem `prox_extendedIndicator_eq_projection_mapping`.
-The target file therefore reuses the existing chapter owner `P[C]` rather than keeping a parallel
+The target file therefore reuses the existing chapter owner `Proj[C]` rather than keeping a parallel
 squared-distance wrapper. -/
 recall projection_mapping
 

@@ -26,7 +26,7 @@ private abbrev epigraph_penalty (g : E → ℝ) : E × ℝ → EReal :=
 
 /- Theorem 6.36 is `bridge/view`: the source-facing object is the projection mapping onto the
 epigraph `epi(g)`. The canonical owners already exist upstream as Chapter 6's `prox[...]` and
-`P[...]`, together with Chapter 2's `realEpigraph` and Theorem 6.30's owner residual
+`Proj[...]`, together with Chapter 2's `realEpigraph` and Theorem 6.30's owner residual
 `level_set_projection_residual`. The only genuinely new source-facing datum in this file is
 therefore the epigraph-specialized surface for that existing residual owner, obtained by viewing
 `realEpigraph g` as the zero sublevel set of `(y, t) ↦ g y - t`. -/
@@ -85,11 +85,11 @@ lemma epigraph_projection_residual_eq_of_scaled_prox_eq_singleton
 /-- A point already lying in the real epigraph of `g` projects to itself. -/
 theorem projection_mapping_realEpigraph_eq_singleton_of_mem
     (g : E → ℝ) (x : E) (s : ℝ) (hgxs : g x ≤ s) :
-    P[realEpigraph (fun y : E ↦ (g y : EReal))] (x, s) = {(x, s)} := by
+    Proj[realEpigraph (fun y : E ↦ (g y : EReal))] (x, s) = {(x, s)} := by
   have hx_mem : (x, s) ∈ realEpigraph (fun y : E ↦ (g y : EReal)) := by
     -- Feasibility is exactly the defining epigraph inequality at `(x, s)`.
     simpa [realEpigraph] using hgxs
-  have hx_proj : (x, s) ∈ P[realEpigraph (fun y : E ↦ (g y : EReal))] (x, s) := by
+  have hx_proj : (x, s) ∈ Proj[realEpigraph (fun y : E ↦ (g y : EReal))] (x, s) := by
     -- A feasible point has zero distance to itself, so it is a projection point.
     rw [mem_projection_mapping_iff, isMinOn_iff]
     refine ⟨hx_mem, ?_⟩
@@ -211,11 +211,11 @@ theorem euclideanRealEpigraph_eq_zero_sublevel (g : E → ℝ) :
 /-- Helper for Theorem 6.36: a feasible Euclidean product point projects to itself. -/
 theorem projection_mapping_euclideanRealEpigraph_eq_singleton_of_mem
     (g : E → ℝ) (x : E) (s : ℝ) (hgxs : g x ≤ s) :
-    P[euclideanRealEpigraph g] (euclideanProductPoint x s) = {euclideanProductPoint x s} := by
+    Proj[euclideanRealEpigraph g] (euclideanProductPoint x s) = {euclideanProductPoint x s} := by
   have hx_mem : euclideanProductPoint x s ∈ euclideanRealEpigraph g := by
     -- Feasibility is exactly the defining Euclidean epigraph inequality.
     simpa [euclideanRealEpigraph] using hgxs
-  have hx_proj : euclideanProductPoint x s ∈ P[euclideanRealEpigraph g] (euclideanProductPoint x s) := by
+  have hx_proj : euclideanProductPoint x s ∈ Proj[euclideanRealEpigraph g] (euclideanProductPoint x s) := by
     -- A feasible point has zero Euclidean distance to itself.
     rw [mem_projection_mapping_iff, isMinOn_iff]
     refine ⟨hx_mem, ?_⟩
@@ -676,7 +676,7 @@ shift `s + λ`. -/
 theorem projection_mapping_realEpigraph_eq_lifted_scaled_prox_of_root
     (g : E → ℝ) (hg_convex : ConvexOn ℝ Set.univ g) (x : E) (s : ℝ) (hgxs : s < g x)
     (lam : PosReal) (hψ : epigraph_projection_residual g x s (lam : ℝ) = 0) :
-    P[euclideanRealEpigraph g] (euclideanProductPoint x s) =
+    Proj[euclideanRealEpigraph g] (euclideanProductPoint x s) =
       (fun y : E ↦ euclideanProductPoint y (s + (lam : ℝ))) ''
         prox[fun y : E ↦ ((lam : ℝ) : EReal) * (g y : EReal)] x := by
   rcases euclidean_epigraph_penalty_proper_closed_convex g hg_convex with
@@ -688,8 +688,8 @@ theorem projection_mapping_realEpigraph_eq_lifted_scaled_prox_of_root
   -- Route correction: specialize Theorem 6.30 to the repaired Euclidean penalty, then convert the
   -- resulting scaled prox set using the Euclidean transport bridge.
   calc
-    P[euclideanRealEpigraph g] (euclideanProductPoint x s)
-        = P[(euclidean_epigraph_penalty g) ⁻¹' Set.Iic (0 : EReal)] (euclideanProductPoint x s) := by
+    Proj[euclideanRealEpigraph g] (euclideanProductPoint x s)
+        = Proj[(euclidean_epigraph_penalty g) ⁻¹' Set.Iic (0 : EReal)] (euclideanProductPoint x s) := by
             rw [euclideanRealEpigraph_eq_zero_sublevel]
     _ = prox[((lam : EReal) • euclidean_epigraph_penalty g)] (euclideanProductPoint x s) := by
           exact
@@ -710,7 +710,7 @@ equation. -/
 theorem projection_mapping_realEpigraph_eq_piecewise_lifted_scaled_prox
     (g : E → ℝ) (hg_convex : ConvexOn ℝ Set.univ g) (x : E) (s : ℝ) (lam : ℝ)
     (hactive : s < g x → 0 < lam ∧ epigraph_projection_residual g x s lam = 0) :
-    P[euclideanRealEpigraph g] (euclideanProductPoint x s) =
+    Proj[euclideanRealEpigraph g] (euclideanProductPoint x s) =
       if hgxs : g x ≤ s then
         {euclideanProductPoint x s}
       else
@@ -723,7 +723,7 @@ theorem projection_mapping_realEpigraph_eq_piecewise_lifted_scaled_prox
     rcases hactive hsx with ⟨hlam, hψ⟩
     let lamPos : PosReal := ⟨lam, hlam⟩
     have hbranch :
-        P[euclideanRealEpigraph g] (euclideanProductPoint x s) =
+        Proj[euclideanRealEpigraph g] (euclideanProductPoint x s) =
           (fun y : E ↦ euclideanProductPoint y (s + (lamPos : ℝ))) ''
             prox[fun y : E ↦ ((lamPos : ℝ) : EReal) * (g y : EReal)] x :=
       projection_mapping_realEpigraph_eq_lifted_scaled_prox_of_root g hg_convex x s hsx lamPos hψ

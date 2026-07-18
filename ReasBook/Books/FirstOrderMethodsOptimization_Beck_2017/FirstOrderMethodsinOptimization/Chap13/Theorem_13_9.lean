@@ -43,18 +43,18 @@ section
 
 variable [CompleteSpace E]
 variable {f : E → ℝ} {g : E → EReal} {Lf : NNReal}
-variable [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
+variable [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
 variable {x p : ℕ → E} {t : ℕ → Set.Icc (0 : ℝ) 1}
 variable (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
 variable
   (hrule : uses_generalized_conditional_gradient_adaptive_or_exact_stepsize_rule
     f g Lf x p t)
 
-local notation "F" => composite_model_objective f.toEReal g
-local notation "F_opt" => generalized_conditional_gradient_optimal_value f.toEReal g
+local notation "F" => composite_model_objective f.toExtendedReal g
+local notation "F_opt" => generalized_conditional_gradient_optimal_value f.toExtendedReal g
 
 /-- Helper for Theorem 13.9: the smoothness field from Assumption 13.1 restricts from
-`effective_domain f.toEReal` to the smaller feasible core `effective_domain g`. -/
+`effective_domain f.toExtendedReal` to the smaller feasible core `effective_domain g`. -/
 lemma generalized_conditional_gradient_smooth_on_g_effective_domain_of_problem :
     is_l_smooth_on f (effective_domain g) Lf := by
   -- Rewrite both smoothness predicates into differentiability plus gradient Lipschitz control,
@@ -86,7 +86,7 @@ lemma generalized_conditional_gradient_optimal_value_eq_of_mem_optimal_set
 /-- Helper for Theorem 13.9: every global minimizer of the composite objective is feasible for
 the regularizer term `g`. -/
 lemma generalized_conditional_gradient_optimal_point_mem_effective_domain
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf)
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf)
     {xStar : E} (hxStar : xStar ∈ unconstrained_problem_solutions F) :
     xStar ∈ effective_domain g := by
   -- Compare the optimizer with one known feasible point; the minimizing value cannot be `⊤`, so
@@ -113,7 +113,7 @@ lemma generalized_conditional_gradient_optimal_point_mem_effective_domain
 /-- Helper for Theorem 13.9: compactness of `effective_domain g` yields a strictly positive
 uniform diameter bound. -/
 lemma effective_domain_pairwise_dist_le_of_compact :
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf) →
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf) →
     ∃ Ω : ℝ, 0 < Ω ∧
       ∀ u ∈ effective_domain g, ∀ v ∈ effective_domain g, ‖u - v‖ ≤ Ω := by
   intro hproblem
@@ -313,7 +313,7 @@ lemma objective_difference_tendsto_zero_of_antitone_bddBelow
 /-- Helper for Theorem 13.9: the real objective values along every generalized
 conditional-gradient trajectory are bounded below by the value at a global minimizer. -/
 lemma generalized_conditional_gradient_objective_toReal_bddBelow
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t) :
     BddBelow (Set.range fun k ↦ (F (x k)).toReal) := by
   -- Choose a global minimizer from Text 13.1, then compare its objective value to every iterate.
@@ -347,7 +347,7 @@ lemma generalized_conditional_gradient_objective_toReal_bddBelow
 conditional-gradient gap to vanish, because each search point must coincide with the current
 iterate. -/
 lemma generalized_conditional_gradient_gap_eq_zero_of_nonpos_diameter_bound
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     {Ω : ℝ}
     (hΩnonpos : Ω ≤ 0)
@@ -387,7 +387,7 @@ lemma generalized_conditional_gradient_gap_eq_zero_of_nonpos_diameter_bound
 conditional-gradient method with adaptive stepsize or exact line search is objective
 nonincreasing: `F(x^(k+1)) ≤ F(x^k)` for all `k ≥ 0`. -/
 theorem generalized_conditional_gradient_objective_step_nonincreasing
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (hrule : uses_generalized_conditional_gradient_adaptive_or_exact_stepsize_rule
       f g Lf x p t)
@@ -448,7 +448,7 @@ theorem generalized_conditional_gradient_objective_step_nonincreasing
 sequence `S(x^k)` converges to `0` along any trajectory generated with adaptive stepsize or exact
 line search. -/
 theorem generalized_conditional_gradient_gap_tendsto_zero
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (hrule : uses_generalized_conditional_gradient_adaptive_or_exact_stepsize_rule
       f g Lf x p t) :
@@ -544,7 +544,7 @@ satisfies the complexity estimate
 `min_{0 ≤ n ≤ k} S(x^n) ≤ max {2 (F(x^0) - F_opt) / (k + 1),
 sqrt (2 L_f Ω^2 (F(x^0) - F_opt)) / sqrt (k + 1)}`. -/
 theorem generalized_conditional_gradient_best_gap_up_to_le_complexity_bound
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (hrule : uses_generalized_conditional_gradient_adaptive_or_exact_stepsize_rule
       f g Lf x p t)
@@ -839,7 +839,7 @@ section
 
 variable [FiniteDimensional ℝ E]
 variable {f : E → ℝ} {g : E → EReal} {Lf : NNReal}
-variable [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
+variable [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
 variable {x p : ℕ → E} {t : ℕ → Set.Icc (0 : ℝ) 1}
 variable (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
 variable
@@ -848,7 +848,7 @@ variable
 
 local instance : CompleteSpace E := FiniteDimensional.complete ℝ E
 
-local notation "F" => composite_model_objective f.toEReal g
+local notation "F" => composite_model_objective f.toExtendedReal g
 
 -- Proof sketch: combine the sufficient-decrease inequality from Lemma 13.8 with the
 -- characterization from Chapter 3 that nonstationarity forces the generalized
@@ -858,12 +858,12 @@ local notation "F" => composite_model_objective f.toEReal g
 composite problem `min_x {f(x) + g(x)}`, then the adaptive/exact generalized conditional-gradient
 step decreases the objective strictly: `F(x^(k+1)) < F(x^k)`. -/
 theorem generalized_conditional_gradient_objective_step_strict_decrease_of_not_stationary
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (hrule : uses_generalized_conditional_gradient_adaptive_or_exact_stepsize_rule
       f g Lf x p t)
     (k : ℕ)
-    (hk : ¬ is_stationary_point f.toEReal g (x k)) :
+    (hk : ¬ is_stationary_point f.toExtendedReal g (x k)) :
     F (x (k + 1)) < F (x k) := by
   -- Use the positive compactness-derived diameter bound so that the sufficient-decrease lower
   -- bound is strictly positive whenever the gap is nonzero.
@@ -881,17 +881,17 @@ theorem generalized_conditional_gradient_objective_step_strict_decrease_of_not_s
     generalized_conditional_gradient_trajectory_mem_effective_domain
       (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj (k + 1)
   have hxk_f :
-      x k ∈ effective_domain f.toEReal :=
+      x k ∈ effective_domain f.toExtendedReal :=
     hproblem.g_effective_domain_subset_f_effective_domain hxk
   have hS_nonneg :
       0 ≤ (S[f, g](x k)).toReal :=
     generalized_conditional_gradient_norm_toReal_nonneg_of_mem_argmin
       (f := f) (g := g) hproblem.ne_bot hxk (htraj.argmin_mem k)
   have hS_eq_zero_iff :
-      S[f, g](x k) = 0 ↔ is_stationary_point f.toEReal g (x k) := by
+      S[f, g](x k) = 0 ↔ is_stationary_point f.toExtendedReal g (x k) := by
     simpa using
       (generalized_conditional_gradient_norm_eq_zero_iff_is_stationary_point
-        (f := f.toEReal) (g := g) (Lf := Lf) hproblem ⟨x k, hxk_f⟩)
+        (f := f.toExtendedReal) (g := g) (Lf := Lf) hproblem ⟨x k, hxk_f⟩)
   have hS_ne_zero : S[f, g](x k) ≠ 0 := by
     intro hS_zero
     exact hk (hS_eq_zero_iff.mp hS_zero)
@@ -1032,7 +1032,7 @@ lemma ereal_liminf_add_coe_real (u : ℕ → EReal) (c : ℝ) :
 /-- Helper for Theorem 13.9: the smooth term `y ↦ ⟪∇ f(y), y - v⟫` converges along every
 cluster-point subsequence staying in `effective_domain g`. -/
 lemma generalized_conditional_gradient_gap_inner_tendsto_of_cluster_subseq
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
     {xBar v : E} {ψ : ℕ → ℕ}
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (hxBarg : xBar ∈ effective_domain g)
@@ -1076,7 +1076,7 @@ lemma generalized_conditional_gradient_gap_inner_tendsto_of_cluster_subseq
 /-- Helper for Theorem 13.9: the gap objective at a feasible cluster point is bounded by the
 `liminf` of the same fixed-feasible-`v` gap objective along the convergent subsequence. -/
 lemma generalized_conditional_gradient_gap_objective_liminf_lower_bound_of_cluster_subseq
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
     {xBar v : E} {ψ : ℕ → ℕ}
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (hxBarg : xBar ∈ effective_domain g)
@@ -1152,7 +1152,7 @@ lemma generalized_conditional_gradient_gap_objective_liminf_lower_bound_of_clust
 /-- Helper for Theorem 13.9: if the trajectory gaps converge to `0`, then every fixed-feasible
 test point has subsequence gap-objective `liminf` at most `0`. -/
 lemma generalized_conditional_gradient_gap_objective_liminf_nonpos_of_gap_tendsto_zero
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
     {v : E} {ψ : ℕ → ℕ}
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (hgap_tendsto :
@@ -1198,7 +1198,7 @@ lemma generalized_conditional_gradient_gap_objective_liminf_nonpos_of_gap_tendst
 conditional-gradient gaps tend to `0`, every fixed feasible test point yields a nonpositive limit
 gap objective at the cluster point. -/
 lemma generalized_conditional_gradient_gap_objective_nonpos_of_cluster_subseq_of_mem_effective_domain
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
     {xBar v : E} {ψ : ℕ → ℕ}
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (hxBarg : xBar ∈ effective_domain g)
@@ -1236,12 +1236,12 @@ lemma generalized_conditional_gradient_gap_objective_nonpos_of_cluster_subseq_of
 conditional-gradient trajectory generated with adaptive stepsize or exact line search is a
 stationary point of the composite problem `min_x {f(x) + g(x)}`. -/
 theorem generalized_conditional_gradient_cluster_point_is_stationary
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (hrule : uses_generalized_conditional_gradient_adaptive_or_exact_stepsize_rule
       f g Lf x p t)
     {xBar : E} (hxBar : MapClusterPt xBar Filter.atTop x) :
-    is_stationary_point f.toEReal g xBar := by
+    is_stationary_point f.toExtendedReal g xBar := by
   -- Route correction: isolate the source proof's only remaining hard step as the fixed-`v`
   -- cluster-limit helper, and use it to turn the supremal gap at `xBar` into `0`.
   obtain ⟨ψ, hψmono, hψtendsto⟩ := MapClusterPt.tendsto_subseq hxBar
@@ -1287,11 +1287,11 @@ theorem generalized_conditional_gradient_cluster_point_is_stationary
   have hS_zero : S[f, g](xBar) = 0 :=
     le_antisymm hS_nonpos hS_nonneg
   have hxBar_f :
-      xBar ∈ effective_domain f.toEReal :=
+      xBar ∈ effective_domain f.toExtendedReal :=
     hproblem.g_effective_domain_subset_f_effective_domain hxBarg
   exact
     (generalized_conditional_gradient_norm_eq_zero_iff_is_stationary_point
-      (f := f.toEReal) (g := g) (Lf := Lf) hproblem ⟨xBar, hxBar_f⟩).1 hS_zero
+      (f := f.toExtendedReal) (g := g) (Lf := Lf) hproblem ⟨xBar, hxBar_f⟩).1 hS_zero
 
 end
 

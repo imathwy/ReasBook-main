@@ -6,12 +6,15 @@ import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.C
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap04.Theorem_4_12
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Definition_8_2
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap15.Definition_15_1
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap15.Proposition_15_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
 noncomputable section
 
 universe u v w
+
+open scoped FirstOrderSubdifferential
 
 section
 
@@ -21,12 +24,10 @@ variable [NormedAddCommGroup Z] [InnerProductSpace ℝ Z] [FiniteDimensional ℝ
 variable [NormedAddCommGroup Y] [InnerProductSpace ℝ Y] [FiniteDimensional ℝ Y]
 
 /- Proposition 15.3 is a `bridge/view` item. The `core/canonical` owner remains Chapter 3's
-`subdifferential`; `euclideanSubdifferential` is only its finite-dimensional vector-side view; and
+`extendedRealSubdifferential`; `euclideanSubdifferential` is only its finite-dimensional vector-side view; and
 the `source-facing` Chapter 15 data are the ADMM affine subproblem objectives and the dual
-optimality condition from equation (15.5). The imported Proposition 15.2 module is currently not
-available as a stable dependency in this workspace, so this file reintroduces only the minimal
-earlier API needed to carry out the same source-faithful proof route for Proposition 15.3. The
-only extra hypothesis needed for the individual argmin/subgradient equivalences is nonempty
+optimality condition from equation (15.5), reused from their canonical owner in Proposition 15.2.
+The only extra hypothesis needed for the individual argmin/subgradient equivalences is nonempty
 `effective_domain`, excluding the degenerate `⊤` case in Fermat's criterion. -/
 
 recall euclideanSubdifferential
@@ -37,237 +38,16 @@ end
 
 section
 
-open InnerProductSpace (toDualMap)
-
-variable {X : Type u} {Z : Type v} {Y : Type w}
-variable [NormedAddCommGroup X] [InnerProductSpace ℝ X] [FiniteDimensional ℝ X]
-variable [NormedAddCommGroup Z] [InnerProductSpace ℝ Z] [FiniteDimensional ℝ Z]
-variable [NormedAddCommGroup Y] [InnerProductSpace ℝ Y] [FiniteDimensional ℝ Y]
-
-/-- Helper for Proposition 15.3: the Chapter 15 `x`-subproblem is the affine perturbation
-`x ↦ ⟪Aᵀ y, x⟫ + h₁(x)`. -/
-def admm_x_subproblem
-    (h₁ : X → EReal) (A : X →ₗ[ℝ] Y) (y : Y) : X → EReal :=
-  fun x ↦ ((inner ℝ (A.adjoint y) x : ℝ) : EReal) + h₁ x
-
-/-- Helper for Proposition 15.3: evaluating the `x`-subproblem gives the displayed affine
-objective. -/
-@[simp] theorem admm_x_subproblem_apply
-    (h₁ : X → EReal) (A : X →ₗ[ℝ] Y) (y : Y) (x : X) :
-    admm_x_subproblem h₁ A y x =
-      ((inner ℝ (A.adjoint y) x : ℝ) : EReal) + h₁ x :=
-  rfl
-
-/-- Helper for Proposition 15.3: the Chapter 15 `z`-subproblem is the affine perturbation
-`z ↦ ⟪Bᵀ y, z⟫ + h₂(z)`. -/
-def admm_z_subproblem
-    (h₂ : Z → EReal) (B : Z →ₗ[ℝ] Y) (y : Y) : Z → EReal :=
-  fun z ↦ ((inner ℝ (B.adjoint y) z : ℝ) : EReal) + h₂ z
-
-/-- Helper for Proposition 15.3: evaluating the `z`-subproblem gives the displayed affine
-objective. -/
-@[simp] theorem admm_z_subproblem_apply
-    (h₂ : Z → EReal) (B : Z →ₗ[ℝ] Y) (y : Y) (z : Z) :
-    admm_z_subproblem h₂ B y z =
-      ((inner ℝ (B.adjoint y) z : ℝ) : EReal) + h₂ z :=
-  rfl
-
-/-- Helper for Proposition 15.3: equation (15.5) is represented by the existence of primal
-witnesses whose evaluation functionals lie in the conjugate subdifferentials at
-`-Aᵀ y^{k+1}` and `-Bᵀ y^{k+1}`, together with the affine update. -/
-def admm_dual_optimality_condition
-    (ρ : ℝ)
-    (h₁ : X → EReal) (h₂ : Z → EReal)
-    (A : X →ₗ[ℝ] Y) (B : Z →ₗ[ℝ] Y) (c yk yNext : Y) : Prop :=
-  ∃ xNext,
-    Module.Dual.eval ℝ X xNext ∈
-        ∂ (conjugate_function h₁)(toDualMap ℝ X (-A.adjoint yNext)) ∧
-      ∃ zNext,
-        Module.Dual.eval ℝ Z zNext ∈
-            ∂ (conjugate_function h₂)(toDualMap ℝ Z (-B.adjoint yNext)) ∧
-          yNext = yk + ρ • (A xNext + B zNext - c)
-
-/-- Helper for Proposition 15.3: maximizing an objective on the whole space is equivalent to
-minimizing its pointwise negation. -/
-lemma isMaxOn_univ_iff_isMinOn_univ_neg
-    (φ : X → EReal) (x : X) :
-    IsMaxOn φ Set.univ x ↔ IsMinOn (fun x' ↦ -φ x') Set.univ x := by
-  -- Unfold both whole-space extremality predicates and compare them by pointwise negation.
-  rw [isMaxOn_univ_iff, isMinOn_univ_iff]
-  constructor
-  · intro hx u
-    exact EReal.neg_le_neg_iff.2 (hx u)
-  · intro hx u
-    exact EReal.neg_le_neg_iff.1 (hx u)
-
-/-- Helper for Proposition 15.3: negating the affine-minus-`h₁` conjugate objective yields the
-Chapter 15 `x`-subproblem. -/
-lemma neg_pairing_sub_eq_admm_x_subproblem
-    (h₁ : X → EReal) (A : X →ₗ[ℝ] Y)
-    (hh₁_proper : IsProperExtendedRealFunction h₁)
-    (y : Y) :
-    (fun x' : X ↦ -(((toDualMap ℝ X (-A.adjoint y)) x' : EReal) - h₁ x')) =
-      admm_x_subproblem h₁ A y := by
-  funext x'
-  -- Properness rules out the `-∞` case, so the negated subtraction is the expected sum.
-  have hneg :
-      -(((toDualMap ℝ X (-A.adjoint y)) x' : EReal) - h₁ x') =
-        -((toDualMap ℝ X (-A.adjoint y)) x' : EReal) + h₁ x' := by
-    rw [EReal.neg_sub] <;> simp [hh₁_proper.ne_bot x']
-  -- Identify the resulting affine term with the adjoint inner product.
-  rw [hneg, admm_x_subproblem_apply]
-  simp [InnerProductSpace.toDualMap_apply_apply, real_inner_comm]
-
-/-- Helper for Proposition 15.3: negating the affine-minus-`h₂` conjugate objective yields the
-Chapter 15 `z`-subproblem. -/
-lemma neg_pairing_sub_eq_admm_z_subproblem
-    (h₂ : Z → EReal) (B : Z →ₗ[ℝ] Y)
-    (hh₂_proper : IsProperExtendedRealFunction h₂)
-    (y : Y) :
-    (fun z' : Z ↦ -(((toDualMap ℝ Z (-B.adjoint y)) z' : EReal) - h₂ z')) =
-      admm_z_subproblem h₂ B y := by
-  funext z'
-  -- Properness rules out the `-∞` case, so the negated subtraction is the expected sum.
-  have hneg :
-      -(((toDualMap ℝ Z (-B.adjoint y)) z' : EReal) - h₂ z') =
-        -((toDualMap ℝ Z (-B.adjoint y)) z' : EReal) + h₂ z' := by
-    rw [EReal.neg_sub] <;> simp [hh₂_proper.ne_bot z']
-  -- Identify the resulting affine term with the adjoint inner product.
-  rw [hneg, admm_z_subproblem_apply]
-  simp [InnerProductSpace.toDualMap_apply_apply, real_inner_comm]
-
-/-- Helper for Proposition 15.3: conjugate-subgradient membership for `f*` is exactly the
-argmax condition for the affine-minus-`f` objective. -/
-lemma eval_mem_conjugate_subdifferential_iff_isMaxOn_affine_minus
-    {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
-    (f : E → EReal) (hf_proper : IsProperExtendedRealFunction f)
-    (hf_closed : LowerSemicontinuous f) (hf_convex : is_convex_function f)
-    (y : Module.Dual ℝ E) (x : E) :
-    Module.Dual.eval ℝ E x ∈ subdifferential (conjugate_function f) y ↔
-      IsMaxOn (fun x' : E ↦ (y x' : EReal) - f x') Set.univ x := by
-  -- Route correction: Theorem 4.12 already packages the conjugate-side argmax description, so
-  -- we use it directly instead of rebuilding Fenchel--Young subtraction identities by hand.
-  constructor
-  · intro hx
-    rw [subdifferential_conjugate_eq_eval_image_argmax_affine_minus
-      f hf_proper hf_closed hf_convex y] at hx
-    rcases hx with ⟨x', hx', hEval⟩
-    have hxEq : x' = x :=
-      Module.eval_apply_injective (K := ℝ) (V := E) hEval
-    simpa using hxEq ▸ hx'
-  · intro hx
-    rw [subdifferential_conjugate_eq_eval_image_argmax_affine_minus
-      f hf_proper hf_closed hf_convex y]
-    exact ⟨x, hx, rfl⟩
-
-/-- Helper for Proposition 15.3: a conjugate-side subgradient witness for `h₁` at `-Aᵀ y` is
-equivalent to solving the `x`-subproblem. -/
-theorem eval_mem_conjugate_subdifferential_iff_mem_admm_x_subproblem_solutions
-    (h₁ : X → EReal) (A : X →ₗ[ℝ] Y)
-    (hh₁_proper : IsProperExtendedRealFunction h₁)
-    (hh₁_closed : LowerSemicontinuous h₁) (hh₁_convex : is_convex_function h₁)
-    (y : Y) (x : X) :
-    Module.Dual.eval ℝ X x ∈
-        ∂ (conjugate_function h₁)(toDualMap ℝ X (-A.adjoint y)) ↔
-      x ∈ unconstrained_problem_solutions (admm_x_subproblem h₁ A y) := by
-  let ℓ : Module.Dual ℝ X := toDualMap ℝ X (-A.adjoint y)
-  let φ : X → EReal := fun x' ↦ (ℓ x' : EReal) - h₁ x'
-  have hmax :
-      Module.Dual.eval ℝ X x ∈ subdifferential (conjugate_function h₁) ℓ ↔
-        IsMaxOn φ Set.univ x := by
-    -- First express conjugate-subgradient membership through the canonical argmax description.
-    simpa [φ] using
-      (eval_mem_conjugate_subdifferential_iff_isMaxOn_affine_minus
-        h₁ hh₁_proper hh₁_closed hh₁_convex ℓ x)
-  have hmin :
-      IsMaxOn φ Set.univ x ↔ IsMinOn (admm_x_subproblem h₁ A y) Set.univ x := by
-    -- Then negate the objective and rewrite it to the ADMM `x`-subproblem.
-    have hobj : (fun x' : X ↦ -φ x') = admm_x_subproblem h₁ A y := by
-      simpa [φ, ℓ] using neg_pairing_sub_eq_admm_x_subproblem h₁ A hh₁_proper y
-    calc
-      IsMaxOn φ Set.univ x ↔ IsMinOn (fun x' : X ↦ -φ x') Set.univ x := by
-        simpa [φ] using isMaxOn_univ_iff_isMinOn_univ_neg φ x
-      _ ↔ IsMinOn (admm_x_subproblem h₁ A y) Set.univ x := by
-        constructor
-        · intro hxMin
-          simpa [hobj] using hxMin
-        · intro hxMin
-          simpa [hobj] using hxMin
-  have hsol :
-      IsMinOn (admm_x_subproblem h₁ A y) Set.univ x ↔
-        x ∈ unconstrained_problem_solutions (admm_x_subproblem h₁ A y) := by
-    -- Finally pass from `IsMinOn` to the Chapter 8 solution-set owner.
-    simpa using
-      (mem_unconstrained_problem_solutions_iff
-        (f := admm_x_subproblem h₁ A y) (x := x)).symm
-  -- Chaining the three equivalences gives the desired source-faithful bridge.
-  have hchain :
-      Module.Dual.eval ℝ X x ∈ subdifferential (conjugate_function h₁) ℓ ↔
-        x ∈ unconstrained_problem_solutions (admm_x_subproblem h₁ A y) :=
-    hmax.trans (hmin.trans hsol)
-  simpa [ℓ] using hchain
-
-/-- Helper for Proposition 15.3: a conjugate-side subgradient witness for `h₂` at `-Bᵀ y` is
-equivalent to solving the `z`-subproblem. -/
-theorem eval_mem_conjugate_subdifferential_iff_mem_admm_z_subproblem_solutions
-    (h₂ : Z → EReal) (B : Z →ₗ[ℝ] Y)
-    (hh₂_proper : IsProperExtendedRealFunction h₂)
-    (hh₂_closed : LowerSemicontinuous h₂) (hh₂_convex : is_convex_function h₂)
-    (y : Y) (z : Z) :
-    Module.Dual.eval ℝ Z z ∈
-        ∂ (conjugate_function h₂)(toDualMap ℝ Z (-B.adjoint y)) ↔
-      z ∈ unconstrained_problem_solutions (admm_z_subproblem h₂ B y) := by
-  let ℓ : Module.Dual ℝ Z := toDualMap ℝ Z (-B.adjoint y)
-  let φ : Z → EReal := fun z' ↦ (ℓ z' : EReal) - h₂ z'
-  have hmax :
-      Module.Dual.eval ℝ Z z ∈ subdifferential (conjugate_function h₂) ℓ ↔
-        IsMaxOn φ Set.univ z := by
-    -- First express conjugate-subgradient membership through the canonical argmax description.
-    simpa [φ] using
-      (eval_mem_conjugate_subdifferential_iff_isMaxOn_affine_minus
-        h₂ hh₂_proper hh₂_closed hh₂_convex ℓ z)
-  have hmin :
-      IsMaxOn φ Set.univ z ↔ IsMinOn (admm_z_subproblem h₂ B y) Set.univ z := by
-    -- Then negate the objective and rewrite it to the ADMM `z`-subproblem.
-    have hobj : (fun z' : Z ↦ -φ z') = admm_z_subproblem h₂ B y := by
-      simpa [φ, ℓ] using neg_pairing_sub_eq_admm_z_subproblem h₂ B hh₂_proper y
-    calc
-      IsMaxOn φ Set.univ z ↔ IsMinOn (fun z' : Z ↦ -φ z') Set.univ z := by
-        simpa [φ] using isMaxOn_univ_iff_isMinOn_univ_neg φ z
-      _ ↔ IsMinOn (admm_z_subproblem h₂ B y) Set.univ z := by
-        constructor
-        · intro hzMin
-          simpa [hobj] using hzMin
-        · intro hzMin
-          simpa [hobj] using hzMin
-  have hsol :
-      IsMinOn (admm_z_subproblem h₂ B y) Set.univ z ↔
-        z ∈ unconstrained_problem_solutions (admm_z_subproblem h₂ B y) := by
-    -- Finally pass from `IsMinOn` to the Chapter 8 solution-set owner.
-    simpa using
-      (mem_unconstrained_problem_solutions_iff
-        (f := admm_z_subproblem h₂ B y) (x := z)).symm
-  -- Chaining the three equivalences gives the desired source-faithful bridge.
-  have hchain :
-      Module.Dual.eval ℝ Z z ∈ subdifferential (conjugate_function h₂) ℓ ↔
-        z ∈ unconstrained_problem_solutions (admm_z_subproblem h₂ B y) :=
-    hmax.trans (hmin.trans hsol)
-  simpa [ℓ] using hchain
-
-end
-
-section
-
 variable {E : Type u}
 variable [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
 
 /-- Helper for Proposition 15.3: zero is a subgradient of the affine perturbation
-`u ↦ ⟪a, u⟫ + h(u)` at `x` exactly when `-a` belongs to the Euclidean subdifferential of `h`
+`u ↦ ⟪a, u⟫ + h(u)` at `x` exactly when `-a` belongs to the Euclidean extendedRealSubdifferential of `h`
 at `x`. -/
 theorem zero_mem_subdifferential_inner_perturbation_iff_neg_mem_euclideanSubdifferential
     (h : E → EReal) (a x : E) :
     (0 : Module.Dual ℝ E) ∈
-        subdifferential (fun u ↦ ((inner ℝ a u : ℝ) : EReal) + h u) x ↔
+        extendedRealSubdifferential (fun u ↦ ((inner ℝ a u : ℝ) : EReal) + h u) x ↔
       -a ∈ euclideanSubdifferential h x := by
   let perturbation : E → EReal := fun u ↦ ((inner ℝ a u : ℝ) : EReal) + h u
   have perturbation_mem_effective_domain_iff (u : E) :
@@ -373,11 +153,11 @@ variable [NormedAddCommGroup X] [InnerProductSpace ℝ X] [FiniteDimensional ℝ
 variable [NormedAddCommGroup Y] [InnerProductSpace ℝ Y] [FiniteDimensional ℝ Y]
 
 -- Proof sketch: apply Fermat's criterion to the affine perturbation
--- `x ↦ ⟪Aᵀ y, x⟫ + h₁(x)` and use the affine-linear subdifferential rule to move the linear term
+-- `x ↦ ⟪Aᵀ y, x⟫ + h₁(x)` and use the affine-linear extendedRealSubdifferential rule to move the linear term
 -- to the other side, yielding the Euclidean/vector-side Chapter 3 condition
 -- `-A.adjoint y ∈ euclideanSubdifferential h₁ x`.
 /-- A point minimizes the `x`-subproblem from Proposition 15.2 exactly when `-Aᵀ y` belongs to
-the Euclidean Chapter 3 subdifferential of `h₁` at that point. -/
+the Euclidean Chapter 3 extendedRealSubdifferential of `h₁` at that point. -/
 theorem mem_admm_x_subproblem_solutions_iff_neg_adjoint_mem_euclideanSubdifferential
     (h₁ : X → EReal) (A : X →ₗ[ℝ] Y)
     (hh₁_dom : (effective_domain h₁).Nonempty)
@@ -408,7 +188,7 @@ variable [NormedAddCommGroup Y] [InnerProductSpace ℝ Y] [FiniteDimensional ℝ
 -- Proof sketch: apply the same Fermat-plus-affine-perturbation argument to the `z`-subproblem
 -- `z ↦ ⟪Bᵀ y, z⟫ + h₂(z)`, again stated through the Euclidean bridge owner.
 /-- A point minimizes the `z`-subproblem from Proposition 15.2 exactly when `-Bᵀ y` belongs to
-the Euclidean Chapter 3 subdifferential of `h₂` at that point. -/
+the Euclidean Chapter 3 extendedRealSubdifferential of `h₂` at that point. -/
 theorem mem_admm_z_subproblem_solutions_iff_neg_adjoint_mem_euclideanSubdifferential
     (h₂ : Z → EReal) (B : Z →ₗ[ℝ] Y)
     (hh₂_dom : (effective_domain h₂).Nonempty)
@@ -438,11 +218,11 @@ variable [NormedAddCommGroup Y] [InnerProductSpace ℝ Y] [FiniteDimensional ℝ
 
 -- Proof sketch: start from Proposition 15.2, which rewrites equation (15.5) as the existence of
 -- primal witnesses solving the `x`- and `z`-subproblems together with the affine update (15.6).
--- Then replace each `arg min` clause by the corresponding subdifferential condition using the two
+-- Then replace each `arg min` clause by the corresponding extendedRealSubdifferential condition using the two
 -- preceding bridge lemmas.
 /-- Proposition 15.3: under the Chapter 15 proper/closed/convex hypotheses on `h₁` and `h₂`,
 equation (15.5) is equivalent to the existence of primal witnesses `x^(k+1)` and `z^(k+1)`
-satisfying the affine update (15.6) and the subdifferential optimality conditions corresponding to
+satisfying the affine update (15.6) and the extendedRealSubdifferential optimality conditions corresponding to
 (15.7) and (15.8). -/
 theorem admm_dual_optimality_condition_iff_exists_primal_subgradient_and_affine_update
     (ρ : ℝ)

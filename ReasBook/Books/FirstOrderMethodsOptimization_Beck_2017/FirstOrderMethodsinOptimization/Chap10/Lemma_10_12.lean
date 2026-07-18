@@ -30,7 +30,7 @@ lemma prox_gradient_operator_eq_singleton_forward
       {T[L; f, g] x} := by
   -- Unfold the source-facing prox-gradient operator into the singleton proximal step.
   simpa [proximal_gradient_step] using
-    (prox_grad_operator_eq_singleton (f := f.toEReal) (g := g) L
+    (prox_grad_operator_eq_singleton (f := f.toExtendedReal) (g := g) L
       (interior_effective_domain_point_of_real f x))
 
 /-- Helper for Lemma 10.12: global convex `L`-smoothness on `Set.univ` implies the standard
@@ -261,11 +261,11 @@ theorem prox_grad_step_gradient_mapping_norm_monotone
       ‖G[L; f, g] xPlus‖ =
           ‖(L : ℝ) •
               ((interior_effective_domain_point_of_real f xPlus : E) -
-                T[L, f.toEReal, g] (interior_effective_domain_point_of_real f xPlus))‖ := by
+                T[L, f.toExtendedReal, g] (interior_effective_domain_point_of_real f xPlus))‖ := by
             rw [prox_gradient_mapping_apply, gradient_mapping_apply]
       _ = (L : ℝ) *
             ‖(interior_effective_domain_point_of_real f xPlus : E) -
-              T[L, f.toEReal, g] (interior_effective_domain_point_of_real f xPlus)‖ := by
+              T[L, f.toExtendedReal, g] (interior_effective_domain_point_of_real f xPlus)‖ := by
             rw [norm_smul, Real.norm_of_nonneg (le_of_lt L.2)]
       _ = (L : ℝ) * ‖xPlus - xNext‖ := by
             congr 1
@@ -276,11 +276,11 @@ theorem prox_grad_step_gradient_mapping_norm_monotone
       ‖G[L; f, g] x‖ =
           ‖(L : ℝ) •
               ((interior_effective_domain_point_of_real f x : E) -
-                T[L, f.toEReal, g] (interior_effective_domain_point_of_real f x))‖ := by
+                T[L, f.toExtendedReal, g] (interior_effective_domain_point_of_real f x))‖ := by
             rw [prox_gradient_mapping_apply, gradient_mapping_apply]
       _ = (L : ℝ) *
             ‖(interior_effective_domain_point_of_real f x : E) -
-              T[L, f.toEReal, g] (interior_effective_domain_point_of_real f x)‖ := by
+              T[L, f.toExtendedReal, g] (interior_effective_domain_point_of_real f x)‖ := by
             rw [norm_smul, Real.norm_of_nonneg (le_of_lt L.2)]
       _ = (L : ℝ) * ‖x - xPlus‖ := by
             congr 1

@@ -33,8 +33,8 @@ recall isMinOn_univ_iff_zero_mem_subdifferential
 recall subdifferential_precompose_affineMap_eq
 recall subdifferential_add_eq_sum_subdifferential_of_mem_interiors
 
-/-- Helper for Proposition 15.1: in finite dimensions, the Euclidean subdifferential is the image
-of the owner subdifferential under the Fréchet-Riesz identification. -/
+/-- Helper for Proposition 15.1: in finite dimensions, the Euclidean extendedRealSubdifferential is the image
+of the owner extendedRealSubdifferential under the Fréchet-Riesz identification. -/
 lemma euclideanSubdifferential_eq_image_subdifferential
     {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
     (f : E → EReal) (x : E) :
@@ -77,18 +77,18 @@ Riesz representing vector. -/
 lemma dual_to_vector_mem_euclideanSubdifferential_of_mem_subdifferential
     {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
     {f : E → EReal} {x : E} {g : Module.Dual ℝ E}
-    (hg : g ∈ subdifferential f x) :
+    (hg : g ∈ extendedRealSubdifferential f x) :
     dual_to_vector g ∈ euclideanSubdifferential f x := by
   -- Rewrite Euclidean membership to owner-side membership and recover the original dual witness.
   rw [mem_euclideanSubdifferential_iff, mem_strongDualSubdifferential]
   simpa [toDualMap_dual_to_vector] using hg
 
-/-- Helper for Proposition 15.1: zero membership in the Euclidean subdifferential is equivalent to
-zero membership in the owner subdifferential. -/
+/-- Helper for Proposition 15.1: zero membership in the Euclidean extendedRealSubdifferential is equivalent to
+zero membership in the owner extendedRealSubdifferential. -/
 lemma zero_mem_euclideanSubdifferential_iff_zero_mem_subdifferential
     {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
     (f : E → EReal) (x : E) :
-    0 ∈ euclideanSubdifferential f x ↔ (0 : Module.Dual ℝ E) ∈ subdifferential f x := by
+    0 ∈ euclideanSubdifferential f x ↔ (0 : Module.Dual ℝ E) ∈ extendedRealSubdifferential f x := by
   -- Rewrite Euclidean membership through the Riesz map and the strong-dual bridge.
   rw [mem_euclideanSubdifferential_iff, mem_strongDualSubdifferential]
   simp
@@ -226,10 +226,10 @@ lemma convex_function_ne_bot_of_mem_interior_finite_domain
 
 /-- Helper for Proposition 15.1: a function with convex effective domain and a subgradient at every
 effective-domain point is convex. -/
-lemma is_convex_function_of_subgradient_exists_on_effective_domain
+lemma is_convex_function_of_subgradient_exists_on_effective_domain_proposition_15_1
     {E : Type*} [AddCommGroup E] [Module ℝ E] {f : E → EReal}
     (hdom : Convex ℝ (effective_domain f))
-    (hsubgrad : ∀ x ∈ effective_domain f, ∃ g : Module.Dual ℝ E, g ∈ subdifferential f x) :
+    (hsubgrad : ∀ x ∈ effective_domain f, ∃ g : Module.Dual ℝ E, g ∈ extendedRealSubdifferential f x) :
     is_convex_function f := by
   rw [is_convex_function_iff_segment_ineq]
   intro x hx y hy t ht
@@ -345,7 +345,7 @@ lemma finite_domain_linear_quadratic_tether_eq_univ
     · simpa [mul_assoc] using quadratic_tether_factor_ne_bot (ρ := ρ) yk y
 
 /-- Helper for Proposition 15.1: precomposing a convex function with `y ↦ -Lᵀ y` transports the
-Euclidean subdifferential by the vector map `-L`. -/
+Euclidean extendedRealSubdifferential by the vector map `-L`. -/
 lemma euclideanSubdifferential_precompose_neg_adjoint_eq_image
     (f : X → EReal) (L : X →ₗ[ℝ] Y) (y : Y)
     (hconvex : is_convex_function f)
@@ -354,8 +354,8 @@ lemma euclideanSubdifferential_precompose_neg_adjoint_eq_image
       (-L) '' euclideanSubdifferential f (-L.adjoint y) := by
   -- Apply the owner affine rule first, then transport its witnesses through the Riesz map.
   have hprecompose :
-      subdifferential (fun y' : Y ↦ f (-L.adjoint y')) y =
-        (-L.adjoint).dualMap '' subdifferential f (-L.adjoint y) := by
+      extendedRealSubdifferential (fun y' : Y ↦ f (-L.adjoint y')) y =
+        (-L.adjoint).dualMap '' extendedRealSubdifferential f (-L.adjoint y) := by
     simpa using
       (subdifferential_precompose_affineMap_eq
         (f := f) (φ := (-L.adjoint).toAffineMap) (x := y) hconvex hy)
@@ -388,7 +388,7 @@ lemma euclideanSubdifferential_precompose_neg_adjoint_eq_image
       (dualMap_toDualMap_eq_toDualMap_adjoint (L := -L.adjoint) (y := x))
 
 /-- Helper for Proposition 15.1: the owner two-term sum rule transports directly to the
-Euclidean/vector-side subdifferential. -/
+Euclidean/vector-side extendedRealSubdifferential. -/
 lemma euclideanSubdifferential_add_eq_sum_of_mem_interiors
     (f₁ f₂ : Y → EReal) (x : Y)
     (hconvex₁ : is_convex_function f₁)
@@ -399,8 +399,8 @@ lemma euclideanSubdifferential_add_eq_sum_of_mem_interiors
       euclideanSubdifferential f₁ x + euclideanSubdifferential f₂ x := by
   -- Transport the owner two-term sum rule through the Riesz representation on each witness.
   have hsum :
-      subdifferential (f₁ + f₂) x =
-        subdifferential f₁ x + subdifferential f₂ x := by
+      extendedRealSubdifferential (f₁ + f₂) x =
+        extendedRealSubdifferential f₁ x + extendedRealSubdifferential f₂ x := by
     simpa using
       (subdifferential_add_eq_sum_subdifferential_of_mem_interiors
         f₁ f₂ x hconvex₁ hconvex₂ hx₁ hx₂)
@@ -547,7 +547,7 @@ lemma euclideanSubdifferential_linear_quadratic_tether_eq_singleton
     simpa [ψ, g, hz, EReal.coe_add] using hg_mem
 
 /-- At a point where both conjugate-affine terms lie in the interiors of their finite domains, the
-Euclidean subdifferential of the canonical ADMM dual-update objective splits as the sum of the two
+Euclidean extendedRealSubdifferential of the canonical ADMM dual-update objective splits as the sum of the two
 transported conjugate subdifferentials and the singleton contributed by the linear-plus-quadratic
 tether. -/
 theorem euclideanSubdifferential_admm_dual_update_objective_eq
@@ -574,7 +574,7 @@ theorem euclideanSubdifferential_admm_dual_update_objective_eq
   have hsource :
       admm_dual_update_objective ρ h₁ h₂ A B c yk = f₁ + f₂ + f₃ := by
     -- The interior finite-domain hypotheses upgrade to global non-`⊥` control, so the source
-    -- formula is valid everywhere and can be used directly in the subdifferential calculation.
+    -- formula is valid everywhere and can be used directly in the extendedRealSubdifferential calculation.
     funext y'
     simpa [f₁, f₂, f₃, add_assoc] using
       (admm_dual_update_objective_apply_eq_source_formula ρ h₁ h₂ A B c yk y'
@@ -587,7 +587,7 @@ theorem euclideanSubdifferential_admm_dual_update_objective_eq
     simpa [f₂, Function.comp] using
       (is_convex_function_precompose_affineMap h₂_convex ((-B.adjoint).toAffineMap))
   have hf₃_convex : is_convex_function f₃ := by
-    refine is_convex_function_of_subgradient_exists_on_effective_domain ?_ ?_
+    refine is_convex_function_of_subgradient_exists_on_effective_domain_proposition_15_1 ?_ ?_
     · have hf₃_eff : effective_domain f₃ = Set.univ := by
         ext x
         constructor
@@ -653,7 +653,7 @@ theorem euclideanSubdifferential_admm_dual_update_objective_eq
 /-- Proposition 15.1: for the canonical ADMM dual-update objective from equation (15.4), if that
 objective is evaluated at points whose two conjugate-affine terms lie in the interior of their
 finite domains, then the textbook `arg min` condition (15.4) is equivalent to the split
-subdifferential inclusion (15.5). -/
+extendedRealSubdifferential inclusion (15.5). -/
 theorem mem_admm_dual_update_iff_zero_mem_split_subdifferential_sum
     (ρ : PosReal)
     (h₁ : X → EReal) (h₂ : Z → EReal)
@@ -665,7 +665,7 @@ theorem mem_admm_dual_update_iff_zero_mem_split_subdifferential_sum
         (-B) '' euclideanSubdifferential (h₂∗) (-B.adjoint yNext) +
           {c + (1 / (ρ : ℝ)) • (yNext - yk)} := by
   -- Route correction: the final Fermat step is stable once the objective-level Euclidean
-  -- subdifferential formula above is established with the repaired local source-formula bridge.
+  -- extendedRealSubdifferential formula above is established with the repaired local source-formula bridge.
   have hy₁_fd : -A.adjoint yNext ∈ finite_domain (h₁∗) := interior_subset hy₁
   have hy₂_fd : -B.adjoint yNext ∈ finite_domain (h₂∗) := interior_subset hy₂
   rcases hy₁_fd with ⟨hy₁_top, hy₁_bot⟩
@@ -687,12 +687,12 @@ theorem mem_admm_dual_update_iff_zero_mem_split_subdifferential_sum
     exact EReal.add_lt_top hlin_ne_top
       (by simpa [mul_assoc] using quadratic_tether_factor_ne_top (ρ := ρ) yk yNext)
   -- Rewrite update membership to Fermat's condition, then pass through the Euclidean bridge and
-  -- the computed objective subdifferential.
+  -- the computed objective extendedRealSubdifferential.
   rw [mem_admm_dual_update_iff]
   rw [isMinOn_univ_iff_zero_mem_subdifferential (f := admm_dual_update_objective ρ h₁ h₂ A B c yk)
     hdom]
   rw [show ((0 : Module.Dual ℝ Y) ∈
-      subdifferential (admm_dual_update_objective ρ h₁ h₂ A B c yk) yNext) ↔
+      extendedRealSubdifferential (admm_dual_update_objective ρ h₁ h₂ A B c yk) yNext) ↔
       0 ∈ euclideanSubdifferential (admm_dual_update_objective ρ h₁ h₂ A B c yk) yNext by
         simpa using
           (zero_mem_euclideanSubdifferential_iff_zero_mem_subdifferential

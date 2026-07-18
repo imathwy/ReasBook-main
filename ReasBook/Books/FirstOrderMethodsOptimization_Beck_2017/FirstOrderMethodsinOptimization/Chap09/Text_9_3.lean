@@ -4,7 +4,7 @@ import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.C
 -- Declarations for this item will be appended below by the statement pipeline.
 /- Text 9.3 is `source-facing`: it asserts the existence of a strictly convex real-valued
 generator together with positive points witnessing triangle-inequality failure. The core owner is
-the Chapter 9 Bregman distance `bregmanDistance`; the one-dimensional bridge to real-valued
+the Chapter 9 Bregman distance `extendedRealBregmanDistance`; the one-dimensional bridge to real-valued
 generators is already supplied upstream in `Text_9_2`, so this file keeps the witness data itself
 rather than repackaging it as an auxiliary set. -/
 

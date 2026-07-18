@@ -10,10 +10,10 @@ section
 variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /- Theorem 3.4 is `source-facing` in the chapter real-valued convex-analysis API. The
-`core/canonical` owner notions are Chapter 3's `subdifferential` and `strongDualSubdifferential`;
+`core/canonical` owner notions are Chapter 3's `extendedRealSubdifferential` and `strongDualSubdifferential`;
 the declaration `subdifferentialAt` below is the stable real-valued specialization used
 throughout the chapter, not a second owner abstraction. -/
-/-- The real-valued subdifferential at `x`, viewed through the chapter's strong-dual bridge for
+/-- The real-valued extendedRealSubdifferential at `x`, viewed through the chapter's strong-dual bridge for
 the extended-real-valued coercion of `f`. -/
 abbrev subdifferentialAt (f : E → ℝ) (x : E) : Set (StrongDual ℝ E) :=
   strongDualSubdifferential (fun y ↦ (f y : EReal)) x
@@ -55,7 +55,7 @@ open InnerProductSpace (toDualMap)
 
 variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
-/-- The Euclidean/vector-side subdifferential at `x`, obtained by transporting the owner
+/-- The Euclidean/vector-side extendedRealSubdifferential at `x`, obtained by transporting the owner
 `subdifferentialAt f x : Set (StrongDual ℝ E)` back to vectors using the Riesz map `toDualMap`.
 This is a derived `bridge/view` API obtained by specializing `euclideanSubdifferential` to the
 everywhere-finite coercion of `f`; `subdifferentialAt` remains the owner abstraction. -/

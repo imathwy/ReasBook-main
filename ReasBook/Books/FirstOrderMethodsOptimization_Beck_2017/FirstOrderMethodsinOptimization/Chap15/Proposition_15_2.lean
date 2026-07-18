@@ -13,6 +13,7 @@ noncomputable section
 universe u v w
 
 open InnerProductSpace (toDualMap)
+open scoped FirstOrderSubdifferential
 
 section
 
@@ -23,7 +24,7 @@ variable [NormedAddCommGroup Y] [InnerProductSpace ℝ Y] [FiniteDimensional ℝ
 
 /- Domain sampling for this file:
 - the Chapter 4 conjugacy owner `conjugate_function`, together with Chapter 3's
-  `subdifferential`, governs the dual-side optimality clauses;
+  `extendedRealSubdifferential`, governs the dual-side optimality clauses;
 - the Chapter 8 owner `unconstrained_problem_solutions` is the canonical whole-space `arg min`
   set, with Mathlib's `IsMinOn` as its membership view;
 - the ADMM affine `x`- and `z`-subproblems, together with equation (15.5), are the
@@ -246,7 +247,7 @@ theorem eval_mem_conjugate_subdifferential_iff_mem_admm_z_subproblem_solutions
   simpa [ℓ] using hchain
 
 -- Proof sketch: unfold `admm_dual_optimality_condition`, apply the two bridge theorems turning
--- conjugate-subdifferential memberships into `arg min` conditions, and keep the affine update
+-- conjugate-extendedRealSubdifferential memberships into `arg min` conditions, and keep the affine update
 -- equation unchanged.
 /-- Proposition 15.2: by the conjugate subgradient theorem, equation (15.5) holds exactly when
 there are points `x^{k+1}` and `z^{k+1}` minimizing the two affine subproblems

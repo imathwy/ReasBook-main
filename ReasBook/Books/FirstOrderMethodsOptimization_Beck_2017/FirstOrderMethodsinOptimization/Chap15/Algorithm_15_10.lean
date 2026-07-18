@@ -278,7 +278,7 @@ theorem ad_lpmm_x_update_mem_adlpmm_x_step
     (xk : X) (zk yk : Y) :
     ad_lpmm_x_update A ρ lam xk zk yk ∈
       adlpmm_x_step
-        (fun x : X ↦ ((((lam : ℝ) * ‖x‖₁ : ℝ)) : EReal))
+        (fun x : X ↦ ((((lam : ℝ) * l1n[x] : ℝ)) : EReal))
         ρ
         (ad_lpmm_alpha_parameter A ρ hL : PosReal)
         A
@@ -318,7 +318,7 @@ theorem ad_lpmm_trajectory
       0
       (ad_lpmm_alpha_parameter A ρ hL)
       (ad_lpmm_beta_parameter ρ)
-      (fun x : X ↦ ((((lam : ℝ) * ‖x‖₁ : ℝ)) : EReal))
+      (fun x : X ↦ ((((lam : ℝ) * l1n[x] : ℝ)) : EReal))
       (denoising_data_fidelity b)
       (ad_lpmm_x A ρ lam b x0 z0 y0)
       (ad_lpmm_z A ρ lam b x0 z0 y0)

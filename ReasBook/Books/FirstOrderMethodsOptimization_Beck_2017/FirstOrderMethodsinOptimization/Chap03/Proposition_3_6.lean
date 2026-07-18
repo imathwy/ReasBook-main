@@ -16,7 +16,7 @@ therefore best recorded as the inclusion `effective_domain f ⊆ subdifferential
 pointwise nonemptiness view left to `[simp]` rewrites from `mem_subdifferential_domain`. -/
 
 -- Proof sketch: for each `x ∈ effective_domain f`, the inclusion `hsub` gives
--- `x ∈ subdifferential_domain f`, hence some `g ∈ subdifferential f x`, equivalently a
+-- `x ∈ subdifferential_domain f`, hence some `g ∈ extendedRealSubdifferential f x`, equivalently a
 -- subgradient at `x`. Applying the resulting inequalities at a convex combination of `x₀` and
 -- `x₁` yields the Jensen inequality, hence convexity.
 /-- Proposition 3.6: if an extended-real-valued function is subdifferentiable at every point of

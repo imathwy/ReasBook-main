@@ -193,14 +193,14 @@ theorem fista_y_succ
     simpa [Nat.add_assoc] using fista_t_succ f g x0 L (k + 1)]
   rfl
 
-/-- The canonical B2 upper-model acceptance predicate for `f.toEReal` at the bridge point
+/-- The canonical B2 upper-model acceptance predicate for `f.toExtendedReal` at the bridge point
 `interior_effective_domain_point_of_real f y` is exactly the displayed FISTA upper-model
 inequality `(10.39)` at `y`. -/
 theorem proximal_gradient_backtracking_B2_accepts_iff_fista_upper_model
     (f : E → ℝ) (g : E → EReal) [IsProperExtendedRealFunction g]
     [Fact (LowerSemicontinuous g)] [Fact (is_convex_function g)] (L : PosReal) (y : E) :
     proximal_gradient_backtracking_B2_accepts
-      f.toEReal g L (interior_effective_domain_point_of_real f y) ↔
+      f.toExtendedReal g L (interior_effective_domain_point_of_real f y) ↔
   let xNext := T[L; f, g] y
   f xNext ≤
     f y +
@@ -208,7 +208,7 @@ theorem proximal_gradient_backtracking_B2_accepts_iff_fista_upper_model
       ((L : ℝ) / 2) * ‖xNext - y‖ ^ (2 : ℕ) := by
   -- Unfold the B2 predicate and isolate the final `EReal`-to-`ℝ` coercion bridge.
   simp only [proximal_gradient_backtracking_B2_accepts, prox_gradient_operator_apply,
-    Function.toEReal, interior_effective_domain_point_of_real]
+    Function.toExtendedReal, interior_effective_domain_point_of_real]
   constructor
   · intro h
     exact EReal.coe_le_coe_iff.mp <| by
@@ -227,7 +227,7 @@ def uses_backtracking_procedure_B3_rule
     (η : ProximalGradientBacktrackingGrowthFactor) : Prop :=
   ∀ k : ℕ, ∃ i : ℕ,
     is_backtracking_procedure_B2_index
-      f.toEReal g
+      f.toExtendedReal g
       (proximal_gradient_backtracking_B2_previous_stepsize s L k) η
       (interior_effective_domain_point_of_real f (y k)) i ∧
     L k =
@@ -236,7 +236,7 @@ def uses_backtracking_procedure_B3_rule
 
 -- Proof sketch: specialize `uses_backtracking_procedure_B3_rule` at the iteration `k`; the chosen
 -- index `i` is accepted by `is_backtracking_procedure_B2_index_accepts` for the canonical
--- Chapter 10 B2 owner applied to `f.toEReal` at `interior_effective_domain_point_of_real f (y k)`.
+-- Chapter 10 B2 owner applied to `f.toExtendedReal` at `interior_effective_domain_point_of_real f (y k)`.
 -- The bridge theorem
 -- `proximal_gradient_backtracking_B2_accepts_iff_fista_upper_model` then rewrites this canonical
 -- acceptance predicate as the displayed FISTA upper-model inequality.
@@ -257,7 +257,7 @@ theorem uses_backtracking_procedure_B3_rule_accepts
   rcases hrule k with ⟨i, hi, hLk⟩
   have haccepts :
       proximal_gradient_backtracking_B2_accepts
-        f.toEReal g
+        f.toExtendedReal g
         (proximal_gradient_backtracking_trial_stepsize
           (proximal_gradient_backtracking_B2_previous_stepsize s L k) η i)
         (interior_effective_domain_point_of_real f (y k)) :=

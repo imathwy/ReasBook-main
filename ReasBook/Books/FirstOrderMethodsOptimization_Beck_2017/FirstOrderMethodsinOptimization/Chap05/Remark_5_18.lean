@@ -14,11 +14,11 @@ local notation "E₁" => WithLp 1 (Fin n → ℝ)
 local notation "Δ₁" => Set.preimage (ofLp : E₁ → Fin n → ℝ) (stdSimplex ℝ (Fin n))
 
 /- Remark 5.18 is `source-facing`: the primitive object is the entropy-shifted simplex function
-`x ↦ f(x) - α ‖x‖₁²`. Domain sampling points to Proposition 5.14's entropy owner
+`x ↦ f(x) - α l1n[x]²`. Domain sampling points to Proposition 5.14's entropy owner
 `coordinatewise_negative_entropy` and mathlib's canonical real-valued owner `ConvexOn` on the
 `WithLp 1` simplex model. The main labeled entry is therefore a convexity statement on `Δ₁`,
-while the helper lemmas record the simplex-specific identities `‖x‖₁ = 1` and
-`f(x) - α ‖x‖₁² = f(x) - α`. -/
+while the helper lemmas record the simplex-specific identities `l1n[x] = 1` and
+`f(x) - α l1n[x]² = f(x) - α`. -/
 
 -- Proof sketch: expand `hx : x ∈ Δ₁` as `ofLp x ∈ stdSimplex ℝ (Fin n)`, rewrite the `WithLp 1`
 -- norm by the finite `ℓ₁` coordinate formula, then use nonnegativity of simplex coordinates to
@@ -30,7 +30,7 @@ theorem l1_norm_eq_one_of_mem_stdSimplex {x : E₁} (hx : x ∈ Δ₁) :
 
 -- Proof sketch: substitute `‖x‖ = 1` from `l1_norm_eq_one_of_mem_stdSimplex hx`, square this
 -- identity, and simplify the scalar expression.
-/-- On the unit simplex, subtracting `α ‖x‖₁²` from the negative entropy is the same as
+/-- On the unit simplex, subtracting `α l1n[x]²` from the negative entropy is the same as
 subtracting the constant `α`. -/
 theorem negative_entropy_sub_alpha_l1Square_eq_sub_alpha_of_mem_stdSimplex
     (α : ℝ) {x : E₁} (hx : x ∈ Δ₁) :
@@ -43,7 +43,7 @@ theorem negative_entropy_sub_alpha_l1Square_eq_sub_alpha_of_mem_stdSimplex
 -- `negative_entropy_sub_alpha_l1Square_eq_sub_alpha_of_mem_stdSimplex` identifies the source
 -- expression with that constant translate on all points of `Δ₁`.
 /-- Remark 5.18: for every `α > 0`, the negative entropy on the unit simplex remains convex after
-subtracting `α ‖x‖₁²`, because this term is constant on the simplex. -/
+subtracting `α l1n[x]²`, because this term is constant on the simplex. -/
 theorem negative_entropy_sub_alpha_l1Square_convexOn_stdSimplex (α : ℝ) (hα : 0 < α) :
     ConvexOn ℝ Δ₁
       (fun x : E₁ ↦ coordinatewise_negative_entropy (ofLp x) - α * ‖x‖ ^ (2 : ℕ)) := sorry

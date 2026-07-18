@@ -11,26 +11,26 @@ section
 variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /- Definition 10.64 is `source-facing`: it identifies the chapter owner
-`Λ[a] : Set E` with the subdifferential of the continuous-dual norm at the
+`Λ[a] : Set E` with the extendedRealSubdifferential of the continuous-dual norm at the
 dual vector `a`. Domain sampling for the surrounding convex-analysis API gives:
 - `Λ[·]` from Lemma 10.61 as the source-facing owner object;
-- `subdifferentialAt` from Theorem 3.4 as the `core/canonical` subdifferential owner;
+- `subdifferentialAt` from Theorem 3.4 as the `core/canonical` extendedRealSubdifferential owner;
 - `NormedSpace.inclusionInDoubleDual ℝ E` as the canonical `bridge/view` from primal vectors to the
   bidual-valued strong-dual subgradients of the continuous-dual norm.
 
 The primitive data are only the dual vector `a`. The primal set `Λ[a]` should therefore remain the
-public source-facing object, while the strong-dual subdifferential is used through this canonical
+public source-facing object, while the strong-dual extendedRealSubdifferential is used through this canonical
 bridge instead of replacing `Λ[a]` by a second owner living on the bidual. -/
 
 -- Proof sketch: unfold `Λ[a]` using Lemma 10.61. For `x : E`, membership in the transported
--- strong-dual subdifferential says that the bidual evaluation functional
+-- strong-dual extendedRealSubdifferential says that the bidual evaluation functional
 -- `NormedSpace.inclusionInDoubleDual ℝ E x`, i.e. `b ↦ b x`, satisfies the subgradient inequality
 -- for `h(a) = ‖a‖` at `a`. Evaluating that inequality at `0` yields `‖x‖ ≤ 1`, while
 -- evaluating it along positive multiples of `a` yields `a x = ‖a‖`; conversely these two
 -- conditions imply the subgradient inequality by the dual-pairing bound
 -- `b x ≤ ‖b‖ ‖x‖ ≤ ‖b‖`.
 /-- Helper for Definition 10.64: membership of the bidual evaluation functional in the norm
-subdifferential is exactly the pointwise subgradient inequality `‖b‖ ≥ ‖a‖ + (b - a)(x)`. -/
+extendedRealSubdifferential is exactly the pointwise subgradient inequality `‖b‖ ≥ ‖a‖ + (b - a)(x)`. -/
 lemma mem_subdifferentialAt_norm_iff_eval_subgradient_inequality
     (a : StrongDual ℝ E) {x : E} :
     NormedSpace.inclusionInDoubleDual ℝ E x ∈
@@ -112,7 +112,7 @@ lemma apply_eq_norm_and_norm_le_one_of_eval_subgradient_inequality
   exact ⟨hax, hnorm⟩
 
 /-- Definition 10.64, pointwise bridge form: a primal vector `x` is a source counterpart
-`x ∈ Λ[a]` exactly when its canonical bidual image belongs to the norm subdifferential at `a`. -/
+`x ∈ Λ[a]` exactly when its canonical bidual image belongs to the norm extendedRealSubdifferential at `a`. -/
 @[simp] theorem mem_primalCounterparts_iff_mem_subdifferentialAt_norm
     (a : StrongDual ℝ E) {x : E} :
     x ∈ Λ[a] ↔
@@ -132,7 +132,7 @@ lemma apply_eq_norm_and_norm_le_one_of_eval_subgradient_inequality
       ⟨hax, hnorm⟩
     exact ⟨hnorm, hax⟩
 
-/-- Definition 10.64: the source set `Λ_a` is the subdifferential of the continuous-dual norm
+/-- Definition 10.64: the source set `Λ_a` is the extendedRealSubdifferential of the continuous-dual norm
 `h(a) = ‖a‖`, transported from the bidual-valued owner `subdifferentialAt` back to the primal
 space by the canonical map
 `NormedSpace.inclusionInDoubleDual ℝ E`. -/

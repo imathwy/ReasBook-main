@@ -290,7 +290,7 @@ lemma eval_mem_conjugate_subdifferential_iff_isMaxOn_affine_minus
     (hf_closed : LowerSemicontinuous f)
     (hf_convex : is_convex_function f)
     (yDual : Module.Dual ℝ E) (x : E) :
-    Module.Dual.eval ℝ E x ∈ subdifferential (conjugate_function f) yDual ↔
+    Module.Dual.eval ℝ E x ∈ extendedRealSubdifferential (conjugate_function f) yDual ↔
       IsMaxOn (fun x' : E ↦ (yDual x' : EReal) - f x') Set.univ x := by
   constructor
   · intro hx
@@ -313,7 +313,7 @@ lemma eval_mem_conjugate_subdifferential_of_mem_dual_primal_x_argmax
     {v : V} {x : E}
     (hx : x ∈ dual_proximal_gradient_primal_x_argmax f A v) :
     Module.Dual.eval ℝ E x ∈
-      subdifferential (conjugate_function f)
+      extendedRealSubdifferential (conjugate_function f)
         (InnerProductSpace.toDualMap ℝ E (A.adjoint v)) := by
   have hf_convex_toReal :
       ConvexOn ℝ (effective_domain f) (fun z : E ↦ (f z).toReal) := by
@@ -341,7 +341,7 @@ lemma conjugate_subgradient_eval_eq_gradient_point
     (h_problem : IsDualBasedProximalGradientProblem f g A σ)
     {y x : E}
     (hx : Module.Dual.eval ℝ E x ∈
-      subdifferential (conjugate_function f) (InnerProductSpace.toDualMap ℝ E y)) :
+      extendedRealSubdifferential (conjugate_function f) (InnerProductSpace.toDualMap ℝ E y)) :
     x = ∇ (fun z : E ↦ ((f∗) z).toReal) y := by
   let φ : E →ₗ[ℝ] Module.Dual ℝ E :=
     ((LinearMap.toContinuousLinearMap : (Module.Dual ℝ E) ≃ₗ[ℝ] StrongDual ℝ E).symm).toLinearMap.comp
@@ -376,7 +376,7 @@ lemma conjugate_subgradient_eval_eq_gradient_point
         rcases hconj_finite z with ⟨hz_ne_bot, hz_lt_top⟩
         exact ⟨hz_lt_top, hz_ne_bot⟩
     simpa [hfinite_domain_univ]
-  have hx_primal : xDual ∈ subdifferential (f∗) y := by
+  have hx_primal : xDual ∈ extendedRealSubdifferential (f∗) y := by
     have hφ_apply (z : E) : φ z = (InnerProductSpace.toDualMap ℝ E z : Module.Dual ℝ E) := by
       ext w
       simp [φ, InnerProductSpace.toDual_apply_eq_toDualMap_apply]
@@ -386,7 +386,7 @@ lemma conjugate_subgradient_eval_eq_gradient_point
       simp [xDual, φ, InnerProductSpace.toDual_apply_eq_toDualMap_apply, real_inner_comm]
     have hpullback :
         φ.dualMap (Module.Dual.eval ℝ E x) ∈
-          subdifferential (fun z : E ↦ conjugate_function f (φ z)) y := by
+          extendedRealSubdifferential (fun z : E ↦ conjugate_function f (φ z)) y := by
       exact
         (subdifferential_precompose_affineMap_subset
           (f := conjugate_function f) (φ := φ.toAffineMap) (x := y))
@@ -401,7 +401,7 @@ lemma conjugate_subgradient_eval_eq_gradient_point
     have hx_image :
         InnerProductSpace.toDual ℝ E x ∈
           (LinearMap.toContinuousLinearMap : (Module.Dual ℝ E) ≃ₗ[ℝ] StrongDual ℝ E) ''
-            subdifferential (f∗) y := by
+            extendedRealSubdifferential (f∗) y := by
       refine ⟨xDual, hx_primal, ?_⟩
       ext z
       simp [xDual, InnerProductSpace.toDual_apply_eq_toDualMap_apply]
@@ -420,6 +420,19 @@ lemma conjugate_subgradient_eval_eq_gradient_point
       simpa [hsingleton] using hx_strong
     simpa using this
   exact (InnerProductSpace.toDual ℝ E).injective hx_eq_dual
+
+/-- A primal argmax point is the conjugate gradient at the corresponding adjoint dual point. -/
+lemma dual_primal_x_argmax_eq_conjugate_gradient
+    (σ : PosReal)
+    (h_problem : IsDualBasedProximalGradientProblem f g A σ)
+    {v : V} {x : E}
+    (hx : x ∈ dual_proximal_gradient_primal_x_argmax f A v) :
+    x = ∇ (fun z : E ↦ ((f∗) z).toReal) (A.adjoint v) := by
+  apply conjugate_subgradient_eval_eq_gradient_point
+    (f := f) (g := g) (A := A) (σ := σ) h_problem
+  exact
+    eval_mem_conjugate_subdifferential_of_mem_dual_primal_x_argmax
+      (f := f) (g := g) (A := A) (σ := σ) h_problem hx
 
 /-- Helper for Theorem 12.9: the Chapter 12 split minimization objective is pointwise `-q`. -/
 lemma dual_terms_objective_eq_neg_q
@@ -649,7 +662,7 @@ lemma dual_trajectory_step_mem_proximal_gradient_step
     (k : ℕ) :
     y (k + 1) ∈
       proximal_gradient_step
-        (Function.toEReal (fun z : V ↦ ((f∗) (A.adjoint z)).toReal))
+        (Function.toExtendedReal (fun z : V ↦ ((f∗) (A.adjoint z)).toReal))
         (fun z : V ↦ (g∗) (-z))
         (w k)
         (L : PosReal) := by
@@ -663,7 +676,7 @@ lemma dual_trajectory_step_mem_proximal_gradient_step
           (w k) :=
     htraj.dual_step k
   rw [dual_based_proximal_gradient_dual_step_eq_proximal_gradient_step
-    (F := Function.toEReal (fun z : V ↦ ((f∗) (A.adjoint z)).toReal))
+    (F := Function.toExtendedReal (fun z : V ↦ ((f∗) (A.adjoint z)).toReal))
     (G := fun z : V ↦ (g∗) (-z))
     (gradF := fun z : V ↦ ∇ (fun z' : V ↦ ((f∗) (A.adjoint z')).toReal) z)
     (L := (L : PosReal))
@@ -717,7 +730,7 @@ lemma dual_upper_model_accepts_at_w
     [Fact (LowerSemicontinuous (fun z : V ↦ (g∗) (-z)))]
     [Fact (is_convex_function (fun z : V ↦ (g∗) (-z)))] :
     proximal_gradient_backtracking_B2_accepts
-      (Function.toEReal (fun z : V ↦ ((f∗) (A.adjoint z)).toReal))
+      (Function.toExtendedReal (fun z : V ↦ ((f∗) (A.adjoint z)).toReal))
       (fun z : V ↦ (g∗) (-z))
       (L : PosReal)
       (interior_effective_domain_point_of_real
@@ -1035,7 +1048,7 @@ theorem fast_dual_proximal_gradient_dual_objective_gap_le_of_dual_trajectory
   have hstep_mem :
       y (k + 1) ∈
         proximal_gradient_step
-          (Function.toEReal (fun z : V ↦ ((f∗) (A.adjoint z)).toReal))
+          (Function.toExtendedReal (fun z : V ↦ ((f∗) (A.adjoint z)).toReal))
           (fun z : V ↦ (g∗) (-z))
           (w k)
           (L : PosReal) :=
@@ -1043,7 +1056,7 @@ theorem fast_dual_proximal_gradient_dual_objective_gap_le_of_dual_trajectory
       (f := f) (g := g) (A := A) h_problem htraj k
   have hmodel_accepts :
       proximal_gradient_backtracking_B2_accepts
-        (Function.toEReal (fun z : V ↦ ((f∗) (A.adjoint z)).toReal))
+        (Function.toExtendedReal (fun z : V ↦ ((f∗) (A.adjoint z)).toReal))
         (fun z : V ↦ (g∗) (-z))
         (L : PosReal)
         (interior_effective_domain_point_of_real

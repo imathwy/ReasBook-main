@@ -249,7 +249,7 @@ box `{z | z_i ≤ b_i}`. -/
 theorem euclidean_coordinatewise_min_mem_projection_mapping_upper_box
     (s : Ep) :
     euclidean_coordinatewise_min s b ∈
-      P[{z : Ep | ∀ i : Fin p, z i ≤ b i}] s :=
+      Proj[{z : Ep | ∀ i : Fin p, z i ≤ b i}] s :=
   by
   let u : Ep := euclidean_coordinatewise_min s b
   have hu_mem : u ∈ {z : Ep | ∀ i : Fin p, z i ≤ b i} := by

@@ -20,7 +20,7 @@ Chapter 2 convexity API `is_convex_function`, with
 `is_convex_function_iff_segment_ineq` supplying the canonical segment-inequality view. Unlike
 Theorem 3.11, this lemma does not assume an inner-product or finite-dimensional structure, so its
 main statement should remain a direct affine lower bound rather than being collapsed into a
-subdifferential-max formula. -/
+extendedRealSubdifferential-max formula. -/
 recall effective_domain
 recall is_convex_function
 recall is_convex_function_iff_segment_ineq

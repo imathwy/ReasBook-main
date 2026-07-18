@@ -2,7 +2,7 @@ import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.C
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
-/- Theorem 3.7 is recall-only as a `bridge/view` item in the chapter convex-subdifferential API:
+/- Theorem 3.7 is recall-only as a `bridge/view` item in the chapter convex-extendedRealSubdifferential API:
 the exact owner theorem is already
 `subdifferential_unbounded_of_affineSpan_effective_domain_direction_finrank_lt`, stated on the
 continuous-dual owner bridge `strongDualSubdifferential` rather than an expanded set-builder

@@ -28,7 +28,7 @@ Domain sampling in the surrounding chapter identifies:
   exact constant stepsize regime `L_k = L_f`;
 - `prox_grad_step_gradient_mapping_norm_monotone` from Lemma 10.12 as the one-step monotonicity
   bridge;
-- `IsConvexCompositeSmoothMinimizationProblem f.toEReal g XStar FOpt Lf` as the convex Chapter 10
+- `IsConvexCompositeSmoothMinimizationProblem f.toExtendedReal g XStar FOpt Lf` as the convex Chapter 10
   owner needed only for the optimizer-dependent sublinear-rate clause (b);
 - `proximal_gradient_best_gradient_mapping_norm_le_sublinear_rate` from Theorem 10.26 as the
   running-minimum `O(1 / k)` rate owner.
@@ -65,14 +65,14 @@ theorem proximal_gradient_mapping_norm_nonincreasing_of_constant_stepsize
     [Fact (is_convex_function g)]
     (hf_convex : ConvexOn ℝ Set.univ f)
     (hf_smooth : is_l_smooth_on f Set.univ Lf)
-    (htraj : is_proximal_gradient_trajectory f.toEReal g x L)
+    (htraj : is_proximal_gradient_trajectory f.toExtendedReal g x L)
     (hLconst : uses_proximal_gradient_Lf_stepsize_rule Lf L) (k : ℕ) :
     ‖G[hLconst.stepsize; f, g] (x (k + 1))‖ ≤ ‖G[hLconst.stepsize; f, g] (x k)‖ := sorry
 
 section
 
 variable {XStar : Set E} {FOpt : ℝ}
-variable [hproblem : IsConvexCompositeSmoothMinimizationProblem f.toEReal g XStar FOpt Lf]
+variable [hproblem : IsConvexCompositeSmoothMinimizationProblem f.toExtendedReal g XStar FOpt Lf]
 
 -- Proof sketch: combine clause (1) with the running-minimum rate estimate from Theorem 10.26 in
 -- the constant-stepsize regime `α = β = 1`. Because the residual norms are nonincreasing, the
@@ -85,7 +85,7 @@ Theorem 10.26 and the same constant stepsize rule, every optimizer `xStar ∈ X^
 pointwise `O(1 / k)` estimate
 `‖G_(L_f)(x^k)‖ ≤ 2 L_f ‖x^0 - xStar‖ / (k + 1)`. -/
 theorem proximal_gradient_mapping_norm_le_one_div_k_of_constant_stepsize
-    (htraj : is_proximal_gradient_trajectory f.toEReal g x L)
+    (htraj : is_proximal_gradient_trajectory f.toExtendedReal g x L)
     (hLconst : uses_proximal_gradient_Lf_stepsize_rule Lf L)
     (xStar : E) (hxStar : xStar ∈ XStar) (k : ℕ) :
     ‖hproblem.gradientMapping hLconst.stepsize (x k)‖ ≤

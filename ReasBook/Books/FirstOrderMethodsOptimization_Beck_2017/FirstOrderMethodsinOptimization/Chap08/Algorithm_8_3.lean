@@ -32,7 +32,7 @@ def projected_subgradient_method (C : Set E)
         ((xk : E) - t k • g k xk)
 
 /-- A direction-selection rule is admissible for the projected subgradient method on `f` when, at
-each iterate, the selected direction belongs to the Euclidean subdifferential of `f` at the
+each iterate, the selected direction belongs to the Euclidean extendedRealSubdifferential of `f` at the
 current iterate and the current stepsize is strictly positive. -/
 def projected_subgradient_method_is_admissible
     (f : E → ℝ) (C : Set E) (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C)

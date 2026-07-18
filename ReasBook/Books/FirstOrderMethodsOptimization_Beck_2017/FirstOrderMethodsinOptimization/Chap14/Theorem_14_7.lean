@@ -19,7 +19,7 @@ nearby Chapter 11 and Chapter 14 files.
 This item is `source-facing`: it is the existential-radius corollary of the Chapter 14
 `O(1 / k)` convergence-rate theorem for the objective gap along an alternating-minimization
 trajectory under Assumption 14.10. The relevant owners already exist in the local API:
-- `composite_model_objective f.toEReal (separableSum g)` from Chapter 10/Chapter 6 for the
+- `composite_model_objective f.toExtendedReal (separableSum g)` from Chapter 10/Chapter 6 for the
   objective `F(x) = f(x) + ∑ i, g_i(x_i)`;
 - `IsAlternatingMinimizationConvexRateProblem` for Assumption 14.10;
 - the Algorithm 14.1 trajectory owner `is_alternating_minimization_trajectory` for the generated
@@ -37,7 +37,7 @@ variable {f : ((i : Fin p) → Ei i) → ℝ} {g : ∀ i : Fin p, Ei i → EReal
 variable {XStar : Set ((i : Fin p) → Ei i)} {FOpt : ℝ} {Lf : NNReal}
 variable [IsAlternatingMinimizationConvexRateProblem f g XStar FOpt Lf]
 
-local notation "F" => composite_model_objective f.toEReal (separableSum g)
+local notation "F" => composite_model_objective f.toExtendedReal (separableSum g)
 
 -- Proof sketch: choose one positive level `α` above the initial value `F(x^0)`, extract the
 -- corresponding radius witness from Assumption 14.10 once and for all, and then apply the

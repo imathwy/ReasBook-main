@@ -1,4 +1,5 @@
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Assumption_8_12
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Corollary_8_22
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Definition_8_8
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Definition_8_10
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Lemma_8_11
@@ -54,7 +55,7 @@ also vanishes. -/
 lemma objective_gap_eq_zero_of_zero_selected_subgradient
     (h_subgrad :
       ∀ k,
-        (toDualMap ℝ E (g k (x[k])) : Module.Dual ℝ E) ∈ subdifferential f (x[k] : E))
+        (toDualMap ℝ E (g k (x[k])) : Module.Dual ℝ E) ∈ extendedRealSubdifferential f (x[k] : E))
     (k : ℕ) (hg0 : g k (x[k]) = 0) :
     gap k = 0 := by
   -- The Chapter 8 subgradient-gap lemma turns the zero subgradient branch into a zero gap branch.
@@ -72,37 +73,13 @@ lemma objective_gap_eq_zero_of_zero_selected_subgradient
     simpa [hg0] using hgap_le
   linarith
 
-/-- Helper for Theorem 8.13: points already lying in the feasible set are fixed by the metric
-projection onto that set. -/
-lemma metricProjection_eq_self_of_mem {y : E} (hy : y ∈ C) :
-    (metricProjection C h_problem.feasible_nonempty h_problem.feasible_closed.isComplete
-      h_problem.feasible_convex y : E) = y := by
-  -- The variational inequality with test point `y` forces the projection residual to vanish.
-  have hineq :=
-    inner_sub_metricProjection_le_zero C h_problem.feasible_nonempty
-      h_problem.feasible_closed.isComplete h_problem.feasible_convex y y hy
-  have hnorm_sq_le_zero :
-      ‖y -
-          (metricProjection C h_problem.feasible_nonempty h_problem.feasible_closed.isComplete
-            h_problem.feasible_convex y : E)‖ ^ (2 : ℕ) ≤ 0 := by
-    simpa [real_inner_self_eq_norm_sq] using hineq
-  have hnorm_zero :
-      ‖y -
-          (metricProjection C h_problem.feasible_nonempty h_problem.feasible_closed.isComplete
-            h_problem.feasible_convex y : E)‖ = 0 := by
-    nlinarith [sq_nonneg
-      ‖y -
-          (metricProjection C h_problem.feasible_nonempty h_problem.feasible_closed.isComplete
-            h_problem.feasible_convex y : E)‖, hnorm_sq_le_zero]
-  exact (sub_eq_zero.mp (norm_eq_zero.mp hnorm_zero)).symm
-
 /-- Helper for Theorem 8.13: one Polyak step decreases the squared distance to any optimal point
 by at least the squared objective gap divided by `L_f^2`. -/
 lemma polyak_sqdist_drop_le_squared_gap_div_Lf_sq
     (h_norm : SubgradientNormBoundOn f C)
     (h_subgrad :
       ∀ k,
-        (toDualMap ℝ E (g k (x[k])) : Module.Dual ℝ E) ∈ subdifferential f (x[k] : E))
+        (toDualMap ℝ E (g k (x[k])) : Module.Dual ℝ E) ∈ extendedRealSubdifferential f (x[k] : E))
     (h_polyak :
       ∀ k,
         t k = polyak_stepsize f fOpt (x[k] : E) (g k (x[k])))
@@ -125,7 +102,7 @@ lemma polyak_sqdist_drop_le_squared_gap_div_Lf_sq
         (metricProjection C h_problem.feasible_nonempty h_problem.feasible_closed.isComplete
           h_problem.feasible_convex xStar : E) = xStar :=
       metricProjection_eq_self_of_mem
-        (f := f) (C := C) (XStar := XStar) (fOpt := fOpt) (h_problem := h_problem)
+        h_problem.feasible_nonempty h_problem.feasible_closed h_problem.feasible_convex
         (y := xStar) hxStar_data.1
     have hdist :
         ‖(x[k + 1] : E) - xStar‖ ≤ ‖((x[k] : E) - t k • g k (x[k])) - xStar‖ := by
@@ -168,7 +145,7 @@ lemma polyak_sqdist_drop_le_squared_gap_div_Lf_sq
         (metricProjection C h_problem.feasible_nonempty h_problem.feasible_closed.isComplete
           h_problem.feasible_convex xStar : E) = xStar :=
       metricProjection_eq_self_of_mem
-        (f := f) (C := C) (XStar := XStar) (fOpt := fOpt) (h_problem := h_problem)
+        h_problem.feasible_nonempty h_problem.feasible_closed h_problem.feasible_convex
         (y := xStar) hxStar_data.1
     have hdist :
         ‖(x[k + 1] : E) - xStar‖ ≤ ‖((x[k] : E) - t k • g k (x[k])) - xStar‖ := by
@@ -272,7 +249,7 @@ lemma polyak_squared_gap_prefix_sum_le_initial_sqdist
     (h_norm : SubgradientNormBoundOn f C)
     (h_subgrad :
       ∀ k,
-        (toDualMap ℝ E (g k (x[k])) : Module.Dual ℝ E) ∈ subdifferential f (x[k] : E))
+        (toDualMap ℝ E (g k (x[k])) : Module.Dual ℝ E) ∈ extendedRealSubdifferential f (x[k] : E))
     (h_polyak :
       ∀ k,
         t k = polyak_stepsize f fOpt (x[k] : E) (g k (x[k])))
@@ -403,7 +380,7 @@ theorem projected_subgradient_method_sqdist_mono_of_polyak_stepsize
     (h_norm : SubgradientNormBoundOn f C)
     (h_subgrad :
       ∀ k,
-        (toDualMap ℝ E (g k (x[k])) : Module.Dual ℝ E) ∈ subdifferential f (x[k] : E))
+        (toDualMap ℝ E (g k (x[k])) : Module.Dual ℝ E) ∈ extendedRealSubdifferential f (x[k] : E))
     (h_polyak :
       ∀ k,
         t k = polyak_stepsize f fOpt (x[k] : E) (g k (x[k])))
@@ -430,7 +407,7 @@ theorem projected_subgradient_method_objective_tendsto_of_polyak_stepsize
     (h_norm : SubgradientNormBoundOn f C)
     (h_subgrad :
       ∀ k,
-        (toDualMap ℝ E (g k (x[k])) : Module.Dual ℝ E) ∈ subdifferential f (x[k] : E))
+        (toDualMap ℝ E (g k (x[k])) : Module.Dual ℝ E) ∈ extendedRealSubdifferential f (x[k] : E))
     (h_polyak :
       ∀ k,
         t k = polyak_stepsize f fOpt (x[k] : E) (g k (x[k])))
@@ -492,7 +469,7 @@ theorem projected_subgradient_method_best_value_gap_le_of_polyak_stepsize
     (h_norm : SubgradientNormBoundOn f C)
     (h_subgrad :
       ∀ k,
-        (toDualMap ℝ E (g k (x[k])) : Module.Dual ℝ E) ∈ subdifferential f (x[k] : E))
+        (toDualMap ℝ E (g k (x[k])) : Module.Dual ℝ E) ∈ extendedRealSubdifferential f (x[k] : E))
     (h_polyak :
       ∀ k,
         t k = polyak_stepsize f fOpt (x[k] : E) (g k (x[k])))

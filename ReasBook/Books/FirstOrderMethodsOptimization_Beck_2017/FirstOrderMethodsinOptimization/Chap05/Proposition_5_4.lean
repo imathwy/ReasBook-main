@@ -15,7 +15,8 @@ section
 variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [CompleteSpace E]
 variable (C : Set E) (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C) (hC_convex : Convex ℝ C)
 
-local notation "P" => fun x ↦ (metricProjection C hC_nonempty hC_closed hC_convex x : E)
+local notation "P" => fun x ↦
+  (metricProjection C hC_nonempty hC_closed.isComplete hC_convex x : E)
 
 /- Proposition 5.4 is a `bridge/view` item over the Chapter 2 owner
 `euclidean_distance_potential`. The primitive object is already defined upstream; this file keeps
@@ -42,13 +43,15 @@ theorem gradient_euclidean_distance_potential_eq_metricProjection (x : E) :
 theorem lipschitzWith_gradient_euclidean_distance_potential
     (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C) (hC_convex : Convex ℝ C) :
     LipschitzWith 1 (∇ (euclidean_distance_potential C)) := by
-  let p : E → E := fun x ↦ (metricProjection C hC_nonempty hC_closed hC_convex x : E)
+  let p : E → E := fun x ↦
+    (metricProjection C hC_nonempty hC_closed.isComplete hC_convex x : E)
   have hgrad : ∇ (euclidean_distance_potential C) = p := by
     funext x
     exact gradient_euclidean_distance_potential_eq_metricProjection
       C hC_nonempty hC_closed hC_convex x
 
-  simpa [p, hgrad] using metricProjection_nonexpansive C hC_nonempty hC_closed hC_convex
+  simpa [p, hgrad] using
+    metricProjection_nonexpansive C hC_nonempty hC_closed hC_convex
 
 /-- Proposition 5.4 (2): in a complete real inner product space,
 `euclidean_distance_potential C` has `1`-Lipschitz gradient, i.e.

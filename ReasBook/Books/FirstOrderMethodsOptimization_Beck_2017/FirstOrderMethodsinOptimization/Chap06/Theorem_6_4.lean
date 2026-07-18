@@ -2,6 +2,7 @@ import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap02.Corollary_2_1
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap02.Theorem_2_5
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap06.Definition_6_1
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap06.Theorem_6_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -20,20 +21,6 @@ sampling shows that the relevant owner abstractions for this statement already l
 
 Accordingly, this file should only state the existence theorem for `prox[f] x`; it should not
 duplicate local owners for coercivity, minimizer existence, or proximal-set membership. -/
-
--- Proof sketch: the quadratic penalty `u ↦ (1 / 2) ‖u - x‖²` is continuous, hence closed after
--- coercing to `EReal`. Adding it to the closed function `f` yields a closed proximal objective.
-omit [ProperSpace E] in
-/-- If `f` is lower semicontinuous, then its proximal objective at `x` is lower semicontinuous. -/
-theorem lowerSemicontinuous_proximal_objective
-    {f : E → EReal} (hf_closed : LowerSemicontinuous f) (x : E) :
-    LowerSemicontinuous (proximal_objective f x) := by
-  have hpenalty_closed : LowerSemicontinuous
-      (fun u : E ↦ ((((1 / 2 : ℝ) * ‖u - x‖ ^ (2 : ℕ)) : ℝ) : EReal)) :=
-    continuous_real_isClosed (by fun_prop)
-  simpa only [proximal_objective_apply] using
-    hf_closed.add' hpenalty_closed <| fun u ↦
-      EReal.continuousAt_add (.inr (EReal.coe_ne_bot _)) (.inr (EReal.coe_ne_top _))
 
 -- Proof sketch: fix `x`. The function `proximal_objective f x` is coercive by `hcoercive`, hence
 -- proper. It is also lower semicontinuous because `f` is lower semicontinuous and the quadratic

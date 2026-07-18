@@ -12,7 +12,7 @@ variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
 recall strongDualSubdifferential
 
-/- Theorem 6.42 sits in the proximal/subdifferential domain.
+/- Theorem 6.42 sits in the proximal/extendedRealSubdifferential domain.
 
 Domain sampling:
 - `prox[f]` from Definition 6.1 is the source-facing Chapter 6 owner.

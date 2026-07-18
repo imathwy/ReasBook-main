@@ -33,7 +33,7 @@ recall subdifferential_domain_subset_effective_domain
 -- `intrinsicInterior ℝ (effective_domain f)`, and Proposition 3.7 pushes that set into
 -- `subdifferential_domain f`.
 /-- Owner-level bridge: a convex extended-real-valued function with nonempty effective domain has
-nonempty subdifferential domain. -/
+nonempty extendedRealSubdifferential domain. -/
 theorem subdifferential_domain_nonempty_of_convex_of_effective_domain_nonempty
     (f : E → EReal) (hconv : is_convex_function f) (hdom : (effective_domain f).Nonempty) :
     (subdifferential_domain f).Nonempty := by
@@ -43,7 +43,7 @@ theorem subdifferential_domain_nonempty_of_convex_of_effective_domain_nonempty
       (relativeInterior_effective_domain_subset_subdifferential_domain f hconv)
 
 /-- Proposition 3.7.1: any proper convex extended-real-valued function has a point where the
-subdifferential is nonempty. Equivalently, `dom(∂ f)` is nonempty. -/
+extendedRealSubdifferential is nonempty. Equivalently, `dom(∂ f)` is nonempty. -/
 theorem subdifferential_domain_nonempty_of_proper_convex
     (f : E → EReal) (hf : IsProperExtendedRealFunction f) (hconv : is_convex_function f) :
     (subdifferential_domain f).Nonempty :=
@@ -51,23 +51,23 @@ theorem subdifferential_domain_nonempty_of_proper_convex
     hf.effective_domain_nonempty
 
 -- Proof sketch: extract `x ∈ subdifferential_domain f` from the owner theorem, rewrite it as
--- `(subdifferential f x).Nonempty`, and recover `x ∈ effective_domain f` because the
--- subdifferential is empty off the effective domain.
+-- `(extendedRealSubdifferential f x).Nonempty`, and recover `x ∈ effective_domain f` because the
+-- extendedRealSubdifferential is empty off the effective domain.
 /-- Owner-level companion: a convex extended-real-valued function with nonempty effective domain
-has a point of its effective domain where the subdifferential is nonempty. -/
+has a point of its effective domain where the extendedRealSubdifferential is nonempty. -/
 theorem exists_subdifferentiable_point_in_effective_domain_of_convex_of_effective_domain_nonempty
     (f : E → EReal) (hconv : is_convex_function f) (hdom : (effective_domain f).Nonempty) :
-    ∃ x ∈ effective_domain f, (subdifferential f x).Nonempty := by
+    ∃ x ∈ effective_domain f, (extendedRealSubdifferential f x).Nonempty := by
   rcases subdifferential_domain_nonempty_of_convex_of_effective_domain_nonempty f hconv hdom with
       ⟨x, hx⟩
   refine ⟨x, subdifferential_domain_subset_effective_domain hx, ?_⟩
   exact (mem_subdifferential_domain).1 hx
 
 /-- Source-facing corollary: any proper convex extended-real-valued function has a point of its
-effective domain where the subdifferential is nonempty. -/
+effective domain where the extendedRealSubdifferential is nonempty. -/
 theorem exists_subdifferentiable_point_in_effective_domain_of_proper_convex
     (f : E → EReal) (hf : IsProperExtendedRealFunction f) (hconv : is_convex_function f) :
-    ∃ x ∈ effective_domain f, (subdifferential f x).Nonempty :=
+    ∃ x ∈ effective_domain f, (extendedRealSubdifferential f x).Nonempty :=
   exists_subdifferentiable_point_in_effective_domain_of_convex_of_effective_domain_nonempty f
     hconv hf.effective_domain_nonempty
 

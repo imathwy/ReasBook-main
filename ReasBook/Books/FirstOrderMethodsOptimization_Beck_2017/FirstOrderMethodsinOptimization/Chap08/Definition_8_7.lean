@@ -10,17 +10,17 @@ section
 variable {E : Type u} [AddCommGroup E] [Module ℝ E]
 
 /- Definition 8.7 is `source-facing`: the textbook introduces a deterministic rule that chooses,
-for each feasible point `x ∈ C`, one member of the owner set `subdifferential f x = ∂ f(x)`.
+for each feasible point `x ∈ C`, one member of the owner set `extendedRealSubdifferential f x = ∂ f(x)`.
 This is genuine data, not merely an existence claim, so the public API is a function on `C`
 equipped with the pointwise membership property, without any existential wrapper or separate choice
 operator. -/
 
 /-- Definition 8.7: a subgradient selection for `f` on `C` is a deterministic rule assigning to
 each `x ∈ C` a chosen subgradient `f'(x) ∈ ∂ f(x)`, that is, a function `C → E*` whose value at
-every feasible point belongs to the subdifferential of `f` at that point. -/
+every feasible point belongs to the extendedRealSubdifferential of `f` at that point. -/
 structure SubgradientSelection (f : E → EReal) (C : Set E) where
   toFun : C → Module.Dual ℝ E
-  mem_subdifferential : ∀ x : C, toFun x ∈ subdifferential f x.1
+  mem_subdifferential : ∀ x : C, toFun x ∈ extendedRealSubdifferential f x.1
 
 /-- A subgradient selection is canonically used as the underlying function `C → E*`. -/
 instance {f : E → EReal} {C : Set E} :

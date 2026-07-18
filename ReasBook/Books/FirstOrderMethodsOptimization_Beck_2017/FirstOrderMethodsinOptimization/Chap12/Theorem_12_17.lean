@@ -70,7 +70,7 @@ local notation "y[" k "]" => y (p * k)
 /-- Helper for Theorem 12.17: the Chapter 11 minimization surface built from the smooth dual term
 `(f∗) (∑ i, y_i)` and the separable nonsmooth term `∑ i, g_i∗(-y_i)` is exactly the negation of
 the source-facing block dual objective `q`. -/
-lemma dual_block_dual_minimization_view_apply
+lemma dual_block_dual_minimization_view_apply_theorem_12_17
     (h_problem : IsDualBlockProximalGradientProblem f g σ)
     (v : Fin p → E) :
     composite_model_objective
@@ -129,7 +129,7 @@ lemma dual_block_dual_minimization_view_apply
 dual term `g_i^*(-v_i)` to be finite above. This is the coordinatewise domain bridge needed to
 feed the Chapter 11 block-separable owner from the theorem's `finite_domain (q(f, g))`
 hypothesis. -/
-lemma block_dual_term_mem_effective_domain_of_mem_finite_domain
+lemma block_dual_term_mem_effective_domain_of_mem_finite_domain_theorem_12_17
     (h_problem : IsDualBlockProximalGradientProblem f g σ)
     {v : Fin p → E} (hv : v ∈ finite_domain (q(f, g))) (i : Fin p) :
     v i ∈ effective_domain (fun z : E ↦ ((g i)∗) (-z)) := by
@@ -182,7 +182,7 @@ lemma block_dual_term_mem_effective_domain_of_mem_finite_domain
       a + separableSum G v = - q(f, g) v := by
     -- Rewrite the Chapter 11 minimization view back to the source dual objective.
     simpa [a, G, composite_model_objective_apply] using
-      (dual_block_dual_minimization_view_apply
+      (dual_block_dual_minimization_view_apply_theorem_12_17
         (σ := σ) (f := f) (g := g) h_problem v)
   have hobj_ne_top : a + separableSum G v ≠ ⊤ := by
     -- Finiteness of `q(v)` rules out `⊤` for the minimization-view objective value.
@@ -264,7 +264,7 @@ lemma dual_value_mem_finite_domain_of_mem_effective_domain_separable_dual
       a + separableSum G v = - q(f, g) v := by
     -- Rewrite the minimization view back to the source-facing dual objective `q`.
     simpa [a, G, composite_model_objective_apply] using
-      (dual_block_dual_minimization_view_apply
+      (dual_block_dual_minimization_view_apply_theorem_12_17
         (σ := σ) (f := f) (g := g) h_problem v)
   -- With both summands finite, `-q(v)` is finite and therefore so is `q(v)`.
   rw [mem_finite_domain, mem_effective_domain, lt_top_iff_ne_top]
@@ -306,9 +306,9 @@ lemma dual_block_initial_sublevel_radius_on_minimization_view
   have hq :
       q(f, g) y0 ≤ q(f, g) yBar := by
     -- Rewrite `Hdual = -q` on both sides, then negate the minimization-view inequality.
-    rw [dual_block_dual_minimization_view_apply
+    rw [dual_block_dual_minimization_view_apply_theorem_12_17
         (σ := σ) (f := f) (g := g) h_problem yBar,
-      dual_block_dual_minimization_view_apply
+      dual_block_dual_minimization_view_apply_theorem_12_17
         (σ := σ) (f := f) (g := g) h_problem y0] at hyBar
     simpa using (EReal.neg_le_neg_iff.mp hyBar)
   -- Return to the source-facing radius hypothesis on the dual objective `q`.
@@ -371,7 +371,7 @@ private theorem mem_intrinsicInterior_prod
 
 /-- Helper for Theorem 12.17: the `PiLp` separable-sum effective domain is the pullback of the
 raw coordinatewise effective-domain product through the canonical coordinate equivalence. -/
-lemma effective_domain_piLp_separableSum_eq_preimage_raw_product
+lemma effective_domain_piLp_separableSum_eq_preimage_raw_product_theorem_12_17
     (hg_proper : ∀ i : Fin p, IsProperExtendedRealFunction (g i)) :
     let e := PiLp.continuousLinearEquiv (2 : ENNReal) ℝ (fun _ : Fin p ↦ E)
     effective_domain (PiLp.separableSum g) =
@@ -398,7 +398,7 @@ lemma effective_domain_piLp_separableSum_eq_preimage_raw_product
 
 /-- Helper for Theorem 12.17: intrinsic-interior membership pulls back along a continuous linear
 equivalence. -/
-lemma mem_intrinsicInterior_preimage_of_continuousLinearEquiv
+lemma mem_intrinsicInterior_preimage_of_continuousLinearEquiv_theorem_12_17
     {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     {W : Type*} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W]
     (e : V ≃L[ℝ] W) {s : Set W} {x : V}
@@ -435,7 +435,7 @@ lemma mem_intrinsicInterior_preimage_of_continuousLinearEquiv
 
 /-- Helper for Theorem 12.17: coordinatewise intrinsic-interior membership places the full block
 vector in the intrinsic interior of the raw coordinate product. -/
-lemma mem_intrinsicInterior_univ_pi_of_forall
+lemma mem_intrinsicInterior_univ_pi_of_forall_theorem_12_17
     {s : Fin p → Set E} {v : Fin p → E}
     (hv : ∀ i : Fin p, v i ∈ intrinsicInterior ℝ (s i)) :
     v ∈ intrinsicInterior ℝ (Set.pi Set.univ s) := by
@@ -471,7 +471,7 @@ lemma mem_intrinsicInterior_univ_pi_of_forall
           (mem_intrinsicInterior_prod (x := v 0) (z := fun i : Fin p ↦ v i.succ) hhead htail)
       have hpre :
           v ∈ intrinsicInterior ℝ (e ⁻¹' (s 0 ×ˢ Set.pi Set.univ (fun i : Fin p ↦ s i.succ))) :=
-        mem_intrinsicInterior_preimage_of_continuousLinearEquiv (e := e) hprod
+        mem_intrinsicInterior_preimage_of_continuousLinearEquiv_theorem_12_17 (e := e) hprod
       have hset :
           e ⁻¹' (s 0 ×ˢ Set.pi Set.univ (fun i : Fin p ↦ s i.succ)) = Set.pi Set.univ s := by
         ext w
@@ -512,13 +512,14 @@ lemma piLp_separableSum_qualification_of_block_qualification
         intrinsicInterior ℝ (Set.pi Set.univ (fun i => effective_domain (g i))) := by
     -- First build the raw product witness from the coordinatewise qualification assumptions.
     simpa [e, dual_block_duplication_apply] using
-      (mem_intrinsicInterior_univ_pi_of_forall
+      (mem_intrinsicInterior_univ_pi_of_forall_theorem_12_17
         (s := fun i => effective_domain (g i))
         (v := fun _ : Fin p ↦ xHat)
         hxHat_g)
   -- Then pull that witness back to the `PiLp` owner through the coordinate equivalence.
-  rw [effective_domain_piLp_separableSum_eq_preimage_raw_product (g := g) hg_proper]
-  exact mem_intrinsicInterior_preimage_of_continuousLinearEquiv (e := e) hraw
+  rw [effective_domain_piLp_separableSum_eq_preimage_raw_product_theorem_12_17
+    (g := g) hg_proper]
+  exact mem_intrinsicInterior_preimage_of_continuousLinearEquiv_theorem_12_17 (e := e) hraw
 
 /-- Helper for Theorem 12.17: Assumption 12.14 should induce the Chapter 12.1 owner for the
 duplicated `PiLp` block-space model used in Lemma 12.7. -/
@@ -783,7 +784,7 @@ lemma optimal_dual_point_mem_finite_domain_of_finite_witness
 
 /-- Helper for Theorem 12.17: once the optimal value and the comparison dual point are finite, the
 source-facing `EReal` dual gap rewrites to the corresponding scalar gap after `toReal`. -/
-lemma dual_gap_toReal_eq_of_mem_finite_domain
+lemma dual_gap_toReal_eq_of_mem_finite_domain_theorem_12_17
     {v yBar yStar : Fin p → E}
     (hv : v ∈ finite_domain (q(f, g)))
     (hyStar : yStar ∈ Λ*(f, g))
@@ -807,7 +808,29 @@ lemma dual_gap_toReal_eq_of_mem_finite_domain
   -- With both endpoints finite, `EReal.toReal_sub` gives the scalar dual-gap identity directly.
   rw [EReal.toReal_sub hqOpt_ne_top hqOpt_ne_bot hyBar_ne_top hyBar_ne_bot]
 
-set_option maxHeartbeats 800000 in
+/- Keep the expensive conjugate/subgradient bridge outside the recursive trajectory proof so Lean
+elaborates it once rather than unfolding the full problem package at every recursive occurrence. -/
+lemma dual_block_primal_argmax_eq_conjugate_gradient
+    (h_problem : IsDualBlockProximalGradientProblem f g σ)
+    (i : Fin p) {v xPoint : E}
+    (hx : xPoint ∈ dual_proximal_gradient_primal_x_argmax f LinearMap.id v) :
+    xPoint = gradient (fun z : E ↦ ((f∗) z).toReal) v := by
+  have hsingle :
+      IsDualBasedProximalGradientProblem f (g i) LinearMap.id σ := by
+    refine
+      { toIsProperExtendedRealFunction := h_problem.toIsProperExtendedRealFunction
+        f_closed := h_problem.f_closed
+        f_strongly_convex := h_problem.f_strongly_convex
+        g_proper := h_problem.g_proper i
+        g_closed := h_problem.g_closed i
+        g_convex := h_problem.g_convex i
+        qualification := ?_ }
+    rcases h_problem.exists_mem_intrinsicInterior with ⟨xHat, hxf, hg⟩
+    exact ⟨xHat, hxf, by simpa using hg i⟩
+  simpa using
+    dual_primal_x_argmax_eq_conjugate_gradient
+      (f := f) (g := g i) (A := LinearMap.id) (σ := σ) hsingle hx
+
 /-- Helper for Theorem 12.17: every iterate of the cyclic dual block proximal-gradient trajectory
 stays in the finite domain of the source-facing dual objective `q`. -/
 lemma cyclic_dbpg_dual_iterate_mem_finite_domain
@@ -832,32 +855,10 @@ lemma cyclic_dbpg_dual_iterate_mem_finite_domain
           x n ∈ dual_proximal_gradient_primal_x_argmax
             f LinearMap.id (∑ j : Fin p, y n j) :=
         (is_dual_block_proximal_gradient_primal_trajectory_step h_traj n).1
-      have hsingle :
-          IsDualBasedProximalGradientProblem f (g i) LinearMap.id σ := by
-        refine
-          { toIsProperExtendedRealFunction := h_problem.toIsProperExtendedRealFunction
-            f_closed := h_problem.f_closed
-            f_strongly_convex := h_problem.f_strongly_convex
-            g_proper := h_problem.g_proper i
-            g_closed := h_problem.g_closed i
-            g_convex := h_problem.g_convex i
-            qualification := ?_ }
-        rcases h_problem.exists_mem_intrinsicInterior with ⟨xHat, hxf, hg⟩
-        exact ⟨xHat, hxf, by simpa using hg i⟩
       have hx_eq :
           x n = gradient (fun z : E ↦ ((f∗) z).toReal) (∑ j : Fin p, y n j) := by
-        have hsub :
-            Module.Dual.eval ℝ E (x n) ∈
-              subdifferential (conjugate_function f)
-                (InnerProductSpace.toDualMap ℝ E (∑ j : Fin p, y n j)) := by
-          exact
-            eval_mem_conjugate_subdifferential_of_mem_dual_primal_x_argmax
-              (E := E) (V := E) (f := f) (g := g i) (A := LinearMap.id) (σ := σ)
-              hsingle hx_argmax
-        exact
-          conjugate_subgradient_eval_eq_gradient_point
-            (E := E) (V := E) (f := f) (g := g i) (A := LinearMap.id) (σ := σ)
-            hsingle hsub
+        exact dual_block_primal_argmax_eq_conjugate_gradient
+          (f := f) (g := g) (σ := σ) h_problem i hx_argmax
       have hprimal_step_grad :
           y (n + 1) ∈ dual_block_proximal_gradient_primal_y_step g σ
             (gradient (fun z : E ↦ ((f∗) z).toReal) (∑ j : Fin p, y n j)) (y n) i := by
@@ -910,7 +911,7 @@ lemma cyclic_dbpg_dual_iterate_mem_finite_domain
           exact mem_effective_domain.mp hi_mem
         · have hj_mem :
               y n j ∈ effective_domain (fun z : E ↦ ((g j)∗) (-z)) :=
-            block_dual_term_mem_effective_domain_of_mem_finite_domain
+            block_dual_term_mem_effective_domain_of_mem_finite_domain_theorem_12_17
               (σ := σ)
               (f := f)
               (g := g)
@@ -1008,7 +1009,7 @@ theorem cyclic_dual_block_proximal_gradient_dual_gap_le_max_geometric_or_subline
   -- apply the fixed-initial-radius Chapter 11 rate theorem on the minimization view using
   -- `dual_block_initial_sublevel_radius_on_minimization_view`, and then rewrite the resulting
   -- scalar estimate back to the displayed `EReal` dual-gap bound with
-  -- `dual_gap_toReal_eq_of_mem_finite_domain`. The newly verified finite-domain fact
+  -- `dual_gap_toReal_eq_of_mem_finite_domain_theorem_12_17`. The newly verified finite-domain fact
   -- `hyk_finite` reduces the remaining blocker to the Chapter 11 owner/rate transport only.
   clear hyk_finite
   sorry

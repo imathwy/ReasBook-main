@@ -75,9 +75,18 @@ variable {f : E → ℝ} {g : E → EReal} {XStar : Set E} {FOpt : ℝ} {Lf : NN
 
 namespace IsFastProximalGradientProblem
 
+/-- Assumption 10.31 supplies the regularity instances needed to state the canonical B3 rule. -/
+abbrev UsesBacktrackingProcedureB3Rule
+    (hproblem : IsFastProximalGradientProblem f g XStar FOpt Lf)
+    (y : ℕ → E) (L : ℕ → PosReal)
+    (s : PosReal) (η : ProximalGradientBacktrackingGrowthFactor) : Prop :=
+  letI : IsProperExtendedRealFunction g := hproblem.g_proper
+  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
+  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
+  uses_backtracking_procedure_B3_rule f g y L s η
+
 /-- Under Assumption 10.31, Remark 10.32 is the specialization of the owner-level B3 stepsize
-bound using the canonical smoothness field `hproblem.f_smooth` and the upstream B3 bridge owner
-`hproblem.UsesBacktrackingProcedureB3Rule`. -/
+bound using the canonical smoothness field `hproblem.f_smooth` and the upstream B3 bridge. -/
 theorem uses_backtracking_procedure_B3_rule_stepsize_bounds
     (hproblem : IsFastProximalGradientProblem f g XStar FOpt Lf)
     {y : ℕ → E} {L : ℕ → PosReal}

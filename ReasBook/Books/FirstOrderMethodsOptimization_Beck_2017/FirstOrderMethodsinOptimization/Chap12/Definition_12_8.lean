@@ -10,14 +10,14 @@ section
 variable {n p : ℕ}
 
 /- Definition 12.8 is `source-facing`: it introduces the polyhedral feasible region cut out by
-`A x ≤ b` in `ℝ^n` and then reuses the chapter owner `projectionPoint` for orthogonal projection
+`A x ≤ b` in `ℝ^n` and then reuses the chapter owner `closedConvexProjectionPoint` for orthogonal projection
 onto that set.
 
 Domain sampling for this file identifies the relevant owner abstractions as follows.
 - `inequality_feasible_set` from Chapter 3 is the canonical owner for finitely many inequality
   constraints;
 - orthogonal projection onto a nonempty closed convex set is already owned upstream in Chapter 3
-  by `projectionPoint` and its derived API.
+  by `closedConvexProjectionPoint` and its derived API.
 
 Primitive data are therefore only the matrix-induced constraint family
 `(i, x) ↦ A.toEuclideanLin x i - b i`; the feasible set is derived from the Chapter 3 owner, and
@@ -56,7 +56,7 @@ theorem polyhedral_projection_feasible_set_eq_setOf
   simp [mem_polyhedral_projection_feasible_set]
 
 /- Definition 12.8 packages the feasible region `S = {x ∈ ℝ^n | A x ≤ b}` itself. The orthogonal
-projection problem onto `S` is then handled by the upstream Chapter 3 owner `projectionPoint`
+projection problem onto `S` is then handled by the upstream Chapter 3 owner `closedConvexProjectionPoint`
 once nonemptiness, closedness, and convexity of `S` are supplied in later developments. -/
 
 end

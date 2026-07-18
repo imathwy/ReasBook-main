@@ -144,7 +144,7 @@ private theorem graphIndicator_convex
 /-- Helper for Theorem 12.2: the graph of a linear map is a cone. -/
 private theorem graphOn_isCone
     (A : E →ₗ[ℝ] V) :
-    IsCone (Set.univ.graphOn A) := by
+    IsNonnegativeCone (Set.univ.graphOn A) := by
   rw [isCone_iff_smul_mem]
   intro a ha x hx
   rcases x with ⟨x, z⟩

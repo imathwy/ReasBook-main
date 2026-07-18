@@ -21,7 +21,7 @@ recall conjugate_function_apply
 -- the resulting inequality in `EReal`.
 /-- Proposition 4.2: Fenchel's inequality. For a proper extended-real-valued function `f`, the sum
 of `f x` and its conjugate at `y` dominates the dual pairing `⟨y, x⟩`, written here as `y x`. -/
-theorem fenchel_inequality (f : E → EReal) (x : E) (y : Module.Dual ℝ E)
+theorem fenchelYoung_inequality (f : E → EReal) (x : E) (y : Module.Dual ℝ E)
     (hproper : IsProperExtendedRealFunction f) :
     f x + conjugate_function f y ≥ (y x : EReal) := by
   have hx :

@@ -16,12 +16,12 @@ section
 variable {E : Type u}
 
 /-- The canonical extended-real-valued lift of a real-valued potential. -/
-abbrev toEReal (ω : E → ℝ) : E → EReal :=
+abbrev toExtendedReal (ω : E → ℝ) : E → EReal :=
   Real.toEReal ∘ ω
 
 /-- Evaluating the canonical extended-real-valued lift of a real-valued potential. -/
-@[simp] theorem toEReal_apply (ω : E → ℝ) (x : E) :
-    ω.toEReal x = ω x :=
+@[simp] theorem toExtendedReal_apply (ω : E → ℝ) (x : E) :
+    ω.toExtendedReal x = ω x :=
   rfl
 
 end
@@ -31,13 +31,13 @@ section
 variable {E : Type u} [Nonempty E]
 
 /-- A real-valued function, viewed in `EReal`, is proper. -/
-theorem toEReal_isProper (ω : E → ℝ) :
-    IsProperExtendedRealFunction ω.toEReal := by
+theorem toExtendedReal_isProper (ω : E → ℝ) :
+    IsProperExtendedRealFunction ω.toExtendedReal := by
   refine ⟨?_, ?_⟩
   · intro x
-    simp [Function.toEReal]
+    simp [Function.toExtendedReal]
   · let x : E := Classical.choice inferInstance
-    exact ⟨x, by simp [effective_domain, Function.toEReal]⟩
+    exact ⟨x, by simp [effective_domain, Function.toExtendedReal]⟩
 
 end
 
@@ -47,10 +47,10 @@ variable {E : Type u} [TopologicalSpace E]
 
 /-- Continuity of a real-valued function implies lower semicontinuity of its canonical
 `EReal` coercion. -/
-theorem toEReal_lowerSemicontinuous_of_continuous
+theorem toExtendedReal_lowerSemicontinuous_of_continuous
     {ω : E → ℝ} (hω : Continuous ω) :
-    LowerSemicontinuous ω.toEReal := by
-  simpa [Function.toEReal] using
+    LowerSemicontinuous ω.toExtendedReal := by
+  simpa [Function.toExtendedReal] using
     (continuous_coe_real_ereal.comp hω).lowerSemicontinuous
 
 end
@@ -60,10 +60,10 @@ section
 variable {E : Type u} [PseudoMetricSpace E]
 
 /-- A Lipschitz real-valued function remains lower semicontinuous after coercion to `EReal`. -/
-theorem toEReal_lowerSemicontinuous_of_lipschitz
+theorem toExtendedReal_lowerSemicontinuous_of_lipschitz
     {ω : E → ℝ} {L : NNReal} (hω : LipschitzWith L ω) :
-    LowerSemicontinuous ω.toEReal :=
-  toEReal_lowerSemicontinuous_of_continuous hω.continuous
+    LowerSemicontinuous ω.toExtendedReal :=
+  toExtendedReal_lowerSemicontinuous_of_continuous hω.continuous
 
 end
 
@@ -72,15 +72,15 @@ section
 variable {E : Type u} [AddCommMonoid E] [Module ℝ E]
 
 /-- A convex real-valued function remains convex after coercion to `EReal`. -/
-theorem toEReal_isConvexFunction
+theorem toExtendedReal_isConvexFunction
     {ω : E → ℝ} (hω : ConvexOn ℝ Set.univ ω) :
-    is_convex_function ω.toEReal := by
+    is_convex_function ω.toExtendedReal := by
   have hne_bot :
-      ∀ x ∈ effective_domain ω.toEReal, ω.toEReal x ≠ ⊥ := by
+      ∀ x ∈ effective_domain ω.toExtendedReal, ω.toExtendedReal x ≠ ⊥ := by
     intro x hx
-    simp [Function.toEReal]
+    simp [Function.toExtendedReal]
   refine (is_convex_function_iff_convexOn_toReal hne_bot).2 ?_
-  simpa [effective_domain, Function.toEReal] using hω
+  simpa [effective_domain, Function.toExtendedReal] using hω
 
 end
 
@@ -95,7 +95,7 @@ section
 variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [CompleteSpace E]
 
 /- Definition 9.2 has two layers in the local API.
-- `bregmanDistance` is a `bridge/view` owner in the Hilbert-space gradient setting, since its
+- `extendedRealBregmanDistance` is a `bridge/view` owner in the Hilbert-space gradient setting, since its
   formula uses both `∇` and `inner`.
 - The standing assumptions on `ω` over `C` are a `source-facing` Chapter 9 owner recorded below as
   `IsBregmanPotentialOn`; that owner itself lives in the weaker normed-space convex-analysis
@@ -105,21 +105,21 @@ variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [Complete
 viewed as a totalized real-valued function with intended source domain
 `dom(ω) × dom(∂ ω)`, is
 `B_ω(x, y) = ω(x) - ω(y) - ⟪∇ω(y), x - y⟫` on finite points. -/
-def bregmanDistance (ω : E → EReal) (x y : E) : ℝ :=
+def extendedRealBregmanDistance (ω : E → EReal) (x y : E) : ℝ :=
   (ω x).toReal - (ω y).toReal - inner ℝ (∇ (fun z ↦ (ω z).toReal) y) (x - y)
 
-notation "B[" ω "]" => bregmanDistance ω
-notation "B[" ω "]" => bregmanDistance (Function.toEReal ω)
+notation "B[" ω "]" => extendedRealBregmanDistance ω
+notation "B[" ω "]" => extendedRealBregmanDistance (Function.toExtendedReal ω)
 
--- Proof sketch: unfold `bregmanDistance`; evaluating the definition at `(x, y)` gives the
+-- Proof sketch: unfold `extendedRealBregmanDistance`; evaluating the definition at `(x, y)` gives the
 -- displayed totalized real-valued expression.
-/-- The defining formula for `bregmanDistance` at `(x, y)` is
+/-- The defining formula for `extendedRealBregmanDistance` at `(x, y)` is
 `ω(x) - ω(y) - ⟪∇ω(y), x - y⟫` on finite points. -/
 @[simp] theorem bregmanDistance_def (ω : E → EReal) (x y : E) :
     B[ω] x y =
       (ω x).toReal - (ω y).toReal - inner ℝ (∇ (fun z ↦ (ω z).toReal) y) (x - y) := sorry
 
--- Proof sketch: unfold `bregmanDistance` at `(x, x)`; the two function values cancel and the
+-- Proof sketch: unfold `extendedRealBregmanDistance` at `(x, x)`; the two function values cancel and the
 -- remaining inner product is against `x - x = 0`.
 /-- The Bregman distance of a point from itself is zero. -/
 @[simp] theorem bregmanDistance_self_eq_zero (ω : E → EReal) (x : E) :

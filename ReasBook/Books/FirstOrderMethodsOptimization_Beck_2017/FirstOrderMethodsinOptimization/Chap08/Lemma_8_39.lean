@@ -1,4 +1,5 @@
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap03.Proposition_3_12
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Algorithm_8_13
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Assumption_8_7
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Assumption_8_38
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Definition_8_16
@@ -20,105 +21,8 @@ incremental projected subgradient iterates `x^{k,i}` and `x^k`, not a surrogate 
 finite-sum problem. The existing owner abstractions already present in the project are the metric
 projection `metricProjection`, the aggregate finite-sum objective `finite_sum_objective`, the
 standing constrained problem class `IsConstrainedConvexProblem`, and the componentwise
-assumption package `IncrementalProjectedSubgradientAssumptions`. The only genuinely new data are
-the recursive inner and outer iterate sequences for the incremental method itself. -/
-
-/-- The `Fin m` index canonically determined by a natural number `i < m`. -/
-def fin_from_lt {m i : ℕ} (h : i < m) : Fin m :=
-  ⟨i, h⟩
-
--- Proof sketch: unfold `fin_from_lt`; the underlying natural number of the resulting `Fin m`
--- index is definitionally `i`.
-/-- The canonical `Fin` index built from `i < m` has underlying value `i`. -/
-@[simp] theorem fin_from_lt_val {m i : ℕ} (h : i < m) :
-    (fin_from_lt h : ℕ) = i := sorry
-
-/-- The inner iterates `x^{k,i}` of the incremental projected subgradient method, obtained by
-starting from the outer iterate `x^k = xk` and projecting after each of the first `i` component
-subgradient steps at cycle `k`. -/
-def incremental_projected_subgradient_inner_iterates {m : ℕ} (C : Set E)
-    (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C) (hC_convex : Convex ℝ C)
-    (g : ℕ → C → Fin m → E) (t : ℕ → ℝ) (k : ℕ) (xk : C) : ℕ → C
-  | 0 => xk
-  | i + 1 =>
-      let xki :=
-        incremental_projected_subgradient_inner_iterates
-          C hC_nonempty hC_closed hC_convex g t k xk i
-      if hi : i < m then
-        metricProjection C hC_nonempty hC_closed.isComplete hC_convex
-          ((xki : E) - t k • g k xki (fin_from_lt hi))
-      else
-        xki
-
--- Proof sketch: unfold the recursive definition of
--- `incremental_projected_subgradient_inner_iterates` at `0`.
-/-- The inner incremental projected-subgradient cycle starts from the prescribed outer iterate
-`x^k`. -/
-@[simp] theorem incremental_projected_subgradient_inner_iterates_zero
-    {m : ℕ} {C : Set E} {hC_nonempty : C.Nonempty} {hC_closed : IsClosed C}
-    {hC_convex : Convex ℝ C} {g : ℕ → C → Fin m → E} {t : ℕ → ℝ} {k : ℕ} {xk : C} :
-    incremental_projected_subgradient_inner_iterates
-      C hC_nonempty hC_closed hC_convex g t k xk 0 = xk := sorry
-
--- Proof sketch: unfold the recursive definition at `i + 1`; the branch `hi : i < m` selects the
--- component index `⟨i, hi⟩`, so the next inner iterate is exactly one projected subgradient step
--- from `x^{k,i}` using the common stepsize `t_k`.
-/-- When `i < m`, the next inner iterate is the metric projection of `x^{k,i} - t_k g^{k,i}` onto
-`C`. -/
-theorem incremental_projected_subgradient_inner_iterates_succ
-    {m : ℕ} {C : Set E} {hC_nonempty : C.Nonempty} {hC_closed : IsClosed C}
-    {hC_convex : Convex ℝ C} {g : ℕ → C → Fin m → E} {t : ℕ → ℝ} {k i : ℕ} {xk : C}
-    (hi : i < m) :
-    incremental_projected_subgradient_inner_iterates
-      C hC_nonempty hC_closed hC_convex g t k xk (i + 1) =
-      metricProjection C hC_nonempty hC_closed.isComplete hC_convex
-        (((incremental_projected_subgradient_inner_iterates
-            C hC_nonempty hC_closed hC_convex g t k xk i : C) : E) -
-          t k •
-            g k
-              (incremental_projected_subgradient_inner_iterates
-                C hC_nonempty hC_closed hC_convex g t k xk i)
-              (fin_from_lt hi)) := sorry
-
-/-- The outer iterate sequence `x^k` of the incremental projected subgradient method, where
-`x^{k+1}` is obtained by running one full inner cycle of `m` projected component-subgradient steps
-starting from `x^k`. -/
-def incremental_projected_subgradient_method {m : ℕ} (C : Set E)
-    (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C) (hC_convex : Convex ℝ C)
-    (g : ℕ → C → Fin m → E) (t : ℕ → ℝ) (x0 : C) : ℕ → C
-  | 0 => x0
-  | k + 1 =>
-      let xk :=
-        incremental_projected_subgradient_method
-          C hC_nonempty hC_closed hC_convex g t x0 k
-      incremental_projected_subgradient_inner_iterates
-        C hC_nonempty hC_closed hC_convex g t k xk m
-
--- Proof sketch: unfold the recursive definition of
--- `incremental_projected_subgradient_method` at `0`.
-/-- The incremental projected-subgradient method starts from the prescribed feasible initial
-point. -/
-@[simp] theorem incremental_projected_subgradient_method_zero
-    {m : ℕ} {C : Set E} {hC_nonempty : C.Nonempty} {hC_closed : IsClosed C}
-    {hC_convex : Convex ℝ C} {g : ℕ → C → Fin m → E} {t : ℕ → ℝ} {x0 : C} :
-    incremental_projected_subgradient_method
-      C hC_nonempty hC_closed hC_convex g t x0 0 = x0 := sorry
-
--- Proof sketch: unfold the recursive definition of
--- `incremental_projected_subgradient_method` at `k + 1`; this identifies `x^{k+1}` with the end
--- point `x^{k,m}` of one full inner cycle starting from `x^k`.
-/-- One outer step of the incremental projected subgradient method is the terminal inner iterate
-after processing all `m` component functions once. -/
-theorem incremental_projected_subgradient_method_succ
-    {m : ℕ} {C : Set E} {hC_nonempty : C.Nonempty} {hC_closed : IsClosed C}
-    {hC_convex : Convex ℝ C} {g : ℕ → C → Fin m → E} {t : ℕ → ℝ} {x0 : C} (k : ℕ) :
-    incremental_projected_subgradient_method
-      C hC_nonempty hC_closed hC_convex g t x0 (k + 1) =
-      incremental_projected_subgradient_inner_iterates
-        C hC_nonempty hC_closed hC_convex g t k
-        (incremental_projected_subgradient_method
-          C hC_nonempty hC_closed hC_convex g t x0 k)
-        m := sorry
+assumption package `IncrementalProjectedSubgradientAssumptions`. Algorithm 8.13 is the canonical
+owner of the recursive inner and outer iterate sequences used here. -/
 
 section
 
@@ -130,11 +34,11 @@ variable (g : ℕ → C → Fin m → E) (t : ℕ → ℝ) (x0 : C)
 
 local notation "x[" k "]" =>
   incremental_projected_subgradient_method
-    C h_problem.feasible_nonempty h_problem.feasible_closed h_problem.feasible_convex g t x0 k
+    C h_problem.feasible_nonempty h_problem.feasible_closed h_problem.feasible_convex t g x0 k
 
 local notation "x[" k "," i "]" =>
-  incremental_projected_subgradient_inner_iterates
-    C h_problem.feasible_nonempty h_problem.feasible_closed h_problem.feasible_convex g t k x[k] i
+  incremental_projected_subgradient_inner_iterate
+    C h_problem.feasible_nonempty h_problem.feasible_closed h_problem.feasible_convex t g k x[k] i
 
 -- Proof sketch: apply the one-step projected subgradient inequality to each inner update
 -- `x[k,i+1] = P_C (x[k,i] - t_k g^{k,i})`, sum over the `m` component steps, rewrite the summed
@@ -147,7 +51,7 @@ for each optimal point `xStar ∈ XStar`, where `f = ∑ i, f_i` and `L = h_incr
 theorem incremental_projected_subgradient_method_fundamental_inequality
     (h_subgrad :
       ∀ k (i : Fin m),
-        toDualMap ℝ E (g k x[k, i] i) ∈ strongDualSubdifferential (fi i) (x[k, i] : E))
+        toDualMap ℝ E (g k x[k,i] i) ∈ strongDualSubdifferential (fi i) (x[k,i] : E))
     {xStar : E} (hxStar : xStar ∈ XStar) (k : ℕ) :
     ‖(x[k + 1] : E) - xStar‖ ^ (2 : ℕ) ≤
       ‖(x[k] : E) - xStar‖ ^ (2 : ℕ) -

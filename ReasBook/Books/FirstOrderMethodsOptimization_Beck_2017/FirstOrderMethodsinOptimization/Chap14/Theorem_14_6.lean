@@ -60,7 +60,7 @@ penalty `g_i : E_i → (-∞, ∞]` is proper, closed, convex, and continuous on
 the smooth term `f : E → ℝ` is convex and globally `L_f`-smooth, `XStar = X^*` is the nonempty
 optimal set of `F(x) = f(x) + ∑ i, g_i(x_i)` with optimal value `FOpt = F_opt`, and every
 positive sublevel of `F` stays within a uniformly bounded distance of every optimal point. The
-Chapter 14 and Chapter 10 composite-model owners for `f.toEReal` are recovered below as derived
+Chapter 14 and Chapter 10 composite-model owners for `f.toExtendedReal` are recovered below as derived
 bridge API rather than stored as primitive data. -/
 class IsAlternatingMinimizationConvexRateProblem
     (f : ((i : Fin p) → Ei i) → ℝ) (g : ∀ i : Fin p, Ei i → EReal)
@@ -75,13 +75,13 @@ class IsAlternatingMinimizationConvexRateProblem
   f_smooth : is_l_smooth_on f Set.univ Lf
   optimal_set_eq :
     XStar = unconstrained_problem_solutions
-      (composite_model_objective f.toEReal (separableSum g))
+      (composite_model_objective f.toExtendedReal (separableSum g))
   optimal_set_nonempty : XStar.Nonempty
   optimal_value_isGLB :
-    IsGLB (Set.range (composite_model_objective f.toEReal (separableSum g))) (FOpt : EReal)
+    IsGLB (Set.range (composite_model_objective f.toExtendedReal (separableSum g))) (FOpt : EReal)
   bounded_sublevel_distance_to_each_optimal_point (α : PosReal) :
     ∃ Rα : PosReal, ∀ {x xStar : (i : Fin p) → Ei i},
-      composite_model_objective f.toEReal (separableSum g) x ≤ ((α : ℝ) : EReal) →
+      composite_model_objective f.toExtendedReal (separableSum g) x ≤ ((α : ℝ) : EReal) →
       xStar ∈ XStar →
       ‖x - xStar‖ ≤ (Rα : ℝ)
 
@@ -92,41 +92,41 @@ open Metric
 variable {f : ((i : Fin p) → Ei i) → ℝ} {g : ∀ i : Fin p, Ei i → EReal}
 variable {XStar : Set ((i : Fin p) → Ei i)} {FOpt : ℝ} {Lf : NNReal}
 
-local notation "F" => composite_model_objective f.toEReal (separableSum g)
+local notation "F" => composite_model_objective f.toExtendedReal (separableSum g)
 
 /-- Assumption 14.10 canonically induces the Chapter 14 alternating-minimization composite-model
-owner for the smooth term `f.toEReal` and the block penalties `g_i`. -/
+owner for the smooth term `f.toExtendedReal` and the block penalties `g_i`. -/
 theorem toIsAlternatingMinimizationCompositeModel
     (h : IsAlternatingMinimizationConvexRateProblem f g XStar FOpt Lf) :
-    IsAlternatingMinimizationCompositeModel f.toEReal g where
+    IsAlternatingMinimizationCompositeModel f.toExtendedReal g where
   g_proper := h.g_proper
   g_closed := h.g_closed
   g_convex := h.g_convex
   g_continuousOn_effective_domain := h.g_continuousOn_effective_domain
   f_ne_bot x := by
-    simp [Function.toEReal]
+    simp [Function.toExtendedReal]
   f_closed := by
     have hcont : Continuous f := by
       refine continuous_iff_continuousAt.2 ?_
       intro x
       exact (h.f_smooth.1 x (by simp)).continuousAt
-    exact Function.toEReal_lowerSemicontinuous_of_continuous hcont
+    exact Function.toExtendedReal_lowerSemicontinuous_of_continuous hcont
   f_effective_domain_convex := by
-    simpa [effective_domain, Function.toEReal] using
+    simpa [effective_domain, Function.toExtendedReal] using
       (convex_univ : Convex ℝ (Set.univ : Set ((i : Fin p) → Ei i)))
   f_toReal_differentiableOn_interior_effective_domain := by
     intro x hx
-    simpa [effective_domain, Function.toEReal] using
+    simpa [effective_domain, Function.toExtendedReal] using
       (h.f_smooth.1 x (by simp)).differentiableWithinAt
   g_effective_domain_subset_interior_f_effective_domain := by
     intro x hx
-    simp [effective_domain, Function.toEReal]
+    simp [effective_domain, Function.toExtendedReal]
 
 /-- Assumption 14.10 canonically induces the Chapter 10 composite smooth minimization owner for
 the aggregate regularizer `x ↦ ∑ i, g_i(x_i)`. -/
 theorem toIsCompositeSmoothMinimizationProblem
     (h : IsAlternatingMinimizationConvexRateProblem f g XStar FOpt Lf) :
-    IsCompositeSmoothMinimizationProblem f.toEReal (separableSum g) XStar FOpt Lf := by
+    IsCompositeSmoothMinimizationProblem f.toExtendedReal (separableSum g) XStar FOpt Lf := by
   let hmodel := h.toIsAlternatingMinimizationCompositeModel
   exact
     { f_ne_bot := hmodel.f_ne_bot
@@ -138,7 +138,7 @@ theorem toIsCompositeSmoothMinimizationProblem
       g_effective_domain_subset_interior_f_effective_domain :=
         hmodel.g_effective_domain_subset_interior_f_effective_domain
       f_toReal_smooth_on_interior_effective_domain := by
-        simpa [effective_domain, Function.toEReal] using h.f_smooth
+        simpa [effective_domain, Function.toExtendedReal] using h.f_smooth
       optimal_set_eq := h.optimal_set_eq
       optimal_set_nonempty := h.optimal_set_nonempty
       optimal_value_isGLB := h.optimal_value_isGLB }
@@ -147,14 +147,14 @@ theorem toIsCompositeSmoothMinimizationProblem
 for the aggregate regularizer `x ↦ ∑ i, g_i(x_i)`. -/
 theorem toIsConvexCompositeSmoothMinimizationProblem
     (h : IsAlternatingMinimizationConvexRateProblem f g XStar FOpt Lf) :
-    IsConvexCompositeSmoothMinimizationProblem f.toEReal (separableSum g) XStar FOpt Lf := by
+    IsConvexCompositeSmoothMinimizationProblem f.toExtendedReal (separableSum g) XStar FOpt Lf := by
   let hcomposite := h.toIsCompositeSmoothMinimizationProblem
   exact
     { f_ne_bot := hcomposite.f_ne_bot
       g_proper := hcomposite.g_proper
       f_closed := hcomposite.f_closed
       g_closed := hcomposite.g_closed
-      f_convex := Function.toEReal_isConvexFunction h.f_convex
+      f_convex := Function.toExtendedReal_isConvexFunction h.f_convex
       g_convex := hcomposite.g_convex
       g_effective_domain_subset_interior_f_effective_domain :=
         hcomposite.g_effective_domain_subset_interior_f_effective_domain
@@ -199,7 +199,7 @@ section
 variable {f : ((i : Fin p) → Ei i) → ℝ} {g : ∀ i : Fin p, Ei i → EReal}
 variable {XStar : Set ((i : Fin p) → Ei i)} {FOpt : ℝ} {Lf : NNReal}
 
-local notation "F" => composite_model_objective f.toEReal (separableSum g)
+local notation "F" => composite_model_objective f.toExtendedReal (separableSum g)
 
 /-- Helper for Theorem 14.6: every alternating-minimization iterate stays in the effective domain
 of `F`, and every iterate remains in the initial sublevel set. -/
@@ -289,7 +289,7 @@ lemma alternating_minimization_objective_gap_nonneg
     (htraj : is_alternating_minimization_trajectory F x) :
     ∀ k : ℕ, 0 ≤ (F (x k)).toReal - FOpt := by
   let hconvex :
-      IsConvexCompositeSmoothMinimizationProblem f.toEReal (separableSum g) XStar FOpt Lf :=
+      IsConvexCompositeSmoothMinimizationProblem f.toExtendedReal (separableSum g) XStar FOpt Lf :=
     IsAlternatingMinimizationConvexRateProblem.toIsConvexCompositeSmoothMinimizationProblem
       (f := f) (g := g) (XStar := XStar) (FOpt := FOpt) (Lf := Lf) hproblem
   have hiterates :=
@@ -303,7 +303,7 @@ lemma alternating_minimization_objective_gap_nonneg
         (fun i _ ↦ hproblem.g_proper i |>.ne_bot (x k i))
   have hFx_ne_bot : F (x k) ≠ ⊥ := by
     rw [composite_model_objective_apply, EReal.add_ne_bot_iff]
-    exact ⟨by simp [Function.toEReal], hsum_ne_bot⟩
+    exact ⟨by simp [Function.toExtendedReal], hsum_ne_bot⟩
   have hFx_coe :
       (((F (x k)).toReal : ℝ) : EReal) = F (x k) := by
     exact EReal.coe_toReal (lt_top_iff_ne_top.mp (mem_effective_domain.mp hxk_mem)) hFx_ne_bot
@@ -735,7 +735,7 @@ lemma alternating_minimization_optimal_point_mem_effective_domain
     {xStar : (i : Fin p) → Ei i} (hxStar : xStar ∈ XStar) :
     xStar ∈ effective_domain F := by
   let hconvex :
-      IsConvexCompositeSmoothMinimizationProblem f.toEReal (separableSum g) XStar FOpt Lf :=
+      IsConvexCompositeSmoothMinimizationProblem f.toExtendedReal (separableSum g) XStar FOpt Lf :=
     IsAlternatingMinimizationConvexRateProblem.toIsConvexCompositeSmoothMinimizationProblem
       (f := f) (g := g) (XStar := XStar) (FOpt := FOpt) (Lf := Lf) hproblem
   -- An optimal point attains the finite optimal value `FOpt`, hence it belongs to `dom(F)`.
@@ -757,7 +757,7 @@ lemma alternating_minimization_trial_update_mem_effective_domain
   -- Route correction: the reusable block-domain API is now factored out of `Theorem_14_5`, so
   -- this lemma can stay a thin adapter from block convexity back to the full composite domain.
   let hmodel :
-      IsAlternatingMinimizationCompositeModel f.toEReal g :=
+      IsAlternatingMinimizationCompositeModel f.toExtendedReal g :=
     IsAlternatingMinimizationConvexRateProblem.toIsAlternatingMinimizationCompositeModel
       (f := f) (g := g) (XStar := XStar) (FOpt := FOpt) (Lf := Lf) hproblem
   have hzi :
@@ -859,7 +859,7 @@ theorem alternating_minimization_objective_gap_le_max_geometric_or_sublinear_of_
   · have hproblem : IsAlternatingMinimizationConvexRateProblem f g XStar FOpt Lf :=
       inferInstance
     have hconvex :
-        IsConvexCompositeSmoothMinimizationProblem f.toEReal (separableSum g) XStar FOpt Lf :=
+        IsConvexCompositeSmoothMinimizationProblem f.toExtendedReal (separableSum g) XStar FOpt Lf :=
       IsAlternatingMinimizationConvexRateProblem.toIsConvexCompositeSmoothMinimizationProblem
         (f := f) (g := g) (XStar := XStar) (FOpt := FOpt) (Lf := Lf) hproblem
     haveI : IsEmpty (Fin p) := by

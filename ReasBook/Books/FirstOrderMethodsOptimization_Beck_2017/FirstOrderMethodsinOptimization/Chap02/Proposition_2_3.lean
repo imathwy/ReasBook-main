@@ -23,7 +23,7 @@ variable {E : Type u} [AddCommGroup E] [Module ℝ E]
 then the support function `σ_K` is the indicator function of the polar cone
 `Kᵒ = {y | ∀ x ∈ K, y x ≤ 0}`. -/
 theorem support_function_eq_indicatorFunction_polarCone
-    (K : Set E) (hK : IsCone K) (h0 : (0 : E) ∈ K) :
+    (K : Set E) (hK : IsNonnegativeCone K) (h0 : (0 : E) ∈ K) :
     support_function K = extendedIndicator (polar_cone K) := sorry
 
 end

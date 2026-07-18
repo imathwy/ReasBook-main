@@ -21,7 +21,7 @@ variable [hproblem : IsFastProximalGradientProblem f g XStar FOpt Lf]
 
 section
 
-local notation "F" => composite_model_objective f.toEReal g
+local notation "F" => composite_model_objective f.toExtendedReal g
 
 set_option quotPrecheck false in
 local notation "x" =>
@@ -49,7 +49,7 @@ local notation "B2Accepts" =>
   letI : IsProperExtendedRealFunction g := hproblem.g_proper
   letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
   letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
-  proximal_gradient_backtracking_B2_accepts f.toEReal g
+  proximal_gradient_backtracking_B2_accepts f.toExtendedReal g
 
 set_option quotPrecheck false in
 local notation "UsesB3" =>
@@ -632,7 +632,7 @@ lemma fista_optimal_point_mem_effective_domain
   have hg_top : g xStar ≠ ⊤ := by
     intro hg_top
     have hFx_top : F xStar = ⊤ := by
-      simp [composite_model_objective_apply, Function.toEReal, hg_top]
+      simp [composite_model_objective_apply, Function.toExtendedReal, hg_top]
     rw [hFx_top] at hxStar_value
     simpa using hxStar_value
   -- Finite `g`-value is exactly membership in the effective domain.
@@ -655,7 +655,7 @@ lemma fista_iterate_mem_effective_domain
       rw [fista_x_succ (f := f) (g := g) (x0 := x0) (L := L) n]
       simpa using
         (prox_grad_step_mem_effective_domain_g
-          (f := f.toEReal) (g := g)
+          (f := f.toExtendedReal) (g := g)
           (interior_effective_domain_point_of_real f (y n))
           (L n))
 
@@ -671,7 +671,7 @@ lemma fista_objective_eq_real_of_mem_effective_domain
       g xPoint = ((((g xPoint).toReal : ℝ)) : EReal) :=
     (EReal.coe_toReal (mem_effective_domain.mp hxPoint).ne (hg_proper.ne_bot xPoint)).symm
   -- Once `g x` is finite, the objective is just a sum of real casts.
-  rw [composite_model_objective_apply, Function.toEReal, hgx_val]
+  rw [composite_model_objective_apply, Function.toExtendedReal, hgx_val]
   simp
 
 /-- Helper for Theorem 10.34: the source weight `1 / t_(k+1)` is a genuine convex-combination

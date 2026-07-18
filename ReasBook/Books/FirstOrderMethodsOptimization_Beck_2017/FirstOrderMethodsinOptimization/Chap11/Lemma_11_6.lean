@@ -111,6 +111,10 @@ lemma cbpg_f_convex
       (f := f) (g := g) (block_gradient := block_gradient)
       (XStar := XStar) (FOpt := FOpt) (Lf := Lf) (Li := Li))
 
+-- The remaining helpers use the standing owner and initial point through local notations and
+-- their proof bodies. Keep both as explicit declaration dependencies under Lean 4.30.
+include hconvex x0
+
 /-- Helper for Lemma 11.6: the convex CBPG assumptions canonically induce the Chapter 10 convex
 composite owner for `f` and the aggregate regularizer `separableSum g`. -/
 lemma cbpg_toIsConvexCompositeSmoothMinimizationProblem :

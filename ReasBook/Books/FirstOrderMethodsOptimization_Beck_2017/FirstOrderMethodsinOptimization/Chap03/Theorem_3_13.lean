@@ -33,10 +33,10 @@ recall strongDualSubdifferential
 -- pairing against the gradient. For any `g ∈ strongDualSubdifferential f x`, the max formula bounds
 -- `g d` by that directional derivative for every direction `d`, and applying this to both `d` and
 -- `-d` forces `g` to coincide with the dual vector represented by
--- `∇ (fun y ↦ (f y).toReal) x`. Nonemptiness of the subdifferential at the interior finite point
+-- `∇ (fun y ↦ (f y).toReal) x`. Nonemptiness of the extendedRealSubdifferential at the interior finite point
 -- then gives the stated singleton equality.
 /-- Theorem 3.13 (1): if a convex extended-real-valued function is differentiable at a point in the
-chapter sense `is_differentiable_at`, then its continuous-dual subdifferential there is the
+chapter sense `is_differentiable_at`, then its continuous-dual extendedRealSubdifferential there is the
 singleton consisting of the dual vector represented by the gradient. -/
 theorem subdifferential_eq_singleton_gradient_of_differentiableAt
     (f : E → EReal) (x : E) (hconvex : is_convex_function f) (hdiff : is_differentiable_at f x) :
@@ -53,12 +53,12 @@ theorem subdifferential_eq_singleton_gradient_of_differentiableAt
 -- subgradient `0` at the origin. The max formula then gives vanishing directional derivatives in
 -- every direction, and the standard finite-dimensional convex argument upgrades this to
 -- differentiability at the origin. Translating back yields differentiability of
--- `y ↦ (f y).toReal` at `x`, and the forward implication identifies the subdifferential with the
+-- `y ↦ (f y).toReal` at `x`, and the forward implication identifies the extendedRealSubdifferential with the
 -- singleton of the gradient.
 /-- Theorem 3.13 (2): if a convex extended-real-valued function has a unique continuous-dual
 subgradient at an interior point of its finite domain, then the real-valued map
 `y ↦ (f y).toReal` is differentiable there, equivalently `f` is differentiable there in the
-chapter sense `is_differentiable_at`, and the subdifferential is the singleton of the
+chapter sense `is_differentiable_at`, and the extendedRealSubdifferential is the singleton of the
 corresponding gradient. -/
 theorem differentiableAt_and_subdifferential_eq_singleton_gradient_of_unique_subgradient
     (f : E → EReal) (x : E) (hconvex : is_convex_function f)

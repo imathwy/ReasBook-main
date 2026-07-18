@@ -22,24 +22,24 @@ than under closed-convex hypotheses. -/
 def projection_mapping (C : Set E) : E → Set E :=
   fun x ↦ {y | y ∈ C ∧ IsMinOn (fun z ↦ ‖z - x‖) C y}
 
-notation "P[" C "]" => projection_mapping C
+notation "Proj[" C "]" => projection_mapping C
 
--- Proof sketch: unfold `projection_mapping`; membership in `P[C] x` is definitionally the
+-- Proof sketch: unfold `projection_mapping`; membership in `Proj[C] x` is definitionally the
 -- conjunction that `y ∈ C` and that `y` minimizes the distance from `x` over `C`.
-/-- A point `y` belongs to `P[C] x` exactly when `y ∈ C` and it minimizes the distance from `x`
+/-- A point `y` belongs to `Proj[C] x` exactly when `y ∈ C` and it minimizes the distance from `x`
 over `C`. -/
 @[simp]
 theorem mem_projection_mapping_iff {C : Set E} {x y : E} :
-    y ∈ P[C] x ↔ y ∈ C ∧ IsMinOn (fun z ↦ ‖z - x‖) C y :=
+    y ∈ Proj[C] x ↔ y ∈ C ∧ IsMinOn (fun z ↦ ‖z - x‖) C y :=
   Iff.rfl
 
-/-- Every point in the projection set `P[C] x` belongs to `C`. -/
-theorem mem_of_mem_projection_mapping {C : Set E} {x y : E} (hy : y ∈ P[C] x) :
+/-- Every point in the projection set `Proj[C] x` belongs to `C`. -/
+theorem mem_of_mem_projection_mapping {C : Set E} {x y : E} (hy : y ∈ Proj[C] x) :
     y ∈ C :=
   (mem_projection_mapping_iff.mp hy).1
 
-/-- Any point in `P[C] x` realizes the infimum distance from `x` to `C`. -/
-theorem norm_eq_iInf_of_mem_projection_mapping {C : Set E} {x y : E} (hy : y ∈ P[C] x) :
+/-- Any point in `Proj[C] x` realizes the infimum distance from `x` to `C`. -/
+theorem norm_eq_iInf_of_mem_projection_mapping {C : Set E} {x y : E} (hy : y ∈ Proj[C] x) :
     ‖x - y‖ = ⨅ z : C, ‖x - z‖ := by
   have hyC : y ∈ C := mem_of_mem_projection_mapping hy
   have hyMin : IsMinOn (fun z ↦ ‖z - x‖) C y := (mem_projection_mapping_iff.mp hy).2
@@ -49,13 +49,13 @@ theorem norm_eq_iInf_of_mem_projection_mapping {C : Set E} {x y : E} (hy : y ∈
 restricting `C` to `D ∩ C` does not change the projection set. -/
 theorem projection_mapping_inter_eq_of_projection_mapping_subset
     (C D : Set E) (x : E)
-    (hproj_nonempty : (P[C] x).Nonempty)
-    (hproj_subset : P[C] x ⊆ D) :
-    P[D ∩ C] x = P[C] x := by
+    (hproj_nonempty : (Proj[C] x).Nonempty)
+    (hproj_subset : Proj[C] x ⊆ D) :
+    Proj[D ∩ C] x = Proj[C] x := by
   rcases hproj_nonempty with ⟨p, hp_proj_mem⟩
   have hpD : p ∈ D := hproj_subset hp_proj_mem
   rw [mem_projection_mapping_iff] at hp_proj_mem
-  have hp_inter : p ∈ P[D ∩ C] x := by
+  have hp_inter : p ∈ Proj[D ∩ C] x := by
     rw [mem_projection_mapping_iff]
     refine ⟨⟨hpD, hp_proj_mem.1⟩, ?_⟩
     simpa [Set.inter_comm] using hp_proj_mem.2.inter D
@@ -83,7 +83,7 @@ theorem projection_mapping_inter_eq_of_projection_mapping_subset
 /-- In a proper normed additive group, every nonempty closed set has a nonempty projection set. -/
 theorem projection_mapping_nonempty_of_nonempty_isClosed [ProperSpace E]
     (C : Set E) (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C) (x : E) :
-    (P[C] x).Nonempty := by
+    (Proj[C] x).Nonempty := by
   obtain ⟨y, hyC, hyinf⟩ := hC_closed.exists_infDist_eq_dist hC_nonempty x
   refine ⟨y, ?_⟩
   rw [mem_projection_mapping_iff, isMinOn_iff]
@@ -96,13 +96,13 @@ section InnerProduct
 
 variable [InnerProductSpace ℝ E]
 
--- Proof sketch: two points of `P[C] x` both realize the same infimum distance. The Hilbert-space
+-- Proof sketch: two points of `Proj[C] x` both realize the same infimum distance. The Hilbert-space
 -- characterization `norm_eq_iInf_iff_real_inner_le_zero` turns each minimizing property into a
 -- variational inequality. Evaluating these inequalities against the other point and combining them
 -- forces the squared distance between the two points to be nonpositive, hence zero.
-/-- For a convex set `C`, any two points in the projection set `P[C] x` coincide. -/
+/-- For a convex set `C`, any two points in the projection set `Proj[C] x` coincide. -/
 theorem eq_of_mem_projection_mapping {C : Set E} (hC_convex : Convex ℝ C) {x u v : E}
-    (hu : u ∈ P[C] x) (hv : v ∈ P[C] x) : u = v := by
+    (hu : u ∈ Proj[C] x) (hv : v ∈ Proj[C] x) : u = v := by
   have huC : u ∈ C := mem_of_mem_projection_mapping hu
   have hvC : v ∈ C := mem_of_mem_projection_mapping hv
   have hu_inner : ∀ w ∈ C, inner ℝ (x - u) (w - u) ≤ 0 :=
@@ -134,10 +134,10 @@ theorem eq_of_mem_projection_mapping {C : Set E} (hC_convex : Convex ℝ C) {x u
   exact sub_eq_zero.mp <| norm_eq_zero.mp <| by
     simpa [norm_sub_rev] using hzero
 
-/-- For a convex set `C`, the projection set `P[C] x` is a subsingleton. -/
+/-- For a convex set `C`, the projection set `Proj[C] x` is a subsingleton. -/
 theorem projection_mapping_subsingleton
     (C : Set E) (hC_convex : Convex ℝ C) (x : E) :
-    (P[C] x).Subsingleton := by
+    (Proj[C] x).Subsingleton := by
   intro u hu v hv
   exact eq_of_mem_projection_mapping hC_convex hu hv
 
@@ -147,11 +147,11 @@ end InnerProduct
 -- proximal objective reduces to `(1 / 2) ‖y - x‖^2`, while outside `C` it is `⊤`, so its
 -- minimizers are exactly the minimizers of `y ↦ ‖y - x‖^2` on `C`. Because `t ↦ t^2` is strictly
 -- increasing on `[0, ∞)`, these are the same as the minimizers of `y ↦ ‖y - x‖` on `C`, namely
--- the points of `P[C] x`.
+-- the points of `Proj[C] x`.
 /-- Theorem 6.24: for a nonempty set `C`, the proximal mapping of the indicator function `δ_C`
 coincides with the set-valued projection mapping `P_C`. -/
 theorem prox_extendedIndicator_eq_projection_mapping (C : Set E) (hC : C.Nonempty) (x : E) :
-    prox[extendedIndicator C] x = P[C] x := by
+    prox[extendedIndicator C] x = Proj[C] x := by
   ext y
   rw [mem_proximal_mapping_iff, mem_projection_mapping_iff, isMinOn_univ_iff]
   constructor

@@ -74,11 +74,11 @@ truncated linear penalties applied to the coordinate magnitudes. -/
 theorem weighted_l1_box_penalty_eq_separableSum_truncated_linear_penalty
     (ω : ι → NNReal) (α : ι → ENNReal) :
     weighted_l1_box_penalty ω α =
-      separableSum (fun i ↦ truncated_linear_penalty (ω i) (α i) ∘ abs) :=
+      PiLp.separableSum (fun i ↦ truncated_linear_penalty (ω i) (α i) ∘ abs) :=
   by
     funext x
     rw [weighted_l1_box_penalty_apply]
-    simp only [separableSum, Function.comp_apply, truncated_linear_penalty_apply]
+    simp only [PiLp.separableSum_apply, Function.comp_apply, truncated_linear_penalty_apply]
     by_cases hx : ∀ i, ENNReal.ofReal |x i| ≤ α i
     · have hsum :
           (∑ i, (((ω i : ℝ) * |x i| : ℝ) : EReal)) =
@@ -377,6 +377,19 @@ private theorem truncated_linear_penalty_comp_abs_ne_bot
         simp [extendedIndicator, ht]
     simpa [hind] using (EReal.coe_ne_bot ((ω i : ℝ) * |t|))
 
+/-- Helper for Example 6.23: composing a coordinate truncated penalty with `abs` preserves
+properness, since the composition never reaches `-∞` and is finite at the origin. -/
+private theorem isProper_truncated_linear_penalty_comp_abs
+    (ω : ι → NNReal) (α : ι → ENNReal) (i : ι) :
+    IsProperExtendedRealFunction (truncated_linear_penalty (ω i) (α i) ∘ abs) := by
+  refine ⟨truncated_linear_penalty_comp_abs_ne_bot ω α i, ?_⟩
+  refine ⟨0, ?_⟩
+  rw [mem_effective_domain]
+  have h0 : (0 : ℝ) ∈ {y : ℝ | 0 ≤ y ∧ (y : EReal) ≤ (α i : EReal)} := by
+    refine ⟨le_rfl, ?_⟩
+    positivity
+  simp [Function.comp_apply, truncated_linear_penalty_apply, extendedIndicator, h0]
+
 /-- Helper for Example 6.23: the `i`-th coordinate of `𝓢[ω, α] x` matches the scalar closed form
 used in Example 6.22. -/
 private theorem twoSidedSoftThreshold_apply_eq_scalar_box_display
@@ -435,14 +448,15 @@ theorem prox_weighted_l1_box_penalty_eq_singleton_twoSidedSoftThreshold
     prox[weighted_l1_box_penalty ω α] x =
       {𝓢[ω, α] x} := by
   have hpen :
-      (separableSum (fun i ↦ truncated_linear_penalty (ω i) (α i) ∘ abs) : E → EReal) =
+      (PiLp.separableSum
+          (fun i ↦ truncated_linear_penalty (ω i) (α i) ∘ abs) : E → EReal) =
         weighted_l1_box_penalty ω α :=
     (weighted_l1_box_penalty_eq_separableSum_truncated_linear_penalty ω α).symm
   -- Apply the separable prox singleton bridge after reducing to the scalar coordinate penalties.
   simpa [hpen] using
     (prox_separableSum_eq_singleton_iff_coordinatewise
       (fun i ↦ truncated_linear_penalty (ω i) (α i) ∘ abs)
-      (truncated_linear_penalty_comp_abs_ne_bot ω α)
+      (isProper_truncated_linear_penalty_comp_abs ω α)
       x
       (𝓢[ω, α] x)).2
       (prox_coordinate_absolute_value_box_eq_singleton ω α x)

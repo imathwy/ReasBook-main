@@ -51,7 +51,7 @@ variable {f : E1 × E2 → ℝ} {g1 : E1 → EReal} {g2 : E2 → EReal}
 variable {x1 : ℕ → E1} {x2 : ℕ → E2} {xStar : E1 × E2} {FOpt : ℝ}
 variable {L1 L2 R : PosReal}
 
-local notation "F" => two_block_alternating_minimization_objective f.toEReal g1 g2
+local notation "F" => two_block_alternating_minimization_objective f.toExtendedReal g1 g2
 local notation "x[" k "]" => (x1 k, x2 k)
 
 -- Proof sketch: set
@@ -102,10 +102,10 @@ lemma convex_real_support_univ_fderiv
 /-- Helper for Theorem 14.8: the current second block is always an exact minimizer of the current
 `x₂`-subproblem, with the `k = 0` case coming from the initialization clause. -/
 lemma two_block_current_x2_objective_is_min_on
-    (htraj : is_two_block_alternating_minimization_trajectory f.toEReal g1 g2 x1 x2)
+    (htraj : is_two_block_alternating_minimization_trajectory f.toExtendedReal g1 g2 x1 x2)
     (n : ℕ) :
     IsMinOn
-      (two_block_alternating_minimization_x2_objective f.toEReal g1 g2 (x1 n))
+      (two_block_alternating_minimization_x2_objective f.toExtendedReal g1 g2 (x1 n))
       Set.univ
       (x2 n) := by
   -- Split off the initialization case from the recursive update case.
@@ -118,7 +118,7 @@ lemma two_block_current_x2_objective_is_min_on
 /-- Helper for Theorem 14.8: every outer iterate stays in the effective domain of `F`, and the
 objective never exceeds its initial value. -/
 lemma two_block_iterates_mem_effective_domain_and_initial_sublevel
-    (htraj : is_two_block_alternating_minimization_trajectory f.toEReal g1 g2 x1 x2)
+    (htraj : is_two_block_alternating_minimization_trajectory f.toExtendedReal g1 g2 x1 x2)
     (hx0 : x[0] ∈ effective_domain F) :
     ∀ n : ℕ, x[n] ∈ effective_domain F ∧ F x[n] ≤ F x[0] := by
   intro n
@@ -152,7 +152,7 @@ lemma two_block_iterates_mem_effective_domain_and_initial_sublevel
 /-- Helper for Theorem 14.8: each half-step also stays in the effective domain and in the initial
 sublevel set. -/
 lemma two_block_half_step_mem_effective_domain_and_initial_sublevel
-    (htraj : is_two_block_alternating_minimization_trajectory f.toEReal g1 g2 x1 x2)
+    (htraj : is_two_block_alternating_minimization_trajectory f.toExtendedReal g1 g2 x1 x2)
     (hx0 : x[0] ∈ effective_domain F)
     (n : ℕ) :
     two_block_alternating_minimization_half_step x1 x2 n ∈ effective_domain F ∧
@@ -178,7 +178,7 @@ finite and `xStar` globally minimizes `F`. -/
 lemma two_block_objective_gap_nonneg
     (hg1_proper : IsProperExtendedRealFunction g1)
     (hg2_proper : IsProperExtendedRealFunction g2)
-    (htraj : is_two_block_alternating_minimization_trajectory f.toEReal g1 g2 x1 x2)
+    (htraj : is_two_block_alternating_minimization_trajectory f.toExtendedReal g1 g2 x1 x2)
     (hxStar : IsMinOn F Set.univ xStar)
     (hFOpt : F xStar = (FOpt : EReal))
     (hx0 : x[0] ∈ effective_domain F)
@@ -191,7 +191,7 @@ lemma two_block_objective_gap_nonneg
     -- The smooth term is real-valued, and the proper penalties never take the value `-∞`.
     rw [two_block_alternating_minimization_objective_apply, EReal.add_ne_bot_iff,
       EReal.add_ne_bot_iff]
-    exact ⟨⟨by simp [Function.toEReal], hg1_proper.ne_bot (x1 n)⟩, hg2_proper.ne_bot (x2 n)⟩
+    exact ⟨⟨by simp [Function.toExtendedReal], hg1_proper.ne_bot (x1 n)⟩, hg2_proper.ne_bot (x2 n)⟩
   have hFx_coe :
       (((F x[n]).toReal : ℝ) : EReal) = F x[n] := by
     exact EReal.coe_toReal (mem_effective_domain.mp hiter.1).ne hFx_bot
@@ -248,7 +248,7 @@ lemma two_block_objective_ne_bot
   -- The smooth term is real-valued, and proper penalties never attain `-∞`.
   rw [two_block_alternating_minimization_objective_apply, EReal.add_ne_bot_iff,
     EReal.add_ne_bot_iff]
-  exact ⟨⟨by simp [Function.toEReal], hg1_proper.ne_bot y1⟩, hg2_proper.ne_bot y2⟩
+  exact ⟨⟨by simp [Function.toExtendedReal], hg1_proper.ne_bot y1⟩, hg2_proper.ne_bot y2⟩
 
 /-- Helper for Theorem 14.8: on the effective domain, the objective is exactly the coercion of its
 real value. -/
@@ -268,7 +268,7 @@ than the half-step objective gap. -/
 lemma two_block_next_iterate_objective_gap_le_half_step_gap
     (hg1_proper : IsProperExtendedRealFunction g1)
     (hg2_proper : IsProperExtendedRealFunction g2)
-    (htraj : is_two_block_alternating_minimization_trajectory f.toEReal g1 g2 x1 x2)
+    (htraj : is_two_block_alternating_minimization_trajectory f.toExtendedReal g1 g2 x1 x2)
     (hx0 : x[0] ∈ effective_domain F)
     (n : ℕ) :
     (F x[n + 1]).toReal - FOpt ≤
@@ -297,14 +297,14 @@ lemma two_block_next_iterate_objective_gap_le_half_step_gap
 /-- Helper for Theorem 14.8: exact minimization of the current second-block slice identifies the
 first-block partial infimum at `x₁^n` with the current objective value. -/
 lemma two_block_x1_partial_infimum_eq_current_value
-    (htraj : is_two_block_alternating_minimization_trajectory f.toEReal g1 g2 x1 x2)
+    (htraj : is_two_block_alternating_minimization_trajectory f.toExtendedReal g1 g2 x1 x2)
     (n : ℕ) :
     let phi1 : E1 → EReal := fun y1 ↦ sInf (Set.range (fun z2 : E2 ↦ F (y1, z2)))
     phi1 (x1 n) = F x[n] := by
   let phi1 : E1 → EReal := fun y1 ↦ sInf (Set.range (fun z2 : E2 ↦ F (y1, z2)))
   have hmin :
       IsMinOn
-        (two_block_alternating_minimization_x2_objective f.toEReal g1 g2 (x1 n))
+        (two_block_alternating_minimization_x2_objective f.toExtendedReal g1 g2 (x1 n))
         Set.univ
         (x2 n) :=
     two_block_current_x2_objective_is_min_on
@@ -340,7 +340,7 @@ lemma two_block_x1_partial_infimum_eq_optimal_value
 /-- Helper for Theorem 14.8: exact minimization of the current first-block slice identifies the
 second-block partial infimum at `x₂^n` with the half-step objective value. -/
 lemma two_block_x2_partial_infimum_eq_current_value
-    (htraj : is_two_block_alternating_minimization_trajectory f.toEReal g1 g2 x1 x2)
+    (htraj : is_two_block_alternating_minimization_trajectory f.toExtendedReal g1 g2 x1 x2)
     (n : ℕ) :
     let xHalf := two_block_alternating_minimization_half_step x1 x2 n
     let phi2 : E2 → EReal := fun y2 ↦ sInf (Set.range (fun z1 : E1 ↦ F (z1, y2)))
@@ -349,7 +349,7 @@ lemma two_block_x2_partial_infimum_eq_current_value
   let phi2 : E2 → EReal := fun y2 ↦ sInf (Set.range (fun z1 : E1 ↦ F (z1, y2)))
   have hmin :
       IsMinOn
-        (two_block_alternating_minimization_x1_objective f.toEReal g1 g2 (x2 n))
+        (two_block_alternating_minimization_x1_objective f.toExtendedReal g1 g2 (x2 n))
         Set.univ
         (x1 (n + 1)) := by
     simpa [Nat.succ_eq_add_one] using htraj.step_x1 n
@@ -423,7 +423,7 @@ lemma two_block_second_penalty_eq_coe_toReal_of_mem_effective_domain
         _ = ⊤ := by
           have hleft_ne_bot :
               (((f (y1, y2) : ℝ) : EReal) + g1 y1) ≠ ⊥ := by
-            exact (EReal.add_ne_bot_iff).2 ⟨by simp [Function.toEReal], hg1_proper.ne_bot y1⟩
+            exact (EReal.add_ne_bot_iff).2 ⟨by simp [Function.toExtendedReal], hg1_proper.ne_bot y1⟩
           rw [EReal.add_top_of_ne_bot hleft_ne_bot]
     exact (mem_effective_domain.mp hy).ne hFy_top
   exact EReal.coe_toReal hg2_ne_top (hg2_proper.ne_bot y2)
@@ -433,7 +433,7 @@ lemma two_block_second_penalty_eq_coe_toReal_of_mem_effective_domain
 lemma two_block_x1_inactive_marginal_eq_current_value
     (hg1_proper : IsProperExtendedRealFunction g1)
     (hg2_proper : IsProperExtendedRealFunction g2)
-    (htraj : is_two_block_alternating_minimization_trajectory f.toEReal g1 g2 x1 x2)
+    (htraj : is_two_block_alternating_minimization_trajectory f.toExtendedReal g1 g2 x1 x2)
     (hx0 : x[0] ∈ effective_domain F)
     (n : ℕ) :
     let eta1 : E1 → EReal :=
@@ -450,7 +450,7 @@ lemma two_block_x1_inactive_marginal_eq_current_value
       (f := f) (g1 := g1) (g2 := g2) hg1_proper hg2_proper hiter.1
   have hmin :
       IsMinOn
-        (two_block_alternating_minimization_x2_objective f.toEReal g1 g2 (x1 n))
+        (two_block_alternating_minimization_x2_objective f.toExtendedReal g1 g2 (x1 n))
         Set.univ
         (x2 n) :=
     two_block_current_x2_objective_is_min_on
@@ -489,7 +489,7 @@ current objective value. -/
 lemma two_block_x1_inactive_marginal_add_active_penalty_eq_current_objective
     (hg1_proper : IsProperExtendedRealFunction g1)
     (hg2_proper : IsProperExtendedRealFunction g2)
-    (htraj : is_two_block_alternating_minimization_trajectory f.toEReal g1 g2 x1 x2)
+    (htraj : is_two_block_alternating_minimization_trajectory f.toExtendedReal g1 g2 x1 x2)
     (hx0 : x[0] ∈ effective_domain F)
     (n : ℕ) :
     let eta1 : E1 → EReal :=
@@ -543,7 +543,7 @@ lemma two_block_x1_inactive_marginal_add_active_penalty_le_optimal_value
           (((f xStar : ℝ) : EReal)) + (g1 xStar.1 + g2 xStar.2) by
             rw [add_assoc, add_comm (g2 xStar.2) (g1 xStar.1)]]
       rw [hxStar_eta, two_block_alternating_minimization_objective_apply]
-      simp [Function.toEReal, add_assoc]
+      simp [Function.toExtendedReal, add_assoc]
     _ = (FOpt : EReal) := hFOpt
 
 /-- Helper for Theorem 14.8: once the half-step is finite, the inactive marginal
@@ -551,7 +551,7 @@ lemma two_block_x1_inactive_marginal_add_active_penalty_le_optimal_value
 lemma two_block_x2_inactive_marginal_eq_current_value
     (hg1_proper : IsProperExtendedRealFunction g1)
     (hg2_proper : IsProperExtendedRealFunction g2)
-    (htraj : is_two_block_alternating_minimization_trajectory f.toEReal g1 g2 x1 x2)
+    (htraj : is_two_block_alternating_minimization_trajectory f.toExtendedReal g1 g2 x1 x2)
     (hx0 : x[0] ∈ effective_domain F)
     (n : ℕ) :
     let eta2 : E2 → EReal :=
@@ -569,7 +569,7 @@ lemma two_block_x2_inactive_marginal_eq_current_value
         (f := f) (g1 := g1) (g2 := g2) hg1_proper hg2_proper hhalf.1
   have hmin :
       IsMinOn
-        (two_block_alternating_minimization_x1_objective f.toEReal g1 g2 (x2 n))
+        (two_block_alternating_minimization_x1_objective f.toExtendedReal g1 g2 (x2 n))
         Set.univ
         (x1 (n + 1)) := by
     simpa [Nat.succ_eq_add_one] using htraj.step_x1 n
@@ -609,7 +609,7 @@ half-step objective value. -/
 lemma two_block_x2_inactive_marginal_add_inactive_penalty_eq_half_step_objective
     (hg1_proper : IsProperExtendedRealFunction g1)
     (hg2_proper : IsProperExtendedRealFunction g2)
-    (htraj : is_two_block_alternating_minimization_trajectory f.toEReal g1 g2 x1 x2)
+    (htraj : is_two_block_alternating_minimization_trajectory f.toExtendedReal g1 g2 x1 x2)
     (hx0 : x[0] ∈ effective_domain F)
     (n : ℕ) :
     let eta2 : E2 → EReal :=
@@ -664,7 +664,7 @@ lemma two_block_x2_inactive_marginal_add_inactive_penalty_le_optimal_value
           (((f xStar : ℝ) : EReal)) + (g1 xStar.1 + g2 xStar.2) by
             rw [add_assoc]]
       rw [hxStar_eta, two_block_alternating_minimization_objective_apply]
-      simp [Function.toEReal, add_assoc]
+      simp [Function.toExtendedReal, add_assoc]
     _ = (FOpt : EReal) := hFOpt
 
 /-- Helper for Theorem 14.8: once a pair objective has a supporting affine lower bound at an
@@ -696,7 +696,7 @@ lemma two_block_x1_half_step_quadratic_gap
     (hg1_proper : IsProperExtendedRealFunction g1)
     (hg1_convex : is_convex_function g1)
     (hg2_proper : IsProperExtendedRealFunction g2)
-    (htraj : is_two_block_alternating_minimization_trajectory f.toEReal g1 g2 x1 x2)
+    (htraj : is_two_block_alternating_minimization_trajectory f.toExtendedReal g1 g2 x1 x2)
     (hf_convex : ConvexOn ℝ Set.univ f)
     (hf_x1_smooth :
       ∀ z2 : E2, is_l_smooth_on (fun y1 ↦ f (y1, z2)) Set.univ (PosReal.toNNReal L1))
@@ -751,7 +751,7 @@ lemma two_block_x2_next_step_quadratic_gap
     (hg1_proper : IsProperExtendedRealFunction g1)
     (hg2_proper : IsProperExtendedRealFunction g2)
     (hg2_convex : is_convex_function g2)
-    (htraj : is_two_block_alternating_minimization_trajectory f.toEReal g1 g2 x1 x2)
+    (htraj : is_two_block_alternating_minimization_trajectory f.toExtendedReal g1 g2 x1 x2)
     (hf_convex : ConvexOn ℝ Set.univ f)
     (hf_x2_smooth :
       ∀ z1 : E1, is_l_smooth_on (fun y2 ↦ f (z1, y2)) Set.univ (PosReal.toNNReal L2))
@@ -807,7 +807,7 @@ lemma two_block_objective_gap_quadratic_recurrence
     (hg1_convex : is_convex_function g1)
     (hg2_proper : IsProperExtendedRealFunction g2)
     (hg2_convex : is_convex_function g2)
-    (htraj : is_two_block_alternating_minimization_trajectory f.toEReal g1 g2 x1 x2)
+    (htraj : is_two_block_alternating_minimization_trajectory f.toExtendedReal g1 g2 x1 x2)
     (hf_convex : ConvexOn ℝ Set.univ f)
     (hf_x1_smooth :
       ∀ z2 : E2, is_l_smooth_on (fun y1 ↦ f (y1, z2)) Set.univ (PosReal.toNNReal L1))
@@ -922,7 +922,7 @@ lemma two_block_objective_gap_le_max_geometric_or_sublinear_core
     (hg1_convex : is_convex_function g1)
     (hg2_proper : IsProperExtendedRealFunction g2)
     (hg2_convex : is_convex_function g2)
-    (htraj : is_two_block_alternating_minimization_trajectory f.toEReal g1 g2 x1 x2)
+    (htraj : is_two_block_alternating_minimization_trajectory f.toExtendedReal g1 g2 x1 x2)
     (hf_convex : ConvexOn ℝ Set.univ f)
     (hf_x1_smooth :
       ∀ z2 : E2, is_l_smooth_on (fun y1 ↦ f (y1, z2)) Set.univ (PosReal.toNNReal L1))
@@ -998,7 +998,7 @@ theorem two_block_alternating_minimization_objective_gap_le_max_geometric_or_sub
     (hg2_proper : IsProperExtendedRealFunction g2)
     (hg2_closed : LowerSemicontinuous g2)
     (hg2_convex : is_convex_function g2)
-    (htraj : is_two_block_alternating_minimization_trajectory f.toEReal g1 g2 x1 x2)
+    (htraj : is_two_block_alternating_minimization_trajectory f.toExtendedReal g1 g2 x1 x2)
     (hf_convex : ConvexOn ℝ Set.univ f)
     (hf_x1_smooth :
       ∀ z2 : E2, is_l_smooth_on (fun y1 ↦ f (y1, z2)) Set.univ (PosReal.toNNReal L1))

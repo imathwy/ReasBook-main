@@ -16,11 +16,12 @@ variable {m n : ℕ}
 local notation "𝕄" => Matrix (Fin m) (Fin n) ℝ
 
 /-- The ambient real matrix space is equipped with its Frobenius norm. -/
-local instance : NormedAddCommGroup 𝕄 := Matrix.frobeniusNormedAddCommGroup
+local instance prop75FrobeniusNormedAddCommGroup : NormedAddCommGroup 𝕄 :=
+  Matrix.frobeniusNormedAddCommGroup
 
 /- Proposition 7.5 is `source-facing`: the textbook defines
 `T = {Y : ℝ^(m × n) | σ(Y) ∈ C}` and expresses the projection formula through the chapter's
-projection owner `P[...]` together with the singular-value SVD data of `X`. The canonical matrix
+projection owner `Proj[...]` together with the singular-value SVD data of `X`. The canonical matrix
 reconstruction owner already present in the project is
 `orthogonalRectangularDiagonalMap U V`. -/
 
@@ -73,7 +74,7 @@ theorem mem_rectangularSpectralSet_iff {C : Set (Fin (min m n) → ℝ)} {Y : �
     Y ∈ rectangularSpectralSet C ↔ singular_value_function Y ∈ C := sorry
 
 -- Proof sketch: let `T := rectangularSpectralSet C`. The projection-indicator identity rewrites
--- `P[T] X` and `P[C] (σ(X))` as proximal sets of the indicator functions `δ_T` and `δ_C`. Then
+-- `Proj[T] X` and `Proj[C] (σ(X))` as proximal sets of the indicator functions `δ_T` and `δ_C`. Then
 -- apply the rectangular spectral proximal formula to `δ_C ∘ singular_value_function`, using the
 -- singular value decomposition `X = U * rectangularDiagonal (σ(X)) * Vᵀ`, and rewrite back in
 -- terms of projection mappings.
@@ -88,7 +89,7 @@ theorem projection_mapping_rectangularSpectralSet_eq_image_projection_mapping_si
     (hC_convex : Convex ℝ C) (X : 𝕄) (U : Matrix.orthogonalGroup (Fin m) ℝ)
     (V : Matrix.orthogonalGroup (Fin n) ℝ)
     (hsvd : X = orthogonalRectangularDiagonalMap U V (singular_value_function X)) :
-    P[rectangularSpectralSet C] X =
-      orthogonalRectangularDiagonalMap U V '' P[C] (singular_value_function X) := sorry
+    Proj[rectangularSpectralSet C] X =
+      orthogonalRectangularDiagonalMap U V '' Proj[C] (singular_value_function X) := sorry
 
 end

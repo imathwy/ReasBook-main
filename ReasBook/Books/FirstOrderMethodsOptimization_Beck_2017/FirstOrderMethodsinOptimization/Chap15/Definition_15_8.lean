@@ -21,10 +21,10 @@ local notation "X" => EuclideanSpace ℝ ι
 sampled from the nearby optimization files, the Chapter 3 constrained-objective owner, the
 Chapter 6 Euclidean `ℓ¹` owner, and the Chapter 15 linear-map-based API.
 
-This item is `source-facing`: it defines the basis-pursuit model `min ‖x‖₁` subject to `A x = b`.
+This item is `source-facing`: it defines the basis-pursuit model `min l1n[x]` subject to `A x = b`.
 The best `core/canonical` owner split already exists upstream:
 - `constrained_problem_objective` owns the constrained extended-real objective;
-- `EuclideanSpace.l1Norm`, written `‖x‖₁`, owns the Euclidean `ℓ¹` term on finite product spaces;
+- `EuclideanSpace.l1Norm`, written `l1n[x]`, owns the Euclidean `ℓ¹` term on finite product spaces;
 - Chapter 15 treats the forward operator canonically as a linear map `A : X →ₗ[ℝ] Y`.
 
 Primitive data are therefore only the linear constraint fiber `A ⁻¹' {b}` and the `ℓ¹` objective.
@@ -35,17 +35,17 @@ The matrix presentation from the textbook is a `bridge/view` obtained by special
 objective and affine feasible set `A x = b`. -/
 def basis_pursuit_problem
     (A : X →ₗ[ℝ] Y) (b : Y) : X → EReal :=
-  constrained_problem_objective (fun x ↦ ((‖x‖₁ : ℝ) : EReal))
+  constrained_problem_objective (fun x ↦ ((l1n[x] : ℝ) : EReal))
     (A ⁻¹' ({b} : Set Y))
 
 /-- Helper for Definition 15.8: on the affine feasible set `A x = b`, the basis-pursuit problem
-agrees with the `ℓ¹` objective `‖x‖₁`. -/
+agrees with the `ℓ¹` objective `l1n[x]`. -/
 @[simp] theorem basis_pursuit_problem_of_eq
     (A : X →ₗ[ℝ] Y) (b : Y) {x : X} (hx : A x = b) :
-    basis_pursuit_problem A b x = ((‖x‖₁ : ℝ) : EReal) := by
+    basis_pursuit_problem A b x = ((l1n[x] : ℝ) : EReal) := by
   -- Translate the affine constraint into membership in the feasible fiber `A ⁻¹' {b}`.
   exact constrained_problem_objective_of_mem
-    (fun x ↦ ((‖x‖₁ : ℝ) : EReal))
+    (fun x ↦ ((l1n[x] : ℝ) : EReal))
     (by simpa [Set.mem_preimage] using hx)
 
 /-- Helper for Definition 15.8: outside the affine feasible set `A x = b`, the basis-pursuit
@@ -55,15 +55,15 @@ problem takes the infeasible value `⊤`. -/
     basis_pursuit_problem A b x = ⊤ := by
   -- Translate violation of the affine constraint into nonmembership in the feasible fiber.
   exact constrained_problem_objective_of_not_mem
-    (fun x ↦ ((‖x‖₁ : ℝ) : EReal))
+    (fun x ↦ ((l1n[x] : ℝ) : EReal))
     (by simpa [Set.mem_preimage] using hx)
 
-/-- Helper for Definition 15.8: evaluating the basis-pursuit problem at `x` gives `‖x‖₁` when
+/-- Helper for Definition 15.8: evaluating the basis-pursuit problem at `x` gives `l1n[x]` when
 `A x = b`, and `⊤` otherwise. -/
 @[simp] theorem basis_pursuit_problem_apply
     (A : X →ₗ[ℝ] Y) (b : Y) (x : X) :
     basis_pursuit_problem A b x =
-      if A x = b then ((‖x‖₁ : ℝ) : EReal) else ⊤ := by
+      if A x = b then ((l1n[x] : ℝ) : EReal) else ⊤ := by
   -- Split on feasibility to expose the constrained-objective branch selected at `x`.
   by_cases hx : A x = b
   · rw [if_pos hx]

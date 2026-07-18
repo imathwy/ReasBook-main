@@ -21,10 +21,10 @@ variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [ProperSp
 
 Domain sampling in the local Chapter 10 and Chapter 6 API identifies the canonical owners already
 present in the workspace:
-- `Function.toEReal` from Definition 9.2 is the owner of the canonical coercion from real-valued
+- `Function.toExtendedReal` from Definition 9.2 is the owner of the canonical coercion from real-valued
   objectives to the extended-real codomain, together with the derived proper/lower-semicontinuous/
   convex bridge API used by the proximal-point owner;
-- `proximal_point_operator` / `proxₚ[μ, h.toEReal]` from Definition 10.12 is the point-valued
+- `proximal_point_operator` / `proxₚ[μ, h.toExtendedReal]` from Definition 10.12 is the point-valued
   bridge surface for `prox_(μ h)`;
 - `metricProjection` from Proposition 3.12 is the point-valued owner of `P_C`;
 - `fista_momentum_update` and `fista_extrapolated_point` from Algorithm 10.13 are the scalar and
@@ -41,7 +41,7 @@ canonical FISTA state `(x^(k-1), x^k, t_k)`. The faithful public interface is th
 recursive state owner `constrained_s_fista` valued in `FISTAState E`, together with the
 source-facing feasible iterate, extrapolated-point, and momentum companions. The recursive owner
 should therefore take the constrained problem data through Definition 10.59's canonical class
-rather than restating parallel low-level assumptions about `C` and `h.toEReal`. Since the
+rather than restating parallel low-level assumptions about `C` and `h.toExtendedReal`. Since the
 displayed initialization uses `μ = ε / ℓ_h^2` and
 `L̃ = ℓ_h^2 / ε`, the interface keeps those two positive parameters as named source-facing
 declarations rather than hiding them inside the state update. -/
@@ -89,16 +89,16 @@ def constrained_s_fista_next_iterate
     (h : E → ℝ) (C : Set E) (ℓh : PosReal)
     [hproblem : IsConvexLipschitzConstrainedMinimizationProblem h C (PosReal.toNNReal ℓh)]
     (ε : PosReal) (y : E) : C :=
-  let _ : IsProperExtendedRealFunction h.toEReal :=
+  let _ : IsProperExtendedRealFunction h.toExtendedReal :=
     IsConvexLipschitzConstrainedMinimizationProblem.objective_toEReal_proper hproblem
-  let _ : Fact (LowerSemicontinuous h.toEReal) :=
+  let _ : Fact (LowerSemicontinuous h.toExtendedReal) :=
     ⟨IsConvexLipschitzConstrainedMinimizationProblem.objective_toEReal_lowerSemicontinuous
       hproblem⟩
-  let _ : Fact (is_convex_function h.toEReal) :=
+  let _ : Fact (is_convex_function h.toExtendedReal) :=
     ⟨IsConvexLipschitzConstrainedMinimizationProblem.objective_toEReal_convex hproblem⟩
   metricProjection C hproblem.constraint_nonempty hproblem.constraint_closed.isComplete
     hproblem.constraint_convex
-    (proxₚ[constrained_s_fista_smoothing_parameter ε ℓh, h.toEReal] y)
+    (proxₚ[constrained_s_fista_smoothing_parameter ε ℓh, h.toExtendedReal] y)
 
 /-- Algorithm 10.59: for a constrained convex Lipschitz problem `min {h(x) | x ∈ C}`, an
 accuracy parameter `ε > 0`, and an initial feasible point `x^0 ∈ C`, the constrained S-FISTA

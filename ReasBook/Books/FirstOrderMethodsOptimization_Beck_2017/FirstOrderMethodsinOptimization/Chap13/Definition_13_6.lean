@@ -134,7 +134,7 @@ section
 variable {E : Type u} [AddCommGroup E] [Module ℝ E]
 variable (f : E → ℝ) (g : E → EReal)
 
-local notation "F" => composite_model_objective f.toEReal g
+local notation "F" => composite_model_objective f.toExtendedReal g
 
 /-- A generalized conditional-gradient trajectory uses exact line search when each stepsize
 belongs to the Definition 13.6 exact-line-search set for the composite objective along the segment

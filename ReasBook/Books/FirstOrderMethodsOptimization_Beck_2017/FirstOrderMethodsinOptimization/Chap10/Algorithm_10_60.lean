@@ -15,20 +15,20 @@ variable (D : Matrix (Fin p) (Fin n) ℝ) (lam : ℝ)
 
 variable (Lf : NNReal) (α : PosReal)
 variable
-  [hgProper : IsProperExtendedRealFunction (Function.toEReal (ambient_l1_regularizer n lam))]
-  [hgClosed : Fact (LowerSemicontinuous (Function.toEReal (ambient_l1_regularizer n lam)))]
-  [hgConvex : Fact (is_convex_function (Function.toEReal (ambient_l1_regularizer n lam)))]
+  [hgProper : IsProperExtendedRealFunction (Function.toExtendedReal (ambient_l1_regularizer n lam))]
+  [hgClosed : Fact (LowerSemicontinuous (Function.toExtendedReal (ambient_l1_regularizer n lam)))]
+  [hgConvex : Fact (is_convex_function (Function.toExtendedReal (ambient_l1_regularizer n lam)))]
 
 local instance gRegProper :
-    IsProperExtendedRealFunction (Function.toEReal (ambient_l1_regularizer n lam)) :=
+    IsProperExtendedRealFunction (Function.toExtendedReal (ambient_l1_regularizer n lam)) :=
   hgProper
 
 local instance gRegLowerSemicontinuous :
-    Fact (LowerSemicontinuous (Function.toEReal (ambient_l1_regularizer n lam))) :=
+    Fact (LowerSemicontinuous (Function.toExtendedReal (ambient_l1_regularizer n lam))) :=
   hgClosed
 
 local instance gRegConvex :
-    Fact (is_convex_function (Function.toEReal (ambient_l1_regularizer n lam))) :=
+    Fact (is_convex_function (Function.toExtendedReal (ambient_l1_regularizer n lam))) :=
   hgConvex
 
 /- Algorithm 10.60 is a `bridge/view` item.
@@ -67,7 +67,7 @@ S-FISTA recursion is the Chapter 10 owner `s_fista` specialized to the Definitio
     s_fista
       (least_squares_loss A b)
       hμ
-      (Function.toEReal (ambient_l1_regularizer n lam))
+      (Function.toExtendedReal (ambient_l1_regularizer n lam))
       Lf α μ x0
 
 /- The associated primal-iterate and extrapolated-point sequences are the corresponding
@@ -77,7 +77,7 @@ specializations of `s_fista_x` and `s_fista_y`. -/
     s_fista_x
       (least_squares_loss A b)
       hμ
-      (Function.toEReal (ambient_l1_regularizer n lam))
+      (Function.toExtendedReal (ambient_l1_regularizer n lam))
       Lf α μ x0
 
 #check
@@ -85,7 +85,7 @@ specializations of `s_fista_x` and `s_fista_y`. -/
     s_fista_y
       (least_squares_loss A b)
       hμ
-      (Function.toEReal (ambient_l1_regularizer n lam))
+      (Function.toExtendedReal (ambient_l1_regularizer n lam))
       Lf α μ x0
 
 /- The effective curvature parameter is the canonical S-FISTA curvature bound
@@ -99,12 +99,12 @@ directly. -/
     (s_fista_x_zero
       (least_squares_loss A b)
       hμ
-      (Function.toEReal (ambient_l1_regularizer n lam))
+      (Function.toExtendedReal (ambient_l1_regularizer n lam))
       Lf α μ x0 :
       s_fista_x
         (least_squares_loss A b)
         hμ
-        (Function.toEReal (ambient_l1_regularizer n lam))
+        (Function.toExtendedReal (ambient_l1_regularizer n lam))
         Lf α μ x0 0 = x0)
 
 #check
@@ -112,12 +112,12 @@ directly. -/
     (s_fista_y_zero
       (least_squares_loss A b)
       hμ
-      (Function.toEReal (ambient_l1_regularizer n lam))
+      (Function.toExtendedReal (ambient_l1_regularizer n lam))
       Lf α μ x0 :
       s_fista_y
         (least_squares_loss A b)
         hμ
-        (Function.toEReal (ambient_l1_regularizer n lam))
+        (Function.toExtendedReal (ambient_l1_regularizer n lam))
         Lf α μ x0 0 = x0)
 
 #check
@@ -125,7 +125,7 @@ directly. -/
     s_fista_x_succ
       (least_squares_loss A b)
       hμ
-      (Function.toEReal (ambient_l1_regularizer n lam))
+      (Function.toExtendedReal (ambient_l1_regularizer n lam))
       Lf α μ x0 k
 
 #check
@@ -133,7 +133,7 @@ directly. -/
     s_fista_y_succ
       (least_squares_loss A b)
       hμ
-      (Function.toEReal (ambient_l1_regularizer n lam))
+      (Function.toExtendedReal (ambient_l1_regularizer n lam))
       Lf α μ x0 k
 
 end

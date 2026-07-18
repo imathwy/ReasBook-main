@@ -689,7 +689,7 @@ lemma mem_euclideanSubdifferentialAt_wolfe_example_function_iff
     rw [mem_euclideanSubdifferentialAt_iff, subdifferentialAt, mem_strongDualSubdifferential] at hz
     have hz_support :
         ((toDualMap ℝ E z : StrongDual ℝ E) : Module.Dual ℝ E) ∈
-          subdifferential
+          extendedRealSubdifferential
             (fun y : E ↦ support_function (wolfe_example_support_set γ) (toDualMap ℝ E y)) x := by
       -- Part (a) identifies the real-valued Wolfe example with the same support function.
       simpa [wolfe_example_function_eq_support_function γ hγ] using hz
@@ -741,7 +741,7 @@ lemma mem_euclideanSubdifferentialAt_wolfe_example_function_iff
         _ = support_function (wolfe_example_support_set γ) (toDualMap ℝ E x) := hpair
     have hz_support :
         ((toDualMap ℝ E z : StrongDual ℝ E) : Module.Dual ℝ E) ∈
-          subdifferential
+          extendedRealSubdifferential
             (fun y : E ↦ support_function (wolfe_example_support_set γ) (toDualMap ℝ E y)) x :=
       (pairing_eq_add_conjugate_iff_mem_subdifferential
         (fun y : E ↦ support_function (wolfe_example_support_set γ) (toDualMap ℝ E y))
@@ -752,7 +752,7 @@ lemma mem_euclideanSubdifferentialAt_wolfe_example_function_iff
 -- Proof sketch: use part (1) to rewrite the function as the support function of
 -- `wolfe_example_support_set γ`, then identify Euclidean subgradients of a support function with
 -- argmax points. The origin case yields the full support set.
-/-- Lemma 8.5 (4): for `γ > 0`, the Euclidean/vector-side subdifferential of the Wolfe example
+/-- Lemma 8.5 (4): for `γ > 0`, the Euclidean/vector-side extendedRealSubdifferential of the Wolfe example
 function at the origin is the support set `C`. -/
 theorem euclidean_subdifferentialAt_wolfe_example_function_at_zero
     (γ : ℝ) (hγ : 0 < γ) :
@@ -901,9 +901,9 @@ lemma eq_normalized_ellipsoid_point_of_mem_support_set_of_pairing_eq
 
 -- Proof sketch: in the region `|x₂| ≤ x₁` with `x₁ ≠ 0`, the support-function maximizer is the
 -- normalized ellipsoidal boundary point `(x₁, γ x₂) / √(x₁^2 + γ x₂^2)`, so the Euclidean
--- subdifferential is the corresponding singleton.
+-- extendedRealSubdifferential is the corresponding singleton.
 /-- Lemma 8.5 (5): for `γ > 0`, in the region `|x₂| ≤ x₁` with `x₁ ≠ 0`, the Euclidean
-subdifferential is the singleton normalized boundary point
+extendedRealSubdifferential is the singleton normalized boundary point
 `(x₁, γ x₂) / √(x₁^2 + γ x₂^2)`. -/
 theorem euclidean_subdifferentialAt_wolfe_example_function_on_ellipsoidal_region
     (γ : ℝ) (hγ : 0 < γ) (x : E) (hx_region : |x 1| ≤ x 0) (hx0 : x 0 ≠ 0) :
@@ -1136,7 +1136,7 @@ lemma eq_truncation_sign_point_of_mem_support_set_of_pairing_eq
 -- active, and the exposed maximizer is the boundary point
 -- `(1 / √(1 + γ), γ sign(x₂) / √(1 + γ))`.
 /-- Lemma 8.5 (6): for `γ > 0`, in the region `x₁ < |x₂|` with `x₂ ≠ 0`, the Euclidean
-subdifferential is the singleton boundary point
+extendedRealSubdifferential is the singleton boundary point
 `(1 / √(1 + γ), γ sign(x₂) / √(1 + γ))`. -/
 theorem euclidean_subdifferentialAt_wolfe_example_function_on_truncation_boundary
     (γ : ℝ) (hγ : 0 < γ) (x : E) (hx_region : x 0 < |x 1|) (hx1 : x 1 ≠ 0) :
@@ -1190,7 +1190,7 @@ by
 -- Proof sketch: on the negative `x₁`-axis, the active supporting points are exactly those on the
 -- vertical truncation segment with first coordinate `1 / √(1 + γ)` and second coordinate between
 -- `-γ / √(1 + γ)` and `γ / √(1 + γ)`.
-/-- Lemma 8.5 (7): for `γ > 0`, on the negative `x₁`-axis, the Euclidean subdifferential is the
+/-- Lemma 8.5 (7): for `γ > 0`, on the negative `x₁`-axis, the Euclidean extendedRealSubdifferential is the
 vertical segment `{1 / √(1 + γ)} × [-γ / √(1 + γ), γ / √(1 + γ)]`. -/
 theorem euclidean_subdifferentialAt_wolfe_example_function_on_negative_axis
     (γ : ℝ) (hγ : 0 < γ) (x : E) (hx0 : x 0 < 0) (hx1 : x 1 = 0) :

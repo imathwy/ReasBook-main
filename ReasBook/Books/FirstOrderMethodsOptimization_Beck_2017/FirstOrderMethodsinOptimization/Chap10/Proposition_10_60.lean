@@ -39,7 +39,7 @@ lemma lpPairingDual_top_operatorNorm_eq_l1 (x : E) :
 
 /-- Helper for Proposition 10.60: the Euclidean Riesz pairing on the coordinate model is the
 coordinate dot product. -/
-lemma toDualMap_apply_eq_dotProduct (u v : E₂) :
+lemma toDualMap_apply_eq_dotProduct_linf_coordinates (u v : E₂) :
     ((toDualMap ℝ E₂ v) u : ℝ) = dotProduct (ofLp u) (ofLp v) := by
   -- Convert the Euclidean inner product to the explicit coordinate formula.
   simpa [InnerProductSpace.toDualMap_apply_apply, dotProduct, mul_comm] using
@@ -51,7 +51,7 @@ lemma toDualMap_apply_sub_eq_dotProduct_sub (a : E*) (x : E) (y : E₂) :
     ((toDualMap ℝ E₂ (toLp 2 (ofLp x))) (y - toLp 2 (ofLp a)) : ℝ) =
       dotProduct (ofLp y) (ofLp x) - dotProduct (ofLp a) (ofLp x) := by
   -- Expand the Euclidean pairing and separate the translated contribution.
-  rw [toDualMap_apply_eq_dotProduct]
+  rw [toDualMap_apply_eq_dotProduct_linf_coordinates]
   simp [sub_eq_add_neg, add_dotProduct, neg_dotProduct]
 
 /-- Helper for Proposition 10.60: every `ℓ₁`-unit vector pairs with an `ℓ∞` vector by at most its
@@ -275,8 +275,8 @@ lemma mem_primalCounterparts_lpPairingDual_one_iff_mem_euclideanSubdifferentialA
 - `source-facing`: the Chapter 10 owner `Λ[·]` on the primal `ℓ₁` space, with the dual
   coefficient vector living in the chapter's canonical `ℓ∞` model `E*`;
 - `core/canonical`: the explicit owner condition `‖x‖ ≤ 1 ∧ a x = ‖a‖`, used directly here to
-  identify `Λ[·]` with the canonical norm-subdifferential owner in the coordinate proof;
-- `bridge/view`: the Euclidean `ℓ∞` subdifferential computation from Proposition 3.24, used only
+  identify `Λ[·]` with the canonical norm-extendedRealSubdifferential owner in the coordinate proof;
+- `bridge/view`: the Euclidean `ℓ∞` extendedRealSubdifferential computation from Proposition 3.24, used only
   through the canonical coordinate transport `coordToL1 : E₂ → E`.
 
 The primitive data are only the `ℓ∞` coefficient vector `a : E*`. The Euclidean coordinate point
@@ -288,9 +288,9 @@ active-coordinate image. -/
 -- Proof sketch: identify the coefficient vector `a : E*` with the functional
 -- `LinearMap.toContinuousLinearMap (lpPairingDual (1 : ENNReal) (ofLp a))` on the primal `ℓ₁`
 -- space. Then rewrite the owner condition `x ∈ Λ[·]` directly into the norming equations used in
--- the Euclidean subgradient inequality, and combine that with the `ℓ∞` subdifferential
+-- the Euclidean subgradient inequality, and combine that with the `ℓ∞` extendedRealSubdifferential
 -- computation from Proposition 3.24 via the canonical coordinate transport `coordToL1`.
-/-- Bridge/view form of Proposition 10.60: transporting the Euclidean subdifferential of the `ℓ∞`
+/-- Bridge/view form of Proposition 10.60: transporting the Euclidean extendedRealSubdifferential of the `ℓ∞`
 norm from the coordinate model `E₂` to the primal `ℓ₁` space identifies it with the
 norming-functional set
 `Λ[LinearMap.toContinuousLinearMap (lpPairingDual 1 (ofLp a))]`. -/
@@ -306,7 +306,7 @@ theorem primalCounterparts_lpPairingDual_one_eq_image_euclideanSubdifferentialAt
 
 -- Proof sketch: combine the bridge theorem
 -- `primalCounterparts_lpPairingDual_one_eq_image_euclideanSubdifferentialAt_linf` with
--- Chapter 3's nonzero `ℓ∞`-subdifferential formula
+-- Chapter 3's nonzero `ℓ∞`-extendedRealSubdifferential formula
 -- `euclidean_subdifferentialAt_linf_eq_piecewise`. Under `a ≠ 0`, the `if`-expression in that
 -- theorem reduces to the upstream owner `activeCoordinateFace (fun i ↦ |a i|)`, and
 -- transporting that branch along `coordToL1` yields the signed active-coordinate convex
@@ -322,7 +322,7 @@ theorem primalCounterparts_lpPairingDual_one_eq_signed_activeCoordinateFace
       (fun coeff : ι → ℝ ↦ toLp 1 (fun i ↦ coeff i * Real.sign (a i))) ''
         activeCoordinateFace (fun i ↦ |a i|) := by
   -- Route correction: rather than unfolding `Λ[·]` again, reuse the proved bridge to the
-  -- Euclidean `ℓ∞` subdifferential and then specialize the Chapter 3 nonzero formula.
+  -- Euclidean `ℓ∞` extendedRealSubdifferential and then specialize the Chapter 3 nonzero formula.
   rw [primalCounterparts_lpPairingDual_one_eq_image_euclideanSubdifferentialAt_linf]
   have ha' : toLp 2 (ofLp a) ≠ (0 : E₂) := by
     simpa using ha

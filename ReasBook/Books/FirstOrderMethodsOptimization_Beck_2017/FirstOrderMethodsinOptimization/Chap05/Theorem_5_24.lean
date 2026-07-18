@@ -1,4 +1,5 @@
 import Mathlib
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap02.Definition_2_5
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap02.Definition_2_6
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap03.Definition_3_2
 
@@ -13,16 +14,16 @@ variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
 /- Theorem 5.24 is `source-facing` for the first-order characterization of strong convexity. The
 extended-real convex-analysis owners it uses are already upstream: `effective_domain` and
 `IsProperExtendedRealFunction` from Definition 2.5, `is_convex_function` from Definition 2.6, and
-`subdifferential` from Definition 3.2. This file keeps only the new strong-convexity predicates
+`extendedRealSubdifferential` from Definition 3.2. This file keeps only the new strong-convexity predicates
 and equivalence theorem built on top of those owners. -/
 
-recall subdifferential
+recall extendedRealSubdifferential
 
 /-- The first-order lower quadratic support inequality for an extended-real-valued convex
 function. This is the source clause (ii), written with dual pairings `g (y - x)` instead of the
 Euclidean inner-product notation. -/
 def subgradient_quadratic_lower_bound (f : E → EReal) (σ : ℝ) : Prop :=
-  ∀ x : E, ∀ g ∈ subdifferential f x, ∀ y ∈ effective_domain f,
+  ∀ x : E, ∀ g ∈ extendedRealSubdifferential f x, ∀ y ∈ effective_domain f,
     f y ≥ f x + ((g (y - x) + (σ / 2) * ‖y - x‖ ^ (2 : ℕ) : ℝ) : EReal)
 
 -- Proof sketch: unfold `subgradient_quadratic_lower_bound`; this is definitional equality.
@@ -31,13 +32,13 @@ subgradient lower bound. -/
 @[simp] theorem subgradient_quadratic_lower_bound_iff
     {f : E → EReal} {σ : ℝ} :
     subgradient_quadratic_lower_bound f σ ↔
-      ∀ x : E, ∀ g ∈ subdifferential f x, ∀ y ∈ effective_domain f,
+      ∀ x : E, ∀ g ∈ extendedRealSubdifferential f x, ∀ y ∈ effective_domain f,
         f y ≥ f x + ((g (y - x) + (σ / 2) * ‖y - x‖ ^ (2 : ℕ) : ℝ) : EReal) := sorry
 
-/-- The strong monotonicity inequality for the subdifferential of an extended-real-valued convex
+/-- The strong monotonicity inequality for the extendedRealSubdifferential of an extended-real-valued convex
 function. This is the source clause (iii), written in dual-pairing form. -/
 def subdifferential_strong_monotonicity (f : E → EReal) (σ : ℝ) : Prop :=
-  ∀ x y : E, ∀ gₓ ∈ subdifferential f x, ∀ gᵧ ∈ subdifferential f y,
+  ∀ x y : E, ∀ gₓ ∈ extendedRealSubdifferential f x, ∀ gᵧ ∈ extendedRealSubdifferential f y,
     σ * ‖x - y‖ ^ (2 : ℕ) ≤ (gₓ - gᵧ) (x - y)
 
 -- Proof sketch: unfold `subdifferential_strong_monotonicity`; this is definitional equality.
@@ -46,7 +47,7 @@ monotonicity inequality for pairs of subgradients. -/
 @[simp] theorem subdifferential_strong_monotonicity_iff
     {f : E → EReal} {σ : ℝ} :
     subdifferential_strong_monotonicity f σ ↔
-      ∀ x y : E, ∀ gₓ ∈ subdifferential f x, ∀ gᵧ ∈ subdifferential f y,
+      ∀ x y : E, ∀ gₓ ∈ extendedRealSubdifferential f x, ∀ gᵧ ∈ extendedRealSubdifferential f y,
         σ * ‖x - y‖ ^ (2 : ℕ) ≤ (gₓ - gᵧ) (x - y) := sorry
 
 -- Proof sketch: use the canonical owner-level strong-convexity statement
@@ -60,7 +61,7 @@ monotonicity inequality for pairs of subgradients. -/
 /-- Theorem 5.24: for a proper closed convex extended-real-valued function and a fixed modulus
 `σ > 0`, the following are equivalent: (i) the real-valued restriction of `f` to its effective
 domain is `σ`-strongly convex, (ii) every subgradient gives the quadratic lower support model, and
-(iii) the subdifferential is `σ`-strongly monotone. This is the canonical owner-level rendering of
+(iii) the extendedRealSubdifferential is `σ`-strongly monotone. This is the canonical owner-level rendering of
 the textbook first-order characterization of strong convexity. -/
 theorem strongConvexOn_tfae_subgradient_quadratic_lower_bound_strong_monotonicity
     (f : E → EReal) (σ : ℝ) (hσ : 0 < σ) (hf_proper : IsProperExtendedRealFunction f)

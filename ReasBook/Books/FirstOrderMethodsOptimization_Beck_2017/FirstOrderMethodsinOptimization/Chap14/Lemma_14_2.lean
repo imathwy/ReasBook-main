@@ -26,7 +26,7 @@ variable {f : ((i : Fin p) → Ei i) → EReal} {g : (i : Fin p) → Ei i → ER
 
 /-- The Chapter 3 stationary-point owner uses the product-space module induced by the chosen
 inner product on `Π i, E_i`. -/
-local instance : Module ℝ ((i : Fin p) → Ei i) :=
+local instance instModuleRealForallLemma14_2 : Module ℝ ((i : Fin p) → Ei i) :=
   (inferInstance : InnerProductSpace ℝ ((i : Fin p) → Ei i)).toNormedSpace.toModule
 
 local notation "F" => composite_model_objective f (separableSum g)

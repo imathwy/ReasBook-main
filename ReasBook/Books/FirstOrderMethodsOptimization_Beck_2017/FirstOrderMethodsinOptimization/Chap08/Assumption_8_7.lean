@@ -37,7 +37,7 @@ class IsConstrainedConvexProblem
 
 /-- A constrained convex problem packages both existence of minimizers and the
 greatest-lower-bound characterization of the optimal value. -/
-instance instFactOptimalSetNonemptyAndOptimalValueIsGLB
+instance instFactConstrainedOptimalSetNonemptyAndOptimalValueIsGLB
     {f : E → EReal} {C XStar : Set E} {fOpt : ℝ}
     [h : IsConstrainedConvexProblem f C XStar fOpt] :
     Fact (XStar.Nonempty ∧ IsGLB (f '' C) (fOpt : EReal)) where

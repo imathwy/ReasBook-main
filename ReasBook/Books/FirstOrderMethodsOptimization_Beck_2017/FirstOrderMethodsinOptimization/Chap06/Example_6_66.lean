@@ -15,6 +15,7 @@ open AffineMap
 section
 
 variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [ProperSpace E]
+  [Nontrivial E]
 
 /- Example 6.66 is `source-facing`: the textbook computes the proximal operator of the scaled
 Huber function `λ H[μ]`. Domain sampling in the chapter identifies the correct owner chain:

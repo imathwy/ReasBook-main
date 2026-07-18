@@ -528,7 +528,7 @@ lemma block_sign_conjugate_symmetric_dilation_eq_neg
 
 /-- Helper for Theorem 7.4: orthogonal conjugation by a real matrix with `UᵀU = I` preserves the
 characteristic polynomial. -/
-lemma orthogonal_conjugate_charpoly {k : ℕ}
+lemma orthogonal_conjugate_charpoly_theorem74 {k : ℕ}
     (U A : Matrix (Fin k) (Fin k) ℝ) (hU : Uᵀ * U = 1) :
     Matrix.charpoly (U * A * Uᵀ) = Matrix.charpoly A := by
   -- Move one orthogonal factor around the characteristic polynomial and cancel it.
@@ -571,7 +571,7 @@ lemma symmetric_eigenvalue_function_eq_of_orthogonal_conjugate {k : ℕ}
   -- Reduce to the conjugacy-invariance of the characteristic polynomial.
   apply symmetric_eigenvalue_function_eq_of_charpoly_eq
   rw [hB]
-  exact orthogonal_conjugate_charpoly U
+  exact orthogonal_conjugate_charpoly_theorem74 U
     (((A : symmetricMatrices k) : Matrix (Fin k) (Fin k) ℝ)) hU
 
 /-- Helper for Theorem 7.4: reverse a finite vector and flip its sign. -/
@@ -1355,7 +1355,7 @@ lemma transpose_mul_self_charpoly_eq_gram_square_profile_charpoly
             rw [hQ]
     _ = Matrix.charpoly (Matrix.diagonal (symmetric_eigenvalue_function A)) := by
           exact
-            orthogonal_conjugate_charpoly
+            orthogonal_conjugate_charpoly_theorem74
               (U := (Q : Matrix (Fin n) (Fin n) ℝ))
               (A := Matrix.diagonal (symmetric_eigenvalue_function A)) hQQ
     _ = Matrix.charpoly (Matrix.diagonal (gram_square_profile X)) := by
@@ -1810,7 +1810,7 @@ lemma symmetric_dilation_square_charpoly_eq_squared_ordered_diagonal
                           hdiag_sq
     _ = Matrix.charpoly (Matrix.diagonal z) := by
           exact
-            orthogonal_conjugate_charpoly
+            orthogonal_conjugate_charpoly_theorem74
               (U := (Q : Matrix (Fin (m + n)) (Fin (m + n)) ℝ))
               (A := Matrix.diagonal z) hQQ
 
@@ -2407,7 +2407,7 @@ lemma symmetric_dilation_square_charpoly_eq_head_square_profile
                 rw [hQ]
         _ = Matrix.charpoly (Matrix.diagonal (symmetric_eigenvalue_function A)) := by
               exact
-                orthogonal_conjugate_charpoly
+                orthogonal_conjugate_charpoly_theorem74
                   (U := (Q : Matrix (Fin (m + n)) (Fin (m + n)) ℝ))
                   (A := Matrix.diagonal (symmetric_eigenvalue_function A)) hQQ
         _ = Matrix.charpoly (Matrix.diagonal (symmetric_dilation_square_profile X)) := by

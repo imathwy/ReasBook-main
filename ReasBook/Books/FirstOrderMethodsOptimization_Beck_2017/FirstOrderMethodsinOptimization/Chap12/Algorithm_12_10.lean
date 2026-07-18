@@ -75,7 +75,7 @@ variable (n : ℕ) (d : EuclideanSpace ℝ (Fin n)) (lam : PosReal)
 variable (y0 : EuclideanSpace ℝ (Fin (n - 1)))
 
 /-- Algorithm 12.10: for the one-dimensional total variation denoising problem
-`min_x {(1 / 2) ‖x - d‖₂² + λ ‖D x‖₁}`, with signal length `n`, positive regularization
+`min_x {(1 / 2) ‖x - d‖₂² + λ l1n[D x]}`, with signal length `n`, positive regularization
 parameter `λ` encoded by `lam : PosReal`, and an initial dual point `y⁰ ∈ ℝ^(n-1)`, this
 recursive sequence generates the DPG dual iterates by
 `x^k = Dᵀ y^k + d` and

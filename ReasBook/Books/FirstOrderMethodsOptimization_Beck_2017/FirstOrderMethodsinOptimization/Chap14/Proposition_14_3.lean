@@ -13,19 +13,19 @@ open scoped Topology
 variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /- Domain sampling for Proposition 14.3:
-- `subdifferential` is the Chapter 3 `core/canonical` owner for the subgradient set `∂ h(x)`;
+- `extendedRealSubdifferential` is the Chapter 3 `core/canonical` owner for the subgradient set `∂ h(x)`;
 - `strongDualSubdifferential` is the topologized `bridge/view` needed only for the convergence of
   the sequence `a : ℕ → StrongDual ℝ E`;
 - `is_subgradient_at_iff_forall_mem_effective_domain` is the primitive pointwise inequality API.
 
-This proposition is `source-facing`: it says the graph of the subdifferential is sequentially
+This proposition is `source-facing`: it says the graph of the extendedRealSubdifferential is sequentially
 closed under strong-dual/space convergence. The public theorem surface should therefore use the
 strong-dual bridge notation `∂ₛ h(x)` rather than the long raw owner name
 `strongDualSubdifferential`, while the algebraic owner remains `∂ h(x)`. The textbook properness
 and convexity hypotheses are redundant here: once `aₖ ∈ ∂ₛ h(bₖ)` is given,
 lower semicontinuity is the only active assumption for passing to the limit. -/
 
-recall subdifferential
+recall extendedRealSubdifferential
 recall strongDualSubdifferential
 
 -- Proof sketch: fix any `z : E`. From `a k ∈ ∂ₛ h(b k)` we have
@@ -163,9 +163,9 @@ lemma limit_basepoint_mem_effective_domain
   have hb0_top : h (b 0) = ⊤ := le_antisymm le_top hlimit
   exact (mem_effective_domain.mp hb0).ne hb0_top
 
-/-- Proposition 14.3: if each `a k` belongs to the subdifferential of a lower semicontinuous
+/-- Proposition 14.3: if each `a k` belongs to the extendedRealSubdifferential of a lower semicontinuous
 extended-real-valued function `h` at `b k`, and `a k → aBar`, `b k → bBar`, then `aBar` belongs
-to the subdifferential of `h` at `bBar`. The statement uses the strong-dual bridge notation
+to the extendedRealSubdifferential of `h` at `bBar`. The statement uses the strong-dual bridge notation
 `∂ₛ h(x)`, so the theorem surface stays source-readable without exposing the long raw bridge name
 `strongDualSubdifferential`. The textbook properness and convexity hypotheses are redundant for
 this closed-graph property, so lower semicontinuity is the only public assumption. -/

@@ -56,7 +56,7 @@ def finite_sum_projected_subgradient_method {m : ℕ} (C : Set E)
             finite_sum_selected_subgradient g k xk)
 
 /-- A component-subgradient selection rule is admissible for the finite-sum projected subgradient
-method when, at each iterate, every chosen component lies in the Euclidean subdifferential of the
+method when, at each iterate, every chosen component lies in the Euclidean extendedRealSubdifferential of the
 corresponding summand and the aggregate chosen subgradient is nonzero. -/
 def finite_sum_projected_subgradient_method_is_admissible {m : ℕ}
     (f : Fin m → E → ℝ) (C : Set E)

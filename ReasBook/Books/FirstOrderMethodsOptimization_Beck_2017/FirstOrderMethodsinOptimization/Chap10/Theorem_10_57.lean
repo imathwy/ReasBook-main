@@ -78,7 +78,7 @@ variable
   (x0 : E)
 
 local notation "μ" => s_fista_complexity_smoothing_parameter ε α β Lf
-local notation "Hsf" => H[f.toEReal, h.toEReal, g]
+local notation "Hsf" => H[f.toExtendedReal, h.toExtendedReal, g]
 set_option quotPrecheck false in
 local notation "xμ" =>
   letI : IsProperExtendedRealFunction g := hproblem.g_proper

@@ -408,7 +408,7 @@ lemma fenchel_neg_conjugate_le_primal_plus_pairing
       (((-inner ℝ yBar z : ℝ) : EReal)) ≤ g z + (g∗) (-yBar) := by
     simpa [conjugate_function_primal_apply, InnerProductSpace.toDualMap_apply_apply,
       inner_neg_left, add_comm] using
-      (fenchel_inequality g z (InnerProductSpace.toDualMap ℝ V (-yBar)) h_problem.g_proper)
+      (fenchelYoung_inequality g z (InnerProductSpace.toDualMap ℝ V (-yBar)) h_problem.g_proper)
   -- Move the conjugate term left, then move the finite pairing term back to the right.
   have hsub :
       -((g∗) (-yBar)) - (((inner ℝ yBar z : ℝ) : EReal)) ≤ g z := by

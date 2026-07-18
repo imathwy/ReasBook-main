@@ -22,7 +22,7 @@ half squared distance to a nonempty closed convex set. Domain sampling identifie
 
 - Proposition 3.12's `metricProjection`,
 - the projection-ray identity proved below from the same variational inequality,
-- Theorem 6.24's set-valued projection owner `P[C]`, and
+- Theorem 6.24's set-valued projection owner `Proj[C]`, and
 - mathlib's canonical affine owner `AffineMap.lineMap`.
 
 This separates primitive data from derived API correctly. The primitive data are only the set
@@ -89,7 +89,7 @@ lemma metricProjection_eq_along_projection_ray
 /-- Helper for Example 6.65: the canonical metric projection belongs to the set-valued projection
 mapping onto `C`. -/
 lemma metricProjection_mem_projection_mapping (x : E) :
-    (P x : E) ∈ P[C] x := by
+    (P x : E) ∈ Proj[C] x := by
   rw [mem_projection_mapping_iff, isMinOn_iff]
   constructor
   · exact (P x).2
@@ -110,11 +110,11 @@ projection must coincide with the metric projection. -/
 lemma metricProjection_eq_of_norm_eq_norm_sub_metricProjection
     (x c : E) (hc : c ∈ C) (hcmin : ‖x - c‖ = ‖x - P x‖) :
     c = (P x : E) := by
-  have hp_proj : (P x : E) ∈ P[C] x :=
+  have hp_proj : (P x : E) ∈ Proj[C] x :=
     metricProjection_mem_projection_mapping
       (C := C) (hC_nonempty := hC_nonempty) (hC_complete := hC_complete)
       (hC_convex := hC_convex) x
-  have hc_proj : c ∈ P[C] x := by
+  have hc_proj : c ∈ Proj[C] x := by
     rw [mem_projection_mapping_iff, isMinOn_iff]
     constructor
     · exact hc

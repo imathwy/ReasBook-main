@@ -12,9 +12,9 @@ local notation "E" => EuclideanSpace ℝ ι
 
 /- Proposition 3.24 is a `bridge/view` item for the Chapter 3 owner `subdifferentialAt`, and its
 public vector-side owner is `euclideanSubdifferentialAt`. Proposition 3.23 already identifies the
-coordinatewise-max Euclidean subdifferential with `activeCoordinateFace`; the only additional
+coordinatewise-max Euclidean extendedRealSubdifferential with `activeCoordinateFace`; the only additional
 source-facing content here is the signed active-coordinate description of the `ℓ∞`
-subdifferential. The zero case is stated directly using the canonical `WithLp 1` unit ball on
+extendedRealSubdifferential. The zero case is stated directly using the canonical `WithLp 1` unit ball on
 `ℝ^n`, so no extra wrapper is introduced. -/
 
 -- Proof sketch: on `Fin n → ℝ`, the ambient norm is the `ℓ∞` norm, so the objective is
@@ -23,7 +23,7 @@ subdifferential. The zero case is stated directly using the canonical `WithLp 1`
 -- of the signed coordinate vectors is exactly the canonical `WithLp 1` unit ball
 -- `{z | ‖toLp 1 z‖ ≤ 1}`.
 /-- Proposition 3.24: for `f(x) = ‖x‖∞ = ‖x‖` on `ℝ^n = Fin n → ℝ`, the Euclidean/vector-side
-subdifferential is the `ℓ₁` unit ball `{z | ‖toLp 1 z‖ ≤ 1}` at the origin, and away from the
+extendedRealSubdifferential is the `ℓ₁` unit ball `{z | ‖toLp 1 z‖ ≤ 1}` at the origin, and away from the
 origin it is the set of convex
 combinations `∑_{i ∈ I(x)} λ_i sign (x_i) e_i` supported on the active coordinates
 `I(x) = {i | |x i| = ‖x‖∞}`. -/

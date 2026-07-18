@@ -148,8 +148,8 @@ lemma fenchel_young_eq_of_scaled_prox_singleton
     exact (EReal.coe_toReal (mem_effective_domain.mp hu_eff).ne (hf_proper.ne_bot u)).symm
   have hmem :
       ((toDualMap ℝ E ((μ : ℝ)⁻¹ • (x - u)) : StrongDual ℝ E) : Module.Dual ℝ E) ∈
-        subdifferential f u := by
-    -- Descale the supporting inequality directly on the subdifferential owner predicate.
+        extendedRealSubdifferential f u := by
+    -- Descale the supporting inequality directly on the extendedRealSubdifferential owner predicate.
     rw [mem_subdifferential, is_subgradient_at_iff_forall_mem_effective_domain]
     refine ⟨hu_eff, ?_⟩
     intro y hy

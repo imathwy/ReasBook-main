@@ -13,7 +13,7 @@ section
 variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [CompleteSpace E]
 
 /- Text 9.1 is `source-facing`, but its owner object is already the Chapter 9 declaration
-`bregmanDistance` from Definition 9.2. This file is therefore a `bridge/view` specialization to
+`extendedRealBregmanDistance` from Definition 9.2. This file is therefore a `bridge/view` specialization to
 the textbook real-valued setting `ω : E → ℝ`, with primitive data only the function, the set, and
 the strict-convexity/differentiability hypotheses. -/
 
@@ -21,7 +21,7 @@ the strict-convexity/differentiability hypotheses. -/
 formula `ω(x) - ω(y) - ⟪∇ω(y), x - y⟫`. -/
 @[simp] theorem bregmanDistance_apply_real (ω : E → ℝ) (x y : E) :
     B[ω] x y = ω x - ω y - inner ℝ (∇ ω y) (x - y) := by
-  simp [bregmanDistance, Function.toEReal]
+  simp [extendedRealBregmanDistance, Function.toExtendedReal]
 
 -- Proof sketch: apply the first-order lower support inequality for a differentiable convex
 -- function at `y` to obtain `0 ≤ B[ω] x y`. If `x ≠ y`, strict convexity upgrades that support

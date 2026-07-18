@@ -16,16 +16,17 @@ variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDi
 variable (C : Set E) (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C)
   (hC_convex : Convex ℝ C)
 
-local notation "P" => fun y ↦ (metricProjection C hC_nonempty hC_closed hC_convex y : E)
+local notation "P" => fun y ↦
+  (metricProjection C hC_nonempty hC_closed.isComplete hC_convex y : E)
 
 -- Proof sketch: if `x ∉ C`, use Proposition 3.12 to identify the gradient of
--- `y ↦ (infDist y C)^2 / 2` with `y - P_C(y)` and combine it with the singleton-subdifferential
+-- `y ↦ (infDist y C)^2 / 2` with `y - P_C(y)` and combine it with the singleton-extendedRealSubdifferential
 -- criterion for differentiable convex functions to obtain the unique normalized subgradient vector.
 -- If `x ∈ C`, rewrite the subgradient inequality for `y ↦ infDist y C` in Euclidean coordinates:
 -- one inclusion follows by testing the inequality on points of `C` and on `x + v`, and the reverse
 -- inclusion follows from the projection formula `infDist y C = ‖y - P_C(y)‖` together with the
 -- normal-cone inequality and Cauchy-Schwarz.
-/- Proposition 3.22 is a `bridge/view` theorem in the chapter subdifferential API: the owner
+/- Proposition 3.22 is a `bridge/view` theorem in the chapter extendedRealSubdifferential API: the owner
 notion remains `subdifferentialAt`, and the left-hand side is stated through its canonical
 Euclidean bridge `euclideanSubdifferentialAt`. The right-hand side still uses the owner
 `normal_cone`, since the textbook formula is intrinsically the dual normal cone intersected with

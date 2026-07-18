@@ -1,5 +1,6 @@
 import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap02.Theorem_2_6
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap09.Lemma_9_3
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap09.Lemma_9_4
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap09.Theorem_9_12
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap10.Algorithm_10_67
@@ -112,13 +113,13 @@ theorem non_euclidean_proximal_gradient_objective_values_antitone
     -- Replace the quadratic term from the accepted upper model by the stronger Bregman term.
     calc
       F (x (k + 1)) = f (x (k + 1)) + g (x (k + 1)) := by
-        simp [F, composite_model_objective]
+        simp [composite_model_objective]
       _ ≤
           (f (x k) +
             ((inner ℝ (∇ (fun y ↦ (f y).toReal) (x k)) (x (k + 1) - x k) +
               ((L k : ℝ) / 2) * ‖x (k + 1) - x k‖ ^ (2 : ℕ) : ℝ) : EReal)) +
             g (x (k + 1)) := by
-          exact add_le_add_right hupper (g (x (k + 1)))
+          exact add_le_add_left hupper (g (x (k + 1)))
       _ ≤
           (f (x k) +
             ((((inner ℝ (∇ (fun y ↦ (f y).toReal) (x k)) (x (k + 1) - x k) : ℝ) : EReal)) +
@@ -130,21 +131,21 @@ theorem non_euclidean_proximal_gradient_objective_values_antitone
                 ((((inner ℝ (∇ (fun y ↦ (f y).toReal) (x k)) (x (k + 1) - x k) : ℝ) : EReal)) +
                   ((((L k : ℝ) * B[ω] (x (k + 1)) (x k) : ℝ) : EReal))) := by
             rw [EReal.coe_add]
-            exact add_le_add_left hquad_le_bregmanE
+            exact add_le_add_right hquad_le_bregmanE
               (((inner ℝ (∇ (fun y ↦ (f y).toReal) (x k)) (x (k + 1) - x k) : ℝ) : EReal))
-          exact add_le_add_right hsplit (g (x (k + 1)))
+          exact add_le_add_left (add_le_add_right hsplit (f (x k))) (g (x (k + 1)))
       _ = non_euclidean_textbook_model f g ω (x k) (L k) (x (k + 1)) := by
-        simp [non_euclidean_textbook_model, F, composite_model_objective, add_assoc, add_left_comm,
+        simp [non_euclidean_textbook_model, composite_model_objective, add_assoc, add_left_comm,
           add_comm]
   have hmodel_self :
       non_euclidean_textbook_model f g ω (x k) (L k) (x k) = F (x k) := by
     -- Evaluating the local model at the base point removes both the linear and Bregman terms.
     have hbregman_self : B[ω] (x k) (x k) = 0 :=
       bregmanDistance_eq_zero_of_eq ω rfl
-    simp [non_euclidean_textbook_model, F, composite_model_objective, hbregman_self]
+    simp [non_euclidean_textbook_model, composite_model_objective, hbregman_self]
   -- Minimize the textbook local model at `x^(k+1)` and compare it with the comparator `x^k`.
   exact le_trans hmodel_upper <| by
-    simpa [hmodel_self] using hmodel_min (x k) (by simp)
+    simpa [hmodel_self] using hmodel_min (show x k ∈ Set.univ by simp)
 
 /-- Helper for Theorem 10.72: the pointwise sum of two convex extended-real-valued functions is
 again convex. -/
@@ -152,35 +153,39 @@ lemma is_convex_function_add
     {V : Type*} [AddCommMonoid V] [Module ℝ V]
     (f₁ f₂ : V → EReal) (hf₁ : is_convex_function f₁) (hf₂ : is_convex_function f₂) :
     is_convex_function (f₁ + f₂) := by
-  let F : Fin 2 → V → EReal := fun i ↦ if i = 0 then f₁ else f₂
-  have hF : ∀ i : Fin 2, is_convex_function (F i) := by
+  let summand : Fin 2 → V → EReal := fun i ↦ if i = 0 then f₁ else f₂
+  have hF : ∀ i : Fin 2, is_convex_function (summand i) := by
     intro i
     fin_cases i
     · -- The first summand is `f₁`.
-      simpa [F] using hf₁
+      simpa [summand] using hf₁
     · -- The second summand is `f₂`.
-      simpa [F] using hf₂
+      simpa [summand] using hf₂
   -- Express the sum as the two-term nonnegative weighted sum from Theorem 2.6.
-  simpa [F, Fin.sum_univ_two, Pi.add_apply] using
+  simpa [summand, Fin.sum_univ_two, Pi.add_apply] using
     (is_convex_function_finset_nonneg_weighted_sum (m := 2) hF fun _ ↦ 1)
+
+include hproblem
 
 /-- Helper for Theorem 10.72: the Chapter 9 penalty `ψ_n` used in the source proof of clause (b).
 It is the scaled linearization of `f` at `x^n` plus the scaled nonsmooth term `(1 / L_n) g`. -/
 abbrev non_euclidean_linearized_scaled_penalty
     (n : ℕ) : E → EReal :=
   fun u ↦
-    (((mirror_c_problem_functional ω (x n)
-        (fderiv ℝ (fun y ↦ (f y).toReal) (x n))
-        (((1 / L n : PosReal) : ℝ)) u : ℝ) : EReal) +
-      ((((1 / L n : PosReal) : EReal) • g) u))
+    (((((1 / L n : PosReal) : ℝ) *
+        fderiv ℝ (fun y ↦ (f y).toReal) (x n) u : ℝ) : EReal) +
+      (((1 / L n : PosReal) : EReal) • g) u)
 
 /-- Helper for Theorem 10.72: adding the finite linearization term to the scaled penalty does not
 change its effective domain, so `ψ_n` has the same effective domain as `g`. -/
 lemma non_euclidean_linearized_scaled_penalty_effective_domain_eq
     (n : ℕ) :
     effective_domain (non_euclidean_linearized_scaled_penalty
-      (f := f) (g := g) (ω := ω) (x := x) (L := L) n) =
+      (f := f) (g := g) (x := x) (L := L) n) =
       effective_domain g := by
+  letI : IsProperExtendedRealFunction g := hproblem.g_proper
+  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
+  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
   let ψpen : E → EReal := (((1 / L n : PosReal) : EReal) • g)
   have hscaled_proper :
       IsProperExtendedRealFunction ψpen :=
@@ -190,16 +195,17 @@ lemma non_euclidean_linearized_scaled_penalty_effective_domain_eq
   · intro hu
     have hu_ne_top :
         non_euclidean_linearized_scaled_penalty
-          (f := f) (g := g) (ω := ω) (x := x) (L := L) n u ≠ ⊤ :=
+          (f := f) (g := g) (x := x) (L := L) n u ≠ ⊤ :=
       (mem_effective_domain.mp hu).ne
     have hpen_ne_bot : ψpen u ≠ ⊥ := hscaled_proper.ne_bot u
     have hpen_ne_top : ψpen u ≠ ⊤ := by
       intro htop
       have hsum_top :
           non_euclidean_linearized_scaled_penalty
-              (f := f) (g := g) (ω := ω) (x := x) (L := L) n u =
+              (f := f) (g := g) (x := x) (L := L) n u =
             ⊤ := by
-        simp [non_euclidean_linearized_scaled_penalty, ψpen, htop, hpen_ne_bot]
+        change (((_ : ℝ) : EReal) + ψpen u) = ⊤
+        rw [htop, EReal.add_top_of_ne_bot (EReal.coe_ne_bot _)]
       exact hu_ne_top hsum_top
     have hu_scaled : u ∈ effective_domain ψpen := mem_effective_domain.mpr <| by
       exact lt_top_iff_ne_top.mpr hpen_ne_top
@@ -218,31 +224,32 @@ to specialize Theorem 9.12 in the source proof of clause (b). -/
 lemma non_euclidean_linearized_scaled_penalty_proper_convex
     (n : ℕ) :
     IsProperExtendedRealFunction (non_euclidean_linearized_scaled_penalty
-      (f := f) (g := g) (ω := ω) (x := x) (L := L) n) ∧
+      (f := f) (g := g) (x := x) (L := L) n) ∧
       is_convex_function (non_euclidean_linearized_scaled_penalty
-        (f := f) (g := g) (ω := ω) (x := x) (L := L) n) := by
+        (f := f) (g := g) (x := x) (L := L) n) := by
+  letI : IsProperExtendedRealFunction g := hproblem.g_proper
+  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
+  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
   let ψlin : E → EReal := fun u ↦
-    (((mirror_c_problem_functional ω (x n)
-        (fderiv ℝ (fun y ↦ (f y).toReal) (x n))
-        (((1 / L n : PosReal) : ℝ)) u : ℝ) : EReal)
+    (((1 / L n : PosReal) : ℝ) *
+      fderiv ℝ (fun y ↦ (f y).toReal) (x n) u : ℝ)
   let ψpen : E → EReal := (((1 / L n : PosReal) : EReal) • g)
   have hscaled := scaled_backtracking_penalty_proper_closed_convex (g := g) (Lk := L n)
   have hlin_convex : is_convex_function ψlin := by
     -- A continuous linear functional is convex on the whole space, and its `EReal` lift preserves
     -- that convexity.
-    refine Function.toEReal_isConvexFunction ?_
+    refine Function.toExtendedReal_isConvexFunction ?_
     simpa [ψlin] using
-      (((mirror_c_problem_functional ω (x n)
-          (fderiv ℝ (fun y ↦ (f y).toReal) (x n))
-          (((1 / L n : PosReal) : ℝ))).toLinearMap).convexOn (s := Set.univ) convex_univ)
+      (((((1 / L n : PosReal) : ℝ) •
+          fderiv ℝ (fun y ↦ (f y).toReal) (x n)).convexOn (s := Set.univ)) convex_univ)
   have hproper :
       IsProperExtendedRealFunction (non_euclidean_linearized_scaled_penalty
-        (f := f) (g := g) (ω := ω) (x := x) (L := L) n) := by
+        (f := f) (g := g) (x := x) (L := L) n) := by
     refine ⟨?_, ?_⟩
     · intro u
       -- The scaled penalty never takes `⊥`, and adding a finite real term preserves that.
-      simpa [non_euclidean_linearized_scaled_penalty, ψlin, ψpen] using
-        EReal.add_ne_bot (EReal.coe_ne_bot _) (hscaled.1.ne_bot u)
+      rw [EReal.add_ne_bot_iff]
+      exact ⟨EReal.coe_ne_bot _, hscaled.1.ne_bot u⟩
     · rcases hscaled.1.effective_domain_nonempty with ⟨u, hu⟩
       -- Any finite point of the scaled penalty remains finite after adding the linear term.
       refine ⟨u, ?_⟩
@@ -252,7 +259,7 @@ lemma non_euclidean_linearized_scaled_penalty_proper_convex
             (mem_effective_domain.mp hu).ne
   have hconvex :
       is_convex_function (non_euclidean_linearized_scaled_penalty
-        (f := f) (g := g) (ω := ω) (x := x) (L := L) n) := by
+        (f := f) (g := g) (x := x) (L := L) n) := by
     -- Convexity is preserved when we add the affine linearization to the convex scaled penalty.
     simpa [non_euclidean_linearized_scaled_penalty, ψlin, ψpen, Pi.add_apply] using
       is_convex_function_add ψlin ψpen hlin_convex hscaled.2.2
@@ -275,6 +282,9 @@ lemma non_euclidean_scaled_linearized_objective_effective_domain_eq
     effective_domain (non_euclidean_scaled_linearized_objective
       (f := f) (g := g) (x := x) (L := L) n) =
       effective_domain g := by
+  letI : IsProperExtendedRealFunction g := hproblem.g_proper
+  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
+  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
   let ψpen : E → EReal := fun u ↦ (((L n : ℝ)⁻¹ : EReal) * g u)
   have hscaled_proper :
       IsProperExtendedRealFunction ψpen := by
@@ -294,16 +304,21 @@ lemma non_euclidean_scaled_linearized_objective_effective_domain_eq
           non_euclidean_scaled_linearized_objective
               (f := f) (g := g) (x := x) (L := L) n u =
             ⊤ := by
-        simp [non_euclidean_scaled_linearized_objective, ψpen, htop]
+        change (((_ : ℝ) : EReal) + ψpen u) = ⊤
+        rw [htop, EReal.add_top_of_ne_bot (EReal.coe_ne_bot _)]
       exact hu_ne_top hsum_top
     have hu_scaled : u ∈ effective_domain ψpen := mem_effective_domain.mpr <| by
       exact lt_top_iff_ne_top.mpr hpen_ne_top
-    simpa [ψpen, Pi.smul_apply, smul_eq_mul] using
-      (mem_effective_domain_scaled_function_iff g (1 / L n) inferInstance u).mp hu_scaled
+    have hu_scaled' :
+        u ∈ effective_domain ((((1 / L n : PosReal) : EReal) • g)) := by
+      simpa [ψpen, Pi.smul_apply, smul_eq_mul] using hu_scaled
+    exact (mem_effective_domain_scaled_function_iff g (1 / L n) inferInstance u).mp hu_scaled'
   · intro hu
     have hu_scaled :
         u ∈ effective_domain ψpen := by
-      exact (mem_effective_domain_scaled_function_iff g (1 / L n) inferInstance u).mpr hu
+      have hu_scaled' :=
+        (mem_effective_domain_scaled_function_iff g (1 / L n) inferInstance u).mpr hu
+      simpa [ψpen, Pi.smul_apply, smul_eq_mul] using hu_scaled'
     -- A finite linear perturbation preserves finiteness of the scaled penalty.
     exact mem_effective_domain.mpr <| by
       simpa [non_euclidean_scaled_linearized_objective, ψpen] using
@@ -318,8 +333,11 @@ lemma non_euclidean_scaled_linearized_objective_proper_convex
       (f := f) (g := g) (x := x) (L := L) n) ∧
       is_convex_function (non_euclidean_scaled_linearized_objective
         (f := f) (g := g) (x := x) (L := L) n) := by
+  letI : IsProperExtendedRealFunction g := hproblem.g_proper
+  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
+  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
   let ψlin : E → EReal := fun u ↦
-    ((((L n : ℝ)⁻¹ * fderiv ℝ (fun y ↦ (f y).toReal) (x n) u : ℝ) : EReal))
+    (((L n : ℝ)⁻¹ * fderiv ℝ (fun y ↦ (f y).toReal) (x n) u : ℝ) : EReal)
   let ψpen : E → EReal := fun u ↦ (((L n : ℝ)⁻¹ : EReal) * g u)
   have hscaled :
       IsProperExtendedRealFunction ψpen ∧ LowerSemicontinuous ψpen ∧
@@ -328,7 +346,7 @@ lemma non_euclidean_scaled_linearized_objective_proper_convex
       scaled_backtracking_penalty_proper_closed_convex (g := g) (Lk := L n)
   have hlin_convex : is_convex_function ψlin := by
     -- A continuous linear functional stays convex after the `EReal` lift.
-    refine Function.toEReal_isConvexFunction ?_
+    refine Function.toExtendedReal_isConvexFunction ?_
     simpa [ψlin] using
       (((((L n : ℝ)⁻¹) • fderiv ℝ (fun y ↦ (f y).toReal) (x n)).convexOn (s := Set.univ))
         convex_univ)
@@ -338,8 +356,8 @@ lemma non_euclidean_scaled_linearized_objective_proper_convex
     refine ⟨?_, ?_⟩
     · intro u
       -- The scaled penalty never takes `⊥`, and the linear term is finite.
-      simpa [non_euclidean_scaled_linearized_objective, ψlin, ψpen] using
-        EReal.add_ne_bot (EReal.coe_ne_bot _) (hscaled.1.ne_bot u)
+      rw [EReal.add_ne_bot_iff]
+      exact ⟨EReal.coe_ne_bot _, hscaled.1.ne_bot u⟩
     · rcases hscaled.1.effective_domain_nonempty with ⟨u, hu⟩
       -- Any finite point of the scaled penalty remains finite after adding the linear term.
       refine ⟨u, ?_⟩
@@ -468,13 +486,13 @@ lemma non_euclidean_successor_le_textbook_model
     -- Upgrade the accepted quadratic upper model to the stronger Bregman upper model.
     calc
       F (x (n + 1)) = f (x (n + 1)) + g (x (n + 1)) := by
-        simp [F, composite_model_objective]
+        simp [composite_model_objective]
       _ ≤
           (f (x n) +
             ((inner ℝ (∇ (fun y ↦ (f y).toReal) (x n)) (x (n + 1) - x n) +
               ((L n : ℝ) / 2) * ‖x (n + 1) - x n‖ ^ (2 : ℕ) : ℝ) : EReal)) +
             g (x (n + 1)) := by
-          exact add_le_add_right hupper (g (x (n + 1)))
+          exact add_le_add_left hupper (g (x (n + 1)))
       _ ≤
           (f (x n) +
             ((((inner ℝ (∇ (fun y ↦ (f y).toReal) (x n)) (x (n + 1) - x n) : ℝ) : EReal)) +
@@ -486,14 +504,14 @@ lemma non_euclidean_successor_le_textbook_model
                 ((((inner ℝ (∇ (fun y ↦ (f y).toReal) (x n)) (x (n + 1) - x n) : ℝ) : EReal)) +
                   ((((L n : ℝ) * B[ω] (x (n + 1)) (x n) : ℝ) : EReal))) := by
             rw [EReal.coe_add]
-            exact add_le_add_left hquad_le_bregmanE
+            exact add_le_add_right hquad_le_bregmanE
               (((inner ℝ (∇ (fun y ↦ (f y).toReal) (x n)) (x (n + 1) - x n) : ℝ) : EReal))
-          exact add_le_add_right hsplit (g (x (n + 1)))
+          exact add_le_add_left (add_le_add_right hsplit (f (x n))) (g (x (n + 1)))
       _ = non_euclidean_textbook_model f g ω (x n) (L n) (x (n + 1)) := by
-        simp [non_euclidean_textbook_model, F, composite_model_objective, add_assoc, add_left_comm,
+        simp [non_euclidean_textbook_model, composite_model_objective, add_assoc, add_left_comm,
           add_comm]
   -- Compare the model at the minimizer `x^(n+1)` with the same model at the external comparator.
-  exact le_trans hmodel_upper <| hmodel_min u (by simp)
+  exact le_trans hmodel_upper <| hmodel_min (show u ∈ Set.univ by simp)
 
 /-- Helper for Theorem 10.72: convexity of `f` replaces the local linear model at a comparator by
 the true objective value, leaving only the Bregman penalty. This is the source passage from
@@ -524,6 +542,7 @@ lemma non_euclidean_textbook_model_le_objective_add_bregman
       (f u).toReal ≥ (f (x n)).toReal +
         inner ℝ (∇ (fun z ↦ (f z).toReal) (x n)) (u - x n) :=
     non_euclidean_convex_support_toReal_at_basepoint
+      (f := f) (g := g) (XStar := XStar) (FOpt := FOpt) (Lf := Lf)
       (xBase := x n) (y := u) hxn_eff hfxn.2 hu_eff
   have hlinear_le :
       f (x n) +
@@ -542,9 +561,9 @@ lemma non_euclidean_textbook_model_le_objective_add_bregman
           ((((L n : ℝ) * B[ω] u (x n) : ℝ) : EReal)) := by
             simp [non_euclidean_textbook_model, add_assoc]
     _ ≤ ((f u + g u) + ((((L n : ℝ) * B[ω] u (x n) : ℝ) : EReal))) := by
-      exact add_le_add_right (add_le_add_right hlinear_le (g u)) _
+      exact add_le_add_left (add_le_add_left hlinear_le (g u)) _
     _ = F u + ((((L n : ℝ) * B[ω] u (x n) : ℝ) : EReal)) := by
-      simp [F, composite_model_objective, add_assoc]
+      simp [composite_model_objective, add_assoc]
 
 /-- Helper for Theorem 10.72: the optimal value is a lower bound for every objective value along
 the non-Euclidean proximal-gradient trajectory. -/
@@ -577,11 +596,11 @@ lemma non_euclidean_linearized_penalty_three_point_ineq
     (n : ℕ) {u : E} (hu : u ∈ effective_domain g) :
     (((B[ω] u (x (n + 1)) + B[ω] (x (n + 1)) (x n) - B[ω] u (x n) : ℝ)) : EReal) ≤
       non_euclidean_linearized_scaled_penalty
-          (f := f) (g := g) (ω := ω) (x := x) (L := L) n u -
+          (f := f) (g := g) (x := x) (L := L) n u -
         non_euclidean_linearized_scaled_penalty
-          (f := f) (g := g) (ω := ω) (x := x) (L := L) n (x (n + 1)) := by
+          (f := f) (g := g) (x := x) (L := L) n (x (n + 1)) := by
   let ψ := non_euclidean_linearized_scaled_penalty
-    (f := f) (g := g) (ω := ω) (x := x) (L := L) n
+    (f := f) (g := g) (x := x) (L := L) n
   have hxn_domains :
       x n ∈ effective_domain g ∩ subdifferential_domain ω :=
     is_non_euclidean_proximal_gradient_trajectory_mem_domains htraj n
@@ -595,27 +614,26 @@ lemma non_euclidean_linearized_penalty_three_point_ineq
       IsMinOn (fun z ↦ ψ z + ((B[ω] z (x n) : ℝ) : EReal)) Set.univ (x (n + 1)) := by
     -- Rewrite the realized step minimizer from the Mirror-C objective to the Bregman-form
     -- objective `ψ_n + B[ω](·, x^n)`.
-    have hmirror :
-        IsMinOn
-          (mirror_c_update_objective g ω (x n)
-            (fderiv ℝ (fun y ↦ (f y).toReal) (x n)) ((L n : ℝ)⁻¹))
-          Set.univ (x (n + 1)) :=
+    have hmirror :=
       is_non_euclidean_proximal_gradient_trajectory_isMinOn htraj n
-    simpa [ψ, non_euclidean_linearized_scaled_penalty, hcurvature, Pi.smul_apply, smul_eq_mul,
-      add_assoc] using
+    simpa only [ψ, non_euclidean_linearized_scaled_penalty, hcurvature, Pi.smul_apply,
+      smul_eq_mul, add_assoc] using
       (isMinOn_mirror_c_update_objective_iff_isMinOn_bregman_update_objective
         g ω (x n) (x (n + 1))
         (fderiv ℝ (fun y ↦ (f y).toReal) (x n)) ((L n : ℝ)⁻¹)).mp hmirror
   have hψ_data :=
     non_euclidean_linearized_scaled_penalty_proper_convex
-      (f := f) (g := g) (ω := ω) (x := x) (L := L) n
+      (f := f) (g := g) (XStar := XStar) (FOpt := FOpt) (Lf := Lf)
+      (x := x) (L := L) n
   have hωψ : IsBregmanPotentialOn ω (effective_domain ψ) (1 : ℝ) := by
     rw [non_euclidean_linearized_scaled_penalty_effective_domain_eq
-      (f := f) (g := g) (ω := ω) (x := x) (L := L) n]
+      (f := f) (g := g) (XStar := XStar) (FOpt := FOpt) (Lf := Lf)
+      (x := x) (L := L) n]
     exact hω
   have huψ : u ∈ effective_domain ψ := by
     rwa [non_euclidean_linearized_scaled_penalty_effective_domain_eq
-      (f := f) (g := g) (ω := ω) (x := x) (L := L) n]
+      (f := f) (g := g) (XStar := XStar) (FOpt := FOpt) (Lf := Lf)
+      (x := x) (L := L) n]
   have hopt :
       (inner ℝ
           ((∇ (fun z ↦ (ω z).toReal) (x n)) -
@@ -631,13 +649,13 @@ lemma non_euclidean_linearized_penalty_three_point_ineq
             (∇ (fun z ↦ (ω z).toReal) (x (n + 1))))
           (u - x (n + 1)) =
         B[ω] u (x (n + 1)) + B[ω] (x (n + 1)) (x n) - B[ω] u (x n) := by
-    -- The Bregman three-point identity rewrites the gradient pairing into the textbook
-    -- difference-of-distances expression.
-    simpa using
-      (bregman_three_point_identity
-        (ω := ω) (c := u) (a := x (n + 1)) (b := x n)
-        ((hω.differentiableOn_subdifferential_domain hxn1_domains.2).hasGradientAt)
-        ((hω.differentiableOn_subdifferential_domain hxn_domains.2).hasGradientAt)).symm
+    -- Both sides use the same totalized gradients, so this is the algebraic owner-level
+    -- three-point identity; no upgrade from within-set differentiability is needed.
+    rw [bregmanDistance_def, bregmanDistance_def, bregmanDistance_def]
+    have huxn : u - x n = (u - x (n + 1)) + (x (n + 1) - x n) := by
+      abel
+    rw [huxn, inner_add_right, inner_sub_left]
+    ring
   calc
     (((B[ω] u (x (n + 1)) + B[ω] (x (n + 1)) (x n) - B[ω] u (x n) : ℝ)) : EReal) =
         (inner ℝ
@@ -669,14 +687,17 @@ lemma non_euclidean_scaled_objective_successor_add_bregman_le_comparator
   have hψ_data :
       IsProperExtendedRealFunction ψ ∧ is_convex_function ψ :=
     non_euclidean_scaled_linearized_objective_proper_convex
-      (f := f) (g := g) (x := x) (L := L) n
+      (f := f) (g := g) (XStar := XStar) (FOpt := FOpt) (Lf := Lf)
+      (x := x) (L := L) n
   have hωψ : IsBregmanPotentialOn ω (effective_domain ψ) (1 : ℝ) := by
     rw [non_euclidean_scaled_linearized_objective_effective_domain_eq
-      (f := f) (g := g) (x := x) (L := L) n]
+      (f := f) (g := g) (XStar := XStar) (FOpt := FOpt) (Lf := Lf)
+      (x := x) (L := L) n]
     exact hω
   have huψ : u ∈ effective_domain ψ := by
     rwa [non_euclidean_scaled_linearized_objective_effective_domain_eq
-      (f := f) (g := g) (x := x) (L := L) n]
+      (f := f) (g := g) (XStar := XStar) (FOpt := FOpt) (Lf := Lf)
+      (x := x) (L := L) n]
   have hmin_scaled :
       IsMinOn (fun z ↦ ψ z + ((B[ω] z (x n) : ℝ) : EReal)) Set.univ (x (n + 1)) := by
     -- The realized step minimizes the exact Chapter 9 objective `ψ_n + B_ω(·, x^n)`.
@@ -705,12 +726,13 @@ lemma non_euclidean_scaled_objective_successor_add_bregman_le_comparator
             (∇ (fun z ↦ (ω z).toReal) (x (n + 1))))
           (u - x (n + 1)) =
         B[ω] u (x (n + 1)) + B[ω] (x (n + 1)) (x n) - B[ω] u (x n) := by
-    -- The Bregman three-point identity is exactly the source bridge to `(10.u401)`.
-    simpa using
-      (bregman_three_point_identity
-        (ω := ω) (c := u) (a := x (n + 1)) (b := x n)
-        ((hω.differentiableOn_subdifferential_domain hxn1_domains.2).hasGradientAt)
-        ((hω.differentiableOn_subdifferential_domain hxn_domains.2).hasGradientAt)).symm
+    -- Both sides use the same totalized gradients, so this is the algebraic owner-level
+    -- three-point identity; no upgrade from within-set differentiability is needed.
+    rw [bregmanDistance_def, bregmanDistance_def, bregmanDistance_def]
+    have huxn : u - x n = (u - x (n + 1)) + (x (n + 1) - x n) := by
+      abel
+    rw [huxn, inner_add_right, inner_sub_left]
+    ring
   have hgap :
       (((B[ω] u (x (n + 1)) + B[ω] (x (n + 1)) (x n) - B[ω] u (x n) : ℝ)) : EReal) ≤
         ψ u - ψ (x (n + 1)) := by
@@ -733,13 +755,25 @@ lemma non_euclidean_scaled_objective_successor_add_bregman_le_comparator
         (((B[ω] u (x (n + 1)) + B[ω] (x (n + 1)) (x n) - B[ω] u (x n) : ℝ)) : EReal) +
           ψ (x (n + 1)) ≤ ψ u := by
       exact
-        (EReal.le_sub_iff_add_le (.inl hψ_succ_ne_bot) (.inl hψ_u_ne_top)).1 hgap
-    have hshift' := add_le_add_right hshift ((((B[ω] u (x n) : ℝ)) : EReal))
+        (EReal.le_sub_iff_add_le (.inl hψ_succ_ne_bot) (.inr hψ_u_ne_top)).1 hgap
+    have hshift' := add_le_add_left hshift ((((B[ω] u (x n) : ℝ)) : EReal))
     have hsum_real :
         (B[ω] u (x (n + 1)) + B[ω] (x (n + 1)) (x n) - B[ω] u (x n)) + B[ω] u (x n) =
           B[ω] u (x (n + 1)) + B[ω] (x (n + 1)) (x n) := by
       ring
-    simpa [hsum_real, add_assoc, add_left_comm, add_comm, EReal.coe_add] using hshift'
+    have hcancel :
+        (((B[ω] u (x (n + 1)) + B[ω] (x (n + 1)) (x n) - B[ω] u (x n) : ℝ)) : EReal) +
+            (((B[ω] u (x n) : ℝ)) : EReal) =
+          (((B[ω] u (x (n + 1)) + B[ω] (x (n + 1)) (x n) : ℝ)) : EReal) := by
+      rw [← EReal.coe_add, hsum_real]
+    calc
+      ((((B[ω] u (x (n + 1)) + B[ω] (x (n + 1)) (x n) : ℝ)) : EReal)) +
+            ψ (x (n + 1)) =
+          ((((B[ω] u (x (n + 1)) + B[ω] (x (n + 1)) (x n) - B[ω] u (x n) : ℝ)) : EReal) +
+              ψ (x (n + 1))) + (((B[ω] u (x n) : ℝ)) : EReal) := by
+        rw [← hcancel]
+        ac_rfl
+      _ ≤ ψ u + (((B[ω] u (x n) : ℝ)) : EReal) := hshift'
   -- Reassemble the left and right sides into `scaled_bregman_objective`.
   simpa [ψ, non_euclidean_scaled_linearized_objective, scaled_bregman_objective,
     add_assoc, add_left_comm, add_comm, EReal.coe_add] using hgap_add
@@ -786,6 +820,7 @@ theorem non_euclidean_proximal_gradient_objective_gap_le
     -- Convexity upgrades the local linear model at `xStar` to the true objective value `F xStar`.
     exact
       non_euclidean_textbook_model_le_objective_add_bregman
+        (f := f) (g := g) (ω := ω) (XStar := XStar) (FOpt := FOpt) (Lf := Lf)
         (htraj := htraj) (n := n) hxStar_eff
   have hscaled_objective_drop :
       ∀ n : ℕ,
@@ -796,6 +831,7 @@ theorem non_euclidean_proximal_gradient_objective_gap_le
     -- Route correction: use the source plus-form inequality `(10.96)` directly.
     exact
       non_euclidean_scaled_objective_successor_add_bregman_le_comparator
+        (f := f) (g := g) (ω := ω) (XStar := XStar) (FOpt := FOpt) (Lf := Lf)
         (hω := hω) (htraj := htraj) (n := n) hxStar_eff
   -- Route correction: clause (b) must stay on the source Chapter 9 route.
   -- The source plus-form inequality `(10.96)` is now in place. The remaining work is the single

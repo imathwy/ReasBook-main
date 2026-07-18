@@ -2,9 +2,9 @@ import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.C
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
-/- Proposition 3.27 is recall-only in the Chapter 3 subdifferential-calculus API. The primary
+/- Proposition 3.27 is recall-only in the Chapter 3 extendedRealSubdifferential-calculus API. The primary
 mathematical domain is the weak max rule for subdifferentials of pointwise suprema. In this
-domain, the owner abstraction is the Chapter 3 owner set `subdifferential`; the active-index family
+domain, the owner abstraction is the Chapter 3 owner set `extendedRealSubdifferential`; the active-index family
 `{i : ι // f i x = ⨆ j, f j x}` is derived data, and the convex-hull inclusion is the canonical
 source-facing statement. Sampling the nearby owner declarations:
 

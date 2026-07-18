@@ -13,7 +13,7 @@ open scoped RealInnerProductSpace
 open WithLp (toLp ofLp)
 
 /- Lemma 6.26 is `source-facing`: it records explicit singleton formulas for the Chapter 6
-projection owner `P[C]` from Theorem 6.24 on five standard closed convex subsets of `ℝ^n`. The
+projection owner `Proj[C]` from Theorem 6.24 on five standard closed convex subsets of `ℝ^n`. The
 source formulas are Euclidean orthogonal projections, so the coordinate cases are stated on
 `EuclideanSpace ℝ ι` and expose coordinates through `ofLp`; raw function spaces `ι → ℝ` carry
 Lean's default `Pi` norm and would state a different projection problem. The item is split into
@@ -68,7 +68,7 @@ lemma projIcc_sub_mul_nonpos_of_mem_Icc
 on the Euclidean owner `EuclideanSpace ℝ ι`, is the singleton containing the coordinatewise
 positive part of `x`. -/
 lemma projection_mapping_nonnegativeOrthant_eq_singleton_coordinatewisePosPart (x : E) :
-    P[((fun y : E ↦ y.ofLp) ⁻¹' Set.Ici (0 : X))] x =
+    Proj[((fun y : E ↦ y.ofLp) ⁻¹' Set.Ici (0 : X))] x =
       {WithLp.toLp (p := (2 : ENNReal)) x.ofLp⁺} :=
   by
   let C : Set E := ((fun y : E ↦ y.ofLp) ⁻¹' Set.Ici (0 : X))
@@ -100,7 +100,7 @@ lemma projection_mapping_nonnegativeOrthant_eq_singleton_coordinatewisePosPart (
       _ ≤ 0 := by
         exact Finset.sum_nonpos fun i _ ↦
           posPart_sub_mul_nonpos_of_nonneg (x.ofLp i) (y.ofLp i) (hy_nonneg i)
-  have hp_proj : p ∈ P[C] x := by
+  have hp_proj : p ∈ Proj[C] x := by
     rw [mem_projection_mapping_iff, isMinOn_iff]
     refine ⟨hp_mem, ?_⟩
     intro y hy
@@ -124,7 +124,7 @@ lemma projection_mapping_nonnegativeOrthant_eq_singleton_coordinatewisePosPart (
     have hnorm_le : ‖x - p‖ ≤ ‖x - y‖ :=
       (sq_le_sq₀ (norm_nonneg _) (norm_nonneg _)).mp hsq
     simpa [norm_sub_rev] using hnorm_le
-  have hsub : (P[C] x).Subsingleton :=
+  have hsub : (Proj[C] x).Subsingleton :=
     projection_mapping_subsingleton C hconvex x
   simpa [C, p] using hsub.eq_singleton_of_mem hp_proj
 
@@ -137,7 +137,7 @@ the coordinatewise interval projection `Set.projIcc` of `x` onto `[l i, u i]` in
 Euclidean owner `EuclideanSpace ℝ ι`. -/
 lemma projection_mapping_box_eq_singleton_coordinatewiseClamp
     (l u : ι → ℝ) (hlu : ∀ i, l i ≤ u i) (x : E) :
-    P[((fun y : E ↦ y.ofLp) ⁻¹' Box[(fun i ↦ (l i : EReal)), fun i ↦ (u i : EReal)])] x =
+    Proj[((fun y : E ↦ y.ofLp) ⁻¹' Box[(fun i ↦ (l i : EReal)), fun i ↦ (u i : EReal)])] x =
       {WithLp.toLp (p := (2 : ENNReal))
         (fun i ↦ ((Set.projIcc (l i) (u i) (hlu i) (x.ofLp i) : Set.Icc (l i) (u i)) : ℝ))} :=
   by
@@ -187,7 +187,7 @@ lemma projection_mapping_box_eq_singleton_coordinatewiseClamp
         exact Finset.sum_nonpos fun i _ ↦
           projIcc_sub_mul_nonpos_of_mem_Icc
             (l i) (u i) (x.ofLp i) (y.ofLp i) (hlu i) (hy_mem i)
-  have hp_proj : p ∈ P[C] x := by
+  have hp_proj : p ∈ Proj[C] x := by
     rw [mem_projection_mapping_iff, isMinOn_iff]
     refine ⟨hp_mem, ?_⟩
     intro y hy
@@ -211,14 +211,14 @@ lemma projection_mapping_box_eq_singleton_coordinatewiseClamp
     have hnorm_le : ‖x - p‖ ≤ ‖x - y‖ :=
       (sq_le_sq₀ (norm_nonneg _) (norm_nonneg _)).mp hsq
     simpa [norm_sub_rev] using hnorm_le
-  have hsub : (P[C] x).Subsingleton :=
+  have hsub : (Proj[C] x).Subsingleton :=
     projection_mapping_subsingleton C hconvex x
   simpa [C, p] using hsub.eq_singleton_of_mem hp_proj
 
 /-- The pointwise-interval view of Lemma 6.26 (2), obtained from `Box[ℓ,u] = Set.Icc ℓ u`. -/
 lemma projection_mapping_Icc_eq_singleton_coordinatewiseClamp
     (l u : ι → ℝ) (hlu : ∀ i, l i ≤ u i) (x : E) :
-    P[((fun y : E ↦ y.ofLp) ⁻¹' Set.Icc l u)] x =
+    Proj[((fun y : E ↦ y.ofLp) ⁻¹' Set.Icc l u)] x =
       {WithLp.toLp (p := (2 : ENNReal))
         (fun i ↦ ((Set.projIcc (l i) (u i) (hlu i) (x.ofLp i) : Set.Icc (l i) (u i)) : ℝ))} := by
   simpa [box_eq_Icc] using
@@ -293,7 +293,7 @@ correction
 `x - Aᵀ (A Aᵀ)⁻¹ (A x - b)`. -/
 lemma projection_mapping_affine_linear_constraint_set_eq_singleton_affineCorrection
     (A : Matrix ι κ ℝ) (hAA : Invertible (A * Aᵀ)) (b : F) (x : E) :
-    P[((fun y : E ↦ y.ofLp) ⁻¹' affine_linear_constraint_set A b)] x =
+    Proj[((fun y : E ↦ y.ofLp) ⁻¹' affine_linear_constraint_set A b)] x =
       {WithLp.toLp (p := (2 : ENNReal))
         (x.ofLp - Aᵀ *ᵥ (((A * Aᵀ)⁻¹) *ᵥ (A *ᵥ x.ofLp - b)))} :=
   by
@@ -342,7 +342,7 @@ lemma projection_mapping_affine_linear_constraint_set_eq_singleton_affineCorrect
                 (y.ofLp - p0))
       _ = 0 := horth
       _ ≤ 0 := le_rfl
-  have hp_proj : p ∈ P[C] x := by
+  have hp_proj : p ∈ Proj[C] x := by
     rw [mem_projection_mapping_iff, isMinOn_iff]
     refine ⟨hp_mem, ?_⟩
     intro y hy
@@ -366,7 +366,7 @@ lemma projection_mapping_affine_linear_constraint_set_eq_singleton_affineCorrect
     have hnorm_le : ‖x - p‖ ≤ ‖x - y‖ :=
       (sq_le_sq₀ (norm_nonneg _) (norm_nonneg _)).mp hsq
     simpa [norm_sub_rev] using hnorm_le
-  have hsub : (P[C] x).Subsingleton :=
+  have hsub : (Proj[C] x).Subsingleton :=
     projection_mapping_subsingleton C hconvex x
   simpa [C, p, p0] using hsub.eq_singleton_of_mem hp_proj
 
@@ -450,7 +450,7 @@ lemma radial_retraction_distance_le_of_mem_closedBall
 nonnegative radius is the singleton given by radial truncation toward the center. -/
 lemma projection_mapping_closedBall_eq_singleton_radialRetraction
     (c x : E) (r : ℝ) (hr : 0 ≤ r) :
-    P[Metric.closedBall c r] x = {c + (r / max ‖x - c‖ r) • (x - c)} := by
+    Proj[Metric.closedBall c r] x = {c + (r / max ‖x - c‖ r) • (x - c)} := by
   by_cases hx : ‖x - c‖ ≤ r
   · have hp_eq : c + (r / max ‖x - c‖ r) • (x - c) = x := by
       by_cases hxc : x = c
@@ -463,7 +463,7 @@ lemma projection_mapping_closedBall_eq_singleton_radialRetraction
         have hcancel : c + (x - c) = x := by
           abel_nf
         exact hcancel
-    have hp_proj : x ∈ P[Metric.closedBall c r] x := by
+    have hp_proj : x ∈ Proj[Metric.closedBall c r] x := by
       -- Inside the ball, the base point already minimizes the distance to itself.
       rw [mem_projection_mapping_iff, isMinOn_iff]
       refine ⟨?_, ?_⟩
@@ -471,14 +471,14 @@ lemma projection_mapping_closedBall_eq_singleton_radialRetraction
       · intro y hy
         simp
     have hsub :
-        (P[Metric.closedBall c r] x).Subsingleton :=
+        (Proj[Metric.closedBall c r] x).Subsingleton :=
       projection_mapping_subsingleton (Metric.closedBall c r) (convex_closedBall c r) x
     simpa [hp_eq] using hsub.eq_singleton_of_mem hp_proj
   · have hx' : r < ‖x - c‖ := by
       exact lt_of_not_ge hx
     have hmax : max ‖x - c‖ r = ‖x - c‖ := by
       exact max_eq_left (le_of_lt hx')
-    have hp_proj : c + (r / ‖x - c‖) • (x - c) ∈ P[Metric.closedBall c r] x := by
+    have hp_proj : c + (r / ‖x - c‖) • (x - c) ∈ Proj[Metric.closedBall c r] x := by
       -- Outside the ball, the radial truncation is feasible and dominates every other feasible
       -- competitor by the triangle inequality comparison with the center.
       rw [mem_projection_mapping_iff, isMinOn_iff]
@@ -487,7 +487,7 @@ lemma projection_mapping_closedBall_eq_singleton_radialRetraction
       simpa [norm_sub_rev] using
         radial_retraction_distance_le_of_mem_closedBall c x y r hr hy hx'
     have hsub :
-        (P[Metric.closedBall c r] x).Subsingleton :=
+        (Proj[Metric.closedBall c r] x).Subsingleton :=
       projection_mapping_subsingleton (Metric.closedBall c r) (convex_closedBall c r) x
     simpa [hmax] using hsub.eq_singleton_of_mem hp_proj
 
@@ -578,10 +578,10 @@ projection is the singleton obtained by subtracting the positive-part affine vio
 normal direction `a`. -/
 lemma projection_mapping_halfSpace_eq_singleton_positivePartCorrection
     (a x : E) (α : ℝ) (ha : a ≠ 0) :
-    P[halfSpace a α] x =
+    Proj[halfSpace a α] x =
       {x - (((⟪a, x⟫ - α)⁺ / ‖a‖ ^ (2 : ℕ)) • a)} := by
   by_cases hx : inner ℝ a x ≤ α
-  · have hp_proj : x ∈ P[halfSpace a α] x := by
+  · have hp_proj : x ∈ Proj[halfSpace a α] x := by
       -- On the feasible branch, the point is already in the half-space and minimizes distance
       -- trivially.
       rw [mem_projection_mapping_iff, isMinOn_iff]
@@ -595,12 +595,12 @@ lemma projection_mapping_halfSpace_eq_singleton_positivePartCorrection
         simp [sub_nonpos.mpr hx]
       rw [hpos, zero_div, zero_smul, sub_zero]
     have hsub :
-        (P[halfSpace a α] x).Subsingleton :=
+        (Proj[halfSpace a α] x).Subsingleton :=
       projection_mapping_subsingleton (halfSpace a α) (convex_halfSpace_owner a α) x
     simpa [hp_eq] using hsub.eq_singleton_of_mem hp_proj
   · have hviol : α < inner ℝ a x := by
       exact lt_of_not_ge hx
-    have hp_proj : x - (((inner ℝ a x - α) / ‖a‖ ^ (2 : ℕ)) • a) ∈ P[halfSpace a α] x := by
+    have hp_proj : x - (((inner ℝ a x - α) / ‖a‖ ^ (2 : ℕ)) • a) ∈ Proj[halfSpace a α] x := by
       -- On the active branch, use the boundary correction and compare with every feasible point
       -- through the defining half-space inequality and Cauchy-Schwarz.
       rw [mem_projection_mapping_iff, isMinOn_iff]
@@ -615,7 +615,7 @@ lemma projection_mapping_halfSpace_eq_singleton_positivePartCorrection
         simp [sub_nonneg.mpr hviol.le]
       rw [hpos]
     have hsub :
-        (P[halfSpace a α] x).Subsingleton :=
+        (Proj[halfSpace a α] x).Subsingleton :=
       projection_mapping_subsingleton (halfSpace a α) (convex_halfSpace_owner a α) x
     simpa [hp_eq] using hsub.eq_singleton_of_mem hp_proj
 

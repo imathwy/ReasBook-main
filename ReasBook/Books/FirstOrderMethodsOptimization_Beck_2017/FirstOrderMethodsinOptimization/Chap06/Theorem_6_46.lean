@@ -19,14 +19,14 @@ variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
 /- Theorem 6.46 is `source-facing`: the textbook statement computes the proximal operator of the
 support function of a nonempty closed convex set. Domain sampling here points to the existing
-`core/canonical` owners `support_function`, `σ[C]`, `prox[...]`, and Proposition 3.12's
+`core/canonical` owners `support_function`, `σp[C]`, `prox[...]`, and Proposition 3.12's
 `metricProjection`. The relevant supporting declarations are Chapter 2's primal-space bridge
 `support_function_primal`, Proposition 3.12's projection variational inequality
 `inner_sub_metricProjection_le_zero`, Theorem 6.25's singleton bridge
 `projection_mapping_eq_singleton_of_nonempty_closed_convex`, and Proposition 6.2.2's linear
 proximal formula `prox_inner_eq_singleton_sub`. The primitive data are only the set `C` and its
 nonempty/complete/convex hypotheses; the right-hand point `P_C (x / λ)` is derived from the owner
-`metricProjection`, and the support-function term is the source-facing primal owner `σ[C]`. The
+`metricProjection`, and the support-function term is the source-facing primal owner `σp[C]`. The
 closed-subset-in-a-complete-space formulation is a downstream `bridge/view` specialization obtained
 by supplying `IsClosed.isComplete`. -/
 
@@ -43,17 +43,17 @@ variable (C : Set E) (hC_nonempty : C.Nonempty) (hC_complete : IsComplete C)
 /-- Theorem 6.46: prox of support functions. If `C` is a nonempty complete convex subset of a
 real inner product space and `lam : PosReal` encodes a positive scalar `λ`, then the
 proximal set of the scaled support function `λ σ_C` at `x` is the singleton containing
-`x - λ P_C(x / λ)`, written in Lean using the canonical owners `σ[C]` and
+`x - λ P_C(x / λ)`, written in Lean using the canonical owners `σp[C]` and
 `metricProjection`. The familiar
 closed-subset-in-a-complete-space statement is the direct specialization obtained from
 `IsClosed.isComplete`. This is the chapter's set-valued rendering of the textbook identity
 `prox_{λ σ_C}(x) = x - λ P_C(x / λ)`. -/
 theorem prox_support_function_eq_singleton_sub_smul_metricProjection
     (lam : PosReal) (x : E) :
-    prox[(((lam : ℝ) : EReal) • σ[C])] x =
+    prox[(((lam : ℝ) : EReal) • σp[C])] x =
       {x - (lam : ℝ) •
         (metricProjection C hC_nonempty hC_complete hC_convex ((lam : ℝ)⁻¹ • x) : E)} := by
-  let σC : E → EReal := σ[C]
+  let σC : E → EReal := σp[C]
   let P : E → C := metricProjection C hC_nonempty hC_complete hC_convex
   let z : E := (lam : ℝ)⁻¹ • x
   let pC : C := P z
@@ -80,7 +80,7 @@ theorem prox_support_function_eq_singleton_sub_smul_metricProjection
     rw [hu_eq, real_inner_smul_left]
     exact mul_nonpos_of_nonneg_of_nonpos lam.2.le hproj
   have hσ_lower (y : E) : ((⟪y, p⟫ : ℝ) : EReal) ≤ σC y := by
-    rw [show σC y = σ[C] y by rfl, support_function_primal_apply, support_function_apply]
+    rw [show σC y = σp[C] y by rfl, support_function_primal_apply, support_function_apply]
     exact le_sSup ⟨p, hp_mem, by simp⟩
   have hg_le (y : E) : g y ≤ (((lam : ℝ) : EReal) • σC) y := by
     have hscaled :=
@@ -90,7 +90,7 @@ theorem prox_support_function_eq_singleton_sub_smul_metricProjection
     simpa [g, Pi.smul_apply, real_inner_smul_right, EReal.coe_mul, mul_comm, mul_left_comm,
       mul_assoc] using hscaled
   have hσ_eq : σC u = ((⟪u, p⟫ : ℝ) : EReal) := by
-    change σ[C] u = ((⟪u, p⟫ : ℝ) : EReal)
+    change σp[C] u = ((⟪u, p⟫ : ℝ) : EReal)
     rw [support_function_primal_apply]
     apply support_function_eq_of_isGreatest_image
     refine ⟨?_, ?_⟩

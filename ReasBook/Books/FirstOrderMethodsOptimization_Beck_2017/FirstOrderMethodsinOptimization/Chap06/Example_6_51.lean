@@ -422,7 +422,7 @@ theorem prox_sum_k_largest_abs_eq_singleton_sub_smul_metricProjection
   let lamPos : PosReal := ⟨lam, hlam⟩
   have hpenalty :
       (fun y : E ↦ (lam : EReal) * (sum_k_largest_abs k y : EReal)) =
-        (((lam : ℝ) : EReal) • σ[C]) := by
+        (((lam : ℝ) : EReal) • σp[C]) := by
     funext y
     -- Rewrite the source-facing penalty through the support-function identity proved above.
     rw [Pi.smul_apply, support_function_primal_apply,

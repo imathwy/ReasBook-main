@@ -38,7 +38,7 @@ lemma prox_gradient_operator_eq_singleton_forward (x : E) :
   -- The source-facing prox-gradient operator is defined by choosing the singleton proximal point
   -- of the forward-gradient step.
   simpa [proximal_gradient_step] using
-    (prox_grad_operator_eq_singleton (f := f.toEReal) (g := g) L
+    (prox_grad_operator_eq_singleton (f := f.toExtendedReal) (g := g) L
       (interior_effective_domain_point_of_real f x))
 
 /-- Helper for Lemma 10.11: the prox-gradient update equals the identity minus the scaled gradient
@@ -48,14 +48,14 @@ lemma prox_gradient_operator_eq_sub_gradient_mapping (x : E) :
   have hG :
       G[L; f, g] x = (L : ℝ) • (x - T[L; f, g] x) := by
     calc
-      G[L; f, g] x = G[L, f.toEReal, g] (interior_effective_domain_point_of_real f x) := by
+      G[L; f, g] x = G[L, f.toExtendedReal, g] (interior_effective_domain_point_of_real f x) := by
         rfl
       _ =
           (L : ℝ) •
-            (((interior_effective_domain_point_of_real f x : interior (effective_domain f.toEReal))
-              : E) - T[L, f.toEReal, g] (interior_effective_domain_point_of_real f x)) := by
+            (((interior_effective_domain_point_of_real f x : interior (effective_domain f.toExtendedReal))
+              : E) - T[L, f.toExtendedReal, g] (interior_effective_domain_point_of_real f x)) := by
             exact
-              gradient_mapping_apply (f.toEReal) g L
+              gradient_mapping_apply (f.toExtendedReal) g L
                 (interior_effective_domain_point_of_real f x)
       _ = (L : ℝ) • (x - T[L; f, g] x) := by
             rfl

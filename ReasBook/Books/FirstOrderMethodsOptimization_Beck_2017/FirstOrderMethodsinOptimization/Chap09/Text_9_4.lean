@@ -21,8 +21,8 @@ variable {ω : E → EReal} {C : Set E} {σ : ℝ} {xk xNext gradf : E} {t : ℝ
 Text 9.4 is `source-facing` in the Chapter 9 mirror-descent API. Domain sampling in the relevant
 convex-analysis layer points to these existing owners:
 - Chapter 9's `IsBregmanPotentialOn ω C σ` for the primitive mirror-map data on `C`;
-- Chapter 9's `bregmanDistance` / `B[ω]` for the step objective;
-- Chapter 3's owner `subdifferential` / `subdifferential_domain` for the constrained optimality
+- Chapter 9's `extendedRealBregmanDistance` / `B[ω]` for the step objective;
+- Chapter 3's owner `extendedRealSubdifferential` / `subdifferential_domain` for the constrained optimality
   condition;
 - Chapter 4's Fenchel owner `conjugate_function` together with the conjugate-side bridge used to
   pass from constrained subgradient membership to the gradient of the conjugate.
@@ -31,7 +31,7 @@ The right abstraction layer is therefore:
 - `source-facing`: the mirror step over `C` and the textbook conclusion
   `x⁺ = ∇ ω̃∗(∇ω(xᵏ) - t g_f)`;
 - `core/canonical`: the constrained potential `ω̃ = ω + extendedIndicator C`;
-- `bridge/view`: the intermediate constrained-subgradient and conjugate-subdifferential
+- `bridge/view`: the intermediate constrained-subgradient and conjugate-extendedRealSubdifferential
   formulations.
 
 The primitive data are the Bregman-potential owner `hω : IsBregmanPotentialOn ω C σ` and the
@@ -60,7 +60,7 @@ lemma mirror_descent_step_isMinOn_iff_dual_mem_subdifferential_add_indicator
 
 -- Proof sketch: combine the constrained-subgradient bridge above with Fenchel conjugacy for
 -- `ω̃ = ω + δ_C`. Strong convexity of the constrained potential makes `ω̃∗` differentiable at the
--- dual point, so the singleton subdifferential there is represented by the gradient of
+-- dual point, so the singleton extendedRealSubdifferential there is represented by the gradient of
 -- `y ↦ ((ω̃∗) y).toReal`. Transporting back through the Riesz map identifies the primal vector
 -- `x⁺` with that gradient.
 /-- Text 9.4: letting `ω̃ = ω + δ_C`, if `ω` is a Bregman potential on `C` and

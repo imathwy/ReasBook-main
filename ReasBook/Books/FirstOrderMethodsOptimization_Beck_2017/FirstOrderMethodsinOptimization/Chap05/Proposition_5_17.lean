@@ -1,46 +1,15 @@
 import Mathlib
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap02.Definition_2_5
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap02.Definition_2_6
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap02.Definition_2_8
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap04.Definition_4_1
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap05.Theorem_5_26
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
 noncomputable section
 
 universe u
-
-/-- The effective domain of an extended-real-valued function is the set where the value is finite.
--/
-def effective_domain {E : Type u} (f : E → EReal) : Set E := {x | f x < ⊤}
-
-/-- A proper extended-real-valued function never takes the value `-∞` and has nonempty effective
-domain. -/
-class IsProperExtendedRealFunction {E : Type u} (f : E → EReal) : Prop where
-  ne_bot : ∀ x, f x ≠ ⊥
-  effective_domain_nonempty : (effective_domain f).Nonempty
-
-/-- An extended-real-valued function is convex when its real epigraph is convex. -/
-def is_convex_function {E : Type u} [AddCommMonoid E] [Module ℝ E] (f : E → EReal) : Prop :=
-  Convex ℝ {p : E × ℝ | f p.1 ≤ (p.2 : EReal)}
-
-/-- The infimal convolution is the pointwise infimum of translated sums. -/
-noncomputable def infimal_convolution {E : Type u} [AddCommGroup E]
-    (h1 h2 : E → EReal) : E → EReal :=
-  fun x ↦ ⨅ u : E, h1 u + h2 (x - u)
-
-/-- The Fenchel conjugate of an extended-real-valued function on the algebraic dual. -/
-noncomputable def conjugate_function {E : Type u} [AddCommGroup E] [Module ℝ E]
-    (f : E → EReal) : Module.Dual ℝ E → EReal :=
-  fun y ↦ sSup (Set.range fun x : E ↦ (y x : EReal) - f x)
-
-/-- A real-valued function is `L`-smooth on `D` when it is differentiable there and its Fréchet
-derivative is `L`-Lipschitz on `D`. -/
-def is_l_smooth_on {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    (f : E → ℝ) (D : Set E) (L : NNReal) : Prop :=
-  (∀ x ∈ D, DifferentiableAt ℝ f x) ∧ LipschitzOnWith L (fderiv ℝ f) D
-
-/-- The Fenchel conjugate, viewed on the continuous dual through the canonical coercion to the
-algebraic dual. -/
-noncomputable def conjugate_function_strongDual {E : Type u} [NormedAddCommGroup E]
-    [NormedSpace ℝ E] (f : E → EReal) : StrongDual ℝ E → EReal :=
-  fun y ↦ sSup (Set.range fun x : E ↦ (y x : EReal) - f x)
 
 section
 

@@ -13,9 +13,9 @@ variable {m n : ℕ}
 local notation "Em" => EuclideanSpace ℝ (Fin m)
 local notation "En" => EuclideanSpace ℝ (Fin n)
 
-/- Proposition 3.26 is a `bridge/view` item in the chapter's coordinate `ℓ∞` subdifferential
+/- Proposition 3.26 is a `bridge/view` item in the chapter's coordinate `ℓ∞` extendedRealSubdifferential
 API. The owner abstractions already live upstream: Theorem 3.19 gives the affine-map pullback
-rule on `subdifferential`, and Proposition 3.24 gives the vector-side owner formula through
+rule on `extendedRealSubdifferential`, and Proposition 3.24 gives the vector-side owner formula through
 `euclideanSubdifferentialAt` for the residual `ℓ∞` norm on `Fin m → ℝ`. The only primitive data
 here are the affine matrix map `A.mulVecLin` and the offset `b`; the transpose-image formula is
 derived from those owners. -/
@@ -33,14 +33,14 @@ private theorem euclidean_subdifferentialAt_affine_linf_eq_transpose_image
         euclideanSubdifferentialAt (fun y : Em ↦ ‖ofLp y‖) (toLp 2 (A.mulVecLin (ofLp x) + b)) :=
   sorry
 
--- Proof sketch: first rewrite the affine `ℓ∞` subdifferential using the owner-level transpose
+-- Proof sketch: first rewrite the affine `ℓ∞` extendedRealSubdifferential using the owner-level transpose
 -- coordinate description from Proposition 3.24. When the residual `A.mulVecLin x + b` vanishes,
--- the `ℓ∞` subdifferential is the canonical `WithLp 1` unit ball `{z | ‖toLp 1 z‖ ≤ 1}`, whose
+-- the `ℓ∞` extendedRealSubdifferential is the canonical `WithLp 1` unit ball `{z | ‖toLp 1 z‖ ≤ 1}`, whose
 -- pullback along `A` is the transpose image `Aᵀ.mulVecLin '' {z | ‖toLp 1 z‖ ≤ 1}`. Otherwise,
 -- the active signed-coordinate image from Proposition 3.24 pulls back along `A` to the transpose
 -- image of those active combinations.
 /-- Proposition 3.26: for the affine `ℓ∞` objective `x ↦ ‖A x + b‖∞`, the Euclidean/vector-side
-subdifferential is the transpose image of the `ℓ₁` unit ball `{z | ‖toLp 1 z‖ ≤ 1}` when
+extendedRealSubdifferential is the transpose image of the `ℓ₁` unit ball `{z | ‖toLp 1 z‖ ≤ 1}` when
 `A x + b = 0`, and otherwise it is the transpose image of the active signed-coordinate image from
 Proposition 3.24, evaluated at the residual `A x + b`. -/
 theorem euclidean_subdifferentialAt_affine_linf_eq_piecewise

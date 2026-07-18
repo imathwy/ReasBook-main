@@ -118,7 +118,7 @@ lemma translated_block_coordinate_slice_prox_point_eq_block_partial_prox_grad_po
     -- block update, unlike the unshifted slice at `0`.
     simpa [proximal_gradient_step, hgrad', interior_effective_domain_point_of_real] using
       (prox_grad_operator_eq_singleton
-        ((fun y : Ei i ↦ block_coordinate_slice f x i (y - x i)).toEReal)
+        ((fun y : Ei i ↦ block_coordinate_slice f x i (y - x i)).toExtendedReal)
         (g i)
         L
         (interior_effective_domain_point_of_real

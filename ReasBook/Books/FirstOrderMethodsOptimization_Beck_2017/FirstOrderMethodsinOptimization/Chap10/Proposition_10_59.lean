@@ -23,7 +23,7 @@ Domain sampling:
 The primitive data are only the vector `a : E`. The source proposition is therefore best stated
 directly on the existing Chapter 10 owner `Λ[toDualMap ℝ E a]`, with the normalized vector formula
 proved from the owner lemmas and the equality case in Cauchy-Schwarz, rather than by introducing a
-separate Euclidean-subdifferential bridge theorem as a second public layer. -/
+separate Euclidean-extendedRealSubdifferential bridge theorem as a second public layer. -/
 
 -- Proof sketch: membership of `x` in `Λ[toDualMap ℝ E a]` gives `‖x‖ = 1` and
 -- `⟪a, x⟫ = ‖a‖` via the owner lemmas `norm_eq_one_of_mem_primalCounterparts` and

@@ -10,7 +10,7 @@ Definition 11.7 is a `bridge/view` in the Chapter 11 block proximal-gradient dom
 Domain sampling identifies the relevant declarations as follows:
 - `block_partial_gradient_mapping` from Definition 11.4 is the Chapter 11 `source-facing` owner
   for the one-block residual `G_L^i(x)`;
-- the notation `(G[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i` is the canonical
+- the notation `(Gloc[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i` is the local
   theorem-surface spelling of that owner;
 - `block_partial_gradient_mapping_def` is the defining residual formula;
 - Theorem 10.7's zero-penalty specialization is the nearby canonical pattern for collapsing a
@@ -65,25 +65,25 @@ private def block_partial_gradient_mapping_local
 
 set_option quotPrecheck false in
 scoped[Gradient] notation3:max
-    "T[" L "; " g ", " block_gradient ", " hg_proper ", " hg_closed ", " hg_convex "]" =>
+    "Tloc[" L "; " g ", " block_gradient ", " hg_proper ", " hg_closed ", " hg_convex "]" =>
   fun x i ↦
     block_partial_prox_grad_point_local g block_gradient hg_proper hg_closed hg_convex L i x
 
 set_option quotPrecheck false in
 scoped[Gradient] notation3:max
-    "T[" L "; " g ", " block_gradient ", " hg_proper ", " hg_closed ", " hg_convex "]" x:arg
+    "Tloc[" L "; " g ", " block_gradient ", " hg_proper ", " hg_closed ", " hg_convex "]" x:arg
       i:arg =>
   block_partial_prox_grad_point_local g block_gradient hg_proper hg_closed hg_convex L i x
 
 set_option quotPrecheck false in
 scoped[Gradient] notation3:max
-    "G[" L "; " g ", " block_gradient ", " hg_proper ", " hg_closed ", " hg_convex "]" =>
+    "Gloc[" L "; " g ", " block_gradient ", " hg_proper ", " hg_closed ", " hg_convex "]" =>
   fun x i ↦
     block_partial_gradient_mapping_local g block_gradient hg_proper hg_closed hg_convex L i x
 
 set_option quotPrecheck false in
 scoped[Gradient] notation3:max
-    "G[" L "; " g ", " block_gradient ", " hg_proper ", " hg_closed ", " hg_convex "]" x:arg
+    "Gloc[" L "; " g ", " block_gradient ", " hg_proper ", " hg_closed ", " hg_convex "]" x:arg
       i:arg =>
   block_partial_gradient_mapping_local g block_gradient hg_proper hg_closed hg_convex L i x
 
@@ -93,7 +93,7 @@ theorem block_partial_prox_grad_point_eq_singleton_on_interior
     (L : PosReal) (i : ι) (x : BlockSpace) :
     prox[((((1 / L : PosReal) : EReal) • g i))]
       (x i - (1 / L : ℝ) • block_gradient i x) =
-      {(T[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i} := by
+      {(Tloc[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i} := by
   let hscaled :=
     scaled_function_proper_closed_convex_of_pos
       (g i) (hg_proper i) (hg_closed i) (hg_convex i) (1 / L)
@@ -112,10 +112,10 @@ theorem block_partial_prox_grad_point_eq_singleton_on_interior
 `L • (x_i - T_L^i(x))`. -/
 @[simp] theorem partial_gradient_mapping_apply
     (L : PosReal) (i : ι) (x : BlockSpace) :
-    (G[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i =
+    (Gloc[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i =
       (L : ℝ) •
         (x i -
-          (T[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i) := by
+          (Tloc[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i) := by
   rfl
 
 /-- Helper for Definition 11.7: when the `i`th block penalty is the zero function, the scaled
@@ -137,14 +137,14 @@ theorem scaled_zero_block_penalty_prox_eq_singleton
 one-block proximal-gradient point is the translated block gradient step. -/
 theorem block_partial_prox_grad_point_eq_gradient_step_of_block_penalty_eq_zero
     (L : PosReal) (i : ι) (hgi_zero : g i = 0) (x : BlockSpace) :
-    (T[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i =
+    (Tloc[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i =
       x i - (1 / L : ℝ) • block_gradient i x := by
   -- Compare the two singleton descriptions of the same proximal set: the Chapter 11 singleton
   -- owner identifies it with `{T_L^i(x)}`, while the zero-penalty specialization identifies it
   -- with the translated gradient step.
   apply Set.singleton_injective
   calc
-    {(T[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i} =
+    {(Tloc[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i} =
         prox[((((1 / L : PosReal) : EReal) • g i))]
           (x i - (1 / L : ℝ) • block_gradient i x) := by
       symm
@@ -158,10 +158,10 @@ theorem block_partial_prox_grad_point_eq_gradient_step_of_block_penalty_eq_zero
 chosen block gradient when the `i`th block penalty is zero. -/
 theorem partial_gradient_mapping_apply_eq_block_gradient_of_block_penalty_eq_zero
     (L : PosReal) (i : ι) (hgi_zero : g i = 0) (x : BlockSpace) :
-    (G[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i =
+    (Gloc[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i =
       block_gradient i x := by
   have hT :
-      (T[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i =
+      (Tloc[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i =
         x i - (1 / L : ℝ) • block_gradient i x := by
     exact block_partial_prox_grad_point_eq_gradient_step_of_block_penalty_eq_zero
       g block_gradient hg_proper hg_closed hg_convex L i hgi_zero x
@@ -170,10 +170,10 @@ theorem partial_gradient_mapping_apply_eq_block_gradient_of_block_penalty_eq_zer
   -- Rewrite the residual by the explicit prox point from the previous helper, then collapse the
   -- scalar factor `L • ((1 / L) • ·)` to the identity.
   calc
-    (G[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i =
+    (Gloc[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i =
         (L : ℝ) •
           (x i -
-            (T[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i) := by
+            (Tloc[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i) := by
       rw [partial_gradient_mapping_apply]
     _ = (L : ℝ) • ((1 / L : ℝ) • block_gradient i x) := by
       rw [hT]
@@ -186,13 +186,13 @@ theorem partial_gradient_mapping_apply_eq_block_gradient_of_block_penalty_eq_zer
 -- point itself, so the residual collapses to `block_gradient i x`.
 /-- Definition 11.7: if the `i`th block penalty vanishes identically, then the `i`th partial
 gradient mapping
-namely `x ↦ (G[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i`, coincides on
+namely `x ↦ (Gloc[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) x i`, coincides on
 `interior (effective_domain f)` with the map `x ↦ block_gradient i x`, which encodes
 `x ↦ ∇_i f(x)` in the standing block setup. -/
 theorem partial_gradient_mapping_eq_block_gradient_of_block_penalty_eq_zero
     (L : PosReal) (i : ι) (hgi_zero : g i = 0) :
     (fun x : interior (effective_domain f) ↦
-      (G[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) (x : BlockSpace) i) =
+      (Gloc[L; g, block_gradient, hg_proper, hg_closed, hg_convex]) (x : BlockSpace) i) =
       fun x : interior (effective_domain f) ↦ block_gradient i (x : BlockSpace) := by
   -- Function extensionality reduces the statement to the pointwise residual collapse proved
   -- above.

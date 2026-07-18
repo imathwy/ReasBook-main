@@ -1,4 +1,5 @@
 import Mathlib
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap10.Algorithm_10_13
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap10.Definition_10_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
@@ -8,67 +9,6 @@ noncomputable section
 universe u
 
 open scoped Gradient
-
-section FISTAHelpers
-
-variable {E : Type u}
-
-/-- Helper for Proposition 10.58: the standard FISTA momentum update
-`t ↦ (1 + √(1 + 4 t^2)) / 2`. -/
-def fista_momentum_update (t : ℝ) : ℝ :=
-  (1 + Real.sqrt (1 + 4 * t ^ (2 : ℕ))) / 2
-
-/-- Helper for Proposition 10.58: the canonical FISTA momentum sequence
-`t₀ = 1`, `t_(n+1) = (1 + √(1 + 4 t_n^2)) / 2`. -/
-def fista_momentum_sequence : ℕ → ℝ
-  | 0 => 1
-  | n + 1 => fista_momentum_update (fista_momentum_sequence n)
-
-/-- Helper for Proposition 10.58: the FISTA momentum update sends `0` to `1`. -/
-@[simp] theorem fista_momentum_update_zero :
-    fista_momentum_update 0 = 1 := by
-  simp [fista_momentum_update]
-
-/-- Helper for Proposition 10.58: the FISTA momentum sequence starts at `t₀ = 1`. -/
-@[simp] theorem fista_momentum_sequence_zero :
-    fista_momentum_sequence 0 = 1 :=
-  rfl
-
-/-- Helper for Proposition 10.58: the FISTA momentum sequence satisfies the standard recursion.
--/
-theorem fista_momentum_sequence_succ (n : ℕ) :
-    fista_momentum_sequence (n + 1) =
-      fista_momentum_update (fista_momentum_sequence n) :=
-  rfl
-
-/-- Helper for Proposition 10.58: a FISTA state stores the previous iterate, current iterate,
-and current momentum parameter. -/
-structure FISTAState (E : Type u) where
-  xPrev : E
-  xCur : E
-  tCur : ℝ
-
-section
-
-variable [AddCommGroup E]
-variable [Module ℝ E]
-
-/-- Helper for Proposition 10.58: the extrapolated point attached to a FISTA state. -/
-def fista_extrapolated_point (state : FISTAState E) : E :=
-  let tNext := fista_momentum_update state.tCur
-  state.xCur + ((state.tCur - 1) / tNext) • (state.xCur - state.xPrev)
-
-/-- Helper for Proposition 10.58: expanding `fista_extrapolated_point` recovers the textbook
-FISTA extrapolation formula. -/
-@[simp] theorem fista_extrapolated_point_eq (state : FISTAState E) :
-    fista_extrapolated_point state =
-      let tNext := fista_momentum_update state.tCur
-      state.xCur + ((state.tCur - 1) / tNext) • (state.xCur - state.xPrev) :=
-  rfl
-
-end
-
-end FISTAHelpers
 
 section
 
@@ -139,7 +79,7 @@ private def s_fista_aux_state_update
     FISTAState E :=
   let y := fista_extrapolated_point state
   { xPrev := state.xCur
-    xCur := T[s_fista_curvature_bound Lf α μ, (fun z ↦ f z + hμ z).toEReal, g]
+    xCur := T[s_fista_curvature_bound Lf α μ, (fun z ↦ f z + hμ z).toExtendedReal, g]
       (interior_effective_domain_point_of_real (fun z ↦ f z + hμ z) y)
     tCur := fista_momentum_update state.tCur }
 
@@ -224,7 +164,7 @@ smoothed objective evaluated at `y^k`. -/
 theorem s_fista_x_succ
     (k : ℕ) :
     s_fista_x f hμ g Lf α μ x0 (k + 1) =
-      T[s_fista_curvature_bound Lf α μ, (fun y ↦ f y + hμ y).toEReal, g]
+      T[s_fista_curvature_bound Lf α μ, (fun y ↦ f y + hμ y).toExtendedReal, g]
         (interior_effective_domain_point_of_real (fun y ↦ f y + hμ y)
           (s_fista_y f hμ g Lf α μ x0 k)) :=
   rfl

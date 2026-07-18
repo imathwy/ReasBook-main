@@ -16,7 +16,7 @@ variable {n : ℕ}
 local notation "E" => EuclideanSpace ℝ (Fin n)
 local notation "𝕊" => symmetricMatrices n
 
-/- Proposition 3.4 is `source-facing` in the chapter spectral-subdifferential API. The ambient
+/- Proposition 3.4 is `source-facing` in the chapter spectral-extendedRealSubdifferential API. The ambient
 owner object for the matrix variable is the canonical submodule `symmetricMatrices n = 𝕊^n` from
 Definition 1.30, while the spectral owner data comes from mathlib's
 `Matrix.IsHermitian.eigenvalues`. The public declarations below keep the book's
@@ -50,7 +50,7 @@ def symmetricRankOne (v : E) : 𝕊 :=
 -- `vᵀ(Y - X)v` as the Frobenius inner product with `vvᵀ`, then apply the Riesz identification
 -- between `𝕊^n` and its continuous dual, as packaged by `euclideanSubdifferentialAt`.
 /-- Proposition 3.4: if `v` is a unit eigenvector of the symmetric matrix `X` for the largest
-eigenvalue, then the rank-one matrix `vvᵀ` belongs to the Euclidean subdifferential of the
+eigenvalue, then the rank-one matrix `vvᵀ` belongs to the Euclidean extendedRealSubdifferential of the
 maximum-eigenvalue function at `X`; equivalently, via the Frobenius trace-pairing Riesz
 identification, it represents a dual subgradient at `X`. -/
 theorem symmetricRankOne_mem_euclideanSubdifferentialAt_symmetricMaxEigenvalue

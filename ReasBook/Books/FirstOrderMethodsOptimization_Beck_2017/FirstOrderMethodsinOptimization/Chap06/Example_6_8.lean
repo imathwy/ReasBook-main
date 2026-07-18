@@ -22,13 +22,13 @@ finite-dimensional Euclidean product, specializing to `ℝ^n` when `ι = Fin n`.
 against Proposition 3.17, Definition 6.3, Lemma 6.5, and Theorem 6.6 shows that the right owner
 split is:
 
-- `source-facing`: the regularizer `x ↦ λ ‖x‖₁`,
+- `source-facing`: the regularizer `x ↦ λ l1n[x]`,
 - `core/canonical`: mathlib's `WithLp 1` norm on the finite product, together with the Chapter 6
   owners `absolute_value_penalty`, `PiLp.separableSum`, and
   `prox_separableSum_eq_singleton_iff_coordinatewise`,
-- `bridge/view`: the coordinate formula `‖x‖₁ = ∑ i, |x i|`.
+- `bridge/view`: the coordinate formula `l1n[x] = ∑ i, |x i|`.
 
-Accordingly, this file keeps the source-facing notation `‖x‖₁`, with the raw owner exposed as the
+Accordingly, this file keeps the source-facing notation `l1n[x]`, with the raw owner exposed as the
 short canonical name `EuclideanSpace.l1Norm`. Its coordinate sum formula is derived API. -/
 
 namespace EuclideanSpace
@@ -47,16 +47,16 @@ abbrev l1Norm (x : E) : ℝ :=
 end EuclideanSpace
 
 /-- Textbook notation for the Euclidean `ℓ¹` norm on a finite product. -/
-notation "‖" x "‖₁" => EuclideanSpace.l1Norm x
+notation "l1n[" x "]" => EuclideanSpace.l1Norm x
 
 -- Proof sketch: unfold `separableSum` and `absolute_value_penalty`, then identify the resulting
 -- finite sum of absolute values with the `ℓ¹` norm in Euclidean coordinates.
 /-- Bridge theorem: the canonical separable-sum owner for the scalar penalty `t ↦ λ |t|` is the
-Euclidean `ℓ¹` regularizer `x ↦ λ ‖x‖₁` on a finite product, specializing to `ℝ^n` when
+Euclidean `ℓ¹` regularizer `x ↦ λ l1n[x]` on a finite product, specializing to `ℝ^n` when
 `ι = Fin n`. -/
 theorem separableSum_absolute_value_penalty_eq_l1_norm_penalty
     (lam : ℝ) (x : E) :
-    separableSum (fun _ : ι ↦ absolute_value_penalty lam) x = ((lam * ‖x‖₁ : ℝ) : EReal) := by
+    separableSum (fun _ : ι ↦ absolute_value_penalty lam) x = ((lam * l1n[x] : ℝ) : EReal) := by
   rw [separableSum, EuclideanSpace.l1Norm_eq_sum_abs]
   simp only [absolute_value_penalty_apply]
   have hsum :
@@ -82,12 +82,12 @@ theorem separableSum_absolute_value_penalty_eq_l1_norm_penalty
 -- The source's strict
 -- positivity assumption is redundant for the minimizer-set identity itself, so the canonical Lean
 -- statement keeps only `0 ≤ λ`.
-/-- Example 6.8: for the Euclidean `ℓ¹` regularizer `x ↦ λ ‖x‖₁` on a finite Euclidean product,
+/-- Example 6.8: for the Euclidean `ℓ¹` regularizer `x ↦ λ l1n[x]` on a finite Euclidean product,
 specializing to `ℝ^n` when `ι = Fin n`, the proximal mapping at `x` is the singleton obtained by
 coordinatewise soft-thresholding. -/
 theorem prox_euclidean_l1_eq_singleton_softThreshold
     {lam : ℝ} (hlam : 0 ≤ lam) (x : E) :
-    prox[fun y : E ↦ ((lam * ‖y‖₁ : ℝ) : EReal)] x =
+    prox[fun y : E ↦ ((lam * l1n[y] : ℝ) : EReal)] x =
       {T_[lam] x} := by
   have hproper_abs : IsProperExtendedRealFunction (absolute_value_penalty lam) := by
     refine ⟨?_, ?_⟩
@@ -98,7 +98,7 @@ theorem prox_euclidean_l1_eq_singleton_softThreshold
       simp [absolute_value_penalty_apply]
   have hpen :
       (PiLp.separableSum (fun _ : ι ↦ absolute_value_penalty lam) : E → EReal) =
-        fun y : E ↦ ((lam * ‖y‖₁ : ℝ) : EReal) :=
+        fun y : E ↦ ((lam * l1n[y] : ℝ) : EReal) :=
     funext (separableSum_absolute_value_penalty_eq_l1_norm_penalty lam)
   simpa [hpen] using
     (prox_separableSum_eq_singleton_iff_coordinatewise

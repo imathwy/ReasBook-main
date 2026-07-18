@@ -600,7 +600,7 @@ theorem greedy_projection_method_best_max_distance_le
               (projected_subgradient_method Set.univ Set.univ_nonempty isClosed_univ convex_univ
                 g t ⟨x0, Set.mem_univ x0⟩ n)) :
           Module.Dual ℝ E) ∈
-            subdifferential
+            extendedRealSubdifferential
               (fun y : E ↦ (convex_feasibility_max_distance S y : EReal))
               ((projected_subgradient_method Set.univ Set.univ_nonempty isClosed_univ convex_univ
                 g t ⟨x0, Set.mem_univ x0⟩ n : Set.univ) : E) := by

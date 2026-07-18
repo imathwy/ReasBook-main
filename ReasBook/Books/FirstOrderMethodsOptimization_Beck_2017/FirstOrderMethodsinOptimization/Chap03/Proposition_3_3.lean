@@ -20,10 +20,10 @@ variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 -- Proof sketch: this is the closed-unit-ball specialization of the owner theorem
 -- `subdifferential_extended_indicator_eq_normal_cone`.
-/-- Proposition 3.3: the subdifferential of the indicator of the closed unit ball is its normal
+/-- Proposition 3.3: the extendedRealSubdifferential of the indicator of the closed unit ball is its normal
 cone. -/
 theorem subdifferential_extended_indicator_closed_unit_ball_eq_normal_cone (x : E) :
-    subdifferential (extendedIndicator (closedBall (0 : E) 1)) x =
+    extendedRealSubdifferential (extendedIndicator (closedBall (0 : E) 1)) x =
       normal_cone (closedBall (0 : E) 1) x := by
   simpa using
     subdifferential_extended_indicator_eq_normal_cone (closedBall (0 : E) 1) x

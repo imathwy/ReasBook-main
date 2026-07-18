@@ -62,7 +62,7 @@ theorem example_8_19_isConstrainedConvexProblem :
 theorem example_8_19_lipschitz_constant_pos :
     0 < (7.2111 : ℝ) := sorry
 
--- Proof sketch: use the affine-`ℓ¹` subdifferential description from Proposition 3.19 together
+-- Proof sketch: use the affine-`ℓ¹` extendedRealSubdifferential description from Proposition 3.19 together
 -- with the four possible sign choices of the two residual coordinates to reduce every strong-dual
 -- subgradient to one of four explicit vectors. Then bound each of their Euclidean norms by
 -- `7.2111`.
@@ -98,7 +98,7 @@ def example_8_19_subgradient_direction (x : E) : E :=
 -- Proof sketch: apply Proposition 3.19 (2) to the affine `ℓ¹` objective with matrix
 -- `example_8_19_matrix` and zero offset, then rewrite the objective through
 -- `example_8_19_objective_eq_l1_matrix_norm`.
-/-- Example 8.19 (7): the chosen vector `v(x)` belongs to the Euclidean subdifferential
+/-- Example 8.19 (7): the chosen vector `v(x)` belongs to the Euclidean extendedRealSubdifferential
 `∂ f(x)`. -/
 theorem example_8_19_subgradient_direction_mem (x : E) :
     example_8_19_subgradient_direction x ∈

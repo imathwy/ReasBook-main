@@ -9,10 +9,10 @@ section
 
 /- Lemma 5.22 is `source-facing`: it asks for a scalar-valued selection of one-dimensional
 subgradients along an interval. The owner abstractions already exist upstream as Chapter 2's
-`is_convex_function` and Chapter 3's `subdifferential`; the scalar slope view is only a
+`is_convex_function` and Chapter 3's `extendedRealSubdifferential`; the scalar slope view is only a
 `bridge/view`, obtained by identifying `g : ℝ` with the continuous linear functional `g • 1`. -/
 
-/-- A real slope `g` belongs to the one-dimensional subdifferential of `f` at `t` exactly when the
+/-- A real slope `g` belongs to the one-dimensional extendedRealSubdifferential of `f` at `t` exactly when the
 supporting-line inequality with slope `g` holds at every point. This is the scalar bridge to the
 chapter owner `strongDualSubdifferential`. -/
 theorem real_slope_mem_strongDualSubdifferential_iff
@@ -22,11 +22,11 @@ theorem real_slope_mem_strongDualSubdifferential_iff
 
 -- Proof sketch: the interval hypothesis places every interior point `t ∈ (a, b)` in the relative
 -- interior of `dom(f)`, so the Chapter 3 existence theorem gives a nonempty one-dimensional
--- subdifferential there. Choosing the monotone left-derivative selection `h(t) ∈ ∂ f(t)` and
+-- extendedRealSubdifferential there. Choosing the monotone left-derivative selection `h(t) ∈ ∂ f(t)` and
 -- applying the fundamental theorem for monotone functions on `[a, b]` yields the integral formula.
 /-- Lemma 5.22: if a closed convex function `f : ℝ → (-∞, ∞]` never takes the value `-∞` and is
 finite on `[a, b]` with `a ≤ b`, then there exists a real-valued selection of the one-dimensional
-subdifferential on `(a, b)` whose interval integral equals the endpoint difference
+extendedRealSubdifferential on `(a, b)` whose interval integral equals the endpoint difference
 `(f b).toReal - (f a).toReal`. -/
 theorem exists_subgradient_selection_eq_intervalIntegral
     (f : ℝ → EReal) (hne_bot : ∀ x, f x ≠ ⊥) (h_closed : LowerSemicontinuous f)

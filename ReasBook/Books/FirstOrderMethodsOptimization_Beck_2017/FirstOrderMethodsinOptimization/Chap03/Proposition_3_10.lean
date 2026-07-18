@@ -15,12 +15,12 @@ section
 variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
 
 /- Proposition 3.10 is a `bridge/view` reformulation of the Chapter 3 max formula from
-`Definition_3_9`: the owner notions remain `directional_derivative` and `subdifferential`, while
+`Definition_3_9`: the owner notions remain `directional_derivative` and `extendedRealSubdifferential`, while
 the support-function expression is the Chapter 2 canonical reformulation. -/
 recall support_function
 recall directional_derivative
 recall is_convex_function
-recall subdifferential
+recall extendedRealSubdifferential
 recall finite_domain
 recall directional_derivative_isGreatest_subgradient_pairings_at_interior_point
 recall support_function_eq_of_isGreatest_image
@@ -32,12 +32,12 @@ recall support_function_eq_of_isGreatest_image
 -- qualification is `x ∈ interior (finite_domain f)`, from which the older global no-`⊥`
 -- hypothesis and the effective-domain interior hypothesis are derived internally.
 /-- Proposition 3.10: for a convex extended-real-valued function, at a point in the interior of
-its finite domain the directional derivative equals the support function of the subdifferential
+its finite domain the directional derivative equals the support function of the extendedRealSubdifferential
 evaluated at the canonical functional `Module.Dual.eval ℝ E d`. -/
 theorem directional_derivative_eq_support_function_subdifferential_at_interior_point
     {f : E → EReal} {x d : E} (hconvex : is_convex_function f)
     (hx : x ∈ interior (finite_domain f)) :
-    directional_derivative f x d = support_function (subdifferential f x) (eval ℝ E d) := by
+    directional_derivative f x d = support_function (extendedRealSubdifferential f x) (eval ℝ E d) := by
   have hx_effective : x ∈ interior (effective_domain f) :=
     interior_mono (fun _ hz ↦ hz.1) hx
   have h_ne_bot : ∀ y, f y ≠ ⊥ := by
@@ -97,7 +97,7 @@ theorem directional_derivative_eq_support_function_subdifferential_at_interior_p
       simp
     exact hz_finite.2 (le_bot_iff.mp <| h_rhs_bot ▸ hz_le)
   symm
-  refine support_function_eq_of_isGreatest_image (subdifferential f x) (eval ℝ E d) ?_
+  refine support_function_eq_of_isGreatest_image (extendedRealSubdifferential f x) (eval ℝ E d) ?_
   simpa [eval_apply] using
     directional_derivative_isGreatest_subgradient_pairings_at_interior_point
       h_ne_bot hconvex hx_effective

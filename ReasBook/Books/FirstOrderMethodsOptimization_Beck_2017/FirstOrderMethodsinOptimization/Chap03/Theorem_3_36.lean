@@ -25,7 +25,7 @@ recall optimality_residual
 
 /-- A scalar `lambda0` together with inequality multipliers `lambda` satisfies the Fritz-John
 conditions for the convex problem with objective `f`, constraints `g`, and candidate optimizer
-`xstar` when the multipliers are nonnegative, not all zero, satisfy the subdifferential
+`xstar` when the multipliers are nonnegative, not all zero, satisfy the extendedRealSubdifferential
 stationarity condition, and obey complementary slackness. -/
 def IsFritzJohnMultiplier
     {m : ℕ} (f : E → ℝ) (g : Fin m → E → ℝ) (xstar : E)
@@ -67,7 +67,7 @@ variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensio
 /-- Theorem 3.36: Fritz-John necessary optimality conditions. If `xstar` is a feasible optimal
 solution of the convex problem `min f x` subject to `g i x ≤ 0` for all `i`, then there exist
 nonnegative multipliers `lambda0` and `lambda` that are not all zero and satisfy the
-subdifferential stationarity condition together with complementary slackness at `xstar`. -/
+extendedRealSubdifferential stationarity condition together with complementary slackness at `xstar`. -/
 theorem exists_fritz_john_multipliers_of_isMinOn
     {m : ℕ} (f : E → ℝ) (g : Fin m → E → ℝ) (xstar : E)
     (hf : ConvexOn ℝ Set.univ f) (hg : ∀ i : Fin m, ConvexOn ℝ Set.univ (g i))

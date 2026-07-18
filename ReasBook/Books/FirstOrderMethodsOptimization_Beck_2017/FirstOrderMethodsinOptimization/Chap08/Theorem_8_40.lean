@@ -1,4 +1,5 @@
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap03.Proposition_3_12
+import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Algorithm_8_13
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Assumption_8_7
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Assumption_8_38
 import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization.Chap08.Definition_8_8
@@ -21,64 +22,13 @@ variable (h_problem : IsConstrainedConvexProblem (finite_sum_objective fi) C XSt
 variable (h_incremental : IncrementalProjectedSubgradientAssumptions fi C)
 variable (g : ℕ → C → Fin m → E) (t : ℕ → ℝ) (x0 : C)
 
-/-- The inner iterates `x^{k,i}` of the incremental projected subgradient method, obtained by
-starting from the outer iterate `x^k = xk` and projecting after each of the first `i` component
-subgradient steps at cycle `k`. -/
-def incremental_projected_subgradient_inner_iterates {m : ℕ} (C : Set E)
-    (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C) (hC_convex : Convex ℝ C)
-    (g : ℕ → C → Fin m → E) (t : ℕ → ℝ) (k : ℕ) (xk : C) : ℕ → C
-  | 0 => xk
-  | i + 1 =>
-      let xki :=
-        incremental_projected_subgradient_inner_iterates
-          C hC_nonempty hC_closed hC_convex g t k xk i
-      if hi : i < m then
-        metricProjection C hC_nonempty hC_closed.isComplete hC_convex
-          ((xki : E) - t k • g k xki ⟨i, hi⟩)
-      else
-        xki
-
--- Proof sketch: unfold the recursive definition of
--- `incremental_projected_subgradient_inner_iterates` at `0`.
-/-- The inner incremental projected-subgradient cycle starts from the prescribed outer iterate
-`x^k`. -/
-@[simp] theorem incremental_projected_subgradient_inner_iterates_zero
-    {m : ℕ} {C : Set E} {hC_nonempty : C.Nonempty} {hC_closed : IsClosed C}
-    {hC_convex : Convex ℝ C} {g : ℕ → C → Fin m → E} {t : ℕ → ℝ} {k : ℕ} {xk : C} :
-    incremental_projected_subgradient_inner_iterates
-      C hC_nonempty hC_closed hC_convex g t k xk 0 = xk := sorry
-
-/-- The outer iterate sequence `x^k` of the incremental projected subgradient method, where
-`x^{k+1}` is obtained by running one full inner cycle of `m` projected component-subgradient steps
-starting from `x^k`. -/
-def incremental_projected_subgradient_method {m : ℕ} (C : Set E)
-    (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C) (hC_convex : Convex ℝ C)
-    (g : ℕ → C → Fin m → E) (t : ℕ → ℝ) (x0 : C) : ℕ → C
-  | 0 => x0
-  | k + 1 =>
-      let xk :=
-        incremental_projected_subgradient_method
-          C hC_nonempty hC_closed hC_convex g t x0 k
-      incremental_projected_subgradient_inner_iterates
-        C hC_nonempty hC_closed hC_convex g t k xk m
-
--- Proof sketch: unfold the recursive definition of
--- `incremental_projected_subgradient_method` at `0`.
-/-- The incremental projected-subgradient method starts from the prescribed feasible initial
-point. -/
-@[simp] theorem incremental_projected_subgradient_method_zero
-    {m : ℕ} {C : Set E} {hC_nonempty : C.Nonempty} {hC_closed : IsClosed C}
-    {hC_convex : Convex ℝ C} {g : ℕ → C → Fin m → E} {t : ℕ → ℝ} {x0 : C} :
-    incremental_projected_subgradient_method
-      C hC_nonempty hC_closed hC_convex g t x0 0 = x0 := sorry
-
 local notation "x[" k "]" =>
   incremental_projected_subgradient_method
-    C h_problem.feasible_nonempty h_problem.feasible_closed h_problem.feasible_convex g t x0 k
+    C h_problem.feasible_nonempty h_problem.feasible_closed h_problem.feasible_convex t g x0 k
 
 local notation "x[" k "," i "]" =>
-  incremental_projected_subgradient_inner_iterates
-    C h_problem.feasible_nonempty h_problem.feasible_closed h_problem.feasible_convex g t k x[k] i
+  incremental_projected_subgradient_inner_iterate
+    C h_problem.feasible_nonempty h_problem.feasible_closed h_problem.feasible_convex t g k x[k] i
 
 -- Proof sketch: apply Lemma 8.39 to an arbitrary optimal point `xStar ∈ XStar`, sum the
 -- fundamental inequality from `0` through `k`, and use the defining minimality of
@@ -93,7 +43,7 @@ first `k + 1` iterates converges to `0`. -/
 theorem incremental_projected_subgradient_best_value_gap_tendsto_zero_of_stepsize_ratio
     (h_subgrad :
       ∀ k (i : Fin m),
-        toDualMap ℝ E (g k x[k, i] i) ∈ strongDualSubdifferential (fi i) (x[k, i] : E))
+        toDualMap ℝ E (g k x[k,i] i) ∈ strongDualSubdifferential (fi i) (x[k,i] : E))
     (h_stepsize_pos : ∀ n, 0 < t n)
     (h_ratio :
       Filter.Tendsto
@@ -122,7 +72,7 @@ theorem incremental_projected_subgradient_best_value_gap_le_of_half_squared_diam
     (hm : 0 < m)
     (h_subgrad :
       ∀ k (i : Fin m),
-        toDualMap ℝ E (g k x[k, i] i) ∈ strongDualSubdifferential (fi i) (x[k, i] : E))
+        toDualMap ℝ E (g k x[k,i] i) ∈ strongDualSubdifferential (fi i) (x[k,i] : E))
     (hΘ :
       ∀ x ∈ C, ∀ y ∈ C, (1 / 2 : ℝ) * ‖x - y‖ ^ (2 : ℕ) ≤ Θ)
     (h_stepsize :

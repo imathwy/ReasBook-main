@@ -27,7 +27,7 @@ Domain sampling:
 - `projected_subgradient_method` and `projected_subgradient_method_succ` from Algorithm 8.3;
 - `PosReal` from Definition 6.7;
 - `isMinOn_mirror_c_half_squared_norm_indicator_update_iff_eq_projection` from Text 9.11;
-- `projectionPoint` from Proposition 3.12 for the ambient-space projection formula.
+- `closedConvexProjectionPoint` from Proposition 3.12 for the ambient-space projection formula.
 
 Accordingly, this file deletes the duplicate local owner and states Definition 10.4.4 directly as
 the gradient specialization of the existing Chapter 8 owner. -/
@@ -65,7 +65,7 @@ projection formula `x^(k+1) = P_C(x^k - t_k ∇ f(x^k))`. -/
 theorem projected_gradient_method_succ_coe (k : ℕ) :
     (xpg (k + 1) : E) =
       Pp[C, hC_nonempty, hC_closed, hC_convex] ((xpg k : E) - (t k : ℝ) • ∇ f (xpg k : E)) := by
-  simpa [projectionPoint] using
+  simpa [closedConvexProjectionPoint] using
     congrArg (fun y : C ↦ (y : E)) (projected_gradient_method_succ f C hC_nonempty hC_closed
       hC_convex t x0 k)
 

@@ -18,7 +18,7 @@ variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [Complete
 Domain sampling points to these existing owners:
 - `mirror_c_update_objective` from Definition 9.6 for the source-facing one-step Mirror-C update;
 - `mirror_c_problem_functional` from Definition 9.6 for the linear perturbation term;
-- Chapter 9's canonical Bregman owner `bregmanDistance` / `B[ω]` from Definition 9.2;
+- Chapter 9's canonical Bregman owner `extendedRealBregmanDistance` / `B[ω]` from Definition 9.2;
 - the defining equations `mirror_c_update_objective_apply` and `bregmanDistance_def`, which already
   encode the gradient term through the canonical owners.
 
@@ -56,7 +56,7 @@ theorem mirror_c_update_objective_add_constant_eq_bregman_form
 -- Proof sketch: rewrite the equation-(9.33) objective using
 -- `mirror_c_update_objective_add_constant_eq_bregman_form`; the two functions differ by the
 -- `x`-independent constant `⟪∇ω(x^k), x^k⟫ - ω(x^k)`, so they have the same minimizers on
--- `Set.univ`. No Bregman-potential or subdifferential-domain hypotheses are needed because the
+-- `Set.univ`. No Bregman-potential or extendedRealSubdifferential-domain hypotheses are needed because the
 -- claim is only about the totalized definitions already present upstream.
 /-- Text 9.10: the Mirror-C update formula can be rewritten from the linearized objective
 in equation `(9.32)` to the Bregman-distance objective in equation `(9.33)` without changing the

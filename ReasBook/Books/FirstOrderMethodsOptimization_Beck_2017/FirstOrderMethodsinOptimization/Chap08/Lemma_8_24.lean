@@ -27,7 +27,7 @@ distance to an optimal point plus one half of the accumulated squared subgradien
 theorem projected_subgradient_method_weighted_objective_gap_sum_le
     (h_subgrad :
       ∀ k,
-        (toDualMap ℝ E (g k (x[k])) : Module.Dual ℝ E) ∈ subdifferential f (x[k] : E))
+        (toDualMap ℝ E (g k (x[k])) : Module.Dual ℝ E) ∈ extendedRealSubdifferential f (x[k] : E))
     {xStar : E} (hxStar : xStar ∈ XStar) (k : ℕ) :
     Finset.sum (Finset.range (k + 1)) (fun n ↦ t n * ((f (x[n] : E)).toReal - fOpt)) ≤
       (1 / 2 : ℝ) * ‖(x0 : E) - xStar‖ ^ 2 +

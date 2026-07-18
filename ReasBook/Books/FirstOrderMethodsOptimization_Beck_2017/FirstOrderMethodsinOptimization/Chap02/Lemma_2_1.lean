@@ -16,14 +16,14 @@ noncomputable abbrev support_function_primal (C : Set E) : E → EReal :=
   fun x ↦ support_function C (InnerProductSpace.toDualMap ℝ E x)
 
 /-- Textbook notation for the primal-space support function. -/
-notation "σ[" C "]" => support_function_primal C
+notation "σp[" C "]" => support_function_primal C
 
 -- Proof sketch: unfold `support_function_primal`; this is exactly the specialization of
 -- `support_function` along `InnerProductSpace.toDualMap`.
-/-- Evaluating `σ[C]` at `x` is the same as evaluating the chapter owner `support_function C` at
+/-- Evaluating `σp[C]` at `x` is the same as evaluating the chapter owner `support_function C` at
 the dual vector corresponding to `x`. -/
 @[simp] theorem support_function_primal_apply (C : Set E) (x : E) :
-    σ[C] x = support_function C (InnerProductSpace.toDualMap ℝ E x) :=
+    σp[C] x = support_function C (InnerProductSpace.toDualMap ℝ E x) :=
   rfl
 
 -- Proof sketch: specialize the chapter owner `support_function` along the canonical map
@@ -31,18 +31,18 @@ the dual vector corresponding to `x`. -/
 -- pairings `c ↦ ⟪x, c⟫` over `C`.
 /-- The inner-product-space support-function formula is the specialization of the chapter owner
 `support_function` along `InnerProductSpace.toDualMap`, written on the source-facing owner
-`σ[C]`. -/
+`σp[C]`. -/
 theorem support_function_eq_sSup (C : Set E) (x : E) :
-    σ[C] x = sSup ((fun c : E ↦ (inner ℝ x c : EReal)) '' C) := by
+    σp[C] x = sSup ((fun c : E ↦ (inner ℝ x c : EReal)) '' C) := by
   simpa using support_function_apply C (InnerProductSpace.toDualMap ℝ E x)
 
 -- Proof sketch: the specialized support function is the chapter owner support function on the dual
 -- space, precomposed with the continuous linear map `InnerProductSpace.toDualMap`; closedness and
 -- convexity are preserved under this specialization.
 /-- Lemma 2.1: the support function of a subset of a real inner product space, expressed via the
-chapter owner support function on the dual space and written on the source-facing owner `σ[C]`, is
+chapter owner support function on the dual space and written on the source-facing owner `σp[C]`, is
 closed, i.e. lower semicontinuous, and convex in the chapter owner sense `is_convex_function`. -/
 theorem support_function_closed_and_convex (C : Set E) :
-    LowerSemicontinuous (σ[C]) ∧ is_convex_function (σ[C]) := sorry
+    LowerSemicontinuous (σp[C]) ∧ is_convex_function (σp[C]) := sorry
 
 end

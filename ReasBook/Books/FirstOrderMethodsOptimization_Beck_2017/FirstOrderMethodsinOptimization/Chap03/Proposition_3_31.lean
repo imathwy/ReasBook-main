@@ -53,7 +53,7 @@ def IsPossibleMedian (a : Fin n → ℝ) (x : ℝ) : Prop :=
 
 -- Proof sketch: order the sample values and analyze the one-dimensional convex objective
 -- `fermatWeberObjective (fun _ ↦ 1) a`, equivalently `x ↦ ∑ i, |x - a i|`. Using the
--- subdifferential formula for `|·|` together with the finite sum rule and Fermat's optimality
+-- extendedRealSubdifferential formula for `|·|` together with the finite sum rule and Fermat's optimality
 -- condition, one shows that `x` is a global minimizer exactly when at least half of the sample
 -- lies on each side of `x`, which is the defining condition for `IsPossibleMedian a x`.
 /-- Proposition 3.31: a real number is a possible median of a finite real sample if and only if it
