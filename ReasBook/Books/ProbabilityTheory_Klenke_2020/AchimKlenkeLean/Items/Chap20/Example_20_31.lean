@@ -11,10 +11,10 @@ universe u
 
 variable {E : Type u} [MeasurableSpace E]
 
-local instance : MeasurableSpace (Stream' E) :=
+local instance example2031MeasurableSpaceStream : MeasurableSpace (Stream' E) :=
   inferInstanceAs (MeasurableSpace (ℕ → E))
 
-local instance (μ : Measure E) [IsProbabilityMeasure μ] :
+local instance example2031ProbabilityMeasureFamily (μ : Measure E) [IsProbabilityMeasure μ] :
     ∀ n : ℕ, IsProbabilityMeasure ((fun _ : ℕ ↦ μ) n) :=
   fun _ ↦ inferInstance
 

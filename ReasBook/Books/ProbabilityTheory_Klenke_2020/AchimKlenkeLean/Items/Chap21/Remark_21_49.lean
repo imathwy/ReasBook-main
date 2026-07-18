@@ -19,19 +19,6 @@ namespace ProbabilityTheory
 
 variable {Ω : Type u} [mΩ : MeasurableSpace Ω]
 
-local notation "FellerBranchingPathBrownianMotion" =>
-  (fun {Ω' : Type u} _ P ℱ W ↦
-    IsBrownianMotionWithFiltration ℱ P (fun t ω ↦ W ω t))
-
-local notation "FellerBranchingPathEquation" =>
-  (fun {Ω' : Type u} _ P ℱ ξ W X ↦
-    ∃ _ : IsProbabilityMeasure P,
-      IsGeneralizedNDimensionalDiffusion ℱ P ξ
-        (fun t ω ↦ W ω t)
-        (oneDimensionalDiffusion (cirDiffusionCoeff 2))
-        (oneDimensionalDrift (cirDriftCoeff 0 0))
-        (fun t ω ↦ X ω t))
-
 -- Proof sketch: use the higher centered moment formulas from Lemma 21.47 to obtain increment
 -- bounds of order strictly larger than `2`, then apply the one-parameter Kolmogorov continuity
 -- criterion to the branching diffusion. The resulting version is almost surely locally Hölder of
@@ -53,8 +40,10 @@ theorem branchingDiffusion_paths_locallyHolderContinuous_subhalf
 `cirDiffusionCoeff 2` and `cirDriftCoeff 0 0`, has a unique strong solution. -/
 theorem fellerBranchingSDE_hasUniqueStrongSolution (x : NNReal) :
     HasUniqueStrongSolution
-      FellerBranchingPathBrownianMotion
-      FellerBranchingPathEquation
-      (Measure.dirac (oneDimensionalInitialState (x : ℝ))) := sorry
+      GeneralizedSDEBrownianMotion
+      (SolvesStrongGeneralizedSDE
+        (oneDimensionalDiffusion (cirDiffusionCoeff 2))
+        (oneDimensionalDrift (cirDriftCoeff 0 0)))
+      (Measure.dirac (oneDimensionalState (x : ℝ))) := sorry
 
 end ProbabilityTheory

@@ -14,7 +14,7 @@ variable {V : Type u} [AddCommGroup V] [Module ℝ V] [c : PreInnerProductSpace.
 
 attribute [local instance] InnerProductSpace.Core.toSeminormedAddCommGroup
 
-local instance : InnerProductSpace ℝ V := InnerProductSpace.ofCore c
+local instance lemma723InnerProductSpace : InnerProductSpace ℝ V := InnerProductSpace.ofCore c
 
 /-- Lemma 7.23: A semi-inner product on a real vector space is continuous for the product
 topology coming from the pseudo-metric `d (x, y) = ⟪x - y, x - y⟫_ℝ ^ (1 / 2)`. -/

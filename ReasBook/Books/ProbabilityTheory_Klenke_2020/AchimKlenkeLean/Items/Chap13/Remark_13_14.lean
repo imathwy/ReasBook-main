@@ -71,20 +71,21 @@ section RadonTopology
 
 variable {E : Type u} [TopologicalSpace E] [MeasurableSpace E]
 
-local notation "RadonMeasureSubtype" => { μ : Measure E // IsRadonMeasure μ }
+private abbrev RadonMeasureSubtype (E : Type u) [TopologicalSpace E] [MeasurableSpace E] :=
+  { μ : Measure E // IsRadonMeasure μ }
 
-instance instIsRadonMeasure (μ : RadonMeasureSubtype) : IsRadonMeasure (μ : Measure E) :=
+instance instIsRadonMeasure (μ : RadonMeasureSubtype E) : IsRadonMeasure (μ : Measure E) :=
   μ.2
 
-instance instIsLocallyFiniteMeasureRadonMeasureSubtype (μ : RadonMeasureSubtype) :
+instance instIsLocallyFiniteMeasureRadonMeasureSubtype (μ : RadonMeasureSubtype E) :
     IsLocallyFiniteMeasure (μ : Measure E) :=
   IsRadonMeasure.locallyFinite μ.2
 
 /-- Integration against a compactly supported continuous real-valued test function on `𝓜(E)`. -/
-def radonVagueIntegral (f : C_c(E, ℝ)) : RadonMeasureSubtype → ℝ :=
+def radonVagueIntegral (f : C_c(E, ℝ)) : RadonMeasureSubtype E → ℝ :=
   fun μ ↦ ∫ x, f x ∂(μ : Measure E)
 
-@[simp] theorem radonVagueIntegral_apply (f : C_c(E, ℝ)) (μ : RadonMeasureSubtype) :
+@[simp] theorem radonVagueIntegral_apply (f : C_c(E, ℝ)) (μ : RadonMeasureSubtype E) :
     radonVagueIntegral f μ = ∫ x, f x ∂(μ : Measure E) :=
   rfl
 
@@ -119,12 +120,12 @@ end MeasureTheory
 convergence notion by `Tendsto`; compare
 `tendsto_iff_radonMeasureVaguelyConvergesTo`. -/
 @[reducible] def vagueTopology (E : Type u) [TopologicalSpace E] [MeasurableSpace E] :
-    TopologicalSpace { μ : Measure E // IsRadonMeasure μ } :=
+    TopologicalSpace (RadonMeasureSubtype E) :=
   ⨅ f : C_c(E, ℝ),
     TopologicalSpace.induced (radonVagueIntegral f) inferInstance
 
 instance instTopologicalSpaceRadonMeasureSubtype :
-    TopologicalSpace { μ : Measure E // IsRadonMeasure μ } :=
+    TopologicalSpace (RadonMeasureSubtype E) :=
   vagueTopology E
 
 variable {X : Type v} [TopologicalSpace X]
@@ -134,12 +135,12 @@ variable {X : Type v} [TopologicalSpace X]
 /-- A map into `𝓜(E)` is continuous for the vague topology exactly when every compactly supported
 continuous test-function integral is continuous. -/
 theorem continuous_iff_continuous_vague_integral
-    {μs : X → RadonMeasureSubtype} :
+    {μs : X → RadonMeasureSubtype E} :
     Continuous μs ↔
       ∀ f : C_c(E, ℝ), Continuous (radonVagueIntegral f ∘ μs) := by
   simp [continuous_iInf_rng, continuous_induced_rng]
 
-variable {μ : RadonMeasureSubtype} {μs : ℕ → RadonMeasureSubtype}
+variable {μ : RadonMeasureSubtype E} {μs : ℕ → RadonMeasureSubtype E}
 
 -- Proof sketch: `vagueTopology` is the infimum of the induced topologies from the integral maps
 -- `μ ↦ ∫ f dμ`, so convergence is equivalent to convergence of every such coordinate map.
@@ -161,23 +162,22 @@ theorem tendsto_iff_forall_vagueIntegral_tendsto :
 /-- On a locally compact Hausdorff space, the vague topology on `𝓜(E)` is Hausdorff. -/
 theorem vagueTopology_t2Space_of_locallyCompact
     [LocallyCompactSpace E] [T2Space E] :
-    T2Space RadonMeasureSubtype := sorry
+    T2Space (RadonMeasureSubtype E) := sorry
 
 -- Proof sketch: for a locally compact Polish base space, the standard description of the vague
 -- topology yields a complete separable metric on Radon measures.
 /-- On a locally compact Polish base space, the vague topology on `𝓜(E)` is Polish. -/
 theorem vagueTopology_polish_of_locallyCompact
     [LocallyCompactSpace E] [BorelSpace E] [PolishSpace E] :
-    PolishSpace RadonMeasureSubtype := sorry
+    PolishSpace (RadonMeasureSubtype E) := sorry
 
 end RadonTopology
 
 section Metric
 
 variable {E : Type u} [MetricSpace E] [MeasurableSpace E] [BorelSpace E]
-local notation "RadonMeasureSubtype" => { μ : Measure E // IsRadonMeasure μ }
 
-variable {μ : RadonMeasureSubtype} {μs : ℕ → RadonMeasureSubtype}
+variable {μ : RadonMeasureSubtype E} {μs : ℕ → RadonMeasureSubtype E}
 
 -- Proof sketch: the subtype hypotheses supply the ambient Radon-measure assumptions from
 -- Definition 13.12, and `tendsto_iff_forall_vagueIntegral_tendsto` identifies the remaining

@@ -17,8 +17,8 @@ open scoped BigOperators
 private theorem poissonPMF_pgf_eq_exp (lam : NNReal) (z : ℝ) :
     (∑' m : ℕ, (poissonPMF lam m).toReal * z ^ m) = Real.exp (lam * (z - 1)) := by
   -- Translate Example 3.4 from the measure-valued statement to the pmf series used here.
-  simpa [probabilityGeneratingSeries, poissonMeasure, PMF.toMeasure_apply_singleton,
-    measurableSet_singleton] using example_3_4_poisson_pgf lam z
+  simpa [probabilityGeneratingSeries, poissonMeasure_singleton, poissonPMF,
+    poissonPMFReal] using example_3_4_poisson_pgf lam z
 
 /-- Helper for Theorem 3.7: the source-proof bound `(∑ p_{n,l}) * sup_l p_{n,l}` tends to zero. -/
 private theorem row_sum_mul_iSup_tendsto_zero

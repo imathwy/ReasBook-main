@@ -1,4 +1,5 @@
 import Mathlib
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap24.Corollary_24_29
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -11,18 +12,6 @@ universe u
 namespace ProbabilityTheory
 
 variable {Ω : Type u} [MeasurableSpace Ω]
-
-/-- The finite-dimensional Dirichlet law obtained by normalizing independent Gamma coordinates
-with shape parameters `θ i`. -/
-def dirichletMeasure {n : ℕ} (θ : Fin n → ℝ) : Measure (Fin n → ℝ) :=
-  (Measure.pi fun i ↦ gammaMeasure (θ i) 1).map (fun y i ↦ y i / ∑ j, y j)
-
--- Proof sketch: unfold `dirichletMeasure`; it is exactly the pushforward of the product Gamma law
--- along the coordinatewise normalization map `y ↦ (fun i ↦ y i / ∑ j, y j)`.
-/-- Unfolding `dirichletMeasure` gives the normalized-Gamma construction of the Dirichlet law. -/
-theorem dirichletMeasure_def {n : ℕ} (θ : Fin n → ℝ) :
-    dirichletMeasure θ =
-      (Measure.pi fun i ↦ gammaMeasure (θ i) 1).map (fun y i ↦ y i / ∑ j, y j) := sorry
 
 -- Proof sketch: realize `X` by the normalized-Gamma construction of the Dirichlet law, then
 -- permute the independent Gamma coordinates. The product Gamma law is invariant under coordinate

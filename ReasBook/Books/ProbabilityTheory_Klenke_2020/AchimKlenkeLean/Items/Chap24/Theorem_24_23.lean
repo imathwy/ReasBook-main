@@ -1,5 +1,6 @@
 import Mathlib
 import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap24.Definition_24_3
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap24.Definition_24_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -15,42 +16,6 @@ variable {Ω : Type u} [MeasurableSpace Ω]
 variable {E : Type v} [MeasurableSpace E] [PseudoMetricSpace E] [BorelSpace E]
 variable {F : Type w} [MeasurableSpace F] [PseudoMetricSpace F] [BorelSpace F]
 variable [LocallyCompactSpace F]
-
-/-- A random measure on `E` is a Poisson point process with intensity `μ` when it is measurable,
-is locally finite almost surely, has independent increments on pairwise disjoint bounded
-measurable sets, and its bounded-set counts have the Poisson laws prescribed by `μ`. -/
-def IsPoissonPointProcess
-    (μ : Measure E) (P : ProbabilityMeasure Ω) (X : Ω → Measure E) : Prop :=
-  IsRandomMeasure P X ∧
-    (∀ (n : ℕ) (A : Fin n → Set E),
-      (∀ i, MeasurableSet (A i)) →
-      (∀ i, Bornology.IsBounded (A i)) →
-      Pairwise (fun i j ↦ Disjoint (A i) (A j)) →
-      iIndepFun (fun i ω ↦ X ω (A i)) (P : Measure Ω)) ∧
-    IsLocallyFiniteMeasure μ ∧
-    ∀ ⦃A : Set E⦄, MeasurableSet A → Bornology.IsBounded A → (μ A) ≠ ⊤ →
-      HasLaw (fun ω ↦ X ω A)
-        (Measure.map (fun n : ℕ ↦ (n : ENNReal)) (poissonMeasure (μ A).toNNReal))
-        (P : Measure Ω)
-
--- Proof sketch: unfold `IsPoissonPointProcess`; the statement is exactly the conjunction of the
--- random-measure, local-finiteness, independent-increments, and Poisson marginal-law conditions.
-/-- Unfolding `IsPoissonPointProcess μ P X` gives the chapter's bounded-set Poisson-point-process
-conditions for `X` with intensity `μ`. -/
-theorem isPoissonPointProcess_iff
-    (μ : Measure E) (P : ProbabilityMeasure Ω) (X : Ω → Measure E) :
-    IsPoissonPointProcess μ P X ↔
-      IsRandomMeasure P X ∧
-        (∀ (n : ℕ) (A : Fin n → Set E),
-          (∀ i, MeasurableSet (A i)) →
-          (∀ i, Bornology.IsBounded (A i)) →
-          Pairwise (fun i j ↦ Disjoint (A i) (A j)) →
-          iIndepFun (fun i ω ↦ X ω (A i)) (P : Measure Ω)) ∧
-        IsLocallyFiniteMeasure μ ∧
-        ∀ ⦃A : Set E⦄, MeasurableSet A → Bornology.IsBounded A → (μ A) ≠ ⊤ →
-          HasLaw (fun ω ↦ X ω A)
-            (Measure.map (fun n : ℕ ↦ (n : ENNReal)) (poissonMeasure (μ A).toNNReal))
-            (P : Measure Ω) := sorry
 
 /-- The random measure obtained by coloring each point `x` of `X ω` with the mark `Y x ω`. -/
 def coloredPointProcess

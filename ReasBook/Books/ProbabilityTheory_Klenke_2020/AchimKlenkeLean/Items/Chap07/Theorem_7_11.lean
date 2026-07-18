@@ -247,7 +247,11 @@ private lemma supporting_affine_minorant_of_mem_interior {G : Set State} {φ : S
     rw [ha_eq] at hay_eq
     linarith
   refine ⟨Set.restrict G a, ?_, ?_⟩
-  · exact ⟨fun x ↦ ha_lower x x.2, a, rfl⟩
+  · refine ⟨fun x ↦ ha_lower x x.2, a.linear, a 0, ?_⟩
+    funext x
+    change a x = a.linear x + a 0
+    have hdecomp := congrArg (fun f : State → ℝ ↦ f x) a.decomp
+    simpa using hdecomp
   · simpa using ha_eq
 
 /-- Helper for Theorem 7.11: if the contact point lies in the intrinsic interior of a convex

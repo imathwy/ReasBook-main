@@ -13,8 +13,8 @@ probability measure along `k ↦ k / n`, so no separate public wrapper definitio
 
 private noncomputable def geometricProbabilityMeasure (p : ℝ) (hp_pos : 0 < p) (hp_lt_one : p < 1) :
     ProbabilityMeasure ℕ :=
-  ⟨geometricMeasure hp_pos (le_of_lt hp_lt_one),
-    isProbabilityMeasure_geometricMeasure hp_pos (le_of_lt hp_lt_one)⟩
+  let p' : Set.Icc (0 : ℝ) 1 := ⟨p, le_of_lt hp_pos, le_of_lt hp_lt_one⟩
+  ⟨geometricMeasure p', inferInstance⟩
 
 private noncomputable def expProbabilityMeasure (α : ℝ) (hα : 0 < α) : ProbabilityMeasure ℝ :=
   ⟨expMeasure α, isProbabilityMeasure_expMeasure hα⟩

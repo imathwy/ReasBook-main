@@ -1,4 +1,5 @@
 import Mathlib
+import ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap24.Definition_24_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -13,27 +14,6 @@ namespace ProbabilityTheory
 
 variable {Ω : Type u} [MeasurableSpace Ω]
 variable {E : Type v} [PseudoMetricSpace E] [MeasurableSpace E] [BorelSpace E]
-
-/-- A Poisson point process on `E` with intensity `μ` is a random measure with independent
-increments whose values on bounded measurable sets have the Poisson laws determined by `μ`. -/
-class IsPoissonPointProcess (μ : Measure E) (P : ProbabilityMeasure Ω)
-    (X : Ω → Measure E) : Prop where
-  /-- The measure-valued map underlying a Poisson point process is measurable. -/
-  measurable : Measurable X
-  /-- A Poisson point process is locally finite almost surely. -/
-  locallyFinite : ∀ᵐ ω ∂(P : Measure Ω), IsLocallyFiniteMeasure (X ω)
-  /-- A Poisson point process has independent increments. -/
-  indepIncrements :
-    ∀ n, ∀ A : Fin n → Set E,
-      (∀ i, MeasurableSet (A i)) →
-      Pairwise (fun i j ↦ Disjoint (A i) (A j)) →
-      iIndepFun (fun i ω ↦ X ω (A i)) (P : Measure Ω)
-  /-- Counts on bounded measurable sets have the Poisson law with parameter `μ A`. -/
-  poisson_bounded_eval :
-    ∀ A : Set E, MeasurableSet A → Bornology.IsBounded A →
-      HasLaw (fun ω ↦ X ω A)
-        (Measure.map (fun n : ℕ ↦ (n : ℝ≥0∞)) (poissonMeasure ((μ A).toNNReal)))
-        (P : Measure Ω)
 
 -- Proof sketch: use the Poisson-point-process law on bounded measurable sets together with the
 -- atom-free hypothesis on `μ` to identify the void probabilities and rule out multiple points at a

@@ -18,11 +18,11 @@ variable {Y : ℕ → Ω → ℝ}
 local notation "BrownianPathSpace" => C(NNReal, ℝ)
 
 /-- The Brownian path space `C([0, ∞), ℝ)` carries its Borel `σ`-algebra in this item. -/
-local instance brownianPathSpaceMeasurableSpace : MeasurableSpace BrownianPathSpace :=
+local instance theorem2143BrownianPathSpaceMeasurableSpace : MeasurableSpace BrownianPathSpace :=
   borel BrownianPathSpace
 
 /-- The Brownian path space is a Borel space for its compact-open topology. -/
-local instance brownianPathSpaceBorelSpace : BorelSpace BrownianPathSpace :=
+local instance theorem2143BrownianPathSpaceBorelSpace : BorelSpace BrownianPathSpace :=
   ⟨rfl⟩
 
 /-- The normalized linearly interpolated partial-sum path built from the `0`-based increment

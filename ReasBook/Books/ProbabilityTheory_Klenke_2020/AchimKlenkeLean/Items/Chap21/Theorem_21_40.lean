@@ -13,10 +13,10 @@ universe u
 local notation "PathSpace" => BrownianPathSpace
 
 -- Use the canonical Borel measurable structure on the continuous path space `C([0, ∞), ℝ)`.
-local instance : MeasurableSpace PathSpace := borel _
+local instance theorem2140MeasurableSpacePathSpace : MeasurableSpace PathSpace := borel _
 
 -- The local measurable structure on `PathSpace` is its Borel `σ`-algebra.
-local instance : BorelSpace PathSpace := ⟨rfl⟩
+local instance theorem2140BorelSpacePathSpace : BorelSpace PathSpace := ⟨rfl⟩
 
 /-- Tightness of the family of initial-value laws attached to a family of path laws. -/
 def initial_value_laws_tight {ι : Type u} (P : ι → ProbabilityMeasure PathSpace) : Prop :=

@@ -86,7 +86,7 @@ section CancellativeMeasurability
 variable [AddCancelCommMonoid E] [MeasurableSpace E] [MeasurableAdd₂ E]
 variable [MeasurableSingletonClass E]
 
-local instance : MeasurableSpace (Stream' E) :=
+local instance theorem2019MeasurableSpaceStream : MeasurableSpace (Stream' E) :=
   inferInstanceAs (MeasurableSpace (ℕ → E))
 
 local notation "ℐ" => MeasurableSpace.invariants Stream'.tail

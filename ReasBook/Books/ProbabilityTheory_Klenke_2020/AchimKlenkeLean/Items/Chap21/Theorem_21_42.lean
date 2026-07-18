@@ -9,9 +9,10 @@ noncomputable section
 
 universe u v
 
-local instance : MeasurableSpace BrownianPathSpace := borel _
+local instance theorem2142MeasurableSpaceBrownianPathSpace : MeasurableSpace BrownianPathSpace :=
+  borel _
 
-local instance : BorelSpace BrownianPathSpace := ⟨rfl⟩
+local instance theorem2142BorelSpaceBrownianPathSpace : BorelSpace BrownianPathSpace := ⟨rfl⟩
 
 -- Proof sketch: use the Kolmogorov--Chentsov Hölder-probability estimate on each compact time
 -- interval to verify the oscillation tightness criterion from Theorem 21.40 for the family of

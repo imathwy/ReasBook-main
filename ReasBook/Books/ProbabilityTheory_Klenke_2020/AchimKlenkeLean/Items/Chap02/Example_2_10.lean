@@ -20,9 +20,11 @@ lemma measure_preimage_ge_eq_poisson_tail (rates : ℕ → NNReal) (X : ℕ → 
 
 /-- Helper for Example 2.10: expand a Poisson tail as a discrete `tsum`. -/
 lemma poisson_tail_eq_tsum (r : NNReal) (k : ℕ) :
-    (poissonMeasure r) (Set.Ici k) = ∑' m : ℕ, (Set.Ici k).indicator (poissonPMF r) m := by
-  -- `poissonMeasure` is the measure associated to the Poisson PMF.
-  rw [poissonMeasure, PMF.toMeasure_apply_eq_tsum]
+    (poissonMeasure r) (Set.Ici k) =
+      ∑' m : ℕ, (Set.Ici k).indicator (fun m ↦ poissonMeasure r {m}) m := by
+  -- A measure on the discrete space `ℕ` is the sum of its singleton masses.
+  exact (Measure.tsum_indicator_apply_singleton (poissonMeasure r) (Set.Ici k)
+    measurableSet_Ici).symm
 
 /-- Helper for Example 2.10: the uniform envelope used to dominate shifted Poisson tails. -/
 noncomputable abbrev poisson_tail_envelope (Λ : NNReal) (n m : ℕ) : ENNReal :=
@@ -108,9 +110,10 @@ lemma shifted_poisson_tail_series_ne_top (Λ : NNReal) (rates : ℕ → NNReal)
     intro m
     by_cases hnm : n + 1 ≤ m
     · calc
-        (Set.Ici (n + 1)).indicator (poissonPMF (rates (n + 1))) m
+        (Set.Ici (n + 1)).indicator
+            (fun j ↦ poissonMeasure (rates (n + 1)) {j}) m
             = ENNReal.ofReal (poissonPMFReal (rates (n + 1)) m) := by
-                simp [Set.mem_Ici, hnm, poissonPMFReal_ofReal_eq_poissonPMF]
+                simp [Set.mem_Ici, hnm, poissonMeasure_singleton, poissonPMFReal]
         _ ≤ ENNReal.ofReal ((Λ : ℝ) ^ m / m.factorial) := by
                 exact ENNReal.ofReal_le_ofReal
                   (poisson_term_le_uniform Λ (rates (n + 1)) (hΛ (n + 1)) m)
