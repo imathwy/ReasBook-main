@@ -328,20 +328,11 @@
     },
     {
       "project": "book:ProbabilityTheory_Klenke_2020",
-      "run_id": "20260716T182032Z-g14-final-eight-root-budget-24f4d577",
-      "run_result": "repair-incomplete",
-      "session_state": "checkpointed",
-      "project_state": "repair-checkpointed",
-      "target_revision": "64961606ccdb84cdf984610ef65699d9223b4749",
-      "resume": {
-        "last_checkpoint": "20260716T182032Z-g14-final-eight-root-budget-24f4d577",
-        "current_root": "ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap06.Corollary_6_26",
-        "next_command": "lake build ProbabilityTheory_Klenke_2020.AchimKlenkeLean.Items.Chap06.Corollary_6_26",
-        "branch": "repair/book-probability-theory-klenke-20260717",
-        "commit": "ebdcd97e852f32c74ac1224d233e88a9353f6eec"
-      },
-      "checkpoint_reason": "The prior session stopped only after eight repaired roots. The next theorem-argument-order migration was not attempted and remains a safe concrete next step.",
-      "root_class": "signature-drift",
+      "run_id": "20260718T-p02-final-full-pass-r2",
+      "run_result": "full-pass",
+      "session_state": "completed",
+      "project_state": "full-pass",
+      "target_revision": "88fd1d6aa0ee2666bcb080ca864518525c6dd939",
       "session_history": [
         {
           "kind": "historical-alias",
@@ -353,6 +344,11 @@
           "baseline_report": "20260717T-klenke-baseline-candidate",
           "sync_plan": "20260717T-klenke-noop-sync-plan",
           "note": "Reviewed two-file entry/name compatibility patch; project remains repair-checkpointed and no full-pass is claimed."
+        },
+        {
+          "kind": "single-project-repair",
+          "validation_report": "20260718T-p02-final-full-pass-r2",
+          "note": "Final canonical P02 automation passed 1283/1283 active imports, the complete Book build and shared root after the project-local naming compatibility repair, proof-bypass audit, related automation tests, and diff check."
         }
       ]
     },

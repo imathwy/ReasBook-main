@@ -14,8 +14,7 @@ import IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Book
 -- import LecturesConvexOptimization_Nesterov_2018.Book
 -- repair-pending: book:LinearRepresentations_Serre_1977; last-run=20260717T054404Z-g16-final-eight-root-budget-24f4d577; status=repair-incomplete
 -- import LinearRepresentations_Serre_1977.Book
--- repair-pending: book:ProbabilityTheory_Klenke_2020; last-run=20260716T182032Z-g14-final-eight-root-budget-24f4d577; status=repair-incomplete
--- import ProbabilityTheory_Klenke_2020.Book
+import ProbabilityTheory_Klenke_2020.Book
 import ReasLib.Book
 import RiemannSurfaces_Forster_1981.Book
 -- repair-pending: book:SmoothManifolds_Lee_2012; last-run=20260716T122533Z-g10-r2-final-25bc9aca; status=repair-incomplete
