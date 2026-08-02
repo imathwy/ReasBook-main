@@ -3,20 +3,6 @@
   "migration_status": "complete",
   "projects": [
     {
-      "project": "book:ReasLib",
-      "run_id": "20260717T-reaslib-lifecycle-audit",
-      "run_result": "full-pass",
-      "session_state": "completed",
-      "project_state": "full-pass",
-      "target_revision": "64961606ccdb84cdf984610ef65699d9223b4749",
-      "session_history": [
-        {
-          "kind": "lifecycle-migration",
-          "validation_report": "20260717T-reaslib-lifecycle-audit"
-        }
-      ]
-    },
-    {
       "project": "book:chapter1_reference_format",
       "run_id": "20260717T114110Z-pilot-baseline-validation-431a8e27",
       "run_result": "full-pass",

@@ -42,8 +42,6 @@ lean_lib FirstOrderMethodsOptimization_Beck_2017 where
   srcDir := "Books"
 lean_lib AlgebraicTopology_May_1999 where
   srcDir := "Books"
-lean_lib ReasLib where
-  srcDir := "Books"
 lean_lib RiemannSurfaces_Forster_1981 where
   srcDir := "Books"
 lean_lib chapter1_reference_format where

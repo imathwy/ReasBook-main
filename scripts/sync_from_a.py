@@ -145,7 +145,6 @@ NAME_MAP = {
     "CombinatorialGroupTheory":       "CombinatorialGroupTheory_Magnus_2004",
     "FirstOrderMethodsinOptimization":"FirstOrderMethodsOptimization_Beck_2017",
     "Nesterov":                       "LecturesConvexOptimization_Nesterov_2018",
-    "Reaslib":                        "ReasLib",
     "RiemannSurfaces":                "RiemannSurfaces_Forster_1981",
     "Serre":                          "LinearRepresentations_Serre_1977",
     "SmoothManifoldsLee":             "SmoothManifolds_Lee_2012",

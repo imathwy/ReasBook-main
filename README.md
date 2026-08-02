@@ -27,8 +27,6 @@ ReasBook-private is generated using the tool: [M2F](https://github.com/optsuite/
   - Links: [Documentation](https://optpku.github.io/ReasBook-private/docs/Books/AlgebraicTopology_May_1999/Book.html) | [Lean source](./ReasBook/Books/AlgebraicTopology_May_1999/Chapters/) | [Verso](https://optpku.github.io/ReasBook-private/books/algebraictopology_may_1999/)
 - [Otto Forster, *Lectures on Riemann Surfaces*, Springer, 1981, ISBN 978-0-387-90617-1.](./ReasBook/Books/RiemannSurfaces_Forster_1981/)
   - Links: [Documentation](https://optpku.github.io/ReasBook-private/docs/Books/RiemannSurfaces_Forster_1981/Book.html) | [Lean source](./ReasBook/Books/RiemannSurfaces_Forster_1981/Chapters/) | [Verso](https://optpku.github.io/ReasBook-private/books/riemannsurfaces_forster_1981/)
-- [ReasLib](./ReasBook/Books/ReasLib/) — A Lean 4 library for mathematical optimization, covering convex analysis, optimality conditions, and algorithm convergence.
-  - Links: [Documentation](https://optpku.github.io/ReasBook-private/docs/Books/ReasLib/) | [Lean source](./ReasBook/Books/ReasLib/) | [Verso](https://optpku.github.io/ReasBook-private/books/reaslib/)
 
 ### Papers
 - [Yurii Nesterov, "Smooth minimization of non-smooth functions," *Mathematical Programming*, Ser. A 103, 127-152, 2005, DOI: 10.1007/s10107-004-0552-5.](./ReasBook/Papers/SmoothMinimization_Nesterov_2004/)

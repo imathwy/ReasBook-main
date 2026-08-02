@@ -7,7 +7,6 @@ import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Book
 import FirstOrderMethodsOptimization_Beck_2017.Book
 import IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Book
 import ProbabilityTheory_Klenke_2020.Book
-import ReasLib.Book
 import RiemannSurfaces_Forster_1981.Book
 import chapter1_reference_format.Book
 import Papers.OnSomeLocalRings_Maassaran_2025.Paper
