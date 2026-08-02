@@ -843,42 +843,41 @@ class TipTests(RepositoryFixture):
 
 
 class WorkflowContractTests(unittest.TestCase):
-    def test_wrappers_use_reusable_workflow_and_never_push_or_upload_reports(self):
+    def test_public_branch_workflow_set_and_dependencies(self):
         root = SCRIPTS.parent
         workflows = root / ".github" / "workflows"
-        for name in ("build.yml", "sync-from-a.yml", "repair.yml"):
-            self.assertIn(
-                "uses: ./.github/workflows/automation.yml",
-                (workflows / name).read_text(),
-            )
-        self.assertIn(
-            "uses: ./.github/workflows/automation.yml",
-            (workflows / "check-toolchain.yml").read_text(),
+        self.assertEqual(
+            {path.name for path in workflows.glob("*.yml")},
+            {"deploy_pages.yml", "deploy_preview.yml", "docs_full.yml"},
         )
-        combined = "\n".join(path.read_text() for path in workflows.glob("*.yml"))
-        self.assertNotIn("git push", combined)
-        self.assertNotIn("actions/upload-artifact", combined)
-        core = (workflows / "automation.yml").read_text()
-        self.assertIn("group: lean-resource-lock", core)
-        self.assertIn("scripts/ci_heartbeat.sh automation", core)
-        self.assertIn("python3 scripts/run_automation.py", core)
-        self.assertIn("peter-evans/create-pull-request@v7", core)
-        self.assertIn("args+=(--paper \"$PAPER\")", core)
-        repair = (workflows / "repair.yml").read_text()
-        self.assertIn("options: [book, paper]", repair)
+        deploy_pages = (workflows / "deploy_pages.yml").read_text()
+        deploy_preview = (workflows / "deploy_preview.yml").read_text()
+        docs_full = (workflows / "docs_full.yml").read_text()
+        self.assertIn("branches: [ v4.30.0 ]", deploy_pages)
+        self.assertIn("branches: [ v4.30.0 ]", deploy_preview)
+        self.assertIn("uses: ./.github/workflows/docs_full.yml", deploy_pages)
+        self.assertIn("workflow_call:", docs_full)
+        self.assertIn("github.repository == 'optpku/ReasBook-preview'", deploy_preview)
 
-    def test_sync_workflow_is_single_project_three_way_only(self):
+        referenced_scripts = {
+            token.rstrip(";").removeprefix("./")
+            for text in (deploy_pages, deploy_preview, docs_full)
+            for token in text.split()
+            if token.startswith("./scripts/")
+        }
+        self.assertTrue(referenced_scripts)
+        for script in referenced_scripts:
+            self.assertTrue((root / script).is_file(), script)
+
+    def test_project_builds_keep_complete_roots_and_serialize_large_work(self):
         workflows = SCRIPTS.parent / ".github" / "workflows"
-        reusable = (workflows / "automation.yml").read_text()
-        wrapper = (workflows / "sync-from-a.yml").read_text()
-        self.assertIn("--to-commit", reusable)
-        self.assertIn("--apply .automation/sync-plan/sync-plan.json", reusable)
-        self.assertIn("--accept-sync .automation/sync-plan/sync-plan.json", reusable)
-        self.assertIn("sync requires exactly one book or paper", reusable)
-        self.assertIn('project_key="paper:$PAPER"', reusable)
-        self.assertNotIn("sync_from_a.py --source .automation/source-a --all", reusable)
-        self.assertIn("required: true", wrapper)
-        self.assertIn("--all --dry-run", wrapper)
+        deploy_pages = (workflows / "deploy_pages.yml").read_text()
+        docs_full = (workflows / "docs_full.yml").read_text()
+        self.assertIn('(root / "Books", "books", "Books", "Book")', deploy_pages)
+        self.assertIn('(root / "Papers", "papers", "Papers", "Paper")', deploy_pages)
+        self.assertIn('(root / "Books", "book", "Book")', docs_full)
+        self.assertIn('(root / "Papers", "paper", "Paper")', docs_full)
+        self.assertIn("max-parallel: 1", docs_full)
 
     def test_heartbeat_preserves_exit_code(self):
         result = subprocess.run(

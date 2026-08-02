@@ -1,0 +1,411 @@
+name: Build Full Docs
+
+on:
+  workflow_call:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 2 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  prepare-project-doc-modules:
+    name: prepare-project-doc-modules
+    runs-on: ubuntu-latest
+    outputs:
+      project_matrix: ${{ steps.collect.outputs.project_matrix }}
+      project_count: ${{ steps.collect.outputs.project_count }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Collect project root doc modules
+        id: collect
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          from pathlib import Path
+
+          root = Path("ReasBook")
+          projects = []
+          for kind_dir, kind_slug, leaf in [
+              (root / "Books", "book", "Book"),
+              (root / "Papers", "paper", "Paper"),
+          ]:
+              if not kind_dir.is_dir():
+                  continue
+              for project in sorted(kind_dir.iterdir()):
+                  if not project.is_dir():
+                      continue
+                  if not (project / f"{leaf}.lean").is_file():
+                      continue
+                  module = f"{kind_dir.name}.{project.name}.{leaf}"
+                  project_id = f"{kind_slug}_{project.name.lower()}_{leaf.lower()}"
+                  projects.append({
+                      "id": project_id,
+                      "module": module,
+                      "name": project.name,
+                      "doc_subdir": f"{kind_dir.name}/{project.name}",
+                  })
+
+          print(f"project_matrix={json.dumps(projects, separators=(',', ':'))}")
+          print(f"project_count={len(projects)}")
+          PY
+
+  build-shared-docs:
+    name: build-shared-docs
+    needs: prepare-project-doc-modules
+    runs-on: [self-hosted, Linux, X64]
+    timeout-minutes: 300
+    env:
+      HEARTBEAT_INTERVAL_SECONDS: 45
+      RETRY_ON_143_MAX_RETRIES: 1
+      RETRY_ON_143_SLEEP_SECONDS: 20
+      PERSIST_ROOT: ${{ vars.REASBOOK_PERSIST_ROOT }}
+      SHARED_DOC_MODULES_EXTRA: ""
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare persistent build directories
+        run: |
+          set -euo pipefail
+          repo_key="${GITHUB_REPOSITORY//\//_}"
+          persist_root="${PERSIST_ROOT:-${HOME:-/root}/.cache/reasbook-ci/$repo_key}"
+          echo "PERSIST_ROOT=$persist_root" >> "$GITHUB_ENV"
+          echo "Using persistent root: $persist_root"
+          mkdir -p "$persist_root/reasbook_lake" \
+                   "$persist_root/reasbookweb_lake" \
+                   "$persist_root/elan"
+          rm -rf ReasBook/.lake ReasBookWeb/.lake
+          ln -sfn "$persist_root/reasbook_lake" ReasBook/.lake
+          ln -sfn "$persist_root/reasbookweb_lake" ReasBookWeb/.lake
+          if [ -d "$persist_root/elan" ] && [ -n "$(ls -A "$persist_root/elan" 2>/dev/null)" ]; then
+            mkdir -p "${HOME:-/root}/.elan"
+            if command -v rsync >/dev/null 2>&1; then
+              rsync -a "$persist_root/elan/" "${HOME:-/root}/.elan/"
+            else
+              cp -a "$persist_root/elan/." "${HOME:-/root}/.elan/"
+            fi
+          fi
+
+      - name: Install elan (Lean toolchain manager)
+        run: |
+          if [ ! -x "${HOME:-/root}/.elan/bin/elan" ]; then
+            curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+          fi
+
+      - name: Restore ReasBook build cache
+        continue-on-error: true
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ReasBook/.lake/build/bin
+            ReasBook/.lake/build/lib/lean
+          key: lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-seed
+          restore-keys: |
+            lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
+            lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-
+
+      - name: Restore ReasBook doc-data cache
+        continue-on-error: true
+        uses: actions/cache/restore@v4
+        with:
+          path: ReasBook/.lake/build/doc-data
+          key: lake-reasbook-docdata-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-seed
+          restore-keys: |
+            lake-reasbook-docdata-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
+            lake-reasbook-docdata-v1-${{ runner.os }}-${{ runner.arch }}-
+
+      - name: Restore ReasBook doc cache
+        continue-on-error: true
+        uses: actions/cache/restore@v4
+        with:
+          path: ReasBook/.lake/build/doc
+          key: lake-reasbook-doc-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-seed
+          restore-keys: |
+            lake-reasbook-doc-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
+            lake-reasbook-doc-v1-${{ runner.os }}-${{ runner.arch }}-
+
+      - name: Prime ReasBook cache
+        timeout-minutes: 30
+        run: |
+          set -euo pipefail
+          if ! ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_cache.sh (docs_full)" ./scripts/build_reasbook_cache.sh; then
+            echo "[docs_full][shared] cache get failed; continuing with local build"
+          fi
+
+      - name: Clean project docs roots before shared build
+        run: |
+          set -euo pipefail
+          rm -rf ReasBook/.lake/build/doc/Books ReasBook/.lake/build/doc/Papers
+
+      - name: Build shared ReasBook docs chunk 1 (core modules)
+        timeout-minutes: 180
+        env:
+          SHARED_DOC_MODULES: ReasBook
+        run: |
+          set -euo pipefail
+          ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_shared_docs.sh (docs_full:chunk1)" ./scripts/build_reasbook_shared_docs.sh
+
+      - name: Save shared chunk1 doc-data cache checkpoint
+        if: always()
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: ReasBook/.lake/build/doc-data
+          key: lake-reasbook-docdata-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-shared-chunk1-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Save shared chunk1 build cache checkpoint
+        if: always()
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ReasBook/.lake/build/bin
+            ReasBook/.lake/build/lib/lean
+          key: lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-shared-chunk1-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Save shared chunk1 doc cache checkpoint
+        if: always()
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: ReasBook/.lake/build/doc
+          key: lake-reasbook-doc-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-shared-chunk1-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Build shared ReasBook docs chunk 2 (optional aggregate modules)
+        if: env.SHARED_DOC_MODULES_EXTRA != ''
+        timeout-minutes: 180
+        env:
+          SHARED_DOC_MODULES: ${{ env.SHARED_DOC_MODULES_EXTRA }}
+        run: |
+          set -euo pipefail
+          ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_shared_docs.sh (docs_full:chunk2)" ./scripts/build_reasbook_shared_docs.sh
+
+      - name: Upload shared docs baseline artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: shared-doc-base
+          path: ReasBook/.lake/build/doc
+          if-no-files-found: error
+          compression-level: 0
+          overwrite: true
+
+      - name: Save ReasBook doc-data cache
+        if: always()
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: ReasBook/.lake/build/doc-data
+          key: lake-reasbook-docdata-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-shared-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Save ReasBook build cache
+        if: always()
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ReasBook/.lake/build/bin
+            ReasBook/.lake/build/lib/lean
+          key: lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-shared-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - name: Persist elan toolchain
+        if: always()
+        run: |
+          set -euo pipefail
+          repo_key="${GITHUB_REPOSITORY//\//_}"
+          persist_root="${PERSIST_ROOT:-${HOME:-/root}/.cache/reasbook-ci/$repo_key}"
+          mkdir -p "$persist_root/elan"
+          if [ -d "${HOME:-/root}/.elan" ]; then
+            if command -v rsync >/dev/null 2>&1; then
+              rsync -a --delete "${HOME:-/root}/.elan/" "$persist_root/elan/"
+            else
+              rm -rf "$persist_root/elan"/*
+              cp -a "${HOME:-/root}/.elan/." "$persist_root/elan/"
+            fi
+          fi
+
+  build-project-root-docs:
+    name: build-project-root-docs (${{ matrix.project.module }})
+    needs:
+      - prepare-project-doc-modules
+      - build-shared-docs
+    if: needs.prepare-project-doc-modules.outputs.project_count != '0'
+    runs-on: [self-hosted, Linux, X64]
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        project: ${{ fromJSON(needs.prepare-project-doc-modules.outputs.project_matrix) }}
+    env:
+      HEARTBEAT_INTERVAL_SECONDS: 45
+      RETRY_ON_143_MAX_RETRIES: 1
+      RETRY_ON_143_SLEEP_SECONDS: 20
+      PERSIST_ROOT: ${{ vars.REASBOOK_PERSIST_ROOT }}
+      PROJECT_DOC_MODULES: ${{ matrix.project.module }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare persistent build directories
+        run: |
+          set -euo pipefail
+          repo_key="${GITHUB_REPOSITORY//\//_}"
+          persist_root="${PERSIST_ROOT:-${HOME:-/root}/.cache/reasbook-ci/$repo_key}"
+          echo "PERSIST_ROOT=$persist_root" >> "$GITHUB_ENV"
+          echo "Using persistent root: $persist_root"
+          mkdir -p "$persist_root/reasbook_lake" \
+                   "$persist_root/reasbookweb_lake" \
+                   "$persist_root/elan"
+          rm -rf ReasBook/.lake ReasBookWeb/.lake
+          ln -sfn "$persist_root/reasbook_lake" ReasBook/.lake
+          ln -sfn "$persist_root/reasbookweb_lake" ReasBookWeb/.lake
+          if [ -d "$persist_root/elan" ] && [ -n "$(ls -A "$persist_root/elan" 2>/dev/null)" ]; then
+            mkdir -p "${HOME:-/root}/.elan"
+            if command -v rsync >/dev/null 2>&1; then
+              rsync -a "$persist_root/elan/" "${HOME:-/root}/.elan/"
+            else
+              cp -a "$persist_root/elan/." "${HOME:-/root}/.elan/"
+            fi
+          fi
+
+      - name: Install elan (Lean toolchain manager)
+        run: |
+          if [ ! -x "${HOME:-/root}/.elan/bin/elan" ]; then
+            curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+          fi
+
+      - name: Restore ReasBook build cache
+        continue-on-error: true
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ReasBook/.lake/build/bin
+            ReasBook/.lake/build/lib/lean
+          key: lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-shared-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-shared-
+            lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
+            lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-
+
+      - name: Restore ReasBook doc-data cache
+        continue-on-error: true
+        uses: actions/cache/restore@v4
+        with:
+          path: ReasBook/.lake/build/doc-data
+          key: lake-reasbook-docdata-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-shared-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            lake-reasbook-docdata-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-shared-
+            lake-reasbook-docdata-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
+            lake-reasbook-docdata-v1-${{ runner.os }}-${{ runner.arch }}-
+
+      - name: Clean project docs subtree
+        run: |
+          set -euo pipefail
+          rm -rf "ReasBook/.lake/build/doc/${{ matrix.project.doc_subdir }}"
+
+      - name: Build project root docs (${{ matrix.project.module }})
+        timeout-minutes: 300
+        run: |
+          set -euo pipefail
+          ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_project_docs.sh (docs_full:${PROJECT_DOC_MODULES})" ./scripts/build_reasbook_project_docs.sh
+
+      - name: Stage project root docs subtree
+        run: |
+          set -euo pipefail
+          src="ReasBook/.lake/build/doc/${{ matrix.project.doc_subdir }}"
+          dst=".artifacts/project-root-doc/${{ matrix.project.doc_subdir }}"
+          test -d "$src"
+          mkdir -p "$(dirname "$dst")"
+          cp -a "$src" "$dst"
+
+      - name: Persist elan toolchain
+        if: always()
+        run: |
+          set -euo pipefail
+          repo_key="${GITHUB_REPOSITORY//\//_}"
+          persist_root="${PERSIST_ROOT:-${HOME:-/root}/.cache/reasbook-ci/$repo_key}"
+          mkdir -p "$persist_root/elan"
+          if [ -d "${HOME:-/root}/.elan" ]; then
+            if command -v rsync >/dev/null 2>&1; then
+              rsync -a --delete "${HOME:-/root}/.elan/" "$persist_root/elan/"
+            else
+              rm -rf "$persist_root/elan"/*
+              cp -a "${HOME:-/root}/.elan/." "$persist_root/elan/"
+            fi
+          fi
+
+      - name: Upload project root docs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: project-root-doc-${{ matrix.project.id }}
+          path: .artifacts/project-root-doc
+          if-no-files-found: error
+          compression-level: 0
+          overwrite: true
+
+  package-docs-artifact:
+    name: package-docs-artifact
+    needs:
+      - prepare-project-doc-modules
+      - build-shared-docs
+      - build-project-root-docs
+    if: always() && needs.build-shared-docs.result == 'success' && (needs.prepare-project-doc-modules.outputs.project_count == '0' || needs.build-project-root-docs.result == 'success')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download shared docs baseline artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: shared-doc-base
+          path: ReasBook/.lake/build/doc
+
+      - name: Download project root docs artifacts
+        if: needs.prepare-project-doc-modules.outputs.project_count != '0'
+        uses: actions/download-artifact@v4
+        with:
+          pattern: project-root-doc-*
+          path: .artifacts/project-root-doc
+          merge-multiple: true
+
+      - name: Merge project root docs artifacts
+        if: needs.prepare-project-doc-modules.outputs.project_count != '0'
+        run: |
+          set -euo pipefail
+          src_root=".artifacts/project-root-doc"
+          if [ -d "$src_root/.artifacts/project-root-doc" ]; then
+            src_root="$src_root/.artifacts/project-root-doc"
+          fi
+          if [ -d "$src_root" ]; then
+            cp -a "$src_root"/. ReasBook/.lake/build/doc/
+          fi
+
+      - name: Verify assembled docs tree
+        run: |
+          set -euo pipefail
+          test -d ReasBook/.lake/build/doc
+          test -f ReasBook/.lake/build/doc/index.html
+
+      - name: Write docs cache marker
+        run: |
+          set -euo pipefail
+          marker="$(git rev-parse HEAD:ReasBook)"
+          printf '%s\n' "$marker" > ReasBook/.lake/build/doc/.reasbook-docs-marker
+
+      - name: Save final ReasBook doc cache
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: ReasBook/.lake/build/doc
+          key: lake-reasbook-docfinal-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-${{ github.sha }}
+
+      - name: Upload docs artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-docs-shared
+          path: ReasBook/.lake/build/doc
+          if-no-files-found: error
+          compression-level: 0
+          overwrite: true

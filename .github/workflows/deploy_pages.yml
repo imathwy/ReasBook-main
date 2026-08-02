@@ -1,0 +1,646 @@
+name: Deploy Verso Site to GitHub Pages
+
+on:
+  push:
+    branches: [ v4.30.0 ]
+  workflow_dispatch:
+    inputs:
+      full_deploy:
+        description: 'Run full monolithic build+deploy (recommended)'
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  discover-projects:
+    runs-on: ubuntu-latest
+    outputs:
+      projects: ${{ steps.collect.outputs.projects }}
+      build_projects: ${{ steps.collect.outputs.build_projects }}
+      build_project_count: ${{ steps.collect.outputs.build_project_count }}
+      build_scope: ${{ steps.collect.outputs.build_scope }}
+      full_deploy: ${{ steps.collect.outputs.full_deploy }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Collect books/papers for site partitioning
+        id: collect
+        run: |
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          root = Path("ReasBook")
+          projects = []
+          projects_by_key = {}
+
+          for kind_dir, kind_slug, kind_title, leaf in [
+              (root / "Books", "books", "Books", "Book"),
+              (root / "Papers", "papers", "Papers", "Paper"),
+          ]:
+              if not kind_dir.is_dir():
+                  continue
+              for project in sorted(kind_dir.iterdir()):
+                  if not project.is_dir():
+                      continue
+                  if not (project / f"{leaf}.lean").is_file():
+                      continue
+
+                  entry = {
+                      "kind": kind_slug,
+                      "kindTitle": kind_title,
+                      "name": project.name,
+                      "slug": project.name.lower(),
+                  }
+                  projects.append(entry)
+                  projects_by_key[(kind_slug, project.name)] = entry
+
+          event_name = os.environ.get("GITHUB_EVENT_NAME", "")
+          event_payload = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text(encoding="utf-8"))
+
+          if event_name in {"push"}:
+              full_deploy = True
+          elif event_name == "workflow_dispatch":
+              raw = str((event_payload.get("inputs") or {}).get("full_deploy", "true")).strip().lower()
+              full_deploy = raw in {"1", "true", "yes", "on"}
+          else:
+              full_deploy = False
+
+          changed_projects = []
+          changed_keys = set()
+          if event_name == "push":
+              before = str(event_payload.get("before") or "").strip()
+              after = str(event_payload.get("after") or os.environ.get("GITHUB_SHA", "")).strip()
+              if before and before != "0" * 40 and after:
+                  try:
+                      cp = subprocess.run(
+                          ["git", "diff", "--name-only", f"{before}..{after}"],
+                          check=True,
+                          capture_output=True,
+                          text=True,
+                      )
+                      changed_files = [ln.strip() for ln in cp.stdout.splitlines() if ln.strip()]
+                  except Exception:
+                      changed_files = []
+              else:
+                  changed_files = []
+
+              for path in changed_files:
+                  parts = Path(path).parts
+                  key = None
+                  if len(parts) >= 3 and parts[0] == "ReasBook" and parts[1] == "Books":
+                      key = ("books", parts[2])
+                  elif len(parts) >= 3 and parts[0] == "ReasBook" and parts[1] == "Papers":
+                      key = ("papers", parts[2])
+                  if key and key in projects_by_key and key not in changed_keys:
+                      changed_keys.add(key)
+                      changed_projects.append(projects_by_key[key])
+
+          build_projects = projects if full_deploy else changed_projects
+          build_scope = "full" if full_deploy else ("changed" if changed_projects else "core-only")
+
+          print(f"projects={json.dumps(projects, separators=(',', ':'))}")
+          print(f"build_projects={json.dumps(build_projects, separators=(',', ':'))}")
+          print(f"build_project_count={len(build_projects)}")
+          print(f"build_scope={build_scope}")
+          print(f"full_deploy={'true' if full_deploy else 'false'}")
+          PY
+
+  check-doc-cache:
+    needs: discover-projects
+    if: needs.discover-projects.outputs.full_deploy == 'true'
+    runs-on: [self-hosted, Linux, X64]
+    env:
+      PERSIST_ROOT: ${{ vars.REASBOOK_PERSIST_ROOT }}
+    outputs:
+      doc_cache_hit: ${{ steps.doc_cache_state.outputs.doc_cache_exact }}
+      doc_cache_exact: ${{ steps.doc_cache_state.outputs.doc_cache_exact }}
+      doc_cache_available: ${{ steps.doc_cache_state.outputs.doc_cache_available }}
+      doc_cache_marker_expected: ${{ steps.doc_cache_state.outputs.doc_cache_marker_expected }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare persistent ReasBook lake directory
+        run: |
+          set -euo pipefail
+          repo_key="${GITHUB_REPOSITORY//\//_}"
+          persist_root="${PERSIST_ROOT:-${HOME:-/root}/.cache/reasbook-ci/$repo_key}"
+          echo "PERSIST_ROOT=$persist_root" >> "$GITHUB_ENV"
+          echo "Using persistent root: $persist_root"
+          mkdir -p "$persist_root/reasbook_lake"
+          rm -rf ReasBook/.lake
+          ln -sfn "$persist_root/reasbook_lake" ReasBook/.lake
+
+      - name: Derive doc cache availability
+        id: doc_cache_state
+        run: |
+          set -euo pipefail
+          expected_marker="$(git rev-parse HEAD:ReasBook)"
+          marker_file="ReasBook/.lake/build/doc/.reasbook-docs-marker"
+          echo "doc_cache_marker_expected=${expected_marker}" >> "$GITHUB_OUTPUT"
+
+          has_index=false
+          has_marker=false
+          marker_value=""
+          if [ -f ReasBook/.lake/build/doc/index.html ]; then
+            has_index=true
+          fi
+          if [ -f "$marker_file" ]; then
+            has_marker=true
+            marker_value="$(tr -d '\r\n' < "$marker_file")"
+          fi
+
+          if [ "$has_index" = "true" ] && [ "$has_marker" = "true" ] && [ "$marker_value" = "$expected_marker" ]; then
+            echo "doc_cache_exact=true" >> "$GITHUB_OUTPUT"
+            echo "doc_cache_available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "doc_cache_exact=false" >> "$GITHUB_OUTPUT"
+            echo "doc_cache_available=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  build-full-docs-fallback:
+    needs:
+      - discover-projects
+      - check-doc-cache
+    if: needs.discover-projects.outputs.full_deploy == 'true' && needs.check-doc-cache.outputs.doc_cache_available != 'true'
+    uses: ./.github/workflows/docs_full.yml
+    permissions:
+      contents: read
+
+  build-changed-projects:
+    needs: discover-projects
+    if: needs.discover-projects.outputs.full_deploy != 'true'
+    runs-on: [self-hosted, Linux, X64]
+    timeout-minutes: 150
+    env:
+      HEARTBEAT_INTERVAL_SECONDS: 45
+      RETRY_ON_143_MAX_RETRIES: 1
+      RETRY_ON_143_SLEEP_SECONDS: 20
+      PERSIST_ROOT: ${{ vars.REASBOOK_PERSIST_ROOT }}
+      PROJECTS_JSON: ${{ needs.discover-projects.outputs.build_projects }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare persistent build directories
+        run: |
+          set -euo pipefail
+          repo_key="${GITHUB_REPOSITORY//\//_}"
+          persist_root="${PERSIST_ROOT:-${HOME:-/root}/.cache/reasbook-ci/$repo_key}"
+          echo "PERSIST_ROOT=$persist_root" >> "$GITHUB_ENV"
+          echo "Using persistent root: $persist_root"
+          mkdir -p "$persist_root/reasbook_lake" \
+                   "$persist_root/reasbookweb_lake" \
+                   "$persist_root/elan"
+          rm -rf ReasBook/.lake ReasBookWeb/.lake
+          ln -sfn "$persist_root/reasbook_lake" ReasBook/.lake
+          ln -sfn "$persist_root/reasbookweb_lake" ReasBookWeb/.lake
+          if [ -d "$persist_root/elan" ] && [ -n "$(ls -A "$persist_root/elan" 2>/dev/null)" ]; then
+            mkdir -p "${HOME:-/root}/.elan"
+            if command -v rsync >/dev/null 2>&1; then
+              rsync -a "$persist_root/elan/" "${HOME:-/root}/.elan/"
+            else
+              cp -a "$persist_root/elan/." "${HOME:-/root}/.elan/"
+            fi
+          fi
+
+      - name: Install elan (Lean toolchain manager)
+        run: |
+          if [ ! -x "${HOME:-/root}/.elan/bin/elan" ]; then
+            curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+          fi
+
+      - name: Restore ReasBook build cache
+        continue-on-error: true
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ReasBook/.lake/build/bin
+            ReasBook/.lake/build/lib/lean
+          key: lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}
+          restore-keys: |
+            lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
+            lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-
+
+      - name: Prime ReasBook cache (fast path)
+        timeout-minutes: 20
+        run: |
+          set -euo pipefail
+          if ! ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_cache.sh (fast path)" ./scripts/build_reasbook_cache.sh; then
+            echo "[fast path] cache get failed; continuing with local build"
+          fi
+
+      - name: Build ReasBook core target (fast path)
+        timeout-minutes: 80
+        run: |
+          set -euo pipefail
+          ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_core.sh (fast path)" ./scripts/build_reasbook_core.sh
+
+      - name: Build changed project docs/pages (fast path)
+        if: needs.discover-projects.outputs.build_project_count != '0'
+        timeout-minutes: 70
+        run: |
+          set -euo pipefail
+          ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_selected_projects.sh" ./scripts/build_selected_projects.sh
+
+      - name: Save ReasBook build cache
+        if: always()
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ReasBook/.lake/build/bin
+            ReasBook/.lake/build/lib/lean
+          key: lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}
+
+      - name: Persist elan toolchain
+        if: always()
+        run: |
+          set -euo pipefail
+          repo_key="${GITHUB_REPOSITORY//\//_}"
+          persist_root="${PERSIST_ROOT:-${HOME:-/root}/.cache/reasbook-ci/$repo_key}"
+          mkdir -p "$persist_root/elan"
+          if [ -d "${HOME:-/root}/.elan" ]; then
+            if command -v rsync >/dev/null 2>&1; then
+              rsync -a --delete "${HOME:-/root}/.elan/" "$persist_root/elan/"
+            else
+              rm -rf "$persist_root/elan"/*
+              cp -a "${HOME:-/root}/.elan/." "$persist_root/elan/"
+            fi
+          fi
+
+  build-monolith-site:
+    needs:
+      - discover-projects
+      - check-doc-cache
+      - build-full-docs-fallback
+    if: always() && needs.discover-projects.outputs.full_deploy == 'true' && (needs.check-doc-cache.outputs.doc_cache_available == 'true' || needs.build-full-docs-fallback.result == 'success')
+    runs-on: [self-hosted, Linux, X64]
+    timeout-minutes: 300
+    env:
+      HEARTBEAT_INTERVAL_SECONDS: 45
+      RETRY_ON_143_MAX_RETRIES: 1
+      RETRY_ON_143_SLEEP_SECONDS: 20
+      PERSIST_ROOT: ${{ vars.REASBOOK_PERSIST_ROOT }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare persistent build directories
+        run: |
+          set -euo pipefail
+          repo_key="${GITHUB_REPOSITORY//\//_}"
+          persist_root="${PERSIST_ROOT:-${HOME:-/root}/.cache/reasbook-ci/$repo_key}"
+          echo "PERSIST_ROOT=$persist_root" >> "$GITHUB_ENV"
+          echo "Using persistent root: $persist_root"
+          mkdir -p "$persist_root/reasbook_lake" \
+                   "$persist_root/reasbookweb_lake" \
+                   "$persist_root/elan"
+          rm -rf ReasBook/.lake ReasBookWeb/.lake
+          ln -sfn "$persist_root/reasbook_lake" ReasBook/.lake
+          ln -sfn "$persist_root/reasbookweb_lake" ReasBookWeb/.lake
+          if [ -d "$persist_root/elan" ] && [ -n "$(ls -A "$persist_root/elan" 2>/dev/null)" ]; then
+            mkdir -p "${HOME:-/root}/.elan"
+            if command -v rsync >/dev/null 2>&1; then
+              rsync -a "$persist_root/elan/" "${HOME:-/root}/.elan/"
+            else
+              cp -a "$persist_root/elan/." "${HOME:-/root}/.elan/"
+            fi
+          fi
+
+      - name: Install elan (Lean toolchain manager)
+        run: |
+          if [ ! -x "${HOME:-/root}/.elan/bin/elan" ]; then
+            curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
+          fi
+
+      - name: Restore ReasBook build cache
+        continue-on-error: true
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ReasBook/.lake/build/bin
+            ReasBook/.lake/build/lib/lean
+          key: lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}
+          restore-keys: |
+            lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
+            lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-
+
+      - name: Restore ReasBook doc-data cache
+        continue-on-error: true
+        uses: actions/cache/restore@v4
+        with:
+          path: ReasBook/.lake/build/doc-data
+          key: lake-reasbook-docdata-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}
+          restore-keys: |
+            lake-reasbook-docdata-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
+            lake-reasbook-docdata-v1-${{ runner.os }}-${{ runner.arch }}-
+
+      - name: Restore ReasBook doc cache
+        continue-on-error: true
+        uses: actions/cache/restore@v4
+        with:
+          path: ReasBook/.lake/build/doc
+          key: lake-reasbook-docfinal-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-${{ github.sha }}
+          restore-keys: |
+            lake-reasbook-docfinal-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-
+            lake-reasbook-docfinal-v1-${{ runner.os }}-${{ runner.arch }}-
+            lake-reasbook-doc-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-
+            lake-reasbook-doc-v1-${{ runner.os }}-${{ runner.arch }}-
+
+      - name: Detect local docs cache presence
+        id: local_docs
+        run: |
+          set -euo pipefail
+          if [ -f ReasBook/.lake/build/doc/index.html ]; then
+            echo "docs_present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "docs_present=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Log docs cache mode
+        run: |
+          set -euo pipefail
+          exact='${{ needs.check-doc-cache.outputs.doc_cache_exact }}'
+          available='${{ needs.check-doc-cache.outputs.doc_cache_available }}'
+          marker='${{ needs.check-doc-cache.outputs.doc_cache_marker_expected }}'
+          local='${{ steps.local_docs.outputs.docs_present }}'
+          echo "[ci][docs-cache] exact=${exact} available=${available} marker=${marker} local=${local}"
+
+      - name: Restore ReasBookWeb build cache
+        continue-on-error: true
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            ReasBookWeb/.lake/build/bin
+            ReasBookWeb/.lake/build/lib/lean
+          key: lake-reasbookweb-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBookWeb/lean-toolchain') }}-${{ hashFiles('ReasBookWeb/lake-manifest.json') }}
+          restore-keys: |
+            lake-reasbookweb-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBookWeb/lean-toolchain') }}-
+            lake-reasbookweb-lite-v2-${{ runner.os }}-${{ runner.arch }}-
+
+      - name: Prime ReasBook cache
+        timeout-minutes: 30
+        run: |
+          set -euo pipefail
+          if ! ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_cache.sh" ./scripts/build_reasbook_cache.sh; then
+            echo "[monolith] cache get failed; continuing with local build"
+          fi
+
+      - name: Build ReasBook core target
+        timeout-minutes: 90
+        run: |
+          set -euo pipefail
+          ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_core.sh" ./scripts/build_reasbook_core.sh
+
+      - name: Build ReasBookWeb (sections + Verso)
+        timeout-minutes: 180
+        run: |
+          set -euo pipefail
+          ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_web.sh (Verso)" ./scripts/build_reasbook_web.sh
+
+      - name: Download docs artifact from fallback
+        if: steps.local_docs.outputs.docs_present != 'true' && needs.build-full-docs-fallback.result == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          name: full-docs-shared
+          path: ReasBook/.lake/build/doc
+
+      - name: Bootstrap docs from shared target (last-resort)
+        if: steps.local_docs.outputs.docs_present != 'true' && needs.build-full-docs-fallback.result != 'success'
+        timeout-minutes: 150
+        run: |
+          set -euo pipefail
+          ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_shared_docs.sh (monolith fallback)" ./scripts/build_reasbook_shared_docs.sh
+
+      - name: Check cached docs presence
+        run: |
+          set -euo pipefail
+          test -d ReasBook/.lake/build/doc
+          test -f ReasBook/.lake/build/doc/index.html
+          marker_file="ReasBook/.lake/build/doc/.reasbook-docs-marker"
+          expected_marker='${{ needs.check-doc-cache.outputs.doc_cache_marker_expected }}'
+          if [ ! -f "$marker_file" ]; then
+            if [ '${{ steps.local_docs.outputs.docs_present }}' != 'true' ] && [ '${{ needs.build-full-docs-fallback.result }}' != 'success' ]; then
+              # Last-resort docs were built in this run (shared fallback path): tag them now.
+              printf '%s\n' "$expected_marker" > "$marker_file"
+            fi
+          fi
+          test -f "$marker_file"
+          actual_marker="$(tr -d '\r\n' < "$marker_file")"
+          test "$actual_marker" = "$expected_marker"
+
+      - name: Assemble docs under ReasBookWeb/_site/docs
+        timeout-minutes: 20
+        run: |
+          set -euo pipefail
+          ./scripts/ci_heartbeat.sh "assemble_site_docs.sh" ./scripts/assemble_site_docs.sh
+
+      - name: Upload monolithic site artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-monolith
+          path: ReasBookWeb/_site
+          if-no-files-found: error
+          compression-level: 0
+          overwrite: true
+
+      - name: Save ReasBook build cache
+        if: always()
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ReasBook/.lake/build/bin
+            ReasBook/.lake/build/lib/lean
+          key: lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}
+
+      - name: Save ReasBookWeb build cache
+        if: always()
+        continue-on-error: true
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ReasBookWeb/.lake/build/bin
+            ReasBookWeb/.lake/build/lib/lean
+          key: lake-reasbookweb-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBookWeb/lean-toolchain') }}-${{ hashFiles('ReasBookWeb/lake-manifest.json') }}
+
+      - name: Persist elan toolchain
+        if: always()
+        run: |
+          set -euo pipefail
+          repo_key="${GITHUB_REPOSITORY//\//_}"
+          persist_root="${PERSIST_ROOT:-${HOME:-/root}/.cache/reasbook-ci/$repo_key}"
+          mkdir -p "$persist_root/elan"
+          if [ -d "${HOME:-/root}/.elan" ]; then
+            if command -v rsync >/dev/null 2>&1; then
+              rsync -a --delete "${HOME:-/root}/.elan/" "$persist_root/elan/"
+            else
+              rm -rf "$persist_root/elan"/*
+              cp -a "${HOME:-/root}/.elan/." "$persist_root/elan/"
+            fi
+          fi
+
+  assemble-pages-artifact:
+    needs:
+      - discover-projects
+      - build-monolith-site
+    if: always() && needs.build-monolith-site.result == 'success'
+    runs-on: ubuntu-latest
+    outputs:
+      pages_artifact_name: ${{ steps.pages_artifact_name.outputs.name }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download monolithic site artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site-monolith
+          path: .artifacts/monolith
+
+      - name: Assemble partitioned sites tree
+        env:
+          PROJECTS_JSON: ${{ needs.discover-projects.outputs.projects }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import os
+          import shutil
+          from pathlib import Path
+
+          projects = json.loads(os.environ["PROJECTS_JSON"])
+          src_root = Path(".artifacts/monolith")
+          dst_root = Path(".site")
+
+          if dst_root.exists():
+              shutil.rmtree(dst_root)
+          shutil.copytree(src_root, dst_root)
+
+          sites_root = dst_root / "sites"
+          sites_root.mkdir(parents=True, exist_ok=True)
+
+          for p in projects:
+              slug = p["slug"]
+              kind = p["kind"]
+              kind_title = p["kindTitle"]
+              name = p["name"]
+
+              pages_src = dst_root / kind / slug
+              docs_src = dst_root / "docs" / kind_title / name
+              site_dir = sites_root / slug
+
+              if site_dir.exists():
+                  shutil.rmtree(site_dir)
+              site_dir.mkdir(parents=True, exist_ok=True)
+
+              if pages_src.is_dir():
+                  shutil.copytree(pages_src, site_dir / "pages")
+              if docs_src.is_dir():
+                  shutil.copytree(docs_src, site_dir / "docs")
+
+              index = site_dir / "index.html"
+              index.write_text(
+                  "\n".join(
+                      [
+                          "<!doctype html>",
+                          '<html lang="en">',
+                          "<head>",
+                          '  <meta charset="utf-8" />',
+                          '  <meta name="viewport" content="width=device-width,initial-scale=1" />',
+                          f"  <title>{name}</title>",
+                          "</head>",
+                          "<body>",
+                          f"  <h1>{name}</h1>",
+                          "  <ul>",
+                          '    <li><a href="./pages/">Pages</a></li>',
+                          '    <li><a href="./docs/">Documentation</a></li>',
+                          "  </ul>",
+                          '  <p><a href="../../">Back to root</a></p>',
+                          "</body>",
+                          "</html>",
+                          "",
+                      ]
+                  ),
+                  encoding="utf-8",
+              )
+
+          root_index = dst_root / "index.html"
+          if not root_index.exists():
+              links = "\n".join(
+                  f'    <li><a href="./sites/{p["slug"]}/">{p["name"]}</a></li>' for p in projects
+              )
+              root_index.write_text(
+                  "\n".join(
+                      [
+                          "<!doctype html>",
+                          '<html lang="en">',
+                          "<head>",
+                          '  <meta charset="utf-8" />',
+                          '  <meta name="viewport" content="width=device-width,initial-scale=1" />',
+                          "  <title>ReasBook</title>",
+                          "</head>",
+                          "<body>",
+                          "  <h1>ReasBook</h1>",
+                          "  <h2>Independent Sites</h2>",
+                          "  <ul>",
+                          links,
+                          "  </ul>",
+                          "</body>",
+                          "</html>",
+                          "",
+                      ]
+                  ),
+                  encoding="utf-8",
+              )
+          PY
+
+      - name: Verify generated site tree
+        run: |
+          set -euo pipefail
+          ls -la .site
+          test -d .site/books
+          test -d .site/papers
+          test -d .site/docs
+          test -d .site/sites
+
+      - name: Compute Pages artifact name
+        id: pages_artifact_name
+        run: |
+          set -euo pipefail
+          echo "name=github-pages-${{ github.run_attempt }}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: ${{ steps.pages_artifact_name.outputs.name }}
+          path: .site
+
+  deploy:
+    needs: assemble-pages-artifact
+    if: always() && needs.assemble-pages-artifact.result == 'success'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: ${{ needs['assemble-pages-artifact'].outputs.pages_artifact_name }}
+
+      - name: Print deployed Pages URL
+        run: |
+          echo "GitHub Pages URL: ${{ steps.deployment.outputs.page_url }}"
