@@ -1,1 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_48_2.TensorCompare

@@ -1,4 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Proposition_10_58_7.GrothendieckClasses
-import stacks_proof.stacks_project.Chap10.Proposition_10_58_7.DegreeOneQuotients
-import stacks_proof.stacks_project.Chap10.Proposition_10_58_7.HomogeneousQuotientPieces
-import stacks_proof.stacks_project.Chap10.Proposition_10_58_7.DegreeOneKernels

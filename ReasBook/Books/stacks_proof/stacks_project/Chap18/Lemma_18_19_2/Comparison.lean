@@ -1,1 +1,0 @@
-import stacks_proof.stacks_project.Chap18.Lemma_18_19_2

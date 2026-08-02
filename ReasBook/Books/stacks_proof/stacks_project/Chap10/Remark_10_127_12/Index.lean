@@ -1,3 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Remark_10_127_12.OneStageSystems
-import stacks_proof.stacks_project.Chap10.Remark_10_127_12.TwoStageDualNumber
-import stacks_proof.stacks_project.Chap10.Remark_10_127_12.Reindex

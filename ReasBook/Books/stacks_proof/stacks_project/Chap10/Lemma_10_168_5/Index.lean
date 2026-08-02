@@ -1,3 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_168_5.TensorKaehler
-import stacks_proof.stacks_project.Chap10.Lemma_10_168_5.DirectedRingLimit
-import stacks_proof.stacks_project.Chap10.Lemma_10_168_5.TensorColimitDirectLimit

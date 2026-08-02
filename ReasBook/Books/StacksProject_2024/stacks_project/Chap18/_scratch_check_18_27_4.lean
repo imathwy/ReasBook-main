@@ -1,6 +1,0 @@
-import Mathlib
-#check MonoidalClosed.uncurry_natural_left
-#check MonoidalClosed.uncurry_natural_right
-#check MonoidalClosed.uncurry_pre_app
-#check BraidedCategory.braiding_naturality_left
-#check Adjunction.mkOfHomEquiv

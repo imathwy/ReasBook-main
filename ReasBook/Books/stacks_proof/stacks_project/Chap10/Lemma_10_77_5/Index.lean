@@ -1,1 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_77_5.IdempotentCorrection

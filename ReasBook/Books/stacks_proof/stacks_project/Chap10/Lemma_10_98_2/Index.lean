@@ -1,3 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_98_2.BasicMaps
-import stacks_proof.stacks_project.Chap10.Lemma_10_98_2.QuotientKernelSystem
-import stacks_proof.stacks_project.Chap10.Lemma_10_98_2.CompletionComparison

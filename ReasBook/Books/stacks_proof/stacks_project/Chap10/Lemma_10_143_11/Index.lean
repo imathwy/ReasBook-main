@@ -1,4 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_143_11.IdealAndCotangentMaps
-import stacks_proof.stacks_project.Chap10.Lemma_10_143_11.SquareZeroLiftSetup
-import stacks_proof.stacks_project.Chap10.Lemma_10_143_11.KernelIdealTransport
-import stacks_proof.stacks_project.Chap10.Lemma_10_143_11.CotangentResidualComparison

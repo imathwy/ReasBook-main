@@ -42,29 +42,15 @@ lean_lib FirstOrderMethodsOptimization_Beck_2017 where
   srcDir := "Books"
 lean_lib AlgebraicTopology_May_1999 where
   srcDir := "Books"
-lean_lib LecturesConvexOptimization_Nesterov_2018 where
-  srcDir := "Books"
 lean_lib ReasLib where
   srcDir := "Books"
 lean_lib RiemannSurfaces_Forster_1981 where
   srcDir := "Books"
-lean_lib LinearRepresentations_Serre_1977 where
-  srcDir := "Books"
-lean_lib SmoothManifolds_Lee_2012 where
-  srcDir := "Books"
-lean_lib DifferentialForms_Cartan_1970 where
-  srcDir := "Books"
 lean_lib chapter1_reference_format where
-  srcDir := "Books"
-lean_lib StacksProject_2024 where
-  srcDir := "Books"
-lean_lib stacks_proof where
   srcDir := "Books"
 
 -- Books living under Books/<LibName>/ with a Book.lean entry point
 lean_lib Analysis2_Tao_2022 where
-  srcDir := "Books"
-lean_lib ConvexAnalysis_Rockafellar_1970 where
   srcDir := "Books"
 lean_lib IntroductiontoRealAnalysisVolumeI_JiriLebl_2025 where
   srcDir := "Books"

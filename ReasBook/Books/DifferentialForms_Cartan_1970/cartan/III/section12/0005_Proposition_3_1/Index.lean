@@ -1,8 +1,0 @@
-import DifferentialForms_Cartan_1970.cartan.III.section12.«0005_Proposition_3_1».FourierJordanDecay
-import DifferentialForms_Cartan_1970.cartan.III.section12.«0005_Proposition_3_1».WeightedNormalForm
-import DifferentialForms_Cartan_1970.cartan.III.section12.«0005_Proposition_3_1».UpperHalfDiskBoundaryPath
-import DifferentialForms_Cartan_1970.cartan.III.section12.«0005_Proposition_3_1».UpperHalfDiskBoundaryRegularity
-import DifferentialForms_Cartan_1970.cartan.III.section12.«0005_Proposition_3_1».UpperHalfDiskBoundaryStraightening
-import DifferentialForms_Cartan_1970.cartan.III.section12.«0005_Proposition_3_1».UpperHalfDiskContourBridge
-
--- Re-export the theorem-local support modules for Proposition 3.1.

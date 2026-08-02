@@ -1,1 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Remark_10_28_13.BasicModel

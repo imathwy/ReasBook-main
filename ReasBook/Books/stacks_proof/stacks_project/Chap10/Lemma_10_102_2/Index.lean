@@ -1,9 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_102_2.Basic
-import stacks_proof.stacks_project.Chap10.Lemma_10_102_2.Recoordinate
-import stacks_proof.stacks_project.Chap10.Lemma_10_102_2.BiproductBlock
-import stacks_proof.stacks_project.Chap10.Lemma_10_102_2.PivotNormalization
-import stacks_proof.stacks_project.Chap10.Lemma_10_102_2.ReducedComplexCore
-import stacks_proof.stacks_project.Chap10.Lemma_10_102_2.ReducedComplexSquares
-import stacks_proof.stacks_project.Chap10.Lemma_10_102_2.ReducedFiniteFree
-import stacks_proof.stacks_project.Chap10.Lemma_10_102_2.ChainBiproductSplit
-import stacks_proof.stacks_project.Chap10.Lemma_10_102_2.Transport

@@ -1,3 +1,0 @@
-import Mathlib.RingTheory.DividedPowers.SubDPIdeal
-import StacksProject_2024.stacks_project.Chap23.Definition_23_4_1
-#check DividedPowers.isSubDPIdeal_ker

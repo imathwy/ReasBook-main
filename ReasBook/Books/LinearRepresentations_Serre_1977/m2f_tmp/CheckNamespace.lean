@@ -1,6 +1,0 @@
-import LinearRepresentations_Serre_1977.Serre.Chap18.Exercise_18_18_3_2.RegularValueCongruenceSourceFaithful
-
-namespace Representation
-#check regularValueCongruenceSourceFaithfulStatement
-#check regularValueCongruenceSourceFaithfulStatement_of_canonicalProductInput
-end Representation

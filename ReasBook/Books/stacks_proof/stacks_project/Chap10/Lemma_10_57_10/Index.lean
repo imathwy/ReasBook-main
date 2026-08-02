@@ -1,4 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_57_10.ModelPresentation
-import stacks_proof.stacks_project.Chap10.Lemma_10_57_10.ConeHomogenization
-import stacks_proof.stacks_project.Chap10.Lemma_10_57_10.ConeQuotientGrading
-import stacks_proof.stacks_project.Chap10.Lemma_10_57_10.FreeConeModule

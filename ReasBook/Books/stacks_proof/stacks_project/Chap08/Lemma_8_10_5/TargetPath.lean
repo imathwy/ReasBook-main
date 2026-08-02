@@ -1,4 +1,0 @@
-import stacks_proof.stacks_project.Chap08.Lemma_8_10_5.TargetPathTransport
-import stacks_proof.stacks_project.Chap08.Lemma_8_10_5.TargetPathLift
-import stacks_proof.stacks_project.Chap08.Lemma_8_10_5.TargetPathOverlap
-import stacks_proof.stacks_project.Chap08.Lemma_8_10_5.TargetPathTail

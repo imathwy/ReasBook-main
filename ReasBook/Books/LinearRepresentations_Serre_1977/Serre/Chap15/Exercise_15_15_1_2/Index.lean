@@ -1,1 +1,0 @@
-import LinearRepresentations_Serre_1977.Serre.Chap15.Exercise_15_15_1_2.FiniteRepTensorRing

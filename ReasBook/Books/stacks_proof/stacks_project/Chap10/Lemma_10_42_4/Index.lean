@@ -1,5 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_42_4.TranscendenceBasisStage
-import stacks_proof.stacks_project.Chap10.Lemma_10_42_4.FrobeniusBaseChange
-import stacks_proof.stacks_project.Chap10.Lemma_10_42_4.SeparableClosureDegreeDrop
-import stacks_proof.stacks_project.Chap10.Lemma_10_42_4.PthRootAbsorptionStage
-import stacks_proof.stacks_project.Chap10.Lemma_10_42_4.PurelyInseparableLiftCore

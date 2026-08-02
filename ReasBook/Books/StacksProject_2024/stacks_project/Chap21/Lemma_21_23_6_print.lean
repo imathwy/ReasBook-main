@@ -1,2 +1,0 @@
-import StacksProject_2024.stacks_project.Chap21.Lemma_21_23_6
-#print cohomologySheafSection_stageComparison_injective_of_cofinal_coverSystem

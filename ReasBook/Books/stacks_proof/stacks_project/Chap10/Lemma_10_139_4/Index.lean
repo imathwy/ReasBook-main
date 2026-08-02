@@ -1,4 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_139_4.BasicQuotients
-import stacks_proof.stacks_project.Chap10.Lemma_10_139_4.SquareZeroModels
-import stacks_proof.stacks_project.Chap10.Lemma_10_139_4.TruncationKernels
-import stacks_proof.stacks_project.Chap10.Lemma_10_139_4.StagewiseCompletions

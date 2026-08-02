@@ -1,1 +1,0 @@
-import stacks_proof.stacks_project.Chap15.Lemma_15_105_20.ProductWeakDimension

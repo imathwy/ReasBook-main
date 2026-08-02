@@ -1,1 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Proposition_10_102_9.MatrixConjugation

@@ -1,1 +1,0 @@
-import StacksProject_2024.stacks_project.Chap21.Lemma_21_17_10.ColimitHomology

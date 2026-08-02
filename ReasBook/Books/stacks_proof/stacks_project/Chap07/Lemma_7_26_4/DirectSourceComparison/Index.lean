@@ -1,4 +1,0 @@
-import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.DirectSourceComparison.SourceRestrictionSections
-import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.DirectSourceComparison.DirectSourceReindexing
-import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.DirectSourceComparison.GlueRestrictionPresheaf
-import stacks_proof.stacks_project.Chap07.Lemma_7_26_4.DirectSourceComparison.PullbackCompTransport

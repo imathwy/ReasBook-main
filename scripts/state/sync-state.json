@@ -60,28 +60,6 @@
       "baseline_review_reason": "Reviewed complete local.diff: all 27 changed files trace to committed Lean 4.30 repair 7b9621e9, covering TypeCat/morphism, mapVertexGroup, declaration-kind, heartbeat, and proof compatibility changes. Canonical run 20260717T144655Z-baseline-expansion-validation-f30135d1 is full-pass with complete imports and all audits passing.",
       "initial_local_diff_sha256": "812896ff2453583b16deae27e8a95c5db437300bdbc00ccc8e1ffa27f681a179"
     },
-    "book:SmoothManifolds_Lee_2012": {
-      "source_directory": "SmoothManifoldsLee",
-      "accepted_upstream_commit": "dd73b4c7620df23250fe66798d3b1e818a793efb",
-      "normalization_profile": "SmoothManifoldsLee-v1",
-      "normalizer_commit": "64961606ccdb84cdf984610ef65699d9223b4749",
-      "normalized_tree_sha256": "5e62efffdfc2c0fa76c6d0c2c5f1df7c3f8d0336b385fbc7d6cfa4b7207ae65d",
-      "accepted_in_reasbook_commit": "64961606ccdb84cdf984610ef65699d9223b4749",
-      "last_sync_report": "docs/automation-reports/v4.30.0/20260717T-smooth-manifolds-baseline-final",
-      "baseline_review_reason": "Exact byte-for-byte normalized match at the latest ALLBOOKS project commit dd73b4c7. This establishes provenance only; lifecycle remains repair-blocked at G10 and no full-pass is claimed.",
-      "initial_local_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    "book:DifferentialForms_Cartan_1970": {
-      "source_directory": "cartan",
-      "accepted_upstream_commit": "44bd65992a2f4f860eb15221de130d19147efdf6",
-      "normalization_profile": "cartan-v1",
-      "normalizer_commit": "64961606ccdb84cdf984610ef65699d9223b4749",
-      "normalized_tree_sha256": "9178085c4c2250f3d950465eba2261cc74f9963d1da0a34af222d534b7384e53",
-      "accepted_in_reasbook_commit": "64961606ccdb84cdf984610ef65699d9223b4749",
-      "last_sync_report": "docs/automation-reports/v4.30.0/20260717T-cartan-baseline-candidate",
-      "baseline_review_reason": "Reviewed complete 12-file local.diff: all changes disambiguate the project-root V/VI/VII hierarchy from the coexisting cartan/V/VI/VII hierarchy; five trace to import rebuild 9e0b9a05 and seven to Lean 4.30 WIP 65382630. This establishes provenance only; lifecycle remains repair-blocked and no full-pass is claimed.",
-      "initial_local_diff_sha256": "ddd881a897d656328b0faa5a430a4fb5167c726ea3ff2e75aed4b1fdc3032e77"
-    },
     "book:FirstOrderMethodsOptimization_Beck_2017": {
       "source_directory": "FirstOrderMethodsinOptimization",
       "accepted_upstream_commit": "ae24e440af940da831facda323568306debda105",
@@ -103,39 +81,6 @@
       "last_sync_report": "docs/automation-reports/v4.30.0/20260717T-klenke-baseline-candidate",
       "baseline_review_reason": "Reviewed complete two-file local.diff: both entry/name compatibility changes trace to committed Lean 4.30 WIP 46625c1f. Provenance only: lifecycle remains repair-checkpointed with its existing resume commit; no full-pass is claimed.",
       "initial_local_diff_sha256": "24d68061d6d2a26e39c6c0889bbf861c413aa60a889e7b297ad6f3a4242689dc"
-    },
-    "book:ConvexAnalysis_Rockafellar_1970": {
-      "source_directory": "ConvexAnalysis_Rockafellar_1970",
-      "accepted_upstream_commit": "5009a7eb490afeadba06926c71c56ee8e686beb6",
-      "normalization_profile": "ConvexAnalysis_Rockafellar_1970-v1",
-      "normalizer_commit": "64961606ccdb84cdf984610ef65699d9223b4749",
-      "normalized_tree_sha256": "00e3cb217d5fbb09268a2537a06c0357d6dc2bef20f72c74db8dc34d4bfd2e01",
-      "accepted_in_reasbook_commit": "64961606ccdb84cdf984610ef65699d9223b4749",
-      "last_sync_report": "docs/automation-reports/v4.30.0/20260717T-rockafellar-baseline-final",
-      "baseline_review_reason": "Reviewed complete 151-file local.diff after correcting the double-named source layout: every remaining file traces to committed checkpoint54 Lean 4.30 migration 10834c51. Provenance only: lifecycle remains repair-checkpointed with its existing resume commit; no full-pass is claimed.",
-      "initial_local_diff_sha256": "1f5a73e9894c2078f32ddd5be191cd79528626bb52f0596b4a97df558ec88cb9"
-    },
-    "book:LinearRepresentations_Serre_1977": {
-      "source_directory": "serre",
-      "accepted_upstream_commit": "f268271b010617c2b43683b762ac3bd1d7cc4f6c",
-      "normalization_profile": "serre-v1",
-      "normalizer_commit": "64961606ccdb84cdf984610ef65699d9223b4749",
-      "normalized_tree_sha256": "1503bcc38da84b295e545841b1ae9af46c9fe5e174a639d65039e54b8c664e70",
-      "accepted_in_reasbook_commit": "64961606ccdb84cdf984610ef65699d9223b4749",
-      "last_sync_report": "docs/automation-reports/v4.30.0/20260717T-serre-baseline-candidate",
-      "baseline_review_reason": "Reviewed complete 40-file local.diff: all changes disambiguate root-level modules from an incorrect extra Serre prefix; 37 trace to committed Lean 4.30 WIP 6b040bfc and three to import rebuild 9e0b9a05. Provenance only: lifecycle remains repair-checkpointed and no full-pass is claimed.",
-      "initial_local_diff_sha256": "ec358ae6fbfd43bc0336c2166f1eff111726c95151095985fda4cae2ddf92e75"
-    },
-    "book:LecturesConvexOptimization_Nesterov_2018": {
-      "source_directory": "Nesterov",
-      "accepted_upstream_commit": "5009a7eb490afeadba06926c71c56ee8e686beb6",
-      "normalization_profile": "Nesterov-v1",
-      "normalizer_commit": "64961606ccdb84cdf984610ef65699d9223b4749",
-      "normalized_tree_sha256": "1edf80a6d79822d1d26ae6c927a66f9627482e0ef3127fb1c1946e5c9c45fd17",
-      "accepted_in_reasbook_commit": "64961606ccdb84cdf984610ef65699d9223b4749",
-      "last_sync_report": "docs/automation-reports/v4.30.0/20260717T-nesterov-baseline-candidate",
-      "baseline_review_reason": "Reviewed complete three-file local.diff: two entry/name changes trace to committed Lean 4.30 WIP 0bbbec42 and the internal Book.lean canonical-prefix rewrite traces to import rebuild 9e0b9a05. Provenance only: lifecycle remains repair-checkpointed and no full-pass is claimed.",
-      "initial_local_diff_sha256": "a143710fba66a568e74da4695aac911d18e68d3c67cc525faa1a4a1062264f5e"
     },
     "paper:SmoothMinimization_Nesterov_2004": {
       "source_directory": "SmoothMinimization_Nesterov_2004",
@@ -180,28 +125,6 @@
       "last_sync_report": "docs/automation-reports/v4.30.0/20260717T-analysis2-baseline",
       "baseline_review_reason": "Reviewed complete 17-file local.diff: sixteen Lean 4.30 migration files trace to b0d8f76e and one canonical import isolation to 95e6f13a. Canonical run 20260717T172037Z-baseline-expansion-validation-e4bf744e is full-pass with all audits passing.",
       "initial_local_diff_sha256": "2c7962b9685095116de73a22b99b2e73ea07ab8741c228294f132e76712dee34"
-    },
-    "book:StacksProject_2024": {
-      "source_directory": "stacks-refine-stmt",
-      "accepted_upstream_commit": "9fdecfac597ef10e2f02ab812d828fd6ffa2492c",
-      "normalization_profile": "stacks-refine-stmt-v1",
-      "normalizer_commit": "64961606ccdb84cdf984610ef65699d9223b4749",
-      "normalized_tree_sha256": "79fdaebe7d5d06e2656efea01c0e57154cf2e843648faab00662b9d8b4ce2865",
-      "accepted_in_reasbook_commit": "64961606ccdb84cdf984610ef65699d9223b4749",
-      "last_sync_report": "docs/automation-reports/v4.30.0/20260717T-stacks-project-baseline",
-      "baseline_review_reason": "Reviewed complete two-file local.diff: stacks_project.lean entry repair traces to a6794421 and internal Book.lean canonical-prefix rewrite to 9e0b9a05. Canonical run 20260717T172621Z-baseline-expansion-validation-bba73919 remains repair-incomplete (six direct roots plus a filename coverage issue); provenance is accepted without claiming full-pass.",
-      "initial_local_diff_sha256": "dbe13d530a06b89c7351cf50f44cdb16b77901a5ceaf46ab7eacaa380d5b8db3"
-    },
-    "book:stacks_proof": {
-      "source_directory": "stacks-proof",
-      "accepted_upstream_commit": "9fdecfac597ef10e2f02ab812d828fd6ffa2492c",
-      "normalization_profile": "stacks-proof-v1",
-      "normalizer_commit": "64961606ccdb84cdf984610ef65699d9223b4749",
-      "normalized_tree_sha256": "51111909a20fa4c178385a1e49648bebd5469ce7a3c08ec0c2ed339194ab4cf9",
-      "accepted_in_reasbook_commit": "64961606ccdb84cdf984610ef65699d9223b4749",
-      "last_sync_report": "docs/automation-reports/v4.30.0/20260717T-stacks-proof-baseline-final",
-      "baseline_review_reason": "Reviewed complete 4085-file local.diff after excluding .lake artifacts: 4084 files trace to committed Lean 4.30 migration checkpoint f428accc and one internal entry to 9e0b9a05. Canonical run 20260717T180227Z-baseline-expansion-validation-395d4ab7 remains repair-incomplete due a Book-level duplicate declaration and incomplete import coverage; no full-pass is claimed.",
-      "initial_local_diff_sha256": "4f270c48e0275d065dfaba24076c76284256b922c2dc00e7e0f7d07e98ca23d6"
     }
   }
 }

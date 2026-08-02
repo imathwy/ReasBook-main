@@ -1,6 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_110_3.ResolutionData
-import stacks_proof.stacks_project.Chap10.Lemma_10_110_3.MinimalResolution
-import stacks_proof.stacks_project.Chap10.Lemma_10_110_3.LocalKoszul
-import stacks_proof.stacks_project.Chap10.Lemma_10_110_3.IdealCoordinate
-import stacks_proof.stacks_project.Chap10.Lemma_10_110_3.KoszulFirstOrder
-import stacks_proof.stacks_project.Chap10.Lemma_10_110_3.MinimalComparison

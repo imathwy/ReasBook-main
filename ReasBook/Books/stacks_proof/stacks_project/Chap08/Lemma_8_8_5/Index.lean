@@ -1,3 +1,0 @@
-import stacks_proof.stacks_project.Chap08.Lemma_8_8_5.ExplicitPullbackObjects
-import stacks_proof.stacks_project.Chap08.Lemma_8_8_5.StackificationTransport
-

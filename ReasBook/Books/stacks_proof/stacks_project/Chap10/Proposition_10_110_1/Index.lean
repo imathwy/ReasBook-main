@@ -1,3 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Proposition_10_110_1.SameUniverseProjective
-import stacks_proof.stacks_project.Chap10.Proposition_10_110_1.SurjectiveDepth
-import stacks_proof.stacks_project.Chap10.Proposition_10_110_1.ULiftModel

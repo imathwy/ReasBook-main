@@ -1,3 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_13_4.TensorComparison
-import stacks_proof.stacks_project.Chap10.Lemma_10_13_4.TensorSlotInsertion
-import stacks_proof.stacks_project.Chap10.Lemma_10_13_4.RelationSets

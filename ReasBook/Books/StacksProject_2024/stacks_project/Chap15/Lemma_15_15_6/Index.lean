@@ -1,2 +1,0 @@
-import StacksProject_2024.stacks_project.Chap15.Lemma_15_15_6.LocalizationBridge
-import StacksProject_2024.stacks_project.Chap15.Lemma_15_15_6.ClosedFiberBridge

@@ -1,6 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Example_10_119_5.CoefficientSubring
-import stacks_proof.stacks_project.Chap10.Example_10_119_5.CoefficientDVRCompletion
-import stacks_proof.stacks_project.Chap10.Example_10_119_5.CoefficientFractionField
-import stacks_proof.stacks_project.Chap10.Example_10_119_5.LaurentCoefficientUnion
-import stacks_proof.stacks_project.Chap10.Example_10_119_5.PowerSeriesModuleBridge
-import stacks_proof.stacks_project.Chap10.Example_10_119_5.AdjoinedCompletion

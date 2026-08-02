@@ -1,5 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_99_16.PrincipalQuotients
-import stacks_proof.stacks_project.Chap10.Lemma_10_99_16.TorOwnerBridge
-import stacks_proof.stacks_project.Chap10.Lemma_10_99_16.SourceTorExact
-import stacks_proof.stacks_project.Chap10.Lemma_10_99_16.AnnihilatedTor
-import stacks_proof.stacks_project.Chap10.Lemma_10_99_16.FaithfulIdeals

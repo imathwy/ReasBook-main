@@ -1,2 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_149_5.UniversalThickeningComparison
-import stacks_proof.stacks_project.Chap10.Lemma_10_149_5.SelfPresentationConormal

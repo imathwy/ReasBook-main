@@ -1,3 +1,0 @@
-import LinearRepresentations_Serre_1977.Serre.Chap10.Exercise_10_10_3_5
-#check character_value_congruent_mod_ideal
-#check exists_tensorCharacter_character_value_mod_pIdeal_ne

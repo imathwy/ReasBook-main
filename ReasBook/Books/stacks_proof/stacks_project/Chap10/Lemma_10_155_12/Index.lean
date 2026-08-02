@@ -1,2 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_155_12.IndEtaleBaseChange
-import stacks_proof.stacks_project.Chap10.Lemma_10_155_12.LocalizationIndEtale

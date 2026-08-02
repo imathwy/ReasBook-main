@@ -1,5 +1,0 @@
-import stacks_proof.stacks_project.Chap07.Lemma_7_38_3.BasicULift
-import stacks_proof.stacks_project.Chap07.Lemma_7_38_3.SheafifiedRepresentableStalk
-import stacks_proof.stacks_project.Chap07.Lemma_7_38_3.SeparatingSections
-import stacks_proof.stacks_project.Chap07.Lemma_7_38_3.SieveFiberLifting
-import stacks_proof.stacks_project.Chap07.Lemma_7_38_3.LargeTypeLocalBijective

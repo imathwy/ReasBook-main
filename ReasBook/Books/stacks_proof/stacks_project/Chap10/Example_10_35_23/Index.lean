@@ -1,4 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Example_10_35_23.CoordinateRings
-import stacks_proof.stacks_project.Chap10.Example_10_35_23.NodeAxes
-import stacks_proof.stacks_project.Chap10.Example_10_35_23.MatrixAmbientIdeals
-import stacks_proof.stacks_project.Chap10.Example_10_35_23.RankOneParametrization

@@ -11,8 +11,6 @@ ReasBook-private is generated using the tool: [M2F](https://github.com/optsuite/
 ### Books
 - [Terence Tao, *Analysis II*, 4th ed., Hindustan Book Agency / Springer, Singapore, 2022, ISBN 978-981-19-7284-3.](./ReasBook/Books/Analysis2_Tao_2022/)
   - Links: [Documentation](https://optpku.github.io/ReasBook-private/docs/Books/Analysis2_Tao_2022/Book.html) | [Lean source](./ReasBook/Books/Analysis2_Tao_2022/Chapters/) | [Verso](https://optpku.github.io/ReasBook-private/books/analysis2_tao_2022/)
-- [R. Tyrrell Rockafellar, *Convex Analysis*, Princeton University Press, Princeton, 1970, ISBN 0-691-08069-0.](./ReasBook/Books/ConvexAnalysis_Rockafellar_1970/)
-  - Links: [Documentation](https://optpku.github.io/ReasBook-private/docs/Books/ConvexAnalysis_Rockafellar_1970/Book.html) | [Lean source](./ReasBook/Books/ConvexAnalysis_Rockafellar_1970/Chapters/) | [Verso](https://optpku.github.io/ReasBook-private/books/convexanalysis_rockafellar_1970/)
 - [Jiri Lebl, *Introduction to Real Analysis, Volume I*, version 6.2, May 23, 2025.](./ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/)
   - Links: [Documentation](https://optpku.github.io/ReasBook-private/docs/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Book.html) | [Lean source](./ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/) | [Verso](https://optpku.github.io/ReasBook-private/books/introductiontorealanalysisvolumei_jirilebl_2025/)
 - [Michele Conforti, Gerard Cornuejols, Giacomo Zambelli, *Integer Programming*, Graduate Texts in Mathematics 271, Springer, 2014, ISBN 978-3-319-11007-3.](./ReasBook/Books/IntegerProgramming_Conforti_2014/)
@@ -27,18 +25,8 @@ ReasBook-private is generated using the tool: [M2F](https://github.com/optsuite/
   - Links: [Documentation](https://optpku.github.io/ReasBook-private/docs/Books/FirstOrderMethodsOptimization_Beck_2017/Book.html) | [Lean source](./ReasBook/Books/FirstOrderMethodsOptimization_Beck_2017/Chapters/) | [Verso](https://optpku.github.io/ReasBook-private/books/firstordermethodsoptimization_beck_2017/)
 - [J. Peter May, *A Concise Course in Algebraic Topology*, University of Chicago Press, 1999, ISBN 978-0-226-51183-2.](./ReasBook/Books/AlgebraicTopology_May_1999/)
   - Links: [Documentation](https://optpku.github.io/ReasBook-private/docs/Books/AlgebraicTopology_May_1999/Book.html) | [Lean source](./ReasBook/Books/AlgebraicTopology_May_1999/Chapters/) | [Verso](https://optpku.github.io/ReasBook-private/books/algebraictopology_may_1999/)
-- [Yurii Nesterov, *Lectures on Convex Optimization*, 2nd ed., Springer, 2018, ISBN 978-3-319-91577-3.](./ReasBook/Books/LecturesConvexOptimization_Nesterov_2018/)
-  - Links: [Documentation](https://optpku.github.io/ReasBook-private/docs/Books/LecturesConvexOptimization_Nesterov_2018/Book.html) | [Lean source](./ReasBook/Books/LecturesConvexOptimization_Nesterov_2018/Chapters/) | [Verso](https://optpku.github.io/ReasBook-private/books/lecturesconvexoptimization_nesterov_2018/)
 - [Otto Forster, *Lectures on Riemann Surfaces*, Springer, 1981, ISBN 978-0-387-90617-1.](./ReasBook/Books/RiemannSurfaces_Forster_1981/)
   - Links: [Documentation](https://optpku.github.io/ReasBook-private/docs/Books/RiemannSurfaces_Forster_1981/Book.html) | [Lean source](./ReasBook/Books/RiemannSurfaces_Forster_1981/Chapters/) | [Verso](https://optpku.github.io/ReasBook-private/books/riemannsurfaces_forster_1981/)
-- [Jean-Pierre Serre, *Linear Representations of Finite Groups*, Springer, 1977, ISBN 978-0-387-90190-9.](./ReasBook/Books/LinearRepresentations_Serre_1977/)
-  - Links: [Documentation](https://optpku.github.io/ReasBook-private/docs/Books/LinearRepresentations_Serre_1977/Book.html) | [Lean source](./ReasBook/Books/LinearRepresentations_Serre_1977/Chapters/) | [Verso](https://optpku.github.io/ReasBook-private/books/linearrepresentations_serre_1977/)
-- [John M. Lee, *Introduction to Smooth Manifolds*, 2nd ed., Springer, 2012, ISBN 978-1-4419-9981-8.](./ReasBook/Books/SmoothManifolds_Lee_2012/)
-  - Links: [Documentation](https://optpku.github.io/ReasBook-private/docs/Books/SmoothManifolds_Lee_2012/Book.html) | [Lean source](./ReasBook/Books/SmoothManifolds_Lee_2012/Chapters/) | [Verso](https://optpku.github.io/ReasBook-private/books/smoothmanifolds_lee_2012/)
-- [Henri Cartan, *Differential Forms*, Dover Publications, 2006, ISBN 978-0-486-45010-0.](./ReasBook/Books/DifferentialForms_Cartan_1970/)
-  - Links: [Documentation](https://optpku.github.io/ReasBook-private/docs/Books/DifferentialForms_Cartan_1970/Book.html) | [Lean source](./ReasBook/Books/DifferentialForms_Cartan_1970/Chapters/) | [Verso](https://optpku.github.io/ReasBook-private/books/differentialforms_cartan_1970/)
-- [The Stacks Project.](./ReasBook/Books/StacksProject_2024/)
-  - Links: [Documentation](https://optpku.github.io/ReasBook-private/docs/Books/StacksProject_2024/Book.html) | [Lean source](./ReasBook/Books/StacksProject_2024/Chapters/) | [Verso](https://optpku.github.io/ReasBook-private/books/stacksproject_2024/)
 - [ReasLib](./ReasBook/Books/ReasLib/) — A Lean 4 library for mathematical optimization, covering convex analysis, optimality conditions, and algorithm convergence.
   - Links: [Documentation](https://optpku.github.io/ReasBook-private/docs/Books/ReasLib/) | [Lean source](./ReasBook/Books/ReasLib/) | [Verso](https://optpku.github.io/ReasBook-private/books/reaslib/)
 
@@ -83,7 +71,7 @@ Content directories use:
 
 Examples:
 
-- `ConvexAnalysis_Rockafellar_1970`
+- `Analysis2_Tao_2022`
 - `SmoothMinimization_Nesterov_2004`
 - `OnSomeLocalRings_Maassaran_2025`
 - `ProbabilityTheory_Klenke_2020`

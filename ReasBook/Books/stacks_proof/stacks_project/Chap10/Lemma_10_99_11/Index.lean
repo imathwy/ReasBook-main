@@ -1,6 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_99_11.MappedIdealTensor
-import stacks_proof.stacks_project.Chap10.Lemma_10_99_11.StageKernelFiltration
-import stacks_proof.stacks_project.Chap10.Lemma_10_99_11.PrimeLocalizationTensor
-import stacks_proof.stacks_project.Chap10.Lemma_10_99_11.QuotientLocalization
-import stacks_proof.stacks_project.Chap10.Lemma_10_99_11.LocalCriterionUniverse
-import stacks_proof.stacks_project.Chap10.Lemma_10_99_11.ClosedFiberLocalization

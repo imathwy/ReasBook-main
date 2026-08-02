@@ -1,5 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_150_8.PrincipalPartsMap
-import stacks_proof.stacks_project.Chap10.Lemma_10_150_8.PrincipalPartsBaseChange
-import stacks_proof.stacks_project.Chap10.Lemma_10_150_8.DiagonalTensorModels
-import stacks_proof.stacks_project.Chap10.Lemma_10_150_8.SourceQuotientBaseChange
-import stacks_proof.stacks_project.Chap10.Lemma_10_150_8.RingQuotientTensorBridge

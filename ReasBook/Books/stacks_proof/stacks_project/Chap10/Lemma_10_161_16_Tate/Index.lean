@@ -1,5 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_161_16_Tate.BasicN2AndRoots
-import stacks_proof.stacks_project.Chap10.Lemma_10_161_16_Tate.PrincipalPrimeRoot
-import stacks_proof.stacks_project.Chap10.Lemma_10_161_16_Tate.ResidueFieldBridge
-import stacks_proof.stacks_project.Chap10.Lemma_10_161_16_Tate.PrincipalAdicSeparated
-import stacks_proof.stacks_project.Chap10.Lemma_10_161_16_Tate.LocalizedNormalization

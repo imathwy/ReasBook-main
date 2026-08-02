@@ -1,2 +1,0 @@
-import stacks_proof.stacks_project.Chap11.Theorem_11_8_2.BaseChangeMatrix
-import stacks_proof.stacks_project.Chap11.Theorem_11_8_2.SplitByBrauer

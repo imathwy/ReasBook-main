@@ -1,5 +1,0 @@
--- Proof rescue support index.
-
-import LinearRepresentations_Serre_1977.Serre.Chap16.Exercise_16_16_3_9.DimensionTwoTransport
-import LinearRepresentations_Serre_1977.Serre.Chap16.Exercise_16_16_3_9.ModSevenDegree
-import LinearRepresentations_Serre_1977.Serre.Chap16.Exercise_16_16_3_9.ModSevenLiftObstruction

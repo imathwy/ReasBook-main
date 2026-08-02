@@ -1,5 +1,0 @@
-import stacks_proof.stacks_project.Chap08.Lemma_8_4_3.Fibered
-import stacks_proof.stacks_project.Chap08.Lemma_8_4_3.AmbientIsoClosure
-import stacks_proof.stacks_project.Chap08.Lemma_8_4_3.PullbackComparison
-import stacks_proof.stacks_project.Chap08.Lemma_8_4_3.RestrictedDescent
-import stacks_proof.stacks_project.Chap08.Lemma_8_4_3.Transport

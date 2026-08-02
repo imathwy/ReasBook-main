@@ -1,4 +1,0 @@
--- Proof rescue support index.
-import LinearRepresentations_Serre_1977.Serre.Chap16.Corollary_16_16_1_3.CharacterDescent
-import LinearRepresentations_Serre_1977.Serre.Chap16.Corollary_16_16_1_3.GrothendieckCharacter
-import LinearRepresentations_Serre_1977.Serre.Chap16.Corollary_16_16_1_3.ScalarExtensionCharacter

@@ -1,3 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_101_4
-import stacks_proof.stacks_project.Chap10.Lemma_10_103_13
-import stacks_proof.stacks_project.Chap10.Remark_10_160_9.RegularSingleton

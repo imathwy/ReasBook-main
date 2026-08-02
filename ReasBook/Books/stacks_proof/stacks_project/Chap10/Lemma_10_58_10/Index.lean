@@ -1,4 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_58_10.NumericalPolynomialDegree
-import stacks_proof.stacks_project.Chap10.Lemma_10_58_10.ScalarHilbertSerre
-import stacks_proof.stacks_project.Chap10.Lemma_10_58_10.ScalarHilbertSerreQuotient
-import stacks_proof.stacks_project.Chap10.Lemma_10_58_10.ScalarHilbertSerreInduction

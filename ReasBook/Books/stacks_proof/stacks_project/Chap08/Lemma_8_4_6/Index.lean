@@ -1,5 +1,0 @@
-import stacks_proof.stacks_project.Chap08.Lemma_8_4_6.CanonicalPullbackComparison
-import stacks_proof.stacks_project.Chap08.Lemma_8_4_6.StackMorphismPullHom
-import stacks_proof.stacks_project.Chap08.Lemma_8_4_6.CoverDescentTransport
-import stacks_proof.stacks_project.Chap08.Lemma_8_4_6.FixedCoverEquivalenceBridge
-import stacks_proof.stacks_project.Chap08.Lemma_8_4_6.ExplicitPullbackInverseSupport

@@ -1,3 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_66_19.OwnerDirectSumDescent
-import stacks_proof.stacks_project.Chap10.Lemma_10_66_19.IntermediateOwnerDescent
-import stacks_proof.stacks_project.Chap10.Lemma_10_66_19.FiniteIntermediateTensor

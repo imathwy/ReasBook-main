@@ -1,6 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Example_10_55_5.PolynomialEvaluation
-import stacks_proof.stacks_project.Chap10.Example_10_55_5.RestrictionTransport
-import stacks_proof.stacks_project.Chap10.Example_10_55_5.EndpointFieldClasses
-import stacks_proof.stacks_project.Chap10.Example_10_55_5.Noetherian
-import stacks_proof.stacks_project.Chap10.Example_10_55_5.ProjectiveRank
-import stacks_proof.stacks_project.Chap10.Example_10_55_5.ProjectiveClutching

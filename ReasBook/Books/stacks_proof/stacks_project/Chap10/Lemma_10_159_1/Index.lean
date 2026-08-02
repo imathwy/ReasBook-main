@@ -1,5 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_159_1.LocalAlgebra
-import stacks_proof.stacks_project.Chap10.Lemma_10_159_1.ResidueExtensionStage
-import stacks_proof.stacks_project.Chap10.Lemma_10_159_1.WellOrderedPrefix
-import stacks_proof.stacks_project.Chap10.Lemma_10_159_1.PrefixStageChain
-import stacks_proof.stacks_project.Chap10.Lemma_10_159_1.OpenSystem

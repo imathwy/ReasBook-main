@@ -1,4 +1,0 @@
-import stacks_proof.stacks_project.Chap10.Lemma_10_64_3.SemilocalPrime
-import stacks_proof.stacks_project.Chap10.Lemma_10_64_3.TensorQuotient
-import stacks_proof.stacks_project.Chap10.Lemma_10_64_3.SemilocalLocalization
-import stacks_proof.stacks_project.Chap10.Lemma_10_64_3.SemilocalRegularitySetup

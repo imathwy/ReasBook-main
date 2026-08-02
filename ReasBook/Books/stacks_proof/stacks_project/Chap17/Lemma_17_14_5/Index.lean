@@ -1,1 +1,0 @@
-import stacks_proof.stacks_project.Chap17.Lemma_17_14_5.FreeSections

@@ -1,6 +1,0 @@
-import stacks_proof.stacks_project.Chap07.Lemma_7_28_1.SliceStructuredArrow
-import stacks_proof.stacks_project.Chap07.Lemma_7_28_1.LowerShriekTransport
-import stacks_proof.stacks_project.Chap07.Lemma_7_28_1.LocalizationPushforward
-import stacks_proof.stacks_project.Chap07.Lemma_7_28_1.RepresentableLocalizationSigma
-import stacks_proof.stacks_project.Chap07.Lemma_7_28_1.RepresentableLocalizationRawFiber
-import stacks_proof.stacks_project.Chap07.Lemma_7_28_1.RepresentableLocalizationFiber
