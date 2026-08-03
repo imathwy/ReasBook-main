@@ -10,8 +10,7 @@ Optimization: A Basic Course*.
 | Proof completion | 99.48% |
 | Explicit `sorry` | 76 |
 
-Contributors: Chenyi Li, Siyuan Shao, Yijie Wang, Feiming Wang, Weiran Shi,
-Yuhao Jiang, Zebo Liu, and Wentao Long.
+Contributors: Chenyi Li, Siyuan Shao, Yijie Wang, Feiming Wang, Weiran Shi, Yuhao Jiang, Zebo Liu, and Wentao Long.
 
 The project uses Lean/mathlib `v4.30.0`, matching `optpku/ReasBook` branch
 `v4.30.0` at `11a65a5`. Build it with:
@@ -20,5 +19,3 @@ The project uses Lean/mathlib `v4.30.0`, matching `optpku/ReasBook` branch
 cd ReasBook
 lake build ReasBook
 ```
-
-Book sources: [`ReasBook/Books/IntroductoryLecturesOnConvexOptimization_Nesterov_2004`](./ReasBook/Books/IntroductoryLecturesOnConvexOptimization_Nesterov_2004/)
