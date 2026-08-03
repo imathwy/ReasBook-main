@@ -122,7 +122,7 @@ jobs:
   check-doc-cache:
     needs: discover-projects
     if: needs.discover-projects.outputs.full_deploy == 'true'
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: [self-hosted, Linux, X64, reasbook-public]
     env:
       PERSIST_ROOT: ${{ vars.REASBOOK_PERSIST_ROOT }}
     outputs:
@@ -137,7 +137,8 @@ jobs:
         run: |
           set -euo pipefail
           repo_key="${GITHUB_REPOSITORY//\//_}"
-          persist_root="${PERSIST_ROOT:-${HOME:-/root}/.cache/reasbook-ci/$repo_key}"
+          persist_base="${PERSIST_ROOT:-${HOME:-/root}/.cache/reasbook-ci/$repo_key}"
+          persist_root="$persist_base/$GITHUB_REF_NAME"
           echo "PERSIST_ROOT=$persist_root" >> "$GITHUB_ENV"
           echo "Using persistent root: $persist_root"
           mkdir -p "$persist_root/reasbook_lake"
@@ -183,7 +184,7 @@ jobs:
   build-changed-projects:
     needs: discover-projects
     if: needs.discover-projects.outputs.full_deploy != 'true'
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: [self-hosted, Linux, X64, reasbook-public]
     timeout-minutes: 150
     env:
       HEARTBEAT_INTERVAL_SECONDS: 45
@@ -198,23 +199,16 @@ jobs:
         run: |
           set -euo pipefail
           repo_key="${GITHUB_REPOSITORY//\//_}"
-          persist_root="${PERSIST_ROOT:-${HOME:-/root}/.cache/reasbook-ci/$repo_key}"
+          persist_base="${PERSIST_ROOT:-${HOME:-/root}/.cache/reasbook-ci/$repo_key}"
+          persist_root="$persist_base/$GITHUB_REF_NAME"
           echo "PERSIST_ROOT=$persist_root" >> "$GITHUB_ENV"
           echo "Using persistent root: $persist_root"
+          # The self-hosted runner already persists HOME; keep only Lake caches here.
           mkdir -p "$persist_root/reasbook_lake" \
-                   "$persist_root/reasbookweb_lake" \
-                   "$persist_root/elan"
+                   "$persist_root/reasbookweb_lake"
           rm -rf ReasBook/.lake ReasBookWeb/.lake
           ln -sfn "$persist_root/reasbook_lake" ReasBook/.lake
           ln -sfn "$persist_root/reasbookweb_lake" ReasBookWeb/.lake
-          if [ -d "$persist_root/elan" ] && [ -n "$(ls -A "$persist_root/elan" 2>/dev/null)" ]; then
-            mkdir -p "${HOME:-/root}/.elan"
-            if command -v rsync >/dev/null 2>&1; then
-              rsync -a "$persist_root/elan/" "${HOME:-/root}/.elan/"
-            else
-              cp -a "$persist_root/elan/." "${HOME:-/root}/.elan/"
-            fi
-          fi
 
       - name: Install elan (Lean toolchain manager)
         run: |
@@ -265,29 +259,13 @@ jobs:
             ReasBook/.lake/build/lib/lean
           key: lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}
 
-      - name: Persist elan toolchain
-        if: always()
-        run: |
-          set -euo pipefail
-          repo_key="${GITHUB_REPOSITORY//\//_}"
-          persist_root="${PERSIST_ROOT:-${HOME:-/root}/.cache/reasbook-ci/$repo_key}"
-          mkdir -p "$persist_root/elan"
-          if [ -d "${HOME:-/root}/.elan" ]; then
-            if command -v rsync >/dev/null 2>&1; then
-              rsync -a --delete "${HOME:-/root}/.elan/" "$persist_root/elan/"
-            else
-              rm -rf "$persist_root/elan"/*
-              cp -a "${HOME:-/root}/.elan/." "$persist_root/elan/"
-            fi
-          fi
-
   build-monolith-site:
     needs:
       - discover-projects
       - check-doc-cache
       - build-full-docs-fallback
     if: always() && needs.discover-projects.outputs.full_deploy == 'true' && (needs.check-doc-cache.outputs.doc_cache_available == 'true' || needs.build-full-docs-fallback.result == 'success')
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: [self-hosted, Linux, X64, reasbook-public]
     timeout-minutes: 300
     env:
       HEARTBEAT_INTERVAL_SECONDS: 45
@@ -301,23 +279,16 @@ jobs:
         run: |
           set -euo pipefail
           repo_key="${GITHUB_REPOSITORY//\//_}"
-          persist_root="${PERSIST_ROOT:-${HOME:-/root}/.cache/reasbook-ci/$repo_key}"
+          persist_base="${PERSIST_ROOT:-${HOME:-/root}/.cache/reasbook-ci/$repo_key}"
+          persist_root="$persist_base/$GITHUB_REF_NAME"
           echo "PERSIST_ROOT=$persist_root" >> "$GITHUB_ENV"
           echo "Using persistent root: $persist_root"
+          # The self-hosted runner already persists HOME; keep only Lake caches here.
           mkdir -p "$persist_root/reasbook_lake" \
-                   "$persist_root/reasbookweb_lake" \
-                   "$persist_root/elan"
+                   "$persist_root/reasbookweb_lake"
           rm -rf ReasBook/.lake ReasBookWeb/.lake
           ln -sfn "$persist_root/reasbook_lake" ReasBook/.lake
           ln -sfn "$persist_root/reasbookweb_lake" ReasBookWeb/.lake
-          if [ -d "$persist_root/elan" ] && [ -n "$(ls -A "$persist_root/elan" 2>/dev/null)" ]; then
-            mkdir -p "${HOME:-/root}/.elan"
-            if command -v rsync >/dev/null 2>&1; then
-              rsync -a "$persist_root/elan/" "${HOME:-/root}/.elan/"
-            else
-              cp -a "$persist_root/elan/." "${HOME:-/root}/.elan/"
-            fi
-          fi
 
       - name: Install elan (Lean toolchain manager)
         run: |
@@ -453,7 +424,8 @@ jobs:
           name: site-monolith
           path: ReasBookWeb/_site
           if-no-files-found: error
-          compression-level: 0
+          retention-days: 1
+          compression-level: 6
           overwrite: true
 
       - name: Save ReasBook build cache
@@ -475,22 +447,6 @@ jobs:
             ReasBookWeb/.lake/build/bin
             ReasBookWeb/.lake/build/lib/lean
           key: lake-reasbookweb-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBookWeb/lean-toolchain') }}-${{ hashFiles('ReasBookWeb/lake-manifest.json') }}
-
-      - name: Persist elan toolchain
-        if: always()
-        run: |
-          set -euo pipefail
-          repo_key="${GITHUB_REPOSITORY//\//_}"
-          persist_root="${PERSIST_ROOT:-${HOME:-/root}/.cache/reasbook-ci/$repo_key}"
-          mkdir -p "$persist_root/elan"
-          if [ -d "${HOME:-/root}/.elan" ]; then
-            if command -v rsync >/dev/null 2>&1; then
-              rsync -a --delete "${HOME:-/root}/.elan/" "$persist_root/elan/"
-            else
-              rm -rf "$persist_root/elan"/*
-              cp -a "${HOME:-/root}/.elan/." "$persist_root/elan/"
-            fi
-          fi
 
   assemble-pages-artifact:
     needs:
