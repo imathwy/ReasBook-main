@@ -1,13 +1,2 @@
--- Root module for ReasBook
-import Mathlib
-import AlgebraicTopology_May_1999.Book
-import Analysis2_Tao_2022.Book
-import CombinatorialGroupTheory_Magnus_2004.Book
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Book
-import FirstOrderMethodsOptimization_Beck_2017.Book
-import IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Book
-import ProbabilityTheory_Klenke_2020.Book
-import RiemannSurfaces_Forster_1981.Book
-import chapter1_reference_format.Book
-import Papers.OnSomeLocalRings_Maassaran_2025.Paper
-import Papers.SmoothMinimization_Nesterov_2004.Paper
+-- Root module for the Sun--Yuan book-only submission branch.
+import OptimizationTheoryAndMethods_SunYuan_2006.Book

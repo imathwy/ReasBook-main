@@ -1,2 +1,0 @@
-import Papers.OnSomeLocalRings_Maassaran_2025.Sections.section01_part1
-import Papers.OnSomeLocalRings_Maassaran_2025.Sections.section01_part2

@@ -31,33 +31,9 @@ lean_lib Books where
 
 lean_lib Papers where
 
--- Books from ALLBOOKS (sources live under Books/<LibName>/)
-lean_lib ProbabilityTheory_Klenke_2020 where
+-- The only textbook retained on this submission branch.
+lean_lib OptimizationTheoryAndMethods_SunYuan_2006 where
   srcDir := "Books"
-lean_lib ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017 where
-  srcDir := "Books"
-lean_lib CombinatorialGroupTheory_Magnus_2004 where
-  srcDir := "Books"
-lean_lib FirstOrderMethodsOptimization_Beck_2017 where
-  srcDir := "Books"
-lean_lib AlgebraicTopology_May_1999 where
-  srcDir := "Books"
-lean_lib RiemannSurfaces_Forster_1981 where
-  srcDir := "Books"
-lean_lib chapter1_reference_format where
-  srcDir := "Books"
-
--- Books living under Books/<LibName>/ with a Book.lean entry point
-lean_lib Analysis2_Tao_2022 where
-  srcDir := "Books"
-lean_lib IntroductiontoRealAnalysisVolumeI_JiriLebl_2025 where
-  srcDir := "Books"
-
--- Papers living under Papers/<LibName>/ with a Paper.lean entry point
-lean_lib OnSomeLocalRings_Maassaran_2025 where
-  srcDir := "Papers"
-lean_lib SmoothMinimization_Nesterov_2004 where
-  srcDir := "Papers"
 
 lean_exe "literate-extract" where
   root := `LiterateExtract
