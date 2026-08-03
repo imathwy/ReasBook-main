@@ -14,39 +14,32 @@ ReasBook is generated using the tool: [M2F](https://github.com/optsuite/M2F.git)
 ### Books
 - [Terence Tao, *Analysis II*, 4th ed., Hindustan Book Agency / Springer, Singapore, 2022, ISBN 978-981-19-7284-3.](./ReasBook/Books/Analysis2_Tao_2022/)
   - Contributors: Chenyi Li, Min Cui, Qiming Dai, Shu Miao, Wanli Ma, Yi Yuan, Zichen Wang, Ziyu Wang.
-  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/Books/Analysis2_Tao_2022/Book.html) | [Lean source](./ReasBook/Books/Analysis2_Tao_2022/Books/) | [Verso](https://optpku.github.io/ReasBook/books/analysis2_tao_2022/)
+  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/Analysis2_Tao_2022/Book.html) | [Lean source](./ReasBook/Books/Analysis2_Tao_2022/Books/) | [Verso](https://optpku.github.io/ReasBook/books/analysis2_tao_2022/)
 - [J. Peter May, *A Concise Course in Algebraic Topology*, University of Chicago Press, 1999, ISBN 978-0-226-51183-2.](./ReasBook/Books/AlgebraicTopology_May_1999/)
-  - Contributors: Wanli Ma.
-  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/Books/AlgebraicTopology_May_1999/Book.html) | [Lean source](./ReasBook/Books/AlgebraicTopology_May_1999/MayConciseRevised/) | [Verso](https://optpku.github.io/ReasBook/books/algebraictopology_may_1999/)
+  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/AlgebraicTopology_May_1999/Book.html) | [Lean source](./ReasBook/Books/AlgebraicTopology_May_1999/MayConciseRevised/) | [Verso](https://optpku.github.io/ReasBook/books/algebraictopology_may_1999/)
 - [Wilhelm Magnus, Abraham Karrass, Donald Solitar, *Combinatorial Group Theory*, Dover Publications, 2004, ISBN 978-0-486-43830-6.](./ReasBook/Books/CombinatorialGroupTheory_Magnus_2004/)
-  - Contributors: Wanli Ma.
-  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/Books/CombinatorialGroupTheory_Magnus_2004/Book.html) | [Lean source](./ReasBook/Books/CombinatorialGroupTheory_Magnus_2004/CombinatorialGroupTheory/) | [Verso](https://optpku.github.io/ReasBook/books/combinatorialgrouptheory_magnus_2004/)
+  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/CombinatorialGroupTheory_Magnus_2004/Book.html) | [Lean source](./ReasBook/Books/CombinatorialGroupTheory_Magnus_2004/CombinatorialGroupTheory/) | [Verso](https://optpku.github.io/ReasBook/books/combinatorialgrouptheory_magnus_2004/)
 - [Heinz H. Bauschke and Patrick L. Combettes, *Convex Analysis and Monotone Operator Theory in Hilbert Spaces*, 2nd ed., Springer, 2017, ISBN 978-3-319-48310-8.](./ReasBook/Books/ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017/)
-  - Contributors: Wanli Ma.
-  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/Books/ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017/Book.html) | [Lean source](./ReasBook/Books/ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017/BauschkeLean/) | [Verso](https://optpku.github.io/ReasBook/books/convexanalysismonotoneoperators_bauschkecombettes_2017/)
+  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017/Book.html) | [Lean source](./ReasBook/Books/ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017/BauschkeLean/) | [Verso](https://optpku.github.io/ReasBook/books/convexanalysismonotoneoperators_bauschkecombettes_2017/)
 - [Amir Beck, *First-Order Methods in Optimization*, SIAM, 2017, ISBN 978-1-61197-499-7.](./ReasBook/Books/FirstOrderMethodsOptimization_Beck_2017/)
-  - Contributors: Wanli Ma.
-  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/Books/FirstOrderMethodsOptimization_Beck_2017/Book.html) | [Lean source](./ReasBook/Books/FirstOrderMethodsOptimization_Beck_2017/FirstOrderMethodsinOptimization/) | [Verso](https://optpku.github.io/ReasBook/books/firstordermethodsoptimization_beck_2017/)
+  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/FirstOrderMethodsOptimization_Beck_2017/Book.html) | [Lean source](./ReasBook/Books/FirstOrderMethodsOptimization_Beck_2017/FirstOrderMethodsinOptimization/) | [Verso](https://optpku.github.io/ReasBook/books/firstordermethodsoptimization_beck_2017/)
 - [Jiri Lebl, *Introduction to Real Analysis, Volume I*, version 6.2, May 23, 2025, (TBD: publisher/city), (TBD: ISBN).](./ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/)
   - Contributors: Zichen Wang.
-  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Book.html) | [Lean source](./ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Books/) | [Verso](https://optpku.github.io/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/)
+  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Book.html) | [Lean source](./ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Books/) | [Verso](https://optpku.github.io/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/)
 - [Achim Klenke, *Probability Theory: A Comprehensive Course*, 3rd ed., Springer, 2020, ISBN 978-3-030-56401-8.](./ReasBook/Books/ProbabilityTheory_Klenke_2020/)
-  - Contributors: Wanli Ma.
-  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/Books/ProbabilityTheory_Klenke_2020/Book.html) | [Lean source](./ReasBook/Books/ProbabilityTheory_Klenke_2020/AchimKlenkeLean/) | [Verso](https://optpku.github.io/ReasBook/books/probabilitytheory_klenke_2020/)
+  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/ProbabilityTheory_Klenke_2020/Book.html) | [Lean source](./ReasBook/Books/ProbabilityTheory_Klenke_2020/AchimKlenkeLean/) | [Verso](https://optpku.github.io/ReasBook/books/probabilitytheory_klenke_2020/)
 - [Otto Forster, *Lectures on Riemann Surfaces*, Springer, 1981, ISBN 978-0-387-90617-1.](./ReasBook/Books/RiemannSurfaces_Forster_1981/)
-  - Contributors: Wanli Ma.
-  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/Books/RiemannSurfaces_Forster_1981/Book.html) | [Lean source](./ReasBook/Books/RiemannSurfaces_Forster_1981/RiemannSurfaces/) | [Verso](https://optpku.github.io/ReasBook/books/riemannsurfaces_forster_1981/)
+  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/RiemannSurfaces_Forster_1981/Book.html) | [Lean source](./ReasBook/Books/RiemannSurfaces_Forster_1981/RiemannSurfaces/) | [Verso](https://optpku.github.io/ReasBook/books/riemannsurfaces_forster_1981/)
 - [*Chapter 1 Reference Format* (formalization reference project).](./ReasBook/Books/chapter1_reference_format/)
-  - Contributors: Wanli Ma.
-  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/Books/chapter1_reference_format/Book.html) | [Lean source](./ReasBook/Books/chapter1_reference_format/Chap01/) | [Verso](https://optpku.github.io/ReasBook/books/chapter1_reference_format/)
+  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/chapter1_reference_format/Book.html) | [Lean source](./ReasBook/Books/chapter1_reference_format/Chap01/) | [Verso](https://optpku.github.io/ReasBook/books/chapter1_reference_format/)
 
 ### Papers
 - [Yurii Nesterov, "Smooth minimization of non-smooth functions," *Mathematical Programming*, Ser. A 103, 127-152, 2005, DOI: 10.1007/s10107-004-0552-5.](./ReasBook/Papers/SmoothMinimization_Nesterov_2004/)
   - Contributors: Wanli Ma, Zichen Wang.
-  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/Papers/SmoothMinimization_Nesterov_2004/Paper.html) | [Lean source](./ReasBook/Papers/SmoothMinimization_Nesterov_2004/Sections/) | [Verso](https://optpku.github.io/ReasBook/papers/smoothminimization_nesterov_2004/)
+  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/SmoothMinimization_Nesterov_2004/Paper.html) | [Lean source](./ReasBook/Papers/SmoothMinimization_Nesterov_2004/Sections/) | [Verso](https://optpku.github.io/ReasBook/papers/smoothminimization_nesterov_2004/)
 - [Mohamad Maassarani, "On Some Local Rings," arXiv:2512.19197v1 [math.AC], 2025.](./ReasBook/Papers/OnSomeLocalRings_Maassaran_2025/)
   - Contributors: Liang Xiao, Haochen Ju, Zichen Wang.
-  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/Papers/OnSomeLocalRings_Maassaran_2025/Paper.html) | [Lean source](./ReasBook/Papers/OnSomeLocalRings_Maassaran_2025/Sections/) | [Verso](https://optpku.github.io/ReasBook/papers/onsomelocalrings_maassaran_2025/)
+  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/OnSomeLocalRings_Maassaran_2025/Paper.html) | [Lean source](./ReasBook/Papers/OnSomeLocalRings_Maassaran_2025/Sections/) | [Verso](https://optpku.github.io/ReasBook/papers/onsomelocalrings_maassaran_2025/)
 
 ## Repository Layout
 

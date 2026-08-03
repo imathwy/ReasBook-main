@@ -371,6 +371,20 @@ jobs:
           set -euo pipefail
           test -d ReasBook/.lake/build/doc
           test -f ReasBook/.lake/build/doc/index.html
+          python3 - <<'PY'
+          from pathlib import Path
+
+          source_root = Path("ReasBook")
+          doc_root = source_root / ".lake/build/doc"
+          missing = []
+          for kind, leaf in (("Books", "Book"), ("Papers", "Paper")):
+              for entry in sorted((source_root / kind).glob(f"*/{leaf}.lean")):
+                  expected = doc_root / entry.parent.name / f"{leaf}.html"
+                  if not expected.is_file():
+                      missing.append(expected.relative_to(doc_root).as_posix())
+          if missing:
+              raise SystemExit("missing generated documentation: " + ", ".join(missing))
+          PY
 
       - name: Write docs cache marker
         run: |

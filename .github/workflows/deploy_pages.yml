@@ -164,7 +164,26 @@ jobs:
             marker_value="$(tr -d '\r\n' < "$marker_file")"
           fi
 
-          if [ "$has_index" = "true" ] && [ "$has_marker" = "true" ] && [ "$marker_value" = "$expected_marker" ]; then
+          docs_complete="$(python3 - <<'PY'
+          import sys
+          from pathlib import Path
+
+          source_root = Path("ReasBook")
+          doc_root = source_root / ".lake/build/doc"
+          missing = []
+          for kind, leaf in (("Books", "Book"), ("Papers", "Paper")):
+              for entry in sorted((source_root / kind).glob(f"*/{leaf}.lean")):
+                  expected = doc_root / entry.parent.name / f"{leaf}.html"
+                  if not expected.is_file():
+                      missing.append(expected.relative_to(doc_root).as_posix())
+
+          for path in missing:
+              print(f"::notice title=Incomplete documentation cache::Missing {path}", file=sys.stderr)
+          print("false" if missing else "true")
+          PY
+          )"
+
+          if [ "$has_index" = "true" ] && [ "$has_marker" = "true" ] && [ "$marker_value" = "$expected_marker" ] && [ "$docs_complete" = "true" ]; then
             echo "doc_cache_exact=true" >> "$GITHUB_OUTPUT"
             echo "doc_cache_available=true" >> "$GITHUB_OUTPUT"
           else
@@ -334,7 +353,25 @@ jobs:
         id: local_docs
         run: |
           set -euo pipefail
-          if [ -f ReasBook/.lake/build/doc/index.html ]; then
+          docs_complete="$(python3 - <<'PY'
+          import sys
+          from pathlib import Path
+
+          source_root = Path("ReasBook")
+          doc_root = source_root / ".lake/build/doc"
+          missing = []
+          for kind, leaf in (("Books", "Book"), ("Papers", "Paper")):
+              for entry in sorted((source_root / kind).glob(f"*/{leaf}.lean")):
+                  expected = doc_root / entry.parent.name / f"{leaf}.html"
+                  if not expected.is_file():
+                      missing.append(expected.relative_to(doc_root).as_posix())
+
+          for path in missing:
+              print(f"::notice title=Incomplete local documentation::Missing {path}", file=sys.stderr)
+          print("false" if missing else "true")
+          PY
+          )"
+          if [ -f ReasBook/.lake/build/doc/index.html ] && [ "$docs_complete" = "true" ]; then
             echo "docs_present=true" >> "$GITHUB_OUTPUT"
           else
             echo "docs_present=false" >> "$GITHUB_OUTPUT"
@@ -411,6 +448,20 @@ jobs:
           test -f "$marker_file"
           actual_marker="$(tr -d '\r\n' < "$marker_file")"
           test "$actual_marker" = "$expected_marker"
+          python3 - <<'PY'
+          from pathlib import Path
+
+          source_root = Path("ReasBook")
+          doc_root = source_root / ".lake/build/doc"
+          missing = []
+          for kind, leaf in (("Books", "Book"), ("Papers", "Paper")):
+              for entry in sorted((source_root / kind).glob(f"*/{leaf}.lean")):
+                  expected = doc_root / entry.parent.name / f"{leaf}.html"
+                  if not expected.is_file():
+                      missing.append(expected.relative_to(doc_root).as_posix())
+          if missing:
+              raise SystemExit("missing generated documentation: " + ", ".join(missing))
+          PY
 
       - name: Assemble docs under ReasBookWeb/_site/docs
         timeout-minutes: 20
