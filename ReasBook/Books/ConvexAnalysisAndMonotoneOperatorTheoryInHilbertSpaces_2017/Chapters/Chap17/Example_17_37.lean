@@ -1,0 +1,187 @@
+import Mathlib
+import BauschkeLean.Chap16.Example_16_73
+import BauschkeLean.Chap17.Proposition_17_2
+import BauschkeLean.Chap17.Proposition_17_16
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+open scoped InnerProductSpace
+open scoped Pointwise
+
+universe u
+
+namespace ERealFunction
+
+noncomputable section
+
+section RadialSubdifferential
+
+variable {H : Type u} [NormedAddCommGroup H] [InnerProductSpace ℝ H]
+
+-- Semantic search note: `lean_leansearch` was unavailable in this agent environment, so the
+-- derivative owner was verified against local precedents in `Proposition_17_31` and
+-- `Remark_18_16`.
+
+/-- Helper for Example 17 37: viewing a real convex function on `ℝ` as an `EReal`-valued
+function preserves convexity on its effective domain. -/
+lemma convexOn_toEReal_of_convexOn_univ
+    (φ : ℝ → ℝ) (hconv : _root_.ConvexOn ℝ Set.univ φ) :
+    ConvexOn φ.toEReal (effectiveDomain φ.toEReal) := by
+  -- Rewrite the scalar Jensen inequality through `toEReal`.
+  refine ⟨?_, ?_, ?_⟩
+  · simp [Function.effectiveDomain_toEReal]
+  · simp [Function.effectiveDomain_toEReal]
+  · intro s hs t ht a ha0 ha1
+    have hreal :
+        φ (a • s + (1 - a) • t) ≤ a * φ s + (1 - a) * φ t := by
+      simpa [smul_eq_mul] using
+        hconv.2 (by simp) (by simp) ha0.le (sub_nonneg.mpr ha1.le) (by ring)
+    change ((φ (a • s + (1 - a) • t) : ℝ) : EReal) ≤
+      ((a * φ s + (1 - a) * φ t : ℝ) : EReal)
+    exact_mod_cast hreal
+
+/-- Helper for Example 17 37: for a convex scalar function, differentiability identifies the
+canonical right derivative with the ordinary derivative. -/
+lemma scalar_right_derivative_eq_deriv_of_differentiableAt
+    {φ : ℝ → ℝ} (hconv : ConvexOn φ.toEReal (effectiveDomain φ.toEReal)) {r : ℝ}
+    (hφdiff : DifferentiableAt ℝ φ r) :
+    (φ.toEReal)′₊(r) = (((deriv φ r : ℝ)) : EReal) := by
+  have hline : HasLineDerivAt ℝ φ (deriv φ r) r (1 : ℝ) := by
+    -- The one-dimensional Fréchet derivative gives the line derivative in direction `1`.
+    simpa using hφdiff.hasDerivAt.hasFDerivAt.hasLineDerivAt (1 : ℝ)
+  have hreal :
+      Filter.Tendsto
+        (fun t : ℝ ↦ ((((φ (r + t * 1) - φ r) / t : ℝ)) : EReal))
+        (nhdsWithin (0 : ℝ) (Set.Ioi 0))
+        (nhds (((deriv φ r : ℝ)) : EReal)) := by
+    -- Cast the real right-slope limit to `EReal`.
+    exact EReal.tendsto_coe.2 <| by
+      simpa [smul_eq_mul, div_eq_mul_inv, mul_comm] using hline.tendsto_slope_zero_right
+  have hright : HasRightDerivativeAt φ.toEReal r (((deriv φ r : ℝ)) : EReal) := by
+    refine ⟨by simp [Function.effectiveDomain_toEReal], ?_⟩
+    -- Replace the `toEReal` quotient by the cast of the ordinary real quotient.
+    refine Filter.Tendsto.congr' ?_ hreal
+    apply eventuallyEq_nhdsWithin_of_eqOn
+    intro t _
+    simp only [Function.toEReal_apply, smul_eq_mul]
+    rw [← EReal.coe_sub, ← EReal.coe_div]
+  -- Convexity upgrades the source derivative limit to the canonical right derivative owner.
+  simpa [ERealFunction.rightDerivative, HasRightDerivativeAt] using
+    (directionalDerivative_eq_of_hasDirectionalDerivativeAt (f := φ.toEReal) hconv hright)
+
+/-- Helper for Example 17 37: for a convex scalar function, differentiability identifies the
+canonical left derivative with the ordinary derivative. -/
+lemma scalar_left_derivative_eq_deriv_of_differentiableAt
+    {φ : ℝ → ℝ} (hconv : ConvexOn φ.toEReal (effectiveDomain φ.toEReal)) {r : ℝ}
+    (hφdiff : DifferentiableAt ℝ φ r) :
+    (φ.toEReal)′₋(r) = (((deriv φ r : ℝ)) : EReal) := by
+  have hline : HasLineDerivAt ℝ φ (-(deriv φ r)) r (-1 : ℝ) := by
+    -- The same Fréchet derivative gives the line derivative in direction `-1`.
+    simpa using hφdiff.hasDerivAt.hasFDerivAt.hasLineDerivAt (-1 : ℝ)
+  have hreal :
+      Filter.Tendsto
+        (fun t : ℝ ↦ ((((φ (r + t * (-1)) - φ r) / t : ℝ)) : EReal))
+        (nhdsWithin (0 : ℝ) (Set.Ioi 0))
+        (nhds (-(((deriv φ r : ℝ)) : EReal))) := by
+    -- Cast the real line-derivative limit in direction `-1` to `EReal`.
+    exact EReal.tendsto_coe.2 <| by
+      simpa [smul_eq_mul, div_eq_mul_inv, mul_comm] using hline.tendsto_slope_zero_right
+  have hleft : HasLeftDerivativeAt φ.toEReal r (((deriv φ r : ℝ)) : EReal) := by
+    refine ⟨by simp [Function.effectiveDomain_toEReal], ?_⟩
+    -- Match the source `toEReal` quotient with the cast real quotient along direction `-1`.
+    refine Filter.Tendsto.congr' ?_ hreal
+    apply eventuallyEq_nhdsWithin_of_eqOn
+    intro t _
+    simp only [Function.toEReal_apply, smul_eq_mul]
+    rw [← EReal.coe_sub, ← EReal.coe_div]
+  have hdir :
+      (φ.toEReal)′(r; -1) = -((((deriv φ r : ℝ)) : EReal)) :=
+    directionalDerivative_eq_of_hasDirectionalDerivativeAt (f := φ.toEReal) hconv hleft
+  -- The left derivative is the negated directional derivative in direction `-1`.
+  simpa [ERealFunction.leftDerivative] using congrArg Neg.neg hdir
+
+omit [InnerProductSpace ℝ H] in
+/-- Helper for Example 17 37: away from the origin, the scalar subdifferential at `‖x‖` is the
+singleton generated by the derivative of `φ`. -/
+lemma scalar_subdifferential_eq_singleton_of_norm_ne_zero
+    (φ : ℝ → ℝ) (hconv : ConvexOn φ.toEReal (effectiveDomain φ.toEReal))
+    (hφdiff : DifferentiableOn ℝ φ (({0} : Set ℝ)ᶜ)) {x : H} (hx : x ≠ 0) :
+    (∂ φ.toEReal) ‖x‖ = ({deriv φ ‖x‖} : Set ℝ) := by
+  have hnorm_mem : ‖x‖ ∈ effectiveDomain φ.toEReal := by
+    simp [Function.effectiveDomain_toEReal]
+  have hnorm_ne : ‖x‖ ≠ 0 := by
+    simpa [norm_eq_zero] using hx
+  have hnorm_mem_compl : ‖x‖ ∈ (({0} : Set ℝ)ᶜ) := by
+    simpa [Set.mem_compl_iff] using hnorm_ne
+  have hdiff_at : DifferentiableAt ℝ φ ‖x‖ := by
+    -- The hypothesis gives differentiability at every nonzero radius.
+    have hdiff_within : DifferentiableWithinAt ℝ φ (({0} : Set ℝ)ᶜ) ‖x‖ :=
+      hφdiff ‖x‖ hnorm_mem_compl
+    have hnhds : (({0} : Set ℝ)ᶜ) ∈ nhds ‖x‖ := by
+      exact isOpen_compl_singleton.mem_nhds hnorm_mem_compl
+    exact hdiff_within.differentiableAt hnhds
+  -- Rewrite the scalar subdifferential as the interval between the one-sided derivatives.
+  rw [subdifferential_eq_Icc_oneSidedDerivatives (f := φ.toEReal) (hconv := hconv) hnorm_mem]
+  change Real.toEReal ⁻¹' Set.Icc ((φ.toEReal)′₋(‖x‖)) ((φ.toEReal)′₊(‖x‖)) =
+    ({deriv φ ‖x‖} : Set ℝ)
+  rw [scalar_left_derivative_eq_deriv_of_differentiableAt hconv hdiff_at]
+  rw [scalar_right_derivative_eq_deriv_of_differentiableAt hconv hdiff_at]
+  ext a
+  -- A degenerate interval with equal endpoints is exactly a singleton.
+  simp [Set.mem_preimage]
+
+/-- Helper for Example 17 37: collapsing the scalar singleton acting on the normalized ray gives
+the displayed singleton `{(φ'(‖x‖) / ‖x‖) • x}`. -/
+lemma singleton_scaled_ray_eq_singleton_deriv_over_norm
+    (φ : ℝ → ℝ) {x : H} :
+    ({deriv φ ‖x‖} : Set ℝ) • ({‖x‖⁻¹ • x} : Set H) =
+      ({(deriv φ ‖x‖ / ‖x‖) • x} : Set H) := by
+  -- Expand the singleton set action and combine the scalar factors.
+  ext u
+  simp [div_eq_mul_inv, smul_smul]
+
+-- Proof sketch: Example 16.73(1) yields `ρ` with `(∂ φ.toEReal) 0 = [-ρ, ρ]`, and
+-- Example 16.73(3) turns that scalar interval into the zero-branch radial formula
+-- `(∂ (fun y ↦ φ ‖y‖).toEReal) 0 = B(0; ρ)`. For `x ≠ 0`, Example 16.73(2) rewrites the radial
+-- subdifferential as `((∂ φ.toEReal) ‖x‖) • {‖x‖⁻¹ • x}`, while Proposition 17.16 collapses the
+-- scalar owner `(∂ φ.toEReal) ‖x‖` to the singleton `{deriv φ ‖x‖}` because `φ` is
+-- differentiable off `0`.
+/-- Example 17 37: if `φ : ℝ → ℝ` is convex, even, and differentiable on `ℝ \ {0}`, then there
+exists `ρ ∈ ℝ₊` such that the scalar subdifferential of `φ` at `0` is `[-ρ, ρ]`, and the
+subdifferential of the radial function `x ↦ φ ‖x‖` is the closed ball `B(0; ρ)` at the origin
+and the singleton `{(φ'(‖x‖) / ‖x‖) • x}` away from the origin. -/
+theorem exists_subdifferential_comp_norm_eq_closedBall_at_zero_and_singleton_of_ne
+    (φ : ℝ → ℝ) (hconv : _root_.ConvexOn ℝ Set.univ φ) (heven : Function.Even φ)
+    (hφdiff : DifferentiableOn ℝ φ (({0} : Set ℝ)ᶜ)) :
+    ∃ ρ : NNReal,
+      (∂ φ.toEReal) 0 = Set.Icc (-(ρ : ℝ)) (ρ : ℝ) ∧
+      (∂ (fun y : H ↦ φ ‖y‖).toEReal) 0 = Metric.closedBall (0 : H) (ρ : ℝ) ∧
+      ∀ x : H, x ≠ 0 →
+        (∂ (fun y : H ↦ φ ‖y‖).toEReal) x = ({(deriv φ ‖x‖ / ‖x‖) • x} : Set H) := by
+  let hconv_toEReal := convexOn_toEReal_of_convexOn_univ φ hconv
+  rcases exists_symmetric_subdifferential_zero_eq_interval (φ := φ) hconv heven with ⟨ρ, hρ⟩
+  refine ⟨ρ, hρ, ?_, ?_⟩
+  · -- The origin branch is exactly Example 16.73(3).
+    simpa using
+      subdifferential_comp_norm_zero_eq_closedBall_of_subdifferential_zero_eq_interval
+        (H := H) (φ := φ) hconv hρ
+  · intro x hx
+    -- Route correction: avoid the broken Proposition 17.31 route and collapse the scalar fiber
+    -- through Proposition 17.16 before rewriting the radial set action.
+    calc
+      (∂ (fun y : H ↦ φ ‖y‖).toEReal) x
+          = ((∂ φ.toEReal) ‖x‖) • ({‖x‖⁻¹ • x} : Set H) := by
+              simpa using
+                subdifferential_comp_norm_eq_scaled_ray_image_of_ne
+                  (H := H) (φ := φ) hconv heven x hx
+      _ = ({deriv φ ‖x‖} : Set ℝ) • ({‖x‖⁻¹ • x} : Set H) := by
+            rw [scalar_subdifferential_eq_singleton_of_norm_ne_zero
+              (H := H) (φ := φ) hconv_toEReal hφdiff hx]
+      _ = ({(deriv φ ‖x‖ / ‖x‖) • x} : Set H) := by
+            exact singleton_scaled_ray_eq_singleton_deriv_over_norm (φ := φ)
+
+end RadialSubdifferential
+
+end
+
+end ERealFunction
