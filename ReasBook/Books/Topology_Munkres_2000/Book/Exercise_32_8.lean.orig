@@ -1,0 +1,321 @@
+module
+
+public import Book.Definition_25_1.ComponentIn
+public import Book.Definition_4_5.LinearContinuum
+public import Book.Exercise_3_13
+public import Book.Theorem_24_1
+public import Mathlib.Topology.Order.T5
+public import Mathlib.Topology.Order.IsLUB
+
+public section
+
+universe u
+
+open Set
+
+/- Exercise 32.8 (1): Every linear continuum with its order topology is normal. In fact,
+every linear order with its order topology has the stronger canonical `T5Space` instance. -/
+#check OrderTopology.t5Space
+
+namespace Set
+
+/-- An open interval lies between `A` and `B` when its two endpoints lie one in each set. -/
+def IsOpenIntervalBetween {X : Type u} [LinearOrder X] (A B U : Set X) : Prop :=
+  (∃ a ∈ A, ∃ b ∈ B, U = Ioo a b) ∨ ∃ b ∈ B, ∃ a ∈ A, U = Ioo b a
+
+/-- A complementary component is a crossing component of `A` and `B` when it is an open
+interval with one endpoint in each set. -/
+def IsCrossingComponent {X : Type u} [TopologicalSpace X] [LinearOrder X]
+    (A B W : Set X) : Prop :=
+  IsConnectedComponentIn (A ∪ B)ᶜ W ∧ IsOpenIntervalBetween A B W
+
+/-- A crossing component is a connected component of `(A ∪ B)ᶜ`. -/
+theorem IsCrossingComponent.isConnectedComponentIn {X : Type u} [TopologicalSpace X]
+    [LinearOrder X] {A B W : Set X} (hW : IsCrossingComponent A B W) :
+    IsConnectedComponentIn (A ∪ B)ᶜ W :=
+  hW.1
+
+/-- A crossing component is an open interval between `A` and `B`. -/
+theorem IsCrossingComponent.isOpenIntervalBetween {X : Type u} [TopologicalSpace X]
+    [LinearOrder X] {A B W : Set X} (hW : IsCrossingComponent A B W) :
+    IsOpenIntervalBetween A B W :=
+  hW.2
+
+/-- The type of complementary components that are open intervals between `A` and `B`. -/
+abbrev CrossingComponent {X : Type u} [TopologicalSpace X] [LinearOrder X]
+    (A B : Set X) :=
+  {W : Set X // IsCrossingComponent A B W}
+
+/-- The points selected from the crossing components of `A` and `B`. -/
+def crossingComponentPoints {X : Type u} [TopologicalSpace X] [LinearOrder X]
+    (A B : Set X) (choose : (W : CrossingComponent A B) → (W : Set X)) : Set X :=
+  range fun W ↦ (choose W : X)
+
+/-- Membership in `crossingComponentPoints A B choose` means being the point selected from
+some crossing component of `A` and `B`. -/
+theorem mem_crossingComponentPoints {X : Type u} [TopologicalSpace X] [LinearOrder X]
+    {A B : Set X} {choose : (W : CrossingComponent A B) → (W : Set X)} {x : X} :
+    x ∈ crossingComponentPoints A B choose ↔
+      ∃ W, (choose W : X) = x := by
+  rfl
+
+/-- Exercise 32.8 (2): A component of the complement of a nonempty closed set in a
+linear continuum is a bounded open interval with endpoints in the set, or an open ray
+with endpoint in the set. -/
+theorem component_compl_closed_eq_interval {X : Type u} [LinearOrder X]
+    [TopologicalSpace X] [OrderTopology X] [LinearContinuum X] {C U : Set X}
+    (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C)
+    (hU : IsConnectedComponentIn Cᶜ U) :
+    (∃ c ∈ C, ∃ c' ∈ C, U = Ioo c c') ∨
+      (∃ c ∈ C, U = Ioi c) ∨ ∃ c ∈ C, U = Iio c := by
+  obtain ⟨x, hxU⟩ := hU.nonempty
+  have hxC : x ∉ C := hU.subset hxU
+  have hU_ord : U.OrdConnected := hU.isConnected.isPreconnected.ordConnected
+  let lowerCut := C ∩ Iio x
+  let upperCut := C ∩ Ioi x
+  by_cases hLower : lowerCut.Nonempty
+  · obtain ⟨c, hc⟩ := LinearContinuum.leastUpperBoundProperty.exists_isLUB lowerCut hLower
+      ⟨x, fun y hy ↦ hy.2.le⟩
+    have hcC : c ∈ C := by
+      -- Closedness returns the supremum of the lower cut to `C`.
+      rw [← hC_closed.closure_eq]
+      exact closure_mono inter_subset_left (hc.mem_closure hLower)
+    have hcx : c < x := by
+      have hcle : c ≤ x := hc.2 (fun _ hy ↦ hy.2.le)
+      exact hcle.lt_of_ne fun h ↦ hxC (h ▸ hcC)
+    by_cases hUpper : upperCut.Nonempty
+    · obtain ⟨c', hc'⟩ :=
+        (leastUpperBoundProperty_implies_greatestLowerBoundProperty X
+          LinearContinuum.leastUpperBoundProperty).exists_isGLB upperCut hUpper
+          ⟨x, fun y hy ↦ hy.2.le⟩
+      have hc'C : c' ∈ C := by
+        -- Closedness likewise returns the infimum of the upper cut to `C`.
+        rw [← hC_closed.closure_eq]
+        exact closure_mono inter_subset_left (hc'.mem_closure hUpper)
+      have hxc' : x < c' := by
+        have hlec' : x ≤ c' := hc'.2 (fun _ hy ↦ hy.2.le)
+        exact hlec'.lt_of_ne fun h ↦ hxC (h.symm ▸ hc'C)
+      left
+      refine ⟨c, hcC, c', hc'C, ?_⟩
+      apply Subset.antisymm
+      · intro y hyU
+        have hcy : c < y := by
+          apply lt_of_not_ge
+          intro hyc
+          rcases eq_or_lt_of_le hyc with rfl | hyc'
+          · exact (hU.subset hyU) hcC
+          · obtain ⟨z, hz, hyz, -⟩ := hc.exists_between hyc'
+            exact (hU.subset (hU_ord.out hyU hxU ⟨hyz.le, hz.2.le⟩)) hz.1
+        have hyc' : y < c' := by
+          apply lt_of_not_ge
+          intro hc'y
+          rcases eq_or_lt_of_le hc'y with rfl | hc'y'
+          · exact (hU.subset hyU) hc'C
+          · obtain ⟨z, hz, -, hzy⟩ := hc'.exists_between hc'y'
+            exact (hU.subset (hU_ord.out hxU hyU ⟨hz.2.le, hzy.le⟩)) hz.1
+        exact ⟨hcy, hyc'⟩
+      · intro y hy
+        have hIntervalSubset : Ioo c c' ⊆ Cᶜ := by
+          intro z hz hzC
+          rcases le_total z x with hzx | hxz
+          · rcases hzx.eq_or_lt with rfl | hzx'
+            · exact hxC hzC
+            · exact (not_le_of_gt hz.1) (hc.1 ⟨hzC, hzx'⟩)
+          · rcases hxz.eq_or_lt with rfl | hxz'
+            · exact hxC hzC
+            · exact (not_le_of_gt hz.2) (hc'.1 ⟨hzC, hxz'⟩)
+        have hIntervalPreconnected : IsPreconnected (Ioo c c') :=
+          (LinearContinuum.isConnected_of_ordConnected ordConnected_Ioo ⟨x, hcx, hxc'⟩).isPreconnected
+        rw [hU.eq_connectedComponentIn hxU]
+        exact hIntervalPreconnected.subset_connectedComponentIn ⟨hcx, hxc'⟩
+          hIntervalSubset hy
+    · right
+      left
+      refine ⟨c, hcC, ?_⟩
+      apply Subset.antisymm
+      · intro y hyU
+        apply lt_of_not_ge
+        intro hyc
+        rcases eq_or_lt_of_le hyc with rfl | hyc'
+        · exact (hU.subset hyU) hcC
+        · obtain ⟨z, hz, hyz, -⟩ := hc.exists_between hyc'
+          exact (hU.subset (hU_ord.out hyU hxU ⟨hyz.le, hz.2.le⟩)) hz.1
+      · intro y hcy
+        have hRaySubset : Ioi c ⊆ Cᶜ := by
+          intro z hcz hzC
+          rcases le_total z x with hzx | hxz
+          · rcases hzx.eq_or_lt with rfl | hzx'
+            · exact hxC hzC
+            · exact (not_le_of_gt hcz) (hc.1 ⟨hzC, hzx'⟩)
+          · rcases hxz.eq_or_lt with rfl | hxz'
+            · exact hxC hzC
+            · exact hUpper ⟨z, hzC, hxz'⟩
+        have hRayPreconnected : IsPreconnected (Ioi c) :=
+          (LinearContinuum.isConnected_of_ordConnected ordConnected_Ioi ⟨x, hcx⟩).isPreconnected
+        rw [hU.eq_connectedComponentIn hxU]
+        exact hRayPreconnected.subset_connectedComponentIn hcx hRaySubset hcy
+  · have hUpper : upperCut.Nonempty := by
+      rcases hC_nonempty with ⟨c, hcC⟩
+      rcases lt_trichotomy c x with hcx | hcx | hxc
+      · exact False.elim (hLower ⟨c, hcC, hcx⟩)
+      · exact False.elim (hxC (hcx ▸ hcC))
+      · exact ⟨c, hcC, hxc⟩
+    obtain ⟨c, hc⟩ :=
+      (leastUpperBoundProperty_implies_greatestLowerBoundProperty X
+        LinearContinuum.leastUpperBoundProperty).exists_isGLB upperCut hUpper
+        ⟨x, fun y hy ↦ hy.2.le⟩
+    have hcC : c ∈ C := by
+      -- The upper cut has a least point in the closure of `C`.
+      rw [← hC_closed.closure_eq]
+      exact closure_mono inter_subset_left (hc.mem_closure hUpper)
+    have hxc : x < c := by
+      have hlec : x ≤ c := hc.2 (fun _ hy ↦ hy.2.le)
+      exact hlec.lt_of_ne fun h ↦ hxC (h.symm ▸ hcC)
+    right
+    right
+    refine ⟨c, hcC, ?_⟩
+    apply Subset.antisymm
+    · intro y hyU
+      apply lt_of_not_ge
+      intro hcy
+      rcases eq_or_lt_of_le hcy with rfl | hcy'
+      · exact (hU.subset hyU) hcC
+      · obtain ⟨z, hz, -, hzy⟩ := hc.exists_between hcy'
+        exact (hU.subset (hU_ord.out hxU hyU ⟨hz.2.le, hzy.le⟩)) hz.1
+    · intro y hyc
+      have hRaySubset : Iio c ⊆ Cᶜ := by
+        intro z hzc hzC
+        rcases le_total z x with hzx | hxz
+        · rcases hzx.eq_or_lt with rfl | hzx'
+          · exact hxC hzC
+          · exact hLower ⟨z, hzC, hzx'⟩
+        · rcases hxz.eq_or_lt with rfl | hxz'
+          · exact hxC hzC
+          · exact (not_le_of_gt hzc) (hc.1 ⟨hzC, hxz'⟩)
+      have hRayPreconnected : IsPreconnected (Iio c) :=
+        (LinearContinuum.isConnected_of_ordConnected ordConnected_Iio ⟨x, hxc⟩).isPreconnected
+      rw [hU.eq_connectedComponentIn hxU]
+      exact hRayPreconnected.subset_connectedComponentIn hxc hRaySubset hyc
+
+/-- Helper for Exercise 32.8: every selected crossing point lies in the canonical
+order-separating set. -/
+lemma crossingComponentPoints_subset_ordSeparatingSet {X : Type u} [LinearOrder X]
+    [TopologicalSpace X] {A B : Set X}
+    (hAB : Disjoint A B) (choose : (W : CrossingComponent A B) → (W : Set X)) :
+    crossingComponentPoints A B choose ⊆ ordSeparatingSet A B := by
+  intro x hx
+  obtain ⟨W, rfl⟩ := mem_crossingComponentPoints.mp hx
+  have hxW : (choose W : X) ∈ (W : Set X) := (choose W).property
+  rcases W.property.isOpenIntervalBetween with hW | hW
+  · obtain ⟨a, haA, b, hbB, hW⟩ := hW
+    have hxInterval : (choose W : X) ∈ Ioo a b := hW.le hxW
+    have haB : a ∉ B := fun haB ↦ Set.disjoint_left.mp hAB haA haB
+    have hbA : b ∉ A := fun hbA ↦ Set.disjoint_left.mp hAB hbA hbB
+    constructor
+    · refine mem_iUnion₂.mpr ⟨a, haA, ?_⟩
+      rw [mem_ordConnectedComponent]
+      intro z hz
+      rcases le_total z a with hza | haz
+      · have hzEq : z = a := le_antisymm hza (left_mem_uIcc.1 hz)
+        exact hzEq ▸ haB
+      · have hzx : z ≤ (choose W : X) := by
+          rw [uIcc_of_le hxInterval.1.le] at hz
+          exact hz.2
+        exact W.property.isConnectedComponentIn.subset
+          (show z ∈ Ioo a b from
+            ⟨haz.lt_of_ne fun h ↦ haB (h ▸ hbB), hzx.trans_lt hxInterval.2⟩) |>.2
+    · refine mem_iUnion₂.mpr ⟨b, hbB, ?_⟩
+      rw [mem_ordConnectedComponent]
+      intro z hz
+      rcases le_total b z with hbz | hzb
+      · have hzEq : z = b := le_antisymm (right_mem_uIcc.1 hz) hbz
+        exact hzEq ▸ hbA
+      · have hxz : (choose W : X) ≤ z := by
+          rw [uIcc_of_ge hxInterval.2.le] at hz
+          exact hz.1
+        exact W.property.isConnectedComponentIn.subset
+          (show z ∈ Ioo a b from
+            ⟨hxInterval.1.trans_le hxz, hzb.lt_of_ne fun h ↦ hbA (h.symm ▸ haA)⟩) |>.1
+  · obtain ⟨b, hbB, a, haA, hW⟩ := hW
+    have hxInterval : (choose W : X) ∈ Ioo b a := hW.le hxW
+    have haB : a ∉ B := fun haB ↦ Set.disjoint_left.mp hAB haA haB
+    have hbA : b ∉ A := fun hbA ↦ Set.disjoint_left.mp hAB hbA hbB
+    constructor
+    · refine mem_iUnion₂.mpr ⟨a, haA, ?_⟩
+      rw [mem_ordConnectedComponent]
+      intro z hz
+      rcases le_total a z with haz | hza
+      · have hzEq : z = a := le_antisymm (right_mem_uIcc.1 hz) haz
+        exact hzEq ▸ haB
+      · have hxz : (choose W : X) ≤ z := by
+          rw [uIcc_of_ge hxInterval.2.le] at hz
+          exact hz.1
+        exact W.property.isConnectedComponentIn.subset
+          (show z ∈ Ioo b a from
+            ⟨hxInterval.1.trans_le hxz, hza.lt_of_ne fun h ↦ haB (h.symm ▸ hbB)⟩) |>.2
+    · refine mem_iUnion₂.mpr ⟨b, hbB, ?_⟩
+      rw [mem_ordConnectedComponent]
+      intro z hz
+      rcases le_total z b with hzb | hbz
+      · have hzEq : z = b := le_antisymm hzb (left_mem_uIcc.1 hz)
+        exact hzEq ▸ hbA
+      · have hzx : z ≤ (choose W : X) := by
+          rw [uIcc_of_le hxInterval.1.le] at hz
+          exact hz.2
+        exact W.property.isConnectedComponentIn.subset
+          (show z ∈ Ioo b a from
+            ⟨hbz.lt_of_ne fun h ↦ hbA (h ▸ haA), hzx.trans_lt hxInterval.2⟩) |>.1
+
+/-- Helper for Exercise 32.8: two selected crossing points joined inside the
+order-separating set are equal. -/
+lemma eq_of_mem_crossingComponentPoints_of_uIcc_subset {X : Type u} [LinearOrder X]
+    [TopologicalSpace X] [OrderTopology X] [LinearContinuum X] {A B : Set X}
+    (choose : (W : CrossingComponent A B) → (W : Set X)) {x y : X}
+    (hx : x ∈ crossingComponentPoints A B choose)
+    (hy : y ∈ crossingComponentPoints A B choose)
+    (hxy : uIcc x y ⊆ ordSeparatingSet A B) : x = y := by
+  classical
+  obtain ⟨W, hWx⟩ := mem_crossingComponentPoints.mp hx
+  obtain ⟨W', hW'y⟩ := mem_crossingComponentPoints.mp hy
+  have hSep : ordSeparatingSet A B ⊆ (A ∪ B)ᶜ := by
+    intro z hz hzAB
+    rcases hzAB with hzA | hzB
+    · exact Set.disjoint_left.mp disjoint_left_ordSeparatingSet hzA hz
+    · exact Set.disjoint_left.mp disjoint_right_ordSeparatingSet hzB hz
+  have hPreconnected : IsPreconnected (uIcc x y) :=
+    (LinearContinuum.isConnected_of_ordConnected ordConnected_uIcc
+      ⟨x, left_mem_uIcc⟩).isPreconnected
+  have hyW : y ∈ (W : Set X) := by
+    rw [W.property.isConnectedComponentIn.eq_connectedComponentIn
+      (hWx ▸ (choose W).property)]
+    exact hPreconnected.subset_connectedComponentIn left_mem_uIcc
+      (hxy.trans hSep) right_mem_uIcc
+  have hWW' : W = W' := by
+    apply Subtype.ext
+    calc
+      (W : Set X) = connectedComponentIn (A ∪ B)ᶜ y :=
+        W.property.isConnectedComponentIn.eq_connectedComponentIn hyW
+      _ = (W' : Set X) :=
+        (W'.property.isConnectedComponentIn.eq_connectedComponentIn
+          (hW'y ▸ (choose W').property)).symm
+  subst W'
+  exact hWx.symm.trans hW'y
+
+/-- Exercise 32.8 (3): Choosing a point in every complementary component that is an open
+interval between two closed disjoint sets produces a closed set of selected points. -/
+theorem crossingComponentPoints_isClosed {X : Type u} [LinearOrder X]
+    [TopologicalSpace X] [OrderTopology X] [LinearContinuum X] {A B : Set X}
+    (hA : IsClosed A) (hB : IsClosed B) (hAB : Disjoint A B)
+    (choose : (W : CrossingComponent A B) → (W : Set X)) :
+    IsClosed (crossingComponentPoints A B choose) := sorry
+
+/-- Exercise 32.8 (4): A component of the complement of the selected crossing points
+is disjoint from at least one of the two original closed sets. -/
+theorem component_compl_crossingPoints_disjoint {X : Type u} [LinearOrder X]
+    [TopologicalSpace X] [OrderTopology X] [LinearContinuum X] {A B V : Set X}
+    (hA : IsClosed A) (hB : IsClosed B) (hAB : Disjoint A B)
+    (choose : (W : CrossingComponent A B) → (W : Set X))
+    (hV : IsConnectedComponentIn (crossingComponentPoints A B choose)ᶜ V) :
+    Disjoint V A ∨ Disjoint V B := sorry
+
+end Set

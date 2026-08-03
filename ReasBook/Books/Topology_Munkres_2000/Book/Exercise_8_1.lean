@@ -1,0 +1,111 @@
+module
+
+public import Topology_Munkres_2000.Book.Definition_8_1.RecursionFormula
+public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+public import Mathlib.Data.PNat.Interval
+public import Mathlib.Data.Real.Basic
+import Topology_Munkres_2000.Book.Theorem_8_4
+
+public section
+
+open scoped BigOperators
+
+/-- `positivePartialSum b n` is the recursively defined sum of
+the first `n` terms of the positive-integer-indexed real sequence `b`. -/
+@[expose]
+def positivePartialSum (b : ℕ+ → ℝ) (n : ℕ+) : ℝ :=
+  PNat.recOn n (b 1) (fun k sum ↦ sum + b (k + 1))
+
+/-- The positive partial sum through the first term is that term. -/
+theorem positivePartialSum_one (b : ℕ+ → ℝ) :
+    positivePartialSum b 1 = b 1 := rfl
+
+/-- A positive partial sum at a successor is the preceding sum plus the newly
+included term. -/
+theorem positivePartialSum_succ (b : ℕ+ → ℝ) (n : ℕ+) :
+    positivePartialSum b (n + 1) = positivePartialSum b n + b (n + 1) := by
+  change PNat.recOn (n + 1) (b 1) (fun k sum ↦ sum + b (k + 1)) =
+    PNat.recOn n (b 1) (fun k sum ↦ sum + b (k + 1)) + b (n + 1)
+  exact PNat.recOn_succ n (b 1) (fun k sum ↦ sum + b (k + 1))
+
+/-- For an index greater than one, the positive partial sum is the previous
+partial sum plus the current term. -/
+theorem positivePartialSum_eq_prev_add (b : ℕ+ → ℝ) (n : ℕ+) (hn : 1 < n) :
+    positivePartialSum b n = positivePartialSum b (n - 1) + b n := by
+  -- Rewrite the current index as the successor of its positive predecessor.
+  rw [← PNat.sub_add_of_lt hn]
+  -- The public successor equation now gives the required recursion formula.
+  exact positivePartialSum_succ b (n - 1)
+
+/-- Exercise 8.1: The recursively defined positive partial sum agrees with the standard
+finite sum over the positive-integer interval from `1` through `n`. -/
+theorem positivePartialSum_eq_sum_Icc (b : ℕ+ → ℝ) (n : ℕ+) :
+    positivePartialSum b n = ∑ k ∈ Finset.Icc 1 n, b k := by
+  -- Follow the same positive-integer recursion used to define the partial sum.
+  induction n using PNat.recOn with
+  | one =>
+      -- At the initial index, both sides reduce to the first sequence term.
+      rw [positivePartialSum_one, Finset.Icc_self]
+      simp only [Finset.sum_singleton]
+  | succ n ih =>
+      -- The new endpoint lies above the preceding interval, so insertion is disjoint.
+      have endpoint_not_mem : n + 1 ∉ Finset.Icc 1 n := by
+        rw [Finset.mem_Icc, not_and_or]
+        exact Or.inr (not_le_of_gt (PNat.lt_succ_self n))
+      -- Decompose the enlarged interval into its new endpoint and the old interval.
+      have interval_succ :
+          Finset.Icc 1 (n + 1) = insert (n + 1) (Finset.Icc 1 n) := by
+        ext k
+        rw [Finset.mem_Icc, Finset.mem_insert, Finset.mem_Icc]
+        constructor
+        · intro hk
+          by_cases hkn : k = n + 1
+          · exact Or.inl hkn
+          · exact Or.inr ⟨hk.1, PNat.lt_add_one_iff.mp (lt_of_le_of_ne hk.2 hkn)⟩
+        · intro hk
+          rcases hk with hk | hk
+          · subst k
+            exact ⟨(one_le : (1 : ℕ+) ≤ n + 1), le_rfl⟩
+          · exact ⟨hk.1, hk.2.trans (PNat.lt_succ_self n).le⟩
+      -- Synchronize the recursive sum equation with right-endpoint insertion.
+      rw [positivePartialSum_succ, ih, interval_succ,
+        Finset.sum_insert endpoint_not_mem]
+      exact add_comm _ _
+
+/-- The history rule used to define positive partial sums by the principle of
+recursive definition. -/
+@[expose]
+def positivePartialSumStep (b : ℕ+ → ℝ) {i : ℕ+} (hi : 1 < i)
+    (f : Set.Iio i → ℝ) : ℝ :=
+  f ⟨i - 1, by
+    calc
+      i - 1 < i - 1 + 1 := PNat.lt_succ_self _
+      _ = i := PNat.sub_add_of_lt hi⟩ + b i
+
+/-- The positive-partial-sum history rule evaluates the preceding history value
+and adds the current sequence term. -/
+theorem positivePartialSumStep_apply (b : ℕ+ → ℝ) (i : ℕ+) (hi : 1 < i)
+    (f : Set.Iio i → ℝ) :
+    positivePartialSumStep b hi f =
+      f ⟨i - 1, by
+        calc
+          i - 1 < i - 1 + 1 := PNat.lt_succ_self _
+          _ = i := PNat.sub_add_of_lt hi⟩ + b i := rfl
+
+/-- Positive partial sums satisfy the recursion formula from Exercise 8.1. -/
+theorem positivePartialSum_isPositiveRecursionFormula (b : ℕ+ → ℝ) :
+    (positivePartialSum b).IsPositiveRecursionFormula (b 1) (positivePartialSumStep b) := by
+  apply Function.IsPositiveRecursionFormula.mk (positivePartialSum_one b)
+  intro i hi
+  rw [positivePartialSum_eq_prev_add b i hi]
+  rfl
+
+/-- The recursive equations for positive partial sums determine a unique
+positive-integer-indexed real sequence. -/
+theorem existsUnique_positivePartialSum (b : ℕ+ → ℝ) :
+    ∃! h : ℕ+ → ℝ,
+      h.IsPositiveRecursionFormula (b 1) (positivePartialSumStep b) :=
+  existsUnique_positiveRecursive ℝ (b 1) (positivePartialSumStep b)
+
+
+end

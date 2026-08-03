@@ -1,0 +1,428 @@
+module
+
+public import Mathlib.Data.Countable.Defs
+public import Mathlib.Topology.Constructions
+public import Mathlib.Topology.Instances.Nat
+public import Mathlib.Topology.Instances.Real.Lemmas
+public import Mathlib.Topology.Separation.Regular
+
+public section
+
+universe u
+
+/-- Helper for Exercise 32.9: the cylinder fixing the coordinates in `B` to their values in `x`. -/
+private def coordinateCylinder {J : Type u} (x : J → ℕ) (B : Finset J) : Set (J → ℕ) :=
+  {y | ∀ a ∈ B, y a = x a}
+
+/-- Helper for Exercise 32.9: Stone's closed set of functions injective away from the value `n`. -/
+private def stoneSet {J : Type u} (n : ℕ) : Set (J → ℕ) :=
+  {x | Set.InjOn x {a | x a ≠ n}}
+
+/-- Helper for Exercise 32.9: every open neighborhood contains a finite-coordinate cylinder. -/
+private lemma exists_coordinateCylinder_subset {J : Type u} {U : Set (J → ℕ)}
+    (hU : IsOpen U) {x : J → ℕ} (hx : x ∈ U) :
+    ∃ B : Finset J, coordinateCylinder x B ⊆ U := by
+  -- Extract a basic product neighborhood and shrink each discrete coordinate set to a singleton.
+  rw [isOpen_pi_iff] at hU
+  obtain ⟨B, s, hs, hsub⟩ := hU x hx
+  refine ⟨B, fun y hy ↦ hsub ?_⟩
+  intro a ha
+  rw [hy a ha]
+  exact (hs a ha).2
+
+/-- Helper for Exercise 32.9: a finite-coordinate cylinder in `J → ℕ` is open. -/
+private lemma coordinateCylinder_isOpen {J : Type u} (x : J → ℕ) (B : Finset J) :
+    IsOpen (coordinateCylinder x B) := by
+  -- Express the cylinder as a finite product of open singletons.
+  have hcylinder : coordinateCylinder x B = (B : Set J).pi fun a ↦ {x a} := by
+    ext y
+    simp only [coordinateCylinder, Set.mem_setOf_eq, Set.mem_pi, Set.mem_singleton_iff,
+      Finset.mem_coe]
+  rw [hcylinder]
+  exact isOpen_set_pi B.finite_toSet fun a _ ↦ isOpen_discrete {x a}
+
+/-- Helper for Exercise 32.9: each Stone set is closed. -/
+private lemma stoneSet_isClosed {J : Type u} (n : ℕ) : IsClosed (stoneSet (J := J) n) := by
+  -- A failure of injectivity is witnessed by two coordinates and persists on their cylinder.
+  classical
+  rw [← isOpen_compl_iff]
+  refine isOpen_iff_mem_nhds.mpr fun x hx ↦ ?_
+  simp only [stoneSet, Set.mem_compl_iff, Set.mem_setOf_eq] at hx
+  rw [Set.InjOn] at hx
+  push Not at hx
+  obtain ⟨a, ha, b, hb, heq, hab⟩ := hx
+  refine mem_nhds_iff.mpr ⟨coordinateCylinder x {a, b}, ?_, coordinateCylinder_isOpen x {a, b}, ?_⟩
+  · intro y hy
+    simp only [Set.mem_compl_iff, stoneSet, Set.mem_setOf_eq]
+    intro hinj
+    have hya : y a = x a := hy a (by simp)
+    have hyb : y b = x b := hy b (by simp)
+    have hyna : y a ≠ n := by simpa only [Set.mem_setOf_eq, hya] using ha
+    have hynb : y b ≠ n := by simpa only [Set.mem_setOf_eq, hyb] using hb
+    exact hab (hinj hyna hynb (hya.trans (heq.trans hyb.symm)))
+  · intro a haB
+    rfl
+
+/-- Helper for Exercise 32.9: the Stone sets for the values `1` and `2` are disjoint. -/
+private lemma stoneSet_one_disjoint_two {J : Type u} [Uncountable J] :
+    Disjoint (stoneSet (J := J) 1) (stoneSet (J := J) 2) := by
+  -- Membership in both sets would make a function from `J` to `ℕ` globally injective.
+  rw [Set.disjoint_left]
+  intro x hxone hxtwo
+  have hinjective : Function.Injective x := by
+    intro a b hab
+    by_cases hone : x a = 1
+    · have htwoa : x a ≠ 2 := by omega
+      have htwob : x b ≠ 2 := by simpa [hab] using htwoa
+      exact hxtwo htwoa htwob hab
+    · have honeb : x b ≠ 1 := by simpa [hab] using hone
+      exact hxone hone honeb hab
+  exact not_injective_uncountable_countable x hinjective
+
+/-- Helper for Exercise 32.9: an injective finite labeling avoiding `1` and `2` extends across
+one new coordinate while preserving these properties. -/
+private lemma exists_injectiveLabel_insert {J : Type u} [DecidableEq J]
+    (B : Finset J) (a : J) (ha : a ∉ B)
+    (e : J → ℕ) (hinj : Set.InjOn e B) (hone : ∀ b ∈ B, e b ≠ 1)
+    (htwo : ∀ b ∈ B, e b ≠ 2) :
+    ∃ e' : J → ℕ, Set.InjOn e' (insert a B : Finset J) ∧
+      (∀ b ∈ B, e' b = e b) ∧ (∀ b ∈ insert a B, e' b ≠ 1) ∧
+      ∀ b ∈ insert a B, e' b ≠ 2 := by
+  -- Choose a fresh label outside the old finite range and the two forbidden values.
+  classical
+  let forbidden : Set ℕ := e '' (B : Set J) ∪ {1, 2}
+  have hforbidden : forbidden.Finite :=
+    (B.finite_toSet.image e).union (Set.toFinite {1, 2})
+  obtain ⟨m, hm⟩ := hforbidden.infinite_compl.nonempty
+  have hmrange : m ∉ e '' (B : Set J) := fun h ↦ hm (Set.mem_union_left _ h)
+  have hmone : m ≠ 1 := fun h ↦ hm (h ▸ Set.mem_union_right _ (by simp))
+  have hmtwo : m ≠ 2 := fun h ↦ hm (h ▸ Set.mem_union_right _ (by simp))
+  refine ⟨Function.update e a m, ?_, ?_, ?_, ?_⟩
+  · rw [Finset.coe_insert, Set.injOn_insert]
+    · constructor
+      · intro b hb c hc hbc
+        have hba : b ≠ a := fun h ↦ ha (h ▸ hb)
+        have hca : c ≠ a := fun h ↦ ha (h ▸ hc)
+        exact hinj hb hc (by simpa [hba, hca] using hbc)
+      · intro hmimage
+        obtain ⟨b, hb, hmb⟩ := hmimage
+        have hba : b ≠ a := fun h ↦ ha (h ▸ hb)
+        exact hmrange ⟨b, hb, by simpa [hba] using hmb⟩
+    · simpa using ha
+  · intro b hb
+    have hba : b ≠ a := fun h ↦ ha (h ▸ hb)
+    simp [hba]
+  · intro b hb
+    simp only [Finset.mem_insert] at hb
+    rcases hb with rfl | hb
+    · simpa using hmone
+    · have hba : b ≠ a := fun h ↦ ha (h ▸ hb)
+      simpa [hba] using hone b hb
+  · intro b hb
+    simp only [Finset.mem_insert] at hb
+    rcases hb with rfl | hb
+    · simpa using hmtwo
+    · have hba : b ≠ a := fun h ↦ ha (h ▸ hb)
+      simpa [hba] using htwo b hb
+
+/-- Helper for Exercise 32.9: an injective finite labeling avoiding `1` and `2` extends across
+the union with another finite set. -/
+private lemma exists_injectiveLabel_union {J : Type u} [DecidableEq J]
+    (B C : Finset J) (e : J → ℕ) (hinj : Set.InjOn e B)
+    (hone : ∀ b ∈ B, e b ≠ 1) (htwo : ∀ b ∈ B, e b ≠ 2) :
+    ∃ e' : J → ℕ, Set.InjOn e' (B ∪ C : Finset J) ∧
+      (∀ b ∈ B, e' b = e b) ∧ (∀ b ∈ B ∪ C, e' b ≠ 1) ∧
+      ∀ b ∈ B ∪ C, e' b ≠ 2 := by
+  -- Add the new coordinates one at a time, preserving the old labels at every step.
+  induction C using Finset.induction_on with
+  | empty =>
+      refine ⟨e, ?_, ?_, ?_, ?_⟩
+      · simpa using hinj
+      · exact fun _ _ ↦ rfl
+      · simpa using hone
+      · simpa using htwo
+  | @insert a C ha ih =>
+      obtain ⟨e', hinj', hagree', hone', htwo'⟩ := ih
+      by_cases ha' : a ∈ B ∪ C
+      · refine ⟨e', ?_, hagree', ?_, ?_⟩
+        · simpa [Finset.union_insert, Finset.insert_eq_of_mem ha'] using hinj'
+        · simpa [Finset.union_insert, Finset.insert_eq_of_mem ha'] using hone'
+        · simpa [Finset.union_insert, Finset.insert_eq_of_mem ha'] using htwo'
+      · obtain ⟨e'', hinj'', hagree'', hone'', htwo''⟩ :=
+          exists_injectiveLabel_insert (B ∪ C) a ha' e' hinj' hone' htwo'
+        refine ⟨e'', ?_, ?_, ?_, ?_⟩
+        · simpa [Finset.union_insert] using hinj''
+        · intro b hb
+          exact (hagree'' b (Finset.mem_union_left C hb)).trans (hagree' b hb)
+        · simpa [Finset.union_insert] using hone''
+        · simpa [Finset.union_insert] using htwo''
+
+/-- Helper for Exercise 32.9: a finite Stone approximation carries an injective labeling whose
+values avoid the two exceptional labels. -/
+private structure StoneApproximation (J : Type u) where
+  support : Finset J
+  label : J → ℕ
+  injOn_label : Set.InjOn label support
+  label_ne_one : ∀ a ∈ support, label a ≠ 1
+  label_ne_two : ∀ a ∈ support, label a ≠ 2
+
+/-- Helper for Exercise 32.9: the point associated to an approximation uses its labels on the
+finite support and the value `1` elsewhere. -/
+private def StoneApproximation.point {J : Type u} [DecidableEq J]
+    (s : StoneApproximation J) : J → ℕ :=
+  fun a ↦ if a ∈ s.support then s.label a else 1
+
+/-- Helper for Exercise 32.9: the point associated to every approximation belongs to Stone's
+first closed set. -/
+private lemma StoneApproximation.point_mem_stoneSet_one {J : Type u} [DecidableEq J]
+    (s : StoneApproximation J) : s.point ∈ stoneSet (J := J) 1 := by
+  -- A coordinate whose value is not `1` lies in the finite support, where the label is injective.
+  intro a ha b hb hab
+  have ha_support : a ∈ s.support := by
+    by_contra ha_not
+    exact ha (by simp [StoneApproximation.point, ha_not])
+  have hb_support : b ∈ s.support := by
+    by_contra hb_not
+    exact hb (by simp [StoneApproximation.point, hb_not])
+  apply s.injOn_label ha_support hb_support
+  simpa [StoneApproximation.point, ha_support, hb_support] using hab
+
+/-- Helper for Exercise 32.9: every finite approximation can be enlarged so that the cylinder
+around its associated point lies in a prescribed open neighborhood of the first Stone set. -/
+private lemma exists_stoneApproximation_extension {J : Type u} [DecidableEq J]
+    {U : Set (J → ℕ)} (hU : IsOpen U) (hstoneU : stoneSet (J := J) 1 ⊆ U)
+    (s : StoneApproximation J) :
+    ∃ t : StoneApproximation J, s.support ⊆ t.support ∧
+      (∀ a ∈ s.support, t.label a = s.label a) ∧
+      coordinateCylinder s.point t.support ⊆ U := by
+  -- Choose a cylinder around the stage point, then extend the partial injection to its support.
+  obtain ⟨C, hC⟩ := exists_coordinateCylinder_subset hU (hstoneU s.point_mem_stoneSet_one)
+  obtain ⟨e, hinj, hagree, hone, htwo⟩ :=
+    exists_injectiveLabel_union s.support C s.label s.injOn_label s.label_ne_one s.label_ne_two
+  refine ⟨⟨s.support ∪ C, e, hinj, hone, htwo⟩, ?_, hagree, ?_⟩
+  · exact Finset.subset_union_left
+  · exact fun _ hx ↦ hC fun a ha ↦ hx a (Finset.mem_union_right _ ha)
+
+/-- Helper for Exercise 32.9: there is an initial finite Stone approximation. -/
+private lemma exists_stoneApproximation {J : Type u} :
+    ∃ s : StoneApproximation J, s.support = ∅ := by
+  -- The empty support carries the constant-zero labeling vacuously.
+  refine ⟨⟨∅, fun _ ↦ 0, ?_, ?_, ?_⟩, rfl⟩
+  · intro _ ha
+    simp at ha
+  · intro _ ha
+    simp at ha
+  · intro _ ha
+    simp at ha
+
+/-- Helper for Exercise 32.9: choose the next approximation inside the prescribed neighborhood. -/
+private noncomputable def nextStoneApproximation {J : Type u} [DecidableEq J]
+    {U : Set (J → ℕ)} (hU : IsOpen U) (hstoneU : stoneSet (J := J) 1 ⊆ U)
+    (s : StoneApproximation J) : StoneApproximation J :=
+  Classical.choose (exists_stoneApproximation_extension hU hstoneU s)
+
+/-- Helper for Exercise 32.9: the chosen next approximation extends the current support. -/
+private lemma support_subset_nextStoneApproximation {J : Type u} [DecidableEq J]
+    {U : Set (J → ℕ)} (hU : IsOpen U) (hstoneU : stoneSet (J := J) 1 ⊆ U)
+    (s : StoneApproximation J) :
+    s.support ⊆ (nextStoneApproximation hU hstoneU s).support := by
+  -- Read the support inclusion from the one-step extension specification.
+  exact (Classical.choose_spec (exists_stoneApproximation_extension hU hstoneU s)).1
+
+/-- Helper for Exercise 32.9: the chosen next approximation preserves all current labels. -/
+private lemma nextStoneApproximation_label_eq {J : Type u} [DecidableEq J]
+    {U : Set (J → ℕ)} (hU : IsOpen U) (hstoneU : stoneSet (J := J) 1 ⊆ U)
+    (s : StoneApproximation J) {a : J} (ha : a ∈ s.support) :
+    (nextStoneApproximation hU hstoneU s).label a = s.label a := by
+  -- Read label compatibility from the one-step extension specification.
+  exact (Classical.choose_spec (exists_stoneApproximation_extension hU hstoneU s)).2.1 a ha
+
+/-- Helper for Exercise 32.9: the cylinder determined by the next support lies in the chosen
+neighborhood of the first Stone set. -/
+private lemma nextStoneApproximation_cylinder_subset {J : Type u} [DecidableEq J]
+    {U : Set (J → ℕ)} (hU : IsOpen U) (hstoneU : stoneSet (J := J) 1 ⊆ U)
+    (s : StoneApproximation J) :
+    coordinateCylinder s.point (nextStoneApproximation hU hstoneU s).support ⊆ U := by
+  -- Read cylinder containment from the one-step extension specification.
+  exact (Classical.choose_spec (exists_stoneApproximation_extension hU hstoneU s)).2.2
+
+/-- Helper for Exercise 32.9: recursively iterate the one-step Stone approximation extension. -/
+private noncomputable def stoneApproximationSequence {J : Type u} [DecidableEq J]
+    {U : Set (J → ℕ)} (hU : IsOpen U) (hstoneU : stoneSet (J := J) 1 ⊆ U) :
+    ℕ → StoneApproximation J :=
+  fun n ↦ Nat.rec (Classical.choose exists_stoneApproximation)
+    (fun _ s ↦ nextStoneApproximation hU hstoneU s) n
+
+/-- Helper for Exercise 32.9: consecutive supports in the recursive sequence are increasing. -/
+private lemma stoneApproximationSequence_support_mono {J : Type u} [DecidableEq J]
+    {U : Set (J → ℕ)} (hU : IsOpen U) (hstoneU : stoneSet (J := J) 1 ⊆ U) (n : ℕ) :
+    (stoneApproximationSequence hU hstoneU n).support ⊆
+      (stoneApproximationSequence hU hstoneU (n + 1)).support := by
+  -- Unfold one recursive step and apply its support specification.
+  exact support_subset_nextStoneApproximation hU hstoneU (stoneApproximationSequence hU hstoneU n)
+
+/-- Helper for Exercise 32.9: consecutive stages preserve labels on the earlier support. -/
+private lemma stoneApproximationSequence_label_succ {J : Type u} [DecidableEq J]
+    {U : Set (J → ℕ)} (hU : IsOpen U) (hstoneU : stoneSet (J := J) 1 ⊆ U)
+    (n : ℕ) {a : J} (ha : a ∈ (stoneApproximationSequence hU hstoneU n).support) :
+    (stoneApproximationSequence hU hstoneU (n + 1)).label a =
+      (stoneApproximationSequence hU hstoneU n).label a := by
+  -- Unfold one recursive step and apply its label specification.
+  exact nextStoneApproximation_label_eq hU hstoneU
+    (stoneApproximationSequence hU hstoneU n) ha
+
+/-- Helper for Exercise 32.9: every stage cylinder lies in the chosen neighborhood. -/
+private lemma stoneApproximationSequence_cylinder_subset {J : Type u} [DecidableEq J]
+    {U : Set (J → ℕ)} (hU : IsOpen U) (hstoneU : stoneSet (J := J) 1 ⊆ U) (n : ℕ) :
+    coordinateCylinder (stoneApproximationSequence hU hstoneU n).point
+      (stoneApproximationSequence hU hstoneU (n + 1)).support ⊆ U := by
+  -- Unfold one recursive step and apply its cylinder specification.
+  exact nextStoneApproximation_cylinder_subset hU hstoneU
+    (stoneApproximationSequence hU hstoneU n)
+
+/-- Helper for Exercise 32.9: earlier supports are contained in every later support. -/
+private lemma stoneApproximationSequence_support_le {J : Type u} [DecidableEq J]
+    {U : Set (J → ℕ)} (hU : IsOpen U) (hstoneU : stoneSet (J := J) 1 ⊆ U)
+    {m n : ℕ} (hmn : m ≤ n) :
+    (stoneApproximationSequence hU hstoneU m).support ⊆
+      (stoneApproximationSequence hU hstoneU n).support := by
+  -- Induct on the distance between stages and compose consecutive inclusions.
+  induction n, hmn using Nat.le_induction with
+  | base => exact fun _ ha ↦ ha
+  | succ n hmn ih =>
+      exact ih.trans (stoneApproximationSequence_support_mono hU hstoneU n)
+
+/-- Helper for Exercise 32.9: labels are unchanged between any two comparable stages. -/
+private lemma stoneApproximationSequence_label_le {J : Type u} [DecidableEq J]
+    {U : Set (J → ℕ)} (hU : IsOpen U) (hstoneU : stoneSet (J := J) 1 ⊆ U)
+    {m n : ℕ} (hmn : m ≤ n) {a : J}
+    (ha : a ∈ (stoneApproximationSequence hU hstoneU m).support) :
+    (stoneApproximationSequence hU hstoneU n).label a =
+      (stoneApproximationSequence hU hstoneU m).label a := by
+  -- Induct through consecutive label-preservation equations.
+  induction n, hmn using Nat.le_induction with
+  | base => rfl
+  | succ n hmn ih =>
+      have ha_n := stoneApproximationSequence_support_le hU hstoneU hmn ha
+      exact (stoneApproximationSequence_label_succ hU hstoneU n ha_n).trans ih
+
+/-- Helper for Exercise 32.9: the stabilized point uses the eventual label on coordinates that
+enter the approximation supports and equals `2` elsewhere. -/
+private noncomputable def stabilizedStonePoint {J : Type u} [DecidableEq J]
+    {U : Set (J → ℕ)} (hU : IsOpen U) (hstoneU : stoneSet (J := J) 1 ⊆ U) : J → ℕ :=
+  fun a ↦ @dite ℕ (∃ n, a ∈ (stoneApproximationSequence hU hstoneU n).support)
+    (Classical.propDecidable _)
+    (fun h ↦ (stoneApproximationSequence hU hstoneU (Nat.find h)).label a)
+    (fun _ ↦ 2)
+
+/-- Helper for Exercise 32.9: on every stage support, the stabilized point equals that stage's
+label. -/
+private lemma stabilizedStonePoint_eq_label {J : Type u} [DecidableEq J]
+    {U : Set (J → ℕ)} (hU : IsOpen U) (hstoneU : stoneSet (J := J) 1 ⊆ U)
+    {n : ℕ} {a : J} (ha : a ∈ (stoneApproximationSequence hU hstoneU n).support) :
+    stabilizedStonePoint hU hstoneU a = (stoneApproximationSequence hU hstoneU n).label a := by
+  -- Compare the least support stage with the given stage and use label compatibility.
+  let hexists : ∃ m, a ∈ (stoneApproximationSequence hU hstoneU m).support := ⟨n, ha⟩
+  rw [stabilizedStonePoint, dif_pos hexists]
+  exact (stoneApproximationSequence_label_le hU hstoneU (Nat.find_le ha)
+    (Nat.find_spec hexists)).symm
+
+/-- Helper for Exercise 32.9: a finite set of coordinates that enter the supports is already
+contained in one support. -/
+private lemma finite_subset_stoneSupports {J : Type u} [DecidableEq J]
+    {U : Set (J → ℕ)} (hU : IsOpen U) (hstoneU : stoneSet (J := J) 1 ⊆ U)
+    (B : Finset J) (hB : ∀ a ∈ B, ∃ n, a ∈ (stoneApproximationSequence hU hstoneU n).support) :
+    ∃ n, B ⊆ (stoneApproximationSequence hU hstoneU n).support := by
+  -- Induct over the finite set and combine the two stage bounds with their maximum.
+  induction B using Finset.induction_on with
+  | empty => exact ⟨0, Finset.empty_subset _⟩
+  | @insert a B ha ih =>
+      obtain ⟨na, hna⟩ := hB a (by simp)
+      obtain ⟨nB, hnB⟩ := ih fun b hb ↦ hB b (by simp [hb])
+      refine ⟨max na nB, ?_⟩
+      intro b hb
+      simp only [Finset.mem_insert] at hb
+      rcases hb with rfl | hb
+      · exact stoneApproximationSequence_support_le hU hstoneU (Nat.le_max_left _ _) hna
+      · exact stoneApproximationSequence_support_le hU hstoneU (Nat.le_max_right _ _) (hnB hb)
+
+/-- Helper for Exercise 32.9: the stabilized point belongs to Stone's second closed set. -/
+private lemma stabilizedStonePoint_mem_stoneSet_two {J : Type u} [DecidableEq J]
+    {U : Set (J → ℕ)} (hU : IsOpen U) (hstoneU : stoneSet (J := J) 1 ⊆ U) :
+    stabilizedStonePoint hU hstoneU ∈ stoneSet (J := J) 2 := by
+  -- Move two coordinates to a common support stage, then use injectivity there.
+  intro a ha b hb hab
+  have ha_support : ∃ n, a ∈ (stoneApproximationSequence hU hstoneU n).support := by
+    by_contra h
+    exact ha (by simp [stabilizedStonePoint, h])
+  have hb_support : ∃ n, b ∈ (stoneApproximationSequence hU hstoneU n).support := by
+    by_contra h
+    exact hb (by simp [stabilizedStonePoint, h])
+  obtain ⟨na, hna⟩ := ha_support
+  obtain ⟨nb, hnb⟩ := hb_support
+  let n := max na nb
+  have hna' : a ∈ (stoneApproximationSequence hU hstoneU n).support :=
+    stoneApproximationSequence_support_le hU hstoneU (Nat.le_max_left _ _) hna
+  have hnb' : b ∈ (stoneApproximationSequence hU hstoneU n).support :=
+    stoneApproximationSequence_support_le hU hstoneU (Nat.le_max_right _ _) hnb
+  apply (stoneApproximationSequence hU hstoneU n).injOn_label hna' hnb'
+  rw [← stabilizedStonePoint_eq_label hU hstoneU hna',
+    ← stabilizedStonePoint_eq_label hU hstoneU hnb']
+  exact hab
+
+/-- Helper for Exercise 32.9: the two canonical Stone closed sets cannot have disjoint open
+neighborhoods. -/
+private lemma stoneSets_not_separated {J : Type u} [Uncountable J] :
+    ¬ SeparatedNhds (stoneSet (J := J) 1) (stoneSet (J := J) 2) := by
+  -- Build the recursive approximation inside the first neighborhood and diagonalize against the
+  -- finite cylinder supplied by the second neighborhood.
+  classical
+  rintro ⟨U, V, hU, hV, hstoneU, hstoneV, hdisjoint⟩
+  let y := stabilizedStonePoint hU hstoneU
+  have hyStone : y ∈ stoneSet (J := J) 2 :=
+    stabilizedStonePoint_mem_stoneSet_two hU hstoneU
+  obtain ⟨B, hB⟩ := exists_coordinateCylinder_subset hV (hstoneV hyStone)
+  let BA : Finset J := B.filter fun a ↦ ∃ n, a ∈ (stoneApproximationSequence hU hstoneU n).support
+  have hBA : ∀ a ∈ BA, ∃ n, a ∈ (stoneApproximationSequence hU hstoneU n).support := by
+    intro a ha
+    exact (Finset.mem_filter.mp ha).2
+  obtain ⟨n, hn⟩ := finite_subset_stoneSupports hU hstoneU BA hBA
+  let z : J → ℕ := fun a ↦
+    if a ∈ (stoneApproximationSequence hU hstoneU (n + 1)).support then
+      (stoneApproximationSequence hU hstoneU n).point a else y a
+  have hzU : z ∈ U :=
+    stoneApproximationSequence_cylinder_subset hU hstoneU n fun a ha ↦ by
+      simp [z, ha]
+  have hzV : z ∈ V := hB fun a haB ↦ by
+    by_cases haNext : a ∈ (stoneApproximationSequence hU hstoneU (n + 1)).support
+    · have haUnion : ∃ m, a ∈ (stoneApproximationSequence hU hstoneU m).support :=
+        ⟨n + 1, haNext⟩
+      have haBA : a ∈ BA := Finset.mem_filter.mpr ⟨haB, haUnion⟩
+      have haN : a ∈ (stoneApproximationSequence hU hstoneU n).support := hn haBA
+      rw [show z a = (stoneApproximationSequence hU hstoneU n).point a by simp [z, haNext]]
+      rw [StoneApproximation.point, if_pos haN]
+      exact (stabilizedStonePoint_eq_label hU hstoneU haN).symm
+    · simp [z, haNext]
+  exact Set.disjoint_left.mp hdisjoint hzU hzV
+
+/-- Helper for Exercise 32.9: an uncountable product of real lines fails the closed-set
+separation property. -/
+theorem uncountableRealPower_notNormal {J : Type u} [Uncountable J] :
+    ¬ NormalSpace (J → ℝ) := by
+  -- Pull normality back to the closed coordinatewise copy of `J → ℕ` inside `J → ℝ`.
+  intro hnormal
+  letI : NormalSpace (J → ℝ) := hnormal
+  have hclosedEmbedding :
+      Topology.IsClosedEmbedding (fun x : J → ℕ ↦ fun a ↦ (x a : ℝ)) :=
+    Topology.IsClosedEmbedding.piMap fun _ ↦ Nat.isClosedEmbedding_coe_real
+  letI : NormalSpace (J → ℕ) := hclosedEmbedding.normalSpace
+  -- Normal separation of the closed disjoint Stone sets contradicts the Stone construction.
+  exact stoneSets_not_separated (J := J)
+    (normal_separation (stoneSet_isClosed (J := J) 1) (stoneSet_isClosed (J := J) 2)
+      (stoneSet_one_disjoint_two (J := J)))
+
+/-- An uncountable product of real lines is not normal in the book's `T4Space` convention. -/
+theorem realPower_notT4 {J : Type u} [Uncountable J] :
+    ¬ T4Space (J → ℝ) := by
+  intro h
+  exact uncountableRealPower_notNormal h.toNormalSpace

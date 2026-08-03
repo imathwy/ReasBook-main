@@ -1,9 +1,0 @@
-import Mathlib
-import Papers.OnSomeLocalRings_Maassaran_2025.Sections.section01
-import Papers.OnSomeLocalRings_Maassaran_2025.Sections.section01_part1
-import Papers.OnSomeLocalRings_Maassaran_2025.Sections.section01_part2
-import Papers.OnSomeLocalRings_Maassaran_2025.Sections.section02
-import Papers.OnSomeLocalRings_Maassaran_2025.Sections.section02_part1
-import Papers.OnSomeLocalRings_Maassaran_2025.Sections.section02_part2
-import Papers.OnSomeLocalRings_Maassaran_2025.Sections.section02_part3
-import Papers.OnSomeLocalRings_Maassaran_2025.Sections.section02_part4

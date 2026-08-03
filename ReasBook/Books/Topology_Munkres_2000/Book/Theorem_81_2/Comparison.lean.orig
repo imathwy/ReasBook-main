@@ -1,0 +1,186 @@
+module
+
+public import Book.Lemma_81_1
+public import Book.Notation_52_1.RightCosets
+public import Mathlib.GroupTheory.QuotientGroup.Basic
+
+public section
+
+universe u v
+
+namespace CoveringTransformation
+
+variable {E : Type u} {B : Type v} [TopologicalSpace E] [TopologicalSpace B]
+variable [PathConnectedSpace E] [PathConnectedSpace B]
+variable [LocallyPathConnectedSpace E] [LocallyPathConnectedSpace B]
+variable {p : E → B}
+
+/-- The normalizer of the covering subgroup inside the fundamental group. -/
+noncomputable abbrev normalizerSubgroup (hp : IsCoveringMap p) {e₀ : E} {b₀ : B}
+    (he₀ : p e₀ = b₀) : Subgroup (FundamentalGroup B b₀) :=
+  Subgroup.normalizer
+    (hp.fundamentalGroupMapRange he₀ : Set (FundamentalGroup B b₀))
+
+/-- The normalizer subgroup is the normalizer of the induced fundamental-group range. -/
+theorem normalizerSubgroup_def (hp : IsCoveringMap p) {e₀ : E} {b₀ : B}
+    (he₀ : p e₀ = b₀) :
+    normalizerSubgroup hp he₀ = Subgroup.normalizer
+      (hp.fundamentalGroupMapRange he₀ : Set (FundamentalGroup B b₀)) := sorry
+
+/-- The quotient of the normalizer of the covering subgroup by that subgroup. -/
+abbrev normalizerQuotient (hp : IsCoveringMap p) {e₀ : E} {b₀ : B}
+    (he₀ : p e₀ = b₀) :=
+  let H₀ := hp.fundamentalGroupMapRange he₀
+  normalizerSubgroup hp he₀ ⧸ H₀.subgroupOf (normalizerSubgroup hp he₀)
+
+/-- The normalizer quotient unfolds to the canonical quotient group. -/
+theorem normalizerQuotient_def (hp : IsCoveringMap p) {e₀ : E} {b₀ : B}
+    (he₀ : p e₀ = b₀) :
+    normalizerQuotient hp he₀ =
+      let H₀ := hp.fundamentalGroupMapRange he₀
+      normalizerSubgroup hp he₀ ⧸ H₀.subgroupOf (normalizerSubgroup hp he₀) := sorry
+
+/-- The normalizer of the covering subgroup, viewed as a set of fundamental-group elements. -/
+abbrev normalizerSet (hp : IsCoveringMap p) {e₀ : E} {b₀ : B}
+    (he₀ : p e₀ = b₀) : Set (FundamentalGroup B b₀) :=
+  normalizerSubgroup hp he₀
+
+/-- The normalizer set is the carrier of the normalizer subgroup. -/
+theorem normalizerSet_def (hp : IsCoveringMap p) {e₀ : E} {b₀ : B}
+    (he₀ : p e₀ = b₀) :
+    normalizerSet hp he₀ = normalizerSubgroup hp he₀ := sorry
+
+/-- Inclusion of the normalizer preserves the right-coset relation. -/
+theorem normalizerRightRel_respects (hp : IsCoveringMap p) {e₀ : E} {b₀ : B}
+    (he₀ : p e₀ = b₀) {a b : normalizerSubgroup hp he₀}
+    (hab : QuotientGroup.rightRel
+      ((hp.fundamentalGroupMapRange he₀).subgroupOf
+        (normalizerSubgroup hp he₀)) a b) :
+    QuotientGroup.rightRel (hp.fundamentalGroupMapRange he₀)
+      (a : FundamentalGroup B b₀) (b : FundamentalGroup B b₀) := sorry
+
+/-- The canonical map from the normalizer quotient to right cosets of the covering subgroup. -/
+noncomputable def normalizerQuotientRightCoset (hp : IsCoveringMap p) {e₀ : E} {b₀ : B}
+    (he₀ : p e₀ = b₀) : normalizerQuotient hp he₀ →
+      FundamentalGroup B b₀ ⧸ᵣ hp.fundamentalGroupMapRange he₀ :=
+  let H₀ := hp.fundamentalGroupMapRange he₀
+  let N₀ := normalizerSubgroup hp he₀
+  Quotient.map' (fun x : N₀ ↦ (x : FundamentalGroup B b₀))
+      (fun _ _ hab ↦ normalizerRightRel_respects hp he₀ hab) ∘
+    (QuotientGroup.quotientRightRelEquivQuotientLeftRel (H₀.subgroupOf N₀)).symm
+
+/-- The canonical right coset of a normalizer-quotient element is represented by the
+normalizer. -/
+theorem normalizerQuotientRightCoset_mem (hp : IsCoveringMap p) {e₀ : E} {b₀ : B}
+    (he₀ : p e₀ = b₀) (q : normalizerQuotient hp he₀) :
+    normalizerQuotientRightCoset hp he₀ q ∈
+      Quotient.mk'' '' normalizerSet hp he₀ := sorry
+
+/-- The canonical right-coset map from the normalizer quotient is bijective onto the cosets
+represented by the normalizer. -/
+theorem normalizerQuotientRightCoset_bijective (hp : IsCoveringMap p)
+    {e₀ : E} {b₀ : B} (he₀ : p e₀ = b₀) :
+    Function.Bijective (fun q : normalizerQuotient hp he₀ ↦
+      (⟨normalizerQuotientRightCoset hp he₀ q,
+        normalizerQuotientRightCoset_mem hp he₀ q⟩ :
+          {q : FundamentalGroup B b₀ ⧸ᵣ hp.fundamentalGroupMapRange he₀ //
+            q ∈ Quotient.mk'' '' normalizerSet hp he₀})) := sorry
+
+/-- The canonical quotient group is equivalent to the right cosets represented by the
+normalizer. -/
+noncomputable def rightCosetEquiv (hp : IsCoveringMap p) {e₀ : E} {b₀ : B}
+    (he₀ : p e₀ = b₀) :
+    normalizerQuotient hp he₀ ≃
+      {q : FundamentalGroup B b₀ ⧸ᵣ hp.fundamentalGroupMapRange he₀ //
+        q ∈ Quotient.mk'' '' normalizerSet hp he₀} :=
+  Equiv.ofBijective
+    (fun q ↦ ⟨normalizerQuotientRightCoset hp he₀ q,
+      normalizerQuotientRightCoset_mem hp he₀ q⟩)
+    (normalizerQuotientRightCoset_bijective hp he₀)
+
+/-- Applying the right-coset comparison equivalence forgets only the quotient representation. -/
+theorem rightCosetEquiv_apply (hp : IsCoveringMap p) {e₀ : E} {b₀ : B}
+    (he₀ : p e₀ = b₀) (q : normalizerQuotient hp he₀) :
+    ((rightCosetEquiv hp he₀ q :
+      {q : FundamentalGroup B b₀ ⧸ᵣ hp.fundamentalGroupMapRange he₀ //
+        q ∈ Quotient.mk'' '' normalizerSet hp he₀}) :
+      FundamentalGroup B b₀ ⧸ᵣ hp.fundamentalGroupMapRange he₀) =
+        normalizerQuotientRightCoset hp he₀ q := sorry
+
+/-- The inverse monodromy coset of the value of a covering transformation is represented by
+the normalizer of the covering subgroup. -/
+theorem inverseMonodromy_mem_normalizer (hp : IsCoveringMap p)
+    (hp_surjective : Function.Surjective p) (e₀ : E) (b₀ : B) (he₀ : p e₀ = b₀)
+    (h : CoveringTransformation p) :
+    (Equiv.ofBijective (hp.monodromyRightCosetMap he₀)
+      (hp.monodromyRightCosetMap_bijective he₀)).symm
+        (evalInFiber b₀ e₀ he₀ h) ∈
+      Quotient.mk'' ''
+        normalizerSet hp he₀ := sorry
+
+/-- Evaluation followed by inverse monodromy, expressed in the canonical normalizer quotient. -/
+noncomputable def toNormalizerQuotient (hp : IsCoveringMap p)
+    (hp_surjective : Function.Surjective p) (e₀ : E) (b₀ : B) (he₀ : p e₀ = b₀) :
+    CoveringTransformation p → normalizerQuotient hp he₀ :=
+  fun h ↦ (rightCosetEquiv hp he₀).symm
+    ⟨(Equiv.ofBijective (hp.monodromyRightCosetMap he₀)
+      (hp.monodromyRightCosetMap_bijective he₀)).symm
+        (evalInFiber b₀ e₀ he₀ h),
+      inverseMonodromy_mem_normalizer hp hp_surjective e₀ b₀ he₀ h⟩
+
+/-- The right-coset image of `toNormalizerQuotient` is exactly inverse monodromy after
+evaluation in the fiber. -/
+theorem toNormalizerQuotient_apply (hp : IsCoveringMap p)
+    (hp_surjective : Function.Surjective p) (e₀ : E) (b₀ : B) (he₀ : p e₀ = b₀)
+    (h : CoveringTransformation p) :
+    ((rightCosetEquiv hp he₀ (toNormalizerQuotient hp hp_surjective e₀ b₀ he₀ h) :
+      {q : Quotient (QuotientGroup.rightRel (hp.fundamentalGroupMapRange he₀)) //
+        q ∈ Quotient.mk'' '' normalizerSet hp he₀}) :
+      Quotient (QuotientGroup.rightRel (hp.fundamentalGroupMapRange he₀))) =
+        (Equiv.ofBijective (hp.monodromyRightCosetMap he₀)
+          (hp.monodromyRightCosetMap_bijective he₀)).symm
+            (evalInFiber b₀ e₀ he₀ h) := sorry
+
+/-- Evaluation followed by inverse monodromy preserves multiplication. -/
+theorem toNormalizerQuotient_map_mul (hp : IsCoveringMap p)
+    (hp_surjective : Function.Surjective p) (e₀ : E) (b₀ : B) (he₀ : p e₀ = b₀)
+    (h k : CoveringTransformation p) :
+    toNormalizerQuotient hp hp_surjective e₀ b₀ he₀ (h * k) =
+      toNormalizerQuotient hp hp_surjective e₀ b₀ he₀ h *
+        toNormalizerQuotient hp hp_surjective e₀ b₀ he₀ k := sorry
+
+/-- Evaluation followed by inverse monodromy as a group homomorphism. -/
+noncomputable def toNormalizerQuotientHom (hp : IsCoveringMap p)
+    (hp_surjective : Function.Surjective p) (e₀ : E) (b₀ : B) (he₀ : p e₀ = b₀) :
+    CoveringTransformation p →* normalizerQuotient hp he₀ :=
+  MonoidHom.mk' (toNormalizerQuotient hp hp_surjective e₀ b₀ he₀)
+    (toNormalizerQuotient_map_mul hp hp_surjective e₀ b₀ he₀)
+
+/-- The homomorphism to the normalizer quotient has the stated underlying function. -/
+theorem toNormalizerQuotientHom_apply (hp : IsCoveringMap p)
+    (hp_surjective : Function.Surjective p) (e₀ : E) (b₀ : B) (he₀ : p e₀ = b₀)
+    (h : CoveringTransformation p) :
+    toNormalizerQuotientHom hp hp_surjective e₀ b₀ he₀ h =
+      toNormalizerQuotient hp hp_surjective e₀ b₀ he₀ h := sorry
+
+/-- Evaluation followed by inverse monodromy is bijective onto the normalizer quotient. -/
+theorem toNormalizerQuotient_bijective (hp : IsCoveringMap p)
+    (hp_surjective : Function.Surjective p) (e₀ : E) (b₀ : B) (he₀ : p e₀ = b₀) :
+    Function.Bijective (toNormalizerQuotient hp hp_surjective e₀ b₀ he₀) := sorry
+
+/-- The covering-transformation group is canonically isomorphic to the quotient of the
+normalizer of the covering subgroup by that subgroup. -/
+noncomputable def normalizerQuotientEquiv (hp : IsCoveringMap p)
+    (hp_surjective : Function.Surjective p) (e₀ : E) (b₀ : B) (he₀ : p e₀ = b₀) :
+    CoveringTransformation p ≃* normalizerQuotient hp he₀ :=
+  MulEquiv.ofBijective (toNormalizerQuotientHom hp hp_surjective e₀ b₀ he₀)
+    (toNormalizerQuotient_bijective hp hp_surjective e₀ b₀ he₀)
+
+/-- The normalizer-quotient isomorphism has forward map `toNormalizerQuotient`. -/
+theorem normalizerQuotientEquiv_apply (hp : IsCoveringMap p)
+    (hp_surjective : Function.Surjective p) (e₀ : E) (b₀ : B) (he₀ : p e₀ = b₀)
+    (h : CoveringTransformation p) :
+    normalizerQuotientEquiv hp hp_surjective e₀ b₀ he₀ h =
+      toNormalizerQuotient hp hp_surjective e₀ b₀ he₀ h := sorry
+
+end CoveringTransformation

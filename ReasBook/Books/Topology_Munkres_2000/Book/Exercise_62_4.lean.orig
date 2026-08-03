@@ -1,0 +1,28 @@
+module
+
+public import Book.Definition_61_3.SimpleClosedCurve
+public import Book.Exercise_35_4
+public import Mathlib.AlgebraicTopology.FundamentalGroupoid.FundamentalGroup
+public import Mathlib.Topology.Connected.Basic
+
+public section
+
+open Set
+
+/-- Exercise 62.4 (1). If the origin lies in the unbounded component of the complement of a
+simple closed curve in the punctured Euclidean plane, then the inclusion-induced
+fundamental-group homomorphism is trivial. -/
+theorem fundamentalGroupMap_eq_one_of_originComponent_unbounded
+    (C : Set (EuclideanSpace ℝ (Fin 2))) [Topology.IsSimpleClosedCurve C]
+    (hC : C ⊆ EuclideanPlane.punctured) (c : C)
+    (h_unbounded : ¬ Bornology.IsBounded (connectedComponentIn Cᶜ 0)) :
+    FundamentalGroup.map (ContinuousMap.inclusion hC) c = 1 := sorry
+
+/-- Exercise 62.4 (2). If the origin lies in the bounded component of the complement of a
+simple closed curve in the punctured Euclidean plane, then the inclusion-induced
+fundamental-group homomorphism is nontrivial. -/
+theorem fundamentalGroupMap_ne_one_of_originComponent_bounded
+    (C : Set (EuclideanSpace ℝ (Fin 2))) [Topology.IsSimpleClosedCurve C]
+    (hC : C ⊆ EuclideanPlane.punctured) (c : C)
+    (h_bounded : Bornology.IsBounded (connectedComponentIn Cᶜ 0)) :
+    FundamentalGroup.map (ContinuousMap.inclusion hC) c ≠ 1 := sorry

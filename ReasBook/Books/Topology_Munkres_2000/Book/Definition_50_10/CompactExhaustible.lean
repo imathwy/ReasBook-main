@@ -1,0 +1,3 @@
+module
+
+public import Topology_Munkres_2000.Book.Exercise_46_10.CompactExhaustible

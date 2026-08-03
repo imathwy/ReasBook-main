@@ -1,0 +1,130 @@
+module
+
+public import Topology_Munkres_2000.Book.Definition_2_6
+public import Topology_Munkres_2000.Book.Example_2_5
+public import Mathlib.Topology.Order.IntermediateValue
+public import Mathlib.Tactic
+
+public section
+
+/-- The real function `x ↦ x ^ 3 - x` before restricting its domain and range. -/
+def cubicMinusId (x : ℝ) : ℝ :=
+  x ^ 3 - x
+
+/-- Helper for Exercise 2.6: `cubicMinusId` sends `[1, ∞)` into `[0, ∞)`. -/
+lemma cubicMinusId_mapsTo_Ici :
+    Set.MapsTo cubicMinusId (Set.Ici (1 : ℝ)) (Set.Ici (0 : ℝ)) := by
+  -- Factor the cubic so every factor has a controlled sign on the chosen domain.
+  intro x hx
+  change 1 ≤ x at hx
+  change 0 ≤ cubicMinusId x
+  have hx0 : 0 ≤ x := by
+    linarith
+  have hxSub : 0 ≤ x - 1 := sub_nonneg.mpr hx
+  have hxAdd : 0 ≤ x + 1 := by
+    linarith
+  have hfactor : cubicMinusId x = x * (x - 1) * (x + 1) := by
+    unfold cubicMinusId
+    ring
+  rw [hfactor]
+  exact mul_nonneg (mul_nonneg hx0 hxSub) hxAdd
+
+/-- Helper for Exercise 2.6: `cubicMinusId` is strictly increasing on `[1, ∞)`. -/
+lemma cubicMinusId_strictMonoOn : StrictMonoOn cubicMinusId (Set.Ici (1 : ℝ)) := by
+  -- Factor the difference and show both factors are positive.
+  intro x hx y hy hxy
+  change 1 ≤ x at hx
+  change 1 ≤ y at hy
+  have hxPos : 0 < x := by
+    linarith
+  have hyPos : 0 < y := lt_trans hxPos hxy
+  have hlinear : 0 < y - x := sub_pos.mpr hxy
+  have hquadratic : 0 < x ^ 2 + x * y + y ^ 2 - 1 := by
+    nlinarith [sq_nonneg x, sq_nonneg y, mul_pos hxPos hyPos]
+  have hfactor :
+      cubicMinusId y - cubicMinusId x =
+        (y - x) * (x ^ 2 + x * y + y ^ 2 - 1) := by
+    unfold cubicMinusId
+    ring
+  apply sub_pos.mp
+  rw [hfactor]
+  exact mul_pos hlinear hquadratic
+
+/-- Helper for Exercise 2.6: `cubicMinusId` maps `[1, ∞)` onto `[0, ∞)`. -/
+lemma cubicMinusId_surjOn_Ici :
+    Set.SurjOn cubicMinusId (Set.Ici (1 : ℝ)) (Set.Ici (0 : ℝ)) := by
+  -- Trap each nonnegative target between the endpoint values on `[1, z + 1]`.
+  intro z hz
+  change 0 ≤ z at hz
+  have hbounds : (1 : ℝ) ≤ z + 1 := by
+    linarith
+  have hupper : z ≤ cubicMinusId (z + 1) := by
+    unfold cubicMinusId
+    nlinarith [sq_nonneg z, mul_nonneg hz (sq_nonneg z)]
+  have hcontinuous : Continuous cubicMinusId := by
+    unfold cubicMinusId
+    exact (continuous_id.pow 3).sub continuous_id
+  have htarget : z ∈ Set.Icc (cubicMinusId 1) (cubicMinusId (z + 1)) := by
+    constructor
+    · norm_num [cubicMinusId]
+      exact hz
+    · exact hupper
+  have himage := intermediate_value_Icc hbounds hcontinuous.continuousOn htarget
+  obtain ⟨x, hx, hvalue⟩ := himage
+  exact ⟨x, hx.1, hvalue⟩
+
+/-- Exercise 2.6: The function `cubicMinusId` induces a bijection from `Set.Ici (1 : ℝ)` onto
+`Set.Ici (0 : ℝ)`. -/
+theorem cubicMinusId_bijOn :
+    Set.BijOn cubicMinusId (Set.Ici (1 : ℝ)) (Set.Ici (0 : ℝ)) := by
+  -- Assemble range control, injectivity from strict monotonicity, and surjectivity.
+  exact ⟨cubicMinusId_mapsTo_Ici, cubicMinusId_strictMonoOn.injOn,
+    cubicMinusId_surjOn_Ici⟩
+
+/-- The restriction of `x ↦ x ^ 3 - x` from `Set.Ici (1 : ℝ)` to
+`Set.Ici (0 : ℝ)`. -/
+def restrictedCubic : Set.Ici (1 : ℝ) → Set.Ici (0 : ℝ) :=
+  cubicMinusId_bijOn.mapsTo.restrict cubicMinusId (Set.Ici (1 : ℝ)) (Set.Ici (0 : ℝ))
+
+/-- The chosen restriction `restrictedCubic` is bijective. -/
+theorem restrictedCubic_bijective : Function.Bijective restrictedCubic :=
+  cubicMinusId_bijOn.bijective
+
+/-- The ambient-coordinate graph of `restrictedCubic` is the cubic graph with `x ≥ 1`. -/
+theorem restrictedCubic_graph :
+    Set.graphOn cubicMinusId (Set.Ici (1 : ℝ)) =
+      {p : ℝ × ℝ | 1 ≤ p.1 ∧ p.2 = p.1 ^ 3 - p.1} := by
+  -- Normalize graph membership and unfold the polynomial value.
+  ext p
+  simp only [Set.mem_graphOn, Set.mem_Ici, Set.mem_setOf_eq, cubicMinusId, eq_comm]
+
+/-- Helper for Exercise 2.6: membership in a swapped graph reverses its coordinates. -/
+lemma mem_swap_image_graphOn_iff {α β : Type*} (f : α → β) (s : Set α) (p : β × α) :
+    p ∈ Prod.swap '' Set.graphOn f s ↔ p.2 ∈ s ∧ p.1 = f p.2 := by
+  -- Unpack the image witness and use the graph's defining coordinate equality.
+  constructor
+  · rintro ⟨⟨a, b⟩, hq, rfl⟩
+    simpa only [Set.mem_graphOn, Prod.swap_prod_mk, eq_comm] using hq
+  · intro hp
+    refine ⟨(p.2, p.1), ?_, ?_⟩
+    · simpa only [Set.mem_graphOn, eq_comm] using hp
+    · rfl
+
+/-- The graph of the inverse of `restrictedCubic` is obtained by swapping the coordinates
+of its graph. -/
+theorem restrictedCubic_inverseGraph :
+    Prod.swap '' Set.graphOn cubicMinusId (Set.Ici (1 : ℝ)) =
+      {p : ℝ × ℝ | 0 ≤ p.1 ∧ 1 ≤ p.2 ∧ p.1 = p.2 ^ 3 - p.2} := by
+  -- Use the swapped-graph interface, adding range nonnegativity from the maps-to lemma.
+  ext p
+  rw [mem_swap_image_graphOn_iff]
+  constructor
+  · intro hp
+    have hpNonneg : 0 ≤ cubicMinusId p.2 := cubicMinusId_mapsTo_Ici hp.1
+    have hpPolynomial : p.1 = p.2 ^ 3 - p.2 := by
+      simpa only [cubicMinusId] using hp.2
+    exact ⟨hp.2 ▸ hpNonneg, hp.1, hpPolynomial⟩
+  · intro hp
+    have hpCubic : p.1 = cubicMinusId p.2 := by
+      simpa only [cubicMinusId] using hp.2.2
+    exact ⟨hp.2.1, hpCubic⟩

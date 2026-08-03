@@ -1,0 +1,55 @@
+module
+
+public import Book.Example_11_1.CircularRegion
+
+public section
+
+universe u
+
+variable {α : Type u} (𝒜 : Set (Set α))
+
+/- Example 11.1 (1): Proper inclusion is a strict partial order on any
+collection of sets. -/
+#check (inferInstance : IsStrictOrder 𝒜 (· < ·))
+
+namespace EuclideanPlane.CircularRegion
+
+/-- Example 11.1: The origin-centered circular regions form a maximal chain under proper
+inclusion. -/
+theorem originCentered_isMaxChain : IsMaxChain (· < ·) originCentered := by
+  -- Apply the common radius criterion using the origin-centered representative of each radius.
+  refine isMaxChain_of_radiusOrder originCentered ?_ ?_ ?_
+  · intro U V hU hV
+    exact originCentered_lt_iff_radius_lt hU hV
+  · intro U V hU hV hradius
+    apply eq_of_center_eq_radius_eq
+    · rw [(mem_originCentered U).mp hU, (mem_originCentered V).mp hV]
+    · exact hradius
+  · intro U
+    let V : CircularRegion :=
+      { center := 0
+        radius := U.radius
+        radius_pos := U.radius_pos }
+    refine ⟨V, ?_, rfl⟩
+    exact rfl
+
+/-- Example 11.1: The circular regions tangent from the right to the `y`-axis at the origin form
+a maximal chain under proper inclusion. -/
+theorem rightTangent_isMaxChain : IsMaxChain (· < ·) rightTangent := by
+  -- Apply the common radius criterion using the tangent representative of each radius.
+  refine isMaxChain_of_radiusOrder rightTangent ?_ ?_ ?_
+  · intro U V hU hV
+    exact rightTangent_lt_iff_radius_lt hU hV
+  · intro U V hU hV hradius
+    apply eq_of_center_eq_radius_eq
+    · rw [(mem_rightTangent U).mp hU, (mem_rightTangent V).mp hV, hradius]
+    · exact hradius
+  · intro U
+    let V : CircularRegion :=
+      { center := EuclideanSpace.single 0 U.radius
+        radius := U.radius
+        radius_pos := U.radius_pos }
+    refine ⟨V, ?_, rfl⟩
+    exact rfl
+
+end EuclideanPlane.CircularRegion

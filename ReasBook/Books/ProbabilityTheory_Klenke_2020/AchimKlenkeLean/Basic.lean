@@ -1,1 +1,0 @@
-def probabilityTheoryHello := "world"

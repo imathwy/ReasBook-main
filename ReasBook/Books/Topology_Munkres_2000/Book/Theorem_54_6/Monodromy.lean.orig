@@ -1,0 +1,66 @@
+module
+
+public import Book.Theorem_54_4
+public import Mathlib.GroupTheory.Coset.Defs
+
+public section
+
+universe u v
+
+namespace IsCoveringMap
+
+variable {E : Type u} {B : Type v} [TopologicalSpace E] [TopologicalSpace B]
+variable {p : E → B} (hp : IsCoveringMap p) {e₀ : E} {b₀ : B}
+
+/-- The image in `π₁(B, b₀)` of the fundamental-group homomorphism induced by a covering map. -/
+noncomputable def fundamentalGroupMapRange (he₀ : p e₀ = b₀) : Subgroup (FundamentalGroup B b₀) :=
+  (FundamentalGroup.mapOfEq ⟨p, hp.continuous⟩ he₀).range
+
+/-- The point `e₀`, regarded as an element of the fiber over `b₀`. -/
+def basepointInFiber (p : E → B) (he₀ : p e₀ = b₀) : p ⁻¹' {b₀} :=
+  ⟨e₀, he₀⟩
+
+/-- A covering map induces an injective homomorphism on fundamental groups. -/
+theorem fundamentalGroupMap_injective (he₀ : p e₀ = b₀) :
+    Function.Injective (FundamentalGroup.mapOfEq ⟨p, hp.continuous⟩ he₀) := sorry
+
+/-- Monodromy at the selected fiber point is constant on right cosets of the induced subgroup. -/
+theorem monodromy_eq_of_rightRel (he₀ : p e₀ = b₀) {γ δ : FundamentalGroup B b₀}
+    (hγδ : QuotientGroup.rightRel (hp.fundamentalGroupMapRange he₀) γ δ) :
+    hp.monodromy γ (basepointInFiber p he₀) =
+      hp.monodromy δ (basepointInFiber p he₀) := sorry
+
+/-- The endpoint map from right cosets of the induced subgroup to the covering fiber. -/
+noncomputable def monodromyRightCosetMap (he₀ : p e₀ = b₀) :
+    Quotient (QuotientGroup.rightRel (hp.fundamentalGroupMapRange he₀)) → p ⁻¹' {b₀} :=
+  Quotient.lift (fun γ ↦ hp.monodromy γ (basepointInFiber p he₀))
+    (fun _ _ h ↦ hp.monodromy_eq_of_rightRel he₀ h)
+
+/-- The right-coset endpoint map evaluates representatives by monodromy. -/
+theorem monodromyRightCosetMap_mk (he₀ : p e₀ = b₀) (γ : FundamentalGroup B b₀) :
+    hp.monodromyRightCosetMap he₀ (Quotient.mk'' γ) =
+      hp.monodromy γ (basepointInFiber p he₀) := sorry
+
+/-- The endpoint map from right cosets of the induced subgroup is injective. -/
+theorem monodromyRightCosetMap_injective (he₀ : p e₀ = b₀) :
+    Function.Injective (hp.monodromyRightCosetMap he₀) := sorry
+
+/-- For a path-connected covering space, right cosets of the induced subgroup correspond
+bijectively to the covering fiber. -/
+theorem monodromyRightCosetMap_bijective (he₀ : p e₀ = b₀) [PathConnectedSpace E] :
+    Function.Bijective (hp.monodromyRightCosetMap he₀) := sorry
+
+/-- Membership in the induced subgroup is equivalent to fixing the selected fiber point under
+monodromy. -/
+theorem mem_fundamentalGroupMapRange_iff_monodromy (he₀ : p e₀ = b₀)
+    (γ : FundamentalGroup B b₀) :
+    γ ∈ hp.fundamentalGroupMapRange he₀ ↔
+      hp.monodromy γ (basepointInFiber p he₀) = basepointInFiber p he₀ := sorry
+
+/-- A based loop class belongs to the induced subgroup exactly when its canonical lift from
+`e₀` ends again at `e₀`. -/
+theorem loopClass_mem_range_iff_liftPath_one (he₀ : p e₀ = b₀) (f : Path b₀ b₀) :
+    FundamentalGroup.fromPath (.mk f) ∈ hp.fundamentalGroupMapRange he₀ ↔
+      hp.liftPath f e₀ (f.source.trans he₀.symm) 1 = e₀ := sorry
+
+end IsCoveringMap

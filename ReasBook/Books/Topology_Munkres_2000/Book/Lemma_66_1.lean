@@ -1,0 +1,409 @@
+module
+
+public import Topology_Munkres_2000.Book.Definition_66_1
+public import Topology_Munkres_2000.Book.Definition_66_2.FreeHomotopy
+public import Mathlib.Topology.Connected.Basic
+public import Mathlib.Topology.Connected.LocallyPathConnected
+public import Mathlib.Analysis.LocallyConvex.WithSeminorms
+
+public section
+
+open Set unitInterval
+
+namespace PlaneLoop
+
+/-- Reversing a loop preserves the set of points it avoids. -/
+theorem symm_not_mem_range {x : ℂ} (f : Path x x) (a : ℂ)
+    (h_avoid : a ∉ Set.range f) :
+    a ∉ Set.range f.symm := by
+  rw [Path.symm_range]
+  exact h_avoid
+
+/-- If `b` lies in the component of the complement of a loop through `a`, then `a` is outside
+the loop. -/
+theorem left_not_mem_range_of_mem_connectedComponentIn {x : ℂ} (f : Path x x) (a b : ℂ)
+    (hab : b ∈ connectedComponentIn (Set.range f)ᶜ a) :
+    a ∉ Set.range f :=
+  connectedComponentIn_nonempty_iff.mp ⟨b, hab⟩
+
+/-- If `b` lies in the component of the complement of a loop through `a`, then `b` is outside
+the loop. -/
+theorem right_not_mem_range_of_mem_connectedComponentIn {x : ℂ} (f : Path x x) (a b : ℂ)
+    (hab : b ∈ connectedComponentIn (Set.range f)ᶜ a) :
+    b ∉ Set.range f :=
+  connectedComponentIn_subset (Set.range f)ᶜ a hab
+
+/-- Helper for Lemma 66.1: directions of a continuous map avoiding a point vary continuously. -/
+lemma continuous_direction_comp {Y : Type*} [TopologicalSpace Y] (g : C(Y, ℂ)) (a : ℂ)
+    (h : ∀ y, g y ≠ a) :
+    Continuous fun y ↦ direction (g y) a (h y) := by
+  -- Continuity follows from continuity of subtraction, norm, and division away from zero.
+  apply Continuous.subtype_mk
+  have quotient_continuous : Continuous fun y ↦ (g y - a) / ‖g y - a‖ := by
+    apply Continuous.div₀
+    · fun_prop
+    · fun_prop
+    · intro y
+      simpa using sub_ne_zero.mpr (h y)
+  convert quotient_continuous using 1
+  funext y
+  exact direction_coe (g y) a (h y)
+
+/-- Helper for Lemma 66.1: horizontal displacement of a lifted loop square is constant. -/
+lemma liftedLoopDisplacement_eq (G : C(unitInterval × unitInterval, UnitAddCircle))
+    (L : C(unitInterval × unitInterval, ℝ))
+    (hL : ∀ p, (L p : UnitAddCircle) = G p)
+    (hloop : ∀ t, G (0, t) = G (1, t)) (t : unitInterval) :
+    L (1, t) - L (0, t) = L (1, 0) - L (0, 0) := by
+  -- The displacement is a continuous real lift of a constant additive-circle map.
+  let displacement : unitInterval → ℝ := fun u ↦ L (1, u) - L (0, u)
+  have displacement_continuous : Continuous displacement := by
+    dsimp only [displacement]
+    fun_prop
+  have displacement_projects_const (u v : unitInterval) :
+      (displacement u : UnitAddCircle) = (displacement v : UnitAddCircle) := by
+    rw [show (displacement u : UnitAddCircle) =
+      (L (1, u) : UnitAddCircle) - L (0, u) by
+        exact AddCircle.coe_sub (p := (1 : ℝ)) _ _]
+    rw [show (displacement v : UnitAddCircle) =
+      (L (1, v) : UnitAddCircle) - L (0, v) by
+        exact AddCircle.coe_sub (p := (1 : ℝ)) _ _]
+    rw [hL, hL, hL, hL, ← hloop u, ← hloop v]
+    simp
+  exact (AddCircle.isCoveringMap_coe (1 : ℝ)).const_of_comp displacement_continuous
+    displacement_projects_const t 0
+
+/-- Helper for Lemma 66.1: normalization commutes with reversal of a plane loop. -/
+lemma normalizedLoop_symm_apply {x : ℂ} (f : Path x x) (a : ℂ)
+    (h_avoid : a ∉ Set.range f) (t : unitInterval) :
+    normalizedLoop f.symm a (symm_not_mem_range f a h_avoid) t =
+      normalizedLoop f a h_avoid (unitInterval.symm t) := by
+  -- Both sides are the direction of the same point of the reversed path.
+  simp only [normalizedLoop_apply, Path.symm_apply]
+  rfl
+
+/-- Part (a) of Lemma 66.1: Reversing a plane loop negates its winding number. -/
+theorem windingNumber_reverse {x : ℂ} (f : Path x x) (a : ℂ)
+    (h_avoid : a ∉ Set.range f) :
+    windingNumber f.symm a (symm_not_mem_range f a h_avoid) =
+      -windingNumber f a h_avoid := by
+  -- Reverse an arbitrary lift by precomposing it with interval reflection.
+  let reverseInterval : C(unitInterval, unitInterval) :=
+    ⟨unitInterval.symm, unitInterval.continuous_symm⟩
+  let reversedLift : C(unitInterval, ℝ) :=
+    (angularLift f a h_avoid).comp reverseInterval
+  have reversedLift_lifts (t : unitInterval) :
+      standardCircleCovering (reversedLift t) =
+        normalizedLoop f.symm a (symm_not_mem_range f a h_avoid) t := by
+    rw [normalizedLoop_symm_apply]
+    exact angularLift_lifts f a h_avoid (unitInterval.symm t)
+  have reverse_spec := windingNumber_spec f.symm a
+    (symm_not_mem_range f a h_avoid) reversedLift reversedLift_lifts
+  have original_spec := windingNumber_spec f a h_avoid
+    (angularLift f a h_avoid) (angularLift_lifts f a h_avoid)
+  -- Reflection exchanges the endpoints, so the real displacement changes sign.
+  have cast_eq :
+      (windingNumber f.symm a (symm_not_mem_range f a h_avoid) : ℝ) =
+        -(windingNumber f a h_avoid : ℝ) := by
+    rw [← reverse_spec, ← original_spec]
+    simp [reversedLift, reverseInterval, unitInterval.symm]
+  exact_mod_cast cast_eq
+
+/-- Helper for Lemma 66.1: the square of a free homotopy avoiding `a` is pointwise distinct
+from `a`. -/
+lemma freeHomotopySquare_ne {x x' : ℂ} (f : Path x x) (f' : Path x' x')
+    (a : ℂ) (F : ContinuousMap.FreeHomotopy f.toContinuousMap f'.toContinuousMap)
+    (hF_avoid : a ∉ Set.range F) (p : unitInterval × unitInterval) :
+    F.square p ≠ a := by
+  -- Swapping the coordinates converts a square value into a value of the original homotopy.
+  intro hp
+  apply hF_avoid
+  refine ⟨(p.2, p.1), ?_⟩
+  cases p with
+  | mk s t => exact hp
+
+/-- Helper for Lemma 66.1: the normalized direction square of an avoiding free homotopy is
+continuous. -/
+lemma continuous_angularHomotopySquare {x x' : ℂ} (f : Path x x) (f' : Path x' x')
+    (a : ℂ) (F : ContinuousMap.FreeHomotopy f.toContinuousMap f'.toContinuousMap)
+    (hF_avoid : a ∉ Set.range F) :
+    Continuous fun p ↦
+      direction (F.square p) a (freeHomotopySquare_ne f f' a F hF_avoid p) := by
+  -- Normalize the square continuously in `Circle`.
+  exact continuous_direction_comp F.square a (freeHomotopySquare_ne f f' a F hF_avoid)
+
+/-- Helper for Lemma 66.1: the angular square associated to a free homotopy, with loop
+parameter first and homotopy parameter second. -/
+noncomputable def angularHomotopySquare {x x' : ℂ} (f : Path x x) (f' : Path x' x')
+    (a : ℂ) (F : ContinuousMap.FreeHomotopy f.toContinuousMap f'.toContinuousMap)
+    (hF_avoid : a ∉ Set.range F) : C(unitInterval × unitInterval, Circle) :=
+  ⟨fun p ↦ direction (F.square p) a (freeHomotopySquare_ne f f' a F hF_avoid p),
+    continuous_angularHomotopySquare f f' a F hF_avoid⟩
+
+/-- Helper for Lemma 66.1: pointwise evaluation of the normalized angular homotopy square. -/
+lemma angularHomotopySquare_apply {x x' : ℂ} (f : Path x x) (f' : Path x' x')
+    (a : ℂ) (F : ContinuousMap.FreeHomotopy f.toContinuousMap f'.toContinuousMap)
+    (hF_avoid : a ∉ Set.range F) (p : unitInterval × unitInterval) :
+    angularHomotopySquare f f' a F hF_avoid p =
+      direction (F.square p) a (freeHomotopySquare_ne f f' a F hF_avoid p) := by
+  -- This is the computation rule exposed by the named square owner.
+  rfl
+
+/-- Helper for Lemma 66.1: the source row of the angular square is the source angular loop. -/
+lemma angularHomotopySquare_source {x x' : ℂ} (f : Path x x) (f' : Path x' x')
+    (a : ℂ) (F : ContinuousMap.FreeHomotopy f.toContinuousMap f'.toContinuousMap)
+    (hF_avoid : a ∉ Set.range F) (s : unitInterval) :
+    angularHomotopySquare f f' a F hF_avoid (s, 0) =
+      normalizedLoop f a (F.source_not_mem_range a hF_avoid) s := by
+  -- Evaluate the square at time zero and identify it with the source loop.
+  rw [angularHomotopySquare_apply, normalizedLoop_apply]
+  congr 1
+  exact F.apply_zero s
+
+/-- Helper for Lemma 66.1: the target row of the angular square is the target angular loop. -/
+lemma angularHomotopySquare_target {x x' : ℂ} (f : Path x x) (f' : Path x' x')
+    (a : ℂ) (F : ContinuousMap.FreeHomotopy f.toContinuousMap f'.toContinuousMap)
+    (hF_avoid : a ∉ Set.range F) (s : unitInterval) :
+    angularHomotopySquare f f' a F hF_avoid (s, 1) =
+      normalizedLoop f' a (F.target_not_mem_range a hF_avoid) s := by
+  -- Evaluate the square at time one and identify it with the target loop.
+  rw [angularHomotopySquare_apply, normalizedLoop_apply]
+  congr 1
+  exact F.apply_one s
+
+/-- Helper for Lemma 66.1: every horizontal slice of the angular square is a loop. -/
+lemma angularHomotopySquare_apply_zero_eq_apply_one {x x' : ℂ} (f : Path x x)
+    (f' : Path x' x') (a : ℂ)
+    (F : ContinuousMap.FreeHomotopy f.toContinuousMap f'.toContinuousMap)
+    (hF_avoid : a ∉ Set.range F) (t : unitInterval) :
+    angularHomotopySquare f f' a F hF_avoid (0, t) =
+      angularHomotopySquare f f' a F hF_avoid (1, t) := by
+  -- The free-homotopy loop condition identifies the two loop-parameter boundaries.
+  rw [angularHomotopySquare_apply, angularHomotopySquare_apply]
+  congr 1
+  exact F.apply_zero_eq_apply_one t
+
+/-- Helper for Lemma 66.1: the direction square transported to the additive circle. -/
+noncomputable def additiveAngularHomotopySquare {x x' : ℂ} (f : Path x x) (f' : Path x' x')
+    (a : ℂ) (F : ContinuousMap.FreeHomotopy f.toContinuousMap f'.toContinuousMap)
+    (hF_avoid : a ∉ Set.range F) : C(unitInterval × unitInterval, UnitAddCircle) :=
+  (⟨(AddCircle.homeomorphCircle one_ne_zero).symm,
+    (AddCircle.homeomorphCircle one_ne_zero).symm.continuous⟩ : C(Circle, UnitAddCircle)).comp
+    (angularHomotopySquare f f' a F hF_avoid)
+
+/-- Helper for Lemma 66.1: pointwise evaluation of the additive angular square. -/
+lemma additiveAngularHomotopySquare_apply {x x' : ℂ} (f : Path x x) (f' : Path x' x')
+    (a : ℂ) (F : ContinuousMap.FreeHomotopy f.toContinuousMap f'.toContinuousMap)
+    (hF_avoid : a ∉ Set.range F) (p : unitInterval × unitInterval) :
+    additiveAngularHomotopySquare f f' a F hF_avoid p =
+      (AddCircle.homeomorphCircle one_ne_zero).symm
+        (angularHomotopySquare f f' a F hF_avoid p) := by
+  -- Evaluation of the continuous-map composition is pointwise composition.
+  exact rfl
+
+/-- Part (b) of Lemma 66.1: A free homotopy through loops avoiding `a` preserves winding number. -/
+theorem windingNumber_eq_of_freeHomotopy {x x' : ℂ} (f : Path x x) (f' : Path x' x')
+    (a : ℂ) (F : ContinuousMap.FreeHomotopy f.toContinuousMap f'.toContinuousMap)
+    (hF_avoid : a ∉ Set.range F) :
+    windingNumber f a (F.source_not_mem_range a hF_avoid) =
+      windingNumber f' a (F.target_not_mem_range a hF_avoid) := by
+  -- Route correction: lift the named angular square rather than expanding an anonymous map.
+  let angularSquare := angularHomotopySquare f f' a F hF_avoid
+  let timeFirstSquare := angularSquare.comp ContinuousMap.prodSwap
+  let sourceAngularLift := angularLift f a (F.source_not_mem_range a hF_avoid)
+  have initial_projection (s : unitInterval) :
+      timeFirstSquare (0, s) = standardCircleCovering (sourceAngularLift s) := by
+    rw [show timeFirstSquare (0, s) = angularSquare (s, 0) by rfl]
+    rw [show angularSquare (s, 0) = normalizedLoop f a
+      (F.source_not_mem_range a hF_avoid) s by
+        exact angularHomotopySquare_source f f' a F hF_avoid s]
+    exact (angularLift_lifts f a (F.source_not_mem_range a hF_avoid) s).symm
+  let circleCovering := (AddCircle.isCoveringMap_coe (1 : ℝ)).homeomorph_comp
+    (AddCircle.homeomorphCircle one_ne_zero)
+  let timeFirstLift := circleCovering.liftHomotopy
+    timeFirstSquare sourceAngularLift initial_projection
+  let loopFirstLift := timeFirstLift.comp ContinuousMap.prodSwap
+  have lift_projects (p : unitInterval × unitInterval) :
+      standardCircleCovering (loopFirstLift p) = angularSquare p := by
+    have projection := congr_fun
+      (circleCovering.liftHomotopy_lifts
+        timeFirstSquare sourceAngularLift initial_projection) (p.2, p.1)
+    exact projection
+  let sourceLift : C(unitInterval, ℝ) := loopFirstLift.comp
+    ((ContinuousMap.id unitInterval).prodMk (.const unitInterval 0))
+  let targetLift : C(unitInterval, ℝ) := loopFirstLift.comp
+    ((ContinuousMap.id unitInterval).prodMk (.const unitInterval 1))
+  have sourceLift_projects (s : unitInterval) :
+      standardCircleCovering (sourceLift s) =
+        normalizedLoop f a (F.source_not_mem_range a hF_avoid) s := by
+    rw [show standardCircleCovering (sourceLift s) =
+      standardCircleCovering (loopFirstLift (s, 0)) by rfl]
+    rw [lift_projects]
+    exact angularHomotopySquare_source f f' a F hF_avoid s
+  have targetLift_projects (s : unitInterval) :
+      standardCircleCovering (targetLift s) =
+        normalizedLoop f' a (F.target_not_mem_range a hF_avoid) s := by
+    rw [show standardCircleCovering (targetLift s) =
+      standardCircleCovering (loopFirstLift (s, 1)) by rfl]
+    rw [lift_projects]
+    exact angularHomotopySquare_target f f' a F hF_avoid s
+  let additiveSquare := additiveAngularHomotopySquare f f' a F hF_avoid
+  have additive_lift_projects (p : unitInterval × unitInterval) :
+      (loopFirstLift p : UnitAddCircle) = additiveSquare p := by
+    apply (AddCircle.homeomorphCircle one_ne_zero).injective
+    rw [show AddCircle.homeomorphCircle one_ne_zero (loopFirstLift p : UnitAddCircle) =
+      standardCircleCovering (loopFirstLift p) by rfl]
+    rw [lift_projects]
+    rw [show additiveSquare p =
+      (AddCircle.homeomorphCircle one_ne_zero).symm (angularSquare p) by
+        exact additiveAngularHomotopySquare_apply f f' a F hF_avoid p]
+    exact ((AddCircle.homeomorphCircle one_ne_zero).apply_symm_apply (angularSquare p)).symm
+  have additive_boundary (t : unitInterval) :
+      additiveSquare (0, t) = additiveSquare (1, t) := by
+    rw [show additiveSquare (0, t) =
+      (AddCircle.homeomorphCircle one_ne_zero).symm (angularSquare (0, t)) by
+        exact additiveAngularHomotopySquare_apply f f' a F hF_avoid (0, t)]
+    rw [show additiveSquare (1, t) =
+      (AddCircle.homeomorphCircle one_ne_zero).symm (angularSquare (1, t)) by
+        exact additiveAngularHomotopySquare_apply f f' a F hF_avoid (1, t)]
+    congr 1
+    exact angularHomotopySquare_apply_zero_eq_apply_one f f' a F hF_avoid t
+  have displacement_eq := liftedLoopDisplacement_eq additiveSquare loopFirstLift
+    additive_lift_projects additive_boundary 1
+  have source_spec := windingNumber_spec f a
+    (F.source_not_mem_range a hF_avoid) sourceLift sourceLift_projects
+  have target_spec := windingNumber_spec f' a
+    (F.target_not_mem_range a hF_avoid) targetLift targetLift_projects
+  -- The lifted displacement is constant across homotopy time, so the integer invariants agree.
+  have cast_eq :
+      (windingNumber f a (F.source_not_mem_range a hF_avoid) : ℝ) =
+        (windingNumber f' a (F.target_not_mem_range a hF_avoid) : ℝ) := by
+    rw [← source_spec, ← target_spec]
+    exact displacement_eq.symm
+  exact_mod_cast cast_eq
+
+/-- Helper for Lemma 66.1: translation of a plane loop by a fixed complex number. -/
+noncomputable def translateLoop {x : ℂ} (f : Path x x) (c : ℂ) : Path (x - c) (x - c) :=
+  f.map (continuous_id.sub continuous_const)
+
+/-- Helper for Lemma 66.1: pointwise evaluation of a translated loop. -/
+lemma translateLoop_apply {x : ℂ} (f : Path x x) (c : ℂ) (s : unitInterval) :
+    translateLoop f c s = f s - c := by
+  -- Translation is the pointwise map used to construct the path.
+  rfl
+
+/-- Helper for Lemma 66.1: normalizing a translated loop about zero agrees with normalizing the
+original loop about the translation point. -/
+lemma normalizedLoop_translateLoop_zero {x : ℂ} (f : Path x x) (c : ℂ)
+    (h_avoid : c ∉ Set.range f) (h_zero : 0 ∉ Set.range (translateLoop f c))
+    (s : unitInterval) :
+    normalizedLoop (translateLoop f c) 0 h_zero s = normalizedLoop f c h_avoid s := by
+  -- Both normalized directions have the same complex representative.
+  rw [normalizedLoop_apply, normalizedLoop_apply]
+  apply Subtype.ext
+  rw [direction_coe, direction_coe, translateLoop_apply, sub_zero]
+
+/-- Helper for Lemma 66.1: translating a loop and the distinguished point together preserves
+winding number. -/
+lemma windingNumber_translateLoop_zero {x : ℂ} (f : Path x x) (c : ℂ)
+    (h_avoid : c ∉ Set.range f) (h_zero : 0 ∉ Set.range (translateLoop f c)) :
+    windingNumber (translateLoop f c) 0 h_zero = windingNumber f c h_avoid := by
+  -- Use the canonical lift of the translated loop as a common lift of both normalized loops.
+  let translatedLift := angularLift (translateLoop f c) 0 h_zero
+  have translatedLift_projects (s : unitInterval) :
+      standardCircleCovering (translatedLift s) =
+        normalizedLoop (translateLoop f c) 0 h_zero s :=
+    angularLift_lifts (translateLoop f c) 0 h_zero s
+  have originalLift_projects (s : unitInterval) :
+      standardCircleCovering (translatedLift s) = normalizedLoop f c h_avoid s := by
+    rw [translatedLift_projects]
+    exact normalizedLoop_translateLoop_zero f c h_avoid h_zero s
+  have translated_spec := windingNumber_spec (translateLoop f c) 0 h_zero translatedLift
+    translatedLift_projects
+  have original_spec := windingNumber_spec f c h_avoid translatedLift originalLift_projects
+  have cast_eq : (windingNumber (translateLoop f c) 0 h_zero : ℝ) =
+      (windingNumber f c h_avoid : ℝ) := by
+    rw [← translated_spec, ← original_spec]
+  exact_mod_cast cast_eq
+
+/-- Lemma 66.1 (c): Winding number is constant on a component of a loop complement. -/
+theorem windingNumber_eq_of_mem_connectedComponentIn {x : ℂ} (f : Path x x) (a b : ℂ)
+    (hab : b ∈ connectedComponentIn ((Set.range f)ᶜ) a) :
+    windingNumber f a (left_not_mem_range_of_mem_connectedComponentIn f a b hab) =
+      windingNumber f b (right_not_mem_range_of_mem_connectedComponentIn f a b hab) := by
+  classical
+  -- The connected component is open and connected, hence path connected in the plane.
+  have ha : a ∈ (Set.range f)ᶜ :=
+    left_not_mem_range_of_mem_connectedComponentIn f a b hab
+  have complement_open : IsOpen ((Set.range f)ᶜ) :=
+    (isCompact_range f.continuous).isClosed.isOpen_compl
+  have component_open : IsOpen (connectedComponentIn ((Set.range f)ᶜ) a) :=
+    complement_open.connectedComponentIn
+  have component_connected : IsConnected (connectedComponentIn ((Set.range f)ᶜ) a) :=
+    isConnected_connectedComponentIn_iff.mpr ha
+  have component_path_connected : IsPathConnected (connectedComponentIn ((Set.range f)ᶜ) a) :=
+    component_open.isConnected_iff_isPathConnected.mp component_connected
+  have joined : JoinedIn (connectedComponentIn ((Set.range f)ᶜ) a) a b :=
+    component_path_connected.joinedIn a (mem_connectedComponentIn ha) b hab
+  let α : Path a b := joined.somePath
+  have alpha_avoids_loop (t : unitInterval) : α t ∉ Set.range f := by
+    exact connectedComponentIn_subset ((Set.range f)ᶜ) a (joined.somePath_mem t)
+  have translated_a_avoids_zero : 0 ∉ Set.range (translateLoop f a) := by
+    rintro ⟨s, hs⟩
+    have : f s = a := sub_eq_zero.mp hs
+    exact ha ⟨s, this⟩
+  have translated_b_avoids_zero : 0 ∉ Set.range (translateLoop f b) := by
+    rintro ⟨s, hs⟩
+    have : f s = b := sub_eq_zero.mp hs
+    exact (right_not_mem_range_of_mem_connectedComponentIn f a b hab) ⟨s, this⟩
+  let translatedSquare : C(unitInterval × unitInterval, ℂ) :=
+    ⟨fun p ↦ f p.1 - α p.2, by fun_prop⟩
+  have translatedSquare_source (s : unitInterval) :
+      translatedSquare (s, 0) = translateLoop f a s := by
+    rw [show translatedSquare (s, 0) = f s - α 0 by rfl]
+    rw [show α 0 = a by exact Path.source α, translateLoop_apply]
+  have translatedSquare_target (s : unitInterval) :
+      translatedSquare (s, 1) = translateLoop f b s := by
+    rw [show translatedSquare (s, 1) = f s - α 1 by rfl]
+    rw [show α 1 = b by exact Path.target α, translateLoop_apply]
+  have translatedSquare_loop (t : unitInterval) :
+      translatedSquare (0, t) = translatedSquare (1, t) := by
+    rw [show translatedSquare (0, t) = f 0 - α t by rfl]
+    rw [show translatedSquare (1, t) = f 1 - α t by rfl]
+    rw [Path.source, Path.target]
+  have translatedSquare_isLoop (t : unitInterval) :
+      ContinuousMap.IsLoop
+        ((translatedSquare.comp ContinuousMap.prodSwap).curry t) := by
+    rw [ContinuousMap.isLoop_iff]
+    exact translatedSquare_loop t
+  let translatedHomotopy : ContinuousMap.FreeHomotopy
+      (translateLoop f a).toContinuousMap (translateLoop f b).toContinuousMap :=
+    { toHomotopy :=
+        { toContinuousMap := translatedSquare.comp ContinuousMap.prodSwap
+          map_zero_left := translatedSquare_source
+          map_one_left := translatedSquare_target }
+      prop' := translatedSquare_isLoop }
+  have translatedHomotopy_avoids_zero : 0 ∉ Set.range translatedHomotopy := by
+    rintro ⟨p, hp⟩
+    have zero_eq : f p.2 - α p.1 = 0 := by
+      exact hp
+    have alpha_eq : α p.1 = f p.2 := by
+      exact (sub_eq_zero.mp zero_eq).symm
+    exact alpha_avoids_loop p.1 ⟨p.2, alpha_eq.symm⟩
+  have translated_winding_eq := windingNumber_eq_of_freeHomotopy
+    (translateLoop f a) (translateLoop f b) 0 translatedHomotopy translatedHomotopy_avoids_zero
+  -- Rewrite the translated endpoint invariants back to winding about `a` and `b`.
+  calc
+    windingNumber f a (left_not_mem_range_of_mem_connectedComponentIn f a b hab) =
+        windingNumber (translateLoop f a) 0 translated_a_avoids_zero := by
+      exact (windingNumber_translateLoop_zero f a
+        (left_not_mem_range_of_mem_connectedComponentIn f a b hab)
+        translated_a_avoids_zero).symm
+    _ = windingNumber (translateLoop f b) 0 translated_b_avoids_zero := by
+      exact translated_winding_eq
+    _ = windingNumber f b (right_not_mem_range_of_mem_connectedComponentIn f a b hab) := by
+      exact windingNumber_translateLoop_zero f b
+        (right_not_mem_range_of_mem_connectedComponentIn f a b hab)
+        translated_b_avoids_zero
+
+end PlaneLoop

@@ -1,0 +1,21 @@
+name = "GATE"
+version = "0.1.0"
+keywords = ["math"]
+defaultTargets = ["Topology_Munkres_2000"]
+
+[leanOptions]
+pp.unicode.fun = true # pretty-prints `fun a ↦ b`
+relaxedAutoImplicit = false
+weak.linter.mathlibStandardSet = true
+maxSynthPendingDepth = 3
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.32.0"
+
+[[lean_lib]]
+name = "Topology_Munkres_2000"
+srcDir = "Books"
+roots = ["Topology_Munkres_2000.Book"]
+globs = ["Topology_Munkres_2000.Book", "Topology_Munkres_2000.Book.+"]

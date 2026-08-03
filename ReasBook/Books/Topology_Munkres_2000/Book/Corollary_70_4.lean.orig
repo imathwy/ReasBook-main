@@ -1,0 +1,83 @@
+module
+
+public import Book.Theorem_70_2
+public import Mathlib.AlgebraicTopology.FundamentalGroupoid.SimplyConnected
+public import Mathlib.GroupTheory.QuotientGroup.Basic
+
+public section
+
+universe u
+
+/-- The least normal subgroup of `π₁(U, x₀)` containing the image of the inclusion
+homomorphism from `π₁(U ∩ V, x₀)`. -/
+noncomputable abbrev vanKampenLeftNormalClosure {X : Type u} [TopologicalSpace X]
+    (U V : Set X) (x₀ : X) (hx₀ : x₀ ∈ U ∩ V) :
+    Subgroup (FundamentalGroup U ⟨x₀, hx₀.1⟩) :=
+  Subgroup.normalClosure (Set.range
+    (FundamentalGroup.vanKampenLeftMap U V x₀ hx₀))
+
+/-- Under the Seifert–van Kampen hypotheses and simple connectedness of `V`, inclusion
+of `U` into `X` induces a surjection on fundamental groups. -/
+theorem vanKampenLeftInclusion_surjective {X : Type u} [TopologicalSpace X]
+    (U V : Set X) (x₀ : X) (hx₀ : x₀ ∈ U ∩ V)
+    (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ)
+    [PathConnectedSpace U] [PathConnectedSpace (U ∩ V : Set X)]
+    [SimplyConnectedSpace V] :
+    Function.Surjective (FundamentalGroup.map
+      (⟨Subtype.val, continuous_subtype_val⟩ : C(U, X)) ⟨x₀, hx₀.1⟩) := sorry
+
+/-- Under the Seifert–van Kampen hypotheses and simple connectedness of `V`, the kernel
+of the inclusion-induced map from `π₁(U, x₀)` is the normal closure of the image from
+`π₁(U ∩ V, x₀)`. -/
+theorem vanKampenLeftInclusion_ker {X : Type u} [TopologicalSpace X]
+    (U V : Set X) (x₀ : X) (hx₀ : x₀ ∈ U ∩ V)
+    (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ)
+    [PathConnectedSpace U] [PathConnectedSpace (U ∩ V : Set X)]
+    [SimplyConnectedSpace V] :
+    (FundamentalGroup.map
+      (⟨Subtype.val, continuous_subtype_val⟩ : C(U, X)) ⟨x₀, hx₀.1⟩).ker =
+      vanKampenLeftNormalClosure U V x₀ hx₀ := sorry
+
+/-- The homomorphism induced by inclusion from the quotient of `π₁(U, x₀)` by the
+normal closure of the image from `π₁(U ∩ V, x₀)`. -/
+noncomputable def vanKampenLeftQuotientInclusion
+    {X : Type u} [TopologicalSpace X]
+    (U V : Set X) (x₀ : X) (hx₀ : x₀ ∈ U ∩ V)
+    (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ)
+    [PathConnectedSpace U] [PathConnectedSpace (U ∩ V : Set X)]
+    [SimplyConnectedSpace V] :
+    FundamentalGroup U ⟨x₀, hx₀.1⟩ ⧸ vanKampenLeftNormalClosure U V x₀ hx₀ →*
+      FundamentalGroup X x₀ :=
+  QuotientGroup.lift (vanKampenLeftNormalClosure U V x₀ hx₀)
+    (FundamentalGroup.map
+      (⟨Subtype.val, continuous_subtype_val⟩ : C(U, X)) ⟨x₀, hx₀.1⟩)
+    (vanKampenLeftInclusion_ker U V x₀ hx₀ hU hV hcover ▸ le_rfl)
+
+/-- Corollary 70.4: Under the Seifert–van Kampen hypotheses, if `V` is simply
+connected, then `π₁(X, x₀)` is multiplicatively equivalent to `π₁(U, x₀)` modulo the
+least normal subgroup containing the image of `π₁(U ∩ V, x₀) → π₁(U, x₀)`. -/
+noncomputable def vanKampenLeftQuotientEquiv
+    {X : Type u} [TopologicalSpace X]
+    (U V : Set X) (x₀ : X) (hx₀ : x₀ ∈ U ∩ V)
+    (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ)
+    [PathConnectedSpace U] [PathConnectedSpace (U ∩ V : Set X)]
+    [SimplyConnectedSpace V] :
+    FundamentalGroup U ⟨x₀, hx₀.1⟩ ⧸ vanKampenLeftNormalClosure U V x₀ hx₀ ≃*
+      FundamentalGroup X x₀ :=
+  (QuotientGroup.quotientMulEquivOfEq
+    (vanKampenLeftInclusion_ker U V x₀ hx₀ hU hV hcover).symm).trans
+      (QuotientGroup.quotientKerEquivOfSurjective
+        (FundamentalGroup.map
+          (⟨Subtype.val, continuous_subtype_val⟩ : C(U, X)) ⟨x₀, hx₀.1⟩)
+        (vanKampenLeftInclusion_surjective U V x₀ hx₀ hU hV hcover))
+
+/-- The equivalence of Corollary 70.4 has the quotient lift induced by inclusion of
+`U` into `X` as its underlying homomorphism. -/
+theorem vanKampenLeftQuotientEquiv_toMonoidHom
+    {X : Type u} [TopologicalSpace X]
+    (U V : Set X) (x₀ : X) (hx₀ : x₀ ∈ U ∩ V)
+    (hU : IsOpen U) (hV : IsOpen V) (hcover : U ∪ V = Set.univ)
+    [PathConnectedSpace U] [PathConnectedSpace (U ∩ V : Set X)]
+    [SimplyConnectedSpace V] :
+    (vanKampenLeftQuotientEquiv U V x₀ hx₀ hU hV hcover).toMonoidHom =
+      vanKampenLeftQuotientInclusion U V x₀ hx₀ hU hV hcover := sorry

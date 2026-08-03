@@ -1,0 +1,54 @@
+module
+
+public import Book.Definition_71_2.FiniteWedge
+public import Mathlib.Topology.Coherent
+
+public section
+
+universe u v
+
+namespace Topology
+
+/-- A topological space is a wedge of an indexed family of circles at a common point. -/
+class IsWedgeOfCircles {J : Type v} {X : Type u} [TopologicalSpace X]
+    (S : J → Set X) (p : X) : Prop extends IsCircleUnion S p where
+  /-- The ambient topology is coherent with the indexed circles. -/
+  isCoherentWith : Topology.IsCoherentWith (Set.range S)
+
+namespace IsWedgeOfCircles
+
+variable {J : Type v} {X : Type u} [TopologicalSpace X] {S : J → Set X} {p : X}
+
+/-- The wedge-of-circles property is equivalent to the source's covering, circle,
+intersection, and coherence conditions. -/
+theorem iff :
+    IsWedgeOfCircles S p ↔
+      (⋃ α, S α = Set.univ) ∧ (∀ α, Nonempty (S α ≃ₜ Circle)) ∧
+        Pairwise (fun α β ↦ S α ∩ S β = {p}) ∧ IsCoherentWith (Set.range S) :=
+  ⟨fun h ↦ ⟨h.covers, h.homeomorphic_circle, h.inter_eq, h.isCoherentWith⟩,
+    fun h ↦ {
+      toIsCircleUnion := ⟨h.1, h.2.1, h.2.2.1⟩
+      isCoherentWith := h.2.2.2 }⟩
+
+/-- The source's four defining conditions construct the wedge-of-circles property. -/
+theorem of
+    (h_cover : ⋃ α, S α = Set.univ)
+    (h_circle : ∀ α, Nonempty (S α ≃ₜ Circle))
+    (h_inter : Pairwise (fun α β ↦ S α ∩ S β = {p}))
+    (h_coherent : IsCoherentWith (Set.range S)) :
+    IsWedgeOfCircles S p :=
+  { toIsCircleUnion := ⟨h_cover, h_circle, h_inter⟩
+    isCoherentWith := h_coherent }
+
+/-- Every finite Hausdorff wedge of circles is a wedge of circles with coherent topology. -/
+instance {J : Type v} [Fintype J] {X : Type u} [TopologicalSpace X]
+    (S : J → Set X) (p : X) [h : IsFiniteWedgeOfCircles S p] : IsWedgeOfCircles S p where
+  toIsCircleUnion := h.toIsCircleUnion
+  isCoherentWith := IsFiniteWedgeOfCircles.isCoherentWith h
+
+/-- The common point of a wedge of circles belongs to every indexed circle. -/
+theorem mem_basepoint [IsWedgeOfCircles S p] (α : J) : p ∈ S α := sorry
+
+end IsWedgeOfCircles
+
+end Topology

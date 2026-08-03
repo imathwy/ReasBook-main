@@ -1,0 +1,234 @@
+module
+
+public import Book.Proposition_76_2.Pasting
+public import Book.Definition_76_2.Translation
+
+public section
+
+universe u v w
+
+open LabellingScheme
+open LabellingScheme.PolygonalRegions
+open LabellingScheme.PolygonalRegions.Pasting
+open scoped Pointwise
+
+namespace LabellingScheme.PolygonalRegions.CyclicRegion
+
+/-- Helper for Proposition 76.2: ambient translation gives a homeomorphism from a
+presented component to the translated polygonal region. -/
+noncomputable def translatedHomeomorph {α : Type u} {scheme : LabellingScheme α}
+    {regions : PolygonalRegions.{u, v} scheme} {region : Occurrence scheme}
+    (presentation : CyclicRegion regions region) (offset : EuclideanSpace ℝ (Fin 2)) :
+    RegionHomeomorph regions region (presentation.polygon.translate offset).region :=
+  @Homeomorph.trans _ _ _ (regions.topology region) inferInstance inferInstance
+    presentation.homeomorph
+    ((Homeomorph.addRight offset).image presentation.polygon.region |>.trans
+      (Homeomorph.setCongr (presentation.polygon.translate_region offset).symm))
+
+/-- Helper for Proposition 76.2: translated vertices retain the original affine
+edge parametrization after applying ambient translation. -/
+theorem translatedEdgeCompatibility {α : Type u} {scheme : LabellingScheme α}
+    {regions : PolygonalRegions.{u, v} scheme} {region : Occurrence scheme}
+    (presentation : CyclicRegion regions region) (offset : EuclideanSpace ℝ (Fin 2))
+    (edge : Fin region.1.1.length) (t : unitInterval) :
+    ((presentation.translatedHomeomorph offset (regions.edge region edge t) :
+        (presentation.polygon.translate offset).region) : EuclideanSpace ℝ (Fin 2)) =
+      AffineMap.lineMap ((presentation.polygon.translate offset).toPolygon.vertices edge)
+        ((presentation.polygon.translate offset).toPolygon.vertices
+          (finRotate region.1.1.length edge)) (t : ℝ) := by
+  -- Move to ambient points, then use the original edge compatibility and translated vertices.
+  change Homeomorph.addRight offset
+    (presentation.homeomorph (regions.edge region edge t) : EuclideanSpace ℝ (Fin 2)) = _
+  rw [presentation.edgeCompatibility, CyclicPolygon.translate_apply,
+    CyclicPolygon.translate_apply]
+  simp only [AffineMap.lineMap_apply, vsub_eq_sub, vadd_eq_add]
+  rw [Homeomorph.coe_addRight]
+  module
+
+/-- Helper for Proposition 76.2: translating a cyclic presentation preserves its
+edge-compatible presentation of the same abstract component. -/
+noncomputable def translate {α : Type u} {scheme : LabellingScheme α}
+    {regions : PolygonalRegions.{u, v} scheme} {region : Occurrence scheme}
+    (presentation : CyclicRegion regions region) (offset : EuclideanSpace ℝ (Fin 2)) :
+    CyclicRegion regions region :=
+  ⟨presentation.polygon.translate offset, presentation.translatedHomeomorph offset,
+    presentation.translatedEdgeCompatibility offset⟩
+
+/-- Helper for Proposition 76.2: the translated presentation stores the translated polygon. -/
+theorem translate_polygon {α : Type u} {scheme : LabellingScheme α}
+    {regions : PolygonalRegions.{u, v} scheme} {region : Occurrence scheme}
+    (presentation : CyclicRegion regions region) (offset : EuclideanSpace ℝ (Fin 2)) :
+    (presentation.translate offset).polygon = presentation.polygon.translate offset := by
+  rfl
+
+/-- Helper for Proposition 76.2: the image under right translation is the pointwise
+left translate, using commutativity of the ambient Euclidean additive group. -/
+theorem image_addRight_eq_vadd (offset : EuclideanSpace ℝ (Fin 2))
+    (s : Set (EuclideanSpace ℝ (Fin 2))) :
+    Homeomorph.addRight offset '' s = offset +ᵥ s := by
+  ext point
+  simp only [Homeomorph.coe_addRight, Set.mem_image, Set.mem_vadd_set]
+  constructor
+  · rintro ⟨x, hx, rfl⟩
+    exact ⟨x, hx, by simpa only [vadd_eq_add] using add_comm offset x⟩
+  · rintro ⟨x, hx, rfl⟩
+    exact ⟨x, hx, by simpa only [vadd_eq_add] using add_comm x offset⟩
+/-- Helper for Proposition 76.2: compact cyclic regions can be separated by translating
+the left region, after which any chosen directed edges define an edge gluing. -/
+theorem existsTranslatedEdgeGluing {α : Type u} {scheme : LabellingScheme α}
+    {regions : PolygonalRegions.{u, v} scheme}
+    {leftOccurrence rightOccurrence : Occurrence scheme}
+    (left : CyclicRegion regions leftOccurrence) (right : CyclicRegion regions rightOccurrence)
+    (leftIndex : Fin leftOccurrence.1.1.length) (rightIndex : Fin rightOccurrence.1.1.length)
+    (leftForward rightForward : Bool) :
+    ∃ offset, Nonempty (CyclicPolygon.EdgeGluing (left.translate offset).polygon right.polygon) := by
+  -- Both filled polygonal regions are compact convex hulls of finite vertex sets.
+  have hleftCompact : IsCompact left.polygon.region := by
+    rw [left.polygon.region_eq_convexHull]
+    exact Set.finite_range left.polygon.toPolygon.vertices |>.isCompact_convexHull ℝ
+  have hrightCompact : IsCompact right.polygon.region := by
+    rw [right.polygon.region_eq_convexHull]
+    exact Set.finite_range right.polygon.toPolygon.vertices |>.isCompact_convexHull ℝ
+  -- Translate the left polygon away from the fixed right polygon.
+  obtain ⟨offset, hdisjoint⟩ := exists_disjoint_vadd_of_isCompact hrightCompact hleftCompact
+  refine ⟨offset, ⟨⟨⟨leftIndex, leftForward⟩, ⟨rightIndex, rightForward⟩, ?_⟩⟩⟩
+  rw [translate_polygon, CyclicPolygon.translate_region]
+  simpa only [Homeomorph.coe_addRight, vadd_eq_add, add_comm] using hdisjoint.symm
+
+end LabellingScheme.PolygonalRegions.CyclicRegion
+
+
+namespace LabellingScheme.PolygonalRegions.PasteResult
+
+/-- Helper for Proposition 76.2: a completed first paste transports any realization
+of the split family to a realization of the merged family. -/
+theorem existsRealization {α : Type u} [DecidableEq α]
+    {splitScheme mergedScheme : LabellingScheme α}
+    {splitRegions : PolygonalRegions.{u, v} splitScheme} {c : α}
+    {mergedFirst : Occurrence mergedScheme}
+    {ι : Type u} {splitRest : ι → Occurrence splitScheme}
+    {mergedRest : ι → Occurrence mergedScheme}
+    (result : PasteResult splitRegions c mergedFirst splitRest mergedRest)
+    {X : Type w} [TopologicalSpace X] (q : splitRegions.Source → X)
+    (hsplit : splitRegions.Realizes q) :
+    ∃ mergedQuotient : Source result.pasting.mergedRegions → X,
+      Realizes result.pasting.mergedRegions mergedQuotient := by
+  -- The original realization is constant on every fibre of the first paste.
+  have hfactor : Function.FactorsThrough q result.firstPaste := by
+    intro x y hxy
+    apply (hsplit.fibers x y).mpr
+    apply (identified_iff_remainingIdentified_pullback splitRegions c result.firstPaste
+      result.pasting.pastesLabel x y).mpr
+    rw [hxy]
+  let splitMap : C(splitRegions.Source, X) :=
+    ⟨q, hsplit.isQuotientMap.continuous⟩
+  let firstPasteMap : C(splitRegions.Source, result.Intermediate) :=
+    ⟨result.firstPaste, result.pasting.pastesLabel.isQuotientMap.continuous⟩
+  have hfirstPasteMap : Topology.IsQuotientMap firstPasteMap :=
+    result.pasting.pastesLabel.isQuotientMap
+  let remainingPastes : C(result.Intermediate, X) :=
+    hfirstPasteMap.lift splitMap (fun x y hxy ↦ hfactor hxy)
+  -- The quotient lift has the original realization as its composite with `firstPaste`.
+  have htriangle : remainingPastes ∘ result.firstPaste = q := by
+    funext x
+    exact DFunLike.congr_fun
+      (hfirstPasteMap.lift_comp splitMap
+        (fun a d had ↦ hfactor had)) x
+  refine ⟨remainingPastes ∘ result.pasting.sourceHomeomorph.symm, ?_⟩
+  -- Apply the generic realization transport theorem after rewriting the lift triangle.
+  apply result.pasting.realizes remainingPastes
+  simpa only [htriangle] using hsplit
+
+/-- Helper for Proposition 76.2: cyclic presentations of the distinguished merged
+component and every retained component make the whole merged family polygonal. -/
+theorem isPolygonal_cons {α : Type u} [DecidableEq α]
+    {splitScheme : LabellingScheme α} {splitRegions : PolygonalRegions.{u, v} splitScheme}
+    {c : α} (word : PolygonWord α) (rest : LabellingScheme α)
+    {splitRest : Occurrence rest → Occurrence splitScheme}
+    (result : PasteResult splitRegions c (mergedFirstOccurrence word rest) splitRest
+      (mergedRestOccurrence word rest)) :
+    IsPolygonal result.pasting.mergedRegions := by
+  classical
+  -- Decompose an arbitrary occurrence into the merged first component or the remainder.
+  rw [isPolygonal_iff]
+  intro region
+  cases hposition : consOccurrenceEquiv word rest region with
+  | none =>
+      have hregion : region = mergedFirstOccurrence word rest := by
+        apply (consOccurrenceEquiv word rest).injective
+        simpa only [mergedFirstOccurrence, Equiv.apply_symm_apply] using hposition
+      subst region
+      exact ⟨result.mergedFirstRegion⟩
+  | some retainedRegion =>
+      have hregion : region = mergedRestOccurrence word rest retainedRegion := by
+        apply (consOccurrenceEquiv word rest).injective
+        simpa only [mergedRestOccurrence, Equiv.apply_symm_apply] using hposition
+      subst region
+      exact ⟨result.retainedCyclicRegion retainedRegion⟩
+
+/-- Helper for Proposition 76.2: polygonality of a completed paste and the generic
+quotient transport together give the two conclusions required by the proposition. -/
+theorem existsPolygonalRealization {α : Type u} [DecidableEq α]
+    {splitScheme mergedScheme : LabellingScheme α}
+    {splitRegions : PolygonalRegions.{u, v} splitScheme} {c : α}
+    {mergedFirst : Occurrence mergedScheme}
+    {ι : Type u} {splitRest : ι → Occurrence splitScheme}
+    {mergedRest : ι → Occurrence mergedScheme}
+    (result : PasteResult splitRegions c mergedFirst splitRest mergedRest)
+    (hpolygonal : IsPolygonal result.pasting.mergedRegions)
+    {X : Type w} [TopologicalSpace X] (q : splitRegions.Source → X)
+    (hsplit : splitRegions.Realizes q) :
+    IsPolygonal result.pasting.mergedRegions ∧
+      ∃ mergedQuotient : Source result.pasting.mergedRegions → X,
+        Realizes result.pasting.mergedRegions mergedQuotient := by
+  -- Keep the geometric conclusion and transport the original quotient realization.
+  exact ⟨hpolygonal, result.existsRealization q hsplit⟩
+
+end LabellingScheme.PolygonalRegions.PasteResult
+
+/-- Proposition 76.2. If a family of polygonal regions realizing `X` has uniquely paired
+edges labelled `c⁻¹` and `c` on its first two regions, those edges can be pasted to form
+a polygonal merged first region while retaining polygonal presentations of every remaining
+region and realizing the same space `X`. -/
+theorem pasteRealizesSameSpace {α : Type u} [DecidableEq α]
+    (y₀ y₁ : List (α × Bool)) (c : α) (b : Bool) (rest : LabellingScheme α)
+    (hy₀Length : 2 ≤ y₀.length) (hy₁Length : 2 ≤ y₁.length)
+    (hy₀ : ∀ letter ∈ y₀, letter.1 ≠ c) (hy₁ : ∀ letter ∈ y₁, letter.1 ≠ c)
+    (hrest : rest.AvoidsLabel c)
+    (splitRegions : PolygonalRegions.{u, v}
+      (⟨y₀ ++ [(c, !b)], PolygonWord.appendLetter_length y₀ (c, !b) hy₀Length⟩ ::ₘ
+        ⟨(c, b) :: y₁, PolygonWord.consLetter_length (c, b) y₁ hy₁Length⟩ ::ₘ rest))
+    (hsplitPolygonal : splitRegions.IsPolygonal)
+    {X : Type w} [TopologicalSpace X] (q : splitRegions.Source → X)
+    (hsplit : splitRegions.Realizes q) :
+    ∃ result : PolygonalRegions.PasteResult splitRegions c
+        (mergedFirstOccurrence
+          ⟨y₀ ++ y₁, PolygonWord.append_length y₀ y₁ hy₀Length hy₁Length⟩ rest)
+        (fun region ↦ splitRestOccurrence
+          ⟨y₀ ++ [(c, !b)], PolygonWord.appendLetter_length y₀ (c, !b) hy₀Length⟩
+          ⟨(c, b) :: y₁, PolygonWord.consLetter_length (c, b) y₁ hy₁Length⟩ rest region)
+        (fun region ↦ mergedRestOccurrence
+          ⟨y₀ ++ y₁, PolygonWord.append_length y₀ y₁ hy₀Length hy₁Length⟩ rest region),
+      IsPolygonal result.pasting.mergedRegions ∧
+        ∃ mergedQuotient : Source result.pasting.mergedRegions → X,
+          Realizes result.pasting.mergedRegions mergedQuotient := by
+  classical
+  -- First choose concrete cyclic presentations of the two regions carrying the `c`-edges.
+  obtain ⟨leftRegion⟩ := (isPolygonal_iff splitRegions).mp hsplitPolygonal
+    (firstOccurrence
+      ⟨y₀ ++ [(c, !b)], PolygonWord.appendLetter_length y₀ (c, !b) hy₀Length⟩
+      ⟨(c, b) :: y₁, PolygonWord.consLetter_length (c, b) y₁ hy₁Length⟩ rest)
+  obtain ⟨rightRegion⟩ := (isPolygonal_iff splitRegions).mp hsplitPolygonal
+    (secondOccurrence
+      ⟨y₀ ++ [(c, !b)], PolygonWord.appendLetter_length y₀ (c, !b) hy₀Length⟩
+      ⟨(c, b) :: y₁, PolygonWord.consLetter_length (c, b) y₁ hy₁Length⟩ rest)
+  -- Route correction: retained homeomorphisms alone do not preserve the boundary-edge
+  -- parametrizations required by `CyclicRegion`; the paste producer must supply those
+  -- compatible retained presentations before `PasteResult.isPolygonal_cons` can close.
+  -- TODO: strengthen `existsOfEdgeGluing` to return edge-compatible cyclic presentations
+  -- for every retained merged component, then apply `isPolygonal_cons` followed by
+  -- `existsPolygonalRealization`.
+  sorry
+
+/- The generic realization-transport theorem used after constructing the paste. -/
+#check realizes

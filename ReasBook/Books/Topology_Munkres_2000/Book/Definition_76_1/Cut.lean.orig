@@ -1,0 +1,223 @@
+module
+
+public import Book.Definition_74_1.CyclicPolygon
+
+public section
+
+namespace CyclicPolygon.Cut
+
+noncomputable section
+
+variable {n : ℕ}
+
+/-- The index map for the vertices `p₀, p₁, …, pₖ` of the left cut polygon. -/
+def leftIndex (k : Fin n) (i : Fin (k.val + 1)) : Fin n :=
+  Fin.castLE (Nat.succ_le_iff.mpr k.isLt) i
+
+/-- The left index map preserves the underlying natural-number index. -/
+theorem leftIndex_val (k : Fin n) (i : Fin (k.val + 1)) :
+    (leftIndex k i).val = i.val := by
+  -- `Fin.castLE` changes only the bound, not the underlying index.
+  rfl
+
+/-- The index map for the vertices `p₀, pₖ, pₖ₊₁, …, pₙ₋₁` of the right cut polygon. -/
+def rightIndex (k : Fin n) (i : Fin (n - k.val + 1)) : Fin n :=
+  Fin.cases (Fin.castLE (Nat.succ_le_iff.mpr k.isLt) 0)
+    (fun j ↦ Fin.castLE (Nat.le_of_eq (Nat.add_sub_of_le (Nat.le_of_lt k.isLt)))
+      (Fin.natAdd k.val j)) i
+
+/-- The initial right-hand vertex is `p₀`. -/
+theorem rightIndex_zero (k : Fin n) : (rightIndex k 0).val = 0 := by
+  -- The exceptional first branch of `rightIndex` is the original index zero.
+  rfl
+
+/-- After its initial vertex, the right index map lists the vertices starting at `pₖ`. -/
+theorem rightIndex_succ (k : Fin n) (i : Fin (n - k.val)) :
+    (rightIndex k i.succ).val = k.val + i.val := by
+  -- Successor indices use the translated tail beginning at `k`.
+  rfl
+
+/-- Helper for Definition 76.1: the left cut index map is strictly increasing. -/
+theorem leftIndex_strictMono (k : Fin n) : StrictMono (leftIndex k) := by
+  -- Comparing values reduces strict monotonicity to the unchanged natural indices.
+  intro i j hij
+  exact hij
+
+/-- Helper for Definition 76.1: the right cut index map is strictly increasing after `k > 0`. -/
+theorem rightIndex_strictMono (k : Fin n) (hk : 0 < k.val) : StrictMono (rightIndex k) := by
+  -- Split off the initial zero; the remaining translated tail preserves order.
+  intro i j hij
+  refine Fin.cases ?_ (fun a ↦ ?_) i
+  · have hj : 0 < (rightIndex k j).val := by
+      refine Fin.cases ?_ (fun b ↦ ?_) j
+      · omega
+      · rw [rightIndex_succ]
+        omega
+    exact hj
+  · refine Fin.cases ?_ (fun b ↦ ?_) j
+    · omega
+    · apply Fin.mk_lt_mk.mpr
+      rw [rightIndex_succ, rightIndex_succ]
+      simpa using hij
+
+/-- The lifted angle sequence for the left cut polygon. -/
+def leftAngles (P : CyclicPolygon n) (k : Fin n) : Fin (k.val + 2) → ℝ :=
+  Fin.lastCases (P.angles 0 + 2 * Real.pi)
+    (fun i ↦ P.angles (Fin.castLE (Nat.succ_le_succ (Nat.le_of_lt k.isLt)) i))
+
+/-- The left lifted angle sequence agrees with the original sequence before its closing angle. -/
+theorem leftAngles_apply (P : CyclicPolygon n) (k : Fin n) (i : Fin (k.val + 1)) :
+    leftAngles P k i.castSucc = P.angles (leftIndex k i).castSucc := by
+  -- Before the closing entry, `lastCases` selects the inherited angle branch.
+  simp only [leftAngles, Fin.lastCases_castSucc]
+  rfl
+
+/-- The lifted angle sequence for the right cut polygon. -/
+def rightAngles (P : CyclicPolygon n) (k : Fin n) : Fin (n - k.val + 2) → ℝ :=
+  Fin.lastCases (P.angles 0 + 2 * Real.pi)
+    (fun i ↦ P.angles (rightIndex k i).castSucc)
+
+/-- The right lifted angle sequence agrees with the original sequence before its closing angle. -/
+theorem rightAngles_apply (P : CyclicPolygon n) (k : Fin n)
+    (i : Fin (n - k.val + 1)) :
+    rightAngles P k i.castSucc = P.angles (rightIndex k i).castSucc := by
+  -- Before the closing entry, `lastCases` selects the inherited angle branch.
+  simp only [rightAngles, Fin.lastCases_castSucc]
+
+/-- The left lifted angle sequence is strictly increasing. -/
+theorem leftAngles_strictMono (P : CyclicPolygon n) (k : Fin n) :
+    StrictMono (leftAngles P k) := by
+  -- It suffices to compare consecutive entries of the finite angle sequence.
+  rw [Fin.strictMono_iff_lt_succ]
+  intro i
+  by_cases hi : i.val < k.val
+  · let j : Fin (k.val + 1) := ⟨i.val + 1, by omega⟩
+    have hsucc : i.succ = j.castSucc := by
+      apply Fin.ext
+      rfl
+    rw [leftAngles_apply P k i, hsucc, leftAngles_apply P k j]
+    apply P.angles_strictMono
+    apply Fin.mk_lt_mk.mpr
+    simp only [Fin.val_castSucc, leftIndex_val, j]
+    omega
+  · have hilast : i = Fin.last k.val := by
+      apply Fin.ext
+      simp only [Fin.val_last]
+      omega
+    subst i
+    rw [leftAngles_apply P k (Fin.last k.val)]
+    rw [Fin.succ_last]
+    simp only [leftAngles, Fin.lastCases_last, P.angles_last]
+    have hfirst : P.angles (leftIndex k (Fin.last k.val)).castSucc <
+        P.angles (Fin.last n) := by
+      apply P.angles_strictMono
+      simp [leftIndex_val]
+    linarith
+
+/-- The final left lifted angle closes one full turn after its initial angle. -/
+theorem leftAngles_last (P : CyclicPolygon n) (k : Fin n) :
+    leftAngles P k (Fin.last (k.val + 1)) = leftAngles P k 0 + 2 * Real.pi := by
+  -- The final branch is defined as one full turn beyond the initial angle.
+  simp only [leftAngles, Fin.lastCases_last, Fin.lastCases_castSucc]
+
+/-- The right lifted angle sequence is strictly increasing. -/
+theorem rightAngles_strictMono (P : CyclicPolygon n) (k : Fin n) (hk₁ : 1 < k.val) :
+    StrictMono (rightAngles P k) := by
+  -- It suffices to compare consecutive entries, separating the initial and closing edges.
+  rw [Fin.strictMono_iff_lt_succ]
+  intro i
+  by_cases hi : i.val = 0
+  · have hizero : i = 0 := Fin.ext hi
+    subst i
+    rw [rightAngles_apply P k 0]
+    have hone : (0 : Fin (n - k.val + 1)).succ =
+        (1 : Fin (n - k.val + 1)).castSucc := by
+      apply Fin.ext
+      rfl
+    rw [hone, rightAngles_apply P k 1]
+    apply P.angles_strictMono
+    simp [rightIndex_zero, rightIndex_succ, hk₁]
+  · by_cases hilast : i.val = n - k.val
+    · have hiFinLast : i = Fin.last (n - k.val) := Fin.ext hilast
+      subst i
+      rw [rightAngles_apply P k (Fin.last (n - k.val))]
+      rw [Fin.succ_last]
+      simp only [rightAngles, Fin.lastCases_last, P.angles_last]
+      have hindex : (rightIndex k (Fin.last (n - k.val))).castSucc < Fin.last n := by
+        simp [rightIndex_succ]
+      have hinherited := P.angles_strictMono hindex
+      linarith
+    · obtain ⟨j, rfl⟩ := Fin.eq_succ_of_ne_zero hi
+      rw [rightAngles_apply P k j.succ, rightAngles_apply P k j.succ.succ]
+      apply P.angles_strictMono
+      apply Fin.ext_iff.mpr
+      simp [rightIndex_succ]
+
+/-- The final right lifted angle closes one full turn after its initial angle. -/
+theorem rightAngles_last (P : CyclicPolygon n) (k : Fin n) :
+    rightAngles P k (Fin.last (n - k.val + 1)) = rightAngles P k 0 + 2 * Real.pi := by
+  -- The final branch is one full turn beyond the inherited initial angle.
+  unfold rightAngles
+  simp [rightIndex_zero]
+
+/-- The left cut polygon has at least three vertices. -/
+theorem leftThreeLe (k : Fin n) (hk₁ : 1 < k.val) : 3 ≤ k.val + 1 := by
+  -- The cut contains vertices `0`, `1`, and `k` because `k > 1`.
+  omega
+
+/-- The right cut polygon has at least three vertices. -/
+theorem rightThreeLe (k : Fin n) (hk₂ : k.val < n - 1) : 3 ≤ n - k.val + 1 := by
+  -- There are at least two vertices from `k` through `n - 1`, plus the initial zero.
+  omega
+
+/-- The cyclic polygon with successive vertices `p₀, p₁, …, pₖ, p₀`. -/
+def left (P : CyclicPolygon n) (k : Fin n) (hk₁ : 1 < k.val) :
+    CyclicPolygon (k.val + 1) where
+  three_le := leftThreeLe k hk₁
+  center := P.center
+  radius := P.radius
+  radius_pos := P.radius_pos
+  angles := leftAngles P k
+  angles_strictMono := leftAngles_strictMono P k
+  angles_last := leftAngles_last P k
+
+/-- The cyclic polygon with successive vertices `p₀, pₖ, …, pₙ₋₁, p₀`. -/
+def right (P : CyclicPolygon n) (k : Fin n) (hk₁ : 1 < k.val)
+    (hk₂ : k.val < n - 1) :
+    CyclicPolygon (n - k.val + 1) where
+  three_le := rightThreeLe k hk₂
+  center := P.center
+  radius := P.radius
+  radius_pos := P.radius_pos
+  angles := rightAngles P k
+  angles_strictMono := rightAngles_strictMono P k hk₁
+  angles_last := rightAngles_last P k
+
+/-- The vertices of the left cut polygon are the corresponding original vertices. -/
+theorem left_apply (P : CyclicPolygon n) (k : Fin n) (hk₁ : 1 < k.val)
+    (i : Fin (k.val + 1)) :
+    (left P k hk₁).toPolygon.vertices i = P.toPolygon.vertices (leftIndex k i) := sorry
+
+/-- The vertices of the right cut polygon are the corresponding original vertices. -/
+theorem right_apply (P : CyclicPolygon n) (k : Fin n) (hk₁ : 1 < k.val)
+    (hk₂ : k.val < n - 1)
+    (i : Fin (n - k.val + 1)) :
+    (right P k hk₁ hk₂).toPolygon.vertices i =
+      P.toPolygon.vertices (rightIndex k i) := sorry
+
+/-- The closing edge of the left cut polygon and the initial edge of the right cut polygon
+are the same diagonal joining `p₀` and `pₖ`. -/
+theorem commonEdge (P : CyclicPolygon n) (k : Fin n) (hk₁ : 1 < k.val)
+    (hk₂ : k.val < n - 1) :
+    (left P k hk₁).edgeSet (Fin.last k.val) = (right P k hk₁ hk₂).edgeSet 0 := sorry
+
+/-- The original filled polygonal region is the union of the two regions cut along the
+diagonal joining `p₀` and `pₖ`. -/
+theorem region_eq_union (P : CyclicPolygon n) (k : Fin n) (hk₁ : 1 < k.val)
+    (hk₂ : k.val < n - 1) :
+    P.region = (left P k hk₁).region ∪ (right P k hk₁ hk₂).region := sorry
+
+
+end
+
+end CyclicPolygon.Cut
