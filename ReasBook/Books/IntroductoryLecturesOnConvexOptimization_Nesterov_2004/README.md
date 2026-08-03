@@ -1,25 +1,21 @@
-# Introductory Lectures on Convex Optimization (Nesterov, 2004)
+# Introductory Lectures on Convex Optimization — Nesterov (2004)
 
-Lean 4 formalization of Yurii Nesterov's *Introductory Lectures on Convex Optimization*.
+Lean 4 formalization of Yurii Nesterov's *Introductory Lectures on Convex
+Optimization: A Basic Course*.
 
-- Contributor: `imathwy`
-- Upstream base: `optpku/ReasBook@11a65a5` (branch `v4.30.0`)
-- Lean/mathlib: `v4.30.0` / `v4.30.0`
-- Main module: `IntroductoryLecturesOnConvexOptimization_Nesterov_2004.Book`
-- Declarations/examples: 10,064
-- Lean code: 1,645 files, 87,388 lines
-- Theorems/lemmas: 6,972
-- Proof completion: approximately 98.91%
-- Explicit `sorry`: 76
+| Item | Value |
+| --- | ---: |
+| Declarations | 14,663 |
+| Lean source | 87,388 lines in 1,645 files |
+| Proof completion | 99.48% |
+| Explicit `sorry` | 76 |
 
-The completion percentage is `1 - explicit sorry occurrences / theorem-and-lemma declarations`.
-All 1,642 source files are retained. The default aggregate imports 1,248 source modules; source
-modules still requiring v4.30 porting or causing duplicate-name collisions remain in the tree for
-later work but are not imported by `Book.lean`.
+Contributors: Chenyi Li, Siyuan Shao, Yijie Wang, Feiming Wang, Weiran Shi,
+Yuhao Jiang, Zebo Liu, and Wentao Long.
 
-Build command:
+Main module: `IntroductoryLecturesOnConvexOptimization_Nesterov_2004.Book`.
+The default aggregate imports 1,248 source modules; all remaining source files
+are retained for subsequent Lean `v4.30.0` porting and collision cleanup.
 
-```bash
-cd ReasBook
-lake build ReasBook
-```
+Proof completion is the percentage of declarations without a direct explicit
+`sorry` (`14,587 / 14,663`).

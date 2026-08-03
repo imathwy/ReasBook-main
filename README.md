@@ -1,14 +1,24 @@
-# ReasBook — Nesterov book-only branch
+# Introductory Lectures on Convex Optimization — Nesterov (2004)
 
-This branch contains the Lean 4 formalization of Yurii Nesterov's *Introductory Lectures on Convex Optimization* (2004).
+Lean 4 formalization of Yurii Nesterov's *Introductory Lectures on Convex
+Optimization: A Basic Course*.
 
-- Contributor: `imathwy`
-- Book source: [`ReasBook/Books/IntroductoryLecturesOnConvexOptimization_Nesterov_2004`](./ReasBook/Books/IntroductoryLecturesOnConvexOptimization_Nesterov_2004/)
-- Upstream base: `optpku/ReasBook` branch `v4.30.0`, commit `11a65a57a6d13d3bf3a60bb6f225d0e6fec901c8`
-- Lean/mathlib: `v4.30.0` / `v4.30.0`, inherited unchanged from that upstream branch
-- Branch: `book/nesterov-introductory-lectures-v4.30.0`
+| Item | Value |
+| --- | ---: |
+| Declarations | 14,663 |
+| Lean source | 87,388 lines in 1,645 files |
+| Proof completion | 99.48% |
+| Explicit `sorry` | 76 |
+
+Contributors: Chenyi Li, Siyuan Shao, Yijie Wang, Feiming Wang, Weiran Shi,
+Yuhao Jiang, Zebo Liu, and Wentao Long.
+
+The project uses Lean/mathlib `v4.30.0`, matching `optpku/ReasBook` branch
+`v4.30.0` at `11a65a5`. Build it with:
 
 ```bash
 cd ReasBook
 lake build ReasBook
 ```
+
+Book sources: [`ReasBook/Books/IntroductoryLecturesOnConvexOptimization_Nesterov_2004`](./ReasBook/Books/IntroductoryLecturesOnConvexOptimization_Nesterov_2004/)
