@@ -20,3 +20,8 @@ __pycache__/
 
 # Ephemeral same-workspace CI checkout and preflight logs.
 .automation/
+
+# Local build diagnostics.
+/build_*.log
+/build_*.status
+/cache_get.log

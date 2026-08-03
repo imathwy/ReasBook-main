@@ -1,14 +1,23 @@
-# ReasBook — Sun--Yuan book-only branch
+# Optimization Theory and Methods — Sun–Yuan (2006)
 
-This branch contains the Lean 4 formalization of Wenyu Sun and Ya-xiang Yuan's *Optimization Theory and Methods: Nonlinear Programming* (2006).
+Lean 4 formalization of Wenyu Sun and Ya-xiang Yuan's *Optimization Theory and
+Methods: Nonlinear Programming*.
 
-- Contributor: `imathwy`
-- Book source: [`ReasBook/Books/OptimizationTheoryAndMethods_SunYuan_2006`](./ReasBook/Books/OptimizationTheoryAndMethods_SunYuan_2006/)
-- Upstream base: `optpku/ReasBook` branch `v4.30.0`, commit `11a65a57a6d13d3bf3a60bb6f225d0e6fec901c8`
-- Lean/mathlib: `v4.30.0` / `v4.30.0`, inherited unchanged from that upstream branch
-- Branch: `book/sun-yuan-optimization-theory-methods-v4.30.0`
+| Item | Value |
+| --- | ---: |
+| Declarations | 8,426 |
+| Lean source | 187,113 lines in 710 files |
+| Proof completion | 96.51% |
+| Explicit `sorry` | 301 |
+
+Contributors: Chenyi Li, Wanli Ma, and Zichen Wang.
+
+The project uses Lean/mathlib `v4.30.0`, matching `optpku/ReasBook` branch
+`v4.30.0` at `11a65a5`. Build it with:
 
 ```bash
 cd ReasBook
 lake build ReasBook
 ```
+
+Book sources: [`ReasBook/Books/OptimizationTheoryAndMethods_SunYuan_2006`](./ReasBook/Books/OptimizationTheoryAndMethods_SunYuan_2006/)
