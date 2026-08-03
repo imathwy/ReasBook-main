@@ -17,7 +17,7 @@ concurrency:
 jobs:
   build:
     if: github.repository == 'optpku/ReasBook-preview'
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: [self-hosted, Linux, X64, reasbook-public]
     timeout-minutes: 180
     env:
       HEARTBEAT_INTERVAL_SECONDS: 45
@@ -33,27 +33,18 @@ jobs:
           set -euo pipefail
           home_dir="${HOME:-/root}"
           repo_key="${GITHUB_REPOSITORY//\//_}"
-          persist_root="${PERSIST_ROOT:-$home_dir/.cache/reasbook-ci/$repo_key}"
+          persist_base="${PERSIST_ROOT:-$home_dir/.cache/reasbook-ci/$repo_key}"
+          persist_root="$persist_base/$GITHUB_REF_NAME"
           echo "PERSIST_ROOT=$persist_root" >> "$GITHUB_ENV"
           echo "Using persistent root: $persist_root"
+          # The self-hosted runner already persists HOME; keep only Lake caches here.
           mkdir -p "$persist_root/reasbook_lake" \
-                   "$persist_root/reasbookweb_lake" \
-                   "$persist_root/elan"
+                   "$persist_root/reasbookweb_lake"
 
           # Keep heavy Lake artifacts outside checkout so they survive checkout cleanup.
           rm -rf ReasBook/.lake ReasBookWeb/.lake
           ln -sfn "$persist_root/reasbook_lake" ReasBook/.lake
           ln -sfn "$persist_root/reasbookweb_lake" ReasBookWeb/.lake
-
-          # Restore persisted elan state if available.
-          if [ -d "$persist_root/elan" ] && [ -n "$(ls -A "$persist_root/elan" 2>/dev/null)" ]; then
-            mkdir -p "$home_dir/.elan"
-            if command -v rsync >/dev/null 2>&1; then
-              rsync -a "$persist_root/elan/" "$home_dir/.elan/"
-            else
-              cp -a "$persist_root/elan/." "$home_dir/.elan/"
-            fi
-          fi
 
           du -sh "$persist_root"/* 2>/dev/null || true
 
@@ -78,23 +69,6 @@ jobs:
         run: |
           set -euo pipefail
           ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_web.sh (preview)" ./scripts/build_reasbook_web.sh
-
-      - name: Persist elan toolchain
-        if: always()
-        run: |
-          set -euo pipefail
-          home_dir="${HOME:-/root}"
-          repo_key="${GITHUB_REPOSITORY//\//_}"
-          persist_root="${PERSIST_ROOT:-$home_dir/.cache/reasbook-ci/$repo_key}"
-          mkdir -p "$persist_root/elan"
-          if [ -d "$home_dir/.elan" ]; then
-            if command -v rsync >/dev/null 2>&1; then
-              rsync -a --delete "$home_dir/.elan/" "$persist_root/elan/"
-            else
-              rm -rf "$persist_root/elan"/*
-              cp -a "$home_dir/.elan/." "$persist_root/elan/"
-            fi
-          fi
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
