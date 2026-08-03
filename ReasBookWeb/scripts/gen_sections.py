@@ -194,7 +194,7 @@ PAPER_TITLES = {
 # Temporary literate extraction bypass for pathological modules.
 # Keep this list minimal and remove entries once upstream extraction is fixed.
 DEFAULT_SKIP_MODULES = {
-    "Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02.section09_part12",
+    "ConvexAnalysis_Rockafellar_1970.Chapters.Chap02.section09_part12",
 }
 
 
@@ -575,7 +575,22 @@ def paper_title(paper: str) -> str:
 
 def to_module(source_root: Path, path: Path) -> str:
     rel = path.relative_to(source_root)
+    # Every book is registered as its own Lake library with ``srcDir :=
+    # "Books"``.  Its canonical module name is therefore relative to the
+    # Books directory (for example ``Analysis2_Tao_2022.Book``), not the
+    # overlapping ``Books.*`` alias exposed by the aggregate Books library.
+    # Building the alias can load the same source under both names and fail
+    # with duplicate declarations.  Papers intentionally use their
+    # ``Papers.*`` names throughout the source tree, so keep that prefix.
+    if rel.parts and rel.parts[0] == "Books":
+        rel = Path(*rel.parts[1:])
     return ".".join(rel.with_suffix("").parts)
+
+
+def route_from_source(source_root: Path, path: Path) -> str:
+    """Return the stable site route derived from the physical source path."""
+    rel = path.relative_to(source_root)
+    return route_from_module(".".join(rel.with_suffix("").parts))
 
 
 def normalize_path(path: str) -> str:
@@ -691,10 +706,18 @@ def collect_entries(source_root: Path) -> list[Entry]:
     for path in sorted(books_root.rglob("*.lean")):
         if not should_include_book(path):
             continue
+        rel = path.relative_to(books_root)
+        # Only the project-root Book.lean is a public overview.  Some imported
+        # projects also contain an old internal */Book.lean aggregator whose
+        # flattened imports are not valid in this unified workspace.  The
+        # project-root Book.lean already provides the complete active import
+        # set, so exposing the internal aggregator adds no page coverage and
+        # can make the literate batch request nonexistent modules.
+        if path.stem.lower() == "book" and len(rel.parts) != 2:
+            continue
         module = to_module(source_root, path)
         if module in SKIP_MODULES:
             continue
-        rel = path.relative_to(books_root)
         book = rel.parts[0]
         if book in TBD_BOOKS:
             continue
@@ -711,7 +734,7 @@ def collect_entries(source_root: Path) -> list[Entry]:
                 category="books",
                 module=module,
                 title=" -- ".join(title_parts),
-                route=route_from_module(module),
+                route=route_from_source(source_root, path),
                 book_or_paper=book,
                 chapter_num=chapter_number(rel.parts),
                 section_num=sec_num,
@@ -735,7 +758,7 @@ def collect_entries(source_root: Path) -> list[Entry]:
                 category="papers",
                 module=module,
                 title=f"{paper_title(paper)} -- {sec_title}",
-                route=route_from_module(module),
+                route=route_from_source(source_root, path),
                 book_or_paper=paper,
                 chapter_num=0,
                 section_num=sec_num,
@@ -1080,7 +1103,7 @@ def write_book_readmes(source_root: Path, entries: list[Entry]) -> None:
 
     for book in all_books:
         title = book_title(book)
-        book_module = f"Books.{book}.Book"
+        book_module = f"{book}.Book"
         book_file = books_root / book / "Book.lean"
         item_entries = sorted(
             [e for e in by_book.get(book, []) if (e.section_num > 0 and e.part_num == 0)],
@@ -1329,7 +1352,7 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
         docs_path = (
             home_entry.module.replace(".", "/")
             if home_entry is not None
-            else f"Books/{book}/Book"
+            else f"{book}/Book"
         )
         lines.append(f"- [Documentation]({portable_site_link(f'docs/{docs_path}.html')})")
         if (book_dir / "Book.lean").exists():
@@ -1674,15 +1697,10 @@ def main() -> None:
             print(f"INFO:   skip module: {mod}")
 
     entries = collect_entries(source_root)
-    write_source_overviews(source_root, entries)
-    entries = collect_entries(source_root)
     out_file.parent.mkdir(parents=True, exist_ok=True)
     write_text_if_changed(out_file, emit_sections(entries), log=False)
     write_text_if_changed(route_file, emit_route_table(entries), log=False)
     write_work_pages(repo_root, source_root, entries)
-    write_book_readmes(source_root, entries)
-    write_paper_readmes(source_root, entries)
-    write_root_readme(repo_root, source_root)
     print(f"Wrote {out_file} with {len(entries)} sections")
     print(f"Wrote {route_file} with generated route macro")
 
