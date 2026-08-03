@@ -27,6 +27,20 @@ jobs:
           from pathlib import Path
 
           root = Path("ReasBook")
+          flat_project_roots = set()
+          current_lib = None
+          for line in (root / "lakefile.lean").read_text(encoding="utf-8").splitlines():
+              if line.startswith("lean_lib "):
+                  current_lib = line.split()[1].strip("«»")
+                  continue
+              stripped = line.strip()
+              if current_lib and stripped.startswith("srcDir :="):
+                  source_dir = stripped.split('"', 2)[1]
+                  flat_project_roots.add((source_dir, current_lib))
+                  continue
+              if stripped and not line[0].isspace():
+                  current_lib = None
+
           projects = []
           for kind_dir, kind_slug, leaf in [
               (root / "Books", "book", "Book"),
@@ -39,13 +53,18 @@ jobs:
                       continue
                   if not (project / f"{leaf}.lean").is_file():
                       continue
-                  module = f"{kind_dir.name}.{project.name}.{leaf}"
+                  if (kind_dir.name, project.name) in flat_project_roots:
+                      module = f"{project.name}.{leaf}"
+                      doc_subdir = project.name
+                  else:
+                      module = f"{kind_dir.name}.{project.name}.{leaf}"
+                      doc_subdir = f"{kind_dir.name}/{project.name}"
                   project_id = f"{kind_slug}_{project.name.lower()}_{leaf.lower()}"
                   projects.append({
                       "id": project_id,
                       "module": module,
                       "name": project.name,
-                      "doc_subdir": f"{kind_dir.name}/{project.name}",
+                      "doc_subdir": doc_subdir,
                   })
 
           print(f"project_matrix={json.dumps(projects, separators=(',', ':'))}")
