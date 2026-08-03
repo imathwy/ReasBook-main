@@ -16,6 +16,8 @@ rev = "v4.29.0"
 
 [[lean_lib]]
 name = "BauschkeLean"
+srcDir = "."
+roots = ["Books"]
 
 [[lean_lib]]
 name = "Bauschke"
