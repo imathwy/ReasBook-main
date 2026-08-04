@@ -180,22 +180,14 @@ if not SITE_ROOT.endswith("/"):
 DOCS_BASE = f"{SITE_BASE}docs/"
 
 BOOK_TITLES = {
-    "ConvexAnalysis_Rockafellar_1970": "Convex Analysis (Rockafellar, 1970)",
-    "IntegerProgramming_Conforti_2014": "Integer Programming (Conforti et al., 2014)",
-    "Analysis2_Tao_2022": "Analysis II (Tao, 2022)",
-    "IntroductiontoRealAnalysisVolumeI_JiriLebl_2025": "Introduction to Real Analysis, Volume I (Jiri Lebl, 2025)",
+    "ProbabilityTheory_Klenke_2020": "Probability Theory (Klenke, 2020)",
 }
 
-PAPER_TITLES = {
-    "SmoothMinimization_Nesterov_2004": "Smooth Minimization (Nesterov, 2004)",
-    "OnSomeLocalRings_Maassaran_2025": "On Some Local Rings (Maassaran, 2025)",
-}
+PAPER_TITLES = {}
 
 # Temporary literate extraction bypass for pathological modules.
 # Keep this list minimal and remove entries once upstream extraction is fixed.
-DEFAULT_SKIP_MODULES = {
-    "Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02.section09_part12",
-}
+DEFAULT_SKIP_MODULES = set()
 
 
 def parse_csv_env_set(name: str) -> set[str]:
@@ -207,200 +199,13 @@ def parse_csv_env_set(name: str) -> set[str]:
 
 SKIP_MODULES = DEFAULT_SKIP_MODULES | parse_csv_env_set("REASBOOK_SKIP_MODULES")
 
-BOOK_CHAPTER_TITLES = {
-    "Analysis2_Tao_2022": {
-        1: "Metric Spaces",
-        2: "Continuous Functions on Metric Spaces",
-        3: "Uniform Convergence",
-        4: "Power Series",
-        5: "Fourier Series",
-        6: "Several Variable Differential Calculus",
-        7: "Lebesgue Measure",
-        8: "Lebesgue Integration",
-    },
-    "ConvexAnalysis_Rockafellar_1970": {
-        1: "Part I: Basic Concepts",
-        2: "Part II: Topological Properties",
-        3: "Part III: Duality Correspondences",
-        4: "Part IV: Representation and Inequalities",
-    },
-    "IntroductiontoRealAnalysisVolumeI_JiriLebl_2025": {
-        1: "Real Numbers",
-        2: "Sequences and Series",
-        3: "Continuous Functions",
-        4: "The Derivative",
-        5: "The Riemann Integral",
-        6: "Sequences of Functions",
-        7: "Metric Spaces",
-    },
-}
+BOOK_CHAPTER_TITLES = {}
 
-BOOK_SECTION_TITLES = {
-    "Analysis2_Tao_2022": {
-        1: {
-            1: "Definitions and Examples",
-            2: "Some Point-Set Topology of Metric Spaces",
-            3: "Relative Topology",
-            4: "Cauchy Sequences and Complete Metric Spaces",
-            5: "Compact Metric Spaces",
-        },
-        2: {
-            1: "Continuous Functions",
-            2: "Continuity and Product Spaces",
-            3: "Continuity and Compactness",
-            4: "Continuity and Connectedness",
-            5: "Topological Spaces",
-        },
-        3: {
-            1: "Limiting Values of Functions",
-            2: "Pointwise and Uniform Convergence",
-            3: "Uniform Convergence and Continuity",
-            4: "The Metric of Uniform Convergence",
-            5: "Series of Functions; the Weierstrass M-Test",
-            6: "Uniform Convergence and Integration",
-            7: "Uniform Convergence and Derivatives",
-            8: "Uniform Approximation by Polynomials",
-        },
-        4: {
-            1: "Formal Power Series",
-            2: "Real Analytic Functions",
-            3: "Abel's Theorem",
-            4: "Multiplication of Power Series",
-            5: "The Exponential and Logarithm Functions",
-            6: "A Digression on Complex Numbers",
-            7: "Trigonometric Functions",
-        },
-        5: {
-            1: "Periodic Functions",
-            2: "Inner Products on Periodic Functions",
-            3: "Trigonometric Polynomials",
-            4: "Periodic Convolutions",
-            5: "The Fourier and Plancherel Theorems",
-        },
-        6: {
-            1: "Linear Transformations",
-            2: "Derivatives in Several Variable Calculus",
-            3: "Partial and Directional Derivatives",
-            4: "The Several Variable Calculus Chain Rule",
-            5: "Double Derivatives and Clairaut's Theorem",
-            6: "The Contraction Mapping Theorem",
-            7: "The Inverse Function Theorem in Several Variable Calculus",
-            8: "The Implicit Function Theorem",
-        },
-        7: {
-            1: "The Goal: Lebesgue Measure",
-            2: "First Attempt: Outer Measure",
-            3: "Outer Measure Is not Additive",
-            4: "Measurable Sets",
-            5: "Measurable Functions",
-        },
-        8: {
-            1: "Simple Functions",
-            2: "Integration of Non-negative Measurable Functions",
-            3: "Integration of Absolutely Integrable Functions",
-            4: "Comparison with the Riemann Integral",
-            5: "Fubini's Theorem",
-        },
-    },
-    "ConvexAnalysis_Rockafellar_1970": {
-        1: {
-            1: "Affine Sets",
-            2: "Convex Sets and Cones",
-            3: "The Algebra of Convex Sets",
-            4: "Convex Functions",
-            5: "Functional Operations",
-        },
-        2: {
-            5: "Functional Operations",
-            6: "Relative Interiors of Convex Sets",
-            7: "Closures of Convex Functions",
-            8: "Recession Cones and Unboundedness",
-            9: "Some Closedness Criteria",
-            10: "Continuity of Convex Functions",
-        },
-        3: {
-            11: "Separation Theorems",
-            12: "Conjugates of Convex Functions",
-            13: "Support Functions",
-            14: "Polars of Convex Sets",
-            15: "Polars of Convex Functions",
-            16: "Dual Operations",
-        },
-        4: {
-            17: "Caratheodory's Theorem",
-            18: "Extreme Points and Faces of Convex Sets",
-            19: "Polyhedral Convex Sets and Functions",
-            20: "Some Applications of Polyhedral Convexity",
-        },
-    },
-    "IntroductiontoRealAnalysisVolumeI_JiriLebl_2025": {
-        1: {
-            1: "Basic Properties",
-            2: "The Set of Real Numbers",
-            3: "Absolute Value and Bounded Functions",
-            4: "Intervals and the Size of R",
-            5: "Decimal Representation of the Reals",
-        },
-        2: {
-            1: "Sequences and Limits",
-            2: "Facts About Limits of Sequences",
-            3: "Limit Superior, Limit Inferior, and Bolzano-Weierstrass",
-            4: "Cauchy Sequences",
-            5: "Series",
-            6: "More on Series",
-        },
-        3: {
-            1: "Limits of Functions",
-            2: "Continuous Functions",
-            3: "Extreme and Intermediate Value Theorems",
-            4: "Uniform Continuity",
-            5: "Limits at Infinity",
-            6: "Monotone Functions and Continuity",
-        },
-        4: {
-            1: "The Derivative",
-            2: "Mean Value Theorem",
-            3: "Taylor's Theorem",
-            4: "Inverse Function Theorem",
-        },
-        5: {
-            1: "The Riemann Integral",
-            2: "Properties of the Integral",
-            3: "Fundamental Theorem of Calculus",
-            4: "The Logarithm and the Exponential",
-            5: "Improper Integrals",
-        },
-        6: {
-            1: "Pointwise and Uniform Convergence",
-            2: "Interchange of Limits",
-            3: "Picard's Theorem",
-        },
-        7: {
-            1: "Metric Spaces",
-            2: "Open and Closed Sets",
-            3: "Sequences and Convergence",
-            4: "Completeness and Compactness",
-            5: "Continuous Functions",
-            6: "Fixed Point Theorem and Picard's Theorem Again",
-        },
-    },
-}
+BOOK_SECTION_TITLES = {}
 
-PAPER_SECTION_TITLES = {
-    "SmoothMinimization_Nesterov_2004": {
-        1: "Introduction",
-        2: "Smooth Approximations of Non-differentiable Functions",
-        3: "Fast Gradient Methods",
-        4: "Applications",
-        5: "Implementation Issues and Modifications",
-    },
-    "OnSomeLocalRings_Maassaran_2025": {
-        1: "Separable Case",
-        2: "Lifting the Isomorphisms",
-    },
-}
+PAPER_SECTION_TITLES = {}
 
-TBD_BOOKS = {"IntegerProgramming_Conforti_2014"}
+TBD_BOOKS = set()
 
 SKIP_STEMS = {"utils", "tactics", "scratch", "internal", "helper", "helpers"}
 
@@ -959,7 +764,7 @@ def emit_sections(entries: list[Entry]) -> str:
 
 
 def emit_route_table(entries: list[Entry]) -> str:
-    intro_book_slug = "introductiontorealanalysisvolumei_jirilebl_2025"
+    intro_book_slug = "probabilitytheory_klenke_2020"
 
     def alias_routes(e: Entry) -> list[str]:
         if e.category != "books":
@@ -1053,7 +858,7 @@ def source_link(module: str) -> str:
 
 def chapter_source_link(e: Entry) -> str:
     chapter = f"Chap{e.chapter_num:02d}"
-    return repo_relative_link(f"Chapters/{chapter}/")
+    return repo_relative_link(f"Items/{chapter}/")
 
 
 def paper_sections_source_link(e: Entry) -> str:
@@ -1113,7 +918,7 @@ def write_book_readmes(source_root: Path, entries: list[Entry]) -> None:
                 f"[Documentation]({docs_target})",
             ]
             if book_file.exists():
-                links.append(f"[Lean source]({repo_relative_link('Chapters/')})")
+                links.append(f"[Lean source]({repo_relative_link('Items/')})")
             else:
                 links.append("[Lean source](./)")
             out.append(f"- Links: {' | '.join(links)}")
@@ -1243,7 +1048,7 @@ def write_root_readme(repo_root: Path, source_root: Path) -> None:
         book_verso = published_verso_link(f"books/{book.lower()}/")
         has_book_agg = (source_root / "Books" / book / "Book.lean").exists()
         if has_book_agg:
-            lean_src = repo_relative_link(f"ReasBook/Books/{book}/Chapters/")
+            lean_src = repo_relative_link(f"ReasBook/Books/{book}/Items/")
             docs_link = published_site_link(f"docs/Books/{book}/Book.html")
         else:
             lean_src = repo_relative_link(f"ReasBook/Books/{book}/")
@@ -1333,7 +1138,7 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
         )
         lines.append(f"- [Documentation]({portable_site_link(f'docs/{docs_path}.html')})")
         if (book_dir / "Book.lean").exists():
-            lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Books/{book}/Chapters/')})")
+            lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Books/{book}/Items/')})")
         else:
             lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Books/{book}/')})")
         lines.append("")
