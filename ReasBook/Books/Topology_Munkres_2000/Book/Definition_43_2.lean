@@ -1,6 +1,6 @@
 module
 
-import Topology_Munkres_2000.Book.Definition_20_9.UniformMetric
+import Topology_Munkres_2000.Book.Definition_20_9
 
 /- Definition 43.2: For a metric `m` on `Y`, `MetricSpace.uniformFun m J` is the
 uniform metric on the cartesian power `J → Y`. Its distance is the supremum of the

@@ -1,7 +1,7 @@
 module
 
 public import Topology_Munkres_2000.Book.Corollary_22_3
-public import Topology_Munkres_2000.Book.Definition_22_2.Saturation
+public import Topology_Munkres_2000.Book.Definition_22_2
 public import Mathlib.Data.PNat.Basic
 public import Mathlib.Topology.Constructions
 public import Mathlib.Topology.Homeomorph.Lemmas

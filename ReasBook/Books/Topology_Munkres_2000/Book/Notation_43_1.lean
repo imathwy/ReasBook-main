@@ -1,6 +1,6 @@
 module
 
-import Topology_Munkres_2000.Book.Definition_20_9.UniformMetric
+import Topology_Munkres_2000.Book.Definition_20_9
 
 public section
 

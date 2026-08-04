@@ -1,6 +1,6 @@
 module
 
-public import Topology_Munkres_2000.Book.Example_37_1.EllipticFamily
+public import Topology_Munkres_2000.Book.Example_37_1
 
 public section
 

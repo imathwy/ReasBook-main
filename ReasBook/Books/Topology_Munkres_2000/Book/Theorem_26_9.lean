@@ -1,7 +1,7 @@
 module
 
 public import Mathlib.Topology.Compactness.Compact
-public import Topology_Munkres_2000.Book.Definition_26_5.FiniteIntersection
+public import Topology_Munkres_2000.Book.Definition_26_5
 
 public section
 

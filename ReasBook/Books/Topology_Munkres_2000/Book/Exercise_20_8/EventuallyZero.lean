@@ -2,7 +2,7 @@ module
 
 public import Topology_Munkres_2000.Book.Exercise_19_7.EventuallyZero
 public import Topology_Munkres_2000.Book.Exercise_20_4.RealSequences
-public import Topology_Munkres_2000.Book.Definition_20_9.UniformMetric
+public import Topology_Munkres_2000.Book.Definition_20_9
 public import Topology_Munkres_2000.Book.Definition_19_1.BoxTopology
 public import Mathlib.Analysis.Normed.Lp.lpSpace
 public import Mathlib.Topology.WithTopology

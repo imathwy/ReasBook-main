@@ -18,7 +18,7 @@ public import Topology_Munkres_2000.Book.Example_31_2.Instances
 public import Topology_Munkres_2000.Book.Example_30_2
 public import Topology_Munkres_2000.Book.Example_30_3.Countability
 public import Topology_Munkres_2000.Book.Example_28_2.Instances
-public import Topology_Munkres_2000.Book.Definition_20_9.UniformMetric
+public import Topology_Munkres_2000.Book.Definition_20_9
 public import Topology_Munkres_2000.Book.Example_30_5.Compactness
 public import Topology_Munkres_2000.Book.Exercise_30_16.Instances
 public import Topology_Munkres_2000.Book.Exercise_30_7

@@ -1,6 +1,6 @@
 module
 
-public import Topology_Munkres_2000.Book.Definition_26_5.FiniteIntersection
+public import Topology_Munkres_2000.Book.Definition_26_5
 public import Mathlib.Order.TeichmullerTukey
 
 public section

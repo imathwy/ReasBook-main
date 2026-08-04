@@ -1,6 +1,6 @@
 module
 
-public import Topology_Munkres_2000.Book.Definition_20_9.UniformMetric
+public import Topology_Munkres_2000.Book.Definition_20_9
 public import Mathlib.Topology.WithTopology
 
 public section

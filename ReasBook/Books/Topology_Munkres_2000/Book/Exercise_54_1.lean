@@ -1,7 +1,7 @@
 module
 
 public import Topology_Munkres_2000.Book.Example_53_2.CircleMap
-public import Topology_Munkres_2000.Book.Example_54_1.TurnPaths
+public import Topology_Munkres_2000.Book.Example_54_1
 
 public section
 

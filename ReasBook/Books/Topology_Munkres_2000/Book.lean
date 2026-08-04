@@ -76,7 +76,6 @@ import Topology_Munkres_2000.Book.Corollary_7_3
 import Topology_Munkres_2000.Book.Corollary_7_4
 import Topology_Munkres_2000.Book.Corollary_81_3.Normality
 import Topology_Munkres_2000.Book.Corollary_81_3
-import Topology_Munkres_2000.Book.Corollary_81_4.Comparison
 import Topology_Munkres_2000.Book.Corollary_81_4
 import Topology_Munkres_2000.Book.Corollary_82_2
 import Topology_Munkres_2000.Book.Corollary_8_0_1.UniformContinuousMap
@@ -85,7 +84,6 @@ import Topology_Munkres_2000.Book.Corollary_8_0_2
 import Topology_Munkres_2000.Book.Definition_10_1
 import Topology_Munkres_2000.Book.Definition_10_2
 import Topology_Munkres_2000.Book.Definition_10_3
-import Topology_Munkres_2000.Book.Definition_10_4.MinimalOrder
 import Topology_Munkres_2000.Book.Definition_10_4
 import Topology_Munkres_2000.Book.Definition_11_1
 import Topology_Munkres_2000.Book.Definition_11_2
@@ -100,7 +98,6 @@ import Topology_Munkres_2000.Book.Definition_12_4
 import Topology_Munkres_2000.Book.Definition_13_1
 import Topology_Munkres_2000.Book.Definition_13_2
 import Topology_Munkres_2000.Book.Definition_13_3.RealLine
-import Topology_Munkres_2000.Book.Definition_13_3.SorgenfreyLine
 import Topology_Munkres_2000.Book.Definition_13_3
 import Topology_Munkres_2000.Book.Definition_13_4.Subbasis
 import Topology_Munkres_2000.Book.Definition_13_4
@@ -108,7 +105,6 @@ import Topology_Munkres_2000.Book.Definition_13_99_1.SelectPath
 import Topology_Munkres_2000.Book.Definition_13_99_1
 import Topology_Munkres_2000.Book.Definition_14_1
 import Topology_Munkres_2000.Book.Definition_14_2
-import Topology_Munkres_2000.Book.Definition_14_3.OrderBasis
 import Topology_Munkres_2000.Book.Definition_14_3
 import Topology_Munkres_2000.Book.Definition_14_4
 import Topology_Munkres_2000.Book.Definition_15_1
@@ -168,16 +164,13 @@ import Topology_Munkres_2000.Book.Definition_20_4
 import Topology_Munkres_2000.Book.Definition_20_5
 import Topology_Munkres_2000.Book.Definition_20_6
 import Topology_Munkres_2000.Book.Definition_20_7
-import Topology_Munkres_2000.Book.Definition_20_8.UniformMetric
 import Topology_Munkres_2000.Book.Definition_20_8
-import Topology_Munkres_2000.Book.Definition_20_9.UniformMetric
 import Topology_Munkres_2000.Book.Definition_20_9
 import Topology_Munkres_2000.Book.Definition_21_1
 import Topology_Munkres_2000.Book.Definition_21_2
 import Topology_Munkres_2000.Book.Definition_21_3.ClosedUnitDisk
 import Topology_Munkres_2000.Book.Definition_21_3
 import Topology_Munkres_2000.Book.Definition_22_1
-import Topology_Munkres_2000.Book.Definition_22_2.Saturation
 import Topology_Munkres_2000.Book.Definition_22_2
 import Topology_Munkres_2000.Book.Definition_22_3
 import Topology_Munkres_2000.Book.Definition_22_4
@@ -205,7 +198,6 @@ import Topology_Munkres_2000.Book.Definition_26_2
 import Topology_Munkres_2000.Book.Definition_26_3
 import Topology_Munkres_2000.Book.Definition_26_4.Tube
 import Topology_Munkres_2000.Book.Definition_26_4
-import Topology_Munkres_2000.Book.Definition_26_5.FiniteIntersection
 import Topology_Munkres_2000.Book.Definition_26_5
 import Topology_Munkres_2000.Book.Definition_26_6
 import Topology_Munkres_2000.Book.Definition_26_7.PerfectMap
@@ -801,7 +793,6 @@ import Topology_Munkres_2000.Book.Example_32_2.DiagonalSeparation
 import Topology_Munkres_2000.Book.Example_32_2.Separation
 import Topology_Munkres_2000.Book.Example_32_2
 import Topology_Munkres_2000.Book.Example_33_1
-import Topology_Munkres_2000.Book.Example_37_1.EllipticFamily
 import Topology_Munkres_2000.Book.Example_37_1
 import Topology_Munkres_2000.Book.Example_37_2
 import Topology_Munkres_2000.Book.Example_37_3
@@ -809,7 +800,6 @@ import Topology_Munkres_2000.Book.Example_38_1.Compactifications
 import Topology_Munkres_2000.Book.Example_38_1
 import Topology_Munkres_2000.Book.Example_38_2.Compactification
 import Topology_Munkres_2000.Book.Example_38_2
-import Topology_Munkres_2000.Book.Example_38_3.Compactification
 import Topology_Munkres_2000.Book.Example_38_3
 import Topology_Munkres_2000.Book.Example_38_4.Extension
 import Topology_Munkres_2000.Book.Example_38_4.OscillatingExtension
@@ -883,11 +873,9 @@ import Topology_Munkres_2000.Book.Example_53_3
 import Topology_Munkres_2000.Book.Example_53_4.Covering
 import Topology_Munkres_2000.Book.Example_53_4.Doughnut
 import Topology_Munkres_2000.Book.Example_53_4
-import Topology_Munkres_2000.Book.Example_53_5.GridCover
 import Topology_Munkres_2000.Book.Example_53_5
 import Topology_Munkres_2000.Book.Example_53_6.Polar
 import Topology_Munkres_2000.Book.Example_53_6
-import Topology_Munkres_2000.Book.Example_54_1.TurnPaths
 import Topology_Munkres_2000.Book.Example_54_1
 import Topology_Munkres_2000.Book.Example_58_1
 import Topology_Munkres_2000.Book.Example_58_2.PlanarFigureEight
@@ -946,7 +934,6 @@ import Topology_Munkres_2000.Book.Example_7_4
 import Topology_Munkres_2000.Book.Example_7_5
 import Topology_Munkres_2000.Book.Example_80_1
 import Topology_Munkres_2000.Book.Example_81_1.Regular
-import Topology_Munkres_2000.Book.Example_81_1.Transformations
 import Topology_Munkres_2000.Book.Example_81_1
 import Topology_Munkres_2000.Book.Example_81_2
 import Topology_Munkres_2000.Book.Example_81_3.CylinderActions
@@ -2162,8 +2149,8 @@ import Topology_Munkres_2000.Book.Remark_58_1
 import Topology_Munkres_2000.Book.Remark_59_1
 import Topology_Munkres_2000.Book.Remark_60_1.AntipodalCover
 import Topology_Munkres_2000.Book.Remark_60_1.AntipodalParity
-import Topology_Munkres_2000.Book.Remark_60_1.CoefficientBockstein
 import Topology_Munkres_2000.Book.Remark_60_1.CoverTransitionTriangle
+import Topology_Munkres_2000.Book.Remark_60_1.CoefficientBockstein
 import Topology_Munkres_2000.Book.Remark_60_1.DegreeOneCharacters
 import Topology_Munkres_2000.Book.Remark_60_1.EmbeddedSurfaceSection
 import Topology_Munkres_2000.Book.Remark_60_1.IntegralSingularCohomology
@@ -2543,7 +2530,6 @@ import Topology_Munkres_2000.Book.Theorem_74_3.Presentation
 import Topology_Munkres_2000.Book.Theorem_74_3
 import Topology_Munkres_2000.Book.Theorem_74_4.Presentation
 import Topology_Munkres_2000.Book.Theorem_74_4
-import Topology_Munkres_2000.Book.Theorem_75_1.Comparison
 import Topology_Munkres_2000.Book.Theorem_75_1
 import Topology_Munkres_2000.Book.Theorem_75_2.HomotopyPrism
 import Topology_Munkres_2000.Book.Theorem_75_2

@@ -1,6 +1,6 @@
 module
 
-public import Topology_Munkres_2000.Book.Example_38_3.Compactification
+public import Topology_Munkres_2000.Book.Example_38_3
 public import Topology_Munkres_2000.Book.Example_38_4.Extension
 public import Mathlib.Topology.ContinuousMap.Bounded.Basic
 

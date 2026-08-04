@@ -64,7 +64,7 @@ theorem mem_rationalLowerLimitBasis (s : Set ℝ) :
 def rationalLowerLimit : TopologicalSpace ℝ :=
   TopologicalSpace.generateFrom rationalLowerLimitBasis
 
-local instance : TopologicalSpace ℝ := rationalLowerLimit
+local instance instRationalLowerLimitTopology : TopologicalSpace ℝ := rationalLowerLimit
 
 /-- Rational-endpoint half-open intervals form a basis for `rationalLowerLimit`. -/
 theorem rationalLowerLimitBasis_isTopologicalBasis :

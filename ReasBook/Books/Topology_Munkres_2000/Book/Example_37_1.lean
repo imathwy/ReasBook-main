@@ -1,6 +1,6 @@
 module
 
-public import Topology_Munkres_2000.Book.Definition_26_5.FiniteIntersection
+public import Topology_Munkres_2000.Book.Definition_26_5
 public import Mathlib.Analysis.InnerProductSpace.PiL2
 public import Mathlib.Analysis.Convex.StrictConvexBetween
 public import Mathlib.Analysis.InnerProductSpace.Convex
@@ -24,14 +24,25 @@ plane. -/
 def firstCoordinate (x : Plane) : ℝ :=
   x 0
 
+lemma firstCoordinate_apply (x : Plane) : firstCoordinate x = x 0 := by
+  rfl
+
 /-- Support for Example 37.1: projection to the second coordinate of the Euclidean
 plane. -/
 def secondCoordinate (x : Plane) : ℝ :=
   x 1
 
+lemma secondCoordinate_apply (x : Plane) : secondCoordinate x = x 1 := by
+  rfl
+
 /-- Support for Example 37.1: the first focus `p = (1 / 3, 1 / 3)`. -/
 noncomputable def p : Plane :=
   WithLp.toLp 2 ![(1 / 3 : ℝ), (1 / 3 : ℝ)]
+
+lemma p_apply (i : Fin 2) : p i = (1 / 3 : ℝ) := by
+  fin_cases i
+  · norm_num [p, PiLp.toLp_apply]
+  · norm_num [p, PiLp.toLp_apply]
 
 /-- Support for Example 37.1: the second focus `q = (1 / 2, 2 / 3)`. -/
 noncomputable def q : Plane :=
@@ -41,6 +52,10 @@ noncomputable def q : Plane :=
 plane. -/
 def unitSquare : Set Plane :=
   {x | ∀ i, 0 ≤ x i ∧ x i ≤ 1}
+
+lemma mem_unitSquare (x : Plane) :
+    x ∈ unitSquare ↔ ∀ i, 0 ≤ x i ∧ x i ≤ 1 := by
+  rfl
 
 /-- Support for Example 37.1: the filled ellipse with foci `p`, `q` and
 focal-distance bound `c`. -/

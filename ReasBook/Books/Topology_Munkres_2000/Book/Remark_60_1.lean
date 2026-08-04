@@ -5903,7 +5903,7 @@ private lemma antipodalParityCochain_isCocycle :
   rw [antipodalParityCochain_eq_boolCoverParityCochain]
   apply boolCoverParityCochain_isCocycle_of_triangle
   intro simplex
-  exact boolCoverEdgeTransition_triangle quotientMap
+  exact CoverTransitionTriangle.boolCoverEdgeTransition_triangle quotientMap
     quotientMap_isAddQuotientCoveringMap antipodalFiberChoice simplex
 
 /-- Helper for Remark 60.1: the antipodal double cover supplies a mod-two

@@ -1,7 +1,7 @@
 module
 
 public import Topology_Munkres_2000.Book.Definition_66_4.Predicates
-public import Topology_Munkres_2000.Book.Example_54_1.TurnPaths
+public import Topology_Munkres_2000.Book.Example_54_1
 public import Topology_Munkres_2000.Book.Theorem_66_2
 
 public section

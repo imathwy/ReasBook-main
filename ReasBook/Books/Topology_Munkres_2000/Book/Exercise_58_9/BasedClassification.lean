@@ -1,6 +1,6 @@
 module
 
-public import Topology_Munkres_2000.Book.Example_54_1.TurnPaths
+public import Topology_Munkres_2000.Book.Example_54_1
 public import Topology_Munkres_2000.Book.Definition_52_5.Convention
 public import Mathlib.Analysis.Convex.Contractible
 public import Mathlib.Topology.CompactOpen

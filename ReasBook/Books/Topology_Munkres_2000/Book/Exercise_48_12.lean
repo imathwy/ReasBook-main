@@ -1,6 +1,6 @@
 module
 
-public import Topology_Munkres_2000.Book.Definition_20_9.UniformMetric
+public import Topology_Munkres_2000.Book.Definition_20_9
 public import Topology_Munkres_2000.Book.Definition_19_1.BoxTopology
 public import Topology_Munkres_2000.Book.Proposition_21_3.UniformConvergence
 public import Mathlib.Topology.Baire.CompleteMetrizable

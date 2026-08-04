@@ -1,6 +1,6 @@
 module
 
-public import Topology_Munkres_2000.Book.Example_38_3.Compactification
+public import Topology_Munkres_2000.Book.Example_38_3
 
 @[expose] public section
 

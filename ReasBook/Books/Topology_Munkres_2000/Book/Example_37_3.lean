@@ -1,8 +1,8 @@
 module
 
 public import Mathlib.Analysis.Convex.Segment
-public import Topology_Munkres_2000.Book.Definition_26_5.FiniteIntersection
-public import Topology_Munkres_2000.Book.Example_37_1.EllipticFamily
+public import Topology_Munkres_2000.Book.Definition_26_5
+public import Topology_Munkres_2000.Book.Example_37_1
 
 public section
 

@@ -1,6 +1,6 @@
 module
 
-public import Topology_Munkres_2000.Book.Definition_20_8.UniformMetric
+public import Topology_Munkres_2000.Book.Definition_20_8
 
 public section
 
@@ -56,6 +56,11 @@ noncomputable abbrev metricSpace (J : Type u) : MetricSpace (J → ℝ) :=
 /-- The open ball for the uniform metric on `J → ℝ`. -/
 def ball {J : Type u} (x : J → ℝ) (ε : ℝ) : Set (J → ℝ) :=
   {y | (metricSpace J).dist y x < ε}
+
+/-- Membership in a uniform-metric ball is the defining strict distance inequality. -/
+theorem mem_ball {J : Type u} {x y : J → ℝ} {ε : ℝ} :
+    y ∈ ball x ε ↔ (metricSpace J).dist y x < ε := by
+  rfl
 
 /-- The uniform distance is the supremum of the coordinatewise standard bounded real distances. -/
 theorem dist_eq {J : Type u} (x y : J → ℝ) :

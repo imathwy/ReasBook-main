@@ -33,7 +33,7 @@ lemma upperLimit_eq_generateFrom :
 
 -- Local instance justification (noncanonical choice): `ℝ` already has its standard topology,
 -- while this theorem states the basis property for the competing upper-limit topology.
-local instance : TopologicalSpace ℝ := upperLimit
+local instance instUpperLimitTopology : TopologicalSpace ℝ := upperLimit
 
 /-- The intervals in `upperLimitBasis` form a basis for `upperLimit`. -/
 theorem upperLimitBasis_isTopologicalBasis :

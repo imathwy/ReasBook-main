@@ -9,7 +9,7 @@ public section
 
 noncomputable section
 
-namespace AlgebraicTopology
+namespace AlgebraicTopology.CoverTransitionTriangle
 
 open unitInterval
 
@@ -515,4 +515,4 @@ lemma boolCoverEdgeTransition_triangle
         boolCoverEdgeTransition p hp s
           ((TopCat.toSSet.obj (TopCat.of X)).δ 2 simplex) := add_comm _ _
 
-end AlgebraicTopology
+end AlgebraicTopology.CoverTransitionTriangle

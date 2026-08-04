@@ -1,6 +1,6 @@
 module
 
-public import Topology_Munkres_2000.Book.Definition_22_2.Saturation
+public import Topology_Munkres_2000.Book.Definition_22_2
 public import Mathlib.Topology.Maps.Basic
 
 public section
