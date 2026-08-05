@@ -15,8 +15,8 @@ variable [Monad m] [MonadError m] [MonadQuotation m]
 
 
 partial def getCommentString' (pref : String) (hl : Highlighted) : m String := do
-  let str := (← getString hl).trim
-  let str := str.stripPrefix pref |>.stripSuffix "-/" |>.trim
+  let str := (← getString hl).trimAscii.toString
+  let str := (str.dropPrefix pref).dropSuffix "-/" |>.trimAscii |>.toString
   pure str
 where getString : Highlighted → m String
   | .text txt | .unparsed txt => pure txt
@@ -58,7 +58,7 @@ def loadModuleContent (mod : String) (leanProject : System.FilePath := "../ReasB
       let toolchainfile := projectDir / "lean-toolchain"
       if !(← toolchainfile.pathExists) then
         throw <| .userError s!"File {toolchainfile} doesn't exist, couldn't load project"
-      pure (← IO.FS.readFile toolchainfile).trim
+      pure (← IO.FS.readFile toolchainfile).trimAscii.toString
     | some override => pure override
 
   -- Kludge: remove variables introduced by Lake. Clearing out DYLD_LIBRARY_PATH and
@@ -95,7 +95,7 @@ def loadModuleContent (mod : String) (leanProject : System.FilePath := "../ReasB
       }
       if res.exitCode != 0 then
         reportFail projectDir cmd args res
-      IO.FS.readFile res.stdout.trim
+      IO.FS.readFile res.stdout.trimAscii.toString
     finally f.unlock
 
   let parsed ←
@@ -113,7 +113,7 @@ def loadModuleContent (mod : String) (leanProject : System.FilePath := "../ReasB
       match findModuleItemArray? parsed with
       | some json => pure json
       | none =>
-        let sample := if jsonFile.length > 400 then jsonFile.take 400 ++ " ..." else jsonFile
+        let sample := if jsonFile.length > 400 then (jsonFile.take 400).toString ++ " ..." else jsonFile
         throw <| IO.userError s!"Couldn't find a module-item JSON array in literate output. Sample:\n{sample}"
     match json.mapM deJson with
     | .error err =>
@@ -373,7 +373,7 @@ where
     ``(Verso.Doc.ListItem.mk $(← arr (← contents.mapM (ofBlock tms))))
 
   normalizeInternalHref (href : String) : String :=
-    let href := href.trim
+    let href := href.trimAscii.toString
     if href.isEmpty then href
     else if href.startsWith "/" then href
     else if href.startsWith "#" then href

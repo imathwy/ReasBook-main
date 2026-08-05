@@ -14,23 +14,25 @@ package «ReasBook» where
     ⟨`weak.linter.unnecessarySimpa, false⟩
   ]
 
-require mathlib from git
-  "https://github.com/leanprover-community/mathlib4.git" @ "v4.26.0"
-
--- Register doc-gen4's `docs` facet in this main project.
--- Pin to Lean v4.26.0-compatible release so `ReasBook:docs` is available.
+-- Keep documentation and literate extraction on the same Lean release as the
+-- formalization project.
 require «doc-gen4» from git
-  "https://github.com/leanprover/doc-gen4" @ "v4.26.0"
+  "https://github.com/leanprover/doc-gen4" @ "v4.30.0-rc1"
 
-require subverso from git "https://github.com/leanprover/subverso" @ "eb77622e97e942ba2cfe02f60637705fc2d9481b"
-require MD4Lean from git "https://github.com/acmepjz/md4lean" @ "main"
+require subverso from git
+  "https://github.com/leanprover/subverso" @ "52b9dfbd2658408e37ae6e8b72601ddeaaa25a0c"
+require MD4Lean from git
+  "https://github.com/acmepjz/md4lean" @ "6a3fb240133bcb7e1a066fdc784b3fdc304e3fc5"
+
+-- Keep Mathlib last so its dependency pins take precedence over the
+-- documentation packages' transitive pins.
+require mathlib from git
+  "https://github.com/leanprover-community/mathlib4.git" @ "v4.30.0-rc1"
 
 @[default_target]
 lean_lib «ReasBook» where
 
 lean_lib Books where
-
-lean_lib Papers where
 
 lean_exe "literate-extract" where
   root := `LiterateExtract
@@ -50,7 +52,7 @@ module_facet literate mod : System.FilePath := do
       buildFileUnlessUpToDate' (text := true) hlFile <|
         proc {
           cmd := exeFile.toString
-          args :=  #[mod.name.toString, hlFile.toString]
+          args := #[mod.name.toString, hlFile.toString]
           env := ← getAugmentedEnv
         }
       pure hlFile

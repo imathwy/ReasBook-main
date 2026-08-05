@@ -1,9 +1,9 @@
 import Lake
 open Lake DSL
 
-require verso from git "https://github.com/leanprover/verso.git" @ "v4.26.0"
-require subverso from git "https://github.com/leanprover/subverso" @ "eb77622e97e942ba2cfe02f60637705fc2d9481b"
-require MD4Lean from git "https://github.com/acmepjz/md4lean" @ "main"
+require verso from git "https://github.com/leanprover/verso.git" @ "v4.30.0-rc1"
+require subverso from git "https://github.com/leanprover/subverso" @ "52b9dfbd2658408e37ae6e8b72601ddeaaa25a0c"
+require MD4Lean from git "https://github.com/acmepjz/md4lean" @ "6a3fb240133bcb7e1a066fdc784b3fdc304e3fc5"
 
 package "reasbook-site" where
   version := v!"0.1.0"
@@ -14,7 +14,7 @@ lean_lib «ReasBookSite» where
 lean_exe "reasbook-site" where
   root := `ReasBookSite
 
-/-- Root of the main ReasBook project (which defines Books/ and Papers/ modules). -/
+/-- Root of the main ReasBook project containing the published book modules. -/
 def reasbookRoot : System.FilePath := "../ReasBook"
 
 /-- Parse a generated section line of the form: `(`Module.Name, "Title"),`. -/

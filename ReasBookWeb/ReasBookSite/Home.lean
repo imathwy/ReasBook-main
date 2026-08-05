@@ -3,15 +3,16 @@ open Verso Genre Blog
 
 #doc (Page) "ReasBook" =>
 
-This site publishes literate pages generated from the `ReasBook` Lean project.
+This site publishes the Lean formalization of Amir Beck's
+*First-Order Methods in Optimization*.
 
 Use the top navigation to browse:
 
 - `Home`: project overview (this page)
 - `Documentation`: Lean API docs
-- each book/paper `Home` page: overview and links into that specific source
+- the book `Home` page: overview and links to all chapter source directories
 
-When new books, papers, or sections are added, regenerate `ReasBookSite/Sections.lean`
-and `ReasBookSite/RouteTable.lean` with:
+After the book layout changes, regenerate `ReasBookSite/Sections.lean`,
+`ReasBookSite/RouteTable.lean`, and the book home page with:
 
 `python3 scripts/gen_sections.py`

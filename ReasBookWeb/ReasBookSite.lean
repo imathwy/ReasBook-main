@@ -20,8 +20,6 @@ def sidebarFallbackScript : String := r##"
     ? window.__versoSiteRoot
     : "/";
   const siteRootNoSlash = siteRoot.endsWith("/") ? siteRoot.slice(0, -1) : siteRoot;
-  const introBookSlug = "introductiontorealanalysisvolumei_jirilebl_2025";
-
   function trimSlashes(s) {
     return (s || "").replace(/^\/+|\/+$/g, "");
   }
@@ -35,11 +33,7 @@ def sidebarFallbackScript : String := r##"
   }
 
   function normalizeLegacyRoute(rel) {
-    rel = normalizeRoute(rel || "");
-    if (rel.startsWith("chapters/")) {
-      return normalizeRoute("books/" + introBookSlug + "/" + rel);
-    }
-    return rel;
+    return normalizeRoute(rel || "");
   }
 
   function canonicalRelPath(rel) {
@@ -242,7 +236,6 @@ def navLinkRewriteScript : String := r##"
     ? window.__versoSiteRoot
     : "/";
   const siteRootNoSlash = siteRoot.endsWith("/") ? siteRoot.slice(0, -1) : siteRoot;
-  const introBookSlug = "introductiontorealanalysisvolumei_jirilebl_2025";
   const specials = ["#", "mailto:", "tel:"];
 
   function trimSlashes(s) {
@@ -258,11 +251,7 @@ def navLinkRewriteScript : String := r##"
   }
 
   function normalizeLegacyRoute(rel) {
-    rel = normalizeRoute(rel || "");
-    if (rel.startsWith("chapters/")) {
-      return normalizeRoute("books/" + introBookSlug + "/" + rel);
-    }
-    return rel;
+    return normalizeRoute(rel || "");
   }
 
   function isSpecial(href) {
