@@ -148,7 +148,7 @@ If generated artifacts were previously committed, untrack them (without deleting
 
 ## Publications
 
-### Formalization of Optimization, Numerical Linear Algebra
+### Mathematical Formalization
 
 - Wanli Ma, Zichen Wang,  Zaiwen Wen, *A Unified Framework for Formalizing Matrix Decomposition Proofs*. [(Paper)](https://arxiv.org/abs/2607.05874)
 - Chenyi Li, Ziyu Wang, Wanyi He, Yuxuan Wu, Shengyang Xu, Zaiwen Wen. *Formalization of Complexity Analysis of the First-order Optimization Algorithms*, Journal of Automated Reasoning. [(Paper)](https://arxiv.org/abs/2403.11437)
