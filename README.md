@@ -117,7 +117,7 @@ If generated artifacts were previously committed, untrack them (without deleting
 
 ### Formalization Platform
 
-- [ReasLab](https://prove.reaslab.io)
+- [ReasLab](https://reaslab.io)
   - An online Lean formalization platform for collaborative theorem development and verification.
 
 ### Formalization Projects
