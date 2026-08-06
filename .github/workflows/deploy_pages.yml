@@ -22,7 +22,7 @@ concurrency:
 
 jobs:
   discover-projects:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64, reasbook-public]
     outputs:
       version_branches: ${{ steps.collect.outputs.version_branches }}
       version_branch_count: ${{ steps.collect.outputs.version_branch_count }}
@@ -282,7 +282,7 @@ jobs:
       - discover-projects
       - build-branch-sites
     if: always() && needs.build-branch-sites.result == 'success'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64, reasbook-public]
     env:
       VERSION_BRANCHES: ${{ needs.discover-projects.outputs.version_branches }}
     steps:
@@ -344,7 +344,7 @@ jobs:
       - discover-projects
       - merge-branch-sites
     if: always() && needs.merge-branch-sites.result == 'success'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64, reasbook-public]
     outputs:
       pages_artifact_name: ${{ steps.pages_artifact_name.outputs.name }}
     steps:
@@ -474,7 +474,7 @@ jobs:
   deploy:
     needs: assemble-pages-artifact
     if: always() && needs.assemble-pages-artifact.result == 'success'
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64, reasbook-public]
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
