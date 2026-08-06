@@ -18,6 +18,16 @@ ReasBookWeb/Book/
 **/*.bc
 **/*.o
 
+# Python
+__pycache__/
+**/__pycache__/
+*.py[cod]
+
+# Local working/private files (not pushed)
+docs/
+CLAUDE.md
+maintenance/
+
 # OS / editor junk
 .DS_Store
 **/.DS_Store
