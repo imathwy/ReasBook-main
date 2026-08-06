@@ -12,7 +12,7 @@ ReasBook is generated using the tool: [M2F](https://github.com/optsuite/M2F.git)
 | --- | --- | --- | ---: | --- |
 | `v4.32.0` | `v4.32.0` | Empty | 0 / 0 | Passed |
 | `v4.30.0` | `v4.30.0` | Active | 8 / 2 | Passed |
-| `v4.26.0` | `v4.26.0` | Active | 4 / 2 | Passed (content; ProofWidgets JS-widget env issue) |
+| `v4.26.0` | `v4.26.0` | Active | 4 / 2 | Passed |
 
 Status: `Empty` (initialized, no books yet) · `Active` (accepting PRs) · `Frozen` (kept, no new books) · `Archived` (historical only).
 
