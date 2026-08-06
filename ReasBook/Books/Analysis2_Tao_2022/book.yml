@@ -1,0 +1,34 @@
+schema_version: 1
+id: Analysis2_Tao_2022
+title: Analysis II
+authors:
+- Terence Tao
+edition: 4th ed.
+publisher: Hindustan Book Agency / Springer, Singapore
+year: 2022
+isbn: 978-981-19-7284-3
+toolchain: leanprover/lean4:v4.26.0
+mathlib: v4.26.0
+branch: v4.26.0
+contributors:
+- name: Chenyi Li
+- name: Min Cui
+- name: Qiming Dai
+- name: Shu Miao
+- name: Wanli Ma
+  github: wl-ma
+- name: Yi Yuan
+- name: Zichen Wang
+- name: Ziyu Wang
+coverage: 'Chapters 1–8: metric spaces, continuity, uniform convergence, power series,
+  Fourier series, and multivariate differential calculus.'
+statistics:
+  declarations: 2557
+  theorem_lemma_example: 2258
+  other_declarations: 299
+  lean_files: 105
+  lean_lines: 49279
+  proof_completion: 2554/2557
+  sorry: 3
+  admit: 2
+build_command: cd ReasBook && lake build Books.Analysis2_Tao_2022.Book

@@ -1,0 +1,25 @@
+schema_version: 1
+id: IntroductiontoRealAnalysisVolumeI_JiriLebl_2025
+title: Introduction to Real Analysis, Volume I
+authors:
+- Jiri Lebl
+edition: version 6.2
+publisher: null
+year: 2025
+isbn: null
+toolchain: leanprover/lean4:v4.26.0
+mathlib: v4.26.0
+branch: v4.26.0
+contributors:
+- name: Zichen Wang
+coverage: Chapters 0–7 of Introduction to Real Analysis, Volume I (v6.2, May 2025).
+statistics:
+  declarations: 1202
+  theorem_lemma_example: 951
+  other_declarations: 251
+  lean_files: 57
+  lean_lines: 34783
+  proof_completion: 1202/1202
+  sorry: 0
+  admit: 0
+build_command: cd ReasBook && lake build Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Book

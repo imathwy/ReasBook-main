@@ -2,6 +2,33 @@
 
 - Links: [Verso](https://optpku.github.io/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/) | [Documentation](https://optpku.github.io/ReasBook/docs/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Book.html) | [Lean source](./Chapters/)
 
+## Contributors
+
+- Zichen Wang
+
+## Coverage
+
+Chapters 0–7 of Introduction to Real Analysis, Volume I (v6.2, May 2025).
+
+## Statistics
+
+- **Declarations:** 1202 (theorem/lemma/example: 951; other: 251)
+- **Lean code:** 57 `.lean` files, 34783 lines
+- **Proof completion:** 1202/1202 (approx)
+- **Remaining placeholders:** `sorry`: 0; `admit`: 0
+
+## Build
+
+```bash
+cd ReasBook
+lake build Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Book
+```
+
+## Metadata
+
+See [`book.yml`](book.yml).
+
+
 ## Chapter 00
 
 - Section 0.3 ([Verso](https://optpku.github.io/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/section03/)) ([Documentation](https://optpku.github.io/ReasBook/docs/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap00/section03.html)) ([Lean source](./Chapters/Chap00/))

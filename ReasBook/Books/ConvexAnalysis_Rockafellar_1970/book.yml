@@ -1,0 +1,46 @@
+schema_version: 1
+id: ConvexAnalysis_Rockafellar_1970
+title: Convex Analysis
+authors:
+- R. Tyrrell Rockafellar
+edition: null
+publisher: Princeton University Press, Princeton
+year: 1970
+isbn: 0-691-08069-0
+toolchain: leanprover/lean4:v4.26.0
+mathlib: v4.26.0
+branch: v4.26.0
+contributors:
+- name: Changyu Zou
+- name: Chenyi Li
+- name: Guangxuan Pan
+- name: Pengfei Hao
+- name: Qiming Dai
+- name: Shu Miao
+- name: Siyuan Shao
+- name: Suwu Wu
+- name: Wanli Ma
+  github: wl-ma
+- name: Weiran Shi
+- name: Xinyi Guo
+- name: Xuran Sun
+- name: Yifan Bai
+- name: Yijie Wang
+- name: Yunfei Zhang
+- name: Yunxi Duan
+- name: Yuhao Jiang
+- name: Zebo Liu
+- name: Zhiyan Wang
+- name: Zichen Wang
+coverage: 'Chapters 1–4: basic concepts, topological properties, duality correspondences,
+  and applications.'
+statistics:
+  declarations: 3751
+  theorem_lemma_example: 3415
+  other_declarations: 336
+  lean_files: 223
+  lean_lines: 148688
+  proof_completion: 3741/3751
+  sorry: 10
+  admit: 2
+build_command: cd ReasBook && lake build Books.ConvexAnalysis_Rockafellar_1970.Book

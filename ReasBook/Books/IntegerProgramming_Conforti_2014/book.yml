@@ -1,0 +1,29 @@
+schema_version: 1
+id: IntegerProgramming_Conforti_2014
+title: Integer Programming
+authors:
+- Michele Conforti
+- Gerard Cornuejols
+- Giacomo Zambelli
+edition: null
+publisher: Springer, Graduate Texts in Mathematics 271
+year: 2014
+isbn: 978-3-319-11007-3
+toolchain: leanprover/lean4:v4.26.0
+mathlib: v4.26.0
+branch: v4.26.0
+contributors:
+- name: Wanli Ma
+  github: wl-ma
+- name: Zichen Wang
+coverage: Skeleton only — no chapters formalized yet.
+statistics:
+  declarations: 0
+  theorem_lemma_example: 0
+  other_declarations: 0
+  lean_files: 1
+  lean_lines: 2
+  proof_completion: 0/0
+  sorry: 0
+  admit: 0
+build_command: cd ReasBook && lake build Books.IntegerProgramming_Conforti_2014.Book
