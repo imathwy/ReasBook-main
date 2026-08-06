@@ -20,7 +20,6 @@ def sidebarFallbackScript : String := r##"
     ? window.__versoSiteRoot
     : "/";
   const siteRootNoSlash = siteRoot.endsWith("/") ? siteRoot.slice(0, -1) : siteRoot;
-  const introBookSlug = "introductiontorealanalysisvolumei_jirilebl_2025";
 
   function trimSlashes(s) {
     return (s || "").replace(/^\/+|\/+$/g, "");
@@ -34,22 +33,14 @@ def sidebarFallbackScript : String := r##"
     return route;
   }
 
-  function normalizeLegacyRoute(rel) {
-    rel = normalizeRoute(rel || "");
-    if (rel.startsWith("chapters/")) {
-      return normalizeRoute("books/" + introBookSlug + "/" + rel);
-    }
-    return rel;
-  }
-
   function canonicalRelPath(rel) {
     rel = normalizeRoute((rel || "").replace(/^\/+/, ""));
     const keys = ["books/", "papers/", "docs/"];
     for (const key of keys) {
       const i = rel.lastIndexOf(key);
-      if (i > 0) return normalizeLegacyRoute(rel.slice(i));
+      if (i > 0) return normalizeRoute(rel.slice(i));
     }
-    return normalizeLegacyRoute(rel);
+    return rel;
   }
 
   function currentRelPath() {
@@ -242,7 +233,6 @@ def navLinkRewriteScript : String := r##"
     ? window.__versoSiteRoot
     : "/";
   const siteRootNoSlash = siteRoot.endsWith("/") ? siteRoot.slice(0, -1) : siteRoot;
-  const introBookSlug = "introductiontorealanalysisvolumei_jirilebl_2025";
   const specials = ["#", "mailto:", "tel:"];
 
   function trimSlashes(s) {
@@ -255,14 +245,6 @@ def navLinkRewriteScript : String := r##"
     if (route.endsWith(".html")) route = route.slice(0, -5) + "/";
     if (route && !route.endsWith("/")) route += "/";
     return route;
-  }
-
-  function normalizeLegacyRoute(rel) {
-    rel = normalizeRoute(rel || "");
-    if (rel.startsWith("chapters/")) {
-      return normalizeRoute("books/" + introBookSlug + "/" + rel);
-    }
-    return rel;
   }
 
   function isSpecial(href) {
@@ -280,7 +262,7 @@ def navLinkRewriteScript : String := r##"
     rel = trimToLastSegment(rel, "books/");
     rel = trimToLastSegment(rel, "papers/");
     rel = trimToLastSegment(rel, "docs/");
-    return normalizeLegacyRoute(rel);
+    return rel;
   }
 
   function currentRelPath() {

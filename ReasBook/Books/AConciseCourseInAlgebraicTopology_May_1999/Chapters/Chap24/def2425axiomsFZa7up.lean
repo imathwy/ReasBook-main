@@ -1,0 +1,5 @@
+import Books.AConciseCourseInAlgebraicTopology_May_1999.Chapters.Chap24.Definition_24_2_5
+#print axioms ComplexKTheoryPrespectrum.reducedComparison
+#print axioms ComplexKTheoryPrespectrum.reducedTheoryComparison
+#print axioms ComplexKTheoryPrespectrum.unreducedComparison
+#print axioms ComplexKTheoryPrespectrum.unreducedComparison_def

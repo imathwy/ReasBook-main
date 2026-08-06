@@ -14,21 +14,24 @@ package «ReasBook» where
     ⟨`weak.linter.unnecessarySimpa, false⟩
   ]
 
-require mathlib from git
-  "https://github.com/leanprover-community/mathlib4.git" @ "v4.26.0"
-
 -- Register doc-gen4's `docs` facet in this main project.
--- Pin to Lean v4.26.0-compatible release so `ReasBook:docs` is available.
+-- Pin to the Lean v4.29.1-compatible release so `ReasBook:docs` is available.
 require «doc-gen4» from git
-  "https://github.com/leanprover/doc-gen4" @ "v4.26.0"
+  "https://github.com/leanprover/doc-gen4" @ "v4.29.1"
 
-require subverso from git "https://github.com/leanprover/subverso" @ "eb77622e97e942ba2cfe02f60637705fc2d9481b"
+require subverso from git "https://github.com/leanprover/subverso" @ "verso-v4.29.0"
 require MD4Lean from git "https://github.com/acmepjz/md4lean" @ "main"
+
+-- Keep Mathlib last so its transitive dependency versions take precedence.
+require mathlib from git
+  "https://github.com/leanprover-community/mathlib4.git" @ "v4.29.1"
 
 @[default_target]
 lean_lib «ReasBook» where
 
+@[default_target]
 lean_lib Books where
+  globs := #[.submodules `Books]
 
 lean_lib Papers where
 

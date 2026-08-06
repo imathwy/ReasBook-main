@@ -1,0 +1,162 @@
+import Mathlib.AlgebraicTopology.SimplicialSet.Degenerate
+import Mathlib.AlgebraicTopology.SingularSet
+import Mathlib.GroupTheory.FreeAbelianGroup
+import Mathlib.GroupTheory.QuotientGroup.Basic
+
+open CategoryTheory Simplicial
+
+noncomputable section
+
+universe u
+
+-- Semantic recall via `lean_leansearch`: `SSet.nonDegenerate`, `SSet.degenerate`, and `SSet.N`
+-- are the canonical owners for nondegenerate and degenerate simplices of a simplicial set, while
+-- Chapter 16 already uses `singularChainComplexFunctor` for the surrounding singular-chain API.
+
+/-- The type of nondegenerate singular `n`-simplices of `X`. -/
+abbrev nondegenerateSingularSimplex (n : ℕ) (X : TopCat.{u}) :=
+  { σ : (TopCat.toSSet.obj X) _⦋n⦌ // σ ∈ (TopCat.toSSet.obj X).nonDegenerate n }
+
+/-- The free Abelian group on all singular `n`-simplices of `X`. -/
+abbrev singularSimplexGroup (n : ℕ) (X : TopCat.{u}) :=
+  FreeAbelianGroup ((TopCat.toSSet.obj X) _⦋n⦌)
+
+/-- The degenerate singular `n`-simplices of `X`, transported from the canonical simplicial-set
+notion on `TopCat.toSSet.obj X`. -/
+abbrev degenerateSingularSimplex (n : ℕ) (X : TopCat.{u}) :
+    Set ((TopCat.toSSet.obj X) _⦋n⦌) :=
+  (TopCat.toSSet.obj X).degenerate n
+
+/-- Definition 16.1.5. The singular chain group `C_n(X)` is the free Abelian group on the
+nondegenerate singular `n`-simplices of `X`. -/
+abbrev singularChainGroup (n : ℕ) (X : TopCat.{u}) :=
+  FreeAbelianGroup (nondegenerateSingularSimplex n X)
+
+scoped[SingularChainGroup] notation "C[" n "](" X ")" => singularChainGroup n X
+
+open scoped SingularChainGroup
+
+/-- `C[n](X)` is definitionally the free Abelian group on the nondegenerate singular
+`n`-simplices of `X`. -/
+theorem singularChainGroup_def (n : ℕ) (X : TopCat.{u}) :
+    C[n](X) = FreeAbelianGroup (nondegenerateSingularSimplex n X) :=
+  rfl
+
+/-- Project the free Abelian group on all singular `n`-simplices to the free Abelian group on the
+nondegenerate ones by killing degenerate generators. -/
+noncomputable def singularChainGroupProjection (n : ℕ) (X : TopCat.{u}) :
+    singularSimplexGroup n X →+ C[n](X) := by
+  classical
+  exact FreeAbelianGroup.lift fun σ ↦
+    if hσ : σ ∈ (TopCat.toSSet.obj X).nonDegenerate n then
+      FreeAbelianGroup.of ⟨σ, hσ⟩
+    else 0
+
+/-- The projection sends a nondegenerate generator to the corresponding generator of
+`singularChainGroup n X`. -/
+@[simp] theorem singularChainGroupProjection_of
+    (n : ℕ) (X : TopCat.{u}) (σ : (TopCat.toSSet.obj X) _⦋n⦌)
+    (hσ : σ ∈ (TopCat.toSSet.obj X).nonDegenerate n) :
+    singularChainGroupProjection n X (FreeAbelianGroup.of σ) = FreeAbelianGroup.of ⟨σ, hσ⟩ := by
+  simp [singularChainGroupProjection, hσ]
+
+/-- The projection kills degenerate generators. -/
+@[simp] theorem singularChainGroupProjection_of_mem_degenerate
+    (n : ℕ) (X : TopCat.{u}) (σ : (TopCat.toSSet.obj X) _⦋n⦌)
+    (hσ : σ ∈ degenerateSingularSimplex n X) :
+    singularChainGroupProjection n X (FreeAbelianGroup.of σ) = 0 := by
+  have hσ' : σ ∉ (TopCat.toSSet.obj X).nonDegenerate n := by
+    simpa [degenerateSingularSimplex] using
+      ((TopCat.toSSet.obj X).mem_degenerate_iff_notMem_nonDegenerate σ).1 hσ
+  simp [singularChainGroupProjection, hσ']
+
+/-- Include a nondegenerate singular `n`-simplex as an ordinary singular `n`-simplex. -/
+noncomputable def singularChainGroupInclusion (n : ℕ) (X : TopCat.{u}) :
+    C[n](X) →+ singularSimplexGroup n X :=
+  FreeAbelianGroup.lift fun σ ↦ FreeAbelianGroup.of σ.1
+
+/-- The inclusion sends a nondegenerate generator to the corresponding ambient singular simplex.
+-/
+@[simp] theorem singularChainGroupInclusion_of
+    (n : ℕ) (X : TopCat.{u}) (σ : nondegenerateSingularSimplex n X) :
+    singularChainGroupInclusion n X (FreeAbelianGroup.of σ) = FreeAbelianGroup.of σ.1 := by
+  simp [singularChainGroupInclusion]
+
+/-- The inclusion of nondegenerate generators is a right inverse to the projection that kills
+degenerate generators. -/
+theorem singularChainGroupProjection_comp_inclusion (n : ℕ) (X : TopCat.{u}) :
+    (singularChainGroupProjection n X).comp (singularChainGroupInclusion n X) =
+      AddMonoidHom.id (C[n](X)) := by
+  ext σ
+  cases σ with
+  | mk σ hσ =>
+      simp [hσ]
+
+/-- The inclusion of nondegenerate generators is a right inverse to the projection that kills
+degenerate generators. -/
+theorem singularChainGroupProjection_rightInverse (n : ℕ) (X : TopCat.{u}) :
+    Function.RightInverse (singularChainGroupInclusion n X) (singularChainGroupProjection n X) := by
+  intro c
+  exact DFunLike.congr_fun (singularChainGroupProjection_comp_inclusion n X) c
+
+/-- The projection from all singular `n`-simplices onto `C[n](X)` is surjective. -/
+theorem singularChainGroupProjection_surjective (n : ℕ) (X : TopCat.{u}) :
+    Function.Surjective (singularChainGroupProjection n X) := by
+  intro c
+  exact ⟨singularChainGroupInclusion n X c, singularChainGroupProjection_rightInverse n X c⟩
+
+/-- The subgroup of the free Abelian group on all singular `n`-simplices generated by the
+degenerate generators. -/
+def degenerateSingularSimplexSubgroup (n : ℕ) (X : TopCat.{u}) :
+    AddSubgroup (singularSimplexGroup n X) :=
+  AddSubgroup.closure
+    (Set.range fun σ : {σ : (TopCat.toSSet.obj X) _⦋n⦌ // σ ∈ degenerateSingularSimplex n X} ↦
+      FreeAbelianGroup.of σ.1)
+
+/-- The subgroup generated by degenerate singular `n`-simplices is the kernel of the projection to
+`C[n](X)`. -/
+theorem degenerateSingularSimplexSubgroup_eq_ker (n : ℕ) (X : TopCat.{u}) :
+    degenerateSingularSimplexSubgroup n X =
+      (singularChainGroupProjection n X).ker := by
+  classical
+  refine le_antisymm ?_ ?_
+  · refine (AddSubgroup.closure_le _).2 ?_
+    rintro _ ⟨⟨σ, hσ⟩, rfl⟩
+    simpa [AddMonoidHom.mem_ker] using
+      singularChainGroupProjection_of_mem_degenerate n X σ hσ
+  · intro c hc
+    have hcorrection :
+        ∀ c : singularSimplexGroup n X,
+          c - singularChainGroupInclusion n X (singularChainGroupProjection n X c) ∈
+            degenerateSingularSimplexSubgroup n X := by
+      intro c
+      induction c using FreeAbelianGroup.induction_on with
+      | zero =>
+          simp
+      | of σ =>
+          by_cases hσ : σ ∈ degenerateSingularSimplex n X
+          · have hgen : FreeAbelianGroup.of σ ∈ degenerateSingularSimplexSubgroup n X := by
+              refine AddSubgroup.subset_closure ?_
+              exact ⟨⟨σ, hσ⟩, rfl⟩
+            simpa [hσ] using hgen
+          · have hσ' : σ ∈ (TopCat.toSSet.obj X).nonDegenerate n := by
+              simpa [degenerateSingularSimplex] using
+                ((TopCat.toSSet.obj X).mem_nonDegenerate_iff_notMem_degenerate σ).2 hσ
+            simp [singularChainGroupProjection_of n X σ hσ']
+      | neg σ hσcorr =>
+          simpa [sub_eq_add_neg, map_neg, add_assoc, add_left_comm, add_comm] using
+            (degenerateSingularSimplexSubgroup n X).neg_mem hσcorr
+      | add c₁ c₂ hc₁ hc₂ =>
+          simpa [sub_eq_add_neg, map_add, add_assoc, add_left_comm, add_comm] using
+            (degenerateSingularSimplexSubgroup n X).add_mem hc₁ hc₂
+    have hc' : singularChainGroupProjection n X c = 0 := hc
+    simpa [hc'] using hcorrection c
+
+/-- The quotient of the free Abelian group on all singular `n`-simplices by the subgroup generated
+by the degenerate ones is canonically equivalent to `C[n](X)`. -/
+noncomputable def singularChainGroupQuotientEquiv (n : ℕ) (X : TopCat.{u}) :
+    singularSimplexGroup n X ⧸ degenerateSingularSimplexSubgroup n X ≃+ C[n](X) :=
+  QuotientAddGroup.liftEquiv
+    (degenerateSingularSimplexSubgroup n X)
+    (singularChainGroupProjection_surjective n X)
+    (degenerateSingularSimplexSubgroup_eq_ker n X)

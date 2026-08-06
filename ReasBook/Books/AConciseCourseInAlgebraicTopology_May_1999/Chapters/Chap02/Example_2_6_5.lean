@@ -1,0 +1,53 @@
+import Mathlib.Algebra.Category.Grp.Colimits
+import Mathlib.Algebra.Category.Grp.Limits
+import Mathlib.CategoryTheory.Limits.HasLimits
+import Mathlib.GroupTheory.CoprodI
+import Mathlib.Topology.Category.TopCat.Limits.Basic
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+universe v u₁ u₂
+
+open CategoryTheory Limits
+
+variable {ι : Type u₁} {C : Type u₂} [Category.{v} C] (f : ι → C)
+
+/- Example 2.6.5: when a diagram is indexed by a discrete type `ι`, the existence of its colimit
+is expressed by the canonical coproduct class `HasCoproduct f`. -/
+#check (HasCoproduct f : Prop)
+
+/- Dually, the existence of its limit is expressed by the canonical product class
+`HasProduct f`. -/
+#check (HasProduct f : Prop)
+
+variable [HasCoproduct f]
+
+/- The colimit of a discrete diagram is the coproduct object `∐ f`. In sets and topological
+spaces, these recover disjoint unions. -/
+#check (∐ f : C)
+
+variable [HasProduct f]
+
+/- The limit of a discrete diagram is the product object `∏ᶜ f`. In the standard examples, these
+recover Cartesian products. -/
+#check (∏ᶜ f : C)
+
+/- Topological spaces have arbitrary coproducts, giving disjoint unions. -/
+#check (inferInstance : HasCoproducts TopCat)
+
+/- Topological spaces have arbitrary products. -/
+#check (inferInstance : HasProducts TopCat)
+
+/- Abelian groups have arbitrary coproducts; these are direct sums. -/
+#check (inferInstance : HasCoproducts AddCommGrpCat)
+
+/- Abelian groups have arbitrary products. -/
+#check (inferInstance : HasProducts AddCommGrpCat)
+
+/- Groups have arbitrary products, giving Cartesian products in `GrpCat`. -/
+#check (inferInstance : HasProducts GrpCat)
+
+/- For groups, the indexed free product carries the canonical coproduct inclusions
+`Monoid.CoprodI.of`, and its universal property is expressed by `Monoid.CoprodI.lift`. -/
+#check Monoid.CoprodI.of
+#check Monoid.CoprodI.lift

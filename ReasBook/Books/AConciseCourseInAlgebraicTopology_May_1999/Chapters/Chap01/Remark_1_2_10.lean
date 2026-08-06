@@ -1,0 +1,14 @@
+import Mathlib.Tactic.Recall
+import Mathlib.Topology.Homotopy.HomotopyGroup
+
+universe u
+
+open scoped Topology
+
+variable {X : Type u} [TopologicalSpace X] (x : X)
+
+/- Remark 1.2.10: later homotopy groups are organized into the family `π_ n X x`; the
+fundamental group is the first member of this family, so `π_ 1 X x` is canonically identified
+with `FundamentalGroup X x`. -/
+recall HomotopyGroup.pi1EquivFundamentalGroup (x : X) :
+    π_ 1 X x ≃ FundamentalGroup X x

@@ -1,0 +1,19 @@
+import Mathlib.AlgebraicTopology.FundamentalGroupoid.Basic
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+universe u
+
+open Path.Homotopic.Quotient
+
+variable {X : Type u} [TopologicalSpace X] {x y : X}
+
+/- Lemma 1.2.8 (1): a path class followed by its reverse is endpoint-fixed homotopic to the
+constant path at the starting point, so for `γ : Path.Homotopic.Quotient x y`,
+`γ.trans γ.symm = refl x`. -/
+#check (trans_symm : (γ : Path.Homotopic.Quotient x y) → γ.trans γ.symm = refl x)
+
+/- Lemma 1.2.8 (2): the reverse of a path class followed by the original path class is
+endpoint-fixed homotopic to the constant path at the endpoint, so for
+`γ : Path.Homotopic.Quotient x y`, `γ.symm.trans γ = refl y`. -/
+#check (symm_trans : (γ : Path.Homotopic.Quotient x y) → γ.symm.trans γ = refl y)

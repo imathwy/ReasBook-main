@@ -1,8 +1,8 @@
 import Lake
 open Lake DSL
 
-require verso from git "https://github.com/leanprover/verso.git" @ "v4.26.0"
-require subverso from git "https://github.com/leanprover/subverso" @ "eb77622e97e942ba2cfe02f60637705fc2d9481b"
+require verso from git "https://github.com/leanprover/verso.git" @ "v4.29.0"
+require subverso from git "https://github.com/leanprover/subverso" @ "verso-v4.29.0"
 require MD4Lean from git "https://github.com/acmepjz/md4lean" @ "main"
 
 package "reasbook-site" where
@@ -19,19 +19,19 @@ def reasbookRoot : System.FilePath := "../ReasBook"
 
 /-- Parse a generated section line of the form: `(`Module.Name, "Title"),`. -/
 def parseSectionLine? (line : String) : Option (Lean.Name × String) :=
-  let line := line.trim
+  let line := line.trimAscii.toString
   if !line.startsWith "(`" then
     none
   else
     match line.splitOn ", \"" with
     | [lhs, rhs] =>
-      let nameStr := (lhs.drop 2).trim
+      let nameStr := (lhs.drop 2).trimAscii.toString
       if nameStr.isEmpty then
         none
       else
         let titleRaw :=
-          if rhs.endsWith "\")," then rhs.dropRight 3
-          else if rhs.endsWith "\"" then rhs.dropRight 1
+          if rhs.endsWith "\")," then (rhs.dropEnd 3).toString
+          else if rhs.endsWith "\"" then (rhs.dropEnd 1).toString
           else rhs
         some (nameStr.toName, titleRaw.replace "\\\"" "\"")
     | _ => none
@@ -62,7 +62,7 @@ def buildLiterateJsonBatch (pkg : NPackage n) (mods : Array String) : LogIO Unit
   let lakeConfig := if (← lakefile.pathExists) then lakefile else lakefile'
 
   let toolchainFile := pkg.dir / reasbookRoot / "lean-toolchain"
-  let toolchain := (← IO.FS.readFile toolchainFile).trim
+  let toolchain := (← IO.FS.readFile toolchainFile).trimAscii.toString
 
   let f ← IO.FS.Handle.mk lakeConfig .read
   f.lock (exclusive := true)

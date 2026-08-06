@@ -1,0 +1,655 @@
+import Books.AConciseCourseInAlgebraicTopology_May_1999.Chapters.Chap03.Definition_3_2_6
+import Books.AConciseCourseInAlgebraicTopology_May_1999.Chapters.Chap03.Definition_3_2_7
+import Books.AConciseCourseInAlgebraicTopology_May_1999.Chapters.Chap03.Definition_3_7_10
+import Books.AConciseCourseInAlgebraicTopology_May_1999.Chapters.Chap03.Lemma_3_4_5
+import Books.AConciseCourseInAlgebraicTopology_May_1999.Chapters.Chap03.Theorem_3_7_9
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+open CategoryTheory FundamentalGroupoid
+open CategoryTheory.Groupoid.CategoryTheory
+open scoped FundamentalGroup QuotientGroup
+
+universe u
+
+variable {E B : Type u}
+  [TopologicalSpace E] [TopologicalSpace B]
+
+namespace IsPathConnectedCoveringMap
+
+variable {p : C(E, B)}
+
+/-- Helper for Corollary 3.7.11: restricting the identity covering-space endomorphism to a fiber
+gives the identity map. -/
+private theorem coveringSpaceHomToFiberFun_id (b : B) :
+    coveringSpaceHomToFiberFun b (𝟙 (Over.mk (TopCat.ofHom p))) = id := by
+  funext x
+  -- The identity over-morphism acts trivially on the chosen fiber point.
+  apply Subtype.ext
+  rfl
+
+/-- Helper for Corollary 3.7.11: restricting a composite covering-space endomorphism to a fiber
+composes the induced fiber maps in the same order. -/
+private theorem coveringSpaceHomToFiberFun_comp (b : B)
+    (h₁ h₂ : Over.mk (TopCat.ofHom p) ⟶ Over.mk (TopCat.ofHom p)) :
+    coveringSpaceHomToFiberFun b (h₁ ≫ h₂) =
+      coveringSpaceHomToFiberFun b h₂ ∘
+        coveringSpaceHomToFiberFun b h₁ := by
+  funext x
+  -- Composition in the over-category composes the underlying maps on fiber points.
+  apply Subtype.ext
+  rfl
+
+/-- The fiber map induced by a covering-space automorphism is bijective. -/
+-- Proof sketch: the inverse automorphism of the covering induces the inverse map on the fiber
+-- over `p e`, and the two composites are identities because `α.hom ≫ α.inv = 𝟙 _` and
+-- `α.inv ≫ α.hom = 𝟙 _`.
+private theorem coveringSpaceAutFiberMap_bijective
+    (e : E) (α : CoveringSpaceAut p) :
+    Function.Bijective (coveringSpaceHomToFiberFun (p e) α.hom) := by
+  let f := coveringSpaceHomToFiberFun (p e) α.hom
+  let g := coveringSpaceHomToFiberFun (p e) α.inv
+  have hleft : Function.LeftInverse g f := by
+    intro x
+    have hcomp : g ∘ f = id := by
+      -- Restricting `α.hom ≫ α.inv = 𝟙` to the fiber gives a left inverse.
+      calc
+        g ∘ f =
+            coveringSpaceHomToFiberFun (p e) (α.hom ≫ α.inv) := by
+              symm
+              exact coveringSpaceHomToFiberFun_comp (p e) α.hom α.inv
+        _ = coveringSpaceHomToFiberFun (p e) (𝟙 (Over.mk (TopCat.ofHom p))) := by
+              rw [α.hom_inv_id]
+        _ = id := coveringSpaceHomToFiberFun_id (p e)
+    simpa [f, g] using congrFun hcomp x
+  have hright : Function.RightInverse g f := by
+    intro x
+    have hcomp : f ∘ g = id := by
+      -- Restricting `α.inv ≫ α.hom = 𝟙` to the fiber gives a right inverse.
+      calc
+        f ∘ g =
+            coveringSpaceHomToFiberFun (p e) (α.inv ≫ α.hom) := by
+              symm
+              exact coveringSpaceHomToFiberFun_comp (p e) α.inv α.hom
+        _ = coveringSpaceHomToFiberFun (p e) (𝟙 (Over.mk (TopCat.ofHom p))) := by
+              rw [α.inv_hom_id]
+        _ = id := coveringSpaceHomToFiberFun_id (p e)
+    simpa [f, g] using congrFun hcomp x
+  exact ⟨hleft.injective, hright.surjective⟩
+
+/-- The permutation of the fiber over `p e` induced by a covering-space automorphism. -/
+noncomputable def coveringSpaceAutFiberPerm
+    (e : E) (α : CoveringSpaceAut p) :
+    Equiv.Perm (p ⁻¹' {p e}) :=
+  Equiv.ofBijective
+    (coveringSpaceHomToFiberFun (p e) α.hom)
+    (coveringSpaceAutFiberMap_bijective e α)
+
+/-- The identity covering-space automorphism induces the identity permutation on the fiber. -/
+-- Proof sketch: unfold `coveringSpaceAutFiberPerm`; the identity morphism of
+-- `Over.mk (TopCat.ofHom p)` restricts to the identity map on each fiber.
+private theorem coveringSpaceAutFiberPerm_one (e : E) :
+    coveringSpaceAutFiberPerm e (1 : CoveringSpaceAut p) = 1 := by
+  ext x
+  -- The identity covering automorphism restricts to the identity on the fiber.
+  rfl
+
+/-- The permutation induced on the fiber is multiplicative in the covering-space automorphism. -/
+-- Proof sketch: restriction to the fiber respects composition of morphisms in the over-category,
+-- so the permutation attached to `α * β` is the composite of the permutations attached to `α` and
+-- `β`.
+private theorem coveringSpaceAutFiberPerm_mul
+    (e : E) (α β : CoveringSpaceAut p) :
+    coveringSpaceAutFiberPerm e (α * β) =
+      coveringSpaceAutFiberPerm e α * coveringSpaceAutFiberPerm e β := by
+  ext x
+  -- Restriction to the fiber respects composition of covering automorphisms.
+  rfl
+
+/-- Helper for Corollary 3.7.11: membership in the ordinary image subgroup is equivalent to
+membership of the corresponding loop morphism in the image of the induced functor on vertex
+groups. -/
+private theorem mem_fundamentalGroup_range_iff_toPath_mem_mapVertexGroup_range
+    (hp : IsPathConnectedCoveringMap p) (e : E) (γ : FundamentalGroup B (p e)) :
+    γ ∈ (FundamentalGroup.map p e).range ↔
+      γ.toPath ∈
+        (Functor.mapVertexGroup hp.fundamentalGroupoidMap (FundamentalGroupoid.mk e)).range := by
+  constructor
+  · rintro ⟨δ, rfl⟩
+    exact ⟨δ.toPath, rfl⟩
+  · rintro ⟨δ, hδ⟩
+    refine ⟨FundamentalGroup.fromPath δ, ?_⟩
+    simpa using hδ
+
+section
+
+variable [PathConnectedSpace E]
+
+/-- The monodromy action of `π₁(B, p e)` on the fiber over `p e` is pretransitive for a
+path-connected covering space. -/
+-- Proof sketch: given two points in the fiber over `p e`, choose a path in the path-connected
+-- total space joining them. Projecting that path to `B` gives a loop at `p e`, and monodromy
+-- along that loop sends the first point to the second.
+theorem fiberMonodromyMulAction_isPretransitive
+    [hp : IsPathConnectedCoveringMap p] (e : E) :
+    MulAction.IsPretransitive (FundamentalGroup B (p e)) (p ⁻¹' {p e}) := by
+  letI : CategoryTheory.IsConnected (FundamentalGroupoid E) := by
+    refine CategoryTheory.IsConnected.of_any_functor_const_on_obj ?_
+    intro α F x y
+    ext
+    exact CategoryTheory.Discrete.eq_of_hom <|
+      F.map (show x ⟶ y from ⟦PathConnectedSpace.somePath x.as y.as⟧)
+  letI : MulAction (FundamentalGroupoid.mk (p e) ⟶ FundamentalGroupoid.mk (p e))
+      (hp.fundamentalGroupoidMap.Fiber (FundamentalGroupoid.mk (p e))) :=
+    Functor.IsCovering.fiberTranslationMulAction
+      hp.fundamentalGroupoidMap_isCovering (FundamentalGroupoid.mk (p e))
+  letI : MulAction.IsPretransitive
+      (FundamentalGroupoid.mk (p e) ⟶ FundamentalGroupoid.mk (p e))
+      (hp.fundamentalGroupoidMap.Fiber (FundamentalGroupoid.mk (p e))) :=
+    Functor.IsCovering.fiberTranslationMulAction_isPretransitive
+      hp.fundamentalGroupoidMap_isCovering (FundamentalGroupoid.mk (p e))
+  let ξ₀ : hp.fundamentalGroupoidMap.Fiber (FundamentalGroupoid.mk (p e)) :=
+    ⟨FundamentalGroupoid.mk e, rfl⟩
+  let x₀ : p ⁻¹' {p e} := hp.fundamentalGroupoidMapFiberEquiv (p e) ξ₀
+  refine (MulAction.isPretransitive_iff_base x₀).2 ?_
+  intro x
+  let ξ : hp.fundamentalGroupoidMap.Fiber (FundamentalGroupoid.mk (p e)) :=
+    (hp.fundamentalGroupoidMapFiberEquiv (p e)).symm x
+  have hbase :
+      MulAction.IsPretransitive
+          (FundamentalGroupoid.mk (p e) ⟶ FundamentalGroupoid.mk (p e))
+          (hp.fundamentalGroupoidMap.Fiber (FundamentalGroupoid.mk (p e))) ↔
+        ∀ ξ : hp.fundamentalGroupoidMap.Fiber (FundamentalGroupoid.mk (p e)),
+          ∃ δ : FundamentalGroupoid.mk (p e) ⟶ FundamentalGroupoid.mk (p e), δ • ξ₀ = ξ :=
+    MulAction.isPretransitive_iff_base ξ₀
+  rcases hbase.mp inferInstance ξ with ⟨δ, hδ⟩
+  refine ⟨FundamentalGroup.fromPath δ⁻¹, ?_⟩
+  have hsmul :
+      δ • ξ₀ =
+        Functor.IsCovering.fiberTranslationMap
+          hp.fundamentalGroupoidMap_isCovering δ⁻¹ ξ₀ := by
+    change δ • ξ₀ =
+      (Functor.IsCovering.fiberTranslationFunctor
+        hp.fundamentalGroupoidMap_isCovering).map δ⁻¹ ξ₀
+    exact Functor.vertexGroupAction_smul_eq_map_inv
+      (Functor.IsCovering.fiberTranslationFunctor hp.fundamentalGroupoidMap_isCovering)
+      (FundamentalGroupoid.mk (p e)) δ ξ₀
+  have htransport :
+      hp.fundamentalGroupoidMapFiberEquiv (p e)
+          (Functor.IsCovering.fiberTranslationMap
+            hp.fundamentalGroupoidMap_isCovering δ⁻¹ ξ₀) =
+        hp.fiberTranslationMap ((FundamentalGroup.fromPath δ⁻¹).toPath) x₀ := by
+    change hp.fundamentalGroupoidMapFiberEquiv (p e)
+        (Functor.IsCovering.fiberTranslationMap
+          hp.fundamentalGroupoidMap_isCovering ((FundamentalGroup.fromPath δ⁻¹).toPath) ξ₀) =
+      hp.fiberTranslationMap ((FundamentalGroup.fromPath δ⁻¹).toPath) x₀
+    exact fundamentalGroupoidMapFiberEquiv_fiberTranslation hp (p e)
+      (FundamentalGroup.fromPath δ⁻¹) ξ₀
+  calc
+    (FundamentalGroup.fromPath δ⁻¹) • x₀ =
+        hp.fiberTranslationMap ((FundamentalGroup.fromPath δ⁻¹).toPath) x₀ := by
+          rfl
+    _ = hp.fundamentalGroupoidMapFiberEquiv (p e)
+          (Functor.IsCovering.fiberTranslationMap
+            hp.fundamentalGroupoidMap_isCovering δ⁻¹ ξ₀) := htransport.symm
+    _ = hp.fundamentalGroupoidMapFiberEquiv (p e) (δ • ξ₀) := by
+          exact congrArg (hp.fundamentalGroupoidMapFiberEquiv (p e)) hsmul.symm
+    _ = hp.fundamentalGroupoidMapFiberEquiv (p e) ξ := by rw [hδ]
+    _ = x := by simp [ξ]
+
+end
+
+/-- The stabilizer of the distinguished fiber point `e` under monodromy is exactly the image of
+`p_* : π₁(E, e) → π₁(B, p e)`. -/
+-- Proof sketch: a loop in `B` fixes `e` under monodromy precisely when it lifts to a loop in `E`
+-- based at `e`, which is the defining membership condition for the image subgroup
+-- `(FundamentalGroup.map p e).range`.
+theorem fiberMonodromyMulAction_stabilizer_eq_fundamentalGroupRange
+    [hp : IsPathConnectedCoveringMap p] (e : E) :
+    MulAction.stabilizer (FundamentalGroup B (p e)) (⟨e, rfl⟩ : p ⁻¹' {p e}) =
+      (FundamentalGroup.map p e).range := by
+  letI : MulAction (FundamentalGroupoid.mk (p e) ⟶ FundamentalGroupoid.mk (p e))
+      (hp.fundamentalGroupoidMap.Fiber (FundamentalGroupoid.mk (p e))) :=
+    Functor.IsCovering.fiberTranslationMulAction
+      hp.fundamentalGroupoidMap_isCovering (FundamentalGroupoid.mk (p e))
+  let x₀ : p ⁻¹' {p e} := ⟨e, rfl⟩
+  let ξ₀ : hp.fundamentalGroupoidMap.Fiber (FundamentalGroupoid.mk (p e)) :=
+    ⟨FundamentalGroupoid.mk e, rfl⟩
+  have hstab_groupoid :
+      MulAction.stabilizer (FundamentalGroupoid.mk (p e) ⟶ FundamentalGroupoid.mk (p e)) ξ₀ =
+        (Functor.mapVertexGroup hp.fundamentalGroupoidMap (FundamentalGroupoid.mk e)).range := by
+    -- The categorical fiber-translation stabilizer is the image of the upstairs vertex group.
+    simpa [ξ₀] using
+      (Functor.IsCovering.fiberTranslation_basepoint_stabilizer_eq_mapVertexGroup_range
+        hp.fundamentalGroupoidMap_isCovering (FundamentalGroupoid.mk e))
+  ext γ
+  let δ : FundamentalGroupoid.mk (p e) ⟶ FundamentalGroupoid.mk (p e) := γ.toPath
+  constructor
+  · intro hγ
+    rw [MulAction.mem_stabilizer_iff] at hγ
+    have hsmul :
+        δ⁻¹ • ξ₀ =
+          Functor.IsCovering.fiberTranslationMap
+            hp.fundamentalGroupoidMap_isCovering δ ξ₀ := by
+      change δ⁻¹ • ξ₀ =
+        (Functor.IsCovering.fiberTranslationFunctor
+          hp.fundamentalGroupoidMap_isCovering).map δ ξ₀
+      simpa using Functor.vertexGroupAction_smul_eq_map_inv
+        (Functor.IsCovering.fiberTranslationFunctor hp.fundamentalGroupoidMap_isCovering)
+        (FundamentalGroupoid.mk (p e)) δ⁻¹ ξ₀
+    have htransport :
+        hp.fundamentalGroupoidMapFiberEquiv (p e)
+            (Functor.IsCovering.fiberTranslationMap
+              hp.fundamentalGroupoidMap_isCovering δ ξ₀) =
+          hp.fiberTranslationMap γ.toPath x₀ := by
+      change hp.fundamentalGroupoidMapFiberEquiv (p e)
+          (Functor.IsCovering.fiberTranslationMap
+            hp.fundamentalGroupoidMap_isCovering γ.toPath ξ₀) =
+        hp.fiberTranslationMap γ.toPath x₀
+      exact fundamentalGroupoidMapFiberEquiv_fiberTranslation hp (p e) γ ξ₀
+    have hfixed_groupoid : δ⁻¹ • ξ₀ = ξ₀ := by
+      apply (hp.fundamentalGroupoidMapFiberEquiv (p e)).injective
+      calc
+        hp.fundamentalGroupoidMapFiberEquiv (p e) (δ⁻¹ • ξ₀) =
+            hp.fundamentalGroupoidMapFiberEquiv (p e)
+              (Functor.IsCovering.fiberTranslationMap
+                hp.fundamentalGroupoidMap_isCovering δ ξ₀) := by
+                  exact congrArg (hp.fundamentalGroupoidMapFiberEquiv (p e)) hsmul
+        _ = hp.fiberTranslationMap γ.toPath x₀ := htransport
+        _ = γ • x₀ := by rfl
+        _ = x₀ := hγ
+        _ = hp.fundamentalGroupoidMapFiberEquiv (p e) ξ₀ := by rfl
+    have hmem_stab : δ⁻¹ ∈
+        MulAction.stabilizer (FundamentalGroupoid.mk (p e) ⟶ FundamentalGroupoid.mk (p e)) ξ₀ := by
+      -- Fixing the distinguished categorical fiber point is stabilizer membership.
+      rwa [MulAction.mem_stabilizer_iff]
+    have hmem_groupoid_inv : δ⁻¹ ∈
+        (Functor.mapVertexGroup hp.fundamentalGroupoidMap (FundamentalGroupoid.mk e)).range := by
+      -- Rewrite categorical stabilizer membership using the standard basepoint theorem.
+      simpa [hstab_groupoid] using hmem_stab
+    have hmem_ordinary_inv : γ⁻¹ ∈ (FundamentalGroup.map p e).range :=
+      (mem_fundamentalGroup_range_iff_toPath_mem_mapVertexGroup_range hp e (γ⁻¹)).2
+        hmem_groupoid_inv
+    -- Inverting the subgroup witness returns membership for `γ` itself.
+    simpa using Subgroup.inv_mem ((FundamentalGroup.map p e).range) hmem_ordinary_inv
+  · intro hγ
+    rw [MulAction.mem_stabilizer_iff]
+    have hmem_ordinary_inv : γ⁻¹ ∈ (FundamentalGroup.map p e).range := by
+      -- The image subgroup is closed under inversion.
+      simpa using Subgroup.inv_mem ((FundamentalGroup.map p e).range) hγ
+    have hmem_groupoid_inv : δ⁻¹ ∈
+        (Functor.mapVertexGroup hp.fundamentalGroupoidMap (FundamentalGroupoid.mk e)).range :=
+      (mem_fundamentalGroup_range_iff_toPath_mem_mapVertexGroup_range hp e (γ⁻¹)).1
+        hmem_ordinary_inv
+    have hmem_stab : δ⁻¹ ∈
+        MulAction.stabilizer (FundamentalGroupoid.mk (p e) ⟶ FundamentalGroupoid.mk (p e)) ξ₀ := by
+      -- Transport the subgroup-membership statement back to the categorical stabilizer.
+      simpa [hstab_groupoid] using hmem_groupoid_inv
+    have hfixed_groupoid : δ⁻¹ • ξ₀ = ξ₀ := by
+      rwa [MulAction.mem_stabilizer_iff] at hmem_stab
+    have hsmul :
+        δ⁻¹ • ξ₀ =
+          Functor.IsCovering.fiberTranslationMap
+            hp.fundamentalGroupoidMap_isCovering δ ξ₀ := by
+      change δ⁻¹ • ξ₀ =
+        (Functor.IsCovering.fiberTranslationFunctor
+          hp.fundamentalGroupoidMap_isCovering).map δ ξ₀
+      simpa using Functor.vertexGroupAction_smul_eq_map_inv
+        (Functor.IsCovering.fiberTranslationFunctor hp.fundamentalGroupoidMap_isCovering)
+        (FundamentalGroupoid.mk (p e)) δ⁻¹ ξ₀
+    have htransport :
+        hp.fundamentalGroupoidMapFiberEquiv (p e)
+            (Functor.IsCovering.fiberTranslationMap
+              hp.fundamentalGroupoidMap_isCovering δ ξ₀) =
+          hp.fiberTranslationMap γ.toPath x₀ := by
+      change hp.fundamentalGroupoidMapFiberEquiv (p e)
+          (Functor.IsCovering.fiberTranslationMap
+            hp.fundamentalGroupoidMap_isCovering γ.toPath ξ₀) =
+        hp.fiberTranslationMap γ.toPath x₀
+      exact fundamentalGroupoidMapFiberEquiv_fiberTranslation hp (p e) γ ξ₀
+    -- Transport the categorical fixed-point statement back to the ordinary monodromy action.
+    calc
+      γ • x₀ = hp.fiberTranslationMap γ.toPath x₀ := by rfl
+      _ = hp.fundamentalGroupoidMapFiberEquiv (p e)
+            (Functor.IsCovering.fiberTranslationMap
+              hp.fundamentalGroupoidMap_isCovering δ ξ₀) := htransport.symm
+      _ = hp.fundamentalGroupoidMapFiberEquiv (p e) (δ⁻¹ • ξ₀) := by
+            exact congrArg (hp.fundamentalGroupoidMapFiberEquiv (p e)) hsmul.symm
+      _ = hp.fundamentalGroupoidMapFiberEquiv (p e) ξ₀ := by rw [hfixed_groupoid]
+      _ = x₀ := by rfl
+
+/-- The permutation induced on the fiber by a covering-space automorphism is equivariant for the
+monodromy action of `π₁(B, p e)`. -/
+-- Proof sketch: `coveringSpaceHomToFiberFun_comm` from Theorem 3.7.9 gives the required
+-- commutation relation with monodromy, and `mem_gSetAut_iff` packages that equivariance as
+-- membership in `gSetAut`.
+theorem coveringSpaceAutFiberPerm_mem_gSetAut
+    [hp : IsPathConnectedCoveringMap p] (e : E) (α : CoveringSpaceAut p) :
+    coveringSpaceAutFiberPerm e α ∈ gSetAut (FundamentalGroup B (p e)) (p ⁻¹' {p e}) := by
+  rw [mem_gSetAut_iff]
+  intro γ x
+  -- The pointwise equivariance relation is exactly monodromy equivariance from Theorem 3.7.9.
+  simpa [coveringSpaceAutFiberPerm] using
+    coveringSpaceHomToFiberFun_comm (p e) α.hom γ x
+
+/-- Automorphisms of the fiber over `p e` as its canonical `π₁(B, p e)`-set. -/
+noncomputable abbrev FiberAut [hp : IsPathConnectedCoveringMap p] (e : E) :=
+  Aut_ (FundamentalGroup B (p e)) (p ⁻¹' {p e})
+
+/-- The canonical homomorphism from covering-space automorphisms to automorphisms of the fiber as
+a `π₁(B, p e)`-set. -/
+noncomputable def coveringSpaceAutToFiberAutHom
+    [hp : IsPathConnectedCoveringMap p] (e : E) :
+    CoveringSpaceAut p →*
+      Aut_ (FundamentalGroup B (p e)) (p ⁻¹' {p e}) :=
+  ((autMulEquivGSetAut (FundamentalGroup B (p e)) (p ⁻¹' {p e})).symm.toMonoidHom).comp
+    { toFun := fun α ↦
+        ⟨coveringSpaceAutFiberPerm e α, coveringSpaceAutFiberPerm_mem_gSetAut e α⟩
+      map_one' := Subtype.ext (coveringSpaceAutFiberPerm_one e)
+      map_mul' := fun α β ↦ Subtype.ext (coveringSpaceAutFiberPerm_mul e α β) }
+
+/-- The canonical homomorphism acts on the fiber by restricting the underlying covering
+automorphism. -/
+@[simp] theorem coveringSpaceAutToFiberAutHom_hom_apply
+    [hp : IsPathConnectedCoveringMap p] (e : E) (α : CoveringSpaceAut p) (x : p ⁻¹' {p e}) :
+    (coveringSpaceAutToFiberAutHom e α).hom.hom x =
+      coveringSpaceHomToFiberFun (p e) α.hom x := by
+  rfl
+
+section
+
+variable [PathConnectedSpace E]
+
+/-- The automorphism group of the fiber monodromy `π₁(B, p e)`-set is canonically identified with
+the Weyl group of the image subgroup `(FundamentalGroup.map p e).range`. -/
+noncomputable def fiberAutMulEquivWeylGroup_fundamentalGroupRange
+    [hp : IsPathConnectedCoveringMap p] (e : E) :
+    Aut_ (FundamentalGroup B (p e)) (p ⁻¹' {p e}) ≃*
+      Subgroup.weylGroup ((FundamentalGroup.map p e).range) :=
+  letI : MulAction.IsPretransitive (FundamentalGroup B (p e)) (p ⁻¹' {p e}) :=
+    fiberMonodromyMulAction_isPretransitive e
+  let x₀ : p ⁻¹' {p e} := ⟨e, rfl⟩
+  let eW :
+      Subgroup.weylGroup (MulAction.stabilizer (FundamentalGroup B (p e)) x₀) ≃*
+        Aut_ (FundamentalGroup B (p e)) (p ⁻¹' {p e}) :=
+    weylGroup_stabilizer_mulEquiv_aut x₀
+  eW.symm.trans
+    (MulEquiv.cast (fiberMonodromyMulAction_stabilizer_eq_fundamentalGroupRange e))
+
+end
+
+section
+
+variable [PathConnectedSpace E] [LocPathConnectedSpace E]
+
+/-- The canonical homomorphism to fiber `π₁(B, p e)`-set automorphisms is bijective. -/
+-- Proof sketch: Theorem 3.7.9 identifies all morphisms of covering spaces `p ⟶ p` with
+-- equivariant fiber maps. Restricting to invertible morphisms on both sides gives bijectivity on
+-- the corresponding automorphism groups.
+theorem coveringSpaceAutToFiberAutHom_bijective
+    [hp : IsPathConnectedCoveringMap p] (e : E) :
+    Function.Bijective
+      ((coveringSpaceAutToFiberAutHom e :
+          CoveringSpaceAut p →* Aut_ (FundamentalGroup B (p e)) (p ⁻¹' {p e}))) := by
+  constructor
+  · intro α β hαβ
+    apply Iso.ext
+    apply (coveringSpaceHomToFiber_bijective (p e)).1
+    apply MulActionHom.ext
+    intro x
+    have hx :
+        (coveringSpaceAutToFiberAutHom e α).hom.hom x =
+          (coveringSpaceAutToFiberAutHom e β).hom.hom x := by
+      simpa using
+        congrArg
+          (fun φ : Aut_ (FundamentalGroup B (p e)) (p ⁻¹' {p e}) ↦ φ.hom.hom x)
+          hαβ
+    -- Equality of fiber automorphisms gives equality of the restricted covering maps.
+    simpa [coveringSpaceAutToFiberAutHom, coveringSpaceAutFiberPerm, coveringSpaceHomToFiber] using
+      hx
+  · intro (φ : Aut_ (FundamentalGroup B (p e)) (p ⁻¹' {p e}))
+    -- Route correction: lift the inverse fiber automorphism through Theorem 3.7.9 instead of
+    -- rebuilding the Weyl-group argument directly.
+    have hφ_hom_smul :
+        ∀ (γ : FundamentalGroup B (p e)) (x : p ⁻¹' {p e}),
+          φ.hom.hom (γ • x) = γ • (show p ⁻¹' {p e} from φ.hom.hom x) := by
+      intro γ x
+      -- The forward fiber automorphism is equivariant by definition.
+      simpa [Action.ofMulAction_apply] using congrFun (φ.hom.comm γ) x
+    let φhom : (p ⁻¹' {p e}) →[FundamentalGroup B (p e)] (p ⁻¹' {p e}) :=
+      { toFun := φ.hom.hom
+        map_smul' := hφ_hom_smul }
+    have hφ_inv_smul :
+        ∀ (γ : FundamentalGroup B (p e)) (x : p ⁻¹' {p e}),
+          φ.inv.hom (γ • x) = γ • (show p ⁻¹' {p e} from φ.inv.hom x) := by
+      intro γ x
+      -- The inverse fiber automorphism is equivariant for the same monodromy action.
+      simpa [Action.ofMulAction_apply] using congrFun (φ.inv.comm γ) x
+    let φinv : (p ⁻¹' {p e}) →[FundamentalGroup B (p e)] (p ⁻¹' {p e}) :=
+      { toFun := φ.inv.hom
+        map_smul' := hφ_inv_smul }
+    obtain ⟨h, hh⟩ := (coveringSpaceHomToFiber_bijective (p e)).2 φhom
+    obtain ⟨i, hi⟩ := (coveringSpaceHomToFiber_bijective (p e)).2 φinv
+    have hh_apply (x : p ⁻¹' {p e}) :
+        coveringSpaceHomToFiberFun (p e) h x = φ.hom.hom x := by
+      -- The lifted endomorphism `h` restricts to the given fiber automorphism `φ.hom`.
+      simpa [coveringSpaceHomToFiber] using
+        congrArg
+          (fun ψ : (p ⁻¹' {p e}) →[FundamentalGroup B (p e)] (p ⁻¹' {p e}) ↦ ψ x)
+          hh
+    have hi_apply (x : p ⁻¹' {p e}) :
+        coveringSpaceHomToFiberFun (p e) i x = φ.inv.hom x := by
+      -- Likewise, `i` restricts to the inverse fiber automorphism `φ.inv.hom`.
+      simpa [coveringSpaceHomToFiber] using
+        congrArg
+          (fun ψ : (p ⁻¹' {p e}) →[FundamentalGroup B (p e)] (p ⁻¹' {p e}) ↦ ψ x)
+          hi
+    have hhi : h ≫ i = 𝟙 (Over.mk (TopCat.ofHom p)) := by
+      apply (coveringSpaceHomToFiber_bijective (p e)).1
+      apply MulActionHom.ext
+      intro x
+      -- The lifted maps compose to the identity because `φ.hom` and `φ.inv.hom` are inverse.
+      have hcompose :
+          coveringSpaceHomToFiberFun (p e) (h ≫ i) x =
+            φ.inv.hom (φ.hom.hom x) := by
+        calc
+          coveringSpaceHomToFiberFun (p e) (h ≫ i) x =
+              coveringSpaceHomToFiberFun (p e) i
+                (coveringSpaceHomToFiberFun (p e) h x) := by
+                  simpa [Function.comp] using
+                    congrFun (coveringSpaceHomToFiberFun_comp (p e) h i) x
+          _ = φ.inv.hom (φ.hom.hom x) := by
+                rw [hh_apply x, hi_apply (φ.hom.hom x)]
+      have hidentity : φ.inv.hom (φ.hom.hom x) = x := by
+        simpa [Function.comp] using congrFun (Action.hom_inv_hom φ) x
+      exact hcompose.trans hidentity
+    have hih : i ≫ h = 𝟙 (Over.mk (TopCat.ofHom p)) := by
+      apply (coveringSpaceHomToFiber_bijective (p e)).1
+      apply MulActionHom.ext
+      intro x
+      -- The opposite composite is also the identity because `φ.inv.hom` and `φ.hom` are inverse.
+      have hcompose :
+          coveringSpaceHomToFiberFun (p e) (i ≫ h) x =
+            φ.hom.hom (φ.inv.hom x) := by
+        calc
+          coveringSpaceHomToFiberFun (p e) (i ≫ h) x =
+              coveringSpaceHomToFiberFun (p e) h
+                (coveringSpaceHomToFiberFun (p e) i x) := by
+                  simpa [Function.comp] using
+                    congrFun (coveringSpaceHomToFiberFun_comp (p e) i h) x
+          _ = φ.hom.hom (φ.inv.hom x) := by
+                rw [hi_apply x, hh_apply (φ.inv.hom x)]
+      have hidentity : φ.hom.hom (φ.inv.hom x) = x := by
+        simpa [Function.comp] using congrFun (Action.inv_hom_hom φ) x
+      exact hcompose.trans hidentity
+    have hIso : IsIso h := IsIso.mk ⟨i, hhi, hih⟩
+    refine ⟨asIso h, ?_⟩
+    ext x
+    -- The reconstructed covering automorphism acts on the fiber as the original automorphism `φ`.
+    simpa [coveringSpaceAutToFiberAutHom, coveringSpaceAutFiberPerm, coveringSpaceHomToFiber,
+      CategoryTheory.asIso_hom, φhom] using hh_apply x
+
+/-- The automorphism group of a covering space is canonically isomorphic to the automorphism group
+of its fiber over `p e` as a `π₁(B, p e)`-set. -/
+noncomputable def coveringSpaceAutMulEquivFiberAut
+    [hp : IsPathConnectedCoveringMap p] (e : E) :
+    CoveringSpaceAut p ≃*
+      Aut_ (FundamentalGroup B (p e)) (p ⁻¹' {p e}) :=
+  MulEquiv.ofBijective
+    (coveringSpaceAutToFiberAutHom e)
+    (by
+      simpa using coveringSpaceAutToFiberAutHom_bijective e)
+
+/-- Evaluating the first equivalence agrees with the canonical homomorphism
+`coveringSpaceAutToFiberAutHom`. -/
+theorem coveringSpaceAutMulEquivFiberAut_apply
+    [hp : IsPathConnectedCoveringMap p] (e : E) (α : CoveringSpaceAut p) :
+    coveringSpaceAutMulEquivFiberAut e α =
+      coveringSpaceAutToFiberAutHom e α := rfl
+
+/-- The first equivalence is realized by the canonical homomorphism
+`coveringSpaceAutToFiberAutHom`. -/
+@[simp] theorem coveringSpaceAutMulEquivFiberAut_toMonoidHom
+    [hp : IsPathConnectedCoveringMap p] (e : E) :
+    (coveringSpaceAutMulEquivFiberAut e).toMonoidHom =
+      (coveringSpaceAutToFiberAutHom e :
+        CoveringSpaceAut p →* Aut_ (FundamentalGroup B (p e)) (p ⁻¹' {p e})) := rfl
+
+/-- Corollary 3.7.11 (1): if `G = π₁(B, p e)` and `H = p_*(π₁(E, e))`, then the automorphism
+group of the covering space `p` is canonically isomorphic to the Weyl group `W H`. -/
+noncomputable def coveringSpaceAutMulEquivWeylGroup_fundamentalGroupRange
+    [hp : IsPathConnectedCoveringMap p] (e : E) :
+    CoveringSpaceAut p ≃* Subgroup.weylGroup ((FundamentalGroup.map p e).range) :=
+  (coveringSpaceAutMulEquivFiberAut e).trans
+    (fiberAutMulEquivWeylGroup_fundamentalGroupRange e :
+      Aut_ (FundamentalGroup B (p e)) (p ⁻¹' {p e}) ≃*
+        Subgroup.weylGroup ((FundamentalGroup.map p e).range))
+
+/-- Evaluating the first clause identifies a covering-space automorphism with its Weyl-group
+class through the fiber `π₁(B, p e)`-set. -/
+-- Proof sketch: unfold `coveringSpaceAutMulEquivWeylGroup_fundamentalGroupRange`; the value is
+-- the composite of the covering-automorphism/fiber-action equivalence and the bundled
+-- fiber-action Weyl-group bridge.
+theorem coveringSpaceAutMulEquivWeylGroup_fundamentalGroupRange_apply
+    [hp : IsPathConnectedCoveringMap p] (e : E) (α : CoveringSpaceAut p) :
+    coveringSpaceAutMulEquivWeylGroup_fundamentalGroupRange e α =
+      fiberAutMulEquivWeylGroup_fundamentalGroupRange e
+        (coveringSpaceAutMulEquivFiberAut e α) := rfl
+
+end
+
+end IsPathConnectedCoveringMap
+
+namespace IsRegularCoveringMap
+
+variable {p : C(E, B)} {e : E}
+
+section
+
+variable [PathConnectedSpace E] [LocPathConnectedSpace E]
+
+/-- The quotient `π₁(B, p e) / p_*(π₁(E, e))` attached to a regular covering map. -/
+abbrev fundamentalGroupRangeQuotient (hp : IsRegularCoveringMap p e) :=
+  letI : (FundamentalGroup.map p e).range.Normal := hp.normal_fundamentalGroup_map_range
+  FundamentalGroup B (p e) ⧸ (FundamentalGroup.map p e).range
+
+noncomputable instance (hp : IsRegularCoveringMap p e) :
+    Monoid (fundamentalGroupRangeQuotient hp) := by
+  letI : (FundamentalGroup.map p e).range.Normal := hp.normal_fundamentalGroup_map_range
+  dsimp [fundamentalGroupRangeQuotient]
+  infer_instance
+
+/-- Regular-cover specialization of the Weyl-group description from clause (1). -/
+noncomputable def coveringSpaceAutMulEquivWeylGroup_fundamentalGroupRange
+    (hp : IsRegularCoveringMap p e) :
+    CoveringSpaceAut p ≃* Subgroup.weylGroup ((FundamentalGroup.map p e).range) := by
+  letI : IsPathConnectedCoveringMap p := hp.isPathConnectedCoveringMap
+  exact IsPathConnectedCoveringMap.coveringSpaceAutMulEquivWeylGroup_fundamentalGroupRange e
+
+/-- The Weyl-group/quotient identification attached to a regular covering map. -/
+noncomputable def weylGroupMulEquivFundamentalGroupRangeQuotient
+    (hp : IsRegularCoveringMap p e) :
+    Subgroup.weylGroup ((FundamentalGroup.map p e).range) ≃*
+      fundamentalGroupRangeQuotient hp := by
+  letI : (FundamentalGroup.map p e).range.Normal := hp.normal_fundamentalGroup_map_range
+  simpa [fundamentalGroupRangeQuotient] using
+    (Subgroup.weylGroupMulEquivQuotientOfNormal ((FundamentalGroup.map p e).range))
+
+/-- Corollary 3.7.11 (2): if `p` is regular at `e`, then the automorphism group of the covering
+space `p` is canonically isomorphic to `π₁(B, p e) / p_*(π₁(E, e))`. -/
+noncomputable def coveringSpaceAutMulEquivQuotientFundamentalGroupRange
+    (hp : IsRegularCoveringMap p e) :
+    CoveringSpaceAut p ≃* fundamentalGroupRangeQuotient hp :=
+  (coveringSpaceAutMulEquivWeylGroup_fundamentalGroupRange hp).trans
+    (weylGroupMulEquivFundamentalGroupRangeQuotient hp)
+
+/-- Evaluating the second clause factors through the Weyl-group description and then the quotient
+by the normal image subgroup. -/
+-- Proof sketch: unfold `coveringSpaceAutMulEquivQuotientFundamentalGroupRange`; its value is the
+-- application of `weylGroupMulEquivQuotientOfNormal` to the Weyl-group class from the first
+-- clause.
+theorem coveringSpaceAutMulEquivQuotientFundamentalGroupRange_apply
+    (hp : IsRegularCoveringMap p e) (α : CoveringSpaceAut p) :
+    coveringSpaceAutMulEquivQuotientFundamentalGroupRange hp α =
+      weylGroupMulEquivFundamentalGroupRangeQuotient hp
+        (coveringSpaceAutMulEquivWeylGroup_fundamentalGroupRange hp α) := rfl
+
+end
+
+end IsRegularCoveringMap
+
+namespace IsUniversalCoveringMap
+
+variable {p : C(E, B)}
+
+/-- A universal covering map is regular at every chosen basepoint. -/
+-- Proof sketch: the image subgroup `p_*(π₁(E, e))` is trivial for a universal covering, hence
+-- normal, so the regularity condition follows immediately.
+theorem isRegularCoveringMap (hp : IsUniversalCoveringMap p) (e : E) :
+    IsRegularCoveringMap p e := by
+  have hbot : (FundamentalGroup.map p e).range = ⊥ := hp.fundamentalGroup_map_range_eq_bot e
+  refine ⟨hp.isPathConnectedCoveringMap, ?_⟩
+  -- The trivial subgroup is normal, so the regularity condition is automatic.
+  exact hbot ▸ Subgroup.normal_bot
+
+section
+
+variable [LocPathConnectedSpace E]
+
+/-- The quotient from clause (2) reduces to `π₁(B, p e)` for a universal covering map. -/
+noncomputable def fundamentalGroupRangeQuotientMulEquivFundamentalGroup
+    (hp : IsUniversalCoveringMap p) (e : E) :
+    IsRegularCoveringMap.fundamentalGroupRangeQuotient (isRegularCoveringMap hp e) ≃*
+      FundamentalGroup B (p e) := by
+  letI : (FundamentalGroup.map p e).range.Normal :=
+    (isRegularCoveringMap hp e).normal_fundamentalGroup_map_range
+  simpa [IsRegularCoveringMap.fundamentalGroupRangeQuotient] using
+    (QuotientGroup.quotientMulEquivOfEq (hp.fundamentalGroup_map_range_eq_bot e)).trans
+      QuotientGroup.quotientBot
+
+/-- Corollary 3.7.11 (3): if `p` is universal, then the automorphism group of the covering space
+`p` is canonically isomorphic to `π₁(B, p e)`. -/
+noncomputable def coveringSpaceAutMulEquivFundamentalGroup
+    (hp : IsUniversalCoveringMap p) (e : E) :
+    CoveringSpaceAut p ≃* FundamentalGroup B (p e) :=
+  letI : PathConnectedSpace E := hp.pathConnectedSpace
+  let h_regular := isRegularCoveringMap hp e
+  (IsRegularCoveringMap.coveringSpaceAutMulEquivQuotientFundamentalGroupRange h_regular).trans
+    (fundamentalGroupRangeQuotientMulEquivFundamentalGroup hp e)
+
+/-- Evaluating the third clause specializes the quotient description along the equality
+`p_*(π₁(E, e)) = ⊥`. -/
+-- Proof sketch: unfold `coveringSpaceAutMulEquivFundamentalGroup`; its value is the regular-case
+-- quotient class, followed by the quotient identifications for the trivial subgroup.
+theorem coveringSpaceAutMulEquivFundamentalGroup_apply
+    (hp : IsUniversalCoveringMap p) (e : E) (α : CoveringSpaceAut p) :
+    coveringSpaceAutMulEquivFundamentalGroup hp e α =
+      fundamentalGroupRangeQuotientMulEquivFundamentalGroup hp e
+        (IsRegularCoveringMap.coveringSpaceAutMulEquivQuotientFundamentalGroupRange
+          (isRegularCoveringMap hp e) α) := by
+  letI : PathConnectedSpace E := hp.pathConnectedSpace
+  rfl
+
+end
+
+end IsUniversalCoveringMap

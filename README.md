@@ -1,109 +1,73 @@
 # ReasBook
 
-**ReasBook** is a Lean 4 project for formalizing mathematics from textbooks and research papers.
-The goal is to preserve the structure of original references while producing machine-checkable proofs.
-We welcome collaboration from researchers, students, and practitioners.
+**ReasBook** is a Lean 4 project for formalizing mathematics from textbooks and
+research papers while preserving the structure of the original references.
+The formalizations are generated and maintained with
+[M2F](https://github.com/optsuite/M2F).
 
-ReasBook is generated using the tool: [M2F](https://github.com/optsuite/M2F.git).
+This submission branch contains the Lean formalization of J. Peter May's
+*A Concise Course in Algebraic Topology* (University of Chicago Press, 1999).
 
-## Current Coverage
+## Current Book
 
-> Note: `Documentation` is currently maintained and validated for Tao's *Analysis II*.
-> For other books, full aggregation in `Documentation` may temporarily cause naming conflicts.
+- [J. Peter May, *A Concise Course in Algebraic Topology* (1999)](./ReasBook/Books/AConciseCourseInAlgebraicTopology_May_1999/)
+  - Contributor: Ze Yuan
+  - Lean: 4.29.1
+  - Mathlib: `5e932f97dd25535344f80f9dd8da3aab83df0fe6`
+  - Coverage: 25 chapters, 159 numbered sections, and 1116 migrated source modules
+  - Items: 985 total; 732 (74.3%) have no `sorry` in their main labeled statements
+  - Remaining main-statement proof debt: 253 items, comprising 364 labeled declarations
 
-### Books
-- [Terence Tao, *Analysis II*, 4th ed., Hindustan Book Agency / Springer, Singapore, 2022, ISBN 978-981-19-7284-3.](./ReasBook/Books/Analysis2_Tao_2022/)
-  - Contributors: Chenyi Li, Min Cui, Qiming Dai, Shu Miao, Wanli Ma, Yi Yuan, Zichen Wang, Ziyu Wang.
-  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/Books/Analysis2_Tao_2022/Book.html) | [Lean source](./ReasBook/Books/Analysis2_Tao_2022/Chapters/) | [Verso](https://optpku.github.io/ReasBook/books/analysis2_tao_2022/)
-- [R. Tyrrell Rockafellar, *Convex Analysis*, Princeton University Press, Princeton, 1970, ISBN 0-691-08069-0.](./ReasBook/Books/ConvexAnalysis_Rockafellar_1970/)
-  - Contributors: Changyu Zou, Chenyi Li, Guangxuan Pan, Pengfei Hao, Qiming Dai, Shu Miao, Siyuan Shao, Suwan Wu, Wanli Ma, Weiran Shi, Xinyi Guo, Xuran Sun, Yifan Bai, Yijie Wang, Yunfei Zhang, Yunxi Duan, Yuhao Jiang, Zebo Liu, Zhiyan Wang, Zichen Wang.
-  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/Books/ConvexAnalysis_Rockafellar_1970/Book.html) | [Lean source](./ReasBook/Books/ConvexAnalysis_Rockafellar_1970/Chapters/) | [Verso](https://optpku.github.io/ReasBook/books/convexanalysis_rockafellar_1970/)
-- [Jiri Lebl, *Introduction to Real Analysis, Volume I*, version 6.2, May 23, 2025, (TBD: publisher/city), (TBD: ISBN).](./ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/)
-  - Contributors: Zichen Wang.
-  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Book.html) | [Lean source](./ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/) | [Verso](https://optpku.github.io/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/)
-- [Michele Conforti, Gerard Cornuejols, Giacomo Zambelli, *Integer Programming*, Graduate Texts in Mathematics 271, Springer, 2014, ISBN 978-3-319-11007-3.](./ReasBook/Books/IntegerProgramming_Conforti_2014/)
-  - Contributors: Binghe Huang, Chenglin Li, Chenrui Yang, Chenxi Liu, Congyuan Lei, Dongye Song, Fuzhi Wang, Haodong Zhang, Jiangnan Song, Jinmin Song, Junze Qiao, Junzhe Lai, Kaiwen He, Liming Han, Lurong Yang, Meng Zhou, Pengqi Lei, Renran Luo, Siyan Chen, Wangqi Liu, Wenxin Zeng, Wanli Ma, Wenxuan Wu, Xinru Zhu, Xu Han, Xutianshi Tao, Yichao Guo, Youyou Qin, Yuhan Zhang, Yushen Guo, Yutong Zhang, Ze Zhai, Zheng Ma, Zhiyong Chen, Zichen Wang, Zichen Xu, Zihao Liu.
-  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/Books/IntegerProgramming_Conforti_2014/Book.html) | [Lean source](./ReasBook/Books/IntegerProgramming_Conforti_2014/Chapters/) | [Verso](https://optpku.github.io/ReasBook/books/integerprogramming_conforti_2014/)
+The migration preserves the source proof bodies. Imports were rewritten only to
+use the ReasBook module prefix. The 1180 existing `sorry` occurrences come from
+the source project; no proofs were replaced with new `sorry` declarations.
 
-### Papers
-- [Yurii Nesterov, "Smooth minimization of non-smooth functions," *Mathematical Programming*, Ser. A 103, 127-152, 2005, DOI: 10.1007/s10107-004-0552-5.](./ReasBook/Papers/SmoothMinimization_Nesterov_2004/)
-  - Contributors: Wanli Ma, Zichen Wang.
-  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/Papers/SmoothMinimization_Nesterov_2004/Paper.html) | [Lean source](./ReasBook/Papers/SmoothMinimization_Nesterov_2004/Sections/) | [Verso](https://optpku.github.io/ReasBook/papers/smoothminimization_nesterov_2004/)
-- [Mohamad Maassarani, "On Some Local Rings," arXiv:2512.19197v1 [math.AC], 2025.](./ReasBook/Papers/OnSomeLocalRings_Maassaran_2025/)
-  - Contributors: Liang Xiao, Haochen Ju, Zichen Wang.
-  - Links: [Documentation](https://optpku.github.io/ReasBook/docs/Papers/OnSomeLocalRings_Maassaran_2025/Paper.html) | [Lean source](./ReasBook/Papers/OnSomeLocalRings_Maassaran_2025/Sections/) | [Verso](https://optpku.github.io/ReasBook/papers/onsomelocalrings_maassaran_2025/)
-
-## Repository Layout
-
-The repository keeps a shared Lean source tree (`ReasBook/`) and a single Verso website project (`ReasBookWeb/`):
+## Source Layout
 
 ```text
 ReasBook/
-├── ReasBook/                         # Main Lean project (books + papers)
-│   ├── Books/
-│   ├── Papers/
-│   ├── ReasBook.lean
-│   ├── LiterateExtract.lean
-│   ├── lakefile.lean
-│   ├── lake-manifest.json
-│   └── lean-toolchain
-├── ReasBookWeb/                      # Verso website project
-│   ├── ReasBookSite/
-│   ├── static_files/
-│   ├── scripts/gen_sections.py
-│   ├── ReasBookSite.lean
-│   ├── lakefile.lean
-│   ├── lake-manifest.json
-│   └── lean-toolchain
-├── .github/workflows/deploy_pages.yml
-├── build.sh
-├── build-web.sh
-├── serve.py
-└── scripts/cleanup-generated.sh
+├── Books/
+│   └── AConciseCourseInAlgebraicTopology_May_1999/
+│       ├── Book.lean
+│       ├── Chapters/
+│       │   ├── Chap01.lean
+│       │   ├── Chap01/
+│       │   └── ...
+│       └── README.md
+├── ReasBook.lean
+├── lakefile.lean
+├── lake-manifest.json
+└── lean-toolchain
 ```
 
-## Naming Convention
+Top-level book directories follow `<Title>_<AuthorLastName>_<Year>`. Lean
+modules in this branch use the prefix
+`Books.AConciseCourseInAlgebraicTopology_May_1999`.
 
-Top-level content directories use:
-
-`<Title>_<AuthorLastName>_<Year>`
-
-Examples:
-
-- `ConvexAnalysis_Rockafellar_1970`
-- `SmoothMinimization_Nesterov_2004`
-- `OnSomeLocalRings_Maassaran_2025`
+The theorem files remain independent compilation units because combining all of
+them into one Lean environment would introduce duplicate declarations. The
+chapter and section modules therefore serve as source indexes. The `Books`
+library is a default target and includes all of its submodules, so the ordinary
+build still checks every migrated source file.
 
 ## Build
-
-### Fast preview (Verso-only, recommended)
 
 From the repository root:
 
 ```bash
-BUILD_DOCS=0 ./build.sh
-./scripts/build_reasbook_web.sh
-python3 serve.py 18000
+cd ReasBook
+lake build
 ```
 
-Open:
-
-- `http://127.0.0.1:18000/ReasBook/`
-
-### Full build (complete pipeline)
+To check one source file directly:
 
 ```bash
-./build-web.sh
-python3 serve.py 18000
+cd ReasBook
+lake env lean Books/AConciseCourseInAlgebraicTopology_May_1999/Chapters/Chap25/Theorem_25_5_2.lean
 ```
 
-This path is much slower than the fast preview mode.
-
-If generated artifacts were previously committed, untrack them (without deleting local files):
-
-```bash
-./scripts/cleanup-generated.sh
-```
+Warnings about `sorry` and existing linter findings are expected. A successful
+default build completes 5042 jobs and covers all JPMay source modules.
 
 ## Sponsors
 

@@ -180,22 +180,15 @@ if not SITE_ROOT.endswith("/"):
 DOCS_BASE = f"{SITE_BASE}docs/"
 
 BOOK_TITLES = {
-    "ConvexAnalysis_Rockafellar_1970": "Convex Analysis (Rockafellar, 1970)",
-    "IntegerProgramming_Conforti_2014": "Integer Programming (Conforti et al., 2014)",
-    "Analysis2_Tao_2022": "Analysis II (Tao, 2022)",
-    "IntroductiontoRealAnalysisVolumeI_JiriLebl_2025": "Introduction to Real Analysis, Volume I (Jiri Lebl, 2025)",
+    "AConciseCourseInAlgebraicTopology_May_1999":
+        "A Concise Course in Algebraic Topology (May, 1999)",
 }
 
-PAPER_TITLES = {
-    "SmoothMinimization_Nesterov_2004": "Smooth Minimization (Nesterov, 2004)",
-    "OnSomeLocalRings_Maassaran_2025": "On Some Local Rings (Maassaran, 2025)",
-}
+PAPER_TITLES = {}
 
 # Temporary literate extraction bypass for pathological modules.
 # Keep this list minimal and remove entries once upstream extraction is fixed.
-DEFAULT_SKIP_MODULES = {
-    "Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02.section09_part12",
-}
+DEFAULT_SKIP_MODULES: set[str] = set()
 
 
 def parse_csv_env_set(name: str) -> set[str]:
@@ -207,200 +200,22 @@ def parse_csv_env_set(name: str) -> set[str]:
 
 SKIP_MODULES = DEFAULT_SKIP_MODULES | parse_csv_env_set("REASBOOK_SKIP_MODULES")
 
-BOOK_CHAPTER_TITLES = {
-    "Analysis2_Tao_2022": {
-        1: "Metric Spaces",
-        2: "Continuous Functions on Metric Spaces",
-        3: "Uniform Convergence",
-        4: "Power Series",
-        5: "Fourier Series",
-        6: "Several Variable Differential Calculus",
-        7: "Lebesgue Measure",
-        8: "Lebesgue Integration",
-    },
-    "ConvexAnalysis_Rockafellar_1970": {
-        1: "Part I: Basic Concepts",
-        2: "Part II: Topological Properties",
-        3: "Part III: Duality Correspondences",
-        4: "Part IV: Representation and Inequalities",
-    },
-    "IntroductiontoRealAnalysisVolumeI_JiriLebl_2025": {
-        1: "Real Numbers",
-        2: "Sequences and Series",
-        3: "Continuous Functions",
-        4: "The Derivative",
-        5: "The Riemann Integral",
-        6: "Sequences of Functions",
-        7: "Metric Spaces",
-    },
-}
+BOOK_CHAPTER_TITLES = {}
 
-BOOK_SECTION_TITLES = {
-    "Analysis2_Tao_2022": {
-        1: {
-            1: "Definitions and Examples",
-            2: "Some Point-Set Topology of Metric Spaces",
-            3: "Relative Topology",
-            4: "Cauchy Sequences and Complete Metric Spaces",
-            5: "Compact Metric Spaces",
-        },
-        2: {
-            1: "Continuous Functions",
-            2: "Continuity and Product Spaces",
-            3: "Continuity and Compactness",
-            4: "Continuity and Connectedness",
-            5: "Topological Spaces",
-        },
-        3: {
-            1: "Limiting Values of Functions",
-            2: "Pointwise and Uniform Convergence",
-            3: "Uniform Convergence and Continuity",
-            4: "The Metric of Uniform Convergence",
-            5: "Series of Functions; the Weierstrass M-Test",
-            6: "Uniform Convergence and Integration",
-            7: "Uniform Convergence and Derivatives",
-            8: "Uniform Approximation by Polynomials",
-        },
-        4: {
-            1: "Formal Power Series",
-            2: "Real Analytic Functions",
-            3: "Abel's Theorem",
-            4: "Multiplication of Power Series",
-            5: "The Exponential and Logarithm Functions",
-            6: "A Digression on Complex Numbers",
-            7: "Trigonometric Functions",
-        },
-        5: {
-            1: "Periodic Functions",
-            2: "Inner Products on Periodic Functions",
-            3: "Trigonometric Polynomials",
-            4: "Periodic Convolutions",
-            5: "The Fourier and Plancherel Theorems",
-        },
-        6: {
-            1: "Linear Transformations",
-            2: "Derivatives in Several Variable Calculus",
-            3: "Partial and Directional Derivatives",
-            4: "The Several Variable Calculus Chain Rule",
-            5: "Double Derivatives and Clairaut's Theorem",
-            6: "The Contraction Mapping Theorem",
-            7: "The Inverse Function Theorem in Several Variable Calculus",
-            8: "The Implicit Function Theorem",
-        },
-        7: {
-            1: "The Goal: Lebesgue Measure",
-            2: "First Attempt: Outer Measure",
-            3: "Outer Measure Is not Additive",
-            4: "Measurable Sets",
-            5: "Measurable Functions",
-        },
-        8: {
-            1: "Simple Functions",
-            2: "Integration of Non-negative Measurable Functions",
-            3: "Integration of Absolutely Integrable Functions",
-            4: "Comparison with the Riemann Integral",
-            5: "Fubini's Theorem",
-        },
-    },
-    "ConvexAnalysis_Rockafellar_1970": {
-        1: {
-            1: "Affine Sets",
-            2: "Convex Sets and Cones",
-            3: "The Algebra of Convex Sets",
-            4: "Convex Functions",
-            5: "Functional Operations",
-        },
-        2: {
-            5: "Functional Operations",
-            6: "Relative Interiors of Convex Sets",
-            7: "Closures of Convex Functions",
-            8: "Recession Cones and Unboundedness",
-            9: "Some Closedness Criteria",
-            10: "Continuity of Convex Functions",
-        },
-        3: {
-            11: "Separation Theorems",
-            12: "Conjugates of Convex Functions",
-            13: "Support Functions",
-            14: "Polars of Convex Sets",
-            15: "Polars of Convex Functions",
-            16: "Dual Operations",
-        },
-        4: {
-            17: "Caratheodory's Theorem",
-            18: "Extreme Points and Faces of Convex Sets",
-            19: "Polyhedral Convex Sets and Functions",
-            20: "Some Applications of Polyhedral Convexity",
-        },
-    },
-    "IntroductiontoRealAnalysisVolumeI_JiriLebl_2025": {
-        1: {
-            1: "Basic Properties",
-            2: "The Set of Real Numbers",
-            3: "Absolute Value and Bounded Functions",
-            4: "Intervals and the Size of R",
-            5: "Decimal Representation of the Reals",
-        },
-        2: {
-            1: "Sequences and Limits",
-            2: "Facts About Limits of Sequences",
-            3: "Limit Superior, Limit Inferior, and Bolzano-Weierstrass",
-            4: "Cauchy Sequences",
-            5: "Series",
-            6: "More on Series",
-        },
-        3: {
-            1: "Limits of Functions",
-            2: "Continuous Functions",
-            3: "Extreme and Intermediate Value Theorems",
-            4: "Uniform Continuity",
-            5: "Limits at Infinity",
-            6: "Monotone Functions and Continuity",
-        },
-        4: {
-            1: "The Derivative",
-            2: "Mean Value Theorem",
-            3: "Taylor's Theorem",
-            4: "Inverse Function Theorem",
-        },
-        5: {
-            1: "The Riemann Integral",
-            2: "Properties of the Integral",
-            3: "Fundamental Theorem of Calculus",
-            4: "The Logarithm and the Exponential",
-            5: "Improper Integrals",
-        },
-        6: {
-            1: "Pointwise and Uniform Convergence",
-            2: "Interchange of Limits",
-            3: "Picard's Theorem",
-        },
-        7: {
-            1: "Metric Spaces",
-            2: "Open and Closed Sets",
-            3: "Sequences and Convergence",
-            4: "Completeness and Compactness",
-            5: "Continuous Functions",
-            6: "Fixed Point Theorem and Picard's Theorem Again",
-        },
-    },
-}
+BOOK_SECTION_TITLES = {}
 
-PAPER_SECTION_TITLES = {
-    "SmoothMinimization_Nesterov_2004": {
-        1: "Introduction",
-        2: "Smooth Approximations of Non-differentiable Functions",
-        3: "Fast Gradient Methods",
-        4: "Applications",
-        5: "Implementation Issues and Modifications",
-    },
-    "OnSomeLocalRings_Maassaran_2025": {
-        1: "Separable Case",
-        2: "Lifting the Isomorphisms",
-    },
-}
+PAPER_SECTION_TITLES = {}
 
-TBD_BOOKS = {"IntegerProgramming_Conforti_2014"}
+TBD_BOOKS: set[str] = set()
+
+# Some imported projects keep theorem files as independent compilation units.
+# Importing every unit into one section can merge incompatible environments
+# (for example, two units may intentionally reuse a helper declaration name).
+# For these books, the generated section modules are source indexes instead:
+# they link every source unit without importing the units into one environment.
+INDEPENDENT_SOURCE_BOOKS = {
+    "AConciseCourseInAlgebraicTopology_May_1999",
+}
 
 SKIP_STEMS = {"utils", "tactics", "scratch", "internal", "helper", "helpers"}
 
@@ -959,16 +774,6 @@ def emit_sections(entries: list[Entry]) -> str:
 
 
 def emit_route_table(entries: list[Entry]) -> str:
-    intro_book_slug = "introductiontorealanalysisvolumei_jirilebl_2025"
-
-    def alias_routes(e: Entry) -> list[str]:
-        if e.category != "books":
-            return []
-        prefix = f"books/{intro_book_slug}/"
-        if e.route.startswith(prefix + "chapters/chap00/"):
-            return [e.route[len(prefix) :]]
-        return []
-
     def work_page_module(e: Entry) -> str:
         if e.category == "books":
             return f"ReasBookSite.WorkPages.Books.{e.book_or_paper}"
@@ -1016,8 +821,6 @@ def emit_route_table(entries: list[Entry]) -> str:
             continue
         target = f"Book.{e.module}"
         lines.append(f"      {lean_string(e.route)} {target}")
-        for alias in alias_routes(e):
-            lines.append(f"      {lean_string(alias)} {target}")
     lines.append("    )")
     lines.append("")
     lines.append("def reasbook_site : Site := site ReasBookSite.Home /")
@@ -1035,8 +838,6 @@ def emit_route_table(entries: list[Entry]) -> str:
             continue
         target = f"Book.{e.module}"
         lines.append(f"  {lean_string(e.route)} {target}")
-        for alias in alias_routes(e):
-            lines.append(f"  {lean_string(alias)} {target}")
     lines.append("")
     lines.append("end ReasBookSite.RouteTable")
     lines.append("")
@@ -1079,6 +880,12 @@ def write_book_readmes(source_root: Path, entries: list[Entry]) -> None:
             by_book.setdefault(e.book_or_paper, []).append(e)
 
     for book in all_books:
+        readme = books_root / book / "README.md"
+        if book in INDEPENDENT_SOURCE_BOOKS and readme.exists():
+            # Independent-source books use a curated source/build README.  Do
+            # not replace it with the generated website-link index.
+            continue
+
         title = book_title(book)
         book_module = f"Books.{book}.Book"
         book_file = books_root / book / "Book.lean"
@@ -1140,7 +947,6 @@ def write_book_readmes(source_root: Path, entries: list[Entry]) -> None:
                 )
             out.append("")
 
-        readme = books_root / book / "README.md"
         write_text_if_changed(readme, "\n".join(out), log=True)
 
 
@@ -1443,9 +1249,6 @@ def upsert_overview_block(path: Path, body_lines: list[str]) -> None:
             last_import = i
     insert_at = last_import + 1 if last_import >= 0 else 0
 
-    while insert_at < len(lines) and lines[insert_at].strip() == "":
-        insert_at += 1
-
     candidate_start = insert_at
     while candidate_start < len(lines) and lines[candidate_start].strip() == "":
         candidate_start += 1
@@ -1459,11 +1262,8 @@ def upsert_overview_block(path: Path, body_lines: list[str]) -> None:
             candidate_body = lines[candidate_start + 1 : candidate_end]
             if is_generated_overview_block(candidate_body):
                 del lines[candidate_start : candidate_end + 1]
-                while candidate_start < len(lines) and lines[candidate_start].strip() == "":
-                    if candidate_start == 0 or lines[candidate_start - 1].strip() == "":
-                        del lines[candidate_start]
-                    else:
-                        break
+                while insert_at < len(lines) and lines[insert_at].strip() == "":
+                    del lines[insert_at]
 
     # Drop stale legacy docstring blocks used by old generated chapter aggregators.
     i = 0
@@ -1485,7 +1285,9 @@ def upsert_overview_block(path: Path, body_lines: list[str]) -> None:
         i += 1
 
     block_lines = ["/-!", *body_lines, "-/"]
-    insert_lines = ["", *block_lines, ""]
+    insert_lines = ([""] if last_import >= 0 else []) + block_lines
+    if insert_at < len(lines):
+        insert_lines.append("")
     lines = lines[:insert_at] + insert_lines + lines[insert_at:]
     new_text = "\n".join(lines)
     new_text = re.sub(r"\n{3,}", "\n\n", new_text)
@@ -1495,6 +1297,102 @@ def upsert_overview_block(path: Path, body_lines: list[str]) -> None:
     if new_text != orig_text:
         path.write_text(new_text, encoding="utf-8")
         print(f"Updated overview in {path}")
+
+
+def replace_leading_imports(path: Path, modules: Iterable[str]) -> None:
+    """Replace the initial import block while preserving the module body."""
+    text = path.read_text(encoding="utf-8")
+    lines = text.splitlines()
+    end = 0
+    saw_import = False
+    while end < len(lines):
+        stripped = lines[end].strip()
+        if stripped.startswith("import "):
+            saw_import = True
+            end += 1
+            continue
+        if stripped == "":
+            end += 1
+            continue
+        break
+
+    if not saw_import and end == 0:
+        body = lines
+    else:
+        body = lines[end:]
+
+    while body and body[0].strip() == "":
+        body.pop(0)
+
+    imports = [f"import {module}" for module in sorted(set(modules))]
+    out = imports + ([""] if imports and body else []) + body
+    content = "\n".join(out).rstrip() + "\n"
+    write_text_if_changed(path, content, log=False)
+
+
+SOURCE_SECTION_RE = re.compile(r"_(\d+)_(\d+)(?:_|$)")
+
+
+def ensure_independent_source_overviews(source_root: Path) -> None:
+    """Create section index modules for books whose sources compile independently."""
+    books_root = source_root / "Books"
+    for book in sorted(INDEPENDENT_SOURCE_BOOKS):
+        chapters_root = books_root / book / "Chapters"
+        if not chapters_root.is_dir():
+            continue
+        for chapter_dir in sorted(chapters_root.iterdir()):
+            chapter_match = CHAPTER_RE.match(chapter_dir.name.lower())
+            if chapter_match is None or not chapter_dir.is_dir():
+                continue
+            chapter_num = int(chapter_match.group(1))
+            section_nums: set[int] = set()
+            for path in chapter_dir.rglob("*.lean"):
+                if path.stem.lower().startswith("section"):
+                    continue
+                for part in path.relative_to(chapter_dir).with_suffix("").parts:
+                    match = SOURCE_SECTION_RE.search(part)
+                    if match is None:
+                        continue
+                    if int(match.group(1)) == chapter_num:
+                        section_nums.add(int(match.group(2)))
+                    break
+            for section_num in sorted(section_nums):
+                section_file = chapter_dir / f"section{section_num:02d}.lean"
+                if not section_file.exists():
+                    write_text_if_changed(section_file, "", log=False)
+                    print(f"Wrote {section_file} (generated section index)")
+
+
+def independent_section_sources(source_root: Path, base: Entry) -> list[tuple[str, str]]:
+    """Return (label, GitHub URL) pairs for an independent section's source units."""
+    chapter_dir = (
+        source_root
+        / "Books"
+        / base.book_or_paper
+        / "Chapters"
+        / f"Chap{base.chapter_num:02d}"
+    )
+    out: list[tuple[str, str]] = []
+    for path in sorted(chapter_dir.rglob("*.lean")):
+        if path.stem.lower().startswith("section"):
+            continue
+        rel = path.relative_to(chapter_dir)
+        match = None
+        for part in rel.with_suffix("").parts:
+            match = SOURCE_SECTION_RE.search(part)
+            if match is not None:
+                break
+        if match is None:
+            continue
+        if (int(match.group(1)), int(match.group(2))) != (base.chapter_num, base.section_num):
+            continue
+        repo_path = path.relative_to(source_root.parent).as_posix()
+        url = (
+            f"https://github.com/{GITHUB_OWNER}/{GITHUB_REPO}/blob/"
+            f"{GITHUB_BRANCH}/{repo_path}"
+        )
+        out.append((rel.with_suffix("").as_posix(), url))
+    return out
 
 
 def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
@@ -1513,6 +1411,13 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
             [e for e in b_entries if (e.section_num > 0 and e.part_num == 0)],
             key=lambda e: (e.chapter_num, e.section_num, e.stem),
         )
+
+        if book in INDEPENDENT_SOURCE_BOOKS:
+            chapter_modules = {
+                f"Books.{book}.Chapters.Chap{e.chapter_num:02d}"
+                for e in section_entries
+            }
+            replace_leading_imports(book_file, chapter_modules)
 
         body: list[str] = []
         body.append(f"Overview page for {book_title(book)}.")
@@ -1568,6 +1473,9 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
                     log=False,
                 )
                 print(f"Wrote {chapter_file} (generated chapter aggregator)")
+
+            if book in INDEPENDENT_SOURCE_BOOKS:
+                replace_leading_imports(chapter_file, (e.module for e in ch_entries))
 
             chapter_route = f"books/{book.lower()}/chapters/chap{chapter_num:02d}/"
             chapter_title = chapter_title_for_book(book, chapter_num)
@@ -1653,6 +1561,40 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
 
         upsert_overview_block(section_file, body)
 
+    for key, base in sorted(base_by_key.items()):
+        if base.book_or_paper not in INDEPENDENT_SOURCE_BOOKS:
+            continue
+
+        section_file = source_root / Path(*base.module.split(".")).with_suffix(".lean")
+        if not section_file.exists():
+            continue
+
+        replace_leading_imports(section_file, [])
+        chapter_route = f"books/{base.book_or_paper.lower()}/chapters/chap{base.chapter_num:02d}/"
+        section_label = readme_label(base) or section_title_from_stem(base.stem)
+        sources = independent_section_sources(source_root, base)
+
+        body = [
+            f"Overview page for {section_label}.",
+            "",
+            "The migrated theorem files are retained as independent source units.",
+            "This overview links them without merging their Lean environments.",
+            "",
+            "Verso links:",
+            f"- [Section overview]({portable_site_link(base.route)})",
+            f"- [Chapter overview]({portable_site_link(chapter_route)})",
+            f"- [Book overview]({portable_site_link(f'books/{base.book_or_paper.lower()}/book/')})",
+            "",
+            "Source units:",
+            "",
+        ]
+        if sources:
+            body.extend(f"- [{label}]({url})" for label, url in sources)
+        else:
+            body.append("- No numbered source unit was found for this section.")
+        body.append("")
+        upsert_overview_block(section_file, body)
+
 
 def main() -> None:
     args = parse_args()
@@ -1673,6 +1615,7 @@ def main() -> None:
         for mod in sorted(SKIP_MODULES):
             print(f"INFO:   skip module: {mod}")
 
+    ensure_independent_source_overviews(source_root)
     entries = collect_entries(source_root)
     write_source_overviews(source_root, entries)
     entries = collect_entries(source_root)
