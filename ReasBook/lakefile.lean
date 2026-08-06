@@ -44,8 +44,6 @@ lean_lib AlgebraicTopology_May_1999 where
   srcDir := "Books"
 lean_lib RiemannSurfaces_Forster_1981 where
   srcDir := "Books"
-lean_lib chapter1_reference_format where
-  srcDir := "Books"
 
 -- Books living under Books/<LibName>/ with a Book.lean entry point
 lean_lib Analysis2_Tao_2022 where
