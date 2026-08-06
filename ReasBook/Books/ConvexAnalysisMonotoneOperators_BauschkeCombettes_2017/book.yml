@@ -1,0 +1,26 @@
+schema_version: 1
+id: ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017
+title: Convex Analysis and Monotone Operator Theory in Hilbert Spaces
+authors:
+- Heinz H. Bauschke
+- Patrick L. Combettes
+edition: 2nd ed.
+publisher: Springer
+year: 2017
+isbn: 978-3-319-48310-8
+toolchain: leanprover/lean4:v4.30.0
+mathlib: v4.30.0
+branch: v4.30.0
+contributors: []
+coverage: Formalized content from Bauschke–Combettes' Convex Analysis and Monotone
+  Operator Theory in Hilbert Spaces.
+statistics:
+  declarations: 4930
+  theorem_lemma_example: 4232
+  other_declarations: 698
+  lean_files: 958
+  lean_lines: 95701
+  proof_completion: 4092/4930
+  sorry: 838
+  admit: 3
+build_command: cd ReasBook && lake build Books.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Book

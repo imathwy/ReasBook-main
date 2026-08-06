@@ -9,6 +9,7 @@ ReasBook/Books/OptimizationResearch/
 # Local documentation and harness state.
 docs/
 .openharness/
+maintenance/
 
 # Local agent configuration requested for this workspace.
 AGENTS.md

@@ -1,0 +1,26 @@
+schema_version: 1
+id: CombinatorialGroupTheory_Magnus_2004
+title: Combinatorial Group Theory
+authors:
+- Wilhelm Magnus
+- Abraham Karrass
+- Donald Solitar
+edition: null
+publisher: Dover Publications
+year: 2004
+isbn: 978-0-486-43830-6
+toolchain: leanprover/lean4:v4.30.0
+mathlib: v4.30.0
+branch: v4.30.0
+contributors: []
+coverage: Formalized content from Magnus–Karrass–Solitar's Combinatorial Group Theory.
+statistics:
+  declarations: 1757
+  theorem_lemma_example: 866
+  other_declarations: 891
+  lean_files: 431
+  lean_lines: 24133
+  proof_completion: 1312/1757
+  sorry: 445
+  admit: 6
+build_command: cd ReasBook && lake build Books.CombinatorialGroupTheory_Magnus_2004.Book

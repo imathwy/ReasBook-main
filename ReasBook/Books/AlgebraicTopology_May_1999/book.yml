@@ -1,0 +1,25 @@
+schema_version: 1
+id: AlgebraicTopology_May_1999
+title: A Concise Course in Algebraic Topology
+authors:
+- J. Peter May
+edition: null
+publisher: University of Chicago Press
+year: 1999
+isbn: 978-0-226-51183-2
+toolchain: leanprover/lean4:v4.30.0
+mathlib: v4.30.0
+branch: v4.30.0
+contributors: []
+coverage: Formalized statements, constructions, and proofs from May's Concise Course
+  in Algebraic Topology.
+statistics:
+  declarations: 1626
+  theorem_lemma_example: 1148
+  other_declarations: 478
+  lean_files: 197
+  lean_lines: 41202
+  proof_completion: 1620/1626
+  sorry: 6
+  admit: 1
+build_command: cd ReasBook && lake build Books.AlgebraicTopology_May_1999.Book

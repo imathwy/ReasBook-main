@@ -1,0 +1,24 @@
+schema_version: 1
+id: RiemannSurfaces_Forster_1981
+title: Lectures on Riemann Surfaces
+authors:
+- Otto Forster
+edition: null
+publisher: Springer
+year: 1981
+isbn: 978-0-387-90617-1
+toolchain: leanprover/lean4:v4.30.0
+mathlib: v4.30.0
+branch: v4.30.0
+contributors: []
+coverage: Formalized content from Forster's Lectures on Riemann Surfaces.
+statistics:
+  declarations: 174
+  theorem_lemma_example: 113
+  other_declarations: 61
+  lean_files: 26
+  lean_lines: 1505
+  proof_completion: 129/174
+  sorry: 45
+  admit: 0
+build_command: cd ReasBook && lake build Books.RiemannSurfaces_Forster_1981.Book
