@@ -1,0 +1,37 @@
+# Example book metadata. Copy to ReasBook/Books/<BookId>/book.yml and fill in.
+# All values must be consistent with the book's README.md and config/toolchains.yml.
+# Unknown fields: use null (do not invent).
+# Validate with: python3 scripts/validate_book_yml.py ReasBook/Books/<BookId>/book.yml
+
+schema_version: 1
+
+id: "<Title>_<AuthorLastName>_<Year>"
+title: "<Full Book Title>"
+authors:
+  - "<Full Author Name>"
+edition: "<Edition or null>"
+publisher: "<Publisher, City or null>"
+year: <YYYY>
+isbn: "<ISBN or null>"
+
+toolchain: "leanprover/lean4:vX.Y.0"
+mathlib: "vX.Y.0"
+branch: "vX.Y.0"
+
+contributors:
+  - name: "<Name>"
+    github: "<GitHub-ID>"
+
+coverage: "<2–4 sentences describing covered scope, or null>"
+
+statistics:
+  declarations: <total>
+  theorem_lemma_example: <count>
+  other_declarations: <count>
+  lean_files: <count>
+  lean_lines: <count>
+  proof_completion: "<done>/<total>"
+  sorry: <count>
+  admit: <count>
+
+build_command: "cd ReasBook && lake build Books.<BookId>.Book"
