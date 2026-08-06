@@ -1,0 +1,20 @@
+# ReasBook toolchain branch registry.
+# Public facts only (schema_version + branches). Strategy/locks live in the private
+# maintenance/config.yml and are intentionally NOT in this file.
+schema_version: 1
+
+branches:
+  - version: v4.26.0
+    branch: v4.26.0
+    status: active
+    initialization: migrated-from-main
+
+  - version: v4.30.0
+    branch: v4.30.0
+    status: active
+    initialization: existing
+
+  - version: v4.32.0
+    branch: v4.32.0
+    status: empty
+    initialization: automatic

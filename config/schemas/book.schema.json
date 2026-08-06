@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://optpku.github.io/ReasBook/config/schemas/book.schema.json",
+  "title": "ReasBook book metadata (book.yml)",
+  "description": "Public schema for ReasBook/Books/<BookId>/book.yml. Unknown fields use null.",
+  "type": "object",
+  "required": ["schema_version", "id", "title", "authors", "toolchain", "mathlib", "branch"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9]+_[A-Za-z]+_[0-9]{4}$",
+      "description": "<Title>_<AuthorLastName>_<Year>"
+    },
+    "title": { "type": "string" },
+    "authors": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "edition": { "type": ["string", "null"] },
+    "publisher": { "type": ["string", "null"] },
+    "year": { "type": ["integer", "null"], "minimum": 1900, "maximum": 2100 },
+    "isbn": { "type": ["string", "null"] },
+    "toolchain": {
+      "type": "string",
+      "pattern": "^leanprover/lean4:v[0-9]+\\.[0-9]+\\.0$",
+      "description": "Must match ReasBook/lean-toolchain"
+    },
+    "mathlib": { "type": "string", "pattern": "^v[0-9]+\\.[0-9]+\\.0$" },
+    "branch": { "type": "string", "pattern": "^v[0-9]+\\.[0-9]+\\.0$" },
+    "contributors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string" },
+          "github": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "coverage": { "type": ["string", "null"] },
+    "statistics": {
+      "type": "object",
+      "properties": {
+        "declarations": { "type": ["integer", "null"], "minimum": 0 },
+        "theorem_lemma_example": { "type": ["integer", "null"], "minimum": 0 },
+        "other_declarations": { "type": ["integer", "null"], "minimum": 0 },
+        "lean_files": { "type": ["integer", "null"], "minimum": 0 },
+        "lean_lines": { "type": ["integer", "null"], "minimum": 0 },
+        "proof_completion": { "type": ["string", "null"], "pattern": "^[0-9]+/[0-9]+$" },
+        "sorry": { "type": ["integer", "null"], "minimum": 0 },
+        "admit": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    },
+    "build_command": { "type": "string" }
+  }
+}
