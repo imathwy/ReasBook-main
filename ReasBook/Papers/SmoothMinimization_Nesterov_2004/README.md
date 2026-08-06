@@ -1,4 +1,33 @@
-# Smooth Minimization (Nesterov, 2004)
+# Smooth Minimization of Non-Smooth Functions
+
+- **Author:** Yurii Nesterov
+- **Venue:** Mathematical Programming, Ser. A 103, 127–152 (2005), DOI: 10.1007/s10107-004-0552-5
+- **Paper ID:** `SmoothMinimization_Nesterov_2004`
+- **Branch/toolchain:** `v4.26.0` / `leanprover/lean4:v4.26.0`
+
+## Contributors
+
+- Wanli Ma (@wl-ma)
+- Zichen Wang
+
+## Coverage
+
+Formalization of the paper's results on smooth minimization of non-smooth functions:
+smoothing techniques and complexity guarantees for first-order methods.
+
+## Statistics
+
+- **Declarations:** 353 (theorem/lemma/example: 303; other: 50)
+- **Lean code:** 27 `.lean` files, 15255 lines
+- **Proof completion:** 353/353 (approx)
+- **Remaining placeholders:** `sorry`: 0; `admit`: 0
+
+## Build
+
+```bash
+cd ReasBook
+lake build Papers.SmoothMinimization_Nesterov_2004.Paper
+```
 
 - Links: [Verso](https://optpku.github.io/ReasBook/papers/smoothminimization_nesterov_2004/) | [Documentation](https://optpku.github.io/ReasBook/docs/Papers/SmoothMinimization_Nesterov_2004/Paper.html) | [Lean source](./Sections/)
 
