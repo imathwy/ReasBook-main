@@ -71,8 +71,10 @@ Add a `README.md` in the book directory with at least:
 - contributor names and GitHub usernames;
 - Lean toolchain;
 - coverage;
-- declarations, lines of code, proof completion, and `sorry`/`admit` counts;
-- build command.
+- declarations, lines of code, proof completion, and `sorry`/`admit` counts.
+
+> Build instructions are the same for every book (see §5: `cd ReasBook && lake build`);
+> individual book READMEs do not need to repeat the build command.
 
 If the repository provides a `book.yml` template and a validation script, also fill in the
 `book.yml` for the book. Use `null` for unknown fields; do not invent values.
@@ -135,7 +137,6 @@ For example:
 - **Contributor:** <Name> (@<GitHub-ID>)
 - **Target branch:** `vX.Y.0`
 - **Lean toolchain:** `<full content of ReasBook/lean-toolchain>`
-- **Build:** `<actual build command>` — Passed
 - **Declarations:** <total> (theorem/lemma/example: <count>; other: <count>)
 - **Lean code:** <file-count> `.lean` files, <line-count> lines
 - **Proof completion:** <done> / <total> = <percent>%
