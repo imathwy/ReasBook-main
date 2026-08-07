@@ -49,7 +49,6 @@
         "sorry": { "type": ["integer", "null"], "minimum": 0 },
         "admit": { "type": ["integer", "null"], "minimum": 0 }
       }
-    },
-    "build_command": { "type": "string" }
+    }
   }
 }
