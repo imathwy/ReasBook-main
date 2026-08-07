@@ -241,10 +241,29 @@ jobs:
               exit 0
             fi
           fi
+          ulimit -s unlimited 2>/dev/null || true
           ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_shared_docs.sh (${BRANCH})" ./scripts/build_reasbook_shared_docs.sh
-          ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_project_docs.sh (${BRANCH})" ./scripts/build_reasbook_project_docs.sh
-          marker="$(git rev-parse HEAD:ReasBook)"
-          printf '%s\n' "$marker" > ReasBook/.lake/build/doc/.reasbook-docs-marker
+          # Per-project docs: build each module separately so one book's doc-gen crash
+          # (e.g. SIGSEGV on a huge book like Klenke) does not fail the whole branch.
+          failed=""
+          cd ReasBook
+          for entry in Books/*/Book.lean Papers/*/Paper.lean; do
+            [ -f "$entry" ] || continue
+            mod="${entry%.lean}"; mod="${mod//\//.}"
+            log="${RUNNER_TEMP:-/tmp}/docgen-${mod//./_}.log"
+            if ! lake -R -Kenv=dev build "$mod:docs" > "$log" 2>&1; then
+              echo "[docs] FAILED: ${mod} (site continues without it)"
+              tail -5 "$log" || true
+              failed="$failed $mod"
+            fi
+          done
+          cd ..
+          if [ -n "$failed" ]; then
+            echo "[docs] doc failures (skipping docs-marker so next run retries):${failed}"
+          else
+            marker="$(git rev-parse HEAD:ReasBook)"
+            printf '%s\n' "$marker" > ReasBook/.lake/build/doc/.reasbook-docs-marker
+          fi
 
       - name: Assemble docs under ReasBookWeb/_site/docs
         timeout-minutes: 20
