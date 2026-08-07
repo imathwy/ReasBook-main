@@ -22,4 +22,3 @@ statistics:
   proof_completion: 1202/1202
   sorry: 0
   admit: 0
-build_command: cd ReasBook && lake build Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Book

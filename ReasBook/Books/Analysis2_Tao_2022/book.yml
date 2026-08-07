@@ -31,4 +31,3 @@ statistics:
   proof_completion: 2554/2557
   sorry: 3
   admit: 2
-build_command: cd ReasBook && lake build Books.Analysis2_Tao_2022.Book

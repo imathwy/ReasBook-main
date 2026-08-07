@@ -43,4 +43,3 @@ statistics:
   proof_completion: 3741/3751
   sorry: 10
   admit: 2
-build_command: cd ReasBook && lake build Books.ConvexAnalysis_Rockafellar_1970.Book
