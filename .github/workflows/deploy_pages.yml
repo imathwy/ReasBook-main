@@ -327,7 +327,9 @@ jobs:
 
           branches = json.loads(os.environ["VERSION_BRANCHES"])
           src_root = Path(".artifacts/branches")
-          dst_root = Path(".site")
+          # NOTE: use a NON-hidden directory name ("site", not ".site") because
+          # actions/upload-artifact@v4 excludes dot-prefixed (hidden) paths by default.
+          dst_root = Path("site")
           if dst_root.exists():
               shutil.rmtree(dst_root)
           dst_root.mkdir(parents=True)
@@ -357,7 +359,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: site-monolith
-          path: .site
+          path: site
           if-no-files-found: error
           retention-days: 1
           compression-level: 6
