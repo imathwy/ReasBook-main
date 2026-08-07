@@ -33,5 +33,3 @@ statistics:
   proof_completion: "<done>/<total>"
   sorry: <count>
   admit: <count>
-
-build_command: "cd ReasBook && lake build Books.<BookId>.Book"
