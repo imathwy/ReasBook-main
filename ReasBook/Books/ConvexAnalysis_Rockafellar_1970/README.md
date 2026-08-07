@@ -48,6 +48,47 @@ lake build Books.ConvexAnalysis_Rockafellar_1970.Book
 See [`book.yml`](book.yml).
 
 
+
+# Convex Analysis (Rockafellar, 1970)
+
+- Links: [Verso](https://optpku.github.io/ReasBook/books/convexanalysis_rockafellar_1970/) | [Documentation](https://optpku.github.io/ReasBook/docs/Books/ConvexAnalysis_Rockafellar_1970/Book.html) | [Lean source](./Chapters/)
+
+
+- Changyu Zou
+- Chenyi Li
+- Guangxuan Pan
+- Pengfei Hao
+- Qiming Dai
+- Shu Miao
+- Siyuan Shao
+- Suwu Wu
+- Wanli Ma (@wl-ma)
+- Weiran Shi
+- Xinyi Guo
+- Xuran Sun
+- Yifan Bai
+- Yijie Wang
+- Yunfei Zhang
+- Yunxi Duan
+- Yuhao Jiang
+- Zebo Liu
+- Zhiyan Wang
+- Zichen Wang
+
+
+Chapters 1–4: basic concepts, topological properties, duality correspondences, and applications.
+
+
+- **Declarations:** 3751 (theorem/lemma/example: 3415; other: 336)
+- **Lean code:** 223 `.lean` files, 148688 lines
+- **Proof completion:** 3741/3751 (approx)
+- **Remaining placeholders:** `sorry`: 10; `admit`: 2
+
+
+
+
+
+
 ## Chapter 01 -- Part I: Basic Concepts
 
 - 1.1 Affine Sets ([Verso](https://optpku.github.io/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap01/section01/)) ([Documentation](https://optpku.github.io/ReasBook/docs/Books/ConvexAnalysis_Rockafellar_1970/Chapters/Chap01/section01.html)) ([Lean source](./Chapters/Chap01/))

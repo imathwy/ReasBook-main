@@ -13,9 +13,44 @@ toolchain: leanprover/lean4:v4.26.0
 mathlib: v4.26.0
 branch: v4.26.0
 contributors:
+- name: Binghe Huang
+- name: Chenglin Li
+- name: Chenrui Yang
+- name: Chenxi Liu
+- name: Congyuan Lei
+- name: Dongye Song
+- name: Fuzhi Wang
+- name: Haodong Zhang
+- name: Jiangnan Song
+- name: Jinmin Song
+- name: Junze Qiao
+- name: Junzhe Lai
+- name: Kaiwen He
+- name: Liming Han
+- name: Lurong Yang
+- name: Meng Zhou
+- name: Pengqi Lei
+- name: Renran Luo
+- name: Siyan Chen
+- name: Wangqi Liu
+- name: Wenxin Zeng
 - name: Wanli Ma
   github: wl-ma
+- name: Wenxuan Wu
+- name: Xinru Zhu
+- name: Xu Han
+- name: Xutianshi Tao
+- name: Yichao Guo
+- name: Youyou Qin
+- name: Yuhan Zhang
+- name: Yushen Guo
+- name: Yutong Zhang
+- name: Ze Zhai
+- name: Zheng Ma
+- name: Zhiyong Chen
 - name: Zichen Wang
+- name: Zichen Xu
+- name: Zihao Liu
 coverage: Skeleton only — no chapters formalized yet.
 statistics:
   declarations: 0
