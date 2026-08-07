@@ -50,10 +50,15 @@ jobs:
           for m in re.finditer(r"^\s*-\s*version:\s*(\S+)\s*$", text, re.MULTILINE):
               branches.append(m.group(1))
           # Keep only branches that actually exist as git refs.
+          # Use origin/<branch> refs: a fresh checkout only has remote-tracking refs,
+          # not local branches named vX.Y.0.
           existing = []
           for b in branches:
               try:
-                  subprocess.run(["git", "rev-parse", "--verify", "--quiet", b], check=True, capture_output=True)
+                  subprocess.run(
+                      ["git", "rev-parse", "--verify", "--quiet", f"origin/{b}"],
+                      check=True, capture_output=True,
+                  )
                   existing.append(b)
               except subprocess.CalledProcessError:
                   pass
@@ -70,7 +75,7 @@ jobs:
               ]:
                   try:
                       out = subprocess.run(
-                          ["git", "ls-tree", "-r", "--name-only", branch, kind_dir],
+                          ["git", "ls-tree", "-r", "--name-only", f"origin/{branch}", kind_dir],
                           check=True, capture_output=True, text=True,
                       ).stdout
                   except subprocess.CalledProcessError:
