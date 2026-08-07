@@ -21,4 +21,3 @@ statistics:
   proof_completion: 129/174
   sorry: 45
   admit: 0
-build_command: cd ReasBook && lake build Books.RiemannSurfaces_Forster_1981.Book

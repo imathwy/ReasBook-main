@@ -23,4 +23,3 @@ statistics:
   proof_completion: 4092/4930
   sorry: 838
   admit: 3
-build_command: cd ReasBook && lake build Books.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Book

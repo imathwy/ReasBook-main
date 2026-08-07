@@ -21,4 +21,3 @@ statistics:
   proof_completion: 3875/6003
   sorry: 2128
   admit: 8
-build_command: cd ReasBook && lake build Books.ProbabilityTheory_Klenke_2020.Book

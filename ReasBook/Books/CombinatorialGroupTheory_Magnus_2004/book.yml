@@ -23,4 +23,3 @@ statistics:
   proof_completion: 1312/1757
   sorry: 445
   admit: 6
-build_command: cd ReasBook && lake build Books.CombinatorialGroupTheory_Magnus_2004.Book

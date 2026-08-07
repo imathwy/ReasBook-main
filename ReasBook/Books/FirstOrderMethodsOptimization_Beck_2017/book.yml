@@ -21,4 +21,3 @@ statistics:
   proof_completion: 3993/4569
   sorry: 576
   admit: 4
-build_command: cd ReasBook && lake build Books.FirstOrderMethodsOptimization_Beck_2017.Book

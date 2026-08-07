@@ -22,4 +22,3 @@ statistics:
   proof_completion: 1620/1626
   sorry: 6
   admit: 1
-build_command: cd ReasBook && lake build Books.AlgebraicTopology_May_1999.Book

@@ -20,15 +20,14 @@ contributors:
 - name: Yi Yuan
 - name: Zichen Wang
 - name: Ziyu Wang
-coverage: 'Chapters 1–8: metric spaces, continuity, uniform convergence, power series,
-  Fourier series, and multivariate differential calculus.'
+coverage: 'Analysis II (Tao): metric spaces, continuity, uniform convergence, power
+  series, Fourier series, and multivariate differential calculus.'
 statistics:
-  declarations: 2557
-  theorem_lemma_example: 2258
-  other_declarations: 299
-  lean_files: 105
-  lean_lines: 49279
-  proof_completion: 2554/2557
-  sorry: 3
+  declarations: 2357
+  theorem_lemma_example: 2060
+  other_declarations: 297
+  lean_files: 102
+  lean_lines: 45269
+  proof_completion: 2357/2357
+  sorry: 0
   admit: 2
-build_command: cd ReasBook && lake build Books.Analysis2_Tao_2022.Book

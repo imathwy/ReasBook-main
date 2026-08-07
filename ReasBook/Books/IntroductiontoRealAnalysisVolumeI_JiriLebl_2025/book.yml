@@ -17,9 +17,8 @@ statistics:
   declarations: 1202
   theorem_lemma_example: 951
   other_declarations: 251
-  lean_files: 57
-  lean_lines: 34783
+  lean_files: 59
+  lean_lines: 34545
   proof_completion: 1202/1202
   sorry: 0
   admit: 0
-build_command: cd ReasBook && lake build Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Book
