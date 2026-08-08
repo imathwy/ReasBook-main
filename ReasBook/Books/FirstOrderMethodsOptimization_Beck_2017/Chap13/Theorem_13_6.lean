@@ -12,20 +12,20 @@ noncomputable section
 universe u
 
 open InnerProductSpace (toDual)
-open scoped FirstOrderSubdifferential Gradient
+open scoped Gradient
 
 /- `prompt_add/` is absent in this workspace, so the statement design is checked against the local
 owners for the actual mathematics of Theorem 13.6:
 
 - `generalized_conditional_gradient_norm` and Lemma 13.5 for the Chapter 13 gap quantity `S(x)`;
-- `fenchelYoung_inequality` and `pairing_eq_add_conjugate_iff_mem_subdifferential` for the Chapter 4
+- `fenchel_inequality` and `pairing_eq_add_conjugate_iff_mem_subdifferential` for the Chapter 4
   Fenchel/Fenchel--Young characterization;
 - `is_stationary_point` for the finite-dimensional Chapter 3 stationarity owner.
 
 This item is `source-facing`. The primitive data is the gap quantity `S[f₀, g](x)` together with
-the `g`-side Fenchel/extendedRealSubdifferential hypotheses actually used by the characterization. Assumption
+the `g`-side Fenchel/subdifferential hypotheses actually used by the characterization. Assumption
 13.1 is not the owner of that characterization: it is only a `bridge/view` that later supplies the
-pointwise differentiability hypothesis needed to rewrite the extendedRealSubdifferential condition as
+pointwise differentiability hypothesis needed to rewrite the subdifferential condition as
 stationarity. -/
 
 section
@@ -57,7 +57,7 @@ theorem generalized_conditional_gradient_norm_nonneg
         g x + conjugate_function g (-toDual ℝ E (∇ f₀ x) : Module.Dual ℝ E) := by
     -- Fenchel's inequality identifies the gap as a translated nonnegative residual.
     simpa [add_comm] using
-      (fenchelYoung_inequality g x (-toDual ℝ E (∇ f₀ x) : Module.Dual ℝ E) hg_proper)
+      (fenchel_inequality g x (-toDual ℝ E (∇ f₀ x) : Module.Dual ℝ E) hg_proper)
   have hresidual :
       (0 : EReal) ≤
         g x + conjugate_function g (-toDual ℝ E (∇ f₀ x) : Module.Dual ℝ E) -
@@ -125,25 +125,22 @@ private lemma generalized_conditional_gradient_norm_eq_zero_iff_fenchel_young_eq
               rw [hpair]
       _ = 0 := by
               simpa [sub_eq_add_neg] using
-                (EReal.sub_self
-                  (x := (((inner ℝ (∇ f₀ x) x : ℝ) : EReal)))
-                  (h_top := by simp)
-                  (h_bot := by simp))
+                (EReal.sub_self (by simp) (by simp))
 
 -- Proof sketch: rewrite `S(xStar)` by Lemma 13.5. The equality `S(xStar) = 0` is exactly the
 -- Fenchel--Young equality case for `g` at `(xStar, -∇ (fun y ↦ (f y).toReal) xStar)`, so Theorem
--- 4.10 rewrites it as extendedRealSubdifferential membership. Only the no-`⊥` hypothesis on `g` is active.
+-- 4.10 rewrites it as subdifferential membership. Only the no-`⊥` hypothesis on `g` is active.
 /-- Theorem 13.6 (2), source-facing form: the generalized
 conditional-gradient norm vanishes if and only if the negative gradient belongs to the
-extendedRealSubdifferential of `g` at `xStar`. -/
+subdifferential of `g` at `xStar`. -/
 theorem generalized_conditional_gradient_norm_eq_zero_iff_neg_gradient_mem_subdifferential
     (hg_ne_bot : ∀ z, g z ≠ ⊥) (xStar : E) :
     S[f₀, g](xStar) = 0 ↔
       (-toDual ℝ E (∇ f₀ xStar) : Module.Dual ℝ E) ∈ ∂ g(xStar) := by
   -- Route correction: match the source proof through Fenchel--Young equality, not by unfolding
-  -- the extendedRealSubdifferential definition directly.
+  -- the subdifferential definition directly.
   rw [generalized_conditional_gradient_norm_eq_zero_iff_fenchel_young_equality]
-  -- The Chapter 4 equality criterion is exactly the required extendedRealSubdifferential characterization.
+  -- The Chapter 4 equality criterion is exactly the required subdifferential characterization.
   simpa using
     (pairing_eq_add_conjugate_iff_mem_subdifferential g hg_ne_bot xStar
       (-toDual ℝ E (∇ f₀ xStar) : Module.Dual ℝ E))
@@ -157,11 +154,12 @@ variable {f g : E → EReal}
 
 local notation "f₀" => fun y ↦ EReal.toReal (f y)
 
-local instance : CompleteSpace E := FiniteDimensional.complete ℝ E
+local instance theorem13_6_completeSpace : CompleteSpace E :=
+  FiniteDimensional.complete ℝ E
 
 -- Proof sketch: use
 -- `generalized_conditional_gradient_norm_eq_zero_iff_neg_gradient_mem_subdifferential`, then
--- combine the resulting extendedRealSubdifferential membership with the explicit differentiability hypothesis
+-- combine the resulting subdifferential membership with the explicit differentiability hypothesis
 -- and unfold `is_stationary_point`.
 /-- The finite-dimensional Chapter 3 stationarity owner rewrites the vanishing gap condition as
 stationarity once differentiability of `f` at `xStar` is supplied explicitly. -/

@@ -1,11 +1,11 @@
 import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap03.Definition_3_4
+import FirstOrderMethodsOptimization_Beck_2017.Chap08.DualConstraintVector
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
 noncomputable section
 
-open WithLp (toLp)
 open scoped BigOperators
 
 universe u
@@ -18,22 +18,9 @@ local notation "Λ" => EuclideanSpace ℝ (Fin m)
 
 /- Theorem 8.42 is `source-facing`: it bounds the Euclidean norm of a dual multiplier in the
 superlevel set `S_μ` using the strict-feasibility slack at a Slater point `xBar`. The canonical
-owner for the dual objective is Chapter 3's `lagrangian_dual_objective`; the only local bridge is
-the conversion from the coordinatewise constraint family `g i x` to the Euclidean constraint
-vector used by that owner. -/
-
-/-- The coordinatewise constraint family `g i x` viewed as the Euclidean constraint vector
-appearing in the Lagrangian dual objective. -/
-def dual_constraint_vector (g : Fin m → E → ℝ) : E → Λ :=
-  fun x ↦ toLp 2 (fun i ↦ g i x)
-
--- Proof sketch: unfold `dual_constraint_vector`; evaluating the Euclidean vector at coordinate
--- `i` recovers the `i`-th scalar constraint value `g i x`.
-/-- Evaluating `dual_constraint_vector g x` at coordinate `i` returns `g i x`. -/
-@[simp] theorem dual_constraint_vector_apply
-    (g : Fin m → E → ℝ) (x : E) (i : Fin m) :
-    dual_constraint_vector g x i = g i x := by
-  simp [dual_constraint_vector]
+owner for the dual objective is Chapter 3's `lagrangian_dual_objective`; the reusable Chapter 8
+bridge `dual_constraint_vector` supplies the Euclidean constraint vector attached to the
+coordinatewise family `g i x`. -/
 
 /-- The dual-objective superlevel set `S_μ = {λ ∈ ℝ₊^m : q(λ) ≥ μ}` for the inequality-constrained
 problem with ambient set `X`, objective `f`, and constraint family `g`. -/

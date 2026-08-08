@@ -1,8 +1,6 @@
-import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_13
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Assumption_10_31
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_2
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Definition_9_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -22,152 +20,195 @@ Domain sampling:
 - `T[...]` from Definition 10.9 is the canonical owner for the prox-gradient point
   `z^k = T_(L_k)(y^k)` attached to a real-valued smooth term and an extended-real-valued
   regularizer;
-- `fista_momentum_update` from Algorithm 10.13 is already the local owner for the textbook
-  momentum recursion `t_(k+1) = (1 + √(1 + 4 t_k^2)) / 2`;
+- `fista_momentum_sequence` and `fista_momentum_update` from Algorithm 10.13 are already the
+  local owners for the textbook momentum recursion
+  `t_0 = 1`, `t_(k+1) = (1 + √(1 + 4 t_k^2)) / 2`;
+- `FISTAState` and `fista_extrapolated_point` from Algorithm 10.13 are the chapter's canonical
+  affine owners for generic FISTA state data, so any extra MFISTA owner here should record only
+  the genuinely new source content beyond that generic state layer;
 - `composite_model_objective` from Definition 10.2 is the chapter owner for the composite value
-  `F = f + g`, and the project already uses the bridge `f.toExtendedReal` for real-valued smooth terms.
+  `F = f + g`, and the project already uses the bridge `f.toEReal` for real-valued smooth terms.
 
-The genuinely new source content is the monotone acceptance clause choosing `x^(k+1)` from the
-two displayed candidates `z^k` and `x^k`. Because this step is a noncanonical choice, the
-faithful public API is a trajectory predicate on the sequences `(x^k, y^k, z^k, t_k, L_k)`
-rather than a recursively chosen iterate map. The primitive regularity data are the same
-proper/closed/convex instances on `g` already used by `T[...]`; the problem-owned bridge
-`IsFastProximalGradientProblem.IsMfistaTrajectory` below is derived API.
+The genuinely new source content is the monotone MFISTA trajectory relation on the explicit
+sequences `(x^k, y^k, z^k, L_k)`: after forming the prox-gradient point `z^k`, the source keeps
+the monotonicity clause only as the displayed objective inequality
+`F (x^(k+1)) ≤ min (F (z^k)) (F (x^k))`, together with the canonical FISTA momentum recursion and
+the MFISTA extrapolation formula. Because this step is noncanonical, the faithful public API is a
+trajectory predicate on those sequences, reusing `fista_momentum_sequence` rather than adding a
+second public momentum owner or a chosen iterate package.
 
-The last update formula in the source uses `t_(k-1) - 1` at step `k`. To make the boundary case
-`k = 0` explicit, the formalization uses the standard initial convention `t_(-1) = 0` and then
-forms the coefficient `(t_(k-1) - 1) / t_(k+1)`. -/
+Primitive data are exactly the `g`-side regularity assumptions needed to form the prox-gradient
+point `T_(L_k)(y^k)`. The `f`-side convexity and `L_f`-smoothness hypotheses from Assumption
+10.31(A)-(B) are mathematically ambient standing assumptions for the later rate theorems, not
+primitive fields of the trajectory relation itself, so they belong in the fast-problem bridge
+below rather than in the core owner header. -/
 
-/-- The previous MFISTA momentum coefficient, encoding the boundary convention `t_(-1) = 0` and
-`t_(k-1)` for later indices. -/
-def mfista_previous_momentum (t : ℕ → ℝ) : ℕ → ℝ
-  | 0 => 0
-  | k + 1 => t k
-
--- Proof sketch: unfold the recursive definition of `mfista_previous_momentum` at `0`.
-/-- The initial previous MFISTA momentum coefficient is `0`, corresponding to the convention
-`t_(-1) = 0`. -/
-@[simp] theorem mfista_previous_momentum_zero (t : ℕ → ℝ) :
-    mfista_previous_momentum t 0 = 0 := rfl
-
--- Proof sketch: unfold the recursive definition of `mfista_previous_momentum` at `k + 1`.
-/-- For `k ≥ 0`, the previous MFISTA momentum coefficient at index `k + 1` is `t_k`. -/
-@[simp] theorem mfista_previous_momentum_succ (t : ℕ → ℝ) (k : ℕ) :
-    mfista_previous_momentum t (k + 1) = t k := rfl
-
-/-- Algorithm 10.11: a tuple of sequences `(x^k, y^k, z^k, t_k, L_k)` is an MFISTA trajectory
-for `f` and `g` when `y^0 = x^0`, `t_0 = 1`, each `z^k` is the prox-gradient point
-`T_(L_k)(y^k)`, the chosen iterate `x^(k+1)` is one of the two textbook candidates `z^k` or
-`x^k` and minimizes the composite objective on that two-point set, the momentum update is
-`t_(k+1) = (1 + √(1 + 4 t_k^2)) / 2`, and `y^(k+1)` is given by the MFISTA extrapolation
-formula with coefficient `(t_(k-1) - 1) / t_(k+1)` and the boundary convention `t_(-1) = 0`. -/
+/-- Algorithm 10.11: sequences `(x^k, y^k, z^k, L_k)` form an MFISTA trajectory for `f` and `g`
+when `y 0 = x 0`, each `z k` is the prox-gradient point `T[L k; f, g] (y k)`, the monotonicity
+clause is stated exactly by the displayed inequality
+`composite_model_objective f.toEReal g (x (k + 1)) ≤
+  min (composite_model_objective f.toEReal g (z k))
+    (composite_model_objective f.toEReal g (x k))`,
+and `y (k + 1)` is given by the MFISTA extrapolation formula using the canonical Chapter 10
+momentum sequence `fista_momentum_sequence`. Under Assumption 10.31, the bridge
+`IsFastProximalGradientProblem.IsMfistaTrajectory` recovers the standing regularity assumptions on
+`f` and `g`. -/
 class is_mfista_trajectory
-    (f : E → ℝ) (g : E → EReal) [IsProperExtendedRealFunction g]
+    (f : E → ℝ) (g : E → EReal)
+    [IsProperExtendedRealFunction g]
     [Fact (LowerSemicontinuous g)] [Fact (is_convex_function g)]
-    (x y z : ℕ → E) (t : ℕ → ℝ) (L : ℕ → PosReal) : Prop where
-  y_zero : y 0 = x 0
-  t_zero : t 0 = 1
-  z_eq (k : ℕ) :
-    z k = T[L k; f, g] (y k)
-  x_next_mem (k : ℕ) :
-    x (k + 1) ∈ ({z k, x k} : Set E)
-  x_next_isMinOn (k : ℕ) :
-    IsMinOn (composite_model_objective f.toExtendedReal g) ({z k, x k} : Set E) (x (k + 1))
-  t_succ (k : ℕ) : t (k + 1) = fista_momentum_update (t k)
-  y_succ (k : ℕ) :
-    y (k + 1) =
-      x (k + 1) +
-        (t k / t (k + 1)) • (z k - x (k + 1)) +
-        ((mfista_previous_momentum t k - 1) / t (k + 1)) • (x (k + 1) - x k)
+    (x y z : ℕ → E) (L : ℕ → PosReal) : Prop where
+  /-- The MFISTA initialization clause is `y 0 = x 0`. -/
+  init : y 0 = x 0
+  /-- At each iteration `k`, MFISTA records the prox-gradient point, the source monotonicity
+  inequality, and the extrapolated next search point. -/
+  step : ∀ k : ℕ,
+    z k = T[L k; f, g] (y k) ∧
+      composite_model_objective f.toEReal g (x (k + 1)) ≤
+        min (composite_model_objective f.toEReal g (z k))
+          (composite_model_objective f.toEReal g (x k)) ∧
+      y (k + 1) =
+        x (k + 1) +
+          (fista_momentum_sequence k / fista_momentum_sequence (k + 1)) •
+            (z k - x (k + 1)) +
+          ((fista_momentum_sequence k - 1) / fista_momentum_sequence (k + 1)) •
+            (x (k + 1) - x k)
+
+section
 
 variable {f : E → ℝ} {g : E → EReal}
-variable [IsProperExtendedRealFunction g] [Fact (LowerSemicontinuous g)]
-  [Fact (is_convex_function g)]
-variable {x y z : ℕ → E} {t : ℕ → ℝ} {L : ℕ → PosReal}
+variable [IsProperExtendedRealFunction g]
+variable [Fact (LowerSemicontinuous g)] [Fact (is_convex_function g)]
+variable {x y z : ℕ → E} {L : ℕ → PosReal}
 
--- Proof sketch: project the `y_zero` field of `is_mfista_trajectory`.
-/-- An MFISTA trajectory starts from `y^0 = x^0`. -/
-theorem is_mfista_trajectory_y_zero
-    (htraj : is_mfista_trajectory f g x y z t L) :
-    y 0 = x 0 :=
-  htraj.y_zero
+namespace is_mfista_trajectory
 
--- Proof sketch: project the `t_zero` field of `is_mfista_trajectory`.
-/-- An MFISTA trajectory starts from the initial momentum parameter `t_0 = 1`. -/
-theorem is_mfista_trajectory_t_zero
-    (htraj : is_mfista_trajectory f g x y z t L) :
-    t 0 = 1 :=
-  htraj.t_zero
+/-- Coercion from an MFISTA trajectory to its per-iteration step data. -/
+instance instCoeFun :
+    CoeFun
+      (is_mfista_trajectory f g x y z L)
+      (fun _ ↦
+        ∀ k : ℕ,
+          z k = T[L k; f, g] (y k) ∧
+            composite_model_objective f.toEReal g (x (k + 1)) ≤
+              min (composite_model_objective f.toEReal g (z k))
+                (composite_model_objective f.toEReal g (x k)) ∧
+            y (k + 1) =
+              x (k + 1) +
+                (fista_momentum_sequence k / fista_momentum_sequence (k + 1)) •
+                  (z k - x (k + 1)) +
+                ((fista_momentum_sequence k - 1) / fista_momentum_sequence (k + 1)) •
+                  (x (k + 1) - x k)) where
+  coe htraj := htraj.step
 
-/-- At each iteration `k`, the auxiliary MFISTA point `z^k` is the canonical prox-gradient point
-`T_(L_k)(y^k)`. -/
-theorem is_mfista_trajectory_z_eq
-    (htraj : is_mfista_trajectory f g x y z t L) (k : ℕ) :
-    z k = T[L k; f, g] (y k) :=
-  htraj.z_eq k
+/-- Along an MFISTA trajectory, the initialization clause is `y 0 = x 0`. -/
+theorem y_zero
+    (htraj : is_mfista_trajectory f g x y z L) :
+    y 0 = x 0 := by
+  -- The initialization clause is stored directly in the trajectory owner.
+  exact htraj.init
 
-/-- At each iteration `k`, the chosen MFISTA iterate `x^(k+1)` is one of the two displayed
-candidates `z^k` or `x^k`. -/
-theorem is_mfista_trajectory_x_next_mem
-    (htraj : is_mfista_trajectory f g x y z t L) (k : ℕ) :
-    x (k + 1) ∈ ({z k, x k} : Set E) :=
-  htraj.x_next_mem k
+/-- Along an MFISTA trajectory, `z k` is the canonical prox-gradient point `T[L k; f, g] (y k)`.
+-/
+theorem z_eq
+    (htraj : is_mfista_trajectory f g x y z L) (k : ℕ) :
+    z k = T[L k; f, g] (y k) := by
+  -- The first component of the per-step data is the prox-gradient identity.
+  exact (htraj k).1
 
-/-- At each iteration `k`, the chosen MFISTA iterate `x^(k+1)` minimizes the composite objective
-on the two-point candidate set `{z^k, x^k}`. -/
-theorem is_mfista_trajectory_x_next_isMinOn
-    (htraj : is_mfista_trajectory f g x y z t L) (k : ℕ) :
-    IsMinOn (composite_model_objective f.toExtendedReal g) ({z k, x k} : Set E) (x (k + 1)) :=
-  htraj.x_next_isMinOn k
+/-- Along an MFISTA trajectory, the source monotonicity clause holds exactly in the displayed
+objective form. -/
+theorem x_next_objective_le_min
+    (htraj : is_mfista_trajectory f g x y z L) (k : ℕ) :
+    composite_model_objective f.toEReal g (x (k + 1)) ≤
+      min (composite_model_objective f.toEReal g (z k))
+        (composite_model_objective f.toEReal g (x k)) := by
+  -- The second component of the per-step data is the monotonicity inequality.
+  exact (htraj k).2.1
 
-/-- At each iteration `k`, the chosen MFISTA iterate `x^(k+1)` is either `z^k` or `x^k`. -/
-theorem is_mfista_trajectory_x_next_eq_or_eq
-    (htraj : is_mfista_trajectory f g x y z t L) (k : ℕ) :
-    x (k + 1) = z k ∨ x (k + 1) = x k := by
-  simpa [Set.mem_insert_iff, Set.mem_singleton_iff, eq_comm, or_left_comm, or_assoc] using
-    htraj.x_next_mem k
-
-/-- At each iteration `k`, the chosen MFISTA iterate `x^(k+1)` satisfies the monotonicity clause
-`F(x^(k+1)) ≤ min {F(z^k), F(x^k)}`. -/
-theorem is_mfista_trajectory_objective_le_min
-    (htraj : is_mfista_trajectory f g x y z t L) (k : ℕ) :
-    composite_model_objective f.toExtendedReal g (x (k + 1)) ≤
-      min (composite_model_objective f.toExtendedReal g (z k))
-        (composite_model_objective f.toExtendedReal g (x k)) := by
-  have hmin := htraj.x_next_isMinOn k
-  rw [isMinOn_iff] at hmin
-  exact le_min (hmin (z k) (by simp)) (hmin (x k) (by simp))
-
-/-- At each iteration `k`, the MFISTA momentum sequence satisfies
-`t_(k+1) = (1 + √(1 + 4 t_k^2)) / 2`. -/
-theorem is_mfista_trajectory_t_succ
-    (htraj : is_mfista_trajectory f g x y z t L) (k : ℕ) :
-    t (k + 1) = fista_momentum_update (t k) :=
-  htraj.t_succ k
-
-/-- At each iteration `k`, the extrapolated point `y^(k+1)` is obtained from `x^(k+1)`, `z^k`,
-`x^k`, `t_k`, and the source coefficient `(t_(k-1) - 1) / t_(k+1)`. -/
-theorem is_mfista_trajectory_y_succ
-    (htraj : is_mfista_trajectory f g x y z t L) (k : ℕ) :
+/-- Along an MFISTA trajectory, `y (k + 1)` is given by the MFISTA extrapolation formula. -/
+theorem y_succ
+    (htraj : is_mfista_trajectory f g x y z L) (k : ℕ) :
     y (k + 1) =
       x (k + 1) +
-        (t k / t (k + 1)) • (z k - x (k + 1)) +
-        ((mfista_previous_momentum t k - 1) / t (k + 1)) • (x (k + 1) - x k) :=
-  htraj.y_succ k
+        (fista_momentum_sequence k / fista_momentum_sequence (k + 1)) •
+          (z k - x (k + 1)) +
+        ((fista_momentum_sequence k - 1) / fista_momentum_sequence (k + 1)) •
+          (x (k + 1) - x k) := by
+  -- The final component of the per-step data is the MFISTA extrapolation rule.
+  exact (htraj k).2.2
 
-variable {XStar : Set E} {FOpt : ℝ} {Lf : NNReal}
+end is_mfista_trajectory
+
+/-- An MFISTA trajectory is equivalent to the four defining clauses of Algorithm 10.11. -/
+theorem is_mfista_trajectory_iff :
+    is_mfista_trajectory f g x y z L ↔
+      y 0 = x 0 ∧
+        (∀ k : ℕ, z k = T[L k; f, g] (y k)) ∧
+        (∀ k : ℕ,
+          composite_model_objective f.toEReal g (x (k + 1)) ≤
+            min (composite_model_objective f.toEReal g (z k))
+              (composite_model_objective f.toEReal g (x k))) ∧
+        (∀ k : ℕ,
+          y (k + 1) =
+            x (k + 1) +
+              (fista_momentum_sequence k / fista_momentum_sequence (k + 1)) •
+                (z k - x (k + 1)) +
+              ((fista_momentum_sequence k - 1) / fista_momentum_sequence (k + 1)) •
+                (x (k + 1) - x k)) := by
+  constructor
+  · intro htraj
+    -- Read the owner through its public companion projections.
+    refine ⟨is_mfista_trajectory.y_zero htraj, ?_, ?_, ?_⟩
+    · intro k
+      -- Each prox-gradient point is recovered from the step projection.
+      exact is_mfista_trajectory.z_eq htraj k
+    · intro k
+      -- The displayed monotonicity clause is recovered from the same step data.
+      exact is_mfista_trajectory.x_next_objective_le_min htraj k
+    · intro k
+      -- The extrapolated search point is the third component of the step data.
+      exact is_mfista_trajectory.y_succ htraj k
+  · rintro ⟨hy0, hz, hobj, hy⟩
+    -- Repackage the four textbook clauses into the owner fields.
+    refine ⟨hy0, ?_⟩
+    intro k
+    exact ⟨hz k, hobj k, hy k⟩
+
+/-- In Algorithm 10.11, the chosen MFISTA iterate has objective no larger than the
+prox-gradient point `z k`. -/
+theorem is_mfista_trajectory_x_next_objective_le_prox
+    (htraj : is_mfista_trajectory f g x y z L) (k : ℕ) :
+    composite_model_objective f.toEReal g (x (k + 1)) ≤
+      composite_model_objective f.toEReal g (z k) := by
+  -- Project the `min` bound to its left branch.
+  exact le_trans (is_mfista_trajectory.x_next_objective_le_min htraj k) (min_le_left _ _)
+
+/-- In Algorithm 10.11, the chosen MFISTA iterate has objective no larger than the previous
+iterate `x k`. -/
+theorem is_mfista_trajectory_x_next_objective_le_current
+    (htraj : is_mfista_trajectory f g x y z L) (k : ℕ) :
+    composite_model_objective f.toEReal g (x (k + 1)) ≤
+      composite_model_objective f.toEReal g (x k) := by
+  -- Project the same `min` bound to the current-iterate branch.
+  exact le_trans (is_mfista_trajectory.x_next_objective_le_min htraj k) (min_le_right _ _)
+
+end
 
 namespace IsFastProximalGradientProblem
 
-/-- Bridge/view layer: Assumption 10.31 canonically supplies the regularity data required by the
-MFISTA trajectory predicate. -/
+variable {f : E → ℝ} {g : E → EReal} {XStar : Set E} {FOpt : ℝ} {Lf : NNReal}
+
+/-- Bridge/view layer: Assumption 10.31 canonically supplies the standing hypotheses required by
+the owner-level MFISTA trajectory predicate from Algorithm 10.11. -/
 abbrev IsMfistaTrajectory
     (hproblem : IsFastProximalGradientProblem f g XStar FOpt Lf)
-    (x y z : ℕ → E) (t : ℕ → ℝ) (L : ℕ → PosReal) : Prop :=
-  letI : IsProperExtendedRealFunction g := hproblem.g_proper
-  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
-  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
-  is_mfista_trajectory f g x y z t L
+    (x y z : ℕ → E) (L : ℕ → PosReal) : Prop :=
+  @is_mfista_trajectory E _ _ _ f g
+    (instIsProperExtendedRealFunctionRightOfIsFastProximalGradientProblem hproblem)
+    (instFactLowerSemicontinuousRightOfIsFastProximalGradientProblem hproblem)
+    (instFactIsConvexFunctionRightOfIsFastProximalGradientProblem hproblem)
+    x y z L
 
 end IsFastProximalGradientProblem
 

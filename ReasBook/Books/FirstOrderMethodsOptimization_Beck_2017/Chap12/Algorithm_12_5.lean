@@ -1,11 +1,8 @@
-import Mathlib
-import FirstOrderMethodsOptimization_Beck_2017.Chap01.Definition_1_16
-import FirstOrderMethodsOptimization_Beck_2017.Chap01.Definition_1_44
 import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_2
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_39
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_41
-import FirstOrderMethodsOptimization_Beck_2017.Chap06.Lemma_6_26
 import FirstOrderMethodsOptimization_Beck_2017.Chap12.Algorithm_12_2
+import FirstOrderMethodsOptimization_Beck_2017.Chap12.Definition_12_10
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -13,12 +10,26 @@ open WithLp (toLp)
 
 noncomputable section
 
+namespace EuclideanSpace
+
+section
+
+variable {ι : Type*} [Fintype ι]
+
+/-- The coordinatewise projection of `s` onto the upper box `{z | z_i ≤ b_i}` in
+`EuclideanSpace ℝ ι`. -/
+def upperBoxClamp (s b : EuclideanSpace ℝ ι) : EuclideanSpace ℝ ι :=
+  toLp 2 (fun i ↦ min (s i) (b i))
+
+end
+
+end EuclideanSpace
+
 section
 
 variable {n p : ℕ}
 
-local notation "En" => EuclideanSpace ℝ (Fin n)
-local notation "Ep" => EuclideanSpace ℝ (Fin p)
+open EuclideanSpace (upperBoxClamp)
 
 /- Algorithm 12.5 is `source-facing`: it gives the explicit dual projection-gradient recursion for
 the polyhedral system `A x ≤ b`.
@@ -29,12 +40,13 @@ Domain sampling identifies the abstraction layers as follows.
   `DualBasedProximalGradientDualStepsizeParameter` specialized to `σ = 1`, together with the
   Chapter 12.2 trajectory owner `is_dual_proximal_gradient_primal_trajectory`;
 - `bridge/view`: the projection-specific explicit formulas `Aᵀ y + d` and
-  `y - (1 / L) A x + (1 / L) min {A x - L y, b}` realizing the Chapter 12.2 argmax/proximal
-  steps for the quadratic projection model.
+  `y - (1 / L) A x + (1 / L) upperBoxClamp (A x - L y) b` realizing the Chapter 12.2
+  argmax/proximal steps for the quadratic projection model.
 
-The primitive projection data are therefore the shared stepsize owner, the coordinatewise minimum
-in `ℝ^p`, the explicit primal point, and the explicit dual update. The recursive iterate families
-remain source-facing, while the canonical Chapter 12.2 owner is recovered by a bridge theorem. -/
+The primitive projection data are therefore the shared stepsize owner, the pointwise minimum
+`upperBoxClamp x b` onto the upper box in `ℝ^p`, the explicit primal point, and the explicit dual
+update. The recursive iterate families remain source-facing, while the canonical Chapter 12.2
+owner is recovered by a bridge theorem. -/
 
 /-- The admissible constant stepsize parameters for the polyhedral projection problem. This is the
 Chapter 12.1 dual stepsize owner specialized to the projection objective, whose strong-convexity
@@ -50,52 +62,50 @@ abbrev PolyhedralProjectionStepsizeParameter
 theorem polyhedral_projection_stepsize_parameter_lower_bound
     (A : Matrix (Fin p) (Fin n) ℝ) (L : PolyhedralProjectionStepsizeParameter A) :
     ‖A.toEuclideanLin.toContinuousLinearMap‖ ^ (2 : ℕ) ≤ (L : ℝ) := by
-  simpa [PolyhedralProjectionStepsizeParameter,
-    dual_based_proximal_gradient_dual_lipschitz_constant_eq]
-    using
-      DualBasedProximalGradientDualStepsizeParameter.lower_bound L
-
-/-- The coordinatewise minimum of two vectors in `ℝ^p`. -/
-def euclidean_coordinatewise_min (x y : Ep) : Ep :=
-  toLp 2 (fun i ↦ min (x i) (y i))
-
-/-- Evaluating the coordinatewise minimum at `i` gives `min (x_i, y_i)`. -/
-@[simp] theorem euclidean_coordinatewise_min_apply
-    (x y : Ep) (i : Fin p) :
-    euclidean_coordinatewise_min x y i = min (x i) (y i) :=
-  rfl
+  -- Specialize the Chapter 12.1 lower bound at `σ = 1` and simplify the denominator.
+  simpa [dual_based_proximal_gradient_dual_lipschitz_constant_eq] using
+    DualBasedProximalGradientDualStepsizeParameter.lower_bound L
 
 /-- Helper for Algorithm 12.5: if `y ≤ b`, then the residual from clamping `s` above by `b`
 has nonpositive product with the feasible displacement from the same clamp to `y`. -/
 theorem sub_min_mul_nonpos_of_le_right
     (s y b : ℝ) (hy : y ≤ b) :
     (s - min s b) * (y - min s b) ≤ 0 := by
-  by_cases hsb : s ≤ b
-  · rw [min_eq_left hsb]
+  -- Split on whether `s` already lies below the upper bound `b`.
+  by_cases hs : s ≤ b
+  · rw [min_eq_left hs]
     simp
-  · rw [min_eq_right (le_of_not_ge hsb)]
-    exact mul_nonpos_of_nonneg_of_nonpos
-      (sub_nonneg.mpr (le_of_not_ge hsb))
-      (sub_nonpos.mpr hy)
+  · have hb : b ≤ s := le_of_not_ge hs
+    rw [min_eq_right hb]
+    have hs_nonneg : 0 ≤ s - b := sub_nonneg.mpr hb
+    have hy_nonpos : y - b ≤ 0 := sub_nonpos.mpr hy
+    exact mul_nonpos_of_nonneg_of_nonpos hs_nonneg hy_nonpos
 
 /-- The shared primal point `Aᵀ y + d` attached to the current dual iterate `y`. -/
 def polyhedral_projection_primal_point
-    (A : Matrix (Fin p) (Fin n) ℝ) (d : En) (y : Ep) : En :=
+    (A : Matrix (Fin p) (Fin n) ℝ)
+    (d : EuclideanSpace ℝ (Fin n)) (y : EuclideanSpace ℝ (Fin p)) :
+    EuclideanSpace ℝ (Fin n) :=
   A.transpose.toEuclideanLin y + d
 
 /-- The shared explicit dual update from a primal point `x` and current dual point `y`:
-`y - (1 / L) A x + (1 / L) min {A x - L y, b}`. -/
+`y - (1 / L) A x + (1 / L) upperBoxClamp (A x - L y) b`. -/
 def polyhedral_projection_dual_update
-    (A : Matrix (Fin p) (Fin n) ℝ) (b : Ep) (L : PosReal) (x : En) (y : Ep) : Ep :=
+    (A : Matrix (Fin p) (Fin n) ℝ) (b : EuclideanSpace ℝ (Fin p))
+    (L : PosReal) (x : EuclideanSpace ℝ (Fin n))
+    (y : EuclideanSpace ℝ (Fin p)) :
+    EuclideanSpace ℝ (Fin p) :=
   y - (1 / L : ℝ) • A.toEuclideanLin x +
-    (1 / L : ℝ) • euclidean_coordinatewise_min (A.toEuclideanLin x - (L : ℝ) • y) b
+    (1 / L : ℝ) • upperBoxClamp (A.toEuclideanLin x - (L : ℝ) • y) b
 
 /-- Algorithm 12.5: given `A`, `b`, `d`, an admissible constant parameter `L ≥ ‖A‖₂,₂²`, and an
 initial dual point `y⁰ = y0`, the polyhedral projection DPG method generates the dual iterates
 `y^k` by recursively applying the shared primal-point and dual-update formulas. -/
 def polyhedral_projection_dpg_dual_iterates
-    (A : Matrix (Fin p) (Fin n) ℝ) (b : Ep) (d : En)
-    (L : PolyhedralProjectionStepsizeParameter A) (y0 : Ep) : ℕ → Ep
+    (A : Matrix (Fin p) (Fin n) ℝ) (b : EuclideanSpace ℝ (Fin p)) (d : EuclideanSpace ℝ (Fin n))
+    (L : PolyhedralProjectionStepsizeParameter A)
+    (y0 : EuclideanSpace ℝ (Fin p)) :
+    ℕ → EuclideanSpace ℝ (Fin p)
   | 0 => y0
   | k + 1 =>
       let yk := polyhedral_projection_dpg_dual_iterates A b d L y0 k
@@ -104,37 +114,27 @@ def polyhedral_projection_dpg_dual_iterates
 
 /-- The associated primal iterates `x^k = Aᵀ y^k + d` derived from the DPG dual recursion. -/
 def polyhedral_projection_dpg_primal_iterates
-    (A : Matrix (Fin p) (Fin n) ℝ) (b : Ep) (d : En)
-    (L : PolyhedralProjectionStepsizeParameter A) (y0 : Ep) : ℕ → En :=
+    (A : Matrix (Fin p) (Fin n) ℝ) (b : EuclideanSpace ℝ (Fin p)) (d : EuclideanSpace ℝ (Fin n))
+    (L : PolyhedralProjectionStepsizeParameter A)
+    (y0 : EuclideanSpace ℝ (Fin p)) :
+    ℕ → EuclideanSpace ℝ (Fin n) :=
   fun k ↦ polyhedral_projection_primal_point A d
     (polyhedral_projection_dpg_dual_iterates A b d L y0 k)
 
-private def polyhedral_projection_quadratic_objective (d : En) : En → EReal :=
-  fun x ↦ ((((1 / 2 : ℝ) * ‖x - d‖ ^ (2 : ℕ)) : ℝ) : EReal)
-
-private def polyhedral_projection_upper_box_indicator (b : Ep) : Ep → EReal :=
-  extendedIndicator {z : Ep | ∀ i : Fin p, z i ≤ b i}
-
 section
 
-variable (A : Matrix (Fin p) (Fin n) ℝ) (b : Ep) (d : En)
-variable (L : PolyhedralProjectionStepsizeParameter A) (y0 : Ep)
-
-local notation "y[" k "]" => polyhedral_projection_dpg_dual_iterates A b d L y0 k
-local notation "x[" k "]" => polyhedral_projection_dpg_primal_iterates A b d L y0 k
-local notation "ySeq" => polyhedral_projection_dpg_dual_iterates A b d L y0
-local notation "xSeq" => polyhedral_projection_dpg_primal_iterates A b d L y0
-local notation "IsPolyhedralProjectionDPGTrajectory" =>
-  @is_dual_proximal_gradient_primal_trajectory En Ep _ _ _ _ _ _
-    (polyhedral_projection_quadratic_objective d)
-    (polyhedral_projection_upper_box_indicator b)
-    A.toEuclideanLin (1 : PosReal) L y0
+variable
+    (A : Matrix (Fin p) (Fin n) ℝ)
+    (b : EuclideanSpace ℝ (Fin p)) (d : EuclideanSpace ℝ (Fin n))
+variable (L : PolyhedralProjectionStepsizeParameter A) (y0 : EuclideanSpace ℝ (Fin p))
 
 /-- The polyhedral projection DPG dual sequence starts from the prescribed initialization
 `y⁰ = y0`. -/
 theorem polyhedral_projection_dpg_dual_iterates_zero
-    :
-    y[0] = y0 :=
+    (A : Matrix (Fin p) (Fin n) ℝ) (b : EuclideanSpace ℝ (Fin p)) (d : EuclideanSpace ℝ (Fin n))
+    (L : PolyhedralProjectionStepsizeParameter A) (y0 : EuclideanSpace ℝ (Fin p)) :
+    polyhedral_projection_dpg_dual_iterates A b d L y0 0 = y0 := by
+  -- The recursion is initialized at the prescribed point `y0`.
   rfl
 
 -- Proof sketch: unfold `polyhedral_projection_dpg_dual_iterates` at `k + 1`; the recursive
@@ -142,243 +142,401 @@ theorem polyhedral_projection_dpg_dual_iterates_zero
 /-- Each successor dual iterate is obtained by evaluating the shared dual update at the current
 dual iterate and its associated primal point. -/
 theorem polyhedral_projection_dpg_dual_iterates_succ
-    (k : ℕ) :
-    y[k + 1] =
+    (A : Matrix (Fin p) (Fin n) ℝ) (b : EuclideanSpace ℝ (Fin p)) (d : EuclideanSpace ℝ (Fin n))
+    (L : PolyhedralProjectionStepsizeParameter A) (y0 : EuclideanSpace ℝ (Fin p)) (k : ℕ) :
+    polyhedral_projection_dpg_dual_iterates A b d L y0 (k + 1) =
       polyhedral_projection_dual_update A b L
-        (polyhedral_projection_primal_point A d y[k])
-        y[k] :=
-  by
-  -- Route correction: unfold the recursive definition directly instead of relying on a generated
-  -- recursion equation that can drift under elaboration.
+        (polyhedral_projection_primal_point A d
+          (polyhedral_projection_dpg_dual_iterates A b d L y0 k))
+        (polyhedral_projection_dpg_dual_iterates A b d L y0 k) := by
+  -- Unfold the recursive successor clause once.
   rfl
 
 -- Proof sketch: unfold `polyhedral_projection_dpg_primal_iterates`; by definition `x^k` is the
 -- shared primal-point owner evaluated at the current dual iterate `y^k`.
 /-- The primal iterates satisfy the textbook identity `x^k = Aᵀ y^k + d`. -/
 theorem polyhedral_projection_dpg_primal_iterates_eq
-    (k : ℕ) :
-    x[k] = A.transpose.toEuclideanLin y[k] + d :=
+    (A : Matrix (Fin p) (Fin n) ℝ) (b : EuclideanSpace ℝ (Fin p)) (d : EuclideanSpace ℝ (Fin n))
+    (L : PolyhedralProjectionStepsizeParameter A) (y0 : EuclideanSpace ℝ (Fin p)) (k : ℕ) :
+    polyhedral_projection_dpg_primal_iterates A b d L y0 k =
+      A.transpose.toEuclideanLin
+          (polyhedral_projection_dpg_dual_iterates A b d L y0 k) + d := by
+  -- The primal iterate is defined by applying the shared primal-point formula.
   rfl
+
+/-- Helper for Algorithm 12.5: splitting the affine term at the explicit primal point `Aᵀ y + d`
+separates the residual inner product from the constant contributions. -/
+theorem polyhedral_projection_primal_point_inner_split
+    (A : Matrix (Fin p) (Fin n) ℝ)
+    (d : EuclideanSpace ℝ (Fin n)) (y : EuclideanSpace ℝ (Fin p))
+    (x' : EuclideanSpace ℝ (Fin n)) :
+    inner ℝ x' (A.transpose.toEuclideanLin y) =
+      inner ℝ (A.transpose.toEuclideanLin y)
+        (x' - polyhedral_projection_primal_point A d y) +
+      inner ℝ d (A.transpose.toEuclideanLin y) +
+      ‖A.transpose.toEuclideanLin y‖ ^ (2 : ℕ) := by
+  let xBar := polyhedral_projection_primal_point A d y
+  let a := A.transpose.toEuclideanLin y
+  have hxBar : xBar = a + d := by
+    change polyhedral_projection_primal_point A d y = A.transpose.toEuclideanLin y + d
+    rfl
+  -- Split the affine term at the translated point `xBar = Aᵀ y + d`, then expand the inner
+  -- product of `xBar` with `Aᵀ y` into its self and data components.
+  calc
+    inner ℝ x' (A.transpose.toEuclideanLin y)
+        = inner ℝ ((x' - xBar : EuclideanSpace ℝ (Fin n)) + xBar) a := by
+            congr 1
+            abel
+    _ = inner ℝ (x' - xBar) a + inner ℝ xBar a := by
+      rw [inner_add_left]
+    _ = inner ℝ a (x' - xBar) + inner ℝ xBar a := by
+      rw [real_inner_comm]
+    _ = inner ℝ a (x' - xBar) +
+          (inner ℝ a a + inner ℝ d a) := by
+      rw [hxBar, inner_add_left]
+    _ = inner ℝ a (x' - xBar) +
+          (‖a‖ ^ (2 : ℕ) + inner ℝ d a) := by
+      rw [real_inner_self_eq_norm_sq]
+    _ = inner ℝ a (x' - xBar) + inner ℝ d a + ‖a‖ ^ (2 : ℕ) := by
+      ring
+    _ = inner ℝ (A.transpose.toEuclideanLin y)
+          (x' - polyhedral_projection_primal_point A d y) +
+        inner ℝ d (A.transpose.toEuclideanLin y) +
+        ‖A.transpose.toEuclideanLin y‖ ^ (2 : ℕ) := by
+      rfl
+
+/-- Helper for Algorithm 12.5: subtracting the datum `d` from the explicit primal point
+`polyhedral_projection_primal_point A d y` recovers the affine term `Aᵀ y`. -/
+theorem polyhedral_projection_primal_point_sub_data
+    (A : Matrix (Fin p) (Fin n) ℝ) (d : EuclideanSpace ℝ (Fin n)) (y : EuclideanSpace ℝ (Fin p)) :
+    polyhedral_projection_primal_point A d y - d = A.transpose.toEuclideanLin y := by
+  -- Expand the explicit primal point and cancel the translated datum.
+  ext i
+  simp [polyhedral_projection_primal_point]
 
 /-- Helper for Algorithm 12.5: the affine-minus-quadratic step-(a) objective is a constant minus
 the squared distance to the explicit primal point `Aᵀ y + d`. -/
 theorem polyhedral_projection_affine_minus_quadratic_eq_constant_sub_sq_real
-    (y : Ep) (x' : En) :
-    (inner ℝ x' (A.transpose.toEuclideanLin y) : ℝ) -
-        (1 / 2 : ℝ) * ‖(x' - d : En)‖ ^ (2 : ℕ) =
-        (1 / 2 : ℝ) * ‖(polyhedral_projection_primal_point A d y : En)‖ ^ (2 : ℕ) -
+    (A : Matrix (Fin p) (Fin n) ℝ)
+    (d : EuclideanSpace ℝ (Fin n)) (y : EuclideanSpace ℝ (Fin p))
+    (x' : EuclideanSpace ℝ (Fin n)) :
+    inner ℝ x' (A.transpose.toEuclideanLin y) -
+        (1 / 2 : ℝ) * ‖(x' - d : EuclideanSpace ℝ (Fin n))‖ ^ (2 : ℕ) =
+        (1 / 2 : ℝ) * ‖polyhedral_projection_primal_point A d y‖ ^ (2 : ℕ) -
         (1 / 2 : ℝ) * ‖d‖ ^ (2 : ℕ) -
         (1 / 2 : ℝ) *
-          ‖(x' - (polyhedral_projection_primal_point A d y : En) : En)‖ ^ (2 : ℕ) :=
-  by
-  let a : En := A.transpose.toEuclideanLin y
-  have hxd : ‖(x' - d : En)‖ ^ (2 : ℕ) = ‖x'‖ ^ (2 : ℕ) - 2 * inner ℝ x' d + ‖d‖ ^ (2 : ℕ) := by
-    simpa [real_inner_comm] using (norm_sub_sq_real x' d)
-  have hxa :
-      ‖(x' - (polyhedral_projection_primal_point A d y : En) : En)‖ ^ (2 : ℕ) =
-        ‖x'‖ ^ (2 : ℕ) - 2 * inner ℝ x' (polyhedral_projection_primal_point A d y) +
-          ‖(polyhedral_projection_primal_point A d y : En)‖ ^ (2 : ℕ) := by
-    simpa [real_inner_comm] using (norm_sub_sq_real x' (polyhedral_projection_primal_point A d y))
-  have hadd :
-      inner ℝ x' (polyhedral_projection_primal_point A d y) =
-        inner ℝ x' (A.transpose.toEuclideanLin y) + inner ℝ x' d := by
-    -- Split the completed-square center into the affine term and the shift by `d`.
-    simp [polyhedral_projection_primal_point, inner_add_right]
-  nlinarith
+          ‖x' - polyhedral_projection_primal_point A d y‖ ^ (2 : ℕ) := by
+  let xBar := polyhedral_projection_primal_point A d y
+  have hbar : xBar - d = A.transpose.toEuclideanLin y := by
+    -- Reuse the explicit primal-point normal form while keeping the proof at the `xBar` center.
+    simpa [xBar, polyhedral_projection_primal_point] using
+      add_sub_cancel (A.transpose.toEuclideanLin y) d
+  have hsplit :
+      inner ℝ x' (A.transpose.toEuclideanLin y) =
+        inner ℝ (A.transpose.toEuclideanLin y) (x' - xBar) +
+          inner ℝ d (A.transpose.toEuclideanLin y) +
+          ‖A.transpose.toEuclideanLin y‖ ^ (2 : ℕ) := by
+    -- Rewrite the mixed term in the normal form centered at `xBar`.
+    simpa [xBar] using
+      polyhedral_projection_primal_point_inner_split (A := A) (d := d) y x'
+  have hquad :
+      (1 / 2 : ℝ) * ‖(x' - d : EuclideanSpace ℝ (Fin n))‖ ^ (2 : ℕ) =
+        (1 / 2 : ℝ) * ‖A.transpose.toEuclideanLin y‖ ^ (2 : ℕ) +
+          inner ℝ (A.transpose.toEuclideanLin y) (x' - xBar) +
+          (1 / 2 : ℝ) * ‖(x' - xBar : EuclideanSpace ℝ (Fin n))‖ ^ (2 : ℕ) := by
+    -- Translate the quadratic penalty from `d` to the center `xBar`.
+    simpa [xBar, polyhedral_projection_primal_point] using
+      quadratic_translate_identity d xBar x'
+  have hconst :
+      (1 / 2 : ℝ) * ‖xBar‖ ^ (2 : ℕ) =
+        (1 / 2 : ℝ) * ‖d‖ ^ (2 : ℕ) +
+          inner ℝ d (A.transpose.toEuclideanLin y) +
+          (1 / 2 : ℝ) * ‖A.transpose.toEuclideanLin y‖ ^ (2 : ℕ) := by
+    -- The constant term is the same translation identity evaluated at the center.
+    simpa [xBar, polyhedral_projection_primal_point] using
+      quadratic_translate_identity (0 : EuclideanSpace ℝ (Fin n)) d xBar
+  -- Route correction: close the completed square from the two explicit normal-form bridges above.
+  nlinarith [hsplit, hquad, hconst]
 
 /-- Helper for Algorithm 12.5: the affine-minus-quadratic step-(a) objective is a constant minus
 the squared distance to the explicit primal point `Aᵀ y + d`. -/
 theorem polyhedral_projection_affine_minus_quadratic_eq_constant_sub_sq
-    (y : Ep) (x' : En) :
-    (((inner ℝ x' (A.transpose.toEuclideanLin y) : ℝ) : EReal) -
-      polyhedral_projection_quadratic_objective d x') =
-      (((1 / 2 : ℝ) * ‖(polyhedral_projection_primal_point A d y : En)‖ ^ (2 : ℕ) -
+    (A : Matrix (Fin p) (Fin n) ℝ)
+    (d : EuclideanSpace ℝ (Fin n)) (y : EuclideanSpace ℝ (Fin p))
+    (x' : EuclideanSpace ℝ (Fin n)) :
+    ((inner ℝ x' (A.transpose.toEuclideanLin y) : EReal) -
+      denoising_data_fidelity d x') =
+      (((1 / 2 : ℝ) * ‖polyhedral_projection_primal_point A d y‖ ^ (2 : ℕ) -
           (1 / 2 : ℝ) * ‖d‖ ^ (2 : ℕ) -
           (1 / 2 : ℝ) *
-            ‖x' - (polyhedral_projection_primal_point A d y : En)‖ ^ (2 : ℕ) : ℝ) :
-        EReal) :=
-  by
-  -- Cast the real completed-square identity once after unfolding the quadratic objective.
-  exact_mod_cast
-    polyhedral_projection_affine_minus_quadratic_eq_constant_sub_sq_real
-      (A := A) (d := d) y x'
+            ‖x' - polyhedral_projection_primal_point A d y‖ ^ (2 : ℕ) : ℝ) :
+        EReal) := by
+  have hhalf :
+      (‖(x' - d : EuclideanSpace ℝ (Fin n))‖ ^ (2 : ℕ) / 2 : ℝ) =
+        (1 / 2 : ℝ) * ‖(x' - d : EuclideanSpace ℝ (Fin n))‖ ^ (2 : ℕ) := by
+    ring
+  -- Convert the EReal-valued objective to the real completed-square identity and coerce back.
+  rw [denoising_data_fidelity_apply, hhalf, EReal.coe_sub]
+  exact congrArg
+    (fun t : ℝ ↦ (t : EReal))
+    (polyhedral_projection_affine_minus_quadratic_eq_constant_sub_sq_real
+      (A := A) (d := d) y x')
 
-/-- Helper for Algorithm 12.5: the explicit primal point `Aᵀ y + d` globally maximizes the
-step-(a) affine-minus-quadratic owner objective. -/
-theorem polyhedral_projection_primal_point_isMaxOn_owner
-    (y : Ep) :
+/-- Private helper for Algorithm 12.5: the explicit primal point `Aᵀ y + d` globally maximizes
+the step-(a) affine-minus-quadratic objective. -/
+private theorem polyhedral_projection_primal_point_isMaxOn
+    (A : Matrix (Fin p) (Fin n) ℝ)
+    (d : EuclideanSpace ℝ (Fin n)) (y : EuclideanSpace ℝ (Fin p)) :
     IsMaxOn
-      (fun x' : En ↦
-        (((inner ℝ x' (A.toEuclideanLin.adjoint y) : ℝ) : EReal) -
-          polyhedral_projection_quadratic_objective d x'))
+      (fun x' : EuclideanSpace ℝ (Fin n) ↦
+        ((inner ℝ x' (A.toEuclideanLin.adjoint y) : EReal) -
+          denoising_data_fidelity d x'))
       Set.univ
-      (polyhedral_projection_primal_point A d y) :=
-  -- TODO: rewrite `A.toEuclideanLin.adjoint` to `A.transpose.toEuclideanLin`, apply the
-  -- completed-square identity at `x'` and at the center `polyhedral_projection_primal_point A d y`,
-  -- and close the remaining comparison with `EReal.coe_le_coe_iff.mpr (sub_le_self _ hquad_nonneg)`.
-  sorry
+      (polyhedral_projection_primal_point A d y) := by
+  let xBar := polyhedral_projection_primal_point A d y
+  -- Rewrite the adjoint once into the stable transpose normal form used by the completed square.
+  have hadj : A.toEuclideanLin.adjoint y = A.transpose.toEuclideanLin y := by
+    have hlin : A.toEuclideanLin.adjoint = A.transpose.toEuclideanLin := by
+      simpa using (Matrix.toEuclideanLin_conjTranspose_eq_adjoint A).symm
+    simpa using
+      congrArg
+        (fun T : EuclideanSpace ℝ (Fin p) →ₗ[ℝ] EuclideanSpace ℝ (Fin n) ↦ T y)
+        hlin
+  -- Route correction: use `isMaxOn_univ_iff` instead of manually expanding filter/set syntax.
+  rw [isMaxOn_univ_iff]
+  intro x'
+  have hxObjective :
+      ((inner ℝ x' (A.toEuclideanLin.adjoint y) : EReal) -
+          denoising_data_fidelity d x') =
+        (((1 / 2 : ℝ) * ‖xBar‖ ^ (2 : ℕ) -
+            (1 / 2 : ℝ) * ‖d‖ ^ (2 : ℕ) -
+            (1 / 2 : ℝ) * ‖(x' - xBar : EuclideanSpace ℝ (Fin n))‖ ^ (2 : ℕ) : ℝ) : EReal) := by
+    -- Rewrite the objective at `x'` into the constant-minus-square normal form.
+    simpa [xBar, hadj] using
+      (polyhedral_projection_affine_minus_quadratic_eq_constant_sub_sq
+        (A := A) (d := d) y x')
+  have hcenterObjective :
+      ((inner ℝ xBar (A.toEuclideanLin.adjoint y) : EReal) -
+          denoising_data_fidelity d xBar) =
+        (((1 / 2 : ℝ) * ‖xBar‖ ^ (2 : ℕ) -
+            (1 / 2 : ℝ) * ‖d‖ ^ (2 : ℕ) : ℝ) : EReal) := by
+    -- At the center `xBar`, the residual squared norm vanishes.
+    simpa [xBar, hadj] using
+      (polyhedral_projection_affine_minus_quadratic_eq_constant_sub_sq
+        (A := A) (d := d) y xBar)
+  have hresidualNonneg : 0 ≤ (1 / 2 : ℝ) * ‖(x' - xBar : EuclideanSpace ℝ (Fin n))‖ ^ (2 : ℕ) := by
+    positivity
+  -- Compare the centered formulas; maximality is exactly nonnegativity of the residual square.
+  rw [hxObjective, hcenterObjective]
+  exact EReal.coe_le_coe_iff.mpr (by nlinarith)
 
 /-- The explicit primal point `Aᵀ y + d` is the Chapter 12.2 step-(a) argmax point for the
 quadratic projection objective. -/
 theorem polyhedral_projection_primal_point_mem_argmax
-    (y : Ep) :
+    (A : Matrix (Fin p) (Fin n) ℝ) (d : EuclideanSpace ℝ (Fin n)) (y : EuclideanSpace ℝ (Fin p)) :
     polyhedral_projection_primal_point A d y ∈
       dual_proximal_gradient_primal_x_argmax
-        (polyhedral_projection_quadratic_objective d) A.toEuclideanLin y :=
-  -- TODO: unfold `dual_proximal_gradient_primal_x_argmax` and package
-  -- `polyhedral_projection_primal_point_isMaxOn_owner`.
-  sorry
+        (denoising_data_fidelity d) A.toEuclideanLin y := by
+  -- Unfold the Chapter 12 argmax owner and reuse the centered maximality theorem.
+  rw [mem_dual_proximal_gradient_primal_x_argmax_iff]
+  simpa using polyhedral_projection_primal_point_isMaxOn (A := A) (d := d) y
 
 /-- Helper for Algorithm 12.5: the upper box `{z | z_i ≤ b_i}` is convex. -/
 theorem polyhedral_projection_upper_box_convex
-    (b : Ep) :
-    Convex ℝ {z : Ep | ∀ i : Fin p, z i ≤ b i} := by
-  intro x hx y hy a b' ha hb hab i
-  -- Check convexity coordinatewise, then collapse the scalar combination with `a + b' = 1`.
+    (b : EuclideanSpace ℝ (Fin p)) :
+    Convex ℝ {z : EuclideanSpace ℝ (Fin p) | ∀ i : Fin p, z i ≤ b i} := by
+  -- Check the convex inequality coordinatewise against the common upper bound `b`.
+  intro x hx y hy a c ha hc hac i
   calc
-    (a • x + b' • y) i = a * x i + b' * y i := by simp
-    _ ≤ a * b i + b' * b i := by
-      exact add_le_add
-        (mul_le_mul_of_nonneg_left (hx i) ha)
-        (mul_le_mul_of_nonneg_left (hy i) hb)
-    _ = (a + b') * b i := by ring
-    _ = b i := by rw [hab, one_mul]
+    (a • x + c • y) i = a * x i + c * y i := by simp
+    _ ≤ a * b i + c * b i := by
+      gcongr
+      · exact hx i
+      · exact hy i
+    _ = b i := by
+      calc
+        a * b i + c * b i = (a + c) * b i := by ring
+        _ = b i := by rw [hac, one_mul]
 
-/-- Helper for Algorithm 12.5: the coordinatewise minimum is the projection of `s` onto the upper
-box `{z | z_i ≤ b_i}`. -/
-theorem euclidean_coordinatewise_min_mem_projection_mapping_upper_box
-    (s : Ep) :
-    euclidean_coordinatewise_min s b ∈
-      Proj[{z : Ep | ∀ i : Fin p, z i ≤ b i}] s :=
-  by
-  let u : Ep := euclidean_coordinatewise_min s b
-  have hu_mem : u ∈ {z : Ep | ∀ i : Fin p, z i ≤ b i} := by
+/-- Helper for Algorithm 12.5: `upperBoxClamp s b` is the projection of `s` onto the upper box
+`{z | z_i ≤ b_i}`. -/
+theorem upperBoxClamp_mem_projection_mapping_upper_box
+    (s : EuclideanSpace ℝ (Fin p)) :
+    upperBoxClamp s b ∈
+      P[{z : EuclideanSpace ℝ (Fin p) | ∀ i : Fin p, z i ≤ b i}] s := by
+  -- Use the Chapter 6 variational characterization of projections onto convex sets.
+  have hclamp_mem :
+      upperBoxClamp s b ∈ {z : EuclideanSpace ℝ (Fin p) | ∀ i : Fin p, z i ≤ b i} := by
     intro i
-    show u i ≤ b i
-    simpa [u, euclidean_coordinatewise_min_apply] using (min_le_right (s i) (b i))
+    simpa [EuclideanSpace.upperBoxClamp] using (min_le_right (s i) (b i))
   refine
     (mem_projection_mapping_iff_inner_le_zero
-      {z : Ep | ∀ i : Fin p, z i ≤ b i}
-      (polyhedral_projection_upper_box_convex b) s hu_mem).2 ?_
+      {z : EuclideanSpace ℝ (Fin p) | ∀ i : Fin p, z i ≤ b i}
+      (polyhedral_projection_upper_box_convex (b := b))
+      s hclamp_mem).2 ?_
   intro y hy
-  rw [euclideanSpace_inner_eq_sum_mul]
-  exact Finset.sum_nonpos fun i _ ↦ by
-    simpa [u, euclidean_coordinatewise_min_apply] using
+  -- Rewrite the Euclidean inner product as a finite sum of coordinatewise scalar products.
+  have hcoord :
+      ∀ i : Fin p,
+        inner ℝ (s i - upperBoxClamp s b i) (y i - upperBoxClamp s b i) ≤ 0 := by
+    intro i
+    have hmul :
+        (s i - min (s i) (b i)) * (y i - min (s i) (b i)) ≤ 0 :=
       sub_min_mul_nonpos_of_le_right (s i) (y i) (b i) (hy i)
+    have hinner :
+        inner ℝ (s i - upperBoxClamp s b i) (y i - upperBoxClamp s b i) =
+          (s i - min (s i) (b i)) * (y i - min (s i) (b i)) := by
+      simpa [EuclideanSpace.upperBoxClamp] using
+        (RCLike.inner_apply'
+          (s i - min (s i) (b i))
+          (y i - min (s i) (b i)) :
+          inner ℝ (s i - min (s i) (b i)) (y i - min (s i) (b i)) =
+            (s i - min (s i) (b i)) * (y i - min (s i) (b i)))
+    rw [hinner]
+    exact hmul
+  calc
+    inner ℝ (s - upperBoxClamp s b) (y - upperBoxClamp s b)
+        = ∑ i : Fin p,
+            inner ℝ (s i - upperBoxClamp s b i) (y i - upperBoxClamp s b i) := by
+            simp [PiLp.inner_apply]
+    _ ≤ 0 := by
+      refine Finset.sum_nonpos ?_
+      intro i hi
+      exact hcoord i
 
-/-- Helper for Algorithm 12.5: positive scaling leaves the upper-box indicator unchanged because
-it is `0` on the box and `⊤` outside. -/
-theorem smul_polyhedral_projection_upper_box_indicator
-    (A : Matrix (Fin p) (Fin n) ℝ) (b : Ep) (L : PolyhedralProjectionStepsizeParameter A) :
-    ((((L : EReal) • polyhedral_projection_upper_box_indicator b) : Ep → EReal)) =
-      polyhedral_projection_upper_box_indicator b := by
+/-- Helper for Algorithm 12.5: positive scaling does not change the indicator of the upper box
+`{z : EuclideanSpace ℝ (Fin p) | ∀ i, z i ≤ b i}`. -/
+theorem polyhedral_projection_smul_extendedIndicator_upper_box_eq :
+    (((L : EReal) • δ_ {z : EuclideanSpace ℝ (Fin p) | ∀ i : Fin p, z i ≤ b i}) :
+      EuclideanSpace ℝ (Fin p) → EReal) =
+      δ_ {z : EuclideanSpace ℝ (Fin p) | ∀ i : Fin p, z i ≤ b i} := by
+  -- The indicator takes only the values `0` and `⊤`, and positive scaling fixes both of them.
   funext z
-  change ((L : EReal) * polyhedral_projection_upper_box_indicator b z) =
-    polyhedral_projection_upper_box_indicator b z
-  have hL_pos : (0 : ℝ) < ((L : PosReal) : ℝ) := by
-    exact PosReal.coe_pos (L : PosReal)
-  have hL_pos' : (0 : EReal) < (L : EReal) := by
-    exact_mod_cast hL_pos
-  by_cases hz : z ∈ {z : Ep | ∀ i : Fin p, z i ≤ b i}
-  · have hz_zero : polyhedral_projection_upper_box_indicator b z = 0 := by
-      simp [polyhedral_projection_upper_box_indicator, extendedIndicator, hz]
-    rw [hz_zero]
-    simp
-  · have hz_top : polyhedral_projection_upper_box_indicator b z = ⊤ := by
-      simp [polyhedral_projection_upper_box_indicator, extendedIndicator, hz]
-    rw [hz_top]
-    simp [EReal.mul_top_of_pos hL_pos']
+  by_cases hz : z ∈ {z : EuclideanSpace ℝ (Fin p) | ∀ i : Fin p, z i ≤ b i}
+  · simp [extendedIndicator, hz, Pi.smul_apply, smul_eq_mul]
+  · simp [extendedIndicator, hz, Pi.smul_apply, smul_eq_mul,
+      EReal.coe_mul_top_of_pos (L : PosReal).2]
 
-/-- Helper for Algorithm 12.5: the clipped point `min {A x - L y, b}` is a proximal point of the
-scaled upper-box indicator at `A x - L y`. -/
+/-- Helper for Algorithm 12.5: the clipped point `upperBoxClamp (A x - L y) b` is a proximal
+point of the scaled upper-box indicator at `A x - L y`. -/
 theorem polyhedral_projection_clipped_point_mem_scaled_indicator_prox
-    (x : En) (y : Ep) :
-    euclidean_coordinatewise_min (A.toEuclideanLin x - (L : ℝ) • y) b ∈
-      prox (((L : EReal) • polyhedral_projection_upper_box_indicator b))
-        (A.toEuclideanLin x - (L : ℝ) • y) :=
-  -- TODO: rewrite the scaled upper-box indicator via
-  -- `smul_polyhedral_projection_upper_box_indicator`, identify prox of the indicator with the
-  -- projection mapping by `prox_extendedIndicator_eq_projection_mapping`, and finish with
-  -- `euclidean_coordinatewise_min_mem_projection_mapping_upper_box`.
-  sorry
+    (x : EuclideanSpace ℝ (Fin n)) (y : EuclideanSpace ℝ (Fin p)) :
+    upperBoxClamp (A.toEuclideanLin x - (L : ℝ) • y) b ∈
+      prox (((L : EReal) • δ_ {z : EuclideanSpace ℝ (Fin p) | ∀ i : Fin p, z i ≤ b i}))
+        (A.toEuclideanLin x - (L : ℝ) • y) := by
+  -- Reduce the scaled indicator to the unscaled indicator, then use projection membership.
+  have hbox_nonempty :
+      ({z : EuclideanSpace ℝ (Fin p) | ∀ i : Fin p, z i ≤ b i} :
+        Set (EuclideanSpace ℝ (Fin p))).Nonempty := by
+    refine ⟨b, ?_⟩
+    intro i
+    show (b i : ℝ) ≤ b i
+    exact le_rfl
+  have hproj :
+      upperBoxClamp (A.toEuclideanLin x - (L : ℝ) • y) b ∈
+        P[{z : EuclideanSpace ℝ (Fin p) | ∀ i : Fin p, z i ≤ b i}]
+          (A.toEuclideanLin x - (L : ℝ) • y) := by
+    simpa using
+      upperBoxClamp_mem_projection_mapping_upper_box
+        (b := b)
+        (A.toEuclideanLin x - (L : ℝ) • y)
+  have hproxMem :
+      upperBoxClamp (A.toEuclideanLin x - (L : ℝ) • y) b ∈
+        prox[extendedIndicator {z : EuclideanSpace ℝ (Fin p) | ∀ i : Fin p, z i ≤ b i}]
+          (A.toEuclideanLin x - (L : ℝ) • y) := by
+    rw [prox_extendedIndicator_eq_projection_mapping
+      {z : EuclideanSpace ℝ (Fin p) | ∀ i : Fin p, z i ≤ b i} hbox_nonempty]
+    exact hproj
+  rw [polyhedral_projection_smul_extendedIndicator_upper_box_eq (b := b) (L := L)]
+  simpa using hproxMem
 
 /-- The explicit clipped dual update realizes the Chapter 12.2 step-(b) primal proximal update
 for the indicator of the upper box `{z | z ≤ b}`. -/
 theorem polyhedral_projection_dual_update_mem_y_step
-    (x : En) (y : Ep) :
+    (x : EuclideanSpace ℝ (Fin n)) (y : EuclideanSpace ℝ (Fin p)) :
     polyhedral_projection_dual_update A b L x y ∈
       dual_proximal_gradient_primal_y_step
-        (polyhedral_projection_upper_box_indicator b) A.toEuclideanLin x y L :=
-  -- TODO: use `polyhedral_projection_clipped_point_mem_scaled_indicator_prox` as the proximal
-  -- witness in the image-set definition of `dual_proximal_gradient_primal_y_step` and then unfold
-  -- `polyhedral_projection_dual_update` to match the affine correction.
-  sorry
+        (δ_ {z : EuclideanSpace ℝ (Fin p) | ∀ i : Fin p, z i ≤ b i}) A.toEuclideanLin x y L := by
+  -- Package the explicit clipped point as the witness required by the Chapter 12 step owner.
+  rw [mem_dual_proximal_gradient_primal_y_step_iff]
+  refine ⟨upperBoxClamp (A.toEuclideanLin x - (L : ℝ) • y) b, ?_, ?_⟩
+  · exact polyhedral_projection_clipped_point_mem_scaled_indicator_prox
+      (A := A) (b := b) (L := L) x y
+  · simp [polyhedral_projection_dual_update]
 
 -- Proof sketch: combine `polyhedral_projection_dpg_dual_iterates_succ` with
 -- the explicit dual-update definition, then rewrite the primal point through
 -- `polyhedral_projection_dpg_primal_iterates_eq`.
 /-- The dual iterates satisfy the textbook general step
-`y^(k+1) = y^k - (1 / L) A x^k + (1 / L) min {A x^k - L y^k, b}`. -/
+`y^(k+1) = y^k - (1 / L) A x^k + (1 / L) upperBoxClamp (A x^k - L y^k) b`. -/
 theorem polyhedral_projection_dpg_dual_iterates_update
-    (k : ℕ) :
-    y[k + 1] =
-      y[k] - (1 / L : ℝ) • A.toEuclideanLin x[k] +
+    (A : Matrix (Fin p) (Fin n) ℝ) (b : EuclideanSpace ℝ (Fin p)) (d : EuclideanSpace ℝ (Fin n))
+    (L : PolyhedralProjectionStepsizeParameter A) (y0 : EuclideanSpace ℝ (Fin p)) (k : ℕ) :
+    polyhedral_projection_dpg_dual_iterates A b d L y0 (k + 1) =
+      polyhedral_projection_dpg_dual_iterates A b d L y0 k -
+        (1 / L : ℝ) • A.toEuclideanLin (polyhedral_projection_dpg_primal_iterates A b d L y0 k) +
         (1 / L : ℝ) •
-          euclidean_coordinatewise_min
-            (A.toEuclideanLin x[k] - (L : ℝ) • y[k])
-            b :=
-  by
-  -- Expand the successor iterate and then rewrite the primal point as `x[k]`.
-  rw [polyhedral_projection_dpg_dual_iterates_succ, polyhedral_projection_dual_update,
-    polyhedral_projection_dpg_primal_iterates_eq]
+          upperBoxClamp
+            (A.toEuclideanLin (polyhedral_projection_dpg_primal_iterates A b d L y0 k) -
+              (L : ℝ) • polyhedral_projection_dpg_dual_iterates A b d L y0 k)
+            b := by
+  -- Unfold the successor iterate and rewrite the shared primal point as `x^k`.
+  rw [polyhedral_projection_dpg_dual_iterates_succ, polyhedral_projection_dpg_primal_iterates_eq]
+  rfl
 
 /-- Each primal iterate `x^k` lies in the Chapter 12.2 primal argmax set determined by the
 current dual iterate `y^k`. -/
 theorem polyhedral_projection_dpg_primal_iterates_mem_argmax
-    (k : ℕ) :
+    (A : Matrix (Fin p) (Fin n) ℝ) (b : EuclideanSpace ℝ (Fin p)) (d : EuclideanSpace ℝ (Fin n))
+    (L : PolyhedralProjectionStepsizeParameter A) (y0 : EuclideanSpace ℝ (Fin p)) (k : ℕ) :
     polyhedral_projection_dpg_primal_iterates A b d L y0 k ∈
       dual_proximal_gradient_primal_x_argmax
-        (polyhedral_projection_quadratic_objective d) A.toEuclideanLin
-        (polyhedral_projection_dpg_dual_iterates A b d L y0 k) :=
-  -- TODO: specialize `polyhedral_projection_primal_point_mem_argmax` at `y[k]` and unfold the
-  -- source-facing primal iterate definition.
-  sorry
+        (denoising_data_fidelity d) A.toEuclideanLin
+        (polyhedral_projection_dpg_dual_iterates A b d L y0 k) := by
+  -- Rewrite `x^k` to the explicit primal point and reuse the pointwise argmax proof.
+  simpa [polyhedral_projection_dpg_primal_iterates_eq] using
+    polyhedral_projection_primal_point_mem_argmax
+      (A := A) (d := d)
+      (polyhedral_projection_dpg_dual_iterates A b d L y0 k)
 
 /-- Each successor dual iterate belongs to the Chapter 12.2 primal proximal-update set based at
 the current pair `(x^k, y^k)`. -/
 theorem polyhedral_projection_dpg_dual_iterates_mem_y_step
-    (k : ℕ) :
+    (A : Matrix (Fin p) (Fin n) ℝ) (b : EuclideanSpace ℝ (Fin p)) (d : EuclideanSpace ℝ (Fin n))
+    (L : PolyhedralProjectionStepsizeParameter A) (y0 : EuclideanSpace ℝ (Fin p)) (k : ℕ) :
     polyhedral_projection_dpg_dual_iterates A b d L y0 (k + 1) ∈
       dual_proximal_gradient_primal_y_step
-        (polyhedral_projection_upper_box_indicator b) A.toEuclideanLin
+        (δ_ {z : EuclideanSpace ℝ (Fin p) | ∀ i : Fin p, z i ≤ b i}) A.toEuclideanLin
         (polyhedral_projection_dpg_primal_iterates A b d L y0 k)
-        (polyhedral_projection_dpg_dual_iterates A b d L y0 k) L :=
-  -- TODO: rewrite `y[k + 1]` with `polyhedral_projection_dpg_dual_iterates_update` and then
-  -- reuse `polyhedral_projection_dual_update_mem_y_step` at `(x[k], y[k])`.
-  sorry
-
-/-- Helper for Algorithm 12.5: the explicit primal and dual iterate families satisfy the fully
-expanded Chapter 12.2 trajectory predicate. -/
-theorem polyhedral_projection_dpg_is_dual_proximal_gradient_primal_trajectory_explicit :
-    @is_dual_proximal_gradient_primal_trajectory En Ep _ _ _ _ _ _
-      (polyhedral_projection_quadratic_objective d)
-      (polyhedral_projection_upper_box_indicator b)
-      A.toEuclideanLin
-      (1 : PosReal)
-      L
-      y0
-      (polyhedral_projection_dpg_primal_iterates A b d L y0)
-      (polyhedral_projection_dpg_dual_iterates A b d L y0) :=
-  -- TODO: assemble the Chapter 12.2 trajectory owner from the initialization theorem and the two
-  -- iterate-level membership bridges.
-  sorry
+        (polyhedral_projection_dpg_dual_iterates A b d L y0 k) L := by
+  -- Rewrite the successor iterate to the explicit dual-update owner and reuse the step-(b) proof.
+  rw [polyhedral_projection_dpg_dual_iterates_succ]
+  simpa [polyhedral_projection_dpg_primal_iterates_eq] using
+    polyhedral_projection_dual_update_mem_y_step
+      (A := A) (b := b) (L := L)
+      (polyhedral_projection_dpg_primal_iterates A b d L y0 k)
+      (polyhedral_projection_dpg_dual_iterates A b d L y0 k)
 
 /-- The explicit polyhedral projection recursion is a Chapter 12.2 dual proximal-gradient primal
 trajectory for the quadratic objective and the upper-box indicator. -/
-theorem polyhedral_projection_dpg_is_dual_proximal_gradient_primal_trajectory :
-    IsPolyhedralProjectionDPGTrajectory xSeq ySeq :=
-  by
-  simpa using polyhedral_projection_dpg_is_dual_proximal_gradient_primal_trajectory_explicit
+theorem polyhedral_projection_dpg_is_dual_proximal_gradient_primal_trajectory
+    (A : Matrix (Fin p) (Fin n) ℝ) (b : EuclideanSpace ℝ (Fin p)) (d : EuclideanSpace ℝ (Fin n))
+    (L : PolyhedralProjectionStepsizeParameter A) (y0 : EuclideanSpace ℝ (Fin p)) :
+    is_dual_proximal_gradient_primal_trajectory
+      (denoising_data_fidelity d)
+      (δ_ {z : EuclideanSpace ℝ (Fin p) | ∀ i : Fin p, z i ≤ b i})
+      A.toEuclideanLin
+      L
+      y0
+      (polyhedral_projection_dpg_primal_iterates A b d L y0)
+      (polyhedral_projection_dpg_dual_iterates A b d L y0) := by
+  -- Assemble the initialization, step-(a), and step-(b) owner theorems.
+  refine ⟨?_, ?_, ?_⟩
+  · exact polyhedral_projection_dpg_dual_iterates_zero A b d L y0
+  · intro k
+    exact polyhedral_projection_dpg_primal_iterates_mem_argmax A b d L y0 k
+  · intro k
+    exact polyhedral_projection_dpg_dual_iterates_mem_y_step A b d L y0 k
 
 end
 

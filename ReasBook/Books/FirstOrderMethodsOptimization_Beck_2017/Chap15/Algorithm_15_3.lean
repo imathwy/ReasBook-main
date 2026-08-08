@@ -144,4 +144,15 @@ class IsADMMAlternatingTrajectory
     y (k + 1) =
       admm_multiplier_update ρ A B c (y k) (x (k + 1)) (z (k + 1))
 
+/-- An Algorithm 15.3 alternating ADMM trajectory predicate is a proposition, hence
+subsingleton. -/
+instance instSubsingletonIsADMMAlternatingTrajectory
+    {ρ : PosReal}
+    {h₁ : X → EReal} {h₂ : Z → EReal}
+    {A : X →ₗ[ℝ] Y} {B : Z →ₗ[ℝ] Y} {c : Y}
+    {x : ℕ → X} {z : ℕ → Z} {y : ℕ → Y}
+    {x0 : X} {z0 : Z} {y0 : Y} :
+    Subsingleton (IsADMMAlternatingTrajectory ρ h₁ h₂ A B c x z y x0 z0 y0) :=
+  inferInstance
+
 end

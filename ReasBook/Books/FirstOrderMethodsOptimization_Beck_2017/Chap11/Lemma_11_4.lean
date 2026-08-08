@@ -92,11 +92,7 @@ lemma cbpg_stage_difference_single
             x[k, j.1] j) := by
     -- The next auxiliary stage is exactly the owner one-block update in block `j`.
     simpa [block_coordinate_update] using
-      cyclic_block_proximal_gradient_method_inner_succ
-        (hproblem := hproblem)
-        (x0 := x0')
-        k
-        j.2
+      cyclic_block_proximal_gradient_method_inner_succ hproblem x0' k j.2
   -- Coordinatewise, only the active block contributes to the stage difference.
   rw [hsucc]
   ext i
@@ -130,11 +126,7 @@ lemma cbpg_stage_difference_toPiLp_single
             x[k, j.1] j) := by
     -- Use the owner one-block update formula for the next auxiliary stage.
     simpa [block_coordinate_update] using
-      cyclic_block_proximal_gradient_method_inner_succ
-        (hproblem := hproblem)
-        (x0 := x0')
-        k
-        j.2
+      cyclic_block_proximal_gradient_method_inner_succ hproblem x0' k j.2
   -- Transporting to `PiLp` preserves the same singleton support pattern.
   ext i
   rw [hsucc]
@@ -169,11 +161,7 @@ lemma cbpg_auxiliary_iterate_mem_effective_domain_of_outer_iterate
                 x[k, m] jm) := by
         -- The successor inner stage is exactly the owner one-block prox update.
         simpa [block_coordinate_update] using
-          cyclic_block_proximal_gradient_method_inner_succ
-            (hproblem := hproblem)
-            (x0 := x0')
-            k
-            hm_lt
+          cyclic_block_proximal_gradient_method_inner_succ hproblem x0' k hm_lt
       have hnext :
           block_coordinate_update
               x[k, m]
@@ -183,11 +171,10 @@ lemma cbpg_auxiliary_iterate_mem_effective_domain_of_outer_iterate
             effective_domain (separableSum g) := by
         -- Domain membership propagates through one owner-level prox update.
         simpa [xm] using
-          IsBlockProximalGradientProblem.block_coordinate_update_prox_point_mem_effective_domain
-            (h := hproblem.toIsBlockProximalGradientProblem)
-            (M := Li jm)
-            (x := xm)
-            (i := jm)
+          hproblem.block_coordinate_update_prox_point_mem_effective_domain
+            (Li jm)
+            xm
+            jm
       rw [hsucc]
       exact hnext
 
@@ -203,8 +190,8 @@ lemma cbpg_auxiliary_iterate_mem_effective_domain
         simpa using x0.2
       exact
         cbpg_auxiliary_iterate_mem_effective_domain_of_outer_iterate
-          (hproblem := hproblem)
-          (x0 := x0)
+          hproblem
+          x0
           0
           hx0
           m
@@ -216,8 +203,8 @@ lemma cbpg_auxiliary_iterate_mem_effective_domain
         exact ih p (Nat.le_refl _)
       exact
         cbpg_auxiliary_iterate_mem_effective_domain_of_outer_iterate
-          (hproblem := hproblem)
-          (x0 := x0)
+          hproblem
+          x0
           (k + 1)
           hxsucc
           m
@@ -331,11 +318,7 @@ theorem cbpg_auxiliary_sufficient_decrease_gradient_mapping
             x[k, j.1] j) := by
     -- The next auxiliary stage is the canonical one-block prox update.
     simpa [block_coordinate_update] using
-      cyclic_block_proximal_gradient_method_inner_succ
-        (hproblem := hproblem)
-        (x0 := x0')
-        k
-        j.2
+      cyclic_block_proximal_gradient_method_inner_succ hproblem x0' k j.2
   -- Apply the owner one-block sufficient-decrease theorem at the current auxiliary iterate.
   simpa [xj, hsucc] using
     hproblem.block_partial_gradient_sufficient_decrease j xj
@@ -361,11 +344,7 @@ theorem cbpg_auxiliary_sufficient_decrease_step_norm
             x[k, j.1] j) := by
     -- The stage update matches the proposition's one-block update owner.
     simpa [block_coordinate_update] using
-      cyclic_block_proximal_gradient_method_inner_succ
-        (hproblem := hproblem)
-        (x0 := x0')
-        k
-        j.2
+      cyclic_block_proximal_gradient_method_inner_succ hproblem x0' k j.2
   -- Reuse Proposition 11.1 at the auxiliary iterate and rewrite its updated point.
   simpa [xj, hsucc] using
     hproblem.block_partial_gradient_sufficient_decrease_step_norm j xj
@@ -519,7 +498,7 @@ lemma cbpg_outer_cycle_real_coefficient_bound
       intro j hj
       have hLmin_le_pos : Lmin ≤ Li j := by
         simpa [cbpg_min_block_stepsize] using
-          (Finset.inf'_le (s := Finset.univ) (f := Li) (b := j) (h := by simp))
+          (Finset.inf'_le Li (Finset.mem_univ j))
       have hLmin_le : (Lmin : ℝ) ≤ (Li j : ℝ) := by
         exact_mod_cast hLmin_le_pos
       have hcoeff : ((Lmin : ℝ) / 2) ≤ ((Li j : ℝ) / 2) := by

@@ -21,7 +21,7 @@ variable (f : E → EReal) (μ : PosReal)
 
 recall effective_domain
 recall is_convex_function
-recall extendedRealSubdifferential
+recall subdifferential
 recall strongDualSubdifferential
 recall prox_singleton_implies_effective_domain_and_inner_support
 recall prox_eq_singleton_iff_toDualMap_sub_mem_strongDualSubdifferential
@@ -209,7 +209,7 @@ lemma scaled_prox_singleton_support_of_proper_convex
       field_simp [show (μ : ℝ) ≠ 0 by exact_mod_cast μ.2.ne']
     rw [show inner ℝ ((1 / μ : ℝ) • (x - u)) (y - u) =
         (1 / μ : ℝ) * inner ℝ (x - u) (y - u) by
-        simpa using inner_smul_left (x - u) (y - u) (1 / μ : ℝ)] 
+        simpa using inner_smul_left (x - u) (y - u) (1 / μ : ℝ)]
     rw [hcancel] at hscaled
     exact hscaled
   have hsupport_realE :

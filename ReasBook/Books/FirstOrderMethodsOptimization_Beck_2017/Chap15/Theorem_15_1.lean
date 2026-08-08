@@ -1,4 +1,3 @@
-import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_7
 import FirstOrderMethodsOptimization_Beck_2017.Chap02.Lemma_2_4
 import FirstOrderMethodsOptimization_Beck_2017.Chap02.Proposition_2_3
@@ -9,6 +8,7 @@ import FirstOrderMethodsOptimization_Beck_2017.Chap04.Proposition_4_1
 import FirstOrderMethodsOptimization_Beck_2017.Chap04.Theorem_4_6
 import FirstOrderMethodsOptimization_Beck_2017.Chap15.Definition_15_1
 import FirstOrderMethodsOptimization_Beck_2017.Chap15.Definition_15_2
+import FirstOrderMethodsOptimization_Beck_2017.Chap15.Definition_15_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -21,11 +21,12 @@ open scoped Pointwise
 section
 
 variable {X : Type u} {Z : Type v} {Y : Type w}
-variable [NormedAddCommGroup X] [NormedSpace ℝ X] [FiniteDimensional ℝ X]
-variable [NormedAddCommGroup Z] [NormedSpace ℝ Z] [FiniteDimensional ℝ Z]
-variable [AddCommGroup Y] [Module ℝ Y]
+variable [NormedAddCommGroup X] [InnerProductSpace ℝ X] [FiniteDimensional ℝ X]
+variable [NormedAddCommGroup Z] [InnerProductSpace ℝ Z] [FiniteDimensional ℝ Z]
+variable [NormedAddCommGroup Y] [NormedSpace ℝ Y]
 variable {h₁ : X → EReal} {h₂ : Z → EReal}
 variable {A : X →ₗ[ℝ] Y} {B : Z →ₗ[ℝ] Y} {c : Y}
+variable {ρ : PosReal} {G : X →ₗ[ℝ] X} {Q : Z →ₗ[ℝ] Z}
 
 /- `prompt_add/` is absent in this workspace, so the owner choice is sampled from the nearby
 Chapter 4 and Chapter 15 duality files. This item is `source-facing`: its mathematical content is
@@ -35,23 +36,10 @@ The `core/canonical` owners are already upstream:
 - `fenchel_duality_value_eq` and
   `exists_isGreatest_fenchel_dual_objective_of_finite_value` in Chapter 4.
 
-Accordingly, this file keeps only the ADMM-specialized statements. The primitive data for those
-specializations are the properness and convexity hypotheses actually consumed by the Chapter 4
-owners, together with the source-facing relative-interior feasibility clause from Assumption
-15.2(E). On the codomain side, the owner declarations already live over the weaker ambient layer
-`[AddCommGroup Y] [Module ℝ Y]`, so this file does not retain extra normed or finite-dimensional
-structure on `Y` as theorem-level input. The larger Chapter 15 bundle
-`IsADMMConvexObjectivePair` remains upstream auxiliary API, but it is not the owner-level input
-for these theorem statements. -/
-
-recall admm_problem_value
-recall admm_dual_problem_value
-recall admm_dual_objective
-recall fenchel_dual_objective
-recall fenchel_dual_problem_value
-recall fenchel_dual_problem_value_eq_sSup
-recall fenchel_duality_value_eq
-recall exists_isGreatest_fenchel_dual_objective_of_finite_value
+Accordingly, this file keeps only the ADMM-specialized statements. The main labeled theorems are
+source-facing over the Chapter 15 assumption owner `IsADPMMProblem`; the private helper layer
+below keeps the projected properness, convexity, and qualification inputs explicit because those
+are the Chapter 4 duality hypotheses consumed internally by the proof skeleton. -/
 
 variable (h₁_proper : IsProperExtendedRealFunction h₁)
 variable (h₂_proper : IsProperExtendedRealFunction h₂)
@@ -96,12 +84,13 @@ private theorem ereal_sInf_range_sub_pairing_eq_neg_conjugate
       simpa using hr
   -- Translate the infimum of the negated range into the negative supremum from the conjugate.
   rw [hrange]
-  have hsInf_neg : sInf (-Set.range (fun x : E ↦ (η x : EReal) - f x)) =
-      -sSup (Set.range fun x : E ↦ (η x : EReal) - f x) := by
+  have hsInf_neg :
+      sInf (-Set.range (fun x : E ↦ (η x : EReal) - f x)) =
+        -sSup (Set.range fun x : E ↦ (η x : EReal) - f x) := by
     refine le_antisymm ?_ ?_
     · have hsSup :
-        sSup (Set.range fun x : E ↦ (η x : EReal) - f x) ≤
-          -sInf (-Set.range fun x : E ↦ (η x : EReal) - f x) := by
+          sSup (Set.range fun x : E ↦ (η x : EReal) - f x) ≤
+            -sInf (-Set.range fun x : E ↦ (η x : EReal) - f x) := by
         refine sSup_le ?_
         intro x hx
         have hsInf :
@@ -152,15 +141,17 @@ private theorem mem_intrinsicInterior_prod
     (hx : x ∈ intrinsicInterior ℝ S)
     (hz : z ∈ intrinsicInterior ℝ T) :
     (x, z) ∈ intrinsicInterior ℝ (S ×ˢ T) := by
-  -- Route correction: use the closed-ball characterization from Definition 3.7, then project the
-  -- ambient affine-span condition to each coordinate before applying the original witnesses.
+  -- Use the closed-ball characterization and project the product affine-span condition.
   rcases (mem_intrinsicInterior_iff_closedBall_inter_affineSpan_subset).1 hx with
     ⟨hx_span, εS, hεS, hballS⟩
   rcases (mem_intrinsicInterior_iff_closedBall_inter_affineSpan_subset).1 hz with
     ⟨hz_span, εT, hεT, hballT⟩
   refine (mem_intrinsicInterior_iff_closedBall_inter_affineSpan_subset).2 ?_
-  refine ⟨subset_affineSpan ℝ (S ×ˢ T) ⟨intrinsicInterior_subset hx, intrinsicInterior_subset hz⟩,
-    min εS εT, lt_min hεS hεT, ?_⟩
+  refine ⟨
+    subset_affineSpan ℝ (S ×ˢ T) ⟨intrinsicInterior_subset hx, intrinsicInterior_subset hz⟩,
+    min εS εT,
+    lt_min hεS hεT,
+    ?_⟩
   intro uv huv
   rcases uv with ⟨u, v⟩
   rcases huv with ⟨huv_ball, huv_span⟩
@@ -206,8 +197,8 @@ private theorem effective_domain_admm_objective
     effective_domain (H[h₁, h₂]) = effective_domain h₁ ×ˢ effective_domain h₂ := by
   ext xz
   rcases xz with ⟨x, z⟩
-  -- Turn finiteness of the sum into coordinatewise finiteness using the properness `ne_bot` facts.
-  simp [effective_domain, lt_top_iff_ne_top,
+  -- Turn finiteness of the block sum into coordinatewise finiteness using `≠ ⊥`.
+  simp [effective_domain, lt_top_iff_ne_top, admm_objective_apply,
     EReal.add_ne_top_iff_ne_top₂, h₁_proper.ne_bot x, h₂_proper.ne_bot z]
 
 /-- Helper for Theorem 15.1: the ADMM objective never takes the value `-∞`. -/
@@ -226,52 +217,37 @@ private theorem admm_objective_proper
     (h₁_proper : IsProperExtendedRealFunction h₁)
     (h₂_proper : IsProperExtendedRealFunction h₂) :
     IsProperExtendedRealFunction (H[h₁, h₂]) := by
-  rcases h₁_proper.effective_domain_nonempty with ⟨x₀, hx₀⟩
-  rcases h₂_proper.effective_domain_nonempty with ⟨z₀, hz₀⟩
+  rcases h₁_proper.effective_domain_nonempty with ⟨x0, hx0⟩
+  rcases h₂_proper.effective_domain_nonempty with ⟨z0, hz0⟩
   refine
-    { ne_bot := admm_objective_ne_bot (h₁ := h₁) (h₂ := h₂) h₁_proper h₂_proper
+    { ne_bot := admm_objective_ne_bot h₁_proper h₂_proper
       effective_domain_nonempty := ?_ }
-  -- Combine the coordinatewise effective-domain witnesses into a product witness.
-  refine ⟨(x₀, z₀), ?_⟩
-  simpa [effective_domain_admm_objective (h₁ := h₁) (h₂ := h₂) h₁_proper h₂_proper] using
-    And.intro hx₀ hz₀
-
-/-- Helper for Theorem 15.1: the pointwise sum of two convex extended-real-valued functions is
-convex. -/
-private theorem is_convex_function_add
-    {E : Type*} [AddCommMonoid E] [Module ℝ E]
-    (f g : E → EReal) (hf : is_convex_function f) (hg : is_convex_function g) :
-    is_convex_function (f + g) := by
-  let F : Fin 2 → E → EReal := fun i ↦ if i = 0 then f else g
-  let α : Fin 2 → NNReal := fun _ ↦ 1
-  have hconv :
-      is_convex_function (fun x ↦ ∑ i : Fin 2, (((α i : ℝ) : EReal) * F i x)) := by
-    refine is_convex_function_finset_nonneg_weighted_sum ?_ α
-    intro i
-    fin_cases i
-    · simpa [F] using hf
-    · simpa [F] using hg
-  -- Evaluate the two-term weighted sum explicitly.
-  simpa [F, α, Fin.sum_univ_two] using hconv
+  refine ⟨(x0, z0), ?_⟩
+  simpa [effective_domain_admm_objective h₁_proper h₂_proper] using And.intro hx0 hz0
 
 /-- Helper for Theorem 15.1: the ADMM product objective is convex on `X × Z`. -/
 private theorem admm_objective_convex
+    (h₁_proper : IsProperExtendedRealFunction h₁)
+    (h₂_proper : IsProperExtendedRealFunction h₂)
     (h₁_convex : is_convex_function h₁)
     (h₂_convex : is_convex_function h₂) :
     is_convex_function (H[h₁, h₂]) := by
-  have hfst : is_convex_function (fun xz : X × Z ↦ h₁ xz.1) := by
-    -- Pull back `h₁` along the first coordinate projection.
+  have hh₁_fst : is_convex_function (fun xz : X × Z ↦ h₁ xz.1) := by
+    -- Pull the convexity of `h₁` back along the first-coordinate projection.
     simpa using
-      is_convex_function_precompose_affineMap (f := h₁) h₁_convex
-        (LinearMap.fst ℝ X Z).toAffineMap
-  have hsnd : is_convex_function (fun xz : X × Z ↦ h₂ xz.2) := by
-    -- Pull back `h₂` along the second coordinate projection.
+      is_convex_function_precompose_linearMap_add
+        (f := h₁) h₁_convex (LinearMap.fst ℝ X Z) (0 : X)
+  have hh₂_snd : is_convex_function (fun xz : X × Z ↦ h₂ xz.2) := by
+    -- Pull the convexity of `h₂` back along the second-coordinate projection.
     simpa using
-      is_convex_function_precompose_affineMap (f := h₂) h₂_convex
-        (LinearMap.snd ℝ X Z).toAffineMap
-  -- The ADMM objective is the sum of the two pulled-back block objectives.
-  simpa [admm_objective] using
-    is_convex_function_add (fun xz : X × Z ↦ h₁ xz.1) (fun xz : X × Z ↦ h₂ xz.2) hfst hsnd
+      is_convex_function_precompose_linearMap_add
+        (f := h₂) h₂_convex (LinearMap.snd ℝ X Z) (0 : Z)
+  -- The ADMM objective is the pointwise sum of the two block pullbacks.
+  simpa [composite_model_objective_eq_add] using
+    is_convex_function_pointwise_add
+      hh₁_fst hh₂_snd
+      (fun xz ↦ h₁_proper.ne_bot xz.1)
+      (fun xz ↦ h₂_proper.ne_bot xz.2)
 
 /-- Helper for Theorem 15.1: a linear fiber is a translate of the kernel through any feasible
 base point. -/
@@ -284,16 +260,23 @@ private theorem linear_fiber_eq_singleton_add_ker
   ext x
   constructor
   · intro hx
-    -- Split a feasible point into the chosen base point plus a kernel displacement.
-    refine ⟨x0, by simp, x - x0, ?_, by abel⟩
-    change L (x - x0) = 0
-    rw [LinearMap.map_sub, hx, hx0, sub_self]
-  · rintro ⟨u, hu, v, hv, hsum⟩
-    have hu0 : u = x0 := Set.mem_singleton_iff.1 hu
-    -- Conversely, adding a kernel displacement preserves the linear constraint value.
-    rw [← hsum, hu0]
-    change L (x0 + v) = c
-    rw [LinearMap.map_add, LinearMap.mem_ker.1 hv, hx0, add_zero]
+    -- Rewrite a feasible point as the base point plus a kernel vector.
+    refine Set.mem_add.2 ⟨x0, by simp, x - x0, ?_, ?_⟩
+    · simpa [LinearMap.mem_ker] using
+        show L (x - x0) = 0 by
+          calc
+            L (x - x0) = L x - L x0 := by rw [map_sub]
+            _ = c - c := by rw [hx, hx0]
+            _ = 0 := sub_self c
+    · abel
+  · intro hx
+    rcases Set.mem_add.1 hx with ⟨u, hu, z, hz, rfl⟩
+    rcases Set.mem_singleton_iff.1 hu with rfl
+    have hz' : L z = 0 := by simpa [LinearMap.mem_ker] using hz
+    -- Adding a kernel vector to a chosen solution preserves feasibility.
+    simpa using
+      show L (u + z) = c by
+        rw [map_add, hx0, hz', add_zero]
 
 /-- Helper for Theorem 15.1: the polar cone of a submodule carrier is its dual annihilator. -/
 private theorem polar_cone_submodule_eq_dualAnnihilator
@@ -307,7 +290,7 @@ private theorem polar_cone_submodule_eq_dualAnnihilator
     change φ ∈ W.dualAnnihilator
     rw [Submodule.mem_dualAnnihilator]
     intro w hw
-    -- Test the polar inequality on `w` and `-w` to upgrade nonpositivity to vanishing.
+    -- Test the polar inequality on `w` and `-w` to upgrade nonpositivity to equality.
     have hle : φ w ≤ 0 := h w hw
     have hneg : φ (-w) ≤ 0 := h (-w) (by simpa using W.neg_mem hw)
     have hge : 0 ≤ φ w := by
@@ -317,9 +300,9 @@ private theorem polar_cone_submodule_eq_dualAnnihilator
   · intro h
     change φ ∈ W.dualAnnihilator at h
     rw [Submodule.mem_dualAnnihilator] at h
+    -- Vanishing on the submodule is stronger than the polar-cone inequality.
     intro w hw
-    -- Vanishing on the submodule is the stronger condition required by the polar cone.
-    simpa [h w hw]
+    simp [h w hw]
 
 /-- Helper for Theorem 15.1: the set-theoretic range of `dualMap` matches its linear-map range. -/
 private theorem set_range_dualMap_eq_linearMap_range
@@ -329,8 +312,12 @@ private theorem set_range_dualMap_eq_linearMap_range
     (L : E →ₗ[ℝ] F) :
     Set.range L.dualMap = (LinearMap.range L.dualMap : Set (Module.Dual ℝ E)) := by
   ext ξ
-  rw [Set.mem_range]
-  exact LinearMap.mem_range
+  constructor
+  · rintro ⟨η, rfl⟩
+    exact LinearMap.mem_range.2 ⟨η, rfl⟩
+  · intro hξ
+    rcases LinearMap.mem_range.1 hξ with ⟨η, rfl⟩
+    exact ⟨η, rfl⟩
 
 /-- Helper for Theorem 15.1: the support function of a singleton is evaluation at its unique
 point. -/
@@ -338,14 +325,15 @@ private theorem support_function_singleton
     {E : Type*} [AddCommGroup E] [Module ℝ E]
     (x0 : E) (ξ : Module.Dual ℝ E) :
     support_function ({x0} : Set E) ξ = (ξ x0 : EReal) := by
-  -- The pairing image of a singleton has greatest element given by the unique point.
-  refine support_function_eq_of_isGreatest_image ({x0} : Set E) ξ ?_
-  refine ⟨?_, ?_⟩
-  · exact ⟨x0, by simp, rfl⟩
-  · intro r hr
-    rcases hr with ⟨x, hx, rfl⟩
-    rcases Set.mem_singleton_iff.1 hx with rfl
-    exact le_rfl
+  -- The image set is a singleton, so its unique element is automatically greatest.
+  have hmax :
+      IsGreatest ((fun x : E ↦ (ξ x : EReal)) '' ({x0} : Set E)) (ξ x0 : EReal) := by
+    constructor
+    · exact ⟨x0, by simp, rfl⟩
+    · rintro _ ⟨x, hx, rfl⟩
+      rcases Set.mem_singleton_iff.1 hx with rfl
+      simp
+  exact support_function_eq_of_isGreatest_image ({x0} : Set E) ξ hmax
 
 /-- Helper for Theorem 15.1: the support function of an affine linear fiber is evaluation at the
 base point plus the indicator of the transpose range. -/
@@ -356,45 +344,50 @@ private theorem support_function_linear_fiber_eq_eval_add_indicator_dual_range
     (L : E →ₗ[ℝ] F) (x0 : E) (c : F) (hx0 : L x0 = c) (ξ : Module.Dual ℝ E) :
     support_function ({x : E | L x = c}) ξ =
       (ξ x0 : EReal) + extendedIndicator (Set.range L.dualMap) ξ := by
-  have hcone : IsNonnegativeCone ((LinearMap.ker L : Submodule ℝ E) : Set E) := by
-    intro a x hx
-    -- The kernel is closed under nonnegative scaling because it is a submodule.
-    change (a : ℝ) • x ∈ LinearMap.ker L
-    rw [LinearMap.mem_ker, LinearMap.map_smul, LinearMap.mem_ker.1 hx]
+  have hcone : IsCone (LinearMap.ker L : Set E) := by
+    rw [isCone_iff_smul_mem]
+    intro a _ha x hx
+    exact Submodule.smul_mem _ a hx
+  have hzero : (0 : E) ∈ (LinearMap.ker L : Set E) := by
     simp
-  have hzero : (0 : E) ∈ ((LinearMap.ker L : Submodule ℝ E) : Set E) := by
-    simp
-  have hker :
-      support_function ((LinearMap.ker L : Submodule ℝ E) : Set E) =
-        extendedIndicator (Set.range L.dualMap) := by
-    ext ψ
-    -- Rewrite the homogeneous support function through the polar cone and then through the
-    -- dual-annihilator/range identification.
-    calc
-      support_function ((LinearMap.ker L : Submodule ℝ E) : Set E) ψ
-          = extendedIndicator (polar_cone ((LinearMap.ker L : Set E))) ψ := by
-              simpa using congrArg (fun f : Module.Dual ℝ E → EReal ↦ f ψ)
-                (support_function_eq_indicatorFunction_polarCone
-                  ((LinearMap.ker L : Set E)) hcone hzero)
-      _ = extendedIndicator ((LinearMap.ker L).dualAnnihilator : Set (Module.Dual ℝ E)) ψ := by
-            rw [polar_cone_submodule_eq_dualAnnihilator]
-      _ = extendedIndicator (LinearMap.range L.dualMap : Set (Module.Dual ℝ E)) ψ := by
-            rw [← LinearMap.range_dualMap_eq_dualAnnihilator_ker]
-      _ = extendedIndicator (Set.range L.dualMap) ψ := by
-            rw [set_range_dualMap_eq_linearMap_range]
-  -- Rewrite the affine fiber as a translate of the kernel, then split the support function across
-  -- the singleton and homogeneous pieces.
+  -- Translate the affine fiber to a singleton plus the kernel, then rewrite the kernel support.
   calc
     support_function ({x : E | L x = c}) ξ
         = support_function (({x0} : Set E) + (LinearMap.ker L : Set E)) ξ := by
-            rw [linear_fiber_eq_singleton_add_ker L x0 c hx0]
+            rw [← linear_fiber_eq_singleton_add_ker L x0 c hx0]
     _ = support_function ({x0} : Set E) ξ +
-          support_function ((LinearMap.ker L : Submodule ℝ E) : Set E) ξ := by
-            rw [support_function_minkowski_sum]
-    _ = (ξ x0 : EReal) + support_function ((LinearMap.ker L : Submodule ℝ E) : Set E) ξ := by
+          support_function (LinearMap.ker L : Set E) ξ := by
+            simpa using
+              congrFun
+                (support_function_minkowski_sum_eq_add
+                  ({x0} : Set E) (LinearMap.ker L : Set E))
+                ξ
+    _ = (ξ x0 : EReal) + support_function (LinearMap.ker L : Set E) ξ := by
             rw [support_function_singleton]
-    _ = (ξ x0 : EReal) + extendedIndicator (Set.range L.dualMap) ξ := by
-            rw [hker]
+    _ = (ξ x0 : EReal) +
+          extendedIndicator (polar_cone (LinearMap.ker L : Set E)) ξ := by
+            congr 1
+            rw [support_function_eq_indicatorFunction_polarCone
+              (LinearMap.ker L : Set E) hcone hzero]
+    _ = (ξ x0 : EReal) +
+          extendedIndicator (Set.range L.dualMap) ξ := by
+            have hrange :
+                polar_cone (LinearMap.ker L : Set E) = Set.range L.dualMap := by
+              have hpolar :
+                  (polar_cone (LinearMap.ker L : Set E) : Set (Module.Dual ℝ E)) =
+                    ((LinearMap.ker L).dualAnnihilator : Set (Module.Dual ℝ E)) := by
+                simpa using
+                  congrArg
+                    (fun K : PointedCone ℝ (Module.Dual ℝ E) => (K : Set (Module.Dual ℝ E)))
+                    (polar_cone_submodule_eq_dualAnnihilator (W := LinearMap.ker L))
+              calc
+                polar_cone (LinearMap.ker L : Set E)
+                    = ((LinearMap.ker L).dualAnnihilator : Set (Module.Dual ℝ E)) := by
+                      exact hpolar
+                _ = (LinearMap.range L.dualMap : Set (Module.Dual ℝ E)) := by
+                  rw [← LinearMap.range_dualMap_eq_dualAnnihilator_ker]
+                _ = Set.range L.dualMap := (set_range_dualMap_eq_linearMap_range L).symm
+            rw [hrange]
 
 /-- Helper for Theorem 15.1: once a feasible base point is fixed, the ADMM constraint set is the
 affine subspace obtained by translating `ker (A.coprod B)` through that point. -/
@@ -402,29 +395,30 @@ private theorem admm_feasible_set_eq_affineSubspace_of_mem
     {xz0 : X × Z} (hxz0 : xz0 ∈ admm_feasible_set A B c) :
     admm_feasible_set A B c =
       ((AffineSubspace.mk' xz0 (A.coprod B).ker : AffineSubspace ℝ (X × Z)) : Set (X × Z)) := by
-  ext xz
-  constructor
-  · intro hxz
-    -- Compare any other feasible point to the base point by taking their difference in the kernel.
-    change xz - xz0 ∈ (A.coprod B).ker
-    rw [LinearMap.mem_ker]
-    rw [LinearMap.map_sub]
-    have hxz_eq : (A.coprod B) xz = c := by
-      simpa using hxz
-    have hxz0_eq : (A.coprod B) xz0 = c := by
-      simpa using hxz0
-    calc
-      (A.coprod B) xz - (A.coprod B) xz0 = c - c := by rw [hxz_eq, hxz0_eq]
-      _ = 0 := sub_self c
-  · intro hxz
-    -- Conversely, a kernel displacement keeps the affine constraint value unchanged.
-    change xz - xz0 ∈ (A.coprod B).ker at hxz
-    rw [LinearMap.mem_ker] at hxz
-    rw [LinearMap.map_sub] at hxz
-    have hxz0_eq : (A.coprod B) xz0 = c := by
-      simpa using hxz0
-    have heq : (A.coprod B) xz = (A.coprod B) xz0 := sub_eq_zero.mp hxz
-    simpa using heq.trans hxz0_eq
+  have hxz0_eq : (A.coprod B) xz0 = c := by
+    simpa [admm_feasible_set, LinearMap.coprod_apply] using hxz0
+  have htranslate :
+      ({xz0} : Set (X × Z)) + ((A.coprod B).ker : Set (X × Z)) =
+        ((AffineSubspace.mk' xz0 (A.coprod B).ker : AffineSubspace ℝ (X × Z)) : Set (X × Z)) := by
+    ext xz
+    constructor
+    · rintro ⟨u, hu, v, hv, rfl⟩
+      rcases Set.mem_singleton_iff.1 hu with rfl
+      simpa [AffineSubspace.mem_mk'] using hv
+    · intro hxz
+      have hxz' : xz - xz0 ∈ (A.coprod B).ker := by
+        simpa [AffineSubspace.mem_mk'] using hxz
+      refine Set.mem_add.2 ⟨xz0, by simp, xz - xz0, hxz', ?_⟩
+      abel
+  -- Identify the feasible set with the affine fiber of `A.coprod B`.
+  calc
+    admm_feasible_set A B c = {xz : X × Z | (A.coprod B) xz = c} := by
+      ext xz
+      simp [admm_feasible_set, LinearMap.coprod_apply]
+    _ = ({xz0} : Set (X × Z)) + ((A.coprod B).ker : Set (X × Z)) := by
+      rw [linear_fiber_eq_singleton_add_ker (A.coprod B) xz0 c hxz0_eq]
+    _ = ((AffineSubspace.mk' xz0 (A.coprod B).ker : AffineSubspace ℝ (X × Z)) : Set (X × Z)) :=
+      htranslate
 
 /-- Helper for Theorem 15.1: the ADMM feasible set is convex. -/
 private theorem admm_feasible_set_convex :
@@ -433,39 +427,33 @@ private theorem admm_feasible_set_convex :
   rcases x with ⟨x₁, z₁⟩
   rcases y with ⟨x₂, z₂⟩
   have hx_eq : A x₁ + B z₁ = c := by
-    simpa using hx
+    simpa [admm_feasible_set] using hx
   have hy_eq : A x₂ + B z₂ = c := by
-    simpa using hy
-  -- The affine constraint is preserved by convex combinations because `a + b = 1`.
-  change A (a • x₁ + b • x₂) + B (a • z₁ + b • z₂) = c
-  calc
-    A (a • x₁ + b • x₂) + B (a • z₁ + b • z₂)
-        = a • (A x₁ + B z₁) + b • (A x₂ + B z₂) := by
-            simp [map_add, map_smul, smul_add, add_assoc, add_left_comm]
-    _ = a • c + b • c := by rw [hx_eq, hy_eq]
-    _ = (a + b) • c := by rw [← add_smul]
-    _ = c := by simpa [hab] using (one_smul ℝ c)
+    simpa [admm_feasible_set] using hy
+  -- Linear combinations preserve the affine equality constraint.
+  have hcomb :
+      A (a • x₁ + b • x₂) + B (a • z₁ + b • z₂) =
+        a • (A x₁ + B z₁) + b • (A x₂ + B z₂) := by
+    simp [map_add, smul_add, add_assoc, add_left_comm, add_comm]
+  have hconstraint :
+      A (a • x₁ + b • x₂) + B (a • z₁ + b • z₂) = c := by
+    calc
+      A (a • x₁ + b • x₂) + B (a • z₁ + b • z₂)
+          = a • (A x₁ + B z₁) + b • (A x₂ + B z₂) := hcomb
+      _ = a • c + b • c := by rw [hx_eq, hy_eq]
+      _ = (a + b) • c := by rw [← add_smul]
+      _ = c := by simpa [hab]
+  simpa [admm_feasible_set] using hconstraint
 
 /-- Helper for Theorem 15.1: every feasible ADMM point lies in the intrinsic interior of the
 affine feasible set. -/
 private theorem mem_intrinsicInterior_admm_feasible_set
     {xz : X × Z} (hxz : xz ∈ admm_feasible_set A B c) :
     xz ∈ intrinsicInterior ℝ (admm_feasible_set A B c) := by
-  have hmem :
-      xz ∈
-        ((AffineSubspace.mk' xz (A.coprod B).ker : AffineSubspace ℝ (X × Z)) : Set (X × Z)) := by
-    -- The base point of the affine translate belongs to it via the zero kernel displacement.
-    change xz - xz ∈ (A.coprod B).ker
-    rw [LinearMap.mem_ker]
-    simp
-  have hri :
-      xz ∈ intrinsicInterior ℝ
-        (((AffineSubspace.mk' xz (A.coprod B).ker : AffineSubspace ℝ (X × Z)) : Set (X × Z))) := by
-    -- Every point of an affine subspace lies in its intrinsic interior.
-    exact mem_intrinsicInterior_affineSubspace
-      (AffineSubspace.mk' xz (A.coprod B).ker) hmem
-  -- Rewrite the feasible set as that affine translate through the chosen feasible point.
-  simpa [admm_feasible_set_eq_affineSubspace_of_mem (A := A) (B := B) (c := c) hxz] using hri
+  -- Rewrite the feasible set to the affine-subspace carrier determined by the chosen point.
+  rw [admm_feasible_set_eq_affineSubspace_of_mem (A := A) (B := B) (c := c) hxz]
+  exact mem_intrinsicInterior_affineSubspace
+    (AffineSubspace.mk' xz (A.coprod B).ker) (by simp)
 
 /-- Helper for Theorem 15.1: the ADMM primal value is the Fenchel primal infimum for the product
 objective plus the feasible-set indicator. -/
@@ -475,23 +463,16 @@ private theorem admm_problem_value_eq_fenchel_primal_infimum
     H_opt[h₁, h₂; A, B, c] =
       sInf (Set.range (composite_model_objective (H[h₁, h₂])
         (extendedIndicator (admm_feasible_set A B c)))) := by
-  -- Rewrite the constrained objective as `H + δ_C` using the global no-`⊥` property of `H`.
-  have hrewrite :
+  have hconstrained_eq :
       constrained_problem_objective (H[h₁, h₂]) (admm_feasible_set A B c) =
         composite_model_objective (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c)) := by
-    -- Route correction: supply the non-`⊥` side condition explicitly, then rewrite `f + δ_C`
-    -- back to the canonical pointwise-sum owner `composite_model_objective`.
+    -- Rewrite the constrained objective as `H[h₁,h₂] + δ_feas`.
     simpa [composite_model_objective_eq_add] using
-      (constrained_problem_objective_eq_add_extendedIndicator
-        (f := H[h₁, h₂]) (C := admm_feasible_set A B c)
-        (fun yz _ ↦ admm_objective_ne_bot (h₁ := h₁) (h₂ := h₂) h₁_proper h₂_proper yz))
-  have hrange :
-      Set.range (constrained_problem_objective (H[h₁, h₂]) (admm_feasible_set A B c)) =
-        Set.range (composite_model_objective (H[h₁, h₂])
-          (extendedIndicator (admm_feasible_set A B c))) := by
-    simpa using congrArg Set.range hrewrite
-  rw [admm_problem_value_eq_sInf]
-  rw [hrange]
+      constrained_problem_objective_eq_add_extendedIndicator
+        (H[h₁, h₂]) (admm_feasible_set A B c)
+        (fun xz _ ↦ admm_objective_ne_bot h₁_proper h₂_proper xz)
+  -- Substitute the normalized owner into the Chapter 15 primal-value definition.
+  simpa [admm_problem_value_eq_sInf, hconstrained_eq]
 
 /-- Helper for Theorem 15.1: the ADMM qualification matches the Chapter 4 Fenchel qualification
 on the product space. -/
@@ -504,14 +485,15 @@ private theorem admm_fenchel_qualification
           A xHat + B zHat = c) :
     (intrinsicInterior ℝ (effective_domain (H[h₁, h₂])) ∩
       intrinsicInterior ℝ (admm_feasible_set A B c)).Nonempty := by
-  rcases hqual with ⟨xHat, hxHat, zHat, hzHat, hfeas⟩
-  refine ⟨(xHat, zHat), ?_, ?_⟩
-  · -- The product relative-interior witness transfers through the product-domain identity.
-    simpa [effective_domain_admm_objective (h₁ := h₁) (h₂ := h₂) h₁_proper h₂_proper] using
-      mem_intrinsicInterior_prod (X := X) (Z := Z) hxHat hzHat
-  · -- The feasible witness lies in the intrinsic interior of the affine constraint fiber.
-    exact mem_intrinsicInterior_admm_feasible_set (A := A) (B := B) (c := c)
-      (xz := (xHat, zHat)) (by simpa using hfeas)
+  rcases hqual with ⟨xHat, hxHat, zHat, hzHat, hEq⟩
+  refine ⟨(xHat, zHat), ?_⟩
+  constructor
+  · -- Put the qualification witness in the product relative interior of the effective domain.
+    simpa [effective_domain_admm_objective h₁_proper h₂_proper] using
+      mem_intrinsicInterior_prod (x := xHat) (z := zHat) hxHat hzHat
+  · -- Then use the affine-fiber owner for the feasible-set intrinsic interior.
+    exact mem_intrinsicInterior_admm_feasible_set
+      (A := A) (B := B) (c := c) (by simpa [admm_feasible_set] using hEq)
 
 /-- Helper for Theorem 15.1: the support function of the ADMM feasible affine fiber is constant on
 the transpose range. -/
@@ -522,20 +504,21 @@ private theorem support_function_admm_feasible_set_on_range
           A xHat + B zHat = c)
     (y : Module.Dual ℝ Y) :
     support_function (admm_feasible_set A B c) ((A.coprod B).dualMap y) = (y c : EReal) := by
-  rcases hqual with ⟨xHat, hxHat, zHat, hzHat, hfeas⟩
-  have hxz_feas : (xHat, zHat) ∈ admm_feasible_set A B c := by
-    simpa using hfeas
-  -- The transpose pairing is constant on the feasible fiber, so its image has greatest element
-  -- `y c`.
-  refine support_function_eq_of_isGreatest_image _ _ ?_
-  refine ⟨?_, ?_⟩
-  · refine ⟨(xHat, zHat), hxz_feas, ?_⟩
-    simp [LinearMap.dualMap_apply, hfeas]
-  · intro r hr
-    rcases hr with ⟨xz, hxz, rfl⟩
-    have hxz_eq : (A.coprod B) xz = c := by
-      simpa using hxz
-    simp [LinearMap.dualMap_apply, hxz_eq]
+  rcases hqual with ⟨xHat, _hxHat, zHat, _hzHat, hEq⟩
+  have hxz0 : (A.coprod B) (xHat, zHat) = c := by
+    simpa [LinearMap.coprod_apply] using hEq
+  have hmem : (A.coprod B).dualMap y ∈ Set.range (A.coprod B).dualMap := ⟨y, rfl⟩
+  -- Evaluate the affine-fiber support formula at a feasible base point.
+  calc
+    support_function (admm_feasible_set A B c) ((A.coprod B).dualMap y)
+        = ((((A.coprod B).dualMap y) (xHat, zHat) : ℝ) : EReal) +
+            extendedIndicator (Set.range (A.coprod B).dualMap) ((A.coprod B).dualMap y) := by
+              simpa [admm_feasible_set, LinearMap.coprod_apply] using
+                support_function_linear_fiber_eq_eval_add_indicator_dual_range
+                  (A.coprod B) (xHat, zHat) c hxz0 ((A.coprod B).dualMap y)
+    _ = (y c : EReal) + 0 := by
+          simp [extendedIndicator, hmem, LinearMap.dualMap_apply, LinearMap.coprod_apply, hEq]
+    _ = (y c : EReal) := by simp
 
 /-- Helper for Theorem 15.1: outside the transpose range, the support function of the ADMM
 feasible affine fiber is infinite. -/
@@ -547,26 +530,33 @@ private theorem support_function_admm_feasible_set_eq_top_of_not_mem_dual_range
     (ξ : Module.Dual ℝ (X × Z))
     (hξ : ξ ∉ Set.range (A.coprod B).dualMap) :
     support_function (admm_feasible_set A B c) (-ξ) = ⊤ := by
-  rcases hqual with ⟨xHat, hxHat, zHat, hzHat, hfeas⟩
+  rcases hqual with ⟨xHat, _hxHat, zHat, _hzHat, hEq⟩
   have hxz0 : (A.coprod B) (xHat, zHat) = c := by
-    simpa using hfeas
-  have hnegξ : -ξ ∉ Set.range (A.coprod B).dualMap := by
-    intro hnegξ
+    simpa [LinearMap.coprod_apply] using hEq
+  have hneg : -ξ ∉ Set.range (A.coprod B).dualMap := by
+    intro hmem
+    rcases hmem with ⟨y, hy⟩
+    have hneg_map : (A.coprod B).dualMap (-y) = -((A.coprod B).dualMap y) := by
+      apply LinearMap.ext
+      intro xz
+      rcases xz with ⟨x, z⟩
+      simp [LinearMap.dualMap_apply, LinearMap.coprod_apply]
     apply hξ
-    rcases hnegξ with ⟨y, hy⟩
     refine ⟨-y, ?_⟩
-    simpa [hy]
-  -- Route correction: compute the affine-fiber support function through the kernel-translation
-  -- formula, then the off-range indicator term forces the value to `⊤`.
+    calc
+      (A.coprod B).dualMap (-y) = -((A.coprod B).dualMap y) := hneg_map
+      _ = -(-ξ) := by simpa [hy]
+      _ = ξ := by simp
+  -- Off the transpose range, the indicator term in the affine-fiber support formula is `⊤`.
   calc
     support_function (admm_feasible_set A B c) (-ξ)
-        = ((-ξ) (xHat, zHat) : EReal) +
+        = (((-ξ) (xHat, zHat) : ℝ) : EReal) +
             extendedIndicator (Set.range (A.coprod B).dualMap) (-ξ) := by
               simpa [admm_feasible_set, LinearMap.coprod_apply] using
                 support_function_linear_fiber_eq_eval_add_indicator_dual_range
-                  (L := A.coprod B) (x0 := (xHat, zHat)) (c := c) hxz0 (-ξ)
+                  (A.coprod B) (xHat, zHat) c hxz0 (-ξ)
     _ = ⊤ := by
-          simp [extendedIndicator, hnegξ]
+          simp [extendedIndicator, hneg]
 
 /-- Helper for Theorem 15.1: subtracting the pulled-back dual pairing from the block objective
 repackages the integrand as the ADMM Lagrangian plus the constant term `⟨y, c⟩`. -/
@@ -575,118 +565,111 @@ private theorem admm_objective_sub_coprodDual_neg_eq_lagrangian_add_eval
     H[h₁, h₂] xz - (((A.coprod B).dualMap (-y)) xz : EReal) =
       admm_lagrangian h₁ h₂ A B c xz.1 xz.2 y + (y c : EReal) := by
   rcases xz with ⟨x, z⟩
+  have hdual :
+      (((A.coprod B).dualMap (-y)) (x, z) : EReal) = ((-(y (A x + B z)) : ℝ) : EReal) := by
+    simp [LinearMap.dualMap_apply, LinearMap.coprod_apply]
   have hpair :
-      (((A.coprod B).dualMap (-y)) (x, z) : EReal) = -((y (A x + B z) : ℝ) : EReal) := by
-    -- The transpose of `(-y)` evaluates to the negative primal pairing.
-    let t : Y := (A.coprod B) (x, z)
+      (admm_lagrangian h₁ h₂ A B c x z y : EReal) + (y c : EReal) =
+        h₁ x + h₂ z + (y (A x + B z) : EReal) := by
+    have hpair_eval :
+        (y (A x + B z - c) : EReal) + (y c : EReal) = (y (A x + B z) : EReal) := by
+      change (((y (A x + B z - c) + y c : ℝ)) : EReal) = (((y (A x + B z) : ℝ)) : EReal)
+      have hreal : y (A x + B z - c) + y c = y (A x + B z) := by
+        rw [map_sub]
+        abel
+      simp [hreal]
+    rw [admm_lagrangian_apply]
     calc
-      (((A.coprod B).dualMap (-y)) (x, z) : EReal)
-          = ((((-y) t : ℝ)) : EReal) := by
-              simp [LinearMap.dualMap_apply, t]
-      _ = -(((y t : ℝ) : EReal)) := by
-            simp
-      _ = -((y (A x + B z) : ℝ) : EReal) := by
-            simp [t, LinearMap.coprod_apply]
-  have hsplit :
-      ((y (A x + B z) : ℝ) : EReal) =
-        (y (A x + B z - c) : EReal) + (y c : EReal) := by
-    -- Split the affine pairing into the constraint residual and the constant term `⟨y, c⟩`.
-    have hsplit_real : y (A x + B z - c) + y c = y (A x + B z) := by
-      calc
-        y (A x + B z - c) + y c = (y (A x + B z) - y c) + y c := by
-          simp [sub_eq_add_neg, map_add, add_assoc]
-        _ = y (A x + B z) := by
-          abel
-    exact congrArg (fun t : ℝ ↦ (t : EReal)) hsplit_real.symm
-  -- Rewrite the pulled-back pairing, then fold the residual term back into the Lagrangian owner.
+      h₁ x + h₂ z + (y (A x + B z - c) : EReal) + (y c : EReal)
+          = h₁ x + h₂ z + ((y (A x + B z - c) : EReal) + (y c : EReal)) := by
+              rw [add_assoc]
+      _ = h₁ x + h₂ z + (y (A x + B z) : EReal) := by rw [hpair_eval]
+  -- Normalize the pulled-back dual pairing into the ADMM Lagrangian residual.
   calc
     H[h₁, h₂] (x, z) - (((A.coprod B).dualMap (-y)) (x, z) : EReal)
-        = h₁ x + h₂ z + ((y (A x + B z) : ℝ) : EReal) := by
-            rw [admm_objective_apply, hpair]
-            simp [sub_eq_add_neg]
-    _ = h₁ x + h₂ z + (y (A x + B z - c) : EReal) + (y c : EReal) := by
-          simpa [add_assoc] using congrArg (fun t : EReal ↦ h₁ x + h₂ z + t) hsplit
-    _ = admm_lagrangian h₁ h₂ A B c x z y + (y c : EReal) := by
-          rw [admm_lagrangian_apply]
+        = h₁ x + h₂ z + (y (A x + B z) : EReal) := by
+            rw [admm_objective_apply]
+            change
+              h₁ x + h₂ z + (((-((-y) (A x + B z)) : ℝ)) : EReal) =
+                h₁ x + h₂ z + (y (A x + B z) : EReal)
+            simp [sub_eq_add_neg, add_assoc, add_left_comm, add_comm]
+    _ = admm_lagrangian h₁ h₂ A B c x z y + (y c : EReal) := hpair.symm
 
 /-- Helper for Theorem 15.1: translating an `EReal` range by a finite scalar translates its
 infimum by the same scalar. -/
 private theorem ereal_sInf_range_add_finite
     {α : Type*} (φ : α → EReal) (r : ℝ) :
     sInf (Set.range fun a : α ↦ φ a + (r : EReal)) = sInf (Set.range φ) + (r : EReal) := by
-  refine le_antisymm ?_ ?_
-  · -- Shift the translated infimum back by `-r` to recover a lower bound for the original range.
-    have hshift :
-        sInf (Set.range fun a : α ↦ φ a + (r : EReal)) + ((-r : ℝ) : EReal) ≤
-          sInf (Set.range φ) := by
-      refine le_sInf ?_
-      intro x hx
-      rcases hx with ⟨a, rfl⟩
-      have hsInf :
-          sInf (Set.range fun a : α ↦ φ a + (r : EReal)) ≤ φ a + (r : EReal) := by
-        exact sInf_le (show φ a + (r : EReal) ∈ Set.range (fun a : α ↦ φ a + (r : EReal)) from
-          ⟨a, rfl⟩)
-      have hsInf' :
-          sInf (Set.range fun a : α ↦ φ a + (r : EReal)) + ((-r : ℝ) : EReal) ≤
-            φ a + (r : EReal) + ((-r : ℝ) : EReal) := by
-        exact (EReal.addLECancellable_coe (-r)).add_le_add_iff_right.mpr hsInf
-      calc
-        sInf (Set.range fun a : α ↦ φ a + (r : EReal)) + ((-r : ℝ) : EReal) ≤
-            φ a + (r : EReal) + ((-r : ℝ) : EReal) := hsInf'
-        _ = φ a := by
-              simpa [sub_eq_add_neg, add_assoc] using
-                (EReal.add_sub_cancel_right (a := φ a) (b := r))
-    have hshift' :
-        sInf (Set.range fun a : α ↦ φ a + (r : EReal)) + ((-r : ℝ) : EReal) + (r : EReal) ≤
-          sInf (Set.range φ) + (r : EReal) := by
-      exact (EReal.addLECancellable_coe r).add_le_add_iff_right.mpr hshift
-    calc
-      sInf (Set.range fun a : α ↦ φ a + (r : EReal))
-          = sInf (Set.range fun a : α ↦ φ a + (r : EReal)) + ((-r : ℝ) : EReal) + (r : EReal) := by
-              simpa [sub_eq_add_neg, add_assoc] using
-                (EReal.sub_add_cancel
-                  (a := sInf (Set.range fun a : α ↦ φ a + (r : EReal))) (b := r)).symm
-      _ ≤ sInf (Set.range φ) + (r : EReal) := hshift'
-  · -- Conversely, `sInf (range φ) + r` is a lower bound for the translated range.
-    refine le_sInf ?_
-    intro x hx
-    rcases hx with ⟨a, rfl⟩
-    have hsInf : sInf (Set.range φ) ≤ φ a := by
-      exact sInf_le (show φ a ∈ Set.range φ from ⟨a, rfl⟩)
-    exact (EReal.addLECancellable_coe r).add_le_add_iff_right.mpr hsInf
+  let f : EReal → EReal := fun t ↦ t + (r : EReal)
+  have hmono : Monotone f := by
+    intro a b hab
+    simpa [f, add_comm, add_left_comm, add_assoc] using
+      add_le_add_left hab (r : EReal)
+  have hcontAdd :
+      ContinuousAt (fun p : EReal × EReal ↦ p.1 + p.2) (sInf (Set.range φ), (r : EReal)) := by
+    apply EReal.continuousAt_add <;> simp
+  have hpair_cont : ContinuousAt (fun t : EReal ↦ (t, (r : EReal))) (sInf (Set.range φ)) :=
+    continuousAt_id.prodMk continuousAt_const
+  have hcont : ContinuousAt f (sInf (Set.range φ)) := by
+    simpa [f] using hcontAdd.comp₂ continuousAt_id continuousAt_const
+  have htop : f ⊤ = ⊤ := by
+    simp [f]
+  have hmap :
+      f (sInf (Set.range φ)) = sInf (f '' Set.range φ) :=
+    Monotone.map_sInf_of_continuousAt (s := Set.range φ) hcont hmono htop
+  have himage :
+      f '' Set.range φ = Set.range fun a : α ↦ φ a + (r : EReal) := by
+    ext t
+    constructor
+    · rintro ⟨u, ⟨a, rfl⟩, rfl⟩
+      exact ⟨a, rfl⟩
+    · rintro ⟨a, rfl⟩
+      exact ⟨φ a, ⟨a, rfl⟩, rfl⟩
+  simpa [f, himage] using hmap.symm
 
 /-- Helper for Theorem 15.1: on the transpose range, the first Fenchel term is the ADMM dual
 objective plus the constant evaluation `⟨y, c⟩`. -/
 private theorem neg_conjugate_admm_objective_coprodDual_neg_eq_dual_objective_add_eval
+    (h₁_proper : IsProperExtendedRealFunction h₁)
+    (h₂_proper : IsProperExtendedRealFunction h₂)
     (y : Module.Dual ℝ Y) :
     -conjugate_function (H[h₁, h₂]) ((A.coprod B).dualMap (-y)) =
       admm_dual_objective h₁ h₂ A B c y + (y c : EReal) := by
-  -- Route correction: rewrite the negative conjugate through the ADMM Lagrangian owner instead
-  -- of a raw product-conjugate splitting argument.
-  rw [← ereal_sInf_range_sub_pairing_eq_neg_conjugate]
-  have hrange :
-      Set.range
-          (fun xz : X × Z ↦ H[h₁, h₂] xz - (((A.coprod B).dualMap (-y)) xz : EReal)) =
-        Set.range
-          (fun xz : X × Z ↦ admm_lagrangian h₁ h₂ A B c xz.1 xz.2 y + (y c : EReal)) := by
-    ext r
-    constructor
-    · rintro ⟨xz, rfl⟩
-      exact ⟨xz,
-        (admm_objective_sub_coprodDual_neg_eq_lagrangian_add_eval
-          (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c) y xz).symm⟩
-    · rintro ⟨xz, rfl⟩
-      exact ⟨xz,
-        admm_objective_sub_coprodDual_neg_eq_lagrangian_add_eval
-          (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c) y xz⟩
-  -- Pull the finite scalar `⟨y, c⟩` outside the infimum and use the Definition 15.2 owner.
-  rw [hrange, ereal_sInf_range_add_finite]
-  rw [← admm_dual_objective_eq_sInf_lagrangian (h₁ := h₁) (h₂ := h₂)
-    (A := A) (B := B) (c := c) (y := y)]
+  -- Rewrite the conjugate as an infimum of affine perturbations, then identify the ADMM integrand.
+  calc
+    -conjugate_function (H[h₁, h₂]) ((A.coprod B).dualMap (-y))
+        = sInf (Set.range fun xz : X × Z ↦
+            H[h₁, h₂] xz - ((((A.coprod B).dualMap (-y)) xz : ℝ) : EReal)) := by
+              symm
+              exact ereal_sInf_range_sub_pairing_eq_neg_conjugate
+                (H[h₁, h₂]) ((A.coprod B).dualMap (-y))
+    _ = sInf (Set.range fun xz : X × Z ↦
+          admm_lagrangian h₁ h₂ A B c xz.1 xz.2 y + (y c : EReal)) := by
+          congr 1
+          ext r
+          constructor
+          · rintro ⟨xz, rfl⟩
+            exact ⟨xz, by
+              exact
+                (admm_objective_sub_coprodDual_neg_eq_lagrangian_add_eval
+                  (A := A) (B := B) (c := c) (h₁ := h₁) (h₂ := h₂) y xz).symm⟩
+          · rintro ⟨xz, rfl⟩
+            exact ⟨xz, by
+              exact admm_objective_sub_coprodDual_neg_eq_lagrangian_add_eval
+                (A := A) (B := B) (c := c) (h₁ := h₁) (h₂ := h₂) y xz⟩
+    _ = sInf (Set.range fun xz : X × Z ↦ admm_lagrangian h₁ h₂ A B c xz.1 xz.2 y) +
+          (y c : EReal) := by
+            simpa using
+              ereal_sInf_range_add_finite
+                (fun xz : X × Z ↦ admm_lagrangian h₁ h₂ A B c xz.1 xz.2 y) (y c)
+    _ = admm_dual_objective h₁ h₂ A B c y + (y c : EReal) := by
+          rw [← admm_dual_objective_eq_sInf_lagrangian h₁ h₂ A B c h₁_proper h₂_proper y]
 
 /-- Helper for Theorem 15.1: on the transpose range, the unrestricted Fenchel dual objective
 agrees with the ADMM dual objective. -/
 private theorem fenchel_dual_objective_on_admm_constraint_dual_range
+    (h₁_proper : IsProperExtendedRealFunction h₁)
+    (h₂_proper : IsProperExtendedRealFunction h₂)
     (hqual :
       ∃ xHat ∈ intrinsicInterior ℝ (effective_domain h₁),
         ∃ zHat ∈ intrinsicInterior ℝ (effective_domain h₂),
@@ -695,27 +678,51 @@ private theorem fenchel_dual_objective_on_admm_constraint_dual_range
     fenchel_dual_objective (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c))
       ((A.coprod B).dualMap (-y)) =
         admm_dual_objective h₁ h₂ A B c y := by
-  have hneg :
-      -((A.coprod B).dualMap (-y)) = (A.coprod B).dualMap y := by
-    -- Negating the pulled-back `-y` recovers the ordinary transpose evaluation at `y`.
-    simpa using congrArg Neg.neg ((A.coprod B).dualMap.map_neg y)
-  -- Expand the Fenchel dual objective, rewrite both terms on the transpose range, and cancel
-  -- the finite scalar `⟨y, c⟩`.
+  have hneg_dual : -((A.coprod B).dualMap (-y)) = (A.coprod B).dualMap y := by
+    apply LinearMap.ext
+    intro xz
+    rcases xz with ⟨x, z⟩
+    simp [LinearMap.dualMap_apply, LinearMap.coprod_apply]
+  -- On the transpose range, the support-function term is exactly `⟨y, c⟩`.
+  rw [fenchel_dual_objective_apply, conjugate_function_extendedIndicator_apply_eq_support_function]
+  rw [hneg_dual, support_function_admm_feasible_set_on_range (A := A) (B := B) (c := c) hqual y]
+  rw [neg_conjugate_admm_objective_coprodDual_neg_eq_dual_objective_add_eval
+    (A := A) (B := B) (c := c) (h₁ := h₁) (h₂ := h₂) h₁_proper h₂_proper y]
+  rw [admm_dual_objective, sub_eq_add_neg]
+  have hcancel :
+      -conjugate_function h₁ (A.dualMap (-y)) -
+          conjugate_function h₂ (B.dualMap (-y)) -
+            (y c : EReal) + (y c : EReal) =
+        -conjugate_function h₁ (A.dualMap (-y)) -
+          conjugate_function h₂ (B.dualMap (-y)) := by
+    calc
+      -conjugate_function h₁ (A.dualMap (-y)) -
+          conjugate_function h₂ (B.dualMap (-y)) -
+            (y c : EReal) + (y c : EReal)
+          =
+          (-conjugate_function h₁ (A.dualMap (-y)) -
+            conjugate_function h₂ (B.dualMap (-y))) +
+              (-(y c : EReal) + (y c : EReal)) := by
+                simp [sub_eq_add_neg, add_assoc]
+      _ = -conjugate_function h₁ (A.dualMap (-y)) -
+            conjugate_function h₂ (B.dualMap (-y)) := by
+              have hyc : (-(y c : EReal) + (y c : EReal)) = 0 := by
+                change (((-(y c) + y c : ℝ)) : EReal) = 0
+                simp
+              rw [hyc]
+              rw [add_zero]
   calc
-    fenchel_dual_objective (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c))
-        ((A.coprod B).dualMap (-y))
-        = -conjugate_function (H[h₁, h₂]) ((A.coprod B).dualMap (-y)) -
-            support_function (admm_feasible_set A B c) ((A.coprod B).dualMap y) := by
-              rw [fenchel_dual_objective_apply,
-                conjugate_function_extendedIndicator_apply_eq_support_function, hneg]
-    _ = (admm_dual_objective h₁ h₂ A B c y + (y c : EReal)) - (y c : EReal) := by
-          rw [neg_conjugate_admm_objective_coprodDual_neg_eq_dual_objective_add_eval
-            (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c) y,
-            support_function_admm_feasible_set_on_range
-              (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c) hqual y]
-    _ = admm_dual_objective h₁ h₂ A B c y := by
-          simpa using
-            (EReal.add_sub_cancel_right (a := admm_dual_objective h₁ h₂ A B c y) (b := y c))
+    (-conjugate_function h₁ (A.dualMap (-y)) -
+        conjugate_function h₂ (B.dualMap (-y)) -
+          (y c : EReal) + (y c : EReal)) +
+        -(y c : EReal)
+        =
+        (-conjugate_function h₁ (A.dualMap (-y)) -
+          conjugate_function h₂ (B.dualMap (-y))) + -(y c : EReal) := by
+            rw [hcancel]
+    _ = -conjugate_function h₁ (A.dualMap (-y)) -
+          conjugate_function h₂ (B.dualMap (-y)) - (y c : EReal) := by
+            rfl
 
 /-- Helper for Theorem 15.1: outside the transpose range, the unrestricted Fenchel dual objective
 collapses to `-∞`. -/
@@ -727,42 +734,49 @@ private theorem fenchel_dual_objective_eq_bot_of_not_mem_admm_constraint_dual_ra
     (ξ : Module.Dual ℝ (X × Z))
     (hξ : ξ ∉ Set.range (A.coprod B).dualMap) :
     fenchel_dual_objective (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c)) ξ = ⊥ := by
-  -- Expand the Fenchel dual objective and force the indicator-conjugate term to `⊤`.
+  -- Off the transpose range, the support-function term is `⊤`, so the dual objective collapses.
   rw [fenchel_dual_objective_apply, conjugate_function_extendedIndicator_apply_eq_support_function]
   rw [support_function_admm_feasible_set_eq_top_of_not_mem_dual_range
-    (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c) hqual ξ hξ]
+    (A := A) (B := B) (c := c) hqual ξ hξ]
   simp
 
 /-- Helper for Theorem 15.1: the unrestricted Fenchel dual value of the ADMM product formulation
 is exactly the ADMM dual problem value. -/
 private theorem fenchel_dual_problem_value_eq_admm_dual_problem_value
+    (h₁_proper : IsProperExtendedRealFunction h₁)
+    (h₂_proper : IsProperExtendedRealFunction h₂)
     (hqual :
       ∃ xHat ∈ intrinsicInterior ℝ (effective_domain h₁),
         ∃ zHat ∈ intrinsicInterior ℝ (effective_domain h₂),
           A xHat + B zHat = c) :
     fenchel_dual_problem_value (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c)) =
       admm_dual_problem_value h₁ h₂ A B c := by
-  -- Compare the two dual suprema pointwise, using the on-range identification and the off-range
-  -- `⊥` collapse.
+  -- Compare the two suprema pointwise using the on-range rewrite and the off-range collapse.
   rw [fenchel_dual_problem_value_eq_sSup, admm_dual_problem_value_eq_sSup]
   apply le_antisymm
   · refine sSup_le ?_
     intro r hr
     rcases hr with ⟨ξ, rfl⟩
     by_cases hξ : ξ ∈ Set.range (A.coprod B).dualMap
-    · rcases hξ with ⟨y₀, rfl⟩
-      rw [show (A.coprod B).dualMap y₀ = (A.coprod B).dualMap (-(-y₀)) by simp]
+    · rcases hξ with ⟨y0, hy0⟩
+      have hy : ξ = (A.coprod B).dualMap (-(-y0)) := by
+        calc
+          ξ = (A.coprod B).dualMap y0 := hy0.symm
+          _ = (A.coprod B).dualMap (-(-y0)) := by simp
+      rw [hy]
       rw [fenchel_dual_objective_on_admm_constraint_dual_range
-        (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c) hqual (-y₀)]
-      exact le_sSup ⟨-y₀, rfl⟩
+        (A := A) (B := B) (c := c) (h₁ := h₁) (h₂ := h₂)
+        h₁_proper h₂_proper hqual (-y0)]
+      exact le_sSup ⟨-y0, rfl⟩
     · rw [fenchel_dual_objective_eq_bot_of_not_mem_admm_constraint_dual_range
-      (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c) hqual ξ hξ]
+        (A := A) (B := B) (c := c) (h₁ := h₁) (h₂ := h₂) hqual ξ hξ]
       exact bot_le
   · refine sSup_le ?_
     intro r hr
     rcases hr with ⟨y, rfl⟩
     rw [← fenchel_dual_objective_on_admm_constraint_dual_range
-      (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c) hqual y]
+      (A := A) (B := B) (c := c) (h₁ := h₁) (h₂ := h₂)
+      h₁_proper h₂_proper hqual y]
     exact le_sSup ⟨(A.coprod B).dualMap (-y), rfl⟩
 
 /-- Helper for Theorem 15.1: the indicator of the nonempty ADMM feasible set is proper. -/
@@ -777,8 +791,9 @@ private theorem admm_feasible_set_indicator_proper
       effective_domain_nonempty := ?_ }
   · intro xz
     by_cases hxz : xz ∈ admm_feasible_set A B c <;> simp [extendedIndicator, hxz]
-  · rcases hqual with ⟨xHat, hxHat, zHat, hzHat, hfeas⟩
-    exact ⟨(xHat, zHat), by simpa using hfeas⟩
+  · rcases hqual with ⟨xHat, _hxHat, zHat, _hzHat, hEq⟩
+    refine ⟨(xHat, zHat), ?_⟩
+    simpa [effective_domain_extendedIndicator, admm_feasible_set, hEq]
 
 /-- Helper for Theorem 15.1: the indicator of the ADMM feasible affine set is convex. -/
 private theorem admm_feasible_set_indicator_convex :
@@ -793,16 +808,14 @@ private theorem admm_feasible_set_indicator_convex :
       is_convex_function
         (constrained_problem_objective (0 : X × Z → EReal) (admm_feasible_set A B c)) :=
     is_convex_function_constrained_problem_objective h_zero_convex admm_feasible_set_convex
-  -- Rewrite the constrained owner as the indicator because the zero function contributes nothing.
+  -- Rewrite the constrained zero objective as `0 + δ_feas`.
   rw [constrained_problem_objective_eq_add_extendedIndicator
     (0 : X × Z → EReal) (admm_feasible_set A B c) (fun _ _ ↦ by simp)] at h_constrained_convex
   simpa [composite_model_objective] using h_constrained_convex
 
--- Proof sketch: rewrite the affine-constrained ADMM primal problem as a Fenchel problem on the
--- product space `X × Z`, with the equality constraint encoded by the indicator of the affine set
--- `{(x, z) | A x + B z = c}`. The relative-interior feasibility assumption is exactly the
--- qualification needed to apply Fenchel--Rockafellar duality, and the resulting dual value is
--- `admm_dual_problem_value h₁ h₂ A B c`.
+-- Proof sketch: the public theorem is stated under `hAssump : IsADPMMProblem ρ h₁ h₂ A B G Q c`,
+-- while the private proof path rewrites the affine-constrained ADMM primal problem as a Fenchel
+-- problem on `X × Z` and uses `hAssump.ri_qualification` as the Chapter 4 qualification input.
 include h₁_proper h₂_proper h₁_convex h₂_convex hqual
 
 omit h₁_proper h₂_proper h₁_convex h₂_convex in
@@ -821,8 +834,8 @@ private theorem fenchel_maximizer_mem_admm_constraint_dual_range
         fenchel_dual_problem_value (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c)) =
           (r : EReal)) :
     ξ ∈ Set.range (A.coprod B).dualMap := by
-  by_contra hξ
-  have hfinite_ne_bot :
+  by_contra hξ_not_mem
+  have hdual_ne_bot :
       fenchel_dual_problem_value (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c)) ≠ ⊥ := by
     rcases hfiniteF with ⟨r, hr⟩
     rw [hr]
@@ -830,153 +843,181 @@ private theorem fenchel_maximizer_mem_admm_constraint_dual_range
   have hξ_value :
       fenchel_dual_problem_value (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c)) =
         fenchel_dual_objective (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c)) ξ := by
-    -- Rewrite the Fenchel dual value as the supremum of its objective range and evaluate it at
-    -- the greatest point supplied by Chapter 4 dual attainment.
     rw [fenchel_dual_problem_value_eq_sSup]
     exact hgreat.csSup_eq
   rw [fenchel_dual_objective_eq_bot_of_not_mem_admm_constraint_dual_range
-    (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c) hqual ξ hξ] at hξ_value
-  exact hfinite_ne_bot hξ_value
+    (A := A) (B := B) (c := c) (h₁ := h₁) (h₂ := h₂) hqual ξ hξ_not_mem] at hξ_value
+  exact hdual_ne_bot hξ_value
 
-/-- Theorem 15.1 (1): under the relative-interior feasibility condition from Assumption 15.2(E),
-the optimal values of the ADMM primal problem `(15.1)` and dual problem `(15.2)` coincide. -/
-theorem admm_problem_value_eq_admm_dual_problem_value :
+omit h₁_proper h₂_proper h₁_convex h₂_convex hqual
+
+/-- Theorem 15.1 (1): if Assumption 15.2 holds for the AD-PMM problem, then the optimal values of
+the primal problem `(15.1)` and dual problem `(15.2)` coincide. -/
+theorem admm_problem_value_eq_admm_dual_problem_value
+    (hAssump : IsADPMMProblem ρ h₁ h₂ A B G Q c) :
     H_opt[h₁, h₂; A, B, c] = admm_dual_problem_value h₁ h₂ A B c := by
-  -- Route correction: after including the standing assumption package into the declaration
-  -- abstraction, the source proof closes by a direct Fenchel-duality instantiation.
+  -- Specialize Chapter 4 Fenchel duality to the ADMM product objective and affine feasible set.
   calc
     H_opt[h₁, h₂; A, B, c]
-        =
-          sInf (Set.range (composite_model_objective (H[h₁, h₂])
-            (extendedIndicator (admm_feasible_set A B c)))) :=
-      admm_problem_value_eq_fenchel_primal_infimum
-        (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c) h₁_proper h₂_proper
-    _ =
-        fenchel_dual_problem_value (H[h₁, h₂])
-          (extendedIndicator (admm_feasible_set A B c)) :=
-      fenchel_duality_value_eq
-        (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c))
-        (admm_objective_proper (h₁ := h₁) (h₂ := h₂) h₁_proper h₂_proper)
-        (admm_feasible_set_indicator_proper
-          (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c) hqual)
-        (admm_objective_convex (h₁ := h₁) (h₂ := h₂) h₁_convex h₂_convex)
-        (admm_feasible_set_indicator_convex (A := A) (B := B) (c := c))
-        (by
-          -- The ADMM relative-interior feasibility hypothesis is exactly the Fenchel
-          -- qualification for the feasible-set indicator.
-          simpa [effective_domain_extendedIndicator] using
-            admm_fenchel_qualification
-              (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c)
-              h₁_proper h₂_proper hqual)
+        = sInf (Set.range
+            (composite_model_objective (H[h₁, h₂])
+              (extendedIndicator (admm_feasible_set A B c)))) :=
+            admm_problem_value_eq_fenchel_primal_infimum
+              (A := A) (B := B) (c := c)
+              hAssump.toIsProperExtendedRealFunction hAssump.h₂_proper
+    _ = fenchel_dual_problem_value (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c)) :=
+          fenchel_duality_value_eq
+            (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c))
+            (admm_objective_proper
+              (h₁ := h₁) (h₂ := h₂)
+              hAssump.toIsProperExtendedRealFunction hAssump.h₂_proper)
+            (admm_feasible_set_indicator_proper
+              (A := A) (B := B) (c := c) hAssump.ri_qualification)
+            (admm_objective_convex
+              (h₁ := h₁) (h₂ := h₂)
+              hAssump.toIsProperExtendedRealFunction hAssump.h₂_proper
+              hAssump.h₁_convex hAssump.h₂_convex)
+            (admm_feasible_set_indicator_convex (A := A) (B := B) (c := c))
+            (by
+              simpa [effective_domain_extendedIndicator] using
+                admm_fenchel_qualification
+                  (A := A) (B := B) (c := c)
+                  hAssump.toIsProperExtendedRealFunction hAssump.h₂_proper
+                  hAssump.ri_qualification)
     _ = admm_dual_problem_value h₁ h₂ A B c :=
-      fenchel_dual_problem_value_eq_admm_dual_problem_value
-        (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c) hqual
+          fenchel_dual_problem_value_eq_admm_dual_problem_value
+            (A := A) (B := B) (c := c) (h₁ := h₁) (h₂ := h₂)
+            hAssump.toIsProperExtendedRealFunction hAssump.h₂_proper
+            hAssump.ri_qualification
 
--- Proof sketch: after the value equality above, the ADMM dual problem is a Fenchel dual problem
--- with the same qualification hypothesis. If the primal optimal value is finite, then the common
--- primal/dual value is finite, so the Chapter 4 dual-attainment theorem yields a dual maximizer,
--- which is rephrased as an `IsGreatest` point of the range of `admm_dual_objective`.
-/-- Theorem 15.1 (2): under the same qualification, if the ADMM primal optimal value is finite,
-then the dual problem `(15.2)` possesses an optimal solution. -/
-theorem exists_isGreatest_admm_dual_objective_of_finite_admm_problem_value
-    (hfinite : ∃ r : ℝ, H_opt[h₁, h₂; A, B, c] = (r : EReal)) :
+-- Proof sketch: `hAssump.optimal_set_nonempty` supplies the source-side optimal-solution context,
+-- so the dual attainment statement is exposed directly from the Assumption 15.2 owner rather than
+-- through a separate finiteness hypothesis on `H_opt[h₁, h₂; A, B, c]`.
+/-- Theorem 15.1 (2): if Assumption 15.2 holds for the AD-PMM problem, then the dual problem
+`(15.2)` possesses an optimal solution. -/
+theorem exists_isGreatest_admm_dual_objective
+    (hAssump : IsADPMMProblem ρ h₁ h₂ A B G Q c) :
     ∃ y : Module.Dual ℝ Y,
       IsGreatest (Set.range (admm_dual_objective h₁ h₂ A B c))
         (admm_dual_objective h₁ h₂ A B c y) := by
+  obtain ⟨xzStar, hxzStar⟩ := hAssump.optimal_set_nonempty
+  have hxzStar_data : xzStar ∈ admm_feasible_set A B c ∧
+      IsMinOn (H[h₁, h₂]) (admm_feasible_set A B c) xzStar := by
+    simpa using hxzStar
+  have hprimal_value_eq :
+      H_opt[h₁, h₂; A, B, c] = H[h₁, h₂] xzStar := by
+    have hxzStar_min :
+        IsMinOn (constrained_problem_objective (H[h₁, h₂]) (admm_feasible_set A B c))
+          Set.univ xzStar := by
+      rw [isMinOn_univ_iff]
+      intro y
+      by_cases hy : y ∈ admm_feasible_set A B c
+      · simpa [constrained_problem_objective, hy, hxzStar_data.1] using hxzStar_data.2 hy
+      · rw [constrained_problem_objective_of_not_mem (H[h₁, h₂]) hy]
+        exact le_top
+    have hglb_raw :=
+      hxzStar_min.isGLB (by simp : xzStar ∈ (Set.univ : Set (X × Z)))
+    rw [admm_problem_value_eq_sInf]
+    have hcs_raw := hglb_raw.csInf_eq ⟨_, ⟨xzStar, ⟨by simp, rfl⟩⟩⟩
+    calc
+      sInf (Set.range (constrained_problem_objective (H[h₁, h₂]) (admm_feasible_set A B c)))
+          = constrained_problem_objective (H[h₁, h₂]) (admm_feasible_set A B c) xzStar :=
+            by simpa [Set.range] using hcs_raw
+      _ = H[h₁, h₂] xzStar := by
+            simp [constrained_problem_objective, hxzStar_data.1]
+  rcases hAssump.ri_qualification with ⟨xHat, hxHat, zHat, hzHat, hEq⟩
+  have hqual_feas : (xHat, zHat) ∈ admm_feasible_set A B c := by
+    simpa [admm_feasible_set] using hEq
+  have hqual_finite :
+      H[h₁, h₂] (xHat, zHat) < ⊤ := by
+    have hmem :
+        (xHat, zHat) ∈ effective_domain (H[h₁, h₂]) := by
+      simpa [effective_domain_admm_objective
+        (h₁ := h₁) (h₂ := h₂)
+        hAssump.toIsProperExtendedRealFunction hAssump.h₂_proper] using
+        And.intro (intrinsicInterior_subset hxHat) (intrinsicInterior_subset hzHat)
+    exact mem_effective_domain.mp hmem
+  have hxzStar_lt_top : H[h₁, h₂] xzStar < ⊤ := by
+    exact lt_of_le_of_lt (hxzStar_data.2 hqual_feas) hqual_finite
+  have hprimal_ne_bot : H_opt[h₁, h₂; A, B, c] ≠ ⊥ := by
+    rw [hprimal_value_eq]
+    exact admm_objective_ne_bot
+      (h₁ := h₁) (h₂ := h₂)
+      hAssump.toIsProperExtendedRealFunction hAssump.h₂_proper xzStar
+  have hprimal_ne_top : H_opt[h₁, h₂; A, B, c] ≠ ⊤ := by
+    rw [hprimal_value_eq]
+    exact ne_of_lt hxzStar_lt_top
   have hfiniteF :
       ∃ r : ℝ,
         fenchel_dual_problem_value (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c)) =
           (r : EReal) := by
-    rcases hfinite with ⟨r, hr⟩
-    refine ⟨r, ?_⟩
-    -- First identify the unrestricted Fenchel dual value with the ADMM dual value, then use the
-    -- already-established primal/dual equality to transport the finiteness witness.
+    refine ⟨(H_opt[h₁, h₂; A, B, c]).toReal, ?_⟩
     calc
       fenchel_dual_problem_value (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c))
           = admm_dual_problem_value h₁ h₂ A B c :=
-        fenchel_dual_problem_value_eq_admm_dual_problem_value
-          (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c) hqual
+              fenchel_dual_problem_value_eq_admm_dual_problem_value
+                (A := A) (B := B) (c := c) (h₁ := h₁) (h₂ := h₂)
+                hAssump.toIsProperExtendedRealFunction hAssump.h₂_proper
+                hAssump.ri_qualification
       _ = H_opt[h₁, h₂; A, B, c] := by
-        -- Re-run the value equality locally to avoid ambiguity from the included declaration
-        -- parameters in the public theorem constant.
-        symm
-        calc
-          H_opt[h₁, h₂; A, B, c]
-              =
-                sInf (Set.range (composite_model_objective (H[h₁, h₂])
-                  (extendedIndicator (admm_feasible_set A B c)))) :=
-            admm_problem_value_eq_fenchel_primal_infimum
-              (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c) h₁_proper h₂_proper
-          _ =
-              fenchel_dual_problem_value (H[h₁, h₂])
-                (extendedIndicator (admm_feasible_set A B c)) :=
-            fenchel_duality_value_eq
-              (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c))
-              (admm_objective_proper (h₁ := h₁) (h₂ := h₂) h₁_proper h₂_proper)
-              (admm_feasible_set_indicator_proper
-                (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c) hqual)
-              (admm_objective_convex (h₁ := h₁) (h₂ := h₂) h₁_convex h₂_convex)
-              (admm_feasible_set_indicator_convex (A := A) (B := B) (c := c))
-              (by
-                simpa [effective_domain_extendedIndicator] using
-                  admm_fenchel_qualification
-                    (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c)
-                    h₁_proper h₂_proper hqual)
-          _ = admm_dual_problem_value h₁ h₂ A B c :=
-            fenchel_dual_problem_value_eq_admm_dual_problem_value
-              (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c) hqual
-      _ = (r : EReal) := hr
+            rw [admm_problem_value_eq_admm_dual_problem_value (ρ := ρ) (G := G) (Q := Q) hAssump]
+      _ = (((H_opt[h₁, h₂; A, B, c]).toReal : ℝ) : EReal) := by
+            exact (EReal.coe_toReal hprimal_ne_top hprimal_ne_bot).symm
   rcases exists_isGreatest_fenchel_dual_objective_of_finite_value
       (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c))
-      (admm_objective_proper (h₁ := h₁) (h₂ := h₂) h₁_proper h₂_proper)
+      (admm_objective_proper
+        (h₁ := h₁) (h₂ := h₂)
+        hAssump.toIsProperExtendedRealFunction hAssump.h₂_proper)
       (admm_feasible_set_indicator_proper
-        (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c) hqual)
-      (admm_objective_convex (h₁ := h₁) (h₂ := h₂) h₁_convex h₂_convex)
+        (A := A) (B := B) (c := c) hAssump.ri_qualification)
+      (admm_objective_convex
+        (h₁ := h₁) (h₂ := h₂)
+        hAssump.toIsProperExtendedRealFunction hAssump.h₂_proper
+        hAssump.h₁_convex hAssump.h₂_convex)
       (admm_feasible_set_indicator_convex (A := A) (B := B) (c := c))
       (by
-        -- Reuse the same qualification rewrite as in the value theorem.
         simpa [effective_domain_extendedIndicator] using
           admm_fenchel_qualification
-            (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c)
-            h₁_proper h₂_proper hqual)
+            (A := A) (B := B) (c := c)
+            hAssump.toIsProperExtendedRealFunction hAssump.h₂_proper
+            hAssump.ri_qualification)
       hfiniteF with
     ⟨ξ, hξ_greatest⟩
   have hξ_mem :
       ξ ∈ Set.range (A.coprod B).dualMap :=
     fenchel_maximizer_mem_admm_constraint_dual_range
-      (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c) (hqual := hqual)
-      ξ hξ_greatest hfiniteF
-  rcases hξ_mem with ⟨η, hη⟩
-  refine ⟨-η, ?_⟩
-  refine ⟨⟨-η, rfl⟩, ?_⟩
+      (A := A) (B := B) (c := c) (h₁ := h₁) (h₂ := h₂)
+      (hqual := hAssump.ri_qualification) ξ hξ_greatest hfiniteF
+  rcases hξ_mem with ⟨y0, rfl⟩
+  refine ⟨-y0, ?_⟩
+  refine ⟨⟨-y0, rfl⟩, ?_⟩
   intro r hr
   rcases hr with ⟨y, rfl⟩
   have hle :
       fenchel_dual_objective (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c))
           ((A.coprod B).dualMap (-y)) ≤
-        fenchel_dual_objective (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c)) ξ :=
+        fenchel_dual_objective (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c))
+          ((A.coprod B).dualMap y0) :=
     hξ_greatest.2
       (show
-          fenchel_dual_objective (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c))
-              ((A.coprod B).dualMap (-y)) ∈
-            Set.range
-              (fenchel_dual_objective (H[h₁, h₂])
-                (extendedIndicator (admm_feasible_set A B c))) from
-        ⟨(A.coprod B).dualMap (-y), rfl⟩)
-  have hξ_rewrite :
-      fenchel_dual_objective (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c)) ξ =
-        admm_dual_objective h₁ h₂ A B c (-η) := by
-    -- Rewrite the maximizing Fenchel dual point through its transpose-range representation.
-    rw [← hη]
-    simpa using
-      (fenchel_dual_objective_on_admm_constraint_dual_range
-        (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c) hqual (-η))
-  -- Restrict the global Fenchel maximizer to the transpose range and rewrite both endpoints back
-  -- to the ADMM dual objective.
+        fenchel_dual_objective (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c))
+            ((A.coprod B).dualMap (-y)) ∈
+          Set.range
+            (fenchel_dual_objective (H[h₁, h₂]) (extendedIndicator (admm_feasible_set A B c))) from
+          ⟨(A.coprod B).dualMap (-y), rfl⟩)
+  -- Restrict the Fenchel maximizer to the transpose range and rewrite both endpoints back.
+  have hy0_dual : (A.coprod B).dualMap y0 = (A.coprod B).dualMap (-(-y0)) := by
+    simp
   rw [fenchel_dual_objective_on_admm_constraint_dual_range
-    (h₁ := h₁) (h₂ := h₂) (A := A) (B := B) (c := c) hqual y,
-    hξ_rewrite] at hle
-  exact hle
+    (A := A) (B := B) (c := c) (h₁ := h₁) (h₂ := h₂)
+    (h₁_proper := hAssump.toIsProperExtendedRealFunction) (h₂_proper := hAssump.h₂_proper)
+    hAssump.ri_qualification y,
+    hy0_dual,
+    fenchel_dual_objective_on_admm_constraint_dual_range
+      (A := A) (B := B) (c := c) (h₁ := h₁) (h₂ := h₂)
+      (h₁_proper := hAssump.toIsProperExtendedRealFunction) (h₂_proper := hAssump.h₂_proper)
+      hAssump.ri_qualification (-y0)] at hle
+  simpa using hle
 
 omit h₁_proper h₂_proper h₁_convex h₂_convex hqual
 

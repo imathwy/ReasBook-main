@@ -70,11 +70,11 @@ private lemma generalized_conditional_gradient_gap_range_eq_affine_shift
   · rintro ⟨p, rfl⟩
     refine ⟨_, ⟨p, rfl⟩, ?_⟩
     exact generalized_conditional_gradient_gap_integrand_eq_affine_add_conjugate_integrand
-      (f := f) (g := g) x p |>.symm
+      f g x p |>.symm
   · rintro ⟨_, ⟨p, rfl⟩, rfl⟩
     refine ⟨p, ?_⟩
     exact generalized_conditional_gradient_gap_integrand_eq_affine_add_conjugate_integrand
-      (f := f) (g := g) x p
+      f g x p
 
 /-- Helper for Lemma 13.5: taking the supremum of an affine translate of a set of extended reals
 adds the same affine constant to the supremum. -/
@@ -103,7 +103,9 @@ private lemma ereal_sSup_affine_shift (c : EReal) (s : Set EReal) :
         sSup ((fun z : EReal ↦ (r : EReal) + z) '' s) = ⨆ a ∈ s, (r : EReal) + a := by
           rw [sSup_image]
         _ = (r : EReal) + sSup s := by
-          simpa using (hgc.l_sSup (s := s)).symm
+          simpa using
+            (hgc.l_sSup :
+              (r : EReal) + sSup s = ⨆ a ∈ s, (r : EReal) + a).symm
   | top =>
       by_cases hs : sSup s = ⊥
       · apply le_antisymm
@@ -171,7 +173,7 @@ theorem generalized_conditional_gradient_norm_eq_inner_add_value_add_conjugate
     sSup (Set.range (fun p ↦ ((inner ℝ (∇ f₀ x) (x - p) : ℝ) : EReal) + g x - g p)) =
       sSup ((fun z : EReal ↦ (((inner ℝ (∇ f₀ x) x : ℝ) : EReal) + g x) + z) ''
         Set.range (fun p ↦ ((inner ℝ (-∇ f₀ x) p : ℝ) : EReal) - g p)) := by
-        rw [generalized_conditional_gradient_gap_range_eq_affine_shift (f := f) (g := g) x]
+        rw [generalized_conditional_gradient_gap_range_eq_affine_shift f g x]
     _ =
       (((inner ℝ (∇ f₀ x) x : ℝ) : EReal) + g x) +
         sSup (Set.range (fun p ↦ ((inner ℝ (-∇ f₀ x) p : ℝ) : EReal) - g p)) := by

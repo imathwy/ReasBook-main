@@ -56,7 +56,7 @@ lemma projected_subgradient_method_dist_mono_of_polyak_stepsize
   -- Rewrite the strong-dual selections into the owner interface used by Theorem 8.13.
   have h_subgrad' :
       ∀ n,
-        (toDualMap ℝ E (g n (x[n])) : Module.Dual ℝ E) ∈ extendedRealSubdifferential f (x[n] : E) := by
+        (toDualMap ℝ E (g n (x[n])) : Module.Dual ℝ E) ∈ subdifferential f (x[n] : E) := by
     intro n
     simpa [mem_strongDualSubdifferential] using h_subgrad n
   have hsq :=
@@ -159,7 +159,7 @@ lemma cluster_point_mem_optimal_set_of_polyak_stepsize {y : E}
     y ∈ XStar := by
   have h_subgrad' :
       ∀ n,
-        (toDualMap ℝ E (g n (x[n])) : Module.Dual ℝ E) ∈ extendedRealSubdifferential f (x[n] : E) := by
+        (toDualMap ℝ E (g n (x[n])) : Module.Dual ℝ E) ∈ subdifferential f (x[n] : E) := by
     intro n
     simpa [mem_strongDualSubdifferential] using h_subgrad n
   have hyC : y ∈ C := by

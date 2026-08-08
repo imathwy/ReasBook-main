@@ -66,16 +66,31 @@ outer iteration `k`, one has `x^{k,0} = x^k`, each inner successor state `x^{k,i
 from `x^{k,i-1}` by updating block `i` with a minimizer of
 `y ↦ F(x^{k,i-1} + 𝒰[i] (y - x_i^k))`, and the next outer iterate is the terminal inner state
 `x^(k+1) = x^{k,p}`. -/
-def is_alternating_minimization_alternative_trajectory
+class is_alternating_minimization_alternative_trajectory
     (F : BlockSpace → EReal) (x0 : BlockSpace) (x : ℕ → BlockSpace)
-    (xAux : ℕ → Fin (p + 1) → BlockSpace) : Prop :=
-  x 0 = x0 ∧
-    ∀ k : ℕ,
-      xAux k 0 = x k ∧
-        (∀ i : Fin p,
-          xAux k i.succ ∈
-            alternating_minimization_block_step F (x k) (xAux k i.castSucc) i) ∧
-        x (k + 1) = xAux k (Fin.last p)
+    (xAux : ℕ → Fin (p + 1) → BlockSpace) : Prop where
+  zero_eq : x 0 = x0
+  start_eq : ∀ k : ℕ, xAux k 0 = x k
+  block_mem : ∀ k : ℕ, ∀ i : Fin p,
+    xAux k i.succ ∈
+      alternating_minimization_block_step F (x k) (xAux k i.castSucc) i
+  terminal_eq : ∀ k : ℕ, x (k + 1) = xAux k (Fin.last p)
+
+/-- The source-facing alternative trajectory owner exposes its defining clauses to typeclass
+search. -/
+instance instFactAlternatingMinimizationAlternativeTrajectoryClauses
+    {F : BlockSpace → EReal} {x0 : BlockSpace} {x : ℕ → BlockSpace}
+    {xAux : ℕ → Fin (p + 1) → BlockSpace}
+    [h : is_alternating_minimization_alternative_trajectory F x0 x xAux] :
+    Fact
+      (x 0 = x0 ∧
+        ∀ k : ℕ,
+          xAux k 0 = x k ∧
+            (∀ i : Fin p,
+              xAux k i.succ ∈
+                alternating_minimization_block_step F (x k) (xAux k i.castSucc) i) ∧
+            x (k + 1) = xAux k (Fin.last p)) where
+  out := ⟨h.zero_eq, fun k ↦ ⟨h.start_eq k, h.block_mem k, h.terminal_eq k⟩⟩
 
 -- Proof sketch: extract the initialization clause from the first conjunct of
 -- `is_alternating_minimization_alternative_trajectory F x0 x xAux`.
@@ -86,7 +101,7 @@ theorem is_alternating_minimization_alternative_trajectory_zero
     {xAux : ℕ → Fin (p + 1) → BlockSpace}
     (h : is_alternating_minimization_alternative_trajectory F x0 x xAux) :
     x 0 = x0 :=
-  h.1
+  h.zero_eq
 
 -- Proof sketch: specialize the defining universal clause of
 -- `is_alternating_minimization_alternative_trajectory F x0 x xAux` at the iteration index `k`.
@@ -102,7 +117,7 @@ theorem is_alternating_minimization_alternative_trajectory_step
         xAux k i.succ ∈
           alternating_minimization_block_step F (x k) (xAux k i.castSucc) i) ∧
       x (k + 1) = xAux k (Fin.last p) :=
-  h.2 k
+  ⟨h.start_eq k, h.block_mem k, h.terminal_eq k⟩
 
 /-- Helper for Algorithm 14.2: before block `i` is updated, the `i`-th coordinate of the
 auxiliary state still matches the old outer iterate `x^k`. -/

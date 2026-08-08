@@ -22,6 +22,7 @@ private theorem polar_cone_nonnegative_orthant_eq_image_nonpositive_orthant (n :
       (mem_polar_cone _ _).mp hy (Pi.single i 1) (by simp)
     simpa [dotProductEquiv] using hyi
   · rintro ⟨v, hv, rfl⟩
+    change dotProductEquiv ℝ (Fin n) v ∈ polar_cone (Set.Ici (0 : Fin n → ℝ))
     rw [mem_polar_cone]
     intro x hx
     simpa [dotProductEquiv, zero_dotProduct] using
@@ -32,16 +33,16 @@ support function of the nonnegative orthant is the indicator function of the non
 theorem support_function_nonnegative_orthant_eq_indicator_nonpositive_dual_orthant
     (n : ℕ) :
     support_function (Set.Ici (0 : Fin n → ℝ)) =
-      extendedIndicator (dotProductEquiv ℝ (Fin n) '' Set.Iic (0 : Fin n → ℝ)) := by
+      δ_(dotProductEquiv ℝ (Fin n) '' Set.Iic (0 : Fin n → ℝ)) := by
   calc
     support_function (Set.Ici (0 : Fin n → ℝ))
-        = extendedIndicator (polar_cone (Set.Ici (0 : Fin n → ℝ))) :=
+        = δ_(polar_cone (Set.Ici (0 : Fin n → ℝ))) :=
           support_function_eq_indicatorFunction_polarCone (Set.Ici (0 : Fin n → ℝ))
             (by
               rw [isCone_iff_smul_mem]
               intro a ha x hx i
               simpa using mul_nonneg ha (hx i))
             (by simp)
-    _ = extendedIndicator (dotProductEquiv ℝ (Fin n) '' Set.Iic (0 : Fin n → ℝ)) := by
+    _ = δ_(dotProductEquiv ℝ (Fin n) '' Set.Iic (0 : Fin n → ℝ)) := by
           congr 1
           simpa using polar_cone_nonnegative_orthant_eq_image_nonpositive_orthant n

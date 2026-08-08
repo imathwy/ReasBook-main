@@ -448,15 +448,12 @@ theorem proximal_gradient_upper_model_of_constant_or_backtracking_B2_rule
       -- The smooth upper model on `interior (effective_domain f)` gives the textbook inequality.
       simpa [hLf_rule k, norm_sub_rev] using
         (is_l_smooth_on_descent_lemma
-          (L := Lf)
-          (D := interior (effective_domain f))
-          (f := fun y ↦ (f y).toReal)
           hf_effective_domain_convex.interior
           hf_toReal_smooth_on_interior_effective_domain
           hxk_int
           hxk1_int)
     -- Lift the real descent estimate to the source-facing `EReal` inequality.
-    exact proximal_gradient_upper_model_of_toReal_le (f := f) hxk1_int hdescent
+    exact proximal_gradient_upper_model_of_toReal_le hxk1_int hdescent
   · -- In the B2 branch, the source-facing owner already stores the desired inequality.
     rcases hB2 k with ⟨i, _, hmodel⟩
     simpa [proximal_gradient_trajectory_iterate] using hmodel
@@ -514,8 +511,12 @@ lemma proximal_gradient_trajectory_succ_eq_operator
         proximal_gradient_step f g (proximal_gradient_trajectory_iterate htraj k : E) (L k) := by
     simpa [proximal_gradient_trajectory_iterate] using
       (is_proximal_gradient_trajectory_step htraj k).2
-  rw [prox_grad_operator_eq_singleton (f := f) (g := g) (L := L k)
-    (x := proximal_gradient_trajectory_iterate htraj k)] at hstep
+  rw
+    [prox_grad_operator_eq_singleton
+      f
+      g
+      (L k)
+      (proximal_gradient_trajectory_iterate htraj k)] at hstep
   simpa using hstep
 
 -- Proof sketch: `uses_proximal_gradient_backtracking_B2_rule_accepts` gives the canonical
@@ -548,23 +549,18 @@ theorem uses_proximal_gradient_backtracking_B2_rule_upperModel
         (((f (xk : E)).toReal +
             inner ℝ (∇ (fun y ↦ (f y).toReal) (xk : E)) (T[L k, f, g] xk - (xk : E)) +
             ((L k : ℝ) / 2) * ‖T[L k, f, g] xk - (xk : E)‖ ^ (2 : ℕ) : ℝ) : EReal) := by
-    have haccepts' :=
-      (proximal_gradient_backtracking_B2_accepts_iff (f := f) (g := g) (L k) xk).1 haccepts
+    have haccepts' := (proximal_gradient_backtracking_B2_accepts_iff f g (L k) xk).1 haccepts
     rw [hfxk_val] at haccepts'
     simpa [EReal.coe_add, add_assoc] using haccepts'
   -- Rewrite the accepted operator point as the realized successor iterate.
-  simpa [xk, proximal_gradient_trajectory_succ_eq_operator
-    (f := f) (g := g) htraj k] using hmodel
+  simpa [xk, proximal_gradient_trajectory_succ_eq_operator htraj k] using hmodel
 
 -- Proof sketch: in the constant-rule case, `L k = L_f`, so apply the descent lemma from the
 -- smoothness field in Assumption 10.1 to the two consecutive iterates of the proximal-gradient
 -- trajectory. In the B2 branch, rewrite the stored trajectory-level upper-model inequality using
 -- the single-valued prox-gradient operator at the iterate `x^k`.
-/-- Remark 10.19 (1): if `g` is proper, closed, and convex; `effective_domain f` is convex;
-`effective_domain g ⊆ interior (effective_domain f)`; `(fun y ↦ (f y).toReal)` is
-`L_f`-smooth on `interior (effective_domain f)`; and the trajectory uses the admissible
-stepsize regime from Remark 10.19, then the chosen stepsize `L_k` satisfies the canonical B2
-acceptance predicate at every iteration. -/
+/-- Under the standing proper-space hypotheses, the admissible constant-or-B2 stepsize regime from
+Remark 10.19 implies the canonical B2 acceptance predicate at every iteration. -/
 theorem proximal_gradient_constant_or_backtracking_B2_stepsize_accepts
     (hf_ne_bot : ∀ y, f y ≠ ⊥)
     (hf_effective_domain_convex : Convex ℝ (effective_domain f))
@@ -588,11 +584,11 @@ theorem proximal_gradient_constant_or_backtracking_B2_stepsize_accepts
       hg_effective_domain_subset_interior_f_effective_domain
       hf_toReal_smooth_on_interior_effective_domain
       htraj hrule k
-  refine (proximal_gradient_backtracking_B2_accepts_iff (f := f) (g := g) (L k) xk).2 ?_
+  refine (proximal_gradient_backtracking_B2_accepts_iff f g (L k) xk).2 ?_
   -- Rewrite the base value through `toReal` and identify the realized successor iterate.
   rw [hfxk_val]
-  simpa [xk, proximal_gradient_trajectory_succ_eq_operator
-    (f := f) (g := g) htraj k, EReal.coe_add, add_assoc] using hmodel
+  simpa [xk, proximal_gradient_trajectory_succ_eq_operator htraj k, EReal.coe_add, add_assoc] using
+    hmodel
 
 /-- Helper for Remark 10.19: under the omitted `f_ne_bot` clause from Assumption 10.1, any trial
 curvature `Lbar ≥ L_f` satisfies the canonical B2 acceptance predicate at the current iterate. -/
@@ -611,7 +607,9 @@ lemma backtracking_B2_accepts_of_stepsize_ge_Lf
     -- Lemma 10.4 keeps the prox-gradient image inside `interior (effective_domain f)`.
     simpa [xNext] using
       prox_grad_operator_mem_interior_effective_domain_f
-        (f := f) (g := g) (Lf := Lf)
+        f
+        g
+        Lf
         hf_ne_bot
         hf_effective_domain_convex
         hg_effective_domain_subset_interior_f_effective_domain
@@ -625,9 +623,6 @@ lemma backtracking_B2_accepts_of_stepsize_ge_Lf
     -- Lemma 5.7 supplies the source upper model at the base point `y` and prox point `xNext`.
     simpa [xNext, norm_sub_rev] using
       (is_l_smooth_on_descent_lemma
-        (L := Lf)
-        (D := interior (effective_domain f))
-        (f := fun z ↦ (f z).toReal)
         hf_effective_domain_convex.interior
         hf_toReal_smooth_on_interior_effective_domain
         y.2
@@ -649,8 +644,8 @@ lemma backtracking_B2_accepts_of_stepsize_ge_Lf
         (((f (y : E)).toReal +
             inner ℝ (∇ (fun z ↦ (f z).toReal) (y : E)) (xNext - (y : E)) +
             ((Lbar : ℝ) / 2) * ‖xNext - (y : E)‖ ^ (2 : ℕ) : ℝ) : EReal) := by
-    exact proximal_gradient_upper_model_of_toReal_le (f := f) hxNext_int hdescentLbar
-  refine (proximal_gradient_backtracking_B2_accepts_iff (f := f) (g := g) Lbar y).2 ?_
+    exact proximal_gradient_upper_model_of_toReal_le hxNext_int hdescentLbar
+  refine (proximal_gradient_backtracking_B2_accepts_iff f g Lbar y).2 ?_
   -- Convert the source-facing real right-hand side into the canonical acceptance predicate.
   rw [hy_val]
   simpa [xNext, EReal.coe_add, add_assoc] using hmodel
@@ -698,7 +693,6 @@ lemma backtracking_B2_local_stepsize_bounds
           refine lt_of_not_ge fun hnot ↦ ?_
           exact hreject <|
             backtracking_B2_accepts_of_stepsize_ge_Lf
-              (f := f) (g := g) (Lf := Lf)
               hf_effective_domain_convex
               hg_effective_domain_subset_interior_f_effective_domain
               hf_toReal_smooth_on_interior_effective_domain
@@ -736,7 +730,6 @@ theorem proximal_gradient_backtracking_B2_stepsize_bounds_of_ne_bot
       -- The initial comparison uses the seed curvature `s` as the previous trial.
       have hlocal :=
         backtracking_B2_local_stepsize_bounds
-          (f := f) (g := g) (Lf := Lf)
           hf_effective_domain_convex
           hg_effective_domain_subset_interior_f_effective_domain
           hf_toReal_smooth_on_interior_effective_domain
@@ -746,7 +739,6 @@ theorem proximal_gradient_backtracking_B2_stepsize_bounds_of_ne_bot
   | succ k ih =>
       have hlocal :=
         backtracking_B2_local_stepsize_bounds
-          (f := f) (g := g) (Lf := Lf)
           hf_effective_domain_convex
           hg_effective_domain_subset_interior_f_effective_domain
           hf_toReal_smooth_on_interior_effective_domain
@@ -776,6 +768,7 @@ theorem proximal_gradient_backtracking_B2_stepsize_bounds_of_ne_bot
 `L_k` produced by backtracking
 procedure B2 satisfy the bounds `s ≤ L_k ≤ max {η L_f, s}` for every `k ≥ 0`. -/
 theorem proximal_gradient_backtracking_B2_stepsize_bounds
+    (hf_ne_bot : ∀ y, f y ≠ ⊥)
     (hf_effective_domain_convex : Convex ℝ (effective_domain f))
     (hg_effective_domain_subset_interior_f_effective_domain :
       effective_domain g ⊆ interior (effective_domain f))
@@ -788,11 +781,19 @@ theorem proximal_gradient_backtracking_B2_stepsize_bounds
     (k : ℕ) :
     (s : ℝ) ≤ (L k : ℝ) ∧
       (L k : ℝ) ≤ max (((η : ℝ) * (Lf : ℝ))) (s : ℝ) := by
-  -- TODO: the textbook proof uses Assumption 10.1, whose primitive clause `f_ne_bot : ∀ y, f y ≠ ⊥`
-  -- is needed to turn a rejected predecessor trial with `Ltrial ≥ L_f` into a contradiction via
-  -- `backtracking_B2_accepts_of_stepsize_ge_Lf`. The stronger theorem
-  -- `proximal_gradient_backtracking_B2_stepsize_bounds_of_ne_bot` above proves the exact source
-  -- statement once that omitted hypothesis is restored.
-  sorry
+  exact
+    proximal_gradient_backtracking_B2_stepsize_bounds_of_ne_bot
+      (Lf := Lf)
+      (f := f)
+      (g := g)
+      hf_ne_bot
+      hf_effective_domain_convex
+      hg_effective_domain_subset_interior_f_effective_domain
+      hf_toReal_smooth_on_interior_effective_domain
+      htraj
+      s
+      η
+      hrule
+      k
 
 end

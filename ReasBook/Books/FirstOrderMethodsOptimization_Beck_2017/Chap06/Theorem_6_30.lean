@@ -25,7 +25,7 @@ recall projection_mapping
 
 /-
 Theorem 6.30 is `bridge/view`: the owner abstractions already fixed earlier in the chapter are
-the set-valued projection map `Proj[...]` and the set-valued proximal map `prox[...]`. The only new
+the set-valued projection map `P[...]` and the set-valued proximal map `prox[...]`. The only new
 source-facing datum here is the scalar residual governing projection onto the real sublevel set
 `f ⁻¹' Set.Iic (α : EReal)`, rendered without choosing a point from the proximal set before
 uniqueness is available.
@@ -46,9 +46,9 @@ point satisfies `f y ≤ α`, then the projection onto the level set
 `C = f ⁻¹' Set.Iic (α : EReal)` agrees with the projection onto `dom(f)`. -/
 theorem projection_mapping_sublevel_eq_projection_effective_domain_of_projection_mem_sublevel
     (f : E → EReal) (α : ℝ) (x : E)
-    (hproj_nonempty : (Proj[effective_domain f] x).Nonempty)
-    (hproj_sublevel : Proj[effective_domain f] x ⊆ f ⁻¹' Set.Iic (α : EReal)) :
-    Proj[f ⁻¹' Set.Iic (α : EReal)] x = Proj[effective_domain f] x := by
+    (hproj_nonempty : (P[effective_domain f] x).Nonempty)
+    (hproj_sublevel : P[effective_domain f] x ⊆ f ⁻¹' Set.Iic (α : EReal)) :
+    P[f ⁻¹' Set.Iic (α : EReal)] x = P[effective_domain f] x := by
   have hsublevel :
       f ⁻¹' Set.Iic (α : EReal) ⊆ effective_domain f := by
     intro y hy
@@ -271,7 +271,7 @@ sublevel set. -/
 lemma mem_projection_mapping_sublevel_of_mem_scaled_prox_and_eq_level
     (f : E → EReal) (α : ℝ) (x : E) (lam : PosReal) {u : E}
     (hu : u ∈ prox[((lam : EReal) • f)] x) (hlevel : f u = (α : EReal)) :
-    u ∈ Proj[f ⁻¹' Set.Iic (α : EReal)] x := by
+    u ∈ P[f ⁻¹' Set.Iic (α : EReal)] x := by
   rw [mem_projection_mapping_iff]
   refine ⟨by simpa [hlevel], ?_⟩
   rw [isMinOn_iff]
@@ -360,7 +360,7 @@ theorem projection_mapping_sublevel_eq_scaled_prox_of_level_set_projection_resid
     (hf_closed : LowerSemicontinuous f) (hf_convex : is_convex_function f)
     (x : E) (lam : PosReal)
     (hphi : level_set_projection_residual f α x (lam : ℝ) = 0) :
-    Proj[f ⁻¹' Set.Iic (α : EReal)] x = prox[((lam : EReal) • f)] x := by
+    P[f ⁻¹' Set.Iic (α : EReal)] x = prox[((lam : EReal) • f)] x := by
   rcases scaled_function_proper_closed_convex_of_pos f hf_proper hf_closed hf_convex lam with
     ⟨hscaled_proper, hscaled_closed, hscaled_convex⟩
   rcases prox_eq_singleton_of_proper_closed_convex (((lam : EReal) • f))
@@ -394,14 +394,14 @@ theorem projection_mapping_sublevel_eq_scaled_prox_of_level_set_projection_resid
           (EReal.coe_toReal (mem_effective_domain.mp hu_eff).ne (hf_proper.ne_bot u)).symm
       _ = (α : EReal) := by
         exact_mod_cast hlevel_real
-  have hu_proj : u ∈ Proj[f ⁻¹' Set.Iic (α : EReal)] x :=
+  have hu_proj : u ∈ P[f ⁻¹' Set.Iic (α : EReal)] x :=
     mem_projection_mapping_sublevel_of_mem_scaled_prox_and_eq_level f α x lam hu hlevel
   have hsublevel_convex : Convex ℝ (f ⁻¹' Set.Iic (α : EReal)) :=
     sublevel_convex_of_is_convex_function f α hf_convex
   -- The active-branch candidate is a projection point, and convexity makes that projection set a
   -- singleton, matching the already singleton proximal set.
   calc
-    Proj[f ⁻¹' Set.Iic (α : EReal)] x = {u} := by
+    P[f ⁻¹' Set.Iic (α : EReal)] x = {u} := by
       exact Set.Subsingleton.eq_singleton_of_mem
         (projection_mapping_subsingleton (f ⁻¹' Set.Iic (α : EReal)) hsublevel_convex x) hu_proj
     _ = prox[((lam : EReal) • f)] x := hprox.symm

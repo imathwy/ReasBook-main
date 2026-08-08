@@ -17,7 +17,7 @@ section
 variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [CompleteSpace E]
 variable {f : E → ℝ} {g : E → EReal}
 
-local notation "F" => composite_model_objective f.toExtendedReal g
+local notation "F" => composite_model_objective f.toEReal g
 
 /-- Helper for Lemma 13.8: the composite objective is finite at every point of `effective_domain g`
 because the smooth term is real-valued and `g` does not take the value `⊥`. -/
@@ -41,8 +41,7 @@ lemma composite_model_objective_eq_coe_toReal_of_mem_effective_domain
     F x = (((F x).toReal : ℝ) : EReal) := by
   -- First rewrite the finite objective value through the explicit real formula from the previous
   -- helper, then fold that formula back as the coercion of `toReal`.
-  rw [composite_model_objective_eq_coe_real_of_mem_effective_domain
-    (f := f) (g := g) hg_ne_bot hx]
+  rw [composite_model_objective_eq_coe_real_of_mem_effective_domain hg_ne_bot hx]
   exact (EReal.coe_toReal (EReal.coe_ne_top _) (EReal.coe_ne_bot _)).symm
 
 /-- Helper for Lemma 13.8: every iterate of a generalized conditional-gradient trajectory stays in
@@ -61,8 +60,7 @@ lemma generalized_conditional_gradient_trajectory_mem_effective_domain
     rcases is_generalized_conditional_gradient_trajectory_step htraj k with ⟨hp, hstep⟩
     have hpdom :
         p k ∈ effective_domain g :=
-      generalized_conditional_gradient_argmin_mem_effective_domain
-        (f := f) (g := g) hk hp
+      generalized_conditional_gradient_argmin_mem_effective_domain hk hp
     have hcombo :
         (t k : ℝ) • p k + (1 - (t k : ℝ)) • x k ∈ effective_domain g :=
       combo_mem_effective_domain_of_is_convex_function hg_convex hpdom hk (t k).2
@@ -148,7 +146,7 @@ lemma generalized_conditional_gradient_norm_toReal_eq_gap_real_of_mem_argmin
       inner ℝ (∇ f x) (x - p) + (g x).toReal - (g p).toReal := by
   -- Apply `toReal` to the finite `EReal` representation from the previous helper.
   rw [generalized_conditional_gradient_norm_eq_coe_gap_real_of_mem_argmin
-    (f := f) (g := g) hg_ne_bot hx hpdom hp]
+    hg_ne_bot hx hpdom hp]
   simpa using
     EReal.toReal_coe (inner ℝ (∇ f x) (x - p) + (g x).toReal - (g p).toReal)
 
@@ -162,7 +160,7 @@ lemma generalized_conditional_gradient_norm_eq_coe_toReal_of_mem_argmin
   -- Rewrite the norm by the explicit finite real gap formula, then read that formula back as a
   -- coercion of its `toReal`.
   rw [generalized_conditional_gradient_norm_eq_coe_gap_real_of_mem_argmin
-    (f := f) (g := g) hg_ne_bot hx hpdom hp]
+    hg_ne_bot hx hpdom hp]
   exact (EReal.coe_toReal (EReal.coe_ne_top _) (EReal.coe_ne_bot _)).symm
 
 /-- Helper for Lemma 13.8: argmin membership implies the real-valued linearized subproblem at `p`
@@ -176,8 +174,7 @@ lemma generalized_conditional_gradient_subproblem_toReal_le_of_mem_argmin
   -- both finite `EReal` values as real coercions.
   have hpdom :
       p ∈ effective_domain g :=
-    generalized_conditional_gradient_argmin_mem_effective_domain
-      (f := f) (g := g) hx hp
+    generalized_conditional_gradient_argmin_mem_effective_domain hx hp
   have hmin :
       generalized_conditional_gradient_subproblem f g x p ≤
         generalized_conditional_gradient_subproblem f g x x := by
@@ -212,18 +209,17 @@ lemma generalized_conditional_gradient_norm_toReal_nonneg_of_mem_argmin
   -- inequality as the explicit finite gap formula for `S[f, g](x)`.
   have hpdom :
       p ∈ effective_domain g :=
-    generalized_conditional_gradient_argmin_mem_effective_domain
-      (f := f) (g := g) hx hp
+    generalized_conditional_gradient_argmin_mem_effective_domain hx hp
   have hsub :
       inner ℝ (∇ f x) p + (g p).toReal ≤ inner ℝ (∇ f x) x + (g x).toReal :=
     generalized_conditional_gradient_subproblem_toReal_le_of_mem_argmin
-      (f := f) (g := g) hg_ne_bot hx hp
+      hg_ne_bot hx hp
   have hgap_nonneg :
       0 ≤ inner ℝ (∇ f x) (x - p) + (g x).toReal - (g p).toReal := by
     rw [inner_sub_right]
     linarith
   rw [generalized_conditional_gradient_norm_toReal_eq_gap_real_of_mem_argmin
-    (f := f) (g := g) hg_ne_bot hx hpdom hp]
+    hg_ne_bot hx hpdom hp]
   exact hgap_nonneg
 
 /-- Helper for Lemma 13.8: Lemma 13.7 becomes a real-valued inequality once all objective and
@@ -243,29 +239,24 @@ lemma generalized_conditional_gradient_fundamental_inequality_toReal
   -- case split, so the adaptive proof only manipulates real inequalities.
   have hpdom :
       p ∈ effective_domain g :=
-    generalized_conditional_gradient_argmin_mem_effective_domain
-      (f := f) (g := g) hx hp
+    generalized_conditional_gradient_argmin_mem_effective_domain hx hp
   have htrial_dom :
       x + α • (p - x) ∈ effective_domain g :=
     conditional_gradient_trial_mem_effective_domain_of_mem_Icc
-      (g := g) hg_convex hx hpdom hα
+      hg_convex hx hpdom hα
   have hfund :
       F (x + α • (p - x)) ≤
         F x - (α : EReal) * S[f, g](x) +
           ((((α ^ (2 : ℕ) * (Lf : ℝ)) / 2) * ‖p - x‖ ^ (2 : ℕ) : ℝ) : EReal) := by
     simpa [pow_two, mul_assoc, mul_left_comm, mul_comm] using
       (generalized_conditional_gradient_fundamental_inequality
-        (f := f) (g := g) (Lf := Lf)
-        (hg_ne_bot := hg_ne_bot)
-        (hg_convex := hg_convex)
-        (hf_smooth := hf_smooth_on_effective_domain_g)
-        (x := x) (p := p) hx hp hα)
+        hg_ne_bot hg_convex hf_smooth_on_effective_domain_g hx hp hα)
   rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-      (f := f) (g := g) hg_ne_bot htrial_dom,
+      hg_ne_bot htrial_dom,
     composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-      (f := f) (g := g) hg_ne_bot hx,
+      hg_ne_bot hx,
     generalized_conditional_gradient_norm_eq_coe_toReal_of_mem_argmin
-      (f := f) (g := g) hg_ne_bot hx hpdom hp,
+      hg_ne_bot hx hpdom hp,
     ← EReal.coe_mul, ← EReal.coe_sub, ← EReal.coe_add] at hfund
   exact_mod_cast hfund
 
@@ -292,23 +283,22 @@ theorem generalized_conditional_gradient_adaptive_trial_sufficient_decrease
   dsimp
   have hpdom :
       p ∈ effective_domain g :=
-    generalized_conditional_gradient_argmin_mem_effective_domain
-      (f := f) (g := g) hx hp
+    generalized_conditional_gradient_argmin_mem_effective_domain hx hp
   have hS_nonneg :
       0 ≤ (S[f, g](x)).toReal :=
     generalized_conditional_gradient_norm_toReal_nonneg_of_mem_argmin
-      (f := f) (g := g) hg_ne_bot hx hp
+      hg_ne_bot hx hp
   set s : ℝ := conditional_gradient_adaptive_stepsize (S[f, g](x)).toReal Lf x p with hs
   have hs_mem :
       s ∈ Set.Icc (0 : ℝ) 1 := by
     -- The adaptive scalar is an admissible comparison point on `[0, 1]`.
     rw [hs]
     exact conditional_gradient_adaptive_stepsize_mem_Icc
-      (Sx := (S[f, g](x)).toReal) hS_nonneg Lf x p
+      hS_nonneg Lf x p
   have htrial_dom :
       x + s • (p - x) ∈ effective_domain g :=
     conditional_gradient_trial_mem_effective_domain_of_mem_Icc
-      (g := g) hg_convex hx hpdom hs_mem
+      hg_convex hx hpdom hs_mem
   have hfund :
       (F (x + s • (p - x))).toReal ≤
         (F x).toReal - s * (S[f, g](x)).toReal +
@@ -316,7 +306,6 @@ theorem generalized_conditional_gradient_adaptive_trial_sufficient_decrease
     -- This is equation (13.8) after normalizing all finite `EReal` values to reals.
     simpa [hs] using
       generalized_conditional_gradient_fundamental_inequality_toReal
-        (f := f) (g := g) (Lf := Lf)
         hg_ne_bot hg_convex hf_smooth_on_effective_domain_g hx hp hs_mem
   have hmodel :
       s * (S[f, g](x)).toReal -
@@ -340,7 +329,7 @@ theorem generalized_conditional_gradient_adaptive_trial_sufficient_decrease
         have hgap_zero :
             (S[f, g](x)).toReal = 0 := by
           rw [generalized_conditional_gradient_norm_toReal_eq_gap_real_of_mem_argmin
-            (f := f) (g := g) hg_ne_bot hx hpdom hp, hpx]
+            hg_ne_bot hx hpdom hp, hpx]
           simp
         have htrial_eq :
             x + s • (p - x) = x := by
@@ -389,7 +378,7 @@ theorem generalized_conditional_gradient_adaptive_trial_sufficient_decrease
             ((S[f, g](x)).toReal / ((Lf : ℝ) * ‖p - x‖ ^ (2 : ℕ))) := by
         rw [hs]
         exact conditional_gradient_adaptive_stepsize_of_ne
-          (Sx := (S[f, g](x)).toReal) (Lf := Lf) (x := x) (p := p) hp_ne hLf_ne
+          (S[f, g](x)).toReal hp_ne hLf_ne
       by_cases hratio :
           (S[f, g](x)).toReal / ((Lf : ℝ) * ‖p - x‖ ^ (2 : ℕ)) ≤ 1
       · -- On the clipped-ratio branch, the textbook estimate is the quadratic one.
@@ -485,13 +474,11 @@ theorem generalized_conditional_gradient_adaptive_trial_sufficient_decrease
   have hFx :
       F x = ((Fx : ℝ) : EReal) := by
     dsimp [Fx]
-    exact composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-      (f := f) (g := g) hg_ne_bot hx
+    exact composite_model_objective_eq_coe_toReal_of_mem_effective_domain hg_ne_bot hx
   have hFtrial :
       F (x + s • (p - x)) = ((Ftrial : ℝ) : EReal) := by
     dsimp [Ftrial]
-    exact composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-      (f := f) (g := g) hg_ne_bot htrial_dom
+    exact composite_model_objective_eq_coe_toReal_of_mem_effective_domain hg_ne_bot htrial_dom
   calc
     F x - F (x + s • (p - x)) =
         (((Fx : ℝ) : EReal) - ((Ftrial : ℝ) : EReal)) := by
@@ -521,7 +508,7 @@ The theorem therefore keeps only the primitive source data not already owned ups
 convexity/no-`⊥` hypotheses on `g`, the smoothness of `f` on `effective_domain g`, and the
 explicit diameter bound `Ω` on `effective_domain g`. The descent estimate itself is then expressed
 through the canonical Chapter 13 owners above, with
-`F = composite_model_objective f.toExtendedReal g` as the ambient objective surface. -/
+`F = composite_model_objective f.toEReal g` as the ambient objective surface. -/
 
 -- Proof sketch: let `Sₖ = (generalized_conditional_gradient_gap_objective f g (x k) (p k)).toReal`
 -- and apply the Chapter 13 one-step fundamental inequality to the segment
@@ -537,7 +524,7 @@ each `pᵏ ∈ arg min_p {⟪p, ∇ f(xᵏ)⟫ + g(p)}`, and
 `xᵏ⁺¹ = xᵏ + tₖ (pᵏ - xᵏ)` with stepsizes chosen either by the adaptive rule or by exact line
 search, then every one-step objective decrease is at least
 `(1 / 2) * min {S(xᵏ), S(xᵏ)^2 / (L_f Ω^2)}`, where `S(xᵏ) = (S[f, g](x k)).toReal` and `Ω`
-bounds the diameter of `dom(g)`. Here `F = composite_model_objective f.toExtendedReal g`. The textbook
+bounds the diameter of `dom(g)`. Here `F = composite_model_objective f.toEReal g`. The textbook
 codomain restriction is represented explicitly by `hg_ne_bot : ∀ y, g y ≠ ⊥`. -/
 theorem generalized_conditional_gradient_sufficient_decrease_of_adaptive_or_exact_line_search
     {Lf : NNReal}
@@ -558,18 +545,17 @@ theorem generalized_conditional_gradient_sufficient_decrease_of_adaptive_or_exac
   have hxk :
       x k ∈ effective_domain g :=
     generalized_conditional_gradient_trajectory_mem_effective_domain
-      (f := f) (g := g) hg_ne_bot hg_convex htraj k
+      hg_ne_bot hg_convex htraj k
   have hpk :
       p k ∈ generalized_conditional_gradient_argmin f g (x k) :=
     htraj.argmin_mem k
   have hpk_dom :
       p k ∈ effective_domain g :=
-    generalized_conditional_gradient_argmin_mem_effective_domain
-      (f := f) (g := g) hxk hpk
+    generalized_conditional_gradient_argmin_mem_effective_domain hxk hpk
   have hS_nonneg : 0 ≤ (S[f, g](x k)).toReal := by
     -- The chosen gap is nonnegative because the search point minimizes the linearized subproblem.
     exact generalized_conditional_gradient_norm_toReal_nonneg_of_mem_argmin
-      (f := f) (g := g) hg_ne_bot hxk hpk
+      hg_ne_bot hxk hpk
   let s : ℝ := conditional_gradient_adaptive_stepsize (S[f, g](x k)).toReal Lf (x k) (p k)
   let xTilde : E := x k + s • (p k - x k)
   have hs_mem :
@@ -585,7 +571,7 @@ theorem generalized_conditional_gradient_sufficient_decrease_of_adaptive_or_exac
     -- This is the source proof's core trial-point estimate (13.10).
     simpa [s, xTilde] using
       generalized_conditional_gradient_adaptive_trial_sufficient_decrease
-        (f := f) (g := g) hg_ne_bot hg_convex hf_smooth_on_effective_domain_g hΩ hxk hpk
+        hg_ne_bot hg_convex hf_smooth_on_effective_domain_g hΩ hxk hpk
   rcases hrule with hadapt | hexact
   · -- Under the adaptive rule, the trial point is exactly the next iterate.
     rcases hadapt k with ⟨_, _, htk_eq⟩
@@ -610,21 +596,19 @@ theorem generalized_conditional_gradient_sufficient_decrease_of_adaptive_or_exac
         xTilde ∈ effective_domain g := by
       dsimp [xTilde]
       exact conditional_gradient_trial_mem_effective_domain_of_mem_Icc
-        (g := g) hg_convex hxk hpk_dom hs_mem
+        hg_convex hxk hpk_dom hs_mem
     have hxnext :
         x (k + 1) ∈ effective_domain g :=
       generalized_conditional_gradient_trajectory_mem_effective_domain
-        (f := f) (g := g) hg_ne_bot hg_convex htraj (k + 1)
+        hg_ne_bot hg_convex htraj (k + 1)
     have hcompare_real :
         (F (x (k + 1))).toReal ≤ (F xTilde).toReal :=
       EReal.toReal_le_toReal hstep_compare
         (by
-          rw [composite_model_objective_eq_coe_real_of_mem_effective_domain
-            (f := f) (g := g) hg_ne_bot hxnext]
+          rw [composite_model_objective_eq_coe_real_of_mem_effective_domain hg_ne_bot hxnext]
           exact EReal.coe_ne_bot _)
         (by
-          rw [composite_model_objective_eq_coe_real_of_mem_effective_domain
-            (f := f) (g := g) hg_ne_bot hxTilde]
+          rw [composite_model_objective_eq_coe_real_of_mem_effective_domain hg_ne_bot hxTilde]
           exact EReal.coe_ne_top _)
     have htrial_real :
         (1 / 2 : ℝ) *
@@ -636,13 +620,11 @@ theorem generalized_conditional_gradient_sufficient_decrease_of_adaptive_or_exac
       have hFxk :
           F (x k) = ((Fxk : ℝ) : EReal) := by
         dsimp [Fxk]
-        exact composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-          (f := f) (g := g) hg_ne_bot hxk
+        exact composite_model_objective_eq_coe_toReal_of_mem_effective_domain hg_ne_bot hxk
       have hFxTilde :
           F xTilde = ((FxTilde : ℝ) : EReal) := by
         dsimp [FxTilde]
-        exact composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-          (f := f) (g := g) hg_ne_bot hxTilde
+        exact composite_model_objective_eq_coe_toReal_of_mem_effective_domain hg_ne_bot hxTilde
       have htrial_coe :
           (((Fxk - FxTilde : ℝ)) : EReal) ≥
             ((1 / 2 : ℝ) *
@@ -671,13 +653,11 @@ theorem generalized_conditional_gradient_sufficient_decrease_of_adaptive_or_exac
     have hFxk :
         F (x k) = ((Fxk : ℝ) : EReal) := by
       dsimp [Fxk]
-      exact composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-        (f := f) (g := g) hg_ne_bot hxk
+      exact composite_model_objective_eq_coe_toReal_of_mem_effective_domain hg_ne_bot hxk
     have hFxnext :
         F (x (k + 1)) = ((Fxnext : ℝ) : EReal) := by
       dsimp [Fxnext]
-      exact composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-        (f := f) (g := g) hg_ne_bot hxnext
+      exact composite_model_objective_eq_coe_toReal_of_mem_effective_domain hg_ne_bot hxnext
     have hgoal_ereal :
         (((Fxk - Fxnext : ℝ)) : EReal) ≥
           ((1 / 2 : ℝ) *

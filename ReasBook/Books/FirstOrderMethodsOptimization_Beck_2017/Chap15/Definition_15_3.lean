@@ -1,4 +1,3 @@
-import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap15.Definition_15_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
@@ -38,6 +37,17 @@ def admm_augmented_lagrangian
 /- Textbook notation for the augmented Lagrangian `L_ρ`. -/
 notation "L[" ρ "; " h₁ ", " h₂ "; " A ", " B ", " c "]" =>
   admm_augmented_lagrangian h₁ h₂ A B c ρ
+
+/-- The augmented Lagrangian notation `L[ρ; h₁, h₂; A, B, c]` is the ADMM Lagrangian plus the
+quadratic penalty term. -/
+theorem admm_augmented_lagrangian_def
+    (h₁ : X → EReal) (h₂ : Z → EReal)
+    (A : X →ₗ[ℝ] Y) (B : Z →ₗ[ℝ] Y) (c : Y) (ρ : ℝ)
+    (x : X) (z : Z) (y : Y) :
+    L[ρ; h₁, h₂; A, B, c] x z y =
+      admm_lagrangian h₁ h₂ A B c x z (toDualMap ℝ Y y) +
+        (((ρ / 2) * ‖A x + B z - c‖ ^ (2 : ℕ) : ℝ) : EReal) :=
+  rfl
 
 -- Proof sketch: unfold `admm_augmented_lagrangian`; evaluation at `(x, z; y)` is exactly the
 -- displayed defining formula for the augmented Lagrangian.

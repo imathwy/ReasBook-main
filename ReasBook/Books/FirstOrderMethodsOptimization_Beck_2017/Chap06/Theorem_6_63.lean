@@ -1,6 +1,7 @@
 import FirstOrderMethodsOptimization_Beck_2017.Chap02.Theorem_2_6
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Definition_6_7
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_3
+import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_4
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_30
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_39
 
@@ -371,10 +372,18 @@ lemma proximal_objective_proper_closed_convex_of_proper_closed_convex
       simpa using hg_convex
     · dsimp [F]
       simpa using hquad
+  have hF_ne_bot : ∀ i ∈ Finset.univ, ∀ z, F i z ≠ ⊥ := by
+    intro i _ z
+    fin_cases i
+    · simpa [F] using hg_proper.ne_bot z
+    · dsimp [F]
+      simpa only [← EReal.coe_pow, ← EReal.coe_mul] using
+        EReal.coe_ne_bot ((1 / 2 : ℝ) * ‖z - x‖ ^ (2 : ℕ))
   have hconvex : is_convex_function (proximal_objective g x) := by
     -- The proximal objective is the sum of `g` and the canonical quadratic penalty.
     have hsum :=
-      is_convex_function_finset_nonneg_weighted_sum (f := F) hF (fun _ ↦ (1 : NNReal))
+      is_convex_function_finset_nonneg_weighted_sum (s := Finset.univ) (f := F)
+        (fun i _ ↦ hF i) hF_ne_bot (fun _ ↦ (1 : NNReal))
     simpa [proximal_objective_apply, F, Fin.sum_univ_two] using hsum
   exact ⟨hproper, hclosed, hconvex⟩
 

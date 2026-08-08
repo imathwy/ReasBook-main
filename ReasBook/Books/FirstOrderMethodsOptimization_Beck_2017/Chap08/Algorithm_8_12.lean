@@ -10,6 +10,16 @@ noncomputable section
 
 section
 
+variable {E : Type u}
+
+/-- A feasible point `x0 : C` canonically witnesses that the feasible set `C` is nonempty. -/
+theorem set_nonempty_of_mem {C : Set E} (x0 : C) : C.Nonempty :=
+  ⟨x0, x0.property⟩
+
+end
+
+section
+
 variable {E : Type u} {Ω : Type v}
 variable [NormedAddCommGroup E] [InnerProductSpace ℝ E] [CompleteSpace E]
 
@@ -32,16 +42,25 @@ def finite_sum_stochastic_projected_subgradient_stepsize {m : ℕ}
   Real.sqrt (2 * Θ * (m : ℝ)) /
     (finite_sum_stochastic_subgradient_bound_constant L * Real.sqrt (k + 1 : ℝ))
 
-/-- Algorithm 8.12: for a nonempty closed convex feasible set `C`, a feasible initial point `x0`,
+/-- The named Algorithm 8.12 stepsize is exactly the textbook formula
+`√(2 Θ m) / (L̃_f √(k + 1))`. -/
+@[simp] theorem finite_sum_stochastic_projected_subgradient_stepsize_eq {m : ℕ}
+    (Θ : ℝ) (L : Fin m → ℝ) (k : ℕ) :
+    finite_sum_stochastic_projected_subgradient_stepsize Θ L k =
+      Real.sqrt (2 * Θ * (m : ℝ)) /
+        (finite_sum_stochastic_subgradient_bound_constant L * Real.sqrt (k + 1 : ℝ)) := by
+  rfl
+
+/-- Algorithm 8.12: for a closed convex feasible set `C`, a feasible initial point `x0`,
 componentwise subgradient choices `g k x j`, and a sampled index rule `i_k`, the stochastic
 projected subgradient method for a finite-sum objective is the Algorithm 8.10 iteration
 specialized to the sampled direction `g k x (i_k ω)` and the stepsize
 `√(2 Θ m) / (L̃_f √(k + 1))`, where `L̃_f = √m * √(∑ i, L_i^2)`. -/
 abbrev finite_sum_stochastic_projected_subgradient_method {m : ℕ} (C : Set E)
-    (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C) (hC_convex : Convex ℝ C)
+    (hC_closed : IsClosed C) (hC_convex : Convex ℝ C)
     (Θ : ℝ) (L : Fin m → ℝ) (i : ℕ → Ω → Fin m) (g : ℕ → C → Fin m → E) (x0 : C) :
     ℕ → Ω → C :=
-  stochastic_projected_subgradient_method C hC_nonempty hC_closed hC_convex
+  stochastic_projected_subgradient_method C (set_nonempty_of_mem x0) hC_closed hC_convex
     (fun k x ω ↦ g k x (i k ω))
     (finite_sum_stochastic_projected_subgradient_stepsize Θ L)
     x0
@@ -49,35 +68,45 @@ abbrev finite_sum_stochastic_projected_subgradient_method {m : ℕ} (C : Set E)
 section
 
 variable {m : ℕ}
-variable (C : Set E) (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C) (hC_convex : Convex ℝ C)
+variable (C : Set E) (hC_closed : IsClosed C) (hC_convex : Convex ℝ C)
 variable (Θ : ℝ) (L : Fin m → ℝ) (i : ℕ → Ω → Fin m) (g : ℕ → C → Fin m → E) (x0 : C)
 
 local notation "x[" k "]" =>
   finite_sum_stochastic_projected_subgradient_method
-    C hC_nonempty hC_closed hC_convex Θ L i g x0 k
+    C hC_closed hC_convex Θ L i g x0 k
 
--- Proof sketch: unfold
--- `finite_sum_stochastic_projected_subgradient_method`; the resulting Algorithm 8.10 iterate at
--- `0` is the constant path with value `x0`.
+-- Proof sketch: specialize `stochastic_projected_subgradient_method_zero` from Algorithm 8.10 to
+-- the sampled component direction `fun k x ω ↦ g k x (i k ω)` and the textbook stepsize rule.
 /-- The finite-sum stochastic projected-subgradient sequence starts from the prescribed feasible
 initial point at every sample `ω`. -/
-theorem finite_sum_stochastic_projected_subgradient_method_zero (ω : Ω) :
-    x[0] ω = x0 := sorry
+@[simp] theorem finite_sum_stochastic_projected_subgradient_method_zero (ω : Ω) :
+    x[0] ω = x0 := by
+  simpa [finite_sum_stochastic_projected_subgradient_method] using
+    (stochastic_projected_subgradient_method_zero
+      C (set_nonempty_of_mem x0) hC_closed hC_convex
+      (fun k x ω ↦ g k x (i k ω))
+      (finite_sum_stochastic_projected_subgradient_stepsize Θ L)
+      x0 ω)
 
--- Proof sketch: unfold `finite_sum_stochastic_projected_subgradient_method` and then apply the
--- one-step expansion `stochastic_projected_subgradient_method_succ` from Algorithm 8.10 to the
--- specialized sampled direction `fun k x ω ↦ g k x (i k ω)` and the textbook stepsize
--- `finite_sum_stochastic_projected_subgradient_stepsize Θ L`.
+-- Proof sketch: specialize `stochastic_projected_subgradient_method_succ` from Algorithm 8.10 to
+-- the sampled component direction and rewrite the named stepsize with
+-- `finite_sum_stochastic_projected_subgradient_stepsize_eq`.
 /-- One step of Algorithm 8.12 applies the metric projection onto `C` to the current sample
 iterate minus the sampled component subgradient scaled by
 `√(2 Θ m) / (L̃_f √(k + 1))`. -/
 theorem finite_sum_stochastic_projected_subgradient_method_succ (k : ℕ) (ω : Ω) :
     x[k + 1] ω =
-      metricProjection C hC_nonempty hC_closed.isComplete hC_convex
-        ((x[k] ω : E) -
+      metricProjection C (set_nonempty_of_mem x0) hC_closed hC_convex
+        (x[k] ω -
           (Real.sqrt (2 * Θ * (m : ℝ)) /
               (finite_sum_stochastic_subgradient_bound_constant L * Real.sqrt (k + 1 : ℝ))) •
-            g k (x[k] ω) (i k ω)) := sorry
+            g k (x[k] ω) (i k ω)) := by
+  simpa [finite_sum_stochastic_projected_subgradient_method] using
+    (stochastic_projected_subgradient_method_succ
+      C (set_nonempty_of_mem x0) hC_closed hC_convex
+      (fun j x ω ↦ g j x (i j ω))
+      (finite_sum_stochastic_projected_subgradient_stepsize Θ L)
+      x0 k ω)
 
 end
 

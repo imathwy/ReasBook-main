@@ -69,6 +69,57 @@ theorem constraint_le_optimality_residual
   simpa [optimality_residual, coordinatewiseMax] using
     le_ciSup (Finite.bddAbove_range (optimality_residual_coordinates f fbar g x)) i.castSucc
 
+/-- Helper for Lemma 3.5: the residual objective vanishes at every feasible point whose objective
+value is exactly `fbar`. -/
+theorem optimality_residual_eq_zero_of_feasible_of_eq_fbar
+    (x : E) (hxfeas : x ∈ inequality_feasible_set g) (hfx : f x = fbar) :
+    optimality_residual f fbar g x = 0 := by
+  rw [mem_inequality_feasible_set] at hxfeas
+  refine le_antisymm ?_ ?_
+  · -- Bound each coordinate of the finite maximum above by `0`.
+    rw [optimality_residual, coordinatewiseMax]
+    refine ciSup_le (fun i ↦ ?_)
+    refine Fin.lastCases ?_ (fun i ↦ ?_) i
+    · simp [hfx, optimality_residual_coordinates]
+    · simpa [optimality_residual_coordinates] using hxfeas i
+  · -- The objective-gap coordinate already gives the reverse inequality.
+    simpa [hfx] using objective_gap_le_optimality_residual (f := f) (fbar := fbar) (g := g) x
+
+/-- Helper for Lemma 3.5: if `fbar` is the least feasible objective value, then the residual
+objective is nonnegative everywhere. -/
+theorem zero_le_optimality_residual_of_isLeast
+    (hfbar : IsLeast (f '' inequality_feasible_set g) fbar) (x : E) :
+    0 ≤ optimality_residual f fbar g x := by
+  by_cases hxfeas : x ∈ inequality_feasible_set g
+  · -- On feasible points, the objective-gap coordinate is already nonnegative.
+    have hfbar_le : fbar ≤ f x := hfbar.2 ⟨x, hxfeas, rfl⟩
+    calc
+      0 ≤ f x - fbar := sub_nonneg.mpr hfbar_le
+      _ ≤ optimality_residual f fbar g x :=
+        objective_gap_le_optimality_residual (f := f) (fbar := fbar) (g := g) x
+  · -- On infeasible points, a violated constraint gives a positive residual coordinate.
+    rw [mem_inequality_feasible_set] at hxfeas
+    push Not at hxfeas
+    rcases hxfeas with ⟨i, hi⟩
+    calc
+      0 ≤ g i x := le_of_lt hi
+      _ ≤ optimality_residual f fbar g x :=
+        constraint_le_optimality_residual (f := f) (fbar := fbar) (g := g) x i
+
+/-- Helper for Lemma 3.5: a nonpositive residual value forces both feasibility and the objective
+bound `f x ≤ fbar`. -/
+theorem feasible_and_obj_le_of_optimality_residual_le_zero
+    (x : E) (hx : optimality_residual f fbar g x ≤ 0) :
+    x ∈ inequality_feasible_set g ∧ f x ≤ fbar := by
+  refine ⟨?_, ?_⟩
+  · -- Every constraint is bounded above by the nonpositive residual.
+    rw [mem_inequality_feasible_set]
+    intro i
+    exact le_trans (constraint_le_optimality_residual (f := f) (fbar := fbar) (g := g) x i) hx
+  · -- The objective-gap coordinate gives the claimed upper bound on `f x`.
+    exact sub_nonpos.mp <|
+      le_trans (objective_gap_le_optimality_residual (f := f) (fbar := fbar) (g := g) x) hx
+
 -- Proof sketch: let `S = inequality_feasible_set g`. The hypothesis `hfbar` says precisely that
 -- `fbar` is the least feasible objective value. If `x ∈ S` and `x` minimizes `f` on `S`, then
 -- `f x = fbar`, so every entry in the finite max defining
@@ -84,6 +135,59 @@ the residual objective `x ↦ max {f x - fbar, g 0 x, …, g (m - 1) x}`. -/
 theorem inequality_constrained_optimal_set_eq_global_minimizers_optimality_residual
     (hfbar : IsLeast (f '' inequality_feasible_set g) fbar) :
     {x | x ∈ inequality_feasible_set g ∧ IsMinOn f (inequality_feasible_set g) x} =
-      {x | IsMinOn (optimality_residual f fbar g) Set.univ x} := sorry
+      {x | IsMinOn (optimality_residual f fbar g) Set.univ x} := by
+  -- Compare both sets pointwise and use the residual value `0` as the common bridge.
+  ext x
+  constructor
+  · intro hx
+    change IsMinOn (optimality_residual f fbar g) Set.univ x
+    rcases hx with ⟨hxfeas, hxmin⟩
+    rcases hfbar.1 with ⟨xbar, hxbarfeas, hxbarval⟩
+    rw [isMinOn_iff] at hxmin
+    rw [isMinOn_univ_iff]
+    -- The feasible minimizer must achieve the least feasible value `fbar`.
+    have hfx_le : f x ≤ fbar := by
+      simpa [hxbarval] using hxmin xbar hxbarfeas
+    have hfbar_le : fbar ≤ f x := hfbar.2 ⟨x, hxfeas, rfl⟩
+    have hfx : f x = fbar := le_antisymm hfx_le hfbar_le
+    -- Normalize the residual at `x` to `0`, then compare with the global nonnegativity bound.
+    have hxzero :
+        optimality_residual f fbar g x = 0 :=
+      optimality_residual_eq_zero_of_feasible_of_eq_fbar
+        (f := f) (fbar := fbar) (g := g) x hxfeas hfx
+    intro y
+    calc
+      optimality_residual f fbar g x = 0 := hxzero
+      _ ≤ optimality_residual f fbar g y :=
+        zero_le_optimality_residual_of_isLeast (f := f) (fbar := fbar) (g := g) hfbar y
+  · intro hx
+    change x ∈ inequality_feasible_set g ∧ IsMinOn f (inequality_feasible_set g) x
+    rcases hfbar.1 with ⟨xbar, hxbarfeas, hxbarval⟩
+    change IsMinOn (optimality_residual f fbar g) Set.univ x at hx
+    rw [isMinOn_univ_iff] at hx
+    -- Compare the residual minimizer against a feasible point that attains `fbar`.
+    have hxle_zero : optimality_residual f fbar g x ≤ 0 := by
+      calc
+        optimality_residual f fbar g x ≤ optimality_residual f fbar g xbar := hx xbar
+        _ = 0 :=
+          optimality_residual_eq_zero_of_feasible_of_eq_fbar
+            (f := f) (fbar := fbar) (g := g) xbar hxbarfeas hxbarval
+    -- A nonpositive residual value recovers the original feasibility and objective bound.
+    rcases feasible_and_obj_le_of_optimality_residual_le_zero
+        (f := f) (fbar := fbar) (g := g) x hxle_zero with ⟨hxfeas, hfx_le⟩
+    refine ⟨hxfeas, ?_⟩
+    rw [isMinOn_iff]
+    intro y hy
+    -- Feasible comparison points have value at least `fbar`, so `x` is optimal on the feasible set.
+    exact le_trans hfx_le (hfbar.2 ⟨y, hy, rfl⟩)
+
+/-- Under the optimal-value hypothesis `hfbar`, minimizing `f` on the inequality-feasible set is
+equivalent to globally minimizing the residual objective. -/
+theorem isMinOn_optimality_residual_univ_iff
+    (hfbar : IsLeast (f '' inequality_feasible_set g) fbar) (x : E) :
+    (x ∈ inequality_feasible_set g ∧ IsMinOn f (inequality_feasible_set g) x) ↔
+      IsMinOn (optimality_residual f fbar g) Set.univ x := by
+  simpa using congrArg (fun s : Set E ↦ x ∈ s)
+    (inequality_constrained_optimal_set_eq_global_minimizers_optimality_residual hfbar)
 
 end

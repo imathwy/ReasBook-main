@@ -1,5 +1,6 @@
 import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap01.Definition_1_33
+import FirstOrderMethodsOptimization_Beck_2017.Chap01.Definition_1_30
 import FirstOrderMethodsOptimization_Beck_2017.Chap04.Definition_4_1
 import FirstOrderMethodsOptimization_Beck_2017.Chap07.Definition_7_8
 import FirstOrderMethodsOptimization_Beck_2017.Chap07.Definition_7_10
@@ -19,10 +20,11 @@ variable {n : ℕ}
 local notation "Mₙ" => Matrix (Fin n) (Fin n) ℝ
 local notation "𝕊" => symmetricMatrices n
 
-local instance theorem72FrobeniusNormedAddCommGroup : NormedAddCommGroup Mₙ :=
+local instance instTheorem72NormedAddCommGroupMatrix : NormedAddCommGroup Mₙ :=
   Matrix.frobeniusNormedAddCommGroup
-local instance theorem72FrobeniusNormedSpace : NormedSpace ℝ Mₙ := Matrix.frobeniusNormedSpace
-local instance theorem72FrobeniusInnerProductSpace : InnerProductSpace ℝ Mₙ :=
+local instance instTheorem72NormedSpaceMatrix : NormedSpace ℝ Mₙ :=
+  Matrix.frobeniusNormedSpace
+local instance instTheorem72InnerProductSpaceMatrix : InnerProductSpace ℝ Mₙ :=
   Matrix.frobeniusInnerProductSpace
 
 /-- Helper for Theorem 7.2: the Frobenius inner product on real matrices is the entrywise double
@@ -215,7 +217,7 @@ lemma orthogonal_diagonal_symmetric_eigenvalue_function_eq_of_antitone
 
 /-- Helper for Theorem 7.2: the imported `eigenvalues` lists inherit monovariance because they are
 both reindexed from the decreasing zero-indexed eigenvalue lists by the same equivalence. -/
-lemma hermitian_eigenvalues_monovary {A B : Mₙ}
+private lemma hermitian_eigenvalues_monovary {A B : Mₙ}
     (hA : A.IsHermitian) (hB : B.IsHermitian) :
     Monovary hA.eigenvalues hB.eigenvalues := by
   let e : Fin n ≃ Fin (Fintype.card (Fin n)) := (Fintype.equivOfCardEq (Fintype.card_fin _)).symm
@@ -227,7 +229,7 @@ lemma hermitian_eigenvalues_monovary {A B : Mₙ}
 
 /-- Helper for Theorem 7.2: squaring the entries of an orthogonal matrix gives a doubly
 stochastic matrix. -/
-lemma orthogonal_entrywise_sq_mem_doubly_stochastic
+private lemma orthogonal_entrywise_sq_mem_doubly_stochastic
     (Q : Matrix.orthogonalGroup (Fin n) ℝ) :
     (fun i j : Fin n ↦ (Q i j)^2 : Mₙ) ∈ doublyStochastic ℝ (Fin n) := by
   -- The row and column sums are the diagonal entries of `Q Qᵀ` and `Qᵀ Q`.
@@ -249,7 +251,7 @@ lemma orthogonal_entrywise_sq_mem_doubly_stochastic
 
 /-- Helper for Theorem 7.2: the diagonal entries of an orthogonal conjugate of a diagonal matrix
 are weighted by the squared orthogonal entries. -/
-lemma diagonal_conj_entry (y : Fin n → ℝ) (Q : Matrix.orthogonalGroup (Fin n) ℝ) (i : Fin n) :
+private lemma diagonal_conj_entry (y : Fin n → ℝ) (Q : Matrix.orthogonalGroup (Fin n) ℝ) (i : Fin n) :
     (((Q : Mₙ) * Matrix.diagonal y * ((Q : Mₙ)ᵀ)) i i) = ∑ j, (Q i j)^2 * y j := by
   -- Expand the diagonal conjugation and normalize the finite sum.
   rw [mul_assoc]
@@ -258,7 +260,7 @@ lemma diagonal_conj_entry (y : Fin n → ℝ) (Q : Matrix.orthogonalGroup (Fin n
 
 /-- Helper for Theorem 7.2: after diagonalizing both matrices, the trace pairing becomes the dot
 product against the doubly stochastic matrix of squared orthogonal entries. -/
-lemma orthogonal_trace_reduction (x y : Fin n → ℝ) (Q : Matrix.orthogonalGroup (Fin n) ℝ) :
+private lemma orthogonal_trace_reduction (x y : Fin n → ℝ) (Q : Matrix.orthogonalGroup (Fin n) ℝ) :
     Matrix.trace (Matrix.diagonal x * (Q : Mₙ) * Matrix.diagonal y * ((Q : Mₙ)ᵀ)) =
       dotProduct x ((fun i j : Fin n ↦ (Q i j)^2 : Mₙ) *ᵥ y) := by
   calc
@@ -289,7 +291,7 @@ lemma orthogonal_trace_reduction (x y : Fin n → ℝ) (Q : Matrix.orthogonalGro
 
 /-- Helper for Theorem 7.2: a doubly stochastic matrix cannot increase the dot product of two
 monovarying real vectors. -/
-lemma doubly_stochastic_dotProduct_le_of_monovary (x y : Fin n → ℝ) (P : Mₙ)
+private lemma doubly_stochastic_dotProduct_le_of_monovary (x y : Fin n → ℝ) (P : Mₙ)
     (hxy : Monovary x y) (hP : P ∈ doublyStochastic ℝ (Fin n)) :
     dotProduct x (P *ᵥ y) ≤ dotProduct x y := by
   obtain ⟨w, hw_nonneg, hw_sum, hwP⟩ := exists_eq_sum_perm_of_mem_doublyStochastic hP

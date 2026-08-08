@@ -11,11 +11,11 @@ variable {E : Type u}
 variable [NormedAddCommGroup E] [InnerProductSpace ℝ E] [CompleteSpace E]
 
 /- Definition 12.9 is a `bridge/view` recall: the orthogonal projection onto an intersection of
-closed convex sets is not a new owner abstraction, but the Chapter 3 owner `closedConvexProjectionPoint`
+closed convex sets is not a new owner abstraction, but the Chapter 3 owner `projectionPoint`
 applied to the total intersection.
 
 Domain sampling identifies the canonical owner abstraction and the relevant derived API:
-- `closedConvexProjectionPoint` from Proposition 3.12 is the chapter owner of orthogonal projection onto a
+- `projectionPoint` from Proposition 3.12 is the chapter owner of orthogonal projection onto a
   nonempty closed convex set;
 - `isClosed_iInter` and `convex_iInter` from mathlib provide the closedness and convexity of the
   total intersection from the family hypotheses;
@@ -25,11 +25,6 @@ Primitive owner data are only the set `S` together with its nonemptiness, closed
 convexity. For an intersection `S = ⋂ i, C i`, the familywise assumptions are auxiliary bridge data
 used only to derive `IsClosed S` and `Convex ℝ S`, so the public recall surface stays at the owner
 level rather than rebuilding intersection-specific wrappers. -/
-recall closedConvexProjectionPoint
-recall closedConvexProjectionPoint_mem
-recall closedConvexProjectionPoint_isMinOn
-recall eq_closedConvexProjectionPoint_of_mem_isMinOn
-
 section
 
 variable (C : ι → Set E) (hC_nonempty : (⋂ i, C i).Nonempty)
@@ -39,25 +34,25 @@ local notation "S" => ⋂ i, C i
 local notation "hS_closed" => isClosed_iInter hC_closed
 local notation "hS_convex" => convex_iInter hC_convex
 local notation "P" =>
-  closedConvexProjectionPoint S hC_nonempty hS_closed hS_convex
+  projectionPoint S hC_nonempty hS_closed hS_convex
 
 /- Definition 12.9: for `S = ⋂ i, C i`, once the total intersection is known to be nonempty,
-closed, and convex, its orthogonal projection is the canonical point projection `closedConvexProjectionPoint`
+closed, and convex, its orthogonal projection is the canonical point projection `projectionPoint`
 onto `S`, equivalently the optimal solution of `min_x {(1 / 2) ‖x - d‖^2 : x ∈ S}`. -/
 #check (P : E → E)
 
 /- The owner membership theorem applies directly to the total feasible set `S`. -/
-#check (closedConvexProjectionPoint_mem S hC_nonempty hS_closed hS_convex :
+#check (projectionPoint_mem S hC_nonempty hS_closed hS_convex :
   ∀ d : E, P d ∈ S)
 
 /- The owner minimizer theorem applies directly to the half squared-distance problem on `S`. -/
-#check (closedConvexProjectionPoint_isMinOn S hC_nonempty hS_closed hS_convex :
+#check (projectionPoint_isMinOn S hC_nonempty hS_closed hS_convex :
   ∀ d : E, IsMinOn (fun x ↦ ‖x - d‖ ^ (2 : ℕ) / 2) S (P d))
 
 /- The owner uniqueness theorem applies directly to characterize any feasible minimizer on `S` as
 the projection point. -/
 #check
-    (eq_closedConvexProjectionPoint_of_mem_isMinOn
+    (eq_projectionPoint_of_mem_isMinOn
       S hC_nonempty hS_closed hS_convex :
   ∀ (d : E) {x : E}, x ∈ S →
     IsMinOn (fun y ↦ ‖y - d‖ ^ (2 : ℕ) / 2) S x →

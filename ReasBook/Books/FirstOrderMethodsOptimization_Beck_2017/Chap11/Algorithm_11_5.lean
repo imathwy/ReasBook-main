@@ -61,25 +61,28 @@ variable (hproblem : IsBlockProximalGradientProblem f g block_gradient XStar FOp
 variable (x0 : (i : ι) → Ei i)
 variable (sampled_block : ℕ → ι)
 
-local notation "x[" k "]" =>
-  randomized_block_proximal_gradient_method hproblem x0 sampled_block k
-local notation "i[" k "]" => sampled_block k
-
 -- Proof sketch: unfold the recursive definition of
 -- `randomized_block_proximal_gradient_method` at `0`.
 /-- The RBPG iterate sequence starts at the prescribed initial point `x^0`. -/
 @[simp] theorem randomized_block_proximal_gradient_method_zero :
-    x[0] = x0 :=
+    randomized_block_proximal_gradient_method hproblem x0 sampled_block 0 = x0 :=
   rfl
 
 -- Proof sketch: unfold `randomized_block_proximal_gradient_method` at `k + 1`; the recursion
--- applies one realized RBPG step to the current iterate using the sampled block `i[k]`.
+-- applies one realized RBPG step to the current iterate using the sampled block `sampled_block k`.
 /-- At step `k`, the next RBPG iterate is obtained by applying the realized one-block update in
-the sampled block `i_k = i[k]`. -/
+the sampled block `i_k = sampled_block k`. -/
 theorem randomized_block_proximal_gradient_method_succ (k : ℕ) :
-    x[k + 1] =
-      block_coordinate_update x[k] i[k]
-        (hproblem.prox_point (Li i[k]) i[k] x[k] - x[k] i[k]) :=
+    randomized_block_proximal_gradient_method hproblem x0 sampled_block (k + 1) =
+      block_coordinate_update
+        (randomized_block_proximal_gradient_method hproblem x0 sampled_block k)
+        (sampled_block k)
+        (hproblem.prox_point
+            (Li (sampled_block k))
+            (sampled_block k)
+            (randomized_block_proximal_gradient_method hproblem x0 sampled_block k) -
+          (randomized_block_proximal_gradient_method hproblem x0 sampled_block k)
+            (sampled_block k)) :=
   rfl
 
 end

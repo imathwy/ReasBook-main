@@ -26,7 +26,7 @@ def non_euclidean_proximal_gradient_constant_or_backtracking_B5_stepsize_rule
   letI : IsBregmanPotentialOn ω (effective_domain g) (1 : ℝ) := hω
   uses_proximal_gradient_Lf_stepsize_rule Lf L ∨
     ∃ s : PosReal, ∃ η : ProximalGradientBacktrackingGrowthFactor,
-      uses_non_euclidean_proximal_gradient_backtracking_B5_rule f g ω x L s η
+      UsesNonEuclideanProximalGradientBacktrackingB5Rule f g ω x L s η
 
 /-- The constant/B5 sublinear-rate stepsize rule in Theorem 10.72 enriches the primitive
 constant-or-B5 regime by recording the rate constant `α`: either every curvature estimate
@@ -42,7 +42,7 @@ def non_euclidean_proximal_gradient_sublinear_rate_stepsize_rule
   (α = 1 ∧ uses_proximal_gradient_Lf_stepsize_rule Lf L) ∨
     ∃ _hLf : 0 < (Lf : ℝ), ∃ s : PosReal, ∃ η : ProximalGradientBacktrackingGrowthFactor,
       α = max (η : ℝ) ((s : ℝ) / (Lf : ℝ)) ∧
-        uses_non_euclidean_proximal_gradient_backtracking_B5_rule f g ω x L s η
+        UsesNonEuclideanProximalGradientBacktrackingB5Rule f g ω x L s η
 
 /-- Forgetting the auxiliary rate constant `α` from the sublinear-rate owner recovers the
 primitive constant-or-B5 stepsize regime from Theorem 10.72. -/

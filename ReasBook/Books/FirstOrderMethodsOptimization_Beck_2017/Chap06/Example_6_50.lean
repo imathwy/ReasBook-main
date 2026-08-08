@@ -682,7 +682,8 @@ theorem sum_of_k_largest_values_eq_support_function_constraint_set
     rw [hk_zero, sum_of_k_largest_values]
     simp
     symm
-    refine support_function_eq_of_isGreatest_image _ _ ?_
+    refine support_function_eq_of_isGreatest_image
+      (sum_of_k_largest_constraint_set ι 0) (toDualMap ℝ E x) ?_
     refine ⟨?_, ?_⟩
     · refine ⟨0, ?_, by simp⟩
       constructor
@@ -745,7 +746,7 @@ theorem prox_sum_of_k_largest_values_eq_singleton_sub_smul_metricProjection
     prox[fun y : E ↦ (lam : EReal) * (sum_of_k_largest_values k y : EReal)] x
       =
         {x - lam •
-          (metricProjection
+          (metricProjectionOfComplete
             (sum_of_k_largest_constraint_set ι k)
             (sum_of_k_largest_constraint_set_nonempty ι hk)
             (sum_of_k_largest_constraint_set_closed ι k).isComplete
@@ -754,7 +755,7 @@ theorem prox_sum_of_k_largest_values_eq_singleton_sub_smul_metricProjection
   let lamPos : PosReal := ⟨lam, hlam⟩
   have hpenalty :
       (fun y : E ↦ (lam : EReal) * (sum_of_k_largest_values k y : EReal)) =
-        (((lam : ℝ) : EReal) • σp[sum_of_k_largest_constraint_set ι k]) := by
+        (((lam : ℝ) : EReal) • σ[sum_of_k_largest_constraint_set ι k]) := by
     funext y
     -- Rewrite the source-facing top-`k` sum as the support function of the capped simplex.
     rw [Pi.smul_apply, support_function_primal_apply,

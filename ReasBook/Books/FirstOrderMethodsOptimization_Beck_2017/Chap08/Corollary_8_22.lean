@@ -26,39 +26,20 @@ local notation "x[" k "]" =>
     (hinter.mono Set.inter_subset_left) hS₁_closed hS₁_convex
     (hinter.mono Set.inter_subset_right) hS₂_closed hS₂_convex x0 k
 
-/-- Helper for Corollary 8.22: points already lying in a closed convex set are fixed by its metric
-projection. -/
-lemma metricProjection_eq_self_of_mem {C : Set E}
-    (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C) (hC_convex : Convex ℝ C)
-    {y : E} (hy : y ∈ C) :
-    (metricProjection C hC_nonempty hC_closed.isComplete hC_convex y : E) = y := by
-  -- The variational inequality at `y` forces the projection residual to have zero norm.
-  have hineq :=
-    inner_sub_metricProjection_le_zero C hC_nonempty hC_closed.isComplete hC_convex y y hy
-  have hnorm_sq_le_zero :
-      ‖y -
-          (metricProjection C hC_nonempty hC_closed.isComplete hC_convex y : E)‖ ^ (2 : ℕ) ≤ 0 := by
-    simpa [real_inner_self_eq_norm_sq] using hineq
-  have hnorm_zero :
-      ‖y -
-          (metricProjection C hC_nonempty hC_closed.isComplete hC_convex y : E)‖ = 0 := by
-    nlinarith [sq_nonneg
-      ‖y -
-          (metricProjection C hC_nonempty hC_closed.isComplete hC_convex y : E)‖, hnorm_sq_le_zero]
-  exact (sub_eq_zero.mp (norm_eq_zero.mp hnorm_zero)).symm
-
 /-- Helper for Corollary 8.22: one metric-projection step decreases the squared distance to each
 point of the set by at least the squared distance from the current point to the set. -/
 lemma metricProjection_sqdist_drop_le {C : Set E}
     (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C) (hC_convex : Convex ℝ C)
     {x y : E} (hy : y ∈ C) :
-    dist (metricProjection C hC_nonempty hC_closed.isComplete hC_convex x : E) y ^ (2 : ℕ) +
+    dist (metricProjection C hC_nonempty hC_closed hC_convex x : E) y ^ (2 : ℕ) +
         infDist x C ^ (2 : ℕ) ≤
       dist x y ^ (2 : ℕ) := by
-  let p : E := metricProjection C hC_nonempty hC_closed.isComplete hC_convex x
+  let p : E := metricProjection C hC_nonempty hC_closed hC_convex x
   have hy_proj :
-      (metricProjection C hC_nonempty hC_closed.isComplete hC_convex y : E) = y :=
-    metricProjection_eq_self_of_mem hC_nonempty hC_closed hC_convex hy
+      (metricProjection C hC_nonempty hC_closed hC_convex y : E) = y :=
+    by
+      simpa [projectionPoint] using
+        projectionPoint_eq_self_of_mem C hC_nonempty hC_closed hC_convex hy
   have hfirm :
       inner ℝ (p - y) (x - y) ≥ ‖p - y‖ ^ (2 : ℕ) := by
     -- Firm nonexpansiveness becomes a one-sided inner-product control after fixing `y`.
@@ -96,7 +77,7 @@ lemma metricProjection_sqdist_drop_le {C : Set E}
     nlinarith [hinner_nonneg, hnorm_expand]
   have hinf : infDist x C = dist x p := by
     simpa [p] using
-      infDist_eq_dist_metricProjection C hC_nonempty hC_closed.isComplete hC_convex x
+      infDist_eq_dist_metricProjection C hC_nonempty hC_closed hC_convex x
   simpa [p, hinf] using hsq
 
 /-- Helper for Corollary 8.22: one full alternating-projection step decreases the squared distance
@@ -105,7 +86,7 @@ lemma alternating_projection_sqdist_step_le {s : E} (hs : s ∈ S₁ ∩ S₂) (
     dist (x[k + 1] : E) s ^ (2 : ℕ) ≤
       dist (x[k] : E) s ^ (2 : ℕ) - infDist (x[k] : E) S₁ ^ (2 : ℕ) := by
   let p : E :=
-    metricProjection S₁ (hinter.mono Set.inter_subset_left) hS₁_closed.isComplete hS₁_convex
+    metricProjection S₁ (hinter.mono Set.inter_subset_left) hS₁_closed hS₁_convex
       (x[k] : E)
   have hstep₁ :
       dist p s ^ (2 : ℕ) + infDist (x[k] : E) S₁ ^ (2 : ℕ) ≤ dist (x[k] : E) s ^ (2 : ℕ) :=
@@ -113,7 +94,7 @@ lemma alternating_projection_sqdist_step_le {s : E} (hs : s ∈ S₁ ∩ S₂) (
       (hinter.mono Set.inter_subset_left) hS₁_closed hS₁_convex hs.1
   have hstep₂_raw :
       dist
-          (metricProjection S₂ (hinter.mono Set.inter_subset_right) hS₂_closed.isComplete
+          (metricProjection S₂ (hinter.mono Set.inter_subset_right) hS₂_closed
             hS₂_convex p : E) s ^ (2 : ℕ) +
         infDist p S₂ ^ (2 : ℕ) ≤
       dist p s ^ (2 : ℕ) :=
@@ -266,7 +247,7 @@ theorem alternating_projection_exists_prefix_iterate_infDist_le (k : ℕ) :
   have hn_le : n ≤ k := by
     simpa [T] using hnT
   let s0 :=
-    metricProjection (S₁ ∩ S₂) hinter (hS₁_closed.inter hS₂_closed).isComplete
+    metricProjection (S₁ ∩ S₂) hinter (hS₁_closed.inter hS₂_closed)
       (hS₁_convex.inter hS₂_convex) (x0 : E)
   have hsum_upper :
       Finset.sum T (fun i ↦ infDist (x[i] : E) S₁ ^ (2 : ℕ)) ≤
@@ -280,7 +261,7 @@ theorem alternating_projection_exists_prefix_iterate_infDist_le (k : ℕ) :
         infDist (x0 : E) (S₁ ∩ S₂) = dist (x0 : E) (s0 : E) := by
       simpa [s0] using
         infDist_eq_dist_metricProjection
-          (S₁ ∩ S₂) hinter (hS₁_closed.inter hS₂_closed).isComplete
+          (S₁ ∩ S₂) hinter (hS₁_closed.inter hS₂_closed)
           (hS₁_convex.inter hS₂_convex) (x0 : E)
     simpa [T, hs0dist] using hsum
   have hmin_sq :

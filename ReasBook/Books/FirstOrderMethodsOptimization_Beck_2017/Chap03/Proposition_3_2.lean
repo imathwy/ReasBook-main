@@ -10,16 +10,16 @@ section
 
 variable {E : Type u} [AddCommGroup E] [Module ℝ E]
 
--- Proof sketch: unfold `extendedRealSubdifferential`, `extendedIndicator`, and `normal_cone`. If `x ∈ S`, then
+-- Proof sketch: unfold `subdifferential`, `extendedIndicator`, and `normal_cone`. If `x ∈ S`, then
 -- `extendedIndicator S x = 0`, and the subgradient inequality is equivalent to
 -- `g (z - x) ≤ 0` for every `z ∈ S`. If `x ∉ S`, then `x ∉ effective_domain (extendedIndicator S)`,
--- so `extendedRealSubdifferential (extendedIndicator S) x = ∅`, and `normal_cone S x` is also empty by
+-- so `subdifferential (extendedIndicator S) x = ∅`, and `normal_cone S x` is also empty by
 -- definition.
-/-- Proposition 3.2: the extendedRealSubdifferential of the indicator function `δ_S` coincides with the normal
+/-- Proposition 3.2: the subdifferential of the indicator function `δ_S` coincides with the normal
 cone of `S` at every point. In this bridge formulation, the textbook nonemptiness hypothesis on
 `S` is redundant because both sides are empty outside `S`. -/
 theorem subdifferential_extended_indicator_eq_normal_cone (S : Set E) (x : E) :
-    extendedRealSubdifferential (extendedIndicator S) x = normal_cone S x := by
+    subdifferential (extendedIndicator S) x = normal_cone S x := by
   by_cases hx : x ∈ S
   · ext g
     rw [mem_subdifferential, mem_normal_cone S hx]

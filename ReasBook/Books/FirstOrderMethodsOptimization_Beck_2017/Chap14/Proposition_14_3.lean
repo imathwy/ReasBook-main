@@ -13,19 +13,19 @@ open scoped Topology
 variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
 /- Domain sampling for Proposition 14.3:
-- `extendedRealSubdifferential` is the Chapter 3 `core/canonical` owner for the subgradient set `∂ h(x)`;
+- `subdifferential` is the Chapter 3 `core/canonical` owner for the subgradient set `∂ h(x)`;
 - `strongDualSubdifferential` is the topologized `bridge/view` needed only for the convergence of
   the sequence `a : ℕ → StrongDual ℝ E`;
 - `is_subgradient_at_iff_forall_mem_effective_domain` is the primitive pointwise inequality API.
 
-This proposition is `source-facing`: it says the graph of the extendedRealSubdifferential is sequentially
+This proposition is `source-facing`: it says the graph of the subdifferential is sequentially
 closed under strong-dual/space convergence. The public theorem surface should therefore use the
 strong-dual bridge notation `∂ₛ h(x)` rather than the long raw owner name
 `strongDualSubdifferential`, while the algebraic owner remains `∂ h(x)`. The textbook properness
 and convexity hypotheses are redundant here: once `aₖ ∈ ∂ₛ h(bₖ)` is given,
 lower semicontinuity is the only active assumption for passing to the limit. -/
 
-recall extendedRealSubdifferential
+recall subdifferential
 recall strongDualSubdifferential
 
 -- Proof sketch: fix any `z : E`. From `a k ∈ ∂ₛ h(b k)` we have
@@ -35,7 +35,7 @@ recall strongDualSubdifferential
 -- `h z ≥ h bBar + aBar (z - bBar)` for all `z`, which is exactly `aBar ∈ ∂ₛ h(bBar)`.
 /-- Helper for Proposition 14.3: lower semicontinuity bounds the value at the limit point by the
 `liminf` along any convergent sequence. -/
-lemma lowerSemicontinuous_value_le_liminf_along_sequence
+private lemma lowerSemicontinuous_value_le_liminf_along_sequence
     (h : E → EReal) (hclosed : LowerSemicontinuous h) {b : ℕ → E} {bBar : E}
     (hb : Tendsto b atTop (𝓝 bBar)) :
     h bBar ≤ Filter.liminf (fun k ↦ h (b k)) atTop := by
@@ -78,7 +78,7 @@ lemma pointwise_subgradient_bound_on_effective_domain
 
 /-- Helper for Proposition 14.3: an eventual upper bound by a constant forces the `liminf`
 to stay below that constant. -/
-lemma liminf_le_constant_of_eventually_le_ereal
+private lemma liminf_le_constant_of_eventually_le_ereal
     {u : ℕ → EReal} {c : EReal} (huc : ∀ᶠ k in atTop, u k ≤ c) :
     Filter.liminf u atTop ≤ c := by
   -- Any eventual lower bound for `u` can be compared to `c` on a common tail.
@@ -163,9 +163,9 @@ lemma limit_basepoint_mem_effective_domain
   have hb0_top : h (b 0) = ⊤ := le_antisymm le_top hlimit
   exact (mem_effective_domain.mp hb0).ne hb0_top
 
-/-- Proposition 14.3: if each `a k` belongs to the extendedRealSubdifferential of a lower semicontinuous
+/-- Proposition 14.3: if each `a k` belongs to the subdifferential of a lower semicontinuous
 extended-real-valued function `h` at `b k`, and `a k → aBar`, `b k → bBar`, then `aBar` belongs
-to the extendedRealSubdifferential of `h` at `bBar`. The statement uses the strong-dual bridge notation
+to the subdifferential of `h` at `bBar`. The statement uses the strong-dual bridge notation
 `∂ₛ h(x)`, so the theorem surface stays source-readable without exposing the long raw bridge name
 `strongDualSubdifferential`. The textbook properness and convexity hypotheses are redundant for
 this closed-graph property, so lower semicontinuity is the only public assumption. -/

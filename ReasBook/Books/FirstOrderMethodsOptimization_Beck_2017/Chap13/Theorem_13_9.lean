@@ -43,18 +43,18 @@ section
 
 variable [CompleteSpace E]
 variable {f : E → ℝ} {g : E → EReal} {Lf : NNReal}
-variable [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
+variable [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
 variable {x p : ℕ → E} {t : ℕ → Set.Icc (0 : ℝ) 1}
 variable (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
 variable
   (hrule : uses_generalized_conditional_gradient_adaptive_or_exact_stepsize_rule
     f g Lf x p t)
 
-local notation "F" => composite_model_objective f.toExtendedReal g
-local notation "F_opt" => generalized_conditional_gradient_optimal_value f.toExtendedReal g
+local notation "F" => composite_model_objective f.toEReal g
+local notation "F_opt" => generalized_conditional_gradient_optimal_value f.toEReal g
 
 /-- Helper for Theorem 13.9: the smoothness field from Assumption 13.1 restricts from
-`effective_domain f.toExtendedReal` to the smaller feasible core `effective_domain g`. -/
+`effective_domain f.toEReal` to the smaller feasible core `effective_domain g`. -/
 lemma generalized_conditional_gradient_smooth_on_g_effective_domain_of_problem :
     is_l_smooth_on f (effective_domain g) Lf := by
   -- Rewrite both smoothness predicates into differentiability plus gradient Lipschitz control,
@@ -86,7 +86,7 @@ lemma generalized_conditional_gradient_optimal_value_eq_of_mem_optimal_set
 /-- Helper for Theorem 13.9: every global minimizer of the composite objective is feasible for
 the regularizer term `g`. -/
 lemma generalized_conditional_gradient_optimal_point_mem_effective_domain
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf)
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf)
     {xStar : E} (hxStar : xStar ∈ unconstrained_problem_solutions F) :
     xStar ∈ effective_domain g := by
   -- Compare the optimizer with one known feasible point; the minimizing value cannot be `⊤`, so
@@ -98,8 +98,7 @@ lemma generalized_conditional_gradient_optimal_point_mem_effective_domain
   have hle : F xStar ≤ F y := by
     exact (isMinOn_univ_iff.mp hxStar_min) y
   have hFy_ne_top : F y ≠ ⊤ := by
-    rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-      (f := f) (g := g) hproblem.ne_bot hy]
+    rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain hproblem.ne_bot hy]
     exact EReal.coe_ne_top _
   have hFxStar_ne_top : F xStar ≠ ⊤ := by
     exact ne_of_lt (lt_of_le_of_lt hle (lt_top_iff_ne_top.mpr hFy_ne_top))
@@ -113,14 +112,14 @@ lemma generalized_conditional_gradient_optimal_point_mem_effective_domain
 /-- Helper for Theorem 13.9: compactness of `effective_domain g` yields a strictly positive
 uniform diameter bound. -/
 lemma effective_domain_pairwise_dist_le_of_compact :
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf) →
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf) →
     ∃ Ω : ℝ, 0 < Ω ∧
       ∀ u ∈ effective_domain g, ∀ v ∈ effective_domain g, ‖u - v‖ ≤ Ω := by
   intro hproblem
   -- First bound the feasible set in norm, then convert that radius bound into a diameter bound by
   -- the triangle inequality.
-  obtain ⟨R, hR_pos, hRball⟩ :=
-    hproblem.g_effective_domain_compact.isBounded.subset_closedBall_lt 0 (0 : E)
+  have hbounded := hproblem.g_effective_domain_compact.isBounded
+  obtain ⟨R, hR_pos, hRball⟩ := hbounded.subset_closedBall_lt 0 (0 : E)
   refine ⟨max 1 (2 * R), lt_of_lt_of_le zero_lt_one (le_max_left _ _), ?_⟩
   intro u hu v hv
   have hu_ball : u ∈ Metric.closedBall (0 : E) R := hRball hu
@@ -150,32 +149,31 @@ lemma generalized_conditional_gradient_one_step_decrease_toReal
       (F (x k)).toReal - (F (x (k + 1))).toReal := by
   -- Apply the `EReal` sufficient-decrease theorem, then convert the finite objective values at the
   -- two feasible iterates to real subtraction.
-  have hsmooth := generalized_conditional_gradient_smooth_on_g_effective_domain_of_problem
-    (f := f) (g := g) (Lf := Lf)
+  have hsmooth : is_l_smooth_on f (effective_domain g) Lf :=
+    generalized_conditional_gradient_smooth_on_g_effective_domain_of_problem
   have hdec :
       F (x k) - F (x (k + 1)) ≥
         ((1 / 2 : ℝ) *
             min ((S[f, g](x k)).toReal)
               ((S[f, g](x k)).toReal ^ (2 : ℕ) / ((Lf : ℝ) * Ω ^ (2 : ℕ))) : EReal) :=
     generalized_conditional_gradient_sufficient_decrease_of_adaptive_or_exact_line_search
-      (f := f) (g := g) (Lf := Lf)
       hproblem.ne_bot hproblem.g_convex hsmooth htraj hrule hΩ k
   have hxk :
       x k ∈ effective_domain g :=
     generalized_conditional_gradient_trajectory_mem_effective_domain
-      (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj k
+      hproblem.ne_bot hproblem.g_convex htraj k
   have hxk1 :
       x (k + 1) ∈ effective_domain g :=
     generalized_conditional_gradient_trajectory_mem_effective_domain
-      (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj (k + 1)
+      hproblem.ne_bot hproblem.g_convex htraj (k + 1)
   have hFxk :
       F (x k) = (((F (x k)).toReal : ℝ) : EReal) :=
     composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-      (f := f) (g := g) hproblem.ne_bot hxk
+      hproblem.ne_bot hxk
   have hFxk1 :
       F (x (k + 1)) = (((F (x (k + 1))).toReal : ℝ) : EReal) :=
     composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-      (f := f) (g := g) hproblem.ne_bot hxk1
+      hproblem.ne_bot hxk1
   have hdec_real :
       (((F (x k)).toReal - (F (x (k + 1))).toReal : ℝ) : EReal) ≥
         ((1 / 2 : ℝ) *
@@ -214,7 +212,7 @@ lemma generalized_conditional_gradient_prefix_min_decrease_sum_le_initial_object
   induction' k with k hk
   · -- The base prefix has exactly one decrease term, so this is the one-step estimate at `0`.
     simpa using generalized_conditional_gradient_one_step_decrease_toReal
-      (f := f) (g := g) (Lf := Lf) htraj hrule hΩ 0
+      htraj hrule hΩ 0
   · -- Append the next one-step estimate and simplify the objective differences by telescoping.
     have hkStep :
         (1 / 2 : ℝ) *
@@ -222,7 +220,7 @@ lemma generalized_conditional_gradient_prefix_min_decrease_sum_le_initial_object
               ((S[f, g](x (k + 1))).toReal ^ (2 : ℕ) / ((Lf : ℝ) * Ω ^ (2 : ℕ))) ≤
           (F (x (k + 1))).toReal - (F (x (k + 2))).toReal := by
       simpa using generalized_conditional_gradient_one_step_decrease_toReal
-        (f := f) (g := g) (Lf := Lf) htraj hrule hΩ (k + 1)
+        htraj hrule hΩ (k + 1)
     have hsum :
         ((1 / 2 : ℝ) *
             Finset.sum (Finset.range (k + 1)) (fun n ↦
@@ -313,18 +311,16 @@ lemma objective_difference_tendsto_zero_of_antitone_bddBelow
 /-- Helper for Theorem 13.9: the real objective values along every generalized
 conditional-gradient trajectory are bounded below by the value at a global minimizer. -/
 lemma generalized_conditional_gradient_objective_toReal_bddBelow
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t) :
     BddBelow (Set.range fun k ↦ (F (x k)).toReal) := by
   -- Choose a global minimizer from Text 13.1, then compare its objective value to every iterate.
   obtain ⟨xStar, hxStar⟩ := generalized_conditional_gradient_optimal_set_nonempty hproblem
   have hxStar_g :
       xStar ∈ effective_domain g :=
-    generalized_conditional_gradient_optimal_point_mem_effective_domain
-      (f := f) (g := g) (Lf := Lf) hproblem hxStar
+    generalized_conditional_gradient_optimal_point_mem_effective_domain hproblem hxStar
   have hFxStar_ne_bot : F xStar ≠ ⊥ := by
-    rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-      (f := f) (g := g) hproblem.ne_bot hxStar_g]
+    rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain hproblem.ne_bot hxStar_g]
     exact EReal.coe_ne_bot _
   refine ⟨(F xStar).toReal, ?_⟩
   intro y hy
@@ -332,10 +328,9 @@ lemma generalized_conditional_gradient_objective_toReal_bddBelow
   have hxk :
       x k ∈ effective_domain g :=
     generalized_conditional_gradient_trajectory_mem_effective_domain
-      (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj k
+      hproblem.ne_bot hproblem.g_convex htraj k
   have hFxk_ne_top : F (x k) ≠ ⊤ := by
-    rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-      (f := f) (g := g) hproblem.ne_bot hxk]
+    rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain hproblem.ne_bot hxk]
     exact EReal.coe_ne_top _
   have hle :
       F xStar ≤ F (x k) := by
@@ -347,7 +342,7 @@ lemma generalized_conditional_gradient_objective_toReal_bddBelow
 conditional-gradient gap to vanish, because each search point must coincide with the current
 iterate. -/
 lemma generalized_conditional_gradient_gap_eq_zero_of_nonpos_diameter_bound
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     {Ω : ℝ}
     (hΩnonpos : Ω ≤ 0)
@@ -359,11 +354,11 @@ lemma generalized_conditional_gradient_gap_eq_zero_of_nonpos_diameter_bound
   have hxk :
       x k ∈ effective_domain g :=
     generalized_conditional_gradient_trajectory_mem_effective_domain
-      (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj k
+      hproblem.ne_bot hproblem.g_convex htraj k
   have hpk :
       p k ∈ effective_domain g :=
     generalized_conditional_gradient_argmin_mem_effective_domain
-      (f := f) (g := g) hxk (htraj.argmin_mem k)
+      hxk (htraj.argmin_mem k)
   have hdist_le_zero : ‖x k - p k‖ ≤ 0 := by
     exact le_trans (hΩ (x k) hxk (p k) hpk) hΩnonpos
   have hdist_zero : ‖x k - p k‖ = 0 := by
@@ -387,7 +382,7 @@ lemma generalized_conditional_gradient_gap_eq_zero_of_nonpos_diameter_bound
 conditional-gradient method with adaptive stepsize or exact line search is objective
 nonincreasing: `F(x^(k+1)) ≤ F(x^k)` for all `k ≥ 0`. -/
 theorem generalized_conditional_gradient_objective_step_nonincreasing
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (hrule : uses_generalized_conditional_gradient_adaptive_or_exact_stepsize_rule
       f g Lf x p t)
@@ -398,20 +393,20 @@ theorem generalized_conditional_gradient_objective_step_nonincreasing
   -- Route correction: the problem instance is already in scope, so the source proof runs directly
   -- through the one-step decrease estimate and finiteness of consecutive objective values.
   have hdiam :=
-    effective_domain_pairwise_dist_le_of_compact (f := f) (g := g) (Lf := Lf)
+    @effective_domain_pairwise_dist_le_of_compact E _ _ _ f g Lf
   obtain ⟨Ω, hΩpos, hΩ⟩ := hdiam hproblem
   have hxk :
       x k ∈ effective_domain g :=
     generalized_conditional_gradient_trajectory_mem_effective_domain
-      (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj k
+      hproblem.ne_bot hproblem.g_convex htraj k
   have hxk1 :
       x (k + 1) ∈ effective_domain g :=
     generalized_conditional_gradient_trajectory_mem_effective_domain
-      (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj (k + 1)
+      hproblem.ne_bot hproblem.g_convex htraj (k + 1)
   have hS_nonneg :
       0 ≤ (S[f, g](x k)).toReal :=
     generalized_conditional_gradient_norm_toReal_nonneg_of_mem_argmin
-      (f := f) (g := g) hproblem.ne_bot hxk (htraj.argmin_mem k)
+      hproblem.ne_bot hxk (htraj.argmin_mem k)
   have hterm_nonneg :
       0 ≤
         (1 / 2 : ℝ) *
@@ -429,14 +424,12 @@ theorem generalized_conditional_gradient_objective_step_nonincreasing
             ((S[f, g](x k)).toReal ^ (2 : ℕ) / ((Lf : ℝ) * Ω ^ (2 : ℕ))) ≤
         (F (x k)).toReal - (F (x (k + 1))).toReal := by
     exact generalized_conditional_gradient_one_step_decrease_toReal
-      (f := f) (g := g) (Lf := Lf) htraj hrule hΩ k
+      htraj hrule hΩ k
   have hreal :
       (F (x (k + 1))).toReal ≤ (F (x k)).toReal := by
     linarith
-  rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-    (f := f) (g := g) hproblem.ne_bot hxk1,
-    composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-      (f := f) (g := g) hproblem.ne_bot hxk]
+  rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain hproblem.ne_bot hxk1,
+    composite_model_objective_eq_coe_toReal_of_mem_effective_domain hproblem.ne_bot hxk]
   exact_mod_cast hreal
 
 -- Proof sketch: the one-step sufficient-decrease estimate yields a nonnegative lower bound on
@@ -448,7 +441,7 @@ theorem generalized_conditional_gradient_objective_step_nonincreasing
 sequence `S(x^k)` converges to `0` along any trajectory generated with adaptive stepsize or exact
 line search. -/
 theorem generalized_conditional_gradient_gap_tendsto_zero
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (hrule : uses_generalized_conditional_gradient_adaptive_or_exact_stepsize_rule
       f g Lf x p t) :
@@ -459,32 +452,29 @@ theorem generalized_conditional_gradient_gap_tendsto_zero
   -- Route correction: the source proof first drives the successive objective differences to zero,
   -- then inverts the scalar bound `min {Sₖ, Sₖ² / (L_f Ω²)}` pointwise.
   obtain ⟨Ω, hΩpos, hΩ⟩ :=
-    effective_domain_pairwise_dist_le_of_compact
-      (f := f) (g := g) (Lf := Lf) hproblem
+    effective_domain_pairwise_dist_le_of_compact hproblem
   let a : ℕ → ℝ := fun k ↦ (F (x k)).toReal
   have hanti : Antitone a := by
     refine antitone_nat_of_succ_le ?_
     intro k
     have hstep :=
       generalized_conditional_gradient_objective_step_nonincreasing
-        (f := f) (g := g) (Lf := Lf) htraj hrule k
+        htraj hrule k
     have hxk :
         x k ∈ effective_domain g :=
       generalized_conditional_gradient_trajectory_mem_effective_domain
-        (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj k
+        hproblem.ne_bot hproblem.g_convex htraj k
     have hxk1 :
         x (k + 1) ∈ effective_domain g :=
       generalized_conditional_gradient_trajectory_mem_effective_domain
-        (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj (k + 1)
-    rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-      (f := f) (g := g) hproblem.ne_bot hxk1,
-      composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-        (f := f) (g := g) hproblem.ne_bot hxk] at hstep
+        hproblem.ne_bot hproblem.g_convex htraj (k + 1)
+    rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain hproblem.ne_bot hxk1,
+      composite_model_objective_eq_coe_toReal_of_mem_effective_domain hproblem.ne_bot hxk] at hstep
     exact_mod_cast hstep
   have hbelow :
       BddBelow (Set.range a) :=
-    generalized_conditional_gradient_objective_toReal_bddBelow
-      (f := f) (g := g) (Lf := Lf) (x := x) (p := p) (t := t) htraj
+    @generalized_conditional_gradient_objective_toReal_bddBelow
+      E _ _ _ f g Lf hproblem x p t hproblem htraj
   have hdiff :
       Filter.Tendsto (fun k ↦ a k - a (k + 1)) Filter.atTop (nhds 0) :=
     objective_difference_tendsto_zero_of_antitone_bddBelow hanti hbelow
@@ -502,8 +492,7 @@ theorem generalized_conditional_gradient_gap_tendsto_zero
     simpa [C] using tendsto_const_nhds.mul hB_tendsto
   have hsqrt_tendsto :
       Filter.Tendsto (fun k ↦ Real.sqrt (C * B k)) Filter.atTop (nhds 0) := by
-    simpa using
-      (Real.continuous_sqrt.continuousAt.tendsto.comp hCB_tendsto)
+    simpa using hCB_tendsto.sqrt
   have hupper_tendsto :
       Filter.Tendsto
         (fun k ↦ max (B k) (Real.sqrt (C * B k))) Filter.atTop (nhds 0) :=
@@ -514,9 +503,9 @@ theorem generalized_conditional_gradient_gap_tendsto_zero
     have hxk :
         x k ∈ effective_domain g :=
       generalized_conditional_gradient_trajectory_mem_effective_domain
-        (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj k
+        hproblem.ne_bot hproblem.g_convex htraj k
     exact generalized_conditional_gradient_norm_toReal_nonneg_of_mem_argmin
-      (f := f) (g := g) hproblem.ne_bot hxk (htraj.argmin_mem k)
+      hproblem.ne_bot hxk (htraj.argmin_mem k)
   have hupper :
       ∀ k, (S[f, g](x k)).toReal ≤ max (B k) (Real.sqrt (C * B k)) := by
     intro k
@@ -525,8 +514,7 @@ theorem generalized_conditional_gradient_gap_tendsto_zero
     have hdec :
         (1 / 2 : ℝ) * min s (s ^ (2 : ℕ) / C) ≤ a k - a (k + 1) := by
       simpa [a, C, s] using
-        generalized_conditional_gradient_one_step_decrease_toReal
-          (f := f) (g := g) (Lf := Lf) htraj hrule hΩ k
+        generalized_conditional_gradient_one_step_decrease_toReal htraj hrule hΩ k
     have hmin :
         min s (s ^ (2 : ℕ) / C) ≤ B k := by
       dsimp [B]
@@ -544,7 +532,7 @@ satisfies the complexity estimate
 `min_{0 ≤ n ≤ k} S(x^n) ≤ max {2 (F(x^0) - F_opt) / (k + 1),
 sqrt (2 L_f Ω^2 (F(x^0) - F_opt)) / sqrt (k + 1)}`. -/
 theorem generalized_conditional_gradient_best_gap_up_to_le_complexity_bound
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (hrule : uses_generalized_conditional_gradient_adaptive_or_exact_stepsize_rule
       f g Lf x p t)
@@ -571,39 +559,32 @@ theorem generalized_conditional_gradient_best_gap_up_to_le_complexity_bound
     have hx0 :
         x 0 ∈ effective_domain g :=
       generalized_conditional_gradient_trajectory_mem_effective_domain
-        (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj 0
+        hproblem.ne_bot hproblem.g_convex htraj 0
     have hxk1 :
         x (k + 1) ∈ effective_domain g :=
       generalized_conditional_gradient_trajectory_mem_effective_domain
-        (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj (k + 1)
+        hproblem.ne_bot hproblem.g_convex htraj (k + 1)
     obtain ⟨xStar, hxStar⟩ := generalized_conditional_gradient_optimal_set_nonempty hproblem
     have hxStar_g :
         xStar ∈ effective_domain g :=
-      generalized_conditional_gradient_optimal_point_mem_effective_domain
-        (f := f) (g := g) (Lf := Lf) hproblem hxStar
+      generalized_conditional_gradient_optimal_point_mem_effective_domain hproblem hxStar
     have hopt_eq :
         F_opt = F xStar :=
-      generalized_conditional_gradient_optimal_value_eq_of_mem_optimal_set
-        (f := f) (g := g) hxStar
+      generalized_conditional_gradient_optimal_value_eq_of_mem_optimal_set hxStar
     have hFx0_ne_top : F (x 0) ≠ ⊤ := by
-      rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-        (f := f) (g := g) hproblem.ne_bot hx0]
+      rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain hproblem.ne_bot hx0]
       exact EReal.coe_ne_top _
     have hFx0_ne_bot : F (x 0) ≠ ⊥ := by
-      rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-        (f := f) (g := g) hproblem.ne_bot hx0]
+      rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain hproblem.ne_bot hx0]
       exact EReal.coe_ne_bot _
     have hFxk1_ne_top : F (x (k + 1)) ≠ ⊤ := by
-      rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-        (f := f) (g := g) hproblem.ne_bot hxk1]
+      rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain hproblem.ne_bot hxk1]
       exact EReal.coe_ne_top _
     have hFxStar_ne_top : F xStar ≠ ⊤ := by
-      rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-        (f := f) (g := g) hproblem.ne_bot hxStar_g]
+      rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain hproblem.ne_bot hxStar_g]
       exact EReal.coe_ne_top _
     have hFxStar_ne_bot : F xStar ≠ ⊥ := by
-      rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-        (f := f) (g := g) hproblem.ne_bot hxStar_g]
+      rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain hproblem.ne_bot hxStar_g]
       exact EReal.coe_ne_bot _
     have hopt_le_k1 :
         F xStar ≤ F (x (k + 1)) := by
@@ -646,7 +627,7 @@ theorem generalized_conditional_gradient_best_gap_up_to_le_complexity_bound
           (F (x 0)).toReal - (F (x (k + 1))).toReal := by
       simpa [C] using
         generalized_conditional_gradient_prefix_min_decrease_sum_le_initial_objective_drop
-          (f := f) (g := g) (Lf := Lf) htraj hrule hΩpos hΩ k
+          htraj hrule hΩpos hΩ k
     have hbest_nonneg : 0 ≤ best := by
       have hbest_mem :
           best ∈ ((Finset.range (k + 1)).image fun n ↦ (S[f, g](x n)).toReal) := by
@@ -656,9 +637,9 @@ theorem generalized_conditional_gradient_best_gap_up_to_le_complexity_bound
       have hnonneg_n :
           0 ≤ (S[f, g](x n)).toReal :=
         generalized_conditional_gradient_norm_toReal_nonneg_of_mem_argmin
-          (f := f) (g := g) hproblem.ne_bot
+          hproblem.ne_bot
           (generalized_conditional_gradient_trajectory_mem_effective_domain
-            (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj n)
+            hproblem.ne_bot hproblem.g_convex htraj n)
           (htraj.argmin_mem n)
       simpa [← hbest_eq] using hnonneg_n
     have hpointwise :
@@ -674,11 +655,11 @@ theorem generalized_conditional_gradient_best_gap_up_to_le_complexity_bound
       have hxn :
           x n ∈ effective_domain g :=
         generalized_conditional_gradient_trajectory_mem_effective_domain
-          (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj n
+          hproblem.ne_bot hproblem.g_convex htraj n
       have hs_nonneg :
           0 ≤ (S[f, g](x n)).toReal :=
         generalized_conditional_gradient_norm_toReal_nonneg_of_mem_argmin
-          (f := f) (g := g) hproblem.ne_bot hxn (htraj.argmin_mem n)
+          hproblem.ne_bot hxn (htraj.argmin_mem n)
       have hsq_le :
           best ^ (2 : ℕ) ≤ (S[f, g](x n)).toReal ^ (2 : ℕ) := by
         nlinarith [hbest_nonneg, hs_nonneg, hbest_le]
@@ -756,8 +737,8 @@ theorem generalized_conditional_gradient_best_gap_up_to_le_complexity_bound
         best_achieved_function_value (fun y ↦ (S[f, g](y)).toReal) x k = 0 := by
       have hS0_zero :
           (S[f, g](x 0)).toReal = 0 :=
-        generalized_conditional_gradient_gap_eq_zero_of_nonpos_diameter_bound
-          (f := f) (g := g) (Lf := Lf) (x := x) (p := p) (t := t) htraj hΩnonpos hΩ 0
+        @generalized_conditional_gradient_gap_eq_zero_of_nonpos_diameter_bound
+          E _ _ _ f g Lf hproblem x p t hproblem htraj Ω hΩnonpos hΩ 0
       have hbest_le_zero :
           best_achieved_function_value (fun y ↦ (S[f, g](y)).toReal) x k ≤ 0 := by
         calc
@@ -777,41 +758,35 @@ theorem generalized_conditional_gradient_best_gap_up_to_le_complexity_bound
         have hxn :
             x n ∈ effective_domain g :=
           generalized_conditional_gradient_trajectory_mem_effective_domain
-            (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj n
+            hproblem.ne_bot hproblem.g_convex htraj n
         have hnonneg_n :
             0 ≤ (S[f, g](x n)).toReal :=
           generalized_conditional_gradient_norm_toReal_nonneg_of_mem_argmin
-            (f := f) (g := g) hproblem.ne_bot hxn (htraj.argmin_mem n)
+            hproblem.ne_bot hxn (htraj.argmin_mem n)
         simpa [← hbest_eq] using hnonneg_n
       exact le_antisymm hbest_le_zero hbest_nonneg
     obtain ⟨xStar, hxStar⟩ := generalized_conditional_gradient_optimal_set_nonempty hproblem
     have hxStar_g :
         xStar ∈ effective_domain g :=
-      generalized_conditional_gradient_optimal_point_mem_effective_domain
-        (f := f) (g := g) (Lf := Lf) hproblem hxStar
+      generalized_conditional_gradient_optimal_point_mem_effective_domain hproblem hxStar
     have hx0 :
         x 0 ∈ effective_domain g :=
       generalized_conditional_gradient_trajectory_mem_effective_domain
-        (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj 0
+        hproblem.ne_bot hproblem.g_convex htraj 0
     have hopt_eq :
         F_opt = F xStar :=
-      generalized_conditional_gradient_optimal_value_eq_of_mem_optimal_set
-        (f := f) (g := g) hxStar
+      generalized_conditional_gradient_optimal_value_eq_of_mem_optimal_set hxStar
     have hFx0_ne_top : F (x 0) ≠ ⊤ := by
-      rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-        (f := f) (g := g) hproblem.ne_bot hx0]
+      rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain hproblem.ne_bot hx0]
       exact EReal.coe_ne_top _
     have hFx0_ne_bot : F (x 0) ≠ ⊥ := by
-      rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-        (f := f) (g := g) hproblem.ne_bot hx0]
+      rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain hproblem.ne_bot hx0]
       exact EReal.coe_ne_bot _
     have hFxStar_ne_top : F xStar ≠ ⊤ := by
-      rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-        (f := f) (g := g) hproblem.ne_bot hxStar_g]
+      rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain hproblem.ne_bot hxStar_g]
       exact EReal.coe_ne_top _
     have hFxStar_ne_bot : F xStar ≠ ⊥ := by
-      rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-        (f := f) (g := g) hproblem.ne_bot hxStar_g]
+      rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain hproblem.ne_bot hxStar_g]
       exact EReal.coe_ne_bot _
     have hopt_le_0 :
         F xStar ≤ F (x 0) := by
@@ -839,16 +814,17 @@ section
 
 variable [FiniteDimensional ℝ E]
 variable {f : E → ℝ} {g : E → EReal} {Lf : NNReal}
-variable [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
+variable [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
 variable {x p : ℕ → E} {t : ℕ → Set.Icc (0 : ℝ) 1}
 variable (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
 variable
   (hrule : uses_generalized_conditional_gradient_adaptive_or_exact_stepsize_rule
     f g Lf x p t)
 
-local instance : CompleteSpace E := FiniteDimensional.complete ℝ E
+local instance theorem13_9_completeSpace : CompleteSpace E :=
+  FiniteDimensional.complete ℝ E
 
-local notation "F" => composite_model_objective f.toExtendedReal g
+local notation "F" => composite_model_objective f.toEReal g
 
 -- Proof sketch: combine the sufficient-decrease inequality from Lemma 13.8 with the
 -- characterization from Chapter 3 that nonstationarity forces the generalized
@@ -858,40 +834,40 @@ local notation "F" => composite_model_objective f.toExtendedReal g
 composite problem `min_x {f(x) + g(x)}`, then the adaptive/exact generalized conditional-gradient
 step decreases the objective strictly: `F(x^(k+1)) < F(x^k)`. -/
 theorem generalized_conditional_gradient_objective_step_strict_decrease_of_not_stationary
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (hrule : uses_generalized_conditional_gradient_adaptive_or_exact_stepsize_rule
       f g Lf x p t)
     (k : ℕ)
-    (hk : ¬ is_stationary_point f.toExtendedReal g (x k)) :
+    (hk : ¬ is_stationary_point f.toEReal g (x k)) :
     F (x (k + 1)) < F (x k) := by
   -- Use the positive compactness-derived diameter bound so that the sufficient-decrease lower
   -- bound is strictly positive whenever the gap is nonzero.
   -- Route correction: once `x k` is recognized as a feasible point of `f`, Theorem 13.6 turns
   -- nonstationarity into strict positivity of the Chapter 13 gap.
   have hdiam :=
-    effective_domain_pairwise_dist_le_of_compact (f := f) (g := g) (Lf := Lf)
+    @effective_domain_pairwise_dist_le_of_compact E _ _ _ f g Lf
   obtain ⟨Ω, hΩpos, hΩ⟩ := hdiam hproblem
   have hxk :
       x k ∈ effective_domain g :=
     generalized_conditional_gradient_trajectory_mem_effective_domain
-      (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj k
+      hproblem.ne_bot hproblem.g_convex htraj k
   have hxk1 :
       x (k + 1) ∈ effective_domain g :=
     generalized_conditional_gradient_trajectory_mem_effective_domain
-      (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj (k + 1)
+      hproblem.ne_bot hproblem.g_convex htraj (k + 1)
   have hxk_f :
-      x k ∈ effective_domain f.toExtendedReal :=
+      x k ∈ effective_domain f.toEReal :=
     hproblem.g_effective_domain_subset_f_effective_domain hxk
   have hS_nonneg :
       0 ≤ (S[f, g](x k)).toReal :=
     generalized_conditional_gradient_norm_toReal_nonneg_of_mem_argmin
-      (f := f) (g := g) hproblem.ne_bot hxk (htraj.argmin_mem k)
+      hproblem.ne_bot hxk (htraj.argmin_mem k)
   have hS_eq_zero_iff :
-      S[f, g](x k) = 0 ↔ is_stationary_point f.toExtendedReal g (x k) := by
+      S[f, g](x k) = 0 ↔ is_stationary_point f.toEReal g (x k) := by
     simpa using
       (generalized_conditional_gradient_norm_eq_zero_iff_is_stationary_point
-        (f := f.toExtendedReal) (g := g) (Lf := Lf) hproblem ⟨x k, hxk_f⟩)
+        hproblem ⟨x k, hxk_f⟩)
   have hS_ne_zero : S[f, g](x k) ≠ 0 := by
     intro hS_zero
     exact hk (hS_eq_zero_iff.mp hS_zero)
@@ -900,9 +876,9 @@ theorem generalized_conditional_gradient_objective_step_strict_decrease_of_not_s
     have hS_coe :
         S[f, g](x k) = (((S[f, g](x k)).toReal : ℝ) : EReal) :=
       generalized_conditional_gradient_norm_eq_coe_toReal_of_mem_argmin
-        (f := f) (g := g) hproblem.ne_bot hxk
+        hproblem.ne_bot hxk
         (generalized_conditional_gradient_argmin_mem_effective_domain
-          (f := f) (g := g) hxk (htraj.argmin_mem k))
+          hxk (htraj.argmin_mem k))
         (htraj.argmin_mem k)
     have hS_zero : S[f, g](x k) = 0 := by
       simpa [hS_toReal_zero] using hS_coe
@@ -934,14 +910,12 @@ theorem generalized_conditional_gradient_objective_step_strict_decrease_of_not_s
             ((S[f, g](x k)).toReal ^ (2 : ℕ) / ((Lf : ℝ) * Ω ^ (2 : ℕ))) ≤
         (F (x k)).toReal - (F (x (k + 1))).toReal := by
     exact generalized_conditional_gradient_one_step_decrease_toReal
-      (f := f) (g := g) (Lf := Lf) htraj hrule hΩ k
+      htraj hrule hΩ k
   have hreal :
       (F (x (k + 1))).toReal < (F (x k)).toReal := by
     linarith
-  rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-    (f := f) (g := g) hproblem.ne_bot hxk1,
-    composite_model_objective_eq_coe_toReal_of_mem_effective_domain
-      (f := f) (g := g) hproblem.ne_bot hxk]
+  rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain hproblem.ne_bot hxk1,
+    composite_model_objective_eq_coe_toReal_of_mem_effective_domain hproblem.ne_bot hxk]
   exact_mod_cast hreal
 
 /-- Helper for Theorem 13.9: lower semicontinuity bounds the value at the limit point by the
@@ -966,8 +940,7 @@ lemma ereal_continuousAt_add_real (c : ℝ) (a : EReal) :
   let cE : EReal := ((c : ℝ) : EReal)
   have hadd :
       ContinuousAt (fun p : EReal × EReal ↦ p.1 + p.2) (a, cE) :=
-    EReal.continuousAt_add (p := (a, cE))
-      (.inr (EReal.coe_ne_bot _)) (.inr (EReal.coe_ne_top _))
+    EReal.continuousAt_add (.inr (EReal.coe_ne_bot _)) (.inr (EReal.coe_ne_top _))
   simpa [cE] using hadd.comp₂ continuousAt_id continuousAt_const
 
 /-- Helper for Theorem 13.9: adding a fixed finite real constant commutes with `Filter.liminf`
@@ -999,11 +972,12 @@ lemma ereal_liminf_add_coe_real (u : ℕ → EReal) (c : ℝ) :
                 Filter.liminf (fun _ : ℕ ↦ negcE) Filter.atTop := by
                   rw [hc_neg]
         _ ≤ Filter.liminf (fun n ↦ (u n + cE) + negcE) Filter.atTop := by
-              simpa using
-                (EReal.le_liminf_add
-                  (u := fun n ↦ u n + cE)
-                  (v := fun _ : ℕ ↦ negcE)
-                  (f := Filter.atTop))
+              have hle :
+                  Filter.liminf (fun n ↦ u n + cE) Filter.atTop +
+                      Filter.liminf (fun _ : ℕ ↦ negcE) Filter.atTop ≤
+                    Filter.liminf (fun n ↦ (u n + cE) + negcE) Filter.atTop :=
+                EReal.le_liminf_add
+              simpa using hle
         _ = Filter.liminf u Filter.atTop := by
               refine Filter.liminf_congr (Filter.Eventually.of_forall ?_)
               intro n
@@ -1024,15 +998,16 @@ lemma ereal_liminf_add_coe_real (u : ℕ → EReal) (c : ℝ) :
           = Filter.liminf u Filter.atTop + Filter.liminf (fun _ : ℕ ↦ cE) Filter.atTop := by
               rw [hc_pos]
       _ ≤ Filter.liminf (fun n ↦ u n + cE) Filter.atTop := by
-            simpa using
-              (EReal.le_liminf_add
-                (u := u) (v := fun _ : ℕ ↦ cE)
-                (f := Filter.atTop))
+            have hle :
+                Filter.liminf u Filter.atTop + Filter.liminf (fun _ : ℕ ↦ cE) Filter.atTop ≤
+                  Filter.liminf (fun n ↦ u n + cE) Filter.atTop :=
+              EReal.le_liminf_add
+            simpa using hle
 
 /-- Helper for Theorem 13.9: the smooth term `y ↦ ⟪∇ f(y), y - v⟫` converges along every
 cluster-point subsequence staying in `effective_domain g`. -/
 lemma generalized_conditional_gradient_gap_inner_tendsto_of_cluster_subseq
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
     {xBar v : E} {ψ : ℕ → ℕ}
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (hxBarg : xBar ∈ effective_domain g)
@@ -1045,9 +1020,8 @@ lemma generalized_conditional_gradient_gap_inner_tendsto_of_cluster_subseq
   -- Use the source route: continuity of the gradient on `effective_domain g`, continuity of
   -- subtraction by the fixed feasible point `v`, and then continuity of the inner product.
   let D : Set E := effective_domain g
-  have hsmooth :=
+  have hsmooth : is_l_smooth_on f (effective_domain g) Lf :=
     generalized_conditional_gradient_smooth_on_g_effective_domain_of_problem
-      (f := f) (g := g) (Lf := Lf)
   have hgradLip := (is_l_smooth_on_iff_lipschitzOnWith_gradient.mp hsmooth).2
   have hgradCont : ContinuousOn (∇ f) D := hgradLip.continuousOn
   have hsubCont : ContinuousOn (fun y : E ↦ y - v) D :=
@@ -1060,7 +1034,7 @@ lemma generalized_conditional_gradient_gap_inner_tendsto_of_cluster_subseq
     -- Every point on the generalized conditional-gradient trajectory is feasible.
     exact Filter.Eventually.of_forall fun n ↦
       generalized_conditional_gradient_trajectory_mem_effective_domain
-        (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj (ψ n)
+        hproblem.ne_bot hproblem.g_convex htraj (ψ n)
   have hwithin :
       Filter.Tendsto (fun n ↦ x (ψ n)) Filter.atTop (nhdsWithin xBar D) :=
     tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ hψtendsto hmem
@@ -1076,7 +1050,7 @@ lemma generalized_conditional_gradient_gap_inner_tendsto_of_cluster_subseq
 /-- Helper for Theorem 13.9: the gap objective at a feasible cluster point is bounded by the
 `liminf` of the same fixed-feasible-`v` gap objective along the convergent subsequence. -/
 lemma generalized_conditional_gradient_gap_objective_liminf_lower_bound_of_cluster_subseq
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
     {xBar v : E} {ψ : ℕ → ℕ}
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (hxBarg : xBar ∈ effective_domain g)
@@ -1098,10 +1072,14 @@ lemma generalized_conditional_gradient_gap_objective_liminf_lower_bound_of_clust
       Filter.Tendsto innerSeq Filter.atTop
         (nhds (((inner ℝ (∇ f xBar) (xBar - v) : ℝ) : EReal))) := by
     -- The smooth inner-product term is continuous along the convergent subsequence.
-    simpa [innerSeq] using
-      generalized_conditional_gradient_gap_inner_tendsto_of_cluster_subseq
-        (f := f) (g := g) (Lf := Lf) (x := x) (p := p) (t := t)
-        (htraj := htraj) (xBar := xBar) (v := v) (ψ := ψ) hxBarg hv hψtendsto
+    have hinner_tendsto' :
+        Filter.Tendsto
+          (fun n ↦ (((inner ℝ (∇ f (x (ψ n))) (x (ψ n) - v) : ℝ) : EReal)))
+          Filter.atTop
+          (nhds (((inner ℝ (∇ f xBar) (xBar - v) : ℝ) : EReal))) :=
+      @generalized_conditional_gradient_gap_inner_tendsto_of_cluster_subseq
+        E _ _ _ f g Lf hproblem x p t hproblem xBar v ψ htraj hxBarg hv hψtendsto
+    simpa [innerSeq] using hinner_tendsto'
   have hg_liminf :
       g xBar ≤ Filter.liminf (fun n ↦ g (x (ψ n))) Filter.atTop :=
     lowerSemicontinuous_value_le_liminf_along_subsequence hproblem.g_closed hψtendsto
@@ -1117,9 +1095,12 @@ lemma generalized_conditional_gradient_gap_objective_liminf_lower_bound_of_clust
             Filter.liminf innerSeq Filter.atTop := by
               exact add_le_add hg_liminf le_rfl
       _ ≤ Filter.liminf gapCore Filter.atTop := by
-            simpa [gapCore, innerSeq, add_assoc, add_left_comm, add_comm] using
-              (EReal.le_liminf_add
-                (u := fun n ↦ g (x (ψ n))) (v := innerSeq) (f := Filter.atTop))
+            have hle :
+                Filter.liminf (fun n ↦ g (x (ψ n))) Filter.atTop +
+                    Filter.liminf innerSeq Filter.atTop ≤
+                  Filter.liminf gapCore Filter.atTop :=
+              EReal.le_liminf_add
+            simpa [gapCore, innerSeq, add_assoc, add_left_comm, add_comm] using hle
   have hgv_ne_top : g v ≠ ⊤ := (mem_effective_domain.mp hv).ne
   have hgv_ne_bot : g v ≠ ⊥ := hproblem.ne_bot v
   have hneg_gv :
@@ -1152,7 +1133,7 @@ lemma generalized_conditional_gradient_gap_objective_liminf_lower_bound_of_clust
 /-- Helper for Theorem 13.9: if the trajectory gaps converge to `0`, then every fixed-feasible
 test point has subsequence gap-objective `liminf` at most `0`. -/
 lemma generalized_conditional_gradient_gap_objective_liminf_nonpos_of_gap_tendsto_zero
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
     {v : E} {ψ : ℕ → ℕ}
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (hgap_tendsto :
@@ -1170,11 +1151,11 @@ lemma generalized_conditional_gradient_gap_objective_liminf_nonpos_of_gap_tendst
     have hxψn :
         x (ψ n) ∈ effective_domain g :=
       generalized_conditional_gradient_trajectory_mem_effective_domain
-        (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj (ψ n)
+        hproblem.ne_bot hproblem.g_convex htraj (ψ n)
     have hpψn :
         p (ψ n) ∈ effective_domain g :=
       generalized_conditional_gradient_argmin_mem_effective_domain
-        (f := f) (g := g) hxψn (htraj.argmin_mem (ψ n))
+        hxψn (htraj.argmin_mem (ψ n))
     calc
       gapSeq n ≤ S[f, g](x (ψ n)) := by
         rw [generalized_conditional_gradient_norm_eq_sSup_gap_objective]
@@ -1182,7 +1163,7 @@ lemma generalized_conditional_gradient_gap_objective_liminf_nonpos_of_gap_tendst
       _ = normSeq n := by
         dsimp [normSeq]
         exact generalized_conditional_gradient_norm_eq_coe_toReal_of_mem_argmin
-          (f := f) (g := g) hproblem.ne_bot hxψn hpψn (htraj.argmin_mem (ψ n))
+          hproblem.ne_bot hxψn hpψn (htraj.argmin_mem (ψ n))
   have hnorm_tendsto :
       Filter.Tendsto normSeq Filter.atTop (nhds (0 : EReal)) := by
     simpa [normSeq] using (EReal.tendsto_coe.2 hgap_tendsto)
@@ -1198,7 +1179,7 @@ lemma generalized_conditional_gradient_gap_objective_liminf_nonpos_of_gap_tendst
 conditional-gradient gaps tend to `0`, every fixed feasible test point yields a nonpositive limit
 gap objective at the cluster point. -/
 lemma generalized_conditional_gradient_gap_objective_nonpos_of_cluster_subseq_of_mem_effective_domain
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
     {xBar v : E} {ψ : ℕ → ℕ}
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (hxBarg : xBar ∈ effective_domain g)
@@ -1214,16 +1195,14 @@ lemma generalized_conditional_gradient_gap_objective_nonpos_of_cluster_subseq_of
         Filter.liminf
           (fun n ↦ generalized_conditional_gradient_gap_objective f g (x (ψ n)) v)
           Filter.atTop :=
-    generalized_conditional_gradient_gap_objective_liminf_lower_bound_of_cluster_subseq
-      (f := f) (g := g) (Lf := Lf) (x := x) (p := p) (t := t)
-      htraj hxBarg hv hψtendsto
+    @generalized_conditional_gradient_gap_objective_liminf_lower_bound_of_cluster_subseq
+      E _ _ _ f g Lf hproblem x p t hproblem xBar v ψ htraj hxBarg hv hψtendsto
   have hupper :
       Filter.liminf
         (fun n ↦ generalized_conditional_gradient_gap_objective f g (x (ψ n)) v)
         Filter.atTop ≤ 0 :=
-    generalized_conditional_gradient_gap_objective_liminf_nonpos_of_gap_tendsto_zero
-      (f := f) (g := g) (Lf := Lf) (x := x) (p := p) (t := t)
-      (v := v) (ψ := ψ) htraj hgap_tendsto
+    @generalized_conditional_gradient_gap_objective_liminf_nonpos_of_gap_tendsto_zero
+      E _ _ _ f g Lf hproblem x p t hproblem v ψ htraj hgap_tendsto
   exact le_trans hlower hupper
 
 -- Proof sketch: let `xBar` be a sequential cluster point and extract a subsequence
@@ -1236,12 +1215,12 @@ lemma generalized_conditional_gradient_gap_objective_nonpos_of_cluster_subseq_of
 conditional-gradient trajectory generated with adaptive stepsize or exact line search is a
 stationary point of the composite problem `min_x {f(x) + g(x)}`. -/
 theorem generalized_conditional_gradient_cluster_point_is_stationary
-    [hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf]
+    [hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf]
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (hrule : uses_generalized_conditional_gradient_adaptive_or_exact_stepsize_rule
       f g Lf x p t)
     {xBar : E} (hxBar : MapClusterPt xBar Filter.atTop x) :
-    is_stationary_point f.toExtendedReal g xBar := by
+    is_stationary_point f.toEReal g xBar := by
   -- Route correction: isolate the source proof's only remaining hard step as the fixed-`v`
   -- cluster-limit helper, and use it to turn the supremal gap at `xBar` into `0`.
   obtain ⟨ψ, hψmono, hψtendsto⟩ := MapClusterPt.tendsto_subseq hxBar
@@ -1249,21 +1228,22 @@ theorem generalized_conditional_gradient_cluster_point_is_stationary
       Filter.Tendsto (fun n ↦ (S[f, g](x (ψ n))).toReal) Filter.atTop (nhds 0) := by
     exact
       (generalized_conditional_gradient_gap_tendsto_zero
-        (f := f) (g := g) (Lf := Lf) htraj hrule).comp hψmono.tendsto_atTop
+        htraj hrule).comp hψmono.tendsto_atTop
   have hxBarg :
       xBar ∈ effective_domain g := by
-    refine hproblem.g_effective_domain_compact.isClosed.mem_of_mapClusterPt hxBar ?_
+    have hclosed := hproblem.g_effective_domain_compact.isClosed
+    refine hclosed.mem_of_mapClusterPt hxBar ?_
     exact Filter.Eventually.of_forall fun k ↦
       generalized_conditional_gradient_trajectory_mem_effective_domain
-        (f := f) (g := g) hproblem.ne_bot hproblem.g_convex htraj k
+        hproblem.ne_bot hproblem.g_convex htraj k
   have hS_nonpos : S[f, g](xBar) ≤ 0 := by
     rw [generalized_conditional_gradient_norm_eq_sSup_gap_objective]
     refine sSup_le ?_
     rintro z ⟨v, rfl⟩
     by_cases hv : v ∈ effective_domain g
-    · exact generalized_conditional_gradient_gap_objective_nonpos_of_cluster_subseq_of_mem_effective_domain
-        (f := f) (g := g) (Lf := Lf) (x := x) (p := p) (t := t)
-        htraj hxBarg hv hψtendsto hgap_tendsto
+    · exact
+        @generalized_conditional_gradient_gap_objective_nonpos_of_cluster_subseq_of_mem_effective_domain
+          E _ _ _ f g Lf hproblem x p t hproblem xBar v ψ htraj hxBarg hv hψtendsto hgap_tendsto
     · have hgv_top : g v = ⊤ := by
         by_contra hgv_ne_top
         exact hv (mem_effective_domain.mpr (lt_top_iff_ne_top.mpr hgv_ne_top))
@@ -1276,7 +1256,7 @@ theorem generalized_conditional_gradient_cluster_point_is_stationary
     have hgxBar_ne_bot : g xBar ≠ ⊥ := hproblem.ne_bot xBar
     have hsub_self :
         g xBar - g xBar = 0 := by
-      simpa using EReal.sub_self (x := g xBar) (h_top := hgxBar_ne_top) (h_bot := hgxBar_ne_bot)
+      simpa using EReal.sub_self hgxBar_ne_top hgxBar_ne_bot
     simp [hsub_self]
   have hS_nonneg : 0 ≤ S[f, g](xBar) := by
     rw [generalized_conditional_gradient_norm_eq_sSup_gap_objective]
@@ -1287,11 +1267,11 @@ theorem generalized_conditional_gradient_cluster_point_is_stationary
   have hS_zero : S[f, g](xBar) = 0 :=
     le_antisymm hS_nonpos hS_nonneg
   have hxBar_f :
-      xBar ∈ effective_domain f.toExtendedReal :=
+      xBar ∈ effective_domain f.toEReal :=
     hproblem.g_effective_domain_subset_f_effective_domain hxBarg
   exact
     (generalized_conditional_gradient_norm_eq_zero_iff_is_stationary_point
-      (f := f.toExtendedReal) (g := g) (Lf := Lf) hproblem ⟨xBar, hxBar_f⟩).1 hS_zero
+      hproblem ⟨xBar, hxBar_f⟩).1 hS_zero
 
 end
 

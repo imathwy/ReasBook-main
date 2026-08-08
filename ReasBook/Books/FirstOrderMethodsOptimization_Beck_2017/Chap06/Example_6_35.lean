@@ -18,14 +18,55 @@ section
 variable {ι : Type*} [Fintype ι]
 
 local notation "E" => EuclideanSpace ℝ ι
-local notation "F" => PiLp.separableSum (fun _ : ι ↦ negative_log_barrier)
+local notation "F" =>
+  (PiLp.separableSum (fun _ : ι ↦ negative_log_barrier) : E → EReal)
+
+/-- The finite-product negative-log barrier evaluated on the `PiLp` model of Euclidean space. -/
+private theorem piLp_sum_negative_log_barrier_apply (x : E) :
+    F x =
+      if ∀ i, 0 < x i then ((-∑ i, Real.log (x i) : ℝ) : EReal) else ⊤ := by
+  classical
+  by_cases hx : ∀ i, 0 < x i
+  · rw [if_pos hx, PiLp.separableSum_apply]
+    calc
+      (∑ i, negative_log_barrier (x i)) =
+          ∑ i, ((-Real.log (x i) : ℝ) : EReal) := by
+            apply Finset.sum_congr rfl
+            intro i hi
+            exact negative_log_barrier_of_pos (hx i)
+      _ = (((∑ i, -Real.log (x i) : ℝ)) : EReal) := by
+            symm
+            simpa using
+              (ereal_coe_finset_sum Finset.univ (fun i : ι ↦ -Real.log (x i)))
+      _ = ((-∑ i, Real.log (x i) : ℝ) : EReal) := by
+            congr 1
+            simp [Finset.sum_neg_distrib]
+  · rw [if_neg hx, PiLp.separableSum_apply]
+    obtain ⟨i, hi⟩ := not_forall.mp hx
+    have hrest_ne_bot :
+        Finset.sum (Finset.univ.erase i) (fun j ↦ negative_log_barrier (x j)) ≠ ⊥ := by
+      exact finset_ereal_sum_ne_bot (Finset.univ.erase i)
+        (fun j ↦ negative_log_barrier (x j)) (fun j hj ↦ by
+          by_cases hj' : 0 < x j
+          · simp [negative_log_barrier, hj']
+          · simp [negative_log_barrier, hj'])
+    calc
+      (∑ j, negative_log_barrier (x j)) =
+          negative_log_barrier (x i) +
+            Finset.sum (Finset.univ.erase i) (fun j ↦ negative_log_barrier (x j)) := by
+              symm
+              exact Finset.add_sum_erase (s := Finset.univ) (a := i)
+                (fun j ↦ negative_log_barrier (x j)) (Finset.mem_univ i)
+      _ = ⊤ := by
+            rw [negative_log_barrier_of_nonpos (le_of_not_gt hi)]
+            exact EReal.top_add_of_ne_bot hrest_ne_bot
 
 /- Example 6.35 is `source-facing`: its public object is the positive-product feasible set
 `{x ∈ (ℝ_{++})^ι | α ≤ ∏ i, x i}`, specializing to the textbook `ℝ_{++}^n` when `ι = Fin n`.
 Domain sampling against Proposition 4.8, Example 6.9, and Theorem 6.30 shows that the
 `core/canonical` owners already upstream are the scalar `negative_log_barrier`, its finite-product
 owner `F`, the Chapter 4 finite-sum theorem `sum_negative_log_barrier_apply`, the projection owner
-`Proj[...]`, and the level-set residual owner `level_set_projection_residual` from Theorem 6.30.
+`P[...]`, and the level-set residual owner `level_set_projection_residual` from Theorem 6.30.
 Primitive data: the source-facing set. Derived API: the textbook `-∑ log` barrier formula and the
 explicit active-branch scalar equation, expressed as a theorem evaluating the canonical residual
 rather than as a second local root-function owner. -/
@@ -53,7 +94,7 @@ theorem mem_effective_domain_separableSum_negative_log_barrier_iff (x : E) :
   have hsum :
       F x =
         if ∀ i, 0 < x i then ((-∑ i, Real.log (x i) : ℝ) : EReal) else ⊤ := by
-    simpa using (sum_negative_log_barrier_apply (x := x))
+    exact piLp_sum_negative_log_barrier_apply x
   rw [mem_effective_domain, hsum]
   by_cases hx : ∀ i, 0 < x i
   · simpa [hx] using (EReal.coe_lt_top (-∑ i, Real.log (x i)))
@@ -86,7 +127,7 @@ lemma separableSum_negative_log_barrier_proper_closed_convex :
     have hsum :
         F x =
           if ∀ i, 0 < x i then ((-∑ i, Real.log (x i) : ℝ) : EReal) else ⊤ := by
-      simpa using (sum_negative_log_barrier_apply (x := x))
+      exact piLp_sum_negative_log_barrier_apply x
     rw [hsum]
     split_ifs <;> simp
   refine ⟨?_, ?_, ?_⟩
@@ -131,7 +172,7 @@ lemma separableSum_negative_log_barrier_proper_closed_convex :
               have hreal : y.toReal < -∑ i, Real.log (x i) := by
                 have hsum :
                     F x = (((-∑ i, Real.log (x i) : ℝ)) : EReal) := by
-                  simpa [hxpos] using (sum_negative_log_barrier_apply (x := x))
+                  simpa [hxpos] using piLp_sum_negative_log_barrier_apply x
                 rw [Set.mem_preimage, hsum] at hx
                 have hx' :
                     (((y.toReal : ℝ)) : EReal) <
@@ -182,13 +223,13 @@ lemma separableSum_negative_log_barrier_proper_closed_convex :
                 exact_mod_cast hreal
               have hsum :
                   F x = (((-∑ i, Real.log (x i) : ℝ)) : EReal) := by
-                simpa [hxpos] using (sum_negative_log_barrier_apply (x := x))
+                  simpa [hxpos] using piLp_sum_negative_log_barrier_apply x
               rw [Set.mem_preimage, hsum]
               exact hx'
             · have hx' : (((y.toReal : ℝ)) : EReal) < (⊤ : EReal) := by
                 simp
               have hsum : F x = (⊤ : EReal) := by
-                simpa [hxpos] using (sum_negative_log_barrier_apply (x := x))
+                simpa [hxpos] using piLp_sum_negative_log_barrier_apply x
               rw [Set.mem_preimage, hsum]
               exact hx'
         simpa [hpreimage] using isOpen_lt hg continuous_const
@@ -248,12 +289,12 @@ lemma separableSum_negative_log_barrier_proper_closed_convex :
         exact Finset.sum_le_sum fun i hi ↦ hcoord i
       have hx_toReal : (F x).toReal = ∑ i, -Real.log (x i) := by
         have hsum : F x = (((-∑ i, Real.log (x i) : ℝ)) : EReal) := by
-          simpa [hxpos] using (sum_negative_log_barrier_apply (x := x))
+          simpa [hxpos] using piLp_sum_negative_log_barrier_apply x
         rw [hsum]
         simp [Finset.sum_neg_distrib]
       have hy_toReal : (F y).toReal = ∑ i, -Real.log (y i) := by
         have hsum : F y = (((-∑ i, Real.log (y i) : ℝ)) : EReal) := by
-          simpa [hypos] using (sum_negative_log_barrier_apply (x := y))
+          simpa [hypos] using piLp_sum_negative_log_barrier_apply y
         rw [hsum]
         simp [Finset.sum_neg_distrib]
       have hcomb_toReal : (F (a • x + b • y)).toReal = ∑ i, -Real.log ((a • x + b • y) i) := by
@@ -262,7 +303,7 @@ lemma separableSum_negative_log_barrier_proper_closed_convex :
               if ∀ i, 0 < (a • x + b • y) i then
                 (((-∑ i, Real.log ((a • x + b • y) i) : ℝ)) : EReal)
               else ⊤ := by
-          simpa using (sum_negative_log_barrier_apply (x := a • x + b • y))
+          exact piLp_sum_negative_log_barrier_apply (a • x + b • y)
         rw [hsum]
         rw [if_pos hcomb_pos]
         simp [Finset.sum_neg_distrib]
@@ -278,17 +319,6 @@ lemma separableSum_negative_log_barrier_proper_closed_convex :
                   simp_rw [Finset.mul_sum]
         _ = a * (F x).toReal + b * (F y).toReal := by
           rw [hx_toReal, hy_toReal]
-
-/-- Helper for Example 6.35: coercing a finite real sum into `EReal` is the same as summing the
-coerced terms. -/
-lemma ereal_coe_finset_sum (s : Finset ι) (g : ι → ℝ) :
-    ((s.sum g : ℝ) : EReal) = s.sum fun i ↦ ((g i : ℝ) : EReal) := by
-  classical
-  -- Induct on the finite set so each step is reduced to the binary coercion lemma `EReal.coe_add`.
-  refine Finset.induction_on s ?_ ?_
-  · simp
-  · intro a s ha hs
-    simp [ha, hs, EReal.coe_add]
 
 /-- Helper for Example 6.35: scaling the finite negative-log sum by a positive scalar is the same
 as scaling each summand separately. -/
@@ -306,8 +336,10 @@ lemma scaled_separableSum_negative_log_barrier_apply_of_pos
       PiLp.separableSum (fun _ : ι ↦ ((lam : EReal) • negative_log_barrier)) z := by
   -- Both sides are finite on the positive orthant, so we rewrite them to the same coerced real
   -- sum and finish with finite-dimensional algebra.
-  rw [Pi.smul_apply, PiLp.separableSum_apply, sum_negative_log_barrier_apply, if_pos hz,
-    smul_eq_mul]
+  rw [Pi.smul_apply, PiLp.separableSum_apply, smul_eq_mul]
+  rw [show (∑ i, negative_log_barrier (z i)) =
+      (((-(∑ i, Real.log (z i)) : ℝ)) : EReal) by
+        simpa [PiLp.separableSum_apply, hz] using piLp_sum_negative_log_barrier_apply z]
   rw [show (((lam : EReal) * (((-(∑ i, Real.log (z i)) : ℝ)) : EReal)) : EReal) =
       (((lam : ℝ) * (-(∑ i, Real.log (z i))) : ℝ) : EReal) by
       rw [← EReal.coe_mul]]
@@ -328,7 +360,7 @@ lemma scaled_separableSum_negative_log_barrier_apply_of_not_pos
   obtain ⟨i, hi⟩ := not_forall.mp hz
   have hF_top : F z = ⊤ := by
     -- The original separable barrier is already infinite once one coordinate is nonpositive.
-    simpa [PiLp.separableSum_apply, hz] using (sum_negative_log_barrier_apply (x := z))
+    simpa [hz] using piLp_sum_negative_log_barrier_apply z
   have hleft : (((lam : EReal) • F) z) = ⊤ := by
     -- Positive scaling preserves the `⊤` value on the inactive branch.
     rw [Pi.smul_apply, smul_eq_mul, hF_top]
@@ -352,8 +384,7 @@ lemma scaled_separableSum_negative_log_barrier_apply_of_not_pos
     · rw [Pi.smul_apply, negative_log_barrier, if_neg hzj, smul_eq_mul] at hjbot
       rw [EReal.mul_top_of_pos (show 0 < (lam : EReal) by exact_mod_cast lam.2)] at hjbot
       simp at hjbot
-  have hright : PiLp.separableSum
-      (fun _ : ι ↦ ((lam : EReal) • negative_log_barrier)) z = ⊤ := by
+  have hright : PiLp.separableSum (fun _ : ι ↦ ((lam : EReal) • negative_log_barrier)) z = ⊤ := by
     -- Isolate the bad coordinate and collapse the remaining sum with `top_add_of_ne_bot`.
     rw [PiLp.separableSum_apply]
     rw [show (∑ j, ((lam : EReal) • negative_log_barrier) (z j)) =
@@ -376,6 +407,33 @@ theorem smul_separableSum_negative_log_barrier_eq (lam : PosReal) :
   · exact scaled_separableSum_negative_log_barrier_apply_of_pos z lam hz
   · exact scaled_separableSum_negative_log_barrier_apply_of_not_pos z lam hz
 
+/-- Positive scaling preserves properness of the scalar negative-log barrier. -/
+private lemma scaled_negative_log_barrier_proper (lam : PosReal) :
+    IsProperExtendedRealFunction ((lam : EReal) • negative_log_barrier) := by
+  refine ⟨?_, ?_⟩
+  · intro t
+    by_cases ht : 0 < t
+    · simp [negative_log_barrier, ht, Pi.smul_apply, smul_eq_mul, ← EReal.coe_mul]
+    · rw [Pi.smul_apply, negative_log_barrier, if_neg ht, smul_eq_mul]
+      rw [EReal.mul_top_of_pos (show 0 < (lam : EReal) by exact_mod_cast lam.2)]
+      simp
+  · refine ⟨1, ?_⟩
+    rw [mem_effective_domain]
+    simp [negative_log_barrier, Pi.smul_apply, smul_eq_mul, ← EReal.coe_mul]
+
+/-- The `PiLp` specialization of the coordinatewise logarithmic-barrier proximal formula. -/
+private theorem prox_piLp_log_barrier_penalty_eq_singleton
+    (lam : PosReal) (x : E) :
+    prox[PiLp.separableSum (fun _ : ι ↦ (lam : EReal) • negative_log_barrier)] x =
+      {toLp 2 fun j ↦ (x j + Real.sqrt (x j ^ 2 + 4 * (lam : ℝ))) / 2} := by
+  apply
+    (prox_separableSum_eq_singleton_iff_coordinatewise
+      (fun _ : ι ↦ (lam : EReal) • negative_log_barrier)
+      (fun _ ↦ scaled_negative_log_barrier_proper lam) x
+      (toLp 2 fun j ↦ (x j + Real.sqrt (x j ^ 2 + 4 * (lam : ℝ))) / 2)).2
+  intro i
+  simpa using prox_scalar_log_barrier_penalty_eq_singleton (lam : ℝ) lam.2 (x i)
+
 -- Proof sketch: unfold `positiveProductSuperlevelSet` and
 -- `sum_negative_log_barrier_apply`. On the positive orthant, the inequality
 -- `-∑ j log (x j) ≤ -log α` is equivalent to `α ≤ ∏ j, x j` by logarithm identities, while
@@ -392,7 +450,7 @@ theorem positiveProductSuperlevelSet_eq_sublevel_separableSum_negative_log_barri
     rcases hx with ⟨hxpos, hαx⟩
     -- On the positive orthant, the barrier inequality is equivalent to the product constraint.
     have hsum : F x = (((-∑ i, Real.log (x i) : ℝ)) : EReal) := by
-      simpa [hxpos] using (sum_negative_log_barrier_apply (x := x))
+      simpa [hxpos] using piLp_sum_negative_log_barrier_apply x
     have hlog_le : Real.log (α : ℝ) ≤ ∑ i, Real.log (x i) := by
       have hxprod_pos : 0 < ∏ i, x i := by
         exact Finset.prod_pos fun i hi ↦ hxpos i
@@ -408,7 +466,7 @@ theorem positiveProductSuperlevelSet_eq_sublevel_separableSum_negative_log_barri
     · -- Once the barrier value is finite, exponentiating the log inequality recovers the product
       -- lower bound.
       have hsum : F x = (((-∑ i, Real.log (x i) : ℝ)) : EReal) := by
-        simpa [hxpos] using (sum_negative_log_barrier_apply (x := x))
+        simpa [hxpos] using piLp_sum_negative_log_barrier_apply x
       have hreal : (-∑ i, Real.log (x i) : ℝ) ≤ -Real.log (α : ℝ) := by
         have hx' : F x ≤ (((-Real.log (α : ℝ) : ℝ)) : EReal) := by
           simpa [Set.mem_preimage, Set.mem_Iic] using hx
@@ -431,7 +489,7 @@ theorem positiveProductSuperlevelSet_eq_sublevel_separableSum_negative_log_barri
     · -- Outside the positive orthant, the separable barrier is `⊤`, so the sublevel condition
       -- cannot hold.
       have hsum : F x = (⊤ : EReal) := by
-        simpa [hxpos] using (sum_negative_log_barrier_apply (x := x))
+        simpa [hxpos] using piLp_sum_negative_log_barrier_apply x
       have hx' : ¬ x ∈ F ⁻¹' Set.Iic (((-Real.log (α : ℝ) : ℝ)) : EReal) := by
         rw [Set.mem_preimage, Set.mem_Iic, hsum]
         simp
@@ -453,7 +511,7 @@ theorem positiveProductProjectionResidual_eq
     simpa [y] using activePoint_coordinate_pos x lam j
   have hprox : prox[((lam : EReal) • F)] x = {y} := by
     rw [smul_separableSum_negative_log_barrier_eq (ι := ι) lam]
-    simpa [y] using prox_log_barrier_penalty_eq_singleton lam.2 x
+    simpa [y] using prox_piLp_log_barrier_penalty_eq_singleton lam x
   -- Singleton collapse turns the generic residual into the textbook scalar equation.
   calc
     level_set_projection_residual F (-Real.log (α : ℝ)) x (lam : ℝ) =
@@ -463,7 +521,7 @@ theorem positiveProductProjectionResidual_eq
               F (-Real.log (α : ℝ)) x (lam : ℝ) y hprox
     _ = (-(∑ j, Real.log (y j)) + Real.log (α : ℝ) : ℝ) := by
       have hFy : F y = (((-∑ j, Real.log (y j) : ℝ)) : EReal) := by
-        simpa [hy_pos] using (sum_negative_log_barrier_apply (x := y))
+        simpa [hy_pos] using piLp_sum_negative_log_barrier_apply y
       have hsub :
           (((( -∑ j, Real.log (y j) : ℝ) - (-Real.log (α : ℝ))) : ℝ) : EReal) =
             (((-(∑ j, Real.log (y j)) + Real.log (α : ℝ) : ℝ)) : EReal) := by
@@ -498,8 +556,8 @@ theorem positiveProductProjectionResidual_antitoneOn_nonneg
 /-- A point already lying in `positiveProductSuperlevelSet α` projects to itself. -/
 theorem projection_mapping_positiveProductSuperlevelSet_eq_singleton_of_mem
     (α : ℝ) (x : E) (hx : x ∈ positiveProductSuperlevelSet α) :
-    Proj[positiveProductSuperlevelSet α] x = {x} := by
-  have hx_proj : x ∈ Proj[positiveProductSuperlevelSet α] x := by
+    P[positiveProductSuperlevelSet α] x = {x} := by
+  have hx_proj : x ∈ P[positiveProductSuperlevelSet α] x := by
     -- Feasibility makes `x` itself a projection point because its distance to itself is zero.
     rw [mem_projection_mapping_iff, isMinOn_iff]
     refine ⟨hx, ?_⟩
@@ -545,7 +603,7 @@ theorem projection_mapping_positiveProductSuperlevelSet_eq_singleton_of_root
     (hroot :
       (α : ℝ) =
         ∏ j, (x j + Real.sqrt (x j ^ (2 : ℕ) + 4 * (lam : ℝ))) / 2) :
-    Proj[positiveProductSuperlevelSet (α : ℝ)] x =
+    P[positiveProductSuperlevelSet (α : ℝ)] x =
       {toLp 2 fun j ↦ (x j + Real.sqrt (x j ^ (2 : ℕ) + 4 * (lam : ℝ))) / 2} := by
   rcases separableSum_negative_log_barrier_proper_closed_convex (ι := ι) with
     ⟨hf_proper, hf_closed, hf_convex⟩
@@ -575,19 +633,19 @@ theorem projection_mapping_positiveProductSuperlevelSet_eq_singleton_of_root
       _ = 0 := by
         exact_mod_cast hreal
   have hsublevel :
-      Proj[F ⁻¹' Set.Iic (((-Real.log (α : ℝ) : ℝ)) : EReal)] x =
+      P[F ⁻¹' Set.Iic (((-Real.log (α : ℝ) : ℝ)) : EReal)] x =
         prox[((lam : EReal) • F)] x :=
     projection_mapping_sublevel_eq_scaled_prox_of_level_set_projection_residual_eq_zero
       F (-Real.log (α : ℝ)) hf_proper hf_closed hf_convex x lam hphi
   -- Theorem 6.30 reduces the active branch to the scaled proximal singleton from Example 6.9.
   calc
-    Proj[positiveProductSuperlevelSet (α : ℝ)] x =
-        Proj[F ⁻¹' Set.Iic (((-Real.log (α : ℝ) : ℝ)) : EReal)] x := by
+    P[positiveProductSuperlevelSet (α : ℝ)] x =
+        P[F ⁻¹' Set.Iic (((-Real.log (α : ℝ) : ℝ)) : EReal)] x := by
           rw [positiveProductSuperlevelSet_eq_sublevel_separableSum_negative_log_barrier α]
     _ = prox[((lam : EReal) • F)] x := hsublevel
     _ = {y} := by
           rw [smul_separableSum_negative_log_barrier_eq (ι := ι) lam]
-          simpa [y] using prox_log_barrier_penalty_eq_singleton lam.2 x
+          simpa [y] using prox_piLp_log_barrier_penalty_eq_singleton lam x
     _ = {toLp 2 fun j ↦ (x j + Real.sqrt (x j ^ (2 : ℕ) + 4 * (lam : ℝ))) / 2} := by
           simp [y]
 

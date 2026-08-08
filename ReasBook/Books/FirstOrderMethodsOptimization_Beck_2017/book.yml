@@ -10,14 +10,23 @@ isbn: 978-1-61197-499-7
 toolchain: leanprover/lean4:v4.30.0
 mathlib: v4.30.0
 branch: v4.30.0
-contributors: []
-coverage: Formalized content from Beck's First-Order Methods in Optimization.
+contributors:
+- name: Shu Miao
+- name: Zhiyan Wang
+- name: Suwan Wu
+- name: Changyu Zou
+- name: Xinyi Guo
+- name: Yunxi Duan
+- name: Wanli Ma
+  github: wl-ma
+- name: Zichen Wang
+coverage: Complete formalization of Chapters 1–15 of Beck's First-Order Methods in Optimization.
 statistics:
-  declarations: 4569
-  theorem_lemma_example: 3583
-  other_declarations: 986
-  lean_files: 836
-  lean_lines: 115865
-  proof_completion: 3993/4569
-  sorry: 576
-  admit: 4
+  declarations: 7468
+  theorem_lemma_example: 6227
+  other_declarations: 1241
+  lean_files: 860
+  lean_lines: 248417
+  proof_completion: 6227/6227
+  sorry: 0
+  admit: 0

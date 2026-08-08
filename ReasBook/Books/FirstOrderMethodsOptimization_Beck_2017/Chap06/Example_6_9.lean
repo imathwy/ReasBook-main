@@ -35,18 +35,19 @@ theorem prox_log_barrier_penalty_eq_singleton {lam : ℝ} (hlam : 0 < lam)
       {toLp 2 (fun j ↦ (x j + Real.sqrt (x j ^ 2 + 4 * lam)) / 2)} := by
   have hlamE : 0 < (lam : EReal) := by
     exact_mod_cast hlam
-  have h_ne_bot : ∀ _ : ι, ∀ t : ℝ, ((lam : EReal) • negative_log_barrier) t ≠ ⊥ := by
-    intro _ t
-    by_cases ht : 0 < t
-    · simpa [negative_log_barrier, ht, Pi.smul_apply, smul_eq_mul] using
-        EReal.coe_ne_bot (lam * (-Real.log t))
-    · simp [negative_log_barrier, ht, Pi.smul_apply, smul_eq_mul, EReal.mul_top_of_pos hlamE]
-  have hproper : ∀ _ : ι, IsProperExtendedRealFunction
-      ((lam : EReal) • negative_log_barrier) := by
-    intro j
-    refine ⟨h_ne_bot j, ?_⟩
-    refine ⟨1, ?_⟩
-    simp [effective_domain, negative_log_barrier, Pi.smul_apply, smul_eq_mul]
+  have hproper :
+      ∀ _ : ι, IsProperExtendedRealFunction ((lam : EReal) • negative_log_barrier) := by
+    intro _
+    refine ⟨?_, ?_⟩
+    · intro t
+      by_cases ht : 0 < t
+      · simpa [negative_log_barrier, ht, Pi.smul_apply, smul_eq_mul] using
+          EReal.coe_ne_bot (lam * (-Real.log t))
+      · simp [negative_log_barrier, ht, Pi.smul_apply, smul_eq_mul,
+          EReal.mul_top_of_pos hlamE]
+    · refine ⟨1, ?_⟩
+      rw [mem_effective_domain]
+      simp [negative_log_barrier, Pi.smul_apply, smul_eq_mul, ← EReal.coe_mul]
   refine
     (prox_separableSum_eq_singleton_iff_coordinatewise
       (fun _ ↦ (lam : EReal) • negative_log_barrier)

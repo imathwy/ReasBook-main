@@ -1,11 +1,9 @@
-import Mathlib
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_2
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_6
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_11
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Assumption_10_31
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Lemma_10_33
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Remark_10_32
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_16
-
--- Declarations for this item will be appended below by the statement pipeline.
 
 noncomputable section
 
@@ -19,187 +17,65 @@ variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [ProperSp
 
 variable {f : E → ℝ} {g : E → EReal} {XStar : Set E} {FOpt : ℝ} {Lf : NNReal}
 variable [hproblem : IsFastProximalGradientProblem f g XStar FOpt Lf]
-variable {x y z : ℕ → E} {t : ℕ → ℝ} {L : ℕ → PosReal} {xStar : E} {α : ℝ}
+variable {x y z : ℕ → E} {L : ℕ → PosReal} {α : ℝ} {xStar : E}
 
-local notation "F" => composite_model_objective f.toExtendedReal g
+/-- Helper for Theorem 10.40: the theorem uses the source residual
+`u_n = t_n z^n - (x* + (t_n - 1) x^n)`. -/
+def mfistaResidualToOptimal
+    (x z : ℕ → E) (xStar : E) (n : ℕ) : E :=
+  fista_momentum_sequence n • z n -
+    (xStar + (fista_momentum_sequence n - 1) • x n)
 
-set_option quotPrecheck false in
-local notation "B2Accepts" =>
-  letI : IsProperExtendedRealFunction g := hproblem.g_proper
-  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
-  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
-  proximal_gradient_backtracking_B2_accepts f.toExtendedReal g
+/-- Helper for Theorem 10.40: the canonical momentum sequence stays above `1`. -/
+lemma mfistaMomentum_one_le
+    (n : ℕ) :
+    (1 : ℝ) ≤ fista_momentum_sequence n := by
+  have hlower :=
+    fista_momentum_sequence_lower_bound
+      (t := fista_momentum_sequence)
+      (h0 := fista_momentum_sequence_zero)
+      (hsucc := fista_momentum_sequence_succ)
+      n
+  have hone_le_half :
+      (1 : ℝ) ≤ ((n : ℝ) + 2) / 2 := by
+    nlinarith [show (0 : ℝ) ≤ n by exact_mod_cast Nat.zero_le n]
+  exact le_trans hone_le_half hlower
 
-set_option quotPrecheck false in
-local notation "UsesB3" =>
-  letI : IsProperExtendedRealFunction g := hproblem.g_proper
-  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
-  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
-  uses_backtracking_procedure_B3_rule f g y L
-
-/-- Helper for Theorem 10.40: the source post-step residual attached to the MFISTA iterate and an
-optimizer `xStar`. -/
-def mfista_residual_to_optimum (xStar : E) : ℕ → E
-  | 0 => x 0 - xStar
-  | k + 1 => (t k : ℝ) • z k - (xStar + (t k - 1) • x k)
-
-/-- Helper for Theorem 10.40: the FISTA momentum recursion implies the quadratic identity
-`t_(k+1)^2 - t_(k+1) = t_k^2`. -/
-lemma mfista_momentum_quadratic_identity
-    (htraj : hproblem.IsMfistaTrajectory x y z t L) (k : ℕ) :
-    t (k + 1) ^ (2 : ℕ) - t (k + 1) = t k ^ (2 : ℕ) := by
-  letI : IsProperExtendedRealFunction g := hproblem.g_proper
-  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
-  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
-  -- Rewrite the successor momentum through the canonical FISTA update.
-  rw [is_mfista_trajectory_t_succ htraj, fista_momentum_update_eq]
-  have hsqrt_sq :
-      Real.sqrt (1 + 4 * t k ^ (2 : ℕ)) * Real.sqrt (1 + 4 * t k ^ (2 : ℕ)) =
-        1 + 4 * t k ^ (2 : ℕ) := by
-    nlinarith [Real.sq_sqrt (show 0 ≤ 1 + 4 * t k ^ (2 : ℕ) by positivity)]
-  -- The displayed identity is then a direct scalar simplification.
+/-- Helper for Theorem 10.40: the FISTA momentum recursion satisfies
+`t_(n+1)^2 - t_(n+1) = t_n^2`. -/
+lemma mfistaMomentum_sq_sub_eq_prev_sq
+    (n : ℕ) :
+    fista_momentum_sequence (n + 1) ^ (2 : ℕ) -
+        fista_momentum_sequence (n + 1) =
+      fista_momentum_sequence n ^ (2 : ℕ) := by
+  have hsucc := fista_momentum_sequence_succ n
+  rw [fista_momentum_update_eq] at hsucc
+  have hrad_nonneg :
+      0 ≤ 1 + 4 * fista_momentum_sequence n ^ (2 : ℕ) := by
+    positivity
+  have hsqrt :
+      Real.sqrt (1 + 4 * fista_momentum_sequence n ^ (2 : ℕ)) =
+        2 * fista_momentum_sequence (n + 1) - 1 := by
+    nlinarith [hsucc]
+  have hsq :
+      (Real.sqrt (1 + 4 * fista_momentum_sequence n ^ (2 : ℕ))) ^ (2 : ℕ) =
+        (2 * fista_momentum_sequence (n + 1) - 1) ^ (2 : ℕ) := by
+    simpa using congrArg (fun t : ℝ ↦ t ^ (2 : ℕ)) hsqrt
+  rw [Real.sq_sqrt hrad_nonneg] at hsq
   nlinarith
 
-/-- Helper for Theorem 10.40: for positive indices, the current MFISTA owner rewrites `y^k`
-using the coefficient `mfista_previous_momentum t (k - 1) - 1` in the last affine term. -/
-lemma mfista_extrapolation_step
-    (htraj : hproblem.IsMfistaTrajectory x y z t L)
-    (k : ℕ) (hk : 1 ≤ k) :
-    y k =
-      x k +
-        (t (k - 1) / t k) • (z (k - 1) - x k) +
-        ((mfista_previous_momentum t (k - 1) - 1) / t k) • (x k - x (k - 1)) := by
-  letI : IsProperExtendedRealFunction g := hproblem.g_proper
-  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
-  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
-  rcases Nat.exists_eq_add_of_le hk with ⟨n, rfl⟩
-  -- Reindex the successor-form MFISTA owner to obtain the exact statement at index `n + 1`.
-  simpa [Nat.add_comm] using is_mfista_trajectory_y_succ htraj n
-
-/-- Helper for Theorem 10.40: any optimizer in `XStar` attains the composite objective value
-`FOpt`. -/
-lemma mfista_objective_eq_optimal_value_of_mem_optimal_set
-    (hproblem : IsFastProximalGradientProblem f g XStar FOpt Lf)
-    (hxStar : xStar ∈ XStar) :
-    F xStar = (FOpt : EReal) := by
-  -- Pass to the canonical convex-composite owner and reuse its optimizer-value identity.
-  simpa using
-    IsConvexCompositeSmoothMinimizationProblem.objective_eq_optimalValue_of_mem_optimalSet
-      (h :=
-        IsFastProximalGradientProblem.toIsConvexCompositeSmoothMinimizationProblem
-          hproblem)
-      hxStar
-
-/-- Helper for Theorem 10.40: every MFISTA momentum parameter is strictly positive. -/
-lemma mfista_momentum_pos
-    (htraj : hproblem.IsMfistaTrajectory x y z t L) (k : ℕ) :
-    0 < t k := by
-  have hbound := hproblem.isMfistaTrajectory_t_lower_bound htraj k
-  have hpos : 0 < (((k : ℝ) + 2) / 2) := by
-    positivity
-  -- The lower bound from Lemma 10.33 keeps every denominator in the MFISTA extrapolation positive.
-  exact lt_of_lt_of_le hpos hbound
-
-/-- Helper for Theorem 10.40: any trial curvature at least `L_f` satisfies the B3 upper-model
-acceptance predicate at the MFISTA extrapolated point `y^k`. -/
-lemma mfista_upper_model_accepts_of_stepsize_ge_Lf
-    (k : ℕ) (Lbar : PosReal) (hLbar : (Lf : ℝ) ≤ (Lbar : ℝ)) :
-    B2Accepts Lbar (interior_effective_domain_point_of_real f (y k)) := by
-  letI : IsProperExtendedRealFunction g := hproblem.g_proper
-  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
-  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
-  -- Rewrite B3 acceptance into the displayed upper-model inequality at `y^k`.
-  refine
-    (proximal_gradient_backtracking_B2_accepts_iff_fista_upper_model f g Lbar (y k)).2 ?_
-  let xNext := T[Lbar; f, g] (y k)
-  have hy_mem : y k ∈ Set.univ := by
-    simp
-  have hxNext_mem : xNext ∈ Set.univ := by
-    simp [xNext]
-  have hdescentLf :
-      f xNext ≤
-        f (y k) +
-          inner ℝ (∇ f (y k)) (xNext - y k) +
-            ((Lf : ℝ) / 2) * ‖xNext - y k‖ ^ (2 : ℕ) := by
-    -- The global `L_f`-smoothness field gives the source upper model on `Set.univ`.
-    simpa [xNext, norm_sub_rev] using
-      (is_l_smooth_on_descent_lemma
-        (L := Lf)
-        (D := Set.univ)
-        (f := f)
-        convex_univ
-        hproblem.f_smooth
-        hy_mem
-        hxNext_mem)
-  have hnorm_nonneg : 0 ≤ ‖xNext - y k‖ ^ (2 : ℕ) := by
-    positivity
-  have hdescentLbar :
-      f xNext ≤
-        f (y k) +
-          inner ℝ (∇ f (y k)) (xNext - y k) +
-            ((Lbar : ℝ) / 2) * ‖xNext - y k‖ ^ (2 : ℕ) := by
-    -- Enlarging the curvature coefficient from `L_f` to `Lbar` preserves the inequality.
-    nlinarith
-  simpa [xNext] using hdescentLbar
-
-/-- Helper for Theorem 10.40: the accepted B3 curvature is bounded below by the previous trial
-curvature and above by `max {η L_f, L_prev}`. -/
-lemma mfista_b3_local_stepsize_bounds
-    {s : PosReal} {η : ProximalGradientBacktrackingGrowthFactor}
-    (hB3 : UsesB3 s η) (k : ℕ) :
-    let LPrev := proximal_gradient_backtracking_B2_previous_stepsize s L k
-    (LPrev : ℝ) ≤ (L k : ℝ) ∧
-      (L k : ℝ) ≤ max ((η : ℝ) * (Lf : ℝ)) (LPrev : ℝ) := by
-  letI : IsProperExtendedRealFunction g := hproblem.g_proper
-  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
-  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
-  rcases hB3 k with ⟨i, hi, hLk⟩
-  dsimp
-  constructor
-  · -- Every accepted B3 trial is `L_prev * η^i`, hence it is at least `L_prev`.
-    rw [hLk, proximal_gradient_backtracking_trial_stepsize_coe]
-    have hηge1 : (1 : ℝ) ≤ (η : ℝ) := le_of_lt η.2
-    have hLPrev_nonneg :
-        0 ≤ (proximal_gradient_backtracking_B2_previous_stepsize s L k : ℝ) := by
-      exact le_of_lt (proximal_gradient_backtracking_B2_previous_stepsize s L k).2
-    exact le_mul_of_one_le_right hLPrev_nonneg (one_le_pow₀ hηge1)
-  · cases i with
-    | zero =>
-        -- If the first trial is accepted, then `L_k = L_prev`.
-        rw [hLk, proximal_gradient_backtracking_trial_stepsize_coe]
-        simp
-    | succ m =>
-        let LPrev : PosReal := proximal_gradient_backtracking_B2_previous_stepsize s L k
-        let Ltrial : PosReal := proximal_gradient_backtracking_trial_stepsize LPrev η m
-        have hreject :
-            ¬ B2Accepts Ltrial (interior_effective_domain_point_of_real f (y k)) := by
-          exact is_backtracking_procedure_B2_index_minimal hi (Nat.lt_succ_self m)
-        have htrial_lt_lf : (Ltrial : ℝ) < (Lf : ℝ) := by
-          refine lt_of_not_ge fun hnot ↦ ?_
-          exact hreject <|
-            mfista_upper_model_accepts_of_stepsize_ge_Lf (k := k) (Lbar := Ltrial) hnot
-        have haccepted_eq :
-            (L k : ℝ) = (Ltrial : ℝ) * (η : ℝ) := by
-          simp [hLk, Ltrial, LPrev, proximal_gradient_backtracking_trial_stepsize_coe,
-            pow_succ, mul_assoc]
-        have haccepted_lt :
-            (L k : ℝ) < (η : ℝ) * (Lf : ℝ) := by
-          have hη_pos : 0 < (η : ℝ) := lt_trans zero_lt_one η.2
-          rw [haccepted_eq]
-          nlinarith
-        exact le_trans (le_of_lt haccepted_lt) (le_max_left _ _)
-
-/-- Helper for Theorem 10.40: if `α = max {η, s / L_f}` with `L_f > 0`, then
-`α L_f = max {η L_f, s}`. -/
-lemma mfista_alpha_mul_lf_eq_max_stepsize
+/-- Helper for Theorem 10.40: the textbook backtracking constant
+`α = max {η, s / L_f}` is equivalent to the stepsize cap `α L_f = max {η L_f, s}`. -/
+lemma mfistaAlphaMulLf_eq_maxStepsize
     {s : PosReal} {η : ProximalGradientBacktrackingGrowthFactor}
     (hLf : 0 < (Lf : ℝ))
     (hα : α = max (η : ℝ) ((s : ℝ) / (Lf : ℝ))) :
     max ((η : ℝ) * (Lf : ℝ)) (s : ℝ) = α * (Lf : ℝ) := by
-  -- Split on which branch of the textbook `max` defines `α`.
+  -- Split on which branch of the textbook `max` determines `α`.
   rw [hα]
   by_cases hη : (η : ℝ) ≤ (s : ℝ) / (Lf : ℝ)
-  · have hs : (s : ℝ) = ((s : ℝ) / (Lf : ℝ)) * (Lf : ℝ) := by
+  · have hs :
+        (s : ℝ) = ((s : ℝ) / (Lf : ℝ)) * (Lf : ℝ) := by
       field_simp [hLf.ne']
     have hηLf : (η : ℝ) * (Lf : ℝ) ≤ (s : ℝ) := by
       nlinarith
@@ -217,740 +93,1172 @@ lemma mfista_alpha_mul_lf_eq_max_stepsize
       exact hmul
     rw [max_eq_left (le_of_lt hsLf), max_eq_left (le_of_lt hηlt)]
 
-/-- Helper for Theorem 10.40: the admissible constant/B3 stepsize rule always yields the uniform
-bound `L_k ≤ α L_f`. -/
-lemma mfista_stepsize_control
-    (hrule : hproblem.SublinearRateStepsizeRule y L α) (k : ℕ) :
-    (L k : ℝ) ≤ α * (Lf : ℝ) := by
-  rcases hrule with ⟨rfl, hconst⟩ | ⟨hLf, s, η, hα, hB3⟩
-  · -- In the constant branch, `α = 1` and all curvatures equal `L_f`.
-    simpa [hconst k]
-  · have hmax :
-        max ((η : ℝ) * (Lf : ℝ)) (s : ℝ) = α * (Lf : ℝ) := by
-      exact mfista_alpha_mul_lf_eq_max_stepsize (Lf := Lf) hLf hα
-    induction k with
-    | zero =>
-        -- The initial accepted curvature is controlled by the first local B3 comparison.
-        have hlocal := mfista_b3_local_stepsize_bounds (Lf := Lf) (hB3 := hB3) 0
-        simpa [proximal_gradient_backtracking_B2_previous_stepsize_zero, hmax] using hlocal.2
-    | succ k ih =>
-        have hη_le : (η : ℝ) * (Lf : ℝ) ≤ α * (Lf : ℝ) := by
-          have hηα : (η : ℝ) ≤ α := by
-            rw [hα]
-            exact le_max_left _ _
-          nlinarith
-        have hstep :
-            (L (k + 1) : ℝ) ≤ max ((η : ℝ) * (Lf : ℝ)) (L k : ℝ) := by
-          have hlocal :=
-            mfista_b3_local_stepsize_bounds (Lf := Lf) (hB3 := hB3) (k + 1)
-          simpa [proximal_gradient_backtracking_B2_previous_stepsize_succ] using hlocal.2
-        have hmax_le : max ((η : ℝ) * (Lf : ℝ)) (L k : ℝ) ≤ α * (Lf : ℝ) := by
-          exact max_le hη_le ih
-        exact le_trans hstep hmax_le
+omit hproblem in
+/-- Helper for Theorem 10.40: on `effective_domain g`, the composite objective is the finite real
+sum `f + g`. -/
+lemma mfistaObjectiveEqReal_of_memEffectiveDomain
+    (hproblem : IsFastProximalGradientProblem f g XStar FOpt Lf)
+    {xPoint : E} (hxPoint : xPoint ∈ effective_domain g) :
+    composite_model_objective f.toEReal g xPoint =
+      (((f xPoint + (g xPoint).toReal : ℝ)) : EReal) := by
+  let hg_proper : IsProperExtendedRealFunction g := hproblem.g_proper
+  have hgx_val :
+      g xPoint = (((g xPoint).toReal : ℝ) : EReal) := by
+    exact
+      (EReal.coe_toReal (mem_effective_domain.mp hxPoint).ne
+        (hg_proper.ne_bot xPoint)).symm
+  -- Once `g xPoint` is finite, the composite objective is the cast of the real sum.
+  rw [composite_model_objective_apply, Function.toEReal, hgx_val]
+  simp [EReal.coe_add]
 
-/-- Helper for Theorem 10.40: every admissible MFISTA stepsize is at least the previous accepted
-curvature estimate. -/
-lemma mfista_stepsize_mono
-    (hrule : hproblem.SublinearRateStepsizeRule y L α) {k : ℕ} (hk : 1 ≤ k) :
-    (L (k - 1) : ℝ) ≤ (L k : ℝ) := by
-  rcases hrule with ⟨rfl, hconst⟩ | ⟨_, s, η, _, hB3⟩
-  · cases k with
-    | zero =>
-        cases hk
-    | succ n =>
-        -- Under the constant rule all curvatures equal `L_f`.
-        simpa [hconst n, hconst (n + 1)]
-  · cases k with
-    | zero =>
-        cases hk
-    | succ n =>
-        -- In the B3 branch, the accepted trial at step `n + 1` is at least the previous value `L_n`.
-        simpa [proximal_gradient_backtracking_B2_previous_stepsize_succ] using
-          (mfista_b3_local_stepsize_bounds (Lf := Lf) (hB3 := hB3) (n + 1)).1
+omit hproblem in
+/-- Helper for Theorem 10.40: every finite objective gap is the cast of its real gap. -/
+lemma mfistaObjectiveGap_eq_coe_sub_toReal_of_memEffectiveDomain
+    (hproblem : IsFastProximalGradientProblem f g XStar FOpt Lf)
+    {xPoint : E} (hxPoint : xPoint ∈ effective_domain g) :
+    ((((composite_model_objective f.toEReal g xPoint).toReal - FOpt : ℝ)) : EReal) =
+      composite_model_objective f.toEReal g xPoint - (FOpt : EReal) := by
+  have hxPoint_toReal :
+      (composite_model_objective f.toEReal g xPoint).toReal =
+        f xPoint + (g xPoint).toReal := by
+    rw [mfistaObjectiveEqReal_of_memEffectiveDomain hproblem hxPoint]
+    simpa [Function.toEReal] using EReal.toReal_coe (f xPoint + (g xPoint).toReal)
+  -- Rewrite the finite objective value through its real representative before subtracting `FOpt`.
+  rw [hxPoint_toReal, mfistaObjectiveEqReal_of_memEffectiveDomain hproblem hxPoint]
+  simp [EReal.coe_sub]
 
-/-- Helper for Theorem 10.40: scaling the stored MFISTA extrapolation formula exposes the exact
-correction term that separates the owner-level recurrence from the textbook residual identity. -/
-lemma mfista_scaled_extrapolation_residual
-    (htraj : hproblem.IsMfistaTrajectory x y z t L)
-    (xStar : E) {k : ℕ} (hk : 1 ≤ k) :
-    (t k : ℝ) • y k - (xStar + (t k - 1) • x k) =
-      (t (k - 1) : ℝ) • z (k - 1) - (xStar + (t (k - 1) - 1) • x (k - 1)) +
-        (mfista_previous_momentum t (k - 1) - t (k - 1)) • (x k - x (k - 1)) := by
-  letI : IsProperExtendedRealFunction g := hproblem.g_proper
-  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
-  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
-  have htk_pos : 0 < t k := mfista_momentum_pos htraj k
-  have hcancel_prev :
-      (t k : ℝ) * (t (k - 1) / t k) = t (k - 1) := by
-    field_simp [htk_pos.ne']
-  have hcancel_momentum :
-      (t k : ℝ) * ((mfista_previous_momentum t (k - 1) - 1) / t k) =
-        mfista_previous_momentum t (k - 1) - 1 := by
-    field_simp [htk_pos.ne']
-  -- Expand the stored MFISTA extrapolation once and cancel the denominator `t_k`.
-  rw [mfista_extrapolation_step htraj k hk]
-  simp_rw [smul_add, smul_sub, smul_smul]
-  rw [hcancel_prev, hcancel_momentum]
-  -- The remaining affine terms collect into the previous residual plus the explicit correction.
-  simp only [sub_eq_add_neg, add_assoc]
-  module
+omit hproblem in
+/-- Helper for Theorem 10.40: once both composite values are finite, their difference is the
+canonical `EReal` coercion of the real difference of their `toReal` values. -/
+lemma mfistaObjectiveDiff_eq_coe_sub_of_memEffectiveDomain
+    (hproblem : IsFastProximalGradientProblem f g XStar FOpt Lf)
+    {xPoint zPoint : E}
+    (hxPoint : xPoint ∈ effective_domain g)
+    (hzPoint : zPoint ∈ effective_domain g) :
+    composite_model_objective f.toEReal g zPoint -
+        composite_model_objective f.toEReal g xPoint =
+      ((((composite_model_objective f.toEReal g zPoint).toReal -
+            (composite_model_objective f.toEReal g xPoint).toReal : ℝ)) : EReal) := by
+  have hzPoint_toReal :
+      (composite_model_objective f.toEReal g zPoint).toReal =
+        f zPoint + (g zPoint).toReal := by
+    rw [mfistaObjectiveEqReal_of_memEffectiveDomain hproblem hzPoint]
+    simpa [Function.toEReal] using EReal.toReal_coe (f zPoint + (g zPoint).toReal)
+  have hxPoint_toReal :
+      (composite_model_objective f.toEReal g xPoint).toReal =
+        f xPoint + (g xPoint).toReal := by
+    rw [mfistaObjectiveEqReal_of_memEffectiveDomain hproblem hxPoint]
+    simpa [Function.toEReal] using EReal.toReal_coe (f xPoint + (g xPoint).toReal)
+  -- Rewrite both finite objective values through their real representatives before subtracting.
+  rw [hzPoint_toReal, hxPoint_toReal,
+    mfistaObjectiveEqReal_of_memEffectiveDomain hproblem hzPoint,
+    mfistaObjectiveEqReal_of_memEffectiveDomain hproblem hxPoint]
+  simp [EReal.coe_sub]
 
-/-- Helper for Theorem 10.40: in the stay branch of the MFISTA choice rule, the pre-step vector is
-exactly the source post-step residual `u^k`. -/
-lemma mfista_prestep_vector_eq_residual_of_stay
-    (htraj : hproblem.IsMfistaTrajectory x y z t L)
-    (xStar : E) {k : ℕ} (hk : 1 ≤ k)
-    (hstay : x k = x (k - 1)) :
-    (t k : ℝ) • y k - (xStar + (t k - 1) • x k) =
-      mfista_residual_to_optimum (x := x) (z := z) (t := t) xStar k := by
-  cases k with
-  | zero =>
-      cases hk
-  | succ n =>
-      -- In the stay branch, the correction term from the owner-level MFISTA recurrence vanishes.
-      have hscaled :=
-        mfista_scaled_extrapolation_residual
-          (htraj := htraj) (xStar := xStar) (k := n + 1) (Nat.succ_le_succ (Nat.zero_le n))
-      simpa [mfista_residual_to_optimum, hstay, sub_self] using hscaled
+omit hproblem in
+/-- Helper for Theorem 10.40: every finite objective value is at least the optimal value `FOpt`. -/
+lemma mfistaToReal_ge_FOpt_of_memEffectiveDomain
+    (hproblem : IsFastProximalGradientProblem f g XStar FOpt Lf)
+    {xPoint : E} (hxPoint : xPoint ∈ effective_domain g) :
+    FOpt ≤ (composite_model_objective f.toEReal g xPoint).toReal := by
+  have hxPoint_toReal :
+      (composite_model_objective f.toEReal g xPoint).toReal =
+        f xPoint + (g xPoint).toReal := by
+    rw [mfistaObjectiveEqReal_of_memEffectiveDomain hproblem hxPoint]
+    simpa [Function.toEReal] using EReal.toReal_coe (f xPoint + (g xPoint).toReal)
+  have hxPoint_finite :
+      (((composite_model_objective f.toEReal g xPoint).toReal : ℝ) : EReal) =
+        composite_model_objective f.toEReal g xPoint := by
+    rw [hxPoint_toReal, mfistaObjectiveEqReal_of_memEffectiveDomain hproblem hxPoint]
+  have hlower : (FOpt : EReal) ≤ composite_model_objective f.toEReal g xPoint :=
+    hproblem.optimal_value_isGLB.1 ⟨xPoint, rfl⟩
+  -- Once the feasible objective value is known to be finite, the `EReal` lower bound reads as a
+  -- plain real inequality.
+  rw [← hxPoint_finite] at hlower
+  exact EReal.coe_le_coe_iff.mp hlower
 
-/-- Helper for Theorem 10.40: at the first moving step `k = 1`, the MFISTA pre-step vector
-reduces to the initial residual `x^0 - xStar`. -/
-lemma mfista_prestep_vector_eq_initial_residual_of_move_one
-    (htraj : hproblem.IsMfistaTrajectory x y z t L)
-    (xStar : E) (hmove : x 1 = z 0) :
-    (t 1 : ℝ) • y 1 - (xStar + (t 1 - 1) • x 1) = x 0 - xStar := by
-  letI : IsProperExtendedRealFunction g := hproblem.g_proper
-  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
-  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
-  have ht0 : t 0 = 1 := by
-    simpa using is_mfista_trajectory_t_zero htraj
-  have hscaled :=
-    mfista_scaled_extrapolation_residual
-      (htraj := htraj) (xStar := xStar) (k := 1) (by simpa)
-  -- At `k = 1`, the boundary convention `t_(-1) = 0` collapses the correction to `-(x¹ - x⁰)`.
-  simpa [hmove, ht0, mfista_previous_momentum, sub_eq_add_neg, add_assoc, add_left_comm, add_comm]
-    using hscaled
-
-/-- Helper for Theorem 10.40: the MFISTA momentum update strictly increases the stored momentum
-parameter at every step. -/
-lemma mfista_momentum_strict_step
-    (htraj : hproblem.IsMfistaTrajectory x y z t L) (k : ℕ) :
-    t k < t (k + 1) := by
-  letI : IsProperExtendedRealFunction g := hproblem.g_proper
-  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
-  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
-  -- The owner recurrence advances the momentum by at least `1 / 2`, so in particular it is
-  -- strictly increasing.
-  rw [is_mfista_trajectory_t_succ htraj]
-  have hstep : t k + 1 / 2 ≤ fista_momentum_update (t k) :=
-    add_one_half_le_fista_momentum_update (t k)
-  linarith
-
-/-- Helper for Theorem 10.40: in the move branch with `k ≥ 2`, the source interpolation weight
-`(t_(k-2) - 1) / (t_(k-1) - 1)` is a genuine convex coefficient. -/
-lemma mfista_move_branch_weight_mem_Icc
-    (htraj : hproblem.IsMfistaTrajectory x y z t L)
-    {k : ℕ} (hk : 2 ≤ k) :
-    let lamk : ℝ := (t (k - 2) - 1) / (t (k - 1) - 1)
-    lamk ∈ Set.Icc (0 : ℝ) 1 := by
-  rcases Nat.exists_eq_add_of_le hk with ⟨n, rfl⟩
-  suffices
-      let lamk : ℝ := (t n - 1) / (t (n + 1) - 1)
-      lamk ∈ Set.Icc (0 : ℝ) 1 by
-    simpa [Nat.add_comm, Nat.add_left_comm, Nat.add_assoc]
-  dsimp
-  have hn_nonneg : (0 : ℝ) ≤ n := by
-    exact_mod_cast (Nat.zero_le n)
-  have ht_num : 1 ≤ t n := by
-    have hshift : (((n : ℕ) : ℝ) + 2) / 2 = (n : ℝ) / 2 + 1 := by
-      ring
-    have hone : (1 : ℝ) ≤ (((n : ℕ) : ℝ) + 2) / 2 := by
-      rw [hshift]
-      nlinarith
-    have hbound := hproblem.isMfistaTrajectory_t_lower_bound htraj n
-    linarith
-  have ht_den : 1 < t (n + 1) := by
-    have hshift : (((n + 1 : ℕ) : ℝ) + 2) / 2 = (n : ℝ) / 2 + (3 : ℝ) / 2 := by
-      calc
-        (((n + 1 : ℕ) : ℝ) + 2) / 2 = (((n : ℝ) + 1) + 2) / 2 := by norm_num
-        _ = (n : ℝ) / 2 + (3 : ℝ) / 2 := by ring
-    have hthree_halves : (3 : ℝ) / 2 ≤ (((n + 1 : ℕ) : ℝ) + 2) / 2 := by
-      rw [hshift]
-      nlinarith
-    have hbound := hproblem.isMfistaTrajectory_t_lower_bound htraj (n + 1)
-    linarith
-  have hden_pos : 0 < t (n + 1) - 1 := by
-    linarith
-  have hnum_nonneg : 0 ≤ t n - 1 := by
-    linarith
-  have hnum_le_den : t n - 1 ≤ t (n + 1) - 1 := by
-    have hmono := mfista_momentum_strict_step (htraj := htraj) n
-    linarith
-  refine ⟨div_nonneg hnum_nonneg hden_pos.le, ?_⟩
-  exact (div_le_iff₀ hden_pos).2 (by simpa using hnum_le_den)
-
-/-- Helper for Theorem 10.40: in a move branch, the source residual is the current distance to
-`xStar` plus the previous-step displacement scaled by `t_(k-1) - 1`. -/
-lemma mfista_residual_to_optimum_eq_move_branch
-    (xStar : E) {k : ℕ} (hk : 1 ≤ k) (hmove : x k = z (k - 1)) :
-    mfista_residual_to_optimum (x := x) (z := z) (t := t) xStar k =
-      (x k - xStar) + (t (k - 1) - 1) • (x k - x (k - 1)) := by
-  cases k with
-  | zero =>
-      cases hk
-  | succ n =>
-      -- Rewrite the residual at the move step and collect the affine terms into the displacement
-      -- form used by the source proof.
-      simp [mfista_residual_to_optimum, hmove, sub_eq_add_neg]
-      module
-
-/-- Helper for Theorem 10.40: for `k ≥ 2`, the MFISTA pre-step vector in the move branch is the
-convex interpolation of the current source residual and the plain distance to `xStar` predicted by
-the textbook proof. -/
-lemma mfista_prestep_vector_move_branch_affine_form
-    (htraj : hproblem.IsMfistaTrajectory x y z t L)
-    (xStar : E) {k : ℕ} (hk : 2 ≤ k) (hmove : x k = z (k - 1)) :
-    let lamk : ℝ := (t (k - 2) - 1) / (t (k - 1) - 1)
-    lamk ∈ Set.Icc (0 : ℝ) 1 ∧
-      (t k : ℝ) • y k - (xStar + (t k - 1) • x k) =
-        lamk • mfista_residual_to_optimum (x := x) (z := z) (t := t) xStar k +
-          (1 - lamk) • (x k - xStar) := by
-  rcases Nat.exists_eq_add_of_le hk with ⟨n, rfl⟩
-  suffices
-      let lamk : ℝ := (t n - 1) / (t (n + 1) - 1)
-      lamk ∈ Set.Icc (0 : ℝ) 1 ∧
-        (t (n + 2) : ℝ) • y (n + 2) - (xStar + (t (n + 2) - 1) • x (n + 2)) =
-          lamk • mfista_residual_to_optimum (x := x) (z := z) (t := t) xStar (n + 2) +
-            (1 - lamk) • (x (n + 2) - xStar) by
-    simpa [Nat.add_comm, Nat.add_left_comm, Nat.add_assoc]
-  dsimp
-  set lamk : ℝ := (t n - 1) / (t (n + 1) - 1)
-  have hlam_mem :
-      lamk ∈ Set.Icc (0 : ℝ) 1 := by
-    simpa [lamk] using
-      mfista_move_branch_weight_mem_Icc (htraj := htraj) (k := n + 2) (by omega)
-  have hscaled :=
-    mfista_scaled_extrapolation_residual
-      (htraj := htraj) (xStar := xStar) (k := n + 2) (by omega)
-  have hprestep :
-      (t (n + 2) : ℝ) • y (n + 2) - (xStar + (t (n + 2) - 1) • x (n + 2)) =
-        mfista_residual_to_optimum (x := x) (z := z) (t := t) xStar (n + 2) +
-          (t n - t (n + 1)) • (x (n + 2) - x (n + 1)) := by
-    -- Route correction: the owner recurrence contributes the explicit correction
-    -- `(t_n - t_(n+1)) • (x^(n+2) - x^(n+1))`; rewriting through the move branch isolates it.
-    simpa [mfista_residual_to_optimum, hmove, mfista_previous_momentum_succ, sub_eq_add_neg,
-      add_assoc, add_left_comm, add_comm] using hscaled
-  have hresidual :
-      mfista_residual_to_optimum (x := x) (z := z) (t := t) xStar (n + 2) =
-        (x (n + 2) - xStar) + (t (n + 1) - 1) • (x (n + 2) - x (n + 1)) :=
-    by
-      have hmove' : x (n + 2) = z (n + 2 - 1) := by
-        simpa [Nat.add_comm, Nat.add_left_comm, Nat.add_assoc] using hmove
-      exact
-        mfista_residual_to_optimum_eq_move_branch
-          (x := x) (z := z) (t := t) (xStar := xStar) (k := n + 2) (by omega) hmove'
-  have hn_nonneg : (0 : ℝ) ≤ n := by
-    exact_mod_cast (Nat.zero_le n)
-  have hthree_halves :
-      (3 : ℝ) / 2 ≤ t (n + 1) := by
-    have hshift : (((n + 1 : ℕ) : ℝ) + 2) / 2 = (n : ℝ) / 2 + (3 : ℝ) / 2 := by
-      calc
-        (((n + 1 : ℕ) : ℝ) + 2) / 2 = (((n : ℝ) + 1) + 2) / 2 := by norm_num
-        _ = (n : ℝ) / 2 + (3 : ℝ) / 2 := by ring
-    have hthree_halves' : (3 : ℝ) / 2 ≤ (((n + 1 : ℕ) : ℝ) + 2) / 2 := by
-      rw [hshift]
-      nlinarith
-    have hbound := hproblem.isMfistaTrajectory_t_lower_bound htraj (n + 1)
-    linarith
-  have hden_pos : 0 < t (n + 1) - 1 := by
-    linarith
-  have hlam_coeff :
-      lamk * (t (n + 1) - 1) = t n - 1 := by
-    dsimp [lamk]
-    field_simp [hden_pos.ne']
-  have hscaled_coeff :
-      lamk • ((t (n + 1) - 1) • (x (n + 2) - x (n + 1))) =
-        (t n - 1) • (x (n + 2) - x (n + 1)) := by
-    simpa [smul_smul] using congrArg (fun a : ℝ ↦ a • (x (n + 2) - x (n + 1))) hlam_coeff
-  refine ⟨hlam_mem, ?_⟩
-  calc
-    (t (n + 2) : ℝ) • y (n + 2) - (xStar + (t (n + 2) - 1) • x (n + 2)) =
-        mfista_residual_to_optimum (x := x) (z := z) (t := t) xStar (n + 2) +
-          (t n - t (n + 1)) • (x (n + 2) - x (n + 1)) := hprestep
-    _ = (x (n + 2) - xStar) + (t n - 1) • (x (n + 2) - x (n + 1)) := by
-      rw [hresidual]
-      module
-    _ = lamk • mfista_residual_to_optimum (x := x) (z := z) (t := t) xStar (n + 2) +
-          (1 - lamk) • (x (n + 2) - xStar) := by
-      rw [hresidual, smul_add, hscaled_coeff]
-      module
-
-/-- Helper for Theorem 10.40: every optimizer has finite `g`-value, hence belongs to
+omit hproblem in
+/-- Helper for Theorem 10.40: every optimizer has finite `g`-value, hence lies in
 `effective_domain g`. -/
-lemma mfista_optimal_point_mem_effective_domain
+lemma mfistaOptimalPoint_memEffectiveDomain
     (hproblem : IsFastProximalGradientProblem f g XStar FOpt Lf)
     (hxStar : xStar ∈ XStar) :
     xStar ∈ effective_domain g := by
-  letI : IsProperExtendedRealFunction g := hproblem.g_proper
+  -- Read the optimizer through the canonical fast-problem objective-value bridge.
   have hxStar_value :
-      F xStar = (FOpt : EReal) :=
-    mfista_objective_eq_optimal_value_of_mem_optimal_set
-      (xStar := xStar) hproblem hxStar
+      composite_model_objective f.toEReal g xStar = (FOpt : EReal) :=
+    IsConvexCompositeSmoothMinimizationProblem.objective_eq_optimalValue_of_mem_optimalSet
+      (h := hproblem.toIsConvexCompositeSmoothMinimizationProblem)
+      hxStar
   have hg_top : g xStar ≠ ⊤ := by
+    -- If `g xStar = ⊤`, then the composite objective is also `⊤`, contradicting optimality.
     intro hg_top
-    have hFx_top : F xStar = ⊤ := by
-      rw [composite_model_objective_apply, Function.toExtendedReal, hg_top]
-      simpa using (EReal.coe_add_top (f xStar))
-    rw [hFx_top] at hxStar_value
-    simpa using hxStar_value
-  -- Finite `g`-value is exactly membership in the effective domain.
+    have htop :
+        composite_model_objective f.toEReal g xStar = ⊤ := by
+      rw [composite_model_objective_apply, Function.toEReal, hg_top]
+      simp
+    rw [htop] at hxStar_value
+    exact EReal.coe_ne_top FOpt hxStar_value.symm
   exact mem_effective_domain.mpr (lt_top_iff_ne_top.mpr hg_top)
 
-/-- Helper for Theorem 10.40: on `effective_domain g`, the composite objective is the real sum
-`f x + g(x).toReal`. -/
-lemma mfista_objective_eq_real_of_mem_effective_domain
-    (hproblem : IsFastProximalGradientProblem f g XStar FOpt Lf)
-    {xPoint : E} (hxPoint : xPoint ∈ effective_domain g) :
-    F xPoint = ((((f xPoint + (g xPoint).toReal : ℝ))) : EReal) := by
-  letI : IsProperExtendedRealFunction g := hproblem.g_proper
-  let hg_proper : IsProperExtendedRealFunction g := inferInstance
-  have hgx_val :
-      g xPoint = ((((g xPoint).toReal : ℝ)) : EReal) :=
-    (EReal.coe_toReal (mem_effective_domain.mp hxPoint).ne (hg_proper.ne_bot xPoint)).symm
-  -- Once `g x` is finite, the objective is just the sum of two real casts.
-  rw [composite_model_objective_apply, Function.toExtendedReal, hgx_val]
-  simp
-
-/-- Helper for Theorem 10.40: every positive-index MFISTA iterate has finite objective value, so
-it lies in `effective_domain g`. -/
-lemma mfista_iterate_mem_effective_domain
-    (htraj : hproblem.IsMfistaTrajectory x y z t L)
-    {k : ℕ} (hk : 1 ≤ k) :
-    x k ∈ effective_domain g := by
-  letI : IsProperExtendedRealFunction g := hproblem.g_proper
-  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
-  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
-  cases k with
-  | zero =>
-      cases hk
-  | succ n =>
-      have hz_eff : z n ∈ effective_domain g := by
-        -- The auxiliary point `z^n` is always the prox-gradient step, hence it has finite
-        -- regularizer value.
-        rw [is_mfista_trajectory_z_eq htraj n]
-        simpa using
-          (prox_grad_step_mem_effective_domain_g
-            (f := f.toExtendedReal) (g := g)
-            (y := interior_effective_domain_point_of_real f (y n))
-            (L n))
-      have hz_obj :
-          F (z n) = ((((f (z n) + (g (z n)).toReal : ℝ))) : EReal) :=
-        mfista_objective_eq_real_of_mem_effective_domain
-          (xPoint := z n) hproblem hz_eff
-      have hxnext_le :
-          F (x (n + 1)) ≤ F (z n) := by
-        -- The MFISTA choice rule bounds the chosen iterate by each candidate, in particular by
-        -- `z^n`.
-        exact le_trans (is_mfista_trajectory_objective_le_min htraj n) (min_le_left _ _)
-      have hxnext_top : F (x (n + 1)) ≠ ⊤ := by
-        intro htop
-        have htop_le : (⊤ : EReal) ≤ F (z n) := by
-          simpa [htop] using hxnext_le
-        have hFz_ne_top : F (z n) ≠ ⊤ := by
-          rw [hz_obj]
-          exact EReal.coe_ne_top _
-        exact hFz_ne_top (top_le_iff.mp htop_le)
-      have hg_top : g (x (n + 1)) ≠ ⊤ := by
-        intro hg_top
-        have hFx_top : F (x (n + 1)) = ⊤ := by
-          rw [composite_model_objective_apply, Function.toExtendedReal, hg_top]
-          simpa using (EReal.coe_add_top (f (x (n + 1))))
-        exact hxnext_top hFx_top
-      -- Returning to `effective_domain g` only needs the exclusion of the `⊤` branch.
-      exact mem_effective_domain.mpr (lt_top_iff_ne_top.mpr hg_top)
-
-/-- Helper for Theorem 10.40: the optimal value is a lower bound for every MFISTA objective
-value, which is the order-theoretic form of nonnegativity of the objective gap. -/
-lemma mfista_objective_gap_nonneg
-    (hproblem : IsFastProximalGradientProblem f g XStar FOpt Lf)
+/-- Helper for Theorem 10.40: every positive MFISTA iterate has finite `g`-value because its
+objective is bounded above by the finite prox-point objective. -/
+lemma mfistaPositiveIterate_memEffectiveDomainG
+    (htraj : hproblem.IsMfistaTrajectory x y z L)
     (n : ℕ) :
-    (FOpt : EReal) ≤ F (x n) := by
-  -- This is exactly the greatest-lower-bound clause from the standing fast problem.
-  exact hproblem.optimal_value_isGLB.1 ⟨x n, rfl⟩
+    x (n + 1) ∈ effective_domain g := by
+  -- Local instance justification (owner reuse): the prox-step finiteness theorem is stated in the
+  -- shared prox-gradient API, so we expose the regularity data carried by `hproblem`.
+  letI : IsProperExtendedRealFunction g := hproblem.g_proper
+  -- Local instance justification (owner reuse): the same prox-step theorem also expects the
+  -- closedness witness from the standing fast-problem assumptions.
+  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
+  -- Local instance justification (owner reuse): the same prox-step theorem finally expects the
+  -- convexity witness already stored in `hproblem`.
+  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
+  have hz :
+      z n ∈ effective_domain g := by
+    -- Each prox-point `z n` is finite for `g` by the Chapter 10 prox-gradient domain lemma.
+    simpa [is_mfista_trajectory.z_eq htraj n] using
+      (prox_grad_step_mem_effective_domain_g
+        (interior_effective_domain_point_of_real f (y n))
+        (L n))
+  have hz_obj_ne_top :
+      composite_model_objective f.toEReal g (z n) ≠ ⊤ := by
+    -- Finite prox-point objectives are real coercions, hence cannot be `⊤`.
+    rw [mfistaObjectiveEqReal_of_memEffectiveDomain (hproblem := hproblem) hz]
+    exact (EReal.add_lt_top (EReal.coe_ne_top _) (EReal.coe_ne_top _)).ne
+  have hx_obj_ne_top :
+      composite_model_objective f.toEReal g (x (n + 1)) ≠ ⊤ := by
+    -- Monotonicity of MFISTA transfers finite objective values from `z n` to `x (n + 1)`.
+    intro hx_top
+    have hchoose := is_mfista_trajectory_x_next_objective_le_prox htraj n
+    rw [hx_top] at hchoose
+    exact hz_obj_ne_top (top_le_iff.mp hchoose)
+  have hg_top :
+      g (x (n + 1)) ≠ ⊤ := by
+    -- If `g (x (n + 1)) = ⊤`, then the composite objective would also be `⊤`.
+    intro hg_top
+    have hobj_top :
+        composite_model_objective f.toEReal g (x (n + 1)) = ⊤ := by
+      rw [composite_model_objective_apply, Function.toEReal, hg_top]
+      simp
+    exact hx_obj_ne_top hobj_top
+  exact mem_effective_domain.mpr (lt_top_iff_ne_top.mpr hg_top)
 
-/-- Helper for Theorem 10.40: every positive-index MFISTA objective gap is finite, so its real
-value casts back to the displayed `EReal` gap `F(x^n) - F_opt`. -/
-lemma mfista_positive_iterate_gap_coe
-    (htraj : hproblem.IsMfistaTrajectory x y z t L)
-    {n : ℕ} (hn : 1 ≤ n) :
-    ((((F (x n)).toReal - FOpt : ℝ)) : EReal) = F (x n) - (FOpt : EReal) := by
-  have hxn_eff : x n ∈ effective_domain g :=
-    mfista_iterate_mem_effective_domain
-      (f := f) (g := g) (XStar := XStar) (FOpt := FOpt) (Lf := Lf)
-      (x := x) (y := y) (z := z) (t := t) (L := L) htraj hn
-  have hxn_obj :
-      F (x n) = ((((f (x n) + (g (x n)).toReal : ℝ))) : EReal) :=
-    mfista_objective_eq_real_of_mem_effective_domain
-      (xPoint := x n) hproblem hxn_eff
-  -- Rewrite the iterate value through its finite real representative, then simplify the
-  -- `EReal` subtraction as an ordinary real subtraction.
-  rw [hxn_obj]
-  rw [EReal.toReal_coe]
-  simp [EReal.coe_sub]
+/-- Helper for Theorem 10.40: every positive MFISTA objective gap is nonnegative on the real
+layer. -/
+lemma mfistaPositiveIterateGapNonneg
+    (htraj : hproblem.IsMfistaTrajectory x y z L)
+    (n : ℕ) :
+    0 ≤ (composite_model_objective f.toEReal g (x (n + 1))).toReal - FOpt := by
+  have hxsucc :
+      x (n + 1) ∈ effective_domain g :=
+    mfistaPositiveIterate_memEffectiveDomainG (hproblem := hproblem) htraj n
+  -- Finite feasible objective values are bounded below by the optimal value.
+  exact sub_nonneg.mpr <|
+    mfistaToReal_ge_FOpt_of_memEffectiveDomain (hproblem := hproblem) hxsucc
 
-/-- Helper for Theorem 10.40: every positive-index MFISTA objective gap is nonnegative as a real
-number, once the finite-value transport from `EReal` has been isolated. -/
-lemma mfista_positive_iterate_gap_nonneg
-    (htraj : hproblem.IsMfistaTrajectory x y z t L)
-    {n : ℕ} (hn : 1 ≤ n) :
-    0 ≤ (F (x n)).toReal - FOpt := by
-  have hgapE :
-      (0 : EReal) ≤ F (x n) - (FOpt : EReal) := by
-    -- Convert the global lower bound `F_opt ≤ F(x^n)` into nonnegativity of the shifted gap.
-    exact (EReal.sub_nonneg (Or.inr (by simp)) (Or.inr (by simp))).2 <|
-      mfista_objective_gap_nonneg
-        (f := f) (g := g) (XStar := XStar) (FOpt := FOpt)
-        (Lf := Lf) (x := x) hproblem n
-  have hgapE' :
-      (0 : EReal) ≤ ((((F (x n)).toReal - FOpt : ℝ)) : EReal) := by
-    rw [mfista_positive_iterate_gap_coe
-      (f := f) (g := g) (XStar := XStar) (FOpt := FOpt)
-      (Lf := Lf) (x := x) (y := y) (z := z) (t := t) (L := L)
-      htraj (n := n) hn]
-    exact hgapE
-  -- Strip the final `EReal` cast to recover the real nonnegativity statement.
-  exact EReal.coe_nonneg.mp hgapE'
-
-/-- Helper for Theorem 10.40: every reciprocal MFISTA momentum coefficient `1 / t_k` is a
-genuine convex-combination weight. -/
-lemma mfista_one_div_t_mem_Icc
-    (htraj : hproblem.IsMfistaTrajectory x y z t L)
-    (k : ℕ) :
-    ((t k)⁻¹ : ℝ) ∈ Set.Icc (0 : ℝ) 1 := by
-  have ht_ge_one : (1 : ℝ) ≤ t k := by
-    have hbound := hproblem.isMfistaTrajectory_t_lower_bound htraj k
-    have haux : (1 : ℝ) ≤ (((k : ℕ) : ℝ) + 2) / 2 := by
-      have hk_nonneg : (0 : ℝ) ≤ ((k : ℕ) : ℝ) := by
-        exact_mod_cast Nat.zero_le k
-      nlinarith
-    exact le_trans haux hbound
-  have ht_pos : 0 < t k := lt_of_lt_of_le zero_lt_one ht_ge_one
-  refine ⟨inv_nonneg.mpr (le_of_lt ht_pos), ?_⟩
-  have hrecip : 1 / t k ≤ 1 / (1 : ℝ) :=
-    one_div_le_one_div_of_le zero_lt_one ht_ge_one
-  simpa [one_div] using hrecip
-
-/-- Helper for Theorem 10.40: convexity of the smooth term gives the supporting-hyperplane lower
-bound at any base point. -/
-lemma mfista_convex_support_at_basepoint
-    (hfast : IsFastProximalGradientProblem f g XStar FOpt Lf)
-    (xPoint yPoint : E) :
-    f xPoint ≥ f yPoint + inner ℝ (∇ f yPoint) (xPoint - yPoint) := by
-  have hconv : ConvexOn ℝ Set.univ f := hfast.f_convex
-  let line : ℝ → E := AffineMap.lineMap yPoint xPoint
-  let φ : ℝ → ℝ := fun s ↦ f (line s)
-  have hφ_convex : ConvexOn ℝ Set.univ φ := by
-    -- Restrict the global convexity of `f` to the segment from `y` to `x`.
-    simpa [φ, line] using
-      hconv.comp_affineMap (AffineMap.lineMap (k := ℝ) yPoint xPoint)
-  have hy_diff : DifferentiableAt ℝ f yPoint := hfast.f_smooth.1 yPoint (by simp)
-  have hline : HasDerivAt line (xPoint - yPoint) 0 := by
-    simpa [line] using
-      (show HasDerivAt (AffineMap.lineMap yPoint xPoint) (xPoint - yPoint) (0 : ℝ) from
-        AffineMap.hasDerivAt_lineMap)
-  have hφ_deriv : HasDerivAt φ (inner ℝ (∇ f yPoint) (xPoint - yPoint)) 0 := by
-    -- Differentiate the segment restriction at the left endpoint and identify the derivative with
-    -- the ambient gradient paired against the segment direction.
-    have hcomp : HasDerivAt φ (fderiv ℝ f yPoint (xPoint - yPoint)) 0 := by
-      have hbase : HasFDerivAt f (fderiv ℝ f yPoint) (line 0) := by
-        simpa [line] using hy_diff.hasFDerivAt
-      simpa [φ, line] using HasFDerivAt.comp_hasDerivAt 0 hbase hline
-    have hgrad :
-        fderiv ℝ f yPoint (xPoint - yPoint) =
-          inner ℝ (∇ f yPoint) (xPoint - yPoint) := by
-      simpa using
-        (show
-            fderiv ℝ f yPoint (xPoint - yPoint) =
-              inner ℝ (∇ f yPoint) (xPoint - yPoint) from
-          HasGradientAt.fderiv_apply hy_diff.hasGradientAt)
-    simpa [hgrad] using hcomp
-  have hsecant : inner ℝ (∇ f yPoint) (xPoint - yPoint) ≤ slope φ 0 1 := by
-    -- Convexity bounds the derivative at the left endpoint by the secant slope.
-    exact hφ_convex.le_slope_of_hasDerivAt (by simp) (by simp) zero_lt_one hφ_deriv
-  have hsecant' : inner ℝ (∇ f yPoint) (xPoint - yPoint) ≤ f xPoint - f yPoint := by
-    simpa [φ, line, slope] using hsecant
-  linarith
-
-/-- Helper for Theorem 10.40: convexity of `f` makes the prox-gradient linearization defect
-nonnegative at every real base point. -/
-lemma mfista_linearization_defect_nonneg
-    (hfast : IsFastProximalGradientProblem f g XStar FOpt Lf)
-    (xPoint yPoint : E) :
-    (0 : EReal) ≤
-      ℓ[f.toExtendedReal, xPoint, interior_effective_domain_point_of_real f yPoint] := by
-  let yI := interior_effective_domain_point_of_real f yPoint
-  have hsupport :
-      0 ≤ f xPoint - f yPoint - inner ℝ (∇ f yPoint) (xPoint - yPoint) := by
-    -- Rearrange the convex supporting-hyperplane inequality into the standard defect form.
-    have hbase :=
-      mfista_convex_support_at_basepoint
-        (hfast := hfast) (xPoint := xPoint) (yPoint := yPoint)
-    linarith
-  have hsupportE :
-      (0 : EReal) ≤
-        ((((f xPoint - f yPoint - inner ℝ (∇ f yPoint) (xPoint - yPoint) : ℝ))) : EReal) := by
-    exact EReal.coe_nonneg.mpr hsupport
-  -- Evaluating the linearization defect at a real base point collapses to the same real scalar.
-  simpa [yI, prox_gradient_linearization_defect_eq, Function.toExtendedReal, EReal.coe_sub] using
-    hsupportE
+/-- Helper for Theorem 10.40: the reciprocal of the MFISTA momentum coefficient belongs to
+`Set.Icc 0 1`. -/
+lemma mfistaOneDivMomentum_memIcc
+    (n : ℕ) :
+    (1 / fista_momentum_sequence (n + 1) : ℝ) ∈ Set.Icc (0 : ℝ) 1 := by
+  -- The textbook lower bound `t_(n+1) ≥ 1` controls the reciprocal coefficient.
+  have hone_le :
+      (1 : ℝ) ≤ fista_momentum_sequence (n + 1) :=
+    mfistaMomentum_one_le (n + 1)
+  have hpos :
+      0 < fista_momentum_sequence (n + 1) := lt_of_lt_of_le zero_lt_one hone_le
+  constructor
+  · exact one_div_nonneg.mpr (le_of_lt hpos)
+  · have hrecip_le :
+        1 / fista_momentum_sequence (n + 1) ≤ 1 / (1 : ℝ) := by
+      exact one_div_le_one_div_of_le zero_lt_one hone_le
+    simpa using hrecip_le
 
 /-- Helper for Theorem 10.40: the source comparison point
-`(1 / t_k) xStar + (1 - 1 / t_k) x^k` satisfies the convex objective upper bound coming from the
-convexity of `f` and `g`. -/
-lemma mfista_combination_objective_upper_bound
-    (htraj : hproblem.IsMfistaTrajectory x y z t L)
+`(1 / t_(n+1)) • xStar + (1 - 1 / t_(n+1)) • x^(n+1)` stays in `effective_domain g`. -/
+lemma mfistaCombinationPoint_memEffectiveDomain
+    (htraj : hproblem.IsMfistaTrajectory x y z L)
     (hxStar : xStar ∈ XStar)
-    {k : ℕ} (hk : 1 ≤ k) :
-    let θ : ℝ := (t k)⁻¹
-    let c : E := θ • xStar + (1 - θ) • x k
-    F c ≤
-      ((((1 - θ) * ((F (x k)).toReal - FOpt) + FOpt : ℝ)) : EReal) := by
+    (n : ℕ) :
+    let θ : ℝ := 1 / fista_momentum_sequence (n + 1)
+    let w : E := θ • xStar + (1 - θ) • x (n + 1)
+    w ∈ effective_domain g := by
+  dsimp
+  have hxStar_eff :
+      xStar ∈ effective_domain g :=
+    mfistaOptimalPoint_memEffectiveDomain (hproblem := hproblem) hxStar
+  have hxsucc_eff :
+      x (n + 1) ∈ effective_domain g :=
+    mfistaPositiveIterate_memEffectiveDomainG (hproblem := hproblem) htraj n
+  have hθ_mem :
+      (1 / fista_momentum_sequence (n + 1) : ℝ) ∈ Set.Icc (0 : ℝ) 1 := by
+    simpa using mfistaOneDivMomentum_memIcc n
+  -- Convexity of `g` keeps the source comparison point inside the effective domain.
+  exact combo_mem_effective_domain_of_is_convex_function hproblem.g_convex
+    hxStar_eff hxsucc_eff hθ_mem
+
+/-- Helper for Theorem 10.40: convexity bounds the objective of the source comparison point by
+`(1 - 1 / t_(n+1)) v_(n+1) + FOpt` on the real layer. -/
+lemma mfistaCombinationObjectiveUpperBoundReal
+    (htraj : hproblem.IsMfistaTrajectory x y z L)
+    (hxStar : xStar ∈ XStar)
+    (n : ℕ) :
+    let θ : ℝ := 1 / fista_momentum_sequence (n + 1)
+    let w : E := θ • xStar + (1 - θ) • x (n + 1)
+    (composite_model_objective f.toEReal g w).toReal ≤
+      (1 - θ) *
+          ((composite_model_objective f.toEReal g (x (n + 1))).toReal - FOpt) +
+        FOpt := by
+  -- Local instance justification (owner reuse): the convex-segment owner for `g` expects the
+  -- properness witness carried by `hproblem`.
   letI : IsProperExtendedRealFunction g := hproblem.g_proper
-  let θ : ℝ := (t k)⁻¹
-  let c : E := θ • xStar + (1 - θ) • x k
-  have hxStar_eff : xStar ∈ effective_domain g :=
-    mfista_optimal_point_mem_effective_domain (xStar := xStar) hproblem hxStar
-  have hxk_eff : x k ∈ effective_domain g :=
-    mfista_iterate_mem_effective_domain
-      (f := f) (g := g) (XStar := XStar) (FOpt := FOpt) (Lf := Lf)
-      (x := x) (y := y) (z := z) (t := t) (L := L) htraj hk
+  dsimp
+  let θ : ℝ := 1 / fista_momentum_sequence (n + 1)
+  let w : E := θ • xStar + (1 - θ) • x (n + 1)
+  have hxStar_eff :
+      xStar ∈ effective_domain g :=
+    mfistaOptimalPoint_memEffectiveDomain (hproblem := hproblem) hxStar
+  have hxsucc_eff :
+      x (n + 1) ∈ effective_domain g :=
+    mfistaPositiveIterate_memEffectiveDomainG (hproblem := hproblem) htraj n
   have hθ_mem : θ ∈ Set.Icc (0 : ℝ) 1 := by
-    simpa [θ] using mfista_one_div_t_mem_Icc (htraj := htraj) k
+    simpa [θ] using mfistaOneDivMomentum_memIcc n
   have hθ_nonneg : 0 ≤ θ := hθ_mem.1
   have hθ_le_one : θ ≤ 1 := hθ_mem.2
   have hone_sub_nonneg : 0 ≤ 1 - θ := sub_nonneg.mpr hθ_le_one
-  have hθ_sum : θ + (1 - θ) = 1 := by ring
-  have hc_eff : c ∈ effective_domain g := by
-    -- Convexity of `g` keeps the source comparison point finite-valued.
-    exact combo_mem_effective_domain_of_is_convex_function hproblem.g_convex
-      hxStar_eff hxk_eff hθ_mem
-  have hc_obj :
-      F c = ((((f c + (g c).toReal : ℝ))) : EReal) :=
-    mfista_objective_eq_real_of_mem_effective_domain
-      (xPoint := c) hproblem hc_eff
-  have hxk_obj :
-      F (x k) = ((((f (x k) + (g (x k)).toReal : ℝ))) : EReal) :=
-    mfista_objective_eq_real_of_mem_effective_domain
-      (xPoint := x k) hproblem hxk_eff
+  have hw_eff : w ∈ effective_domain g := by
+    -- Reuse the feasibility lemma at the exact comparison point.
+    simpa [θ, w] using
+      mfistaCombinationPoint_memEffectiveDomain
+        (hproblem := hproblem) (htraj := htraj) (hxStar := hxStar) n
+  have hw_obj :
+      composite_model_objective f.toEReal g w =
+        (((f w + (g w).toReal : ℝ)) : EReal) :=
+    mfistaObjectiveEqReal_of_memEffectiveDomain (hproblem := hproblem) hw_eff
+  have hxsucc_obj :
+      composite_model_objective f.toEReal g (x (n + 1)) =
+        (((f (x (n + 1)) + (g (x (n + 1))).toReal : ℝ)) : EReal) :=
+    mfistaObjectiveEqReal_of_memEffectiveDomain (hproblem := hproblem) hxsucc_eff
   have hxStar_obj :
-      F xStar = ((((f xStar + (g xStar).toReal : ℝ))) : EReal) :=
-    mfista_objective_eq_real_of_mem_effective_domain
-      (xPoint := xStar) hproblem hxStar_eff
+      composite_model_objective f.toEReal g xStar =
+        (((f xStar + (g xStar).toReal : ℝ)) : EReal) :=
+    mfistaObjectiveEqReal_of_memEffectiveDomain (hproblem := hproblem) hxStar_eff
   have hxStar_value :
-      F xStar = (FOpt : EReal) :=
-    mfista_objective_eq_optimal_value_of_mem_optimal_set
-      (xStar := xStar) hproblem hxStar
+      composite_model_objective f.toEReal g xStar = (FOpt : EReal) :=
+    IsConvexCompositeSmoothMinimizationProblem.objective_eq_optimalValue_of_mem_optimalSet
+      (h := hproblem.toIsConvexCompositeSmoothMinimizationProblem)
+      hxStar
   have hxStar_toReal :
       f xStar + (g xStar).toReal = FOpt := by
     have hxStar_value' :
-        ((((f xStar + (g xStar).toReal : ℝ))) : EReal) = (FOpt : EReal) := by
+        (((f xStar + (g xStar).toReal : ℝ)) : EReal) = (FOpt : EReal) := by
       simpa [hxStar_obj] using hxStar_value
     exact EReal.coe_eq_coe_iff.mp hxStar_value'
-  have hxk_toReal :
-      (F (x k)).toReal = f (x k) + (g (x k)).toReal := by
-    rw [hxk_obj, EReal.toReal_coe]
+  have hxsucc_toReal :
+      (composite_model_objective f.toEReal g (x (n + 1))).toReal =
+        f (x (n + 1)) + (g (x (n + 1))).toReal := by
+    rw [hxsucc_obj, EReal.toReal_coe]
   have hg_convexE :
-      g c ≤
-        (θ : EReal) * g xStar + ((1 - θ : ℝ) : EReal) * g (x k) := by
-    -- This is the source Jensen inequality for the nonsmooth term.
-    simpa [c, θ, add_comm, add_left_comm, add_assoc, mul_comm, mul_left_comm, mul_assoc] using
+      g w ≤
+        (θ : EReal) * g xStar + ((1 - θ : ℝ) : EReal) * g (x (n + 1)) := by
+    -- Jensen's inequality for the nonsmooth term is read on the source combination point.
+    simpa [w, θ, add_comm, add_left_comm, add_assoc, mul_comm, mul_left_comm, mul_assoc] using
       (is_convex_function_iff_segment_ineq.mp hproblem.g_convex)
-        xStar hxStar_eff (x k) hxk_eff hθ_mem
+        xStar hxStar_eff (x (n + 1)) hxsucc_eff hθ_mem
   have hg_convex :
-      (g c).toReal ≤ θ * (g xStar).toReal + (1 - θ) * (g (x k)).toReal := by
-    have hgxStar_val :
-        g xStar = ((((g xStar).toReal : ℝ)) : EReal) :=
-      (EReal.coe_toReal (mem_effective_domain.mp hxStar_eff).ne
-        (hproblem.g_proper.ne_bot xStar)).symm
-    have hgxk_val :
-        g (x k) = ((((g (x k)).toReal : ℝ)) : EReal) :=
-      (EReal.coe_toReal (mem_effective_domain.mp hxk_eff).ne
+      (g w).toReal ≤ θ * (g xStar).toReal + (1 - θ) * (g (x (n + 1))).toReal := by
+    have hgw_val :
+        g w = (((g w).toReal : ℝ) : EReal) :=
+      (EReal.coe_toReal (mem_effective_domain.mp hw_eff).ne
         (hproblem.g_proper.ne_bot _)).symm
-    have hgc_val :
-        g c = ((((g c).toReal : ℝ)) : EReal) :=
-      (EReal.coe_toReal (mem_effective_domain.mp hc_eff).ne
+    have hgxStar_val :
+        g xStar = (((g xStar).toReal : ℝ) : EReal) :=
+      (EReal.coe_toReal (mem_effective_domain.mp hxStar_eff).ne
+        (hproblem.g_proper.ne_bot _)).symm
+    have hgxsucc_val :
+        g (x (n + 1)) = (((g (x (n + 1))).toReal : ℝ) : EReal) :=
+      (EReal.coe_toReal (mem_effective_domain.mp hxsucc_eff).ne
         (hproblem.g_proper.ne_bot _)).symm
     have hg_convex' :
-        ((((g c).toReal : ℝ)) : EReal) ≤
-          (((((θ * (g xStar).toReal + (1 - θ) * (g (x k)).toReal : ℝ))) : EReal)) := by
-      rw [hgc_val, hgxStar_val, hgxk_val] at hg_convexE
+        (((g w).toReal : ℝ) : EReal) ≤
+          (((θ * (g xStar).toReal + (1 - θ) * (g (x (n + 1))).toReal : ℝ)) : EReal) := by
+      rw [hgw_val, hgxStar_val, hgxsucc_val] at hg_convexE
       simpa [EReal.coe_add, EReal.coe_mul] using hg_convexE
     exact EReal.coe_le_coe_iff.mp hg_convex'
   have hf_convex :
-      f c ≤ θ * f xStar + (1 - θ) * f (x k) := by
-    have hseg :=
-      hproblem.f_convex.2
-        (show xStar ∈ Set.univ by simp)
-        (show x k ∈ Set.univ by simp)
-        hθ_nonneg hone_sub_nonneg hθ_sum
-    -- Specialize convexity of `f` to the same source comparison point.
-    simpa [c, θ, add_comm, add_left_comm, add_assoc, mul_comm, mul_left_comm, mul_assoc] using
-      hseg
-  have hc_toReal :
-      (F c).toReal = f c + (g c).toReal := by
-    rw [hc_obj, EReal.toReal_coe]
+      f w ≤ θ * f xStar + (1 - θ) * f (x (n + 1)) := by
+    -- The smooth term is convex on `Set.univ`, so it satisfies the same Jensen bound.
+    simpa [w, θ, smul_eq_mul, mul_comm, mul_left_comm, mul_assoc] using
+      hproblem.f_convex.2 (by simp) (by simp) hθ_nonneg hone_sub_nonneg (by nlinarith)
+  have hw_toReal :
+      (composite_model_objective f.toEReal g w).toReal = f w + (g w).toReal := by
+    rw [hw_obj, EReal.toReal_coe]
   have hupper_real :
-      (F c).toReal ≤
-        (1 - θ) * ((F (x k)).toReal - FOpt) + FOpt := by
-    -- Add the smooth and nonsmooth convexity bounds, then replace `F xStar` by `FOpt`.
-    rw [hc_toReal, hxk_toReal]
+      (composite_model_objective f.toEReal g w).toReal ≤
+        (1 - θ) *
+            ((composite_model_objective f.toEReal g (x (n + 1))).toReal - FOpt) +
+          FOpt := by
+    -- Add the convex bounds for `f` and `g`, then substitute `F(x*) = FOpt`.
+    rw [hw_toReal, hxsucc_toReal]
     nlinarith [hf_convex, hg_convex, hxStar_toReal]
-  -- Return to `EReal` after the real inequality has been normalized.
-  simpa [θ, c, hc_obj] using (EReal.coe_le_coe_iff.mpr hupper_real)
+  exact hupper_real
 
-/-- Helper for Theorem 10.40: scaling the displacement from the source comparison point clears
-the reciprocal coefficient `1 / t_k` and leaves the affine vector used in the Lyapunov energy. -/
-lemma mfista_scaled_sub_comparison_point
-    (htraj : hproblem.IsMfistaTrajectory x y z t L)
-    (xStar point : E) (k : ℕ) :
-    let θ : ℝ := (t k)⁻¹
-    let c : E := θ • xStar + (1 - θ) • x k
-    (t k : ℝ) • (point - c) = (t k : ℝ) • point - (xStar + (t k - 1) • x k) := by
-  have htk_pos : 0 < t k := mfista_momentum_pos htraj k
-  have hθ : (t k : ℝ) * (t k)⁻¹ = 1 := by
-    exact mul_inv_cancel₀ htk_pos.ne'
-  have hxcoeff : (t k : ℝ) * (1 - (t k)⁻¹) = t k - 1 := by
-    -- Expand the scalar coefficient once, then cancel `t_k * t_k⁻¹`.
-    calc
-      (t k : ℝ) * (1 - (t k)⁻¹) = (t k : ℝ) - (t k : ℝ) * (t k)⁻¹ := by ring
-      _ = t k - 1 := by rw [hθ]
-  -- Expand the comparison point and collect the cleared scalar coefficients.
+omit hproblem in
+/-- Helper for Theorem 10.40: convexity of the real-valued smooth term makes the local
+linearization defect of `f.toEReal` nonnegative at every base point. -/
+lemma mfistaConvexLinearizationDefect_nonneg
+    (hfast : IsFastProximalGradientProblem f g XStar FOpt Lf)
+    {xPoint : E} (yI : interior (effective_domain f.toEReal)) :
+    (0 : EReal) ≤ ℓ[f.toEReal, xPoint, yI] := by
+  let line : ℝ →ᵃ[ℝ] E := AffineMap.lineMap (yI : E) xPoint
+  let φ : ℝ → ℝ := fun t ↦ f (line t)
+  have hconv :
+      ConvexOn ℝ (effective_domain f.toEReal) (fun z ↦ (f.toEReal z).toReal) := by
+    simpa [effective_domain, Function.toEReal] using hfast.f_convex
+  have hφ_convex :
+      ConvexOn ℝ (line ⁻¹' effective_domain f.toEReal) φ := by
+    -- Restrict the real-valued model of `f` to the segment from `yI` to `xPoint`.
+    simpa [φ, line] using hconv.comp_affineMap line
+  have hφ_zero :
+      (0 : ℝ) ∈ line ⁻¹' effective_domain f.toEReal := by
+    simpa [line] using interior_subset yI.2
+  have hφ_one :
+      (1 : ℝ) ∈ line ⁻¹' effective_domain f.toEReal := by
+    simp [line, effective_domain, Function.toEReal]
+  have hyDiff :
+      DifferentiableAt ℝ f (yI : E) :=
+    hfast.f_smooth.1 (yI : E) (by simp)
+  have hφ_deriv :
+      HasDerivAt φ
+        (inner ℝ (∇ f (yI : E)) (xPoint - (yI : E))) 0 := by
+    have hcomp :
+        HasDerivAt φ
+          (fderiv ℝ f (yI : E) (xPoint - (yI : E))) 0 := by
+      have hbase :
+          HasFDerivAt f (fderiv ℝ f (yI : E)) (line 0) := by
+        simpa [line] using hyDiff.hasFDerivAt
+      have hline : HasDerivAt line (xPoint - (yI : E)) 0 := by
+        simpa [line] using
+          (show HasDerivAt (AffineMap.lineMap (yI : E) xPoint) (xPoint - (yI : E)) (0 : ℝ) from
+            AffineMap.hasDerivAt_lineMap)
+      simpa [φ, line] using HasFDerivAt.comp_hasDerivAt 0 hbase hline
+    have hgrad :
+        fderiv ℝ f (yI : E) (xPoint - (yI : E)) =
+          inner ℝ (∇ f (yI : E)) (xPoint - (yI : E)) := by
+      simpa using
+        (show
+            fderiv ℝ f (yI : E) (xPoint - (yI : E)) =
+              inner ℝ (∇ f (yI : E)) (xPoint - (yI : E)) from
+          HasGradientAt.fderiv_apply hyDiff.hasGradientAt)
+    simpa [hgrad] using hcomp
+  have hsupport :
+      inner ℝ (∇ f (yI : E)) (xPoint - (yI : E)) ≤ f xPoint - f (yI : E) := by
+    have hsecant :
+        inner ℝ (∇ f (yI : E)) (xPoint - (yI : E)) ≤ slope φ 0 1 := by
+      -- Convexity bounds the directional derivative by the secant slope on the segment.
+      exact hφ_convex.le_slope_of_hasDerivAt hφ_zero hφ_one zero_lt_one hφ_deriv
+    simpa [φ, line, slope] using hsecant
+  have hreal :
+      0 ≤ f xPoint - f (yI : E) - inner ℝ (∇ f (yI : E)) (xPoint - (yI : E)) := by
+    linarith
+  -- Rewrite the defect once and then read the supporting-hyperplane inequality on the real layer.
+  rw [prox_gradient_linearization_defect_eq]
+  simpa [Function.toEReal] using (EReal.coe_le_coe_iff.mpr hreal)
+
+/-- Helper for Theorem 10.40: after dropping the nonnegative convex linearization defect, the
+fundamental prox-gradient inequality becomes a real inequality on finite endpoints. -/
+lemma mfistaAcceptedProxGapReal
+    {xPoint yPoint : E} {Lbar : PosReal}
+    (hxPoint : xPoint ∈ effective_domain g)
+    (haccepts :
+      let xPlus := hproblem.proxPoint Lbar yPoint
+      f xPlus ≤
+        f yPoint +
+          inner ℝ (∇ f yPoint) (xPlus - yPoint) +
+          ((Lbar : ℝ) / 2) * ‖xPlus - yPoint‖ ^ (2 : ℕ)) :
+    let yI := interior_effective_domain_point_of_real f yPoint
+    let xPlus : E := hproblem.proxPoint Lbar yI
+    ((Lbar : ℝ) / 2) * ‖xPoint - xPlus‖ ^ (2 : ℕ) -
+        ((Lbar : ℝ) / 2) * ‖xPoint - yPoint‖ ^ (2 : ℕ) ≤
+      (composite_model_objective f.toEReal g xPoint).toReal -
+        (composite_model_objective f.toEReal g xPlus).toReal := by
+  -- Local instance justification (owner reuse): the prox-gap owners are stated in the shared
+  -- prox-gradient API, so we expose the regularity data already carried by `hproblem`.
+  letI : IsProperExtendedRealFunction g := hproblem.g_proper
+  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
+  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
+  let yI := interior_effective_domain_point_of_real f yPoint
+  let xPlus : E := hproblem.proxPoint Lbar yI
+  have hxPlus :
+      xPlus ∈ effective_domain g := by
+    -- The prox-gradient step at the real base point always lands in `effective_domain g`.
+    simpa [xPlus, yI, IsFastProximalGradientProblem.proxPoint] using
+      (prox_grad_step_mem_effective_domain_g yI Lbar)
+  have haccepts' :
+      proximal_gradient_backtracking_B2_accepts f.toEReal g Lbar yI := by
+    -- Repackage the displayed upper model as the canonical B2 acceptance predicate.
+    simpa [yI, IsFastProximalGradientProblem.proxPoint] using
+      (proximal_gradient_backtracking_B2_accepts_iff_fista_upper_model f g Lbar yPoint).2 haccepts
+  have hfund :
+      (((((Lbar : ℝ) / 2) * ‖xPoint - xPlus‖ ^ (2 : ℕ) -
+          ((Lbar : ℝ) / 2) * ‖xPoint - yPoint‖ ^ (2 : ℕ) : ℝ)) : EReal) +
+        ℓ[f.toEReal, xPoint, yI] ≤
+        composite_model_objective f.toEReal g xPoint -
+          composite_model_objective f.toEReal g xPlus := by
+    -- Specialize the fundamental prox-gradient inequality at `xPoint` and the accepted point.
+    simpa [xPlus, yI, IsFastProximalGradientProblem.proxPoint] using
+      (fundamental_prox_grad_inequality
+        (f := f.toEReal) (g := g) xPoint yI Lbar haccepts')
+  have hdefect_nonneg :
+      (0 : EReal) ≤ ℓ[f.toEReal, xPoint, yI] := by
+    -- Convexity lets us drop the linearization defect from the accepted-step estimate.
+    simpa [yI] using
+      (mfistaConvexLinearizationDefect_nonneg
+        (hfast := hproblem) (xPoint := xPoint) (yI := yI))
+  have hstepE :
+      (((((Lbar : ℝ) / 2) * ‖xPoint - xPlus‖ ^ (2 : ℕ) -
+          ((Lbar : ℝ) / 2) * ‖xPoint - yPoint‖ ^ (2 : ℕ) : ℝ)) : EReal) ≤
+        composite_model_objective f.toEReal g xPoint -
+          composite_model_objective f.toEReal g xPlus := by
+    have hbase :
+        (((((Lbar : ℝ) / 2) * ‖xPoint - xPlus‖ ^ (2 : ℕ) -
+            ((Lbar : ℝ) / 2) * ‖xPoint - yPoint‖ ^ (2 : ℕ) : ℝ)) : EReal) ≤
+          (((((Lbar : ℝ) / 2) * ‖xPoint - xPlus‖ ^ (2 : ℕ) -
+              ((Lbar : ℝ) / 2) * ‖xPoint - yPoint‖ ^ (2 : ℕ) : ℝ)) : EReal) +
+            ℓ[f.toEReal, xPoint, yI] := by
+      exact le_add_of_nonneg_right hdefect_nonneg
+    exact le_trans hbase hfund
+  have hstepE' := hstepE
+  -- Rewrite the finite objective difference as the canonical real subtraction before stripping
+  -- the final `EReal` coercion.
+  rw [mfistaObjectiveDiff_eq_coe_sub_of_memEffectiveDomain
+    (hproblem := hproblem) (xPoint := xPlus) (zPoint := xPoint) hxPlus hxPoint] at hstepE'
+  exact EReal.coe_le_coe_iff.mp hstepE'
+
+/-- Helper for Theorem 10.40: the MFISTA extrapolation formula gives the exact predecessor
+transport from the pre-step vector to the previous residual. -/
+lemma mfistaPrestepVector_eq_previousResidual
+    (htraj : hproblem.IsMfistaTrajectory x y z L)
+    (n : ℕ) :
+    fista_momentum_sequence (n + 1) • y (n + 1) -
+        (xStar + (fista_momentum_sequence (n + 1) - 1) • x (n + 1)) =
+      mfistaResidualToOptimal x z xStar n :=
+  by
+  -- Local instance justification (owner reuse): the trajectory projection theorem is stated for
+  -- the raw MFISTA owner, so we expose the regularity witnesses already stored in `hproblem`.
+  letI : IsProperExtendedRealFunction g := hproblem.g_proper
+  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
+  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
+  have htnNext_pos : 0 < fista_momentum_sequence (n + 1) := by
+    exact lt_of_lt_of_le zero_lt_one (mfistaMomentum_one_le (n + 1))
+  have hmul_z :
+      fista_momentum_sequence (n + 1) *
+          (fista_momentum_sequence n / fista_momentum_sequence (n + 1)) =
+        fista_momentum_sequence n := by
+    field_simp [htnNext_pos.ne']
+  have hmul_x :
+      fista_momentum_sequence (n + 1) *
+          ((fista_momentum_sequence n - 1) / fista_momentum_sequence (n + 1)) =
+        fista_momentum_sequence n - 1 := by
+    field_simp [htnNext_pos.ne']
+  -- Route correction: rewrite the MFISTA pre-step vector through the exact `y_succ` formula once,
+  -- then collapse the scaled coefficients back to the previous residual.
+  rw [is_mfista_trajectory.y_succ htraj n, mfistaResidualToOptimal]
+  simp_rw [smul_add, smul_sub, smul_smul]
+  rw [hmul_z, hmul_x]
+  simp_rw [sub_eq_add_neg]
+  module
+
+/-- Helper for Theorem 10.40: the accepted stepsize rule supplies both monotonicity of
+`L_n` and the uniform cap `L_n ≤ α L_f`. -/
+lemma mfistaStepsizeControl
+    (hrule : hproblem.SublinearRateStepsizeRule y L α) :
+    (∀ n, (L n : ℝ) ≤ (L (n + 1) : ℝ)) ∧
+      (∀ n, (L n : ℝ) ≤ α * (Lf : ℝ)) :=
+  by
+  constructor
+  · intro n
+    rcases hrule with ⟨_, hLf_rule⟩ | ⟨_, s, η, _, hB3⟩
+    · -- In the constant branch, all stepsizes are exactly `L_f`.
+      rw [hLf_rule n, hLf_rule (n + 1)]
+    · -- In the B3 branch, each accepted stepsize is at least the previous accepted stepsize.
+      -- Local instance justification (owner reuse): the local B3 bounds are stated in the shared
+      -- prox-gradient API, so we expose the regularity data carried by `hproblem`.
+      letI : IsProperExtendedRealFunction g := hproblem.g_proper
+      -- Local instance justification (owner reuse): the same B3 bridge also expects the
+      -- closedness witness from the standing fast-problem assumptions.
+      letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
+      -- Local instance justification (owner reuse): the same B3 bridge finally expects the
+      -- convexity witness already stored in `hproblem`.
+      letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
+      simpa [proximal_gradient_backtracking_B2_previous_stepsize_succ] using
+        (backtracking_B3_local_stepsize_bounds
+          (f := f) (g := g) (Lf := Lf)
+          hproblem.f_smooth hB3 (n + 1)).1
+  · intro n
+    rcases hrule with ⟨hα, hLf_rule⟩ | ⟨hLf_pos, s, η, hα, hB3⟩
+    · -- In the constant branch, the stepsize rule is literally `L_n = L_f` and `α = 1`.
+      rw [hα, hLf_rule n]
+      simpa using (le_rfl : (Lf : ℝ) ≤ (Lf : ℝ))
+    · -- In the B3 branch, combine Remark 10.32 with the textbook identity
+      -- `α L_f = max {η L_f, s}`.
+      rcases hproblem.uses_backtracking_procedure_B3_rule_stepsize_bounds s η hB3 n with
+        ⟨_, hLn_upper⟩
+      calc
+        (L n : ℝ) ≤ max ((η : ℝ) * (Lf : ℝ)) (s : ℝ) := hLn_upper
+        _ = α * (Lf : ℝ) := by
+          exact mfistaAlphaMulLf_eq_maxStepsize (Lf := Lf) hLf_pos hα
+
+/-- Helper for Theorem 10.40: the first source energy is bounded by the initial distance to an
+optimizer on the exact source surface `2 / L_0`. -/
+lemma mfistaInitialEnergyBound
+    (htraj : hproblem.IsMfistaTrajectory x y z L)
+    (hrule : hproblem.SublinearRateStepsizeRule y L α)
+    (hxStar : xStar ∈ XStar) :
+    let vR : ℕ → ℝ :=
+      fun n ↦ (composite_model_objective f.toEReal g (x n)).toReal - FOpt
+    ‖mfistaResidualToOptimal x z xStar 0‖ ^ (2 : ℕ) +
+        (2 / (L 0 : ℝ)) * fista_momentum_sequence 0 ^ (2 : ℕ) * vR 1 ≤
+      ‖x 0 - xStar‖ ^ (2 : ℕ) := by
+  -- Local instance justification (owner reuse): the prox-step finiteness theorem used to identify
+  -- `z 0` is stated in the shared prox-gradient API.
+  letI : IsProperExtendedRealFunction g := hproblem.g_proper
+  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
+  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
   dsimp
-  simp_rw [smul_sub, smul_add, smul_smul]
-  rw [hθ, hxcoeff]
-  simp [sub_eq_add_neg, add_assoc, add_left_comm, add_comm]
+  have hL0_pos : 0 < (L 0 : ℝ) := PosReal.coe_pos (L 0)
+  have hxStar_eff :
+      xStar ∈ effective_domain g :=
+    mfistaOptimalPoint_memEffectiveDomain (hproblem := hproblem) hxStar
+  have hx1_eff :
+      x 1 ∈ effective_domain g :=
+    mfistaPositiveIterate_memEffectiveDomainG (hproblem := hproblem) htraj 0
+  have hz0_eff :
+      z 0 ∈ effective_domain g := by
+    simpa [is_mfista_trajectory.z_eq htraj 0, IsFastProximalGradientProblem.proxPoint] using
+      (prox_grad_step_mem_effective_domain_g
+        (interior_effective_domain_point_of_real f (y 0))
+        (L 0))
+  have hxStar_value :
+      composite_model_objective f.toEReal g xStar = (FOpt : EReal) :=
+    IsConvexCompositeSmoothMinimizationProblem.objective_eq_optimalValue_of_mem_optimalSet
+      (h := hproblem.toIsConvexCompositeSmoothMinimizationProblem)
+      hxStar
+  have hxStar_toReal :
+      (composite_model_objective f.toEReal g xStar).toReal = FOpt := by
+    rw [hxStar_value, EReal.toReal_coe]
+  have hxStar_sum_toReal :
+      f xStar + (g xStar).toReal = FOpt := by
+    rw [← hxStar_toReal]
+    rw [mfistaObjectiveEqReal_of_memEffectiveDomain (hproblem := hproblem) hxStar_eff, EReal.toReal_coe]
+  have haccepted0 :
+      ((L 0 : ℝ) / 2) * ‖xStar - z 0‖ ^ (2 : ℕ) -
+          ((L 0 : ℝ) / 2) * ‖xStar - x 0‖ ^ (2 : ℕ) ≤
+        FOpt - (composite_model_objective f.toEReal g (z 0)).toReal := by
+    have hgap0 :=
+      mfistaAcceptedProxGapReal
+        (hproblem := hproblem) (xPoint := xStar) (yPoint := y 0) (Lbar := L 0)
+        hxStar_eff
+        (hproblem.sublinearRateStepsizeRule_accepts hrule 0)
+    rw [mfistaObjectiveEqReal_of_memEffectiveDomain (hproblem := hproblem) hxStar_eff, EReal.toReal_coe] at hgap0
+    rw [hxStar_sum_toReal] at hgap0
+    -- Normalize the optimizer value, the initial base point, and the prox-point `z 0`.
+    simpa [interior_effective_domain_point_of_real,
+      is_mfista_trajectory.y_zero htraj, is_mfista_trajectory.z_eq htraj 0,
+      IsFastProximalGradientProblem.proxPoint, norm_sub_rev] using hgap0
+  have hx1_le_z0 :
+      (composite_model_objective f.toEReal g (x 1)).toReal ≤
+        (composite_model_objective f.toEReal g (z 0)).toReal := by
+    have hx1_le_z0E :
+        composite_model_objective f.toEReal g (x 1) ≤
+          composite_model_objective f.toEReal g (z 0) :=
+      is_mfista_trajectory_x_next_objective_le_prox htraj 0
+    have hx1_toReal :
+        (composite_model_objective f.toEReal g (x 1)).toReal =
+          f (x 1) + (g (x 1)).toReal := by
+      rw [mfistaObjectiveEqReal_of_memEffectiveDomain (hproblem := hproblem) hx1_eff, EReal.toReal_coe]
+    have hz0_toReal :
+        (composite_model_objective f.toEReal g (z 0)).toReal =
+          f (z 0) + (g (z 0)).toReal := by
+      rw [mfistaObjectiveEqReal_of_memEffectiveDomain (hproblem := hproblem) hz0_eff, EReal.toReal_coe]
+    rw [mfistaObjectiveEqReal_of_memEffectiveDomain (hproblem := hproblem) hx1_eff,
+      mfistaObjectiveEqReal_of_memEffectiveDomain (hproblem := hproblem) hz0_eff] at hx1_le_z0E
+    rw [hx1_toReal, hz0_toReal]
+    exact EReal.coe_le_coe_iff.mp hx1_le_z0E
+  have hx1_gap_le_z0_gap :
+      (composite_model_objective f.toEReal g (x 1)).toReal - FOpt ≤
+        (composite_model_objective f.toEReal g (z 0)).toReal - FOpt := by
+    linarith
+  have haccepted0_scaled :
+      ‖z 0 - xStar‖ ^ (2 : ℕ) -
+          ‖x 0 - xStar‖ ^ (2 : ℕ) ≤
+        (2 / (L 0 : ℝ)) *
+          (FOpt - (composite_model_objective f.toEReal g (z 0)).toReal) := by
+    have hmult :
+        (2 / (L 0 : ℝ)) *
+            (((L 0 : ℝ) / 2) * ‖xStar - z 0‖ ^ (2 : ℕ) -
+              ((L 0 : ℝ) / 2) * ‖xStar - x 0‖ ^ (2 : ℕ)) ≤
+          (2 / (L 0 : ℝ)) *
+            (FOpt - (composite_model_objective f.toEReal g (z 0)).toReal) := by
+      exact mul_le_mul_of_nonneg_left haccepted0 (by positivity)
+    -- Clear the positive factor `L₀ / 2` from the accepted prox-gap inequality.
+    have hmult' := hmult
+    field_simp [hL0_pos.ne'] at hmult'
+    have hmult'' :
+        (‖z 0 - xStar‖ ^ (2 : ℕ) - ‖x 0 - xStar‖ ^ (2 : ℕ)) * (L 0 : ℝ) ≤
+          2 * (FOpt - (composite_model_objective f.toEReal g (z 0)).toReal) := by
+      simpa [norm_sub_rev, mul_comm, mul_left_comm, mul_assoc] using hmult'
+    have haccepted0_scaled' :
+        ‖z 0 - xStar‖ ^ (2 : ℕ) - ‖x 0 - xStar‖ ^ (2 : ℕ) ≤
+          (2 * (FOpt - (composite_model_objective f.toEReal g (z 0)).toReal)) / (L 0 : ℝ) := by
+      exact (le_div_iff₀ hL0_pos).2 <| by
+        simpa [mul_comm, mul_left_comm, mul_assoc] using hmult''
+    simpa [div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm] using haccepted0_scaled'
+  have hbase_z0 :
+      ‖z 0 - xStar‖ ^ (2 : ℕ) +
+          (2 / (L 0 : ℝ)) *
+            ((composite_model_objective f.toEReal g (z 0)).toReal - FOpt) ≤
+        ‖x 0 - xStar‖ ^ (2 : ℕ) := by
+    -- Rearranging the scaled accepted prox-gap gives the exact first source seed at `z 0`.
+    nlinarith [haccepted0_scaled]
+  have hbase_x1 :
+      ‖z 0 - xStar‖ ^ (2 : ℕ) +
+          (2 / (L 0 : ℝ)) *
+            ((composite_model_objective f.toEReal g (x 1)).toReal - FOpt) ≤
+        ‖x 0 - xStar‖ ^ (2 : ℕ) := by
+    have hscale :
+        (2 / (L 0 : ℝ)) *
+            ((composite_model_objective f.toEReal g (x 1)).toReal - FOpt) ≤
+          (2 / (L 0 : ℝ)) *
+            ((composite_model_objective f.toEReal g (z 0)).toReal - FOpt) := by
+      exact mul_le_mul_of_nonneg_left hx1_gap_le_z0_gap (by positivity)
+    linarith
+  -- Collapse the residual `u_0 = z^0 - x*` and the seed momentum value `t_0 = 1`.
+  simpa [mfistaResidualToOptimal, fista_momentum_sequence_zero, norm_sub_rev] using hbase_x1
 
-/-- Helper for Theorem 10.40: applying the scaled comparison-point rewrite to `z^k` recovers the
-source post-step residual `u^(k+1)`. -/
-lemma mfista_scaled_step_sub_comparison_point_eq_residual
-    (htraj : hproblem.IsMfistaTrajectory x y z t L)
-    (xStar : E) (k : ℕ) :
-    let θ : ℝ := (t k)⁻¹
-    let c : E := θ • xStar + (1 - θ) • x k
-    (t k : ℝ) • (z k - c) =
-      mfista_residual_to_optimum (x := x) (z := z) (t := t) xStar (k + 1) := by
-  -- The generic comparison-point rewrite matches the residual definition exactly at `z^k`.
-  simpa [mfista_residual_to_optimum] using
-    (mfista_scaled_sub_comparison_point
-      (htraj := htraj) (xStar := xStar) (point := z k) k)
+/-- Helper for Theorem 10.40: the source comparison point at step `n + 1` satisfies the exact
+current-step objective-gap estimate on the real layer. -/
+lemma mfistaCurrentStepGapUpperBound
+    (htraj : hproblem.IsMfistaTrajectory x y z L)
+    (hxStar : xStar ∈ XStar)
+    (n : ℕ) :
+    let vR : ℕ → ℝ :=
+      fun m ↦ (composite_model_objective f.toEReal g (x m)).toReal - FOpt
+    let θ : ℝ := 1 / fista_momentum_sequence (n + 1)
+    let w : E := θ • xStar + (1 - θ) • x (n + 1)
+    (composite_model_objective f.toEReal g w).toReal -
+        (composite_model_objective f.toEReal g (z (n + 1))).toReal ≤
+      (1 - θ) * vR (n + 1) - vR (n + 2) := by
+  -- Local instance justification (owner reuse): the prox-point finiteness theorem for `z (n + 1)`
+  -- lives in the shared prox-gradient API, so we expose the regularity data already in `hproblem`.
+  letI : IsProperExtendedRealFunction g := hproblem.g_proper
+  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
+  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
+  dsimp
+  let vR : ℕ → ℝ :=
+    fun m ↦ (composite_model_objective f.toEReal g (x m)).toReal - FOpt
+  let θ : ℝ := 1 / fista_momentum_sequence (n + 1)
+  let w : E := θ • xStar + (1 - θ) • x (n + 1)
+  have hw_upper :
+      (composite_model_objective f.toEReal g w).toReal ≤
+        (1 - θ) * vR (n + 1) + FOpt := by
+    -- First bound the comparison-point objective by convexity at the source combination point.
+    simpa [vR, θ, w] using
+      (mfistaCombinationObjectiveUpperBoundReal
+        (hproblem := hproblem) (htraj := htraj) (hxStar := hxStar) n)
+  have hxnext_eff :
+      x (n + 2) ∈ effective_domain g :=
+    mfistaPositiveIterate_memEffectiveDomainG (hproblem := hproblem) htraj (n + 1)
+  have hzsucc_eff :
+      z (n + 1) ∈ effective_domain g := by
+    -- The prox-gradient point at the accepted step is also finite for `g`.
+    simpa [is_mfista_trajectory.z_eq htraj (n + 1), IsFastProximalGradientProblem.proxPoint] using
+      (prox_grad_step_mem_effective_domain_g
+        (interior_effective_domain_point_of_real f (y (n + 1)))
+        (L (n + 1)))
+  have hchooseE :
+      composite_model_objective f.toEReal g (x (n + 2)) ≤
+        composite_model_objective f.toEReal g (z (n + 1)) :=
+    is_mfista_trajectory_x_next_objective_le_prox htraj (n + 1)
+  have hchoose_real :
+      (composite_model_objective f.toEReal g (x (n + 2))).toReal ≤
+        (composite_model_objective f.toEReal g (z (n + 1))).toReal := by
+    -- Convert the accepted-step objective comparison to the finite real layer.
+    have hchoose_real' :
+        f (x (n + 2)) + (g (x (n + 2))).toReal ≤
+          f (z (n + 1)) + (g (z (n + 1))).toReal := by
+      rw [mfistaObjectiveEqReal_of_memEffectiveDomain (hproblem := hproblem) hxnext_eff,
+        mfistaObjectiveEqReal_of_memEffectiveDomain (hproblem := hproblem) hzsucc_eff] at hchooseE
+      exact EReal.coe_le_coe_iff.mp hchooseE
+    simpa [mfistaObjectiveEqReal_of_memEffectiveDomain (hproblem := hproblem) hxnext_eff,
+      mfistaObjectiveEqReal_of_memEffectiveDomain (hproblem := hproblem) hzsucc_eff,
+      EReal.toReal_coe] using hchoose_real'
+  have hsubtract :
+      (composite_model_objective f.toEReal g w).toReal -
+          (composite_model_objective f.toEReal g (z (n + 1))).toReal ≤
+        (composite_model_objective f.toEReal g w).toReal -
+          (composite_model_objective f.toEReal g (x (n + 2))).toReal := by
+    -- Then replace `F(z^(n+1))` by the smaller chosen objective `F(x^(n+2))`.
+    linarith
+  have hgoal :
+      (composite_model_objective f.toEReal g w).toReal -
+          (composite_model_objective f.toEReal g (x (n + 2))).toReal ≤
+        (1 - θ) * vR (n + 1) - vR (n + 2) := by
+    -- Finally rewrite the terminal objective through the shifted real gap `vR (n + 2)`.
+    dsimp [vR] at hw_upper ⊢
+    linarith
+  exact le_trans hsubtract hgoal
 
-/- Theorem 10.40 is `source-facing` in the MFISTA convergence analysis.
+/-- Helper for Theorem 10.40: combining the accepted prox-gap with the current-step objective
+bound yields the exact shared-denominator Lyapunov balance. -/
+lemma mfistaAcceptedStepEnergyBalance
+    (htraj : hproblem.IsMfistaTrajectory x y z L)
+    (hrule : hproblem.SublinearRateStepsizeRule y L α)
+    (hxStar : xStar ∈ XStar)
+    (n : ℕ) :
+    let vR : ℕ → ℝ :=
+      fun m ↦ (composite_model_objective f.toEReal g (x m)).toReal - FOpt
+    ‖mfistaResidualToOptimal x z xStar (n + 1)‖ ^ (2 : ℕ) +
+        (2 / (L (n + 1) : ℝ)) *
+          fista_momentum_sequence (n + 1) ^ (2 : ℕ) * vR (n + 2) ≤
+      ‖mfistaResidualToOptimal x z xStar n‖ ^ (2 : ℕ) +
+        (2 / (L (n + 1) : ℝ)) *
+          fista_momentum_sequence n ^ (2 : ℕ) * vR (n + 1) := by
+  -- Local instance justification (owner reuse): the accepted prox-gap bridge is stated in the
+  -- shared prox-gradient API, so we expose the regularity data already stored in `hproblem`.
+  letI : IsProperExtendedRealFunction g := hproblem.g_proper
+  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
+  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
+  dsimp
+  let vR : ℕ → ℝ :=
+    fun m ↦ (composite_model_objective f.toEReal g (x m)).toReal - FOpt
+  let t : ℝ := fista_momentum_sequence (n + 1)
+  let θ : ℝ := 1 / t
+  let w : E := θ • xStar + (1 - θ) • x (n + 1)
+  have hL_pos : 0 < (L (n + 1) : ℝ) := PosReal.coe_pos (L (n + 1))
+  have ht_one_le : (1 : ℝ) ≤ t := by
+    simpa [t] using mfistaMomentum_one_le (n + 1)
+  have ht_pos : 0 < t := lt_of_lt_of_le zero_lt_one ht_one_le
+  have hw_eff :
+      w ∈ effective_domain g := by
+    -- The accepted prox-gap is applied at the same source comparison point.
+    simpa [t, θ, w] using
+      (mfistaCombinationPoint_memEffectiveDomain
+        (hproblem := hproblem) (htraj := htraj) (hxStar := hxStar) n)
+  have hprox :
+      ((L (n + 1) : ℝ) / 2) * ‖w - z (n + 1)‖ ^ (2 : ℕ) -
+          ((L (n + 1) : ℝ) / 2) * ‖w - y (n + 1)‖ ^ (2 : ℕ) ≤
+        (composite_model_objective f.toEReal g w).toReal -
+          (composite_model_objective f.toEReal g (z (n + 1))).toReal := by
+    -- Read the accepted prox-gap on the real layer at step `n + 1`.
+    simpa [w, θ, interior_effective_domain_point_of_real,
+      is_mfista_trajectory.z_eq htraj (n + 1),
+      IsFastProximalGradientProblem.proxPoint] using
+      (mfistaAcceptedProxGapReal
+        (hproblem := hproblem)
+        (xPoint := w) (yPoint := y (n + 1)) (Lbar := L (n + 1))
+        hw_eff
+        (hproblem.sublinearRateStepsizeRule_accepts hrule (n + 1)))
+  have hobj :
+      (composite_model_objective f.toEReal g w).toReal -
+          (composite_model_objective f.toEReal g (z (n + 1))).toReal ≤
+        (1 - θ) * vR (n + 1) - vR (n + 2) := by
+    -- The current-step objective side is already packaged in the source normal form.
+    simpa [vR, t, θ, w] using
+      (mfistaCurrentStepGapUpperBound
+        (hproblem := hproblem) (htraj := htraj) (hxStar := hxStar) n)
+  have hraw :
+      ((L (n + 1) : ℝ) / 2) * ‖w - z (n + 1)‖ ^ (2 : ℕ) -
+          ((L (n + 1) : ℝ) / 2) * ‖w - y (n + 1)‖ ^ (2 : ℕ) ≤
+        (1 - θ) * vR (n + 1) - vR (n + 2) := by
+    -- Compose the accepted prox-gap with the current-step objective estimate.
+    exact le_trans hprox hobj
+  have hscaled :
+      t ^ (2 : ℕ) *
+          (((L (n + 1) : ℝ) / 2) * ‖w - z (n + 1)‖ ^ (2 : ℕ) -
+            ((L (n + 1) : ℝ) / 2) * ‖w - y (n + 1)‖ ^ (2 : ℕ)) ≤
+        t ^ (2 : ℕ) * ((1 - θ) * vR (n + 1) - vR (n + 2)) := by
+    -- Scale the whole inequality by `t_(n+1)^2`, matching the source Lyapunov normalization.
+    exact mul_le_mul_of_nonneg_left hraw (by positivity)
+  have hw_scaled :
+      t • w = xStar + (t - 1) • x (n + 1) := by
+    -- Rewrite the scaled comparison point into the exact source affine surface.
+    have ht_ne : t ≠ 0 := ne_of_gt ht_pos
+    have ht_div : t * (1 / t) = 1 := by
+      field_simp [ht_ne]
+    have ht_one_sub : t * (1 - 1 / t) = t - 1 := by
+      field_simp [ht_ne]
+    calc
+      t • w = t • (θ • xStar + (1 - θ) • x (n + 1)) := by rfl
+      _ = (t * θ) • xStar + (t * (1 - θ)) • x (n + 1) := by
+        simp [smul_add, smul_smul]
+      _ = xStar + (t - 1) • x (n + 1) := by
+        dsimp [θ]
+        rw [ht_div, ht_one_sub, one_smul]
+  have hpost_vector :
+      t • (w - z (n + 1)) = - mfistaResidualToOptimal x z xStar (n + 1) := by
+    -- The post-step vector is exactly the residual at index `n + 1`, up to sign.
+    calc
+      t • (w - z (n + 1)) = t • w - t • z (n + 1) := by simp [smul_sub]
+      _ = (xStar + (t - 1) • x (n + 1)) - t • z (n + 1) := by rw [hw_scaled]
+      _ = -(t • z (n + 1) - (xStar + (t - 1) • x (n + 1))) := by abel
+      _ = - mfistaResidualToOptimal x z xStar (n + 1) := by
+        simp [mfistaResidualToOptimal, t]
+  have hpre_vector :
+      t • (w - y (n + 1)) = - mfistaResidualToOptimal x z xStar n := by
+    -- The pre-step vector collapses to the previous residual via the MFISTA extrapolation rule.
+    calc
+      t • (w - y (n + 1)) = t • w - t • y (n + 1) := by simp [smul_sub]
+      _ = (xStar + (t - 1) • x (n + 1)) - t • y (n + 1) := by rw [hw_scaled]
+      _ = -(t • y (n + 1) - (xStar + (t - 1) • x (n + 1))) := by abel
+      _ = - mfistaResidualToOptimal x z xStar n := by
+        simpa [t] using
+          congrArg (fun v : E ↦ -v)
+            (mfistaPrestepVector_eq_previousResidual
+              (hproblem := hproblem) (htraj := htraj) (xStar := xStar) n)
+  have hpost :
+      t ^ (2 : ℕ) * ‖w - z (n + 1)‖ ^ (2 : ℕ) =
+        ‖mfistaResidualToOptimal x z xStar (n + 1)‖ ^ (2 : ℕ) := by
+    -- Rewrite the post-step norm into the residual norm at index `n + 1`.
+    calc
+      t ^ (2 : ℕ) * ‖w - z (n + 1)‖ ^ (2 : ℕ) =
+          ‖t • (w - z (n + 1))‖ ^ (2 : ℕ) := by
+        rw [norm_smul]
+        have ht_norm : ‖t‖ = t := Real.norm_of_nonneg (le_of_lt ht_pos)
+        rw [ht_norm]
+        ring
+      _ = ‖mfistaResidualToOptimal x z xStar (n + 1)‖ ^ (2 : ℕ) := by
+        rw [hpost_vector]
+        simp
+  have hpre :
+      t ^ (2 : ℕ) * ‖w - y (n + 1)‖ ^ (2 : ℕ) =
+        ‖mfistaResidualToOptimal x z xStar n‖ ^ (2 : ℕ) := by
+    -- Rewrite the pre-step norm into the previous residual norm.
+    calc
+      t ^ (2 : ℕ) * ‖w - y (n + 1)‖ ^ (2 : ℕ) =
+          ‖t • (w - y (n + 1))‖ ^ (2 : ℕ) := by
+        rw [norm_smul]
+        have ht_norm : ‖t‖ = t := Real.norm_of_nonneg (le_of_lt ht_pos)
+        rw [ht_norm]
+        ring
+      _ = ‖mfistaResidualToOptimal x z xStar n‖ ^ (2 : ℕ) := by
+        rw [hpre_vector]
+        simp
+  have hcoef_gap :
+      t ^ (2 : ℕ) * (1 - θ) = fista_momentum_sequence n ^ (2 : ℕ) := by
+    have ht_ne : t ≠ 0 := ne_of_gt ht_pos
+    -- Normalize the source scalar coefficient `t_(n+1)^2 (1 - 1 / t_(n+1))`.
+    calc
+      t ^ (2 : ℕ) * (1 - θ) = t ^ (2 : ℕ) - t := by
+        dsimp [θ]
+        field_simp [pow_two, ht_ne]
+      _ = fista_momentum_sequence n ^ (2 : ℕ) := by
+        simpa [t] using mfistaMomentum_sq_sub_eq_prev_sq n
+  have hscaled' :
+      ((L (n + 1) : ℝ) / 2) *
+          (t ^ (2 : ℕ) * ‖w - z (n + 1)‖ ^ (2 : ℕ)) -
+          ((L (n + 1) : ℝ) / 2) *
+            (t ^ (2 : ℕ) * ‖w - y (n + 1)‖ ^ (2 : ℕ)) ≤
+        (t ^ (2 : ℕ) * (1 - θ)) * vR (n + 1) -
+          t ^ (2 : ℕ) * vR (n + 2) := by
+    -- Expand the scaled inequality so the norm and scalar transports can be rewritten separately.
+    simpa [sub_eq_add_neg, mul_add, add_mul, mul_sub, sub_mul,
+      mul_assoc, mul_left_comm, mul_comm] using hscaled
+  have hrewritten :
+      ((L (n + 1) : ℝ) / 2) *
+          ‖mfistaResidualToOptimal x z xStar (n + 1)‖ ^ (2 : ℕ) -
+          ((L (n + 1) : ℝ) / 2) *
+            ‖mfistaResidualToOptimal x z xStar n‖ ^ (2 : ℕ) ≤
+        fista_momentum_sequence n ^ (2 : ℕ) * vR (n + 1) -
+          fista_momentum_sequence (n + 1) ^ (2 : ℕ) * vR (n + 2) := by
+    -- Put the scaled balance into the exact source residual and momentum notation.
+    have hrewritten' := hscaled'
+    rw [hpost, hpre, hcoef_gap] at hrewritten'
+    simpa [t] using hrewritten'
+  -- Divide the source balance by `L_(n+1) / 2` to recover the shared-denominator energy step.
+  have hmult :
+      (2 / (L (n + 1) : ℝ)) *
+          ((((L (n + 1) : ℝ) / 2) *
+              ‖mfistaResidualToOptimal x z xStar (n + 1)‖ ^ (2 : ℕ) -
+            ((L (n + 1) : ℝ) / 2) *
+              ‖mfistaResidualToOptimal x z xStar n‖ ^ (2 : ℕ))) ≤
+        (2 / (L (n + 1) : ℝ)) *
+          (fista_momentum_sequence n ^ (2 : ℕ) * vR (n + 1) -
+            fista_momentum_sequence (n + 1) ^ (2 : ℕ) * vR (n + 2)) := by
+    exact mul_le_mul_of_nonneg_left hrewritten (by positivity)
+  -- Clear the positive factor `L_(n+1) / 2` after scaling the source balance.
+  have htwice :
+      (L (n + 1) : ℝ) * ‖mfistaResidualToOptimal x z xStar (n + 1)‖ ^ (2 : ℕ) -
+          (L (n + 1) : ℝ) * ‖mfistaResidualToOptimal x z xStar n‖ ^ (2 : ℕ) ≤
+        2 *
+          (fista_momentum_sequence n ^ (2 : ℕ) * vR (n + 1) -
+            fista_momentum_sequence (n + 1) ^ (2 : ℕ) * vR (n + 2)) := by
+    nlinarith [hrewritten]
+  have hstep_diff :
+      ‖mfistaResidualToOptimal x z xStar (n + 1)‖ ^ (2 : ℕ) -
+          ‖mfistaResidualToOptimal x z xStar n‖ ^ (2 : ℕ) ≤
+        (2 *
+            (fista_momentum_sequence n ^ (2 : ℕ) * vR (n + 1) -
+              fista_momentum_sequence (n + 1) ^ (2 : ℕ) * vR (n + 2))) /
+          (L (n + 1) : ℝ) := by
+    have htwice' :
+        (‖mfistaResidualToOptimal x z xStar (n + 1)‖ ^ (2 : ℕ) -
+            ‖mfistaResidualToOptimal x z xStar n‖ ^ (2 : ℕ)) *
+            (L (n + 1) : ℝ) ≤
+          2 *
+            (fista_momentum_sequence n ^ (2 : ℕ) * vR (n + 1) -
+              fista_momentum_sequence (n + 1) ^ (2 : ℕ) * vR (n + 2)) := by
+      simpa [mul_sub, mul_comm, mul_left_comm, mul_assoc] using htwice
+    exact (le_div_iff₀ hL_pos).2 <| by
+      exact htwice'
+  have hstep_diff' :
+      ‖mfistaResidualToOptimal x z xStar (n + 1)‖ ^ (2 : ℕ) -
+          ‖mfistaResidualToOptimal x z xStar n‖ ^ (2 : ℕ) ≤
+        (2 / (L (n + 1) : ℝ)) *
+            fista_momentum_sequence n ^ (2 : ℕ) * vR (n + 1) -
+          (2 / (L (n + 1) : ℝ)) *
+            fista_momentum_sequence (n + 1) ^ (2 : ℕ) * vR (n + 2) := by
+    have hrewrite :
+        (2 *
+            (fista_momentum_sequence n ^ (2 : ℕ) * vR (n + 1) -
+              fista_momentum_sequence (n + 1) ^ (2 : ℕ) * vR (n + 2))) /
+            (L (n + 1) : ℝ) =
+          (2 / (L (n + 1) : ℝ)) *
+              fista_momentum_sequence n ^ (2 : ℕ) * vR (n + 1) -
+            (2 / (L (n + 1) : ℝ)) *
+              fista_momentum_sequence (n + 1) ^ (2 : ℕ) * vR (n + 2) := by
+      field_simp [ne_of_gt hL_pos]
+    rw [hrewrite] at hstep_diff
+    exact hstep_diff
+  have hshift1 :=
+      add_le_add_right
+        hstep_diff'
+        (‖mfistaResidualToOptimal x z xStar n‖ ^ (2 : ℕ))
+  have hshift1' :
+      ‖mfistaResidualToOptimal x z xStar (n + 1)‖ ^ (2 : ℕ) ≤
+        ‖mfistaResidualToOptimal x z xStar n‖ ^ (2 : ℕ) +
+          ((2 / (L (n + 1) : ℝ)) *
+              fista_momentum_sequence n ^ (2 : ℕ) * vR (n + 1) -
+            (2 / (L (n + 1) : ℝ)) *
+              fista_momentum_sequence (n + 1) ^ (2 : ℕ) * vR (n + 2)) := by
+    simpa [sub_eq_add_neg, add_assoc, add_left_comm, add_comm] using hshift1
+  have hshift2 :=
+      add_le_add_right
+        hshift1'
+        ((2 / (L (n + 1) : ℝ)) *
+          fista_momentum_sequence (n + 1) ^ (2 : ℕ) * vR (n + 2))
+  simpa [vR, sub_eq_add_neg, add_assoc, add_left_comm, add_comm] using hshift2
 
-Domain sampling in the surrounding chapter identifies:
-- `is_mfista_trajectory` from Algorithm 10.11 as the owner of the MFISTA iterate data;
-- `hproblem.SublinearRateStepsizeRule y L α` from Algorithm 10.6 as the canonical owner-level
-  bridge for the admissible constant/B3 stepsize regimes with the auxiliary constant `α`;
-- `composite_model_objective` from Definition 10.2 as the owner of the composite value
-  `F = f + g`.
+/-- Helper for Theorem 10.40: the exact MFISTA Lyapunov energy contracts in one step. -/
+lemma mfistaEnergyStep
+    (htraj : hproblem.IsMfistaTrajectory x y z L)
+    (hrule : hproblem.SublinearRateStepsizeRule y L α)
+    (hxStar : xStar ∈ XStar)
+    (n : ℕ) :
+    let vR : ℕ → ℝ :=
+      fun m ↦ (composite_model_objective f.toEReal g (x m)).toReal - FOpt
+    let ER : ℕ → ℝ :=
+      fun m ↦
+        ‖mfistaResidualToOptimal x z xStar m‖ ^ (2 : ℕ) +
+          (2 / (L m : ℝ)) * fista_momentum_sequence m ^ (2 : ℕ) * vR (m + 1)
+    ER (n + 1) ≤ ER n := by
+  dsimp
+  let vR : ℕ → ℝ :=
+    fun m ↦ (composite_model_objective f.toEReal g (x m)).toReal - FOpt
+  let ER : ℕ → ℝ :=
+    fun m ↦
+      ‖mfistaResidualToOptimal x z xStar m‖ ^ (2 : ℕ) +
+        (2 / (L m : ℝ)) * fista_momentum_sequence m ^ (2 : ℕ) * vR (m + 1)
+  have hbalance :
+      ‖mfistaResidualToOptimal x z xStar (n + 1)‖ ^ (2 : ℕ) +
+          (2 / (L (n + 1) : ℝ)) *
+            fista_momentum_sequence (n + 1) ^ (2 : ℕ) * vR (n + 2) ≤
+        ‖mfistaResidualToOptimal x z xStar n‖ ^ (2 : ℕ) +
+          (2 / (L (n + 1) : ℝ)) *
+            fista_momentum_sequence n ^ (2 : ℕ) * vR (n + 1) := by
+    -- Start from the raw shared-denominator Lyapunov balance.
+    simpa [vR] using
+      (mfistaAcceptedStepEnergyBalance
+        (hproblem := hproblem) (htraj := htraj) (hrule := hrule) (hxStar := hxStar) n)
+  have hstepsize_mono :
+      (L n : ℝ) ≤ (L (n + 1) : ℝ) :=
+    (mfistaStepsizeControl (hproblem := hproblem) hrule).1 n
+  have hgap_nonneg :
+      0 ≤ vR (n + 1) := by
+    -- The transport from `L_(n+1)` back to `L_n` is valid because the previous gap is nonnegative.
+    simpa [vR] using
+      (mfistaPositiveIterateGapNonneg
+        (hproblem := hproblem) (htraj := htraj) n)
+  have htransport :
+      (2 / (L (n + 1) : ℝ)) * fista_momentum_sequence n ^ (2 : ℕ) * vR (n + 1) ≤
+        (2 / (L n : ℝ)) * fista_momentum_sequence n ^ (2 : ℕ) * vR (n + 1) := by
+    have hLn_pos : 0 < (L n : ℝ) := PosReal.coe_pos (L n)
+    have hrecip :
+        2 / (L (n + 1) : ℝ) ≤ 2 / (L n : ℝ) := by
+      have hone_div :
+          1 / (L (n + 1) : ℝ) ≤ 1 / (L n : ℝ) := by
+        exact one_div_le_one_div_of_le hLn_pos hstepsize_mono
+      have htwo_mul :
+          (2 : ℝ) * (1 / (L (n + 1) : ℝ)) ≤
+            (2 : ℝ) * (1 / (L n : ℝ)) := by
+        exact mul_le_mul_of_nonneg_left hone_div (by positivity)
+      simpa [div_eq_mul_inv, mul_assoc, mul_left_comm, mul_comm] using htwo_mul
+    have hterm_nonneg :
+        0 ≤ fista_momentum_sequence n ^ (2 : ℕ) * vR (n + 1) := by
+      exact mul_nonneg (by positivity) hgap_nonneg
+    -- Only the right-hand denominator changes when we transport the energy from `L_(n+1)` to `L_n`.
+    have htransport' := mul_le_mul_of_nonneg_right hrecip hterm_nonneg
+    simpa [mul_assoc, mul_left_comm, mul_comm] using htransport'
+  have hfinal :
+      ER (n + 1) ≤
+        ‖mfistaResidualToOptimal x z xStar n‖ ^ (2 : ℕ) +
+          (2 / (L n : ℝ)) * fista_momentum_sequence n ^ (2 : ℕ) * vR (n + 1) := by
+    -- Compose the raw balance with the one-line denominator transport.
+    nlinarith [hbalance, htransport]
+  simpa [ER] using hfinal
 
-Layer triage:
-- `source-facing`: the accelerated objective-gap estimate for an MFISTA trajectory;
-- `core/canonical`: `F`, `hproblem.IsMfistaTrajectory`, and
-  `fast_proximal_gradient_sublinear_rate_stepsize_rule f g Lf`;
-- `bridge/view`: `hproblem.SublinearRateStepsizeRule y L α` and the optimizer membership
-  hypothesis `xStar ∈ XStar`.
-
-Primitive data are the trajectory, the standing problem assumptions, the optimizer `xStar`, and
-the single shared stepsize-rule owner. The theorem therefore uses the bridge/view surfaces
-`hproblem.IsMfistaTrajectory` and
-`hproblem.SublinearRateStepsizeRule y L α`, so the Assumption 10.31 owner supplies the
-regularity fields canonically instead of exposing them in the theorem statement. -/
-
--- Proof sketch: combine the MFISTA descent recursion from the prox-gradient inequality with the
--- acceptance property `(10.39)` supplied either by the constant rule `L_k = L_f` or by
--- backtracking procedure B3, telescope the Lyapunov estimate built from `t_k` and the auxiliary
--- vectors `u^k`, bound the initial energy by `‖x^0 - x*‖²`, and then use the standard lower bound
--- on `t_(k-1)` to convert the estimate into the `O(1 / k^2)` rate.
 /-- Theorem 10.40: under Assumption 10.31, any MFISTA trajectory whose curvature estimates are
 chosen either by the constant rule `L_k = L_f` with `α = 1` or by backtracking procedure B3 with
-`α = max {η, s / L_f}` satisfies the accelerated objective bound
-`F(x^k) - F_opt ≤ 2 α L_f ‖x^0 - x*‖² / (k + 1)²` for every optimizer `x* ∈ X^*` and every
-iteration `k ≥ 1`. -/
+`α = max {η, s / L_f}` satisfies the accelerated objective-gap bound
+`F(x^k) - F_opt ≤ 2 α L_f ‖x^0 - x*‖^2 / (k + 1)^2` for every optimizer `x* ∈ X^*` and every
+`k ≥ 1`. -/
 theorem mfista_objective_gap_le_two_alpha_Lf_dist_sq_div_sq
-    (htraj : hproblem.IsMfistaTrajectory x y z t L)
+    (htraj : hproblem.IsMfistaTrajectory x y z L)
     (hrule : hproblem.SublinearRateStepsizeRule y L α)
     (hxStar : xStar ∈ XStar) (k : ℕ) (hk : 1 ≤ k) :
-    F (x k) - (FOpt : EReal) ≤
-      ((2 * α * (Lf : ℝ) * ‖x 0 - xStar‖ ^ (2 : ℕ) / (k + 1 : ℝ) ^ (2 : ℕ) : ℝ) :
-        EReal) := by
-  -- Route correction: `mfista_scaled_extrapolation_residual` shows that the owner-level MFISTA
-  -- recurrence produces an extra correction term, so the textbook Lyapunov telescope does not
-  -- close verbatim from the current `y_succ` field.
-  have hxStar_value :
-      F xStar = (FOpt : EReal) :=
-    mfista_objective_eq_optimal_value_of_mem_optimal_set
-      (xStar := xStar) hproblem hxStar
-  have hgapk_coe :
-      ((((F (x k)).toReal - FOpt : ℝ)) : EReal) = F (x k) - (FOpt : EReal) :=
-    mfista_positive_iterate_gap_coe
-      (f := f) (g := g) (XStar := XStar) (FOpt := FOpt)
-      (Lf := Lf) (x := x) (y := y) (z := z) (t := t) (L := L)
-      htraj hk
-  have hgapk_nonneg :
-      0 ≤ (F (x k)).toReal - FOpt :=
-    mfista_positive_iterate_gap_nonneg
-      (f := f) (g := g) (XStar := XStar) (FOpt := FOpt)
-      (Lf := Lf) (x := x) (y := y) (z := z) (t := t) (L := L)
-      htraj hk
-  let v : ℕ → ℝ := fun n ↦ (F (x n)).toReal - FOpt
-  let A : ℕ → ℝ := fun n ↦
-    ‖mfista_residual_to_optimum (x := x) (z := z) (t := t) xStar n‖ ^ (2 : ℕ) +
-      (2 / (L (n - 1) : ℝ)) * t (n - 1) ^ (2 : ℕ) * v n
-  let B : ℕ → ℝ := fun n ↦
-    ‖x n - xStar‖ ^ (2 : ℕ) +
-      (2 / (L (n - 1) : ℝ)) * t (n - 1) ^ (2 : ℕ) * v n
-  let M : ℕ → ℝ := fun n ↦ max (A n) (B n)
-  have hvk_nonneg : 0 ≤ v k := by
-    simpa [v] using hgapk_nonneg
-  have hcomparison_upper :
-      let θ : ℝ := (t k)⁻¹
-      let c : E := θ • xStar + (1 - θ) • x k
-      F c ≤ ((((1 - θ) * v k + FOpt : ℝ)) : EReal) := by
-    -- The source comparison point already has the correct convex objective upper bound.
-    simpa [v] using
-      (mfista_combination_objective_upper_bound
-        (f := f) (g := g) (XStar := XStar) (FOpt := FOpt) (Lf := Lf)
-        (x := x) (y := y) (z := z) (t := t) (L := L)
-        (hproblem := hproblem) (htraj := htraj) (hxStar := hxStar) hk)
-  have hcomparison_step :
-      let θ : ℝ := (t k)⁻¹
-      let c : E := θ • xStar + (1 - θ) • x k
-      (t k : ℝ) • (z k - c) =
-        mfista_residual_to_optimum (x := x) (z := z) (t := t) xStar (k + 1) := by
-    -- This is the post-step quadratic rewrite required by the source comparison-point estimate.
-    simpa using
-      (mfista_scaled_step_sub_comparison_point_eq_residual
-        (f := f) (g := g) (XStar := XStar) (FOpt := FOpt) (Lf := Lf)
-        (x := x) (y := y) (z := z) (t := t) (L := L)
-        (hproblem := hproblem) (htraj := htraj) (xStar := xStar) k)
-  have hcomparison_prestep :
-      let θ : ℝ := (t k)⁻¹
-      let c : E := θ • xStar + (1 - θ) • x k
-      (t k : ℝ) • (y k - c) = (t k : ℝ) • y k - (xStar + (t k - 1) • x k) := by
-    -- The same comparison point also rewrites the pre-step quadratic term into the owner vector.
-    simpa using
-      (mfista_scaled_sub_comparison_point
-        (f := f) (g := g) (XStar := XStar) (FOpt := FOpt) (Lf := Lf)
-        (x := x) (y := y) (z := z) (t := t) (L := L)
-        (hproblem := hproblem) (htraj := htraj) (xStar := xStar) (point := y k) k)
-  -- TODO: the finite-value transport is now normalized through `v`, `hgapk_coe`, and
-  -- `hgapk_nonneg`, `hcomparison_upper`, `hcomparison_step`, and `hcomparison_prestep`. The
-  -- remaining source-faithful step is now exactly the prox-gradient specialization:
-  -- apply `fundamental_prox_grad_inequality` at the comparison point, rewrite the two quadratic
-  -- terms via `hcomparison_step` and `hcomparison_prestep`, and then package the stay/move
-  -- branches into the `k ≥ 2` two-state monotonicity from the re-plan.
-  clear hxStar_value hgapk_coe hvk_nonneg hcomparison_upper hcomparison_step
-    hcomparison_prestep M B A v
-  sorry
+    composite_model_objective f.toEReal g (x k) - (FOpt : EReal) ≤
+      (((2 * α * (Lf : ℝ) * ‖x 0 - xStar‖ ^ (2 : ℕ)) / (k + 1 : ℝ) ^ (2 : ℕ) : ℝ) : EReal) :=
+  by
+  obtain ⟨K, rfl⟩ := Nat.exists_eq_add_of_le hk
+  let vR : ℕ → ℝ :=
+    fun n ↦ (composite_model_objective f.toEReal g (x n)).toReal - FOpt
+  let ER : ℕ → ℝ :=
+    fun n ↦
+      ‖mfistaResidualToOptimal x z xStar n‖ ^ (2 : ℕ) +
+        (2 / (L n : ℝ)) * fista_momentum_sequence n ^ (2 : ℕ) * vR (n + 1)
+  have henergy_le_zero : ∀ n, ER n ≤ ER 0 := by
+    intro n
+    induction n with
+    | zero =>
+        exact le_rfl
+    | succ n ihn =>
+        -- Iterate the one-step Lyapunov contraction from `ER n` down to the initial energy.
+        exact le_trans
+          (by
+            simpa [ER, vR] using
+              (mfistaEnergyStep
+                (hproblem := hproblem) (htraj := htraj) (hrule := hrule)
+                (hxStar := hxStar) n))
+          ihn
+  have hinitial :
+      ER 0 ≤ ‖x 0 - xStar‖ ^ (2 : ℕ) := by
+    -- The initial source energy is already bounded by the starting distance to the optimizer.
+    simpa [ER, vR] using
+      (mfistaInitialEnergyBound
+        (hproblem := hproblem) (htraj := htraj) (hrule := hrule) (hxStar := hxStar))
+  have henergyK :
+      ER K ≤ ‖x 0 - xStar‖ ^ (2 : ℕ) := by
+    exact le_trans (henergy_le_zero K) hinitial
+  have hgap_term :
+      (2 / (L K : ℝ)) * fista_momentum_sequence K ^ (2 : ℕ) * vR (K + 1) ≤
+        ‖x 0 - xStar‖ ^ (2 : ℕ) := by
+    have hdrop :
+        (2 / (L K : ℝ)) * fista_momentum_sequence K ^ (2 : ℕ) * vR (K + 1) ≤ ER K := by
+      -- Drop the nonnegative residual norm from the Lyapunov energy.
+      dsimp [ER]
+      have hres_nonneg :
+          0 ≤ ‖mfistaResidualToOptimal x z xStar K‖ ^ (2 : ℕ) := by positivity
+      nlinarith
+    exact le_trans hdrop henergyK
+  have hstepsize_cap :
+      (L K : ℝ) ≤ α * (Lf : ℝ) :=
+    (mfistaStepsizeControl (hproblem := hproblem) hrule).2 K
+  have hLf_pos : 0 < (Lf : ℝ) :=
+    hproblem.sublinearRateStepsizeRule_lf_pos hrule
+  have hαLf_pos : 0 < α * (Lf : ℝ) := by
+    exact lt_of_lt_of_le (PosReal.coe_pos (L K)) hstepsize_cap
+  have hvR_nonneg : 0 ≤ vR (K + 1) := by
+    -- The final real gap is nonnegative because `x^(K+1)` lies in `effective_domain g`.
+    simpa [vR] using
+      (mfistaPositiveIterateGapNonneg
+        (hproblem := hproblem) (htraj := htraj) K)
+  have hscaled_gap :
+      2 * fista_momentum_sequence K ^ (2 : ℕ) * vR (K + 1) ≤
+        α * (Lf : ℝ) * ‖x 0 - xStar‖ ^ (2 : ℕ) := by
+    have hmul :
+        (L K : ℝ) *
+            ((2 / (L K : ℝ)) * fista_momentum_sequence K ^ (2 : ℕ) * vR (K + 1)) ≤
+          (L K : ℝ) * ‖x 0 - xStar‖ ^ (2 : ℕ) := by
+      exact mul_le_mul_of_nonneg_left hgap_term (le_of_lt (PosReal.coe_pos (L K)))
+    have hmul' :
+        2 * fista_momentum_sequence K ^ (2 : ℕ) * vR (K + 1) ≤
+          (L K : ℝ) * ‖x 0 - xStar‖ ^ (2 : ℕ) := by
+      -- Clear the positive denominator `L_K` from the gap estimate.
+      have hmul'' := hmul
+      field_simp [ne_of_gt (PosReal.coe_pos (L K))] at hmul''
+      nlinarith [hmul'', PosReal.coe_pos (L K)]
+    exact le_trans hmul' <|
+      mul_le_mul_of_nonneg_right hstepsize_cap (by positivity)
+  have hmomentum_lower :
+      (((K : ℝ) + 2) / 2) ≤ fista_momentum_sequence K := by
+    exact
+      fista_momentum_sequence_lower_bound
+        (t := fista_momentum_sequence)
+        (h0 := fista_momentum_sequence_zero)
+        (hsucc := fista_momentum_sequence_succ)
+        K
+  have hmomentum_sq :
+      ((K : ℝ) + 2) ^ (2 : ℕ) ≤ 4 * fista_momentum_sequence K ^ (2 : ℕ) := by
+    -- Square the standard lower bound `((K : ℝ) + 2) / 2 ≤ t_K`.
+    have hdouble :
+        (K : ℝ) + 2 ≤ 2 * fista_momentum_sequence K := by
+      nlinarith [hmomentum_lower]
+    nlinarith [hdouble]
+  have hscaled_final :
+      ((K : ℝ) + 2) ^ (2 : ℕ) * vR (K + 1) ≤
+        2 * α * (Lf : ℝ) * ‖x 0 - xStar‖ ^ (2 : ℕ) := by
+    have hleft :
+        ((K : ℝ) + 2) ^ (2 : ℕ) * vR (K + 1) ≤
+          (4 * fista_momentum_sequence K ^ (2 : ℕ)) * vR (K + 1) := by
+      exact mul_le_mul_of_nonneg_right hmomentum_sq hvR_nonneg
+    have hright :
+        (4 * fista_momentum_sequence K ^ (2 : ℕ)) * vR (K + 1) ≤
+          2 * α * (Lf : ℝ) * ‖x 0 - xStar‖ ^ (2 : ℕ) := by
+      nlinarith [hscaled_gap]
+    exact le_trans hleft hright
+  have hk_den_pos :
+      0 < ((K : ℝ) + 2) ^ (2 : ℕ) := by
+    positivity
+  have hreal :
+      vR (K + 1) ≤
+        (2 * α * (Lf : ℝ) * ‖x 0 - xStar‖ ^ (2 : ℕ)) /
+          ((K : ℝ) + 2) ^ (2 : ℕ) := by
+    -- Divide the scaled bound by the positive factor `((K : ℝ) + 2)^2`.
+    exact (le_div_iff₀ hk_den_pos).2 <| by
+      simpa [mul_assoc, mul_left_comm, mul_comm] using hscaled_final
+  have hK_eff :
+      x (K + 1) ∈ effective_domain g :=
+    mfistaPositiveIterate_memEffectiveDomainG (hproblem := hproblem) htraj K
+  have hK_eff' :
+      x (1 + K) ∈ effective_domain g := by
+    simpa [Nat.add_comm] using hK_eff
+  have hreal' :
+      vR (K + 1) ≤
+        (2 * α * (Lf : ℝ) * ‖x 0 - xStar‖ ^ (2 : ℕ)) /
+          (((K + 1 : ℕ) : ℝ) + 1) ^ (2 : ℕ) := by
+    have hdenom :
+        ((K : ℝ) + 2) ^ (2 : ℕ) = ((K : ℝ) + (1 + 1)) ^ (2 : ℕ) := by
+      ring
+    rw [Nat.cast_add, Nat.cast_one, add_assoc]
+    rw [← hdenom]
+    exact hreal
+  -- Convert the final real estimate back to the public `EReal` objective-gap statement.
+  rw [← mfistaObjectiveGap_eq_coe_sub_toReal_of_memEffectiveDomain
+    (hproblem := hproblem) hK_eff']
+  simpa [vR, Nat.add_comm, Nat.cast_add, Nat.cast_one, mul_assoc, mul_left_comm, mul_comm] using
+    (EReal.coe_le_coe_iff.mpr hreal')
 
 end

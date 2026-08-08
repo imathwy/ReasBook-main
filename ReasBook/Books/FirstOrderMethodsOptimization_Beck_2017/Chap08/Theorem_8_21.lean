@@ -47,27 +47,6 @@ local notation "hS_nonempty" => family_nonempty_of_iInter_nonempty hinter
 local notation "x" =>
   greedy_projection_method S hS_nonempty hS_closed hS_convex i x0
 
-/-- Helper for Theorem 8.21: points already lying in a nonempty closed convex set are fixed by its
-metric projection. -/
-theorem metricProjection_eq_self_of_mem_closed_convex {C : Set E}
-    (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C) (hC_convex : Convex ℝ C)
-    {y : E} (hy : y ∈ C) :
-    (metricProjection C hC_nonempty hC_closed.isComplete hC_convex y : E) = y := by
-  -- The projection inequality at `y` forces the residual to have zero norm.
-  have hineq :=
-    inner_sub_metricProjection_le_zero C hC_nonempty hC_closed.isComplete hC_convex y y hy
-  have hnorm_sq_le_zero :
-      ‖y -
-          (metricProjection C hC_nonempty hC_closed.isComplete hC_convex y : E)‖ ^ (2 : ℕ) ≤ 0 := by
-    simpa [real_inner_self_eq_norm_sq] using hineq
-  have hnorm_zero :
-      ‖y -
-          (metricProjection C hC_nonempty hC_closed.isComplete hC_convex y : E)‖ = 0 := by
-    nlinarith [sq_nonneg
-      ‖y -
-          (metricProjection C hC_nonempty hC_closed.isComplete hC_convex y : E)‖, hnorm_sq_le_zero]
-  exact (sub_eq_zero.mp (norm_eq_zero.mp hnorm_zero)).symm
-
 /-- Helper for Theorem 8.21: the max-distance objective is globally `1`-Lipschitz. -/
 theorem lipschitzWith_convex_feasibility_max_distance :
     LipschitzWith 1 (convex_feasibility_max_distance S) := by
@@ -95,7 +74,7 @@ def selected_projection_direction (z : E) (j : Fin m) : E :=
   else
     (infDist z (S j))⁻¹ •
       (z -
-        metricProjection (S j) (hS_nonempty j) (hS_closed j).isComplete (hS_convex j) z)
+        metricProjection (S j) (hS_nonempty j) (hS_closed j) (hS_convex j) z)
 
 /-- Helper for Theorem 8.21: the selected projection direction is a strong-dual subgradient of the
 single active distance branch. -/
@@ -111,7 +90,7 @@ theorem selected_projection_direction_mem_strongDualSubdifferential_infDist
     simpa [selected_projection_direction, hzero] using
       (Metric.infDist_nonneg : 0 ≤ infDist y (S j))
   · let p : E :=
-      metricProjection (S j) (hS_nonempty j) (hS_closed j).isComplete (hS_convex j) z
+      metricProjection (S j) (hS_nonempty j) (hS_closed j) (hS_convex j) z
     let r : E := z - p
     have hd_nonneg : 0 ≤ infDist z (S j) :=
       (Metric.infDist_nonneg : 0 ≤ infDist z (S j))
@@ -120,7 +99,7 @@ theorem selected_projection_direction_mem_strongDualSubdifferential_infDist
     have hdist : infDist z (S j) = ‖r‖ := by
       simpa [p, r, dist_eq_norm] using
         infDist_eq_dist_metricProjection
-          (S j) (hS_nonempty j) (hS_closed j).isComplete (hS_convex j) z
+          (S j) (hS_nonempty j) (hS_closed j) (hS_convex j) z
     intro y
     refine (Metric.le_infDist (hS_nonempty j)).2 ?_
     intro q hq
@@ -128,7 +107,7 @@ theorem selected_projection_direction_mem_strongDualSubdifferential_infDist
         inner ℝ r (q - p) ≤ 0 := by
       simpa [p, r] using
         inner_sub_metricProjection_le_zero
-          (S j) (hS_nonempty j) (hS_closed j).isComplete (hS_convex j) z q hq
+          (S j) (hS_nonempty j) (hS_closed j) (hS_convex j) z q hq
     have hsplit : y - z = (y - q) + (q - p) - r := by
       simp [p, r]
     have hinner :
@@ -346,7 +325,7 @@ theorem convex_feasibility_max_distance_problem_on_univ :
         intro j hj
         let P : E → E := fun y ↦
           metricProjection (S j) (family_nonempty_of_iInter_nonempty hinter' j)
-            (hclosed j).isComplete (hconvex j) y
+            (hclosed j) (hconvex j) y
         rw [ConvexOn]
         refine ⟨convex_univ, ?_⟩
         intro u hu v hv a b ha hb hab
@@ -355,23 +334,23 @@ theorem convex_feasibility_max_distance_problem_on_univ :
           (hconvex j)
             (show P u ∈ S j by
               exact (metricProjection (S j) (family_nonempty_of_iInter_nonempty hinter' j)
-                (hclosed j).isComplete (hconvex j) u).property)
+                (hclosed j) (hconvex j) u).property)
             (show P v ∈ S j by
               exact (metricProjection (S j) (family_nonempty_of_iInter_nonempty hinter' j)
-                (hclosed j).isComplete (hconvex j) v).property)
+                (hclosed j) (hconvex j) v).property)
             ha hb hab
         have hdist_x :
             infDist u (S j) = dist u (P u) := by
           simpa [P] using
             infDist_eq_dist_metricProjection
               (S j) (family_nonempty_of_iInter_nonempty hinter' j)
-              (hclosed j).isComplete (hconvex j) u
+              (hclosed j) (hconvex j) u
         have hdist_y :
             infDist v (S j) = dist v (P v) := by
           simpa [P] using
             infDist_eq_dist_metricProjection
               (S j) (family_nonempty_of_iInter_nonempty hinter' j)
-              (hclosed j).isComplete (hconvex j) v
+              (hclosed j) (hconvex j) v
         calc
           infDist (a • u + b • v) (S j)
               ≤ dist (a • u + b • v) (a • P u + b • P v) :=
@@ -478,10 +457,11 @@ theorem greedy_projection_polyak_bridge
       0 (x k) (g k ⟨x k, Set.mem_univ _⟩)
   have huniv_proj :
       ∀ y : E,
-        (metricProjection Set.univ Set.univ_nonempty isClosed_univ.isComplete convex_univ y : E) = y := by
+        (metricProjection Set.univ Set.univ_nonempty isClosed_univ convex_univ y : E) = y := by
     intro y
-    exact metricProjection_eq_self_of_mem_closed_convex
-      (C := Set.univ) Set.univ_nonempty isClosed_univ convex_univ (by simp)
+    simpa [projectionPoint] using
+      projectionPoint_eq_self_of_mem Set.univ Set.univ_nonempty isClosed_univ convex_univ
+        (by simp)
   refine ⟨g, t, ?_, ?_, ?_⟩
   · intro k
     -- The admissible greedy index is farthest, so its selected direction is a max-objective
@@ -508,15 +488,15 @@ theorem greedy_projection_polyak_bridge
         rw [projected_subgradient_method_succ, greedy_projection_method_succ, hk_val, huniv_proj]
         let jk : Fin m := i k (x k)
         let p : E :=
-          metricProjection (S jk) (hS_nonempty jk) (hS_closed jk).isComplete (hS_convex jk) (x k)
+          metricProjection (S jk) (hS_nonempty jk) (hS_closed jk) (hS_convex jk) (x k)
         by_cases hzero : infDist (x k) (S jk) = 0
         · -- If the active distance is zero, both updates fix the current iterate.
           have hxk_mem : x k ∈ S jk := by
             exact ((hS_closed jk).mem_iff_infDist_zero (hS_nonempty jk)).2 hzero
           have hp_eq : p = x k := by
             simpa [p] using
-              metricProjection_eq_self_of_mem_closed_convex
-                (C := S jk) (hS_nonempty jk) (hS_closed jk) (hS_convex jk) hxk_mem
+              projectionPoint_eq_self_of_mem (S jk) (hS_nonempty jk) (hS_closed jk)
+                (hS_convex jk) hxk_mem
           simp [g, t, selected_projection_direction, hzero, polyak_stepsize_zero, jk, p, hp_eq]
         · -- When the active distance is positive, the Polyak step exactly cancels the normalized
           -- residual and lands on the selected metric projection.
@@ -527,7 +507,7 @@ theorem greedy_projection_polyak_bridge
           have hdist : infDist (x k) (S jk) = ‖x k - p‖ := by
             simpa [p, dist_eq_norm] using
               infDist_eq_dist_metricProjection
-                (S jk) (hS_nonempty jk) (hS_closed jk).isComplete (hS_convex jk) (x k)
+                (S jk) (hS_nonempty jk) (hS_closed jk) (hS_convex jk) (x k)
           have hg_norm : ‖g k ⟨x k, Set.mem_univ _⟩‖ = 1 := by
             calc
               ‖g k ⟨x k, Set.mem_univ _⟩‖
@@ -564,7 +544,7 @@ theorem greedy_projection_polyak_bridge
             exact ht_eq'.trans hactive
           rw [ht_eq]
           simp [g, jk, p, selected_projection_direction, hzero, smul_smul, hzero]
-       
+
 
 /- Theorem 8.21 is `source-facing`: it states the complexity bound and convergence conclusion for
 the concrete greedy projection iterates. The owner abstractions already present in the chapter are
@@ -600,7 +580,7 @@ theorem greedy_projection_method_best_max_distance_le
               (projected_subgradient_method Set.univ Set.univ_nonempty isClosed_univ convex_univ
                 g t ⟨x0, Set.mem_univ x0⟩ n)) :
           Module.Dual ℝ E) ∈
-            extendedRealSubdifferential
+            subdifferential
               (fun y : E ↦ (convex_feasibility_max_distance S y : EReal))
               ((projected_subgradient_method Set.univ Set.univ_nonempty isClosed_univ convex_univ
                 g t ⟨x0, Set.mem_univ x0⟩ n : Set.univ) : E) := by

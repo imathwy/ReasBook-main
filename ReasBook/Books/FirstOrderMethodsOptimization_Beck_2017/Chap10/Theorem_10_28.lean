@@ -373,7 +373,7 @@ lemma proximal_point_trajectory_mem_effective_domain
   obtain ⟨j, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (Nat.pos_iff_ne_zero.mp hk)
   exact
     (mem_scaled_prox_implies_effective_domain_and_inner_support
-      (g := g) (c := c) (x := x j) (u := x (j + 1))
+      g c (x j) (x (j + 1))
       (is_proximal_point_trajectory_step htraj j)).1
 
 omit [NormedAddCommGroup E] [InnerProductSpace ℝ E]
@@ -407,7 +407,7 @@ lemma proximal_point_step_support_ineq_real
       x (k + 1) ∈ prox[((c : EReal) • g)] (x k) :=
     is_proximal_point_trajectory_step htraj k
   rcases mem_scaled_prox_implies_effective_domain_and_inner_support
-      (g := g) (c := c) (x := x k) (u := x (k + 1)) hstep_mem with
+      g c (x k) (x (k + 1)) hstep_mem with
     ⟨hxNext_eff, hsupport⟩
   have hy_val :
       g y = (((g y).toReal : ℝ) : EReal) := by
@@ -458,7 +458,7 @@ lemma proximal_point_step_gap_le_sqdist_drop
     2 * (c : ℝ) * ((g (x (k + 1))).toReal - (g y).toReal) ≤
       ‖x k - y‖ ^ (2 : ℕ) - ‖x (k + 1) - y‖ ^ (2 : ℕ) - ‖x (k + 1) - x k‖ ^ (2 : ℕ) := by
   have hsupport :=
-    proximal_point_step_support_ineq_real (g := g) (x0 := x0) (c := c) htraj k hy
+    proximal_point_step_support_ineq_real g x0 c htraj k hy
   have hsq :
       ‖x k - y‖ ^ (2 : ℕ) =
         ‖x k - x (k + 1)‖ ^ (2 : ℕ) -
@@ -484,10 +484,10 @@ lemma proximal_point_successor_objective_antitone
   intro k
   have hk_eff :
       x (k + 1) ∈ effective_domain g :=
-    proximal_point_trajectory_mem_effective_domain (g := g) (x0 := x0) (c := c) htraj
+    proximal_point_trajectory_mem_effective_domain g x0 c htraj
       (Nat.succ_le_succ (Nat.zero_le k))
   have hstep :=
-    proximal_point_step_gap_le_sqdist_drop (g := g) (x0 := x0) (c := c) htraj (k + 1) hk_eff
+    proximal_point_step_gap_le_sqdist_drop g x0 c htraj (k + 1) hk_eff
   have hgap_nonpos :
       2 * (c : ℝ) * ((g (x (k + 2))).toReal - (g (x (k + 1))).toReal) ≤ 0 := by
     -- Specializing the three-point inequality at `y = x^(k+1)` leaves only the objective drop.
@@ -513,11 +513,11 @@ lemma proximal_point_prefix_gap_sum_le
       ‖x (K + 1) - xStar‖ ^ (2 : ℕ) ≤
         ‖x0 - xStar‖ ^ (2 : ℕ) := by
   have hxStar_eff : xStar ∈ effective_domain g :=
-    optimal_point_mem_effective_domain (g := g) hxStar
+    optimal_point_mem_effective_domain g hxStar
   induction K with
   | zero =>
       have hstep :=
-        proximal_point_step_gap_le_sqdist_drop (g := g) (x0 := x0) (c := c) htraj 0 hxStar_eff
+        proximal_point_step_gap_le_sqdist_drop g x0 c htraj 0 hxStar_eff
       have hstep' :
           2 * (c : ℝ) * ((g (x 1)).toReal - (g xStar).toReal) + ‖x 1 - xStar‖ ^ (2 : ℕ) ≤
             ‖x 0 - xStar‖ ^ (2 : ℕ) := by
@@ -526,7 +526,7 @@ lemma proximal_point_prefix_gap_sum_le
       simpa [hxzero, Finset.sum_range_one] using hstep'
   | succ K ih =>
       have hstep :=
-        proximal_point_step_gap_le_sqdist_drop (g := g) (x0 := x0) (c := c) htraj (K + 1) hxStar_eff
+        proximal_point_step_gap_le_sqdist_drop g x0 c htraj (K + 1) hxStar_eff
       have hstep' :
           2 * (c : ℝ) * ((g (x (K + 2))).toReal - (g xStar).toReal) +
             ‖x (K + 2) - xStar‖ ^ (2 : ℕ) ≤
@@ -564,15 +564,15 @@ theorem proximal_point_method_fejer_monotonicity
     IsFejerMonotoneWithRespectTo x XStar := by
   intro xStar hxStar k
   have hxStar_eff : xStar ∈ effective_domain g :=
-    optimal_point_mem_effective_domain (g := g) hxStar
+    optimal_point_mem_effective_domain g hxStar
   have hstep :=
-    proximal_point_step_gap_le_sqdist_drop (g := g) (x0 := x0) (c := c) htraj k hxStar_eff
+    proximal_point_step_gap_le_sqdist_drop g x0 c htraj k hxStar_eff
   have hopt :
       g xStar ≤ g (x (k + 1)) :=
     (mem_unconstrained_problem_solutions_iff_forall_le.mp hxStar) (x (k + 1))
   have hxNext_eff :
       x (k + 1) ∈ effective_domain g :=
-    proximal_point_trajectory_mem_effective_domain (g := g) (x0 := x0) (c := c) htraj
+    proximal_point_trajectory_mem_effective_domain g x0 c htraj
       (Nat.succ_le_succ (Nat.zero_le k))
   have hgap_nonneg :
       0 ≤ (g (x (k + 1))).toReal - (g xStar).toReal := by
@@ -613,9 +613,9 @@ theorem proximal_point_method_objective_gap_le
   obtain ⟨K, rfl⟩ := Nat.exists_eq_add_of_le hk
   let gap : ℕ → ℝ := fun i ↦ (g (x (i + 1))).toReal - (g xStar).toReal
   have hprefix :=
-    proximal_point_prefix_gap_sum_le (g := g) (x0 := x0) (c := c) htraj xStar hxStar K
+    proximal_point_prefix_gap_sum_le g x0 c htraj xStar hxStar K
   have hanti :=
-    proximal_point_successor_objective_antitone (g := g) (x0 := x0) (c := c) htraj
+    proximal_point_successor_objective_antitone g x0 c htraj
   have hsum_lower :
       ((K + 1 : ℝ) * gap K) ≤
         Finset.sum (Finset.range (K + 1)) gap := by
@@ -651,7 +651,7 @@ theorem proximal_point_method_objective_gap_le
       simpa [gap, mul_assoc, mul_left_comm, mul_comm] using hmul
   have hxNext_eff :
       x (K + 1) ∈ effective_domain g :=
-    proximal_point_trajectory_mem_effective_domain (g := g) (x0 := x0) (c := c) htraj
+    proximal_point_trajectory_mem_effective_domain g x0 c htraj
       (Nat.succ_le_succ (Nat.zero_le K))
   have hxNext_val :
       g (x (K + 1)) = ((((g (x (K + 1))).toReal : ℝ)) : EReal) := by
@@ -659,7 +659,7 @@ theorem proximal_point_method_objective_gap_le
       (EReal.coe_toReal (mem_effective_domain.mp hxNext_eff).ne
         (‹IsProperExtendedRealFunction g›.ne_bot _)).symm
   have hxStar_eff : xStar ∈ effective_domain g :=
-    optimal_point_mem_effective_domain (g := g) hxStar
+    optimal_point_mem_effective_domain g hxStar
   have hxStar_val :
       g xStar = ((((g xStar).toReal : ℝ)) : EReal) := by
     exact
@@ -696,9 +696,9 @@ lemma cluster_point_mem_optimal_set_of_proximal_point_method
     (hxBar : MapClusterPt xBar Filter.atTop x) :
     xBar ∈ XStar := by
   obtain ⟨ψ, hψmono, hψtendsto⟩ := MapClusterPt.tendsto_subseq hxBar
-  let htraj := proximal_point_method_is_proximal_point_trajectory (g := g) (x0 := x0) (c := c)
+  let htraj := proximal_point_method_is_proximal_point_trajectory g x0 c
   have hxStar0_eff : xStar0 ∈ effective_domain g :=
-    optimal_point_mem_effective_domain (g := g) hxStar0
+    optimal_point_mem_effective_domain g hxStar0
   have hxStar0_val :
       g xStar0 = ((((g xStar0).toReal : ℝ)) : EReal) := by
     exact
@@ -715,7 +715,7 @@ lemma cluster_point_mem_optimal_set_of_proximal_point_method
       (mem_unconstrained_problem_solutions_iff_forall_le.mp hxStar0) (x (ψ (n + 1)))
     have hxψ_eff :
         x (ψ (n + 1)) ∈ effective_domain g :=
-      proximal_point_trajectory_mem_effective_domain (g := g) (x0 := x0) (c := c) htraj hkψ
+      proximal_point_trajectory_mem_effective_domain g x0 c htraj hkψ
     have htoReal :=
       EReal.toReal_le_toReal hopt
         (‹IsProperExtendedRealFunction g›.ne_bot xStar0)
@@ -730,11 +730,10 @@ lemma cluster_point_mem_optimal_set_of_proximal_point_method
     have hkψ : 1 ≤ ψ (n + 1) := by
       exact le_trans (Nat.succ_le_succ (Nat.zero_le n)) hψ_ge
     have hbound :=
-      proximal_point_method_objective_gap_le
-        (g := g) (x0 := x0) (c := c) htraj xStar0 hxStar0 (ψ (n + 1)) hkψ
+      proximal_point_method_objective_gap_le g x0 c htraj xStar0 hxStar0 (ψ (n + 1)) hkψ
     have hxψ_eff :
         x (ψ (n + 1)) ∈ effective_domain g :=
-      proximal_point_trajectory_mem_effective_domain (g := g) (x0 := x0) (c := c) htraj hkψ
+      proximal_point_trajectory_mem_effective_domain g x0 c htraj hkψ
     have hxψ_val :
         g (x (ψ (n + 1))) = ((((g (x (ψ (n + 1)))).toReal : ℝ)) : EReal) := by
       exact
@@ -785,7 +784,7 @@ lemma cluster_point_mem_optimal_set_of_proximal_point_method
         exact le_trans (Nat.succ_le_succ (Nat.zero_le n)) hψ_ge
       have hxψ_eff :
           x (ψ (n + 1)) ∈ effective_domain g :=
-        proximal_point_trajectory_mem_effective_domain (g := g) (x0 := x0) (c := c) htraj hkψ
+        proximal_point_trajectory_mem_effective_domain g x0 c htraj hkψ
       exact
         (EReal.coe_toReal (mem_effective_domain.mp hxψ_eff).ne
           (‹IsProperExtendedRealFunction g›.ne_bot _)).symm
@@ -832,10 +831,10 @@ theorem proximal_point_method_tendsto_optimal_point
     (hXStar_nonempty : Set.Nonempty XStar) :
     ∃ xStar ∈ XStar, Filter.Tendsto x Filter.atTop (nhds xStar) := by
   obtain ⟨xStar0, hxStar0⟩ := hXStar_nonempty
-  let htraj := proximal_point_method_is_proximal_point_trajectory (g := g) (x0 := x0) (c := c)
+  let htraj := proximal_point_method_is_proximal_point_trajectory g x0 c
   have hFejer :
       IsFejerMonotoneWithRespectTo x XStar :=
-    proximal_point_method_fejer_monotonicity (g := g) (x0 := x0) (c := c) htraj
+    proximal_point_method_fejer_monotonicity g x0 c htraj
   let r : ℝ := dist (x 0) xStar0
   have hball : ∀ n : ℕ, x n ∈ Metric.closedBall xStar0 r := by
     intro n
@@ -855,7 +854,7 @@ theorem proximal_point_method_tendsto_optimal_point
       {y : E | MapClusterPt y Filter.atTop x} ⊆ XStar := by
     intro y hy
     exact cluster_point_mem_optimal_set_of_proximal_point_method
-      (g := g) (x0 := x0) (c := c) hxStar0 hy
+      g x0 c hxStar0 hy
   have hlimitPoint : ∃ y : E, MapClusterPt y Filter.atTop x := ⟨xBar, hxBar⟩
   obtain ⟨xStar, hxStar, hxTendsto⟩ :=
     tendsto_to_limitPoint_of_isFejerMonotoneWithRespectTo hFejer hlimitPoints_subset hlimitPoint

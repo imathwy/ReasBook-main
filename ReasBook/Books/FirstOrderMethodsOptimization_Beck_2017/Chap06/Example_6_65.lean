@@ -20,27 +20,27 @@ variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 /- Example 6.65 is `source-facing`: the textbook item computes the proximal operator of the
 half squared distance to a nonempty closed convex set. Domain sampling identifies the owner stack
 
-- Proposition 3.12's `metricProjection`,
+- Proposition 3.12's complete-subset bridge `metricProjectionOfComplete`,
 - the projection-ray identity proved below from the same variational inequality,
-- Theorem 6.24's set-valued projection owner `Proj[C]`, and
+- Theorem 6.24's set-valued projection owner `P[C]`, and
 - mathlib's canonical affine owner `AffineMap.lineMap`.
 
 This separates primitive data from derived API correctly. The primitive data are only the set
 `C`, its nonempty/complete/convex hypotheses, the base point `x`, and the scalar `λ ≥ 0`. The
 ambient specialization "closed subset of a complete space" is only a downstream bridge via
-`IsClosed.isComplete`; the canonical owner data for the projection point are `IsComplete C` and
+`metricProjection`; the canonical owner data for the projection point are `IsComplete C` and
 `Convex ℝ C`. The projection point is derived API, so the public theorem should reuse
-`metricProjection` directly and express the affine combination through the owner `lineMap` rather
-than through a bespoke local wrapper. -/
+`metricProjectionOfComplete` directly and express the affine combination through the owner
+`lineMap` rather than through a bespoke local wrapper. -/
 
 variable (C : Set E) (hC_nonempty : C.Nonempty) (hC_complete : IsComplete C)
     (hC_convex : Convex ℝ C)
 
-local notation "P" => metricProjection C hC_nonempty hC_complete hC_convex
+local notation "P" => metricProjectionOfComplete C hC_nonempty hC_complete hC_convex
 
 /-- Helper for Example 6.65: points on the ray leaving `P x` in the direction of `x - P x`
 keep the same metric projection onto `C`. -/
-lemma metricProjection_eq_along_projection_ray
+private lemma metricProjection_eq_along_projection_ray
     (x : E) (t : ℝ) (ht : 0 ≤ t) :
     P ((P x : E) + t • (x - P x)) = P x := by
   let y : E := (P x : E) + t • (x - P x)
@@ -49,7 +49,7 @@ lemma metricProjection_eq_along_projection_ray
   have hy_Px : ∀ w ∈ C, inner ℝ (y - P x) (w - P x) ≤ 0 := by
     intro w hw
     have hx :=
-      inner_sub_metricProjection_le_zero
+      inner_sub_metricProjectionOfComplete_le_zero
         C hC_nonempty hC_complete hC_convex x w hw
     have hy : y - P x = t • (x - P x) := by
       dsimp [y]
@@ -59,7 +59,8 @@ lemma metricProjection_eq_along_projection_ray
   have hPx_min : ‖y - P x‖ = ⨅ z : C, ‖y - z‖ :=
     (norm_eq_iInf_iff_real_inner_le_zero hC_convex hPx).2 hy_Px
   have hPy_min : ‖y - P y‖ = ⨅ z : C, ‖y - z‖ := by
-    simpa [y] using norm_sub_metricProjection_eq_iInf C hC_nonempty hC_complete hC_convex y
+    simpa [y] using
+      norm_sub_metricProjectionOfComplete_eq_iInf C hC_nonempty hC_complete hC_convex y
   have hPy : ∀ w ∈ C, inner ℝ (y - P y) (w - P y) ≤ 0 :=
     (norm_eq_iInf_iff_real_inner_le_zero hC_convex (P y).2).1 hPy_min
   have h1 : inner ℝ (y - P y) (P x - P y) ≤ 0 := hPy (P x) hPx
@@ -89,7 +90,7 @@ lemma metricProjection_eq_along_projection_ray
 /-- Helper for Example 6.65: the canonical metric projection belongs to the set-valued projection
 mapping onto `C`. -/
 lemma metricProjection_mem_projection_mapping (x : E) :
-    (P x : E) ∈ Proj[C] x := by
+    (P x : E) ∈ P[C] x := by
   rw [mem_projection_mapping_iff, isMinOn_iff]
   constructor
   · exact (P x).2
@@ -102,7 +103,7 @@ lemma metricProjection_mem_projection_mapping (x : E) :
     have h_inf_le : (⨅ w : C, ‖x - w‖) ≤ ‖x - z‖ := by
       simpa using ciInf_le h_bdd ⟨z, hz⟩
     have hproj : ‖x - P x‖ = ⨅ w : C, ‖x - w‖ :=
-      norm_sub_metricProjection_eq_iInf C hC_nonempty hC_complete hC_convex x
+      norm_sub_metricProjectionOfComplete_eq_iInf C hC_nonempty hC_complete hC_convex x
     simpa [norm_sub_rev] using le_trans hproj.le h_inf_le
 
 /-- Helper for Example 6.65: a point of `C` at the same distance from `x` as the metric
@@ -110,11 +111,11 @@ projection must coincide with the metric projection. -/
 lemma metricProjection_eq_of_norm_eq_norm_sub_metricProjection
     (x c : E) (hc : c ∈ C) (hcmin : ‖x - c‖ = ‖x - P x‖) :
     c = (P x : E) := by
-  have hp_proj : (P x : E) ∈ Proj[C] x :=
+  have hp_proj : (P x : E) ∈ P[C] x :=
     metricProjection_mem_projection_mapping
       (C := C) (hC_nonempty := hC_nonempty) (hC_complete := hC_complete)
       (hC_convex := hC_convex) x
-  have hc_proj : c ∈ Proj[C] x := by
+  have hc_proj : c ∈ P[C] x := by
     rw [mem_projection_mapping_iff, isMinOn_iff]
     constructor
     · exact hc
@@ -284,7 +285,7 @@ theorem prox_half_sq_infDist_eq_singleton_metricProjection
       have hproj :
           ‖x - p‖ = ⨅ w : C, ‖x - w‖ := by
         simpa [p] using
-          norm_sub_metricProjection_eq_iInf C hC_nonempty hC_complete hC_convex x
+          norm_sub_metricProjectionOfComplete_eq_iInf C hC_nonempty hC_complete hC_convex x
       exact le_trans hproj.le h_inf_le
     have hobjective_eq (y : E) :
         (lam / 2) * infDist y C ^ (2 : ℕ) + (1 / 2 : ℝ) * ‖y - x‖ ^ (2 : ℕ) =
@@ -293,8 +294,9 @@ theorem prox_half_sq_infDist_eq_singleton_metricProjection
       -- Rewrite the distance through the projection point and then complete the square.
       have hy_dist : infDist y C = ‖y - P y‖ := by
         calc
-          infDist y C = dist y (P y) :=
-            infDist_eq_dist_metricProjection C hC_nonempty hC_complete hC_convex y
+          infDist y C = dist y (P y) := by
+            simpa using
+              infDist_eq_dist_metricProjectionOfComplete C hC_nonempty hC_complete hC_convex y
           _ = ‖y - P y‖ := by rw [dist_eq_norm]
       rw [hy_dist]
       exact two_point_quadratic_eq_completed_square

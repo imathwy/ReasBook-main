@@ -7,7 +7,7 @@ import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_54
 family identifies
 
 - `M[μ, f]` as the core Moreau-envelope owner;
-- `l1n[·]` as the source-facing Euclidean `ℓ¹` penalty owner;
+- `‖·‖₁` as the source-facing Euclidean `ℓ¹` penalty owner;
 - `H[μ]` as the source-facing scalar Huber owner; and
 - `moreau_envelope_l1_sum_toReal_eq_sum_huber` from Example 6.59 as the owner-level bridge from
   the real-valued `ℓ¹` envelope to the coordinatewise Huber sum.

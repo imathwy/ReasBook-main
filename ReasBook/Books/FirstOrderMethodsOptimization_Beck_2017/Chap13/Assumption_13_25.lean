@@ -53,7 +53,7 @@ should remain on the public surface directly rather than being passed through a 
 `XStar` plus an equality field, and optimizer attainment / optimal-value characterization are
 recovered below as bridge theorems from the canonical indicator specialization. -/
 
-/-- Assumption 13.25: clauses (A)-(D) for the strongly convex conditional-gradient setting mean
+/-- Assumption 13.25 (1): clauses (A)-(D) for the strongly convex conditional-gradient setting mean
 that `f` never takes the value `⊥`, the constrained feasible set `C` is nonempty and compact,
 `f` is convex with `C ⊆ dom(f)` and open effective domain, `σ > 0`, `C` is `σ`-strongly convex
 in the primitive sense `Set.StrongConvex C σ`, `x ↦ (f x).toReal` is `L_f`-smooth on `dom(f)`
@@ -149,7 +149,8 @@ theorem toIsGeneralizedConditionalGradientProblem
       f_toReal_smooth_on_effective_domain := h.f_toReal_smooth_on_effective_domain
       Lf_pos := h.Lf_pos }
 
-/-- Assumption 13.25 canonically induces the source-facing positive/nonempty strong-convex-set
+/-- Assumption 13.25 (2): the standing strongly convex conditional-gradient hypotheses canonically
+induce the source-facing positive/nonempty strong-convex-set
 owner from Definition 13.22. -/
 theorem stronglyConvexWith
     {f : E → EReal} {C : Set E} {σ δ : ℝ} {Lf : NNReal}
@@ -158,6 +159,12 @@ theorem stronglyConvexWith
   sigma_pos := h.sigma_pos
   nonempty := h.constraint_nonempty
   strongConvex := h.strongConvex
+
+/-- The strongly convex conditional-gradient standing assumptions form a proof-irrelevant owner. -/
+instance instSubsingleton
+    {f : E → EReal} {C : Set E} {σ δ : ℝ} {Lf : NNReal}
+    : Subsingleton (IsStronglyConvexConditionalGradientProblem f C σ δ Lf) :=
+  inferInstance
 
 /-- The feasible set of Assumption 13.25 meets the effective domain of `f`. -/
 theorem constraint_inter_effective_domain_nonempty
@@ -190,7 +197,8 @@ theorem lowerSemicontinuousOn_constraint
     (mem_effective_domain.mp (h.feasible_subset_effective_domain hy)).ne
     (h.f_ne_bot y)]
 
-/-- Assumption 13.25 implies attainment of the constrained minimum on the canonical solution set
+/-- Assumption 13.25 (3): the standing hypotheses imply attainment of the constrained minimum on
+the canonical solution set
 `constrained_problem_solutions f C`. -/
 theorem constrained_problem_solutions_nonempty
     {f : E → EReal} {C : Set E} {σ δ : ℝ} {Lf : NNReal}
@@ -234,7 +242,8 @@ theorem optimal_value_eq_of_mem_constrained_problem_solutions
     _ = f xStar := by
       simp [composite_model_objective, extendedIndicator, hxStar_data.1]
 
-/-- Assumption 13.25 recovers the greatest-lower-bound characterization of the constrained
+/-- Assumption 13.25 (4): the canonical optimizer set and optimal-value owners recover the
+greatest-lower-bound characterization of the constrained
 optimal value from the canonical optimizer set and optimal-value owners. -/
 theorem optimal_value_isGLB
     {f : E → EReal} {C : Set E} {σ δ : ℝ} {Lf : NNReal}

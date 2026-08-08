@@ -67,13 +67,31 @@ proximal-gradient method in primal representation when every iteration `k` satis
 `x^k ∈ argmax_x {⟪x, ∑ j, y_j^k⟫ - f(x)}` and the next block vector `y^(k+1)` is obtained by
 updating only the selected coordinate `block k` through the proximal rule
 `y_i^k - σ x^k + σ prox_{g_i / σ}(x^k - y_i^k / σ)`. -/
-def is_dual_block_proximal_gradient_primal_trajectory
+class is_dual_block_proximal_gradient_primal_trajectory
     (f : E → EReal) (g : ι → E → EReal) (σ : PosReal) (block : ℕ → ι)
-    (y0 : ι → E) (x : ℕ → E) (y : ℕ → ι → E) : Prop :=
-  y 0 = y0 ∧
+    (y0 : ι → E) (x : ℕ → E) (y : ℕ → ι → E) : Prop where
+  /-- The trajectory starts from the prescribed initialization `y⁰ = y0`. -/
+  zero : y 0 = y0
+  /-- At each iteration, the primal point lies in the aggregated argmax set and the next block
+  vector is obtained by the selected one-block proximal update. -/
+  step :
     ∀ k : ℕ,
       x k ∈ dual_proximal_gradient_primal_x_argmax f LinearMap.id (∑ j, y k j) ∧
         y (k + 1) ∈ dual_block_proximal_gradient_primal_y_step g σ (x k) (y k) (block k)
+
+/-- Coercion from an Algorithm 12.15 primal trajectory to its primitive per-iteration update
+clause. -/
+instance is_dual_block_proximal_gradient_primal_trajectory.instCoeFun
+    (f : E → EReal) (g : ι → E → EReal) (σ : PosReal) (block : ℕ → ι)
+    (y0 : ι → E) (x : ℕ → E) (y : ℕ → ι → E) :
+    CoeFun
+      (is_dual_block_proximal_gradient_primal_trajectory f g σ block y0 x y)
+      (fun _ ↦
+        ∀ k : ℕ,
+          x k ∈ dual_proximal_gradient_primal_x_argmax f LinearMap.id (∑ j, y k j) ∧
+            y (k + 1) ∈ dual_block_proximal_gradient_primal_y_step g σ (x k) (y k) (block k))
+    where
+  coe h := h.step
 
 -- Proof sketch: extract the initialization equation from the first conjunct of
 -- `is_dual_block_proximal_gradient_primal_trajectory`.

@@ -1,9 +1,8 @@
-import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Definition_6_10
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_3
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_2
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_9
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Remark_10_17
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.ProxGradientLinearizationDefect
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -48,8 +47,8 @@ lemma prox_grad_step_mem_effective_domain_g
       prox[((((1 / L : PosReal) : EReal) • g))] z = {xPlus} := by
     simpa [xPlus, z, proximal_gradient_step] using prox_grad_operator_eq_singleton f g L y
   let hg_convex : is_convex_function g := Fact.out
-  rcases scaled_prox_singleton_support_of_proper_convex
-      (f := g) (μ := 1 / L) inferInstance hg_convex z xPlus hprox with
+  rcases @scaled_prox_singleton_support_of_proper_convex
+      E _ _ _ g (1 / L) inferInstance hg_convex z xPlus hprox with
     ⟨hxPlus_eff, _⟩
   simpa [xPlus] using hxPlus_eff
 
@@ -69,8 +68,8 @@ lemma prox_grad_support_inequality
   let hg_proper : IsProperExtendedRealFunction g := inferInstance
   have hprox : prox[((((1 / L : PosReal) : EReal) • g))] z = {xPlus} := by
     simpa [xPlus, z, proximal_gradient_step] using prox_grad_operator_eq_singleton f g L y
-  rcases scaled_prox_singleton_support_of_proper_convex
-      (f := g) (μ := 1 / L) inferInstance hg_convex z xPlus hprox with
+  rcases @scaled_prox_singleton_support_of_proper_convex
+      E _ _ _ g (1 / L) inferInstance hg_convex z xPlus hprox with
     ⟨hxPlus_eff, hsupport⟩
   have hvector :
       ((1 / (1 / L : PosReal) : ℝ) • (z - xPlus)) =
@@ -139,8 +138,7 @@ lemma prox_grad_g_gap_lower_bound
       ((L : ℝ) / 2) * ‖x - (y : E)‖ ^ (2 : ℕ) +
       (((L : ℝ) / 2) * ‖xPlus - (y : E)‖ ^ (2 : ℕ) -
         inner ℝ grad (x - xPlus))
-  have hsupport :=
-    prox_grad_support_inequality (f := f) (g := g) x y L
+  have hsupport := @prox_grad_support_inequality E _ _ _ f g _ _ _ x y L
   have hsupport' :
       (((gapR : ℝ)) : EReal) ≤ g x - g xPlus := by
     have hsupportx :
@@ -166,7 +164,7 @@ lemma prox_grad_g_gap_lower_bound
               ((‖xPlus - (y : E)‖ ^ (2 : ℕ) + ‖x - xPlus‖ ^ (2 : ℕ) -
                   ‖x - (y : E)‖ ^ (2 : ℕ)) / 2) -
               inner ℝ grad (x - xPlus) := by
-              rw [inner_base_step_eq_half_norm_balance (f := f) (g := g)]
+              rw [inner_base_step_eq_half_norm_balance x y L]
         _ = gapR := by
               dsimp [gapR]
               ring
@@ -194,7 +192,7 @@ lemma accepted_model_forces_step_bot_of_base_bot
           ((inner ℝ (∇ (fun z ↦ (f z).toReal) (y : E)) (xPlus - (y : E)) +
             ((L : ℝ) / 2) * ‖xPlus - (y : E)‖ ^ (2 : ℕ) : ℝ) : EReal) := by
     simpa [xPlus] using
-      (proximal_gradient_backtracking_B2_accepts_iff (f := f) (g := g) L y).1 hmodel
+      (proximal_gradient_backtracking_B2_accepts_iff f g L y).1 hmodel
   have hle_bot : f xPlus ≤ ⊥ := by
     simpa [hfy_bot] using hmodel'
   exact le_antisymm hle_bot bot_le
@@ -216,7 +214,7 @@ lemma accepted_model_forces_step_ne_top_of_base_finite
           ((inner ℝ (∇ (fun z ↦ (f z).toReal) (y : E)) (xPlus - (y : E)) +
             ((L : ℝ) / 2) * ‖xPlus - (y : E)‖ ^ (2 : ℕ) : ℝ) : EReal) := by
     simpa [xPlus] using
-      (proximal_gradient_backtracking_B2_accepts_iff (f := f) (g := g) L y).1 hmodel
+      (proximal_gradient_backtracking_B2_accepts_iff f g L y).1 hmodel
   have hfy_val :
       f (y : E) = (((f (y : E)).toReal : ℝ) : EReal) := by
     exact (EReal.coe_toReal hfy_top hfy_bot).symm
@@ -255,6 +253,7 @@ lemma accepted_model_forces_step_ne_top_of_base_finite
     not_le_of_gt htopgt
   exact hnot hmodel'
 
+omit [Fact (LowerSemicontinuous g)] [Fact (is_convex_function g)] in
 /-- Helper for Theorem 10.16: on the finite branch, the model right-hand side
 `g(x) + f(y) + ⟪∇f(y), x - y⟫` is exactly `F(x) - ℓ_f(x, y)`. -/
 lemma objective_minus_linearization_eq_model_rhs_of_finite_values
@@ -351,10 +350,10 @@ lemma prox_grad_finite_branch_real_gap
     exact hFx_top hFx_eq_top
   have hxPlusg :
       xPlus ∈ effective_domain g :=
-    prox_grad_step_mem_effective_domain_g (f := f) (g := g) y L
+    prox_grad_step_mem_effective_domain_g y L
   have hxPlus_top :
       f xPlus ≠ ⊤ :=
-    accepted_model_forces_step_ne_top_of_base_finite (f := f) (g := g) y L hmodel hfy_bot
+    accepted_model_forces_step_ne_top_of_base_finite y L hmodel hfy_bot
   have hgx_val :
       g x = (((g x).toReal : ℝ) : EReal) := by
     exact (EReal.coe_toReal (mem_effective_domain.mp hxg).ne hgx_bot).symm
@@ -372,7 +371,7 @@ lemma prox_grad_finite_branch_real_gap
     have hgapE :
         (((quadR + tailR : ℝ)) : EReal) + g xPlus ≤ g x := by
       simpa [xPlus, grad, quadR, tailR] using
-        prox_grad_g_gap_lower_bound (f := f) (g := g) x y L
+        prox_grad_g_gap_lower_bound x y L
     have hgapE' :
         (((quadR + tailR : ℝ)) : EReal) ≤ g x - g xPlus := by
       have hgapIff :
@@ -399,7 +398,7 @@ lemma prox_grad_finite_branch_real_gap
             ((inner ℝ grad (xPlus - (y : E)) +
               ((L : ℝ) / 2) * ‖xPlus - (y : E)‖ ^ (2 : ℕ) : ℝ) : EReal) := by
       simpa [xPlus, grad] using
-        (proximal_gradient_backtracking_B2_accepts_iff (f := f) (g := g) L y).1 hmodel
+        (proximal_gradient_backtracking_B2_accepts_iff f g L y).1 hmodel
     rw [hfxPlus_val, hfy_val] at hmodelE
     have hmodelE' :
         (((f xPlus).toReal : ℝ) : EReal) ≤
@@ -560,10 +559,10 @@ lemma fundamental_prox_grad_inequality_finite_branch
     exact hFx_top hFx_eq_top
   have hxPlusg :
       xPlus ∈ effective_domain g :=
-    prox_grad_step_mem_effective_domain_g (f := f) (g := g) y L
+    prox_grad_step_mem_effective_domain_g y L
   have hxPlus_top :
       f xPlus ≠ ⊤ :=
-    accepted_model_forces_step_ne_top_of_base_finite (f := f) (g := g) y L hmodel hfy_bot
+    accepted_model_forces_step_ne_top_of_base_finite y L hmodel hfy_bot
   -- Route correction: normalize the goal once, then close it with the pure real gap lemma.
   have hnorm :
       (F x - F xPlus ≥
@@ -577,7 +576,7 @@ lemma fundamental_prox_grad_inequality_finite_branch
           ((f x).toReal + (g x).toReal) - ((f xPlus).toReal + (g xPlus).toReal) := by
     simpa [xPlus] using
       (fundamental_prox_grad_goal_normal_form
-        (f := f) (g := g) x y L
+        x y L
         hxg
         (by simpa [xPlus] using hxPlusg)
         hfx_bot hfx_top hfy_bot
@@ -591,7 +590,7 @@ lemma fundamental_prox_grad_inequality_finite_branch
         ((f x).toReal + (g x).toReal) - ((f xPlus).toReal + (g xPlus).toReal) := by
     simpa [xPlus] using
       (prox_grad_finite_branch_real_gap
-        (f := f) (g := g) x y L hmodel hfx_bot hfy_bot
+        x y L hmodel hfx_bot hfy_bot
         (by simpa [xPlus] using hxPlus_bot') hFx_top)
   have hgoal :
       F x - F xPlus ≥
@@ -637,7 +636,7 @@ theorem fundamental_prox_grad_inequality
       have hxPlus_bot_eq :
           f xPlus = ⊥ :=
         by simpa [xPlus] using
-          (accepted_model_forces_step_bot_of_base_bot (f := f) (g := g) y L hmodel hfy_bot_eq)
+          (accepted_model_forces_step_bot_of_base_bot y L hmodel hfy_bot_eq)
       have hgoal :
           F x - F xPlus ≥
             ((((L : ℝ) / 2) * ‖x - xPlus‖ ^ (2 : ℕ) -
@@ -668,10 +667,10 @@ theorem fundamental_prox_grad_inequality
         · -- If `F x = ⊤`, rewrite the finite step value as a real coercion and finish.
           have hxPlusg :
               xPlus ∈ effective_domain g :=
-            prox_grad_step_mem_effective_domain_g (f := f) (g := g) y L
+            prox_grad_step_mem_effective_domain_g y L
           have hxPlus_top :
               f xPlus ≠ ⊤ :=
-            accepted_model_forces_step_ne_top_of_base_finite (f := f) (g := g) y L hmodel hfy_bot
+            accepted_model_forces_step_ne_top_of_base_finite y L hmodel hfy_bot
           have hfxPlus_val :
               f xPlus = (((f xPlus).toReal : ℝ) : EReal) := by
             exact (EReal.coe_toReal hxPlus_top hxPlus_bot).symm
@@ -694,7 +693,7 @@ theorem fundamental_prox_grad_inequality
         · -- The remaining branch is exactly the finite-branch helper proved above.
           simpa [xPlus] using
             (fundamental_prox_grad_inequality_finite_branch
-              (f := f) (g := g) x y L hmodel hfx_bot hfy_bot
+              x y L hmodel hfx_bot hfy_bot
               (by simpa [xPlus] using hxPlus_bot) hFx_top_eq)
 
 end

@@ -8,30 +8,31 @@ universe u
 
 variable {E : Type u}
 
-/- Example 2.1 uses the chapter's source-facing indicator-function owner
-`extendedIndicator`. -/
+/-
+Example 2.1: this item is a canonical recall of the chapter owners for indicator functions,
+their effective domains, real epigraphs, and proper extended-real-valued functions. -/
 recall extendedIndicator
 
-/- The finite-value locus in this example is the canonical owner `effective_domain` from
-Definition 2.1, reused by Definition 2.5. -/
+/- The finite-value locus is the canonical owner `effective_domain`, and the textbook identity
+`dom(δ_C) = C` is already recorded by `effective_domain_extendedIndicator`. -/
 recall effective_domain
+recall effective_domain_extendedIndicator
+recall mem_effective_domain_extendedIndicator
 
 /- The real-epigraph owner for extended-real-valued functions is the chapter declaration
 `realEpigraph`. -/
 recall realEpigraph
-
--- Proof sketch: use extensionality on sets, unfold `effective_domain` and `extendedIndicator`,
--- and split on whether the point lies in `C`.
-/-- Example2.1: The effective domain of the indicator function `δ_C` is exactly the set `C`. -/
-theorem effective_domain_indicatorFunction (C : Set E) :
-    effective_domain (extendedIndicator C) = C := sorry
+recall mem_realEpigraph
 
 -- Proof sketch: unfold the displayed real-epigraph set and `effective_domain`; if `f x ≤ y` with
 -- `y : ℝ`, then
 -- `(y : EReal) < ⊤`, so transitivity gives `f x < ⊤`.
 /-- A point in the real epigraph projects to a point in the effective domain. -/
-theorem mem_effective_domain_of_mem_real_epigraph {f : E → EReal} {x : E} {y : ℝ}
-    (h : (x, y) ∈ realEpigraph f) : x ∈ effective_domain f := sorry
+theorem mem_effective_domain_of_mem_realEpigraph {f : E → EReal} {x : E} {y : ℝ}
+    (h : (x, y) ∈ realEpigraph f) : x ∈ effective_domain f := by
+  -- Semantic recall: `EReal.coe_lt_top` is the canonical finite-value bridge for real heights.
+  rw [mem_effective_domain]
+  exact lt_of_le_of_lt (mem_realEpigraph.mp h) (EReal.coe_lt_top y)
 
 /- Proper extended-real-valued functions are already owned upstream in Definition 2.5. -/
 recall IsProperExtendedRealFunction

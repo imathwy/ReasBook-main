@@ -26,13 +26,21 @@ def projected_subgradient_method (C : Set E)
   | 0 => x0
   | k + 1 =>
       -- Route correction: the chapter-level metric projection API is parameterized by completeness,
-      -- so the closed feasible set supplies the needed input through `hC_closed.isComplete`.
+      -- so the closed feasible set supplies the needed input through `hC_closed`.
       let xk := projected_subgradient_method C hC_nonempty hC_closed hC_convex g t x0 k
-      metricProjection C hC_nonempty hC_closed.isComplete hC_convex
+      metricProjection C hC_nonempty hC_closed hC_convex
         ((xk : E) - t k • g k xk)
 
+/-- The ambient-space iterate sequence obtained by coercing the feasible projected-subgradient
+iterates from `C` to `E`. This is the canonical bridge for objective values and norm estimates,
+which are naturally stated in the ambient space. -/
+abbrev projected_subgradient_method_iterate (C : Set E)
+    (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C) (hC_convex : Convex ℝ C)
+    (g : ℕ → C → E) (t : ℕ → ℝ) (x0 : C) : ℕ → E :=
+  fun k ↦ projected_subgradient_method C hC_nonempty hC_closed hC_convex g t x0 k
+
 /-- A direction-selection rule is admissible for the projected subgradient method on `f` when, at
-each iterate, the selected direction belongs to the Euclidean extendedRealSubdifferential of `f` at the
+each iterate, the selected direction belongs to the Euclidean subdifferential of `f` at the
 current iterate and the current stepsize is strictly positive. -/
 def projected_subgradient_method_is_admissible
     (f : E → ℝ) (C : Set E) (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C)
@@ -58,12 +66,33 @@ theorem projected_subgradient_method_succ (C : Set E) (hC_nonempty : C.Nonempty)
     (hC_closed : IsClosed C) (hC_convex : Convex ℝ C) (g : ℕ → C → E) (t : ℕ → ℝ) (x0 : C)
     (k : ℕ) :
     projected_subgradient_method C hC_nonempty hC_closed hC_convex g t x0 (k + 1) =
-      metricProjection C hC_nonempty hC_closed.isComplete hC_convex
+      metricProjection C hC_nonempty hC_closed hC_convex
         ((projected_subgradient_method C hC_nonempty hC_closed hC_convex g t x0 k : E) -
           t k • g k (projected_subgradient_method C hC_nonempty hC_closed hC_convex g t x0 k)) :=
   by
     -- Unfolding one recursive step exposes the projected update rule verbatim.
     rfl
+
+-- Proof sketch: unfold `projected_subgradient_method_iterate` at `0`; this is the ambient-space
+-- coercion of `projected_subgradient_method_zero`.
+/-- The ambient projected-subgradient iterate sequence starts at the prescribed initial point. -/
+@[simp] theorem projected_subgradient_method_iterate_zero (C : Set E) (hC_nonempty : C.Nonempty)
+    (hC_closed : IsClosed C) (hC_convex : Convex ℝ C) (g : ℕ → C → E) (t : ℕ → ℝ) (x0 : C) :
+    projected_subgradient_method_iterate C hC_nonempty hC_closed hC_convex g t x0 0 = x0 := by
+  rfl
+
+-- Proof sketch: unfold `projected_subgradient_method_iterate` at `k + 1`; this is the ambient
+-- version of `projected_subgradient_method_succ`.
+/-- One step of the ambient projected-subgradient iterate sequence is the projected update in `E`.
+-/
+theorem projected_subgradient_method_iterate_succ (C : Set E) (hC_nonempty : C.Nonempty)
+    (hC_closed : IsClosed C) (hC_convex : Convex ℝ C) (g : ℕ → C → E) (t : ℕ → ℝ) (x0 : C)
+    (k : ℕ) :
+    projected_subgradient_method_iterate C hC_nonempty hC_closed hC_convex g t x0 (k + 1) =
+      metricProjection C hC_nonempty hC_closed hC_convex
+        (projected_subgradient_method_iterate C hC_nonempty hC_closed hC_convex g t x0 k -
+          t k • g k (projected_subgradient_method C hC_nonempty hC_closed hC_convex g t x0 k)) :=
+  rfl
 
 -- Proof sketch: unfold `projected_subgradient_method_is_admissible` and specialize its defining
 -- condition at the index `k`.

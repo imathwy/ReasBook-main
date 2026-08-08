@@ -14,25 +14,22 @@ section
 
 variable {n l : ℕ}
 
-local notation "E" => Fin n → ℝ
-
-variable {Q : positiveDefiniteMatrices n} {b : E} {a : Fin l → E}
+variable {Q : positiveDefiniteMatrices n} {b : Fin n → ℝ} {a : Fin l → Fin n → ℝ}
 variable {x : ℕ → polytope_quadratic_feasible_set a} {i : ℕ → Fin l}
 
-local notation "d[" k "]" =>
-  polytope_quadratic_conditional_gradient_direction a (x k) (i k)
 local notation "λ[" k "]" =>
-  polytope_quadratic_exact_line_search_ratio Q b (x k) (d[k])
+  polytope_quadratic_exact_line_search_ratios Q b a x i k
 
 section
 
 variable
-  {v0 : stdSimplex ℝ (Fin l)} {xStar : E}
+  {v0 : stdSimplex ℝ (Fin l)} {xStar : Fin n → ℝ}
 
 local notation "Ω" => convexHull ℝ (Set.range a)
 
 local notation "v[" k "]" =>
-  polytope_quadratic_exact_line_search_weights (v0 : Fin l → ℝ) k
+  polytope_quadratic_exact_line_search_weights
+    (Q := Q) (b := b) (a := a) (x := x) (i := i) (v0 : Fin l → ℝ) k
 
 namespace Lemma_13_19_PartialSumsDivergence
 
@@ -41,10 +38,10 @@ subsequence whose limit has strictly positive coordinates. -/
 theorem exists_strictly_positive_limit_weights_of_summable_ratio
     (hinit :
       IsStrictVertexSublevelInitialPoint
-        (polytope_quadratic_objective Q b) a (x 0 : E) v0)
+        (polytope_quadratic_objective Q b) a (x 0 : Fin n → ℝ) v0)
     (htraj :
       is_polytope_quadratic_conditional_gradient_exact_line_search_trajectory Q b a x i)
-    (hs : Summable (fun k ↦ λ[k])) :
+    (hs : Summable (polytope_quadratic_exact_line_search_ratios Q b a x i)) :
     ∃ wBar : stdSimplex ℝ (Fin l), ∃ ψ : ℕ → ℕ,
       StrictMono ψ ∧
       Filter.Tendsto (fun m ↦ v[ψ m]) Filter.atTop (nhds (wBar : Fin l → ℝ)) ∧
@@ -55,8 +52,7 @@ theorem exists_strictly_positive_limit_weights_of_summable_ratio
         (Q := Q) (b := b) (a := a) (x := x) (i := i) (v0 := v0) hinit htraj k⟩
   obtain ⟨wBar, ψ, hψmono, hψtendsto⟩ := CompactSpace.tendsto_subseq u
   obtain ⟨δ, hδ_pos, hδbound⟩ :=
-    Lemma_13_19_TrajectoryWeights
-      .polytope_quadratic_exact_line_search_weights_lower_bound_of_summable
+    Lemma_13_19_TrajectoryWeights.polytope_quadratic_exact_line_search_weights_lower_bound_of_summable
       (Q := Q) (b := b) (a := a) (x := x) (i := i) (v0 := v0) hinit htraj hs
   have hval_tendsto :
       Filter.Tendsto (fun m ↦ v[ψ m]) Filter.atTop (nhds (wBar : Fin l → ℝ)) := by
@@ -89,7 +85,7 @@ theorem boundary_optimizer_eq_weighted_sum_of_limit_weights
         Ω xStar)
     (hinit :
       IsStrictVertexSublevelInitialPoint
-        (polytope_quadratic_objective Q b) a (x 0 : E) v0)
+        (polytope_quadratic_objective Q b) a (x 0 : Fin n → ℝ) v0)
     (htraj :
       is_polytope_quadratic_conditional_gradient_exact_line_search_trajectory Q b a x i)
     {wBar : stdSimplex ℝ (Fin l)} {ψ : ℕ → ℕ}
@@ -97,7 +93,7 @@ theorem boundary_optimizer_eq_weighted_sum_of_limit_weights
     (hψtendsto :
       Filter.Tendsto (fun m ↦ v[ψ m]) Filter.atTop (nhds (wBar : Fin l → ℝ))) :
     xStar = ∑ j, wBar j • a j := by
-  let bary : (Fin l → ℝ) → E := fun w' ↦ ∑ j, w' j • a j
+  let bary : (Fin l → ℝ) → (Fin n → ℝ) := fun w' ↦ ∑ j, w' j • a j
   have hbary_cont : Continuous bary := by
     -- The barycentric synthesis map is continuous because it is a finite sum of coordinates.
     refine continuous_finset_sum _ fun j _ ↦ ?_
@@ -108,7 +104,7 @@ theorem boundary_optimizer_eq_weighted_sum_of_limit_weights
     -- Applying the barycentric map transports the weight convergence to vertex combinations.
     simpa [bary, Function.comp] using (hbary_cont.tendsto (wBar : Fin l → ℝ)).comp hψtendsto
   have hxSub_tendsto :
-      Filter.Tendsto (fun m ↦ (x (ψ m) : E)) Filter.atTop (nhds xStar) := by
+      Filter.Tendsto (fun m ↦ (x (ψ m) : Fin n → ℝ)) Filter.atTop (nhds xStar) := by
     -- Every subsequence inherits the convergence of the full iterate sequence to `xStar`.
     exact
       (Lemma_13_19_ClusterConvergence.polytope_quadratic_iterates_tendsto_boundary_optimizer
@@ -119,8 +115,8 @@ theorem boundary_optimizer_eq_weighted_sum_of_limit_weights
     -- The source recursion identifies each iterate with its barycentric vertex combination.
     refine Tendsto.congr' ?_ hxSub_tendsto
     exact Filter.Eventually.of_forall fun m ↦
-      (Lemma_13_19_TrajectoryWeights.polytope_quadratic_exact_line_search_iterate_eq_weighted_sum
-        (Q := Q) (b := b) (a := a) (x := x) (i := i) (v0 := v0) hinit htraj (ψ m)).symm
+      Lemma_13_19_TrajectoryWeights.polytope_quadratic_exact_line_search_iterate_eq_weighted_sum
+        (Q := Q) (b := b) (a := a) (x := x) (i := i) (v0 := v0) hinit htraj (ψ m)
   -- The same subsequence has both limits, so the limit point is unique.
   exact tendsto_nhds_unique hweightedSub_tendsto hbary_tendsto
 
@@ -133,10 +129,10 @@ theorem polytope_quadratic_exact_line_search_ratio_not_summable
         Ω xStar)
     (hinit :
       IsStrictVertexSublevelInitialPoint
-        (polytope_quadratic_objective Q b) a (x 0 : E) v0)
+        (polytope_quadratic_objective Q b) a (x 0 : Fin n → ℝ) v0)
     (htraj :
       is_polytope_quadratic_conditional_gradient_exact_line_search_trajectory Q b a x i) :
-    ¬ Summable (fun k ↦ λ[k]) := by
+    ¬ Summable (polytope_quadratic_exact_line_search_ratios Q b a x i) := by
   intro hs
   obtain ⟨wBar, ψ, hψmono, hψtendsto, hwBar_pos⟩ :=
     exists_strictly_positive_limit_weights_of_summable_ratio
@@ -152,8 +148,7 @@ theorem polytope_quadratic_exact_line_search_ratio_not_summable
     -- Strictly positive simplex coordinates place the weighted sum in the interior of `Ω`.
     rw [hxStar_eq]
     exact
-      Lemma_13_19_InteriorWeights
-        .strictly_positive_stdSimplex_weighted_sum_mem_interior_convexHull
+      Lemma_13_19_InteriorWeights.strictly_positive_stdSimplex_weighted_sum_mem_interior_convexHull
         (a := a) hboundary.interior_nonempty wBar.property hwBar_pos
   have hxStar_not_mem_interior : xStar ∉ interior Ω := by
     -- Boundary membership excludes interior membership.
@@ -171,14 +166,15 @@ theorem polytope_quadratic_exact_line_search_ratio_partialSums_tendsto_atTop
         Ω xStar)
     (hinit :
       IsStrictVertexSublevelInitialPoint
-        (polytope_quadratic_objective Q b) a (x 0 : E) v0)
+        (polytope_quadratic_objective Q b) a (x 0 : Fin n → ℝ) v0)
     (htraj :
       is_polytope_quadratic_conditional_gradient_exact_line_search_trajectory Q b a x i) :
     Filter.Tendsto
       (fun m : ℕ ↦
         Finset.sum (Finset.range (m + 1)) fun k ↦ λ[k])
       Filter.atTop Filter.atTop := by
-  have h_not_summable : ¬ Summable (fun k ↦ λ[k]) := by
+  have h_not_summable :
+      ¬ Summable (polytope_quadratic_exact_line_search_ratios Q b a x i) := by
     -- The source contradiction is now isolated in its own helper theorem.
     exact
       polytope_quadratic_exact_line_search_ratio_not_summable

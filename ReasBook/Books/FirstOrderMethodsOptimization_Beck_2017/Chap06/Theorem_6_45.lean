@@ -32,7 +32,7 @@ specialization. Domain sampling in the chapter gives the owner chain:
   primal-space surface,
 - `prox_eq_singleton_of_proper_closed_convex` from Theorem 6.3 as the chapter's existence/uniqueness
   owner for proximal points on the ambient space,
-- `conjugate_function_pos_real_mul` from Proposition 4.7 and
+- `conjugate_function_primal_pos_real_mul` from Proposition 4.7 and
   `proximal_mapping_smul_precompose_inv_smul` from Theorem 6.12 as the two scaling bridges.
 
 Primitive data: `f`, the proper/closed/convex hypotheses, the positive scale `lam : PosReal`,
@@ -43,8 +43,8 @@ Derived API: the scaled conjugate rewrite and the proximal transport needed to e
 The textbook writes a single-valued identity, so the canonical chapter-level rendering is the
 singleton identity for the pointwise sum set. -/
 recall conjugate_function_primal
-recall fenchelYoung_inequality
-recall conjugate_function_pos_real_mul
+recall fenchel_inequality
+recall conjugate_function_primal_pos_real_mul
 recall pairing_eq_add_conjugate_iff_mem_subdifferential
 recall isProperExtendedRealFunction_conjugate_function
 recall proximal_mapping_smul_precompose_inv_smul
@@ -74,16 +74,6 @@ lemma conjugate_function_primal_proper_of_proper_convex
     change conjugate_function f (y' : Module.Dual ℝ E) < ⊤ at hy
     simpa [conjugate_function_primal_apply] using hx ▸ hy
 
-/-- Helper for Theorem 6.45: positive scaling rewrites the primal conjugate into the exact
-precompose-and-rescale form needed by Theorem 6.12. -/
-lemma scaled_conjugate_primal_eq_pos_smul_precompose_inv_smul
-    (f : E → EReal) (lam : PosReal) :
-    (((lam : EReal) • f)∗) = fun y ↦ (lam : EReal) * (f∗) ((lam : ℝ)⁻¹ • y) := by
-  -- Rewrite Proposition 4.7 directly on the primal-space conjugate surface.
-  funext y
-  simpa [conjugate_function_primal_apply, Pi.smul_apply, smul_eq_mul] using
-    congrFun (conjugate_function_pos_real_mul f (lam : ℝ) lam.2) (toDualMap ℝ E y)
-
 /-- Helper for Theorem 6.45: if `u` is the proximal point of the scaled function `λ f` at `x`,
 then the proximal point of its conjugate is the residual `x - u`. -/
 lemma prox_scaled_function_conjugate_eq_singleton_residual
@@ -108,7 +98,7 @@ lemma prox_scaled_function_conjugate_eq_singleton_residual
       (prox_eq_singleton_iff_toDualMap_sub_mem_strongDualSubdifferential
         g hg_proper hg_convex x u).mp hprox_g
   have hsub' :
-      (toDualMap ℝ E (x - u) : Module.Dual ℝ E) ∈ extendedRealSubdifferential g u := by
+      (toDualMap ℝ E (x - u) : Module.Dual ℝ E) ∈ subdifferential g u := by
     simpa [mem_strongDualSubdifferential] using hsub
   have hfenchel_eq :
       (toDualMap ℝ E (x - u) u : EReal) = g u + conjugate_function g (toDualMap ℝ E (x - u)) := by
@@ -167,7 +157,7 @@ lemma prox_scaled_function_conjugate_eq_singleton_residual
       -- Fenchel inequality bounds every dual value above by the primal-conjugate sum.
       simpa [ge_iff_le, add_comm, conjugate_function_primal_apply,
         InnerProductSpace.toDualMap_apply_apply] using
-        (fenchelYoung_inequality g u (toDualMap ℝ E z) hg_proper)
+        (fenchel_inequality g u (toDualMap ℝ E z) hg_proper)
     have hfenchel_z_real :
         inner ℝ z u ≤ (g u).toReal + ((g∗) z).toReal := by
       rw [hu_val, hz_val, ← EReal.coe_add] at hfenchel_z
@@ -223,7 +213,7 @@ theorem prox_scaled_conjugate_sum_eq_singleton
       (lam : ℝ) • prox[fun y ↦ (f∗) y / (lam : EReal)] ((lam : ℝ)⁻¹ • x)
           = prox[(((lam : EReal) • f)∗)] x := by
             symm
-            rw [scaled_conjugate_primal_eq_pos_smul_precompose_inv_smul]
+            rw [conjugate_function_primal_pos_real_mul f (lam : ℝ) lam.2]
             simpa [smul_eq_mul] using
               proximal_mapping_smul_precompose_inv_smul (g := f∗) (lam := (lam : ℝ))
                 (ne_of_gt lam.2) x

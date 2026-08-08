@@ -1,4 +1,3 @@
-import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap03.Definition_3_6
 import FirstOrderMethodsOptimization_Beck_2017.Chap03.Theorem_3_1
 
@@ -15,8 +14,8 @@ variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
 /- Definition 9.6 is `source-facing`: the textbook gives an iterative composite mirror-descent
 procedure through explicit iterates, chosen positive stepsizes, chosen subgradients of `f`, and
 the explicit unconstrained argmin update (9.32). The owner abstractions already present in the
-project for these ingredients are `effective_domain`, `subdifferential_domain`,
-`strongDualSubdifferential`, the continuous-dual derivative `fderiv ℝ (fun y ↦ (ω y).toReal) xk`,
+project for these ingredients are `effective_domain`, `subdifferential_domain`, `∂ₛ f(x)`, the
+continuous-dual derivative `fderiv ℝ (fun y ↦ (ω y).toReal) xk`,
 and mathlib's minimizer predicate `IsMinOn`, so this item is best recorded as the explicit
 one-step objective together with a trajectory predicate. The later equation-(9.33) Bregman rewrite
 belongs in a separate `bridge/view` file and should reuse this equation-(9.32) owner rather than
@@ -39,7 +38,7 @@ def mirror_c_problem_functional
 
 /-- The one-step Mirror-C objective from equation (9.32), written as the extended-real-valued
 function `x ↦ (t s - ω'(xk))(x) + t g(x) + ω(x)` using a chosen strong-dual subgradient
-`s ∈ ∂ f(xk)`. -/
+`s ∈ ∂ₛ f(xk)`. -/
 def mirror_c_update_objective
     (g ω : E → EReal) (xk : E) (s : StrongDual ℝ E) (t : ℝ) : E → EReal :=
   fun x ↦
@@ -56,18 +55,18 @@ def mirror_c_update_objective
     mirror_c_update_objective g ω xk s t x =
       (((mirror_c_problem_functional ω xk s t x : ℝ) : EReal) +
         (t : EReal) * g x) +
-        ω x := sorry
+        ω x := rfl
 
 /-- Definition 9.6: sequences of iterates `x`, chosen subgradients `s`, and stepsizes `t`
 follow the Mirror-C Method for the composite objective `f + g` with mirror map `ω` when at every
 iteration `k` the current iterate lies in `dom(g) ∩ dom(∂ ω)`, the chosen functional `s k`
-belongs to `∂ f(x^k)`, the stepsize `t k` is positive, and the next iterate `x^(k+1)` minimizes
+belongs to `∂ₛ f(x^k)`, the stepsize `t k` is positive, and the next iterate `x^(k+1)` minimizes
 the explicit Mirror-C objective from equation (9.32) over all `x`. -/
 def is_mirror_c_trajectory
     (f g ω : E → EReal) (x : ℕ → E) (s : ℕ → StrongDual ℝ E) (t : ℕ → ℝ) : Prop :=
   ∀ k,
     x k ∈ effective_domain g ∩ subdifferential_domain ω ∧
-      s k ∈ strongDualSubdifferential f (x k) ∧
+      s k ∈ ∂ₛ f(x k) ∧
       0 < t k ∧
       IsMinOn (mirror_c_update_objective g ω (x k) (s k) (t k)) Set.univ (x (k + 1))
 
@@ -79,8 +78,44 @@ theorem is_mirror_c_trajectory_step
     {f g ω : E → EReal} {x : ℕ → E} {s : ℕ → StrongDual ℝ E} {t : ℕ → ℝ}
     (h : is_mirror_c_trajectory f g ω x s t) (k : ℕ) :
     x k ∈ effective_domain g ∩ subdifferential_domain ω ∧
-      s k ∈ strongDualSubdifferential f (x k) ∧
+      s k ∈ ∂ₛ f(x k) ∧
       0 < t k ∧
-      IsMinOn (mirror_c_update_objective g ω (x k) (s k) (t k)) Set.univ (x (k + 1)) := sorry
+      IsMinOn (mirror_c_update_objective g ω (x k) (s k) (t k)) Set.univ (x (k + 1)) :=
+  h k
+
+/-- A Mirror-C trajectory keeps every iterate in the effective domain of `g`. -/
+theorem is_mirror_c_trajectory.mem_effective_domain
+    {f g ω : E → EReal} {x : ℕ → E} {s : ℕ → StrongDual ℝ E} {t : ℕ → ℝ}
+    (h : is_mirror_c_trajectory f g ω x s t) (k : ℕ) :
+    x k ∈ effective_domain g :=
+  (is_mirror_c_trajectory_step h k).1.1
+
+/-- A Mirror-C trajectory keeps every iterate in the subdifferential domain `dom(∂ ω)`. -/
+theorem is_mirror_c_trajectory.mem_subdifferential_domain
+    {f g ω : E → EReal} {x : ℕ → E} {s : ℕ → StrongDual ℝ E} {t : ℕ → ℝ}
+    (h : is_mirror_c_trajectory f g ω x s t) (k : ℕ) :
+    x k ∈ subdifferential_domain ω :=
+  (is_mirror_c_trajectory_step h k).1.2
+
+/-- A Mirror-C trajectory chooses a strong-dual subgradient of `f` at each iterate. -/
+theorem is_mirror_c_trajectory.subgradient_mem
+    {f g ω : E → EReal} {x : ℕ → E} {s : ℕ → StrongDual ℝ E} {t : ℕ → ℝ}
+    (h : is_mirror_c_trajectory f g ω x s t) (k : ℕ) :
+    s k ∈ ∂ₛ f(x k) :=
+  (is_mirror_c_trajectory_step h k).2.1
+
+/-- A Mirror-C trajectory uses positive stepsizes. -/
+theorem is_mirror_c_trajectory.stepsize_pos
+    {f g ω : E → EReal} {x : ℕ → E} {s : ℕ → StrongDual ℝ E} {t : ℕ → ℝ}
+    (h : is_mirror_c_trajectory f g ω x s t) (k : ℕ) :
+    0 < t k :=
+  (is_mirror_c_trajectory_step h k).2.2.1
+
+/-- A Mirror-C trajectory makes the next iterate a global minimizer of the one-step objective. -/
+theorem is_mirror_c_trajectory.isMinOn
+    {f g ω : E → EReal} {x : ℕ → E} {s : ℕ → StrongDual ℝ E} {t : ℕ → ℝ}
+    (h : is_mirror_c_trajectory f g ω x s t) (k : ℕ) :
+    IsMinOn (mirror_c_update_objective g ω (x k) (s k) (t k)) Set.univ (x (k + 1)) :=
+  (is_mirror_c_trajectory_step h k).2.2.2
 
 end

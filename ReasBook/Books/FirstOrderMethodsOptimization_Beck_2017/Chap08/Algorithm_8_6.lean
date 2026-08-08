@@ -30,10 +30,10 @@ def greedy_projection_method (S : Fin m → Set E)
   | 0 => x0
   | k + 1 =>
       -- Route correction: the chapter-level metric projection API is parameterized by completeness,
-      -- so each closed set contributes that input through `hS_closed ik`.isComplete.
+      -- so each closed set contributes that input through `hS_closed ik`.
       let xk := greedy_projection_method S hS_nonempty hS_closed hS_convex i x0 k
       let ik := i k xk
-      metricProjection (S ik) (hS_nonempty ik) (hS_closed ik).isComplete (hS_convex ik) xk
+      metricProjection (S ik) (hS_nonempty ik) (hS_closed ik) (hS_convex ik) xk
 
 /-- An index-selection rule is admissible for the greedy projection method when, at each current
 iterate `x^k`, the selected index `i_k` attains the maximum of the distance profile
@@ -64,7 +64,7 @@ theorem greedy_projection_method_succ (S : Fin m → Set E)
       metricProjection
         (S (i k (greedy_projection_method S hS_nonempty hS_closed hS_convex i x0 k)))
         (hS_nonempty (i k (greedy_projection_method S hS_nonempty hS_closed hS_convex i x0 k)))
-        (hS_closed (i k (greedy_projection_method S hS_nonempty hS_closed hS_convex i x0 k))).isComplete
+        (hS_closed (i k (greedy_projection_method S hS_nonempty hS_closed hS_convex i x0 k)))
         (hS_convex (i k (greedy_projection_method S hS_nonempty hS_closed hS_convex i x0 k)))
         (greedy_projection_method S hS_nonempty hS_closed hS_convex i x0 k) := by
   -- Unfolding one recursive step exposes the greedy projection update verbatim.

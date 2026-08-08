@@ -1647,17 +1647,15 @@ lemma permMatrix_conj_diagonal
   simp [Matrix.diagonal]
 
 /-- Helper for Theorem 7.1: permutation matrices are orthogonal over `ℝ`. -/
-lemma permMatrix_mem_orthogonalGroup
+private lemma permMatrix_mem_orthogonalGroup
     (σ : Equiv.Perm (Fin n)) :
     (σ.permMatrix ℝ : Mₙ) ∈ Matrix.orthogonalGroup (Fin n) ℝ := by
   refine (Matrix.mem_orthogonalGroup_iff (A := (σ.permMatrix ℝ : Mₙ)) (R := ℝ)).2 ?_
-  have hσ : σ.symm * σ = (1 : Equiv.Perm (Fin n)) := inv_mul_cancel σ
+  rw [Matrix.transpose_permMatrix]
   calc
-    (σ.permMatrix ℝ : Mₙ) * (σ.permMatrix ℝ)ᵀ =
-        Equiv.Perm.permMatrix ℝ (σ.symm * σ) := by
-      rw [Matrix.transpose_permMatrix]
-      exact (Matrix.permMatrix_mul (R := ℝ) (σ := σ.symm) (τ := σ)).symm
-    _ = 1 := by rw [hσ]; exact Matrix.permMatrix_one
+    σ.permMatrix ℝ * (σ⁻¹).permMatrix ℝ = ((σ⁻¹) * σ).permMatrix ℝ :=
+      (Matrix.permMatrix_mul (R := ℝ) (σ := σ⁻¹) (τ := σ)).symm
+    _ = 1 := by simp
 
 /-- Helper for Theorem 7.1: an ordered common diagonalization of the reindexed relative conjugate
 transports back to a theorem-coordinate common diagonalization of `X` and `Y`. -/
@@ -1705,14 +1703,13 @@ lemma ordered_transport_common_diagonalization_to_theorem_coordinates
       Matrix.mul_assoc]
   have hPmat_right : Pmatᵀ * Pmat = (1 : Mₙ) := by
     -- The permutation matrix also satisfies the right orthogonality relation.
-    have hσ₀ : σ₀ * σ₀.symm = (1 : Equiv.Perm (Fin n)) := mul_inv_cancel σ₀
+    dsimp [Pmat]
+    rw [Matrix.transpose_permMatrix]
     calc
-      Pmatᵀ * Pmat =
-          (σ₀.permMatrix ℝ)ᵀ * σ₀.permMatrix ℝ := rfl
-      _ = Equiv.Perm.permMatrix ℝ (σ₀ * σ₀.symm) := by
-        rw [Matrix.transpose_permMatrix]
-        exact (Matrix.permMatrix_mul (R := ℝ) (σ := σ₀) (τ := σ₀.symm)).symm
-      _ = 1 := by rw [hσ₀]; exact Matrix.permMatrix_one
+      (σ₀⁻¹).permMatrix ℝ * σ₀.permMatrix ℝ =
+          (σ₀ * σ₀⁻¹).permMatrix ℝ :=
+        (Matrix.permMatrix_mul (R := ℝ) (σ := σ₀) (τ := σ₀⁻¹)).symm
+      _ = 1 := by simp
   have hQt : (Q : Mₙ)ᵀ = (W : Mₙ)ᵀ * (U : Mₙ) := by
     -- Transpose the relative-basis identity `Q = Uᵀ W`.
     simpa [Matrix.transpose_mul] using congrArg Matrix.transpose hQ

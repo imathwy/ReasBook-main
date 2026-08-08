@@ -29,7 +29,8 @@ def nonnegative_linear_penalty (mu : ℝ) : ℝ → EReal :=
   · simp [nonnegative_linear_penalty, extendedIndicator, hx]
   · calc
       nonnegative_linear_penalty mu x = ⊤ + (((mu * x : ℝ) : EReal)) := by
-        simp [nonnegative_linear_penalty, extendedIndicator, hx, EReal.coe_mul]
+        have hx' : x ∈ Set.Iio (0 : ℝ) := by simpa using hx
+        simp [nonnegative_linear_penalty, extendedIndicator, hx', EReal.coe_mul]
       _ = ⊤ := by rw [EReal.top_add_of_ne_bot (EReal.coe_ne_bot _)]
       _ = if 0 ≤ x then ((mu * x : ℝ) : EReal) else ⊤ := by simp [hx]
 
@@ -67,7 +68,8 @@ def nonnegative_cubic_penalty (lam : ℝ) : ℝ → EReal :=
   · simp [nonnegative_cubic_penalty, extendedIndicator, hx]
   · calc
       nonnegative_cubic_penalty lam x = ⊤ + (((lam * x ^ 3 : ℝ) : EReal)) := by
-        simp [nonnegative_cubic_penalty, extendedIndicator, hx, EReal.coe_mul, EReal.coe_pow]
+        have hx' : x ∈ Set.Iio (0 : ℝ) := by simpa using hx
+        simp [nonnegative_cubic_penalty, extendedIndicator, hx', EReal.coe_mul, EReal.coe_pow]
       _ = ⊤ := by rw [EReal.top_add_of_ne_bot (EReal.coe_ne_bot _)]
       _ = if 0 ≤ x then ((lam * x ^ 3 : ℝ) : EReal) else ⊤ := by simp [hx]
 

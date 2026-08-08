@@ -18,7 +18,7 @@ variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 local notation "E" => EuclideanSpace ℝ ι
 
 /- Lemma 6.71 is `bridge/view`: the sparse-set owner `C_[s]` already lives in
-`Definition_6_12`, but the projection owner `Proj[...]` for this textbook `ℝ^n` result must live on
+`Definition_6_12`, but the projection owner `P[...]` for this textbook `ℝ^n` result must live on
 the Euclidean `ℓ²` owner `E = EuclideanSpace ℝ ι`, not on the raw function space `ι → ℝ`. The
 left-hand side therefore uses the canonical transport `toLp 2 '' C_[s]`, while the right-hand side
 uses the same transport on the masked coordinate vectors. Example 6.51 already owns the
@@ -439,7 +439,7 @@ cardinality `s` and captures the `s` largest absolute coordinates of `x` through
 `sum_k_largest_abs`. Specializing to `ι = Fin n` recovers the textbook `ℝ^n` statement. -/
 theorem projection_mapping_sSparseVectors_eq_top_abs_coordinate_projections
     {s : ℕ} (hs : s ≤ Fintype.card ι) (x : E) :
-    Proj[(toLp 2 '' (C_[s] : Set (ι → ℝ)) : Set E)] x =
+    P[(toLp 2 '' (C_[s] : Set (ι → ℝ)) : Set E)] x =
       (fun S : Finset ι ↦ toLp 2 ((↑S : Set ι).indicator x.ofLp)) ''
         {S : Finset ι |
           S.card = s ∧

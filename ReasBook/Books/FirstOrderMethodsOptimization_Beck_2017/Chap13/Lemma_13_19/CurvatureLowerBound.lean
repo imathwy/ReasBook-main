@@ -14,7 +14,7 @@ variable {n l : ℕ}
 
 local notation "E" => Fin n → ℝ
 
-variable {Q : positiveDefiniteMatrices n} {b : E} {a : Fin l → E}
+variable {Q : positiveDefiniteMatrices n} {b : Fin n → ℝ} {a : Fin l → Fin n → ℝ}
 variable {x : ℕ → polytope_quadratic_feasible_set a} {i : ℕ → Fin l}
 
 local notation "d[" k "]" =>
@@ -25,7 +25,7 @@ local notation "κ[" k "]" =>
 section
 
 variable
-  {v0 : stdSimplex ℝ (Fin l)} {xStar : E}
+  {v0 : stdSimplex ℝ (Fin l)} {xStar : Fin n → ℝ}
 
 local notation "Ω" => convexHull ℝ (Set.range a)
 local notation "f_q" => polytope_quadratic_objective Q b
@@ -51,9 +51,12 @@ theorem polytope_quadratic_boundary_optimizer_ne_vertex
   have hxStar_le_x0 :
       f_q xStar ≤ f_q (x 0 : E) := by
     -- Compare the optimal boundary point with the initial feasible iterate.
-    simpa [polytope_quadratic_problem_of_mem Q b a hxStar_data.1,
-      polytope_quadratic_problem_of_mem Q b a (x 0).property] using
-      hxStar_data.2 (x 0).property
+    have hle := hxStar_data.2 (x 0).property
+    change polytope_quadratic_problem Q b a xStar ≤
+      polytope_quadratic_problem Q b a (x 0 : E) at hle
+    rw [polytope_quadratic_problem_of_mem Q b a hxStar_data.1,
+      polytope_quadratic_problem_of_mem Q b a (x 0).property] at hle
+    exact EReal.coe_le_coe_iff.mp hle
   have hx0_lt_xStar :
       f_q (x 0 : E) < f_q xStar := by
     -- The strict-vertex-sublevel hypothesis transfers to `xStar` through the assumed equality.
@@ -201,11 +204,11 @@ theorem exists_pos_polytope_quadratic_directional_curvature_lower_bound
     · exact (Finset.lt_inf'_iff (by simp)).2 fun k hk ↦ by
         have hd_ne : d[k] ≠ 0 := by
           intro hd
-          have hnonneg :
-              0 ≤ polytope_quadratic_conditional_gradient_directional_derivative
-                Q b a (x k) (i k) := by
-            simp [polytope_quadratic_conditional_gradient_directional_derivative_eq,
-              polytope_quadratic_conditional_gradient_direction_eq, hd]
+          have hzero :
+              polytope_quadratic_conditional_gradient_directional_derivative
+                Q b a (x k) (i k) = 0 := by
+            rw [polytope_quadratic_conditional_gradient_directional_derivative_eq, hd]
+            simp
           linarith [htraj.directional_derivative_neg k]
         exact norm_pos_iff.mpr hd_ne
   refine ⟨γ * η ^ (2 : ℕ), by positivity, ?_⟩

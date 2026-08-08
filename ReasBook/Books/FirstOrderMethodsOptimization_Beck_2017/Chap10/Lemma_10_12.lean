@@ -1,7 +1,7 @@
 import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap05.Definition_5_1
-import FirstOrderMethodsOptimization_Beck_2017.Chap05.Theorem_5_8
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_5
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.GradientCocoercivity
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_42
 
 -- Declarations for this item will be appended below by the statement pipeline.
@@ -22,7 +22,7 @@ owner to a real-valued smooth term via the shared bridge/view surface `G[L; f, g
 
 /-- Helper for Lemma 10.12: the Chapter 10 prox-gradient point is the unique proximal point of
 the scaled penalty at the forward-gradient input. -/
-lemma prox_gradient_operator_eq_singleton_forward
+private lemma prox_gradient_operator_eq_singleton_forward
     (f : E → ℝ) (g : E → EReal) (L : PosReal)
     [IsProperExtendedRealFunction g] [Fact (LowerSemicontinuous g)]
     [Fact (is_convex_function g)] (x : E) :
@@ -30,46 +30,8 @@ lemma prox_gradient_operator_eq_singleton_forward
       {T[L; f, g] x} := by
   -- Unfold the source-facing prox-gradient operator into the singleton proximal step.
   simpa [proximal_gradient_step] using
-    (prox_grad_operator_eq_singleton (f := f.toExtendedReal) (g := g) L
+    (prox_grad_operator_eq_singleton f.toEReal g L
       (interior_effective_domain_point_of_real f x))
-
-/-- Helper for Lemma 10.12: global convex `L`-smoothness on `Set.univ` implies the standard
-`1 / L`-cocoercivity inequality for the gradient. -/
-lemma smooth_gradient_cocoercive_univ
-    (f : E → ℝ) (L : PosReal)
-    (hf_convex : ConvexOn ℝ Set.univ f)
-    (hf_smooth : is_l_smooth_on f Set.univ (PosReal.toNNReal L))
-    (x y : E) :
-    inner ℝ (∇ f x - ∇ f y) (x - y) ≥
-      (1 / (L : ℝ)) * ‖∇ f x - ∇ f y‖ ^ (2 : ℕ) := by
-  letI : FiniteDimensional ℝ E := FiniteDimensional.of_locallyCompactSpace ℝ
-  have hf_diff : Differentiable ℝ f := by
-    -- Global smoothness on `Set.univ` gives differentiability at every point.
-    intro z
-    exact hf_smooth.1 z (by simp)
-  have hLnn : 0 < PosReal.toNNReal L := by
-    exact_mod_cast L.2
-  have htfae :=
-    convex_l_smooth_tfae_descent_gradient_lower_bound_cocoercive_convex_combo
-      f hf_convex hf_diff (PosReal.toNNReal L) hLnn
-  have hcoco :
-      inner ℝ (∇ f x - ∇ f y) (x - y) ≥
-        (1 / (((PosReal.toNNReal L : NNReal) : ℝ))) *
-          ‖∇ f x - ∇ f y‖ ^ (2 : ℕ) := by
-    -- Extract clause `(iv)` from Theorem 5.8.
-    have hcoco_all :
-        ∀ x y : E,
-          inner ℝ (∇ f x - ∇ f y) (x - y) ≥
-            (1 / (((PosReal.toNNReal L : NNReal) : ℝ))) *
-              ‖∇ f x - ∇ f y‖ ^ (2 : ℕ) :=
-      (List.TFAE.out htfae 0 3
-        (a := is_l_smooth_on f Set.univ (PosReal.toNNReal L))
-        (b := ∀ x y : E,
-          inner ℝ (∇ f x - ∇ f y) (x - y) ≥
-            (1 / (((PosReal.toNNReal L : NNReal) : ℝ))) *
-              ‖∇ f x - ∇ f y‖ ^ (2 : ℕ))).mp hf_smooth
-    exact hcoco_all x y
-  simpa using hcoco
 
 /-- Helper for Lemma 10.12: convex global `L`-smoothness controls the gradient difference at the
 prox-gradient pair `(x, T_L(x))` by the Chapter 5 cocoercivity inequality. -/
@@ -87,8 +49,8 @@ lemma convex_smooth_gradient_difference_sq_le
         inner ℝ (∇ f (T[L; f, g] x) - ∇ f x) (T[L; f, g] x - x) := by
     -- Specialize the Chapter 5 cocoercivity inequality to `(T_L(x), x)`.
     simpa using
-      smooth_gradient_cocoercive_univ
-        (f := f) (L := L) hf_convex hf_smooth (T[L; f, g] x) x
+      (gradient_cocoercive_of_convex_l_smooth_posReal
+        (E := E) L hf_convex hf_smooth) (T[L; f, g] x) x
   have hmul := mul_le_mul_of_nonneg_left hcoco (le_of_lt L.2)
   have hL : (L : ℝ) * (1 / (L : ℝ)) = 1 := by
     field_simp [show (L : ℝ) ≠ 0 from L.2.ne']
@@ -122,7 +84,7 @@ lemma prox_gradient_forward_points_dist_le_step
     -- Rewrite the Chapter 5 inequality in the compact `a,b` notation from the source proof.
     simpa [a, b] using
       convex_smooth_gradient_difference_sq_le
-        (f := f) (g := g) (L := L) hf_convex hf_smooth x
+        f g L hf_convex hf_smooth x
   have hsq :
       ‖((1 / (L : ℝ)) • a) - b‖ ^ (2 : ℕ) ≤ ‖b‖ ^ (2 : ℕ) := by
     -- Expand the squared norm and reduce to the scalar inequality coming from `hgrad`.
@@ -204,7 +166,7 @@ lemma prox_gradient_step_distance_monotone
         (x - (1 / (L : ℝ)) • ∇ f x) =
           {T[L; f, g] x} := by
     -- The Chapter 10 prox-gradient point is exactly the unique proximal point at the forward input.
-    simpa using prox_gradient_operator_eq_singleton_forward (f := f) (g := g) (L := L) x
+    simpa using prox_gradient_operator_eq_singleton_forward f g L x
   have hy :
       prox[((((1 / L : PosReal) : EReal) • g))]
         (T[L; f, g] x - (1 / (L : ℝ)) • ∇ f (T[L; f, g] x)) =
@@ -212,15 +174,15 @@ lemma prox_gradient_step_distance_monotone
     -- Apply the same singleton description one step later.
     simpa using
       prox_gradient_operator_eq_singleton_forward
-        (f := f) (g := g) (L := L) (T[L; f, g] x)
+        f g L (T[L; f, g] x)
   have hnonexp :
       ‖T[L; f, g] x - T[L; f, g] (T[L; f, g] x)‖ ≤
         ‖(x - (1 / (L : ℝ)) • ∇ f x) -
           (T[L; f, g] x - (1 / (L : ℝ)) • ∇ f (T[L; f, g] x))‖ := by
     -- Proximal nonexpansivity compares the two consecutive prox-gradient updates.
     simpa [norm_sub_rev] using
-      prox_eq_singleton_nonexpansive
-        (f := ((((1 / L : PosReal) : EReal) • g)))
+      @prox_eq_singleton_nonexpansive E _ _
+        ((((1 / L : PosReal) : EReal) • g))
         (x - (1 / (L : ℝ)) • ∇ f x)
         (T[L; f, g] x - (1 / (L : ℝ)) • ∇ f (T[L; f, g] x))
         (T[L; f, g] x)
@@ -230,7 +192,7 @@ lemma prox_gradient_step_distance_monotone
   exact
     le_trans hnonexp <|
       prox_gradient_forward_points_dist_le_step
-        (f := f) (g := g) (L := L) hf_convex hf_smooth x
+        f g L hf_convex hf_smooth x
 
 -- Route correction: this proof follows the textbook forward-point comparison plus proximal
 -- nonexpansivity, rather than the earlier residual-cocoercivity shortcut.
@@ -252,7 +214,7 @@ theorem prox_grad_step_gradient_mapping_norm_monotone
     -- First compare the lengths of two consecutive prox-gradient steps.
     simpa [xPlus, xNext] using
       prox_gradient_step_distance_monotone
-        (f := f) (g := g) (L := L) hf_convex hf_smooth x
+        f g L hf_convex hf_smooth x
   have hmul := mul_le_mul_of_nonneg_left hstep (le_of_lt L.2)
   have hGxPlus :
       ‖G[L; f, g] xPlus‖ = (L : ℝ) * ‖xPlus - xNext‖ := by
@@ -261,11 +223,11 @@ theorem prox_grad_step_gradient_mapping_norm_monotone
       ‖G[L; f, g] xPlus‖ =
           ‖(L : ℝ) •
               ((interior_effective_domain_point_of_real f xPlus : E) -
-                T[L, f.toExtendedReal, g] (interior_effective_domain_point_of_real f xPlus))‖ := by
+                T[L, f.toEReal, g] (interior_effective_domain_point_of_real f xPlus))‖ := by
             rw [prox_gradient_mapping_apply, gradient_mapping_apply]
       _ = (L : ℝ) *
             ‖(interior_effective_domain_point_of_real f xPlus : E) -
-              T[L, f.toExtendedReal, g] (interior_effective_domain_point_of_real f xPlus)‖ := by
+              T[L, f.toEReal, g] (interior_effective_domain_point_of_real f xPlus)‖ := by
             rw [norm_smul, Real.norm_of_nonneg (le_of_lt L.2)]
       _ = (L : ℝ) * ‖xPlus - xNext‖ := by
             congr 1
@@ -276,11 +238,11 @@ theorem prox_grad_step_gradient_mapping_norm_monotone
       ‖G[L; f, g] x‖ =
           ‖(L : ℝ) •
               ((interior_effective_domain_point_of_real f x : E) -
-                T[L, f.toExtendedReal, g] (interior_effective_domain_point_of_real f x))‖ := by
+                T[L, f.toEReal, g] (interior_effective_domain_point_of_real f x))‖ := by
             rw [prox_gradient_mapping_apply, gradient_mapping_apply]
       _ = (L : ℝ) *
             ‖(interior_effective_domain_point_of_real f x : E) -
-              T[L, f.toExtendedReal, g] (interior_effective_domain_point_of_real f x)‖ := by
+              T[L, f.toEReal, g] (interior_effective_domain_point_of_real f x)‖ := by
             rw [norm_smul, Real.norm_of_nonneg (le_of_lt L.2)]
       _ = (L : ℝ) * ‖x - xPlus‖ := by
             congr 1

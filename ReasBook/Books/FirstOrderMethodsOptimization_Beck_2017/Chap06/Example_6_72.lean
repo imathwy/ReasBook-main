@@ -16,7 +16,7 @@ local notation "y₀" => (!₂[2, 3, 0, 0] : E)
 local notation "z₀" => (!₂[0, 3, -2, 0] : E)
 
 /- Example 6.72 is `source-facing`: the canonical owner abstractions for this item are the
-set-valued projection map `Proj[...]` from `Lemma_6_71` and the sparse-vector set `C_[s]` from
+set-valued projection map `P[...]` from `Lemma_6_71` and the sparse-vector set `C_[s]` from
 `Definition_6_12`. Since the textbook content is a concrete worked projection computation, the
 main labeled entry should remain the explicit equality for this specific vector rather than a new
 wrapper around the general characterization from Lemma 6.71. -/
@@ -64,9 +64,9 @@ private theorem top_supports_two_example (S : Finset (Fin 4))
 `2`-sparse vectors consists exactly of the two vectors obtained by keeping the coordinates
 indexed by `{0, 1}` or `{1, 2}` and zeroing out the others. -/
 theorem projection_mapping_sSparseVectors_two_example_eq_two_point_set :
-    Proj[toLp 2 '' C_[2]] !₂[(2 : ℝ), 3, -2, 1] =
+    P[toLp 2 '' C_[2]] !₂[(2 : ℝ), 3, -2, 1] =
       {!₂[(2 : ℝ), 3, 0, 0], !₂[(0 : ℝ), 3, -2, 0]} := by
-  change Proj[toLp 2 '' C_[2]] x₀ = {y₀, z₀}
+  change P[toLp 2 '' C_[2]] x₀ = {y₀, z₀}
   -- Rewrite the projection set using the support-maximization characterization from Lemma 6.71.
   rw [projection_mapping_sSparseVectors_eq_top_abs_coordinate_projections
     (by decide) x₀]

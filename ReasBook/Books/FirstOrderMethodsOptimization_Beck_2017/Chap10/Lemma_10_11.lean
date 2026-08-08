@@ -1,6 +1,6 @@
 import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap05.Definition_5_1
-import FirstOrderMethodsOptimization_Beck_2017.Chap05.Theorem_5_8
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.GradientCocoercivity
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_42
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_5
 
@@ -32,13 +32,13 @@ should not introduce a parallel wrapper for the same residual. -/
 
 /-- Helper for Lemma 10.11: the Chapter 10 prox-gradient operator is the unique proximal point of
 the scaled penalty at the forward-gradient input. -/
-lemma prox_gradient_operator_eq_singleton_forward (x : E) :
+private lemma prox_gradient_operator_eq_singleton_forward (x : E) :
     prox[((((1 / L : PosReal) : EReal) • g))] (x - (1 / (L : ℝ)) • ∇ f x) =
       {T[L; f, g] x} := by
   -- The source-facing prox-gradient operator is defined by choosing the singleton proximal point
   -- of the forward-gradient step.
   simpa [proximal_gradient_step] using
-    (prox_grad_operator_eq_singleton (f := f.toExtendedReal) (g := g) L
+    (prox_grad_operator_eq_singleton f.toEReal g L
       (interior_effective_domain_point_of_real f x))
 
 /-- Helper for Lemma 10.11: the prox-gradient update equals the identity minus the scaled gradient
@@ -48,14 +48,14 @@ lemma prox_gradient_operator_eq_sub_gradient_mapping (x : E) :
   have hG :
       G[L; f, g] x = (L : ℝ) • (x - T[L; f, g] x) := by
     calc
-      G[L; f, g] x = G[L, f.toExtendedReal, g] (interior_effective_domain_point_of_real f x) := by
+      G[L; f, g] x = G[L, f.toEReal, g] (interior_effective_domain_point_of_real f x) := by
         rfl
       _ =
           (L : ℝ) •
-            (((interior_effective_domain_point_of_real f x : interior (effective_domain f.toExtendedReal))
-              : E) - T[L, f.toExtendedReal, g] (interior_effective_domain_point_of_real f x)) := by
+            (((interior_effective_domain_point_of_real f x : interior (effective_domain f.toEReal))
+              : E) - T[L, f.toEReal, g] (interior_effective_domain_point_of_real f x)) := by
             exact
-              gradient_mapping_apply (f.toExtendedReal) g L
+              gradient_mapping_apply (f.toEReal) g L
                 (interior_effective_domain_point_of_real f x)
       _ = (L : ℝ) • (x - T[L; f, g] x) := by
             rfl
@@ -68,42 +68,6 @@ lemma prox_gradient_operator_eq_sub_gradient_mapping (x : E) :
     _ = x - (1 / (L : ℝ)) • G[L; f, g] x := by
       rw [hG, smul_smul, hL, one_smul]
 
-/-- Helper for Lemma 10.11: global convex `L`-smoothness on `Set.univ` implies the standard
-`1 / L`-cocoercivity inequality for the gradient. -/
-lemma smooth_gradient_cocoercive_univ
-    (hf_convex : ConvexOn ℝ Set.univ f)
-    (hf_smooth : is_l_smooth_on f Set.univ (PosReal.toNNReal L))
-    (x y : E) :
-    inner ℝ (∇ f x - ∇ f y) (x - y) ≥
-      (1 / (L : ℝ)) * ‖∇ f x - ∇ f y‖ ^ (2 : ℕ) := by
-  letI : FiniteDimensional ℝ E := FiniteDimensional.of_locallyCompactSpace ℝ
-  have hf_diff : Differentiable ℝ f := by
-    -- Global `L`-smoothness on `Set.univ` gives differentiability at every point.
-    intro z
-    exact hf_smooth.1 z (by simp)
-  have hLnn : 0 < PosReal.toNNReal L := by
-    exact_mod_cast L.2
-  have htfae :=
-    convex_l_smooth_tfae_descent_gradient_lower_bound_cocoercive_convex_combo
-      f hf_convex hf_diff (PosReal.toNNReal L) hLnn
-  -- Extract clause `(iv)` from Theorem 5.8 and specialize it to `x` and `y`.
-  have hiff :
-      is_l_smooth_on f Set.univ (PosReal.toNNReal L) ↔
-        ∀ x y : E,
-          inner ℝ (∇ f x - ∇ f y) (x - y) ≥
-            (1 / (((PosReal.toNNReal L : NNReal) : ℝ))) *
-              ‖∇ f x - ∇ f y‖ ^ (2 : ℕ) := by
-    exact
-      (List.TFAE.out htfae 0 3
-        (h₁ := by rfl)
-        (h₂ := by rfl))
-  have hcoco :
-      inner ℝ (∇ f x - ∇ f y) (x - y) ≥
-        (1 / (((PosReal.toNNReal L : NNReal) : ℝ))) *
-          ‖∇ f x - ∇ f y‖ ^ (2 : ℕ) := by
-    exact (hiff.mp hf_smooth) x y
-  simpa using hcoco
-
 /-- Helper for Lemma 10.11: the difference of the two forward-gradient base points splits into the
 prox-gradient step difference plus the residual gap `G_L - ∇f`. -/
 lemma prox_gradient_forward_difference_eq_step_add_residual_gap (x y : E) :
@@ -112,7 +76,8 @@ lemma prox_gradient_forward_difference_eq_step_add_residual_gap (x y : E) :
         (1 / (L : ℝ)) •
           ((G[L; f, g] x - G[L; f, g] y) - (∇ f x - ∇ f y)) := by
   -- Rewrite each prox-gradient step as `id - (1 / L) G_L` and then collect the residual gap.
-  rw [prox_gradient_operator_eq_sub_gradient_mapping, prox_gradient_operator_eq_sub_gradient_mapping]
+  rw [prox_gradient_operator_eq_sub_gradient_mapping]
+  rw [prox_gradient_operator_eq_sub_gradient_mapping]
   simp only [sub_eq_add_neg, add_assoc]
   module
 
@@ -178,7 +143,7 @@ lemma prox_gradient_cross_term_nonneg (x y : E) :
     -- Apply firm nonexpansivity to the singleton proximal points at the two forward inputs.
     exact
       prox_eq_singleton_firmly_nonexpansive
-        (f := ((((1 / L : PosReal) : EReal) • g)))
+        ((((1 / L : PosReal) : EReal) • g))
         (x - (1 / (L : ℝ)) • ∇ f x)
         (y - (1 / (L : ℝ)) • ∇ f y)
         (T[L; f, g] x)
@@ -186,8 +151,8 @@ lemma prox_gradient_cross_term_nonneg (x y : E) :
         hg_scaled.1
         hg_scaled.2.1
         hg_scaled.2.2
-        (prox_gradient_operator_eq_singleton_forward (f := f) (g := g) (L := L) x)
-        (prox_gradient_operator_eq_singleton_forward (f := f) (g := g) (L := L) y)
+        (prox_gradient_operator_eq_singleton_forward f g L x)
+        (prox_gradient_operator_eq_singleton_forward f g L y)
   have hscaled_nonneg :
       0 ≤
         (1 / (L : ℝ)) *
@@ -205,8 +170,7 @@ lemma prox_gradient_cross_term_nonneg (x y : E) :
               inner ℝ
                 ((G[L; f, g] x - G[L; f, g] y) - (∇ f x - ∇ f y))
                 (T[L; f, g] x - T[L; f, g] y) := by
-      rw [prox_gradient_forward_difference_eq_step_add_residual_gap
-          (f := f) (g := g) (L := L)]
+      rw [prox_gradient_forward_difference_eq_step_add_residual_gap f g L]
       rw [inner_add_left, real_inner_smul_left, real_inner_self_eq_norm_sq]
     have hfirm' :
         ‖T[L; f, g] x - T[L; f, g] y‖ ^ (2 : ℕ) +
@@ -232,7 +196,8 @@ lemma prox_gradient_cross_term_nonneg (x y : E) :
       T[L; f, g] x - T[L; f, g] y =
         (x - y) - (1 / (L : ℝ)) • (G[L; f, g] x - G[L; f, g] y) := by
     -- Normalize the prox-gradient step difference into the residual form from the statement.
-    rw [prox_gradient_operator_eq_sub_gradient_mapping, prox_gradient_operator_eq_sub_gradient_mapping]
+    rw [prox_gradient_operator_eq_sub_gradient_mapping]
+    rw [prox_gradient_operator_eq_sub_gradient_mapping]
     simp only [sub_eq_add_neg, add_assoc]
     module
   -- Replace the step difference by the residual form and swap the real inner-product arguments.
@@ -259,15 +224,15 @@ theorem prox_gradient_mapping_cocoercive
     -- Route correction: expand the firm-nonexpansive cross term only after reaching the abstract
     -- nonnegative residual inequality.
     have hcross0 :=
-      prox_gradient_cross_term_nonneg (f := f) (g := g) (L := L) x y
-    rw [prox_gradient_cross_term_expansion (f := f) (g := g) (L := L) x y] at hcross0
+      prox_gradient_cross_term_nonneg f g L x y
+    rw [prox_gradient_cross_term_expansion f g L x y] at hcross0
     simpa [dG, dGrad] using hcross0
   have hgrad :
       (1 / (L : ℝ)) * ‖dGrad‖ ^ (2 : ℕ) ≤ inner ℝ dGrad (x - y) := by
     -- Insert the Chapter 5 cocoercivity estimate for the smooth gradient.
     simpa [dGrad] using
-      smooth_gradient_cocoercive_univ
-        (f := f) (L := L) hf_convex hf_smooth x y
+      (gradient_cocoercive_of_convex_l_smooth_posReal
+        (E := E) L hf_convex hf_smooth) x y
   have hcs :
       inner ℝ dG dGrad ≤ ‖dG‖ * ‖dGrad‖ := by
     -- Cauchy--Schwarz controls the mixed inner product.
@@ -344,7 +309,7 @@ theorem prox_gradient_mapping_lipschitz
           inner ℝ (G[L; f, g] x - G[L; f, g] y) (x - y) := by
       simpa using
         prox_gradient_mapping_cocoercive
-          (f := f) (g := g) (L := L) hf_convex hf_smooth x y
+          f g L hf_convex hf_smooth x y
     have hcs :
         inner ℝ (G[L; f, g] x - G[L; f, g] y) (x - y) ≤
           ‖G[L; f, g] x - G[L; f, g] y‖ * ‖x - y‖ := by

@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Data.Real.Basic
+import Mathlib.Order.Bounds.Basic
+import Mathlib.Order.Filter.Extr
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -9,7 +12,7 @@ universe u v
 section
 
 variable {Source : Type u} {Link : Type v}
-variable [Fintype Source] [DecidableEq Source] [DecidableEq Link]
+variable [Fintype Source] [DecidableEq Link]
 
 /- Definition 8.25 is `source-facing`: the textbook introduces a finite-source, finite-link
 network utility maximization problem. Domain sampling against earlier Chapter 8 items shows that
@@ -76,9 +79,9 @@ every link load is bounded by capacity and every source rate lies in its interva
 -- Proof sketch: rewrite `IsMaxOn` using `isMaxOn_iff` and keep the maximizer's own feasibility
 -- explicit, since `IsMaxOn` alone only compares against feasible points and does not imply
 -- membership of `x` in the feasible set.
-/-- Helper for Definition 8.25: a feasible rate vector `x` maximizes the network utility
-on `network_utility_maximization_feasible_set linksUsedBySource c M` exactly when every other
-feasible rate vector has no larger total utility. -/
+/-- Definition 8.25, source-facing optimizer form: a rate vector `x` solves the network utility
+maximization problem exactly when it is feasible and every other feasible rate vector has no
+larger total utility. -/
 theorem mem_and_isMaxOn_network_utility_maximization_feasible_set_iff
     {u : Source → ℝ → ℝ} {linksUsedBySource : Source → Finset Link}
     {c : Link → ℝ} {M : Source → ℝ} {x : Source → ℝ} :
@@ -106,30 +109,5 @@ theorem mem_and_isMaxOn_network_utility_maximization_feasible_set_iff
     -- Repackaging feasibility as set membership reduces the comparison step to `hopt`.
     intro y hy
     exact hopt y hy.1 hy.2
-
--- Proof sketch: unfold `IsMaxOn` and rewrite feasibility with
--- `mem_network_utility_maximization_feasible_set`. This yields exactly the textbook statement
--- that `x` satisfies the NUM constraints and has utility at least that of every other feasible
--- rate vector.
-/-- Solving the network utility maximization problem means maximizing
-`network_utility_objective u x = ∑ s, u_s(x_s)` on
-`network_utility_maximization_feasible_set linksUsedBySource c M`. -/
-theorem isMaxOn_network_utility_maximization_feasible_set_iff
-    {u : Source → ℝ → ℝ} {linksUsedBySource : Source → Finset Link}
-    {c : Link → ℝ} {M : Source → ℝ} {x : Source → ℝ} :
-    IsMaxOn
-        (network_utility_objective u)
-        (network_utility_maximization_feasible_set linksUsedBySource c M)
-        x ↔
-      (∀ ℓ : Link, network_link_load linksUsedBySource x ℓ ≤ c ℓ) ∧
-        (∀ s : Source, x s ∈ Set.Icc 0 (M s)) ∧
-        ∀ y : Source → ℝ,
-          (∀ ℓ : Link, network_link_load linksUsedBySource y ℓ ≤ c ℓ) →
-            (∀ s : Source, y s ∈ Set.Icc 0 (M s)) →
-              network_utility_objective u y ≤ network_utility_objective u x := by
-  -- Route correction: `IsMaxOn` does not encode `x ∈ feasible_set`, so the displayed
-  -- right-hand side is stronger than the left-hand side. The corrected equivalence is
-  -- `mem_and_isMaxOn_network_utility_maximization_feasible_set_iff`.
-  sorry
 
 end

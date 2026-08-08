@@ -129,42 +129,38 @@ private lemma scaled_neg_gradient_mem_scaled_subdifferential_iff
     (((1 / L : ℝ) •
         (-toDual ℝ E (∇ (fun y ↦ (f y).toReal) x) : Module.Dual ℝ E)) :
           Module.Dual ℝ E) ∈
-      extendedRealSubdifferential ((((1 / L : PosReal) : EReal) • g)) x ↔
+      subdifferential ((((1 / L : PosReal) : EReal) • g)) x ↔
         (-toDual ℝ E (∇ (fun y ↦ (f y).toReal) x) : Module.Dual ℝ E) ∈
-          extendedRealSubdifferential g x := by
+          subdifferential g x := by
   have hL_pos : 0 < (1 / L : ℝ) := one_div_pos.mpr (PosReal.coe_pos L)
   have hscaled :
-      extendedRealSubdifferential ((((1 / L : PosReal) : EReal) • g)) x =
-        (1 / L : ℝ) • extendedRealSubdifferential g x := by
+      subdifferential ((((1 / L : PosReal) : EReal) • g)) x =
+        (1 / L : ℝ) • subdifferential g x := by
     simpa [Pi.smul_apply, smul_eq_mul] using
       (subdifferential_pos_real_mul g (1 / L : ℝ) hL_pos x)
   have hL_ne : (1 / L : ℝ) ≠ 0 := ne_of_gt hL_pos
   have hmul_inv : ((L : ℝ) * (L : ℝ)⁻¹) = 1 := by
     exact mul_inv_cancel₀ (PosReal.coe_pos L).ne'
-  -- Rewrite the scaled extendedRealSubdifferential as a pointwise scalar multiple and cancel the scalar.
+  -- Rewrite the scaled subdifferential as a pointwise scalar multiple and cancel the scalar.
   constructor
   · intro hmem
-    rw [hscaled, Set.mem_smul_set_iff_inv_smul_mem₀ (a := (1 / L : ℝ))
-      (A := extendedRealSubdifferential g x)
-      (x := ((1 / L : ℝ) •
-        (-toDual ℝ E (∇ (fun y ↦ (f y).toReal) x) : Module.Dual ℝ E)))
-      (ha := hL_ne)] at hmem
+    rw [hscaled, Set.mem_smul_set_iff_inv_smul_mem₀ hL_ne
+      (subdifferential g x)
+      ((1 / L : ℝ) • (-toDual ℝ E (∇ (fun y ↦ (f y).toReal) x) : Module.Dual ℝ E))] at hmem
     simpa [one_div, smul_smul, hmul_inv] using hmem
   · intro hmem
-    rw [hscaled, Set.mem_smul_set_iff_inv_smul_mem₀ (a := (1 / L : ℝ))
-      (A := extendedRealSubdifferential g x)
-      (x := ((1 / L : ℝ) •
-        (-toDual ℝ E (∇ (fun y ↦ (f y).toReal) x) : Module.Dual ℝ E)))
-      (ha := hL_ne)]
+    rw [hscaled, Set.mem_smul_set_iff_inv_smul_mem₀ hL_ne
+      (subdifferential g x)
+      ((1 / L : ℝ) • (-toDual ℝ E (∇ (fun y ↦ (f y).toReal) x) : Module.Dual ℝ E))]
     simpa [one_div, smul_smul, hmul_inv] using hmem
 
 /-- Helper for Theorem 10.7: a singleton prox-grad step at `x` is equivalent to the negative
-gradient belonging to the extendedRealSubdifferential of `g` at `x`. -/
+gradient belonging to the subdifferential of `g` at `x`. -/
 private lemma proximal_gradient_step_eq_singleton_self_iff_neg_gradient_mem_subdifferential
     (L : PosReal) (x : interior (effective_domain f)) :
     proximal_gradient_step f g (x : E) L = {(x : E)} ↔
       (-toDual ℝ E (∇ (fun y ↦ (f y).toReal) (x : E)) : Module.Dual ℝ E) ∈
-        extendedRealSubdifferential g (x : E) := by
+        subdifferential g (x : E) := by
   let hg_closed : LowerSemicontinuous g := Fact.out
   let hg_convex : is_convex_function g := Fact.out
   let hg_scaled :=
@@ -186,8 +182,8 @@ private lemma proximal_gradient_step_eq_singleton_self_iff_neg_gradient_mem_subd
         (((1 / L : ℝ) •
             (-toDual ℝ E (∇ (fun y ↦ (f y).toReal) (x : E)) : Module.Dual ℝ E)) :
               Module.Dual ℝ E) ∈
-          extendedRealSubdifferential ((((1 / L : PosReal) : EReal) • g)) (x : E) := by
-    -- Route correction: rewrite the strong-dual conclusion into the Chapter 3 extendedRealSubdifferential
+          subdifferential ((((1 / L : PosReal) : EReal) • g)) (x : E) := by
+    -- Route correction: rewrite the strong-dual conclusion into the Chapter 3 subdifferential
     -- owner before removing the positive scaling factor.
     simpa [mem_strongDualSubdifferential, InnerProductSpace.toDual_apply_eq_toDualMap_apply,
       sub_eq_add_neg, smul_neg, neg_smul] using hprox
@@ -196,11 +192,11 @@ private lemma proximal_gradient_step_eq_singleton_self_iff_neg_gradient_mem_subd
         (((1 / L : ℝ) •
             (-toDual ℝ E (∇ (fun y ↦ (f y).toReal) (x : E)) : Module.Dual ℝ E)) :
               Module.Dual ℝ E) ∈
-          extendedRealSubdifferential ((((1 / L : PosReal) : EReal) • g)) (x : E) := hsub
+          subdifferential ((((1 / L : PosReal) : EReal) • g)) (x : E) := hsub
     _ ↔
         (-toDual ℝ E (∇ (fun y ↦ (f y).toReal) (x : E)) : Module.Dual ℝ E) ∈
-          extendedRealSubdifferential g (x : E) :=
-      scaled_neg_gradient_mem_scaled_subdifferential_iff (f := f) (g := g) L (x : E)
+          subdifferential g (x : E) :=
+      scaled_neg_gradient_mem_scaled_subdifferential_iff L (x : E)
 
 -- Proof sketch: expand `G[L, f, g] xStar = 0` into the fixed-point condition
 -- `xStar = T_L^{f,g}(xStar)`. Then use the singleton bridge for `T[L, f, g]` and the proximal
@@ -219,7 +215,7 @@ theorem gradient_mapping_eq_zero_iff_is_stationary_point
   · intro hG
     have hfixed :
         T[L, f, g] xStar = (xStar : E) :=
-      (gradient_mapping_eq_zero_iff_fixed_point (f := f) (g := g) L xStar).mp hG
+      (gradient_mapping_eq_zero_iff_fixed_point L xStar).mp hG
     have hstep :
         proximal_gradient_step f g (xStar : E) L = {(xStar : E)} := by
       -- The fixed-point form is converted back to the textbook singleton proximal step.
@@ -231,12 +227,12 @@ theorem gradient_mapping_eq_zero_iff_is_stationary_point
     exact
       ⟨hdiff,
         (proximal_gradient_step_eq_singleton_self_iff_neg_gradient_mem_subdifferential
-          (f := f) (g := g) L xStar).mp hstep⟩
+          L xStar).mp hstep⟩
   · rintro ⟨_, hstationary⟩
     have hstep :
         proximal_gradient_step f g (xStar : E) L = {(xStar : E)} :=
       (proximal_gradient_step_eq_singleton_self_iff_neg_gradient_mem_subdifferential
-        (f := f) (g := g) L xStar).mpr hstationary
+        L xStar).mpr hstationary
     have hfixed :
         T[L, f, g] xStar = (xStar : E) := by
       -- Singleton identification recovers the prox-grad fixed-point equation.
@@ -248,6 +244,6 @@ theorem gradient_mapping_eq_zero_iff_is_stationary_point
         _ = {(xStar : E)} := hstep
     -- Returning through the residual/fixed-point equivalence closes the loop.
     exact
-      (gradient_mapping_eq_zero_iff_fixed_point (f := f) (g := g) L xStar).mpr hfixed
+      (gradient_mapping_eq_zero_iff_fixed_point L xStar).mpr hfixed
 
 end StationaryPoint

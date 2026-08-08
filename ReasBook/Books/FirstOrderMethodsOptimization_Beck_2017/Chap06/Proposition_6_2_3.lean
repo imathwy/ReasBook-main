@@ -23,24 +23,11 @@ local notation "E" => EuclideanSpace ℝ ι
 - primitive data: the matrix `A`, the Euclidean linear coefficient `b`, and the base point `x`.
 
 The coordinate model from Chapter 5 remains the canonical construction of the quadratic-affine
-function, but the public proposition should expose only the intrinsic Euclidean surface. The bridge
-lemma below keeps the coordinate realization internal by rewriting
+function, but the public proposition should expose only the intrinsic Euclidean surface.
+The bridge lemma `quadratic_affine_function_on_lp_two_apply_eq` keeps the coordinate realization
+internal by rewriting
 `quadratic_affine_function_on_lp (2 : ENNReal) A b.ofLp 0` as the Euclidean quadratic
 `y ↦ (1 / 2) ⟪A.toEuclideanLin y, y⟫ + ⟪b, y⟫`. -/
-
-/-- The Chapter 5 coordinate quadratic owner at `p = 2` is the intrinsic Euclidean quadratic
-`y ↦ (1 / 2) ⟪A.toEuclideanLin y, y⟫ + ⟪b, y⟫`. -/
-@[simp] theorem quadratic_affine_function_on_lp_two_apply_eq
-    (A : Matrix ι ι ℝ) (b x : E) :
-    quadratic_affine_function_on_lp (2 : ENNReal) A b.ofLp 0 x =
-      (1 / 2 : ℝ) * ⟪A.toEuclideanLin x, x⟫ + ⟪b, x⟫ := by
-  have hAx : ⟪A.toEuclideanLin x, x⟫ = x.ofLp ⬝ᵥ (A *ᵥ x.ofLp) := by
-    change ⟪((A.toLpLin 2 2) : WithLp 2 (ι → ℝ) →ₗ[ℝ] E) x, x⟫ = _
-    simpa [Matrix.toLpLin_apply] using EuclideanSpace.inner_toLp_toLp (A *ᵥ x.ofLp) x.ofLp
-  have hbx : ⟪b, x⟫ = x.ofLp ⬝ᵥ b.ofLp := by
-    simpa using (EuclideanSpace.inner_eq_star_dotProduct b x)
-  rw [quadratic_affine_function_on_lp_apply, quadratic_affine_function_apply, hAx, hbx]
-  simp [dotProduct_comm]
 
 /-- Helper for Proposition 6.2.3: the candidate proximal point obtained by solving the shifted
 normal equation `(A + I) u = x - b`. -/
@@ -74,8 +61,10 @@ lemma shifted_inverse_solves_quadratic_normal_equation
   ext i
   have hEq :
       (((A + 1).toEuclideanLin (quadratic_prox_center A b x)).ofLp) i = ((x - b).ofLp) i := by
-    rw [quadratic_prox_center, Matrix.ofLp_toEuclideanLin_apply, Matrix.ofLp_toEuclideanLin_apply]
-    rw [Matrix.mulVec_mulVec, Matrix.mul_inv_of_invertible, Matrix.one_mulVec]
+    rw [quadratic_prox_center, Matrix.ofLp_toLpLin 2 2 (A + 1),
+      Matrix.ofLp_toLpLin 2 2 ((A + 1)⁻¹), ← Matrix.toLin'_mul_apply,
+      Matrix.mul_inv_of_invertible, Matrix.toLin'_one]
+    rfl
   simpa using hEq
 
 -- Completing the square around the normal-equation solution rewrites the proximal objective as
@@ -109,7 +98,8 @@ lemma quadratic_penalized_value_center_add_error
   unfold quadratic_penalized_value quadratic_prox_error
   rw [LinearMap.map_add, inner_add_left, inner_add_right, inner_add_right, inner_add_right, hsub,
     norm_add_sq_real]
-  have hcross : ⟪A.toEuclideanLin u, z⟫ + ⟪A.toEuclideanLin z, u⟫ + 2 * ⟪u - x, z⟫ + 2 * ⟪b, z⟫ = 0 := by
+  have hcross :
+      ⟪A.toEuclideanLin u, z⟫ + ⟪A.toEuclideanLin z, u⟫ + 2 * ⟪u - x, z⟫ + 2 * ⟪b, z⟫ = 0 := by
     -- After the symmetry rewrite, the mixed terms cancel exactly by the normal equation.
     rw [inner_sub_left]
     nlinarith [hu_inner', hzsymm]

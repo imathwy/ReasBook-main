@@ -29,18 +29,6 @@ Domain sampling in the surrounding chapter/project identifies:
 Primitive data are therefore only the two dual terms `F` and `G`; the combined minimization
 objective is derived API from the existing owner `composite_model_objective`. -/
 
-private theorem ereal_sInf_neg (s : Set EReal) :
-    sInf (-s) = -sSup s := by
-  refine le_antisymm ?_ ?_
-  · have hsSup : sSup s ≤ -sInf (-s) := by
-      refine sSup_le fun x hx ↦ ?_
-      have hsInf : sInf (-s) ≤ -x := by
-        exact sInf_le (by simpa [Set.mem_neg] using hx : -x ∈ -s)
-      exact EReal.le_neg.mp hsInf
-    exact EReal.le_neg.mpr hsSup
-  · refine le_sInf fun z hz ↦ ?_
-    exact EReal.neg_le.mpr (le_sSup (by simpa [Set.mem_neg] using hz : -z ∈ s))
-
 /-- The textbook term `F(y) = f*(Aᵀ y)` in the dual-based proximal gradient dual model, expressed
 through the canonical pullback `A.dualMap` on the algebraic dual. -/
 def dual_based_proximal_gradient_dual_F_term

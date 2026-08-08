@@ -11,6 +11,23 @@ section
 variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
 variable {f g : E → EReal} {Lf : NNReal}
 
+/-- Minimizing `f + g` globally is equivalent to minimizing it on `effective_domain g` when
+`f` never takes the value `-∞`. -/
+private theorem isMinOn_composite_model_objective_univ_iff_isMinOn_effective_domain_local
+    (hf_ne_bot : ∀ y, f y ≠ ⊥) {xStar : E} :
+    IsMinOn (composite_model_objective f g) Set.univ xStar ↔
+      IsMinOn (composite_model_objective f g) (effective_domain g) xStar := by
+  rw [isMinOn_univ_iff, isMinOn_iff]
+  constructor
+  · intro hxMin y _
+    exact hxMin y
+  · intro hxMin y
+    by_cases hy : y ∈ effective_domain g
+    · exact hxMin y hy
+    · have hgy_top : g y = ⊤ :=
+        le_antisymm le_top (not_lt.mp (by simpa using hy))
+      simp [composite_model_objective_apply, hgy_top, hf_ne_bot y]
+
 namespace IsGeneralizedConditionalGradientProblem
 
 /-- Under Assumption 13.1, the composite objective `F(x) = f(x) + g(x)` is lower semicontinuous on
@@ -68,7 +85,8 @@ theorem generalized_conditional_gradient_optimal_set_nonempty
       h.g_effective_domain_compact
       ⟨y, ⟨hy, hyF⟩⟩
   have hxmin_univ : IsMinOn (composite_model_objective f g) Set.univ x :=
-    (isMinOn_composite_model_objective_univ_iff_isMinOn_effective_domain h.f_ne_bot).2 hxmin
+    (isMinOn_composite_model_objective_univ_iff_isMinOn_effective_domain_local
+      h.f_ne_bot).2 hxmin
   exact ⟨x, mem_unconstrained_problem_solutions_iff.mpr hxmin_univ⟩
 
 end

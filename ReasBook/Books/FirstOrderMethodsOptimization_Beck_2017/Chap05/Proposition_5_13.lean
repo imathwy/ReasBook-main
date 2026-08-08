@@ -1,4 +1,5 @@
-import Mathlib
+import FirstOrderMethodsOptimization_Beck_2017.Chap02.Example_2_6
+import FirstOrderMethodsOptimization_Beck_2017.Chap05.Theorem_5_17
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -8,20 +9,64 @@ section
 
 variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
-/- Proposition 5.13 is `source-facing`: the textbook object is the extended-real-valued function
-`x ↦ (1 / 2) ‖x‖² + δ_C(x)`. In item-per-file mode, the unavailable project-local bridge imports are
-repaired away by stating the mathematically equivalent `core/canonical` owner formulation directly:
-strong convexity of the real-valued half squared norm on the convex set `C`. -/
+/- Proposition 5.13 is `source-facing`: the textbook function is
+`x ↦ ((‖x‖ ^ (2 : ℕ) / 2 : ℝ) : EReal) + (δ_ C) x`. The chapter already owns this layer through
+`is_strongly_convex_function`, while the real-valued statement
+`StrongConvexOn C 1 (fun x ↦ ‖x‖ ^ (2 : ℕ) / 2)` is the canonical `bridge/view` companion used
+downstream. -/
 
--- Proof sketch: use the standard inner-product-space characterization
--- `strongConvexOn_iff_convex` with `m = 1`. After subtracting `(1 / 2) ‖x‖²`, the remaining
--- function is constant `0` on `C`, hence convex; this is the canonical owner-level form of the
--- source statement about `x ↦ (1 / 2) ‖x‖² + δ_C(x)`.
-/-- Proposition 5.13: on a convex set `C` in a real inner product space, the half squared norm is
-`1`-strongly convex. This is the canonical real-valued formulation of the source statement that the
-extended-real-valued function `x ↦ (‖x‖² / 2 : ℝ) + δ_C(x)` is `1`-strongly convex. -/
+/-- Proposition 5.13: on a convex set `C` in a real inner product space, the extended-real-valued
+function `x ↦ ((‖x‖ ^ (2 : ℕ) / 2 : ℝ) : EReal) + (δ_ C) x` is `1`-strongly convex. -/
+theorem half_squared_norm_add_indicator_is_one_strongly_convex_function
+    (C : Set E) (hC : Convex ℝ C) :
+    is_strongly_convex_function
+      (fun x : E ↦ ((‖x‖ ^ (2 : ℕ) / 2 : ℝ) : EReal) + (δ_ C) x)
+      1 := by
+  refine
+    (is_strongly_convex_function_iff_sub_half_sigma_norm_sq_is_convex
+      (fun x : E ↦ ((‖x‖ ^ (2 : ℕ) / 2 : ℝ) : EReal) + (δ_ C) x)
+      1
+      (by norm_num)
+      ?_).2 ?_
+  · intro x
+    change (((‖x‖ ^ (2 : ℕ) / 2 : ℝ) : EReal) + (δ_ C) x) ≠ ⊥
+    by_cases hx : x ∈ C
+    · rw [extendedIndicator_of_mem hx]
+      simp
+    · rw [extendedIndicator_of_not_mem hx]
+      rw [EReal.coe_add_top]
+      simp
+  · have hsub :
+        (fun x : E ↦
+          (((‖x‖ ^ (2 : ℕ) / 2 : ℝ) : EReal) + (δ_ C) x) -
+            ((((1 : ℝ) / 2) * ‖x‖ ^ (2 : ℕ) : ℝ) : EReal)) = δ_ C := by
+      funext x
+      change
+        (((‖x‖ ^ (2 : ℕ) / 2 : ℝ) : EReal) + (δ_ C) x) -
+            ((((1 : ℝ) / 2) * ‖x‖ ^ (2 : ℕ) : ℝ) : EReal) =
+          (δ_ C) x
+      by_cases hx : x ∈ C
+      · rw [extendedIndicator_of_mem hx]
+        rw [add_zero]
+        have hhalf : ‖x‖ ^ (2 : ℕ) / 2 = (1 / 2 : ℝ) * ‖x‖ ^ (2 : ℕ) := by
+          ring
+        rw [hhalf, ← EReal.coe_sub]
+        simp
+      · rw [extendedIndicator_of_not_mem hx]
+        rw [EReal.coe_add_top]
+        simpa using EReal.top_sub_coe ((1 / 2 : ℝ) * ‖x‖ ^ (2 : ℕ))
+    rw [hsub]
+    exact extendedIndicator_isConvexFunction_of_convex C hC
+
+/-- Bridge/view companion to Proposition 5.13: on `C`, the real-valued half squared norm is
+`1`-strongly convex in mathlib's canonical `StrongConvexOn` form. -/
 theorem half_squared_norm_is_one_strongly_convex_on
     (C : Set E) (hC : Convex ℝ C) :
-    StrongConvexOn C 1 (fun x : E ↦ ‖x‖ ^ (2 : ℕ) / 2) := sorry
+    StrongConvexOn C 1 (fun x : E ↦ ‖x‖ ^ (2 : ℕ) / 2) := by
+  rw [strongConvexOn_iff_convex]
+  have hconst : ConvexOn ℝ C (fun _ : E ↦ (0 : ℝ)) := convexOn_const (0 : ℝ) hC
+  convert hconst using 1
+  funext x
+  ring
 
 end

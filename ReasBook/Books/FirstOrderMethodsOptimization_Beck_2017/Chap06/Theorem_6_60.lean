@@ -118,13 +118,27 @@ theorem moreau_envelope_toReal_is_inv_mu_smooth
   let _ := hf_closed
   let _ := hf_convex
   let ωμ : E → ℝ := fun x ↦ (1 / (2 * μ : ℝ)) * ‖x‖ ^ (2 : ℕ)
+  have hnorm_sq : ConvexOn ℝ Set.univ (fun x : E ↦ ‖x‖ ^ (2 : ℕ)) :=
+    convexOn_univ_norm.pow (fun x _ ↦ norm_nonneg x) 2
+  have hcoeff : 0 ≤ 1 / (2 * (μ : ℝ)) := by
+    have hμ : 0 < (μ : ℝ) := μ.2
+    positivity
+  have hω_convex : ConvexOn ℝ Set.univ ωμ := by
+    simpa [ωμ] using hnorm_sq.smul hcoeff
+  have hω_real : ∀ x, ∃ r : ℝ, (f □r ωμ) x = (r : EReal) := by
+    intro x
+    change ∃ r : ℝ, (f □ ω(μ)) x = (r : EReal)
+    exact moreau_envelope_eq_real_of_proper_convex f μ hf_proper hf_closed hf_convex x
   letI : FiniteDimensional ℝ E := FiniteDimensional.of_locallyCompactSpace ℝ
   -- Route correction: the textbook owner theorem is already exposed as
   -- `infimal_convolution_toReal_is_l_smooth`, so after rewriting `M[μ, f]` as `f □ ω(μ)` it
   -- closes the Chapter 5 smoothness goal directly.
   change is_l_smooth_on (fun x ↦ ((f □ ω(μ)) x).toReal) Set.univ (Real.toNNReal (1 / μ))
   change is_l_smooth_on (fun x ↦ ((f □r ωμ) x).toReal) Set.univ (Real.toNNReal (1 / μ))
-  exact infimal_convolution_toReal_is_l_smooth f ωμ (Real.toNNReal (1 / μ))
+  exact
+    infimal_convolution_toReal_is_l_smooth
+      f ωμ (Real.toNNReal (1 / μ)) hf_proper hf_closed hf_convex hω_convex
+      (moreau_quadratic_kernel_is_inv_mu_smooth (E := E) μ) hω_real
 
 /- Theorem 6.60 (2): Definition 6.10 already owns the singleton-valued proximal gradient formula
 for the real-valued Moreau envelope, so the canonical owner theorem is reused directly here. -/

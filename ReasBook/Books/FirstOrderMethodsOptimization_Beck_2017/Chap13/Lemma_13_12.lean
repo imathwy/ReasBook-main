@@ -57,14 +57,14 @@ lemma convex_support_toReal_at_basepoint
     (hx_diff : DifferentiableAt ℝ f₀ x)
     (hy_f : y ∈ effective_domain f) :
     (f y).toReal ≥ (f x).toReal + inner ℝ (∇ f₀ x) (y - x) := by
-  let line : ℝ → E := AffineMap.lineMap x y
+  let line : ℝ →ᵃ[ℝ] E := AffineMap.lineMap x y
   let φ : ℝ → ℝ := fun t ↦ f₀ (line t)
   have hconv : ConvexOn ℝ (effective_domain f) f₀ :=
     convexOn_toReal_of_is_convex_function hf_convex (fun z _ ↦ hf_ne_bot z)
   have hφ_convex :
       ConvexOn ℝ (line ⁻¹' effective_domain f) φ := by
     -- Restrict the convex real-valued model to the line segment from `x` to `y`.
-    simpa [φ, line] using hconv.comp_affineMap (AffineMap.lineMap (k := ℝ) x y)
+    simpa [φ, line] using hconv.comp_affineMap line
   have hφ_zero :
       (0 : ℝ) ∈ line ⁻¹' effective_domain f := by
     simpa [line] using hx_f
@@ -82,12 +82,16 @@ lemma convex_support_toReal_at_basepoint
         simpa [line] using hx_diff.hasFDerivAt
       have hline : HasDerivAt line (y - x) 0 := by
         simpa [line] using
-          (AffineMap.hasDerivAt_lineMap (a := x) (b := y) (x := (0 : ℝ)))
+          (show HasDerivAt (AffineMap.lineMap x y) (y - x) (0 : ℝ) from
+            AffineMap.hasDerivAt_lineMap)
       simpa [φ, line] using
-        HasFDerivAt.comp_hasDerivAt (x := 0) hbase hline
+        HasFDerivAt.comp_hasDerivAt 0 hbase hline
     have hgrad :
         fderiv ℝ f₀ x (y - x) = inner ℝ (∇ f₀ x) (y - x) := by
-      simpa using HasGradientAt.fderiv_apply (y := y - x) hx_diff.hasGradientAt
+      simpa using
+        (show
+            fderiv ℝ f₀ x (y - x) = inner ℝ (∇ f₀ x) (y - x) from
+          HasGradientAt.fderiv_apply hx_diff.hasGradientAt)
     simpa [hgrad] using hcomp
   have hsecant :
       inner ℝ (∇ f₀ x) (y - x) ≤ slope φ 0 1 := by
@@ -154,8 +158,7 @@ lemma objective_minus_gap_le_objective_value
           (f x).toReal ≤ (f y).toReal + inner ℝ (∇ f₀ x) (x - y) := by
         -- Rewrite the first-order convexity bound into the source proof's `x - y` form.
         have hbase :=
-          convex_support_toReal_at_basepoint
-            (f := f) hf_ne_bot hf_convex hx_f hx_diff hy_f
+          convex_support_toReal_at_basepoint hf_ne_bot hf_convex hx_f hx_diff hy_f
         rw [hinner_rev] at hbase
         linarith
       apply (EReal.sub_le_iff_le_add (Or.inr hFy_ne_top) (Or.inr hFy_ne_bot)).2
@@ -246,10 +249,10 @@ theorem generalized_conditional_gradient_gap_ge_objective_gap
     have hpoint :
         F x - generalized_conditional_gradient_gap_objective f₀ g x y ≤ F y :=
       objective_minus_gap_le_objective_value
-        (f := f) (g := g) hf_ne_bot hf_convex hx_f hx_diff hx y
+        hf_ne_bot hf_convex hx_f hx_diff hx y
     have hgap :
         generalized_conditional_gradient_gap_objective f₀ g x y ≤ S[f₀, g](x) :=
-      gap_objective_le_conditional_gradient_norm (f := f) (g := g) x y
+      gap_objective_le_conditional_gradient_norm x y
     -- Lowering the subtracted gap term preserves the objective comparison.
     exact (EReal.sub_le_sub le_rfl hgap).trans hpoint
   -- Convert the lower-bound statement `F x - S ≤ F_opt` back to the desired gap inequality.

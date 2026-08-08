@@ -1,21 +1,32 @@
 import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap01.Definition_1_37
 import FirstOrderMethodsOptimization_Beck_2017.Chap03.Definition_3_10
+import FirstOrderMethodsOptimization_Beck_2017.Chap03.Theorem_3_13
+import FirstOrderMethodsOptimization_Beck_2017.Chap03.Theorem_3_19
+import FirstOrderMethodsOptimization_Beck_2017.Chap04.Theorem_4_12
 import FirstOrderMethodsOptimization_Beck_2017.Chap04.Theorem_4_15
 import FirstOrderMethodsOptimization_Beck_2017.Chap05.Theorem_5_26
+import FirstOrderMethodsOptimization_Beck_2017.Chap11.Definition_11_13
+import FirstOrderMethodsOptimization_Beck_2017.Chap11.Theorem_11_11
+import FirstOrderMethodsOptimization_Beck_2017.Chap12.DualBlockMinimizationView
 import FirstOrderMethodsOptimization_Beck_2017.Chap12.Definition_12_14
 import FirstOrderMethodsOptimization_Beck_2017.Chap12.Definition_12_1_1
 import FirstOrderMethodsOptimization_Beck_2017.Chap12.Definition_12_15
+import FirstOrderMethodsOptimization_Beck_2017.Chap12.Algorithm_12_13.Comparison
+import FirstOrderMethodsOptimization_Beck_2017.Chap12.Algorithm_12_14
 import FirstOrderMethodsOptimization_Beck_2017.Chap12.Algorithm_12_15
 import FirstOrderMethodsOptimization_Beck_2017.Chap12.Definition_12_17
+import FirstOrderMethodsOptimization_Beck_2017.Chap12.Lemma_12_3
+import FirstOrderMethodsOptimization_Beck_2017.Chap12.Lemma_12_7
 import FirstOrderMethodsOptimization_Beck_2017.Chap12.Lemma_12_15
+import FirstOrderMethodsOptimization_Beck_2017.Chap12.Theorem_12_4
 
 noncomputable section
 
 universe u v
 
 open MeasureTheory ProbabilityTheory
-open scoped BigOperators ProbabilityTheory ENNReal
+open scoped BigOperators ProbabilityTheory ENNReal Gradient
 
 section
 
@@ -83,7 +94,7 @@ explicit Lyapunov coefficient on the canonical block `L²` owner `WithLp.toLp 2 
 lemma half_weighted_sqnorm_eq_initial_lyapunov
     (σ : PosReal) (y0 yStar : Fin p → E) :
     (1 / 2 : ℝ) *
-        compositeWeightedL2Norm (fun _ : Fin p ↦ σ⁻¹) (y0 - yStar) ^ (2 : ℕ) =
+        compositeWeightedL2Norm (fun i : Fin p ↦ σ⁻¹) (y0 - yStar) ^ (2 : ℕ) =
       (1 / (2 * (σ : ℝ))) * ‖WithLp.toLp 2 (y0 - yStar)‖ ^ (2 : ℕ) := by
   have hσ : (σ : ℝ) ≠ 0 := by
     exact ne_of_gt σ.2
@@ -99,7 +110,7 @@ lemma half_weighted_sqnorm_eq_initial_lyapunov
   -- Expand the weighted norm into the explicit weighted `L²` sum.
   calc
     (1 / 2 : ℝ) *
-        compositeWeightedL2Norm (fun _ : Fin p ↦ σ⁻¹) (y0 - yStar) ^ (2 : ℕ)
+        compositeWeightedL2Norm (fun i : Fin p ↦ σ⁻¹) (y0 - yStar) ^ (2 : ℕ)
         =
       (1 / 2 : ℝ) *
         ∑ i : Fin p, (((σ⁻¹ : PosReal) : ℝ)) * ‖(y0 - yStar) i‖ ^ (2 : ℕ) := by
@@ -141,110 +152,302 @@ lemma realized_dbpg_primal_argmax_at
   -- The realized DBPG trajectory owner already packages the step-(a) argmax membership.
   exact (is_dual_block_proximal_gradient_primal_trajectory_step (h_traj ω) k).1
 
-/-- Helper for Theorem 12.14: the duplication-space Chapter 12 primal argmax owner is equivalent
-to the source block-sum argmax owner at the same block vector. -/
-lemma dual_primal_x_argmax_duplication_iff_sum
-    {xBar : E} {v : Fin p → E} :
-    xBar ∈
-        dual_proximal_gradient_primal_x_argmax
-          f
-          (dual_block_duplication E p).toLinearMap
-          (WithLp.toLp 2 v) ↔
-      xBar ∈ dual_proximal_gradient_primal_x_argmax f LinearMap.id (∑ i : Fin p, v i) := by
-  -- Rewrite both owners to the canonical `IsMaxOn` condition and normalize the duplication
-  -- adjoint to the block sum.
-  rw [mem_dual_proximal_gradient_primal_x_argmax_iff,
-    mem_dual_proximal_gradient_primal_x_argmax_iff]
-  have hadj := by
-    -- Route correction: keep the canonical duplication-adjoint theorem, then let `simpa` unfold
-    -- the local duplication owner only at the final transport step.
-    simpa using
-      (dual_block_duplication_linear_adjoint_apply
-        (E := E) (p := p) (y := WithLp.toLp 2 v))
-  constructor <;> intro hx <;> simpa [dual_block_duplication, hadj] using hx
+/-- Helper for Theorem 12.14: a source argmax point for
+`x' ↦ ⟪x', v⟫ - f x'` is exactly a conjugate-side subgradient at `v`. -/
+lemma eval_mem_conjugate_subdifferential_of_mem_dual_primal_x_argmax
+    (h_problem : IsDualBlockProximalGradientProblem f g σ)
+    {v xBar : E}
+    (hx : xBar ∈ dual_proximal_gradient_primal_x_argmax f LinearMap.id v) :
+    Module.Dual.eval ℝ E xBar ∈
+      subdifferential (conjugate_function f)
+        (InnerProductSpace.toDualMap ℝ E v) := by
+  have hf_convex_toReal :
+      ConvexOn ℝ (effective_domain f) (fun z : E ↦ (f z).toReal) := by
+    -- Strong convexity of `f` on its effective domain implies convexity of its real-valued part.
+    exact (h_problem.f_strongly_convex.strictConvexOn σ.2).convexOn
+  have hf_convex : is_convex_function f := by
+    -- Convert the domainwise convexity statement back to the project owner `is_convex_function`.
+    rw [is_convex_function_iff_convexOn_toReal (fun z _ ↦ h_problem.toIsProperExtendedRealFunction.ne_bot z)]
+    exact hf_convex_toReal
+  have hmax :
+      IsMaxOn
+        (fun x' : E ↦
+          (((InnerProductSpace.toDualMap ℝ E v) x' : EReal) - f x'))
+        Set.univ xBar := by
+    -- Unfold the source argmax owner and rewrite the dual pairing as the Hilbert inner product.
+    simpa [mem_dual_proximal_gradient_primal_x_argmax_iff,
+      InnerProductSpace.toDualMap_apply_apply, real_inner_comm] using hx
+  -- The Chapter 4 conjugacy bridge turns the source argmax condition into a conjugate subgradient.
+  rw [subdifferential_conjugate_eq_eval_image_argmax_affine_minus
+    f
+    h_problem.toIsProperExtendedRealFunction
+    h_problem.f_closed
+    hf_convex
+    (InnerProductSpace.toDualMap ℝ E v)]
+  exact ⟨xBar, hmax, rfl⟩
 
-/-- Helper for Theorem 12.14: once both the optimal dual point and the sampled dual point are
-finite, the `EReal` dual gap rewrites to the scalar gap after applying `toReal`. -/
-lemma dual_gap_toReal_eq_of_mem_finite_domain
-    {yBar yStar : Fin p → E}
+/-- Helper for Theorem 12.14: a conjugate-side subgradient at `v` is the canonical gradient point
+`∇(f∗)(v)` on the source route. -/
+lemma conjugate_subgradient_eval_eq_gradient_point
+    (h_problem : IsDualBlockProximalGradientProblem f g σ)
+    {v xBar : E}
+    (hx :
+      Module.Dual.eval ℝ E xBar ∈
+        subdifferential (conjugate_function f) (InnerProductSpace.toDualMap ℝ E v)) :
+    xBar = ∇ (fun z : E ↦ ((f∗) z).toReal) v := by
+  let φ : E →ₗ[ℝ] Module.Dual ℝ E :=
+    ((LinearMap.toContinuousLinearMap : (Module.Dual ℝ E) ≃ₗ[ℝ] StrongDual ℝ E).symm).toLinearMap.comp
+      ((InnerProductSpace.toDual ℝ E).toLinearEquiv.toLinearMap)
+  let xDual : Module.Dual ℝ E :=
+    (LinearMap.toContinuousLinearMap : (Module.Dual ℝ E) ≃ₗ[ℝ] StrongDual ℝ E).symm
+      (InnerProductSpace.toDual ℝ E xBar)
+  have hconj_finite :
+      ∀ z : E, (f∗) z ≠ ⊥ ∧ (f∗) z < ⊤ := by
+    intro z
+    -- Strong convexity of `f` makes its conjugate finite-valued everywhere.
+    simpa using
+      dual_based_proximal_gradient_dual_F_primal_finite_valued
+        (σ := σ)
+        (f := f)
+        (A := (LinearMap.id : E →ₗ[ℝ] E))
+        h_problem.toIsProperExtendedRealFunction
+        h_problem.f_closed
+        h_problem.f_strongly_convex
+        z
+  have hconj_convex : is_convex_function (f∗) := by
+    -- The conjugate objective is convex on the primal space.
+    simpa using
+      dual_based_proximal_gradient_dual_F_primal_convex
+        (f := f)
+        (A := (LinearMap.id : E →ₗ[ℝ] E))
+  have hconj_diff :
+      DifferentiableAt ℝ (fun z : E ↦ ((f∗) z).toReal) v := by
+    -- Lemma 12.3 gives global differentiability of the conjugate under strong convexity.
+    exact
+      (conjugate_function_primal_is_l_smooth_on_of_proper_closed_strongConvexOn
+        (σ := σ)
+        (f := f)
+        h_problem.toIsProperExtendedRealFunction
+        h_problem.f_closed
+        h_problem.f_strongly_convex).1 v (by simp)
+  have hv_interior : v ∈ interior (finite_domain (f∗)) := by
+    have hfinite_domain_univ : finite_domain (f∗) = Set.univ := by
+      ext z
+      constructor
+      · intro _
+        simp
+      · intro _
+        rcases hconj_finite z with ⟨hz_ne_bot, hz_lt_top⟩
+        exact ⟨hz_lt_top, hz_ne_bot⟩
+    -- Finite-valuedness everywhere identifies the interior with `Set.univ`.
+    simpa [hfinite_domain_univ]
+  have hx_primal : xDual ∈ subdifferential (f∗) v := by
+    have hφ_apply (z : E) : φ z = (InnerProductSpace.toDualMap ℝ E z : Module.Dual ℝ E) := by
+      ext w
+      simp [φ, InnerProductSpace.toDual_apply_eq_toDualMap_apply]
+    have hφdual :
+        φ.dualMap (Module.Dual.eval ℝ E xBar) = xDual := by
+      ext z
+      simp [xDual, φ, InnerProductSpace.toDual_apply_eq_toDualMap_apply, real_inner_comm]
+    have hpullback :
+        φ.dualMap (Module.Dual.eval ℝ E xBar) ∈
+          subdifferential (fun z : E ↦ conjugate_function f (φ z)) v := by
+      -- Pull the given conjugate subgradient back through the Riesz identification.
+      exact
+        (subdifferential_precompose_affineMap_subset
+          (f := conjugate_function f)
+          (φ := φ.toAffineMap)
+          (x := v))
+          ⟨Module.Dual.eval ℝ E xBar, hx, rfl⟩
+    have hsubset :
+        (fun z : E ↦ conjugate_function f (φ z)) = (f∗) := by
+      funext z
+      simpa [hφ_apply z] using (conjugate_function_primal_apply f z).symm
+    simpa [hsubset, hφdual] using hpullback
+  have hx_strong :
+      InnerProductSpace.toDual ℝ E xBar ∈ strongDualSubdifferential (f∗) v := by
+    have hx_image :
+        InnerProductSpace.toDual ℝ E xBar ∈
+          (LinearMap.toContinuousLinearMap : (Module.Dual ℝ E) ≃ₗ[ℝ] StrongDual ℝ E) ''
+            subdifferential (f∗) v := by
+      refine ⟨xDual, hx_primal, ?_⟩
+      ext z
+      simp [xDual, InnerProductSpace.toDual_apply_eq_toDualMap_apply]
+    simpa [strongDualSubdifferential_eq_image_subdifferential] using hx_image
+  have hsingleton :=
+    subdifferential_eq_singleton_gradient_of_differentiableAt
+      (f := (f∗))
+      v
+      hconj_convex
+      ⟨hv_interior, hconj_diff⟩
+  have hx_eq_dual :
+      InnerProductSpace.toDual ℝ E xBar =
+        InnerProductSpace.toDual ℝ E
+          (∇ (fun z : E ↦ ((f∗) z).toReal) v) := by
+    have :
+        InnerProductSpace.toDual ℝ E xBar ∈
+          ({InnerProductSpace.toDual ℝ E
+              (∇ (fun z : E ↦ ((f∗) z).toReal) v)} : Set (StrongDual ℝ E)) := by
+      simpa [hsingleton] using hx_strong
+    simpa using this
+  -- Injectivity of the Riesz map identifies the primal point with the canonical gradient point.
+  exact (InnerProductSpace.toDual ℝ E).injective hx_eq_dual
+
+/-- Helper for Theorem 12.14: every source primal argmax witness is the canonical conjugate
+gradient point `∇(f∗)(v)`. -/
+lemma dual_primal_argmax_eq_conjugate_gradient
+    (h_problem : IsDualBlockProximalGradientProblem f g σ)
+    {v xBar : E}
+    (hx : xBar ∈ dual_proximal_gradient_primal_x_argmax f LinearMap.id v) :
+    xBar = ∇ (fun z : E ↦ ((f∗) z).toReal) v := by
+  -- Follow the source route: argmax gives a conjugate subgradient, and differentiability of `f∗`
+  -- collapses that subgradient to the singleton gradient point.
+  exact
+    conjugate_subgradient_eval_eq_gradient_point
+      (f := f)
+      (g := g)
+      (σ := σ)
+      h_problem
+      (eval_mem_conjugate_subdifferential_of_mem_dual_primal_x_argmax
+        (f := f)
+        (g := g)
+        (σ := σ)
+        h_problem
+        hx)
+
+/-- Helper for Theorem 12.14: every optimal dual point minimizes the Chapter 11 minimization view
+`Hdual = -q`. This is the source-faithful bridge from the source optimal set `Λ*` to the Chapter
+11 owner `unconstrained_problem_solutions`. -/
+lemma optimal_dual_point_mem_unconstrained_problem_solutions_minimization_view
+    (h_problem : IsDualBlockProximalGradientProblem f g σ)
+    {yStar : Fin p → E}
+    (hyStar : yStar ∈ Λ*(f, g)) :
+    yStar ∈
+      unconstrained_problem_solutions (DualBlockMinimizationView.objective f g) := by
+  -- Rewrite the Chapter 11 minimization surface to `-q`, then use the global maximality of
+  -- `yStar` for the source-facing dual objective.
+  rw [mem_unconstrained_problem_solutions_iff_forall_le]
+  intro yBar
+  have hmax_all : ∀ yBar' : Fin p → E, q(f, g) yBar' ≤ q(f, g) yStar := by
+    simpa [mem_dual_block_proximal_gradient_dual_optimal_set, isMaxOn_univ_iff] using hyStar
+  have hmax : q(f, g) yBar ≤ q(f, g) yStar := by
+    exact hmax_all yBar
+  -- Replace the Chapter 11 objective by `-q` on both points and negate the source inequality.
+  rw [dual_block_dual_minimization_view_apply
+      f g h_problem.toIsProperExtendedRealFunction h_problem.g_proper yStar,
+    dual_block_dual_minimization_view_apply
+      f g h_problem.toIsProperExtendedRealFunction h_problem.g_proper yBar]
+  simpa using (EReal.neg_le_neg_iff.mpr hmax)
+
+/-- Helper for Theorem 12.14: the blockwise affine update `w + 𝒰[i] d` changes the aggregated
+coordinate sum by exactly the increment `d`. This is the canonical chain-rule bridge from the
+block owner to the primal-space conjugate term. -/
+lemma sum_block_coordinate_update
+    (w : Fin p → E) (i : Fin p) (d : E) :
+    (∑ j : Fin p, block_coordinate_update w i d j) = (∑ j : Fin p, w j) + d := by
+  -- Expand the one-block update as `w + Pi.single i d` and sum the coordinates termwise.
+  classical
+  calc
+    (∑ j : Fin p, block_coordinate_update w i d j)
+        = ∑ j : Fin p, (block_coordinate_update w i d) j := by
+            rfl
+    _ = (∑ j : Fin p, w j) + ∑ j : Fin p, Pi.single i d j := by
+          simp [block_coordinate_update, Finset.sum_add_distrib]
+    _ = (∑ j : Fin p, w j) + d := by
+          simp
+
+/-- Helper for Theorem 12.14: summing the dual representatives of the block coordinates agrees
+with the dual representative of the aggregated block sum. -/
+lemma sumDual_eq_toDualMap_sum
+    (w : Fin p → E) :
+    (∑ j : Fin p, (InnerProductSpace.toDualMap ℝ E (w j) : Module.Dual ℝ E)) =
+      InnerProductSpace.toDualMap ℝ E (∑ j : Fin p, w j) := by
+  ext z
+  simp [InnerProductSpace.toDualMap_apply_apply, sum_inner]
+
+/-- Helper for Theorem 12.14: updating one block by `d` adds exactly the dual increment
+`InnerProductSpace.toDualMap ℝ E d` to the aggregated dual sum. -/
+lemma sumDual_blockCoordinateUpdate
+    (w : Fin p → E) (i : Fin p) (d : E) :
+    (∑ j : Fin p,
+        (InnerProductSpace.toDualMap ℝ E (block_coordinate_update w i d j) :
+          Module.Dual ℝ E)) =
+      (InnerProductSpace.toDualMap ℝ E d : Module.Dual ℝ E) +
+        ∑ j : Fin p, (InnerProductSpace.toDualMap ℝ E (w j) : Module.Dual ℝ E) := by
+  -- Collapse both finite sums to the Riesz functional of the aggregated block sum.
+  calc
+    (∑ j : Fin p,
+        (InnerProductSpace.toDualMap ℝ E (block_coordinate_update w i d j) :
+          Module.Dual ℝ E)) =
+      InnerProductSpace.toDualMap ℝ E
+        (∑ j : Fin p, block_coordinate_update w i d j) := by
+          exact sumDual_eq_toDualMap_sum (w := fun j ↦ block_coordinate_update w i d j)
+    _ =
+      InnerProductSpace.toDualMap ℝ E ((∑ j : Fin p, w j) + d) := by
+        rw [sum_block_coordinate_update]
+    _ =
+      (InnerProductSpace.toDualMap ℝ E d : Module.Dual ℝ E) +
+        InnerProductSpace.toDualMap ℝ E (∑ j : Fin p, w j) := by
+          simpa [add_comm] using
+            (InnerProductSpace.toDualMap ℝ E).map_add (∑ j : Fin p, w j) d
+    _ =
+      (InnerProductSpace.toDualMap ℝ E d : Module.Dual ℝ E) +
+        ∑ j : Fin p, (InnerProductSpace.toDualMap ℝ E (w j) : Module.Dual ℝ E) := by
+          rw [sumDual_eq_toDualMap_sum]
+
+/-- Helper for Theorem 12.14: the minimization-view optimal value `FOpt = -q_opt` is the GLB of
+`Hdual = -q` once a finite initial dual point and a finite optimal witness are fixed. -/
+lemma dual_block_minimization_view_optimal_value_isGLB
+    (h_problem : IsDualBlockProximalGradientProblem f g σ)
     (hyStar : yStar ∈ Λ*(f, g))
-    (hyStar_finite : yStar ∈ finite_domain (q(f, g)))
-    (hyBar_finite : yBar ∈ finite_domain (q(f, g))) :
-    (q_opt(f, g) - q(f, g) yBar).toReal =
-      EReal.toReal (q_opt(f, g)) - (q(f, g) yBar).toReal := by
+    (hy0_finite : y0 ∈ finite_domain (q(f, g)))
+    (hyStar_finite : yStar ∈ finite_domain (q(f, g))) :
+    IsGLB
+      (Set.range (DualBlockMinimizationView.objective f g))
+      (((-EReal.toReal (q_opt(f, g)) : ℝ)) : EReal) := by
+  have hqOpt_ne_bot : q_opt(f, g) ≠ ⊥ := by
+    intro hqOpt_bot
+    have hle : q(f, g) y0 ≤ q_opt(f, g) :=
+      dual_objective_le_dual_problem_value (f := f) (g := g) y0
+    have hy0_ne_bot : q(f, g) y0 ≠ ⊥ := (mem_finite_domain.mp hy0_finite).2
+    exact hy0_ne_bot (by simpa [hqOpt_bot] using hle)
   have hqOpt_ne_top : q_opt(f, g) ≠ ⊤ := by
-    -- The optimal value is attained at `yStar`, so finiteness of `q(yStar)` transfers to `q_opt`.
     rw [← dual_block_proximal_gradient_dual_objective_eq_dual_problem_value_of_mem_optimal_set
       f g hyStar]
     exact (mem_finite_domain.mp hyStar_finite).1.ne
-  have hqOpt_ne_bot : q_opt(f, g) ≠ ⊥ := by
-    -- The same attained-value identification also transfers the non-`⊥` side.
-    rw [← dual_block_proximal_gradient_dual_objective_eq_dual_problem_value_of_mem_optimal_set
-      f g hyStar]
-    exact (mem_finite_domain.mp hyStar_finite).2
-  have hyBar_ne_top : q(f, g) yBar ≠ ⊤ := by
-    -- Membership in `finite_domain` records that the sampled dual value is finite above.
-    exact (mem_finite_domain.mp hyBar_finite).1.ne
-  have hyBar_ne_bot : q(f, g) yBar ≠ ⊥ := by
-    -- Membership in `finite_domain` also records the non-`⊥` side.
-    exact (mem_finite_domain.mp hyBar_finite).2
-  -- With both endpoints finite, `EReal.toReal_sub` gives the scalar gap identity directly.
-  rw [EReal.toReal_sub hqOpt_ne_top hqOpt_ne_bot hyBar_ne_top hyBar_ne_bot]
-
-/-- Helper for Theorem 12.14: the Chapter 11 minimization surface on block-dual variables is
-pointwise the negation of the source-facing block dual objective `q`. -/
-lemma dual_block_dual_minimization_view_apply
-    (h_problem : IsDualBlockProximalGradientProblem f g σ)
-    (v : Fin p → E) :
-    composite_model_objective
-        (fun w : Fin p → E ↦ (f∗) (∑ i : Fin p, w i))
-        (separableSum (fun i z ↦ ((g i)∗) (-z)))
-        v =
-      - q(f, g) v := by
-  let a : EReal := (f∗) (∑ i : Fin p, v i)
-  let b : EReal := ∑ i : Fin p, ((g i)∗) (-v i)
-  have ha_ne_bot : a ≠ ⊥ := by
-    -- The strongly convex primal term has a finite-valued conjugate at every aggregated dual sum.
-    have hfin :=
-      conjugate_function_finite_of_proper_closed_strongConvexOn
-        (σ : ℝ)
-        σ.2
-        f
-        h_problem.toIsProperExtendedRealFunction.ne_bot
-        h_problem.toIsProperExtendedRealFunction.effective_domain_nonempty
-        h_problem.f_closed
-        h_problem.f_strongly_convex
-        (InnerProductSpace.toDual ℝ E (∑ i : Fin p, v i))
-    simpa [a, conjugate_function_strongDual, conjugate_function_primal_apply,
-      conjugate_function] using hfin.1
-  have hb_ne_bot : b ≠ ⊥ := by
-    -- Each block conjugate term is proper, so their finite sum also avoids `⊥`.
-    refine ereal_sum_ne_bot Finset.univ (fun i ↦ ((g i)∗) (-v i)) ?_
-    intro i _
-    have hg_conj_proper :
-        IsProperExtendedRealFunction (conjugate_function (g i)) :=
-      isProperExtendedRealFunction_conjugate_function
-        (g i)
-        (h_problem.g_proper i)
-        (h_problem.g_convex i)
-    simpa [conjugate_function_primal_apply] using
-      hg_conj_proper.ne_bot (InnerProductSpace.toDualMap ℝ E (-v i))
-  have ha_top : -a ≠ ⊤ := by
-    -- Negating a non-`⊥` extended-real value cannot produce `⊤`.
-    intro ha_top
-    have : a = ⊥ := by
-      simpa [a] using congrArg Neg.neg ha_top
-    exact ha_ne_bot this
-  have hneg : -(-a - b) = a + b := by
-    -- Excluding the mixed `⊤/⊥` case allows the outer negation to distribute through subtraction.
-    have hraw : -(-a - b) = -(-a) + b := by
-      exact EReal.neg_sub (Or.inr hb_ne_bot) (Or.inl ha_top)
-    simpa [a, b] using hraw
-  -- Unfold the Chapter 11 objective and the Chapter 12 dual objective, then match the two sides.
-  rw [composite_model_objective_apply, separableSum_apply,
-    dual_block_proximal_gradient_dual_objective_apply]
-  change a + b = -(-a - b)
-  simpa [a, b] using hneg.symm
+  have hqOpt_coe :
+      (((EReal.toReal (q_opt(f, g)) : ℝ)) : EReal) = q_opt(f, g) :=
+    EReal.coe_toReal hqOpt_ne_top hqOpt_ne_bot
+  have hneg_qOpt_coe :
+      (((-EReal.toReal (q_opt(f, g)) : ℝ)) : EReal) = -q_opt(f, g) := by
+    -- Coerce the finite optimal value to `ℝ`, then negate on both sides.
+    simpa using congrArg Neg.neg hqOpt_coe
+  constructor
+  · rintro _ ⟨yBar, rfl⟩
+    have hmax : q(f, g) yBar ≤ q_opt(f, g) :=
+      dual_objective_le_dual_problem_value (f := f) (g := g) yBar
+    -- Rewrite the minimization-view value to `-q(yBar)` and compare it against `-q_opt`.
+    calc
+      (((-EReal.toReal (q_opt(f, g)) : ℝ)) : EReal) = -q_opt(f, g) := hneg_qOpt_coe
+      _ ≤ -q(f, g) yBar := by
+        simpa using (EReal.neg_le_neg_iff.mpr hmax)
+      _ = DualBlockMinimizationView.objective f g yBar := by
+            rw [dual_block_dual_minimization_view_apply
+              f g h_problem.toIsProperExtendedRealFunction h_problem.g_proper yBar]
+  · intro b hb
+    have hyStar_lb :
+        b ≤ DualBlockMinimizationView.objective f g yStar :=
+      hb ⟨yStar, rfl⟩
+    -- Evaluate the lower bound at the chosen optimizer and rewrite the value back to `-q_opt`.
+    calc
+      b ≤ DualBlockMinimizationView.objective f g yStar := hyStar_lb
+      _ = -q(f, g) yStar := by
+            rw [dual_block_dual_minimization_view_apply
+              f g h_problem.toIsProperExtendedRealFunction h_problem.g_proper yStar]
+      _ = -q_opt(f, g) := by
+            rw [dual_block_proximal_gradient_dual_objective_eq_dual_problem_value_of_mem_optimal_set
+              f g hyStar]
+      _ = (((-EReal.toReal (q_opt(f, g)) : ℝ)) : EReal) := hneg_qOpt_coe.symm
 
 /-- Helper for Theorem 12.14: a `PiLp` block vector lies in the effective domain of the separable
 block penalty exactly when each coordinate lies in the corresponding block effective domain. -/
@@ -278,7 +481,7 @@ lemma constant_block_mem_effective_domain_piLp_separableSum
     (dual_block_duplication E p).toLinearMap xHat ∈ effective_domain (PiLp.separableSum g) := by
   -- The duplicated block vector has every coordinate equal to `xHat`, so the coordinatewise
   -- effective-domain criterion closes immediately.
-  rw [mem_effective_domain_piLp_separableSum_iff (g := g) hg_proper]
+  rw [mem_effective_domain_piLp_separableSum_iff g hg_proper]
   simpa [dual_block_duplication_apply] using hxHat_g
 
 /-- Helper for Theorem 12.14: the coordinatewise relative-interior witness from Assumption 12.14
@@ -293,8 +496,7 @@ lemma constant_block_mem_effective_domain_piLp_separableSum_of_intrinsicInterior
   have hxHat_dom : ∀ i : Fin p, xHat ∈ effective_domain (g i) := by
     intro i
     exact intrinsicInterior_subset (hxHat_g i)
-  exact constant_block_mem_effective_domain_piLp_separableSum
-    (g := g) hg_proper (xHat := xHat) hxHat_dom
+  exact constant_block_mem_effective_domain_piLp_separableSum g hg_proper hxHat_dom
 
 /-- Helper for Theorem 12.14: the relative interiors of two sets combine to the relative interior
 of their Cartesian product. This is the finite-product bridge needed before transporting the
@@ -330,7 +532,7 @@ private theorem mem_intrinsicInterior_prod
     have hmem_map :
         u ∈ (affineSpan ℝ (S ×ˢ T)).map ((LinearMap.fst ℝ E V).toAffineMap) := by
       simpa using
-        (AffineSubspace.mem_map_of_mem (f := (LinearMap.fst ℝ E V).toAffineMap) huv_span)
+        (AffineSubspace.mem_map_of_mem ((LinearMap.fst ℝ E V).toAffineMap) huv_span)
     rw [AffineSubspace.map_span] at hmem_map
     exact hmem_map
   have hv_span_prod :
@@ -338,7 +540,7 @@ private theorem mem_intrinsicInterior_prod
     have hmem_map :
         v ∈ (affineSpan ℝ (S ×ˢ T)).map ((LinearMap.snd ℝ E V).toAffineMap) := by
       simpa using
-        (AffineSubspace.mem_map_of_mem (f := (LinearMap.snd ℝ E V).toAffineMap) huv_span)
+        (AffineSubspace.mem_map_of_mem ((LinearMap.snd ℝ E V).toAffineMap) huv_span)
     rw [AffineSubspace.map_span] at hmem_map
     exact hmem_map
   have hu_span : u ∈ affineSpan ℝ S := by
@@ -357,7 +559,7 @@ lemma effective_domain_piLp_separableSum_eq_preimage_raw_product
     (hg_proper : ∀ i : Fin p, IsProperExtendedRealFunction (g i)) :
     let e := PiLp.continuousLinearEquiv (2 : ENNReal) ℝ (fun _ : Fin p ↦ E)
     effective_domain (PiLp.separableSum g) =
-      e ⁻¹' Set.pi Set.univ (fun i => effective_domain (g i)) := by
+      e ⁻¹' Set.pi Set.univ (fun i ↦ effective_domain (g i)) := by
   let e := PiLp.continuousLinearEquiv (2 : ENNReal) ℝ (fun _ : Fin p ↦ E)
   -- Evaluate the `PiLp` separable sum coordinatewise and then read off membership in the product
   -- of the block effective domains.
@@ -401,7 +603,8 @@ lemma mem_intrinsicInterior_preimage_of_continuousLinearEquiv
   have hnhds :
       e ⁻¹' Metric.ball (e x) ε ∈ nhds x := by
     -- Continuity of the linear equivalence gives a small neighborhood sent into the target ball.
-    exact e.continuous.continuousAt.preimage_mem_nhds (Metric.ball_mem_nhds _ hε)
+    have hcont : ContinuousAt e x := e.continuousAt
+    exact hcont.preimage_mem_nhds (Metric.ball_mem_nhds _ hε)
   rcases Metric.mem_nhds_iff.1 hnhds with ⟨δ, hδ, hδball⟩
   refine (mem_intrinsicInterior_iff_closedBall_inter_affineSpan_subset).2 ?_
   refine ⟨hx_preimage, δ / 2, by positivity, ?_⟩
@@ -414,7 +617,7 @@ lemma mem_intrinsicInterior_preimage_of_continuousLinearEquiv
   have heu_span_map :
       e u ∈ (affineSpan ℝ (e ⁻¹' s)).map eA.toAffineMap := by
     simpa [eA] using
-      (AffineSubspace.mem_map_of_mem (f := eA.toAffineMap) hu_span)
+      (AffineSubspace.mem_map_of_mem eA.toAffineMap hu_span)
   have heu_span :
       e u ∈ affineSpan ℝ s := by
     rw [AffineSubspace.map_span] at heu_span_map
@@ -458,10 +661,10 @@ lemma mem_intrinsicInterior_univ_pi_of_forall
               (s 0 ×ˢ Set.pi Set.univ (fun i : Fin p ↦ s i.succ)) := by
         -- Split the finite product into its head coordinate and tail block family.
         simpa [e, Fin.tail] using
-          (mem_intrinsicInterior_prod (x := v 0) (z := fun i : Fin p ↦ v i.succ) hhead htail)
+          (mem_intrinsicInterior_prod hhead htail)
       have hpre :
           v ∈ intrinsicInterior ℝ (e ⁻¹' (s 0 ×ˢ Set.pi Set.univ (fun i : Fin p ↦ s i.succ))) :=
-        mem_intrinsicInterior_preimage_of_continuousLinearEquiv (e := e) hprod
+        mem_intrinsicInterior_preimage_of_continuousLinearEquiv e hprod
       have hset :
           e ⁻¹' (s 0 ×ˢ Set.pi Set.univ (fun i : Fin p ↦ s i.succ)) = Set.pi Set.univ s := by
         ext w
@@ -494,16 +697,13 @@ lemma constant_block_mem_intrinsicInterior_piLp_separableSum_of_intrinsicInterio
   let e := PiLp.continuousLinearEquiv (2 : ENNReal) ℝ (fun _ : Fin p ↦ E)
   have hraw :
       e ((dual_block_duplication E p).toLinearMap xHat) ∈
-        intrinsicInterior ℝ (Set.pi Set.univ (fun i => effective_domain (g i))) := by
+        intrinsicInterior ℝ (Set.pi Set.univ (fun i ↦ effective_domain (g i))) := by
     -- First build the raw product intrinsic-interior witness from the coordinatewise data.
     simpa [e, dual_block_duplication_apply] using
-      (mem_intrinsicInterior_univ_pi_of_forall
-        (s := fun i => effective_domain (g i))
-        (v := fun _ : Fin p ↦ xHat)
-        hxHat_g)
+      (mem_intrinsicInterior_univ_pi_of_forall hxHat_g)
   -- Then transport that raw witness back to the `PiLp` owner through the coordinate equivalence.
-  rw [effective_domain_piLp_separableSum_eq_preimage_raw_product (g := g) hg_proper]
-  exact mem_intrinsicInterior_preimage_of_continuousLinearEquiv (e := e) hraw
+  rw [effective_domain_piLp_separableSum_eq_preimage_raw_product g hg_proper]
+  exact mem_intrinsicInterior_preimage_of_continuousLinearEquiv e hraw
 
 /-- Helper for Theorem 12.14: Assumption 12.14 on the block problem should induce the Chapter
 12.1 owner for the duplicated block-space model. -/
@@ -527,7 +727,7 @@ lemma dual_block_problem_to_dual_based_problem :
     separableSum_closed g h_problem.g_closed
   have hsum_convex :
       is_convex_function (separableSum g) :=
-    separableSum_convex g h_problem.g_convex
+    separableSum_convex g h_problem.g_proper h_problem.g_convex
   refine
     { toIsProperExtendedRealFunction := h_problem.toIsProperExtendedRealFunction
       f_closed := h_problem.f_closed
@@ -562,7 +762,7 @@ lemma dual_block_problem_to_dual_based_problem :
     -- First reduce the duplicated `PiLp` witness to plain coordinatewise domain membership.
     exact
       constant_block_mem_effective_domain_piLp_separableSum_of_intrinsicInterior
-        (g := g) h_problem.g_proper (xHat := xHat) hxHat_g
+        g h_problem.g_proper hxHat_g
   have hdup_mem_span :
       (dual_block_duplication E p).toLinearMap xHat ∈
         affineSpan ℝ (effective_domain (PiLp.separableSum g)) := by
@@ -576,8 +776,125 @@ lemma dual_block_problem_to_dual_based_problem :
     -- the duplicated `PiLp` owner through the canonical coordinate equivalence.
     exact
       constant_block_mem_intrinsicInterior_piLp_separableSum_of_intrinsicInterior
-        (g := g) h_problem.g_proper (xHat := xHat) hxHat_g
+        g h_problem.g_proper hxHat_g
   simpa [dual_block_duplication_apply] using hdup_mem_ri
+
+/-- Helper for Theorem 12.14: the duplicated `PiLp` dual problem value agrees with the
+source-facing block dual optimum `q_opt`. -/
+lemma dual_block_problem_value_eq_duplicated_dual_problem_value
+    (h_problem : IsDualBlockProximalGradientProblem f g σ) :
+    dual_based_proximal_gradient_lagrange_dual_problem_value
+        f
+        (PiLp.separableSum g)
+        (dual_block_duplication E p) =
+      q_opt(f, g) := by
+  let Y := PiLp (2 : ENNReal) (fun _ : Fin p ↦ E)
+  -- Compare the two optimal values as suprema of the same pointwise objective, viewed once on the
+  -- duplicated-owner dual space and once on the source block-dual owner.
+  rw [dual_based_proximal_gradient_lagrange_dual_problem_value,
+    dual_block_proximal_gradient_dual_problem_value_eq_sSup]
+  apply le_antisymm
+  · refine sSup_le ?_
+    rintro z ⟨φ, rfl⟩
+    let φc : StrongDual ℝ Y := LinearMap.toContinuousLinearMap φ
+    rcases (InnerProductSpace.toDual ℝ Y).surjective φc with ⟨v, hv⟩
+    have hφ : φ = InnerProductSpace.toDualMap ℝ Y v := by
+      ext w
+      have hw := congrArg (fun ψ : StrongDual ℝ Y ↦ ψ w) hv.symm
+      simpa [φc, Y, InnerProductSpace.toDual_apply_eq_toDualMap_apply] using hw
+    rw [hφ]
+    have hobj :
+        dual_based_proximal_gradient_lagrange_dual_objective
+            f
+            (PiLp.separableSum g)
+            (dual_block_duplication E p)
+            (InnerProductSpace.toDualMap ℝ Y v) =
+          q(f, g) v := by
+      calc
+        dual_based_proximal_gradient_lagrange_dual_objective
+            f
+            (PiLp.separableSum g)
+            (dual_block_duplication E p)
+            (InnerProductSpace.toDualMap ℝ Y v) =
+          dual_based_proximal_gradient_lagrange_dual_objective_primal
+            f
+            (PiLp.separableSum g)
+            (dual_block_duplication E p)
+            v := by
+              simpa [Y] using
+                (primalDualObjective_eq_dualOwner
+                  (f := f)
+                  (g := PiLp.separableSum g)
+                  (A := dual_block_duplication E p)
+                  (y := v)).symm
+        _ = q(f, g) v := by
+              simpa [Y] using
+                (dual_block_proximal_gradient_lagrange_dual_objective_primal_eq_dual_objective
+                  (f := f)
+                  (g := g)
+                  (hg_proper := h_problem.g_proper)
+                  v)
+    have hs :
+        q(f, g) v ≤ sSup (Set.range (q(f, g))) :=
+      le_sSup ⟨v, rfl⟩
+    exact hobj.le.trans hs
+  · refine sSup_le ?_
+    rintro z ⟨v, rfl⟩
+    have hobj :
+        dual_based_proximal_gradient_lagrange_dual_objective
+            f
+            (PiLp.separableSum g)
+            (dual_block_duplication E p)
+            (InnerProductSpace.toDualMap ℝ Y (WithLp.toLp 2 v)) =
+          q(f, g) v := by
+      calc
+        dual_based_proximal_gradient_lagrange_dual_objective
+            f
+            (PiLp.separableSum g)
+            (dual_block_duplication E p)
+            (InnerProductSpace.toDualMap ℝ Y (WithLp.toLp 2 v)) =
+          dual_based_proximal_gradient_lagrange_dual_objective_primal
+            f
+            (PiLp.separableSum g)
+            (dual_block_duplication E p)
+            (WithLp.toLp 2 v) := by
+              simpa [Y] using
+                (primalDualObjective_eq_dualOwner
+                  (f := f)
+                  (g := PiLp.separableSum g)
+                  (A := dual_block_duplication E p)
+                  (y := WithLp.toLp 2 v)).symm
+        _ = q(f, g) v := by
+              simpa [PiLp.toLp_apply] using
+                (dual_block_proximal_gradient_lagrange_dual_objective_primal_eq_dual_objective
+                  (f := f)
+                  (g := g)
+                  (hg_proper := h_problem.g_proper)
+                  (WithLp.toLp 2 v))
+    have hs :
+        q(f, g) v ≤
+          sSup
+            (Set.range
+              (dual_based_proximal_gradient_lagrange_dual_objective
+                f
+                (PiLp.separableSum g)
+                (dual_block_duplication E p))) := by
+      calc
+        q(f, g) v =
+            dual_based_proximal_gradient_lagrange_dual_objective
+              f
+              (PiLp.separableSum g)
+              (dual_block_duplication E p)
+              (InnerProductSpace.toDualMap ℝ Y (WithLp.toLp 2 v)) := hobj.symm
+        _ ≤
+            sSup
+              (Set.range
+                (dual_based_proximal_gradient_lagrange_dual_objective
+                  f
+                  (PiLp.separableSum g)
+                  (dual_block_duplication E p))) := by
+              exact le_sSup ⟨InnerProductSpace.toDualMap ℝ Y (WithLp.toLp 2 v), rfl⟩
+    exact hs
 
 /-- Helper for Theorem 12.14: iterating the textbook one-step factor
 `(p + n) / (p + n + 1)` yields the closed-form coefficient `p / (p + k + 1)`. -/
@@ -638,181 +955,688 @@ lemma expected_dual_gap_eq_integral_pointwise_gap
     integral_const]
   simp
 
-/-- Helper for Theorem 12.14: if every block dual term `g_i^*(-v_i)` is finite above, then the
-source-facing dual objective value `q(v)` is finite. This is the canonical bridge from
-coordinatewise Chapter 12 dual feasibility to the theorem surface `finite_domain (q(f, g))`. -/
-lemma dual_value_mem_finite_domain_of_coordinatewise_dual_term
+/-- Helper for Theorem 12.14: the block slice of the minimization-view smooth term
+`w ↦ (f∗)(∑ i, w_i)` has derivative given by the conjugate gradient at the aggregated sum. -/
+lemma dual_block_minimization_view_block_partial_gradient_spec
     (h_problem : IsDualBlockProximalGradientProblem f g σ)
-    {v : Fin p → E}
-    (hv : ∀ i : Fin p, v i ∈ effective_domain (fun z : E ↦ ((g i)∗) (-z))) :
-    v ∈ finite_domain (q(f, g)) := by
-  let a : EReal := (f∗) (∑ i : Fin p, v i)
-  let G : Fin p → E → EReal := fun i z ↦ ((g i)∗) (-z)
-  have hfin :=
-    conjugate_function_finite_of_proper_closed_strongConvexOn
-      (σ : ℝ)
-      σ.2
-      f
-      h_problem.toIsProperExtendedRealFunction.ne_bot
-      h_problem.toIsProperExtendedRealFunction.effective_domain_nonempty
-      h_problem.f_closed
-      h_problem.f_strongly_convex
-      (InnerProductSpace.toDual ℝ E (∑ i : Fin p, v i))
-  have ha_ne_bot : a ≠ ⊥ := by
-    -- Strong convexity makes the conjugate finite everywhere on the aggregated dual sum.
-    simpa [a, conjugate_function_strongDual, conjugate_function_primal_apply,
-      conjugate_function] using hfin.1
-  have ha_ne_top : a ≠ ⊤ := by
-    -- The same conjugate finiteness also excludes `⊤`.
-    exact (lt_top_iff_ne_top.mp (by
-      simpa [a, conjugate_function_strongDual, conjugate_function_primal_apply,
-        conjugate_function] using hfin.2))
-  have hG_proper : ∀ i : Fin p, IsProperExtendedRealFunction (G i) := by
-    intro i
-    let hconj :=
-      isProperExtendedRealFunction_conjugate_function (g i) (h_problem.g_proper i)
-        (h_problem.g_convex i)
-    refine
-      { ne_bot := ?_
-        effective_domain_nonempty := ?_ }
-    · intro z
-      -- Precomposing the conjugate with negation preserves the no-`⊥` property.
-      simpa [G, conjugate_function_primal_apply] using
-        hconj.ne_bot (InnerProductSpace.toDualMap ℝ E (-z))
-    · rcases hconj.effective_domain_nonempty with ⟨φ, hφ⟩
-      let φc : StrongDual ℝ E := ⟨φ, φ.continuous_of_finiteDimensional⟩
-      have hφ_repr :
-          (InnerProductSpace.toDualMap ℝ E ((InnerProductSpace.toDual ℝ E).symm φc) :
-            Module.Dual ℝ E) = φ := by
-        ext x
-        change (((InnerProductSpace.toDual ℝ E) ((InnerProductSpace.toDual ℝ E).symm φc)) :
-            StrongDual ℝ E) x = φ x
-        have hsymm := (InnerProductSpace.toDual ℝ E).apply_symm_apply φc
-        exact congrArg (fun ψ : StrongDual ℝ E => ψ x) hsymm
-      refine ⟨-((InnerProductSpace.toDual ℝ E).symm φc), ?_⟩
-      simpa [G, mem_effective_domain, conjugate_function_primal_apply, hφ_repr] using hφ
-  have hb_ne_bot : separableSum G v ≠ ⊥ := by
-    -- Properness of each conjugate block keeps the separable sum away from `⊥`.
-    simpa [G, separableSum_apply] using
-      (ereal_sum_ne_bot Finset.univ (fun i ↦ G i (v i))
-        (fun i _ ↦ (hG_proper i).ne_bot (v i)))
-  have hb_ne_top : separableSum G v ≠ ⊤ := by
-    -- The coordinatewise effective-domain assumptions make the separable sum finite above.
-    exact (lt_top_iff_ne_top.mp <| by
-      simpa [G, separableSum_apply] using
-        (ereal_sum_lt_top Finset.univ (fun i ↦ G i (v i))
-          (fun i _ ↦ mem_effective_domain.mp (hv i))))
-  have hview :
-      a + separableSum G v = - q(f, g) v := by
-    -- Rewrite the Chapter 11 composite objective back to the source dual objective `q`.
-    simpa [a, G, composite_model_objective_apply] using
-      (dual_block_dual_minimization_view_apply
-        (σ := σ) (f := f) (g := g) h_problem v)
-  rw [mem_finite_domain, mem_effective_domain, lt_top_iff_ne_top]
-  constructor
-  · intro hq_top
-    have hab_ne_bot : a + separableSum G v ≠ ⊥ := by
-      simpa [EReal.add_ne_bot_iff, ha_ne_top, hb_ne_bot] using And.intro ha_ne_bot hb_ne_bot
-    have hab_eq_bot : a + separableSum G v = ⊥ := by
-      rw [hview]
-      simpa [hq_top]
-    exact hab_ne_bot hab_eq_bot
-  · intro hq_bot
-    have hab_eq_top : a + separableSum G v = ⊤ := by
-      rw [hview]
-      simpa [hq_bot]
-    exact (EReal.add_ne_top ha_ne_top hb_ne_top) hab_eq_top
+    (i : Fin p) (w : Fin p → E) :
+    HasFDerivAt
+      (block_coordinate_slice (DualBlockMinimizationView.smoothTerm f) w i)
+      (InnerProductSpace.toDualMap ℝ E
+        (gradient (fun z : E ↦ (((f∗) z).toReal)) (∑ j : Fin p, w j)))
+      0 := by
+  let φ : E → ℝ := fun z ↦ ((f∗) z).toReal
+  have hdiffAt : DifferentiableAt ℝ φ (∑ j : Fin p, w j) := by
+    -- Lemma 12.3 gives differentiability of the conjugate real lift at every aggregated dual sum.
+    exact
+      (conjugate_function_primal_is_l_smooth_on_of_proper_closed_strongConvexOn
+        (σ := σ)
+        (f := f)
+        h_problem.toIsProperExtendedRealFunction
+        h_problem.f_closed
+        h_problem.f_strongly_convex).1
+        (∑ j : Fin p, w j)
+        (by simp)
+  have hbase :
+      HasFDerivAt
+        φ
+        (InnerProductSpace.toDualMap ℝ E (gradient φ (∑ j : Fin p, w j)))
+        (∑ j : Fin p, w j) := by
+    -- Rewrite differentiability into the Fréchet derivative shape used by the chain rule.
+    simpa [φ] using hdiffAt.hasGradientAt.hasFDerivAt
+  have hshift :
+      HasFDerivAt
+        (fun d : E ↦ (∑ j : Fin p, w j) + d)
+        (ContinuousLinearMap.id ℝ E)
+        0 := by
+    -- The affine re-centering map `d ↦ ∑ w_j + d` has derivative `id`.
+    simpa using
+      ((ContinuousLinearMap.id ℝ E).hasFDerivAt.const_add (∑ j : Fin p, w j) :
+        HasFDerivAt
+          (fun d : E ↦ (∑ j : Fin p, w j) + (ContinuousLinearMap.id ℝ E d))
+          (ContinuousLinearMap.id ℝ E)
+          0)
+  have hbase0 :
+      HasFDerivAt
+        φ
+        (InnerProductSpace.toDualMap ℝ E (gradient φ (∑ j : Fin p, w j)))
+        ((∑ j : Fin p, w j) + 0) := by
+    simpa using hbase
+  have hcomp := hbase0.comp 0 hshift
+  have hslice :
+      block_coordinate_slice (DualBlockMinimizationView.smoothTerm f) w i =
+        fun d : E ↦ φ ((∑ j : Fin p, w j) + d) := by
+    funext d
+    simp [block_coordinate_slice_apply, DualBlockMinimizationView.smoothTerm_apply, φ,
+      sum_block_coordinate_update, add_comm, add_left_comm, add_assoc]
+  -- Route correction: rewrite the block slice through the aggregated block-sum normal form before
+  -- consuming the composed derivative.
+  rw [hslice]
+  simpa using hcomp
 
-/-- Helper for Theorem 12.14: finiteness of the source-facing dual value `q(v)` forces each block
-dual term `g_i^*(-v_i)` to be finite above. This isolates the coordinatewise part of the
-finite-domain invariant used in the DBPG induction. -/
-lemma block_dual_term_mem_effective_domain_of_mem_finite_domain
+/-- Helper for Theorem 12.14: the block gradient of the minimization-view smooth term is
+`σ⁻¹`-Lipschitz along every coordinate direction. -/
+lemma dual_block_minimization_view_block_partial_gradient_lipschitz
     (h_problem : IsDualBlockProximalGradientProblem f g σ)
-    {v : Fin p → E} (hv : v ∈ finite_domain (q(f, g))) (i : Fin p) :
-    v i ∈ effective_domain (fun z : E ↦ ((g i)∗) (-z)) := by
-  let a : EReal := (f∗) (∑ j : Fin p, v j)
-  let G : Fin p → E → EReal := fun j z ↦ ((g j)∗) (-z)
-  have hfin :=
-    conjugate_function_finite_of_proper_closed_strongConvexOn
-      (σ : ℝ)
-      σ.2
-      f
-      h_problem.toIsProperExtendedRealFunction.ne_bot
-      h_problem.toIsProperExtendedRealFunction.effective_domain_nonempty
-      h_problem.f_closed
-      h_problem.f_strongly_convex
-      (InnerProductSpace.toDual ℝ E (∑ j : Fin p, v j))
-  have ha_ne_bot : a ≠ ⊥ := by
-    -- The smooth conjugate term is finite at the aggregated dual sum.
-    simpa [a, conjugate_function_strongDual, conjugate_function_primal_apply,
-      conjugate_function] using hfin.1
-  have ha_ne_top : a ≠ ⊤ := by
-    -- Strong convexity also excludes `⊤` for the smooth conjugate term.
-    exact (lt_top_iff_ne_top.mp (by
-      simpa [a, conjugate_function_strongDual, conjugate_function_primal_apply,
-        conjugate_function] using hfin.2))
-  have hG_proper : ∀ j : Fin p, IsProperExtendedRealFunction (G j) := by
-    intro j
-    let hconj :=
-      isProperExtendedRealFunction_conjugate_function (g j) (h_problem.g_proper j)
-        (h_problem.g_convex j)
-    refine
-      { ne_bot := ?_
-        effective_domain_nonempty := ?_ }
-    · intro z
-      -- Each negated conjugate block remains proper after the sign flip.
-      simpa [G, conjugate_function_primal_apply] using
-        hconj.ne_bot (InnerProductSpace.toDualMap ℝ E (-z))
-    · rcases hconj.effective_domain_nonempty with ⟨φ, hφ⟩
-      let φc : StrongDual ℝ E := ⟨φ, φ.continuous_of_finiteDimensional⟩
-      have hφ_repr :
-          (InnerProductSpace.toDualMap ℝ E ((InnerProductSpace.toDual ℝ E).symm φc) :
-            Module.Dual ℝ E) = φ := by
-        ext x
-        change (((InnerProductSpace.toDual ℝ E) ((InnerProductSpace.toDual ℝ E).symm φc)) :
-            StrongDual ℝ E) x = φ x
-        have hsymm := (InnerProductSpace.toDual ℝ E).apply_symm_apply φc
-        exact congrArg (fun ψ : StrongDual ℝ E => ψ x) hsymm
-      refine ⟨-((InnerProductSpace.toDual ℝ E).symm φc), ?_⟩
-      simpa [G, mem_effective_domain, conjugate_function_primal_apply, hφ_repr] using hφ
-  have hview :
-      a + separableSum G v = - q(f, g) v := by
-    -- Use the source-facing `q` identity to isolate the separable conjugate sum.
-    simpa [a, G, composite_model_objective_apply] using
-      (dual_block_dual_minimization_view_apply
-        (σ := σ) (f := f) (g := g) h_problem v)
-  have hobj_ne_top : a + separableSum G v ≠ ⊤ := by
-    -- Finiteness of `q(v)` rules out `⊤` for the negated Chapter 11 objective value.
-    rw [hview]
-    simpa using (mem_finite_domain.mp hv).2
-  have hsep_ne_top : separableSum G v ≠ ⊤ := by
-    -- Remove the finite smooth conjugate term from the sum and keep the regularizer finite above.
-    exact (EReal.add_ne_top_iff_ne_top_right ha_ne_bot ha_ne_top).1 hobj_ne_top
-  have hsep_mem : v ∈ effective_domain (separableSum G) := by
-    -- The separable block-dual regularizer is therefore finite at `v`.
-    simpa [mem_effective_domain, lt_top_iff_ne_top] using hsep_ne_top
-  -- Apply the standard Chapter 11 separable-sum domain projection back to coordinate `i`.
-  simpa [G] using
-    (block_mem_effective_domain_of_mem_separableSum_effective_domain G hG_proper hsep_mem i)
+    (i : Fin p) (w : Fin p → E) (d : E) :
+    ‖(gradient (fun z : E ↦ (((f∗) z).toReal)) (∑ j : Fin p, w j)) -
+        (gradient (fun z : E ↦ (((f∗) z).toReal))
+          (∑ j : Fin p, block_coordinate_update w i d j))‖ ≤
+      (σ⁻¹ : ℝ) * ‖d‖ := by
+  let φ : E → ℝ := fun z ↦ ((f∗) z).toReal
+  have hsmooth :
+      is_l_smooth_on φ Set.univ (Real.toNNReal (1 / (σ : ℝ))) := by
+    -- Lemma 12.3 gives the global `1 / σ` smoothness of the conjugate term on the primal space.
+    simpa [φ] using
+      conjugate_function_primal_is_l_smooth_on_of_proper_closed_strongConvexOn
+        σ
+        f
+        h_problem.toIsProperExtendedRealFunction
+        h_problem.f_closed
+        h_problem.f_strongly_convex
+  have hgrad :=
+    (is_l_smooth_on_iff_forall_norm_sub_le.mp hsmooth).2
+      (∑ j : Fin p, w j)
+      (by simp)
+      (∑ j : Fin p, block_coordinate_update w i d j)
+      (by simp)
+  have hσ_nonneg : 0 ≤ 1 / (σ : ℝ) := by
+    exact div_nonneg (by norm_num) (le_of_lt σ.2)
+  have hgrad' :
+      ‖(gradient (fun z : E ↦ (((f∗) z).toReal)) (∑ j : Fin p, w j)) -
+          (gradient (fun z : E ↦ (((f∗) z).toReal))
+            (∑ j : Fin p, block_coordinate_update w i d j))‖ ≤
+        (1 / (σ : ℝ)) * ‖∑ j : Fin p, w j - ∑ j : Fin p, block_coordinate_update w i d j‖ := by
+    calc
+      ‖(gradient (fun z : E ↦ (((f∗) z).toReal)) (∑ j : Fin p, w j)) -
+          (gradient (fun z : E ↦ (((f∗) z).toReal))
+            (∑ j : Fin p, block_coordinate_update w i d j))‖
+          ≤ ((Real.toNNReal (1 / (σ : ℝ)) : NNReal) : ℝ) *
+              ‖∑ j : Fin p, w j - ∑ j : Fin p, block_coordinate_update w i d j‖ :=
+        hgrad
+      _ = (1 / (σ : ℝ)) * ‖∑ j : Fin p, w j - ∑ j : Fin p, block_coordinate_update w i d j‖ := by
+          have hσ_cast :
+              (((Real.toNNReal (1 / (σ : ℝ)) : NNReal) : ℝ)) = 1 / (σ : ℝ) := by
+            exact congrArg (fun x : NNReal => (x : ℝ)) (Real.toNNReal_of_nonneg hσ_nonneg)
+          rw [hσ_cast]
+  -- After rewriting the updated aggregated sum as `∑ w_j + d`, the global smoothness bound
+  -- collapses to the desired one-block estimate.
+  calc
+    ‖(gradient (fun z : E ↦ (((f∗) z).toReal)) (∑ j : Fin p, w j)) -
+        (gradient (fun z : E ↦ (((f∗) z).toReal))
+          (∑ j : Fin p, block_coordinate_update w i d j))‖
+        ≤ (1 / (σ : ℝ)) * ‖∑ j : Fin p, w j - ∑ j : Fin p, block_coordinate_update w i d j‖ :=
+      hgrad'
+    _ = (σ⁻¹ : ℝ) * ‖d‖ := by
+      simp [sum_block_coordinate_update, sub_eq_add_neg, add_comm, add_left_comm, add_assoc,
+        norm_neg]
+
+/-- Helper for Theorem 12.14: the minimization view `Hdual = -q` satisfies the Chapter 11
+randomized block proximal-gradient assumptions with constant block weight `σ⁻¹`. -/
+lemma dual_block_minimization_view_randomized_assumptions
+    (h_problem : IsDualBlockProximalGradientProblem f g σ)
+    (hyStar : yStar ∈ Λ*(f, g))
+    (hy0_finite : y0 ∈ finite_domain (q(f, g)))
+    (hyStar_finite : yStar ∈ finite_domain (q(f, g))) :
+    RandomizedBlockProximalGradientAssumptions
+      (DualBlockMinimizationView.smoothTerm f)
+      (fun i z ↦ ((g i)∗) (-z))
+      (fun _ : Fin p ↦ fun w : Fin p → E ↦
+        (∇ fun z : E ↦ (((f∗) z).toReal)) (∑ j : Fin p, w j))
+      (unconstrained_problem_solutions (DualBlockMinimizationView.objective f g))
+      (-EReal.toReal (q_opt(f, g)))
+      (fun _ : Fin p ↦ σ⁻¹) := by
+  let sumLinearMap : (Fin p → E) →ₗ[ℝ] E :=
+    { toFun := fun w ↦ ∑ j : Fin p, w j
+      map_add' := by
+        intro w z
+        simp [Finset.sum_add_distrib]
+      map_smul' := by
+        intro a w
+        simp [Finset.smul_sum] }
+  let sumCLM : (Fin p → E) →L[ℝ] E :=
+    { toLinearMap := sumLinearMap
+      cont := sumLinearMap.continuous_of_finiteDimensional }
+  have hsmooth_domain_univ :
+      effective_domain (DualBlockMinimizationView.smoothTerm (p := p) f) = Set.univ := by
+    ext w
+    constructor
+    · intro _
+      simp
+    · intro _
+      rw [mem_effective_domain, DualBlockMinimizationView.smoothTerm_apply]
+      simpa using
+        (dual_based_proximal_gradient_dual_F_primal_finite_valued
+          (σ := σ)
+          (f := f)
+          (A := (LinearMap.id : E →ₗ[ℝ] E))
+          h_problem.toIsProperExtendedRealFunction
+          h_problem.f_closed
+          h_problem.f_strongly_convex
+          (∑ j : Fin p, w j)).2
+  have hsmooth_convex :
+      is_convex_function (DualBlockMinimizationView.smoothTerm (p := p) f) := by
+    -- Pull convexity of `f∗` back along the block-sum linear map.
+    simpa [sumLinearMap, DualBlockMinimizationView.smoothTerm_apply] using
+      is_convex_function_precompose_linearMap_add
+        (f := (f∗))
+        (conjugate_function_closed_and_convex f).2
+        sumLinearMap
+        0
+  have hsmooth_precompose :
+      is_l_smooth_on
+        (fun w : Fin p → E ↦ ((f∗) (sumCLM w)).toReal)
+        Set.univ
+        (Real.toNNReal (1 / (σ : ℝ)) * ‖sumCLM‖₊ ^ (2 : ℕ)) := by
+    -- Global smoothness of `z ↦ ((f∗) z).toReal` is stable under linear precomposition.
+    exact
+      Example_10_44.is_l_smooth_on_precompose_continuousLinearMap
+        sumCLM
+        (fun z : E ↦ ((f∗) z).toReal)
+        (conjugate_function_primal_is_l_smooth_on_of_proper_closed_strongConvexOn
+          (σ := σ)
+          (f := f)
+          h_problem.toIsProperExtendedRealFunction
+          h_problem.f_closed
+          h_problem.f_strongly_convex)
+  have hsmooth_diff_univ :
+      DifferentiableOn
+        ℝ
+        (fun w : Fin p → E ↦ (DualBlockMinimizationView.smoothTerm (p := p) f w).toReal)
+        Set.univ := by
+    have hsmooth_toReal_eq :
+        (fun w : Fin p → E ↦ ((f∗) (sumCLM w)).toReal) =
+          fun w : Fin p → E ↦ (DualBlockMinimizationView.smoothTerm (p := p) f w).toReal := by
+      funext w
+      simp [sumCLM, sumLinearMap, DualBlockMinimizationView.smoothTerm_apply]
+    intro w hw
+    -- Differentiate the precomposed smooth conjugate on the whole block space.
+    rw [← hsmooth_toReal_eq]
+    exact (hsmooth_precompose.1 w (by simp)).differentiableWithinAt
+  have hsmooth_closed :
+      LowerSemicontinuous (DualBlockMinimizationView.smoothTerm (p := p) f) := by
+    -- Lower semicontinuity of `f∗` is stable under continuous precomposition.
+    have hclosed :
+        LowerSemicontinuous (fun w : Fin p → E ↦ (f∗) (sumCLM w)) :=
+      (conjugate_function_closed_and_convex f).1.comp sumCLM.continuous
+    simpa [sumCLM, DualBlockMinimizationView.smoothTerm_apply] using hclosed
+  have hyStar_minimization :
+      yStar ∈ unconstrained_problem_solutions (DualBlockMinimizationView.objective f g) := by
+    -- The source dual optimizer is exactly a minimizer of the Chapter 11 minimization view.
+    exact
+      optimal_dual_point_mem_unconstrained_problem_solutions_minimization_view
+        (σ := σ)
+        (f := f)
+        (g := g)
+        h_problem
+        hyStar
+  refine
+    RandomizedBlockProximalGradientAssumptions.ofIsBlockProximalGradientProblem ?_ hsmooth_convex ?_
+  · refine
+      { f_ne_bot := ?_
+        block_g_proper := ?_
+        block_g_closed := ?_
+        block_g_convex := ?_
+        f_closed := hsmooth_closed
+        g_effective_domain_subset_interior_f_effective_domain := ?_
+        optimal_set_eq := rfl
+        optimal_set_nonempty := ⟨yStar, hyStar_minimization⟩
+        optimal_value_isGLB :=
+          dual_block_minimization_view_optimal_value_isGLB
+            (σ := σ)
+            (f := f)
+            (g := g)
+            (y0 := y0)
+            (yStar := yStar)
+            h_problem
+            hyStar
+            hy0_finite
+            hyStar_finite
+        block_partial_gradient_spec := ?_
+        block_partial_gradient_lipschitz := ?_ }
+    · intro w
+      -- Properness of `f` prevents the smooth conjugate term from taking the value `⊥`.
+      simpa [DualBlockMinimizationView.smoothTerm_apply, conjugate_function_primal_apply] using
+        conjugate_function_ne_bot_of_proper
+          f
+          h_problem.toIsProperExtendedRealFunction
+          (InnerProductSpace.toDualMap ℝ E (∑ j : Fin p, w j))
+    · intro i
+      -- Each block penalty `g_i^*(-·)` is proper by Lemma 12.3.
+      exact
+        dual_based_proximal_gradient_dual_G_primal_proper
+          (g i)
+          (h_problem.g_proper i)
+          (h_problem.g_convex i)
+    · intro i
+      -- Closedness of `g_i^*(-·)` is the corresponding closedness half of the same Lemma 12.3
+      -- companion.
+      exact
+        (dual_based_proximal_gradient_dual_G_primal_closed_and_convex (g i)).1
+    · intro i
+      -- Convexity of `g_i^*(-·)` is the convex half of the same Chapter 12 companion.
+      exact
+        (dual_based_proximal_gradient_dual_G_primal_closed_and_convex (g i)).2
+    · intro w hw
+      -- The smooth minimization-view term is finite everywhere, so its interior effective domain
+      -- is all of block space.
+      simpa [hsmooth_domain_univ]
+    · intro i w hw
+      -- The block-slice derivative is the conjugate gradient at the aggregated block sum.
+      exact
+        dual_block_minimization_view_block_partial_gradient_spec
+          (σ := σ)
+          (f := f)
+          (g := g)
+          h_problem
+          i
+          w
+    · intro i w d hw hwd
+      -- The global `1 / σ` smoothness of the conjugate gives the blockwise Lipschitz bound.
+      exact
+        dual_block_minimization_view_block_partial_gradient_lipschitz
+          (σ := σ)
+          (f := f)
+          (g := g)
+          h_problem
+          i
+          w
+          d
+  · -- Route correction: after identifying the smooth-term effective domain with `Set.univ`, the
+    -- differentiability field is just the global differentiability of the precomposed conjugate.
+    simpa [hsmooth_domain_univ] using hsmooth_diff_univ
 
 /-- Helper for Theorem 12.14: the sampled block-dual iterate at time `k + 1` should stay in the
 finite domain of the dual objective along every realized DBPG trajectory. -/
 lemma randomized_dbpg_dual_iterate_mem_finite_domain
+    (h_problem : IsDualBlockProximalGradientProblem f g σ)
+    (h_traj :
+      ∀ ω,
+        is_dual_block_proximal_gradient_primal_trajectory
+          f g σ (fun n ↦ sampled_block n ω) y0
+          (fun n ↦ x n ω)
+          (fun n ↦ y n ω))
+    (hy0_finite : y0 ∈ finite_domain (q(f, g)))
     (k : ℕ) :
-    ∀ ω, y (k + 1) ω ∈ finite_domain (q(f, g)) := sorry
+    ∀ ω, y (k + 1) ω ∈ finite_domain (q(f, g)) := by
+  have hy_all : ∀ n : ℕ, ∀ ω, y n ω ∈ finite_domain (q(f, g)) := by
+    intro n
+    induction n with
+    | zero =>
+        intro ω
+        -- The realized DBPG trajectory starts from the prescribed finite initial dual point.
+        simpa [is_dual_block_proximal_gradient_primal_trajectory_zero (h_traj ω)] using hy0_finite
+    | succ n ihn =>
+        intro ω
+        -- One primal-representation DBPG step preserves finiteness of the source dual value.
+        exact
+          dual_block_primal_y_step_mem_finite_domain
+            (σ := σ)
+            (f := f)
+            (g := g)
+            h_problem
+            (ihn ω)
+            (is_dual_block_proximal_gradient_primal_trajectory_step (h_traj ω) n).2
+  -- Specialize the global iterate invariant to the sampled time `k + 1`.
+  intro ω
+  exact hy_all (k + 1) ω
+
+/-- Helper for Theorem 12.14: each realized DBPG sample path coincides with the Chapter 11
+randomized block proximal-gradient recursion on the minimization view `Hdual = -q`. -/
+lemma randomized_dbpg_realized_minimization_view_method_eq
+    (h_problem : IsDualBlockProximalGradientProblem f g σ)
+    (h_traj :
+      ∀ ω,
+        is_dual_block_proximal_gradient_primal_trajectory
+          f g σ (fun n ↦ sampled_block n ω) y0
+          (fun n ↦ x n ω)
+          (fun n ↦ y n ω))
+    (hRBPG :
+      RandomizedBlockProximalGradientAssumptions
+        (DualBlockMinimizationView.smoothTerm f)
+        (fun i z ↦ ((g i)∗) (-z))
+        (fun _ : Fin p ↦ fun w : Fin p → E ↦
+          (∇ fun z : E ↦ (((f∗) z).toReal)) (∑ j : Fin p, w j))
+        (unconstrained_problem_solutions (DualBlockMinimizationView.objective f g))
+        (-EReal.toReal (q_opt(f, g)))
+        (fun _ : Fin p ↦ σ⁻¹))
+    (hy0_eff :
+      y0 ∈ effective_domain (DualBlockMinimizationView.regularizer g)) :
+    ∀ ω n,
+      y n ω =
+        randomized_block_proximal_gradient_method
+          hRBPG.toIsBlockProximalGradientProblem
+          (hRBPG.interior_effective_domain_point ⟨y0, hy0_eff⟩)
+          (fun m ↦ sampled_block m ω)
+          n := by
+  intro ω n
+  induction n with
+  | zero =>
+      -- The realized DBPG path and the Chapter 11 RBPG path start from the same initial point.
+      simpa [randomized_block_proximal_gradient_method_zero,
+        is_dual_block_proximal_gradient_primal_trajectory_zero (h_traj ω)] using
+        (hRBPG.toIsBlockProximalGradientProblem.interior_effective_domain_point_coe
+          ⟨y0, hy0_eff⟩).symm
+  | succ n ihn =>
+      let hcore := hRBPG.toIsBlockProximalGradientProblem
+      let yRBPG :=
+        randomized_block_proximal_gradient_method
+          hcore
+          (hRBPG.interior_effective_domain_point ⟨y0, hy0_eff⟩)
+          (fun m ↦ sampled_block m ω)
+          n
+      have hσ0 : (σ : ℝ) ≠ 0 := ne_of_gt σ.2
+      have hσ : (1 / (σ⁻¹ : PosReal) : ℝ) = (σ : ℝ) := by
+        change (1 : ℝ) / ((σ : ℝ)⁻¹) = (σ : ℝ)
+        field_simp [hσ0]
+      have hstep :
+          y (n + 1) ω ∈
+            dual_block_proximal_gradient_dual_step
+              (fun i z ↦ ((g i)∗) (-z))
+              (∇ fun z : E ↦ (((f∗) z).toReal))
+              σ
+              (sampled_block n ω)
+              yRBPG := by
+        have hx_argmax :
+            x n ω ∈ dual_proximal_gradient_primal_x_argmax
+              f
+              LinearMap.id
+              (∑ j : Fin p, y n ω j) := by
+          exact (is_dual_block_proximal_gradient_primal_trajectory_step (h_traj ω) n).1
+        have hx_eq :
+            x n ω = ∇ (fun z : E ↦ ((f∗) z).toReal) (∑ j : Fin p, y n ω j) := by
+          exact
+            dual_primal_argmax_eq_conjugate_gradient
+              (f := f)
+              (g := g)
+              (σ := σ)
+              h_problem
+              hx_argmax
+        have hprimal_step :
+            y (n + 1) ω ∈
+              dual_block_proximal_gradient_primal_y_step
+                g
+                σ
+                ((∇ fun z : E ↦ (((f∗) z).toReal)) (∑ j : Fin p, y n ω j))
+                (y n ω)
+                (sampled_block n ω) := by
+          simpa [hx_eq] using (is_dual_block_proximal_gradient_primal_trajectory_step (h_traj ω) n).2
+        -- Rewrite the realized Chapter 12 step onto the already-identified Chapter 11 current
+        -- iterate.
+        simpa [yRBPG, ihn] using
+          (dual_block_proximal_gradient_dual_step_iff_mem_dual_block_proximal_gradient_primal_y_step
+            (f := f)
+            (g := g)
+            (σ := σ)
+            h_problem.toIsProperExtendedRealFunction
+            h_problem.f_closed
+            h_problem.f_strongly_convex
+            h_problem.g_proper
+            h_problem.g_closed
+            h_problem.g_convex
+            (sampled_block n ω)
+            (y (n + 1) ω)
+            (y n ω)).2 hprimal_step
+      rw [randomized_block_proximal_gradient_method_succ]
+      rw [mem_dual_block_proximal_gradient_dual_step_iff] at hstep
+      rcases hstep with ⟨hactive, hrest⟩
+      have hprox :
+          prox[(((σ : ℝ) : EReal) • (fun z : E ↦ ((g (sampled_block n ω))∗) (-z)))]
+              (yRBPG (sampled_block n ω) -
+                (σ : ℝ) •
+                  ((∇ fun z : E ↦ (((f∗) z).toReal)) (∑ j : Fin p, yRBPG j))) =
+            {hcore.prox_point (σ⁻¹) (sampled_block n ω) yRBPG} := by
+        -- The owner-level prox point is the unique active-block proximal point of the
+        -- minimization-view Chapter 11 problem.
+        simpa [IsBlockProximalGradientProblem.prox_point, hσ] using
+          block_partial_prox_grad_point_eq_singleton
+            (fun i z ↦ ((g i)∗) (-z))
+            (fun _ : Fin p ↦ fun w : Fin p → E ↦
+              (∇ fun z : E ↦ (((f∗) z).toReal)) (∑ j : Fin p, w j))
+            hcore.block_g_proper
+            hcore.block_g_closed
+            hcore.block_g_convex
+            (σ⁻¹)
+            (sampled_block n ω)
+            yRBPG
+      have hactive_eq :
+          y (n + 1) ω (sampled_block n ω) =
+            hcore.prox_point (σ⁻¹) (sampled_block n ω) yRBPG := by
+        -- The active block belongs to a singleton proximal set, so its value is the owner-level
+        -- prox point.
+        rw [hprox] at hactive
+        simpa using hactive
+      -- Compare the updated block and all untouched blocks separately.
+      ext j
+      by_cases hj : j = sampled_block n ω
+      · subst hj
+        simpa [yRBPG, block_coordinate_update] using hactive_eq
+      · simpa [yRBPG, block_coordinate_update_apply_ne, hj] using hrest j hj
 
 /-- Helper for Theorem 12.14: the sampled dual objective at time `k + 1` should be integrable
 because the realized DBPG iterate depends only on finitely many uniformly sampled blocks. -/
 lemma randomized_dbpg_dual_value_integrable
+    (h_problem : IsDualBlockProximalGradientProblem f g σ)
+    (h_traj :
+      ∀ ω,
+        is_dual_block_proximal_gradient_primal_trajectory
+          f g σ (fun n ↦ sampled_block n ω) y0
+          (fun n ↦ x n ω)
+          (fun n ↦ y n ω))
+    (h_sampled_block_meas : ∀ k, Measurable (sampled_block k))
+    (h_sampled_block_indep : iIndepFun sampled_block μ)
+    (h_sampled_block_uniform :
+      ∀ k (i : Fin p), μ ((sampled_block k) ⁻¹' {i}) = 1 / (p : ℝ≥0∞))
+    (hyStar : yStar ∈ Λ*(f, g))
+    (hy0_finite : y0 ∈ finite_domain (q(f, g)))
+    (hyStar_finite : yStar ∈ finite_domain (q(f, g)))
     (k : ℕ) :
     Integrable (fun ω ↦ (q(f, g) (y (k + 1) ω)).toReal) μ := by
-  -- TODO: factor `y (k + 1)` through the finite sampled-block history and use finite-range
-  -- integrability of the induced scalar observable.
-  sorry
+  let Hsmooth : (Fin p → E) → EReal := DualBlockMinimizationView.smoothTerm f
+  let G : Fin p → E → EReal := fun i z ↦ ((g i)∗) (-z)
+  let Hdual : (Fin p → E) → EReal := DualBlockMinimizationView.objective f g
+  have hRBPG :=
+    dual_block_minimization_view_randomized_assumptions
+      (σ := σ)
+      (f := f)
+      (g := g)
+      (y0 := y0)
+      (yStar := yStar)
+      h_problem
+      hyStar
+      hy0_finite
+      hyStar_finite
+  have hy0_eff :
+      y0 ∈ effective_domain (separableSum G) :=
+    initial_dual_point_mem_effective_domain_minimization_view
+      f
+      g
+      y0
+      h_problem.toIsProperExtendedRealFunction
+      h_problem.g_proper
+      hy0_finite
+  have hpath :
+      ∀ ω n,
+        y n ω =
+          randomized_block_proximal_gradient_method
+            hRBPG.toIsBlockProximalGradientProblem
+            (hRBPG.interior_effective_domain_point ⟨y0, hy0_eff⟩)
+            (fun m ↦ sampled_block m ω)
+            n :=
+    randomized_dbpg_realized_minimization_view_method_eq
+      (σ := σ)
+      (f := f)
+      (g := g)
+      (y0 := y0)
+      (sampled_block := sampled_block)
+      (x := x)
+      (y := y)
+      h_problem
+      h_traj
+      hRBPG
+      hy0_eff
+  have hobjective_integrable :
+      Integrable
+        (fun ω ↦
+          (Hdual
+            (randomized_block_proximal_gradient_method
+              hRBPG.toIsBlockProximalGradientProblem
+              (hRBPG.interior_effective_domain_point ⟨y0, hy0_eff⟩)
+              (fun m ↦ sampled_block m ω)
+              (k + 1))).toReal)
+        μ := by
+    let history : Ω → Fin k → Fin p :=
+      fun ω ↦ randomized_block_history (fun m ↦ sampled_block m ω) k
+    let joint : Ω → (Fin k → Fin p) × Fin p :=
+      fun ω ↦ (history ω, sampled_block k ω)
+    let ψ : (Fin k → Fin p) → Fin p → ℝ :=
+      fun ξ i ↦
+        (Hdual
+          (randomized_block_proximal_gradient_method
+            hRBPG.toIsBlockProximalGradientProblem
+            (hRBPG.interior_effective_domain_point ⟨y0, hy0_eff⟩)
+            (rbpgHistoryWithCurrent k ξ i)
+            (k + 1))).toReal
+    let φ : ((Fin k → Fin p) × Fin p) → ℝ := fun z ↦ ψ z.1 z.2
+    have hhistory_meas : Measurable history := by
+      -- The frozen history is measurable because each coordinate is one sampled block.
+      refine measurable_pi_lambda _ fun t ↦ ?_
+      simpa [history, randomized_block_history] using h_sampled_block_meas t
+    have hjoint_meas : Measurable joint := by
+      -- Pairing the frozen history with the current block preserves measurability.
+      exact hhistory_meas.prodMk (h_sampled_block_meas k)
+    have hrepr :
+        (fun ω ↦
+          (Hdual
+            (randomized_block_proximal_gradient_method
+              hRBPG.toIsBlockProximalGradientProblem
+              (hRBPG.interior_effective_domain_point ⟨y0, hy0_eff⟩)
+              (fun m ↦ sampled_block m ω)
+              (k + 1))).toReal) =
+          fun ω ↦ ψ (history ω) (sampled_block k ω) := by
+      -- Rewrite the `(k + 1)`-st iterate through the frozen-history/current-block decomposition.
+      funext ω
+      have hω :=
+        rbpgPathwiseIterate_succ_eq_historyCurrent
+          hRBPG
+          ⟨y0, hy0_eff⟩
+          sampled_block
+          ω
+          k
+      simpa [rbpg_pathwise_iterate, history, ψ] using
+        congrArg (fun z ↦ (Hdual z).toReal) hω
+    have hφ_int : Integrable φ (μ.map joint) := by
+      -- Any real observable of the finite joint state `(ξ₀, …, ξ_{k-1}, i_k)` is integrable.
+      exact Integrable.of_finite
+    have hjoint_int :
+        Integrable (fun ω ↦ ψ (history ω) (sampled_block k ω)) μ := by
+      simpa [joint, φ] using hφ_int.comp_measurable hjoint_meas
+    rw [hrepr]
+    exact hjoint_int
+  have hneg_integrable :
+      Integrable (fun ω ↦ - (q(f, g) (y (k + 1) ω)).toReal) μ := by
+    -- Rewrite the Chapter 11 observable back to the source dual objective `q` pointwise.
+    refine hobjective_integrable.congr ?_
+    refine Filter.Eventually.of_forall ?_
+    intro ω
+    have hpathω := hpath ω (k + 1)
+    calc
+      (Hdual
+          (randomized_block_proximal_gradient_method
+            hRBPG.toIsBlockProximalGradientProblem
+            (hRBPG.interior_effective_domain_point ⟨y0, hy0_eff⟩)
+            (fun m ↦ sampled_block m ω)
+            (k + 1))).toReal
+          = (Hdual (y (k + 1) ω)).toReal := by
+              simpa [hpathω]
+      _ = (- q(f, g) (y (k + 1) ω)).toReal := by
+            simpa [Hdual] using
+              congrArg EReal.toReal
+                (dual_block_dual_minimization_view_apply
+                  f
+                  g
+                  h_problem.toIsProperExtendedRealFunction
+                  h_problem.g_proper
+                  (y (k + 1) ω))
+      _ = - (q(f, g) (y (k + 1) ω)).toReal := by
+            simp
+  -- Negating the observable one more time recovers the desired source-facing integrability.
+  simpa using hneg_integrable.neg
+
+/-- Helper for Theorem 12.14: after normalizing the realized primal argmax point to the canonical
+gradient of `f∗`, each realized DBPG successor lies in the Chapter 12 dual-step owner written in
+the minimization-view variables. -/
+lemma realized_dbpg_dual_step_mem_canonical_dual_step
+    (h_problem : IsDualBlockProximalGradientProblem f g σ)
+    (h_traj :
+      ∀ ω,
+        is_dual_block_proximal_gradient_primal_trajectory
+          f g σ (fun n ↦ sampled_block n ω) y0
+          (fun n ↦ x n ω)
+          (fun n ↦ y n ω))
+    (k : ℕ) (ω : Ω) :
+    y (k + 1) ω ∈
+      dual_block_proximal_gradient_dual_step
+        (fun j z ↦ ((g j)∗) (-z))
+        (∇ fun z : E ↦ (((f∗) z).toReal))
+        σ
+        (sampled_block k ω)
+        (y k ω) := by
+  have hx_argmax :
+      x k ω ∈ dual_proximal_gradient_primal_x_argmax
+        f
+        LinearMap.id
+        (∑ j : Fin p, y k ω j) := by
+    -- Extract the source argmax clause from the realized trajectory owner.
+    exact (is_dual_block_proximal_gradient_primal_trajectory_step (h_traj ω) k).1
+  have hx_eq :
+      x k ω = ∇ (fun z : E ↦ ((f∗) z).toReal) (∑ j : Fin p, y k ω j) := by
+    -- Route correction: normalize the source argmax witness before transporting the step owner.
+    exact
+      dual_primal_argmax_eq_conjugate_gradient
+        (f := f)
+        (g := g)
+        (σ := σ)
+        h_problem
+        hx_argmax
+  have hprimal_step :
+      y (k + 1) ω ∈
+        dual_block_proximal_gradient_primal_y_step
+          g
+          σ
+          ((∇ fun z : E ↦ (((f∗) z).toReal)) (∑ j : Fin p, y k ω j))
+          (y k ω)
+          (sampled_block k ω) := by
+    -- Rewrite the realized primal-representation step using the canonical gradient point.
+    simpa [hx_eq] using (is_dual_block_proximal_gradient_primal_trajectory_step (h_traj ω) k).2
+  -- Lemma 12.15 converts the primal-representation step into the dual-step owner exactly.
+  exact
+    (dual_block_proximal_gradient_dual_step_iff_mem_dual_block_proximal_gradient_primal_y_step
+      (f := f)
+      (g := g)
+      (σ := σ)
+      h_problem.toIsProperExtendedRealFunction
+      h_problem.f_closed
+      h_problem.f_strongly_convex
+      h_problem.g_proper
+      h_problem.g_closed
+      h_problem.g_convex
+      (sampled_block k ω)
+      (y (k + 1) ω)
+      (y k ω)).2 hprimal_step
 
 /-- Helper for Theorem 12.14: at each realized iterate, the Chapter 12.7 primal-vs-dual-gap
 estimate on the duplicated block model yields the scalar dual-gap bound used in part (2). -/
 lemma dbpg_pointwise_primal_sqdist_le_dual_gap_at_succ
+    (h_problem : IsDualBlockProximalGradientProblem f g σ)
+    (h_traj :
+      ∀ ω,
+        is_dual_block_proximal_gradient_primal_trajectory
+          f g σ (fun n ↦ sampled_block n ω) y0
+          (fun n ↦ x n ω)
+          (fun n ↦ y n ω))
+    (hyStar : yStar ∈ Λ*(f, g))
+    (hyStar_finite : yStar ∈ finite_domain (q(f, g)))
     (xStar : E)
     (hxStar : IsMinOn F Set.univ xStar)
     (k : ℕ)
@@ -821,15 +1645,434 @@ lemma dbpg_pointwise_primal_sqdist_le_dual_gap_at_succ
     ‖x (k + 1) ω - xStar‖ ^ (2 : ℕ) ≤
       (2 / (σ : ℝ)) *
         (EReal.toReal (q_opt(f, g)) - (q(f, g) (y (k + 1) ω)).toReal) := by
-  -- TODO: apply Lemma 12.7 on the duplicated block-space model, rewrite its dual objective back
-  -- to `q(f, g)`, and then convert the `EReal` gap to the scalar gap using `hy_finite`.
-  sorry
+  have h_problem_dup :
+      IsDualBasedProximalGradientProblem
+        f
+        (PiLp.separableSum g)
+        (dual_block_duplication E p).toLinearMap
+        σ :=
+    dual_block_problem_to_dual_based_problem
+      (σ := σ)
+      (f := f)
+      (g := g)
+      h_problem
+  have hx_argmax_sum :
+      x (k + 1) ω ∈ dual_proximal_gradient_primal_x_argmax
+        f
+        LinearMap.id
+        (∑ j : Fin p, y (k + 1) ω j) :=
+    realized_dbpg_primal_argmax_at
+      (f := f)
+      (g := g)
+      (σ := σ)
+      (y0 := y0)
+      (sampled_block := sampled_block)
+      (x := x)
+      (y := y)
+      h_traj
+      (k + 1)
+      ω
+  have hx_argmax_dup :
+      x (k + 1) ω ∈
+        dual_proximal_gradient_primal_x_argmax
+          f
+          (dual_block_duplication E p).toLinearMap
+          (WithLp.toLp 2 (y (k + 1) ω)) := by
+    -- Transport the realized argmax condition to the duplicated `PiLp` owner used by
+    -- Lemma 12.7.
+    exact
+      (mem_dual_primal_x_argmax_duplication_iff
+        (f := f)
+        (n := p)
+        (x := x (k + 1) ω)
+        (v := y (k + 1) ω)).2 hx_argmax_sum
+  have hdup_gap :
+      ((((σ : ℝ) / 2) * ‖x (k + 1) ω - xStar‖ ^ (2 : ℕ) : ℝ) : EReal) ≤
+        dual_based_proximal_gradient_lagrange_dual_problem_value
+            f
+            (PiLp.separableSum g)
+            (dual_block_duplication E p) -
+          dual_based_proximal_gradient_lagrange_dual_objective_primal
+            f
+            (PiLp.separableSum g)
+            (dual_block_duplication E p)
+            (WithLp.toLp 2 (y (k + 1) ω)) := by
+    -- Apply Lemma 12.7 exactly on the duplicated block-space model.
+    exact
+      half_sigma_sqdist_le_dual_gap_of_primal_argmax
+        (σ := σ)
+        (f := f)
+        (g := PiLp.separableSum g)
+        (A := dual_block_duplication E p)
+        h_problem_dup
+        (WithLp.toLp 2 (y (k + 1) ω))
+        (x (k + 1) ω)
+        xStar
+        hx_argmax_dup
+        hxStar
+  have hgap_ereal :
+      ((((σ : ℝ) / 2) * ‖x (k + 1) ω - xStar‖ ^ (2 : ℕ) : ℝ) : EReal) ≤
+        q_opt(f, g) - q(f, g) (y (k + 1) ω) := by
+    -- Rewrite the duplicated-model dual gap back to the source-facing block-dual gap.
+    calc
+      ((((σ : ℝ) / 2) * ‖x (k + 1) ω - xStar‖ ^ (2 : ℕ) : ℝ) : EReal) ≤
+          dual_based_proximal_gradient_lagrange_dual_problem_value
+              f
+              (PiLp.separableSum g)
+              (dual_block_duplication E p) -
+            dual_based_proximal_gradient_lagrange_dual_objective_primal
+              f
+              (PiLp.separableSum g)
+              (dual_block_duplication E p)
+              (WithLp.toLp 2 (y (k + 1) ω)) :=
+        hdup_gap
+      _ = q_opt(f, g) - q(f, g) (y (k + 1) ω) := by
+        rw [dual_block_problem_value_eq_duplicated_dual_problem_value
+          (σ := σ) (f := f) (g := g) h_problem]
+        simpa [PiLp.toLp_apply] using
+          congrArg
+            (fun t : EReal => q_opt(f, g) - t)
+            (dual_block_proximal_gradient_lagrange_dual_objective_primal_eq_dual_objective
+              (f := f)
+              (g := g)
+              (hg_proper := h_problem.g_proper)
+              (WithLp.toLp 2 (y (k + 1) ω)))
+  have hqOpt_ne_top : q_opt(f, g) ≠ ⊤ := by
+    -- The attained optimal value is finite above because the chosen optimal witness lies in the
+    -- finite domain of `q`.
+    rw [← dual_block_proximal_gradient_dual_objective_eq_dual_problem_value_of_mem_optimal_set
+      f g hyStar]
+    exact (mem_finite_domain.mp hyStar_finite).1.ne
+  have hgap_ne_top : q_opt(f, g) - q(f, g) (y (k + 1) ω) ≠ ⊤ := by
+    -- Subtracting a finite-above dual value from a finite-above optimum cannot hit `⊤`.
+    have hneg_ne_top : -q(f, g) (y (k + 1) ω) ≠ ⊤ := by
+      simpa [EReal.neg_eq_top_iff] using (mem_finite_domain.mp hy_finite).2
+    simpa [sub_eq_add_neg] using EReal.add_ne_top hqOpt_ne_top hneg_ne_top
+  have hgap_real :
+      ((σ : ℝ) / 2) * ‖x (k + 1) ω - xStar‖ ^ (2 : ℕ) ≤
+        EReal.toReal (q_opt(f, g) - q(f, g) (y (k + 1) ω)) := by
+    -- Push the finite `EReal` comparison down to `ℝ`.
+    exact EReal.toReal_le_toReal hgap_ereal (EReal.coe_ne_bot _) hgap_ne_top
+  have hgap_scalar :
+      ((σ : ℝ) / 2) * ‖x (k + 1) ω - xStar‖ ^ (2 : ℕ) ≤
+        EReal.toReal (q_opt(f, g)) - (q(f, g) (y (k + 1) ω)).toReal := by
+    -- Replace the right-hand side by the already verified scalar dual-gap identity.
+    simpa using
+      (hgap_real.trans_eq
+        (dual_gap_toReal_eq_of_mem_finite_domain
+          (f := f)
+          (g := g)
+          (yBar := y (k + 1) ω)
+          (yStar := yStar)
+          hyStar
+          hyStar_finite
+          hy_finite))
+  have hσ_pos : 0 < (σ : ℝ) := σ.2
+  have hscaled :
+      (σ : ℝ) * ‖x (k + 1) ω - xStar‖ ^ (2 : ℕ) ≤
+        (σ : ℝ) *
+          ((2 / (σ : ℝ)) *
+            (EReal.toReal (q_opt(f, g)) - (q(f, g) (y (k + 1) ω)).toReal)) := by
+    calc
+      (σ : ℝ) * ‖x (k + 1) ω - xStar‖ ^ (2 : ℕ)
+          = 2 * (((σ : ℝ) / 2) * ‖x (k + 1) ω - xStar‖ ^ (2 : ℕ)) := by ring
+      _ ≤
+          2 *
+            (EReal.toReal (q_opt(f, g)) - (q(f, g) (y (k + 1) ω)).toReal) := by
+            gcongr
+      _ =
+          (σ : ℝ) *
+            ((2 / (σ : ℝ)) *
+              (EReal.toReal (q_opt(f, g)) - (q(f, g) (y (k + 1) ω)).toReal)) := by
+            field_simp [show (σ : ℝ) ≠ 0 by exact ne_of_gt hσ_pos]
+  -- Cancel the positive factor `σ` from both sides to recover the displayed squared-distance
+  -- estimate.
+  exact le_of_mul_le_mul_left hscaled hσ_pos
 
 -- Proof sketch: condition on the sampled-block history generated by `sampled_block`, use the
 -- one-step randomized DBPG Lyapunov contraction for
 -- `(1 / (2 σ)) ‖y^k - y*‖² + q_opt - q(y^k)`, average over the uniformly sampled block, and
 -- iterate the recursion to obtain the factor `p / (p + k + 1)`. Finally identify the optimal
 -- value by `dual_block_proximal_gradient_dual_objective_eq_dual_problem_value_of_mem_optimal_set`.
+/-- Helper for Theorem 12.14: with the full DBPG assumptions made explicit, the Chapter 11
+randomized objective-gap theorem on the minimization view `Hdual = -q` yields the expected
+dual-gap estimate in the canonical block `L²` coordinates. -/
+lemma randomized_dbpg_expected_dual_gap_le_of_assumptions_l2_view
+    (k : ℕ)
+    (h_problem : IsDualBlockProximalGradientProblem f g σ)
+    (h_traj :
+      ∀ ω,
+        is_dual_block_proximal_gradient_primal_trajectory
+          f g σ (fun n ↦ sampled_block n ω) y0
+          (fun n ↦ x n ω)
+          (fun n ↦ y n ω))
+    (h_sampled_block_meas : ∀ k, Measurable (sampled_block k))
+    (h_sampled_block_indep : iIndepFun sampled_block μ)
+    (h_sampled_block_uniform :
+      ∀ k (i : Fin p), μ ((sampled_block k) ⁻¹' {i}) = 1 / (p : ℝ≥0∞))
+    (hyStar : yStar ∈ Λ*(f, g))
+    (hy0_finite : y0 ∈ finite_domain (q(f, g)))
+    (hyStar_finite : yStar ∈ finite_domain (q(f, g)))
+    (h_dual_value_finite : ∀ ω, y (k + 1) ω ∈ finite_domain (q(f, g)))
+    (h_dual_value_integrable : Integrable (fun ω ↦ (q(f, g) (y (k + 1) ω)).toReal) μ) :
+    EReal.toReal (q_opt(f, g)) - μ[fun ω ↦ (q(f, g) (y (k + 1) ω)).toReal] ≤
+      (p : ℝ) / (p + k + 1 : ℝ) *
+        ((1 / (2 * (σ : ℝ))) * ‖WithLp.toLp 2 (y0 - yStar)‖ ^ (2 : ℕ) +
+          EReal.toReal (q_opt(f, g)) - (q(f, g) y0).toReal) := by
+  let Hdual : (Fin p → E) → EReal := DualBlockMinimizationView.objective f g
+  let G : Fin p → E → EReal := fun i z ↦ ((g i)∗) (-z)
+  have hRBPG :=
+    dual_block_minimization_view_randomized_assumptions
+      (σ := σ)
+      (f := f)
+      (g := g)
+      (y0 := y0)
+      (yStar := yStar)
+      h_problem
+      hyStar
+      hy0_finite
+      hyStar_finite
+  have hy0_eff :
+      y0 ∈ effective_domain (DualBlockMinimizationView.regularizer g) :=
+    initial_dual_point_mem_effective_domain_minimization_view
+      f
+      g
+      y0
+      h_problem.toIsProperExtendedRealFunction
+      h_problem.g_proper
+      hy0_finite
+  have hyStar_minimization :
+      yStar ∈ unconstrained_problem_solutions (DualBlockMinimizationView.objective f g) := by
+    -- The Chapter 12 optimal dual point is the Chapter 11 minimizer of `Hdual = -q`.
+    exact
+      optimal_dual_point_mem_unconstrained_problem_solutions_minimization_view
+        (σ := σ)
+        (f := f)
+        (g := g)
+        h_problem
+        hyStar
+  have hpath :
+      ∀ ω n,
+        y n ω =
+          rbpg_pathwise_iterate
+            hRBPG
+            ⟨y0, hy0_eff⟩
+            sampled_block
+            ω
+            n := by
+    intro ω n
+    -- The realized DBPG path is exactly the RBPG path on the minimization view.
+    simpa [rbpg_pathwise_iterate] using
+      randomized_dbpg_realized_minimization_view_method_eq
+        (σ := σ)
+        (f := f)
+        (g := g)
+        (y0 := y0)
+        (sampled_block := sampled_block)
+        (x := x)
+        (y := y)
+        h_problem
+        h_traj
+        hRBPG
+        hy0_eff
+        ω
+        n
+  have hobjective_integrable :
+      Integrable (fun ω ↦ (Hdual (y (k + 1) ω)).toReal) μ := by
+    -- Rewrite `Hdual = -q` pointwise and reuse the assumed integrability of the sampled dual
+    -- value.
+    refine h_dual_value_integrable.neg.congr ?_
+    refine Filter.Eventually.of_forall ?_
+    intro ω
+    have hobj :
+        Hdual (y (k + 1) ω) = -q(f, g) (y (k + 1) ω) := by
+      simpa [Hdual] using
+        dual_block_dual_minimization_view_apply
+          f
+          g
+          h_problem.toIsProperExtendedRealFunction
+          h_problem.g_proper
+          (y (k + 1) ω)
+    simpa [hobj]
+  have hpointwise_gap :
+      ∀ ω,
+        (Hdual (y (k + 1) ω)).toReal - (-EReal.toReal (q_opt(f, g))) =
+          EReal.toReal (q_opt(f, g)) - (q(f, g) (y (k + 1) ω)).toReal := by
+    intro ω
+    -- Rewrite first to the finite `EReal` dual gap, then use the scalar dual-gap identity.
+    calc
+      (Hdual (y (k + 1) ω)).toReal - (-EReal.toReal (q_opt(f, g))) =
+          (q_opt(f, g) - q(f, g) (y (k + 1) ω)).toReal := by
+            simpa [Hdual] using
+              dual_block_minimization_view_gap_toReal_eq_dual_gap
+                f
+                g
+                h_problem.toIsProperExtendedRealFunction
+                h_problem.g_proper
+                hyStar
+                hyStar_finite
+                (h_dual_value_finite ω)
+      _ =
+          EReal.toReal (q_opt(f, g)) - (q(f, g) (y (k + 1) ω)).toReal := by
+            simpa using
+              dual_gap_toReal_eq_of_mem_finite_domain
+                (f := f)
+                (g := g)
+                (yBar := y (k + 1) ω)
+                (yStar := yStar)
+                hyStar
+                hyStar_finite
+                (h_dual_value_finite ω)
+  have hgap_integral :
+      μ[fun ω ↦ (Hdual (y (k + 1) ω)).toReal] - (-EReal.toReal (q_opt(f, g))) =
+        EReal.toReal (q_opt(f, g)) -
+          μ[fun ω ↦ (q(f, g) (y (k + 1) ω)).toReal] := by
+    -- Separate the constant-shift rewrite from the pointwise dual-gap rewrite to keep the final
+    -- normalization stable.
+    calc
+      μ[fun ω ↦ (Hdual (y (k + 1) ω)).toReal] - (-EReal.toReal (q_opt(f, g))) =
+          μ[fun ω ↦ (Hdual (y (k + 1) ω)).toReal] -
+            μ[fun _ : Ω ↦ -EReal.toReal (q_opt(f, g))] := by
+              simpa [integral_const]
+      _ =
+          μ[fun ω ↦
+            (Hdual (y (k + 1) ω)).toReal - (-EReal.toReal (q_opt(f, g)))] := by
+              symm
+              exact
+                integral_sub
+                  hobjective_integrable
+                  (integrable_const (-EReal.toReal (q_opt(f, g))))
+      _ =
+          μ[fun ω ↦
+            EReal.toReal (q_opt(f, g)) -
+              (q(f, g) (y (k + 1) ω)).toReal] := by
+                apply integral_congr_ae
+                exact Filter.Eventually.of_forall hpointwise_gap
+      _ =
+          EReal.toReal (q_opt(f, g)) -
+            μ[fun ω ↦ (q(f, g) (y (k + 1) ω)).toReal] := by
+              symm
+              exact
+                expected_dual_gap_eq_integral_pointwise_gap
+                  (f := f)
+                  (g := g)
+                  (y := y)
+                  k
+                  h_dual_value_integrable
+  have hgap_eq :
+      rbpg_expected_objective_gap
+          hRBPG
+          ⟨y0, hy0_eff⟩
+          sampled_block
+          μ
+          (k + 1) =
+        EReal.toReal (q_opt(f, g)) -
+          μ[fun ω ↦ (q(f, g) (y (k + 1) ω)).toReal] := by
+    rw [rbpg_expected_objective_gap_apply]
+    have hpath_integral :
+        μ[fun ω ↦
+          (composite_model_objective
+            (DualBlockMinimizationView.smoothTerm f)
+            (separableSum G)
+            (rbpg_pathwise_iterate hRBPG ⟨y0, hy0_eff⟩ sampled_block ω (k + 1))).toReal] =
+          μ[fun ω ↦ (Hdual (y (k + 1) ω)).toReal] := by
+      -- Rewrite the Chapter 11 pathwise iterate back to the realized DBPG iterate.
+      apply integral_congr_ae
+      refine Filter.Eventually.of_forall ?_
+      intro ω
+      simpa [Hdual, G, rbpg_pathwise_iterate] using
+        congrArg
+          (fun z ↦ (DualBlockMinimizationView.objective f g z).toReal)
+          (hpath ω (k + 1)).symm
+    rw [hpath_integral]
+    exact hgap_integral
+  have hinit_eq :
+      rbpg_initial_lyapunov
+          (fun _ : Fin p ↦ σ⁻¹)
+          (-EReal.toReal (q_opt(f, g)))
+          Hdual
+          y0
+          yStar =
+        (1 / (2 * (σ : ℝ))) * ‖WithLp.toLp 2 (y0 - yStar)‖ ^ (2 : ℕ) +
+          EReal.toReal (q_opt(f, g)) - (q(f, g) y0).toReal := by
+    rw [rbpg_initial_lyapunov_def]
+    have hobj0 :
+        (Hdual y0).toReal = - (q(f, g) y0).toReal := by
+      -- Evaluate `Hdual = -q` at the initial dual point and take real parts.
+      simpa [Hdual] using
+        congrArg EReal.toReal
+          (dual_block_dual_minimization_view_apply
+            f
+            g
+            h_problem.toIsProperExtendedRealFunction
+            h_problem.g_proper
+            y0)
+    rw [hobj0]
+    -- The Chapter 11 weighted initial norm is exactly the displayed block `L²` Lyapunov term.
+    simpa [sub_eq_add_neg, add_assoc, add_left_comm, add_comm] using
+      (congrArg
+        (fun t : ℝ ↦ t + (- (q(f, g) y0).toReal - -EReal.toReal (q_opt(f, g))))
+        (half_weighted_sqnorm_eq_initial_lyapunov σ y0 yStar))
+  have hsublinear :
+      rbpg_expected_objective_gap
+          hRBPG
+          ⟨y0, hy0_eff⟩
+          sampled_block
+          μ
+          (k + 1) ≤
+        (p : ℝ) / (p + k + 1 : ℝ) *
+          rbpg_initial_lyapunov
+            (fun _ : Fin p ↦ σ⁻¹)
+            (-EReal.toReal (q_opt(f, g)))
+            Hdual
+            y0
+            yStar := by
+    -- This is exactly Theorem 11.11 specialized to the minimization-view Chapter 12 owner.
+    simpa [Hdual, G] using
+      randomized_block_proximal_gradient_expected_objective_gap_le_sublinear
+        hRBPG
+        ⟨y0, hy0_eff⟩
+        sampled_block
+        μ
+        yStar
+        hyStar_minimization
+        h_sampled_block_meas
+        h_sampled_block_indep
+        (fun n i ↦ by
+          simpa using h_sampled_block_uniform n i)
+        k
+  calc
+    EReal.toReal (q_opt(f, g)) - μ[fun ω ↦ (q(f, g) (y (k + 1) ω)).toReal] =
+        rbpg_expected_objective_gap
+          hRBPG
+          ⟨y0, hy0_eff⟩
+          sampled_block
+          μ
+          (k + 1) := hgap_eq.symm
+    _ ≤
+        (p : ℝ) / (p + k + 1 : ℝ) *
+          rbpg_initial_lyapunov
+            (fun _ : Fin p ↦ σ⁻¹)
+            (-EReal.toReal (q_opt(f, g)))
+            Hdual
+            y0
+            yStar := hsublinear
+    _ =
+        (p : ℝ) / (p + k + 1 : ℝ) *
+          ((1 / (2 * (σ : ℝ))) * ‖WithLp.toLp 2 (y0 - yStar)‖ ^ (2 : ℕ) +
+            EReal.toReal (q_opt(f, g)) - (q(f, g) y0).toReal) := by
+              rw [hinit_eq]
+
+/-- Helper for Theorem 12.14: the rate bounds use the transported block `L²` norm on
+`Fin p → E`. -/
+local instance block_l2_normedAddCommGroup : NormedAddCommGroup (Fin p → E) :=
+  PiLp.normedAddCommGroupToPi 2 (fun _ : Fin p ↦ E)
+
+section
+
+include sampled_block x h_problem h_traj h_sampled_block_meas h_sampled_block_indep
+  h_sampled_block_uniform hyStar hy0_finite hyStar_finite
+
 /-- Theorem 12.14 (1): for primal and dual sequences generated by the dual block proximal-gradient
 method with randomized uniformly sampled block order, if the sampled dual objective value is
 integrable and the relevant dual points lie in the finite domain of `q`, then the expected dual
@@ -843,21 +2086,59 @@ theorem randomized_dual_block_proximal_gradient_expected_dual_gap_le
       (p : ℝ) / (p + k + 1 : ℝ) *
         ((1 / (2 * (σ : ℝ))) * ‖y0 - yStar‖ ^ (2 : ℕ) +
           EReal.toReal (q_opt(f, g)) - (q(f, g) y0).toReal) :=
-  -- Route correction: keep the source Lyapunov-recursion route and isolate the remaining blocker
-  -- to the Chapter 11/12 bridge, rather than switching to a different proof architecture here.
-  -- TODO: prove this by transporting each realized DBPG dual trajectory to the Chapter 11 RBPG
-  -- method on the block-dual objective `-q`, then apply
-  -- `randomized_block_proximal_gradient_expected_objective_gap_le_sublinear` and rewrite the
-  -- resulting objective estimate with the already-isolated pointwise identity
-  -- `dual_block_dual_minimization_view_apply`, then finish with
-  -- `dual_problem_value_toReal_eq_of_mem_optimal_set` and the corrected `PiLp`-owner version of
-  -- `half_weighted_sqnorm_eq_initial_lyapunov`. The remaining blocker is now the missing local
-  -- Chapter 12-to-Chapter 11 randomized-trajectory package together with the final transport from
-  -- that canonical `L²` initial norm to the present theorem surface.
-  sorry
+by
+  -- Instantiate the already proved explicit-assumptions wrapper from the Chapter 11 reduction.
+  have h_l2 :
+      EReal.toReal (q_opt(f, g)) - μ[fun ω ↦ (q(f, g) (y (k + 1) ω)).toReal] ≤
+        (p : ℝ) / (p + k + 1 : ℝ) *
+          ((1 / (2 * (σ : ℝ))) * ‖WithLp.toLp 2 y0 - WithLp.toLp 2 yStar‖ ^ (2 : ℕ) +
+            EReal.toReal (q_opt(f, g)) - (q(f, g) y0).toReal) := by
+    simpa [WithLp.toLp_sub] using
+      randomized_dbpg_expected_dual_gap_le_of_assumptions_l2_view
+        (μ := μ)
+        (σ := σ)
+        (f := f)
+        (g := g)
+        (y0 := y0)
+        (sampled_block := sampled_block)
+        (x := x)
+        (y := y)
+        (yStar := yStar)
+        k
+        h_problem
+        h_traj
+        h_sampled_block_meas
+        h_sampled_block_indep
+        h_sampled_block_uniform
+        hyStar
+        hy0_finite
+        hyStar_finite
+        h_dual_value_finite
+        h_dual_value_integrable
+  have hnorm :
+      ‖WithLp.toLp 2 y0 - WithLp.toLp 2 yStar‖ ^ (2 : ℕ) = ‖y0 - yStar‖ ^ (2 : ℕ) := by
+    rw [← WithLp.toLp_sub]
+    have hnorm_eq : ‖WithLp.toLp 2 (y0 - yStar)‖ = ‖y0 - yStar‖ := by
+      simpa using
+        (PiLp.norm_seminormedAddCommGroupToPi
+          (p := 2)
+          (α := fun _ : Fin p ↦ E)
+          (y0 - yStar)).symm
+    rw [hnorm_eq]
+  calc
+    EReal.toReal (q_opt(f, g)) - μ[fun ω ↦ (q(f, g) (y (k + 1) ω)).toReal] ≤
+        (p : ℝ) / (p + k + 1 : ℝ) *
+          ((1 / (2 * (σ : ℝ))) * ‖WithLp.toLp 2 y0 - WithLp.toLp 2 yStar‖ ^ (2 : ℕ) +
+            EReal.toReal (q_opt(f, g)) - (q(f, g) y0).toReal) :=
+      h_l2
+    _ =
+        (p : ℝ) / (p + k + 1 : ℝ) *
+          ((1 / (2 * (σ : ℝ))) * ‖y0 - yStar‖ ^ (2 : ℕ) +
+            EReal.toReal (q_opt(f, g)) - (q(f, g) y0).toReal) := by
+      rw [hnorm]
 
-/-- Helper for Theorem 12.14: once the pointwise Chapter 12 primal-dual estimate and the sampled
-dual-value integrability are available, part (2) is a formal consequence of part (1). -/
+end
+
 lemma expected_primal_sqdist_le_of_dual_gap_bound
     (xStar : E) (k : ℕ)
     (h_problem : IsDualBlockProximalGradientProblem f g σ)
@@ -924,8 +2205,18 @@ by
       (f := f)
       (g := g)
       (y0 := y0)
+      (sampled_block := sampled_block)
+      (x := x)
       (y := y)
+      (h_problem := h_problem)
+      (h_traj := h_traj)
+      (h_sampled_block_meas := h_sampled_block_meas)
+      (h_sampled_block_indep := h_sampled_block_indep)
+      (h_sampled_block_uniform := h_sampled_block_uniform)
       (yStar := yStar)
+      (hyStar := hyStar)
+      (hy0_finite := hy0_finite)
+      (hyStar_finite := hyStar_finite)
       k
       h_dual_value_finite
       h_dual_value_integrable
@@ -965,13 +2256,7 @@ by
     _ =
         (2 / (σ : ℝ)) *
           (EReal.toReal (q_opt(f, g)) - μ[fun ω ↦ (q(f, g) (y (k + 1) ω)).toReal]) := by
-          rw [expected_dual_gap_eq_integral_pointwise_gap
-            (μ := μ)
-            (f := f)
-            (g := g)
-            (y := y)
-            k
-            h_dual_value_integrable]
+          rw [expected_dual_gap_eq_integral_pointwise_gap f g y k h_dual_value_integrable]
     _ ≤
         (2 / (σ : ℝ)) *
           ((p : ℝ) / (p + k + 1 : ℝ) *
@@ -984,10 +2269,164 @@ by
             EReal.toReal (q_opt(f, g)) - (q(f, g) y0).toReal) :=
       h_rhs_rewrite
 
+/-- Helper for Theorem 12.14: with the DBPG trajectory and sampling assumptions made explicit,
+the expected primal squared-distance bound follows formally from the expectation wrapper and the
+already established pointwise/integrability lemmas. -/
+lemma randomized_dbpg_expected_primal_sqdist_le_of_assumptions
+    (xStar : E) (hxStar : IsMinOn F Set.univ xStar)
+    (k : ℕ)
+    (h_problem : IsDualBlockProximalGradientProblem f g σ)
+    (h_traj :
+      ∀ ω,
+        is_dual_block_proximal_gradient_primal_trajectory
+          f g σ (fun n ↦ sampled_block n ω) y0
+          (fun n ↦ x n ω)
+          (fun n ↦ y n ω))
+    (h_sampled_block_meas : ∀ k, Measurable (sampled_block k))
+    (h_sampled_block_indep : iIndepFun sampled_block μ)
+    (h_sampled_block_uniform :
+      ∀ k (i : Fin p), μ ((sampled_block k) ⁻¹' {i}) = 1 / (p : ℝ≥0∞))
+    (hyStar : yStar ∈ Λ*(f, g))
+    (hy0_finite : y0 ∈ finite_domain (q(f, g)))
+    (hyStar_finite : yStar ∈ finite_domain (q(f, g)))
+    (h_primal_sqdist_integrable :
+      Integrable (fun ω ↦ ‖x (k + 1) ω - xStar‖ ^ (2 : ℕ)) μ) :
+    μ[fun ω ↦ ‖x (k + 1) ω - xStar‖ ^ (2 : ℕ)] ≤
+      2 * (p : ℝ) / ((σ : ℝ) * (p + k + 1 : ℝ)) *
+        ((1 / (2 * (σ : ℝ))) * ‖y0 - yStar‖ ^ (2 : ℕ) +
+          EReal.toReal (q_opt(f, g)) - (q(f, g) y0).toReal) := by
+  have h_dual_value_finite :
+      ∀ ω, y (k + 1) ω ∈ finite_domain (q(f, g)) :=
+    randomized_dbpg_dual_iterate_mem_finite_domain
+      (σ := σ)
+      (f := f)
+      (g := g)
+      (y0 := y0)
+      (sampled_block := sampled_block)
+      (x := x)
+      (y := y)
+      h_problem
+      h_traj
+      hy0_finite
+      k
+  have h_dual_value_integrable :
+      Integrable (fun ω ↦ (q(f, g) (y (k + 1) ω)).toReal) μ :=
+    randomized_dbpg_dual_value_integrable
+      (μ := μ)
+      (σ := σ)
+      (f := f)
+      (g := g)
+      (y0 := y0)
+      (yStar := yStar)
+      (sampled_block := sampled_block)
+      (x := x)
+      (y := y)
+      (h_problem := h_problem)
+      (h_traj := h_traj)
+      (h_sampled_block_meas := h_sampled_block_meas)
+      (h_sampled_block_indep := h_sampled_block_indep)
+      (h_sampled_block_uniform := h_sampled_block_uniform)
+      (hyStar := hyStar)
+      (hy0_finite := hy0_finite)
+      (hyStar_finite := hyStar_finite)
+      k
+  have h_pointwise :
+      ∀ ω,
+        ‖x (k + 1) ω - xStar‖ ^ (2 : ℕ) ≤
+          (2 / (σ : ℝ)) *
+            (EReal.toReal (q_opt(f, g)) - (q(f, g) (y (k + 1) ω)).toReal) := by
+    intro ω
+    -- The pathwise Chapter 12 estimate is already available at the sampled successor iterate.
+    exact
+      dbpg_pointwise_primal_sqdist_le_dual_gap_at_succ
+        (σ := σ)
+        (f := f)
+        (g := g)
+        (y0 := y0)
+        (yStar := yStar)
+        (sampled_block := sampled_block)
+        (x := x)
+        (y := y)
+        (h_problem := h_problem)
+        (h_traj := h_traj)
+        (hyStar := hyStar)
+        (hyStar_finite := hyStar_finite)
+        (xStar := xStar)
+        (hxStar := hxStar)
+        k
+        ω
+        (h_dual_value_finite ω)
+  -- Once all explicit DBPG assumptions are present, the theorem is exactly the expectation
+  -- wrapper instantiated with the local Chapter 12 helper lemmas.
+  exact
+    expected_primal_sqdist_le_of_dual_gap_bound
+      (μ := μ)
+      (σ := σ)
+      (f := f)
+      (g := g)
+      (y0 := y0)
+      (sampled_block := sampled_block)
+      (x := x)
+      (y := y)
+      (yStar := yStar)
+      xStar
+      k
+      h_problem
+      h_traj
+      h_sampled_block_meas
+      h_sampled_block_indep
+      h_sampled_block_uniform
+      hyStar
+      hy0_finite
+      hyStar_finite
+      h_primal_sqdist_integrable
+      h_dual_value_finite
+      h_dual_value_integrable
+      h_pointwise
+
 -- Proof sketch: combine the same history-conditioned randomized Lyapunov contraction used in
 -- part (1) with the Chapter 12 primal-dual estimate that bounds `‖x^{k+1} - x*‖²` by `(2 / σ)`
 -- times the dual-gap Lyapunov quantity. Taking expectations and substituting the part (1)
 -- recursion gives the displayed `O(1 / k)` primal-distance estimate.
+include sampled_block y h_problem h_traj h_sampled_block_meas h_sampled_block_indep
+  h_sampled_block_uniform hyStar hy0_finite hyStar_finite
+
+/-- Helper for Theorem 12.14: the public part-(2) theorem is exactly the explicit-assumptions
+wrapper once the ambient randomized DBPG trajectory data are re-exposed at the theorem boundary. -/
+lemma randomized_dbpg_expected_primal_sqdist_public_context_bridge
+    (xStar : E) (hxStar : IsMinOn F Set.univ xStar)
+    (k : ℕ)
+    (h_primal_sqdist_integrable :
+      Integrable (fun ω ↦ ‖x (k + 1) ω - xStar‖ ^ (2 : ℕ)) μ) :
+    μ[fun ω ↦ ‖x (k + 1) ω - xStar‖ ^ (2 : ℕ)] ≤
+      2 * (p : ℝ) / ((σ : ℝ) * (p + k + 1 : ℝ)) *
+        ((1 / (2 * (σ : ℝ))) * ‖y0 - yStar‖ ^ (2 : ℕ) +
+          EReal.toReal (q_opt(f, g)) - (q(f, g) y0).toReal) := by
+  -- Restore the ambient randomized DBPG assumptions by calling the proved explicit wrapper.
+  exact
+    randomized_dbpg_expected_primal_sqdist_le_of_assumptions
+      (μ := μ)
+      (σ := σ)
+      (f := f)
+      (g := g)
+      (y0 := y0)
+      (sampled_block := sampled_block)
+      (x := x)
+      (y := y)
+      (yStar := yStar)
+      xStar
+      hxStar
+      k
+      h_problem
+      h_traj
+      h_sampled_block_meas
+      h_sampled_block_indep
+      h_sampled_block_uniform
+      hyStar
+      hy0_finite
+      hyStar_finite
+      h_primal_sqdist_integrable
+
 /-- Theorem 12.14 (2): for primal and dual sequences generated by the dual block proximal-gradient
 method with randomized uniformly sampled block order, if the sampled primal squared distance is
 integrable and the dual endpoint values on the right-hand side lie in the finite domain of `q`,
@@ -1003,9 +2442,30 @@ theorem randomized_dual_block_proximal_gradient_expected_primal_sqdist_le
         ((1 / (2 * (σ : ℝ))) * ‖y0 - yStar‖ ^ (2 : ℕ) +
           EReal.toReal (q_opt(f, g)) - (q(f, g) y0).toReal) :=
 by
-  -- TODO: the intended wrapper factors part (2) through
-  -- `expected_primal_sqdist_le_of_dual_gap_bound`, but the current theorem statement does not yet
-  -- expose the randomized DBPG trajectory data needed to instantiate that helper.
-  sorry
+  -- Route correction: close the public theorem from the dedicated bridge instead of repeating
+  -- the explicit-assumptions instantiation at the public boundary.
+  simpa using
+    randomized_dbpg_expected_primal_sqdist_public_context_bridge
+      (μ := μ)
+      (σ := σ)
+      (f := f)
+      (g := g)
+      (y0 := y0)
+      (sampled_block := sampled_block)
+      (x := x)
+      (y := y)
+      (h_problem := h_problem)
+      (h_traj := h_traj)
+      (h_sampled_block_meas := h_sampled_block_meas)
+      (h_sampled_block_indep := h_sampled_block_indep)
+      (h_sampled_block_uniform := h_sampled_block_uniform)
+      (yStar := yStar)
+      (hyStar := hyStar)
+      (hy0_finite := hy0_finite)
+      (hyStar_finite := hyStar_finite)
+      xStar
+      hxStar
+      k
+      h_primal_sqdist_integrable
 
 end

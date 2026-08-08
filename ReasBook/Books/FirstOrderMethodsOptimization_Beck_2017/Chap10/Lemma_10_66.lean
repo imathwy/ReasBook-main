@@ -7,6 +7,8 @@ import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_11
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Lemma_10_14
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Lemma_10_65
 
+local notation "Λ[" a "]" => primalCounterparts a
+
 -- Declarations for this item will be appended below by the statement pipeline.
 
 noncomputable section
@@ -216,7 +218,7 @@ private abbrev backtracking_B4_sufficient_decrease_coeff
 
 -- Proof sketch: rewrite `L k` as the constant parameter `barL`, apply Lemma 10.65 at the current
 -- iterate with the chosen counterpart `xDagger k`, and then unfold the constant-case coefficient.
-/-- Lemma 10.66, constant-stepsize branch: if every `L_k = barL` for some
+/-- Lemma 10.66 (1), constant-stepsize branch: if every `L_k = barL` for some
 `barL ∈ (L_f / 2, ∞)`, then each non-Euclidean gradient step satisfies the sufficient-decrease
 estimate with coefficient `((barL : ℝ) - L_f / 2) / barL^2`. -/
 theorem non_euclidean_gradient_constant_stepsize_sufficient_decrease
@@ -257,7 +259,7 @@ theorem non_euclidean_gradient_constant_stepsize_sufficient_decrease
 -- above by
 -- `non_euclidean_backtracking_B4_stepsize_le_max_initial_or_smoothness_threshold`; this yields
 -- the displayed uniform B4 coefficient.
-/-- Lemma 10.66, B4-backtracking branch: if the curvature estimates are chosen by backtracking
+/-- Lemma 10.66 (2), B4-backtracking branch: if the curvature estimates are chosen by backtracking
 procedure B4 with parameters `(s, γ, η)`, then each step satisfies the sufficient-decrease
 estimate with coefficient `γ / max {s, η L_f / (2 (1 - γ))}`. -/
 theorem non_euclidean_gradient_backtracking_B4_sufficient_decrease
@@ -327,7 +329,7 @@ theorem non_euclidean_gradient_backtracking_B4_sufficient_decrease
 -- Proof sketch: compare the exact minimizing stepsize with the candidate `1 / L_f`, use the
 -- global `L_f`-smoothness estimate from Lemma 10.65 at that comparison step, and conclude by
 -- minimality of the chosen exact-line-search parameter.
-/-- Lemma 10.66, exact-line-search branch: if `L_f > 0` and every reciprocal stepsize
+/-- Lemma 10.66 (3), exact-line-search branch: if `L_f > 0` and every reciprocal stepsize
 `1 / L_k` minimizes the descent objective along the non-Euclidean ray at iteration `k`, then
 each step satisfies the sufficient-decrease estimate with coefficient `1 / (2 L_f)`. -/
 theorem non_euclidean_gradient_exact_line_search_sufficient_decrease
@@ -407,7 +409,7 @@ theorem non_euclidean_gradient_exact_line_search_sufficient_decrease
 -- `L_f`-smoothness to bound the objective value of that comparison step; this branch keeps
 -- `0 < L_f` as the branch hypothesis and states the textbook coefficient directly as
 -- `M = 1 / (2 L_f)`.
-/-- Lemma 10.66: if `f` is globally `L_f`-smooth and the iterates satisfy
+/-- Lemma 10.66 (4): if `f` is globally `L_f`-smooth and the iterates satisfy
 `x^(k+1) = x^k - (‖f'(x^k)‖_* / L_k) • xDagger^k`,
 with `xDagger^k ∈ Λ_{f'(x^k)}`, and if the stepsizes are chosen either by a constant rule
 `barL ∈ (L_f / 2, ∞)`, by backtracking procedure B4 with parameters `(s, γ, η)`, or by exact
@@ -437,18 +439,18 @@ theorem non_euclidean_gradient_sufficient_decrease_by_stepsize_rule
     -- The constant-stepsize branch is exactly the specialized one-step estimate.
     simpa using
       non_euclidean_gradient_constant_stepsize_sufficient_decrease
-        (hf := hf) (hstep := hstep) (hDagger := hDagger) barL hL k
+        hf hstep hDagger barL hL k
   · rcases hrest with hB4 | hexact
     · rcases hB4 with ⟨s, γ, η, hrule, rfl⟩
       -- The B4 branch uses acceptance plus the uniform upper bound on the chosen trial.
       simpa [backtracking_B4_sufficient_decrease_coeff] using
         non_euclidean_gradient_backtracking_B4_sufficient_decrease
-          (hf := hf) (hstep := hstep) s γ η hrule k
+          hf hstep s γ η hrule k
     · rcases hexact with ⟨hLf, hsearch, rfl⟩
       -- The exact-line-search branch compares the minimizing step with the candidate `1 / L_f`.
       simpa using
         non_euclidean_gradient_exact_line_search_sufficient_decrease
-          (hf := hf) (hstep := hstep) (hDagger := hDagger) hLf hsearch k
+          hf hstep hDagger hLf hsearch k
 
 end SufficientDecreaseRule
 

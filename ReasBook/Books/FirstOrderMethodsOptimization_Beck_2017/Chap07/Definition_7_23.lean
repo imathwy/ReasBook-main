@@ -1,6 +1,5 @@
 import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap01.Definition_1_30
-import FirstOrderMethodsOptimization_Beck_2017.Chap07.Definition_7_11
 import FirstOrderMethodsOptimization_Beck_2017.Chap07.Definition_7_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
@@ -15,6 +14,20 @@ variable {n : ℕ}
 
 local notation "𝕊" => symmetricMatrices n
 
+/-- The ordered eigenvalue map on the symmetric matrix space `𝕊^n`, sending `X` to the decreasingly
+ordered list of its real eigenvalues indexed by `Fin n`. -/
+noncomputable def symmetricEigenvalues_7_23 (X : 𝕊) : Fin n → ℝ :=
+  (X.property.isHermitian).eigenvalues
+
+-- Proof sketch: unfold `symmetricEigenvalues`; it is defined to be the canonical Hermitian
+-- eigenvalue list attached to the underlying symmetric matrix.
+/-- Evaluating `symmetricEigenvalues X` at `i` gives the `i`-th entry of the canonical decreasing
+eigenvalue list of the symmetric matrix `X`. -/
+theorem symmetricEigenvalues_7_23_apply (X : 𝕊) (i : Fin n) :
+    symmetricEigenvalues_7_23 X i = (X.property.isHermitian).eigenvalues i := by
+  -- This is the defining evaluation rule for `symmetricEigenvalues`.
+  rfl
+
 /-- A proper permutation-symmetric eigenvalue factorization of `g` consists of an associated
 function on `ℝ^n` whose composition with `symmetricEigenvalues` recovers `g`. -/
 inductive HasPermutationSymmetricEigenvalueFactorization (g : 𝕊 → EReal) : Prop
@@ -23,33 +36,25 @@ inductive HasPermutationSymmetricEigenvalueFactorization (g : 𝕊 → EReal) : 
       (associatedFunction_isProper : IsProperExtendedRealFunction associatedFunction)
       (associatedFunction_isPermutationSymmetric :
         IsPermutationSymmetricFunction associatedFunction)
-      (comp_eq : g = associatedFunction ∘ symmetricEigenvalues) :
+      (comp_eq : g = associatedFunction ∘ symmetricEigenvalues_7_23) :
       HasPermutationSymmetricEigenvalueFactorization g
 
-/-- Helper for Definition 7.23: the diagonal matrix with diagonal `x↓` is symmetric, hence lies in
-`𝕊^n`. -/
-theorem diagonal_mem_symmetricMatrices_descending (x : Fin n → ℝ) :
+private theorem diagonal_mem_symmetricMatrices (x : Fin n → ℝ) :
     Matrix.diagonal (x↓) ∈ symmetricMatrices n := by
   -- Membership in `𝕊^n` is symmetry of the underlying real matrix, and diagonal matrices are
   -- symmetric.
   rw [mem_symmetricMatrices_iff]
   simp
 
-/-- Helper for Definition 7.23: the symmetric matrix whose diagonal entries are the decreasing
-rearrangement `x↓`. -/
-noncomputable def descendingDiagonalMatrix (x : Fin n → ℝ) : 𝕊 :=
-  ⟨Matrix.diagonal (x↓), diagonal_mem_symmetricMatrices_descending x⟩
+private noncomputable def descendingDiagonalMatrix (x : Fin n → ℝ) : 𝕊 :=
+  ⟨Matrix.diagonal (x↓), diagonal_mem_symmetricMatrices x⟩
 
-/-- Helper for Definition 7.23: the decreasing rearrangement `x↓` is antitone. -/
-theorem antitone_descendingRearrangement (x : Fin n → ℝ) : Antitone (x↓) := by
+private theorem antitone_descendingRearrangement (x : Fin n → ℝ) : Antitone (x↓) := by
   -- The tuple `x ∘ Tuple.sort x` is monotone, and composing with `Fin.revPerm` reverses the order.
   simpa [Function.comp_def, descendingRearrangement] using
     (Tuple.monotone_sort x).comp_antitone Fin.rev_anti
 
-/-- Helper for Definition 7.23: the canonical decreasing Hermitian eigenvalue list of the diagonal
-matrix with diagonal `x↓` is exactly `x↓`, after the standard `Fin.cast` reindexing used by
-`eigenvalues₀`. -/
-theorem diagonal_eigenvalues_zero_indexed (x : Fin n → ℝ) :
+private theorem diagonal_eigenvalues_zero_indexed (x : Fin n → ℝ) :
     let A : Matrix (Fin n) (Fin n) ℝ := Matrix.diagonal (x↓)
     let hA : A.IsHermitian := by
       simp [A]
@@ -88,10 +93,8 @@ theorem diagonal_eigenvalues_zero_indexed (x : Fin n → ℝ) :
     exact hcast_anti.sortedGE_ofFn
   exact List.ofFn_inj.1 (hA.sort_roots_charpoly_eq_eigenvalues₀.symm.trans hsort)
 
-/-- Helper for Definition 7.23: the ordered eigenvalue vector of the diagonal matrix with diagonal
-`x↓` is `x↓` up to a permutation of coordinates. -/
-theorem symmetricEigenvalues_descendingDiagonalMatrix_eq_comp_perm (x : Fin n → ℝ) :
-    ∃ σ : Equiv.Perm (Fin n), symmetricEigenvalues (descendingDiagonalMatrix x) = x↓ ∘ σ := by
+private theorem symmetricEigenvalues_descendingDiagonalMatrix_eq_comp_perm (x : Fin n → ℝ) :
+    ∃ σ : Equiv.Perm (Fin n), symmetricEigenvalues_7_23 (descendingDiagonalMatrix x) = x↓ ∘ σ := by
   classical
   let A : Matrix (Fin n) (Fin n) ℝ := Matrix.diagonal (x↓)
   let hA : A.IsHermitian := by
@@ -104,13 +107,12 @@ theorem symmetricEigenvalues_descendingDiagonalMatrix_eq_comp_perm (x : Fin n �
   ext i
   -- Route correction: `Matrix.IsHermitian.eigenvalues` on `Fin n` is only a reindex of the
   -- canonical sorted spectrum, so the diagonal realization is exact only up to permutation.
-  rw [symmetricEigenvalues_apply]
+  rw [symmetricEigenvalues_7_23_apply]
   change hA.eigenvalues₀ (e.symm i) = x↓ (σ i)
   rw [diagonal_eigenvalues_zero_indexed (n := n) x]
   simp [σ, c, e, finCongr_apply]
 
-/-- Helper for Definition 7.23: the decreasing rearrangement is idempotent. -/
-theorem descendingRearrangement_idem (x : Fin n → ℝ) : (x↓)↓ = x↓ := by
+private theorem descendingRearrangement_idem (x : Fin n → ℝ) : (x↓)↓ = x↓ := by
   -- The first rearrangement already differs from `x` only by a permutation, so sorting again does
   -- nothing.
   simpa [descendingRearrangement, Function.comp_assoc, Equiv.Perm.coe_mul] using
@@ -132,7 +134,7 @@ theorem HasPermutationSymmetricEigenvalueFactorization.isProper
   · intro X
     -- The factorization reduces `g X` to the proper associated function evaluated on eigenvalues.
     rw [hcomp]
-    exact hf_proper.ne_bot (symmetricEigenvalues X)
+    exact hf_proper.ne_bot (symmetricEigenvalues_7_23 X)
   · rcases hf_proper.effective_domain_nonempty with ⟨x, hxmem⟩
     have hx : f x < ⊤ := by
       simpa [mem_effective_domain] using hxmem

@@ -56,13 +56,15 @@ theorem directional_derivative_pointwise_max_eq_sup'_active_gradient_pairings
           (⟪∇ (fun y ↦ (f i y).toReal) x, d⟫) x d := by
       simpa using (hderiv i).hasLineDerivAt d
     exact
-      ⟨⟪∇ (fun y ↦ (f i y).toReal) x, d⟫,
+      ⟨(⟪∇ (fun y ↦ (f i y).toReal) x, d⟫ : ℝ),
         has_directional_derivative_at_of_mem_interior_of_hasLineDerivAt (hxfinite i) hline⟩
+  have hx : x ∈ ⋂ i : ι, interior (finite_domain (f i)) := by
+    simpa [Set.mem_iInter] using hxfinite
   calc
     directional_derivative (fun y ↦ ⨆ i : ι, f i y) x d
         = iSup fun i : {i : ι // f i x = iSup fun j : ι ↦ f j x} ↦
             directional_derivative (f i) x d :=
-      directional_derivative_iSup_eq_iSup_active_indices f x d hdir
+      directional_derivative_iSup_eq_iSup_active_indices f x d hx hdir
     _ = iSup fun i : {i : ι // f i x = iSup fun j : ι ↦ f j x} ↦
           ((⟪∇ (fun y ↦ (f i y).toReal) x, d⟫ : ℝ) : EReal) := by
       congr with i

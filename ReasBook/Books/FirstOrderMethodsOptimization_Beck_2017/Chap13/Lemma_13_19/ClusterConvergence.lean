@@ -14,7 +14,7 @@ variable {n l : ℕ}
 
 local notation "E" => Fin n → ℝ
 
-variable {Q : positiveDefiniteMatrices n} {b : E} {a : Fin l → E}
+variable {Q : positiveDefiniteMatrices n} {b : Fin n → ℝ} {a : Fin l → Fin n → ℝ}
 variable {x : ℕ → polytope_quadratic_feasible_set a} {i : ℕ → Fin l}
 
 local notation "d[" k "]" =>
@@ -27,7 +27,7 @@ local notation "κ[" k "]" =>
 section
 
 variable
-  {v0 : stdSimplex ℝ (Fin l)} {xStar : E}
+  {v0 : stdSimplex ℝ (Fin l)} {xStar : Fin n → ℝ}
 
 local notation "Ω" => convexHull ℝ (Set.range a)
 local notation "f_q" => polytope_quadratic_objective Q b
@@ -41,7 +41,7 @@ finite convex-hull feasible set `Ω`. -/
 theorem polytope_quadratic_cluster_point_mem_feasible_set
     {a : Fin l → E}
     {x : ℕ → polytope_quadratic_feasible_set a}
-    {xBar : E}
+    {xBar : Fin n → ℝ}
     (hxBar : MapClusterPt xBar Filter.atTop (fun k ↦ (x k : E))) :
     xBar ∈ convexHull ℝ (Set.range a) := by
   -- Closedness of the finite convex hull traps every subsequential limit of feasible iterates.
@@ -55,7 +55,7 @@ theorem polytope_quadratic_constant_argmin_subseq_of_mapClusterPt
     {a : Fin l → E}
     {x : ℕ → polytope_quadratic_feasible_set a}
     {i : ℕ → Fin l}
-    {xBar : E}
+    {xBar : Fin n → ℝ}
     (hxBar : MapClusterPt xBar Filter.atTop (fun k ↦ (x k : E))) :
     ∃ ψ : ℕ → ℕ, ∃ j : Fin l,
       StrictMono ψ ∧
@@ -83,7 +83,7 @@ that vertex index still minimizes the limiting vertex-linearization at the clust
 theorem polytope_quadratic_vertex_argmin_at_cluster_point_of_constant_argmin_subseq
     (htraj :
       is_polytope_quadratic_conditional_gradient_exact_line_search_trajectory Q b a x i)
-    {xBar : E} {ψ : ℕ → ℕ} {j : Fin l}
+    {xBar : Fin n → ℝ} {ψ : ℕ → ℕ} {j : Fin l}
     (hψtendsto :
       Filter.Tendsto (fun m ↦ (x (ψ m) : E)) Filter.atTop (nhds xBar))
     (hconst : ∀ m, i (ψ m) = j) :
@@ -98,11 +98,15 @@ theorem polytope_quadratic_vertex_argmin_at_cluster_point_of_constant_argmin_sub
   have hφj_cont : Continuous φj := by
     -- The limiting vertex-linearization is a continuous affine functional of the iterate.
     dsimp [φj, polytope_quadratic_vertex_linear_objective]
-    exact continuous_const.dotProduct (continuous_const.matrix_mulVec continuous_id).add continuous_const
+    exact
+      continuous_const.dotProduct
+        ((continuous_const.matrix_mulVec continuous_id).add continuous_const)
   have hφq_cont : Continuous φq := by
     -- The same continuity argument applies to every comparison vertex `q`.
     dsimp [φq, polytope_quadratic_vertex_linear_objective]
-    exact continuous_const.dotProduct (continuous_const.matrix_mulVec continuous_id).add continuous_const
+    exact
+      continuous_const.dotProduct
+        ((continuous_const.matrix_mulVec continuous_id).add continuous_const)
   have hφj_tendsto :
       Filter.Tendsto (fun m ↦ φj (x (ψ m) : E)) Filter.atTop (nhds (φj xBar)) :=
     (hφj_cont.tendsto xBar).comp hψtendsto
@@ -128,7 +132,7 @@ theorem polytope_quadratic_uniform_objective_drop_of_negative_cluster_derivative
         (polytope_quadratic_objective Q b) a (x 0 : E) v0)
     (htraj :
       is_polytope_quadratic_conditional_gradient_exact_line_search_trajectory Q b a x i)
-    {xBar : E} {ψ : ℕ → ℕ} {j : Fin l}
+    {xBar : Fin n → ℝ} {ψ : ℕ → ℕ} {j : Fin l}
     (hψtendsto :
       Filter.Tendsto (fun m ↦ (x (ψ m) : E)) Filter.atTop (nhds xBar))
     (hconst : ∀ m, i (ψ m) = j)
@@ -196,19 +200,20 @@ theorem polytope_quadratic_uniform_objective_drop_of_negative_cluster_derivative
     filter_upwards [hg_eventually, hcurv_eventually] with m hm_g hm_curv
     have hm_idx : i (ψ m) = j := hconst m
     have hcurv_eq : κ[ψ m] = curv (x (ψ m) : E) := by
-      simp [κ, curv, hm_idx, polytope_quadratic_conditional_gradient_direction_eq]
+      simp [curv, hm_idx, polytope_quadratic_conditional_gradient_direction_eq]
     have hd_ne : d[ψ m] ≠ 0 := by
       -- A zero direction would make the directional derivative vanish, contradicting the trajectory.
       intro hd
-      have hnot :
-          ¬ polytope_quadratic_conditional_gradient_directional_derivative
-              Q b a (x (ψ m)) (i (ψ m)) < 0 := by
-        simp [polytope_quadratic_conditional_gradient_directional_derivative_eq,
-          polytope_quadratic_conditional_gradient_direction_eq, hd]
-      exact hnot (htraj.directional_derivative_neg (ψ m))
+      have hzero :
+          polytope_quadratic_conditional_gradient_directional_derivative
+              Q b a (x (ψ m)) (i (ψ m)) = 0 := by
+        rw [polytope_quadratic_conditional_gradient_directional_derivative_eq, hd]
+        simp
+      linarith [htraj.directional_derivative_neg (ψ m)]
     have hcurv_pos :
         0 < curv (x (ψ m) : E) := by
-      simpa [hcurv_eq, κ] using Q.2.dotProduct_mulVec_pos hd_ne
+      rw [← hcurv_eq]
+      exact Q.2.dotProduct_mulVec_pos hd_ne
     have hratio_eq :
         λ[ψ m] = -g (x (ψ m) : E) / curv (x (ψ m) : E) := by
       rw [polytope_quadratic_exact_line_search_ratio_eq]
@@ -225,9 +230,16 @@ theorem polytope_quadratic_uniform_objective_drop_of_negative_cluster_derivative
               (-g (x (ψ m) : E) / curv (x (ψ m) : E)) ^ (2 : ℕ) =
             (-g (x (ψ m) : E)) ^ (2 : ℕ) / (2 * curv (x (ψ m) : E)) := by
         field_simp [hcurv_pos.ne']
-        ring
       rw [hrewrite]
-      nlinarith [hε_pos, hC_pos, hcurv_pos, hnum_lower, hden_upper]
+      have hnum_sq : ε ^ (2 : ℕ) ≤ (-g (x (ψ m) : E)) ^ (2 : ℕ) := by
+        nlinarith
+      apply (div_le_div_iff₀ (by positivity : 0 < 2 * C) (by positivity :
+        0 < 2 * curv (x (ψ m) : E))).2
+      exact
+        (mul_le_mul_of_nonneg_left
+            (mul_le_mul_of_nonneg_left hden_upper (by positivity : (0 : ℝ) ≤ 2))
+            (sq_nonneg ε)).trans
+          (mul_le_mul_of_nonneg_right hnum_sq (by positivity : (0 : ℝ) ≤ 2 * C))
     have hstep_eq :=
       Lemma_13_19_TrajectoryCore.polytope_quadratic_exact_line_search_objective_step_eq
         (Q := Q) (b := b) (a := a) (x := x) (i := i) (v0 := v0) hinit htraj (ψ m)
@@ -249,7 +261,7 @@ theorem polytope_quadratic_directional_derivative_nonneg_at_cluster_point_of_con
         (polytope_quadratic_objective Q b) a (x 0 : E) v0)
     (htraj :
       is_polytope_quadratic_conditional_gradient_exact_line_search_trajectory Q b a x i)
-    {xBar : E} {ψ : ℕ → ℕ} {j : Fin l}
+    {xBar : Fin n → ℝ} {ψ : ℕ → ℕ} {j : Fin l}
     (hψmono : StrictMono ψ)
     (hψtendsto :
       Filter.Tendsto (fun m ↦ (x (ψ m) : E)) Filter.atTop (nhds xBar))
@@ -286,7 +298,12 @@ theorem polytope_quadratic_directional_derivative_nonneg_at_cluster_point_of_con
               f_q (x (ψ (N + m) + 1) : E) :=
           hantitone hpsi_step
         -- Propagate the one-step fixed drop to the next subsequence term by monotonicity.
-        linarith
+        have hnext :
+            f_q (x (ψ (N + m + 1)) : E) ≤
+              (f_q (x (ψ N) : E) - (m : ℝ) * c) - c :=
+          hmono_step.trans (hdrop_m.trans (sub_le_sub_right hm c))
+        rw [Nat.cast_succ]
+        convert hnext using 1 <;> ring
   obtain ⟨m, hm⟩ := exists_nat_gt (gap[ψ N] / c)
   have hgap_nonneg_tail :
       0 ≤ gap[ψ (N + m)] :=
@@ -295,11 +312,10 @@ theorem polytope_quadratic_directional_derivative_nonneg_at_cluster_point_of_con
   have hgap_upper :
       gap[ψ (N + m)] ≤ gap[ψ N] - (m : ℝ) * c := by
     -- Translate the objective decrease estimate into the gap language by subtracting `f_opt`.
-    dsimp [gap]
     linarith [hiter m]
   have hgap_neg :
       gap[ψ N] - (m : ℝ) * c < 0 := by
-    nlinarith
+    exact sub_neg.mpr ((div_lt_iff₀ hc_pos).mp hm)
   linarith
 
 /-- Helper for Lemma 13.19: every cluster point of an exact-line-search trajectory is the boundary
@@ -314,7 +330,7 @@ theorem polytope_quadratic_cluster_point_eq_boundary_optimizer_of_exact_trajecto
         (polytope_quadratic_objective Q b) a (x 0 : E) v0)
     (htraj :
       is_polytope_quadratic_conditional_gradient_exact_line_search_trajectory Q b a x i)
-    {xBar : E}
+    {xBar : Fin n → ℝ}
     (hxBar : MapClusterPt xBar Filter.atTop (fun k ↦ (x k : E))) :
     xBar = xStar := by
   obtain ⟨ψ, j, hψmono, hψtendsto, hconst⟩ :=
@@ -342,7 +358,7 @@ theorem polytope_quadratic_cluster_point_eq_boundary_optimizer_of_exact_trajecto
     -- Restrict the global constrained optimality certificate back to the feasible set `Ω`.
     rw [isMinOn_iff] at hxBar_min_univ ⊢
     intro y hy
-    exact hxBar_min_univ y
+    exact hxBar_min_univ y (Set.mem_univ y)
   have hxBar_sol :
       xBar ∈ constrained_problem_solutions (polytope_quadratic_problem Q b a) Ω := by
     simpa [mem_constrained_problem_solutions_iff] using ⟨hxBar_mem, hxBar_min_Ω⟩
@@ -370,7 +386,7 @@ theorem polytope_quadratic_iterates_tendsto_boundary_optimizer
   refine tendsto_of_subseq_tendsto ?_
   intro ns hns
   have hfreq : ∃ᶠ m : ℕ in Filter.atTop, (x (ns m) : E) ∈ Ω := by
-    exact Filter.Eventually.of_forall fun m ↦ (x (ns m)).property
+    exact (Filter.Eventually.of_forall fun m ↦ (x (ns m)).property).frequently
   rcases ((Set.finite_range a).isCompact_convexHull ℝ).exists_mapClusterPt_of_frequently hfreq with
     ⟨y, hyΩ, hyCluster⟩
   obtain ⟨ψ, hψmono, hψtendsto⟩ := MapClusterPt.tendsto_subseq hyCluster

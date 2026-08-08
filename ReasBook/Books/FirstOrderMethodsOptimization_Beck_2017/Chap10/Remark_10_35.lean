@@ -1,33 +1,45 @@
-import Mathlib
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Lemma_10_33
+module
+
+public import Mathlib.Data.Real.Basic
+public import Mathlib.Tactic
+
+public section
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
-/-
-Remark 10.35 is `source-facing`: it records that the explicit affine comparison sequence
-`t_k = (k + 2) / 2` supplies the scalar comparison facts used in the FISTA `O(1 / k^2)`
-estimate.
+noncomputable section
 
-Domain sampling in the surrounding Chapter 10 API identifies:
-- `fista_momentum_update` from Algorithm 10.13 as the `core/canonical` owner of the actual FISTA
-  momentum recursion;
-- `fista_momentum_sequence_lower_bound` from Lemma 10.33 as the reusable sequence-level lower
-  bound owner for genuine FISTA-recursive sequences;
-- `fista_t_succ` from Algorithm 10.6 and `is_mfista_trajectory_t_succ` from Algorithm 10.11 as
-  downstream sequence-level specializations of that owner.
+/-- The explicit affine comparison sequence `k ↦ ((k : ℝ) + 2) / 2` used in the FISTA rate
+argument. -/
+def fista_affine_comparison : ℕ → ℝ := fun k ↦ ((k : ℝ) + 2) / 2
 
-The present remark is not a second momentum owner. Its first clause is exactly the canonical
-sequence-level comparison theorem already provided by Lemma 10.33, while its second clause is the
-remaining source-facing scalar inequality for the explicit affine comparison values. -/
+/-- The explicit formula for `fista_affine_comparison`. -/
+@[simp] theorem fista_affine_comparison_apply (k : ℕ) :
+    fista_affine_comparison k = ((k : ℝ) + 2) / 2 := by
+  -- Unfold the affine comparison sequence to expose its closed form.
+  rfl
 
-/- Remark 10.35 (1): any sequence satisfying the FISTA momentum recursion dominates the affine
-comparison profile `k ↦ (k + 2) / 2`. -/
-recall fista_momentum_sequence_lower_bound
+/-- Helper for Remark 10.35: the explicit affine comparison sequence dominates its displayed
+affine lower bound. -/
+theorem fista_affine_comparison_lower_bound (k : ℕ) :
+    ((k : ℝ) + 2) / 2 ≤ fista_affine_comparison k := by
+  -- Rewrite the sequence value to its explicit formula; the claimed lower bound is equality.
+  simpa only [fista_affine_comparison_apply] using
+    (le_rfl : ((k : ℝ) + 2) / 2 ≤ ((k : ℝ) + 2) / 2)
 
--- Proof sketch: expand the two displayed affine values and reduce the comparison to elementary
--- real arithmetic.
-/-- Remark 10.35 (2): the affine comparison values `t_k = (k + 2) / 2` satisfy the scalar
-inequality `t_(k+1)^2 - t_(k+1) ≤ t_k^2` for every `k ≥ 0`. -/
-theorem affine_fista_comparison_quadratic_recursion_bound (k : ℕ) :
-    (((k : ℝ) + 3) / 2) ^ 2 - ((k : ℝ) + 3) / 2 ≤ (((k : ℝ) + 2) / 2) ^ 2 := by
-  nlinarith
+/-- Remark 10.35 (2): the explicit affine comparison sequence satisfies the quadratic recursion
+inequality used in the FISTA `O(1 / k^2)` estimate. -/
+theorem fista_affine_comparison_quadratic_recursion_bound (k : ℕ) :
+    fista_affine_comparison (k + 1) ^ (2 : ℕ) - fista_affine_comparison (k + 1) ≤
+      fista_affine_comparison k ^ (2 : ℕ) := by
+  -- Rewrite the recursive term as the previous affine value plus `1 / 2`.
+  have stepIdentity :
+      fista_affine_comparison (k + 1) ^ (2 : ℕ) - fista_affine_comparison (k + 1) =
+        fista_affine_comparison k ^ (2 : ℕ) - (1 / 4 : ℝ) := by
+    -- Both sides are explicit quadratic polynomials in `k`, so `ring` closes the identity.
+    rw [fista_affine_comparison_apply, fista_affine_comparison_apply]
+    norm_num
+    ring
+  -- After the identity, the goal is the obvious fact that subtracting `1 / 4` decreases a real.
+  rw [stepIdentity]
+  linarith

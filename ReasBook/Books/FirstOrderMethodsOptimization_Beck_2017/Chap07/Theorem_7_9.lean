@@ -16,7 +16,7 @@ textbook coordinate model `ℝ^n`, with orthogonal matrices acting by `mulVec`. 
 
 /-- Helper for Theorem 7.9: moving an orthogonal matrix from the second dot-product input to the
 first input amounts to applying the matrix itself. -/
-lemma dotProduct_transpose_mulVec_eq_dotProduct_smul
+private lemma dotProduct_transpose_mulVec_eq_dotProduct_smul
     (A : Matrix.orthogonalGroup (Fin n) ℝ) (y z : Fin n → ℝ) :
     dotProduct y ((A : Matrix (Fin n) (Fin n) ℝ).transpose.mulVec z) =
       dotProduct (A • y) z := by
@@ -26,7 +26,7 @@ lemma dotProduct_transpose_mulVec_eq_dotProduct_smul
 
 /-- Helper for Theorem 7.9: an orthogonal matrix followed by its transpose acts as the identity on
 `ℝ^n`. -/
-lemma orthogonal_mulVec_transpose_mulVec
+private lemma orthogonal_mulVec_transpose_mulVec
     (A : Matrix.orthogonalGroup (Fin n) ℝ) (z : Fin n → ℝ) :
     (A : Matrix (Fin n) (Fin n) ℝ).mulVec
         ((A : Matrix (Fin n) (Fin n) ℝ).transpose.mulVec z) = z := by
@@ -40,7 +40,7 @@ lemma orthogonal_mulVec_transpose_mulVec
 
 /-- Helper for Theorem 7.9: the transpose of an orthogonal matrix is its inverse action on
 `ℝ^n`. -/
-lemma orthogonal_transpose_mulVec_mulVec
+private lemma theorem7_9_orthogonal_transpose_mulVec_mulVec
     (A : Matrix.orthogonalGroup (Fin n) ℝ) (x : Fin n → ℝ) :
     ((A : Matrix (Fin n) (Fin n) ℝ).transpose).mulVec
         ((A : Matrix (Fin n) (Fin n) ℝ).mulVec x) = x := by
@@ -54,7 +54,7 @@ lemma orthogonal_transpose_mulVec_mulVec
 
 /-- Helper for Theorem 7.9: orthogonal precomposition preserves the range of the conjugate
 integrand after the matching change of variables. -/
-lemma conjugate_integrand_range_precompose_orthogonal_eq
+private lemma conjugate_integrand_range_precompose_orthogonal_eq
     (A : Matrix.orthogonalGroup (Fin n) ℝ) (f : (Fin n → ℝ) → EReal)
     (y : Fin n → ℝ) :
     Set.range
@@ -74,7 +74,7 @@ lemma conjugate_integrand_range_precompose_orthogonal_eq
     have hx :
         ((A : Matrix (Fin n) (Fin n) ℝ).transpose).mulVec (A • x) = x := by
       rw [hAx]
-      exact orthogonal_transpose_mulVec_mulVec A x
+      exact theorem7_9_orthogonal_transpose_mulVec_mulVec A x
     have hdot :
         (((dotProductEquiv ℝ (Fin n) y)
             (((A : Matrix (Fin n) (Fin n) ℝ).transpose).mulVec (A • x)) : ℝ) :
@@ -102,7 +102,7 @@ lemma conjugate_integrand_range_precompose_orthogonal_eq
 
 /-- Helper for Theorem 7.9: precomposing by an orthogonal matrix transports the conjugate point by
 that same matrix. -/
-lemma conjugate_function_precompose_orthogonal_eq
+lemma theorem7_9_conjugate_function_precompose_orthogonal_eq
     (A : Matrix.orthogonalGroup (Fin n) ℝ) (f : (Fin n → ℝ) → EReal)
     (y : Fin n → ℝ) :
     conjugate_function (fun x : Fin n → ℝ ↦ f (A • x))
@@ -136,7 +136,7 @@ theorem conjugate_function_eq_conjugate_function_orthogonal_mulVec
         conjugate_function (fun x : Fin n → ℝ ↦ f (A • x))
           (dotProductEquiv ℝ (Fin n) y) := by
           symm
-          exact conjugate_function_precompose_orthogonal_eq A f y
+          exact theorem7_9_conjugate_function_precompose_orthogonal_eq A f y
     _ = conjugate_function f (dotProductEquiv ℝ (Fin n) y) := by
           rw [hpre]
 

@@ -139,27 +139,28 @@ variable {f : X → EReal} {g : (i : ι) → Ei i → EReal} {Li : (i : ι) → 
 local notation "F" => composite_model_objective f (PiLp.separableSum g)
 local notation "Fopt" => generalized_conditional_gradient_optimal_value f (PiLp.separableSum g)
 
-/-- The effective domain of the block-separable regularizer is compact under Assumption 13.28,
-because it is the `PiLp` transport of the finite product of the compact coordinate domains
+/-- The effective domain of the block-separable regularizer is compact, because it is the `PiLp`
+transport of the finite product of the compact coordinate domains
 `effective_domain (g i)`. -/
 theorem separableSum_effective_domain_compact
     (h : IsGeneralizedBlockConditionalGradientProblem f g Li) :
     IsCompact (effective_domain (PiLp.separableSum g)) := by
   let e := PiLp.continuousLinearEquiv (2 : ENNReal) ℝ Ei
+  let he := e.symm.toHomeomorph
   have hproduct :
-      IsCompact (Set.pi Set.univ (fun i => effective_domain (g i))) :=
+      IsCompact (Set.pi Set.univ (fun i ↦ effective_domain (g i))) :=
     isCompact_univ_pi (fun i ↦ h.g_effective_domain_compact i)
   have hdomain :
       effective_domain (PiLp.separableSum g) =
-        e.symm ⁻¹' Set.pi Set.univ (fun i => effective_domain (g i)) := by
+        e.symm ⁻¹' Set.pi Set.univ (fun i ↦ effective_domain (g i)) := by
     -- Identify the PiLp feasible core with the preimage of the product of block domains.
     ext x
     simp [mem_effective_domain, PiLp.separableSum_apply]
   -- Transport compactness back through the canonical PiLp/raw-coordinate homeomorphism.
   rw [hdomain]
-  exact e.symm.toHomeomorph.isCompact_preimage.mpr hproduct
+  simpa using he.isCompact_preimage.mpr hproduct
 
-/-- Assumption 13.28 is more source-facing than the Chapter 13 owner
+/-- This owner is more source-facing than the Chapter 13 owner
 `IsGeneralizedConditionalGradientProblem`: it keeps the blockwise differentiability and
 block-Lipschitz clauses rather than storing a global smoothness constant on `effective_domain f`.
 Whenever such a global smoothness witness is available separately, the aggregate regularizer
@@ -175,7 +176,7 @@ theorem toIsGeneralizedConditionalGradientProblem
   refine
     { toIsProperExtendedRealFunction := separableSum_proper g h.block_g_proper
       g_closed := separableSum_closed g h.block_g_closed
-      g_convex := separableSum_convex g h.block_g_convex
+      g_convex := separableSum_convex g h.block_g_proper h.block_g_convex
       g_effective_domain_compact := h.separableSum_effective_domain_compact
       f_ne_bot := h.f_ne_bot
       f_effective_domain_open := h.f_effective_domain_open
@@ -222,7 +223,7 @@ theorem composite_model_objective_lowerSemicontinuousOn_effective_domain
     (mem_effective_domain.mp (h.g_effective_domain_subset_f_effective_domain hy)).ne
     (h.f_ne_bot y)]
 
-/-- Assumption 13.28 derives attainment of the minimum on the canonical optimizer set
+/-- These hypotheses derive attainment of the minimum on the canonical optimizer set
 `unconstrained_problem_solutions (composite_model_objective f (PiLp.separableSum g))`. -/
 theorem optimal_set_nonempty
     (h : IsGeneralizedBlockConditionalGradientProblem f g Li) :
@@ -248,7 +249,7 @@ theorem optimal_set_nonempty
   exact ⟨x, mem_unconstrained_problem_solutions_iff.mpr hxmin_univ⟩
 
 /-- The canonical Chapter 13 optimal value `F_opt` is the greatest lower bound of the attainable
-composite objective values under Assumption 13.28. -/
+composite objective values under these hypotheses. -/
 theorem optimal_value_isGLB
     (h : IsGeneralizedBlockConditionalGradientProblem f g Li) :
     IsGLB (Set.range F) Fopt := by
@@ -269,7 +270,7 @@ theorem optimal_value_eq_of_mem_optimal_set
   rw [generalized_conditional_gradient_optimal_value_eq_sInf]
   exact hglb.csInf_eq ⟨F xStar, ⟨xStar, rfl⟩⟩
 
-/-- Helper for Assumption 13.28: transporting the composite objective through the canonical
+/-- Helper: transporting the composite objective through the canonical
 PiLp/raw-coordinate equivalence does not change its pointwise value. -/
 private theorem transported_composite_model_objective_apply
     (y : (j : ι) → Ei j) :
@@ -282,7 +283,7 @@ private theorem transported_composite_model_objective_apply
   -- regularizer and the whole composite objective.
   simp [F, composite_model_objective_apply, PiLp.separableSum_apply]
 
-/-- Helper for Assumption 13.28: a raw one-block update transports back to the corresponding PiLp
+/-- Helper: a raw one-block update transports back to the corresponding PiLp
 singleton update. -/
 private theorem symm_block_coordinate_update_eq_add_single
     (y : (j : ι) → Ei j) (i : ι) (d : Ei i) :
@@ -296,7 +297,7 @@ private theorem symm_block_coordinate_update_eq_add_single
     simp [block_coordinate_update]
   · simp [block_coordinate_update, hj]
 
-/-- Helper for Assumption 13.28: the one-block PiLp update is Fréchet differentiable with the
+/-- Helper: the one-block PiLp update is Frechet differentiable with the
 canonical singleton-insertion derivative. -/
 private theorem block_update_hasFDerivAt
     (x : X) (i : ι) :
@@ -318,13 +319,17 @@ private theorem block_update_hasFDerivAt
         (PiLp.continuousLinearEquiv (2 : ENNReal) ℝ Ei).symm.toContinuousLinearMap
         (Pi.single i (0 : Ei i)) := by
     simpa using
-      (PiLp.hasFDerivAt_toLp (𝕜 := ℝ) (p := (2 : ENNReal))
-        (E := Ei) (f := Pi.single i (0 : Ei i)))
+      (((PiLp.continuousLinearEquiv (2 : ENNReal) ℝ Ei).symm.toContinuousLinearMap).hasFDerivAt :
+        HasFDerivAt
+          (fun z : (j : ι) → Ei j ↦
+            (PiLp.continuousLinearEquiv (2 : ENNReal) ℝ Ei).symm z)
+          (PiLp.continuousLinearEquiv (2 : ENNReal) ℝ Ei).symm.toContinuousLinearMap
+          (Pi.single i (0 : Ei i)))
   -- Compose the raw singleton insertion with `toLp`, then translate by the base point `x`.
   simpa [block_coordinate_update, PiLp.coe_symm_continuousLinearEquiv, PiLp.toLp_single]
     using (htoLp.comp 0 hsingle).const_add x
 
-/-- Helper for Assumption 13.28: differentiability of `f.toReal` on the open effective domain
+/-- Helper: differentiability of `f.toReal` on the open effective domain
 gives the Fréchet-derivative formula for the one-block slice `d ↦ f(x + 𝒰[i] d)` at `0`. -/
 private theorem block_partial_gradient_hasFDerivAt
     (h : IsGeneralizedBlockConditionalGradientProblem f g Li)
@@ -344,7 +349,7 @@ private theorem block_partial_gradient_hasFDerivAt
         (InnerProductSpace.toDualMap ℝ X ((∇ fun z : X ↦ (f z).toReal) x))
         x :=
     hdiffAt.hasGradientAt.hasFDerivAt
-  have hcomp := hbase.comp 0 (block_update_hasFDerivAt (Ei := Ei) x i)
+  have hcomp := hbase.comp 0 (block_update_hasFDerivAt x i)
   -- Rewrite the composed derivative as the expected block partial gradient functional.
   simpa [block_partial_gradient_eq_gradient, ContinuousLinearMap.comp_apply,
     InnerProductSpace.toDualMap_apply_apply, PiLp.inner_apply]
@@ -399,12 +404,12 @@ theorem toIsBlockProximalGradientProblem
         · intro hy
           rw [isMinOn_univ_iff] at hy ⊢
           intro z
-          simpa [transported_composite_model_objective_apply (f := f) (g := g)]
+          simpa [transported_composite_model_objective_apply]
             using hy (e.symm z) (by simp)
         · intro hy
           rw [isMinOn_univ_iff] at hy ⊢
           intro z
-          simpa [transported_composite_model_objective_apply (f := f) (g := g)]
+          simpa [transported_composite_model_objective_apply]
             using hy (e z) (by simp)
       optimal_set_nonempty := by
         rcases h.optimal_set_nonempty with ⟨xStar, hxStar⟩
@@ -442,10 +447,10 @@ theorem toIsBlockProximalGradientProblem
           constructor
           · rintro ⟨y, rfl⟩
             exact ⟨e.symm y, by
-              simpa [transported_composite_model_objective_apply (f := f) (g := g)]⟩
+              simpa [transported_composite_model_objective_apply]⟩
           · rintro ⟨x, rfl⟩
             exact ⟨e x, by
-              simpa [transported_composite_model_objective_apply (f := f) (g := g)]⟩
+              simpa [transported_composite_model_objective_apply]⟩
         rw [hrange]
         simpa [hopt_coe] using h.optimal_value_isGLB
       block_partial_gradient_spec := by
@@ -456,9 +461,9 @@ theorem toIsBlockProximalGradientProblem
           simpa [effective_domain, mem_effective_domain] using this
         -- Rewrite the raw one-block slice back to the PiLp slice and reuse the earlier helper.
         simpa [block_coordinate_slice_apply,
-          symm_block_coordinate_update_eq_add_single (Ei := Ei) y i,
+          symm_block_coordinate_update_eq_add_single y i,
           GeneralizedBlockConditionalGradient.blockGradient_apply]
-          using block_partial_gradient_hasFDerivAt (f := f) (g := g) (Li := Li) h i hy'
+          using block_partial_gradient_hasFDerivAt h i hy'
       block_partial_gradient_lipschitz := by
         intro i y d hy hyd
         have hy' : e.symm y ∈ effective_domain f := by
@@ -472,7 +477,7 @@ theorem toIsBlockProximalGradientProblem
           simpa [effective_domain, mem_effective_domain] using this
         -- The transported block gradient and transported block update match the PiLp owner data.
         simpa [GeneralizedBlockConditionalGradient.blockGradient_apply,
-          symm_block_coordinate_update_eq_add_single (Ei := Ei) y i]
+          symm_block_coordinate_update_eq_add_single y i]
           using h.block_partial_gradient_lipschitz i hy' hyd' }
 
 theorem block_partial_gradient_spec
@@ -482,7 +487,7 @@ theorem block_partial_gradient_spec
     HasFDerivAt (fun d ↦ (f (x + (𝒰[i] d : X))).toReal)
       (InnerProductSpace.toDualMap ℝ (Ei i) ((∇[i] fun z : X ↦ (f z).toReal) x)) 0 := by
   -- This is exactly the slice-derivative helper established before the Chapter 11 transport.
-  exact block_partial_gradient_hasFDerivAt (f := f) (g := g) (Li := Li) h i hx
+  exact block_partial_gradient_hasFDerivAt h i hx
 
 theorem g_effective_domain_subset_interior_f_effective_domain
     (h : IsGeneralizedBlockConditionalGradientProblem f g Li) :
@@ -534,7 +539,7 @@ instance instIsProperExtendedRealFunctionSmoothTerm
         (fun i _ ↦ by simpa [y0, PiLp.toLp_apply] using hy i)
     exact ⟨y0, h.g_effective_domain_subset_f_effective_domain hy0⟩
 
-/-- Each block penalty in Assumption 13.28 is proper by the source-facing owner field
+/-- Each block penalty is proper by the source-facing owner field
 `block_g_proper`. -/
 instance instIsProperExtendedRealFunctionBlockPenalty
     {f : X → EReal} {g : (i : ι) → Ei i → EReal}

@@ -25,7 +25,7 @@ layers are:
 - `core/canonical`: the coordinatewise two-sided soft-thresholding operator `𝓢[ω, α]`, the
   weighted box constraint set `weighted_l1_box_constraint_set ω α β`, the weighted penalty owner
   `weighted_l1_box_penalty ω α`, the generic level-set residual `level_set_projection_residual`,
-  and the set-valued projection map `Proj[C]`,
+  and the set-valued projection map `P[C]`,
 - `bridge/view`: the explicit scalar root function coming from the proximal singleton formula in
   Example 6.23, its positive-multiplier identification with the generic residual from Theorem
   6.30, and the feasible `λ = 0` reduction to projection onto `effective_domain
@@ -474,7 +474,7 @@ theorem weightedL1BoxProjectionRootFunction_antitone
 box projection already satisfies the weighted `ℓ¹` constraint and is the unique projected point. -/
 theorem projection_mapping_weighted_l1_box_constraint_set_eq_singleton_of_residual_nonpos
     (x : E) (hres : weightedL1BoxProjectionRootFunction ω α β x 0 ≤ 0) :
-    Proj[C] x =
+    P[C] x =
       {𝓢[(fun _ ↦ 0), α] x} := by
   let y : E := 𝓢[(fun _ ↦ 0), α] x
   have hproper :
@@ -484,10 +484,10 @@ theorem projection_mapping_weighted_l1_box_constraint_set_eq_singleton_of_residu
       (effective_domain (weighted_l1_box_penalty ω α)).Nonempty :=
     hproper.effective_domain_nonempty
   have hproj_eff :
-      Proj[effective_domain (weighted_l1_box_penalty ω α)] x = {y} := by
+      P[effective_domain (weighted_l1_box_penalty ω α)] x = {y} := by
     -- At zero weights, Example 6.23 reduces the box prox to the ordinary box projection.
     calc
-      Proj[effective_domain (weighted_l1_box_penalty ω α)] x =
+      P[effective_domain (weighted_l1_box_penalty ω α)] x =
           prox[extendedIndicator (effective_domain (weighted_l1_box_penalty ω α))] x := by
             symm
             exact prox_extendedIndicator_eq_projection_mapping
@@ -499,7 +499,7 @@ theorem projection_mapping_weighted_l1_box_constraint_set_eq_singleton_of_residu
             simpa [y] using
               prox_weighted_l1_box_penalty_eq_singleton_twoSidedSoftThreshold
                 (ω := fun _ ↦ (0 : NNReal)) (α := α) (x := x)
-  have hproj_nonempty : (Proj[effective_domain (weighted_l1_box_penalty ω α)] x).Nonempty := by
+  have hproj_nonempty : (P[effective_domain (weighted_l1_box_penalty ω α)] x).Nonempty := by
     rw [hproj_eff]
     exact Set.singleton_nonempty y
   have hy_eff : y ∈ effective_domain (weighted_l1_box_penalty ω α) := by
@@ -519,16 +519,16 @@ theorem projection_mapping_weighted_l1_box_constraint_set_eq_singleton_of_residu
       (ω := ω) (α := α) hy_eff]
     exact_mod_cast hy_sum_le
   have hproj_sublevel :
-      Proj[effective_domain (weighted_l1_box_penalty ω α)] x ⊆
+      P[effective_domain (weighted_l1_box_penalty ω α)] x ⊆
         (weighted_l1_box_penalty ω α) ⁻¹' Set.Iic (β : EReal) := by
     intro z hz
     rw [hproj_eff] at hz
     have hz' : z = y := by simpa using hz
     simpa [hz'] using hy_sublevel
   calc
-    Proj[C] x = Proj[(weighted_l1_box_penalty ω α) ⁻¹' Set.Iic (β : EReal)] x := by
+    P[C] x = P[(weighted_l1_box_penalty ω α) ⁻¹' Set.Iic (β : EReal)] x := by
       rw [weighted_l1_box_constraint_set_eq_sublevel_weighted_l1_box_penalty]
-    _ = Proj[effective_domain (weighted_l1_box_penalty ω α)] x := by
+    _ = P[effective_domain (weighted_l1_box_penalty ω α)] x := by
       exact projection_mapping_sublevel_eq_projection_effective_domain_of_projection_mem_sublevel
         (weighted_l1_box_penalty ω α) β x hproj_nonempty hproj_sublevel
     _ = {y} := hproj_eff
@@ -547,7 +547,7 @@ theorem projection_mapping_weighted_l1_box_constraint_set_eq_singleton_of_root
     (x : E) (lam : NNReal)
     (hactive : 0 < weightedL1BoxProjectionRootFunction ω α β x 0)
     (hroot : weightedL1BoxProjectionRootFunction ω α β x lam = 0) :
-    Proj[C] x =
+    P[C] x =
       {𝓢[(fun i ↦ lam * ω i), α] x} := by
   have hlam_ne : lam ≠ 0 := by
     intro hlam
@@ -568,7 +568,7 @@ theorem projection_mapping_weighted_l1_box_constraint_set_eq_singleton_of_root
   rcases weighted_l1_box_penalty_proper_closed_convex (ω := ω) (α := α) with
     ⟨hf_proper, hf_closed, hf_convex⟩
   calc
-    Proj[C] x = Proj[(weighted_l1_box_penalty ω α) ⁻¹' Set.Iic (β : EReal)] x := by
+    P[C] x = P[(weighted_l1_box_penalty ω α) ⁻¹' Set.Iic (β : EReal)] x := by
       rw [weighted_l1_box_constraint_set_eq_sublevel_weighted_l1_box_penalty]
     _ = prox[((lamPos : EReal) • weighted_l1_box_penalty ω α)] x := by
       exact projection_mapping_sublevel_eq_scaled_prox_of_level_set_projection_residual_eq_zero
@@ -595,7 +595,7 @@ theorem projection_mapping_weighted_l1_box_constraint_set_eq_singleton_piecewise
     (x : E) (lam : NNReal)
     (hroot : 0 < weightedL1BoxProjectionRootFunction ω α β x 0 →
       weightedL1BoxProjectionRootFunction ω α β x lam = 0) :
-    Proj[C] x =
+    P[C] x =
       {if weightedL1BoxProjectionRootFunction ω α β x 0 ≤ 0 then
         𝓢[(fun _ ↦ 0), α] x
       else

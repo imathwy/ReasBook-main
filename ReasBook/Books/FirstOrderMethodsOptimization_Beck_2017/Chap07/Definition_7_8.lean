@@ -29,7 +29,7 @@ noncomputable def permutationOrthogonalFamily (n : ℕ) :
     Set (Matrix.orthogonalGroup (Fin n) ℝ) :=
   Set.range permutationOrthogonalMatrix
 
-notation "Λperm[" n "]" => permutationOrthogonalFamily n
+notation "Λ[" n "]" => permutationOrthogonalFamily n
 
 /-- The decreasing rearrangement `x↓` of a vector `x` is obtained by sorting its coordinates in
 weakly decreasing order. -/
@@ -41,7 +41,7 @@ postfix:max "↓" => descendingRearrangement
 /-- Definition 7.8: a proper extended-real-valued function on `ℝ^n` is permutation symmetric when
 it is invariant under every permutation matrix. -/
 abbrev IsPermutationSymmetricFunction (f : (Fin n → ℝ) → EReal) : Prop :=
-  IsSymmetricFunction Λperm[n] f
+  IsSymmetricFunction Λ[n] f
 
 /-- Helper for Definition 7.8: the orthogonal action of a permutation matrix just reindexes the
 coordinates of the vector. -/

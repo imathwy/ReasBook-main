@@ -24,6 +24,8 @@ This source-facing cone is the Chapter 2 owner `polar_cone` of the translated se
 def normal_cone (S : Set E) (x : E) : Set (Module.Dual ℝ E) :=
   { y | x ∈ S ∧ y ∈ polar_cone (S -ᵥ ({x} : Set E)) }
 
+@[inherit_doc normal_cone] notation:max "N[" S "](" x ")" => normal_cone S x
+
 -- Proof sketch: if `x ∈ S`, the extra feasibility guard in the definition of `normal_cone` is
 -- redundant, so the source-facing cone is exactly the owner `polar_cone` of the translated set.
 /-- At a feasible point, the normal cone is the polar cone of the translated feasible-displacement
@@ -40,7 +42,9 @@ set. -/
 displacement `z - x` with `z ∈ S`. -/
 lemma mem_normal_cone (S : Set E) {x : E} (hx : x ∈ S) (y : Module.Dual ℝ E) :
     y ∈ normal_cone S x ↔ ∀ z ∈ S, y (z - x) ≤ 0 := by
-  rw [normal_cone_eq_polar_cone_of_mem S hx, mem_polar_cone, Set.vsub_singleton]
+  rw [normal_cone_eq_polar_cone_of_mem S hx]
+  change y ∈ polar_cone (S -ᵥ ({x} : Set E)) ↔ ∀ z ∈ S, y (z - x) ≤ 0
+  rw [mem_polar_cone, Set.vsub_singleton]
   constructor
   · intro hy z hz
     exact hy (z - x) ⟨z, hz, rfl⟩

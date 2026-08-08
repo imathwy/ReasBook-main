@@ -19,7 +19,8 @@ value of `y x` for `x` on `Metric.sphere (0 : E) 1`. -/
 theorem dualNorm_isGreatest_on_unit_sphere (y : Module.Dual ℝ E) :
     IsGreatest (y '' Metric.sphere (0 : E) 1) (dualNorm y) := by
   by_cases hy : dualNorm y = 0
-  · obtain ⟨x, hx⟩ : (Metric.sphere (0 : E) 1).Nonempty := NormedSpace.sphere_nonempty.mpr zero_le_one
+  · obtain ⟨x, hx⟩ : (Metric.sphere (0 : E) 1).Nonempty :=
+      NormedSpace.sphere_nonempty.mpr zero_le_one
     refine ⟨?_, ?_⟩
     · refine ⟨x, hx, ?_⟩
       have hle : |y x| ≤ 0 := by
@@ -33,7 +34,8 @@ theorem dualNorm_isGreatest_on_unit_sphere (y : Module.Dual ℝ E) :
       simp [hy, hzero]
   · obtain ⟨x, hxball, hxy⟩ := exists_dualNorm_eq_apply y
     have hynonneg : 0 ≤ dualNorm y := by
-      simp [dualNorm]
+      rw [dualNorm_eq_toContinuousLinearMap_norm]
+      exact norm_nonneg _
     have hypos : 0 < dualNorm y := lt_of_le_of_ne hynonneg (Ne.symm hy)
     have hxge : 1 ≤ ‖x‖ := by
       have hle : dualNorm y ≤ dualNorm y * ‖x‖ := by

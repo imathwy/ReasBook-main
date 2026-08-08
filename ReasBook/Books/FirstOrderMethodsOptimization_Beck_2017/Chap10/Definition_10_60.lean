@@ -20,7 +20,7 @@ variable (A : Matrix (Fin m) (Fin n) ℝ) (b : EuclideanSpace ℝ (Fin m))
 /- Definition 10.60 is `source-facing` in the concrete S-FISTA model layer.
 
 Domain sampling identifies the canonical owners already present in the project:
-- Chapter 6's `EuclideanSpace.l1Norm`, used on the theorem surface as `l1n[·]`, for the Euclidean
+- Chapter 6's `EuclideanSpace.l1Norm`, used on the theorem surface as `‖·‖₁`, for the Euclidean
   `ℓ¹` penalties;
 - Chapter 10's `composite_model_objective` for additive objective assembly;
 - Definition 10.55's S-FISTA three-term bridge, showing that the three-summand objective should be
@@ -35,13 +35,13 @@ penalty, and the ambient `ℓ¹` penalty. Their sum is derived API from the chap
 abbrev least_squares_loss : X → ℝ :=
   fun x ↦ (1 / 2 : ℝ) * ‖A.toEuclideanLin x - b‖ ^ (2 : ℕ)
 
-/-- The analysis `ℓ¹` penalty `x ↦ l1n[D x]` from Definition 10.60. -/
+/-- The analysis `ℓ¹` penalty `x ↦ ‖D x‖₁` from Definition 10.60. -/
 abbrev analysis_l1_penalty : X → ℝ :=
-  fun x ↦ l1n[D.toEuclideanLin x]
+  fun x ↦ ‖D.toEuclideanLin x‖₁
 
-/-- The ambient `ℓ¹` regularizer `x ↦ λ l1n[x]` from Definition 10.60. -/
+/-- The ambient `ℓ¹` regularizer `x ↦ λ ‖x‖₁` from Definition 10.60. -/
 abbrev ambient_l1_regularizer (n : ℕ) (lam : ℝ) : EuclideanSpace ℝ (Fin n) → ℝ :=
-  fun x ↦ lam * l1n[x]
+  fun x ↦ lam * ‖x‖₁
 
 /- Definition 10.60: the least-squares analysis-`ℓ¹` objective is the specialized Chapter 10
 three-term owner `H[least_squares_loss A b, analysis_l1_penalty D, ambient_l1_regularizer n lam]`.
@@ -53,20 +53,20 @@ three-term owner `H[least_squares_loss A b, analysis_l1_penalty D, ambient_l1_re
   rfl
 
 @[simp] theorem analysis_l1_penalty_apply (x : X) :
-    analysis_l1_penalty D x = l1n[D.toEuclideanLin x] :=
+    analysis_l1_penalty D x = ‖D.toEuclideanLin x‖₁ :=
   rfl
 
 @[simp] theorem ambient_l1_regularizer_apply (x : X) :
-    ambient_l1_regularizer n lam x = lam * l1n[x] :=
+    ambient_l1_regularizer n lam x = lam * ‖x‖₁ :=
   rfl
 
 /- Evaluating the Definition 10.60 objective at `x` is definitionally the textbook formula
-`(1 / 2) ‖A x - b‖₂² + l1n[D x] + λ l1n[x]`. -/
+`(1 / 2) ‖A x - b‖₂² + ‖D x‖₁ + λ ‖x‖₁`. -/
 #check
   ((fun _ : X ↦ rfl) :
     ∀ x : X,
       H[least_squares_loss A b, analysis_l1_penalty D, ambient_l1_regularizer n lam] x =
-        (1 / 2 : ℝ) * ‖A.toEuclideanLin x - b‖ ^ (2 : ℕ) + l1n[D.toEuclideanLin x] +
-          lam * l1n[x])
+        (1 / 2 : ℝ) * ‖A.toEuclideanLin x - b‖ ^ (2 : ℕ) + ‖D.toEuclideanLin x‖₁ +
+          lam * ‖x‖₁)
 
 end

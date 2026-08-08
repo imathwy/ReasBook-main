@@ -89,11 +89,7 @@ lemma prox_grad_operator_mem_interior_effective_domain_f
   -- The standing domain inclusion upgrades the previous `dom(g)` finiteness to `int(dom(f))`.
   exact
     hg_effective_domain_subset_interior_f_effective_domain
-      (prox_grad_operator_mem_effective_domain_g
-        (f := f)
-        (g := g)
-        L
-        x)
+      (prox_grad_operator_mem_effective_domain_g f g L x)
 
 /-- Helper for Lemma 10.4: the proximal support inequality controls the smooth linear term in
 real-valued form. -/
@@ -112,7 +108,7 @@ lemma prox_grad_linear_term_le_toReal
     -- The Chapter 10 prox-gradient step is exactly the singleton proximal point of `(1 / L) g`.
     simpa [xPlus, z, proximal_gradient_step] using prox_grad_operator_eq_singleton f g L x
   rcases scaled_prox_singleton_support_of_proper_convex
-      (f := g) (μ := 1 / L) inferInstance hg_convex z xPlus hprox with
+      g (1 / L) inferInstance hg_convex z xPlus hprox with
     ⟨hxPlus_eff, hsupport⟩
   have hx_val :
       g (x : E) = (((g (x : E)).toReal : ℝ) : EReal) := by
@@ -203,23 +199,12 @@ theorem prox_grad_sufficient_decrease
   have hxPlus_int_f :
       xPlus ∈ interior (effective_domain f) :=
     prox_grad_operator_mem_interior_effective_domain_f
-      (f := f)
-      (g := g)
-      (hf_ne_bot := hf_ne_bot)
-      (hf_effective_domain_convex := hf_effective_domain_convex)
-      (hg_effective_domain_subset_interior_f_effective_domain :=
-        hg_effective_domain_subset_interior_f_effective_domain)
-      (hf_toReal_smooth_on_interior_effective_domain :=
-        hf_toReal_smooth_on_interior_effective_domain)
-      (L := L)
-      (x := x)
+      f g Lf hf_ne_bot hf_effective_domain_convex
+      hg_effective_domain_subset_interior_f_effective_domain
+      hf_toReal_smooth_on_interior_effective_domain L x
   have hxPlus_eff_f : xPlus ∈ effective_domain f := interior_subset hxPlus_int_f
   have hxPlus_eff_g : xPlus ∈ effective_domain g :=
-    prox_grad_operator_mem_effective_domain_g
-      (f := f)
-      (g := g)
-      (L := L)
-      (x := x)
+    prox_grad_operator_mem_effective_domain_g f g L x
   by_cases hxg : (x : E) ∈ effective_domain g
   · have hfx_val :
         f (x : E) = (((f (x : E)).toReal : ℝ) : EReal) := by
@@ -241,9 +226,6 @@ theorem prox_grad_sufficient_decrease
       -- Apply the Chapter 5 descent lemma at `x` and the realized successor `xPlus`.
       simpa [xPlus, norm_sub_rev] using
         (is_l_smooth_on_descent_lemma
-          (L := Lf)
-          (D := interior (effective_domain f))
-          (f := fun y ↦ (f y).toReal)
           hf_effective_domain_convex.interior
           hf_toReal_smooth_on_interior_effective_domain
           x.property
@@ -255,17 +237,9 @@ theorem prox_grad_sufficient_decrease
       -- The Chapter 6 singleton support inequality controls the linear model error.
       simpa [xPlus] using
         (prox_grad_linear_term_le_toReal
-          (f := f)
-          (g := g)
-          (hf_ne_bot := hf_ne_bot)
-          (hf_effective_domain_convex := hf_effective_domain_convex)
-          (hg_effective_domain_subset_interior_f_effective_domain :=
-            hg_effective_domain_subset_interior_f_effective_domain)
-          (hf_toReal_smooth_on_interior_effective_domain :=
-            hf_toReal_smooth_on_interior_effective_domain)
-          (L := L)
-          (x := x)
-          (hxg := hxg))
+          f g Lf hf_ne_bot hf_effective_domain_convex
+          hg_effective_domain_subset_interior_f_effective_domain
+          hf_toReal_smooth_on_interior_effective_domain L x hxg)
     have hgap_real :
         ((L : ℝ) - (Lf : ℝ) / 2) * ‖xPlus - (x : E)‖ ^ (2 : ℕ) ≤
           (f (x : E)).toReal + (g (x : E)).toReal -
@@ -276,16 +250,9 @@ theorem prox_grad_sufficient_decrease
         (((L : ℝ) - (Lf : ℝ) / 2) / (L : ℝ) ^ (2 : ℕ) * ‖G[L, f, g] x‖ ^ (2 : ℕ)) =
           ((L : ℝ) - (Lf : ℝ) / 2) * ‖xPlus - (x : E)‖ ^ (2 : ℕ) := by
       rw [gradient_mapping_norm_sq_eq_residual_sq
-        (f := f)
-        (g := g)
-        (hf_ne_bot := hf_ne_bot)
-        (hf_effective_domain_convex := hf_effective_domain_convex)
-        (hg_effective_domain_subset_interior_f_effective_domain :=
-          hg_effective_domain_subset_interior_f_effective_domain)
-        (hf_toReal_smooth_on_interior_effective_domain :=
-          hf_toReal_smooth_on_interior_effective_domain)
-        (L := L)
-        (x := x)]
+        f g Lf hf_ne_bot hf_effective_domain_convex
+        hg_effective_domain_subset_interior_f_effective_domain
+        hf_toReal_smooth_on_interior_effective_domain L x]
       have hL0 : (L : ℝ) ≠ 0 := (PosReal.coe_pos L).ne'
       rw [pow_two]
       have hnorm :

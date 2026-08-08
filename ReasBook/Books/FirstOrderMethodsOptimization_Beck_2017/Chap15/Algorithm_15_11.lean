@@ -1,4 +1,5 @@
 import Mathlib
+import FirstOrderMethodsOptimization_Beck_2017.Chap15.Algorithm_15_6
 import FirstOrderMethodsOptimization_Beck_2017.Chap15.Algorithm_15_12
 
 -- Declarations for this item will be appended below by the statement pipeline.
@@ -44,7 +45,7 @@ iteration `k`, `x^(k+1)` belongs to the canonical linear-composite ADMM `x`-argm
 `y^(k+1)` is the canonical affine multiplier update specialized to `A x - z = 0`.
 
 This is the `source-facing` view of alternating ADMM specialized to
-`h₁ = 0`, `h₂(z) = l1n[z - b]`, `B = -I`, and `c = 0`; the source-specific content here is only the
+`h₁ = 0`, `h₂(z) = ‖z - b‖₁`, `B = -I`, and `c = 0`; the source-specific content here is only the
 trajectory packaging by `z⁰` and `y⁰`. -/
 class IsADMMSoftThresholdTrajectoryV1
     (ρ : PosReal)
@@ -74,7 +75,7 @@ class IsADMMSoftThresholdTrajectoryV1
 namespace IsADMMSoftThresholdTrajectoryV1
 
 /-- A source-facing Algorithm 15.11 trajectory canonically determines the alternating-ADMM
-trajectory for `h₁ = 0`, `h₂(z) = l1n[z - b]`, `B = -I`, and `c = 0`, with the initial point
+trajectory for `h₁ = 0`, `h₂(z) = ‖z - b‖₁`, `B = -I`, and `c = 0`, with the initial point
 `x^0` read off as `x 0`. -/
 theorem toIsADMMAlternatingTrajectory
     {ρ : PosReal}

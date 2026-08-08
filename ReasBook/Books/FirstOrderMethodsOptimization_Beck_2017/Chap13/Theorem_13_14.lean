@@ -43,7 +43,7 @@ Text 13.1 consequence rather than primitive data. -/
 
 variable
   {f : E → ℝ} {g : E → EReal} {Lf : NNReal}
-  (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf)
+  (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf)
   (hf_convex : ConvexOn ℝ Set.univ f)
   {x p : ℕ → E} {t : ℕ → Set.Icc (0 : ℝ) 1}
   (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
@@ -51,12 +51,12 @@ variable
   {Ω : ℝ}
   (hΩ : ∀ u ∈ effective_domain g, ∀ v ∈ effective_domain g, ‖u - v‖ ≤ Ω)
 
-local notation "F" => composite_model_objective f.toExtendedReal g
-local notation "F_opt" => generalized_conditional_gradient_optimal_value f.toExtendedReal g
+local notation "F" => composite_model_objective f.toEReal g
+local notation "F_opt" => generalized_conditional_gradient_optimal_value f.toEReal g
 
 /-- Helper for Theorem 13.14: every optimizer attains the canonical Chapter 13 optimal value
 `F_opt`. -/
-lemma generalized_conditional_gradient_optimal_value_eq_of_mem_optimal_set
+private lemma generalized_conditional_gradient_optimal_value_eq_of_mem_optimal_set
     {xStar : E} (hxStar : xStar ∈ unconstrained_problem_solutions F) :
     F_opt = F xStar := by
   -- Rewrite optimizer membership as global minimality, then identify the infimum with that value.
@@ -86,8 +86,8 @@ lemma conditional_gradient_predefined_diminishing_stepsize_mem_Icc
 
 /-- Helper for Theorem 13.14: every generalized conditional-gradient iterate stays in
 `effective_domain g`. -/
-lemma generalized_conditional_gradient_trajectory_mem_effective_domain_theorem_13_14
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf)
+private lemma generalized_conditional_gradient_trajectory_mem_effective_domain
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf)
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (k : ℕ) :
     x k ∈ effective_domain g := by
@@ -100,8 +100,7 @@ lemma generalized_conditional_gradient_trajectory_mem_effective_domain_theorem_1
     rcases is_generalized_conditional_gradient_trajectory_step htraj k with ⟨hp, hstep⟩
     have hpdom :
         p k ∈ effective_domain g :=
-      generalized_conditional_gradient_argmin_mem_effective_domain
-        (f := f) (g := g) hk hp
+      generalized_conditional_gradient_argmin_mem_effective_domain hk hp
     have hcombo :
         (t k : ℝ) • p k + (1 - (t k : ℝ)) • x k ∈ effective_domain g :=
       combo_mem_effective_domain_of_is_convex_function hproblem.g_convex hpdom hk (t k).2
@@ -123,8 +122,8 @@ lemma generalized_conditional_gradient_trajectory_mem_effective_domain_theorem_1
 
 /-- Helper for Theorem 13.14: the composite objective is finite at every point of
 `effective_domain g`, so it is the coercion of the corresponding real sum. -/
-lemma composite_model_objective_eq_coe_real_of_mem_effective_domain_theorem_13_14
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf)
+private lemma composite_model_objective_eq_coe_real_of_mem_effective_domain
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf)
     {y : E} (hy : y ∈ effective_domain g) :
     F y = (((f y) + (g y).toReal : ℝ) : EReal) := by
   -- At feasible points, `g y` is finite and `f y` is already real-valued.
@@ -134,23 +133,22 @@ lemma composite_model_objective_eq_coe_real_of_mem_effective_domain_theorem_13_1
       (mem_effective_domain.mp hy).ne
       (hproblem.toIsProperExtendedRealFunction.ne_bot y)
   rw [composite_model_objective_apply, ← hgy]
-  simpa [Function.toExtendedReal] using (EReal.coe_add (f y) (g y).toReal).symm
+  simpa [Function.toEReal] using (EReal.coe_add (f y) (g y).toReal).symm
 
 /-- Helper for Theorem 13.14: the composite objective has the expected real `toReal` formula at
 every feasible point. -/
 lemma composite_model_objective_toReal_eq_of_mem_effective_domain
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf)
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf)
     {y : E} (hy : y ∈ effective_domain g) :
     (F y).toReal = f y + (g y).toReal := by
   -- Apply `toReal` to the finite-value normalization from the previous lemma.
-  rw [composite_model_objective_eq_coe_real_of_mem_effective_domain_theorem_13_14
-    (hproblem := hproblem) (y := y) hy]
+  rw [composite_model_objective_eq_coe_real_of_mem_effective_domain hproblem hy]
   simpa using EReal.toReal_coe (f y + (g y).toReal)
 
 /-- Helper for Theorem 13.14: at a feasible argmin point, the generalized conditional-gradient
 norm is the explicit real gap formula. -/
-lemma generalized_conditional_gradient_norm_eq_coe_gap_real_of_mem_argmin_theorem_13_14
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf)
+private lemma generalized_conditional_gradient_norm_eq_coe_gap_real_of_mem_argmin
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf)
     {y q : E} (hy : y ∈ effective_domain g) (hq : q ∈ effective_domain g)
     (hqmin : q ∈ generalized_conditional_gradient_argmin f g y) :
     S[f, g](y) =
@@ -176,44 +174,41 @@ lemma generalized_conditional_gradient_norm_eq_coe_gap_real_of_mem_argmin_theore
 
 /-- Helper for Theorem 13.14: the real-valued conditional-gradient gap formula is the `toReal`
 image of the canonical norm at a feasible argmin point. -/
-lemma generalized_conditional_gradient_norm_toReal_eq_gap_real_of_mem_argmin_theorem_13_14
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf)
+private lemma generalized_conditional_gradient_norm_toReal_eq_gap_real_of_mem_argmin
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf)
     {y q : E} (hy : y ∈ effective_domain g) (hq : q ∈ effective_domain g)
     (hqmin : q ∈ generalized_conditional_gradient_argmin f g y) :
     (S[f, g](y)).toReal =
       inner ℝ (∇ f y) (y - q) + (g y).toReal - (g q).toReal := by
   -- The previous finite `EReal` representation turns `toReal` into the displayed real formula.
-  rw [generalized_conditional_gradient_norm_eq_coe_gap_real_of_mem_argmin_theorem_13_14
-    (hproblem := hproblem) (y := y) (q := q) hy hq hqmin]
+  rw [generalized_conditional_gradient_norm_eq_coe_gap_real_of_mem_argmin hproblem hy hq hqmin]
   simpa using
     EReal.toReal_coe (inner ℝ (∇ f y) (y - q) + (g y).toReal - (g q).toReal)
 
 /-- Helper for Theorem 13.14: every iterate gap value is finite, hence equal to the coercion of
 its `toReal`. -/
 lemma generalized_conditional_gradient_norm_eq_coe_toReal
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf)
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf)
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (k : ℕ) :
     S[f, g](x k) = (((S[f, g](x k)).toReal : ℝ) : EReal) := by
   -- Rewrite the canonical norm at the chosen argmin point by the explicit real gap formula.
   have hxk :
       x k ∈ effective_domain g :=
-    generalized_conditional_gradient_trajectory_mem_effective_domain_theorem_13_14
-      (hproblem := hproblem) (htraj := htraj) k
+    generalized_conditional_gradient_trajectory_mem_effective_domain hproblem htraj k
   have hpk :
       p k ∈ generalized_conditional_gradient_argmin f g (x k) :=
     htraj.argmin_mem k
   have hpk_dom :
       p k ∈ effective_domain g :=
-    generalized_conditional_gradient_argmin_mem_effective_domain
-      (f := f) (g := g) hxk hpk
-  rw [generalized_conditional_gradient_norm_eq_coe_gap_real_of_mem_argmin_theorem_13_14
-    (hproblem := hproblem) (y := x k) (q := p k) hxk hpk_dom hpk]
+    generalized_conditional_gradient_argmin_mem_effective_domain hxk hpk
+  rw [generalized_conditional_gradient_norm_eq_coe_gap_real_of_mem_argmin
+    hproblem hxk hpk_dom hpk]
   exact (EReal.coe_toReal (EReal.coe_ne_top _) (EReal.coe_ne_bot _)).symm
 
 /-- Helper for Theorem 13.14: the adaptive conditional-gradient stepsize lies in `[0, 1]`
 whenever the current gap value is nonnegative. -/
-lemma conditional_gradient_adaptive_stepsize_mem_Icc_theorem_13_14
+private lemma conditional_gradient_adaptive_stepsize_mem_Icc
     {Sx : ℝ} (hSx : 0 ≤ Sx) (y q : E) :
     conditional_gradient_adaptive_stepsize Sx Lf y q ∈ Set.Icc (0 : ℝ) 1 := by
   -- Split the explicit fallback branch from the clipped-ratio branch in Definition 13.6.
@@ -265,8 +260,7 @@ lemma adaptive_stepsize_upper_model_value_le_of_mem_Icc
     have hLf_ne : Lf ≠ 0 := by
       intro hLf
       exact hdeg (Or.inr hLf)
-    rw [hs, conditional_gradient_adaptive_stepsize_of_ne
-      (Sx := Sx) (Lf := Lf) (x := y) (p := q) hq_ne hLf_ne]
+    rw [hs, conditional_gradient_adaptive_stepsize_of_ne Sx hq_ne hLf_ne]
     let D : ℝ := (Lf : ℝ) * ‖q - y‖ ^ (2 : ℕ)
     let r : ℝ := Sx / D
     have hLf_pos : 0 < (Lf : ℝ) := by
@@ -304,7 +298,7 @@ lemma adaptive_stepsize_upper_model_value_le_of_mem_Icc
 /-- Helper for Theorem 13.14: every objective gap `F(xᵏ) - F_opt` is the coercion of the
 corresponding real difference of finite values. -/
 lemma generalized_conditional_gradient_objective_gap_eq_coe_sub_optimal_value
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf)
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf)
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (k : ℕ) :
     F (x k) - F_opt =
@@ -316,8 +310,7 @@ lemma generalized_conditional_gradient_objective_gap_eq_coe_sub_optimal_value
   obtain ⟨y0, hy0⟩ :=
     hproblem.toIsProperExtendedRealFunction.effective_domain_nonempty
   have hFy0_lt_top : F y0 < ⊤ := by
-    rw [composite_model_objective_eq_coe_real_of_mem_effective_domain_theorem_13_14
-      (hproblem := hproblem) hy0]
+    rw [composite_model_objective_eq_coe_real_of_mem_effective_domain hproblem hy0]
     exact EReal.coe_lt_top _
   have hFxStar_ne_top : F xStar ≠ ⊤ := by
     rw [isMinOn_iff] at hxmin
@@ -330,24 +323,21 @@ lemma generalized_conditional_gradient_objective_gap_eq_coe_sub_optimal_value
     intro hg_top
     have htop : F xStar = ⊤ := by
       rw [composite_model_objective_apply, hg_top]
-      simpa [Function.toExtendedReal] using EReal.add_top_of_ne_bot (EReal.coe_ne_bot (f xStar))
+      simpa [Function.toEReal] using EReal.add_top_of_ne_bot (EReal.coe_ne_bot (f xStar))
     exact hFxStar_ne_top htop
   have hxk_dom :
       x k ∈ effective_domain g :=
-    generalized_conditional_gradient_trajectory_mem_effective_domain_theorem_13_14
-      (hproblem := hproblem) (htraj := htraj) k
+    generalized_conditional_gradient_trajectory_mem_effective_domain hproblem htraj k
   have hxk_val :
       F (x k) = (((F (x k)).toReal : ℝ) : EReal) := by
-    rw [composite_model_objective_eq_coe_real_of_mem_effective_domain_theorem_13_14
-      (hproblem := hproblem) hxk_dom]
+    rw [composite_model_objective_eq_coe_real_of_mem_effective_domain hproblem hxk_dom]
     exact (EReal.coe_toReal (EReal.coe_ne_top _) (EReal.coe_ne_bot _)).symm
   have hopt_eq :
       F_opt = F xStar :=
     generalized_conditional_gradient_optimal_value_eq_of_mem_optimal_set hxStar
   have hopt_val :
       F_opt = (((F_opt).toReal : ℝ) : EReal) := by
-    rw [hopt_eq, composite_model_objective_eq_coe_real_of_mem_effective_domain_theorem_13_14
-      (hproblem := hproblem) hxStar_dom]
+    rw [hopt_eq, composite_model_objective_eq_coe_real_of_mem_effective_domain hproblem hxStar_dom]
     exact (EReal.coe_toReal (EReal.coe_ne_top _) (EReal.coe_ne_bot _)).symm
   rw [hxk_val, hopt_val, ← EReal.coe_sub]
   simp
@@ -355,19 +345,18 @@ lemma generalized_conditional_gradient_objective_gap_eq_coe_sub_optimal_value
 /-- Helper for Theorem 13.14: the real objective gap is the ordinary difference of the finite
 iterate and optimal values. -/
 lemma generalized_conditional_gradient_objective_gap_toReal_eq_sub_optimal_value
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf)
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf)
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (k : ℕ) :
     (F (x k) - F_opt).toReal = (F (x k)).toReal - (F_opt).toReal := by
   -- Apply `toReal` to the finite `EReal` normalization of the objective gap.
-  rw [generalized_conditional_gradient_objective_gap_eq_coe_sub_optimal_value
-    (hproblem := hproblem) (htraj := htraj) k]
+  rw [generalized_conditional_gradient_objective_gap_eq_coe_sub_optimal_value hproblem htraj k]
   simpa using EReal.toReal_coe ((F (x k)).toReal - (F_opt).toReal)
 
 /-- Helper for Theorem 13.14: Assumption 13.1 restricts the smoothness of the real-valued term
-`f` from `effective_domain f.toExtendedReal` to the smaller set `effective_domain g`. -/
+`f` from `effective_domain f.toEReal` to the smaller set `effective_domain g`. -/
 lemma generalized_conditional_gradient_smooth_on_effective_domain_g
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf) :
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf) :
     is_l_smooth_on f (effective_domain g) Lf := by
   -- Rewrite the smoothness owner once, then restrict both differentiability and Lipschitz
   -- control along the domain inclusion `effective_domain g ⊆ effective_domain f`.
@@ -386,8 +375,8 @@ lemma generalized_conditional_gradient_smooth_on_effective_domain_g
 
 /-- Helper for Theorem 13.14: every feasible trial point on the conditional-gradient segment
 remains in `effective_domain g`. -/
-lemma conditional_gradient_trial_mem_effective_domain_of_mem_Icc_theorem_13_14
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf)
+private lemma conditional_gradient_trial_mem_effective_domain_of_mem_Icc
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf)
     {y q : E} (hy : y ∈ effective_domain g) (hq : q ∈ effective_domain g)
     {α : ℝ} (hα : α ∈ Set.Icc (0 : ℝ) 1) :
     y + α • (q - y) ∈ effective_domain g := by
@@ -401,33 +390,31 @@ lemma conditional_gradient_trial_mem_effective_domain_of_mem_Icc_theorem_13_14
 
 /-- Helper for Theorem 13.14: the composite objective is the coercion of its real value at every
 feasible point. -/
-lemma composite_model_objective_eq_coe_toReal_of_mem_effective_domain_theorem_13_14
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf)
+private lemma composite_model_objective_eq_coe_toReal_of_mem_effective_domain
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf)
     {y : E} (hy : y ∈ effective_domain g) :
     F y = (((F y).toReal : ℝ) : EReal) := by
   -- First rewrite `F y` through the explicit finite real formula, then fold it back as a
   -- coercion of `toReal`.
-  rw [composite_model_objective_eq_coe_real_of_mem_effective_domain_theorem_13_14
-    (hproblem := hproblem) (y := y) hy]
+  rw [composite_model_objective_eq_coe_real_of_mem_effective_domain hproblem hy]
   exact (EReal.coe_toReal (EReal.coe_ne_top _) (EReal.coe_ne_bot _)).symm
 
 /-- Helper for Theorem 13.14: at a feasible argmin point, the generalized conditional-gradient
 norm is the coercion of its real `toReal` value. -/
-lemma generalized_conditional_gradient_norm_eq_coe_toReal_of_mem_argmin_theorem_13_14
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf)
+private lemma generalized_conditional_gradient_norm_eq_coe_toReal_of_mem_argmin
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf)
     {y q : E} (hy : y ∈ effective_domain g) (hq : q ∈ effective_domain g)
     (hqmin : q ∈ generalized_conditional_gradient_argmin f g y) :
     S[f, g](y) = (((S[f, g](y)).toReal : ℝ) : EReal) := by
   -- Rewrite the norm by the explicit finite real gap formula, then read that formula back as the
   -- coercion of its `toReal`.
-  rw [generalized_conditional_gradient_norm_eq_coe_gap_real_of_mem_argmin_theorem_13_14
-    (hproblem := hproblem) (y := y) (q := q) hy hq hqmin]
+  rw [generalized_conditional_gradient_norm_eq_coe_gap_real_of_mem_argmin hproblem hy hq hqmin]
   exact (EReal.coe_toReal (EReal.coe_ne_top _) (EReal.coe_ne_bot _)).symm
 
 /-- Helper for Theorem 13.14: argmin membership implies the real-valued linearized subproblem at
 `q` is no larger than the comparison value at the base point `y`. -/
-lemma generalized_conditional_gradient_subproblem_toReal_le_of_mem_argmin_theorem_13_14
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf)
+private lemma generalized_conditional_gradient_subproblem_toReal_le_of_mem_argmin
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf)
     {y q : E} (hy : y ∈ effective_domain g)
     (hqmin : q ∈ generalized_conditional_gradient_argmin f g y) :
     inner ℝ (∇ f y) q + (g q).toReal ≤ inner ℝ (∇ f y) y + (g y).toReal := by
@@ -435,8 +422,7 @@ lemma generalized_conditional_gradient_subproblem_toReal_le_of_mem_argmin_theore
   -- both finite `EReal` values as real coercions.
   have hq :
       q ∈ effective_domain g :=
-    generalized_conditional_gradient_argmin_mem_effective_domain
-      (f := f) (g := g) hy hqmin
+    generalized_conditional_gradient_argmin_mem_effective_domain hy hqmin
   have hmin :
       generalized_conditional_gradient_subproblem f g y q ≤
         generalized_conditional_gradient_subproblem f g y y := by
@@ -466,8 +452,8 @@ lemma generalized_conditional_gradient_subproblem_toReal_le_of_mem_argmin_theore
 
 /-- Helper for Theorem 13.14: the generalized conditional-gradient norm is nonnegative at every
 feasible argmin point. -/
-lemma generalized_conditional_gradient_norm_toReal_nonneg_of_mem_argmin_theorem_13_14
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf)
+private lemma generalized_conditional_gradient_norm_toReal_nonneg_of_mem_argmin
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf)
     {y q : E} (hy : y ∈ effective_domain g)
     (hqmin : q ∈ generalized_conditional_gradient_argmin f g y) :
     0 ≤ (S[f, g](y)).toReal := by
@@ -475,24 +461,21 @@ lemma generalized_conditional_gradient_norm_toReal_nonneg_of_mem_argmin_theorem_
   -- inequality as the explicit finite gap formula for `S[f, g](y)`.
   have hq :
       q ∈ effective_domain g :=
-    generalized_conditional_gradient_argmin_mem_effective_domain
-      (f := f) (g := g) hy hqmin
+    generalized_conditional_gradient_argmin_mem_effective_domain hy hqmin
   have hsub :
       inner ℝ (∇ f y) q + (g q).toReal ≤ inner ℝ (∇ f y) y + (g y).toReal :=
-    generalized_conditional_gradient_subproblem_toReal_le_of_mem_argmin_theorem_13_14
-      (f := f) (g := g) (Lf := Lf) (hproblem := hproblem) hy hqmin
+    generalized_conditional_gradient_subproblem_toReal_le_of_mem_argmin hproblem hy hqmin
   have hgap_nonneg :
       0 ≤ inner ℝ (∇ f y) (y - q) + (g y).toReal - (g q).toReal := by
     rw [inner_sub_right]
     linarith
-  rw [generalized_conditional_gradient_norm_toReal_eq_gap_real_of_mem_argmin_theorem_13_14
-    (hproblem := hproblem) (y := y) (q := q) hy hq hqmin]
+  rw [generalized_conditional_gradient_norm_toReal_eq_gap_real_of_mem_argmin hproblem hy hq hqmin]
   exact hgap_nonneg
 
 /-- Helper for Theorem 13.14: Lemma 13.7 becomes a real-valued inequality once all objective and
 gap terms are normalized at feasible points. -/
-lemma generalized_conditional_gradient_fundamental_inequality_toReal_theorem_13_14
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf)
+private lemma generalized_conditional_gradient_fundamental_inequality_toReal
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf)
     {y q : E} (hy : y ∈ effective_domain g)
     (hqmin : q ∈ generalized_conditional_gradient_argmin f g y)
     {α : ℝ} (hα : α ∈ Set.Icc (0 : ℝ) 1) :
@@ -504,31 +487,26 @@ lemma generalized_conditional_gradient_fundamental_inequality_toReal_theorem_13_
   -- inequalities.
   have hq_dom :
       q ∈ effective_domain g :=
-    generalized_conditional_gradient_argmin_mem_effective_domain
-      (f := f) (g := g) hy hqmin
+    generalized_conditional_gradient_argmin_mem_effective_domain hy hqmin
   have htrial_dom :
       y + α • (q - y) ∈ effective_domain g :=
-    conditional_gradient_trial_mem_effective_domain_of_mem_Icc_theorem_13_14
-      (hproblem := hproblem) hy hq_dom hα
+    conditional_gradient_trial_mem_effective_domain_of_mem_Icc hproblem hy hq_dom hα
   have hfund :
       F (y + α • (q - y)) ≤
         F y - (α : EReal) * S[f, g](y) +
           ((((α ^ (2 : ℕ) * (Lf : ℝ)) / 2) * ‖q - y‖ ^ (2 : ℕ) : ℝ) : EReal) := by
     simpa [pow_two, mul_assoc, mul_left_comm, mul_comm] using
       (generalized_conditional_gradient_fundamental_inequality
-        (f := f) (g := g) (Lf := Lf)
-        (hg_ne_bot := hproblem.toIsProperExtendedRealFunction.ne_bot)
-        (hg_convex := hproblem.g_convex)
-        (hf_smooth :=
-          generalized_conditional_gradient_smooth_on_effective_domain_g
-            (f := f) (g := g) (Lf := Lf) hproblem)
-        (x := y) (p := q) hy hqmin hα)
-  rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain_theorem_13_14
-      (hproblem := hproblem) (y := y + α • (q - y)) htrial_dom,
-    composite_model_objective_eq_coe_toReal_of_mem_effective_domain_theorem_13_14
-      (hproblem := hproblem) (y := y) hy,
-    generalized_conditional_gradient_norm_eq_coe_toReal_of_mem_argmin_theorem_13_14
-      (hproblem := hproblem) (y := y) (q := q) hy hq_dom hqmin,
+        hproblem.toIsProperExtendedRealFunction.ne_bot
+        hproblem.g_convex
+        (generalized_conditional_gradient_smooth_on_effective_domain_g hproblem)
+        hy hqmin hα)
+  rw [composite_model_objective_eq_coe_toReal_of_mem_effective_domain
+      hproblem htrial_dom,
+    composite_model_objective_eq_coe_toReal_of_mem_effective_domain
+      hproblem hy,
+    generalized_conditional_gradient_norm_eq_coe_toReal_of_mem_argmin
+      hproblem hy hq_dom hqmin,
     ← EReal.coe_mul, ← EReal.coe_sub, ← EReal.coe_add] at hfund
   exact_mod_cast hfund
 
@@ -547,23 +525,20 @@ lemma generalized_conditional_gradient_standard_stepsize_model_recurrence
     conditional_gradient_predefined_diminishing_stepsize_mem_Icc k
   have hxk :
       x k ∈ effective_domain g :=
-    generalized_conditional_gradient_trajectory_mem_effective_domain_theorem_13_14
-      (hproblem := hproblem) (htraj := htraj) k
+    generalized_conditional_gradient_trajectory_mem_effective_domain hproblem htraj k
   have hpk :
       p k ∈ generalized_conditional_gradient_argmin f g (x k) :=
     htraj.argmin_mem k
   have hpk_dom :
       p k ∈ effective_domain g :=
-    generalized_conditional_gradient_argmin_mem_effective_domain
-      (f := f) (g := g) hxk hpk
+    generalized_conditional_gradient_argmin_mem_effective_domain hxk hpk
   have htrial :
       (F (x k + αk • (p k - x k))).toReal ≤
         (F (x k)).toReal - αk * (S[f, g](x k)).toReal +
           (((αk ^ (2 : ℕ) * (Lf : ℝ)) / 2) * ‖p k - x k‖ ^ (2 : ℕ)) := by
     simpa [αk] using
-      generalized_conditional_gradient_fundamental_inequality_toReal_theorem_13_14
-        (f := f) (g := g) (Lf := Lf) (hproblem := hproblem)
-        (y := x k) (q := p k) hxk hpk hαk
+      generalized_conditional_gradient_fundamental_inequality_toReal
+        hproblem hxk hpk hαk
   rcases hsteps with hpredef | hrest
   · -- The predefined branch is exactly equation (13.26) with `t_k = α_k`.
     have htk_eq : (t k : ℝ) = αk := by
@@ -579,8 +554,7 @@ lemma generalized_conditional_gradient_standard_stepsize_model_recurrence
       -- model comparison from equation (13.28).
       have hS_nonneg :
           0 ≤ (S[f, g](x k)).toReal :=
-        generalized_conditional_gradient_norm_toReal_nonneg_of_mem_argmin_theorem_13_14
-          (f := f) (g := g) (Lf := Lf) (hproblem := hproblem) hxk hpk
+        generalized_conditional_gradient_norm_toReal_nonneg_of_mem_argmin hproblem hxk hpk
       rcases hadapt k with ⟨_, _, htk_eq⟩
       have hstep_adapt :
           (F (x (k + 1))).toReal ≤
@@ -588,9 +562,8 @@ lemma generalized_conditional_gradient_standard_stepsize_model_recurrence
               (((((t k : ℝ) ^ (2 : ℕ)) * (Lf : ℝ)) / 2) *
                 ‖p k - x k‖ ^ (2 : ℕ)) := by
         simpa [htraj.step_eq k] using
-          generalized_conditional_gradient_fundamental_inequality_toReal_theorem_13_14
-            (f := f) (g := g) (Lf := Lf) (hproblem := hproblem)
-            (y := x k) (q := p k) hxk hpk (t k).2
+          generalized_conditional_gradient_fundamental_inequality_toReal
+            hproblem hxk hpk (t k).2
       have hmodel_compare :
           -(t k : ℝ) * (S[f, g](x k)).toReal +
               (((((t k : ℝ) ^ (2 : ℕ)) * (Lf : ℝ)) / 2) *
@@ -601,19 +574,16 @@ lemma generalized_conditional_gradient_standard_stepsize_model_recurrence
         rw [htk_eq]
         simpa [αk] using
           adaptive_stepsize_upper_model_value_le_of_mem_Icc
-            (Lf := Lf) (Sx := (S[f, g](x k)).toReal) (alpha := αk)
             hS_nonneg hαk (x k) (p k)
       linarith
     · -- The exact-line-search branch compares the minimizing step with the common trial scalar
       -- `α_k`, then inserts the predefined-step model inequality.
       have htrial_dom :
           x k + αk • (p k - x k) ∈ effective_domain g :=
-        conditional_gradient_trial_mem_effective_domain_of_mem_Icc_theorem_13_14
-          (f := f) (g := g) (Lf := Lf) (hproblem := hproblem) hxk hpk_dom hαk
+        conditional_gradient_trial_mem_effective_domain_of_mem_Icc hproblem hxk hpk_dom hαk
       have hxnext :
           x (k + 1) ∈ effective_domain g :=
-        generalized_conditional_gradient_trajectory_mem_effective_domain_theorem_13_14
-          (hproblem := hproblem) (htraj := htraj) (k + 1)
+        generalized_conditional_gradient_trajectory_mem_effective_domain hproblem htraj (k + 1)
       have hcompare :
           F (x (k + 1)) ≤ F (x k + αk • (p k - x k)) := by
         have hexactk := hexact k
@@ -624,12 +594,12 @@ lemma generalized_conditional_gradient_standard_stepsize_model_recurrence
           (F (x (k + 1))).toReal ≤ (F (x k + αk • (p k - x k))).toReal :=
         EReal.toReal_le_toReal hcompare
           (by
-            rw [composite_model_objective_eq_coe_real_of_mem_effective_domain_theorem_13_14
-              (hproblem := hproblem) (y := x (k + 1)) hxnext]
+            rw [composite_model_objective_eq_coe_real_of_mem_effective_domain
+              hproblem hxnext]
             exact EReal.coe_ne_bot _)
           (by
-            rw [composite_model_objective_eq_coe_real_of_mem_effective_domain_theorem_13_14
-              (hproblem := hproblem) (y := x k + αk • (p k - x k)) htrial_dom]
+            rw [composite_model_objective_eq_coe_real_of_mem_effective_domain
+              hproblem htrial_dom]
             exact EReal.coe_ne_top _)
       exact le_trans hcompare_real htrial
 omit hproblem htraj hsteps hΩ
@@ -647,15 +617,13 @@ lemma generalized_conditional_gradient_standard_stepsize_value_recurrence
   let αk : ℝ := conditional_gradient_predefined_diminishing_stepsize k
   have hxk :
       x k ∈ effective_domain g :=
-    generalized_conditional_gradient_trajectory_mem_effective_domain_theorem_13_14
-      (hproblem := hproblem) (htraj := htraj) k
+    generalized_conditional_gradient_trajectory_mem_effective_domain hproblem htraj k
   have hpk :
       p k ∈ generalized_conditional_gradient_argmin f g (x k) :=
     htraj.argmin_mem k
   have hpk_dom :
       p k ∈ effective_domain g :=
-    generalized_conditional_gradient_argmin_mem_effective_domain
-      (f := f) (g := g) hxk hpk
+    generalized_conditional_gradient_argmin_mem_effective_domain hxk hpk
   have hnorm_le :
       ‖p k - x k‖ ≤ Ω := by
     simpa [norm_sub_rev] using hΩ (x k) hxk (p k) hpk_dom
@@ -675,8 +643,7 @@ lemma generalized_conditional_gradient_standard_stepsize_value_recurrence
         ring
   have hmodel :=
     generalized_conditional_gradient_standard_stepsize_model_recurrence
-      (f := f) (g := g) (Lf := Lf) (hproblem := hproblem) (htraj := htraj)
-      (hsteps := hsteps) (Ω := Ω) (hΩ := hΩ) k
+      hproblem htraj hsteps hΩ k
   dsimp [αk] at hquad_le hmodel ⊢
   linarith
 omit hproblem htraj hsteps hΩ
@@ -696,19 +663,18 @@ lemma generalized_conditional_gradient_standard_stepsize_recurrence
   -- `(F_opt).toReal` after rewriting both objective gaps as ordinary real differences.
   have hvalue :=
     generalized_conditional_gradient_standard_stepsize_value_recurrence
-      (f := f) (g := g) (Lf := Lf) (hproblem := hproblem) (htraj := htraj)
-      (hsteps := hsteps) (Ω := Ω) (hΩ := hΩ) k
+      hproblem htraj hsteps hΩ k
   rw [generalized_conditional_gradient_objective_gap_toReal_eq_sub_optimal_value
-      (hproblem := hproblem) (htraj := htraj) (k := k + 1),
+      hproblem htraj (k + 1),
     generalized_conditional_gradient_objective_gap_toReal_eq_sub_optimal_value
-      (hproblem := hproblem) (htraj := htraj) (k := k)]
+      hproblem htraj k]
   linarith
 omit hproblem htraj hsteps hΩ
 
 /-- Helper for Theorem 13.14: convexity of `f` and Lemma 13.12 imply that the real objective gap
 is dominated by the real generalized conditional-gradient gap at every iterate. -/
 lemma generalized_conditional_gradient_objective_gap_toReal_le_norm_toReal
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf)
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf)
     (hf_convex : ConvexOn ℝ Set.univ f)
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (k : ℕ) :
@@ -717,38 +683,34 @@ lemma generalized_conditional_gradient_objective_gap_toReal_le_norm_toReal
   -- finite-value normalizations already established in this file.
   have hxk :
       x k ∈ effective_domain g :=
-    generalized_conditional_gradient_trajectory_mem_effective_domain_theorem_13_14
-      (hproblem := hproblem) (htraj := htraj) k
+    generalized_conditional_gradient_trajectory_mem_effective_domain hproblem htraj k
   have hxk_f :
-      x k ∈ effective_domain f.toExtendedReal :=
+      x k ∈ effective_domain f.toEReal :=
     hproblem.g_effective_domain_subset_f_effective_domain hxk
   have hdiff :
-      DifferentiableAt ℝ (fun y ↦ ((f.toExtendedReal) y).toReal) (x k) :=
+      DifferentiableAt ℝ (fun y ↦ ((f.toEReal) y).toReal) (x k) :=
     (hproblem.is_differentiable_at ⟨x k, hxk_f⟩).2
   have hgap_ereal :
       F (x k) - F_opt ≤ S[f, g](x k) := by
     simpa [ge_iff_le] using
       (generalized_conditional_gradient_gap_ge_objective_gap
-        (f := f.toExtendedReal) (g := g)
-        (hf_ne_bot := fun y ↦ EReal.coe_ne_bot (f y))
-        (hf_convex := Function.toExtendedReal_isConvexFunction hf_convex)
-        (hx_f := hxk_f) (hx_diff := hdiff) (hx := hxk))
+        (fun y ↦ EReal.coe_ne_bot (f y))
+        (Function.toEReal_isConvexFunction hf_convex)
+        hxk_f hdiff hxk)
   have hleft_bot :
       F (x k) - F_opt ≠ ⊥ := by
-    rw [generalized_conditional_gradient_objective_gap_eq_coe_sub_optimal_value
-      (hproblem := hproblem) (htraj := htraj) k]
+    rw [generalized_conditional_gradient_objective_gap_eq_coe_sub_optimal_value hproblem htraj k]
     exact EReal.coe_ne_bot _
   have hright_top :
       S[f, g](x k) ≠ ⊤ := by
-    rw [generalized_conditional_gradient_norm_eq_coe_toReal
-      (hproblem := hproblem) (htraj := htraj) k]
+    rw [generalized_conditional_gradient_norm_eq_coe_toReal hproblem htraj k]
     exact EReal.coe_ne_top _
   exact EReal.toReal_le_toReal hgap_ereal hleft_bot hright_top
 
 /-- Helper for Theorem 13.14: the real objective gap is nonnegative at every iterate because
 `F_opt` is the infimum of attained objective values. -/
 lemma generalized_conditional_gradient_objective_gap_toReal_nonneg
-    (hproblem : IsGeneralizedConditionalGradientProblem f.toExtendedReal g Lf)
+    (hproblem : IsGeneralizedConditionalGradientProblem f.toEReal g Lf)
     (htraj : is_generalized_conditional_gradient_trajectory f g x p t)
     (k : ℕ) :
     0 ≤ (F (x k) - F_opt).toReal := by
@@ -765,7 +727,7 @@ lemma generalized_conditional_gradient_objective_gap_toReal_nonneg
   have hopt_ne_bot :
       F_opt ≠ ⊥ := by
     rw [hopt_eq, composite_model_objective_apply]
-    simpa [Function.toExtendedReal] using
+    simpa [Function.toEReal] using
       show (((f xStar : ℝ) : EReal) + g xStar) ≠ ⊥ by
         intro hbot
         rw [EReal.add_eq_bot_iff] at hbot
@@ -774,18 +736,15 @@ lemma generalized_conditional_gradient_objective_gap_toReal_nonneg
         · exact hproblem.toIsProperExtendedRealFunction.ne_bot xStar hright
   have hxk :
       x k ∈ effective_domain g :=
-    generalized_conditional_gradient_trajectory_mem_effective_domain_theorem_13_14
-      (hproblem := hproblem) (htraj := htraj) k
+    generalized_conditional_gradient_trajectory_mem_effective_domain hproblem htraj k
   have hFxk_ne_top :
       F (x k) ≠ ⊤ := by
-    rw [composite_model_objective_eq_coe_real_of_mem_effective_domain_theorem_13_14
-      (hproblem := hproblem) (y := x k) hxk]
+    rw [composite_model_objective_eq_coe_real_of_mem_effective_domain hproblem hxk]
     exact EReal.coe_ne_top _
   have hreal_le :
       (F_opt).toReal ≤ (F (x k)).toReal :=
     EReal.toReal_le_toReal hopt_le hopt_ne_bot hFxk_ne_top
-  rw [generalized_conditional_gradient_objective_gap_toReal_eq_sub_optimal_value
-    (hproblem := hproblem) (htraj := htraj) k]
+  rw [generalized_conditional_gradient_objective_gap_toReal_eq_sub_optimal_value hproblem htraj k]
   exact sub_nonneg.mpr hreal_le
 
 -- Proof sketch: specialize the one-step estimate from the generalized conditional-gradient
@@ -813,18 +772,15 @@ theorem generalized_conditional_gradient_objective_gap_le_sublinear_rate
     positivity
   have hbound :=
     scalar_recurrence_le_sublinear_bound_of_conditional_gradient_stepsize
-      (a := a) (b := b) (A := A) (p := 1) (hp := by norm_num)
-      (ha_nonneg := fun n ↦ generalized_conditional_gradient_objective_gap_toReal_nonneg
-        (f := f) (g := g) (Lf := Lf) (hproblem := hproblem) (htraj := htraj) n)
-      (hstep := fun n ↦ by
+      a b A 1 (by norm_num)
+      (fun n ↦ generalized_conditional_gradient_objective_gap_toReal_nonneg hproblem htraj n)
+      (fun n ↦ by
         simpa [a, b, A] using
           generalized_conditional_gradient_standard_stepsize_recurrence
-            (f := f) (g := g) (Lf := Lf) (hproblem := hproblem) (htraj := htraj)
-            (hsteps := hsteps) (Ω := Ω) (hΩ := hΩ) n)
-      (ha_le_b := fun n ↦ generalized_conditional_gradient_objective_gap_toReal_le_norm_toReal
-        (f := f) (g := g) (Lf := Lf) (hproblem := hproblem) (hf_convex := hf_convex)
-        (htraj := htraj) n)
-      (k := k) hk
+            hproblem htraj hsteps hΩ n)
+      (fun n ↦ generalized_conditional_gradient_objective_gap_toReal_le_norm_toReal
+        hproblem hf_convex htraj n)
+      hk
   have hbound' :
       a k ≤ (2 * A) / (k : ℝ) := by
     simpa [a, A, hA_nonneg, max_eq_left hA_nonneg, mul_assoc, mul_left_comm, mul_comm] using
@@ -833,10 +789,9 @@ theorem generalized_conditional_gradient_objective_gap_le_sublinear_rate
       (F (x k)).toReal - (F_opt).toReal ≤
         (2 : ℝ) * (Lf : ℝ) * Ω ^ (2 : ℕ) / (k : ℝ) := by
     rw [← generalized_conditional_gradient_objective_gap_toReal_eq_sub_optimal_value
-      (hproblem := hproblem) (htraj := htraj) k]
+      hproblem htraj k]
     simpa [a, A, mul_assoc, mul_left_comm, mul_comm] using hbound'
-  rw [generalized_conditional_gradient_objective_gap_eq_coe_sub_optimal_value
-    (hproblem := hproblem) (htraj := htraj) k]
+  rw [generalized_conditional_gradient_objective_gap_eq_coe_sub_optimal_value hproblem htraj k]
   exact_mod_cast hfinal_real
 omit hproblem hf_convex htraj hsteps hΩ
 
@@ -866,18 +821,15 @@ theorem exists_half_tail_generalized_conditional_gradient_gap_le_sublinear_rate
     positivity
   obtain ⟨n, hn, hbn⟩ :=
     exists_half_tail_index_le_sublinear_bound_of_conditional_gradient_stepsize
-      (a := a) (b := b) (A := A) (p := 1) (hp := by norm_num)
-      (ha_nonneg := fun m ↦ generalized_conditional_gradient_objective_gap_toReal_nonneg
-        (f := f) (g := g) (Lf := Lf) (hproblem := hproblem) (htraj := htraj) m)
-      (hstep := fun m ↦ by
+      a b A 1 (by norm_num)
+      (fun m ↦ generalized_conditional_gradient_objective_gap_toReal_nonneg hproblem htraj m)
+      (fun m ↦ by
         simpa [a, b, A] using
           generalized_conditional_gradient_standard_stepsize_recurrence
-            (f := f) (g := g) (Lf := Lf) (hproblem := hproblem) (htraj := htraj)
-            (hsteps := hsteps) (Ω := Ω) (hΩ := hΩ) m)
-      (ha_le_b := fun m ↦ generalized_conditional_gradient_objective_gap_toReal_le_norm_toReal
-        (f := f) (g := g) (Lf := Lf) (hproblem := hproblem) (hf_convex := hf_convex)
-        (htraj := htraj) m)
-      (k := k) hk
+            hproblem htraj hsteps hΩ m)
+      (fun m ↦ generalized_conditional_gradient_objective_gap_toReal_le_norm_toReal
+        hproblem hf_convex htraj m)
+      hk
   have hbn' :
       b n ≤ (8 * A) / (((k - 2 : ℕ) : ℝ)) := by
     simpa [a, A, hA_nonneg, max_eq_left hA_nonneg, mul_assoc, mul_left_comm, mul_comm] using
@@ -887,8 +839,7 @@ theorem exists_half_tail_generalized_conditional_gradient_gap_le_sublinear_rate
         (8 : ℝ) * (Lf : ℝ) * Ω ^ (2 : ℕ) / (((k - 2 : ℕ) : ℝ)) := by
     simpa [b, A, mul_assoc, mul_left_comm, mul_comm] using hbn'
   refine ⟨n, hn, ?_⟩
-  rw [generalized_conditional_gradient_norm_eq_coe_toReal
-    (hproblem := hproblem) (htraj := htraj) n]
+  rw [generalized_conditional_gradient_norm_eq_coe_toReal hproblem htraj n]
   exact_mod_cast hfinal_real
 omit hproblem hf_convex htraj hsteps hΩ
 

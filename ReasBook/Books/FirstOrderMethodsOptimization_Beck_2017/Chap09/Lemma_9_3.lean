@@ -15,8 +15,8 @@ variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [Complete
 variable {ω : E → EReal} {a b c : E}
 
 /- Lemma 9.3 is `source-facing`: it records the standard three-point identity for the Chapter 9
-owner `extendedRealBregmanDistance` on the mathematically meaningful differentiable domain of the two anchor
-points. The Chapter 9 owner on the right is still `extendedRealBregmanDistance`, while the gradient data on
+owner `bregmanDistance` on the mathematically meaningful differentiable domain of the two anchor
+points. The Chapter 9 owner on the right is still `bregmanDistance`, while the gradient data on
 the left should be supplied through the canonical mathlib owner `HasGradientAt` rather than through
 the global totalized surface `∇`. -/
 

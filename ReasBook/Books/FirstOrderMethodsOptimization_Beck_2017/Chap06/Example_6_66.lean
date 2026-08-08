@@ -15,7 +15,6 @@ open AffineMap
 section
 
 variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [ProperSpace E]
-  [Nontrivial E]
 
 /- Example 6.66 is `source-facing`: the textbook computes the proximal operator of the scaled
 Huber function `λ H[μ]`. Domain sampling in the chapter identifies the correct owner chain:
@@ -77,7 +76,7 @@ theorem prox_scaled_huber_function_eq_singleton_shrinkage
     have hscaled_norm :
         prox[(((μ + lamPos : ℝ) : EReal) • norm_penalty 1)] x =
           {lineMap x 0 (((μ + lamPos : ℝ) / max ‖x‖ (μ + lamPos : ℝ)))} := by
-      have hμlam_nonneg : 0 ≤ (μ + lamPos : ℝ) := le_of_lt (add_pos μ.2 lamPos.2)
+      have hμlam_pos : 0 < (μ + lamPos : ℝ) := add_pos μ.2 lamPos.2
       calc
         prox[(((μ + lamPos : ℝ) : EReal) • norm_penalty 1)] x
             = prox[norm_penalty (μ + lamPos : ℝ)] x := by
@@ -86,7 +85,7 @@ theorem prox_scaled_huber_function_eq_singleton_shrinkage
                 simp [norm_penalty, smul_eq_mul]
         _ = {(1 - (μ + lamPos : ℝ) / max ‖x‖ (μ + lamPos : ℝ)) • x} := by
               simpa using
-                prox_norm_penalty_eq_singleton_shrinkage (μ + lamPos : ℝ) hμlam_nonneg x
+                prox_norm_penalty_eq_singleton_shrinkage (μ + lamPos : ℝ) hμlam_pos x
         _ = {lineMap x 0 (((μ + lamPos : ℝ) / max ‖x‖ (μ + lamPos : ℝ)))} := by
               simp [AffineMap.lineMap_apply_module]
     have hscaled_huber :

@@ -78,8 +78,8 @@ lemma gradient_mapping_support_ineq_real
     -- Unfold the Chapter 10 prox-gradient operator back to the singleton proximal point.
     simpa [z, proximal_gradient_step] using prox_grad_operator_eq_singleton f g L x
   rcases scaled_prox_singleton_support_of_proper_convex
-      (f := g)
-      (μ := 1 / L)
+      g
+      (1 / L)
       inferInstance
       hg_convex
       z
@@ -150,9 +150,9 @@ lemma gradient_mapping_quadratic_bound
   let G₂ := G[L₂, f, g] x
   let T₁ := T[L₁, f, g] x
   let T₂ := T[L₂, f, g] x
-  rcases gradient_mapping_support_ineq_real (f := f) (g := g) L₁ x with
+  rcases gradient_mapping_support_ineq_real f g L₁ x with
     ⟨hT₁_eff, hsupport₁⟩
-  rcases gradient_mapping_support_ineq_real (f := f) (g := g) L₂ x with
+  rcases gradient_mapping_support_ineq_real f g L₂ x with
     ⟨hT₂_eff, hsupport₂⟩
   have h₁ :
       inner ℝ (G₁ - grad) (T₂ - T₁) ≤
@@ -248,7 +248,7 @@ lemma gradient_mapping_norm_ratio_bounds
     dsimp [b]
     exact norm_nonneg _
   have hquad :=
-    gradient_mapping_quadratic_bound (f := f) (g := g) L₂ L₁ x
+    gradient_mapping_quadratic_bound f g L₂ L₁ x
   have hquad_ab :
       (1 / (L₂ : ℝ)) * a ^ (2 : ℕ) + (1 / (L₁ : ℝ)) * b ^ (2 : ℕ) ≤
         ((1 / (L₂ : ℝ)) + (1 / (L₁ : ℝ))) * a * b := by
@@ -307,7 +307,7 @@ theorem gradient_mapping_norm_monotone
     Monotone (fun L : PosReal ↦ ‖G[L, f, g] x‖) := by
   intro L₁ L₂ hL
   -- The shared scalar ratio lemma gives the norm monotonicity directly.
-  exact (gradient_mapping_norm_ratio_bounds (f := f) (g := g) hL x).1
+  exact (gradient_mapping_norm_ratio_bounds f g hL x).1
 
 -- Proof sketch: start from the same quadratic inequality as in part (1), divide by the positive
 -- quantity `‖G_{L₂}(x)‖` in the nontrivial case, and identify the resulting interval for
@@ -323,6 +323,6 @@ theorem gradient_mapping_norm_div_stepsize_antitone
     Antitone (fun L : PosReal ↦ ‖G[L, f, g] x‖ / (L : ℝ)) := by
   intro L₁ L₂ hL
   -- The same ratio lemma also gives the normalized antitonicity.
-  exact (gradient_mapping_norm_ratio_bounds (f := f) (g := g) hL x).2
+  exact (gradient_mapping_norm_ratio_bounds f g hL x).2
 
 end

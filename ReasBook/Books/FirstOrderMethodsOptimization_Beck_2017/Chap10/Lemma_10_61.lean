@@ -21,7 +21,9 @@ def primalCounterparts (a : E →L[ℝ] ℝ) : Set E :=
 
 end
 
-notation "Λ[" a "]" => primalCounterparts a
+-- Chapter 7 owns the public `Λ[...]` notation. Keep this chapter-specific overload private so
+-- importing both chapters does not duplicate the generated global parser declaration.
+local notation "Λ[" a "]" => primalCounterparts a
 
 section
 

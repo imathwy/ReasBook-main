@@ -1,4 +1,5 @@
 import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_9
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

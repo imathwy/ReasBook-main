@@ -314,7 +314,7 @@ lemma absolute_value_log_sum_exp_smoothing_has_loose_nonneg_bound
   simpa [hmax, hsmooth, pair_linear_opNorm_sq] using
     IsSmoothApproximationNonneg.precompose_linearMap_add
       (coordinatewise_max_shifted_log_sum_exp_is_smooth_approximation_nonneg
-        (n := 2) (hn := by decide) μ)
+        (by decide) μ)
       pair_linear_map
       (0 : E₂)
 
@@ -467,7 +467,7 @@ theorem absolute_value_log_sum_exp_smoothing_parameter_lower_bounds
         ‖deriv (deriv (absolute_value_log_sum_exp_smoothing μ)) 0‖ ≤
           ((PosReal.toNNReal α / PosReal.toNNReal μ : NNReal) : ℝ) := by
       simpa using
-        (norm_deriv_le_of_lipschitz (x₀ := (0 : ℝ)) hderiv_lip)
+        (norm_deriv_le_of_lipschitz hderiv_lip)
     have hsecond :
         ‖deriv (deriv (absolute_value_log_sum_exp_smoothing μ)) 0‖ = (μ : ℝ)⁻¹ := by
       rw [absolute_value_log_sum_exp_smoothing_second_deriv_eq]

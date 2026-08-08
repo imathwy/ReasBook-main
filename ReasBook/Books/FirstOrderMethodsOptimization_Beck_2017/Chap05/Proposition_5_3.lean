@@ -29,7 +29,7 @@ section
 variable (C : Set E) (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C) (hC_convex : Convex ℝ C)
 
 local notation "P" => fun x ↦
-  (metricProjection C hC_nonempty hC_closed.isComplete hC_convex x : E)
+  (metricProjection C hC_nonempty hC_closed hC_convex x : E)
 
 -- Proof sketch: write the gradient difference as `(x - y) - (P x - P y)`, expand its squared
 -- norm, and use firm nonexpansiveness of the metric projection to bound the cross term.
@@ -55,6 +55,8 @@ end
 -- `x - P_C(x)`. For the owner-level smoothness statement, it remains to show this gradient field is
 -- `1`-Lipschitz. Writing the gradient difference as `(x - y) - (P_C(x) - P_C(y))`, expanding its
 -- squared norm, and applying firm nonexpansiveness of the metric projection yields the estimate.
+variable [FiniteDimensional ℝ E]
+
 private theorem half_sq_infDist_is_l_smooth_of_nonempty_closed
     (C : Set E) (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C)
     (hC_convex : Convex ℝ C) :
@@ -63,14 +65,14 @@ private theorem half_sq_infDist_is_l_smooth_of_nonempty_closed
   refine ⟨?_, ?_⟩
   · intro x _
     have hx :=
-      hasGradientAt_half_sq_infDist C hC_nonempty hC_closed.isComplete hC_convex x
+      hasGradientAt_half_sq_infDist C hC_nonempty hC_closed hC_convex x
     exact hx.differentiableAt
   · rw [lipschitzOnWith_iff_norm_sub_le]
     intro x _ y _
     rw [gradient_half_sq_infDist_eq_sub_metricProjection
-        C hC_nonempty hC_closed.isComplete hC_convex x,
+        C hC_nonempty hC_closed hC_convex x,
       gradient_half_sq_infDist_eq_sub_metricProjection
-        C hC_nonempty hC_closed.isComplete hC_convex y]
+        C hC_nonempty hC_closed hC_convex y]
     simpa using
       half_sq_infDist_sub_metricProjection_nonexpansive
         C hC_nonempty hC_closed hC_convex x y
@@ -78,7 +80,8 @@ private theorem half_sq_infDist_is_l_smooth_of_nonempty_closed
 -- Proof sketch: if `C = ∅`, then `Metric.infDist · C = 0`, so the function is constant. If
 -- `C.Nonempty`, replace `C` by its closure; `Metric.infDist` is unchanged by closure, while
 -- `closure C` is closed, nonempty, and convex, so the closed-case estimate applies.
-/-- Proposition 5.3: the half squared distance to a convex set is globally `1`-smooth. -/
+/-- Proposition 5.3: in a finite-dimensional real inner product space, the half squared distance
+to a convex set is globally `1`-smooth. -/
 theorem half_sq_infDist_is_l_smooth (C : Set E) (hC_convex : Convex ℝ C) :
     is_l_smooth_on (fun z ↦ (infDist z C) ^ 2 / 2) Set.univ 1 := by
   by_cases hC_nonempty : C.Nonempty

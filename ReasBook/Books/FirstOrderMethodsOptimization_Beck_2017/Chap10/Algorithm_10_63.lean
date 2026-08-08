@@ -2,6 +2,8 @@ import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap01.Proposition_1_9
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_61
 
+local notation "Λ[" a "]" => primalCounterparts a
+
 -- Declarations for this item will be appended below by the statement pipeline.
 
 noncomputable section
@@ -74,8 +76,8 @@ result to the primal `ℓ₁` owner space. -/
 /-- Helper for Algorithm 10.63: the `ℓ₁`-to-Euclidean coordinate transport is the continuous
 linear equivalence induced by the two `WithLp.linearEquiv` coordinate identifications. -/
 abbrev coordToL2ContinuousLinearEquiv : E ≃L[ℝ] E₂ :=
-  ((WithLp.linearEquiv (p := (1 : ENNReal)) (K := ℝ) (V := ι → ℝ)).trans
-      (WithLp.linearEquiv (p := (2 : ENNReal)) (K := ℝ) (V := ι → ℝ)).symm).toContinuousLinearEquiv
+  ((WithLp.linearEquiv (1 : ENNReal) ℝ (ι → ℝ)).trans
+      (WithLp.linearEquiv (2 : ENNReal) ℝ (ι → ℝ)).symm).toContinuousLinearEquiv
 
 /-- Helper for Algorithm 10.63: `coordToL2ContinuousLinearEquiv` acts by the coordinate transport
 `coordToL2`. -/
@@ -90,7 +92,7 @@ abbrev coordToL2ContinuousLinearEquiv : E ≃L[ℝ] E₂ :=
 
 /-- Helper for Algorithm 10.63: the `(1, ∞)` pairing functional has operator norm equal to the
 `ℓ∞` norm of its coefficient vector. -/
-lemma lpPairingDual_one_operatorNorm_eq_linf (a : WithLp (⊤ : ENNReal) (ι → ℝ)) :
+private lemma lpPairingDual_one_operatorNorm_eq_linf (a : WithLp (⊤ : ENNReal) (ι → ℝ)) :
     ‖LinearMap.toContinuousLinearMap (lpPairingDual (1 : ENNReal) (ofLp a))‖ = ‖ofLp a‖ := by
   classical
   let T := LinearMap.toContinuousLinearMap (lpPairingDual (1 : ENNReal) (ofLp a))
@@ -109,7 +111,9 @@ lemma lpPairingDual_one_operatorNorm_eq_linf (a : WithLp (⊤ : ENNReal) (ι →
         intro i hi
         gcongr
         rw [Pi.norm_def]
-        simpa using (Finset.le_sup (f := fun j : ι ↦ ‖ofLp a j‖₊) (Finset.mem_univ i))
+        simpa using
+          (@Finset.le_sup NNReal ι inferInstance inferInstance Finset.univ
+            (fun j : ι ↦ ‖ofLp a j‖₊) i (Finset.mem_univ i))
       _ = ∑ i, ‖ofLp a‖ * ‖ofLp x i‖ := by
         refine Finset.sum_congr rfl ?_
         intro i hi
@@ -117,11 +121,11 @@ lemma lpPairingDual_one_operatorNorm_eq_linf (a : WithLp (⊤ : ENNReal) (ι →
       _ = ‖ofLp a‖ * ∑ i, ‖ofLp x i‖ := by
         rw [Finset.mul_sum]
       _ = ‖ofLp a‖ * ‖x‖ := by
-        rw [PiLp.norm_eq_sum (p := (1 : ENNReal)) (by norm_num : 0 < (1 : ENNReal).toReal)]
+        rw [PiLp.norm_eq_sum (by norm_num : 0 < (1 : ENNReal).toReal)]
         simp
   by_cases hι : Nonempty ι
   · letI := hι
-    obtain ⟨i, hmax⟩ := Finite.exists_max (f := fun j : ι ↦ |(ofLp a) j|)
+    obtain ⟨i, hmax⟩ := Finite.exists_max (fun j : ι ↦ |(ofLp a) j|)
     have hunit :
         ‖toLp (1 : ENNReal) ((Pi.single i (Real.sign ((ofLp a) i)) : ι → ℝ))‖ ≤ 1 := by
       calc
@@ -146,7 +150,9 @@ lemma lpPairingDual_one_operatorNorm_eq_linf (a : WithLp (⊤ : ENNReal) (ι →
     have hcoord : ‖ofLp a‖ = |(ofLp a) i| := by
       rw [Pi.norm_def]
       have hsup : Finset.univ.sup (fun j : ι ↦ ‖ofLp a j‖₊) = ‖ofLp a i‖₊ := by
-        refine le_antisymm ?_ (Finset.le_sup (f := fun j : ι ↦ ‖ofLp a j‖₊) (Finset.mem_univ i))
+        refine le_antisymm ?_
+          (@Finset.le_sup NNReal ι inferInstance inferInstance Finset.univ
+            (fun j : ι ↦ ‖ofLp a j‖₊) i (Finset.mem_univ i))
         refine Finset.sup_le ?_
         intro j hj
         exact_mod_cast hmax j
@@ -157,8 +163,9 @@ lemma lpPairingDual_one_operatorNorm_eq_linf (a : WithLp (⊤ : ENNReal) (ι →
         ‖ofLp a‖ = ‖T (toLp (1 : ENNReal) ((Pi.single i (Real.sign ((ofLp a) i)) : ι → ℝ)))‖ := by
           rw [hcoord, hvalue]
         _ ≤ ‖T‖ := by
-          simpa [T] using T.unit_le_opNorm (x := toLp (1 : ENNReal)
-            ((Pi.single i (Real.sign ((ofLp a) i)) : ι → ℝ))) hunit
+          simpa [T] using
+            T.unit_le_opNorm
+              (toLp (1 : ENNReal) ((Pi.single i (Real.sign ((ofLp a) i)) : ι → ℝ))) hunit
     exact le_antisymm hupper hlower
   · haveI : IsEmpty ι := not_nonempty_iff.mp hι
     have ha : a = 0 := Subsingleton.elim _ _
@@ -170,7 +177,9 @@ lemma finite_sup_nnnorm_eq_of_maximizer
     (a : ι → ℝ) (i : ι) (hmax : ∀ j : ι, |a j| ≤ |a i|) :
     Finset.univ.sup (fun j : ι ↦ ‖a j‖₊) = ‖a i‖₊ := by
   -- Compare the finite supremum directly with the maximizing coordinate inside `ℝ≥0`.
-  refine le_antisymm ?_ (Finset.le_sup (f := fun j : ι ↦ ‖a j‖₊) (Finset.mem_univ i))
+  refine le_antisymm ?_
+    (@Finset.le_sup NNReal ι inferInstance inferInstance Finset.univ
+      (fun j : ι ↦ ‖a j‖₊) i (Finset.mem_univ i))
   refine Finset.sup_le ?_
   intro j hj
   exact_mod_cast hmax j
@@ -187,7 +196,7 @@ lemma linf_norm_eq_abs_of_coordinate_maximizer
 
 /-- Helper for Algorithm 10.63: the Euclidean Riesz pairing on the coordinate model is the
 coordinate dot product. -/
-lemma toDualMap_apply_eq_dotProduct_l1_coordinates (u v : E₂) :
+private lemma toDualMap_apply_eq_dotProduct (u v : E₂) :
     ((InnerProductSpace.toDualMap ℝ E₂ v) u : ℝ) = dotProduct (ofLp u) (ofLp v) := by
   -- Convert the Euclidean inner product to the explicit coordinate formula.
   simpa [InnerProductSpace.toDualMap_apply_apply, dotProduct, mul_comm] using
@@ -204,8 +213,7 @@ lemma toDualMap_apply_coordToL2_eq_lpPairingDual_apply
   calc
     ((InnerProductSpace.toDualMap ℝ E₂ v) (coordToL2 u) : ℝ) =
         dotProduct (ofLp u) (ofLp v) := by
-      simpa using
-        (toDualMap_apply_eq_dotProduct_l1_coordinates (u := coordToL2 u) (v := v))
+      simpa using (toDualMap_apply_eq_dotProduct (coordToL2 u) v)
     _ = LinearMap.toContinuousLinearMap (lpPairingDual (1 : ENNReal) (ofLp v)) u := by
       simp [lpPairingDual_apply]
 
@@ -230,7 +238,12 @@ lemma fderiv_pullback_coordToL2_eq_lpPairingDual_gradient
     _ =
         ((InnerProductSpace.toDual ℝ E₂) (∇ f (coordToL2 x))).comp
           coordToL2ContinuousLinearEquiv.toContinuousLinearMap := by
-      rw [hf.hasGradientAt.hasFDerivAt.fderiv]
+      ext u
+      simpa [ContinuousLinearMap.comp_apply, coordToL2ContinuousLinearEquiv_apply,
+        InnerProductSpace.toDual_apply_apply] using
+        (show
+            fderiv ℝ f (coordToL2 x) (coordToL2 u) = inner ℝ (∇ f (coordToL2 x)) (coordToL2 u) from
+          HasGradientAt.fderiv_apply hf.hasGradientAt)
     _ =
         LinearMap.toContinuousLinearMap
           (lpPairingDual (1 : ENNReal) (ofLp (∇ f (coordToL2 x)))) := by
@@ -238,11 +251,10 @@ lemma fderiv_pullback_coordToL2_eq_lpPairingDual_gradient
       ext u
       -- Evaluate both composed maps on the same primal vector and use the exact adapter.
       simpa [ContinuousLinearMap.comp_apply] using
-        (toDualMap_apply_coordToL2_eq_lpPairingDual_apply
-          (u := u) (v := ∇ f (coordToL2 x)))
+        (toDualMap_apply_coordToL2_eq_lpPairingDual_apply u (∇ f (coordToL2 x)))
 
 /-- Helper for Algorithm 10.63: multiplying a real number by its sign gives its absolute value. -/
-lemma real_sign_mul_eq_abs (t : ℝ) : Real.sign t * t = |t| := by
+private lemma real_sign_mul_eq_abs (t : ℝ) : Real.sign t * t = |t| := by
   -- Split on the sign of the scalar and reduce to the defining formulas for `Real.sign`.
   rcases lt_trichotomy t 0 with hneg | rfl | hpos
   · simp [Real.sign_of_neg hneg, abs_of_neg hneg]
@@ -250,7 +262,7 @@ lemma real_sign_mul_eq_abs (t : ℝ) : Real.sign t * t = |t| := by
   · simp [Real.sign_of_pos hpos, abs_of_pos hpos]
 
 /-- Helper for Algorithm 10.63: the real sign has norm at most `1`. -/
-lemma real_sign_norm_le_one (t : ℝ) : ‖Real.sign t‖ ≤ 1 := by
+private lemma real_sign_norm_le_one (t : ℝ) : ‖Real.sign t‖ ≤ 1 := by
   -- The sign can only take the values `-1`, `0`, and `1`.
   rcases lt_trichotomy t 0 with hneg | rfl | hpos
   · simp [Real.sign_of_neg hneg]
@@ -304,7 +316,7 @@ theorem l1_non_euclidean_gradient_counterpart_mem_primalCounterparts
       _ = ‖ofLp (∇ f x)‖ := by
         symm
         simpa [PiLp.norm_toLp] using
-          (linf_norm_eq_abs_of_coordinate_maximizer (a := ofLp (∇ f x)) (i := i) hmax)
+          (linf_norm_eq_abs_of_coordinate_maximizer (ofLp (∇ f x)) i hmax)
       _ = ‖LinearMap.toContinuousLinearMap (lpPairingDual (1 : ENNReal) (ofLp (∇ f x)))‖ := by
         symm
         simpa using
@@ -329,7 +341,13 @@ def l1_non_euclidean_gradient_step
 
 section Trajectory
 
-variable (f : E₂ → ℝ) (iSel : ℕ → E₂ → ι) (L : ℕ → PosReal) (x0 : E₂)
+-- Spell out the Euclidean coordinate type in these section variables.  With a local notation
+-- here, Lean may elaborate each occurrence with a fresh, unresolved index type before `ι` is
+-- registered as a dependency of the section variable; the unresolved metavariable then
+-- contaminates every trajectory theorem below.
+variable (f : EuclideanSpace ℝ ι → ℝ)
+  (iSel : ℕ → EuclideanSpace ℝ ι → ι)
+  (L : ℕ → PosReal) (x0 : EuclideanSpace ℝ ι)
 
 local notation "f₁" => fun x : E ↦ f (coordToL2 x)
 local notation "counterpart" => l1_non_euclidean_gradient_counterpart_rule f iSel
@@ -357,9 +375,8 @@ lemma coordinate_counterpart_rule_mem_primalCounterparts_at_point
     counterpart k x ∈ Λ[fderiv ℝ f₁ x] :=
   -- Rewrite the owner derivative through the Euclidean gradient bridge, then reuse the
   -- maximizing-coordinate counterpart theorem at the Euclidean point `coordToL2 x`.
-  (fderiv_pullback_coordToL2_eq_lpPairingDual_gradient (f := f) (x := x) hf) ▸
-    (l1_non_euclidean_gradient_counterpart_mem_primalCounterparts
-      (f := f) (x := coordToL2 x) (i := iSel k (coordToL2 x)) (hmax := hmax))
+  (fderiv_pullback_coordToL2_eq_lpPairingDual_gradient f x hf) ▸
+    l1_non_euclidean_gradient_counterpart_mem_primalCounterparts hmax
 
 /-- Helper for Algorithm 10.63: at a differentiability point, one owner step is exactly the
 transported textbook coordinate step. -/
@@ -374,14 +391,13 @@ lemma owner_step_eq_coordinate_step_of_differentiable
       ‖fderiv ℝ f₁ x‖ = ‖(∇ f (coordToL2 x)).ofLp‖ :=
     Eq.trans
       (congrArg norm
-        (fderiv_pullback_coordToL2_eq_lpPairingDual_gradient (f := f) (x := x) hf))
+        (fderiv_pullback_coordToL2_eq_lpPairingDual_gradient f x hf))
       (lpPairingDual_one_operatorNorm_eq_linf
         (toLp (⊤ : ENNReal) (ofLp (∇ f (coordToL2 x)))))
   hnorm ▸
-    (coordToL1_coordToL2_sub_smul
-      (x := x)
-      (a := ‖(∇ f (coordToL2 x)).ofLp‖ / (Lk : ℝ))
-      (v := l1_non_euclidean_gradient_counterpart f (coordToL2 x) (iSel k (coordToL2 x)))).symm
+    (coordToL1_coordToL2_sub_smul x
+      (‖(∇ f (coordToL2 x)).ofLp‖ / (Lk : ℝ))
+      (l1_non_euclidean_gradient_counterpart f (coordToL2 x) (iSel k (coordToL2 x)))).symm
 
 /-- Helper for Algorithm 10.63: in the nondifferentiable branch, both the pulled-back derivative
 and the Euclidean gradient vanish, so the owner step reduces to the identity update. -/
@@ -393,10 +409,15 @@ lemma owner_step_eq_coordinate_step_of_not_differentiable
   -- Transport nondifferentiability to the pulled-back objective on the owner space, then rewrite
   -- both step sizes to zero and use the coordinate transport identity.
   let hnd₁ : ¬ DifferentiableAt ℝ f₁ x :=
-    fun hf₁ ↦
-      hnd
-        ((coordToL2ContinuousLinearEquiv.comp_right_differentiableAt_iff
-          (f := f) (x := x)).1 hf₁)
+    fun hf₁ ↦ by
+      have hfcomp :
+          DifferentiableAt ℝ
+            (f ∘ (coordToL2ContinuousLinearEquiv (ι := ι))) x := by
+        simpa only [Function.comp_apply, coordToL2ContinuousLinearEquiv_apply] using hf₁
+      have hfout :=
+        ((coordToL2ContinuousLinearEquiv (ι := ι)).comp_right_differentiableAt_iff
+          (f := f) (x := x)).1 hfcomp
+      exact hnd (by simpa only [coordToL2ContinuousLinearEquiv_apply] using hfout)
   let hleft : ‖fderiv ℝ f₁ x‖ / (Lk : ℝ) = 0 :=
     Eq.trans
       (congrArg (fun T : E →L[ℝ] ℝ ↦ ‖T‖ / (Lk : ℝ))
@@ -413,10 +434,8 @@ lemma owner_step_eq_coordinate_step_of_not_differentiable
         (zero_div (Lk : ℝ)))
   hleft ▸
     hright ▸
-      (coordToL1_coordToL2_sub_smul
-        (x := x)
-        (a := 0)
-        (v := l1_non_euclidean_gradient_counterpart f (coordToL2 x) (iSel k (coordToL2 x)))).symm
+      (coordToL1_coordToL2_sub_smul x 0
+        (l1_non_euclidean_gradient_counterpart f (coordToL2 x) (iSel k (coordToL2 x)))).symm
 
 /-- Helper for Algorithm 10.63: at an explicit initialization point, one owner recursion step is
 the transported textbook coordinate update. -/
@@ -435,13 +454,11 @@ lemma owner_trajectory_succ_eq_coordinate_step
       DifferentiableAt ℝ f
         (coordToL2 (non_euclidean_gradient_method f₁ counterpart L (coordToL1 xInit) k))
   · exact
-      owner_step_eq_coordinate_step_of_differentiable
-        (f := f) (iSel := iSel) (k := k) (Lk := L k)
-        (x := non_euclidean_gradient_method f₁ counterpart L (coordToL1 xInit) k) hf
+      owner_step_eq_coordinate_step_of_differentiable f iSel k (L k)
+        (non_euclidean_gradient_method f₁ counterpart L (coordToL1 xInit) k) hf
   · exact
-      owner_step_eq_coordinate_step_of_not_differentiable
-        (f := f) (iSel := iSel) (k := k) (Lk := L k)
-        (x := non_euclidean_gradient_method f₁ counterpart L (coordToL1 xInit) k) hf
+      owner_step_eq_coordinate_step_of_not_differentiable f iSel k (L k)
+        (non_euclidean_gradient_method f₁ counterpart L (coordToL1 xInit) k) hf
 
 /-- Helper for Algorithm 10.63: the coordinate-maximizer hypothesis yields owner admissibility at
 an explicit initialization point. -/
@@ -465,14 +482,16 @@ lemma coordinate_maximizers_imply_owner_admissibility
       f₁ counterpart L (coordToL1 xInit) :=
   fun k ↦
     ⟨
-      (coordToL2ContinuousLinearEquiv.comp_right_differentiableAt_iff
-        (f := f)
-        (x := non_euclidean_gradient_method f₁ counterpart L (coordToL1 xInit) k)).2
-        (h k).1,
-      coordinate_counterpart_rule_mem_primalCounterparts_at_point
-        (f := f) (iSel := iSel) (k := k)
-        (x := non_euclidean_gradient_method f₁ counterpart L (coordToL1 xInit) k)
-        (h k).1 (h k).2
+      (by
+        have hfcomp :=
+          ((coordToL2ContinuousLinearEquiv (ι := ι)).comp_right_differentiableAt_iff
+            (f := f)
+            (x := non_euclidean_gradient_method f₁ counterpart L (coordToL1 xInit) k)).2
+              (by
+                simpa only [coordToL2ContinuousLinearEquiv_apply] using (h k).1)
+        simpa only [Function.comp_apply, coordToL2ContinuousLinearEquiv_apply] using hfcomp),
+      coordinate_counterpart_rule_mem_primalCounterparts_at_point f iSel k
+        (non_euclidean_gradient_method f₁ counterpart L (coordToL1 xInit) k) (h k).1 (h k).2
     ⟩
 
 /-- One owner-step of Algorithm 10.63 is Algorithm 10.61 specialized to the transported
@@ -481,8 +500,7 @@ theorem non_euclidean_gradient_method_succ_l1_counterpart_rule
     (k : ℕ) :
     x[k + 1] =
       coordToL1 (l1_non_euclidean_gradient_step f (L k) (iSel k x₂[k]) x₂[k]) :=
-  owner_trajectory_succ_eq_coordinate_step
-    (f := f) (iSel := iSel) (L := L) (k := k)
+  owner_trajectory_succ_eq_coordinate_step f iSel L k
 
 /-- Algorithm 10.63: in Euclidean coordinates, the canonical owner trajectory satisfies the
 textbook update
@@ -497,8 +515,7 @@ theorem non_euclidean_gradient_method_update_l1_counterpart_rule
             e[iSel k x₂[k]])) :=
   -- Expand the transported Euclidean step from the predecessor theorem into the textbook update.
   Eq.trans
-    (non_euclidean_gradient_method_succ_l1_counterpart_rule
-      (f := f) (iSel := iSel) (L := L) (k := k))
+    (non_euclidean_gradient_method_succ_l1_counterpart_rule f iSel L x0 k)
     (congrArg coordToL1
       (l1_non_euclidean_gradient_step_eq f (L k) (iSel k x₂[k]) x₂[k]))
 
@@ -511,8 +528,7 @@ theorem non_euclidean_gradient_method_is_admissible_of_coordinate_maximizers
           ∀ j : ι, |(∇ f x₂[k]) j| ≤ |(∇ f x₂[k]) (iSel k x₂[k])|) :
     non_euclidean_gradient_method_is_admissible
       f₁ counterpart L (coordToL1 x0) :=
-  coordinate_maximizers_imply_owner_admissibility
-    (f := f) (iSel := iSel) (L := L) (h := h)
+  coordinate_maximizers_imply_owner_admissibility f iSel L h
 
 /-- Along the canonical owner trajectory, the selected signed coordinate vector is a primal
 counterpart of the current `ℓ∞` gradient coefficient vector whenever the selected coordinate
@@ -523,8 +539,7 @@ theorem coordinate_counterpart_mem_primalCounterparts_along_non_euclidean_gradie
     (k : ℕ) :
     coordToL1 (l1_non_euclidean_gradient_counterpart f x₂[k] (iSel k x₂[k])) ∈
       Λ[LinearMap.toContinuousLinearMap (lpPairingDual (1 : ENNReal) (ofLp (∇ f x₂[k])))] :=
-  l1_non_euclidean_gradient_counterpart_mem_primalCounterparts
-    (f := f) (x := x₂[k]) (i := iSel k x₂[k]) (hmax := h k)
+  l1_non_euclidean_gradient_counterpart_mem_primalCounterparts (h k)
 
 end Trajectory
 

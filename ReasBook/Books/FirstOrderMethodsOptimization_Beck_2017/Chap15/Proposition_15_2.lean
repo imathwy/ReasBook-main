@@ -13,7 +13,6 @@ noncomputable section
 universe u v w
 
 open InnerProductSpace (toDualMap)
-open scoped FirstOrderSubdifferential
 
 section
 
@@ -24,7 +23,7 @@ variable [NormedAddCommGroup Y] [InnerProductSpace ℝ Y] [FiniteDimensional ℝ
 
 /- Domain sampling for this file:
 - the Chapter 4 conjugacy owner `conjugate_function`, together with Chapter 3's
-  `extendedRealSubdifferential`, governs the dual-side optimality clauses;
+  `subdifferential`, governs the dual-side optimality clauses;
 - the Chapter 8 owner `unconstrained_problem_solutions` is the canonical whole-space `arg min`
   set, with Mathlib's `IsMinOn` as its membership view;
 - the ADMM affine `x`- and `z`-subproblems, together with equation (15.5), are the
@@ -154,7 +153,7 @@ theorem eval_mem_conjugate_subdifferential_iff_mem_admm_x_subproblem_solutions
         h₁ hh₁_proper hh₁_closed hh₁_convex ℓ] at hx
       rcases hx with ⟨x', hx', hEval⟩
       have hxEq : x' = x :=
-        Module.eval_apply_injective (K := ℝ) (V := X) hEval
+        Module.eval_apply_injective ℝ hEval
       simpa [φ] using hxEq ▸ hx'
     · intro hx
       rw [subdifferential_conjugate_eq_eval_image_argmax_affine_minus
@@ -179,8 +178,9 @@ theorem eval_mem_conjugate_subdifferential_iff_mem_admm_x_subproblem_solutions
         x ∈ unconstrained_problem_solutions (admm_x_subproblem h₁ A y) := by
     -- Translate the `IsMinOn` statement into membership in the canonical Chapter 8 solution set.
     simpa using
-      (mem_unconstrained_problem_solutions_iff
-        (f := admm_x_subproblem h₁ A y) (x := x)).symm
+      (mem_unconstrained_problem_solutions_iff :
+        x ∈ unconstrained_problem_solutions (admm_x_subproblem h₁ A y) ↔
+          IsMinOn (admm_x_subproblem h₁ A y) Set.univ x).symm
   -- Chain the conjugate-subgradient, argmax, and argmin characterizations.
   have hchain :
       Module.Dual.eval ℝ X x ∈ ∂ (conjugate_function h₁)(ℓ) ↔
@@ -212,7 +212,7 @@ theorem eval_mem_conjugate_subdifferential_iff_mem_admm_z_subproblem_solutions
         h₂ hh₂_proper hh₂_closed hh₂_convex ℓ] at hz
       rcases hz with ⟨z', hz', hEval⟩
       have hzEq : z' = z :=
-        Module.eval_apply_injective (K := ℝ) (V := Z) hEval
+        Module.eval_apply_injective ℝ hEval
       simpa [φ] using hzEq ▸ hz'
     · intro hz
       rw [subdifferential_conjugate_eq_eval_image_argmax_affine_minus
@@ -237,8 +237,9 @@ theorem eval_mem_conjugate_subdifferential_iff_mem_admm_z_subproblem_solutions
         z ∈ unconstrained_problem_solutions (admm_z_subproblem h₂ B y) := by
     -- Translate the `IsMinOn` statement into membership in the canonical Chapter 8 solution set.
     simpa using
-      (mem_unconstrained_problem_solutions_iff
-        (f := admm_z_subproblem h₂ B y) (x := z)).symm
+      (mem_unconstrained_problem_solutions_iff :
+        z ∈ unconstrained_problem_solutions (admm_z_subproblem h₂ B y) ↔
+          IsMinOn (admm_z_subproblem h₂ B y) Set.univ z).symm
   -- Chain the conjugate-subgradient, argmax, and argmin characterizations.
   have hchain :
       Module.Dual.eval ℝ Z z ∈ ∂ (conjugate_function h₂)(ℓ) ↔
@@ -247,7 +248,7 @@ theorem eval_mem_conjugate_subdifferential_iff_mem_admm_z_subproblem_solutions
   simpa [ℓ] using hchain
 
 -- Proof sketch: unfold `admm_dual_optimality_condition`, apply the two bridge theorems turning
--- conjugate-extendedRealSubdifferential memberships into `arg min` conditions, and keep the affine update
+-- conjugate-subdifferential memberships into `arg min` conditions, and keep the affine update
 -- equation unchanged.
 /-- Proposition 15.2: by the conjugate subgradient theorem, equation (15.5) holds exactly when
 there are points `x^{k+1}` and `z^{k+1}` minimizing the two affine subproblems

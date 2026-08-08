@@ -1,6 +1,8 @@
 import Mathlib
-import FirstOrderMethodsOptimization_Beck_2017.Chap05.Definition_5_1
+import FirstOrderMethodsOptimization_Beck_2017.Chap05.Lemma_5_7
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_61
+
+local notation "Λ[" a "]" => primalCounterparts a
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -27,105 +29,6 @@ update `x - (‖f'(x)‖_* / L) • xDagger`, not an additional packaged owner. 
 -- `(x, x - (‖f'(x)‖_* / L) • xDagger)`. Rewrite the derivative pairing with
 -- `apply_eq_norm_of_mem_primalCounterparts hDagger`, and reduce the squared norm term with
 -- `norm_eq_one_of_mem_primalCounterparts (by intro h; simpa [h] using hDagger) hDagger`.
-/-- Helper for Lemma 10.65: global smoothness on `Set.univ` yields the Fréchet-derivative
-descent inequality along any chord. -/
-lemma is_l_smooth_on_univ_fderiv_descent
-    {f : E → ℝ} {Lf : NNReal} (hf : is_l_smooth_on f Set.univ Lf)
-    (x y : E) :
-    f y ≤ f x + fderiv ℝ f x (y - x) + ((Lf : ℝ) / 2) * ‖y - x‖ ^ (2 : ℕ) := by
-  rcases (is_l_smooth_on_iff.mp hf) with ⟨hdiff, hLip⟩
-  let φ : ℝ → ℝ := fun t ↦ f (AffineMap.lineMap x y t)
-  let a0 : ℝ := fderiv ℝ f x (y - x)
-  let s : ℝ := ‖y - x‖ ^ (2 : ℕ)
-  let B : ℝ → ℝ := fun t ↦ f x + t * a0 + ((Lf : ℝ) / 2) * t ^ (2 : ℕ) * s
-  have hdiff_all : ∀ z : E, DifferentiableAt ℝ f z := fun z ↦ hdiff z (by simp)
-  have hLip_all :
-      ∀ z w : E, ‖fderiv ℝ f z - fderiv ℝ f w‖ ≤ (Lf : ℝ) * ‖z - w‖ := fun z w ↦
-    hLip z (by simp) w (by simp)
-  have hφ_deriv :
-      ∀ t : ℝ,
-        HasDerivAt φ (fderiv ℝ f (AffineMap.lineMap x y t) (y - x)) t := by
-    intro t
-    -- Differentiate the restriction of `f` to the segment from `x` to `y`.
-    simpa [φ] using
-      HasFDerivAt.comp_hasDerivAt
-        (x := t)
-        (l := f)
-        (f := AffineMap.lineMap x y)
-        (hdiff_all _).hasFDerivAt
-        (AffineMap.hasDerivAt_lineMap (a := x) (b := y) (x := t))
-  have hφ_cont : ContinuousOn φ (Set.Icc (0 : ℝ) 1) := by
-    intro t ht
-    exact (hφ_deriv t).continuousAt.continuousWithinAt
-  have hB_deriv : ∀ t : ℝ, HasDerivAt B (a0 + (Lf : ℝ) * t * s) t := by
-    intro t
-    have hlin : HasDerivAt (fun u : ℝ ↦ u * a0) a0 t := by
-      simpa [one_mul] using (hasDerivAt_id t).mul_const a0
-    have hquad :
-        HasDerivAt
-          (fun u : ℝ ↦ ((Lf : ℝ) / 2) * u ^ (2 : ℕ) * s)
-          ((Lf : ℝ) * t * s) t := by
-      -- The barrier derivative is exactly the linear growth term used in the comparison.
-      simpa [pow_two, two_mul, mul_assoc, mul_left_comm, mul_comm] using
-        (((hasDerivAt_pow 2 t).const_mul ((Lf : ℝ) / 2)).mul_const s)
-    -- Add the linearization term and the quadratic barrier.
-    convert ((hasDerivAt_const t (f x)).add hlin).add hquad using 1
-    · simp [a0, s, add_comm]
-  have hB_cont : ContinuousOn B (Set.Icc (0 : ℝ) 1) := by
-    intro t ht
-    exact (hB_deriv t).continuousAt.continuousWithinAt
-  have hbound :
-      ∀ t ∈ Set.Ico (0 : ℝ) 1,
-        fderiv ℝ f (AffineMap.lineMap x y t) (y - x) ≤ a0 + (Lf : ℝ) * t * s := by
-    intro t ht
-    have ht_nonneg : 0 ≤ t := ht.1
-    have hline_norm :
-        ‖AffineMap.lineMap x y t - x‖ = t * ‖y - x‖ := by
-      calc
-        ‖AffineMap.lineMap x y t - x‖ = ‖t • (y - x)‖ := by
-          simp [AffineMap.lineMap_apply_module']
-        _ = ‖t‖ * ‖y - x‖ := norm_smul _ _
-        _ = t * ‖y - x‖ := by
-          rw [Real.norm_eq_abs, abs_of_nonneg ht_nonneg]
-    have hnorm :
-        ‖(fderiv ℝ f (AffineMap.lineMap x y t) - fderiv ℝ f x) (y - x)‖ ≤
-          (Lf : ℝ) * t * s := by
-      calc
-        ‖(fderiv ℝ f (AffineMap.lineMap x y t) - fderiv ℝ f x) (y - x)‖
-            ≤ ‖fderiv ℝ f (AffineMap.lineMap x y t) - fderiv ℝ f x‖ * ‖y - x‖ := by
-              exact (fderiv ℝ f (AffineMap.lineMap x y t) - fderiv ℝ f x).le_opNorm (y - x)
-        _ ≤ ((Lf : ℝ) * ‖AffineMap.lineMap x y t - x‖) * ‖y - x‖ := by
-              exact mul_le_mul_of_nonneg_right
-                (hLip_all (AffineMap.lineMap x y t) x) (norm_nonneg _)
-        _ = ((Lf : ℝ) * (t * ‖y - x‖)) * ‖y - x‖ := by
-              rw [hline_norm]
-        _ = (Lf : ℝ) * t * s := by
-              dsimp [s]
-              rw [pow_two]
-              ring
-    have hlinear :
-        (fderiv ℝ f (AffineMap.lineMap x y t) - fderiv ℝ f x) (y - x) ≤
-          (Lf : ℝ) * t * s := by
-      exact (le_abs_self _).trans hnorm
-    have hrewrite :
-        (fderiv ℝ f (AffineMap.lineMap x y t) - fderiv ℝ f x) (y - x) =
-          fderiv ℝ f (AffineMap.lineMap x y t) (y - x) - a0 := by
-      simp [a0]
-    rw [hrewrite] at hlinear
-    linarith
-  have hcompare :=
-    image_le_of_deriv_right_le_deriv_boundary
-      hφ_cont
-      (fun t ht ↦ (hφ_deriv t).hasDerivWithinAt)
-      (by simp [φ, B])
-      hB_cont
-      (fun t ht ↦ (hB_deriv t).hasDerivWithinAt)
-      hbound
-  -- Evaluate the one-dimensional comparison at the right endpoint of the segment.
-  have hendpoint : φ 1 ≤ B 1 := hcompare (by simp)
-  simpa [φ, B, a0, s, AffineMap.lineMap_apply_zero, AffineMap.lineMap_apply_one,
-    pow_two, mul_assoc, mul_left_comm, mul_comm] using hendpoint
-
 /-- Helper for Lemma 10.65: the primal-counterpart equality rewrites the linear term in the
 non-Euclidean step. -/
 lemma scaled_primal_counterpart_pairing
@@ -182,13 +85,13 @@ theorem non_euclidean_gradient_method_sufficient_decrease
       f (x + d) ≤ f x + a d + ((Lf : ℝ) / 2) * ‖d‖ ^ (2 : ℕ) := by
     -- Apply the Banach-space descent lemma to the trial point `x + d`.
     simpa [a, d] using
-      is_l_smooth_on_univ_fderiv_descent (f := f) (Lf := Lf) hf x (x + d)
+      is_l_smooth_on_univ_fderiv_descent hf x (x + d)
   have hpair : a d = -((α : ℝ) * ‖a‖) := by
     -- The primal-counterpart equality identifies the linear term with `-α ‖a‖`.
-    simpa [α, d] using scaled_primal_counterpart_pairing (a := a) (xDagger := xDagger) hDagger L
+    simpa [α, d] using scaled_primal_counterpart_pairing hDagger L
   have hnorm_sq : ‖d‖ ^ (2 : ℕ) ≤ α ^ (2 : ℕ) := by
     -- The unit-ball part of `Λ[a]` controls the norm of the step direction.
-    simpa [α, d] using scaled_primal_counterpart_norm_sq_le (a := a) (xDagger := xDagger) hDagger L
+    simpa [α, d] using scaled_primal_counterpart_norm_sq_le hDagger L
   have hquad :
       ((Lf : ℝ) / 2) * ‖d‖ ^ (2 : ℕ) ≤ ((Lf : ℝ) / 2) * α ^ (2 : ℕ) := by
     exact mul_le_mul_of_nonneg_left hnorm_sq (by positivity)

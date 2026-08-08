@@ -47,16 +47,16 @@ def finite_sum_projected_subgradient_method {m : ℕ} (C : Set E)
   | 0 => x0
   | k + 1 =>
       -- Route correction: the canonical projection API is owned by Proposition 3.12, so the
-      -- closed feasible set supplies the required completeness input through `hC_closed.isComplete`.
+      -- closed feasible set supplies the required completeness input through `hC_closed`.
       let xk :=
         finite_sum_projected_subgradient_method C hC_nonempty hC_closed hC_convex Θ g x0 k
-      metricProjection C hC_nonempty hC_closed.isComplete hC_convex
+      metricProjection C hC_nonempty hC_closed hC_convex
         ((xk : E) -
           finite_sum_projected_subgradient_stepsize Θ g k xk •
             finite_sum_selected_subgradient g k xk)
 
 /-- A component-subgradient selection rule is admissible for the finite-sum projected subgradient
-method when, at each iterate, every chosen component lies in the Euclidean extendedRealSubdifferential of the
+method when, at each iterate, every chosen component lies in the Euclidean subdifferential of the
 corresponding summand and the aggregate chosen subgradient is nonzero. -/
 def finite_sum_projected_subgradient_method_is_admissible {m : ℕ}
     (f : Fin m → E → ℝ) (C : Set E)
@@ -96,7 +96,7 @@ point. -/
 to the current iterate minus the normalized sum of the chosen component subgradients. -/
 theorem finite_sum_projected_subgradient_method_succ (k : ℕ) :
     x[k + 1] =
-      metricProjection C hC_nonempty hC_closed.isComplete hC_convex
+      metricProjection C hC_nonempty hC_closed hC_convex
         ((x[k] : E) -
           (Real.sqrt (2 * Θ) /
               (‖∑ i : Fin m, g k (x[k]) i‖ * Real.sqrt (k + 1 : ℝ))) •

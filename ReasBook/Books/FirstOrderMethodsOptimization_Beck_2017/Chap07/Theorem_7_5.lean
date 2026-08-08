@@ -21,14 +21,15 @@ variable {m n : ℕ}
 local notation "𝕄" => Matrix (Fin m) (Fin n) ℝ
 
 /-- The ambient real matrix space is equipped with its Frobenius norm. -/
-local instance theorem75FrobeniusNormedAddCommGroup : NormedAddCommGroup 𝕄 :=
+local instance instTheorem75NormedAddCommGroupMatrix : NormedAddCommGroup 𝕄 :=
   Matrix.frobeniusNormedAddCommGroup
 
 /-- The ambient real matrix space is a normed real vector space. -/
-local instance theorem75FrobeniusNormedSpace : NormedSpace ℝ 𝕄 := Matrix.frobeniusNormedSpace
+local instance instTheorem75NormedSpaceMatrix : NormedSpace ℝ 𝕄 :=
+  Matrix.frobeniusNormedSpace
 
 /-- The ambient real matrix space is equipped with its Frobenius inner product. -/
-local instance theorem75FrobeniusInnerProductSpace : InnerProductSpace ℝ 𝕄 :=
+local instance instTheorem75InnerProductSpaceMatrix : InnerProductSpace ℝ 𝕄 :=
   Matrix.frobeniusInnerProductSpace
 
 /-- Helper for Theorem 7.5: the rectangular diagonal matrix with diagonal entries `x` and zero

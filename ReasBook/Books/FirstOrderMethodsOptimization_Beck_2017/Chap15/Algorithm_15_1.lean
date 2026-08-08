@@ -1,4 +1,3 @@
-import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Definition_6_7
 import FirstOrderMethodsOptimization_Beck_2017.Chap08.Definition_8_2
 import FirstOrderMethodsOptimization_Beck_2017.Chap15.Definition_15_2
@@ -79,33 +78,6 @@ section
 variable [NormedAddCommGroup Y] [InnerProductSpace ℝ Y] [FiniteDimensional ℝ Y]
 variable [NormedAddCommGroup X] [InnerProductSpace ℝ X] [FiniteDimensional ℝ X]
 variable [NormedAddCommGroup Z] [InnerProductSpace ℝ Z] [FiniteDimensional ℝ Z]
-
-/-- Rewriting the Chapter 15 dual owner along the Riesz map gives the explicit equation-(15.4)
-objective at a point where the two conjugate terms avoid `⊥`. -/
-theorem admm_dual_minimization_view_primal_apply_of_nonbot
-    (h₁ : X → EReal) (h₂ : Z → EReal)
-    (A : X →ₗ[ℝ] Y) (B : Z →ₗ[ℝ] Y) (c : Y) (y : Y)
-    (h₁_ne_bot : (h₁∗) (-A.adjoint y) ≠ ⊥)
-    (h₂_ne_bot : (h₂∗) (-B.adjoint y) ≠ ⊥) :
-    (h₁∗) (-A.adjoint y) +
-      (h₂∗) (-B.adjoint y) +
-        ((inner ℝ c y : ℝ) : EReal) =
-      -admm_dual_objective_primal h₁ h₂ A B c y := by
-  have hA : A.dualMap (-InnerProductSpace.toDualMap ℝ Y y) =
-      InnerProductSpace.toDualMap ℝ X (-A.adjoint y) := by
-    ext x
-    simp [LinearMap.dualMap_apply, InnerProductSpace.toDualMap_apply_apply, A.adjoint_inner_left]
-  have hB : B.dualMap (-InnerProductSpace.toDualMap ℝ Y y) =
-      InnerProductSpace.toDualMap ℝ Z (-B.adjoint y) := by
-    ext z
-    simp [LinearMap.dualMap_apply, InnerProductSpace.toDualMap_apply_apply, B.adjoint_inner_left]
-  -- Route correction: the unconditional function-level source formula is false when a conjugate
-  -- term is `⊥`, so transport the dual-space non-`⊥` bridge pointwise through the Riesz map.
-  simpa [admm_dual_objective_primal, hA, hB, conjugate_function_primal_apply,
-    InnerProductSpace.toDualMap_apply_apply, real_inner_comm] using
-    (admm_dual_minimization_view_apply h₁ h₂ A B c (InnerProductSpace.toDualMap ℝ Y y)
-      (by simpa [hA, conjugate_function_primal_apply] using h₁_ne_bot)
-      (by simpa [hB, conjugate_function_primal_apply] using h₂_ne_bot))
 
 /-- Rewriting the Chapter 15 dual owner along the Riesz map gives the explicit equation-(15.4)
 objective at a point where the two conjugate terms avoid `⊥`. -/

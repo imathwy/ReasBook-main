@@ -59,10 +59,10 @@ theorem projected_subgradient_best_value_gap_le_epsilon_of_polyak_stepsize
       h_bound.L_f ^ (2 : ℕ) * infDist (x0 : E) XStar ^ (2 : ℕ) / ε ^ (2 : ℕ) - 1 ≤ (k : ℝ)) :
     best_achieved_function_value (fun x : E ↦ (f x).toReal) (fun n ↦ (x[n] : E)) k - fOpt ≤ ε :=
   by
-    -- Rewrite the strong-dual selection into the extendedRealSubdifferential form used by Theorem 8.13.
+    -- Rewrite the strong-dual selection into the subdifferential form used by Theorem 8.13.
     have h_subgrad' :
         ∀ n,
-          (toDualMap ℝ E (g n (x[n])) : Module.Dual ℝ E) ∈ extendedRealSubdifferential f (x[n] : E) := by
+          (toDualMap ℝ E (g n (x[n])) : Module.Dual ℝ E) ∈ subdifferential f (x[n] : E) := by
       intro n
       simpa [mem_strongDualSubdifferential] using h_subgrad n
     -- Theorem 8.13 already packages the source-faithful telescoping argument into a rate bound.

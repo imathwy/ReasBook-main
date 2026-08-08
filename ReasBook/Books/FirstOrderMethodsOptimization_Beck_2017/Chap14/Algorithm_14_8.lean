@@ -285,6 +285,19 @@ class is_two_block_alternating_minimization_trajectory
       Set.univ
       (x2 (k + 1))
 
+/-- A source-facing two-block trajectory canonically yields the initial second-block minimization
+clause as a typeclass-searchable fact. -/
+instance two_block_alternating_minimization_trajectory_initial_fact
+    {f : E1 × E2 → EReal} {g1 : E1 → EReal} {g2 : E2 → EReal}
+    {x1 : ℕ → E1} {x2 : ℕ → E2}
+    [h : is_two_block_alternating_minimization_trajectory f g1 g2 x1 x2] :
+    Fact
+      (IsMinOn
+        (two_block_alternating_minimization_x2_objective f g1 g2 (x1 0))
+        Set.univ
+        (x2 0)) where
+  out := h.initial
+
 /-- A source-facing two-block trajectory canonically yields the underlying Chapter 14 trajectory. -/
 theorem is_two_block_alternating_minimization_trajectory_toTrajectory
     {f : E1 × E2 → EReal} {g1 : E1 → EReal} {g2 : E2 → EReal}

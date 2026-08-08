@@ -27,7 +27,7 @@ Domain sampling:
 - `projected_subgradient_method` and `projected_subgradient_method_succ` from Algorithm 8.3;
 - `PosReal` from Definition 6.7;
 - `isMinOn_mirror_c_half_squared_norm_indicator_update_iff_eq_projection` from Text 9.11;
-- `closedConvexProjectionPoint` from Proposition 3.12 for the ambient-space projection formula.
+- `projectionPoint` from Proposition 3.12 for the ambient-space projection formula.
 
 Accordingly, this file deletes the duplicate local owner and states Definition 10.4.4 directly as
 the gradient specialization of the existing Chapter 8 owner. -/
@@ -54,9 +54,9 @@ subgradient sequence specialized to `gₖ(x) = ∇ f(x)`. -/
 iterate minus the current stepsize times the gradient at that iterate. -/
 theorem projected_gradient_method_succ (k : ℕ) :
     xpg (k + 1) =
-      metricProjection C hC_nonempty hC_closed.isComplete hC_convex
+      metricProjection C hC_nonempty hC_closed hC_convex
         ((xpg k : E) - (t k : ℝ) • ∇ f (xpg k : E)) := by
-  simpa using
+  simpa [div_eq_mul_inv, mul_comm] using
     projected_subgradient_method_succ C hC_nonempty hC_closed hC_convex
       (fun _ x ↦ ∇ f (x : E)) (fun j ↦ (t j : ℝ)) x0 k
 
@@ -65,7 +65,7 @@ projection formula `x^(k+1) = P_C(x^k - t_k ∇ f(x^k))`. -/
 theorem projected_gradient_method_succ_coe (k : ℕ) :
     (xpg (k + 1) : E) =
       Pp[C, hC_nonempty, hC_closed, hC_convex] ((xpg k : E) - (t k : ℝ) • ∇ f (xpg k : E)) := by
-  simpa [closedConvexProjectionPoint] using
+  simpa [projectionPoint] using
     congrArg (fun y : C ↦ (y : E)) (projected_gradient_method_succ f C hC_nonempty hC_closed
       hC_convex t x0 k)
 
@@ -83,7 +83,14 @@ theorem projected_gradient_method_step_isMinOn (k : ℕ) :
       )
       Set.univ
       (xpg (k + 1) : E) := by
-  simpa using
+  have hpotential :
+      (fun y : E ↦ ((((1 / 2 : ℝ) * ‖y‖ ^ (2 : ℕ) : ℝ) : EReal))) =
+        (fun y : E ↦ (((‖y‖ ^ (2 : ℕ) / 2 : ℝ) : EReal))) := by
+    funext y
+    congr 1
+    ring
+  rw [hpotential]
+  exact
     (isMinOn_mirror_c_half_squared_norm_indicator_update_iff_eq_projection
       C hC_nonempty hC_closed hC_convex (xpg k : E) (∇ f (xpg k : E))
       (xpg (k + 1) : E) (t k).2).2

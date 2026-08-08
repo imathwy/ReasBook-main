@@ -26,8 +26,8 @@ def incremental_projected_subgradient_inner_iterate {m : ℕ} (C : Set E)
   Fin.foldl (min i m)
     (fun y j ↦
       -- Route correction: the chapter projection API is parameterized by completeness, and the
-      -- closed feasible set provides that input through `hC_closed.isComplete`.
-      metricProjection C hC_nonempty hC_closed.isComplete hC_convex
+      -- closed feasible set provides that input through `hC_closed`.
+      metricProjection C hC_nonempty hC_closed hC_convex
         ((y : E) - t k • g k y (Fin.castLE (Nat.min_le_right i m) j)))
     x
 
@@ -44,7 +44,7 @@ theorem incremental_projected_subgradient_inner_iterate_zero {m : ℕ} (C : Set 
   simpa [incremental_projected_subgradient_inner_iterate] using
     (Fin.foldl_zero
       (f := fun y j ↦
-        metricProjection C hC_nonempty hC_closed.isComplete hC_convex
+        metricProjection C hC_nonempty hC_closed hC_convex
           ((y : E) - t k • g k y (Fin.castLE (Nat.min_le_right 0 m) j)))
       x)
 
@@ -58,7 +58,7 @@ theorem incremental_projected_subgradient_inner_iterate_succ {m : ℕ} (C : Set 
     (t : ℕ → ℝ) (g : ℕ → C → Fin m → E) (k : ℕ) (x : C) {i : ℕ} (hi : i < m) :
     incremental_projected_subgradient_inner_iterate C hC_nonempty hC_closed hC_convex t g k x
         (i + 1) =
-      metricProjection C hC_nonempty hC_closed.isComplete hC_convex
+      metricProjection C hC_nonempty hC_closed hC_convex
         ((incremental_projected_subgradient_inner_iterate
             C hC_nonempty hC_closed hC_convex t g k x i : E) -
           t k •
@@ -71,7 +71,7 @@ theorem incremental_projected_subgradient_inner_iterate_succ {m : ℕ} (C : Set 
           C hC_nonempty hC_closed hC_convex t g k x (i + 1) =
         Fin.foldl (i + 1)
           (fun y j ↦
-            metricProjection C hC_nonempty hC_closed.isComplete hC_convex
+            metricProjection C hC_nonempty hC_closed hC_convex
               ((y : E) - t k • g k y (Fin.castLE (Nat.succ_le_of_lt hi) j)))
           x := by
     -- Replace the truncated count `min (i + 1) m` by `i + 1` using the bound `i < m`.
@@ -80,14 +80,14 @@ theorem incremental_projected_subgradient_inner_iterate_succ {m : ℕ} (C : Set 
         (Fin.foldl_congr
           (w := Nat.min_eq_left (Nat.succ_le_of_lt hi))
           (f := fun y j ↦
-            metricProjection C hC_nonempty hC_closed.isComplete hC_convex
+            metricProjection C hC_nonempty hC_closed hC_convex
               ((y : E) - t k • g k y (Fin.castLE (Nat.min_le_right (i + 1) m) j))))
   have hprefix_base :
       incremental_projected_subgradient_inner_iterate
           C hC_nonempty hC_closed hC_convex t g k x i =
         Fin.foldl i
           (fun y j ↦
-            metricProjection C hC_nonempty hC_closed.isComplete hC_convex
+            metricProjection C hC_nonempty hC_closed hC_convex
               ((y : E) - t k • g k y (Fin.castLE (Nat.le_of_lt hi) j)))
           x := by
     -- The same truncation rewrite identifies stage `i` with the prefix fold over the first `i`
@@ -97,12 +97,12 @@ theorem incremental_projected_subgradient_inner_iterate_succ {m : ℕ} (C : Set 
         (Fin.foldl_congr
           (w := Nat.min_eq_left (Nat.le_of_lt hi))
           (f := fun y j ↦
-            metricProjection C hC_nonempty hC_closed.isComplete hC_convex
+            metricProjection C hC_nonempty hC_closed hC_convex
               ((y : E) - t k • g k y (Fin.castLE (Nat.min_le_right i m) j))))
   have hprefix :
       Fin.foldl i
           (fun y j ↦
-            metricProjection C hC_nonempty hC_closed.isComplete hC_convex
+            metricProjection C hC_nonempty hC_closed hC_convex
               ((y : E) - t k • g k y (j.castSucc.castLE (Nat.succ_le_of_lt hi))))
           x =
         incremental_projected_subgradient_inner_iterate
@@ -112,12 +112,12 @@ theorem incremental_projected_subgradient_inner_iterate_succ {m : ℕ} (C : Set 
     calc
       Fin.foldl i
           (fun y j ↦
-            metricProjection C hC_nonempty hC_closed.isComplete hC_convex
+            metricProjection C hC_nonempty hC_closed hC_convex
               ((y : E) - t k • g k y (j.castSucc.castLE (Nat.succ_le_of_lt hi))))
           x =
         Fin.foldl i
           (fun y j ↦
-            metricProjection C hC_nonempty hC_closed.isComplete hC_convex
+            metricProjection C hC_nonempty hC_closed hC_convex
               ((y : E) - t k • g k y (Fin.castLE (Nat.le_of_lt hi) j)))
           x := by
         congr with y j
@@ -146,7 +146,7 @@ def incremental_projected_subgradient_method {m : ℕ} (C : Set E)
 
 /-- A component-selection rule is admissible for the incremental projected subgradient method when
 every stepsize is positive and each chosen direction at the `i`-th inner stage belongs to the
-Euclidean extendedRealSubdifferential of the `i`-th summand at the current inner iterate. -/
+Euclidean subdifferential of the `i`-th summand at the current inner iterate. -/
 def incremental_projected_subgradient_method_is_admissible {m : ℕ}
     (f : Fin m → E → ℝ) (C : Set E) (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C)
     (hC_convex : Convex ℝ C) (t : ℕ → ℝ) (g : ℕ → C → Fin m → E) (x0 : C) : Prop :=
@@ -205,7 +205,7 @@ theorem incremental_projected_subgradient_method_inner_zero (k : ℕ) :
 `x^{k,i} - t_k g^{k,i}` back onto `C`. -/
 theorem incremental_projected_subgradient_method_inner_succ (k : ℕ) {i : ℕ} (hi : i < m) :
     x[k, i + 1] =
-      metricProjection C hC_nonempty hC_closed.isComplete hC_convex
+      metricProjection C hC_nonempty hC_closed hC_convex
         ((x[k, i] : E) - t k • g k x[k, i] ⟨i, hi⟩) := by
   -- Apply the generic successor-stage recursion to the current outer iterate `x[k]`.
   simpa using

@@ -34,8 +34,8 @@ mathematics. -/
 -- of the derivative at the chord point by `sqrt (2 L_g g(...))`, then apply the smoothness upper
 -- estimate to any point in the prescribed closed ball and use concavity of `sqrt` to conclude
 -- that the whole ball stays inside the `α`-sublevel set.
-/-- Helper for Theorem 13.23: strong convexity controls the value of `g` at the chord point of two
-points in the `α`-sublevel set. -/
+/-- Strong convexity controls the value of `g` at the chord point of two points in the
+`α`-sublevel set. -/
 lemma sublevel_chord_value_le
     (g : E → ℝ) (α : ℝ) (σg : ℝ) (hg_strong : StrongConvexOn univ σg g)
     {x y : E} (hx : g x ≤ α) (hy : g y ≤ α) {t : ℝ} (ht : t ∈ Icc (0 : ℝ) 1) :
@@ -47,7 +47,7 @@ lemma sublevel_chord_value_le
       g (t • x + (1 - t) • y) ≤
         t * g x + (1 - t) * g y - t * (1 - t) * ((σg / 2) * ‖x - y‖ ^ (2 : ℕ)) := by
     simpa [smul_eq_mul, mul_assoc, mul_left_comm, mul_comm] using
-      hstrong (x := x) (by simp) (y := y) (by simp) (a := t) (b := 1 - t)
+      hstrong (show x ∈ (univ : Set E) by simp) (show y ∈ (univ : Set E) by simp)
         ht.1 (sub_nonneg.mpr ht.2) (by linarith)
   have htx : t * g x ≤ t * α := mul_le_mul_of_nonneg_left hx ht.1
   have hty : (1 - t) * g y ≤ (1 - t) * α := by
@@ -60,25 +60,25 @@ lemma sublevel_chord_value_le
       linarith
     _ = α - (σg / 2) * t * (1 - t) * ‖x - y‖ ^ (2 : ℕ) := by ring
 
-/-- Helper for Theorem 13.23: on the whole space, `L`-smoothness gives the Banach-space quadratic
-upper model with the Fréchet derivative. -/
+/-- On the whole space, `L`-smoothness gives the Banach-space quadratic upper model with the
+Fréchet derivative. -/
 lemma is_l_smooth_on_upper_quadratic_univ
     {g : E → ℝ} {Lg : NNReal} (hg_smooth : is_l_smooth_on g univ Lg) (x y : E) :
     g y ≤ g x + fderiv ℝ g x (y - x) + ((Lg : ℝ) / 2) * ‖y - x‖ ^ (2 : ℕ) := by
   -- Route correction: the Chapter 10 global descent lemma already provides the exact quadratic
   -- upper model needed here, so this helper is only an adapter to the local theorem statement.
-  simpa using is_l_smooth_on_univ_fderiv_descent (f := g) (Lf := Lg) hg_smooth x y
+  simpa using is_l_smooth_on_univ_fderiv_descent hg_smooth x y
 
-/-- Helper for Theorem 13.23: multiplying a real number by its sign recovers its absolute value. -/
-lemma real_sign_mul_eq_abs (t : ℝ) : Real.sign t * t = |t| := by
+/-- Multiplying a real number by its sign recovers its absolute value. -/
+private lemma real_sign_mul_eq_abs (t : ℝ) : Real.sign t * t = |t| := by
   -- Split by the sign of `t` and reduce to the defining formulas for `Real.sign`.
   rcases lt_trichotomy t 0 with ht_neg | rfl | ht_pos
   · simp [Real.sign_of_neg ht_neg, abs_of_neg ht_neg]
   · simp
   · simp [Real.sign_of_pos ht_pos, abs_of_pos ht_pos]
 
-/-- Helper for Theorem 13.23: a real-valued continuous linear functional admits a unit-ball
-direction whose image is strictly larger than any sub-opnorm threshold. -/
+/-- A real-valued continuous linear functional admits a unit-ball direction whose image is strictly
+larger than any sub-opnorm threshold. -/
 lemma exists_norm_lt_one_lt_apply_of_lt_opNorm_real
     (a : E →L[ℝ] ℝ) {r : ℝ} (hr : r < ‖a‖) :
     ∃ v : E, ‖v‖ < 1 ∧ r < a v := by
@@ -108,8 +108,7 @@ lemma exists_norm_lt_one_lt_apply_of_lt_opNorm_real
     simpa [Real.norm_eq_abs] using hu_apply
   exact ⟨v, hv_norm, hv_apply_eq ▸ hr_apply_abs⟩
 
-/-- Helper for Theorem 13.23: nonnegativity and global smoothness bound the derivative norm by
-`√(2 L_g g(x))`. -/
+/-- Nonnegativity and global smoothness bound the derivative norm by `√(2 L_g g(x))`. -/
 lemma norm_fderiv_le_sqrt_two_mul_value
     {g : E → ℝ} {Lg : NNReal}
     (hg_nonneg : ∀ x, 0 ≤ g x) (hLg : 0 < (Lg : ℝ))
@@ -122,7 +121,7 @@ lemma norm_fderiv_le_sqrt_two_mul_value
   obtain ⟨r, hsqrt_lt_r, hr_lt_norm⟩ := exists_between hgt
   have hr_pos : 0 < r := lt_of_le_of_lt (Real.sqrt_nonneg _) hsqrt_lt_r
   obtain ⟨v, hv_norm, hr_lt_apply⟩ :=
-    exists_norm_lt_one_lt_apply_of_lt_opNorm_real (a := fderiv ℝ g x) hr_lt_norm
+    exists_norm_lt_one_lt_apply_of_lt_opNorm_real (fderiv ℝ g x) hr_lt_norm
   set s : ℝ := r / (Lg : ℝ)
   set y : E := x - s • v
   have hs_pos : 0 < s := by
@@ -175,7 +174,7 @@ lemma norm_fderiv_le_sqrt_two_mul_value
   have hdescent :
       g y ≤ g x + fderiv ℝ g x (y - x) + ((Lg : ℝ) / 2) * ‖y - x‖ ^ (2 : ℕ) := by
     -- The global quadratic model controls the function value at the trial point.
-    simpa [y] using is_l_smooth_on_upper_quadratic_univ (g := g) (Lg := Lg) hg_smooth x y
+    simpa [y] using is_l_smooth_on_upper_quadratic_univ hg_smooth x y
   have hy_upper : g y < g x - r ^ (2 : ℕ) / (2 * (Lg : ℝ)) := by
     -- The linear gain dominates the quadratic remainder along this trial step.
     calc
@@ -207,8 +206,7 @@ lemma norm_fderiv_le_sqrt_two_mul_value
     nlinarith [hsqrt_lt_r, hsqrt_nonneg, hr_pos, hsq]
   exact (lt_irrefl _ <| lt_trans hsqrt_sq_lt hr_sq_lt)
 
-/-- Helper for Theorem 13.23: the radius correction term matches the source proof's
-`β / (2 * sqrt α)` normalization. -/
+/-- The radius correction term matches the source proof's `β / (2 * sqrt α)` normalization. -/
 lemma radius_correction_eq_beta_div_two_sqrt_alpha
     (α : ℝ) (Lg : NNReal) (σg t r : ℝ) (hα : 0 < α) (hLg : 0 < (Lg : ℝ)) :
     ((((σg / Real.sqrt (2 * α * (Lg : ℝ))) / 2) * t * (1 - t) * r) *
@@ -257,7 +255,7 @@ lemma radius_correction_eq_beta_div_two_sqrt_alpha
     _ = (((σg / 2) * t * (1 - t) * r) / (2 * Real.sqrt α)) := by
           field_simp [hsqrt_alpha_ne, hsqrt_half_ne]
 
-/-- Helper for Theorem 13.23: the final square-root correction stays below `α`. -/
+/-- The final square-root correction stays below `α`. -/
 lemma sqrt_sub_add_beta_div_two_sqrt_alpha_sq_le_alpha
     (α β : ℝ) (hα : 0 < α) (hβ : 0 ≤ β) (hβα : β ≤ α) :
     (Real.sqrt (α - β) + β / (2 * Real.sqrt α)) ^ (2 : ℕ) ≤ α := by
@@ -363,7 +361,7 @@ theorem sublevelSet_stronglyConvexWith_of_nonnegative_isLSmoothOn_of_strongConve
     have hz_upper_raw :
         g z ≤ g c + fderiv ℝ g c (z - c) + ((Lg : ℝ) / 2) * ‖z - c‖ ^ (2 : ℕ) := by
       -- Apply the global quadratic upper model at the chord point `c`.
-      simpa [c] using is_l_smooth_on_upper_quadratic_univ (g := g) (Lg := Lg) hg_smooth c z
+      simpa [c] using is_l_smooth_on_upper_quadratic_univ hg_smooth c z
     have hlinear :
         fderiv ℝ g c (z - c) ≤ Real.sqrt (2 * (Lg : ℝ) * g c) * γ := by
       -- Bound the linear term first by the operator norm and then by the derivative estimate.
@@ -376,8 +374,7 @@ theorem sublevelSet_stronglyConvexWith_of_nonnegative_isLSmoothOn_of_strongConve
           exact mul_le_mul_of_nonneg_left hz_norm (norm_nonneg _)
         _ ≤ Real.sqrt (2 * (Lg : ℝ) * g c) * γ := by
           exact mul_le_mul_of_nonneg_right
-            (norm_fderiv_le_sqrt_two_mul_value
-              (g := g) (Lg := Lg) hg_nonneg hLg hg_smooth c)
+            (norm_fderiv_le_sqrt_two_mul_value hg_nonneg hLg hg_smooth c)
             hγ_nonneg
     have hquad :
         ((Lg : ℝ) / 2) * ‖z - c‖ ^ (2 : ℕ) ≤ ((Lg : ℝ) / 2) * γ ^ (2 : ℕ) := by
@@ -453,9 +450,9 @@ theorem sublevelSet_stronglyConvexWith_of_nonnegative_isLSmoothOn_of_strongConve
         _ ≤ α := sqrt_sub_add_beta_div_two_sqrt_alpha_sq_le_alpha α β hα hβ_nonneg hβ_le_α
     simpa using hz_alpha
 
-/-- Theorem 13.23, `bridge/view`: the primitive owner `Set.StrongConvex` is obtained from the
-source-facing theorem in the positive regime, while the degenerate cases reduce to the zero-modulus
-convex sublevel-set statement. -/
+/-- Bridge/view: the primitive owner `Set.StrongConvex` is obtained from the source-facing theorem
+in the positive regime, while the degenerate cases reduce to the zero-modulus convex sublevel-set
+statement. -/
 theorem sublevelSet_strongConvex_of_nonnegative_isLSmoothOn_of_strongConvexOn
     (g : E → ℝ) (α : ℝ) (Lg : NNReal) (σg : ℝ) (hσg : 0 < σg)
     (hg_nonneg : ∀ x, 0 ≤ g x)

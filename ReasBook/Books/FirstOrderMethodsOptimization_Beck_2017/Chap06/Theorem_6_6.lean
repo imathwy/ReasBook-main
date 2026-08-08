@@ -1,5 +1,7 @@
 import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_5
+import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_6
+import FirstOrderMethodsOptimization_Beck_2017.Chap02.Theorem_2_6
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Definition_6_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
@@ -42,6 +44,57 @@ abbrev separableSum (f : ∀ i, E i → EReal) : PiLp (2 : ENNReal) E → EReal 
 end PiLp
 
 end SeparableSum
+
+section PiLpSeparableSumRegularity
+
+variable {ι : Type v} [Fintype ι]
+variable {E : ι → Type u}
+variable [∀ i, NormedAddCommGroup (E i)]
+variable [∀ i, InnerProductSpace ℝ (E i)]
+variable [∀ i, CompleteSpace (E i)]
+
+namespace PiLp
+
+/-- The `PiLp` owner `PiLp.separableSum` inherits properness from the canonical owner
+`_root_.separableSum` via the `L²` product equivalence. -/
+instance instIsProperExtendedRealFunctionSeparableSum
+    (f : ∀ i, E i → EReal) [IsProperExtendedRealFunction (_root_.separableSum f)] :
+    IsProperExtendedRealFunction (PiLp.separableSum f) := by
+  let e := PiLp.continuousLinearEquiv (2 : ENNReal) ℝ E
+  let hsum_proper : IsProperExtendedRealFunction (_root_.separableSum f) := inferInstance
+  refine
+    { ne_bot := ?_
+      effective_domain_nonempty := ?_ }
+  · intro z
+    simpa [PiLp.separableSum, e] using hsum_proper.ne_bot (e z)
+  · rcases hsum_proper.effective_domain_nonempty with ⟨z, hz⟩
+    refine ⟨e.symm z, ?_⟩
+    simpa [PiLp.separableSum, e, mem_effective_domain] using hz
+
+/-- The `PiLp` owner `PiLp.separableSum` inherits lower semicontinuity from the canonical owner
+`_root_.separableSum` by precomposition with the `L²` product equivalence. -/
+instance instFactLowerSemicontinuousSeparableSum
+    (f : ∀ i, E i → EReal) [Fact (LowerSemicontinuous (_root_.separableSum f))] :
+    Fact (LowerSemicontinuous (PiLp.separableSum f)) := by
+  let e := PiLp.continuousLinearEquiv (2 : ENNReal) ℝ E
+  let hsum_closed : LowerSemicontinuous (_root_.separableSum f) := Fact.out
+  exact ⟨by
+    simpa [Function.comp, PiLp.separableSum, e] using hsum_closed.comp e.continuous⟩
+
+/-- The `PiLp` owner `PiLp.separableSum` inherits convexity from the canonical owner
+`_root_.separableSum` by precomposition with the `L²` product equivalence. -/
+instance instFactIsConvexFunctionSeparableSum
+    (f : ∀ i, E i → EReal) [Fact (is_convex_function (_root_.separableSum f))] :
+    Fact (is_convex_function (PiLp.separableSum f)) := by
+  let e := PiLp.continuousLinearEquiv (2 : ENNReal) ℝ E
+  let hsum_convex : is_convex_function (_root_.separableSum f) := Fact.out
+  exact ⟨by
+    simpa [PiLp.separableSum, e] using
+      is_convex_function_precompose_linearMap_add hsum_convex e.toLinearMap 0⟩
+
+end PiLp
+
+end PiLpSeparableSumRegularity
 
 section SeparableProx
 
@@ -137,6 +190,36 @@ lemma ereal_sum_lt_top {κ : Type*} (s : Finset κ) (φ : κ → EReal)
     -- Adding one more finite head term keeps the finite sum finite.
     rw [Finset.sum_insert ha]
     exact EReal.add_lt_top (lt_top_iff_ne_top.mp ha_top) (lt_top_iff_ne_top.mp hs_top)
+
+/-- The finite block-separable objective `x ↦ ∑ i, f_i(x_i)` is proper when every coordinate
+summand is proper. This generic regularity theorem belongs with the canonical owner
+`separableSum`, so downstream chapters can reuse it without importing Chapter 11 problem-specific
+APIs. -/
+theorem separableSum_proper
+    (f : ∀ i, E i → EReal)
+    (hf_proper : ∀ i, IsProperExtendedRealFunction (f i)) :
+    IsProperExtendedRealFunction (separableSum f) := by
+  classical
+  refine ⟨?_, ?_⟩
+  · intro x
+    rw [separableSum_apply]
+    exact ereal_sum_ne_bot Finset.univ (fun i ↦ f i (x i))
+      (fun i _ ↦ (hf_proper i).ne_bot (x i))
+  · let x : (i : ι) → E i := fun i ↦ Classical.choose (hf_proper i).effective_domain_nonempty
+    have hx : ∀ i, x i ∈ effective_domain (f i) := by
+      intro i
+      exact Classical.choose_spec (hf_proper i).effective_domain_nonempty
+    refine ⟨x, ?_⟩
+    rw [mem_effective_domain, separableSum_apply]
+    exact ereal_sum_lt_top Finset.univ (fun i ↦ f i (x i))
+      (fun i _ ↦ mem_effective_domain.mp (hx i))
+
+/-- Typeclass form of `separableSum_proper` for the canonical finite-product owner
+`separableSum`. -/
+instance instIsProperExtendedRealFunctionSeparableSum
+    (f : ∀ i, E i → EReal) [∀ i, IsProperExtendedRealFunction (f i)] :
+    IsProperExtendedRealFunction (separableSum f) :=
+  separableSum_proper f (fun i ↦ inferInstance)
 
 /-- Helper for Theorem 6.6: a global minimizer of the separable proximal objective has finite
 coordinatewise proximal objectives. -/

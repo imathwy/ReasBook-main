@@ -1,4 +1,4 @@
-import Mathlib
+import FirstOrderMethodsOptimization_Beck_2017.Chap01.LinearMapFiniteDimensionalNorm
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -13,22 +13,18 @@ variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensio
 /-- The dual norm of a linear functional, realized as the operator norm of the associated
 continuous linear functional. -/
 def dualNorm (y : Module.Dual ℝ E) : ℝ :=
-  ‖LinearMap.toContinuousLinearMap y‖
+  ‖y‖
 
-end
+/-- The dual norm agrees with the operator norm of the associated continuous linear functional. -/
+theorem dualNorm_eq_toContinuousLinearMap_norm (y : Module.Dual ℝ E) :
+    dualNorm y = ‖y.toContinuousLinearMap‖ :=
+  rfl
 
-section
-
-variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
-
--- Proof sketch: apply `ContinuousLinearMap.le_opNorm` to the continuous linear functional
--- `LinearMap.toContinuousLinearMap y`; the abbreviation `dualNorm y` is exactly this operator norm,
--- and because the codomain is `ℝ`, the norm of `y x` is `|y x|`.
-/-- Lemma 1.1: for a linear functional `y ∈ E* = Module.Dual ℝ E` on a finite-dimensional real
-normed space, the canonical dual pairing is bounded by the dual norm times the norm of the
-vector. This is the chapter-facing dual-pairing inequality `|y x| ≤ ‖y‖_* ‖x‖` written using
-`dualNorm`. -/
+/-- Lemma 1.1 [generalized Cauchy--Schwarz inequality]: on a real normed space, the canonical
+pairing between `y : E* = Module.Dual ℝ E` and `x : E` satisfies
+`|y x| ≤ ‖y‖ * ‖x‖`. -/
 theorem abs_apply_le_dual_norm_mul_norm (y : Module.Dual ℝ E) (x : E) :
-    |y x| ≤ dualNorm y * ‖x‖ := sorry
+    |y x| ≤ dualNorm y * ‖x‖ := by
+  simpa [dualNorm, Real.norm_eq_abs] using y.toContinuousLinearMap.le_opNorm x
 
 end

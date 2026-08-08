@@ -60,7 +60,8 @@ def greedy_linear_feasibility_projection_method_is_admissible
 
 section
 
-variable (a : Fin m → E) (b : Fin m → ℝ) (i : ℕ → E → Fin m) (x0 : E)
+variable (a : Fin m → Fin n → ℝ) (b : Fin m → ℝ)
+  (i : ℕ → (Fin n → ℝ) → Fin m) (x0 : Fin n → ℝ)
 
 local notation "x[" k "]" => greedy_linear_feasibility_projection_method a b i x0 k
 

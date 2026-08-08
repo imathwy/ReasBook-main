@@ -42,6 +42,7 @@ the Moreau envelope and to invoke the scaled Moreau-decomposition theorem. Deriv
 quadratic term should be stated through the chapter owner `ω(μ)`, not by a duplicate inline
 formula. -/
 recall conjugate_function_primal
+recall conjugate_function_primal_pos_real_mul
 recall pairing_eq_add_conjugate_iff_mem_subdifferential
 recall prox_eq_singleton_of_proper_closed_convex
 recall prox_scaled_conjugate_sum_eq_singleton
@@ -80,7 +81,7 @@ lemma dual_moreau_prox_eq_singleton
       (μ : ℝ) • prox[fun y ↦ (f∗) y / (μ : EReal)] ((μ : ℝ)⁻¹ • x)
           = prox[(((μ : EReal) • f)∗)] x := by
             symm
-            rw [scaled_conjugate_primal_eq_pos_smul_precompose_inv_smul]
+            rw [conjugate_function_primal_pos_real_mul f (μ : ℝ) μ.2]
             simpa [smul_eq_mul] using
               proximal_mapping_smul_precompose_inv_smul (g := f∗) (lam := (μ : ℝ))
                 (ne_of_gt μ.2) x
@@ -148,8 +149,8 @@ lemma fenchel_young_eq_of_scaled_prox_singleton
     exact (EReal.coe_toReal (mem_effective_domain.mp hu_eff).ne (hf_proper.ne_bot u)).symm
   have hmem :
       ((toDualMap ℝ E ((μ : ℝ)⁻¹ • (x - u)) : StrongDual ℝ E) : Module.Dual ℝ E) ∈
-        extendedRealSubdifferential f u := by
-    -- Descale the supporting inequality directly on the extendedRealSubdifferential owner predicate.
+        subdifferential f u := by
+    -- Descale the supporting inequality directly on the subdifferential owner predicate.
     rw [mem_subdifferential, is_subgradient_at_iff_forall_mem_effective_domain]
     refine ⟨hu_eff, ?_⟩
     intro y hy
