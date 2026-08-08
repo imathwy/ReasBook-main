@@ -1,5 +1,4 @@
 import Mathlib
-import AlgebraicTopology_May_1999.Basic
 import AlgebraicTopology_May_1999.Chap01.Construction_1_5_3
 import AlgebraicTopology_May_1999.Chap01.Construction_1_5_5
 import AlgebraicTopology_May_1999.Chap01.Construction_1_6_3

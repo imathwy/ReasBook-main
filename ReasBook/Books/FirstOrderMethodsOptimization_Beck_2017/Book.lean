@@ -1,5 +1,4 @@
 import Mathlib
-import FirstOrderMethodsOptimization_Beck_2017.Basic
 import FirstOrderMethodsOptimization_Beck_2017.Chap01.Definition_1_1
 import FirstOrderMethodsOptimization_Beck_2017.Chap01.Definition_1_10
 import FirstOrderMethodsOptimization_Beck_2017.Chap01.Definition_1_11
@@ -832,4 +831,3 @@ import FirstOrderMethodsOptimization_Beck_2017.Chap15.Proposition_15_2
 import FirstOrderMethodsOptimization_Beck_2017.Chap15.Proposition_15_3
 import FirstOrderMethodsOptimization_Beck_2017.Chap15.Theorem_15_1
 import FirstOrderMethodsOptimization_Beck_2017.Chap15.Theorem_15_2
-import FirstOrderMethodsOptimization_Beck_2017.FirstOrderMethodsinOptimization

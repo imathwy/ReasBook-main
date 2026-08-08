@@ -22,4 +22,3 @@ import RiemannSurfaces_Forster_1981.Chap01.Remark_1_extra_2
 import RiemannSurfaces_Forster_1981.Chap01.Theorem_1_11
 import RiemannSurfaces_Forster_1981.Chap01.Theorem_1_15
 import RiemannSurfaces_Forster_1981.Chap01.Theorem_1_8
-import RiemannSurfaces_Forster_1981.RiemannSurfaces
