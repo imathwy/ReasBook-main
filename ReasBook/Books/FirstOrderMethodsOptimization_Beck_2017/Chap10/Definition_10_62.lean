@@ -1,0 +1,21 @@
+import FirstOrderMethodsOptimization_Beck_2017.Chap08.Algorithm_8_1
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+/- Definition 10.62 is recall-only in the chapter's first-order iterative API. Domain sampling in
+the same owner family points to the existing Chapter 8 declarations
+
+- `beckGradientMethod` as the recursive sequence owner;
+- `gradient_method_zero` and `gradient_method_succ` as the derived base-step and one-step API;
+- `beckSubgradientMethod` as the nearby same-shape first-order method owner confirming the chapter's
+  recursion-first design.
+
+The primitive data are exactly the objective `f`, the stepsize sequence `t`, and the initial
+point `x0`. The update formula and its stepwise expansion are derived from the owner via the
+existing zero/succ theorems, so this file should not introduce a parallel local wrapper, alias,
+or restated recursion. -/
+
+/- Definition 10.62: given an initial point `x0` and stepsizes `t_k`, the gradient method for a
+differentiable objective `f` is the recursive sequence satisfying
+`x^(k+1) = x^k - t_k • ∇ f(x^k)`. -/
+recall beckGradientMethod

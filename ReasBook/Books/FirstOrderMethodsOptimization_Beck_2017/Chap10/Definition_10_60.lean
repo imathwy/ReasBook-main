@@ -1,0 +1,72 @@
+import FirstOrderMethodsOptimization_Beck_2017.Chap06.Example_6_8
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_55
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+noncomputable section
+
+recall composite_model_objective
+recall composite_model_objective_apply
+
+section
+
+variable {m n p : ℕ}
+
+local notation "X" => EuclideanSpace ℝ (Fin n)
+
+variable (A : Matrix (Fin m) (Fin n) ℝ) (b : EuclideanSpace ℝ (Fin m))
+  (D : Matrix (Fin p) (Fin n) ℝ) (lam : ℝ)
+
+/- Definition 10.60 is `source-facing` in the concrete S-FISTA model layer.
+
+Domain sampling identifies the canonical owners already present in the project:
+- Chapter 6's `EuclideanSpace.l1Norm`, used on the theorem surface as `l1n[·]`, for the Euclidean
+  `ℓ¹` penalties;
+- Chapter 10's `composite_model_objective` for additive objective assembly;
+- Definition 10.55's S-FISTA three-term bridge, showing that the three-summand objective should be
+  expressed by iterating `composite_model_objective` rather than by introducing a second local
+  objective owner.
+
+The primitive data are therefore only the least-squares data-fit term, the transformed `ℓ¹`
+penalty, and the ambient `ℓ¹` penalty. Their sum is derived API from the chapter owner
+`composite_model_objective`, so a parallel local wrapper definition is redundant. -/
+
+/-- The least-squares data-fit term `x ↦ (1 / 2) ‖A x - b‖₂²` from Definition 10.60. -/
+abbrev least_squares_loss : X → ℝ :=
+  fun x ↦ (1 / 2 : ℝ) * ‖A.toEuclideanLin x - b‖ ^ (2 : ℕ)
+
+/-- The analysis `ℓ¹` penalty `x ↦ l1n[D x]` from Definition 10.60. -/
+abbrev analysis_l1_penalty : X → ℝ :=
+  fun x ↦ l1n[D.toEuclideanLin x]
+
+/-- The ambient `ℓ¹` regularizer `x ↦ λ l1n[x]` from Definition 10.60. -/
+abbrev ambient_l1_regularizer (n : ℕ) (lam : ℝ) : EuclideanSpace ℝ (Fin n) → ℝ :=
+  fun x ↦ lam * l1n[x]
+
+/- Definition 10.60: the least-squares analysis-`ℓ¹` objective is the specialized Chapter 10
+three-term owner `H[least_squares_loss A b, analysis_l1_penalty D, ambient_l1_regularizer n lam]`.
+-/
+#check H[least_squares_loss A b, analysis_l1_penalty D, ambient_l1_regularizer n lam]
+
+@[simp] theorem least_squares_loss_apply (x : X) :
+    least_squares_loss A b x = (1 / 2 : ℝ) * ‖A.toEuclideanLin x - b‖ ^ (2 : ℕ) :=
+  rfl
+
+@[simp] theorem analysis_l1_penalty_apply (x : X) :
+    analysis_l1_penalty D x = l1n[D.toEuclideanLin x] :=
+  rfl
+
+@[simp] theorem ambient_l1_regularizer_apply (x : X) :
+    ambient_l1_regularizer n lam x = lam * l1n[x] :=
+  rfl
+
+/- Evaluating the Definition 10.60 objective at `x` is definitionally the textbook formula
+`(1 / 2) ‖A x - b‖₂² + l1n[D x] + λ l1n[x]`. -/
+#check
+  ((fun _ : X ↦ rfl) :
+    ∀ x : X,
+      H[least_squares_loss A b, analysis_l1_penalty D, ambient_l1_regularizer n lam] x =
+        (1 / 2 : ℝ) * ‖A.toEuclideanLin x - b‖ ^ (2 : ℕ) + l1n[D.toEuclideanLin x] +
+          lam * l1n[x])
+
+end

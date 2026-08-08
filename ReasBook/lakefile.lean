@@ -27,10 +27,6 @@ require MD4Lean from git "https://github.com/acmepjz/md4lean" @ "main"
 @[default_target]
 lean_lib «ReasBook» where
 
-lean_lib Books where
-
-lean_lib Papers where
-
 -- Books from ALLBOOKS (sources live under Books/<LibName>/)
 lean_lib ProbabilityTheory_Klenke_2020 where
   srcDir := "Books"

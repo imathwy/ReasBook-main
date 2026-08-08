@@ -1,0 +1,45 @@
+import Mathlib
+import FirstOrderMethodsOptimization_Beck_2017.Chap02.Corollary_2_1
+import FirstOrderMethodsOptimization_Beck_2017.Chap02.Theorem_2_5
+import FirstOrderMethodsOptimization_Beck_2017.Chap06.Definition_6_1
+import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_3
+
+-- Declarations for this item will be appended below by the statement pipeline.
+
+universe u
+
+section
+
+variable {E : Type u}
+variable [NormedAddCommGroup E] [ProperSpace E]
+
+/- Theorem 6.4 is `source-facing` for the Chapter 6 proximal-operator existence theory. Domain
+sampling shows that the relevant owner abstractions for this statement already live upstream:
+
+- `IsCoerciveExtendedRealFunction` and `attains_min_on_closed_set_of_coercive` from Chapter 2,
+- `proximal_objective` and the set-valued proximal map `prox[f]` from Definition 6.1.
+
+Accordingly, this file should only state the existence theorem for `prox[f] x`; it should not
+duplicate local owners for coercivity, minimizer existence, or proximal-set membership. -/
+
+-- Proof sketch: fix `x`. The function `proximal_objective f x` is coercive by `hcoercive`, hence
+-- proper. It is also lower semicontinuous because `f` is lower semicontinuous and the quadratic
+-- penalty `u ↦ (1 / 2) ‖u - x‖²` is continuous. Apply
+-- `attains_min_on_closed_set_of_coercive` to `proximal_objective f x` on `Set.univ`; the
+-- resulting minimizer belongs to `prox[f] x` by definition.
+/-- Theorem 6.4: if `f` is closed and the proximal objective at `x`,
+`u ↦ f u + (1 / 2) * ‖u - x‖^2`, is coercive, then the proximal set `prox[f] x` is nonempty. The
+ambient assumption `[ProperSpace E]` is the canonical abstraction capturing the finite-dimensional
+Euclidean setting used in the text, and the textbook properness hypothesis on `f` is redundant
+once this proximal objective is assumed coercive. -/
+theorem prox_nonempty_of_closed_and_proximal_objective_coercive
+    (f : E → EReal) (hf_closed : LowerSemicontinuous f) (x : E)
+    (hcoercive : IsCoerciveExtendedRealFunction (proximal_objective f x)) :
+    (prox[f] x).Nonempty := by
+  rcases attains_min_on_closed_set_of_coercive (proximal_objective f x)
+      (lowerSemicontinuous_proximal_objective hf_closed x) hcoercive isClosed_univ
+      (by simpa using hcoercive.effective_domain_nonempty) with ⟨u, -, hu⟩
+  refine ⟨u, ?_⟩
+  simpa [mem_proximal_mapping_iff] using hu
+
+end
