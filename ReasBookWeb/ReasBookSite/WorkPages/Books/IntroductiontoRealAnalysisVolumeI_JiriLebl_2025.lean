@@ -14,7 +14,6 @@ Chapter 00
 
 Chapter 01 -- Real Numbers
 
-- [1. Chap01](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/)
 - [1.1 Basic Properties](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section01/)
 - [1.2 The Set of Real Numbers](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section02/)
 - [1.3 Absolute Value and Bounded Functions](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap01/section03/)
@@ -23,7 +22,6 @@ Chapter 01 -- Real Numbers
 
 Chapter 02 -- Sequences and Series
 
-- [2. Chap02](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap02/)
 - [2.1 Sequences and Limits](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap02/section01/)
 - [2.2 Facts About Limits of Sequences](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap02/section02/)
 - [2.3 Limit Superior, Limit Inferior, and Bolzano-Weierstrass](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap02/section03/)
@@ -33,7 +31,6 @@ Chapter 02 -- Sequences and Series
 
 Chapter 03 -- Continuous Functions
 
-- [3. Chap03](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap03/)
 - [3.1 Limits of Functions](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap03/section01/)
 - [3.2 Continuous Functions](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap03/section02/)
 - [3.3 Extreme and Intermediate Value Theorems](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap03/section03/)
@@ -43,7 +40,6 @@ Chapter 03 -- Continuous Functions
 
 Chapter 04 -- The Derivative
 
-- [4. Chap04](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap04/)
 - [4.1 The Derivative](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap04/section01/)
 - [4.2 Mean Value Theorem](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap04/section02/)
 - [4.3 Taylor's Theorem](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap04/section03/)
@@ -51,7 +47,6 @@ Chapter 04 -- The Derivative
 
 Chapter 05 -- The Riemann Integral
 
-- [5. Chap05](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap05/)
 - [5.1 The Riemann Integral](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap05/section01/)
 - [5.2 Properties of the Integral](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap05/section02/)
 - [5.3 Fundamental Theorem of Calculus](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap05/section03/)
@@ -60,14 +55,12 @@ Chapter 05 -- The Riemann Integral
 
 Chapter 06 -- Sequences of Functions
 
-- [6. Chap06](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap06/)
 - [6.1 Pointwise and Uniform Convergence](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap06/section01/)
 - [6.2 Interchange of Limits](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap06/section02/)
 - [6.3 Picard's Theorem](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap06/section03/)
 
 Chapter 07 -- Metric Spaces
 
-- [7. Chap07](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/)
 - [7.1 Metric Spaces](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section01/)
 - [7.2 Open and Closed Sets](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section02/)
 - [7.3 Sequences and Convergence](/ReasBook/introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section03/)

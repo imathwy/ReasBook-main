@@ -689,15 +689,6 @@ def should_include_book(path: Path) -> bool:
     if stem.startswith("section"):
         return True
 
-    # Files directly under a chapter directory (e.g. Chap01/Definition_1_1_1.lean)
-    # should be included even without a module doc or "section" prefix.
-    # This handles the flattened v4.30.0 book structure where chapter items
-    # (Definition, Theorem, Lemma, etc.) live directly under ChapXX/.
-    if len(path.parts) >= 2:
-        parent = path.parts[-2]
-        if CHAPTER_RE.match(parent):
-            return True
-
     return module_doc_title(path) is not None
 
 
@@ -1349,7 +1340,7 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
     for book, b_entries in sorted(by_book.items()):
         title = book_title(book)
         section_entries = sorted(
-            [e for e in b_entries if ((e.section_num > 0 or e.chapter_num > 0) and e.part_num == 0)],
+            [e for e in b_entries if (e.section_num > 0 and e.part_num == 0)],
             key=lambda e: (e.chapter_num, e.section_num, e.stem),
         )
         home_entry = next((e for e in b_entries if e.stem == "book"), None)
