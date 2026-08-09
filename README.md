@@ -1,12 +1,12 @@
-# ReasBook — Lean/mathlib v4.32.0
+# ReasBook — Lean/mathlib v4.32.2
 
-**Toolchain:** `leanprover/lean4:v4.32.0`
-**Mathlib:** v4.32.0
+**Toolchain:** `leanprover/lean4:v4.32.2`
+**Mathlib:** v4.32.2
 **Status:** Empty
 **Last build:** pending
 
 This branch currently contains no books or papers yet. It is the receiving branch for
-new contributions on Lean/mathlib v4.32.0.
+new contributions on Lean/mathlib v4.32.2.
 
 ## Build
 
