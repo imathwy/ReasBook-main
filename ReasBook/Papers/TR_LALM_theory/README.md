@@ -46,16 +46,17 @@ imports the complete article-facing development.
 | --- | ---: |
 | Lean/mathlib version | `v4.32.2` |
 | Implementation `.lean` files | 141 |
-| Physical Lean source lines | 75,687 |
-| Nonblank Lean source lines | 71,408 |
+| Physical Lean source lines | 75,686 |
+| Nonblank Lean source lines | 71,407 |
 | Top-level declarations | 2,853 |
 | Article-level linked entries | 24 |
 | Direct article-level dependency edges | 42 |
 | `sorry` / `admit` placeholders | 0 / 0 |
 | Project-defined `axiom` declarations | 0 |
 
-The source-line and declaration counts exclude the ReasBook presentation
-wrappers. The declaration breakdown is:
+The source-line count covers the 141 implementation modules under this
+directory and excludes `Paper.lean` and the one-line aggregate wrapper
+`Papers/TR_LALM_theory.lean`. The declaration breakdown is:
 
 | Declaration kind | Count |
 | --- | ---: |
