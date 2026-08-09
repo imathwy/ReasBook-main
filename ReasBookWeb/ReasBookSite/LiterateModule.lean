@@ -15,8 +15,8 @@ variable [Monad m] [MonadError m] [MonadQuotation m]
 
 
 partial def getCommentString' (pref : String) (hl : Highlighted) : m String := do
-  let str := (← getString hl).trim
-  let str := str.stripPrefix pref |>.stripSuffix "-/" |>.trim
+  let str := (← getString hl).trimAscii.copy
+  let str := str.dropPrefix pref |>.dropSuffix "-/" |>.trimAscii.copy
   pure str
 where getString : Highlighted → m String
   | .text txt | .unparsed txt => pure txt
@@ -58,7 +58,7 @@ def loadModuleContent (mod : String) (leanProject : System.FilePath := "../ReasB
       let toolchainfile := projectDir / "lean-toolchain"
       if !(← toolchainfile.pathExists) then
         throw <| .userError s!"File {toolchainfile} doesn't exist, couldn't load project"
-      pure (← IO.FS.readFile toolchainfile).trim
+      pure (← IO.FS.readFile toolchainfile).trimAscii.copy
     | some override => pure override
 
   -- Kludge: remove variables introduced by Lake. Clearing out DYLD_LIBRARY_PATH and
@@ -95,7 +95,7 @@ def loadModuleContent (mod : String) (leanProject : System.FilePath := "../ReasB
       }
       if res.exitCode != 0 then
         reportFail projectDir cmd args res
-      IO.FS.readFile res.stdout.trim
+      IO.FS.readFile res.stdout.trimAscii.copy
     finally f.unlock
 
   let parsed ←
@@ -113,7 +113,7 @@ def loadModuleContent (mod : String) (leanProject : System.FilePath := "../ReasB
       match findModuleItemArray? parsed with
       | some json => pure json
       | none =>
-        let sample := if jsonFile.length > 400 then jsonFile.take 400 ++ " ..." else jsonFile
+        let sample := if jsonFile.length > 400 then (jsonFile.take 400).copy ++ " ..." else jsonFile
         throw <| IO.userError s!"Couldn't find a module-item JSON array in literate output. Sample:\n{sample}"
     match json.mapM deJson with
     | .error err =>
@@ -288,8 +288,10 @@ partial def docFromModAndTerms
           if !mdHeaders.back?.isEqSome lvl then
             mdHeaders := mdHeaders.push lvl
 
+          let titleSyntax ← arr inlines
           push {
-            titleSyntax := (← arr inlines),
+            rangeSyntax := titleSyntax,
+            selectionSyntax := titleSyntax,
             expandedTitle := some (txt.map inlineText |>.toList |> String.join, inlines),
             metadata := none,
             blocks := #[],
@@ -373,7 +375,7 @@ where
     ``(Verso.Doc.ListItem.mk $(← arr (← contents.mapM (ofBlock tms))))
 
   normalizeInternalHref (href : String) : String :=
-    let href := href.trim
+    let href := href.trimAscii.copy
     if href.isEmpty then href
     else if href.startsWith "/" then href
     else if href.startsWith "#" then href
@@ -445,7 +447,8 @@ def elabReasBookPage (x : Ident) (mod : Ident) (config : LitPageConfig) (title :
 
   let titleParts ← stringToInlines title
   let titleString := inlinesToString (← getEnv) titleParts
-  let initState : PartElabM.State := .init (.node .none nullKind titleParts)
+  let titleSyntax := .node .none nullKind titleParts
+  let initState : PartElabM.State := .init titleSyntax titleSyntax
 
   -- Each item pairs a top-level command with a mapping from terms found in docstrings to their
   -- parsed, elaborated forms
@@ -466,12 +469,8 @@ def elabReasBookPage (x : Ident) (mod : Ident) (config : LitPageConfig) (title :
   let finished := partState.partContext.toPartFrame.close 0
   let finished :=
     -- Obey the Markdown convention of a single top-level header being the title of the document, if it's been followed
-    if let .mk _ _ _ metadata #[] #[p] _ := finished then
-      match p with
-      | .mk t1 t2 t3 _ bs ps pos =>
-        -- Propagate metadata fields
-        FinishedPart.mk t1 t2 t3 metadata bs ps pos
-      | _ => p
+    if let .mk _ _ _ _ metadata #[] #[p] _ := finished then
+      p.withMetadata metadata
     else finished
 
   let ty ← ``(VersoDoc $genre)
