@@ -1,9 +1,9 @@
 import Lake
 open Lake DSL
 
-require verso from git "https://github.com/leanprover/verso.git" @ "v4.26.0"
-require subverso from git "https://github.com/leanprover/subverso" @ "eb77622e97e942ba2cfe02f60637705fc2d9481b"
-require MD4Lean from git "https://github.com/acmepjz/md4lean" @ "main"
+require verso from git "https://github.com/leanprover/verso.git" @ "v4.32.0"
+require subverso from git "https://github.com/leanprover/subverso" @ "0076a9e8a3670d83c54c93414b2b26d3a8aba08d"
+require MD4Lean from git "https://github.com/acmepjz/md4lean" @ "31907cc18f48a95384f99cee5582c00fb39e0f67"
 
 package "reasbook-site" where
   version := v!"0.1.0"
@@ -19,19 +19,19 @@ def reasbookRoot : System.FilePath := "../ReasBook"
 
 /-- Parse a generated section line of the form: `(`Module.Name, "Title"),`. -/
 def parseSectionLine? (line : String) : Option (Lean.Name × String) :=
-  let line := line.trim
+  let line := line.trimAscii.copy
   if !line.startsWith "(`" then
     none
   else
     match line.splitOn ", \"" with
     | [lhs, rhs] =>
-      let nameStr := (lhs.drop 2).trim
+      let nameStr := (lhs.drop 2).trimAscii.copy
       if nameStr.isEmpty then
         none
       else
         let titleRaw :=
-          if rhs.endsWith "\")," then rhs.dropRight 3
-          else if rhs.endsWith "\"" then rhs.dropRight 1
+          if rhs.endsWith "\")," then (rhs.dropEnd 3).copy
+          else if rhs.endsWith "\"" then (rhs.dropEnd 1).copy
           else rhs
         some (nameStr.toName, titleRaw.replace "\\\"" "\"")
     | _ => none
@@ -62,7 +62,7 @@ def buildLiterateJsonBatch (pkg : NPackage n) (mods : Array String) : LogIO Unit
   let lakeConfig := if (← lakefile.pathExists) then lakefile else lakefile'
 
   let toolchainFile := pkg.dir / reasbookRoot / "lean-toolchain"
-  let toolchain := (← IO.FS.readFile toolchainFile).trim
+  let toolchain := (← IO.FS.readFile toolchainFile).trimAscii.copy
 
   let f ← IO.FS.Handle.mk lakeConfig .read
   f.lock (exclusive := true)
@@ -95,7 +95,9 @@ target genLib (pkg) : Unit := do
       | error s!"Failed to generate {leanModName}: it has not been defined in the workspace."
 
     let origName := "/".intercalate (module.components.map (·.toString)) ++ ".lean"
-    let origLeanFile : System.FilePath := pkg.dir / reasbookRoot / origName
+    let papersPath := pkg.dir / reasbookRoot / "Papers" / origName
+    let booksPath := pkg.dir / reasbookRoot / "Books" / origName
+    let origLeanFile ← if (← papersPath.pathExists) then pure papersPath else pure booksPath
     addTrace (← computeTrace <| TextFilePath.mk origLeanFile)
 
     let jsonName := "/".intercalate (module.components.map (·.toString)) ++ ".json"
