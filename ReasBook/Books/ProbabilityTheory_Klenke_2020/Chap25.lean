@@ -54,7 +54,7 @@ import ProbabilityTheory_Klenke_2020.Chap25.Theorem_25_9
 import ProbabilityTheory_Klenke_2020.Chap25.UpperHalfSpace
 
 /-!
-# Probability Theory: A Comprehensive Course (Klenke, 2020) — Chapter 25
+# Chapter 25 — Probability Theory: A Comprehensive Course (Klenke, 2020)
 
 Aggregation module for all formalized items in Chapter 25.
 -/

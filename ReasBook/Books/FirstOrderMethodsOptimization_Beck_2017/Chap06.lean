@@ -87,7 +87,7 @@ import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_63
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_67
 
 /-!
-# First-Order Methods in Optimization (Beck, 2017) — Chapter 06
+# Chapter 06 — First-Order Methods in Optimization (Beck, 2017)
 
 Aggregation module for all formalized items in Chapter 6.
 -/

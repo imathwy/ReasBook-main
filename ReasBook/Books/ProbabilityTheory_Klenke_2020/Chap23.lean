@@ -29,7 +29,7 @@ import ProbabilityTheory_Klenke_2020.Chap23.Theorem_23_3
 import ProbabilityTheory_Klenke_2020.Chap23.Theorem_23_8
 
 /-!
-# Probability Theory: A Comprehensive Course (Klenke, 2020) — Chapter 23
+# Chapter 23 — Probability Theory: A Comprehensive Course (Klenke, 2020)
 
 Aggregation module for all formalized items in Chapter 23.
 -/

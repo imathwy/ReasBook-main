@@ -127,7 +127,7 @@ import ProbabilityTheory_Klenke_2020.Chap01.Theorem_1_92
 import ProbabilityTheory_Klenke_2020.Chap01.Theorem_1_96
 
 /-!
-# Probability Theory: A Comprehensive Course (Klenke, 2020) — Chapter 01
+# Chapter 01 — Probability Theory: A Comprehensive Course (Klenke, 2020)
 
 Aggregation module for all formalized items in Chapter 1.
 -/

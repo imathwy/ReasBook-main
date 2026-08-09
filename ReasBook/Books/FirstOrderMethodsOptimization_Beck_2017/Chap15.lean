@@ -30,7 +30,7 @@ import FirstOrderMethodsOptimization_Beck_2017.Chap15.Theorem_15_1
 import FirstOrderMethodsOptimization_Beck_2017.Chap15.Theorem_15_2
 
 /-!
-# First-Order Methods in Optimization (Beck, 2017) — Chapter 15
+# Chapter 15 — First-Order Methods in Optimization (Beck, 2017)
 
 Aggregation module for all formalized items in Chapter 15.
 -/

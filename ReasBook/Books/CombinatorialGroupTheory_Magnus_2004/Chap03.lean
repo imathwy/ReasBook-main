@@ -82,7 +82,7 @@ import CombinatorialGroupTheory_Magnus_2004.Chap03.Proposition_3_9_7
 import CombinatorialGroupTheory_Magnus_2004.Chap03.Remark_3_12_2
 
 /-!
-# Combinatorial Group Theory (Magnus, Karrass, Solitar, 2004) — Chapter 03
+# Chapter 03 — Combinatorial Group Theory (Magnus, Karrass, Solitar, 2004)
 
 Aggregation module for all formalized items in Chapter 3.
 -/

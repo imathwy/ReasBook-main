@@ -45,7 +45,7 @@ import ProbabilityTheory_Klenke_2020.Chap24.Theorem_24_5
 import ProbabilityTheory_Klenke_2020.Chap24.Theorem_24_7
 
 /-!
-# Probability Theory: A Comprehensive Course (Klenke, 2020) — Chapter 24
+# Chapter 24 — Probability Theory: A Comprehensive Course (Klenke, 2020)
 
 Aggregation module for all formalized items in Chapter 24.
 -/

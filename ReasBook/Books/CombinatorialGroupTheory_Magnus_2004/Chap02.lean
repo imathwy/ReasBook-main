@@ -49,7 +49,7 @@ import CombinatorialGroupTheory_Magnus_2004.Chap02.Theorem_2_6_1
 import CombinatorialGroupTheory_Magnus_2004.Chap02.Theorem_2_6_2
 
 /-!
-# Combinatorial Group Theory (Magnus, Karrass, Solitar, 2004) — Chapter 02
+# Chapter 02 — Combinatorial Group Theory (Magnus, Karrass, Solitar, 2004)
 
 Aggregation module for all formalized items in Chapter 2.
 -/

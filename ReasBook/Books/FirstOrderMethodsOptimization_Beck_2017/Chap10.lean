@@ -111,7 +111,7 @@ import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_72
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_9
 
 /-!
-# First-Order Methods in Optimization (Beck, 2017) — Chapter 10
+# Chapter 10 — First-Order Methods in Optimization (Beck, 2017)
 
 Aggregation module for all formalized items in Chapter 10.
 -/

@@ -102,7 +102,7 @@ import ProbabilityTheory_Klenke_2020.Chap21.Theorem_21_70
 import ProbabilityTheory_Klenke_2020.Chap21.Theorem_21_75
 
 /-!
-# Probability Theory: A Comprehensive Course (Klenke, 2020) — Chapter 21
+# Chapter 21 — Probability Theory: A Comprehensive Course (Klenke, 2020)
 
 Aggregation module for all formalized items in Chapter 21.
 -/

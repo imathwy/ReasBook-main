@@ -51,7 +51,7 @@ import ProbabilityTheory_Klenke_2020.Chap05.Theorem_5_7
 import ProbabilityTheory_Klenke_2020.Chap05.Theorem_5_8
 
 /-!
-# Probability Theory: A Comprehensive Course (Klenke, 2020) — Chapter 05
+# Chapter 05 — Probability Theory: A Comprehensive Course (Klenke, 2020)
 
 Aggregation module for all formalized items in Chapter 5.
 -/

@@ -49,7 +49,7 @@ import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09.Theorem_9_2
 import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09.Theorem_9_9
 
 /-!
-# Convex Analysis and Monotone Operator Theory (Bauschke & Combettes, 2017) — Chapter 09
+# Chapter 09 — Convex Analysis and Monotone Operator Theory (Bauschke & Combettes, 2017)
 
 Aggregation module for all formalized items in Chapter 9.
 -/

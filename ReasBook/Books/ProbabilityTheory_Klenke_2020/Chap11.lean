@@ -32,7 +32,7 @@ import ProbabilityTheory_Klenke_2020.Chap11.Theorem_11_4
 import ProbabilityTheory_Klenke_2020.Chap11.Theorem_11_7
 
 /-!
-# Probability Theory: A Comprehensive Course (Klenke, 2020) — Chapter 11
+# Chapter 11 — Probability Theory: A Comprehensive Course (Klenke, 2020)
 
 Aggregation module for all formalized items in Chapter 11.
 -/

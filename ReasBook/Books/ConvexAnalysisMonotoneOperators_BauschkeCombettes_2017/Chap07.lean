@@ -26,7 +26,7 @@ import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap07.Theorem_7_1
 import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap07.Theorem_7_4
 
 /-!
-# Convex Analysis and Monotone Operator Theory (Bauschke & Combettes, 2017) — Chapter 07
+# Chapter 07 — Convex Analysis and Monotone Operator Theory (Bauschke & Combettes, 2017)
 
 Aggregation module for all formalized items in Chapter 7.
 -/

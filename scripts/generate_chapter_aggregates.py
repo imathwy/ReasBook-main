@@ -50,7 +50,7 @@ def generate_chapter_aggregate(book_dir: Path, book_name: str, chap_dir: Path) -
     book_title = BOOK_TITLES.get(book_name, book_name)
     lines.append("")
     lines.append("/-!")
-    lines.append(f"# {book_title} — Chapter {chap_num:02d}")
+    lines.append(f"# Chapter {chap_num:02d} — {book_title}")
     lines.append("")
     lines.append(f"Aggregation module for all formalized items in Chapter {chap_num}.")
     lines.append("-/")

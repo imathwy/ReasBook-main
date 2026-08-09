@@ -69,7 +69,7 @@ import CombinatorialGroupTheory_Magnus_2004.Chap05.Theorem_5_8_5
 import CombinatorialGroupTheory_Magnus_2004.Chap05.Theorem_5_9_3
 
 /-!
-# Combinatorial Group Theory (Magnus, Karrass, Solitar, 2004) — Chapter 05
+# Chapter 05 — Combinatorial Group Theory (Magnus, Karrass, Solitar, 2004)
 
 Aggregation module for all formalized items in Chapter 5.
 -/

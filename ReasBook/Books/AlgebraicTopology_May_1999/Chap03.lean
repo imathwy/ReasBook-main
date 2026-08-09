@@ -89,7 +89,7 @@ import AlgebraicTopology_May_1999.Chap03.Theorem_3_8_10
 import AlgebraicTopology_May_1999.Chap03.Theorem_3_8_2
 
 /-!
-# A Concise Course in Algebraic Topology (May, 1999) — Chapter 03
+# Chapter 03 — A Concise Course in Algebraic Topology (May, 1999)
 
 Aggregation module for all formalized items in Chapter 3.
 -/

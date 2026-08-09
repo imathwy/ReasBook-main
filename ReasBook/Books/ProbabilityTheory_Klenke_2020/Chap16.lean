@@ -38,7 +38,7 @@ import ProbabilityTheory_Klenke_2020.Chap16.Theorem_16_5
 import ProbabilityTheory_Klenke_2020.Chap16.Theorem_16_6
 
 /-!
-# Probability Theory: A Comprehensive Course (Klenke, 2020) — Chapter 16
+# Chapter 16 — Probability Theory: A Comprehensive Course (Klenke, 2020)
 
 Aggregation module for all formalized items in Chapter 16.
 -/

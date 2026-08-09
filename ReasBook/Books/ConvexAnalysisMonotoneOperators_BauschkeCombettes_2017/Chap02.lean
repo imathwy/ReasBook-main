@@ -83,7 +83,7 @@ import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap02.Text_2_0_8
 import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap02.Text_2_0_9
 
 /-!
-# Convex Analysis and Monotone Operator Theory (Bauschke & Combettes, 2017) — Chapter 02
+# Chapter 02 — Convex Analysis and Monotone Operator Theory (Bauschke & Combettes, 2017)
 
 Aggregation module for all formalized items in Chapter 2.
 -/

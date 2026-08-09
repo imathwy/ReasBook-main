@@ -35,7 +35,7 @@ import ProbabilityTheory_Klenke_2020.Chap12.Theorem_12_24
 import ProbabilityTheory_Klenke_2020.Chap12.Theorem_12_26
 
 /-!
-# Probability Theory: A Comprehensive Course (Klenke, 2020) — Chapter 12
+# Chapter 12 — Probability Theory: A Comprehensive Course (Klenke, 2020)
 
 Aggregation module for all formalized items in Chapter 12.
 -/

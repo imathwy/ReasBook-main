@@ -41,7 +41,7 @@ import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.Remark_12_2
 import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12.ScaledProximityOperator
 
 /-!
-# Convex Analysis and Monotone Operator Theory (Bauschke & Combettes, 2017) — Chapter 12
+# Chapter 12 — Convex Analysis and Monotone Operator Theory (Bauschke & Combettes, 2017)
 
 Aggregation module for all formalized items in Chapter 12.
 -/

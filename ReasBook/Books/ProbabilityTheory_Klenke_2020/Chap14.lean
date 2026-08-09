@@ -55,7 +55,7 @@ import ProbabilityTheory_Klenke_2020.Chap14.Theorem_14_47
 import ProbabilityTheory_Klenke_2020.Chap14.Theorem_14_8
 
 /-!
-# Probability Theory: A Comprehensive Course (Klenke, 2020) — Chapter 14
+# Chapter 14 — Probability Theory: A Comprehensive Course (Klenke, 2020)
 
 Aggregation module for all formalized items in Chapter 14.
 -/

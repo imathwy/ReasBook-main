@@ -53,7 +53,7 @@ import AlgebraicTopology_May_1999.Chap01.Theorem_1_6_4
 import AlgebraicTopology_May_1999.Chap01.Theorem_1_7_4
 
 /-!
-# A Concise Course in Algebraic Topology (May, 1999) — Chapter 01
+# Chapter 01 — A Concise Course in Algebraic Topology (May, 1999)
 
 Aggregation module for all formalized items in Chapter 1.
 -/

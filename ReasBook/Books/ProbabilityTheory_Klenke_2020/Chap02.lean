@@ -52,7 +52,7 @@ import ProbabilityTheory_Klenke_2020.Chap02.Theorem_2_5
 import ProbabilityTheory_Klenke_2020.Chap02.Theorem_2_7
 
 /-!
-# Probability Theory: A Comprehensive Course (Klenke, 2020) — Chapter 02
+# Chapter 02 — Probability Theory: A Comprehensive Course (Klenke, 2020)
 
 Aggregation module for all formalized items in Chapter 2.
 -/

@@ -38,7 +38,7 @@ import ProbabilityTheory_Klenke_2020.Chap04.Theorem_4_8
 import ProbabilityTheory_Klenke_2020.Chap04.Theorem_4_9
 
 /-!
-# Probability Theory: A Comprehensive Course (Klenke, 2020) — Chapter 04
+# Chapter 04 — Probability Theory: A Comprehensive Course (Klenke, 2020)
 
 Aggregation module for all formalized items in Chapter 4.
 -/

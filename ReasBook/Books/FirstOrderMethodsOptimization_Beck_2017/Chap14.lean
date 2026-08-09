@@ -24,7 +24,7 @@ import FirstOrderMethodsOptimization_Beck_2017.Chap14.Theorem_14_7
 import FirstOrderMethodsOptimization_Beck_2017.Chap14.Theorem_14_8
 
 /-!
-# First-Order Methods in Optimization (Beck, 2017) — Chapter 14
+# Chapter 14 — First-Order Methods in Optimization (Beck, 2017)
 
 Aggregation module for all formalized items in Chapter 14.
 -/

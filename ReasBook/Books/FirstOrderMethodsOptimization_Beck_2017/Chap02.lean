@@ -48,7 +48,7 @@ import FirstOrderMethodsOptimization_Beck_2017.Chap02.Theorem_2_8
 import FirstOrderMethodsOptimization_Beck_2017.Chap02.Theorem_2_9
 
 /-!
-# First-Order Methods in Optimization (Beck, 2017) — Chapter 02
+# Chapter 02 — First-Order Methods in Optimization (Beck, 2017)
 
 Aggregation module for all formalized items in Chapter 2.
 -/

@@ -165,7 +165,7 @@ import CombinatorialGroupTheory_Magnus_2004.Chap01.SignedLetter
 import CombinatorialGroupTheory_Magnus_2004.Chap01.Theorem_1_5_3
 
 /-!
-# Combinatorial Group Theory (Magnus, Karrass, Solitar, 2004) — Chapter 01
+# Chapter 01 — Combinatorial Group Theory (Magnus, Karrass, Solitar, 2004)
 
 Aggregation module for all formalized items in Chapter 1.
 -/

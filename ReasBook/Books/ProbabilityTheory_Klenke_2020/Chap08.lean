@@ -68,7 +68,7 @@ import ProbabilityTheory_Klenke_2020.Chap08.Theorem_8_7
 import ProbabilityTheory_Klenke_2020.Chap08.Transition_after_Example_8_33
 
 /-!
-# Probability Theory: A Comprehensive Course (Klenke, 2020) — Chapter 08
+# Chapter 08 — Probability Theory: A Comprehensive Course (Klenke, 2020)
 
 Aggregation module for all formalized items in Chapter 8.
 -/

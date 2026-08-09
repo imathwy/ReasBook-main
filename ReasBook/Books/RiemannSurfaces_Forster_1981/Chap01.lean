@@ -24,7 +24,7 @@ import RiemannSurfaces_Forster_1981.Chap01.Theorem_1_15
 import RiemannSurfaces_Forster_1981.Chap01.Theorem_1_8
 
 /-!
-# Lectures on Riemann Surfaces (Forster, 1981) — Chapter 01
+# Chapter 01 — Lectures on Riemann Surfaces (Forster, 1981)
 
 Aggregation module for all formalized items in Chapter 1.
 -/

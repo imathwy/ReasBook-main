@@ -35,7 +35,7 @@ import FirstOrderMethodsOptimization_Beck_2017.Chap05.Theorem_5_4
 import FirstOrderMethodsOptimization_Beck_2017.Chap05.Theorem_5_8
 
 /-!
-# First-Order Methods in Optimization (Beck, 2017) — Chapter 05
+# Chapter 05 — First-Order Methods in Optimization (Beck, 2017)
 
 Aggregation module for all formalized items in Chapter 5.
 -/
