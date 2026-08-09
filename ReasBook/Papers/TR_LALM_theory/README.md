@@ -13,6 +13,13 @@ Kangkang Deng, Zichen Wang, and Zaiwen Wen.
 Contributor: Zichen Wang ([@imathwy](https://github.com/imathwy)). The
 formalization uses Lean and mathlib `v4.32.2`.
 
+## Start with the Dependency Graph
+
+Open the [deployed interactive theorem map](https://imathwy.github.io/ReasBook-TR_LALM/theorem-map/)
+first to browse the 24 article-level entries, their 42 direct dependencies,
+and the natural-language statement attached to each item. Every graph node
+links to the corresponding declaration in the official `v4.32.2` source tree.
+
 ## Scope
 
 The development models the paper's mathematical objects and proves its
@@ -102,10 +109,9 @@ import lower-level proof interfaces and mathlib results.
 | Proposition 4.1 | [`LALM.Correction.strictParameterRegion`](https://github.com/optpku/ReasBook/blob/v4.32.2/ReasBook/Papers/TR_LALM_theory/Proposition_4_1.lean?plain=1#L537) | Assumption 2.3 |
 | Corollary 4.2 | [`LALM.Correction.Run.existsApproximatePair`](https://github.com/optpku/ReasBook/blob/v4.32.2/ReasBook/Papers/TR_LALM_theory/Corollary_4_2.lean?plain=1#L1836) | Theorems 2.12, 2.13, 3.6; Corollary 3.8; Proposition 4.1 |
 
-## Interactive Dependency Graph
+## Map Contents
 
-The [deployed theorem map](https://imathwy.github.io/ReasBook-TR_LALM/theorem-map/)
-shows the 24 article-level entries and 42 direct dependency edges. It provides:
+The deployed theorem map provides:
 
 - full-graph and selected-neighborhood views;
 - upstream and downstream highlighting;
