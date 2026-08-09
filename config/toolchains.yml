@@ -18,3 +18,8 @@ branches:
     branch: v4.32.0
     status: empty
     initialization: automatic
+
+  - version: v4.32.2
+    branch: v4.32.2
+    status: active
+    initialization: direct

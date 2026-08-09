@@ -14,9 +14,9 @@ publisher: "<Publisher, City or null>"
 year: <YYYY>
 isbn: "<ISBN or null>"
 
-toolchain: "leanprover/lean4:vX.Y.0"
-mathlib: "vX.Y.0"
-branch: "vX.Y.0"
+toolchain: "leanprover/lean4:vX.Y.Z"
+mathlib: "vX.Y.Z"
+branch: "vX.Y.Z"
 
 contributors:
   - name: "<Name>"
