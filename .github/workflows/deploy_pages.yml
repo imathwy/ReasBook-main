@@ -245,11 +245,28 @@ jobs:
           ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_shared_docs.sh (${BRANCH})" ./scripts/build_reasbook_shared_docs.sh
           # Per-project docs: build each module separately so one book's doc-gen crash
           # (e.g. SIGSEGV on a huge book like Klenke) does not fail the whole branch.
+          # Module name depends on lakefile style:
+          #   v4.26.0: lean_lib Books  -> module = Books.XXX.Book
+          #   v4.30.0+: lean_lib XXX where srcDir := "Books" -> module = XXX.Book
           failed=""
           cd ReasBook
+          has_books_lib=false
+          has_papers_lib=false
+          if grep -qE 'lean_lib\s+[«"]?Books[»"]?\s' lakefile.lean 2>/dev/null; then has_books_lib=true; fi
+          if grep -qE 'lean_lib\s+[«"]?Papers[»"]?\s' lakefile.lean 2>/dev/null; then has_papers_lib=true; fi
           for entry in Books/*/Book.lean Papers/*/Paper.lean; do
             [ -f "$entry" ] || continue
-            mod="${entry%.lean}"; mod="${mod//\//.}"
+            kind="${entry%%/*}"  # "Books" or "Papers"
+            # Determine whether this kind uses a flat lib (no prefix)
+            if [ "$kind" = "Books" ] && [ "$has_books_lib" = "true" ]; then
+              mod="${entry%.lean}"; mod="${mod//\//.}"
+            elif [ "$kind" = "Papers" ] && [ "$has_papers_lib" = "true" ]; then
+              mod="${entry%.lean}"; mod="${mod//\//.}"
+            else
+              # Flat: lean_lib XXX where srcDir := "Books/Papers" — strip the kind prefix
+              inner="${entry#*/}"  # e.g. AlgebraicTopology_May_1999/Book.lean
+              mod="${inner%.lean}"; mod="${mod//\//.}"
+            fi
             log="${RUNNER_TEMP:-/tmp}/docgen-${mod//./_}.log"
             if ! lake -R -Kenv=dev build "$mod:docs" > "$log" 2>&1; then
               echo "[docs] FAILED: ${mod} (site continues without it)"
