@@ -13,10 +13,12 @@ matches the Lean/mathlib version of your book project:
 v4.26.0
 v4.30.0
 v4.32.0
+v4.32.2
 ```
 
-ReasBook only accepts stable `vX.Y.0` versions, i.e. the patch version must be `0`.
-Other patch versions (`vX.Y.1`), release candidates, and nightlies are **not** accepted.
+ReasBook only accepts stable `vX.Y.Z` versions that are registered in the main
+README and `config/toolchains.yml`. Patch releases are allowed when explicitly
+registered; release candidates and nightlies are **not** accepted.
 The PR target version must match `ReasBook/lean-toolchain`. Do **not** target `main` with book code.
 
 If the version you need is not listed, contact a maintainer. Do not switch to a nearby version
@@ -29,7 +31,7 @@ latest state of the target version branch:
 
 ```bash
 git fetch upstream
-git switch -c book/<book-slug> upstream/vX.Y.0
+git switch -c book/<book-slug> upstream/vX.Y.Z
 ```
 
 Use lowercase letters, digits, and hyphens for the branch name, for example:
@@ -95,7 +97,7 @@ runner; for local verification, `lake build` passing is usually sufficient.
 Before committing, check that you did not accidentally delete files from the target branch:
 
 ```bash
-git diff --diff-filter=D --name-status upstream/vX.Y.0...HEAD
+git diff --diff-filter=D --name-status upstream/vX.Y.Z...HEAD
 ```
 
 Apart from intentional replacements inside your own book, there should be no deletions of other
@@ -106,19 +108,19 @@ books or papers.
 Set the PR base to the matching version branch:
 
 ```text
-vX.Y.0
+vX.Y.Z
 ```
 
 New book PR title:
 
 ```text
-[Book][vX.Y.0] Add <BookId>
+[Book][vX.Y.Z] Add <BookId>
 ```
 
 Update PR title:
 
 ```text
-[Book][vX.Y.0] Update <BookId>: <short-scope>
+[Book][vX.Y.Z] Update <BookId>: <short-scope>
 ```
 
 For example:
@@ -135,7 +137,7 @@ For example:
 - **Book:** <Title> — <Author full name> (<Edition, Year>)
 - **Book ID:** `<BookId>`
 - **Contributor:** <Name> (@<GitHub-ID>)
-- **Target branch:** `vX.Y.0`
+- **Target branch:** `vX.Y.Z`
 - **Lean toolchain:** `<full content of ReasBook/lean-toolchain>`
 - **Declarations:** <total> (theorem/lemma/example: <count>; other: <count>)
 - **Lean code:** <file-count> `.lean` files, <line-count> lines
@@ -150,7 +152,7 @@ For example:
 
 ## Pre-submission checklist
 
-- Personal branch created from the correct `upstream/vX.Y.0`.
+- Personal branch created from the correct `upstream/vX.Y.Z`.
 - PR base, PR title, and `lean-toolchain` version are consistent.
 - Branch name, book directory name, and PR title follow the conventions.
 - Book `README.md` and contributor info are complete.

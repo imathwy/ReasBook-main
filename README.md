@@ -11,6 +11,7 @@ ReasBook is generated using the tool: [M2F](https://github.com/optsuite/M2F.git)
 | Branch | Lean/mathlib | Status | Books/Papers | Last build |
 | --- | --- | --- | ---: | --- |
 | `v4.32.0` | `v4.32.0` | Empty | 0 / 0 | Passed |
+| `v4.32.2` | `v4.32.2` | Active | 0 / 1 | Passed |
 | `v4.30.0` | `v4.30.0` | Active | 8 / 2 | Passed |
 | `v4.26.0` | `v4.26.0` | Active | 4 / 2 | Passed |
 
@@ -35,14 +36,22 @@ Status: `Empty` (initialized, no books yet) · `Active` (accepting PRs) · `Froz
 
 | Paper | Branch | Contributors | Documentation | Source | Verso |
 | --- | --- | --- | --- | --- | --- |
+| A Fixed-Penalty Linearized Augmented Lagrangian Method with Classical Multiplier Updates — Benqi Liu, Kangkang Deng, Zichen Wang, Zaiwen Wen | `v4.32.2` | Zichen Wang | [doc](https://optpku.github.io/ReasBook/docs/TR_LALM_theory/Paper.html) | [v4.32.2](https://github.com/optpku/ReasBook/tree/v4.32.2/ReasBook/Papers/TR_LALM_theory/) | [verso](https://optpku.github.io/ReasBook/papers/tr_lalm_theory/) |
 | Smooth Minimization of Non-Smooth Functions — Yurii Nesterov (2004) | `v4.26.0` / `v4.30.0` | Wanli Ma, Zichen Wang | [doc v4.26.0](https://optpku.github.io/ReasBook/docs/Papers/SmoothMinimization_Nesterov_2004/Paper.html) / [doc v4.30.0](https://optpku.github.io/ReasBook/docs/SmoothMinimization_Nesterov_2004/Paper.html) | [v4.26.0](https://github.com/optpku/ReasBook/tree/v4.26.0/ReasBook/Papers/SmoothMinimization_Nesterov_2004/) / [v4.30.0](https://github.com/optpku/ReasBook/tree/v4.30.0/ReasBook/Papers/SmoothMinimization_Nesterov_2004/) | [verso](https://optpku.github.io/ReasBook/papers/smoothminimization_nesterov_2004/) |
 | On Some Local Rings — Mohamad Maassarani (2025) | `v4.26.0` / `v4.30.0` | Liang Xiao, Haochen Ju, Zichen Wang | [doc v4.26.0](https://optpku.github.io/ReasBook/docs/Papers/OnSomeLocalRings_Maassaran_2025/Paper.html) / [doc v4.30.0](https://optpku.github.io/ReasBook/docs/OnSomeLocalRings_Maassaran_2025/Paper.html) | [v4.26.0](https://github.com/optpku/ReasBook/tree/v4.26.0/ReasBook/Papers/OnSomeLocalRings_Maassaran_2025/) / [v4.30.0](https://github.com/optpku/ReasBook/tree/v4.30.0/ReasBook/Papers/OnSomeLocalRings_Maassaran_2025/) | [verso](https://optpku.github.io/ReasBook/papers/onsomelocalrings_maassaran_2025/) |
+
+The TR-LALM entry formalizes the fixed-penalty linearized augmented
+Lagrangian analysis for nonlinear equality-constrained nonconvex optimization,
+including deterministic and stochastic complexity, stopping/restart semantics,
+finite-length KL convergence, and the optional minimum-norm correction. Its Lean
+source has 2,853 declarations across 141 implementation files, with no `sorry`
+or `admit` placeholders.
 
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-- Book code lives on the version branch matching its Lean/mathlib toolchain; only `vX.Y.0` versions are accepted.
+- Book and paper code lives on the registered version branch matching its Lean/mathlib toolchain; only registered stable `vX.Y.Z` versions are accepted.
 - **Book code is not merged to `main`.** `main` is the cross-version catalog only.
 - PR base, PR title version, `ReasBook/lean-toolchain`, and `book.yml` must all match.
 
