@@ -557,7 +557,7 @@ def readme_label(e: Entry) -> str:
             return f"Section {e.chapter_num}.{e.section_num}"
         if e.section_num > 0:
             return f"{e.chapter_num}.{e.section_num} {base}"
-        return f"{e.chapter_num}. {base}"
+        return "Overview"
     if e.category == "papers":
         return f"Section {e.section_num}: {base}"
     return base
@@ -687,6 +687,9 @@ def should_include_book(path: Path) -> bool:
         return False
 
     if stem.startswith("section"):
+        return True
+
+    if CHAPTER_RE.match(stem):
         return True
 
     return module_doc_title(path) is not None
@@ -1340,7 +1343,7 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
     for book, b_entries in sorted(by_book.items()):
         title = book_title(book)
         section_entries = sorted(
-            [e for e in b_entries if (e.section_num > 0 and e.part_num == 0)],
+            [e for e in b_entries if ((e.section_num > 0 or e.chapter_num > 0) and e.part_num == 0)],
             key=lambda e: (e.chapter_num, e.section_num, e.stem),
         )
         home_entry = next((e for e in b_entries if e.stem == "book"), None)

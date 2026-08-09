@@ -27,6 +27,9 @@ macro_rules
       static "static" ← "./static_files"
       "books/algebraictopology_may_1999/" ReasBookSite.WorkPages.Books.AlgebraicTopology_May_1999
       "algebraictopology_may_1999/book/" ReasBookSite.WorkPages.Books.AlgebraicTopology_May_1999
+      "algebraictopology_may_1999/chap01/" Book.AlgebraicTopology_May_1999.Chap01
+      "algebraictopology_may_1999/chap02/" Book.AlgebraicTopology_May_1999.Chap02
+      "algebraictopology_may_1999/chap03/" Book.AlgebraicTopology_May_1999.Chap03
       "books/analysis2_tao_2022/" ReasBookSite.WorkPages.Books.Analysis2_Tao_2022
       "analysis2_tao_2022/book/" ReasBookSite.WorkPages.Books.Analysis2_Tao_2022
       "analysis2_tao_2022/chapters/chap01/" Book.Analysis2_Tao_2022.Chapters.Chap01
@@ -129,10 +132,50 @@ macro_rules
       "analysis2_tao_2022/chapters/chap08/section05/" Book.Analysis2_Tao_2022.Chapters.Chap08.section05
       "books/combinatorialgrouptheory_magnus_2004/" ReasBookSite.WorkPages.Books.CombinatorialGroupTheory_Magnus_2004
       "combinatorialgrouptheory_magnus_2004/book/" ReasBookSite.WorkPages.Books.CombinatorialGroupTheory_Magnus_2004
+      "combinatorialgrouptheory_magnus_2004/chap01/" Book.CombinatorialGroupTheory_Magnus_2004.Chap01
+      "combinatorialgrouptheory_magnus_2004/chap02/" Book.CombinatorialGroupTheory_Magnus_2004.Chap02
+      "combinatorialgrouptheory_magnus_2004/chap03/" Book.CombinatorialGroupTheory_Magnus_2004.Chap03
+      "combinatorialgrouptheory_magnus_2004/chap04/" Book.CombinatorialGroupTheory_Magnus_2004.Chap04
+      "combinatorialgrouptheory_magnus_2004/chap05/" Book.CombinatorialGroupTheory_Magnus_2004.Chap05
       "books/convexanalysismonotoneoperators_bauschkecombettes_2017/" ReasBookSite.WorkPages.Books.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017
       "convexanalysismonotoneoperators_bauschkecombettes_2017/book/" ReasBookSite.WorkPages.Books.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017
+      "convexanalysismonotoneoperators_bauschkecombettes_2017/chap01/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap01
+      "convexanalysismonotoneoperators_bauschkecombettes_2017/chap02/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap02
+      "convexanalysismonotoneoperators_bauschkecombettes_2017/chap03/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03
+      "convexanalysismonotoneoperators_bauschkecombettes_2017/chap04/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04
+      "convexanalysismonotoneoperators_bauschkecombettes_2017/chap05/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05
+      "convexanalysismonotoneoperators_bauschkecombettes_2017/chap06/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06
+      "convexanalysismonotoneoperators_bauschkecombettes_2017/chap07/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap07
+      "convexanalysismonotoneoperators_bauschkecombettes_2017/chap08/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08
+      "convexanalysismonotoneoperators_bauschkecombettes_2017/chap09/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09
+      "convexanalysismonotoneoperators_bauschkecombettes_2017/chap10/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap10
+      "convexanalysismonotoneoperators_bauschkecombettes_2017/chap11/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap11
+      "convexanalysismonotoneoperators_bauschkecombettes_2017/chap12/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12
+      "convexanalysismonotoneoperators_bauschkecombettes_2017/chap13/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13
+      "convexanalysismonotoneoperators_bauschkecombettes_2017/chap14/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap14
+      "convexanalysismonotoneoperators_bauschkecombettes_2017/chap15/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap15
+      "convexanalysismonotoneoperators_bauschkecombettes_2017/chap16/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16
+      "convexanalysismonotoneoperators_bauschkecombettes_2017/chap17/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17
+      "convexanalysismonotoneoperators_bauschkecombettes_2017/chap18/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap18
+      "convexanalysismonotoneoperators_bauschkecombettes_2017/chap19/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap19
+      "convexanalysismonotoneoperators_bauschkecombettes_2017/chap20/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap20
       "books/firstordermethodsoptimization_beck_2017/" ReasBookSite.WorkPages.Books.FirstOrderMethodsOptimization_Beck_2017
       "firstordermethodsoptimization_beck_2017/book/" ReasBookSite.WorkPages.Books.FirstOrderMethodsOptimization_Beck_2017
+      "firstordermethodsoptimization_beck_2017/chap01/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap01
+      "firstordermethodsoptimization_beck_2017/chap02/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap02
+      "firstordermethodsoptimization_beck_2017/chap03/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap03
+      "firstordermethodsoptimization_beck_2017/chap04/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap04
+      "firstordermethodsoptimization_beck_2017/chap05/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap05
+      "firstordermethodsoptimization_beck_2017/chap06/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap06
+      "firstordermethodsoptimization_beck_2017/chap07/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap07
+      "firstordermethodsoptimization_beck_2017/chap08/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap08
+      "firstordermethodsoptimization_beck_2017/chap09/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap09
+      "firstordermethodsoptimization_beck_2017/chap10/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap10
+      "firstordermethodsoptimization_beck_2017/chap11/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap11
+      "firstordermethodsoptimization_beck_2017/chap12/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap12
+      "firstordermethodsoptimization_beck_2017/chap13/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap13
+      "firstordermethodsoptimization_beck_2017/chap14/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap14
+      "firstordermethodsoptimization_beck_2017/chap15/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap15
       "books/introductiontorealanalysisvolumei_jirilebl_2025/" ReasBookSite.WorkPages.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025
       "introductiontorealanalysisvolumei_jirilebl_2025/book/" ReasBookSite.WorkPages.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025
       "introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/" Book.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap00
@@ -192,10 +235,37 @@ macro_rules
       "introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section06/" Book.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap07.section06
       "books/probabilitytheory_klenke_2020/" ReasBookSite.WorkPages.Books.ProbabilityTheory_Klenke_2020
       "probabilitytheory_klenke_2020/book/" ReasBookSite.WorkPages.Books.ProbabilityTheory_Klenke_2020
+      "probabilitytheory_klenke_2020/chap01/" Book.ProbabilityTheory_Klenke_2020.Chap01
+      "probabilitytheory_klenke_2020/chap02/" Book.ProbabilityTheory_Klenke_2020.Chap02
+      "probabilitytheory_klenke_2020/chap03/" Book.ProbabilityTheory_Klenke_2020.Chap03
+      "probabilitytheory_klenke_2020/chap04/" Book.ProbabilityTheory_Klenke_2020.Chap04
+      "probabilitytheory_klenke_2020/chap05/" Book.ProbabilityTheory_Klenke_2020.Chap05
+      "probabilitytheory_klenke_2020/chap06/" Book.ProbabilityTheory_Klenke_2020.Chap06
+      "probabilitytheory_klenke_2020/chap07/" Book.ProbabilityTheory_Klenke_2020.Chap07
+      "probabilitytheory_klenke_2020/chap08/" Book.ProbabilityTheory_Klenke_2020.Chap08
       "probabilitytheory_klenke_2020/chap08/section_8_2_introduction/" Book.ProbabilityTheory_Klenke_2020.Chap08.Section_8_2_introduction
       "probabilitytheory_klenke_2020/chap08/section_8_3_introduction/" Book.ProbabilityTheory_Klenke_2020.Chap08.Section_8_3_introduction
+      "probabilitytheory_klenke_2020/chap09/" Book.ProbabilityTheory_Klenke_2020.Chap09
+      "probabilitytheory_klenke_2020/chap10/" Book.ProbabilityTheory_Klenke_2020.Chap10
+      "probabilitytheory_klenke_2020/chap11/" Book.ProbabilityTheory_Klenke_2020.Chap11
+      "probabilitytheory_klenke_2020/chap12/" Book.ProbabilityTheory_Klenke_2020.Chap12
+      "probabilitytheory_klenke_2020/chap13/" Book.ProbabilityTheory_Klenke_2020.Chap13
+      "probabilitytheory_klenke_2020/chap14/" Book.ProbabilityTheory_Klenke_2020.Chap14
+      "probabilitytheory_klenke_2020/chap15/" Book.ProbabilityTheory_Klenke_2020.Chap15
+      "probabilitytheory_klenke_2020/chap16/" Book.ProbabilityTheory_Klenke_2020.Chap16
+      "probabilitytheory_klenke_2020/chap17/" Book.ProbabilityTheory_Klenke_2020.Chap17
+      "probabilitytheory_klenke_2020/chap18/" Book.ProbabilityTheory_Klenke_2020.Chap18
+      "probabilitytheory_klenke_2020/chap19/" Book.ProbabilityTheory_Klenke_2020.Chap19
+      "probabilitytheory_klenke_2020/chap20/" Book.ProbabilityTheory_Klenke_2020.Chap20
+      "probabilitytheory_klenke_2020/chap21/" Book.ProbabilityTheory_Klenke_2020.Chap21
+      "probabilitytheory_klenke_2020/chap22/" Book.ProbabilityTheory_Klenke_2020.Chap22
+      "probabilitytheory_klenke_2020/chap23/" Book.ProbabilityTheory_Klenke_2020.Chap23
+      "probabilitytheory_klenke_2020/chap24/" Book.ProbabilityTheory_Klenke_2020.Chap24
+      "probabilitytheory_klenke_2020/chap25/" Book.ProbabilityTheory_Klenke_2020.Chap25
+      "probabilitytheory_klenke_2020/chap26/" Book.ProbabilityTheory_Klenke_2020.Chap26
       "books/riemannsurfaces_forster_1981/" ReasBookSite.WorkPages.Books.RiemannSurfaces_Forster_1981
       "riemannsurfaces_forster_1981/book/" ReasBookSite.WorkPages.Books.RiemannSurfaces_Forster_1981
+      "riemannsurfaces_forster_1981/chap01/" Book.RiemannSurfaces_Forster_1981.Chap01
       "papers/onsomelocalrings_maassaran_2025/" ReasBookSite.WorkPages.Papers.OnSomeLocalRings_Maassaran_2025
       "onsomelocalrings_maassaran_2025/paper/" ReasBookSite.WorkPages.Papers.OnSomeLocalRings_Maassaran_2025
       "onsomelocalrings_maassaran_2025/sections/section01/" Book.OnSomeLocalRings_Maassaran_2025.Sections.section01
@@ -239,6 +309,9 @@ def reasbook_site : Site := site ReasBookSite.Home /
   static "static" ← "./static_files"
   "books/algebraictopology_may_1999/" ReasBookSite.WorkPages.Books.AlgebraicTopology_May_1999
   "algebraictopology_may_1999/book/" ReasBookSite.WorkPages.Books.AlgebraicTopology_May_1999
+  "algebraictopology_may_1999/chap01/" Book.AlgebraicTopology_May_1999.Chap01
+  "algebraictopology_may_1999/chap02/" Book.AlgebraicTopology_May_1999.Chap02
+  "algebraictopology_may_1999/chap03/" Book.AlgebraicTopology_May_1999.Chap03
   "books/analysis2_tao_2022/" ReasBookSite.WorkPages.Books.Analysis2_Tao_2022
   "analysis2_tao_2022/book/" ReasBookSite.WorkPages.Books.Analysis2_Tao_2022
   "analysis2_tao_2022/chapters/chap01/" Book.Analysis2_Tao_2022.Chapters.Chap01
@@ -341,10 +414,50 @@ def reasbook_site : Site := site ReasBookSite.Home /
   "analysis2_tao_2022/chapters/chap08/section05/" Book.Analysis2_Tao_2022.Chapters.Chap08.section05
   "books/combinatorialgrouptheory_magnus_2004/" ReasBookSite.WorkPages.Books.CombinatorialGroupTheory_Magnus_2004
   "combinatorialgrouptheory_magnus_2004/book/" ReasBookSite.WorkPages.Books.CombinatorialGroupTheory_Magnus_2004
+  "combinatorialgrouptheory_magnus_2004/chap01/" Book.CombinatorialGroupTheory_Magnus_2004.Chap01
+  "combinatorialgrouptheory_magnus_2004/chap02/" Book.CombinatorialGroupTheory_Magnus_2004.Chap02
+  "combinatorialgrouptheory_magnus_2004/chap03/" Book.CombinatorialGroupTheory_Magnus_2004.Chap03
+  "combinatorialgrouptheory_magnus_2004/chap04/" Book.CombinatorialGroupTheory_Magnus_2004.Chap04
+  "combinatorialgrouptheory_magnus_2004/chap05/" Book.CombinatorialGroupTheory_Magnus_2004.Chap05
   "books/convexanalysismonotoneoperators_bauschkecombettes_2017/" ReasBookSite.WorkPages.Books.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017
   "convexanalysismonotoneoperators_bauschkecombettes_2017/book/" ReasBookSite.WorkPages.Books.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017
+  "convexanalysismonotoneoperators_bauschkecombettes_2017/chap01/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap01
+  "convexanalysismonotoneoperators_bauschkecombettes_2017/chap02/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap02
+  "convexanalysismonotoneoperators_bauschkecombettes_2017/chap03/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap03
+  "convexanalysismonotoneoperators_bauschkecombettes_2017/chap04/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap04
+  "convexanalysismonotoneoperators_bauschkecombettes_2017/chap05/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap05
+  "convexanalysismonotoneoperators_bauschkecombettes_2017/chap06/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06
+  "convexanalysismonotoneoperators_bauschkecombettes_2017/chap07/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap07
+  "convexanalysismonotoneoperators_bauschkecombettes_2017/chap08/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap08
+  "convexanalysismonotoneoperators_bauschkecombettes_2017/chap09/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap09
+  "convexanalysismonotoneoperators_bauschkecombettes_2017/chap10/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap10
+  "convexanalysismonotoneoperators_bauschkecombettes_2017/chap11/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap11
+  "convexanalysismonotoneoperators_bauschkecombettes_2017/chap12/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap12
+  "convexanalysismonotoneoperators_bauschkecombettes_2017/chap13/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap13
+  "convexanalysismonotoneoperators_bauschkecombettes_2017/chap14/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap14
+  "convexanalysismonotoneoperators_bauschkecombettes_2017/chap15/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap15
+  "convexanalysismonotoneoperators_bauschkecombettes_2017/chap16/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap16
+  "convexanalysismonotoneoperators_bauschkecombettes_2017/chap17/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap17
+  "convexanalysismonotoneoperators_bauschkecombettes_2017/chap18/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap18
+  "convexanalysismonotoneoperators_bauschkecombettes_2017/chap19/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap19
+  "convexanalysismonotoneoperators_bauschkecombettes_2017/chap20/" Book.ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap20
   "books/firstordermethodsoptimization_beck_2017/" ReasBookSite.WorkPages.Books.FirstOrderMethodsOptimization_Beck_2017
   "firstordermethodsoptimization_beck_2017/book/" ReasBookSite.WorkPages.Books.FirstOrderMethodsOptimization_Beck_2017
+  "firstordermethodsoptimization_beck_2017/chap01/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap01
+  "firstordermethodsoptimization_beck_2017/chap02/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap02
+  "firstordermethodsoptimization_beck_2017/chap03/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap03
+  "firstordermethodsoptimization_beck_2017/chap04/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap04
+  "firstordermethodsoptimization_beck_2017/chap05/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap05
+  "firstordermethodsoptimization_beck_2017/chap06/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap06
+  "firstordermethodsoptimization_beck_2017/chap07/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap07
+  "firstordermethodsoptimization_beck_2017/chap08/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap08
+  "firstordermethodsoptimization_beck_2017/chap09/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap09
+  "firstordermethodsoptimization_beck_2017/chap10/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap10
+  "firstordermethodsoptimization_beck_2017/chap11/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap11
+  "firstordermethodsoptimization_beck_2017/chap12/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap12
+  "firstordermethodsoptimization_beck_2017/chap13/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap13
+  "firstordermethodsoptimization_beck_2017/chap14/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap14
+  "firstordermethodsoptimization_beck_2017/chap15/" Book.FirstOrderMethodsOptimization_Beck_2017.Chap15
   "books/introductiontorealanalysisvolumei_jirilebl_2025/" ReasBookSite.WorkPages.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025
   "introductiontorealanalysisvolumei_jirilebl_2025/book/" ReasBookSite.WorkPages.Books.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025
   "introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap00/" Book.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap00
@@ -404,10 +517,37 @@ def reasbook_site : Site := site ReasBookSite.Home /
   "introductiontorealanalysisvolumei_jirilebl_2025/chapters/chap07/section06/" Book.IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Chapters.Chap07.section06
   "books/probabilitytheory_klenke_2020/" ReasBookSite.WorkPages.Books.ProbabilityTheory_Klenke_2020
   "probabilitytheory_klenke_2020/book/" ReasBookSite.WorkPages.Books.ProbabilityTheory_Klenke_2020
+  "probabilitytheory_klenke_2020/chap01/" Book.ProbabilityTheory_Klenke_2020.Chap01
+  "probabilitytheory_klenke_2020/chap02/" Book.ProbabilityTheory_Klenke_2020.Chap02
+  "probabilitytheory_klenke_2020/chap03/" Book.ProbabilityTheory_Klenke_2020.Chap03
+  "probabilitytheory_klenke_2020/chap04/" Book.ProbabilityTheory_Klenke_2020.Chap04
+  "probabilitytheory_klenke_2020/chap05/" Book.ProbabilityTheory_Klenke_2020.Chap05
+  "probabilitytheory_klenke_2020/chap06/" Book.ProbabilityTheory_Klenke_2020.Chap06
+  "probabilitytheory_klenke_2020/chap07/" Book.ProbabilityTheory_Klenke_2020.Chap07
+  "probabilitytheory_klenke_2020/chap08/" Book.ProbabilityTheory_Klenke_2020.Chap08
   "probabilitytheory_klenke_2020/chap08/section_8_2_introduction/" Book.ProbabilityTheory_Klenke_2020.Chap08.Section_8_2_introduction
   "probabilitytheory_klenke_2020/chap08/section_8_3_introduction/" Book.ProbabilityTheory_Klenke_2020.Chap08.Section_8_3_introduction
+  "probabilitytheory_klenke_2020/chap09/" Book.ProbabilityTheory_Klenke_2020.Chap09
+  "probabilitytheory_klenke_2020/chap10/" Book.ProbabilityTheory_Klenke_2020.Chap10
+  "probabilitytheory_klenke_2020/chap11/" Book.ProbabilityTheory_Klenke_2020.Chap11
+  "probabilitytheory_klenke_2020/chap12/" Book.ProbabilityTheory_Klenke_2020.Chap12
+  "probabilitytheory_klenke_2020/chap13/" Book.ProbabilityTheory_Klenke_2020.Chap13
+  "probabilitytheory_klenke_2020/chap14/" Book.ProbabilityTheory_Klenke_2020.Chap14
+  "probabilitytheory_klenke_2020/chap15/" Book.ProbabilityTheory_Klenke_2020.Chap15
+  "probabilitytheory_klenke_2020/chap16/" Book.ProbabilityTheory_Klenke_2020.Chap16
+  "probabilitytheory_klenke_2020/chap17/" Book.ProbabilityTheory_Klenke_2020.Chap17
+  "probabilitytheory_klenke_2020/chap18/" Book.ProbabilityTheory_Klenke_2020.Chap18
+  "probabilitytheory_klenke_2020/chap19/" Book.ProbabilityTheory_Klenke_2020.Chap19
+  "probabilitytheory_klenke_2020/chap20/" Book.ProbabilityTheory_Klenke_2020.Chap20
+  "probabilitytheory_klenke_2020/chap21/" Book.ProbabilityTheory_Klenke_2020.Chap21
+  "probabilitytheory_klenke_2020/chap22/" Book.ProbabilityTheory_Klenke_2020.Chap22
+  "probabilitytheory_klenke_2020/chap23/" Book.ProbabilityTheory_Klenke_2020.Chap23
+  "probabilitytheory_klenke_2020/chap24/" Book.ProbabilityTheory_Klenke_2020.Chap24
+  "probabilitytheory_klenke_2020/chap25/" Book.ProbabilityTheory_Klenke_2020.Chap25
+  "probabilitytheory_klenke_2020/chap26/" Book.ProbabilityTheory_Klenke_2020.Chap26
   "books/riemannsurfaces_forster_1981/" ReasBookSite.WorkPages.Books.RiemannSurfaces_Forster_1981
   "riemannsurfaces_forster_1981/book/" ReasBookSite.WorkPages.Books.RiemannSurfaces_Forster_1981
+  "riemannsurfaces_forster_1981/chap01/" Book.RiemannSurfaces_Forster_1981.Chap01
   "papers/onsomelocalrings_maassaran_2025/" ReasBookSite.WorkPages.Papers.OnSomeLocalRings_Maassaran_2025
   "onsomelocalrings_maassaran_2025/paper/" ReasBookSite.WorkPages.Papers.OnSomeLocalRings_Maassaran_2025
   "onsomelocalrings_maassaran_2025/sections/section01/" Book.OnSomeLocalRings_Maassaran_2025.Sections.section01
