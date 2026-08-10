@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="Interactive article-level dependency map for the TR-LALM Lean formalization.">
+  <title>TR-LALM Theorem Map</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [["\\(", "\\)"]],
+        displayMath: [["\\[", "\\]"]],
+        processEscapes: true,
+        macros: {
+          R: "\\mathbb{R}",
+          E: "\\mathbb{E}",
+          cL: "\\mathcal{L}",
+          cO: "\\mathcal{O}",
+          eps: "\\varepsilon",
+          grad: "\\nabla",
+          norm: ["\\left\\lVert #1\\right\\rVert", 1]
+        }
+      },
+      chtml: {
+        displayAlign: "left",
+        displayIndent: "0"
+      },
+      options: {
+        skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"]
+      },
+      startup: {
+        typeset: false
+      }
+    };
+  </script>
+  <script defer src="./vendor/mathjax/tex-chtml.js"></script>
+</head>
+<body>
+  <div class="app-shell" id="appShell">
+    <aside class="sidebar" id="sidebar">
+      <header class="brand">
+        <div class="brand-mark" aria-hidden="true">TR</div>
+        <div class="brand-copy">
+          <h1>Theorem Map</h1>
+          <p>TR-LALM formalization</p>
+        </div>
+        <button class="icon-button sidebar-toggle" id="sidebarToggle" type="button"
+          title="Collapse index" aria-label="Collapse index" aria-expanded="true">&lt;</button>
+      </header>
+
+      <div class="index-controls">
+        <label class="search-field">
+          <span class="visually-hidden">Search article items</span>
+          <input id="searchInput" type="search"
+            placeholder="Search label, title, declaration" autocomplete="off">
+        </label>
+        <div class="filter-grid">
+          <label>
+            <span>Section</span>
+            <select id="sectionFilter">
+              <option value="all">All sections</option>
+              <option value="deterministic">Deterministic</option>
+              <option value="stochastic">Stochastic</option>
+              <option value="correction">SOC correction</option>
+            </select>
+          </label>
+          <label>
+            <span>Kind</span>
+            <select id="typeFilter">
+              <option value="all">All kinds</option>
+            </select>
+          </label>
+        </div>
+        <div class="index-meta" id="indexMeta">24 article items</div>
+      </div>
+
+      <div class="item-list" id="itemList" role="listbox"
+        aria-label="Article assumptions, definitions, and results" tabindex="0"></div>
+    </aside>
+
+    <main class="main-panel">
+      <header class="toolbar">
+        <div class="toolbar-title">
+          <div class="current-label" id="currentLabel">Assumption 2.1</div>
+          <div class="current-title" id="currentTitle">Smoothness and uniform LICQ</div>
+        </div>
+        <div class="toolbar-actions">
+          <div class="segmented" role="group" aria-label="Graph scope">
+            <button id="fullGraphButton" class="active" type="button">Full graph</button>
+            <button id="focusGraphButton" type="button">Neighborhood</button>
+          </div>
+          <div class="zoom-controls" role="group" aria-label="Graph zoom">
+            <button class="icon-button" id="zoomOutButton" type="button"
+              title="Zoom out" aria-label="Zoom out">-</button>
+            <button class="icon-button" id="fitButton" type="button"
+              title="Fit graph" aria-label="Fit graph">Fit</button>
+            <button class="icon-button" id="zoomInButton" type="button"
+              title="Zoom in" aria-label="Zoom in">+</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="mobile-view-switch segmented" role="group" aria-label="Mobile view">
+        <button id="mobileGraphButton" class="active" type="button">Graph</button>
+        <button id="mobileDetailButton" type="button">Statement</button>
+      </div>
+
+      <section class="workspace" id="workspace" data-mobile-view="graph">
+        <section class="graph-panel" aria-label="Article dependency graph">
+          <div class="graph-toolbar">
+            <div class="graph-stats" id="graphStats">24 nodes / 42 dependencies</div>
+            <div class="legend" aria-label="Graph section colors">
+              <span><i class="legend-swatch deterministic"></i>Deterministic</span>
+              <span><i class="legend-swatch stochastic"></i>Stochastic</span>
+              <span><i class="legend-swatch correction"></i>SOC correction</span>
+            </div>
+          </div>
+          <div class="graph-viewport" id="graphViewport">
+            <svg id="dependencyGraph" class="dependency-graph"
+              role="img" aria-label="Dependency graph among article-level declarations">
+              <defs>
+                <marker id="arrowDefault" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z"></path>
+                </marker>
+                <marker id="arrowUpstream" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z"></path>
+                </marker>
+                <marker id="arrowDownstream" viewBox="0 0 10 10" refX="9" refY="5"
+                  markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z"></path>
+                </marker>
+              </defs>
+              <g id="graphScene"></g>
+            </svg>
+            <div class="graph-message" id="graphMessage" hidden></div>
+            <div class="graph-empty" id="graphEmpty" hidden>No graph items match this view.</div>
+          </div>
+        </section>
+
+        <aside class="detail-panel" id="detailPanel" aria-label="Selected article item">
+          <div class="detail-rail">
+            <button class="icon-button detail-toggle" id="detailToggle" type="button"
+              title="Collapse statement" aria-label="Collapse statement"
+              aria-expanded="true">&gt;</button>
+          </div>
+          <div class="detail-scroll">
+            <div id="detailContent"></div>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </div>
+
+  <div id="statementTemplates" hidden>
+    <template id="statement-assumption-2-1">
+      <p>There exist a nonempty open set \(\mathcal U\subseteq\R^n\) on which
+        \(f\) and \(c\) are continuously differentiable, a scalar
+        \(\underline f\in\R\), and positive constants
+        \(G,L_f,M,L_c,\sigma\) with the following properties:</p>
+      <ol type="i">
+        <li>\(f(x)\ge\underline f\), \(\norm{\grad f(x)}\le G\), and
+          \(\norm{\grad f(x)-\grad f(y)}\le L_f\norm{x-y}\) for all
+          \(x,y\in\mathcal U\);</li>
+        <li>\(\norm{\grad c(x)}\le M\) and
+          \(\norm{\grad c(x)-\grad c(y)}\le L_c\norm{x-y}\) for all
+          \(x,y\in\mathcal U\);</li>
+        <li>\(\sigma_{\min}(\grad c(x))\ge\sigma\) for all
+          \(x\in\mathcal U\).</li>
+      </ol>
+    </template>
+
+    <template id="statement-definition-2-2">
+      <p>Given \(\varepsilon\ge0\), a point \(x\) is an
+        \(\varepsilon\)-KKT point if there exists
+        \(\lambda\in\mathbb R^m\) such that</p>
+      <div class="formula">\[
+        \norm{\grad f(x)+\grad c(x)\lambda}\le\varepsilon,
+        \qquad \norm{c(x)}\le\varepsilon.
+      \]</div>
+      <p>A specified pair \((x,\lambda)\) satisfying these inequalities is
+        an \(\varepsilon\)-KKT pair. For \(\varepsilon=0\), \(x\) is a KKT
+        point and \((x,\lambda)\) is a KKT pair.</p>
+    </template>
+
+    <template id="statement-algorithm-2-1">
+      <p>Given \(x_0,\lambda_0\), a fixed penalty \(\rho>0\), and a fixed
+        proximal coefficient \(\beta>0\), repeat for \(k=0,1,2,\ldots\):</p>
+      <ol class="algorithm-steps">
+        <li>Compute the linearized augmented-Lagrangian step \(p_k\) from
+          <div class="formula">\[
+            \bigl(\beta I_n+\rho\grad c(x_k)\grad c(x_k)^\top\bigr)p_k
+            =-\grad f(x_k)-\grad c(x_k)
+              \bigl(\lambda_k+\rho c(x_k)\bigr).
+          \]</div>
+        </li>
+        <li>Set \(x_{k+1}=x_k+p_k\).</li>
+        <li>Perform the classical ALM multiplier update
+          <div class="formula">\[
+            \lambda_{k+1}=\lambda_k+\rho c(x_{k+1}).
+          \]</div>
+        </li>
+      </ol>
+    </template>
+
+    <template id="statement-assumption-2-3">
+      <p>There exist \(\Delta,\beta,\rho,\Lambda>0\), all independent of the
+        target accuracy, satisfying</p>
+      <div class="formula">\[
+        \begin{aligned}
+        \Lambda &\ge
+          \frac{G+\beta\Delta+\rho M\kappa_{\mathrm{lin}}\Delta^2}{\sigma},
+        &\quad
+        \frac{G}{\beta}+\frac{3M\Lambda}{\beta+\rho\sigma^2}
+          &\le\Delta,\\
+        C_{\mathrm{mod}}&\le\frac{3\beta}{8},
+        &\quad
+        \rho&\ge\frac{8C_{\lambda,p}}{\beta}.
+        \end{aligned}
+      \]</div>
+      <p>The initialization obeys
+        \(\norm{\lambda_0}\le\Lambda\) and
+        \(\rho\norm{c(x_0)}\le\Lambda\).</p>
+    </template>
+
+    <template id="statement-proposition-2-4">
+      <p>Under <a href="#assumption-2-1" data-item-ref="assumption-2-1">Assumption 2.1</a>,
+        there exist \(\Delta>0\), a constant ratio \(\tau_\rho>0\), and
+        \(\beta_0>0\) such that, for every \(\beta\ge\beta_0\), the choice
+        \(\rho=\tau_\rho\beta\) and a suitable
+        \(\Lambda=\Theta(\beta\Delta)\) satisfy all inequalities in
+        <a href="#assumption-2-3" data-item-ref="assumption-2-3">Assumption 2.3</a>.</p>
+    </template>
+
+    <template id="statement-assumption-2-5">
+      <p>For the exact-gradient method, the \(\Delta\)-neighborhood of
+        \(\mathcal S_{\mathrm{det}}\) is contained in the regularity region:</p>
+      <div class="formula">\[
+        \mathcal N_\Delta(\mathcal S_{\mathrm{det}})\subset\mathcal U.
+      \]</div>
+    </template>
+
+    <template id="statement-lemma-2-6">
+      <p>Suppose that
+        <a href="#assumption-2-1" data-item-ref="assumption-2-1">Assumption 2.1</a>
+        and <a href="#assumption-2-3" data-item-ref="assumption-2-3">Assumption 2.3</a>
+        hold. Then every admissible prefix
+        \(\{(x_k,\lambda_k)\}_{k=0}^N\) generated by NR-LALM satisfies</p>
+      <div class="formula">\[
+        \norm{p_k}\le\Delta\quad(0\le k\le N-1),
+        \qquad
+        \norm{\lambda_k}\le\Lambda\quad(0\le k\le N).
+      \]</div>
+    </template>
+
+    <template id="statement-lemma-2-7">
+      <p>Under
+        <a href="#assumption-2-1" data-item-ref="assumption-2-1">Assumption 2.1</a>
+        and <a href="#assumption-2-3" data-item-ref="assumption-2-3">Assumption 2.3</a>,
+        every iteration in an admissible prefix satisfies</p>
+      <div class="formula">\[
+        \cL_\rho(x_{k+1},\lambda_k)
+        \le\cL_\rho(x_k,\lambda_k)-\frac{\beta}{2}\norm{p_k}^2.
+      \]</div>
+    </template>
+
+    <template id="statement-lemma-2-8">
+      <p>Under
+        <a href="#assumption-2-1" data-item-ref="assumption-2-1">Assumption 2.1</a>
+        and <a href="#assumption-2-3" data-item-ref="assumption-2-3">Assumption 2.3</a>,
+        for every \(k\ge1\) in an admissible prefix,</p>
+      <div class="formula">\[
+        \norm{\lambda_{k+1}-\lambda_k}^2
+        \le C_{\lambda,p}
+          \bigl(\norm{p_k}^2+\norm{p_{k-1}}^2\bigr).
+      \]</div>
+    </template>
+
+    <template id="statement-theorem-2-9">
+      <p>Suppose
+        <a href="#assumption-2-1" data-item-ref="assumption-2-1">Assumption 2.1</a>
+        and <a href="#assumption-2-3" data-item-ref="assumption-2-3">Assumption 2.3</a>
+        hold. On every admissible prefix and for all \(k\ge1\) in that prefix,</p>
+      <div class="formula">\[
+        \Phi_{k+1}\le\Phi_k-\frac{\beta}{4}\norm{p_k}^2.
+      \]</div>
+      <p>Moreover,</p>
+      <div class="formula">\[
+        \Phi_k\ge\underline\Phi
+        :=\underline f-\frac{\Lambda^2}{2\rho}
+        \qquad\text{for all }k\ge1.
+      \]</div>
+    </template>
+
+    <template id="statement-theorem-2-10">
+      <p>Let
+        <a href="#assumption-2-1" data-item-ref="assumption-2-1">Assumption 2.1</a>,
+        <a href="#assumption-2-3" data-item-ref="assumption-2-3">Assumption 2.3</a>,
+        and <a href="#assumption-2-5" data-item-ref="assumption-2-5">Assumption 2.5</a>
+        hold, and run NR-LALM in
+        <a href="#algorithm-2-1" data-item-ref="algorithm-2-1">Algorithm 2.1</a>.
+        Then NR-LALM is well defined for every \(k\), every finite generated
+        prefix is admissible, and</p>
+      <div class="formula">\[
+        \norm{p_k}\le\Delta,\quad
+        \norm{\lambda_k}\le\Lambda,\quad
+        x_k\in\mathcal S_{\mathrm{det}}\ (k\ge0),\quad
+        \Phi_k\le\overline\Phi_1\ (k\ge1).
+      \]</div>
+    </template>
+
+    <template id="statement-lemma-2-11">
+      <p>Under
+        <a href="#assumption-2-1" data-item-ref="assumption-2-1">Assumption 2.1</a>
+        and <a href="#assumption-2-3" data-item-ref="assumption-2-3">Assumption 2.3</a>,
+        every deterministic admissible prefix of length \(N\) satisfies</p>
+      <div class="formula">\[
+        \mathcal R_{k+1}^2
+        \le C_R\bigl(\norm{p_k}^2+\norm{p_{k-1}}^2\bigr),
+        \qquad 1\le k\le N-1,
+      \]</div>
+      <p>where
+        \(C_s:=\beta+\rho M\kappa_{\mathrm{lin}}\Delta+L_f+L_c\Lambda\)
+        and \(C_R:=C_s^2+C_{\lambda,p}/\rho^2\).</p>
+    </template>
+
+    <template id="statement-theorem-2-12">
+      <p>Let
+        <a href="#assumption-2-1" data-item-ref="assumption-2-1">Assumption 2.1</a>,
+        <a href="#assumption-2-3" data-item-ref="assumption-2-3">Assumption 2.3</a>,
+        and <a href="#assumption-2-5" data-item-ref="assumption-2-5">Assumption 2.5</a>
+        hold, and run NR-LALM with exact gradients. For \(K\ge2\), let
+        \(\widehat k\) be uniform on \(\{1,\ldots,K-1\}\). Then</p>
+      <div class="formula">\[
+        \min_{1\le k\le K-1}\mathcal R_{k+1}^2
+        \le\E[\mathcal R_{\widehat k+1}^2]
+        \le\frac{C_{\mathrm{det}}}{K-1},
+      \]</div>
+      <p>where
+        \(C_{\mathrm{det}}
+          :=C_R[\Delta^2+8(\Phi_1-\underline\Phi)/\beta]\)
+        is independent of \(K\) and \(\varepsilon\). If
+        \(K-1\ge C_{\mathrm{det}}\varepsilon^{-2}\), a minimizing iterate
+        is an \(\varepsilon\)-KKT pair. The iteration, first-order oracle,
+        and exact Jacobian-induced linear-system solve complexities are all
+        \(\cO(\varepsilon^{-2})\), with fixed penalty and the classical
+        multiplier update.</p>
+    </template>
+
+    <template id="statement-theorem-2-13">
+      <p>Let
+        <a href="#assumption-2-1" data-item-ref="assumption-2-1">Assumption 2.1</a>,
+        <a href="#assumption-2-3" data-item-ref="assumption-2-3">Assumption 2.3</a>,
+        and <a href="#assumption-2-5" data-item-ref="assumption-2-5">Assumption 2.5</a>
+        hold, and run NR-LALM with exact gradients. Assume also that
+        \(\mathcal S_{\mathrm{det}}\) is compact and that the lifted energy
+        \(\mathcal E\) has the KL property at every point of the cluster set
+        of \(u_k=(x_k,\lambda_k,p_{k-1})\). Then</p>
+      <div class="formula">\[
+        \sum_{k=0}^{\infty}
+        \left(\norm{x_{k+1}-x_k}
+        +\norm{\lambda_{k+1}-\lambda_k}\right)<\infty.
+      \]</div>
+      <p>The entire sequence \((x_k,\lambda_k)\) converges to a KKT pair
+        \((x_\star,\lambda_\star)\), and
+        \(u_k\to(x_\star,\lambda_\star,0)\).</p>
+    </template>
+
+    <template id="statement-assumption-3-1">
+      <p>Suppose \(f(x)=\E[F(x;\xi)]\) for \(x\in\mathcal U\). All random
+        quantities below are measurable whenever they are formed. For almost
+        every \(\xi\), \(F(\cdot;\xi)\) is differentiable on \(\mathcal U\).
+        There exist \(\sigma_f,L_s\ge0\) such that:</p>
+      <ol type="i">
+        <li>\(\E[\grad F(x;\xi)]=\grad f(x)\) and
+          \(\E\norm{\grad F(x;\xi)-\grad f(x)}^2\le\sigma_f^2\)
+          for all \(x\in\mathcal U\);</li>
+        <li>\(\E\norm{\grad F(x;\xi)-\grad F(y;\xi)}^2
+          \le L_s^2\norm{x-y}^2\) for all \(x,y\in\mathcal U\).</li>
+      </ol>
+    </template>
+
+    <template id="statement-definition-3-2">
+      <p>Given \(\varepsilon\ge0\), a random point \(x\) is a stochastic
+        \(\varepsilon\)-KKT point if there exists a random multiplier
+        \(\lambda\), defined on the same probability space, such that</p>
+      <div class="formula">\[
+        \E\norm{\grad f(x)+\grad c(x)\lambda}^2\le\varepsilon^2,
+        \qquad
+        \E\norm{c(x)}^2\le\varepsilon^2.
+      \]</div>
+      <p>A specified random pair \((x,\lambda)\) satisfying these inequalities
+        is a stochastic \(\varepsilon\)-KKT pair.</p>
+    </template>
+
+    <template id="statement-lemma-3-3">
+      <p>Under
+        <a href="#assumption-2-1" data-item-ref="assumption-2-1">Assumption 2.1</a>
+        and <a href="#assumption-3-1" data-item-ref="assumption-3-1">Assumption 3.1</a>,
+        every almost surely admissible length-\(K\) prefix with
+        \(\E\norm{p_k}^2<\infty\) for \(0\le k<K\) satisfies</p>
+      <div class="formula">\[
+        \sum_{k=0}^{K-1}\E\norm{e_k}^2
+        \le\frac{K\sigma_f^2}{B}
+        +\frac{QL_s^2}{b}\sum_{k=0}^{K-1}\E\norm{p_k}^2.
+      \]</div>
+    </template>
+
+    <template id="statement-lemma-3-4">
+      <p>Under
+        <a href="#assumption-2-1" data-item-ref="assumption-2-1">Assumption 2.1</a>
+        and <a href="#assumption-2-3" data-item-ref="assumption-2-3">Assumption 2.3</a>,
+        every almost surely admissible prefix of length \(K\ge2\) satisfies</p>
+      <div class="formula">\[
+        P_K\le D_0+D_1E_K.
+      \]</div>
+      <p>If, in addition,
+        <a href="#assumption-3-1" data-item-ref="assumption-3-1">Assumption 3.1</a>
+        holds and projected SPIDER is used with \(b\ge2D_1QL_s^2\), then</p>
+      <div class="formula">\[
+        \frac{E_K}{K}\le\frac{2\sigma_f^2}{B}+\frac{D_0}{D_1K},
+        \qquad
+        \frac{P_K}{K}\le\frac{2D_1\sigma_f^2}{B}+\frac{2D_0}{K}.
+      \]</div>
+    </template>
+
+    <template id="statement-lemma-3-5">
+      <p>Under
+        <a href="#assumption-2-1" data-item-ref="assumption-2-1">Assumption 2.1</a>
+        and <a href="#assumption-2-3" data-item-ref="assumption-2-3">Assumption 2.3</a>,
+        let a length-\(N\) stochastic NR-LALM prefix be almost surely
+        admissible. Then, almost surely, for every \(1\le k\le N-1\),</p>
+      <div class="formula">\[
+        \mathcal R_{k+1}^2
+        \le C_R^{\mathrm{st}}\Bigl(
+          \norm{p_k}^2+\norm{p_{k-1}}^2+
+          \norm{e_k}^2+\norm{e_{k-1}}^2\Bigr).
+      \]</div>
+    </template>
+
+    <template id="statement-theorem-3-6">
+      <p>Let
+        <a href="#assumption-2-1" data-item-ref="assumption-2-1">Assumption 2.1</a>,
+        <a href="#assumption-3-1" data-item-ref="assumption-3-1">Assumption 3.1</a>,
+        and <a href="#assumption-2-3" data-item-ref="assumption-2-3">Assumption 2.3</a>
+        hold. Fix \(K\ge2\), use projected SPIDER with
+        \(B=K\), \(Q=\lceil\sqrt K\rceil\), and
+        \(b=\max\{1,\lceil2D_1L_s^2Q\rceil\}\), and suppose the length-\(K\)
+        prefix is almost surely admissible. If \(\widehat k\) is independent
+        of the oracle samples and uniform on \(\{1,\ldots,K-1\}\), then</p>
+      <div class="formula">\[
+        \E[\mathcal R_{\widehat k+1}^2]
+        \le\frac{C_{\mathrm{st}}}{K-1}.
+      \]</div>
+      <p>The constant is independent of \(K\) and \(\varepsilon\). Taking
+        \(K-1\ge C_{\mathrm{st}}\varepsilon^{-2}\) produces a stochastic
+        \(\varepsilon\)-KKT pair. Iterations, deterministic
+        constraint/Jacobian evaluations, and exact linear solves cost
+        \(\cO(\varepsilon^{-2})\); stochastic gradients cost
+        \(\cO(\varepsilon^{-3})\).</p>
+    </template>
+
+    <template id="statement-theorem-3-7">
+      <p>Fix \(\delta\in(0,1)\) and \(K\ge2\). Let
+        \(\mathcal X_\delta\) be a known Borel localization set satisfying</p>
+      <div class="formula">\[
+        x_0\in\mathcal X_\delta,\qquad
+        \mathcal S_{\mathrm{st}}(\delta)\subseteq\mathcal X_\delta,\qquad
+        \mathcal N_\Delta(\mathcal X_\delta)\subset\mathcal U.
+      \]</div>
+      <p>Construct stochastic NR-LALM recursively while the current iterate
+        lies in \(\mathcal X_\delta\), and let
+        \(\tau_{\mathrm{ex}}:=\inf\{k\ge1:x_k\notin\mathcal X_\delta\}\).
+        Under
+        <a href="#assumption-2-1" data-item-ref="assumption-2-1">Assumption 2.1</a>,
+        <a href="#assumption-3-1" data-item-ref="assumption-3-1">Assumption 3.1</a>,
+        and <a href="#assumption-2-3" data-item-ref="assumption-2-3">Assumption 2.3</a>,</p>
+      <div class="formula">\[
+        \mathbb P(\tau_{\mathrm{ex}}\le K)\le\delta.
+      \]</div>
+      <p>If \(\widehat k\) is independent of the oracle samples and uniform
+        on \(\{1,\ldots,K-1\}\), then</p>
+      <div class="formula">\[
+        \E\!\left[\mathcal R_{\widehat k+1}^2
+          \mid\tau_{\mathrm{ex}}>K\right]
+        \le\frac{C_{\mathrm{st}}}{(1-\delta)(K-1)}.
+      \]</div>
+    </template>
+
+    <template id="statement-corollary-3-8">
+      <p>Under the conditions of
+        <a href="#theorem-3-7" data-item-ref="theorem-3-7">Theorem 3.7</a>,
+        let \(T\) be the number of attempts and \(N_{\mathrm{grad}}\) the
+        total stochastic-gradient count. The safeguarded-restart procedure
+        terminates almost surely and</p>
+      <div class="formula">\[
+        \E[T]\le\frac{1}{1-\delta},\qquad
+        \E[\mathcal R_{\widehat k+1}^2]
+          \le\frac{C_{\mathrm{st}}}{(1-\delta)(K-1)},\qquad
+        \E[N_{\mathrm{grad}}]
+          \le\frac{\lceil K/Q\rceil B+2Kb}{1-\delta}.
+      \]</div>
+      <p>The expected numbers of deterministic constraint/Jacobian
+        evaluations, exact linear-system solves, and localization-set
+        membership tests are each \(\cO(K/(1-\delta))\).</p>
+    </template>
+
+    <template id="statement-proposition-4-1">
+      <p>Suppose
+        <a href="#assumption-2-1" data-item-ref="assumption-2-1">Assumption 2.1</a>
+        holds with \(m\ge1\). Use the same regularity constants for both
+        methods and fix a positive tuple
+        \((\Delta,\beta,\rho,\Lambda)\). If the sufficient inequalities for
+        NR-LALM hold, then their corrected counterparts hold for NR-LALM+SOC
+        with the same tuple.</p>
+      <p>Under global regularity and common initialization, the deterministic
+        sufficient region derived for NR-LALM is contained in that for
+        NR-LALM+SOC. The containment is strict: there exist a globally regular
+        scalar problem and fixed \((\beta,\rho,x_0,\lambda_0)\) for which the
+        NR-LALM+SOC conditions hold, whereas no positive auxiliary pair
+        \((\Delta_{\mathrm{base}},\Lambda_{\mathrm{base}})\) satisfies the
+        NR-LALM conditions.</p>
+    </template>
+
+    <template id="statement-corollary-4-2">
+      <p>Suppose
+        <a href="#assumption-2-1" data-item-ref="assumption-2-1">Assumption 2.1</a>
+        and the corrected fixed-parameter and initialization conditions hold,
+        with all downstream constants recomputed for NR-LALM+SOC.</p>
+      <ol type="i">
+        <li>Under the corrected deterministic localization buffer,
+          exact-gradient NR-LALM+SOC has
+          \(\cO(\varepsilon^{-2})\) iteration, oracle, primal-solve, and
+          correction-solve complexities.</li>
+        <li>Under
+          <a href="#assumption-3-1" data-item-ref="assumption-3-1">Assumption 3.1</a>,
+          corrected projected SPIDER gives
+          \(\cO(\varepsilon^{-3})\) stochastic-gradient complexity and
+          \(\cO(\varepsilon^{-2})\) deterministic evaluations and solves,
+          directly under almost-sure admissibility and in expectation with
+          safeguarded restart under the corrected stochastic buffer.</li>
+        <li>If the corrected deterministic localization set is compact and
+          the lifted energy has the KL property at every cluster point, the
+          corrected primal-dual trajectory has finite length and converges
+          to a KKT pair.</li>
+      </ol>
+    </template>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
