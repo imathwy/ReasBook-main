@@ -15,7 +15,16 @@ ReasBook is generated using the tool: [M2F](https://github.com/optsuite/M2F.git)
 | `v4.30.0` | `v4.30.0` | Active | 8 / 2 | Passed |
 | `v4.26.0` | `v4.26.0` | Active | 4 / 2 | Passed |
 
-Status: `Empty` (initialized, no books yet) · `Active` (accepting PRs) · `Frozen` (kept, no new books) · `Archived` (historical only).
+`main` is the cross-version catalog. The source code stays on the registered version branches; the lightweight link folders below make each entry discoverable from this branch.
+
+Status: `Empty` (initialized, no source projects on that branch) · `Active` (accepting PRs) · `Frozen` (kept, no new books) · `Archived` (historical only).
+
+## Main-branch Link Folders
+
+Each directory in these indexes is a landing page for one book or paper. Open a directory and follow its prominent source link to the exact version branch and project folder.
+
+- [Books](https://github.com/optpku/ReasBook/tree/main/ReasBook/Books/)
+- [Papers](https://github.com/optpku/ReasBook/tree/main/ReasBook/Papers/)
 
 ## Books
 
@@ -52,7 +61,7 @@ or `admit` placeholders.
 See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 - Book and paper code lives on the registered version branch matching its Lean/mathlib toolchain; only registered stable `vX.Y.Z` versions are accepted.
-- **Book code is not merged to `main`.** `main` is the cross-version catalog only.
+- **Book and paper code is not merged to `main`.** `main` remains the cross-version catalog, while its link folders point to the corresponding version branches.
 - PR base, PR title version, `ReasBook/lean-toolchain`, and `book.yml` must all match.
 
 ## Build
