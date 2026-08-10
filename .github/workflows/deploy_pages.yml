@@ -142,6 +142,14 @@ jobs:
           ref: ${{ matrix.branch }}
           fetch-depth: 0
 
+      - name: Checkout theorem-map generator from main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: .reasbook-main
+          sparse-checkout: |
+            tools/theorem_map
+
       - name: Prepare persistent build directories
         run: |
           set -euo pipefail
@@ -288,6 +296,18 @@ jobs:
           set -euo pipefail
           ./scripts/ci_heartbeat.sh "assemble_site_docs.sh (${BRANCH})" ./scripts/assemble_site_docs.sh
 
+      - name: Generate theorem dependency maps (${BRANCH})
+        timeout-minutes: 30
+        run: |
+          set -euo pipefail
+          python3 .reasbook-main/tools/theorem_map/generate_all.py \
+            --repo-root . \
+            --site-root ReasBookWeb/_site \
+            --branch "$BRANCH" \
+            --repository "https://github.com/${GITHUB_REPOSITORY}" \
+            --extractor .reasbook-main/tools/theorem_map/Extract.lean \
+            --assets .reasbook-main/tools/theorem_map/assets
+
       - name: Upload branch site artifact
         uses: actions/upload-artifact@v4
         with:
@@ -429,6 +449,7 @@ jobs:
 
               pages_src = dst_root / kind / slug
               docs_src = dst_root / "docs" / kind_title / name
+              map_src = dst_root / "theorem-maps" / kind / slug
               site_dir = sites_root / slug
 
               if site_dir.exists():
@@ -439,6 +460,16 @@ jobs:
                   shutil.copytree(pages_src, site_dir / "pages")
               if docs_src.is_dir():
                   shutil.copytree(docs_src, site_dir / "docs")
+
+              navigation = []
+              if pages_src.is_dir():
+                  navigation.append('    <li><a href="./pages/">Pages</a></li>')
+              if docs_src.is_dir():
+                  navigation.append('    <li><a href="./docs/">Documentation</a></li>')
+              if map_src.is_dir():
+                  navigation.append(
+                      f'    <li><a href="../../theorem-maps/{kind}/{slug}/">Theorem map</a></li>'
+                  )
 
               index = site_dir / "index.html"
               index.write_text(
@@ -454,8 +485,7 @@ jobs:
                           "<body>",
                           f"  <h1>{name}</h1>",
                           "  <ul>",
-                          '    <li><a href="./pages/">Pages</a></li>',
-                          '    <li><a href="./docs/">Documentation</a></li>',
+                          *navigation,
                           "  </ul>",
                           '  <p><a href="../../">Back to root</a></p>',
                           "</body>",
@@ -496,11 +526,17 @@ jobs:
               )
           PY
 
+      - name: Rebuild cross-version theorem-map catalog
+        run: |
+          set -euo pipefail
+          python3 tools/theorem_map/catalog.py --site-root .site
+
       - name: Verify generated site tree
         run: |
           set -euo pipefail
           ls -la .site
           test -d .site/docs
+          test -f .site/theorem-maps/index.html
 
       - name: Compute Pages artifact name
         id: pages_artifact_name
