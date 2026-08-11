@@ -3,7 +3,7 @@
 # Copy doc-gen output into ReasBookWeb/_site/docs and ensure docs index exists.
 set -euo pipefail
 
-web_docs_dir="ReasBookWeb/_site/docs"
+web_docs_dir="ReasBookWeb/_site/docs/ReasBook"
 source_docs_dir="ReasBook/.lake/build/doc"
 
 if [ ! -d "$source_docs_dir" ]; then
@@ -29,8 +29,11 @@ if [ -n "$repo_name" ]; then
       "s#href=\"(?:\\.\\./)+\\.//${escaped_repo_name}/#href=\"/${repo_name}/#g; s#href=\"(?:\\.\\./)+${escaped_repo_name}/#href=\"/${repo_name}/#g"
 fi
 
-if [ ! -f "$web_docs_dir/index.html" ]; then
-  cat > "$web_docs_dir/index.html" <<'EOF'
+# Also create a top-level docs index.html that links to ReasBook/
+docs_index_dir="ReasBookWeb/_site/docs"
+mkdir -p "$docs_index_dir"
+if [ ! -f "$docs_index_dir/index.html" ]; then
+  cat > "$docs_index_dir/index.html" <<'EOF'
 <!doctype html>
 <html lang="en">
 <head>
@@ -41,11 +44,11 @@ if [ ! -f "$web_docs_dir/index.html" ]; then
 <body>
   <h1>ReasBook Documentation</h1>
   <ul>
-    <li><a href="./Books/Analysis2_Tao_2022/Chapters/Chap01/section01.html">Analysis II (Tao): Chapter 1 Section 1</a></li>
-    <li><a href="./Books/ConvexAnalysis_Rockafellar_1970/Chapters/Chap01/section01_part1.html">Convex Analysis (Rockafellar): Chapter 1 Section 1 Part 1</a></li>
-    <li><a href="./Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap01/section01.html">Introduction to Real Analysis I (Lebl): Chapter 1 Section 1</a></li>
-    <li><a href="./Papers/SmoothMinimization_Nesterov_2004/Sections/section01.html">Nesterov 2004: Section 1</a></li>
-    <li><a href="./Papers/OnSomeLocalRings_Maassaran_2025/Sections/section01.html">Maassarani 2025: Section 1</a></li>
+    <li><a href="./ReasBook/Books/Analysis2_Tao_2022/Chapters/Chap01/section01.html">Analysis II (Tao): Chapter 1 Section 1</a></li>
+    <li><a href="./ReasBook/Books/ConvexAnalysis_Rockafellar_1970/Chapters/Chap01/section01_part1.html">Convex Analysis (Rockafellar): Chapter 1 Section 1 Part 1</a></li>
+    <li><a href="./ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Chapters/Chap01/section01.html">Introduction to Real Analysis I (Lebl): Chapter 1 Section 1</a></li>
+    <li><a href="./ReasBook/Papers/SmoothMinimization_Nesterov_2004/Sections/section01.html">Nesterov 2004: Section 1</a></li>
+    <li><a href="./ReasBook/Papers/OnSomeLocalRings_Maassaran_2025/Sections/section01.html">Maassarani 2025: Section 1</a></li>
   </ul>
 </body>
 </html>
