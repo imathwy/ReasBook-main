@@ -26,6 +26,7 @@ Each directory in these indexes is a landing page for one book or paper. Open a 
 
 - [Books](https://github.com/optpku/ReasBook/tree/main/ReasBook/Books/)
 - [Papers](https://github.com/optpku/ReasBook/tree/main/ReasBook/Papers/)
+- [Theorem dependency maps](https://optpku.github.io/ReasBook/theorem-maps/)
 
 ## Books
 
