@@ -5,7 +5,7 @@ The goal is to preserve the structure of original references while producing mac
 We welcome contributions from researchers, students, and practitioners.
 
 ReasBook is generated using the tool: [M2F](https://github.com/optsuite/M2F.git). 
-- Try our automated formalization system [Quokka (https://quokka.reaslab.io/)](https://quokka.reaslab.io/).  Quokka can transform long mathematical literature into compilable Lean 4 formal proofs automatically.
+- Try our public available automated formalization system [Quokka (https://quokka.reaslab.io/)](https://quokka.reaslab.io/).  Quokka can transform long mathematical literature into compilable Lean 4 formal proofs automatically.
 
 ## Toolchain Branches
 
