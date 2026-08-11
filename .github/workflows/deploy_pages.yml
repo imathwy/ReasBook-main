@@ -448,7 +448,7 @@ jobs:
               name = p["name"]
 
               pages_src = dst_root / kind / slug
-              docs_src = dst_root / "docs" / kind_title / name
+              docs_src = dst_root / "docs" / "ReasBook" / kind_title / name
               map_src = dst_root / "theorem-maps" / kind / slug
               site_dir = sites_root / slug
 
