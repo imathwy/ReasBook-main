@@ -481,6 +481,10 @@ def export_environments(
             for project in exportable
         ]
     }
+    print(
+        f"[theorem-map] exporting {len(exportable)} compiled project environments",
+        flush=True,
+    )
     with tempfile.TemporaryDirectory(prefix="reasbook-theorem-map-") as temp:
         temp_root = Path(temp)
         config_path = temp_root / "config.json"
