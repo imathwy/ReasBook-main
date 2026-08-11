@@ -5,11 +5,15 @@ ReasBook theorem dependency maps. A map shows the natural-language statement of
 each literature-level declaration, the matching Lean declaration, and direct
 dependencies after project-internal helper declarations are contracted.
 
+The deployment currently publishes only audited, project-provided maps. This
+keeps the public site focused while the remaining books and papers are being
+reviewed. Projects without a `theorem-map/index.html` are skipped by default.
+
 ## Generation
 
 `Extract.lean` reads compiled Lean environments. `generate_all.py` discovers all
-book and paper entry points on one version branch, identifies docstrings that
-begin with labels such as `Theorem 2.3`, and writes maps under:
+book and paper entry points on one version branch and copies audited static maps
+under:
 
 ```text
 ReasBookWeb/_site/theorem-maps/books/<project-id>/
@@ -28,6 +32,10 @@ python3 tools/theorem_map/generate_all.py \
   --site-root ReasBookWeb/_site \
   --branch v4.32.2
 ```
+
+To preview automatically generated maps for the remaining projects, opt in
+explicitly with `--include-generic`. That mode identifies docstrings beginning
+with labels such as `Theorem 2.3` and extracts their Lean dependencies.
 
 ## Project overrides
 

@@ -467,6 +467,18 @@ def discover_projects(repo_root: Path) -> list[Project]:
     return projects
 
 
+def has_curated_map(project: Project) -> bool:
+    return (project.root / "theorem-map" / "index.html").is_file()
+
+
+def generic_projects(
+    projects: Iterable[Project], include_generic: bool
+) -> list[Project]:
+    if not include_generic:
+        return []
+    return [project for project in projects if not has_curated_map(project)]
+
+
 def export_environments(
     repo_root: Path,
     extractor: Path,
@@ -617,6 +629,11 @@ def main() -> int:
     parser.add_argument(
         "--assets", type=Path, default=Path(__file__).with_name("assets")
     )
+    parser.add_argument(
+        "--include-generic",
+        action="store_true",
+        help="also generate maps from Lean environments for projects without a curated map",
+    )
     args = parser.parse_args()
 
     repo_root = args.repo_root.resolve()
@@ -628,34 +645,33 @@ def main() -> int:
         print("[theorem-map] no ReasBook projects found")
         return 0
 
+    maps_root = site_root / "theorem-maps"
+    if maps_root.exists():
+        shutil.rmtree(maps_root)
+
     raw_by_project: dict[str, list[dict[str, Any]]] = {}
-    try:
-        automated_projects = [
-            project
-            for project in projects
-            if not (project.root / "theorem-map" / "index.html").is_file()
-        ]
-        raw_by_project = export_environments(
-            repo_root, extractor, automated_projects
-        )
-    except subprocess.CalledProcessError as error:
-        print(
-            f"[theorem-map] Lean environment export failed ({error}); using source fallback",
-            file=sys.stderr,
-        )
+    if args.include_generic:
+        try:
+            automated_projects = generic_projects(projects, args.include_generic)
+            raw_by_project = export_environments(
+                repo_root, extractor, automated_projects
+            )
+        except subprocess.CalledProcessError as error:
+            print(
+                f"[theorem-map] Lean environment export failed ({error}); using source fallback",
+                file=sys.stderr,
+            )
 
     commit = git_value(repo_root, "rev-parse", "HEAD")
     entries: list[tuple[Project, int, int]] = []
     for project in projects:
         output = site_root / "theorem-maps" / project.kind / project.slug
-        if output.exists():
-            shutil.rmtree(output)
         curated_static = project.root / "theorem-map"
-        if (curated_static / "index.html").is_file():
+        if has_curated_map(project):
             copy_curated_map(curated_static, output)
             item_count, edge_count = curated_counts(curated_static)
             print(f"[theorem-map] {project.project_id}: copied curated static map")
-        else:
+        elif args.include_generic:
             raw = raw_by_project.get(project.project_id)
             if raw is None:
                 raw = fallback_raw_declarations(project)
@@ -674,10 +690,16 @@ def main() -> int:
             print(
                 f"[theorem-map] {project.project_id}: {item_count} nodes, {edge_count} edges"
             )
+        else:
+            print(
+                f"[theorem-map] {project.project_id}: skipped (no curated static map)"
+            )
+            continue
         entries.append((project, item_count, edge_count))
 
     write_catalog(site_root, entries)
-    print(f"[theorem-map] generated {len(entries)} project maps")
+    mode = "curated plus generic" if args.include_generic else "curated only"
+    print(f"[theorem-map] generated {len(entries)} project maps ({mode})")
     return 0
 
 

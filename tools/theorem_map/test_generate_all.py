@@ -46,6 +46,36 @@ class TheoremMapTests(unittest.TestCase):
             ["lemma-2-1"],
         )
 
+    def test_generic_projects_are_opt_in(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            curated_root = root / "curated"
+            generated_root = root / "generated"
+            (curated_root / "theorem-map").mkdir(parents=True)
+            (curated_root / "theorem-map" / "index.html").write_text(
+                "<!doctype html>", encoding="utf-8"
+            )
+            curated = generate_all.Project(
+                kind="papers",
+                kind_dir="Papers",
+                leaf="Paper",
+                project_id="Curated",
+                root=curated_root,
+                root_module=None,
+            )
+            generated = generate_all.Project(
+                kind="books",
+                kind_dir="Books",
+                leaf="Book",
+                project_id="Generated",
+                root=generated_root,
+                root_module="Generated.Book",
+            )
+            self.assertEqual(generate_all.generic_projects([curated, generated], False), [])
+            self.assertEqual(
+                generate_all.generic_projects([curated, generated], True), [generated]
+            )
+
     def test_merged_catalog_reads_metadata(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             site_root = Path(temp)
