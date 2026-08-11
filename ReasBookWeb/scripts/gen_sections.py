@@ -177,7 +177,7 @@ if not SITE_ROOT.startswith("/"):
 if not SITE_ROOT.endswith("/"):
     SITE_ROOT = f"{SITE_ROOT}/"
 
-DOCS_BASE = f"{SITE_BASE}docs/"
+DOCS_BASE = f"{SITE_BASE}docs/ReasBook/"
 
 BOOK_TITLES = {
     "ConvexAnalysis_Rockafellar_1970": "Convex Analysis (Rockafellar, 1970)",
@@ -641,7 +641,7 @@ def docs_relative_site_link(module: str, route: str) -> str:
 
 def docs_relative_doc_link(from_module: str, to_module: str) -> str:
     _ = from_module
-    return portable_site_link(f"docs/{to_module.replace('.', '/')}.html")
+    return portable_site_link(f"docs/ReasBook/{to_module.replace('.', '/')}.html")
 
 
 def portable_site_link(route: str) -> str:
@@ -948,7 +948,7 @@ def emit_sections(entries: list[Entry]) -> str:
     lines.append("")
     lines.append(f"def siteRoot : String := {lean_string(SITE_ROOT)}")
     lines.append(f"def siteBase : String := {lean_string(SITE_ROOT)}")
-    lines.append(f"def docsRoot : String := {lean_string(local_site_link('docs/'))}")
+    lines.append(f"def docsRoot : String := {lean_string(local_site_link('docs/ReasBook/'))}")
     lines.append(f"def staticRoot : String := {lean_string(local_site_link('static/style.css'))}")
     lines.append("")
     lines.append(f"def sidebarDataJson : String := {lean_string(sidebar_json)}")
@@ -1044,7 +1044,7 @@ def emit_route_table(entries: list[Entry]) -> str:
 
 
 def doc_link(module: str) -> str:
-    return published_site_link(f"docs/{module.replace('.', '/')}.html")
+    return published_site_link(f"docs/ReasBook/{module.replace('.', '/')}.html")
 
 
 def source_link(module: str) -> str:
@@ -1244,10 +1244,10 @@ def write_root_readme(repo_root: Path, source_root: Path) -> None:
         has_book_agg = (source_root / "Books" / book / "Book.lean").exists()
         if has_book_agg:
             lean_src = repo_relative_link(f"ReasBook/Books/{book}/Chapters/")
-            docs_link = published_site_link(f"docs/Books/{book}/Book.html")
+            docs_link = published_site_link(f"docs/ReasBook/Books/{book}/Book.html")
         else:
             lean_src = repo_relative_link(f"ReasBook/Books/{book}/")
-            docs_link = published_site_link(f"docs/Books/{book}/")
+            docs_link = published_site_link(f"docs/ReasBook/Books/{book}/")
 
         for i, line in enumerate(lines):
             if line.startswith("- [") and book_ref_re.search(line):
@@ -1269,10 +1269,10 @@ def write_root_readme(repo_root: Path, source_root: Path) -> None:
         has_paper_agg = (source_root / "Papers" / paper / "Paper.lean").exists()
         if has_paper_agg:
             lean_src = repo_relative_link(f"ReasBook/Papers/{paper}/Sections/")
-            docs_link = published_site_link(f"docs/Papers/{paper}/Paper.html")
+            docs_link = published_site_link(f"docs/ReasBook/Papers/{paper}/Paper.html")
         else:
             lean_src = repo_relative_link(f"ReasBook/Papers/{paper}/")
-            docs_link = published_site_link(f"docs/Papers/{paper}/")
+            docs_link = published_site_link(f"docs/ReasBook/Papers/{paper}/")
 
         for i, line in enumerate(lines):
             if line.startswith("- [") and paper_ref_re.search(line):
@@ -1331,7 +1331,7 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
             if home_entry is not None
             else f"Books/{book}/Book"
         )
-        lines.append(f"- [Documentation]({portable_site_link(f'docs/{docs_path}.html')})")
+        lines.append(f"- [Documentation]({portable_site_link(f'docs/ReasBook/{docs_path}.html')})")
         if (book_dir / "Book.lean").exists():
             lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Books/{book}/Chapters/')})")
         else:
@@ -1382,7 +1382,7 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
             if home_entry is not None
             else f"Papers/{paper}/Paper"
         )
-        lines.append(f"- [Documentation]({portable_site_link(f'docs/{docs_path}.html')})")
+        lines.append(f"- [Documentation]({portable_site_link(f'docs/ReasBook/{docs_path}.html')})")
         if (paper_dir / "Paper.lean").exists():
             lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Papers/{paper}/Sections/')})")
         else:
