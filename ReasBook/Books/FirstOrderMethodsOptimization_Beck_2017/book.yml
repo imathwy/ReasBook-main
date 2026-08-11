@@ -10,7 +10,9 @@ isbn: 978-1-61197-499-7
 toolchain: leanprover/lean4:v4.30.0
 mathlib: v4.30.0
 branch: v4.30.0
-contributors: []
+contributors:
+- name: Zichen Wang
+- name: Zaiwen Wen
 coverage: Formalized content from Beck's First-Order Methods in Optimization.
 statistics:
   declarations: 4569

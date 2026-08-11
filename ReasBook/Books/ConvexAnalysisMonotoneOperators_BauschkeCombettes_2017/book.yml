@@ -11,7 +11,9 @@ isbn: 978-3-319-48310-8
 toolchain: leanprover/lean4:v4.30.0
 mathlib: v4.30.0
 branch: v4.30.0
-contributors: []
+contributors:
+- name: Zichen Wang
+- name: Zaiwen Wen
 coverage: Formalized content from Bauschke–Combettes' Convex Analysis and Monotone
   Operator Theory in Hilbert Spaces.
 statistics:

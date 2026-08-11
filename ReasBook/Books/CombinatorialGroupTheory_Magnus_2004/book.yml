@@ -12,7 +12,9 @@ isbn: 978-0-486-43830-6
 toolchain: leanprover/lean4:v4.30.0
 mathlib: v4.30.0
 branch: v4.30.0
-contributors: []
+contributors:
+- name: Zichen Wang
+- name: Zaiwen Wen
 coverage: Formalized content from Magnus–Karrass–Solitar's Combinatorial Group Theory.
 statistics:
   declarations: 1757
