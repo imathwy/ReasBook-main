@@ -32,14 +32,8 @@ contributors:
 - name: Zebo Liu
 - name: Zhiyan Wang
 - name: Zichen Wang
-coverage: 'Chapters 1–4: basic concepts, topological properties, duality correspondences,
-  and applications.'
+coverage: 'Chapters 1–5: basic concepts, topological properties, duality correspondences,
+  representation & inequalities, and differential theory.'
 statistics:
-  declarations: 3751
-  theorem_lemma_example: 3415
-  other_declarations: 336
-  lean_files: 223
-  lean_lines: 148688
-  proof_completion: 3741/3751
-  sorry: 10
-  admit: 2
+  lean_files: 331
+  lean_lines: 249355

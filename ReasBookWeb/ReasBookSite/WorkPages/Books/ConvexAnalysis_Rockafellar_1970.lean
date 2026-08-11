@@ -40,3 +40,12 @@ Chapter 04 -- Part IV: Representation and Inequalities
 - [4.18 Extreme Points and Faces of Convex Sets](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap04/section18/)
 - [4.19 Polyhedral Convex Sets and Functions](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap04/section19/)
 - [4.20 Some Applications of Polyhedral Convexity](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap04/section20/)
+- [4.21 Systems of Convex Inequalities](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap04/section21/)
+- [4.22 Theorems of the Alternative](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap04/section22/)
+
+Chapter 05 -- Part V: Differential Theory
+
+- [5.23 Subgradient](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap05/section23/)
+- [5.24 Subdifferential Calculus](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap05/section24/)
+- [5.25 Directional Derivatives](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap05/section25/)
+- [5.26 Monotone Operators](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap05/section26/)
