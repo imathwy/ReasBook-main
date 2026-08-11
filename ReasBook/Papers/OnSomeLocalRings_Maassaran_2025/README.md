@@ -2,7 +2,7 @@
 
 This is a catalog link folder on `main`; the Lean source is available on both registered branches.
 
-**[Open the theorem dependency map](https://optpku.github.io/ReasBook/theorem-maps/papers/onsomelocalrings_maassaran_2025/)**
+Theorem map: pending review.
 
 **[Open the source on `v4.26.0`](https://github.com/optpku/ReasBook/tree/v4.26.0/ReasBook/Papers/OnSomeLocalRings_Maassaran_2025/)**
 
