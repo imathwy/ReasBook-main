@@ -92,16 +92,23 @@ private def extractProjectCore (spec : ProjectSpec) : CoreM (Array RawDeclaratio
       declarations := declarations.push declaration
   return declarations
 
-/-- Import a project's root module and run its metadata extraction. -/
-private unsafe def extractProject (spec : ProjectSpec) : IO RawProject := do
-  let env ← importModules #[{ module := spec.rootModule.toName }] {}
+/-- Import all project roots once and extract each project from the shared environment. -/
+private unsafe def extractProjects (specs : Array ProjectSpec) : IO (Array RawProject) := do
+  let imports : Array Import := specs.map fun spec => {
+    module := spec.rootModule.toName
+  }
+  IO.println s!"Importing {imports.size} theorem-map project roots"
+  let env ← importModules imports {}
   let context : Core.Context := {
     fileName := "<theorem-map-extract>"
     fileMap := default
   }
   let state : Core.State := { env }
-  let (declarations, _) ← CoreM.toIO (extractProjectCore spec) context state
-  return { id := spec.id, rootModule := spec.rootModule, declarations }
+  let extractAll : CoreM (Array RawProject) := specs.mapM fun spec => do
+    let declarations ← extractProjectCore spec
+    return { id := spec.id, rootModule := spec.rootModule, declarations }
+  let (projects, _) ← CoreM.toIO extractAll context state
+  return projects
 
 /-- Decode an extractor configuration from JSON. -/
 private def parseConfig (path : System.FilePath) : IO ExtractConfig := do
@@ -121,7 +128,7 @@ unsafe def main (args : List String) : IO UInt32 := do
     initSearchPath (← findSysroot)
     enableInitializersExecution
     let config ← parseConfig configPath
-    let projects ← config.projects.mapM extractProject
+    let projects ← extractProjects config.projects
     if let some parent := (outputPath : System.FilePath).parent then
       IO.FS.createDirAll parent
     IO.FS.writeFile outputPath (toJson projects).pretty
