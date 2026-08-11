@@ -21,3 +21,13 @@ else
   echo "[build_reasbook_web] unable to raise stack limit; continuing with current limit"
 fi
 "$LAKE_BIN" exe reasbook-site
+
+THEOREM_MAP_SOURCE="../ReasBook/Papers/TR_LALM_theory/theorem-map"
+THEOREM_MAP_TARGET="_site/theorem-maps/papers/tr_lalm_theory"
+
+echo "[build_reasbook_web] installing curated TR-LALM theorem map"
+mkdir -p "$(dirname "$THEOREM_MAP_TARGET")"
+rm -rf "$THEOREM_MAP_TARGET"
+cp -R "$THEOREM_MAP_SOURCE" "$THEOREM_MAP_TARGET"
+test -f "$THEOREM_MAP_TARGET/index.html"
+test -f "$THEOREM_MAP_TARGET/metadata.json"

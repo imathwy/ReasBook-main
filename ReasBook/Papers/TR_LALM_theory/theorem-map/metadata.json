@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "project": {
+    "id": "TR_LALM_theory",
+    "title": "A Fixed-Penalty Linearized Augmented Lagrangian Method with Classical Multiplier Updates",
+    "kind": "papers",
+    "branch": "v4.32.2",
+    "commit": "094e974c4fc99a750543e63051f95b85ad2f92d2",
+    "repository": "https://github.com/optpku/ReasBook",
+    "sourceRoot": "ReasBook/Papers/TR_LALM_theory/"
+  },
+  "nodes": 24,
+  "edges": 42,
+  "generation": {
+    "mode": "curated-static",
+    "description": "Article-level declarations and dependencies audited against the manuscript and Lean source."
+  }
+}

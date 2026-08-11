@@ -7,7 +7,7 @@ Kangkang Deng, Zichen Wang, and Zaiwen Wen.
 [Lean source](https://github.com/optpku/ReasBook/tree/v4.32.2/ReasBook/Papers/TR_LALM_theory/)
 | [aggregate module](https://github.com/optpku/ReasBook/blob/v4.32.2/ReasBook/Papers/TR_LALM_theory.lean)
 | [paper module](https://github.com/optpku/ReasBook/blob/v4.32.2/ReasBook/Papers/TR_LALM_theory/Paper.lean)
-| [interactive theorem map](https://imathwy.github.io/ReasBook-TR_LALM/theorem-map/)
+| [interactive theorem map](https://optpku.github.io/ReasBook/theorem-maps/papers/tr_lalm_theory/)
 | [numerical code](https://github.com/bqliu815/NR-LALM)
 
 Contributor: Zichen Wang ([@imathwy](https://github.com/imathwy)). The
@@ -15,7 +15,7 @@ formalization uses Lean and mathlib `v4.32.2`.
 
 ## Start with the Dependency Graph
 
-Open the [deployed interactive theorem map](https://imathwy.github.io/ReasBook-TR_LALM/theorem-map/)
+Open the [deployed interactive theorem map](https://optpku.github.io/ReasBook/theorem-maps/papers/tr_lalm_theory/)
 first to browse the 24 article-level entries, their 42 direct dependencies,
 and the natural-language statement attached to each item. Every graph node
 links to the corresponding declaration in the official `v4.32.2` source tree.
@@ -122,7 +122,7 @@ The deployed theorem map provides:
   branch.
 
 The static map source is available in
-[`theorem-map/`](https://github.com/imathwy/ReasBook-TR_LALM/tree/main/theorem-map/).
+[`theorem-map/`](https://github.com/optpku/ReasBook/tree/v4.32.2/ReasBook/Papers/TR_LALM_theory/theorem-map/).
 
 ## Source Layout
 
