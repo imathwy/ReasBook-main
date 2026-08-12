@@ -46,7 +46,7 @@ lean_lib Analysis2_Tao_2022 where
   srcDir := "Books"
 lean_lib IntroductiontoRealAnalysisVolumeI_JiriLebl_2025 where
   srcDir := "Books"
-lean_lib IntroductoryLecturesOnConvexOptimization_Nesterov_2004 where
+lean_lib OptimizationTheoryAndMethods_SunYuan_2006 where
   srcDir := "Books"
 
 -- Papers living under Papers/<LibName>/ with a Paper.lean entry point

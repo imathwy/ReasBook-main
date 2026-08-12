@@ -1,0 +1,29 @@
+schema_version: 1
+id: OptimizationTheoryAndMethods_SunYuan_2006
+title: "Optimization Theory and Methods: Nonlinear Programming"
+authors:
+- Wenyu Sun
+- Ya-xiang Yuan
+edition: 1st ed.
+publisher: Springer
+year: 2006
+isbn: null
+toolchain: leanprover/lean4:v4.30.0
+mathlib: v4.30.0
+branch: v4.30.0
+contributors:
+- name: Chenyi Li
+  github: chenyili0818
+- name: Wanli Ma
+  github: wl-ma
+- name: Zichen Wang
+coverage: "Optimization theory and numerical methods across Chapters 1–14, including unconstrained and constrained optimization."
+statistics:
+  declarations: 8426
+  theorem_lemma_example: 5916
+  other_declarations: 2510
+  lean_files: 710
+  lean_lines: 187116
+  proof_completion: 8132/8426
+  sorry: 301
+  admit: 0
