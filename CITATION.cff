@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: >-
+  If you use ReasBook, cite the M2F paper and this repository, and identify the
+  project directory, version branch, and full commit SHA used.
+title: "ReasBook: Formalizations of Mathematical Textbooks and Research Papers in Lean 4"
+type: software
+authors:
+  - name: "ReasBook Contributors"
+repository-code: "https://github.com/optpku/ReasBook"
+url: "https://github.com/optpku/ReasBook"
+license: Apache-2.0
+references:
+  - type: article
+    authors:
+      - family-names: Wang
+        given-names: Zichen
+      - family-names: Ma
+        given-names: Wanli
+      - family-names: Ming
+        given-names: Zhenyu
+      - family-names: Zhang
+        given-names: Gong
+      - family-names: Yuan
+        given-names: Kun
+      - family-names: Wen
+        given-names: Zaiwen
+    title: "M2F: Automated Formalization of Mathematical Literature at Scale"
+    year: 2026
+    doi: "10.48550/arXiv.2602.17016"
+    url: "https://arxiv.org/abs/2602.17016"
