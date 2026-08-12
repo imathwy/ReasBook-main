@@ -1318,5 +1318,161 @@ theorem theorem18_8_closedBoundedConvex_eq_sInter_tangentHalfspaces_exposedPoint
   · simpa [H] using hsupset
 
 end
+
+/-- Theorem 18.6 in the no-lines form used later in Theorem 25.6: a closed convex set containing
+no lines still has every extreme point in the closure of its exposed points. The bounded theorem
+above is the compact special case; the unbounded proof is deferred to the Chapter 18 no-lines
+development. -/
+lemma theorem18_6_mem_exposedPoints_of_mem_exposedPoints_inter_closedBall {n : ℕ}
+    {C : Set (Fin n → ℝ)} (hCconv : Convex ℝ C) {R : ℝ} {x : Fin n → ℝ}
+    (hxnorm : ‖x‖ < R) (hxExp : x ∈ (C ∩ Metric.closedBall (0 : Fin n → ℝ) R).exposedPoints ℝ) :
+    x ∈ C.exposedPoints ℝ := by
+  classical
+  rcases (exposed_point_def.mp hxExp) with ⟨hxD, l, hl⟩
+  refine (exposed_point_def.mpr ?_)
+  refine ⟨hxD.1, l, ?_⟩
+  intro y hyC
+  by_cases hyBall : y ∈ Metric.closedBall (0 : Fin n → ℝ) R
+  · exact hl y ⟨hyC, hyBall⟩
+  · have hxBall : x ∈ Metric.closedBall (0 : Fin n → ℝ) R := hxD.2
+    have hyne : y ≠ x := by
+      intro hxy
+      exact hyBall (hxy.symm ▸ hxBall)
+    have hyEq_of_hxyle : l x ≤ l y → y = x := by
+      intro hxy
+      let δ : ℝ := R - ‖x‖
+      have hδpos : 0 < δ := by
+        dsimp [δ]
+        linarith
+      let t : ℝ := min (1 / 2) (δ / (‖y - x‖ + 1))
+      have htpos : 0 < t := by
+        dsimp [t]
+        refine lt_min ?_ ?_
+        · norm_num
+        · exact div_pos hδpos (by positivity)
+      have ht_nonneg : 0 ≤ t := le_of_lt htpos
+      have htle : t ≤ δ / (‖y - x‖ + 1) := by
+        dsimp [t]
+        exact min_le_right _ _
+      have htle_one : t ≤ 1 := by
+        have hhalf : t ≤ (1 / 2 : ℝ) := by
+          dsimp [t]
+          exact min_le_left _ _
+        linarith
+      let w : Fin n → ℝ := (1 - t) • x + t • y
+      have hwC : w ∈ C := by
+        refine hCconv hxD.1 hyC ?_ ht_nonneg ?_
+        · linarith
+        · ring
+      have htmul_add_le : t * (‖y - x‖ + 1) ≤ δ := by
+        have hdenpos : 0 < ‖y - x‖ + 1 := by positivity
+        exact (le_div_iff₀ hdenpos).mp htle
+      have htmul_lt : t * ‖y - x‖ < δ := by
+        have hEq : t * ‖y - x‖ = t * (‖y - x‖ + 1) - t := by ring
+        rw [hEq]
+        linarith
+      have hw_eq : w = x + t • (y - x) := by
+        ext i
+        simp [w]
+        ring
+      have hnorm_tsub_lt : ‖t • (y - x)‖ < δ := by
+        rw [norm_smul, Real.norm_eq_abs, abs_of_nonneg ht_nonneg]
+        exact htmul_lt
+      have hwBall : w ∈ Metric.closedBall (0 : Fin n → ℝ) R := by
+        rw [Metric.mem_closedBall, dist_eq_norm]
+        have hnorm_w_le : ‖w‖ ≤ ‖x‖ + ‖t • (y - x)‖ := by
+          rw [hw_eq]
+          exact norm_add_le _ _
+        have hnorm_w_lt : ‖w‖ < R := by
+          dsimp [δ] at htmul_lt hδpos
+          linarith
+        simpa using le_of_lt hnorm_w_lt
+      have hwge : l x ≤ l w := by
+        have hwformula : l w = (1 - t) * l x + t * l y := by
+          simp [w, map_add]
+        have hrewrite : (1 - t) * l x + t * l y = l x + t * (l y - l x) := by ring
+        rw [hwformula, hrewrite]
+        have hnonneg : 0 ≤ t * (l y - l x) := by
+          exact mul_nonneg ht_nonneg (sub_nonneg.mpr hxy)
+        linarith
+      have hwuniq : w = x := (hl w ⟨hwC, hwBall⟩).2 hwge
+      have hsmul : t • (y - x) = 0 := by
+        have hEq : x + t • (y - x) = x := by simpa [hw_eq] using hwuniq
+        have hsub := congrArg (fun z : Fin n → ℝ => z - x) hEq
+        simpa [sub_eq_add_neg, add_assoc, add_left_comm, add_comm] using hsub
+      have hyx : y = x := by
+        rcases smul_eq_zero.mp hsmul with ht0 | hyx
+        · exact False.elim (ne_of_gt htpos ht0)
+        · exact sub_eq_zero.mp hyx
+      exact hyx
+    have hyle : l y ≤ l x := by
+      by_contra hnot
+      have hyx : y = x := hyEq_of_hxyle (le_of_lt (lt_of_not_ge hnot))
+      exact hyBall (hyx.symm ▸ hxBall)
+    exact ⟨hyle, hyEq_of_hxyle⟩
+
+theorem theorem18_6_extremePoints_subset_closure_exposedPoints_of_noLines
+    {n : ℕ} (C : Set (Fin n → ℝ)) (hCclosed : IsClosed C) (hCconv : Convex ℝ C)
+    (hNoLines :
+      ¬ ∃ y : Fin n → ℝ, y ≠ 0 ∧ y ∈ (-Set.recessionCone C) ∩ Set.recessionCone C) :
+    C.extremePoints ℝ ⊆ closure (C.exposedPoints ℝ) := by
+  classical
+  let _ := hCclosed
+  let _ := hCconv
+  let _ := hNoLines
+  intro x hxext
+  have hxext' : IsExtremePoint (𝕜 := ℝ) C x :=
+    (isExtremePoint_iff_mem_extremePoints (𝕜 := ℝ) (C := C) (x := x)).2 hxext
+  let R : ℝ := ‖x‖ + 1
+  let D : Set (Fin n → ℝ) := C ∩ Metric.closedBall (0 : Fin n → ℝ) R
+  have hDclosed : IsClosed D := by
+    dsimp [D]
+    exact hCclosed.inter Metric.isClosed_closedBall
+  have hDbounded : Bornology.IsBounded D := by
+    dsimp [D]
+    refine (Metric.isBounded_closedBall (x := (0 : Fin n → ℝ)) (r := R)).subset ?_
+    intro y hy
+    exact hy.2
+  have hDconv : Convex ℝ D := by
+    dsimp [D]
+    exact hCconv.inter (convex_closedBall (0 : Fin n → ℝ) R)
+  have hxD : x ∈ D := by
+    refine ⟨hxext'.1, ?_⟩
+    rw [Metric.mem_closedBall, dist_eq_norm]
+    dsimp [R]
+    have hnorm : ‖x - (0 : Fin n → ℝ)‖ = ‖x‖ := by simp
+    rw [hnorm]
+    exact le_add_of_nonneg_right (show (0 : ℝ) ≤ (1 : ℝ) from zero_le_one)
+  have hxextD : IsExtremePoint (𝕜 := ℝ) D x :=
+    theorem18_6_isExtremePoint_mono (C := C) (D := D) (by
+      intro y hy
+      exact hy.1) hxD hxext'
+  have hxclD : x ∈ closure (D.exposedPoints ℝ) := by
+    exact
+      theorem18_6_extremePoints_subset_closure_exposedPoints (n := n) (C := D) hDclosed hDbounded
+        hDconv ((isExtremePoint_iff_mem_extremePoints (𝕜 := ℝ) (C := D) (x := x)).1 hxextD)
+  rw [Metric.mem_closure_iff] at hxclD ⊢
+  intro ε hε
+  obtain ⟨y, hyExpD, hxy⟩ := hxclD (min ε 1) (by positivity)
+  have hdist_lt_one : dist x y < 1 := lt_of_lt_of_le hxy (min_le_right _ _)
+  have hy_norm_lt : ‖y‖ < R := by
+    have hnorm_sub_lt : ‖y - x‖ < 1 := by
+      simpa [dist_eq_norm, norm_sub_rev] using hdist_lt_one
+    have hy_eq : x + (y - x) = y := by
+      ext i
+      simp
+    have hy_norm_le : ‖y‖ ≤ ‖x‖ + ‖y - x‖ := by
+      calc
+        ‖y‖ = ‖x + (y - x)‖ := by simp [hy_eq]
+        _ ≤ ‖x‖ + ‖y - x‖ := norm_add_le _ _
+    dsimp [R]
+    linarith
+  refine ⟨y, ?_, ?_⟩
+  · exact
+      theorem18_6_mem_exposedPoints_of_mem_exposedPoints_inter_closedBall (n := n) (C := C) hCconv
+        (R := R) hy_norm_lt hyExpD
+  · exact lt_of_lt_of_le hxy (min_le_left _ _)
+
+
 end Section18
 end Chap04
