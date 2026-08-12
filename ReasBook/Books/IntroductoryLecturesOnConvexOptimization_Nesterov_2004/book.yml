@@ -1,0 +1,32 @@
+schema_version: 1
+id: IntroductoryLecturesOnConvexOptimization_Nesterov_2004
+title: "Introductory Lectures on Convex Optimization: A Basic Course"
+authors:
+- Yurii Nesterov
+edition: 1st ed.
+publisher: Springer
+year: 2004
+isbn: null
+toolchain: leanprover/lean4:v4.30.0
+mathlib: v4.30.0
+branch: v4.30.0
+contributors:
+- name: Chenyi Li
+  github: chenyili0818
+- name: Siyuan Shao
+- name: Yijie Wang
+- name: Feiming Wang
+- name: Weiran Shi
+- name: Yuhao Jiang
+- name: Zebo Liu
+- name: Wentao Long
+coverage: "Definitions, algorithms, lemmas, and main complexity results across Chapters 1–7."
+statistics:
+  declarations: 14663
+  theorem_lemma_example: 11863
+  other_declarations: 2800
+  lean_files: 1645
+  lean_lines: 494658
+  proof_completion: 14587/14663
+  sorry: 76
+  admit: 0
