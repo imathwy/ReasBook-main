@@ -177,7 +177,7 @@ if not SITE_ROOT.startswith("/"):
 if not SITE_ROOT.endswith("/"):
     SITE_ROOT = f"{SITE_ROOT}/"
 
-DOCS_BASE = f"{SITE_BASE}docs/"
+DOCS_BASE = f"{SITE_BASE}docs/ReasBook/"
 
 BOOK_TITLES = {
     "ConvexAnalysis_Rockafellar_1970": "Convex Analysis (Rockafellar, 1970)",
@@ -194,7 +194,7 @@ PAPER_TITLES = {
 # Temporary literate extraction bypass for pathological modules.
 # Keep this list minimal and remove entries once upstream extraction is fixed.
 DEFAULT_SKIP_MODULES = {
-    "ConvexAnalysis_Rockafellar_1970.Chapters.Chap02.section09_part12",
+    "Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02.section09_part12",
 }
 
 
@@ -555,9 +555,7 @@ def readme_label(e: Entry) -> str:
         default_base = section_title_from_stem(e.stem)
         if base == default_base and re.fullmatch(r"Section \d{2}", base):
             return f"Section {e.chapter_num}.{e.section_num}"
-        if e.section_num > 0:
-            return f"{e.chapter_num}.{e.section_num} {base}"
-        return f"{e.chapter_num}. {base}"
+        return f"{e.chapter_num}.{e.section_num} {base}"
     if e.category == "papers":
         return f"Section {e.section_num}: {base}"
     return base
@@ -577,22 +575,7 @@ def paper_title(paper: str) -> str:
 
 def to_module(source_root: Path, path: Path) -> str:
     rel = path.relative_to(source_root)
-    # Every book is registered as its own Lake library with ``srcDir :=
-    # "Books"``.  Its canonical module name is therefore relative to the
-    # Books directory (for example ``Analysis2_Tao_2022.Book``), not the
-    # overlapping ``Books.*`` alias exposed by the aggregate Books library.
-    # Building the alias can load the same source under both names and fail
-    # with duplicate declarations.  Papers intentionally use their
-    # ``Papers.*`` names throughout the source tree, so keep that prefix.
-    if rel.parts and rel.parts[0] == "Books":
-        rel = Path(*rel.parts[1:])
     return ".".join(rel.with_suffix("").parts)
-
-
-def route_from_source(source_root: Path, path: Path) -> str:
-    """Return the stable site route derived from the physical source path."""
-    rel = path.relative_to(source_root)
-    return route_from_module(".".join(rel.with_suffix("").parts))
 
 
 def normalize_path(path: str) -> str:
@@ -658,7 +641,7 @@ def docs_relative_site_link(module: str, route: str) -> str:
 
 def docs_relative_doc_link(from_module: str, to_module: str) -> str:
     _ = from_module
-    return portable_site_link(f"docs/{to_module.replace('.', '/')}.html")
+    return portable_site_link(f"docs/ReasBook/{to_module.replace('.', '/')}.html")
 
 
 def portable_site_link(route: str) -> str:
@@ -687,15 +670,6 @@ def should_include_book(path: Path) -> bool:
     if stem.startswith("section"):
         return True
 
-    # Files directly under a chapter directory (e.g. Chap01/Definition_1_1_1.lean)
-    # should be included even without a module doc or "section" prefix.
-    # This handles the flattened v4.30.0 book structure where chapter items
-    # (Definition, Theorem, Lemma, etc.) live directly under ChapXX/.
-    if len(path.parts) >= 2:
-        parent = path.parts[-2]
-        if CHAPTER_RE.match(parent):
-            return True
-
     return module_doc_title(path) is not None
 
 
@@ -717,18 +691,10 @@ def collect_entries(source_root: Path) -> list[Entry]:
     for path in sorted(books_root.rglob("*.lean")):
         if not should_include_book(path):
             continue
-        rel = path.relative_to(books_root)
-        # Only the project-root Book.lean is a public overview.  Some imported
-        # projects also contain an old internal */Book.lean aggregator whose
-        # flattened imports are not valid in this unified workspace.  The
-        # project-root Book.lean already provides the complete active import
-        # set, so exposing the internal aggregator adds no page coverage and
-        # can make the literate batch request nonexistent modules.
-        if path.stem.lower() == "book" and len(rel.parts) != 2:
-            continue
         module = to_module(source_root, path)
         if module in SKIP_MODULES:
             continue
+        rel = path.relative_to(books_root)
         book = rel.parts[0]
         if book in TBD_BOOKS:
             continue
@@ -745,7 +711,7 @@ def collect_entries(source_root: Path) -> list[Entry]:
                 category="books",
                 module=module,
                 title=" -- ".join(title_parts),
-                route=route_from_source(source_root, path),
+                route=route_from_module(module),
                 book_or_paper=book,
                 chapter_num=chapter_number(rel.parts),
                 section_num=sec_num,
@@ -769,7 +735,7 @@ def collect_entries(source_root: Path) -> list[Entry]:
                 category="papers",
                 module=module,
                 title=f"{paper_title(paper)} -- {sec_title}",
-                route=route_from_source(source_root, path),
+                route=route_from_module(module),
                 book_or_paper=paper,
                 chapter_num=0,
                 section_num=sec_num,
@@ -982,7 +948,7 @@ def emit_sections(entries: list[Entry]) -> str:
     lines.append("")
     lines.append(f"def siteRoot : String := {lean_string(SITE_ROOT)}")
     lines.append(f"def siteBase : String := {lean_string(SITE_ROOT)}")
-    lines.append(f"def docsRoot : String := {lean_string(local_site_link('docs/'))}")
+    lines.append(f"def docsRoot : String := {lean_string(local_site_link('docs/ReasBook/'))}")
     lines.append(f"def staticRoot : String := {lean_string(local_site_link('static/style.css'))}")
     lines.append("")
     lines.append(f"def sidebarDataJson : String := {lean_string(sidebar_json)}")
@@ -1078,7 +1044,7 @@ def emit_route_table(entries: list[Entry]) -> str:
 
 
 def doc_link(module: str) -> str:
-    return published_site_link(f"docs/{module.replace('.', '/')}.html")
+    return published_site_link(f"docs/ReasBook/{module.replace('.', '/')}.html")
 
 
 def source_link(module: str) -> str:
@@ -1114,7 +1080,7 @@ def write_book_readmes(source_root: Path, entries: list[Entry]) -> None:
 
     for book in all_books:
         title = book_title(book)
-        book_module = f"{book}.Book"
+        book_module = f"Books.{book}.Book"
         book_file = books_root / book / "Book.lean"
         item_entries = sorted(
             [e for e in by_book.get(book, []) if (e.section_num > 0 and e.part_num == 0)],
@@ -1278,10 +1244,10 @@ def write_root_readme(repo_root: Path, source_root: Path) -> None:
         has_book_agg = (source_root / "Books" / book / "Book.lean").exists()
         if has_book_agg:
             lean_src = repo_relative_link(f"ReasBook/Books/{book}/Chapters/")
-            docs_link = published_site_link(f"docs/Books/{book}/Book.html")
+            docs_link = published_site_link(f"docs/ReasBook/Books/{book}/Book.html")
         else:
             lean_src = repo_relative_link(f"ReasBook/Books/{book}/")
-            docs_link = published_site_link(f"docs/Books/{book}/")
+            docs_link = published_site_link(f"docs/ReasBook/Books/{book}/")
 
         for i, line in enumerate(lines):
             if line.startswith("- [") and book_ref_re.search(line):
@@ -1303,10 +1269,10 @@ def write_root_readme(repo_root: Path, source_root: Path) -> None:
         has_paper_agg = (source_root / "Papers" / paper / "Paper.lean").exists()
         if has_paper_agg:
             lean_src = repo_relative_link(f"ReasBook/Papers/{paper}/Sections/")
-            docs_link = published_site_link(f"docs/Papers/{paper}/Paper.html")
+            docs_link = published_site_link(f"docs/ReasBook/Papers/{paper}/Paper.html")
         else:
             lean_src = repo_relative_link(f"ReasBook/Papers/{paper}/")
-            docs_link = published_site_link(f"docs/Papers/{paper}/")
+            docs_link = published_site_link(f"docs/ReasBook/Papers/{paper}/")
 
         for i, line in enumerate(lines):
             if line.startswith("- [") and paper_ref_re.search(line):
@@ -1345,7 +1311,7 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
     for book, b_entries in sorted(by_book.items()):
         title = book_title(book)
         section_entries = sorted(
-            [e for e in b_entries if ((e.section_num > 0 or e.chapter_num > 0) and e.part_num == 0)],
+            [e for e in b_entries if (e.section_num > 0 and e.part_num == 0)],
             key=lambda e: (e.chapter_num, e.section_num, e.stem),
         )
         home_entry = next((e for e in b_entries if e.stem == "book"), None)
@@ -1363,9 +1329,9 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
         docs_path = (
             home_entry.module.replace(".", "/")
             if home_entry is not None
-            else f"{book}/Book"
+            else f"Books/{book}/Book"
         )
-        lines.append(f"- [Documentation]({portable_site_link(f'docs/{docs_path}.html')})")
+        lines.append(f"- [Documentation]({portable_site_link(f'docs/ReasBook/{docs_path}.html')})")
         if (book_dir / "Book.lean").exists():
             lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Books/{book}/Chapters/')})")
         else:
@@ -1416,7 +1382,7 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
             if home_entry is not None
             else f"Papers/{paper}/Paper"
         )
-        lines.append(f"- [Documentation]({portable_site_link(f'docs/{docs_path}.html')})")
+        lines.append(f"- [Documentation]({portable_site_link(f'docs/ReasBook/{docs_path}.html')})")
         if (paper_dir / "Paper.lean").exists():
             lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Papers/{paper}/Sections/')})")
         else:
@@ -1708,10 +1674,15 @@ def main() -> None:
             print(f"INFO:   skip module: {mod}")
 
     entries = collect_entries(source_root)
+    write_source_overviews(source_root, entries)
+    entries = collect_entries(source_root)
     out_file.parent.mkdir(parents=True, exist_ok=True)
     write_text_if_changed(out_file, emit_sections(entries), log=False)
     write_text_if_changed(route_file, emit_route_table(entries), log=False)
     write_work_pages(repo_root, source_root, entries)
+    write_book_readmes(source_root, entries)
+    write_paper_readmes(source_root, entries)
+    write_root_readme(repo_root, source_root)
     print(f"Wrote {out_file} with {len(entries)} sections")
     print(f"Wrote {route_file} with generated route macro")
 

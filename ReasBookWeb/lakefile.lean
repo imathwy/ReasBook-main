@@ -95,10 +95,9 @@ target genLib (pkg) : Unit := do
       | error s!"Failed to generate {leanModName}: it has not been defined in the workspace."
 
     let origName := "/".intercalate (module.components.map (·.toString)) ++ ".lean"
-    let origLeanFile : System.FilePath :=
-      match module.components with
-      | `Papers :: _ => pkg.dir / reasbookRoot / origName
-      | _ => pkg.dir / reasbookRoot / "Books" / origName
+    let papersPath := pkg.dir / reasbookRoot / "Papers" / origName
+    let booksPath := pkg.dir / reasbookRoot / "Books" / origName
+    let origLeanFile ← if (← papersPath.pathExists) then pure papersPath else pure booksPath
     addTrace (← computeTrace <| TextFilePath.mk origLeanFile)
 
     let jsonName := "/".intercalate (module.components.map (·.toString)) ++ ".json"

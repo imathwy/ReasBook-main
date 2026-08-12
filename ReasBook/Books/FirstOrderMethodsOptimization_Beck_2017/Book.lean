@@ -1,6 +1,4 @@
 import Mathlib
-
--- BEGIN AUTO-IMPORTS (managed by orchestrator)
 import FirstOrderMethodsOptimization_Beck_2017.Chap01.Definition_1_1
 import FirstOrderMethodsOptimization_Beck_2017.Chap01.Definition_1_10
 import FirstOrderMethodsOptimization_Beck_2017.Chap01.Definition_1_11
