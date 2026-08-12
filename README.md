@@ -28,6 +28,39 @@ Each directory in these indexes is a landing page for one book or paper. Open a 
 - [Papers](https://github.com/optpku/ReasBook/tree/main/ReasBook/Papers/)
 - [Theorem dependency maps](https://optpku.github.io/ReasBook/theorem-maps/) (currently TR-LALM only)
 
+## Download and Use One Project
+
+You do not need to download every ReasBook project or the history of every
+toolchain branch. First find the book or paper in the tables below and note its
+version branch and project directory. A single-branch sparse checkout can then
+download the shared Lean project files and only the selected source directory.
+
+For example, to use *First-Order Methods in Optimization* from `v4.30.0`:
+
+```bash
+git clone --depth 1 --filter=blob:none --no-checkout --single-branch \
+  --branch v4.30.0 https://github.com/optpku/ReasBook.git
+cd ReasBook
+git sparse-checkout init --no-cone
+git sparse-checkout set \
+  '/ReasBook/lakefile.lean' \
+  '/ReasBook/lean-toolchain' \
+  '/ReasBook/lake-manifest.json' \
+  '/ReasBook/Books/FirstOrderMethodsOptimization_Beck_2017/**'
+git checkout v4.30.0
+cd ReasBook
+lake exe cache get
+lake env lean Books/FirstOrderMethodsOptimization_Beck_2017/Book.lean
+```
+
+Replace the branch, `Books`/`Papers` directory, project identifier, and Lake
+root file with those of the selected entry (`Book.lean` for a book and
+`Paper.lean` for a paper). Sparse checkout avoids downloading the other
+ReasBook sources on that branch; Lake still downloads the required mathlib
+dependencies and compiled cache. A normal clone of this repository can fetch
+all official version branches, but it does not include independent repositories
+in GitHub's forks network.
+
 ## Books
 
 | Book | Branch | Contributors | Documentation | Source | Verso |
@@ -151,4 +184,8 @@ python3 serve.py 18000     # serve at http://127.0.0.1:18000/ReasBook/
 
 ## License
 
-Released under the Apache 2.0 license. See `LICENSE` for details.
+ReasBook uses the [Apache License 2.0](LICENSE), matching mathlib. Unless an
+individual file carries a different notice, this license covers ReasBook
+content on every official branch and in all copies and forks derived from this
+repository. Fork-specific additions and third-party dependencies remain subject
+to their respective license notices.
