@@ -41,8 +41,8 @@ theorem convex_function_exists_pos_lipschitzOnWith_toReal_of_isCompact_subset_in
     (convexOn_toReal_of_is_convex_function hconvex h_ne_bot).locallyLipschitzOn_interior
   obtain ⟨L, hL⟩ :=
     LocallyLipschitzOn.exists_lipschitzOnWith_of_compact hX_compact (hloc.mono hX_subset)
-  have hLpos : (0 : NNReal) < L + 1 := by
-    positivity
+  have hLpos : (0 : NNReal) < L + 1 :=
+    lt_of_lt_of_le zero_lt_one (le_add_of_nonneg_left zero_le)
   refine ⟨L + 1, hLpos, hL.weaken ?_⟩
   · exact le_add_of_nonneg_right zero_le_one
 

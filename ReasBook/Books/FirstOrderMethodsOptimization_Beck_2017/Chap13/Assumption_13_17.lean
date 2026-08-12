@@ -33,4 +33,12 @@ class IsBoundaryNonExtremeOptimalSolution
   mem_frontier : xStar ∈ frontier Ω
   not_mem_extremePoints : xStar ∉ Ω.extremePoints ℝ
 
+/-- A boundary non-extreme optimal solution canonically provides the chosen optimizer as a
+solution of the constrained problem. -/
+instance instFactMemConstrainedProblemSolutionsOfIsBoundaryNonExtremeOptimalSolution
+    {F : E → α} {Ω : Set E} {xStar : E}
+    [h : IsBoundaryNonExtremeOptimalSolution F Ω xStar] :
+    Fact (xStar ∈ constrained_problem_solutions F Ω) where
+  out := h.mem_constrained_problem_solutions
+
 end

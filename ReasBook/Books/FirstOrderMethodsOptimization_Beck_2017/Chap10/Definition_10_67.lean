@@ -138,12 +138,12 @@ variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [ProperSp
 
 namespace IsConvexCompositeSmoothMinimizationProblem
 
-/-- Bridge/view layer: a convex composite smooth minimization problem for `f.toExtendedReal` canonically
+/-- Bridge/view layer: a convex composite smooth minimization problem for `f.toEReal` canonically
 supplies the Chapter 10 prox-gradient residual at parameter `L` without repeating the regularity
 data for `g` on the theorem surface. -/
 abbrev gradientMapping
     {f : E → ℝ} {g : E → EReal} {XStar : Set E} {FOpt : ℝ} {Lf : NNReal}
-    (hproblem : IsConvexCompositeSmoothMinimizationProblem f.toExtendedReal g XStar FOpt Lf)
+    (hproblem : IsConvexCompositeSmoothMinimizationProblem f.toEReal g XStar FOpt Lf)
     (L : PosReal) : E → E :=
   letI : IsProperExtendedRealFunction g := hproblem.g_proper
   letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩

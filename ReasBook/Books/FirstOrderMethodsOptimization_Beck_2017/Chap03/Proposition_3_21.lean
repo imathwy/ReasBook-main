@@ -10,7 +10,7 @@ variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [Complete
 variable (C : Set E) (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C)
     (hC_convex : Convex ℝ C)
 
-local notation "Pₛ" => metricProjection C hC_nonempty hC_closed.isComplete hC_convex
+local notation "Pₛ" => metricProjection C hC_nonempty hC_closed hC_convex
 local notation "P" => fun x ↦ (Pₛ x : E)
 
 /- Proposition 3.21 is `source-facing`: it states the fixed-point property of the metric
@@ -33,8 +33,7 @@ theorem metricProjection_add_smul_sub_metricProjection_eq (x : E) (lam : ℝ) (h
   have hPx : P x ∈ C := (Pₛ x).2
   have hy_Px : ∀ w ∈ C, inner ℝ (y - P x) (w - P x) ≤ 0 := by
     intro w hw
-    have hx := inner_sub_metricProjection_le_zero
-      C hC_nonempty hC_closed.isComplete hC_convex x w hw
+    have hx := inner_sub_metricProjection_le_zero C hC_nonempty hC_closed hC_convex x w hw
     have hy : y - P x = lam • (x - P x) := by
       dsimp [y]
       abel
@@ -43,8 +42,7 @@ theorem metricProjection_add_smul_sub_metricProjection_eq (x : E) (lam : ℝ) (h
   have hPx_min : ‖y - P x‖ = ⨅ z : C, ‖y - z‖ :=
     (norm_eq_iInf_iff_real_inner_le_zero hC_convex hPx).2 hy_Px
   have hPy_min : ‖y - P y‖ = ⨅ z : C, ‖y - z‖ := by
-    simpa [y] using
-      norm_sub_metricProjection_eq_iInf C hC_nonempty hC_closed.isComplete hC_convex y
+    simpa [y] using norm_sub_metricProjection_eq_iInf C hC_nonempty hC_closed hC_convex y
   have hPy : ∀ w ∈ C, inner ℝ (y - P y) (w - P y) ≤ 0 :=
     (norm_eq_iInf_iff_real_inner_le_zero hC_convex (Pₛ y).2).1 hPy_min
   have h1 : inner ℝ (y - P y) (P x - P y) ≤ 0 := hPy (P x) hPx

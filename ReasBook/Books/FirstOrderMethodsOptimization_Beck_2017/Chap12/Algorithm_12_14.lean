@@ -87,12 +87,30 @@ block-choice sequence `i_k ∈ {1, …, p}`, a sequence `y` follows the dual blo
 method in dual representation when `y 0 = y0` and every successor iterate updates only the chosen
 block `i_k` by a proximal step of `σ G_(i_k)` at
 `y_(i_k)^k - σ ∇ f*(∑ j, y_j^k)`, with `grad_f_conj` representing `∇ f*`. -/
-def is_dual_block_proximal_gradient_dual_trajectory
+class is_dual_block_proximal_gradient_dual_trajectory
     {p : ℕ} (G : Fin p → E → EReal) (grad_f_conj : E → E) (σ : PosReal)
-    (block_choice : ℕ → Fin p) (y0 : Fin p → E) (y : ℕ → Fin p → E) : Prop :=
-  y 0 = y0 ∧
+    (block_choice : ℕ → Fin p) (y0 : Fin p → E) (y : ℕ → Fin p → E) : Prop where
+  /-- The trajectory starts from the prescribed initialization `y⁰ = y0`. -/
+  zero : y 0 = y0
+  /-- At each iteration, the next block vector is obtained by the selected one-block dual
+  proximal update. -/
+  step :
     ∀ k : ℕ,
       y (k + 1) ∈ dual_block_proximal_gradient_dual_step G grad_f_conj σ (block_choice k) (y k)
+
+/-- Coercion from an Algorithm 12.14 dual trajectory to its primitive per-iteration update
+clause. -/
+instance is_dual_block_proximal_gradient_dual_trajectory.instCoeFun
+    {p : ℕ} (G : Fin p → E → EReal) (grad_f_conj : E → E) (σ : PosReal)
+    (block_choice : ℕ → Fin p) (y0 : Fin p → E) (y : ℕ → Fin p → E) :
+    CoeFun
+      (is_dual_block_proximal_gradient_dual_trajectory G grad_f_conj σ block_choice y0 y)
+      (fun _ ↦
+        ∀ k : ℕ,
+          y (k + 1) ∈
+            dual_block_proximal_gradient_dual_step G grad_f_conj σ (block_choice k) (y k))
+    where
+  coe h := h.step
 
 -- Proof sketch: extract the initialization equation from the first conjunct of
 -- `is_dual_block_proximal_gradient_dual_trajectory`.
@@ -104,7 +122,7 @@ theorem is_dual_block_proximal_gradient_dual_trajectory_zero
     (h : is_dual_block_proximal_gradient_dual_trajectory
       G grad_f_conj σ block_choice y0 y) :
     y 0 = y0 :=
-  h.1
+  h.zero
 
 -- Proof sketch: specialize the defining universal clause of
 -- `is_dual_block_proximal_gradient_dual_trajectory` at the iteration index `k`.
@@ -117,6 +135,6 @@ theorem is_dual_block_proximal_gradient_dual_trajectory_step
       G grad_f_conj σ block_choice y0 y)
     (k : ℕ) :
     y (k + 1) ∈ dual_block_proximal_gradient_dual_step G grad_f_conj σ (block_choice k) (y k) :=
-  h.2 k
+  h.step k
 
 end

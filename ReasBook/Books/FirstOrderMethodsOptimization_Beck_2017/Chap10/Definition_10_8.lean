@@ -45,21 +45,33 @@ chosen-step wrapper. The source-facing owner is stated directly in textbook step
 the proximal map, while the reciprocal-curvature trajectory view is exposed separately as a bridge
 to Algorithm 10.1. -/
 
-/-- Definition 10.8: sequences of iterates `x` and positive stepsizes `t` follow the
+/-- Definition 10.8 (1): sequences of iterates `x` and positive stepsizes `t` follow the
 proximal-gradient method for `f + g` when `f` is differentiable at every iterate `x^k` and the
 iterates satisfy the textbook stepsize update
 `x^(k+1) ∈ prox[t_k g](x^k - t_k ∇ f(x^k))`. -/
-def is_proximal_gradient_trajectory_with_stepsizes
-    (f : E → ℝ) (g : E → EReal) (x : ℕ → E) (t : ℕ → PosReal) : Prop :=
-  ∀ k : ℕ,
+class is_proximal_gradient_trajectory_with_stepsizes
+    (f : E → ℝ) (g : E → EReal) (x : ℕ → E) (t : ℕ → PosReal) : Prop where
+  /-- The primitive per-iteration data of a Definition 10.8 stepsize trajectory. -/
+  step : ∀ k : ℕ,
     DifferentiableAt ℝ f (x k) ∧
       x (k + 1) ∈ prox[(((t k : ℝ) : EReal) • g)] (x k - (t k : ℝ) • ∇ f (x k))
+
+/-- Coercion from a Definition 10.8 stepsize trajectory to its primitive per-iteration data. -/
+instance is_proximal_gradient_trajectory_with_stepsizes.instCoeFun
+    (f : E → ℝ) (g : E → EReal) (x : ℕ → E) (t : ℕ → PosReal) :
+    CoeFun
+      (is_proximal_gradient_trajectory_with_stepsizes f g x t)
+      (fun _ ↦
+        ∀ k : ℕ,
+          DifferentiableAt ℝ f (x k) ∧
+            x (k + 1) ∈ prox[(((t k : ℝ) : EReal) • g)] (x k - (t k : ℝ) • ∇ f (x k))) where
+  coe h := h.step
 
 /-- Rewriting the reciprocal-curvature one-step owner `proximal_gradient_step` at `L = t⁻¹`
 recovers the textbook stepsize proximal update `prox[t g](x - t ∇ f(x))`. -/
 theorem proximal_gradient_step_eq_stepsize_form
     (f : E → ℝ) (g : E → EReal) (xk : E) (t : PosReal) :
-    proximal_gradient_step f.toExtendedReal g xk t⁻¹ =
+    proximal_gradient_step f.toEReal g xk t⁻¹ =
       prox[(((t : ℝ) : EReal) • g)] (xk - (t : ℝ) • ∇ f xk) := by
   rw [proximal_gradient_step]
   rw [show (((1 / t⁻¹ : PosReal) : EReal)) = (((t : ℝ) : EReal)) by
@@ -104,7 +116,7 @@ canonical prox-gradient step with reciprocal curvature parameter `t_k⁻¹`. -/
 theorem is_proximal_gradient_trajectory_with_stepsizes_mem_step
     {f : E → ℝ} {g : E → EReal} {x : ℕ → E} {t : ℕ → PosReal}
     (h : is_proximal_gradient_trajectory_with_stepsizes f g x t) (k : ℕ) :
-    x (k + 1) ∈ proximal_gradient_step f.toExtendedReal g (x k) (t k)⁻¹ :=
+    x (k + 1) ∈ proximal_gradient_step f.toEReal g (x k) (t k)⁻¹ :=
   by
     simpa [proximal_gradient_step_eq_stepsize_form] using
       is_proximal_gradient_trajectory_with_stepsizes_mem_prox h k
@@ -112,7 +124,7 @@ theorem is_proximal_gradient_trajectory_with_stepsizes_mem_step
 omit [CompleteSpace E] in
 private theorem is_differentiable_at_toEReal_of_differentiableAt
     {f : E → ℝ} {x : E} (hdiff : DifferentiableAt ℝ f x) :
-    is_differentiable_at f.toExtendedReal x := by
+    is_differentiable_at f.toEReal x := by
   refine ⟨?_, ?_⟩
   · simp [finite_domain, effective_domain]
   · simpa using hdiff
@@ -124,16 +136,16 @@ private theorem reciprocal_stepsize_half_eq_inv_two_mul (t : PosReal) :
   field_simp [ht]
 
 /-- The source-facing Definition 10.8 owner canonically induces the reciprocal-curvature
-Algorithm 10.1 trajectory for `f.toExtendedReal` and parameters `L_k = t_k⁻¹`. This is the bridge/view
+Algorithm 10.1 trajectory for `f.toEReal` and parameters `L_k = t_k⁻¹`. This is the bridge/view
 from textbook stepsize language to the chapter's curvature-language owner. -/
 theorem is_proximal_gradient_trajectory_with_stepsizes.toCurvatureTrajectory
     {f : E → ℝ} {g : E → EReal} {x : ℕ → E} {t : ℕ → PosReal}
     (h : is_proximal_gradient_trajectory_with_stepsizes f g x t) :
-    is_proximal_gradient_trajectory f.toExtendedReal g x (fun k ↦ (t k)⁻¹) := by
+    is_proximal_gradient_trajectory f.toEReal g x (fun k ↦ (t k)⁻¹) := by
   intro k
   refine ⟨?_, ?_⟩
   · have hx :
-        x k ∈ interior (finite_domain f.toExtendedReal) :=
+        x k ∈ interior (finite_domain f.toEReal) :=
       (is_differentiable_at_toEReal_of_differentiableAt
         (is_proximal_gradient_trajectory_with_stepsizes_differentiableAt h k)).1
     simp [effective_domain] at hx ⊢
@@ -149,20 +161,20 @@ gradient. -/
 theorem mem_proximal_gradient_step_iff_isMinOn_stepsize_model
     {f : E → ℝ} {g : E → EReal} {xk xNext : E} {t : PosReal}
     (hdiff : DifferentiableAt ℝ f xk) :
-    xNext ∈ proximal_gradient_step f.toExtendedReal g xk t⁻¹ ↔
+    xNext ∈ proximal_gradient_step f.toEReal g xk t⁻¹ ↔
       IsMinOn
         (fun u ↦
           ((((f xk : ℝ) : EReal) + ((inner ℝ (∇ f xk) (u - xk) : ℝ) : EReal)) + g u) +
             ((((1 / (2 * (t : ℝ)) : ℝ) * ‖u - xk‖ ^ (2 : ℕ)) : ℝ) : EReal))
         Set.univ xNext := by
   have hcurvature :
-      xNext ∈ proximal_gradient_step f.toExtendedReal g xk t⁻¹ ↔
+      xNext ∈ proximal_gradient_step f.toEReal g xk t⁻¹ ↔
         IsMinOn
           (fun u ↦
             ((((f xk : ℝ) : EReal) + ((inner ℝ (∇ f xk) (u - xk) : ℝ) : EReal)) + g u) +
               ((((((t⁻¹ : PosReal) : ℝ) / 2) * ‖u - xk‖ ^ (2 : ℕ)) : ℝ) : EReal))
           Set.univ xNext :=
-    show xNext ∈ proximal_gradient_step f.toExtendedReal g xk t⁻¹ ↔
+    show xNext ∈ proximal_gradient_step f.toEReal g xk t⁻¹ ↔
         IsMinOn
           (fun u ↦
             ((((f xk : ℝ) : EReal) + ((inner ℝ (∇ f xk) (u - xk) : ℝ) : EReal)) + g u) +
@@ -170,10 +182,10 @@ theorem mem_proximal_gradient_step_iff_isMinOn_stepsize_model
           Set.univ xNext from
       mem_proximal_gradient_step_iff_isMinOn_curvature_model
         (is_differentiable_at_toEReal_of_differentiableAt hdiff)
-  simpa [PosReal.coe_inv, reciprocal_stepsize_half_eq_inv_two_mul, Function.toExtendedReal] using
+  simpa [PosReal.coe_inv, reciprocal_stepsize_half_eq_inv_two_mul, Function.toEReal] using
     hcurvature
 
-/-- Definition 10.8 in textbook form: at each iteration `k`, the next iterate `x^(k+1)` globally
+/-- Definition 10.8 (2): at each iteration `k`, the next iterate `x^(k+1)` globally
 minimizes the linearized quadratic model with stepsize `t_k`. The differentiability clause for the
 current iterate `x^k` is available separately from
 `is_proximal_gradient_trajectory_with_stepsizes_differentiableAt`. -/

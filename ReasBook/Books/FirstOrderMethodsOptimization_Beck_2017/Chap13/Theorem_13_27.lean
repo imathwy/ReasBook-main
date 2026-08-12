@@ -3,6 +3,7 @@ import FirstOrderMethodsOptimization_Beck_2017.Chap13.Algorithm_13_1
 import FirstOrderMethodsOptimization_Beck_2017.Chap13.Assumption_13_25
 import FirstOrderMethodsOptimization_Beck_2017.Chap13.Definition_13_6
 import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_7
+import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_8
 import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_12
 import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_26
 import FirstOrderMethodsOptimization_Beck_2017.Chap13.Theorem_13_14
@@ -49,10 +50,10 @@ variable
   {x p : ℕ → E} {t : ℕ → Set.Icc (0 : ℝ) 1}
   (htraj :
     is_generalized_conditional_gradient_trajectory
-      f₀ (extendedIndicator C) x p t)
+      (fun y : E ↦ EReal.toReal (f y)) (extendedIndicator C) x p t)
   (hsteps :
     uses_generalized_conditional_gradient_adaptive_or_exact_stepsize_rule
-      f₀ (extendedIndicator C) Lf x p t)
+      (fun y : E ↦ EReal.toReal (f y)) (extendedIndicator C) Lf x p t)
 
 local notation "λ" => min (σ * δ / (8 * (Lf : ℝ))) (1 / 2 : ℝ)
 
@@ -79,9 +80,10 @@ lemma conditional_gradient_iterate_mem_constraint
             ((t k : ℝ) • p k + (1 - (t k : ℝ)) • x k)
             (((σ / 2) * (t k : ℝ) * (1 - (t k : ℝ)) * ‖p k - x k‖ ^ (2 : ℕ)) : ℝ) := by
       simpa using
-        Metric.mem_closedBall_self
-          (x := (t k : ℝ) • p k + (1 - (t k : ℝ)) • x k)
-          hradius
+        (@Metric.mem_closedBall_self E _
+          ((t k : ℝ) • p k + (1 - (t k : ℝ)) • x k)
+          (((σ / 2) * (t k : ℝ) * (1 - (t k : ℝ)) * ‖p k - x k‖ ^ (2 : ℕ)) : ℝ)
+          hradius)
     rw [hstep, conditional_gradient_segment_eq_convex_combo, add_comm]
     exact hproblem.strongConvex hpkC hk (t k).2 hcenter
 
@@ -97,8 +99,8 @@ lemma conditional_gradient_norm_eq_coe_inner_sub
       ((inner ℝ (∇ f₀ (x k)) (x k - p k) : ℝ) : EReal) := by
   -- Realize the canonical gap at the chosen constrained argmin and cancel the indicator terms.
   have hxk : x k ∈ C :=
-    conditional_gradient_iterate_mem_constraint
-      (σ := σ) (δ := δ) (Lf := Lf) htraj k
+    @conditional_gradient_iterate_mem_constraint E _ _ _ f C σ δ Lf hproblem x p t hproblem
+      htraj k
   rcases is_conditional_gradient_trajectory_step htraj k with ⟨hpkC, _, _⟩
   rw [generalized_conditional_gradient_norm_eq_of_mem_argmin (htraj.argmin_mem k),
     generalized_conditional_gradient_gap_objective_apply]
@@ -114,8 +116,8 @@ lemma conditional_gradient_gap_toReal_nonneg
     0 ≤ (S[f₀, extendedIndicator C](x k)).toReal := by
   -- Compare the linear minimizer `pᵏ` against the feasible point `xᵏ`.
   have hxk : x k ∈ C :=
-    conditional_gradient_iterate_mem_constraint
-      (σ := σ) (δ := δ) (Lf := Lf) htraj k
+    @conditional_gradient_iterate_mem_constraint E _ _ _ f C σ δ Lf hproblem x p t hproblem
+      htraj k
   rcases is_conditional_gradient_trajectory_step htraj k with ⟨_, hpmin, _⟩
   rw [isMinOn_iff] at hpmin
   have hle :
@@ -128,8 +130,8 @@ lemma conditional_gradient_gap_toReal_nonneg
       0 ≤ inner ℝ (∇ f₀ (x k)) (x k - p k) := by
     rw [inner_sub_right]
     linarith
-  rw [conditional_gradient_norm_eq_coe_inner_sub
-    (σ := σ) (δ := δ) (Lf := Lf) htraj k]
+  rw [@conditional_gradient_norm_eq_coe_inner_sub E _ _ _ f C σ δ Lf hproblem x p t hproblem
+    htraj k]
   exact hinner_nonneg
 
 /-- Helper for Theorem 13.27: the constrained objective gap is a finite real cast, so its
@@ -147,8 +149,8 @@ lemma conditional_gradient_objective_gap_eq_coe_sub_optimal_value
   have hxStar_data : xStar ∈ C ∧ IsMinOn f C xStar := by
     simpa using hxStar
   have hxk : x k ∈ C :=
-    conditional_gradient_iterate_mem_constraint
-      (σ := σ) (δ := δ) (Lf := Lf) htraj k
+    @conditional_gradient_iterate_mem_constraint E _ _ _ f C σ δ Lf hproblem x p t hproblem
+      htraj k
   have hxk_val :
       f (x k) = (((f (x k)).toReal : ℝ) : EReal) := by
     exact
@@ -179,8 +181,8 @@ lemma conditional_gradient_objective_gap_toReal_le_gap
       (S[f₀, extendedIndicator C](x k)).toReal := by
   -- Specialize Lemma 13.12 to the feasible iterate and convert the finite inequality to `ℝ`.
   have hxk : x k ∈ C :=
-    conditional_gradient_iterate_mem_constraint
-      (σ := σ) (δ := δ) (Lf := Lf) htraj k
+    @conditional_gradient_iterate_mem_constraint E _ _ _ f C σ δ Lf hproblem x p t hproblem
+      htraj k
   have hxk_f : x k ∈ effective_domain f :=
     hproblem.feasible_subset_effective_domain hxk
   have hxk_g : x k ∈ effective_domain (extendedIndicator C) := by
@@ -192,21 +194,16 @@ lemma conditional_gradient_objective_gap_toReal_le_gap
       f (x k) - f_opt ≤ S[f₀, extendedIndicator C](x k) := by
     simpa [ge_iff_le, composite_model_objective_apply, extendedIndicator, hxk] using
       (generalized_conditional_gradient_gap_ge_objective_gap
-        (f := f) (g := extendedIndicator C)
-        (hf_ne_bot := hproblem.f_ne_bot)
-        (hf_convex := hproblem.f_convex)
-        (hx_f := hxk_f)
-        (hx_diff := hxk_diff)
-        (hx := hxk_g))
+        hproblem.f_ne_bot hproblem.f_convex hxk_f hxk_diff hxk_g)
   have hleft_bot :
       f (x k) - f_opt ≠ ⊥ := by
-    rw [conditional_gradient_objective_gap_eq_coe_sub_optimal_value
-      (σ := σ) (δ := δ) (Lf := Lf) htraj k]
+    rw [@conditional_gradient_objective_gap_eq_coe_sub_optimal_value
+      E _ _ _ f C σ δ Lf hproblem x p t hproblem htraj k]
     exact EReal.coe_ne_bot _
   have hright_top :
       S[f₀, extendedIndicator C](x k) ≠ ⊤ := by
-    rw [conditional_gradient_norm_eq_coe_inner_sub
-      (σ := σ) (δ := δ) (Lf := Lf) htraj k]
+    rw [@conditional_gradient_norm_eq_coe_inner_sub E _ _ _ f C σ δ Lf hproblem x p t hproblem
+      htraj k]
     exact EReal.coe_ne_top _
   have hreal :
       (f (x k) - f_opt).toReal ≤
@@ -281,8 +278,8 @@ lemma conditional_gradient_gap_eq_coe_toReal
     S[f₀, extendedIndicator C](x k) =
       (((S[f₀, extendedIndicator C](x k)).toReal : ℝ) : EReal) := by
   -- Rewrite the gap by the explicit finite inner-product formula along the constrained trajectory.
-  rw [conditional_gradient_norm_eq_coe_inner_sub
-    (σ := σ) (δ := δ) (Lf := Lf) htraj k]
+  rw [@conditional_gradient_norm_eq_coe_inner_sub E _ _ _ f C σ δ Lf hproblem x p t hproblem
+    htraj k]
   exact (EReal.coe_toReal (EReal.coe_ne_top _) (EReal.coe_ne_bot _)).symm
 
 /-- Helper for Theorem 13.27: under exact line search, the next iterate has no larger objective
@@ -302,11 +299,11 @@ lemma conditional_gradient_exact_step_vs_trial_point
   -- Compare the exact-line-search value in the auxiliary objective `f₀ + 𝟙_C`, then rewrite
   -- that auxiliary objective back to the original constrained objective on feasible points.
   have hxk1 : x (k + 1) ∈ C :=
-    conditional_gradient_iterate_mem_constraint
-      (σ := σ) (δ := δ) (Lf := Lf) htraj (k + 1)
+    @conditional_gradient_iterate_mem_constraint E _ _ _ f C σ δ Lf hproblem x p t hproblem
+      htraj (k + 1)
   have hxk : x k ∈ C :=
-    conditional_gradient_iterate_mem_constraint
-      (σ := σ) (δ := δ) (Lf := Lf) htraj k
+    @conditional_gradient_iterate_mem_constraint E _ _ _ f C σ δ Lf hproblem x p t hproblem
+      htraj k
   rcases is_conditional_gradient_trajectory_step htraj k with ⟨hpkC, _, _⟩
   have htrialC : x k + s • (p k - x k) ∈ C := by
     have hcombo :
@@ -331,10 +328,10 @@ lemma conditional_gradient_exact_step_vs_trial_point
     rw [mem_conditional_gradient_exact_line_search_stepsizes_iff, isMinOn_iff] at hexactk
     rcases hexactk with ⟨_, hmin⟩
     simpa [htraj.step_eq k] using hmin s hs
-  rw [conditional_gradient_auxiliary_objective_eq_coe_toReal
-      (σ := σ) (δ := δ) (Lf := Lf) hxk1,
-    conditional_gradient_auxiliary_objective_eq_coe_toReal
-      (σ := σ) (δ := δ) (Lf := Lf) htrialC] at hcompare
+  rw [@conditional_gradient_auxiliary_objective_eq_coe_toReal E _ _ _ f C σ δ Lf hproblem
+      hproblem (x (k + 1)) hxk1,
+    @conditional_gradient_auxiliary_objective_eq_coe_toReal E _ _ _ f C σ δ Lf hproblem
+      hproblem (x k + s • (p k - x k)) htrialC] at hcompare
   exact_mod_cast hcompare
 
 /-- Helper for Theorem 13.27: the iterate objective gap has the expected real-valued `toReal`
@@ -348,8 +345,8 @@ lemma conditional_gradient_gap_toReal_eq_objective_minus_optimal_value
     (f (x k) - f_opt).toReal =
       (f (x k)).toReal - (f_opt).toReal := by
   -- Rewrite the `EReal` gap as a coercion of a real difference and then take `toReal`.
-  rw [conditional_gradient_objective_gap_eq_coe_sub_optimal_value
-    (σ := σ) (δ := δ) (Lf := Lf) htraj k]
+  rw [@conditional_gradient_objective_gap_eq_coe_sub_optimal_value
+    E _ _ _ f C σ δ Lf hproblem x p t hproblem htraj k]
   simpa using EReal.toReal_coe ((f (x k)).toReal - (f_opt).toReal)
 
 /-- Helper for Theorem 13.27: on the nondegenerate adaptive ratio branch, the quadratic gap lower
@@ -369,8 +366,8 @@ lemma conditional_gradient_ratio_branch_ge_strong_convex_factor
   -- `2 * L_f * ‖xᵏ - pᵏ‖²`.
   let Sx : ℝ := (S[f₀, extendedIndicator C](x k)).toReal
   have hxk : x k ∈ C :=
-    conditional_gradient_iterate_mem_constraint
-      (σ := σ) (δ := δ) (Lf := Lf) htraj k
+    @conditional_gradient_iterate_mem_constraint E _ _ _ f C σ δ Lf hproblem x p t hproblem
+      htraj k
   have hxk_f : x k ∈ effective_domain f :=
     hproblem.feasible_subset_effective_domain hxk
   have hxk_diff : DifferentiableAt ℝ f₀ (x k) :=
@@ -382,8 +379,8 @@ lemma conditional_gradient_ratio_branch_ge_strong_convex_factor
   have hgap_nonneg : 0 ≤ Sx := by
     dsimp [Sx]
     exact
-      conditional_gradient_gap_toReal_nonneg
-        (σ := σ) (δ := δ) (Lf := Lf) htraj k
+      @conditional_gradient_gap_toReal_nonneg E _ _ _ f C σ δ Lf hproblem x p t hproblem
+        htraj k
   have hxkp : x k ≠ p k := by
     simpa [eq_comm] using hpx
   have hnorm_pos : 0 < ‖x k - p k‖ := by
@@ -395,7 +392,6 @@ lemma conditional_gradient_ratio_branch_ge_strong_convex_factor
     let xC : C := ⟨x k, hxk⟩
     simpa [Sx, xC] using
       (generalized_conditional_gradient_norm_ge_strong_convexity_quadratic_bound
-        (f := f) (C := C) (σ := σ) (δ := δ)
         hproblem.sigma_pos hproblem.strongConvex xC hxk_diff hdelta (p k)
         (htraj.argmin_mem k))
   have hmul :
@@ -436,18 +432,17 @@ lemma conditional_gradient_adaptive_trial_drop_ge_lambda_gap
   let s : ℝ := conditional_gradient_adaptive_stepsize Sx Lf (x k) (p k)
   let xTilde : E := x k + s • (p k - x k)
   have hxk : x k ∈ C :=
-    conditional_gradient_iterate_mem_constraint
-      (σ := σ) (δ := δ) (Lf := Lf) htraj k
+    @conditional_gradient_iterate_mem_constraint E _ _ _ f C σ δ Lf hproblem x p t hproblem
+      htraj k
   rcases is_conditional_gradient_trajectory_step htraj k with ⟨hpkC, _, _⟩
   have hS_nonneg : 0 ≤ Sx := by
     dsimp [Sx]
     exact
-      conditional_gradient_gap_toReal_nonneg
-        (σ := σ) (δ := δ) (Lf := Lf) htraj k
+      @conditional_gradient_gap_toReal_nonneg E _ _ _ f C σ δ Lf hproblem x p t hproblem
+        htraj k
   have hs_mem : s ∈ Set.Icc (0 : ℝ) 1 := by
     dsimp [s, Sx]
-    exact conditional_gradient_adaptive_stepsize_mem_Icc_theorem_13_14
-      hS_nonneg (x k) (p k)
+    exact conditional_gradient_adaptive_stepsize_mem_Icc hS_nonneg Lf (x k) (p k)
   have htrialC : xTilde ∈ C := by
     have hcombo :
         s • p k + (1 - s) • x k ∈ effective_domain (extendedIndicator C) :=
@@ -464,45 +459,39 @@ lemma conditional_gradient_adaptive_trial_drop_ge_lambda_gap
           (((s ^ (2 : ℕ) * (Lf : ℝ)) / 2) * ‖p k - x k‖ ^ (2 : ℕ)) := by
     -- Rewrite the generalized composite objective back to `f` on feasible points.
     have hfund_raw :
-        composite_model_objective (Function.toExtendedReal f₀) (extendedIndicator C) xTilde ≤
-          composite_model_objective (Function.toExtendedReal f₀) (extendedIndicator C) (x k) -
+        composite_model_objective (Function.toEReal f₀) (extendedIndicator C) xTilde ≤
+          composite_model_objective (Function.toEReal f₀) (extendedIndicator C) (x k) -
             (s : EReal) * S[f₀, extendedIndicator C](x k) +
               ((((s ^ (2 : ℕ) * (Lf : ℝ)) / 2) * ‖p k - x k‖ ^ (2 : ℕ) : ℝ) : EReal) := by
-      simpa [Function.toExtendedReal, xTilde, pow_two, mul_assoc, mul_left_comm, mul_comm] using
+      simpa [Function.toEReal, xTilde, pow_two, mul_assoc, mul_left_comm, mul_comm] using
         (generalized_conditional_gradient_fundamental_inequality
-          (f := f₀)
-          (g := extendedIndicator C)
-          (Lf := Lf)
-          (hg_ne_bot := by
+          (by
             intro y
             by_cases hy : y ∈ C <;> simp [extendedIndicator, hy])
-          (hg_convex := hproblem.toIsGeneralizedConditionalGradientProblem.g_convex)
-          (hf_smooth :=
-            conditional_gradient_f_toReal_smooth_on_constraint
-              (f := f) (C := C) (σ := σ) (δ := δ) (Lf := Lf))
-          (x := x k)
-          (p := p k)
+          hproblem.toIsGeneralizedConditionalGradientProblem.g_convex
+          (@conditional_gradient_f_toReal_smooth_on_constraint
+            E _ _ _ f C σ δ Lf hproblem hproblem)
           (by simpa [effective_domain_extendedIndicator] using hxk)
           (htraj.argmin_mem k)
           hs_mem)
     have hxk_aux :
-        composite_model_objective (Function.toExtendedReal f₀) (extendedIndicator C) (x k) =
+        composite_model_objective (Function.toEReal f₀) (extendedIndicator C) (x k) =
           (((f (x k)).toReal : ℝ) : EReal) := by
-      simpa [Function.toExtendedReal] using
-        (conditional_gradient_auxiliary_objective_eq_coe_toReal
-          (σ := σ) (δ := δ) (Lf := Lf) hxk)
+      simpa [Function.toEReal] using
+        (@conditional_gradient_auxiliary_objective_eq_coe_toReal E _ _ _ f C σ δ Lf hproblem
+          hproblem (x k) hxk)
     have htrial_aux :
-        composite_model_objective (Function.toExtendedReal f₀) (extendedIndicator C) xTilde =
+        composite_model_objective (Function.toEReal f₀) (extendedIndicator C) xTilde =
           (((f xTilde).toReal : ℝ) : EReal) := by
-      simpa [Function.toExtendedReal] using
-        (conditional_gradient_auxiliary_objective_eq_coe_toReal
-          (σ := σ) (δ := δ) (Lf := Lf) htrialC)
+      simpa [Function.toEReal] using
+        (@conditional_gradient_auxiliary_objective_eq_coe_toReal E _ _ _ f C σ δ Lf hproblem
+          hproblem xTilde htrialC)
     have hgap_aux :
         S[f₀, extendedIndicator C](x k) = ((Sx : ℝ) : EReal) := by
       dsimp [Sx]
       exact
-        conditional_gradient_gap_eq_coe_toReal
-          (σ := σ) (δ := δ) (Lf := Lf) htraj k
+        @conditional_gradient_gap_eq_coe_toReal E _ _ _ f C σ δ Lf hproblem x p t hproblem
+          htraj k
     rw [htrial_aux, hxk_aux, hgap_aux, ← EReal.coe_mul, ← EReal.coe_sub, ← EReal.coe_add] at hfund_raw
     exact_mod_cast hfund_raw
   have hmodel :
@@ -519,8 +508,8 @@ lemma conditional_gradient_adaptive_trial_drop_ge_lambda_gap
           conditional_gradient_adaptive_stepsize_eq_one_of_eq Sx Lf (x k)
       have hgap_zero : Sx = 0 := by
         dsimp [Sx]
-        rw [conditional_gradient_norm_eq_coe_inner_sub
-          (σ := σ) (δ := δ) (Lf := Lf) htraj k, hpx]
+        rw [@conditional_gradient_norm_eq_coe_inner_sub E _ _ _ f C σ δ Lf hproblem x p t
+          hproblem htraj k, hpx]
         simp
       have htrial_eq : xTilde = x k := by
         dsimp [xTilde]
@@ -561,8 +550,8 @@ lemma conditional_gradient_adaptive_trial_drop_ge_lambda_gap
               (σ * δ / (8 * (Lf : ℝ))) * Sx ≤
                 Sx ^ (2 : ℕ) / (2 * (Lf : ℝ) * ‖p k - x k‖ ^ (2 : ℕ)) := by
             simpa [Sx, norm_sub_rev] using
-              conditional_gradient_ratio_branch_ge_strong_convex_factor
-                (σ := σ) (δ := δ) (Lf := Lf) htraj k hpx
+              @conditional_gradient_ratio_branch_ge_strong_convex_factor
+                E _ _ _ f C σ δ Lf hproblem x p t hproblem htraj k hpx
           have hratio_model :
               Sx ^ (2 : ℕ) / (2 * (Lf : ℝ) * ‖p k - x k‖ ^ (2 : ℕ)) ≤
                 (f (x k)).toReal - (f xTilde).toReal := by
@@ -625,18 +614,17 @@ lemma conditional_gradient_step_drop_ge_lambda_gap
   let xTilde : E := x k + s • (p k - x k)
   have hS_nonneg :
       0 ≤ (S[f₀, extendedIndicator C](x k)).toReal :=
-    conditional_gradient_gap_toReal_nonneg
-      (σ := σ) (δ := δ) (Lf := Lf) htraj k
+    @conditional_gradient_gap_toReal_nonneg E _ _ _ f C σ δ Lf hproblem x p t hproblem
+      htraj k
   have hs_mem : s ∈ Set.Icc (0 : ℝ) 1 := by
     dsimp [s]
-    exact conditional_gradient_adaptive_stepsize_mem_Icc_theorem_13_14
-      hS_nonneg (x k) (p k)
+    exact conditional_gradient_adaptive_stepsize_mem_Icc hS_nonneg Lf (x k) (p k)
   have htrial :
       λ * (S[f₀, extendedIndicator C](x k)).toReal ≤
         (f (x k)).toReal - (f xTilde).toReal := by
     simpa [s, xTilde] using
-      conditional_gradient_adaptive_trial_drop_ge_lambda_gap
-        (σ := σ) (δ := δ) (Lf := Lf) htraj k
+      @conditional_gradient_adaptive_trial_drop_ge_lambda_gap
+        E _ _ _ f C σ δ Lf hproblem x p t hproblem htraj k
   rcases hsteps with hadapt | hexact
   · -- Under the adaptive rule, the next iterate is the adaptive trial point itself.
     rcases hadapt k with ⟨_, _, htk_eq⟩
@@ -650,8 +638,8 @@ lemma conditional_gradient_step_drop_ge_lambda_gap
     have hcompare :
         (f (x (k + 1))).toReal ≤ (f xTilde).toReal := by
       simpa [s, xTilde] using
-        conditional_gradient_exact_step_vs_trial_point
-          (σ := σ) (δ := δ) (Lf := Lf) htraj hexact k hs_mem
+        @conditional_gradient_exact_step_vs_trial_point
+          E _ _ _ f C σ δ Lf hproblem x p t hproblem htraj hexact k s hs_mem
     linarith
 
 include hproblem htraj hsteps
@@ -676,31 +664,30 @@ theorem conditional_gradient_objective_gap_step_le_linear_rate_factor
     have hgap_le :
         (f (x k) - f_opt).toReal ≤
           (S[f₀, extendedIndicator C](x k)).toReal :=
-      conditional_gradient_objective_gap_toReal_le_gap
-        (σ := σ) (δ := δ) (Lf := Lf) htraj k
+      @conditional_gradient_objective_gap_toReal_le_gap
+        E _ _ _ f C σ δ Lf hproblem x p t hproblem htraj k
     have hstep_gap :
         λ * (S[f₀, extendedIndicator C](x k)).toReal ≤
           (f (x k)).toReal - (f (x (k + 1))).toReal :=
-      conditional_gradient_step_drop_ge_lambda_gap
-        (σ := σ) (δ := δ) (Lf := Lf) htraj hsteps k
+      @conditional_gradient_step_drop_ge_lambda_gap
+        E _ _ _ f C σ δ Lf hproblem x p t hproblem htraj hsteps k
     exact le_trans
       (mul_le_mul_of_nonneg_left hgap_le
-        (conditional_gradient_lambda_nonneg
-          (f := f) (C := C) (σ := σ) (δ := δ) (Lf := Lf)))
+        (@conditional_gradient_lambda_nonneg E _ _ _ f C σ δ Lf hproblem hproblem))
       hstep_gap
   let gapk : ℝ := (f (x k) - f_opt).toReal
   have hgapk :
       gapk = (f (x k)).toReal - (f_opt).toReal := by
     dsimp [gapk]
     exact
-      conditional_gradient_gap_toReal_eq_objective_minus_optimal_value
-        (σ := σ) (δ := δ) (Lf := Lf) htraj k
+      @conditional_gradient_gap_toReal_eq_objective_minus_optimal_value
+        E _ _ _ f C σ δ Lf hproblem x p t hproblem htraj k
   have hgapk1 :
       (f (x (k + 1)) - f_opt).toReal =
         (f (x (k + 1))).toReal - (f_opt).toReal := by
     exact
-      conditional_gradient_gap_toReal_eq_objective_minus_optimal_value
-        (σ := σ) (δ := δ) (Lf := Lf) htraj (k + 1)
+      @conditional_gradient_gap_toReal_eq_objective_minus_optimal_value
+        E _ _ _ f C σ δ Lf hproblem x p t hproblem htraj (k + 1)
   have hstep_drop' :
       λ * gapk ≤ (f (x k)).toReal - (f (x (k + 1))).toReal := by
     simpa [gapk] using hstep_drop
@@ -727,13 +714,11 @@ theorem conditional_gradient_objective_gap_le_geometric_rate
   induction' k with k hk
   · simp
   · have hstep :=
-      conditional_gradient_objective_gap_step_le_linear_rate_factor
-        (σ := σ) (δ := δ) (Lf := Lf)
-        (hproblem := hproblem) (htraj := htraj) (hsteps := hsteps) k
+      @conditional_gradient_objective_gap_step_le_linear_rate_factor
+        E _ _ _ f C σ δ Lf hproblem x p t htraj hsteps k
     have hone :
         0 ≤ 1 - λ :=
-      conditional_gradient_one_sub_lambda_nonneg
-        (f := f) (C := C) (σ := σ) (δ := δ) (Lf := Lf)
+      @conditional_gradient_one_sub_lambda_nonneg E _ _ _ f C σ δ Lf hproblem hproblem
     calc
       (f (x (k + 1)) - f_opt).toReal ≤
           (1 - λ) * (f (x k) - f_opt).toReal := hstep

@@ -1,10 +1,10 @@
 import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_5
 import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_6
+import FirstOrderMethodsOptimization_Beck_2017.Chap03.Definition_3_10
 import FirstOrderMethodsOptimization_Beck_2017.Chap08.Definition_8_2
 import FirstOrderMethodsOptimization_Beck_2017.Chap05.Definition_5_1
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_2
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Corollary_10_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -103,9 +103,10 @@ theorem IsGeneralizedConditionalGradientProblem.is_differentiable_at
     {f g : E → EReal} {Lf : NNReal}
     (h : IsGeneralizedConditionalGradientProblem f g Lf) (x : effective_domain f) :
     is_differentiable_at f x := by
-  apply is_differentiable_at_of_mem_interior_effective_domain h.f_ne_bot
-  · simpa [h.f_effective_domain_open.interior_eq] using
-      h.f_toReal_smooth_on_effective_domain
-  · simp [h.f_effective_domain_open.interior_eq]
+  have hx_int : (x : E) ∈ interior (effective_domain f) := by
+    simp [h.f_effective_domain_open.interior_eq, x.property]
+  have hx_finite : (x : E) ∈ interior (finite_domain f) := by
+    simpa [finite_domain_eq_effective_domain h.f_ne_bot] using hx_int
+  exact ⟨hx_finite, h.f_toReal_smooth_on_effective_domain.1 x x.property⟩
 
 end

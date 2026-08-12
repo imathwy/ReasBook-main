@@ -145,6 +145,16 @@ class IsADMMTrajectory
     y (k + 1) =
       admm_multiplier_update ρ A B c (y k) (x (k + 1)) (z (k + 1))
 
+/-- An Algorithm 15.2 trajectory predicate is a proposition, hence subsingleton. -/
+instance
+    {ρ : PosReal}
+    {h₁ : X → EReal} {h₂ : Z → EReal}
+    {A : X →ₗ[ℝ] Y} {B : Z →ₗ[ℝ] Y} {c : Y}
+    {x : ℕ → X} {z : ℕ → Z} {y : ℕ → Y} {y0 : Y}
+    :
+    Subsingleton (IsADMMTrajectory ρ h₁ h₂ A B c x z y y0) :=
+  inferInstance
+
 -- Proof sketch: read off the initialization equation from the `y_zero` field of
 -- `IsADMMTrajectory`.
 /-- An ADMM trajectory starts from the prescribed initialization `y^0 = y0`. -/

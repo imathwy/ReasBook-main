@@ -21,8 +21,8 @@ recall lagrangianDualObjective
 recall dualObjectiveValues
 
 variable (X : Set (Fin n → ℝ))
-variable (f : (Fin n → ℝ) → ℝ)
-variable (g : (Fin n → ℝ) → Fin m → ℝ)
+variable (f : (Fin n → ℝ) → EReal)
+variable (g : Fin m → (Fin n → ℝ) → EReal)
 variable (A : Matrix (Fin p) (Fin n) ℝ) (b : Fin p → ℝ)
 
 local notation "q" => lagrangianDualObjective X f g A b

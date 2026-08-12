@@ -1,4 +1,3 @@
-import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap05.Definition_5_1
 import FirstOrderMethodsOptimization_Beck_2017.Chap05.Lemma_5_7
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_2
@@ -29,7 +28,8 @@ def fista_initial_state (x0 : E) : FISTAState E :=
 -- initial point `x0`.
 /-- The current iterate of the initial FISTA state is the input point `x0`. -/
 @[simp] theorem fista_initial_state_xCur (x0 : E) :
-    (fista_initial_state x0).xCur = x0 :=
+    (fista_initial_state x0).xCur = x0 := by
+  -- Unfold the initial state: its `xCur` field is definitionally `x0`.
   rfl
 
 end
@@ -62,8 +62,10 @@ API therefore reuses the existing owner abstractions and adds only the general s
 the B3 rule itself, rather than introducing a second FISTA wrapper package or a parallel B3
 acceptance layer. -/
 
-/-- One FISTA update with curvature estimate `L_k`: extrapolate to `y^k`, apply the prox-gradient
-map `T_(L_k)` there, and update the momentum parameter to `t_(k+1)`. -/
+/-- One accelerated prox-gradient state update driven by the extrapolated point attached to
+`state`: it advances `xCur` to `T_(L)(fista_extrapolated_point state)`, shifts the current
+iterate into `xPrev`, and updates the momentum parameter. This matches the constant-stepsize
+update from Algorithm 10.13 and remains a useful bridge owner for later accelerated variants. -/
 def fista_state_update
     (f : E → ℝ) (g : E → EReal) [IsProperExtendedRealFunction g]
     [Fact (LowerSemicontinuous g)] [Fact (is_convex_function g)]
@@ -84,21 +86,43 @@ theorem fista_state_update_eq_constant_stepsize_state_update
     [Fact (LowerSemicontinuous g)] [Fact (is_convex_function g)]
     (Lf : PosReal) (state : FISTAState E) :
     fista_state_update f g Lf state =
-      fista_constant_stepsize_state_update f g Lf state :=
+      fista_constant_stepsize_state_update f g Lf state := by
+  -- Unfold both updates: they are the same record built from the same `y` and `tNext`.
   rfl
 
-/-- Algorithm 10.6: for a real-valued smooth term `f`, a proper closed convex regularizer `g`,
+/-- The internal recursive pair implementing Algorithm 10.6 faithfully: the first component is the
+FISTA state `(x^(k-1), x^k, t_k)`, and the second component is the textbook extrapolated point
+`y^k` used to form `x^(k+1)`. -/
+private def fista_state_and_y
+    (f : E → ℝ) (g : E → EReal) [IsProperExtendedRealFunction g]
+    [Fact (LowerSemicontinuous g)] [Fact (is_convex_function g)]
+    (x0 : E) (L : ℕ → PosReal) :
+    ℕ → FISTAState E × E
+  | 0 => (fista_initial_state x0, x0)
+  | k + 1 =>
+      let (state, yk) := fista_state_and_y f g x0 L k
+      let tNext := fista_momentum_update state.tCur
+      let xNext := T[L k; f, g] yk
+      let nextState : FISTAState E :=
+        { xPrev := state.xCur
+          xCur := xNext
+          tCur := tNext }
+      let yNext := xNext + ((state.tCur - 1) / tNext) • (xNext - state.xCur)
+      (nextState, yNext)
+
+/-- For a real-valued smooth term `f`, a proper closed convex regularizer `g`,
 an initial point `x^0 = x0`, and positive curvature estimates `L_k`, the FISTA recursion is the
-state sequence whose `k`-th state stores `(x^(k-1), x^k, t_k)`, starts from
-`(x^0, x^0, 1)`, and evolves by the extrapolation-plus-prox-gradient update with parameter
-`L_k`. -/
+state sequence whose companion internal recursion stores both the state `(x^(k-1), x^k, t_k)` and
+the textbook extrapolated point `y^k`, starts from `(x^0, x^0, 1)` with `y^0 = x^0`, and then
+evolves by the source formulas
+`x^(k+1) = T_(L_k)(y^k)`, `t_(k+1) = (1 + √(1 + 4 t_k^2)) / 2`, and
+`y^(k+1) = x^(k+1) + ((t_k - 1) / t_(k+1)) (x^(k+1) - x^k)`. -/
 def fista
     (f : E → ℝ) (g : E → EReal) [IsProperExtendedRealFunction g]
     [Fact (LowerSemicontinuous g)] [Fact (is_convex_function g)]
     (x0 : E) (L : ℕ → PosReal) :
-    ℕ → FISTAState E
-  | 0 => fista_initial_state x0
-  | k + 1 => fista_state_update f g (L k) (fista f g x0 L k)
+    ℕ → FISTAState E :=
+  fun k ↦ (fista_state_and_y f g x0 L k).1
 
 /-- The FISTA iterate `x^k`, namely the current iterate field of the `k`-th FISTA state. -/
 def fista_x
@@ -114,12 +138,12 @@ def fista_t
     (x0 : E) (L : ℕ → PosReal) (k : ℕ) : ℝ :=
   (fista f g x0 L k).tCur
 
-/-- The FISTA extrapolated point `y^k` obtained from the `k`-th FISTA state. -/
+/-- The FISTA extrapolated point `y^k` from the companion source-faithful recursion. -/
 def fista_y
     (f : E → ℝ) (g : E → EReal) [IsProperExtendedRealFunction g]
     [Fact (LowerSemicontinuous g)] [Fact (is_convex_function g)]
     (x0 : E) (L : ℕ → PosReal) (k : ℕ) : E :=
-  fista_extrapolated_point (fista f g x0 L k)
+  (fista_state_and_y f g x0 L k).2
 
 -- Proof sketch: unfold `fista` at the base index `0`; the initial state's current iterate is
 -- definitionally `x0`.
@@ -128,7 +152,8 @@ def fista_y
     (f : E → ℝ) (g : E → EReal) [IsProperExtendedRealFunction g]
     [Fact (LowerSemicontinuous g)] [Fact (is_convex_function g)]
     (x0 : E) (L : ℕ → PosReal) :
-    fista_x f g x0 L 0 = x0 :=
+    fista_x f g x0 L 0 = x0 := by
+  -- Evaluate the recursion at `0` and read off the initial state's current iterate.
   rfl
 
 -- Proof sketch: unfold `fista` at the base index `0`; the initial state's momentum field is
@@ -138,7 +163,8 @@ def fista_y
     (f : E → ℝ) (g : E → EReal) [IsProperExtendedRealFunction g]
     [Fact (LowerSemicontinuous g)] [Fact (is_convex_function g)]
     (x0 : E) (L : ℕ → PosReal) :
-    fista_t f g x0 L 0 = 1 :=
+    fista_t f g x0 L 0 = 1 := by
+  -- Evaluate the recursion at `0` and read off the initial momentum field.
   rfl
 
 -- Proof sketch: at the initial state one has `x^{-1} = x^0 = x0` and `t_0 = 1`, so the
@@ -149,8 +175,8 @@ def fista_y
     [Fact (LowerSemicontinuous g)] [Fact (is_convex_function g)]
     (x0 : E) (L : ℕ → PosReal) :
     fista_y f g x0 L 0 = x0 := by
-  -- Unfold the initial state and reduce the extrapolation coefficient to zero.
-  simp [fista_y, fista, fista_initial_state, fista_extrapolated_point, fista_momentum_update]
+  -- The companion recursion stores `y^0 = x0` in its second component.
+  rfl
 
 -- Proof sketch: unfold `fista` at `k + 1`; by definition, the current iterate field of the
 -- updated state is the prox-gradient point `T_(L_k)(y^k)`.
@@ -161,7 +187,8 @@ theorem fista_x_succ
     [Fact (LowerSemicontinuous g)] [Fact (is_convex_function g)]
     (x0 : E) (L : ℕ → PosReal) (k : ℕ) :
     fista_x f g x0 L (k + 1) =
-      T[L k; f, g] (fista_y f g x0 L k) :=
+      T[L k; f, g] (fista_y f g x0 L k) := by
+  -- Unfold the successor clause of the recursion: `x^(k+1)` is the stored prox-gradient point.
   rfl
 
 -- Proof sketch: unfold `fista` at `k + 1`; the updated state's momentum field is
@@ -173,49 +200,53 @@ theorem fista_t_succ
     [Fact (LowerSemicontinuous g)] [Fact (is_convex_function g)]
     (x0 : E) (L : ℕ → PosReal) (k : ℕ) :
     fista_t f g x0 L (k + 1) =
-      fista_momentum_update (fista_t f g x0 L k) :=
+      fista_momentum_update (fista_t f g x0 L k) := by
+  -- Unfold the successor clause of the recursion: the new momentum is `fista_momentum_update t_k`.
   rfl
 
--- Proof sketch: unfold `fista` at `k + 1`; the extrapolated point of the updated state is
--- definitionally the standard FISTA formula built from `x^(k+1)`, `x^k`, `t_(k+1)`, and
--- `t_(k+2)`.
+-- Proof sketch: unfold the companion internal recursion at `k + 1`; the stored extrapolated point
+-- is definitionally the textbook formula built from `x^(k+1)`, `x^k`, `t_k`, and `t_(k+1)`.
 /-- The FISTA extrapolated sequence satisfies
-`y^(k+1) = x^(k+1) + ((t_(k+1) - 1) / t_(k+2)) (x^(k+1) - x^k)`. -/
+`y^(k+1) = x^(k+1) + ((t_k - 1) / t_(k+1)) (x^(k+1) - x^k)`. -/
 theorem fista_y_succ
     (f : E → ℝ) (g : E → EReal) [IsProperExtendedRealFunction g]
     [Fact (LowerSemicontinuous g)] [Fact (is_convex_function g)]
     (x0 : E) (L : ℕ → PosReal) (k : ℕ) :
     fista_y f g x0 L (k + 1) =
       fista_x f g x0 L (k + 1) +
-        ((fista_t f g x0 L (k + 1) - 1) / fista_t f g x0 L (k + 2)) •
+        ((fista_t f g x0 L k - 1) / fista_t f g x0 L (k + 1)) •
           (fista_x f g x0 L (k + 1) - fista_x f g x0 L k) := by
-  rw [show fista_t f g x0 L (k + 2) = fista_momentum_update (fista_t f g x0 L (k + 1)) by
-    simpa [Nat.add_assoc] using fista_t_succ f g x0 L (k + 1)]
+  -- Unfold the stored `yNext` field and rewrite it through the public `x` and `t` views.
   rfl
 
-/-- The canonical B2 upper-model acceptance predicate for `f.toExtendedReal` at the bridge point
+/-- The canonical B2 upper-model acceptance predicate for `f.toEReal` at the bridge point
 `interior_effective_domain_point_of_real f y` is exactly the displayed FISTA upper-model
 inequality `(10.39)` at `y`. -/
 theorem proximal_gradient_backtracking_B2_accepts_iff_fista_upper_model
     (f : E → ℝ) (g : E → EReal) [IsProperExtendedRealFunction g]
     [Fact (LowerSemicontinuous g)] [Fact (is_convex_function g)] (L : PosReal) (y : E) :
     proximal_gradient_backtracking_B2_accepts
-      f.toExtendedReal g L (interior_effective_domain_point_of_real f y) ↔
+      f.toEReal g L (interior_effective_domain_point_of_real f y) ↔
   let xNext := T[L; f, g] y
   f xNext ≤
     f y +
       inner ℝ (∇ f y) (xNext - y) +
       ((L : ℝ) / 2) * ‖xNext - y‖ ^ (2 : ℕ) := by
-  -- Unfold the B2 predicate and isolate the final `EReal`-to-`ℝ` coercion bridge.
-  simp only [proximal_gradient_backtracking_B2_accepts, prox_gradient_operator_apply,
-    Function.toExtendedReal, interior_effective_domain_point_of_real]
   constructor
-  · intro h
+  · intro haccepts
+    -- Expand the canonical B2 predicate at the real base point and drop the `EReal` coercions.
+    have haccepts' :=
+      (proximal_gradient_backtracking_B2_accepts_iff
+        f.toEReal g L (interior_effective_domain_point_of_real f y)).1 haccepts
     exact EReal.coe_le_coe_iff.mp <| by
-      simpa [add_assoc] using h
-  · intro h
+      simpa [prox_gradient_operator_apply, Function.toEReal, add_assoc] using haccepts'
+  · intro hmodel
+    -- Repackage the displayed real inequality as the Chapter 10 B2 acceptance predicate.
+    refine
+      (proximal_gradient_backtracking_B2_accepts_iff
+        f.toEReal g L (interior_effective_domain_point_of_real f y)).2 ?_
     exact EReal.coe_le_coe_iff.mpr <| by
-      simpa [add_assoc] using h
+      simpa [prox_gradient_operator_apply, Function.toEReal, add_assoc] using hmodel
 
 /-- A stepsize schedule uses backtracking procedure B3 along a point sequence `y` when, at every
 iteration `k`, the accepted curvature estimate `L_k` is the first accepted geometric trial based
@@ -227,7 +258,7 @@ def uses_backtracking_procedure_B3_rule
     (η : ProximalGradientBacktrackingGrowthFactor) : Prop :=
   ∀ k : ℕ, ∃ i : ℕ,
     is_backtracking_procedure_B2_index
-      f.toExtendedReal g
+      f.toEReal g
       (proximal_gradient_backtracking_B2_previous_stepsize s L k) η
       (interior_effective_domain_point_of_real f (y k)) i ∧
     L k =
@@ -236,7 +267,7 @@ def uses_backtracking_procedure_B3_rule
 
 -- Proof sketch: specialize `uses_backtracking_procedure_B3_rule` at the iteration `k`; the chosen
 -- index `i` is accepted by `is_backtracking_procedure_B2_index_accepts` for the canonical
--- Chapter 10 B2 owner applied to `f.toExtendedReal` at `interior_effective_domain_point_of_real f (y k)`.
+-- Chapter 10 B2 owner applied to `f.toEReal` at `interior_effective_domain_point_of_real f (y k)`.
 -- The bridge theorem
 -- `proximal_gradient_backtracking_B2_accepts_iff_fista_upper_model` then rewrites this canonical
 -- acceptance predicate as the displayed FISTA upper-model inequality.
@@ -253,23 +284,16 @@ theorem uses_backtracking_procedure_B3_rule_accepts
       f (y k) +
         inner ℝ (∇ f (y k)) (xNext - y k) +
         ((L k : ℝ) / 2) * ‖xNext - y k‖ ^ (2 : ℕ) := by
-  -- Extract the accepted B2 trial produced by the B3 rule at step `k`.
   rcases hrule k with ⟨i, hi, hLk⟩
-  have haccepts :
-      proximal_gradient_backtracking_B2_accepts
-        f.toExtendedReal g
-        (proximal_gradient_backtracking_trial_stepsize
-          (proximal_gradient_backtracking_B2_previous_stepsize s L k) η i)
-        (interior_effective_domain_point_of_real f (y k)) :=
-    is_backtracking_procedure_B2_index_accepts hi
-  -- Rewrite the accepted B2 predicate into the displayed FISTA upper-model inequality.
-  simpa [hLk] using
+  -- The chosen backtracking index is accepted for the corresponding geometric trial.
+  rw [hLk]
+  exact
     (proximal_gradient_backtracking_B2_accepts_iff_fista_upper_model
-      (f := f)
-      (g := g)
-      (L := proximal_gradient_backtracking_trial_stepsize
+      f g
+      (proximal_gradient_backtracking_trial_stepsize
         (proximal_gradient_backtracking_B2_previous_stepsize s L k) η i)
-      (y := y k)).mp haccepts
+      (y k)).1
+      (is_backtracking_procedure_B2_index_accepts hi)
 
 /-- The constant/B3 stepsize rule in the fast proximal-gradient analysis: either every
 `L_k = L_f`, giving `α = 1`, or the schedule is produced by backtracking procedure B3 along the
@@ -281,7 +305,7 @@ def fast_proximal_gradient_sublinear_rate_stepsize_rule
     [Fact (LowerSemicontinuous g)] [Fact (is_convex_function g)]
     (y : ℕ → E) (L : ℕ → PosReal) (α : ℝ) : Prop :=
   (α = 1 ∧ uses_proximal_gradient_Lf_stepsize_rule Lf L) ∨
-    ∃ _hLf : 0 < (Lf : ℝ), ∃ s : PosReal, ∃ η : ProximalGradientBacktrackingGrowthFactor,
+    0 < (Lf : ℝ) ∧ ∃ s : PosReal, ∃ η : ProximalGradientBacktrackingGrowthFactor,
       α = max (η : ℝ) ((s : ℝ) / (Lf : ℝ)) ∧
         uses_backtracking_procedure_B3_rule f g y L s η
 
@@ -295,9 +319,11 @@ theorem fast_proximal_gradient_sublinear_rate_stepsize_rule_lf_pos
     {y : ℕ → E} {L : ℕ → PosReal} {α : ℝ}
     (hrule : fast_proximal_gradient_sublinear_rate_stepsize_rule f g Lf y L α) :
     0 < (Lf : ℝ) := by
-  rcases hrule with ⟨_, hLf_rule⟩ | ⟨hLf, _, _, _, _⟩
-  · exact uses_proximal_gradient_Lf_stepsize_rule_lf_pos hLf_rule
-  · exact hLf
+  rcases hrule with ⟨_, hLf_rule⟩ | ⟨hLf_pos, _, _, _, _⟩
+  · -- The exact constant rule already forces `L_f` to be positive.
+    exact uses_proximal_gradient_Lf_stepsize_rule_lf_pos hLf_rule
+  · -- The B3 branch records the required positivity explicitly.
+    exact hLf_pos
 
 -- Proof sketch: in the constant-rule case, use the global `L_f`-smoothness inequality at `y^k`
 -- and specialize `uses_proximal_gradient_Lf_stepsize_rule Lf L` at `k`. In the
@@ -320,73 +346,97 @@ theorem fast_proximal_gradient_sublinear_rate_stepsize_rule_accepts
       f (y k) +
         inner ℝ (∇ f (y k)) (xNext - y k) +
         ((L k : ℝ) / 2) * ‖xNext - y k‖ ^ (2 : ℕ) := by
-  rcases hrule with ⟨_, hLconst⟩ | ⟨_, s, η, _, hB3⟩
-  · -- In the constant branch, the global `L_f`-smoothness bound applies on `Set.univ`.
-    let xNext := T[L k; f, g] (y k)
-    have hy_mem : y k ∈ Set.univ := by
-      simp
-    have hxNext_mem : xNext ∈ Set.univ := by
-      simp [xNext]
-    -- Specialize the descent lemma to the pair `(y^k, T_(L_k)(y^k))`.
-    simpa [xNext, hLconst k, norm_sub_rev] using
-      (is_l_smooth_on_descent_lemma
-        (L := Lf)
-        (D := Set.univ)
-        (f := f)
-        convex_univ
-        hf_smooth
-        hy_mem
-        hxNext_mem)
-  · -- In the backtracking branch, B3 acceptance is exactly the required inequality.
+  rcases hrule with ⟨_, hLf_rule⟩ | ⟨_, s, η, _, hB3⟩
+  · let LfPos : PosReal := hLf_rule.stepsize
+    have hLk : L k = LfPos := by
+      apply Subtype.ext
+      exact hLf_rule k
+    -- The constant branch is the global smoothness descent lemma at the point `y^k`.
+    have hdescent :
+        let xNext := T[LfPos; f, g] (y k)
+        f xNext ≤
+          f (y k) +
+            inner ℝ (∇ f (y k)) (xNext - y k) +
+            ((LfPos : ℝ) / 2) * ‖xNext - y k‖ ^ (2 : ℕ) := by
+      simpa [LfPos, PosReal.coe_toNNReal, norm_sub_rev] using
+        (is_l_smooth_on_univ_descent_lemma hf_smooth (y k) (T[LfPos; f, g] (y k)))
+    -- Rewriting `L k` to the constant stepsize closes the displayed inequality.
+    simpa [hLk] using hdescent
+  · -- The B3 branch is exactly the accepted-trial bridge proved above.
     exact uses_backtracking_procedure_B3_rule_accepts hB3 k
 
+variable {f : E → ℝ} {g : E → EReal}
 variable {XStar : Set E} {FOpt : ℝ} {Lf : NNReal}
 
 namespace IsFastProximalGradientProblem
+
+variable [hproblem : IsFastProximalGradientProblem f g XStar FOpt Lf]
+
+/-- Helper for Algorithm 10.6: under Assumption 10.31, the prox-gradient point `T[L; f, g] y`
+can be formed using the canonical `g`-regularity data supplied by `hproblem`. -/
+abbrev proxPoint
+    (hproblem : IsFastProximalGradientProblem f g XStar FOpt Lf)
+    (L : PosReal) (y : E) : E :=
+  @prox_gradient_operator E _ _ _ f g
+    hproblem.g_proper ⟨hproblem.g_closed⟩ ⟨hproblem.g_convex⟩ L y
 
 /-- Bridge/view layer: Assumption 10.31 canonically supplies the `g`-regularity data required by
 the shared constant/B3 sublinear-rate stepsize owner from Algorithm 10.6. -/
 abbrev SublinearRateStepsizeRule
     (hproblem : IsFastProximalGradientProblem f g XStar FOpt Lf)
     (y : ℕ → E) (L : ℕ → PosReal) (α : ℝ) : Prop :=
-  letI : IsProperExtendedRealFunction g := hproblem.g_proper
-  letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
-  letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
-  fast_proximal_gradient_sublinear_rate_stepsize_rule f g Lf y L α
+  @fast_proximal_gradient_sublinear_rate_stepsize_rule E _ _ _ f g Lf
+    hproblem.g_proper ⟨hproblem.g_closed⟩ ⟨hproblem.g_convex⟩ y L α
 
 /-- The canonical fast-problem bridge owner `SublinearRateStepsizeRule` already includes
 positivity of the smoothness constant `L_f`. -/
 theorem sublinearRateStepsizeRule_lf_pos
-    {hproblem : IsFastProximalGradientProblem f g XStar FOpt Lf}
     {y : ℕ → E} {L : ℕ → PosReal} {α : ℝ}
     (hrule : hproblem.SublinearRateStepsizeRule y L α) :
     0 < (Lf : ℝ) := by
+  -- Local instance justification (defeq pin): the explicit fast-problem witness `hproblem`
+  -- canonically fixes the properness instance for `g`, so the shared owner theorem elaborates
+  -- through the same regularity data without changing the public theorem surface.
   letI : IsProperExtendedRealFunction g := hproblem.g_proper
+  -- Local instance justification (defeq pin): the explicit fast-problem witness `hproblem`
+  -- canonically fixes the lower-semicontinuity witness for `g`, so the shared owner theorem
+  -- uses the same closedness data as the fast-problem assumptions.
   letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
+  -- Local instance justification (defeq pin): the explicit fast-problem witness `hproblem`
+  -- canonically fixes the convexity witness for `g`, so the shared owner theorem reuses the
+  -- source-facing regularity package verbatim.
   letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
+  -- Reduce to the shared owner theorem, now elaborated through the local `hproblem` instances.
   simpa [SublinearRateStepsizeRule] using
-    fast_proximal_gradient_sublinear_rate_stepsize_rule_lf_pos f g Lf hrule
+    (fast_proximal_gradient_sublinear_rate_stepsize_rule_lf_pos f g Lf hrule)
 
-/-- Under Assumption 10.31, the owner-level fast stepsize bridge supplies the FISTA upper-model
-inequality `(10.39)` at every point `y^k`. -/
+/-- Algorithm 10.6: under Assumption 10.31, the owner-level fast stepsize
+bridge supplies the FISTA upper-model inequality `(10.39)` at every point `y^k`. -/
 theorem sublinearRateStepsizeRule_accepts
-    {hproblem : IsFastProximalGradientProblem f g XStar FOpt Lf}
     {α : ℝ} {y : ℕ → E} {L : ℕ → PosReal}
     (hrule : hproblem.SublinearRateStepsizeRule y L α)
     (k : ℕ) :
-    letI : IsProperExtendedRealFunction g := hproblem.g_proper
-    letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
-    letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
-    let xNext := T[L k; f, g] (y k)
+    let xNext := hproblem.proxPoint (L k) (y k)
     f xNext ≤
       f (y k) +
         inner ℝ (∇ f (y k)) (xNext - y k) +
         ((L k : ℝ) / 2) * ‖xNext - y k‖ ^ (2 : ℕ) := by
+  -- Local instance justification (defeq pin): the explicit fast-problem witness `hproblem`
+  -- canonically fixes the properness instance for `g`, so the shared owner theorem elaborates
+  -- through the same regularity data without changing the public theorem surface.
   letI : IsProperExtendedRealFunction g := hproblem.g_proper
+  -- Local instance justification (defeq pin): the explicit fast-problem witness `hproblem`
+  -- canonically fixes the lower-semicontinuity witness for `g`, so the shared owner theorem
+  -- uses the same closedness data as the fast-problem assumptions.
   letI : Fact (LowerSemicontinuous g) := ⟨hproblem.g_closed⟩
+  -- Local instance justification (defeq pin): the explicit fast-problem witness `hproblem`
+  -- canonically fixes the convexity witness for `g`, so the shared owner theorem reuses the
+  -- source-facing regularity package verbatim.
   letI : Fact (is_convex_function g) := ⟨hproblem.g_convex⟩
-  simpa [SublinearRateStepsizeRule] using
-    fast_proximal_gradient_sublinear_rate_stepsize_rule_accepts f g Lf hproblem.f_smooth hrule k
+  -- Route correction: use the shared owner theorem directly, then unfold only the bridge views.
+  simpa [SublinearRateStepsizeRule, proxPoint] using
+    (fast_proximal_gradient_sublinear_rate_stepsize_rule_accepts
+      f g Lf hproblem.f_smooth hrule k)
 
 end IsFastProximalGradientProblem
 

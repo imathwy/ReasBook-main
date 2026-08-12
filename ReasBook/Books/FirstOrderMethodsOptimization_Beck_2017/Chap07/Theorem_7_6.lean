@@ -30,7 +30,8 @@ local instance theorem76FrobeniusNormedAddCommGroup : NormedAddCommGroup 𝕄 :=
   Matrix.frobeniusNormedAddCommGroup
 
 /-- The ambient real matrix space is a normed real vector space. -/
-local instance theorem76FrobeniusNormedSpace : NormedSpace ℝ 𝕄 := Matrix.frobeniusNormedSpace
+local instance theorem76FrobeniusNormedSpace : NormedSpace ℝ 𝕄 :=
+  Matrix.frobeniusNormedSpace
 
 /-- The ambient real matrix space is equipped with its Frobenius inner product. -/
 local instance theorem76FrobeniusInnerProductSpace : InnerProductSpace ℝ 𝕄 :=
@@ -84,7 +85,7 @@ lemma sign_pattern_mul_abs (x : Fin (min m n) → ℝ) (i : Fin (min m n)) :
     simp [sign_pattern, hxi, abs_of_nonneg hxi_nonneg]
 
 /-- Helper for Theorem 7.6: the diagonal matrix of the sign pattern is orthogonal. -/
-noncomputable def signDiagonalOrthogonal
+private noncomputable def signDiagonalOrthogonal
     (x : Fin (min m n) → ℝ) : Matrix.orthogonalGroup (Fin (min m n)) ℝ := by
   let s : Fin (min m n) → ℝ := sign_pattern x
   have hsq : ∀ i : Fin (min m n), s i * s i = 1 := by
@@ -107,7 +108,7 @@ noncomputable def signDiagonalOrthogonal
       · simp [hij]
 
 /-- Helper for Theorem 7.6: the sign orthogonal acts by coordinatewise multiplication. -/
-lemma signDiagonalOrthogonal_mulVec
+private lemma signDiagonalOrthogonal_mulVec
     (x z : Fin (min m n) → ℝ) :
     (((signDiagonalOrthogonal x : Matrix.orthogonalGroup (Fin (min m n)) ℝ) :
         Matrix (Fin (min m n)) (Fin (min m n)) ℝ)).mulVec z =
@@ -118,7 +119,7 @@ lemma signDiagonalOrthogonal_mulVec
 
 /-- Helper for Theorem 7.6: extend the sign pattern by `1` outside the common diagonal block on
 the row index set. -/
-def rectangularSignPattern
+private def rectangularSignPattern
     (x : Fin (min m n) → ℝ) : Fin m → ℝ :=
   fun i ↦
     if h : i.1 < min m n then
@@ -127,7 +128,7 @@ def rectangularSignPattern
 
 /-- Helper for Theorem 7.6: the rectangularly extended sign pattern defines an orthogonal row
 matrix. -/
-noncomputable def rectangularSignOrthogonal
+private noncomputable def rectangularSignOrthogonal
     (x : Fin (min m n) → ℝ) : Matrix.orthogonalGroup (Fin m) ℝ := by
   let s : Fin m → ℝ := rectangularSignPattern (m := m) (n := n) x
   have hsq : ∀ i : Fin m, s i * s i = 1 := by
@@ -158,7 +159,7 @@ noncomputable def rectangularSignOrthogonal
 /-- Helper for Theorem 7.6: extending the same permutation to the row and column index sets
 acts on the rectangular diagonal profile entrywise by the original permutation on the common
 diagonal block. -/
-lemma rectangularDiagonalProfile_perm_extension_apply
+private lemma rectangularDiagonalProfile_perm_extension_apply
     (σ : Equiv.Perm (Fin (min m n))) (z : Fin (min m n) → ℝ) (i : Fin m) (j : Fin n) :
     let σm : Equiv.Perm (Fin m) :=
       σ.viaFintypeEmbedding (Fin.castLEEmb (Nat.min_le_left m n))
@@ -346,7 +347,7 @@ lemma rectangularDiagonalProfile_perm_extension_apply
 
 /-- Helper for Theorem 7.6: extending the same permutation to the row and column index sets
 reindexes the rectangular diagonal profile by that permutation. -/
-lemma rectangularDiagonalProfile_perm_extension_eq
+private lemma rectangularDiagonalProfile_perm_extension_eq
     (σ : Equiv.Perm (Fin (min m n))) (z : Fin (min m n) → ℝ) :
     let σm : Equiv.Perm (Fin m) :=
       σ.viaFintypeEmbedding (Fin.castLEEmb (Nat.min_le_left m n))
@@ -366,7 +367,7 @@ lemma rectangularDiagonalProfile_perm_extension_eq
 
 /-- Helper for Theorem 7.6: the rectangularly extended sign matrix restores the signs of the
 diagonal profile while leaving the column factor trivial. -/
-lemma rectangularDiagonalProfile_left_sign_eq
+private lemma rectangularDiagonalProfile_left_sign_eq
     (x : Fin (min m n) → ℝ) :
     orthogonalRectangularDiagonalProfileMap (rectangularSignOrthogonal (m := m) (n := n) x) 1
         (fun i ↦ |x i|) =
@@ -385,7 +386,7 @@ lemma rectangularDiagonalProfile_left_sign_eq
 
 /-- Helper for Theorem 7.6: the raw rectangular diagonal profile is an orthogonal image of the
 canonical sorted absolute-value profile `|x|↓`. -/
-lemma rectangularDiagonalProfile_eq_orthogonalRectangularDiagonalProfileMap_abs_descending
+private lemma rectangularDiagonalProfile_eq_orthogonalRectangularDiagonalProfileMap_abs_descending
     (x : Fin (min m n) → ℝ) :
     ∃ U : Matrix.orthogonalGroup (Fin m) ℝ,
       ∃ V : Matrix.orthogonalGroup (Fin n) ℝ,
@@ -418,8 +419,11 @@ lemma rectangularDiagonalProfile_eq_orthogonalRectangularDiagonalProfileMap_abs_
     -- The inverse permutation cancels the sorting permutation inside the orthogonal group.
     apply Subtype.ext
     change τ.permMatrix ℝ * (τ⁻¹).permMatrix ℝ = 1
-    rw [← Matrix.permMatrix_mul]
-    simp
+    calc
+      τ.permMatrix ℝ * (τ⁻¹).permMatrix ℝ =
+          (τ⁻¹ * τ).permMatrix ℝ :=
+        (Matrix.permMatrix_mul (R := ℝ) (σ := τ⁻¹) (τ := τ)).symm
+      _ = 1 := by simp
   have hunsort_smul :
       permutationOrthogonalMatrix τ • xdesc = (fun i ↦ |x i|) := by
     have happly :=
@@ -496,7 +500,7 @@ lemma rectangularDiagonalProfile_eq_orthogonalRectangularDiagonalProfileMap_abs_
 
 /-- Helper for Theorem 7.6: every coordinate of the sorted absolute-value profile is
 nonnegative. -/
-lemma descendingRearrangement_abs_nonneg
+private lemma descendingRearrangement_abs_nonneg
     (x : Fin (min m n) → ℝ) (i : Fin (min m n)) :
     0 ≤ Function.descendingRearrangement (fun j ↦ |x j|) i := by
   -- Every entry of the merge-sorted list of absolute values comes from an original absolute value.
@@ -514,7 +518,7 @@ lemma descendingRearrangement_abs_nonneg
 
 /-- Helper for Theorem 7.6: evaluating the spectral lift on the rectangular diagonal model
 recovers the ordered absolute-value profile because the singular values of `dg(x)` are `|x|↓`. -/
-lemma singular_value_function_rectangularDiagonalProfile_eq_abs_descendingRearrangement
+private lemma singular_value_function_rectangularDiagonalProfile_eq_abs_descendingRearrangement
     (x : Fin (min m n) → ℝ) :
     singular_value_function (rectangularDiagonalProfile x) =
       Function.descendingRearrangement (fun i ↦ |x i|) := by
@@ -570,7 +574,7 @@ lemma absolutely_symmetric_precompose_eq_of_preserves_abs_descendingRearrangemen
 
 /-- Helper for Theorem 7.6: pulling the conjugate back along `dotProductEquiv` preserves absolute
 permutation symmetry. -/
-lemma dotProduct_conjugate_profile_is_absolutely_permutation_symmetric
+private lemma dotProduct_conjugate_profile_is_absolutely_permutation_symmetric
     (f : (Fin (min m n) → ℝ) → EReal) (hf : IsAbsolutelyPermutationSymmetric f)
     (hfconv : is_convex_function f) :
     IsAbsolutelyPermutationSymmetric
@@ -626,8 +630,11 @@ lemma dotProduct_conjugate_profile_is_absolutely_permutation_symmetric
           apply Subtype.ext
           -- The inverse permutation matrix cancels the original one inside the orthogonal group.
           change σ.permMatrix ℝ * (σ⁻¹).permMatrix ℝ = 1
-          rw [← Matrix.permMatrix_mul]
-          simp
+          calc
+            σ.permMatrix ℝ * (σ⁻¹).permMatrix ℝ =
+                (σ⁻¹ * σ).permMatrix ℝ :=
+              (Matrix.permMatrix_mul (R := ℝ) (σ := σ⁻¹) (τ := σ)).symm
+            _ = 1 := by simp
         calc
           permutationOrthogonalMatrix σ • xdesc =
               (permutationOrthogonalMatrix σ * permutationOrthogonalMatrix σ.symm) •
@@ -729,7 +736,7 @@ lemma dotProduct_conjugate_profile_is_absolutely_permutation_symmetric
           (dotProductEquiv ℝ (Fin (min m n)) xdesc) =
         conjugate_function f
           (dotProductEquiv ℝ (Fin (min m n)) (A • xdesc))
-      exact conjugate_function_precompose_orthogonal_eq A f xdesc
+      exact theorem7_9_conjugate_function_precompose_orthogonal_eq A f xdesc
     -- The conjugate at `x` is the conjugate at `|x|↓` after the corresponding signed permutation.
     calc
       conjugate_function f (dotProductEquiv ℝ (Fin (min m n)) x) =
@@ -748,7 +755,7 @@ lemma dotProduct_conjugate_profile_is_absolutely_permutation_symmetric
 
 /-- Helper for Theorem 7.6: taking the `dotProductEquiv`-pullback conjugate twice recovers the
 Chapter 4 biconjugate of the vector profile. -/
-lemma dotProduct_conjugate_profile_biconjugate_eq_theorem76
+private lemma dotProduct_conjugate_profile_biconjugate_eq
     (f : (Fin (min m n) → ℝ) → EReal) :
     (fun x : Fin (min m n) → ℝ ↦
       conjugate_function
@@ -803,8 +810,9 @@ lemma absolutely_symmetric_spectral_closed_convex_forward
           singular_value_function := by
     -- Apply the same spectral formula once more to the conjugate profile.
     simpa [Function.comp] using matrix_spectral_conjugate_formula fconj hfconj_symm
+  have hproper : IsProperExtendedRealFunction f := ⟨hf.ne_bot, hf.effective_domain_nonempty⟩
   have hself : biconjugate_function f = f :=
-    biconjugate_function_eq_self_of_closed_convex f hf_closed hf_convex
+    biconjugate_function_eq_self_of_proper_closed_convex f hproper hf_closed hf_convex
   have hmatrix_self :
       (fun Y : 𝕄 ↦ conjugate_function (fconj ∘ singular_value_function) ↑(toDualMap ℝ 𝕄 Y)) =
         f ∘ singular_value_function := by
@@ -815,7 +823,7 @@ lemma absolutely_symmetric_spectral_closed_convex_forward
             conjugate_function fconj (dotProductEquiv ℝ (Fin (min m n)) x)) ∘
             singular_value_function := hmatrix_conj_conj
       _ = biconjugate_function f ∘ singular_value_function := by
-            rw [dotProduct_conjugate_profile_biconjugate_eq_theorem76 f]
+            rw [dotProduct_conjugate_profile_biconjugate_eq f]
       _ = f ∘ singular_value_function := by
             rw [hself]
   let G : 𝕄 → EReal :=
@@ -860,7 +868,21 @@ lemma absolutely_symmetric_spectral_closed_convex_reverse
     -- Closedness descends along the continuous rectangular diagonal embedding.
     rw [hpull] at hcomp
     exact hcomp
-  · rw [is_convex_function_iff_segment_ineq] at hF_convex ⊢
+  · let _ : IsProperExtendedRealFunction f :=
+      ⟨hf.ne_bot, hf.effective_domain_nonempty⟩
+    let _ : IsProperExtendedRealFunction (f ∘ singular_value_function) := by
+      refine ⟨?_, ?_⟩
+      · intro X
+        exact hf.ne_bot (singular_value_function X)
+      · rcases hf.effective_domain_nonempty with ⟨x, hx⟩
+        refine ⟨rectangularDiagonalProfile x, ?_⟩
+        have hpullx :
+            (f ∘ singular_value_function) (rectangularDiagonalProfile x) = f x := by
+          simpa [Function.comp] using
+            absolutely_symmetric_rectangular_diagonal_pullback_eq f hf x
+        rw [mem_effective_domain, hpullx]
+        exact hx
+    rw [is_convex_function_iff_segment_ineq] at hF_convex ⊢
     intro x hx y hy t ht
     have hXeq :
         (f ∘ singular_value_function) (rectangularDiagonalProfile x) = f x := by

@@ -1,4 +1,3 @@
-import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap03.Proposition_3_12
 import FirstOrderMethodsOptimization_Beck_2017.Chap09.Definition_9_2
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_13
@@ -21,10 +20,10 @@ variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [ProperSp
 
 Domain sampling in the local Chapter 10 and Chapter 6 API identifies the canonical owners already
 present in the workspace:
-- `Function.toExtendedReal` from Definition 9.2 is the owner of the canonical coercion from real-valued
+- `Function.toEReal` from Definition 9.2 is the owner of the canonical coercion from real-valued
   objectives to the extended-real codomain, together with the derived proper/lower-semicontinuous/
   convex bridge API used by the proximal-point owner;
-- `proximal_point_operator` / `proxₚ[μ, h.toExtendedReal]` from Definition 10.12 is the point-valued
+- `proximal_point_operator` / `proxₚ[μ, h.toEReal]` from Definition 10.12 is the point-valued
   bridge surface for `prox_(μ h)`;
 - `metricProjection` from Proposition 3.12 is the point-valued owner of `P_C`;
 - `fista_momentum_update` and `fista_extrapolated_point` from Algorithm 10.13 are the scalar and
@@ -41,7 +40,7 @@ canonical FISTA state `(x^(k-1), x^k, t_k)`. The faithful public interface is th
 recursive state owner `constrained_s_fista` valued in `FISTAState E`, together with the
 source-facing feasible iterate, extrapolated-point, and momentum companions. The recursive owner
 should therefore take the constrained problem data through Definition 10.59's canonical class
-rather than restating parallel low-level assumptions about `C` and `h.toExtendedReal`. Since the
+rather than restating parallel low-level assumptions about `C` and `h.toEReal`. Since the
 displayed initialization uses `μ = ε / ℓ_h^2` and
 `L̃ = ℓ_h^2 / ε`, the interface keeps those two positive parameters as named source-facing
 declarations rather than hiding them inside the state update. -/
@@ -62,7 +61,8 @@ def constrained_s_fista_smoothing_parameter
 @[simp] theorem constrained_s_fista_smoothing_parameter_coe
     (ε ℓh : PosReal) :
     ((constrained_s_fista_smoothing_parameter ε ℓh : PosReal) : ℝ) =
-      (ε : ℝ) / (ℓh : ℝ) ^ (2 : ℕ) := sorry
+      (ε : ℝ) / (ℓh : ℝ) ^ (2 : ℕ) :=
+  rfl
 
 /-- The curvature parameter `L̃ = ℓ_h² / ε` appearing in Algorithm 10.59. -/
 def constrained_s_fista_curvature_parameter
@@ -80,25 +80,26 @@ def constrained_s_fista_curvature_parameter
 @[simp] theorem constrained_s_fista_curvature_parameter_coe
     (ε ℓh : PosReal) :
     ((constrained_s_fista_curvature_parameter ε ℓh : PosReal) : ℝ) =
-      (ℓh : ℝ) ^ (2 : ℕ) / (ε : ℝ) := sorry
+      (ℓh : ℝ) ^ (2 : ℕ) / (ε : ℝ) :=
+  rfl
 
 section Problem
 
+variable (h : E → ℝ) (C : Set E) (ℓh : PosReal)
+variable [problem : IsConvexLipschitzConstrainedMinimizationProblem h C (PosReal.toNNReal ℓh)]
+
 /-- The projected proximal step `P_C (prox_(μ h) (y))` used in constrained S-FISTA. -/
 def constrained_s_fista_next_iterate
-    (h : E → ℝ) (C : Set E) (ℓh : PosReal)
-    [hproblem : IsConvexLipschitzConstrainedMinimizationProblem h C (PosReal.toNNReal ℓh)]
     (ε : PosReal) (y : E) : C :=
-  let _ : IsProperExtendedRealFunction h.toExtendedReal :=
-    IsConvexLipschitzConstrainedMinimizationProblem.objective_toEReal_proper hproblem
-  let _ : Fact (LowerSemicontinuous h.toExtendedReal) :=
-    ⟨IsConvexLipschitzConstrainedMinimizationProblem.objective_toEReal_lowerSemicontinuous
-      hproblem⟩
-  let _ : Fact (is_convex_function h.toExtendedReal) :=
-    ⟨IsConvexLipschitzConstrainedMinimizationProblem.objective_toEReal_convex hproblem⟩
-  metricProjection C hproblem.constraint_nonempty hproblem.constraint_closed.isComplete
-    hproblem.constraint_convex
-    (proxₚ[constrained_s_fista_smoothing_parameter ε ℓh, h.toExtendedReal] y)
+  let _ : IsProperExtendedRealFunction h.toEReal :=
+    problem.objective_toEReal_proper
+  let _ : Fact (LowerSemicontinuous h.toEReal) :=
+    ⟨problem.objective_toEReal_lowerSemicontinuous⟩
+  let _ : Fact (is_convex_function h.toEReal) :=
+    ⟨problem.objective_toEReal_convex⟩
+  metricProjection C problem.constraint_nonempty problem.constraint_closed
+    problem.constraint_convex
+    (proxₚ[constrained_s_fista_smoothing_parameter ε ℓh, h.toEReal] y)
 
 /-- Algorithm 10.59: for a constrained convex Lipschitz problem `min {h(x) | x ∈ C}`, an
 accuracy parameter `ε > 0`, and an initial feasible point `x^0 ∈ C`, the constrained S-FISTA
@@ -108,41 +109,65 @@ parameters `μ = ε / ℓ_h²` and `L̃ = ℓ_h² / ε`, and recursively applies
 update `x^(k+1) = P_C (prox_(μ h) (y^k))`, where `y^k` is the associated FISTA extrapolated
 point. -/
 def constrained_s_fista
-    (h : E → ℝ) (C : Set E) (ℓh : PosReal)
-    [IsConvexLipschitzConstrainedMinimizationProblem h C (PosReal.toNNReal ℓh)]
     (ε : PosReal) (x0 : C) : ℕ → FISTAState E
   | 0 =>
       { xPrev := x0
         xCur := x0
         tCur := 1 }
   | k + 1 =>
-      let state := constrained_s_fista h C ℓh ε x0 k
-      let xNext := (constrained_s_fista_next_iterate h C ℓh ε
-        (fista_extrapolated_point state) : E)
+      let state := constrained_s_fista ε x0 k
+      let xNext := constrained_s_fista_next_iterate h C ℓh ε (fista_extrapolated_point state)
       { xPrev := state.xCur
         xCur := xNext
         tCur := fista_momentum_update state.tCur }
 
+/-- The constrained S-FISTA state sequence starts from
+`(x^(-1), x^0, t_0) = (x^0, x^0, 1)`. -/
+@[simp] theorem constrained_s_fista_zero
+    (ε : PosReal) (x0 : C) :
+    constrained_s_fista h C ℓh ε x0 0 =
+      { xPrev := x0
+        xCur := x0
+        tCur := 1 } :=
+  rfl
+
+/-- Each constrained S-FISTA successor state is obtained from the previous state by the projected
+proximal update and the canonical FISTA momentum update. -/
+theorem constrained_s_fista_succ
+    (ε : PosReal) (x0 : C) (k : ℕ) :
+    constrained_s_fista h C ℓh ε x0 (k + 1) =
+      let state := constrained_s_fista h C ℓh ε x0 k
+      let xNext := constrained_s_fista_next_iterate h C ℓh ε (fista_extrapolated_point state)
+      { xPrev := state.xCur
+        xCur := xNext
+        tCur := fista_momentum_update state.tCur } :=
+  rfl
+
 /-- Every constrained S-FISTA current iterate belongs to the feasible set `C`. -/
 theorem constrained_s_fista_mem_constraint
-    (h : E → ℝ) (C : Set E) (ℓh : PosReal)
-    [IsConvexLipschitzConstrainedMinimizationProblem h C (PosReal.toNNReal ℓh)]
     (ε : PosReal) (x0 : C) (k : ℕ) :
-    (constrained_s_fista h C ℓh ε x0 k).xCur ∈ C := sorry
+    (constrained_s_fista h C ℓh ε x0 k).xCur ∈ C := by
+  induction k with
+  | zero =>
+      simp [constrained_s_fista]
+  | succ k hk =>
+      simp [constrained_s_fista]
 
 /-- The feasible constrained S-FISTA iterate sequence `x^k`. -/
 def constrained_s_fista_x
-    (h : E → ℝ) (C : Set E) (ℓh : PosReal)
-    [IsConvexLipschitzConstrainedMinimizationProblem h C (PosReal.toNNReal ℓh)]
     (ε : PosReal) (x0 : C) : ℕ → C :=
   fun k ↦
     ⟨(constrained_s_fista h C ℓh ε x0 k).xCur,
       constrained_s_fista_mem_constraint h C ℓh ε x0 k⟩
 
+/-- The ambient-space constrained S-FISTA iterate sequence `x^k`, obtained by coercing the
+feasible iterates into `E` for affine formulas such as the FISTA extrapolation rule. -/
+def constrained_s_fista_x_point
+    (ε : PosReal) (x0 : C) : ℕ → E :=
+  fun k ↦ constrained_s_fista_x h C ℓh ε x0 k
+
 /-- The constrained S-FISTA extrapolated sequence `y^k`. -/
 def constrained_s_fista_y
-    (h : E → ℝ) (C : Set E) (ℓh : PosReal)
-    [IsConvexLipschitzConstrainedMinimizationProblem h C (PosReal.toNNReal ℓh)]
     (ε : PosReal) (x0 : C) : ℕ → E :=
   fun k ↦ fista_extrapolated_point (constrained_s_fista h C ℓh ε x0 k)
 
@@ -158,39 +183,43 @@ recall fista_momentum_sequence_succ
 /-- The momentum field carried by the constrained S-FISTA state is the canonical Chapter 10 FISTA
 momentum sequence. -/
 theorem constrained_s_fista_tCur_eq
-    (h : E → ℝ) (C : Set E) (ℓh : PosReal)
-    [IsConvexLipschitzConstrainedMinimizationProblem h C (PosReal.toNNReal ℓh)]
     (ε : PosReal) (x0 : C) (k : ℕ) :
-    (constrained_s_fista h C ℓh ε x0 k).tCur = fista_momentum_sequence k := sorry
+    (constrained_s_fista h C ℓh ε x0 k).tCur = fista_momentum_sequence k := by
+  induction k with
+  | zero =>
+      simp [constrained_s_fista, fista_momentum_sequence]
+  | succ k hk =>
+      rw [constrained_s_fista, hk, fista_momentum_sequence_succ]
 
 -- Proof sketch: unfold `constrained_s_fista` at `0`; the initial state's feasible iterate is
 -- definitionally `x^0`.
 /-- The constrained S-FISTA feasible sequence starts at the prescribed initial point `x^0`. -/
 @[simp] theorem constrained_s_fista_x_zero
-    (h : E → ℝ) (C : Set E) (ℓh : PosReal)
-    [IsConvexLipschitzConstrainedMinimizationProblem h C (PosReal.toNNReal ℓh)]
     (ε : PosReal) (x0 : C) :
-    constrained_s_fista_x h C ℓh ε x0 0 = x0 := sorry
+    constrained_s_fista_x h C ℓh ε x0 0 = x0 := by
+  apply Subtype.ext
+  simp [constrained_s_fista_x, constrained_s_fista]
 
 -- Proof sketch: unfold `constrained_s_fista` at `0`; the initial state records `y^0 = x^0`.
 /-- The constrained S-FISTA extrapolated sequence starts from `y^0 = x^0`. -/
 @[simp] theorem constrained_s_fista_y_zero
-    (h : E → ℝ) (C : Set E) (ℓh : PosReal)
-    [IsConvexLipschitzConstrainedMinimizationProblem h C (PosReal.toNNReal ℓh)]
     (ε : PosReal) (x0 : C) :
-    constrained_s_fista_y h C ℓh ε x0 0 = (x0 : E) := sorry
+    constrained_s_fista_y h C ℓh ε x0 0 =
+      constrained_s_fista_x_point h C ℓh ε x0 0 := by
+  simp [constrained_s_fista_y, constrained_s_fista_x_point, constrained_s_fista_x,
+    constrained_s_fista, fista_extrapolated_point, fista_momentum_update]
 
 -- Proof sketch: unfold `constrained_s_fista` at `k + 1`; the updated state's `xCur` field is
 -- definitionally `P_C (prox_(μ h) (y^k))`.
 /-- Each constrained S-FISTA successor iterate satisfies
 `x^(k+1) = P_C (prox_(μ h) (y^k))`. -/
 theorem constrained_s_fista_x_succ
-    (h : E → ℝ) (C : Set E) (ℓh : PosReal)
-    [IsConvexLipschitzConstrainedMinimizationProblem h C (PosReal.toNNReal ℓh)]
     (ε : PosReal) (x0 : C) (k : ℕ) :
     constrained_s_fista_x h C ℓh ε x0 (k + 1) =
       constrained_s_fista_next_iterate h C ℓh ε
-        (constrained_s_fista_y h C ℓh ε x0 k) := sorry
+        (constrained_s_fista_y h C ℓh ε x0 k) := by
+  apply Subtype.ext
+  simp [constrained_s_fista_x, constrained_s_fista, constrained_s_fista_y]
 
 -- Proof sketch: unfold `constrained_s_fista` at `k + 1`; the updated state's `yCur` field is
 -- definitionally the FISTA extrapolation formula built from `x^(k+1)`, `x^k`, `t_(k+1)`, and
@@ -198,15 +227,28 @@ theorem constrained_s_fista_x_succ
 /-- The constrained S-FISTA extrapolated sequence satisfies
 `y^(k+1) = x^(k+1) + ((t_(k+1) - 1) / t_(k+2)) (x^(k+1) - x^k)`. -/
 theorem constrained_s_fista_y_succ
-    (h : E → ℝ) (C : Set E) (ℓh : PosReal)
-    [IsConvexLipschitzConstrainedMinimizationProblem h C (PosReal.toNNReal ℓh)]
     (ε : PosReal) (x0 : C) (k : ℕ) :
     constrained_s_fista_y h C ℓh ε x0 (k + 1) =
-      (constrained_s_fista_x h C ℓh ε x0 (k + 1) : E) +
+      constrained_s_fista_x_point h C ℓh ε x0 (k + 1) +
         ((fista_momentum_sequence (k + 1) - 1) /
             fista_momentum_sequence (k + 2)) •
-          ((constrained_s_fista_x h C ℓh ε x0 (k + 1) : E) -
-            (constrained_s_fista_x h C ℓh ε x0 k : E)) := sorry
+          (constrained_s_fista_x_point h C ℓh ε x0 (k + 1) -
+            constrained_s_fista_x_point h C ℓh ε x0 k) := by
+  rw [constrained_s_fista_y, fista_extrapolated_point_eq]
+  have ht :
+      (constrained_s_fista h C ℓh ε x0 (k + 1)).tCur =
+        fista_momentum_sequence (k + 1) :=
+    constrained_s_fista_tCur_eq h C ℓh ε x0 (k + 1)
+  have htNext :
+      fista_momentum_update ((constrained_s_fista h C ℓh ε x0 (k + 1)).tCur) =
+        fista_momentum_sequence (k + 2) := by
+    rw [ht, ← fista_momentum_sequence_succ (k + 1)]
+  have hxPrev :
+      (constrained_s_fista h C ℓh ε x0 (k + 1)).xPrev =
+        constrained_s_fista_x_point h C ℓh ε x0 k := by
+    rfl
+  rw [htNext, ht, hxPrev]
+  simp [constrained_s_fista_x_point, constrained_s_fista_x]
 
 end Problem
 

@@ -1,4 +1,5 @@
 import Mathlib
+import FirstOrderMethodsOptimization_Beck_2017.Chap01.Proposition_1_2
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -134,153 +135,14 @@ theorem matrix_schatten_top_norm_eq_first_singular_value
       rw [matrix_schatten_norm_def, htoLp, hσ]
       simp
 
--- Proof sketch: combine the previous theorem with the operator-norm/singular-value identity for
--- real matrices from Proposition 1.2.
 section L2Operator
 
 open scoped Matrix.Norms.L2Operator
-
-/-- Helper for Definition 7.20: on a positive real finite-dimensional endomorphism, the operator
-norm is the largest eigenvalue. -/
-lemma positive_operator_norm_eq_top_eigenvalue
-    {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
-    {S : E →ₗ[ℝ] E} {k : ℕ} (hn : Module.finrank ℝ E = k) (hk : 0 < k)
-    (hS : S.IsPositive) :
-    ‖S.toContinuousLinearMap‖ = hS.isSymmetric.eigenvalues hn ⟨0, hk⟩ := by
-  have hS_nonneg : ∀ x : E, 0 ≤ S.toContinuousLinearMap.rayleighQuotient x := by
-    intro x
-    by_cases hx : x = 0
-    · simp [ContinuousLinearMap.rayleighQuotient, hx]
-    · rw [ContinuousLinearMap.rayleighQuotient]
-      exact div_nonneg (hS.inner_nonneg_left x) (sq_nonneg ‖x‖)
-  have hbdd_all :
-      BddAbove (Set.range fun x : E ↦ S.toContinuousLinearMap.rayleighQuotient x) := by
-    refine ⟨‖S.toContinuousLinearMap‖, ?_⟩
-    rintro y ⟨x, rfl⟩
-    exact le_trans
-      (by
-        simpa [abs_of_nonneg (hS_nonneg x)] using
-          S.toContinuousLinearMap.rayleighQuotient_le_norm x)
-      le_rfl
-  have hbdd_nonzero :
-      BddAbove
-        (Set.range fun x : {x : E // x ≠ 0} ↦ S.toContinuousLinearMap.rayleighQuotient x) :=
-    hbdd_all.mono <| by
-      rintro y ⟨x, rfl⟩
-      exact ⟨x, rfl⟩
-  haveI : Nontrivial E := Module.nontrivial_of_finrank_pos (hn ▸ hk)
-  haveI : Nonempty {x : E // x ≠ 0} := by
-    obtain ⟨x, hx⟩ := exists_ne (0 : E)
-    exact ⟨⟨x, hx⟩⟩
-  have hiSup_nonzero_nonneg :
-      0 ≤ ⨆ x : {x : E // x ≠ 0}, S.toContinuousLinearMap.rayleighQuotient x := by
-    obtain ⟨x, hx⟩ := exists_ne (0 : E)
-    exact le_trans (hS_nonneg x) (le_ciSup hbdd_nonzero ⟨x, hx⟩)
-  have hsup_eq : (⨆ x : E, S.toContinuousLinearMap.rayleighQuotient x) =
-      ⨆ x : {x : E // x ≠ 0}, S.toContinuousLinearMap.rayleighQuotient x := by
-    apply le_antisymm
-    · refine ciSup_le ?_
-      intro x
-      by_cases hx : x = 0
-      · rw [hx, ContinuousLinearMap.rayleighQuotient_apply_zero]
-        exact hiSup_nonzero_nonneg
-      · exact le_ciSup hbdd_nonzero ⟨x, hx⟩
-    · refine ciSup_le ?_
-      intro x
-      exact le_ciSup hbdd_all x.1
-  have hnorm_eq_sup :
-      ‖S.toContinuousLinearMap‖ = ⨆ x : E, S.toContinuousLinearMap.rayleighQuotient x := by
-    -- Positivity removes the absolute value from the Rayleigh-quotient formula for the norm.
-    rw [ContinuousLinearMap.norm_eq_iSup_rayleighQuotient _ hS.isSymmetric]
-    congr with x
-    exact abs_of_nonneg (hS_nonneg x)
-  have hM_eig :
-      Module.End.HasEigenvalue S
-        (⨆ x : {x : E // x ≠ 0}, S.toContinuousLinearMap.rayleighQuotient x) := by
-    -- The source-faithful step is that the maximal Rayleigh quotient is itself an eigenvalue.
-    simpa [ContinuousLinearMap.rayleighQuotient] using
-      (LinearMap.IsSymmetric.hasEigenvalue_iSup_of_finiteDimensional (T := S) hS.isSymmetric)
-  obtain ⟨j, hj⟩ := hS.isSymmetric.exists_eigenvalues_eq hn hM_eig
-  rw [hnorm_eq_sup, hsup_eq]
-  apply le_antisymm
-  · -- Any eigenvalue is bounded above by the first entry of the decreasing eigenvalue list.
-    rw [← hj]
-    exact (hS.isSymmetric.eigenvalues_antitone hn)
-      (show (⟨0, hk⟩ : Fin k) ≤ j by exact Nat.zero_le _)
-  · let i0 : Fin k := ⟨0, hk⟩
-    have hi0_ne : hS.isSymmetric.eigenvectorBasis hn i0 ≠ 0 := by
-      intro hzero
-      have hnorm : ‖hS.isSymmetric.eigenvectorBasis hn i0‖ = 1 :=
-        OrthonormalBasis.norm_eq_one _ _
-      simp [hzero] at hnorm
-    have hray :
-        S.toContinuousLinearMap.rayleighQuotient (hS.isSymmetric.eigenvectorBasis hn i0) =
-          hS.isSymmetric.eigenvalues hn i0 := by
-      -- Evaluate the Rayleigh quotient on a unit eigenvector for the top eigenvalue.
-      rw [ContinuousLinearMap.rayleighQuotient, ContinuousLinearMap.reApplyInnerSelf_apply]
-      change
-        RCLike.re
-            (inner ℝ (S (hS.isSymmetric.eigenvectorBasis hn i0))
-              (hS.isSymmetric.eigenvectorBasis hn i0)) /
-          ‖hS.isSymmetric.eigenvectorBasis hn i0‖ ^ 2 = hS.isSymmetric.eigenvalues hn i0
-      rw [hS.isSymmetric.apply_eigenvectorBasis hn i0, inner_smul_left,
-        OrthonormalBasis.norm_eq_one]
-      simp
-    rw [← hray]
-    exact le_ciSup hbdd_nonzero ⟨hS.isSymmetric.eigenvectorBasis hn i0, hi0_ne⟩
-
-/-- Helper for Definition 7.20: the operator norm of a real finite-dimensional linear map is its
-first singular value. -/
-lemma operator_norm_eq_first_singular_value
-    {E F : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
-    [NormedAddCommGroup F] [InnerProductSpace ℝ F] [FiniteDimensional ℝ F]
-    (T : E →ₗ[ℝ] F) :
-    ‖T.toContinuousLinearMap‖ = T.singularValues 0 := by
-  by_cases hk : 0 < Module.finrank ℝ E
-  · let k : ℕ := Module.finrank ℝ E
-    have hn : Module.finrank ℝ E = k := rfl
-    have hgram :=
-      positive_operator_norm_eq_top_eigenvalue hn hk
-        (LinearMap.isPositive_adjoint_comp_self T)
-    have hnorm_sq : ‖T.toContinuousLinearMap‖ ^ 2 =
-        (LinearMap.isPositive_adjoint_comp_self T).isSymmetric.eigenvalues hn ⟨0, hk⟩ := by
-      -- Compare `‖T‖²` with the top eigenvalue of the Gram operator `T†T`.
-      calc
-        ‖T.toContinuousLinearMap‖ ^ 2 = ‖(LinearMap.adjoint T ∘ₗ T).toContinuousLinearMap‖ := by
-          simpa [pow_two] using
-            (ContinuousLinearMap.norm_adjoint_comp_self T.toContinuousLinearMap).symm
-        _ = (LinearMap.isPositive_adjoint_comp_self T).isSymmetric.eigenvalues hn ⟨0, hk⟩ := hgram
-    have hsq : ‖T.toContinuousLinearMap‖ ^ 2 = T.singularValues 0 ^ 2 := by
-      -- The Gram eigenvalues are exactly the squared singular values.
-      exact hnorm_sq.trans (LinearMap.sq_singularValues_fin T hn ⟨0, hk⟩).symm
-    have hnorm_nonneg : 0 ≤ ‖T.toContinuousLinearMap‖ := norm_nonneg _
-    have hσ_nonneg : 0 ≤ T.singularValues 0 := T.singularValues_nonneg 0
-    -- Both quantities are nonnegative, so equality of squares implies equality.
-    exact le_antisymm
-      (by nlinarith [hsq])
-      (by nlinarith [hsq])
-  · have hfinrank : Module.finrank ℝ E = 0 := Nat.eq_zero_of_not_pos hk
-    have hzero : ∀ x : E, x = 0 := finrank_zero_iff_forall_zero.mp hfinrank
-    have hT : T = 0 := by
-      -- In zero domain dimension the map itself is zero.
-      ext x
-      simp [hzero x]
-    rw [hT]
-    simp
-
-/-- Helper for Definition 7.20: the Euclidean induced matrix norm is the largest singular value. -/
-theorem l2_induced_matrix_norm_eq_max_singular_value
-    (X : Matrix (Fin m) (Fin n) ℝ) :
-    ‖X‖ = X.toEuclideanLin.singularValues 0 := by
-  -- Rewrite the matrix norm through `toEuclideanLin` and apply the linear-map bridge.
-  simpa [Matrix.l2_opNorm_def] using operator_norm_eq_first_singular_value X.toEuclideanLin
 
 /-- The Schatten `∞`-norm of a real matrix equals the Euclidean induced matrix operator norm. -/
 theorem matrix_schatten_top_norm_eq_l2_induced_matrix_norm
     (X : Matrix (Fin m) (Fin n) ℝ) :
     S_[⊤] X = ‖X‖ := by
-  -- Route correction: avoid the unavailable chapter import and prove the operator-norm bridge
-  -- locally from the Gram operator and singular-value API.
   calc
     S_[⊤] X = X.toEuclideanLin.singularValues 0 := by
       exact matrix_schatten_top_norm_eq_first_singular_value X

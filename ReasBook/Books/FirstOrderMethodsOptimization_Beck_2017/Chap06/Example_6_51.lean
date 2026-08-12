@@ -49,7 +49,7 @@ private theorem hC_convex :
 private def constraintProjectionPoint (y : E) : E :=
   (metricProjection C
     (hC_nonempty k)
-    (hC_closed k).isComplete
+    (hC_closed k)
     (hC_convex k)
     y : E)
 
@@ -422,7 +422,7 @@ theorem prox_sum_k_largest_abs_eq_singleton_sub_smul_metricProjection
   let lamPos : PosReal := ⟨lam, hlam⟩
   have hpenalty :
       (fun y : E ↦ (lam : EReal) * (sum_k_largest_abs k y : EReal)) =
-        (((lam : ℝ) : EReal) • σp[C]) := by
+        (((lam : ℝ) : EReal) • σ[C]) := by
     funext y
     -- Rewrite the source-facing penalty through the support-function identity proved above.
     rw [Pi.smul_apply, support_function_primal_apply,

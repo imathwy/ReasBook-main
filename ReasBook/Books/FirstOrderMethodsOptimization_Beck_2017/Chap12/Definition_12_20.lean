@@ -144,50 +144,60 @@ private def alternating_edge_index :
 
 /-- Helper for Definition 12.20: the parity split of adjacent-edge indices is bijective. -/
 private theorem alternating_edge_index_bijective :
-    Function.Bijective (alternating_edge_index (n := n)) := by
+    Function.Bijective (@alternating_edge_index n) := by
   constructor
   · intro a b hab
-    -- Compare the underlying natural-number edge indices to separate the parity cases.
+    -- Compare the two parity branches separately, reducing each case to arithmetic on values.
     cases a with
     | inl i =>
         cases b with
         | inl j =>
-            apply congrArg Sum.inl
-            apply Fin.ext
-            have hij : 2 * i.1 = 2 * j.1 := by
+            -- Equal even-branch images force the same halved edge index.
+            have hijVal : 2 * i.1 = 2 * j.1 := by
               simpa [alternating_edge_index] using congrArg Fin.val hab
-            omega
+            have hij : i = j := by
+              apply Fin.ext
+              omega
+            simp [hij]
         | inr j =>
-            have hij : 2 * i.1 = 2 * j.1 + 1 := by
+            -- Route correction: the mixed branch is impossible because an even number is not odd.
+            have hijVal : 2 * i.1 = 2 * j.1 + 1 := by
               simpa [alternating_edge_index] using congrArg Fin.val hab
-            omega
+            have : False := by
+              omega
+            exact False.elim this
     | inr i =>
         cases b with
         | inl j =>
-            have hij : 2 * i.1 + 1 = 2 * j.1 := by
+            -- The same parity contradiction rules out the other mixed branch.
+            have hijVal : 2 * i.1 + 1 = 2 * j.1 := by
               simpa [alternating_edge_index] using congrArg Fin.val hab
-            omega
+            have : False := by
+              omega
+            exact False.elim this
         | inr j =>
-            apply congrArg Sum.inr
-            apply Fin.ext
-            have hij : 2 * i.1 + 1 = 2 * j.1 + 1 := by
+            -- Equal odd-branch images again force the same halved edge index.
+            have hijVal : 2 * i.1 + 1 = 2 * j.1 + 1 := by
               simpa [alternating_edge_index] using congrArg Fin.val hab
-            omega
-  · intro k
-    -- Every edge index is either even or odd, so it belongs to exactly one branch.
-    rcases Nat.mod_two_eq_zero_or_one k.1 with hk | hk
-    · refine ⟨Sum.inl ⟨k.1 / 2, ?_⟩, ?_⟩
+            have hij : i = j := by
+              apply Fin.ext
+              omega
+            simp [hij]
+  · intro e
+    -- Reconstruct the unique preimage by splitting the edge index into even and odd cases.
+    rcases Nat.even_or_odd e.1 with he | ho
+    · rcases even_iff_exists_two_mul.mp he with ⟨k, hk⟩
+      -- The even case lands in the left summand with index `k`.
+      refine ⟨Sum.inl ⟨k, ?_⟩, ?_⟩
       · omega
       · apply Fin.ext
-        have hdecomp : k.1 % 2 + 2 * (k.1 / 2) = k.1 := Nat.mod_add_div k.1 2
-        simp [alternating_edge_index]
-        omega
-    · refine ⟨Sum.inr ⟨k.1 / 2, ?_⟩, ?_⟩
+        simpa [alternating_edge_index] using hk.symm
+    · rcases odd_iff_exists_bit1.mp ho with ⟨k, hk⟩
+      -- The odd case lands in the right summand with index `k`.
+      refine ⟨Sum.inr ⟨k, ?_⟩, ?_⟩
       · omega
       · apply Fin.ext
-        have hdecomp : k.1 % 2 + 2 * (k.1 / 2) = k.1 := Nat.mod_add_div k.1 2
-        simp [alternating_edge_index]
-        omega
+        simpa [alternating_edge_index] using hk.symm
 
 /-- Helper for Definition 12.20: the absolute first-difference sum splits into its even-start and
 odd-start edge blocks. -/
@@ -205,9 +215,9 @@ theorem adjacent_edge_abs_sum_eq_even_edge_abs_sum_add_odd_edge_abs_sum
           |D[n + 1] x (alternating_edge_index s)| := by
           symm
           exact Fintype.sum_bijective
-            (alternating_edge_index (n := n))
-            alternating_edge_index_bijective
-            (fun s ↦ |D[n + 1] x (alternating_edge_index s)|)
+            (@alternating_edge_index n)
+            (@alternating_edge_index_bijective n)
+            (fun s ↦ |D[n + 1] x ((@alternating_edge_index n) s)|)
             (fun e ↦ |D[n + 1] x e|)
             (fun _ ↦ rfl)
     _ =
@@ -229,7 +239,7 @@ theorem one_dimensional_total_variation_eq_even_edge_abs_sum_add_odd_edge_abs_su
         |D[n + 1] x (one_dimensional_total_variation_split_odd_edge i)|) := by
   -- Expand the `ℓ¹` norm of the first-difference vector and apply the parity split.
   rw [one_dimensional_total_variation, EuclideanSpace.l1Norm_eq_sum_abs]
-  exact adjacent_edge_abs_sum_eq_even_edge_abs_sum_add_odd_edge_abs_sum (x := x)
+  exact adjacent_edge_abs_sum_eq_even_edge_abs_sum_add_odd_edge_abs_sum x
 
 /-- The full one-dimensional total-variation penalty splits into the sum of the even-edge and
 odd-edge penalties. -/
@@ -246,32 +256,33 @@ theorem one_dimensional_total_variation_penalty_eq_split_penalties
   rw [one_dimensional_total_variation_eq_even_edge_abs_sum_add_odd_edge_abs_sum]
   rw [mul_add]
 
-/-- Definition 12.20: the one-dimensional total-variation denoising objective from
-Definition 12.19 is the two-block finite-sum objective whose smooth term is the quadratic
-fidelity `denoising_data_fidelity d` and whose two block penalties are the even-edge and
-odd-edge split penalties. -/
-theorem one_dimensional_total_variation_denoising_objective_eq_dual_block_model
+/-- Definition 12.20 [Splitting of the one-dimensional total variation denoising objective]:
+the one-dimensional total-variation denoising objective is exactly the Chapter 12.14
+two-block composite objective whose block family is given by the even-edge and odd-edge split
+penalties. -/
+theorem one_dimensional_total_variation_denoising_fits_dual_block_model
     (d : En) (lam : PosReal) :
     one_dimensional_total_variation_denoising_objective d lam =
       composite_model_objective
         (denoising_data_fidelity d)
         (finite_sum_objective G[lam]) := by
   ext x
-  rw [one_dimensional_total_variation_denoising_objective_apply, composite_model_objective_apply,
-    one_dimensional_total_variation_split_penalties_apply,
-    one_dimensional_total_variation_penalty_eq_split_penalties]
-  simp
+  rw [one_dimensional_total_variation_denoising_objective_apply,
+    composite_model_objective_apply]
+  rw [one_dimensional_total_variation_penalty_eq_split_penalties,
+    one_dimensional_total_variation_split_penalties_apply]
+  rfl
 
-/-- Evaluating the split one-dimensional total-variation denoising objective gives the sum of the
-quadratic fidelity term and the two alternating edge penalties. -/
+/-- Pointwise form of Definition 12.20: evaluating the one-dimensional total-variation denoising
+objective gives the quadratic fidelity term plus the even-edge and odd-edge split penalties. -/
 theorem one_dimensional_total_variation_denoising_objective_apply_eq_split_penalties
     (d x : En) (lam : PosReal) :
     one_dimensional_total_variation_denoising_objective d lam x =
       denoising_data_fidelity d x +
         one_dimensional_total_variation_split_even_edge_penalty lam x +
         one_dimensional_total_variation_split_odd_edge_penalty lam x := by
-  rw [one_dimensional_total_variation_denoising_objective_apply,
-    one_dimensional_total_variation_penalty_eq_split_penalties]
+  rw [one_dimensional_total_variation_denoising_fits_dual_block_model,
+    composite_model_objective_apply, one_dimensional_total_variation_split_penalties_apply]
   simp [add_assoc]
 
 end

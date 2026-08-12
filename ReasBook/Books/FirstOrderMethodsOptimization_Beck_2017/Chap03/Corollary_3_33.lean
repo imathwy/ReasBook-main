@@ -19,9 +19,10 @@ convex-analysis API directly. -/
 recall effective_domain
 recall IsProperExtendedRealFunction
 recall is_convex_function
-recall extendedRealSubdifferential
+recall subdifferential
 recall normal_cone
 recall isMinOn_iff_exists_subgradient_neg_mem_normal_cone
+recall isMinOn_iff_exists_subgradient_neg_mem_normal_cone_of_proper
 recall neg_dotProductEquiv_mem_normal_cone_stdSimplex_iff_exists_multiplier
 
 -- Proof sketch: apply the constrained convex optimality criterion under the qualification
@@ -42,14 +43,14 @@ theorem isMinOn_stdSimplex_iff_exists_subgradient_vector_and_multiplier
     {xStar : Fin n → ℝ} (hxStar : xStar ∈ Δ) :
     IsMinOn f Δ xStar ↔
       ∃ g : Fin n → ℝ,
-        dotProductEquiv ℝ (Fin n) g ∈ extendedRealSubdifferential f xStar ∧
+        dotProductEquiv ℝ (Fin n) g ∈ subdifferential f xStar ∧
           ∃ μ : ℝ, IsStdSimplexMultiplier xStar g μ := by
   have hΔ : Convex ℝ Δ := convex_stdSimplex ℝ (Fin n)
   have howner :
       IsMinOn f Δ xStar ↔
         ∃ g' : Module.Dual ℝ (Fin n → ℝ),
-          g' ∈ extendedRealSubdifferential f xStar ∧ -g' ∈ normal_cone Δ xStar :=
-    isMinOn_iff_exists_subgradient_neg_mem_normal_cone (f := f) hf.ne_bot hconv hΔ
+          g' ∈ ∂ f(xStar) ∧ -g' ∈ normal_cone Δ xStar :=
+    isMinOn_iff_exists_subgradient_neg_mem_normal_cone_of_proper (f := f) hf hconv hΔ
       (by simpa [Set.inter_comm] using hri) hxStar
   constructor
   · intro hxmin

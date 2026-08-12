@@ -1,5 +1,6 @@
 import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap01.Definition_1_33
+import FirstOrderMethodsOptimization_Beck_2017.Chap12.Algorithm_12_12.Spaces
 import FirstOrderMethodsOptimization_Beck_2017.Chap12.Proposition_12_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
@@ -7,24 +8,21 @@ import FirstOrderMethodsOptimization_Beck_2017.Chap12.Proposition_12_4
 noncomputable section
 
 open scoped BigOperators Matrix Matrix.Norms.Frobenius
-open Matrix WithLp
+open Matrix TwoDimensionalTV WithLp
 
 section
 
 variable (m n : ℕ)
 
-local notation "M" => Matrix (Fin m) (Fin n) ℝ
-local notation "P" => Matrix (Fin m) (Fin (n - 1)) ℝ
-local notation "Q" => Matrix (Fin (m - 1)) (Fin n) ℝ
-local notation "TVSpace" => WithLp 2 (P × Q)
-
 /- Proposition 12.5 is `bridge/view` in the two-dimensional total-variation denoising API.
 
 Domain sampling identifies the owner split:
-- `core/canonical`: `two_dimensional_total_variation_difference : M →ₗ[ℝ] TVSpace` from
+- `core/canonical`: `two_dimensional_total_variation_difference :
+  MatrixSpace m n →ₗ[ℝ] DualSpace m n` from
   Proposition 12.4;
 - `core/canonical`: mathlib's `WithLp.linearEquiv`, `WithLp.fst`, and `WithLp.snd`, which equip
-  `WithLp 2 (P × Q)` with the canonical `L²` product structure used for the TV dual pair;
+  `WithLp 2 (HorizontalSpace m n × VerticalSpace m n)` with the canonical `L²` product structure
+  used for the TV dual pair;
 - `core/canonical`: `LinearMap.adjoint`, once the source and target carry the Frobenius and `L²`
   Hilbert structures used in the chapter;
 - `bridge/view`: the explicit boundary-value formula for `Aᵀ z`.
@@ -32,24 +30,6 @@ Domain sampling identifies the owner split:
 Primitive data here are only the Frobenius/`L²` Hilbert structures. The divergence formula is
 derived API from the adjoint owner, not a second public operator parallel to `A.adjoint`. The
 owner-level notation `A[m, n]` and `Aᵀ[m, n]` is imported from Proposition 12.4. -/
-
-local instance : NormedAddCommGroup M := Matrix.frobeniusNormedAddCommGroup
-
-local instance : NormedSpace ℝ M := Matrix.frobeniusNormedSpace
-
-local instance : InnerProductSpace ℝ M := Matrix.frobeniusInnerProductSpace
-
-local instance : NormedAddCommGroup P := Matrix.frobeniusNormedAddCommGroup
-
-local instance : NormedSpace ℝ P := Matrix.frobeniusNormedSpace
-
-local instance : InnerProductSpace ℝ P := Matrix.frobeniusInnerProductSpace
-
-local instance : NormedAddCommGroup Q := Matrix.frobeniusNormedAddCommGroup
-
-local instance : NormedSpace ℝ Q := Matrix.frobeniusNormedSpace
-
-local instance : InnerProductSpace ℝ Q := Matrix.frobeniusInnerProductSpace
 
 -- Proof sketch: identify `Aᵀ` with the unique map satisfying the Hilbert adjoint identity for the
 -- Proposition 12.4 forward-difference operator, then compute the resulting coordinate formula by
@@ -134,7 +114,7 @@ lemma forward_difference_sum_eq_zero_padded
 /-- Helper for Proposition 12.5: the horizontal inner-product term is the zero-padded horizontal
 divergence contribution. -/
 lemma horizontal_difference_inner_eq_zero_padded
-    (x : M) (z : TVSpace) :
+    (x : MatrixSpace m n) (z : DualSpace m n) :
     inner ℝ (two_dimensional_total_variation_horizontal_difference x) z.fst =
       ∑ i : Fin m, ∑ j : Fin n,
         x i j *
@@ -167,12 +147,12 @@ lemma horizontal_difference_inner_eq_zero_padded
       refine Finset.sum_congr rfl ?_
       intro i hi
       simpa [two_dimensional_total_variation_horizontal_difference_apply] using
-        forward_difference_sum_eq_zero_padded n (x := x i) (p := z.fst i)
+        forward_difference_sum_eq_zero_padded n (x i) (z.fst i)
 
 /-- Helper for Proposition 12.5: the vertical inner-product term is the zero-padded vertical
 divergence contribution. -/
 lemma vertical_difference_inner_eq_zero_padded
-    (x : M) (z : TVSpace) :
+    (x : MatrixSpace m n) (z : DualSpace m n) :
     inner ℝ (two_dimensional_total_variation_vertical_difference x) z.snd =
       ∑ i : Fin m, ∑ j : Fin n,
         x i j *
@@ -209,7 +189,7 @@ lemma vertical_difference_inner_eq_zero_padded
       refine Finset.sum_congr rfl ?_
       intro j hj
       simpa [two_dimensional_total_variation_vertical_difference_apply] using
-        forward_difference_sum_eq_zero_padded m (x := fun i ↦ x i j) (p := fun i ↦ z.snd i j)
+        forward_difference_sum_eq_zero_padded m (fun i ↦ x i j) (fun i ↦ z.snd i j)
     _ = ∑ i : Fin m, ∑ j : Fin n,
           x i j *
             ((if h : i.1 < m - 1 then z.snd (i.castLT h) j else 0) -
@@ -218,7 +198,7 @@ lemma vertical_difference_inner_eq_zero_padded
 
 /-- Helper for Proposition 12.5: the adjoint of the discrete TV difference operator is the
 zero-padded discrete divergence. -/
-abbrev zero_padded_divergence (z : TVSpace) : M :=
+abbrev zero_padded_divergence (z : DualSpace m n) : MatrixSpace m n :=
   fun i j ↦
     (if h : j.1 < n - 1 then z.fst i (j.castLT h) else 0) +
       (if h : i.1 < m - 1 then z.snd (i.castLT h) j else 0) -
@@ -228,7 +208,7 @@ abbrev zero_padded_divergence (z : TVSpace) : M :=
 /-- Helper for Proposition 12.5: the Hilbert adjoint agrees with the zero-padded divergence matrix
 on every entry. -/
 lemma two_dimensional_total_variation_difference_adjoint_eq_zero_padded_divergence
-    (z : TVSpace) :
+    (z : DualSpace m n) :
     Aᵀ[m, n] z = zero_padded_divergence m n z := by
   apply ext_inner_left ℝ
   intro x
@@ -241,7 +221,8 @@ lemma two_dimensional_total_variation_difference_adjoint_eq_zero_padded_divergen
       simp [WithLp.prod_inner_apply]
     _ = inner ℝ (two_dimensional_total_variation_horizontal_difference x) z.fst +
           inner ℝ (two_dimensional_total_variation_vertical_difference x) z.snd := by
-      rw [two_dimensional_total_variation_difference_fst, two_dimensional_total_variation_difference_snd]
+      rw [two_dimensional_total_variation_difference_fst,
+        two_dimensional_total_variation_difference_snd]
     _ =
         (∑ i : Fin m, ∑ j : Fin n,
           x i j *
@@ -285,7 +266,7 @@ lemma two_dimensional_total_variation_difference_adjoint_eq_zero_padded_divergen
 `A[m, n]` has the divergence-style coordinate formula with zero-extended boundary terms. -/
 @[simp]
 theorem two_dimensional_total_variation_difference_adjoint_apply
-    (z : TVSpace) (i : Fin m) (j : Fin n) :
+    (z : DualSpace m n) (i : Fin m) (j : Fin n) :
     Aᵀ[m, n] z i j =
       (if h : j.1 < n - 1 then z.fst i ⟨j.1, h⟩ else 0) +
         (if h : i.1 < m - 1 then z.snd ⟨i.1, h⟩ j else 0) -
@@ -301,7 +282,7 @@ theorem two_dimensional_total_variation_difference_adjoint_apply
 /-- Evaluating `Aᵀ[m, n]` on the canonical dual pair `(p, q)` recovers the textbook divergence
 formula `p_{i,j} + q_{i,j} - p_{i,j-1} - q_{i-1,j}` with zero boundary extension. -/
 @[simp] theorem two_dimensional_total_variation_difference_adjoint_toLp_apply
-    (p : P) (q : Q) (i : Fin m) (j : Fin n) :
+    (p : HorizontalSpace m n) (q : VerticalSpace m n) (i : Fin m) (j : Fin n) :
     Aᵀ[m, n] (toLp 2 (p, q)) i j =
       (if h : j.1 < n - 1 then p i ⟨j.1, h⟩ else 0) +
         (if h : i.1 < m - 1 then q ⟨i.1, h⟩ j else 0) -

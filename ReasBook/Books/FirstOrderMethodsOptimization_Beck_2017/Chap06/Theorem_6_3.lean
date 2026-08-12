@@ -44,10 +44,9 @@ proximal set itself, while the minimizer predicate `IsMinOn` remains the canonic
 -- minimizer unique after adding the proper closed convex function `f`. Rewriting with
 -- `mem_proximal_mapping_iff` identifies the proximal set with the singleton containing that
 -- minimizer.
-omit [InnerProductSpace ℝ E] [ProperSpace E] in
 /-- Helper for Theorem 6.3: if `f` is lower semicontinuous, then adding the continuous quadratic
 penalty preserves lower semicontinuity of the proximal objective. -/
-theorem lowerSemicontinuous_proximal_objective
+private theorem lowerSemicontinuous_proximal_objective
     {f : E → EReal} (hf_closed : LowerSemicontinuous f) (x : E) :
     LowerSemicontinuous (proximal_objective f x) := by
   -- The quadratic penalty is continuous as a real-valued function, hence lower semicontinuous

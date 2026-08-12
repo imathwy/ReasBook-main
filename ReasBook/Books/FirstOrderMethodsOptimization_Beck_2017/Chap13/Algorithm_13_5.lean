@@ -1,4 +1,3 @@
-import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap08.Definition_8_2
 import FirstOrderMethodsOptimization_Beck_2017.Chap01.Definition_1_31
 import FirstOrderMethodsOptimization_Beck_2017.Chap13.Definition_13_6
@@ -65,7 +64,7 @@ def polytope_quadratic_vertex_linear_objective
 theorem polytope_quadratic_vertex_mem_feasible_set
     (a : Fin l → E) (i : Fin l) :
     a i ∈ polytope_quadratic_feasible_set a := by
-  exact subset_convexHull ℝ (Set.range a) (Set.mem_range_self i)
+  exact subset_convexHull ℝ (Set.range a) ⟨i, rfl⟩
 
 -- Proof sketch: a linear functional attains the same minimum on a convex hull as on the
 -- generating vertices. Therefore a minimizing vertex index produces a canonical `IsMinOn`
@@ -77,32 +76,30 @@ theorem polytope_quadratic_linearized_isMinOn_feasible_set_of_mem_vertex_argmin
     (hi :
       i ∈ unconstrained_problem_solutions
         (polytope_quadratic_vertex_linear_objective Q b a xk)) :
-    IsMinOn (fun y ↦ dotProduct y (Q *ᵥ xk + b)) (polytope_quadratic_feasible_set a) (a i) := by
-  let S : Set E := {y | dotProduct (a i) (Q *ᵥ xk + b) ≤ dotProduct y (Q *ᵥ xk + b)}
-  -- First rewrite the discrete argmin certificate as pointwise inequalities on all vertices.
-  have hvertices :
-      Set.range a ⊆ S := by
-    rw [mem_unconstrained_problem_solutions_iff_forall_le] at hi
+    IsMinOn (fun y ↦ dotProduct y (Q *ᵥ xk + b)) (polytope_quadratic_feasible_set a) (a i) :=
+  by
+    -- Rewrite the discrete argmin certificate into pointwise bounds on every vertex.
+    rw [isMinOn_iff]
     intro y hy
-    rcases hy with ⟨j, rfl⟩
-    simpa [S, polytope_quadratic_vertex_linear_objective_apply] using hi j
-  -- Then extend the linear inequality from the vertices to their convex hull.
-  have hconvex : Convex ℝ S := by
-    intro x hx y hy t₁ t₂ ht₁ ht₂ hsum
-    simp only [S, Set.mem_setOf_eq] at hx hy ⊢
-    calc
-      dotProduct (a i) (Q *ᵥ xk + b) =
-          (t₁ + t₂) * dotProduct (a i) (Q *ᵥ xk + b) := by rw [hsum, one_mul]
-      _ ≤ t₁ * dotProduct x (Q *ᵥ xk + b) + t₂ * dotProduct y (Q *ᵥ xk + b) := by
-        nlinarith
-      _ = dotProduct (t₁ • x + t₂ • y) (Q *ᵥ xk + b) := by
-        simp [add_dotProduct, smul_dotProduct, dotProduct_add]
-        ring
-  have hfeasible_subset : polytope_quadratic_feasible_set a ⊆ S := by
-    simpa [polytope_quadratic_feasible_set, S] using convexHull_min hvertices hconvex
-  rw [isMinOn_iff]
-  intro y hy
-  exact hfeasible_subset hy
+    let g : E := Q *ᵥ xk + b
+    have hi' := mem_unconstrained_problem_solutions_iff_forall_le.mp hi
+    have hverts : ∀ j : Fin l, dotProduct (a i) g ≤ dotProduct (a j) g := by
+      intro j
+      simpa [polytope_quadratic_vertex_linear_objective, g] using hi' j
+    have hlin : IsLinearMap ℝ (fun z : E ↦ dotProduct z g) := by
+      refine ⟨?_, ?_⟩
+      · intro u v
+        simp
+      · intro c u
+        simp
+    -- The supporting halfspace is convex and contains every generating vertex, hence the hull.
+    have hsubset :
+        polytope_quadratic_feasible_set a ⊆ {z : E | dotProduct (a i) g ≤ dotProduct z g} := by
+      refine convexHull_min ?_ (convex_halfSpace_ge hlin (dotProduct (a i) g))
+      intro z hz
+      rcases hz with ⟨j, rfl⟩
+      simpa [g] using hverts j
+    exact hsubset hy
 
 /-- The search direction `dᵏ = a_{i_k} - xᵏ` from Algorithm 13.5. -/
 def polytope_quadratic_conditional_gradient_direction
@@ -174,16 +171,15 @@ theorem polytope_quadratic_conditional_gradient_update_eq
   rfl
 
 /-- Helper for Algorithm 13.5: positive definiteness makes the quadratic cross term symmetric. -/
-lemma positiveDefinite_dotProduct_mulVec_swap
+private lemma positiveDefinite_dotProduct_mulVec_swap
     {Q : positiveDefiniteMatrices n} (x y : E) :
     dotProduct x (Q *ᵥ y) = dotProduct y (Q *ᵥ x) := by
-  have htranspose : ((Q : Matrix (Fin n) (Fin n) ℝ)ᵀ) = Q := by
-    simpa using Q.2.1.eq
-  -- Move the transpose to the first vector, then use symmetry of `Q`.
-  rw [Matrix.dotProduct_mulVec]
-  rw [← htranspose]
-  rw [Matrix.vecMul_transpose]
-  rw [htranspose, dotProduct_comm]
+  -- Move the positive-definite matrix across the dot product using Hermitian symmetry.
+  calc
+    dotProduct x (Q *ᵥ y) = dotProduct (Q *ᵥ x) y :=
+      dotProduct_mulVec_swap_of_isHermitian Q Q.2.isHermitian x y
+    _ = dotProduct y (Q *ᵥ x) := by
+      rw [dotProduct_comm]
 
 /-- Helper for Algorithm 13.5: the quadratic objective restricts to a scalar quadratic along every
 line through a point. -/
@@ -193,56 +189,90 @@ lemma polytope_quadratic_objective_add_smul_direction_eq
       polytope_quadratic_objective Q b x +
         t * dotProduct d (Q *ᵥ x + b) +
         ((t ^ (2 : ℕ)) / 2) * dotProduct d (Q *ᵥ d) := by
-  -- Expand the quadratic and linear parts using bilinearity and the symmetry cross term.
-  rw [polytope_quadratic_objective_apply, polytope_quadratic_objective_apply]
-  simp only [Matrix.mulVec_add, Matrix.mulVec_smul, dotProduct_add, add_dotProduct,
-    dotProduct_smul, smul_dotProduct, smul_eq_mul]
-  rw [positiveDefinite_dotProduct_mulVec_swap (Q := Q) x d]
-  rw [dotProduct_comm b d]
+  have hquad :
+      dotProduct (x + t • d) (Q *ᵥ (x + t • d)) =
+        dotProduct x (Q *ᵥ x) +
+          2 * t * dotProduct d (Q *ᵥ x) +
+          t ^ (2 : ℕ) * dotProduct d (Q *ᵥ d) := by
+    -- Expand the quadratic term and identify the two mixed terms via symmetry of `Q`.
+    calc
+      dotProduct (x + t • d) (Q *ᵥ (x + t • d))
+          = dotProduct (x + t • d) (Q *ᵥ x + t • (Q *ᵥ d)) := by
+              rw [Matrix.mulVec_add, Matrix.mulVec_smul]
+      _ = dotProduct (x + t • d) (Q *ᵥ x) + dotProduct (x + t • d) (t • (Q *ᵥ d)) := by
+            rw [dotProduct_add]
+      _ = dotProduct x (Q *ᵥ x) + dotProduct (t • d) (Q *ᵥ x) +
+            dotProduct (x + t • d) (t • (Q *ᵥ d)) := by
+            rw [add_dotProduct]
+      _ = dotProduct x (Q *ᵥ x) + t * dotProduct d (Q *ᵥ x) +
+            dotProduct (x + t • d) (t • (Q *ᵥ d)) := by
+            simp [smul_eq_mul]
+      _ = dotProduct x (Q *ᵥ x) + t * dotProduct d (Q *ᵥ x) +
+            t * dotProduct (x + t • d) (Q *ᵥ d) := by
+            simp [smul_eq_mul]
+      _ = dotProduct x (Q *ᵥ x) + t * dotProduct d (Q *ᵥ x) +
+            t * (dotProduct x (Q *ᵥ d) + dotProduct (t • d) (Q *ᵥ d)) := by
+            rw [add_dotProduct]
+      _ = dotProduct x (Q *ᵥ x) + t * dotProduct d (Q *ᵥ x) +
+            t * (dotProduct d (Q *ᵥ x) + t * dotProduct d (Q *ᵥ d)) := by
+            simp [positiveDefinite_dotProduct_mulVec_swap, smul_eq_mul]
+      _ = dotProduct x (Q *ᵥ x) +
+            2 * t * dotProduct d (Q *ᵥ x) +
+            t ^ (2 : ℕ) * dotProduct d (Q *ᵥ d) := by
+            ring
+  have hlin :
+      dotProduct b (x + t • d) = dotProduct b x + t * dotProduct d b := by
+    -- The affine term is linear along the same line.
+    rw [dotProduct_add]
+    simp [dotProduct_comm, smul_eq_mul]
+  -- Combine the quadratic and affine expansions into the displayed scalar quadratic.
+  rw [polytope_quadratic_objective_apply, polytope_quadratic_objective_apply, hquad, hlin]
+  simp only [dotProduct_add, dotProduct_comm]
   ring
 
 /-- Helper for Algorithm 13.5: clipping the exact quadratic ratio to `[0, 1]` minimizes the
 scalar quadratic restriction on the unit interval. -/
-lemma clipped_quadratic_ratio_isMinOn_unit_interval
-    {α κ : ℝ} (hκ : 0 < κ) :
+private lemma clipped_quadratic_ratio_isMinOn_unit_interval
+    {α κ : ℝ} (hκ : 0 < κ) (hratio : 0 ≤ -α / κ) :
     IsMinOn (fun t : ℝ ↦ t * α + ((t ^ (2 : ℕ)) / 2) * κ)
       (Set.Icc (0 : ℝ) 1) (min (-α / κ) 1) := by
-  let f : ℝ → ℝ := fun t ↦ t * α + ((t ^ (2 : ℕ)) / 2) * κ
-  let lam : ℝ := -α / κ
-  have hκne : κ ≠ 0 := ne_of_gt hκ
   rw [isMinOn_iff]
   intro t ht
-  by_cases hlam : lam ≤ 1
-  · have hdiff : f t - f lam = (κ / 2) * (t - lam) ^ (2 : ℕ) := by
-        dsimp [f, lam]
-        field_simp [hκne]
+  let r : ℝ := -α / κ
+  have hr_nonneg : 0 ≤ r := by
+    simpa [r] using hratio
+  have hquad_rewrite (u : ℝ) :
+      u * α + ((u ^ (2 : ℕ)) / 2) * κ =
+        ((κ / 2) * (u - r) ^ (2 : ℕ)) - (κ / 2) * r ^ (2 : ℕ) := by
+    -- Complete the square around the unconstrained minimizer `r = -α / κ`.
+    dsimp [r]
+    field_simp [hκ.ne']
+    ring
+  by_cases hr_le_one : r ≤ 1
+  · -- When `r ∈ [0, 1]`, the clipped point is the true quadratic minimizer.
+    rw [min_eq_left hr_le_one, hquad_rewrite, hquad_rewrite]
+    have hsq : 0 ≤ (t - r) ^ (2 : ℕ) := sq_nonneg (t - r)
+    have _ : 0 ≤ min r 1 := le_min hr_nonneg zero_le_one
+    nlinarith [hκ]
+  · -- Otherwise the interval minimizer is the right endpoint `1`.
+    have hr_one_lt : 1 < r := lt_of_not_ge hr_le_one
+    rw [min_eq_right (le_of_lt hr_one_lt), hquad_rewrite, hquad_rewrite]
+    have ht_le_r : t ≤ r := le_trans ht.2 (le_of_lt hr_one_lt)
+    have h_left : 0 ≤ r - 1 := by
+      nlinarith [hr_one_lt]
+    have h_right : 0 ≤ r - t := by
+      nlinarith [ht_le_r]
+    have hmono : r - 1 ≤ r - t := by
+      nlinarith [ht.2]
+    have habs : |r - 1| ≤ |r - t| := by
+      rw [abs_of_nonneg h_left, abs_of_nonneg h_right]
+      exact hmono
+    have hsq' : (r - 1) ^ (2 : ℕ) ≤ (r - t) ^ (2 : ℕ) := (sq_le_sq).2 habs
+    have hsq : (r - 1) ^ (2 : ℕ) ≤ (t - r) ^ (2 : ℕ) := by
+      have hEq : (r - t) ^ (2 : ℕ) = (t - r) ^ (2 : ℕ) := by
         ring
-    have hnonneg : 0 ≤ (κ / 2) * (t - lam) ^ (2 : ℕ) := by
-      exact mul_nonneg (by positivity) (sq_nonneg (t - lam))
-    have hmin : f lam ≤ f t := by
-      linarith
-    have hclip : min lam 1 = lam := min_eq_left hlam
-    simpa [f, lam, hclip] using hmin
-  · have hlam_ge : 1 ≤ lam := le_of_not_ge hlam
-    have hακ : α + κ ≤ 0 := by
-      have hκle : κ ≤ -α := by
-        have := (le_div_iff₀ hκ).mp hlam_ge
-        simpa [lam] using this
-      linarith
-    have hfactor_nonpos : α + (κ / 2) * (t + 1) ≤ 0 := by
-      have hterm : (κ / 2) * (t + 1) ≤ κ := by
-        nlinarith [ht.2, hκ.le]
-      linarith
-    have hdiff : f t - f 1 = (t - 1) * (α + (κ / 2) * (t + 1)) := by
-      dsimp [f]
-      ring
-    have hnonneg : 0 ≤ (t - 1) * (α + (κ / 2) * (t + 1)) := by
-      refine mul_nonneg_of_nonpos_of_nonpos ?_ hfactor_nonpos
-      linarith [ht.2]
-    have hmin : f 1 ≤ f t := by
-      linarith
-    have hclip : min lam 1 = 1 := min_eq_right hlam_ge
-    simpa [f, lam, hclip] using hmin
+      rwa [← hEq]
+    nlinarith [hκ]
 
 -- Proof sketch: for a positive-definite quadratic objective, the one-dimensional restriction to
 -- the segment from `xᵏ` to `a_{i_k}` is minimized on `[0, 1]` by the clipped ratio
@@ -262,116 +292,280 @@ theorem polytope_quadratic_ratio_clip_mem_conditional_gradient_exact_line_search
           (polytope_quadratic_conditional_gradient_direction a xk i))
         1 ∈
       conditional_gradient_exact_line_search_stepsizes
-        (polytope_quadratic_objective Q b).toExtendedReal
+        (polytope_quadratic_objective Q b).toEReal
         xk (a i) := by
   let d : E := polytope_quadratic_conditional_gradient_direction a xk i
   let α : ℝ := dotProduct d (Q *ᵥ xk + b)
   let κ : ℝ := dotProduct d (Q *ᵥ d)
-  let lam : ℝ := polytope_quadratic_exact_line_search_ratio Q b xk d
-  have hα : α < 0 := by
-    simpa [d, α] using hderiv
+  let τ : ℝ := min (polytope_quadratic_exact_line_search_ratio Q b xk d) 1
+  have hd : d ≠ 0 := by
+    -- A zero direction would force the directional derivative to vanish.
+    intro hd
+    have hd_sub : a i - xk = 0 := by
+      simpa [d, polytope_quadratic_conditional_gradient_direction_eq] using hd
+    have hd_eq : a i = xk := sub_eq_zero.mp hd_sub
+    have hderiv_eq :
+        polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i = 0 := by
+      rw [polytope_quadratic_conditional_gradient_directional_derivative_eq,
+        polytope_quadratic_conditional_gradient_direction_eq, hd_eq]
+      simp
+    linarith
+  have hκ : 0 < κ := by
+    simpa [κ, d] using Q.2.dotProduct_mulVec_pos hd
+  have hratio_nonneg :
+      0 ≤ polytope_quadratic_exact_line_search_ratio Q b xk d := by
+    rw [polytope_quadratic_exact_line_search_ratio_eq]
+    have hnum :
+        0 ≤ -dotProduct d (Q *ᵥ xk + b) := by
+      have hderiv_nonneg :
+          0 ≤ -polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i := by
+        linarith
+      simpa [polytope_quadratic_conditional_gradient_directional_derivative_eq, d] using
+        hderiv_nonneg
+    exact div_nonneg hnum hκ.le
+  have hscalar :
+      IsMinOn (fun t : ℝ ↦ t * α + ((t ^ (2 : ℕ)) / 2) * κ) (Set.Icc (0 : ℝ) 1) τ := by
+    -- The one-dimensional quadratic is minimized by the clipped exact-line-search ratio.
+    simpa [τ, α, κ, polytope_quadratic_exact_line_search_ratio_eq] using
+      clipped_quadratic_ratio_isMinOn_unit_interval hκ hratio_nonneg
+  rw [mem_conditional_gradient_exact_line_search_stepsizes_iff]
+  constructor
+  · -- The clipped ratio lies in `[0, 1]`.
+    constructor
+    · exact le_min hratio_nonneg zero_le_one
+    · exact min_le_right _ _
+  · rw [isMinOn_iff] at hscalar ⊢
+    intro s hs
+    have hcompare := hscalar s hs
+    have hcompare_shifted :
+        polytope_quadratic_objective Q b xk + (τ * α + ((τ ^ (2 : ℕ)) / 2) * κ) ≤
+          polytope_quadratic_objective Q b xk + (s * α + ((s ^ (2 : ℕ)) / 2) * κ) := by
+      linarith
+    have hcompare_ereal :
+        ((polytope_quadratic_objective Q b xk + (τ * α + ((τ ^ (2 : ℕ)) / 2) * κ) : ℝ) : EReal) ≤
+          ((polytope_quadratic_objective Q b xk + (s * α + ((s ^ (2 : ℕ)) / 2) * κ) : ℝ) :
+            EReal) := by
+      exact_mod_cast hcompare_shifted
+    have hτ_eq :
+        (polytope_quadratic_objective Q b).toEReal (xk + τ • (a i - xk)) =
+          ((polytope_quadratic_objective Q b xk + (τ * α + ((τ ^ (2 : ℕ)) / 2) * κ) : ℝ) :
+            EReal) := by
+      -- Rewrite the segment objective at `τ` through the normalized quadratic line formula.
+      calc
+        (polytope_quadratic_objective Q b).toEReal (xk + τ • (a i - xk))
+            = ((polytope_quadratic_objective Q b (xk + τ • d) : ℝ) : EReal) := by
+                simp [Function.toEReal, d, polytope_quadratic_conditional_gradient_direction_eq]
+        _ = ((polytope_quadratic_objective Q b xk +
+              τ * dotProduct d (Q *ᵥ xk + b) +
+              ((τ ^ (2 : ℕ)) / 2) * dotProduct d (Q *ᵥ d) : ℝ) : EReal) := by
+                rw [polytope_quadratic_objective_add_smul_direction_eq
+                  (Q := Q) (b := b) (x := xk) (d := d) (t := τ)]
+        _ = ((polytope_quadratic_objective Q b xk + (τ * α + ((τ ^ (2 : ℕ)) / 2) * κ) : ℝ) :
+              EReal) := by
+                simp [α, κ, add_assoc]
+    have hs_eq :
+        (polytope_quadratic_objective Q b).toEReal (xk + s • (a i - xk)) =
+          ((polytope_quadratic_objective Q b xk + (s * α + ((s ^ (2 : ℕ)) / 2) * κ) : ℝ) :
+            EReal) := by
+      -- The same normalization applies to every comparison point `s ∈ [0,1]`.
+      calc
+        (polytope_quadratic_objective Q b).toEReal (xk + s • (a i - xk))
+            = ((polytope_quadratic_objective Q b (xk + s • d) : ℝ) : EReal) := by
+                simp [Function.toEReal, d, polytope_quadratic_conditional_gradient_direction_eq]
+        _ = ((polytope_quadratic_objective Q b xk +
+              s * dotProduct d (Q *ᵥ xk + b) +
+              ((s ^ (2 : ℕ)) / 2) * dotProduct d (Q *ᵥ d) : ℝ) : EReal) := by
+                rw [polytope_quadratic_objective_add_smul_direction_eq
+                  (Q := Q) (b := b) (x := xk) (d := d) (t := s)]
+        _ = ((polytope_quadratic_objective Q b xk + (s * α + ((s ^ (2 : ℕ)) / 2) * κ) : ℝ) :
+              EReal) := by
+                simp [α, κ, add_assoc]
+    rw [hτ_eq, hs_eq]
+    exact hcompare_ereal
+
+private theorem polytope_quadratic_exact_line_search_ratio_nonneg_of_neg_directional_derivative
+    {Q : positiveDefiniteMatrices n} {b : E} {a : Fin l → E}
+    {xk : polytope_quadratic_feasible_set a} {i : Fin l}
+    (hderiv :
+      polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i < 0) :
+    0 ≤
+      polytope_quadratic_exact_line_search_ratio Q b xk
+        (polytope_quadratic_conditional_gradient_direction a xk i) := by
+  let d := polytope_quadratic_conditional_gradient_direction a xk i
   have hd : d ≠ 0 := by
     intro hd
-    have : ¬ α < 0 := by
-      simp [α, hd]
-    exact this hα
-  have hκ : 0 < κ := by
-    simpa [d, κ] using Q.2.dotProduct_mulVec_pos hd
-  have hlamdef : lam = -α / κ := by
-    simp [lam, α, κ, d, polytope_quadratic_exact_line_search_ratio_eq]
-  have hmem : min lam 1 ∈ Set.Icc (0 : ℝ) 1 := by
-    refine ⟨?_, min_le_right _ _⟩
-    rw [hlamdef]
-    exact le_min (div_nonneg (by linarith : 0 ≤ -α) hκ.le) zero_le_one
-  have hscalar :
-      IsMinOn (fun t : ℝ ↦ t * α + ((t ^ (2 : ℕ)) / 2) * κ)
-        (Set.Icc (0 : ℝ) 1) (min lam 1) := by
-    simpa [hlamdef] using
-      clipped_quadratic_ratio_isMinOn_unit_interval (α := α) (κ := κ) hκ
-  rw [mem_conditional_gradient_exact_line_search_stepsizes_iff]
-  refine ⟨?_, ?_⟩
-  · change min lam 1 ∈ Set.Icc (0 : ℝ) 1
-    exact hmem
-  · rw [isMinOn_iff]
-    intro u hu
-    have hquad := (isMinOn_iff.mp hscalar) u hu
-    -- Rewrite the one-dimensional restriction explicitly, then cast the resulting real inequality
-    -- to `EReal` for the exact-line-search owner.
-    change
-      ((polytope_quadratic_objective Q b (xk + min lam 1 • d) : EReal) ≤
-        polytope_quadratic_objective Q b (xk + u • d))
-    have hshift :
-        polytope_quadratic_objective Q b (xk + min lam 1 • d) ≤
-          polytope_quadratic_objective Q b (xk + u • d) := by
-      have hquad' :
-          min lam 1 * dotProduct d (Q *ᵥ xk + b) +
-              (((min lam 1) ^ (2 : ℕ)) / 2) * dotProduct d (Q *ᵥ d) ≤
-            u * dotProduct d (Q *ᵥ xk + b) +
-              ((u ^ (2 : ℕ)) / 2) * dotProduct d (Q *ᵥ d) := by
-        simpa [α, κ] using hquad
-      rw [polytope_quadratic_objective_add_smul_direction_eq
-          (Q := Q) (b := b) (x := xk) (d := d) (t := min lam 1)]
-      rw [polytope_quadratic_objective_add_smul_direction_eq
-          (Q := Q) (b := b) (x := xk) (d := d) (t := u)]
-      simpa [add_comm, add_left_comm, add_assoc] using
-        add_le_add_left hquad' (polytope_quadratic_objective Q b xk)
-    exact_mod_cast hshift
+    have hd_sub : a i - (xk : E) = 0 := by
+      simpa [d, polytope_quadratic_conditional_gradient_direction_eq] using hd
+    have hd_eq : a i = (xk : E) := sub_eq_zero.mp hd_sub
+    have hderiv_eq :
+        polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i = 0 := by
+      rw [polytope_quadratic_conditional_gradient_directional_derivative_eq,
+        polytope_quadratic_conditional_gradient_direction_eq, hd_eq]
+      simp
+    have hnot :
+        ¬ polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i < 0 := by
+      rw [hderiv_eq]
+      norm_num
+    exact hnot hderiv
+  have hden :
+      0 < dotProduct d (Q *ᵥ d) := by
+    simpa [d] using Q.2.dotProduct_mulVec_pos hd
+  have hnum :
+      0 ≤ -dotProduct d (Q *ᵥ (xk : E) + b) := by
+    have hnum' :
+        0 ≤
+          -polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i := by
+      linarith
+    simpa [polytope_quadratic_conditional_gradient_directional_derivative_eq, d] using hnum'
+  rw [polytope_quadratic_exact_line_search_ratio_eq]
+  exact div_nonneg hnum hden.le
 
-/-- Algorithm 13.5: the admissible next iterates from `xᵏ` are obtained by choosing a vertex
-index `i_k` minimizing `⟪a_i, ∇ f_q(xᵏ)⟫`, setting `dᵏ = a_{i_k} - xᵏ`, and then either stopping
-when `⟪dᵏ, ∇ f_q(xᵏ)⟫ ≥ 0` (encoded here by the stationary outcome `xᵏ⁺¹ = xᵏ`), or updating by
-`xᵏ⁺¹ = xᵏ + t_k dᵏ` with `t_k = min {λ_k, 1}` and
-`λ_k = -⟪dᵏ, ∇ f_q(xᵏ)⟫ / ((dᵏ)^T Q dᵏ)`, for a feasible iterate `xᵏ ∈ Ω` in the
-positive-definite quadratic regime `Q ∈ 𝕊_{++}^n`. -/
-def polytope_quadratic_conditional_gradient_one_step
-    (Q : positiveDefiniteMatrices n) (b : E) (a : Fin l → E)
-    (xk : polytope_quadratic_feasible_set a) : Set E :=
-  {xNext : E |
-      ∃ i ∈
-          unconstrained_problem_solutions
-            (polytope_quadratic_vertex_linear_objective Q b a xk),
-        ((0 ≤ polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i ∧
-            xNext = (xk : E)) ∨
-          (polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i < 0 ∧
-            xNext = polytope_quadratic_conditional_gradient_update Q b a xk i))}
+/-- On the nonterminal branch of Algorithm 13.5, the exact-line-search update remains in the
+feasible polytope `Ω = conv{a₁, …, a_l}`. -/
+theorem polytope_quadratic_conditional_gradient_update_mem_feasible_set
+    {Q : positiveDefiniteMatrices n} {b : E} {a : Fin l → E}
+    {xk : polytope_quadratic_feasible_set a} {i : Fin l}
+    (hderiv :
+      polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i < 0) :
+    polytope_quadratic_conditional_gradient_update Q b a xk i ∈
+      polytope_quadratic_feasible_set a := by
+  let t :=
+    min
+      (polytope_quadratic_exact_line_search_ratio Q b xk
+        (polytope_quadratic_conditional_gradient_direction a xk i))
+      1
+  have ht_nonneg : 0 ≤ t := by
+    exact le_min
+      (polytope_quadratic_exact_line_search_ratio_nonneg_of_neg_directional_derivative hderiv)
+      zero_le_one
+  have ht_le_one : t ≤ 1 := min_le_right _ _
+  have hxk : (xk : E) ∈ polytope_quadratic_feasible_set a := xk.2
+  have hai : a i ∈ polytope_quadratic_feasible_set a :=
+    polytope_quadratic_vertex_mem_feasible_set a i
+  have hcombo :
+      (1 - t) • (xk : E) + t • a i ∈ polytope_quadratic_feasible_set a := by
+    exact (convex_iff_add_mem.mp (convex_convexHull ℝ (Set.range a)))
+      hxk hai (sub_nonneg.mpr ht_le_one) ht_nonneg (by ring)
+  have hupdate_eq :
+      polytope_quadratic_conditional_gradient_update Q b a xk i =
+        (1 - t) • (xk : E) + t • a i := by
+    calc
+      polytope_quadratic_conditional_gradient_update Q b a xk i
+          = (xk : E) + t • (a i - (xk : E)) := by
+              simp [polytope_quadratic_conditional_gradient_update, t,
+                polytope_quadratic_conditional_gradient_direction_eq]
+      _ = (1 - t) • (xk : E) + t • a i := by
+            ext j
+            change (xk : E) j + t * (a i j - (xk : E) j) =
+              (1 - t) * (xk : E) j + t * a i j
+            ring
+  exact hupdate_eq ▸ hcombo
 
--- Proof sketch: unfold `polytope_quadratic_conditional_gradient_one_step`; the resulting set
--- comprehension is exactly the stop-or-update alternative from Algorithm 13.5.
-/-- Expanding `polytope_quadratic_conditional_gradient_one_step Q b a xᵏ` yields the set of
-points produced by a minimizing vertex index `i_k`, together with the stopping-or-update
-alternative from Algorithm 13.5. -/
-theorem polytope_quadratic_conditional_gradient_one_step_def
+/-- The nonterminal branch of Algorithm 13.5 canonically produces the next feasible iterate as a
+point of `Ω = conv{a₁, …, a_l}`. -/
+def polytope_quadratic_conditional_gradient_next_iterate
     (Q : positiveDefiniteMatrices n) (b : E) (a : Fin l → E)
-    (xk : polytope_quadratic_feasible_set a) :
-    polytope_quadratic_conditional_gradient_one_step Q b a xk =
-      {xNext : E |
-          ∃ i ∈
-          unconstrained_problem_solutions
-                (polytope_quadratic_vertex_linear_objective Q b a xk),
-            ((0 ≤ polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i ∧
-                xNext = (xk : E)) ∨
-              (polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i < 0 ∧
-                xNext = polytope_quadratic_conditional_gradient_update Q b a xk i))} :=
+    (xk : polytope_quadratic_feasible_set a) (i : Fin l)
+    (hderiv :
+      polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i < 0) :
+    polytope_quadratic_feasible_set a :=
+  ⟨polytope_quadratic_conditional_gradient_update Q b a xk i,
+    polytope_quadratic_conditional_gradient_update_mem_feasible_set hderiv⟩
+
+/-- Coercing the canonical next feasible iterate from Algorithm 13.5 recovers the underlying
+exact-line-search update `xᵏ + t_k dᵏ`. -/
+@[simp] theorem polytope_quadratic_conditional_gradient_next_iterate_coe
+    {Q : positiveDefiniteMatrices n} {b : E} {a : Fin l → E}
+    {xk : polytope_quadratic_feasible_set a} {i : Fin l}
+    {hderiv :
+      polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i < 0} :
+    ((polytope_quadratic_conditional_gradient_next_iterate Q b a xk i hderiv :
+        polytope_quadratic_feasible_set a) : E) =
+      polytope_quadratic_conditional_gradient_update Q b a xk i :=
   rfl
 
--- Proof sketch: unfold `polytope_quadratic_conditional_gradient_one_step`; membership is exactly
--- the displayed stop-or-update alternative.
-/-- A point `xᵏ⁺¹` belongs to `polytope_quadratic_conditional_gradient_one_step Q b a xᵏ` exactly
-when it arises from a minimizing vertex index `i_k`, with either the stopping certificate
+/-- Algorithm 13.5: the admissible next feasible iterates from `xᵏ` are obtained by choosing a
+vertex index `i_k` minimizing `⟪a_i, ∇ f_q(xᵏ)⟫`, setting `dᵏ = a_{i_k} - xᵏ`, and then either
+stopping when `⟪dᵏ, ∇ f_q(xᵏ)⟫ ≥ 0`, or updating by the exact-line-search step
+`xᵏ⁺¹ = xᵏ + t_k dᵏ` with `t_k = min {λ_k, 1}`. -/
+inductive polytope_quadratic_conditional_gradient_one_step
+    (Q : positiveDefiniteMatrices n) (b : E) (a : Fin l → E)
+    (xk : polytope_quadratic_feasible_set a) : polytope_quadratic_feasible_set a → Prop where
+  | stop
+      (i : Fin l)
+      (hi :
+        i ∈ unconstrained_problem_solutions
+          (polytope_quadratic_vertex_linear_objective Q b a xk))
+      (hderiv :
+        0 ≤ polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i) :
+      polytope_quadratic_conditional_gradient_one_step Q b a xk xk
+  | update
+      (i : Fin l)
+      (hi :
+        i ∈ unconstrained_problem_solutions
+          (polytope_quadratic_vertex_linear_objective Q b a xk))
+      (hderiv :
+        polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i < 0) :
+      polytope_quadratic_conditional_gradient_one_step Q b a xk
+        (polytope_quadratic_conditional_gradient_next_iterate Q b a xk i hderiv)
+
+-- Proof sketch: pattern match on the two constructors of
+-- `polytope_quadratic_conditional_gradient_one_step`; the result is exactly the displayed
+-- stop-or-update alternative on feasible iterates.
+/-- A feasible iterate `xᵏ⁺¹` satisfies
+`polytope_quadratic_conditional_gradient_one_step Q b a xᵏ xᵏ⁺¹` exactly when it arises from a
+minimizing vertex index `i_k`, with either the stopping certificate
 `⟪dᵏ, ∇ f_q(xᵏ)⟫ ≥ 0` and `xᵏ⁺¹ = xᵏ`, or the nonterminal update
 `xᵏ⁺¹ = xᵏ + t_k dᵏ`. -/
-@[simp] theorem mem_polytope_quadratic_conditional_gradient_one_step_iff
+@[simp] theorem polytope_quadratic_conditional_gradient_one_step_iff
     {Q : positiveDefiniteMatrices n} {b : E} {a : Fin l → E}
-    {xk : polytope_quadratic_feasible_set a} {xNext : E} :
-    xNext ∈ polytope_quadratic_conditional_gradient_one_step Q b a xk ↔
+    {xk xNext : polytope_quadratic_feasible_set a} :
+    polytope_quadratic_conditional_gradient_one_step Q b a xk xNext ↔
       ∃ i ∈
           unconstrained_problem_solutions
             (polytope_quadratic_vertex_linear_objective Q b a xk),
         ((0 ≤ polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i ∧
-            xNext = (xk : E)) ∨
-          (polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i < 0 ∧
-            xNext = polytope_quadratic_conditional_gradient_update Q b a xk i)) :=
-  Iff.rfl
+            xNext = xk) ∨
+          ∃ hderiv :
+            polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i < 0,
+            xNext =
+              polytope_quadratic_conditional_gradient_next_iterate Q b a xk i hderiv) := by
+  constructor
+  · rintro (⟨i, hi, hderiv⟩ | ⟨i, hi, hderiv⟩)
+    · exact ⟨i, hi, Or.inl ⟨hderiv, rfl⟩⟩
+    · exact ⟨i, hi, Or.inr ⟨hderiv, rfl⟩⟩
+  · rintro ⟨i, hi, hstop | hupdate⟩
+    · rcases hstop with ⟨hderiv, rfl⟩
+      exact polytope_quadratic_conditional_gradient_one_step.stop i hi hderiv
+    · rcases hupdate with ⟨hderiv, rfl⟩
+      exact polytope_quadratic_conditional_gradient_one_step.update i hi hderiv
+
+/-- If the chosen minimizing vertex index satisfies the stopping test
+`⟪dᵏ, ∇ f_q(xᵏ)⟫ ≥ 0`, then the stationary branch `xᵏ⁺¹ = xᵏ` is an admissible Algorithm 13.5
+one-step outcome. -/
+theorem self_polytope_quadratic_conditional_gradient_one_step_of_nonneg_directional_derivative
+    {Q : positiveDefiniteMatrices n} {b : E} {a : Fin l → E}
+    {xk : polytope_quadratic_feasible_set a} {i : Fin l}
+    (hi :
+      i ∈ unconstrained_problem_solutions
+        (polytope_quadratic_vertex_linear_objective Q b a xk))
+    (hderiv : 0 ≤ polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i) :
+    polytope_quadratic_conditional_gradient_one_step Q b a xk xk := by
+  exact polytope_quadratic_conditional_gradient_one_step.stop i hi hderiv
+
+/-- If the chosen minimizing vertex index satisfies the nonterminal test
+`⟪dᵏ, ∇ f_q(xᵏ)⟫ < 0`, then the exact-line-search update `xᵏ + t_k dᵏ` is an admissible
+Algorithm 13.5 one-step outcome. -/
+theorem polytope_quadratic_conditional_gradient_update_one_step
+    {Q : positiveDefiniteMatrices n} {b : E} {a : Fin l → E}
+    {xk : polytope_quadratic_feasible_set a} {i : Fin l}
+    (hi :
+      i ∈ unconstrained_problem_solutions
+        (polytope_quadratic_vertex_linear_objective Q b a xk))
+    (hderiv : polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i < 0) :
+    polytope_quadratic_conditional_gradient_one_step Q b a xk
+      (polytope_quadratic_conditional_gradient_next_iterate Q b a xk i hderiv) := by
+  exact polytope_quadratic_conditional_gradient_one_step.update i hi hderiv
 
 -- Proof sketch: from `hi`, the chosen vertex `a_i` minimizes the linearization over all vertices,
 -- hence over the feasible polytope `Ω = conv{a₁, …, a_l}` by convexity of the linear
@@ -390,47 +584,53 @@ theorem polytope_quadratic_isMinOn_of_nonneg_directional_derivative
         (polytope_quadratic_vertex_linear_objective Q b a xk))
     (hderiv : 0 ≤ polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i) :
     IsMinOn (polytope_quadratic_problem Q b a) Set.univ xk := by
-  let v : E := Q *ᵥ xk + b
-  have hlin :
-      IsMinOn (fun y ↦ dotProduct y v) (polytope_quadratic_feasible_set a) (a i) :=
+  let g : E := Q *ᵥ xk + b
+  have hlinMin :
+      IsMinOn (fun y ↦ dotProduct y g) (polytope_quadratic_feasible_set a) (a i) :=
     polytope_quadratic_linearized_isMinOn_feasible_set_of_mem_vertex_argmin hi
-  rw [isMinOn_univ_iff]
-  intro y
-  by_cases hy : y ∈ polytope_quadratic_feasible_set a
-  · have hai_le : dotProduct (a i) v ≤ dotProduct y v := (isMinOn_iff.mp hlin) y hy
-    have hxk_le_ai : dotProduct xk v ≤ dotProduct (a i) v := by
-      have hderiv' : 0 ≤ dotProduct (a i - xk) v := by
-        simpa [polytope_quadratic_conditional_gradient_directional_derivative,
-          polytope_quadratic_conditional_gradient_direction_eq, v] using hderiv
-      exact sub_nonneg.mp (by simpa [sub_dotProduct] using hderiv')
-    have hdir : 0 ≤ dotProduct (y - xk) v := by
-      have : dotProduct xk v ≤ dotProduct y v := le_trans hxk_le_ai hai_le
-      simpa [sub_dotProduct] using sub_nonneg.mpr this
-    have hcurv :
-        0 ≤ dotProduct (y - xk) (Q *ᵥ (y - xk)) := by
-      simpa using Q.2.posSemidef.dotProduct_mulVec_nonneg (y - xk)
-    have hobj :
+  rw [isMinOn_iff] at hlinMin
+  have hfirstOrder :
+      ∀ {y : E}, y ∈ polytope_quadratic_feasible_set a →
+        0 ≤ dotProduct (y - xk) g := by
+    intro y hy
+    -- Shift the minimizing-vertex inequality by `dotProduct xk g`.
+    have hdir_le :
+        polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i ≤
+          dotProduct (y - xk) g := by
+      have hshift :
+          dotProduct (a i) g - dotProduct xk g ≤ dotProduct y g - dotProduct xk g :=
+        sub_le_sub_right (hlinMin y hy) (dotProduct xk g)
+      simpa [g, polytope_quadratic_conditional_gradient_directional_derivative_eq,
+        polytope_quadratic_conditional_gradient_direction_eq, dotProduct_sub,
+        sub_eq_add_neg, add_assoc, add_left_comm, add_comm] using hshift
+    exact le_trans hderiv hdir_le
+  have hobjMin :
+      ∀ {y : E}, y ∈ polytope_quadratic_feasible_set a →
         polytope_quadratic_objective Q b xk ≤ polytope_quadratic_objective Q b y := by
-      have hexpand :
-          polytope_quadratic_objective Q b y =
-            polytope_quadratic_objective Q b xk +
-              dotProduct (y - xk) v +
-              (((1 : ℝ) ^ (2 : ℕ)) / 2) * dotProduct (y - xk) (Q *ᵥ (y - xk)) := by
-        -- Specialize the line-restriction formula at `t = 1` and rewrite `xk + (y - xk)` to `y`.
-        have hy_eq : xk + (1 : ℝ) • (y - xk) = y := by
-          simp [sub_eq_add_neg]
-        rw [← hy_eq]
-        rw [polytope_quadratic_objective_add_smul_direction_eq
-            (Q := Q) (b := b) (x := xk) (d := y - xk) (t := (1 : ℝ))]
-        simp [v, one_smul, add_comm, add_left_comm, add_assoc, sub_eq_add_neg]
-      rw [hexpand]
+    intro y hy
+    have hlinear_nonneg : 0 ≤ dotProduct (y - xk) g := hfirstOrder hy
+    have hcurv_nonneg :
+        0 ≤ ((1 : ℝ) ^ (2 : ℕ) / 2) * dotProduct (y - xk) (Q *ᵥ (y - xk)) := by
+      have hpsd : 0 ≤ dotProduct (y - xk) (Q *ᵥ (y - xk)) :=
+        Q.2.posSemidef.dotProduct_mulVec_nonneg (y - xk)
       nlinarith
-    have hobjEReal :
-        (polytope_quadratic_objective Q b xk : EReal) ≤ polytope_quadratic_objective Q b y := by
-      exact_mod_cast hobj
-    rw [polytope_quadratic_problem_of_mem Q b a hxk, polytope_quadratic_problem_of_mem Q b a hy]
-    exact hobjEReal
-  · rw [polytope_quadratic_problem_of_mem Q b a hxk, polytope_quadratic_problem_of_not_mem Q b a hy]
+    have hy_eq : y = xk + (1 : ℝ) • (y - xk) := by
+      simp
+    -- Evaluate the quadratic objective at `y` along the segment from `xk` in direction `y - xk`.
+    rw [hy_eq, polytope_quadratic_objective_add_smul_direction_eq
+      (Q := Q) (b := b) (x := xk) (d := y - xk) (t := (1 : ℝ))]
+    nlinarith
+  -- Split into feasible and infeasible comparison points for the constrained objective.
+  rw [isMinOn_iff]
+  intro y _
+  by_cases hy : y ∈ polytope_quadratic_feasible_set a
+  · simpa [polytope_quadratic_problem_of_mem Q b a hxk,
+      polytope_quadratic_problem_of_mem Q b a hy] using
+        (show ((polytope_quadratic_objective Q b xk : ℝ) : EReal) ≤
+            ((polytope_quadratic_objective Q b y : ℝ) : EReal) by
+          exact_mod_cast hobjMin hy)
+  · rw [polytope_quadratic_problem_of_mem Q b a hxk,
+      polytope_quadratic_problem_of_not_mem Q b a hy]
     simp
 
 end

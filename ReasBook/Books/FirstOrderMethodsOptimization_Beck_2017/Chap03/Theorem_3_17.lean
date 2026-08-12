@@ -18,14 +18,13 @@ real-valued everywhere-finite specialization `subdifferentialAt`, rather than a 
 sum-rule API. -/
 recall subdifferentialAt
 recall is_convex_function_iff_convexOn_toReal
-recall
-  strongDualSubdifferential_finset_sum_eq_sum_strongDualSubdifferential_of_nonempty_iInter_relativeInterior
+recall strongDualSubdifferential_finset_sum_eq_sum_of_nonempty_iInter_relativeInterior
 
 -- Proof sketch: specialize the strong-dual finite-sum rule from Theorem 3.18 to the
 -- extended-real coercions `y ↦ (f i y : EReal)`. Real-valued convexity gives the no-`⊥`
 -- hypothesis and convexity of each coercion, while the effective domain of every summand is all
 -- of `E`, so the relative-interior qualification is automatic.
-/-- Theorem 3.17: for a finite family of real-valued convex functions on `E`, the extendedRealSubdifferential
+/-- Theorem 3.17: for a finite family of real-valued convex functions on `E`, the subdifferential
 at `x` of the pointwise sum is the pointwise sum of the individual subdifferentials at `x`. -/
 theorem subdifferentialAt_finset_sum_eq_sum_subdifferentialAt
     {m : ℕ} (f : Fin m → E → ℝ) (x : E)
@@ -56,7 +55,7 @@ theorem subdifferentialAt_finset_sum_eq_sum_subdifferentialAt
   unfold subdifferentialAt
   rw [hsum]
   simpa [F] using
-    strongDualSubdifferential_finset_sum_eq_sum_strongDualSubdifferential_of_nonempty_iInter_relativeInterior
+    strongDualSubdifferential_finset_sum_eq_sum_of_nonempty_iInter_relativeInterior
       F x h_ne_bot hconvexF hqual
 
 end

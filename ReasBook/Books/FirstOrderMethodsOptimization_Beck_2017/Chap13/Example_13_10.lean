@@ -14,6 +14,9 @@ open InnerProductSpace (toDualMap)
 open Metric
 open scoped Gradient
 
+-- Chapter 7 owns the global `Λ[...]` parser. Use the Chapter 10 meaning only in this file.
+local notation "Λ[" a "]" => primalCounterparts a
+
 section
 
 variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [CompleteSpace E]
@@ -74,8 +77,8 @@ theorem mem_unit_ball_generalized_conditional_gradient_argmin_iff_mem_primalCoun
       refine ⟨0, ?_⟩
       simp
     have hbridge :=
-      mem_generalized_conditional_gradient_argmin_extendedIndicator_iff
-        (f := fun y ↦ ((f y : ℝ) : EReal)) (C := B) (xk := x) (p := p) hB_nonempty
+      @mem_generalized_conditional_gradient_argmin_extendedIndicator_iff
+        E _ _ _ (fun y ↦ ((f y : ℝ) : EReal)) B hB_nonempty x p
     simpa using hbridge
   calc
     p ∈ generalized_conditional_gradient_argmin f (extendedIndicator B) x ↔

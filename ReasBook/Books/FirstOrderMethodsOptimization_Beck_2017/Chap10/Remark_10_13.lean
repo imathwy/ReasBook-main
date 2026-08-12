@@ -86,7 +86,7 @@ lemma prox_grad_support_controls_linear_term
     -- The prox-gradient update is the singleton proximal point of the scaled penalty.
     simpa [yPlus, z, proximal_gradient_step] using prox_grad_operator_eq_singleton f g L y
   rcases scaled_prox_singleton_support_of_proper_convex
-      (f := g) (μ := 1 / L) inferInstance hg_convex z yPlus hprox with
+      g (1 / L) inferInstance hg_convex z yPlus hprox with
     ⟨hyPlus_eff, hsupport⟩
   have hy_val :
       g (y : E) = (((g (y : E)).toReal : ℝ) : EReal) := by
@@ -183,7 +183,7 @@ lemma prox_grad_effective_domain_sufficient_decrease
   have hx_eff_f : (xInterior : E) ∈ effective_domain f := interior_subset xInterior.property
   have hxPlus_eff_g : xPlus ∈ effective_domain g := by
     -- The prox-gradient update stays finite for `g`, so both objective terms are real-valued.
-    simpa [xPlus] using prox_grad_update_mem_effective_domain_g (f := f) (g := g) L xInterior
+    simpa [xPlus] using prox_grad_update_mem_effective_domain_g f g L xInterior
   have hxPlus_int_f : xPlus ∈ interior (effective_domain f) := by
     exact hg_effective_domain_subset_interior_f_effective_domain hxPlus_eff_g
   have hxPlus_eff_f : xPlus ∈ effective_domain f := interior_subset hxPlus_int_f
@@ -207,9 +207,6 @@ lemma prox_grad_effective_domain_sufficient_decrease
     -- Apply the smooth descent lemma to the current point and its realized prox-gradient update.
     simpa [xInterior, xPlus, norm_sub_rev] using
       (is_l_smooth_on_descent_lemma
-        (L := Lf)
-        (D := interior (effective_domain f))
-        (f := fun y ↦ (f y).toReal)
         hf_effective_domain_convex.interior
         hf_toReal_smooth_on_interior_effective_domain
         xInterior.property
@@ -220,7 +217,7 @@ lemma prox_grad_effective_domain_sufficient_decrease
           (g (x : E)).toReal - (g xPlus).toReal := by
     -- The Chapter 6 prox-support inequality controls the linear model error.
     simpa [xInterior, xPlus] using
-      (prox_grad_support_controls_linear_term (f := f) (g := g) L xInterior x.property)
+      prox_grad_support_controls_linear_term f g L xInterior x.property
   have hgap_real :
       ((L : ℝ) - (Lf : ℝ) / 2) * ‖xPlus - (x : E)‖ ^ (2 : ℕ) ≤
         (f (x : E)).toReal + (g (x : E)).toReal -
@@ -230,7 +227,7 @@ lemma prox_grad_effective_domain_sufficient_decrease
   have hcoeff_real :
       (((L : ℝ) - (Lf : ℝ) / 2) / (L : ℝ) ^ (2 : ℕ) * ‖G[L, f, g] xInterior‖ ^ (2 : ℕ)) =
         ((L : ℝ) - (Lf : ℝ) / 2) * ‖xPlus - (x : E)‖ ^ (2 : ℕ) := by
-    rw [gradient_mapping_norm_sq_eq_scaled_step_norm_sq (f := f) (g := g) L xInterior]
+    rw [gradient_mapping_norm_sq_eq_scaled_step_norm_sq f g L xInterior]
     have hL0 : (L : ℝ) ≠ 0 := (PosReal.coe_pos L).ne'
     rw [pow_two]
     have hnorm :
@@ -293,9 +290,8 @@ lemma backtracking_accepts_of_stepsize_ge_smoothness_threshold
           composite_model_objective f g (T[L, f, g] xInterior) := by
     simpa [xInterior] using
       prox_grad_effective_domain_sufficient_decrease
-        (f := f) (g := g) (Lf := Lf)
-        (hg_effective_domain_subset_interior_f_effective_domain :=
-          hg_effective_domain_subset_interior_f_effective_domain)
+        f g Lf
+        hg_effective_domain_subset_interior_f_effective_domain
         x
         hf_ne_bot
         hf_effective_domain_convex
@@ -376,9 +372,8 @@ lemma exists_accepted_backtracking_trial
       exact (div_lt_iff₀ hs_pos).1 hi
     simpa [mul_comm, mul_left_comm, mul_assoc] using hi'
   exact backtracking_accepts_of_stepsize_ge_smoothness_threshold
-    (f := f) (g := g) (Lf := Lf)
-    (hg_effective_domain_subset_interior_f_effective_domain :=
-      hg_effective_domain_subset_interior_f_effective_domain)
+    f g Lf
+    hg_effective_domain_subset_interior_f_effective_domain
     γ x
     hf_ne_bot hf_effective_domain_convex
     hf_toReal_smooth_on_interior_effective_domain
@@ -403,9 +398,8 @@ lemma backtracking_trial_lt_smoothness_threshold_of_rejected
   refine lt_of_not_ge fun hge ↦ ?_
   exact hreject <|
     backtracking_accepts_of_stepsize_ge_smoothness_threshold
-      (f := f) (g := g) (Lf := Lf)
-      (hg_effective_domain_subset_interior_f_effective_domain :=
-        hg_effective_domain_subset_interior_f_effective_domain)
+      f g Lf
+      hg_effective_domain_subset_interior_f_effective_domain
       γ x
       hf_ne_bot hf_effective_domain_convex
       hf_toReal_smooth_on_interior_effective_domain

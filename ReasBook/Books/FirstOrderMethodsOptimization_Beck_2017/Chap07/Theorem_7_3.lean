@@ -27,30 +27,31 @@ local notation "𝕊" => symmetricMatrices n
 local notation "symmetricEigenvalues" => symmetric_eigenvalue_function
 
 /-- The ambient real matrix space is equipped with its Frobenius norm. -/
-local instance theorem73FrobeniusNormedAddCommGroup : NormedAddCommGroup Mₙ :=
+local instance theorem7_3_frobeniusNormedAddCommGroup : NormedAddCommGroup Mₙ :=
   Matrix.frobeniusNormedAddCommGroup
-local instance theorem73FrobeniusNormedSpace : NormedSpace ℝ Mₙ := Matrix.frobeniusNormedSpace
-local instance theorem73FrobeniusInnerProductSpace : InnerProductSpace ℝ Mₙ :=
+local instance theorem7_3_frobeniusNormedSpace : NormedSpace ℝ Mₙ :=
+  Matrix.frobeniusNormedSpace
+local instance theorem7_3_frobeniusInnerProductSpace : InnerProductSpace ℝ Mₙ :=
   Matrix.frobeniusInnerProductSpace
 
 /-- A real symmetric matrix is Hermitian. -/
 -- Proof sketch: over `ℝ`, the conjugate transpose is the ordinary transpose, so `IsHermitian`
 -- reduces to `IsSymm`.
-theorem Matrix.IsSymm.isHermitian_of_real {X : Mₙ} (hX : X.IsSymm) :
+theorem Matrix.IsSymm.theorem7_3_isHermitian_of_real {X : Mₙ} (hX : X.IsSymm) :
     X.IsHermitian := by
   -- Over `ℝ`, conjugate transpose is transpose, so symmetry is exactly Hermitian symmetry.
   simpa [Matrix.IsHermitian, Matrix.conjTranspose_eq_transpose_of_trivial] using hX
 
 /-- The ordered eigenvalue map on real symmetric `n × n` matrices. -/
 noncomputable def symmetricMatrixEigenvalues (X : Mₙ) (hX : X.IsSymm) : Fin n → ℝ :=
-  hX.isHermitian_of_real.eigenvalues
+  hX.theorem7_3_isHermitian_of_real.eigenvalues
 
 -- Proof sketch: unfold `symmetricMatrixEigenvalues`; evaluation at `i` is definitionally the
 -- `i`-th ordered Hermitian eigenvalue of the symmetric matrix `X`.
 /-- Evaluating `symmetricMatrixEigenvalues X hX` returns the corresponding ordered Hermitian
 eigenvalue of the symmetric matrix `X`. -/
 @[simp] theorem symmetricMatrixEigenvalues_apply (X : Mₙ) (hX : X.IsSymm) (i : Fin n) :
-    symmetricMatrixEigenvalues X hX i = hX.isHermitian_of_real.eigenvalues i := by
+    symmetricMatrixEigenvalues X hX i = hX.theorem7_3_isHermitian_of_real.eigenvalues i := by
   -- This is the defining equation of `symmetricMatrixEigenvalues`.
   rfl
 
@@ -240,7 +241,7 @@ lemma orthogonal_mulVec_transpose_mulVec
 
 /-- Helper for Theorem 7.3: the transpose of an orthogonal matrix is the inverse of its action on
 `ℝ^n`. -/
-lemma orthogonal_transpose_mulVec_mulVec
+private lemma theorem7_3_orthogonal_transpose_mulVec_mulVec
     (A : Matrix.orthogonalGroup (Fin n) ℝ) (x : Fin n → ℝ) :
     ((A : Mₙ).transpose).mulVec ((A : Mₙ).mulVec x) = x := by
   -- Collapse the transpose-after-action product to the identity.
@@ -268,7 +269,7 @@ lemma conjugate_integrand_range_precompose_orthogonal_eq
     have hAx : A • x = (A : Mₙ).mulVec x := rfl
     have hx : ((A : Mₙ).transpose).mulVec (A • x) = x := by
       rw [hAx]
-      exact orthogonal_transpose_mulVec_mulVec A x
+      exact theorem7_3_orthogonal_transpose_mulVec_mulVec A x
     have hdot :
         (((dotProductEquiv ℝ (Fin n) y)
             (((A : Mₙ).transpose).mulVec (A • x)) : ℝ) : EReal) =
@@ -395,8 +396,9 @@ lemma symmetric_spectral_function_closed_convex_on_subtype
           symmetricEigenvalues := by
     -- Apply the same spectral formula once more to the conjugate profile.
     simpa [Function.comp] using spectral_conjugate_formula fconj hfconj_symm
+  have hproper : IsProperExtendedRealFunction f := hf_perm.toIsProperExtendedRealFunction
   have hself : biconjugate_function f = f :=
-    biconjugate_function_eq_self_of_closed_convex f hf_closed hf_convex
+    biconjugate_function_eq_self_of_proper_closed_convex f hproper hf_closed hf_convex
   have hmatrix_self :
       (fun Y : 𝕊 ↦ conjugate_function (fconj ∘ symmetricEigenvalues)
           ↑(InnerProductSpace.toDualMap ℝ 𝕊 Y)) =
@@ -454,7 +456,7 @@ lemma symmetric_spectral_function_proper_on_subtype
 
 /-- Helper for Theorem 7.3: the Euclidean pullback `y ↦ f y.ofLp` is proper, closed, and convex
 whenever `f` is. -/
-lemma euclidean_pullback_proper_closed_convex
+lemma theorem7_3_euclidean_pullback_proper_closed_convex
     (f : (Fin n → ℝ) → EReal) (hf_perm : IsPermutationSymmetricFunction f)
     (hf_closed : LowerSemicontinuous f) (hf_convex : is_convex_function f) :
     IsProperExtendedRealFunction (fun y : EuclideanSpace ℝ (Fin n) ↦ f y.ofLp) ∧
@@ -612,7 +614,7 @@ by
 
 /-- Helper for Theorem 7.3: orthogonal conjugation preserves the characteristic polynomial of a
 real square matrix. -/
-lemma orthogonal_conjugate_charpoly
+private lemma orthogonal_conjugate_charpoly
     (U : Matrix.orthogonalGroup (Fin n) ℝ) (A : Mₙ) :
     Matrix.charpoly ((U : Mₙ)ᵀ * A * (U : Mₙ)) = Matrix.charpoly A := by
   -- Cycle the orthogonal factors past the characteristic polynomial and collapse them to `1`.
@@ -665,12 +667,12 @@ lemma symmetricMatrixEigenvalues_orthogonal_conjugate_eq
   have hchar : Matrix.charpoly B = Matrix.charpoly A := by
     simpa [B] using orthogonal_conjugate_charpoly U A
   have hEq :
-      ((orthogonal_conjugate_isSymm_iff U A).2 hA).isHermitian_of_real.eigenvalues =
-        hA.isHermitian_of_real.eigenvalues := by
+      ((orthogonal_conjugate_isSymm_iff U A).2 hA).theorem7_3_isHermitian_of_real.eigenvalues =
+        hA.theorem7_3_isHermitian_of_real.eigenvalues := by
     exact
       ((Matrix.IsHermitian.eigenvalues_eq_eigenvalues_iff
-        (hA := ((orthogonal_conjugate_isSymm_iff U A).2 hA).isHermitian_of_real)
-        (hB := hA.isHermitian_of_real))).2 hchar
+        (hA := ((orthogonal_conjugate_isSymm_iff U A).2 hA).theorem7_3_isHermitian_of_real)
+        (hB := hA.theorem7_3_isHermitian_of_real))).2 hchar
   simpa [symmetricMatrixEigenvalues, B] using hEq
 
 /-- Helper for Theorem 7.3: the ambient spectral lift is invariant under orthogonal conjugation. -/
@@ -980,7 +982,8 @@ by
       prox[symmetricSpectralLift f] X = {(Y0 : Mₙ)} := by
     rw [prox_symmetricSpectralLift_eq_subtype_image f hf_perm X hX,
       hsubsingleton, Set.image_singleton]
-  have hpullback := euclidean_pullback_proper_closed_convex f hf_perm hf_closed hf_convex
+  have hpullback :=
+    theorem7_3_euclidean_pullback_proper_closed_convex f hf_perm hf_closed hf_convex
   rcases prox_eq_singleton_of_proper_closed_convex
       (fun y : EuclideanSpace ℝ (Fin n) ↦ f y.ofLp)
       hpullback.1 hpullback.2.1 hpullback.2.2 eigLp with ⟨x0, hvecsingleton⟩

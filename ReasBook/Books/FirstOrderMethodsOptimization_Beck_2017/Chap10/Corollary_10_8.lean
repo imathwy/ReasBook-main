@@ -116,18 +116,37 @@ theorem gradient_mapping_eq_zero_iff_optimal_composite_model_objective
       hf_ne_bot
       hf_toReal_smooth_on_interior_effective_domain
       xStarInterior.property
+  have hf_effective_domain_nonempty : (effective_domain f).Nonempty := by
+    rcases (inferInstance : IsProperExtendedRealFunction g).effective_domain_nonempty with
+      ⟨x, hx⟩
+    exact ⟨x, interior_subset (hg_effective_domain_subset_interior_f_effective_domain hx)⟩
+  letI : IsProperExtendedRealFunction f :=
+    { ne_bot := hf_ne_bot
+      effective_domain_nonempty := hf_effective_domain_nonempty }
   have hgradient :
       G[L, f, g] xStarInterior = 0 ↔ is_stationary_point f g xStar := by
     have hgradient' :
         G[L, f, g] xStarInterior = 0 ↔ is_stationary_point f g (xStarInterior : E) :=
       gradient_mapping_eq_zero_iff_is_stationary_point L xStarInterior hdiff
     simpa [xStarInterior] using hgradient'
+  have hfproper : IsProperExtendedRealFunction f := inferInstance
   have hg_convex : is_convex_function g := ‹Fact (is_convex_function g)›.1
+  have hfinite_dom :
+      effective_domain g ⊆ interior (finite_domain f) := by
+    simpa [finite_domain_eq_effective_domain hf_ne_bot] using
+      hg_effective_domain_subset_interior_f_effective_domain
   have hoptimal :
       IsMinOn (composite_model_objective f g) (effective_domain g) xStar ↔
         is_stationary_point f g xStar := by
     simpa [isMinOn_composite_model_objective_iff] using
-      (isMinOn_iff_is_stationary_point hg_convex hxStar hdiff hf_convex)
+      (isMinOn_iff_is_stationary_point
+        hfproper
+        (inferInstance : IsProperExtendedRealFunction g)
+        hg_convex
+        hfinite_dom
+        hxStar
+        hdiff
+        hf_convex)
   calc
     G[L, f, g] ⟨xStar, hg_effective_domain_subset_interior_f_effective_domain hxStar⟩ = 0 ↔
         is_stationary_point f g xStar := by

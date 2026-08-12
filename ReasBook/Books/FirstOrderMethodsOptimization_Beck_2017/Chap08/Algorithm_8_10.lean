@@ -29,13 +29,24 @@ def stochastic_projected_subgradient_method (C : Set E)
   | k + 1 =>
       let xk := stochastic_projected_subgradient_method C hC_nonempty hC_closed hC_convex g t x0 k
       fun ω ↦
-        metricProjection C hC_nonempty hC_closed.isComplete hC_convex
+        metricProjection C hC_nonempty hC_closed hC_convex
           ((xk ω : E) - t k • g k (xk ω) ω)
 
 /-- A stepsize rule for the stochastic projected subgradient method is admissible when every
 stepsize is strictly positive. -/
 def stochastic_projected_subgradient_stepsizes_positive (t : ℕ → ℝ) : Prop :=
   ∀ k, 0 < t k
+
+/-- The ambient-space iterate sequence associated to
+`stochastic_projected_subgradient_method`. This is the canonical bridge for objective values,
+conditional expectations, and norm estimates, where the iterate is used as an `E`-valued random
+variable rather than as a point of `C`. -/
+abbrev stochastic_projected_subgradient_method_iterate (C : Set E)
+    (hC_nonempty : C.Nonempty) (hC_closed : IsClosed C) (hC_convex : Convex ℝ C)
+    (g : ℕ → C → Ω → E) (t : ℕ → ℝ) (x0 : C) : ℕ → Ω → E :=
+  fun k ω ↦
+    (stochastic_projected_subgradient_method
+      C hC_nonempty hC_closed hC_convex g t x0 k ω : E)
 
 section
 
@@ -60,9 +71,30 @@ theorem stochastic_projected_subgradient_method_zero (ω : Ω) :
 current sample iterate minus the current stepsize times the sampled direction. -/
 theorem stochastic_projected_subgradient_method_succ (k : ℕ) (ω : Ω) :
     x[k + 1] ω =
-      metricProjection C hC_nonempty hC_closed.isComplete hC_convex
+      metricProjection C hC_nonempty hC_closed hC_convex
         ((x[k] ω : E) - t k • g k (x[k] ω) ω) := by
   -- Unfold the successor branch; the local `let xk := ...` reduces to the current iterate `x[k]`.
+  rfl
+
+-- Proof sketch: unfold `stochastic_projected_subgradient_method_iterate` at `0`; this is the
+-- ambient-space coercion of `stochastic_projected_subgradient_method_zero`.
+/-- The ambient-space stochastic iterate sequence starts from the prescribed initial point. -/
+@[simp] theorem stochastic_projected_subgradient_method_iterate_zero :
+    stochastic_projected_subgradient_method_iterate C hC_nonempty hC_closed hC_convex g t x0 0 =
+      fun _ ↦ (x0 : E) := by
+  rfl
+
+-- Proof sketch: unfold `stochastic_projected_subgradient_method_iterate` at `k + 1`; this is the
+-- ambient-space version of `stochastic_projected_subgradient_method_succ`.
+/-- One stochastic projected-subgradient step in ambient space applies the metric projection to the
+current iterate minus the sampled stochastic direction. -/
+theorem stochastic_projected_subgradient_method_iterate_succ (k : ℕ) (ω : Ω) :
+    stochastic_projected_subgradient_method_iterate
+        C hC_nonempty hC_closed hC_convex g t x0 (k + 1) ω =
+      metricProjection C hC_nonempty hC_closed hC_convex
+        (stochastic_projected_subgradient_method_iterate
+          C hC_nonempty hC_closed hC_convex g t x0 k ω -
+          t k • g k (x[k] ω) ω) := by
   rfl
 
 -- Proof sketch: unfold `stochastic_projected_subgradient_stepsizes_positive` and specialize the

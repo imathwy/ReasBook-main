@@ -1,10 +1,9 @@
-import Mathlib
-import FirstOrderMethodsOptimization_Beck_2017.Chap06.Definition_6_10
+import FirstOrderMethodsOptimization_Beck_2017.Chap05.Theorem_5_26
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_15
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_67
-import FirstOrderMethodsOptimization_Beck_2017.Chap05.Theorem_5_26
 import FirstOrderMethodsOptimization_Beck_2017.Chap12.Algorithm_12_1
 import FirstOrderMethodsOptimization_Beck_2017.Chap12.Algorithm_12_2
+import FirstOrderMethodsOptimization_Beck_2017.Chap12.Lemma_12_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -20,9 +19,10 @@ variable {E : Type u} {V : Type v}
 variable [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
 variable [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V]
 
-/-- Helper for Lemma 12.5: the gradient of the shifted pullback of `f∗` along `A.adjoint` is the
-pushforward by `A` of the ambient conjugate gradient. -/
-lemma gradient_conjugate_pullback_add_eq
+/-- Helper for Lemma 12.5: the gradient of the shifted pullback
+`z ↦ ((f∗) (A.adjoint z + b)).toReal` is the pushforward by `A` of the ambient conjugate
+gradient evaluated at `A.adjoint v + b`. -/
+lemma shiftedGradientConjugatePullback_eq
     (σ : PosReal) (f : E → EReal) (A : E →ₗ[ℝ] V) (b : E)
     (hf_proper : IsProperExtendedRealFunction f) (hf_closed : LowerSemicontinuous f)
     (hf_strong : StrongConvexOn (effective_domain f) (σ : ℝ) (fun x ↦ (f x).toReal))
@@ -30,49 +30,49 @@ lemma gradient_conjugate_pullback_add_eq
     ∇ (fun z : V ↦ (((f∗) (A.adjoint z + b)).toReal)) v =
       A (∇ (fun x : E ↦ (((f∗) x).toReal)) (A.adjoint v + b)) := by
   let fStarReal : E → ℝ := fun x ↦ (((f∗) x).toReal)
-  let fStarStrongDual : StrongDual ℝ E → ℝ := fun y ↦ (conjugate_function_strongDual f y).toReal
-  have hsmooth :=
-    is_l_smooth_on_toReal_conjugate_function_strongDual_of_proper_closed_strongConvexOn
-      (σ : ℝ) σ.2 f hf_proper.ne_bot hf_proper.effective_domain_nonempty hf_closed hf_strong
-  rw [is_l_smooth_on] at hsmooth
-  have hdiffStrongDual :
-      DifferentiableAt ℝ fStarStrongDual (InnerProductSpace.toDual ℝ E (A.adjoint v + b)) := by
-    simpa [fStarStrongDual] using
-      hsmooth.1 (InnerProductSpace.toDual ℝ E (A.adjoint v + b)) (by simp)
+  let AadjMap : V →L[ℝ] E := A.adjoint.toContinuousLinearMap
   have hdiffFStar : DifferentiableAt ℝ fStarReal (A.adjoint v + b) := by
-    have hcomp :=
-      hdiffStrongDual.comp (A.adjoint v + b)
-        (InnerProductSpace.toDual ℝ E).toContinuousLinearEquiv.toContinuousLinearMap.differentiableAt
-    simpa [fStarReal, fStarStrongDual, conjugate_function_primal_apply,
-      conjugate_function_strongDual] using hcomp
-  have hdiffShift : DifferentiableAt ℝ (fun x : E ↦ fStarReal (x + b)) (A.adjoint v) := by
-    simpa [fStarReal] using hdiffFStar.comp (A.adjoint v) (differentiableAt_id.add_const b)
+    -- Lemma 12.3 makes the primal conjugate globally smooth, hence differentiable, everywhere.
+    simpa [fStarReal] using
+      (conjugate_function_primal_is_l_smooth_on_of_proper_closed_strongConvexOn
+        σ f hf_proper hf_closed hf_strong).1
+        (A.adjoint v + b)
+        (by simp)
+  have hdiffShifted : DifferentiableAt ℝ (fun x : E ↦ fStarReal (x + b)) (A.adjoint v) := by
+    -- Recenter the differentiability statement at the shifted point `A.adjoint v + b`.
+    rw [differentiableAt_comp_add_right b]
+    simpa [fStarReal] using hdiffFStar
   have hderiv :
       fderiv ℝ (fun z : V ↦ fStarReal (A.adjoint z + b)) v =
-        (fderiv ℝ fStarReal (A.adjoint v + b)).comp A.adjoint.toContinuousLinearMap := by
-    -- Differentiate the affine pullback by first composing with `A.adjoint`, then shifting by `b`.
-    change
-      fderiv ℝ ((fun x : E ↦ fStarReal (x + b)) ∘ A.adjoint) v =
-        (fderiv ℝ fStarReal (A.adjoint v + b)).comp A.adjoint.toContinuousLinearMap
-    have hAderiv : fderiv ℝ (fun z : V ↦ A.adjoint z) v = A.adjoint.toContinuousLinearMap := by
-      simpa using A.adjoint.toContinuousLinearMap.fderiv
-    rw [fderiv_comp v hdiffShift A.adjoint.toContinuousLinearMap.differentiableAt]
-    rw [hAderiv]
-    rw [fderiv_comp_add_right b]
+        (fderiv ℝ fStarReal (A.adjoint v + b)).comp AadjMap := by
+    -- Differentiate the composite `z ↦ fStarReal (A.adjoint z + b)` via the linear pullback
+    -- `A.adjoint` and the shifted conjugate surface.
+    change fderiv ℝ (fun z : V ↦ (fun x : E ↦ fStarReal (x + b)) (A.adjoint z)) v =
+      (fderiv ℝ fStarReal (A.adjoint v + b)).comp AadjMap
+    have hcomp :
+        fderiv ℝ (fun z : V ↦ (fun x : E ↦ fStarReal (x + b)) (A.adjoint z)) v =
+          (fderiv ℝ (fun x : E ↦ fStarReal (x + b)) (A.adjoint v)).comp AadjMap := by
+      simpa [AadjMap] using (hdiffShifted.hasFDerivAt.comp v AadjMap.hasFDerivAt).fderiv
+    rw [hcomp, fderiv_comp_add_right b]
   have hgradMap :
-      (fderiv ℝ fStarReal (A.adjoint v + b)).comp A.adjoint.toContinuousLinearMap =
+      (fderiv ℝ fStarReal (A.adjoint v + b)).comp AadjMap =
         (InnerProductSpace.toDual ℝ V)
           (A (∇ (fun x : E ↦ (((f∗) x).toReal)) (A.adjoint v + b))) := by
-    -- Identify the composed derivative with the Riesz image of `A (∇ f∗)`.
+    -- Identify the Fréchet derivative with the Riesz image of the pushed-forward gradient.
+    have hgradAt := hdiffFStar.hasGradientAt
+    have hFDerivAt := hgradAt.hasFDerivAt
     have hgradFStar :
         fderiv ℝ fStarReal (A.adjoint v + b) =
-          (InnerProductSpace.toDual ℝ E) (∇ (fun x : E ↦ (((f∗) x).toReal)) (A.adjoint v + b)) := by
-      simpa [fStarReal] using hdiffFStar.hasGradientAt.hasFDerivAt.fderiv
+          (InnerProductSpace.toDual ℝ E)
+            (∇ (fun x : E ↦ (((f∗) x).toReal)) (A.adjoint v + b)) := by
+      simpa [fStarReal] using hFDerivAt.fderiv
     ext y
     calc
-      ((fderiv ℝ fStarReal (A.adjoint v + b)).comp A.adjoint.toContinuousLinearMap) y
-          = fderiv ℝ fStarReal (A.adjoint v + b) (A.adjoint y) := by
+      ((fderiv ℝ fStarReal (A.adjoint v + b)).comp AadjMap) y
+          = fderiv ℝ fStarReal (A.adjoint v + b) (AadjMap y) := by
               rfl
+      _ = fderiv ℝ fStarReal (A.adjoint v + b) (A.adjoint y) := by
+            simp [AadjMap]
       _ = inner ℝ (∇ (fun x : E ↦ (((f∗) x).toReal)) (A.adjoint v + b)) (A.adjoint y) := by
             rw [hgradFStar, InnerProductSpace.toDual_apply_apply]
       _ = inner ℝ (A (∇ (fun x : E ↦ (((f∗) x).toReal)) (A.adjoint v + b))) y := by
@@ -81,26 +81,26 @@ lemma gradient_conjugate_pullback_add_eq
           (InnerProductSpace.toDual ℝ V)
             (A (∇ (fun x : E ↦ (((f∗) x).toReal)) (A.adjoint v + b))) y := by
             rfl
-  -- Convert the derivative identity back to the gradient identity.
-  simpa [gradient] using
+  -- Convert the derivative identity back to the corresponding gradient formula.
+  simpa [gradient, fStarReal] using
     congrArg ((InnerProductSpace.toDual ℝ V).symm) (hderiv.trans hgradMap)
 
 /-- Helper for Lemma 12.5: the proximal mapping of `z ↦ (g∗) (-z)` is the negated image of the
-proximal mapping of the scaled conjugate. -/
-lemma prox_negated_conjugate_eq_neg_image_scaled_conjugate_prox
+proximal mapping of the scaled conjugate `((1 / L) • (g∗))`. -/
+lemma proxNegatedConjugate_eq_negImageScaledConjugateProx
     (g : V → EReal) (hg_proper : IsProperExtendedRealFunction g)
     (hg_convex : is_convex_function g) (L : PosReal) (w : V) :
     prox[((((1 / L : PosReal) : EReal) • fun z : V ↦ (g∗) (-z)))] w =
-      (fun q : V ↦ -q) '' prox[((((1 / L : PosReal) : EReal) • (g∗)))] (-w) := by
+      (fun u ↦ -u) '' prox[((((1 / L : PosReal) : EReal) • (g∗)))] (-w) := by
   let gScaled : V → EReal := (((1 / L : PosReal) : EReal) • (g∗))
   let φ : V →ᴬ[ℝ] V := (-ContinuousLinearMap.id ℝ V).toContinuousAffineMap
   have hgConjProper : IsProperExtendedRealFunction (g∗) :=
     conjugate_function_primal_proper_of_proper_convex g hg_proper hg_convex
   have hgScaledProper : IsProperExtendedRealFunction gScaled :=
-    scaled_function_proper_of_pos (f := (g∗)) (μ := (1 / L : PosReal)) hgConjProper
+    scaled_function_proper_of_pos (g∗) (1 / L : PosReal) hgConjProper
   have hφ :
       φ.contLinear ∘L ContinuousLinearMap.adjoint φ.contLinear = (1 : ℝ) • (1 : V →L[ℝ] V) := by
-    -- The negation map is an isometry, so its adjoint-composition is the identity.
+    -- The negation map is an isometry, so composing it with its adjoint gives the identity.
     ext z
     simp [φ]
   calc
@@ -113,29 +113,27 @@ lemma prox_negated_conjugate_eq_neg_image_scaled_conjugate_prox
             simpa using
               proximal_mapping_precompose_continuousAffineMap
                 gScaled hgScaledProper φ 1 zero_lt_one hφ w
-    _ = (fun q : V ↦ -q) '' prox[((((1 / L : PosReal) : EReal) • (g∗)))] (-w) := by
-      -- Simplify the affine correction for `φ = -id`.
+    _ = (fun u ↦ -u) '' prox[((((1 / L : PosReal) : EReal) • (g∗)))] (-w) := by
+      -- Simplify the affine correction for the special affine map `φ = -id`.
       ext y
       constructor
       · rintro ⟨z, hz, rfl⟩
         refine ⟨z, ?_, ?_⟩
-        · simpa [gScaled, φ]
-            using hz
+        · simpa [gScaled, φ] using hz
         · simp [φ]
       · rintro ⟨z, hz, hy⟩
         refine ⟨z, ?_, ?_⟩
-        · simpa [gScaled, φ]
-            using hz
+        · simpa [gScaled, φ] using hz
         · simpa [φ] using hy
 
 /-- Helper for Lemma 12.5: the negated scaled-conjugate proximal point is equivalent to the
 Chapter 12 primal `y`-step owner. -/
-lemma neg_scaled_conjugate_prox_mem_iff_mem_dual_proximal_gradient_primal_y_step
-    (g : V → EReal) (A : E →ₗ[ℝ] V) (x : E) (v y : V) (L : PosReal)
+lemma negScaledConjugateProx_mem_iff_memDualPrimalYStep
+    (g : V → EReal) (A : E →ₗ[ℝ] V) (x : E) (v yNext : V) (L : PosReal)
     (hg_proper : IsProperExtendedRealFunction g) (hg_closed : LowerSemicontinuous g)
     (hg_convex : is_convex_function g) :
-    y ∈ (fun q : V ↦ -q) '' prox[((((1 / L : PosReal) : EReal) • (g∗)))] ((1 / L : ℝ) • A x - v) ↔
-      y ∈ dual_proximal_gradient_primal_y_step g A x v L := by
+    yNext ∈ (fun u ↦ -u) '' prox[((((1 / L : PosReal) : EReal) • (g∗)))] ((1 / L : ℝ) • A x - v) ↔
+      yNext ∈ dual_proximal_gradient_primal_y_step g A x v L := by
   rcases scaled_function_proper_closed_convex_of_pos g hg_proper hg_closed hg_convex L with
     ⟨hgScaledProper, hgScaledClosed, hgScaledConvex⟩
   rcases prox_eq_singleton_of_proper_closed_convex
@@ -147,7 +145,7 @@ lemma neg_scaled_conjugate_prox_mem_iff_mem_dual_proximal_gradient_primal_y_step
       g hg_proper hg_closed hg_convex L (A x - (L : ℝ) • v) p hpSingleton
   have hbase :
       ((L : ℝ)⁻¹ • (A x - (L : ℝ) • v)) = ((1 / L : ℝ) • A x - v) := by
-    -- Normalize the Moreau base point into the textbook forward point.
+    -- Normalize the Moreau base point into the Chapter 12 forward point.
     have hL : (L : ℝ) ≠ 0 := ne_of_gt L.2
     rw [smul_sub, smul_smul]
     simp [one_div, hL]
@@ -158,7 +156,7 @@ lemma neg_scaled_conjugate_prox_mem_iff_mem_dual_proximal_gradient_primal_y_step
   have hnegResidual :
       -((L : ℝ)⁻¹ • ((A x - (L : ℝ) • v) - p)) =
         v - (1 / L : ℝ) • A x + (1 / L : ℝ) • p := by
-    -- Expand the residual point into the Chapter 12 affine update.
+    -- Expand the negated Moreau residual into the Chapter 12 affine dual update.
     have hL : (L : ℝ) ≠ 0 := ne_of_gt L.2
     calc
       -((L : ℝ)⁻¹ • ((A x - (L : ℝ) • v) - p))
@@ -166,21 +164,24 @@ lemma neg_scaled_conjugate_prox_mem_iff_mem_dual_proximal_gradient_primal_y_step
               rw [smul_sub, neg_sub]
       _ = v - (1 / L : ℝ) • A x + (1 / L : ℝ) • p := by
             rw [smul_sub, smul_smul]
-            simp [one_div, hL, sub_eq_add_neg, add_assoc, add_left_comm, add_comm]
+            simp [one_div, hL, sub_eq_add_neg, add_left_comm, add_comm]
   constructor
-  · rintro ⟨q, hq, rfl⟩
-    have hqSingleton :
-        q = (L : ℝ)⁻¹ • ((A x - (L : ℝ) • v) - p) := by
-      have : q ∈ ({((L : ℝ)⁻¹ • ((A x - (L : ℝ) • v) - p))} : Set V) := by
-        rw [hdualSingletonBase] at hq
-        exact hq
+  · rintro ⟨u, hu, rfl⟩
+    have huSingleton :
+        u = (L : ℝ)⁻¹ • ((A x - (L : ℝ) • v) - p) := by
+      have : u ∈ ({((L : ℝ)⁻¹ • ((A x - (L : ℝ) • v) - p))} : Set V) := by
+        rw [hdualSingletonBase] at hu
+        exact hu
       simpa using this
+    -- Convert the transported Moreau singleton into the canonical Chapter 12 step witness.
     rw [mem_dual_proximal_gradient_primal_y_step_iff]
     refine ⟨p, ?_, ?_⟩
     · have hpMem : p ∈ ({p} : Set V) := by simp
-      simpa [hpSingleton] using hpMem
-    · simp [hqSingleton, hnegResidual]
+      simp [hpSingleton]
+    · simp [huSingleton, hnegResidual]
   · intro hy
+    -- Unfold the Chapter 12 step owner and rewrite the unique prox witness back into the
+    -- transported Moreau residual.
     rw [mem_dual_proximal_gradient_primal_y_step_iff] at hy
     rcases hy with ⟨p', hp', hyEq⟩
     have hp'Eq : p' = p := by
@@ -192,21 +193,10 @@ lemma neg_scaled_conjugate_prox_mem_iff_mem_dual_proximal_gradient_primal_y_step
       simp
     · simp [hyEq, hp'Eq, hnegResidual]
 
--- Proof sketch: render the source dual update through the Chapter 12 owner
--- `dual_based_proximal_gradient_dual_step` with the canonical nonsmooth term
--- `w ↦ (g∗) (-w)`. The smooth gradient is the affine-shifted
--- conjugate gradient `w ↦ ∇ (((f∗) (A.adjoint w + b)).toReal)`, and the source argmax point is the
--- canonical gradient point `xTilde = ∇ (fun x ↦ ((f∗) x).toReal) (A.adjoint v + b)`. Then apply
--- the negation transport of the proximal mapping together with the extended Moreau decomposition
--- to identify the dual-step owner with the canonical Algorithm 12.2 primal `y`-step owner at
--- `xTilde`.
-/-- Lemma 12.5: if `F(w) = f^*(Aᵀ w + b)` and `G(w) = g^*(-w)` under assumptions (A), (B), and
-(C) of Assumption 12.1, then the dual proximal-gradient relation
-`y = prox_{(1 / L) G} (v - (1 / L) ∇ F(v))` is equivalent, rendered on the Chapter 12 step owner
-`dual_based_proximal_gradient_dual_step`, to membership in the canonical Algorithm 12.2 owner
-`dual_proximal_gradient_primal_y_step g A x̃ v L`, where
-`x̃ = ∇ f^*(Aᵀ v + b)` is the canonical maximizer of
-`x ↦ ⟪x, Aᵀ v + b⟫ - f(x)`. -/
+/-- Lemma 12.5: the shifted dual proximal-gradient step for
+`F(y) = f∗(A.adjoint y + b)` and `G(y) = g∗(-y)` is equivalent to the primal-representation
+`y`-step at the canonical point `xTilde = ∇ (fun x ↦ (((f∗) x).toReal)) (A.adjoint v + b)`,
+which is the source argmax point for `x ↦ ⟪x, A.adjoint v + b⟫ - f x`. -/
 theorem dual_based_proximal_gradient_dual_step_iff_mem_dual_proximal_gradient_primal_y_step
     (σ : PosReal) (f : E → EReal) (g : V → EReal) (A : E →ₗ[ℝ] V) (b : E)
     (hf_proper : IsProperExtendedRealFunction f) (hf_closed : LowerSemicontinuous f)
@@ -214,27 +204,33 @@ theorem dual_based_proximal_gradient_dual_step_iff_mem_dual_proximal_gradient_pr
     (hg_proper : IsProperExtendedRealFunction g) (hg_closed : LowerSemicontinuous g)
     (hg_convex : is_convex_function g) (y v : V) (L : PosReal) :
     y ∈ dual_based_proximal_gradient_dual_step
-          (fun z : V ↦ (g∗) (-z))
-          (fun w ↦ ∇ (fun z : V ↦ (((f∗) (A.adjoint z + b)).toReal)) w)
-          L
-          v ↔
+      (fun z : V ↦ (g∗) (-z))
+      (fun w ↦ ∇ (fun z : V ↦ (((f∗) (A.adjoint z + b)).toReal)) w)
+      L
+      v ↔
       y ∈ dual_proximal_gradient_primal_y_step
         g
         A
         (∇ (fun x : E ↦ (((f∗) x).toReal)) (A.adjoint v + b))
         v
         L := by
-  -- Rewrite the source owner into the proximal point with the explicit forward-gradient point.
+  -- Rewrite the dual-step owner into the explicit proximal point at the forward-gradient base.
   rw [mem_dual_based_proximal_gradient_dual_step_iff]
-  -- Identify the smooth gradient term with the pushed-forward conjugate gradient `A x̃`.
-  rw [gradient_conjugate_pullback_add_eq σ f A b hf_proper hf_closed hf_strong v]
-  -- Transport the proximal set of `z ↦ (g∗) (-z)` through negation.
-  rw [prox_negated_conjugate_eq_neg_image_scaled_conjugate_prox g hg_proper hg_convex L]
-  -- Finish with the Moreau decomposition rendered on the Chapter 12 primal-step owner.
+  -- Normalize the shifted conjugate gradient into `A` applied to the canonical primal point.
+  rw [shiftedGradientConjugatePullback_eq σ f A b hf_proper hf_closed hf_strong v]
+  -- Transport the proximal mapping of `z ↦ (g∗) (-z)` through the involution `u ↦ -u`.
+  rw [proxNegatedConjugate_eq_negImageScaledConjugateProx g hg_proper hg_convex L]
+  -- Finish with the Moreau decomposition rewritten as the Chapter 12 primal `y`-step owner.
   simpa [sub_eq_add_neg, add_assoc, add_left_comm, add_comm] using
-    neg_scaled_conjugate_prox_mem_iff_mem_dual_proximal_gradient_primal_y_step
-      g A
+    negScaledConjugateProx_mem_iff_memDualPrimalYStep
+      g
+      A
       (∇ (fun x : E ↦ (((f∗) x).toReal)) (A.adjoint v + b))
-      v y L hg_proper hg_closed hg_convex
+      v
+      y
+      L
+      hg_proper
+      hg_closed
+      hg_convex
 
 end

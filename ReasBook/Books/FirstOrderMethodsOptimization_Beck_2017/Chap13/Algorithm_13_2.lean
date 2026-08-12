@@ -1,4 +1,3 @@
-import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_1
 import FirstOrderMethodsOptimization_Beck_2017.Chap13.Definition_13_4
 
@@ -59,6 +58,17 @@ theorem is_generalized_conditional_gradient_trajectory_zero
     (h : is_generalized_conditional_gradient_trajectory f g x p t) :
     x 0 ∈ effective_domain g :=
   h.zero_mem_effective_domain
+
+-- Proof sketch: specialize the defining argmin clause of
+-- `is_generalized_conditional_gradient_trajectory` at the iteration index `k`.
+/-- At each iteration `k`, a generalized conditional-gradient trajectory chooses a minimizer
+`pᵏ` of the canonical linearized subproblem at `xᵏ`. -/
+theorem is_generalized_conditional_gradient_trajectory_argmin
+    {f : E → ℝ} {g : E → EReal} {x p : ℕ → E}
+    {t : ℕ → Set.Icc (0 : ℝ) 1}
+    (h : is_generalized_conditional_gradient_trajectory f g x p t) (k : ℕ) :
+    p k ∈ generalized_conditional_gradient_argmin f g (x k) :=
+  h.argmin_mem k
 
 -- Proof sketch: specialize the defining universal clause of
 -- `is_generalized_conditional_gradient_trajectory` at the iteration index `k`.

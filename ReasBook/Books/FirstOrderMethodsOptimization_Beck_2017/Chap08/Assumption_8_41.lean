@@ -73,7 +73,7 @@ class IsDualProjectedSubgradientProblem {m : ℕ}
 
 /-- A dual projected subgradient problem package canonically supplies both a nonempty optimal set
 and the greatest-lower-bound characterization of the optimal value. -/
-instance instFactOptimalSetNonemptyAndOptimalValueIsGLB
+instance instFactDualProjectedSubgradientOptimalSetNonemptyAndOptimalValueIsGLB
     {m : ℕ} {X XStar : Set E} {f : E → ℝ} {g : Fin m → E → ℝ} {fOpt : ℝ}
     [h : IsDualProjectedSubgradientProblem X XStar f g fOpt] :
     Fact

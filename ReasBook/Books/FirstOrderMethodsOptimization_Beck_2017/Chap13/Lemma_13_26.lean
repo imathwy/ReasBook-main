@@ -68,7 +68,7 @@ lemma generalized_conditional_gradient_norm_toReal_eq_inner_sub_of_mem_argmin
   -- Recover feasibility of the chosen minimizer so the indicator terms vanish in the gap formula.
   rcases
       (mem_generalized_conditional_gradient_argmin_extendedIndicator_iff
-        (f := f) (C := C) ⟨x, x.2⟩).mp hp with
+        ⟨(x : E), x.2⟩).mp hp with
     ⟨hpxC, _⟩
   -- The canonical norm is realized by the chosen argmin point, and the constrained indicator is
   -- zero at both feasible endpoints.
@@ -88,7 +88,7 @@ lemma argmin_inner_le_of_feasible
   -- `C`, then commute the inner product to match the source proof's orientation.
   rcases
       (mem_generalized_conditional_gradient_argmin_extendedIndicator_iff
-        (f := f) (C := C) ⟨x, x.2⟩).mp hp with
+        ⟨(x : E), x.2⟩).mp hp with
     ⟨_, hpmin⟩
   rw [isMinOn_iff] at hpmin
   have hlin : inner ℝ px (∇ f₀ x) ≤ inner ℝ z (∇ f₀ x) :=
@@ -152,7 +152,7 @@ lemma strong_convex_midpoint_gradient_perturbation_mem
       ‖((((σ / 8) * (‖((x : E) - px)‖ ^ (2 : ℕ) / ‖∇ f₀ x‖)) : ℝ) • ∇ f₀ x)‖ ≤
           (σ / 8) * ‖((x : E) - px)‖ ^ (2 : ℕ) :=
         gradient_perturbation_norm_le_quadratic_radius
-          (σ := σ) hσ (∇ f₀ x) hd2
+          hσ (∇ f₀ x) hd2
       _ = ((σ / 2) * (1 / 2 : ℝ) * (1 - (1 / 2 : ℝ)) * ‖((x : E) - px)‖ ^ (2 : ℕ)) := by
         ring
   -- Feed the closed-ball membership into the defining strong-convexity inclusion.
@@ -197,7 +197,7 @@ lemma midpoint_sub_eq_half_sub
           abel
     _ = (1 / 2 : ℝ) • x + (((1 / 2 : ℝ) - 1) • y) := by
           simpa using
-            congrArg (fun t : E => (1 / 2 : ℝ) • x + t)
+            congrArg (fun t : E ↦ (1 / 2 : ℝ) • x + t)
               ((sub_smul (1 / 2 : ℝ) 1 y).symm)
     _ = (1 / 2 : ℝ) • x + ((- (1 / 2 : ℝ)) • y) := by
           norm_num
@@ -233,10 +233,10 @@ theorem generalized_conditional_gradient_norm_ge_strong_convexity_quadratic_boun
       (((σ / 8) * (d2 / ‖g‖)) • g)
   -- First rewrite the Chapter 13 gap into the real inner product used in the source proof.
   rw [generalized_conditional_gradient_norm_toReal_eq_inner_sub_of_mem_argmin
-    (f := f) (C := C) x hp]
+    x hp]
   rcases
       (mem_generalized_conditional_gradient_argmin_extendedIndicator_iff
-        (f := f) (C := C) ⟨x, x.2⟩).mp hp with
+        ⟨(x : E), x.2⟩).mp hp with
     ⟨hpxC, _⟩
   have hd2 : 0 ≤ d2 := by
     positivity
@@ -244,10 +244,10 @@ theorem generalized_conditional_gradient_norm_ge_strong_convexity_quadratic_boun
     -- This is the geometric midpoint-plus-gradient perturbation step from the textbook.
     simpa [z, d2, g] using
       strong_convex_midpoint_gradient_perturbation_mem
-        (f := f) (C := C) hσ hC x hpxC
+        hσ hC x hpxC
   have hargmin : inner ℝ g px ≤ inner ℝ g z := by
     -- Feasibility of `z` lets the constrained argmin witness compare `px` directly with `z`.
-    simpa [g] using argmin_inner_le_of_feasible (f := f) (C := C) x hp hzC
+    simpa [g] using argmin_inner_le_of_feasible x hp hzC
   have hz_nonneg : 0 ≤ inner ℝ g (z - px) := by
     -- Rewrite the difference of objective values as the inner product with `z - px`.
     rw [inner_sub_right]
@@ -256,7 +256,7 @@ theorem generalized_conditional_gradient_norm_ge_strong_convexity_quadratic_boun
       ((1 / 2 : ℝ) • (x : E) + (1 - (1 / 2 : ℝ)) • px) - px =
         (1 / 2 : ℝ) • (((x : E) - px)) := by
     -- This is the scalar midpoint identity used in the textbook decomposition of `x - px`.
-    simpa using midpoint_sub_eq_half_sub (x := (x : E)) (y := px)
+    simpa using midpoint_sub_eq_half_sub (x : E) px
   have hmidpoint_from_z :
       ((1 / 2 : ℝ) • (x : E) + (1 - (1 / 2 : ℝ)) • px) - px =
         (z - px) + (((σ / 8) * (d2 / ‖g‖)) • g) := by

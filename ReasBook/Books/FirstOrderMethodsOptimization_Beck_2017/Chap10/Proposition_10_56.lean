@@ -21,7 +21,7 @@ variable {E : Type u}
 
 Domain sampling in the surrounding chapter identifies the relevant owners already present in the
 workspace:
-- `Function.toExtendedReal` from Definition 9.2 for the canonical coercion from the real-valued terms
+- `Function.toEReal` from Definition 9.2 for the canonical coercion from the real-valued terms
   `f` and `h` into the extended-real codomain;
 - `composite_model_objective` from Definition 10.2, used twice as in Definition 10.55, for the
   underlying three-term objective;
@@ -56,10 +56,10 @@ class IsSFISTAProblem
   g_closed : LowerSemicontinuous g
   g_convex : is_convex_function g
   bounded_real_sublevelSets (a : ℝ) :
-    Bornology.IsBounded {x | H[f.toExtendedReal, h.toExtendedReal, g] x ≤ (a : EReal)}
-  optimal_set_eq : XStar = unconstrained_problem_solutions H[f.toExtendedReal, h.toExtendedReal, g]
+    Bornology.IsBounded {x | H[f.toEReal, h.toEReal, g] x ≤ (a : EReal)}
+  optimal_set_eq : XStar = unconstrained_problem_solutions H[f.toEReal, h.toEReal, g]
   optimal_set_nonempty : XStar.Nonempty
-  optimal_value_isGLB : IsGLB (Set.range H[f.toExtendedReal, h.toExtendedReal, g]) (HOpt : EReal)
+  optimal_value_isGLB : IsGLB (Set.range H[f.toEReal, h.toEReal, g]) (HOpt : EReal)
 
 /-- The regularizer in an S-FISTA problem is proper. -/
 instance instIsProperExtendedRealFunctionRightOfIsSFISTAProblem
@@ -112,8 +112,8 @@ variable {Lf : NNReal} {α β μ : PosReal}
 /-- Helper for Proposition 10.56: the three-term smoothed objective is exactly the Chapter 10
 fast proximal-gradient objective for the real-valued smooth term `x ↦ f x + hμ x`. -/
 theorem smoothed_objective_eq_fast_prox_objective :
-    H[f.toExtendedReal, hμ.toExtendedReal, g] =
-      composite_model_objective (Function.toExtendedReal (fun x ↦ f x + hμ x)) g := by
+    H[f.toEReal, hμ.toEReal, g] =
+      composite_model_objective (Function.toEReal (fun x ↦ f x + hμ x)) g := by
   -- Unfold both Chapter 10 wrappers to the same nested pointwise sum.
   ext x
   rfl
@@ -161,29 +161,29 @@ theorem is_l_smooth_on_add
 terms are finite everywhere and the regularizer `g` is proper. -/
 theorem smoothed_objective_is_proper
     (hproblem : IsSFISTAProblem f h g XStar HOpt Lf α β) :
-    IsProperExtendedRealFunction H[f.toExtendedReal, hμ.toExtendedReal, g] := by
+    IsProperExtendedRealFunction H[f.toEReal, hμ.toEReal, g] := by
   refine ⟨?_, ?_⟩
   · -- No point can have value `-∞` because only the `g`-term could, and properness excludes that.
     intro x
-    simp [Function.toExtendedReal, add_assoc, hproblem.g_proper.ne_bot x]
+    simp [Function.toEReal, add_assoc, hproblem.g_proper.ne_bot x]
   · -- Any finite point of `g` is also finite for the full smoothed objective.
     rcases hproblem.g_proper.effective_domain_nonempty with ⟨x, hx⟩
     refine ⟨x, ?_⟩
     refine mem_effective_domain.mpr ?_
     have hsum_top : (f x : EReal) + hμ x ≠ ⊤ := by
       exact (EReal.add_lt_top (EReal.coe_ne_top _) (EReal.coe_ne_top _)).ne
-    simpa [Function.toExtendedReal, add_assoc] using
+    simpa [Function.toEReal, add_assoc] using
       EReal.add_lt_top hsum_top (mem_effective_domain.mp hx).ne
 
 /-- Helper for Proposition 10.56: coercing the finite smoothed objective value back to `ℝ` and
 then to `EReal` recovers the original value. -/
 theorem smoothed_objective_coe_toReal_of_mem_effective_domain
     (hproblem : IsSFISTAProblem f h g XStar HOpt Lf α β)
-    {x : E} (hx : x ∈ effective_domain H[f.toExtendedReal, hμ.toExtendedReal, g]) :
-    (((H[f.toExtendedReal, hμ.toExtendedReal, g] x).toReal : ℝ) : EReal) =
-      H[f.toExtendedReal, hμ.toExtendedReal, g] x := by
+    {x : E} (hx : x ∈ effective_domain H[f.toEReal, hμ.toEReal, g]) :
+    (((H[f.toEReal, hμ.toEReal, g] x).toReal : ℝ) : EReal) =
+      H[f.toEReal, hμ.toEReal, g] x := by
   -- Effective-domain membership removes `⊤`, and properness removes `⊥`.
-  have hne_bot : H[f.toExtendedReal, hμ.toExtendedReal, g] x ≠ ⊥ :=
+  have hne_bot : H[f.toEReal, hμ.toEReal, g] x ≠ ⊥ :=
     (smoothed_objective_is_proper (f := f) (h := h) (hμ := hμ) (g := g) hproblem).ne_bot x
   exact EReal.coe_toReal (mem_effective_domain.mp hx).ne hne_bot
 
@@ -192,18 +192,18 @@ real-valued smooth part is continuous and `g` is lower semicontinuous. -/
 theorem smoothed_objective_lower_semicontinuous
     (hproblem : IsSFISTAProblem f h g XStar HOpt Lf α β)
     (hhμ : IsSmoothApproximation h hμ α β μ) :
-    LowerSemicontinuous H[f.toExtendedReal, hμ.toExtendedReal, g] := by
+    LowerSemicontinuous H[f.toEReal, hμ.toEReal, g] := by
   -- The real-valued smooth part is continuous because both summands are globally smooth.
   have hcont : Continuous (fun x ↦ f x + hμ x) := by
     refine continuous_iff_continuousAt.2 ?_
     intro x
     exact (hproblem.f_smooth.1 x (by simp)).continuousAt.add
       ((hhμ.smooth.1 x (by simp)).continuousAt)
-  have hsmooth_lsc : LowerSemicontinuous (Function.toExtendedReal (fun x ↦ f x + hμ x)) :=
-    Function.toExtendedReal_lowerSemicontinuous_of_continuous hcont
+  have hsmooth_lsc : LowerSemicontinuous (Function.toEReal (fun x ↦ f x + hμ x)) :=
+    Function.toEReal_lowerSemicontinuous_of_continuous hcont
   have hsum_lsc :
       LowerSemicontinuous
-        (composite_model_objective (Function.toExtendedReal (fun x ↦ f x + hμ x)) g) := by
+        (composite_model_objective (Function.toEReal (fun x ↦ f x + hμ x)) g) := by
     -- Addition is continuous at every relevant pair because the real-valued lifted term is finite.
     refine hsmooth_lsc.add' hproblem.g_closed ?_
     intro x
@@ -215,22 +215,22 @@ because smoothing shifts the original objective by at most `β μ`. -/
 theorem smoothed_objective_bounded_real_sublevel_sets
     (hproblem : IsSFISTAProblem f h g XStar HOpt Lf α β)
     (hhμ : IsSmoothApproximation h hμ α β μ) :
-    ∀ a : ℝ, Bornology.IsBounded {x | H[f.toExtendedReal, hμ.toExtendedReal, g] x ≤ (a : EReal)} := by
+    ∀ a : ℝ, Bornology.IsBounded {x | H[f.toEReal, hμ.toEReal, g] x ≤ (a : EReal)} := by
   intro a
   refine Bornology.IsBounded.subset
     (hproblem.bounded_real_sublevelSets (a + (β : ℝ) * (μ : ℝ))) ?_
   intro x hx
   have hcompare :
-      H[f.toExtendedReal, h.toExtendedReal, g] x ≤
-        H[f.toExtendedReal, hμ.toExtendedReal, g] x + (((β : ℝ) * (μ : ℝ) : ℝ) : EReal) := by
+      H[f.toEReal, h.toEReal, g] x ≤
+        H[f.toEReal, hμ.toEReal, g] x + (((β : ℝ) * (μ : ℝ) : ℝ) : EReal) := by
     -- Only the `h`/`hμ` slot changes, and `hhμ.upper_le` controls that change uniformly.
     have hupper :
         ((h x : ℝ) : EReal) ≤ (((hμ x + (β : ℝ) * (μ : ℝ) : ℝ) : ℝ) : EReal) := by
       exact_mod_cast hhμ.upper_le x
     calc
-      H[f.toExtendedReal, h.toExtendedReal, g] x
+      H[f.toEReal, h.toEReal, g] x
           = ((f x : EReal) + h x) + g x := by
-            simp [Function.toExtendedReal, add_assoc]
+            simp [Function.toEReal, add_assoc]
       _ ≤ ((f x : EReal) + (((hμ x + (β : ℝ) * (μ : ℝ) : ℝ) : EReal))) + g x := by
             have hsum_with_g :
                 ((h x : EReal) + g x) ≤
@@ -242,11 +242,11 @@ theorem smoothed_objective_bounded_real_sublevel_sets
                   ((((hμ x + (β : ℝ) * (μ : ℝ) : ℝ) : EReal) + g x) + f x) := by
               exact add_le_add_left hsum_with_g (f x : EReal)
             simpa [add_assoc, add_left_comm, add_comm] using htotal
-      _ = H[f.toExtendedReal, hμ.toExtendedReal, g] x + (((β : ℝ) * (μ : ℝ) : ℝ) : EReal) := by
-            simp [Function.toExtendedReal, add_left_comm, add_comm]
+      _ = H[f.toEReal, hμ.toEReal, g] x + (((β : ℝ) * (μ : ℝ) : ℝ) : EReal) := by
+            simp [Function.toEReal, add_left_comm, add_comm]
   calc
-    H[f.toExtendedReal, h.toExtendedReal, g] x
-        ≤ H[f.toExtendedReal, hμ.toExtendedReal, g] x + (((β : ℝ) * (μ : ℝ) : ℝ) : EReal) := hcompare
+    H[f.toEReal, h.toEReal, g] x
+        ≤ H[f.toEReal, hμ.toEReal, g] x + (((β : ℝ) * (μ : ℝ) : ℝ) : EReal) := hcompare
     _ ≤ (a : EReal) + (((β : ℝ) * (μ : ℝ) : ℝ) : EReal) := by
           simpa [add_comm] using
             add_le_add_left hx ((((β : ℝ) * (μ : ℝ) : ℝ) : EReal))
@@ -258,7 +258,7 @@ theorem bounded_real_sublevel_radius
     (hproblem : IsSFISTAProblem f h g XStar HOpt Lf α β)
     (a : ℝ) :
     ∃ R : PosReal, ∀ ⦃x : E⦄,
-      H[f.toExtendedReal, h.toExtendedReal, g] x ≤ (a : EReal) → ‖x‖ ≤ (R : ℝ) := by
+      H[f.toEReal, h.toEReal, g] x ≤ (a : EReal) → ‖x‖ ≤ (R : ℝ) := by
   rcases (hproblem.bounded_real_sublevelSets a).subset_closedBall_lt 0 (0 : E) with
     ⟨R, hR, hball⟩
   refine ⟨⟨R, hR⟩, ?_⟩
@@ -273,10 +273,10 @@ theorem toIsFastProximalGradientProblem
     (hhμ : IsSmoothApproximation h hμ α β μ) :
     ∃ HμOpt : ℝ,
       IsFastProximalGradientProblem (fun x ↦ f x + hμ x) g
-        (unconstrained_problem_solutions H[f.toExtendedReal, hμ.toExtendedReal, g])
+        (unconstrained_problem_solutions H[f.toEReal, hμ.toEReal, g])
         HμOpt
         (Lf + PosReal.toNNReal α / PosReal.toNNReal μ) := by
-  let Fμ : E → EReal := H[f.toExtendedReal, hμ.toExtendedReal, g]
+  let Fμ : E → EReal := H[f.toEReal, hμ.toEReal, g]
   -- The source-proof route is to show the smoothed objective satisfies the Weierstrass hypotheses.
   have hFμ_proper : IsProperExtendedRealFunction Fμ := by
     simpa [Fμ] using smoothed_objective_is_proper
@@ -306,19 +306,19 @@ theorem toIsFastProximalGradientProblem
       (f₁ := f) (f₂ := hμ) (L₁ := Lf) (L₂ := PosReal.toNNReal α / PosReal.toNNReal μ)
       hproblem.f_smooth hhμ.smooth
   have h_optimal_set_eq :
-      unconstrained_problem_solutions H[f.toExtendedReal, hμ.toExtendedReal, g] =
+      unconstrained_problem_solutions H[f.toEReal, hμ.toEReal, g] =
         unconstrained_problem_solutions
-          (composite_model_objective (Function.toExtendedReal (fun x ↦ f x + hμ x)) g) := by
+          (composite_model_objective (Function.toEReal (fun x ↦ f x + hμ x)) g) := by
     -- The optimizer set is transported through the normalization of the objective.
     simp [smoothed_objective_eq_fast_prox_objective (f := f) (hμ := hμ) (g := g)]
   have h_optimal_nonempty :
-      (unconstrained_problem_solutions H[f.toExtendedReal, hμ.toExtendedReal, g]).Nonempty := by
+      (unconstrained_problem_solutions H[f.toEReal, hμ.toEReal, g]).Nonempty := by
     -- The minimizer returned by Weierstrass belongs to the canonical unconstrained solution set.
     exact ⟨x, mem_unconstrained_problem_solutions_iff.mpr hxmin⟩
   have h_optimal_value_isGLB :
       IsGLB
         (Set.range
-          (composite_model_objective (Function.toExtendedReal (fun x ↦ f x + hμ x)) g))
+          (composite_model_objective (Function.toEReal (fun x ↦ f x + hμ x)) g))
         (HμOpt : EReal) := by
     -- Global minimality identifies the optimum as the greatest lower bound of the range.
     have hglb_smoothed : IsGLB (Set.range Fμ) (HμOpt : EReal) := by
@@ -327,7 +327,7 @@ theorem toIsFastProximalGradientProblem
       hglb_smoothed
   have h_fast :
       IsFastProximalGradientProblem (fun x ↦ f x + hμ x) g
-        (unconstrained_problem_solutions H[f.toExtendedReal, hμ.toExtendedReal, g])
+        (unconstrained_problem_solutions H[f.toEReal, hμ.toEReal, g])
         HμOpt
         (Lf + PosReal.toNNReal α / PosReal.toNNReal μ) := by
     -- Package the smoothed-objective data into the Chapter 10 fast proximal-gradient owner.

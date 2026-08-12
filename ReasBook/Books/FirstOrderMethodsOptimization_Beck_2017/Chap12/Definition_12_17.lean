@@ -1,4 +1,5 @@
 import Mathlib
+import FirstOrderMethodsOptimization_Beck_2017.Chap03.Definition_3_10
 import FirstOrderMethodsOptimization_Beck_2017.Chap04.Theorem_4_3
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_6
 import FirstOrderMethodsOptimization_Beck_2017.Chap12.Definition_12_4
@@ -104,18 +105,42 @@ theorem dual_block_proximal_gradient_dual_objective_eq_dual_problem_value_of_mem
   rcases hz with ⟨yBar, rfl⟩
   exact hmax yBar
 
+/-- Shared Chapter 12 companion for Definition 12.17: once both the optimal dual point and the
+sampled dual point are finite, the `EReal` dual gap rewrites to the scalar gap after applying
+`toReal`. -/
+theorem dual_gap_toReal_eq_of_mem_finite_domain
+    {p : ℕ} (f : E → EReal) (g : Fin p → E → EReal)
+    {yBar yStar : Fin p → E}
+    (hyStar : yStar ∈ Λ*(f, g))
+    (hyStar_finite : yStar ∈ finite_domain (q(f, g)))
+    (hyBar_finite : yBar ∈ finite_domain (q(f, g))) :
+    (q_opt(f, g) - q(f, g) yBar).toReal =
+      EReal.toReal (q_opt(f, g)) - (q(f, g) yBar).toReal := by
+  have hqOpt_ne_top : q_opt(f, g) ≠ ⊤ := by
+    rw [← dual_block_proximal_gradient_dual_objective_eq_dual_problem_value_of_mem_optimal_set
+      f g hyStar]
+    exact (mem_finite_domain.mp hyStar_finite).1.ne
+  have hqOpt_ne_bot : q_opt(f, g) ≠ ⊥ := by
+    rw [← dual_block_proximal_gradient_dual_objective_eq_dual_problem_value_of_mem_optimal_set
+      f g hyStar]
+    exact (mem_finite_domain.mp hyStar_finite).2
+  have hyBar_ne_top : q(f, g) yBar ≠ ⊤ := by
+    exact (mem_finite_domain.mp hyBar_finite).1.ne
+  have hyBar_ne_bot : q(f, g) yBar ≠ ⊥ := by
+    exact (mem_finite_domain.mp hyBar_finite).2
+  rw [EReal.toReal_sub hqOpt_ne_top hqOpt_ne_bot hyBar_ne_top hyBar_ne_bot]
+
+/-- Shared Chapter 12 companion for Definition 12.17: every source-facing dual value is bounded
+above by the canonical dual optimum `q_opt`. -/
+theorem dual_objective_le_dual_problem_value
+    {p : ℕ} (f : E → EReal) (g : Fin p → E → EReal) (v : Fin p → E) :
+    q(f, g) v ≤ q_opt(f, g) := by
+  rw [dual_block_proximal_gradient_dual_problem_value_eq_sSup]
+  exact le_sSup ⟨v, rfl⟩
+
 section
 
 variable [FiniteDimensional ℝ E]
-
-/-- Helper for Definition 12.17: the linear adjoint of the duplication map is the block sum. -/
-theorem dual_block_duplication_linear_adjoint_apply
-    {p : ℕ} (y : PiLp (2 : ENNReal) (fun _ : Fin p ↦ E)) :
-    ((dual_block_duplication E p).toLinearMap).adjoint y =
-      ∑ i : Fin p, y i := by
-  -- Replace the algebraic adjoint by the already computed continuous adjoint from Proposition 12.7.
-  rw [LinearMap.adjoint_eq_toCLM_adjoint]
-  simpa using dual_block_duplication_adjoint_apply (E := E) (p := p) (y := y)
 
 omit [FiniteDimensional ℝ E] in
 /-- Helper for Definition 12.17: the Riesz functional of a negated block vector is the coordinate
@@ -178,7 +203,8 @@ omit [FiniteDimensional ℝ E] in
 /-- Helper for Definition 12.17: the conjugate of the block-separable sum at `-y` is the sum of
 the coordinate conjugates. -/
 theorem conjugate_function_primal_separableSum_neg_eq_sum
-    {p : ℕ} (g : Fin p → E → EReal) (h_ne_bot : ∀ i x, g i x ≠ ⊥)
+    {p : ℕ} (g : Fin p → E → EReal)
+    (hg_proper : ∀ i : Fin p, IsProperExtendedRealFunction (g i))
     (y : PiLp (2 : ENNReal) (fun _ : Fin p ↦ E)) :
     ((PiLp.separableSum g)∗) (-y) =
       ∑ i : Fin p, ((g i)∗) (-y i) := by
@@ -187,20 +213,20 @@ theorem conjugate_function_primal_separableSum_neg_eq_sum
   rw [conjugate_function_primal_apply, toDualMap_neg_eq_lsum_comp_continuousLinearEquiv]
   rw [conjugate_function_separableSum_eq_conjugate_function_coordinate_sum]
   simpa [conjugate_function_primal_apply] using
-    (conjugate_function_separable_sum_eq_sum_conjugate_function g h_ne_bot
+    (conjugate_function_separable_sum_eq_sum_conjugate_function g hg_proper
       (fun i : Fin p ↦ InnerProductSpace.toDualMap ℝ E (-y i)))
 
 -- Proof sketch: evaluate the Chapter 12.4 primal-space dual objective on the diagonal
 -- duplication operator `dual_block_duplication E p`, then identify the adjoint term with
 -- `∑ i, y i` and rewrite the separable conjugate term with
--- `conjugate_function_separable_sum_eq_sum_conjugate_function`, which requires the standard
--- no-`⊥` hypothesis on the block functions `g i`.
+-- `conjugate_function_separable_sum_eq_sum_conjugate_function`, which now uses the canonical
+-- properness owner on the block functions `g i`.
 /-- The Chapter 12.4 dual objective specialized to the block-separable model agrees with the
-source-facing block dual objective from Definition 12.17, under the canonical no-`⊥` hypothesis
-needed for the separable-conjugate bridge. -/
+source-facing block dual objective from Definition 12.17, under the canonical block-properness
+hypothesis needed for the separable-conjugate bridge. -/
 theorem dual_block_proximal_gradient_lagrange_dual_objective_primal_eq_dual_objective
     {p : ℕ} (f : E → EReal) (g : Fin p → E → EReal)
-    (h_ne_bot : ∀ i x, g i x ≠ ⊥)
+    (hg_proper : ∀ i : Fin p, IsProperExtendedRealFunction (g i))
     (y : PiLp (2 : ENNReal) (fun _ : Fin p ↦ E)) :
     dual_based_proximal_gradient_lagrange_dual_objective_primal f
       (PiLp.separableSum g) (dual_block_duplication E p) y =
@@ -212,7 +238,7 @@ theorem dual_block_proximal_gradient_lagrange_dual_objective_primal_eq_dual_obje
   -- The two bridge lemmas exactly match the source proof: the duplication adjoint sums the blocks,
   -- and the conjugate of the separable sum splits coordinatewise.
   rw [dual_block_duplication_linear_adjoint_apply,
-    conjugate_function_primal_separableSum_neg_eq_sum (g := g) h_ne_bot]
+    conjugate_function_primal_separableSum_neg_eq_sum (g := g) hg_proper]
 
 end
 

@@ -38,6 +38,17 @@ class RandomizedBlockProximalGradientAssumptions
   f_toReal_differentiableOn_interior_effective_domain :
     DifferentiableOn ℝ (fun x ↦ (f x).toReal) (interior (effective_domain f))
 
+/-- The randomized block proximal-gradient assumptions inherit the shared Chapter 11
+block proximal-gradient problem owner. -/
+instance instIsBlockProximalGradientProblemOfRandomizedBlockProximalGradientAssumptions
+    {f : ((i : ι) → Ei i) → EReal} {g : (i : ι) → Ei i → EReal}
+    {block_gradient : (i : ι) → ((j : ι) → Ei j) → Ei i}
+    {XStar : Set ((i : ι) → Ei i)} {FOpt : ℝ}
+    {Li : (i : ι) → PosReal}
+    (h : RandomizedBlockProximalGradientAssumptions f g block_gradient XStar FOpt Li) :
+    IsBlockProximalGradientProblem f g block_gradient XStar FOpt Li :=
+  h.toIsBlockProximalGradientProblem
+
 namespace RandomizedBlockProximalGradientAssumptions
 
 /-- The randomized block proximal-gradient assumptions are obtained from the Chapter 11 core owner

@@ -302,7 +302,9 @@ theorem HasAbsolutelyPermutationSymmetricSingularValueFactorization.isProper
   · rcases hf_abs.effective_domain_nonempty with ⟨x, hx_mem⟩
     have hx : f x < ⊤ := by
       simpa [mem_effective_domain] using hx_mem
-    have hx_desc : f x = f (|x|↓) := hf_abs.map_eq_abs_descendingRearrangement x
+    have hx_desc :
+        f x = f (Function.descendingRearrangement (fun i ↦ |x i|)) :=
+      hf_abs.map_eq_abs_descendingRearrangement x
     rcases
       exists_matrix_with_singular_value_function_eq_abs_descendingRearrangement (m := m) (n := n) x
         with ⟨X, hX⟩

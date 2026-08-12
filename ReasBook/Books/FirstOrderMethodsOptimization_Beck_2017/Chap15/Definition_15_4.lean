@@ -93,4 +93,18 @@ class IsADPMMProblem
   optimal_set_nonempty :
     (constrained_problem_solutions (H[h₁, h₂]) (admm_feasible_set A B c)).Nonempty
 
+-- `lean_leansearch` was unavailable in this agent environment; the companion-instance choice
+-- follows the local `Fact`-exposure pattern used in Chapter 10 assumption/problem owners.
+/-- Companion instance exposing nonemptiness of the canonical primal optimal set to typeclass
+search. -/
+instance instFactOptimalSetNonemptyOfIsADPMMProblem
+    {ρ : PosReal}
+    {h₁ : X → EReal} {h₂ : Z → EReal}
+    {A : X →ₗ[ℝ] Y} {B : Z →ₗ[ℝ] Y}
+    {G : X →ₗ[ℝ] X} {Q : Z →ₗ[ℝ] Z}
+    {c : Y}
+    (h : IsADPMMProblem ρ h₁ h₂ A B G Q c) :
+    Fact ((constrained_problem_solutions (H[h₁, h₂]) (admm_feasible_set A B c)).Nonempty) :=
+  ⟨h.optimal_set_nonempty⟩
+
 end

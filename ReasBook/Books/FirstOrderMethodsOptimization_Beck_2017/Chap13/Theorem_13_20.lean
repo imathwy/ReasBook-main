@@ -1,6 +1,9 @@
-import Mathlib
+import FirstOrderMethodsOptimization_Beck_2017.Chap13.Assumption_13_17
+import FirstOrderMethodsOptimization_Beck_2017.Chap13.Assumption_13_18
+import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_19.ExactTrajectory
 import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_15
-import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_19
+import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_19.TrajectoryCore
+import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_19.CurvatureLowerBound
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -46,112 +49,16 @@ variable (x : ℕ → polytope_quadratic_feasible_set a)
 local notation "Ω" => convexHull ℝ (Set.range a)
 local notation "f_q" => polytope_quadratic_objective Q b
 local notation "f_opt" => EReal.toReal (polytope_quadratic_optimal_value Q b a)
-local notation "gap[" k "]" => f_q (x k : E) - f_opt
+local notation "gap[" k "]" => f_q (x k) - f_opt
 
-/-- Helper for Theorem 13.20: the chosen conditional-gradient direction at index `k`. -/
-abbrev cg_dir (i : ℕ → Fin l) (k : ℕ) : E :=
+local notation "d[" i "," k "]" =>
   polytope_quadratic_conditional_gradient_direction a (x k) (i k)
 
-/-- Helper for Theorem 13.20: the exact-line-search ratio attached to the chosen direction. -/
-abbrev cg_ratio (i : ℕ → Fin l) (k : ℕ) : ℝ :=
-  polytope_quadratic_exact_line_search_ratio Q b (x k) (cg_dir i k)
+local notation "κ[" i "," k "]" =>
+  dotProduct (d[i, k]) (Q *ᵥ d[i, k])
 
-/-- Helper for Theorem 13.20: the directional curvature along the chosen direction. -/
-abbrev cg_curvature (i : ℕ → Fin l) (k : ℕ) : ℝ :=
-  dotProduct (cg_dir i k) ((Q : Matrix (Fin n) (Fin n) ℝ) *ᵥ (cg_dir i k))
-
-/-- Helper for Theorem 13.20: every constrained optimizer of the polytope quadratic problem
-attains the canonical optimal value `f_opt`. -/
-lemma polytope_quadratic_optimal_value_eq_of_mem_constrained_problem_solutions
-    {xStar : E}
-    (hxStar :
-      xStar ∈ constrained_problem_solutions (polytope_quadratic_problem Q b a) Ω) :
-    polytope_quadratic_optimal_value Q b a = f_q xStar := by
-  have hxStar_data : xStar ∈ Ω ∧ IsMinOn (polytope_quadratic_problem Q b a) Ω xStar := by
-    simpa using hxStar
-  -- Upgrade the feasible minimizer to a minimizer of the constrained objective on `Set.univ`.
-  have hxStar_min : IsMinOn (polytope_quadratic_problem Q b a) Set.univ xStar := by
-    rw [isMinOn_univ_iff]
-    intro y
-    by_cases hy : y ∈ Ω
-    · simpa [polytope_quadratic_problem_of_mem Q b a hxStar_data.1,
-        polytope_quadratic_problem_of_mem Q b a hy] using hxStar_data.2 hy
-    · rw [polytope_quadratic_problem_of_mem Q b a hxStar_data.1,
-        polytope_quadratic_problem_of_not_mem Q b a hy]
-      simp
-  have hglb :
-      IsGLB (Set.range (polytope_quadratic_problem Q b a))
-        (polytope_quadratic_problem Q b a xStar) := by
-    simpa using hxStar_min.isGLB (by simp : xStar ∈ (Set.univ : Set E))
-  -- Now identify the `sInf` owner with the attained minimizing value.
-  rw [polytope_quadratic_optimal_value_eq_sInf]
-  calc
-    sInf (Set.range (polytope_quadratic_problem Q b a)) =
-        polytope_quadratic_problem Q b a xStar :=
-      hglb.csInf_eq (Set.range_nonempty _)
-    _ = f_q xStar := by
-      simpa [hxStar_data.1] using polytope_quadratic_problem_of_mem Q b a hxStar_data.1
-
-/-- Helper for Theorem 13.20: every feasible iterate has nonnegative objective gap above
-`f_opt`. -/
-lemma polytope_quadratic_objective_gap_nonneg
-    {xStar : E}
-    (hboundary :
-      IsBoundaryNonExtremeOptimalSolution
-        (polytope_quadratic_problem Q b a)
-        Ω xStar)
-    (k : ℕ) :
-    0 ≤ gap[k] := by
-  have hxStar_data : xStar ∈ Ω ∧ IsMinOn (polytope_quadratic_problem Q b a) Ω xStar := by
-    simpa using hboundary.mem_constrained_problem_solutions
-  have hxk : (x k : E) ∈ Ω := (x k).property
-  have hle : f_q xStar ≤ f_q (x k : E) := by
-    simpa [polytope_quadratic_problem_of_mem Q b a hxStar_data.1,
-      polytope_quadratic_problem_of_mem Q b a hxk] using hxStar_data.2 hxk
-  have hopt_eq : f_opt = f_q xStar := by
-    rw [polytope_quadratic_optimal_value_eq_of_mem_constrained_problem_solutions
-      (Q := Q) (b := b) (a := a) hboundary.mem_constrained_problem_solutions]
-  linarith
-
-/-- Helper for Theorem 13.20: distinct points have strictly smaller quadratic objective at their
-midpoint than the average of their endpoint values. -/
-lemma polytope_quadratic_objective_midpoint_lt_avg
-    {x y : E} (hxy : x ≠ y) :
-    f_q (midpoint ℝ x y) < (f_q x + f_q y) / 2 := by
-  let d : E := y - x
-  have hd : d ≠ 0 := by
-    dsimp [d]
-    exact sub_ne_zero.mpr hxy.symm
-  have hκpos : 0 < dotProduct d (Q *ᵥ d) := by
-    simpa [d] using Q.2.dotProduct_mulVec_pos hd
-  have hmid_eq : midpoint ℝ x y = x + (1 / 2 : ℝ) • d := by
-    ext j
-    simp [midpoint, d]
-    ring
-  have hy_eq : y = x + (1 : ℝ) • d := by
-    simp [d]
-  have hmid_formula :
-      f_q (midpoint ℝ x y) =
-        f_q x +
-          (1 / 2 : ℝ) * dotProduct d (Q *ᵥ x + b) +
-          (((1 / 2 : ℝ) ^ (2 : ℕ)) / 2) * dotProduct d (Q *ᵥ d) := by
-    rw [hmid_eq]
-    simpa [d] using
-      (polytope_quadratic_objective_add_smul_direction_eq
-        (Q := Q) (b := b) (x := x) (d := d) (t := (1 / 2 : ℝ)))
-  have hy_formula :
-      f_q y =
-        f_q x +
-          dotProduct d (Q *ᵥ x + b) +
-          (((1 : ℝ) ^ (2 : ℕ)) / 2) * dotProduct d (Q *ᵥ d) := by
-    rw [hy_eq]
-    simpa [d] using
-      (polytope_quadratic_objective_add_smul_direction_eq
-        (Q := Q) (b := b) (x := x) (d := d) (t := (1 : ℝ)))
-  rw [hmid_formula, hy_formula]
-  have hcurv_pos : 0 < (1 / 8 : ℝ) * dotProduct d (Q *ᵥ d) := by
-    nlinarith
-  nlinarith
+local notation "λ[" i "," k "]" =>
+  polytope_quadratic_exact_line_search_ratio Q b (x k) (d[i, k])
 
 /-- Helper for Theorem 13.20: the stationary branch of Algorithm 13.5 is impossible once the
 iterate is interior to `Ω` and already strictly below all vertex objective values. -/
@@ -161,47 +68,33 @@ lemma polytope_quadratic_stationary_branch_false
       IsBoundaryNonExtremeOptimalSolution
         (polytope_quadratic_problem Q b a)
         Ω xStar)
-    (hxk_int : (xk : E) ∈ interior Ω)
-    (hxk_lt : ∀ j : Fin l, f_q (xk : E) < f_q (a j))
+    (hxk_int : xk ∈ interior Ω)
+    (hxk_lt : ∀ j : Fin l, f_q xk < f_q (a j))
     (hi0 :
       i0 ∈ unconstrained_problem_solutions
         (polytope_quadratic_vertex_linear_objective Q b a xk))
     (hderiv :
       0 ≤ polytope_quadratic_conditional_gradient_directional_derivative Q b a xk i0) :
     False := by
-  have hxStar_data : xStar ∈ Ω ∧ IsMinOn (polytope_quadratic_problem Q b a) Ω xStar := by
-    simpa using hboundary.mem_constrained_problem_solutions
-  have hxk_opt : IsMinOn (polytope_quadratic_problem Q b a) Set.univ (xk : E) :=
+  -- Turn the stopping certificate into a constrained optimizer at the current iterate.
+  have hxk_min_univ :
+      IsMinOn (polytope_quadratic_problem Q b a) Set.univ (xk : E) :=
     polytope_quadratic_isMinOn_of_nonneg_directional_derivative
-      (Q := Q) (b := b) (a := a) (xk := xk) (i := i0) xk.property hi0 hderiv
-  have hxk_le_xStar : f_q (xk : E) ≤ f_q xStar := by
-    have hle := (isMinOn_univ_iff.mp hxk_opt) xStar
-    simpa [polytope_quadratic_problem_of_mem Q b a xk.property,
-      polytope_quadratic_problem_of_mem Q b a hxStar_data.1] using hle
-  have hxStar_le_xk : f_q xStar ≤ f_q (xk : E) := by
-    simpa [polytope_quadratic_problem_of_mem Q b a hxStar_data.1,
-      polytope_quadratic_problem_of_mem Q b a xk.property] using hxStar_data.2 xk.property
-  have hvalue_eq : f_q (xk : E) = f_q xStar := le_antisymm hxk_le_xStar hxStar_le_xk
-  have hxStar_not_int : xStar ∉ interior Ω := by
+      (Q := Q) (b := b) (a := a) xk.property hi0 hderiv
+  have hxk_sol :
+      (xk : E) ∈ constrained_problem_solutions (polytope_quadratic_problem Q b a) Ω := by
+    rw [mem_constrained_problem_solutions_iff]
+    refine ⟨xk.property, ?_⟩
+    rw [isMinOn_iff] at hxk_min_univ ⊢
+    intro y hy
+    exact hxk_min_univ y (by simp)
+  have hxk_eq_xStar :
+      (xk : E) = xStar :=
+    polytope_quadratic_eq_boundary_optimizer_of_mem_constrained_problem_solutions
+      (Q := Q) (b := b) (a := a) (xStar := xStar) hboundary hxk_sol
+  have hxStar_not_mem_interior : xStar ∉ interior Ω := by
     simpa [frontier] using hboundary.mem_frontier.2
-  have hneq : (xk : E) ≠ xStar := by
-    intro hEq
-    exact hxStar_not_int (hEq ▸ hxk_int)
-  have hmid_mem : midpoint ℝ (xk : E) xStar ∈ Ω := by
-    exact (convex_convexHull ℝ (Set.range a)).midpoint_mem xk.property hxStar_data.1
-  have hmid_lt :
-      f_q (midpoint ℝ (xk : E) xStar) < f_q (xk : E) := by
-    have hstrict :=
-      polytope_quadratic_objective_midpoint_lt_avg
-        (Q := Q) (b := b) (a := a) (x := (xk : E)) (y := xStar) hneq
-    rw [hvalue_eq] at hstrict
-    simpa using hstrict
-  have hmid_ge :
-      f_q (xk : E) ≤ f_q (midpoint ℝ (xk : E) xStar) := by
-    have hle := (isMinOn_univ_iff.mp hxk_opt) (midpoint ℝ (xk : E) xStar)
-    simpa [polytope_quadratic_problem_of_mem Q b a xk.property,
-      polytope_quadratic_problem_of_mem Q b a hmid_mem] using hle
-  exact (not_lt_of_ge hmid_ge) hmid_lt
+  exact hxStar_not_mem_interior (by simpa [hxk_eq_xStar] using hxk_int)
 
 /-- Helper for Theorem 13.20: every Algorithm 13.5 iterate stays in `interior Ω`, and its
 objective value remains strictly below every vertex value. -/
@@ -213,91 +106,105 @@ lemma generated_iterate_mem_interior_and_objective_lt_vertices
         Ω xStar)
     (hstart :
       IsStrictVertexSublevelInitialPoint
-        f_q a (x 0 : E) v0)
+        f_q a (x 0) v0)
     (hstep :
       ∀ k : ℕ,
-        (x (k + 1) : E) ∈
-          polytope_quadratic_conditional_gradient_one_step Q b a (x k)) :
-    ∀ k : ℕ, x k ∈ interior Ω ∧ ∀ j : Fin l, f_q (x k : E) < f_q (a j) := by
+        polytope_quadratic_conditional_gradient_one_step Q b a (x k) (x (k + 1))) :
+    ∀ k : ℕ, x k ∈ interior Ω ∧ ∀ j : Fin l, f_q (x k) < f_q (a j) := by
   intro k
-  induction' k with k hk
-  · -- Assumption 13.18 gives both the interior base point and the strict vertex sublevel bound.
-    refine ⟨?_, ?_⟩
-    · exact hstart.mem_interior_feasible_set hboundary.interior_nonempty
-    · intro j
-      exact hstart.objective_lt_vertex j
-  · rcases hk with ⟨hxk_int, hxk_lt⟩
-    rcases (mem_polytope_quadratic_conditional_gradient_one_step_iff).1 (hstep k) with
-      ⟨i0, hi0, hbranch⟩
-    cases hbranch with
-    | inl hstop =>
-        exfalso
-        exact polytope_quadratic_stationary_branch_false
+  induction k with
+  | zero =>
+      -- Assumption 13.18 supplies both the interior base point and the strict vertex sublevel.
+      exact ⟨by simpa using hstart.mem_interior_feasible_set hboundary.interior_nonempty,
+        fun j ↦ hstart.objective_lt_vertex j⟩
+  | succ k hk =>
+      have hk_int : x k ∈ interior Ω := hk.1
+      have hk_lt : ∀ j : Fin l, f_q (x k) < f_q (a j) := hk.2
+      have hstepk := hstep k
+      rw [polytope_quadratic_conditional_gradient_one_step_iff] at hstepk
+      rcases hstepk with ⟨i, hi, hstop | hupdate⟩
+      · rcases hstop with ⟨hderiv, _⟩
+        exact (polytope_quadratic_stationary_branch_false
           (Q := Q) (b := b) (a := a) (xStar := xStar)
-          hboundary hxk_int hxk_lt hi0 hstop.1
-    | inr hmove =>
-        let t : ℝ :=
+          hboundary hk_int hk_lt hi hderiv).elim
+      · rcases hupdate with ⟨hderiv, hxnext⟩
+        let t :=
           min
             (polytope_quadratic_exact_line_search_ratio Q b (x k)
-              (polytope_quadratic_conditional_gradient_direction a (x k) i0))
+              (polytope_quadratic_conditional_gradient_direction a (x k) i))
             1
-        have hnext_eq :
+        have hxnext_coe :
             (x (k + 1) : E) =
-              (x k : E) + t • ((a i0) - (x k : E)) := by
-          simpa [polytope_quadratic_conditional_gradient_update, t,
-            polytope_quadratic_conditional_gradient_direction_eq] using hmove.2
-        have hline_search :
+              polytope_quadratic_conditional_gradient_update Q b a (x k) i := by
+          simpa using congrArg (fun z : polytope_quadratic_feasible_set a ↦ (z : E)) hxnext
+        have hexact :
             t ∈
               conditional_gradient_exact_line_search_stepsizes
-                (polytope_quadratic_objective Q b).toExtendedReal
-                (x k) (a i0) := by
-          simpa [t, polytope_quadratic_conditional_gradient_direction_eq] using
+                (polytope_quadratic_objective Q b).toEReal
+                (x k) (a i) := by
+          simpa [t] using
             polytope_quadratic_ratio_clip_mem_conditional_gradient_exact_line_search_stepsizes
-              (Q := Q) (b := b) (a := a) (xk := x k) (i := i0) hmove.1
-        have ht_data :
-            t ∈ Set.Icc (0 : ℝ) 1 ∧
-              IsMinOn
-                (fun u ↦
-                  (polytope_quadratic_objective Q b).toExtendedReal
-                    ((x k : E) + u • ((a i0) - (x k : E))))
-                (Set.Icc (0 : ℝ) 1) t := by
-          simpa [conditional_gradient_exact_line_search_stepsizes,
-            polytope_quadratic_conditional_gradient_direction_eq] using
-            (mem_conditional_gradient_exact_line_search_stepsizes_iff.mp hline_search)
-        have hobj_le : f_q (x (k + 1) : E) ≤ f_q (x k : E) := by
-          have hmin0 := (isMinOn_iff.mp ht_data.2) 0 (by simp)
-          rw [hnext_eq] at hmin0
-          simpa using hmin0
-        have hxnext_lt : ∀ j : Fin l, f_q (x (k + 1) : E) < f_q (a j) := by
+              (Q := Q) (b := b) (a := a) (xk := x k) (i := i) hderiv
+        rw [mem_conditional_gradient_exact_line_search_stepsizes_iff, isMinOn_iff] at hexact
+        rcases hexact with ⟨ht_mem, hmin⟩
+        have ht_nonneg : 0 ≤ t := ht_mem.1
+        have hobjective_le : f_q (x (k + 1)) ≤ f_q (x k) := by
+          -- Compare the exact-line-search update against the trial value `t = 0`.
+          have hcompare := hmin 0 (by simp)
+          have hcompare' :
+              (f_q (x (k + 1)) : EReal) ≤ f_q (x k) := by
+            simpa [hxnext_coe, t,
+              polytope_quadratic_conditional_gradient_update_eq,
+              polytope_quadratic_conditional_gradient_direction_eq] using hcompare
+          exact_mod_cast hcompare'
+        have ht_lt_one : t < 1 := by
+          -- If the clipped ratio were `1`, the next iterate would be the chosen vertex.
+          by_contra hnot_lt
+          have hge : 1 ≤ t := by
+            linarith
+          have ht_eq_one : t = 1 := le_antisymm ht_mem.2 hge
+          have hvertex_eq : (x (k + 1) : E) = a i := by
+            rw [hxnext_coe, polytope_quadratic_conditional_gradient_update_eq,
+              polytope_quadratic_conditional_gradient_direction_eq, t, ht_eq_one]
+            simp
+          have hvertex_le : f_q (a i) ≤ f_q (x k) := by
+            simpa [hvertex_eq] using hobjective_le
+          linarith [hk_lt i]
+        have hvertex : a i ∈ Ω := subset_convexHull ℝ (Set.range a) ⟨i, rfl⟩
+        have hnext_eq :
+            (x (k + 1) : E) = t • a i + (1 - t) • (x k : E) := by
+          -- Rewrite the update as the convex combination needed for the interior argument.
+          rw [hxnext_coe, polytope_quadratic_conditional_gradient_update_eq,
+            polytope_quadratic_conditional_gradient_direction_eq, t]
+          ext j
+          change (x k : E) j +
+              min
+                  (polytope_quadratic_exact_line_search_ratio Q b (x k)
+                    (polytope_quadratic_conditional_gradient_direction a (x k) i))
+                  1 *
+                (a i j - (x k : E) j) =
+            min
+                (polytope_quadratic_exact_line_search_ratio Q b (x k)
+                  (polytope_quadratic_conditional_gradient_direction a (x k) i))
+                1 *
+              a i j +
+              (1 -
+                  min
+                    (polytope_quadratic_exact_line_search_ratio Q b (x k)
+                      (polytope_quadratic_conditional_gradient_direction a (x k) i))
+                    1) *
+                (x k : E) j
+          ring
+        have hnext_int : x (k + 1) ∈ interior Ω := by
+          -- A positive amount of the interior iterate keeps the next point in the interior.
+          refine hnext_eq ▸ ?_
+          exact (convex_convexHull ℝ (Set.range a)).combo_self_interior_mem_interior
+            hvertex hk_int ht_nonneg (sub_pos.mpr ht_lt_one) (by ring)
+        have hnext_lt : ∀ j : Fin l, f_q (x (k + 1)) < f_q (a j) := by
+          -- One-step monotonicity preserves the strict sublevel relation against every vertex.
           intro j
-          exact lt_of_le_of_lt hobj_le (hxk_lt j)
-        have ht_ne_one : t ≠ 1 := by
-          intro ht_one
-          have hx_vertex : (x (k + 1) : E) = a i0 := by
-            rw [hnext_eq, ht_one]
-            ext s
-            simp
-          have := hxnext_lt i0
-          rw [hx_vertex] at this
-          exact lt_irrefl _ this
-        have ht_lt_one : t < 1 := lt_of_le_of_ne ht_data.1.2 ht_ne_one
-        have hxnext_int : x (k + 1) ∈ interior Ω := by
-          have hβnonneg : 0 ≤ 1 - t := sub_nonneg.mpr ht_data.1.2
-          have hβpos : 0 < 1 - t := sub_pos.mpr ht_lt_one
-          have hcombo :
-              (1 - (1 - t)) • a i0 + (1 - t) • (x k : E) ∈ interior Ω :=
-            (convex_convexHull ℝ (Set.range a)).combo_self_interior_mem_interior
-              (polytope_quadratic_vertex_mem_feasible_set a i0)
-              hxk_int hβnonneg hβpos (by ring)
-          have hxnext_combo :
-              (x (k + 1) : E) =
-                (1 - (1 - t)) • a i0 + (1 - t) • (x k : E) := by
-            rw [hnext_eq]
-            ext s
-            simp
-            ring
-          simpa [hxnext_combo]
-        exact ⟨hxnext_int, hxnext_lt⟩
+          exact lt_of_le_of_lt hobjective_le (hk_lt j)
+        exact ⟨hnext_int, hnext_lt⟩
 
 -- Proof sketch: under Assumptions 13.17 and 13.18, the stopping branch of
 -- `polytope_quadratic_conditional_gradient_one_step` cannot occur along a generated sequence.
@@ -316,166 +223,120 @@ theorem exists_polytope_quadratic_conditional_gradient_exact_line_search_traject
         Ω xStar)
     (hstart :
       IsStrictVertexSublevelInitialPoint
-        f_q a (x 0 : E) v0)
+        f_q a (x 0) v0)
     (hstep :
       ∀ k : ℕ,
-        (x (k + 1) : E) ∈
-          polytope_quadratic_conditional_gradient_one_step Q b a (x k)) :
+        polytope_quadratic_conditional_gradient_one_step Q b a (x k) (x (k + 1))) :
     ∃ i : ℕ → Fin l,
       is_polytope_quadratic_conditional_gradient_exact_line_search_trajectory Q b a x i := by
   classical
-  have hinv :=
+  have hiter :=
     generated_iterate_mem_interior_and_objective_lt_vertices
-      (Q := Q) (b := b) (a := a) (x := x)
+      (Q := Q) (b := b) (a := a) (x := x) (xStar := xStar) (v0 := v0)
       hboundary hstart hstep
-  -- At each step the stationary branch is excluded by the interior/strict-sublevel invariant.
-  have hupdate :
+  have hupdate_witness :
       ∀ k : ℕ,
         ∃ i : Fin l,
           i ∈
-              unconstrained_problem_solutions
-                (polytope_quadratic_vertex_linear_objective Q b a (x k)) ∧
-            polytope_quadratic_conditional_gradient_directional_derivative Q b a (x k) i < 0 ∧
-            x (k + 1) = polytope_quadratic_conditional_gradient_update Q b a (x k) i := by
+            unconstrained_problem_solutions
+              (polytope_quadratic_vertex_linear_objective Q b a (x k)) ∧
+          ∃ hderiv :
+            polytope_quadratic_conditional_gradient_directional_derivative Q b a (x k) i < 0,
+            x (k + 1) =
+              polytope_quadratic_conditional_gradient_next_iterate Q b a (x k) i hderiv := by
     intro k
-    rcases hinv k with ⟨hxk_int, hxk_lt⟩
-    rcases (mem_polytope_quadratic_conditional_gradient_one_step_iff).1 (hstep k) with
-      ⟨i0, hi0, hbranch⟩
-    cases hbranch with
-    | inl hstop =>
-        exfalso
-        exact polytope_quadratic_stationary_branch_false
-          (Q := Q) (b := b) (a := a) (xStar := xStar)
-          hboundary hxk_int hxk_lt hi0 hstop.1
-    | inr hmove =>
-        exact ⟨i0, hi0, hmove.1, hmove.2⟩
-  choose i hi_arg hi_deriv hi_step using hupdate
+    have hk := hiter k
+    have hstepk := hstep k
+    rw [polytope_quadratic_conditional_gradient_one_step_iff] at hstepk
+    rcases hstepk with ⟨i, hi, hstop | hupdate⟩
+    · rcases hstop with ⟨hderiv, _⟩
+      exact (polytope_quadratic_stationary_branch_false
+        (Q := Q) (b := b) (a := a) (xStar := xStar)
+        hboundary hk.1 hk.2 hi hderiv).elim
+    · rcases hupdate with ⟨hderiv, hnext⟩
+      exact ⟨i, hi, hderiv, by simpa using hnext⟩
+  choose i hi hderiv hnext using hupdate_witness
   refine ⟨i, ?_⟩
-  exact
-    { argmin_mem := hi_arg
-      directional_derivative_neg := hi_deriv
-      step_eq := hi_step }
-
-/-- Helper for Theorem 13.20: the exact-line-search ratio is nonnegative along an exact
-trajectory. -/
-lemma polytope_quadratic_exact_line_search_ratio_nonneg
-    {xStar : E} {v0 : stdSimplex ℝ (Fin l)}
-    (i : ℕ → Fin l)
-    (htraj :
-      is_polytope_quadratic_conditional_gradient_exact_line_search_trajectory Q b a x i)
-    (k : ℕ) :
-    0 ≤ cg_ratio i k := by
-  have hd : cg_dir i k ≠ 0 := by
-    intro hd
-    have hnot : ¬ polytope_quadratic_conditional_gradient_directional_derivative Q b a (x k) (i k) < 0 := by
-      simp [polytope_quadratic_conditional_gradient_directional_derivative_eq,
-        polytope_quadratic_conditional_gradient_direction_eq, cg_dir, hd]
-    exact hnot (htraj.directional_derivative_neg k)
-  have hden : 0 < cg_curvature i k := by
-    simpa [cg_dir, cg_curvature] using Q.2.dotProduct_mulVec_pos hd
-  have hnum :
-      0 ≤ -dotProduct (cg_dir i k) (Q *ᵥ (x k : E) + b) := by
-    have hneg := htraj.directional_derivative_neg k
-    simpa [polytope_quadratic_conditional_gradient_directional_derivative_eq,
-      polytope_quadratic_conditional_gradient_direction_eq, cg_dir] using neg_nonneg.mpr hneg.le
-  rw [polytope_quadratic_exact_line_search_ratio_eq]
-  exact div_nonneg hnum hden.le
+  refine
+    { argmin_mem := hi
+      directional_derivative_neg := hderiv
+      step_eq := ?_ }
+  intro k
+  -- Coerce the chosen next-iterate equality back to the explicit update equation.
+  simpa using congrArg (fun z : polytope_quadratic_feasible_set a ↦ (z : E)) (hnext k)
 
 /-- Helper for Theorem 13.20: one exact-line-search step drops the objective gap by at least the
 scaled squared ratio `(√(β / 2) λ_k)^2`. -/
 lemma polytope_quadratic_scaled_ratio_sq_le_gap_drop
-    {xStar : E} {v0 : stdSimplex ℝ (Fin l)}
+    {v0 : stdSimplex ℝ (Fin l)}
     (i : ℕ → Fin l)
-    (hboundary :
-      IsBoundaryNonExtremeOptimalSolution
-        (polytope_quadratic_problem Q b a)
-        Ω xStar)
     (hstart :
       IsStrictVertexSublevelInitialPoint
-        f_q a (x 0 : E) v0)
+        f_q a (x 0) v0)
     (htraj :
       is_polytope_quadratic_conditional_gradient_exact_line_search_trajectory Q b a x i)
     {β : ℝ} (hβpos : 0 < β)
     (hβle :
-      ∀ m : ℕ,
-        β ≤ dotProduct (cg_dir i m) ((Q : Matrix (Fin n) (Fin n) ℝ) *ᵥ (cg_dir i m)))
+      ∀ m : ℕ, β ≤ κ[i, m])
     (k : ℕ) :
-    ((Real.sqrt (β / 2)) * cg_ratio i k) ^ (2 : ℕ) ≤
+    ((Real.sqrt (β / 2)) * λ[i, k]) ^ (2 : ℕ) ≤
       gap[k] - gap[k + 1] := by
-  have hstep_eq :=
-    polytope_quadratic_exact_line_search_objective_step_eq
-      (Q := Q) (b := b) (a := a) (x := x) (i := i) hstart htraj k
-  have hdrop :
+  -- Route correction: the unclipped ratio identity needs Assumption 13.18 to rule out the active
+  -- clip, so we prove the bound through Lemma 13.19's exact one-step objective formula.
+  have hgap_eq :
       gap[k] - gap[k + 1] =
-        (1 / 2 : ℝ) * cg_curvature i k * (cg_ratio i k) ^ (2 : ℕ) := by
-    dsimp [gap]
+        (1 / 2 : ℝ) * κ[i, k] * (λ[i, k]) ^ (2 : ℕ) := by
+    have hstep :=
+      polytope_quadratic_exact_line_search_objective_step_eq
+        (Q := Q) (b := b) (a := a) (x := x) (i := i) (v0 := v0) hstart htraj k
     linarith
-  have hratio_nonneg :
-      0 ≤ (cg_ratio i k) ^ (2 : ℕ) := by
-    exact sq_nonneg _
-  have hcurv :
-      (β / 2) * (cg_ratio i k) ^ (2 : ℕ) ≤
-        (1 / 2 : ℝ) * cg_curvature i k * (cg_ratio i k) ^ (2 : ℕ) := by
-    have hhalf : 0 ≤ (1 / 2 : ℝ) := by positivity
-    have hβhalf :
-        β / 2 ≤ cg_curvature i k / 2 := by
-      exact div_le_div_of_nonneg_right (hβle k) hhalf
-    nlinarith
-  have hsqrt :
-      ((Real.sqrt (β / 2)) * cg_ratio i k) ^ (2 : ℕ) = (β / 2) * (cg_ratio i k) ^ (2 : ℕ) := by
-    have hβhalf_nonneg : 0 ≤ β / 2 := by positivity
-    rw [pow_two, mul_assoc, ← pow_two]
-    rw [Real.sq_sqrt hβhalf_nonneg]
+  have hsq_eq :
+      ((Real.sqrt (β / 2)) * λ[i, k]) ^ (2 : ℕ) =
+        (β / 2) * (λ[i, k]) ^ (2 : ℕ) := by
+    have hβdiv_nonneg : 0 ≤ β / 2 := by
+      linarith
+    rw [pow_two, pow_two, Real.sq_sqrt hβdiv_nonneg]
     ring
-  rw [hdrop]
-  exact hsqrt ▸ hcurv
+  have hLambdaSq_nonneg : 0 ≤ (λ[i, k]) ^ (2 : ℕ) := sq_nonneg _
+  calc
+    ((Real.sqrt (β / 2)) * λ[i, k]) ^ (2 : ℕ) =
+        (β / 2) * (λ[i, k]) ^ (2 : ℕ) := hsq_eq
+    _ ≤ (1 / 2 : ℝ) * κ[i, k] * (λ[i, k]) ^ (2 : ℕ) := by
+      nlinarith [hβle k, hLambdaSq_nonneg]
+    _ = gap[k] - gap[k + 1] := hgap_eq.symm
 
 /-- Helper for Theorem 13.20: finite square tails of the scaled exact-line-search ratios are
 bounded by the matching drop in the objective gap. -/
 lemma polytope_quadratic_scaled_ratio_sq_partial_sum_le_gap_drop
-    {xStar : E} {v0 : stdSimplex ℝ (Fin l)}
+    {v0 : stdSimplex ℝ (Fin l)}
     (i : ℕ → Fin l)
-    (hboundary :
-      IsBoundaryNonExtremeOptimalSolution
-        (polytope_quadratic_problem Q b a)
-        Ω xStar)
     (hstart :
       IsStrictVertexSublevelInitialPoint
-        f_q a (x 0 : E) v0)
+        f_q a (x 0) v0)
     (htraj :
       is_polytope_quadratic_conditional_gradient_exact_line_search_trajectory Q b a x i)
     {β : ℝ} (hβpos : 0 < β)
     (hβle :
-      ∀ m : ℕ,
-        β ≤ dotProduct (cg_dir i m) ((Q : Matrix (Fin n) (Fin n) ℝ) *ᵥ (cg_dir i m)))
+      ∀ m : ℕ, β ≤ κ[i, m])
     (k m : ℕ) :
     Finset.sum (Finset.range m)
         (fun n ↦
           ((Real.sqrt (β / 2)) *
-            cg_ratio i (k + n)) ^ (2 : ℕ)) ≤
+            λ[i, k + n]) ^ (2 : ℕ)) ≤
       gap[k] - gap[k + m] := by
-  induction' m with m hm
-  · simp
-  · -- Telescope the one-step lower bounds for the gap drops.
-    rw [Finset.sum_range_succ]
-    have hstep :=
-      polytope_quadratic_scaled_ratio_sq_le_gap_drop
-        (Q := Q) (b := b) (a := a) (x := x) (i := i)
-        (xStar := xStar) (v0 := v0)
-        hboundary hstart htraj hβpos hβle (k + m)
-    have hmerge :
-        gap[k] - gap[k + m] + (gap[k + m] - gap[k + (m + 1)]) =
-          gap[k] - gap[k + (m + 1)] := by
-      ring
-    calc
-      Finset.sum (Finset.range m)
-          (fun n ↦
-            ((Real.sqrt (β / 2)) *
-              cg_ratio i (k + n)) ^ (2 : ℕ)) +
-          ((Real.sqrt (β / 2)) * cg_ratio i (k + m)) ^ (2 : ℕ)
-          ≤ (gap[k] - gap[k + m]) + (gap[k + m] - gap[k + (m + 1)]) := by
-            exact add_le_add hm hstep
-      _ = gap[k] - gap[k + (m + 1)] := hmerge
+  induction m with
+  | zero =>
+      simp
+  | succ m hm =>
+      rw [Finset.sum_range_succ]
+      have hstep :
+          ((Real.sqrt (β / 2)) * λ[i, k + m]) ^ (2 : ℕ) ≤
+            gap[k + m] - gap[k + (m + 1)] := by
+        simpa [Nat.add_assoc] using
+          polytope_quadratic_scaled_ratio_sq_le_gap_drop
+            (Q := Q) (b := b) (a := a) (x := x) (i := i) (v0 := v0)
+            hstart htraj hβpos hβle (k + m)
+      linarith
 
 /-- Helper for Theorem 13.20: the `ENNReal` square tail of the scaled exact-line-search ratios is
 dominated by the current objective gap. -/
@@ -488,55 +349,45 @@ lemma polytope_quadratic_gap_ge_scaled_ratio_sq_tail
         Ω xStar)
     (hstart :
       IsStrictVertexSublevelInitialPoint
-        f_q a (x 0 : E) v0)
+        f_q a (x 0) v0)
     (htraj :
       is_polytope_quadratic_conditional_gradient_exact_line_search_trajectory Q b a x i)
     {β : ℝ} (hβpos : 0 < β)
     (hβle :
-      ∀ m : ℕ,
-        β ≤ dotProduct (cg_dir i m) ((Q : Matrix (Fin n) (Fin n) ℝ) *ᵥ (cg_dir i m)))
+      ∀ m : ℕ, β ≤ κ[i, m])
     (k : ℕ) :
     ∑' n : ℕ,
         ENNReal.ofReal
           (((Real.sqrt (β / 2)) *
-            cg_ratio i (k + n)) ^ (2 : ℕ)) ≤
+            λ[i, k + n]) ^ (2 : ℕ)) ≤
       ENNReal.ofReal gap[k] := by
-  let s : ℕ → ℝ := fun n ↦
-    ((Real.sqrt (β / 2)) *
-      cg_ratio i (k + n)) ^ (2 : ℕ)
-  have hs_nonneg : ∀ n : ℕ, 0 ≤ s n := by
+  let term : ℕ → ℝ :=
+    fun n ↦ (((Real.sqrt (β / 2)) * λ[i, k + n]) ^ (2 : ℕ))
+  have hterm_nonneg : ∀ n : ℕ, 0 ≤ term n := by
     intro n
-    dsimp [s]
     exact sq_nonneg _
-  have hs_bound :
-      ∀ m : ℕ, Finset.sum (Finset.range m) s ≤ gap[k] := by
+  have hpartial : ∀ m : ℕ, Finset.sum (Finset.range m) term ≤ gap[k] := by
     intro m
     have hdrop :=
       polytope_quadratic_scaled_ratio_sq_partial_sum_le_gap_drop
-        (Q := Q) (b := b) (a := a) (x := x) (i := i)
-        (xStar := xStar) (v0 := v0)
-        hboundary hstart htraj hβpos hβle k m
+        (Q := Q) (b := b) (a := a) (x := x) (i := i) (v0 := v0)
+        hstart htraj hβpos hβle k m
     have hgap_nonneg :
         0 ≤ gap[k + m] :=
       polytope_quadratic_objective_gap_nonneg
-        (Q := Q) (b := b) (a := a) (x := x) hboundary (k + m)
-    dsimp [s] at hdrop ⊢
-    linarith
-  have hs_summable : Summable s :=
-    summable_of_sum_range_le hs_nonneg hs_bound
-  have hs_tsum :
-      ∑' n : ℕ, s n ≤ gap[k] :=
-    Real.tsum_le_of_sum_range_le hs_nonneg hs_bound
-  have hgap_nonneg :
-      0 ≤ gap[k] :=
-    polytope_quadratic_objective_gap_nonneg
-      (Q := Q) (b := b) (a := a) (x := x) hboundary k
-  rw [ENNReal.ofReal_tsum_of_nonneg hs_nonneg hs_summable]
-  exact ENNReal.ofReal_le_ofReal hs_tsum
+        (Q := Q) (b := b) (a := a) (x := x) (xStar := xStar) hboundary (k + m)
+    simpa [term] using le_trans hdrop (sub_le_self _ hgap_nonneg)
+  have hsummable : Summable term :=
+    summable_of_sum_range_le hterm_nonneg hpartial
+  have htsum_le : ∑' n : ℕ, term n ≤ gap[k] :=
+    Real.tsum_le_of_sum_range_le hterm_nonneg hpartial
+  rw [← ENNReal.ofReal_tsum_of_nonneg hterm_nonneg hsummable]
+  exact ENNReal.ofReal_le_ofReal htsum_le
 
 -- Proof sketch: rewrite the quadratic gap using the Canon-Cullum identities from Lemma 13.19,
 -- pass to the infinite tail representation
--- `f_q(x^k) - f_opt = (1 / 2) ∑_{n = k}^∞ (d^n)ᵀ Q d^n · λ_n^2`, bound the quadratic form below
+-- `f_q(x^k) - f_opt = (1 / 2)
+--    ∑_{n = k}^∞ (d^n)ᵀ Q d^n · λ_n^2`, bound the quadratic form below
 -- by the positive-definiteness constant supplied by Assumption 13.17, use Lemma 13.19(c) to show
 -- that the exact-line-search stepsizes are not summable, and then invoke Lemma 13.15 on the tail
 -- square series.
@@ -552,7 +403,7 @@ theorem polytope_quadratic_gap_ge_rpow_neg_one_add_eps_infinitely_often_of_exact
         Ω xStar)
     (hstart :
       IsStrictVertexSublevelInitialPoint
-        f_q a (x 0 : E) v0)
+        f_q a (x 0) v0)
     (htraj :
       is_polytope_quadratic_conditional_gradient_exact_line_search_trajectory Q b a x i)
     (ε : ℝ) (hε : 0 < ε) :
@@ -562,67 +413,62 @@ theorem polytope_quadratic_gap_ge_rpow_neg_one_add_eps_infinitely_often_of_exact
           ((k : ℝ) ^ (-(1 + ε))) ≤ gap[k]} := by
   obtain ⟨β, hβpos, hβle⟩ :=
     exists_pos_polytope_quadratic_directional_curvature_lower_bound
-      (Q := Q) (b := b) (a := a) (x := x) (i := i)
+      (Q := Q) (b := b) (a := a) (x := x) (i := i) (xStar := xStar) (v0 := v0)
       hboundary hstart htraj
-  let s : ℕ → ℝ := fun n ↦
-    (Real.sqrt (β / 2)) * cg_ratio i n
-  have hs_nonneg : ∀ n : ℕ, 0 ≤ s n := by
-    intro n
-    dsimp [s]
-    exact mul_nonneg (by positivity)
-      (polytope_quadratic_exact_line_search_ratio_nonneg
-        (Q := Q) (b := b) (a := a) (x := x) (i := i) htraj n)
-  have hpartial_tendsto :
-      Filter.Tendsto
-        (fun m : ℕ ↦
-          Finset.sum (Finset.range (m + 1)) fun n ↦ s n)
-        Filter.atTop Filter.atTop := by
-    have hratio_tendsto :=
-      polytope_quadratic_exact_line_search_ratio_partialSums_tendsto_atTop
-        (Q := Q) (b := b) (a := a) (x := x) (i := i)
-        hboundary hstart htraj
-    -- Scale the divergent partial sums by the positive constant `√(β / 2)`.
-    simpa [s, Finset.mul_sum] using
-      hratio_tendsto.const_mul_atTop (by positivity : 0 < Real.sqrt (β / 2))
-  have hnot_summable_abs : ¬ Summable (fun n ↦ |s n|) := by
-    intro hs_abs
-    have hs : Summable s := by
-      simpa [abs_of_nonneg (hs_nonneg _)] using hs_abs
-    have hs_tendsto :
-        Filter.Tendsto
-          (fun m : ℕ ↦
-            Finset.sum (Finset.range (m + 1)) fun n ↦ s n)
-          Filter.atTop (𝓝 (∑' n : ℕ, s n)) := by
-      simpa using hs.hasSum.tendsto_sum_nat.comp (tendsto_add_atTop_nat 1)
-    exact (not_tendsto_atTop_of_tendsto_nhds hs_tendsto) hpartial_tendsto
-  have hinfinite :
+  let c : ℝ := Real.sqrt (β / 2)
+  have hc_pos : 0 < c := by
+    dsimp [c]
+    apply Real.sqrt_pos.2
+    linarith
+  have hnot_summable_abs :
+      ¬ Summable (fun n ↦ |c * λ[i, n]|) := by
+    intro hs
+    have hscaled :
+        Summable (fun n ↦ c * λ[i, n]) := by
+      refine hs.congr ?_
+      intro n
+      rw [abs_of_nonneg]
+      have hratio_nonneg :
+          0 ≤ λ[i, n] :=
+        polytope_quadratic_exact_line_search_ratio_nonneg
+          (Q := Q) (b := b) (a := a) (x := x) (i := i) htraj n
+      positivity
+    have hratio_summable : Summable (fun n ↦ λ[i, n]) :=
+      (summable_mul_left_iff hc_pos.ne').mp hscaled
+    exact
+      polytope_quadratic_exact_line_search_ratio_not_summable
+        (Q := Q) (b := b) (a := a) (x := x) (i := i) (xStar := xStar) (v0 := v0)
+        hboundary hstart htraj hratio_summable
+  have hinf_tail :
       Set.Infinite
         {k : ℕ |
           0 < k ∧
             ENNReal.ofReal ((k : ℝ) ^ (-(1 + ε))) ≤
-              ∑' n : ℕ, ENNReal.ofReal ((s (n + k)) ^ (2 : ℕ))} := by
-    -- Invoke the canonical Lemma 13.15 owner on the scaled ratio sequence.
-    simpa using
+              ∑' n : ℕ, ENNReal.ofReal ((c * λ[i, n + k]) ^ (2 : ℕ))} := by
+    simpa [c, add_comm, add_left_comm, add_assoc, mul_comm] using
       tail_sq_ge_rpow_neg_infinitely_often_of_not_summable_abs
-        (a := s) hnot_summable_abs hε
-  refine hinfinite.mono ?_
+        (a := fun n ↦ c * λ[i, n]) hnot_summable_abs hε
+  refine hinf_tail.mono ?_
   intro k hk
-  refine ⟨hk.1, ?_⟩
-  have htail :
-      ∑' n : ℕ, ENNReal.ofReal ((s (n + k)) ^ (2 : ℕ)) ≤ ENNReal.ofReal gap[k] := by
-    simpa [s, pow_two, add_comm, add_left_comm, add_assoc, mul_assoc] using
+  rcases hk with ⟨hk_pos, hk_tail⟩
+  have htail_le_gap :
+      ∑' n : ℕ, ENNReal.ofReal ((c * λ[i, n + k]) ^ (2 : ℕ)) ≤
+        ENNReal.ofReal gap[k] := by
+    simpa [c, add_comm, add_left_comm, add_assoc, mul_comm] using
       polytope_quadratic_gap_ge_scaled_ratio_sq_tail
-        (Q := Q) (b := b) (a := a) (x := x) (i := i)
-        (xStar := xStar) (v0 := v0)
+        (Q := Q) (b := b) (a := a) (x := x) (i := i) (xStar := xStar) (v0 := v0)
         hboundary hstart htraj hβpos hβle k
-  have hbound :
+  have hk_enn :
       ENNReal.ofReal ((k : ℝ) ^ (-(1 + ε))) ≤ ENNReal.ofReal gap[k] :=
-    le_trans hk.2 htail
-  have hgap_nonneg :
+    le_trans hk_tail htail_le_gap
+  have hk_gap_nonneg :
       0 ≤ gap[k] :=
     polytope_quadratic_objective_gap_nonneg
-      (Q := Q) (b := b) (a := a) (x := x) hboundary k
-  exact (ENNReal.ofReal_le_ofReal_iff hgap_nonneg).mp hbound
+      (Q := Q) (b := b) (a := a) (x := x) (xStar := xStar) hboundary k
+  have hk_real :
+      ((k : ℝ) ^ (-(1 + ε))) ≤ gap[k] :=
+    (ENNReal.ofReal_le_ofReal_iff hk_gap_nonneg).mp hk_enn
+  exact ⟨hk_pos, hk_real⟩
 
 /-- Theorem 13.20: under Assumptions 13.17 and 13.18, every sequence generated by Algorithm 13.5
 for the quadratic problem `(13.32)` has the Canon-Cullum negative-rate property: for every
@@ -636,23 +482,23 @@ theorem polytope_quadratic_objective_gap_ge_rpow_neg_one_add_eps_infinitely_ofte
         Ω xStar)
     (hstart :
       IsStrictVertexSublevelInitialPoint
-        f_q a (x 0 : E) v0)
+        f_q a (x 0) v0)
     (hstep :
       ∀ k : ℕ,
-        (x (k + 1) : E) ∈
-          polytope_quadratic_conditional_gradient_one_step Q b a (x k))
+        polytope_quadratic_conditional_gradient_one_step Q b a (x k) (x (k + 1)))
     (ε : ℝ) (hε : 0 < ε) :
     Set.Infinite
       {k : ℕ |
         0 < k ∧
           ((k : ℝ) ^ (-(1 + ε))) ≤ gap[k]} := by
-  rcases
-      exists_polytope_quadratic_conditional_gradient_exact_line_search_trajectory_of_one_step
-        (Q := Q) (b := b) (a := a) (x := x) hboundary hstart hstep with
-    ⟨i, htraj⟩
-  -- The source-facing theorem is the exact-trajectory conclusion after the bridge theorem.
-  exact polytope_quadratic_gap_ge_rpow_neg_one_add_eps_infinitely_often_of_exact_trajectory
-    (Q := Q) (b := b) (a := a) (x := x) (i := i) hboundary hstart htraj ε hε
+  obtain ⟨i, htraj⟩ :=
+    exists_polytope_quadratic_conditional_gradient_exact_line_search_trajectory_of_one_step
+      (Q := Q) (b := b) (a := a) (x := x) (xStar := xStar) (v0 := v0)
+      hboundary hstart hstep
+  exact
+    polytope_quadratic_gap_ge_rpow_neg_one_add_eps_infinitely_often_of_exact_trajectory
+      (Q := Q) (b := b) (a := a) (x := x) (i := i) (xStar := xStar) (v0 := v0)
+      hboundary hstart htraj ε hε
 
 end
 

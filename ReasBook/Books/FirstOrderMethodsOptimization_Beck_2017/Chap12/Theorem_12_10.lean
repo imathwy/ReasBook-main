@@ -7,6 +7,7 @@ noncomputable section
 universe u v
 
 open scoped Gradient
+open InnerProductSpace (toDualMap)
 
 section
 
@@ -16,6 +17,9 @@ variable [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ
 
 variable (f : E → EReal) (g : V → EReal) (A : E →ₗ[ℝ] V)
 
+local notation "F" => fun z : V ↦ dual_based_proximal_gradient_dual_F_term f A (toDualMap ℝ V z)
+local notation "G" => fun z : V ↦ dual_based_proximal_gradient_dual_G_term g (toDualMap ℝ V z)
+local notation "gradF" => fun z : V ↦ ∇ (fun z' : V ↦ EReal.toReal (F z')) z
 local notation "q" => dual_based_proximal_gradient_lagrange_dual_objective_primal f g A
 local notation "qOpt" => dual_based_proximal_gradient_lagrange_dual_problem_value f g A
 
@@ -25,6 +29,9 @@ Theorems 12.8 and 12.9.
 Domain sampling in Chapter 12 identifies:
 - `IsFastDualProximalGradientDualTrajectory` from Algorithm 12.3 as the owner of the accelerated
   dual iterates whose objective gap is bounded in Theorem 12.9;
+- `dual_based_proximal_gradient_dual_F_term` and `dual_based_proximal_gradient_dual_G_term` from
+  Definition 12.5 as the canonical owners of the split dual terms entering that trajectory,
+  viewed on the primal dual-variable space through `toDualMap`;
 - `dual_proximal_gradient_primal_x_argmax` from Algorithm 12.2 as the owner of the primal point
   condition used by Lemma 12.7; and
 - `IsFastDualProximalGradientPrimalTrajectory` from Algorithm 12.4 as the heavier source-facing
@@ -47,12 +54,7 @@ theorem fast_dual_proximal_gradient_primal_sqdist_le_of_dual_trajectory
     (L : DualBasedProximalGradientDualStepsizeParameter A.toContinuousLinearMap σ)
     (h_problem : IsDualBasedProximalGradientProblem f g A σ)
     (y0 : V) (x : ℕ → E) (y w : ℕ → V)
-    (htraj :
-      IsFastDualProximalGradientDualTrajectory
-        A.toContinuousLinearMap σ
-        (fun z : V ↦ (g∗) (-z))
-        (fun z : V ↦ ∇ (fun z' : V ↦ ((f∗) (A.adjoint z')).toReal) z)
-        L y0 y w)
+    (htraj : IsFastDualProximalGradientDualTrajectory A.toContinuousLinearMap σ G gradF L y0 y w)
     (hx : ∀ k : ℕ, x k ∈ dual_proximal_gradient_primal_x_argmax f A (y k))
     (xStar : E)
     (hxStar : IsMinOn (composite_model_objective f (g ∘ A)) Set.univ xStar)
@@ -60,7 +62,71 @@ theorem fast_dual_proximal_gradient_primal_sqdist_le_of_dual_trajectory
     (hyStar : q yStar = qOpt)
     (k : ℕ) (hk : 1 ≤ k) :
     ‖x k - xStar‖ ^ (2 : ℕ) ≤
-      4 * (L : ℝ) * ‖y0 - yStar‖ ^ (2 : ℕ) / ((σ : ℝ) * ((k + 1 : ℝ) ^ (2 : ℕ))) := sorry
+      4 * (L : ℝ) * ‖y0 - yStar‖ ^ (2 : ℕ) / ((σ : ℝ) * ((k + 1 : ℝ) ^ (2 : ℕ))) := by
+  -- First control the primal squared distance by the dual gap at the same iterate via Lemma 12.7.
+  have hhalf_gap :
+      ((((σ : ℝ) / 2) * ‖x k - xStar‖ ^ (2 : ℕ) : ℝ) : EReal) ≤
+        qOpt - q (y k) := by
+    simpa using
+      half_sigma_sqdist_le_dual_gap_of_primal_argmax
+        (f := f)
+        (g := g)
+        (A := A)
+        σ
+        h_problem
+        (y k)
+        (x k)
+        xStar
+        (hx k)
+        hxStar
+  -- Then insert the accelerated `O(1 / k^2)` dual-gap estimate from Theorem 12.9.
+  have hgap_rate :
+      qOpt - q (y k) ≤
+        ((2 * (L : ℝ) * ‖y0 - yStar‖ ^ (2 : ℕ) / ((k + 1 : ℝ) ^ (2 : ℕ)) : ℝ) : EReal) := by
+    simpa using
+      fast_dual_proximal_gradient_dual_objective_gap_le_of_dual_trajectory
+        (f := f)
+        (g := g)
+        (A := A)
+        σ
+        L
+        h_problem
+        y0
+        y
+        w
+        htraj
+        yStar
+        hyStar
+        k
+        hk
+  -- The source proof is exactly the transitive sandwich of these two bounds.
+  have hbound_ereal :
+      ((((σ : ℝ) / 2) * ‖x k - xStar‖ ^ (2 : ℕ) : ℝ) : EReal) ≤
+        ((2 * (L : ℝ) * ‖y0 - yStar‖ ^ (2 : ℕ) / ((k + 1 : ℝ) ^ (2 : ℕ)) : ℝ) : EReal) :=
+    le_trans hhalf_gap hgap_rate
+  -- Both ends are real coercions, so the remaining work is a scalar inequality in `ℝ`.
+  have hbound_real :
+      ((σ : ℝ) / 2) * ‖x k - xStar‖ ^ (2 : ℕ) ≤
+        2 * (L : ℝ) * ‖y0 - yStar‖ ^ (2 : ℕ) / ((k + 1 : ℝ) ^ (2 : ℕ)) := by
+    exact EReal.coe_le_coe_iff.mp hbound_ereal
+  have hσ_pos : 0 < (σ : ℝ) := σ.2
+  have hden_pos : 0 < ((k + 1 : ℝ) ^ (2 : ℕ)) := by
+    positivity
+  -- Clear the positive denominator `(k + 1)^2`, then normalize the factor `(σ / 2)`.
+  have hmul :
+      (((σ : ℝ) / 2) * ‖x k - xStar‖ ^ (2 : ℕ)) * ((k + 1 : ℝ) ^ (2 : ℕ)) ≤
+        2 * (L : ℝ) * ‖y0 - yStar‖ ^ (2 : ℕ) := by
+    exact (le_div_iff₀ hden_pos).mp hbound_real
+  have hscaled :
+      (σ : ℝ) * ‖x k - xStar‖ ^ (2 : ℕ) * ((k + 1 : ℝ) ^ (2 : ℕ)) ≤
+        4 * (L : ℝ) * ‖y0 - yStar‖ ^ (2 : ℕ) := by
+    nlinarith
+  have htotal_pos : 0 < (σ : ℝ) * ((k + 1 : ℝ) ^ (2 : ℕ)) :=
+    mul_pos hσ_pos hden_pos
+  -- Cancel the positive denominator to recover the displayed primal-distance estimate.
+  exact
+    (le_div_iff₀ htotal_pos).2 <| by
+      simpa [mul_assoc, mul_left_comm, mul_comm] using hscaled
 
 -- Proof sketch: pass from the source-facing Algorithm 12.4 trajectory owner to the canonical
 -- accelerated dual-trajectory owner via
@@ -90,7 +156,12 @@ theorem fast_dual_proximal_gradient_primal_sqdist_le
     fast_dual_proximal_gradient_primal_sqdist_le_of_dual_trajectory
       f g A σ L h_problem y0 x y w
       (IsFastDualProximalGradientPrimalTrajectory.toDualTrajectory
-        (f := f) (g := g) (A := A) h_problem htraj) hx
+        (f := f)
+        (g := g)
+        (A := A)
+        h_problem
+        htraj)
+      hx
       xStar hxStar yStar hyStar k hk
 
 end

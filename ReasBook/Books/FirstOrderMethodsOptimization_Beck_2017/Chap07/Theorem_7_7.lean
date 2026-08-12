@@ -27,15 +27,13 @@ local notation "Mₘ" => Matrix (Fin m) (Fin m) ℝ
 local notation "Mₙ" => Matrix (Fin n) (Fin n) ℝ
 
 /-- The ambient real matrix space is equipped with its Frobenius norm. -/
-local instance theorem77FrobeniusNormedAddCommGroup : NormedAddCommGroup 𝕄 :=
-  Matrix.frobeniusNormedAddCommGroup
+local instance : NormedAddCommGroup 𝕄 := Matrix.frobeniusNormedAddCommGroup
 
 /-- The ambient real matrix space is a normed real vector space. -/
-local instance theorem77FrobeniusNormedSpace : NormedSpace ℝ 𝕄 := Matrix.frobeniusNormedSpace
+local instance : NormedSpace ℝ 𝕄 := Matrix.frobeniusNormedSpace
 
 /-- The ambient real matrix space is equipped with its Frobenius inner product. -/
-local instance theorem77FrobeniusInnerProductSpace : InnerProductSpace ℝ 𝕄 :=
-  Matrix.frobeniusInnerProductSpace
+local instance : InnerProductSpace ℝ 𝕄 := Matrix.frobeniusInnerProductSpace
 
 /-- The rectangular diagonal reconstruction map with a Euclidean singular-value vector input. -/
 def orthogonalRectangularDiagonalMapEuclidean
@@ -45,21 +43,21 @@ def orthogonalRectangularDiagonalMapEuclidean
 
 /-- Helper for Theorem 7.7: the local rectangular diagonal model agrees with the Chapter 7
 rectangular profile map. -/
-lemma rectangularDiagonal_eq_profile (x : Fin (min m n) → ℝ) :
+private lemma theorem7_7_rectangularDiagonal_eq_profile (x : Fin (min m n) → ℝ) :
     rectangularDiagonal x = rectangularDiagonalProfile x := by
   -- Both rectangular diagonal owners are defined by the same entrywise formula.
   rfl
 
 /-- Helper for Theorem 7.7: the local orthogonal rectangular diagonal map agrees with the Chapter
 7 profile-map owner. -/
-lemma orthogonalRectangularDiagonalMap_eq_profileMap
+private lemma theorem7_7_orthogonalRectangularDiagonalMap_eq_profileMap
     (U : Matrix.orthogonalGroup (Fin m) ℝ) (V : Matrix.orthogonalGroup (Fin n) ℝ)
     (x : Fin (min m n) → ℝ) :
     orthogonalRectangularDiagonalMap U V x =
       orthogonalRectangularDiagonalProfileMap U V x := by
   -- Rewrite the local map through the already-proved profile-map API.
   rw [orthogonalRectangularDiagonalMap_apply,
-    orthogonalRectangularDiagonalProfileMap_apply, rectangularDiagonal_eq_profile]
+    orthogonalRectangularDiagonalProfileMap_apply, theorem7_7_rectangularDiagonal_eq_profile]
 
 /-- Helper for Theorem 7.7: the matrix spectral lift of an absolutely permutation symmetric,
 closed, convex profile is proper, closed, and convex on the ambient matrix space. -/
@@ -76,7 +74,7 @@ lemma matrixSpectralLift_proper_closed_convex
     · rcases hf_symm.effective_domain_nonempty with ⟨x, hx⟩
       refine ⟨rectangularDiagonal x, ?_⟩
       have hpull : (f ∘ singular_value_function) (rectangularDiagonal x) = f x := by
-        simpa [rectangularDiagonal_eq_profile, Function.comp] using
+        simpa [theorem7_7_rectangularDiagonal_eq_profile, Function.comp] using
           absolutely_symmetric_rectangular_diagonal_pullback_eq f hf_symm x
       rw [mem_effective_domain, hpull]
       simpa [mem_effective_domain] using hx
@@ -88,7 +86,7 @@ lemma matrixSpectralLift_proper_closed_convex
   exact ⟨hproper, hclosedconv.1, hclosedconv.2⟩
 
 /-- Helper for Theorem 7.7: the Euclidean pullback `y ↦ f y.ofLp` is proper, closed, and convex. -/
-lemma euclidean_pullback_proper_closed_convex_theorem77
+private lemma euclidean_pullback_proper_closed_convex
     (f : (Fin (min m n) → ℝ) → EReal) (hf_symm : Function.IsAbsolutelyPermutationSymmetric f)
     (hf_closed : LowerSemicontinuous f) (hf_convex : is_convex_function f) :
     IsProperExtendedRealFunction (fun y : EuclideanSpace ℝ (Fin (min m n)) ↦ f y.ofLp) ∧
@@ -113,7 +111,7 @@ lemma euclidean_pullback_proper_closed_convex_theorem77
 
 /-- Helper for Theorem 7.7: transporting a rectangular diagonal model by fixed left/right
 orthogonal changes of coordinates only changes the orthogonal factors. -/
-lemma orthogonal_transport_orthogonalRectangularDiagonalMap_eq
+private lemma theorem7_7_orthogonal_transport_orthogonalRectangularDiagonalMap_eq
     (U U1 : Matrix.orthogonalGroup (Fin m) ℝ)
     (V V1 : Matrix.orthogonalGroup (Fin n) ℝ)
     (x : Fin (min m n) → ℝ) :
@@ -154,7 +152,7 @@ lemma orthogonal_transport_orthogonalRectangularDiagonalMap_eq
 
 /-- Helper for Theorem 7.7: conjugating the rectangular diagonal model back by the same orthogonal
 factors recovers the bare rectangular diagonal matrix. -/
-lemma orthogonal_conjugate_orthogonalRectangularDiagonalMap_eq_rectangularDiagonal
+private lemma theorem7_7_orthogonal_conjugate_orthogonalRectangularDiagonalMap_eq_rectangularDiagonal
     (U : Matrix.orthogonalGroup (Fin m) ℝ) (V : Matrix.orthogonalGroup (Fin n) ℝ)
     (x : Fin (min m n) → ℝ) :
     ((U : Mₘ)ᵀ) * orthogonalRectangularDiagonalMap U V x * (V : Mₙ) =
@@ -162,12 +160,12 @@ lemma orthogonal_conjugate_orthogonalRectangularDiagonalMap_eq_rectangularDiagon
   -- Specialize the transport normalization to the same left/right factors and simplify the
   -- identity orthogonal action on the diagonal model.
   simpa [orthogonalRectangularDiagonalMap_apply] using
-    orthogonal_transport_orthogonalRectangularDiagonalMap_eq
+    theorem7_7_orthogonal_transport_orthogonalRectangularDiagonalMap_eq
       (U := U) (U1 := U) (V := V) (V1 := V) x
 
 /-- Helper for Theorem 7.7: orthogonal transport on the left and right preserves the singular-value
 profile of a rectangular matrix. -/
-lemma singular_value_function_orthogonal_rectangular_eq
+private lemma theorem7_7_singular_value_function_orthogonal_rectangular_eq
     (U : Matrix.orthogonalGroup (Fin m) ℝ) (V : Matrix.orthogonalGroup (Fin n) ℝ)
     (Z : 𝕄) :
     singular_value_function (((U : Mₘ)ᵀ) * Z * (V : Mₙ)) = singular_value_function Z := by
@@ -193,21 +191,21 @@ lemma singular_value_function_orthogonal_rectangular_eq
               simpa using
                 congrArg
                   (fun M : 𝕄 ↦ ((U : Mₘ)ᵀ) * M * (V : Mₙ))
-                  (orthogonalRectangularDiagonalMap_eq_profileMap U1 V1
+                  (theorem7_7_orthogonalRectangularDiagonalMap_eq_profileMap U1 V1
                     (singular_value_function Z)).symm
       _ = orthogonalRectangularDiagonalMap (U⁻¹ * U1) (V⁻¹ * V1) (singular_value_function Z) := by
-            exact orthogonal_transport_orthogonalRectangularDiagonalMap_eq
+            exact theorem7_7_orthogonal_transport_orthogonalRectangularDiagonalMap_eq
               (U := U) (U1 := U1) (V := V) (V1 := V1) (singular_value_function Z)
   -- The transported matrix is still an orthogonal image of the same ordered singular-value
   -- vector, so the Chapter 7 rectangular diagonal characterization reads off the same profile.
-  rw [htransport, orthogonalRectangularDiagonalMap_eq_profileMap]
+  rw [htransport, theorem7_7_orthogonalRectangularDiagonalMap_eq_profileMap]
   exact singular_value_function_orthogonalRectangularDiagonalMap_eq_of_nonneg_antitone
     (U⁻¹ * U1) (V⁻¹ * V1) (singular_value_function Z)
     (singular_value_function_nonneg Z) (singular_value_function_antitone Z)
 
 /-- Helper for Theorem 7.7: the Frobenius norm is invariant under left/right orthogonal transport
 of a rectangular matrix. -/
-lemma frobenius_norm_orthogonal_rectangular_eq
+private lemma theorem7_7_frobenius_norm_orthogonal_rectangular_eq
     (U : Matrix.orthogonalGroup (Fin m) ℝ) (V : Matrix.orthogonalGroup (Fin n) ℝ)
     (A : 𝕄) :
     ‖((U : Mₘ)ᵀ) * A * (V : Mₙ)‖ = ‖A‖ := by
@@ -286,7 +284,7 @@ lemma proximal_objective_matrixSpectralLift_orthogonal_rectangular_eq
       (((U : Mₘ)ᵀ) * Z * (V : Mₙ)) - rectangularDiagonal d
           = (((U : Mₘ)ᵀ) * Z * (V : Mₙ)) -
               (((U : Mₘ)ᵀ) * orthogonalRectangularDiagonalMap U V d * (V : Mₙ)) := by
-                rw [orthogonal_conjugate_orthogonalRectangularDiagonalMap_eq_rectangularDiagonal]
+                rw [theorem7_7_orthogonal_conjugate_orthogonalRectangularDiagonalMap_eq_rectangularDiagonal]
       _ = (((U : Mₘ)ᵀ) * Z - ((U : Mₘ)ᵀ) * orthogonalRectangularDiagonalMap U V d) * (V : Mₙ) := by
             exact
               (Matrix.sub_mul (((U : Mₘ)ᵀ) * Z) (((U : Mₘ)ᵀ) * orthogonalRectangularDiagonalMap U V d)
@@ -298,20 +296,21 @@ lemma proximal_objective_matrixSpectralLift_orthogonal_rectangular_eq
       ‖((U : Mₘ)ᵀ * Z * (V : Mₙ)) - rectangularDiagonal d‖ =
         ‖Z - orthogonalRectangularDiagonalMap U V d‖ := by
     rw [hsub,
-      frobenius_norm_orthogonal_rectangular_eq U V (Z - orthogonalRectangularDiagonalMap U V d)]
+      theorem7_7_frobenius_norm_orthogonal_rectangular_eq U V
+        (Z - orthogonalRectangularDiagonalMap U V d)]
   -- Rewrite both the spectral term and the quadratic penalty through the orthogonal transport.
   rw [proximal_objective_apply, proximal_objective_apply,
     Function.comp_apply, Function.comp_apply,
-    singular_value_function_orthogonal_rectangular_eq U V Z, hnorm]
+    theorem7_7_singular_value_function_orthogonal_rectangular_eq U V Z, hnorm]
 
 /-- Helper for Theorem 7.7: the trace of the Gram matrix of a rectangular diagonal matrix is the
 sum of the squares of its diagonal profile. -/
-lemma rectangularDiagonal_trace_sum_sq (x : Fin (min m n) → ℝ) :
+private lemma theorem7_7_rectangularDiagonal_trace_sum_sq (x : Fin (min m n) → ℝ) :
     Matrix.trace ((rectangularDiagonal x)ᵀ * rectangularDiagonal x) = ∑ i, x i ^ 2 := by
   let f : ℕ → ℝ := fun j ↦ if h : j < min m n then x ⟨j, h⟩ ^ 2 else 0
   -- Rewrite the Gram matrix through the existing rectangular profile API, then split the trace
   -- into the genuine diagonal block and the zero tail.
-  rw [rectangularDiagonal_eq_profile]
+  rw [theorem7_7_rectangularDiagonal_eq_profile]
   have hgram :
       (rectangularDiagonalProfile x)ᵀ * rectangularDiagonalProfile x =
         Matrix.diagonal (fun j : Fin n ↦ if h : j.1 < min m n then x ⟨j.1, h⟩ ^ 2 else 0) := by
@@ -358,13 +357,14 @@ lemma frobenius_norm_rectangularDiagonal_eq_toLp
     ‖rectangularDiagonal x‖ =
       ‖(WithLp.toLp (p := (2 : ENNReal)) x : EuclideanSpace ℝ (Fin (min m n)))‖ := by
   -- Rewrite both norms to the same square-root-of-sum-of-squares normal form.
-  rw [frobenius_norm_eq_sqrt_trace_transpose_mul, rectangularDiagonal_trace_sum_sq]
+  rw [frobenius_norm_eq_sqrt_trace_transpose_mul,
+    theorem7_7_rectangularDiagonal_trace_sum_sq]
   rw [PiLp.norm_eq_of_L2]
   simp
 
 /-- Helper for Theorem 7.7: the Frobenius distance between two rectangular diagonal matrices is
 the Euclidean distance between their diagonal profiles. -/
-lemma frobenius_norm_rectangularDiagonal_sub_eq
+private lemma theorem7_7_frobenius_norm_rectangularDiagonal_sub_eq
     (x y : Fin (min m n) → ℝ) :
     ‖rectangularDiagonal x - rectangularDiagonal y‖ =
       ‖(WithLp.toLp (p := (2 : ENNReal)) (x - y) :
@@ -740,16 +740,16 @@ lemma rectangularDiagonal_mem_prox_euclidean_of_mem_prox_matrixSpectralLift
   intro y
   have hcmp := hdiag (rectangularDiagonal y.ofLp)
   have hw_pull : (f ∘ singular_value_function) (rectangularDiagonal w) = f w := by
-    simpa [rectangularDiagonal_eq_profile, Function.comp] using
+    simpa [theorem7_7_rectangularDiagonal_eq_profile, Function.comp] using
       absolutely_symmetric_rectangular_diagonal_pullback_eq f hf_symm w
   have hy_pull : (f ∘ singular_value_function) (rectangularDiagonal y.ofLp) = f y.ofLp := by
-    simpa [rectangularDiagonal_eq_profile, Function.comp] using
+    simpa [theorem7_7_rectangularDiagonal_eq_profile, Function.comp] using
       absolutely_symmetric_rectangular_diagonal_pullback_eq f hf_symm y.ofLp
   -- Restrict the ambient minimizing inequality to rectangular diagonal competitors and rewrite the
   -- spectral and quadratic terms through the diagonal model.
   rw [proximal_objective_apply, proximal_objective_apply, hw_pull, hy_pull,
-    frobenius_norm_rectangularDiagonal_sub_eq w d,
-    frobenius_norm_rectangularDiagonal_sub_eq y.ofLp d] at hcmp
+    theorem7_7_frobenius_norm_rectangularDiagonal_sub_eq w d,
+    theorem7_7_frobenius_norm_rectangularDiagonal_sub_eq y.ofLp d] at hcmp
   simpa [proximal_objective_apply] using hcmp
 
 -- Proof sketch: conjugate the proximal objective for `f ∘ singular_value_function` by the fixed
@@ -780,7 +780,7 @@ theorem prox_matrixSpectralLift_eq_image_orthogonalRectangularDiagonalMap
   rcases prox_eq_singleton_of_proper_closed_convex
       (f ∘ singular_value_function) hclosedconv.1 hclosedconv.2.1 hclosedconv.2.2 X with
       ⟨Y0, hsingleton⟩
-  have hpullback := euclidean_pullback_proper_closed_convex_theorem77 f hf_symm hf_closed hf_convex
+  have hpullback := euclidean_pullback_proper_closed_convex f hf_symm hf_closed hf_convex
   rcases prox_eq_singleton_of_proper_closed_convex
       (fun y : EuclideanSpace ℝ (Fin (min m n)) ↦ f y.ofLp)
       hpullback.1 hpullback.2.1 hpullback.2.2 σLp with ⟨x0, hvecsingleton⟩

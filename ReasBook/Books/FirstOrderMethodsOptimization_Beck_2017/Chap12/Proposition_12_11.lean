@@ -227,9 +227,9 @@ double tail. -/
 two-coordinate pair penalty and the even-edge penalty on the double tail. -/
 theorem one_dimensional_total_variation_even_edge_penalty_eq_head_pair_add_tail
     (lam : PosReal) (x : EuclideanSpace ℝ (Fin (n + 2))) :
-    one_dimensional_total_variation_even_edge_penalty (n := n + 2) lam x =
+    @one_dimensional_total_variation_even_edge_penalty (n + 2) lam x =
       pair_difference_penalty (lam : ℝ) (toLp 2 ![x 0, x 1]) +
-        one_dimensional_total_variation_even_edge_penalty (n := n) lam
+        @one_dimensional_total_variation_even_edge_penalty (n) lam
           (toLp 2 (Fin.tail (Fin.tail x))) := by
   -- Reindex the even-starting edges into the head pair plus the shifted tail pairs.
   rw [one_dimensional_total_variation_even_edge_penalty_apply,
@@ -238,54 +238,54 @@ theorem one_dimensional_total_variation_even_edge_penalty_eq_head_pair_add_tail
     omega
   let f : Fin (n / 2 + 1) → ℝ := fun i ↦
     |D[n + 2] x
-        (one_dimensional_total_variation_even_edge (n := n + 2) (Fin.cast hhalf.symm i))|
+        (@one_dimensional_total_variation_even_edge (n + 2) (Fin.cast hhalf.symm i))|
   have hsum_cast :
       ∑ i : Fin ((n + 2) / 2),
-          |D[n + 2] x (one_dimensional_total_variation_even_edge (n := n + 2) i)| =
+          |D[n + 2] x (@one_dimensional_total_variation_even_edge (n + 2) i)| =
         ∑ i : Fin (n / 2 + 1), f i := by
     exact Fintype.sum_equiv (finCongr hhalf)
       (fun i : Fin ((n + 2) / 2) ↦
-        |D[n + 2] x (one_dimensional_total_variation_even_edge (n := n + 2) i)|)
+        |D[n + 2] x (@one_dimensional_total_variation_even_edge (n + 2) i)|)
       f
       (fun i ↦ by simp [f])
   rw [hsum_cast, Fin.sum_univ_succ]
   have hhead : f 0 = |x 0 - x 1| := by
     simpa [f, hhalf, one_dimensional_total_variation_even_edge] using
       congrArg abs
-        (one_dimensional_total_variation_difference_operator_apply_edge (n := n + 2) x
-          (one_dimensional_total_variation_even_edge (n := n + 2) (Fin.cast hhalf.symm 0)))
+        (@one_dimensional_total_variation_difference_operator_apply_edge (n + 2) x
+          (@one_dimensional_total_variation_even_edge (n + 2) (Fin.cast hhalf.symm 0)))
   have htail :
       ∑ i : Fin (n / 2), f i.succ =
         ∑ i : Fin (n / 2),
             |D[n] (toLp 2 (Fin.tail (Fin.tail x)))
-                (one_dimensional_total_variation_even_edge (n := n) i)| := by
+                (@one_dimensional_total_variation_even_edge (n) i)| := by
     apply Finset.sum_congr rfl
     intro i hi
     have hterm :
         f i.succ =
           |D[n] (toLp 2 (Fin.tail (Fin.tail x)))
-              (one_dimensional_total_variation_even_edge (n := n) i)| := by
+              (@one_dimensional_total_variation_even_edge (n) i)| := by
       have hleft :
           one_dimensional_total_variation_edge_left
-              (one_dimensional_total_variation_even_edge (n := n + 2)
+              (one_dimensional_total_variation_even_edge
                 (Fin.cast hhalf.symm i.succ)) =
             (one_dimensional_total_variation_edge_left
-              (one_dimensional_total_variation_even_edge (n := n) i)).succ.succ := by
+              (one_dimensional_total_variation_even_edge i)).succ.succ := by
         apply Fin.ext
         simp [one_dimensional_total_variation_even_edge]
         omega
       have hright :
           one_dimensional_total_variation_edge_right
-              (one_dimensional_total_variation_even_edge (n := n + 2)
+              (one_dimensional_total_variation_even_edge
                 (Fin.cast hhalf.symm i.succ)) =
             (one_dimensional_total_variation_edge_right
-              (one_dimensional_total_variation_even_edge (n := n) i)).succ.succ := by
+              (one_dimensional_total_variation_even_edge i)).succ.succ := by
         apply Fin.ext
         simp [one_dimensional_total_variation_even_edge]
         omega
       rw [show f i.succ =
           |D[n + 2] x
-              (one_dimensional_total_variation_even_edge (n := n + 2)
+              (@one_dimensional_total_variation_even_edge (n + 2)
                 (Fin.cast hhalf.symm i.succ))| by rfl]
       rw [one_dimensional_total_variation_difference_operator_apply_edge,
         one_dimensional_total_variation_difference_operator_apply_edge, hleft, hright]
@@ -299,18 +299,18 @@ pairwise proximal point on the first two coordinates followed by the even-edge p
 the double tail. -/
 theorem one_dimensional_total_variation_even_edge_prox_point_eq_cons_pair_prox_point
     (lam : PosReal) (x : EuclideanSpace ℝ (Fin (n + 2))) :
-    one_dimensional_total_variation_even_edge_prox_point (n := n + 2) lam x =
+    one_dimensional_total_variation_even_edge_prox_point lam x =
       toLp 2
         (Fin.cons ((pair_difference_prox_point (lam : ℝ) (x 0) (x 1)) 0)
           (Fin.cons ((pair_difference_prox_point (lam : ℝ) (x 0) (x 1)) 1)
-            (one_dimensional_total_variation_even_edge_prox_point (n := n) lam
+            (one_dimensional_total_variation_even_edge_prox_point lam
               (toLp 2 (Fin.tail (Fin.tail x)))))) := by
   -- Separate the first pair correction from the shifted tail corrections coordinatewise.
   have hhalf : (n + 2) / 2 = n / 2 + 1 := by
     omega
   let g : Fin (n / 2 + 1) → EuclideanSpace ℝ (Fin (n + 2)) := fun i ↦
     let e :=
-      one_dimensional_total_variation_even_edge (n := n + 2) (Fin.cast hhalf.symm i)
+      one_dimensional_total_variation_even_edge (Fin.cast hhalf.symm i)
     let l := one_dimensional_total_variation_edge_left e
     let r := one_dimensional_total_variation_edge_right e
     pair_difference_prox_correction lam
@@ -319,7 +319,7 @@ theorem one_dimensional_total_variation_even_edge_prox_point_eq_cons_pair_prox_p
       ((single l (1 : ℝ) : EuclideanSpace ℝ (Fin (n + 2))) - single r (1 : ℝ))
   have hsum_cast :
       (∑ i : Fin ((n + 2) / 2),
-          let e := one_dimensional_total_variation_even_edge (n := n + 2) i
+          let e := one_dimensional_total_variation_even_edge i
           let l := one_dimensional_total_variation_edge_left e
           let r := one_dimensional_total_variation_edge_right e
           pair_difference_prox_correction lam
@@ -329,7 +329,7 @@ theorem one_dimensional_total_variation_even_edge_prox_point_eq_cons_pair_prox_p
         ∑ i : Fin (n / 2 + 1), g i := by
     exact Fintype.sum_equiv (finCongr hhalf)
       (fun i : Fin ((n + 2) / 2) ↦
-        let e := one_dimensional_total_variation_even_edge (n := n + 2) i
+        let e := one_dimensional_total_variation_even_edge i
         let l := one_dimensional_total_variation_edge_left e
         let r := one_dimensional_total_variation_edge_right e
         pair_difference_prox_correction lam
@@ -340,12 +340,12 @@ theorem one_dimensional_total_variation_even_edge_prox_point_eq_cons_pair_prox_p
       (fun i ↦ by simp [g])
   have hhead_left :
       one_dimensional_total_variation_edge_left
-          (one_dimensional_total_variation_even_edge (n := n + 2) (Fin.cast hhalf.symm 0)) = 0 := by
+          (one_dimensional_total_variation_even_edge (Fin.cast hhalf.symm 0)) = 0 := by
     apply Fin.ext
     simp [one_dimensional_total_variation_even_edge]
   have hhead_right :
       one_dimensional_total_variation_edge_right
-          (one_dimensional_total_variation_even_edge (n := n + 2) (Fin.cast hhalf.symm 0)) = 1 := by
+          (one_dimensional_total_variation_even_edge (Fin.cast hhalf.symm 0)) = 1 := by
     apply Fin.ext
     simp [one_dimensional_total_variation_even_edge]
   ext j
@@ -357,35 +357,28 @@ theorem one_dimensional_total_variation_even_edge_prox_point_eq_cons_pair_prox_p
       intro i hi
       have hleft :
           one_dimensional_total_variation_edge_left
-              (one_dimensional_total_variation_even_edge (n := n + 2)
+              (one_dimensional_total_variation_even_edge
                 (Fin.cast hhalf.symm i.succ)) =
             (one_dimensional_total_variation_edge_left
-              (one_dimensional_total_variation_even_edge (n := n) i)).succ.succ := by
+              (one_dimensional_total_variation_even_edge i)).succ.succ := by
         apply Fin.ext
         simp [one_dimensional_total_variation_even_edge]
         omega
       have hright :
           one_dimensional_total_variation_edge_right
-              (one_dimensional_total_variation_even_edge (n := n + 2)
+              (one_dimensional_total_variation_even_edge
                 (Fin.cast hhalf.symm i.succ)) =
             (one_dimensional_total_variation_edge_right
-              (one_dimensional_total_variation_even_edge (n := n) i)).succ.succ := by
+              (one_dimensional_total_variation_even_edge i)).succ.succ := by
         apply Fin.ext
         simp [one_dimensional_total_variation_even_edge]
         omega
       simp [g, hleft, hright]
     have hhead_eq :
         x 0 + g 0 0 = (pair_difference_prox_point (lam : ℝ) (x 0) (x 1)) 0 := by
-      have hleft_zero :
-          one_dimensional_total_variation_edge_left (n := n + 2) (0 : Fin (n + 1)) = 0 := by
-        apply Fin.ext
-        simp [one_dimensional_total_variation_edge_left]
-      have hright_zero :
-          one_dimensional_total_variation_edge_right (n := n + 2) (0 : Fin (n + 1)) = 1 := by
-        apply Fin.ext
-        simp [one_dimensional_total_variation_edge_right]
-      simp [g, pair_difference_prox_point, one_dimensional_total_variation_even_edge,
-        hleft_zero, hright_zero]
+      dsimp only [g]
+      rw [hhead_left, hhead_right]
+      simp [pair_difference_prox_point]
     have hcoord :
         x 0 + (g 0 0 + ∑ i : Fin (n / 2), (g i.succ) 0) =
           (pair_difference_prox_point (lam : ℝ) (x 0) (x 1)) 0 := by
@@ -401,50 +394,42 @@ theorem one_dimensional_total_variation_even_edge_prox_point_eq_cons_pair_prox_p
         intro i hi
         have hleft :
             one_dimensional_total_variation_edge_left
-                (one_dimensional_total_variation_even_edge (n := n + 2)
+                (one_dimensional_total_variation_even_edge
                   (Fin.cast hhalf.symm i.succ)) =
               (one_dimensional_total_variation_edge_left
-                (one_dimensional_total_variation_even_edge (n := n) i)).succ.succ := by
+                (one_dimensional_total_variation_even_edge i)).succ.succ := by
           apply Fin.ext
           simp [one_dimensional_total_variation_even_edge]
           omega
         have hright :
             one_dimensional_total_variation_edge_right
-                (one_dimensional_total_variation_even_edge (n := n + 2)
+                (one_dimensional_total_variation_even_edge
                   (Fin.cast hhalf.symm i.succ)) =
               (one_dimensional_total_variation_edge_right
-                (one_dimensional_total_variation_even_edge (n := n) i)).succ.succ := by
+                (one_dimensional_total_variation_even_edge i)).succ.succ := by
           apply Fin.ext
           simp [one_dimensional_total_variation_even_edge]
           omega
         have hone_ne_left :
             (1 : Fin (n + 2)) ≠
               (one_dimensional_total_variation_edge_left
-                (one_dimensional_total_variation_even_edge (n := n) i)).succ.succ := by
+                (one_dimensional_total_variation_even_edge i)).succ.succ := by
           simpa using
             (one_dimensional_total_variation_edge_left
-              (one_dimensional_total_variation_even_edge (n := n) i)).succ_succ_ne_one.symm
+              (one_dimensional_total_variation_even_edge i)).succ_succ_ne_one.symm
         have hone_ne_right :
             (1 : Fin (n + 2)) ≠
               (one_dimensional_total_variation_edge_right
-                (one_dimensional_total_variation_even_edge (n := n) i)).succ.succ := by
+                (one_dimensional_total_variation_even_edge i)).succ.succ := by
           simpa using
             (one_dimensional_total_variation_edge_right
-              (one_dimensional_total_variation_even_edge (n := n) i)).succ_succ_ne_one.symm
+              (one_dimensional_total_variation_even_edge i)).succ_succ_ne_one.symm
         simp [g, hleft, hright, hone_ne_left, hone_ne_right]
       have hhead_eq :
           x 1 + g 0 1 = (pair_difference_prox_point (lam : ℝ) (x 0) (x 1)) 1 := by
-        have hleft_zero :
-            one_dimensional_total_variation_edge_left (n := n + 2) (0 : Fin (n + 1)) = 0 := by
-          apply Fin.ext
-          simp [one_dimensional_total_variation_edge_left]
-        have hright_zero :
-            one_dimensional_total_variation_edge_right (n := n + 2) (0 : Fin (n + 1)) = 1 := by
-          apply Fin.ext
-          simp [one_dimensional_total_variation_edge_right]
-        simp [sub_eq_add_neg, g, pair_difference_prox_point,
-          one_dimensional_total_variation_even_edge,
-          hleft_zero, hright_zero]
+        dsimp only [g]
+        rw [hhead_left, hhead_right]
+        simp [sub_eq_add_neg, pair_difference_prox_point]
       have hcoord :
           x 1 + (g 0 1 + ∑ i : Fin (n / 2), (g i.succ) 1) =
             (pair_difference_prox_point (lam : ℝ) (x 0) (x 1)) 1 := by
@@ -463,7 +448,7 @@ theorem one_dimensional_total_variation_even_edge_prox_point_eq_cons_pair_prox_p
       have htail_eq :
           ∑ i : Fin (n / 2), (g i.succ) k.succ.succ =
             ∑ i : Fin (n / 2),
-              (let e := one_dimensional_total_variation_even_edge (n := n) i
+              (let e := one_dimensional_total_variation_even_edge i
                 let l := one_dimensional_total_variation_edge_left e
                 let r := one_dimensional_total_variation_edge_right e
                 pair_difference_prox_correction lam
@@ -474,26 +459,26 @@ theorem one_dimensional_total_variation_even_edge_prox_point_eq_cons_pair_prox_p
         intro i hi
         have hleft :
             one_dimensional_total_variation_edge_left
-                (one_dimensional_total_variation_even_edge (n := n + 2)
+                (one_dimensional_total_variation_even_edge
                   (Fin.cast hhalf.symm i.succ)) =
               (one_dimensional_total_variation_edge_left
-                (one_dimensional_total_variation_even_edge (n := n) i)).succ.succ := by
+                (one_dimensional_total_variation_even_edge i)).succ.succ := by
           apply Fin.ext
           simp [one_dimensional_total_variation_even_edge]
           omega
         have hright :
             one_dimensional_total_variation_edge_right
-                (one_dimensional_total_variation_even_edge (n := n + 2)
+                (one_dimensional_total_variation_even_edge
                   (Fin.cast hhalf.symm i.succ)) =
               (one_dimensional_total_variation_edge_right
-                (one_dimensional_total_variation_even_edge (n := n) i)).succ.succ := by
+                (one_dimensional_total_variation_even_edge i)).succ.succ := by
           apply Fin.ext
           simp [one_dimensional_total_variation_even_edge]
           omega
         simp [g, hleft, hright, Fin.tail]
       have hcoord :
           x k.succ.succ + (g 0 k.succ.succ + ∑ i : Fin (n / 2), (g i.succ) k.succ.succ) =
-            (one_dimensional_total_variation_even_edge_prox_point (n := n) lam
+            (one_dimensional_total_variation_even_edge_prox_point lam
               (toLp 2 (Fin.tail (Fin.tail x)))) k := by
         rw [hhead_zero]
         have htail_coord := congrArg (fun t : ℝ ↦ x k.succ.succ + t) htail_eq
@@ -505,15 +490,14 @@ theorem one_dimensional_total_variation_even_edge_prox_point_eq_cons_pair_prox_p
 reassembly of the head-pair proximal point and the recursive tail proximal point. -/
 theorem one_dimensional_total_variation_even_edge_prox_point_eq_prepend_pair
     (lam : PosReal) (x : EuclideanSpace ℝ (Fin (n + 2))) :
-    one_dimensional_total_variation_even_edge_prox_point (n := n + 2) lam x =
+    one_dimensional_total_variation_even_edge_prox_point lam x =
       prepend_pair
         (pair_difference_prox_point (lam : ℝ) (x 0) (x 1))
-        (one_dimensional_total_variation_even_edge_prox_point (n := n) lam
+        (one_dimensional_total_variation_even_edge_prox_point lam
           (toLp 2 (Fin.tail (Fin.tail x)))) := by
   -- Repackage the coordinatewise `Fin.cons` description through the canonical builder.
   simpa [prepend_pair] using
-    (one_dimensional_total_variation_even_edge_prox_point_eq_cons_pair_prox_point
-      (n := n) lam x)
+    (one_dimensional_total_variation_even_edge_prox_point_eq_cons_pair_prox_point lam x)
 
 /-- Helper for Proposition 12.11: in `ℝ^(n+2)`, the squared Euclidean distance splits into the
 two head-coordinate contributions and the squared norm of the double-tail difference. -/
@@ -562,10 +546,10 @@ splits into the proximal objective of the first pair and the even-edge proximal 
 double tail. -/
 theorem one_dimensional_total_variation_even_edge_proximal_objective_split
     (lam : PosReal) (x u : EuclideanSpace ℝ (Fin (n + 2))) :
-    proximal_objective (one_dimensional_total_variation_even_edge_penalty (n := n + 2) lam) x u =
+    proximal_objective (@one_dimensional_total_variation_even_edge_penalty (n + 2) lam) x u =
       proximal_objective (pair_difference_penalty (lam : ℝ)) (toLp 2 ![x 0, x 1])
           (toLp 2 ![u 0, u 1]) +
-        proximal_objective (one_dimensional_total_variation_even_edge_penalty (n := n) lam)
+        proximal_objective (@one_dimensional_total_variation_even_edge_penalty (n) lam)
           (toLp 2 (Fin.tail (Fin.tail x))) (toLp 2 (Fin.tail (Fin.tail u))) := by
   -- Rewrite the penalty and quadratic terms into the pair block plus the double-tail block.
   rw [proximal_objective_apply, proximal_objective_apply, proximal_objective_apply,
@@ -597,10 +581,10 @@ the source decomposition into a head pair problem and a recursive tail problem. 
 theorem one_dimensional_total_variation_even_edge_proximal_objective_prepend_pair
     (lam : PosReal) (x : EuclideanSpace ℝ (Fin (n + 2)))
     (p : EuclideanSpace ℝ (Fin 2)) (w : EuclideanSpace ℝ (Fin n)) :
-    proximal_objective (one_dimensional_total_variation_even_edge_penalty (n := n + 2) lam) x
+    proximal_objective (@one_dimensional_total_variation_even_edge_penalty (n + 2) lam) x
         (prepend_pair p w) =
       proximal_objective (pair_difference_penalty (lam : ℝ)) (toLp 2 ![x 0, x 1]) p +
-        proximal_objective (one_dimensional_total_variation_even_edge_penalty (n := n) lam)
+        proximal_objective (@one_dimensional_total_variation_even_edge_penalty (n) lam)
           (toLp 2 (Fin.tail (Fin.tail x))) w := by
   -- Specialize the split identity and then read back the reconstructed head pair and double tail.
   have hp : toLp 2 ![p 0, p 1] = p := by
@@ -636,17 +620,17 @@ theorem one_dimensional_total_variation_even_edge_proximal_objective_eq_coe
 problem and the recursive double-tail problem. -/
 theorem mem_prox_one_dimensional_total_variation_even_edge_penalty_iff_head_pair_double_tail
     (lam : PosReal) (x u : EuclideanSpace ℝ (Fin (n + 2))) :
-    u ∈ prox[one_dimensional_total_variation_even_edge_penalty (n := n + 2) lam] x ↔
+    u ∈ prox[@one_dimensional_total_variation_even_edge_penalty (n + 2) lam] x ↔
       toLp 2 ![u 0, u 1] ∈ prox[pair_difference_penalty (lam : ℝ)] (toLp 2 ![x 0, x 1]) ∧
         toLp 2 (Fin.tail (Fin.tail u)) ∈
-          prox[one_dimensional_total_variation_even_edge_penalty (n := n) lam]
+          prox[@one_dimensional_total_variation_even_edge_penalty (n) lam]
             (toLp 2 (Fin.tail (Fin.tail x))) := by
   constructor
   · intro hu
     -- Freeze the head pair and vary only the tail block to read off recursive optimality.
     have htail_min :
         toLp 2 (Fin.tail (Fin.tail u)) ∈
-          prox[one_dimensional_total_variation_even_edge_penalty (n := n) lam]
+          prox[@one_dimensional_total_variation_even_edge_penalty (n) lam]
             (toLp 2 (Fin.tail (Fin.tail x))) := by
       rw [mem_proximal_mapping_iff] at hu ⊢
       rw [isMinOn_univ_iff] at hu ⊢
@@ -654,18 +638,18 @@ theorem mem_prox_one_dimensional_total_variation_even_edge_penalty_iff_head_pair
       let v : EuclideanSpace ℝ (Fin (n + 2)) := prepend_pair (toLp 2 ![u 0, u 1]) w
       have huv := hu v
       have hu_split :=
-        one_dimensional_total_variation_even_edge_proximal_objective_split (n := n) lam x u
+        @one_dimensional_total_variation_even_edge_proximal_objective_split (n) lam x u
       have hv_split :
           proximal_objective
-              (one_dimensional_total_variation_even_edge_penalty (n := n + 2) lam) x v =
+              (@one_dimensional_total_variation_even_edge_penalty (n + 2) lam) x v =
             proximal_objective (pair_difference_penalty (lam : ℝ)) (toLp 2 ![x 0, x 1])
                 (toLp 2 ![u 0, u 1]) +
               proximal_objective
-                (one_dimensional_total_variation_even_edge_penalty (n := n) lam)
+                (@one_dimensional_total_variation_even_edge_penalty (n) lam)
                 (toLp 2 (Fin.tail (Fin.tail x))) w := by
         simpa [v] using
-          (one_dimensional_total_variation_even_edge_proximal_objective_prepend_pair
-            (n := n) lam x (toLp 2 ![u 0, u 1]) w)
+          (@one_dimensional_total_variation_even_edge_proximal_objective_prepend_pair
+            (n) lam x (toLp 2 ![u 0, u 1]) w)
       rw [hu_split, hv_split] at huv
       obtain ⟨r, hr⟩ :=
         pair_difference_proximal_objective_eq_coe
@@ -682,21 +666,21 @@ theorem mem_prox_one_dimensional_total_variation_even_edge_penalty_iff_head_pair
         prepend_pair p (toLp 2 (Fin.tail (Fin.tail u)))
       have huv := hu v
       have hu_split :=
-        one_dimensional_total_variation_even_edge_proximal_objective_split (n := n) lam x u
+        @one_dimensional_total_variation_even_edge_proximal_objective_split (n) lam x u
       have hv_split :
           proximal_objective
-              (one_dimensional_total_variation_even_edge_penalty (n := n + 2) lam) x v =
+              (@one_dimensional_total_variation_even_edge_penalty (n + 2) lam) x v =
             proximal_objective (pair_difference_penalty (lam : ℝ)) (toLp 2 ![x 0, x 1]) p +
               proximal_objective
-                (one_dimensional_total_variation_even_edge_penalty (n := n) lam)
+                (@one_dimensional_total_variation_even_edge_penalty (n) lam)
                 (toLp 2 (Fin.tail (Fin.tail x))) (toLp 2 (Fin.tail (Fin.tail u))) := by
         simpa [v] using
-          (one_dimensional_total_variation_even_edge_proximal_objective_prepend_pair
-            (n := n) lam x p (toLp 2 (Fin.tail (Fin.tail u))))
+          (@one_dimensional_total_variation_even_edge_proximal_objective_prepend_pair
+            (n) lam x p (toLp 2 (Fin.tail (Fin.tail u))))
       rw [hu_split, hv_split] at huv
       obtain ⟨r, hr⟩ :=
-        one_dimensional_total_variation_even_edge_proximal_objective_eq_coe
-          (n := n) lam (toLp 2 (Fin.tail (Fin.tail x))) (toLp 2 (Fin.tail (Fin.tail u)))
+        @one_dimensional_total_variation_even_edge_proximal_objective_eq_coe
+          (n) lam (toLp 2 (Fin.tail (Fin.tail x))) (toLp 2 (Fin.tail (Fin.tail u)))
       rw [hr] at huv
       exact ((EReal.addLECancellable_coe r).add_le_add_iff_right).mp huv
     exact ⟨hhead_min, htail_min⟩
@@ -706,9 +690,9 @@ theorem mem_prox_one_dimensional_total_variation_even_edge_penalty_iff_head_pair
     intro v
     -- Once both blocks are separately minimal, add the two block inequalities after splitting.
     have hsplit_u :=
-      one_dimensional_total_variation_even_edge_proximal_objective_split (n := n) lam x u
+      @one_dimensional_total_variation_even_edge_proximal_objective_split (n) lam x u
     have hsplit_v :=
-      one_dimensional_total_variation_even_edge_proximal_objective_split (n := n) lam x v
+      @one_dimensional_total_variation_even_edge_proximal_objective_split (n) lam x v
     rw [mem_proximal_mapping_iff, isMinOn_univ_iff] at hhead_min htail_min
     rw [hsplit_u, hsplit_v]
     have hhead_le := hhead_min (toLp 2 ![v 0, v 1])
@@ -732,28 +716,28 @@ theorem prox_one_dimensional_total_variation_even_edge_penalty_eq_singleton
   induction n using Nat.twoStepInduction with
   | zero =>
       have hpen0 :
-          one_dimensional_total_variation_even_edge_penalty (n := 0) lam =
+          @one_dimensional_total_variation_even_edge_penalty (0) lam =
             (0 : EuclideanSpace ℝ (Fin 0) → EReal) := by
         funext u
         simp [one_dimensional_total_variation_even_edge_penalty_apply]
       calc
-        prox[one_dimensional_total_variation_even_edge_penalty (n := 0) lam] x = {x} := by
+        prox[@one_dimensional_total_variation_even_edge_penalty (0) lam] x = {x} := by
           rw [hpen0]
           simpa using prox_zero_eq_singleton x
-        _ = {one_dimensional_total_variation_even_edge_prox_point (n := 0) lam x} := by
+        _ = {@one_dimensional_total_variation_even_edge_prox_point (0) lam x} := by
           congr 1
           simp [one_dimensional_total_variation_even_edge_prox_point_eq]
   | one =>
       have hpen1 :
-          one_dimensional_total_variation_even_edge_penalty (n := 1) lam =
+          @one_dimensional_total_variation_even_edge_penalty (1) lam =
             (0 : EuclideanSpace ℝ (Fin 1) → EReal) := by
         funext u
         simp [one_dimensional_total_variation_even_edge_penalty_apply]
       calc
-        prox[one_dimensional_total_variation_even_edge_penalty (n := 1) lam] x = {x} := by
+        prox[@one_dimensional_total_variation_even_edge_penalty (1) lam] x = {x} := by
           rw [hpen1]
           simpa using prox_zero_eq_singleton x
-        _ = {one_dimensional_total_variation_even_edge_prox_point (n := 1) lam x} := by
+        _ = {@one_dimensional_total_variation_even_edge_prox_point (1) lam x} := by
           congr 1
           simp [one_dimensional_total_variation_even_edge_prox_point_eq]
   | more n ih =>
@@ -764,11 +748,11 @@ theorem prox_one_dimensional_total_variation_even_edge_penalty_eq_singleton
         have hu_factor :
             toLp 2 ![u 0, u 1] ∈ prox[pair_difference_penalty (lam : ℝ)] (toLp 2 ![x 0, x 1]) ∧
               toLp 2 (Fin.tail (Fin.tail u)) ∈
-                prox[one_dimensional_total_variation_even_edge_penalty (n := n) lam]
+                prox[@one_dimensional_total_variation_even_edge_penalty (n) lam]
                   (toLp 2 (Fin.tail (Fin.tail x))) := by
           exact
-            (mem_prox_one_dimensional_total_variation_even_edge_penalty_iff_head_pair_double_tail
-              (n := n) lam x u).1 hu
+            (@mem_prox_one_dimensional_total_variation_even_edge_penalty_iff_head_pair_double_tail
+              (n) lam x u).1 hu
         rcases hu_factor with ⟨hhead_min, htail_min⟩
         have hhead_eq :
             toLp 2 ![u 0, u 1] = pair_difference_prox_point (lam : ℝ) (x 0) (x 1) := by
@@ -776,7 +760,7 @@ theorem prox_one_dimensional_total_variation_even_edge_penalty_eq_singleton
           simpa using hhead_min
         have htail_eq :
             toLp 2 (Fin.tail (Fin.tail u)) =
-              one_dimensional_total_variation_even_edge_prox_point (n := n) lam
+              @one_dimensional_total_variation_even_edge_prox_point (n) lam
                 (toLp 2 (Fin.tail (Fin.tail x))) := by
           rw [ih (toLp 2 (Fin.tail (Fin.tail x)))] at htail_min
           simpa using htail_min
@@ -784,27 +768,28 @@ theorem prox_one_dimensional_total_variation_even_edge_penalty_eq_singleton
           u =
               prepend_pair
                 (pair_difference_prox_point (lam : ℝ) (x 0) (x 1))
-                (one_dimensional_total_variation_even_edge_prox_point (n := n) lam
+                (@one_dimensional_total_variation_even_edge_prox_point (n) lam
                   (toLp 2 (Fin.tail (Fin.tail x)))) := by
             rw [← prepend_pair_reconstruct u]
             rw [hhead_eq, htail_eq]
-          _ = one_dimensional_total_variation_even_edge_prox_point (n := n + 2) lam x := by
+          _ = @one_dimensional_total_variation_even_edge_prox_point (n + 2) lam x := by
             symm
-            exact one_dimensional_total_variation_even_edge_prox_point_eq_prepend_pair
-              (n := n) lam x
+            exact
+              @one_dimensional_total_variation_even_edge_prox_point_eq_prepend_pair
+                (n) lam x
       · intro hu
         rw [Set.mem_singleton_iff] at hu
         subst hu
         apply
-          (mem_prox_one_dimensional_total_variation_even_edge_penalty_iff_head_pair_double_tail
-            (n := n) lam x
-            (one_dimensional_total_variation_even_edge_prox_point (n := n + 2) lam x)).2
+          (@mem_prox_one_dimensional_total_variation_even_edge_penalty_iff_head_pair_double_tail
+            (n) lam x
+            (@one_dimensional_total_variation_even_edge_prox_point (n + 2) lam x)).2
         have hhead_min :
             toLp 2
-                ![(one_dimensional_total_variation_even_edge_prox_point (n := n + 2) lam x) 0,
-                  (one_dimensional_total_variation_even_edge_prox_point (n := n + 2) lam x) 1] ∈
+                ![(@one_dimensional_total_variation_even_edge_prox_point (n + 2) lam x) 0,
+                  (@one_dimensional_total_variation_even_edge_prox_point (n + 2) lam x) 1] ∈
               prox[pair_difference_penalty (lam : ℝ)] (toLp 2 ![x 0, x 1]) := by
-          rw [one_dimensional_total_variation_even_edge_prox_point_eq_prepend_pair (n := n) lam x]
+          rw [@one_dimensional_total_variation_even_edge_prox_point_eq_prepend_pair (n) lam x]
           rw [prox_pair_difference_penalty_eq_singleton (lam : ℝ) lam.2.le (x 0) (x 1)]
           ext i
           fin_cases i <;> simp [pair_difference_prox_point]
@@ -812,10 +797,10 @@ theorem prox_one_dimensional_total_variation_even_edge_penalty_eq_singleton
             toLp 2
                 (Fin.tail
                   (Fin.tail
-                    (one_dimensional_total_variation_even_edge_prox_point (n := n + 2) lam x))) ∈
-              prox[one_dimensional_total_variation_even_edge_penalty (n := n) lam]
+                    (@one_dimensional_total_variation_even_edge_prox_point (n + 2) lam x))) ∈
+              prox[@one_dimensional_total_variation_even_edge_penalty (n) lam]
                 (toLp 2 (Fin.tail (Fin.tail x))) := by
-          rw [one_dimensional_total_variation_even_edge_prox_point_eq_prepend_pair (n := n) lam x]
+          rw [@one_dimensional_total_variation_even_edge_prox_point_eq_prepend_pair (n) lam x]
           rw [ih (toLp 2 (Fin.tail (Fin.tail x)))]
           simp
         exact ⟨hhead_min, htail_min⟩

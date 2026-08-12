@@ -6,6 +6,7 @@ import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_3
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_30
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Definition_6_7
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_3
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_5
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -18,27 +19,6 @@ open scoped BigOperators Gradient
 section
 
 variable {ι : Type u} [Fintype ι] {Ei : ι → Type v}
-
-/-- The block-separable regularizer `x ↦ ∑ i, g_i(x_i)` is proper when every block penalty `g_i`
-is proper. -/
-theorem separableSum_proper
-    (g : (i : ι) → Ei i → EReal)
-    (hg_proper : ∀ i, IsProperExtendedRealFunction (g i)) :
-    IsProperExtendedRealFunction (separableSum g) := by
-  classical
-  refine ⟨?_, ?_⟩
-  · intro x
-    rw [separableSum_apply]
-    exact ereal_sum_ne_bot Finset.univ (fun i ↦ g i (x i))
-      (fun i _ ↦ (hg_proper i).ne_bot (x i))
-  · let x : (i : ι) → Ei i := fun i ↦ Classical.choose (hg_proper i).effective_domain_nonempty
-    have hx : ∀ i, x i ∈ effective_domain (g i) := by
-      intro i
-      exact Classical.choose_spec (hg_proper i).effective_domain_nonempty
-    refine ⟨x, ?_⟩
-    rw [mem_effective_domain, separableSum_apply]
-    exact ereal_sum_lt_top Finset.univ (fun i ↦ g i (x i))
-      (fun i _ ↦ mem_effective_domain.mp (hx i))
 
 /-- A finite value of the block-separable regularizer forces each coordinate penalty to be finite.
 -/
@@ -62,11 +42,6 @@ theorem block_mem_effective_domain_of_mem_separableSum_effective_domain
   have hsum_eq_top : separableSum g x = ⊤ := by
     rw [separableSum_apply, hsum, hgi_top, EReal.top_add_of_ne_bot hrest_ne_bot]
   exact (lt_top_iff_ne_top.mp (mem_effective_domain.mp hx)) hsum_eq_top
-
-instance instIsProperExtendedRealFunctionSeparableSum
-    (g : (i : ι) → Ei i → EReal) [∀ i, IsProperExtendedRealFunction (g i)] :
-    IsProperExtendedRealFunction (separableSum g) :=
-  separableSum_proper g (fun i ↦ (inferInstance : IsProperExtendedRealFunction (g i)))
 
 end
 
@@ -164,18 +139,32 @@ variable {ι : Type u} [Fintype ι] {Ei : ι → Type v}
 variable [∀ i, AddCommMonoid (Ei i)] [∀ i, Module ℝ (Ei i)]
 
 /-- The block-separable regularizer `x ↦ ∑ i, g_i(x_i)` is convex when every block penalty `g_i`
-is convex. -/
+is proper and convex. -/
 theorem separableSum_convex
     (g : (i : ι) → Ei i → EReal)
+    (hg_proper : ∀ i, IsProperExtendedRealFunction (g i))
     (hg_convex : ∀ i, is_convex_function (g i)) :
     is_convex_function (separableSum g) := by
   classical
   let e : ι ≃ Fin (Fintype.card ι) := Fintype.equivFin ι
   let G : Fin (Fintype.card ι) → ((i : ι) → Ei i) → EReal :=
     fun k x ↦ g (e.symm k) (x (e.symm k))
+  let x0 : (i : ι) → Ei i := fun i ↦ Classical.choose (hg_proper i).effective_domain_nonempty
+  have hx0 : ∀ i, x0 i ∈ effective_domain (g i) := by
+    intro i
+    exact Classical.choose_spec (hg_proper i).effective_domain_nonempty
+  have hG_proper : ∀ k : Fin (Fintype.card ι), IsProperExtendedRealFunction (G k) := by
+    intro k
+    refine ⟨?_, ?_⟩
+    · intro x
+      simpa [G] using (hg_proper (e.symm k)).ne_bot (x (e.symm k))
+    · refine ⟨x0, ?_⟩
+      simpa [G] using hx0 (e.symm k)
   have hG : ∀ k : Fin (Fintype.card ι), is_convex_function (G k) := by
     intro k
     -- Each coordinate summand inherits convexity directly from the corresponding block penalty.
+    letI : IsProperExtendedRealFunction (G k) := hG_proper k
+    letI : IsProperExtendedRealFunction (g (e.symm k)) := hg_proper (e.symm k)
     rw [is_convex_function_iff_segment_ineq]
     intro x hx y hy t ht
     simpa [G] using
@@ -190,9 +179,13 @@ theorem separableSum_convex
       is_convex_function
         (fun x : ((i : ι) → Ei i) ↦
           ∑ k : Fin (Fintype.card ι), G k x) := by
-    simpa [G] using
+    simpa using
       is_convex_function_finset_nonneg_weighted_sum
-        (f := G) hG (fun _ ↦ (1 : NNReal))
+        (s := Finset.univ)
+        (f := G)
+        (fun k _ ↦ hG k)
+        (fun k _ x ↦ (hG_proper k).ne_bot x)
+        (fun _ ↦ (1 : NNReal))
   have hsum_eq :
       (fun x : ((i : ι) → Ei i) ↦
         ∑ k : Fin (Fintype.card ι), G k x) = separableSum g := by
@@ -207,9 +200,12 @@ theorem separableSum_convex
   simpa [hsum_eq] using hsum
 
 instance instFactIsConvexFunctionSeparableSum
-    (g : (i : ι) → Ei i → EReal) [∀ i, Fact (is_convex_function (g i))] :
+    (g : (i : ι) → Ei i → EReal)
+    [∀ i, IsProperExtendedRealFunction (g i)] [∀ i, Fact (is_convex_function (g i))] :
     Fact (is_convex_function (separableSum g)) :=
-  ⟨separableSum_convex g (fun i ↦ (Fact.out : is_convex_function (g i)))⟩
+  ⟨separableSum_convex g
+      (fun i ↦ (inferInstance : IsProperExtendedRealFunction (g i)))
+      (fun i ↦ (Fact.out : is_convex_function (g i)))⟩
 
 end
 
@@ -380,6 +376,30 @@ scoped[Gradient] notation3:max
           block_partial_prox_grad_point g block_gradient hg_proper hg_closed hg_convex M i x) :=
   rfl
 
+/-- The Chapter 11 one-block proximal-gradient update is the unique point of the corresponding
+scaled proximal singleton. -/
+theorem block_partial_prox_grad_point_eq_singleton
+    (g : (i : ι) → Ei i → EReal)
+    (block_gradient : (i : ι) → ((j : ι) → Ei j) → Ei i)
+    (hg_proper : ∀ i, IsProperExtendedRealFunction (g i))
+    (hg_closed : ∀ i, LowerSemicontinuous (g i))
+    (hg_convex : ∀ i, is_convex_function (g i))
+    (M : PosReal) (i : ι) [ProperSpace (Ei i)] (x : (i : ι) → Ei i) :
+    prox[((((1 / M : PosReal) : EReal) • g i))]
+      (x i - (1 / M : ℝ) • block_gradient i x) =
+        {block_partial_prox_grad_point g block_gradient hg_proper hg_closed hg_convex M i x} := by
+  let hscaled :=
+    scaled_function_pcc_of_pos
+      (g i) (hg_proper i) (hg_closed i) (hg_convex i) (1 / M)
+  simpa [block_partial_prox_grad_point, hscaled] using
+    (Classical.choose_spec <|
+      prox_eq_singleton_of_proper_closed_convex
+        ((((1 / M : PosReal) : EReal) • g i))
+        hscaled.1
+        hscaled.2.1
+        hscaled.2.2
+        (x i - (1 / M : ℝ) • block_gradient i x))
+
 end
 
 section
@@ -519,6 +539,29 @@ abbrev gradient_mapping
 
 /-- The owner-level one-block prox point lies in the effective domain of the selected block
 penalty. -/
+theorem prox_point_eq_singleton
+    {f : ((i : ι) → Ei i) → EReal} {g : (i : ι) → Ei i → EReal}
+    {block_gradient : (i : ι) → ((j : ι) → Ei j) → Ei i}
+    {XStar : Set ((i : ι) → Ei i)} {FOpt : ℝ}
+    {Li : (i : ι) → PosReal}
+    (h : IsBlockProximalGradientProblem f g block_gradient XStar FOpt Li)
+    (M : PosReal) (i : ι) [ProperSpace (Ei i)] (x : (j : ι) → Ei j) :
+    prox[((((1 / M : PosReal) : EReal) • g i))]
+      (x i - (1 / M : ℝ) • block_gradient i x) =
+        {h.prox_point M i x} := by
+  simpa [IsBlockProximalGradientProblem.prox_point] using
+    block_partial_prox_grad_point_eq_singleton
+      g
+      block_gradient
+      h.block_g_proper
+      h.block_g_closed
+      h.block_g_convex
+      M
+      i
+      x
+
+/-- The owner-level one-block prox point lies in the effective domain of the selected block
+penalty. -/
 theorem prox_point_mem_effective_domain
     {f : ((i : ι) → Ei i) → EReal} {g : (i : ι) → Ei i → EReal}
     {block_gradient : (i : ι) → ((j : ι) → Ei j) → Ei i}
@@ -527,25 +570,6 @@ theorem prox_point_mem_effective_domain
     (h : IsBlockProximalGradientProblem f g block_gradient XStar FOpt Li)
     (M : PosReal) (i : ι) [ProperSpace (Ei i)] (x : (j : ι) → Ei j) :
     h.prox_point M i x ∈ effective_domain (g i) := by
-  let hscaled :=
-    scaled_function_pcc_of_pos
-      (g i)
-      (h.block_g_proper i)
-      (h.block_g_closed i)
-      (h.block_g_convex i)
-      (1 / M)
-  have hprox :
-      prox[((((1 / M : PosReal) : EReal) • g i))]
-          (x i - (1 / M : ℝ) • block_gradient i x) =
-        {h.prox_point M i x} := by
-    simpa [IsBlockProximalGradientProblem.prox_point, block_partial_prox_grad_point, hscaled] using
-      (Classical.choose_spec <|
-        prox_eq_singleton_of_proper_closed_convex
-          ((((1 / M : PosReal) : EReal) • g i))
-          hscaled.1
-          hscaled.2.1
-          hscaled.2.2
-          (x i - (1 / M : ℝ) • block_gradient i x))
   rcases scaled_prox_singleton_support_of_proper_convex
       (f := g i)
       (μ := 1 / M)
@@ -553,7 +577,7 @@ theorem prox_point_mem_effective_domain
       (h.block_g_convex i)
       (x i - (1 / M : ℝ) • block_gradient i x)
       (h.prox_point M i x)
-      hprox with
+      (h.prox_point_eq_singleton M i x) with
     ⟨hmem, _⟩
   simpa using hmem
 
@@ -720,13 +744,13 @@ theorem toIsCompositeSmoothMinimizationProblem
     IsCompositeSmoothMinimizationProblem
       f (separableSum g) XStar FOpt Lf := by
   -- Populate the Chapter 10 owner directly from the Chapter 11 owner fields and the
-  -- aggregate regularizer bridge lemmas proved above.
+  -- aggregate regularizer bridge lemmas available on `separableSum`.
   refine
     { f_ne_bot := h.f_ne_bot
       g_proper := separableSum_proper g h.block_g_proper
       f_closed := h.f_closed
       g_closed := separableSum_closed g h.block_g_closed
-      g_convex := separableSum_convex g h.block_g_convex
+      g_convex := separableSum_convex g h.block_g_proper h.block_g_convex
       f_effective_domain_convex := h.f_effective_domain_convex
       g_effective_domain_subset_interior_f_effective_domain :=
         h.g_effective_domain_subset_interior_f_effective_domain
@@ -747,6 +771,18 @@ theorem separableSum_proper
     IsProperExtendedRealFunction (separableSum g) :=
   (toIsCompositeSmoothMinimizationProblem h).g_proper
 
+/-- The aggregate regularizer `separableSum g` is proper under the Chapter 11 block assumptions.
+-/
+instance instIsProperExtendedRealFunctionSeparableSumOfBlockProximalGradientAssumptions
+    {f : ((i : ι) → Ei i) → EReal} {g : (i : ι) → Ei i → EReal}
+    {block_gradient : (i : ι) → ((j : ι) → Ei j) → Ei i}
+    {XStar : Set ((i : ι) → Ei i)} {FOpt : ℝ}
+    {Lf : NNReal} {Li : (i : ι) → PosReal}
+    (h :
+      BlockProximalGradientAssumptions f g block_gradient XStar FOpt Lf Li) :
+    IsProperExtendedRealFunction (separableSum g) :=
+  h.separableSum_proper
+
 /-- The induced aggregate regularizer `x ↦ ∑ i, g_i(x_i)` is lower semicontinuous. -/
 theorem separableSum_closed
     {f : ((i : ι) → Ei i) → EReal} {g : (i : ι) → Ei i → EReal}
@@ -758,6 +794,18 @@ theorem separableSum_closed
     LowerSemicontinuous (separableSum g) :=
   (toIsCompositeSmoothMinimizationProblem h).g_closed
 
+/-- The aggregate regularizer `separableSum g` is lower semicontinuous under the Chapter 11 block
+assumptions. -/
+instance instFactLowerSemicontinuousSeparableSumOfBlockProximalGradientAssumptions
+    {f : ((i : ι) → Ei i) → EReal} {g : (i : ι) → Ei i → EReal}
+    {block_gradient : (i : ι) → ((j : ι) → Ei j) → Ei i}
+    {XStar : Set ((i : ι) → Ei i)} {FOpt : ℝ}
+    {Lf : NNReal} {Li : (i : ι) → PosReal}
+    (h :
+      BlockProximalGradientAssumptions f g block_gradient XStar FOpt Lf Li) :
+    Fact (LowerSemicontinuous (separableSum g)) :=
+  ⟨h.separableSum_closed⟩
+
 /-- The induced aggregate regularizer `x ↦ ∑ i, g_i(x_i)` is convex. -/
 theorem separableSum_convex
     {f : ((i : ι) → Ei i) → EReal} {g : (i : ι) → Ei i → EReal}
@@ -768,6 +816,89 @@ theorem separableSum_convex
       BlockProximalGradientAssumptions f g block_gradient XStar FOpt Lf Li) :
     is_convex_function (separableSum g) :=
   (toIsCompositeSmoothMinimizationProblem h).g_convex
+
+/-- The aggregate regularizer `separableSum g` is convex under the Chapter 11 block assumptions.
+-/
+instance instFactIsConvexFunctionSeparableSumOfBlockProximalGradientAssumptions
+    {f : ((i : ι) → Ei i) → EReal} {g : (i : ι) → Ei i → EReal}
+    {block_gradient : (i : ι) → ((j : ι) → Ei j) → Ei i}
+    {XStar : Set ((i : ι) → Ei i)} {FOpt : ℝ}
+    {Lf : NNReal} {Li : (i : ι) → PosReal}
+    (h :
+      BlockProximalGradientAssumptions f g block_gradient XStar FOpt Lf Li) :
+    Fact (is_convex_function (separableSum g)) :=
+  ⟨h.separableSum_convex⟩
+
+/-- The aggregate `PiLp` regularizer `x ↦ ∑ i, g_i(x_i)` is proper under the Chapter 11 block
+assumptions. -/
+theorem piLp_separableSum_proper
+    {f : ((i : ι) → Ei i) → EReal} {g : (i : ι) → Ei i → EReal}
+    {block_gradient : (i : ι) → ((j : ι) → Ei j) → Ei i}
+    {XStar : Set ((i : ι) → Ei i)} {FOpt : ℝ}
+    {Lf : NNReal} {Li : (i : ι) → PosReal}
+    (h :
+      BlockProximalGradientAssumptions f g block_gradient XStar FOpt Lf Li) :
+    IsProperExtendedRealFunction (PiLp.separableSum g) := by
+  letI : IsProperExtendedRealFunction (separableSum g) := h.separableSum_proper
+  exact PiLp.instIsProperExtendedRealFunctionSeparableSum g
+
+/-- The aggregate `PiLp` regularizer `x ↦ ∑ i, g_i(x_i)` is lower semicontinuous under the
+Chapter 11 block assumptions. -/
+theorem piLp_separableSum_closed
+    {f : ((i : ι) → Ei i) → EReal} {g : (i : ι) → Ei i → EReal}
+    {block_gradient : (i : ι) → ((j : ι) → Ei j) → Ei i}
+    {XStar : Set ((i : ι) → Ei i)} {FOpt : ℝ}
+    {Lf : NNReal} {Li : (i : ι) → PosReal}
+    (h :
+      BlockProximalGradientAssumptions f g block_gradient XStar FOpt Lf Li) :
+    Fact (LowerSemicontinuous (PiLp.separableSum g)) := by
+  letI : Fact (LowerSemicontinuous (separableSum g)) := ⟨h.separableSum_closed⟩
+  exact PiLp.instFactLowerSemicontinuousSeparableSum g
+
+/-- The aggregate `PiLp` regularizer `x ↦ ∑ i, g_i(x_i)` is convex under the Chapter 11 block
+assumptions. -/
+theorem piLp_separableSum_convex
+    {f : ((i : ι) → Ei i) → EReal} {g : (i : ι) → Ei i → EReal}
+    {block_gradient : (i : ι) → ((j : ι) → Ei j) → Ei i}
+    {XStar : Set ((i : ι) → Ei i)} {FOpt : ℝ}
+    {Lf : NNReal} {Li : (i : ι) → PosReal}
+    (h :
+      BlockProximalGradientAssumptions f g block_gradient XStar FOpt Lf Li) :
+    Fact (is_convex_function (PiLp.separableSum g)) := by
+  letI : Fact (is_convex_function (separableSum g)) := ⟨h.separableSum_convex⟩
+  exact PiLp.instFactIsConvexFunctionSeparableSum g
+
+/-- The Chapter 10 prox-gradient operator on the canonical aggregate `PiLp` owner induced by the
+Chapter 11 block assumptions. This is a thin `bridge/view`: it reuses `T[...]` and supplies only
+the derived regularity facts for `PiLp.separableSum g`. -/
+abbrev aggregate_prox_grad_operator
+    {f : ((i : ι) → Ei i) → EReal} {g : (i : ι) → Ei i → EReal}
+    {block_gradient : (i : ι) → ((j : ι) → Ei j) → Ei i}
+    {XStar : Set ((i : ι) → Ei i)} {FOpt : ℝ}
+    {Lf : NNReal} {Li : (i : ι) → PosReal}
+    [ProperSpace (PiLp 2 Ei)]
+    (h : BlockProximalGradientAssumptions f g block_gradient XStar FOpt Lf Li)
+    (L : PosReal) : PiLp 2 Ei → PiLp 2 Ei :=
+  let _ : IsProperExtendedRealFunction (PiLp.separableSum g) := h.piLp_separableSum_proper
+  let _ : Fact (LowerSemicontinuous (PiLp.separableSum g)) := h.piLp_separableSum_closed
+  let _ : Fact (is_convex_function (PiLp.separableSum g)) := h.piLp_separableSum_convex
+  prox_gradient_operator (fun z ↦ (f z).toReal) (PiLp.separableSum g) L
+
+/-- The Chapter 10 gradient mapping on the canonical aggregate `PiLp` owner induced by the
+Chapter 11 block assumptions. This is the companion `bridge/view` to
+`aggregate_prox_grad_operator`. -/
+abbrev aggregate_gradient_mapping
+    {f : ((i : ι) → Ei i) → EReal} {g : (i : ι) → Ei i → EReal}
+    {block_gradient : (i : ι) → ((j : ι) → Ei j) → Ei i}
+    {XStar : Set ((i : ι) → Ei i)} {FOpt : ℝ}
+    {Lf : NNReal} {Li : (i : ι) → PosReal}
+    [ProperSpace (PiLp 2 Ei)]
+    (h : BlockProximalGradientAssumptions f g block_gradient XStar FOpt Lf Li)
+    (L : PosReal) : PiLp 2 Ei → PiLp 2 Ei :=
+  let _ : IsProperExtendedRealFunction (PiLp.separableSum g) := h.piLp_separableSum_proper
+  let _ : Fact (LowerSemicontinuous (PiLp.separableSum g)) := h.piLp_separableSum_closed
+  let _ : Fact (is_convex_function (PiLp.separableSum g)) := h.piLp_separableSum_convex
+  prox_gradient_mapping (fun z ↦ (f z).toReal) (PiLp.separableSum g) L
 
 /-- The Chapter 10 smoothness owner reused by Definition 11.4 already implies differentiability
 of `x ↦ (f x).toReal` on `interior (effective_domain f)`. -/

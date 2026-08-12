@@ -44,7 +44,7 @@ section
 
 variable {f : E → ℝ} {g : E → EReal} {Lf : NNReal}
 
-local notation "F" => composite_model_objective f.toExtendedReal g
+local notation "F" => composite_model_objective f.toEReal g
 
 /-- Helper for Lemma 13.7: any minimizer of the generalized conditional-gradient linearized
 subproblem is finite for `g`, hence belongs to `effective_domain g`. -/
@@ -108,10 +108,13 @@ lemma conditional_gradient_segment_quadratic_rewrite
 /-- Helper for Lemma 13.7: convexity of `g` bounds the value at the conditional-gradient trial
 point by the convex combination of the endpoint values. -/
 lemma generalized_conditional_gradient_segment_convex_bound
-    {x p : E} (hg_convex : is_convex_function g)
+    {x p : E} (hg_ne_bot : ∀ y, g y ≠ ⊥) (hg_convex : is_convex_function g)
     (hx : x ∈ effective_domain g) (hp_dom : p ∈ effective_domain g)
     {t : ℝ} (ht : t ∈ Set.Icc (0 : ℝ) 1) :
     g (x + t • (p - x)) ≤ ((1 - t : ℝ) : EReal) * g x + (t : EReal) * g p := by
+  letI : IsProperExtendedRealFunction g :=
+    { ne_bot := hg_ne_bot
+      effective_domain_nonempty := ⟨x, hx⟩ }
   -- Use the Chapter 2 segment inequality after rewriting the affine step as a convex combination.
   have hsegment :=
     (is_convex_function_iff_segment_ineq.mp hg_convex) p hp_dom x hx ht
@@ -127,7 +130,7 @@ lemma generalized_conditional_gradient_segment_convex_bound
 /-- Lemma 13.7: if `f` is `L_f`-smooth on `dom(g)`, `g` is convex, `x ∈ dom(g)`, `p` minimizes
 the linearized subproblem at `x`, and `t ∈ [0, 1]`, then the composite objective satisfies
 `F(x + t (p - x)) ≤ F(x) - t S(x) + (t^2 L_f / 2) ‖p - x‖^2`. Here
-`F = composite_model_objective f.toExtendedReal g` and
+`F = composite_model_objective f.toEReal g` and
 `S(x) = S[f, g](x)`. The chosen-point formula
 `S[f, g](x) = generalized_conditional_gradient_gap_objective f g x p` follows from `hp` by
 Text 13.2. The textbook assumption
@@ -147,7 +150,7 @@ theorem generalized_conditional_gradient_fundamental_inequality
   -- the resulting decrement as the canonical gap `S[f, g](x)`.
   let y := x + t • (p - x)
   have hp_dom : p ∈ effective_domain g :=
-    generalized_conditional_gradient_argmin_mem_effective_domain (f := f) (g := g) hx hp
+    generalized_conditional_gradient_argmin_mem_effective_domain hx hp
   have hy : y ∈ effective_domain g := by
     -- Re-express the affine trial point as a convex combination and use convexity of `dom(g)`.
     rw [show y = x + t • (p - x) by rfl, conditional_gradient_segment_eq_convex_combo, add_comm]
@@ -191,9 +194,6 @@ theorem generalized_conditional_gradient_fundamental_inequality
     -- Apply Lemma 5.7 on the convex effective domain and then normalize the affine-step syntax.
     have hdescent_raw :=
       is_l_smooth_on_descent_lemma
-        (L := Lf)
-        (D := effective_domain g)
-        (f := f)
         (effective_domain_convex_of_is_convex_function hg_convex)
         hf_smooth
         hx
@@ -213,7 +213,7 @@ theorem generalized_conditional_gradient_fundamental_inequality
             rw [inner_smul_right]
       _ = f x + t * inner ℝ (∇ f x) (p - x) +
             (t ^ 2 * (Lf : ℝ) / 2) * ‖p - x‖ ^ (2 : ℕ) := by
-            rw [conditional_gradient_segment_quadratic_rewrite (Lf := Lf) (x := x) (p := p) ht]
+            rw [conditional_gradient_segment_quadratic_rewrite ht]
   have hconv_rhs_val :
       ((1 - t : ℝ) : EReal) * g x + (t : EReal) * g p =
         ((((1 - t) * (g x).toReal + t * (g p).toReal : ℝ)) : EReal) := by
@@ -225,8 +225,7 @@ theorem generalized_conditional_gradient_fundamental_inequality
     -- Convert the convex EReal inequality to a real inequality once the endpoint values are known
     -- to be finite.
     have hconv_raw :=
-      generalized_conditional_gradient_segment_convex_bound
-        (g := g) hg_convex hx hp_dom ht
+      generalized_conditional_gradient_segment_convex_bound hg_ne_bot hg_convex hx hp_dom ht
     have hconv_raw' : g y ≤ ((1 - t : ℝ) : EReal) * g x + (t : EReal) * g p := by
       simpa [y] using hconv_raw
     have hconv_rhs_ne_top :

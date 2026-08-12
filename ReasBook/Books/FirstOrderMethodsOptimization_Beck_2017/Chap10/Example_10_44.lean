@@ -374,7 +374,7 @@ lemma norm_smooth_approximation_is_l_smooth_on :
       is_l_smooth_on_precompose_continuousLinearMap
         (A := Aμ)
         (fun z : E ↦ Real.sqrt (1 + ‖z‖ ^ (2 : ℕ)))
-        sqrt_one_add_sq_norm_is_l_smooth
+        sqrt_one_add_sq_norm_is_l_smooth_innerProductSpace
   have hscaled :
       is_l_smooth_on
         (fun x : E ↦ (μ : ℝ) * Real.sqrt (1 + ‖((1 / (μ : ℝ)) • x)‖ ^ (2 : ℕ)) - μ)

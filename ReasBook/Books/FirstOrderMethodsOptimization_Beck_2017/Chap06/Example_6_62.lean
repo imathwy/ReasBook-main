@@ -341,7 +341,7 @@ lemma hasFDerivAt_huber_function_radial_ball_clip (μ : PosReal) (x : E) :
 /-- Helper for Example 6.62: radial clipping is exactly the singleton projection onto the closed
 ball of radius `μ`. -/
 lemma projection_mapping_closedBall_eq_singleton_radial_ball_clip (μ : PosReal) (x : E) :
-    Proj[Metric.closedBall (0 : E) μ] x = {radial_ball_clip μ x} := by
+    P[Metric.closedBall (0 : E) μ] x = {radial_ball_clip μ x} := by
   -- Reuse the closed-ball projection owner formula and rewrite its radial retraction.
   rw [projection_mapping_closedBall_eq_singleton_radialRetraction (c := (0 : E)) (x := x)
       (r := μ) (by exact le_of_lt μ.2)]
@@ -353,14 +353,14 @@ lemma radial_ball_clip_firmly_nonexpansive (μ : PosReal) (x y : E) :
     inner ℝ (radial_ball_clip μ x - radial_ball_clip μ y) (x - y) ≥
       ‖radial_ball_clip μ x - radial_ball_clip μ y‖ ^ (2 : ℕ) := by
   let C : Set E := Metric.closedBall (0 : E) μ
-  have hpx_set : Proj[C] x = {radial_ball_clip μ x} := by
+  have hpx_set : P[C] x = {radial_ball_clip μ x} := by
     simpa [C] using projection_mapping_closedBall_eq_singleton_radial_ball_clip (E := E) μ x
-  have hpy_set : Proj[C] y = {radial_ball_clip μ y} := by
+  have hpy_set : P[C] y = {radial_ball_clip μ y} := by
     simpa [C] using projection_mapping_closedBall_eq_singleton_radial_ball_clip (E := E) μ y
-  have hpx : radial_ball_clip μ x ∈ Proj[C] x := by
+  have hpx : radial_ball_clip μ x ∈ P[C] x := by
     rw [hpx_set]
     simp
-  have hpy : radial_ball_clip μ y ∈ Proj[C] y := by
+  have hpy : radial_ball_clip μ y ∈ P[C] y := by
     rw [hpy_set]
     simp
   have hpx_mem : radial_ball_clip μ x ∈ C := mem_of_mem_projection_mapping hpx

@@ -3,6 +3,7 @@ import FirstOrderMethodsOptimization_Beck_2017.Chap02.Theorem_2_6
 import FirstOrderMethodsOptimization_Beck_2017.Chap03.Theorem_3_18
 import FirstOrderMethodsOptimization_Beck_2017.Chap03.Theorem_3_27
 import FirstOrderMethodsOptimization_Beck_2017.Chap08.Assumption_8_12
+import FirstOrderMethodsOptimization_Beck_2017.Chap08.HalfSquaredDiameterBound
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -16,7 +17,7 @@ section SumObjective
 variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
 
 /-- Helper for Example 8.36: a nonempty feasible set contained in the interior of every effective
-domain yields the relative-interior qualification needed for the finite-sum extendedRealSubdifferential rule.
+domain yields the relative-interior qualification needed for the finite-sum subdifferential rule.
 -/
 lemma finset_sum_intrinsicInterior_nonempty_of_nonempty_subset_interior
     {m : ℕ} (f : Fin m → E → EReal) (C : Set E)
@@ -109,11 +110,24 @@ lemma finset_sum_subgradient_norm_le_on
         g ∈ strongDualSubdifferential (fun y ↦ ∑ i : Fin m, f i y) x →
           ‖g‖ ≤ ∑ i : Fin m, L i := by
   intro x g hx hg
+  let F : Fin m → E → EReal := f
   have hqual :=
     finset_sum_intrinsicInterior_nonempty_of_nonempty_subset_interior f C hC_nonempty hC_subset
+  have h_ne_bot' : ∀ i : Fin m, ∀ y : E, F i y ≠ ⊥ := hfi_ne_bot
+  have hconvex' : ∀ i : Fin m, is_convex_function (F i) := hfi_convex
+  have hqual' : (⋂ i : Fin m, intrinsicInterior ℝ (effective_domain (F i))).Nonempty := by
+    simpa [F] using hqual
+  have hsum_F :
+      ∂ₛ (fun y ↦ ∑ i : Fin m, F i y)(x) = ∑ i : Fin m, ∂ₛ (F i)(x) := by
+    exact
+      strongDualSubdifferential_finset_sum_eq_sum_of_nonempty_iInter_relativeInterior
+        F x h_ne_bot' hconvex' hqual'
   -- Rewrite the subgradient of the sum into the pointwise sum of the individual subgradients.
-  rw [strongDualSubdifferential_finset_sum_eq_sum_strongDualSubdifferential_of_nonempty_iInter_relativeInterior
-    f x hfi_ne_bot hfi_convex hqual] at hg
+  have hsum :
+      strongDualSubdifferential (fun y ↦ ∑ i : Fin m, f i y) x =
+        ∑ i : Fin m, strongDualSubdifferential (f i) x := by
+    simpa [F] using hsum_F
+  rw [hsum] at hg
   rcases (Set.mem_fintype_sum
       (f := fun i : Fin m ↦ strongDualSubdifferential (f i) x) (a := g)).1 hg with
     ⟨g', hg', rfl⟩
@@ -160,7 +174,7 @@ theorem finset_sum_satisfies_subgradient_norm_bound
         hfi_ne_bot hfi_convex hC_nonempty hC_subset hbound
 
 -- Proof sketch: apply Theorem 3.27 to the sum objective. The finite-sum subgradient estimate from
--- `finset_sum_satisfies_subgradient_norm_bound` supplies the uniform bound on
+-- `finset_sum_satisfies_subgradient_norm_bound` supplies the required pointwise norm bound on
 -- `strongDualSubdifferential (fun y ↦ ∑ i, f i y) x` over `C`, and the same interior-domain
 -- hypotheses ensure that the sum objective is finite on `C`.
 /-- The finite-valued restriction of the sum objective from Example 8.36 is Lipschitz continuous
@@ -182,13 +196,13 @@ theorem lipschitzOnWith_toReal_finset_sum_of_subgradient_bounds
   have hsum_nonneg : 0 ≤ ∑ i : Fin m, L i := by
     exact Finset.sum_nonneg (fun i _ ↦ (hL_pos i).le)
   refine lipschitzOnWith_toReal_of_subdifferential_norm_le_on
-      (f := fun y ↦ ∑ i : Fin m, f i y)
-      (X := C)
-      (L := Real.toNNReal (∑ i : Fin m, L i))
-      hsum_subset ?_
-  intro x hx g hg
-  -- Convert the norm estimate for subgradients into the closed-ball inclusion used by Theorem 3.27.
-  simpa [mem_closedBall_iff_norm'', Real.toNNReal_of_nonneg hsum_nonneg] using
+      (fun y ↦ ∑ i : Fin m, f i y) C (Real.toNNReal (∑ i : Fin m, L i))
+      (fun x _ ↦ finset_sum_ne_bot f hfi_ne_bot x)
+      ?_ hsum_subset ?_
+  · simpa using
+      is_convex_function_fintype_nonneg_weighted_sum hfi_convex hfi_ne_bot (fun _ ↦ 1)
+  intro x g hx hg
+  simpa [Real.toNNReal_of_nonneg hsum_nonneg] using
     finset_sum_subgradient_norm_le_on f C L
       hfi_ne_bot hfi_convex hC_nonempty hC_subset hbound hx hg
 
@@ -219,43 +233,3 @@ def finset_sum_subgradientNormBoundOn
         hfi_ne_bot hfi_convex hC_nonempty hC_subset hL_pos hbound).2 hx hg }
 
 end PackagedBound
-
-section DiameterBound
-
-variable {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
-
--- Proof sketch: the map `(x, y) ↦ (1 / 2 : ℝ) * ‖x - y‖^2` is continuous on `E × E`. If `C` is
--- compact, then `C ×ˢ C` is compact as well, so this map is bounded above on `C ×ˢ C`; any such
--- upper bound is the required constant `Θ`.
-/-- A compact feasible set admits a finite upper bound on its half squared diameter. -/
-theorem exists_half_squared_diameter_bound_of_isCompact
-    (C : Set E) (hC_compact : IsCompact C) :
-    ∃ Θ : ℝ, ∀ x ∈ C, ∀ y ∈ C, (1 / 2 : ℝ) * ‖x - y‖ ^ (2 : ℕ) ≤ Θ := by
-  let φ : E × E → ℝ := fun p ↦ (1 / 2 : ℝ) * ‖p.1 - p.2‖ ^ (2 : ℕ)
-  have hφ_cont : Continuous φ := by
-    -- The half-squared-distance map is built from continuous algebraic operations.
-    continuity
-  rcases bddAbove_def.mp ((hC_compact.prod hC_compact).bddAbove_image hφ_cont.continuousOn) with
-    ⟨Θ, hΘ⟩
-  refine ⟨Θ, ?_⟩
-  intro x hx y hy
-  -- Evaluate the bounded-above image estimate at the pair `(x, y) ∈ C ×ˢ C`.
-  have hxy : φ (x, y) ∈ φ '' (C ×ˢ C) := by
-    exact ⟨(x, y), ⟨hx, hy⟩, rfl⟩
-  simpa [φ] using hΘ (φ (x, y)) hxy
-
--- Proof sketch: every optimal point `xStar ∈ XStar` lies in `C` by `hXStar_subset`, while the
--- initial point `x0` is a point of `C` by construction. Apply the half squared diameter bound
--- `hΘ` to the pair `((x0 : E), xStar)`.
-/-- Any half squared diameter bound on `C` controls the initial-distance term to an optimal point,
-which is the quantity appearing in projected-subgradient complexity estimates. -/
-theorem half_sqdist_to_optimal_point_le_of_half_squared_diameter_bound
-    (C XStar : Set E) {Θ : ℝ}
-    (hXStar_subset : XStar ⊆ C)
-    (hΘ : ∀ x ∈ C, ∀ y ∈ C, (1 / 2 : ℝ) * ‖x - y‖ ^ (2 : ℕ) ≤ Θ)
-    (x0 : C) {xStar : E} (hxStar : xStar ∈ XStar) :
-    (1 / 2 : ℝ) * ‖(x0 : E) - xStar‖ ^ (2 : ℕ) ≤ Θ := by
-  -- Both the initial point and the chosen optimal point belong to `C`, so specialize `hΘ`.
-  exact hΘ (x0 : E) x0.property xStar (hXStar_subset hxStar)
-
-end DiameterBound

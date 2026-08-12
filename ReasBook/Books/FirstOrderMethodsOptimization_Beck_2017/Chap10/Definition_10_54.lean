@@ -24,12 +24,12 @@ The Chapter 10 item adds no new primitive data beyond the Euclidean specializati
 `E = EuclideanSpace ℝ (Fin n)`, so the main entry here should be direct reuse of that Chapter 6
 bridge rather than a parallel local reproving theorem. -/
 
-/- Definition 10.54: for `h(x) = l1n[x]` on `ℝ^n` and any `μ > 0`, the real-valued Moreau envelope
+/- Definition 10.54: for `h(x) = ‖x‖₁` on `ℝ^n` and any `μ > 0`, the real-valued Moreau envelope
 of `h` is the sum of the scalar Huber values on the coordinates:
 `M_h^μ(x) = ∑ i, H_μ(x_i)`. -/
 #check
   (moreau_envelope_l1_sum_toReal_eq_sum_huber :
     ∀ μ : PosReal,
-      ∀ x : E, (M[μ, fun y : E ↦ (l1n[y] : EReal)] x).toReal = ∑ i, H[μ] (x i))
+      ∀ x : E, (M[μ, fun y : E ↦ (‖y‖₁ : EReal)] x).toReal = ∑ i, H[μ] (x i))
 
 end

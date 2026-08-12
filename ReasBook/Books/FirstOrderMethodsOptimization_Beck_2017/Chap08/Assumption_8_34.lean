@@ -16,7 +16,7 @@ variable [MeasurableSpace E] [BorelSpace E]
 
 /- Assumption 8.34 is `source-facing`: it constrains the sampled stochastic subgradients `g^k`
 along the iterate process `x^k` by conditional expectations with respect to the information carried
-by `x^k`. Domain sampling shows that the canonical owners are the vector-side extendedRealSubdifferential
+by `x^k`. Domain sampling shows that the canonical owners are the vector-side subdifferential
 `euclideanSubdifferentialAt` from Chapter 3 and mathlib's conditional expectation `μ[· | m]`, so
 the public API packages exactly the chosen bound constant together with the two source clauses, with
 no surrogate oracle wrapper or extra filtration package. -/

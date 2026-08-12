@@ -2,6 +2,8 @@ import FirstOrderMethodsOptimization_Beck_2017.Chap01.Proposition_1_9
 import FirstOrderMethodsOptimization_Beck_2017.Chap03.Proposition_3_17
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_64
 
+local notation "Λ[" a "]" => primalCounterparts a
+
 -- Declarations for this item will be appended below by the statement pipeline.
 
 noncomputable section
@@ -29,7 +31,7 @@ the surrounding `ℓ∞/ℓ¹` pair identifies:
   `subdifferentialAt_l1_norm_eq_coordinatewise_sign_constraints` and
   `l1CoordinateSubgradientVectors` giving its coordinatewise `ℓ¹` sign-cube companion;
 - `primalCounterparts_eq_preimage_subdifferentialAt_norm` from Definition 10.64 as the chapter
-  bridge from `Λ[·]` to the canonical extendedRealSubdifferential owner.
+  bridge from `Λ[·]` to the canonical subdifferential owner.
 
 The primitive data are only the coefficient vector `a : E*`, so the public statement should stay
 on `Λ[LinearMap.toContinuousLinearMap (lpPairingDual (⊤ : ENNReal) (ofLp a))]` rather than
@@ -40,7 +42,7 @@ kept as a companion theorem. -/
 
 -- Proof sketch: use `primalCounterparts_eq_preimage_subdifferentialAt_norm` to identify
 -- `Λ[LinearMap.toContinuousLinearMap (lpPairingDual (⊤ : ENNReal) (ofLp a))]` with the
--- extendedRealSubdifferential of the `ℓ¹` norm in the `ℓ∞/ℓ¹` dual pair, then transport that owner set along
+-- subdifferential of the `ℓ¹` norm in the `ℓ∞/ℓ¹` dual pair, then transport that owner set along
 -- the canonical `WithLp` equivalence between the Euclidean coordinate model `E₂` and the primal
 -- `ℓ∞` model `E`.
 /-- Helper for Proposition 10.61: a point of the `ℓ∞` unit ball has all coordinates in
@@ -54,7 +56,9 @@ lemma abs_le_one_of_linf_norm_le_one
   intro i
   have hcoord_nnnorm : ‖ofLp x i‖₊ ≤ ‖ofLp x‖₊ := by
     rw [Pi.nnnorm_def]
-    exact Finset.le_sup (f := fun b => ‖ofLp x b‖₊) (Finset.mem_univ i)
+    exact
+      @Finset.le_sup NNReal (Fin n) _ _ Finset.univ
+        (fun b : Fin n ↦ ‖ofLp x b‖₊) i (Finset.mem_univ i)
   have hcoord : ‖ofLp x i‖ ≤ ‖ofLp x‖ := by
     exact_mod_cast hcoord_nnnorm
   simpa [Real.norm_eq_abs] using hcoord.trans hx'
@@ -77,7 +81,7 @@ lemma linf_norm_le_one_of_abs_le_one
   simpa using hx'
 
 /-- Helper for Proposition 10.61: `Real.sign` recovers the absolute value by multiplication. -/
-lemma real_sign_mul_self
+private lemma real_sign_mul_self
     (t : ℝ) :
     Real.sign t * t = |t| := by
   -- Split by the sign of the scalar and reduce to the defining formulas for `Real.sign`.
@@ -91,9 +95,15 @@ lemma real_sign_mul_self
 lemma lpPairingDual_top_norm_eq_l1_norm
     (a : E*) :
     ‖LinearMap.toContinuousLinearMap (lpPairingDual (⊤ : ENNReal) (ofLp a))‖ = ‖a‖ := by
-  -- Proposition 1.9 computes the same norm through the chapter dual-norm owner.
+  -- Proposition 1.9 computes the same norm through the canonical conjugate exponent `1`.
+  letI : Fact (1 ≤ (⊤ : ENNReal)) := ⟨by simp⟩
+  have htop : ENNReal.conjExponent (⊤ : ENNReal) = 1 := by
+    simp [ENNReal.conjExponent]
+  have hconj : ‖toLp (ENNReal.conjExponent (⊤ : ENNReal)) (ofLp a)‖ = ‖a‖ := by
+    rw [htop]
   simpa [dualNorm] using
-    dualNorm_lpPairingDual_eq_conjugate_lp_norm ENNReal.HolderConjugate.top_one (ofLp a)
+    (dualNorm_lpPairingDual_eq_conjExponent_lp_norm (p := (⊤ : ENNReal)) (y := ofLp a)).trans
+      hconj
 
 /-- Helper for Proposition 10.61: membership in the transported Euclidean image can be rewritten
 using the inverse coordinate transport. -/
@@ -187,12 +197,12 @@ lemma mem_primalCounterparts_lpPairingDual_top_iff
 
 /-- Bridge/view form of Proposition 10.61: for a coefficient vector `a` in the `ℓ∞/ℓ¹` coordinate
 dual pair, the source set `Λ_a` is the canonical transport of Chapter 3's Euclidean
-extendedRealSubdifferential owner for the `ℓ¹` norm from the coordinate model to the primal `ℓ∞` model. -/
+subdifferential owner for the `ℓ¹` norm from the coordinate model to the primal `ℓ∞` model. -/
 theorem primalCounterparts_lpPairingDual_top_eq_image_euclideanSubdifferentialAt_l1
     (a : E*) :
     Λ[LinearMap.toContinuousLinearMap (lpPairingDual (⊤ : ENNReal) (ofLp a))] =
       coordToLinf ''
-        euclideanSubdifferentialAt (fun y : E₂ ↦ ‖toLp 1 fun i ↦ y i‖) (toLp 2 (ofLp a)) := by
+        euclideanSubdifferentialAt (fun y : E₂ ↦ ‖toLp 1 (ofLp y)‖) (toLp 2 (ofLp a)) := by
   ext z
   -- Compare both sides through the same coordinatewise sign constraints.
   calc
@@ -201,14 +211,15 @@ theorem primalCounterparts_lpPairingDual_top_eq_image_euclideanSubdifferentialAt
           ∀ i, a i = 0 → |z i| ≤ 1 :=
       mem_primalCounterparts_lpPairingDual_top_iff a
     _ ↔ toLp 2 (ofLp z) ∈
-        euclideanSubdifferentialAt (fun y : E₂ ↦ ‖toLp 1 fun i ↦ y i‖) (toLp 2 (ofLp a)) := by
-          simp [subdifferentialAt_l1_norm_eq_coordinatewise_sign_constraints,
-            mem_l1CoordinateSubgradientVectors_iff]
+        euclideanSubdifferentialAt (fun y : E₂ ↦ ‖toLp 1 (ofLp y)‖) (toLp 2 (ofLp a)) := by
+          simpa using
+            (mem_euclideanSubdifferentialAt_l1_norm_iff
+              (x := toLp 2 (ofLp a)) (z := toLp 2 (ofLp z))).symm
     _ ↔ z ∈
         coordToLinf ''
-          euclideanSubdifferentialAt (fun y : E₂ ↦ ‖toLp 1 fun i ↦ y i‖) (toLp 2 (ofLp a)) :=
+          euclideanSubdifferentialAt (fun y : E₂ ↦ ‖toLp 1 (ofLp y)‖) (toLp 2 (ofLp a)) :=
       (mem_image_coordToLinf_iff
-        (euclideanSubdifferentialAt (fun y : E₂ ↦ ‖toLp 1 fun i ↦ y i‖) (toLp 2 (ofLp a)))).symm
+        (euclideanSubdifferentialAt (fun y : E₂ ↦ ‖toLp 1 (ofLp y)‖) (toLp 2 (ofLp a)))).symm
 
 -- Proof sketch: combine the transported-owner theorem above with
 -- `subdifferentialAt_l1_norm_eq_coordinatewise_sign_constraints`. Under the `coordToLinf`
@@ -218,7 +229,7 @@ theorem primalCounterparts_lpPairingDual_top_eq_image_euclideanSubdifferentialAt
 `euclideanSubdifferentialAt`, the source set `Λ_a` is the coordinatewise sign cube
 `{z : ℝ^n | z_i = sgn(a_i)` on the nonzero coordinates of `a`, and `|z_j| ≤ 1` on the zero
 coordinates}. In the textbook nonzero case, this is the usual description of
-`∂ h(a)` for `h(x) = l1n[x]`. -/
+`∂ h(a)` for `h(x) = ‖x‖₁`. -/
 theorem primalCounterparts_lpPairingDual_top_eq_coordinatewise_sign_cube
     (a : E*) :
     Λ[LinearMap.toContinuousLinearMap (lpPairingDual (⊤ : ENNReal) (ofLp a))] =

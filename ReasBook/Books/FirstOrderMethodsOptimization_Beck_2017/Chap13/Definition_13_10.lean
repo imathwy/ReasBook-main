@@ -28,7 +28,7 @@ finite vertex family `a`. Positive-definiteness of `Q` is a later property used 
 algorithms and optimality statements, not part of the defining owner itself. The clean public API
 is therefore a direct specialization of the constrained-problem owner, with separate source-facing
 names for the feasible set `Ω`, the quadratic objective `f_q`, and the optimal value `f_opt`. The
-only nontrivial bridge needed here is the canonical Chapter 9 lift `Function.toExtendedReal`, which
+only nontrivial bridge needed here is the canonical Chapter 9 lift `Function.toEReal`, which
 replaces a raw lambda coercion in the constrained objective. -/
 
 /- The objective and constrained-problem owners already exist upstream; Definition 13.10 only
@@ -66,7 +66,7 @@ and feasible set `Ω = conv{a₁, a₂, …, a_l}`, is the constrained objective
 abbrev polytope_quadratic_problem
     (Q : Matrix (Fin n) (Fin n) ℝ) (b : E) (a : Fin l → E) : E → EReal :=
   constrained_problem_objective
-    (polytope_quadratic_objective Q b).toExtendedReal
+    (polytope_quadratic_objective Q b).toEReal
     (polytope_quadratic_feasible_set a)
 
 -- Proof sketch: rewrite `polytope_quadratic_problem` as `constrained_problem_objective` on the
@@ -78,7 +78,7 @@ abbrev polytope_quadratic_problem
     (hx : x ∈ polytope_quadratic_feasible_set a) :
     polytope_quadratic_problem Q b a x = polytope_quadratic_objective Q b x := by
   simpa [polytope_quadratic_problem] using
-    constrained_problem_objective_of_mem (polytope_quadratic_objective Q b).toExtendedReal hx
+    constrained_problem_objective_of_mem (polytope_quadratic_objective Q b).toEReal hx
 
 -- Proof sketch: rewrite `polytope_quadratic_problem` as `constrained_problem_objective` on the
 -- feasible set `polytope_quadratic_feasible_set a`, then apply
@@ -89,7 +89,7 @@ abbrev polytope_quadratic_problem
     (hx : x ∉ polytope_quadratic_feasible_set a) :
     polytope_quadratic_problem Q b a x = ⊤ := by
   simpa [polytope_quadratic_problem] using
-    constrained_problem_objective_of_not_mem (polytope_quadratic_objective Q b).toExtendedReal hx
+    constrained_problem_objective_of_not_mem (polytope_quadratic_objective Q b).toEReal hx
 
 /-- The optimal value `f_opt` of the finite-hull quadratic problem is the infimum of the attained
 values of its constrained objective. -/

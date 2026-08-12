@@ -107,18 +107,15 @@ lemma non_euclidean_gradient_step_decrease_ge_dual_norm_sq
   -- Specialize Lemma 10.66 to the generated trajectory and its admissible counterpart sequence.
   simpa using
     non_euclidean_gradient_sufficient_decrease_by_stepsize_rule
-      (hf := hf)
-      x L xDagger
+      hf x L xDagger
       (fun n ↦ by
         -- The recursive update is exactly Algorithm 10.61 on the generated trajectory.
         simpa using
-          (non_euclidean_gradient_method_succ
-            (f := f) (counterpart := counterpart) (L := L) (x0 := x0) n))
+          (non_euclidean_gradient_method_succ n))
       (fun n ↦ by
         -- Admissibility places the chosen counterpart in the primal-counterpart set.
         simpa using
-          (non_euclidean_gradient_method_counterpart_sequence_mem_primalCounterparts
-            (f := f) (counterpart := counterpart) (L := L) (x0 := x0) hadm n))
+          (non_euclidean_gradient_method_counterpart_sequence_mem_primalCounterparts hadm n))
       hstepsize k
 
 /-- Helper for Theorem 10.67: if the Fréchet derivative vanishes at iterate `k`, then the next
@@ -157,7 +154,7 @@ lemma best_achieved_dual_norm_sq_mul_le_prefix_sum_sq
     -- Each prefix value dominates the running minimum, so the same is true after squaring.
     have hle :=
       best_achieved_function_value_le_objective_value
-        (f := fun y : E ↦ ‖fderiv ℝ f y‖_*) x k n hn
+        (fun y : E ↦ ‖fderiv ℝ f y‖_*) x k n hn
     nlinarith [hbest_nonneg, norm_nonneg (fderiv ℝ f (x n)), hle]
   -- Summing the pointwise lower bound over the whole prefix gives the desired estimate.
   calc
@@ -212,17 +209,14 @@ lemma non_euclidean_gradient_prefix_sq_norm_sum_le_objective_gap
           (fun n ↦ f (x n) - f (x (n + 1))) := by
     -- Summing the source one-step sufficient-decrease estimate gives the prefix control.
     exact Finset.sum_le_sum fun n _ ↦
-      non_euclidean_gradient_step_decrease_ge_dual_norm_sq
-        (f := f) (Lf := Lf) (counterpart := counterpart) (L := L) (x0 := x0) (M := M)
-        hf hadm hstepsize n
+      non_euclidean_gradient_step_decrease_ge_dual_norm_sq hf hadm hstepsize n
   have hsum' :
       M * Finset.sum (Finset.range (k + 1))
           (fun n ↦ ‖fderiv ℝ f (x n)‖_* ^ (2 : ℕ)) ≤
         Finset.sum (Finset.range (k + 1))
           (fun n ↦ f (x n) - f (x (n + 1))) := by
     simpa [Finset.mul_sum] using hsum
-  rw [non_euclidean_gradient_objective_telescope
-    (f := f) (counterpart := counterpart) (L := L) (x0 := x0) (k := k)] at hsum'
+  rw [non_euclidean_gradient_objective_telescope k] at hsum'
   have hfOpt_le_terminal : fOpt ≤ f (x (k + 1)) := by
     exact hfOpt.1 ⟨x (k + 1), rfl⟩
   -- Replacing the terminal objective value by the global lower bound matches the textbook gap.
@@ -246,11 +240,9 @@ lemma non_euclidean_gradient_best_dual_norm_sq_mul_le_initial_gap
       (k + 1 : ℝ) *
           (best_achieved_function_value (fun y : E ↦ ‖fderiv ℝ f y‖_*) x k) ^ (2 : ℕ) ≤
         Finset.sum (Finset.range (k + 1)) (fun n ↦ ‖fderiv ℝ f (x n)‖_* ^ (2 : ℕ)) := by
-    simpa using (best_achieved_dual_norm_sq_mul_le_prefix_sum_sq (E := E) (k := k))
+    simpa using (best_achieved_dual_norm_sq_mul_le_prefix_sum_sq k)
   have hprefix :=
-    non_euclidean_gradient_prefix_sq_norm_sum_le_objective_gap
-      (f := f) (Lf := Lf) (counterpart := counterpart) (L := L) (x0 := x0) (M := M)
-      hf hadm hstepsize hfOpt k
+    non_euclidean_gradient_prefix_sq_norm_sum_le_objective_gap hf hadm hstepsize hfOpt k
   -- Multiplying the running-minimum comparison by the positive coefficient `M` matches the
   -- summed decrease inequality.
   exact le_trans (mul_le_mul_of_nonneg_left hbest hM_nonneg) hprefix
@@ -271,7 +263,6 @@ lemma non_euclidean_gradient_best_dual_norm_up_to_le_rate_core
       M * ((k + 1 : ℝ) * best ^ (2 : ℕ)) ≤ f x0 - fOpt := by
     simpa [hbest_def] using
       non_euclidean_gradient_best_dual_norm_sq_mul_le_initial_gap
-        (f := f) (Lf := Lf) (counterpart := counterpart) (L := L) (x0 := x0) (M := M)
         hf hadm hstepsize hfOpt k
   have hbest_nonneg : 0 ≤ best := by
     rw [hbest_def]
@@ -311,11 +302,12 @@ lemma non_euclidean_gradient_best_dual_norm_up_to_le_rate_core
   -- Nonnegativity lets the squared comparison recover the unsquared rate inequality.
   nlinarith [hsq, hleft_nonneg, hright_nonneg]
 
-include hf hadm hstepsize
-
 /-- Helper for Theorem 10.67: if the objective values are antitone and bounded below, then the
 successive objective drops converge to `0`. -/
 lemma non_euclidean_gradient_objective_step_tendsto_zero_of_bddBelow
+    (hf : is_l_smooth_on f Set.univ Lf)
+    (hadm : non_euclidean_gradient_method_is_admissible f counterpart L x0)
+    (hstepsize : uses_non_euclidean_gradient_stepsize_rule f Lf x L xDagger M)
     (hbelow : BddBelow (Set.range fun k ↦ f (x k))) :
     Filter.Tendsto (fun k ↦ f (x k) - f (x (k + 1))) Filter.atTop (nhds 0) := by
   have hMpos :
@@ -324,10 +316,10 @@ lemma non_euclidean_gradient_objective_step_tendsto_zero_of_bddBelow
   have hanti : Antitone (fun k ↦ f (x k)) := by
     refine antitone_nat_of_succ_le ?_
     intro k
-    have hdecrease :=
-      non_euclidean_gradient_step_decrease_ge_dual_norm_sq
-        (f := f) (Lf := Lf) (counterpart := counterpart) (L := L) (x0 := x0) (M := M)
-        hf hadm hstepsize k
+    have hdecrease :
+        f (x k) - f (x (k + 1)) ≥
+          M * ‖fderiv ℝ f (x k)‖_* ^ (2 : ℕ) :=
+      non_euclidean_gradient_step_decrease_ge_dual_norm_sq hf hadm hstepsize k
     have hterm_nonneg :
         0 ≤ M * ‖fderiv ℝ f (x k)‖_* ^ (2 : ℕ) := by
       exact mul_nonneg (le_of_lt hMpos) (sq_nonneg ‖fderiv ℝ f (x k)‖_*)
@@ -350,6 +342,9 @@ lemma non_euclidean_gradient_objective_step_tendsto_zero_of_bddBelow
 /-- Helper for Theorem 10.67: a cluster point produces a lower bound for the full objective
 sequence. -/
 lemma non_euclidean_gradient_objective_bddBelow_of_cluster_point
+    (hf : is_l_smooth_on f Set.univ Lf)
+    (hadm : non_euclidean_gradient_method_is_admissible f counterpart L x0)
+    (hstepsize : uses_non_euclidean_gradient_stepsize_rule f Lf x L xDagger M)
     {xBar : E}
     (hxBar : MapClusterPt xBar Filter.atTop x) :
     BddBelow (Set.range fun k ↦ f (x k)) := by
@@ -360,10 +355,10 @@ lemma non_euclidean_gradient_objective_bddBelow_of_cluster_point
   have hanti : Antitone (fun k ↦ f (x k)) := by
     refine antitone_nat_of_succ_le ?_
     intro k
-    have hdecrease :=
-      non_euclidean_gradient_step_decrease_ge_dual_norm_sq
-        (f := f) (Lf := Lf) (counterpart := counterpart) (L := L) (x0 := x0) (M := M)
-        hf hadm hstepsize k
+    have hdecrease :
+        f (x k) - f (x (k + 1)) ≥
+          M * ‖fderiv ℝ f (x k)‖_* ^ (2 : ℕ) :=
+      non_euclidean_gradient_step_decrease_ge_dual_norm_sq hf hadm hstepsize k
     have hterm_nonneg :
         0 ≤ M * ‖fderiv ℝ f (x k)‖_* ^ (2 : ℕ) := by
       exact mul_nonneg (le_of_lt hMpos) (sq_nonneg ‖fderiv ℝ f (x k)‖_*)
@@ -373,7 +368,8 @@ lemma non_euclidean_gradient_objective_bddBelow_of_cluster_point
   -- Continuity transports the subsequence convergence to the objective values.
   have hobj_tendsto :
       Filter.Tendsto (fun n ↦ f (x (ψ n))) Filter.atTop (nhds (f xBar)) :=
-    hdiff.continuousAt.tendsto.comp hψtendsto
+    let hcont : ContinuousAt f xBar := hdiff.continuousAt
+    hcont.tendsto.comp hψtendsto
   rcases hobj_tendsto.bddBelow_range with ⟨c, hc⟩
   refine ⟨c, ?_⟩
   intro y hy
@@ -385,6 +381,7 @@ lemma non_euclidean_gradient_objective_bddBelow_of_cluster_point
 /-- Helper for Theorem 10.67: global `L_f`-smoothness gives the textbook cluster-point estimate
 `‖f'(x̄)‖_* ≤ L_f ‖y - x̄‖ + ‖f'(y)‖_*`. -/
 lemma non_euclidean_gradient_fderiv_norm_le_cluster_rhs
+    (hf : is_l_smooth_on f Set.univ Lf)
     {xBar y : E} :
     ‖fderiv ℝ f xBar‖_* ≤
       (Lf : ℝ) * ‖y - xBar‖ + ‖fderiv ℝ f y‖_* := by
@@ -412,6 +409,9 @@ lemma non_euclidean_gradient_fderiv_norm_le_cluster_rhs
 by the non-Euclidean gradient method with one of the three admissible stepsize rules from Lemma
 10.66, then the objective sequence `f(x^k)` is nonincreasing. -/
 theorem non_euclidean_gradient_objective_values_antitone
+    (hf : is_l_smooth_on f Set.univ Lf)
+    (hadm : non_euclidean_gradient_method_is_admissible f counterpart L x0)
+    (hstepsize : uses_non_euclidean_gradient_stepsize_rule f Lf x L xDagger M)
     :
     Antitone (fun k ↦ f (x k)) := by
   have hMpos :
@@ -419,10 +419,10 @@ theorem non_euclidean_gradient_objective_values_antitone
     uses_non_euclidean_gradient_stepsize_rule.parameter_pos hstepsize
   refine antitone_nat_of_succ_le ?_
   intro k
-  have hdecrease :=
-    non_euclidean_gradient_step_decrease_ge_dual_norm_sq
-      (f := f) (Lf := Lf) (counterpart := counterpart) (L := L) (x0 := x0) (M := M)
-      hf hadm hstepsize k
+  have hdecrease :
+      f (x k) - f (x (k + 1)) ≥
+        M * ‖fderiv ℝ f (x k)‖_* ^ (2 : ℕ) :=
+    non_euclidean_gradient_step_decrease_ge_dual_norm_sq hf hadm hstepsize k
   have hterm_nonneg :
       0 ≤ M * ‖fderiv ℝ f (x k)‖_* ^ (2 : ℕ) := by
     -- The sufficient-decrease coefficient is positive and the squared dual norm is nonnegative.
@@ -437,24 +437,26 @@ theorem non_euclidean_gradient_objective_values_antitone
 /-- Theorem 10.67 (2): clause (a). Under the same hypotheses, one step is strictly decreasing
 exactly when the Fréchet derivative at the current iterate is nonzero. -/
 theorem non_euclidean_gradient_step_strict_decrease_iff_fderiv_ne_zero
+    (hf : is_l_smooth_on f Set.univ Lf)
+    (hadm : non_euclidean_gradient_method_is_admissible f counterpart L x0)
+    (hstepsize : uses_non_euclidean_gradient_stepsize_rule f Lf x L xDagger M)
     (k : ℕ) :
     f (x (k + 1)) < f (x k) ↔
       fderiv ℝ f (x k) ≠ 0 := by
   constructor
   · intro hlt hkzero
     have hsame :=
-      non_euclidean_gradient_iterate_succ_eq_self_of_fderiv_eq_zero
-        (f := f) (counterpart := counterpart) (L := L) (x0 := x0) k hkzero
+      non_euclidean_gradient_iterate_succ_eq_self_of_fderiv_eq_zero k hkzero
     -- Vanishing derivative forces a fixed point, contradicting strict decrease.
     simpa [hsame] using hlt
   · intro hkzero
     have hMpos :
         0 < M :=
       uses_non_euclidean_gradient_stepsize_rule.parameter_pos hstepsize
-    have hdecrease :=
-      non_euclidean_gradient_step_decrease_ge_dual_norm_sq
-        (f := f) (Lf := Lf) (counterpart := counterpart) (L := L) (x0 := x0) (M := M)
-        hf hadm hstepsize k
+    have hdecrease :
+        f (x k) - f (x (k + 1)) ≥
+          M * ‖fderiv ℝ f (x k)‖_* ^ (2 : ℕ) :=
+      non_euclidean_gradient_step_decrease_ge_dual_norm_sq hf hadm hstepsize k
     have hsq_pos :
         0 < ‖fderiv ℝ f (x k)‖_* ^ (2 : ℕ) := by
       exact pow_pos (norm_pos_iff.mpr hkzero) 2
@@ -470,6 +472,9 @@ theorem non_euclidean_gradient_step_strict_decrease_iff_fderiv_ne_zero
 /-- Theorem 10.67 (3): clause (b). If the objective values of the non-Euclidean gradient method
 are bounded below, then the dual norms of the Fréchet derivatives converge to `0`. -/
 theorem non_euclidean_gradient_dual_norm_tendsto_zero_of_objective_bddBelow
+    (hf : is_l_smooth_on f Set.univ Lf)
+    (hadm : non_euclidean_gradient_method_is_admissible f counterpart L x0)
+    (hstepsize : uses_non_euclidean_gradient_stepsize_rule f Lf x L xDagger M)
     (hbelow :
       BddBelow (Set.range fun k ↦ f (x k))) :
     Filter.Tendsto
@@ -479,9 +484,7 @@ theorem non_euclidean_gradient_dual_norm_tendsto_zero_of_objective_bddBelow
       0 < M :=
     uses_non_euclidean_gradient_stepsize_rule.parameter_pos hstepsize
   have hstep_tendsto_zero :=
-    non_euclidean_gradient_objective_step_tendsto_zero_of_bddBelow
-      (f := f) (Lf := Lf) (counterpart := counterpart) (L := L) (x0 := x0) (M := M)
-      hf hadm hstepsize hbelow
+    non_euclidean_gradient_objective_step_tendsto_zero_of_bddBelow hf hadm hstepsize hbelow
   have hscaled_sq_tendsto_zero :
       Filter.Tendsto
         (fun k ↦ M * ‖fderiv ℝ f (x k)‖_* ^ (2 : ℕ))
@@ -491,9 +494,7 @@ theorem non_euclidean_gradient_dual_norm_tendsto_zero_of_objective_bddBelow
     · intro k
       exact mul_nonneg (le_of_lt hMpos) (sq_nonneg ‖fderiv ℝ f (x k)‖_*)
     · intro k
-      exact non_euclidean_gradient_step_decrease_ge_dual_norm_sq
-        (f := f) (Lf := Lf) (counterpart := counterpart) (L := L) (x0 := x0) (M := M)
-        hf hadm hstepsize k
+      exact non_euclidean_gradient_step_decrease_ge_dual_norm_sq hf hadm hstepsize k
   have hsq_eq :
       (fun k ↦ ‖fderiv ℝ f (x k)‖_* ^ (2 : ℕ)) =
         fun k ↦ (1 / M) * (M * ‖fderiv ℝ f (x k)‖_* ^ (2 : ℕ)) := by
@@ -514,8 +515,9 @@ theorem non_euclidean_gradient_dual_norm_tendsto_zero_of_objective_bddBelow
       Filter.Tendsto
         (fun k ↦ Real.sqrt (‖fderiv ℝ f (x k)‖_* ^ (2 : ℕ)))
         Filter.atTop (nhds 0) := by
+    let hsqrt_cont : ContinuousAt Real.sqrt 0 := Real.continuous_sqrt.continuousAt
     simpa only [Function.comp, Real.sqrt_zero] using
-      Real.continuous_sqrt.continuousAt.tendsto.comp hsq_tendsto_zero
+      hsqrt_cont.tendsto.comp hsq_tendsto_zero
   -- Nonnegativity lets us recover the dual norm from the square root of its square.
   have hEq :
       (fun k ↦ ‖fderiv ℝ f (x k)‖_*) =
@@ -532,6 +534,9 @@ theorem non_euclidean_gradient_dual_norm_tendsto_zero_of_objective_bddBelow
 dual norm up to iteration `k` satisfies the sublinear estimate
 `min_{0 ≤ n ≤ k} ‖f'(x^n)‖_* ≤ √(f(x^0) - fOpt) / √(M (k + 1))`. -/
 theorem non_euclidean_gradient_best_dual_norm_up_to_le_rate
+    (hf : is_l_smooth_on f Set.univ Lf)
+    (hadm : non_euclidean_gradient_method_is_admissible f counterpart L x0)
+    (hstepsize : uses_non_euclidean_gradient_stepsize_rule f Lf x L xDagger M)
     {fOpt : ℝ}
     (hfOpt : IsGLB (Set.range f) fOpt)
     (k : ℕ) :
@@ -540,7 +545,6 @@ theorem non_euclidean_gradient_best_dual_norm_up_to_le_rate
   -- The heavy clause-(c) proof lives in the explicit-hyp core lemma, so the public theorem
   -- stays a thin source-faithful wrapper.
   exact non_euclidean_gradient_best_dual_norm_up_to_le_rate_core
-    (f := f) (Lf := Lf) (counterpart := counterpart) (L := L) (x0 := x0) (M := M)
     hf hadm hstepsize hfOpt k
 
 -- Proof sketch: let `xBar` be a cluster point and extract a convergent subsequence
@@ -549,18 +553,17 @@ theorem non_euclidean_gradient_best_dual_norm_up_to_le_rate
 /-- Theorem 10.67 (5): clause (d). Every sequential limit point of the non-Euclidean gradient
 trajectory is stationary for `min_x f(x)`, in the sense that its Fréchet derivative vanishes. -/
 theorem non_euclidean_gradient_cluster_point_fderiv_eq_zero
+    (hf : is_l_smooth_on f Set.univ Lf)
+    (hadm : non_euclidean_gradient_method_is_admissible f counterpart L x0)
+    (hstepsize : uses_non_euclidean_gradient_stepsize_rule f Lf x L xDagger M)
     {xBar : E}
     (hxBar : MapClusterPt xBar Filter.atTop x) :
     fderiv ℝ f xBar = 0 := by
   obtain ⟨ψ, hψmono, hψtendsto⟩ := MapClusterPt.tendsto_subseq hxBar
   have hbelow :=
-    non_euclidean_gradient_objective_bddBelow_of_cluster_point
-      (f := f) (Lf := Lf) (counterpart := counterpart) (L := L) (x0 := x0) (M := M)
-      hf hadm hstepsize hxBar
+    non_euclidean_gradient_objective_bddBelow_of_cluster_point hf hadm hstepsize hxBar
   have hnorm_tendsto_zero :=
-    non_euclidean_gradient_dual_norm_tendsto_zero_of_objective_bddBelow
-      (f := f) (Lf := Lf) (counterpart := counterpart) (L := L) (x0 := x0) (M := M)
-      hf hadm hstepsize hbelow
+    non_euclidean_gradient_dual_norm_tendsto_zero_of_objective_bddBelow hf hadm hstepsize hbelow
   have hsubseq_norm_tendsto_zero :
       Filter.Tendsto (fun n ↦ ‖fderiv ℝ f (x (ψ n))‖_*) Filter.atTop (nhds 0) :=
     hnorm_tendsto_zero.comp hψmono.tendsto_atTop
@@ -580,9 +583,7 @@ theorem non_euclidean_gradient_cluster_point_fderiv_eq_zero
     · intro n
       exact norm_nonneg _
     · intro n
-      exact non_euclidean_gradient_fderiv_norm_le_cluster_rhs
-        (f := f) (Lf := Lf) (counterpart := counterpart) (L := L) (x0 := x0) (M := M)
-        hf hadm hstepsize
+      exact non_euclidean_gradient_fderiv_norm_le_cluster_rhs hf
   have hnorm_zero :
       ‖fderiv ℝ f xBar‖_* = 0 := by
     exact tendsto_nhds_unique tendsto_const_nhds hconst_norm_tendsto_zero

@@ -71,13 +71,18 @@ theorem dual_block_proximal_gradient_dual_step_iff_mem_dual_block_proximal_gradi
   let gradFStar : E → E := ∇ fStarReal
   let shift : E := ∑ j : Fin p, v j - v i
   let xTilde : E := gradFStar (∑ j : Fin p, v j)
+  -- Normalize the active-block affine shift so the shifted one-block problem is centered at
+  -- the total dual sum `∑ j, v j`.
   have hshift : v i + shift = ∑ j : Fin p, v j := by
     simp [shift, sub_eq_add_neg]
+  -- The Fréchet derivative of the shifted conjugate pulls back to the derivative at the
+  -- canonical total sum.
   have hderiv :
       fderiv ℝ (fun z : E ↦ fStarReal (z + shift)) (v i) =
         fderiv ℝ fStarReal (∑ j : Fin p, v j) := by
     rw [fderiv_comp_add_right shift]
     simp [hshift]
+  -- Convert the derivative identity into the gradient value used by the Chapter 12 block API.
   have hgrad :
       ∇ (fun z : E ↦ fStarReal (z + shift)) (v i) =
         gradFStar (∑ j : Fin p, v j) := by
@@ -92,11 +97,28 @@ theorem dual_block_proximal_gradient_dual_step_iff_mem_dual_block_proximal_gradi
             (v i) ↔
           yiNext ∈ dual_proximal_gradient_primal_y_step (g i) (LinearMap.id) xTilde (v i) σ⁻¹ := by
     intro yiNext
-    simpa [dual_based_proximal_gradient_dual_step, shift, xTilde, hshift, hgrad, gradFStar,
-      fStarReal] using
-      (dual_based_proximal_gradient_dual_step_iff_mem_dual_proximal_gradient_primal_y_step
-        σ f (g i) (LinearMap.id) shift hf_proper hf_closed hf_strong
-        (hg_proper i) (hg_closed i) (hg_convex i) yiNext (v i) σ⁻¹)
+    -- Route correction: rewrite the active-block dual owner through its membership theorem
+    -- before applying Lemma 12.5, instead of asking `simpa` to normalize the owner itself.
+    have hdual :
+        yiNext ∈ dual_based_proximal_gradient_dual_step
+            (fun z : E ↦ ((g i)∗) (-z))
+            (fun _ : E ↦ gradFStar (∑ j : Fin p, v j))
+            σ⁻¹
+            (v i) ↔
+          yiNext ∈ dual_based_proximal_gradient_dual_step
+            (fun z : E ↦ ((g i)∗) (-z))
+            (fun z : E ↦ ∇ (fun w : E ↦ fStarReal (w + shift)) z)
+            σ⁻¹
+            (v i) := by
+      rw [mem_dual_based_proximal_gradient_dual_step_iff,
+        mem_dual_based_proximal_gradient_dual_step_iff,
+        hgrad]
+    -- Specialize Lemma 12.5 on the active block and transport it through the normalized owner.
+    exact hdual.trans <| by
+      simpa [xTilde, gradFStar, fStarReal, hshift] using
+        (dual_based_proximal_gradient_dual_step_iff_mem_dual_proximal_gradient_primal_y_step
+          σ f (g i) (LinearMap.id) shift hf_proper hf_closed hf_strong
+          (hg_proper i) (hg_closed i) (hg_convex i) yiNext (v i) σ⁻¹)
   change yNext ∈ (fun yiNext ↦ block_coordinate_update v i (yiNext - v i)) ''
       dual_based_proximal_gradient_dual_step
         (fun z : E ↦ ((g i)∗) (-z))

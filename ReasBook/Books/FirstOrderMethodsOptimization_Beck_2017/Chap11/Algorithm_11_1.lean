@@ -23,7 +23,7 @@ Domain sampling identifies the owner abstraction as:
 - `stochastic_projected_subgradient_method_succ`, the canonical one-step unfolding theorem for that
   recursion;
 - `projected_subgradient_method` from Algorithm 8.3, the deterministic companion owner;
-- `metricProjection` / `closedConvexProjectionPoint` from Proposition 3.12, the projection owner layer.
+- `metricProjection` / `projectionPoint` from Proposition 3.12, the projection owner layer.
 
 The primitive data here are only the feasible set `C`, the current feasible point `x^k`, the
 positive stepsize `t_k`, the realized sampled index `i_k`, and the component subgradient family
@@ -48,7 +48,7 @@ stepsize `t_k`, and realized sample `i_k` yields the Chapter 11 update
 `P_C (x^k - t_k f'_{i_k}(x^k))`. -/
 theorem stochastic_projected_subgradient_method_one_step_eq :
     x⁺ =
-      metricProjection C hC_nonempty hC_closed.isComplete hC_convex
+      metricProjection C hC_nonempty hC_closed hC_convex
         ((xk : E) - (t : ℝ) • subgrad ik xk) := by
   simpa using
     stochastic_projected_subgradient_method_succ
@@ -61,7 +61,7 @@ ambient space yields the projected point `P_C (x^k - t_k f'_{i_k}(x^k))`. -/
     (x⁺ : E) =
       Pp[C, hC_nonempty, hC_closed, hC_convex]
         ((xk : E) - (t : ℝ) • subgrad ik xk) := by
-  simpa [closedConvexProjectionPoint] using
+  simpa [projectionPoint] using
     congrArg ((↑) : C → E)
       (stochastic_projected_subgradient_method_one_step_eq
         C hC_nonempty hC_closed hC_convex subgrad t xk ik)

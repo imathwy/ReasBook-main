@@ -1,4 +1,3 @@
-import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Lemma_10_4
 
 -- Declarations for this item will be appended below by the statement pipeline.
@@ -39,11 +38,11 @@ local notation "F" => composite_model_objective f g
 
 -- Proof sketch: specialize `prox_grad_sufficient_decrease` to the stepsize `L = Lf`. The
 -- coefficient `((L_f - L_f / 2) / L_f^2)` then simplifies to `1 / (2 L_f)`, and the residual
--- term is already expressed through the Chapter 10 owners `T_{L_f}` and `G_{L_f}` from
+-- term is already expressed through the Chapter 10 owners `T[Lf, f, g]` and `G[Lf, f, g]` from
 -- `Lemma_10_4`.
 /-- Corollary 10.6: under the assumptions of Lemma 10.4, specializing the prox-gradient descent
 estimate to the stepsize `L_f` gives
-`F(x) - F(T_{L_f}^{f,g}(x)) ≥ (1 / (2 L_f)) ‖G_{L_f}^{f,g}(x)‖^2` for every
+`F(x) - F(T[L_f, f, g] x) ≥ (1 / (2 L_f)) ‖G[L_f, f, g] x‖^2` for every
 `x ∈ interior (effective_domain f)`. -/
 theorem prox_grad_sufficient_decrease_at_smoothness_constant
     (hf_ne_bot : ∀ y, f y ≠ ⊥)
@@ -56,26 +55,21 @@ theorem prox_grad_sufficient_decrease_at_smoothness_constant
     (x : interior (effective_domain f)) :
     F (x : E) - F (T[Lf, f, g] x) ≥
       (((1 / (2 * (Lf : ℝ)) * ‖G[Lf, f, g] x‖ ^ (2 : ℕ) : ℝ) : EReal)) := by
+  have hLf0 : (Lf : ℝ) ≠ 0 := (PosReal.coe_pos Lf).ne'
+  have hhalf : (Lf : ℝ) - (Lf : ℝ) / 2 = (Lf : ℝ) / 2 := by ring
   have hcoeff :
-      (((Lf : ℝ) - (PosReal.toNNReal Lf : ℝ) / 2) / ((Lf : ℝ) ^ (2 : ℕ))) =
-        (1 : ℝ) / (2 * (Lf : ℝ)) := by
-    rw [PosReal.coe_toNNReal]
-    have hLf_ne : (Lf : ℝ) ≠ 0 := ne_of_gt (PosReal.coe_pos Lf)
-    field_simp [hLf_ne]
-    ring
-  -- Specialize Lemma 10.4 at the smoothness constant `L = L_f`.
-  simpa only [hcoeff] using
-    prox_grad_sufficient_decrease
-      (f := f)
-      (g := g)
-      (Lf := PosReal.toNNReal Lf)
-      (hf_ne_bot := hf_ne_bot)
-      (hf_effective_domain_convex := hf_effective_domain_convex)
-      (hg_effective_domain_subset_interior_f_effective_domain :=
-        hg_effective_domain_subset_interior_f_effective_domain)
-      (hf_toReal_smooth_on_interior_effective_domain :=
-        hf_toReal_smooth_on_interior_effective_domain)
-      (L := Lf)
-      (x := x)
+      (((Lf : ℝ) - (Lf : ℝ) / 2) / (Lf : ℝ) ^ (2 : ℕ)) =
+        1 / (2 * (Lf : ℝ)) := by
+    rw [hhalf, pow_two]
+    field_simp [hLf0]
+  simpa [hcoeff] using
+    (prox_grad_sufficient_decrease
+      f g (PosReal.toNNReal Lf)
+      hf_ne_bot
+      hf_effective_domain_convex
+      hg_effective_domain_subset_interior_f_effective_domain
+      hf_toReal_smooth_on_interior_effective_domain
+      Lf
+      x)
 
 end

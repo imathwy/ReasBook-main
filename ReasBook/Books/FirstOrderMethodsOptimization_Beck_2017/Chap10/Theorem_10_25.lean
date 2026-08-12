@@ -34,19 +34,18 @@ either the constant rule `L_k = L_f` or backtracking procedure B2, then any iter
 initial point `x^0` to some optimizer `xStar ∈ X^*`. -/
 theorem proximal_gradient_convex_objective_gap_le_of_ceiling_iteration_bound
     (htraj : is_proximal_gradient_trajectory f g x L)
-    (hrule : hproblem.SublinearRateStepsizeRule x L htraj α)
+    (hrule : hproblem.SourceSublinearRateStepsizeRule x L htraj α)
     (hxStar : xStar ∈ XStar)
     (ε : PosReal) (R : ℝ) (hR : ‖x 0 - xStar‖ ≤ R)
     (k : ℕ)
     (hiter : Nat.ceil (α * (Lf : ℝ) * R ^ (2 : ℕ) / (2 * (ε : ℝ))) ≤ k) :
     F (x k) - (FOpt : EReal) ≤ ((ε : ℝ) : EReal) := by
   have hLf_pos : 0 < (Lf : ℝ) := by
-    exact hproblem.sublinearRateStepsizeRule_lf_pos hrule
+    exact hproblem.sublinearRateStepsizeRule_lf_pos
+      (sourceSublinearRateRule_sublinearRateStepsizeRule htraj hrule)
   have hα_pos : 0 < α := by
-    rcases hrule with hLf_rule | ⟨hLf_pos, s, η, hα, hB2⟩
-    · simp [hLf_rule.1]
-    · rw [hα]
-      exact lt_of_lt_of_le (div_pos s.prop hLf_pos) (le_max_right _ _)
+    exact hproblem.sublinearRateStepsizeRule_alpha_pos
+      (sourceSublinearRateRule_sublinearRateStepsizeRule htraj hrule)
   have hαLf_pos : 0 < α * (Lf : ℝ) := mul_pos hα_pos hLf_pos
   by_cases hk : k = 0
   · subst hk

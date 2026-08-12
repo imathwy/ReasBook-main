@@ -98,7 +98,7 @@ lemma log_sum_exp_function_toReal_convexOn (hn : 0 < n) :
         simp [f]
         refine congrArg
           (fun r : ℝ ↦ ((r : EReal) - negative_entropy_on_stdSimplex n y.ofLp)) ?_
-        rw [← WithLp.toLp_ofLp (p := (2 : ENNReal)) (x := y)]
+        rw [← WithLp.toLp_ofLp (2 : ENNReal) y]
         simpa [dotProduct_comm] using (EuclideanSpace.inner_toLp_toLp x.ofLp y.ofLp).symm
       · rintro ⟨z, rfl⟩
         refine ⟨WithLp.toLp 2 z, ?_⟩
@@ -115,8 +115,7 @@ lemma log_sum_exp_function_toReal_convexOn (hn : 0 < n) :
             (dotProductEquiv ℝ (Fin n) x.ofLp) := htransport
       _ = log_sum_exp_function x.ofLp := by
             simpa [log_sum_exp_function] using
-              negative_entropy_on_stdSimplex_conjugate_eq_log_sum_exp
-                (n := n) (y := x.ofLp)
+              negative_entropy_on_stdSimplex_conjugate_eq_log_sum_exp x.ofLp
   have hconvex : is_convex_function (f∗) :=
     (conjugate_function_closed_and_convex f).2
   have hne_bot :
@@ -158,35 +157,29 @@ lemma log_sum_exp_max_bounds (hn : 0 < n) (μ : PosReal) (z : Fin n → ℝ) :
     rw [hmax_finset]
     refine le_antisymm ?_ ?_
     · exact
-        (Finset.sup'_le_iff
-          (s := (Finset.univ : Finset (Fin n)))
-          (H := Finset.univ_nonempty)
-          (f := z)).2
-          (fun i hi ↦ hi0 i)
+        Finset.sup'_le Finset.univ_nonempty z (fun i hi ↦ hi0 i)
     · exact
-        Finset.le_sup'
-          (s := (Finset.univ : Finset (Fin n)))
-          (f := z)
-          (h := Finset.mem_univ i0)
+        Finset.le_sup' z (Finset.mem_univ i0)
   have hcoord_le : ∀ i : Fin n, z i ≤ coordinatewiseMax z := by
     intro i
     rw [hmax_finset]
     exact
-      Finset.le_sup'
-        (s := (Finset.univ : Finset (Fin n)))
-        (f := z)
-        (h := Finset.mem_univ i)
-  have hsum_pos : 0 < ∑ i : Fin n, Real.exp (z i / (μ : ℝ)) := by
+      Finset.le_sup' z (Finset.mem_univ i)
+  let g : Fin n → ℝ := fun i ↦ Real.exp (z i / (μ : ℝ))
+  have hg_nonneg : ∀ i : Fin n, 0 ≤ g i := by
+    intro i
+    exact le_of_lt (Real.exp_pos _)
+  have hsingle_le_sum : g i0 ≤ ∑ i : Fin n, g i := by
+    exact Finset.single_le_sum (fun j _ ↦ hg_nonneg j) (Finset.mem_univ i0)
+  have hsum_pos_g : 0 < ∑ i : Fin n, g i := by
     -- A single positive exponential term already forces the full sum to be positive.
     calc
       0 < Real.exp (z i0 / (μ : ℝ)) := Real.exp_pos _
-      _ ≤ ∑ i : Fin n, Real.exp (z i / (μ : ℝ)) := by
-            exact
-              Finset.single_le_sum
-                (s := (Finset.univ : Finset (Fin n)))
-                (f := fun i : Fin n ↦ Real.exp (z i / (μ : ℝ)))
-                (fun j _ ↦ le_of_lt (Real.exp_pos _))
-                (Finset.mem_univ i0)
+      _ = g i0 := by
+            simp [g]
+      _ ≤ ∑ i : Fin n, g i := hsingle_le_sum
+  have hsum_pos : 0 < ∑ i : Fin n, Real.exp (z i / (μ : ℝ)) := by
+    simpa [g] using hsum_pos_g
   have hsum_le :
       ∑ i : Fin n, Real.exp (z i / (μ : ℝ)) ≤
         (n : ℝ) * Real.exp (coordinatewiseMax z / (μ : ℝ)) := by
@@ -201,20 +194,21 @@ lemma log_sum_exp_max_bounds (hn : 0 < n) (μ : PosReal) (z : Fin n → ℝ) :
                 div_le_div_of_nonneg_right (hcoord_le i) hμ_nonneg
       _ = (n : ℝ) * Real.exp (coordinatewiseMax z / (μ : ℝ)) := by
             simp
+  have hterm_le_sum_g :
+      g i0 ≤ ∑ i : Fin n, g i := hsingle_le_sum
   have hterm_le_sum :
       Real.exp (coordinatewiseMax z / (μ : ℝ)) ≤
         ∑ i : Fin n, Real.exp (z i / (μ : ℝ)) := by
     -- The maximizing coordinate contributes one term of the exponential sum.
-    calc
-      Real.exp (coordinatewiseMax z / (μ : ℝ)) = Real.exp (z i0 / (μ : ℝ)) := by
-        rw [hmax_eq]
-      _ ≤ ∑ i : Fin n, Real.exp (z i / (μ : ℝ)) := by
-            exact
-              Finset.single_le_sum
-                (s := (Finset.univ : Finset (Fin n)))
-                (f := fun i : Fin n ↦ Real.exp (z i / (μ : ℝ)))
-                (fun j _ ↦ le_of_lt (Real.exp_pos _))
-                (Finset.mem_univ i0)
+    have hterm_le_sum_g' :
+        Real.exp (coordinatewiseMax z / (μ : ℝ)) ≤ ∑ i : Fin n, g i := by
+      calc
+        Real.exp (coordinatewiseMax z / (μ : ℝ)) = Real.exp (z i0 / (μ : ℝ)) := by
+          rw [hmax_eq]
+        _ = g i0 := by
+          simp [g]
+        _ ≤ ∑ i : Fin n, g i := hterm_le_sum_g
+    simpa [g] using hterm_le_sum_g'
   constructor
   · -- The full sum is at most `n * exp(max / μ)`, so the shifted log-sum-exp stays below the max.
     have hlog_le :
@@ -258,7 +252,7 @@ lemma shifted_log_sum_exp_smoothing_bounds (hn : 0 < n) (μ : PosReal) (x : E) :
     shifted_log_sum_exp_smoothing μ x ≤ coordinatewiseMax x ∧
       coordinatewiseMax x ≤
         shifted_log_sum_exp_smoothing μ x + (log_cardinality_nonneg hn : ℝ) * (μ : ℝ) := by
-  rcases log_sum_exp_max_bounds (n := n) hn μ x with ⟨hlower, hupper⟩
+  rcases log_sum_exp_max_bounds hn μ x with ⟨hlower, hupper⟩
   constructor
   · -- Expanding the definition turns the first coordinate lemma into the lower approximation bound.
     simpa [shifted_log_sum_exp_smoothing_apply, coe_log_cardinality_nonneg] using hlower
@@ -279,9 +273,9 @@ lemma shifted_log_sum_exp_smoothing_is_inv_mu_smooth (μ : PosReal) :
     -- Proposition 5.8 gives the base log-sum-exp model, and the dilation contributes `‖Aμ‖²`.
     simpa [Aμ, ContinuousLinearMap.smul_apply, smul_eq_mul, mul_comm, mul_left_comm, mul_assoc] using
       Example_10_44.is_l_smooth_on_precompose_continuousLinearMap
-        (A := Aμ)
-        (h := fun z : E ↦ (log_sum_exp_function z).toReal)
-        (hh := log_sum_exp_l2_function_is_one_smooth n)
+        Aμ
+        (fun z : E ↦ (log_sum_exp_function z).toReal)
+        (log_sum_exp_l2_function_is_one_smooth n)
   have hscaled :
       is_l_smooth_on
         (fun x : E ↦
@@ -292,11 +286,9 @@ lemma shifted_log_sum_exp_smoothing_is_inv_mu_smooth (μ : PosReal) :
     -- Multiplying by `μ` rescales the smoothness constant once, and subtracting `μ log n`
     -- leaves the derivative Lipschitz bound unchanged.
     exact Example_10_44.is_l_smooth_on_const_mul_sub_const
-      (c := (μ : ℝ))
-      (d := (μ : ℝ) * Real.log (n : ℝ))
-      (hc := le_of_lt (PosReal.coe_pos μ))
-      (h := fun x : E ↦ (log_sum_exp_function (((1 / (μ : ℝ)) • x).ofLp)).toReal)
-      (L := 1 * ‖Aμ‖₊ ^ (2 : ℕ))
+      (μ : ℝ)
+      ((μ : ℝ) * Real.log (n : ℝ))
+      (le_of_lt (PosReal.coe_pos μ))
       hpre
   have hAμ_norm_le : ‖Aμ‖ ≤ (μ : ℝ)⁻¹ := by
     -- The dilation `x ↦ x / μ` has operator norm at most `1 / μ`.
@@ -354,7 +346,7 @@ lemma shifted_log_sum_exp_smoothing_is_inv_mu_smooth (μ : PosReal) :
         ((1 : NNReal) / PosReal.toNNReal μ) :=
     Example_10_44.is_l_smooth_on_mono hscaled (by simpa [one_mul] using hconst_le)
   have hfun :
-      shifted_log_sum_exp_smoothing (n := n) μ =
+      shifted_log_sum_exp_smoothing μ =
         (fun x : E ↦
           (μ : ℝ) * (log_sum_exp_function (((1 / (μ : ℝ)) • x).ofLp)).toReal -
             (μ : ℝ) * Real.log (n : ℝ)) := by
@@ -389,10 +381,10 @@ theorem coordinatewise_max_shifted_log_sum_exp_is_smooth_approximation_nonneg
     -- Route correction: transport convexity through the scaling affine map instead of building a
     -- bespoke Euclidean conjugacy bridge.
     simpa [Function.comp, LinearMap.coe_toAffineMap, DistribSMul.toLinearMap_apply] using
-      (log_sum_exp_function_toReal_convexOn (n := n) hn).comp_affineMap
+      (log_sum_exp_function_toReal_convexOn hn).comp_affineMap
         (DistribSMul.toLinearMap ℝ E ((1 / (μ : ℝ)) : ℝ)).toAffineMap
   have hfun :
-      shifted_log_sum_exp_smoothing (n := n) μ =
+      shifted_log_sum_exp_smoothing μ =
         (fun x : E ↦
           (μ : ℝ) * (log_sum_exp_function (((1 / (μ : ℝ)) • x).ofLp)).toReal -
             (μ : ℝ) * Real.log (n : ℝ)) := by
@@ -412,12 +404,12 @@ theorem coordinatewise_max_shifted_log_sum_exp_is_smooth_approximation_nonneg
   refine ⟨hconv, ?_, ?_, ?_⟩
   · intro x
     -- The lower approximation inequality is exactly the first pointwise bound.
-    exact (shifted_log_sum_exp_smoothing_bounds (n := n) hn μ x).1
+    exact (shifted_log_sum_exp_smoothing_bounds hn μ x).1
   · intro x
     -- The upper approximation inequality is exactly the second pointwise bound.
-    exact (shifted_log_sum_exp_smoothing_bounds (n := n) hn μ x).2
+    exact (shifted_log_sum_exp_smoothing_bounds hn μ x).2
   · -- Smoothness comes from the scaled Chapter 5 log-sum-exp model.
-    simpa using shifted_log_sum_exp_smoothing_is_inv_mu_smooth (n := n) μ
+    simpa using shifted_log_sum_exp_smoothing_is_inv_mu_smooth μ
 
 -- Proof sketch: start from the nonnegative-parameter approximation theorem above. When `n > 1`,
 -- `log n` is positive, so the error constant upgrades to the positive parameter
@@ -434,7 +426,7 @@ theorem coordinatewise_max_shifted_log_sum_exp_is_smooth_approximation
   -- `NNReal` to `PosReal`.
   simpa [IsSmoothApproximation, log_cardinality_nonneg, log_cardinality_posreal] using
     (coordinatewise_max_shifted_log_sum_exp_is_smooth_approximation_nonneg
-      (n := n) (hn := Nat.lt_trans Nat.zero_lt_one hn) μ)
+      (Nat.lt_trans Nat.zero_lt_one hn) μ)
 
 -- Proof sketch: combine convexity of `fun x : E ↦ coordinatewiseMax x` with the preceding
 -- explicit approximation theorem for each positive `μ`. The latter supplies the required witness
@@ -450,6 +442,6 @@ theorem coordinatewise_max_is_one_log_cardinality_smoothable (hn : 1 < n) :
   -- preceding approximation theorem.
   intro μ
   refine ⟨shifted_log_sum_exp_smoothing μ, ?_⟩
-  exact coordinatewise_max_shifted_log_sum_exp_is_smooth_approximation (n := n) hn μ
+  exact coordinatewise_max_shifted_log_sum_exp_is_smooth_approximation hn μ
 
 end

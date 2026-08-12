@@ -1,4 +1,7 @@
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_3
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_2
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_5
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Remark_10_13
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_16
 
 -- Declarations for this item will be appended below by the statement pipeline.
@@ -17,105 +20,69 @@ variable {f g : E → EReal} [IsProperExtendedRealFunction g]
 
 local notation "F" => composite_model_objective f g
 
-/- Corollary 10.18 is `bridge/view` in the Chapter 10 proximal-gradient API.
-
-Domain sampling:
-- `gradient_mapping` from Definition 10.5 is the owner of the residual `G_L`;
-- `proximal_gradient_backtracking_B2_accepts` from Algorithm 10.3 is the chapter owner of the
-  local quadratic upper-model test at a base point `x`;
-- the Chapter 10 one-step prox-gradient gap estimate from Theorem 10.16 is the owner descent
-  statement for the same local model.
-
-The primitive source data here are:
-- the accepted local upper-model inequality, reused through the existing B2 acceptance owner.
-
-The displayed residual estimate is derived API: specialize the owner gap estimate to `y = x`,
-then rewrite the remaining quadratic term through `G[L, f, g] x`.
--/
-
--- Proof sketch: specialize `fundamental_prox_grad_inequality` to the base point `y = x`. The
--- hypothesis is supplied by the owner predicate `proximal_gradient_backtracking_B2_accepts`. The
--- second quadratic term and the linearization defect then vanish at `y = x`, and the surviving
--- quadratic term is exactly `(1 / (2L)) ‖G_L(x)‖²` after rewriting with `gradient_mapping_apply`.
-/-- Helper for Corollary 10.18: once `f(x)` is known not to be `⊥`, the first-order
-linearization defect vanishes on the diagonal. -/
-lemma prox_gradient_linearization_defect_self_of_ne_bot
-    (x : interior (effective_domain f)) (hfx_ne_bot : f (x : E) ≠ ⊥) :
-    ℓ[f, (x : E), x] = 0 := by
-  -- On the diagonal, the displacement term is zero, and the remaining self-subtraction is
-  -- legitimate because `x ∈ effective_domain f` rules out `⊤` while `hfx_ne_bot` rules out `⊥`.
-  have hfx_ne_top : f (x : E) ≠ ⊤ := (mem_effective_domain.mp (interior_subset x.2)).ne
-  calc
-    ℓ[f, (x : E), x] =
-        f (x : E) - f (x : E) -
-          (inner ℝ (∇ (fun z ↦ (f z).toReal) (x : E)) ((x : E) - (x : E)) : EReal) := by
-      rw [prox_gradient_linearization_defect_eq]
-    _ = f (x : E) - f (x : E) := by
-      simp
-    _ = 0 := by
-      exact EReal.sub_self hfx_ne_top hfx_ne_bot
-
-/-- Helper for Corollary 10.18: specializing the fundamental prox-gradient inequality at the
-base point `x` leaves only the quadratic step-gap term once `f(x)` is known not to be `⊥`. -/
-lemma prox_grad_gap_at_basepoint_of_ne_bot
-    (L : PosReal) (x : interior (effective_domain f))
-    (hupper : proximal_gradient_backtracking_B2_accepts f g L x)
-    (hfx_ne_bot : f (x : E) ≠ ⊥) :
-    F (x : E) - F (T[L, f, g] x) ≥
-      ((((L : ℝ) / 2) * ‖(x : E) - T[L, f, g] x‖ ^ (2 : ℕ) : ℝ) : EReal) := by
-  -- Specializing `fundamental_prox_grad_inequality` with `y = x` produces the source-proof
-  -- decomposition; the diagonal quadratic term and linearization defect then disappear.
-  have hfx_ne_top : f (x : E) ≠ ⊤ := (mem_effective_domain.mp (interior_subset x.2)).ne
-  have hgap :=
-    fundamental_prox_grad_inequality (f := f) (g := g) (x := (x : E)) (y := x) L hupper
-  dsimp at hgap
-  simpa [EReal.sub_self hfx_ne_top hfx_ne_bot] using hgap
-
-/-- Helper for Corollary 10.18: the squared gradient-mapping norm is the squared stepsize times
-the squared prox-gradient step norm. -/
-lemma gradient_mapping_sq_eq_stepsize_sq_mul_step_norm_sq
-    (L : PosReal) (x : interior (effective_domain f)) :
-    ‖G[L, f, g] x‖ ^ (2 : ℕ) =
-      ((L : ℝ) ^ (2 : ℕ)) * ‖(x : E) - T[L, f, g] x‖ ^ (2 : ℕ) := by
-  -- Rewrite `G_L(x)` as the scaled step residual and compute its norm via `norm_smul`.
-  calc
-    ‖G[L, f, g] x‖ ^ (2 : ℕ) =
-        (‖(L : ℝ)‖ * ‖(x : E) - T[L, f, g] x‖) ^ (2 : ℕ) := by
-      rw [gradient_mapping_apply, norm_smul]
-    _ = (((L : ℝ) * ‖(x : E) - T[L, f, g] x‖) ^ (2 : ℕ)) := by
-      simp [Real.norm_eq_abs, abs_of_pos (PosReal.coe_pos L)]
-    _ = ((L : ℝ) ^ (2 : ℕ)) * ‖(x : E) - T[L, f, g] x‖ ^ (2 : ℕ) := by
-      rw [pow_two, pow_two]
-      ring
-
-/-- Helper for Corollary 10.18: the quadratic step-gap term equals the displayed
-`(1 / (2L)) ‖G_L(x)‖²` coefficient after rewriting through the gradient mapping. -/
-lemma half_stepsize_mul_step_norm_sq_eq_gradient_mapping_term
-    (L : PosReal) (x : interior (effective_domain f)) :
-    ((((L : ℝ) / 2) * ‖(x : E) - T[L, f, g] x‖ ^ (2 : ℕ) : ℝ) : EReal) =
-      (((1 : ℝ) / (2 * (L : ℝ)) * ‖G[L, f, g] x‖ ^ (2 : ℕ) : ℝ) : EReal) := by
-  -- Convert the step norm to the gradient-mapping norm first, then simplify the scalar factor
-  -- using the positivity of `L`.
-  congr 1
-  rw [gradient_mapping_sq_eq_stepsize_sq_mul_step_norm_sq (f := f) (g := g) L x]
-  have hL_ne : (L : ℝ) ≠ 0 := ne_of_gt (PosReal.coe_pos L)
-  field_simp [hL_ne]
-
-/-- Corollary 10.18: if the local quadratic upper model of `f` at the prox-grad step `T_L(x)`
-holds, then the composite objective decreases by at least
-`(1 / (2L)) ‖G_L(x)‖²`. -/
-theorem prox_grad_sufficient_decrease_of_upper_model
+/-- Helper for Corollary 10.18: specializing the fundamental prox-gradient inequality at the base
+point `x` removes the comparison-distance term. -/
+lemma fundamental_prox_grad_inequality_at_base_point
     (L : PosReal) (x : interior (effective_domain f))
     (hupper : proximal_gradient_backtracking_B2_accepts f g L x) :
     F x - F (T[L, f, g] x) ≥
-      (((1 : ℝ) / (2 * (L : ℝ)) * ‖G[L, f, g] x‖ ^ (2 : ℕ) : ℝ) : EReal) :=
-by
-  -- Route correction: the textbook source assumes `f : E → (-∞, ∞]`, but the generated Lean
-  -- statement omitted the corresponding `f_ne_bot` hypothesis. The diagonal cancellation in
-  -- `fundamental_prox_grad_inequality` therefore cannot be justified from the current hypotheses.
-  -- TODO: restore the missing source hypothesis `∀ y, f y ≠ ⊥`, apply
-  -- `prox_grad_gap_at_basepoint_of_ne_bot`, and then rewrite with
-  -- `half_stepsize_mul_step_norm_sq_eq_gradient_mapping_term`.
-  sorry
+      ((((L : ℝ) / 2) * ‖(x : E) - T[L, f, g] x‖ ^ (2 : ℕ) : ℝ) : EReal) +
+        ℓ[f, (x : E), x] := by
+  -- Specialize Theorem 10.16 with the comparison point equal to the base point.
+  simpa [sub_self] using
+    (fundamental_prox_grad_inequality (f := f) (g := g) (x := (x : E)) (y := x) L hupper)
+
+/-- Helper for Corollary 10.18: the first-order linearization defect vanishes at its own base
+point. -/
+lemma prox_gradient_linearization_defect_self
+    (hf_ne_bot : ∀ y, f y ≠ ⊥)
+    (x : interior (effective_domain f)) :
+    ℓ[f, (x : E), x] = 0 := by
+  have hx_ne_top : f (x : E) ≠ ⊤ := (mem_effective_domain.mp (interior_subset x.2)).ne
+  have hx_val : f (x : E) = (((f (x : E)).toReal : ℝ) : EReal) := by
+    exact (EReal.coe_toReal hx_ne_top (hf_ne_bot _)).symm
+  -- Expand the defect, identify both function values with the same real coercion, and cancel.
+  rw [prox_gradient_linearization_defect_eq, hx_val, hx_val]
+  simp
+
+/-- Helper for Corollary 10.18: the quadratic step term equals the standard gradient-mapping
+lower-bound coefficient. -/
+lemma half_step_norm_eq_gradient_mapping_term
+    (L : PosReal) (x : interior (effective_domain f)) :
+    ((((L : ℝ) / 2) * ‖(x : E) - T[L, f, g] x‖ ^ (2 : ℕ) : ℝ) : EReal) =
+      (((1 : ℝ) / (2 * (L : ℝ)) * ‖G[L, f, g] x‖ ^ (2 : ℕ) : ℝ) : EReal) := by
+  have hL0 : (L : ℝ) ≠ 0 := (PosReal.coe_pos L).ne'
+  have hreal :
+      ((L : ℝ) / 2) * ‖(x : E) - T[L, f, g] x‖ ^ (2 : ℕ) =
+        (1 : ℝ) / (2 * (L : ℝ)) * ‖G[L, f, g] x‖ ^ (2 : ℕ) := by
+    -- Rewrite the gradient mapping norm through the residual step norm, then simplify scalars.
+    rw [gradient_mapping_norm_sq_eq_scaled_step_norm_sq (f := f) (g := g) L x]
+    field_simp [hL0]
+  exact congrArg (fun t : ℝ ↦ ((t : ℝ) : EReal)) hreal
+
+/-- Corollary 10.18: if the local quadratic upper model of `f` at the prox-grad step `T_L(x)`
+holds, then the composite objective decreases by at least
+`(1 / (2L)) ‖G_L(x)‖²`. The standing composite-model hypothesis `f y ≠ ⊥` for all `y`
+is kept explicit here because it is part of the chapter setup used to interpret the displayed
+extended-real subtraction. -/
+theorem prox_grad_sufficient_decrease_of_upper_model
+    (hf_ne_bot : ∀ y, f y ≠ ⊥)
+    (L : PosReal) (x : interior (effective_domain f))
+    (hupper : proximal_gradient_backtracking_B2_accepts f g L x) :
+    F x - F (T[L, f, g] x) ≥
+      (((1 : ℝ) / (2 * (L : ℝ)) * ‖G[L, f, g] x‖ ^ (2 : ℕ) : ℝ) : EReal) := by
+  -- Follow the source proof: prox-optimality plus the upper model gives the base inequality.
+  calc
+    F x - F (T[L, f, g] x) ≥
+        ((((L : ℝ) / 2) * ‖(x : E) - T[L, f, g] x‖ ^ (2 : ℕ) : ℝ) : EReal) +
+          ℓ[f, (x : E), x] :=
+      fundamental_prox_grad_inequality_at_base_point (f := f) (g := g) L x hupper
+    _ = ((((L : ℝ) / 2) * ‖(x : E) - T[L, f, g] x‖ ^ (2 : ℕ) : ℝ) : EReal) := by
+      -- At the base point, the linearization defect is exactly zero.
+      rw [prox_gradient_linearization_defect_self (f := f) hf_ne_bot x]
+      simp
+    _ = (((1 : ℝ) / (2 * (L : ℝ)) * ‖G[L, f, g] x‖ ^ (2 : ℕ) : ℝ) : EReal) := by
+      -- Convert the prox-step norm into the gradient-mapping norm.
+      rw [half_step_norm_eq_gradient_mapping_term (f := f) (g := g) L x]
 
 end

@@ -20,15 +20,15 @@ variable {ι : Type*}
 local notation "E" => EuclideanSpace ℝ ι
 
 /- Lemma 6.70 is `source-facing` in the Chapter 6 proximal-operator domain. Domain sampling uses
-the Chapter 6 owners `prox[...]` from Definition 6.1, the Euclidean `ℓ¹` norm `l1n[x]` and its
+the Chapter 6 owners `prox[...]` from Definition 6.1, the Euclidean `ℓ¹` norm `‖x‖₁` and its
 soft-thresholding proximal formula from Example 6.8, and the residual/root-function pattern from
 Theorem 6.36 and Example 6.38. The primitive source-facing object is the penalty
-`x ↦ ρ l1n[x]²`, which stays on that canonical surface directly rather than through a one-off local
+`x ↦ ρ ‖x‖₁²`, which stays on that canonical surface directly rather than through a one-off local
 owner; the coordinate weights and scalar root function are derived `bridge/view` auxiliaries for
 the explicit proximal formula, not competing owner abstractions. -/
 
 /-- The coordinate weights `λ_i = [√ρ |x_i| / √μ - 2ρ]_+` appearing in the explicit proximal
-formula for `x ↦ ρ l1n[x]²`. -/
+formula for `x ↦ ρ ‖x‖₁²`. -/
 def l1SquareProxWeight (ρ μ : ℝ) (x : E) : ι → ℝ :=
   fun i ↦ (Real.sqrt ρ * |x i| / Real.sqrt μ - 2 * ρ)⁺
 
@@ -266,7 +266,7 @@ section
 variable [Fintype ι]
 
 /-- The scalar root function
-`ψ(μ) = ∑ i [√ρ |x_i| / √μ - 2ρ]_+ - 1` governing the prox of `x ↦ ρ l1n[x]²`. -/
+`ψ(μ) = ∑ i [√ρ |x_i| / √μ - 2ρ]_+ - 1` governing the prox of `x ↦ ρ ‖x‖₁²`. -/
 def l1SquareProxRootFunction (ρ : ℝ) (x : E) : ℝ → ℝ :=
   fun μ ↦ ∑ i, l1SquareProxWeight ρ μ x i - 1
 
@@ -399,7 +399,7 @@ end
 theorem l1SquareProxCandidate_l1Norm_eq_root_scale
     {ρ μ : ℝ} (hρ : 0 < ρ) (hμ : 0 < μ) (x : E)
     (hroot : l1SquareProxRootFunction ρ x μ = 0) :
-    l1n[l1SquareProxCandidate ρ μ x] = Real.sqrt μ / Real.sqrt ρ := by
+    ‖l1SquareProxCandidate ρ μ x‖₁ = Real.sqrt μ / Real.sqrt ρ := by
   rw [EuclideanSpace.l1Norm_eq_sum_abs]
   calc
     ∑ i, |l1SquareProxCandidate ρ μ x i|
@@ -481,8 +481,8 @@ theorem l1SquareProxCandidate_support_bound
     {ρ μ : ℝ} (hρ : 0 < ρ) (hμ : 0 < μ) (x y : E)
     (hroot : l1SquareProxRootFunction ρ x μ = 0) :
     inner ℝ (x - l1SquareProxCandidate ρ μ x) (y - l1SquareProxCandidate ρ μ x) ≤
-      ρ * l1n[y] ^ (2 : ℕ) -
-        ρ * l1n[l1SquareProxCandidate ρ μ x] ^ (2 : ℕ) := by
+      ρ * ‖y‖₁ ^ (2 : ℕ) -
+        ρ * ‖l1SquareProxCandidate ρ μ x‖₁ ^ (2 : ℕ) := by
   let u : E := l1SquareProxCandidate ρ μ x
   have hcoord :
       ∑ i, (x i - u i) * (y i - u i) ≤
@@ -496,7 +496,7 @@ theorem l1SquareProxCandidate_support_bound
       EuclideanSpace.inner_toLp_toLp ((x - u).ofLp) ((y - u).ofLp)
   have hsum_eq :
       ∑ i, (2 * Real.sqrt ρ * Real.sqrt μ) * (|y i| - |u i|) =
-        (2 * Real.sqrt ρ * Real.sqrt μ) * (l1n[y] - l1n[u]) := by
+        (2 * Real.sqrt ρ * Real.sqrt μ) * (‖y‖₁ - ‖u‖₁) := by
     calc
       ∑ i, (2 * Real.sqrt ρ * Real.sqrt μ) * (|y i| - |u i|)
           = (2 * Real.sqrt ρ * Real.sqrt μ) * ∑ i, (|y i| - |u i|) := by
@@ -504,13 +504,13 @@ theorem l1SquareProxCandidate_support_bound
                 (Finset.mul_sum Finset.univ
                   (fun i : ι ↦ |y i| - |u i|)
                   (2 * Real.sqrt ρ * Real.sqrt μ)).symm
-      _ = (2 * Real.sqrt ρ * Real.sqrt μ) * (l1n[y] - l1n[u]) := by
+      _ = (2 * Real.sqrt ρ * Real.sqrt μ) * (‖y‖₁ - ‖u‖₁) := by
             rw [Finset.sum_sub_distrib,
               ← EuclideanSpace.l1Norm_eq_sum_abs, ← EuclideanSpace.l1Norm_eq_sum_abs]
-  have hu_norm : l1n[u] = Real.sqrt μ / Real.sqrt ρ := by
+  have hu_norm : ‖u‖₁ = Real.sqrt μ / Real.sqrt ρ := by
     simpa [u] using l1SquareProxCandidate_l1Norm_eq_root_scale hρ hμ x hroot
   have hscale :
-      2 * Real.sqrt ρ * Real.sqrt μ = 2 * ρ * l1n[u] := by
+      2 * Real.sqrt ρ * Real.sqrt μ = 2 * ρ * ‖u‖₁ := by
     rw [hu_norm]
     field_simp [Real.sqrt_ne_zero'.2 hρ, Real.sqrt_ne_zero'.2 hμ]
     rw [Real.sq_sqrt hρ.le]
@@ -518,36 +518,36 @@ theorem l1SquareProxCandidate_support_bound
     inner ℝ (x - l1SquareProxCandidate ρ μ x) (y - l1SquareProxCandidate ρ μ x)
         = ∑ i, (x i - u i) * (y i - u i) := by simpa [u] using hinner
     _ ≤ ∑ i, (2 * Real.sqrt ρ * Real.sqrt μ) * (|y i| - |u i|) := hcoord
-    _ = (2 * Real.sqrt ρ * Real.sqrt μ) * (l1n[y] - l1n[u]) := hsum_eq
-    _ = 2 * ρ * l1n[u] * (l1n[y] - l1n[u]) := by rw [hscale]
-    _ ≤ ρ * l1n[y] ^ (2 : ℕ) - ρ * l1n[u] ^ (2 : ℕ) := by
-          nlinarith [sq_nonneg (l1n[y] - l1n[u])]
+    _ = (2 * Real.sqrt ρ * Real.sqrt μ) * (‖y‖₁ - ‖u‖₁) := hsum_eq
+    _ = 2 * ρ * ‖u‖₁ * (‖y‖₁ - ‖u‖₁) := by rw [hscale]
+    _ ≤ ρ * ‖y‖₁ ^ (2 : ℕ) - ρ * ‖u‖₁ ^ (2 : ℕ) := by
+          nlinarith [sq_nonneg (‖y‖₁ - ‖u‖₁)]
 
 -- Proof sketch: if `x = 0`, the proximal objective
--- `u ↦ ρ l1n[u]² + (1 / 2) ‖u - x‖₂²` is minimized at `u = 0`. If `x ≠ 0`, use the variational
--- simplex representation of `l1n[x]²`, minimize first in `u`, and solve the simplex dual problem.
+-- `u ↦ ρ ‖u‖₁² + (1 / 2) ‖u - x‖₂²` is minimized at `u = 0`. If `x ≠ 0`, use the variational
+-- simplex representation of `‖x‖₁²`, minimize first in `u`, and solve the simplex dual problem.
 -- The hypothesis supplies a positive root `μ` of the nonincreasing function
 -- `l1SquareProxRootFunction ρ x`, so the KKT system gives
 -- `λ_i = l1SquareProxWeight ρ μ x i`; substituting these weights yields the displayed minimizer.
-/-- Lemma 6.70: let `f(x) = l1n[x]²` and `ρ > 0`. If `μ` is a positive root of
+/-- Lemma 6.70: let `f(x) = ‖x‖₁²` and `ρ > 0`. If `μ` is a positive root of
 `ψ(μ) = ∑ i [√ρ |x_i| / √μ - 2ρ]_+ - 1` whenever `x ≠ 0`, then the proximal mapping of `ρ f` at
 `x` is `{0}` for `x = 0`, and otherwise it is the singleton whose `i`-th coordinate is
 `λ_i x_i / (λ_i + 2ρ)` with `λ_i = [√ρ |x_i| / √μ - 2ρ]_+`. -/
 theorem prox_squared_l1_norm_penalty_eq_singleton_piecewise
     (ρ μ : ℝ) (hρ : 0 < ρ) (x : E)
     (hμ : x ≠ 0 → 0 < μ ∧ l1SquareProxRootFunction ρ x μ = 0) :
-    prox[fun y : E ↦ ((ρ * l1n[y] ^ (2 : ℕ) : ℝ) : EReal)] x =
+    prox[fun y : E ↦ ((ρ * ‖y‖₁ ^ (2 : ℕ) : ℝ) : EReal)] x =
       if _hx : x = 0 then
         {(0 : E)}
       else
         {toLp 2 (fun i ↦
           (l1SquareProxWeight ρ μ x i * x i) /
             (l1SquareProxWeight ρ μ x i + 2 * ρ))} := by
-  let f : E → EReal := fun y : E ↦ ((ρ * l1n[y] ^ (2 : ℕ) : ℝ) : EReal)
+  let f : E → EReal := fun y : E ↦ ((ρ * ‖y‖₁ ^ (2 : ℕ) : ℝ) : EReal)
   have hf_proper : IsProperExtendedRealFunction f := by
     refine ⟨?_, ?_⟩
     · intro y
-      simpa [f] using (EReal.coe_ne_bot (ρ * l1n[y] ^ (2 : ℕ)))
+      simpa [f] using (EReal.coe_ne_bot (ρ * ‖y‖₁ ^ (2 : ℕ)))
     · refine ⟨0, ?_⟩
       simp [f]
   by_cases hx : x = 0
@@ -558,9 +558,9 @@ theorem prox_squared_l1_norm_penalty_eq_singleton_piecewise
         ∀ y ∈ effective_domain f,
           ((inner ℝ ((0 : E) - 0) (y - 0) : ℝ) : EReal) ≤ f y - f 0 := by
       intro y hy
-      have hnonneg : 0 ≤ ρ * l1n[y] ^ (2 : ℕ) := by
+      have hnonneg : 0 ≤ ρ * ‖y‖₁ ^ (2 : ℕ) := by
         positivity
-      have hnonnegE : (((0 : ℝ) : EReal)) ≤ (((ρ * l1n[y] ^ (2 : ℕ) : ℝ) : EReal)) := by
+      have hnonnegE : (((0 : ℝ) : EReal)) ≤ (((ρ * ‖y‖₁ ^ (2 : ℕ) : ℝ) : EReal)) := by
         exact_mod_cast hnonneg
       simpa [f, EReal.coe_sub] using hnonnegE
     have hprox0 : prox[f] (0 : E) = {(0 : E)} := by
@@ -581,16 +581,16 @@ theorem prox_squared_l1_norm_penalty_eq_singleton_piecewise
       intro y hy
       have hreal :
           inner ℝ (x - u) (y - u) ≤
-            ρ * l1n[y] ^ (2 : ℕ) - ρ * l1n[u] ^ (2 : ℕ) := by
+            ρ * ‖y‖₁ ^ (2 : ℕ) - ρ * ‖u‖₁ ^ (2 : ℕ) := by
         simpa [u] using l1SquareProxCandidate_support_bound hρ hμpos x y hroot
       have hrealE :
           ((inner ℝ (x - u) (y - u) : ℝ) : EReal) ≤
-            (((ρ * l1n[y] ^ (2 : ℕ) - ρ * l1n[u] ^ (2 : ℕ) : ℝ)) : EReal) :=
+            (((ρ * ‖y‖₁ ^ (2 : ℕ) - ρ * ‖u‖₁ ^ (2 : ℕ) : ℝ)) : EReal) :=
         EReal.coe_le_coe hreal
       simpa [f, u, EReal.coe_sub] using hrealE
     have hprox : prox[f] x = {u} := by
       refine prox_eq_singleton_of_effective_domain_and_inner_support f hf_proper x u ?_ hsupport
-      simpa [f, u] using (EReal.coe_lt_top (ρ * l1n[u] ^ (2 : ℕ)))
+      simpa [f, u] using (EReal.coe_lt_top (ρ * ‖u‖₁ ^ (2 : ℕ)))
     simpa [f, u, hx] using hprox
 
 end

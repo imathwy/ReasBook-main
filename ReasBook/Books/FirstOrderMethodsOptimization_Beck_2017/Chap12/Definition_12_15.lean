@@ -62,6 +62,13 @@ theorem qualification_nonempty_iff_exists_mem_intrinsicInterior
 
 namespace IsDualBlockProximalGradientProblem
 
+/-- Assumption 12.14 canonically provides properness of the primal term `f`. -/
+instance instIsProperExtendedRealFunctionOfIsDualBlockProximalGradientProblem
+    {p : ℕ} {f : E → EReal} {g : Fin p → E → EReal} {σ : PosReal}
+    (h : IsDualBlockProximalGradientProblem f g σ) :
+    IsProperExtendedRealFunction f :=
+  h.toIsProperExtendedRealFunction
+
 /-- Assumption 12.14 provides a point lying in `ri (dom f)` and in every block relative interior
 `ri (dom gᵢ)`. -/
 theorem exists_mem_intrinsicInterior

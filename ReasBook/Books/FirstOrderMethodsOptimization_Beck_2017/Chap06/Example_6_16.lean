@@ -250,7 +250,7 @@ lemma zero_mem_prox_zero_smul (g : E → EReal) :
 
 /-- Helper for Example 6.16: a pullback proximal minimizer maps to a proximal minimizer of the
 scaled codomain objective. -/
-lemma sum_pullback_minimizer_maps_to_scaled_minimizer
+private lemma pullback_minimizer_maps_to_scaled_minimizer
     (g : E → EReal) (hcard : 0 < Fintype.card ι) (x u : Eι)
     (hu : u ∈ prox[fun y : Eι ↦ g (∑ i, y i)] x) :
     (∑ i, u i) ∈ prox[((Fintype.card ι : ℝ) : EReal) • g] (∑ i, x i) := by
@@ -393,7 +393,7 @@ theorem proximal_mapping_sum_precompose_eq_image
     constructor
     · intro hu
       rw [Set.mem_image]
-      refine ⟨∑ i, u i, sum_pullback_minimizer_maps_to_scaled_minimizer g hcard x u hu, ?_⟩
+      refine ⟨∑ i, u i, pullback_minimizer_maps_to_scaled_minimizer g hcard x u hu, ?_⟩
       -- A pullback minimizer must lie on the canonical average-shift section.
       simpa [T] using (pullback_minimizer_eq_average_shift g hg_proper hcard x u hu).symm
     · rintro ⟨z, hz, rfl⟩

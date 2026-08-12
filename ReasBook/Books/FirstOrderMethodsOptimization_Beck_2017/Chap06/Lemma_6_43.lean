@@ -2,6 +2,7 @@ import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap03.Proposition_3_12
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Definition_6_1
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Example_6_19
+import FirstOrderMethodsOptimization_Beck_2017.Chap06.Proposition_6_2_1
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -18,10 +19,11 @@ variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
 /- Lemma 6.43 is `source-facing` in the Chapter 6 proximal-operator API: the textbook computes the
 proximal operator of the distance penalty to a nonempty closed convex set. Domain sampling uses the
-project owner `metricProjection`, its ray identity
+ project complete-subset bridge `metricProjectionOfComplete`, its ray identity
 `metricProjection_add_smul_sub_metricProjection_eq`, and the canonical affine owner
-`AffineMap.lineMap`. The main theorem is `source-facing`, while `metricProjection` is the
-`core/canonical` point-projection owner and the older `Pp[...]` notation is only a `bridge/view`.
+`AffineMap.lineMap`. The main theorem is `source-facing`, while `metricProjectionOfComplete` is
+the point-projection `bridge/view` owner for complete subsets and the older `Pp[...]` notation is
+only a separate `bridge/view`.
 The primitive data are the set `C`, its nonempty/complete/convex hypotheses, the scalar `lam`, and
 the base point `x`; the explicit projected point and affine combination are derived API and should
 be stated directly through those owners. -/
@@ -29,7 +31,7 @@ be stated directly through those owners. -/
 variable (C : Set E) (hC_nonempty : C.Nonempty) (hC_complete : IsComplete C)
     (hC_convex : Convex ℝ C)
 
-local notation "P" => metricProjection C hC_nonempty hC_complete hC_convex
+local notation "P" => metricProjectionOfComplete C hC_nonempty hC_complete hC_convex
 
 -- Proof sketch: apply the second prox theorem to `f = fun y ↦ ((lam * infDist y C : ℝ) : EReal)`.
 -- Proof sketch: the distance-penalty proximal objective is controlled by the residual
@@ -49,7 +51,7 @@ theorem metricProjection_eq_along_projection_ray
   have hy_Px : ∀ w ∈ C, inner ℝ (y - P x) (w - P x) ≤ 0 := by
     intro w hw
     have hx :=
-      inner_sub_metricProjection_le_zero
+      inner_sub_metricProjectionOfComplete_le_zero
         C hC_nonempty hC_complete hC_convex x w hw
     have hy : y - P x = t • (x - P x) := by
       dsimp [y]
@@ -59,7 +61,8 @@ theorem metricProjection_eq_along_projection_ray
   have hPx_min : ‖y - P x‖ = ⨅ z : C, ‖y - z‖ :=
     (norm_eq_iInf_iff_real_inner_le_zero hC_convex hPx).2 hy_Px
   have hPy_min : ‖y - P y‖ = ⨅ z : C, ‖y - z‖ := by
-    simpa [y] using norm_sub_metricProjection_eq_iInf C hC_nonempty hC_complete hC_convex y
+    simpa [y] using
+      norm_sub_metricProjectionOfComplete_eq_iInf C hC_nonempty hC_complete hC_convex y
   have hPy : ∀ w ∈ C, inner ℝ (y - P y) (w - P y) ≤ 0 :=
     (norm_eq_iInf_iff_real_inner_le_zero hC_convex (P y).2).1 hPy_min
   have h1 : inner ℝ (y - P y) (P x - P y) ≤ 0 := hPy (P x) hPx
@@ -100,13 +103,15 @@ theorem infDist_prox_objective_lower_bound_by_projection_residual
   let b : E := (P y : E) - P x
   have hy_dist : infDist y C = ‖y - P y‖ := by
     calc
-      infDist y C = dist y (P y) := infDist_eq_dist_metricProjection C hC_nonempty hC_complete hC_convex y
+      infDist y C = dist y (P y) := by
+        simpa using
+          infDist_eq_dist_metricProjectionOfComplete C hC_nonempty hC_complete hC_convex y
       _ = ‖y - P y‖ := by rw [dist_eq_norm]
   have hx_proj :=
-    inner_sub_metricProjection_le_zero
+    inner_sub_metricProjectionOfComplete_le_zero
       C hC_nonempty hC_complete hC_convex x (P y) (P y).2
   have hy_proj :=
-    inner_sub_metricProjection_le_zero
+    inner_sub_metricProjectionOfComplete_le_zero
       C hC_nonempty hC_complete hC_convex y (P x) (P x).2
   have hy_proj' : 0 ≤ inner ℝ (y - P y) ((P y : E) - P x) := by
     have hy_proj'' : inner ℝ (y - P y) (-(((P y : E) - P x))) ≤ 0 := by
@@ -163,7 +168,9 @@ theorem distance_prox_candidate_eq_piecewise_target
   have hpdist : ‖x - P x‖ = infDist x C := by
     calc
       ‖x - P x‖ = dist x (P x) := by rw [dist_eq_norm]
-      _ = infDist x C := (infDist_eq_dist_metricProjection C hC_nonempty hC_complete hC_convex x).symm
+      _ = infDist x C := by
+        simpa using
+          (infDist_eq_dist_metricProjectionOfComplete C hC_nonempty hC_complete hC_convex x).symm
   by_cases hlt : lam < infDist x C
   · have hmax : max ‖x - P x‖ lam = ‖x - P x‖ := by
       rw [hpdist, max_eq_left (le_of_lt hlt)]
@@ -204,12 +211,24 @@ downstream specialization obtained from `IsClosed.isComplete`. The endpoint `λ 
 canonically: if `x ∉ C`, then the first branch becomes `lineMap x (P_C x) 0 = x`, while if
 `x ∈ C`, then both branches reduce to `x`. -/
 theorem prox_infDist_eq_singleton_piecewise_metricProjection
-    [Nontrivial E] (lam : ℝ) (hlam : 0 ≤ lam) (x : E) :
+    (lam : ℝ) (hlam : 0 ≤ lam) (x : E) :
     prox[fun y : E ↦ ((lam * infDist y C : ℝ) : EReal)] x =
       {if lam < infDist x C then
         lineMap x (P x) (lam / infDist x C)
       else
         P x} := by
+  by_cases hlam_zero : lam = 0
+  · subst lam
+    have hprox :
+        prox[fun y : E ↦ (((0 : ℝ) * infDist y C : ℝ) : EReal)] x = {x} := by
+      simpa using (prox_zero_eq_singleton x)
+    rw [hprox]
+    apply congrArg Set.singleton
+    have hpiece :=
+      distance_prox_candidate_eq_piecewise_target
+        C hC_nonempty hC_complete hC_convex 0 x
+    simpa using hpiece
+  have hlam_pos : 0 < lam := lt_of_le_of_ne hlam (Ne.symm hlam_zero)
   let p : E := P x
   let v : E := (1 - lam / max ‖x - p‖ lam) • (x - p)
   let u : E := p + v
@@ -217,10 +236,12 @@ theorem prox_infDist_eq_singleton_piecewise_metricProjection
     calc
       ‖x - p‖ = dist x (P x) := by
         rw [show p = (P x : E) by rfl, dist_eq_norm]
-      _ = infDist x C := (infDist_eq_dist_metricProjection C hC_nonempty hC_complete hC_convex x).symm
+      _ = infDist x C := by
+        simpa using
+          (infDist_eq_dist_metricProjectionOfComplete C hC_nonempty hC_complete hC_convex x).symm
   have hv_prox :
       prox[norm_penalty lam] (x - p) = {v} := by
-    simpa [p, v] using prox_norm_penalty_eq_singleton_shrinkage lam hlam (x - p)
+    simpa [p, v] using prox_norm_penalty_eq_singleton_shrinkage lam hlam_pos (x - p)
   have hv_mem : v ∈ prox[norm_penalty lam] (x - p) := by
     rw [hv_prox]
     simp
@@ -267,7 +288,9 @@ theorem prox_infDist_eq_singleton_piecewise_metricProjection
         (lam * ‖v‖ : ℝ) + (1 / 2 : ℝ) * ‖v - (x - p)‖ ^ 2 := by
     have hu_dist : infDist u C = ‖u - p‖ := by
       calc
-        infDist u C = dist u (P u) := infDist_eq_dist_metricProjection C hC_nonempty hC_complete hC_convex u
+        infDist u C = dist u (P u) := by
+          simpa using
+            infDist_eq_dist_metricProjectionOfComplete C hC_nonempty hC_complete hC_convex u
         _ = dist u (P x) := by rw [hPu]
         _ = ‖u - p‖ := by rw [show p = (P x : E) by rfl, dist_eq_norm]
     have hu_sub_p : u - p = v := by

@@ -140,8 +140,10 @@ def partial_conditional_gradient_norm
     (x : (j : ι) → Ei j) (i : ι) : EReal :=
   sSup (Set.range (partial_conditional_gradient_gap_objective g block_gradient x i))
 
-/- Textbook notation for the `i`-th block conditional-gradient quantity `S_i(x)`. -/
-notation "Sblk[" g ", " block_gradient "; " i "](" x ")" =>
+/- Block-specific notation for the `i`-th conditional-gradient quantity `S_i(x)`.
+The `S[...]` spelling is already the public one-space notation from Text 13.2, so the block
+variant uses a distinct parser token and can be imported together with that owner. -/
+notation "Sᵇ[" g ", " block_gradient "; " i "](" x ")" =>
   partial_conditional_gradient_norm g block_gradient x i
 
 -- Proof sketch: unfold `partial_conditional_gradient_norm`; this is exactly the order-theoretic
@@ -152,7 +154,7 @@ theorem partial_conditional_gradient_norm_eq_sSup_gap_objective
     (g : (i : ι) → Ei i → EReal)
     (block_gradient : (i : ι) → ((j : ι) → Ei j) → Ei i)
     (x : (j : ι) → Ei j) (i : ι) :
-    Sblk[g, block_gradient; i](x) =
+    Sᵇ[g, block_gradient; i](x) =
       sSup (Set.range (partial_conditional_gradient_gap_objective g block_gradient x i)) :=
   rfl
 
@@ -202,7 +204,7 @@ theorem partial_conditional_gradient_norm_eq_of_mem_argmin
     {block_gradient : (i : ι) → ((j : ι) → Ei j) → Ei i}
     {x : (j : ι) → Ei j} {i : ι} {v : Ei i}
     (hv : v ∈ partial_conditional_gradient_argmin g block_gradient x i) :
-    Sblk[g, block_gradient; i](x) =
+    Sᵇ[g, block_gradient; i](x) =
       partial_conditional_gradient_gap_objective g block_gradient x i v := by
   -- Replace the norm by the supremum of the gap range and identify that supremum with its
   -- greatest element coming from the chosen block minimizer.
@@ -221,8 +223,8 @@ def block_conditional_gradient_norm
     (x : (j : ι) → Ei j) : EReal :=
   ∑ i : ι, partial_conditional_gradient_norm g block_gradient x i
 
-/- Textbook notation for the total block conditional-gradient quantity `S(x)`. -/
-notation "Sblk[" g ", " block_gradient "](" x ")" =>
+/- Block-specific notation for the total conditional-gradient quantity `S(x)`. -/
+notation "Sᵇ[" g ", " block_gradient "](" x ")" =>
   block_conditional_gradient_norm g block_gradient x
 
 -- Proof sketch: unfold `block_conditional_gradient_norm`; the owner is definitionally the finite
@@ -233,8 +235,8 @@ theorem block_conditional_gradient_norm_eq_sum
     (g : (i : ι) → Ei i → EReal)
     (block_gradient : (i : ι) → ((j : ι) → Ei j) → Ei i)
     (x : (j : ι) → Ei j) :
-    Sblk[g, block_gradient](x) =
-      ∑ i : ι, Sblk[g, block_gradient; i](x) :=
+    Sᵇ[g, block_gradient](x) =
+      ∑ i : ι, Sᵇ[g, block_gradient; i](x) :=
   rfl
 
 end
@@ -258,7 +260,7 @@ theorem partial_conditional_gradient_norm_eq_of_selection
     {selection : (i : ι) → ((j : ι) → Ei j) → Ei i}
     (hselection : IsPartialConditionalGradientSelection g block_gradient selection)
     (x : (j : ι) → Ei j) (i : ι) :
-    Sblk[g, block_gradient; i](x) =
+    Sᵇ[g, block_gradient; i](x) =
       partial_conditional_gradient_gap_objective g block_gradient x i (selection i x) :=
   partial_conditional_gradient_norm_eq_of_mem_argmin (hselection i x)
 

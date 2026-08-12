@@ -1,4 +1,3 @@
-import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_5
 import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_6
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Definition_6_7
@@ -66,6 +65,16 @@ class IsDualBasedProximalGradientProblem
       A ⁻¹' intrinsicInterior ℝ (effective_domain g)).Nonempty
 
 namespace IsDualBasedProximalGradientProblem
+
+/-- Assumption 12.1 packages primal strong convexity together with the relative-interior
+qualification used throughout the Chapter 12 duality arguments. -/
+theorem strongConvexOn_and_qualification
+    {f : E → EReal} {g : V → EReal} {A : E →ₗ[ℝ] V} {σ : PosReal}
+    (h : IsDualBasedProximalGradientProblem f g A σ) :
+    StrongConvexOn (effective_domain f) (σ : ℝ) (fun x ↦ (f x).toReal) ∧
+      (intrinsicInterior ℝ (effective_domain f) ∩
+        A ⁻¹' intrinsicInterior ℝ (effective_domain g)).Nonempty :=
+  ⟨h.f_strongly_convex, h.qualification⟩
 
 /-- Assumption 12.1 provides a point `x̂ ∈ ri(dom f)` whose image `A x̂` lies in
 `ri(dom g)`. Equivalently, there exist `x̂ ∈ ri(dom f)` and `ẑ ∈ ri(dom g)` with `A x̂ = ẑ`. -/

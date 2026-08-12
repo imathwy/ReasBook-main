@@ -60,12 +60,10 @@ lemma optimal_value_eq_of_mem_optimal_set
     f xStar = fOpt := by
   have hoptset :
       XStar = unconstrained_problem_solutions f :=
-    IsFastProximalGradientProblem.optimal_set_eq_unconstrained_problem_solutions
-      (h := hfast)
+    IsFastProximalGradientProblem.optimal_set_eq_unconstrained_problem_solutions hfast
   have hglb :
       IsGLB (Set.range f) fOpt :=
-    IsFastProximalGradientProblem.optimal_value_isGLB_range
-      (h := hfast)
+    IsFastProximalGradientProblem.optimal_value_isGLB_range hfast
   -- Rewrite the chapter optimal set as the canonical unconstrained argmin set of `f`.
   have hxStar_opt : xStar ∈ unconstrained_problem_solutions f := by
     simpa [hoptset] using hxStar
@@ -88,16 +86,17 @@ lemma convex_support_at_iterate_fderiv
   have hψ_convex : ConvexOn ℝ Set.univ ψ := by
     -- Restrict the ambient convex objective to the affine line through `x` and `y`.
     simpa [ψ, line] using
-      hf_convex.comp_affineMap (AffineMap.lineMap (k := ℝ) xBase yBase)
+      hf_convex.comp_affineMap (AffineMap.lineMap xBase yBase)
   have hψ_deriv : HasDerivAt ψ (fderiv ℝ f xBase (yBase - xBase)) 0 := by
     -- Differentiate the line restriction at the base point `x`.
     have hbase : HasFDerivAt f (fderiv ℝ f xBase) (line 0) := by
       simpa [line] using hf_diff.hasFDerivAt
     have hline : HasDerivAt line (yBase - xBase) 0 := by
       simpa [line] using
-        (AffineMap.hasDerivAt_lineMap (a := xBase) (b := yBase) (x := (0 : ℝ)))
+        (show HasDerivAt (AffineMap.lineMap xBase yBase) (yBase - xBase) (0 : ℝ) from
+          AffineMap.hasDerivAt_lineMap)
     simpa [ψ, line] using
-      HasFDerivAt.comp_hasDerivAt (x := 0) hbase hline
+      HasFDerivAt.comp_hasDerivAt 0 hbase hline
   have hsecant :
       fderiv ℝ f xBase (yBase - xBase) ≤ slope ψ 0 1 := by
     -- Convexity bounds the derivative at the left endpoint by the secant slope.
@@ -117,20 +116,20 @@ lemma objective_gap_le_dist_mul_dual_norm_of_mem_optimal_set
     f (xSeq k) - fOpt ≤ dist (xSeq k) xStar * ‖fderiv ℝ f (xSeq k)‖_* := by
   have hdiff :
       DifferentiableAt ℝ f (xSeq k) :=
-    non_euclidean_gradient_method_differentiableAt
-      (f := f) (counterpart := counterpart) (L := L) (x0 := x0) hadm k
+    non_euclidean_gradient_method_differentiableAt hadm k
   have hsupport :
       f xStar ≥ f (xSeq k) - fderiv ℝ f (xSeq k) (xSeq k - xStar) := by
     -- Route correction: rewrite the convex support term along `xStar - x^k` into the source
     -- direction `x^k - xStar` before comparing it with the operator norm.
     simpa [sub_eq_add_neg, add_comm, add_left_comm, add_assoc, map_neg] using
-      (convex_support_at_iterate_fderiv
-        (f := f) (xBase := xSeq k) (yBase := xStar) hfast.f_convex hdiff)
+      (show
+          f xStar ≥ f (xSeq k) + fderiv ℝ f (xSeq k) (xStar - xSeq k) from
+        convex_support_at_iterate_fderiv hfast.f_convex hdiff)
   have hgap_le_apply :
       f (xSeq k) - fOpt ≤ fderiv ℝ f (xSeq k) (xSeq k - xStar) := by
     -- Replace the optimizer value by `fOpt` and move the support term to the right-hand side.
     have hxstar_eq : f xStar = fOpt :=
-      optimal_value_eq_of_mem_optimal_set (hfast := hfast) hxStar
+      optimal_value_eq_of_mem_optimal_set hxStar
     rw [← hxstar_eq]
     linarith
   -- Finish with the operator-norm bound and rewrite the ambient norm as a metric distance.
@@ -157,7 +156,7 @@ lemma objective_gap_le_infDist_mul_dual_norm
         f (xSeq k) - fOpt ≤ 0 := by
       have hgap :=
         objective_gap_le_dist_mul_dual_norm_of_mem_optimal_set
-          (counterpart := counterpart) (L := L) (x0 := x0) hadm hxStar k
+          hadm hxStar k
       simpa [hzero] using hgap
     simpa [hzero] using hgap_le_zero
   · have hnorm_pos : 0 < ‖fderiv ℝ f (xSeq k)‖_* := by
@@ -172,7 +171,7 @@ lemma objective_gap_le_infDist_mul_dual_norm
       -- Divide the pointwise optimizer estimate by the positive derivative norm.
       have hgap :=
         objective_gap_le_dist_mul_dual_norm_of_mem_optimal_set
-          (counterpart := counterpart) (L := L) (x0 := x0) hadm hxStar k
+          hadm hxStar k
       exact (div_le_iff₀ hnorm_pos).2 <| by
         simpa [mul_assoc, mul_left_comm, mul_comm] using hgap
     have hscaled_le_infDist :
@@ -203,9 +202,7 @@ lemma objective_values_antitone_of_admissible_stepsize
   have hdrop :
       f (xSeq n) - f (xSeq (n + 1)) ≥
         M * ‖fderiv ℝ f (xSeq n)‖_* ^ (2 : ℕ) :=
-    non_euclidean_gradient_step_decrease_ge_dual_norm_sq
-      (f := f) (Lf := Lf) (counterpart := counterpart) (L := L) (x0 := x0) (M := M)
-      hfast.f_smooth hadm hstepsize n
+    non_euclidean_gradient_step_decrease_ge_dual_norm_sq hfast.f_smooth hadm hstepsize n
   have hnonneg : 0 ≤ M * ‖fderiv ℝ f (xSeq n)‖_* ^ (2 : ℕ) := by
     exact mul_nonneg (le_of_lt hM_pos) (sq_nonneg ‖fderiv ℝ f (xSeq n)‖_*)
   exact sub_nonneg.mp (le_trans hnonneg hdrop)
@@ -227,8 +224,7 @@ theorem non_euclidean_gradient_step_decrease_ge_sq_objective_gap_of_sublevel_dis
     uses_non_euclidean_gradient_stepsize_rule.parameter_pos hstepsize
   have hantitone :
       Antitone (fun n ↦ f (xSeq n)) :=
-    objective_values_antitone_of_admissible_stepsize
-      (counterpart := counterpart) (L := L) (x0 := x0) (M := M) hadm hstepsize
+    objective_values_antitone_of_admissible_stepsize hadm hstepsize
   have hxk_le_x0 : f (xSeq k) ≤ f x0 := by
     simpa using hantitone (Nat.zero_le k)
   have hxk_le_α : f (xSeq k) ≤ α := by
@@ -238,8 +234,7 @@ theorem non_euclidean_gradient_step_decrease_ge_sq_objective_gap_of_sublevel_dis
     hRα hxk_le_α
   have hgap_inf :
       f (xSeq k) - fOpt ≤ infDist (xSeq k) XStar * ‖fderiv ℝ f (xSeq k)‖_* :=
-    objective_gap_le_infDist_mul_dual_norm
-      (counterpart := counterpart) (L := L) (x0 := x0) hadm k
+    objective_gap_le_infDist_mul_dual_norm hadm k
   have hgap_radius :
       f (xSeq k) - fOpt ≤ (Rα : ℝ) * ‖fderiv ℝ f (xSeq k)‖_* := by
     -- Monotonicity keeps `x^k` in the initial sublevel set, so `hRα` upgrades the `infDist`
@@ -252,13 +247,11 @@ theorem non_euclidean_gradient_step_decrease_ge_sq_objective_gap_of_sublevel_dis
       f (xSeq k) - f (xSeq (k + 1)) ≥
         M * ‖fderiv ℝ f (xSeq k)‖_* ^ (2 : ℕ) :=
     non_euclidean_gradient_step_decrease_ge_dual_norm_sq
-      (f := f) (Lf := Lf) (counterpart := counterpart) (L := L) (x0 := x0) (M := M)
       hproblem.f_smooth hadm hstepsize k
   have hgap_nonneg : 0 ≤ f (xSeq k) - fOpt := by
     have hglb :
         IsGLB (Set.range f) fOpt :=
-      IsFastProximalGradientProblem.optimal_value_isGLB_range
-        (h := hproblem)
+      IsFastProximalGradientProblem.optimal_value_isGLB_range hproblem
     exact sub_nonneg.mpr (hglb.1 ⟨xSeq k, rfl⟩)
   have hgrad_nonneg : 0 ≤ ‖fderiv ℝ f (xSeq k)‖_* := norm_nonneg _
   have hR_sq_pos : 0 < ((Rα : ℝ) ^ (2 : ℕ)) := by

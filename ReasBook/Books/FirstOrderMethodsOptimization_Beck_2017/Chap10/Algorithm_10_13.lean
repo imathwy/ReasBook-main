@@ -1,6 +1,3 @@
-import Mathlib
-import FirstOrderMethodsOptimization_Beck_2017.Chap09.Definition_9_2
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Assumption_10_31
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
@@ -40,16 +37,28 @@ def fista_momentum_update (t : ℝ) : ℝ :=
 `(1 + √(1 + 4 t^2)) / 2`. -/
 @[simp] theorem fista_momentum_update_eq (t : ℝ) :
     fista_momentum_update t =
-      (1 + Real.sqrt (1 + 4 * t ^ (2 : ℕ))) / 2 := rfl
+      (1 + Real.sqrt (1 + 4 * t ^ (2 : ℕ))) / 2 :=
+  rfl
 
 /-- The FISTA momentum update increases every input by at least `1 / 2`. -/
 theorem add_one_half_le_fista_momentum_update (t : ℝ) :
     t + 1 / 2 ≤ fista_momentum_update t := by
-  have hsqrt : 2 * t ≤ Real.sqrt (1 + 4 * t ^ (2 : ℕ)) := by
-    apply Real.le_sqrt_of_sq_le
-    nlinarith
+  -- Normalize the update formula to a single square-root lower bound.
   rw [fista_momentum_update_eq]
-  linarith
+  suffices hsqrt : 2 * t ≤ Real.sqrt (1 + 4 * t ^ (2 : ℕ)) by
+    nlinarith
+  by_cases ht : t ≤ 0
+  · -- For nonpositive inputs, the left-hand side is already nonpositive.
+    have hsqrt_nonneg : 0 ≤ Real.sqrt (1 + 4 * t ^ (2 : ℕ)) := Real.sqrt_nonneg _
+    linarith
+  · -- For nonnegative inputs, compare squares and use nonnegativity on both sides.
+    have ht_nonneg : 0 ≤ t := by linarith
+    have hrad_nonneg : 0 ≤ 1 + 4 * t ^ (2 : ℕ) := by positivity
+    have hsq : (2 * t) ^ (2 : ℕ) ≤ (Real.sqrt (1 + 4 * t ^ (2 : ℕ))) ^ (2 : ℕ) := by
+      rw [Real.sq_sqrt hrad_nonneg]
+      nlinarith
+    have hsqrt_nonneg : 0 ≤ Real.sqrt (1 + 4 * t ^ (2 : ℕ)) := Real.sqrt_nonneg _
+    nlinarith
 
 /-- The canonical FISTA momentum sequence `t₀ = 1`,
 `t_(n+1) = (1 + √(1 + 4 t_n^2)) / 2`. -/
@@ -92,7 +101,8 @@ def fista_extrapolated_point (state : FISTAState E) : E :=
 @[simp] theorem fista_extrapolated_point_eq (state : FISTAState E) :
     fista_extrapolated_point state =
       let tNext := fista_momentum_update state.tCur
-      state.xCur + ((state.tCur - 1) / tNext) • (state.xCur - state.xPrev) := rfl
+      state.xCur + ((state.tCur - 1) / tNext) • (state.xCur - state.xPrev) :=
+  rfl
 
 end
 
@@ -125,6 +135,24 @@ def fista_constant_stepsize
         tCur := 1 }
   | n + 1 => fista_constant_stepsize_state_update f g Lf (fista_constant_stepsize Lf z n)
 
+/-- The constant-stepsize FISTA state sequence starts from
+`(x^{-1}, x^0, t_0) = (z, T_(L_f)(z), 1)`. -/
+@[simp] theorem fista_constant_stepsize_zero
+    (Lf : PosReal) (z : E) :
+    fista_constant_stepsize f g Lf z 0 =
+      { xPrev := z
+        xCur := T[Lf; f, g] z
+        tCur := 1 } :=
+  rfl
+
+/-- The constant-stepsize FISTA state sequence evolves by the one-step update from the previous
+state. -/
+theorem fista_constant_stepsize_succ
+    (Lf : PosReal) (z : E) (n : ℕ) :
+    fista_constant_stepsize f g Lf z (n + 1) =
+      fista_constant_stepsize_state_update f g Lf (fista_constant_stepsize f g Lf z n) :=
+  rfl
+
 /-- The constant-stepsize FISTA iterate family `x^n`. -/
 def fista_constant_stepsize_x
     (Lf : PosReal) (z : E) (n : ℕ) : E :=
@@ -141,7 +169,8 @@ def fista_constant_stepsize_y
 @[simp] theorem fista_constant_stepsize_x_zero
     (Lf : PosReal) (z : E) :
     fista_constant_stepsize_x f g Lf z 0 =
-      T[Lf; f, g] z := rfl
+      T[Lf; f, g] z :=
+  rfl
 
 -- Proof sketch: at the initialized state, `t_0 = 1`, so the extrapolation coefficient vanishes
 -- and `y^0 = x^0`.
@@ -150,8 +179,7 @@ def fista_constant_stepsize_y
     (Lf : PosReal) (z : E) :
     fista_constant_stepsize_y f g Lf z 0 =
       T[Lf; f, g] z := by
-  simp [fista_constant_stepsize_y, fista_constant_stepsize, fista_extrapolated_point,
-    fista_momentum_update]
+  simp [fista_constant_stepsize_y, fista_extrapolated_point, fista_momentum_update]
 
 -- Proof sketch: unfold `fista_constant_stepsize` at `n + 1`; the updated state's current iterate
 -- is definitionally the prox-gradient point `T_(L_f)(y^n)`.
@@ -171,13 +199,10 @@ theorem fista_constant_stepsize_tCur_eq
       fista_momentum_sequence n := by
   induction n with
   | zero =>
-      -- The initialized state records the textbook starting momentum `t₀ = 1`.
-      simp [fista_constant_stepsize, fista_momentum_sequence]
-  | succ n hn =>
-      -- One state update advances `tCur` by the same scalar recursion as
-      -- `fista_momentum_sequence`.
-      rw [fista_constant_stepsize, fista_constant_stepsize_state_update, hn,
-        fista_momentum_sequence_succ]
+      rfl
+  | succ n ih =>
+      simp [fista_constant_stepsize, fista_constant_stepsize_state_update,
+        fista_momentum_sequence_succ, ih]
 
 -- Proof sketch: unfold `fista_constant_stepsize` at `n + 1`; the extrapolated point of the
 -- updated state is definitionally the standard FISTA formula built from `x^(n+1)`, `x^n`, and
@@ -193,28 +218,16 @@ theorem fista_constant_stepsize_y_succ
         ((fista_momentum_sequence (n + 1) - 1) /
             fista_momentum_sequence (n + 2)) •
           (fista_constant_stepsize_x f g Lf z (n + 1) - fista_constant_stepsize_x f g Lf z n) :=
-  by
-  -- Unfold the extrapolated point once so the state fields can be rewritten to the canonical
-  -- momentum sequence.
+    by
   rw [fista_constant_stepsize_y, fista_extrapolated_point_eq]
-  have ht :
-      (fista_constant_stepsize f g Lf z (n + 1)).tCur =
-        fista_momentum_sequence (n + 1) :=
-    fista_constant_stepsize_tCur_eq f g Lf z (n + 1)
-  have htNext :
-      fista_momentum_update ((fista_constant_stepsize f g Lf z (n + 1)).tCur) =
-        fista_momentum_sequence (n + 2) := by
-    -- The next stored momentum is one more step of the same canonical recursion.
-    rw [ht, ← fista_momentum_sequence_succ (n + 1)]
-  -- After the momentum terms are identified, the remaining fields are exactly the iterate family
-  -- projections `x^(n+1)` and `x^n`.
-  have hxPrev :
-      (fista_constant_stepsize f g Lf z (n + 1)).xPrev =
-        fista_constant_stepsize_x f g Lf z n := by
-    rfl
-  rw [htNext, ht]
-  rw [hxPrev]
-  simp [fista_constant_stepsize_x]
+  rw [fista_constant_stepsize_succ]
+  simp only [fista_constant_stepsize_state_update, fista_constant_stepsize_x]
+  have ht : (fista_constant_stepsize f g Lf z n).tCur = fista_momentum_sequence n :=
+    fista_constant_stepsize_tCur_eq f g Lf z n
+  rw [ht]
+  rw [← fista_momentum_sequence_succ n, ← fista_momentum_sequence_succ (n + 1)]
+  rw [fista_constant_stepsize_succ]
+  simp only [fista_constant_stepsize_state_update]
 
 /-- Algorithm 10.13: given an input point `z^{-1}` and a positive integer restart length `N`,
 the restarted FISTA sequence is defined by `z^0 = T_(L_f)(z^{-1})` and
@@ -225,13 +238,26 @@ def restarted_fista
   | k + 1 =>
       fista_constant_stepsize_x f g Lf (restarted_fista Lf zMinusOne N k) N
 
+/-- Expanding `restarted_fista` yields the defining restarted-FISTA recursion from
+Algorithm 10.13. -/
+theorem restarted_fista_def
+    (Lf : PosReal) (zMinusOne : E) (N : ℕ+) :
+    restarted_fista f g Lf zMinusOne N 0 = T[Lf; f, g] zMinusOne ∧
+      ∀ k, restarted_fista f g Lf zMinusOne N (k + 1) =
+        fista_constant_stepsize_x f g Lf (restarted_fista f g Lf zMinusOne N k) N :=
+  by
+  constructor
+  · simp [restarted_fista]
+  · intro k
+    simp [restarted_fista]
+
 -- Proof sketch: unfold the recursive definition of `restarted_fista` at the base index `0`.
 /-- The restarted FISTA sequence starts at `z^0 = T_(L_f)(z^{-1})`. -/
 @[simp] theorem restarted_fista_zero
     (Lf : PosReal) (zMinusOne : E) (N : ℕ+) :
     restarted_fista f g Lf zMinusOne N 0 =
-      T[Lf; f, g] zMinusOne := by
-  simp [restarted_fista]
+      T[Lf; f, g] zMinusOne :=
+  rfl
 
 -- Proof sketch: unfold the recursive definition of `restarted_fista` at `k + 1`; the next outer
 -- restart point is the `N`th inner iterate of the constant-stepsize FISTA family started from
@@ -241,9 +267,7 @@ iterate started from the previous restart point `z^k`. -/
 @[simp] theorem restarted_fista_succ
     (Lf : PosReal) (zMinusOne : E) (N : ℕ+) (k : ℕ) :
     restarted_fista f g Lf zMinusOne N (k + 1) =
-      fista_constant_stepsize_x f g Lf (restarted_fista f g Lf zMinusOne N k) (N : ℕ) := by
-  simp [restarted_fista]
-
-variable {XStar : Set E} {FOpt : ℝ} {Lf : NNReal}
+      fista_constant_stepsize_x f g Lf (restarted_fista f g Lf zMinusOne N k) N :=
+  rfl
 
 end

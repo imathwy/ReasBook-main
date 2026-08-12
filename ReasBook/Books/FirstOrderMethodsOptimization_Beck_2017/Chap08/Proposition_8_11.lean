@@ -86,7 +86,7 @@ lemma dualFunction_le_lagrangian_value_of_nonneg
 
 /-- Helper for Proposition 8.11: the Euclidean Riesz-map pairing is the coordinate dot product on
 the multiplier space. -/
-lemma toDualMap_apply_eq_dotProduct
+private lemma toDualMap_apply_eq_dotProduct
     (u v : Λ) :
     ((toDualMap ℝ Λ v) u : ℝ) = dotProduct u v := by
   -- Convert the inner-product pairing on Euclidean space to the explicit coordinate formula.

@@ -76,8 +76,8 @@ lemma proximal_gradient_trajectory_succ_eq_prox_grad_operator
         proximal_gradient_step f g (proximal_gradient_trajectory_iterate htraj k : E) (L k) := by
     simpa [proximal_gradient_trajectory_iterate] using
       (is_proximal_gradient_trajectory_step htraj k).2
-  rw [prox_grad_operator_eq_singleton (f := f) (g := g) (L := L k)
-    (x := proximal_gradient_trajectory_iterate htraj k)] at hstep
+  rw [prox_grad_operator_eq_singleton f g (L k)
+    (proximal_gradient_trajectory_iterate htraj k)] at hstep
   simpa using hstep
 
 -- Proof sketch: unpack the B1 rule at iteration `k`, unfold the acceptance predicate at the
@@ -112,8 +112,7 @@ lemma backtracking_B1_acceptance_ineq_at_iterate
     rfl
   -- Unfold the accepted B1 decrease test and identify its point data with the trajectory iterate.
   simpa [xkEff, proximal_gradient_backtracking_accepts, hLk, hxInterior,
-    proximal_gradient_trajectory_succ_eq_prox_grad_operator
-      (f := f) (g := g) htraj k] using haccepts
+    proximal_gradient_trajectory_succ_eq_prox_grad_operator htraj k] using haccepts
 
 -- Proof sketch: compare the coefficients using `L_k ≤ max {s, η L_f / (2 (1 - γ))}` and compare
 -- the residuals using the monotonicity `‖G_s(x^k)‖ ≤ ‖G_Lk(x^k)‖` from Theorem 10.9. Multiplying
@@ -133,7 +132,7 @@ lemma backtracking_residual_bound_from_stepsize_bounds
   let M : ℝ := max (s : ℝ) (((η : ℝ) * (Lf : ℝ)) / (2 * (1 - (γ : ℝ))))
   have hnorm :
       ‖G[s] xk‖ ≤ ‖G[Lk] xk‖ :=
-    gradient_mapping_norm_monotone (f := f) (g := g) xk hs_le_Lk
+    gradient_mapping_norm_monotone f g xk hs_le_Lk
   have hsq :
       ‖G[s] xk‖ ^ (2 : ℕ) ≤ ‖G[Lk] xk‖ ^ (2 : ℕ) := by
     nlinarith [hnorm, norm_nonneg (G[s] xk), norm_nonneg (G[Lk] xk)]
@@ -180,17 +179,10 @@ lemma prox_grad_sufficient_decrease_at_trajectory_iterate
   -- Specialize Lemma 10.4 at the realized interior-domain iterate `x^k`.
   simpa using
     prox_grad_sufficient_decrease
-      (f := f)
-      (g := g)
-      (Lf := Lf)
-      (hf_ne_bot := hf_ne_bot)
-      (hf_effective_domain_convex := hf_effective_domain_convex)
-      (hg_effective_domain_subset_interior_f_effective_domain :=
-        hg_effective_domain_subset_interior_f_effective_domain)
-      (hf_toReal_smooth_on_interior_effective_domain :=
-        hf_toReal_smooth_on_interior_effective_domain)
-      (L := L k)
-      (x := proximal_gradient_trajectory_iterate htraj k)
+      f g Lf hf_ne_bot hf_effective_domain_convex
+      hg_effective_domain_subset_interior_f_effective_domain
+      hf_toReal_smooth_on_interior_effective_domain
+      (L k) (proximal_gradient_trajectory_iterate htraj k)
 
 -- Proof sketch: unpack the B1 owner at iteration `k` and then apply Remark 10.13's uniform
 -- stepsize bound to the accepted trial `s η^i = L_k`.
@@ -216,20 +208,11 @@ lemma backtracking_B1_stepsize_le_max_at_iterate
       (proximal_gradient_backtracking_trial_stepsize s η i : ℝ) ≤
         max (s : ℝ) (((η : ℝ) * (Lf : ℝ)) / (2 * (1 - (γ : ℝ)))) :=
     backtracking_procedure_B1_stepsize_le_max_initial_or_smoothness_threshold
-      (f := f)
-      (g := g)
-      (Lf := Lf)
-      (hg_effective_domain_subset_interior_f_effective_domain :=
-        hg_effective_domain_subset_interior_f_effective_domain)
-      (s := s)
-      (γ := γ)
-      (η := η)
-      (x := xkEff)
-      (hf_ne_bot := hf_ne_bot)
-      (hf_effective_domain_convex := hf_effective_domain_convex)
-      (hf_toReal_smooth_on_interior_effective_domain :=
-        hf_toReal_smooth_on_interior_effective_domain)
-      (i := i)
+      f g Lf
+      hg_effective_domain_subset_interior_f_effective_domain
+      s γ η xkEff
+      hf_ne_bot hf_effective_domain_convex
+      hf_toReal_smooth_on_interior_effective_domain
       hi
   -- Rewrite the accepted trial stepsize back to the trajectory stepsize `L_k`.
   simpa [xkEff, hLk] using hbound
@@ -261,21 +244,14 @@ by
             ‖G[barL] xk‖ ^ (2 : ℕ) : ℝ) : EReal) :=
     by
       simpa [xk] using
-        prox_grad_sufficient_decrease_at_trajectory_iterate
-          (f := f)
-          (g := g)
-          (Lf := Lf)
-          (hf_ne_bot := hf_ne_bot)
-          (hf_effective_domain_convex := hf_effective_domain_convex)
-          (hg_effective_domain_subset_interior_f_effective_domain :=
-            hg_effective_domain_subset_interior_f_effective_domain)
-          (hf_toReal_smooth_on_interior_effective_domain :=
-            hf_toReal_smooth_on_interior_effective_domain)
-          (htraj := htraj)
-          (k := k)
+        prox_grad_sufficient_decrease
+          f g Lf hf_ne_bot hf_effective_domain_convex
+          hg_effective_domain_subset_interior_f_effective_domain
+          hf_toReal_smooth_on_interior_effective_domain
+          barL (proximal_gradient_trajectory_iterate htraj k)
   -- Rewrite the prox-gradient update as the realized successor `x^(k+1)`.
   simpa [xk, proximal_gradient_trajectory_succ_eq_prox_grad_operator
-    (f := f) (g := g) htraj k] using hdescent
+    htraj k] using hdescent
 
 -- Proof sketch: for the accepted B1 stepsize `L_k`, use the `accepts` field of the
 -- backtracking-index owner to get the sufficient-decrease estimate
@@ -311,24 +287,15 @@ by
       ((((γ : ℝ) / (L k : ℝ)) * ‖G[L k] xk‖ ^ (2 : ℕ) : ℝ) : EReal) ≤
         F (x k) - F (x (k + 1)) :=
     backtracking_B1_acceptance_ineq_at_iterate
-      (f := f)
-      (g := g)
-      (hg_effective_domain_subset_interior_f_effective_domain :=
-        hg_effective_domain_subset_interior_f_effective_domain)
+      hg_effective_domain_subset_interior_f_effective_domain
       s γ η htraj hbacktrack k
   have hLk_le_max :
       (L k : ℝ) ≤ max (s : ℝ) (((η : ℝ) * (Lf : ℝ)) / (2 * (1 - (γ : ℝ)))) := by
     -- Remark 10.13 bounds every accepted B1 stepsize by the stated uniform maximum.
     exact backtracking_B1_stepsize_le_max_at_iterate
-      (f := f)
-      (g := g)
-      (Lf := Lf)
-      (hf_ne_bot := hf_ne_bot)
-      (hf_effective_domain_convex := hf_effective_domain_convex)
-      (hg_effective_domain_subset_interior_f_effective_domain :=
-        hg_effective_domain_subset_interior_f_effective_domain)
-      (hf_toReal_smooth_on_interior_effective_domain :=
-        hf_toReal_smooth_on_interior_effective_domain)
+      hf_ne_bot hf_effective_domain_convex
+      hg_effective_domain_subset_interior_f_effective_domain
+      hf_toReal_smooth_on_interior_effective_domain
       s γ η htraj hbacktrack k
   have hs_le_Lk : (s : ℝ) ≤ (L k : ℝ) := by
     -- Every accepted trial has the form `s * η^i`, so it is at least the initial trial `s`.
@@ -341,9 +308,6 @@ by
           ‖G[s] xk‖ ^ (2 : ℕ) : ℝ)) ≤
         (((γ : ℝ) / (L k : ℝ)) * ‖G[L k] xk‖ ^ (2 : ℕ) : ℝ) :=
     backtracking_residual_bound_from_stepsize_bounds
-      (f := f)
-      (g := g)
-      (Lf := Lf)
       s γ η xk (L k) hs_le_Lk hLk_le_max
   have hresidual :
       ((((γ : ℝ) / max (s : ℝ) (((η : ℝ) * (Lf : ℝ)) / (2 * (1 - (γ : ℝ)))) *

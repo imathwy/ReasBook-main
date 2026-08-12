@@ -61,14 +61,14 @@ real-valued smooth term, the source-facing Chapter 10 theorems use the canonical
 `E`. -/
 
 /-- The proximal-gradient mapping for a real-valued smooth term `f`, obtained by evaluating the
-Chapter 10 owner `gradient_mapping` of `f.toExtendedReal` at the canonical interior-domain point
+Chapter 10 owner `gradient_mapping` of `f.toEReal` at the canonical interior-domain point
 associated to `x`. -/
 abbrev prox_gradient_mapping
     (f : E → ℝ) (g : E → EReal)
     [IsProperExtendedRealFunction g] [Fact (LowerSemicontinuous g)]
     [Fact (is_convex_function g)] (L : PosReal) : E → E :=
   fun x ↦
-    G[L, f.toExtendedReal, g] (interior_effective_domain_point_of_real f x)
+    G[L, f.toEReal, g] (interior_effective_domain_point_of_real f x)
 
 syntax:max "G[" term "; " term ", " term "]" : term
 
@@ -77,9 +77,9 @@ macro_rules
   | `(G[$L; $f, $g]) => `(prox_gradient_mapping $f $g $L)
 
 /-- Evaluating `prox_gradient_mapping` at `x` recovers the Chapter 10 gradient mapping of
-`f.toExtendedReal` at the canonical interior-domain point associated to `x`. -/
+`f.toEReal` at the canonical interior-domain point associated to `x`. -/
 @[simp] theorem prox_gradient_mapping_apply (L : PosReal) (x : E) :
-    G[L; f, g] x = G[L, f.toExtendedReal, g] (interior_effective_domain_point_of_real f x) := rfl
+    G[L; f, g] x = G[L, f.toEReal, g] (interior_effective_domain_point_of_real f x) := rfl
 
 end CoeReal
 

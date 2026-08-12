@@ -214,6 +214,18 @@ class IsADLPMMTrajectory
   y_step (k : ℕ) :
     y (k + 1) = admm_multiplier_update ρ A B c (y k) (x (k + 1)) (z (k + 1))
 
+/-- An Algorithm 15.5 AD-LPMM trajectory predicate is a proposition, hence subsingleton. -/
+instance instSubsingletonIsADLPMMTrajectory
+    {ρ : PosReal}
+    {A : X →ₗ[ℝ] Y} {B : Z →ₗ[ℝ] Y} {c : Y}
+    {α : ADLPMMLinearizationParameter ρ A}
+    {β : ADLPMMLinearizationParameter ρ B}
+    {h₁ : X → EReal} {h₂ : Z → EReal}
+    {x : ℕ → X} {z : ℕ → Z} {y : ℕ → Y}
+    {x0 : X} {z0 : Z} {y0 : Y} :
+    Subsingleton (IsADLPMMTrajectory ρ A B c α β h₁ h₂ x z y x0 z0 y0) :=
+  inferInstance
+
 end Trajectory
 
 end

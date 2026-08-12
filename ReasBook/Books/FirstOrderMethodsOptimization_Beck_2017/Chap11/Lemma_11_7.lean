@@ -74,8 +74,7 @@ private lemma halvingCount_add_strictHalfRatioCount_eq (m : ℕ) :
   classical
   -- The two predicates are exact complements on `ℝ`.
   simpa [halvingCount, strictHalfRatioCount, not_le] using
-    (Finset.card_filter_add_card_filter_not
-      (s := Finset.range m) (p := fun k ↦ a (k + 1) ≤ a k / 2))
+    ((Finset.range m).card_filter_add_card_filter_not fun k ↦ a (k + 1) ≤ a k / 2)
 
 /-- Helper for Lemma 11.7: a strict-half-ratio step yields a uniform reciprocal increment. -/
 lemma reciprocal_increment_ge_one_div_two_gamma_of_strict_half_ratio
@@ -128,8 +127,9 @@ lemma geometric_prefix_bound_of_halving_count
   | zero =>
       simp [halvingCount]
   | succ m ih =>
-      have ha_anti := quadratic_step_recurrence_antitone (a := a) (γ := γ) hstep
-      have hcount := halvingCount_succ (a := a) (m := m)
+      have ha_anti := quadratic_step_recurrence_antitone hstep
+      -- Make the section parameter explicit so the local count recursion elaborates stably.
+      have hcount := halvingCount_succ (a := a) m
       by_cases hhalf : a (m + 1) ≤ a m / 2
       · -- A halving step adds one more factor `1 / 2`.
         rw [hcount, if_pos hhalf]
@@ -157,15 +157,16 @@ lemma reciprocal_prefix_bound_of_strict_half_ratio_count
   | zero =>
       simp [strictHalfRatioCount]
   | succ m ih =>
-      have ha_anti := quadratic_step_recurrence_antitone (a := a) (γ := γ) hstep
-      have hcount := strictHalfRatioCount_succ (a := a) (m := m)
+      have ha_anti := quadratic_step_recurrence_antitone hstep
+      -- Make the section parameter explicit so the local count recursion elaborates stably.
+      have hcount := strictHalfRatioCount_succ (a := a) m
       have hm_prev_pos : 0 < a m := lt_of_lt_of_le hm_pos (ha_anti (Nat.le_succ m))
       by_cases hstrict : a m / 2 < a (m + 1)
       · -- A strict-half-ratio step adds one more reciprocal increment.
         have hprefix := ih hm_prev_pos
         have hinc :=
           reciprocal_increment_ge_one_div_two_gamma_of_strict_half_ratio
-            (a := a) (γ := γ) hstep m hm_prev_pos hm_pos hstrict
+            hstep m hm_prev_pos hm_pos hstrict
         rw [hcount, if_pos hstrict]
         have hcast :
             ((strictHalfRatioCount a m + 1 : ℕ) : ℝ) / (2 * (γ : ℝ)) =
@@ -338,33 +339,32 @@ lemma nonnegative_sequence_le_max_geometric_or_sublinear_of_quadratic_step_recur
     rw [han_zero]
     exact le_trans (by norm_num) (le_trans hsub_nonneg (le_max_right _ _))
   · -- Otherwise `a n > 0`, so the reciprocal branch can be evaluated at the prefix `n - 1`.
-    have ha_anti := quadratic_step_recurrence_antitone (a := a) (γ := γ) hstep
+    have ha_anti := quadratic_step_recurrence_antitone hstep
     have han_pos : 0 < a n := lt_of_le_of_ne (ha_nonneg n) (Ne.symm han_zero)
     have hprev_pos : 0 < a (n - 1) := by
       exact lt_of_lt_of_le han_pos (ha_anti (Nat.sub_le n 1))
     have hprefix_mono : a n ≤ a (n - 1) := ha_anti (Nat.sub_le n 1)
     have hpartition :
         halvingCount a (n - 1) + strictHalfRatioCount a (n - 1) = n - 1 :=
-      halvingCount_add_strictHalfRatioCount_eq (a := a) (m := n - 1)
+      halvingCount_add_strictHalfRatioCount_eq (a := a) (n - 1)
     have hcount_split :
         ((((n - 1 : ℕ) : ℝ) / 2) ≤ halvingCount a (n - 1)) ∨
           ((((n - 1 : ℕ) : ℝ) / 2) ≤ strictHalfRatioCount a (n - 1)) :=
       half_count_dichotomy_of_partition
         (h := halvingCount a (n - 1))
         (r := strictHalfRatioCount a (n - 1))
-        (m := n - 1) hpartition
+        (m := n - 1)
+        hpartition
     cases hcount_split with
     | inl hhalf =>
         -- Many halving steps immediately give the geometric target.
         have hgeo_prefix :
             a (n - 1) ≤ ((1 / 2 : ℝ) ^ halvingCount a (n - 1)) * a 0 :=
-          geometric_prefix_bound_of_halving_count
-            (a := a) (γ := γ) hstep (m := n - 1)
+          geometric_prefix_bound_of_halving_count (a := a) (γ := γ) hstep (n - 1)
         have hgeo_target :
             ((1 / 2 : ℝ) ^ halvingCount a (n - 1)) * a 0 ≤
               ((1 / 2 : ℝ) ^ (((n - 1 : ℕ) : ℝ) / 2)) * a 0 :=
-          geometric_branch_le_target_of_halving_count
-            (a0 := a 0) (ha0 := ha_nonneg 0) hhalf
+          geometric_branch_le_target_of_halving_count (ha_nonneg 0) hhalf
         calc
           a n ≤ a (n - 1) := hprefix_mono
           _ ≤ ((1 / 2 : ℝ) ^ halvingCount a (n - 1)) * a 0 := hgeo_prefix
@@ -381,7 +381,7 @@ lemma nonnegative_sequence_le_max_geometric_or_sublinear_of_quadratic_step_recur
             (strictHalfRatioCount a (n - 1) : ℝ) / (2 * (γ : ℝ)) ≤
               1 / a (n - 1) - 1 / a 0 :=
           reciprocal_prefix_bound_of_strict_half_ratio_count
-            (a := a) (γ := γ) hstep (m := n - 1) hprev_pos
+            (a := a) (γ := γ) hstep (n - 1) hprev_pos
         have hrecip :
             (strictHalfRatioCount a (n - 1) : ℝ) / (2 * (γ : ℝ)) ≤ 1 / a (n - 1) := by
           have hrecip0_nonneg : 0 ≤ 1 / a 0 := one_div_nonneg.mpr (ha_nonneg 0)
@@ -389,7 +389,7 @@ lemma nonnegative_sequence_le_max_geometric_or_sublinear_of_quadratic_step_recur
         have hsub_target :
             a (n - 1) ≤ 4 * (γ : ℝ) / ((n - 1 : ℕ) : ℝ) :=
           sublinear_branch_le_target_of_strict_half_ratio_count
-            (γ := γ) (x := a (n - 1)) hprev_pos hm hstrict hrecip
+            hprev_pos hm hstrict hrecip
         calc
           a n ≤ a (n - 1) := hprefix_mono
           _ ≤ 4 * (γ : ℝ) / ((n - 1 : ℕ) : ℝ) := hsub_target
@@ -462,8 +462,7 @@ lemma nonnegative_sequence_le_epsilon_of_quadratic_step_recurrence
     by_cases ha0_zero : a 0 = 0
     · simpa [ha0_zero] using (show (0 : ℝ) ≤ ε by exact (PosReal.coe_pos ε).le)
     · have ha0_pos : 0 < a 0 := lt_of_le_of_ne (ha_nonneg 0) (Ne.symm ha0_zero)
-      exact geometric_term_le_epsilon_of_log_bound
-        (a0 := a 0) ha0_pos ε hgeom_threshold
+      exact geometric_term_le_epsilon_of_log_bound ha0_pos ε hgeom_threshold
   have hsub_le_eps :
       4 * (γ : ℝ) / (((n - 1 : ℕ) : ℝ)) ≤ ε := by
     have hm_pos : 0 < (((n - 1 : ℕ) : ℝ)) := by

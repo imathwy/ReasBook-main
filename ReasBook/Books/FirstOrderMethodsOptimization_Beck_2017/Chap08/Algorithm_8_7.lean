@@ -30,8 +30,8 @@ def alternating_projection_method (S₁ S₂ : Set E)
       let xk :=
         alternating_projection_method S₁ S₂ hS₁_nonempty hS₁_closed hS₁_convex
           hS₂_nonempty hS₂_closed hS₂_convex x0 k
-      metricProjection S₂ hS₂_nonempty hS₂_closed.isComplete hS₂_convex
-        (metricProjection S₁ hS₁_nonempty hS₁_closed.isComplete hS₁_convex (xk : E))
+      metricProjection S₂ hS₂_nonempty hS₂_closed hS₂_convex
+        (metricProjection S₁ hS₁_nonempty hS₁_closed hS₁_convex (xk : E))
 
 section
 
@@ -56,8 +56,8 @@ theorem alternating_projection_method_zero :
 followed by the metric projection onto `S₂`. -/
 theorem alternating_projection_method_succ (k : ℕ) :
     x[k + 1] =
-      metricProjection S₂ hS₂_nonempty hS₂_closed.isComplete hS₂_convex
-        (metricProjection S₁ hS₁_nonempty hS₁_closed.isComplete hS₁_convex (x[k] : E)) := by
+      metricProjection S₂ hS₂_nonempty hS₂_closed hS₂_convex
+        (metricProjection S₁ hS₁_nonempty hS₁_closed hS₁_convex (x[k] : E)) := by
   -- The successor case is exactly the recursive update after the projection API repair.
   rfl
 

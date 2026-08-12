@@ -37,11 +37,11 @@ variable {E : Type u} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 /- Example 6.47 is `source-facing`: the proximal objective still uses the ambient Euclidean
 structure on `E`, but the penalty is built from a second norm `‖·‖_α` on the same real vector
 space. The canonical owner API already present in the project is the set-valued proximal mapping
-`prox[...]`, the set-valued projection mapping `Proj[...]`, the support function `support_function`,
+`prox[...]`, the set-valued projection mapping `P[...]`, the support function `support_function`,
 and mathlib's canonical seminorm ball API. The primitive data are the auxiliary seminorm
 `alpha : Seminorm ℝ E`; the dual ball is a derived `bridge/view` set built from the support
 function of the seminorm unit ball, and the projection side should stay on the chapter owner
-`Proj[...]` rather than on a local chosen-projection wrapper. -/
+`P[...]` rather than on a local chosen-projection wrapper. -/
 
 /-- The closed dual unit ball `{y ∈ E | ‖y‖_{α,*} ≤ 1}` under the ambient Riesz identification
 `y ↦ toDualMap ℝ E y`, defined through the support function of the canonical seminorm unit ball
@@ -305,7 +305,7 @@ variable (alpha : Seminorm ℝ E)
 its auxiliary dual unit ball. -/
 theorem alphaNormPenalty_eq_smul_support_function_primal_alphaDualUnitBall
     (lam : ℝ) :
-    alphaNormPenalty alpha lam = (((lam : ℝ) : EReal) • σp[alphaDualUnitBall alpha]) := by
+    alphaNormPenalty alpha lam = (((lam : ℝ) : EReal) • σ[alphaDualUnitBall alpha]) := by
   funext x
   -- Both functions evaluate to the same scalar multiple of `alpha x`.
   rw [alphaNormPenalty_apply, Pi.smul_apply, support_function_primal_apply,
@@ -315,22 +315,22 @@ theorem alphaNormPenalty_eq_smul_support_function_primal_alphaDualUnitBall
 -- Proof sketch: rewrite `alphaNormPenalty alpha` as the support function of
 -- `alphaDualUnitBall alpha` using `support_function_alphaDualUnitBall_eq_alpha`, then apply
 -- Theorem 6.46 to that dual unit ball, then rewrite the resulting singleton through the
--- chapter projection owner `Proj[...]`.
+-- chapter projection owner `P[...]`.
 /-- Example 6.47: let `f(x) = λ ‖x‖_α` for `λ > 0`, where the source norm `‖·‖_α` on the ambient
 Euclidean space `E` is encoded by the canonical owner `alpha : Seminorm ℝ E`, and let
 `C = {y ∈ E | ‖y‖_{α,*} ≤ 1}` be its dual unit ball under the Riesz identification `E ≃ E*`. Then
 the proximal mapping of `f` is the affine image of the projection set
-`Proj[alphaDualUnitBall alpha] (x / λ)` under `u ↦ x - λ • u`. This is the chapter's set-valued
+`P[alphaDualUnitBall alpha] (x / λ)` under `u ↦ x - λ • u`. This is the chapter's set-valued
 rendering of the textbook identity `prox_{λ ‖·‖_α}(x) = x - λ P_C(x / λ)`. -/
 theorem prox_alphaNormPenalty_eq_sub_smul_projection_mapping_alphaDualUnitBall
     (lam : ℝ) (hlam : 0 < lam) (x : E) :
     prox[alphaNormPenalty alpha lam] x =
-      Set.image (fun u : E ↦ x - lam • u) (Proj[alphaDualUnitBall alpha] (lam⁻¹ • x)) := by
+      Set.image (fun u : E ↦ x - lam • u) (P[alphaDualUnitBall alpha] (lam⁻¹ • x)) := by
   let lamPos : PosReal := ⟨lam, hlam⟩
   have hprox_support :
       prox[alphaNormPenalty alpha lam] x =
         {x - lam •
-          (metricProjection (alphaDualUnitBall alpha)
+          (metricProjectionOfComplete (alphaDualUnitBall alpha)
             (alphaDualUnitBall_nonempty alpha)
             (alphaDualUnitBall_isClosed alpha).isComplete
             (alphaDualUnitBall_convex alpha) (lam⁻¹ • x) : E)} := by
@@ -344,19 +344,25 @@ theorem prox_alphaNormPenalty_eq_sub_smul_projection_mapping_alphaDualUnitBall
         (hC_convex := alphaDualUnitBall_convex alpha)
         lamPos x
   have hproj :
-      Proj[alphaDualUnitBall alpha] (lam⁻¹ • x) =
-        {(metricProjection (alphaDualUnitBall alpha)
+      P[alphaDualUnitBall alpha] (lam⁻¹ • x) =
+        {(metricProjectionOfComplete (alphaDualUnitBall alpha)
             (alphaDualUnitBall_nonempty alpha)
             (alphaDualUnitBall_isClosed alpha).isComplete
             (alphaDualUnitBall_convex alpha) (lam⁻¹ • x) : E)} := by
     -- Rewrite the set-valued projection as the singleton of the metric projection.
-    simpa using
-      projection_mapping_eq_singleton_of_nonempty_closed_convex
-        (C := alphaDualUnitBall alpha)
-        (hC_nonempty := alphaDualUnitBall_nonempty alpha)
-        (hC_closed := alphaDualUnitBall_isClosed alpha)
-        (hC_convex := alphaDualUnitBall_convex alpha)
-        (lam⁻¹ • x)
+    simpa [projectionPoint_eq_metricProjectionOfComplete
+      (C := alphaDualUnitBall alpha)
+      (hC_nonempty := alphaDualUnitBall_nonempty alpha)
+      (hC_complete := (alphaDualUnitBall_isClosed alpha).isComplete)
+      (hC_convex := alphaDualUnitBall_convex alpha)
+      (hC_closed := alphaDualUnitBall_isClosed alpha)
+      (lam⁻¹ • x)] using
+        projection_mapping_eq_singleton_of_nonempty_closed_convex
+          (C := alphaDualUnitBall alpha)
+          (hC_nonempty := alphaDualUnitBall_nonempty alpha)
+          (hC_closed := alphaDualUnitBall_isClosed alpha)
+          (hC_convex := alphaDualUnitBall_convex alpha)
+          (lam⁻¹ • x)
   rw [hprox_support, hproj, Set.image_singleton]
 
 end

@@ -45,12 +45,12 @@ lemma isClosed_transported_stdSimplex : IsClosed (Δ : Set E) := by
 standard simplex in Euclidean coordinates. -/
 lemma coordinatewiseMax_eq_support_function_primal_transported_stdSimplex
     (y : E) :
-    (coordinatewiseMax y.ofLp : EReal) = σp[Δ] y := by
+    (coordinatewiseMax y.ofLp : EReal) = σ[Δ] y := by
   calc
     (coordinatewiseMax y.ofLp : EReal)
         = support_function (stdSimplex ℝ (Fin n)) (dotProductEquiv ℝ (Fin n) y.ofLp) := by
           simpa using coordinatewiseMax_eq_support_function_stdSimplex (x := y.ofLp)
-    _ = σp[Δ] y := by
+    _ = σ[Δ] y := by
       -- Rewrite both support functions as suprema over their defining pairing images.
       rw [support_function_eq_sSup, support_function_apply]
       -- The coordinate pairing is exactly the Euclidean inner product after transporting by `toLp`.
@@ -79,7 +79,7 @@ of the transported standard simplex. -/
 lemma coordinatewiseMax_penalty_eq_smul_support_function_primal_transported_stdSimplex
     (lam : ℝ) :
     (fun y : E ↦ (lam : EReal) * (coordinatewiseMax y.ofLp : EReal)) =
-      (((lam : ℝ) : EReal) • σp[Δ]) := by
+      (((lam : ℝ) : EReal) • σ[Δ]) := by
   funext y
   -- Evaluate the pointwise scalar action and substitute the support-function bridge.
   rw [Pi.smul_apply, coordinatewiseMax_eq_support_function_primal_transported_stdSimplex]
@@ -107,12 +107,12 @@ set onto the transported standard simplex `Δ = toLp 2 '' stdSimplex ℝ (Fin n)
 theorem prox_coordinatewiseMax_eq_sub_smul_projection_mapping_stdSimplex
     (lam : ℝ) (hlam : 0 < lam) (x : E) :
     prox[fun y : E ↦ (lam : EReal) * (coordinatewiseMax y.ofLp : EReal)] x =
-      Set.image (fun u : E ↦ x - lam • u) (Proj[Δ] (lam⁻¹ • x)) := by
+      Set.image (fun u : E ↦ x - lam • u) (P[Δ] (lam⁻¹ • x)) := by
   let lamPos : PosReal := ⟨lam, hlam⟩
   have hprox_support :
       prox[fun y : E ↦ (lam : EReal) * (coordinatewiseMax y.ofLp : EReal)] x =
         {x - lam •
-          (metricProjection Δ transported_stdSimplex_nonempty
+          (metricProjectionOfComplete Δ transported_stdSimplex_nonempty
             isClosed_transported_stdSimplex.isComplete
             convex_transported_stdSimplex (lam⁻¹ • x) : E)} := by
     -- Rewrite the penalty as a scaled support function and invoke Theorem 6.46.
@@ -125,18 +125,24 @@ theorem prox_coordinatewiseMax_eq_sub_smul_projection_mapping_stdSimplex
         (hC_convex := convex_transported_stdSimplex)
         lamPos x
   have hproj :
-      Proj[Δ] (lam⁻¹ • x) =
-        {(metricProjection Δ transported_stdSimplex_nonempty
+      P[Δ] (lam⁻¹ • x) =
+        {(metricProjectionOfComplete Δ transported_stdSimplex_nonempty
             isClosed_transported_stdSimplex.isComplete
             convex_transported_stdSimplex (lam⁻¹ • x) : E)} := by
     -- Rewrite the set-valued projection as the singleton of the metric projection.
-    simpa using
-      projection_mapping_eq_singleton_of_nonempty_closed_convex
-        (C := Δ)
-        (hC_nonempty := transported_stdSimplex_nonempty)
-        (hC_closed := isClosed_transported_stdSimplex)
-        (hC_convex := convex_transported_stdSimplex)
-        (lam⁻¹ • x)
+    simpa [projectionPoint_eq_metricProjectionOfComplete
+      (C := Δ)
+      (hC_nonempty := transported_stdSimplex_nonempty)
+      (hC_complete := isClosed_transported_stdSimplex.isComplete)
+      (hC_convex := convex_transported_stdSimplex)
+      (hC_closed := isClosed_transported_stdSimplex)
+      (lam⁻¹ • x)] using
+        projection_mapping_eq_singleton_of_nonempty_closed_convex
+          (C := Δ)
+          (hC_nonempty := transported_stdSimplex_nonempty)
+          (hC_closed := isClosed_transported_stdSimplex)
+          (hC_convex := convex_transported_stdSimplex)
+          (lam⁻¹ • x)
   rw [hprox_support, hproj, Set.image_singleton]
 
 end

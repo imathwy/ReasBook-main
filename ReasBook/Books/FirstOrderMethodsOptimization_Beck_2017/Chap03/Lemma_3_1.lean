@@ -12,18 +12,18 @@ variable {E : Type u} [AddCommGroup E] [Module ℝ E] {f : E → EReal}
 /- Lemma 3.1 is a `bridge/view` item in the chapter convex-analysis API: the owner theorem is
 `is_convex_function_of_subdifferentiable_on_convex_effective_domain`, whose owner hypothesis is the
 inclusion `effective_domain f ⊆ subdifferential_domain f`. This file keeps the source wording
-"there exists a subgradient" and rewrites it through the owner set `extendedRealSubdifferential f x`,
+"there exists a subgradient" and rewrites it through the owner set `subdifferential f x`,
 equivalently membership in the owner domain `subdifferential_domain f`. -/
 recall effective_domain
 recall is_convex_function
-recall extendedRealSubdifferential
+recall subdifferential
 recall subdifferential_domain
 recall mem_subdifferential_domain
 recall is_convex_function_of_subdifferentiable_on_convex_effective_domain
 
 -- Proof sketch: to prove convexity, fix `x, y ∈ effective_domain f` and `t ∈ [0, 1]`, and set
 -- `z = t • x + (1 - t) • y`. The convexity hypothesis on `effective_domain f` gives
--- `z ∈ effective_domain f`, so `hsubgrad` yields some `g ∈ extendedRealSubdifferential f z`, hence
+-- `z ∈ effective_domain f`, so `hsubgrad` yields some `g ∈ subdifferential f z`, hence
 -- `z ∈ subdifferential_domain f`. Applying the resulting subgradient inequality first with `y` and
 -- then with `x`, and combining the two inequalities with weights `t` and `1 - t`, gives the
 -- Jensen inequality along the segment from `x` to `y`, hence `f` is convex.
@@ -31,7 +31,7 @@ recall is_convex_function_of_subdifferentiable_on_convex_effective_domain
 subgradient at every point of its effective domain, then the function is convex. -/
 lemma is_convex_function_of_subgradient_exists_on_effective_domain
     (hdom : Convex ℝ (effective_domain f))
-    (hsubgrad : ∀ x ∈ effective_domain f, ∃ g : Module.Dual ℝ E, g ∈ extendedRealSubdifferential f x) :
+    (hsubgrad : ∀ x ∈ effective_domain f, ∃ g : Module.Dual ℝ E, g ∈ subdifferential f x) :
     is_convex_function f :=
   is_convex_function_of_subdifferentiable_on_convex_effective_domain hdom
     (fun x hx ↦ by

@@ -16,7 +16,7 @@ local notation "E" => ι → ℝ
 
 /-
 Example 6.32 is `bridge/view` in the Chapter 6 projection domain. The core owners are the
-set-valued projection map `Proj[...]`, the box owner `Box[ℓ,u]`, and the Chapter 1 canonical
+set-valued projection map `P[...]`, the box owner `Box[ℓ,u]`, and the Chapter 1 canonical
 half-space/hyperplane owners on the canonical Euclidean space `EuclideanSpace ℝ ι`,
 transported back to coordinates through the bridge owners `coordinateHalfSpace` and
 `coordinateHyperplane`. The scalar formulas `aᵀ y ≤ b` and `aᵀ y = b` are derived coordinate
@@ -28,7 +28,7 @@ syntax.
 -- `coordinateHalfSpace a b`,
 -- then all box minimizers are feasible for the smaller problem, and no point in the intersection
 -- can improve the distance beyond the box minimum.
-/-- Example 6.32, feasible branch: if the box projection `Proj[Box[ℓ,u]] x` already lies in the
+/-- Example 6.32, feasible branch: if the box projection `P[Box[ℓ,u]] x` already lies in the
 coordinate closed half-space `coordinateHalfSpace a b`, then projecting onto the intersection with
 the box does not change the projected set. This is the finite-index owner-level form, matching
 the Chapter 1 half-space owner and the Chapter 6 box owner directly rather than a
@@ -36,12 +36,12 @@ numbered-coordinate model. -/
 theorem projection_mapping_halfSpace_inter_box_eq_box_projection_mapping_of_projection_subset
     (a : E) (b : ℝ) (l u : ι → EReal)
     (x : E)
-    (hfeas : Proj[Box[l,u]] x ⊆ coordinateHalfSpace a b) :
-    Proj[(coordinateHalfSpace a b ∩ Box[l,u])] x =
-      Proj[Box[l,u]] x := by
+    (hfeas : P[Box[l,u]] x ⊆ coordinateHalfSpace a b) :
+    P[(coordinateHalfSpace a b ∩ Box[l,u])] x =
+      P[Box[l,u]] x := by
   by_cases hbox : (Box[l,u] : Set E).Nonempty
   · letI : ProperSpace E := FiniteDimensional.proper ℝ E
-    have hproj_nonempty : (Proj[Box[l,u]] x).Nonempty :=
+    have hproj_nonempty : (P[Box[l,u]] x).Nonempty :=
       projection_mapping_nonempty_of_nonempty_isClosed (Box[l,u]) hbox (isClosed_box l u) x
     simpa [Set.inter_comm] using
       projection_mapping_inter_eq_of_projection_mapping_subset

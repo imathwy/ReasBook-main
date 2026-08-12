@@ -10,7 +10,7 @@ universe u
 /- Source-facing geometric description: the real epigraph of `δ_C` is exactly `C ×ˢ Ici 0`. -/
 /-- The real epigraph of the extended-real-valued indicator function is `C ×ˢ Ici 0`. -/
 theorem extendedIndicator_real_epigraph_eq {α : Type u} (C : Set α) :
-    realEpigraph (extendedIndicator C) = C ×ˢ Ici (0 : ℝ) := by
+    realEpigraph (δ_ C) = C ×ˢ Ici (0 : ℝ) := by
   ext p
   by_cases hp : p.1 ∈ C <;> simp [realEpigraph, extendedIndicator, hp]
 
@@ -18,12 +18,12 @@ section
 
 variable {α : Type u} [TopologicalSpace α]
 
--- Bridge/view layer: transport the canonical lower-semicontinuity criterion for `extendedIndicator`
+-- Bridge/view layer: transport the canonical lower-semicontinuity criterion for `δ_C`
 -- through the chapter equivalence between lower semicontinuity and closed real epigraph.
 /-- Proposition 2.1: the indicator function `δ_C` has closed real epigraph if and only if its
 underlying set `C` is closed. -/
 theorem extendedIndicator_isClosed_real_epigraph_iff_isClosed (C : Set α) :
-    IsClosed (realEpigraph (extendedIndicator C)) ↔ IsClosed C := by
+    IsClosed (realEpigraph (δ_ C)) ↔ IsClosed C := by
   rw [← lowerSemicontinuous_iff_isClosed_real_epigraph,
     extendedIndicator_lowerSemicontinuous_iff_isClosed]
 

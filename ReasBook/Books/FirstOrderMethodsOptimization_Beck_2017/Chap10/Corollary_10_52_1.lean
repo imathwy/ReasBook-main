@@ -1,6 +1,6 @@
 import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Definition_10_43
-import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_51_1
+import FirstOrderMethodsOptimization_Beck_2017.Chap10.Theorem_10_51
 -- Declarations for this item will be appended below by the statement pipeline.
 
 noncomputable section

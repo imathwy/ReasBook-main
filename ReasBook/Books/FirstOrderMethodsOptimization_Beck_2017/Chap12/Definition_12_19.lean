@@ -25,7 +25,7 @@ Domain sampling against the nearby Chapter 12 API gives:
 - `core/canonical`: `denoising_problem_objective` and `denoising_problem_optimal_value` from
   Definition 12.10;
 - `bridge/view`: the first-difference operator `D[n]` together with the Euclidean `ℓ¹` norm
-  `l1n[·]`, and the explicit finite-sum formula over neighboring coordinates.
+  `‖·‖₁`, and the explicit finite-sum formula over neighboring coordinates.
 
 Primitive source data are only the standard adjacent constructors `Fin.castSucc` and `Fin.succ`
 on `Fin n`. The difference matrix/operator and its canonical adjoint are derived from that
@@ -174,7 +174,7 @@ endpoints of `e`. -/
 /-- The one-dimensional total-variation regularizer on `ℝ^n`, realized as the Euclidean `ℓ¹`
 norm of the first-difference vector `D[n] x`. -/
 def one_dimensional_total_variation (x : En) : ℝ :=
-  l1n[D[n] x]
+  ‖D[n] x‖₁
 
 -- Proof sketch: unfold `one_dimensional_total_variation`; the displayed finite sum is exactly its
 -- defining formula.
@@ -195,7 +195,7 @@ theorem one_dimensional_total_variation_def (x : EuclideanSpace ℝ (Fin (n + 1)
 abbrev one_dimensional_total_variation_denoising_objective
     (d : En) (lam : PosReal) : En → EReal :=
   denoising_problem_objective d
-    (fun y : Em ↦ ↑((lam : ℝ) * l1n[y]))
+    (fun y : Em ↦ ↑((lam : ℝ) * ‖y‖₁))
     D[n]
 
 -- Proof sketch: unfold

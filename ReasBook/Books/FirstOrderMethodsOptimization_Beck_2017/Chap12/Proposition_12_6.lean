@@ -38,71 +38,56 @@ Primitive data are therefore only the matrix `x` and the imported operator owner
 statements for that owner. -/
 
 /-- The matrix space `ℝ^(m × n)` carries its canonical Frobenius norm. -/
-local instance instNormedAddCommGroupMmnProposition12_6 : NormedAddCommGroup Mmn :=
+local instance instProposition126NormedAddCommGroupMatrix : NormedAddCommGroup Mmn :=
   Matrix.frobeniusNormedAddCommGroup
 
 /-- Scalar multiplication on `ℝ^(m × n)` is compatible with the Frobenius norm. -/
-local instance instNormedSpaceMmnProposition12_6 : NormedSpace ℝ Mmn :=
+local instance instProposition126NormedSpaceMatrix : NormedSpace ℝ Mmn :=
   Matrix.frobeniusNormedSpace
 
 /-- The horizontal-difference matrix space carries its canonical Frobenius norm. -/
-local instance instNormedAddCommGroupHmnProposition12_6 : NormedAddCommGroup Hmn :=
+local instance instProposition126NormedAddCommGroupHorizontalMatrix : NormedAddCommGroup Hmn :=
   Matrix.frobeniusNormedAddCommGroup
 
 /-- Scalar multiplication on the horizontal-difference matrix space is compatible with the
 Frobenius norm. -/
-local instance instNormedSpaceHmnProposition12_6 : NormedSpace ℝ Hmn :=
+local instance instProposition126NormedSpaceHorizontalMatrix : NormedSpace ℝ Hmn :=
   Matrix.frobeniusNormedSpace
 
 /-- The vertical-difference matrix space carries its canonical Frobenius norm. -/
-local instance instNormedAddCommGroupVmnProposition12_6 : NormedAddCommGroup Vmn :=
+local instance instProposition126NormedAddCommGroupVerticalMatrix : NormedAddCommGroup Vmn :=
   Matrix.frobeniusNormedAddCommGroup
 
 /-- Scalar multiplication on the vertical-difference matrix space is compatible with the
 Frobenius norm. -/
-local instance instNormedSpaceVmnProposition12_6 : NormedSpace ℝ Vmn :=
+local instance instProposition126NormedSpaceVerticalMatrix : NormedSpace ℝ Vmn :=
   Matrix.frobeniusNormedSpace
 
 /-- The codomain `WithLp 2 (Hmn × Vmn)` is measured using the Frobenius norms on the horizontal and
 vertical difference spaces. -/
-local instance instNormedAddCommGroupTVSpaceProposition12_6 : NormedAddCommGroup TVSpace :=
+local instance instProposition126NormedAddCommGroupTVSpace : NormedAddCommGroup TVSpace :=
   inferInstance
 
 /-- Scalar multiplication on the `L²` product of horizontal and vertical difference matrices is
 compatible with those Frobenius norms. -/
-local instance instNormedSpaceTVSpaceProposition12_6 : NormedSpace ℝ TVSpace := inferInstance
+local instance instProposition126NormedSpaceTVSpace : NormedSpace ℝ TVSpace :=
+  inferInstance
 
-/-- Addition on the `L²` product is continuous for its induced product topology. -/
-local instance instContinuousAddTVSpaceProposition12_6 : ContinuousAdd TVSpace := ⟨by
-  change Continuous (fun p : TVSpace × TVSpace =>
-    WithLp.toLp 2 (WithLp.ofLp p.1 + WithLp.ofLp p.2))
-  have hfst : Continuous (fun p : TVSpace × TVSpace => WithLp.ofLp p.1) :=
-    (WithLp.prod_continuous_ofLp (p := 2) (α := Hmn) (β := Vmn)).comp continuous_fst
-  have hsnd : Continuous (fun p : TVSpace × TVSpace => WithLp.ofLp p.2) :=
-    (WithLp.prod_continuous_ofLp (p := 2) (α := Hmn) (β := Vmn)).comp continuous_snd
-  exact (WithLp.prod_continuous_toLp (p := 2) (α := Hmn) (β := Vmn)).comp
-    (Continuous.add hfst hsnd)⟩
+/-- Addition and negation on the `L²` product are continuous for its transported product
+topology. -/
+local instance instProposition126IsTopologicalAddGroupTVSpace :
+    IsTopologicalAddGroup TVSpace :=
+  Topology.IsInducing.topologicalAddGroup
+    (WithLp.addEquiv (2 : ENNReal) (Hmn × Vmn))
+    (WithLp.homeomorphProd (2 : ENNReal) Hmn Vmn).isInducing
 
-/-- Negation on the `L²` product is continuous for its induced product topology. -/
-local instance instContinuousNegTVSpaceProposition12_6 : ContinuousNeg TVSpace := ⟨by
-  change Continuous (fun x : TVSpace => WithLp.toLp 2 (-WithLp.ofLp x))
-  exact (WithLp.prod_continuous_toLp (p := 2) (α := Hmn) (β := Vmn)).comp
-    (continuous_neg.comp
-      (WithLp.prod_continuous_ofLp (p := 2) (α := Hmn) (β := Vmn)))⟩
+/-- Scalar multiplication is continuous for the transported `L²` product topology. -/
+local instance instProposition126ContinuousSMulTVSpace : ContinuousSMul ℝ TVSpace :=
+  ContinuousSMul.induced (WithLp.linearEquiv (2 : ENNReal) ℝ (Hmn × Vmn))
 
-local instance instIsTopologicalAddGroupTVSpaceProposition12_6 : IsTopologicalAddGroup TVSpace := {}
-
-/-- Scalar multiplication is continuous for the induced `L²` product topology. -/
-local instance instContinuousSMulTVSpaceProposition12_6 : ContinuousSMul ℝ TVSpace := ⟨by
-  change Continuous (fun p : ℝ × TVSpace => WithLp.toLp 2 (p.1 • WithLp.ofLp p.2))
-  have hx : Continuous (fun p : ℝ × TVSpace => WithLp.ofLp p.2) :=
-    (WithLp.prod_continuous_ofLp (p := 2) (α := Hmn) (β := Vmn)).comp continuous_snd
-  exact (WithLp.prod_continuous_toLp (p := 2) (α := Hmn) (β := Vmn)).comp
-    (Continuous.smul continuous_fst hx)⟩
-
-/-- The operator norm specialized to the local Frobenius/`L²` structures. -/
-local instance instNormContinuousLinearMapMmnTVSpaceProposition12_6 :
-    Norm (Mmn →L[ℝ] TVSpace) := ContinuousLinearMap.hasOpNorm
+/-- Operator norms on maps into the transported `L²` product use the standard supremum norm. -/
+local instance instProposition126NormContinuousLinearMap : Norm (Mmn →L[ℝ] TVSpace) :=
+  ContinuousLinearMap.hasOpNorm
 
 /-- Helper for Proposition 12.6: squaring the Frobenius norm of a real matrix recovers the sum of
 the squares of its entries. -/
@@ -223,7 +208,7 @@ lemma horizontal_edge_square_sum_le_four_mul_frobenius_sq
         have hrow :
             ∑ j : Fin (n + 1), x i j ^ (2 : ℕ) =
               (∑ j : Fin n, x i j.castSucc ^ (2 : ℕ)) + x i (Fin.last n) ^ (2 : ℕ) := by
-          simpa using (Fin.sum_univ_castSucc (f := fun j : Fin (n + 1) ↦ x i j ^ (2 : ℕ)))
+          simpa using (Fin.sum_univ_castSucc (fun j : Fin (n + 1) ↦ x i j ^ (2 : ℕ)))
         have hnonneg : 0 ≤ x i (Fin.last n) ^ (2 : ℕ) := by positivity
         linarith
       have h_succ :
@@ -234,7 +219,7 @@ lemma horizontal_edge_square_sum_le_four_mul_frobenius_sq
         have hrow :
             ∑ j : Fin (n + 1), x i j ^ (2 : ℕ) =
               x i 0 ^ (2 : ℕ) + ∑ j : Fin n, x i j.succ ^ (2 : ℕ) := by
-          simpa using (Fin.sum_univ_succ (f := fun j : Fin (n + 1) ↦ x i j ^ (2 : ℕ)))
+          simpa using (Fin.sum_univ_succ (fun j : Fin (n + 1) ↦ x i j ^ (2 : ℕ)))
         have hnonneg : 0 ≤ x i 0 ^ (2 : ℕ) := by positivity
         linarith
       have hsplit :
@@ -288,7 +273,7 @@ lemma vertical_edge_square_sum_le_four_mul_frobenius_sq
             ∑ i : Fin (m + 1), ∑ j : Fin n, x i j ^ (2 : ℕ) =
               (∑ i : Fin m, ∑ j : Fin n, x i.castSucc j ^ (2 : ℕ)) +
                 ∑ j : Fin n, x (Fin.last m) j ^ (2 : ℕ) := by
-          simpa using (Fin.sum_univ_castSucc (f := fun i : Fin (m + 1) ↦
+          simpa using (Fin.sum_univ_castSucc (fun i : Fin (m + 1) ↦
             ∑ j : Fin n, x i j ^ (2 : ℕ)))
         have hnonneg : 0 ≤ ∑ j : Fin n, x (Fin.last m) j ^ (2 : ℕ) := by positivity
         linarith
@@ -299,7 +284,7 @@ lemma vertical_edge_square_sum_le_four_mul_frobenius_sq
             ∑ i : Fin (m + 1), ∑ j : Fin n, x i j ^ (2 : ℕ) =
               (∑ j : Fin n, x 0 j ^ (2 : ℕ)) +
                 ∑ i : Fin m, ∑ j : Fin n, x i.succ j ^ (2 : ℕ) := by
-          simpa using (Fin.sum_univ_succ (f := fun i : Fin (m + 1) ↦
+          simpa using (Fin.sum_univ_succ (fun i : Fin (m + 1) ↦
             ∑ j : Fin n, x i j ^ (2 : ℕ)))
         have hnonneg : 0 ≤ ∑ j : Fin n, x 0 j ^ (2 : ℕ) := by positivity
         linarith
@@ -385,7 +370,6 @@ theorem two_dimensional_total_variation_difference_norm_sq_le_eight_mul_norm_sq
 -- Proof sketch: divide the pointwise estimate
 -- `‖A x‖² ≤ 8 ‖x‖²` by `‖x‖²` for `x ≠ 0`, then apply `ContinuousLinearMap.opNorm_le_bound` to
 -- the continuous linear map `A[m, n]`.
-set_option maxHeartbeats 800000 in
 /-- Proposition 12.6: the discrete horizontal-vertical first-difference operator `A` on
 `ℝ^(m × n)` satisfies the operator-norm bound `‖A‖² ≤ 8`. -/
 theorem two_dimensional_total_variation_difference_opNorm_sq_le_eight :
@@ -402,7 +386,7 @@ theorem two_dimensional_total_variation_difference_opNorm_sq_le_eight :
         ‖(A[m, n]).toContinuousLinearMap x‖ ^ (2 : ℕ) = ‖A[m, n] x‖ ^ (2 : ℕ) := by
           rfl
         _ ≤ 8 * ‖x‖ ^ (2 : ℕ) :=
-          two_dimensional_total_variation_difference_norm_sq_le_eight_mul_norm_sq (m := m) (n := n) x
+          two_dimensional_total_variation_difference_norm_sq_le_eight_mul_norm_sq x
         _ = (Real.sqrt 8 * ‖x‖) ^ (2 : ℕ) := by
           rw [mul_pow, Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 8)]
     have hnonneg : 0 ≤ Real.sqrt 8 * ‖x‖ := by
@@ -417,10 +401,7 @@ theorem two_dimensional_total_variation_difference_opNorm_sq_le_eight :
   -- Square the operator bound and simplify `(\sqrt 8)^2`.
   calc
     ‖(A[m, n]).toContinuousLinearMap‖ ^ (2 : ℕ) ≤ (Real.sqrt 8) ^ (2 : ℕ) := by
-      have hnorm_nonneg : 0 ≤ ‖(A[m, n]).toContinuousLinearMap‖ :=
-        ContinuousLinearMap.opNorm_nonneg (A[m, n]).toContinuousLinearMap
-      have hsqrt_nonneg : 0 ≤ Real.sqrt 8 := Real.sqrt_nonneg 8
-      nlinarith
+      exact pow_le_pow_left₀ (ContinuousLinearMap.opNorm_nonneg _) hopNorm 2
     _ = 8 := by
       rw [Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 8)]
 

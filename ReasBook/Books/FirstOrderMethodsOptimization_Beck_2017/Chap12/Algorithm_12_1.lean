@@ -1,4 +1,3 @@
-import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Definition_6_7
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Algorithm_10_1
 
@@ -27,11 +26,15 @@ Domain sampling against the nearby project owners identifies:
   `L_F = ‖A‖² / σ`.
 
 Since the source algorithm specifies an initialization `y^0`, a constant admissible parameter
-`L ≥ L_F`, and a recursive proximal update, the clean public API is a trajectory predicate on the
-iterate sequence together with a small subtype for admissible constant stepsizes. The gradient
-term is kept explicit as a map `gradF`, representing the textbook `∇ F`; under the stronger
-identification `gradF = ∇ F`, the Chapter 12 source-facing layer is bridged back to the Chapter 10
-owner. -/
+`L ≥ L_F`, and the usual proximal-gradient recursion for the dual objective `F + G`, the clean
+public API is a thin source-facing specialization of the Chapter 10 trajectory owner together with
+the small subtype of admissible constant stepsizes. The one-step owner below keeps an explicit map
+parameter only as a helper layer for Chapter 12 bridge statements; the main labeled trajectory
+owner reuses the canonical Chapter 10 proximal-gradient surface directly. -/
+
+-- Semantic search note: `lean_leansearch` confirmed `gradient` as the canonical owner for the
+-- explicit dual smooth term, and the surrounding owner/API choice was then verified against the
+-- local Chapter 6 and Chapter 10 declarations.
 
 /-- The dual smoothness bound `L_F = ‖A‖² / σ` attached to the dual representation. -/
 def dual_based_proximal_gradient_dual_lipschitz_constant
@@ -86,38 +89,42 @@ def dual_based_proximal_gradient_dual_step
 
 /-- Algorithm 12.1: given an initial point `y^0 = y0` and a constant admissible parameter
 `L ≥ ‖A‖² / σ`, a sequence `y` is a dual proximal-gradient trajectory for the dual representation
-when every successor iterate satisfies
-`y^(k+1) ∈ prox[(1 / L) G] (y^k - (1 / L) ∇F(y^k))`, with `gradF` representing `∇F`. -/
-def is_dual_based_proximal_gradient_dual_trajectory
-    (G : V → EReal) (gradF : V → V) {A : E →L[ℝ] V} {σ : PosReal}
+for the dual objective `F + G` when it starts at `y0` and follows the canonical proximal-gradient
+trajectory for `F + G` with the constant parameter `L`. -/
+class is_dual_based_proximal_gradient_dual_trajectory
+    (F G : V → EReal) [InnerProductSpace ℝ V] [CompleteSpace V]
+    {A : E →L[ℝ] V} {σ : PosReal}
     (L : DualBasedProximalGradientDualStepsizeParameter A σ)
-    (y : ℕ → V) (y0 : V) : Prop :=
-  y 0 = y0 ∧
-    ∀ k : ℕ, y (k + 1) ∈ dual_based_proximal_gradient_dual_step G gradF L (y k)
+    (y : ℕ → V) (y0 : V) : Prop where
+  zero_eq : y 0 = y0
+  trajectory : is_proximal_gradient_trajectory F G y (fun _ ↦ (L : PosReal))
 
 -- Proof sketch: extract the initialization equation from the first conjunct of
 -- `is_dual_based_proximal_gradient_dual_trajectory`.
 /-- A dual proximal-gradient trajectory starts from the prescribed initial point `y^0 = y0`. -/
 theorem is_dual_based_proximal_gradient_dual_trajectory_zero
-    {G : V → EReal} {gradF : V → V} {A : E →L[ℝ] V} {σ : PosReal}
+    {F G : V → EReal} [InnerProductSpace ℝ V] [CompleteSpace V]
+    {A : E →L[ℝ] V} {σ : PosReal}
     {L : DualBasedProximalGradientDualStepsizeParameter A σ}
     {y : ℕ → V} {y0 : V}
-    (h : is_dual_based_proximal_gradient_dual_trajectory G gradF L y y0) :
+    (h : is_dual_based_proximal_gradient_dual_trajectory F G L y y0) :
     y 0 = y0 :=
-  h.1
+  h.zero_eq
 
--- Proof sketch: specialize the defining universal clause of
--- `is_dual_based_proximal_gradient_dual_trajectory` at the iteration index `k`.
-/-- At every iteration `k`, the next dual iterate is a proximal point of the scaled term
-`(1 / L) G` at the forward-gradient point `y^k - (1 / L) gradF(y^k)`. -/
+-- Proof sketch: apply the Chapter 10 trajectory-step theorem to the stored canonical trajectory
+-- field `h.trajectory`.
+/-- At every iteration `k`, a dual proximal-gradient trajectory satisfies the Chapter 10
+interior-domain condition and the constant-stepsize proximal-gradient update for `F + G`. -/
 theorem is_dual_based_proximal_gradient_dual_trajectory_step
-    {G : V → EReal} {gradF : V → V} {A : E →L[ℝ] V} {σ : PosReal}
+    {F G : V → EReal} [InnerProductSpace ℝ V] [CompleteSpace V]
+    {A : E →L[ℝ] V} {σ : PosReal}
     {L : DualBasedProximalGradientDualStepsizeParameter A σ}
     {y : ℕ → V} {y0 : V}
-    (h : is_dual_based_proximal_gradient_dual_trajectory G gradF L y y0)
+    (h : is_dual_based_proximal_gradient_dual_trajectory F G L y y0)
     (k : ℕ) :
-    y (k + 1) ∈ dual_based_proximal_gradient_dual_step G gradF L (y k) :=
-  h.2 k
+    y k ∈ interior (effective_domain F) ∧
+      y (k + 1) ∈ proximal_gradient_step F G (y k) (L : PosReal) :=
+  h.trajectory k
 
 end
 
@@ -126,40 +133,33 @@ section
 variable {V : Type v}
 variable [NormedAddCommGroup V] [InnerProductSpace ℝ V] [CompleteSpace V]
 
--- Proof sketch: unfold both step owners. After replacing `gradF` by the canonical gradient of
--- `F`, the two proximal-point sets are definitionally equal.
-/-- Under the identification `gradF = ∇ F`, the Chapter 12 explicit-gradient dual step is exactly
-the Chapter 10 proximal-gradient step for the composite objective `F + G`. -/
+-- Proof sketch: unfold both step owners at the canonical gradient of `F`; the proximal-point
+-- sets coincide definitionally.
+/-- The Chapter 12 dual-step formula with the canonical gradient of `F` is exactly the Chapter 10
+proximal-gradient step for the composite objective `F + G`. -/
 theorem dual_based_proximal_gradient_dual_step_eq_proximal_gradient_step
-    (F G : V → EReal) (gradF : V → V) (L : PosReal)
-    (hgradF : ∀ y : V, gradF y = ∇ (fun z : V ↦ (F z).toReal) y)
+    (F G : V → EReal) (L : PosReal)
     (yk : V) :
-    dual_based_proximal_gradient_dual_step G gradF L yk =
-      proximal_gradient_step F G yk L := by
-  ext yNext
-  rw [mem_dual_based_proximal_gradient_dual_step_iff, mem_proximal_gradient_step_iff]
-  simp [hgradF]
+    dual_based_proximal_gradient_dual_step
+        G
+        (fun y : V ↦ ∇ (fun z : V ↦ (F z).toReal) y)
+        L
+        yk =
+      proximal_gradient_step F G yk L :=
+  rfl
 
--- Proof sketch: pair the supplied interior-domain hypothesis with the source-facing Chapter 12
--- step relation, then rewrite each step through
--- `dual_based_proximal_gradient_dual_step_eq_proximal_gradient_step`.
-/-- A Chapter 12 dual proximal-gradient trajectory becomes a Chapter 10 proximal-gradient
-trajectory once the explicit dual gradient is identified with `∇ F` and the iterates are known to
-lie in `interior (effective_domain F)`. -/
+-- Proof sketch: this is the canonical trajectory field stored in
+-- `is_dual_based_proximal_gradient_dual_trajectory`.
+/-- A Chapter 12 dual proximal-gradient trajectory is, by construction, the corresponding Chapter
+10 proximal-gradient trajectory with constant parameter `L`. -/
 theorem is_dual_based_proximal_gradient_dual_trajectory.toIsProximalGradientTrajectory
     {E : Type u} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    {F G : V → EReal} {gradF : V → V} {A : E →L[ℝ] V} {σ : PosReal}
+    {F G : V → EReal} {A : E →L[ℝ] V} {σ : PosReal}
     {L : DualBasedProximalGradientDualStepsizeParameter A σ}
     {y : ℕ → V} {y0 : V}
-    (h : is_dual_based_proximal_gradient_dual_trajectory G gradF L y y0)
-    (hgradF : ∀ yk : V, gradF yk = ∇ (fun z : V ↦ (F z).toReal) yk)
-    (hdom : ∀ k : ℕ, y k ∈ interior (effective_domain F)) :
-    is_proximal_gradient_trajectory F G y (fun _ ↦ (L : PosReal)) := by
-  intro k
-  refine ⟨hdom k, ?_⟩
-  simpa [dual_based_proximal_gradient_dual_step_eq_proximal_gradient_step
-    F G gradF (L : PosReal) hgradF (y k)] using
-    is_dual_based_proximal_gradient_dual_trajectory_step h k
+    (h : is_dual_based_proximal_gradient_dual_trajectory F G L y y0) :
+    is_proximal_gradient_trajectory F G y (fun _ ↦ (L : PosReal)) :=
+  h.trajectory
 
 end
 
@@ -175,15 +175,15 @@ theorem dual_based_proximal_gradient_identity_stepsize_parameter_lower_bound
     dual_based_proximal_gradient_dual_lipschitz_constant
         (ContinuousLinearMap.id ℝ E) σ ≤ ((σ⁻¹ : PosReal) : ℝ) := by
   rw [dual_based_proximal_gradient_dual_lipschitz_constant_eq]
-  have hnorm : ‖ContinuousLinearMap.id ℝ E‖ ≤ 1 :=
+  have hid_norm_le : ‖ContinuousLinearMap.id ℝ E‖ ≤ 1 :=
     ContinuousLinearMap.norm_id_le
-  have hsq : ‖ContinuousLinearMap.id ℝ E‖ ^ (2 : ℕ) ≤ 1 := by
-    nlinarith [hnorm, norm_nonneg (ContinuousLinearMap.id ℝ E)]
-  have hσ : 0 ≤ (σ : ℝ) := σ.2.le
-  have hmain :
-      ‖ContinuousLinearMap.id ℝ E‖ ^ (2 : ℕ) / (σ : ℝ) ≤ 1 / (σ : ℝ) := by
-    simpa using div_le_div_of_nonneg_right hsq hσ
-  simpa using hmain
+  have hid_sq_le : ‖ContinuousLinearMap.id ℝ E‖ ^ (2 : ℕ) ≤ 1 := by
+    nlinarith [norm_nonneg (ContinuousLinearMap.id ℝ E), hid_norm_le]
+  have hσ : 0 < (σ : ℝ) := σ.2
+  have hdiv : ‖ContinuousLinearMap.id ℝ E‖ ^ (2 : ℕ) / (σ : ℝ) ≤ 1 / (σ : ℝ) := by
+    rw [div_eq_mul_inv, div_eq_mul_inv]
+    exact mul_le_mul_of_nonneg_right hid_sq_le (inv_nonneg.mpr hσ.le)
+  simpa [one_div] using hdiv
 
 /-- The canonical admissible dual proximal-gradient stepsize parameter for the identity map is
 the reciprocal value `σ⁻¹`. -/

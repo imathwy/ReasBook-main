@@ -36,4 +36,11 @@ class IsSublevelDistanceBoundedSmoothConvexMinimizationProblem
   bounded_sublevel_distance_to_optimal_set (α : PosReal) :
     ∃ Rα : PosReal, ∀ ⦃x : E⦄, f x ≤ α → infDist x XStar ≤ Rα
 
+/-- In Definition 10.65, the real-valued objective is convex on the whole space. -/
+instance instFactConvexOnUnivOfIsSublevelDistanceBoundedSmoothConvexMinimizationProblem
+    {f : E → ℝ} {XStar : Set E} {fOpt : ℝ} {Lf : NNReal}
+    (h : IsSublevelDistanceBoundedSmoothConvexMinimizationProblem f XStar fOpt Lf) :
+    Fact (ConvexOn ℝ Set.univ f) :=
+  ⟨h.f_convex⟩
+
 end

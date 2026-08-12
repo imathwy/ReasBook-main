@@ -45,7 +45,7 @@ theorem gradient_mapping_lipschitz
     intro x
     -- Unfold the Chapter 10 step owner to expose the Chapter 6 proximal singleton theorem.
     simpa [proximal_gradient_step] using
-      (prox_grad_operator_eq_singleton (f := f) (g := g) L x)
+      (prox_grad_operator_eq_singleton f g L x)
   -- Then transfer Chapter 6 proximal nonexpansiveness to the Chapter 10 prox-grad operator.
   have prox_grad_operator_norm_sub_le_forward_point :
       ∀ x y : interior (effective_domain f),
@@ -59,8 +59,8 @@ theorem gradient_mapping_lipschitz
       scaled_function_proper_closed_convex_of_pos g inferInstance hg_closed hg_convex (1 / L)
     -- Apply the Chapter 6 nonexpansiveness theorem to the two singleton proximal points.
     simpa using
-      (prox_eq_singleton_nonexpansive
-        (f := ((((1 / L : PosReal) : EReal) • g)))
+      (@prox_eq_singleton_nonexpansive E _ _
+        ((((1 / L : PosReal) : EReal) • g))
         ((x : E) - (1 / L : ℝ) • ∇ (fun z ↦ (f z).toReal) (x : E))
         ((y : E) - (1 / L : ℝ) • ∇ (fun z ↦ (f z).toReal) (y : E))
         (T[L, f, g] x)

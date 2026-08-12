@@ -39,6 +39,9 @@ def three_point_star_difference_operator : E3 →L[ℝ] E2 :=
   three_point_star_difference_matrix.toEuclideanLin.toContinuousLinearMap
 
 local notation "A" => three_point_star_difference_operator
+local notation "AT" =>
+  LinearMap.toContinuousLinearMap
+    (Matrix.toEuclideanLin three_point_star_difference_matrix.transpose)
 
 /-- The Gram operator `A A†` attached to the fixed three-point-star difference map. -/
 def three_point_star_difference_gram : E2 →L[ℝ] E2 :=
@@ -58,7 +61,7 @@ def three_point_star_difference_penalty : E3 → EReal :=
 /-- Helper for Proposition 12.13: the adjoint of the fixed operator is the transpose-matrix action
 on `E2`. -/
 lemma three_point_star_difference_operator_adjoint_eq_transpose :
-    A† = three_point_star_difference_matrix.transpose.toEuclideanLin.toContinuousLinearMap := by
+    A† = AT := by
   -- Identify the Hilbert-space adjoint with the transpose matrix on Euclidean coordinates.
   calc
     A† =
@@ -67,7 +70,7 @@ lemma three_point_star_difference_operator_adjoint_eq_transpose :
       simpa [three_point_star_difference_operator] using
         (LinearMap.adjoint_toContinuousLinearMap
           (Matrix.toEuclideanLin three_point_star_difference_matrix)).symm
-    _ = three_point_star_difference_matrix.transpose.toEuclideanLin.toContinuousLinearMap := by
+    _ = AT := by
       simpa using
         congrArg LinearMap.toContinuousLinearMap
           (Matrix.toEuclideanLin_conjTranspose_eq_adjoint

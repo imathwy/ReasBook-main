@@ -21,8 +21,9 @@ variable [Fintype ι] [Fintype κ]
 local notation "X" => EuclideanSpace ℝ ι
 local notation "Y" => EuclideanSpace ℝ κ
 
-/- `prompt_add/` is absent in this workspace, so the owner choice is sampled from the sibling
-API-design philosophy and the nearby explicit recursive algorithm files.
+/- Semantic search note: `lean_leansearch` is unavailable in this runner, and `prompt_add/` is
+absent in this workspace, so the owner choice is sampled from the sibling API-design philosophy
+and the nearby explicit recursive algorithm files.
 
 This item is `source-facing`: Algorithm 15.9 gives concrete update formulas for the five iterates
 `x^k`, `z^k`, `w^k`, `y₁^k`, and `y₂^k`. Sampling the nearby owner layer in
@@ -95,12 +96,12 @@ theorem l1_regularized_least_squares_admm_v2_w_update_mem_prox
     (ρ : PosReal) (lam : ℝ) (hlam : 0 ≤ lam) (xNext y2k : X) :
     l1_regularized_least_squares_admm_v2_w_update ρ lam xNext y2k ∈
       prox[((((1 / ρ : PosReal) : EReal) •
-        (fun x : X ↦ ((lam * l1n[x] : ℝ) : EReal))))]
+        (fun x : X ↦ ((lam * ‖x‖₁ : ℝ) : EReal))))]
         (xNext + (1 / (ρ : ℝ)) • y2k) := by
   have hscaled :
       ((((1 / ρ : PosReal) : EReal) •
-        (fun x : X ↦ ((lam * l1n[x] : ℝ) : EReal)))) =
-          fun x : X ↦ (((lam / (ρ : ℝ)) * l1n[x] : ℝ) : EReal) := by
+        (fun x : X ↦ ((lam * ‖x‖₁ : ℝ) : EReal)))) =
+          fun x : X ↦ (((lam / (ρ : ℝ)) * ‖x‖₁ : ℝ) : EReal) := by
     funext x
     simp [Pi.smul_apply, smul_eq_mul, EReal.coe_mul, div_eq_mul_inv]
     ac_rfl
@@ -218,38 +219,40 @@ private def iterateState
   | 0 => initialState x0 z0 w0 y10 y20
   | k + 1 => stateUpdate A b lam ρ (iterateState A b lam ρ x0 z0 w0 y10 y20 k)
 
-/-- Algorithm 15.9 `x`-iterate sequence for the `ℓ¹`-regularized least-squares split problem. -/
+/-- Algorithm 15.9 (1) `x`-iterate sequence for the `ℓ¹`-regularized least-squares split
+problem. -/
 def l1_regularized_least_squares_admm_v2_x
     (A : X →ₗ[ℝ] Y) (b : Y) (lam : ℝ) (ρ : PosReal)
     (x0 : X) (z0 : Y) (w0 : X) (y10 : Y) (y20 : X) :
     ℕ → X :=
   fun k ↦ (iterateState A b lam ρ x0 z0 w0 y10 y20 k).x
 
-/-- Algorithm 15.9 `z`-iterate sequence for the `ℓ¹`-regularized least-squares split problem. -/
+/-- Algorithm 15.9 (2) `z`-iterate sequence for the `ℓ¹`-regularized least-squares split
+problem. -/
 def l1_regularized_least_squares_admm_v2_z
     (A : X →ₗ[ℝ] Y) (b : Y) (lam : ℝ) (ρ : PosReal)
     (x0 : X) (z0 : Y) (w0 : X) (y10 : Y) (y20 : X) :
     ℕ → Y :=
   fun k ↦ (iterateState A b lam ρ x0 z0 w0 y10 y20 k).z
 
-/-- Algorithm 15.9 threshold iterate sequence `w^k` for the `ℓ¹`-regularized least-squares split
-problem. -/
+/-- Algorithm 15.9 (3) threshold iterate sequence `w^k` for the `ℓ¹`-regularized least-squares
+split problem. -/
 def l1_regularized_least_squares_admm_v2_w
     (A : X →ₗ[ℝ] Y) (b : Y) (lam : ℝ) (ρ : PosReal)
     (x0 : X) (z0 : Y) (w0 : X) (y10 : Y) (y20 : X) :
     ℕ → X :=
   fun k ↦ (iterateState A b lam ρ x0 z0 w0 y10 y20 k).w
 
-/-- Algorithm 15.9 first dual-block sequence `y₁^k` for the `ℓ¹`-regularized least-squares split
-problem. -/
+/-- Algorithm 15.9 (4) first dual-block sequence `y₁^k` for the `ℓ¹`-regularized least-squares
+split problem. -/
 def l1_regularized_least_squares_admm_v2_y1
     (A : X →ₗ[ℝ] Y) (b : Y) (lam : ℝ) (ρ : PosReal)
     (x0 : X) (z0 : Y) (w0 : X) (y10 : Y) (y20 : X) :
     ℕ → Y :=
   fun k ↦ (iterateState A b lam ρ x0 z0 w0 y10 y20 k).y1
 
-/-- Algorithm 15.9 second dual-block sequence `y₂^k` for the `ℓ¹`-regularized least-squares split
-problem. -/
+/-- Algorithm 15.9 (5) second dual-block sequence `y₂^k` for the `ℓ¹`-regularized least-squares
+split problem. -/
 def l1_regularized_least_squares_admm_v2_y2
     (A : X →ₗ[ℝ] Y) (b : Y) (lam : ℝ) (ρ : PosReal)
     (x0 : X) (z0 : Y) (w0 : X) (y10 : Y) (y20 : X) :
@@ -264,15 +267,15 @@ variable (x0 : X) (z0 : Y) (w0 : X) (y10 : Y) (y20 : X)
 local notation "x[" k "]" =>
   (l1_regularized_least_squares_admm_v2_x A b lam ρ x0 z0 w0 y10 y20 k : X)
 local notation "z[" k "]" =>
-  l1_regularized_least_squares_admm_v2_z A b lam ρ x0 z0 w0 y10 y20 k
+  (l1_regularized_least_squares_admm_v2_z A b lam ρ x0 z0 w0 y10 y20 k : Y)
 local notation "w[" k "]" =>
   (l1_regularized_least_squares_admm_v2_w A b lam ρ x0 z0 w0 y10 y20 k : X)
 local notation "y1[" k "]" =>
-  l1_regularized_least_squares_admm_v2_y1 A b lam ρ x0 z0 w0 y10 y20 k
+  (l1_regularized_least_squares_admm_v2_y1 A b lam ρ x0 z0 w0 y10 y20 k : Y)
 local notation "y2[" k "]" =>
-  l1_regularized_least_squares_admm_v2_y2 A b lam ρ x0 z0 w0 y10 y20 k
+  (l1_regularized_least_squares_admm_v2_y2 A b lam ρ x0 z0 w0 y10 y20 k : X)
 local notation "f1" =>
-  (fun x : X ↦ ((lam * l1n[x] : ℝ) : EReal))
+  (fun x : X ↦ ((lam * ‖x‖₁ : ℝ) : EReal))
 local notation "f2" =>
   (fun z : Y ↦ ((((1 / 2 : ℝ) * ‖z - b‖ ^ (2 : ℕ) : ℝ)) : EReal))
 
@@ -296,20 +299,17 @@ theorem l1_regularized_least_squares_admm_v2_y1_zero :
 theorem l1_regularized_least_squares_admm_v2_y2_zero :
     y2[0] = y20 := rfl
 
-/-- At every iteration `k`, the next `x`-iterate is given by the explicit linear solve from
-Algorithm 15.9. -/
+/-- At every iteration `k`, the next `x`-iterate is given by the explicit linear solve. -/
 theorem l1_regularized_least_squares_admm_v2_x_succ (k : ℕ) :
     x[k + 1] =
       admm_sum_composition_v2_x_update
         ρ A.toContinuousLinearMap z[k] y1[k] w[k] y2[k] := rfl
 
-/-- At every iteration `k`, the next `z`-iterate is given by the affine average formula from
-Algorithm 15.9. -/
+/-- At every iteration `k`, the next `z`-iterate is given by the affine average formula. -/
 theorem l1_regularized_least_squares_admm_v2_z_succ (k : ℕ) :
     z[k + 1] = l1_regularized_least_squares_admm_v2_z_update A b ρ x[k + 1] y1[k] := rfl
 
-/-- At every iteration `k`, the next `w`-iterate is given by the soft-thresholding formula from
-Algorithm 15.9. -/
+/-- At every iteration `k`, the next `w`-iterate is given by the soft-thresholding formula. -/
 theorem l1_regularized_least_squares_admm_v2_w_succ (k : ℕ) :
     w[k + 1] = l1_regularized_least_squares_admm_v2_w_update ρ lam x[k + 1] y2[k] := rfl
 
@@ -319,12 +319,12 @@ theorem l1_regularized_least_squares_admm_v2_y1_step (k : ℕ) :
     l1_regularized_least_squares_admm_v2_y1 A b lam ρ x0 z0 w0 y10 y20 (k + 1) =
       admm_multiplier_update
         ρ
-        A
-        (-LinearMap.id)
-        0
-        (l1_regularized_least_squares_admm_v2_y1 A b lam ρ x0 z0 w0 y10 y20 k)
-        (l1_regularized_least_squares_admm_v2_x A b lam ρ x0 z0 w0 y10 y20 (k + 1))
-        (l1_regularized_least_squares_admm_v2_z A b lam ρ x0 z0 w0 y10 y20 (k + 1)) :=
+        (A : X →ₗ[ℝ] Y)
+        (-LinearMap.id : Y →ₗ[ℝ] Y)
+        (0 : Y)
+        (l1_regularized_least_squares_admm_v2_y1 A b lam ρ x0 z0 w0 y10 y20 k : Y)
+        (l1_regularized_least_squares_admm_v2_x A b lam ρ x0 z0 w0 y10 y20 (k + 1) : X)
+        (l1_regularized_least_squares_admm_v2_z A b lam ρ x0 z0 w0 y10 y20 (k + 1) : Y) :=
   rfl
 
 /-- At every iteration `k`, the first dual block satisfies the affine recursion
@@ -355,8 +355,8 @@ theorem l1_regularized_least_squares_admm_v2_y2_succ (k : ℕ) :
     y2[k + 1] = y2[k] + (ρ : ℝ) • (x[k + 1] - w[k + 1]) := rfl
 
 set_option linter.unusedVariables false in
-/-- Under `0 ≤ λ`, the explicit Algorithm 15.9 iterates form the canonical Chapter 15
-ADMM-version-2 trajectory for the `ℓ¹`/least-squares specialization. -/
+/-- Under `0 ≤ λ`, the explicit iterates form the canonical Chapter 15 ADMM-version-2 trajectory
+for the `ℓ¹`/least-squares specialization. -/
 theorem l1_regularized_least_squares_admm_v2_isADMMSumCompositionTrajectoryV2
     (hlam : 0 ≤ lam) :
     IsADMMSumCompositionTrajectoryV2

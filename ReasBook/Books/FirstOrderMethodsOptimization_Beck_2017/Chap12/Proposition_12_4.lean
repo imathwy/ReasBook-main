@@ -3,13 +3,14 @@ import FirstOrderMethodsOptimization_Beck_2017.Chap06.Definition_6_1
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Definition_6_2
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Example_6_19
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Lemma_6_5
-import FirstOrderMethodsOptimization_Beck_2017.Chap06.Theorem_6_6
+import FirstOrderMethodsOptimization_Beck_2017.Chap06.Proposition_6_2_1
 import FirstOrderMethodsOptimization_Beck_2017.Chap12.Definition_12_10
+import FirstOrderMethodsOptimization_Beck_2017.Chap12.Algorithm_12_12.Spaces
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
 open scoped BigOperators Matrix Matrix.Norms.Frobenius
-open WithLp
+open TwoDimensionalTV WithLp
 
 noncomputable section
 
@@ -17,224 +18,1594 @@ section
 
 variable {m n : ℕ}
 
-local notation "Mmn" => Matrix (Fin m) (Fin n) ℝ
-local notation "Hmn" => Matrix (Fin m) (Fin (n - 1)) ℝ
-local notation "Vmn" => Matrix (Fin (m - 1)) (Fin n) ℝ
-local notation "TVSpace" => WithLp 2 (Hmn × Vmn)
+/- Semantic search note: `lean_leansearch` was unavailable in this environment, so this file uses
+the Chapter 12 `TwoDimensionalTV` space owners together with mathlib's canonical `WithLp 2`
+product owner for the horizontal/vertical dual pair. -/
 
-/-- Helper for Proposition 12.4: the horizontal-difference matrix space carries its canonical
-Frobenius norm. -/
-local instance hmnNormedAddCommGroup : NormedAddCommGroup Hmn :=
-  Matrix.frobeniusNormedAddCommGroup
+/-- The raw horizontal forward-difference array `p^x`. -/
+private def horizontal_difference_data (x : MatrixSpace m n) : HorizontalSpace m n :=
+  fun i j ↦ x i (Fin.castLE (Nat.sub_le n 1) j) - x i ⟨(j : ℕ) + 1, by omega⟩
 
-/-- Helper for Proposition 12.4: scalar multiplication on the horizontal-difference matrix space
-is compatible with the Frobenius norm. -/
-local instance hmnNormedSpace : NormedSpace ℝ Hmn :=
-  Matrix.frobeniusNormedSpace
+/-- The raw horizontal forward-difference array is additive in `x`. -/
+private theorem horizontal_difference_data_map_add (x y : MatrixSpace m n) :
+    horizontal_difference_data (x + y) =
+      horizontal_difference_data x + horizontal_difference_data y := by
+  -- Compare the two matrices entrywise and expand the forward differences.
+  ext i j
+  simp [horizontal_difference_data, sub_eq_add_neg, add_comm, add_left_comm, add_assoc]
 
-/-- Helper for Proposition 12.4: the vertical-difference matrix space carries its canonical
-Frobenius norm. -/
-local instance vmnNormedAddCommGroup : NormedAddCommGroup Vmn :=
-  Matrix.frobeniusNormedAddCommGroup
-
-/-- Helper for Proposition 12.4: scalar multiplication on the vertical-difference matrix space is
-compatible with the Frobenius norm. -/
-local instance vmnNormedSpace : NormedSpace ℝ Vmn :=
-  Matrix.frobeniusNormedSpace
-
-/-- Helper for Proposition 12.4: the dual TV space uses the canonical `L²` product of the two
-Frobenius matrix norms. -/
-local instance tvSpaceNormedAddCommGroup : NormedAddCommGroup TVSpace :=
-  inferInstance
-
-/-- Helper for Proposition 12.4: scalar multiplication on the `L²` product TV space is compatible
-with the horizontal and vertical Frobenius norms. -/
-local instance tvSpaceNormedSpace : NormedSpace ℝ TVSpace :=
-  inferInstance
-
-/- Proposition 12.4 is `source-facing` in the two-dimensional total-variation denoising model.
-
-Domain sampling identifies the relevant owner declarations:
-- mathlib's `WithLp.linearEquiv` and `WithLp.fst` / `WithLp.snd`, which make `WithLp 2 (Hmn × Vmn)`
-  the canonical `L²` product owner of the horizontal/vertical dual pair;
-- mathlib's `ProdLp.prod_norm_eq_of_L2`, which is the correct Hilbert norm formula on that owner;
-- Chapter 12 Proposition 12.5, which likewise packages the TV dual variables through a canonical
-  Euclidean `L²` owner rather than the raw product.
-
-The primitive data are the horizontal and vertical difference arrays `p` and `q`. Pairing them
-into the ambient dual space is derived API through the canonical `WithLp` bridge. Using the raw
-product `Hmn × Vmn` would equip the dual space with the max norm, which is not the norm used by
-Chapter 6's proximal operator. -/
-
-/-- Helper for Proposition 12.4: the squared `L²` distance on `TVSpace` splits into the squared
-horizontal and vertical Frobenius distances. -/
-lemma tvspace_sqdist_split (p u : Hmn) (q v : Vmn) :
-    ‖toLp 2 (u, v) - toLp 2 (p, q)‖ ^ (2 : ℕ) =
-      ‖u - p‖ ^ (2 : ℕ) + ‖v - q‖ ^ (2 : ℕ) := by
-  -- Expand the `WithLp 2` product norm and simplify the two coordinate projections.
-  simpa using (WithLp.prod_norm_sq_eq_of_L2 (toLp 2 (u, v) - toLp 2 (p, q)))
+/-- The raw horizontal forward-difference array is homogeneous in `x`. -/
+private theorem horizontal_difference_data_map_smul (a : ℝ) (x : MatrixSpace m n) :
+    horizontal_difference_data (a • x) = a • horizontal_difference_data x := by
+  -- Scalar multiplication distributes through each displayed difference entry.
+  ext i j
+  simp [horizontal_difference_data, sub_eq_add_neg, mul_add]
 
 /-- The horizontal forward-difference operator `x ↦ p^x`, with
 `p^x_(i,j) = x_(i,j) - x_(i,j+1)`. -/
-def two_dimensional_total_variation_horizontal_difference : Mmn →ₗ[ℝ] Hmn where
-  toFun x := fun i j ↦ x i (Fin.castLE (Nat.sub_le n 1) j) - x i ⟨(j : ℕ) + 1, by omega⟩
-  map_add' x y := by
-    ext i j
-    simp [sub_eq_add_neg]
-    abel_nf
-  map_smul' a x := by
-    ext i j
-    simp [sub_eq_add_neg]
-    ring_nf
+def two_dimensional_total_variation_horizontal_difference :
+    MatrixSpace m n →ₗ[ℝ] HorizontalSpace m n where
+  toFun := horizontal_difference_data
+  map_add' := horizontal_difference_data_map_add
+  map_smul' := horizontal_difference_data_map_smul
 
--- Proof sketch: unfold `two_dimensional_total_variation_horizontal_difference`; the entry at
--- `(i, j)` is exactly the difference between adjacent horizontal neighbors in row `i`.
 /-- Evaluating the horizontal forward-difference array gives
 `p^x_(i,j) = x_(i,j) - x_(i,j+1)`. -/
 @[simp] theorem two_dimensional_total_variation_horizontal_difference_apply
-    (x : Mmn) (i : Fin m) (j : Fin (n - 1)) :
+    (x : MatrixSpace m n) (i : Fin m) (j : Fin (n - 1)) :
     two_dimensional_total_variation_horizontal_difference x i j =
-      x i (Fin.castLE (Nat.sub_le n 1) j) - x i ⟨(j : ℕ) + 1, by omega⟩ := rfl
+      x i (Fin.castLE (Nat.sub_le n 1) j) - x i ⟨(j : ℕ) + 1, by omega⟩ := by
+  -- The linear map was defined from the raw horizontal-difference data.
+  rfl
+
+/-- The raw vertical forward-difference array `q^x`. -/
+private def vertical_difference_data (x : MatrixSpace m n) : VerticalSpace m n :=
+  fun i j ↦ x (Fin.castLE (Nat.sub_le m 1) i) j - x ⟨(i : ℕ) + 1, by omega⟩ j
+
+/-- The raw vertical forward-difference array is additive in `x`. -/
+private theorem vertical_difference_data_map_add (x y : MatrixSpace m n) :
+    vertical_difference_data (x + y) =
+      vertical_difference_data x + vertical_difference_data y := by
+  -- Compare the two matrices entrywise and expand the forward differences.
+  ext i j
+  simp [vertical_difference_data, sub_eq_add_neg, add_comm, add_left_comm, add_assoc]
+
+/-- The raw vertical forward-difference array is homogeneous in `x`. -/
+private theorem vertical_difference_data_map_smul (a : ℝ) (x : MatrixSpace m n) :
+    vertical_difference_data (a • x) = a • vertical_difference_data x := by
+  -- Scalar multiplication distributes through each displayed difference entry.
+  ext i j
+  simp [vertical_difference_data, sub_eq_add_neg, mul_add]
 
 /-- The vertical forward-difference operator `x ↦ q^x`, with
 `q^x_(i,j) = x_(i,j) - x_(i+1,j)`. -/
-def two_dimensional_total_variation_vertical_difference : Mmn →ₗ[ℝ] Vmn where
-  toFun x := fun i j ↦ x (Fin.castLE (Nat.sub_le m 1) i) j - x ⟨(i : ℕ) + 1, by omega⟩ j
-  map_add' x y := by
-    ext i j
-    simp [sub_eq_add_neg]
-    abel_nf
-  map_smul' a x := by
-    ext i j
-    simp [sub_eq_add_neg]
-    ring_nf
+def two_dimensional_total_variation_vertical_difference :
+    MatrixSpace m n →ₗ[ℝ] VerticalSpace m n where
+  toFun := vertical_difference_data
+  map_add' := vertical_difference_data_map_add
+  map_smul' := vertical_difference_data_map_smul
 
--- Proof sketch: unfold `two_dimensional_total_variation_vertical_difference`; the entry at
--- `(i, j)` is exactly the difference between adjacent vertical neighbors in column `j`.
 /-- Evaluating the vertical forward-difference array gives
 `q^x_(i,j) = x_(i,j) - x_(i+1,j)`. -/
 @[simp] theorem two_dimensional_total_variation_vertical_difference_apply
-    (x : Mmn) (i : Fin (m - 1)) (j : Fin n) :
+    (x : MatrixSpace m n) (i : Fin (m - 1)) (j : Fin n) :
     two_dimensional_total_variation_vertical_difference x i j =
-      x (Fin.castLE (Nat.sub_le m 1) i) j - x ⟨(i : ℕ) + 1, by omega⟩ j := rfl
+      x (Fin.castLE (Nat.sub_le m 1) i) j - x ⟨(i : ℕ) + 1, by omega⟩ j := by
+  -- The linear map was defined from the raw vertical-difference data.
+  rfl
 
 /-- The discrete two-dimensional total-variation difference operator
-`A(x) = (p^x, q^x)`, where `p^x` records horizontal forward differences and `q^x` records vertical
-forward differences. -/
-def two_dimensional_total_variation_difference : Mmn →ₗ[ℝ] TVSpace :=
-  ((WithLp.linearEquiv 2 ℝ (Hmn × Vmn)).symm.toLinearMap).comp
+`A(x) = (p^x, q^x)`. -/
+def two_dimensional_total_variation_difference : MatrixSpace m n →ₗ[ℝ] DualSpace m n :=
+  ((WithLp.linearEquiv 2 ℝ (HorizontalSpace m n × VerticalSpace m n)).symm.toLinearMap).comp
     (two_dimensional_total_variation_horizontal_difference.prod
       two_dimensional_total_variation_vertical_difference)
 
-/- Textbook notation for the canonical two-dimensional TV difference operator and its Hilbert
-adjoint belongs at this owner source. -/
+/- Textbook notation for the two-dimensional TV difference operator. -/
 set_option quotPrecheck false in
 notation:max "A[" m "," n "]" =>
-  (show Matrix (Fin m) (Fin n) ℝ →ₗ[ℝ]
-      WithLp 2 (Matrix (Fin m) (Fin (n - 1)) ℝ × Matrix (Fin (m - 1)) (Fin n) ℝ) from
+  (show MatrixSpace m n →ₗ[ℝ] DualSpace m n from
     two_dimensional_total_variation_difference)
 
+/- Textbook notation for the Hilbert adjoint of the two-dimensional TV difference operator. -/
 set_option quotPrecheck false in
 notation:max "Aᵀ[" m "," n "]" =>
   (A[m, n]).adjoint
 
--- Proof sketch: unfold `A[m, n]`; the first component of `A(x)` is definitionally `p^x`.
-/-- The horizontal component of the discrete two-dimensional TV operator is the
-horizontal-difference array `p^x`. -/
-@[simp] theorem two_dimensional_total_variation_difference_fst
-    (x : Mmn) :
-    (A[m, n] x).fst =
-      two_dimensional_total_variation_horizontal_difference x := rfl
+/-- The first component of `A(x)` is the horizontal-difference array `p^x`. -/
+@[simp] theorem two_dimensional_total_variation_difference_fst (x : MatrixSpace m n) :
+    (A[m, n] x).fst = two_dimensional_total_variation_horizontal_difference x := by
+  -- The `WithLp` product equivalence reads back the first component definitionally.
+  rfl
 
--- Proof sketch: unfold `A[m, n]`; the second component of `A(x)` is definitionally `q^x`.
-/-- The vertical component of the discrete two-dimensional TV operator is the vertical-difference
-array `q^x`. -/
-@[simp] theorem two_dimensional_total_variation_difference_snd
-    (x : Mmn) :
-    (A[m, n] x).snd =
-      two_dimensional_total_variation_vertical_difference x := rfl
+/-- The second component of `A(x)` is the vertical-difference array `q^x`. -/
+@[simp] theorem two_dimensional_total_variation_difference_snd (x : MatrixSpace m n) :
+    (A[m, n] x).snd = two_dimensional_total_variation_vertical_difference x := by
+  -- The `WithLp` product equivalence reads back the second component definitionally.
+  rfl
 
--- Proof sketch: this is the Chapter 12 denoising owner formula specialized to the TV operator
--- `A[m, n]` and the real-valued regularizer `g`, via `denoising_problem_objective_apply`.
-/-- Proposition 12.4 in the Chapter 12 denoising-owner formulation: evaluating the matrix
-objective with the two-dimensional forward-difference operator `A[m, n]` gives the textbook
-formula `x ↦ (1 / 2) ‖x - d‖_F^2 + λ g(A x)`. Taking `g` to be the isotropic or anisotropic
-regularizer below gives the two textbook cases. -/
-@[simp] theorem two_dimensional_total_variation_denoising_problem_objective_apply
-    (g : TVSpace → ℝ) (d : Mmn) (lam : ℝ) (x : Mmn) :
-    denoising_problem_objective d
-      (fun z : TVSpace ↦ ↑(lam * g z))
-      A[m, n] x =
-      ((‖x - d‖ ^ (2 : ℕ) / 2 : ℝ) : EReal) + ↑(lam * g (A[m, n] x)) := rfl
+/-- Proposition 12.4 (1): evaluating the Chapter 12 denoising objective with the
+two-dimensional TV operator `A[m, n]` gives the main-model form
+`x ↦ (1 / 2) ‖x - d‖_F^2 + λ g (A x)`. Choosing `g` to be the isotropic or anisotropic
+regularizer below gives the two textbook TV denoising models. -/
+theorem two_dimensional_total_variation_denoising_problem_objective_apply
+    (g : DualSpace m n → ℝ) (d : MatrixSpace m n) (lam : ℝ) (x : MatrixSpace m n) :
+    denoising_problem_objective d (fun z : DualSpace m n ↦ ↑(lam * g z)) A[m, n] x =
+      ((‖x - d‖ ^ (2 : ℕ) / 2 : ℝ) : EReal) + ↑(lam * g (A[m, n] x)) := by
+  -- This is exactly Definition 12.10 specialized to the TV operator and regularizer.
+  simpa using
+    (denoising_problem_objective_apply d (fun z : DualSpace m n ↦ ↑(lam * g z)) A[m, n] x)
+
+attribute [simp] two_dimensional_total_variation_denoising_problem_objective_apply
 
 /-- The isotropic two-dimensional total-variation regularizer `g₁` on the canonical `L²`
 product of the horizontal and vertical difference spaces. -/
-def two_dimensional_total_variation_isotropic_regularizer (z : TVSpace) : ℝ :=
+def two_dimensional_total_variation_isotropic_regularizer (z : DualSpace m n) : ℝ :=
   let p := z.fst
   let q := z.snd
   (∑ i : Fin m, ∑ j : Fin (n - 1),
       if hi : (i : ℕ) + 1 < m then
-        Real.sqrt (p i j ^ (2 : ℕ) +
-          q (i.castLT (Nat.lt_sub_iff_add_lt.mpr hi)) (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ))
+        Real.sqrt
+          (p i j ^ (2 : ℕ) +
+            q (i.castLT (Nat.lt_sub_iff_add_lt.mpr hi)) (Fin.castLE (Nat.sub_le n 1) j) ^
+              (2 : ℕ))
       else
         |p i j|) +
     ∑ i : Fin (m - 1), ∑ j : Fin n, if (j : ℕ) + 1 < n then (0 : ℝ) else |q i j|
 
--- Proof sketch: unfold `two_dimensional_total_variation_isotropic_regularizer`; the interior
--- indices contribute Euclidean norms, the last row contributes `|p_(m,j)|`, and the last column
--- contributes `|q_(i,n)|`.
 /-- Expanding `g₁` gives the textbook isotropic TV formula with interior Euclidean norms and
 boundary absolute values. -/
 @[simp] theorem two_dimensional_total_variation_isotropic_regularizer_apply
-    (p : Hmn) (q : Vmn) :
+    (p : HorizontalSpace m n) (q : VerticalSpace m n) :
     two_dimensional_total_variation_isotropic_regularizer (toLp 2 (p, q)) =
       (∑ i : Fin m, ∑ j : Fin (n - 1),
         if hi : (i : ℕ) + 1 < m then
-          Real.sqrt (p i j ^ (2 : ℕ) +
-            q (i.castLT (Nat.lt_sub_iff_add_lt.mpr hi)) (Fin.castLE (Nat.sub_le n 1) j) ^
-              (2 : ℕ))
+          Real.sqrt
+            (p i j ^ (2 : ℕ) +
+              q (i.castLT (Nat.lt_sub_iff_add_lt.mpr hi)) (Fin.castLE (Nat.sub_le n 1) j) ^
+                (2 : ℕ))
         else
           |p i j|) +
-        ∑ i : Fin (m - 1), ∑ j : Fin n, if (j : ℕ) + 1 < n then (0 : ℝ) else |q i j| := rfl
+        ∑ i : Fin (m - 1), ∑ j : Fin n, if (j : ℕ) + 1 < n then (0 : ℝ) else |q i j| := by
+  -- Evaluating the regularizer at `toLp 2 (p, q)` just exposes the two coordinates.
+  rfl
 
 /-- The anisotropic two-dimensional total-variation regularizer `g_{ℓ¹}` on the canonical `L²`
 product of the horizontal and vertical difference spaces. -/
-def two_dimensional_total_variation_anisotropic_regularizer (z : TVSpace) : ℝ :=
+def two_dimensional_total_variation_anisotropic_regularizer (z : DualSpace m n) : ℝ :=
   let p := z.fst
   let q := z.snd
   (∑ i : Fin m, ∑ j : Fin (n - 1), |p i j|) +
     ∑ i : Fin (m - 1), ∑ j : Fin n, |q i j|
 
--- Proof sketch: unfold `two_dimensional_total_variation_anisotropic_regularizer`; the formula is
--- exactly the sum of absolute values of all horizontal and vertical difference entries.
-/-- Expanding `g_{ℓ¹}` gives the textbook anisotropic TV formula as the sum of the absolute values
-of all horizontal and vertical differences. -/
+/-- Expanding `g_{ℓ¹}` gives the textbook anisotropic TV formula as the sum of the absolute
+values of all horizontal and vertical differences. -/
 @[simp] theorem two_dimensional_total_variation_anisotropic_regularizer_apply
-    (p : Hmn) (q : Vmn) :
+    (p : HorizontalSpace m n) (q : VerticalSpace m n) :
     two_dimensional_total_variation_anisotropic_regularizer (toLp 2 (p, q)) =
       (∑ i : Fin m, ∑ j : Fin (n - 1), |p i j|) +
-        ∑ i : Fin (m - 1), ∑ j : Fin n, |q i j| := rfl
+        ∑ i : Fin (m - 1), ∑ j : Fin n, |q i j| := by
+  -- Evaluating the regularizer at `toLp 2 (p, q)` just exposes the two coordinates.
+  rfl
 
-/-- The isotropic interior shrinkage factor
+/-- The isotropic shrinkage factor
 `1 - λ / max {sqrt (p^2 + q^2), λ}` appearing in the proximal formula for `g₁`. -/
-def two_dimensional_total_variation_isotropic_shrink_factor
-    (lam p q : ℝ) : ℝ :=
+def two_dimensional_total_variation_isotropic_shrink_factor (lam p q : ℝ) : ℝ :=
   1 - lam / max (Real.sqrt (p ^ (2 : ℕ) + q ^ (2 : ℕ))) lam
 
-/-- Helper for Proposition 12.4: the interior isotropic shrink factor is exactly the Example 6.19
-radial shrinkage factor for the pair `toLp 2 (a, b)`. -/
-lemma isotropic_shrink_factor_eq_pair_shrinkage (lam a b : ℝ) :
-    two_dimensional_total_variation_isotropic_shrink_factor lam a b =
-      1 - lam / max ‖toLp 2 (a, b)‖ lam := by
-  -- Rewrite the `WithLp 2` norm of a scalar pair as the textbook square-root expression.
-  have hnorm : ‖toLp 2 (a, b)‖ = Real.sqrt (a ^ (2 : ℕ) + b ^ (2 : ℕ)) := by
-    simpa [Real.norm_eq_abs, sq_abs] using (WithLp.prod_norm_eq_of_L2 (toLp 2 (a, b)))
-  rw [two_dimensional_total_variation_isotropic_shrink_factor, hnorm]
+/-- Helper for Proposition 12.4: the proximal map of the two-dimensional Euclidean norm penalty is
+the singleton given by the textbook isotropic shrinkage factor. -/
+private theorem two_dimensional_total_variation_pair_prox_eq_singleton
+    (lam : ℝ) (hlam : 0 ≤ lam) (a b : ℝ) :
+    prox[fun y : EuclideanSpace ℝ (Fin 2) ↦ ↑(lam * ‖y‖)]
+      (toLp 2 ![a, b]) =
+        {toLp 2
+          ![two_dimensional_total_variation_isotropic_shrink_factor lam a b * a,
+            two_dimensional_total_variation_isotropic_shrink_factor lam a b * b]} := by
+  let x : EuclideanSpace ℝ (Fin 2) := toLp 2 ![a, b]
+  have hnorm_sq : ‖x‖ ^ (2 : ℕ) = a ^ (2 : ℕ) + b ^ (2 : ℕ) := by
+    -- Compute the squared Euclidean norm of the two-entry block explicitly.
+    simpa [x, Fin.sum_univ_two, pow_two] using EuclideanSpace.real_norm_sq_eq x
+  have hnorm :
+      ‖x‖ = Real.sqrt (a ^ (2 : ℕ) + b ^ (2 : ℕ)) := by
+    -- Both sides are nonnegative and have the same square, so they coincide.
+    have hsqrt :
+        Real.sqrt (a ^ (2 : ℕ) + b ^ (2 : ℕ)) ^ (2 : ℕ) = a ^ (2 : ℕ) + b ^ (2 : ℕ) := by
+      exact Real.sq_sqrt (by positivity)
+    nlinarith [hnorm_sq, hsqrt, norm_nonneg x, Real.sqrt_nonneg (a ^ (2 : ℕ) + b ^ (2 : ℕ))]
+  have hpoint :
+      ((1 - lam / max ‖x‖ lam) • x : EuclideanSpace ℝ (Fin 2)) =
+        toLp 2
+          ![two_dimensional_total_variation_isotropic_shrink_factor lam a b * a,
+            two_dimensional_total_variation_isotropic_shrink_factor lam a b * b] := by
+    -- After rewriting the norm, the singleton point is just scalar multiplication of a 2-vector.
+    ext i
+    fin_cases i <;> simp [x, two_dimensional_total_variation_isotropic_shrink_factor, hnorm]
+  have hpen :
+      (norm_penalty lam : EuclideanSpace ℝ (Fin 2) → EReal) =
+        fun y : EuclideanSpace ℝ (Fin 2) ↦ ↑(lam * ‖y‖) := by
+    -- The Chapter 6 norm penalty is exactly the displayed scalar multiple of the Euclidean norm.
+    funext y
+    simp [norm_penalty_apply]
+  by_cases hzero : lam = 0
+  · -- At `λ = 0`, the norm penalty is the zero function, so the prox map is the identity.
+    subst lam
+    have hpen0 : (norm_penalty (0 : ℝ) : EuclideanSpace ℝ (Fin 2) → EReal) = 0 := by
+      funext y
+      simp [norm_penalty_apply]
+    rw [← hpen, hpen0]
+    simpa [x, two_dimensional_total_variation_isotropic_shrink_factor] using
+      (prox_zero_eq_singleton x)
+  · have hlam_pos : 0 < lam := lt_of_le_of_ne hlam (Ne.symm hzero)
+    -- Specialize the Chapter 6 norm-prox formula and rewrite its singleton point.
+    rw [← hpen]
+    simpa [x, hpoint] using
+      prox_norm_penalty_eq_singleton_shrinkage lam hlam_pos x
+
+/-- Helper for Proposition 12.4: the Chapter 6 two-dimensional norm proximal objective expands
+to the explicit scalar formula used by the isotropic interior TV block. -/
+private theorem pair_norm_proximal_objective_apply
+    (lam pa qb a b : ℝ) :
+    proximal_objective
+        (fun y : EuclideanSpace ℝ (Fin 2) ↦ ↑(lam * ‖y‖))
+        (toLp 2 ![pa, qb]) (toLp 2 ![a, b]) =
+      (((lam * Real.sqrt (a ^ (2 : ℕ) + b ^ (2 : ℕ)) +
+          (1 / 2 : ℝ) * (a - pa) ^ (2 : ℕ) +
+          (1 / 2 : ℝ) * (b - qb) ^ (2 : ℕ) : ℝ)) : EReal) := by
+  let y : EuclideanSpace ℝ (Fin 2) := toLp 2 ![a, b]
+  let x : EuclideanSpace ℝ (Fin 2) := toLp 2 ![pa, qb]
+  have hy_norm_sq : ‖y‖ ^ (2 : ℕ) = a ^ (2 : ℕ) + b ^ (2 : ℕ) := by
+    -- Expand the squared Euclidean norm of the current interior pair.
+    simpa [y, Fin.sum_univ_two, pow_two] using EuclideanSpace.real_norm_sq_eq y
+  have hy_norm : ‖y‖ = Real.sqrt (a ^ (2 : ℕ) + b ^ (2 : ℕ)) := by
+    -- Both sides are nonnegative and have the same square, so they agree.
+    have hsqrt :
+        Real.sqrt (a ^ (2 : ℕ) + b ^ (2 : ℕ)) ^ (2 : ℕ) = a ^ (2 : ℕ) + b ^ (2 : ℕ) := by
+      exact Real.sq_sqrt (by positivity)
+    nlinarith [hy_norm_sq, hsqrt, norm_nonneg y,
+      Real.sqrt_nonneg (a ^ (2 : ℕ) + b ^ (2 : ℕ))]
+  have hdist_sq : ‖y - x‖ ^ (2 : ℕ) = (a - pa) ^ (2 : ℕ) + (b - qb) ^ (2 : ℕ) := by
+    -- Expand the squared distance between the current pair and the data pair entrywise.
+    simpa [x, y, Fin.sum_univ_two, pow_two, sub_eq_add_neg, add_assoc, add_left_comm, add_comm]
+      using EuclideanSpace.real_norm_sq_eq (y - x)
+  -- Rewrite the proximal objective into the explicit real-valued pair expression.
+  calc
+    proximal_objective
+        (fun z : EuclideanSpace ℝ (Fin 2) ↦ ↑(lam * ‖z‖))
+        x y =
+      (((lam * ‖y‖ + (1 / 2 : ℝ) * ‖y - x‖ ^ (2 : ℕ) : ℝ)) : EReal) := by
+        rw [proximal_objective_apply, ← EReal.coe_add]
+    _ =
+      (((lam * Real.sqrt (a ^ (2 : ℕ) + b ^ (2 : ℕ)) +
+          (1 / 2 : ℝ) * (a - pa) ^ (2 : ℕ) +
+          (1 / 2 : ℝ) * (b - qb) ^ (2 : ℕ) : ℝ)) : EReal) := by
+        congr 1
+        rw [hy_norm, hdist_sq]
+        ring
+
+/-- Helper for Proposition 12.4: the Chapter 6 pair proximal objective is always a coercion of a
+finite real number, so it is ready for `EReal` cancellation arguments. -/
+private theorem pair_norm_proximal_objective_eq_coe
+    (lam pa qb a b : ℝ) :
+    ∃ r : ℝ,
+      proximal_objective
+          (fun y : EuclideanSpace ℝ (Fin 2) ↦ ↑(lam * ‖y‖))
+          (toLp 2 ![pa, qb]) (toLp 2 ![a, b]) = (r : EReal) := by
+  -- Package the explicit pair-objective formula as a finite real witness.
+  refine ⟨lam * Real.sqrt (a ^ (2 : ℕ) + b ^ (2 : ℕ)) +
+      (1 / 2 : ℝ) * (a - pa) ^ (2 : ℕ) +
+      (1 / 2 : ℝ) * (b - qb) ^ (2 : ℕ), ?_⟩
+  simpa using pair_norm_proximal_objective_apply lam pa qb a b
+
+/-- Helper for Proposition 12.4: coercing a finite real sum into `EReal` matches summing the
+coerced real terms. -/
+private theorem ereal_coe_sum {α : Type*} (s : Finset α) (φ : α → ℝ) :
+    (((∑ a ∈ s, φ a : ℝ) : EReal)) = ∑ a ∈ s, ((φ a : ℝ) : EReal) := by
+  classical
+  -- Induct over the finite set and push the coercion through one inserted summand at a time.
+  refine Finset.induction_on s ?_ ?_
+  · simp
+  · intro a s ha hs
+    rw [Finset.sum_insert ha, Finset.sum_insert ha, EReal.coe_add, hs]
+
+/-- Helper for Proposition 12.4: coercing a finite double real sum into `EReal` matches summing
+the coerced real terms entrywise. -/
+private theorem ereal_coe_double_sum
+    {α β : Type*} [Fintype α] [Fintype β] (φ : α → β → ℝ) :
+    (((∑ a, ∑ b, φ a b : ℝ) : EReal)) = ∑ a, ∑ b, ((φ a b : ℝ) : EReal) := by
+  -- Push the `EReal` coercion through the outer sum and then through each inner sum.
+  calc
+    (((∑ a, ∑ b, φ a b : ℝ) : EReal))
+        = ∑ a, (((∑ b, φ a b : ℝ) : EReal)) := by
+            simpa using (ereal_coe_sum Finset.univ fun a : α ↦ ∑ b, φ a b)
+    _ = ∑ a, ∑ b, ((φ a b : ℝ) : EReal) := by
+      refine Finset.sum_congr rfl ?_
+      intro a ha
+      simpa using (ereal_coe_sum Finset.univ fun b : β ↦ φ a b)
+
+/-- Helper for Proposition 12.4: squaring the Frobenius norm of a horizontal-difference matrix
+recovers the sum of the squares of its entries. -/
+private theorem horizontal_matrix_frobenius_norm_sq_eq_sum_sq
+    (x : HorizontalSpace m n) :
+    ‖x‖ ^ (2 : ℕ) = ∑ i, ∑ j, x i j ^ (2 : ℕ) := by
+  have hnorm :
+      ‖x‖ = Real.sqrt (∑ i, ∑ j, ‖x i j‖ ^ (2 : ℕ)) := by
+    -- This is the Frobenius norm formula specialized to the horizontal matrix space.
+    simpa [Real.sqrt_eq_rpow] using (Matrix.frobenius_norm_def x)
+  -- Square the Frobenius formula and simplify the entrywise absolute-value squares.
+  calc
+    ‖x‖ ^ (2 : ℕ) = Real.sqrt (∑ i, ∑ j, ‖x i j‖ ^ (2 : ℕ)) ^ (2 : ℕ) := by
+      rw [hnorm]
+    _ = ∑ i, ∑ j, ‖x i j‖ ^ (2 : ℕ) := by
+      exact Real.sq_sqrt (by positivity)
+    _ = ∑ i, ∑ j, x i j ^ (2 : ℕ) := by
+      simp_rw [Real.norm_eq_abs, sq_abs]
+
+/-- Helper for Proposition 12.4: squaring the Frobenius norm of a vertical-difference matrix
+recovers the sum of the squares of its entries. -/
+private theorem vertical_matrix_frobenius_norm_sq_eq_sum_sq
+    (x : VerticalSpace m n) :
+    ‖x‖ ^ (2 : ℕ) = ∑ i, ∑ j, x i j ^ (2 : ℕ) := by
+  have hnorm :
+      ‖x‖ = Real.sqrt (∑ i, ∑ j, ‖x i j‖ ^ (2 : ℕ)) := by
+    -- This is the Frobenius norm formula specialized to the vertical matrix space.
+    simpa [Real.sqrt_eq_rpow] using (Matrix.frobenius_norm_def x)
+  -- Square the Frobenius formula and simplify the entrywise absolute-value squares.
+  calc
+    ‖x‖ ^ (2 : ℕ) = Real.sqrt (∑ i, ∑ j, ‖x i j‖ ^ (2 : ℕ)) ^ (2 : ℕ) := by
+      rw [hnorm]
+    _ = ∑ i, ∑ j, ‖x i j‖ ^ (2 : ℕ) := by
+      exact Real.sq_sqrt (by positivity)
+    _ = ∑ i, ∑ j, x i j ^ (2 : ℕ) := by
+      simp_rw [Real.norm_eq_abs, sq_abs]
+
+/-- Helper for Proposition 12.4: the quadratic term in the TV-space proximal objective splits into
+the horizontal and vertical Frobenius-coordinate sums. -/
+private theorem tv_pair_quadratic_term_eq_sum
+    (p u : HorizontalSpace m n) (q v : VerticalSpace m n) :
+    ((((1 / 2 : ℝ) * ‖(toLp 2 (u, v) : DualSpace m n) - toLp 2 (p, q)‖ ^ (2 : ℕ) : ℝ)) : EReal) =
+      (∑ i : Fin m, ∑ j : Fin (n - 1),
+        ((((1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ)) : EReal)) +
+      ∑ i : Fin (m - 1), ∑ j : Fin n,
+        ((((1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ)) : EReal) := by
+  have hnorm_sq :
+      ‖(toLp 2 (u, v) : DualSpace m n) - toLp 2 (p, q)‖ ^ (2 : ℕ) =
+        ‖u - p‖ ^ (2 : ℕ) + ‖v - q‖ ^ (2 : ℕ) := by
+    -- The `WithLp 2` product norm is the sum of the squared Frobenius norms of the two blocks.
+    simpa using
+      (WithLp.prod_norm_sq_eq_of_L2
+        ((toLp 2 (u, v) : DualSpace m n) - toLp 2 (p, q)))
+  have hreal :
+      ((1 / 2 : ℝ) * ‖(toLp 2 (u, v) : DualSpace m n) - toLp 2 (p, q)‖ ^ (2 : ℕ) : ℝ) =
+        (∑ i : Fin m, ∑ j : Fin (n - 1), (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ)) +
+        ∑ i : Fin (m - 1), ∑ j : Fin n, (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) := by
+    -- Rewrite both Frobenius squares by their entrywise formulas and distribute the factor `1/2`.
+    rw [hnorm_sq, horizontal_matrix_frobenius_norm_sq_eq_sum_sq (u - p),
+      vertical_matrix_frobenius_norm_sq_eq_sum_sq (v - q), mul_add, Finset.mul_sum, Finset.mul_sum]
+    congr 1
+    · refine Finset.sum_congr rfl ?_
+      intro i hi
+      rw [Finset.mul_sum]
+      simpa using rfl
+    · refine Finset.sum_congr rfl ?_
+      intro i hi
+      rw [Finset.mul_sum]
+      simpa using rfl
+  -- Coerce the real identity into `EReal` and push the coercion through both finite sums.
+  calc
+    ((((1 / 2 : ℝ) * ‖(toLp 2 (u, v) : DualSpace m n) - toLp 2 (p, q)‖ ^ (2 : ℕ) : ℝ)) : EReal) =
+        ((((∑ i : Fin m, ∑ j : Fin (n - 1), (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ)) +
+            ∑ i : Fin (m - 1), ∑ j : Fin n,
+              (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ)) : EReal) := by
+      exact congrArg (fun t : ℝ ↦ (t : EReal)) hreal
+    _ =
+        (((∑ i : Fin m, ∑ j : Fin (n - 1),
+            (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ)) : EReal) +
+          (((∑ i : Fin (m - 1), ∑ j : Fin n,
+            (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ)) : EReal) := by
+      rw [EReal.coe_add]
+    _ =
+        (∑ i : Fin m, ∑ j : Fin (n - 1),
+          ((((1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ)) : EReal)) +
+        ∑ i : Fin (m - 1), ∑ j : Fin n,
+          ((((1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ)) : EReal) := by
+      rw [ereal_coe_double_sum (fun i j ↦ (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ)),
+        ereal_coe_double_sum (fun i j ↦ (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ))]
+
+/-- Helper for Proposition 12.4: the anisotropic TV proximal objective is the sum of the scalar
+absolute-value proximal objectives over the horizontal and vertical entries. -/
+private theorem anisotropic_proximal_objective_sum_formula
+    (lam : ℝ) (p u : HorizontalSpace m n) (q v : VerticalSpace m n) :
+    proximal_objective
+        (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_anisotropic_regularizer z))
+        (toLp 2 (p, q)) (toLp 2 (u, v)) =
+      ((((∑ i : Fin m, ∑ j : Fin (n - 1),
+          (lam * |u i j| + (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ)) +
+        ∑ i : Fin (m - 1), ∑ j : Fin n,
+          (lam * |v i j| + (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ) : ℝ)) : EReal) := by
+  have hregularizer :
+      lam *
+          (two_dimensional_total_variation_anisotropic_regularizer (toLp 2 (u, v))) =
+        (∑ i : Fin m, ∑ j : Fin (n - 1), (lam * |u i j| : ℝ)) +
+          ∑ i : Fin (m - 1), ∑ j : Fin n, (lam * |v i j| : ℝ) := by
+    -- First rewrite the anisotropic regularizer as the two absolute-value double sums, then
+    -- distribute the scalar `λ` through each finite sum.
+    rw [two_dimensional_total_variation_anisotropic_regularizer_apply, mul_add, Finset.mul_sum,
+      Finset.mul_sum]
+    congr 1
+    · refine Finset.sum_congr rfl ?_
+      intro i hi
+      rw [Finset.mul_sum]
+    · refine Finset.sum_congr rfl ?_
+      intro i hi
+      rw [Finset.mul_sum]
+  have hhorizontal_block :
+      ((((∑ i : Fin m, ∑ j : Fin (n - 1), (lam * |u i j| : ℝ)) : ℝ)) : EReal) +
+          ∑ i : Fin m, ∑ j : Fin (n - 1),
+            ((((1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ)) : EReal) =
+        ((((∑ i : Fin m, ∑ j : Fin (n - 1),
+            (lam * |u i j| + (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ)) : ℝ)) : EReal) := by
+    -- Regroup the horizontal penalty and quadratic pieces inside a single real double sum.
+    rw [← ereal_coe_double_sum (fun i j ↦ (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ)),
+      ← EReal.coe_add]
+    congr 1
+    rw [← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl ?_
+    intro i hi
+    rw [← Finset.sum_add_distrib]
+  have hvertical_block :
+      ((((∑ i : Fin (m - 1), ∑ j : Fin n, (lam * |v i j| : ℝ)) : ℝ)) : EReal) +
+          ∑ i : Fin (m - 1), ∑ j : Fin n,
+            ((((1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ)) : EReal) =
+        ((((∑ i : Fin (m - 1), ∑ j : Fin n,
+            (lam * |v i j| + (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ)) : ℝ)) : EReal) := by
+    -- Regroup the vertical penalty and quadratic pieces inside a single real double sum.
+    rw [← ereal_coe_double_sum (fun i j ↦ (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ)),
+      ← EReal.coe_add]
+    congr 1
+    rw [← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl ?_
+    intro i hi
+    rw [← Finset.sum_add_distrib]
+  have hregularizer_ereal :
+      ((((lam * two_dimensional_total_variation_anisotropic_regularizer (toLp 2 (u, v)) : ℝ)) :
+        EReal)) =
+        ((((∑ i : Fin m, ∑ j : Fin (n - 1), (lam * |u i j| : ℝ)) +
+            ∑ i : Fin (m - 1), ∑ j : Fin n, (lam * |v i j| : ℝ) : ℝ)) : EReal) := by
+    -- Coerce the real-coordinate regularizer decomposition into `EReal`.
+    exact congrArg (fun t : ℝ ↦ (t : EReal)) hregularizer
+  -- Route correction: keep the source-proof split into horizontal and vertical scalar blocks,
+  -- and only combine the blocks after the real-coordinate regrouping is finished.
+  calc
+    proximal_objective
+        (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_anisotropic_regularizer z))
+        (toLp 2 (p, q)) (toLp 2 (u, v)) =
+      ((((∑ i : Fin m, ∑ j : Fin (n - 1), (lam * |u i j| : ℝ)) +
+          ∑ i : Fin (m - 1), ∑ j : Fin n, (lam * |v i j| : ℝ) : ℝ)) : EReal) +
+        ((∑ i : Fin m, ∑ j : Fin (n - 1),
+            ((((1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ)) : EReal)) +
+          ∑ i : Fin (m - 1), ∑ j : Fin n,
+            ((((1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ)) : EReal)) := by
+          rw [proximal_objective_apply, tv_pair_quadratic_term_eq_sum, hregularizer_ereal]
+    _ =
+      (((((∑ i : Fin m, ∑ j : Fin (n - 1), (lam * |u i j| : ℝ)) : ℝ)) : EReal) +
+          ∑ i : Fin m, ∑ j : Fin (n - 1),
+            ((((1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ)) : EReal)) +
+        (((((∑ i : Fin (m - 1), ∑ j : Fin n, (lam * |v i j| : ℝ)) : ℝ)) : EReal) +
+          ∑ i : Fin (m - 1), ∑ j : Fin n,
+            ((((1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ)) : EReal)) := by
+      rw [EReal.coe_add]
+      simp [add_assoc, add_left_comm, add_comm]
+    _ =
+      ((((∑ i : Fin m, ∑ j : Fin (n - 1),
+          (lam * |u i j| + (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ)) : ℝ)) : EReal) +
+        ((((∑ i : Fin (m - 1), ∑ j : Fin n,
+          (lam * |v i j| + (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ)) : ℝ)) : EReal) := by
+      rw [hhorizontal_block, hvertical_block]
+    _ =
+      ((((∑ i : Fin m, ∑ j : Fin (n - 1),
+          (lam * |u i j| + (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ)) +
+        ∑ i : Fin (m - 1), ∑ j : Fin n,
+          (lam * |v i j| + (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ) : ℝ)) : EReal) := by
+      rw [← EReal.coe_add]
+
+/-- Helper for Proposition 12.4: when the ambient index is a successor, the canonical
+`castLE` embedding from `Fin k` into `Fin (k + 1)` is exactly `Fin.castSucc`. -/
+private theorem castLE_sub_one_eq_castSucc {k : ℕ} (i : Fin k) :
+    Fin.castLE (Nat.sub_le (k + 1) 1) i = i.castSucc := by
+  -- Both successor embeddings preserve the underlying natural number.
+  ext
+  rfl
+
+/-- Helper for Proposition 12.4: summing an interior branch over `Fin k` is equivalent to
+reindexing the sum over the canonical interior copy `Fin (k - 1)`. -/
+private theorem interior_sum_eq_castLE_sum {k : ℕ} (φ : Fin k → ℝ) :
+    (∑ i : Fin k, if hi : (i : ℕ) + 1 < k then φ i else 0) =
+      ∑ i : Fin (k - 1), φ (Fin.castLE (Nat.sub_le k 1) i) := by
+  cases k with
+  | zero =>
+      simp
+  | succ k =>
+      -- Split the successor-index sum into the interior `castSucc` part and the final boundary term.
+      calc
+        (∑ i : Fin (k + 1), if hi : (i : ℕ) + 1 < k + 1 then φ i else 0) =
+            ∑ i : Fin k, φ i.castSucc := by
+              rw [Fin.sum_univ_castSucc]
+              simp
+        _ = ∑ i : Fin k, φ (Fin.castLE (Nat.sub_le (k + 1) 1) i) := by
+              refine Finset.sum_congr rfl ?_
+              intro i hi
+              rw [castLE_sub_one_eq_castSucc]
+
+/-- Helper for Proposition 12.4: summing a proof-dependent interior branch over `Fin k` is
+equivalent to reindexing it over the canonical interior copy `Fin (k - 1)`. -/
+private theorem dependent_interior_sum_eq_castLE_sum {k : ℕ}
+    (ψ : ∀ i : Fin k, ((i : ℕ) + 1 < k) → ℝ) :
+    (∑ i : Fin k, if hi : (i : ℕ) + 1 < k then ψ i hi else 0) =
+      ∑ i : Fin (k - 1), ψ (Fin.castLE (Nat.sub_le k 1) i)
+        (Nat.lt_sub_iff_add_lt.mp i.isLt) := by
+  cases k with
+  | zero =>
+      simp
+  | succ k =>
+      -- Split the successor-index sum into the interior `castSucc` part and the final boundary
+      -- term, then identify the surviving proof-dependent interior branches by proof irrelevance.
+      calc
+        (∑ i : Fin (k + 1), if hi : (i : ℕ) + 1 < k + 1 then ψ i hi else 0) =
+            ∑ i : Fin k, ψ i.castSucc (by simpa using i.isLt) := by
+              rw [Fin.sum_univ_castSucc]
+              have hsum :
+                  (∑ i : Fin k,
+                      if hi : ((i.castSucc : Fin (k + 1)) : ℕ) + 1 < k + 1 then
+                        ψ i.castSucc hi
+                      else
+                        0) =
+                    ∑ i : Fin k, ψ i.castSucc (by simpa using i.isLt) := by
+                refine Finset.sum_congr rfl ?_
+                intro i hi
+                have hlt : ((i.castSucc : Fin (k + 1)) : ℕ) + 1 < k + 1 := by
+                  simpa using i.isLt
+                rw [dif_pos hlt]
+              have hlast :
+                  (if hi : (((Fin.last k : Fin (k + 1)) : ℕ) + 1 < k + 1) then
+                    ψ (Fin.last k) hi
+                  else
+                    0) = 0 := by
+                have hnot : ¬ (((Fin.last k : Fin (k + 1)) : ℕ) + 1 < k + 1) := by
+                  simp [Fin.last]
+                simp [hnot]
+              simpa [hsum, hlast]
+        _ = ∑ i : Fin k, ψ (Fin.castLE (Nat.sub_le (k + 1) 1) i)
+              (Nat.lt_sub_iff_add_lt.mp i.isLt) := by
+              refine Finset.sum_congr rfl ?_
+              intro i hi
+              have hcast : Fin.castLE (Nat.sub_le (k + 1) 1) i = i.castSucc := by
+                simpa using castLE_sub_one_eq_castSucc i
+              cases hcast
+              have hproof :
+                  Nat.lt_sub_iff_add_lt.mp i.isLt =
+                    (by simpa using i.isLt :
+                      ((i.castSucc : Fin (k + 1)) : ℕ) + 1 < k + 1) := by
+                apply Subsingleton.elim
+              cases hproof
+              rfl
+
+/-- Helper for Proposition 12.4: an interior row-conditional double sum can be reindexed over
+the canonical interior row set `Fin (m - 1)`. -/
+private theorem interior_row_double_sum_eq_castLE_sum
+    (φ : Fin m → Fin (n - 1) → ℝ) :
+    (∑ i : Fin m, ∑ j : Fin (n - 1), if hi : (i : ℕ) + 1 < m then φ i j else 0) =
+      ∑ i : Fin (m - 1), ∑ j : Fin (n - 1), φ (Fin.castLE (Nat.sub_le m 1) i) j := by
+  -- Reindex the outer sum and leave the inner sum unchanged.
+  simpa using
+    (interior_sum_eq_castLE_sum (k := m) (φ := fun i : Fin m ↦ ∑ j : Fin (n - 1), φ i j))
+
+/-- Helper for Proposition 12.4: an interior row-conditional double sum with proof-dependent row
+branches can be reindexed over the canonical interior row set `Fin (m - 1)`. -/
+private theorem dependent_interior_row_double_sum_eq_castLE_sum
+    (ψ : ∀ i : Fin m, ((i : ℕ) + 1 < m) → Fin (n - 1) → ℝ) :
+    (∑ i : Fin m, ∑ j : Fin (n - 1), if hi : (i : ℕ) + 1 < m then ψ i hi j else 0) =
+      ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
+        ψ (Fin.castLE (Nat.sub_le m 1) i) (Nat.lt_sub_iff_add_lt.mp i.isLt) j := by
+  -- Reindex the outer row sum while keeping the inner column sum unchanged.
+  simpa using
+    (dependent_interior_sum_eq_castLE_sum (k := m)
+      (ψ := fun i hi ↦ ∑ j : Fin (n - 1), ψ i hi j))
+
+/-- Helper for Proposition 12.4: an interior column-conditional double sum can be reindexed over
+the canonical interior column set `Fin (n - 1)`. -/
+private theorem interior_column_double_sum_eq_castLE_sum
+    (φ : Fin (m - 1) → Fin n → ℝ) :
+    (∑ i : Fin (m - 1), ∑ j : Fin n, if hj : (j : ℕ) + 1 < n then φ i j else 0) =
+      ∑ i : Fin (m - 1), ∑ j : Fin (n - 1), φ i (Fin.castLE (Nat.sub_le n 1) j) := by
+  -- Reindex each rowwise interior-column sum separately.
+  refine Finset.sum_congr rfl ?_
+  intro i hi
+  simpa using
+    (interior_sum_eq_castLE_sum (k := n) (φ := fun j : Fin n ↦ φ i j))
+
+/-- Helper for Proposition 12.4: multiplying the first isotropic TV sum by `λ` splits it into the
+interior coupled Euclidean-norm blocks and the last-row scalar boundary blocks. -/
+private theorem isotropic_horizontal_regularizer_split
+    (lam : ℝ) (u : HorizontalSpace m n) (v : VerticalSpace m n) :
+    lam *
+        (∑ i : Fin m, ∑ j : Fin (n - 1),
+          if hi : (i : ℕ) + 1 < m then
+            Real.sqrt
+              (u i j ^ (2 : ℕ) +
+                v (i.castLT (Nat.lt_sub_iff_add_lt.mpr hi))
+                  (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ))
+          else
+            |u i j|) =
+      (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
+        (lam *
+            Real.sqrt
+              (u (Fin.castLE (Nat.sub_le m 1) i) j ^ (2 : ℕ) +
+                v i (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ)) : ℝ)) +
+      ∑ i : Fin m, ∑ j : Fin (n - 1),
+        if hi : (i : ℕ) + 1 < m then
+          (0 : ℝ)
+        else
+          (lam * |u i j| : ℝ) := by
+  -- Split the first isotropic TV sum into interior coupled blocks and last-row scalar blocks.
+  calc
+    lam *
+        (∑ i : Fin m, ∑ j : Fin (n - 1),
+          if hi : (i : ℕ) + 1 < m then
+            Real.sqrt
+              (u i j ^ (2 : ℕ) +
+                v (i.castLT (Nat.lt_sub_iff_add_lt.mpr hi))
+                  (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ))
+          else
+            |u i j|) =
+      ∑ i : Fin m, ∑ j : Fin (n - 1),
+        if hi : (i : ℕ) + 1 < m then
+          (lam *
+            Real.sqrt
+              (u i j ^ (2 : ℕ) +
+                v (i.castLT (Nat.lt_sub_iff_add_lt.mpr hi))
+                  (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ)) : ℝ)
+        else
+          (lam * |u i j| : ℝ) := by
+        rw [Finset.mul_sum]
+        refine Finset.sum_congr rfl ?_
+        intro i hi
+        rw [Finset.mul_sum]
+        refine Finset.sum_congr rfl ?_
+        intro j hj
+        by_cases hrow : (i : ℕ) + 1 < m <;> simp [hrow]
+    _ =
+      (∑ i : Fin m, ∑ j : Fin (n - 1),
+        if hi : (i : ℕ) + 1 < m then
+          (lam *
+            Real.sqrt
+              (u i j ^ (2 : ℕ) +
+                v (i.castLT (Nat.lt_sub_iff_add_lt.mpr hi))
+                  (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ)) : ℝ)
+        else
+          (0 : ℝ)) +
+        ∑ i : Fin m, ∑ j : Fin (n - 1),
+          if hi : (i : ℕ) + 1 < m then
+            (0 : ℝ)
+          else
+            (lam * |u i j| : ℝ) := by
+        calc
+          (∑ i : Fin m, ∑ j : Fin (n - 1),
+              if hi : (i : ℕ) + 1 < m then
+                (lam *
+                  Real.sqrt
+                    (u i j ^ (2 : ℕ) +
+                      v (i.castLT (Nat.lt_sub_iff_add_lt.mpr hi))
+                        (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ)) : ℝ)
+              else
+                (lam * |u i j| : ℝ)) =
+            ∑ i : Fin m, ∑ j : Fin (n - 1),
+              ((if hi : (i : ℕ) + 1 < m then
+                  (lam *
+                    Real.sqrt
+                      (u i j ^ (2 : ℕ) +
+                        v (i.castLT (Nat.lt_sub_iff_add_lt.mpr hi))
+                          (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ)) : ℝ)
+                else
+                  (0 : ℝ)) +
+                (if hi : (i : ℕ) + 1 < m then
+                  (0 : ℝ)
+                else
+                  (lam * |u i j| : ℝ))) := by
+              refine Finset.sum_congr rfl ?_
+              intro i hi
+              refine Finset.sum_congr rfl ?_
+              intro j hj
+              by_cases hrow : (i : ℕ) + 1 < m <;> simp [hrow]
+          _ =
+            (∑ i : Fin m, ∑ j : Fin (n - 1),
+              if hi : (i : ℕ) + 1 < m then
+                (lam *
+                  Real.sqrt
+                    (u i j ^ (2 : ℕ) +
+                      v (i.castLT (Nat.lt_sub_iff_add_lt.mpr hi))
+                        (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ)) : ℝ)
+              else
+                (0 : ℝ)) +
+              ∑ i : Fin m, ∑ j : Fin (n - 1),
+                if hi : (i : ℕ) + 1 < m then
+                  (0 : ℝ)
+                else
+                  (lam * |u i j| : ℝ) := by
+              simp_rw [Finset.sum_add_distrib]
+    _ =
+      (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
+        (lam *
+            Real.sqrt
+              (u (Fin.castLE (Nat.sub_le m 1) i) j ^ (2 : ℕ) +
+                v i (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ)) : ℝ)) +
+        ∑ i : Fin m, ∑ j : Fin (n - 1),
+          if hi : (i : ℕ) + 1 < m then
+            (0 : ℝ)
+          else
+            (lam * |u i j| : ℝ) := by
+        congr 1
+        simpa using
+          (dependent_interior_row_double_sum_eq_castLE_sum
+            (ψ := fun i hi j ↦
+              (lam *
+                  Real.sqrt
+                    (u i j ^ (2 : ℕ) +
+                      v (i.castLT (Nat.lt_sub_iff_add_lt.mpr hi))
+                        (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ)) : ℝ)))
+
+/-- Helper for Proposition 12.4: multiplying the second isotropic TV sum by `λ` keeps only the
+last-column scalar boundary blocks. -/
+private theorem isotropic_vertical_regularizer_split
+    (lam : ℝ) (v : VerticalSpace m n) :
+    lam *
+        (∑ i : Fin (m - 1), ∑ j : Fin n,
+          if (j : ℕ) + 1 < n then
+            (0 : ℝ)
+          else
+            |v i j|) =
+      ∑ i : Fin (m - 1), ∑ j : Fin n,
+        if (j : ℕ) + 1 < n then
+          (0 : ℝ)
+        else
+          (lam * |v i j| : ℝ) := by
+  -- Distribute `λ` through the last-column scalar boundary sum.
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl ?_
+  intro i hi
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl ?_
+  intro j hj
+  by_cases hcol : (j : ℕ) + 1 < n <;> simp [hcol]
+
+/-- Helper for Proposition 12.4: the quadratic TV-space term splits into interior coupled blocks
+and the last-row/last-column scalar boundary blocks. -/
+private theorem isotropic_quadratic_block_split
+    (p u : HorizontalSpace m n) (q v : VerticalSpace m n) :
+    (∑ i : Fin m, ∑ j : Fin (n - 1),
+        ((1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ)) +
+      ∑ i : Fin (m - 1), ∑ j : Fin n,
+        ((1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ) =
+      ((∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
+          ((1 / 2 : ℝ) * (u (Fin.castLE (Nat.sub_le m 1) i) j -
+                p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
+              (1 / 2 : ℝ) * (v i (Fin.castLE (Nat.sub_le n 1) j) -
+                q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ) : ℝ)) +
+        (∑ i : Fin m, ∑ j : Fin (n - 1),
+          if hi : (i : ℕ) + 1 < m then
+            (0 : ℝ)
+          else
+            ((1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ))) +
+        (∑ i : Fin (m - 1), ∑ j : Fin n,
+          if hj : (j : ℕ) + 1 < n then
+            (0 : ℝ)
+          else
+            ((1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ)) := by
+  let uQuad : Fin m → Fin (n - 1) → ℝ :=
+    fun i j ↦ (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ)
+  let vQuad : Fin (m - 1) → Fin n → ℝ :=
+    fun i j ↦ (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ)
+  have hu_split :
+      (∑ i : Fin m, ∑ j : Fin (n - 1), uQuad i j) =
+        (∑ i : Fin (m - 1), ∑ j : Fin (n - 1), uQuad (Fin.castLE (Nat.sub_le m 1) i) j) +
+          ∑ i : Fin m, ∑ j : Fin (n - 1),
+            if hi : (i : ℕ) + 1 < m then
+              (0 : ℝ)
+            else
+              uQuad i j := by
+    -- Split the horizontal quadratic sum into interior rows and the last-row boundary.
+    calc
+      (∑ i : Fin m, ∑ j : Fin (n - 1), uQuad i j) =
+          ∑ i : Fin m, ∑ j : Fin (n - 1),
+            ((if hi : (i : ℕ) + 1 < m then uQuad i j else 0) +
+              (if hi : (i : ℕ) + 1 < m then 0 else uQuad i j)) := by
+            refine Finset.sum_congr rfl ?_
+            intro i hi
+            refine Finset.sum_congr rfl ?_
+            intro j hj
+            by_cases hrow : (i : ℕ) + 1 < m <;> simp [hrow]
+      _ =
+          (∑ i : Fin m, ∑ j : Fin (n - 1),
+              if hi : (i : ℕ) + 1 < m then uQuad i j else 0) +
+            ∑ i : Fin m, ∑ j : Fin (n - 1),
+              if hi : (i : ℕ) + 1 < m then 0 else uQuad i j := by
+            simp_rw [Finset.sum_add_distrib]
+      _ =
+          (∑ i : Fin (m - 1), ∑ j : Fin (n - 1), uQuad (Fin.castLE (Nat.sub_le m 1) i) j) +
+            ∑ i : Fin m, ∑ j : Fin (n - 1),
+              if hi : (i : ℕ) + 1 < m then 0 else uQuad i j := by
+            rw [interior_row_double_sum_eq_castLE_sum (φ := uQuad)]
+  have hv_split :
+      (∑ i : Fin (m - 1), ∑ j : Fin n, vQuad i j) =
+        (∑ i : Fin (m - 1), ∑ j : Fin (n - 1), vQuad i (Fin.castLE (Nat.sub_le n 1) j)) +
+          ∑ i : Fin (m - 1), ∑ j : Fin n,
+            if hj : (j : ℕ) + 1 < n then
+              (0 : ℝ)
+            else
+              vQuad i j := by
+    -- Split the vertical quadratic sum into interior columns and the last-column boundary.
+    calc
+      (∑ i : Fin (m - 1), ∑ j : Fin n, vQuad i j) =
+          ∑ i : Fin (m - 1), ∑ j : Fin n,
+            ((if hj : (j : ℕ) + 1 < n then vQuad i j else 0) +
+              (if hj : (j : ℕ) + 1 < n then 0 else vQuad i j)) := by
+            refine Finset.sum_congr rfl ?_
+            intro i hi
+            refine Finset.sum_congr rfl ?_
+            intro j hj
+            by_cases hcol : (j : ℕ) + 1 < n <;> simp [hcol]
+      _ =
+          (∑ i : Fin (m - 1), ∑ j : Fin n,
+              if hj : (j : ℕ) + 1 < n then vQuad i j else 0) +
+            ∑ i : Fin (m - 1), ∑ j : Fin n,
+              if hj : (j : ℕ) + 1 < n then 0 else vQuad i j := by
+            simp_rw [Finset.sum_add_distrib]
+      _ =
+          (∑ i : Fin (m - 1), ∑ j : Fin (n - 1), vQuad i (Fin.castLE (Nat.sub_le n 1) j)) +
+            ∑ i : Fin (m - 1), ∑ j : Fin n,
+              if hj : (j : ℕ) + 1 < n then 0 else vQuad i j := by
+            rw [interior_column_double_sum_eq_castLE_sum (φ := vQuad)]
+  have hinterior_block :
+      (∑ i : Fin (m - 1), ∑ j : Fin (n - 1), uQuad (Fin.castLE (Nat.sub_le m 1) i) j) +
+          ∑ i : Fin (m - 1), ∑ j : Fin (n - 1), vQuad i (Fin.castLE (Nat.sub_le n 1) j) =
+        ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
+          (uQuad (Fin.castLE (Nat.sub_le m 1) i) j +
+            vQuad i (Fin.castLE (Nat.sub_le n 1) j) : ℝ) := by
+    -- Regroup the two interior quadratic sums entrywise on the same interior grid.
+    rw [← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl ?_
+    intro i hi
+    rw [← Finset.sum_add_distrib]
+  let interiorH : ℝ :=
+    ∑ i : Fin (m - 1), ∑ j : Fin (n - 1), uQuad (Fin.castLE (Nat.sub_le m 1) i) j
+  let interiorV : ℝ :=
+    ∑ i : Fin (m - 1), ∑ j : Fin (n - 1), vQuad i (Fin.castLE (Nat.sub_le n 1) j)
+  let boundaryH : ℝ :=
+    ∑ i : Fin m, ∑ j : Fin (n - 1),
+      if hi : (i : ℕ) + 1 < m then 0 else uQuad i j
+  let boundaryV : ℝ :=
+    ∑ i : Fin (m - 1), ∑ j : Fin n,
+      if hj : (j : ℕ) + 1 < n then 0 else vQuad i j
+  have hmiddle :
+      ((interiorH + boundaryH) + (interiorV + boundaryV)) =
+        ((interiorH + interiorV) + boundaryH + boundaryV) := by
+    -- Reassociate the four real blocks before replacing the paired interior sum.
+    ring
+  have hcombined :
+      ((interiorH + interiorV) + boundaryH + boundaryV) =
+        (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
+            (uQuad (Fin.castLE (Nat.sub_le m 1) i) j +
+              vQuad i (Fin.castLE (Nat.sub_le n 1) j) : ℝ)) +
+          boundaryH + boundaryV := by
+    -- Replace the two separate interior sums by the coupled interior quadratic block sum.
+    simpa [interiorH, interiorV, boundaryH, boundaryV, add_assoc] using
+      congrArg (fun t : ℝ ↦ t + boundaryH + boundaryV) hinterior_block
+  -- Reassemble the quadratic term in the same interior/boundary geometry as the isotropic TV
+  -- regularizer.
+  calc
+    (∑ i : Fin m, ∑ j : Fin (n - 1), uQuad i j) +
+        ∑ i : Fin (m - 1), ∑ j : Fin n, vQuad i j =
+      ((interiorH + boundaryH) + (interiorV + boundaryV)) := by
+          rw [hu_split, hv_split]
+    _ =
+      ((interiorH + interiorV) + boundaryH + boundaryV) := hmiddle
+    _ =
+      (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
+          (uQuad (Fin.castLE (Nat.sub_le m 1) i) j +
+            vQuad i (Fin.castLE (Nat.sub_le n 1) j) : ℝ)) +
+        boundaryH + boundaryV := hcombined
+    _ = _ := by
+      simp [boundaryH, boundaryV, uQuad, vQuad]
+
+/-- Helper for Proposition 12.4: the canonical real-valued isotropic proximal-objective block sum
+used by the source-proof decomposition. -/
+private def isotropic_proximal_objective_sum_rhs
+    (lam : ℝ) (p u : HorizontalSpace m n) (q v : VerticalSpace m n) : ℝ :=
+  (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
+      (lam *
+          Real.sqrt
+            (u (Fin.castLE (Nat.sub_le m 1) i) j ^ (2 : ℕ) +
+              v i (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ)) +
+        (1 / 2 : ℝ) *
+          (u (Fin.castLE (Nat.sub_le m 1) i) j -
+              p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
+        (1 / 2 : ℝ) *
+          (v i (Fin.castLE (Nat.sub_le n 1) j) -
+              q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ) : ℝ)) +
+    (∑ i : Fin m, ∑ j : Fin (n - 1),
+      if hi : (i : ℕ) + 1 < m then
+        (0 : ℝ)
+      else
+        (lam * |u i j| + (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ)) +
+    (∑ i : Fin (m - 1), ∑ j : Fin n,
+      if hj : (j : ℕ) + 1 < n then
+        (0 : ℝ)
+      else
+        (lam * |v i j| + (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ))
+
+/-- Helper for Proposition 12.4: in `ℝ`, the isotropic TV proximal objective already has the
+canonical interior-pair plus boundary-scalar decomposition used by the source proof. -/
+private theorem isotropic_proximal_objective_sum_formula_real
+    (lam : ℝ) (p u : HorizontalSpace m n) (q v : VerticalSpace m n) :
+    lam * two_dimensional_total_variation_isotropic_regularizer (toLp 2 (u, v)) +
+        (1 / 2 : ℝ) * ‖(toLp 2 (u, v) : DualSpace m n) - toLp 2 (p, q)‖ ^ (2 : ℕ) =
+      isotropic_proximal_objective_sum_rhs lam p u q v := by
+  let interiorReg : ℝ :=
+    ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
+      (lam *
+          Real.sqrt
+            (u (Fin.castLE (Nat.sub_le m 1) i) j ^ (2 : ℕ) +
+              v i (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ)) : ℝ)
+  let boundaryHReg : ℝ :=
+    ∑ i : Fin m, ∑ j : Fin (n - 1),
+      if hi : (i : ℕ) + 1 < m then
+        (0 : ℝ)
+      else
+        (lam * |u i j| : ℝ)
+  let boundaryVReg : ℝ :=
+    ∑ i : Fin (m - 1), ∑ j : Fin n,
+      if hj : (j : ℕ) + 1 < n then
+        (0 : ℝ)
+      else
+        (lam * |v i j| : ℝ)
+  let interiorQuad : ℝ :=
+    ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
+      ((1 / 2 : ℝ) * (u (Fin.castLE (Nat.sub_le m 1) i) j -
+            p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
+        (1 / 2 : ℝ) * (v i (Fin.castLE (Nat.sub_le n 1) j) -
+            q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ) : ℝ)
+  let boundaryHQuad : ℝ :=
+    ∑ i : Fin m, ∑ j : Fin (n - 1),
+      if hi : (i : ℕ) + 1 < m then
+        (0 : ℝ)
+      else
+        ((1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ)
+  let boundaryVQuad : ℝ :=
+    ∑ i : Fin (m - 1), ∑ j : Fin n,
+      if hj : (j : ℕ) + 1 < n then
+        (0 : ℝ)
+      else
+        ((1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ)
+  have hregularizer :
+      lam * two_dimensional_total_variation_isotropic_regularizer (toLp 2 (u, v)) =
+        interiorReg + boundaryHReg + boundaryVReg := by
+    -- Split the real isotropic regularizer into the interior coupled blocks and the two boundary
+    -- scalar blocks before touching any `EReal` coercions.
+    rw [two_dimensional_total_variation_isotropic_regularizer_apply, mul_add,
+      isotropic_horizontal_regularizer_split, isotropic_vertical_regularizer_split]
+    simp [interiorReg, boundaryHReg, boundaryVReg, add_assoc]
+  have hquadratic_raw :
+      (1 / 2 : ℝ) * ‖(toLp 2 (u, v) : DualSpace m n) - toLp 2 (p, q)‖ ^ (2 : ℕ) =
+        (∑ i : Fin m, ∑ j : Fin (n - 1), (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ)) +
+          ∑ i : Fin (m - 1), ∑ j : Fin n, (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) := by
+    have hnorm_sq :
+        ‖(toLp 2 (u, v) : DualSpace m n) - toLp 2 (p, q)‖ ^ (2 : ℕ) =
+          ‖u - p‖ ^ (2 : ℕ) + ‖v - q‖ ^ (2 : ℕ) := by
+      -- The `WithLp 2` product norm splits into the two Frobenius-square contributions.
+      simpa using
+        (WithLp.prod_norm_sq_eq_of_L2
+          ((toLp 2 (u, v) : DualSpace m n) - toLp 2 (p, q)))
+    -- Rewrite both Frobenius squares entrywise and distribute the scalar `1 / 2`.
+    rw [hnorm_sq, horizontal_matrix_frobenius_norm_sq_eq_sum_sq (u - p),
+      vertical_matrix_frobenius_norm_sq_eq_sum_sq (v - q), mul_add, Finset.mul_sum, Finset.mul_sum]
+    congr 1
+    · refine Finset.sum_congr rfl ?_
+      intro i hi
+      rw [Finset.mul_sum]
+      simpa using rfl
+    · refine Finset.sum_congr rfl ?_
+      intro i hi
+      rw [Finset.mul_sum]
+      simpa using rfl
+  have hquadratic :
+      (1 / 2 : ℝ) * ‖(toLp 2 (u, v) : DualSpace m n) - toLp 2 (p, q)‖ ^ (2 : ℕ) =
+        interiorQuad + boundaryHQuad + boundaryVQuad := by
+    -- Reindex the quadratic term into the same interior/boundary geometry as the regularizer.
+    calc
+      (1 / 2 : ℝ) * ‖(toLp 2 (u, v) : DualSpace m n) - toLp 2 (p, q)‖ ^ (2 : ℕ) =
+          (∑ i : Fin m, ∑ j : Fin (n - 1), (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ)) +
+            ∑ i : Fin (m - 1), ∑ j : Fin n, (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) :=
+        hquadratic_raw
+      _ = interiorQuad + boundaryHQuad + boundaryVQuad := by
+        simpa [interiorQuad, boundaryHQuad, boundaryVQuad, add_assoc] using
+          isotropic_quadratic_block_split p u q v
+  have hinterior_block :
+      interiorReg + interiorQuad =
+        ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
+          (lam *
+              Real.sqrt
+                (u (Fin.castLE (Nat.sub_le m 1) i) j ^ (2 : ℕ) +
+                  v i (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ)) +
+            (1 / 2 : ℝ) *
+              (u (Fin.castLE (Nat.sub_le m 1) i) j -
+                  p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
+            (1 / 2 : ℝ) *
+              (v i (Fin.castLE (Nat.sub_le n 1) j) -
+                  q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ) : ℝ) := by
+    -- Merge the interior regularizer and interior quadratic pieces entrywise.
+    dsimp [interiorReg, interiorQuad]
+    rw [← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl ?_
+    intro i hi
+    rw [← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl ?_
+    intro j hj
+    ring
+  have hboundaryH_block :
+      boundaryHReg + boundaryHQuad =
+        ∑ i : Fin m, ∑ j : Fin (n - 1),
+          if hi : (i : ℕ) + 1 < m then
+            (0 : ℝ)
+          else
+            (lam * |u i j| + (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ) := by
+    -- Merge the last-row regularizer and quadratic terms pointwise.
+    dsimp [boundaryHReg, boundaryHQuad]
+    rw [← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl ?_
+    intro i hi
+    rw [← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl ?_
+    intro j hj
+    by_cases hrow : (i : ℕ) + 1 < m <;> simp [hrow]
+  have hboundaryV_block :
+      boundaryVReg + boundaryVQuad =
+        ∑ i : Fin (m - 1), ∑ j : Fin n,
+          if hj : (j : ℕ) + 1 < n then
+            (0 : ℝ)
+          else
+            (lam * |v i j| + (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ) := by
+    -- Merge the last-column regularizer and quadratic terms pointwise.
+    dsimp [boundaryVReg, boundaryVQuad]
+    rw [← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl ?_
+    intro i hi
+    rw [← Finset.sum_add_distrib]
+    refine Finset.sum_congr rfl ?_
+    intro j hj
+    by_cases hcol : (j : ℕ) + 1 < n <;> simp [hcol]
+  -- Route correction: stabilize the exact parenthesized real identity first, then coerce it once
+  -- to `EReal` in the wrapper theorem below.
+  calc
+    lam * two_dimensional_total_variation_isotropic_regularizer (toLp 2 (u, v)) +
+        (1 / 2 : ℝ) * ‖(toLp 2 (u, v) : DualSpace m n) - toLp 2 (p, q)‖ ^ (2 : ℕ) =
+      (interiorReg + boundaryHReg + boundaryVReg) + (interiorQuad + boundaryHQuad + boundaryVQuad) := by
+        rw [hregularizer, hquadratic]
+    _ =
+      (interiorReg + interiorQuad) + (boundaryHReg + boundaryHQuad) + (boundaryVReg + boundaryVQuad) := by
+        ring
+    _ = _ := by
+      rw [hinterior_block]
+      rw [hboundaryH_block]
+      rw [hboundaryV_block]
+      rfl
+
+/-- Helper for Proposition 12.4: the isotropic TV proximal objective splits into interior
+two-dimensional pair objectives together with boundary scalar absolute-value objectives. -/
+private theorem isotropic_proximal_objective_sum_formula
+    (lam : ℝ) (p u : HorizontalSpace m n) (q v : VerticalSpace m n) :
+    proximal_objective
+        (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z))
+        (toLp 2 (p, q)) (toLp 2 (u, v)) =
+      ((isotropic_proximal_objective_sum_rhs lam p u q v : ℝ) : EReal) := by
+  -- Route correction: the coercion-heavy regrouping is now delegated to the real-valued theorem
+  -- above, so this `EReal` statement is only the canonical wrapper.
+  calc
+    proximal_objective
+        (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z))
+        (toLp 2 (p, q)) (toLp 2 (u, v)) =
+      ((((lam * two_dimensional_total_variation_isotropic_regularizer (toLp 2 (u, v)) +
+            (1 / 2 : ℝ) * ‖(toLp 2 (u, v) : DualSpace m n) - toLp 2 (p, q)‖ ^ (2 : ℕ) : ℝ)) :
+          EReal)) := by
+            rw [proximal_objective_apply, EReal.coe_add]
+    _ = _ := by
+      exact congrArg (fun t : ℝ ↦ (t : EReal))
+        (isotropic_proximal_objective_sum_formula_real lam p u q v)
+
+/-- Helper for Proposition 12.4: updating one horizontal entry changes a double sum only at that
+entry. -/
+private def horizontal_update (x : HorizontalSpace m n) (i : Fin m) (j : Fin (n - 1)) (a : ℝ) : HorizontalSpace m n :=
+  Function.update x i (Function.update (x i) j a)
+
+/-- Helper for Proposition 12.4: updating one vertical entry changes a double sum only at that
+entry. -/
+private def vertical_update (x : VerticalSpace m n) (i : Fin (m - 1)) (j : Fin n) (a : ℝ) : VerticalSpace m n :=
+  Function.update x i (Function.update (x i) j a)
+
+/-- Helper for Proposition 12.4: a horizontal single-entry update rewrites the horizontal double
+sum as the changed summand plus the unchanged remainder. -/
+private theorem horizontal_double_sum_update
+    (φ : Fin m → Fin (n - 1) → ℝ → ℝ)
+    (x : HorizontalSpace m n) (i : Fin m) (j : Fin (n - 1)) (a : ℝ) :
+    (∑ i' : Fin m, ∑ j' : Fin (n - 1),
+      φ i' j' (horizontal_update x i j a i' j')) =
+      φ i j a +
+        Finset.sum (Finset.univ.erase j) (fun j' ↦ φ i j' (x i j')) +
+        Finset.sum (Finset.univ.erase i) (fun i' ↦ ∑ j' : Fin (n - 1), φ i' j' (x i' j')) := by
+  classical
+  have hrow_split :
+      (∑ i' : Fin m, ∑ j' : Fin (n - 1),
+        φ i' j' (horizontal_update x i j a i' j')) =
+        (∑ j' : Fin (n - 1), φ i j' (horizontal_update x i j a i j')) +
+          Finset.sum (Finset.univ.erase i) (fun i' ↦ ∑ j' : Fin (n - 1),
+            φ i' j' (horizontal_update x i j a i' j')) := by
+    -- Isolate the updated row from the outer double sum.
+    symm
+    exact Finset.add_sum_erase Finset.univ
+      (fun i' : Fin m ↦ ∑ j' : Fin (n - 1), φ i' j' (horizontal_update x i j a i' j'))
+      (Finset.mem_univ i)
+  have hupdated_row :
+      (∑ j' : Fin (n - 1), φ i j' (horizontal_update x i j a i j')) =
+        φ i j a + Finset.sum (Finset.univ.erase j) (fun j' ↦ φ i j' (x i j')) := by
+    -- Inside the updated row, isolate the updated column and simplify the remaining columns.
+    calc
+      (∑ j' : Fin (n - 1), φ i j' (horizontal_update x i j a i j')) =
+          φ i j (horizontal_update x i j a i j) +
+            Finset.sum (Finset.univ.erase j) (fun j' ↦ φ i j' (horizontal_update x i j a i j')) := by
+              symm
+              exact Finset.add_sum_erase Finset.univ
+                (fun j' : Fin (n - 1) ↦ φ i j' (horizontal_update x i j a i j'))
+                (Finset.mem_univ j)
+      _ = φ i j a + Finset.sum (Finset.univ.erase j) (fun j' ↦ φ i j' (x i j')) := by
+        congr 1
+        · simp [horizontal_update]
+        · refine Finset.sum_congr rfl ?_
+          intro j' hj'
+          have hj'ne : j' ≠ j := (Finset.mem_erase.mp hj').1
+          simp [horizontal_update, Function.update_of_ne, hj'ne]
+  have hunchanged_rows :
+      Finset.sum (Finset.univ.erase i) (fun i' ↦ ∑ j' : Fin (n - 1),
+        φ i' j' (horizontal_update x i j a i' j')) =
+        Finset.sum (Finset.univ.erase i) (fun i' ↦ ∑ j' : Fin (n - 1), φ i' j' (x i' j')) := by
+    -- Every untouched row is unchanged by the outer `Function.update`.
+    refine Finset.sum_congr rfl ?_
+    intro i' hi'
+    have hi'ne : i' ≠ i := (Finset.mem_erase.mp hi').1
+    refine Finset.sum_congr rfl ?_
+    intro j' hj'
+    simp [horizontal_update, Function.update_of_ne, hi'ne]
+  -- Reassemble the split row and remainder in the target order.
+  rw [hrow_split, hupdated_row, hunchanged_rows]
+
+/-- Helper for Proposition 12.4: a vertical single-entry update rewrites the vertical double sum
+as the changed summand plus the unchanged remainder. -/
+private theorem vertical_double_sum_update
+    (φ : Fin (m - 1) → Fin n → ℝ → ℝ)
+    (x : VerticalSpace m n) (i : Fin (m - 1)) (j : Fin n) (a : ℝ) :
+    (∑ i' : Fin (m - 1), ∑ j' : Fin n,
+      φ i' j' (vertical_update x i j a i' j')) =
+      φ i j a +
+        Finset.sum (Finset.univ.erase j) (fun j' ↦ φ i j' (x i j')) +
+        Finset.sum (Finset.univ.erase i) (fun i' ↦ ∑ j' : Fin n, φ i' j' (x i' j')) := by
+  classical
+  have hrow_split :
+      (∑ i' : Fin (m - 1), ∑ j' : Fin n,
+        φ i' j' (vertical_update x i j a i' j')) =
+        (∑ j' : Fin n, φ i j' (vertical_update x i j a i j')) +
+          Finset.sum (Finset.univ.erase i) (fun i' ↦ ∑ j' : Fin n,
+            φ i' j' (vertical_update x i j a i' j')) := by
+    -- Isolate the updated row from the outer double sum.
+    symm
+    exact Finset.add_sum_erase Finset.univ
+      (fun i' : Fin (m - 1) ↦ ∑ j' : Fin n, φ i' j' (vertical_update x i j a i' j'))
+      (Finset.mem_univ i)
+  have hupdated_row :
+      (∑ j' : Fin n, φ i j' (vertical_update x i j a i j')) =
+        φ i j a + Finset.sum (Finset.univ.erase j) (fun j' ↦ φ i j' (x i j')) := by
+    -- Inside the updated row, isolate the updated column and simplify the remaining columns.
+    calc
+      (∑ j' : Fin n, φ i j' (vertical_update x i j a i j')) =
+          φ i j (vertical_update x i j a i j) +
+            Finset.sum (Finset.univ.erase j) (fun j' ↦ φ i j' (vertical_update x i j a i j')) := by
+              symm
+              exact Finset.add_sum_erase Finset.univ
+                (fun j' : Fin n ↦ φ i j' (vertical_update x i j a i j'))
+                (Finset.mem_univ j)
+      _ = φ i j a + Finset.sum (Finset.univ.erase j) (fun j' ↦ φ i j' (x i j')) := by
+        congr 1
+        · simp [vertical_update]
+        · refine Finset.sum_congr rfl ?_
+          intro j' hj'
+          have hj'ne : j' ≠ j := (Finset.mem_erase.mp hj').1
+          simp [vertical_update, Function.update_of_ne, hj'ne]
+  have hunchanged_rows :
+      Finset.sum (Finset.univ.erase i) (fun i' ↦ ∑ j' : Fin n,
+        φ i' j' (vertical_update x i j a i' j')) =
+        Finset.sum (Finset.univ.erase i) (fun i' ↦ ∑ j' : Fin n, φ i' j' (x i' j')) := by
+    -- Every untouched row is unchanged by the outer `Function.update`.
+    refine Finset.sum_congr rfl ?_
+    intro i' hi'
+    have hi'ne : i' ≠ i := (Finset.mem_erase.mp hi').1
+    refine Finset.sum_congr rfl ?_
+    intro j' hj'
+    simp [vertical_update, Function.update_of_ne, hi'ne]
+  -- Reassemble the split row and remainder in the target order.
+  rw [hrow_split, hupdated_row, hunchanged_rows]
+
+/-- Helper for Proposition 12.4: casting an interior row from `Fin (k - 1)` up to `Fin k` and
+then back down recovers the original row index. -/
+private theorem castLE_castLT_sub_one_eq_self {k : ℕ} (i : Fin (k - 1)) :
+    (Fin.castLE (Nat.sub_le k 1) i).castLT i.isLt = i := by
+  -- Both `Fin` indices have the same underlying natural number, so extensionality closes the goal.
+  ext
+  rfl
+
+/-- Helper for Proposition 12.4: the same cast-up/cast-down identity is independent of the
+particular proof used for the interior bound. -/
+private theorem castLE_castLT_sub_one_eq_self_of_lt {k : ℕ} (i : Fin (k - 1))
+    (h : (Fin.castLE (Nat.sub_le k 1) i : Fin k).1 < k - 1) :
+    (Fin.castLE (Nat.sub_le k 1) i).castLT h = i := by
+  -- Proof irrelevance leaves only the underlying value, which matches `i`.
+  ext
+  rfl
+
+/-- Helper for Proposition 12.4: lifting two distinct `Fin (k - 1)` indices into `Fin k` keeps
+them distinct. -/
+private theorem castLE_ne_castLE_sub_one_of_ne {k : ℕ} {i j : Fin (k - 1)} (h : i ≠ j) :
+    Fin.castLE (Nat.sub_le k 1) i ≠ Fin.castLE (Nat.sub_le k 1) j := by
+  intro hij
+  apply h
+  simpa using hij
+
+/-- Helper for Proposition 12.4: if an interior `Fin k` row is not the lifted copy of `i`, then
+its cast-back `Fin (k - 1)` row is not `i` either. -/
+private theorem castLT_ne_of_ne_castLE_sub_one {k : ℕ} {i : Fin (k - 1)} {i' : Fin k}
+    (hi' : (i' : ℕ) + 1 < k) (h : i' ≠ Fin.castLE (Nat.sub_le k 1) i) :
+    i'.castLT (Nat.lt_sub_iff_add_lt.mpr hi') ≠ i := by
+  intro hcast
+  apply h
+  exact Fin.ext (by simpa using congrArg Fin.val hcast)
+
+/-- Helper for Proposition 12.4: a boundary index of `Fin k` cannot be the lifted image of an
+interior index of `Fin (k - 1)`. -/
+private theorem castLE_ne_of_not_lt_last {k : ℕ} {i : Fin k}
+    (hboundary : ¬ ((i : ℕ) + 1 < k)) (i' : Fin (k - 1)) :
+    Fin.castLE (Nat.sub_le k 1) i' ≠ i := by
+  -- Any lifted `Fin (k - 1)` index is still strictly before the last index, contradicting the
+  -- boundary hypothesis.
+  intro hEq
+  have hlt : ((Fin.castLE (Nat.sub_le k 1) i' : Fin k) : ℕ) + 1 < k := by
+    simpa using (Nat.lt_sub_iff_add_lt.mp i'.isLt)
+  apply hboundary
+  simpa [hEq] using hlt
+
+/-- Helper for Proposition 12.4: after replacing one horizontal entry, the anisotropic proximal
+objective becomes the scalar absolute-value proximal objective at that entry plus a constant
+remainder independent of the new scalar. -/
+private theorem anisotropic_horizontal_update_objective_eq_scalar_objective_add_const
+    (lam : ℝ) (p u : HorizontalSpace m n) (q v : VerticalSpace m n) (i : Fin m) (j : Fin (n - 1)) (a : ℝ) :
+    let remainder : ℝ :=
+      Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦
+        (lam * |u i j'| + (1 / 2 : ℝ) * (u i j' - p i j') ^ (2 : ℕ) : ℝ)) +
+      Finset.sum (Finset.univ.erase i) (fun i' : Fin m ↦
+        ∑ j' : Fin (n - 1),
+          (lam * |u i' j'| + (1 / 2 : ℝ) * (u i' j' - p i' j') ^ (2 : ℕ) : ℝ)) +
+      ∑ i' : Fin (m - 1), ∑ j' : Fin n,
+        (lam * |v i' j'| + (1 / 2 : ℝ) * (v i' j' - q i' j') ^ (2 : ℕ) : ℝ)
+    proximal_objective
+        (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_anisotropic_regularizer z))
+        (toLp 2 (p, q)) (toLp 2 (horizontal_update u i j a, v)) =
+      (((lam * |a| + (1 / 2 : ℝ) * (a - p i j) ^ (2 : ℕ) : ℝ)) : EReal) + (remainder : EReal) := by
+  dsimp only
+  let φ : Fin m → Fin (n - 1) → ℝ → ℝ :=
+    fun i' j' t ↦ lam * |t| + (1 / 2 : ℝ) * (t - p i' j') ^ (2 : ℕ)
+  have hhorizontal :
+      (∑ i' : Fin m, ∑ j' : Fin (n - 1),
+        (lam * |horizontal_update u i j a i' j'| +
+            (1 / 2 : ℝ) * (horizontal_update u i j a i' j' - p i' j') ^ (2 : ℕ) : ℝ)) =
+        φ i j a +
+          Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦ φ i j' (u i j')) +
+          Finset.sum (Finset.univ.erase i) (fun i' : Fin m ↦
+            ∑ j' : Fin (n - 1), φ i' j' (u i' j')) := by
+    -- Isolate the updated horizontal coordinate from the global horizontal double sum.
+    simpa [φ] using horizontal_double_sum_update φ u i j a
+  -- Route correction: package the global anisotropic objective as one scalar prox term plus a
+  -- constant remainder before invoking scalar prox uniqueness in the main theorem.
+  rw [anisotropic_proximal_objective_sum_formula, hhorizontal]
+  let remainder : ℝ :=
+    Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦ φ i j' (u i j')) +
+      Finset.sum (Finset.univ.erase i) (fun i' : Fin m ↦
+        ∑ j' : Fin (n - 1), φ i' j' (u i' j')) +
+      ∑ i' : Fin (m - 1), ∑ j' : Fin n,
+        (lam * |v i' j'| + (1 / 2 : ℝ) * (v i' j' - q i' j') ^ (2 : ℕ) : ℝ)
+  calc
+    (((φ i j a +
+          Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦ φ i j' (u i j')) +
+          Finset.sum (Finset.univ.erase i) (fun i' : Fin m ↦
+            ∑ j' : Fin (n - 1), φ i' j' (u i' j')) +
+          ∑ i' : Fin (m - 1), ∑ j' : Fin n,
+            (lam * |v i' j'| + (1 / 2 : ℝ) * (v i' j' - q i' j') ^ (2 : ℕ) : ℝ) : ℝ)) : EReal)
+        =
+      (((φ i j a + remainder : ℝ)) : EReal) := by
+            congr 1
+            simp [remainder]
+            ring
+    _ =
+      (((φ i j a : ℝ)) : EReal) + ((remainder : ℝ) : EReal) := by
+            rw [EReal.coe_add]
+    _ = (((lam * |a| + (1 / 2 : ℝ) * (a - p i j) ^ (2 : ℕ) : ℝ)) : EReal) +
+          ((((Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦
+                (lam * |u i j'| + (1 / 2 : ℝ) * (u i j' - p i j') ^ (2 : ℕ) : ℝ))) +
+              Finset.sum (Finset.univ.erase i) (fun i' : Fin m ↦
+                ∑ j' : Fin (n - 1),
+                  (lam * |u i' j'| + (1 / 2 : ℝ) * (u i' j' - p i' j') ^ (2 : ℕ) : ℝ)) +
+              ∑ i' : Fin (m - 1), ∑ j' : Fin n,
+                (lam * |v i' j'| + (1 / 2 : ℝ) * (v i' j' - q i' j') ^ (2 : ℕ) : ℝ) : ℝ)) :
+            EReal) := by
+              simp [remainder, φ]
+
+/-- Helper for Proposition 12.4: after replacing one vertical entry, the anisotropic proximal
+objective becomes the scalar absolute-value proximal objective at that entry plus a constant
+remainder independent of the new scalar. -/
+private theorem anisotropic_vertical_update_objective_eq_scalar_objective_add_const
+    (lam : ℝ) (p u : HorizontalSpace m n) (q v : VerticalSpace m n) (i : Fin (m - 1)) (j : Fin n) (a : ℝ) :
+    let remainder : ℝ :=
+      (∑ i' : Fin m, ∑ j' : Fin (n - 1),
+          (lam * |u i' j'| + (1 / 2 : ℝ) * (u i' j' - p i' j') ^ (2 : ℕ) : ℝ)) +
+      Finset.sum (Finset.univ.erase j) (fun j' : Fin n ↦
+        (lam * |v i j'| + (1 / 2 : ℝ) * (v i j' - q i j') ^ (2 : ℕ) : ℝ)) +
+      Finset.sum (Finset.univ.erase i) (fun i' : Fin (m - 1) ↦
+        ∑ j' : Fin n,
+          (lam * |v i' j'| + (1 / 2 : ℝ) * (v i' j' - q i' j') ^ (2 : ℕ) : ℝ))
+    proximal_objective
+        (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_anisotropic_regularizer z))
+        (toLp 2 (p, q)) (toLp 2 (u, vertical_update v i j a)) =
+      (((lam * |a| + (1 / 2 : ℝ) * (a - q i j) ^ (2 : ℕ) : ℝ)) : EReal) + (remainder : EReal) := by
+  dsimp only
+  let φ : Fin (m - 1) → Fin n → ℝ → ℝ :=
+    fun i' j' t ↦ lam * |t| + (1 / 2 : ℝ) * (t - q i' j') ^ (2 : ℕ)
+  have hvertical :
+      (∑ i' : Fin (m - 1), ∑ j' : Fin n,
+        (lam * |vertical_update v i j a i' j'| +
+            (1 / 2 : ℝ) * (vertical_update v i j a i' j' - q i' j') ^ (2 : ℕ) : ℝ)) =
+        φ i j a +
+          Finset.sum (Finset.univ.erase j) (fun j' : Fin n ↦ φ i j' (v i j')) +
+          Finset.sum (Finset.univ.erase i) (fun i' : Fin (m - 1) ↦
+            ∑ j' : Fin n, φ i' j' (v i' j')) := by
+    -- Isolate the updated vertical coordinate from the global vertical double sum.
+    simpa [φ] using vertical_double_sum_update φ v i j a
+  -- Route correction: mirror the horizontal proof exactly, but isolate the vertical scalar term
+  -- before combining it with the untouched horizontal block.
+  rw [anisotropic_proximal_objective_sum_formula, hvertical]
+  let remainder : ℝ :=
+    (∑ i' : Fin m, ∑ j' : Fin (n - 1),
+        (lam * |u i' j'| + (1 / 2 : ℝ) * (u i' j' - p i' j') ^ (2 : ℕ) : ℝ)) +
+      Finset.sum (Finset.univ.erase j) (fun j' : Fin n ↦ φ i j' (v i j')) +
+      Finset.sum (Finset.univ.erase i) (fun i' : Fin (m - 1) ↦
+        ∑ j' : Fin n, φ i' j' (v i' j'))
+  calc
+    ((((∑ i' : Fin m, ∑ j' : Fin (n - 1),
+            (lam * |u i' j'| + (1 / 2 : ℝ) * (u i' j' - p i' j') ^ (2 : ℕ) : ℝ)) +
+          (φ i j a +
+            Finset.sum (Finset.univ.erase j) (fun j' : Fin n ↦ φ i j' (v i j')) +
+            Finset.sum (Finset.univ.erase i) (fun i' : Fin (m - 1) ↦
+              ∑ j' : Fin n, φ i' j' (v i' j')) : ℝ)) : ℝ) : EReal) =
+      (((φ i j a + remainder : ℝ)) : EReal) := by
+        congr 1
+        simp [remainder]
+        ring
+    _ =
+      (((φ i j a : ℝ)) : EReal) + ((remainder : ℝ) : EReal) := by
+        rw [EReal.coe_add]
+    _ = (((lam * |a| + (1 / 2 : ℝ) * (a - q i j) ^ (2 : ℕ) : ℝ)) : EReal) +
+          (remainder : EReal) := by
+        simp [φ]
+
+/-- Helper for Proposition 12.4: updating one interior horizontal/vertical pair isolates the
+single coupled isotropic `sqrt (a^2 + b^2)` regularizer term plus an unchanged remainder. -/
+private theorem isotropic_interior_regularizer_update_eq_sqrt_add_remainder
+    (lam : ℝ) (u : HorizontalSpace m n) (v : VerticalSpace m n) (i : Fin (m - 1)) (j : Fin (n - 1)) (a b : ℝ) :
+    let iu : Fin m := Fin.castLE (Nat.sub_le m 1) i
+    let jv : Fin n := Fin.castLE (Nat.sub_le n 1) j
+    let remainder : ℝ :=
+      lam *
+        (Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦
+            Real.sqrt
+              (u iu j' ^ (2 : ℕ) + v i (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ))) +
+          Finset.sum (Finset.univ.erase iu) (fun i' : Fin m ↦
+            ∑ j' : Fin (n - 1),
+              if hi' : (i' : ℕ) + 1 < m then
+                Real.sqrt
+                  (u i' j' ^ (2 : ℕ) +
+                    v (i'.castLT (Nat.lt_sub_iff_add_lt.mpr hi'))
+                      (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ))
+              else
+                |u i' j'|) +
+          ∑ i' : Fin (m - 1), ∑ j' : Fin n, if (j' : ℕ) + 1 < n then (0 : ℝ) else |v i' j'|)
+    lam *
+        two_dimensional_total_variation_isotropic_regularizer
+          (toLp 2 (horizontal_update u iu j a, vertical_update v i jv b)) =
+      lam * Real.sqrt (a ^ (2 : ℕ) + b ^ (2 : ℕ)) + remainder := by
+  dsimp only
+  let iu : Fin m := Fin.castLE (Nat.sub_le m 1) i
+  let jv : Fin n := Fin.castLE (Nat.sub_le n 1) j
+  have hiu : (iu : ℕ) + 1 < m := by
+    -- The lifted interior row still lies strictly before the last row.
+    simpa [iu] using (Nat.lt_sub_iff_add_lt.mp i.isLt)
+  have hjv : (jv : ℕ) + 1 < n := by
+    -- The lifted interior column still lies strictly before the last column.
+    simpa [jv] using (Nat.lt_sub_iff_add_lt.mp j.isLt)
+  let φ : Fin m → Fin (n - 1) → ℝ → ℝ :=
+    fun i' j' t ↦
+      if hi' : (i' : ℕ) + 1 < m then
+        Real.sqrt
+          (t ^ (2 : ℕ) +
+            vertical_update v i jv b
+              (i'.castLT (Nat.lt_sub_iff_add_lt.mpr hi'))
+              (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ))
+      else
+        |t|
+  have hfirst_raw :
+      (∑ i' : Fin m, ∑ j' : Fin (n - 1),
+        if hi' : (i' : ℕ) + 1 < m then
+          Real.sqrt
+            (horizontal_update u iu j a i' j' ^ (2 : ℕ) +
+              vertical_update v i jv b
+                (i'.castLT (Nat.lt_sub_iff_add_lt.mpr hi'))
+                (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ))
+        else
+          |horizontal_update u iu j a i' j'|) =
+        φ iu j a +
+          Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦ φ iu j' (u iu j')) +
+          Finset.sum (Finset.univ.erase iu) (fun i' : Fin m ↦
+            ∑ j' : Fin (n - 1), φ i' j' (u i' j')) := by
+    -- First isolate the updated horizontal entry while keeping the vertical update frozen.
+    simpa [φ] using horizontal_double_sum_update φ u iu j a
+  have hfirst :
+      (∑ i' : Fin m, ∑ j' : Fin (n - 1),
+        if hi' : (i' : ℕ) + 1 < m then
+          Real.sqrt
+            (horizontal_update u iu j a i' j' ^ (2 : ℕ) +
+              vertical_update v i jv b
+                (i'.castLT (Nat.lt_sub_iff_add_lt.mpr hi'))
+                (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ))
+        else
+          |horizontal_update u iu j a i' j'|) =
+        Real.sqrt (a ^ (2 : ℕ) + b ^ (2 : ℕ)) +
+          Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦
+            Real.sqrt
+              (u iu j' ^ (2 : ℕ) + v i (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ))) +
+          Finset.sum (Finset.univ.erase iu) (fun i' : Fin m ↦
+            ∑ j' : Fin (n - 1),
+              if hi' : (i' : ℕ) + 1 < m then
+                Real.sqrt
+                  (u i' j' ^ (2 : ℕ) +
+                    v (i'.castLT (Nat.lt_sub_iff_add_lt.mpr hi'))
+                      (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ))
+              else
+                |u i' j'|) := by
+    -- Simplify the singled-out interior term and show that every remaining term uses the original
+    -- `u` and `v` coordinates because the update misses those indices.
+    rw [hfirst_raw]
+    have hhead :
+        φ iu j a = Real.sqrt (a ^ (2 : ℕ) + b ^ (2 : ℕ)) := by
+      dsimp [φ]
+      have hi_cast :
+          iu.castLT (Nat.lt_sub_iff_add_lt.mpr hiu) = i := by
+        exact castLE_castLT_sub_one_eq_self_of_lt i (Nat.lt_sub_iff_add_lt.mpr hiu)
+      calc
+        (if hi' : (iu : ℕ) + 1 < m then
+            Real.sqrt
+              (a ^ (2 : ℕ) +
+                vertical_update v i jv b
+                  (iu.castLT (Nat.lt_sub_iff_add_lt.mpr hi'))
+                  (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ))
+          else
+            |a|) =
+          Real.sqrt
+            (a ^ (2 : ℕ) +
+              vertical_update v i jv b
+                (iu.castLT (Nat.lt_sub_iff_add_lt.mpr hiu))
+                (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ)) := by
+            simpa [hiu]
+        _ = Real.sqrt (a ^ (2 : ℕ) + vertical_update v i jv b i jv ^ (2 : ℕ)) := by
+          rw [hi_cast]
+        _ = Real.sqrt (a ^ (2 : ℕ) + b ^ (2 : ℕ)) := by
+          simp [vertical_update]
+    have hrow :
+        Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦ φ iu j' (u iu j')) =
+          Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦
+            Real.sqrt
+              (u iu j' ^ (2 : ℕ) + v i (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ))) := by
+      refine Finset.sum_congr rfl ?_
+      intro j' hj'
+      have hj'ne : j' ≠ j := (Finset.mem_erase.mp hj').1
+      have hcast_ne : Fin.castLE (Nat.sub_le n 1) j' ≠ jv := by
+        exact castLE_ne_castLE_sub_one_of_ne (k := n) hj'ne
+      dsimp [φ]
+      have hi_cast :
+          iu.castLT (Nat.lt_sub_iff_add_lt.mpr hiu) = i := by
+        exact castLE_castLT_sub_one_eq_self_of_lt i (Nat.lt_sub_iff_add_lt.mpr hiu)
+      calc
+        (if hi' : (iu : ℕ) + 1 < m then
+            Real.sqrt
+              (u iu j' ^ (2 : ℕ) +
+                vertical_update v i jv b
+                  (iu.castLT (Nat.lt_sub_iff_add_lt.mpr hi'))
+                  (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ))
+          else
+            |u iu j'|) =
+          Real.sqrt
+            (u iu j' ^ (2 : ℕ) +
+              vertical_update v i jv b
+                (iu.castLT (Nat.lt_sub_iff_add_lt.mpr hiu))
+                (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) := by
+            simpa [hiu]
+        _ = Real.sqrt
+            (u iu j' ^ (2 : ℕ) +
+              vertical_update v i jv b i (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) := by
+            rw [hi_cast]
+        _ = Real.sqrt
+            (u iu j' ^ (2 : ℕ) + v i (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) := by
+            simp [vertical_update, hcast_ne]
+    have hrows :
+        Finset.sum (Finset.univ.erase iu) (fun i' : Fin m ↦
+          ∑ j' : Fin (n - 1), φ i' j' (u i' j')) =
+          Finset.sum (Finset.univ.erase iu) (fun i' : Fin m ↦
+            ∑ j' : Fin (n - 1),
+              if hi' : (i' : ℕ) + 1 < m then
+                Real.sqrt
+                  (u i' j' ^ (2 : ℕ) +
+                    v (i'.castLT (Nat.lt_sub_iff_add_lt.mpr hi'))
+                      (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ))
+              else
+                |u i' j'|) := by
+      refine Finset.sum_congr rfl ?_
+      intro i' hi'
+      have hi'ne : i' ≠ iu := (Finset.mem_erase.mp hi').1
+      refine Finset.sum_congr rfl ?_
+      intro j' hj'
+      by_cases hi'lt : (i' : ℕ) + 1 < m
+      · have hrow_ne :
+            i'.castLT (Nat.lt_sub_iff_add_lt.mpr hi'lt) ≠ i :=
+          castLT_ne_of_ne_castLE_sub_one (i := i) hi'lt hi'ne
+        simp [φ, hi'lt, vertical_update, hrow_ne]
+      · simp [φ, hi'lt]
+    rw [hhead, hrow, hrows]
+  have hsecond :
+      (∑ i' : Fin (m - 1), ∑ j' : Fin n,
+        if (j' : ℕ) + 1 < n then (0 : ℝ) else |vertical_update v i jv b i' j'|) =
+        ∑ i' : Fin (m - 1), ∑ j' : Fin n, if (j' : ℕ) + 1 < n then (0 : ℝ) else |v i' j'| := by
+    -- The vertical update hits an interior column, so the boundary `|q_{i,n}|` sum is unchanged.
+    refine Finset.sum_congr rfl ?_
+    intro i' hi'
+    refine Finset.sum_congr rfl ?_
+    intro j' hj'
+    by_cases hi'eq : i' = i
+    · subst i'
+      by_cases hj'eq : j' = jv
+      · subst j'
+        simp [vertical_update, hjv]
+      · simp [vertical_update, hj'eq, hjv]
+    · simp [vertical_update, hi'eq]
+  -- Route correction: first finish the source-level real decomposition of the coupled interior TV
+  -- block, and only then wrap it into the Chapter 6 pair proximal objective.
+  rw [two_dimensional_total_variation_isotropic_regularizer_apply, hfirst, hsecond]
+  ring
 
 /-- The explicit proximal point of `λ g₁` at `(p, q)`, obtained by isotropic shrinkage on
-interior index pairs and soft-thresholding on the boundary entries. -/
+interior pairs and soft-thresholding on the boundary entries. -/
 def two_dimensional_total_variation_isotropic_prox_point
-    (lam : ℝ) (p : Hmn) (q : Vmn) : TVSpace :=
+    (lam : ℝ) (p : HorizontalSpace m n) (q : VerticalSpace m n) : DualSpace m n :=
   toLp 2
     ((fun i j ↦
         if hi : (i : ℕ) + 1 < m then
@@ -251,1720 +1622,1579 @@ def two_dimensional_total_variation_isotropic_prox_point
         else
           𝒯[lam] (q i j))
 
--- Proof sketch: unfold `two_dimensional_total_variation_isotropic_prox_point`; the first
--- component uses the isotropic shrinkage factor on interior indices and soft-thresholding on the
--- last row.
-/-- The horizontal component of the isotropic proximal point has the textbook entrywise formula. -/
+/-- The horizontal component of the isotropic proximal point has the textbook entrywise
+formula. -/
 @[simp] theorem two_dimensional_total_variation_isotropic_prox_point_fst_apply
-    (lam : ℝ) (p : Hmn) (q : Vmn) (i : Fin m) (j : Fin (n - 1)) :
+    (lam : ℝ) (p : HorizontalSpace m n) (q : VerticalSpace m n) (i : Fin m) (j : Fin (n - 1)) :
     (two_dimensional_total_variation_isotropic_prox_point lam p q).fst i j =
       if hi : (i : ℕ) + 1 < m then
         two_dimensional_total_variation_isotropic_shrink_factor lam (p i j)
           (q (i.castLT (Nat.lt_sub_iff_add_lt.mpr hi)) (Fin.castLE (Nat.sub_le n 1) j)) * p i j
       else
-        𝒯[lam] (p i j) := rfl
+        𝒯[lam] (p i j) := by
+  -- Read back the first component of the explicit `toLp 2` pair.
+  rfl
 
--- Proof sketch: unfold `two_dimensional_total_variation_isotropic_prox_point`; the second
--- component uses the isotropic shrinkage factor on interior indices and soft-thresholding on the
--- last column.
 /-- The vertical component of the isotropic proximal point has the textbook entrywise formula. -/
 @[simp] theorem two_dimensional_total_variation_isotropic_prox_point_snd_apply
-    (lam : ℝ) (p : Hmn) (q : Vmn) (i : Fin (m - 1)) (j : Fin n) :
+    (lam : ℝ) (p : HorizontalSpace m n) (q : VerticalSpace m n) (i : Fin (m - 1)) (j : Fin n) :
     (two_dimensional_total_variation_isotropic_prox_point lam p q).snd i j =
       if hj : (j : ℕ) + 1 < n then
         two_dimensional_total_variation_isotropic_shrink_factor lam
           (p (Fin.castLE (Nat.sub_le m 1) i) (j.castLT (Nat.lt_sub_iff_add_lt.mpr hj)))
           (q i j) * q i j
       else
-        𝒯[lam] (q i j) := rfl
+        𝒯[lam] (q i j) := by
+  -- Read back the second component of the explicit `toLp 2` pair.
+  rfl
 
 /-- The explicit proximal point of `λ g_{ℓ¹}` at `(p, q)`, obtained by entrywise
 soft-thresholding. -/
 def two_dimensional_total_variation_anisotropic_prox_point
-    (lam : ℝ) (p : Hmn) (q : Vmn) : TVSpace :=
+    (lam : ℝ) (p : HorizontalSpace m n) (q : VerticalSpace m n) : DualSpace m n :=
   toLp 2 (fun i j ↦ 𝒯[lam] (p i j), fun i j ↦ 𝒯[lam] (q i j))
 
--- Proof sketch: unfold `two_dimensional_total_variation_anisotropic_prox_point`; the first
--- component is coordinatewise soft-thresholding of `p`.
-/-- The horizontal component of the anisotropic proximal point is entrywise soft-thresholding. -/
+/-- The horizontal component of the anisotropic proximal point is entrywise
+soft-thresholding. -/
 @[simp] theorem two_dimensional_total_variation_anisotropic_prox_point_fst_apply
-    (lam : ℝ) (p : Hmn) (q : Vmn) (i : Fin m) (j : Fin (n - 1)) :
+    (lam : ℝ) (p : HorizontalSpace m n) (q : VerticalSpace m n) (i : Fin m) (j : Fin (n - 1)) :
     (two_dimensional_total_variation_anisotropic_prox_point lam p q).fst i j =
-      𝒯[lam] (p i j) := rfl
+      𝒯[lam] (p i j) := by
+  -- Read back the first component of the explicit `toLp 2` pair.
+  rfl
 
--- Proof sketch: unfold `two_dimensional_total_variation_anisotropic_prox_point`; the second
--- component is coordinatewise soft-thresholding of `q`.
-/-- The vertical component of the anisotropic proximal point is entrywise soft-thresholding. -/
+/-- The vertical component of the anisotropic proximal point is entrywise
+soft-thresholding. -/
 @[simp] theorem two_dimensional_total_variation_anisotropic_prox_point_snd_apply
-    (lam : ℝ) (p : Hmn) (q : Vmn) (i : Fin (m - 1)) (j : Fin n) :
+    (lam : ℝ) (p : HorizontalSpace m n) (q : VerticalSpace m n) (i : Fin (m - 1)) (j : Fin n) :
     (two_dimensional_total_variation_anisotropic_prox_point lam p q).snd i j =
-      𝒯[lam] (q i j) := rfl
-
-/-- Helper for Proposition 12.4: coercing a finite real sum into `EReal` commutes with the sum. -/
-lemma ereal_coe_sum_local {κ : Type*} (s : Finset κ) (φ : κ → ℝ) :
-    (((∑ i ∈ s, φ i : ℝ) : EReal)) = ∑ i ∈ s, ((φ i : ℝ) : EReal) := by
-  classical
-  -- Induct over the finite set and push the coercion through one inserted term at a time.
-  refine Finset.induction_on s ?_ ?_
-  · simp
-  · intro a s ha hs
-    rw [Finset.sum_insert ha, Finset.sum_insert ha, EReal.coe_add, hs]
-
-/-- Helper for Proposition 12.4: coercing a finite double real sum into `EReal` commutes with the
-two nested finite sums. -/
-lemma ereal_coe_double_sum_local {ι κ : Type*} (s : Finset ι) (t : Finset κ) (φ : ι → κ → ℝ) :
-    (((∑ i ∈ s, ∑ j ∈ t, φ i j : ℝ) : EReal)) =
-      ∑ i ∈ s, ∑ j ∈ t, ((φ i j : ℝ) : EReal) := by
-  classical
-  -- Push the coercion through the outer finite sum, then through each inner finite sum.
-  rw [ereal_coe_sum_local (s := s) (φ := fun i ↦ ∑ j ∈ t, φ i j)]
-  refine Finset.sum_congr rfl ?_
-  intro i hi
-  simpa using (ereal_coe_sum_local (s := t) (φ := φ i))
-
-/-- Helper for Proposition 12.4: a finite sum over `Fin m` splits into the interior indices
-`0, ..., m - 2` and the boundary index detected by `¬ ((i : ℕ) + 1 < m)`. -/
-lemma fin_sum_split_last {α : Type*} [AddCommMonoid α] (g : Fin m → α) :
-    (∑ i : Fin m, g i) =
-      (∑ i : Fin (m - 1), g (Fin.castLE (Nat.sub_le m 1) i)) +
-        ∑ i : Fin m, if hrow : (i : ℕ) + 1 < m then 0 else g i := by
-  classical
-  cases m with
-  | zero =>
-      simp
-  | succ m =>
-      -- Split `Fin (m + 1)` into `Fin m` and the last boundary index.
-      have hcast :
-          (∑ i : Fin m, g (Fin.castLE (Nat.sub_le (m + 1) 1) i)) =
-            ∑ i : Fin m, g i.castSucc := by
-        refine Finset.sum_congr rfl ?_
-        intro i hi
-        apply congrArg g
-        ext
-        simp [Fin.castLE]
-      have hboundary :
-          (∑ i : Fin (m + 1), if hi : (i : ℕ) + 1 < m + 1 then 0 else g i) = g (Fin.last m) := by
-        rw [Fin.sum_univ_castSucc]
-        simp
-      calc
-        (∑ i : Fin (m + 1), g i) = (∑ i : Fin m, g i.castSucc) + g (Fin.last m) := by
-            rw [Fin.sum_univ_castSucc]
-        _ = (∑ i : Fin m, g (Fin.castLE (Nat.sub_le (m + 1) 1) i)) +
-              ∑ i : Fin (m + 1), if hi : (i : ℕ) + 1 < m + 1 then 0 else g i := by
-              rw [hcast, hboundary]
-
-/-- Helper for Proposition 12.4: embedding an interior row index into `Fin m` still satisfies the
-strict interior inequality needed to access the isotropic `ℓ²` block. -/
-lemma castLE_row_succ_lt (i : Fin (m - 1)) :
-    ((Fin.castLE (Nat.sub_le m 1) i : Fin m) : ℕ) + 1 < m := by
-  exact Nat.lt_sub_iff_add_lt.mp i.is_lt
-
-/-- Helper for Proposition 12.4: embedding an interior column index into `Fin n` still satisfies
-the strict interior inequality needed to access the isotropic `ℓ²` block. -/
-lemma castLE_col_succ_lt (j : Fin (n - 1)) :
-    ((Fin.castLE (Nat.sub_le n 1) j : Fin n) : ℕ) + 1 < n := by
-  exact Nat.lt_sub_iff_add_lt.mp j.is_lt
-
-/-- Helper for Proposition 12.4: converting an interior row index to `Fin m` and back to
-`Fin (m - 1)` recovers the original row. -/
-lemma castLE_row_castLT_eq (i : Fin (m - 1)) :
-    (Fin.castLE (Nat.sub_le m 1) i).castLT (Nat.lt_sub_iff_add_lt.mpr (castLE_row_succ_lt i)) = i := by
-  ext
+      𝒯[lam] (q i j) := by
+  -- Read back the second component of the explicit `toLp 2` pair.
   rfl
 
-/-- Helper for Proposition 12.4: converting an interior column index to `Fin n` and back to
-`Fin (n - 1)` recovers the original column. -/
-lemma castLE_col_castLT_eq (j : Fin (n - 1)) :
-    (Fin.castLE (Nat.sub_le n 1) j).castLT (Nat.lt_sub_iff_add_lt.mpr (castLE_col_succ_lt j)) = j := by
-  ext
-  rfl
-
-/-- Helper for Proposition 12.4: squaring the horizontal Frobenius distance is the entrywise sum
-of the squared coordinate differences. -/
-lemma horizontal_frobenius_sqdist_eq_entrywise_sum (p u : Hmn) :
-    ‖u - p‖ ^ (2 : ℕ) = ∑ i : Fin m, ∑ j : Fin (n - 1), (u i j - p i j) ^ (2 : ℕ) := by
-  have hnorm :
-      ‖u - p‖ = Real.sqrt (∑ i : Fin m, ∑ j : Fin (n - 1), ‖(u - p) i j‖ ^ (2 : ℕ)) := by
-    simpa [Real.sqrt_eq_rpow] using (Matrix.frobenius_norm_def (u - p))
-  -- Rewrite the Frobenius norm through the entrywise formula and square the resulting root.
-  calc
-    ‖u - p‖ ^ (2 : ℕ)
-        = Real.sqrt (∑ i : Fin m, ∑ j : Fin (n - 1), ‖(u - p) i j‖ ^ (2 : ℕ)) ^ (2 : ℕ) := by
-            rw [hnorm]
-    _ = ∑ i : Fin m, ∑ j : Fin (n - 1), ‖(u - p) i j‖ ^ (2 : ℕ) := by
-          exact Real.sq_sqrt (by positivity)
-    _ = ∑ i : Fin m, ∑ j : Fin (n - 1), (u i j - p i j) ^ (2 : ℕ) := by
-          simp [Matrix.sub_apply, Real.norm_eq_abs, sq_abs]
-
-/-- Helper for Proposition 12.4: squaring the vertical Frobenius distance is the entrywise sum of
-the squared coordinate differences. -/
-lemma vertical_frobenius_sqdist_eq_entrywise_sum (q v : Vmn) :
-    ‖v - q‖ ^ (2 : ℕ) = ∑ i : Fin (m - 1), ∑ j : Fin n, (v i j - q i j) ^ (2 : ℕ) := by
-  have hnorm :
-      ‖v - q‖ = Real.sqrt (∑ i : Fin (m - 1), ∑ j : Fin n, ‖(v - q) i j‖ ^ (2 : ℕ)) := by
-    simpa [Real.sqrt_eq_rpow] using (Matrix.frobenius_norm_def (v - q))
-  -- Rewrite the Frobenius norm through the entrywise formula and square the resulting root.
-  calc
-    ‖v - q‖ ^ (2 : ℕ)
-        = Real.sqrt (∑ i : Fin (m - 1), ∑ j : Fin n, ‖(v - q) i j‖ ^ (2 : ℕ)) ^ (2 : ℕ) := by
-            rw [hnorm]
-    _ = ∑ i : Fin (m - 1), ∑ j : Fin n, ‖(v - q) i j‖ ^ (2 : ℕ) := by
-          exact Real.sq_sqrt (by positivity)
-    _ = ∑ i : Fin (m - 1), ∑ j : Fin n, (v i j - q i j) ^ (2 : ℕ) := by
-          simp [Matrix.sub_apply, Real.norm_eq_abs, sq_abs]
-
-/-- Helper for Proposition 12.4: the isotropic interior contribution at `(i, j)` is exactly the
-two-dimensional `norm_penalty` proximal block on the canonical `L²` pair owner. -/
-lemma isotropic_interior_block_proximal_objective_eq
-    (lam : ℝ) (p u : Hmn) (q v : Vmn) (i : Fin (m - 1)) (j : Fin (n - 1)) :
-    proximal_objective (norm_penalty lam)
-      (toLp 2 (p (Fin.castLE (Nat.sub_le m 1) i) j,
-        q i (Fin.castLE (Nat.sub_le n 1) j)))
-      (toLp 2 (u (Fin.castLE (Nat.sub_le m 1) i) j,
-        v i (Fin.castLE (Nat.sub_le n 1) j))) =
-      ((lam *
-          Real.sqrt ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-            (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) +
-          (1 / 2 : ℝ) *
-            (((u (Fin.castLE (Nat.sub_le m 1) i) j -
-                p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-              ((v i (Fin.castLE (Nat.sub_le n 1) j) -
-                q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) : ℝ) : ℝ) : EReal) := by
-  -- Route correction: first name one canonical `WithLp 2 (ℝ × ℝ)` interior block, then rewrite
-  -- its norm and squared-distance terms directly instead of reopening the full TV-space sum.
-  let a := u (Fin.castLE (Nat.sub_le m 1) i) j
-  let b := v i (Fin.castLE (Nat.sub_le n 1) j)
-  let c := p (Fin.castLE (Nat.sub_le m 1) i) j
-  let d := q i (Fin.castLE (Nat.sub_le n 1) j)
-  have hnorm : ‖toLp 2 (a, b)‖ = Real.sqrt (a ^ (2 : ℕ) + b ^ (2 : ℕ)) := by
-    -- The canonical `L²` norm of a scalar pair is the textbook Euclidean square root.
-    simpa [a, b, WithLp.toLp_fst, WithLp.toLp_snd, Real.norm_eq_abs, sq_abs] using
-      (WithLp.prod_norm_eq_of_L2 (toLp 2 (a, b)))
-  have hsqdist :
-      ‖toLp 2 (a, b) - toLp 2 (c, d)‖ ^ (2 : ℕ) =
-        (a - c) ^ (2 : ℕ) + (b - d) ^ (2 : ℕ) := by
-    -- The squared `L²` distance on the pair owner splits into the two scalar squares.
-    simpa [a, b, c, d, WithLp.toLp_fst, WithLp.toLp_snd, Prod.fst_sub, Prod.snd_sub,
-      Real.norm_eq_abs, sq_abs] using
-      (WithLp.prod_norm_sq_eq_of_L2 (toLp 2 (a, b) - toLp 2 (c, d)))
-  rw [proximal_objective_apply, norm_penalty_apply, hnorm, hsqdist, EReal.coe_add]
-
-/-- Helper for Proposition 12.4: the interior isotropic algebra combines the rowwise and
-columnwise squares in `ℝ` before any `EReal` coercion. -/
-lemma interior_norm_proximal_sum_eq_real
-    (lam : ℝ) (p u : Hmn) (q v : Vmn) :
-    lam *
-        (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-          Real.sqrt
-            ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-              (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ))) +
-      (1 / 2 : ℝ) *
-        ((∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-              (u (Fin.castLE (Nat.sub_le m 1) i) j -
-                p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-          ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-              (v i (Fin.castLE (Nat.sub_le n 1) j) -
-                q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) =
-      ∑ i : Fin (m - 1), (lam *
-          (∑ j : Fin (n - 1),
-            Real.sqrt
-              ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-                (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ))) +
-        (1 / 2 : ℝ) *
-          ((∑ j : Fin (n - 1),
-              (u (Fin.castLE (Nat.sub_le m 1) i) j -
-                p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-            ∑ j : Fin (n - 1),
-              (v i (Fin.castLE (Nat.sub_le n 1) j) -
-                q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ))) := by
-  -- Distribute the outer scalar coefficients across the two finite sums and regroup rowwise.
-  have hsplitBC :
-      ((∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-            (u (Fin.castLE (Nat.sub_le m 1) i) j -
-              p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-          ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-            (v i (Fin.castLE (Nat.sub_le n 1) j) -
-              q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) =
-        ∑ i : Fin (m - 1),
-          ((∑ j : Fin (n - 1),
-              (u (Fin.castLE (Nat.sub_le m 1) i) j -
-                p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-            ∑ j : Fin (n - 1),
-              (v i (Fin.castLE (Nat.sub_le n 1) j) -
-                q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) := by
-    rw [← Finset.sum_add_distrib]
-  calc
-    lam *
-        (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-          Real.sqrt
-            ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-              (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ))) +
-      (1 / 2 : ℝ) *
-        ((∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-              (u (Fin.castLE (Nat.sub_le m 1) i) j -
-                p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-          ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-              (v i (Fin.castLE (Nat.sub_le n 1) j) -
-                q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) =
-      (∑ i : Fin (m - 1), lam *
-          (∑ j : Fin (n - 1),
-            Real.sqrt
-              ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-                (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)))) +
-        (1 / 2 : ℝ) *
-          (∑ i : Fin (m - 1),
-            ((∑ j : Fin (n - 1),
-                (u (Fin.castLE (Nat.sub_le m 1) i) j -
-                  p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-              ∑ j : Fin (n - 1),
-                (v i (Fin.castLE (Nat.sub_le n 1) j) -
-                  q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ))) := by
-            rw [Finset.mul_sum, hsplitBC]
-    _ =
-      ∑ i : Fin (m - 1), (lam *
-          (∑ j : Fin (n - 1),
-            Real.sqrt
-              ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-                (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ))) +
-        (1 / 2 : ℝ) *
-          ((∑ j : Fin (n - 1),
-              (u (Fin.castLE (Nat.sub_le m 1) i) j -
-                p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-            ∑ j : Fin (n - 1),
-              (v i (Fin.castLE (Nat.sub_le n 1) j) -
-                q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ))) := by
-            rw [Finset.mul_sum, ← Finset.sum_add_distrib]
-
-/-- Helper for Proposition 12.4: the rowwise interior isotropic expression is the exact double
-sum of the textbook `ℓ²` block summands, still entirely in `ℝ`. -/
-lemma interior_rowwise_real_to_blockwise_real_sum_eq
-    (lam : ℝ) (p u : Hmn) (q v : Vmn) :
-    (∑ i : Fin (m - 1), (lam *
-          (∑ j : Fin (n - 1),
-            Real.sqrt
-              ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-                (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ))) +
-        (1 / 2 : ℝ) *
-          ((∑ j : Fin (n - 1),
-              (u (Fin.castLE (Nat.sub_le m 1) i) j -
-                p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-            ∑ j : Fin (n - 1),
-              (v i (Fin.castLE (Nat.sub_le n 1) j) -
-                q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)))) =
-      ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
+/-- Helper for Proposition 12.4: replacing one interior coupled block in the stabilized real RHS
+isolates exactly the corresponding two-dimensional proximal block plus an unchanged remainder. -/
+private theorem isotropic_interior_rhs_update_eq_pair_block_add_remainder
+    (lam : ℝ) (p u : HorizontalSpace m n) (q v : VerticalSpace m n) (i : Fin (m - 1)) (j : Fin (n - 1)) (a b : ℝ) :
+    let iu : Fin m := Fin.castLE (Nat.sub_le m 1) i
+    let jv : Fin n := Fin.castLE (Nat.sub_le n 1) j
+    let remainder : ℝ :=
+      Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦
         (lam *
             Real.sqrt
-              ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-                (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) +
+              (u iu j' ^ (2 : ℕ) + v i (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+          (1 / 2 : ℝ) * (u iu j' - p iu j') ^ (2 : ℕ) +
           (1 / 2 : ℝ) *
-            (((u (Fin.castLE (Nat.sub_le m 1) i) j -
-                p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-              (((v i (Fin.castLE (Nat.sub_le n 1) j) -
-                  q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) : ℝ))) := by
-  -- Keep the interior regrouping in `ℝ`: distribute the two scalar coefficients rowwise and then
-  -- collapse the horizontal/vertical square terms into the exact block summand shape.
-  refine Finset.sum_congr rfl ?_
-  intro i hi
-  have hsquares :
-      ((∑ j : Fin (n - 1),
-            (u (Fin.castLE (Nat.sub_le m 1) i) j -
-              p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-          ∑ j : Fin (n - 1),
-            (v i (Fin.castLE (Nat.sub_le n 1) j) -
-              q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) =
-        ∑ j : Fin (n - 1),
-          (((u (Fin.castLE (Nat.sub_le m 1) i) j -
-                p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-            ((v i (Fin.castLE (Nat.sub_le n 1) j) -
-                q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) : ℝ) := by
-    rw [← Finset.sum_add_distrib]
-  rw [hsquares, Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]
-
-/-- Helper for Proposition 12.4: the interior isotropic contribution is exactly the finite sum of
-two-dimensional `norm_penalty` proximal blocks. -/
-lemma interior_norm_proximal_sum_eq
-    (lam : ℝ) (p u : Hmn) (q v : Vmn) :
-    ((lam *
-          (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-            Real.sqrt
-              ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-                (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ))) : ℝ) : EReal) +
-        (((1 / 2 : ℝ) *
-              ((∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-                    (u (Fin.castLE (Nat.sub_le m 1) i) j -
-                      p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-                ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-                    (v i (Fin.castLE (Nat.sub_le n 1) j) -
-                      q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) : ℝ) : EReal) =
-      ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-        proximal_objective (norm_penalty lam)
-          (toLp 2 (p (Fin.castLE (Nat.sub_le m 1) i) j,
-            q i (Fin.castLE (Nat.sub_le n 1) j)))
-          (toLp 2 (u (Fin.castLE (Nat.sub_le m 1) i) j,
-            v i (Fin.castLE (Nat.sub_le n 1) j))) := by
-  -- Route correction: finish the interior normalization in `ℝ` first, then coerce the resulting
-  -- exact double sum to `EReal` once and rewrite each summand as a `norm_penalty` block.
-  have hreal :
-      lam *
-          (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-            Real.sqrt
-              ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-                (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ))) +
+            (v i (Fin.castLE (Nat.sub_le n 1) j') -
+                q i (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ)) +
+      Finset.sum (Finset.univ.erase i) (fun i' : Fin (m - 1) ↦
+        ∑ j' : Fin (n - 1),
+          (lam *
+              Real.sqrt
+                (u (Fin.castLE (Nat.sub_le m 1) i') j' ^ (2 : ℕ) +
+                  v i' (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+            (1 / 2 : ℝ) *
+              (u (Fin.castLE (Nat.sub_le m 1) i') j' -
+                  p (Fin.castLE (Nat.sub_le m 1) i') j') ^ (2 : ℕ) +
+            (1 / 2 : ℝ) *
+              (v i' (Fin.castLE (Nat.sub_le n 1) j') -
+                  q i' (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ)) +
+      (∑ i' : Fin m, ∑ j' : Fin (n - 1),
+        if hi' : (i' : ℕ) + 1 < m then
+          (0 : ℝ)
+        else
+          (lam * |u i' j'| + (1 / 2 : ℝ) * (u i' j' - p i' j') ^ (2 : ℕ) : ℝ)) +
+      (∑ i' : Fin (m - 1), ∑ j' : Fin n,
+        if hj' : (j' : ℕ) + 1 < n then
+          (0 : ℝ)
+        else
+          (lam * |v i' j'| + (1 / 2 : ℝ) * (v i' j' - q i' j') ^ (2 : ℕ) : ℝ))
+    isotropic_proximal_objective_sum_rhs lam p (horizontal_update u iu j a) q
+        (vertical_update v i jv b) =
+      (lam * Real.sqrt (a ^ (2 : ℕ) + b ^ (2 : ℕ)) +
+        (1 / 2 : ℝ) * (a - p iu j) ^ (2 : ℕ) +
+        (1 / 2 : ℝ) * (b - q i jv) ^ (2 : ℕ)) +
+        remainder := by
+  dsimp only
+  let iu : Fin m := Fin.castLE (Nat.sub_le m 1) i
+  let jv : Fin n := Fin.castLE (Nat.sub_le n 1) j
+  let G : Fin (m - 1) → Fin (n - 1) → ℝ :=
+    fun i' j' ↦
+      (lam *
+          Real.sqrt
+            (horizontal_update u iu j a (Fin.castLE (Nat.sub_le m 1) i') j' ^ (2 : ℕ) +
+              vertical_update v i jv b i' (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
         (1 / 2 : ℝ) *
-          ((∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-                (u (Fin.castLE (Nat.sub_le m 1) i) j -
-                  p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-            ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-                (v i (Fin.castLE (Nat.sub_le n 1) j) -
-                  q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) =
+          (horizontal_update u iu j a (Fin.castLE (Nat.sub_le m 1) i') j' -
+              p (Fin.castLE (Nat.sub_le m 1) i') j') ^ (2 : ℕ) +
+        (1 / 2 : ℝ) *
+          (vertical_update v i jv b i' (Fin.castLE (Nat.sub_le n 1) j') -
+              q i' (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ)
+  have hiu : (iu : ℕ) + 1 < m := by
+    -- The lifted row `iu` is still an interior row.
+    simpa [iu] using (Nat.lt_sub_iff_add_lt.mp i.isLt)
+  have hjv : (jv : ℕ) + 1 < n := by
+    -- The lifted column `jv` is still an interior column.
+    simpa [jv] using (Nat.lt_sub_iff_add_lt.mp j.isLt)
+  have hinterior_raw :
+      (∑ i' : Fin (m - 1), ∑ j' : Fin (n - 1), G i' j') =
+        G i j +
+          Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦ G i j') +
+          Finset.sum (Finset.univ.erase i) (fun i' : Fin (m - 1) ↦
+            ∑ j' : Fin (n - 1), G i' j') := by
+    have hrow_split :
+        (∑ i' : Fin (m - 1), ∑ j' : Fin (n - 1), G i' j') =
+          (∑ j' : Fin (n - 1), G i j') +
+            Finset.sum (Finset.univ.erase i) (fun i' : Fin (m - 1) ↦
+              ∑ j' : Fin (n - 1), G i' j') := by
+      -- Isolate the updated interior row from the outer finite sum.
+      symm
+      exact Finset.add_sum_erase Finset.univ
+        (fun i' : Fin (m - 1) ↦ ∑ j' : Fin (n - 1), G i' j') (Finset.mem_univ i)
+    have hrow_updated :
+        (∑ j' : Fin (n - 1), G i j') =
+          G i j + Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦ G i j') := by
+      -- Inside the updated row, isolate the updated column.
+      symm
+      exact Finset.add_sum_erase Finset.univ (fun j' : Fin (n - 1) ↦ G i j')
+        (Finset.mem_univ j)
+    rw [hrow_split, hrow_updated]
+  have hhead :
+      G i j =
+        (lam * Real.sqrt (a ^ (2 : ℕ) + b ^ (2 : ℕ)) +
+          (1 / 2 : ℝ) * (a - p iu j) ^ (2 : ℕ) +
+          (1 / 2 : ℝ) * (b - q i jv) ^ (2 : ℕ) : ℝ) := by
+    -- The singled-out interior block sees both updates exactly once.
+    simp [G, iu, jv, horizontal_update, vertical_update]
+  have hrow :
+      Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦ G i j') =
+        Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦
+          (lam *
+              Real.sqrt
+                (u iu j' ^ (2 : ℕ) + v i (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+            (1 / 2 : ℝ) * (u iu j' - p iu j') ^ (2 : ℕ) +
+            (1 / 2 : ℝ) *
+              (v i (Fin.castLE (Nat.sub_le n 1) j') -
+                  q i (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ)) := by
+    -- Every other column in the updated row uses the original `u` and `v` entries.
+    refine Finset.sum_congr rfl ?_
+    intro j' hj'
+    have hj'ne : j' ≠ j := (Finset.mem_erase.mp hj').1
+    have hcast_ne : Fin.castLE (Nat.sub_le n 1) j' ≠ jv := by
+      exact castLE_ne_castLE_sub_one_of_ne (k := n) hj'ne
+    simp [G, iu, jv, horizontal_update, vertical_update, hj'ne, hcast_ne]
+  have hrows :
+      Finset.sum (Finset.univ.erase i) (fun i' : Fin (m - 1) ↦ ∑ j' : Fin (n - 1), G i' j') =
+        Finset.sum (Finset.univ.erase i) (fun i' : Fin (m - 1) ↦
+          ∑ j' : Fin (n - 1),
+            (lam *
+                Real.sqrt
+                  (u (Fin.castLE (Nat.sub_le m 1) i') j' ^ (2 : ℕ) +
+                    v i' (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+              (1 / 2 : ℝ) *
+                (u (Fin.castLE (Nat.sub_le m 1) i') j' -
+                    p (Fin.castLE (Nat.sub_le m 1) i') j') ^ (2 : ℕ) +
+              (1 / 2 : ℝ) *
+                (v i' (Fin.castLE (Nat.sub_le n 1) j') -
+                    q i' (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ)) := by
+    -- Every untouched interior row misses both updates.
+    refine Finset.sum_congr rfl ?_
+    intro i' hi'
+    have hi'ne : i' ≠ i := (Finset.mem_erase.mp hi').1
+    have hrow_ne : Fin.castLE (Nat.sub_le m 1) i' ≠ iu := by
+      exact castLE_ne_castLE_sub_one_of_ne (k := m) hi'ne
+    refine Finset.sum_congr rfl ?_
+    intro j' hj'
+    simp [G, iu, jv, horizontal_update, vertical_update, hrow_ne, hi'ne]
+  have hboundaryH :
+      (∑ i' : Fin m, ∑ j' : Fin (n - 1),
+        if hi' : (i' : ℕ) + 1 < m then
+          (0 : ℝ)
+        else
+          (lam * |horizontal_update u iu j a i' j'| +
+            (1 / 2 : ℝ) * (horizontal_update u iu j a i' j' - p i' j') ^ (2 : ℕ) : ℝ)) =
+        ∑ i' : Fin m, ∑ j' : Fin (n - 1),
+          if hi' : (i' : ℕ) + 1 < m then
+            (0 : ℝ)
+          else
+            (lam * |u i' j'| + (1 / 2 : ℝ) * (u i' j' - p i' j') ^ (2 : ℕ) : ℝ) := by
+    -- Updating an interior row leaves the last-row scalar block sum unchanged.
+    refine Finset.sum_congr rfl ?_
+    intro i' hi'
+    refine Finset.sum_congr rfl ?_
+    intro j' hj'
+    by_cases hi'eq : i' = iu
+    · subst i'
+      simp [hiu]
+    · simp [horizontal_update, hi'eq]
+  have hboundaryV :
+      (∑ i' : Fin (m - 1), ∑ j' : Fin n,
+        if hj' : (j' : ℕ) + 1 < n then
+          (0 : ℝ)
+        else
+          (lam * |vertical_update v i jv b i' j'| +
+            (1 / 2 : ℝ) * (vertical_update v i jv b i' j' - q i' j') ^ (2 : ℕ) : ℝ)) =
+        ∑ i' : Fin (m - 1), ∑ j' : Fin n,
+          if hj' : (j' : ℕ) + 1 < n then
+            (0 : ℝ)
+          else
+            (lam * |v i' j'| + (1 / 2 : ℝ) * (v i' j' - q i' j') ^ (2 : ℕ) : ℝ) := by
+    -- Updating an interior column leaves the last-column scalar block sum unchanged.
+    refine Finset.sum_congr rfl ?_
+    intro i' hi'
+    refine Finset.sum_congr rfl ?_
+    intro j' hj'
+    by_cases hi'eq : i' = i
+    · subst i'
+      by_cases hj'eq : j' = jv
+      · subst j'
+        simp [hjv]
+      · simp [vertical_update, hj'eq]
+    · simp [vertical_update, hi'eq]
+  -- Route correction: decompose the stabilized real RHS first, so the later `EReal` proof only
+  -- wraps this local coupled-block identity once.
+  rw [isotropic_proximal_objective_sum_rhs]
+  rw [show
+      (∑ i' : Fin (m - 1), ∑ j' : Fin (n - 1),
+        (lam *
+            Real.sqrt
+              (horizontal_update u iu j a (Fin.castLE (Nat.sub_le m 1) i') j' ^ (2 : ℕ) +
+                vertical_update v i jv b i' (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+          (1 / 2 : ℝ) *
+            (horizontal_update u iu j a (Fin.castLE (Nat.sub_le m 1) i') j' -
+                p (Fin.castLE (Nat.sub_le m 1) i') j') ^ (2 : ℕ) +
+          (1 / 2 : ℝ) *
+            (vertical_update v i jv b i' (Fin.castLE (Nat.sub_le n 1) j') -
+                q i' (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ)) =
+      ∑ i' : Fin (m - 1), ∑ j' : Fin (n - 1), G i' j' by
+      simp [G]]
+  rw [hinterior_raw, hhead, hrow, hrows, hboundaryH, hboundaryV]
+  ring
+
+/-- Helper for Proposition 12.4: after replacing one interior coupled block, the isotropic TV
+proximal objective becomes the Chapter 6 pair proximal objective plus a constant remainder. -/
+private theorem isotropic_interior_update_objective_eq_pair_objective_add_const
+    (lam : ℝ) (p u : HorizontalSpace m n) (q v : VerticalSpace m n) (i : Fin (m - 1)) (j : Fin (n - 1)) (a b : ℝ) :
+    let iu : Fin m := Fin.castLE (Nat.sub_le m 1) i
+    let jv : Fin n := Fin.castLE (Nat.sub_le n 1) j
+    let remainder : ℝ :=
+      Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦
+        (lam *
+            Real.sqrt
+              (u iu j' ^ (2 : ℕ) + v i (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+          (1 / 2 : ℝ) * (u iu j' - p iu j') ^ (2 : ℕ) +
+          (1 / 2 : ℝ) *
+            (v i (Fin.castLE (Nat.sub_le n 1) j') -
+                q i (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ)) +
+      Finset.sum (Finset.univ.erase i) (fun i' : Fin (m - 1) ↦
+        ∑ j' : Fin (n - 1),
+          (lam *
+              Real.sqrt
+                (u (Fin.castLE (Nat.sub_le m 1) i') j' ^ (2 : ℕ) +
+                  v i' (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+            (1 / 2 : ℝ) *
+              (u (Fin.castLE (Nat.sub_le m 1) i') j' -
+                  p (Fin.castLE (Nat.sub_le m 1) i') j') ^ (2 : ℕ) +
+            (1 / 2 : ℝ) *
+              (v i' (Fin.castLE (Nat.sub_le n 1) j') -
+                  q i' (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ)) +
+      (∑ i' : Fin m, ∑ j' : Fin (n - 1),
+        if hi' : (i' : ℕ) + 1 < m then
+          (0 : ℝ)
+        else
+          (lam * |u i' j'| + (1 / 2 : ℝ) * (u i' j' - p i' j') ^ (2 : ℕ) : ℝ)) +
+      (∑ i' : Fin (m - 1), ∑ j' : Fin n,
+        if hj' : (j' : ℕ) + 1 < n then
+          (0 : ℝ)
+        else
+          (lam * |v i' j'| + (1 / 2 : ℝ) * (v i' j' - q i' j') ^ (2 : ℕ) : ℝ))
+    proximal_objective
+        (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z))
+        (toLp 2 (p, q))
+        (toLp 2 (horizontal_update u iu j a, vertical_update v i jv b)) =
+      proximal_objective
+          (fun y : EuclideanSpace ℝ (Fin 2) ↦ ↑(lam * ‖y‖))
+          (toLp 2 ![p iu j, q i jv]) (toLp 2 ![a, b]) + (remainder : EReal) := by
+  dsimp only
+  -- Rewrite the global isotropic objective to the stabilized real RHS, then identify the singled
+  -- out block with the Chapter 6 pair objective.
+  rw [isotropic_proximal_objective_sum_formula]
+  rw [isotropic_interior_rhs_update_eq_pair_block_add_remainder]
+  rw [pair_norm_proximal_objective_apply]
+  rw [EReal.coe_add]
+
+/-- Helper for Proposition 12.4: replacing one last-row horizontal entry turns the isotropic TV
+proximal objective into the scalar absolute-value proximal objective plus a constant remainder. -/
+private theorem isotropic_boundary_horizontal_update_objective_eq_scalar_objective_add_const
+    (lam : ℝ) (p u : HorizontalSpace m n) (q v : VerticalSpace m n) (i : Fin m) (j : Fin (n - 1))
+    (hboundary : ¬ ((i : ℕ) + 1 < m)) (a : ℝ) :
+    let remainder : ℝ :=
+      (∑ i' : Fin (m - 1), ∑ j' : Fin (n - 1),
+          (lam *
+              Real.sqrt
+                (u (Fin.castLE (Nat.sub_le m 1) i') j' ^ (2 : ℕ) +
+                  v i' (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+            (1 / 2 : ℝ) *
+              (u (Fin.castLE (Nat.sub_le m 1) i') j' -
+                  p (Fin.castLE (Nat.sub_le m 1) i') j') ^ (2 : ℕ) +
+            (1 / 2 : ℝ) *
+              (v i' (Fin.castLE (Nat.sub_le n 1) j') -
+                  q i' (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ)) +
+      Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦
+        (lam * |u i j'| + (1 / 2 : ℝ) * (u i j' - p i j') ^ (2 : ℕ) : ℝ)) +
+      Finset.sum (Finset.univ.erase i) (fun i' : Fin m ↦
+        ∑ j' : Fin (n - 1),
+          if hi' : (i' : ℕ) + 1 < m then
+            (0 : ℝ)
+          else
+            (lam * |u i' j'| + (1 / 2 : ℝ) * (u i' j' - p i' j') ^ (2 : ℕ) : ℝ)) +
+      (∑ i' : Fin (m - 1), ∑ j' : Fin n,
+        if hj' : (j' : ℕ) + 1 < n then
+          (0 : ℝ)
+        else
+          (lam * |v i' j'| + (1 / 2 : ℝ) * (v i' j' - q i' j') ^ (2 : ℕ) : ℝ))
+    proximal_objective
+        (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z))
+        (toLp 2 (p, q)) (toLp 2 (horizontal_update u i j a, v)) =
+      (((lam * |a| + (1 / 2 : ℝ) * (a - p i j) ^ (2 : ℕ) : ℝ)) : EReal) +
+        (remainder : EReal) := by
+  dsimp only
+  let φ : Fin m → Fin (n - 1) → ℝ → ℝ :=
+    fun i' j' t ↦
+      if hi' : (i' : ℕ) + 1 < m then
+        (0 : ℝ)
+      else
+        (lam * |t| + (1 / 2 : ℝ) * (t - p i' j') ^ (2 : ℕ) : ℝ)
+  have hinterior :
+      (∑ i' : Fin (m - 1), ∑ j' : Fin (n - 1),
+        (lam *
+            Real.sqrt
+              (horizontal_update u i j a (Fin.castLE (Nat.sub_le m 1) i') j' ^ (2 : ℕ) +
+                v i' (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+          (1 / 2 : ℝ) *
+            (horizontal_update u i j a (Fin.castLE (Nat.sub_le m 1) i') j' -
+                p (Fin.castLE (Nat.sub_le m 1) i') j') ^ (2 : ℕ) +
+          (1 / 2 : ℝ) *
+            (v i' (Fin.castLE (Nat.sub_le n 1) j') -
+                q i' (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ)) =
+        ∑ i' : Fin (m - 1), ∑ j' : Fin (n - 1),
+          (lam *
+              Real.sqrt
+                (u (Fin.castLE (Nat.sub_le m 1) i') j' ^ (2 : ℕ) +
+                  v i' (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+            (1 / 2 : ℝ) *
+              (u (Fin.castLE (Nat.sub_le m 1) i') j' -
+                  p (Fin.castLE (Nat.sub_le m 1) i') j') ^ (2 : ℕ) +
+            (1 / 2 : ℝ) *
+              (v i' (Fin.castLE (Nat.sub_le n 1) j') -
+                  q i' (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ) := by
+    -- A last-row horizontal update never touches the interior coupled blocks.
+    refine Finset.sum_congr rfl ?_
+    intro i' hi'
+    have hrow_ne : Fin.castLE (Nat.sub_le m 1) i' ≠ i :=
+      castLE_ne_of_not_lt_last hboundary i'
+    refine Finset.sum_congr rfl ?_
+    intro j' hj'
+    simp [horizontal_update, hrow_ne]
+  have hboundaryH :
+      (∑ i' : Fin m, ∑ j' : Fin (n - 1),
+        if hi' : (i' : ℕ) + 1 < m then
+          (0 : ℝ)
+        else
+          (lam * |horizontal_update u i j a i' j'| +
+            (1 / 2 : ℝ) * (horizontal_update u i j a i' j' - p i' j') ^ (2 : ℕ) : ℝ)) =
+        φ i j a +
+          Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦ φ i j' (u i j')) +
+          Finset.sum (Finset.univ.erase i) (fun i' : Fin m ↦
+            ∑ j' : Fin (n - 1), φ i' j' (u i' j')) := by
+    -- Split the last-row boundary block into the updated scalar term and the untouched remainder.
+    simpa [φ, hboundary] using horizontal_double_sum_update φ u i j a
+  -- Route correction: because the updated row is already boundary, the source proof only needs a
+  -- scalar last-row split; the interior coupled sum is unchanged.
+  rw [isotropic_proximal_objective_sum_formula, isotropic_proximal_objective_sum_rhs]
+  rw [hinterior, hboundaryH]
+  let remainder : ℝ :=
+    (∑ i' : Fin (m - 1), ∑ j' : Fin (n - 1),
+        (lam *
+            Real.sqrt
+              (u (Fin.castLE (Nat.sub_le m 1) i') j' ^ (2 : ℕ) +
+                v i' (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+          (1 / 2 : ℝ) *
+            (u (Fin.castLE (Nat.sub_le m 1) i') j' -
+                p (Fin.castLE (Nat.sub_le m 1) i') j') ^ (2 : ℕ) +
+          (1 / 2 : ℝ) *
+            (v i' (Fin.castLE (Nat.sub_le n 1) j') -
+                q i' (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ)) +
+      Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦ φ i j' (u i j')) +
+      Finset.sum (Finset.univ.erase i) (fun i' : Fin m ↦
+        ∑ j' : Fin (n - 1), φ i' j' (u i' j')) +
+      (∑ i' : Fin (m - 1), ∑ j' : Fin n,
+        if hj' : (j' : ℕ) + 1 < n then
+          (0 : ℝ)
+        else
+          (lam * |v i' j'| + (1 / 2 : ℝ) * (v i' j' - q i' j') ^ (2 : ℕ) : ℝ))
+  calc
+    ((((∑ i' : Fin (m - 1), ∑ j' : Fin (n - 1),
+            (lam *
+                Real.sqrt
+                  (u (Fin.castLE (Nat.sub_le m 1) i') j' ^ (2 : ℕ) +
+                    v i' (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+              (1 / 2 : ℝ) *
+                (u (Fin.castLE (Nat.sub_le m 1) i') j' -
+                    p (Fin.castLE (Nat.sub_le m 1) i') j') ^ (2 : ℕ) +
+              (1 / 2 : ℝ) *
+                (v i' (Fin.castLE (Nat.sub_le n 1) j') -
+                    q i' (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ)) +
+          (φ i j a +
+            Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦ φ i j' (u i j')) +
+            Finset.sum (Finset.univ.erase i) (fun i' : Fin m ↦
+              ∑ j' : Fin (n - 1), φ i' j' (u i' j'))) +
+          (∑ i' : Fin (m - 1), ∑ j' : Fin n,
+            if hj' : (j' : ℕ) + 1 < n then
+              (0 : ℝ)
+            else
+              (lam * |v i' j'| + (1 / 2 : ℝ) * (v i' j' - q i' j') ^ (2 : ℕ) : ℝ)) : ℝ)) :
+        EReal) =
+      (((φ i j a + remainder : ℝ)) : EReal) := by
+        congr 1
+        simp [remainder]
+        ring
+    _ = (((φ i j a : ℝ)) : EReal) + ((remainder : ℝ) : EReal) := by
+      rw [EReal.coe_add]
+    _ = (((lam * |a| + (1 / 2 : ℝ) * (a - p i j) ^ (2 : ℕ) : ℝ)) : EReal) +
+          ((remainder : ℝ) : EReal) := by
+        simp [φ, hboundary]
+  simpa [remainder, φ, hboundary]
+
+/-- Helper for Proposition 12.4: replacing one last-column vertical entry turns the isotropic TV
+proximal objective into the scalar absolute-value proximal objective plus a constant remainder. -/
+private theorem isotropic_boundary_vertical_update_objective_eq_scalar_objective_add_const
+    (lam : ℝ) (p u : HorizontalSpace m n) (q v : VerticalSpace m n) (i : Fin (m - 1)) (j : Fin n)
+    (hboundary : ¬ ((j : ℕ) + 1 < n)) (a : ℝ) :
+    let remainder : ℝ :=
+      (∑ i' : Fin (m - 1), ∑ j' : Fin (n - 1),
+          (lam *
+              Real.sqrt
+                (u (Fin.castLE (Nat.sub_le m 1) i') j' ^ (2 : ℕ) +
+                  v i' (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+            (1 / 2 : ℝ) *
+              (u (Fin.castLE (Nat.sub_le m 1) i') j' -
+                  p (Fin.castLE (Nat.sub_le m 1) i') j') ^ (2 : ℕ) +
+            (1 / 2 : ℝ) *
+              (v i' (Fin.castLE (Nat.sub_le n 1) j') -
+                  q i' (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ)) +
+      (∑ i' : Fin m, ∑ j' : Fin (n - 1),
+        if hi' : (i' : ℕ) + 1 < m then
+          (0 : ℝ)
+        else
+          (lam * |u i' j'| + (1 / 2 : ℝ) * (u i' j' - p i' j') ^ (2 : ℕ) : ℝ)) +
+      Finset.sum (Finset.univ.erase j) (fun j' : Fin n ↦
+        if hj' : (j' : ℕ) + 1 < n then
+          (0 : ℝ)
+        else
+          (lam * |v i j'| + (1 / 2 : ℝ) * (v i j' - q i j') ^ (2 : ℕ) : ℝ)) +
+      Finset.sum (Finset.univ.erase i) (fun i' : Fin (m - 1) ↦
+        ∑ j' : Fin n,
+          if hj' : (j' : ℕ) + 1 < n then
+            (0 : ℝ)
+          else
+            (lam * |v i' j'| + (1 / 2 : ℝ) * (v i' j' - q i' j') ^ (2 : ℕ) : ℝ))
+    proximal_objective
+        (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z))
+        (toLp 2 (p, q)) (toLp 2 (u, vertical_update v i j a)) =
+      (((lam * |a| + (1 / 2 : ℝ) * (a - q i j) ^ (2 : ℕ) : ℝ)) : EReal) +
+        (remainder : EReal) := by
+  dsimp only
+  let φ : Fin (m - 1) → Fin n → ℝ → ℝ :=
+    fun i' j' t ↦
+      if hj' : (j' : ℕ) + 1 < n then
+        (0 : ℝ)
+      else
+        (lam * |t| + (1 / 2 : ℝ) * (t - q i' j') ^ (2 : ℕ) : ℝ)
+  have hinterior :
+      (∑ i' : Fin (m - 1), ∑ j' : Fin (n - 1),
+        (lam *
+            Real.sqrt
+              (u (Fin.castLE (Nat.sub_le m 1) i') j' ^ (2 : ℕ) +
+                vertical_update v i j a i' (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+          (1 / 2 : ℝ) *
+            (u (Fin.castLE (Nat.sub_le m 1) i') j' -
+                p (Fin.castLE (Nat.sub_le m 1) i') j') ^ (2 : ℕ) +
+          (1 / 2 : ℝ) *
+            (vertical_update v i j a i' (Fin.castLE (Nat.sub_le n 1) j') -
+                q i' (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ)) =
+        ∑ i' : Fin (m - 1), ∑ j' : Fin (n - 1),
+          (lam *
+              Real.sqrt
+                (u (Fin.castLE (Nat.sub_le m 1) i') j' ^ (2 : ℕ) +
+                  v i' (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+            (1 / 2 : ℝ) *
+              (u (Fin.castLE (Nat.sub_le m 1) i') j' -
+                  p (Fin.castLE (Nat.sub_le m 1) i') j') ^ (2 : ℕ) +
+            (1 / 2 : ℝ) *
+              (v i' (Fin.castLE (Nat.sub_le n 1) j') -
+                  q i' (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ) := by
+    -- A last-column vertical update never touches the interior coupled blocks.
+    refine Finset.sum_congr rfl ?_
+    intro i' hi'
+    refine Finset.sum_congr rfl ?_
+    intro j' hj'
+    have hcol_ne : Fin.castLE (Nat.sub_le n 1) j' ≠ j :=
+      castLE_ne_of_not_lt_last hboundary j'
+    by_cases hi'eq : i' = i
+    · subst i'
+      simp [vertical_update, hcol_ne]
+    · simp [vertical_update, hi'eq]
+  have hboundaryV :
+      (∑ i' : Fin (m - 1), ∑ j' : Fin n,
+        if hj' : (j' : ℕ) + 1 < n then
+          (0 : ℝ)
+        else
+          (lam * |vertical_update v i j a i' j'| +
+            (1 / 2 : ℝ) * (vertical_update v i j a i' j' - q i' j') ^ (2 : ℕ) : ℝ)) =
+        φ i j a +
+          Finset.sum (Finset.univ.erase j) (fun j' : Fin n ↦ φ i j' (v i j')) +
+          Finset.sum (Finset.univ.erase i) (fun i' : Fin (m - 1) ↦
+            ∑ j' : Fin n, φ i' j' (v i' j')) := by
+    -- Split the last-column boundary block into the updated scalar term and the untouched
+    -- vertical remainder.
+    simpa [φ, hboundary] using vertical_double_sum_update φ v i j a
+  -- Route correction: keep the source proof at the last-column scalar block level, so only the
+  -- boundary vertical sum is split while the interior coupled and horizontal boundary sums stay
+  -- fixed.
+  rw [isotropic_proximal_objective_sum_formula, isotropic_proximal_objective_sum_rhs]
+  rw [hinterior, hboundaryV]
+  let remainder : ℝ :=
+    (∑ i' : Fin (m - 1), ∑ j' : Fin (n - 1),
+        (lam *
+            Real.sqrt
+              (u (Fin.castLE (Nat.sub_le m 1) i') j' ^ (2 : ℕ) +
+                v i' (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+          (1 / 2 : ℝ) *
+            (u (Fin.castLE (Nat.sub_le m 1) i') j' -
+                p (Fin.castLE (Nat.sub_le m 1) i') j') ^ (2 : ℕ) +
+          (1 / 2 : ℝ) *
+            (v i' (Fin.castLE (Nat.sub_le n 1) j') -
+                q i' (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ)) +
+      (∑ i' : Fin m, ∑ j' : Fin (n - 1),
+        if hi' : (i' : ℕ) + 1 < m then
+          (0 : ℝ)
+        else
+          (lam * |u i' j'| + (1 / 2 : ℝ) * (u i' j' - p i' j') ^ (2 : ℕ) : ℝ)) +
+      Finset.sum (Finset.univ.erase j) (fun j' : Fin n ↦
+        if hj' : (j' : ℕ) + 1 < n then
+          (0 : ℝ)
+        else
+          (lam * |v i j'| + (1 / 2 : ℝ) * (v i j' - q i j') ^ (2 : ℕ) : ℝ)) +
+      Finset.sum (Finset.univ.erase i) (fun i' : Fin (m - 1) ↦
+        ∑ j' : Fin n,
+          if hj' : (j' : ℕ) + 1 < n then
+            (0 : ℝ)
+          else
+            (lam * |v i' j'| + (1 / 2 : ℝ) * (v i' j' - q i' j') ^ (2 : ℕ) : ℝ))
+  let lhs : ℝ :=
+    (∑ i' : Fin (m - 1), ∑ j' : Fin (n - 1),
+        (lam *
+            Real.sqrt
+              (u (Fin.castLE (Nat.sub_le m 1) i') j' ^ (2 : ℕ) +
+                v i' (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+          (1 / 2 : ℝ) *
+            (u (Fin.castLE (Nat.sub_le m 1) i') j' -
+                p (Fin.castLE (Nat.sub_le m 1) i') j') ^ (2 : ℕ) +
+          (1 / 2 : ℝ) *
+            (v i' (Fin.castLE (Nat.sub_le n 1) j') -
+                q i' (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ)) +
+      (∑ i' : Fin m, ∑ j' : Fin (n - 1),
+        if hi' : (i' : ℕ) + 1 < m then
+          (0 : ℝ)
+        else
+          (lam * |u i' j'| + (1 / 2 : ℝ) * (u i' j' - p i' j') ^ (2 : ℕ) : ℝ)) +
+      (φ i j a +
+        Finset.sum (Finset.univ.erase j) (fun j' : Fin n ↦ φ i j' (v i j')) +
+        Finset.sum (Finset.univ.erase i) (fun i' : Fin (m - 1) ↦
+          ∑ j' : Fin n, φ i' j' (v i' j')) : ℝ)
+  have hlhs : lhs = φ i j a + remainder := by
+    dsimp [lhs, remainder]
+    simp [φ]
+    ring
+  have hcollapse : ((lhs : ℝ) : EReal) = ((φ i j a + remainder : ℝ) : EReal) := by
+    exact congrArg (fun t : ℝ ↦ (t : EReal)) hlhs
+  calc
+    ((lhs : ℝ) : EReal) = ((φ i j a + remainder : ℝ) : EReal) := hcollapse
+    _ =
+      (((φ i j a : ℝ)) : EReal) + ((remainder : ℝ) : EReal) := by
+        rw [EReal.coe_add]
+    _ = (((lam * |a| + (1 / 2 : ℝ) * (a - q i j) ^ (2 : ℕ) : ℝ)) : EReal) +
+          ((remainder : ℝ) : EReal) := by
+        simp [φ, hboundary]
+
+/-- Helper for Proposition 12.4: the displayed isotropic shrinkage/soft-threshold point is a
+global minimizer of the isotropic proximal objective. -/
+private theorem isotropic_prox_point_mem_proximal_mapping
+    (lam : ℝ) (hlam : 0 ≤ lam) (p : HorizontalSpace m n) (q : VerticalSpace m n) :
+    two_dimensional_total_variation_isotropic_prox_point lam p q ∈
+      prox[fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z)]
+        (toLp 2 (p, q)) := by
+  let u : HorizontalSpace m n :=
+    fun i j ↦
+      if hi : (i : ℕ) + 1 < m then
+        two_dimensional_total_variation_isotropic_shrink_factor lam (p i j)
+          (q (i.castLT (Nat.lt_sub_iff_add_lt.mpr hi)) (Fin.castLE (Nat.sub_le n 1) j)) * p i j
+      else
+        𝒯[lam] (p i j)
+  let v : VerticalSpace m n :=
+    fun i j ↦
+      if hj : (j : ℕ) + 1 < n then
+        two_dimensional_total_variation_isotropic_shrink_factor lam
+          (p (Fin.castLE (Nat.sub_le m 1) i) (j.castLT (Nat.lt_sub_iff_add_lt.mpr hj)))
+          (q i j) * q i j
+      else
+        𝒯[lam] (q i j)
+  have hpoint : two_dimensional_total_variation_isotropic_prox_point lam p q = toLp 2 (u, v) := by
+    -- The explicit isotropic prox point is definitionally the `WithLp` pair built from `u` and
+    -- `v`.
+    rfl
+  rw [hpoint, mem_proximal_mapping_iff, isMinOn_univ_iff]
+  intro y
+  have hinterior_term
+      (i : Fin (m - 1)) (j : Fin (n - 1)) :
+      (lam *
+          Real.sqrt
+            (u (Fin.castLE (Nat.sub_le m 1) i) j ^ (2 : ℕ) +
+              v i (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ)) +
+        (1 / 2 : ℝ) *
+          (u (Fin.castLE (Nat.sub_le m 1) i) j -
+              p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
+        (1 / 2 : ℝ) *
+          (v i (Fin.castLE (Nat.sub_le n 1) j) -
+              q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ) : ℝ) ≤
+        (lam *
+            Real.sqrt
+              (y.fst (Fin.castLE (Nat.sub_le m 1) i) j ^ (2 : ℕ) +
+                y.snd i (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ)) +
+          (1 / 2 : ℝ) *
+            (y.fst (Fin.castLE (Nat.sub_le m 1) i) j -
+                p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
+          (1 / 2 : ℝ) *
+            (y.snd i (Fin.castLE (Nat.sub_le n 1) j) -
+                q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ) : ℝ) := by
+    let iu : Fin m := Fin.castLE (Nat.sub_le m 1) i
+    let jv : Fin n := Fin.castLE (Nat.sub_le n 1) j
+    have hiu : (iu : ℕ) + 1 < m := by
+      -- The lifted row index still lies in the interior row set.
+      simpa [iu] using (Nat.lt_sub_iff_add_lt.mp i.isLt)
+    have hjv : (jv : ℕ) + 1 < n := by
+      -- The lifted column index still lies in the interior column set.
+      simpa [jv] using (Nat.lt_sub_iff_add_lt.mp j.isLt)
+    have hi_cast :
+        iu.castLT (Nat.lt_sub_iff_add_lt.mpr hiu) = i := by
+      -- Casting the lifted interior row back down recovers the original interior row.
+      exact castLE_castLT_sub_one_eq_self_of_lt i (Nat.lt_sub_iff_add_lt.mpr hiu)
+    have hj_cast :
+        jv.castLT (Nat.lt_sub_iff_add_lt.mpr hjv) = j := by
+      -- Casting the lifted interior column back down recovers the original interior column.
+      exact castLE_castLT_sub_one_eq_self_of_lt j (Nat.lt_sub_iff_add_lt.mpr hjv)
+    have hu_eq :
+        u iu j =
+          two_dimensional_total_variation_isotropic_shrink_factor lam (p iu j) (q i jv) *
+            p iu j := by
+      -- The horizontal coordinate of the explicit point uses the interior shrinkage formula.
+      rw [show u iu j =
+          (if hi : (iu : ℕ) + 1 < m then
+            two_dimensional_total_variation_isotropic_shrink_factor lam (p iu j)
+              (q (iu.castLT (Nat.lt_sub_iff_add_lt.mpr hi)) (Fin.castLE (Nat.sub_le n 1) j)) *
+                p iu j
+          else
+            𝒯[lam] (p iu j)) by
+            rfl]
+      rw [dif_pos hiu]
+      simpa [jv, hi_cast]
+    have hv_eq :
+        v i jv =
+          two_dimensional_total_variation_isotropic_shrink_factor lam (p iu j) (q i jv) *
+            q i jv := by
+      -- The vertical coordinate of the explicit point uses the same interior shrinkage factor.
+      rw [show v i jv =
+          (if hj : (jv : ℕ) + 1 < n then
+            two_dimensional_total_variation_isotropic_shrink_factor lam
+              (p (Fin.castLE (Nat.sub_le m 1) i) (jv.castLT (Nat.lt_sub_iff_add_lt.mpr hj)))
+              (q i jv) * q i jv
+          else
+            𝒯[lam] (q i jv)) by
+            rfl]
+      rw [dif_pos hjv]
+      simpa [iu, hj_cast]
+    have hpair_mem :
+        toLp 2
+          ![two_dimensional_total_variation_isotropic_shrink_factor lam (p iu j) (q i jv) *
+              p iu j,
+            two_dimensional_total_variation_isotropic_shrink_factor lam (p iu j) (q i jv) *
+              q i jv] ∈
+          prox[fun z : EuclideanSpace ℝ (Fin 2) ↦ ↑(lam * ‖z‖)]
+            (toLp 2 ![p iu j, q i jv]) := by
+      -- The explicit interior block is the singleton Chapter 6 proximal point for the paired data.
+      rw [two_dimensional_total_variation_pair_prox_eq_singleton lam hlam (p iu j) (q i jv)]
+      simp
+    rw [mem_proximal_mapping_iff, isMinOn_univ_iff] at hpair_mem
+    have hpair_le := hpair_mem (toLp 2 ![y.fst iu j, y.snd i jv])
+    let shrinkP : ℝ :=
+      two_dimensional_total_variation_isotropic_shrink_factor lam (p iu j) (q i jv) * p iu j
+    let shrinkQ : ℝ :=
+      two_dimensional_total_variation_isotropic_shrink_factor lam (p iu j) (q i jv) * q i jv
+    have hleft_obj :
+        proximal_objective
+            (fun z : EuclideanSpace ℝ (Fin 2) ↦ ↑(lam * ‖z‖))
+            (toLp 2 ![p iu j, q i jv]) (toLp 2 ![shrinkP, shrinkQ]) =
+          (((lam * Real.sqrt (shrinkP ^ (2 : ℕ) + shrinkQ ^ (2 : ℕ)) +
+                (1 / 2 : ℝ) * (shrinkP - p iu j) ^ (2 : ℕ) +
+                (1 / 2 : ℝ) * (shrinkQ - q i jv) ^ (2 : ℕ) : ℝ)) : EReal) := by
+      -- Expand the paired objective at the shrinkage point into the explicit scalar formula.
+      simpa [shrinkP, shrinkQ] using
+        (pair_norm_proximal_objective_apply lam (p iu j) (q i jv) shrinkP shrinkQ)
+    have hright_obj :
+        proximal_objective
+            (fun z : EuclideanSpace ℝ (Fin 2) ↦ ↑(lam * ‖z‖))
+            (toLp 2 ![p iu j, q i jv]) (toLp 2 ![y.fst iu j, y.snd i jv]) =
+          (((lam * Real.sqrt (y.fst iu j ^ (2 : ℕ) + y.snd i jv ^ (2 : ℕ)) +
+                (1 / 2 : ℝ) * (y.fst iu j - p iu j) ^ (2 : ℕ) +
+                (1 / 2 : ℝ) * (y.snd i jv - q i jv) ^ (2 : ℕ) : ℝ)) : EReal) := by
+      -- Expand the paired objective at the arbitrary competitor into the explicit scalar formula.
+      simpa using
+        (pair_norm_proximal_objective_apply lam (p iu j) (q i jv) (y.fst iu j) (y.snd i jv))
+    have hpair_le' :
+        (((lam * Real.sqrt (shrinkP ^ (2 : ℕ) + shrinkQ ^ (2 : ℕ)) +
+              (1 / 2 : ℝ) * (shrinkP - p iu j) ^ (2 : ℕ) +
+              (1 / 2 : ℝ) * (shrinkQ - q i jv) ^ (2 : ℕ) : ℝ)) : EReal) ≤
+          (((lam * Real.sqrt (y.fst iu j ^ (2 : ℕ) + y.snd i jv ^ (2 : ℕ)) +
+              (1 / 2 : ℝ) * (y.fst iu j - p iu j) ^ (2 : ℕ) +
+              (1 / 2 : ℝ) * (y.snd i jv - q i jv) ^ (2 : ℕ) : ℝ)) : EReal) := by
+      -- Replace both paired objectives by their explicit scalar formulas.
+      rw [hleft_obj, hright_obj] at hpair_le
+      exact hpair_le
+    have hpair_le_real :
+        (lam * Real.sqrt (shrinkP ^ (2 : ℕ) + shrinkQ ^ (2 : ℕ)) +
+            (1 / 2 : ℝ) * (shrinkP - p iu j) ^ (2 : ℕ) +
+            (1 / 2 : ℝ) * (shrinkQ - q i jv) ^ (2 : ℕ) : ℝ) ≤
+          (lam * Real.sqrt (y.fst iu j ^ (2 : ℕ) + y.snd i jv ^ (2 : ℕ)) +
+            (1 / 2 : ℝ) * (y.fst iu j - p iu j) ^ (2 : ℕ) +
+            (1 / 2 : ℝ) * (y.snd i jv - q i jv) ^ (2 : ℕ) : ℝ) := by
+      exact_mod_cast hpair_le'
+    have hpair_le_real' :
+        (lam * Real.sqrt (u iu j ^ (2 : ℕ) + v i jv ^ (2 : ℕ)) +
+            (1 / 2 : ℝ) * (u iu j - p iu j) ^ (2 : ℕ) +
+            (1 / 2 : ℝ) * (v i jv - q i jv) ^ (2 : ℕ) : ℝ) ≤
+          (lam * Real.sqrt (y.fst iu j ^ (2 : ℕ) + y.snd i jv ^ (2 : ℕ)) +
+            (1 / 2 : ℝ) * (y.fst iu j - p iu j) ^ (2 : ℕ) +
+            (1 / 2 : ℝ) * (y.snd i jv - q i jv) ^ (2 : ℕ) : ℝ) := by
+      simpa [shrinkP, shrinkQ, hu_eq, hv_eq] using hpair_le_real
+    simpa [iu, jv] using hpair_le_real'
+  have hboundary_horizontal_term
+      (i : Fin m) (j : Fin (n - 1)) :
+      (if hi : (i : ℕ) + 1 < m then
+        (0 : ℝ)
+      else
+        (lam * |u i j| + (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ)) ≤
+        (if hi : (i : ℕ) + 1 < m then
+          (0 : ℝ)
+        else
+          (lam * |y.fst i j| + (1 / 2 : ℝ) * (y.fst i j - p i j) ^ (2 : ℕ) : ℝ)) := by
+    by_cases hi : (i : ℕ) + 1 < m
+    · -- Interior rows contribute `0` to the last-row scalar sum on both sides.
+      simp [hi]
+    · have hsoft_mem : u i j ∈ prox[absolute_value_penalty lam] (p i j) := by
+        -- On the boundary row, the explicit prox point is the scalar soft-thresholding prox point.
+        rw [prox_absolute_value_penalty_eq_singleton_soft_thresholding lam hlam (p i j)]
+        simp [u, hi]
+      rw [mem_proximal_mapping_iff, isMinOn_univ_iff] at hsoft_mem
+      have hsoft_le := hsoft_mem (y.fst i j)
+      have hsoft_le' :
+          (((lam * |u i j| + (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ)) : EReal) ≤
+            (((lam * |y.fst i j| + (1 / 2 : ℝ) * (y.fst i j - p i j) ^ (2 : ℕ) : ℝ)) :
+              EReal) := by
+        -- Rewrite the scalar Chapter 6 prox objective into the displayed absolute-value formula.
+        simpa [proximal_objective_apply, absolute_value_penalty_apply] using hsoft_le
+      have hsoft_le_real :
+          (lam * |u i j| + (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ) ≤
+            (lam * |y.fst i j| + (1 / 2 : ℝ) * (y.fst i j - p i j) ^ (2 : ℕ) : ℝ) := by
+        exact_mod_cast hsoft_le'
+      simpa [hi] using hsoft_le_real
+  have hboundary_vertical_term
+      (i : Fin (m - 1)) (j : Fin n) :
+      (if hj : (j : ℕ) + 1 < n then
+        (0 : ℝ)
+      else
+        (lam * |v i j| + (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ)) ≤
+        (if hj : (j : ℕ) + 1 < n then
+          (0 : ℝ)
+        else
+          (lam * |y.snd i j| + (1 / 2 : ℝ) * (y.snd i j - q i j) ^ (2 : ℕ) : ℝ)) := by
+    by_cases hj : (j : ℕ) + 1 < n
+    · -- Interior columns contribute `0` to the last-column scalar sum on both sides.
+      simp [hj]
+    · have hsoft_mem : v i j ∈ prox[absolute_value_penalty lam] (q i j) := by
+        -- On the boundary column, the explicit prox point is the scalar soft-thresholding prox
+        -- point.
+        rw [prox_absolute_value_penalty_eq_singleton_soft_thresholding lam hlam (q i j)]
+        simp [v, hj]
+      rw [mem_proximal_mapping_iff, isMinOn_univ_iff] at hsoft_mem
+      have hsoft_le := hsoft_mem (y.snd i j)
+      have hsoft_le' :
+          (((lam * |v i j| + (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ)) : EReal) ≤
+            (((lam * |y.snd i j| + (1 / 2 : ℝ) * (y.snd i j - q i j) ^ (2 : ℕ) : ℝ)) :
+              EReal) := by
+        -- Rewrite the scalar Chapter 6 prox objective into the displayed absolute-value formula.
+        simpa [proximal_objective_apply, absolute_value_penalty_apply] using hsoft_le
+      have hsoft_le_real :
+          (lam * |v i j| + (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ) ≤
+            (lam * |y.snd i j| + (1 / 2 : ℝ) * (y.snd i j - q i j) ^ (2 : ℕ) : ℝ) := by
+        exact_mod_cast hsoft_le'
+      simpa [hj] using hsoft_le_real
+  have hinterior_sum :
+      ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
+          (lam *
+              Real.sqrt
+                (u (Fin.castLE (Nat.sub_le m 1) i) j ^ (2 : ℕ) +
+                  v i (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ)) +
+            (1 / 2 : ℝ) *
+              (u (Fin.castLE (Nat.sub_le m 1) i) j -
+                  p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
+            (1 / 2 : ℝ) *
+              (v i (Fin.castLE (Nat.sub_le n 1) j) -
+                  q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ) : ℝ) ≤
         ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
           (lam *
               Real.sqrt
-                ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-                  (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) +
+                (y.fst (Fin.castLE (Nat.sub_le m 1) i) j ^ (2 : ℕ) +
+                  y.snd i (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ)) +
             (1 / 2 : ℝ) *
-              (((u (Fin.castLE (Nat.sub_le m 1) i) j -
-                    p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-                ((v i (Fin.castLE (Nat.sub_le n 1) j) -
-                    q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) : ℝ)) := by
-    calc
-      lam *
-          (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-            Real.sqrt
-              ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-                (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ))) +
-        (1 / 2 : ℝ) *
-          ((∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-                (u (Fin.castLE (Nat.sub_le m 1) i) j -
-                  p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-            ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-                (v i (Fin.castLE (Nat.sub_le n 1) j) -
-                  q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) =
-          ∑ i : Fin (m - 1), (lam *
-              (∑ j : Fin (n - 1),
-                Real.sqrt
-                  ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-                    (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ))) +
+              (y.fst (Fin.castLE (Nat.sub_le m 1) i) j -
+                  p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
             (1 / 2 : ℝ) *
-              ((∑ j : Fin (n - 1),
-                    (u (Fin.castLE (Nat.sub_le m 1) i) j -
-                      p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-                ∑ j : Fin (n - 1),
-                  (v i (Fin.castLE (Nat.sub_le n 1) j) -
-                    q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ))) := by
-            simpa using interior_norm_proximal_sum_eq_real (lam := lam) (p := p) (u := u)
-              (q := q) (v := v)
-      _ =
-          ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-            (lam *
-                Real.sqrt
-                  ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-                    (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) +
-              (1 / 2 : ℝ) *
-                (((u (Fin.castLE (Nat.sub_le m 1) i) j -
-                      p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-                  ((v i (Fin.castLE (Nat.sub_le n 1) j) -
-                      q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) : ℝ)) := by
-            simpa using interior_rowwise_real_to_blockwise_real_sum_eq (lam := lam) (p := p)
-              (u := u) (q := q) (v := v)
-  let interiorNorm : ℝ :=
-    lam *
-      (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-        Real.sqrt
-          ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-            (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)))
-  let interiorSq : ℝ :=
-    (1 / 2 : ℝ) *
-      ((∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-            (u (Fin.castLE (Nat.sub_le m 1) i) j -
-              p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-        ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-            (v i (Fin.castLE (Nat.sub_le n 1) j) -
-              q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ))
-  let blockReal : Fin (m - 1) → Fin (n - 1) → ℝ := fun i j ↦
-    lam *
-        Real.sqrt
-          ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-            (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) +
-      (1 / 2 : ℝ) *
-        (((u (Fin.castLE (Nat.sub_le m 1) i) j -
-              p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-          ((v i (Fin.castLE (Nat.sub_le n 1) j) -
-              q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) : ℝ)
-  have hcombine :
-      interiorNorm + interiorSq = ∑ i : Fin (m - 1), ∑ j : Fin (n - 1), blockReal i j := by
-    simpa [interiorNorm, interiorSq, blockReal] using hreal
-  calc
-    ((lam *
-          (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-            Real.sqrt
-              ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-                (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ))) : ℝ) : EReal) +
-        (((1 / 2 : ℝ) *
-              ((∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-                    (u (Fin.castLE (Nat.sub_le m 1) i) j -
-                      p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)) +
-                ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-                    (v i (Fin.castLE (Nat.sub_le n 1) j) -
-                      q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) : ℝ) : EReal) =
-        ((interiorNorm : ℝ) : EReal) + ((interiorSq : ℝ) : EReal) := by
-          simp [interiorNorm, interiorSq]
-    _ = (((interiorNorm + interiorSq : ℝ) : ℝ) : EReal) := by
-          rw [EReal.coe_add]
-    _ =
-        (((∑ i : Fin (m - 1), ∑ j : Fin (n - 1), blockReal i j : ℝ) : ℝ) : EReal) := by
-          exact congrArg (fun r : ℝ ↦ ((r : ℝ) : EReal)) hcombine
-    _ =
-        ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-          ((blockReal i j : ℝ) : EReal) := by
-          simpa using
-            (ereal_coe_double_sum_local (s := (Finset.univ : Finset (Fin (m - 1))))
-              (t := (Finset.univ : Finset (Fin (n - 1))))
-              (φ := blockReal))
-    _ =
-        ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-          proximal_objective (norm_penalty lam)
-            (toLp 2 (p (Fin.castLE (Nat.sub_le m 1) i) j,
-              q i (Fin.castLE (Nat.sub_le n 1) j)))
-            (toLp 2 (u (Fin.castLE (Nat.sub_le m 1) i) j,
-              v i (Fin.castLE (Nat.sub_le n 1) j))) := by
-          refine Finset.sum_congr rfl ?_
-          intro i hi
-          refine Finset.sum_congr rfl ?_
-          intro j hj
-          simpa [blockReal] using
-            (isotropic_interior_block_proximal_objective_eq
-              (lam := lam) (p := p) (u := u) (q := q) (v := v) i j).symm
-
-/-- Helper for Proposition 12.4: the interior isotropic block sum can be treated as one finite
-sum over pair indices. -/
-lemma interior_norm_proximal_sum_eq_sum_product
-    (lam : ℝ) (p u : Hmn) (q v : Vmn) :
+              (y.snd i (Fin.castLE (Nat.sub_le n 1) j) -
+                  q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ) : ℝ) := by
+    -- Sum the interior pairwise optimality inequalities over all interior grid blocks.
+    refine Finset.sum_le_sum ?_
+    intro i hi
+    refine Finset.sum_le_sum ?_
+    intro j hj
+    exact hinterior_term i j
+  have hboundary_horizontal_sum :
+      (∑ i : Fin m, ∑ j : Fin (n - 1),
+          if hi : (i : ℕ) + 1 < m then
+            (0 : ℝ)
+          else
+            (lam * |u i j| + (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ)) ≤
+        (∑ i : Fin m, ∑ j : Fin (n - 1),
+          if hi : (i : ℕ) + 1 < m then
+            (0 : ℝ)
+          else
+            (lam * |y.fst i j| + (1 / 2 : ℝ) * (y.fst i j - p i j) ^ (2 : ℕ) : ℝ)) := by
+    -- Sum the last-row scalar inequalities over all horizontal coordinates.
+    refine Finset.sum_le_sum ?_
+    intro i hi
+    refine Finset.sum_le_sum ?_
+    intro j hj
+    exact hboundary_horizontal_term i j
+  have hboundary_vertical_sum :
+      (∑ i : Fin (m - 1), ∑ j : Fin n,
+          if hj : (j : ℕ) + 1 < n then
+            (0 : ℝ)
+          else
+            (lam * |v i j| + (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ)) ≤
+        (∑ i : Fin (m - 1), ∑ j : Fin n,
+          if hj : (j : ℕ) + 1 < n then
+            (0 : ℝ)
+          else
+            (lam * |y.snd i j| + (1 / 2 : ℝ) * (y.snd i j - q i j) ^ (2 : ℕ) : ℝ)) := by
+    -- Sum the last-column scalar inequalities over all vertical coordinates.
+    refine Finset.sum_le_sum ?_
+    intro i hi
+    refine Finset.sum_le_sum ?_
+    intro j hj
+    exact hboundary_vertical_term i j
+  have htarget_obj :
+      proximal_objective
+          (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z))
+          (toLp 2 (p, q)) (toLp 2 (u, v)) =
+        ((isotropic_proximal_objective_sum_rhs lam p u q v : ℝ) : EReal) := by
+    -- Rewrite the isotropic objective at the explicit point into the stabilized interior/boundary
+    -- block sum.
+    simpa using
+      isotropic_proximal_objective_sum_formula lam p u q v
+  have hy_obj :
+      proximal_objective
+          (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z))
+          (toLp 2 (p, q)) y =
+        ((isotropic_proximal_objective_sum_rhs lam p y.fst q y.snd : ℝ) : EReal) := by
+    -- Read `y` as its canonical `WithLp` pair and rewrite the isotropic objective into the same
+    -- stabilized block sum.
+    rw [show y = toLp 2 (y.fst, y.snd) by cases y; rfl]
+    simpa using
+      isotropic_proximal_objective_sum_formula lam p y.fst q y.snd
+  let lhs : ℝ :=
     (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-      proximal_objective (norm_penalty lam)
-        (toLp 2 (p (Fin.castLE (Nat.sub_le m 1) i) j,
-          q i (Fin.castLE (Nat.sub_le n 1) j)))
-        (toLp 2 (u (Fin.castLE (Nat.sub_le m 1) i) j,
-          v i (Fin.castLE (Nat.sub_le n 1) j)))) =
-      ∑ ij : Fin (m - 1) × Fin (n - 1),
-        proximal_objective (norm_penalty lam)
-          (toLp 2 (p (Fin.castLE (Nat.sub_le m 1) ij.1) ij.2,
-            q ij.1 (Fin.castLE (Nat.sub_le n 1) ij.2)))
-          (toLp 2 (u (Fin.castLE (Nat.sub_le m 1) ij.1) ij.2,
-            v ij.1 (Fin.castLE (Nat.sub_le n 1) ij.2))) := by
-  -- Flatten the nested interior sum to a single product index before isolating one active block.
-  rw [← Finset.sum_product (s := (Finset.univ : Finset (Fin (m - 1))))
-    (t := (Finset.univ : Finset (Fin (n - 1))))
-    (f := fun ij : Fin (m - 1) × Fin (n - 1) ↦
-      proximal_objective (norm_penalty lam)
-        (toLp 2 (p (Fin.castLE (Nat.sub_le m 1) ij.1) ij.2,
-          q ij.1 (Fin.castLE (Nat.sub_le n 1) ij.2)))
-        (toLp 2 (u (Fin.castLE (Nat.sub_le m 1) ij.1) ij.2,
-          v ij.1 (Fin.castLE (Nat.sub_le n 1) ij.2))))]
-  simp [Finset.univ_product_univ]
+        (lam *
+            Real.sqrt
+              (u (Fin.castLE (Nat.sub_le m 1) i) j ^ (2 : ℕ) +
+                v i (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ)) +
+          (1 / 2 : ℝ) *
+            (u (Fin.castLE (Nat.sub_le m 1) i) j -
+                p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
+          (1 / 2 : ℝ) *
+            (v i (Fin.castLE (Nat.sub_le n 1) j) -
+                q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ) : ℝ)) +
+      (∑ i : Fin m, ∑ j : Fin (n - 1),
+        if hi : (i : ℕ) + 1 < m then
+          (0 : ℝ)
+        else
+          (lam * |u i j| + (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ)) +
+      (∑ i : Fin (m - 1), ∑ j : Fin n,
+        if hj : (j : ℕ) + 1 < n then
+          (0 : ℝ)
+        else
+          (lam * |v i j| + (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ))
+  let rhs : ℝ :=
+    (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
+        (lam *
+            Real.sqrt
+              (y.fst (Fin.castLE (Nat.sub_le m 1) i) j ^ (2 : ℕ) +
+                y.snd i (Fin.castLE (Nat.sub_le n 1) j) ^ (2 : ℕ)) +
+          (1 / 2 : ℝ) *
+            (y.fst (Fin.castLE (Nat.sub_le m 1) i) j -
+                p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
+          (1 / 2 : ℝ) *
+            (y.snd i (Fin.castLE (Nat.sub_le n 1) j) -
+                q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ) : ℝ)) +
+      (∑ i : Fin m, ∑ j : Fin (n - 1),
+        if hi : (i : ℕ) + 1 < m then
+          (0 : ℝ)
+        else
+          (lam * |y.fst i j| + (1 / 2 : ℝ) * (y.fst i j - p i j) ^ (2 : ℕ) : ℝ)) +
+      (∑ i : Fin (m - 1), ∑ j : Fin n,
+        if hj : (j : ℕ) + 1 < n then
+          (0 : ℝ)
+        else
+          (lam * |y.snd i j| + (1 / 2 : ℝ) * (y.snd i j - q i j) ^ (2 : ℕ) : ℝ))
+  have hsum : lhs ≤ rhs := by
+    -- Combine the interior-pair and boundary-scalar inequalities into the global real-valued
+    -- isotropic objective inequality.
+    dsimp [lhs, rhs]
+    exact add_le_add (add_le_add hinterior_sum hboundary_horizontal_sum) hboundary_vertical_sum
+  rw [htarget_obj, hy_obj]
+  have hsum_ereal : ((lhs : ℝ) : EReal) ≤ ((rhs : ℝ) : EReal) := by
+    exact_mod_cast hsum
+  simpa [lhs, rhs, isotropic_proximal_objective_sum_rhs] using hsum_ereal
 
-/-- Helper for Proposition 12.4: the full interior isotropic pair-index sum is a finite
-real-valued `EReal`. -/
-lemma interior_pair_proximal_sum_eq_coe
-    (lam : ℝ) (p u : Hmn) (q v : Vmn) :
-    ∃ r : ℝ,
-      (∑ ij : Fin (m - 1) × Fin (n - 1),
-        proximal_objective (norm_penalty lam)
-          (toLp 2 (p (Fin.castLE (Nat.sub_le m 1) ij.1) ij.2,
-            q ij.1 (Fin.castLE (Nat.sub_le n 1) ij.2)))
-          (toLp 2 (u (Fin.castLE (Nat.sub_le m 1) ij.1) ij.2,
-            v ij.1 (Fin.castLE (Nat.sub_le n 1) ij.2)))) = (r : EReal) := by
-  let r : ℝ :=
-    ∑ ij : Fin (m - 1) × Fin (n - 1),
+/-- Helper for Proposition 12.4: a global minimizer of the isotropic proximal objective induces
+the corresponding Chapter 6 two-dimensional prox membership on every interior coupled block. -/
+private theorem isotropic_global_minimizer_gives_interior_pair_prox_membership
+    (lam : ℝ) (p : HorizontalSpace m n) (q : VerticalSpace m n) (y : DualSpace m n)
+    (hy : y ∈ prox[fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z)]
+      (toLp 2 (p, q)))
+    (i : Fin (m - 1)) (j : Fin (n - 1)) :
+    toLp 2 ![y.fst (Fin.castLE (Nat.sub_le m 1) i) j, y.snd i (Fin.castLE (Nat.sub_le n 1) j)] ∈
+      prox[fun z : EuclideanSpace ℝ (Fin 2) ↦ ↑(lam * ‖z‖)]
+        (toLp 2 ![p (Fin.castLE (Nat.sub_le m 1) i) j, q i (Fin.castLE (Nat.sub_le n 1) j)]) := by
+  let iu : Fin m := Fin.castLE (Nat.sub_le m 1) i
+  let jv : Fin n := Fin.castLE (Nat.sub_le n 1) j
+  have hy_min :
+      ∀ z : DualSpace m n,
+        proximal_objective
+            (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z))
+            (toLp 2 (p, q)) y ≤
+          proximal_objective
+            (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z))
+            (toLp 2 (p, q)) z := by
+    -- Membership in the proximal map is exactly global minimality of the isotropic proximal
+    -- objective.
+    rw [mem_proximal_mapping_iff, isMinOn_univ_iff] at hy
+    exact hy
+  rw [mem_proximal_mapping_iff, isMinOn_univ_iff]
+  intro z
+  let remainder : ℝ :=
+    Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦
       (lam *
           Real.sqrt
-            ((u (Fin.castLE (Nat.sub_le m 1) ij.1) ij.2) ^ (2 : ℕ) +
-              (v ij.1 (Fin.castLE (Nat.sub_le n 1) ij.2)) ^ (2 : ℕ)) +
+            (y.fst iu j' ^ (2 : ℕ) + y.snd i (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+        (1 / 2 : ℝ) * (y.fst iu j' - p iu j') ^ (2 : ℕ) +
         (1 / 2 : ℝ) *
-          (((u (Fin.castLE (Nat.sub_le m 1) ij.1) ij.2 -
-                p (Fin.castLE (Nat.sub_le m 1) ij.1) ij.2) ^ (2 : ℕ)) +
-            ((v ij.1 (Fin.castLE (Nat.sub_le n 1) ij.2) -
-                q ij.1 (Fin.castLE (Nat.sub_le n 1) ij.2)) ^ (2 : ℕ)) : ℝ))
-  refine ⟨r, ?_⟩
-  -- Rewrite each interior block as a real coercion and push the coercion through the finite sum.
-  calc
-    (∑ ij : Fin (m - 1) × Fin (n - 1),
-        proximal_objective (norm_penalty lam)
-          (toLp 2 (p (Fin.castLE (Nat.sub_le m 1) ij.1) ij.2,
-            q ij.1 (Fin.castLE (Nat.sub_le n 1) ij.2)))
-          (toLp 2 (u (Fin.castLE (Nat.sub_le m 1) ij.1) ij.2,
-            v ij.1 (Fin.castLE (Nat.sub_le n 1) ij.2)))) =
-      ∑ ij : Fin (m - 1) × Fin (n - 1),
-        (((lam *
-              Real.sqrt
-                ((u (Fin.castLE (Nat.sub_le m 1) ij.1) ij.2) ^ (2 : ℕ) +
-                  (v ij.1 (Fin.castLE (Nat.sub_le n 1) ij.2)) ^ (2 : ℕ)) +
-            (1 / 2 : ℝ) *
-              (((u (Fin.castLE (Nat.sub_le m 1) ij.1) ij.2 -
-                    p (Fin.castLE (Nat.sub_le m 1) ij.1) ij.2) ^ (2 : ℕ)) +
-                ((v ij.1 (Fin.castLE (Nat.sub_le n 1) ij.2) -
-                    q ij.1 (Fin.castLE (Nat.sub_le n 1) ij.2)) ^ (2 : ℕ)) : ℝ) : ℝ)) :
-              EReal) := by
-            refine Finset.sum_congr rfl ?_
-            intro ij hij
-            rw [isotropic_interior_block_proximal_objective_eq]
-    _ = ((r : ℝ) : EReal) := by
-          symm
-          exact
-            ereal_coe_sum_local (s := (Finset.univ : Finset (Fin (m - 1) × Fin (n - 1))))
-              (φ := fun ij ↦
-                lam *
-                    Real.sqrt
-                      ((u (Fin.castLE (Nat.sub_le m 1) ij.1) ij.2) ^ (2 : ℕ) +
-                        (v ij.1 (Fin.castLE (Nat.sub_le n 1) ij.2)) ^ (2 : ℕ)) +
-                  (1 / 2 : ℝ) *
-                    (((u (Fin.castLE (Nat.sub_le m 1) ij.1) ij.2 -
-                          p (Fin.castLE (Nat.sub_le m 1) ij.1) ij.2) ^ (2 : ℕ)) +
-                      ((v ij.1 (Fin.castLE (Nat.sub_le n 1) ij.2) -
-                          q ij.1 (Fin.castLE (Nat.sub_le n 1) ij.2)) ^ (2 : ℕ)) : ℝ))
-
-/-- Helper for Proposition 12.4: the last-row isotropic contribution is exactly the guarded finite
-sum of scalar absolute-value proximal blocks. -/
-lemma horizontal_boundary_absolute_value_proximal_sum_eq
-    (lam : ℝ) (p u : Hmn) :
-    ((lam * (∑ i : Fin m, ∑ j : Fin (n - 1),
-          if hrow : (i : ℕ) + 1 < m then (0 : ℝ) else |u i j|) : ℝ) : EReal) +
-        (((1 / 2 : ℝ) * (∑ i : Fin m, ∑ j : Fin (n - 1),
-              if hrow : (i : ℕ) + 1 < m then (0 : ℝ) else (u i j - p i j) ^ (2 : ℕ)) : ℝ) :
-          EReal) =
-      ∑ i : Fin m, ∑ j : Fin (n - 1),
-        if hrow : (i : ℕ) + 1 < m then 0
-        else proximal_objective (absolute_value_penalty lam) (p i j) (u i j) := by
-  -- Keep the row guard attached to each scalar term until the final `EReal` coercion.
-  have hreal :
-      lam * (∑ i : Fin m, ∑ j : Fin (n - 1),
-            if hrow : (i : ℕ) + 1 < m then (0 : ℝ) else |u i j|) +
-          (1 / 2 : ℝ) * (∑ i : Fin m, ∑ j : Fin (n - 1),
-            if hrow : (i : ℕ) + 1 < m then (0 : ℝ) else (u i j - p i j) ^ (2 : ℕ)) =
-        ∑ i : Fin m, ∑ j : Fin (n - 1),
-          if hrow : (i : ℕ) + 1 < m then 0
-          else lam * |u i j| + (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) := by
-    -- Distribute the prefactors, then collapse the guarded row terms entrywise.
-    simp_rw [Finset.mul_sum]
-    rw [← Finset.sum_add_distrib]
-    refine Finset.sum_congr rfl ?_
-    intro i hi
-    rw [← Finset.sum_add_distrib]
-    refine Finset.sum_congr rfl ?_
-    intro j hj
-    by_cases hrow : (i : ℕ) + 1 < m
-    · simp [hrow]
-    · simp [hrow]
-  calc
-    ((lam * (∑ i : Fin m, ∑ j : Fin (n - 1),
-          if hrow : (i : ℕ) + 1 < m then (0 : ℝ) else |u i j|) : ℝ) : EReal) +
-        (((1 / 2 : ℝ) * (∑ i : Fin m, ∑ j : Fin (n - 1),
-              if hrow : (i : ℕ) + 1 < m then (0 : ℝ) else (u i j - p i j) ^ (2 : ℕ)) : ℝ) :
-          EReal) =
-      (((lam * (∑ i : Fin m, ∑ j : Fin (n - 1),
-            if hrow : (i : ℕ) + 1 < m then (0 : ℝ) else |u i j|) +
-          (1 / 2 : ℝ) * (∑ i : Fin m, ∑ j : Fin (n - 1),
-            if hrow : (i : ℕ) + 1 < m then (0 : ℝ) else (u i j - p i j) ^ (2 : ℕ)) : ℝ) :
-            EReal)) := by
-          rw [EReal.coe_add]
-    _ =
-      (((∑ i : Fin m, ∑ j : Fin (n - 1),
-          if hrow : (i : ℕ) + 1 < m then 0
-          else lam * |u i j| + (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ) : EReal)) := by
-          exact congrArg (fun r : ℝ ↦ ((r : ℝ) : EReal)) hreal
-    _ =
-      ∑ i : Fin m, ∑ j : Fin (n - 1),
-        (((if hrow : (i : ℕ) + 1 < m then 0
-            else lam * |u i j| + (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ)) : ℝ) : EReal) := by
-          simpa using
-            (ereal_coe_double_sum_local (s := (Finset.univ : Finset (Fin m)))
-              (t := (Finset.univ : Finset (Fin (n - 1))))
-              (φ := fun i j ↦
-                if hrow : (i : ℕ) + 1 < m then (0 : ℝ)
-                else lam * |u i j| + (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ)))
-    _ =
-      ∑ i : Fin m, ∑ j : Fin (n - 1),
-        if hrow : (i : ℕ) + 1 < m then 0
-        else proximal_objective (absolute_value_penalty lam) (p i j) (u i j) := by
-          refine Finset.sum_congr rfl ?_
-          intro i hi
-          refine Finset.sum_congr rfl ?_
-          intro j hj
-          by_cases hrow : (i : ℕ) + 1 < m
-          · simpa [hrow]
-          · simpa [hrow, proximal_objective_apply, absolute_value_penalty_apply, Real.norm_eq_abs,
-              sq_abs, EReal.coe_add]
-
-/-- Helper for Proposition 12.4: the last-column isotropic contribution is exactly the guarded
-finite sum of scalar absolute-value proximal blocks. -/
-lemma vertical_boundary_absolute_value_proximal_sum_eq
-    (lam : ℝ) (q v : Vmn) :
-    ((lam * (∑ i : Fin (m - 1), ∑ j : Fin n,
-          if hcol : (j : ℕ) + 1 < n then (0 : ℝ) else |v i j|) : ℝ) : EReal) +
-        (((1 / 2 : ℝ) * (∑ i : Fin (m - 1), ∑ j : Fin n,
-              if hcol : (j : ℕ) + 1 < n then (0 : ℝ) else (v i j - q i j) ^ (2 : ℕ)) : ℝ) :
-          EReal) =
-      ∑ i : Fin (m - 1), ∑ j : Fin n,
-        if hcol : (j : ℕ) + 1 < n then 0
-        else proximal_objective (absolute_value_penalty lam) (q i j) (v i j) := by
-  -- Keep the column guard attached to each scalar term until the final `EReal` coercion.
-  have hreal :
-      lam * (∑ i : Fin (m - 1), ∑ j : Fin n,
-            if hcol : (j : ℕ) + 1 < n then (0 : ℝ) else |v i j|) +
-          (1 / 2 : ℝ) * (∑ i : Fin (m - 1), ∑ j : Fin n,
-            if hcol : (j : ℕ) + 1 < n then (0 : ℝ) else (v i j - q i j) ^ (2 : ℕ)) =
-        ∑ i : Fin (m - 1), ∑ j : Fin n,
-          if hcol : (j : ℕ) + 1 < n then 0
-          else lam * |v i j| + (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) := by
-    -- Distribute the prefactors, then collapse the guarded column terms entrywise.
-    simp_rw [Finset.mul_sum]
-    rw [← Finset.sum_add_distrib]
-    refine Finset.sum_congr rfl ?_
-    intro i hi
-    rw [← Finset.sum_add_distrib]
-    refine Finset.sum_congr rfl ?_
-    intro j hj
-    by_cases hcol : (j : ℕ) + 1 < n
-    · simp [hcol]
-    · simp [hcol]
-  calc
-    ((lam * (∑ i : Fin (m - 1), ∑ j : Fin n,
-          if hcol : (j : ℕ) + 1 < n then (0 : ℝ) else |v i j|) : ℝ) : EReal) +
-        (((1 / 2 : ℝ) * (∑ i : Fin (m - 1), ∑ j : Fin n,
-              if hcol : (j : ℕ) + 1 < n then (0 : ℝ) else (v i j - q i j) ^ (2 : ℕ)) : ℝ) :
-          EReal) =
-      (((lam * (∑ i : Fin (m - 1), ∑ j : Fin n,
-            if hcol : (j : ℕ) + 1 < n then (0 : ℝ) else |v i j|) +
-          (1 / 2 : ℝ) * (∑ i : Fin (m - 1), ∑ j : Fin n,
-            if hcol : (j : ℕ) + 1 < n then (0 : ℝ) else (v i j - q i j) ^ (2 : ℕ)) : ℝ) :
-            EReal)) := by
-          rw [EReal.coe_add]
-    _ =
-      (((∑ i : Fin (m - 1), ∑ j : Fin n,
-          if hcol : (j : ℕ) + 1 < n then 0
-          else lam * |v i j| + (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ) : EReal)) := by
-          exact congrArg (fun r : ℝ ↦ ((r : ℝ) : EReal)) hreal
-    _ =
-      ∑ i : Fin (m - 1), ∑ j : Fin n,
-        (((if hcol : (j : ℕ) + 1 < n then 0
-            else lam * |v i j| + (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ)) : ℝ) : EReal) := by
-          simpa using
-            (ereal_coe_double_sum_local (s := (Finset.univ : Finset (Fin (m - 1))))
-              (t := (Finset.univ : Finset (Fin n)))
-              (φ := fun i j ↦
-                if hcol : (j : ℕ) + 1 < n then (0 : ℝ)
-                else lam * |v i j| + (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ)))
-    _ =
-      ∑ i : Fin (m - 1), ∑ j : Fin n,
-        if hcol : (j : ℕ) + 1 < n then 0
-        else proximal_objective (absolute_value_penalty lam) (q i j) (v i j) := by
-          refine Finset.sum_congr rfl ?_
-          intro i hi
-          refine Finset.sum_congr rfl ?_
-          intro j hj
-          by_cases hcol : (j : ℕ) + 1 < n
-          · simpa [hcol]
-          · simpa [hcol, proximal_objective_apply, absolute_value_penalty_apply, Real.norm_eq_abs,
-              sq_abs, EReal.coe_add]
-
-/-- Helper for Proposition 12.4: splitting the horizontal isotropic regularizer across the last
-row isolates the interior `ℓ²` blocks from the guarded last-row absolute values. -/
-lemma horizontal_isotropic_regularizer_split
-    (u : Hmn) (v : Vmn) :
-    (∑ i : Fin m, ∑ j : Fin (n - 1),
-      if hi : (i : ℕ) + 1 < m then
-        Real.sqrt
-          ((u i j) ^ (2 : ℕ) +
-            (v (i.castLT (Nat.lt_sub_iff_add_lt.mpr hi)) (Fin.castLE (Nat.sub_le n 1) j)) ^
-              (2 : ℕ))
+          (y.snd i (Fin.castLE (Nat.sub_le n 1) j') -
+              q i (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ)) +
+    Finset.sum (Finset.univ.erase i) (fun i' : Fin (m - 1) ↦
+      ∑ j' : Fin (n - 1),
+        (lam *
+            Real.sqrt
+              (y.fst (Fin.castLE (Nat.sub_le m 1) i') j' ^ (2 : ℕ) +
+                y.snd i' (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+          (1 / 2 : ℝ) *
+            (y.fst (Fin.castLE (Nat.sub_le m 1) i') j' -
+                p (Fin.castLE (Nat.sub_le m 1) i') j') ^ (2 : ℕ) +
+          (1 / 2 : ℝ) *
+            (y.snd i' (Fin.castLE (Nat.sub_le n 1) j') -
+                q i' (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ)) +
+    (∑ i' : Fin m, ∑ j' : Fin (n - 1),
+      if hi' : (i' : ℕ) + 1 < m then
+        (0 : ℝ)
       else
-        |u i j|) =
-      (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-        Real.sqrt
-          ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-            (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ))) +
-        ∑ i : Fin m, ∑ j : Fin (n - 1),
-          if hrow : (i : ℕ) + 1 < m then (0 : ℝ) else |u i j| := by
-  let g : Fin m → ℝ := fun i ↦
-    ∑ j : Fin (n - 1),
-      if hi : (i : ℕ) + 1 < m then
-        Real.sqrt
-          ((u i j) ^ (2 : ℕ) +
-            (v (i.castLT (Nat.lt_sub_iff_add_lt.mpr hi)) (Fin.castLE (Nat.sub_le n 1) j)) ^
-              (2 : ℕ))
+        (lam * |y.fst i' j'| + (1 / 2 : ℝ) * (y.fst i' j' - p i' j') ^ (2 : ℕ) : ℝ)) +
+    (∑ i' : Fin (m - 1), ∑ j' : Fin n,
+      if hj' : (j' : ℕ) + 1 < n then
+        (0 : ℝ)
       else
-        |u i j|
-  -- Split only the outer row sum, then normalize the interior row cast before touching `EReal`.
-  calc
-    (∑ i : Fin m, ∑ j : Fin (n - 1),
-        if hi : (i : ℕ) + 1 < m then
-          Real.sqrt
-            ((u i j) ^ (2 : ℕ) +
-              (v (i.castLT (Nat.lt_sub_iff_add_lt.mpr hi)) (Fin.castLE (Nat.sub_le n 1) j)) ^
-                (2 : ℕ))
-        else
-          |u i j|) =
-      ∑ i : Fin m, g i := by
-        simp [g]
-    _ =
-        (∑ i : Fin (m - 1), g (Fin.castLE (Nat.sub_le m 1) i)) +
-          ∑ i : Fin m, if hrow : (i : ℕ) + 1 < m then 0 else g i := by
-        simpa [g] using (fin_sum_split_last (m := m) g)
-    _ =
-        (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-          Real.sqrt
-            ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-              (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ))) +
-          ∑ i : Fin m, if hrow : (i : ℕ) + 1 < m then 0 else g i := by
-        congr 1
-        refine Finset.sum_congr rfl ?_
-        intro i hi
-        -- The embedded interior row satisfies the strict inequality, so the cast back to
-        -- `Fin (m - 1)` disappears and the row contributes the Euclidean block.
-        have hrow :
-            (((Fin.castLE (Nat.sub_le m 1) i : Fin m) : ℕ) + 1 < m) :=
-          castLE_row_succ_lt i
-        simp only [g]
-        simp_rw [dif_pos hrow]
-        simp [castLE_row_castLT_eq]
-    _ =
-        (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-          Real.sqrt
-            ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-              (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ))) +
-          ∑ i : Fin m, ∑ j : Fin (n - 1),
-            if hrow : (i : ℕ) + 1 < m then (0 : ℝ) else |u i j| := by
-        congr 1
-        refine Finset.sum_congr rfl ?_
-        intro i hi
-        by_cases hrow : (i : ℕ) + 1 < m
-        · simp [g, hrow]
-        · simp [g, hrow]
-
-/-- Helper for Proposition 12.4: the isotropic TV proximal objective splits into interior
-Euclidean blocks and guarded scalar boundary blocks. -/
-lemma isotropic_proximal_objective_split
-    (lam : ℝ) (p u : Hmn) (q v : Vmn) :
-    proximal_objective
-        (fun z : TVSpace ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z))
-        (toLp 2 (p, q)) (toLp 2 (u, v)) =
-      (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-        proximal_objective (norm_penalty lam)
-          (toLp 2 (p (Fin.castLE (Nat.sub_le m 1) i) j,
-            q i (Fin.castLE (Nat.sub_le n 1) j)))
-          (toLp 2 (u (Fin.castLE (Nat.sub_le m 1) i) j,
-            v i (Fin.castLE (Nat.sub_le n 1) j)))) +
-        (∑ i : Fin m, ∑ j : Fin (n - 1),
-          if hrow : (i : ℕ) + 1 < m then 0
-          else proximal_objective (absolute_value_penalty lam) (p i j) (u i j)) +
-        ∑ i : Fin (m - 1), ∑ j : Fin n,
-          if hcol : (j : ℕ) + 1 < n then 0
-          else proximal_objective (absolute_value_penalty lam) (q i j) (v i j) := by
-  -- Route correction: isolate the row-split of the isotropic regularizer first, then regroup the
-  -- interior and guarded boundary real sums before coercing each finished piece to `EReal`.
-  let interiorReg : ℝ :=
-    ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-      Real.sqrt
-        ((u (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ) +
-          (v i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ))
-  let horizontalBoundaryReg : ℝ :=
-    ∑ i : Fin m, ∑ j : Fin (n - 1),
-      if hrow : (i : ℕ) + 1 < m then (0 : ℝ) else |u i j|
-  let verticalBoundaryReg : ℝ :=
-    ∑ i : Fin (m - 1), ∑ j : Fin n,
-      if hcol : (j : ℕ) + 1 < n then (0 : ℝ) else |v i j|
-  let interiorHorizontalSq : ℝ :=
-    ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-      (u (Fin.castLE (Nat.sub_le m 1) i) j - p (Fin.castLE (Nat.sub_le m 1) i) j) ^ (2 : ℕ)
-  let horizontalBoundarySq : ℝ :=
-    ∑ i : Fin m, ∑ j : Fin (n - 1),
-      if hrow : (i : ℕ) + 1 < m then (0 : ℝ) else (u i j - p i j) ^ (2 : ℕ)
-  let interiorVerticalSq : ℝ :=
-    ∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-      (v i (Fin.castLE (Nat.sub_le n 1) j) - q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)
-  let verticalBoundarySq : ℝ :=
-    ∑ i : Fin (m - 1), ∑ j : Fin n,
-      if hcol : (j : ℕ) + 1 < n then (0 : ℝ) else (v i j - q i j) ^ (2 : ℕ)
-  let interiorRaw : EReal :=
-    ((lam * interiorReg : ℝ) : EReal) +
-      (((1 / 2 : ℝ) * (interiorHorizontalSq + interiorVerticalSq) : ℝ) : EReal)
-  let horizontalRaw : EReal :=
-    ((lam * horizontalBoundaryReg : ℝ) : EReal) +
-      (((1 / 2 : ℝ) * horizontalBoundarySq : ℝ) : EReal)
-  let verticalRaw : EReal :=
-    ((lam * verticalBoundaryReg : ℝ) : EReal) +
-      (((1 / 2 : ℝ) * verticalBoundarySq : ℝ) : EReal)
-  have hhorizontalSqSplit :
-      (∑ i : Fin m, ∑ j : Fin (n - 1), (u i j - p i j) ^ (2 : ℕ)) =
-        interiorHorizontalSq + horizontalBoundarySq := by
-    let g : Fin m → ℝ := fun i ↦
-      ∑ j : Fin (n - 1), (u i j - p i j) ^ (2 : ℕ)
-    -- Split the horizontal squared-distance sum across interior rows and the guarded last row.
-    calc
-      (∑ i : Fin m, ∑ j : Fin (n - 1), (u i j - p i j) ^ (2 : ℕ)) =
-          ∑ i : Fin m, g i := by
-            simp [g]
-      _ =
-          (∑ i : Fin (m - 1), g (Fin.castLE (Nat.sub_le m 1) i)) +
-            ∑ i : Fin m, if hrow : (i : ℕ) + 1 < m then 0 else g i := by
-            simpa [g] using (fin_sum_split_last (m := m) g)
-      _ = interiorHorizontalSq + ∑ i : Fin m, if hrow : (i : ℕ) + 1 < m then 0 else g i := by
-            simp [g, interiorHorizontalSq]
-      _ = interiorHorizontalSq + horizontalBoundarySq := by
-            congr 1
-            refine Finset.sum_congr rfl ?_
-            intro i hi
-            by_cases hrow : (i : ℕ) + 1 < m
-            · simp [g, horizontalBoundarySq, hrow]
-            · simp [g, horizontalBoundarySq, hrow]
-  have hverticalSqSplit :
-      (∑ i : Fin (m - 1), ∑ j : Fin n, (v i j - q i j) ^ (2 : ℕ)) =
-        interiorVerticalSq + verticalBoundarySq := by
-    -- Split each row's vertical squared-distance sum across interior columns and the last column.
-    calc
-      (∑ i : Fin (m - 1), ∑ j : Fin n, (v i j - q i j) ^ (2 : ℕ)) =
-          ∑ i : Fin (m - 1),
-            ((∑ j : Fin (n - 1), (v i (Fin.castLE (Nat.sub_le n 1) j) -
-                q i (Fin.castLE (Nat.sub_le n 1) j)) ^ (2 : ℕ)) +
-              ∑ j : Fin n, if hcol : (j : ℕ) + 1 < n then 0 else (v i j - q i j) ^ (2 : ℕ)) := by
-            refine Finset.sum_congr rfl ?_
-            intro i hi
-            simpa using
-              (fin_sum_split_last (m := n) (g := fun j : Fin n ↦ (v i j - q i j) ^ (2 : ℕ)))
-      _ = interiorVerticalSq + verticalBoundarySq := by
-            simp [interiorVerticalSq, verticalBoundarySq, Finset.sum_add_distrib]
-  have hreal_reassoc :
-      lam * ((interiorReg + horizontalBoundaryReg) + verticalBoundaryReg) +
-          (1 / 2 : ℝ) * ((interiorHorizontalSq + horizontalBoundarySq) +
-            (interiorVerticalSq + verticalBoundarySq)) =
-        (lam * interiorReg + (1 / 2 : ℝ) * (interiorHorizontalSq + interiorVerticalSq)) +
-          ((lam * horizontalBoundaryReg + (1 / 2 : ℝ) * horizontalBoundarySq) +
-            (lam * verticalBoundaryReg + (1 / 2 : ℝ) * verticalBoundarySq)) := by
-    ring
-  rw [proximal_objective_apply, two_dimensional_total_variation_isotropic_regularizer_apply,
-    tvspace_sqdist_split, horizontal_frobenius_sqdist_eq_entrywise_sum,
-    vertical_frobenius_sqdist_eq_entrywise_sum, horizontal_isotropic_regularizer_split,
-    hhorizontalSqSplit, hverticalSqSplit]
-  calc
-    ((lam * ((interiorReg + horizontalBoundaryReg) + verticalBoundaryReg) : ℝ) : EReal) +
-        (((1 / 2 : ℝ) *
-              ((interiorHorizontalSq + horizontalBoundarySq) +
-                (interiorVerticalSq + verticalBoundarySq)) : ℝ) : EReal) =
-      interiorRaw + (horizontalRaw + verticalRaw) := by
-        calc
-          ((lam * ((interiorReg + horizontalBoundaryReg) + verticalBoundaryReg) : ℝ) : EReal) +
-              (((1 / 2 : ℝ) *
-                    ((interiorHorizontalSq + horizontalBoundarySq) +
-                      (interiorVerticalSq + verticalBoundarySq)) : ℝ) : EReal) =
-            (((lam * ((interiorReg + horizontalBoundaryReg) + verticalBoundaryReg) +
-                  (1 / 2 : ℝ) * ((interiorHorizontalSq + horizontalBoundarySq) +
-                    (interiorVerticalSq + verticalBoundarySq)) : ℝ) : EReal)) := by
-              rw [EReal.coe_add]
-          _ =
-            ((((lam * interiorReg + (1 / 2 : ℝ) * (interiorHorizontalSq + interiorVerticalSq)) +
-                  ((lam * horizontalBoundaryReg + (1 / 2 : ℝ) * horizontalBoundarySq) +
-                    (lam * verticalBoundaryReg + (1 / 2 : ℝ) * verticalBoundarySq)) : ℝ) :
-                  EReal)) := by
-              exact congrArg (fun r : ℝ ↦ ((r : ℝ) : EReal)) hreal_reassoc
-          _ = interiorRaw + (horizontalRaw + verticalRaw) := by
-              simp [interiorRaw, horizontalRaw, verticalRaw, EReal.coe_add, add_assoc]
-    _ =
-        (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-          proximal_objective (norm_penalty lam)
-            (toLp 2 (p (Fin.castLE (Nat.sub_le m 1) i) j,
-              q i (Fin.castLE (Nat.sub_le n 1) j)))
-            (toLp 2 (u (Fin.castLE (Nat.sub_le m 1) i) j,
-              v i (Fin.castLE (Nat.sub_le n 1) j)))) +
-          (horizontalRaw + verticalRaw) := by
-          exact
-            congrArg
-              (fun t : EReal ↦ t + (horizontalRaw + verticalRaw))
-              (by
-                simpa [interiorRaw, interiorReg, interiorHorizontalSq, interiorVerticalSq] using
-                  (interior_norm_proximal_sum_eq (lam := lam) (p := p) (u := u) (q := q)
-                    (v := v)))
-    _ =
-        (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-          proximal_objective (norm_penalty lam)
-            (toLp 2 (p (Fin.castLE (Nat.sub_le m 1) i) j,
-              q i (Fin.castLE (Nat.sub_le n 1) j)))
-            (toLp 2 (u (Fin.castLE (Nat.sub_le m 1) i) j,
-              v i (Fin.castLE (Nat.sub_le n 1) j)))) +
-          ((∑ i : Fin m, ∑ j : Fin (n - 1),
-              if hrow : (i : ℕ) + 1 < m then 0
-              else proximal_objective (absolute_value_penalty lam) (p i j) (u i j)) +
-            verticalRaw) := by
-          exact
-            congrArg
-              (fun t : EReal ↦
-                (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-                  proximal_objective (norm_penalty lam)
-                    (toLp 2 (p (Fin.castLE (Nat.sub_le m 1) i) j,
-                      q i (Fin.castLE (Nat.sub_le n 1) j)))
-                    (toLp 2 (u (Fin.castLE (Nat.sub_le m 1) i) j,
-                      v i (Fin.castLE (Nat.sub_le n 1) j)))) +
-                  (t + verticalRaw))
-              (by
-                simpa [horizontalRaw, horizontalBoundaryReg, horizontalBoundarySq] using
-                  (horizontal_boundary_absolute_value_proximal_sum_eq (lam := lam) (p := p)
-                    (u := u)))
-    _ =
-        (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-          proximal_objective (norm_penalty lam)
-            (toLp 2 (p (Fin.castLE (Nat.sub_le m 1) i) j,
-              q i (Fin.castLE (Nat.sub_le n 1) j)))
-            (toLp 2 (u (Fin.castLE (Nat.sub_le m 1) i) j,
-              v i (Fin.castLE (Nat.sub_le n 1) j)))) +
-          ((∑ i : Fin m, ∑ j : Fin (n - 1),
-              if hrow : (i : ℕ) + 1 < m then 0
-              else proximal_objective (absolute_value_penalty lam) (p i j) (u i j)) +
-            ∑ i : Fin (m - 1), ∑ j : Fin n,
-              if hcol : (j : ℕ) + 1 < n then 0
-              else proximal_objective (absolute_value_penalty lam) (q i j) (v i j)) := by
-          exact
-            congrArg
-              (fun t : EReal ↦
-                (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-                  proximal_objective (norm_penalty lam)
-                    (toLp 2 (p (Fin.castLE (Nat.sub_le m 1) i) j,
-                      q i (Fin.castLE (Nat.sub_le n 1) j)))
-                    (toLp 2 (u (Fin.castLE (Nat.sub_le m 1) i) j,
-                      v i (Fin.castLE (Nat.sub_le n 1) j)))) +
-                  ((∑ i : Fin m, ∑ j : Fin (n - 1),
-                      if hrow : (i : ℕ) + 1 < m then 0
-                      else proximal_objective (absolute_value_penalty lam) (p i j) (u i j)) +
-                    t))
-              (by
-                simpa [verticalRaw, verticalBoundaryReg, verticalBoundarySq] using
-                  (vertical_boundary_absolute_value_proximal_sum_eq (lam := lam) (q := q)
-                    (v := v)))
-    _ =
-        (∑ i : Fin (m - 1), ∑ j : Fin (n - 1),
-          proximal_objective (norm_penalty lam)
-            (toLp 2 (p (Fin.castLE (Nat.sub_le m 1) i) j,
-              q i (Fin.castLE (Nat.sub_le n 1) j)))
-            (toLp 2 (u (Fin.castLE (Nat.sub_le m 1) i) j,
-              v i (Fin.castLE (Nat.sub_le n 1) j)))) +
-          (∑ i : Fin m, ∑ j : Fin (n - 1),
-            if hrow : (i : ℕ) + 1 < m then 0
-            else proximal_objective (absolute_value_penalty lam) (p i j) (u i j)) +
-          ∑ i : Fin (m - 1), ∑ j : Fin n,
-            if hcol : (j : ℕ) + 1 < n then 0
-            else proximal_objective (absolute_value_penalty lam) (q i j) (v i j) := by
-          simp [add_assoc]
-
-
-/-- Helper for Proposition 12.4: the horizontal anisotropic contribution is exactly the finite sum
-of scalar absolute-value proximal objectives. -/
-lemma horizontal_absolute_value_proximal_sum_eq
-    (lam : ℝ) (p u : Hmn) :
-    ((lam * (∑ i : Fin m, ∑ j : Fin (n - 1), |u i j|) : ℝ) : EReal) +
-        (((1 / 2 : ℝ) * (∑ i : Fin m, ∑ j : Fin (n - 1), (u i j - p i j) ^ (2 : ℕ)) : ℝ) :
-          EReal) =
-      ∑ i : Fin m, ∑ j : Fin (n - 1),
-        proximal_objective (absolute_value_penalty lam) (p i j) (u i j) := by
-  -- Route correction: normalize the real double sums first, then push one coercion into `EReal`
-  -- instead of asking `simp` to reassociate the whole extended-real expression at once.
-  have hreal :
-      lam * (∑ i : Fin m, ∑ j : Fin (n - 1), |u i j|) +
-          (1 / 2 : ℝ) * (∑ i : Fin m, ∑ j : Fin (n - 1), (u i j - p i j) ^ (2 : ℕ)) =
-        ∑ i : Fin m, ∑ j : Fin (n - 1),
-          (lam * |u i j| + (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ)) := by
-    -- Distribute the two scalar prefactors over the nested finite sums before regrouping terms.
-    simp_rw [Finset.mul_sum]
-    rw [← Finset.sum_add_distrib]
-    refine Finset.sum_congr rfl ?_
-    intro i hi
-    rw [← Finset.sum_add_distrib]
-  calc
-    ((lam * (∑ i : Fin m, ∑ j : Fin (n - 1), |u i j|) : ℝ) : EReal) +
-        (((1 / 2 : ℝ) * (∑ i : Fin m, ∑ j : Fin (n - 1), (u i j - p i j) ^ (2 : ℕ)) : ℝ) :
-          EReal) =
-      (((lam * (∑ i : Fin m, ∑ j : Fin (n - 1), |u i j|) +
-          (1 / 2 : ℝ) * (∑ i : Fin m, ∑ j : Fin (n - 1), (u i j - p i j) ^ (2 : ℕ)) : ℝ) :
-            EReal)) := by
-          rw [EReal.coe_add]
-    _ = (((∑ i : Fin m, ∑ j : Fin (n - 1),
-          (lam * |u i j| + (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ)) : ℝ) : EReal)) := by
-          exact congrArg (fun r : ℝ ↦ ((r : ℝ) : EReal)) hreal
-    _ = ∑ i : Fin m, ∑ j : Fin (n - 1),
-          (((lam * |u i j| + (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ) : ℝ)) : EReal) := by
-          simpa using
-            (ereal_coe_double_sum_local (s := (Finset.univ : Finset (Fin m)))
-              (t := (Finset.univ : Finset (Fin (n - 1))))
-              (φ := fun i j ↦ lam * |u i j| + (1 / 2 : ℝ) * (u i j - p i j) ^ (2 : ℕ)))
-    _ = ∑ i : Fin m, ∑ j : Fin (n - 1),
-          proximal_objective (absolute_value_penalty lam) (p i j) (u i j) := by
-          -- Each summand is exactly the scalar proximal objective from Example 6.8.
-          refine Finset.sum_congr rfl ?_
-          intro i hi
-          refine Finset.sum_congr rfl ?_
-          intro j hj
-          simp [proximal_objective_apply, absolute_value_penalty_apply, Real.norm_eq_abs, sq_abs,
-            EReal.coe_add]
-
-/-- Helper for Proposition 12.4: the vertical anisotropic contribution is exactly the finite sum
-of scalar absolute-value proximal objectives. -/
-lemma vertical_absolute_value_proximal_sum_eq
-    (lam : ℝ) (q v : Vmn) :
-    ((lam * (∑ i : Fin (m - 1), ∑ j : Fin n, |v i j|) : ℝ) : EReal) +
-        (((1 / 2 : ℝ) * (∑ i : Fin (m - 1), ∑ j : Fin n, (v i j - q i j) ^ (2 : ℕ)) : ℝ) :
-          EReal) =
-      ∑ i : Fin (m - 1), ∑ j : Fin n,
-        proximal_objective (absolute_value_penalty lam) (q i j) (v i j) := by
-  -- As in the horizontal case, keep the algebra in `ℝ` until the last coercion to `EReal`.
-  have hreal :
-      lam * (∑ i : Fin (m - 1), ∑ j : Fin n, |v i j|) +
-          (1 / 2 : ℝ) * (∑ i : Fin (m - 1), ∑ j : Fin n, (v i j - q i j) ^ (2 : ℕ)) =
-        ∑ i : Fin (m - 1), ∑ j : Fin n,
-          (lam * |v i j| + (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ)) := by
-    -- Distribute the scalar prefactors over the two nested finite sums, then regroup entrywise.
-    simp_rw [Finset.mul_sum]
-    rw [← Finset.sum_add_distrib]
-    refine Finset.sum_congr rfl ?_
-    intro i hi
-    rw [← Finset.sum_add_distrib]
-  calc
-    ((lam * (∑ i : Fin (m - 1), ∑ j : Fin n, |v i j|) : ℝ) : EReal) +
-        (((1 / 2 : ℝ) * (∑ i : Fin (m - 1), ∑ j : Fin n, (v i j - q i j) ^ (2 : ℕ)) : ℝ) :
-          EReal) =
-      (((lam * (∑ i : Fin (m - 1), ∑ j : Fin n, |v i j|) +
-          (1 / 2 : ℝ) * (∑ i : Fin (m - 1), ∑ j : Fin n, (v i j - q i j) ^ (2 : ℕ)) : ℝ) :
-            EReal)) := by
-          rw [EReal.coe_add]
-    _ = (((∑ i : Fin (m - 1), ∑ j : Fin n,
-          (lam * |v i j| + (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ)) : ℝ) : EReal)) := by
-          exact congrArg (fun r : ℝ ↦ ((r : ℝ) : EReal)) hreal
-    _ = ∑ i : Fin (m - 1), ∑ j : Fin n,
-          (((lam * |v i j| + (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ) : ℝ)) : EReal) := by
-          simpa using
-            (ereal_coe_double_sum_local (s := (Finset.univ : Finset (Fin (m - 1))))
-              (t := (Finset.univ : Finset (Fin n)))
-              (φ := fun i j ↦ lam * |v i j| + (1 / 2 : ℝ) * (v i j - q i j) ^ (2 : ℕ)))
-    _ = ∑ i : Fin (m - 1), ∑ j : Fin n,
-          proximal_objective (absolute_value_penalty lam) (q i j) (v i j) := by
-          -- Each vertical summand is the same scalar soft-thresholding proximal objective.
-          refine Finset.sum_congr rfl ?_
-          intro i hi
-          refine Finset.sum_congr rfl ?_
-          intro j hj
-          simp [proximal_objective_apply, absolute_value_penalty_apply, Real.norm_eq_abs, sq_abs,
-            EReal.coe_add]
-
-/-- Helper for Proposition 12.4: the anisotropic TV proximal objective splits into independent
-scalar absolute-value proximal objectives over all horizontal and vertical entries. -/
-lemma anisotropic_proximal_objective_split
-    (lam : ℝ) (p u : Hmn) (q v : Vmn) :
-    proximal_objective
-        (fun z : TVSpace ↦ ↑(lam * two_dimensional_total_variation_anisotropic_regularizer z))
-        (toLp 2 (p, q)) (toLp 2 (u, v)) =
-      (∑ i : Fin m, ∑ j : Fin (n - 1),
-        proximal_objective (absolute_value_penalty lam) (p i j) (u i j)) +
-      ∑ i : Fin (m - 1), ∑ j : Fin n,
-        proximal_objective (absolute_value_penalty lam) (q i j) (v i j) := by
-  -- Route correction: first split the global TV-space objective into horizontal and vertical
-  -- real sums, then invoke the two scalar normalization lemmas instead of reassociating in
-  -- one large `EReal` expression.
-  rw [proximal_objective_apply, two_dimensional_total_variation_anisotropic_regularizer_apply,
-    tvspace_sqdist_split, horizontal_frobenius_sqdist_eq_entrywise_sum,
-    vertical_frobenius_sqdist_eq_entrywise_sum]
-  calc
-    ((lam *
-          ((∑ i : Fin m, ∑ j : Fin (n - 1), |u i j|) +
-            ∑ i : Fin (m - 1), ∑ j : Fin n, |v i j|) : ℝ) : EReal) +
-        (((1 / 2 : ℝ) *
-              ((∑ i : Fin m, ∑ j : Fin (n - 1), (u i j - p i j) ^ (2 : ℕ)) +
-                ∑ i : Fin (m - 1), ∑ j : Fin n, (v i j - q i j) ^ (2 : ℕ)) : ℝ) : EReal) =
-      (((lam * (∑ i : Fin m, ∑ j : Fin (n - 1), |u i j|) : ℝ) : EReal) +
-          (((1 / 2 : ℝ) *
-                (∑ i : Fin m, ∑ j : Fin (n - 1), (u i j - p i j) ^ (2 : ℕ)) : ℝ) : EReal)) +
-        (((lam * (∑ i : Fin (m - 1), ∑ j : Fin n, |v i j|) : ℝ) : EReal) +
-          (((1 / 2 : ℝ) *
-                (∑ i : Fin (m - 1), ∑ j : Fin n, (v i j - q i j) ^ (2 : ℕ)) : ℝ) : EReal)) := by
-          rw [mul_add, mul_add, EReal.coe_add, EReal.coe_add]
-          let a : EReal :=
-            ((lam * (∑ i : Fin m, ∑ j : Fin (n - 1), |u i j|) : ℝ) : EReal)
-          let b : EReal :=
-            ((lam * (∑ i : Fin (m - 1), ∑ j : Fin n, |v i j|) : ℝ) : EReal)
-          let c : EReal :=
-            ((((∑ i : Fin m, ∑ j : Fin (n - 1), (u i j - p i j) ^ (2 : ℕ)) : ℝ) *
-                (1 / 2 : ℝ)) : EReal)
-          let d : EReal :=
-            ((((∑ i : Fin (m - 1), ∑ j : Fin n, (v i j - q i j) ^ (2 : ℕ)) : ℝ) *
-                (1 / 2 : ℝ)) : EReal)
-          have h_reassoc : a + b + (c + d) = a + c + (b + d) := by
-            calc
-              a + b + (c + d) = a + (b + (c + d)) := by rw [add_assoc]
-              _ = a + (c + (b + d)) := by
-                    congr 1
-                    calc
-                      b + (c + d) = (b + c) + d := by rw [← add_assoc]
-                      _ = (c + b) + d := by rw [add_comm b c]
-                      _ = c + (b + d) := by rw [add_assoc]
-              _ = a + c + (b + d) := by rw [add_assoc]
-          simpa [a, b, c, d, mul_comm, mul_left_comm, mul_assoc] using h_reassoc
-    _ =
-        (∑ i : Fin m, ∑ j : Fin (n - 1),
-          proximal_objective (absolute_value_penalty lam) (p i j) (u i j)) +
-        (((lam * (∑ i : Fin (m - 1), ∑ j : Fin n, |v i j|) : ℝ) : EReal) +
-          (((1 / 2 : ℝ) *
-                (∑ i : Fin (m - 1), ∑ j : Fin n, (v i j - q i j) ^ (2 : ℕ)) : ℝ) :
-            EReal)) := by
-          exact
-            congrArg
-              (fun t : EReal ↦
-                t +
-                  (((lam * (∑ i : Fin (m - 1), ∑ j : Fin n, |v i j|) : ℝ) : EReal) +
-                    (((1 / 2 : ℝ) *
-                          (∑ i : Fin (m - 1), ∑ j : Fin n, (v i j - q i j) ^ (2 : ℕ)) : ℝ) :
-                      EReal)))
-              (horizontal_absolute_value_proximal_sum_eq lam p u)
-    _ =
-        (∑ i : Fin m, ∑ j : Fin (n - 1),
-          proximal_objective (absolute_value_penalty lam) (p i j) (u i j)) +
-        ∑ i : Fin (m - 1), ∑ j : Fin n,
-          proximal_objective (absolute_value_penalty lam) (q i j) (v i j) := by
-          exact
-            congrArg
-              (fun t : EReal ↦
-                (∑ i : Fin m, ∑ j : Fin (n - 1),
-                  proximal_objective (absolute_value_penalty lam) (p i j) (u i j)) +
-                  t)
-              (vertical_absolute_value_proximal_sum_eq lam q v)
-
-/-- Helper for Proposition 12.4: each scalar anisotropic proximal summand is a finite real-valued
-extended-real expression. -/
-lemma absolute_value_proximal_objective_eq_coe
-    (lam a u : ℝ) :
-    proximal_objective (absolute_value_penalty lam) a u =
-      (((lam * |u| + (1 / 2 : ℝ) * (u - a) ^ (2 : ℕ) : ℝ)) : EReal) := by
-  -- Unfold the scalar proximal objective and rewrite its norm term with the absolute value.
-  simp [proximal_objective_apply, absolute_value_penalty_apply, Real.norm_eq_abs, sq_abs,
-    EReal.coe_add]
-
-/-- Helper for Proposition 12.4: every scalar anisotropic proximal block stays away from `⊥`. -/
-lemma absolute_value_proximal_objective_ne_bot
-    (lam a u : ℝ) :
-    proximal_objective (absolute_value_penalty lam) a u ≠ ⊥ := by
-  -- The scalar proximal objective is literally a real number coerced into `EReal`.
-  rw [proximal_objective_apply, absolute_value_penalty_apply]
-  exact EReal.add_ne_bot_iff.2 ⟨EReal.coe_ne_bot _, EReal.coe_ne_bot _⟩
-
-/-- Helper for Proposition 12.4: every scalar anisotropic proximal block stays strictly below
-`⊤`. -/
-lemma absolute_value_proximal_objective_lt_top
-    (lam a u : ℝ) :
-    proximal_objective (absolute_value_penalty lam) a u < ⊤ := by
-  -- The same coercion-to-`EReal` description shows the scalar block is finite.
-  rw [proximal_objective_apply, absolute_value_penalty_apply]
-  exact EReal.add_lt_top (EReal.coe_ne_top _) (EReal.coe_ne_top _)
-
-/-- Helper for Proposition 12.4: the horizontal anisotropic sum can be treated as one finite sum
-over pair indices. -/
-lemma horizontal_absolute_value_proximal_sum_eq_sum_product
-    (lam : ℝ) (p u : Hmn) :
-    (∑ i : Fin m, ∑ j : Fin (n - 1),
-      proximal_objective (absolute_value_penalty lam) (p i j) (u i j)) =
-      ∑ ij : Fin m × Fin (n - 1),
-        proximal_objective (absolute_value_penalty lam) (p ij.1 ij.2) (u ij.1 ij.2) := by
-  -- Collapse the nested matrix sum to a single finite sum indexed by coordinate pairs.
-  rw [← Finset.sum_product (s := (Finset.univ : Finset (Fin m)))
-    (t := (Finset.univ : Finset (Fin (n - 1))))
-    (f := fun ij : Fin m × Fin (n - 1) ↦
-      proximal_objective (absolute_value_penalty lam) (p ij.1 ij.2) (u ij.1 ij.2))]
-  simp [Finset.univ_product_univ]
-
-/-- Helper for Proposition 12.4: the vertical anisotropic sum can be treated as one finite sum
-over pair indices. -/
-lemma vertical_absolute_value_proximal_sum_eq_sum_product
-    (lam : ℝ) (q v : Vmn) :
-    (∑ i : Fin (m - 1), ∑ j : Fin n,
-      proximal_objective (absolute_value_penalty lam) (q i j) (v i j)) =
-      ∑ ij : Fin (m - 1) × Fin n,
-        proximal_objective (absolute_value_penalty lam) (q ij.1 ij.2) (v ij.1 ij.2) := by
-  -- Collapse the nested matrix sum to a single finite sum indexed by coordinate pairs.
-  rw [← Finset.sum_product (s := (Finset.univ : Finset (Fin (m - 1))))
-    (t := (Finset.univ : Finset (Fin n)))
-    (f := fun ij : Fin (m - 1) × Fin n ↦
-      proximal_objective (absolute_value_penalty lam) (q ij.1 ij.2) (v ij.1 ij.2))]
-  simp [Finset.univ_product_univ]
-
-/-- Helper for Proposition 12.4: the full horizontal pair-index sum of scalar anisotropic
-proximal blocks is a finite real-valued `EReal`. -/
-lemma horizontal_pair_proximal_sum_eq_coe
-    (lam : ℝ) (p u : Hmn) :
-    ∃ r : ℝ,
-      (∑ ij : Fin m × Fin (n - 1),
-        proximal_objective (absolute_value_penalty lam) (p ij.1 ij.2) (u ij.1 ij.2)) = (r : EReal) := by
-  refine ⟨∑ ij : Fin m × Fin (n - 1),
-      (lam * |u ij.1 ij.2| + (1 / 2 : ℝ) * (u ij.1 ij.2 - p ij.1 ij.2) ^ (2 : ℕ)), ?_⟩
-  -- Rewrite each scalar block as a real coercion and push the coercion through the finite sum.
-  calc
-    (∑ ij : Fin m × Fin (n - 1),
-        proximal_objective (absolute_value_penalty lam) (p ij.1 ij.2) (u ij.1 ij.2)) =
-      ∑ ij : Fin m × Fin (n - 1),
-        (((lam * |u ij.1 ij.2| + (1 / 2 : ℝ) * (u ij.1 ij.2 - p ij.1 ij.2) ^ (2 : ℕ) : ℝ)) :
-          EReal) := by
-            refine Finset.sum_congr rfl ?_
-            intro ij hij
-            rw [absolute_value_proximal_objective_eq_coe]
-    _ =
-      (((∑ ij : Fin m × Fin (n - 1),
-          (lam * |u ij.1 ij.2| + (1 / 2 : ℝ) * (u ij.1 ij.2 - p ij.1 ij.2) ^ (2 : ℕ)) : ℝ)) :
-            EReal) := by
-          symm
-          exact
-            ereal_coe_sum_local (s := (Finset.univ : Finset (Fin m × Fin (n - 1))))
-              (φ := fun ij ↦
-                lam * |u ij.1 ij.2| + (1 / 2 : ℝ) * (u ij.1 ij.2 - p ij.1 ij.2) ^ (2 : ℕ))
-
-/-- Helper for Proposition 12.4: the full vertical pair-index sum of scalar anisotropic proximal
-blocks is a finite real-valued `EReal`. -/
-lemma vertical_pair_proximal_sum_eq_coe
-    (lam : ℝ) (q v : Vmn) :
-    ∃ r : ℝ,
-      (∑ ij : Fin (m - 1) × Fin n,
-        proximal_objective (absolute_value_penalty lam) (q ij.1 ij.2) (v ij.1 ij.2)) = (r : EReal) := by
-  refine ⟨∑ ij : Fin (m - 1) × Fin n,
-      (lam * |v ij.1 ij.2| + (1 / 2 : ℝ) * (v ij.1 ij.2 - q ij.1 ij.2) ^ (2 : ℕ)), ?_⟩
-  -- Rewrite each scalar block as a real coercion and push the coercion through the finite sum.
-  calc
-    (∑ ij : Fin (m - 1) × Fin n,
-        proximal_objective (absolute_value_penalty lam) (q ij.1 ij.2) (v ij.1 ij.2)) =
-      ∑ ij : Fin (m - 1) × Fin n,
-        (((lam * |v ij.1 ij.2| + (1 / 2 : ℝ) * (v ij.1 ij.2 - q ij.1 ij.2) ^ (2 : ℕ) : ℝ)) :
-          EReal) := by
-            refine Finset.sum_congr rfl ?_
-            intro ij hij
-            rw [absolute_value_proximal_objective_eq_coe]
-    _ =
-      (((∑ ij : Fin (m - 1) × Fin n,
-          (lam * |v ij.1 ij.2| + (1 / 2 : ℝ) * (v ij.1 ij.2 - q ij.1 ij.2) ^ (2 : ℕ)) : ℝ)) :
-            EReal) := by
-          symm
-          exact
-            ereal_coe_sum_local (s := (Finset.univ : Finset (Fin (m - 1) × Fin n)))
-              (φ := fun ij ↦
-                lam * |v ij.1 ij.2| + (1 / 2 : ℝ) * (v ij.1 ij.2 - q ij.1 ij.2) ^ (2 : ℕ))
-
-/-- Helper for Proposition 12.4: after updating one horizontal entry, the horizontal pair-index
-sum splits into the updated scalar block plus an unchanged finite remainder. -/
-lemma horizontal_update_pair_sum_cancellation
-    (lam : ℝ) (p u : Hmn) (ij : Fin m × Fin (n - 1)) (t : ℝ) :
-    let u' : Hmn := Function.update u ij.1 (Function.update (u ij.1) ij.2 t)
-    ∃ r : ℝ,
-      (∑ k : Fin m × Fin (n - 1),
-        proximal_objective (absolute_value_penalty lam) (p k.1 k.2) (u' k.1 k.2)) =
-          proximal_objective (absolute_value_penalty lam) (p ij.1 ij.2) t + (r : EReal) ∧
-      (∑ k : Fin m × Fin (n - 1),
-        proximal_objective (absolute_value_penalty lam) (p k.1 k.2) (u k.1 k.2)) =
-          proximal_objective (absolute_value_penalty lam) (p ij.1 ij.2) (u ij.1 ij.2) + (r : EReal) := by
-  classical
-  dsimp
-  let s : Finset (Fin m × Fin (n - 1)) := Finset.univ.erase ij
-  let r : ℝ :=
-    ∑ k ∈ s, (lam * |u k.1 k.2| + (1 / 2 : ℝ) * (u k.1 k.2 - p k.1 k.2) ^ (2 : ℕ))
-  refine ⟨r, ?_, ?_⟩
-  have hrest_u :
-      (∑ k ∈ s, proximal_objective (absolute_value_penalty lam) (p k.1 k.2) (u k.1 k.2)) =
-        (r : EReal) := by
-    -- Package the inactive horizontal remainder as a real finite sum.
-    calc
-      (∑ k ∈ s, proximal_objective (absolute_value_penalty lam) (p k.1 k.2) (u k.1 k.2)) =
-          ∑ k ∈ s,
-            (((lam * |u k.1 k.2| + (1 / 2 : ℝ) * (u k.1 k.2 - p k.1 k.2) ^ (2 : ℕ) : ℝ)) :
-              EReal) := by
-                refine Finset.sum_congr rfl ?_
-                intro k hk
-                rw [absolute_value_proximal_objective_eq_coe]
-      _ =
-          (((∑ k ∈ s,
-              (lam * |u k.1 k.2| + (1 / 2 : ℝ) * (u k.1 k.2 - p k.1 k.2) ^ (2 : ℕ)) : ℝ)) :
-                EReal) := by
-              symm
-              exact
-                ereal_coe_sum_local (s := s)
-                  (φ := fun k ↦
-                    lam * |u k.1 k.2| + (1 / 2 : ℝ) * (u k.1 k.2 - p k.1 k.2) ^ (2 : ℕ))
-      _ = (r : EReal) := by simp [r]
-  have hrest_u' :
-      (∑ k ∈ s, proximal_objective (absolute_value_penalty lam) (p k.1 k.2)
-        ((Function.update u ij.1 (Function.update (u ij.1) ij.2 t)) k.1 k.2)) =
-        (r : EReal) := by
-    -- Away from the updated entry, the horizontal matrix is unchanged.
-    calc
-      (∑ k ∈ s, proximal_objective (absolute_value_penalty lam) (p k.1 k.2)
-        ((Function.update u ij.1 (Function.update (u ij.1) ij.2 t)) k.1 k.2)) =
-          ∑ k ∈ s, proximal_objective (absolute_value_penalty lam) (p k.1 k.2) (u k.1 k.2) := by
-            refine Finset.sum_congr rfl ?_
-            intro k hk
-            have hk_ne : k ≠ ij := (Finset.mem_erase.mp hk).1
-            by_cases hrow : k.1 = ij.1
-            · have hcol : k.2 ≠ ij.2 := by
-                intro hcol
-                apply hk_ne
-                exact Prod.ext hrow hcol
-              simp [Function.update, hrow, hcol]
-            · simp [Function.update, hrow]
-      _ = (r : EReal) := hrest_u
-  · -- Split off the updated horizontal entry and reuse the common inactive remainder.
-    calc
-      (∑ k : Fin m × Fin (n - 1),
-          proximal_objective (absolute_value_penalty lam) (p k.1 k.2)
-            ((Function.update u ij.1 (Function.update (u ij.1) ij.2 t)) k.1 k.2)) =
-        proximal_objective (absolute_value_penalty lam) (p ij.1 ij.2)
-            ((Function.update u ij.1 (Function.update (u ij.1) ij.2 t)) ij.1 ij.2) +
-          ∑ k ∈ s, proximal_objective (absolute_value_penalty lam) (p k.1 k.2)
-            ((Function.update u ij.1 (Function.update (u ij.1) ij.2 t)) k.1 k.2) := by
-              symm
-              exact Finset.add_sum_erase (Finset.univ : Finset (Fin m × Fin (n - 1)))
-                (fun k ↦
-                  proximal_objective (absolute_value_penalty lam) (p k.1 k.2)
-                    ((Function.update u ij.1 (Function.update (u ij.1) ij.2 t)) k.1 k.2))
-                (Finset.mem_univ ij)
-      _ = proximal_objective (absolute_value_penalty lam) (p ij.1 ij.2) t +
-          ∑ k ∈ s, proximal_objective (absolute_value_penalty lam) (p k.1 k.2)
-            ((Function.update u ij.1 (Function.update (u ij.1) ij.2 t)) k.1 k.2) := by
-              simp [Function.update]
-      _ = proximal_objective (absolute_value_penalty lam) (p ij.1 ij.2) t + (r : EReal) := by
-            rw [hrest_u']
-  · -- The same split at the original point keeps exactly the same inactive remainder.
-    calc
-      (∑ k : Fin m × Fin (n - 1),
-          proximal_objective (absolute_value_penalty lam) (p k.1 k.2) (u k.1 k.2)) =
-        proximal_objective (absolute_value_penalty lam) (p ij.1 ij.2) (u ij.1 ij.2) +
-          ∑ k ∈ s, proximal_objective (absolute_value_penalty lam) (p k.1 k.2) (u k.1 k.2) := by
-              symm
-              exact Finset.add_sum_erase (Finset.univ : Finset (Fin m × Fin (n - 1)))
-                (fun k ↦ proximal_objective (absolute_value_penalty lam) (p k.1 k.2) (u k.1 k.2))
-                (Finset.mem_univ ij)
-      _ = proximal_objective (absolute_value_penalty lam) (p ij.1 ij.2) (u ij.1 ij.2) +
-          (r : EReal) := by
-            have hrest_u_second :
-                (∑ k ∈ s, proximal_objective (absolute_value_penalty lam) (p k.1 k.2) (u k.1 k.2)) =
-                  (r : EReal) := by
-              calc
-                (∑ k ∈ s, proximal_objective (absolute_value_penalty lam) (p k.1 k.2) (u k.1 k.2)) =
-                    ∑ k ∈ s,
-                      (((lam * |u k.1 k.2| + (1 / 2 : ℝ) * (u k.1 k.2 - p k.1 k.2) ^ (2 : ℕ) : ℝ)) :
-                        EReal) := by
-                          refine Finset.sum_congr rfl ?_
-                          intro k hk
-                          rw [absolute_value_proximal_objective_eq_coe]
-                _ =
-                    (((∑ k ∈ s,
-                        (lam * |u k.1 k.2| + (1 / 2 : ℝ) * (u k.1 k.2 - p k.1 k.2) ^ (2 : ℕ)) : ℝ)) :
-                          EReal) := by
-                        symm
-                        exact
-                          ereal_coe_sum_local (s := s)
-                            (φ := fun k ↦
-                              lam * |u k.1 k.2| + (1 / 2 : ℝ) * (u k.1 k.2 - p k.1 k.2) ^ (2 : ℕ))
-                _ = (r : EReal) := by simp [r]
-            exact congrArg
-              (fun s : EReal ↦
-                proximal_objective (absolute_value_penalty lam) (p ij.1 ij.2) (u ij.1 ij.2) + s)
-              hrest_u_second
-
-/-- Helper for Proposition 12.4: after updating one vertical entry, the vertical pair-index sum
-splits into the updated scalar block plus an unchanged finite remainder. -/
-lemma vertical_update_pair_sum_cancellation
-    (lam : ℝ) (q v : Vmn) (ij : Fin (m - 1) × Fin n) (t : ℝ) :
-    let v' : Vmn := Function.update v ij.1 (Function.update (v ij.1) ij.2 t)
-    ∃ r : ℝ,
-      (∑ k : Fin (m - 1) × Fin n,
-        proximal_objective (absolute_value_penalty lam) (q k.1 k.2) (v' k.1 k.2)) =
-          proximal_objective (absolute_value_penalty lam) (q ij.1 ij.2) t + (r : EReal) ∧
-      (∑ k : Fin (m - 1) × Fin n,
-        proximal_objective (absolute_value_penalty lam) (q k.1 k.2) (v k.1 k.2)) =
-          proximal_objective (absolute_value_penalty lam) (q ij.1 ij.2) (v ij.1 ij.2) + (r : EReal) := by
-  classical
-  dsimp
-  let s : Finset (Fin (m - 1) × Fin n) := Finset.univ.erase ij
-  let r : ℝ :=
-    ∑ k ∈ s, (lam * |v k.1 k.2| + (1 / 2 : ℝ) * (v k.1 k.2 - q k.1 k.2) ^ (2 : ℕ))
-  refine ⟨r, ?_, ?_⟩
-  have hrest_v :
-      (∑ k ∈ s, proximal_objective (absolute_value_penalty lam) (q k.1 k.2) (v k.1 k.2)) =
-        (r : EReal) := by
-    -- Package the inactive vertical remainder as a real finite sum.
-    calc
-      (∑ k ∈ s, proximal_objective (absolute_value_penalty lam) (q k.1 k.2) (v k.1 k.2)) =
-          ∑ k ∈ s,
-            (((lam * |v k.1 k.2| + (1 / 2 : ℝ) * (v k.1 k.2 - q k.1 k.2) ^ (2 : ℕ) : ℝ)) :
-              EReal) := by
-                refine Finset.sum_congr rfl ?_
-                intro k hk
-                rw [absolute_value_proximal_objective_eq_coe]
-      _ =
-          (((∑ k ∈ s,
-              (lam * |v k.1 k.2| + (1 / 2 : ℝ) * (v k.1 k.2 - q k.1 k.2) ^ (2 : ℕ)) : ℝ)) :
-                EReal) := by
-              symm
-              exact
-                ereal_coe_sum_local (s := s)
-                  (φ := fun k ↦
-                    lam * |v k.1 k.2| + (1 / 2 : ℝ) * (v k.1 k.2 - q k.1 k.2) ^ (2 : ℕ))
-      _ = (r : EReal) := by simp [r]
-  have hrest_v' :
-      (∑ k ∈ s, proximal_objective (absolute_value_penalty lam) (q k.1 k.2)
-        ((Function.update v ij.1 (Function.update (v ij.1) ij.2 t)) k.1 k.2)) =
-        (r : EReal) := by
-    -- Away from the updated entry, the vertical matrix is unchanged.
-    calc
-      (∑ k ∈ s, proximal_objective (absolute_value_penalty lam) (q k.1 k.2)
-        ((Function.update v ij.1 (Function.update (v ij.1) ij.2 t)) k.1 k.2)) =
-          ∑ k ∈ s, proximal_objective (absolute_value_penalty lam) (q k.1 k.2) (v k.1 k.2) := by
-            refine Finset.sum_congr rfl ?_
-            intro k hk
-            have hk_ne : k ≠ ij := (Finset.mem_erase.mp hk).1
-            by_cases hrow : k.1 = ij.1
-            · have hcol : k.2 ≠ ij.2 := by
-                intro hcol
-                apply hk_ne
-                exact Prod.ext hrow hcol
-              simp [Function.update, hrow, hcol]
-            · simp [Function.update, hrow]
-      _ = (r : EReal) := hrest_v
-  · -- Split off the updated vertical entry and reuse the common inactive remainder.
-    calc
-      (∑ k : Fin (m - 1) × Fin n,
-          proximal_objective (absolute_value_penalty lam) (q k.1 k.2)
-            ((Function.update v ij.1 (Function.update (v ij.1) ij.2 t)) k.1 k.2)) =
-        proximal_objective (absolute_value_penalty lam) (q ij.1 ij.2)
-            ((Function.update v ij.1 (Function.update (v ij.1) ij.2 t)) ij.1 ij.2) +
-          ∑ k ∈ s, proximal_objective (absolute_value_penalty lam) (q k.1 k.2)
-            ((Function.update v ij.1 (Function.update (v ij.1) ij.2 t)) k.1 k.2) := by
-              symm
-              exact Finset.add_sum_erase (Finset.univ : Finset (Fin (m - 1) × Fin n))
-                (fun k ↦
-                  proximal_objective (absolute_value_penalty lam) (q k.1 k.2)
-                    ((Function.update v ij.1 (Function.update (v ij.1) ij.2 t)) k.1 k.2))
-                (Finset.mem_univ ij)
-      _ = proximal_objective (absolute_value_penalty lam) (q ij.1 ij.2) t +
-          ∑ k ∈ s, proximal_objective (absolute_value_penalty lam) (q k.1 k.2)
-            ((Function.update v ij.1 (Function.update (v ij.1) ij.2 t)) k.1 k.2) := by
-              simp [Function.update]
-      _ = proximal_objective (absolute_value_penalty lam) (q ij.1 ij.2) t + (r : EReal) := by
-            rw [hrest_v']
-  · -- The same split at the original point keeps exactly the same inactive remainder.
-    calc
-      (∑ k : Fin (m - 1) × Fin n,
-          proximal_objective (absolute_value_penalty lam) (q k.1 k.2) (v k.1 k.2)) =
-        proximal_objective (absolute_value_penalty lam) (q ij.1 ij.2) (v ij.1 ij.2) +
-          ∑ k ∈ s, proximal_objective (absolute_value_penalty lam) (q k.1 k.2) (v k.1 k.2) := by
-              symm
-              exact Finset.add_sum_erase (Finset.univ : Finset (Fin (m - 1) × Fin n))
-                (fun k ↦ proximal_objective (absolute_value_penalty lam) (q k.1 k.2) (v k.1 k.2))
-                (Finset.mem_univ ij)
-      _ = proximal_objective (absolute_value_penalty lam) (q ij.1 ij.2) (v ij.1 ij.2) +
-          (r : EReal) := by
-            have hrest_v_second :
-                (∑ k ∈ s, proximal_objective (absolute_value_penalty lam) (q k.1 k.2) (v k.1 k.2)) =
-                  (r : EReal) := by
-              calc
-                (∑ k ∈ s, proximal_objective (absolute_value_penalty lam) (q k.1 k.2) (v k.1 k.2)) =
-                    ∑ k ∈ s,
-                      (((lam * |v k.1 k.2| + (1 / 2 : ℝ) * (v k.1 k.2 - q k.1 k.2) ^ (2 : ℕ) : ℝ)) :
-                        EReal) := by
-                          refine Finset.sum_congr rfl ?_
-                          intro k hk
-                          rw [absolute_value_proximal_objective_eq_coe]
-                _ =
-                    (((∑ k ∈ s,
-                        (lam * |v k.1 k.2| + (1 / 2 : ℝ) * (v k.1 k.2 - q k.1 k.2) ^ (2 : ℕ)) : ℝ)) :
-                          EReal) := by
-                        symm
-                        exact
-                          ereal_coe_sum_local (s := s)
-                            (φ := fun k ↦
-                              lam * |v k.1 k.2| + (1 / 2 : ℝ) * (v k.1 k.2 - q k.1 k.2) ^ (2 : ℕ))
-                _ = (r : EReal) := by simp [r]
-            exact congrArg
-              (fun s : EReal ↦
-                proximal_objective (absolute_value_penalty lam) (q ij.1 ij.2) (v ij.1 ij.2) + s)
-              hrest_v_second
-
-/-- Helper for Proposition 12.4: minimizing the anisotropic TV proximal objective is equivalent to
-minimizing each scalar absolute-value proximal block. -/
-lemma anisotropic_isMinOn_proximal_objective_iff_coordinatewise
-    (lam : ℝ) (p u : Hmn) (q v : Vmn) :
-    IsMinOn
-        (proximal_objective
-          (fun z : TVSpace ↦ ↑(lam * two_dimensional_total_variation_anisotropic_regularizer z))
-          (toLp 2 (p, q)))
-        Set.univ (toLp 2 (u, v)) ↔
-      (∀ i j, IsMinOn (proximal_objective (absolute_value_penalty lam) (p i j)) Set.univ
-        (u i j)) ∧
-      (∀ i j, IsMinOn (proximal_objective (absolute_value_penalty lam) (q i j)) Set.univ
-        (v i j)) := by
-  constructor
-  · intro hmin
-    constructor
-    · intro i j
-      rw [isMinOn_univ_iff] at hmin ⊢
-      intro t
-      let u' : Hmn := Function.update u i (Function.update (u i) j t)
-      have huz := hmin (toLp 2 (u', v))
-      -- Freeze the vertical block and update only one horizontal entry.
-      rw [anisotropic_proximal_objective_split (lam := lam) (p := p) (u := u) (q := q) (v := v),
-        anisotropic_proximal_objective_split (lam := lam) (p := p) (u := u') (q := q) (v := v),
-        horizontal_absolute_value_proximal_sum_eq_sum_product,
-        horizontal_absolute_value_proximal_sum_eq_sum_product,
-        vertical_absolute_value_proximal_sum_eq_sum_product] at huz
-      obtain ⟨rh, hu'_split, hu_split⟩ :=
-        horizontal_update_pair_sum_cancellation (lam := lam) (p := p) (u := u) (ij := (i, j))
-          (t := t)
-      obtain ⟨rv, hv_split⟩ := vertical_pair_proximal_sum_eq_coe (lam := lam) (q := q) (v := v)
-      rw [hu_split, hu'_split, hv_split] at huz
-      have hcancel :
-          proximal_objective (absolute_value_penalty lam) (p i j) (u i j) +
-              (((rh + rv : ℝ) : EReal)) ≤
-            proximal_objective (absolute_value_penalty lam) (p i j) t +
-              (((rh + rv : ℝ) : EReal)) := by
-        -- Reassociate the unchanged horizontal and vertical remainders into one finite constant.
-        simpa [u', hu'_split, hu_split, hv_split, EReal.coe_add, add_assoc] using huz
-      exact (EReal.addLECancellable_coe (rh + rv)).add_le_add_iff_right.mp hcancel
-    · intro i j
-      rw [isMinOn_univ_iff] at hmin ⊢
-      intro t
-      let v' : Vmn := Function.update v i (Function.update (v i) j t)
-      have hvz := hmin (toLp 2 (u, v'))
-      -- Freeze the horizontal block and update only one vertical entry.
-      rw [anisotropic_proximal_objective_split (lam := lam) (p := p) (u := u) (q := q) (v := v),
-        anisotropic_proximal_objective_split (lam := lam) (p := p) (u := u) (q := q) (v := v'),
-        horizontal_absolute_value_proximal_sum_eq_sum_product,
-        vertical_absolute_value_proximal_sum_eq_sum_product,
-        vertical_absolute_value_proximal_sum_eq_sum_product] at hvz
-      obtain ⟨rh, hu_split⟩ := horizontal_pair_proximal_sum_eq_coe (lam := lam) (p := p) (u := u)
-      obtain ⟨rv, hv'_split, hv_split⟩ :=
-        vertical_update_pair_sum_cancellation (lam := lam) (q := q) (v := v) (ij := (i, j))
-          (t := t)
-      rw [hu_split, hv_split, hv'_split] at hvz
-      have hcancel_left :
-          proximal_objective (absolute_value_penalty lam) (q i j) (v i j) + (rv : EReal) ≤
-            proximal_objective (absolute_value_penalty lam) (q i j) t + (rv : EReal) := by
-        -- First cancel the unchanged horizontal remainder on the left.
-        exact
-          (EReal.addLECancellable_coe rh).add_le_add_iff_left.mp
-            (by simpa [add_assoc] using hvz)
-      -- Then cancel the unchanged vertical remainder on the right.
-      exact (EReal.addLECancellable_coe rv).add_le_add_iff_right.mp hcancel_left
-  · rintro ⟨hu_min, hv_min⟩
-    rw [isMinOn_univ_iff]
-    intro z
-    -- Once the global objective is split into scalar blocks, sum the coordinatewise inequalities.
-    have hsplit_z :
+        (lam * |y.snd i' j'| + (1 / 2 : ℝ) * (y.snd i' j' - q i' j') ^ (2 : ℕ) : ℝ))
+  have hy_self :
+      proximal_objective
+          (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z))
+          (toLp 2 (p, q)) y =
         proximal_objective
-            (fun z : TVSpace ↦ ↑(lam * two_dimensional_total_variation_anisotropic_regularizer z))
-            (toLp 2 (p, q)) z =
-          (∑ i : Fin m, ∑ j : Fin (n - 1),
-            proximal_objective (absolute_value_penalty lam) (p i j) (z.fst i j)) +
-          ∑ i : Fin (m - 1), ∑ j : Fin n,
-            proximal_objective (absolute_value_penalty lam) (q i j) (z.snd i j) := by
-      simpa using
-        (anisotropic_proximal_objective_split (lam := lam) (p := p) (u := z.fst) (q := q)
-          (v := z.snd))
-    rw [anisotropic_proximal_objective_split (lam := lam) (p := p) (u := u) (q := q) (v := v),
-      hsplit_z]
-    have hhorizontal :
-        (∑ i : Fin m, ∑ j : Fin (n - 1),
-          proximal_objective (absolute_value_penalty lam) (p i j) (u i j)) ≤
-        ∑ i : Fin m, ∑ j : Fin (n - 1),
-          proximal_objective (absolute_value_penalty lam) (p i j) (z.fst i j) := by
-      refine Finset.sum_le_sum ?_
-      intro i hi
-      refine Finset.sum_le_sum ?_
-      intro j hj
-      exact (isMinOn_univ_iff.mp (hu_min i j)) (z.fst i j)
-    have hvertical :
-        (∑ i : Fin (m - 1), ∑ j : Fin n,
-          proximal_objective (absolute_value_penalty lam) (q i j) (v i j)) ≤
-        ∑ i : Fin (m - 1), ∑ j : Fin n,
-          proximal_objective (absolute_value_penalty lam) (q i j) (z.snd i j) := by
-      refine Finset.sum_le_sum ?_
-      intro i hi
-      refine Finset.sum_le_sum ?_
-      intro j hj
-      exact (isMinOn_univ_iff.mp (hv_min i j)) (z.snd i j)
-    exact add_le_add hhorizontal hvertical
+            (fun z : EuclideanSpace ℝ (Fin 2) ↦ ↑(lam * ‖z‖))
+            (toLp 2 ![p iu j, q i jv]) (toLp 2 ![y.fst iu j, y.snd i jv]) +
+          (remainder : EReal) := by
+    -- Rewrite the untouched minimizer as a self-update so the same remainder appears on both
+    -- sides of the comparison.
+    rw [show y = toLp 2 (y.fst, y.snd) by cases y; rfl]
+    simpa [iu, jv, remainder, horizontal_update, vertical_update] using
+      (isotropic_interior_update_objective_eq_pair_objective_add_const
+        lam p y.fst q y.snd i j (y.fst iu j) (y.snd i jv))
+  have hz_update :
+      proximal_objective
+          (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z))
+          (toLp 2 (p, q))
+          (toLp 2 (horizontal_update y.fst iu j (z 0), vertical_update y.snd i jv (z 1))) =
+        proximal_objective
+            (fun z : EuclideanSpace ℝ (Fin 2) ↦ ↑(lam * ‖z‖))
+            (toLp 2 ![p iu j, q i jv]) (toLp 2 ![z 0, z 1]) +
+          (remainder : EReal) := by
+    -- Replacing only the current interior block changes the global objective by exactly the
+    -- corresponding Chapter 6 pair objective, up to the common remainder.
+    simpa [iu, jv, remainder] using
+      (isotropic_interior_update_objective_eq_pair_objective_add_const
+        lam p y.fst q y.snd i j (z 0) (z 1))
+  have hcompare := hy_min (toLp 2 (horizontal_update y.fst iu j (z 0), vertical_update y.snd i jv (z 1)))
+  rw [hy_self, hz_update] at hcompare
+  have hpair_compare :
+      proximal_objective
+          (fun z : EuclideanSpace ℝ (Fin 2) ↦ ↑(lam * ‖z‖))
+          (toLp 2 ![p iu j, q i jv]) (toLp 2 ![y.fst iu j, y.snd i jv]) ≤
+        proximal_objective
+          (fun z : EuclideanSpace ℝ (Fin 2) ↦ ↑(lam * ‖z‖))
+          (toLp 2 ![p iu j, q i jv]) (toLp 2 ![z 0, z 1]) := by
+    -- Cancel the common finite remainder inside `EReal`.
+    exact ((EReal.addLECancellable_coe remainder).add_le_add_iff_right).mp hcompare
+  have hz_eq : (toLp 2 ![z 0, z 1] : EuclideanSpace ℝ (Fin 2)) = z := by
+    -- Every two-dimensional Euclidean vector is determined by its two coordinates.
+    ext k
+    fin_cases k <;> simp
+  simpa [iu, jv, hz_eq] using hpair_compare
 
--- Proof sketch: combine the separable-product proximal theorem from Chapter 6 with Example 6.19
--- on the interior Euclidean norms and Example 6.8 on the boundary absolute-value terms, then
--- reassemble the unique minimizer into the explicit `L²` product point defined above.
-/-- The proximal mapping of the scaled isotropic regularizer `λ g₁`, evaluated at the canonical
-`L²` product point corresponding to `(p, q)`, is the singleton given by the textbook isotropic
-shrinkage and boundary soft-thresholding formulas. -/
+/-- Helper for Proposition 12.4: a global minimizer of the isotropic proximal objective induces
+the scalar absolute-value prox membership on every last-row horizontal entry. -/
+private theorem isotropic_global_minimizer_gives_boundary_horizontal_prox_membership
+    (lam : ℝ) (p : HorizontalSpace m n) (q : VerticalSpace m n) (y : DualSpace m n)
+    (hy : y ∈ prox[fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z)]
+      (toLp 2 (p, q)))
+    (i : Fin m) (j : Fin (n - 1)) (hboundary : ¬ ((i : ℕ) + 1 < m)) :
+    y.fst i j ∈ prox[absolute_value_penalty lam] (p i j) := by
+  have hy_min :
+      ∀ z : DualSpace m n,
+        proximal_objective
+            (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z))
+            (toLp 2 (p, q)) y ≤
+          proximal_objective
+            (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z))
+            (toLp 2 (p, q)) z := by
+    -- Membership in the proximal map is exactly global minimality of the isotropic proximal
+    -- objective.
+    rw [mem_proximal_mapping_iff, isMinOn_univ_iff] at hy
+    exact hy
+  rw [mem_proximal_mapping_iff, isMinOn_univ_iff]
+  intro a
+  let remainder : ℝ :=
+    (∑ i' : Fin (m - 1), ∑ j' : Fin (n - 1),
+        (lam *
+            Real.sqrt
+              (y.fst (Fin.castLE (Nat.sub_le m 1) i') j' ^ (2 : ℕ) +
+                y.snd i' (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+          (1 / 2 : ℝ) *
+            (y.fst (Fin.castLE (Nat.sub_le m 1) i') j' -
+                p (Fin.castLE (Nat.sub_le m 1) i') j') ^ (2 : ℕ) +
+          (1 / 2 : ℝ) *
+            (y.snd i' (Fin.castLE (Nat.sub_le n 1) j') -
+                q i' (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ)) +
+    Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦
+      (lam * |y.fst i j'| + (1 / 2 : ℝ) * (y.fst i j' - p i j') ^ (2 : ℕ) : ℝ)) +
+    Finset.sum (Finset.univ.erase i) (fun i' : Fin m ↦
+      ∑ j' : Fin (n - 1),
+        if hi' : (i' : ℕ) + 1 < m then
+          (0 : ℝ)
+        else
+          (lam * |y.fst i' j'| + (1 / 2 : ℝ) * (y.fst i' j' - p i' j') ^ (2 : ℕ) : ℝ)) +
+    (∑ i' : Fin (m - 1), ∑ j' : Fin n,
+      if hj' : (j' : ℕ) + 1 < n then
+        (0 : ℝ)
+      else
+        (lam * |y.snd i' j'| + (1 / 2 : ℝ) * (y.snd i' j' - q i' j') ^ (2 : ℕ) : ℝ))
+  have hy_self :
+      proximal_objective
+          (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z))
+          (toLp 2 (p, q)) y =
+        (((lam * |y.fst i j| + (1 / 2 : ℝ) * (y.fst i j - p i j) ^ (2 : ℕ) : ℝ)) : EReal) +
+          (remainder : EReal) := by
+    -- Rewrite the untouched minimizer as a self-update so the same scalar remainder appears on
+    -- both sides.
+    rw [show y = toLp 2 (y.fst, y.snd) by cases y; rfl]
+    simpa [remainder, horizontal_update] using
+      (isotropic_boundary_horizontal_update_objective_eq_scalar_objective_add_const
+        lam p y.fst q y.snd i j hboundary (y.fst i j))
+  have ha_update :
+      proximal_objective
+          (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z))
+          (toLp 2 (p, q)) (toLp 2 (horizontal_update y.fst i j a, y.snd)) =
+        (((lam * |a| + (1 / 2 : ℝ) * (a - p i j) ^ (2 : ℕ) : ℝ)) : EReal) +
+          (remainder : EReal) := by
+    -- Replacing only the boundary horizontal entry isolates the scalar absolute-value prox block.
+    simpa [remainder] using
+      (isotropic_boundary_horizontal_update_objective_eq_scalar_objective_add_const
+        lam p y.fst q y.snd i j hboundary a)
+  have hcompare := hy_min (toLp 2 (horizontal_update y.fst i j a, y.snd))
+  rw [hy_self, ha_update] at hcompare
+  have hscalar :
+      (((lam * |y.fst i j| + (1 / 2 : ℝ) * (y.fst i j - p i j) ^ (2 : ℕ) : ℝ)) : EReal) ≤
+        (((lam * |a| + (1 / 2 : ℝ) * (a - p i j) ^ (2 : ℕ) : ℝ)) : EReal) := by
+    -- Cancel the common finite remainder inside `EReal`.
+    exact ((EReal.addLECancellable_coe remainder).add_le_add_iff_right).mp hcompare
+  simpa [proximal_objective_apply, absolute_value_penalty_apply] using hscalar
+
+/-- Helper for Proposition 12.4: a global minimizer of the isotropic proximal objective induces
+the scalar absolute-value prox membership on every last-column vertical entry. -/
+private theorem isotropic_global_minimizer_gives_boundary_vertical_prox_membership
+    (lam : ℝ) (p : HorizontalSpace m n) (q : VerticalSpace m n) (y : DualSpace m n)
+    (hy : y ∈ prox[fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z)]
+      (toLp 2 (p, q)))
+    (i : Fin (m - 1)) (j : Fin n) (hboundary : ¬ ((j : ℕ) + 1 < n)) :
+    y.snd i j ∈ prox[absolute_value_penalty lam] (q i j) := by
+  have hy_min :
+      ∀ z : DualSpace m n,
+        proximal_objective
+            (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z))
+            (toLp 2 (p, q)) y ≤
+          proximal_objective
+            (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z))
+            (toLp 2 (p, q)) z := by
+    -- Membership in the proximal map is exactly global minimality of the isotropic proximal
+    -- objective.
+    rw [mem_proximal_mapping_iff, isMinOn_univ_iff] at hy
+    exact hy
+  rw [mem_proximal_mapping_iff, isMinOn_univ_iff]
+  intro a
+  let remainder : ℝ :=
+    (∑ i' : Fin (m - 1), ∑ j' : Fin (n - 1),
+        (lam *
+            Real.sqrt
+              (y.fst (Fin.castLE (Nat.sub_le m 1) i') j' ^ (2 : ℕ) +
+                y.snd i' (Fin.castLE (Nat.sub_le n 1) j') ^ (2 : ℕ)) +
+          (1 / 2 : ℝ) *
+            (y.fst (Fin.castLE (Nat.sub_le m 1) i') j' -
+                p (Fin.castLE (Nat.sub_le m 1) i') j') ^ (2 : ℕ) +
+          (1 / 2 : ℝ) *
+            (y.snd i' (Fin.castLE (Nat.sub_le n 1) j') -
+                q i' (Fin.castLE (Nat.sub_le n 1) j')) ^ (2 : ℕ) : ℝ)) +
+    (∑ i' : Fin m, ∑ j' : Fin (n - 1),
+      if hi' : (i' : ℕ) + 1 < m then
+        (0 : ℝ)
+      else
+        (lam * |y.fst i' j'| + (1 / 2 : ℝ) * (y.fst i' j' - p i' j') ^ (2 : ℕ) : ℝ)) +
+    Finset.sum (Finset.univ.erase j) (fun j' : Fin n ↦
+      if hj' : (j' : ℕ) + 1 < n then
+        (0 : ℝ)
+      else
+        (lam * |y.snd i j'| + (1 / 2 : ℝ) * (y.snd i j' - q i j') ^ (2 : ℕ) : ℝ)) +
+    Finset.sum (Finset.univ.erase i) (fun i' : Fin (m - 1) ↦
+      ∑ j' : Fin n,
+        if hj' : (j' : ℕ) + 1 < n then
+          (0 : ℝ)
+        else
+          (lam * |y.snd i' j'| + (1 / 2 : ℝ) * (y.snd i' j' - q i' j') ^ (2 : ℕ) : ℝ))
+  have hy_self :
+      proximal_objective
+          (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z))
+          (toLp 2 (p, q)) y =
+        (((lam * |y.snd i j| + (1 / 2 : ℝ) * (y.snd i j - q i j) ^ (2 : ℕ) : ℝ)) : EReal) +
+          (remainder : EReal) := by
+    -- Rewrite the untouched minimizer as a self-update so the same scalar remainder appears on
+    -- both sides.
+    rw [show y = toLp 2 (y.fst, y.snd) by cases y; rfl]
+    simpa [remainder, vertical_update] using
+      (isotropic_boundary_vertical_update_objective_eq_scalar_objective_add_const
+        lam p y.fst q y.snd i j hboundary (y.snd i j))
+  have ha_update :
+      proximal_objective
+          (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z))
+          (toLp 2 (p, q)) (toLp 2 (y.fst, vertical_update y.snd i j a)) =
+        (((lam * |a| + (1 / 2 : ℝ) * (a - q i j) ^ (2 : ℕ) : ℝ)) : EReal) +
+          (remainder : EReal) := by
+    -- Replacing only the boundary vertical entry isolates the scalar absolute-value prox block.
+    simpa [remainder] using
+      (isotropic_boundary_vertical_update_objective_eq_scalar_objective_add_const
+        lam p y.fst q y.snd i j hboundary a)
+  have hcompare := hy_min (toLp 2 (y.fst, vertical_update y.snd i j a))
+  rw [hy_self, ha_update] at hcompare
+  have hscalar :
+      (((lam * |y.snd i j| + (1 / 2 : ℝ) * (y.snd i j - q i j) ^ (2 : ℕ) : ℝ)) : EReal) ≤
+        (((lam * |a| + (1 / 2 : ℝ) * (a - q i j) ^ (2 : ℕ) : ℝ)) : EReal) := by
+    -- Cancel the common finite remainder inside `EReal`.
+    exact ((EReal.addLECancellable_coe remainder).add_le_add_iff_right).mp hcompare
+  simpa [proximal_objective_apply, absolute_value_penalty_apply] using hscalar
+
+/-- Proposition 12.4 (2): for `0 ≤ λ`, the proximal mapping of the scaled isotropic regularizer
+`λ g₁`, evaluated at the canonical `L²` product point corresponding to `(p, q)`, is the singleton
+given by isotropic shrinkage on the interior pairs and soft-thresholding on the boundary terms. -/
 theorem prox_two_dimensional_total_variation_isotropic_regularizer_eq_singleton
-    (lam : ℝ) (hlam : 0 ≤ lam) (p : Hmn) (q : Vmn) :
-    prox[fun z : TVSpace ↦
-      ↑(lam * two_dimensional_total_variation_isotropic_regularizer z)] (toLp 2 (p, q)) =
-      {two_dimensional_total_variation_isotropic_prox_point lam p q} := by
-  -- TODO: after `isotropic_interior_block_proximal_objective_eq`, rewrite the full isotropic
-  -- objective as interior `norm_penalty` blocks plus boundary scalar `absolute_value_penalty`
-  -- terms (`isotropic_proximal_objective_split`), then derive the blockwise `IsMinOn`
-  -- characterization and reassemble the singleton with Example 6.19 and Example 6.8.
-  sorry
-
--- Proof sketch: apply the separable-product proximal theorem from Chapter 6 and use Example 6.8
--- coordinatewise, since every term in `g_{ℓ¹}` is an absolute-value penalty.
-/-- The proximal mapping of the scaled anisotropic regularizer `λ g_{ℓ¹}`, evaluated at the
-canonical `L²` product point corresponding to `(p, q)`, is the singleton given by entrywise
-soft-thresholding. -/
-theorem prox_two_dimensional_total_variation_anisotropic_regularizer_eq_singleton
-    (lam : ℝ) (hlam : 0 ≤ lam) (p : Hmn) (q : Vmn) :
-    prox[fun z : TVSpace ↦
-      ↑(lam * two_dimensional_total_variation_anisotropic_regularizer z)] (toLp 2 (p, q)) =
-      {two_dimensional_total_variation_anisotropic_prox_point lam p q} := by
-  ext z
+    (lam : ℝ) (hlam : 0 ≤ lam) (p : HorizontalSpace m n) (q : VerticalSpace m n) :
+    prox[fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_isotropic_regularizer z)]
+      (toLp 2 (p, q)) = {two_dimensional_total_variation_isotropic_prox_point lam p q} := by
+  -- Route correction: the anisotropic scalar-entry replacement proof does not directly transfer to
+  -- `g₁`; the missing source-faithful step is to rewrite one coupled interior `(p_{i,j}, q_{i,j})`
+  -- block as the literal Chapter 6 two-dimensional norm proximal objective plus a common
+  -- remainder, and only then handle the boundary absolute-value terms as scalar updates.
+  refine Set.eq_singleton_iff_unique_mem.2 ?_
   constructor
-  · intro hz
-    rw [mem_proximal_mapping_iff] at hz
-    rw [Set.mem_singleton_iff]
-    have hz_coord :=
-      (anisotropic_isMinOn_proximal_objective_iff_coordinatewise
-        (lam := lam) (p := p) (u := z.fst) (q := q) (v := z.snd)).mp (by simpa using hz)
-    rcases hz_coord with ⟨hp_min, hq_min⟩
-    have hp_eq :
-        z.fst = (two_dimensional_total_variation_anisotropic_prox_point lam p q).fst := by
-      -- Each horizontal coordinate is the scalar soft-thresholding proximal point.
-      ext i j
-      have hp_mem : z.fst i j ∈ prox[absolute_value_penalty lam] (p i j) := by
-        simpa [mem_proximal_mapping_iff] using hp_min i j
-      rw [prox_absolute_value_penalty_eq_singleton_soft_thresholding lam hlam (p i j),
-        Set.mem_singleton_iff] at hp_mem
-      simpa using hp_mem
-    have hq_eq :
-        z.snd = (two_dimensional_total_variation_anisotropic_prox_point lam p q).snd := by
-      -- Each vertical coordinate is the scalar soft-thresholding proximal point.
-      ext i j
-      have hq_mem : z.snd i j ∈ prox[absolute_value_penalty lam] (q i j) := by
-        simpa [mem_proximal_mapping_iff] using hq_min i j
-      rw [prox_absolute_value_penalty_eq_singleton_soft_thresholding lam hlam (q i j),
-        Set.mem_singleton_iff] at hq_mem
-      simpa using hq_mem
-    simpa using congrArg (fun t : Hmn × Vmn ↦ toLp 2 t) (Prod.ext hp_eq hq_eq)
-  · intro hz
-    rw [Set.mem_singleton_iff] at hz
-    subst hz
-    rw [mem_proximal_mapping_iff]
-    -- Reassemble the global minimizer from the coordinatewise scalar proximal memberships.
-    refine
-      (anisotropic_isMinOn_proximal_objective_iff_coordinatewise
-        (lam := lam) (p := p)
-        (u := (two_dimensional_total_variation_anisotropic_prox_point lam p q).fst)
-        (q := q)
-        (v := (two_dimensional_total_variation_anisotropic_prox_point lam p q).snd)).2 ?_
-    constructor
-    · intro i j
-      have hp_mem : 𝒯[lam] (p i j) ∈ prox[absolute_value_penalty lam] (p i j) := by
-        rw [prox_absolute_value_penalty_eq_singleton_soft_thresholding lam hlam (p i j)]
-        simp
-      simpa [mem_proximal_mapping_iff] using hp_mem
-    · intro i j
-      have hq_mem : 𝒯[lam] (q i j) ∈ prox[absolute_value_penalty lam] (q i j) := by
-        rw [prox_absolute_value_penalty_eq_singleton_soft_thresholding lam hlam (q i j)]
-        simp
-      simpa [mem_proximal_mapping_iff] using hq_mem
+  · -- The explicit isotropic prox point is a global minimizer by summing the interior pair and
+    -- boundary scalar optimality inequalities.
+    exact isotropic_prox_point_mem_proximal_mapping lam hlam p q
+  · intro y hy
+    have hhorizontal_eq
+        (i : Fin m) (j : Fin (n - 1)) :
+        y.fst i j = (two_dimensional_total_variation_isotropic_prox_point lam p q).fst i j := by
+      by_cases hi : (i : ℕ) + 1 < m
+      · let ii : Fin (m - 1) := i.castLT (Nat.lt_sub_iff_add_lt.mpr hi)
+        have hcast_i : Fin.castLE (Nat.sub_le m 1) ii = i := by
+          -- Casting the interior row back up recovers the original row.
+          ext
+          rfl
+        have hpair_mem :=
+          isotropic_global_minimizer_gives_interior_pair_prox_membership lam p q y hy ii j
+        rw [two_dimensional_total_variation_pair_prox_eq_singleton lam hlam
+          (p (Fin.castLE (Nat.sub_le m 1) ii) j)
+          (q ii (Fin.castLE (Nat.sub_le n 1) j))] at hpair_mem
+        have hpair_eq :
+            toLp 2 ![y.fst i j, y.snd ii (Fin.castLE (Nat.sub_le n 1) j)] =
+              toLp 2
+                ![two_dimensional_total_variation_isotropic_shrink_factor lam (p i j)
+                    (q ii (Fin.castLE (Nat.sub_le n 1) j)) * p i j,
+                  two_dimensional_total_variation_isotropic_shrink_factor lam (p i j)
+                    (q ii (Fin.castLE (Nat.sub_le n 1) j)) *
+                      q ii (Fin.castLE (Nat.sub_le n 1) j)] := by
+          -- The interior prox membership identifies the current pair with the unique paired
+          -- shrinkage point.
+          simpa [ii, hcast_i] using hpair_mem
+        have hcoord :
+            y.fst i j =
+              two_dimensional_total_variation_isotropic_shrink_factor lam (p i j)
+                (q ii (Fin.castLE (Nat.sub_le n 1) j)) * p i j := by
+          -- Project the paired equality to the horizontal coordinate.
+          simpa using congrArg (fun z : EuclideanSpace ℝ (Fin 2) ↦ z 0) hpair_eq
+        have htarget :
+            (two_dimensional_total_variation_isotropic_prox_point lam p q).fst i j =
+              two_dimensional_total_variation_isotropic_shrink_factor lam (p i j)
+                (q ii (Fin.castLE (Nat.sub_le n 1) j)) * p i j := by
+          -- On an interior row, the explicit point uses the isotropic shrinkage formula.
+          simpa [ii, hi] using
+            (two_dimensional_total_variation_isotropic_prox_point_fst_apply lam p q i j)
+        exact hcoord.trans htarget.symm
+      · have hmem :=
+          isotropic_global_minimizer_gives_boundary_horizontal_prox_membership
+            lam p q y hy i j hi
+        rw [prox_absolute_value_penalty_eq_singleton_soft_thresholding lam hlam (p i j)] at hmem
+        have hyij : y.fst i j = 𝒯[lam] (p i j) := by
+          -- The last-row scalar prox is unique, so the horizontal boundary coordinate is fixed.
+          simpa using hmem
+        have htarget :
+            (two_dimensional_total_variation_isotropic_prox_point lam p q).fst i j =
+              𝒯[lam] (p i j) := by
+          -- On the boundary row, the explicit point uses soft-thresholding.
+          simpa [hi] using
+            (two_dimensional_total_variation_isotropic_prox_point_fst_apply lam p q i j)
+        exact hyij.trans htarget.symm
+    have hvertical_eq
+        (i : Fin (m - 1)) (j : Fin n) :
+        y.snd i j = (two_dimensional_total_variation_isotropic_prox_point lam p q).snd i j := by
+      by_cases hj : (j : ℕ) + 1 < n
+      · let jj : Fin (n - 1) := j.castLT (Nat.lt_sub_iff_add_lt.mpr hj)
+        have hcast_j : Fin.castLE (Nat.sub_le n 1) jj = j := by
+          -- Casting the interior column back up recovers the original column.
+          ext
+          rfl
+        have hpair_mem :=
+          isotropic_global_minimizer_gives_interior_pair_prox_membership lam p q y hy i jj
+        rw [two_dimensional_total_variation_pair_prox_eq_singleton lam hlam
+          (p (Fin.castLE (Nat.sub_le m 1) i) jj)
+          (q i (Fin.castLE (Nat.sub_le n 1) jj))] at hpair_mem
+        have hpair_eq :
+            toLp 2 ![y.fst (Fin.castLE (Nat.sub_le m 1) i) jj, y.snd i j] =
+              toLp 2
+                ![two_dimensional_total_variation_isotropic_shrink_factor lam
+                    (p (Fin.castLE (Nat.sub_le m 1) i) jj) (q i j) *
+                      p (Fin.castLE (Nat.sub_le m 1) i) jj,
+                  two_dimensional_total_variation_isotropic_shrink_factor lam
+                    (p (Fin.castLE (Nat.sub_le m 1) i) jj) (q i j) * q i j] := by
+          -- The interior prox membership identifies the current pair with the unique paired
+          -- shrinkage point.
+          simpa [jj, hcast_j] using hpair_mem
+        have hcoord :
+            y.snd i j =
+              two_dimensional_total_variation_isotropic_shrink_factor lam
+                (p (Fin.castLE (Nat.sub_le m 1) i) jj) (q i j) * q i j := by
+          -- Project the paired equality to the vertical coordinate.
+          simpa using congrArg (fun z : EuclideanSpace ℝ (Fin 2) ↦ z 1) hpair_eq
+        have htarget :
+            (two_dimensional_total_variation_isotropic_prox_point lam p q).snd i j =
+              two_dimensional_total_variation_isotropic_shrink_factor lam
+                (p (Fin.castLE (Nat.sub_le m 1) i) jj) (q i j) * q i j := by
+          -- On an interior column, the explicit point uses the isotropic shrinkage formula.
+          simpa [jj, hj] using
+            (two_dimensional_total_variation_isotropic_prox_point_snd_apply lam p q i j)
+        exact hcoord.trans htarget.symm
+      · have hmem :=
+          isotropic_global_minimizer_gives_boundary_vertical_prox_membership
+            lam p q y hy i j hj
+        rw [prox_absolute_value_penalty_eq_singleton_soft_thresholding lam hlam (q i j)] at hmem
+        have hyij : y.snd i j = 𝒯[lam] (q i j) := by
+          -- The last-column scalar prox is unique, so the vertical boundary coordinate is fixed.
+          simpa using hmem
+        have htarget :
+            (two_dimensional_total_variation_isotropic_prox_point lam p q).snd i j =
+              𝒯[lam] (q i j) := by
+          -- On the boundary column, the explicit point uses soft-thresholding.
+          simpa [hj] using
+            (two_dimensional_total_variation_isotropic_prox_point_snd_apply lam p q i j)
+        exact hyij.trans htarget.symm
+    apply (WithLp.equiv 2 (HorizontalSpace m n × VerticalSpace m n)).injective
+    -- Equality in the `WithLp` product reduces to coordinatewise equality of the horizontal and
+    -- vertical matrix components.
+    simpa using
+      (Prod.ext
+        (by
+          ext i j
+          exact hhorizontal_eq i j)
+        (by
+          ext i j
+          exact hvertical_eq i j))
+
+/-- Proposition 12.4 (3): for `0 ≤ λ`, the proximal mapping of the scaled anisotropic regularizer
+`λ g_{ℓ¹}`, evaluated at the canonical `L²` product point corresponding to `(p, q)`, is the
+singleton given by entrywise soft-thresholding. -/
+theorem prox_two_dimensional_total_variation_anisotropic_regularizer_eq_singleton
+    (lam : ℝ) (hlam : 0 ≤ lam) (p : HorizontalSpace m n) (q : VerticalSpace m n) :
+    prox[fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_anisotropic_regularizer z)]
+      (toLp 2 (p, q)) = {two_dimensional_total_variation_anisotropic_prox_point lam p q} := by
+  refine Set.eq_singleton_iff_unique_mem.2 ?_
+  constructor
+  · have hu_mem :
+        two_dimensional_total_variation_anisotropic_prox_point lam p q ∈
+          prox[fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_anisotropic_regularizer z)]
+            (toLp 2 (p, q)) := by
+      rw [mem_proximal_mapping_iff, isMinOn_univ_iff]
+      intro y
+      have hhorizontal_term
+          (i : Fin m) (j : Fin (n - 1)) :
+          lam * |𝒯[lam] (p i j)| + (1 / 2 : ℝ) * (𝒯[lam] (p i j) - p i j) ^ (2 : ℕ) ≤
+            lam * |y.fst i j| + (1 / 2 : ℝ) * (y.fst i j - p i j) ^ (2 : ℕ) := by
+        have hsoft_mem : 𝒯[lam] (p i j) ∈ prox[absolute_value_penalty lam] (p i j) := by
+          rw [prox_absolute_value_penalty_eq_singleton_soft_thresholding lam hlam (p i j)]
+          simp
+        rw [mem_proximal_mapping_iff, isMinOn_univ_iff] at hsoft_mem
+        have hsoft_le := hsoft_mem (y.fst i j)
+        have hsoft_le' :
+            (((lam * |𝒯[lam] (p i j)| +
+                  (1 / 2 : ℝ) * (𝒯[lam] (p i j) - p i j) ^ (2 : ℕ) : ℝ)) : EReal) ≤
+              (((lam * |y.fst i j| +
+                  (1 / 2 : ℝ) * (y.fst i j - p i j) ^ (2 : ℕ) : ℝ)) : EReal) := by
+          simpa [proximal_objective_apply, absolute_value_penalty_apply] using hsoft_le
+        exact_mod_cast hsoft_le'
+      have hvertical_term
+          (i : Fin (m - 1)) (j : Fin n) :
+          lam * |𝒯[lam] (q i j)| + (1 / 2 : ℝ) * (𝒯[lam] (q i j) - q i j) ^ (2 : ℕ) ≤
+            lam * |y.snd i j| + (1 / 2 : ℝ) * (y.snd i j - q i j) ^ (2 : ℕ) := by
+        have hsoft_mem : 𝒯[lam] (q i j) ∈ prox[absolute_value_penalty lam] (q i j) := by
+          rw [prox_absolute_value_penalty_eq_singleton_soft_thresholding lam hlam (q i j)]
+          simp
+        rw [mem_proximal_mapping_iff, isMinOn_univ_iff] at hsoft_mem
+        have hsoft_le := hsoft_mem (y.snd i j)
+        have hsoft_le' :
+            (((lam * |𝒯[lam] (q i j)| +
+                  (1 / 2 : ℝ) * (𝒯[lam] (q i j) - q i j) ^ (2 : ℕ) : ℝ)) : EReal) ≤
+              (((lam * |y.snd i j| +
+                  (1 / 2 : ℝ) * (y.snd i j - q i j) ^ (2 : ℕ) : ℝ)) : EReal) := by
+          simpa [proximal_objective_apply, absolute_value_penalty_apply] using hsoft_le
+        exact_mod_cast hsoft_le'
+      have hhorizontal_sum :
+          ∑ i : Fin m, ∑ j : Fin (n - 1),
+              (lam * |𝒯[lam] (p i j)| + (1 / 2 : ℝ) * (𝒯[lam] (p i j) - p i j) ^ (2 : ℕ) : ℝ) ≤
+            ∑ i : Fin m, ∑ j : Fin (n - 1),
+              (lam * |y.fst i j| + (1 / 2 : ℝ) * (y.fst i j - p i j) ^ (2 : ℕ) : ℝ) := by
+        refine Finset.sum_le_sum ?_
+        intro i hi
+        refine Finset.sum_le_sum ?_
+        intro j hj
+        exact hhorizontal_term i j
+      have hvertical_sum :
+          ∑ i : Fin (m - 1), ∑ j : Fin n,
+              (lam * |𝒯[lam] (q i j)| + (1 / 2 : ℝ) * (𝒯[lam] (q i j) - q i j) ^ (2 : ℕ) : ℝ) ≤
+            ∑ i : Fin (m - 1), ∑ j : Fin n,
+              (lam * |y.snd i j| + (1 / 2 : ℝ) * (y.snd i j - q i j) ^ (2 : ℕ) : ℝ) := by
+        refine Finset.sum_le_sum ?_
+        intro i hi
+        refine Finset.sum_le_sum ?_
+        intro j hj
+        exact hvertical_term i j
+      have htarget_obj :
+          proximal_objective
+              (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_anisotropic_regularizer z))
+              (toLp 2 (p, q)) (two_dimensional_total_variation_anisotropic_prox_point lam p q) =
+            ((((∑ i : Fin m, ∑ j : Fin (n - 1),
+                  (lam * |𝒯[lam] (p i j)| +
+                    (1 / 2 : ℝ) * (𝒯[lam] (p i j) - p i j) ^ (2 : ℕ) : ℝ)) +
+                ∑ i : Fin (m - 1), ∑ j : Fin n,
+                  (lam * |𝒯[lam] (q i j)| +
+                    (1 / 2 : ℝ) * (𝒯[lam] (q i j) - q i j) ^ (2 : ℕ) : ℝ) : ℝ)) : EReal) := by
+        -- Expand the explicit prox point and split the anisotropic objective into scalar terms.
+        simpa [two_dimensional_total_variation_anisotropic_prox_point] using
+          (anisotropic_proximal_objective_sum_formula
+            lam p (fun i j ↦ 𝒯[lam] (p i j)) q (fun i j ↦ 𝒯[lam] (q i j)))
+      have hy_obj :
+          proximal_objective
+              (fun z : DualSpace m n ↦ ↑(lam * two_dimensional_total_variation_anisotropic_regularizer z))
+              (toLp 2 (p, q)) y =
+            ((((∑ i : Fin m, ∑ j : Fin (n - 1),
+                  (lam * |y.fst i j| + (1 / 2 : ℝ) * (y.fst i j - p i j) ^ (2 : ℕ) : ℝ)) +
+                ∑ i : Fin (m - 1), ∑ j : Fin n,
+                  (lam * |y.snd i j| + (1 / 2 : ℝ) * (y.snd i j - q i j) ^ (2 : ℕ) : ℝ) : ℝ)) :
+              EReal) := by
+        -- Read `y` as the canonical `WithLp` pair and apply the global sum formula.
+        rw [show y = toLp 2 (y.fst, y.snd) by cases y; rfl]
+        simpa using anisotropic_proximal_objective_sum_formula lam p y.fst q y.snd
+      rw [htarget_obj, hy_obj]
+      exact_mod_cast add_le_add hhorizontal_sum hvertical_sum
+    simpa using hu_mem
+  · intro y hy
+    have hy_min :
+        ∀ z : DualSpace m n,
+          proximal_objective
+              (fun z : DualSpace m n ↦
+                ↑(lam * two_dimensional_total_variation_anisotropic_regularizer z))
+              (toLp 2 (p, q)) y ≤
+            proximal_objective
+              (fun z : DualSpace m n ↦
+                ↑(lam * two_dimensional_total_variation_anisotropic_regularizer z))
+              (toLp 2 (p, q)) z := by
+      rw [mem_proximal_mapping_iff, isMinOn_univ_iff] at hy
+      exact hy
+    have hhorizontal_mem
+        (i : Fin m) (j : Fin (n - 1)) :
+        y.fst i j ∈ prox[absolute_value_penalty lam] (p i j) := by
+      rw [mem_proximal_mapping_iff, isMinOn_univ_iff]
+      intro a
+      let remainder : ℝ :=
+        Finset.sum (Finset.univ.erase j) (fun j' : Fin (n - 1) ↦
+          (lam * |y.fst i j'| + (1 / 2 : ℝ) * (y.fst i j' - p i j') ^ (2 : ℕ) : ℝ)) +
+        Finset.sum (Finset.univ.erase i) (fun i' : Fin m ↦
+          ∑ j' : Fin (n - 1),
+            (lam * |y.fst i' j'| + (1 / 2 : ℝ) * (y.fst i' j' - p i' j') ^ (2 : ℕ) : ℝ)) +
+        ∑ i' : Fin (m - 1), ∑ j' : Fin n,
+          (lam * |y.snd i' j'| + (1 / 2 : ℝ) * (y.snd i' j' - q i' j') ^ (2 : ℕ) : ℝ)
+      have hy_self :
+          proximal_objective
+              (fun z : DualSpace m n ↦
+                ↑(lam * two_dimensional_total_variation_anisotropic_regularizer z))
+              (toLp 2 (p, q)) y =
+            (((lam * |y.fst i j| + (1 / 2 : ℝ) * (y.fst i j - p i j) ^ (2 : ℕ) : ℝ)) :
+              EReal) + (remainder : EReal) := by
+        -- Rewrite the untouched point as a self-update so the same remainder appears on both sides.
+        simpa [remainder, horizontal_update] using
+          (anisotropic_horizontal_update_objective_eq_scalar_objective_add_const
+            lam p y.fst q y.snd i j (y.fst i j))
+      have hy_replaced :
+          proximal_objective
+              (fun z : DualSpace m n ↦
+                ↑(lam * two_dimensional_total_variation_anisotropic_regularizer z))
+              (toLp 2 (p, q)) (toLp 2 (horizontal_update y.fst i j a, y.snd)) =
+            (((lam * |a| + (1 / 2 : ℝ) * (a - p i j) ^ (2 : ℕ) : ℝ)) : EReal) +
+              (remainder : EReal) := by
+        -- Replacing a single horizontal coordinate isolates exactly the scalar objective.
+        simpa [remainder] using
+          (anisotropic_horizontal_update_objective_eq_scalar_objective_add_const
+            lam p y.fst q y.snd i j a)
+      have hcompare := hy_min (toLp 2 (horizontal_update y.fst i j a, y.snd))
+      rw [hy_self, hy_replaced] at hcompare
+      have hscalar :
+          (((lam * |y.fst i j| + (1 / 2 : ℝ) * (y.fst i j - p i j) ^ (2 : ℕ) : ℝ)) : EReal) ≤
+            (((lam * |a| + (1 / 2 : ℝ) * (a - p i j) ^ (2 : ℕ) : ℝ)) : EReal) := by
+        exact ((EReal.addLECancellable_coe remainder).add_le_add_iff_right).mp hcompare
+      simpa [proximal_objective_apply, absolute_value_penalty_apply] using hscalar
+    have hvertical_mem
+        (i : Fin (m - 1)) (j : Fin n) :
+        y.snd i j ∈ prox[absolute_value_penalty lam] (q i j) := by
+      rw [mem_proximal_mapping_iff, isMinOn_univ_iff]
+      intro a
+      let remainder : ℝ :=
+        (∑ i' : Fin m, ∑ j' : Fin (n - 1),
+            (lam * |y.fst i' j'| + (1 / 2 : ℝ) * (y.fst i' j' - p i' j') ^ (2 : ℕ) : ℝ)) +
+        Finset.sum (Finset.univ.erase j) (fun j' : Fin n ↦
+          (lam * |y.snd i j'| + (1 / 2 : ℝ) * (y.snd i j' - q i j') ^ (2 : ℕ) : ℝ)) +
+        Finset.sum (Finset.univ.erase i) (fun i' : Fin (m - 1) ↦
+          ∑ j' : Fin n,
+            (lam * |y.snd i' j'| + (1 / 2 : ℝ) * (y.snd i' j' - q i' j') ^ (2 : ℕ) : ℝ))
+      have hy_self :
+          proximal_objective
+              (fun z : DualSpace m n ↦
+                ↑(lam * two_dimensional_total_variation_anisotropic_regularizer z))
+              (toLp 2 (p, q)) y =
+            (((lam * |y.snd i j| + (1 / 2 : ℝ) * (y.snd i j - q i j) ^ (2 : ℕ) : ℝ)) :
+              EReal) + (remainder : EReal) := by
+        -- Rewrite the untouched point as a self-update so the same remainder appears on both sides.
+        simpa [remainder, vertical_update] using
+          (anisotropic_vertical_update_objective_eq_scalar_objective_add_const
+            lam p y.fst q y.snd i j (y.snd i j))
+      have hy_replaced :
+          proximal_objective
+              (fun z : DualSpace m n ↦
+                ↑(lam * two_dimensional_total_variation_anisotropic_regularizer z))
+              (toLp 2 (p, q)) (toLp 2 (y.fst, vertical_update y.snd i j a)) =
+            (((lam * |a| + (1 / 2 : ℝ) * (a - q i j) ^ (2 : ℕ) : ℝ)) : EReal) +
+              (remainder : EReal) := by
+        -- Replacing a single vertical coordinate isolates exactly the scalar objective.
+        simpa [remainder] using
+          (anisotropic_vertical_update_objective_eq_scalar_objective_add_const
+            lam p y.fst q y.snd i j a)
+      have hcompare := hy_min (toLp 2 (y.fst, vertical_update y.snd i j a))
+      rw [hy_self, hy_replaced] at hcompare
+      have hscalar :
+          (((lam * |y.snd i j| + (1 / 2 : ℝ) * (y.snd i j - q i j) ^ (2 : ℕ) : ℝ)) : EReal) ≤
+            (((lam * |a| + (1 / 2 : ℝ) * (a - q i j) ^ (2 : ℕ) : ℝ)) : EReal) := by
+        exact ((EReal.addLECancellable_coe remainder).add_le_add_iff_right).mp hcompare
+      simpa [proximal_objective_apply, absolute_value_penalty_apply] using hscalar
+    have hhorizontal_eq
+        (i : Fin m) (j : Fin (n - 1)) :
+        y.fst i j = 𝒯[lam] (p i j) := by
+      have hmem := hhorizontal_mem i j
+      rw [prox_absolute_value_penalty_eq_singleton_soft_thresholding lam hlam (p i j)] at hmem
+      simpa using hmem
+    have hvertical_eq
+        (i : Fin (m - 1)) (j : Fin n) :
+        y.snd i j = 𝒯[lam] (q i j) := by
+      have hmem := hvertical_mem i j
+      rw [prox_absolute_value_penalty_eq_singleton_soft_thresholding lam hlam (q i j)] at hmem
+      simpa using hmem
+    apply (WithLp.equiv 2 (HorizontalSpace m n × VerticalSpace m n)).injective
+    -- Equality in `WithLp 2 (HorizontalSpace m n × VerticalSpace m n)` reduces to equality of the underlying pair.
+    simpa [two_dimensional_total_variation_anisotropic_prox_point] using
+      (Prod.ext
+        (by
+          ext i j
+          exact hhorizontal_eq i j)
+        (by
+          ext i j
+          exact hvertical_eq i j))
 
 end

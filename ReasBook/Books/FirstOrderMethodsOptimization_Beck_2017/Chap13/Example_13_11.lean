@@ -1,13 +1,12 @@
-import Mathlib
 import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_2
+import FirstOrderMethodsOptimization_Beck_2017.Chap02.Example_2_6
 import FirstOrderMethodsOptimization_Beck_2017.Chap02.Definition_2_7
 import FirstOrderMethodsOptimization_Beck_2017.Chap03.Definition_3_18
 import FirstOrderMethodsOptimization_Beck_2017.Chap06.Proposition_6_2_3
 import FirstOrderMethodsOptimization_Beck_2017.Chap10.Proposition_10_59
-import FirstOrderMethodsOptimization_Beck_2017.Chap13.Algorithm_13_1
 import FirstOrderMethodsOptimization_Beck_2017.Chap13.Algorithm_13_2
 import FirstOrderMethodsOptimization_Beck_2017.Chap13.Definition_13_6
-import FirstOrderMethodsOptimization_Beck_2017.Chap13.Lemma_13_8
+import FirstOrderMethodsOptimization_Beck_2017.Chap13.Example_13_10
 
 noncomputable section
 
@@ -15,6 +14,9 @@ open InnerProductSpace (toDualMap)
 open Matrix
 open Metric
 open scoped Gradient RealInnerProductSpace
+
+-- Chapter 7 owns the global `Λ[...]` parser. Use the Chapter 10 meaning only in this file.
+local notation "Λ[" a "]" => primalCounterparts a
 
 section
 
@@ -28,6 +30,39 @@ local notation "qA" => quadratic_affine_function_on_lp (2 : ENNReal) (-A) 0 0
 private theorem qA_apply (x : E) :
     qA x = -((1 / 2 : ℝ) * ⟪A.toEuclideanLin x, x⟫) := by
   simpa using quadratic_affine_function_on_lp_two_apply_eq (-A) (0 : E) x
+
+/-- Helper for Example 13.11: on the effective domain of the unit-ball indicator, the composite
+objective reduces to the real quadratic owner `qA`. -/
+private theorem qA_composite_model_objective_eq_coe_real_of_mem_effective_domain
+    {x : E} (hx : x ∈ effective_domain (extendedIndicator B)) :
+    composite_model_objective (Function.toEReal qA) (extendedIndicator B) x =
+      ((qA x : ℝ) : EReal) := by
+  have hxB : x ∈ B := by
+    simpa [effective_domain_extendedIndicator] using hx
+  rw [composite_model_objective_apply]
+  simp [Function.toEReal, extendedIndicator, hxB]
+
+/-- Helper for Example 13.11: every point on a unit-ball oracle segment with parameter in `[0, 1]`
+stays in the effective domain of the unit-ball indicator. -/
+private theorem qA_trial_mem_effective_domain_of_mem_Icc
+    {x p : E} (hx : x ∈ effective_domain (extendedIndicator B))
+    (hp : p ∈ effective_domain (extendedIndicator B))
+    {α : ℝ} (hα : α ∈ Set.Icc (0 : ℝ) 1) :
+    x + α • (p - x) ∈ effective_domain (extendedIndicator B) := by
+  have hindicator_convex : is_convex_function (extendedIndicator B) := by
+    exact extendedIndicator_isConvexFunction_of_convex B (convex_closedBall (0 : E) 1)
+  have hcombo :
+      α • p + (1 - α) • x ∈ effective_domain (extendedIndicator B) :=
+    combo_mem_effective_domain_of_is_convex_function hindicator_convex hp hx hα
+  have hrewrite : x + α • (p - x) = α • p + (1 - α) • x := by
+    rw [smul_sub]
+    calc
+      x + (α • p - α • x) = α • p + (x - α • x) := by
+        abel
+      _ = α • p + (1 - α) • x := by
+        rw [sub_smul, one_smul]
+  rw [hrewrite]
+  exact hcombo
 
 /- This item is `source-facing`: it specializes the Chapter 13 generalized conditional-gradient
 trajectory to the quadratic maximization problem on the Euclidean unit ball.
@@ -48,21 +83,6 @@ ball constraint. The canonical quadratic owner therefore belongs in the theorem 
 the intrinsic Euclidean formula is recovered by `qA_apply` as a thin local bridge for later proof
 rewrites. -/
 
-/-- Helper for Example 13.11: the closed-unit-ball indicator is a convex extended-real-valued
-function. -/
-lemma unit_ball_extendedIndicator_is_convex_function :
-    is_convex_function (extendedIndicator B) := by
-  -- Prove the Jensen inequality directly on the feasible unit ball.
-  rw [is_convex_function_iff_segment_ineq]
-  intro x hx y hy t ht
-  have hxB : x ∈ B := by
-    simpa [effective_domain_extendedIndicator] using hx
-  have hyB : y ∈ B := by
-    simpa [effective_domain_extendedIndicator] using hy
-  have hcombo : t • x + (1 - t) • y ∈ B := by
-    exact (convex_closedBall (0 : E) 1) hxB hyB ht.1 (sub_nonneg.2 ht.2) (by ring)
-  simp [extendedIndicator, hxB, hyB, hcombo]
-
 /-- Helper for Example 13.11: the quadratic owner `qA` has gradient `x ↦ -A x`. -/
 lemma qA_hasGradientAt
     (hA : A.PosSemidef) (x : E) :
@@ -75,11 +95,11 @@ lemma qA_hasGradientAt
   -- Route correction: differentiate the symmetric Rayleigh form directly, then scale by `-1/2`
   -- to match the source objective `qA`.
   have hinner :
-      HasFDerivAt (fun y : E => ⟪T y, y⟫) (2 • innerSL ℝ (T x)) x := by
+      HasFDerivAt (fun y : E ↦ ⟪T y, y⟫) (2 • innerSL ℝ (T x)) x := by
     simpa [hsymm.coe_reApplyInnerSelf_apply] using
       (hsymm.hasStrictFDerivAt_reApplyInnerSelf x).hasFDerivAt
   have hscaled :
-      HasFDerivAt (fun y : E => -((1 / 2 : ℝ) * ⟪T y, y⟫))
+      HasFDerivAt (fun y : E ↦ -((1 / 2 : ℝ) * ⟪T y, y⟫))
         ((-(1 / 2 : ℝ)) • (2 • innerSL ℝ (T x))) x := by
     simpa using hinner.const_mul (-(1 / 2 : ℝ))
   have hfrechet :
@@ -107,69 +127,10 @@ lemma matrix_image_ne_zero_of_not_stationary_on_ball
   apply hns
   -- A zero matrix image gives zero gradient, so the variational inequality is trivially true.
   rw [is_stationary_point_on_iff_forall_inner_nonneg]
-  refine ⟨(qA_hasGradientAt (A := A) hA x).differentiableAt, hx, ?_⟩
+  refine ⟨(qA_hasGradientAt A hA x).differentiableAt, hx, ?_⟩
   intro y hy
-  rw [(qA_hasGradientAt (A := A) hA x).gradient, hzero]
+  rw [(qA_hasGradientAt A hA x).gradient, hzero]
   simp
-
-/-- Helper for Example 13.11: on the Euclidean unit ball, minimizing the Chapter 13 linearized
-subproblem for `qA` is equivalent to maximizing the Chapter 10 functional `q ↦ ⟪A x, q⟫`. -/
-lemma mem_qA_unit_ball_argmin_iff_mem_primalCounterparts
-    (hA : A.PosSemidef) {x p : E} :
-    p ∈ generalized_conditional_gradient_argmin qA (extendedIndicator B) x ↔
-      p ∈ Λ[toDualMap ℝ E (A.toEuclideanLin x)] := by
-  have hB_nonempty : Set.Nonempty B := by
-    refine ⟨0, ?_⟩
-    simp
-  have hargmin :
-      p ∈ generalized_conditional_gradient_argmin qA (extendedIndicator B) x ↔
-        p ∈ B ∧ IsMinOn (fun q ↦ inner ℝ q (∇ qA x)) B p := by
-    -- Rewrite the Chapter 13 argmin owner into feasibility plus minimization of the linearized
-    -- objective on the unit ball.
-    have hqA_toReal : (fun z : E ↦ (Function.toExtendedReal qA z).toReal) = qA := by
-      funext z
-      exact EReal.toReal_coe _
-    have hbridge :=
-      mem_generalized_conditional_gradient_argmin_extendedIndicator_iff
-        (f := Function.toExtendedReal qA) (C := B) (xk := x) (p := p) hB_nonempty
-    rw [hqA_toReal] at hbridge
-    exact hbridge
-  calc
-    p ∈ generalized_conditional_gradient_argmin qA (extendedIndicator B) x ↔
-        p ∈ B ∧ IsMinOn (fun q ↦ inner ℝ q (∇ qA x)) B p := hargmin
-    _ ↔ p ∈ B ∧ IsMinOn (fun q ↦ inner ℝ q (-A.toEuclideanLin x)) B p := by
-      rw [(qA_hasGradientAt (A := A) hA x).gradient]
-    _ ↔ p ∈ Λ[toDualMap ℝ E (A.toEuclideanLin x)] := by
-      rw [mem_Λ_iff]
-      constructor
-      · rintro ⟨hpB, hpmin⟩
-        refine ⟨hpB, ?_⟩
-        -- Minimizing `q ↦ ⟪q, -A x⟫` is equivalent to maximizing `q ↦ ⟪A x, q⟫`.
-        rw [isMinOn_iff] at hpmin
-        rw [isMaxOn_iff]
-        intro q hq
-        have hq_le : inner ℝ p (-A.toEuclideanLin x) ≤ inner ℝ q (-A.toEuclideanLin x) :=
-          hpmin q hq
-        have hneg_le :
-            -inner ℝ q (-A.toEuclideanLin x) ≤ -inner ℝ p (-A.toEuclideanLin x) :=
-          neg_le_neg hq_le
-        simpa [InnerProductSpace.toDualMap_apply_apply, real_inner_comm] using hneg_le
-      · rintro ⟨hpB, hpmax⟩
-        refine ⟨hpB, ?_⟩
-        -- Conversely, maximizing the Chapter 10 functional is minimizing the negated linearized
-        -- objective from the conditional-gradient subproblem.
-        rw [isMaxOn_iff] at hpmax
-        rw [isMinOn_iff]
-        intro q hq
-        have hq_le :
-            (toDualMap ℝ E (A.toEuclideanLin x)) q ≤
-              (toDualMap ℝ E (A.toEuclideanLin x)) p :=
-          hpmax q hq
-        have hneg_le :
-            -((toDualMap ℝ E (A.toEuclideanLin x)) p) ≤
-              -((toDualMap ℝ E (A.toEuclideanLin x)) q) :=
-          neg_le_neg hq_le
-        simpa [InnerProductSpace.toDualMap_apply_apply, real_inner_comm] using hneg_le
 
 /-- Helper for Example 13.11: the Chapter 13 linear minimization oracle on the unit ball is the
 normalized matrix image. -/
@@ -180,15 +141,17 @@ lemma argmin_eq_normalized_matrix_image
     p = ‖A.toEuclideanLin x‖⁻¹ • A.toEuclideanLin x := by
   have hAx_ne :
       A.toEuclideanLin x ≠ 0 :=
-    matrix_image_ne_zero_of_not_stationary_on_ball (A := A) hA hx hns
-  -- The local oracle bridge reduces the Chapter 13 argmin point to the singleton from
-  -- Proposition 10.59.
+    matrix_image_ne_zero_of_not_stationary_on_ball A hA hx hns
+  -- Reuse the Chapter 13 unit-ball oracle bridge from Example 13.10, then specialize the
+  -- negative-gradient owner using `qA_hasGradientAt`.
   have hp_counterpart : p ∈ Λ[toDualMap ℝ E (A.toEuclideanLin x)] := by
-    exact (mem_qA_unit_ball_argmin_iff_mem_primalCounterparts (A := A) hA).mp hp
+    have hp_neg_grad : p ∈ Λ[toDualMap ℝ E (-∇ qA x)] := by
+      exact
+        mem_unit_ball_generalized_conditional_gradient_argmin_iff_mem_primalCounterparts.mp hp
+    simpa [(qA_hasGradientAt A hA x).gradient] using hp_neg_grad
   have hp_singleton :
       p ∈ ({‖A.toEuclideanLin x‖⁻¹ • A.toEuclideanLin x} : Set E) := by
-    rwa [primalCounterparts_toDualMap_eq_singleton_normalized
-      (a := A.toEuclideanLin x) hAx_ne] at hp_counterpart
+    rwa [primalCounterparts_toDualMap_eq_singleton_normalized hAx_ne] at hp_counterpart
   simpa [Set.mem_singleton_iff] using hp_singleton
 
 /-- Helper for Example 13.11: along any segment starting at `x`, the quadratic objective expands
@@ -210,7 +173,7 @@ lemma quadratic_segment_eq_initial_add_linear_curvature
       ⟪T d, x⟫ = ⟪d, T x⟫ := hsymm d x
       _ = ⟪T x, d⟫ := by simp [real_inner_comm]
   have hgrad : ∇ qA x = -T x := by
-    rw [(qA_hasGradientAt (A := A) hA x).gradient]
+    rw [(qA_hasGradientAt A hA x).gradient]
   have hraw :
       qA (x + s • d) =
         qA x - s * ⟪T x, d⟫ - (1 / 2 : ℝ) * s ^ (2 : ℕ) * ⟪T d, d⟫ := by
@@ -251,7 +214,7 @@ lemma quadratic_segment_ge_endpoint_combo
     (hA : A.PosSemidef) (x p : E) {s : ℝ} (hs : s ∈ Set.Icc (0 : ℝ) 1) :
     (1 - s) * qA x + s * qA p ≤ qA (x + s • (p - x)) := by
   have hseg :=
-    quadratic_segment_eq_initial_add_linear_curvature (A := A) hA x p s
+    quadratic_segment_eq_initial_add_linear_curvature A hA x p s
   have hp_endpoint : x + (1 : ℝ) • (p - x) = p := by
     simp
   have hend :
@@ -260,10 +223,10 @@ lemma quadratic_segment_ge_endpoint_combo
           (1 / 2 : ℝ) * ⟪A.toEuclideanLin (p - x), p - x⟫ := by
     -- Evaluate the segment expansion at the endpoint `s = 1`.
     simpa [hp_endpoint] using
-      (quadratic_segment_eq_initial_add_linear_curvature (A := A) hA x p (1 : ℝ))
+      (quadratic_segment_eq_initial_add_linear_curvature A hA x p (1 : ℝ))
   have hgap :
       0 ≤ (1 / 2 : ℝ) * s * (1 - s) * ⟪A.toEuclideanLin (p - x), p - x⟫ :=
-    secant_gap_nonneg_of_posSemidef (A := A) hA x p hs
+    secant_gap_nonneg_of_posSemidef A hA x p hs
   have hrewrite :
       qA (x + s • (p - x)) - ((1 - s) * qA x + s * qA p) =
         (1 / 2 : ℝ) * s * (1 - s) * ⟪A.toEuclideanLin (p - x), p - x⟫ := by
@@ -298,7 +261,7 @@ lemma quadratic_endpoint_lt_initial_of_inner_lt_zero
     have hp_endpoint : x + (1 : ℝ) • (p - x) = p := by
       simp
     simpa [hp_endpoint] using
-      (quadratic_segment_eq_initial_add_linear_curvature (A := A) hA x p (1 : ℝ))
+      (quadratic_segment_eq_initial_add_linear_curvature A hA x p (1 : ℝ))
   -- The strictly negative linear term dominates because the curvature correction is nonpositive.
   linarith [hend, hinner_lt, hcurv]
 
@@ -327,13 +290,8 @@ lemma exact_line_search_real_compare_endpoint_on_feasible_segment
     {x p : E} {τ : ℝ}
     (hx : x ∈ B) (hp : p ∈ B)
     (ht : τ ∈ conditional_gradient_exact_line_search_stepsizes
-      (composite_model_objective (Function.toExtendedReal qA) (extendedIndicator B)) x p) :
+      (composite_model_objective (Function.toEReal qA) (extendedIndicator B)) x p) :
     qA (x + τ • (p - x)) ≤ qA p := by
-  have hg_ne_bot : ∀ y : E, extendedIndicator B y ≠ ⊥ := by
-    intro y
-    by_cases hy : y ∈ B
-    · simp [extendedIndicator, hy]
-    · simp [extendedIndicator, hy]
   have hx_dom : x ∈ effective_domain (extendedIndicator B) := by
     simpa [effective_domain_extendedIndicator] using hx
   have hp_dom : p ∈ effective_domain (extendedIndicator B) := by
@@ -342,15 +300,11 @@ lemma exact_line_search_real_compare_endpoint_on_feasible_segment
     (mem_conditional_gradient_exact_line_search_stepsizes_iff.mp ht).1
   have htrial_dom :
       x + τ • (p - x) ∈ effective_domain (extendedIndicator B) :=
-    conditional_gradient_trial_mem_effective_domain_of_mem_Icc
-      (g := extendedIndicator B)
-      unit_ball_extendedIndicator_is_convex_function hx_dom hp_dom hτ
-  have htrial : x + τ • (p - x) ∈ B := by
-    simpa [effective_domain_extendedIndicator] using htrial_dom
+    qA_trial_mem_effective_domain_of_mem_Icc hx_dom hp_dom hτ
   have hcompare :
-      composite_model_objective (Function.toExtendedReal qA) (extendedIndicator B)
+      composite_model_objective (Function.toEReal qA) (extendedIndicator B)
           (x + τ • (p - x)) ≤
-        composite_model_objective (Function.toExtendedReal qA) (extendedIndicator B) p := by
+        composite_model_objective (Function.toEReal qA) (extendedIndicator B) p := by
     -- Route correction: normalize the exact-line-search owner before stripping the indicator and
     -- `EReal` coercions, so the later rewrites only touch feasible points.
     rw [mem_conditional_gradient_exact_line_search_stepsizes_iff, isMinOn_iff] at ht
@@ -359,11 +313,9 @@ lemma exact_line_search_real_compare_endpoint_on_feasible_segment
   have hcompare_coe :
       (((qA (x + τ • (p - x)) : ℝ) : EReal)) ≤ (((qA p : ℝ) : EReal)) := by
     -- Feasibility turns the composite objective back into the real quadratic owner.
-    rw [composite_model_objective_eq_coe_real_of_mem_effective_domain
-          (f := qA) (g := extendedIndicator B) hg_ne_bot htrial_dom,
-        composite_model_objective_eq_coe_real_of_mem_effective_domain
-          (f := qA) (g := extendedIndicator B) hg_ne_bot hp_dom] at hcompare
-    simpa [extendedIndicator, htrial, hp] using hcompare
+    rw [qA_composite_model_objective_eq_coe_real_of_mem_effective_domain A htrial_dom,
+      qA_composite_model_objective_eq_coe_real_of_mem_effective_domain A hp_dom] at hcompare
+    exact hcompare
   exact EReal.coe_le_coe_iff.mp hcompare_coe
 
 /-- Helper for Example 13.11: a strict endpoint improvement forces the exact line search stepsize
@@ -372,7 +324,7 @@ lemma exact_line_search_stepsize_eq_one_of_endpoint_improvement
     (hA : A.PosSemidef) {x p : E} {τ : ℝ}
     (hx : x ∈ B) (hp : p ∈ B)
     (ht : τ ∈ conditional_gradient_exact_line_search_stepsizes
-      (composite_model_objective (Function.toExtendedReal qA) (extendedIndicator B)) x p)
+      (composite_model_objective (Function.toEReal qA) (extendedIndicator B)) x p)
     (hend : qA p < qA x) :
     τ = 1 := by
   let φ : ℝ → ℝ := fun s ↦ qA (x + s • (p - x))
@@ -382,11 +334,10 @@ lemma exact_line_search_stepsize_eq_one_of_endpoint_improvement
     -- The previous helper removes the indicator layer and compares the chosen step to the
     -- endpoint `s = 1`.
     simpa [φ] using
-      exact_line_search_real_compare_endpoint_on_feasible_segment
-        (A := A) (x := x) (p := p) (τ := τ) hx hp ht
+      exact_line_search_real_compare_endpoint_on_feasible_segment A hx hp ht
   have hsecant : (1 - τ) * φ 0 + τ * φ 1 ≤ φ τ := by
     -- Positive semidefiniteness makes the quadratic restriction lie above its endpoint secant.
-    simpa [φ] using quadratic_segment_ge_endpoint_combo (A := A) hA x p hτ
+    simpa [φ] using quadratic_segment_ge_endpoint_combo A hA x p hτ
   have hendφ : φ 1 < φ 0 := by
     simpa [φ] using hend
   exact eq_right_endpoint_of_min_le_right_of_secant hτ hmin_right hsecant hendφ
@@ -416,78 +367,87 @@ theorem generalized_conditional_gradient_step_eq_power_method_of_not_stationary
     (k : ℕ)
     (hk : ¬ is_stationary_point_on qA B (x k)) :
     x (k + 1) = ‖A.toEuclideanLin (x k)‖⁻¹ • A.toEuclideanLin (x k) := by
-  have hqA_ne_bot : ∀ y : E, extendedIndicator B y ≠ ⊥ := by
-    intro y
-    by_cases hy : y ∈ B
-    · simp [extendedIndicator, hy]
-    · simp [extendedIndicator, hy]
-  have hxk_dom :
-      x k ∈ effective_domain (extendedIndicator B) :=
-    generalized_conditional_gradient_trajectory_mem_effective_domain
-      (f := qA) (g := extendedIndicator B) hqA_ne_bot
-      unit_ball_extendedIndicator_is_convex_function htraj k
-  have hxk : x k ∈ B := by
-    simpa [effective_domain_extendedIndicator] using hxk_dom
-  have hpk_argmin :
+  -- First propagate feasibility of the closed ball along the whole trajectory.
+  have hxBall : ∀ j : ℕ, x j ∈ B := by
+    intro j
+    induction j with
+    | zero =>
+        exact is_conditional_gradient_trajectory_zero
+          (f := Function.toEReal qA) htraj
+    | succ j hj =>
+        rcases is_conditional_gradient_trajectory_step
+            (f := Function.toEReal qA) htraj j with ⟨hpjBall, _, hstep⟩
+        have hxj_dom : x j ∈ effective_domain (extendedIndicator B) := by
+          simpa [effective_domain_extendedIndicator] using hj
+        have hpj_dom : p j ∈ effective_domain (extendedIndicator B) := by
+          simpa [effective_domain_extendedIndicator] using hpjBall
+        have hnext_dom :
+            x j + (t j : ℝ) • (p j - x j) ∈ effective_domain (extendedIndicator B) :=
+          qA_trial_mem_effective_domain_of_mem_Icc hxj_dom hpj_dom (t j).2
+        simpa [effective_domain_extendedIndicator, hstep] using hnext_dom
+  have hxkBall : x k ∈ B := hxBall k
+  have hpkArgmin :
       p k ∈ generalized_conditional_gradient_argmin qA (extendedIndicator B) (x k) :=
     htraj.argmin_mem k
-  have hpk_dom :
-      p k ∈ effective_domain (extendedIndicator B) :=
-    generalized_conditional_gradient_argmin_mem_effective_domain
-      (f := qA) (g := extendedIndicator B) hxk_dom hpk_argmin
-  have hpk : p k ∈ B := by
-    simpa [effective_domain_extendedIndicator] using hpk_dom
-  have hpk_eq :
-      p k = ‖A.toEuclideanLin (x k)‖⁻¹ • A.toEuclideanLin (x k) :=
-    argmin_eq_normalized_matrix_image (A := A) hA hxk hpk_argmin hk
-  have hneg_dir :
-      ∃ y ∈ B, ⟪∇ qA (x k), y - x k⟫ < (0 : ℝ) := by
-    -- Route correction: use the source variational inequality directly to witness a strictly
-    -- descending feasible direction when `x k` is not stationary.
-    by_contra hcontra
+  rcases is_conditional_gradient_trajectory_step
+      (f := Function.toEReal qA) htraj k with ⟨hpkBall, hpkMinRaw, hstep⟩
+  have hgrad : ∇ qA (x k) = -A.toEuclideanLin (x k) :=
+    (qA_hasGradientAt A hA (x k)).gradient
+  have hgradRaw :
+      ∇ (fun y ↦ (Function.toEReal qA y).toReal) (x k) = -A.toEuclideanLin (x k) := by
+    change ∇ qA (x k) = -A.toEuclideanLin (x k)
+    exact hgrad
+  have hpkMin :
+      IsMinOn (fun q ↦ inner ℝ q (-A.toEuclideanLin (x k))) B (p k) := by
+    rw [hgradRaw] at hpkMinRaw
+    exact hpkMinRaw
+  have hpkMin' := hpkMin
+  rw [isMinOn_iff] at hpkMin'
+  -- Nonstationarity upgrades the oracle inequality to strict negativity of the linearized slope.
+  have hinner_nonpos : ⟪∇ qA (x k), p k - x k⟫ ≤ 0 := by
+    have hcompare :
+        inner ℝ (p k) (-A.toEuclideanLin (x k)) ≤
+          inner ℝ (x k) (-A.toEuclideanLin (x k)) :=
+      hpkMin' (x k) hxkBall
+    rw [hgrad]
+    simpa [inner_sub_right, real_inner_comm] using sub_nonpos.mpr hcompare
+  have hinner_lt : ⟪∇ qA (x k), p k - x k⟫ < 0 := by
+    refine lt_of_le_of_ne hinner_nonpos ?_
+    intro hzero
     apply hk
     rw [is_stationary_point_on_iff_forall_inner_nonneg]
-    refine ⟨(qA_hasGradientAt (A := A) hA (x k)).differentiableAt, hxk, ?_⟩
+    refine ⟨(qA_hasGradientAt A hA (x k)).differentiableAt, hxkBall, ?_⟩
     intro y hy
-    by_contra hyneg
-    exact hcontra ⟨y, hy, lt_of_not_ge hyneg⟩
-  have hinner_lt : ⟪∇ qA (x k), p k - x k⟫ < (0 : ℝ) := by
-    rcases hneg_dir with ⟨y, hyB, hyneg⟩
-    have hpmin :
-        IsMinOn (fun q ↦ inner ℝ q (∇ qA (x k))) B (p k) := by
-      have hqA_toReal : (fun z : E ↦ (Function.toExtendedReal qA z).toReal) = qA := by
-        funext z
-        exact EReal.toReal_coe _
-      rcases
-        (mem_generalized_conditional_gradient_argmin_extendedIndicator_iff
-          (f := Function.toExtendedReal qA) (C := B) (xk := x k)
-          (p := p k) ⟨0, by simp⟩).mp hpk_argmin with
-        ⟨_, hpmin⟩
-      rw [hqA_toReal] at hpmin
-      exact hpmin
-    rw [isMinOn_iff] at hpmin
-    have hpy : inner ℝ (p k) (∇ qA (x k)) ≤ inner ℝ y (∇ qA (x k)) :=
-      hpmin y hyB
-    have hyshift :
-        inner ℝ y (∇ qA (x k)) - inner ℝ (x k) (∇ qA (x k)) < (0 : ℝ) := by
-      simpa [real_inner_comm, inner_sub_right] using hyneg
-    have hpshift :
-        inner ℝ (p k) (∇ qA (x k)) - inner ℝ (x k) (∇ qA (x k)) < (0 : ℝ) := by
-      linarith [hpy, hyshift]
-    simpa [real_inner_comm, inner_sub_right] using hpshift
+    have hcompare :
+        inner ℝ (p k) (-A.toEuclideanLin (x k)) ≤
+          inner ℝ y (-A.toEuclideanLin (x k)) :=
+      hpkMin' y hy
+    have hy_nonneg : 0 ≤ ⟪-A.toEuclideanLin (x k), y - p k⟫ := by
+      simpa [inner_sub_right, real_inner_comm] using sub_nonneg.mpr hcompare
+    have hdecomp : y - x k = (y - p k) + (p k - x k) := by
+      abel
+    calc
+      ⟪∇ qA (x k), y - x k⟫
+          = ⟪-A.toEuclideanLin (x k), y - x k⟫ := by rw [hgrad]
+      _ = ⟪-A.toEuclideanLin (x k), y - p k⟫ +
+            ⟪-A.toEuclideanLin (x k), p k - x k⟫ := by
+              rw [hdecomp, inner_add_right]
+      _ = ⟪-A.toEuclideanLin (x k), y - p k⟫ := by rw [hgrad] at hzero; rw [hzero, add_zero]
+      _ ≥ 0 := hy_nonneg
+  -- Exact line search must choose the endpoint `t_k = 1` because the oracle endpoint is better.
   have hendpoint_lt : qA (p k) < qA (x k) :=
-    quadratic_endpoint_lt_initial_of_inner_lt_zero (A := A) hA hinner_lt
-  have ht_eq_one : (t k : ℝ) = 1 :=
+    quadratic_endpoint_lt_initial_of_inner_lt_zero A hA hinner_lt
+  have htk_eq : (t k : ℝ) = 1 :=
     exact_line_search_stepsize_eq_one_of_endpoint_improvement
-      (A := A) hA hxk hpk (hline k) hendpoint_lt
-  have hstep_to_oracle : x (k + 1) = p k := by
-    -- Once exact line search picks `tₖ = 1`, the affine trajectory update lands at the oracle
-    -- point `pᵏ`.
-    simpa [ht_eq_one] using htraj.step_eq k
-  -- Substitute the unit stepsize update and the closed-form oracle point to recover the power
-  -- method exactly.
+      A hA hxkBall hpkBall (hline k) hendpoint_lt
+  have hpk_eq :
+      p k = ‖A.toEuclideanLin (x k)‖⁻¹ • A.toEuclideanLin (x k) :=
+    argmin_eq_normalized_matrix_image A hA hxkBall hpkArgmin hk
+  -- Substitute the endpoint stepsize and the oracle normalization into the trajectory update.
   calc
-    x (k + 1) = p k := hstep_to_oracle
+    x (k + 1) = x k + (t k : ℝ) • (p k - x k) := hstep
+    _ = x k + (1 : ℝ) • (p k - x k) := by rw [htk_eq]
+    _ = p k := by simp
     _ = ‖A.toEuclideanLin (x k)‖⁻¹ • A.toEuclideanLin (x k) := hpk_eq
 
 end

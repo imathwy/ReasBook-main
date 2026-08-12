@@ -59,10 +59,14 @@ lemma conjugate_primal_eq_pairing_sub_of_mem_primal_argmax
     simpa [mem_dual_proximal_gradient_primal_x_argmax_iff,
       InnerProductSpace.toDualMap_apply_apply, real_inner_comm] using hxBar
   -- Theorem 4.11 turns that argmax condition into the exact conjugate equality.
-  simpa [conjugate_function_primal_apply, InnerProductSpace.toDualMap_apply_apply, real_inner_comm]
-    using
+  have hconj :
+      (f∗) (A.adjoint yBar) =
+        ((((InnerProductSpace.toDualMap ℝ E (A.adjoint yBar)) xBar : ℝ) : EReal) - f xBar) := by
+    rw [conjugate_function_primal_apply]
+    exact
       (conjugate_function_eq_iff_isMaxOn_pairing_sub_function
         f xBar (InnerProductSpace.toDualMap ℝ E (A.adjoint yBar))).2 hmax
+  simpa [InnerProductSpace.toDualMap_apply_apply, real_inner_comm] using hconj
 
 /-- Helper for Lemma 12.7: negating `a - r` with a finite real term `r` gives `r - a`. -/
 lemma ereal_neg_sub_real (a : EReal) (r : ℝ) :
@@ -408,7 +412,7 @@ lemma fenchel_neg_conjugate_le_primal_plus_pairing
       (((-inner ℝ yBar z : ℝ) : EReal)) ≤ g z + (g∗) (-yBar) := by
     simpa [conjugate_function_primal_apply, InnerProductSpace.toDualMap_apply_apply,
       inner_neg_left, add_comm] using
-      (fenchelYoung_inequality g z (InnerProductSpace.toDualMap ℝ V (-yBar)) h_problem.g_proper)
+      (fenchel_inequality g z (InnerProductSpace.toDualMap ℝ V (-yBar)) h_problem.g_proper)
   -- Move the conjugate term left, then move the finite pairing term back to the right.
   have hsub :
       -((g∗) (-yBar)) - (((inner ℝ yBar z : ℝ) : EReal)) ≤ g z := by
@@ -506,8 +510,20 @@ lemma dual_objective_ne_top
               rw [← EReal.coe_neg, ← EReal.coe_neg, ← EReal.coe_add]
       rw [hcoe]
       exact EReal.coe_ne_top _
-    rw [dual_based_proximal_gradient_lagrange_dual_objective_primal_apply]
-    simpa [hF_val, hG_val] using hfinite_ne_top
+    intro htop
+    have htop' :
+        -(((((f∗) (A.adjoint yBar)).toReal : ℝ) : EReal)) -
+          (((((g∗) (-yBar)).toReal : ℝ) : EReal)) = ⊤ := by
+      -- Rewrite the source dual objective back to its real-coercion normal form before
+      -- contradicting finiteness above.
+      calc
+        -(((((f∗) (A.adjoint yBar)).toReal : ℝ) : EReal)) -
+            (((((g∗) (-yBar)).toReal : ℝ) : EReal)) =
+          -((f∗) (A.adjoint yBar)) - (g∗) (-yBar) := by
+            rw [hF_val, hG_val]
+        _ = ⊤ := by
+            simpa [dual_based_proximal_gradient_lagrange_dual_objective_primal_apply] using htop
+    exact hfinite_ne_top htop'
 
 /-- Helper for Lemma 12.7: the source proof naturally produces the additive inequality
 `(σ / 2) ‖xBar - xStar‖² + q(yBar) ≤ f(xStar) + g(A xStar)`. -/
