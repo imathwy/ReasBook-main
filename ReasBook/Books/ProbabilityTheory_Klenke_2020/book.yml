@@ -10,7 +10,9 @@ isbn: 978-3-030-56401-8
 toolchain: leanprover/lean4:v4.30.0
 mathlib: v4.30.0
 branch: v4.30.0
-contributors: []
+contributors:
+- name: Zichen Wang
+- name: Zaiwen Wen
 coverage: 'Formalized content from Klenke''s Probability Theory: A Comprehensive Course.'
 statistics:
   declarations: 6003

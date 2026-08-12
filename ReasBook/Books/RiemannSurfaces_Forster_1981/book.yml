@@ -10,7 +10,9 @@ isbn: 978-0-387-90617-1
 toolchain: leanprover/lean4:v4.30.0
 mathlib: v4.30.0
 branch: v4.30.0
-contributors: []
+contributors:
+- name: Zichen Wang
+- name: Zaiwen Wen
 coverage: Formalized content from Forster's Lectures on Riemann Surfaces.
 statistics:
   declarations: 174

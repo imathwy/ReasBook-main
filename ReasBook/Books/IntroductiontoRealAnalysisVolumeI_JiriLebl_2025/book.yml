@@ -12,6 +12,7 @@ mathlib: v4.30.0
 branch: v4.30.0
 contributors:
 - name: Zichen Wang
+- name: Zaiwen Wen
 coverage: Chapters 0–7 of Introduction to Real Analysis, Volume I (v6.2, May 2025).
 statistics:
   declarations: 1202

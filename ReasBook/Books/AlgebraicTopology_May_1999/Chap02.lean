@@ -1,0 +1,60 @@
+import Mathlib
+import AlgebraicTopology_May_1999.Chap02.Corollary_2_4_7
+import AlgebraicTopology_May_1999.Chap02.Corollary_2_8_2
+import AlgebraicTopology_May_1999.Chap02.Definition_2_1_1
+import AlgebraicTopology_May_1999.Chap02.Definition_2_1_2
+import AlgebraicTopology_May_1999.Chap02.Definition_2_2_1
+import AlgebraicTopology_May_1999.Chap02.Definition_2_2_2
+import AlgebraicTopology_May_1999.Chap02.Definition_2_3_1
+import AlgebraicTopology_May_1999.Chap02.Definition_2_3_3
+import AlgebraicTopology_May_1999.Chap02.Definition_2_3_4
+import AlgebraicTopology_May_1999.Chap02.Definition_2_4_1
+import AlgebraicTopology_May_1999.Chap02.Definition_2_4_3
+import AlgebraicTopology_May_1999.Chap02.Definition_2_4_5
+import AlgebraicTopology_May_1999.Chap02.Definition_2_5_1
+import AlgebraicTopology_May_1999.Chap02.Definition_2_5_2
+import AlgebraicTopology_May_1999.Chap02.Definition_2_5_4
+import AlgebraicTopology_May_1999.Chap02.Definition_2_5_6
+import AlgebraicTopology_May_1999.Chap02.Definition_2_6_1
+import AlgebraicTopology_May_1999.Chap02.Definition_2_6_2
+import AlgebraicTopology_May_1999.Chap02.Definition_2_6_3
+import AlgebraicTopology_May_1999.Chap02.Definition_2_6_4
+import AlgebraicTopology_May_1999.Chap02.Definition_2_6_7
+import AlgebraicTopology_May_1999.Chap02.Definition_2_8_5
+import AlgebraicTopology_May_1999.Chap02.Example_2_1_3
+import AlgebraicTopology_May_1999.Chap02.Example_2_2_3
+import AlgebraicTopology_May_1999.Chap02.Example_2_3_2
+import AlgebraicTopology_May_1999.Chap02.Example_2_6_5
+import AlgebraicTopology_May_1999.Chap02.Example_2_6_6
+import AlgebraicTopology_May_1999.Chap02.Lemma_2_4_2
+import AlgebraicTopology_May_1999.Chap02.Lemma_2_4_4
+import AlgebraicTopology_May_1999.Chap02.Lemma_2_5_3
+import AlgebraicTopology_May_1999.Chap02.Lemma_2_5_5
+import AlgebraicTopology_May_1999.Chap02.Lemma_2_7_10
+import AlgebraicTopology_May_1999.Chap02.Lemma_2_7_11
+import AlgebraicTopology_May_1999.Chap02.Lemma_2_7_6
+import AlgebraicTopology_May_1999.Chap02.Lemma_2_8_4
+import AlgebraicTopology_May_1999.Chap02.Problem_2_9_1
+import AlgebraicTopology_May_1999.Chap02.Problem_2_9_2
+import AlgebraicTopology_May_1999.Chap02.Problem_2_9_3
+import AlgebraicTopology_May_1999.Chap02.Problem_2_9_4
+import AlgebraicTopology_May_1999.Chap02.ProofStep_2_7_2
+import AlgebraicTopology_May_1999.Chap02.ProofStep_2_7_3
+import AlgebraicTopology_May_1999.Chap02.ProofStep_2_7_4
+import AlgebraicTopology_May_1999.Chap02.ProofStep_2_7_7
+import AlgebraicTopology_May_1999.Chap02.ProofStep_2_7_8
+import AlgebraicTopology_May_1999.Chap02.ProofStep_2_7_9
+import AlgebraicTopology_May_1999.Chap02.Proposition_2_4_6
+import AlgebraicTopology_May_1999.Chap02.Proposition_2_5_7
+import AlgebraicTopology_May_1999.Chap02.Proposition_2_8_1
+import AlgebraicTopology_May_1999.Chap02.Proposition_2_8_6
+import AlgebraicTopology_May_1999.Chap02.Remark_2_6_8
+import AlgebraicTopology_May_1999.Chap02.Remark_2_8_3
+import AlgebraicTopology_May_1999.Chap02.Theorem_2_7_1
+import AlgebraicTopology_May_1999.Chap02.Theorem_2_7_5
+
+/-!
+# Chapter 02 — A Concise Course in Algebraic Topology (May, 1999)
+
+Aggregation module for all formalized items in Chapter 2.
+-/

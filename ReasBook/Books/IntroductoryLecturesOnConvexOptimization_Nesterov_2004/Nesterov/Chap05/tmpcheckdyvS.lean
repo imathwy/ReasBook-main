@@ -1,0 +1,13 @@
+import IntroductoryLecturesOnConvexOptimization_Nesterov_2004.Nesterov.Chap05.RealProdL2
+attribute [local instance] Chap05RealProdL2.instSeminormedAddCommGroupRealProd
+attribute [local instance] Chap05RealProdL2.instNormedAddCommGroupRealProd
+attribute [local instance] Chap05RealProdL2.instNormedSpaceRealProd
+attribute [local instance] Chap05RealProdL2.instInnerProductSpaceRealProd
+attribute [local instance] Chap05RealProdL2.instCompleteSpaceRealProd
+attribute [local instance] Chap05RealProdL2.instSeminormedAddCommGroupRealProdProd
+attribute [local instance] Chap05RealProdL2.instNormedAddCommGroupRealProdProd
+attribute [local instance] Chap05RealProdL2.instNormedSpaceRealProdProd
+attribute [local instance] Chap05RealProdL2.instInnerProductSpaceRealProdProd
+attribute [local instance] Chap05RealProdL2.instCompleteSpaceRealProdProd
+#synth InnerProductSpace ℝ ((ℝ × ℝ) × ℝ)
+#synth InnerProductSpace ℝ (ℝ × ℝ)

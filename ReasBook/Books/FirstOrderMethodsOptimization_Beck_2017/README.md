@@ -1,93 +1,35 @@
 # First-Order Methods in Optimization
 
-- Links: [Lean source](./Chapters/)
+- **Author:** Amir Beck
+- **Series:** MOS-SIAM Series on Optimization 25
+- **Publisher:** SIAM
+- **Year:** 2017
+- **Lean toolchain:** `leanprover/lean4:v4.30.0`
+- **Lean source:** [`Book.lean`](Book.lean)
 
 ## Contributors
 
-- (none listed)
+- Shu Miao
+- Zhiyan Wang
+- Suwan Wu
+- Changyu Zou
+- Xinyi Guo
+- Yunxi Duan
+- Wanli Ma ([@wl-ma](https://github.com/wl-ma))
+- Zichen Wang
 
 ## Coverage
 
-Formalized content from Beck's First-Order Methods in Optimization.
+Complete formalization of Chapters 1–15 of Amir Beck's *First-Order Methods in
+Optimization*.
 
 ## Statistics
 
-- **Declarations:** 4569 (theorem/lemma/example: 3583; other: 986)
-- **Lean code:** 836 `.lean` files, 115865 lines
-- **Proof completion:** 3993/4569 (approx)
-- **Remaining placeholders:** `sorry`: 576; `admit`: 4
+- **Declarations:** 7468 (theorem/lemma/example: 6227; other: 1241)
+- **Lean code:** 860 `.lean` files, 248417 lines
+- **Proof completion:** 6227/6227 = 100%
+- **Remaining placeholders:** `sorry`: 0; `admit`: 0
 
 ## Metadata
 
 See [`book.yml`](book.yml).
-
-
-
-# First-Order Methods in Optimization
-
-- Links: [Lean source](./Chapters/)
-
-
-- (none listed)
-
-
-Formalized content from Beck's First-Order Methods in Optimization.
-
-
-- **Declarations:** 4569 (theorem/lemma/example: 3583; other: 986)
-- **Lean code:** 836 `.lean` files, 115865 lines
-- **Proof completion:** 3993/4569 (approx)
-- **Remaining placeholders:** `sorry`: 576; `admit`: 4
-
-
-
-
-
-
-
-# First-Order Methods in Optimization
-
-- Links: [Lean source](./Chapters/)
-
-
-- (none listed)
-
-
-Formalized content from Beck's First-Order Methods in Optimization.
-
-
-- **Declarations:** 4569 (theorem/lemma/example: 3583; other: 986)
-- **Lean code:** 836 `.lean` files, 115865 lines
-- **Proof completion:** 3993/4569 (approx)
-- **Remaining placeholders:** `sorry`: 576; `admit`: 4
-
-
-
-
-
-
-
-- (none listed)
-
-
-Formalized content from Beck's First-Order Methods in Optimization.
-
-
-- **Declarations:** 4569 (theorem/lemma/example: 3583; other: 986)
-- **Lean code:** 836 `.lean` files, 115865 lines
-- **Proof completion:** 3993/4569 (approx)
-- **Remaining placeholders:** `sorry`: 576; `admit`: 4
-
-
-
-
-- (none listed)
-
-
-Formalized content from Beck's First-Order Methods in Optimization.
-
-
-- **Declarations:** 4569 (theorem/lemma/example: 3583; other: 986)
-- **Lean code:** 836 `.lean` files, 115865 lines
-- **Proof completion:** 3993/4569 (approx)
-- **Remaining placeholders:** `sorry`: 576; `admit`: 4
