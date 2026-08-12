@@ -182,6 +182,45 @@ python3 serve.py 18000     # serve at http://127.0.0.1:18000/ReasBook/
 - Zaiwen Wen, Beijing International Center for Mathematical Research, Peking University, China (`wenzw@pku.edu.cn`)
 - Yifan Bai, Anjie Dong, Yunxi Duan, Xinyi Guo, Pengfei Hao, Yuhao Jiang, Gongxun Li, Yantao Li, Wentao Long, Zebo Liu, Zhenxi Liu, Siyuan Ma, Guangxuan Pan, Siyuan Shao, Weiran Shi, Junren Si, Xuran Sun, Xuan Tang, Feiming Wang, Yijie Wang, Zhiyan Wang, Zixi Wang, Suwu Wu, Mingyue Xu, Lurong Yang, Yunfei Zhang, Jian Yu, Changyun Zou
 
+## Citation
+
+If you use ReasBook, please cite both the M2F paper and the repository:
+
+M2F paper:
+
+```bibtex
+@misc{wang2026m2f,
+  author        = {Zichen Wang and Wanli Ma and Zhenyu Ming and Gong Zhang and
+                   Kun Yuan and Zaiwen Wen},
+  title         = {{M2F}: Automated Formalization of Mathematical Literature at Scale},
+  year          = {2026},
+  eprint        = {2602.17016},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.AI},
+  doi           = {10.48550/arXiv.2602.17016},
+  url           = {https://arxiv.org/abs/2602.17016}
+}
+```
+
+ReasBook software:
+
+```bibtex
+@software{reasbook2026,
+  author  = {{ReasBook Contributors}},
+  title   = {{ReasBook}: Formalizations of Mathematical Textbooks and
+             Research Papers in {Lean 4}},
+  year    = {2026},
+  url     = {https://github.com/optpku/ReasBook},
+  license = {Apache-2.0}
+}
+```
+
+When referring to a particular formalization, also cite the original book or
+paper and record the ReasBook project directory, version branch, and full commit
+SHA. For example: `v4.30.0`, `ReasBook/Books/<project>/`, and the output of
+`git rev-parse HEAD`. This repository also provides [`CITATION.cff`](CITATION.cff)
+for citation tools and GitHub's citation interface.
+
 ## License
 
 ReasBook uses the [Apache License 2.0](LICENSE), matching mathlib. Unless an
