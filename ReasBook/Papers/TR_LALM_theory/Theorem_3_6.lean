@@ -260,7 +260,7 @@ private lemma fixedResidualMeanSquare_le
           (run.multiplier (k + 1) ω) ^ 2) ∂ℙ) ≤
         ∫⁻ ω, ENNReal.ofReal (C * moments ω) ∂ℙ := by
       refine lintegral_mono fun ω ↦ ENNReal.ofReal_le_ofReal ?_
-      exact run.residual_sq_le h_admissible hk_pos hk ω
+      exact run.residual_sq_le_of_isAdmissiblePrefix h_admissible hk_pos hk ω
     _ = ENNReal.ofReal (∫ ω, C * moments ω ∂ℙ) :=
       (ofReal_integral_eq_lintegral_ofReal hright hrightNonneg).symm
     _ = ENNReal.ofReal (C * ∫ ω, moments ω ∂ℙ) := by
@@ -320,9 +320,11 @@ theorem residualMeanSquare_le
     hasRegularOutputPoints_of_isAEAdmissiblePrefix run' K hrun'Admissible.isAE
   have hbatch := SPIDER.innerBatchSize_isSufficient h oracle params K
   have herrorAverage :=
-    run'.averageGradientErrorMeanSquare_le K hK hrun'Admissible hbatch
+    run'.averageGradientErrorMeanSquare_le_of_isAdmissiblePrefix K hK
+      hrun'Admissible hbatch
   have hstepAverage :=
-    run'.averageStepMeanSquare_le K hK hrun'Admissible hbatch
+    run'.averageStepMeanSquare_le_of_isAdmissiblePrefix K hK
+      hrun'Admissible hbatch
   rw [SPIDER.refreshBatchSize_coe K hK] at herrorAverage hstepAverage
   have hKreal : 0 < (K : ℝ) := by positivity
   have hKzero : (K : ℝ) ≠ 0 := hKreal.ne'
