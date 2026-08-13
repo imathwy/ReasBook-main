@@ -1259,10 +1259,10 @@ private lemma constraintNormSq_eq_multiplierIncrementNormSqDiv
   rw [hupdate, add_sub_cancel_left, norm_smul, Real.norm_eq_abs, abs_of_pos hρ]
   field_simp [hρ.ne']
 
-/-- Lemma 3.5: on every stochastic admissible prefix, the squared KKT residual
-at iteration `k + 1` is bounded pathwise by the current and preceding squared
-step and gradient-error norms. -/
-theorem residual_sq_le
+/-- Pointwise form of Lemma 3.5: on every stochastic admissible prefix, the
+squared KKT residual at iteration `k + 1` is bounded by the current and
+preceding squared step and gradient-error norms. -/
+theorem residual_sq_le_of_isAdmissiblePrefix
     (run : StochasticRun h oracle ℙ x₀ multiplier₀ params Q B b)
     {N k : ℕ} (h_admissible : run.IsAdmissiblePrefix N)
     (hk_pos : 1 ≤ k) (hk : k < N) (ω : Ω) :
@@ -1450,6 +1450,30 @@ theorem residual_sq_le
         (‖run.step k ω‖ ^ 2 + ‖run.step (k - 1) ω‖ ^ 2 +
           ‖run.gradientError k ω‖ ^ 2 +
             ‖run.gradientError (k - 1) ω‖ ^ 2) := by ring
+
+/-- Lemma 3.5: on an almost-surely admissible stochastic prefix, the squared
+KKT residual at iteration `k + 1` obeys the stated pathwise bound almost
+surely. -/
+theorem residual_sq_le
+    (run : StochasticRun h oracle ℙ x₀ multiplier₀ params Q B b)
+    {N k : ℕ} (h_admissible : run.IsAEAdmissiblePrefix N)
+    (hk_pos : 1 ≤ k) (hk : k < N) :
+    ∀ᵐ ω ∂ℙ,
+      KKT.residual f c (run.point (k + 1) ω) (run.multiplier (k + 1) ω) ^ 2 ≤
+        stochasticResidualConstant h params.delta params.beta params.rho
+            params.multiplierBound *
+          (‖run.step k ω‖ ^ 2 + ‖run.step (k - 1) ω‖ ^ 2 +
+            ‖run.gradientError k ω‖ ^ 2 +
+              ‖run.gradientError (k - 1) ω‖ ^ 2) := by
+  obtain ⟨run', hrun'_admissible, hpoint, hmultiplier, hstep, herror⟩ :=
+    h_admissible.exists_pathwiseVersion run N
+  filter_upwards [hpoint (k + 1), hmultiplier (k + 1), hstep k,
+    hstep (k - 1), herror k, herror (k - 1)] with ω hpointSucc
+      hmultiplierSucc hstepCurrent hstepPrevious herrorCurrent herrorPrevious
+  have hbound := run'.residual_sq_le_of_isAdmissiblePrefix hrun'_admissible
+    hk_pos hk ω
+  simpa only [hpointSucc, hmultiplierSucc, hstepCurrent, hstepPrevious,
+    herrorCurrent, herrorPrevious] using hbound
 
 end LALM.StochasticRun
 

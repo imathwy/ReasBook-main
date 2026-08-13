@@ -1905,9 +1905,10 @@ private lemma integrableGradientErrorSquare
   exact Integrable.mono' (integrable_const _)
     hsquareMeasurable (ae_of_all ℙ hbound)
 
-/-- Lemma 3.4 (4): on an admissible prefix of length at least two, accumulated
-step mean square is bounded by the initial allowance and accumulated error. -/
-theorem accumulatedStepMeanSquare_le
+/-- Pointwise form of Lemma 3.4 (4): on an admissible prefix of length at least
+two, accumulated step mean square is bounded by the initial allowance and
+accumulated error. -/
+theorem accumulatedStepMeanSquare_le_of_isAdmissiblePrefix
     (K : ℕ) (hK : 2 ≤ K) (h_admissible : run.IsAdmissiblePrefix K) :
     ∑ k ∈ Finset.range K, run.stepMeanSquare k ≤
       initialStepBound h params + errorStepConstant h params *
@@ -2035,9 +2036,10 @@ private lemma errorStepBatchCoefficient_le_half
           oracle.meanSquareLipschitz ^ 2) / (b : ℝ)) / 2 := by ring
     _ ≤ (1 : ℝ) / 2 := div_le_div_of_nonneg_right hdivided htwoNonneg
 
-/-- Lemma 3.4 (5): under `SPIDER.IsSufficientInnerBatchSize`, the average
-projected-gradient-error mean square has the stated variance and initial terms. -/
-theorem averageGradientErrorMeanSquare_le
+/-- Pointwise form of Lemma 3.4 (5): under
+`SPIDER.IsSufficientInnerBatchSize`, the average projected-gradient-error mean
+square has the stated variance and initial terms. -/
+theorem averageGradientErrorMeanSquare_le_of_isAdmissiblePrefix
     (K : ℕ) (hK : 2 ≤ K) (h_admissible : run.IsAdmissiblePrefix K)
     (h_batch : SPIDER.IsSufficientInnerBatchSize h oracle params Q b) :
     (∑ k ∈ Finset.range K, run.gradientErrorMeanSquare k) / K ≤
@@ -2045,7 +2047,8 @@ theorem averageGradientErrorMeanSquare_le
         initialStepBound h params / (errorStepConstant h params * K) := by
   have hspider := run.accumulatedGradientErrorMeanSquare_le K h_admissible.isAE
     (fun k hk ↦ integrableStepSquare run h_admissible hk)
-  have hsteps := run.accumulatedStepMeanSquare_le K hK h_admissible
+  have hsteps :=
+    run.accumulatedStepMeanSquare_le_of_isAdmissiblePrefix K hK h_admissible
   have habsorb := errorStepBatchCoefficient_le_half h oracle params Q b h_batch
   have hDpos := errorStepConstant_pos h params
   have hDzero : errorStepConstant h params ≠ 0 := hDpos.ne'
@@ -2150,17 +2153,20 @@ theorem averageGradientErrorMeanSquare_le
         initialStepBound h params / (errorStepConstant h params * K)) * K := by
       field_simp [hDzero]
 
-/-- Lemma 3.4 (6): under `SPIDER.IsSufficientInnerBatchSize`, the average primal
-step mean square has the stated variance and initial terms. -/
-theorem averageStepMeanSquare_le
+/-- Pointwise form of Lemma 3.4 (6): under
+`SPIDER.IsSufficientInnerBatchSize`, the average primal step mean square has the
+stated variance and initial terms. -/
+theorem averageStepMeanSquare_le_of_isAdmissiblePrefix
     (K : ℕ) (hK : 2 ≤ K) (h_admissible : run.IsAdmissiblePrefix K)
     (h_batch : SPIDER.IsSufficientInnerBatchSize h oracle params Q b) :
     (∑ k ∈ Finset.range K, run.stepMeanSquare k) / K ≤
       2 * errorStepConstant h params * oracle.noiseLevel ^ 2 / B +
         2 * initialStepBound h params / K := by
-  have hsteps := run.accumulatedStepMeanSquare_le K hK h_admissible
+  have hsteps :=
+    run.accumulatedStepMeanSquare_le_of_isAdmissiblePrefix K hK h_admissible
   have herrors :=
-    run.averageGradientErrorMeanSquare_le K hK h_admissible h_batch
+    run.averageGradientErrorMeanSquare_le_of_isAdmissiblePrefix K hK
+      h_admissible h_batch
   have hDpos := errorStepConstant_pos h params
   have hDzero : errorStepConstant h params ≠ 0 := hDpos.ne'
   have hKreal : 0 < (K : ℝ) := by positivity
@@ -2206,6 +2212,75 @@ theorem averageStepMeanSquare_le
       add_le_add (le_refl _) herrorsScaled
     _ = 2 * errorStepConstant h params * oracle.noiseLevel ^ 2 / B +
         2 * initialStepBound h params / K := by ring
+
+/-- Lemma 3.4 (4): on an almost-surely admissible prefix of length at least two,
+accumulated step mean square is bounded by the initial allowance and accumulated
+error. -/
+theorem accumulatedStepMeanSquare_le
+    (K : ℕ) (hK : 2 ≤ K) (h_admissible : run.IsAEAdmissiblePrefix K) :
+    ∑ k ∈ Finset.range K, run.stepMeanSquare k ≤
+      initialStepBound h params + errorStepConstant h params *
+        ∑ k ∈ Finset.range K, run.gradientErrorMeanSquare k := by
+  obtain ⟨run', hrun'_admissible, _hpoint, _hmultiplier, hstep, herror⟩ :=
+    h_admissible.exists_pathwiseVersion run K
+  have hstepMeanSquare (k : ℕ) :
+      run'.stepMeanSquare k = run.stepMeanSquare k := by
+    rw [run'.stepMeanSquare_def, run.stepMeanSquare_def]
+    exact integral_congr_ae ((hstep k).fun_comp fun p ↦ ‖p‖ ^ 2)
+  have herrorMeanSquare (k : ℕ) :
+      run'.gradientErrorMeanSquare k = run.gradientErrorMeanSquare k := by
+    rw [run'.gradientErrorMeanSquare_def, run.gradientErrorMeanSquare_def]
+    exact integral_congr_ae ((herror k).fun_comp fun e ↦ ‖e‖ ^ 2)
+  have hbound := run'.accumulatedStepMeanSquare_le_of_isAdmissiblePrefix K hK
+    hrun'_admissible
+  simpa only [hstepMeanSquare, herrorMeanSquare] using hbound
+
+/-- Lemma 3.4 (5): on an almost-surely admissible prefix and under
+`SPIDER.IsSufficientInnerBatchSize`, the average projected-gradient-error mean
+square has the stated variance and initial terms. -/
+theorem averageGradientErrorMeanSquare_le
+    (K : ℕ) (hK : 2 ≤ K) (h_admissible : run.IsAEAdmissiblePrefix K)
+    (h_batch : SPIDER.IsSufficientInnerBatchSize h oracle params Q b) :
+    (∑ k ∈ Finset.range K, run.gradientErrorMeanSquare k) / K ≤
+      2 * oracle.noiseLevel ^ 2 / B +
+        initialStepBound h params / (errorStepConstant h params * K) := by
+  obtain ⟨run', hrun'_admissible, _hpoint, _hmultiplier, hstep, herror⟩ :=
+    h_admissible.exists_pathwiseVersion run K
+  have hstepMeanSquare (k : ℕ) :
+      run'.stepMeanSquare k = run.stepMeanSquare k := by
+    rw [run'.stepMeanSquare_def, run.stepMeanSquare_def]
+    exact integral_congr_ae ((hstep k).fun_comp fun p ↦ ‖p‖ ^ 2)
+  have herrorMeanSquare (k : ℕ) :
+      run'.gradientErrorMeanSquare k = run.gradientErrorMeanSquare k := by
+    rw [run'.gradientErrorMeanSquare_def, run.gradientErrorMeanSquare_def]
+    exact integral_congr_ae ((herror k).fun_comp fun e ↦ ‖e‖ ^ 2)
+  have hbound :=
+    run'.averageGradientErrorMeanSquare_le_of_isAdmissiblePrefix K hK
+      hrun'_admissible h_batch
+  simpa only [hstepMeanSquare, herrorMeanSquare] using hbound
+
+/-- Lemma 3.4 (6): on an almost-surely admissible prefix and under
+`SPIDER.IsSufficientInnerBatchSize`, the average primal step mean square has the
+stated variance and initial terms. -/
+theorem averageStepMeanSquare_le
+    (K : ℕ) (hK : 2 ≤ K) (h_admissible : run.IsAEAdmissiblePrefix K)
+    (h_batch : SPIDER.IsSufficientInnerBatchSize h oracle params Q b) :
+    (∑ k ∈ Finset.range K, run.stepMeanSquare k) / K ≤
+      2 * errorStepConstant h params * oracle.noiseLevel ^ 2 / B +
+        2 * initialStepBound h params / K := by
+  obtain ⟨run', hrun'_admissible, _hpoint, _hmultiplier, hstep, herror⟩ :=
+    h_admissible.exists_pathwiseVersion run K
+  have hstepMeanSquare (k : ℕ) :
+      run'.stepMeanSquare k = run.stepMeanSquare k := by
+    rw [run'.stepMeanSquare_def, run.stepMeanSquare_def]
+    exact integral_congr_ae ((hstep k).fun_comp fun p ↦ ‖p‖ ^ 2)
+  have herrorMeanSquare (k : ℕ) :
+      run'.gradientErrorMeanSquare k = run.gradientErrorMeanSquare k := by
+    rw [run'.gradientErrorMeanSquare_def, run.gradientErrorMeanSquare_def]
+    exact integral_congr_ae ((herror k).fun_comp fun e ↦ ‖e‖ ^ 2)
+  have hbound := run'.averageStepMeanSquare_le_of_isAdmissiblePrefix K hK
+    hrun'_admissible h_batch
+  simpa only [hstepMeanSquare, herrorMeanSquare] using hbound
 
 end LALM.StochasticRun
 
