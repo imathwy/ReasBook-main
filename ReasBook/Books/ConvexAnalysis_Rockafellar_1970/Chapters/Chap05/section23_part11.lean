@@ -36,11 +36,11 @@ noncomputable def unitBallBarrierFunction {n : ℕ} (x : Fin n → ℝ) : EReal 
 
 theorem subdifferential_indicatorFunction_eq_normalConeAt_of_mem {n : ℕ}
     {C : Set (Fin n → ℝ)} {x : Fin n → ℝ} (hx : x ∈ C) :
-    subdifferentialAt (indicatorFunction C) x = dualNormalConeAt C x := by
+    subdifferentialAt (indicatorFunction C) x = normalConeAt C x := by
   ext xStar
   constructor
   · intro hxStar
-    refine (mem_dualNormalConeAt_iff).2 ⟨hx, ?_⟩
+    refine (mem_normalConeAt_iff).2 ⟨hx, ?_⟩
     intro z hz
     have hineq :
         indicatorFunction C z ≥
@@ -51,7 +51,7 @@ theorem subdifferential_indicatorFunction_eq_normalConeAt_of_mem {n : ℕ}
     exact_mod_cast hineq'
   · intro hxStar z
     by_cases hz : z ∈ C
-    · have hzle : xStar (z - x) ≤ 0 := (mem_dualNormalConeAt_iff.1 hxStar).2 z hz
+    · have hzle : xStar (z - x) ≤ 0 := (mem_normalConeAt_iff.1 hxStar).2 z hz
       have hzle' : (((xStar (z - x) : ℝ) : EReal)) ≤ (0 : EReal) := by
         exact_mod_cast hzle
       calc
@@ -84,7 +84,7 @@ theorem subdifferential_indicatorFunction_eq_empty_of_not_mem {n : ℕ}
 sublevel set is the polar of the translated `≤ 0` sublevel directions. -/
 lemma helperForTheorem_23_7_euclideanNormalCone_preimage_eq_polar_translatedSublevel
     {n : ℕ} (f : (Fin n → ℝ) → EReal) (x : Fin n → ℝ) :
-    ((dotProductEquiv ℝ (Fin n)) ⁻¹' dualNormalConeAt {z : Fin n → ℝ | f z ≤ f x} x) =
+    ((dotProductEquiv ℝ (Fin n)) ⁻¹' normalConeAt {z : Fin n → ℝ | f z ≤ f x} x) =
       ((dotProductEquiv ℝ (Fin n)) ⁻¹'
         polarCone {y : Fin n → ℝ | translatedDifferenceFunctionAt f x y ≤ 0}) := by
   ext v
@@ -92,7 +92,7 @@ lemma helperForTheorem_23_7_euclideanNormalCone_preimage_eq_polar_translatedSubl
   · intro hv
     -- Read normal-cone membership as the supporting inequality on the original sublevel set.
     have hvNormal :
-        dotProductEquiv ℝ (Fin n) v ∈ dualNormalConeAt {z : Fin n → ℝ | f z ≤ f x} x := hv
+        dotProductEquiv ℝ (Fin n) v ∈ normalConeAt {z : Fin n → ℝ | f z ≤ f x} x := hv
     refine (mem_polarCone_iff
       (E := Fin n → ℝ)
       (K := {y : Fin n → ℝ | translatedDifferenceFunctionAt f x y ≤ 0})
@@ -102,7 +102,7 @@ lemma helperForTheorem_23_7_euclideanNormalCone_preimage_eq_polar_translatedSubl
       exact (EReal.sub_nonpos).1 (by simpa [translatedDifferenceFunctionAt] using hy)
     have hyNormal :
         (dotProductEquiv ℝ (Fin n) v) ((x + y) - x) ≤ 0 :=
-      (mem_dualNormalConeAt_iff.1 hvNormal).2 (x + y) hySublevel
+      (mem_normalConeAt_iff.1 hvNormal).2 (x + y) hySublevel
     -- Translating by `x` turns the normal-cone inequality into the polar inequality on `y`.
     simpa [dotProduct_comm, sub_eq_add_neg, add_assoc, add_left_comm, add_comm] using hyNormal
   · intro hv
@@ -110,7 +110,7 @@ lemma helperForTheorem_23_7_euclideanNormalCone_preimage_eq_polar_translatedSubl
     have hvPolar :
         dotProductEquiv ℝ (Fin n) v ∈
           polarCone {y : Fin n → ℝ | translatedDifferenceFunctionAt f x y ≤ 0} := hv
-    refine (mem_dualNormalConeAt_iff).2 ?_
+    refine (mem_normalConeAt_iff).2 ?_
     refine ⟨by simp, ?_⟩
     intro z hz
     have hzTranslated :
@@ -838,7 +838,7 @@ theorem normalCone_sublevelSet_eq_closure_convexConeHull_subdifferential {n : �
     (f : (Fin n → ℝ) → EReal)
     (hproper : ProperConvexFunctionOn Set.univ f) (x : Fin n → ℝ)
     (hsub : Set.Nonempty (subdifferentialAt f x)) (hnotmin : ∃ z, f z < f x) :
-    ((dotProductEquiv ℝ (Fin n)) ⁻¹' dualNormalConeAt {z | f z ≤ f x} x) =
+    ((dotProductEquiv ℝ (Fin n)) ⁻¹' normalConeAt {z | f z ≤ f x} x) =
       closure ↑(ConvexCone.hull ℝ (((dotProductEquiv ℝ (Fin n)) ⁻¹' subdifferentialAt f x))) := by
   -- Route correction: the remaining Lean blocker is the cone-identification package, not the
   -- initial normal-cone reduction. Once the translated cone/support equality and the vectorized
@@ -906,7 +906,7 @@ theorem normalCone_sublevelSet_eq_closure_convexConeHull_subdifferential {n : �
     refine ⟨(dotProductEquiv ℝ (Fin n)).symm g, ?_⟩
     simpa [S] using hg
   calc
-    ((dotProductEquiv ℝ (Fin n)) ⁻¹' dualNormalConeAt {z | f z ≤ f x} x) =
+    ((dotProductEquiv ℝ (Fin n)) ⁻¹' normalConeAt {z | f z ≤ f x} x) =
         ((dotProductEquiv ℝ (Fin n)) ⁻¹' polarCone D) := by
           simpa [D] using
             helperForTheorem_23_7_euclideanNormalCone_preimage_eq_polar_translatedSublevel f x

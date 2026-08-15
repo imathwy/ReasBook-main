@@ -889,7 +889,7 @@ lemma helperForTheorem_25_6_preimage_eq_empty_of_not_mem_effectiveDomain
     ((dotProductEquiv Real (Fin n)) ⁻¹' subdifferentialAt f x) =
       closure (convexHull Real (gradientLimitVectorsAt f x)) +
         ((dotProductEquiv Real (Fin n)) ⁻¹'
-          dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x) := by
+          normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x) := by
   have hfxTop : f x = ⊤ := by
     -- Off the effective domain of a univ-defined function, the function value must be `⊤`.
     by_contra hfxTop
@@ -910,10 +910,10 @@ lemma helperForTheorem_25_6_preimage_eq_empty_of_not_mem_effectiveDomain
       simp at hxStar
   have hnormalEmpty :
       ((dotProductEquiv Real (Fin n)) ⁻¹'
-          dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x) = ∅ := by
+          normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x) = ∅ := by
     -- The normal cone is empty away from the base set because membership records `x ∈ dom f`.
     ext v
-    simp [Set.preimage, mem_dualNormalConeAt_iff, hx]
+    simp [Set.preimage, mem_normalConeAt_iff, hx]
   -- Once the normal-cone term vanishes, the Minkowski sum on the right is empty as well.
   rw [hsubEmpty, hnormalEmpty]
   simp

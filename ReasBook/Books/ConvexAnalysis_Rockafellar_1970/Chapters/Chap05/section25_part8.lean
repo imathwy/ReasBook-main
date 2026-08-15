@@ -270,7 +270,7 @@ lemma helperForTheorem_25_6_preimage_normalCone_eq_singleton_zero_of_mem_interio
     {x : Fin n → Real}
     (hx : x ∈ interior (effectiveDomain (Set.univ : Set (Fin n → Real)) f)) :
     ((dotProductEquiv Real (Fin n)) ⁻¹'
-        dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x) =
+        normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x) =
       ({0} : Set (Fin n → Real)) := by
   let domf : Set (Fin n → Real) := effectiveDomain (Set.univ : Set (Fin n → Real)) f
   have hproper : ProperConvexFunctionOn (Set.univ : Set (Fin n → Real)) f :=
@@ -293,7 +293,7 @@ lemma helperForTheorem_25_6_preimage_normalCone_eq_singleton_zero_of_mem_interio
         (ε : Real) * (v ⬝ᵥ v) ≤ 0 := by
       -- Evaluating the normal inequality at the forward interior point controls `‖v‖²`.
       simpa [domf, dotProductEquiv_apply_apply, smul_eq_mul, sub_eq_add_neg] using
-        (mem_dualNormalConeAt_iff.1 hv).2 (x + ε • v) hplus
+        (mem_normalConeAt_iff.1 hv).2 (x + ε • v) hplus
     have hsqZero : v ⬝ᵥ v = 0 := by
       have hsqNonneg : 0 ≤ v ⬝ᵥ v := dotProduct_self_nonneg _
       nlinarith
@@ -302,7 +302,7 @@ lemma helperForTheorem_25_6_preimage_normalCone_eq_singleton_zero_of_mem_interio
   · intro hv
     rw [Set.mem_singleton_iff] at hv
     rw [Set.mem_preimage]
-    refine (mem_dualNormalConeAt_iff).2 ?_
+    refine (mem_normalConeAt_iff).2 ?_
     constructor
     · exact interior_subset hx
     · intro z hz
@@ -320,7 +320,7 @@ lemma helperForTheorem_25_6_add_mem_preimageSubdifferential_of_mem_effectiveDoma
     (hu : u ∈ ((dotProductEquiv Real (Fin n)) ⁻¹' subdifferentialAt f x))
     (hv :
       v ∈ ((dotProductEquiv Real (Fin n)) ⁻¹'
-        dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x)) :
+        normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x)) :
     u + v ∈ ((dotProductEquiv Real (Fin n)) ⁻¹' subdifferentialAt f x) := by
   let domf : Set (Fin n → Real) := effectiveDomain (Set.univ : Set (Fin n → Real)) f
   let fTwo : Fin 2 → (Fin n → Real) → EReal :=
@@ -395,7 +395,7 @@ lemma helperForTheorem_25_6_add_mem_preimageSubdifferential_of_mem_effectiveDoma
       simp [indicatorFunction, domf, hy, hyTop]
   have hsumAt :
       subdifferentialAt f x =
-        subdifferentialAt f x + dualNormalConeAt domf x := by
+        subdifferentialAt f x + normalConeAt domf x := by
     calc
       subdifferentialAt f x = subdifferentialAt (fun y => ∑ i, fTwo i y) x := by
         rw [hsumFn]
@@ -403,10 +403,10 @@ lemma helperForTheorem_25_6_add_mem_preimageSubdifferential_of_mem_effectiveDoma
           subdifferentialAt f x +
             subdifferentialAt (indicatorFunction domf) x := by
               simpa [fTwo, Fin.sum_univ_two] using hsum
-      _ = subdifferentialAt f x + dualNormalConeAt domf x := by
+      _ = subdifferentialAt f x + normalConeAt domf x := by
             rw [subdifferential_indicatorFunction_eq_normalConeAt_of_mem hx]
   have hu' : dotProductEquiv Real (Fin n) u ∈ subdifferentialAt f x := hu
-  have hv' : dotProductEquiv Real (Fin n) v ∈ dualNormalConeAt domf x := hv
+  have hv' : dotProductEquiv Real (Fin n) v ∈ normalConeAt domf x := hv
   rw [Set.mem_preimage]
   rw [hsumAt]
   refine Set.mem_add.2 ?_
@@ -425,16 +425,16 @@ lemma helperForTheorem_25_6_preimageNormalCone_subset_recessionCone_preimageSubd
     (hx : x ∈ effectiveDomain (Set.univ : Set (Fin n → Real)) f)
     (hv :
       v ∈ ((dotProductEquiv Real (Fin n)) ⁻¹'
-        dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x)) :
+        normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x)) :
     v ∈ Set.recessionCone (((dotProductEquiv Real (Fin n)) ⁻¹' subdifferentialAt f x) : Set
       (Fin n → Real)) := by
   intro u hu t ht
   have htv :
       t • v ∈ ((dotProductEquiv Real (Fin n)) ⁻¹'
-        dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x) := by
+        normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x) := by
     rw [Set.mem_preimage] at hv ⊢
-    rcases (mem_dualNormalConeAt_iff.1 hv) with ⟨hxDom, hvIneq⟩
-    refine (mem_dualNormalConeAt_iff).2 ?_
+    rcases (mem_normalConeAt_iff.1 hv) with ⟨hxDom, hvIneq⟩
+    refine (mem_normalConeAt_iff).2 ?_
     constructor
     · exact hxDom
     · intro z hz
@@ -458,7 +458,7 @@ lemma helperForTheorem_25_6_forwardInclusion_of_mem_effectiveDomain
     (hx : x ∈ effectiveDomain (Set.univ : Set (Fin n → Real)) f) :
     closure (convexHull Real (gradientLimitVectorsAt f x)) +
         ((dotProductEquiv Real (Fin n)) ⁻¹'
-          dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x) ⊆
+          normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x) ⊆
       ((dotProductEquiv Real (Fin n)) ⁻¹' subdifferentialAt f x) := by
   intro y hy
   rcases Set.mem_add.1 hy with ⟨u, hu, v, hv, rfl⟩
@@ -700,13 +700,13 @@ lemma helperForTheorem_25_6_exists_exposingDirection_singletonNormalFace_polar_p
     ∃ y : Fin n → Real,
       subdifferentialNormalFaceAt f x y = ({p} : Set (Fin n → Real)) ∧
         ∀ v ∈ ((dotProductEquiv Real (Fin n)) ⁻¹'
-            dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x),
+            normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x),
           dotProduct v y ≤ 0 := by
   let C : Set (Fin n → Real) :=
     ((dotProductEquiv Real (Fin n)) ⁻¹' subdifferentialAt f x)
   let K : Set (Fin n → Real) :=
     ((dotProductEquiv Real (Fin n)) ⁻¹'
-      dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x)
+      normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x)
   rcases
       helperForTheorem_25_6_exists_exposingDirection_singletonNormalFace_of_mem_exposedPoints
         (f := f) (x := x) hp with
@@ -741,13 +741,13 @@ lemma helperForTheorem_25_6_exists_exposingDirection_singletonNormalFace_strict_
     ∃ y : Fin n → Real,
       subdifferentialNormalFaceAt f x y = ({p} : Set (Fin n → Real)) ∧
         ∀ v ∈ ((dotProductEquiv Real (Fin n)) ⁻¹'
-            dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x),
+            normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x),
           v ≠ 0 → dotProduct v y < 0 := by
   let C : Set (Fin n → Real) :=
     ((dotProductEquiv Real (Fin n)) ⁻¹' subdifferentialAt f x)
   let K : Set (Fin n → Real) :=
     ((dotProductEquiv Real (Fin n)) ⁻¹'
-      dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x)
+      normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x)
   obtain ⟨y, hFace, hyPolar⟩ :=
     helperForTheorem_25_6_exists_exposingDirection_singletonNormalFace_polar_preimageNormalCone_of_mem_exposedPoints
       (f := f) hf hdom hx hp
@@ -796,7 +796,7 @@ lemma helperForTheorem_25_6_exists_admissibleRay_of_strict_polar_preimageNormalC
     (hx : x ∈ effectiveDomain (Set.univ : Set (Fin n → Real)) f)
     (hyStrict :
       ∀ v ∈ ((dotProductEquiv Real (Fin n)) ⁻¹'
-          dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x),
+          normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x),
         v ≠ 0 → dotProduct v y < 0) :
     ∃ t : Real, 0 < t ∧
       x + t • y ∈ interior (effectiveDomain (Set.univ : Set (Fin n → Real)) f) := by
@@ -955,9 +955,9 @@ lemma helperForTheorem_25_6_exists_admissibleRay_of_strict_polar_preimageNormalC
       intro u hu
       simpa [dotProductEquiv_apply_apply, dotProduct_comm] using hpolar u hu
     have hbNormal :
-        b ∈ ((dotProductEquiv Real (Fin n)) ⁻¹' dualNormalConeAt domf x) := by
+        b ∈ ((dotProductEquiv Real (Fin n)) ⁻¹' normalConeAt domf x) := by
       rw [Set.mem_preimage]
-      refine (mem_dualNormalConeAt_iff).2 ?_
+      refine (mem_normalConeAt_iff).2 ?_
       constructor
       · simpa [domf] using hx
       · intro z hz

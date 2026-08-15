@@ -250,8 +250,8 @@ lemma helperForTheorem_5_24_5_verticalLine_is_subdifferentialScalarGraph_indicat
       have hp1' : p.1 = a := by simpa using hp1
       have hxMem : scalarPoint p.1 ∈ C := by simp [C, hp1']
       have hpNormal :
-          dotProductEquiv ℝ (Fin 1) (scalarPoint p.2) ∈ dualNormalConeAt C (scalarPoint p.1) := by
-        simp [C, hp1', dualNormalConeAt, Set.mem_singleton_iff]
+          dotProductEquiv ℝ (Fin 1) (scalarPoint p.2) ∈ normalConeAt C (scalarPoint p.1) := by
+        simp [C, hp1', normalConeAt, Set.mem_singleton_iff]
       have hpSub :
           dotProductEquiv ℝ (Fin 1) (scalarPoint p.2) ∈
             ∂ (indicatorFunction C) (scalarPoint p.1) := by

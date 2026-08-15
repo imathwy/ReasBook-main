@@ -24,19 +24,30 @@
 - Zebo Liu
 - Zhiyan Wang
 - Zichen Wang
+- xdedlhqhw (@xdedlhqhw)
 
 ## Coverage
 
-Chapters 1–5: basic concepts, topological properties, duality correspondences, representation & inequalities, and differential theory.
+Chapters 1–8: basic concepts, topological properties, duality correspondences, representation and
+inequalities, differential theory, constrained extremum problems, saddle functions and minimax
+theory, and bifunction convolution/composition calculus.
 
 ## Statistics
 
-- **Lean code:** 331 `.lean` files, ~249,000 lines
-- **Proof completion:** unknown (pending re-count with new content)
+- **Declarations:** 10,666 (theorem/lemma/example: 9,164; other: 1,502)
+- **Lean code:** 557 `.lean` files, 421,724 lines
+- **Proof completion:** 10,666 / 10,666 = 100%
+- **Remaining placeholders:** `sorry`: 0; `admit`: 0
 
 ## Metadata
 
-See [`book.yml`](book.yml).
+- **Full title:** *Convex Analysis*
+- **Author:** R. Tyrrell Rockafellar
+- **Edition:** Unspecified
+- **Year:** 1970
+- **Lean toolchain:** `leanprover/lean4:v4.26.0`
+
+See [`book.yml`](book.yml) for the complete metadata record.
 
 
 
@@ -77,3 +88,12 @@ See [`book.yml`](book.yml).
 - 5.24 Subdifferential Calculus ([Verso](https://optpku.github.io/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap05/section24/)) ([Documentation](https://optpku.github.io/ReasBook/docs/Books/ConvexAnalysis_Rockafellar_1970/Chapters/Chap05/section24.html)) ([Lean source](./Chapters/Chap05/))
 - 5.25 Directional Derivatives ([Verso](https://optpku.github.io/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap05/section25/)) ([Documentation](https://optpku.github.io/ReasBook/docs/Books/ConvexAnalysis_Rockafellar_1970/Chapters/Chap05/section25.html)) ([Lean source](./Chapters/Chap05/))
 - 5.26 Monotone Operators ([Verso](https://optpku.github.io/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap05/section26/)) ([Documentation](https://optpku.github.io/ReasBook/docs/Books/ConvexAnalysis_Rockafellar_1970/Chapters/Chap05/section26.html)) ([Lean source](./Chapters/Chap05/))
+## Chapter 06 -- Part VI: Constrained Extremum Problems
+
+- Sections 27–32: minimization, convex programs, perturbations, duality, and Kuhn–Tucker theory ([Lean source](./Chapters/Chap06/))
+## Chapter 07 -- Part VII: Saddle Functions and Minimax Theory
+
+- Sections 33–37: saddle functions, closures, adjoints, Lagrangians, and minimax theory ([Lean source](./Chapters/Chap07/))
+## Chapter 08 -- Part VIII: Infimal Convolution and Bifunction Calculus
+
+- Sections 38–39: bifunction convolution, composition, adjointness, and associated duality results ([Lean source](./Chapters/Chap08/))

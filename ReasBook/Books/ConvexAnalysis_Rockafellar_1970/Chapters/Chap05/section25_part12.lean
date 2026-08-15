@@ -36,7 +36,7 @@ lemma helperForTheorem_25_6_preimageSubdifferential_contains_no_lines_of_mem_eff
     ((dotProductEquiv Real (Fin n)) ⁻¹' subdifferentialAt f x)
   let K : Set (Fin n → Real) :=
     ((dotProductEquiv Real (Fin n)) ⁻¹'
-      dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x)
+      normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x)
   have hproper : ProperConvexFunctionOn (Set.univ : Set (Fin n → Real)) f :=
     helperForTheorem_25_6_properConvexFunctionOn (f := f) hf
   have hfConv : ConvexFunction f := by
@@ -50,7 +50,7 @@ lemma helperForTheorem_25_6_preimageSubdifferential_contains_no_lines_of_mem_eff
     intro d hd
     rcases hCne with ⟨p0, hp0C⟩
     rw [Set.mem_preimage]
-    refine (mem_dualNormalConeAt_iff).2 ?_
+    refine (mem_normalConeAt_iff).2 ?_
     constructor
     · simpa using hx
     · intro z hz
@@ -149,8 +149,8 @@ lemma helperForTheorem_25_6_preimageSubdifferential_contains_no_lines_of_mem_eff
       ∀ z ∈ effectiveDomain (Set.univ : Set (Fin n → Real)) f,
         dotProduct y (z - x) = 0 := by
     intro z hz
-    rcases (mem_dualNormalConeAt_iff.1 hyK) with ⟨_hxDom, hyIneq⟩
-    rcases (mem_dualNormalConeAt_iff.1 hyNegK) with ⟨_hxDom', hyNegIneq⟩
+    rcases (mem_normalConeAt_iff.1 hyK) with ⟨_hxDom, hyIneq⟩
+    rcases (mem_normalConeAt_iff.1 hyNegK) with ⟨_hxDom', hyNegIneq⟩
     have hle : dotProduct y (z - x) ≤ 0 := by
       simpa [dotProductEquiv_apply_apply] using hyIneq z hz
     have hge : 0 ≤ dotProduct y (z - x) := by
@@ -312,7 +312,7 @@ lemma helperForTheorem_25_6_reverseInclusion_chapter18_of_mem_effectiveDomain
     ((dotProductEquiv Real (Fin n)) ⁻¹' subdifferentialAt f x) ⊆
       closure (convexHull Real (gradientLimitVectorsAt f x)) +
         ((dotProductEquiv Real (Fin n)) ⁻¹'
-          dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x) := by
+          normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x) := by
   by_cases hxInt : x ∈ interior (effectiveDomain (Set.univ : Set (Fin n → Real)) f)
   · have hInterior :
         ((dotProductEquiv Real (Fin n)) ⁻¹' subdifferentialAt f x) =
@@ -321,7 +321,7 @@ lemma helperForTheorem_25_6_reverseInclusion_chapter18_of_mem_effectiveDomain
         (f := f) hf hf_closed hxInt
     have hNormalZero :
         ((dotProductEquiv Real (Fin n)) ⁻¹'
-            dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x) =
+            normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x) =
           ({0} : Set (Fin n → Real)) :=
       helperForTheorem_25_6_preimage_normalCone_eq_singleton_zero_of_mem_interior
         (f := f) hf hxInt
@@ -335,7 +335,7 @@ lemma helperForTheorem_25_6_reverseInclusion_chapter18_of_mem_effectiveDomain
     let A : Set (Fin n → Real) := closure (convexHull Real S)
     let K : Set (Fin n → Real) :=
       ((dotProductEquiv Real (Fin n)) ⁻¹'
-        dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x)
+        normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x)
     let C : Set (Fin n → Real) :=
       ((dotProductEquiv Real (Fin n)) ⁻¹' subdifferentialAt f x)
     let B : Set (Fin n → Real) := A + K
@@ -361,9 +361,9 @@ lemma helperForTheorem_25_6_reverseInclusion_chapter18_of_mem_effectiveDomain
     have hKconv : Convex Real K := by
       intro u hu v hv a b ha hb hab
       rw [Set.mem_preimage] at hu hv ⊢
-      refine (mem_dualNormalConeAt_iff).2 ?_
-      rcases (mem_dualNormalConeAt_iff.1 hu) with ⟨hxDom, huIneq⟩
-      rcases (mem_dualNormalConeAt_iff.1 hv) with ⟨_hxDom, hvIneq⟩
+      refine (mem_normalConeAt_iff).2 ?_
+      rcases (mem_normalConeAt_iff.1 hu) with ⟨hxDom, huIneq⟩
+      rcases (mem_normalConeAt_iff.1 hv) with ⟨_hxDom, hvIneq⟩
       constructor
       · exact hxDom
       · intro z hz
@@ -383,7 +383,7 @@ lemma helperForTheorem_25_6_reverseInclusion_chapter18_of_mem_effectiveDomain
     by_cases hCne : C.Nonempty
     · have hKzero : (0 : Fin n → Real) ∈ K := by
         rw [Set.mem_preimage]
-        refine (mem_dualNormalConeAt_iff).2 ?_
+        refine (mem_normalConeAt_iff).2 ?_
         constructor
         · simpa using hx
         · intro z hz
@@ -407,8 +407,8 @@ lemma helperForTheorem_25_6_reverseInclusion_chapter18_of_mem_effectiveDomain
           ∀ {v : Fin n → Real}, v ∈ K → ∀ {t : Real}, 0 ≤ t → t • v ∈ K := by
         intro v hv t ht
         rw [Set.mem_preimage] at hv ⊢
-        rcases (mem_dualNormalConeAt_iff.1 hv) with ⟨hxDom, hvIneq⟩
-        refine (mem_dualNormalConeAt_iff).2 ?_
+        rcases (mem_normalConeAt_iff.1 hv) with ⟨hxDom, hvIneq⟩
+        refine (mem_normalConeAt_iff).2 ?_
         constructor
         · exact hxDom
         · intro z hz
@@ -430,9 +430,9 @@ lemma helperForTheorem_25_6_reverseInclusion_chapter18_of_mem_effectiveDomain
         have htdK : t • d ∈ K := hKsmul hdK ht
         have hsumK : k + t • d ∈ K := by
           rw [Set.mem_preimage] at hk htdK ⊢
-          rcases (mem_dualNormalConeAt_iff.1 hk) with ⟨hxDom, hkIneq⟩
-          rcases (mem_dualNormalConeAt_iff.1 htdK) with ⟨_hxDom, htdIneq⟩
-          refine (mem_dualNormalConeAt_iff).2 ?_
+          rcases (mem_normalConeAt_iff.1 hk) with ⟨hxDom, hkIneq⟩
+          rcases (mem_normalConeAt_iff.1 htdK) with ⟨_hxDom, htdIneq⟩
+          refine (mem_normalConeAt_iff).2 ?_
           constructor
           · exact hxDom
           · intro z hz
@@ -447,7 +447,7 @@ lemma helperForTheorem_25_6_reverseInclusion_chapter18_of_mem_effectiveDomain
         intro d hd
         rcases hCne with ⟨p, hpC⟩
         rw [Set.mem_preimage]
-        refine (mem_dualNormalConeAt_iff).2 ?_
+        refine (mem_normalConeAt_iff).2 ?_
         constructor
         · simpa using hx
         · intro z hz
@@ -548,8 +548,8 @@ lemma helperForTheorem_25_6_reverseInclusion_chapter18_of_mem_effectiveDomain
             ∀ z ∈ effectiveDomain (Set.univ : Set (Fin n → Real)) f,
               dotProduct y (z - x) = 0 := by
           intro z hz
-          rcases (mem_dualNormalConeAt_iff.1 hyK) with ⟨_hxDom, hyIneq⟩
-          rcases (mem_dualNormalConeAt_iff.1 hyNegK) with ⟨_hxDom', hyNegIneq⟩
+          rcases (mem_normalConeAt_iff.1 hyK) with ⟨_hxDom, hyIneq⟩
+          rcases (mem_normalConeAt_iff.1 hyNegK) with ⟨_hxDom', hyNegIneq⟩
           have hle : dotProduct y (z - x) ≤ 0 := by
             simpa [dotProductEquiv_apply_apply] using hyIneq z hz
           have hge : 0 ≤ dotProduct y (z - x) := by
@@ -632,7 +632,7 @@ lemma helperForTheorem_25_6_reverseInclusion_of_mem_effectiveDomain
     ((dotProductEquiv Real (Fin n)) ⁻¹' subdifferentialAt f x) ⊆
       closure (convexHull Real (gradientLimitVectorsAt f x)) +
         ((dotProductEquiv Real (Fin n)) ⁻¹'
-          dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x) := by
+          normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x) := by
   exact
     helperForTheorem_25_6_reverseInclusion_chapter18_of_mem_effectiveDomain
       (f := f) hf hf_closed hdom hx
@@ -655,7 +655,7 @@ theorem closedProperConvex_subdifferential_preimage_eq_closure_convexHull_gradie
     ((dotProductEquiv Real (Fin n)) ⁻¹' subdifferentialAt f x) =
       closure (convexHull Real (gradientLimitVectorsAt f x)) +
         ((dotProductEquiv Real (Fin n)) ⁻¹'
-          dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x) := by
+          normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x) := by
   by_cases hx : x ∈ effectiveDomain (Set.univ : Set (Fin n → Real)) f
   · apply Set.Subset.antisymm
     · -- Rockafellar's reverse inclusion is the Chapter 18 decomposition.

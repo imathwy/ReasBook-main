@@ -205,9 +205,9 @@ is called the normal cone to `C` at `a`. -/
 def IsNormalToConvexSet (n : Nat) (C : Set (Fin n → Real)) (a xstar : Fin n → Real) : Prop :=
   a ∈ C ∧ ∀ x ∈ C, (x - a) ⬝ᵥ xstar ≤ 0
 
-/-- Definition 2.7.10. The normal cone to `C` at `a` is the set of all vectors normal to `C`
-at `a`. -/
-def normalConeAt (n : Nat) (C : Set (Fin n → Real)) (a : Fin n → Real) :
+/-- Definition 2.7.10. The Euclidean-vector version of the normal cone to `C` at `a`. This early
+Chapter 2 API is kept distinct from the later canonical dual-valued `normalConeAt`. -/
+def euclideanNormalConeAt (n : Nat) (C : Set (Fin n → Real)) (a : Fin n → Real) :
     Set (Fin n → Real) :=
   {xstar : Fin n → Real | IsNormalToConvexSet n C a xstar}
 
@@ -243,9 +243,9 @@ lemma barrierCone_add_mem (n : Nat) (C : Set (Fin n → Real)) {xstar1 : Fin n �
 
 /-- The normal cone at `a` is closed under addition. -/
 lemma normalConeAt_add_mem (n : Nat) (C : Set (Fin n → Real)) (a : Fin n → Real)
-    {xstar1 : Fin n → Real} (hx1 : xstar1 ∈ normalConeAt n C a)
-    {xstar2 : Fin n → Real} (hx2 : xstar2 ∈ normalConeAt n C a) :
-    xstar1 + xstar2 ∈ normalConeAt n C a := by
+    {xstar1 : Fin n → Real} (hx1 : xstar1 ∈ euclideanNormalConeAt n C a)
+    {xstar2 : Fin n → Real} (hx2 : xstar2 ∈ euclideanNormalConeAt n C a) :
+    xstar1 + xstar2 ∈ euclideanNormalConeAt n C a := by
   rcases hx1 with ⟨ha1, hx1⟩
   rcases hx2 with ⟨_, hx2⟩
   refine ⟨ha1, ?_⟩
@@ -257,8 +257,8 @@ lemma normalConeAt_add_mem (n : Nat) (C : Set (Fin n → Real)) (a : Fin n → R
 
 /-- The normal cone at `a` is closed under positive scalar multiplication. -/
 lemma normalConeAt_smul_mem (n : Nat) (C : Set (Fin n → Real)) (a : Fin n → Real)
-    {xstar : Fin n → Real} (hx : xstar ∈ normalConeAt n C a) {t : Real} (ht : 0 < t) :
-    t • xstar ∈ normalConeAt n C a := by
+    {xstar : Fin n → Real} (hx : xstar ∈ euclideanNormalConeAt n C a) {t : Real} (ht : 0 < t) :
+    t • xstar ∈ euclideanNormalConeAt n C a := by
   rcases hx with ⟨ha, hx⟩
   refine ⟨ha, ?_⟩
   intro x hxC
@@ -271,8 +271,8 @@ lemma normalConeAt_smul_mem (n : Nat) (C : Set (Fin n → Real)) (a : Fin n → 
 `C` at `a` is a convex cone. -/
 theorem normalConeAt_isConvexCone (n : Nat) (C : Set (Fin n → Real)) (a : Fin n → Real)
     (_hC : Convex Real C) (_ha : a ∈ C) :
-    IsConvexCone n (normalConeAt n C a) := by
-  refine (isConvexCone_iff_add_closed_and_pos_smul_closed n (normalConeAt n C a)).2 ?_
+    IsConvexCone n (euclideanNormalConeAt n C a) := by
+  refine (isConvexCone_iff_add_closed_and_pos_smul_closed n (euclideanNormalConeAt n C a)).2 ?_
   refine ⟨?_, ?_⟩
   · intro x hx y hy
     exact normalConeAt_add_mem n C a hx hy

@@ -4,6 +4,9 @@ import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02
 import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap03
 import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap04
 import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap05
+import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap06
+import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap07
+import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap08
 
 /-!
 Overview page for Convex Analysis (Rockafellar, 1970).
@@ -58,6 +61,18 @@ Chapter 05 -- Part V: Differential Theory
 - 5.24 Subdifferential Calculus ([Documentation](/ReasBook/docs/Books/ConvexAnalysis_Rockafellar_1970/Chapters/Chap05/section24.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap05/section24/))
 - 5.25 Directional Derivatives ([Documentation](/ReasBook/docs/Books/ConvexAnalysis_Rockafellar_1970/Chapters/Chap05/section25.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap05/section25/))
 - 5.26 Monotone Operators ([Documentation](/ReasBook/docs/Books/ConvexAnalysis_Rockafellar_1970/Chapters/Chap05/section26.html)) ([Verso](/ReasBook/books/convexanalysis_rockafellar_1970/chapters/chap05/section26/))
+
+Chapter 06 -- Part VI: Constrained Extremum Problems
+
+- Sections 27–32: minimization, convex programs, perturbations, duality, and Kuhn–Tucker theory.
+
+Chapter 07 -- Part VII: Saddle Functions and Minimax Theory
+
+- Sections 33–37: saddle functions, closures, adjoints, Lagrangians, and minimax theory.
+
+Chapter 08 -- Part VIII: Infimal Convolution and Bifunction Calculus
+
+- Sections 38–39: bifunction convolution, composition, adjointness, and associated duality results.
 
 -/
 

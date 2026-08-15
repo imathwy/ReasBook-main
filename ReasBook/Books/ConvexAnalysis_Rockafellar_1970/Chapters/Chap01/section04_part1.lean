@@ -756,17 +756,7 @@ noncomputable def hessianMatrix {n : Nat} (f : (Fin n → ℝ) → ℝ) (x : Fin
 /-- Over `ℝ`, the quadratic form in `Matrix.PosSemidef` uses no conjugation. -/
 lemma posSemidef_iff_real {n : Nat} (M : Matrix (Fin n) (Fin n) ℝ) :
     Matrix.PosSemidef M ↔ M.IsHermitian ∧ ∀ x, 0 ≤ x ⬝ᵥ (M *ᵥ x) := by
-  constructor
-  · intro h
-    rcases (Matrix.posSemidef_iff_dotProduct_mulVec (M := M)).1 h with ⟨hHerm, hQuad⟩
-    refine ⟨hHerm, ?_⟩
-    intro x
-    simpa using hQuad x
-  · intro h
-    refine (Matrix.posSemidef_iff_dotProduct_mulVec (M := M)).2 ?_
-    refine ⟨h.1, ?_⟩
-    intro x
-    simpa using h.2 x
+  simpa using (Matrix.posSemidef_iff_dotProduct_mulVec (M := M))
 
 /-- Derivative along a line equals the Fréchet derivative applied to the direction. -/
 lemma line_deriv_eq_fderiv {n : Nat} {f : (Fin n → ℝ) → ℝ} {y z : Fin n → ℝ} {t : ℝ}
