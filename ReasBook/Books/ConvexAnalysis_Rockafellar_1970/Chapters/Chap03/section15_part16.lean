@@ -160,7 +160,11 @@ lemma fenchelConjugate_matrix_quadraticHalf_of_posDef {n : ℕ}
       _ = x ⬝ᵥ Qlin y := by simp [Qlin, dotProduct_comm]
   have hQpsd : ∀ x : Fin n → ℝ, 0 ≤ x ⬝ᵥ Qlin x := by
     intro x
-    exact Matrix.PosSemidef.dotProduct_mulVec_nonneg hQpos.posSemidef x
+    by_cases hx : x = 0
+    · simp [hx, Qlin]
+    · have hpos : 0 < x ⬝ᵥ Qlin x := by
+        simpa [Qlin] using hQpos.dotProduct_mulVec_pos hx
+      exact le_of_lt hpos
   have hconj :=
     fenchelConjugate_quadraticHalfLinear_pseudoinverse (n := n) (Q := Qlin) (Q' := QlinInv)
       (P_L := P_L) (L := L) (hL := rfl) hQQ' hQ'Q hP_L_id hQsymm' hQpsd
@@ -244,7 +248,11 @@ theorem matrix_quadraticGauge_isClosedGauge_isNormGauge_and_polar {n : ℕ}
   rcases hcor' with ⟨hk0, hpol0⟩
   have hnonneg : ∀ x : Fin n → ℝ, 0 ≤ x ⬝ᵥ Q.mulVec x := by
     intro x
-    exact Matrix.PosSemidef.dotProduct_mulVec_nonneg hQpos.posSemidef x
+    by_cases hx : x = 0
+    · simp [hx]
+    · have hpos : 0 < x ⬝ᵥ Q.mulVec x := by
+        simpa using hQpos.dotProduct_mulVec_pos hx
+      exact le_of_lt hpos
   have hnonneg_inv : ∀ xStar : Fin n → ℝ, 0 ≤ xStar ⬝ᵥ (Q⁻¹).mulVec xStar := by
     intro xStar
     have hQinv : Matrix.PosDef (Q⁻¹) := Matrix.PosDef.inv (M := Q) hQpos

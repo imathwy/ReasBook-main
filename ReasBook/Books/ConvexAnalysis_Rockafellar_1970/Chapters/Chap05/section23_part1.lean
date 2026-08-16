@@ -66,13 +66,13 @@ scoped[ConvexAnalysis] notation "∂[" ε "] " f:max x:max =>
   Iff.rfl
 
 /-- The normal cone of a set `C` at `x`, expressed by the supporting-inequality condition. -/
-def dualNormalConeAt {n : ℕ} (C : Set (Fin n → ℝ)) (x : Fin n → ℝ) :
+def normalConeAt {n : ℕ} (C : Set (Fin n → ℝ)) (x : Fin n → ℝ) :
     Set (Module.Dual ℝ (Fin n → ℝ)) :=
   {xStar | x ∈ C ∧ ∀ z ∈ C, xStar (z - x) ≤ 0}
 
-@[simp] theorem mem_dualNormalConeAt_iff {n : ℕ}
+@[simp] theorem mem_normalConeAt_iff {n : ℕ}
     {C : Set (Fin n → ℝ)} {x : Fin n → ℝ} {xStar : Module.Dual ℝ (Fin n → ℝ)} :
-    xStar ∈ dualNormalConeAt C x ↔ x ∈ C ∧ ∀ z ∈ C, xStar (z - x) ≤ 0 :=
+    xStar ∈ normalConeAt C x ↔ x ∈ C ∧ ∀ z ∈ C, xStar (z - x) ≤ 0 :=
   Iff.rfl
 
 /-- The translated difference function `y ↦ f (x + y) - f x` associated to `f` at `x`. -/

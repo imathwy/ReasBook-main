@@ -422,7 +422,7 @@ lemma helperForCorollary_23_8_1_indicatorFamilyProper
 exactly the normal cone at every point. -/
 lemma helperForCorollary_23_8_1_subdifferential_indicator_eq_normalCone_of_nonempty
     {n : ℕ} {C : Set (Fin n → ℝ)} (hCne : C.Nonempty) :
-    ∀ x : Fin n → ℝ, subdifferentialAt (indicatorFunction C) x = dualNormalConeAt C x := by
+    ∀ x : Fin n → ℝ, subdifferentialAt (indicatorFunction C) x = normalConeAt C x := by
   intro x
   ext xStar
   by_cases hx : x ∈ C
@@ -430,7 +430,7 @@ lemma helperForCorollary_23_8_1_subdifferential_indicator_eq_normalCone_of_nonem
     · intro hxStar
       -- Inside the set, the subgradient inequality against indicator values is exactly the
       -- supporting inequality that defines the normal cone.
-      refine (mem_dualNormalConeAt_iff).2 ⟨hx, ?_⟩
+      refine (mem_normalConeAt_iff).2 ⟨hx, ?_⟩
       intro z hz
       have hineq :
           indicatorFunction C z ≥
@@ -444,7 +444,7 @@ lemma helperForCorollary_23_8_1_subdifferential_indicator_eq_normalCone_of_nonem
       -- subgradient inequality; outside the set the indicator is already `⊤`.
       intro z
       by_cases hz : z ∈ C
-      · have hzle : xStar (z - x) ≤ 0 := (mem_dualNormalConeAt_iff.1 hxStar).2 z hz
+      · have hzle : xStar (z - x) ≤ 0 := (mem_normalConeAt_iff.1 hxStar).2 z hz
         have hzle' : (((xStar (z - x) : ℝ) : EReal)) ≤ (0 : EReal) := by
           exact_mod_cast hzle
         calc
@@ -475,7 +475,7 @@ lemma helperForCorollary_23_8_1_subdifferential_indicator_eq_normalCone_of_nonem
       exact False.elim (this hbad)
     · intro hxStar
       -- The normal cone is also empty outside the set because membership already demands `x ∈ C`.
-      have hxmem : x ∈ C := (mem_dualNormalConeAt_iff.1 hxStar).1
+      have hxmem : x ∈ C := (mem_normalConeAt_iff.1 hxStar).1
       exact (hx hxmem).elim
 
 /-- Corollary 23.8.1: Let `C₁, …, Cₘ` be convex sets in `ℝⁿ`. If their relative interiors have a
@@ -490,9 +490,9 @@ theorem normalCone_intersection_eq_sum_under_qualification {m n : ℕ}
       ∃ z : Fin n → ℝ, (∀ i ∈ Ipoly, z ∈ C i) ∧
         ∀ i ∉ Ipoly, z ∈ euclideanRelativeInterior_fin n (C i)) →
     ∀ x : Fin n → ℝ,
-      dualNormalConeAt (⋂ i, C i) x =
+      normalConeAt (⋂ i, C i) x =
         {xStar | ∃ parts : Fin m → Module.Dual ℝ (Fin n → ℝ),
-          (∀ i : Fin m, parts i ∈ dualNormalConeAt (C i) x) ∧ xStar = ∑ i, parts i} := by
+          (∀ i : Fin m, parts i ∈ normalConeAt (C i) x) ∧ xStar = ∑ i, parts i} := by
   intro hqual x
   -- First extract a common point so every indicator is proper and the intersection is nonempty.
   rcases helperForCorollary_23_8_1_commonPoint_of_setQualification C Ipoly hqual with ⟨z, hz⟩

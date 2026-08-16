@@ -141,6 +141,402 @@ lemma helperForTheorem_20_0_1_infimalConvolutionFamily_fenchelConjugate_ne_bot
   exact hne (by simpa [hsum_real] using hbot_eq)
 
 /-- Helper for Theorem 20.0.1: closure-removal on the infimal convolution side. -/
+lemma helperForTheorem_20_0_1_infimalConvolutionFamily_fenchelConjugate_exists_nonTop
+    {n m : ℕ} (f : Fin m → (Fin n → ℝ) → EReal)
+    (hproper : ∀ i, ProperConvexFunctionOn (Set.univ : Set (Fin n → ℝ)) (f i)) :
+    ∃ xStar : Fin n → ℝ,
+      infimalConvolutionFamily (fun i => fenchelConjugate n (f i)) xStar ≠ (⊤ : EReal) := by
+  classical
+  have hproperConj :
+      ∀ i : Fin m,
+        ProperConvexFunctionOn (Set.univ : Set (Fin n → ℝ)) (fenchelConjugate n (f i)) := by
+    intro i
+    simpa using (proper_fenchelConjugate_of_proper (n := n) (f := f i) (hproper i))
+  choose xStar0 r0 hx0 using
+    (fun i : Fin m =>
+      properConvexFunctionOn_exists_finite_point
+        (n := n) (f := fenchelConjugate n (f i)) (hproperConj i))
+  let xStar : Fin n → ℝ := ∑ i, xStar0 i
+  refine ⟨xStar, ?_⟩
+  have hsInf_le :
+      infimalConvolutionFamily (fun i => fenchelConjugate n (f i)) xStar ≤
+        ∑ i, fenchelConjugate n (f i) (xStar0 i) := by
+    unfold infimalConvolutionFamily
+    refine sInf_le ?_
+    refine ⟨xStar0, ?_, rfl⟩
+    simp [xStar]
+  have hsum_real :
+      (∑ i, fenchelConjugate n (f i) (xStar0 i)) =
+        (((∑ i, r0 i) : ℝ) : EReal) := by
+    calc
+      (∑ i, fenchelConjugate n (f i) (xStar0 i)) = ∑ i, (((r0 i : ℝ) : EReal)) := by
+        refine Finset.sum_congr rfl ?_
+        intro i hi
+        simpa using (hx0 i)
+      _ = (((∑ i, r0 i) : ℝ) : EReal) := by
+        symm
+        exact section16_coe_finset_sum (s := Finset.univ) (b := fun i : Fin m => r0 i)
+  have hsum_ne_top :
+      (∑ i, fenchelConjugate n (f i) (xStar0 i)) ≠ (⊤ : EReal) := by
+    intro htop
+    have htop' : ((((∑ i, r0 i) : ℝ) : EReal)) = (⊤ : EReal) := by
+      simp [hsum_real] at htop
+    exact EReal.coe_ne_top _ htop'
+  intro htop
+  have htop_le : (⊤ : EReal) ≤ ∑ i, fenchelConjugate n (f i) (xStar0 i) := by
+    simpa [htop] using hsInf_le
+  have hsum_top : (∑ i, fenchelConjugate n (f i) (xStar0 i)) = (⊤ : EReal) :=
+    top_unique htop_le
+  exact hsum_ne_top hsum_top
+
+/-- Helper for Theorem 20.0.1: under the common-domain hypothesis, the conjugate
+infimal convolution family is proper. -/
+lemma helperForTheorem_20_0_1_infimalConvolutionFamily_fenchelConjugate_proper
+    {n m : ℕ} (f : Fin m → (Fin n → ℝ) → EReal)
+    (hproper : ∀ i, ProperConvexFunctionOn (Set.univ : Set (Fin n → ℝ)) (f i))
+    (hdom :
+      Set.Nonempty
+        (⋂ i : Fin m, effectiveDomain (Set.univ : Set (Fin n → ℝ)) (f i))) :
+    ProperConvexFunctionOn (Set.univ : Set (Fin n → ℝ))
+      (infimalConvolutionFamily (fun i => fenchelConjugate n (f i))) := by
+  let g : (Fin n → ℝ) → EReal := infimalConvolutionFamily (fun i => fenchelConjugate n (f i))
+  have hconv : ConvexFunction g := by
+    simpa [g] using
+      (section16_convexFunction_infimalConvolutionFamily_conjugates (f := f) hproper)
+  have hneBot : ∀ xStar : Fin n → ℝ, g xStar ≠ (⊥ : EReal) := by
+    intro xStar
+    simpa [g] using
+      (helperForTheorem_20_0_1_infimalConvolutionFamily_fenchelConjugate_ne_bot
+        (f := f) (hproper := hproper) (hdom := hdom) xStar)
+  rcases
+      helperForTheorem_20_0_1_infimalConvolutionFamily_fenchelConjugate_exists_nonTop
+        (f := f) (hproper := hproper) with
+    ⟨xStar0, hxStar0⟩
+  have hxStar0_mem : xStar0 ∈ effectiveDomain (Set.univ : Set (Fin n → ℝ)) g := by
+    have hxStar0_lt : g xStar0 < (⊤ : EReal) := (lt_top_iff_ne_top).2 hxStar0
+    have hxStar0_mem' :
+        xStar0 ∈ {x | x ∈ (Set.univ : Set (Fin n → ℝ)) ∧ g x < (⊤ : EReal)} := by
+      exact ⟨by simp, hxStar0_lt⟩
+    simpa [effectiveDomain_eq] using hxStar0_mem'
+  have hneDom : Set.Nonempty (effectiveDomain (Set.univ : Set (Fin n → ℝ)) g) := by
+    exact ⟨xStar0, hxStar0_mem⟩
+  refine
+    (properConvexFunctionOn_iff_effectiveDomain_nonempty_finite
+      (S := (Set.univ : Set (Fin n → ℝ))) (f := g)).2 ?_
+  refine ⟨?_, hneDom, ?_⟩
+  · simpa [ConvexFunction] using hconv
+  · intro x hx
+    refine ⟨hneBot x, ?_⟩
+    exact mem_effectiveDomain_imp_ne_top (S := (Set.univ : Set (Fin n → ℝ))) (f := g) hx
+
+/-- Helper for Theorem 20.0.1: from a common effective-domain point for a `Fin (k+1)` family,
+obtain one for its tail `Fin k` subfamily. -/
+lemma helperForTheorem_20_0_1_nonempty_iInter_effectiveDomain_tail
+    {n k : ℕ} (f : Fin (k + 1) → (Fin n → ℝ) → EReal)
+    (hdom :
+      Set.Nonempty
+        (⋂ i : Fin (k + 1), effectiveDomain (Set.univ : Set (Fin n → ℝ)) (f i))) :
+    Set.Nonempty
+      (⋂ j : Fin k, effectiveDomain (Set.univ : Set (Fin n → ℝ)) (f (Fin.succ j))) := by
+  rcases hdom with ⟨x0, hx0⟩
+  refine ⟨x0, ?_⟩
+  refine Set.mem_iInter.2 ?_
+  intro j
+  exact (Set.mem_iInter.mp hx0) (Fin.succ j)
+
+/-- Helper for Theorem 20.0.1: rewrite a split sum over `Fin (k+1)` as head plus tail. -/
+lemma helperForTheorem_20_0_1_sum_headTail_rewrite
+    {n k : ℕ} (xStarFamily : Fin (k + 1) → Fin n → ℝ) :
+    (∑ i, xStarFamily i) = xStarFamily 0 + ∑ j : Fin k, xStarFamily (Fin.succ j) := by
+  simpa using (Fin.sum_univ_succ (f := xStarFamily))
+
+/-- Helper for Theorem 20.0.1: the binary head-tail infimal convolution is bounded above by
+the full family infimal convolution. -/
+lemma helperForTheorem_20_0_1_infimalConvolution_headTail_le_infimalConvolutionFamily
+    {n k : ℕ} (g : Fin (k + 1) → (Fin n → ℝ) → EReal)
+    (xStar : Fin n → ℝ) :
+    infimalConvolution (g 0)
+      (fun y => infimalConvolutionFamily (fun j : Fin k => g (Fin.succ j)) y) xStar ≤
+      infimalConvolutionFamily g xStar := by
+  classical
+  unfold infimalConvolutionFamily
+  refine le_sInf ?_
+  intro z hz
+  rcases hz with ⟨xStarFamily, hsum, rfl⟩
+  have hsumHeadTail :
+      xStarFamily 0 + ∑ j : Fin k, xStarFamily (Fin.succ j) = xStar := by
+    calc
+      xStarFamily 0 + ∑ j : Fin k, xStarFamily (Fin.succ j) = ∑ i, xStarFamily i := by
+        symm
+        exact helperForTheorem_20_0_1_sum_headTail_rewrite
+          (n := n) (k := k) (xStarFamily := xStarFamily)
+      _ = xStar := hsum
+  have htail_le :
+      infimalConvolutionFamily (fun j : Fin k => g (Fin.succ j))
+        (∑ j : Fin k, xStarFamily (Fin.succ j)) ≤
+        ∑ j : Fin k, g (Fin.succ j) (xStarFamily (Fin.succ j)) := by
+    unfold infimalConvolutionFamily
+    refine sInf_le ?_
+    refine ⟨(fun j : Fin k => xStarFamily (Fin.succ j)), rfl, rfl⟩
+  have hheadTail_le :
+      infimalConvolution (g 0)
+        (fun y => infimalConvolutionFamily (fun j : Fin k => g (Fin.succ j)) y) xStar ≤
+        g 0 (xStarFamily 0) +
+          infimalConvolutionFamily (fun j : Fin k => g (Fin.succ j))
+            (∑ j : Fin k, xStarFamily (Fin.succ j)) := by
+    unfold infimalConvolution
+    refine sInf_le ?_
+    refine ⟨xStarFamily 0, ∑ j : Fin k, xStarFamily (Fin.succ j), hsumHeadTail, rfl⟩
+  have hadd_le :
+      g 0 (xStarFamily 0) +
+          infimalConvolutionFamily (fun j : Fin k => g (Fin.succ j))
+            (∑ j : Fin k, xStarFamily (Fin.succ j)) ≤
+        g 0 (xStarFamily 0) +
+          ∑ j : Fin k, g (Fin.succ j) (xStarFamily (Fin.succ j)) :=
+    by
+      simpa [add_comm, add_left_comm, add_assoc] using
+        add_le_add_right htail_le (g 0 (xStarFamily 0))
+  calc
+    infimalConvolution (g 0)
+        (fun y => infimalConvolutionFamily (fun j : Fin k => g (Fin.succ j)) y) xStar ≤
+        g 0 (xStarFamily 0) +
+          infimalConvolutionFamily (fun j : Fin k => g (Fin.succ j))
+            (∑ j : Fin k, xStarFamily (Fin.succ j)) := hheadTail_le
+    _ ≤ g 0 (xStarFamily 0) +
+          ∑ j : Fin k, g (Fin.succ j) (xStarFamily (Fin.succ j)) := hadd_le
+    _ = ∑ i, g i (xStarFamily i) := by
+      symm
+      simpa using
+        (Fin.sum_univ_succ
+          (f := fun i : Fin (k + 1) => g i (xStarFamily i)))
+
+/-- Helper for Theorem 20.0.1: for the conjugate family under the common-domain hypothesis, the
+full-family infimal convolution is bounded above by the head-tail binary infimal convolution. -/
+lemma helperForTheorem_20_0_1_infimalConvolutionFamily_fenchelConjugate_le_infimalConvolution_headTail
+    {n k : ℕ} (f : Fin (k + 1) → (Fin n → ℝ) → EReal)
+    (hproper : ∀ i, ProperConvexFunctionOn (Set.univ : Set (Fin n → ℝ)) (f i))
+    (hdom :
+      Set.Nonempty
+        (⋂ i : Fin (k + 1), effectiveDomain (Set.univ : Set (Fin n → ℝ)) (f i)))
+    (xStar : Fin n → ℝ) :
+    infimalConvolutionFamily (fun i => fenchelConjugate n (f i)) xStar ≤
+      infimalConvolution
+        (fenchelConjugate n (f 0))
+        (fun y =>
+          infimalConvolutionFamily (fun j : Fin k => fenchelConjugate n (f (Fin.succ j))) y)
+        xStar := by
+  classical
+  unfold infimalConvolution
+  refine le_sInf ?_
+  intro z hz
+  rcases hz with ⟨x0, y, hxy, rfl⟩
+  let fTail : Fin k → (Fin n → ℝ) → EReal := fun j => f (Fin.succ j)
+  have hproperTail :
+      ∀ j, ProperConvexFunctionOn (Set.univ : Set (Fin n → ℝ)) (fTail j) := by
+    intro j
+    simpa [fTail] using hproper (Fin.succ j)
+  have hdomTail :
+      Set.Nonempty
+        (⋂ j : Fin k, effectiveDomain (Set.univ : Set (Fin n → ℝ)) (fTail j)) := by
+    simpa [fTail] using
+      helperForTheorem_20_0_1_nonempty_iInter_effectiveDomain_tail
+        (f := f) (hdom := hdom)
+  have htailNeBot :
+      ∀ y' : Fin n → ℝ,
+        infimalConvolutionFamily (fun j : Fin k => fenchelConjugate n (fTail j)) y' ≠ (⊥ : EReal) := by
+    intro y'
+    exact
+      helperForTheorem_20_0_1_infimalConvolutionFamily_fenchelConjugate_ne_bot
+        (f := fTail) (hproper := hproperTail) (hdom := hdomTail) y'
+  let A : Set EReal :=
+    {w : EReal |
+      ∃ xStarFamily : Fin (k + 1) → Fin n → ℝ,
+        (∑ i, xStarFamily i) = xStar ∧
+          w = ∑ i, fenchelConjugate n (f i) (xStarFamily i)}
+  let T : Set EReal :=
+    {w : EReal |
+      ∃ tailFamily : Fin k → Fin n → ℝ,
+        (∑ j, tailFamily j) = y ∧
+          w = ∑ j, fenchelConjugate n (f (Fin.succ j)) (tailFamily j)}
+  change sInf A ≤
+    fenchelConjugate n (f 0) x0 +
+      infimalConvolutionFamily (fun j : Fin k => fenchelConjugate n (f (Fin.succ j))) y
+  have hA_le_head_add_tail :
+      ∀ t : EReal, t ∈ T → sInf A ≤ fenchelConjugate n (f 0) x0 + t := by
+    intro t ht
+    rcases ht with ⟨tailFamily, hTailSum, rfl⟩
+    let xStarFamily : Fin (k + 1) → Fin n → ℝ :=
+      Fin.cases (motive := fun _ : Fin (k + 1) => Fin n → ℝ) x0 tailFamily
+    have hsumFull : (∑ i, xStarFamily i) = xStar := by
+      calc
+        (∑ i, xStarFamily i) = x0 + ∑ j : Fin k, tailFamily j := by
+          simpa [xStarFamily] using
+            (helperForTheorem_20_0_1_sum_headTail_rewrite
+              (n := n) (k := k) (xStarFamily := xStarFamily))
+        _ = x0 + y := by simp [hTailSum]
+        _ = xStar := hxy
+    have hmemA :
+        (∑ i, fenchelConjugate n (f i) (xStarFamily i)) ∈ A := by
+      refine ⟨xStarFamily, hsumFull, rfl⟩
+    have hsInf_le :
+        sInf A ≤ ∑ i, fenchelConjugate n (f i) (xStarFamily i) := sInf_le hmemA
+    have hsumValue :
+        (∑ i, fenchelConjugate n (f i) (xStarFamily i)) =
+          fenchelConjugate n (f 0) x0 +
+            ∑ j : Fin k, fenchelConjugate n (f (Fin.succ j)) (tailFamily j) := by
+      simpa [xStarFamily] using
+        (Fin.sum_univ_succ
+          (f := fun i : Fin (k + 1) => fenchelConjugate n (f i) (xStarFamily i)))
+    exact hsumValue ▸ hsInf_le
+  have htailDef :
+      infimalConvolutionFamily (fun j : Fin k => fenchelConjugate n (f (Fin.succ j))) y = sInf T := by
+    rfl
+  have hheadNeBot : fenchelConjugate n (f 0) x0 ≠ (⊥ : EReal) := by
+    exact
+      (proper_fenchelConjugate_of_proper (n := n) (f := f 0) (hproper 0)).2.2 x0 (by simp)
+  by_cases hheadTop : fenchelConjugate n (f 0) x0 = (⊤ : EReal)
+  · have htailNeBot' :
+      infimalConvolutionFamily (fun j : Fin k => fenchelConjugate n (f (Fin.succ j))) y ≠ (⊥ : EReal) := by
+      simpa [fTail] using htailNeBot y
+    have hrightTop :
+        fenchelConjugate n (f 0) x0 +
+            infimalConvolutionFamily (fun j : Fin k => fenchelConjugate n (f (Fin.succ j))) y =
+          (⊤ : EReal) := by
+      simpa [hheadTop] using
+        (EReal.top_add_of_ne_bot (x := infimalConvolutionFamily
+          (fun j : Fin k => fenchelConjugate n (f (Fin.succ j))) y) htailNeBot')
+    have hsInfA_le_top : sInf A ≤ (⊤ : EReal) := le_top
+    rw [hrightTop]
+    exact hsInfA_le_top
+  · let r : ℝ := (fenchelConjugate n (f 0) x0).toReal
+    have hheadCoe :
+        fenchelConjugate n (f 0) x0 = ((r : ℝ) : EReal) := by
+      change fenchelConjugate n (f 0) x0 = (((fenchelConjugate n (f 0) x0).toReal : ℝ) : EReal)
+      exact
+        helperForCorollary_19_3_4_eq_coe_toReal_of_ne_top_ne_bot
+          (hTop := hheadTop) (hBot := hheadNeBot)
+    have hsub_le_t : ∀ t : EReal, t ∈ T → sInf A - (r : EReal) ≤ t := by
+      intro t ht
+      have hsInfA_le_head_t :
+          sInf A ≤ fenchelConjugate n (f 0) x0 + t := hA_le_head_add_tail t ht
+      have hsInfA_le_r_t :
+          sInf A ≤ (r : EReal) + t := by simpa [hheadCoe]
+        using hsInfA_le_head_t
+      have hsInfA_le_t_r : sInf A ≤ t + (r : EReal) := by
+        simpa [add_comm, add_left_comm, add_assoc] using hsInfA_le_r_t
+      exact EReal.sub_le_of_le_add hsInfA_le_t_r
+    have hsub_le_sInfT : sInf A - (r : EReal) ≤ sInf T := by
+      refine le_sInf ?_
+      intro t ht
+      exact hsub_le_t t ht
+    have hsInfA_le_sInfT_add_r : sInf A ≤ sInf T + (r : EReal) := by
+      exact
+        (EReal.sub_le_iff_le_add
+          (h₁ := Or.inl (EReal.coe_ne_bot r))
+          (h₂ := Or.inl (EReal.coe_ne_top r))).1 hsub_le_sInfT
+    have hsInfA_le_r_add_sInfT : sInf A ≤ (r : EReal) + sInf T := by
+      simpa [add_comm, add_left_comm, add_assoc] using hsInfA_le_sInfT_add_r
+    simpa [hheadCoe, htailDef] using hsInfA_le_r_add_sInfT
+
+/-- Helper for Theorem 20.0.1: head-tail decomposition equality for the conjugate family. -/
+lemma helperForTheorem_20_0_1_infimalConvolutionFamily_fenchelConjugate_headTail_eq_infimalConvolution
+    {n k : ℕ} (f : Fin (k + 1) → (Fin n → ℝ) → EReal)
+    (hproper : ∀ i, ProperConvexFunctionOn (Set.univ : Set (Fin n → ℝ)) (f i))
+    (hdom :
+      Set.Nonempty
+        (⋂ i : Fin (k + 1), effectiveDomain (Set.univ : Set (Fin n → ℝ)) (f i))) :
+    infimalConvolutionFamily (fun i => fenchelConjugate n (f i)) =
+      infimalConvolution
+        (fenchelConjugate n (f 0))
+        (fun y =>
+          infimalConvolutionFamily (fun j : Fin k => fenchelConjugate n (f (Fin.succ j))) y) := by
+  funext xStar
+  apply le_antisymm
+  · exact
+      helperForTheorem_20_0_1_infimalConvolutionFamily_fenchelConjugate_le_infimalConvolution_headTail
+        (f := f) (hproper := hproper) (hdom := hdom) (xStar := xStar)
+  · exact
+      helperForTheorem_20_0_1_infimalConvolution_headTail_le_infimalConvolutionFamily
+        (g := fun i => fenchelConjugate n (f i)) (xStar := xStar)
+
+/-- Helper for Theorem 20.0.1: under polyhedral/proper/common-domain assumptions, the infimal
+convolution family of conjugates is polyhedral. -/
+lemma helperForTheorem_20_0_1_polyhedral_infimalConvolutionFamily_fenchelConjugate_of_polyhedral_nonempty_iInter_effectiveDomain
+    {n m : ℕ} (f : Fin m → (Fin n → ℝ) → EReal)
+    (hpoly : ∀ i, IsPolyhedralConvexFunction n (f i))
+    (hproper : ∀ i, ProperConvexFunctionOn (Set.univ : Set (Fin n → ℝ)) (f i))
+    (hdom :
+      Set.Nonempty
+        (⋂ i : Fin m, effectiveDomain (Set.univ : Set (Fin n → ℝ)) (f i))) :
+    IsPolyhedralConvexFunction n (infimalConvolutionFamily (fun i => fenchelConjugate n (f i))) := by
+  classical
+  induction m with
+  | zero =>
+      have hEqZero :
+          infimalConvolutionFamily (fun i : Fin 0 => fenchelConjugate n (f i)) =
+            indicatorFunction ({0} : Set (Fin n → ℝ)) := by
+        funext x
+        by_cases hx : x = 0
+        · subst hx
+          simp [infimalConvolutionFamily, indicatorFunction]
+        · have hx' : ¬ (0 : Fin n → ℝ) = x := by
+            simpa [eq_comm] using hx
+          simp [infimalConvolutionFamily, indicatorFunction, hx, hx']
+      have hpolyZeroSet : IsPolyhedralConvexSet n ({0} : Set (Fin n → ℝ)) := by
+        simpa using (helperForTheorem_19_1_zero_set_polyhedral (m := n))
+      have hpolyIndicator :
+          IsPolyhedralConvexFunction n (indicatorFunction ({0} : Set (Fin n → ℝ))) :=
+        helperForCorollary_19_2_1_indicatorPolyhedral_of_polyhedralSet
+          (hCpoly := hpolyZeroSet)
+      simpa [hEqZero] using hpolyIndicator
+  | succ k ih =>
+      let fTail : Fin k → (Fin n → ℝ) → EReal := fun j => f (Fin.succ j)
+      let headConj : (Fin n → ℝ) → EReal := fenchelConjugate n (f 0)
+      let tailConj : (Fin n → ℝ) → EReal :=
+        fun y => infimalConvolutionFamily (fun j : Fin k => fenchelConjugate n (fTail j)) y
+      have hpolyTail : ∀ j, IsPolyhedralConvexFunction n (fTail j) := by
+        intro j
+        simpa [fTail] using hpoly (Fin.succ j)
+      have hproperTail :
+          ∀ j, ProperConvexFunctionOn (Set.univ : Set (Fin n → ℝ)) (fTail j) := by
+        intro j
+        simpa [fTail] using hproper (Fin.succ j)
+      have hdomTail :
+          Set.Nonempty
+            (⋂ j : Fin k, effectiveDomain (Set.univ : Set (Fin n → ℝ)) (fTail j)) := by
+        simpa [fTail] using
+          helperForTheorem_20_0_1_nonempty_iInter_effectiveDomain_tail
+            (f := f) (hdom := hdom)
+      have hpolyTailConj :
+          IsPolyhedralConvexFunction n
+            (infimalConvolutionFamily (fun j : Fin k => fenchelConjugate n (fTail j))) :=
+        ih (f := fTail) (hpoly := hpolyTail) (hproper := hproperTail) (hdom := hdomTail)
+      have hproperHeadConj :
+          ProperConvexFunctionOn (Set.univ : Set (Fin n → ℝ)) headConj := by
+        simpa [headConj] using
+          (proper_fenchelConjugate_of_proper (n := n) (f := f 0) (hproper 0))
+      have hproperTailConj :
+          ProperConvexFunctionOn (Set.univ : Set (Fin n → ℝ)) tailConj := by
+        simpa [tailConj, fTail] using
+          (helperForTheorem_20_0_1_infimalConvolutionFamily_fenchelConjugate_proper
+            (f := fTail) (hproper := hproperTail) (hdom := hdomTail))
+      have hpolyHeadConj : IsPolyhedralConvexFunction n headConj := by
+        simpa [headConj] using
+          (polyhedralConvexFunction_fenchelConjugate n (f 0) (hpoly 0))
+      have hpolyHeadTail :
+          IsPolyhedralConvexFunction n (infimalConvolution headConj tailConj) := by
+        exact
+          (polyhedralConvexFunction_infimalConvolution n headConj tailConj
+            hpolyHeadConj hpolyTailConj hproperHeadConj hproperTailConj).1
+      have hheadTailEq :
+          infimalConvolutionFamily (fun i : Fin (k + 1) => fenchelConjugate n (f i)) =
+            infimalConvolution headConj tailConj := by
+        simpa [headConj, tailConj, fTail] using
+          (helperForTheorem_20_0_1_infimalConvolutionFamily_fenchelConjugate_headTail_eq_infimalConvolution
+            (f := f) (hproper := hproper) (hdom := hdom))
+      simpa [hheadTailEq] using hpolyHeadTail
+
+/-- Helper for Theorem 20.0.1: closure-removal on the infimal convolution side. -/
 lemma helperForTheorem_20_0_1_convexFunctionClosure_rhs_eq_self
     {n m : ℕ} (f : Fin m → (Fin n → ℝ) → EReal)
     (hpoly : ∀ i, IsPolyhedralConvexFunction n (f i))
@@ -150,7 +546,25 @@ lemma helperForTheorem_20_0_1_convexFunctionClosure_rhs_eq_self
         (⋂ i : Fin m, effectiveDomain (Set.univ : Set (Fin n → ℝ)) (f i))) :
     convexFunctionClosure (infimalConvolutionFamily (fun i => fenchelConjugate n (f i))) =
       infimalConvolutionFamily (fun i => fenchelConjugate n (f i)) := by
-  sorry
+  let g : (Fin n → ℝ) → EReal := infimalConvolutionFamily (fun i => fenchelConjugate n (f i))
+  have hproperG :
+      ProperConvexFunctionOn (Set.univ : Set (Fin n → ℝ)) g := by
+    simpa [g] using
+      (helperForTheorem_20_0_1_infimalConvolutionFamily_fenchelConjugate_proper
+        (f := f) (hproper := hproper) (hdom := hdom))
+  have hclosedG : ClosedConvexFunction g := by
+    refine helperForCorollary_19_1_2_closed_of_polyhedral_proper ?_ hproperG
+    have hpolyG :
+        IsPolyhedralConvexFunction n
+          (infimalConvolutionFamily (fun i => fenchelConjugate n (f i))) :=
+      helperForTheorem_20_0_1_polyhedral_infimalConvolutionFamily_fenchelConjugate_of_polyhedral_nonempty_iInter_effectiveDomain
+        (f := f) (hpoly := hpoly) (hproper := hproper) (hdom := hdom)
+    simpa [g] using hpolyG
+  have hnotBot : ∀ x : Fin n → ℝ, g x ≠ (⊥ : EReal) := by
+    intro x
+    exact hproperG.2.2 x (by simp)
+  simpa [g] using
+    (convexFunctionClosure_eq_of_closedConvexFunction (f := g) hclosedG hnotBot)
 
 /-- Theorem 20.0.1: Let f₁, …, fₘ be proper polyhedral convex functions on ℝⁿ with
 dom f₁ ∩ ⋯ ∩ dom fₘ ≠ ∅ (formalized as nonempty intersection of effective domains on univ).
@@ -371,7 +785,7 @@ lemma helperForCorollary_20_0_2_exists_attainmentWitness_of_zero_of_index_empty
       infimalConvolutionFamily (n := n) (m := 0) g (0 : Fin n → ℝ) =
           (0 : EReal) := hInfZero
       _ = ∑ i, g i ((fun _ => (0 : Fin n → ℝ)) i) := by
-          simpa using hSumZero.symm
+          simp
 
 /-- Helper for Corollary 20.0.2: with empty index set, a split-sum attainment witness exists
 exactly at the zero target. -/
@@ -440,7 +854,7 @@ lemma helperForCorollary_20_0_2_liftWitness_from_headTail
             simpa using
               (helperForCorollary_20_0_2_sum_headTail_rewrite
                 (n := n) (k := k) (xStarFamily := xStarFamily))
-      _ = x0 + y := by simpa [hTailSum]
+      _ = x0 + y := by simp [hTailSum]
       _ = xStar := hHeadTail
   · simpa using
       (Fin.sum_univ_succ
@@ -493,7 +907,7 @@ lemma helperForCorollary_20_0_2_properSum_of_commonEffectiveDomain
   have hsum_ne_top : (∑ i, f i x0) ≠ (⊤ : EReal) := by
     intro htop
     have htop' : ((((∑ i, (f i x0).toReal) : ℝ) : EReal)) = (⊤ : EReal) := by
-      simpa [hsum_real] using htop
+      simp [hsum_real] at htop
     exact EReal.coe_ne_top _ htop'
   exact properConvexFunctionOn_sum_of_exists_ne_top
     (f := f) hproper ⟨x0, hsum_ne_top⟩
@@ -675,7 +1089,7 @@ lemma helperForCorollary_20_0_2_topOrAttained_of_polyhedral_nonempty_iInter_effe
               intro z hz
               rcases hz with ⟨xStarFamily, hsum, rfl⟩
               simp at hsum
-              simpa [hsum]
+              simp [hsum]
             · refine sInf_le ?_
               refine ⟨fun _ => xStar, ?_, rfl⟩
               simp
@@ -785,7 +1199,7 @@ lemma helperForCorollary_20_0_2_topOrAttained_of_polyhedral_nonempty_iInter_effe
               intro htop
               have htop' :
                   (((∑ j : Fin (k + 1), (fTail j x0).toReal) : ℝ) : EReal) = (⊤ : EReal) := by
-                simpa [hsumTail_real] using htop
+                simp [hsumTail_real] at htop
               exact EReal.coe_ne_top _ htop'
             have hx0Head :
                 x0 ∈ effectiveDomain (Set.univ : Set (Fin n → ℝ)) (fPair 0) := by
@@ -870,7 +1284,7 @@ lemma helperForCorollary_20_0_2_topOrAttained_of_polyhedral_nonempty_iInter_effe
             · exact htailAttained
           rcases htailWitness with ⟨tailFamily, htailSum, htailVal⟩
           have hHeadTailEq : (xStar - y) + y = xStar := by
-            simp [sub_eq_add_neg, add_assoc, add_left_comm, add_comm]
+            simp [sub_eq_add_neg, add_left_comm, add_comm]
           rcases
             helperForCorollary_20_0_2_liftWitness_from_headTail
               (g := fun i => fenchelConjugate n (f i))

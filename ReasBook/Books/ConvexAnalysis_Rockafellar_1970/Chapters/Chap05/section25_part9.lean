@@ -28,7 +28,7 @@ lemma helperForTheorem_25_6_subdifferentialNormalFace_bounded_of_strict_polar_pr
     (hpFace : p ∈ subdifferentialNormalFaceAt f x y)
     (hyStrict :
       ∀ v ∈ ((dotProductEquiv Real (Fin n)) ⁻¹'
-          dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x),
+          normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x),
         v ≠ 0 → dotProduct v y < 0) :
     Bornology.IsBounded (subdifferentialNormalFaceAt f x y) := by
   let domf : Set (Fin n → Real) := effectiveDomain (Set.univ : Set (Fin n → Real)) f
@@ -112,9 +112,9 @@ lemma helperForTheorem_25_6_subdifferentialNormalFace_bounded_of_strict_polar_pr
         have hpair : dotProduct y (p - (p + (1 : Real) • v)) ≤ 0 := hpvFace.2 p hpFace.1
         simpa [dotProduct_comm, sub_eq_add_neg, add_assoc, add_left_comm, add_comm] using hpair
       have hvInNormal :
-          v ∈ ((dotProductEquiv Real (Fin n)) ⁻¹' dualNormalConeAt domf x) := by
+          v ∈ ((dotProductEquiv Real (Fin n)) ⁻¹' normalConeAt domf x) := by
         rw [Set.mem_preimage]
-        refine (mem_dualNormalConeAt_iff).2 ?_
+        refine (mem_normalConeAt_iff).2 ?_
         constructor
         · simpa [domf] using hx
         · intro z hz

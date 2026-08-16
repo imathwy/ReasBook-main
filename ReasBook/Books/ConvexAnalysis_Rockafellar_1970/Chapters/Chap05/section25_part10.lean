@@ -932,7 +932,7 @@ lemma helperForTheorem_25_6_support_preimageNormalCone_eq_indicatorPolar
     (hx : x ∈ effectiveDomain (Set.univ : Set (Fin n → Real)) f) :
     let K : Set (Fin n → Real) :=
       ((dotProductEquiv Real (Fin n)) ⁻¹'
-        dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x)
+        normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x)
     supportFunctionEReal K =
       indicatorFunction {y : Fin n → Real | ∀ v ∈ K, dotProduct v y ≤ 0} := by
   intro K
@@ -948,8 +948,8 @@ lemma helperForTheorem_25_6_support_preimageNormalCone_eq_indicatorPolar
       smul_mem' := by
         intro c hc v hv
         rw [Set.mem_preimage] at hv ⊢
-        refine (mem_dualNormalConeAt_iff).2 ?_
-        rcases (mem_dualNormalConeAt_iff.1 hv) with ⟨hxDom, hvIneq⟩
+        refine (mem_normalConeAt_iff).2 ?_
+        rcases (mem_normalConeAt_iff.1 hv) with ⟨hxDom, hvIneq⟩
         constructor
         · exact hxDom
         · intro z hz
@@ -961,9 +961,9 @@ lemma helperForTheorem_25_6_support_preimageNormalCone_eq_indicatorPolar
       add_mem' := by
         intro u hu v hv
         rw [Set.mem_preimage] at hu hv ⊢
-        refine (mem_dualNormalConeAt_iff).2 ?_
-        rcases (mem_dualNormalConeAt_iff.1 hu) with ⟨hxDom, huIneq⟩
-        rcases (mem_dualNormalConeAt_iff.1 hv) with ⟨_hxDom', hvIneq⟩
+        refine (mem_normalConeAt_iff).2 ?_
+        rcases (mem_normalConeAt_iff.1 hu) with ⟨hxDom, huIneq⟩
+        rcases (mem_normalConeAt_iff.1 hv) with ⟨_hxDom', hvIneq⟩
         constructor
         · exact hxDom
         · intro z hz
@@ -974,7 +974,7 @@ lemma helperForTheorem_25_6_support_preimageNormalCone_eq_indicatorPolar
   have hKne : (K : Set (Fin n → Real)).Nonempty := by
     refine ⟨0, ?_⟩
     rw [Set.mem_preimage]
-    refine (mem_dualNormalConeAt_iff).2 ?_
+    refine (mem_normalConeAt_iff).2 ?_
     constructor
     · simpa [domf] using hx
     · intro z hz

@@ -35,7 +35,7 @@ the Euclideanized subdifferential fiber at `x` must already lie in the vectorize
       d ∈ {d : Fin n → Real | IsExtremeDirection (𝕜 := ℝ)
         (((dotProductEquiv Real (Fin n)) ⁻¹' subdifferentialAt f x)) d}) :
     d ∈ ((dotProductEquiv Real (Fin n)) ⁻¹'
-      dualNormalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x) := by
+      normalConeAt (effectiveDomain (Set.univ : Set (Fin n → Real)) f) x) := by
   -- Rockafellar's Euclideanized fiber `∂f(x)`.
   let C : Set (Fin n → Real) :=
     ((dotProductEquiv Real (Fin n)) ⁻¹' subdifferentialAt f x)
@@ -63,7 +63,7 @@ the Euclideanized subdifferential fiber at `x` must already lie in the vectorize
   have hdrec : d ∈ Set.recessionCone C :=
     mem_recessionCone_of_isExtremeDirection_fin (hCclosed := hCclosed) (by simpa [C] using hd)
   rw [Set.mem_preimage]
-  refine (mem_dualNormalConeAt_iff).2 ?_
+  refine (mem_normalConeAt_iff).2 ?_
   constructor
   · simpa using hx
   · intro z hz

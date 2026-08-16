@@ -140,7 +140,7 @@ theorem mem_euclideanNormalCone_sublevelSet_iff_exists_nonneg_smul_mem_subdiffer
     (hproper : ProperConvexFunctionOn (Set.univ : Set (Fin n → ℝ)) f)
     (x xStar : Fin n → ℝ) (hx : x ∈ interior (effectiveDomain (Set.univ : Set (Fin n → ℝ)) f))
     (hnotmin : ∃ z, f z < f x) :
-    xStar ∈ ((dotProductEquiv ℝ (Fin n)) ⁻¹' dualNormalConeAt {z : Fin n → ℝ | f z ≤ f x} x) ↔
+    xStar ∈ ((dotProductEquiv ℝ (Fin n)) ⁻¹' normalConeAt {z : Fin n → ℝ | f z ≤ f x} x) ↔
       ∃ a : ℝ, 0 ≤ a ∧
         ∃ y ∈ ((dotProductEquiv ℝ (Fin n)) ⁻¹' subdifferentialAt f x), xStar = a • y := by
   let S : Set (Fin n → ℝ) := ((dotProductEquiv ℝ (Fin n)) ⁻¹' subdifferentialAt f x)
