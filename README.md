@@ -11,7 +11,7 @@ ReasBook is generated using the tool: [M2F](https://github.com/optsuite/M2F.git)
 
 | Branch | Lean/mathlib | Status | Books/Papers | Last build |
 | --- | --- | --- | ---: | --- |
-| `v4.32.0` | `v4.32.0` | Empty | 0 / 0 | Passed |
+| `v4.32.0` | `v4.32.0` | Active | 1 / 0 | Pending |
 | `v4.32.2` | `v4.32.2` | Active | 0 / 1 | Passed |
 | `v4.30.0` | `v4.30.0` | Active | 8 / 2 | Passed |
 | `v4.26.0` | `v4.26.0` | Active | 4 / 2 | Passed |
@@ -77,6 +77,7 @@ Titles open their catalog pages; version links open the Lean source directly.
 | **[Introduction to Real Analysis, Volume I](ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/)**<br><sub>Jiri Lebl (v6.2, 2025)</sub> | [`v4.26.0`](https://github.com/optpku/ReasBook/tree/v4.26.0/ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/)<br>[`v4.30.0`](https://github.com/optpku/ReasBook/tree/v4.30.0/ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/) | Zichen Wang, Zaiwen Wen | [Docs v4.26.0](https://optpku.github.io/ReasBook/docs/ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Book.html)<br>[Docs v4.30.0](https://optpku.github.io/ReasBook/docs/ReasBook/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Book.html)<br>[Verso](https://optpku.github.io/ReasBook/books/introductiontorealanalysisvolumei_jirilebl_2025/) |
 | **[Probability Theory: A Comprehensive Course](ReasBook/Books/ProbabilityTheory_Klenke_2020/)**<br><sub>Achim Klenke (3rd ed., 2020)</sub> | [`v4.30.0`](https://github.com/optpku/ReasBook/tree/v4.30.0/ReasBook/Books/ProbabilityTheory_Klenke_2020/) | Xuanzhi Ren, Zichen Wang | [Docs](https://optpku.github.io/ReasBook/docs/ReasBook/ProbabilityTheory_Klenke_2020/Book.html)<br>[Verso](https://optpku.github.io/ReasBook/books/probabilitytheory_klenke_2020/) |
 | **[Lectures on Riemann Surfaces](ReasBook/Books/RiemannSurfaces_Forster_1981/)**<br><sub>Otto Forster (1981)</sub> | [`v4.30.0`](https://github.com/optpku/ReasBook/tree/v4.30.0/ReasBook/Books/RiemannSurfaces_Forster_1981/) | Zichen Wang | [Docs](https://optpku.github.io/ReasBook/docs/ReasBook/RiemannSurfaces_Forster_1981/Book.html)<br>[Verso](https://optpku.github.io/ReasBook/books/riemannsurfaces_forster_1981/) |
+| **[Computational Methods for Inverse Problems](https://github.com/optpku/ReasBook/tree/v4.32.0/ReasBook/Books/ComputationalMethodsInverseProblems_Vogel_2002/)**<br><sub>Curtis R. Vogel (2002)</sub> | [`v4.32.0`](https://github.com/optpku/ReasBook/tree/v4.32.0/ReasBook/Books/ComputationalMethodsInverseProblems_Vogel_2002/) | Yifan Bai, Wanli Ma, Zichen Wang | — |
 
 ## Papers
 
