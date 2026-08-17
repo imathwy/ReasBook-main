@@ -1,0 +1,24 @@
+module
+
+public import Book.Ch9.Theorem_9_7
+
+public section
+
+/- Exercise 9.2. The source asks for proofs of the two clauses of Theorem 9.7.
+Those clauses are already formalized in Chapter 9 as the source-facing theorem
+owners below, so this exercise file records direct reuse rather than
+introducing an exercise-specific wrapper theorem. -/
+
+/- Exercise 9.2 (1).
+
+The existence-and-uniqueness clause of Theorem 9.7 is formalized by
+`existsUniqueMetricProjection`.
+-/
+#check existsUniqueMetricProjection
+
+/- Exercise 9.2 (2).
+
+The continuity clause of Theorem 9.7 is formalized by
+`continuousMetricProjection`.
+-/
+#check continuousMetricProjection

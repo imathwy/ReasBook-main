@@ -1,0 +1,28 @@
+schema_version: 1
+id: ComputationalMethodsInverseProblems_Vogel_2002
+title: "Computational Methods for Inverse Problems"
+authors:
+- Curtis R. Vogel
+edition: 1st ed.
+publisher: SIAM
+year: 2002
+isbn: null
+toolchain: leanprover/lean4:v4.32.0
+mathlib: v4.32.0
+branch: v4.32.0
+contributors:
+- name: Yifan Bai
+  github: TTony2019
+- name: Wanli Ma
+  github: wl-ma
+- name: Zichen Wang
+coverage: "Inverse problems, regularization, iterative methods, spectral filters, parameter choice, variational methods, and iterative solution methods across Chapters 1–9."
+statistics:
+  declarations: 3916
+  theorem_lemma_example: 3109
+  other_declarations: 807
+  lean_files: 683
+  lean_lines: 114644
+  proof_completion: 3811/3916
+  sorry: 105
+  admit: 0

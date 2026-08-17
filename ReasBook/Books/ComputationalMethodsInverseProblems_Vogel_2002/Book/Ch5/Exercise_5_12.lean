@@ -1,0 +1,18 @@
+module
+
+public import Book.Ch5.Cor_5_16
+public import Book.Ch5.Prop_5_6
+
+public section
+
+/- Exercise 5.12. Use Corollary 5.16 to prove Proposition 5.6.
+
+This exercise is a check-only reuse surface. The current source-facing
+Chapter 5 files already provide Proposition 5.6 as
+`Matrix.periodicExtension_discreteConvolution_eq_invDFT_mul_dft` and the
+Corollary 5.16 diagonalization input
+`Matrix.circulant_eq_fourierDiagonal_fft`.
+-/
+#check Matrix.periodicExtension_discreteConvolution_eq_invDFT_mul_dft
+
+#check Matrix.circulant_eq_fourierDiagonal_fft

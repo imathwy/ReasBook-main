@@ -1,0 +1,59 @@
+module
+
+public import Mathlib.Analysis.Calculus.Gradient.Basic
+public import Mathlib.Analysis.InnerProductSpace.PiL2
+public import Book.Ch9.Prop_9_8.FeasibleSet
+
+public section
+
+noncomputable section
+
+namespace NonnegativeOrthant
+
+variable {n : ℕ}
+
+/-- The projected gradient on the nonnegative orthant is the coordinatewise
+clipped gradient vector associated to a feasible point `f`. -/
+def projectedGradient
+    (J : EuclideanSpace ℝ (Fin n) → ℝ) :
+    feasibleSet n → EuclideanSpace ℝ (Fin n) := fun ⟨f, _⟩ ↦
+  WithLp.toLp 2
+    (fun i ↦ if 0 < f i then gradient J f i else min (0 : ℝ) (gradient J f i))
+
+/-- The `i`-th coordinate of `projectedGradient J ⟨f, hf⟩` is given by the
+coordinatewise clipped gradient formula at the feasible point `f`. -/
+theorem projectedGradient_apply
+    (J : EuclideanSpace ℝ (Fin n) → ℝ)
+    (f : EuclideanSpace ℝ (Fin n))
+    (hf : f ∈ feasibleSet n)
+    (i : Fin n) :
+    projectedGradient J ⟨f, hf⟩ i =
+      if 0 < f i then gradient J f i else min (0 : ℝ) (gradient J f i) := by
+  -- Unfold the definition and read off the `i`-th coordinate of `WithLp.toLp`.
+  simp only [projectedGradient, PiLp.toLp_apply]
+
+/-- At a strictly positive coordinate, `projectedGradient J ⟨f, hf⟩` agrees
+with the ordinary gradient. -/
+theorem projectedGradient_apply_of_pos
+    (J : EuclideanSpace ℝ (Fin n) → ℝ)
+    (f : EuclideanSpace ℝ (Fin n))
+    (hf : f ∈ feasibleSet n)
+    (i : Fin n)
+    (hi : 0 < f i) :
+    projectedGradient J ⟨f, hf⟩ i = gradient J f i := by
+  -- Reduce to the coordinate formula and simplify the positive branch.
+  simp [projectedGradient_apply, hi]
+
+/-- At a vanishing coordinate, `projectedGradient J ⟨f, hf⟩` is the minimum of
+`0` and the corresponding gradient entry. -/
+theorem projectedGradient_apply_of_eq_zero
+    (J : EuclideanSpace ℝ (Fin n) → ℝ)
+    (f : EuclideanSpace ℝ (Fin n))
+    (hf : f ∈ feasibleSet n)
+    (i : Fin n)
+    (hi : f i = 0) :
+    projectedGradient J ⟨f, hf⟩ i = min (0 : ℝ) (gradient J f i) := by
+  -- Rewrite the coordinate to zero so the clipped branch becomes the minimum.
+  simp [projectedGradient_apply, hi]
+
+end NonnegativeOrthant

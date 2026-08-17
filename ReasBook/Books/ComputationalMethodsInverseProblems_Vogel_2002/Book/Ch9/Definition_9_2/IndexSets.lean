@@ -1,0 +1,56 @@
+module
+
+public import Mathlib.Data.Real.Basic
+public import Mathlib.Data.Set.Operations
+
+public section
+
+namespace ActiveSet
+
+universe u v
+
+variable {H : Type u} {ι : Type v}
+
+/-- The active set of `c` at `f` consists of the indices where the constraint
+value vanishes. -/
+def active (c : ι → H → ℝ) (f : H) : Set ι :=
+  {i | c i f = 0}
+
+/-- Membership in `active c f` is equivalent to vanishing of the corresponding
+constraint value at `f`. -/
+theorem mem_active (c : ι → H → ℝ) (f : H) (i : ι) :
+    i ∈ active c f ↔ c i f = 0 := by
+  -- Unfolding the set-builder reduces active-set membership to the defining equality.
+  rfl
+
+/-- The inactive set of `c` at `f` consists of the indices where the constraint
+value is strictly positive. -/
+def inactive (c : ι → H → ℝ) (f : H) : Set ι :=
+  {i | 0 < c i f}
+
+/-- Membership in `inactive c f` is equivalent to strict positivity of the
+corresponding constraint value at `f`. -/
+theorem mem_inactive (c : ι → H → ℝ) (f : H) (i : ι) :
+    i ∈ inactive c f ↔ 0 < c i f := by
+  -- Unfolding the set-builder reduces inactive-set membership to the defining inequality.
+  rfl
+
+/-- Under pointwise feasibility, the inactive indices are exactly the complement
+of the active indices. -/
+theorem inactive_eq_compl_active (c : ι → H → ℝ) (f : H)
+    (hfeas : ∀ i, 0 ≤ c i f) :
+    inactive c f = (active c f)ᶜ := by
+  ext i
+  constructor
+  · intro hi
+    -- A strictly positive constraint value cannot vanish, so the index is outside the active set.
+    rw [mem_inactive] at hi
+    rw [Set.mem_compl_iff, mem_active]
+    exact ne_of_gt hi
+  · intro hi
+    -- Feasibility upgrades nonvanishing to strict positivity, so the index is inactive.
+    rw [Set.mem_compl_iff, mem_active] at hi
+    rw [mem_inactive]
+    exact lt_of_le_of_ne (hfeas i) (by simpa [eq_comm] using hi)
+
+end ActiveSet
