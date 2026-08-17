@@ -1,0 +1,13 @@
+module
+
+public import Book.Ch3.Definition_3_4.QuadraticFunctional
+
+public section
+
+/- Exercise 3.3. The source asks for the explicit solution of the positive-step
+line-search subproblem for steepest descent on a quadratic functional with
+positive-definite Hessian. The canonical Chapter 3 formalization already exists
+as `QuadraticOptimization.exactLineSearchStep_quadraticFunctional`, so this
+item records direct reuse of that theorem owner. -/
+
+#check QuadraticOptimization.exactLineSearchStep_quadraticFunctional

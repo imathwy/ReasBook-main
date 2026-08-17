@@ -1,0 +1,13 @@
+module
+
+public import Book.Ch9.Prop_9_15
+
+public section
+
+/- Exercise 9.9. The source asks for a proof of Proposition 9.15. That
+proposition is already formalized in Chapter 9 by
+`NonnegativeOrthant.eq_projector_sub_smul_gradient_of_isLocalMinOn`, so this
+exercise file records direct reuse of the existing theorem owner rather than
+introducing an exercise-specific wrapper theorem. -/
+
+#check NonnegativeOrthant.eq_projector_sub_smul_gradient_of_isLocalMinOn
