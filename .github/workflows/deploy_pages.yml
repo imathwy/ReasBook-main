@@ -344,7 +344,10 @@ jobs:
     needs:
       - discover-projects
       - build-branch-sites
-    if: always() && needs.build-branch-sites.result == 'success'
+    if: |
+    always() &&
+    (needs.build-branch-sites.result == 'success' ||
+     needs.build-branch-sites.result == 'failure')
     runs-on: [self-hosted, Linux, X64, reasbook-public]
     env:
       VERSION_BRANCHES: ${{ needs.discover-projects.outputs.version_branches }}
