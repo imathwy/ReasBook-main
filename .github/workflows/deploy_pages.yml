@@ -136,6 +136,8 @@ jobs:
       RETRY_ON_143_SLEEP_SECONDS: 20
       PERSIST_ROOT: ${{ vars.REASBOOK_PERSIST_ROOT }}
       BRANCH: ${{ matrix.branch }}
+      REASBOOK_DOMAIN: ${{ vars.REASBOOK_DOMAIN }}
+      REASBOOK_ROOT_PATH: ${{ vars.REASBOOK_ROOT_PATH }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -554,16 +556,22 @@ jobs:
     needs: assemble-pages-artifact
     if: always() && needs.assemble-pages-artifact.result == 'success'
     runs-on: [self-hosted, Linux, X64, reasbook-public]
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Download Pages artifact
+        uses: actions/download-artifact@v4
         with:
-          artifact_name: ${{ needs['assemble-pages-artifact'].outputs.pages_artifact_name }}
+          name: ${{ needs['assemble-pages-artifact'].outputs.pages_artifact_name }}
+          path: .site
 
-      - name: Print deployed Pages URL
+      - name: Deploy to local web root
         run: |
-          echo "GitHub Pages URL: ${{ steps.deployment.outputs.page_url }}"
+          set -euo pipefail
+          rsync -av --delete .site/ /var/www/reasbook/
+
+      - name: Reload nginx
+        run: |
+          sudo nginx -t && sudo systemctl reload nginx
+
+      - name: Print deployed URL
+        run: |
+          echo "ReasBook deployed to http://localhost:19080 (systemd) and /var/www/reasbook (nginx)"
