@@ -165,17 +165,30 @@ GITHUB_BRANCH = (
     or "main"
 )
 
-SITE_BASE = (
-    os.environ.get("REASBOOK_SITE_BASE")
-    or f"https://{GITHUB_OWNER}.github.io/{GITHUB_REPO}/"
-).rstrip("/") + "/"
+# Custom domain mode (activated when REASBOOK_DOMAIN is set).
+# When not set, behaviour is identical to the original GitHub Pages logic.
+CUSTOM_DOMAIN = os.environ.get("REASBOOK_DOMAIN", "").strip().rstrip("/")
+CUSTOM_ROOT_PATH = os.environ.get("REASBOOK_ROOT_PATH", "").strip()
 
-DEFAULT_SITE_ROOT = "/" if GITHUB_REPO == f"{GITHUB_OWNER}.github.io" else f"/{GITHUB_REPO}/"
-SITE_ROOT = (os.environ.get("REASBOOK_SITE_ROOT") or DEFAULT_SITE_ROOT).strip()
-if not SITE_ROOT.startswith("/"):
-    SITE_ROOT = f"/{SITE_ROOT}"
-if not SITE_ROOT.endswith("/"):
-    SITE_ROOT = f"{SITE_ROOT}/"
+if CUSTOM_DOMAIN:
+    SITE_BASE = f"{CUSTOM_DOMAIN}/"
+    SITE_ROOT = CUSTOM_ROOT_PATH if CUSTOM_ROOT_PATH else "/"
+    if not SITE_ROOT.startswith("/"):
+        SITE_ROOT = f"/{SITE_ROOT}"
+    if not SITE_ROOT.endswith("/"):
+        SITE_ROOT = f"{SITE_ROOT}/"
+else:
+    SITE_BASE = (
+        os.environ.get("REASBOOK_SITE_BASE")
+        or f"https://{GITHUB_OWNER}.github.io/{GITHUB_REPO}/"
+    ).rstrip("/") + "/"
+
+    DEFAULT_SITE_ROOT = "/" if GITHUB_REPO == f"{GITHUB_OWNER}.github.io" else f"/{GITHUB_REPO}/"
+    SITE_ROOT = (os.environ.get("REASBOOK_SITE_ROOT") or DEFAULT_SITE_ROOT).strip()
+    if not SITE_ROOT.startswith("/"):
+        SITE_ROOT = f"/{SITE_ROOT}"
+    if not SITE_ROOT.endswith("/"):
+        SITE_ROOT = f"{SITE_ROOT}/"
 
 DOCS_BASE = f"{SITE_BASE}docs/"
 
@@ -1012,6 +1025,8 @@ def emit_route_table(entries: list[Entry]) -> str:
         lines.append(f"import {mod}")
     lines.append("")
     lines.append("open Verso Genre Blog Site Syntax")
+    lines.append("")
+    lines.append("set_option maxRecDepth 20000")
     lines.append("")
     lines.append("namespace ReasBookSite.RouteTable")
     lines.append("")
