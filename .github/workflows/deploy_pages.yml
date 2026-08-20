@@ -166,6 +166,8 @@ jobs:
           rm -rf ReasBook/.lake ReasBookWeb/.lake
           ln -sfn "$persist_root/reasbook_lake" ReasBook/.lake
           ln -sfn "$persist_root/reasbookweb_lake" ReasBookWeb/.lake
+          # Decompress any previously compressed build subdirs
+          ./scripts/decompress_persistent_cache.sh "$persist_root/reasbook_lake" || true
 
       - name: Install elan (Lean toolchain manager)
         run: |
@@ -339,6 +341,12 @@ jobs:
             ReasBookWeb/.lake/build/bin
             ReasBookWeb/.lake/build/lib/lean
           key: lake-reasbookweb-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBookWeb/lean-toolchain') }}-${{ hashFiles('ReasBookWeb/lake-manifest.json') }}
+
+      - name: Compress persistent cache
+        if: always()
+        continue-on-error: true
+        run: |
+          ./scripts/compress_persistent_cache.sh "$PERSIST_ROOT/reasbook_lake" || true
 
   merge-branch-sites:
     needs:
