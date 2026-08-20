@@ -83,3 +83,6 @@ library_facet literate lib : Array System.FilePath := do
   let modJobs ← mods.mapM (·.facet `literate |>.fetch)
   let out ← modJobs.mapM (·.await)
   pure (.pure out)
+
+lean_lib IntroductoryLecturesOnConvexOptimization_Nesterov_2004 where
+  srcDir := "Books"
