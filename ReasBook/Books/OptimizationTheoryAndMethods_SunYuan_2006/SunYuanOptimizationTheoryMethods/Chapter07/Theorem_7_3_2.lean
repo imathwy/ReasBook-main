@@ -1,4 +1,3 @@
-import FirstOrderMethodsOptimization_Beck_2017.Chap07.Definition_7_19
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import OptimizationTheoryAndMethods_SunYuan_2006.SunYuanOptimizationTheoryMethods.Chapter07.Definition_7_3_extra_1
 import Mathlib.Algebra.Group.Pi.Units
