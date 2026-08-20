@@ -1,5 +1,5 @@
 import IntroductoryLecturesOnConvexOptimization_Nesterov_2004.Nesterov.Chap02.Definition_2_29
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap06.Example_6_29
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap06.Example_6_29
 
 open PointedCone (hull)
 open scoped Pointwise

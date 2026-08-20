@@ -1,6 +1,6 @@
 import Mathlib.Analysis.Calculus.Gradient.Basic
 import IntroductoryLecturesOnConvexOptimization_Nesterov_2004.Nesterov.Chap01.Definition_1_8_11
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap02.Example_2_57
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap02.Example_2_57
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

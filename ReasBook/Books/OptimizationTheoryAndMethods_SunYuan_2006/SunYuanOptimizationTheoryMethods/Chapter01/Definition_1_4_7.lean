@@ -1,4 +1,4 @@
-import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.BauschkeLean.Chap02.Example_2_57
+import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Chap02.Example_2_57
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.Calculus.Gradient.Basic
 
