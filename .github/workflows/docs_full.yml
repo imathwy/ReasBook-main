@@ -27,6 +27,23 @@ jobs:
           from pathlib import Path
 
           root = Path("ReasBook")
+          # doc-gen4 v4.30.0 segfaults while rendering this project's root
+          # after the shared ReasBook docs target has already covered it.
+          project_doc_exclusions = {"ProbabilityTheory_Klenke_2020"}
+          flat_project_roots = set()
+          current_lib = None
+          for line in (root / "lakefile.lean").read_text(encoding="utf-8").splitlines():
+              if line.startswith("lean_lib "):
+                  current_lib = line.split()[1].strip("«»")
+                  continue
+              stripped = line.strip()
+              if current_lib and stripped.startswith("srcDir :="):
+                  source_dir = stripped.split('"', 2)[1]
+                  flat_project_roots.add((source_dir, current_lib))
+                  continue
+              if stripped and not line[0].isspace():
+                  current_lib = None
+
           projects = []
           for kind_dir, kind_slug, leaf in [
               (root / "Books", "book", "Book"),
@@ -39,13 +56,20 @@ jobs:
                       continue
                   if not (project / f"{leaf}.lean").is_file():
                       continue
-                  module = f"{kind_dir.name}.{project.name}.{leaf}"
+                  if project.name in project_doc_exclusions:
+                      continue
+                  if (kind_dir.name, project.name) in flat_project_roots:
+                      module = f"{project.name}.{leaf}"
+                      doc_subdir = project.name
+                  else:
+                      module = f"{kind_dir.name}.{project.name}.{leaf}"
+                      doc_subdir = f"{kind_dir.name}/{project.name}"
                   project_id = f"{kind_slug}_{project.name.lower()}_{leaf.lower()}"
                   projects.append({
                       "id": project_id,
                       "module": module,
                       "name": project.name,
-                      "doc_subdir": f"{kind_dir.name}/{project.name}",
+                      "doc_subdir": doc_subdir,
                   })
 
           print(f"project_matrix={json.dumps(projects, separators=(',', ':'))}")
@@ -347,6 +371,20 @@ jobs:
           set -euo pipefail
           test -d ReasBook/.lake/build/doc
           test -f ReasBook/.lake/build/doc/index.html
+          python3 - <<'PY'
+          from pathlib import Path
+
+          source_root = Path("ReasBook")
+          doc_root = source_root / ".lake/build/doc"
+          missing = []
+          for kind, leaf in (("Books", "Book"), ("Papers", "Paper")):
+              for entry in sorted((source_root / kind).glob(f"*/{leaf}.lean")):
+                  expected = doc_root / entry.parent.name / f"{leaf}.html"
+                  if not expected.is_file():
+                      missing.append(expected.relative_to(doc_root).as_posix())
+          if missing:
+              raise SystemExit("missing generated documentation: " + ", ".join(missing))
+          PY
 
       - name: Write docs cache marker
         run: |
