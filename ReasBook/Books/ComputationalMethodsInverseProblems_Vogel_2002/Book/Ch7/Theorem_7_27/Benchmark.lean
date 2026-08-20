@@ -1,11 +1,11 @@
 module
 
-public import Book.Ch7.Theorem_7_27.Constants
-public import Book.Ch7.Prop_7_19.KernelMoment
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_27.Constants
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_19.KernelMoment
 public import Mathlib.Analysis.Calculus.Deriv.MeanValue
 public import Mathlib.Analysis.SpecialFunctions.Log.NegMulLog
-public import Book.Ch7.Prop_7_20
-public import Book.Ch7.Remark_7_11.WeightedSeries
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_20
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_11.WeightedSeries
 public import Mathlib.Analysis.SpecialFunctions.Log.Basic
 public import Mathlib.Analysis.SpecialFunctions.Pow.Real
 public import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics

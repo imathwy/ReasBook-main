@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch4.Definition_4_2.DiscreteRandomVariable
-public import Book.Ch4.Example_4_5.FairCoin
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Definition_4_2.DiscreteRandomVariable
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Example_4_5.FairCoin
 public import Mathlib.Probability.CDF
 import Mathlib.Tactic.NormNum
 

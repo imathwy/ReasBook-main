@@ -4,7 +4,7 @@ public import Mathlib.Data.Real.Sign
 public import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 public import Mathlib.Topology.EMetricSpace.BoundedVariation
 public import Mathlib.Topology.EMetricSpace.VariationOnFromTo
-public import Book.Ch8.Definition_8_9
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Definition_8_9
 
 public section
 

@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch1.Exercise_1_4.ErrorTerms
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Exercise_1_4.ErrorTerms
 
 public section
 

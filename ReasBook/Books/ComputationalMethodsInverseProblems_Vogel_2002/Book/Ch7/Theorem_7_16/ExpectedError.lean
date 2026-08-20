@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch7.Prop_7_15.Objective
-public import Book.Ch7.Remark_7_12.Nullspace
-public import Book.Ch7.Theorem_7_16.ErrorConstant
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_15.Objective
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_12.Nullspace
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_16.ErrorConstant
 
 public section
 

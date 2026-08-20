@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch4.Definition_4_20.ConditionalExpectation
-public import Book.Ch4.Example_4_5.FairCoin
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Definition_4_20.ConditionalExpectation
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Example_4_5.FairCoin
 public import Mathlib.Probability.Distributions.Bernoulli
 public import Mathlib.Probability.Distributions.Binomial
 public import Mathlib.Tactic.NormNum

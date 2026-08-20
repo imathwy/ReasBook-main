@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch4.Definition_4_12.Covariance
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Definition_4_12.Covariance
 public import Mathlib.Analysis.InnerProductSpace.PiL2
 public import Mathlib.Data.Matrix.Mul
 public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse

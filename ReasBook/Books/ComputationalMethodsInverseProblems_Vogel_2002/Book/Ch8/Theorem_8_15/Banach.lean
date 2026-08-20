@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch8.Theorem_8_15.Normed
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_15.Normed
 public import Mathlib.Topology.Semicontinuity.Basic
 
 public section

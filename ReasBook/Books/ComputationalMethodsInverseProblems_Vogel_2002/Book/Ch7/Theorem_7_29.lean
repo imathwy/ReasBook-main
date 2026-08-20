@@ -1,17 +1,17 @@
-import Book.Ch7.Definition_7_33
-import Book.Ch7.Exercise_7_1
-import Book.Ch7.Lemma_7_5.SpectralRepresentation
-import Book.Ch7.Notation_7_7.OptimalFamily
-import Book.Ch7.Prop_7_19
-import Book.Ch7.Prop_7_20
-import Book.Ch7.Prop_7_8
-import Book.Ch7.Remark_7_4
-import Book.Ch7.Prop_7_6.WhiteNoise
-import Book.Ch7.Remark_7_10.Filters
-import Book.Ch7.Remark_7_17.AsymptoticOptimalBridge
-import Book.Ch7.Theorem_7_23.PredictiveRisk
-import Book.Ch7.Theorem_7_29.ExpectedObjective
-import Book.Ch7.Theorem_7_29.QuadratureProfile
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Definition_7_33
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Exercise_7_1
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Lemma_7_5.SpectralRepresentation
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Notation_7_7.OptimalFamily
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_19
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_20
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_8
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_4
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_6.WhiteNoise
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_10.Filters
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_17.AsymptoticOptimalBridge
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_23.PredictiveRisk
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_29.ExpectedObjective
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_29.QuadratureProfile
 import Mathlib.Analysis.MeanInequalities
 
 section

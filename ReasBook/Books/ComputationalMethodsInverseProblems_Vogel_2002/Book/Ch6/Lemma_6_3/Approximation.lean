@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch6.Assumption_6_3_extra_1
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch6.Assumption_6_3_extra_1
 public import Mathlib.Analysis.Normed.Group.Basic
 public import Mathlib.Order.Filter.Extr
 

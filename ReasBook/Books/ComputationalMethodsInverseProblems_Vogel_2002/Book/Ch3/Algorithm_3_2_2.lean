@@ -1,9 +1,9 @@
 module
 
-import Book.Ch3.Algorithm_3_2_1.Iterates
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Algorithm_3_2_1.Iterates
 public import Mathlib.Analysis.InnerProductSpace.PiL2
 public import Mathlib.Analysis.Matrix.PosDef
-import Book.Ch3.Definition_3_4.QuadraticFunctional
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_4.QuadraticFunctional
 
 public section
 

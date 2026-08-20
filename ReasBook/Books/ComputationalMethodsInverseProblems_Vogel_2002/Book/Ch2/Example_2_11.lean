@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch2.Exercise_2_10
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Exercise_2_10
 public import Mathlib.Analysis.InnerProductSpace.PiL2
 
 public section

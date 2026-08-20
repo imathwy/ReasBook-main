@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch5.Definition_5_8.Convolution2D
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_8.Convolution2D
 
 public section
 

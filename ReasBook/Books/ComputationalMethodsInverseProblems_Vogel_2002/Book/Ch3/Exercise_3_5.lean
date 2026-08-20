@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch3.Cor_3_8
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Cor_3_8
 
 public section
 

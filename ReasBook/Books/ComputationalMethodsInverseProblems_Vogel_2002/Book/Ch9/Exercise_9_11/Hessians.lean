@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch9.Example_9_1.Objectives
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Example_9_1.Objectives
 
 public section
 

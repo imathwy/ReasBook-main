@@ -1,9 +1,9 @@
 module
 
 public import Mathlib.Topology.Order.LocalExtr
-public import Book.Ch2.Assumption_A2.StronglyPositive
-public import Book.Ch2.Theorem_2_42.Taylor
-import Book.Ch2.Theorem_2_43.Comparison
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Assumption_A2.StronglyPositive
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Theorem_2_42.Taylor
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Theorem_2_43.Comparison
 
 public section
 

@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch2.Definition_2_15
-public import Book.Ch2.Theorem_2_17.Pseudoinverse
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Definition_2_15
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Theorem_2_17.Pseudoinverse
 
 public section
 

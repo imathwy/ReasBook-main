@@ -2,7 +2,7 @@ module
 
 import Mathlib.LinearAlgebra.Matrix.Action
 
-public import Book.Ch6.Example_6_2.DiffusionMatrices
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch6.Example_6_2.DiffusionMatrices
 
 public section
 

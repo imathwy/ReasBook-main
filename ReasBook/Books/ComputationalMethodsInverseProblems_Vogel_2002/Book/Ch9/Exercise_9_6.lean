@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch9.Remark_9_10
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Remark_9_10
 
 public section
 

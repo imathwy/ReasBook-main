@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch2.Notation_2_4
-public import Book.Ch9.Algorithm_9_3_1.Iterates
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Notation_2_4
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Algorithm_9_3_1.Iterates
 public import Mathlib.Analysis.InnerProductSpace.PiL2
 
 public section

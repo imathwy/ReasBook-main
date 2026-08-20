@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch8.Example_8_12.Boundary
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Example_8_12.Boundary
 public import Mathlib.MeasureTheory.Measure.Regular
 public import Mathlib.Topology.MetricSpace.Pseudo.Lemmas
 

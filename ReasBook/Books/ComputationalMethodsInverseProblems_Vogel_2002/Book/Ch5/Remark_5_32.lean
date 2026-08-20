@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch5.Definition_5_27.BCCB
-public import Book.Ch5.Exercise_5_31.DirichletLaplacian
-public import Book.Ch5.Remark_5_32.NeumannLaplacian
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_27.BCCB
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Exercise_5_31.DirichletLaplacian
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Remark_5_32.NeumannLaplacian
 
 public section
 

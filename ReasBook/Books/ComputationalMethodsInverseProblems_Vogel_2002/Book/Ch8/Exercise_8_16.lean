@@ -1,9 +1,9 @@
 module
 
-public import Book.Ch8.Definition_8_4_1.Approximation
-public import Book.Ch8.Definition_8_9
-public import Book.Ch8.Exercise_8_16.ERealUniformity
-public import Book.Ch8.Theorem_8_18
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Definition_8_4_1.Approximation
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Definition_8_9
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Exercise_8_16.ERealUniformity
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_18
 
 public section
 

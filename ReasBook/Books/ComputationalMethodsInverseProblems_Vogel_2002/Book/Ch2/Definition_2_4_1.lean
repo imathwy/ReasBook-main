@@ -1,10 +1,10 @@
 module
 
-public import Book.Ch2.Example_2_5.SmoothNegativeLaplacian
-public import Book.Ch2.Example_2_27
-public import Book.Ch2.Example_2_28
-public import Book.Ch8.Exercise_8_2
-public import Book.Ch8.Prop_8_13.Sobolev
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Example_2_5.SmoothNegativeLaplacian
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Example_2_27
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Example_2_28
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Exercise_8_2
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Prop_8_13.Sobolev
 public import Mathlib.Analysis.InnerProductSpace.Basic
 public import Mathlib.Analysis.SpecialFunctions.Log.Basic
 public import Mathlib.MeasureTheory.Function.L2Space

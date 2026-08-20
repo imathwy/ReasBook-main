@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch5.Algorithm_5_2_1.CirculantExtension
-public import Book.Ch5.Algorithm_5_3_2.Assembled
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Algorithm_5_2_1.CirculantExtension
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Algorithm_5_3_2.Assembled
 
 public section
 

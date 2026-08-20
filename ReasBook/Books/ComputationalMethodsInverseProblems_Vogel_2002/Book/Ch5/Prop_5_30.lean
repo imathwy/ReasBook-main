@@ -1,8 +1,8 @@
 module
 
 public import Mathlib.LinearAlgebra.Matrix.Kronecker
-public import Book.Ch5.Definition_5_7.Fourier2D
-public import Book.Ch5.Definition_5_25.Array
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_7.Fourier2D
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_25.Array
 
 public section
 

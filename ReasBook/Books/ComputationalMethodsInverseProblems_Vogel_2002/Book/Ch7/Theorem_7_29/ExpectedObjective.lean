@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch7.Definition_7_2
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Definition_7_2
 public import Mathlib.MeasureTheory.Integral.Bochner.Basic
 
 public section

@@ -1,7 +1,7 @@
 module
 
 import Mathlib.Algebra.BigOperators.Fin
-public import Book.Ch5.Definition_5_11.Toeplitz
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_11.Toeplitz
 
 public section
 

@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch9.Algorithm_9_3_1.Iterates
-public import Book.Ch9.Definition_9_20.ReducedHessian
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Algorithm_9_3_1.Iterates
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_20.ReducedHessian
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 
 public section

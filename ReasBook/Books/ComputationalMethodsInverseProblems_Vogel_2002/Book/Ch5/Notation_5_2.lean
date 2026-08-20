@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch5.Notation_5_2.Coordinates
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Notation_5_2.Coordinates
 
 public section
 

@@ -1,9 +1,9 @@
 module
 
 public import Mathlib.Algebra.BigOperators.Ring.Finset
-public import Book.Ch2.Definition_2_18
-public import Book.Ch2.Theorem_2_17.Pseudoinverse
-public import Book.Ch2.Theorem_2_19.Reconstruction
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Definition_2_18
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Theorem_2_17.Pseudoinverse
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Theorem_2_19.Reconstruction
 
 public section
 

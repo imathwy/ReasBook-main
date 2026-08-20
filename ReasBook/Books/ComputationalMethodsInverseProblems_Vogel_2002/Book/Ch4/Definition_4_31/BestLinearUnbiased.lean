@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch4.Definition_4_31.LinearEstimator
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Definition_4_31.LinearEstimator
 public import Mathlib.MeasureTheory.Function.LpSeminorm.Basic
 public import Mathlib.Order.Filter.Extr
 public import Mathlib.Probability.Notation

@@ -1,10 +1,10 @@
 module
 
-public import Book.Ch7.Prop_7_15.Objective
-public import Book.Ch7.Prop_7_15.OptimalIndex
-public import Book.Ch7.Prop_7_15.Reconstruction
-public import Book.Ch7.Lemma_7_14
-public import Book.Ch7.Remark_7_12.SingularSystem
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_15.Objective
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_15.OptimalIndex
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_15.Reconstruction
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Lemma_7_14
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_12.SingularSystem
 public import Mathlib.Algebra.Group.ForwardDiff
 public import Mathlib.Analysis.SpecialFunctions.Pow.Real
 public import Mathlib.MeasureTheory.Function.L2Space

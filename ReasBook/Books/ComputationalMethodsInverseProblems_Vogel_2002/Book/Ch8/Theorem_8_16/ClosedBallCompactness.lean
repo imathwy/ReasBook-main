@@ -4,7 +4,7 @@ public import Mathlib.Analysis.Normed.Module.DoubleDual
 public import Mathlib.Analysis.LocallyConvex.WeakSpace
 public import Mathlib.Analysis.Normed.Module.WeakDual
 public import Mathlib.Analysis.LocallyConvex.Bounded
-public import Book.Ch8.Theorem_8_16.Embedding
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_16.Embedding
 
 public section
 

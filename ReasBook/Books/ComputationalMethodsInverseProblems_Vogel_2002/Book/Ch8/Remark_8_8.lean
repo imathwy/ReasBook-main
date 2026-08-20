@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch5.Definition_5_24.BTTB
-public import Book.Ch8.Algorithm_8_2_4.Clauses
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_24.BTTB
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Algorithm_8_2_4.Clauses
 public import Mathlib.Data.Matrix.Mul
 public import Mathlib.LinearAlgebra.Matrix.PosDef
 public import Mathlib.LinearAlgebra.Matrix.Symmetric

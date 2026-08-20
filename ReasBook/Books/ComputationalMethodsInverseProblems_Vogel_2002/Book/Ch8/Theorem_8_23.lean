@@ -1,9 +1,9 @@
-import Book.Ch8.Definition_8_4_1.Approximation
-import Book.Ch8.Definition_8_14.BV
-import Book.Ch8.Prop_8_22.BVBounded
-import Book.Ch8.Theorem_8_18.Comparison
-import Book.Ch8.Theorem_8_16
-import Book.Ch2.Definition_2_24
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Definition_8_4_1.Approximation
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Definition_8_14.BV
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Prop_8_22.BVBounded
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_18.Comparison
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_16
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Definition_2_24
 import Mathlib.Order.Filter.AtTopBot.CountablyGenerated
 import Mathlib.Order.Filter.Extr
 import Mathlib.Topology.Constructions.SumProd

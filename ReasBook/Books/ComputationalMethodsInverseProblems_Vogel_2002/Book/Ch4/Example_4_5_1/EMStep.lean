@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch4.Example_4_5_1.JointModel
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Example_4_5_1.JointModel
 public import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 public section

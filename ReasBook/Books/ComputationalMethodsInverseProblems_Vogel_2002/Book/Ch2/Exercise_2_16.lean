@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch1.Exercise_1_15
-public import Book.Ch2.Example_2_21
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Exercise_1_15
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Example_2_21
 
 public section
 

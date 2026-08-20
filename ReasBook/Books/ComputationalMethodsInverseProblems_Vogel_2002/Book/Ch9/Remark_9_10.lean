@@ -1,9 +1,9 @@
 module
 
-public import Book.Ch2.Exercise_2_21
-public import Book.Ch2.Prop_2_34
-public import Book.Ch2.Theorem_2_30
-public import Book.Ch9.Definition_9_9.CriticalPoint
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Exercise_2_21
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Prop_2_34
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Theorem_2_30
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_9.CriticalPoint
 public import Mathlib.Analysis.Calculus.Deriv.Pow
 public import Mathlib.Analysis.Convex.Slope
 public import Mathlib.Geometry.Manifold.Instances.Real

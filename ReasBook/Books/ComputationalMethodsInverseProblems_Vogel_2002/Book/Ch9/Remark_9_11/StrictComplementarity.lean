@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch9.Definition_9_5.StrictComplementarity
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_5.StrictComplementarity
 public import Mathlib.Analysis.Calculus.Gradient.Basic
 
 public section

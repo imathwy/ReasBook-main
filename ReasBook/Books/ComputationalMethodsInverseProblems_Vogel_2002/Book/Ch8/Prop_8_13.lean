@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch8.Definition_8_9
-public import Book.Ch8.Prop_8_13.Sobolev
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Definition_8_9
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Prop_8_13.Sobolev
 public import Mathlib.Analysis.Normed.Lp.SmoothApprox
 public import Mathlib.Geometry.Manifold.PartitionOfUnity
 public import Mathlib.MeasureTheory.Measure.WithDensity

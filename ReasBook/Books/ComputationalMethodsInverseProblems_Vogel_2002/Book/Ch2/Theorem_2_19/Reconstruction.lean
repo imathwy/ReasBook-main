@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch2.Assumption_A3.Comparison
-public import Book.Ch7.Remark_7_12.SingularSystem
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Assumption_A3.Comparison
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_12.SingularSystem
 public import Mathlib.Analysis.Normed.Lp.lpHolder
 public import Mathlib.Analysis.Normed.Operator.Mul
 

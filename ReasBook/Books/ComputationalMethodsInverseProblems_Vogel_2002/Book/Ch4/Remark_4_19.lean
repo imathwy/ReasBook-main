@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch4.Exercise_4_7.Factorization
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Exercise_4_7.Factorization
 
 public section
 

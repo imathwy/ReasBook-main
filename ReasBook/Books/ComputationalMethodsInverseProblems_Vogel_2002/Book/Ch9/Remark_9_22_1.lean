@@ -1,10 +1,10 @@
 module
 
-public import Book.Ch1.Remark_1_1
-public import Book.Ch9.Algorithm_9_3_1.Iterates
-public import Book.Ch9.Algorithm_9_3_3.Iterates
-public import Book.Ch9.Definition_9_9.CriticalPoint
-public import Book.Ch9.Remark_9_11.StrictComplementarity
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Remark_1_1
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Algorithm_9_3_1.Iterates
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Algorithm_9_3_3.Iterates
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_9.CriticalPoint
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Remark_9_11.StrictComplementarity
 public import Mathlib.Analysis.InnerProductSpace.Adjoint
 public import Mathlib.Analysis.SpecialFunctions.Log.Basic
 

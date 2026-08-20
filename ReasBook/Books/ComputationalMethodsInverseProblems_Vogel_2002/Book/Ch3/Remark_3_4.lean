@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch3.Remark_3_4.Wolfe
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Remark_3_4.Wolfe
 
 public section
 

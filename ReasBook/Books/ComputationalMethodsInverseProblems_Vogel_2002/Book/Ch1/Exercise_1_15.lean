@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch1.Exercise_1_15.Iteration
-public import Book.Ch1.Exercise_1_16.Landweber
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Exercise_1_15.Iteration
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Exercise_1_16.Landweber
 public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 public import Mathlib.LinearAlgebra.Matrix.Diagonal
 public import Mathlib.LinearAlgebra.UnitaryGroup

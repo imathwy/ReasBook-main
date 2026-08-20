@@ -1,15 +1,15 @@
 module
 
-public import Book.Ch9.Algorithm_9_3_1.Iterates
-public import Book.Ch9.Definition_9_2.IndexSets
-public import Book.Ch9.Definition_9_13.ProjectedGradient
-public import Book.Ch9.Definition_9_6.Projection
-public import Book.Ch9.Definition_9_9.CriticalPoint
-public import Book.Ch9.Exercise_9_7
-public import Book.Ch9.Prop_9_14
-public import Book.Ch9.Prop_9_15.Projector
-public import Book.Ch9.Prop_9_8.FeasibleSet
-public import Book.Ch9.Remark_9_11.StrictComplementarity
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Algorithm_9_3_1.Iterates
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_2.IndexSets
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_13.ProjectedGradient
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_6.Projection
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_9.CriticalPoint
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Exercise_9_7
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Prop_9_14
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Prop_9_15.Projector
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Prop_9_8.FeasibleSet
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Remark_9_11.StrictComplementarity
 public import Mathlib.Analysis.Calculus.Deriv.MeanValue
 public import Mathlib.Analysis.Calculus.LocalExtr.Basic
 public import Mathlib.Topology.Order.ExtrClosure

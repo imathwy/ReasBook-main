@@ -5,11 +5,11 @@ public import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 public import Mathlib.LinearAlgebra.Matrix.Circulant
 public import Mathlib.LinearAlgebra.Matrix.Hadamard
 public import Mathlib.LinearAlgebra.Matrix.Kronecker
-public import Book.Ch5.Definition_5_13
-public import Book.Ch5.Definition_5_7.Fourier2D
-public import Book.Ch5.Definition_5_8.Convolution2D
-public import Book.Ch5.Definition_5_9.PeriodicExtension
-public import Book.Ch5.Notation_5_2.Coordinates
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_13
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_7.Fourier2D
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_8.Convolution2D
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_9.PeriodicExtension
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Notation_5_2.Coordinates
 
 public section
 

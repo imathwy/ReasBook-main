@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch2.Definition_2_7.WellPosed
-import Book.Ch2.Theorem_2_17.Pseudoinverse
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Definition_2_7.WellPosed
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Theorem_2_17.Pseudoinverse
 public import Mathlib.Analysis.InnerProductSpace.Defs
 public import Mathlib.Analysis.RCLike.Basic
 public import Mathlib.Analysis.Normed.Operator.Compact.FiniteDimension

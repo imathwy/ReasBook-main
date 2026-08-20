@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch8.Prop_8_13.Sobolev
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Prop_8_13.Sobolev
 public import Mathlib.Analysis.Normed.Lp.SmoothApprox
 public import Mathlib.Geometry.Manifold.PartitionOfUnity
 

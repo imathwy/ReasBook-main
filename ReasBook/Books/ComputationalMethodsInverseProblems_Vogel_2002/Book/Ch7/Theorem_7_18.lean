@@ -1,10 +1,10 @@
 module
 
-public import Book.Ch7.Notation_7_7.OptimalFamily
-public import Book.Ch7.Prop_7_15.Objective
-public import Book.Ch7.Prop_7_15.OptimalIndex
-public import Book.Ch7.Prop_7_15.Reconstruction
-public import Book.Ch7.Theorem_7_18.PredictiveRisk
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Notation_7_7.OptimalFamily
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_15.Objective
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_15.OptimalIndex
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_15.Reconstruction
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_18.PredictiveRisk
 public import Mathlib.Order.Filter.Extr
 
 public section

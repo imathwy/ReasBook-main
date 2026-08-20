@@ -2,8 +2,8 @@ module
 
 public import Mathlib.Analysis.Calculus.IteratedDeriv.FaaDiBruno
 public import Mathlib.Analysis.SpecialFunctions.Log.Deriv
-public import Book.Ch1.Remark_1_2_2.Discrepancy
-public import Book.Ch7.Definition_7_4.Curve
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Remark_1_2_2.Discrepancy
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Definition_7_4.Curve
 
 public section
 

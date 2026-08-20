@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch4.Prop_4_29
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Prop_4_29
 public import Mathlib.MeasureTheory.Integral.Bochner.Basic
 
 public section

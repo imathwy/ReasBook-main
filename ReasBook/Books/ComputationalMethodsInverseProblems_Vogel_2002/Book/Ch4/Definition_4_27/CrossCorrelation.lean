@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch4.Definition_4_27.SecondMoment
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Definition_4_27.SecondMoment
 
 public section
 

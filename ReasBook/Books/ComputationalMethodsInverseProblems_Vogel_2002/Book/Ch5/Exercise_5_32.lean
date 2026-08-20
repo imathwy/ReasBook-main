@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch5.Exercise_5_19
-public import Book.Ch5.Definition_5_27.BCCB
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Exercise_5_19
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_27.BCCB
 
 public section
 

@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch9.Definition_9_5_1.Iteration
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_5_1.Iteration
 
 public section
 

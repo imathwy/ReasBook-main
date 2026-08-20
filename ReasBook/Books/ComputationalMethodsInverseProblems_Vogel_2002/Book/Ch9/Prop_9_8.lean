@@ -1,11 +1,11 @@
 module
 
-public import Book.Ch9.Prop_9_8.FeasibleSet
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Prop_9_8.FeasibleSet
 public import Mathlib.Analysis.Calculus.ContDiff.Basic
 public import Mathlib.Analysis.Calculus.LocalExtr.Basic
-import Book.Ch2.Exercise_2_19.EuclideanQuadrant
-import Book.Ch2.Exercise_2_21
-import Book.Ch2.Theorem_2_38
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Exercise_2_19.EuclideanQuadrant
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Exercise_2_21
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Theorem_2_38
 
 public section
 

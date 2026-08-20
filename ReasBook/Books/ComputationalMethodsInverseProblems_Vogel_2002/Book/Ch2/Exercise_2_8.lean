@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch2.Example_2_12
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Example_2_12
 
 public section
 

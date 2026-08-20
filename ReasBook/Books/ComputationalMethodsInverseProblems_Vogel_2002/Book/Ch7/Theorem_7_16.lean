@@ -1,11 +1,11 @@
 module
 
-public import Book.Ch7.Notation_7_7
-public import Book.Ch7.Prop_7_15.Objective
-public import Book.Ch7.Prop_7_15.OptimalIndex
-public import Book.Ch7.Prop_7_15.Reconstruction
-public import Book.Ch7.Remark_7_12.Nullspace
-public import Book.Ch7.Theorem_7_16.ExpectedError
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Notation_7_7
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_15.Objective
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_15.OptimalIndex
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_15.Reconstruction
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_12.Nullspace
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_16.ExpectedError
 public import Mathlib.Analysis.Asymptotics.AsymptoticEquivalent
 
 public section

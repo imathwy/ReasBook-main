@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch1.Remark_1_2_2.Discrepancy
-public import Book.Ch7.Definition_7_3
-public import Book.Ch7.Exercise_7_8.Deblurring
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Remark_1_2_2.Discrepancy
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Definition_7_3
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Exercise_7_8.Deblurring
 
 public section
 

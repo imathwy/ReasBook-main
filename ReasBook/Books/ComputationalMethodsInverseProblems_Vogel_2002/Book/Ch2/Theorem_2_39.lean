@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch2.Theorem_2_39.Monotonicity
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Theorem_2_39.Monotonicity
 public import Mathlib.Analysis.Calculus.Deriv.AffineMap
 public import Mathlib.Analysis.Convex.Deriv
 

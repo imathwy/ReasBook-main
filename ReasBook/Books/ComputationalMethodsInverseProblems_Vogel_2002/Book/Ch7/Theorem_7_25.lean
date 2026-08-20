@@ -1,9 +1,9 @@
 module
 
-public import Book.Ch7.Prop_7_15.Reconstruction
-public import Book.Ch7.Remark_7_12
-public import Book.Ch7.Theorem_7_25.Benchmark
-public import Book.Ch7.Theorem_7_25.DiscrepancyChoice
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_15.Reconstruction
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_12
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_25.Benchmark
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_25.DiscrepancyChoice
 public import Mathlib.Analysis.Asymptotics.Theta
 
 public section

@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch2.Example_2_3.Diagonal
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Example_2_3.Diagonal
 public import Mathlib.Analysis.InnerProductSpace.Adjoint
 public import Mathlib.Analysis.SpecialFunctions.Sqrt
 

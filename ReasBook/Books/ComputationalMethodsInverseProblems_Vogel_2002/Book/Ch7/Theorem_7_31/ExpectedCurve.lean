@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch7.Definition_7_4.Curve
-public import Book.Ch7.Notation_7_7.OptimalFamily
-public import Book.Ch7.Theorem_7_21.ExpectedError
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Definition_7_4.Curve
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Notation_7_7.OptimalFamily
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_21.ExpectedError
 
 public section
 

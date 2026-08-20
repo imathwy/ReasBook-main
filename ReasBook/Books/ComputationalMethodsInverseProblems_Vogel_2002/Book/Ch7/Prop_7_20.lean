@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch7.Prop_7_19.KernelMoment
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_19.KernelMoment
 public import Mathlib.Analysis.SpecialFunctions.Gamma.Beta
 public import Mathlib.MeasureTheory.Integral.Bochner.Set
 public import Mathlib.Probability.Distributions.Beta

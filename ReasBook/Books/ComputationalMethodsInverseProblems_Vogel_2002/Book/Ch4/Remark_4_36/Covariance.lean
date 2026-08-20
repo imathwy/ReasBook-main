@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch4.Definition_4_12.Covariance
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Definition_4_12.Covariance
 public import Mathlib.Analysis.Normed.Lp.MeasurableSpace
 public import Mathlib.LinearAlgebra.Matrix.ToLin
 public import Mathlib.MeasureTheory.Function.LpSeminorm.Basic

@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch1.Exercise_1_5.Filters
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Exercise_1_5.Filters
 
 public section
 

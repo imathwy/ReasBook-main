@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch5.Cor_5_23
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Cor_5_23
 
 public section
 

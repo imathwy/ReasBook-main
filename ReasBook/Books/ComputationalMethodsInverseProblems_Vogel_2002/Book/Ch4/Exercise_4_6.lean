@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch4.Definition_4_18.JointPmf
-public import Book.Ch4.Example_4_5.FairCoin
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Definition_4_18.JointPmf
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Example_4_5.FairCoin
 public import Mathlib.Probability.Distributions.Binomial
 import Mathlib.Tactic.NormNum
 

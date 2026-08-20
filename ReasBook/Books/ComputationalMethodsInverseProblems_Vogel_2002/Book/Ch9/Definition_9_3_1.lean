@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch9.Definition_9_3_1.BindingSet
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_3_1.BindingSet
 
 public section
 

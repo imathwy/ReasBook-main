@@ -1,3 +1,3 @@
 module
 
-public import Book.Ch2.Definition_2_22
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Definition_2_22

@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch1.Exercise_1_16.Landweber
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Exercise_1_16.Landweber
 public import Mathlib.Algebra.Order.Floor.Semifield
 public import Mathlib.Analysis.SpecificLimits.Basic
 public import Mathlib.Analysis.SpecialFunctions.Sqrt

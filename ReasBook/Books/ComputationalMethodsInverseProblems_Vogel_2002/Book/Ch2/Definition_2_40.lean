@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch2.Definition_2_40.Hessian
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Definition_2_40.Hessian
 
 public section
 

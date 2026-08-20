@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch8.Example_8_5
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Example_8_5
 
 public section
 

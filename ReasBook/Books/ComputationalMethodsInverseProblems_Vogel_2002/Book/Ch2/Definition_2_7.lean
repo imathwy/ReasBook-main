@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch2.Definition_2_7.WellPosed
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Definition_2_7.WellPosed
 public import Mathlib.Analysis.Normed.Operator.Banach
 public import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 public import Mathlib.Topology.Algebra.Module.FiniteDimension

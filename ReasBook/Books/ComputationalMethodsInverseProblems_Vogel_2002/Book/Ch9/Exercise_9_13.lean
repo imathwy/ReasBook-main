@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch9.Exercise_9_13.AdmissibleSet
-public import Book.Ch9.Exercise_9_13.NegLogLikelihood
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Exercise_9_13.AdmissibleSet
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Exercise_9_13.NegLogLikelihood
 public import Mathlib.Order.Filter.Extr
 
 public section

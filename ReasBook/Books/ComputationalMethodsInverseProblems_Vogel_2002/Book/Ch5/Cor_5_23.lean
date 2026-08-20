@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch5.Definition_5_11.Toeplitz
-public import Book.Ch5.Prop_5_20
-public import Book.Ch5.Theorem_5_22
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_11.Toeplitz
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Prop_5_20
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Theorem_5_22
 
 public section
 

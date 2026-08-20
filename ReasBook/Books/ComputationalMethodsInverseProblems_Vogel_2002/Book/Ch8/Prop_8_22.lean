@@ -1,9 +1,9 @@
 module
 
-public import Book.Ch8.Definition_8_4_1.Approximation
-public import Book.Ch8.Exercise_8_16
-public import Book.Ch8.Exercise_8_16.ERealUniformity
-public import Book.Ch8.Prop_8_22.BVBounded
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Definition_8_4_1.Approximation
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Exercise_8_16
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Exercise_8_16.ERealUniformity
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Prop_8_22.BVBounded
 public import Mathlib.MeasureTheory.Function.Holder
 public import Mathlib.Topology.Algebra.Module.Spaces.WeakDual
 public import Mathlib.Topology.Instances.EReal.Lemmas

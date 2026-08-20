@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch7.Prop_7_15.OptimalIndex
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_15.OptimalIndex
 public import Mathlib.Analysis.Asymptotics.SpecificAsymptotics
 public import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 

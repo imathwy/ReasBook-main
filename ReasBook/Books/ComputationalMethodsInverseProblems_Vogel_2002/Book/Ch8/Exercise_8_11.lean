@@ -1,12 +1,12 @@
 module
 
-public import Book.Ch1.Exercise_1_14
-public import Book.Ch1.Remark_1_1.Fredholm
-public import Book.Ch8.Algorithm_8_2_1
-public import Book.Ch8.Algorithm_8_2_2
-public import Book.Ch8.Algorithm_8_2_3
-public import Book.Ch8.Algorithm_8_2_4
-public import Book.Ch8.Exercise_8_16
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Exercise_1_14
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Remark_1_1.Fredholm
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Algorithm_8_2_1
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Algorithm_8_2_2
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Algorithm_8_2_3
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Algorithm_8_2_4
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Exercise_8_16
 
 public section
 

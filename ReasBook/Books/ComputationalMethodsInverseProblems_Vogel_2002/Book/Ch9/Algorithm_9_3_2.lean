@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch9.Algorithm_9_3_2.Iterates
-public import Book.Ch9.Prop_9_15.Projector
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Algorithm_9_3_2.Iterates
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Prop_9_15.Projector
 
 public section
 

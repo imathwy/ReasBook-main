@@ -2,8 +2,8 @@ module
 
 import Mathlib.Analysis.LocallyConvex.WeakSpace
 
-public import Book.Ch2.Definition_2_24
-public import Book.Ch2.Example_2_23
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Definition_2_24
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Example_2_23
 
 public section
 

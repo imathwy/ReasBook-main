@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch4.Theorem_4_24.PosteriorPmf
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Theorem_4_24.PosteriorPmf
 public import Mathlib.Order.Filter.Extr
 
 public section

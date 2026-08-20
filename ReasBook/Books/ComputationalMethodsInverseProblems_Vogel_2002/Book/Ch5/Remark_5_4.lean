@@ -1,9 +1,9 @@
 module
 
-import Book.Ch3.Algorithm_3_2_1.Iterates
-public import Book.Ch5.Definition_5_11.Toeplitz
-import Book.Ch5.Cor_5_23
-import Book.Ch5.Definition_5_27.BCCB
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Algorithm_3_2_1.Iterates
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_11.Toeplitz
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Cor_5_23
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_27.BCCB
 
 public section
 

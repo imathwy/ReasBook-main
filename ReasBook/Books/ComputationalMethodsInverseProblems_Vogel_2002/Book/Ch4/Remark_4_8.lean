@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch4.Example_4_5.FairCoin
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Example_4_5.FairCoin
 public import Mathlib.Probability.IdentDistrib
 
 public section

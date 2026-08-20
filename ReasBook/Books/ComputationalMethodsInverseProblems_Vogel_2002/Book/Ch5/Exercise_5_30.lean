@@ -1,9 +1,9 @@
 module
 
-public import Book.Ch1.Remark_1_1.Fredholm
-public import Book.Ch3.Algorithm_3_2_1.Iterates
-public import Book.Ch5.Cor_5_23
-public import Book.Ch5.Theorem_5_22
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Remark_1_1.Fredholm
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Algorithm_3_2_1.Iterates
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Cor_5_23
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Theorem_5_22
 
 public section
 

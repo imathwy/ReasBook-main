@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch2.Definition_2_4.Functional
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Definition_2_4.Functional
 public import Mathlib.Analysis.InnerProductSpace.Basic
 public import Mathlib.Order.Filter.Extr
 

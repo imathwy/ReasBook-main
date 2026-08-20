@@ -2,8 +2,8 @@ module
 
 public import Mathlib.Probability.Density
 public import Mathlib.Probability.ProbabilityMassFunction.Constructions
-public import Book.Ch4.Definition_4_9.JointCDF
-public import Book.Ch4.Definition_4_10.DiscreteRandomVector
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Definition_4_9.JointCDF
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Definition_4_10.DiscreteRandomVector
 
 public section
 

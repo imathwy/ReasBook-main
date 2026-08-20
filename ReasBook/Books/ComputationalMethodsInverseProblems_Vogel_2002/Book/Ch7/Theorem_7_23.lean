@@ -1,8 +1,8 @@
-import Book.Ch7.Definition_7_33
-import Book.Ch7.Notation_7_7
-import Book.Ch7.Prop_7_20
-import Book.Ch7.Remark_7_17.AsymptoticOptimalBridge
-import Book.Ch7.Theorem_7_23.PredictiveRisk
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Definition_7_33
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Notation_7_7
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_20
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_17.AsymptoticOptimalBridge
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_23.PredictiveRisk
 import Mathlib.Analysis.MeanInequalities
 
 namespace TikhonovPredictiveRisk

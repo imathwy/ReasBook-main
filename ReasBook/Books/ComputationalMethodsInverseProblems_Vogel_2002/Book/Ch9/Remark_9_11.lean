@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch9.Definition_9_9.CriticalPoint
-public import Book.Ch9.Definition_9_5.StrictComplementarity
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_9.CriticalPoint
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_5.StrictComplementarity
 
 public section
 

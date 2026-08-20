@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch4.Definition_4_12
-public import Book.Ch4.Exercise_4_15.MinimumVarianceLinear
-public import Book.Ch4.Prop_4_35
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Definition_4_12
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Exercise_4_15.MinimumVarianceLinear
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Prop_4_35
 
 public section
 

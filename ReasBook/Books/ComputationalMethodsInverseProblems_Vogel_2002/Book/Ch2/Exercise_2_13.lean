@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch2.Notation_2_1
-public import Book.Ch2.Example_2_5.SmoothNegativeLaplacian
-public import Book.Ch8.Definition_8_9.TestFields
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Notation_2_1
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Example_2_5.SmoothNegativeLaplacian
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Definition_8_9.TestFields
 public import Mathlib.Analysis.InnerProductSpace.LinearPMap
 public import Mathlib.Analysis.InnerProductSpace.Positive
 

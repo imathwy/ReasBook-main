@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch1.Exercise_1_11.Operator
-public import Book.Ch1.Exercise_1_11.Regularity
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Exercise_1_11.Operator
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Exercise_1_11.Regularity
 
 public section
 

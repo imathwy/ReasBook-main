@@ -1,5 +1,5 @@
-import Book.Ch3.Algorithm_3_4_extra_3
-import Book.Ch3.Remark_3_4.Wolfe
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Algorithm_3_4_extra_3
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Remark_3_4.Wolfe
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.Calculus.Deriv.Pow

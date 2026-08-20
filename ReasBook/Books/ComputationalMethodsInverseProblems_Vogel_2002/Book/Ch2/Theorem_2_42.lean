@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch2.Theorem_2_39
-public import Book.Ch2.Theorem_2_42.Taylor
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Theorem_2_39
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Theorem_2_42.Taylor
 public import Mathlib.Analysis.Convex.Function
 public import Mathlib.Analysis.InnerProductSpace.Positive
 

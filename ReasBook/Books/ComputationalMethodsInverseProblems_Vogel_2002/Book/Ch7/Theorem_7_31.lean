@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch7.Remark_7_12
-public import Book.Ch7.Definition_7_33
-public import Book.Ch7.Theorem_7_31.ExpectedCurve
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_12
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Definition_7_33
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_31.ExpectedCurve
 
 public section
 

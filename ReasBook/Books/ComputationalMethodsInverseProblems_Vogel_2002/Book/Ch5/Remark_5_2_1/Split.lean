@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch5.Definition_5_1_1
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_1_1
 public import Mathlib.Data.Fin.SuccPred
 public import Mathlib.Logic.Equiv.Fin.Basic
 

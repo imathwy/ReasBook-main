@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch5.Definition_5_4.PeriodicExtension
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_4.PeriodicExtension
 public import Mathlib.Data.Matrix.Basic
 
 public section

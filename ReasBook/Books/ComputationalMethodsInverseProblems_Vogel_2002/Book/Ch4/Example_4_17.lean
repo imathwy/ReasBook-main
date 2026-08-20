@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch4.Definition_4_15.Likelihood
-public import Book.Ch4.Example_4_17.PoissonLikelihood
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Definition_4_15.Likelihood
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Example_4_17.PoissonLikelihood
 
 public section
 

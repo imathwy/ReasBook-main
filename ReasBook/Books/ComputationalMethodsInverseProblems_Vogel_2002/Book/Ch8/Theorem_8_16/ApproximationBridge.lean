@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch8.Prop_8_13
-public import Book.Ch8.Theorem_8_15
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Prop_8_13
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_15
 public import Mathlib.Analysis.InnerProductSpace.Dual
 public import Mathlib.Geometry.Euclidean.Volume.Measure
 public import Mathlib.MeasureTheory.Integral.DivergenceTheorem

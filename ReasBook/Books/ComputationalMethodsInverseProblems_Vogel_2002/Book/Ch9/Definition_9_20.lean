@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch9.Definition_9_2.IndexSets
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_2.IndexSets
 public import Mathlib.Analysis.InnerProductSpace.PiL2
 public import Mathlib.Data.Matrix.Diagonal
 public import Mathlib.Data.Matrix.Mul

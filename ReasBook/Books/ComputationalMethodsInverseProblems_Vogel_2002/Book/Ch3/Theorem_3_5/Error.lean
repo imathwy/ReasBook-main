@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch3.Definition_3_3.EnergyNorm
-public import Book.Ch3.Definition_3_4.QuadraticFunctional
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_3.EnergyNorm
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_4.QuadraticFunctional
 
 public section
 

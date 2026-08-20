@@ -1,8 +1,8 @@
 module
 
 public import Mathlib.Data.Complex.Basic
-public import Book.Ch5.Definition_5_27.BCCB
-public import Book.Ch5.Prop_5_28.HTTB
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_27.BCCB
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Prop_5_28.HTTB
 
 public section
 

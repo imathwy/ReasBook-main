@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch7.Exercise_7_1
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Exercise_7_1
 
 public section
 

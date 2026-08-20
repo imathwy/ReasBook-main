@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch2.Assumption_A2
-public import Book.Ch3.Definition_3_3_3.Update
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Assumption_A2
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_3_3.Update
 
 public section
 

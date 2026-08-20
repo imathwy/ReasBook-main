@@ -1,8 +1,8 @@
-import Book.Ch7.Definition_7_33
-import Book.Ch7.Remark_7_17.AsymptoticOptimalBridge
-import Book.Ch7.Remark_7_17.OptimalIndexProfile
-import Book.Ch7.Theorem_7_16
-import Book.Ch7.Theorem_7_30.OptimalFamily
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Definition_7_33
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_17.AsymptoticOptimalBridge
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_17.OptimalIndexProfile
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_16
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_30.OptimalFamily
 import Mathlib.MeasureTheory.Function.L2Space
 
 section

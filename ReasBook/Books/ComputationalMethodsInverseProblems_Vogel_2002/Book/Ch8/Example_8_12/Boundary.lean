@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch8.Definition_8_9
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Definition_8_9
 public import Mathlib.Analysis.Complex.Tietze
 public import Mathlib.Analysis.Calculus.Gradient.Basic
 public import Mathlib.Analysis.Calculus.ContDiff.Defs

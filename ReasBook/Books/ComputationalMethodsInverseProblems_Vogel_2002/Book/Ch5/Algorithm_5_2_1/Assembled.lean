@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch5.Algorithm_5_2_1.DoubledGrid
-public import Book.Ch5.Notation_5_2_2
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Algorithm_5_2_1.DoubledGrid
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Notation_5_2_2
 
 public section
 

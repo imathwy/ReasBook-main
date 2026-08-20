@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch2.Example_2_1.Spectrum
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Example_2_1.Spectrum
 public import Mathlib.Analysis.InnerProductSpace.Adjoint
 public import Mathlib.Analysis.Matrix.Hermitian
 public import Mathlib.Analysis.Normed.Module.Normalize

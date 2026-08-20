@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch7.Remark_7_12.SingularSystem
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_12.SingularSystem
 public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 
 public section

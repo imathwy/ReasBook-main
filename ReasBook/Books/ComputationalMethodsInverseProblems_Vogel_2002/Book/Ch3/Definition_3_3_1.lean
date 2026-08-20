@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch2.Assumption_A2
-public import Book.Ch3.Definition_3_3_1.QuadraticModel
-public import Book.Ch3.Definition_3_3_1.Step
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Assumption_A2
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_3_1.QuadraticModel
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_3_1.Step
 public import Mathlib.Analysis.Calculus.LocalExtr.LineDeriv
 public import Mathlib.Analysis.InnerProductSpace.Calculus
 public import Mathlib.Order.Filter.Extr

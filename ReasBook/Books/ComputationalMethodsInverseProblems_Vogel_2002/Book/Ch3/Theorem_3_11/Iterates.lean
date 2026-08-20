@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch3.Definition_3_3_1.Step
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_3_1.Step
 public import Mathlib.Topology.EMetricSpace.Lipschitz
 
 public section

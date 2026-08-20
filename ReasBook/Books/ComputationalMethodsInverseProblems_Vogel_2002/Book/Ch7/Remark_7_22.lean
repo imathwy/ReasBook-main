@@ -1,13 +1,13 @@
 module
 
-public import Book.Ch7.Definition_7_33
-public import Book.Ch7.Notation_7_7
-public import Book.Ch7.Prop_7_20
-public import Book.Ch7.Remark_7_11
-public import Book.Ch7.Remark_7_12.Nullspace
-public import Book.Ch7.Remark_7_12.SingularSystem
-public import Book.Ch7.Remark_7_17.OptimalParameter
-public import Book.Ch7.Theorem_7_21
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Definition_7_33
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Notation_7_7
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_20
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_11
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_12.Nullspace
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_12.SingularSystem
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_17.OptimalParameter
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_21
 public import Mathlib.Algebra.Module.Submodule.Range
 public import Mathlib.Analysis.Asymptotics.AsymptoticEquivalent
 public import Mathlib.Analysis.InnerProductSpace.Adjoint

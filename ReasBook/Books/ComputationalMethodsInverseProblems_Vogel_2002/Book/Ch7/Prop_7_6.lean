@@ -1,12 +1,12 @@
 module
 
-import Book.Ch4.Prop_4_35
-import Book.Ch7.Exercise_7_1
-import Book.Ch7.Lemma_7_5
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Prop_4_35
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Exercise_7_1
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Lemma_7_5
 
-public import Book.Ch7.Lemma_7_5.SpectralRepresentation
-public import Book.Ch7.Prop_7_6.EstimationError
-public import Book.Ch7.Prop_7_6.WhiteNoise
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Lemma_7_5.SpectralRepresentation
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_6.EstimationError
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_6.WhiteNoise
 public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 public import Mathlib.LinearAlgebra.Matrix.Diagonal
 public import Mathlib.LinearAlgebra.UnitaryGroup

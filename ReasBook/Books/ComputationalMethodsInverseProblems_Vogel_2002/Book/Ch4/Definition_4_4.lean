@@ -5,7 +5,7 @@ public import Mathlib.Probability.Density
 public import Mathlib.Probability.HasLaw
 public import Mathlib.Probability.ProbabilityMassFunction.Integrals
 import Mathlib.Probability.IdentDistrib
-public import Book.Ch4.Definition_4_2.DiscreteRandomVariable
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Definition_4_2.DiscreteRandomVariable
 
 public section
 

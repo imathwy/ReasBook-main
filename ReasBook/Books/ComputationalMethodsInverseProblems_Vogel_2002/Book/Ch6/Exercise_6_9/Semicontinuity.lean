@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch2.Definition_2_24
-public import Book.Ch6.Exercise_6_9.WeakContinuity
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Definition_2_24
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch6.Exercise_6_9.WeakContinuity
 public import Mathlib.Analysis.LocallyConvex.WeakSpace
 
 public section

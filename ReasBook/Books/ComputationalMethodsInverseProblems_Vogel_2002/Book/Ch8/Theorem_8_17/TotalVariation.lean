@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch8.Theorem_8_15.TV
-public import Book.Ch8.Prop_8_13
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_15.TV
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Prop_8_13
 
 public section
 

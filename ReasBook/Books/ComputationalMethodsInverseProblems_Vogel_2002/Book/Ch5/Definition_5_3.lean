@@ -2,7 +2,7 @@ module
 
 public import Mathlib.Data.Complex.Basic
 public import Mathlib.Data.Matrix.Mul
-public import Book.Ch5.Definition_5_11.Toeplitz
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_11.Toeplitz
 
 public section
 

@@ -1,9 +1,9 @@
 module
 
-public import Book.Ch9.Algorithm_9_3_1.Iterates
-public import Book.Ch9.Definition_9_9.CriticalPoint
-public import Book.Ch9.Exercise_9_7
-public import Book.Ch9.Prop_9_15.Projector
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Algorithm_9_3_1.Iterates
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_9.CriticalPoint
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Exercise_9_7
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Prop_9_15.Projector
 
 public section
 

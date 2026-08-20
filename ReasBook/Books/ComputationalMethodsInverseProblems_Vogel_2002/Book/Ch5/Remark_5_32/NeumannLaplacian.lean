@@ -2,7 +2,7 @@ module
 
 import Mathlib.LinearAlgebra.Matrix.Action
 
-public import Book.Ch5.Exercise_5_31.GridGraph
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Exercise_5_31.GridGraph
 
 public section
 

@@ -1,10 +1,10 @@
 module
 
-public import Book.Ch2.Definition_2_4_1
-public import Book.Ch2.Example_2_27
-public import Book.Ch2.Example_2_28
-public import Book.Ch4.Example_4_17.PoissonLikelihood
-public import Book.Ch9.Exercise_9_13.NegLogLikelihood
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Definition_2_4_1
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Example_2_27
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Example_2_28
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Example_4_17.PoissonLikelihood
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Exercise_9_13.NegLogLikelihood
 public import Mathlib.Analysis.InnerProductSpace.Basic
 
 public section

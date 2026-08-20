@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch8.Definition_8_9.TestFields
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Definition_8_9.TestFields
 
 public section
 

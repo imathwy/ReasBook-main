@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch7.Remark_7_11
-public import Book.Ch7.Theorem_7_21.ExpectedError
-public import Book.Ch7.Theorem_7_23.PredictiveRisk
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_11
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_21.ExpectedError
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_23.PredictiveRisk
 
 public section
 

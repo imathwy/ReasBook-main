@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch5.Definition_5_1_1
-public import Book.Ch5.Definition_5_12
-public import Book.Ch5.Definition_5_13
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_1_1
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_12
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_13
 
 public section
 

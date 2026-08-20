@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch4.Notation_4_5.DiscreteEM
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Notation_4_5.DiscreteEM
 public import Mathlib.Order.Filter.Extr
 
 public section

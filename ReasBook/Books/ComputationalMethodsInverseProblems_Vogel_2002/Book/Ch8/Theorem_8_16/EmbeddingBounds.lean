@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch8.Theorem_8_16.ApproximationBridge
-public import Book.Ch8.Definition_8_14.BV
-public import Book.Ch8.Theorem_8_15
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_16.ApproximationBridge
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Definition_8_14.BV
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_15
 public import Mathlib.MeasureTheory.Function.EssSup
 public import Mathlib.MeasureTheory.Function.Holder
 

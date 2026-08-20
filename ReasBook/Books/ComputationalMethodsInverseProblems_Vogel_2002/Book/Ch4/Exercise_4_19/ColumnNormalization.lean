@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch4.Example_4_5_1.RectangularStochastic
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Example_4_5_1.RectangularStochastic
 
 public section
 

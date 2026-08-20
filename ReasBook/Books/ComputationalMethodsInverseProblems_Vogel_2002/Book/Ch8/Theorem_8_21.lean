@@ -1,9 +1,9 @@
 module
 
-public import Book.Ch8.Definition_8_14.BV
-public import Book.Ch8.Theorem_8_18.Comparison
-public import Book.Ch8.Theorem_8_19.Objective
-public import Book.Ch8.Theorem_8_20.Minimizer
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Definition_8_14.BV
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_18.Comparison
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_19.Objective
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_20.Minimizer
 
 public section
 

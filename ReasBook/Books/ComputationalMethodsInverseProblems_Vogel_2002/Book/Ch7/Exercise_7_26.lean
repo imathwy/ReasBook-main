@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch7.Definition_7_33
-public import Book.Ch7.Remark_7_10.Filters
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Definition_7_33
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_10.Filters
 public import Mathlib.Algebra.Group.ForwardDiff
 public import Mathlib.Order.Filter.Extr
 

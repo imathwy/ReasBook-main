@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch2.Assumption_A2
-public import Book.Ch3.Theorem_3_11.Iterates
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Assumption_A2
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Theorem_3_11.Iterates
 
 public section
 

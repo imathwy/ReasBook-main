@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch3.Definition_3_6.Krylov
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_6.Krylov
 public import Mathlib.Analysis.InnerProductSpace.PiL2
 public import Mathlib.Data.Real.Basic
 public import Mathlib.LinearAlgebra.Matrix.ToLin

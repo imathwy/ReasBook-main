@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch7.Prop_7_19.KernelMoment
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_19.KernelMoment
 public import Mathlib.Analysis.Asymptotics.Lemmas
 public import Mathlib.Analysis.PSeries
 public import Mathlib.Analysis.SpecialFunctions.ImproperIntegrals

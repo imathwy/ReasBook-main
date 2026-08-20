@@ -1,9 +1,9 @@
 module
 
-public import Book.Ch4.Definition_4_31.BestLinearUnbiased
-public import Book.Ch4.Definition_4_12.Covariance
-public import Book.Ch4.Prop_4_35
-public import Book.Ch4.Theorem_4_32.Operator
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Definition_4_31.BestLinearUnbiased
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Definition_4_12.Covariance
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Prop_4_35
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Theorem_4_32.Operator
 public import Mathlib.Analysis.Matrix.Order
 public import Mathlib.Probability.Moments.Variance
 

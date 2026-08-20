@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch1.Exercise_1_14
-public import Book.Ch1.Remark_1_1.Fredholm
-public import Book.Ch8.Definition_8_4_1.Approximation
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Exercise_1_14
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Remark_1_1.Fredholm
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Definition_8_4_1.Approximation
 public import Mathlib.Analysis.Convex.Extrema
 
 public section

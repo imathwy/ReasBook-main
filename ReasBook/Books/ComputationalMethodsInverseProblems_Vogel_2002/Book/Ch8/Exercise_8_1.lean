@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch5.Remark_5_32.NeumannLaplacian
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Remark_5_32.NeumannLaplacian
 public import Mathlib.LinearAlgebra.Matrix.PosDef
 
 public section

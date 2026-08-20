@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch5.Remark_5_18.CirculantExtension
-public import Book.Ch5.Notation_5_2_1
-import Book.Ch5.Prop_5_6.Comparison
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Remark_5_18.CirculantExtension
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Notation_5_2_1
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Prop_5_6.Comparison
 
 public section
 

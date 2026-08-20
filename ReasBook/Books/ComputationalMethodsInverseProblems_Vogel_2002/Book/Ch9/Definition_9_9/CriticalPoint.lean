@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch9.Prop_9_8
-public import Book.Ch9.Theorem_9_4.KKT
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Prop_9_8
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Theorem_9_4.KKT
 public import Mathlib.Analysis.Calculus.FDeriv.WithLp
 
 public section

@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch4.Example_4_5_1.EMStep
-public import Book.Ch4.Prop_4_37
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Example_4_5_1.EMStep
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Prop_4_37
 public import Mathlib.Order.Filter.Extr
 
 public section

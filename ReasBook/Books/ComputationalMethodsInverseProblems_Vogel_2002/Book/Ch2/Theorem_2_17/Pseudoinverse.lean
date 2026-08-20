@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch2.Definition_2_16.MinimumNorm
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Definition_2_16.MinimumNorm
 public import Mathlib.Analysis.InnerProductSpace.Projection.Submodule
 public import Mathlib.Analysis.Normed.Operator.Banach
 

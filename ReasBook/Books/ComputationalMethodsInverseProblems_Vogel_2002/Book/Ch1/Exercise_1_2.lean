@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch1.Remark_1_2.Operator
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Remark_1_2.Operator
 
 public section
 

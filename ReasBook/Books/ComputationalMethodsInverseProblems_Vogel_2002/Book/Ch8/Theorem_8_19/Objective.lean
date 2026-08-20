@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch8.Definition_8_9
-public import Book.Ch8.Theorem_8_18.Comparison
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Definition_8_9
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_18.Comparison
 
 public section
 

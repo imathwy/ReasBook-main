@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch4.Exercise_4_3.GaussianLikelihood
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Exercise_4_3.GaussianLikelihood
 
 public section
 

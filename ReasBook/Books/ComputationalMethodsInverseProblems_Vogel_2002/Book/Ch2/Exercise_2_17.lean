@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch2.Definition_2_22.WeakSeqTendsto
-public import Book.Ch2.Exercise_2_17.Instances
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Definition_2_22.WeakSeqTendsto
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Exercise_2_17.Instances
 import Mathlib.Analysis.LocallyConvex.WeakSpace
 
 public section

@@ -1,10 +1,10 @@
 module
 
-public import Book.Ch7.Remark_7_12
-public import Book.Ch7.Remark_7_28.CriticalProfile
-public import Book.Ch7.Theorem_7_27
-public import Book.Ch7.Theorem_7_21.ExpectedError
-public import Book.Ch7.Theorem_7_27.Benchmark
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_12
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_28.CriticalProfile
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_27
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_21.ExpectedError
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_27.Benchmark
 
 public section
 

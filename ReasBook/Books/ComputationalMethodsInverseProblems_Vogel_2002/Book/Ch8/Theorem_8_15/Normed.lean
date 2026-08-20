@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch8.Definition_8_14.BV
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Definition_8_14.BV
 public import Mathlib.Analysis.Normed.Module.Basic
 public import Mathlib.MeasureTheory.Function.Holder
 public import Mathlib.Topology.Instances.EReal.Lemmas

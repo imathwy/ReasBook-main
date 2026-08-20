@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch5.Definition_5_9.PeriodicExtension
-public import Book.Ch5.Definition_5_24.HTTB
-public import Book.Ch5.Definition_5_27.BCCB
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_9.PeriodicExtension
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_24.HTTB
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_27.BCCB
 
 public section
 

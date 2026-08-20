@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch3.Definition_3_3
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_3
 public import Mathlib.Data.Matrix.Mul
 public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 public import Mathlib.Order.Filter.Extr

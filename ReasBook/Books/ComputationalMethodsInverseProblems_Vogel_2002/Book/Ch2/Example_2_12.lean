@@ -1,8 +1,8 @@
 module
 
 public import Mathlib.Analysis.Normed.Operator.Compact.Basic
-public import Book.Ch2.Example_2_8.HarmonicDiagonal
-public import Book.Ch2.Exercise_2_10
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Example_2_8.HarmonicDiagonal
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Exercise_2_10
 
 public section
 

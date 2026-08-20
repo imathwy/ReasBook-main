@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch4.Definition_4_15.Likelihood
-public import Book.Ch4.Example_4_14.PoissonVector
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Definition_4_15.Likelihood
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Example_4_14.PoissonVector
 public import Mathlib.Analysis.Convex.SpecificFunctions.Basic
 public import Mathlib.Analysis.SpecialFunctions.Log.NegMulLog
 

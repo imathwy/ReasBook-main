@@ -1,10 +1,10 @@
 module
 
-public import Book.Ch7.Definition_7_33
-public import Book.Ch7.Remark_7_12
-public import Book.Ch7.Remark_7_28.CriticalDiscrepancy
-public import Book.Ch7.Theorem_7_21.ExpectedError
-public import Book.Ch7.Theorem_7_27.Benchmark
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Definition_7_33
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_12
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_28.CriticalDiscrepancy
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_21.ExpectedError
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_27.Benchmark
 public import Mathlib.Analysis.Asymptotics.Theta
 
 open scoped Asymptotics

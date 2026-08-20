@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch4.Definition_4_12
-public import Book.Ch4.Exercise_4_4.Moments
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Definition_4_12
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Exercise_4_4.Moments
 
 public section
 

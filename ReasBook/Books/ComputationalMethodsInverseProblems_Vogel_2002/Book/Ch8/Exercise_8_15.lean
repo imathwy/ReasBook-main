@@ -1,10 +1,10 @@
 module
 
-public import Book.Ch3.Algorithm_3_2_2
-public import Book.Ch5.Definition_5_1.Blur2D
-public import Book.Ch5.Definition_5_24.BTTB
-public import Book.Ch5.Exercise_5_1
-public import Book.Ch5.Prop_5_28
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Algorithm_3_2_2
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_1.Blur2D
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_24.BTTB
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Exercise_5_1
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Prop_5_28
 public import Mathlib.Analysis.InnerProductSpace.PiL2
 public import Mathlib.Analysis.Matrix.PosDef
 

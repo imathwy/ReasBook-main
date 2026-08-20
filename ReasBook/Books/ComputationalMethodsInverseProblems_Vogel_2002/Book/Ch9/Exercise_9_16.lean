@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch9.Exercise_9_16.Instances
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Exercise_9_16.Instances
 
 public section
 

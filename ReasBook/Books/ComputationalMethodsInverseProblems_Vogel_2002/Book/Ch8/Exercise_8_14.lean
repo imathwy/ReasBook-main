@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch5.Definition_5_1.Blur2D
-public import Book.Ch8.Algorithm_8_2_1.Clauses
-public import Book.Ch8.Algorithm_8_2_2.Clauses
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_1.Blur2D
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Algorithm_8_2_1.Clauses
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Algorithm_8_2_2.Clauses
 public import Mathlib.LinearAlgebra.Matrix.Vec
 
 public section

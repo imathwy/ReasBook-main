@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch7.Prop_7_15.Reconstruction
-public import Book.Ch7.Remark_7_10.Filters
-public import Book.Ch7.Theorem_7_25.DiscrepancyChoice
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_15.Reconstruction
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_10.Filters
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_25.DiscrepancyChoice
 
 public section
 

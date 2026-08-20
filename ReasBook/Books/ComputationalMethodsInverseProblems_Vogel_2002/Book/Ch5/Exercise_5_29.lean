@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch5.Exercise_5_28.Permutation
-public import Book.Ch5.Prop_5_30
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Exercise_5_28.Permutation
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Prop_5_30
 public import Mathlib.LinearAlgebra.Matrix.Reindex
 
 public section

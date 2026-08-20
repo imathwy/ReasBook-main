@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch4.Example_4_21.TwoFairCoins
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Example_4_21.TwoFairCoins
 import Mathlib.Tactic.NormNum
 
 public section

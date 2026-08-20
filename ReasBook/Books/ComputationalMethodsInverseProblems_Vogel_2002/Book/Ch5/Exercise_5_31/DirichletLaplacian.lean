@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch5.Definition_5_24.HTTB
-public import Book.Ch5.Exercise_5_31.GridGraph
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_24.HTTB
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Exercise_5_31.GridGraph
 public import Mathlib.LinearAlgebra.Matrix.PosDef
 
 public section

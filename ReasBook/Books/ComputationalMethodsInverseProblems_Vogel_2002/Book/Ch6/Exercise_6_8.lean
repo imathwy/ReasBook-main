@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch3.Algorithm_3_3_1.Run
-public import Book.Ch6.Exercise_6_2
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Algorithm_3_3_1.Run
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch6.Exercise_6_2
 
 public section
 

@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch9.Exercise_9_13.AdmissibleSet
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Exercise_9_13.AdmissibleSet
 public import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 public section

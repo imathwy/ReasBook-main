@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch9.Definition_9_6.Projection
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_6.Projection
 public import Mathlib.Analysis.InnerProductSpace.PiL2
 
 public section

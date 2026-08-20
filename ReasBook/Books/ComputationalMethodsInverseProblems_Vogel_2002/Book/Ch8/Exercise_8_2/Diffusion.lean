@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch8.Exercise_8_2.Penalty
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Exercise_8_2.Penalty
 
 public section
 

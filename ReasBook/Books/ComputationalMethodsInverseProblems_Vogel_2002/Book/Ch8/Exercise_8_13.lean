@@ -1,11 +1,11 @@
 module
 
-public import Book.Ch8.Algorithm_8_2_1
-public import Book.Ch8.Algorithm_8_2_2
-public import Book.Ch8.Algorithm_8_2_3
-public import Book.Ch8.Algorithm_8_2_4
-public import Book.Ch8.Definition_8_4_1.Approximation
-public import Book.Ch8.Remark_8_3
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Algorithm_8_2_1
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Algorithm_8_2_2
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Algorithm_8_2_3
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Algorithm_8_2_4
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Definition_8_4_1.Approximation
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Remark_8_3
 
 public section
 

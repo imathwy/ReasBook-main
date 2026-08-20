@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch7.Remark_7_11.WeightedSeries
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_11.WeightedSeries
 public import Mathlib.Algebra.Module.Submodule.Range
 
 public section

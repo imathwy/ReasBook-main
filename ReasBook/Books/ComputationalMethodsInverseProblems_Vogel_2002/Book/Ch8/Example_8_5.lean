@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch8.Example_8_5.Penalty
-public import Book.Ch8.Definition_8_4.Conjugate
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Example_8_5.Penalty
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Definition_8_4.Conjugate
 
 public section
 

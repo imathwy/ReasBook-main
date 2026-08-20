@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch7.Prop_7_19.KernelMoment
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_19.KernelMoment
 public import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 public section

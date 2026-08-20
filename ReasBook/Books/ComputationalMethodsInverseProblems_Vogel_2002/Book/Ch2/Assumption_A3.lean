@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch2.Assumption_A3.Comparison
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Assumption_A3.Comparison
 
 public section
 

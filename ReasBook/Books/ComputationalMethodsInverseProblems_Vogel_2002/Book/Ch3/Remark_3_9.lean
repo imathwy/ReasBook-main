@@ -1,15 +1,15 @@
 module
 
-public import Book.Ch2.Theorem_2_17.Pseudoinverse
-public import Book.Ch2.Theorem_2_17
-public import Book.Ch2.Example_2_1.Spectrum
-public import Book.Ch3.Algorithm_3_2_1.Iterates
-public import Book.Ch3.Definition_3_3
-public import Book.Ch3.Definition_3_4.QuadraticFunctional
-public import Book.Ch3.Definition_3_4.ConditionNumber
-public import Book.Ch3.Definition_3_6
-public import Book.Ch3.Theorem_3_5.Error
-public import Book.Ch3.Cor_3_8
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Theorem_2_17.Pseudoinverse
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Theorem_2_17
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Example_2_1.Spectrum
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Algorithm_3_2_1.Iterates
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_3
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_4.QuadraticFunctional
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_4.ConditionNumber
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_6
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Theorem_3_5.Error
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Cor_3_8
 public import Mathlib.Algebra.Polynomial.AlgebraMap
 public import Mathlib.Analysis.InnerProductSpace.Projection.Basic
 public import Mathlib.Analysis.SpecialFunctions.Arcosh

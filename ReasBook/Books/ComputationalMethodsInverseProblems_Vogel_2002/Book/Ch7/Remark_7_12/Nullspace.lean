@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch7.Prop_7_6.EstimationError
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_6.EstimationError
 
 public section
 

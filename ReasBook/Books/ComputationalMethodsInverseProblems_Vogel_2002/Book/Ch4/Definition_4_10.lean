@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch4.Definition_4_9.JointCDF
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Definition_4_9.JointCDF
 public import Mathlib.Probability.HasLaw
 public import Mathlib.Probability.ProbabilityMassFunction.Basic
 

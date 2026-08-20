@@ -1,14 +1,14 @@
 module
 
-public import Book.Ch1.Remark_1_2_2.Reconstruction
-public import Book.Ch2.Example_2_36
-public import Book.Ch2.Notation_2_4
-public import Book.Ch2.Theorem_2_42
-public import Book.Ch3.Definition_3_4.QuadraticFunctional
-public import Book.Ch9.Prop_9_8.FeasibleSet
-public import Book.Ch9.Prop_9_15.Projector
-public import Book.Ch5.Definition_5_1.Blur2D
-public import Book.Ch4.Example_4_17
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Remark_1_2_2.Reconstruction
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Example_2_36
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Notation_2_4
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Theorem_2_42
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_4.QuadraticFunctional
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Prop_9_8.FeasibleSet
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Prop_9_15.Projector
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_1.Blur2D
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Example_4_17
 public import Mathlib.Analysis.SpecialFunctions.Log.Deriv
 public import Mathlib.Probability.HasLaw
 public import Mathlib.Probability.Independence.Basic

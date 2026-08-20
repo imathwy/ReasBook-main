@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch3.Algorithm_3_4_extra_3.QuadraticBacktracking
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Algorithm_3_4_extra_3.QuadraticBacktracking
 
 public section
 

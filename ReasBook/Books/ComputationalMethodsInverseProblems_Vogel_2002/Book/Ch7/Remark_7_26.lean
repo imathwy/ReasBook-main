@@ -1,9 +1,9 @@
 module
 
-public import Book.Ch7.Definition_7_33
-public import Book.Ch7.Prop_7_15.OptimalIndex
-import Book.Ch7.Remark_7_17.OptimalIndexProfile
-public import Book.Ch7.Theorem_7_25.Benchmark
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Definition_7_33
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_15.OptimalIndex
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_17.OptimalIndexProfile
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_25.Benchmark
 public import Mathlib.Analysis.Asymptotics.Theta
 
 open scoped Asymptotics

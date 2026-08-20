@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch2.Assumption_A2.StronglyPositive
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Assumption_A2.StronglyPositive
 
 public section
 

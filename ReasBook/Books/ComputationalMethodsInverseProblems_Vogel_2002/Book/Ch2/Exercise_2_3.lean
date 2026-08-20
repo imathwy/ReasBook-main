@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch2.Example_2_4.Operator
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Example_2_4.Operator
 
 public section
 

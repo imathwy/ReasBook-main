@@ -1,9 +1,9 @@
 module
 
-public import Book.Ch4.Example_4_26.MapEstimator
-public import Book.Ch4.Exercise_4_15.MinimumVarianceLinear
-public import Book.Ch4.Remark_4_36.Covariance
-import Book.Ch4.Exercise_4_17
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Example_4_26.MapEstimator
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Exercise_4_15.MinimumVarianceLinear
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Remark_4_36.Covariance
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Exercise_4_17
 
 public section
 

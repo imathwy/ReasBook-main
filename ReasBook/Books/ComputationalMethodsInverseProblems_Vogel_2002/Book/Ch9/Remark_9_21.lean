@@ -1,9 +1,9 @@
 module
 
-public import Book.Ch9.Algorithm_9_3_3.Iterates
-public import Book.Ch9.Prop_9_8.FeasibleSet
-public import Book.Ch9.Remark_9_11.StrictComplementarity
-public import Book.Ch9.Remark_9_21.Face
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Algorithm_9_3_3.Iterates
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Prop_9_8.FeasibleSet
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Remark_9_11.StrictComplementarity
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Remark_9_21.Face
 public import Mathlib.Analysis.Calculus.LocalExtr.Basic
 public import Mathlib.Order.Filter.Extr
 

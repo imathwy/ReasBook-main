@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch3.Algorithm_3_2_1.Iterates
-public import Book.Ch3.Definition_3_4.ConditionNumber
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Algorithm_3_2_1.Iterates
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_4.ConditionNumber
 
 public section
 

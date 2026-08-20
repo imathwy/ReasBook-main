@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch8.Algorithm_8_2_1.Clauses
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Algorithm_8_2_1.Clauses
 public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 
 public section

@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch5.Exercise_5_15
-public import Book.Ch5.Lemma_5_21
-public import Book.Ch5.Remark_5_17
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Exercise_5_15
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Lemma_5_21
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Remark_5_17
 
 public section
 

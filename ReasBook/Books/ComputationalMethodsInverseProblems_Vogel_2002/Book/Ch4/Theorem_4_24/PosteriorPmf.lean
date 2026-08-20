@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch4.Definition_4_18.JointPmf
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Definition_4_18.JointPmf
 
 public section
 

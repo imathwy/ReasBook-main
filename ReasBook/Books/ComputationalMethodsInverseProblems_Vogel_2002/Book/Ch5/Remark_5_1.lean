@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch2.Definition_2_7.WellPosed
-public import Book.Ch5.Definition_5_1.Blur2D
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Definition_2_7.WellPosed
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_1.Blur2D
 public import Mathlib.Analysis.Fourier.Convolution
 
 public section

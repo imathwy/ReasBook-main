@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch8.Theorem_8_15.Banach
-public import Book.Ch8.Theorem_8_15.TV
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_15.Banach
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_15.TV
 
 public section
 

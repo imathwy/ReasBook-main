@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch7.Lemma_7_5.SpectralRepresentation
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Lemma_7_5.SpectralRepresentation
 public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 public import Mathlib.LinearAlgebra.Matrix.Symmetric
 public import Mathlib.LinearAlgebra.Matrix.Trace

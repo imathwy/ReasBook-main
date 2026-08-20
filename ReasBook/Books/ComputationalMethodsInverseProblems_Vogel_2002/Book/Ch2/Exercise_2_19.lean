@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch2.Exercise_2_19.EuclideanQuadrant
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Exercise_2_19.EuclideanQuadrant
 
 public section
 

@@ -3,10 +3,10 @@ module
 public import Mathlib.Analysis.Normed.Module.DoubleDual
 public import Mathlib.Analysis.Normed.Module.WeakDual
 public import Mathlib.MeasureTheory.Function.LpSeminorm.LpNorm
-public import Book.Ch8.Prop_8_22.BVBounded
-public import Book.Ch8.Theorem_8_15
-public import Book.Ch8.Theorem_8_16.ClosedBallCompactness
-public import Book.Ch8.Theorem_8_16.Embedding
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Prop_8_22.BVBounded
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_15
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_16.ClosedBallCompactness
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_16.Embedding
 
 public section
 

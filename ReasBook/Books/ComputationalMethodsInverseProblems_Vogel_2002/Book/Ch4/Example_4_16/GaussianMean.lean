@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch3.Definition_3_4.QuadraticFunctional
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_4.QuadraticFunctional
 public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 
 public section

@@ -10,9 +10,9 @@ public import Mathlib.Analysis.Calculus.TangentCone.Prod
 public import Mathlib.MeasureTheory.Integral.DominatedConvergence
 public import Mathlib.MeasureTheory.Integral.DivergenceTheorem
 public import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
-public import Book.Ch8.Exercise_8_2.Diffusion
-public import Book.Ch8.Exercise_8_2.Penalty
-public import Book.Ch8.Exercise_8_2.Pairing
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Exercise_8_2.Diffusion
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Exercise_8_2.Penalty
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Exercise_8_2.Pairing
 
 public section
 

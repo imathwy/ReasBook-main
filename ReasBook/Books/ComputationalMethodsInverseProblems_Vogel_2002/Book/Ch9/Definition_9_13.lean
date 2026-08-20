@@ -2,7 +2,7 @@ module
 
 public import Mathlib.Analysis.Calculus.Gradient.Basic
 public import Mathlib.Analysis.InnerProductSpace.PiL2
-public import Book.Ch9.Prop_9_8.FeasibleSet
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Prop_9_8.FeasibleSet
 
 public section
 

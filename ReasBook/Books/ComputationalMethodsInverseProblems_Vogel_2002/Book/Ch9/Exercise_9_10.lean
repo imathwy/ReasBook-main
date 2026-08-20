@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch9.Exercise_9_10.LeastSquares
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Exercise_9_10.LeastSquares
 
 public section
 

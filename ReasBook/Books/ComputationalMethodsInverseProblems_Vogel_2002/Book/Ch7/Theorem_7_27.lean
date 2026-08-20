@@ -1,10 +1,10 @@
 module
 
-public import Book.Ch7.Remark_7_12
-public import Book.Ch7.Prop_7_20
-public import Book.Ch7.Theorem_7_21.ExpectedError
-public import Book.Ch7.Theorem_7_27.Benchmark
-public import Book.Ch7.Theorem_7_27.Profile
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_12
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_20
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_21.ExpectedError
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_27.Benchmark
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_27.Profile
 public import Mathlib.Analysis.Asymptotics.AsymptoticEquivalent
 
 public section

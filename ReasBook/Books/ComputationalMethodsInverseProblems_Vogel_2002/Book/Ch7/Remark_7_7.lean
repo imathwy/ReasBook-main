@@ -1,10 +1,10 @@
 module
 
-import Book.Ch4.Prop_4_29
-import Book.Ch7.Lemma_7_5
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Prop_4_29
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Lemma_7_5
 
-public import Book.Ch1.Exercise_1_4
-public import Book.Ch7.Prop_7_6
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Exercise_1_4
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_6
 
 public section
 

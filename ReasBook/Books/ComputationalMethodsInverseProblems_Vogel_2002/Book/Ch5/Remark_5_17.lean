@@ -1,10 +1,10 @@
 module
 
-public import Book.Ch5.Notation_5_2_1
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Notation_5_2_1
 public import Mathlib.LinearAlgebra.Matrix.Circulant
 public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
-import Book.Ch5.Prop_5_6.Comparison
-import Book.Ch5.Prop_5_6.Diagonalization
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Prop_5_6.Comparison
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Prop_5_6.Diagonalization
 import Mathlib.Algebra.Group.Pi.Units
 
 public section

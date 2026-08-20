@@ -2,7 +2,7 @@ module
 
 public import Mathlib.Analysis.Fourier.Inversion
 public import Mathlib.MeasureTheory.Integral.Bochner.Set
-public import Book.Ch5.Notation_5_2_1
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Notation_5_2_1
 
 public section
 

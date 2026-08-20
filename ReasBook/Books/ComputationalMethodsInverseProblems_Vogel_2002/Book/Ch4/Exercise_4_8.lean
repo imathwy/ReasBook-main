@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch4.Theorem_4_24
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Theorem_4_24
 
 public section
 

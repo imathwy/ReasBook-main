@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch1.Exercise_1_5
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Exercise_1_5
 public import Mathlib.Analysis.InnerProductSpace.PiL2
 public import Mathlib.LinearAlgebra.Matrix.Diagonal
 public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse

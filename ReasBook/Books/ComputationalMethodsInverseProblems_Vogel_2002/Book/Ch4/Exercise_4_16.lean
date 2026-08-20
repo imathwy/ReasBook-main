@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch4.Example_4_16.GaussianMean
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Example_4_16.GaussianMean
 
 public section
 

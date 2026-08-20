@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch3.Theorem_3_11.Convergence
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Theorem_3_11.Convergence
 public import Mathlib.Analysis.InnerProductSpace.Rayleigh
 public import Mathlib.Order.Filter.Extr
 

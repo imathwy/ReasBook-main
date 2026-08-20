@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch8.Theorem_8_19
-public import Book.Ch8.Theorem_8_20.Minimizer
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_19
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_20.Minimizer
 public import Mathlib.Topology.UniformSpace.UniformConvergence
 
 public section

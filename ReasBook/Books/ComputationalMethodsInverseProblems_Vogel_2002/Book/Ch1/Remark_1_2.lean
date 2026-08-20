@@ -1,9 +1,9 @@
 module
 
-public import Book.Ch1.Exercise_1_4
-public import Book.Ch1.Exercise_1_4.ErrorTerms
-public import Book.Ch1.Exercise_1_5
-public import Book.Ch1.Remark_1_2.Operator
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Exercise_1_4
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Exercise_1_4.ErrorTerms
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Exercise_1_5
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Remark_1_2.Operator
 public import Mathlib.Analysis.InnerProductSpace.PiL2
 public import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
 public import Mathlib.Analysis.SpecificLimits.Basic

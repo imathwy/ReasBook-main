@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch7.Theorem_7_25
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_25
 
 public section
 

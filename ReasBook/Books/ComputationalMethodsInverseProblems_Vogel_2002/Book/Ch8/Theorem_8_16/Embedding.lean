@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch8.Theorem_8_16.EmbeddingBounds
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Theorem_8_16.EmbeddingBounds
 public import Mathlib.Topology.Algebra.Module.Spaces.WeakDual
 
 public section

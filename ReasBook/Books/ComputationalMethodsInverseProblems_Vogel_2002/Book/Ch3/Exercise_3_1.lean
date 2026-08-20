@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch3.Exercise_3_1.Convergence
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Exercise_3_1.Convergence
 
 public section
 

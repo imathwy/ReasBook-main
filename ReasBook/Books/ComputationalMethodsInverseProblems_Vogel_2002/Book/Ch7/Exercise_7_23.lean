@@ -1,4 +1,4 @@
-import Book.Ch7.Theorem_7_23
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Theorem_7_23
 
 /- Exercise 7.23. Main labeled blocker entry.
 

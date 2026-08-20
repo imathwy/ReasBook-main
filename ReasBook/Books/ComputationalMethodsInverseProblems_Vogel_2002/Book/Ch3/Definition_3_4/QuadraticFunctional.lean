@@ -1,9 +1,9 @@
 module
 
-public import Book.Ch2.Definition_2_40.Hessian
-public import Book.Ch2.Theorem_2_39
-public import Book.Ch2.Theorem_2_42
-public import Book.Ch3.Definition_3_2
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Definition_2_40.Hessian
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Theorem_2_39
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Theorem_2_42
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_2
 public import Mathlib.Analysis.Calculus.Gradient.Basic
 public import Mathlib.Analysis.InnerProductSpace.PiL2
 public import Mathlib.Analysis.Matrix.PosDef

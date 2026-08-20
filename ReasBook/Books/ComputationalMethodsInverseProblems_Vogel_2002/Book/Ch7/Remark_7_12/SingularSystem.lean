@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch1.Exercise_1_5.Filters
-public import Book.Ch7.Remark_7_9.Scaling
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Exercise_1_5.Filters
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_9.Scaling
 public import Mathlib.Topology.Algebra.InfiniteSum.Basic
 
 public section

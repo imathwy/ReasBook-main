@@ -3,7 +3,7 @@ module
 public import Mathlib.Analysis.Calculus.Gradient.Basic
 public import Mathlib.Analysis.InnerProductSpace.PiL2
 public import Mathlib.Topology.OpenPartialHomeomorph.Continuity
-public import Book.Ch8.Definition_8_4.Conjugate
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Definition_8_4.Conjugate
 
 public section
 

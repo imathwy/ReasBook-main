@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch4.Remark_4_33.LeastSquares
-public import Book.Ch4.Theorem_4_32
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Remark_4_33.LeastSquares
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Theorem_4_32
 
 public section
 

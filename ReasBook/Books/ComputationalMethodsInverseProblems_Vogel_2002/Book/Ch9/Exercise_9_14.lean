@@ -1,10 +1,10 @@
 module
 
-public import Book.Ch9.Definition_9_5_1.Iteration
-public import Book.Ch9.Exercise_9_13.NegLogLikelihood
-public import Book.Ch9.Exercise_9_14.Likelihood
-public import Book.Ch9.Remark_9_10
-public import Book.Ch2.Theorem_2_38
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_5_1.Iteration
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Exercise_9_13.NegLogLikelihood
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Exercise_9_14.Likelihood
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Remark_9_10
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Theorem_2_38
 public import Mathlib.Analysis.SpecialFunctions.Log.Deriv
 public import Mathlib.Order.Filter.Finite
 public import Mathlib.Order.Filter.Extr

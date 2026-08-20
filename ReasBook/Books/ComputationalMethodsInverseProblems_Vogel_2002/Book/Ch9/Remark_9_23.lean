@@ -1,10 +1,10 @@
 module
 
-public import Book.Ch2.Theorem_2_30
-public import Book.Ch7.Definition_7_33
-public import Book.Ch9.Algorithm_9_5_1.Iterates
-public import Book.Ch9.Definition_9_5_1.Iteration
-public import Book.Ch9.Definition_9_6.Projection
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Theorem_2_30
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Definition_7_33
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Algorithm_9_5_1.Iterates
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_5_1.Iteration
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_6.Projection
 
 public section
 

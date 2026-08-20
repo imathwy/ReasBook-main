@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch7.Remark_7_10.Filters
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_10.Filters
 public import Mathlib.Analysis.SpecialFunctions.Pow.Real
 
 public section

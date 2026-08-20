@@ -1,4 +1,4 @@
-import Book.Ch7.Definition_7_33
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Definition_7_33
 
 /-- Helper for Remark 7.17: package an asymptotic equivalence as
 `ParameterChoice.IsAsymptoticallyOptimal`. -/

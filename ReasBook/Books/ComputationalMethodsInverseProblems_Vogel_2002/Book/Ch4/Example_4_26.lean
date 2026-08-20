@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch1.Remark_1_2_2
-public import Book.Ch1.Remark_1_2_2.Reconstruction
-public import Book.Ch3.Definition_3_4.QuadraticFunctional
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Remark_1_2_2
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Remark_1_2_2.Reconstruction
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_4.QuadraticFunctional
 public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 
 public section

@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch5.Exercise_5_31.DirichletLaplacian
-public import Book.Ch5.Remark_5_33.PeriodicLaplacian
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Exercise_5_31.DirichletLaplacian
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Remark_5_33.PeriodicLaplacian
 
 public section
 

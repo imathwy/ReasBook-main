@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch2.Definition_2_7
-public import Book.Ch3.Definition_3_3_1.QuadraticModel
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Definition_2_7
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_3_1.QuadraticModel
 public import Mathlib.Order.Filter.Extr
 
 public section

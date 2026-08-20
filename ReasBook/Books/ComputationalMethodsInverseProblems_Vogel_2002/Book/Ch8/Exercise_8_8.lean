@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch8.Definition_8_4.Conjugate
-public import Book.Ch8.Exercise_8_6
-public import Book.Ch8.Example_8_6.Penalty
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Definition_8_4.Conjugate
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Exercise_8_6
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Example_8_6.Penalty
 
 public section
 

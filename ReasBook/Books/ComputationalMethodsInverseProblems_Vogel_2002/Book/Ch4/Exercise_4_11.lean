@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch4.Example_4_26.MapEstimator
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Example_4_26.MapEstimator
 
 public section
 

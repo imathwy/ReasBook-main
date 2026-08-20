@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch5.Definition_5_1.Blur2D
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_1.Blur2D
 
 public section
 

@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch8.Exercise_8_4
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Exercise_8_4
 public import Mathlib.Analysis.InnerProductSpace.Adjoint
 
 public section

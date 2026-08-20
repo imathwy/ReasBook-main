@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch6.Lemma_6_3.Approximation
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch6.Lemma_6_3.Approximation
 public import Mathlib.Analysis.Real.Sqrt
 
 public section

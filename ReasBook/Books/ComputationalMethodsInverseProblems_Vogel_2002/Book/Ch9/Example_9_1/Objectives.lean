@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch1.Remark_1_1
-public import Book.Ch2.Definition_2_40.Hessian
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Remark_1_1
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Definition_2_40.Hessian
 public import Mathlib.Analysis.InnerProductSpace.Calculus
 public import Mathlib.Analysis.SpecialFunctions.Log.Deriv
 public import Mathlib.Analysis.Calculus.Gradient.Basic

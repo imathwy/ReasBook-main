@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch7.Notation_7_7.OptimalFamily
-public import Book.Ch7.Prop_7_15.Objective
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Notation_7_7.OptimalFamily
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_15.Objective
 
 public section
 

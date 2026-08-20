@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch9.Definition_9_2.IndexSets
-public import Book.Ch9.Definition_9_9.CriticalPoint
-public import Book.Ch9.Remark_9_11.StrictComplementarity
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_2.IndexSets
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_9.CriticalPoint
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Remark_9_11.StrictComplementarity
 
 public section
 

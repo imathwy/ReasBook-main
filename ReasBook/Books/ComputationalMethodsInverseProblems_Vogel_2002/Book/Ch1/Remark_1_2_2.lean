@@ -1,9 +1,9 @@
 module
 
-public import Book.Ch1.Definition_1_3.Tikhonov
-public import Book.Ch1.Exercise_1_12.Operator
-public import Book.Ch1.Remark_1_2
-public import Book.Ch1.Remark_1_2_2.Discrepancy
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Definition_1_3.Tikhonov
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Exercise_1_12.Operator
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Remark_1_2
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Remark_1_2_2.Discrepancy
 public import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 public import Mathlib.Analysis.Matrix.Order
 public import Mathlib.LinearAlgebra.Matrix.Diagonal

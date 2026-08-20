@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch2.Example_2_2
-public import Book.Ch5.Theorem_5_22.Circulant
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Example_2_2
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Theorem_5_22.Circulant
 public import Mathlib.Algebra.Order.Star.Real
 public import Mathlib.LinearAlgebra.Matrix.PosDef
 public import Mathlib.LinearAlgebra.Matrix.Symmetric

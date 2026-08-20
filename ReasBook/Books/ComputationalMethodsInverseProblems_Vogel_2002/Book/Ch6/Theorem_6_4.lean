@@ -1,13 +1,13 @@
 module
 
-public import Book.Ch2.Definition_2_24
-public import Book.Ch2.Definition_2_29
-public import Book.Ch2.Exercise_2_17
-public import Book.Ch2.Theorem_2_30
-public import Book.Ch6.Assumption_6_3_extra_2
-public import Book.Ch6.Exercise_6_9.WeakContinuity
-public import Book.Ch6.Lemma_6_3
-public import Book.Ch6.Lemma_6_3.Approximation
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Definition_2_24
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Definition_2_29
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Exercise_2_17
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Theorem_2_30
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch6.Assumption_6_3_extra_2
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch6.Exercise_6_9.WeakContinuity
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch6.Lemma_6_3
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch6.Lemma_6_3.Approximation
 
 public section
 

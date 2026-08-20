@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch2.Definition_2_32
-public import Book.Ch6.Notation_6_1
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Definition_2_32
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch6.Notation_6_1
 public import Mathlib.Analysis.InnerProductSpace.PiL2
 public import Mathlib.Analysis.InnerProductSpace.Adjoint
 public import Mathlib.Analysis.InnerProductSpace.Calculus

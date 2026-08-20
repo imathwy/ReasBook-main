@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch2.Theorem_2_44
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Theorem_2_44
 
 public section
 

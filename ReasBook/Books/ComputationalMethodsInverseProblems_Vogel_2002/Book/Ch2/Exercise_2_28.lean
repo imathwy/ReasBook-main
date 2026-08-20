@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch2.Assumption_A1.ClosedConvex
-public import Book.Ch2.Assumption_A2
-public import Book.Ch2.Notation_2_4
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Assumption_A1.ClosedConvex
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Assumption_A2
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Notation_2_4
 
 public section
 

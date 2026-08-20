@@ -2,7 +2,7 @@ module
 
 public import Mathlib.Analysis.Convex.Basic
 public import Mathlib.MeasureTheory.Function.LpOrder
-import Book.Ch2.Example_2_28.Instances
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Example_2_28.Instances
 
 public section
 

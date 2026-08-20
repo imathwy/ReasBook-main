@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch8.Algorithm_8_2_2.Clauses
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch8.Algorithm_8_2_2.Clauses
 
 public section
 

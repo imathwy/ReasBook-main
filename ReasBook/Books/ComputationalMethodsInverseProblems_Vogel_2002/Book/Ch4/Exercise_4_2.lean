@@ -1,7 +1,7 @@
 module
 
 public import Mathlib.LinearAlgebra.Matrix.IsDiag
-public import Book.Ch4.Exercise_4_2.Covariance
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Exercise_4_2.Covariance
 
 public section
 

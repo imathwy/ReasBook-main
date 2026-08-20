@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch7.Definition_7_1
-public import Book.Ch7.Prop_7_6.WhiteNoise
-public import Book.Ch4.Prop_4_35
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Definition_7_1
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_6.WhiteNoise
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Prop_4_35
 public import Mathlib.LinearAlgebra.Matrix.Trace
 public import Mathlib.MeasureTheory.Integral.Bochner.Basic
 

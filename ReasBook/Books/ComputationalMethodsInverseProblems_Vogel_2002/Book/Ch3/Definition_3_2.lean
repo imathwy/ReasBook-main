@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch2.Prop_2_34
-public import Book.Ch3.Definition_3_2.ExactStep
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Prop_2_34
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_2.ExactStep
 public import Mathlib.Analysis.Calculus.DerivativeTest
 
 public section

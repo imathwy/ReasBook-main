@@ -1,8 +1,8 @@
-import Book.Ch3.Algorithm_3_1_1.Iterates
-import Book.Ch3.Definition_3_3
-import Book.Ch3.Definition_3_4.ConditionNumber
-import Book.Ch3.Theorem_3_5.Error
-import Book.Ch2.Example_2_1.Spectrum
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Algorithm_3_1_1.Iterates
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_3
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_4.ConditionNumber
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Theorem_3_5.Error
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Example_2_1.Spectrum
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Order.Filter.Extr

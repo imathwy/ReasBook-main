@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch6.Example_6_2.DiffusionMatrices
-public import Book.Ch6.Notation_6_1
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch6.Example_6_2.DiffusionMatrices
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch6.Notation_6_1
 
 public section
 

@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch2.Assumption_A1.ClosedConvex
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Assumption_A1.ClosedConvex
 public import Mathlib.Analysis.InnerProductSpace.Projection.Minimal
 
 public section

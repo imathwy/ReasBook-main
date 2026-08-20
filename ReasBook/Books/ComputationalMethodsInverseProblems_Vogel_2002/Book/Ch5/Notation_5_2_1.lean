@@ -1,10 +1,10 @@
 module
 
-public import Book.Ch5.Definition_5_1_1
-public import Book.Ch5.Definition_5_3
-public import Book.Ch5.Definition_5_4
-public import Book.Ch5.Notation_5_2.Coordinates
-import Book.Ch5.Prop_5_6
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_1_1
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_3
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Definition_5_4
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Notation_5_2.Coordinates
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Prop_5_6
 
 public section
 

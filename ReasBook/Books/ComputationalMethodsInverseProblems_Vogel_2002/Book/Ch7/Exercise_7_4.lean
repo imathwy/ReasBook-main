@@ -1,9 +1,9 @@
 module
 
-import Book.Ch1.Exercise_1_12.Operator
-public import Book.Ch7.Definition_7_1
-public import Book.Ch7.Definition_7_2
-public import Book.Ch7.Exercise_7_8.Deblurring
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Exercise_1_12.Operator
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Definition_7_1
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Definition_7_2
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Exercise_7_8.Deblurring
 
 public section
 

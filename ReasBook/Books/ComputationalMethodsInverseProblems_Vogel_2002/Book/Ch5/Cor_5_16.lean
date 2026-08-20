@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch5.Remark_5_17
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch5.Remark_5_17
 public import Mathlib.LinearAlgebra.Eigenspace.Matrix
 
 public section

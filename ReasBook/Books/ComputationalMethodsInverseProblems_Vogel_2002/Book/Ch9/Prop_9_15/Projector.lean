@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch2.Exercise_2_19.EuclideanQuadrant
-public import Book.Ch9.Definition_9_6.Projection
-public import Book.Ch9.Prop_9_8.FeasibleSet
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch2.Exercise_2_19.EuclideanQuadrant
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Definition_9_6.Projection
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Prop_9_8.FeasibleSet
 
 public section
 

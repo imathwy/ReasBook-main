@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch4.Definition_4_27.CrossCorrelation
-public import Book.Ch4.Definition_4_34.MinimumVarianceLinear
-public import Book.Ch4.Prop_4_29
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Definition_4_27.CrossCorrelation
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Definition_4_34.MinimumVarianceLinear
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Prop_4_29
 public import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 
 public section

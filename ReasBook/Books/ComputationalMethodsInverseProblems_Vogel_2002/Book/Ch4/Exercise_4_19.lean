@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch4.Exercise_4_19.ColumnNormalization
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch4.Exercise_4_19.ColumnNormalization
 
 public section
 

@@ -1,9 +1,9 @@
 module
 
-public import Book.Ch1.Definition_1_3.Tikhonov
-public import Book.Ch1.Remark_1_2_2.Reconstruction
-import Book.Ch1.Exercise_1_12
-import Book.Ch1.Remark_1_2_2
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Definition_1_3.Tikhonov
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Remark_1_2_2.Reconstruction
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Exercise_1_12
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Remark_1_2_2
 
 public section
 

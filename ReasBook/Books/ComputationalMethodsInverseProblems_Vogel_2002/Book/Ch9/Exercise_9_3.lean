@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch9.Prop_9_8
-import Book.Ch9.Theorem_9_4
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Prop_9_8
+import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Theorem_9_4
 
 public section
 

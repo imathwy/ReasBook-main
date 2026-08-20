@@ -1,7 +1,7 @@
 module
 
-public import Book.Ch9.Example_9_1.Objectives
-public import Book.Ch9.Exercise_9_12.GPCG
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Example_9_1.Objectives
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Exercise_9_12.GPCG
 
 public section
 

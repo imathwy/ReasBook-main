@@ -1,9 +1,9 @@
 module
 
-public import Book.Ch3.Algorithm_3_2_1.Iterates
-public import Book.Ch3.Definition_3_3
-public import Book.Ch3.Definition_3_4.QuadraticFunctional
-public import Book.Ch3.Theorem_3_7
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Algorithm_3_2_1.Iterates
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_3
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Definition_3_4.QuadraticFunctional
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch3.Theorem_3_7
 public import Mathlib.LinearAlgebra.Eigenspace.Zero
 
 public section

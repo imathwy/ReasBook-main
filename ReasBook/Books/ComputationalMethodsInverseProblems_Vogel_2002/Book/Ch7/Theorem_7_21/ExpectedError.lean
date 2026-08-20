@@ -1,9 +1,9 @@
 module
 
-public import Book.Ch7.Prop_7_6.EstimationError
-public import Book.Ch7.Prop_7_19.KernelMoment
-public import Book.Ch7.Remark_7_11.WeightedSeries
-public import Book.Ch7.Remark_7_12.SingularSystem
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_6.EstimationError
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Prop_7_19.KernelMoment
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_11.WeightedSeries
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Remark_7_12.SingularSystem
 public import Mathlib.Analysis.SpecialFunctions.Log.Basic
 public import Mathlib.Analysis.SpecialFunctions.Pow.Real
 public import Mathlib.Topology.Algebra.InfiniteSum.Basic

@@ -1,8 +1,8 @@
 module
 
-public import Book.Ch1.Exercise_1_5.Filters
-public import Book.Ch7.Definition_7_2
-public import Book.Ch7.Lemma_7_5
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch1.Exercise_1_5.Filters
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Definition_7_2
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch7.Lemma_7_5
 public import Mathlib.LinearAlgebra.Matrix.Trace
 
 public section

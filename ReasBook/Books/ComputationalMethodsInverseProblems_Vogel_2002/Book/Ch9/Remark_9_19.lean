@@ -1,6 +1,6 @@
 module
 
-public import Book.Ch9.Remark_9_19.InexactLineSearch
+public import ComputationalMethodsInverseProblems_Vogel_2002.Book.Ch9.Remark_9_19.InexactLineSearch
 
 public section
 
