@@ -58,7 +58,12 @@ instance instStrictMono_of_isAdmissiblePartitionSequence (n : ℕ) :
 -- row `n` and threshold `T`.
 /-- Every admissible partition row eventually reaches any prescribed time horizon `T`. -/
 theorem exists_partition_index_le_time (n : ℕ) (T : NNReal) :
-    ∃ k : ℕ, T ≤ P n k := sorry
+    ∃ k : ℕ, T ≤ P n k := by
+  -- The admissibility data makes the fixed row `P n` tend to `∞`.
+  have hrow : Tendsto (P n) atTop atTop := hP.tendsto_atTop n
+  -- Extract an index where the row has crossed the threshold `T`.
+  rcases Filter.exists_le_of_tendsto_atTop hrow 0 T with ⟨k, _, hk⟩
+  exact ⟨k, hk⟩
 
 /-- The first index in the `n`-th partition row whose time is at least `T`. -/
 def partitionBoundIndex (n : ℕ) (T : NNReal) : ℕ :=

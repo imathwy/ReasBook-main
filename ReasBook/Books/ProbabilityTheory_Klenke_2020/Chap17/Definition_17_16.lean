@@ -35,7 +35,11 @@ def IsTranslationInvariantStepMatrix (p : E → E → ℝ≥0∞) : Prop :=
 same as the probability of the same increment from the origin. -/
 theorem isTranslationInvariantStepMatrix_apply_add
     {p : E → E → ℝ≥0∞} (h : IsTranslationInvariantStepMatrix p) (x z : E) :
-    p x (x + z) = p 0 z := sorry
+    p x (x + z) = p 0 z := by
+  -- Specialize the translation-invariance identity at the endpoint `x + z`.
+  have hstep : p x (x + z) = p 0 ((x + z) - x) := h x (x + z)
+  -- Normalize the increment from `x` to `x + z` to the displacement `z`.
+  simpa using hstep
 
 end TranslationInvariantStepMatrix
 

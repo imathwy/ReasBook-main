@@ -1,10 +1,12 @@
 import Mathlib
 import ProbabilityTheory_Klenke_2020.Chap21.Definition_21_56
-import ProbabilityTheory_Klenke_2020.Chap21.Example_21_57
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
 open Filter
+open scoped ENNReal Topology
+
+noncomputable section
 
 local notation "PathSpace" => C(NNReal, ℝ)
 local notation "PathwiseProcess" => NNReal → ℝ
@@ -104,19 +106,116 @@ theorem tendsto_partition_sum
 
 end HasQuadraticCovariationAlongPartition
 
+-- A file-local dyadic partition sequence keeps the Chapter 21 dyadic API available even when the
+-- earlier example file is still under repair.
+namespace Definition2158
+
+/-- Helper for Definition 21.58: the dyadic partition sequence on `[0, ∞)`, whose `n`-th row
+consists of the times `k 2^{-n}`. -/
+def dyadicPartitionSequence (n k : ℕ) : NNReal :=
+  (k : NNReal) / (2 : NNReal) ^ n
+
+/-- Helper for Definition 21.58: successive points in the `n`-th dyadic row are separated by the
+constant gap `((2 : ℝ≥0∞)⁻¹)^n`. -/
+lemma dyadicPartitionSequence_succGap (n k : ℕ) :
+    edist (dyadicPartitionSequence n k) (dyadicPartitionSequence n (k + 1)) =
+      (((2 : ℝ≥0∞)⁻¹) ^ n) := by
+  have hpow : (2 : NNReal) ^ n ≠ 0 := by
+    positivity
+  have hle : dyadicPartitionSequence n k ≤ dyadicPartitionSequence n (k + 1) := by
+    -- The dyadic row is increasing because the denominator is fixed and positive.
+    rw [dyadicPartitionSequence, dyadicPartitionSequence]
+    exact (div_le_div_iff_of_pos_right (show 0 < (2 : NNReal) ^ n by positivity)).2 <| by
+      exact_mod_cast Nat.le_succ k
+  rw [edist_nndist, NNReal.nndist_eq, tsub_eq_zero_of_le hle]
+  rw [max_eq_right]
+  · -- After removing the trivial branch of the max, the remaining difference is `1 / 2^n`.
+    calc
+      ↑(dyadicPartitionSequence n (k + 1) - dyadicPartitionSequence n k : NNReal)
+          = ↑(((((k : NNReal) + 1) / (2 : NNReal) ^ n) - ((k : NNReal) / (2 : NNReal) ^ n)) :
+              NNReal) := by
+                simp [dyadicPartitionSequence, Nat.cast_add]
+      _ = ↑((((k : NNReal) / (2 : NNReal) ^ n) + (1 / (2 : NNReal) ^ n) -
+            ((k : NNReal) / (2 : NNReal) ^ n)) : NNReal) := by
+                rw [add_div]
+      _ = ↑((1 / (2 : NNReal) ^ n : NNReal)) := by
+                rw [add_tsub_cancel_left]
+      _ = (1 : ℝ≥0∞) / (2 : ℝ≥0∞) ^ n := by
+                rw [ENNReal.coe_div hpow, ENNReal.coe_one, ENNReal.coe_pow]
+                norm_num
+      _ = ((2 : ℝ≥0∞) ^ n)⁻¹ := by
+                simp [div_eq_mul_inv]
+      _ = (((2 : ℝ≥0∞)⁻¹) ^ n) := by
+                simpa using (ENNReal.inv_pow (a := (2 : ℝ≥0∞)) (n := n))
+  · positivity
+
+/-- Helper for Definition 21.58: the mesh of the `n`-th dyadic partition is its common gap size. -/
+lemma partitionMesh_dyadicPartitionSequence (n : ℕ) :
+    partitionMesh dyadicPartitionSequence n = (((2 : ℝ≥0∞)⁻¹) ^ n) := by
+  -- Every term in the defining supremum is the same dyadic gap.
+  rw [partitionMesh]
+  simp only [dyadicPartitionSequence_succGap, iSup_const]
+
+/-- Helper for Definition 21.58: the dyadic mesh decays geometrically to `0` in `ℝ≥0∞`. -/
+lemma tendsto_partitionMesh_dyadicPartitionSequence :
+    Tendsto (fun n : ℕ ↦ partitionMesh dyadicPartitionSequence n) atTop (nhds 0) := by
+  -- Rewrite the mesh in closed form and apply the standard ENNReal geometric limit theorem.
+  have hlt : ((2 : ℝ≥0∞)⁻¹) < 1 := by
+    simp
+  simpa [partitionMesh_dyadicPartitionSequence] using
+    (ENNReal.tendsto_pow_atTop_nhds_zero_of_lt_one (r := (2 : ℝ≥0∞)⁻¹) hlt)
+
+/-- Helper for Definition 21.58: the file-local dyadic partitions form an admissible partition
+sequence. -/
+theorem dyadicPartitionSequence_isAdmissible :
+    IsAdmissiblePartitionSequence dyadicPartitionSequence := by
+  refine
+    { zero_eq := ?_
+      strictMono := ?_
+      nested := ?_
+      tendsto_atTop := ?_
+      mesh_tendsto_zero := tendsto_partitionMesh_dyadicPartitionSequence }
+  · intro n
+    simp [dyadicPartitionSequence]
+  · intro n
+    refine strictMono_nat_of_lt_succ fun k ↦ ?_
+    have hpow : 0 < (2 : NNReal) ^ n := by
+      positivity
+    have hk : (k : NNReal) < ((k + 1 : ℕ) : NNReal) := by
+      exact_mod_cast Nat.lt_succ_self k
+    rw [dyadicPartitionSequence, dyadicPartitionSequence]
+    exact (div_lt_div_iff_of_pos_right hpow).2 hk
+  · intro n t ht
+    rcases (Set.mem_range.mp <| by simpa [partitionPointSet] using ht) with ⟨k, rfl⟩
+    change dyadicPartitionSequence n k ∈ Set.range (dyadicPartitionSequence (n + 1))
+    refine ⟨2 * k, ?_⟩
+    simp [dyadicPartitionSequence, pow_succ, mul_assoc, mul_comm, div_eq_mul_inv]
+  · intro n
+    simpa [dyadicPartitionSequence, div_eq_mul_inv] using
+      (tendsto_natCast_atTop_atTop.atTop_mul_const
+        (show 0 < ((2 : NNReal) ^ n)⁻¹ by positivity))
+
+/-- Helper for Definition 21.58: the file-local dyadic partition sequence carries the expected
+admissible-partition instance. -/
+instance instIsAdmissiblePartitionSequenceDyadicPartitionSequence :
+    IsAdmissiblePartitionSequence dyadicPartitionSequence :=
+  dyadicPartitionSequence_isAdmissible
+
+end Definition2158
+
 /-- The `n`-th dyadic partition sum used to define the `p`-variation of a path on `[0, T]`. -/
 noncomputable abbrev dyadic_p_variation_sum
     (p : ℝ) (G : PathSpace) (T : NNReal) (n : ℕ) : ℝ :=
-  partitionPVariationSum dyadicPartitionSequence p G T n
+  partitionPVariationSum Definition2158.dyadicPartitionSequence p G T n
 
 /-- The `n`-th dyadic partition sum used to define quadratic covariation on `[0, T]`. -/
 noncomputable abbrev dyadic_quadratic_covariation_sum
     (F G : PathSpace) (T : NNReal) (n : ℕ) : ℝ :=
-  partitionQuadraticCovariationSum dyadicPartitionSequence F G T n
+  partitionQuadraticCovariationSum Definition2158.dyadicPartitionSequence F G T n
 
 /-- The dyadic specialization of Definition 21.58 (1). -/
 abbrev HasPVariationAlong (p : ℝ) (G : PathSpace) (V : PathwiseProcess) : Prop :=
-  HasPVariationAlongPartition p G dyadicPartitionSequence V
+  HasPVariationAlongPartition p G Definition2158.dyadicPartitionSequence V
 
 namespace HasPVariationAlong
 
@@ -130,17 +229,17 @@ end HasPVariationAlong
 
 /-- The dyadic specialization of Definition 21.58 (2). -/
 abbrev HasSquareVariationAlong (G : PathSpace) (V : PathwiseProcess) : Prop :=
-  HasSquareVariationAlongPartition G dyadicPartitionSequence V
+  HasSquareVariationAlongPartition G Definition2158.dyadicPartitionSequence V
 
 /-- A continuous path has continuous square variation along the dyadic partitions if it admits a
 continuous square-variation path. -/
 abbrev HasContinuousSquareVariation (G : PathSpace) : Prop :=
-  HasContinuousSquareVariationAlongPartition G dyadicPartitionSequence
+  HasContinuousSquareVariationAlongPartition G Definition2158.dyadicPartitionSequence
 
 /-- Definition 21.58 (3): the class `𝒞_qv` consists of continuous paths whose square variation
 process is continuous in time along the dyadic partitions. -/
 abbrev 𝒞_qv : Set PathSpace :=
-  𝒞_qvAlong dyadicPartitionSequence
+  𝒞_qvAlong Definition2158.dyadicPartitionSequence
 
 /- Membership in `𝒞_qv` is the derived set-level view of the owner property
 `HasContinuousSquareVariation`. -/
@@ -151,7 +250,7 @@ theorem mem_𝒞_qv_iff (G : PathSpace) :
 /-- The dyadic specialization of Definition 21.58 (4). -/
 abbrev HasQuadraticCovariationAlong
     (F G : PathSpace) (covFG : PathwiseProcess) : Prop :=
-  HasQuadraticCovariationAlongPartition F G dyadicPartitionSequence covFG
+  HasQuadraticCovariationAlongPartition F G Definition2158.dyadicPartitionSequence covFG
 
 namespace HasQuadraticCovariationAlong
 
@@ -165,6 +264,101 @@ theorem tendsto_partition_sum
 
 end HasQuadraticCovariationAlong
 
+/-- Helper for Definition 21.58: the polarized difference of the squared increments of `a + b`
+and `a - b` recovers the mixed product `a * b`. -/
+lemma polarizationTermIdentity (a b : ℝ) :
+    ((Real.rpow |a + b| 2) - Real.rpow |a - b| 2) / 4 = a * b := by
+  -- Normalize the two `Real.rpow` terms to ordinary squares.
+  have hadd : Real.rpow |a + b| (2 : ℝ) = (a + b) ^ 2 := by
+    rw [← Real.rpow_natCast]
+    simpa using (sq_abs (a + b))
+  have hsub : Real.rpow |a - b| (2 : ℝ) = (a - b) ^ 2 := by
+    rw [← Real.rpow_natCast]
+    simpa using (sq_abs (a - b))
+  rw [hadd, hsub]
+  -- The remaining statement is a polynomial identity after removing the absolute values.
+  ring
+
+/-- Helper for Definition 21.58: the mixed partition sum is the polarization difference of the
+square-variation sums of `F + G` and `F - G`. -/
+lemma partitionQuadraticCovariationSum_eq_polarization
+    (P : ℕ → ℕ → NNReal) [IsAdmissiblePartitionSequence P]
+    (F G : PathSpace) (T : NNReal) (n : ℕ) :
+    partitionQuadraticCovariationSum P F G T n =
+      ((partitionPVariationSum P 2 (F + G) T n) -
+        (partitionPVariationSum P 2 (F - G) T n)) / 4 := by
+  let s := Finset.range (partitionBoundIndex P n T)
+  let addTerm : ℕ → ℝ := fun k ↦
+    Real.rpow
+      (|((F + G) (partitionNextPointUpTo P n k T)) - ((F + G) (P n k))|)
+      2
+  let subTerm : ℕ → ℝ := fun k ↦
+    Real.rpow
+      (|((F - G) (partitionNextPointUpTo P n k T)) - ((F - G) (P n k))|)
+      2
+  -- Rewrite each mixed increment by the scalar polarization identity.
+  have hterm :
+      ∀ k ∈ s,
+        (F (partitionNextPointUpTo P n k T) - F (P n k)) *
+            (G (partitionNextPointUpTo P n k T) - G (P n k)) =
+          (addTerm k - subTerm k) / 4 := by
+    intro k hk
+    simp only [addTerm, subTerm, ContinuousMap.add_apply, ContinuousMap.sub_apply]
+    have hadd :
+        (F (partitionNextPointUpTo P n k T) + G (partitionNextPointUpTo P n k T)) -
+            (F (P n k) + G (P n k)) =
+          (F (partitionNextPointUpTo P n k T) - F (P n k)) +
+            (G (partitionNextPointUpTo P n k T) - G (P n k)) := by
+      ring
+    have hsub :
+        (F (partitionNextPointUpTo P n k T) - G (partitionNextPointUpTo P n k T)) -
+            (F (P n k) - G (P n k)) =
+          (F (partitionNextPointUpTo P n k T) - F (P n k)) -
+            (G (partitionNextPointUpTo P n k T) - G (P n k)) := by
+      ring
+    rw [hadd, hsub, polarizationTermIdentity]
+  -- Sum the termwise identity and regroup the finite sums.
+  calc
+    partitionQuadraticCovariationSum P F G T n
+        = Finset.sum s (fun k ↦ (addTerm k - subTerm k) / 4) := by
+            unfold partitionQuadraticCovariationSum
+            refine Finset.sum_congr rfl ?_
+            intro k hk
+            exact hterm k (by simpa [s] using hk)
+    _ = (Finset.sum s addTerm - Finset.sum s subTerm) / 4 := by
+      simp_rw [div_eq_mul_inv]
+      rw [← Finset.sum_sub_distrib, ← Finset.sum_mul]
+    _ = (partitionPVariationSum P 2 (F + G) T n -
+          partitionPVariationSum P 2 (F - G) T n) / 4 := by
+      simp only [partitionPVariationSum, s, addTerm, subTerm]
+
+/-- Helper for Definition 21.58: continuous square-variation witnesses for `F - G` and `F + G`
+produce a continuous quadratic-covariation witness for `F` and `G`. -/
+lemma hasQuadraticCovariationAlongPartition_of_squareVariationWitnesses
+    (P : ℕ → ℕ → NNReal) [IsAdmissiblePartitionSequence P]
+    {F G Vsub Vadd : PathSpace}
+    (hVsub : HasSquareVariationAlongPartition (F - G) P Vsub)
+    (hVadd : HasSquareVariationAlongPartition (F + G) P Vadd) :
+    HasQuadraticCovariationAlongPartition F G P (((1 / 4 : ℝ) • (Vadd - Vsub)) : PathSpace) := by
+  intro T
+  -- Pass to the limit in the polarized difference of the two square-variation sums.
+  have hpolarized :
+      Tendsto
+        (fun n ↦
+          ((partitionPVariationSum P 2 (F + G) T n) -
+            (partitionPVariationSum P 2 (F - G) T n)) / 4)
+        atTop
+        (nhds ((((1 / 4 : ℝ) • (Vadd - Vsub)) : PathSpace) T)) := by
+    simpa [ContinuousMap.smul_apply, ContinuousMap.sub_apply, div_eq_mul_inv, smul_eq_mul,
+      mul_comm, mul_left_comm, mul_assoc] using
+      ((HasSquareVariationAlongPartition.tendsto_partition_sum hVadd T).sub
+        (HasSquareVariationAlongPartition.tendsto_partition_sum hVsub T)).mul_const
+        ((1 / 4 : ℝ))
+  -- Replace the source sequence by the partition-sum polarization formula.
+  convert hpolarized using 1
+  ext n
+  exact partitionQuadraticCovariationSum_eq_polarization P F G T n
+
 -- Proof sketch: choose continuous square-variation realizations of `F + G` and `F - G`, define
 -- the mixed bracket by the polarization formula
 -- `((⟨F + G⟩ - ⟨F - G⟩) / 4)_T`, and pass to the limit in the partition sums using the
@@ -176,7 +370,12 @@ theorem exists_quadratic_covariation_along_partition_of_hasContinuousSquareVaria
     (P : ℕ → ℕ → NNReal) [IsAdmissiblePartitionSequence P] {F G : PathSpace}
     (hFsubG : HasContinuousSquareVariationAlongPartition (F - G) P)
     (hFaddG : HasContinuousSquareVariationAlongPartition (F + G) P) :
-    ∃ covFG : PathSpace, HasQuadraticCovariationAlongPartition F G P covFG := sorry
+    ∃ covFG : PathSpace, HasQuadraticCovariationAlongPartition F G P covFG := by
+  rcases hFsubG with ⟨Vsub, hVsub⟩
+  rcases hFaddG with ⟨Vadd, hVadd⟩
+  -- Use the polarized difference of the two square-variation witnesses as the bracket path.
+  refine ⟨((1 / 4 : ℝ) • (Vadd - Vsub)), ?_⟩
+  exact hasQuadraticCovariationAlongPartition_of_squareVariationWitnesses P hVsub hVadd
 
 /-- If `F + G` and `F - G` lie in `𝒞_qv`, then the dyadic quadratic covariation `⟨F,G⟩` exists and
 is represented by a continuous path. -/
@@ -185,6 +384,7 @@ theorem exists_quadratic_covariation_along_of_hasContinuousSquareVariation
     (hFsubG : HasContinuousSquareVariation (F - G))
     (hFaddG : HasContinuousSquareVariation (F + G)) :
     ∃ covFG : PathSpace, HasQuadraticCovariationAlong F G covFG := by
-  simpa using
+  -- Unfold the dyadic abbreviations once and reuse the partition-level existence result.
+  simpa [HasContinuousSquareVariation, HasQuadraticCovariationAlong] using
     exists_quadratic_covariation_along_partition_of_hasContinuousSquareVariation
-      dyadicPartitionSequence hFsubG hFaddG
+      Definition2158.dyadicPartitionSequence hFsubG hFaddG

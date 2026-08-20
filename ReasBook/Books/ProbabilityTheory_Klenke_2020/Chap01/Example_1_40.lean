@@ -24,20 +24,11 @@ private theorem setOf_eq_cylinder_singleton {E : Type u} {n : ℕ} (x : Fin n �
   · intro h i
     exact congr_fun h ⟨i, Finset.mem_range.mpr i.2⟩
 
-/-- Example 1.40: the cylinder classes in `E^ℕ` are given by `𝒜₀ = {∅}` and, for `n + 1`, by the
-sets determined by the first `n + 1` coordinates. -/
-def sequenceCylinderLevel (E : Type u) : ℕ → Set (Set (ℕ → E))
-  | 0 => ({∅} : Set (Set (ℕ → E)))
-  | n + 1 => {s : Set (ℕ → E) | ∃ x : Fin (n + 1) → E, s = {ω | ∀ i : Fin (n + 1), ω i = x i}}
 
 @[simp] theorem mem_sequenceCylinderLevel_zero_iff {E : Type u} {s : Set (ℕ → E)} :
     s ∈ sequenceCylinderLevel E 0 ↔ s = ∅ := by
   rfl
 
-@[simp] theorem mem_sequenceCylinderLevel_succ_iff {E : Type u} {n : ℕ} {s : Set (ℕ → E)} :
-    s ∈ sequenceCylinderLevel E (n + 1) ↔
-      ∃ x : Fin (n + 1) → E, s = {ω | ∀ i : Fin (n + 1), ω i = x i} := by
-  rfl
 
 /-- The semiring `𝒜` from Example 1.40 is the union of the textbook levels `𝒜_n`, with
 `𝒜₀ = {∅}` and `𝒜_(n+1)` the positive-length initial cylinders. -/

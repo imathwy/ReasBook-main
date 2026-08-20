@@ -22,7 +22,11 @@ def StochasticLE (μ1 μ2 : ProbabilityMeasure (Fin d → ℝ)) : Prop :=
 -- the same integral when `μ₁ = μ₂`.
 /-- Stochastic order is reflexive. -/
 theorem stochasticLE_refl (μ : ProbabilityMeasure (Fin d → ℝ)) :
-    StochasticLE μ μ := sorry
+    StochasticLE μ μ := by
+  -- Unfold the order and test against an arbitrary admissible function.
+  intro f _ _ _
+  -- Both sides are the same integral because both measures are `μ`.
+  exact le_rfl
 
 /-- Definition 17.57 (2): the lower orthant order compares probability measures by reversing the
 pointwise order of their values on the closed lower orthants `Set.Iic x`. -/
@@ -33,6 +37,10 @@ def LowerOrthantLE (μ1 μ2 : ProbabilityMeasure (Fin d → ℝ)) : Prop :=
 -- `Set.Iic x`.
 /-- Lower orthant order is reflexive. -/
 theorem lowerOrthantLE_refl (μ : ProbabilityMeasure (Fin d → ℝ)) :
-    LowerOrthantLE μ μ := sorry
+    LowerOrthantLE μ μ := by
+  -- Unfold the pointwise order on lower orthants.
+  intro x
+  -- The same measure assigns the same mass to `Iic x` on both sides.
+  exact le_rfl
 
 end ProbabilityTheory

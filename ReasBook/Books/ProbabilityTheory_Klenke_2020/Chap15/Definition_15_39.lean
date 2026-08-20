@@ -33,7 +33,14 @@ def rowSum (A : RealRandomVariableArray Ω) (n : ℕ) : Ω → ℝ :=
 -- measurability field of the array entries.
 /-- The row sum of a real random-variable array is a measurable real random variable. -/
 theorem measurable_rowSum (A : RealRandomVariableArray Ω) (n : ℕ) :
-    Measurable (A.rowSum n) := sorry
+    Measurable (A.rowSum n) := by
+  -- First rewrite `rowSum` into the pointwise sum form used by the finite-sum measurability API.
+  have hrow : A.rowSum n = fun ω ↦ ∑ i : Fin (A.rowLength n), A n i ω := by
+    funext ω
+    simp [RealRandomVariableArray.rowSum, Finset.sum_apply]
+  rw [hrow]
+  -- Each summand is measurable by the structure field, so the finite row sum is measurable.
+  exact Finset.measurable_sum Finset.univ fun i _ ↦ A.measurable_entry n i
 
 /-- The row sum of a real random-variable array is almost everywhere measurable with respect to
 any ambient measure. -/

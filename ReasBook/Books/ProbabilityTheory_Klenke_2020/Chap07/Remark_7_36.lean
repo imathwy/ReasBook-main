@@ -10,4 +10,4 @@ small-set formulation of uniform integrability cited from Theorem 6.24(iii). The
 `uniformIntegrable_iff_isBounded_and_small_measure_integral_control`; its small-set clause has the
 same quantifier pattern as `MeasureTheory.Measure.TotallyContinuous`, while the auxiliary
 weight-control package from Chapter 6 stays upstream and out of the public focus here. -/
-recall uniformIntegrable_iff_isBounded_and_small_measure_integral_control
+-- recall uniformIntegrable_iff_isBounded_and_small_measure_integral_control

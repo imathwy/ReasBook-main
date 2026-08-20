@@ -2,6 +2,7 @@ import Mathlib
 import ProbabilityTheory_Klenke_2020.Chap23.Definition_23_6
 import ProbabilityTheory_Klenke_2020.Chap23.Definition_23_7
 import ProbabilityTheory_Klenke_2020.Chap23.Example_23_10
+import ProbabilityTheory_Klenke_2020.Chap23.Example_23_10Core
 import ProbabilityTheory_Klenke_2020.Chap23.Example_23_14
 import ProbabilityTheory_Klenke_2020.Chap23.Example_23_15
 import ProbabilityTheory_Klenke_2020.Chap23.Example_23_20
@@ -21,6 +22,7 @@ import ProbabilityTheory_Klenke_2020.Chap23.Remark_23_18
 import ProbabilityTheory_Klenke_2020.Chap23.Remark_23_2
 import ProbabilityTheory_Klenke_2020.Chap23.Theorem_23_1
 import ProbabilityTheory_Klenke_2020.Chap23.Theorem_23_11
+import ProbabilityTheory_Klenke_2020.Chap23.Theorem_23_11Shim
 import ProbabilityTheory_Klenke_2020.Chap23.Theorem_23_13
 import ProbabilityTheory_Klenke_2020.Chap23.Theorem_23_16
 import ProbabilityTheory_Klenke_2020.Chap23.Theorem_23_17

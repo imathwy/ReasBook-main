@@ -93,8 +93,7 @@ theorem localizing_sequence
 end IsContinuousLocalMartingaleUpTo
 
 /-- A sequence `τs` localizes `M` if it localizes `M` up to the constant infinite stopping time. -/
-abbrev IsMartingaleLocalizingSequence (ℱ : TimeFiltration) (μ : Measure Ω)
-    (M : NNReal → Ω → ℝ)
+abbrev IsLocalizingSequence (ℱ : TimeFiltration) (μ : Measure Ω) (M : NNReal → Ω → ℝ)
     (τs : ℕ → Ω → ENNReal) : Prop :=
   IsLocalizingSequenceUpTo ℱ μ (fun _ ↦ ∞) M τs
 
@@ -102,7 +101,7 @@ abbrev IsMartingaleLocalizingSequence (ℱ : TimeFiltration) (μ : Measure Ω)
 stopped-martingale conditions. -/
 theorem isLocalizingSequence_iff (ℱ : TimeFiltration) (μ : Measure Ω)
     (M : NNReal → Ω → ℝ) (τs : ℕ → Ω → ENNReal) :
-    IsMartingaleLocalizingSequence ℱ μ M τs ↔
+    IsLocalizingSequence ℱ μ M τs ↔
       (∀ n : ℕ, IsStoppingTime ℱ (τs n)) ∧
         (∀ᵐ ω ∂μ,
           Monotone (fun n : ℕ ↦ τs n ω) ∧
@@ -131,9 +130,8 @@ case `τ ≡ ∞`. -/
 theorem isLocalMartingale_iff (ℱ : TimeFiltration) (μ : Measure Ω)
     (M : NNReal → Ω → ℝ) :
     IsLocalMartingale ℱ μ M ↔
-      Adapted ℱ M ∧ ∃ τs : ℕ → Ω → ENNReal,
-        IsMartingaleLocalizingSequence ℱ μ M τs := by
-  simpa [IsLocalMartingale, IsMartingaleLocalizingSequence] using
+      Adapted ℱ M ∧ ∃ τs : ℕ → Ω → ENNReal, IsLocalizingSequence ℱ μ M τs := by
+  simpa [IsLocalMartingale, IsLocalizingSequence] using
     (isLocalMartingaleUpTo_iff ℱ μ (fun _ ↦ ∞) M)
 
 /-- Definition 21.66: a real-valued process is a continuous local martingale if it is a local
@@ -157,7 +155,7 @@ theorem adapted {ℱ : TimeFiltration} {μ : Measure Ω} {M : NNReal → Ω → 
 does. -/
 theorem localizing_sequence {ℱ : TimeFiltration} {μ : Measure Ω} {M : NNReal → Ω → ℝ}
     (hM : IsContinuousLocalMartingale ℱ μ M) :
-    ∃ τs : ℕ → Ω → ENNReal, IsMartingaleLocalizingSequence ℱ μ M τs :=
+    ∃ τs : ℕ → Ω → ENNReal, IsLocalizingSequence ℱ μ M τs :=
   (isLocalMartingale_iff ℱ μ M).1 hM.local_martingale |>.2
 
 end IsContinuousLocalMartingale

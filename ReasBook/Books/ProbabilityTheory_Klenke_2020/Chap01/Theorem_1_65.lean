@@ -705,7 +705,7 @@ theorem exists_generateFrom_sandwich_of_caratheodory_measurable
     · exact Or.inl ⟨hx.1, hxA⟩
   have hν_gap_zero : ν (Aplus \ Aminus) = 0 := by
     -- The outer measure of the measurable gap is bounded by a union of two null sets.
-    refine le_antisymm ?_ zero_le
+    refine le_antisymm ?_ (zero_le _)
     calc
       ν (Aplus \ Aminus) ≤ ν ((Aplus \ A) ∪ (A \ Aminus)) := ν.mono hsubset
       _ ≤ ν (Aplus \ A) + ν (A \ Aminus) := measure_union_le _ _

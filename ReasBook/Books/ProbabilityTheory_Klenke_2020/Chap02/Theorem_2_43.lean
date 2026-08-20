@@ -74,4 +74,20 @@ theorem percolationProbability_zero_or_one_of_originPercolationProbability
     (originPercolationProbability μ cluster = 0 →
         percolationProbability μ cluster = 0) ∧
       (0 < originPercolationProbability μ cluster →
-        percolationProbability μ cluster = 1) := sorry
+        percolationProbability μ cluster = 1) := by
+  constructor
+  · -- The vanishing branch is exactly the previously established zero-transfer lemma.
+    intro h_origin_zero
+    exact percolationProbability_eq_zero_of_originPercolationProbability_eq_zero
+      μ cluster h_origin_zero
+  · -- Positive origin-percolation forces positive percolation via the monotonicity comparison.
+    intro h_origin_pos
+    have h_perc_pos : 0 < percolationProbability μ cluster := by
+      exact lt_of_lt_of_le h_origin_pos
+        (originPercolationProbability_le_percolationProbability μ cluster)
+    -- The assumed `0 ∨ 1` dichotomy leaves only the value `1`.
+    cases h_zero_or_one with
+    | inl h_perc_zero =>
+        exact False.elim ((ne_of_gt h_perc_pos) h_perc_zero)
+    | inr h_perc_one =>
+        exact h_perc_one

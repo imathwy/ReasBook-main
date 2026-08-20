@@ -1,6 +1,5 @@
 import Mathlib
 import ProbabilityTheory_Klenke_2020.Chap05.Definition_5_25
-import ProbabilityTheory_Klenke_2020.Chap05.Lemma_5_26
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -146,142 +145,143 @@ theorem prefixCode_kraft_sum_le_one [Fintype E] (C : PrefixCode Bool E) :
     rw [Finset.sum_image C.injective.injOn] at hk
     simpa using hk
 
-/-- Helper for Theorem 5.27: the cross-entropy against the code weights `2^{-length}` is exactly
-the expected code length. -/
+/-- Helper for Theorem 5.27: the finite binary cross-entropy sum against the code weights
+`2^{-length}` is exactly the expected code length. -/
 theorem binary_crossEntropy_codeweight_eq_expectedLength [Fintype E]
     (p : PMF E) (C : PrefixCode Bool E) :
-    crossEntropyInBase binaryBase p
-      (fun e ↦ ENNReal.ofReal ((1 / 2 : ℝ) ^ (C.encode e).length)) =
-        (C.expectedLength p : EReal) := by
-  have hterm : ∀ e : E,
-      ((p e : EReal) * (((Real.log (2 : ℝ) : EReal)⁻¹) *
-          ENNReal.log (ENNReal.ofReal ((1 / 2 : ℝ) ^ (C.encode e).length)))) =
-        (((p e).toReal * Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode e).length) : ℝ) : EReal) := by
+    (-∑ e : E, (p e).toReal * Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode e).length) : ℝ) =
+      C.expectedLength p := by
+  -- Evaluate the logarithm of the dyadic code weight termwise and fold the result into the
+  -- expected-length definition.
+  rw [← Finset.sum_neg_distrib, PrefixCode.expectedLength_def]
+  apply Finset.sum_congr rfl
+  intro e _
+  rw [Real.logb_pow, one_div, Real.logb_inv, Real.logb_self_eq_one one_lt_two]
+  ring
+
+/-- Helper for Theorem 5.27: each base-`2` logarithmic ratio controls the corresponding linear
+mass deficit from below. -/
+private theorem binaryLogRatio_term_lower_bound (a q : ℝ) (ha : 0 ≤ a) (hq : 0 < q) :
+    ((Real.log 2)⁻¹) * (a - q) ≤ a * (Real.logb 2 a - Real.logb 2 q) := by
+  by_cases ha0 : a = 0
+  · subst ha0
+    -- When the source mass vanishes, the right-hand side is zero and the left-hand side is
+    -- nonpositive because the comparison mass is strictly positive.
+    have hcoef_nonneg : 0 ≤ (Real.log 2)⁻¹ := by positivity
+    have hleft : ((Real.log 2)⁻¹) * (0 - q) ≤ 0 := by
+      nlinarith
+    simpa using hleft
+  · have ha_pos : 0 < a := lt_of_le_of_ne ha (by simpa [eq_comm] using ha0)
+    have hratio_pos : 0 < q / a := div_pos hq ha_pos
+    have hlog_bound : Real.log (q / a) ≤ q / a - 1 :=
+      Real.log_le_sub_one_of_pos hratio_pos
+    have hneglog_bound : 1 - q / a ≤ -Real.log (q / a) := by
+      linarith
+    have hscaled :
+        (a * (Real.log 2)⁻¹) * (1 - q / a) ≤
+          (a * (Real.log 2)⁻¹) * (-Real.log (q / a)) := by
+      exact mul_le_mul_of_nonneg_left hneglog_bound (by positivity)
+    have hdiv : a * (q / a) = q := by
+      field_simp [ha_pos.ne']
+    have hratio : a * (1 - q / a) = a - q := by
+      rw [mul_sub, hdiv]
+      ring
+    -- Rewrite the linear and logarithmic sides into the same ratio normal form.
+    calc
+      ((Real.log 2)⁻¹) * (a - q) = (a * (Real.log 2)⁻¹) * (1 - q / a) := by
+        calc
+          ((Real.log 2)⁻¹) * (a - q) = (Real.log 2)⁻¹ * (a * (1 - q / a)) := by
+            rw [hratio]
+          _ = (a * (Real.log 2)⁻¹) * (1 - q / a) := by ring
+      _ ≤ (a * (Real.log 2)⁻¹) * (-Real.log (q / a)) := hscaled
+      _ = a * (-Real.logb 2 (q / a)) := by
+        rw [Real.logb]
+        ring
+      _ = a * (Real.logb 2 a - Real.logb 2 q) := by
+        rw [Real.logb_div hq.ne' ha_pos.ne']
+        ring
+
+/-- Helper for Theorem 5.27: on a finite alphabet, every strictly positive sub-probability `q`
+dominates the binary entropy in the weighted logarithmic sum `-∑ p_e log₂ q_e`. -/
+private theorem binaryEntropy_le_logSum_of_subprobability [Fintype E]
+    (p : PMF E) (q : E → ℝ) (hq_pos : ∀ e, 0 < q e) (hq_sum : ∑ e : E, q e ≤ 1) :
+    (binaryEntropy p).toReal ≤ -∑ e : E, (p e).toReal * Real.logb 2 (q e) := by
+  have hterm :
+      ∀ e : E,
+        ((Real.log 2)⁻¹) * ((p e).toReal - q e) ≤
+          (p e).toReal * (Real.logb 2 (p e).toReal - Real.logb 2 (q e)) := by
     intro e
-    have hpos : 0 < ((1 / 2 : ℝ) ^ (C.encode e).length) := by positivity
-    rw [ENNReal.log_ofReal_of_pos hpos]
-    rw [← EReal.coe_ennreal_toReal (p.apply_ne_top e)]
-    change (((p e).toReal * ((Real.log (2 : ℝ))⁻¹ *
-          Real.log ((1 / 2 : ℝ) ^ (C.encode e).length)) : ℝ) : EReal) =
-        (((p e).toReal * Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode e).length) : ℝ) : EReal)
-    exact_mod_cast (by
-      simp [Real.logb, div_eq_mul_inv, mul_left_comm, mul_comm] :
-        (p e).toReal * ((Real.log (2 : ℝ))⁻¹ * Real.log ((1 / 2 : ℝ) ^ (C.encode e).length)) =
-          (p e).toReal * Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode e).length))
-  calc
-    crossEntropyInBase binaryBase p
-        (fun e ↦ ENNReal.ofReal ((1 / 2 : ℝ) ^ (C.encode e).length)) =
-        -∑ e : E, ((p e : EReal) * (((Real.log (2 : ℝ) : EReal)⁻¹) *
-          ENNReal.log (ENNReal.ofReal ((1 / 2 : ℝ) ^ (C.encode e).length)))) := by
-      rw [crossEntropyInBase_def, binaryBase, tsum_fintype]
-    _ = -∑ e : E,
-          ((((p e).toReal * Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode e).length) : ℝ) : EReal)) := by
-      simp_rw [hterm]
-    _ = ((-∑ e : E, (p e).toReal * Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode e).length) : ℝ) : EReal) := by
-      have hsum (s : Finset E) :
-          Finset.sum s
-              (fun e ↦ (((p e).toReal * Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode e).length) : ℝ) :
-                EReal)) =
-            ((Finset.sum s
-                (fun e ↦ (p e).toReal * Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode e).length)) : ℝ) :
-              EReal) := by
-        induction s using Finset.cons_induction with
-        | empty => simp
-        | @cons a s ha ih =>
-            calc
-              Finset.sum (Finset.cons a s ha)
-                  (fun e ↦ (((p e).toReal * Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode e).length) :
-                    ℝ) : EReal)) =
-                (((p a).toReal * Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode a).length) : ℝ) : EReal) +
-                  Finset.sum s
-                    (fun e ↦ (((p e).toReal * Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode e).length) :
-                      ℝ) : EReal)) := by
-                simp
-              _ = (((p a).toReal * Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode a).length) : ℝ) : EReal) +
-                    ((Finset.sum s
-                        (fun e ↦ (p e).toReal *
-                          Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode e).length)) : ℝ) : EReal) := by
-                rw [ih]
-              _ = ((((p a).toReal * Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode a).length)) +
-                      Finset.sum s
-                        (fun e ↦ (p e).toReal *
-                          Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode e).length)) : ℝ) : EReal) := by
-                simpa [add_comm, add_left_comm, add_assoc]
-              _ = ((Finset.sum (Finset.cons a s ha)
-                      (fun e ↦ (p e).toReal *
-                        Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode e).length)) : ℝ) : EReal) := by
-                simpa [add_comm, add_left_comm, add_assoc]
-      calc
-        -∑ e : E, ((((p e).toReal * Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode e).length) : ℝ) : EReal)) =
-            -((∑ e : E,
-                ((((p e).toReal * Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode e).length) : ℝ) :
-                  EReal)))) := by
-              rfl
-        _ = -(((∑ e : E,
-                (p e).toReal * Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode e).length) : ℝ) : EReal)) := by
-              rw [hsum Finset.univ]
-        _ = ((-∑ e : E, (p e).toReal * Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode e).length) : ℝ) :
-              EReal) := by
-              simpa [add_comm, add_left_comm, add_assoc]
-    _ = ((-∑ e : E, (p e).toReal * (-(C.encode e).length : ℝ) : ℝ) : EReal) := by
-      have hlogsum :
-          (∑ e : E, (p e).toReal * Real.logb 2 ((1 / 2 : ℝ) ^ (C.encode e).length)) =
-            ∑ e : E, (p e).toReal * (-(C.encode e).length : ℝ) := by
-        apply Finset.sum_congr rfl
-        intro e _
-        rw [Real.logb_pow, one_div, Real.logb_inv, Real.logb_self_eq_one one_lt_two]
-        ring
-      rw [hlogsum]
-    _ = (C.expectedLength p : EReal) := by
-      have hexp :
-          (-∑ e : E, (p e).toReal * (-(C.encode e).length : ℝ) : ℝ) =
-            C.expectedLength p := by
-        rw [← Finset.sum_neg_distrib, PrefixCode.expectedLength_def]
+    exact binaryLogRatio_term_lower_bound (p e).toReal (q e) ENNReal.toReal_nonneg (hq_pos e)
+  have hsum_term :
+      ∑ e : E, ((Real.log 2)⁻¹) * ((p e).toReal - q e) ≤
+        ∑ e : E, (p e).toReal * (Real.logb 2 (p e).toReal - Real.logb 2 (q e)) := by
+    exact Finset.sum_le_sum fun e _ ↦ hterm e
+  have hsum_p : ∑ e : E, (p e).toReal = 1 := by
+    -- Rewrite the finite sum as a `tsum` and use the standard `ENNReal.toReal` summation formula.
+    have htsum :
+        (∑' e : E, p e).toReal = ∑' e : E, (p e).toReal :=
+      ENNReal.tsum_toReal_eq fun e ↦ p.apply_ne_top e
+    rw [p.tsum_coe, ENNReal.toReal_one, tsum_fintype] at htsum
+    simpa using htsum.symm
+  have hleft_nonneg :
+      0 ≤ ∑ e : E, ((Real.log 2)⁻¹) * ((p e).toReal - q e) := by
+    have hcoef_nonneg : 0 ≤ (Real.log 2)⁻¹ := by positivity
+    calc
+      0 ≤ (Real.log 2)⁻¹ * (1 - ∑ e : E, q e) := by
+        exact mul_nonneg hcoef_nonneg (sub_nonneg.mpr hq_sum)
+      _ = (Real.log 2)⁻¹ * ((∑ e : E, (p e).toReal) - ∑ e : E, q e) := by
+        rw [hsum_p]
+      _ = (Real.log 2)⁻¹ * ∑ e : E, ((p e).toReal - q e) := by
+        rw [Finset.sum_sub_distrib]
+      _ = ∑ e : E, ((Real.log 2)⁻¹) * ((p e).toReal - q e) := by
+        rw [Finset.mul_sum]
+  have hgap_nonneg :
+      0 ≤
+        (-∑ e : E, (p e).toReal * Real.logb 2 (q e)) -
+          (-∑ e : E, (p e).toReal * Real.logb 2 (p e).toReal) := by
+    calc
+      0 ≤ ∑ e : E, (p e).toReal * (Real.logb 2 (p e).toReal - Real.logb 2 (q e)) :=
+        le_trans hleft_nonneg hsum_term
+      _ = ∑ e : E,
+            ((p e).toReal * Real.logb 2 (p e).toReal - (p e).toReal * Real.logb 2 (q e)) := by
         apply Finset.sum_congr rfl
         intro e _
         ring
-      exact congrArg (fun x : ℝ ↦ (x : EReal)) hexp
+      _ = (∑ e : E, (p e).toReal * Real.logb 2 (p e).toReal) -
+            ∑ e : E, (p e).toReal * Real.logb 2 (q e) := by
+        rw [Finset.sum_sub_distrib]
+      _ = (-∑ e : E, (p e).toReal * Real.logb 2 (q e)) -
+            (-∑ e : E, (p e).toReal * Real.logb 2 (p e).toReal) := by
+        ring
+  have hineq :
+      (-∑ e : E, (p e).toReal * Real.logb 2 (p e).toReal) ≤
+        -∑ e : E, (p e).toReal * Real.logb 2 (q e) :=
+    sub_nonneg.mp hgap_nonneg
+  -- Reinsert the finite Shannon sum for the entropy term.
+  rw [binaryEntropy_toReal_eq_sum p]
+  exact hineq
 
 -- Proof sketch: set `q_e = 2 ^ (-(C.encode e).length : ℤ)` and use the prefix-free hypothesis to
 -- obtain the Kraft inequality; then apply the logarithmic lower bound from Lemma 5.26 to compare
 -- `∑ p_e length(C(e))` with `-∑ p_e log₂ p_e`.
-/-- Theorem 5.27 (1): the expected length of any binary prefix code is at least the binary entropy
-of the source distribution. -/
+/-- Lower-bound part of Theorem 5.27: the expected length of any binary prefix code is at least
+the binary entropy of the source distribution. -/
 theorem binaryEntropy_le_expectedLength_of_prefixCode [Fintype E]
     (p : PMF E) (C : PrefixCode Bool E) :
     (binaryEntropy p).toReal ≤ C.expectedLength p := by
-  let q : E → ENNReal := fun e ↦ ENNReal.ofReal ((1 / 2 : ℝ) ^ (C.encode e).length)
-  have hq : (∑' e : E, q e) ≤ 1 := by
-    rw [tsum_fintype]
-    have hsum :
-        ENNReal.ofReal (∑ e : E, ((1 / 2 : ℝ) ^ (C.encode e).length)) = ∑ e : E, q e := by
-      simp [q, ENNReal.ofReal_sum_of_nonneg]
-    rw [← hsum, ← ENNReal.ofReal_one]
-    exact ENNReal.ofReal_le_ofReal (prefixCode_kraft_sum_le_one C)
+  let q : E → ℝ := fun e ↦ ((1 / 2 : ℝ) ^ (C.encode e).length)
+  have hq_pos : ∀ e : E, 0 < q e := by
+    intro e
+    simp [q]
+  have hq_sum : ∑ e : E, q e ≤ 1 := by
+    simpa [q] using prefixCode_kraft_sum_le_one C
   have hcross :
-      binaryEntropy p ≤
-        crossEntropyInBase binaryBase p q := by
-    simpa [binaryEntropy_eq_entropyInBase, q] using
-      entropyInBase_le_crossEntropyInBase binaryBase (by
-        change 1 < (2 : ℝ)
-        norm_num) p q hq
-  have hcross_eq :
-      crossEntropyInBase binaryBase p q =
-        (C.expectedLength p : EReal) := by
-    simpa [q] using binary_crossEntropy_codeweight_eq_expectedLength p C
-  have hleft_ne_bot : binaryEntropy p ≠ ⊥ := by
-    rw [binaryEntropy_eq_entropyInBase, entropyInBase_eq_sum]
-    simp
-  have hright_ne_top :
-      crossEntropyInBase binaryBase p q ≠ ⊤ := by
-    rw [hcross_eq]
-    simp
-  -- Convert the `EReal` entropy inequality back to the finite real-valued statement.
-  have hreal : (binaryEntropy p).toReal ≤
-      (crossEntropyInBase binaryBase p q).toReal :=
-    EReal.toReal_le_toReal hcross hleft_ne_bot hright_ne_top
-  rw [hcross_eq] at hreal
-  simpa using hreal
+      (binaryEntropy p).toReal ≤
+        -∑ e : E, (p e).toReal * Real.logb 2 (q e) :=
+    binaryEntropy_le_logSum_of_subprobability p q hq_pos hq_sum
+  -- The code weights `q_e = 2^{-length(C(e))}` turn the logarithmic sum into the expected code
+  -- length.
+  simpa [q] using hcross.trans_eq (binary_crossEntropy_codeweight_eq_expectedLength p C)
 
 /-- Helper for Theorem 5.27: on a finite alphabet, the real masses of a probability mass function
 sum to `1`. -/
@@ -1015,18 +1015,314 @@ theorem exists_binary_lengths_expectedLength_le_binaryEntropy_add_one [Fintype E
           rw [shannon_support_expectedLength_eq_binaryEntropy_of_kraft_eq_one p hKeq]
         _ ≤ (binaryEntropy p).toReal + 1 := by gcongr
 
+/-- Helper for Theorem 5.27: `bitString n x` is the fixed-length big-endian binary expansion of
+`x`, truncated to `n` bits. -/
+private def bitString (n x : ℕ) : List Bool :=
+  List.ofFn fun i : Fin n ↦ x.testBit (n - 1 - i)
+
+/-- Helper for Theorem 5.27: `bitString n x` always has length `n`. -/
+private theorem bitString_length (n x : ℕ) : (bitString n x).length = n := by
+  simp [bitString]
+
+/-- Helper for Theorem 5.27: splitting a fixed-length big-endian word into a high-bit prefix and a
+low-bit suffix corresponds to shifting right by the suffix length. -/
+private theorem bitString_add (n m x : ℕ) :
+    bitString (n + m) x = bitString n (x >>> m) ++ bitString m x := by
+  -- Rewrite the `n + m` bits as the first `n` high bits followed by the last `m` low bits.
+  unfold bitString
+  rw [List.ofFn_add]
+  congr 1
+  · apply List.ext_getElem
+    · simp
+    · intro i hi₁ hi₂
+      have hi : i < n := by simpa using hi₂
+      have hidx : n + m - 1 - i = m + (n - 1 - i) := by omega
+      simp [List.getElem_ofFn, Nat.testBit_shiftRight, hidx]
+  · apply List.ext_getElem
+    · simp
+    · intro i hi₁ hi₂
+      have hi : i < m := by simpa using hi₂
+      have hidx : n + m - 1 - (n + i) = m - 1 - i := by omega
+      simp [List.getElem_ofFn, hidx]
+
+/-- Helper for Theorem 5.27: `decodeBitString n l` reads the first `n` bits of `l` as a
+big-endian binary number. -/
+private def decodeBitString (n : ℕ) (l : List Bool) : ℕ :=
+  Nat.ofBits fun i : Fin n ↦ (l[n - 1 - i]? ).getD false
+
+/-- Helper for Theorem 5.27: decoding the fixed-length binary expansion recovers the represented
+number modulo `2 ^ n`. -/
+private theorem decodeBitString_bitString (n x : ℕ) :
+    decodeBitString n (bitString n x) = x % 2 ^ n := by
+  -- Reversing the big-endian indexing recovers the usual little-endian `Nat.ofBits` input.
+  unfold decodeBitString bitString
+  have hbits :
+      (fun i : Fin n ↦ ((List.ofFn fun j : Fin n ↦ x.testBit (n - 1 - j))[n - 1 - i]? ).getD false) =
+        fun i : Fin n ↦ x.testBit i := by
+    funext i
+    have hi : n - 1 - i < n := by omega
+    rw [List.getElem?_eq_getElem (by simpa using hi), List.getElem_ofFn]
+    have hidx : n - 1 - (n - 1 - ↑i) = ↑i := by omega
+    simp [hidx]
+  rw [hbits]
+  simpa using (Nat.ofBits_testBit x n)
+
+/-- Helper for Theorem 5.27: the fixed-length big-endian representation is injective on numbers
+strictly below `2 ^ n`. -/
+private theorem bitString_injective {n x y : ℕ} (hx : x < 2 ^ n) (hy : y < 2 ^ n)
+    (hxy : bitString n x = bitString n y) : x = y := by
+  -- Decode both equal bitstrings back to naturals and use the size bounds to remove the modulus.
+  have hdecode := congrArg (decodeBitString n) hxy
+  rw [decodeBitString_bitString, decodeBitString_bitString, Nat.mod_eq_of_lt hx,
+    Nat.mod_eq_of_lt hy] at hdecode
+  exact hdecode
+
 /-- Helper for Theorem 5.27: a finite family of binary lengths satisfying Kraft's inequality can
 be realized by a binary prefix code with exactly those codeword lengths. -/
 theorem exists_prefixCode_of_binary_lengths [Fintype E] (ℓ : E → ℕ)
     (hKraft : ∑ e : E, ((1 / 2 : ℝ) ^ ℓ e) ≤ 1) :
     ∃ C : PrefixCode Bool E, ∀ e, (C.encode e).length = ℓ e := by
-  -- Route correction: the remaining proof is the exact Kraft converse, i.e. turning dyadic block
-  -- widths into actual prefix codewords. The currently missing part is the low-level realization of
-  -- those aligned dyadic blocks as concrete boolean words.
-  -- TODO: realize the admissible dyadic lengths as a concrete prefix-free family of boolean words,
-  -- for instance by a sorted cumulative-block construction at a common depth and a subsequent
-  -- prefix-freeness argument via disjoint depth cylinders.
-  sorry
+  classical
+  -- Route correction: realize the Kraft-admissible lengths by aligned dyadic blocks at a common
+  -- depth, then encode each block by the fixed-length binary name of its left endpoint.
+  let N : ℕ := Finset.univ.sup ℓ
+  let index : E → Fin (Fintype.card E) := Fintype.equivFin E
+  let precedes : E → E → Prop := fun e₁ e₂ ↦
+    ℓ e₁ < ℓ e₂ ∨ (ℓ e₁ = ℓ e₂ ∧ index e₁ < index e₂)
+  let predecessors : E → Finset E := fun e ↦ Finset.univ.filter fun e' ↦ precedes e' e
+  let blockWidth : E → ℕ := fun e ↦ 2 ^ (N - ℓ e)
+  let blockIndex : E → ℕ := fun e ↦ Finset.sum (predecessors e) fun a ↦ 2 ^ (ℓ e - ℓ a)
+  let blockStart : E → ℕ := fun e ↦ blockIndex e * blockWidth e
+  let totalWidth : ℕ := ∑ e : E, blockWidth e
+  have hlength_le : ∀ e : E, ℓ e ≤ N := by
+    intro e
+    exact Finset.le_sup (Finset.mem_univ e)
+  have hprecedes_irrefl : ∀ e : E, ¬ precedes e e := by
+    intro e he
+    rcases he with hlt | ⟨heq, hlt⟩
+    · exact lt_irrefl _ hlt
+    · exact lt_irrefl _ hlt
+  have hprecedes_trans : ∀ {e₁ e₂ e₃ : E}, precedes e₁ e₂ → precedes e₂ e₃ → precedes e₁ e₃ := by
+    intro e₁ e₂ e₃ h₁₂ h₂₃
+    rcases h₁₂ with h₁₂ | ⟨h₁₂, hidx₁₂⟩
+    · rcases h₂₃ with h₂₃ | ⟨h₂₃, _⟩
+      · exact Or.inl (lt_trans h₁₂ h₂₃)
+      · exact Or.inl (h₁₂.trans_le h₂₃.le)
+    · rcases h₂₃ with h₂₃ | ⟨h₂₃, hidx₂₃⟩
+      · exact Or.inl (h₁₂.le.trans_lt h₂₃)
+      · exact Or.inr ⟨h₁₂.trans h₂₃, lt_trans hidx₁₂ hidx₂₃⟩
+  have hprecedes_total : ∀ {e₁ e₂ : E}, e₁ ≠ e₂ → precedes e₁ e₂ ∨ precedes e₂ e₁ := by
+    intro e₁ e₂ hne
+    by_cases hlt : ℓ e₁ < ℓ e₂
+    · exact Or.inl (Or.inl hlt)
+    · by_cases hgt : ℓ e₂ < ℓ e₁
+      · exact Or.inr (Or.inl hgt)
+      · have hlen : ℓ e₁ = ℓ e₂ := by
+          exact le_antisymm (le_of_not_gt hgt) (le_of_not_gt hlt)
+        have hidx_ne : index e₁ ≠ index e₂ := by
+          intro hidx
+          exact hne ((Fintype.equivFin E).injective hidx)
+        exact (lt_or_gt_of_ne hidx_ne).elim
+          (fun hidx ↦ Or.inl (Or.inr ⟨hlen, hidx⟩))
+          (fun hidx ↦ Or.inr (Or.inr ⟨hlen.symm, hidx⟩))
+  have hblockStart_sum :
+      ∀ e : E, blockStart e = Finset.sum (predecessors e) fun e' ↦ blockWidth e' := by
+    intro e
+    -- Each predecessor contributes a full dyadic block of width `2 ^ (N - ℓ e')`.
+    simp [blockStart, blockIndex, blockWidth]
+    rw [Finset.sum_mul]
+    apply Finset.sum_congr rfl
+    intro e' he'
+    have hpred : precedes e' e := (Finset.mem_filter.mp he').2
+    have hle : ℓ e' ≤ ℓ e := by
+      rcases hpred with hlt | ⟨heq, _⟩
+      · exact hlt.le
+      · exact heq.le
+    calc
+      2 ^ (ℓ e - ℓ e') * 2 ^ (N - ℓ e) = 2 ^ ((ℓ e - ℓ e') + (N - ℓ e)) := by
+        rw [← Nat.pow_add]
+      _ = 2 ^ (N - ℓ e') := by
+        have hN : ℓ e ≤ N := hlength_le e
+        congr
+        omega
+      _ = blockWidth e' := by
+        simp [blockWidth]
+  have htotalWidth_nat : totalWidth ≤ 2 ^ N := by
+    -- Multiply the Kraft inequality by the common depth `2 ^ N`.
+    have hterm : ∀ e : E, ((1 / 2 : ℝ) ^ ℓ e) * (2 : ℝ) ^ N = (blockWidth e : ℝ) := by
+      intro e
+      have hle : ℓ e ≤ N := hlength_le e
+      have htwo : (2 : ℝ) ≠ 0 := by norm_num
+      calc
+        ((1 / 2 : ℝ) ^ ℓ e) * (2 : ℝ) ^ N = (1 / (2 : ℝ) ^ ℓ e) * (2 : ℝ) ^ N := by
+          rw [one_div_pow]
+        _ = (((2 : ℝ) ^ ℓ e)⁻¹) * (2 : ℝ) ^ N := by
+          simp [one_div]
+        _ = (2 : ℝ) ^ (N - ℓ e) := by
+          rw [mul_comm, ← pow_sub₀ (2 : ℝ) htwo hle]
+        _ = (blockWidth e : ℝ) := by
+          simp [blockWidth]
+    have hscaled := mul_le_mul_of_nonneg_right hKraft (by positivity : 0 ≤ (2 : ℝ) ^ N)
+    have hreal : (totalWidth : ℝ) ≤ (2 : ℝ) ^ N := by
+      calc
+        (totalWidth : ℝ) = ∑ e : E, (blockWidth e : ℝ) := by
+          simp [totalWidth]
+        _ = ∑ e : E, (((1 / 2 : ℝ) ^ ℓ e) * (2 : ℝ) ^ N) := by
+          apply Finset.sum_congr rfl
+          intro e he
+          exact (hterm e).symm
+        _ = (∑ e : E, ((1 / 2 : ℝ) ^ ℓ e)) * (2 : ℝ) ^ N := by
+          rw [Finset.sum_mul]
+        _ ≤ 1 * (2 : ℝ) ^ N := hscaled
+        _ = (2 : ℝ) ^ N := by ring
+    exact_mod_cast hreal
+  have hstart_step : ∀ {e₁ e₂ : E}, precedes e₁ e₂ →
+      blockStart e₁ + blockWidth e₁ ≤ blockStart e₂ := by
+    intro e₁ e₂ h₁₂
+    -- Earlier blocks and the current block sit inside the predecessor family of any later symbol.
+    have hsubset : insert e₁ (predecessors e₁) ⊆ predecessors e₂ := by
+      intro x hx
+      rcases Finset.mem_insert.mp hx with rfl | hx
+      · exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, h₁₂⟩
+      · exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hprecedes_trans (Finset.mem_filter.mp hx).2 h₁₂⟩
+    have hsum_le :
+        Finset.sum (insert e₁ (predecessors e₁)) (fun x ↦ blockWidth x) ≤
+          Finset.sum (predecessors e₂) (fun x ↦ blockWidth x) := by
+      exact Finset.sum_le_sum_of_subset_of_nonneg hsubset fun _ _ _ ↦ Nat.zero_le _
+    have hnot_mem : e₁ ∉ predecessors e₁ := by
+      intro he
+      exact hprecedes_irrefl e₁ (Finset.mem_filter.mp he).2
+    calc
+      blockStart e₁ + blockWidth e₁ =
+          Finset.sum (insert e₁ (predecessors e₁)) fun x ↦ blockWidth x := by
+        rw [Finset.sum_insert hnot_mem, add_comm, hblockStart_sum]
+      _ ≤ Finset.sum (predecessors e₂) fun x ↦ blockWidth x := hsum_le
+      _ = blockStart e₂ := (hblockStart_sum e₂).symm
+  have hstartSucc_le_total : ∀ e : E, blockStart e + blockWidth e ≤ totalWidth := by
+    intro e
+    -- The current block and all earlier blocks are part of the full dyadic partition.
+    have hsubset : insert e (predecessors e) ⊆ Finset.univ := by
+      intro x hx
+      simp
+    have hsum_le :
+        Finset.sum (insert e (predecessors e)) (fun x ↦ blockWidth x) ≤
+          Finset.sum Finset.univ (fun x ↦ blockWidth x) := by
+      exact Finset.sum_le_sum_of_subset_of_nonneg hsubset fun _ _ _ ↦ Nat.zero_le _
+    have hnot_mem : e ∉ predecessors e := by
+      intro he
+      exact hprecedes_irrefl e (Finset.mem_filter.mp he).2
+    calc
+      blockStart e + blockWidth e =
+          Finset.sum (insert e (predecessors e)) fun x ↦ blockWidth x := by
+        rw [Finset.sum_insert hnot_mem, add_comm, hblockStart_sum]
+      _ ≤ Finset.sum Finset.univ fun x ↦ blockWidth x := hsum_le
+      _ = totalWidth := by simp [totalWidth]
+  have hblockIndex_lt : ∀ e : E, blockIndex e < 2 ^ ℓ e := by
+    intro e
+    -- The aligned dyadic block starting at `blockStart e` must fit into the depth-`N` tree.
+    have hfit : blockStart e + blockWidth e ≤ 2 ^ N := le_trans (hstartSucc_le_total e) htotalWidth_nat
+    have hrewrite : blockStart e + blockWidth e = (blockIndex e + 1) * blockWidth e := by
+      simp [blockStart, blockWidth, Nat.succ_mul]
+    have hpow : 2 ^ N = (2 ^ ℓ e) * blockWidth e := by
+      simp [blockWidth, ← Nat.pow_add]
+      have hle : ℓ e ≤ N := hlength_le e
+      omega
+    have hle :
+        blockIndex e + 1 ≤ 2 ^ ℓ e := by
+      apply Nat.le_of_mul_le_mul_right
+      · simpa [hrewrite, hpow]
+          using hfit
+      · simp [blockWidth]
+    exact Nat.lt_of_succ_le hle
+  let encode : E → List Bool := fun e ↦ bitString (ℓ e) (blockIndex e)
+  have hencode_length : ∀ e : E, (encode e).length = ℓ e := by
+    intro e
+    simp [encode, bitString_length]
+  have hprefix_forces_interval : ∀ {e₁ e₂ : E}, encode e₁ <+: encode e₂ →
+      blockStart e₂ < blockStart e₁ + blockWidth e₁ := by
+    intro e₁ e₂ hprefix
+    rcases hprefix with ⟨tail, htail⟩
+    have hlen_le : ℓ e₁ ≤ ℓ e₂ := by
+      have hlen_eq := congrArg List.length htail
+      rw [List.length_append, hencode_length e₁, hencode_length e₂] at hlen_eq
+      omega
+    let d : ℕ := ℓ e₂ - ℓ e₁
+    have hd : ℓ e₂ = ℓ e₁ + d := by
+      simp [d, Nat.add_sub_of_le hlen_le]
+    have htake :
+        bitString (ℓ e₁) (blockIndex e₁) = bitString (ℓ e₁) (blockIndex e₂ >>> d) := by
+      -- Taking the first `ℓ e₁` bits of the later codeword recovers the earlier codeword.
+      have htail' : bitString (ℓ e₁) (blockIndex e₁) ++ tail = bitString (ℓ e₂) (blockIndex e₂) := by
+        simpa [encode] using htail
+      rw [hd, bitString_add] at htail'
+      have htake' := congrArg (List.take (ℓ e₁)) htail'
+      simpa [bitString_length] using htake'
+    have hshift_lt : blockIndex e₂ >>> d < 2 ^ ℓ e₁ := by
+      rw [Nat.shiftRight_eq_div_pow]
+      rw [Nat.div_lt_iff_lt_mul (Nat.two_pow_pos d)]
+      have hpow : 2 ^ ℓ e₂ = 2 ^ ℓ e₁ * 2 ^ d := by
+        rw [hd, Nat.pow_add]
+      exact hpow ▸ hblockIndex_lt e₂
+    have hquot : blockIndex e₁ = blockIndex e₂ >>> d :=
+      bitString_injective (hblockIndex_lt e₁) hshift_lt htake
+    have hquot' : blockIndex e₁ = blockIndex e₂ / 2 ^ d := by
+      simpa [Nat.shiftRight_eq_div_pow] using hquot
+    have hdiv_lt : blockIndex e₂ < (blockIndex e₁ + 1) * 2 ^ d := by
+      apply (Nat.div_lt_iff_lt_mul (Nat.two_pow_pos d)).mp
+      rw [hquot']
+      exact Nat.lt_succ_self _
+    calc
+      blockStart e₂ = blockIndex e₂ * 2 ^ (N - ℓ e₂) := by
+        simp [blockStart, blockWidth]
+      _ < ((blockIndex e₁ + 1) * 2 ^ d) * 2 ^ (N - ℓ e₂) := by
+        exact (Nat.mul_lt_mul_right (Nat.two_pow_pos _)).2 hdiv_lt
+      _ = (blockIndex e₁ + 1) * 2 ^ (N - ℓ e₁) := by
+        rw [Nat.mul_assoc]
+        have hle : ℓ e₂ ≤ N := hlength_le e₂
+        congr 1
+        rw [← Nat.pow_add]
+        congr
+        omega
+      _ = blockStart e₁ + blockWidth e₁ := by
+        simp [blockStart, blockWidth, Nat.succ_mul]
+  have hprefix_free : Pairwise (fun e₁ e₂ ↦ ¬ (encode e₁ <+: encode e₂)) := by
+    intro e₁ e₂ hne hprefix
+    -- The aligned dyadic blocks are disjoint, so a later codeword cannot lie in an earlier
+    -- codeword cylinder, and equal-length reverse-order collisions are excluded as well.
+    have horder := hprecedes_total hne
+    rcases horder with h₁₂ | h₂₁
+    · exact (not_lt_of_ge (hstart_step h₁₂)) (hprefix_forces_interval hprefix)
+    · rcases h₂₁ with hlt | ⟨hlen, hidx⟩
+      · rcases hprefix with ⟨tail, htail⟩
+        have hlen_le : ℓ e₁ ≤ ℓ e₂ := by
+          have hlen_eq := congrArg List.length htail
+          rw [List.length_append, hencode_length e₁, hencode_length e₂] at hlen_eq
+          omega
+        exact (not_lt_of_ge hlen_le) hlt
+      · have hsameLength : ℓ e₁ = ℓ e₂ := hlen.symm
+        have hprefix_eq : encode e₁ = encode e₂ := by
+          rcases hprefix with ⟨tail, htail⟩
+          have htail_nil : tail = [] := by
+            have hlen_eq := congrArg List.length htail
+            rw [List.length_append, hencode_length e₁, hencode_length e₂, hsameLength] at hlen_eq
+            have htail_len : tail.length = 0 := by omega
+            simpa [List.length_eq_zero_iff] using htail_len
+          simpa [htail_nil] using htail
+        have hindex_eq : blockIndex e₁ = blockIndex e₂ := by
+          apply bitString_injective (n := ℓ e₁)
+          · simpa using hblockIndex_lt e₁
+          · simpa [hsameLength] using hblockIndex_lt e₂
+          · simpa [encode, hsameLength] using hprefix_eq
+        have hstart_eq : blockStart e₁ = blockStart e₂ := by
+          simp [blockStart, blockWidth, hsameLength, hindex_eq]
+        have hstrict : blockStart e₂ < blockStart e₁ := by
+          have hpos : 0 < blockWidth e₂ := by simp [blockWidth]
+          exact lt_of_lt_of_le (Nat.lt_add_of_pos_right hpos) (hstart_step (Or.inr ⟨hlen, hidx⟩))
+        exact (lt_irrefl _) (hstart_eq ▸ hstrict)
+  let C : PrefixCode Bool E := ⟨encode, hprefix_free⟩
+  refine ⟨C, ?_⟩
+  -- The codewords were built with the prescribed lengths by construction.
+  exact hencode_length
 
 -- Proof sketch: choose Shannon lengths `l(e) = ⌈-log₂ p_e⌉`, verify the Kraft inequality, and use
 -- the standard construction of a binary prefix code with these lengths; the ceiling estimate gives

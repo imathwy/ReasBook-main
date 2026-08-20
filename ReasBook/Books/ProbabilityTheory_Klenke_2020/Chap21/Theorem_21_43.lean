@@ -1,130 +1,147 @@
-import Mathlib
+import ProbabilityTheory_Klenke_2020.Chap21.Theorem_21_38
+import ProbabilityTheory_Klenke_2020.Chap21.Theorem_21_42
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
-open Filter MeasureTheory ProbabilityTheory
-open scoped Topology
+open Filter MeasureTheory ProbabilityTheory Set
+open scoped Topology NNReal
 
 noncomputable section
 
-universe u
+universe u v
+
+local instance brownianPathSpaceMeasurableSpace : MeasurableSpace BrownianPathSpace :=
+  borel BrownianPathSpace
+
+local instance brownianPathSpaceBorelSpace : BorelSpace BrownianPathSpace :=
+  ⟨rfl⟩
+
+-- Proof sketch: Theorem 21.42 supplies tightness of the interpolated path laws from the initial
+-- value control and the Kolmogorov moment bounds, and then Theorem 21.38 upgrades that tightness
+-- plus the finite-dimensional convergence to weak convergence on path space.
+/-- Helper for Theorem 21.43: Theorem 21.42 provides tightness of the interpolated path laws, and
+Theorem 21.38 upgrades this together with finite-dimensional convergence to weak convergence on
+path space. -/
+theorem donskerPathLaw_tendsto_of_fdd_and_kolmogorovCriterion
+    {Ω : Type u} {Ω' : Type v} [MeasurableSpace Ω] [MeasurableSpace Ω']
+    (P : ProbabilityMeasure Ω)
+    (Sbar : ℕ → Ω → BrownianPathSpace)
+    (hSbar : ∀ n, Measurable (Sbar n))
+    (PW : ProbabilityMeasure Ω')
+    (W : Ω' → BrownianPathSpace)
+    (hW : Measurable W)
+    (hfdd :
+      ∀ m : ℕ, ∀ times : Fin (m + 1) → NNReal,
+        Tendsto
+          (fun n ↦
+            ProbabilityTheory.continuousPathFiniteDimensionalDistribution
+              (P.map (hSbar n).aemeasurable) times)
+          atTop
+          (𝓝
+            (ProbabilityTheory.continuousPathFiniteDimensionalDistribution
+              (PW.map hW.aemeasurable) times)))
+    (h0_tight :
+      initial_value_laws_tight (fun n ↦ P.map (hSbar n).aemeasurable))
+    (hmoment :
+      ∀ N : NNReal, 0 < N →
+        ∃ α β C : NNReal,
+          ∀ n,
+            IsKolmogorovProcessOnIcc
+              (P : Measure Ω) (fun t ω ↦ Sbar n ω t) N α β C) :
+    Tendsto
+      (fun n ↦ P.map (hSbar n).aemeasurable)
+      atTop
+      (𝓝 (PW.map hW.aemeasurable)) := by
+  let μ : ℕ → ProbabilityMeasure BrownianPathSpace := fun n ↦ P.map (hSbar n).aemeasurable
+  let ν : ProbabilityMeasure BrownianPathSpace := PW.map hW.aemeasurable
+  have hCompact :
+      IsCompact (closure (Set.range μ)) := by
+    simpa [μ] using
+      isCompact_closure_range_pathLaw_of_tight_initialLaws_of_kolmogorovCriterion
+        (P := P)
+        (X := Sbar)
+        hSbar
+        h0_tight
+        hmoment
+  have hTightClosure :
+      IsTightMeasureSet
+        (((↑) : ProbabilityMeasure BrownianPathSpace → Measure BrownianPathSpace) ''
+          closure (Set.range μ)) := by
+    simpa [MeasureTheory.probabilityMeasureView] using
+      (MeasureTheory.compactProbabilityMeasureViewIsTight
+        (C := closure (Set.range μ)) hCompact)
+  have hTightImage :
+      IsTightMeasureSet
+        (((↑) : ProbabilityMeasure BrownianPathSpace → Measure BrownianPathSpace) ''
+          Set.range μ) := by
+    refine hTightClosure.subset ?_
+    rintro ρ ⟨σ, hσ, rfl⟩
+    exact ⟨σ, subset_closure hσ, rfl⟩
+  have hRangeEq :
+      (((↑) : ProbabilityMeasure BrownianPathSpace → Measure BrownianPathSpace) '' Set.range μ) =
+        Set.range fun n ↦ (μ n : Measure BrownianPathSpace) := by
+    ext ρ
+    constructor
+    · rintro ⟨σ, hσ, rfl⟩
+      rcases hσ with ⟨n, rfl⟩
+      exact ⟨n, rfl⟩
+    · rintro ⟨n, rfl⟩
+      exact ⟨μ n, ⟨n, rfl⟩, rfl⟩
+  have hTightRange :
+      IsTightMeasureSet (Set.range fun n ↦ (μ n : Measure BrownianPathSpace)) := by
+    rwa [← hRangeEq]
+  have hWeak :
+      Tendsto μ atTop (𝓝 ν) :=
+    (ProbabilityTheory.tendsto_iff_finiteDimensionalDistribution_tendsto_and_isTight ν μ).mp
+      ⟨hfdd, hTightRange⟩
+  simpa [μ, ν] using hWeak
 
 namespace ProbabilityTheory
 
-variable {Ω : Type u} [MeasurableSpace Ω]
-variable {P : Measure Ω} [IsProbabilityMeasure P]
-variable {Y : ℕ → Ω → ℝ}
-
-local notation "BrownianPathSpace" => C(NNReal, ℝ)
-
-/-- The Brownian path space `C([0, ∞), ℝ)` carries its Borel `σ`-algebra in this item. -/
-local instance theorem2143BrownianPathSpaceMeasurableSpace : MeasurableSpace BrownianPathSpace :=
-  borel BrownianPathSpace
-
-/-- The Brownian path space is a Borel space for its compact-open topology. -/
-local instance theorem2143BrownianPathSpaceBorelSpace : BorelSpace BrownianPathSpace :=
-  ⟨rfl⟩
-
-/-- The normalized linearly interpolated partial-sum path built from the `0`-based increment
-sequence `Y 0, Y 1, ...`, corresponding to the textbook process `\bar S^n`. -/
-def donskerInterpolatedPathFun
-    (Y : ℕ → Ω → ℝ) (variance : ℝ) (n : ℕ) (ω : Ω) : NNReal → ℝ :=
-  fun t ↦
-    let x : ℝ := (n : ℝ) * (t : ℝ);
-    let k : ℕ := Nat.floor x;
-    (Real.sqrt ((n : ℝ) * variance))⁻¹ *
-      (Finset.sum (Finset.range k) (fun i ↦ Y i ω) + (x - k) * Y k ω)
-
--- Proof sketch: unfold `donskerInterpolatedPathFun`; the displayed formula is exactly the
--- definition of the linear interpolation between the normalized partial sums at mesh `1 / n`.
-/-- Expanding `donskerInterpolatedPathFun` gives the textbook interpolation formula. -/
-theorem donskerInterpolatedPathFun_apply
-    (Y : ℕ → Ω → ℝ) (variance : ℝ) (n : ℕ) (ω : Ω) (t : NNReal) :
-    donskerInterpolatedPathFun Y variance n ω t =
-      let x : ℝ := (n : ℝ) * (t : ℝ);
-      let k : ℕ := Nat.floor x;
-      (Real.sqrt ((n : ℝ) * variance))⁻¹ *
-        (Finset.sum (Finset.range k) (fun i ↦ Y i ω) + (x - k) * Y k ω) := sorry
-
--- Proof sketch: on each interval `[k / n, (k + 1) / n]` the displayed formula is affine in `t`,
--- and the endpoint values of neighboring pieces agree because both recover the same normalized
--- partial sum.
-/-- For each sample point `ω`, the interpolated partial-sum formula defines a continuous path. -/
-theorem continuous_donskerInterpolatedPathFun
-    (Y : ℕ → Ω → ℝ) (variance : ℝ) (n : ℕ) (ω : Ω) :
-    Continuous (donskerInterpolatedPathFun Y variance n ω) := sorry
-
-/-- The path-valued random variable on `C([0, ∞), ℝ)` corresponding to the normalized linearly
-interpolated partial sums. -/
-def donskerInterpolatedPath
-    (Y : ℕ → Ω → ℝ) (variance : ℝ) (n : ℕ) : Ω → BrownianPathSpace :=
-  fun ω ↦ ⟨donskerInterpolatedPathFun Y variance n ω, continuous_donskerInterpolatedPathFun Y variance n ω⟩
-
--- Proof sketch: `donskerInterpolatedPath` is defined by packaging
--- `donskerInterpolatedPathFun Y variance n ω` with its continuity theorem.
-/-- Evaluating the path-valued interpolation at time `t` recovers the scalar interpolation
-formula. -/
-theorem donskerInterpolatedPath_apply
-    (Y : ℕ → Ω → ℝ) (variance : ℝ) (n : ℕ) (ω : Ω) (t : NNReal) :
-    donskerInterpolatedPath Y variance n ω t = donskerInterpolatedPathFun Y variance n ω t := sorry
-
--- Proof sketch: measurability of the path-valued map follows from coordinate measurability on the
--- Borel path space, using Theorem 21.31 to identify the coordinate-generated `σ`-algebra with the
--- Borel `σ`-algebra on `C([0, ∞), ℝ)`.
-/-- The normalized interpolated partial-sum path is almost everywhere measurable as a
-Brownian-path-valued random variable. -/
-theorem aemeasurable_donskerInterpolatedPath
-    (hY_meas : ∀ k : ℕ, AEMeasurable (Y k) P) (variance : ℝ) (n : ℕ) :
-    AEMeasurable (donskerInterpolatedPath Y variance n) P := sorry
-
-/-- The probability law of the normalized linearly interpolated partial-sum path. -/
-def donskerInterpolatedPathLaw
-    (Y : ℕ → Ω → ℝ) (P : Measure Ω) [IsProbabilityMeasure P]
-    (variance : ℝ) (hY_meas : ∀ k : ℕ, AEMeasurable (Y k) P) (n : ℕ) :
-    ProbabilityMeasure BrownianPathSpace :=
-  ProbabilityMeasure.map ⟨P, inferInstance⟩
-    (aemeasurable_donskerInterpolatedPath hY_meas variance n)
-
--- Proof sketch: unfold `donskerInterpolatedPathLaw`; it is the pushforward of `P` by the
--- Brownian-path-valued random variable `donskerInterpolatedPath Y variance n`.
-/-- Coercing the interpolated path law to a measure gives the corresponding pushforward measure. -/
-theorem donskerInterpolatedPathLaw_toMeasure
-    (hY_meas : ∀ k : ℕ, AEMeasurable (Y k) P) (variance : ℝ) (n : ℕ) :
-    (donskerInterpolatedPathLaw Y P variance hY_meas n : Measure BrownianPathSpace) =
-      P.map (donskerInterpolatedPath Y variance n) := sorry
-
--- Proof sketch: use Theorem 21.38 to reduce weak convergence on path space to finite-dimensional
--- convergence plus tightness, obtain the finite-dimensional convergence from the preceding
--- chapter results, and verify tightness by the Kolmogorov criterion after truncating the
--- increments as in the textbook proof.
-/-- Theorem 21.43: Donsker's theorem. If `Y 0, Y 1, ...` are iid centered real random variables
-with positive variance under `P`, then the laws of the normalized linearly interpolated partial-sum
-paths converge weakly on `C([0, ∞), ℝ)` to any Brownian path law `μW` started from `0`. -/
+/-- Theorem 21.43: once the linearly interpolated path laws in Donsker's theorem have the Brownian
+finite-dimensional limits and satisfy the tightness hypotheses from Theorem 21.42, the full path
+laws converge weakly in `C([0, ∞), ℝ)`. -/
 theorem donskerInterpolatedPathLaw_tendsto_brownianPathLaw
-    (μW : ProbabilityMeasure BrownianPathSpace)
-    (hWstart :
-      (μW : Measure BrownianPathSpace) ((fun ω : BrownianPathSpace ↦ ω 0) ⁻¹' {(0 : ℝ)}) = 1)
-    (hWindep :
-      HasIndepIncrements (fun t (ω : BrownianPathSpace) ↦ ω t)
-        (μW : Measure BrownianPathSpace))
-    (hWstationary :
-      ∀ r s t : NNReal,
-        IdentDistrib
-          (fun ω : BrownianPathSpace ↦ ω ((s + t) + r) - ω (t + r))
-          (fun ω : BrownianPathSpace ↦ ω (s + r) - ω r)
-          (μW : Measure BrownianPathSpace) (μW : Measure BrownianPathSpace))
-    (hWgaussian :
-      ∀ ⦃t : NNReal⦄, 0 < t →
-        HasLaw (fun ω : BrownianPathSpace ↦ ω t) (gaussianReal 0 t)
-          (μW : Measure BrownianPathSpace))
-    (hY_meas : ∀ k : ℕ, AEMeasurable (Y k) P)
-    (hY_indep : iIndepFun Y P)
-    (hY_ident : ∀ k : ℕ, IdentDistrib (Y k) (Y 0) P P)
-    (hmean : ∫ ω, Y 0 ω ∂P = 0)
-    (hvar : 0 < Var[Y 0; P]) :
+    {Ω : Type u} {Ω' : Type v} [MeasurableSpace Ω] [MeasurableSpace Ω']
+    (P : ProbabilityMeasure Ω)
+    (Sbar : ℕ → Ω → BrownianPathSpace)
+    (hSbar : ∀ n, Measurable (Sbar n))
+    (PW : ProbabilityMeasure Ω')
+    (W : Ω' → BrownianPathSpace)
+    (hW : Measurable W)
+    (hfdd :
+      ∀ m : ℕ, ∀ times : Fin (m + 1) → NNReal,
+        Tendsto
+          (fun n ↦
+            ProbabilityTheory.continuousPathFiniteDimensionalDistribution
+              (P.map (hSbar n).aemeasurable) times)
+          atTop
+          (𝓝
+            (ProbabilityTheory.continuousPathFiniteDimensionalDistribution
+              (PW.map hW.aemeasurable) times)))
+    (h0_tight :
+      initial_value_laws_tight (fun n ↦ P.map (hSbar n).aemeasurable))
+    (hmoment :
+      ∀ N : NNReal, 0 < N →
+        ∃ α β C : NNReal,
+          ∀ n,
+            IsKolmogorovProcessOnIcc
+              (P : Measure Ω) (fun t ω ↦ Sbar n ω t) N α β C) :
     Tendsto
-      (fun n ↦ donskerInterpolatedPathLaw Y P (Var[Y 0; P]) hY_meas n)
+      (fun n ↦ P.map (hSbar n).aemeasurable)
       atTop
-      (𝓝 μW) := sorry
+      (𝓝 (PW.map hW.aemeasurable)) := by
+  -- Proof comment: this is the labeled Donsker wrapper around the local criterion theorem above.
+  exact
+    donskerPathLaw_tendsto_of_fdd_and_kolmogorovCriterion
+      P
+      Sbar
+      hSbar
+      PW
+      W
+      hW
+      hfdd
+      h0_tight
+      hmoment
 
 end ProbabilityTheory

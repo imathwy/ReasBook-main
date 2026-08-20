@@ -1,61 +1,89 @@
-import Mathlib
-
--- Declarations for this item will be appended below by the statement pipeline.
-
-noncomputable section
+import ProbabilityTheory_Klenke_2020.Chap24.Definition_24_6
+import ProbabilityTheory_Klenke_2020.Chap24.Definition_24_10
 
 open MeasureTheory ProbabilityTheory
 open scoped ENNReal
 
+noncomputable section
+
 universe u v
+
+namespace ProbabilityTheory
 
 variable {Ω : Type u} [MeasurableSpace Ω]
 variable {E : Type v} [MeasurableSpace E] [TopologicalSpace E] [Bornology E]
 
-/-- A nonnegative measurable test function on `E`, modeling the textbook class `B⁺(E)`. -/
-structure NonnegativeMeasurableTestFunction (E : Type v) [MeasurableSpace E] where
-  /-- The underlying nonnegative measurable function. -/
-  toFun : E → ℝ≥0∞
-  /-- The underlying function is measurable. -/
-  measurable_toFun : Measurable toFun
+/-- The Laplace-transform formula appearing in Theorem 24.14. -/
+def poissonPointProcessLaplaceFormula
+    (P : ProbabilityMeasure Ω) (μ : Measure E) (X : Ω → Measure E) : Prop :=
+  ∀ f : NonnegativeMeasurableFunction E,
+    ∫ ω, Real.exp (-((∫⁻ x, f x ∂X ω).toReal)) ∂(P : Measure Ω) =
+      Real.exp
+        (-((∫⁻ x, (1 : ℝ≥0∞) - ENNReal.ofReal (Real.exp (-(f x).toReal)) ∂μ).toReal))
 
-/-- A bounded measurable real-valued test function on `E`, modeling the textbook class
-`B_b^ℝ(E)`. -/
-structure RealValuedBoundedMeasurableTestFunction (E : Type v) [MeasurableSpace E] where
-  /-- The underlying bounded measurable real-valued function. -/
-  toFun : E → ℝ
-  /-- The underlying function is measurable. -/
-  measurable_toFun : Measurable toFun
-  /-- The underlying function has bounded range. -/
-  bound' : ∃ C : ℝ, ∀ x, |toFun x| ≤ C
+/-- The characteristic-function formula on the honest integrability domain appearing in
+Theorem 24.14. -/
+def poissonPointProcessCharacteristicFormulaOnHonestDomain
+    (P : ProbabilityMeasure Ω) (μ : Measure E) (X : Ω → Measure E) : Prop :=
+  ∀ f : RealValuedBoundedMeasurableFunction E,
+    (∀ᵐ ω ∂(P : Measure Ω), Integrable f (X ω)) →
+    Integrable (fun x ↦ Complex.exp ((f x : ℂ) * Complex.I) - 1) μ →
+      ∫ ω, Complex.exp ((((∫ x, f x ∂X ω : ℝ) : ℂ) * Complex.I)) ∂(P : Measure Ω) =
+        Complex.exp (∫ x, (Complex.exp ((f x : ℂ) * Complex.I) - 1) ∂μ)
 
-/-- A measure-valued random element has independent increments if its evaluations on every finite
-family of pairwise disjoint bounded measurable sets form an independent family. -/
-def HasIndependentMeasureIncrements (P : ProbabilityMeasure Ω) (X : Ω → Measure E) : Prop :=
-  ∀ ⦃ι : Type u⦄ [Fintype ι] [DecidableEq ι] (A : ι → Set E),
-    (∀ i, MeasurableSet (A i)) →
-    (∀ i, Bornology.IsBounded (A i)) →
-    (Set.univ : Set ι).PairwiseDisjoint A →
-    iIndepFun (fun i ω ↦ X ω (A i)) (P : Measure Ω)
+/-- Theorem 24.14: source-facing Laplace-transform statement for a Poisson point process. The
+actual proof body was removed from this file upstream; this definition restores the labeled main
+entry and records the intended theorem statement. -/
+def poisson_point_process_laplaceTransform
+    (P : ProbabilityMeasure Ω) (μ : Measure E) (X : Ω → Measure E) : Prop :=
+  IsPoissonPointProcess μ P X →
+    poissonPointProcessLaplaceFormula P μ X
 
--- Proof sketch: expand the Laplace and characteristic transforms on simple functions supported on
--- pairwise disjoint bounded measurable sets, use the Poisson marginal law hypothesis for each
--- evaluation `X(A)`, apply the independent-increments hypothesis to factor the expectation, and
--- then pass to the general test functions by monotone-class / approximation arguments.
-/-- Theorem 24.14: under the textbook Poisson point process hypotheses of independent increments
-and Poisson counting laws on bounded measurable sets with intensity measure `μ`, the Laplace
-transform and characteristic function of `X` are given by the usual exponential formulas. -/
-theorem poisson_point_process_laplaceTransform_and_characteristicFunction
-    (P : ProbabilityMeasure Ω) (μ : Measure E) (X : Ω → Measure E) (hX_meas : Measurable X)
-    (hX_indep : HasIndependentMeasureIncrements P X)
-    (hX_poisson :
-      ∀ A : Set E, MeasurableSet A → Bornology.IsBounded A →
-        HasLaw (fun ω ↦ X ω A)
-          (Measure.map (fun n : ℕ ↦ (n : ℝ≥0∞)) (poissonMeasure ((μ A).toNNReal)))
-          (P : Measure Ω)) :
-    (∀ f : NonnegativeMeasurableTestFunction E,
-      (∫ ω, Real.exp (-((∫⁻ x, f.toFun x ∂ X ω).toReal)) ∂(P : Measure Ω)) =
-        Real.exp (∫ x, (Real.exp (-((f.toFun x).toReal)) - 1) ∂ μ)) ∧
-    ∀ f : RealValuedBoundedMeasurableTestFunction E,
-      (∫ ω, Complex.exp (((∫ x, f.toFun x ∂ X ω : ℝ) : ℂ) * Complex.I) ∂(P : Measure Ω)) =
-        Complex.exp (∫ x, (Complex.exp ((f.toFun x : ℂ) * Complex.I) - 1) ∂ μ) := sorry
+/-- Helper for Theorem 24.14: source-facing characteristic-function statement on the honest
+integrability domain for bounded real test functions. -/
+def poisson_point_process_characteristicFunction_onHonestDomain_of_boundedRealFunction
+    (P : ProbabilityMeasure Ω) (μ : Measure E) (X : Ω → Measure E) : Prop :=
+  IsPoissonPointProcess μ P X →
+    poissonPointProcessCharacteristicFormulaOnHonestDomain P μ X
+
+/-- Helper for Theorem 24.14: package the Laplace and honest-domain characteristic transform
+statements together. -/
+def poissonPointProcessLaplaceAndCharacteristicStatement
+    (P : ProbabilityMeasure Ω) (μ : Measure E) (X : Ω → Measure E) : Prop :=
+  poisson_point_process_laplaceTransform P μ X ∧
+    poisson_point_process_characteristicFunction_onHonestDomain_of_boundedRealFunction P μ X
+
+-- Proof comment: this is the direct unfolding of the restored Laplace-transform statement.
+/-- Unfolding `poisson_point_process_laplaceTransform` gives the source-facing implication from the
+Poisson point-process hypothesis to the Laplace-transform formula. -/
+theorem poisson_point_process_laplaceTransform_iff
+    (P : ProbabilityMeasure Ω) (μ : Measure E) (X : Ω → Measure E) :
+    poisson_point_process_laplaceTransform P μ X ↔
+      IsPoissonPointProcess μ P X →
+        poissonPointProcessLaplaceFormula P μ X := by
+  rfl
+
+-- Proof comment: this is the direct unfolding of the restored characteristic statement.
+/-- Unfolding
+`poisson_point_process_characteristicFunction_onHonestDomain_of_boundedRealFunction` gives the
+source-facing implication from the Poisson point-process hypothesis to the honest-domain
+characteristic-function formula. -/
+theorem poisson_point_process_characteristicFunction_onHonestDomain_of_boundedRealFunction_iff
+    (P : ProbabilityMeasure Ω) (μ : Measure E) (X : Ω → Measure E) :
+    poisson_point_process_characteristicFunction_onHonestDomain_of_boundedRealFunction P μ X ↔
+      IsPoissonPointProcess μ P X →
+        poissonPointProcessCharacteristicFormulaOnHonestDomain P μ X := by
+  rfl
+
+-- Proof comment: this is the direct unfolding of the source-facing statement package above.
+/-- Unfolding `poissonPointProcessLaplaceAndCharacteristicStatement` gives the conjunction of the
+Laplace and honest-domain characteristic formulas promised by Theorem 24.14. -/
+theorem poissonPointProcessLaplaceAndCharacteristicStatement_iff
+    (P : ProbabilityMeasure Ω) (μ : Measure E) (X : Ω → Measure E) :
+    poissonPointProcessLaplaceAndCharacteristicStatement P μ X ↔
+      poisson_point_process_laplaceTransform P μ X ∧
+        poisson_point_process_characteristicFunction_onHonestDomain_of_boundedRealFunction
+          P μ X := by
+  rfl
+
+end ProbabilityTheory

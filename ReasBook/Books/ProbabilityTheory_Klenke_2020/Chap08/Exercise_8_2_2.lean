@@ -1,4 +1,5 @@
 import Mathlib.MeasureTheory.Function.ConditionalExpectation.Real
+import Mathlib.MeasureTheory.Function.ConditionalExpectation.CondJensen
 import Mathlib.MeasureTheory.Function.ConditionalLExpectation
 import Mathlib.MeasureTheory.Integral.Lebesgue.Countable
 import Mathlib.Probability.ProbabilityMassFunction.Constructions
@@ -23,6 +24,82 @@ section FiniteMeasure
 
 variable {P : Measure[mΩ] Ω} [IsFiniteMeasure P]
 
+/-- Helper for Exercise 8.2.2: conditional expectation stays almost surely inside a closed convex
+real set that already contains `X` almost surely. -/
+private lemma condExp_mem_closedConvex_ae {ℱ : MeasurableSpace Ω} (hℱ : ℱ ≤ mΩ) {J : Set ℝ}
+    (hJ_closed : IsClosed J) (hJ_convex : Convex ℝ J) {X : Ω → ℝ} (hX : Integrable X P)
+    (hXJ : ∀ᵐ ω ∂P, X ω ∈ J) :
+    ∀ᵐ ω ∂P, P[X | ℱ] ω ∈ J := by
+  -- Use the closed-convex owner theorem directly once the interval case has been normalized.
+  exact hJ_convex.condExp_mem hℱ hX hJ_closed hXJ
+
+/-- Helper for Exercise 8.2.2: if `X` stays strictly above `c` almost surely, then its
+conditional expectation cannot equal `c` on a set of positive measure. -/
+private lemma condExp_ne_const_of_ae_gt {ℱ : MeasurableSpace Ω} (hℱ : ℱ ≤ mΩ) {X : Ω → ℝ}
+    (hX : Integrable X P) {c : ℝ} (hcX : ∀ᵐ ω ∂P, c < X ω) :
+    ∀ᵐ ω ∂P, P[X | ℱ] ω ≠ c := by
+  let A : Set Ω := {ω | P[X | ℱ] ω = c}
+  have hAℱ : @MeasurableSet Ω ℱ A := by
+    -- The equality event is `ℱ`-measurable because conditional expectation is `ℱ`-measurable.
+    simpa [A] using
+      measurableSet_eq_fun (stronglyMeasurable_condExp (μ := P) (m := ℱ) (f := X)).measurable
+        measurable_const
+  have hA : @MeasurableSet Ω mΩ A := hℱ A hAℱ
+  have hsub_pos : ∀ᵐ ω ∂P.restrict A, 0 < X ω - c := by
+    -- Restrict the strict lower bound to the equality event.
+    exact (ae_restrict_iff' hA).2 <|
+      hcX.mono fun ω hω hωA ↦ by
+        linarith
+  have hsub_nonneg : 0 ≤ᵐ[ P.restrict A] fun ω ↦ X ω - c :=
+    hsub_pos.mono fun ω hω ↦ le_of_lt hω
+  have hsub_int : IntegrableOn (fun ω ↦ X ω - c) A P :=
+    (hX.sub (integrable_const c)).integrableOn
+  have hcond_zero : ∀ᵐ ω ∂P.restrict A, P[(fun ω ↦ X ω - c) | ℱ] ω = 0 := by
+    -- On `A`, the conditional expectation of `X - c` vanishes because `P[X | ℱ] = c`.
+    exact (ae_restrict_iff' hA).2 <|
+      (condExp_sub hX (integrable_const c) ℱ).mono fun ω hω hωA ↦ by
+        rw [condExp_const hℱ c] at hω
+        change P[X | ℱ] ω = c at hωA
+        simpa [hωA] using hω
+  have hset_zero : ∫ ω in A, (X ω - c) ∂P = 0 := by
+    -- The restricted integral agrees with the conditional expectation,
+    -- and the latter is zero on `A`.
+    calc
+      ∫ ω in A, (X ω - c) ∂P = ∫ ω in A, P[(fun ω ↦ X ω - c) | ℱ] ω ∂P := by
+        symm
+        exact setIntegral_condExp hℱ (hX.sub (integrable_const c)) hAℱ
+      _ = ∫ ω, 0 ∂P.restrict A := by
+        exact integral_congr_ae hcond_zero
+      _ = 0 := by simp
+  have hsub_zero : (fun ω ↦ X ω - c) =ᵐ[P.restrict A] 0 :=
+    (setIntegral_eq_zero_iff_of_nonneg_ae hsub_nonneg hsub_int).1 hset_zero
+  have hfalse : ∀ᵐ ω ∂P.restrict A, False := by
+    -- A point in `A` would force `X ω - c` to be both positive and zero.
+    filter_upwards [hsub_pos, hsub_zero] with ω hωpos hωzero
+    have : (0 : ℝ) < 0 := by
+      simp [hωzero] at hωpos
+    exact (lt_irrefl (0 : ℝ)) this
+  have hnotA : ∀ᵐ ω ∂P, ω ∉ A := by
+    have hnotA' : ∀ᵐ ω ∂P, ω ∈ A → False := (ae_restrict_iff' hA).1 hfalse
+    simpa using hnotA'
+  simpa [A] using hnotA
+
+/-- Helper for Exercise 8.2.2: if `X` stays strictly below `c` almost surely, then its
+conditional expectation cannot equal `c` on a set of positive measure. -/
+private lemma condExp_ne_const_of_ae_lt {ℱ : MeasurableSpace Ω} (hℱ : ℱ ≤ mΩ) {X : Ω → ℝ}
+    (hX : Integrable X P) {c : ℝ} (hXc : ∀ᵐ ω ∂P, X ω < c) :
+    ∀ᵐ ω ∂P, P[X | ℱ] ω ≠ c := by
+  have hneg : ∀ᵐ ω ∂P, -c < -X ω := by
+    -- Negating swaps a strict upper bound into a strict lower bound.
+    filter_upwards [hXc] with ω hω
+    linarith
+  have hne_neg : ∀ᵐ ω ∂P, P[-X | ℱ] ω ≠ -c :=
+    condExp_ne_const_of_ae_gt (Ω := Ω) (mΩ := mΩ) (P := P) (ℱ := ℱ) hℱ hX.neg hneg
+  -- Translate the exclusion statement back through `condExp_neg`.
+  filter_upwards [condExp_neg (μ := P) (m := ℱ) X, hne_neg] with ω hω hωne hωeq
+  apply hωne
+  simpa [hωeq] using hω
+
 -- Proof sketch: write an interval in `ℝ` as an order-convex set, then prove separately that
 -- conditional expectation preserves almost-sure lower and upper bounds by combining
 -- `condExp_mono` with `condExp_const`. Intersect the two half-line bounds to recover membership
@@ -34,7 +111,87 @@ minimal ambient assumption needed by the upstream conditional-expectation API us
 theorem condExp_mem_interval_ae {ℱ : MeasurableSpace Ω} (hℱ : ℱ ≤ mΩ) {I : Set ℝ}
     (hI : Set.OrdConnected I) {X : Ω → ℝ} (hX : Integrable X P)
     (hXI : ∀ᵐ ω ∂P, X ω ∈ I) :
-    ∀ᵐ ω ∂P, P[X | ℱ] ω ∈ I := sorry
+    ∀ᵐ ω ∂P, P[X | ℱ] ω ∈ I := by
+  -- Route correction: instead of rebuilding interval preservation from monotonicity alone,
+  -- normalize `I` to a standard interval shape and use the closed-convex owner theorem first.
+  rcases hI.isPreconnected.mem_intervals with hI | hI | hI | hI | hI | hI | hI | hI | hI | hI
+  · -- Closed bounded intervals are handled directly by the closed-convex lemma.
+    rw [hI] at hXI ⊢
+    exact condExp_mem_closedConvex_ae (Ω := Ω) (mΩ := mΩ) (P := P) (ℱ := ℱ)
+      hℱ isClosed_Icc (convex_Icc _ _) hX hXI
+  · -- For `[a, b)`, first stay inside `[a, b]`, then exclude the open upper endpoint.
+    rw [hI] at hXI ⊢
+    have hclosed : ∀ᵐ ω ∂P, P[X | ℱ] ω ∈ Set.Icc (sInf I) (sSup I) :=
+      condExp_mem_closedConvex_ae (Ω := Ω) (mΩ := mΩ) (P := P) (ℱ := ℱ)
+        hℱ isClosed_Icc (convex_Icc _ _) hX <|
+        hXI.mono fun ω hω ↦ ⟨hω.1, le_of_lt hω.2⟩
+    have hlt : ∀ᵐ ω ∂P, X ω < sSup I := hXI.mono fun ω hω ↦ hω.2
+    have hne : ∀ᵐ ω ∂P, P[X | ℱ] ω ≠ sSup I :=
+      condExp_ne_const_of_ae_lt (Ω := Ω) (mΩ := mΩ) (P := P) (ℱ := ℱ) hℱ hX hlt
+    filter_upwards [hclosed, hne] with ω hω_closed hω_ne
+    exact ⟨hω_closed.1, lt_of_le_of_ne hω_closed.2 fun hEq ↦ hω_ne hEq⟩
+  · -- For `(a, b]`, use `[a, b]` as the closed hull and exclude the lower endpoint.
+    rw [hI] at hXI ⊢
+    have hclosed : ∀ᵐ ω ∂P, P[X | ℱ] ω ∈ Set.Icc (sInf I) (sSup I) :=
+      condExp_mem_closedConvex_ae (Ω := Ω) (mΩ := mΩ) (P := P) (ℱ := ℱ)
+        hℱ isClosed_Icc (convex_Icc _ _) hX <|
+        hXI.mono fun ω hω ↦ ⟨le_of_lt hω.1, hω.2⟩
+    have hgt : ∀ᵐ ω ∂P, sInf I < X ω := hXI.mono fun ω hω ↦ hω.1
+    have hne : ∀ᵐ ω ∂P, P[X | ℱ] ω ≠ sInf I :=
+      condExp_ne_const_of_ae_gt (Ω := Ω) (mΩ := mΩ) (P := P) (ℱ := ℱ) hℱ hX hgt
+    filter_upwards [hclosed, hne] with ω hω_closed hω_ne
+    exact ⟨lt_of_le_of_ne hω_closed.1 fun hEq ↦ hω_ne hEq.symm, hω_closed.2⟩
+  · -- For `(a, b)`, use `[a, b]` as the closed hull and exclude both endpoints.
+    rw [hI] at hXI ⊢
+    have hclosed : ∀ᵐ ω ∂P, P[X | ℱ] ω ∈ Set.Icc (sInf I) (sSup I) :=
+      condExp_mem_closedConvex_ae (Ω := Ω) (mΩ := mΩ) (P := P) (ℱ := ℱ)
+        hℱ isClosed_Icc (convex_Icc _ _) hX <|
+        hXI.mono fun ω hω ↦ ⟨le_of_lt hω.1, le_of_lt hω.2⟩
+    have hgt : ∀ᵐ ω ∂P, sInf I < X ω := hXI.mono fun ω hω ↦ hω.1
+    have hlt : ∀ᵐ ω ∂P, X ω < sSup I := hXI.mono fun ω hω ↦ hω.2
+    have hne_low : ∀ᵐ ω ∂P, P[X | ℱ] ω ≠ sInf I :=
+      condExp_ne_const_of_ae_gt (Ω := Ω) (mΩ := mΩ) (P := P) (ℱ := ℱ) hℱ hX hgt
+    have hne_high : ∀ᵐ ω ∂P, P[X | ℱ] ω ≠ sSup I :=
+      condExp_ne_const_of_ae_lt (Ω := Ω) (mΩ := mΩ) (P := P) (ℱ := ℱ) hℱ hX hlt
+    filter_upwards [hclosed, hne_low, hne_high] with ω hω_closed hω_low hω_high
+    exact ⟨lt_of_le_of_ne hω_closed.1 fun hEq ↦ hω_low hEq.symm,
+      lt_of_le_of_ne hω_closed.2 fun hEq ↦ hω_high hEq⟩
+  · -- Closed upper rays are already closed and convex.
+    rw [hI] at hXI ⊢
+    exact condExp_mem_closedConvex_ae (Ω := Ω) (mΩ := mΩ) (P := P) (ℱ := ℱ)
+      hℱ isClosed_Ici (convex_Ici _) hX hXI
+  · -- For open upper rays, use the closed hull `Ici` and exclude the lower endpoint.
+    rw [hI] at hXI ⊢
+    have hclosed : ∀ᵐ ω ∂P, P[X | ℱ] ω ∈ Set.Ici (sInf I) :=
+      condExp_mem_closedConvex_ae (Ω := Ω) (mΩ := mΩ) (P := P) (ℱ := ℱ)
+        hℱ isClosed_Ici (convex_Ici _) hX <|
+        hXI.mono fun ω hω ↦ by simpa using le_of_lt hω
+    have hgt : ∀ᵐ ω ∂P, sInf I < X ω := hXI
+    have hne : ∀ᵐ ω ∂P, P[X | ℱ] ω ≠ sInf I :=
+      condExp_ne_const_of_ae_gt (Ω := Ω) (mΩ := mΩ) (P := P) (ℱ := ℱ) hℱ hX hgt
+    filter_upwards [hclosed, hne] with ω hω_closed hω_ne
+    exact lt_of_le_of_ne hω_closed fun hEq ↦ hω_ne hEq.symm
+  · -- Closed lower rays are also direct applications of the closed-convex lemma.
+    rw [hI] at hXI ⊢
+    exact condExp_mem_closedConvex_ae (Ω := Ω) (mΩ := mΩ) (P := P) (ℱ := ℱ)
+      hℱ isClosed_Iic (convex_Iic _) hX hXI
+  · -- For open lower rays, use the closed hull `Iic` and exclude the upper endpoint.
+    rw [hI] at hXI ⊢
+    have hclosed : ∀ᵐ ω ∂P, P[X | ℱ] ω ∈ Set.Iic (sSup I) :=
+      condExp_mem_closedConvex_ae (Ω := Ω) (mΩ := mΩ) (P := P) (ℱ := ℱ)
+        hℱ isClosed_Iic (convex_Iic _) hX <|
+        hXI.mono fun ω hω ↦ by simpa using le_of_lt hω
+    have hlt : ∀ᵐ ω ∂P, X ω < sSup I := hXI
+    have hne : ∀ᵐ ω ∂P, P[X | ℱ] ω ≠ sSup I :=
+      condExp_ne_const_of_ae_lt (Ω := Ω) (mΩ := mΩ) (P := P) (ℱ := ℱ) hℱ hX hlt
+    filter_upwards [hclosed, hne] with ω hω_closed hω_ne
+    exact lt_of_le_of_ne hω_closed fun hEq ↦ hω_ne hEq
+  · -- The whole line needs no work.
+    rw [hI]
+    simp
+  · -- If `I = ∅`, the hypothesis already says the exceptional set has full measure zero.
+    rw [hI] at hXI ⊢
+    simpa using hXI
 
 end FiniteMeasure
 
@@ -158,8 +315,9 @@ private theorem not_condLExp_mem_interval_ae_aux :
       ∀ᵐ n ∂P, P⁻[X|⊥] n ∈ Set.Iio (∞ : ℝ≥0∞) :=
     h P bot_le Set.ordConnected_Iio (fun _ hx ↦ hx) hX_finite
   rw [hcond_top] at hbad
-  simp at hbad
-  exact NeZero.ne P hbad
+  have hzero : P = 0 := by
+    simpa using hbad
+  exact NeZero.ne P hzero
 
 -- Proof sketch: reuse the same heavy-tailed nonnegative counterexample as in the private
 -- `condLExp` helper, but view it as a real-valued random variable. Then `X⁻ = 0`, so the
@@ -187,5 +345,6 @@ theorem not_lowerCondExp_mem_interval_ae :
       ∀ᵐ n ∂P, lowerCondExp P ⊥ X n ∈ Set.Ioo (⊥ : EReal) ⊤ :=
     h P bot_le Set.ordConnected_Ioo hXneg hXI
   rw [hlower_top] at hbad
-  simp at hbad
-  exact NeZero.ne P hbad
+  have hzero : P = 0 := by
+    simpa using hbad
+  exact NeZero.ne P hzero

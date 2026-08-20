@@ -39,6 +39,22 @@ def TimeIndependentCoefficients (σ : DiffusionCoeff) (b : DriftCoeff) : Prop :=
   (∀ t₁ t₂ x, σ t₁ x = σ t₂ x) ∧
     ∀ t₁ t₂ x, b t₁ x = b t₂ x
 
+/-- Helper for Remark 26.2: the matrix-valued Brownian Itô bridge from Lemma 26.7 is
+structure-valued data, so the diffusion predicate records only the existence of such a
+realization. -/
+def hasMatrixBrownianLocalItoIntegralRealization
+    (ℱ : TimeFiltration) (μ : Measure Ω) [IsProbabilityMeasure μ]
+    (W : BrownianProcess)
+    (H : NNReal → Ω → Fin n → Fin m → ℝ)
+    (N : StateProcess) : Prop :=
+  Nonempty
+    (ProbabilityTheory.IsMatrixBrownianLocalItoIntegral
+      ℱ
+      μ
+      W.toEuclidean
+      H
+      N.toEuclidean)
+
 /-- A generalized `n`-dimensional diffusion with initial state `ξ` is an `n`-dimensional process
 driven by an `m`-dimensional Brownian motion whose coordinates admit the Itô decomposition with
 coefficients `σ(t, X_t)` and `b(t, X_t)`. The Brownian martingale term is expressed through the
@@ -50,12 +66,12 @@ def IsGeneralizedNDimensionalDiffusion
     (X : StateProcess) : Prop :=
   IsBrownianMotionWithFiltration ℱ μ W ∧
     ∃ N : StateProcess,
-      IsMatrixBrownianLocalItoIntegral
+      hasMatrixBrownianLocalItoIntegralRealization
         ℱ
         μ
-        W.toEuclidean
+        W
         (fun t ω i j ↦ σ t (X t ω) i j)
-        N.toEuclidean ∧
+        N ∧
       (∀ i, ProgMeasurable ℱ (fun t ω ↦ b t (X t ω) i)) ∧
       (∀ i T, ∀ᵐ ω ∂μ,
         IntegrableOn

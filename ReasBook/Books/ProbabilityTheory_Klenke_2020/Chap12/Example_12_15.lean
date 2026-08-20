@@ -44,7 +44,8 @@ private theorem exchangeableAverage_apply_zero_comp_swap_eq_exchangeableCesaroAv
 conditioning the first variable on the tail `σ`-algebra agrees almost surely with conditioning on
 the exchangeable `σ`-algebra. -/
 theorem condExp_first_tail_ae_eq_condExp_first_exchangeableSigmaAlgebra
-    {X : ℕ → Ω → ℝ} (hX_exchangeable : IsExchangeable X μ)
+    {X : ℕ → Ω → ℝ} [IsProbabilityMeasure μ]
+    (hX_exchangeable : IsExchangeable X μ) (hX_meas : ∀ n, Measurable (X n))
     (hX0_integrable : Integrable (X 0) μ) :
     μ[X 0 | tailRandomVariableMeasurableSpace X] =ᵐ[μ]
       μ[X 0 | exchangeableSigmaAlgebra (Function.swap X)] := by
@@ -54,7 +55,7 @@ theorem condExp_first_tail_ae_eq_condExp_first_exchangeableSigmaAlgebra
   have hφ_int : Integrable (fun ω ↦ φ (fun i ↦ X i ω)) μ := by
     simpa [φ] using hX0_integrable
   simpa using
-    (exchangeableAverage_limit_of_isExchangeable hX_exchangeable hφ_meas hφ_int).1.symm
+    (exchangeableAverage_limit_of_isExchangeable hX_exchangeable hX_meas hφ_meas hφ_int).1.symm
 
 -- Proof sketch: combine the permutation-average identity from Theorem 12.10 with the backwards
 -- martingale convergence theorem applied to the exchangeable filtration; the resulting limit is
@@ -63,7 +64,8 @@ theorem condExp_first_tail_ae_eq_condExp_first_exchangeableSigmaAlgebra
 coordinate converge almost surely to the conditional expectation of the first variable given the
 exchangeable `σ`-algebra. -/
 theorem exchangeableCesaroAverage_tendsto_ae_condExp_first_exchangeableSigmaAlgebra
-    {X : ℕ → Ω → ℝ} (hX_exchangeable : IsExchangeable X μ)
+    {X : ℕ → Ω → ℝ} [IsProbabilityMeasure μ]
+    (hX_exchangeable : IsExchangeable X μ) (hX_meas : ∀ n, Measurable (X n))
     (hX0_integrable : Integrable (X 0) μ) :
     ∀ᵐ ω ∂μ, Tendsto (fun n ↦ exchangeableCesaroAverage X n ω) atTop
       (nhds (μ[X 0 | exchangeableSigmaAlgebra (Function.swap X)] ω)) := by
@@ -78,7 +80,7 @@ theorem exchangeableCesaroAverage_tendsto_ae_condExp_first_exchangeableSigmaAlge
           (fun n ↦ exchangeableAverage n (fun y ↦ y 0) (Function.swap X ω))
           atTop (nhds (μ[X 0 | exchangeableSigmaAlgebra (Function.swap X)] ω)) := by
     simpa using
-      (exchangeableAverage_limit_of_isExchangeable hX_exchangeable hφ_meas hφ_int).2.1
+      (exchangeableAverage_limit_of_isExchangeable hX_exchangeable hX_meas hφ_meas hφ_int).2.1
   have h_owner_shift :
       ∀ᵐ ω ∂μ,
         Tendsto
@@ -106,7 +108,8 @@ theorem exchangeableCesaroAverage_tendsto_ae_condExp_first_exchangeableSigmaAlge
 coordinate converge in `L¹` to the conditional expectation of the first variable given the
 exchangeable `σ`-algebra. -/
 theorem exchangeableCesaroAverage_tendsto_eLpNorm_condExp_first_exchangeableSigmaAlgebra
-    {X : ℕ → Ω → ℝ} (hX_exchangeable : IsExchangeable X μ)
+    {X : ℕ → Ω → ℝ} [IsProbabilityMeasure μ]
+    (hX_exchangeable : IsExchangeable X μ) (hX_meas : ∀ n, Measurable (X n))
     (hX0_integrable : Integrable (X 0) μ) :
     Tendsto
       (fun n ↦
@@ -129,7 +132,7 @@ theorem exchangeableCesaroAverage_tendsto_eLpNorm_condExp_first_exchangeableSigm
         atTop (nhds 0) := by
     simpa [G] using
       (exchangeableAverage_limit_of_isExchangeable
-        hX_exchangeable hφ_meas hφ_int).2.2.tendsto_eLpNorm
+        hX_exchangeable hX_meas hφ_meas hφ_int).2.2.tendsto_eLpNorm
   have h_owner_shift :
       Tendsto
         (fun n ↦

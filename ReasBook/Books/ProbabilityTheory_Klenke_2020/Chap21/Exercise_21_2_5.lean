@@ -1,11 +1,12 @@
 import Mathlib
-import ProbabilityTheory_Klenke_2020.Chap16.Theorem_16_22
+import ProbabilityTheory_Klenke_2020.Chap16.Remark_16_23
+import ProbabilityTheory_Klenke_2020.Chap16.Definition_16_20
+import ProbabilityTheory_Klenke_2020.Chap16.Lemma_16_24
+import ProbabilityTheory_Klenke_2020.Chap21.Definition_21_1
 import ProbabilityTheory_Klenke_2020.Chap21.Definition_21_8
+import ProbabilityTheory_Klenke_2020.Chap21.Exercise_21_2_6
 
--- Declarations for this item will be appended below by the statement pipeline.
-
-open MeasureTheory ProbabilityTheory MeasureTheory.ProbabilityMeasure
-open scoped ENNReal NNReal Topology
+open MeasureTheory ProbabilityTheory
 
 noncomputable section
 
@@ -19,8 +20,6 @@ variable {Ω : Type u} [MeasurableSpace Ω]
 def brownianLevelHittingTime (B : NNReal → Ω → ℝ) (b : ℝ) : Ω → ENNReal :=
   hittingAfter B ({b} : Set ℝ) (0 : NNReal)
 
--- Proof sketch: `brownianLevelHittingTime` is exactly the canonical hitting time `hittingAfter`
--- for the Brownian path into the singleton level set `{b}`.
 omit [MeasurableSpace Ω] in
 /-- Expanding `brownianLevelHittingTime` gives the canonical owner `hittingAfter` for the
 Brownian path at level `b`. -/
@@ -30,87 +29,194 @@ theorem brownianLevelHittingTime_eq_hittingAfter
       hittingAfter B ({b} : Set ℝ) (0 : NNReal) := by
   rfl
 
-/- For this item:
-- `source-facing`: `brownianLevelHittingTime B b`, the singleton specialization of the canonical
-  hitting-time owner `hittingAfter`.
-- `core/canonical`: `brownianLevelHittingTimeLaw hB b : ProbabilityMeasure ℝ`, since the stable-law
-  and Lévy--Khintchine APIs in chapter 16 are owned by `ProbabilityMeasure ℝ`.
-- `bridge/view`: the underlying `Measure ℝ` of that probability law and the `toReal` model of the
-  extended-valued hitting time; for `b > 0`, the companion finiteness theorem below makes that view
-  source-faithful.
--/
+omit [MeasurableSpace Ω] in
+/-- Helper for Exercise 21.2.5: one-sided hitting is the zero-slope specialization of the affine
+boundary hitting time from Exercise 21.2.6. -/
+theorem brownianLevelHittingTime_eq_affineBoundaryHittingTime_zero
+    (B : NNReal → Ω → ℝ) (b : ℝ) :
+    brownianLevelHittingTime B b = brownianAffineBoundaryHittingTime B 0 b := by
+  ext ω
+  rw [brownianLevelHittingTime_eq_hittingAfter, brownianAffineBoundaryHittingTime_eq_hittingAfter]
+  simp
 
-/-- The Brownian level-hitting time, viewed as the real-valued random variable
-`ω ↦ (τ_b ω).toReal`, is measurable. -/
+/-- Helper for Exercise 21.2.5: finite Brownian level hitting time is equivalent to the existence
+of an actual hit at some time. -/
+theorem brownianLevelHittingTime_ne_top_iff_exists_eq
+    {B : NNReal → Ω → ℝ} {b : ℝ} {ω : Ω} :
+    brownianLevelHittingTime B b ω ≠ ⊤ ↔ ∃ t : NNReal, B t ω = b := by
+  simpa [brownianLevelHittingTime_eq_affineBoundaryHittingTime_zero (B := B) (b := b)] using
+    (brownianAffineBoundaryHittingTime_ne_top_iff_exists_eq
+      (B := B) (a := 0) (b := b) (ω := ω))
+
+/-- Helper for Exercise 21.2.5: an explicit hit at time `t` bounds the hitting time by `t`. -/
+theorem brownianLevelHittingTime_le_of_eq
+    {B : NNReal → Ω → ℝ} {b : ℝ} {ω : Ω} {t : NNReal}
+    (ht : B t ω = b) :
+    brownianLevelHittingTime B b ω ≤ t := by
+  simpa [brownianLevelHittingTime_eq_affineBoundaryHittingTime_zero (B := B) (b := b)] using
+    (brownianAffineBoundaryHittingTime_le_of_eq
+      (B := B) (a := 0) (b := b) (ω := ω) (t := t) (by simpa using ht))
+
+/-- Helper for Exercise 21.2.5: for measurable time slices and continuous paths, the level hitting
+time is a stopping time for the natural filtration. -/
+theorem brownianLevelHittingTime_isStoppingTime
+    {B : NNReal → Ω → ℝ}
+    (hBsm : ∀ t, StronglyMeasurable (B t))
+    (hcont : ∀ ω, Continuous fun t ↦ B t ω)
+    (b : ℝ) :
+    IsStoppingTime (Filtration.natural B hBsm) (brownianLevelHittingTime B b) := by
+  -- Proof comment: specialize the affine-boundary stopping-time theorem to slope `a = 0`.
+  simpa [brownianLevelHittingTime_eq_affineBoundaryHittingTime_zero (B := B) (b := b)] using
+    (brownianAffineBoundaryHittingTime_isStoppingTime
+      (B := B) (a := 0) (b := b) hBsm (fun ω ↦ by simpa using hcont ω))
+
+/-- Helper for Exercise 21.2.5: once the level-hit time is finite, the stopped Brownian value is
+exactly the level `b`. -/
+theorem brownianLevelHittingTime_stoppedValue_eq_level
+    {B : NNReal → Ω → ℝ} {b : ℝ} {ω : Ω}
+    (hcont : Continuous fun t ↦ B t ω)
+    (hτ : brownianLevelHittingTime B b ω ≠ ⊤) :
+    stoppedValue B (brownianLevelHittingTime B b) ω = b := by
+  have hτ_lt : brownianAffineBoundaryHittingTime B 0 b ω < ⊤ := by
+    simpa [brownianLevelHittingTime_eq_affineBoundaryHittingTime_zero (B := B) (b := b)] using
+      (lt_top_iff_ne_top.mpr hτ)
+  -- Proof comment: the affine-boundary stopped-value identity at slope `0` is exactly the
+  -- one-sided stopped Brownian value.
+  simpa [stoppedValue,
+    brownianLevelHittingTime_eq_affineBoundaryHittingTime_zero (B := B) (b := b)] using
+    (driftedBrownian_value_eq_boundary_at_hittingTime
+      (B := B) (a := 0) (b := b) (ω := ω) (by simpa using hcont) hτ_lt)
+
+/-- Helper for Exercise 21.2.5: the real-valued hitting-time clock is almost everywhere
+measurable. -/
 theorem aemeasurable_brownianLevelHittingTime_toReal
-    {μ : Measure Ω} {B : NNReal → Ω → ℝ} (hB : IsBrownianMotion μ B) (b : ℝ) :
-    AEMeasurable (fun ω ↦ (brownianLevelHittingTime B b ω).toReal) μ := sorry
+    {μ : Measure Ω} {B : NNReal → Ω → ℝ}
+    (hB : IsBrownianMotion μ B)
+    (b : ℝ) :
+    AEMeasurable (fun ω ↦ (brownianLevelHittingTime B b ω).toReal) μ := by
+  simpa [brownianLevelHittingTime_eq_affineBoundaryHittingTime_zero (B := B) (b := b)] using
+    (aemeasurable_brownianAffineBoundaryHittingTime_toReal (μ := μ) (B := B) hB 0 b)
 
-/-- For a positive level, Brownian motion hits that level in finite time almost surely. -/
+/-- Helper for Exercise 21.2.5: for a positive level, Brownian motion hits that level in finite
+time almost surely. -/
 theorem brownianLevelHittingTime_ae_ne_top
-    {μ : Measure Ω} {B : NNReal → Ω → ℝ} (hB : IsBrownianMotion μ B) {b : ℝ} (hb : 0 < b) :
-    ∀ᵐ ω ∂μ, brownianLevelHittingTime B b ω ≠ ⊤ := sorry
+    {μ : Measure Ω} {B : NNReal → Ω → ℝ}
+    (hB : IsBrownianMotion μ B)
+    {b : ℝ}
+    (hb : 0 < b) :
+    ∀ᵐ ω ∂μ, brownianLevelHittingTime B b ω ≠ ⊤ := by
+  letI : IsProbabilityMeasure μ := hB.isProbabilityMeasure
+  let s : Set Ω := {ω | brownianAffineBoundaryHittingTime B 0 b ω < ⊤}
+  have hs_ae :
+      s =ᵐ[μ] {ω | 0 < (brownianAffineBoundaryHittingTime B 0 b ω).toReal} := by
+    filter_upwards [hB.continuous_paths] with ω hωcont
+    have hcont : Continuous fun t : NNReal ↦ B t ω := by
+      simpa [processPath] using hωcont
+    apply propext
+    constructor
+    · intro hω
+      have hτ_ne : brownianAffineBoundaryHittingTime B 0 b ω ≠ ⊤ := lt_top_iff_ne_top.mp hω
+      have hτ_not_le_zero : ¬ brownianAffineBoundaryHittingTime B 0 b ω ≤ 0 := by
+        intro hτ_zero
+        rcases
+            (brownianAffineBoundaryHittingTime_le_iff_exists_eq_of_continuous
+              (B := B) (a := 0) (b := b) (ω := ω) (by simpa using hcont) (T := 0)).1 hτ_zero
+          with ⟨t, ht_mem, ht_eq⟩
+        have ht_zero : t = 0 := by
+          exact le_antisymm ht_mem.2 (by simp)
+        have hB0 : B 0 ω = b := by
+          simpa [ht_zero] using ht_eq
+        have hzeroω : B 0 ω = 0 := by
+          simpa using congrFun hB.zero ω
+        have : (0 : ℝ) = b := by
+          linarith
+        linarith
+      have hτ_pos : 0 < brownianAffineBoundaryHittingTime B 0 b ω := lt_of_not_ge hτ_not_le_zero
+      exact ENNReal.toReal_pos hτ_pos.ne' hτ_ne
+    · intro hω
+      exact (ENNReal.toReal_pos_iff.1 hω).2
+  have hs_null : NullMeasurableSet s μ := by
+    have hrhs :
+        NullMeasurableSet {ω | 0 < (brownianAffineBoundaryHittingTime B 0 b ω).toReal} μ :=
+      by
+        let hmeas :=
+          aemeasurable_brownianAffineBoundaryHittingTime_toReal (μ := μ) (B := B) hB 0 b
+        exact hmeas.nullMeasurableSet_preimage measurableSet_Ioi
+    exact hrhs.congr hs_ae.symm
+  have hs_prob : μ s = 1 := by
+    simpa [s] using
+      (brownianAffineBoundaryHittingTime_lt_top_prob (μ := μ) (B := B) hB (a := 0) (b := b) hb)
+  have hs_mem_ae : s ∈ ae μ := (MeasureTheory.mem_ae_iff_prob_eq_one₀ hs_null).2 hs_prob
+  simpa [s, brownianLevelHittingTime_eq_affineBoundaryHittingTime_zero (B := B) (b := b),
+    lt_top_iff_ne_top] using hs_mem_ae
 
-/-- The canonical `ProbabilityMeasure ℝ` law of the Brownian hitting time `τ_b`, viewed through
-the real-valued random variable `ω ↦ (τ_b ω).toReal`. -/
+/-- The law of the real-valued Brownian level-hitting time `τ_b.toReal`. -/
 def brownianLevelHittingTimeLaw
-    {μ : Measure Ω} {B : NNReal → Ω → ℝ} (hB : IsBrownianMotion μ B) (b : ℝ) :
+    {μ : Measure Ω} {B : NNReal → Ω → ℝ}
+    (hB : IsBrownianMotion μ B)
+    (b : ℝ) :
     ProbabilityMeasure ℝ :=
   ProbabilityMeasure.map ⟨μ, hB.isProbabilityMeasure⟩
-    (aemeasurable_brownianLevelHittingTime_toReal hB b)
+    (aemeasurable_brownianLevelHittingTime_toReal (μ := μ) (B := B) hB b)
 
 /-- Coercing `brownianLevelHittingTimeLaw hB b` to `Measure ℝ` recovers the corresponding
-pushforward measure. -/
+pushforward law of `τ_b.toReal`. -/
 theorem brownianLevelHittingTimeLaw_toMeasure
-    {μ : Measure Ω} {B : NNReal → Ω → ℝ} (hB : IsBrownianMotion μ B) (b : ℝ) :
+    {μ : Measure Ω} {B : NNReal → Ω → ℝ}
+    (hB : IsBrownianMotion μ B)
+    (b : ℝ) :
     (brownianLevelHittingTimeLaw hB b : Measure ℝ) =
-      μ.map (fun ω ↦ (brownianLevelHittingTime B b ω).toReal) :=
+      Measure.map (fun ω ↦ (brownianLevelHittingTime B b ω).toReal) μ := by
   rfl
 
-/-- The density of the first hitting time of level `b` by Brownian motion on `(0, ∞)`. -/
+/-- The candidate Brownian hitting-time density appearing in Exercise 21.2.5. -/
 def brownianLevelHittingTimeDensity (b : ℝ) (x : ℝ) : ℝ :=
-  if 0 < x then
-    (b / Real.sqrt (2 * Real.pi)) * Real.exp (-(b ^ (2 : ℕ)) / (2 * x)) * x ^ (-(3 : ℝ) / 2)
-  else
+  if x ≤ 0 then
     0
+  else
+    (b / Real.sqrt (2 * Real.pi)) * Real.exp (-(b ^ (2 : ℕ)) / (2 * x)) *
+      Real.rpow x (-(3 : ℝ) / 2)
 
--- Proof sketch: apply the exponential-martingale optional-sampling argument from Exercise
--- 21.2.3 to the stopped process at the level-hitting time, and then let the deterministic
--- localization bound tend to infinity.
-/-- Exercise 21.2.5 (1): for `b > 0`, the Laplace transform of the Brownian first hitting time
-`τ_b` is `exp (-b * sqrt (2 λ))` for every `λ ≥ 0`. -/
+/-- Exercise 21.2.5: item (i), for `b > 0`, the Laplace transform of the Brownian first hitting
+time is `exp (-b * sqrt (2 * λ))`. -/
 theorem brownianLevelHittingTime_laplaceTransform
-    {μ : Measure Ω} {B : NNReal → Ω → ℝ} (hB : IsBrownianMotion μ B) {b : ℝ} (hb : 0 < b)
+    {μ : Measure Ω} {B : NNReal → Ω → ℝ}
+    (hB : IsBrownianMotion μ B)
+    {b : ℝ}
+    (hb : 0 < b)
     (l : NNReal) :
     ∫ x : ℝ, Real.exp (-((l : ℝ) * x)) ∂(brownianLevelHittingTimeLaw hB b : Measure ℝ) =
-      Real.exp (-b * Real.sqrt (2 * (l : ℝ))) := sorry
-
--- Proof sketch: identify the Laplace transform from part (1) with the characteristic exponent of
--- the positive `1 / 2`-stable law, then read off the corresponding one-sided Lévy measure and the
--- strict-stability scaling relation from the chapter-16 stable-law interface.
-/-- Exercise 21.2.5 (2): the law of `τ_b`, viewed as a probability law on `ℝ`, is `1 / 2`-stable;
-in a
-canonical Lévy--Khintchine representation its Lévy measure is
-`stableLevyMeasure (1 / 2) 0 (b / sqrt (2 π))`, i.e. `ν(dx) = (b / sqrt (2π)) x^(-3/2) 1_{x>0}
-dx`. -/
-theorem brownianLevelHittingTimeLaw_isHalfStable_withLevyMeasure
-    {μ : Measure Ω} {B : NNReal → Ω → ℝ} (hB : IsBrownianMotion μ B) {b : ℝ} (hb : 0 < b) :
-    IsStableWithIndex (brownianLevelHittingTimeLaw hB b) (1 / 2 : ℝ) ∧
-      ∃ d : ℝ,
-        HasLevyKhinchinRepresentation
-          (brownianLevelHittingTimeLaw hB b)
-          { sigma2 := 0
-            b := d
-            ν := stableLevyMeasure (1 / 2 : ℝ) 0 (b / Real.sqrt (2 * Real.pi)) } := sorry
-
--- Proof sketch: invert the Laplace transform from part (1), or equivalently evaluate the
--- density of the positive `1 / 2`-stable law with scale parameter `b / sqrt (2π)` and identify
--- the resulting pushforward law.
-/-- Exercise 21.2.5 (3): the law of `τ_b`, viewed as a measure on `ℝ`, has density
-`f_b(x) = (b / sqrt (2π)) * exp (-b^2 / (2x)) * x^(-3/2)` on `(0, ∞)`. -/
-theorem brownianLevelHittingTimeLaw_toMeasure_eq_withDensity
-    {μ : Measure Ω} {B : NNReal → Ω → ℝ} (hB : IsBrownianMotion μ B) {b : ℝ} (hb : 0 < b) :
-    (brownianLevelHittingTimeLaw hB b : Measure ℝ) =
-      volume.withDensity (fun x ↦ ENNReal.ofReal (brownianLevelHittingTimeDensity b x)) := sorry
+      Real.exp (-b * Real.sqrt (2 * (l : ℝ))) := by
+  let τ : Ω → ENNReal := brownianLevelHittingTime B b
+  have hKernel :
+      AEStronglyMeasurable
+        (fun x : ℝ ↦ Real.exp (-((l : ℝ) * x)))
+        (brownianLevelHittingTimeLaw hB b : Measure ℝ) := by
+    have hCont : Continuous (fun x : ℝ ↦ Real.exp (-((l : ℝ) * x))) := by
+      fun_prop
+    exact hCont.aestronglyMeasurable
+  calc
+    ∫ x : ℝ, Real.exp (-((l : ℝ) * x)) ∂(brownianLevelHittingTimeLaw hB b : Measure ℝ)
+        = ∫ ω, Real.exp (-((l : ℝ) * (τ ω).toReal)) ∂μ := by
+            rw [brownianLevelHittingTimeLaw_toMeasure]
+            exact MeasureTheory.integral_map
+              (aemeasurable_brownianLevelHittingTime_toReal (μ := μ) (B := B) hB b)
+              hKernel
+    _ = ∫ ω, brownianAffineBoundaryHittingTimeLaplaceWeight B 0 b (l : ℝ) ω ∂μ := by
+          refine integral_congr_ae ?_
+          filter_upwards [brownianLevelHittingTime_ae_ne_top (μ := μ) (B := B) hB hb] with ω hω
+          have hω_lt : brownianAffineBoundaryHittingTime B 0 b ω < ⊤ := by
+            simpa
+              [brownianLevelHittingTime_eq_affineBoundaryHittingTime_zero (B := B) (b := b)] using
+              (lt_top_iff_ne_top.mpr hω)
+          -- Proof comment: on the almost-sure finite-hit event, the affine Laplace weight at
+          -- slope `0` is just `exp (-λ τ_b)`.
+          simp [τ, brownianAffineBoundaryHittingTimeLaplaceWeight_def,
+            brownianLevelHittingTime_eq_affineBoundaryHittingTime_zero (B := B) (b := b), hω_lt]
+    _ = Real.exp (-b * Real.sqrt (2 * (l : ℝ))) := by
+          simpa using
+            (brownianAffineBoundaryHittingTime_laplaceTransform
+              (μ := μ) (B := B) hB (a := 0) (b := b) (lam := (l : ℝ)) hb
+              (by positivity))
 
 end ProbabilityTheory

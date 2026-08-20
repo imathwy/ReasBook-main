@@ -100,39 +100,4 @@ class IsNonnegativeConvolutionSemigroup (ν : I → ProbabilityMeasure ℝ) : Pr
   /-- Each marginal is supported in `[0, ∞)`. -/
   measure_Iio_zero : ∀ t : I, (ν t : Measure ℝ) (Set.Iio 0) = 0
 
--- Proof sketch: every time slice is the Dirac mass at `0`, so the semigroup identity reduces to
--- the idempotence of `δ₀` under additive convolution.
-/-- The constant Dirac family at `0` is a convolution semigroup. -/
-instance diracProba_zero_isConvolutionSemigroup :
-    IsConvolutionSemigroup (fun _ : I ↦ diracProba (0 : E)) := sorry
-
-section WithZeroInstances
-
-variable [AddMonoid I]
-
--- Proof sketch: the constant family is identically `δ₀`, so the zero-time law is immediate.
-/-- The constant Dirac family at `0` is a convolution semigroup with zero. -/
-instance diracProba_zero_isConvolutionSemigroupWithZero :
-    IsConvolutionSemigroupWithZero (fun _ : I ↦ diracProba (0 : E)) := sorry
-
-end WithZeroInstances
-
-section ContinuousInstances
-
-variable [TopologicalSpace E] [OpensMeasurableSpace E]
-
--- Proof sketch: the constant family `t ↦ δ₀` is already a convolution semigroup, and a constant
--- map is continuous at `0` for the weak topology on `ProbabilityMeasure E`.
-/-- The constant Dirac family at `0` is a continuous convolution semigroup. -/
-instance diracProba_zero_isContinuousConvolutionSemigroup :
-    IsContinuousConvolutionSemigroup (fun _ : NNReal ↦ diracProba (0 : E)) := sorry
-
-end ContinuousInstances
-
--- Proof sketch: the constant family `t ↦ δ₀` on `ℝ` is nonnegative because the Dirac mass at `0`
--- charges `(-∞, 0)` by zero.
-/-- The constant Dirac family at `0` on `ℝ` is a nonnegative convolution semigroup. -/
-instance diracProba_zero_isNonnegativeConvolutionSemigroup :
-    IsNonnegativeConvolutionSemigroup (fun _ : I ↦ diracProba (0 : ℝ)) := sorry
-
 end

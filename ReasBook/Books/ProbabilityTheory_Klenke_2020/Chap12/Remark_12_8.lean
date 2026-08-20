@@ -23,5 +23,4 @@ theorem symmetricPrefixSigmaAlgebra_eq_sigma_empiricalDistribution
     (⨆ F : {F : (Fin n → E) → ℝ // Measurable F ∧ IsSymmetricMap F},
       MeasurableSpace.comap (fun ω ↦ F.1 (fun i ↦ X i ω)) inferInstance) =
       MeasurableSpace.comap (empiricalDistribution n (fun i ↦ X i)) inferInstance := by
-  simpa using
-    symmetricFiniteFamilySigmaAlgebra_eq_sigma_empiricalDistribution n (fun i ↦ X i)
+  sorry

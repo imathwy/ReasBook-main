@@ -1,4 +1,8 @@
 import Mathlib.Analysis.InnerProductSpace.Laplacian
+import Mathlib.Analysis.Calculus.FDeriv.Symmetric
+import Mathlib.LinearAlgebra.SesquilinearForm.Star
+import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
+import Mathlib.MeasureTheory.MeasurableSpace.Constructions
 import ProbabilityTheory_Klenke_2020.Chap07.Corollary_7_8
 
 -- Declarations for this item will be appended below by the statement pipeline.
@@ -13,6 +17,9 @@ universe u
 variable {n : ℕ}
 variable {G : Set (EuclideanSpace ℝ (Fin n))}
 variable {φ : EuclideanSpace ℝ (Fin n) → ℝ}
+local instance : MeasurableSpace (EuclideanSpace ℝ (Fin n)) := borel _
+local instance : BorelSpace (EuclideanSpace ℝ (Fin n)) := ⟨rfl⟩
+
 
 /-- The Hessian matrix of `φ` on `G`, computed from the second derivative within `G`
 in the standard basis of `ℝⁿ`. -/

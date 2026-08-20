@@ -40,7 +40,9 @@ theorem isPoissonPointProcess_iff
       ∀ ⦃A : Set E⦄, MeasurableSet A → Bornology.IsBounded A → (μ A) ≠ ⊤ →
         HasLaw (fun ω ↦ X ω A)
           (Measure.map (fun n : ℕ ↦ (n : ENNReal)) (poissonMeasure (μ A).toNNReal))
-          (P : Measure Ω) := sorry
+          (P : Measure Ω) := by
+  -- The theorem is the direct unfolding of the defining conjunction.
+  rfl
 
 /-- The law `PPP_μ` attached to a Poisson point process is the pushforward of the ambient
 probability law along the random measure. -/
@@ -56,6 +58,8 @@ process `X`. -/
 theorem poissonPointProcessLaw_def
     (μ : Measure E) (P : ProbabilityMeasure Ω) (X : Ω → Measure E)
     (hX : IsPoissonPointProcess μ P X) :
-    poissonPointProcessLaw μ P X hX = P.map hX.1.measurable.aemeasurable := sorry
+    poissonPointProcessLaw μ P X hX = P.map hX.1.measurable.aemeasurable := by
+  -- The companion law is defined as this pushforward probability measure.
+  rfl
 
 end ProbabilityTheory

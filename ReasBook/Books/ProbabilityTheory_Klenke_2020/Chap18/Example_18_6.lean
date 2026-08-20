@@ -1,5 +1,5 @@
 import Mathlib
-import ProbabilityTheory_Klenke_2020.Chap17.Theorem_17_17
+import ProbabilityTheory_Klenke_2020.Chap17.Definition_17_16
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -14,7 +14,7 @@ namespace ProbabilityTheory
 
 variable {E : Type u} [MeasurableSpace E] [DiscreteMeasurableSpace E]
 
-local instance example186DecidableEq : DecidableEq E := Classical.decEq E
+local instance example18_6DecidableEq : DecidableEq E := Classical.decEq E
 
 /-- Example 18.6: the independent coalescent transition matrix on `E × E`; away from the diagonal
 the two coordinates evolve independently with transition matrix `p`, and once the two coordinates
@@ -32,7 +32,9 @@ def independentCoalescentMatrix (p : E → E → ℝ≥0∞) : (E × E) → (E �
 independent copies of the chain with transition matrix `p`. -/
 theorem independentCoalescentMatrix_apply_of_ne
     (p : E → E → ℝ≥0∞) {x₁ y₁ x₂ y₂ : E} (h : x₁ ≠ y₁) :
-    independentCoalescentMatrix p (x₁, y₁) (x₂, y₂) = p x₁ x₂ * p y₁ y₂ := sorry
+    independentCoalescentMatrix p (x₁, y₁) (x₂, y₂) = p x₁ x₂ * p y₁ y₂ := by
+  -- The off-diagonal hypothesis selects the independent-product branch of the definition.
+  simp [independentCoalescentMatrix, h]
 
 -- Proof sketch: unfold `independentCoalescentMatrix`; on the diagonal the outer `if` uses
 -- `x = x`, and the inner `if` reduces the diagonal-to-diagonal transition to `p x z`.
@@ -40,7 +42,9 @@ theorem independentCoalescentMatrix_apply_of_ne
 probability `p x z`. -/
 theorem independentCoalescentMatrix_apply_diag
     (p : E → E → ℝ≥0∞) (x z : E) :
-    independentCoalescentMatrix p (x, x) (z, z) = p x z := sorry
+    independentCoalescentMatrix p (x, x) (z, z) = p x z := by
+  -- On the diagonal, both `if` tests reduce to equality and the entry becomes `p x z`.
+  simp [independentCoalescentMatrix]
 
 -- Proof sketch: unfold `independentCoalescentMatrix`; on the diagonal the inner `if` forces every
 -- transition to a non-diagonal state to have probability `0`.
@@ -48,7 +52,9 @@ theorem independentCoalescentMatrix_apply_diag
 -/
 theorem independentCoalescentMatrix_apply_diag_of_ne
     (p : E → E → ℝ≥0∞) {x x₂ y₂ : E} (h : x₂ ≠ y₂) :
-    independentCoalescentMatrix p (x, x) (x₂, y₂) = 0 := sorry
+    independentCoalescentMatrix p (x, x) (x₂, y₂) = 0 := by
+  -- A diagonal state can only transition to another diagonal state.
+  simp [independentCoalescentMatrix, h]
 
 -- Proof sketch: split the row indexed by `(x, y)` into the off-diagonal case `x ≠ y`, where the
 -- row sum factors as the product of two stochastic row sums, and the diagonal case `x = y`, where
@@ -57,6 +63,43 @@ theorem independentCoalescentMatrix_apply_diag_of_ne
 /-- The independent coalescent matrix is stochastic whenever `p` is stochastic. -/
 theorem independentCoalescentMatrix_isStochasticMatrix
     (p : E → E → ℝ≥0∞) (hp : IsStochasticMatrix p) :
-    IsStochasticMatrix (independentCoalescentMatrix p) := sorry
+    IsStochasticMatrix (independentCoalescentMatrix p) := by
+  classical
+  rintro ⟨x, y⟩
+  by_cases hxy : x = y
+  · subst hxy
+    -- On the diagonal, each slice over the second coordinate has a single surviving term.
+    have hslice : ∀ z : E, ∑' w : E, independentCoalescentMatrix p (x, x) (z, w) = p x z := by
+      intro z
+      rw [tsum_eq_single z]
+      · rw [independentCoalescentMatrix_apply_diag]
+      · intro w hw
+        rw [independentCoalescentMatrix_apply_diag_of_ne (p := p)]
+        exact fun hzw => hw hzw.symm
+    -- Rewrite the product-state row sum as iterated sums and collapse the diagonal slices.
+    calc
+      ∑' s : E × E, independentCoalescentMatrix p (x, x) s =
+          ∑' z : E, ∑' w : E, independentCoalescentMatrix p (x, x) (z, w) := by
+            simpa using
+              (ENNReal.tsum_prod' (f := fun s : E × E => independentCoalescentMatrix p (x, x) s))
+      _ = ∑' z : E, p x z := by
+            refine tsum_congr hslice
+      _ = 1 := hp x
+  · -- Off the diagonal, the row factorizes as the product of the two original rows.
+    calc
+      ∑' s : E × E, independentCoalescentMatrix p (x, y) s =
+          ∑' z : E, ∑' w : E, independentCoalescentMatrix p (x, y) (z, w) := by
+            simpa using
+              (ENNReal.tsum_prod' (f := fun s : E × E => independentCoalescentMatrix p (x, y) s))
+      _ = ∑' z : E, ∑' w : E, p x z * p y w := by
+            refine tsum_congr fun z => ?_
+            refine tsum_congr fun w => ?_
+            rw [independentCoalescentMatrix_apply_of_ne (p := p) hxy]
+      _ = ∑' z : E, p x z * ∑' w : E, p y w := by
+            refine tsum_congr fun z => ?_
+            rw [ENNReal.tsum_mul_left]
+      _ = ∑' z : E, p x z * 1 := by simp [hp y]
+      _ = (∑' z : E, p x z) * 1 := by rw [ENNReal.tsum_mul_right]
+      _ = 1 := by simp [hp x]
 
 end ProbabilityTheory

@@ -46,6 +46,7 @@ import ProbabilityTheory_Klenke_2020.Chap09.Theorem_9_16
 import ProbabilityTheory_Klenke_2020.Chap09.Theorem_9_32
 import ProbabilityTheory_Klenke_2020.Chap09.Theorem_9_35
 import ProbabilityTheory_Klenke_2020.Chap09.Theorem_9_39
+import ProbabilityTheory_Klenke_2020.Chap09.Theorem_9_39_Helpers
 import ProbabilityTheory_Klenke_2020.Chap09.Theorem_9_43
 
 /-!

@@ -44,7 +44,9 @@ theorem is_poisson_point_process_iff
     is_poisson_point_process P X μ ↔
       IsLocallyFiniteMeasure μ ∧
         ∀ f : E → ℝ≥0∞, Measurable f →
-          random_measure_laplace_functional P X f = poisson_laplace_functional μ f := sorry
+          random_measure_laplace_functional P X f = poisson_laplace_functional μ f := by
+  -- Expand the local definition once; the theorem is exactly the defining conjunction.
+  rfl
 
 -- Proof sketch: use `Kernel.map_apply` and `Measure.map_apply` to rewrite the inner lintegrals,
 -- then simplify the composed test function to `f ∘ φ`.
@@ -53,7 +55,14 @@ theorem random_measure_laplace_functional_map
     (P : ProbabilityMeasure Ω) (X : Kernel Ω E) {φ : E → F} (hφ : Measurable φ)
     (f : F → ℝ≥0∞) (hf : Measurable f) :
     random_measure_laplace_functional P (X.map φ) f =
-      random_measure_laplace_functional P X (f ∘ φ) := sorry
+      random_measure_laplace_functional P X (f ∘ φ) := by
+  -- Rewrite the mapped-kernel integral pointwise, so both Laplace integrands agree.
+  unfold random_measure_laplace_functional
+  refine integral_congr_ae ?_
+  exact Filter.Eventually.of_forall fun ω ↦ by
+    have hω : ∫⁻ x, f x ∂(X.map φ) ω = ∫⁻ x, (f ∘ φ) x ∂X ω := by
+      simpa [Function.comp] using (Kernel.lintegral_map X hφ ω hf)
+    exact congrArg (fun t : ℝ≥0∞ ↦ Real.exp (-t.toReal)) hω
 
 -- Proof sketch: rewrite the pushforward integral against `μ.map φ` as an integral against `μ`
 -- using `lintegral_map`, and then simplify the composed Poisson exponent.
@@ -61,7 +70,15 @@ theorem random_measure_laplace_functional_map
 composing the test function with `φ`. -/
 theorem poisson_laplace_functional_map
     (μ : Measure E) {φ : E → F} (hφ : Measurable φ) (f : F → ℝ≥0∞) (hf : Measurable f) :
-    poisson_laplace_functional (μ.map φ) f = poisson_laplace_functional μ (f ∘ φ) := sorry
+    poisson_laplace_functional (μ.map φ) f = poisson_laplace_functional μ (f ∘ φ) := by
+  -- The Poisson exponent integrand is measurable, so `lintegral_map` rewrites the pushforward.
+  have h_integrand :
+      Measurable fun y : F ↦ 1 - ENNReal.ofReal (Real.exp (-(f y).toReal)) := by
+    exact Measurable.const_sub ((hf.ennreal_toReal.neg.exp).ennreal_ofReal) 1
+  -- After rewriting the inner integral, the result is exactly the composed test function.
+  unfold poisson_laplace_functional
+  rw [MeasureTheory.lintegral_map h_integrand hφ]
+  rfl
 
 -- Proof sketch: equip `μ.map φ` with the assumed local-finiteness, rewrite the Laplace functional
 -- of `X.map φ` by `random_measure_laplace_functional_map`, rewrite the Poisson exponent by
@@ -72,6 +89,21 @@ theorem poisson_point_process_map
     (P : ProbabilityMeasure Ω) (X : Kernel Ω E) (μ : Measure E)
     (hX : is_poisson_point_process P X μ) {φ : E → F} (hφ : Measurable φ)
     (hμφ : IsLocallyFiniteMeasure (μ.map φ)) :
-    is_poisson_point_process P (X.map φ) (μ.map φ) := sorry
+    is_poisson_point_process P (X.map φ) (μ.map φ) := by
+  -- Unpack the PPP hypothesis into local finiteness and the Laplace-functional identity.
+  rw [is_poisson_point_process_iff] at hX ⊢
+  constructor
+  · exact hμφ
+  · intro f hf
+    -- Compare both sides through the common composed test function `f ∘ φ`.
+    calc
+      random_measure_laplace_functional P (X.map φ) f
+          = random_measure_laplace_functional P X (f ∘ φ) :=
+        random_measure_laplace_functional_map P X hφ f hf
+      _ = poisson_laplace_functional μ (f ∘ φ) :=
+        hX.2 (f ∘ φ) (hf.comp hφ)
+      _ = poisson_laplace_functional (μ.map φ) f := by
+        symm
+        exact poisson_laplace_functional_map μ hφ f hf
 
 end ProbabilityTheory

@@ -107,7 +107,7 @@ theorem tendstoInMeasureOnFiniteMeasureSets_iff_mathlib_tendstoInMeasure
   · rw [tendstoInMeasure_iff_dist] at h ⊢
     intro ε hε
     refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds (h ε hε)
-      (fun _ ↦ zero_le) ?_
+      (fun _ ↦ zero_le _) ?_
     intro n
     exact Measure.restrict_apply_le A {ω | ε ≤ dist (fSeq n ω) (f ω)}
 

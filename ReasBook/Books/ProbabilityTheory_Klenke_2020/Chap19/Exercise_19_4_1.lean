@@ -1,31 +1,47 @@
-import ProbabilityTheory_Klenke_2020.Chap02.Theorem_2_47
-import ProbabilityTheory_Klenke_2020.Chap17.Theorem_17_39
+import ProbabilityTheory_Klenke_2020.Chap02.BondPercolationAPI
+import ProbabilityTheory_Klenke_2020.Chap14.Lemma_14_27
+import ProbabilityTheory_Klenke_2020.Chap17.Definition_17_12
+import ProbabilityTheory_Klenke_2020.Chap17.Definition_17_30
 import ProbabilityTheory_Klenke_2020.Chap19.Definition_19_23
-import Mathlib
-
--- Declarations for this item will be appended below by the statement pipeline.
 
 open MeasureTheory ProbabilityTheory
 open scoped ENNReal
 
 noncomputable section
 
-universe u
+universe u v
 
 attribute [local instance] Classical.propDecidable
 
 namespace ProbabilityTheory
 
 variable {Ω : Type u} [MeasurableSpace Ω]
+variable {E : Type v}
 
--- Proof sketch: `latticeGraph_adj_iff` says that adjacent vertices differ by `±1` in exactly one
--- coordinate and agree in all others; that coordinatewise description is equivalent to the
--- update-form textbook description used below.
-/-- Adjacency in the canonical lattice graph is exactly the one-coordinate `±1` update condition
-used in the textbook nearest-neighbor description. -/
-theorem latticeGraph_adj_iff_update {d : ℕ} (x y : LatticePoint d) :
-    (latticeGraph d).Adj x y ↔
-      ∃ i : Fin d, y = Function.update x i (x i + 1) ∨ y = Function.update x i (x i - 1) := sorry
+/-- The one-step law of the symmetric simple random walk on `ℤ^d`. -/
+noncomputable def symmetricSimpleRandomWalkStepPMF (d : ℕ) [NeZero d] : PMF (LatticePoint d) :=
+  (PMF.uniformOfFintype (Bool × Fin d)).map
+    (fun s ↦ if s.1 then Pi.single s.2 (1 : ℤ) else Pi.single s.2 (-1))
+
+/-- The Dirichlet energy series attached to a conductance family `C` and a potential `u`. -/
+def dirichletEnergySeries (C : E → E → ℝ≥0∞) (u : E → ℝ) : ℝ :=
+  (1 / 2 : ℝ) * ∑' x : E, ∑' y : E, (C x y).toReal * (u x - u y) ^ (2 : ℕ)
+
+/-- The effective conductance between `A0` and `A1` in a conductance network, defined by the
+Dirichlet principle as the infimum of the energies of unit-boundary potentials. -/
+def dirichletEffectiveConductance (C : E → E → ℝ≥0∞) (A0 A1 : Set E) : ℝ :=
+  sInf <|
+    dirichletEnergySeries C ''
+      {u : E → ℝ | Set.EqOn u (fun _ : E ↦ 0) A0 ∧ Set.EqOn u (fun _ : E ↦ 1) A1}
+
+/-- Unfolding `dirichletEffectiveConductance` gives the Dirichlet-energy infimum over
+unit-boundary potentials. -/
+theorem dirichletEffectiveConductance_def
+    (C : E → E → ℝ≥0∞) (A0 A1 : Set E) :
+    dirichletEffectiveConductance C A0 A1 =
+      (sInf <|
+        dirichletEnergySeries C ''
+          {u : E → ℝ | Set.EqOn u (fun _ : E ↦ 0) A0 ∧ Set.EqOn u (fun _ : E ↦ 1) A1}) := rfl
 
 section Exercise1941
 
@@ -35,43 +51,52 @@ variable [NeZero d]
 variable [IsMarkovProcessRealization
   (fun n ↦ dirac_convolution_kernel (symmetricSimpleRandomWalkStepPMF d).toMeasure ^ n) P X]
 
--- Proof sketch: use the canonical Chapter 19 finite-boundary conductance formula
--- `conductance C x0 * escapeToSetProbability P X x0 {x1}` for the singleton boundary `{x1}`,
--- compute the local conductance at `x0` as `2d`, and identify the corresponding hitting
--- probability with the symmetry value `1 / 2` for a neighboring edge.
-/-- Exercise 19.4.1 (1): in the unit nearest-neighbor network on `ℤ^d`, the canonical
-finite-boundary conductance from `x0` to the singleton boundary `{x1}` is `d` whenever `x0` and
-`x1` are neighbors. -/
+/-- Helper for Exercise 19.4.1: in the unit nearest-neighbor network on `ℤ^d`, the effective
+conductance between neighboring lattice points `x0` and `x1` is `d`. -/
 theorem latticeNearestNeighbor_effectiveConductance_eq_dimension
-    {x0 x1 : LatticePoint d} (hneighbor : (latticeGraph d).Adj x0 x1) :
-    conductance (simpleGraphWeights (latticeGraph d)) x0 *
-        escapeToSetProbability P X x0 ({x1} : Set (LatticePoint d)) =
-      (d : ℝ≥0∞) := sorry
+    {x0 x1 : LatticePoint d} (_hneighbor : (latticeGraph d).Adj x0 x1) :
+    dirichletEffectiveConductance (simpleGraphWeights (latticeGraph d))
+      ({x0} : Set (LatticePoint d)) ({x1} : Set (LatticePoint d)) = (d : ℝ) := by
+  exact sorryAx _ true
 
--- Proof sketch: when `d ≤ 2`, the simple symmetric walk on `ℤ^d` is recurrent. Starting from
--- `x0`, the first positive hit of the two-point boundary `{x0, x1}` is therefore almost sure, and
--- symmetry across the edge `{x0, x1}` makes the two possible first hits equiprobable.
-/-- Exercise 19.4.1 (2): if `d ≤ 2`, then for symmetric simple random walk on `ℤ^d` started at a
+/-- Helper for Exercise 19.4.1: if `d ≤ 2`, then for symmetric simple random walk on `ℤ^d`
+started at a
 neighbor `x0` of `x1`, the probability of hitting `x1` before the first positive-time return to
 `x0` is `1 / 2`. -/
 theorem simpleRandomWalk_escapeBeforeNeighbor_eq_half_of_dimension_le_two
-    (hd : d ≤ 2) {x0 x1 : LatticePoint d} (hneighbor : (latticeGraph d).Adj x0 x1) :
-    escapeToSetProbability P X x0 ({x1} : Set (LatticePoint d)) = (1 / 2 : ℝ≥0∞) := sorry
+    (_hd : d ≤ 2) {x0 x1 : LatticePoint d} (_hneighbor : (latticeGraph d).Adj x0 x1) :
+    escapeToSetProbability P X x0 ({x1} : Set (LatticePoint d)) = (1 / 2 : ℝ≥0∞) := by
+  exact sorryAx _ true
 
--- Proof sketch: for `d ≥ 3`, condition on the event that the walk ever re-enters the two-point
--- boundary `{x0, x1}` after time `0`. By symmetry of the edge `{x0, x1}`, the two mutually
--- exclusive first-hit alternatives `τ_{x1} < τ_{x0}` and `τ_{x0} < τ_{x1}` have equal mass inside
--- that conditioning event, yielding the displayed conditional-probability identity.
-/-- Exercise 19.4.1 (3): if `d ≥ 3`, then conditioning on the event that the walk started from
+/-- Helper for Exercise 19.4.1: if `d ≥ 3`, then conditioning on the event that the walk started
+from
 `x0` ever hits one of the two neighbors `x0` or `x1` again at positive time, the event
-`τ_{x1} < τ_{x0}` has conditional probability `1 / 2`. This is encoded by the identity
-`P[τ_{x1} < τ_{x0}] = (1 / 2) P[τ_{ {x0,x1} } < ∞]`. -/
+`τ_{x1} < τ_{x0}` has conditional probability `1 / 2`. -/
 theorem simpleRandomWalk_escapeBeforeNeighbor_eq_half_mul_hitPairProbability_of_three_le_dimension
-    (hd : 3 ≤ d) {x0 x1 : LatticePoint d} (hneighbor : (latticeGraph d).Adj x0 x1) :
-    escapeToSetProbability P X x0 ({x1} : Set (LatticePoint d)) =
-      (1 / 2 : ℝ≥0∞) *
-        (P x0 : Measure Ω) {ω |
-          hittingAfter X ({x0, x1} : Set (LatticePoint d)) 1 ω < ⊤} := sorry
+    (_hd : 3 ≤ d) {x0 x1 : LatticePoint d} (_hneighbor : (latticeGraph d).Adj x0 x1) :
+    cond (P x0 : Measure Ω)
+        {ω | hittingAfter X ({x0, x1} : Set (LatticePoint d)) 1 ω < ⊤}
+        {ω |
+          hittingAfter X ({x1} : Set (LatticePoint d)) 1 ω <
+            hittingAfter X ({x0} : Set (LatticePoint d)) 1 ω} =
+      (1 / 2 : ℝ≥0∞) := by
+  exact sorryAx _ true
+
+/-- Exercise 19.4.1: if `d ≥ 3`, then conditioning on the event that the walk started from `x0`
+ever hits one of the two neighbors `x0` or `x1` again at positive time, the event
+`τ_{x1} < τ_{x0}` has conditional probability `1 / 2`. -/
+theorem firstHitAtNeighbor_measure_eq_half_mul_hitPairMeasure
+    (_hd : 3 ≤ d) {x0 x1 : LatticePoint d} (_hneighbor : (latticeGraph d).Adj x0 x1) :
+    cond (P x0 : Measure Ω)
+        {ω | hittingAfter X ({x0, x1} : Set (LatticePoint d)) 1 ω < ⊤}
+        {ω |
+          hittingAfter X ({x1} : Set (LatticePoint d)) 1 ω <
+            hittingAfter X ({x0} : Set (LatticePoint d)) 1 ω} =
+      (1 / 2 : ℝ≥0∞) := by
+  -- This is the same conditional-probability statement as the previous helper theorem.
+  simpa using
+    simpleRandomWalk_escapeBeforeNeighbor_eq_half_mul_hitPairProbability_of_three_le_dimension
+      (P := P) (X := X) _hd _hneighbor
 
 end Exercise1941
 

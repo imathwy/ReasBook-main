@@ -29,7 +29,7 @@ instance instIsConvolutionSemigroup_poissonConvolutionSemigroup (θ : NNReal) :
     apply ProbabilityMeasure.toMeasure_injective
     rw [ProbabilityMeasure.toMeasure_mul, poissonConvolutionSemigroup_toMeasure,
       poissonConvolutionSemigroup_toMeasure, poissonConvolutionSemigroup_toMeasure,
-      ProbabilityTheory.poissonMeasure_conv_poissonMeasure]
+      poissonMeasure_conv_poissonMeasure]
     simp [mul_add]
 
 /-- The family `t ↦ Poi_(θ t)` is a convolution semigroup on `ℕ`. -/

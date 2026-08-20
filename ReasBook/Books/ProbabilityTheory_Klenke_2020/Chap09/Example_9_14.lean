@@ -61,32 +61,30 @@ owner abstraction for the history-dependence clause is `Function.FactorsThrough`
 -- time-`n` σ-algebra of that filtration is exactly `MeasurableSpace.comap (coinTossHistory D n)`,
 -- so the measurable clauses are equivalent to factorization through the length-`n` history.
 theorem predictable_iff_factorsThrough_coinTossHistory {H : ℕ → Ω → ℕ} :
-    IsStronglyPredictable (coinTossHistoryFiltration hD) H ↔
+    IsPredictable (coinTossHistoryFiltration hD) H ↔
       (H 0).FactorsThrough (coinTossHistory D 0) ∧
         ∀ n, (H (n + 1)).FactorsThrough (coinTossHistory D n) := by
-  rw [IsStronglyPredictable.iff_measurable_add_one]
+  rw [isPredictable_iff_measurable_add_one]
   constructor
   · rintro ⟨h0, hsucc⟩
     refine ⟨?_, ?_⟩
     · rw [coinTossHistoryFiltration_apply hD 0] at h0
-      exact h0.measurable.factorsThrough
+      exact h0.factorsThrough
     · intro n
       have hsucc' := hsucc n
       rw [coinTossHistoryFiltration_apply hD n] at hsucc'
-      exact hsucc'.measurable.factorsThrough
+      exact hsucc'.factorsThrough
   · intro h
     refine ⟨?_, ?_⟩
     · rw [coinTossHistoryFiltration_apply hD 0]
       rcases (Function.factorsThrough_iff (H 0)).1 h.1 with ⟨e, he⟩
       rw [he]
-      exact ((measurable_of_finite e).comp
-        (comap_measurable (coinTossHistory D 0))).stronglyMeasurable
+      simpa using (measurable_of_finite e).comp (comap_measurable (coinTossHistory D 0))
     · intro n
       rw [coinTossHistoryFiltration_apply hD n]
       rcases (Function.factorsThrough_iff (H (n + 1))).1 (h.2 n) with ⟨e, he⟩
       rw [he]
-      exact ((measurable_of_finite e).comp
-        (comap_measurable (coinTossHistory D n))).stronglyMeasurable
+      simpa using (measurable_of_finite e).comp (comap_measurable (coinTossHistory D n))
 
 end
 

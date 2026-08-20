@@ -177,7 +177,7 @@ theorem tendsto_eLpNorm_condExp_sub_of_tendsto_eLpNorm {ℱ : MeasurableSpace Ω
   -- The sequence is squeezed between `0` and the given convergent error sequence.
   refine tendsto_of_tendsto_of_tendsto_of_le_of_le tendsto_const_nhds h_tendsto ?_ ?_
   · intro n
-    exact zero_le
+    exact zero_le _
   · intro n
     exact hterm_bound n
 

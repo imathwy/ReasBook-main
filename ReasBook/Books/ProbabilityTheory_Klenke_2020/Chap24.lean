@@ -27,6 +27,7 @@ import ProbabilityTheory_Klenke_2020.Chap24.Exercise_24_3_3
 import ProbabilityTheory_Klenke_2020.Chap24.Remark_24_11
 import ProbabilityTheory_Klenke_2020.Chap24.Remark_24_22
 import ProbabilityTheory_Klenke_2020.Chap24.Theorem_24_12
+import ProbabilityTheory_Klenke_2020.Chap24.Theorem_24_12Core
 import ProbabilityTheory_Klenke_2020.Chap24.Theorem_24_13
 import ProbabilityTheory_Klenke_2020.Chap24.Theorem_24_14
 import ProbabilityTheory_Klenke_2020.Chap24.Theorem_24_16

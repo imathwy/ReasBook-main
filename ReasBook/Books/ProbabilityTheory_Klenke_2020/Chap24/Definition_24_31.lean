@@ -1,4 +1,7 @@
-import Mathlib
+import Mathlib.Order.Monotone.Defs
+import Mathlib.Probability.HasLaw
+import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
+import Mathlib.Topology.Instances.NNReal.Lemmas
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -19,9 +22,9 @@ abbrev MassPartition : Type :=
 instance : CoeFun MassPartition (fun _ ↦ ℕ → NNReal) where
   coe x := x.1
 
-instance : TopologicalSpace MassPartition := inferInstance
+instance : TopologicalSpace MassPartition := _root_.instTopologicalSpaceSubtype
 
-instance : MeasurableSpace MassPartition := inferInstance
+instance : MeasurableSpace MassPartition := Subtype.instMeasurableSpace
 
 /-- The source jump data extracted from a Moran Gamma subordinator: the decreasing jump sizes,
 whose total mass is positive. The terminal mass is the canonical sum of these jumps. -/
@@ -58,7 +61,10 @@ theorem terminalMass_pos
 /-- Normalizing the ordered jump sizes by the terminal mass preserves the decreasing order. -/
 theorem normalizedJumpSequence_antitone
     (M : MoranGammaJumpSequence) :
-    Antitone (fun n ↦ M.jumpSizes n / M.terminalMass) := sorry
+    Antitone (fun n ↦ M.jumpSizes n / M.terminalMass) := by
+  -- Compare two jump sizes with the same positive denominator; positivity preserves the order.
+  intro i j hij
+  exact (div_le_div_iff_of_pos_right M.terminalMass_pos).2 (M.antitone_jumpSizes hij)
 
 -- Proof sketch: use `M.tsum_jumpSizes` and factor out the positive constant `M.terminalMass`.
 -- After dividing both sides of `∑' n, M.jumpSizes n = M.terminalMass` by `M.terminalMass`, the
@@ -66,7 +72,17 @@ theorem normalizedJumpSequence_antitone
 /-- The normalized jump sizes of a Moran Gamma subordinator have total mass `1`. -/
 theorem normalizedJumpSequence_tsum
     (M : MoranGammaJumpSequence) :
-    ∑' n, M.jumpSizes n / M.terminalMass = 1 := sorry
+    ∑' n, M.jumpSizes n / M.terminalMass = 1 := by
+  -- Rewrite division as multiplication by the inverse so the constant factor leaves the `tsum`.
+  calc
+    ∑' n, M.jumpSizes n / M.terminalMass
+        = ∑' n, M.jumpSizes n * M.terminalMass⁻¹ := by
+          simp_rw [div_eq_mul_inv]
+    _ = (∑' n, M.jumpSizes n) * M.terminalMass⁻¹ := NNReal.tsum_mul_right _ _
+    _ = 1 := by
+          -- The total jump mass is exactly `M.terminalMass`, so the normalization cancels.
+          rw [M.tsum_jumpSizes]
+          simp [M.terminalMass_pos.ne']
 
 /-- The normalized jump-size sequence of a Moran Gamma subordinator is summable. -/
 theorem normalizedJumpSequence_summable

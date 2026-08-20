@@ -1,4 +1,7 @@
 import Mathlib
+import ProbabilityTheory_Klenke_2020.Chap02.BondPercolationAPI
+import ProbabilityTheory_Klenke_2020.Chap02.BondPercolationBoxErasure
+import ProbabilityTheory_Klenke_2020.Chap02.BondPercolationFiniteCylinder
 import ProbabilityTheory_Klenke_2020.Chap02.Corollary_2_22
 import ProbabilityTheory_Klenke_2020.Chap02.Corollary_2_23
 import ProbabilityTheory_Klenke_2020.Chap02.Corollary_2_38

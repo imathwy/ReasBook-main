@@ -24,13 +24,22 @@ def centered_average (μ : Measure Ω) (X : ℕ → Ω → ℝ) (n : ℕ) : Ω �
 partial sum is `∑_{i=1}^n (Xᵢ - 𝔼[Xᵢ])`. -/
 private theorem centered_partial_sum_def (μ : Measure Ω) (X : ℕ → Ω → ℝ) (n : ℕ) :
     centered_partial_sum μ (fun k ↦ X (k + 1)) n =
-      fun ω ↦ ∑ i ∈ Finset.Icc 1 n, (X i ω - μ[X i]) := sorry
+      fun ω ↦ ∑ i ∈ Finset.Icc 1 n, (X i ω - μ[X i]) := by
+  -- Proof comment: rewrite the shifted `range n` sum as the textbook interval `Icc 1 n`.
+  ext ω
+  rw [centered_partial_sum]
+  rw [← Finset.Ico_add_one_right_eq_Icc]
+  rw [Finset.sum_Ico_eq_sum_range]
+  simp [Nat.add_comm]
 
 /-- For the textbook sequence `X₁, X₂, …`, represented by `fun n ↦ X (n + 1)`, the normalized
 centered average is `(1 / n) * ∑_{i=1}^n (Xᵢ - 𝔼[Xᵢ])`. -/
 private theorem centered_average_def (μ : Measure Ω) (X : ℕ → Ω → ℝ) (n : ℕ) :
     centered_average μ (fun k ↦ X (k + 1)) n =
-      fun ω ↦ (∑ i ∈ Finset.Icc 1 n, (X i ω - μ[X i])) / n := sorry
+      fun ω ↦ (∑ i ∈ Finset.Icc 1 n, (X i ω - μ[X i])) / n := by
+  -- Proof comment: unfold the normalization and reuse the centered-sum bridge.
+  ext ω
+  rw [centered_average, centered_partial_sum_def]
 
 variable (μ : Measure Ω) [IsProbabilityMeasure μ]
 
@@ -93,6 +102,10 @@ theorem ae_tendsto_centered_average_of_ae_tendsto_raw_average
     exact hω.sub tendsto_const_nhds
   simpa using hcentered
 
+section
+
+omit [IsProbabilityMeasure μ]
+
 /-- For the textbook sequence `X₁, X₂, …`, represented by `X 1, X 2, …`, the weak law amounts to
 integrability of all terms together with convergence in probability of the centered empirical
 averages to `0`. -/
@@ -101,7 +114,23 @@ private theorem satisfies_weak_law_of_large_numbers_iff (X : ℕ → Ω → ℝ)
       (∀ n, Integrable (X (n + 1)) μ) ∧
         TendstoInMeasure μ
           (fun n ω ↦ (∑ i ∈ Finset.Icc 1 n, (X i ω - μ[X i])) / n)
-          atTop 0 := sorry
+          atTop 0 := by
+  -- Proof comment: the only nontrivial step is transporting convergence in measure
+  -- across the pointwise equality from `centered_average_def`.
+  have havg :
+      centered_average μ (fun n ↦ X (n + 1)) =
+        fun n ω ↦ (∑ i ∈ Finset.Icc 1 n, (X i ω - μ[X i])) / n := by
+    funext n
+    exact centered_average_def μ X n
+  constructor
+  · rintro ⟨hInt, hT⟩
+    refine ⟨?_, ?_⟩
+    · simpa using hInt
+    · simpa [havg] using hT
+  · rintro ⟨hInt, hT⟩
+    refine ⟨?_, ?_⟩
+    · simpa using hInt
+    · simpa [havg] using hT
 
 /-- For the textbook sequence `X₁, X₂, …`, represented by `X 1, X 2, …`, the weak law is
 equivalently expressed by the vanishing of the deviation probabilities of the centered empirical
@@ -113,7 +142,24 @@ private theorem satisfies_weak_law_of_large_numbers_iff_probability (X : ℕ →
         ∀ ⦃ε : ℝ⦄, 0 < ε →
           Tendsto
             (fun n ↦ μ {ω | ε ≤ |(∑ i ∈ Finset.Icc 1 n, (X i ω - μ[X i])) / n|})
-            atTop (𝓝 0) := sorry
+            atTop (𝓝 0) := by
+  rw [satisfies_weak_law_of_large_numbers_iff]
+  constructor
+  · rintro ⟨hInt, hT⟩
+    refine ⟨hInt, ?_⟩
+    -- Proof comment: rewrite convergence in measure with the norm criterion and
+    -- simplify `‖x - 0‖` to `|x|` on `ℝ`.
+    simpa only [Pi.zero_apply, sub_zero, Real.norm_eq_abs] using
+      (MeasureTheory.tendstoInMeasure_iff_norm
+        (μ := μ)
+        (l := atTop)
+        (f := fun n ω ↦ (∑ i ∈ Finset.Icc 1 n, (X i ω - μ[X i])) / n)
+        (g := 0)).mp hT
+  · rintro ⟨hInt, hT⟩
+    refine ⟨hInt, ?_⟩
+    rw [MeasureTheory.tendstoInMeasure_iff_norm]
+    intro ε hε
+    simpa only [Pi.zero_apply, sub_zero, Real.norm_eq_abs] using hT (ε := ε) hε
 
 /-- For the textbook sequence `X₁, X₂, …`, represented by `X 1, X 2, …`, the strong law amounts to
 integrability of all terms together with almost sure convergence of the centered empirical
@@ -122,6 +168,28 @@ private theorem satisfies_strong_law_of_large_numbers_iff (X : ℕ → Ω → �
     satisfies_strong_law_of_large_numbers μ (fun n ↦ X (n + 1)) ↔
       (∀ n, Integrable (X (n + 1)) μ) ∧
         ∀ᵐ ω ∂μ, Tendsto
-          (fun n ↦ (∑ i ∈ Finset.Icc 1 n, (X i ω - μ[X i])) / n) atTop (𝓝 0) := sorry
+          (fun n ↦ (∑ i ∈ Finset.Icc 1 n, (X i ω - μ[X i])) / n) atTop (𝓝 0) := by
+  -- Proof comment: rewrite the almost-sure convergence statement pointwise using
+  -- the same average identity as in the weak-law formulation.
+  have havg :
+      ∀ ω,
+        (fun n ↦ centered_average μ (fun k ↦ X (k + 1)) n ω) =
+          fun n ↦ (∑ i ∈ Finset.Icc 1 n, (X i ω - μ[X i])) / n := by
+    intro ω
+    funext n
+    simpa using congrFun (centered_average_def μ X n) ω
+  constructor
+  · rintro ⟨hInt, hT⟩
+    refine ⟨?_, ?_⟩
+    · simpa using hInt
+    · filter_upwards [hT] with ω hω
+      simpa [havg ω] using hω
+  · rintro ⟨hInt, hT⟩
+    refine ⟨?_, ?_⟩
+    · simpa using hInt
+    · filter_upwards [hT] with ω hω
+      simpa [havg ω] using hω
+
+end
 
 end

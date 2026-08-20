@@ -16,6 +16,7 @@ import ProbabilityTheory_Klenke_2020.Chap04.Exercise_4_2_3
 import ProbabilityTheory_Klenke_2020.Chap04.Exercise_4_2_4
 import ProbabilityTheory_Klenke_2020.Chap04.Exercise_4_2_5
 import ProbabilityTheory_Klenke_2020.Chap04.Exercise_4_2_6
+import ProbabilityTheory_Klenke_2020.Chap04.Exercise_4_2_6_Support
 import ProbabilityTheory_Klenke_2020.Chap04.Exercise_4_3_1
 import ProbabilityTheory_Klenke_2020.Chap04.Exercise_4_3_2
 import ProbabilityTheory_Klenke_2020.Chap04.Exercise_4_3_3

@@ -21,7 +21,7 @@ private theorem hp_ne_zero [Fact (1 ≤ p)] : p ≠ 0 :=
 subspace `Lp.simpleFunc ℝ p μ`. -/
 private abbrev finiteMeasureSimpleFuncToLpSimpleFunc (p : ℝ≥0∞) (μ : Measure Ω) [Fact (1 ≤ p)]
     (hp_ne_top : p ≠ ∞) : {g : Ω →ₛ ℝ // g.FinMeasSupp μ} → Lp.simpleFunc ℝ p μ := fun g ↦
-  g.1.toLp ((SimpleFunc.memLp_iff_finMeasSupp hp_ne_zero hp_ne_top).2 g.2)
+  Lp.simpleFunc.toLp g.1 ((SimpleFunc.memLp_iff_finMeasSupp hp_ne_zero hp_ne_top).2 g.2)
 
 /-- The canonical map from simple functions with finite-measure support to their `L^p(μ)`
 equivalence classes. -/

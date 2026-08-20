@@ -1,4 +1,4 @@
-import ProbabilityTheory_Klenke_2020.Chap09.Definition_9_37
+import ProbabilityTheory_Klenke_2020.Chap09.Theorem_9_39_Helpers
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -11,49 +11,92 @@ namespace ProbabilityTheory
 variable {Ω : Type u} [mΩ : MeasurableSpace Ω]
 variable {ℱ : Filtration ℕ mΩ} {μ : Measure Ω}
 
--- Proof sketch: for the forward implication, use the one-step martingale identity together with
--- predictability and local boundedness to show that every stochastic integral is again a
--- martingale. For the converse, test the hypothesis on the indicator integrand
--- `H_n = 1_{\\{n = n₀\\}}`, whose integral isolates the increment `X n₀ - X (n₀ - 1)`.
-/-- Theorem 9.39 (1): an adapted real-valued process with integrable initial value is a martingale
-iff every stochastic integral against a locally bounded predictable integrand is a martingale. -/
-theorem martingale_iff_stochasticIntegral_martingale [IsFiniteMeasure μ] {X : ℕ → Ω → ℝ}
+/-- Helper for Theorem 9.39: the constant process `1` is predictable. -/
+lemma predictableOne : IsPredictable ℱ (fun _ _ ↦ (1 : ℝ)) := by
+  refine isPredictable_of_measurable_add_one ?_ ?_
+  · simpa using (measurable_const : Measurable[ℱ 0] (fun _ : Ω ↦ (1 : ℝ)))
+  · intro n
+    simpa using (measurable_const : Measurable[ℱ n] (fun _ : Ω ↦ (1 : ℝ)))
+
+/-- Helper for Theorem 9.39: the constant process `1` is locally bounded. -/
+lemma locallyBoundedProcessOne : IsLocallyBoundedProcess (Ω := Ω) (fun _ _ ↦ (1 : ℝ)) := by
+  -- Bound the constant stake process uniformly by the radius `1` at every time.
+  intro n
+  refine ⟨1, zero_le_one, ?_⟩
+  intro ω
+  simp
+
+/-- Helper for Theorem 9.39: repeating the initial value at every time yields a martingale. -/
+lemma initialValueProcess_martingale [IsFiniteMeasure μ] {X : ℕ → Ω → ℝ}
     (hX_adapted : Adapted ℱ X) (hX0_int : Integrable (X 0) μ) :
-    Martingale X ℱ μ ↔
-      ∀ H : ℕ → Ω → ℝ,
-        IsPredictable ℱ H →
-          IsLocallyBoundedProcess H →
-            Martingale (stochasticIntegral H X) ℱ μ := sorry
+    Martingale (fun _ ↦ X 0) ℱ μ := by
+  have hX0_meas : StronglyMeasurable[ℱ 0] (X 0) := (hX_adapted 0).stronglyMeasurable
+  exact martingale_const_fun ℱ μ hX0_meas hX0_int
 
--- Proof sketch: the forward implication uses the standard stability of submartingales under
--- stochastic integration by nonnegative locally bounded predictable integrands. For the converse,
--- test on the same single-step indicator integrands as in part (1), which are nonnegative and
--- recover the one-step submartingale inequality for `X`.
-/-- Theorem 9.39 (2): an adapted real-valued process with integrable initial value is a
-submartingale iff every stochastic integral against a nonnegative locally bounded predictable
-integrand is a submartingale. -/
-theorem submartingale_iff_stochasticIntegral_submartingale [IsFiniteMeasure μ]
-    {X : ℕ → Ω → ℝ} (hX_adapted : Adapted ℱ X) (hX0_int : Integrable (X 0) μ) :
-    Submartingale X ℱ μ ↔
-      ∀ H : ℕ → Ω → ℝ,
-        IsPredictable ℱ H →
-          IsLocallyBoundedProcess H →
-            (∀ n ω, 0 ≤ H n ω) →
-              Submartingale (stochasticIntegral H X) ℱ μ := sorry
+/-- Helper for Theorem 9.39: adding back the initial value recovers `X` from the stochastic
+integral with constant integrand `1`. -/
+lemma stochasticIntegralOne_add_initial (X : ℕ → Ω → ℝ) :
+    stochasticIntegral (fun _ _ ↦ (1 : ℝ)) X + (fun _ ↦ X 0) = X := by
+  -- Rewrite the stochastic integral with integrand `1` as `X - X₀` and cancel the initial value.
+  funext n ω
+  simp [Pi.add_apply, stochasticIntegral_one_eq_sub_initial]
 
--- Proof sketch: apply the submartingale statement to `-X` and use the equivalence between
--- supermartingales and submartingales of the negated process, together with
--- `stochasticIntegral H (-X) = -stochasticIntegral H X`.
-/-- Theorem 9.39 (3): an adapted real-valued process with integrable initial value is a
-supermartingale iff every stochastic integral against a nonnegative locally bounded predictable
-integrand is a supermartingale. -/
-theorem supermartingale_iff_stochasticIntegral_supermartingale [IsFiniteMeasure μ]
-    {X : ℕ → Ω → ℝ} (hX_adapted : Adapted ℱ X) (hX0_int : Integrable (X 0) μ) :
-    Supermartingale X ℱ μ ↔
-      ∀ H : ℕ → Ω → ℝ,
-        IsPredictable ℱ H →
-          IsLocallyBoundedProcess H →
-            (∀ n ω, 0 ≤ H n ω) →
-              Supermartingale (stochasticIntegral H X) ℱ μ := sorry
+/-- Theorem 9.39: a discrete stochastic integral preserves the martingale, submartingale, and
+supermartingale properties under locally bounded predictable integrands, and these properties can
+be recovered by testing against the constant integrand `1`. -/
+theorem stochasticIntegral_stability [IsFiniteMeasure μ] {X : ℕ → Ω → ℝ}
+    (hX_adapted : Adapted ℱ X) (hX0_int : Integrable (X 0) μ) :
+    (Martingale X ℱ μ ↔
+      ∀ H : ℕ → Ω → ℝ, IsPredictable ℱ H → IsLocallyBoundedProcess H →
+        Martingale (stochasticIntegral H X) ℱ μ) ∧
+      (Submartingale X ℱ μ ↔
+        ∀ H : ℕ → Ω → ℝ, IsPredictable ℱ H → IsLocallyBoundedProcess H →
+          (∀ n ω, 0 ≤ H n ω) → Submartingale (stochasticIntegral H X) ℱ μ) ∧
+      (Supermartingale X ℱ μ ↔
+        ∀ H : ℕ → Ω → ℝ, IsPredictable ℱ H → IsLocallyBoundedProcess H →
+          (∀ n ω, 0 ≤ H n ω) → Supermartingale (stochasticIntegral H X) ℱ μ) := by
+  refine ⟨?_, ?_⟩
+  · constructor
+    · intro hX H hH hH_bdd
+      -- The forward martingale direction is exactly the stability result proved in the helpers.
+      exact martingale_stochasticIntegral hX hH hH_bdd
+    · intro hTransform
+      have hIntegral :
+          Martingale (stochasticIntegral (fun _ _ ↦ (1 : ℝ)) X) ℱ μ :=
+        hTransform (fun _ _ ↦ (1 : ℝ)) predictableOne locallyBoundedProcessOne
+      have hInitial : Martingale (fun _ ↦ X 0) ℱ μ :=
+        initialValueProcess_martingale hX_adapted hX0_int
+      -- The transform with `H = 1` is `X - X₀`, so adding back the initial value recovers `X`.
+      simpa [stochasticIntegralOne_add_initial] using hIntegral.add hInitial
+  · refine ⟨?_, ?_⟩
+    · constructor
+      · intro hX H hH hH_bdd hH_nonneg
+        -- Nonnegative predictable stakes preserve the submartingale property.
+        exact submartingale_stochasticIntegral hX hH hH_bdd hH_nonneg
+      · intro hTransform
+        have hIntegral :
+            Submartingale (stochasticIntegral (fun _ _ ↦ (1 : ℝ)) X) ℱ μ :=
+          hTransform (fun _ _ ↦ (1 : ℝ)) predictableOne locallyBoundedProcessOne
+            (fun _ _ ↦ zero_le_one)
+        have hInitial : Martingale (fun _ ↦ X 0) ℱ μ :=
+          initialValueProcess_martingale hX_adapted hX0_int
+        -- Add the initial-value martingale to recover the original process.
+        simpa [stochasticIntegralOne_add_initial] using hIntegral.add_martingale hInitial
+    · constructor
+      · intro hX H hH hH_bdd hH_nonneg
+        have hIntegralNeg :
+            Submartingale (stochasticIntegral H (-X)) ℱ μ :=
+          submartingale_stochasticIntegral hX.neg hH hH_bdd hH_nonneg
+        -- Negating the transform converts the submartingale conclusion back to a supermartingale.
+        simpa [stochasticIntegral_neg_right] using hIntegralNeg.neg
+      · intro hTransform
+        have hIntegral :
+            Supermartingale (stochasticIntegral (fun _ _ ↦ (1 : ℝ)) X) ℱ μ :=
+          hTransform (fun _ _ ↦ (1 : ℝ)) predictableOne locallyBoundedProcessOne
+            (fun _ _ ↦ zero_le_one)
+        have hInitial : Martingale (fun _ ↦ X 0) ℱ μ :=
+          initialValueProcess_martingale hX_adapted hX0_int
+        -- Add the initial-value martingale to recover the original process.
+        simpa [stochasticIntegralOne_add_initial] using hIntegral.add_martingale hInitial
 
 end ProbabilityTheory

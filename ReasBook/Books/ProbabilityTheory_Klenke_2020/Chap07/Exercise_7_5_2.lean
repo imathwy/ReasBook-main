@@ -23,7 +23,7 @@ private theorem rnDeriv_add_compl (μ ν : Measure Ω) [SigmaFinite μ] [SigmaFi
   have h_le : ν ≤ μ + ν := by
     intro s
     rw [Measure.add_apply]
-    exact le_add_of_nonneg_left zero_le
+    exact le_add_of_nonneg_left (zero_le (μ s))
   have hμ_add : μ ≪ μ + ν := rfl.absolutelyContinuous.add_right _
   have h_rn_le : ν.rnDeriv (μ + ν) ≤ᵐ[μ] 1 :=
     hμ_add <| rnDeriv_le_one_of_le h_le

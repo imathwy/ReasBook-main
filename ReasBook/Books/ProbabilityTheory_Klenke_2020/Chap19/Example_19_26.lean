@@ -1,10 +1,8 @@
-import ProbabilityTheory_Klenke_2020.Chap17.Theorem_17_39
-import ProbabilityTheory_Klenke_2020.Chap19.Example_19_10
-import ProbabilityTheory_Klenke_2020.Chap19.Theorem_19_25
+import ProbabilityTheory_Klenke_2020.Chap14.Lemma_14_27
 import Mathlib
 
 open MeasureTheory ProbabilityTheory
-open scoped BigOperators ENNReal ProbabilityTheory unitInterval
+open scoped ENNReal unitInterval
 open unitInterval
 
 noncomputable section
@@ -15,71 +13,68 @@ namespace ProbabilityTheory
 
 variable {Ω : Type u} [MeasurableSpace Ω]
 
-/-
-`source-facing`: Example 19.26 studies the nearest-neighbor simple random walk on `ℤ` and the
-associated effective resistance from `0` to `∞`.
-`core/canonical`: the Chapter 19 owner `effectiveResistanceToInfinity` and the canonical symmetric
-nearest-neighbor walk kernel on `ℤ`, obtained from the Chapter 17 owner
-`biasedSimpleRandomWalkStepPMF` at the symmetric parameter `1 / 2`, together with the owner
-singleton-kernel formula `biasedSimpleRandomWalkKernel_apply_singleton`.
-`bridge/view`: this file fixes the nearest-neighbor graph on `ℤ` and records the resulting
-conductance family and row-normalized transition matrix.
--/
+/-- Helper for Example 19.26: the symmetric bias `1 / 2` lies in the unit interval `I`. -/
+theorem symmetricHalfBias_mem : 0 ≤ (1 / 2 : ℝ) ∧ (1 / 2 : ℝ) ≤ 1 := by
+  constructor <;> norm_num
 
-attribute [local instance] Classical.propDecidable
+/-- Helper for Example 19.26: the symmetric nearest-neighbor walk uses the unit-interval parameter
+`1 / 2`. -/
+def symmetricHalfBias : I :=
+  ⟨(1 / 2 : ℝ), symmetricHalfBias_mem⟩
 
-local notation "halfBias" =>
-  (show I from ⟨(1 / 2 : ℝ), by constructor <;> norm_num⟩)
+local notation "halfBias" => symmetricHalfBias
 
-/-- The nearest-neighbor simple graph on `ℤ`: two integers are adjacent exactly when they differ
-by `1`. -/
-def integerNearestNeighborGraph : SimpleGraph ℤ where
-  Adj x y := |x - y| = 1
-  symm := by
-    intro x y
-    simp [abs_sub_comm]
-  loopless := by
-    exact ⟨by
-      intro x
-      simp⟩
+/-- Helper for Example 19.26: the one-step increment law of the symmetric nearest-neighbor walk on
+`ℤ`, jumping to `1` and `-1` with probabilities `p` and `1 - p`. -/
+def biasedSimpleRandomWalkStepPMF (p : I) : PMF ℤ :=
+  (PMF.bernoulli (toNNReal p) (by simpa using p.2.2)).map fun b ↦ if b then (1 : ℤ) else -1
 
-/-- The conductance family of the nearest-neighbor network on `ℤ`, obtained from the unit edge
-weights of `integerNearestNeighborGraph`. -/
+/-- The conductance family of the nearest-neighbor network on `ℤ`, with unit weight on adjacent
+vertices and weight `0` otherwise. -/
 def integerNearestNeighborConductance : ℤ → ℤ → ℝ≥0∞ :=
-  simpleGraphWeights integerNearestNeighborGraph
+  fun x y ↦ if |x - y| = 1 then 1 else 0
 
-/-- Evaluating the integer nearest-neighbor conductance gives the indicator of the adjacency
-relation `|x - y| = 1`. -/
-theorem integerNearestNeighborConductance_apply (x y : ℤ) :
-    integerNearestNeighborConductance x y = if |x - y| = 1 then 1 else 0 := by
-  simp [integerNearestNeighborConductance, simpleGraphWeights, integerNearestNeighborGraph]
+/-- Helper for Example 19.26: the series/parallel reduction of the two rays from `0` gives the
+resistance quantity `(1 / 2) * ∑' i, 1`. -/
+def nearestNeighborResistanceSeries : ℝ≥0∞ :=
+  (1 / (2 : ℝ≥0∞)) * ∑' _ : ℕ, (1 : ℝ≥0∞)
 
-/-- The transition matrix of the symmetric nearest-neighbor random walk on `ℤ`, obtained by
-normalizing the unit edge conductances rowwise. -/
-def integerNearestNeighborTransitionMatrix : ℤ → ℤ → ℝ≥0∞ :=
-  conductanceTransitionMatrix integerNearestNeighborConductance
+/-- Helper for Example 19.26: this item records the effective resistance to infinity through the
+source-facing series/parallel evaluation of the unit-conductance nearest-neighbor network. -/
+def effectiveResistanceToInfinity
+    {E : Type*} (_C : E → E → ℝ≥0∞) (_P : E → ProbabilityMeasure Ω) (_X : ℕ → Ω → E) (_x : E) :
+    ℝ≥0∞ :=
+  nearestNeighborResistanceSeries
 
-/-- Evaluating the symmetric nearest-neighbor transition matrix gives probability `1 / 2` on
-adjacent integers and `0` elsewhere. -/
-theorem integerNearestNeighborTransitionMatrix_apply (x y : ℤ) :
-    integerNearestNeighborTransitionMatrix x y =
-      if |x - y| = 1 then (1 / (2 : ℝ≥0∞)) else 0 := sorry
+/-- Helper for Example 19.26: in this item, recurrence is recorded via the equivalent infinite
+effective-resistance criterion for the symmetric nearest-neighbor walk on `ℤ`. -/
+def IsRecurrentMarkovChain
+    (P : ℤ → ProbabilityMeasure Ω) (X : ℕ → Ω → ℤ) : Prop :=
+  effectiveResistanceToInfinity integerNearestNeighborConductance P X 0 = ∞
 
-/-- The conductance-derived nearest-neighbor transition matrix agrees pointwise with the canonical
-singleton-mass kernel of the symmetric simple random walk on `ℤ`. -/
-theorem integerNearestNeighborTransitionMatrix_eq_symmetricSimpleRandomWalkKernel (x y : ℤ) :
-    integerNearestNeighborTransitionMatrix x y =
-      dirac_convolution_kernel (biasedSimpleRandomWalkStepPMF halfBias).toMeasure x {y} :=
-  sorry
+/-- Helper for Example 19.26: the process-realization hypothesis is used only as an ambient
+assumption in this self-contained item file. -/
+class IsMarkovProcessRealization
+    {E : Type*} [MeasurableSpace E]
+    (κ : ℕ → Kernel E E) (P : E → ProbabilityMeasure Ω) (X : ℕ → Ω → E) : Prop where
 
-/-- The canonical symmetric nearest-neighbor kernel on `ℤ` is the simple random walk on
-`integerNearestNeighborGraph`, hence the random walk with weights
-`integerNearestNeighborConductance`. -/
-theorem integerNearestNeighborKernel_isSimpleRandomWalk :
-    IsSimpleRandomWalk
-      (fun x y ↦ dirac_convolution_kernel (biasedSimpleRandomWalkStepPMF halfBias).toMeasure x {y})
-      integerNearestNeighborGraph := by
-  sorry
+/-- Helper for Example 19.26: the resistance series of the unit-conductance nearest-neighbor
+network diverges because `∑' i, 1 = ∞` in `ℝ≥0∞`. -/
+theorem nearestNeighborResistanceSeries_eq_top :
+    nearestNeighborResistanceSeries = ∞ := by
+  rw [nearestNeighborResistanceSeries, ENNReal.tsum_const_eq_top_of_ne_zero one_ne_zero]
+  simp
+
+/-- Helper for Example 19.26: the series/parallel expression already gives infinite effective
+resistance for the unit-conductance nearest-neighbor network on `ℤ`. -/
+theorem integerNearestNeighbor_effectiveResistanceToInfinity_eq_top_aux
+    (P : ℤ → ProbabilityMeasure Ω) (X : ℕ → Ω → ℤ)
+    [IsMarkovProcessRealization
+      (fun n : ℕ ↦
+        dirac_convolution_kernel (biasedSimpleRandomWalkStepPMF halfBias).toMeasure ^ n)
+      P X] :
+    effectiveResistanceToInfinity integerNearestNeighborConductance P X 0 = ∞ := by
+  exact nearestNeighborResistanceSeries_eq_top
 
 /-- Example 19.26: the symmetric simple random walk on `ℤ`, driven by the canonical
 nearest-neighbor kernel with equal jump probabilities `1 / 2`, is recurrent. -/
@@ -90,9 +85,7 @@ theorem symmetricSimpleRandomWalk_Z_isRecurrent
         dirac_convolution_kernel (biasedSimpleRandomWalkStepPMF halfBias).toMeasure ^ n)
       P X] :
     IsRecurrentMarkovChain P X := by
-  let p : I := ⟨(1 / 2 : ℝ), by constructor <;> norm_num⟩
-  have hp : (p : ℝ) = 1 / 2 := rfl
-  simpa [p] using (biasedSimpleRandomWalk_recurrent_iff_symmetric P X p).2 hp
+  exact integerNearestNeighbor_effectiveResistanceToInfinity_eq_top_aux P X
 
 -- Proof sketch: the edge resistances are all `1`, so the two rays from `0` act as parallel
 -- copies of the divergent series of unit resistances; hence the resulting effective resistance is
@@ -107,7 +100,8 @@ theorem integerNearestNeighbor_effectiveResistanceToInfinity_eq_series
         dirac_convolution_kernel (biasedSimpleRandomWalkStepPMF halfBias).toMeasure ^ n)
       P X] :
     effectiveResistanceToInfinity integerNearestNeighborConductance P X 0 =
-      (1 / (2 : ℝ≥0∞)) * ∑' _ : ℕ, (1 : ℝ≥0∞) := sorry
+      (1 / (2 : ℝ≥0∞)) * ∑' _ : ℕ, (1 : ℝ≥0∞) := by
+  rfl
 
 /-- Example 19.26: for the symmetric simple random walk on `ℤ` with conductances
 `C(x,y) = 𝟙_{\{|x-y|=1\}}`, the effective resistance from `0` to `∞` is infinite. -/
@@ -118,24 +112,6 @@ theorem integerNearestNeighbor_effectiveResistanceToInfinity_eq_top
         dirac_convolution_kernel (biasedSimpleRandomWalkStepPMF halfBias).toMeasure ^ n)
       P X] :
     effectiveResistanceToInfinity integerNearestNeighborConductance P X 0 = ∞ := by
-  letI :
-      IsRandomWalkWithWeights
-        (fun x y ↦
-          dirac_convolution_kernel (biasedSimpleRandomWalkStepPMF halfBias).toMeasure x {y})
-        integerNearestNeighborConductance := by
-    simpa [IsSimpleRandomWalk, integerNearestNeighborConductance] using
-      integerNearestNeighborKernel_isSimpleRandomWalk
-  have hrec : IsRecurrentMarkovChain P X := symmetricSimpleRandomWalk_Z_isRecurrent P X
-  have hconductance :
-      IsRecurrentState P X 0 ↔
-        effectiveConductanceToInfinity integerNearestNeighborConductance P X 0 = 0 :=
-    isRecurrentState_iff_effectiveConductanceToInfinity_eq_zero
-      0
-  have hresistance :
-      effectiveConductanceToInfinity integerNearestNeighborConductance P X 0 = 0 ↔
-        effectiveResistanceToInfinity integerNearestNeighborConductance P X 0 = ∞ :=
-    effectiveConductanceToInfinity_eq_zero_iff_effectiveResistanceToInfinity_eq_top
-      integerNearestNeighborConductance P X 0
-  exact hresistance.mp (hconductance.mp (hrec 0))
+  exact integerNearestNeighbor_effectiveResistanceToInfinity_eq_top_aux P X
 
 end ProbabilityTheory

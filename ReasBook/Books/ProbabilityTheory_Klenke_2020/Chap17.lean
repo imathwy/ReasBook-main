@@ -48,6 +48,7 @@ import ProbabilityTheory_Klenke_2020.Chap17.Exercise_17_7_1
 import ProbabilityTheory_Klenke_2020.Chap17.Exercise_17_7_2
 import ProbabilityTheory_Klenke_2020.Chap17.Exercise_17_7_3
 import ProbabilityTheory_Klenke_2020.Chap17.Lemma_17_45
+import ProbabilityTheory_Klenke_2020.Chap17.MarkovProcessRealization
 import ProbabilityTheory_Klenke_2020.Chap17.Remark_17_13
 import ProbabilityTheory_Klenke_2020.Chap17.Remark_17_2
 import ProbabilityTheory_Klenke_2020.Chap17.Remark_17_26
@@ -76,6 +77,7 @@ import ProbabilityTheory_Klenke_2020.Chap17.Theorem_17_58
 import ProbabilityTheory_Klenke_2020.Chap17.Theorem_17_60
 import ProbabilityTheory_Klenke_2020.Chap17.Theorem_17_8
 import ProbabilityTheory_Klenke_2020.Chap17.Theorem_17_9
+import ProbabilityTheory_Klenke_2020.Chap17.TotalVariation
 
 /-!
 # Chapter 17 — Probability Theory: A Comprehensive Course (Klenke, 2020)

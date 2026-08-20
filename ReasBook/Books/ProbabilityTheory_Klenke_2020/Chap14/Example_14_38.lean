@@ -37,11 +37,57 @@ noncomputable def polyaUrnStepKernel (n : ℕ) (hn : 0 < n) (i : ℕ) :
     (fun x : Π j : Finset.Iic i, polyaUrnState n j ↦ x ⟨i, mem_Iic.2 le_rfl⟩)
     Measurable.of_discrete
 
+/-- Helper for Example 14.38: each fiber of `polyaUrnTransitionKernel` is the expected
+two-point measure concentrated on staying put or gaining one red ball. -/
+lemma polyaUrnTransitionKernel_apply (n : ℕ) (hn : 0 < n) (i : ℕ)
+    (current : polyaUrnState n i) :
+    polyaUrnTransitionKernel n hn i current =
+      let p : ℝ≥0∞ := ((current : ℕ) : ℝ≥0∞) / (n + i : ℝ≥0∞)
+      p • Measure.dirac current.succ + (1 - p) • Measure.dirac current.castSucc := by
+  -- This is the explicit fiber formula encoded in the kernel definition.
+  rfl
+
+/-- Helper for Example 14.38: the coefficient of the upward jump in the Pólya-urn transition
+is bounded by `1`. -/
+lemma polyaUrnTransitionWeight_le_one (n : ℕ) (hn : 0 < n) (i : ℕ)
+    (current : polyaUrnState n i) :
+    ((current : ℕ) : ℝ≥0∞) / (n + i : ℝ≥0∞) ≤ 1 := by
+  -- The current red-ball count cannot exceed the total number of balls at time `i`.
+  have hcurrent :
+      ((current : ℕ) : ℝ≥0∞) ≤ (n + i : ℝ≥0∞) := by
+    exact_mod_cast Nat.le_of_lt_succ current.2
+  have hdenom_ne_zero : (n + i : ℝ≥0∞) ≠ 0 := by
+    exact_mod_cast Nat.ne_of_gt (lt_of_lt_of_le hn (Nat.le_add_right n i))
+  -- Dividing both numerator and denominator by the same positive finite quantity reduces to `1`.
+  calc
+    ((current : ℕ) : ℝ≥0∞) / (n + i : ℝ≥0∞) ≤
+        (n + i : ℝ≥0∞) / (n + i : ℝ≥0∞) :=
+      ENNReal.div_le_div_right hcurrent (n + i : ℝ≥0∞)
+    _ = 1 := ENNReal.div_self hdenom_ne_zero (by simp)
+
+/-- Helper for Example 14.38: every explicit two-point transition fiber has total mass `1`. -/
+lemma polyaUrnTransitionFiber_measure_univ (n : ℕ) (hn : 0 < n) (i : ℕ)
+    (current : polyaUrnState n i) :
+    ((((current : ℕ) : ℝ≥0∞) / (n + i : ℝ≥0∞)) • Measure.dirac current.succ +
+        (1 - (((current : ℕ) : ℝ≥0∞) / (n + i : ℝ≥0∞))) • Measure.dirac current.castSucc)
+      Set.univ = 1 := by
+  let p : ℝ≥0∞ := ((current : ℕ) : ℝ≥0∞) / (n + i : ℝ≥0∞)
+  have hp_le_one : p ≤ 1 := by
+    simpa [p] using polyaUrnTransitionWeight_le_one n hn i current
+  -- Both Dirac measures assign mass `1` to `Set.univ`, so only `p + (1 - p)` remains.
+  simp [p, Measure.add_apply, Measure.smul_apply, hp_le_one, add_tsub_cancel_of_le hp_le_one]
+
 -- Proof sketch: for a current state `xᵢ`, the transition measure is supported on the two
 -- states `xᵢ.castSucc` and `xᵢ.succ`. Its total mass is
 -- `xᵢ / (n + i) + (1 - xᵢ / (n + i)) = 1`.
 instance polyaUrnTransitionKernel_isMarkovKernel (n : ℕ) (hn : 0 < n) (i : ℕ) :
-    IsMarkovKernel (polyaUrnTransitionKernel n hn i) := sorry
+    IsMarkovKernel (polyaUrnTransitionKernel n hn i) where
+  isProbabilityMeasure current := by
+    -- Rewrite the fiber as the explicit two-point transition measure.
+    rw [polyaUrnTransitionKernel_apply]
+    refine ⟨?_⟩
+    -- Its total mass is exactly the computation carried out in the helper lemma above.
+    simpa using polyaUrnTransitionFiber_measure_univ n hn i current
 
 instance polyaUrnStepKernel_isMarkovKernel (n : ℕ) (hn : 0 < n) (i : ℕ) :
     IsMarkovKernel (polyaUrnStepKernel n hn i) := by

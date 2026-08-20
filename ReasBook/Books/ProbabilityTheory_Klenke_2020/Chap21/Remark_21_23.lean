@@ -14,6 +14,8 @@ variable {Ω : Type u} {mΩ : MeasurableSpace Ω}
 
 namespace Filtration
 
+local notation:arg ℱ "^+*[" μ "]" => completed_right_continuous_filtration μ ℱ
+
 /- Remark 21.23 is a `bridge/view`: the source says the completed right-continuous filtration
 satisfies the usual conditions, and the chapter owner abstraction for that property is
 `Filtration.UsualConditions`. Package the existing theorem
@@ -22,7 +24,7 @@ instead of
 restating its fields locally. -/
 instance completed_right_continuous_filtration_usualConditions
     (μ : Measure Ω) (ℱ : Filtration NNReal mΩ) :
-    UsualConditions (completed_right_continuous_filtration μ ℱ) μ.completion := by
+    UsualConditions (ℱ^+*[μ]) μ.completion := by
   exact completed_right_continuous_filtration_usual_conditions μ ℱ
 
 end Filtration

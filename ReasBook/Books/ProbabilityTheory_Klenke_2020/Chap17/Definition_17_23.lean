@@ -44,11 +44,21 @@ theorem IsQMatrix.diag_nonpos {q : E → E → ℝ} (hq : IsQMatrix q) (x : E) :
 -- equal to `0`.
 /-- Every row of a Q-matrix has `tsum` equal to `0`. -/
 theorem IsQMatrix.row_tsum_eq_zero {q : E → E → ℝ} (hq : IsQMatrix q) (x : E) :
-    ∑' y : E, q x y = 0 := sorry
+    ∑' y : E, q x y = 0 := by
+  -- Pass from the rowwise `HasSum` statement directly to the corresponding `tsum` identity.
+  simpa using (hq.row_hasSum_zero x).tsum_eq
 
 -- Proof sketch: the zero matrix has nonnegative off-diagonal entries, and each row has `HasSum`
 -- equal to `0`.
 /-- The zero matrix is a Q-matrix. -/
-instance instIsQMatrixZero : IsQMatrix (fun _ _ : E ↦ 0) := sorry
+instance instIsQMatrixZero : IsQMatrix (fun _ _ : E ↦ 0) where
+  offDiag_nonneg := by
+    -- Every off-diagonal entry of the zero matrix is literally `0`.
+    intro x y hxy
+    simp
+  row_hasSum_zero := by
+    -- Each row is the constant-zero series, whose sum is `0`.
+    intro x
+    simpa using (hasSum_zero : HasSum (fun _ : E ↦ (0 : ℝ)) 0)
 
 end ProbabilityTheory

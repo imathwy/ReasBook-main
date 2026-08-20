@@ -19,11 +19,12 @@ variable {μ : Measure Ω}
 coordinate with respect to the `n`-exchangeable sigma-algebra is the empirical mean of the first
 `n` coordinates; this is the formal content of equation `(12.4)`. -/
 theorem condExp_zero_eq_prefix_average_of_isExchangeable {X : ℕ → Ω → ℝ}
-    (hX : IsExchangeable X μ) (hX0 : Integrable (X 0) μ) (n : ℕ+) :
+    [IsProbabilityMeasure μ] (hX : IsExchangeable X μ)
+    (hX_meas : ∀ n, Measurable (X n)) (hX0 : Integrable (X 0) μ) (n : ℕ+) :
     μ[X 0 | nExchangeableSigmaAlgebra (Function.swap X) (n : ℕ)] =ᵐ[μ]
       fun ω ↦ (∑ i : Fin (n : ℕ), X i ω) / (n : ℝ) := by
   simpa [exchangeableAverage_apply_zero n, Function.comp, Function.swap] using
-    condExp_eq_exchangeableAverage_of_isExchangeable hX
+    condExp_eq_exchangeableAverage_of_isExchangeable hX hX_meas
       (measurable_pi_apply 0)
       (by simpa [Function.swap] using hX0)
       (n : ℕ)

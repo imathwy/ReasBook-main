@@ -25,9 +25,7 @@ instance (part : MeasurableFinpartition Ω) : MeasurableSingletonClass part.part
 
 private theorem biUnion_parts_eq_univ (part : MeasurableFinpartition Ω) :
     (⋃ s ∈ part.parts, ((s : Subtype (MeasurableSet : Set Ω → Prop)) : Set Ω)) = Set.univ := by
-  rw [← Finset.sup_set_eq_biUnion]
-  simpa only [Finset.sup_coe (Psup := fun (s t : Set Ω) (hs : MeasurableSet s)
-      (ht : MeasurableSet t) ↦ hs.union ht)] using
+  simpa [Finset.sup_measurableSetSubtype_eq_biUnion] using
     congrArg (fun s : Subtype (MeasurableSet : Set Ω → Prop) ↦ (s : Set Ω)) part.sup_parts
 
 private noncomputable def indexed (part : MeasurableFinpartition Ω) :

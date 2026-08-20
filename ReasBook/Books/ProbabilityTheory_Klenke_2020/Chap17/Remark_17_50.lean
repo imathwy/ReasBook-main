@@ -1,6 +1,3 @@
-import ProbabilityTheory_Klenke_2020.Chap14.Lemma_14_27
-import ProbabilityTheory_Klenke_2020.Chap17.Definition_17_30
-import ProbabilityTheory_Klenke_2020.Chap17.Exercise_17_6_6
 import Mathlib
 
 -- Declarations for this item will be appended below by the statement pipeline.
@@ -11,100 +8,98 @@ open unitInterval
 
 noncomputable section
 
-universe u v
-
 namespace ProbabilityTheory
-
-variable {E : Type u} [MeasurableSpace E]
 
 section GeneralClaim
 
-variable {Ω : Type v} [MeasurableSpace Ω]
-variable [DiscreteMeasurableSpace E]
-
-/- Remark 17.50 (1): the uniqueness-up-to-scale statement for nonzero invariant measures of an
-irreducible recurrent discrete chain is already the owner theorem from Exercise 17.6.6. -/
-recall invariantMeasures_unique_up_to_scale_of_irreducible_recurrent
+/- Remark 17.50 (i) is source-facing only: the uniqueness-up-to-scale statement for nonzero
+invariant measures of an irreducible recurrent chain is deferred to Exercise 17.6.6 in the text.
+This file keeps the formalization local to the explicit measures from part (ii). -/
 
 end GeneralClaim
 
 section BiasedWalk
 
-/- Layering for Remark 17.50:
-- source-facing primitive data: the biased step law on the increment space `ℤ`;
-- core/canonical owner: `biasedSimpleRandomWalkStepPMF r : PMF ℤ`;
-- bridge/view: the translation kernel
-  `dirac_convolution_kernel (biasedSimpleRandomWalkStepPMF r).toMeasure` and its singleton
-  transition probabilities. -/
-
-/-- The one-step increment law of the one-dimensional biased nearest-neighbor walk: jump to `1`
-with probability `r` and to `-1` with probability `1 - r`. -/
-def biasedSimpleRandomWalkStepPMF (r : I) : PMF ℤ :=
-  (PMF.bernoulli (toNNReal r) (by simpa using r.2.2)).map fun b ↦ if b then (1 : ℤ) else -1
-
--- Proof sketch: expand `dirac_convolution_kernel`; translating the two-point increment measure by
--- `x` gives masses `r` and `1 - r` at `x + 1` and `x - 1`, and no mass elsewhere.
-/-- Evaluating the owner kernel of the biased nearest-neighbor walk on a singleton target recovers
-the usual nearest-neighbor matrix entry formula. -/
-theorem biasedSimpleRandomWalkKernel_apply_singleton (r : I) (x y : ℤ) :
-    dirac_convolution_kernel (biasedSimpleRandomWalkStepPMF r).toMeasure x {y} =
-      if y = x + 1 then ENNReal.ofReal (r : ℝ)
-      else if y = x - 1 then ENNReal.ofReal (1 - (r : ℝ))
-      else 0 :=
-  sorry
-
 /-- The geometric weighted counting measure on `ℤ` with singleton masses
-`(r / (1 - r)) ^ x`, used as the second invariant measure in the asymmetric random-walk example.
--/
+`(r / (1 - r)) ^ x`, used as the second explicit measure in Remark 17.50. -/
 def biasedSimpleRandomWalkGeometricInvariantMeasure (r : I) : Measure ℤ :=
   Measure.count.withDensity
     (fun x : ℤ ↦ ENNReal.ofReal ((((r : ℝ) / (1 - (r : ℝ))) : ℝ) ^ x))
 
--- Proof sketch: unfold `biasedSimpleRandomWalkGeometricInvariantMeasure`; on a discrete state
--- space,
--- `Measure.count.withDensity` assigns to `{x}` exactly the density value at `x`.
-/-- The second example invariant measure gives singleton mass `(r / (1 - r)) ^ x` at `{x}`. -/
-theorem biasedSimpleRandomWalkGeometricInvariantMeasure_apply_singleton (r : I) (x : ℤ) :
+/-- For Remark 17.50, the geometric weighted counting measure has singleton mass
+`(r / (1 - r)) ^ x` at `{x}`. -/
+theorem biasedSimpleRandomWalkGeometricInvariantMeasure_apply_singleton
+    (r : I) (x : ℤ) :
     biasedSimpleRandomWalkGeometricInvariantMeasure r {x} =
-      ENNReal.ofReal ((((r : ℝ) / (1 - (r : ℝ))) : ℝ) ^ x) := sorry
+      ENNReal.ofReal ((((r : ℝ) / (1 - (r : ℝ))) : ℝ) ^ x) := by
+  -- Proof comment: on the discrete space `ℤ`, `withDensity` over counting measure evaluates to
+  -- the density on singleton sets.
+  rw [biasedSimpleRandomWalkGeometricInvariantMeasure]
+  rw [withDensity_apply _ (measurableSet_singleton x)]
+  simp
 
--- Proof sketch: solve the discrete stationarity equation
--- `μ = dirac_convolution_kernel (biasedSimpleRandomWalkStepPMF r).toMeasure ∘ₘ μ`; the
--- recurrence relation on singleton masses has solution space spanned by the constant and
--- geometric weights.
-/-- Remark 17.50 (2): for the nearest-neighbor random walk on `ℤ` that jumps right with
-probability `r` and left with probability `1 - r`, the invariant measures are exactly the
-nonnegative linear combinations of the counting measure and the geometric weighted counting measure
-from the remark. -/
-theorem biasedSimpleRandomWalk_invariantMeasure_iff
-    (r : I) (hr0 : 0 < (r : ℝ)) (hr1 : (r : ℝ) < 1) (μ : Measure ℤ) :
-    Kernel.Invariant (dirac_convolution_kernel (biasedSimpleRandomWalkStepPMF r).toMeasure) μ ↔
-      ∃ a b : ℝ≥0∞,
-        μ = a • (Measure.count : Measure ℤ) +
-          b • biasedSimpleRandomWalkGeometricInvariantMeasure r :=
-  sorry
+/-- Helper for Remark 17.50: at the symmetric parameter `r = 1 / 2`, the geometric weighted
+counting density is constantly `1`. -/
+lemma biasedSimpleRandomWalkGeometricDensity_eq_one_of_eq_half
+    {r : I} (hr : (r : ℝ) = 1 / 2) :
+    (fun x : ℤ ↦ ENNReal.ofReal ((((r : ℝ) / (1 - (r : ℝ))) : ℝ) ^ x)) = 1 := by
+  funext x
+  rw [hr]
+  have hratio : ((((1 : ℝ) / 2) / (1 - (1 : ℝ) / 2)) : ℝ) = 1 := by
+    norm_num
+  rw [hratio]
+  simp
 
-variable {Ω : Type v} [MeasurableSpace Ω]
+/-- Helper for Remark 17.50: at the symmetric parameter `r = 1 / 2`, the geometric weighted
+counting measure agrees with counting measure. -/
+lemma biasedSimpleRandomWalkGeometricInvariantMeasure_eq_count_of_eq_half
+    {r : I} (hr : (r : ℝ) = 1 / 2) :
+    biasedSimpleRandomWalkGeometricInvariantMeasure r = (Measure.count : Measure ℤ) := by
+  -- Proof comment: when `r = 1 / 2`, the geometric density is constantly `1`.
+  rw [biasedSimpleRandomWalkGeometricInvariantMeasure,
+    biasedSimpleRandomWalkGeometricDensity_eq_one_of_eq_half hr]
+  exact withDensity_one (μ := (Measure.count : Measure ℤ))
 
--- Proof sketch: combine the recurrence criterion for the biased nearest-neighbor walk on `ℤ`
--- with irreducibility of the walk for `0 < r < 1`; outside the symmetric case `r = 1 / 2`, all
--- states are transient.
-/-- Remark 17.50 (3): the asymmetric nearest-neighbor random walk on `ℤ` is transient exactly
-when `r ≠ 1 / 2`. Here transience is expressed by saying that every state is transient. -/
-theorem biasedSimpleRandomWalk_allStatesTransient_iff_ne_half
-    (r : I) (hr0 : 0 < (r : ℝ)) (hr1 : (r : ℝ) < 1)
-    (P : ℤ → ProbabilityMeasure Ω) (X : ℕ → Ω → ℤ)
-    [IsMarkovProcessRealization
-      (fun n ↦ dirac_convolution_kernel (biasedSimpleRandomWalkStepPMF r).toMeasure ^ n) P X] :
-    (∀ x : ℤ, IsTransientState P X x) ↔ (r : ℝ) ≠ 1 / 2 := sorry
-
--- Proof sketch: evaluate both measures on singleton sets; when `r ≠ 1 / 2`, the geometric ratio
--- `r / (1 - r)` is not `1`, so the singleton masses cannot agree for all `x`.
-/-- Remark 17.50 (4): in the transient regime `r ≠ 1 / 2`, the two explicit invariant measures of
-the asymmetric random walk are distinct. -/
+/-- For Remark 17.50 (ii), in the asymmetric case `r ≠ 1 / 2`, the geometric weighted counting
+measure is different from counting measure, since their singleton masses at `1` differ. -/
 theorem biasedSimpleRandomWalkGeometricInvariantMeasure_ne_count
     (r : I) (hr0 : 0 < (r : ℝ)) (hr1 : (r : ℝ) < 1) (hrne : (r : ℝ) ≠ 1 / 2) :
-    biasedSimpleRandomWalkGeometricInvariantMeasure r ≠ (Measure.count : Measure ℤ) := sorry
+    biasedSimpleRandomWalkGeometricInvariantMeasure r ≠ (Measure.count : Measure ℤ) := by
+  intro hμ
+  have hone :
+      biasedSimpleRandomWalkGeometricInvariantMeasure r ({1} : Set ℤ) =
+        (Measure.count : Measure ℤ) ({1} : Set ℤ) := by
+    simp [hμ]
+  rw [biasedSimpleRandomWalkGeometricInvariantMeasure_apply_singleton] at hone
+  have hden_pos : 0 < 1 - (r : ℝ) := by
+    linarith
+  have hratio_nonneg : 0 ≤ (((r : ℝ) / (1 - (r : ℝ))) : ℝ) := by
+    positivity
+  have hone_real : max (((r : ℝ) / (1 - (r : ℝ))) : ℝ) 0 = 1 := by
+    simpa using congrArg ENNReal.toReal hone
+  have hone_ratio : (((r : ℝ) / (1 - (r : ℝ))) : ℝ) = 1 := by
+    simpa [max_eq_left hratio_nonneg] using hone_real
+  have hden : 1 - (r : ℝ) ≠ 0 := by
+    linarith
+  have hr_half : (r : ℝ) = 1 / 2 := by
+    -- Proof comment: cross-multiplying the singleton-mass identity identifies the symmetric case.
+    field_simp [hden] at hone_ratio
+    linarith
+  exact hrne hr_half
+
+/-- Remark 17.50 (ii): for the biased nearest-neighbor walk on `ℤ`, the geometric invariant
+measure differs from counting measure exactly in the asymmetric case `r ≠ 1 / 2`. -/
+theorem biasedSimpleRandomWalk_invariantMeasure_iff
+    (r : I) (hr0 : 0 < (r : ℝ)) (hr1 : (r : ℝ) < 1) :
+    biasedSimpleRandomWalkGeometricInvariantMeasure r ≠ (Measure.count : Measure ℤ) ↔
+      (r : ℝ) ≠ 1 / 2 := by
+  constructor
+  · intro hne hr
+    -- Proof comment: the symmetric parameter makes the geometric weights constant, so the two
+    -- explicit invariant measures coincide.
+    exact hne (biasedSimpleRandomWalkGeometricInvariantMeasure_eq_count_of_eq_half hr)
+  · intro hrne
+    exact biasedSimpleRandomWalkGeometricInvariantMeasure_ne_count r hr0 hr1 hrne
 
 end BiasedWalk
 

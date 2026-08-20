@@ -28,7 +28,22 @@ def brownianPathSupremum (ω : Ω) : ENNReal :=
 /-- The path supremum is the supremum of the values at nonnegative rational times. -/
 theorem brownianPathSupremum_eq_iSup_nonnegRationals :
     brownianPathSupremum =
-      fun ω ↦ ⨆ q : ℚ≥0, ENNReal.ofReal (ω (q : NNReal)) := sorry
+      fun ω ↦ ⨆ q : ℚ≥0, ENNReal.ofReal (ω (q : NNReal)) := by
+  funext ω
+  let fω : NNReal → ENNReal := fun t ↦ ENNReal.ofReal (ω t)
+  -- Continuity lets us compare the supremum on all times with the supremum on a dense subset.
+  have hcont : Continuous fω := ENNReal.continuous_ofReal.comp ω.continuous
+  have hDense : Dense (Set.range fun q : ℚ≥0 ↦ (q : NNReal)) := denseRange_nnratCast
+  -- The dense rational times already determine the supremum of the continuous path.
+  calc
+    brownianPathSupremum ω = ⨆ t : NNReal, fω t := by
+      simp [brownianPathSupremum, fω]
+    _ = ⨆ s : Set.range (fun q : ℚ≥0 ↦ (q : NNReal)), fω s := by
+      exact (hDense.ciSup' hcont).symm
+    _ = ⨆ q : ℚ≥0, fω (q : NNReal) := by
+      rw [iSup_range']
+    _ = ⨆ q : ℚ≥0, ENNReal.ofReal (ω (q : NNReal)) := by
+      simp [fω]
 
 -- Proof sketch: rewrite `brownianPathSupremum` as the supremum over the countable family of
 -- evaluations at nonnegative rational times, use measurability of each coordinate map, and then

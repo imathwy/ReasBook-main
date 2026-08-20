@@ -1,6 +1,4 @@
 import Mathlib
-import ProbabilityTheory_Klenke_2020.Chap03.Definition_3_1
-import ProbabilityTheory_Klenke_2020.Chap03.Theorem_3_3
 
 -- Declarations for this item will be appended below by the statement pipeline.
 
@@ -13,15 +11,14 @@ variable {Ω : Type u} [MeasurableSpace Ω]
 
 /-- The defining power series of the probability generating function of a discrete law on `ℕ`,
 evaluated at a point of the unit interval. -/
-noncomputable abbrev pmfProbabilityGeneratingSeries (p : PMF ℕ)
-    (z : Set.Icc (0 : ℝ) 1) : ℝ :=
+noncomputable abbrev probabilityGeneratingSeries (p : PMF ℕ) (z : Set.Icc (0 : ℝ) 1) : ℝ :=
   ∑' n : ℕ, (p n).toReal * (z : ℝ) ^ n
 
 -- Proof sketch: each term in the defining series is nonnegative because both `(p n).toReal` and
 -- `(z : ℝ)^n` are nonnegative on the unit interval, so `tsum_nonneg` applies.
 /-- The probability generating series takes nonnegative values on the unit interval. -/
-theorem pmfProbabilityGeneratingSeries_nonneg (p : PMF ℕ) (z : Set.Icc (0 : ℝ) 1) :
-    0 ≤ pmfProbabilityGeneratingSeries p z := by
+theorem probabilityGeneratingSeries_nonneg (p : PMF ℕ) (z : Set.Icc (0 : ℝ) 1) :
+    0 ≤ probabilityGeneratingSeries p z := by
   -- Each summand is nonnegative, so the whole series is nonnegative termwise.
   refine tsum_nonneg ?_
   intro n
@@ -30,8 +27,8 @@ theorem pmfProbabilityGeneratingSeries_nonneg (p : PMF ℕ) (z : Set.Icc (0 : �
 -- Proof sketch: compare the defining series termwise with `∑' n, (p n).toReal` using `z ≤ 1`,
 -- and then use that the masses of a `PMF` sum to `1`.
 /-- The probability generating series is bounded above by `1` on the unit interval. -/
-theorem pmfProbabilityGeneratingSeries_le_one (p : PMF ℕ) (z : Set.Icc (0 : ℝ) 1) :
-    pmfProbabilityGeneratingSeries p z ≤ 1 := by
+theorem probabilityGeneratingSeries_le_one (p : PMF ℕ) (z : Set.Icc (0 : ℝ) 1) :
+    probabilityGeneratingSeries p z ≤ 1 := by
   have hp_summable : Summable (fun n : ℕ ↦ (p n).toReal) := by
     simpa using ENNReal.summable_toReal p.tsum_coe_ne_top
   have hseries_summable : Summable (fun n : ℕ ↦ (p n).toReal * (z : ℝ) ^ n) := by
@@ -48,12 +45,57 @@ theorem pmfProbabilityGeneratingSeries_le_one (p : PMF ℕ) (z : Set.Icc (0 : �
   -- The summand `(z : ℝ)^n` is bounded above by `1`, so the whole series is bounded by the
   -- total mass of the law.
   calc
-    pmfProbabilityGeneratingSeries p z = ∑' n : ℕ, (p n).toReal * (z : ℝ) ^ n := rfl
+    probabilityGeneratingSeries p z = ∑' n : ℕ, (p n).toReal * (z : ℝ) ^ n := rfl
     _ ≤ ∑' n : ℕ, (p n).toReal :=
       hseries_summable.tsum_le_tsum
         (fun n ↦ mul_le_of_le_one_right ENNReal.toReal_nonneg (pow_le_one₀ z.2.1 z.2.2))
         hp_summable
     _ = 1 := hp_tsum
+
+/-- The probability generating function of an `ℕ`-valued law, viewed as a map from `[0,1]` to
+`[0,1]`. -/
+noncomputable def probabilityGeneratingFunction (p : PMF ℕ) :
+    Set.Icc (0 : ℝ) 1 → Set.Icc (0 : ℝ) 1 :=
+  fun z ↦
+    ⟨probabilityGeneratingSeries p z,
+      probabilityGeneratingSeries_nonneg p z,
+      probabilityGeneratingSeries_le_one p z⟩
+
+-- Proof sketch: unfold `probabilityGeneratingFunction` and `probabilityGeneratingSeries`; the
+-- value is definitionally the stated series.
+/-- The probability generating function evaluates to the defining power series of the law. -/
+theorem probabilityGeneratingFunction_apply (p : PMF ℕ) (z : Set.Icc (0 : ℝ) 1) :
+    (probabilityGeneratingFunction p z : ℝ) =
+      ∑' n : ℕ, (p n).toReal * (z : ℝ) ^ n := by
+  -- Unfolding the subtype-valued definition gives the defining series immediately.
+  rfl
+
+-- Proof sketch: the pushforward of a probability measure along a measurable map is again a
+-- probability measure.
+/-- The pushforward law of a measurable `ℕ`-valued random variable under a probability measure is
+again a probability measure. -/
+theorem isProbabilityMeasure_map_of_measurable (P : Measure Ω) [IsProbabilityMeasure P]
+    (X : Ω → ℕ) (hX : Measurable X) :
+    IsProbabilityMeasure (P.map X) := by
+  -- Pushforwards of probability measures remain probability measures.
+  simpa using Measure.isProbabilityMeasure_map hX.aemeasurable
+
+/-- The `PMF` associated to an `ℕ`-valued measurable random variable under a probability measure. -/
+noncomputable def natRandomVariableLaw (P : Measure Ω) [IsProbabilityMeasure P]
+    (X : Ω → ℕ) (hX : Measurable X) : PMF ℕ :=
+  let _ : IsProbabilityMeasure (P.map X) := isProbabilityMeasure_map_of_measurable P X hX
+  (P.map X).toPMF
+
+-- Proof sketch: unfold `natRandomVariableLaw`; the associated measure is definitionally the
+-- pushforward measure `P.map X`.
+/-- The measure associated to `natRandomVariableLaw` is the pushforward law of the random
+variable. -/
+theorem natRandomVariableLaw_toMeasure (P : Measure Ω) [IsProbabilityMeasure P]
+    (X : Ω → ℕ) (hX : Measurable X) :
+    (natRandomVariableLaw P X hX).toMeasure = P.map X := by
+  -- Unfold the `PMF` built from the pushforward law and simplify `toPMF.toMeasure`.
+  unfold natRandomVariableLaw
+  simp [Measure.toPMF_toMeasure]
 
 /-- The `ℕ`-valued random sum obtained by adding the first `T ω` entries of the sequence
 `X`. -/
@@ -67,6 +109,14 @@ theorem natRandomSum_apply (T : Ω → ℕ) (X : ℕ → Ω → ℕ) (ω : Ω) :
     natRandomSum T X ω = Finset.sum (Finset.range (T ω)) (fun i ↦ X i ω) := by
   -- This is just the defining equation of `natRandomSum`.
   rfl
+
+/-- Helper for Theorem 3.8: finite sums of measurable `ℕ`-valued random variables are measurable.
+-/
+theorem measurable_sum_natFamily {n : ℕ} (X : Fin n → Ω → ℕ)
+    (hX : ∀ i, Measurable (X i)) :
+    Measurable (fun ω ↦ ∑ i : Fin n, X i ω) := by
+  -- Finite sums preserve measurability.
+  fun_prop
 
 -- Proof sketch: for each `n`, the restriction of `natRandomSum T X` to the event `{ω | T ω = n}`
 -- agrees with the measurable finite sum `ω ↦ ∑ i in Finset.range n, X i ω`; then glue these
@@ -117,6 +167,38 @@ theorem measurable_natRandomSum (T : Ω → ℕ) (hT_meas : Measurable T) (X : �
     measurable_sum_natFamily (fun i : Fin n ↦ X i) (fun i ↦ hX_meas i)
   refine (hT_meas (measurableSet_singleton n)).inter ?_
   exact hsum_meas (measurableSet_singleton k)
+
+/-- Helper for Theorem 3.8: the probability generating function of the law of a measurable
+`ℕ`-valued random variable is the expectation of the power map `ω ↦ z ^ X ω`. -/
+theorem probabilityGeneratingFunction_natRandomVariableLaw_eq_integral (P : Measure Ω)
+    [IsProbabilityMeasure P] (X : Ω → ℕ) (hX : Measurable X) (z : Set.Icc (0 : ℝ) 1) :
+    (probabilityGeneratingFunction (natRandomVariableLaw P X hX) z : ℝ) =
+      ∫ ω, (z : ℝ) ^ X ω ∂P := by
+  let _ : IsProbabilityMeasure (P.map X) := isProbabilityMeasure_map_of_measurable P X hX
+  have h_pow_meas : Measurable (fun n : ℕ ↦ (z : ℝ) ^ n) := by
+    fun_prop
+  have h_pow_integrable_map : Integrable (fun n : ℕ ↦ (z : ℝ) ^ n) (P.map X) := by
+    -- The integrand is uniformly bounded by `1` on `[0, 1]`.
+    refine Integrable.of_bound h_pow_meas.aestronglyMeasurable 1 ?_
+    filter_upwards with n
+    rw [Real.norm_of_nonneg (pow_nonneg z.2.1 n)]
+    simpa using (pow_le_one₀ z.2.1 z.2.2 : (z : ℝ) ^ n ≤ 1)
+  have h_pow_integrable_law :
+      Integrable (fun n : ℕ ↦ (z : ℝ) ^ n) (natRandomVariableLaw P X hX).toMeasure := by
+    simpa [natRandomVariableLaw_toMeasure P X hX] using h_pow_integrable_map
+  -- Rewrite the pgf as an integral against the law of `X`, then push that integral back to `P`.
+  calc
+    (probabilityGeneratingFunction (natRandomVariableLaw P X hX) z : ℝ)
+        = ∑' n : ℕ, ((natRandomVariableLaw P X hX) n).toReal * (z : ℝ) ^ n := by
+            rw [probabilityGeneratingFunction_apply]
+    _ = ∫ n, (z : ℝ) ^ n ∂(natRandomVariableLaw P X hX).toMeasure := by
+          symm
+          rw [PMF.integral_eq_tsum _ _ h_pow_integrable_law]
+          simp [smul_eq_mul]
+    _ = ∫ n, (z : ℝ) ^ n ∂(P.map X) := by
+          rw [natRandomVariableLaw_toMeasure P X hX]
+    _ = ∫ ω, (z : ℝ) ^ X ω ∂P := by
+          rw [integral_map hX.aemeasurable h_pow_meas.aestronglyMeasurable]
 
 /-- Helper for Theorem 3.8: the pgf of a finite partial sum of iid `ℕ`-valued random variables
 is the corresponding power of the common pgf. -/

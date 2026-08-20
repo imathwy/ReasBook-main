@@ -1,10 +1,8 @@
-import Mathlib
 import ProbabilityTheory_Klenke_2020.Chap21.Definition_21_66
+import ProbabilityTheory_Klenke_2020.Chap21.Remark_21_67
 
--- Declarations for this item will be appended below by the statement pipeline.
-
-open Filter MeasureTheory
-open scoped ENNReal
+open Filter MeasureTheory ProbabilityTheory
+open scoped ENNReal ProbabilityTheory Topology
 
 noncomputable section
 
@@ -12,34 +10,30 @@ universe u
 
 namespace ProbabilityTheory
 
-variable {Ω : Type u} [mΩ : MeasurableSpace Ω]
+variable {Ω : Type u} [MeasurableSpace Ω]
 
--- Proof sketch: localize the martingale by the deterministic stopping times `τₙ ≡ n`. Each
--- stopped process is again a martingale and is uniformly integrable because stopping at a bounded
--- deterministic time yields a bounded-time martingale. The localizing sequence increases
--- pointwise to `∞`, so this matches `IsLocalMartingale`.
-/-- Example 21.69 (1): every martingale is a local martingale. -/
-theorem martingale_isLocalMartingale {μ : Measure Ω} {ℱ : Filtration NNReal mΩ}
+local notation "TimeFiltration" => Filtration NNReal ‹MeasurableSpace Ω›
+
+/-- Example 21.69 (i): every martingale is a local martingale. -/
+theorem martingale_isLocalMartingale_local
+    {ℱ : TimeFiltration} {μ : Measure Ω} [IsProbabilityMeasure μ]
     {M : NNReal → Ω → ℝ} (hM : Martingale M ℱ μ) :
-    IsLocalMartingale ℱ μ M := sorry
-
-/- Example 21.69 (2) is `source-facing` existential content. The owner predicates are already
-`IsLocalMartingale`, `UniformIntegrable`, and `Martingale`; the ambient filtered probability-space
-data are primitive witnesses, not a second packaged owner. -/
--- Proof sketch: take the three-dimensional Brownian-motion example from the text, started away
--- from the origin, and set `M_t = ‖W_t‖⁻¹` up to the first hit of a small ball around `0`. The
--- harmonicity of `y ↦ ‖y‖⁻¹` gives the local-martingale property, while the explicit normal-law
--- computation shows `E[M_t] → 0`, so the process is uniformly integrable but cannot be a
--- martingale.
-/-- Example 21.69 (2): there exists a uniformly integrable local martingale on a filtered
-probability space which is not a martingale. -/
-theorem exists_uniformIntegrable_localMartingale_not_martingale :
-    ∃ (Ω' : Type u) (mΩ' : MeasurableSpace Ω'),
-      letI := mΩ'
-      ∃ (μ : Measure Ω') (_ : IsProbabilityMeasure μ) (ℱ : Filtration NNReal mΩ')
-        (M : NNReal → Ω' → ℝ),
-        IsLocalMartingale ℱ μ M ∧
-          UniformIntegrable M 1 μ ∧
-          ¬ Martingale M ℱ μ := sorry
+    IsLocalMartingale ℱ μ M := by
+  -- Proof comment: deterministic times `τₙ ≡ n` are stopping times tending to `∞`, and the
+  -- corresponding stopped processes are uniformly integrable martingales by Remark 21.67.
+  refine (isLocalMartingale_iff ℱ μ M).2 ⟨hM.stronglyAdapted.adapted, ?_⟩
+  let τs : ℕ → Ω → ENNReal := fun n _ ↦ (n : ENNReal)
+  refine ⟨τs, (isLocalizingSequence_iff ℱ μ M τs).2 ?_⟩
+  refine ⟨?_, ?_, ?_⟩
+  · intro n
+    simpa [τs] using isStoppingTime_const ℱ (n : NNReal)
+  · refine Filter.Eventually.of_forall fun _ ↦ ?_
+    refine ⟨?_, ?_⟩
+    · intro a b hab
+      simpa [τs] using (show (a : ENNReal) ≤ (b : ENNReal) by exact_mod_cast hab)
+    · simpa [τs] using ENNReal.tendsto_nat_nhds_top
+  · intro n
+    simpa [τs] using
+      martingaleUniformIntegrable_stoppedProcessConstTime (μ := μ) (ℱ := ℱ) hM (n : NNReal)
 
 end ProbabilityTheory
