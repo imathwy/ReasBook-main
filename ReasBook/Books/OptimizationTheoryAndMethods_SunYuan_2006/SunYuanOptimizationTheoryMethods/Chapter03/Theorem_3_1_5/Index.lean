@@ -1,2 +1,0 @@
-import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.SunYuanOptimizationTheoryMethods.Chapter03.Theorem_3_1_5.KantorovichLocal
