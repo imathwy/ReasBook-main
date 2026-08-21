@@ -1,6 +1,6 @@
 import Mathlib
-import Papers.SmoothMinimization_Nesterov_2004.section01
-import Papers.SmoothMinimization_Nesterov_2004.section02
+import SmoothMinimization_Nesterov_2004.section01
+import SmoothMinimization_Nesterov_2004.section02
 
 /-- Points on the segment between `x` and `y` stay in a convex set. -/
 lemma smooth_convex_upper_bound_gamma_mem {E : Type*} [SeminormedAddCommGroup E]

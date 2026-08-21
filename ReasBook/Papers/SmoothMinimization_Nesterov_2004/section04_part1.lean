@@ -1,6 +1,6 @@
 import Mathlib
-import Papers.SmoothMinimization_Nesterov_2004.section02
-import Papers.SmoothMinimization_Nesterov_2004.section03
+import SmoothMinimization_Nesterov_2004.section02
+import SmoothMinimization_Nesterov_2004.section03
 
 open scoped NNReal
 

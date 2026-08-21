@@ -1,5 +1,5 @@
 import Mathlib
-import Papers.SmoothMinimization_Nesterov_2004.section02_part1
+import SmoothMinimization_Nesterov_2004.section02_part1
 
 /-- Unit-sphere values of a dual functional are bounded above (local version). -/
 lemma dualNormDef_unitSphere_bddAbove_section02 {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]

@@ -1,5 +1,5 @@
 import Mathlib
-import Papers.SmoothMinimization_Nesterov_2004.section05_part2
+import SmoothMinimization_Nesterov_2004.section05_part2
 
 open scoped BigOperators Topology
 

@@ -1,5 +1,5 @@
 import Mathlib
-import Papers.OnSomeLocalRings_Maassaran_2025.section02_part2
+import OnSomeLocalRings_Maassaran_2025.section02_part2
 
 namespace SomeLocalRings
 

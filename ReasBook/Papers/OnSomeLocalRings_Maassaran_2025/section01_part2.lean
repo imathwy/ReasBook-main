@@ -1,6 +1,6 @@
 import Mathlib
 import Mathlib.RingTheory.Ideal.Quotient.Operations
-import Papers.OnSomeLocalRings_Maassaran_2025.section01_part1
+import OnSomeLocalRings_Maassaran_2025.section01_part1
 
 namespace SomeLocalRings
 

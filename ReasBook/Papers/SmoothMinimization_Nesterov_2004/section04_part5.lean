@@ -1,5 +1,5 @@
 import Mathlib
-import Papers.SmoothMinimization_Nesterov_2004.section04_part4
+import SmoothMinimization_Nesterov_2004.section04_part4
 
 /-- The softmax vector belongs to the standard simplex (and its normalizer is positive). -/
 lemma entropySimplex_softmax_den_pos_and_mem (m : ℕ) (μ : ℝ) (s : Fin m → ℝ) (hm : 0 < m) :

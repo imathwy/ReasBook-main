@@ -1,5 +1,5 @@
 import Mathlib
-import Papers.SmoothMinimization_Nesterov_2004.section04_part7
+import SmoothMinimization_Nesterov_2004.section04_part7
 
 open scoped NNReal
 

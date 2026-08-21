@@ -1,5 +1,5 @@
 import Mathlib
-import Papers.SmoothMinimization_Nesterov_2004.section02_part2
+import SmoothMinimization_Nesterov_2004.section02_part2
 
 /-- `OperatorNormDef` is nonnegative. -/
 private lemma operatorNormDef_nonneg_section02 {E1 E2 : Type*} [SeminormedAddCommGroup E1] [NormedSpace ℝ E1]

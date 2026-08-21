@@ -8,5 +8,5 @@ import IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Book
 import OptimizationTheoryAndMethods_SunYuan_2006.Book
 import ProbabilityTheory_Klenke_2020.Book
 import RiemannSurfaces_Forster_1981.Book
-import Papers.OnSomeLocalRings_Maassaran_2025.Paper
-import Papers.SmoothMinimization_Nesterov_2004.Paper
+import OnSomeLocalRings_Maassaran_2025.Paper
+import SmoothMinimization_Nesterov_2004.Paper

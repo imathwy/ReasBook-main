@@ -1,5 +1,5 @@
 import Mathlib
-import Papers.SmoothMinimization_Nesterov_2004.section01
+import SmoothMinimization_Nesterov_2004.section01
 
 universe u v
 

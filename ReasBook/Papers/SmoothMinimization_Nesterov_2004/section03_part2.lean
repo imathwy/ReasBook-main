@@ -1,5 +1,5 @@
 import Mathlib
-import Papers.SmoothMinimization_Nesterov_2004.section03_part1
+import SmoothMinimization_Nesterov_2004.section03_part1
 
 /-- Adding a convex function preserves strong convexity. -/
 lemma section03_strongConvex_add_convex {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]

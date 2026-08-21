@@ -1,3 +1,3 @@
-import Papers.SmoothMinimization_Nesterov_2004.section02_part1
-import Papers.SmoothMinimization_Nesterov_2004.section02_part2
-import Papers.SmoothMinimization_Nesterov_2004.section02_part3
+import SmoothMinimization_Nesterov_2004.section02_part1
+import SmoothMinimization_Nesterov_2004.section02_part2
+import SmoothMinimization_Nesterov_2004.section02_part3

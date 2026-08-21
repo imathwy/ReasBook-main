@@ -1,7 +1,7 @@
 import Mathlib
-import Papers.SmoothMinimization_Nesterov_2004.section01
-import Papers.SmoothMinimization_Nesterov_2004.section03
-import Papers.SmoothMinimization_Nesterov_2004.section04
+import SmoothMinimization_Nesterov_2004.section01
+import SmoothMinimization_Nesterov_2004.section03
+import SmoothMinimization_Nesterov_2004.section04
 
 open scoped BigOperators
 

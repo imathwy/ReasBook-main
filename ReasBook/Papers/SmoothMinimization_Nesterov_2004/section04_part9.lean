@@ -1,5 +1,5 @@
 import Mathlib
-import Papers.SmoothMinimization_Nesterov_2004.section04_part8
+import SmoothMinimization_Nesterov_2004.section04_part8
 
 /-- Definition 1.4.3.1.
 Let `E` be a finite-dimensional normed space with norm `‖·‖_1` and dual norm `‖·‖_{1,*}` on `E*`.
