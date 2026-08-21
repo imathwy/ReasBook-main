@@ -165,32 +165,19 @@ GITHUB_BRANCH = (
     or "main"
 )
 
-# Custom domain mode (activated when REASBOOK_DOMAIN is set).
-# When not set, behaviour is identical to the original GitHub Pages logic.
-CUSTOM_DOMAIN = os.environ.get("REASBOOK_DOMAIN", "").strip().rstrip("/")
-CUSTOM_ROOT_PATH = os.environ.get("REASBOOK_ROOT_PATH", "").strip()
+SITE_BASE = (
+    os.environ.get("REASBOOK_SITE_BASE")
+    or f"https://{GITHUB_OWNER}.github.io/{GITHUB_REPO}/"
+).rstrip("/") + "/"
 
-if CUSTOM_DOMAIN:
-    SITE_BASE = f"{CUSTOM_DOMAIN}/"
-    SITE_ROOT = CUSTOM_ROOT_PATH if CUSTOM_ROOT_PATH else "/"
-    if not SITE_ROOT.startswith("/"):
-        SITE_ROOT = f"/{SITE_ROOT}"
-    if not SITE_ROOT.endswith("/"):
-        SITE_ROOT = f"{SITE_ROOT}/"
-else:
-    SITE_BASE = (
-        os.environ.get("REASBOOK_SITE_BASE")
-        or f"https://{GITHUB_OWNER}.github.io/{GITHUB_REPO}/"
-    ).rstrip("/") + "/"
+DEFAULT_SITE_ROOT = "/" if GITHUB_REPO == f"{GITHUB_OWNER}.github.io" else f"/{GITHUB_REPO}/"
+SITE_ROOT = (os.environ.get("REASBOOK_SITE_ROOT") or DEFAULT_SITE_ROOT).strip()
+if not SITE_ROOT.startswith("/"):
+    SITE_ROOT = f"/{SITE_ROOT}"
+if not SITE_ROOT.endswith("/"):
+    SITE_ROOT = f"{SITE_ROOT}/"
 
-    DEFAULT_SITE_ROOT = "/" if GITHUB_REPO == f"{GITHUB_OWNER}.github.io" else f"/{GITHUB_REPO}/"
-    SITE_ROOT = (os.environ.get("REASBOOK_SITE_ROOT") or DEFAULT_SITE_ROOT).strip()
-    if not SITE_ROOT.startswith("/"):
-        SITE_ROOT = f"/{SITE_ROOT}"
-    if not SITE_ROOT.endswith("/"):
-        SITE_ROOT = f"{SITE_ROOT}/"
-
-DOCS_BASE = f"{SITE_BASE}docs/"
+DOCS_BASE = f"{SITE_BASE}docs/ReasBook/"
 
 BOOK_TITLES = {
     "ConvexAnalysis_Rockafellar_1970": "Convex Analysis (Rockafellar, 1970)",
@@ -207,7 +194,7 @@ PAPER_TITLES = {
 # Temporary literate extraction bypass for pathological modules.
 # Keep this list minimal and remove entries once upstream extraction is fixed.
 DEFAULT_SKIP_MODULES = {
-    "Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02.section09_part12",
+    "Books.ConvexAnalysis_Rockafellar_1970.Chap02.section09_part12",
 }
 
 
@@ -654,7 +641,7 @@ def docs_relative_site_link(module: str, route: str) -> str:
 
 def docs_relative_doc_link(from_module: str, to_module: str) -> str:
     _ = from_module
-    return portable_site_link(f"docs/{to_module.replace('.', '/')}.html")
+    return portable_site_link(f"docs/ReasBook/{to_module.replace('.', '/')}.html")
 
 
 def portable_site_link(route: str) -> str:
@@ -961,7 +948,7 @@ def emit_sections(entries: list[Entry]) -> str:
     lines.append("")
     lines.append(f"def siteRoot : String := {lean_string(SITE_ROOT)}")
     lines.append(f"def siteBase : String := {lean_string(SITE_ROOT)}")
-    lines.append(f"def docsRoot : String := {lean_string(local_site_link('docs/'))}")
+    lines.append(f"def docsRoot : String := {lean_string(local_site_link('docs/ReasBook/'))}")
     lines.append(f"def staticRoot : String := {lean_string(local_site_link('static/style.css'))}")
     lines.append("")
     lines.append(f"def sidebarDataJson : String := {lean_string(sidebar_json)}")
@@ -1007,8 +994,6 @@ def emit_route_table(entries: list[Entry]) -> str:
         lines.append(f"import {mod}")
     lines.append("")
     lines.append("open Verso Genre Blog Site Syntax")
-    lines.append("")
-    lines.append("set_option maxRecDepth 20000")
     lines.append("")
     lines.append("namespace ReasBookSite.RouteTable")
     lines.append("")
@@ -1059,7 +1044,7 @@ def emit_route_table(entries: list[Entry]) -> str:
 
 
 def doc_link(module: str) -> str:
-    return published_site_link(f"docs/{module.replace('.', '/')}.html")
+    return published_site_link(f"docs/ReasBook/{module.replace('.', '/')}.html")
 
 
 def source_link(module: str) -> str:
@@ -1068,12 +1053,12 @@ def source_link(module: str) -> str:
 
 def chapter_source_link(e: Entry) -> str:
     chapter = f"Chap{e.chapter_num:02d}"
-    return repo_relative_link(f"Chapters/{chapter}/")
+    return repo_relative_link(f"{chapter}/")
 
 
 def paper_sections_source_link(e: Entry) -> str:
     _ = e
-    return repo_relative_link("Sections/")
+    return repo_relative_link("./")
 
 
 def verso_link(route: str) -> str:
@@ -1128,7 +1113,7 @@ def write_book_readmes(source_root: Path, entries: list[Entry]) -> None:
                 f"[Documentation]({docs_target})",
             ]
             if book_file.exists():
-                links.append(f"[Lean source]({repo_relative_link('Chapters/')})")
+                links.append(f"[Lean source]({repo_relative_link('./')})")
             else:
                 links.append("[Lean source](./)")
             out.append(f"- Links: {' | '.join(links)}")
@@ -1203,7 +1188,7 @@ def write_paper_readmes(source_root: Path, entries: list[Entry]) -> None:
             f"[Documentation]({docs_target})",
         ]
         if paper_file.exists():
-            links.append(f"[Lean source]({repo_relative_link('Sections/')})")
+            links.append(f"[Lean source]({repo_relative_link('./')})")
         else:
             links.append("[Lean source](./)")
         out.append(f"- Links: {' | '.join(links)}")
@@ -1258,11 +1243,11 @@ def write_root_readme(repo_root: Path, source_root: Path) -> None:
         book_verso = published_verso_link(f"books/{book.lower()}/")
         has_book_agg = (source_root / "Books" / book / "Book.lean").exists()
         if has_book_agg:
-            lean_src = repo_relative_link(f"ReasBook/Books/{book}/Chapters/")
-            docs_link = published_site_link(f"docs/Books/{book}/Book.html")
+            lean_src = repo_relative_link(f"ReasBook/Books/{book}/")
+            docs_link = published_site_link(f"docs/ReasBook/Books/{book}/Book.html")
         else:
             lean_src = repo_relative_link(f"ReasBook/Books/{book}/")
-            docs_link = published_site_link(f"docs/Books/{book}/")
+            docs_link = published_site_link(f"docs/ReasBook/Books/{book}/")
 
         for i, line in enumerate(lines):
             if line.startswith("- [") and book_ref_re.search(line):
@@ -1283,11 +1268,11 @@ def write_root_readme(repo_root: Path, source_root: Path) -> None:
         paper_verso = published_verso_link(f"papers/{paper.lower()}/")
         has_paper_agg = (source_root / "Papers" / paper / "Paper.lean").exists()
         if has_paper_agg:
-            lean_src = repo_relative_link(f"ReasBook/Papers/{paper}/Sections/")
-            docs_link = published_site_link(f"docs/Papers/{paper}/Paper.html")
+            lean_src = repo_relative_link(f"ReasBook/Papers/{paper}/")
+            docs_link = published_site_link(f"docs/ReasBook/Papers/{paper}/Paper.html")
         else:
             lean_src = repo_relative_link(f"ReasBook/Papers/{paper}/")
-            docs_link = published_site_link(f"docs/Papers/{paper}/")
+            docs_link = published_site_link(f"docs/ReasBook/Papers/{paper}/")
 
         for i, line in enumerate(lines):
             if line.startswith("- [") and paper_ref_re.search(line):
@@ -1346,9 +1331,9 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
             if home_entry is not None
             else f"Books/{book}/Book"
         )
-        lines.append(f"- [Documentation]({portable_site_link(f'docs/{docs_path}.html')})")
+        lines.append(f"- [Documentation]({portable_site_link(f'docs/ReasBook/{docs_path}.html')})")
         if (book_dir / "Book.lean").exists():
-            lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Books/{book}/Chapters/')})")
+            lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Books/{book}/')})")
         else:
             lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Books/{book}/')})")
         lines.append("")
@@ -1397,9 +1382,9 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
             if home_entry is not None
             else f"Papers/{paper}/Paper"
         )
-        lines.append(f"- [Documentation]({portable_site_link(f'docs/{docs_path}.html')})")
+        lines.append(f"- [Documentation]({portable_site_link(f'docs/ReasBook/{docs_path}.html')})")
         if (paper_dir / "Paper.lean").exists():
-            lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Papers/{paper}/Sections/')})")
+            lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Papers/{paper}/')})")
         else:
             lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Papers/{paper}/')})")
         lines.append("")
@@ -1569,7 +1554,7 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
             by_chapter.setdefault(e.chapter_num, []).append(e)
 
         for chapter_num, ch_entries in sorted(by_chapter.items()):
-            chapter_file = source_root / "Books" / book / "Chapters" / f"Chap{chapter_num:02d}.lean"
+            chapter_file = source_root / "Books" / book / f"Chap{chapter_num:02d}.lean"
             if not chapter_file.exists():
                 chapter_file.parent.mkdir(parents=True, exist_ok=True)
                 imports = sorted({e.module for e in ch_entries})
@@ -1586,7 +1571,7 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
 
             chapter_route = f"books/{book.lower()}/chapters/chap{chapter_num:02d}/"
             chapter_title = chapter_title_for_book(book, chapter_num)
-            chapter_module = f"Books.{book}.Chapters.Chap{chapter_num:02d}"
+            chapter_module = f"Books.{book}.Chap{chapter_num:02d}"
 
             chapter_body: list[str] = []
             chapter_body.append(f"Chapter {chapter_num:02d}")
@@ -1636,7 +1621,7 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
         if not section_file.exists():
             continue
 
-        chapter_file = source_root / "Books" / base.book_or_paper / "Chapters" / f"Chap{base.chapter_num:02d}.lean"
+        chapter_file = source_root / "Books" / base.book_or_paper / f"Chap{base.chapter_num:02d}.lean"
         chapter_route = f"books/{base.book_or_paper.lower()}/chapters/chap{base.chapter_num:02d}/"
         has_chapter_overview = chapter_file.exists()
 
