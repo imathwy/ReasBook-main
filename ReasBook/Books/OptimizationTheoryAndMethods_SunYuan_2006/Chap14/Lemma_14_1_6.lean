@@ -2,9 +2,9 @@ import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.Convex.Deriv
 import Mathlib.Analysis.Convex.Function
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Definition_14_1_extra_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Lemma_14_1_3
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.OneSidedDirectionalDeriv
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Definition_14_1_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Lemma_14_1_3
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.OneSidedDirectionalDeriv
 
 noncomputable section
 

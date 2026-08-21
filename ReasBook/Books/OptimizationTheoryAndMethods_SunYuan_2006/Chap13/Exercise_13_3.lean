@@ -1,5 +1,5 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap013.Theorem_13_5_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap13.Theorem_13_5_1
 import Mathlib.Data.Fin.VecNotation
 import Mathlib.LinearAlgebra.Matrix.Notation
 

@@ -5,7 +5,7 @@ import Mathlib.Analysis.LocallyConvex.Separation
 import Mathlib.Analysis.LocallyConvex.WeakDual
 import Mathlib.Analysis.Normed.Module.WeakDual
 import Mathlib.Data.Real.Basic
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Exercise_14_3
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Exercise_14_3
 
 noncomputable section
 

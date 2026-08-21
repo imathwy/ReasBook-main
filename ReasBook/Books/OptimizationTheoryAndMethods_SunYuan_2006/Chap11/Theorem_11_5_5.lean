@@ -1,6 +1,6 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap011.Lemma_11_5_3
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap011.Theorem_11_5_5.Comparison
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap11.Lemma_11_5_3
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap11.Theorem_11_5_5.Comparison
 
 noncomputable section
 

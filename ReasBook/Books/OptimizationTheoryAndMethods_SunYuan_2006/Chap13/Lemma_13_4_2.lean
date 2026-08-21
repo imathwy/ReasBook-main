@@ -1,5 +1,5 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap013.Algorithm_13_4_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap13.Algorithm_13_4_1
 
 -- Domain sampling:
 -- * primary domain: Step-3 null-space trust-region predicted-reduction lower bounds in

@@ -2,7 +2,7 @@ module
 
 public import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 
-public import OptimizationTheoryAndMethods_SunYuan_2006.Chap013.LinearTrustRegion
+public import OptimizationTheoryAndMethods_SunYuan_2006.Chap13.LinearTrustRegion
 
 noncomputable section
 

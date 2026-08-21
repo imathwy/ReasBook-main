@@ -1,5 +1,5 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Lemma_14_6_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Lemma_14_6_2
 
 -- Source/core/bridge triage:
 -- * source-facing item: Exercise 14.9 recalls the Section 14.6 quantities and the seven clauses
@@ -10,7 +10,7 @@ import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Lemma_14_6_2
 -- local wrappers.
 
 /- Chapter14 Exercise 14.9: recall the canonical Section 14.6 owners and the seven clauses of
-`SunYuanOptimizationTheoryMethods.Chap014.Lemma_14_6_2`. -/
+`SunYuanOptimizationTheoryMethods.Chap14.Lemma_14_6_2`. -/
 
 #check compositeNonsmoothJacobianTranspose
 #check compositeNonsmoothChi

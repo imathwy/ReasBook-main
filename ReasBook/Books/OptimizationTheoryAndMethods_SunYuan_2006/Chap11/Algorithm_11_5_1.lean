@@ -1,6 +1,6 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap011.Algorithm_11_4_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap011.Algorithm_11_5_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap11.Algorithm_11_4_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap11.Algorithm_11_5_2
 import Mathlib.Analysis.Calculus.Gradient.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Data.Matrix.Mul

@@ -1,5 +1,5 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap010.Definition_10_1_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap10.Definition_10_1_extra_1
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic

@@ -11,8 +11,8 @@ import Mathlib.Data.Set.Basic
 import Mathlib.LinearAlgebra.Matrix.ToLin
 import Mathlib.Order.Filter.AtTopBot.Basic
 import Mathlib.Topology.Sequences
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap013.Algorithm_13_4_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap013.Lemma_13_4_3
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap13.Algorithm_13_4_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap13.Lemma_13_4_3
 
 noncomputable section
 

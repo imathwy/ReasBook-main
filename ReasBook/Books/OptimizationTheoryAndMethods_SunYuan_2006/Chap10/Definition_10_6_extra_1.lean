@@ -1,6 +1,6 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap01.Definition_1_2_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap010.Definition_10_1_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap10.Definition_10_1_extra_1
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Analysis.Convex.Function
 import Mathlib.Data.Real.Basic

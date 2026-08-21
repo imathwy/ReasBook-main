@@ -1,7 +1,7 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Order.Filter.Extr
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap013.Algorithm_13_6_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap013.Lemma_13_6_4
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap13.Algorithm_13_6_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap13.Lemma_13_6_4
 
 noncomputable section
 

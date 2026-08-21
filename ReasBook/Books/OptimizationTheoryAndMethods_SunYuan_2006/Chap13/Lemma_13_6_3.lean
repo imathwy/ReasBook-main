@@ -4,8 +4,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 import Mathlib.LinearAlgebra.Matrix.Rank
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap01.Exercise_1_5
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap013.Lemma_13_6_3.Section13325
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap013.Theorem_13_5_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap13.Lemma_13_6_3.Section13325
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap13.Theorem_13_5_1
 
 noncomputable section
 

@@ -6,7 +6,7 @@ import Mathlib.Data.Set.Basic
 import Mathlib.LinearAlgebra.Matrix.ToLin
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap03.Theorem_3_4_3
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap03.Theorem_3_4_4
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Theorem_12_1_3
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Theorem_12_1_3
 
 noncomputable section
 

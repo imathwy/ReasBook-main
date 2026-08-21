@@ -2,8 +2,8 @@ import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.Normed.Module.Dual
 import Mathlib.Analysis.Normed.Operator.NNNorm
 import Mathlib.Data.Set.Basic
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.LocallyLipschitzAt
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Definition_14_1_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.LocallyLipschitzAt
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Definition_14_1_extra_1
 
 noncomputable section
 

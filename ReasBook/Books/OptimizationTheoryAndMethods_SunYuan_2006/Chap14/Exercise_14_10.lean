@@ -4,8 +4,8 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Data.Matrix.Basic
 import Mathlib.Order.Filter.Extr
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap01.Definition_1_5_extra_2
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap013.Remark_13_1_extra_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Algorithm_14_7_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap13.Remark_13_1_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Algorithm_14_7_1
 
 noncomputable section
 

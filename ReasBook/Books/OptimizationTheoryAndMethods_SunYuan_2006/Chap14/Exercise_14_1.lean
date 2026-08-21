@@ -1,6 +1,6 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Definition_14_1_extra_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Lemma_14_1_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Definition_14_1_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Lemma_14_1_1
 
 noncomputable section
 

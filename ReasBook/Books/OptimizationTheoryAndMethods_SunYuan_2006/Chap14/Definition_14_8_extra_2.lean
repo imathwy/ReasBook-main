@@ -1,7 +1,7 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Order.Filter.Extr
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Definition_14_8_extra_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.LocallyLipschitzAt
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Definition_14_8_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.LocallyLipschitzAt
 
 noncomputable section
 

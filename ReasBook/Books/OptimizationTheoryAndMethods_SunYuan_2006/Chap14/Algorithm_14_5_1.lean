@@ -1,5 +1,5 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.EuclideanSubgradient
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.EuclideanSubgradient
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 
 noncomputable section

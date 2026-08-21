@@ -1,6 +1,6 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap01.Definition_1_5_extra_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Definition_12_3_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Definition_12_3_extra_1
 import Mathlib.Analysis.Asymptotics.Lemmas
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.Analysis.InnerProductSpace.PiL2

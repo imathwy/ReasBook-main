@@ -1,6 +1,6 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.Calculus.InverseFunctionTheorem.FDeriv
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Definition_14_8_extra_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Definition_14_8_extra_2
 
 noncomputable section
 

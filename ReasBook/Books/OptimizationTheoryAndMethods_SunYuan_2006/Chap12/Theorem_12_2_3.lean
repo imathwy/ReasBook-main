@@ -1,6 +1,6 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Algorithm_12_2_2
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Theorem_12_1_3
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Algorithm_12_2_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Theorem_12_1_3
 import Mathlib.Order.Filter.AtTopBot.Basic
 
 open Filter

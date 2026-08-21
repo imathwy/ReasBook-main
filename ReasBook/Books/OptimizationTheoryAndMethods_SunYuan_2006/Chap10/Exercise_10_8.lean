@@ -1,5 +1,5 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap010.Algorithm_10_4_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap10.Algorithm_10_4_1
 
 noncomputable section
 

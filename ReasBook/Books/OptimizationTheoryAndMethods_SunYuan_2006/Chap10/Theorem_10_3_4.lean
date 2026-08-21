@@ -1,5 +1,5 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap010.Algorithm_10_3_3
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap10.Algorithm_10_3_3
 import Mathlib.Data.Set.Basic
 import Mathlib.Order.Filter.Extr
 

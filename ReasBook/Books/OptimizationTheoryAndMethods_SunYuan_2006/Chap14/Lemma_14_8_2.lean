@@ -5,7 +5,7 @@ import Mathlib.Analysis.Convex.TotallyBounded
 import Mathlib.Data.Fintype.EquivFin
 import Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
 import Mathlib.MeasureTheory.Measure.OpenPos
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Definition_14_8_extra_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Definition_14_8_extra_2
 
 noncomputable section
 

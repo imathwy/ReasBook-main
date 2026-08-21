@@ -1,7 +1,7 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap08.Theorem_8_2_7
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap010.Theorem_10_6_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Theorem_12_1_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap10.Theorem_10_6_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Theorem_12_1_2
 
 open Filter
 open scoped BigOperators Matrix.Norms.Elementwise

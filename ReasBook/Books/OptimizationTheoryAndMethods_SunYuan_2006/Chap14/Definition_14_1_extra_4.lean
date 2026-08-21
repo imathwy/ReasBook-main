@@ -2,9 +2,9 @@ import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.Calculus.LocalExtr.Basic
 import Mathlib.Order.Filter.Extr
 import Mathlib.Topology.Instances.EReal.Lemmas
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Lemma_14_1_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Lemma_14_1_3
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.OneSidedDirectionalDeriv
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Lemma_14_1_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Lemma_14_1_3
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.OneSidedDirectionalDeriv
 
 noncomputable section
 

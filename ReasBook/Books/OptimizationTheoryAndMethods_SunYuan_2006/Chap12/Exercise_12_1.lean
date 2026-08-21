@@ -2,8 +2,8 @@ import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Data.Matrix.Basic
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap03.Exercise_3_4
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Algorithm_12_1_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Theorem_12_1_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Algorithm_12_1_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Theorem_12_1_2
 
 noncomputable section
 

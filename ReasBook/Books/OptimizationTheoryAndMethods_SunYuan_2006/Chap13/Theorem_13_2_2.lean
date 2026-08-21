@@ -1,7 +1,7 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap08.Definition_8_1_extra_1
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap08.Theorem_8_2_7
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap013.Algorithm_13_2_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap13.Algorithm_13_2_1
 import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Analysis.Matrix.Normed
 import Mathlib.Order.Filter.AtTopBot.Basic

@@ -1,6 +1,6 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap01.Definition_1_2_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap013.Definition_13_3_extra_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap13.Definition_13_3_extra_2
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Normed.Lp.PiLp

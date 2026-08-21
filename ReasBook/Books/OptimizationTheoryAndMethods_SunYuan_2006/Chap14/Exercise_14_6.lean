@@ -1,7 +1,7 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.InnerProductSpace.ProdL2
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap01.Theorem_1_3_24
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Algorithm_14_4_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Algorithm_14_4_1
 
 noncomputable section
 

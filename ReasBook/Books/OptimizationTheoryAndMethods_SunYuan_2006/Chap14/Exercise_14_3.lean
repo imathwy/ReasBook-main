@@ -5,7 +5,7 @@ import Mathlib.Analysis.InnerProductSpace.Dual
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Asymptotics.Lemmas
 import Mathlib.Topology.Order.LiminfLimsup
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Definition_14_1_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Definition_14_1_2
 
 noncomputable section
 

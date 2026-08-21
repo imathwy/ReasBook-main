@@ -1,6 +1,6 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.Asymptotics.Defs
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Theorem_12_7_3
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Theorem_12_7_3
 
 noncomputable section
 

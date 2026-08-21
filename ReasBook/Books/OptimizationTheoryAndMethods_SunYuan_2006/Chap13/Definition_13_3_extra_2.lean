@@ -1,5 +1,5 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Lemma_12_2_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Lemma_12_2_1
 import Mathlib.Algebra.Order.Group.PosPart
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Data.Matrix.Basic

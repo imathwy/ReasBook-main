@@ -1,5 +1,5 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap010.Definition_10_3_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap10.Definition_10_3_extra_1
 
 namespace InteriorPointPenaltyProblem
 

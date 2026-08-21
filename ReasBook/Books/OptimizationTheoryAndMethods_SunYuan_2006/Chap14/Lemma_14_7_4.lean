@@ -1,7 +1,7 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.CStarAlgebra.Matrix
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Algorithm_14_7_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Lemma_14_6_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Algorithm_14_7_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Lemma_14_6_2
 
 noncomputable section
 

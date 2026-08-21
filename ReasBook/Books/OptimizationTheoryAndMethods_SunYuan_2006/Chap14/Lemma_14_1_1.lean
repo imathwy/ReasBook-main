@@ -1,5 +1,5 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Definition_14_1_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Definition_14_1_2
 import Mathlib.Order.Filter.IsBounded
 import Mathlib.Order.LiminfLimsup
 import Mathlib.Topology.Semicontinuity.Basic

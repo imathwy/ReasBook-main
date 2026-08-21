@@ -7,9 +7,9 @@ import Mathlib.Order.Filter.Extr
 import Mathlib.Topology.Algebra.Module.Equiv
 import Mathlib.Topology.Compactness.Compact
 import Mathlib.Topology.MetricSpace.Lipschitz
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Definition_14_1_extra_4
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Algorithm_14_8_extra_5
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Definition_14_8_extra_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Definition_14_1_extra_4
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Algorithm_14_8_extra_5
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Definition_14_8_extra_2
 
 noncomputable section
 

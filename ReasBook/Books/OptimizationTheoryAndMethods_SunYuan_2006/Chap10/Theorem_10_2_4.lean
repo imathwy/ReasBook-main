@@ -1,5 +1,5 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap010.Theorem_10_2_5
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap10.Theorem_10_2_5
 
 variable {n m : ℕ}
 

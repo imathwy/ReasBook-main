@@ -6,8 +6,8 @@ import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Data.Fin.VecNotation
 import Mathlib.Data.Real.Basic
 import Mathlib.Order.Filter.Basic
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.EqualityConstrainedProblem
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Theorem_12_8_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.EqualityConstrainedProblem
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Theorem_12_8_1
 
 open Filter
 

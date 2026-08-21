@@ -3,8 +3,8 @@ import Mathlib.Analysis.Convex.Extrema
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Data.Real.Basic
 import Mathlib.Topology.MetricSpace.HausdorffDistance
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Algorithm_14_3_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Algorithm_14_3_7
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Algorithm_14_3_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Algorithm_14_3_7
 
 noncomputable section
 

@@ -5,8 +5,8 @@ import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Order.Filter.Extr
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap010.Algorithm_10_4_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap010.Exercise_10_3
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap10.Algorithm_10_4_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap10.Exercise_10_3
 
 open scoped BigOperators
 

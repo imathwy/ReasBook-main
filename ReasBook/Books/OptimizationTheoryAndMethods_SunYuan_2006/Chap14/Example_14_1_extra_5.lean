@@ -1,8 +1,8 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.Calculus.LocalExtr.Basic
 import Mathlib.Analysis.SpecialFunctions.Log.Base
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Definition_14_1_2
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Definition_14_1_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Definition_14_1_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Definition_14_1_extra_1
 
 noncomputable section
 

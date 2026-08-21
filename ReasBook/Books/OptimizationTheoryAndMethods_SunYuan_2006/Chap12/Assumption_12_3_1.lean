@@ -2,7 +2,7 @@ import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Analysis.Calculus.Gradient.Basic
 import Mathlib.Order.Filter.Basic
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap010.Theorem_10_6_7
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap10.Theorem_10_6_7
 
 noncomputable section
 

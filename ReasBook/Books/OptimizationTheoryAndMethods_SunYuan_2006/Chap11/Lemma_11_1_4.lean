@@ -1,5 +1,5 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap011.Definition_11_1_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap11.Definition_11_1_extra_1
 import Mathlib.Analysis.Calculus.Deriv.AffineMap
 import Mathlib.Analysis.Convex.Deriv
 import Mathlib.Analysis.Convex.Function

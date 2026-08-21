@@ -1,5 +1,5 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Theorem_12_3_3
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Theorem_12_3_3
 
 noncomputable section
 

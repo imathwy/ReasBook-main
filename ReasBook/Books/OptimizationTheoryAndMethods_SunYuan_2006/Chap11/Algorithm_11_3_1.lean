@@ -11,7 +11,7 @@ import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.LinearAlgebra.Matrix.ToLin
 import Mathlib.Order.Filter.AtTopBot.Basic
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap011.Definition_11_2_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap11.Definition_11_2_extra_1
 
 noncomputable section
 

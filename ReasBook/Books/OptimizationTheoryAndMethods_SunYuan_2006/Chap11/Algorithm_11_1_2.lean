@@ -1,7 +1,7 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Topology.Order.WithTop
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap011.Definition_11_1_extra_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap11.Definition_11_1_extra_2
 
 noncomputable section
 

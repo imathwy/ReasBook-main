@@ -1,6 +1,6 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.Calculus.Deriv.Basic
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Lemma_14_6_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Lemma_14_6_1
 
 noncomputable section
 

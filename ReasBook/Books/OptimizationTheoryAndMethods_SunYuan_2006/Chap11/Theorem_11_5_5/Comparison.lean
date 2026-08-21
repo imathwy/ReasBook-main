@@ -1,5 +1,5 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap011.Lemma_11_5_4
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap11.Lemma_11_5_4
 
 noncomputable section
 

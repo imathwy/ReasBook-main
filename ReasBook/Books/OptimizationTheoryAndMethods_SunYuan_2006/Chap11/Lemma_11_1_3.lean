@@ -4,7 +4,7 @@ import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Data.Set.Basic
 import Mathlib.Order.Filter.Extr
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap08.Definition_8_2_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap011.Lemma_11_1_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap11.Lemma_11_1_1
 
 noncomputable section
 

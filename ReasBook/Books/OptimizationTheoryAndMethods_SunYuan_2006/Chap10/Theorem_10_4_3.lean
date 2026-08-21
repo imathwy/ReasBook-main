@@ -1,8 +1,8 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.Normed.Group.Bounded
 import Mathlib.Order.Filter.Extr
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap010.Algorithm_10_4_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap010.StandardPenaltyProblemBridge
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap10.Algorithm_10_4_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap10.StandardPenaltyProblemBridge
 
 open Filter
 

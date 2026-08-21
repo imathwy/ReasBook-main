@@ -4,7 +4,7 @@ import Mathlib.Analysis.Convex.Function
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Data.Matrix.Basic
 import Mathlib.Data.Set.Basic
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap011.Definition_11_1_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap11.Definition_11_1_extra_1
 
 noncomputable section
 

@@ -1,6 +1,6 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Definition_12_6_extra_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Theorem_12_7_3
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Definition_12_6_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Theorem_12_7_3
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 
 noncomputable section

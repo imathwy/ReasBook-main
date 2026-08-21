@@ -11,7 +11,7 @@ import Mathlib.Data.Matrix.Mul
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.LinearAlgebra.Matrix.Rank
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap013.Lemma_13_6_4
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap13.Lemma_13_6_4
 
 noncomputable section
 

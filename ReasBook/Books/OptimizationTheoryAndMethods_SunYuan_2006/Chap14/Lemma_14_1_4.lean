@@ -7,9 +7,9 @@ import Mathlib.Analysis.LocallyConvex.Separation
 import Mathlib.Analysis.LocallyConvex.WeakDual
 import Mathlib.Analysis.Normed.Module.WeakDual
 import Mathlib.Topology.Semicontinuity.Hemicontinuity
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Definition_14_1_2
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Lemma_14_1_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Lemma_14_1_3
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Definition_14_1_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Lemma_14_1_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Lemma_14_1_3
 noncomputable section
 
 open scoped BigOperators Pointwise ClarkeDifferential ClarkeDirectionalDerivative

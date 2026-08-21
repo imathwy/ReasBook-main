@@ -5,8 +5,8 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap01.Definition_1_5_extra_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Definition_14_8_extra_4
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Exercise_14_13
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Definition_14_8_extra_4
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Exercise_14_13
 
 noncomputable section
 

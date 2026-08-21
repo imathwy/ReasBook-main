@@ -8,7 +8,7 @@ import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Theorem_12_1_4
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Theorem_12_1_4
 
 noncomputable section
 

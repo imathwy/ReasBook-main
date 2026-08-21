@@ -1,6 +1,6 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap09.Theorem_9_1_3
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap013.Remark_13_1_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap13.Remark_13_1_extra_1
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Normed.Lp.PiLp
 import Mathlib.Data.Fin.Tuple.Basic

@@ -1,7 +1,7 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.Asymptotics.Defs
 import Mathlib.Order.Filter.AtTopBot.Basic
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Assumption_12_3_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Assumption_12_3_2
 
 noncomputable section
 

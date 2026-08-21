@@ -1,5 +1,5 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Definition_12_2_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Definition_12_2_extra_1
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Analysis.InnerProductSpace.Adjoint

@@ -3,7 +3,7 @@ import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Analysis.Convex.Segment
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap01.Theorem_1_3_19
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap03.Definition_3_5_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap011.Definition_11_1_extra_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap11.Definition_11_1_extra_2
 
 noncomputable section
 

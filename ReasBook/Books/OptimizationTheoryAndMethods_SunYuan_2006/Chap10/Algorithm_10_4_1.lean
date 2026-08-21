@@ -1,7 +1,7 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Analysis.Normed.Lp.PiLp
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap010.Definition_10_1_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap10.Definition_10_1_extra_1
 
 open scoped BigOperators
 

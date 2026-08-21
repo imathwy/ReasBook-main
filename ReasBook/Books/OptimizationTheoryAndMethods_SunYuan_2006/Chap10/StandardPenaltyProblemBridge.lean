@@ -1,7 +1,7 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap08.Definition_8_1_2
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap08.Definition_8_2_10
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap010.Definition_10_1_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap10.Definition_10_1_extra_1
 
 noncomputable section
 

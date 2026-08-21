@@ -5,8 +5,8 @@ import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Data.Matrix.Block
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap010.Definition_10_1_extra_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Algorithm_12_1_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap10.Definition_10_1_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Algorithm_12_1_1
 
 noncomputable section
 

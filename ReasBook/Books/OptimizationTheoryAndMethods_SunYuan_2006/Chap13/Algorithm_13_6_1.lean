@@ -7,8 +7,8 @@ import Mathlib.Data.Matrix.Mul
 import Mathlib.Data.Real.Basic
 import Mathlib.LinearAlgebra.Matrix.ToLin
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap01.Exercise_1_5
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap013.Assumption_13_6_2
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap013.Theorem_13_5_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap13.Assumption_13_6_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap13.Theorem_13_5_1
 
 noncomputable section
 

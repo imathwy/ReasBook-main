@@ -1,7 +1,7 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib
 import Mathlib.LinearAlgebra.Matrix.PosDef
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap013.Theorem_13_5_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap13.Theorem_13_5_2
 
 -- Semantic recall: Chapter 13 Theorem 13.5.1 already owns the source-facing CDT quadratic
 -- model, feasible set, residual threshold, shifted Hessian, and multiplier conditions. This file

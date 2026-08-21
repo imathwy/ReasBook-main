@@ -3,8 +3,8 @@ import Mathlib.Analysis.Convex.Extrema
 import Mathlib.Analysis.Convex.Function
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Data.Matrix.Basic
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap011.Exercise_11_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.EuclideanSubgradient
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap11.Exercise_11_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.EuclideanSubgradient
 
 noncomputable section
 

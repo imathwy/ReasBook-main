@@ -2,7 +2,7 @@ import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Analysis.Calculus.Gradient.Basic
 import Mathlib.Data.Finset.Max
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap013.Algorithm_13_4_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap13.Algorithm_13_4_1
 
 noncomputable section
 

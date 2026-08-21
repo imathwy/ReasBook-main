@@ -1,6 +1,6 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Order.Filter.EventuallyConst
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap013.Corollary_13_6_5
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap13.Corollary_13_6_5
 
 noncomputable section
 

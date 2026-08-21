@@ -1,6 +1,6 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap011.Exercise_11_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap011.Exercise_11_3
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap11.Exercise_11_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap11.Exercise_11_3
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap03.Definition_3_5_1
 import Mathlib.Analysis.Calculus.FDeriv.WithLp
 import Mathlib.Analysis.Calculus.Deriv.Pow

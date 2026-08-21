@@ -5,9 +5,9 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Order.Filter.AtTopBot.Basic
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap01.Definition_1_5_extra_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Definition_12_3_extra_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Lemma_12_7_4
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Lemma_12_7_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Definition_12_3_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Lemma_12_7_4
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Lemma_12_7_2
 
 noncomputable section
 

@@ -4,7 +4,7 @@ import OptimizationTheoryAndMethods_SunYuan_2006.Chap01.Theorem_1_4_6
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap03.Definition_3_5_1
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap08.Definition_8_1_3
 import OptimizationTheoryAndMethods_SunYuan_2006.Chap08.Theorem_8_3_3
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap010.ChosenPseudoInverse
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap10.ChosenPseudoInverse
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Analysis.Calculus.ContDiff.Operations

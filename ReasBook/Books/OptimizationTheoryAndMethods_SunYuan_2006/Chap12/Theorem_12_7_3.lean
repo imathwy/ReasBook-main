@@ -7,10 +7,10 @@ import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Order.Filter.AtTopBot.Basic
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Assumption_12_3_2
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.EqualityConstrainedProblem
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Lemma_12_2_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Lemma_12_7_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Assumption_12_3_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.EqualityConstrainedProblem
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Lemma_12_2_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Lemma_12_7_2
 
 open Filter
 

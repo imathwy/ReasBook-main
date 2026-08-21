@@ -2,7 +2,7 @@ import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.InnerProductSpace.ProdL2
 import Mathlib.Analysis.InnerProductSpace.Projection.Basic
 import Mathlib.Analysis.Normed.Module.FiniteDimension
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Assumption_12_6_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Assumption_12_6_1
 
 noncomputable section
 

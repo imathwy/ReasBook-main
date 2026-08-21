@@ -1,7 +1,7 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
 import Mathlib.Topology.MetricSpace.HausdorffDistance
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Theorem_14_3_3
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Theorem_14_3_3
 
 noncomputable section
 

@@ -7,8 +7,8 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.LinearAlgebra.Matrix.ToLin
 import Mathlib.Order.Filter.Extr
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap010.Definition_10_5_extra_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap010.StandardPenaltyProblemBridge
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap10.Definition_10_5_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap10.StandardPenaltyProblemBridge
 
 noncomputable section
 

@@ -5,7 +5,7 @@ import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Matrix.Normed
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.Order.Filter.AtTopBot.Basic
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.EqualityConstrainedProblem
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.EqualityConstrainedProblem
 
 open Filter
 open Matrix

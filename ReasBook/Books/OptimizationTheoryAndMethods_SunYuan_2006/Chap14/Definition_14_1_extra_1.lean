@@ -5,7 +5,7 @@ import Mathlib.Analysis.Calculus.TangentCone.Real
 import Mathlib.Order.Filter.Extr
 import Mathlib.Topology.MetricSpace.Lipschitz
 import Mathlib.Topology.Instances.EReal.Lemmas
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.OneSidedDirectionalDeriv
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.OneSidedDirectionalDeriv
 
 noncomputable section
 

@@ -2,7 +2,7 @@ import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.Calculus.ContDiff.Basic
 import Mathlib.Analysis.Matrix.Normed
 import Mathlib.Order.Filter.AtTopBot.Basic
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap011.Algorithm_11_3_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap11.Algorithm_11_3_1
 
 noncomputable section
 

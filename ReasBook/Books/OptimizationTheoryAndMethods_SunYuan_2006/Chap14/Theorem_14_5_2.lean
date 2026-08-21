@@ -1,6 +1,6 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.Convex.Function
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Algorithm_14_5_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Algorithm_14_5_1
 
 noncomputable section
 

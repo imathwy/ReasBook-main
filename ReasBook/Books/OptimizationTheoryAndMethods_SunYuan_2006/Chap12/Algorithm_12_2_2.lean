@@ -7,8 +7,8 @@ import Mathlib.Data.Set.Basic
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.Order.Filter.Extr
 import Mathlib.Topology.Algebra.InfiniteSum.Basic
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap010.Definition_10_6_extra_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Definition_12_2_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap10.Definition_10_6_extra_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Definition_12_2_extra_1
 
 noncomputable section
 

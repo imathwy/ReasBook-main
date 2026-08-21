@@ -6,7 +6,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Basic
 import Mathlib.Order.Filter.AtTopBot.Basic
 import Mathlib.Order.Filter.Extr
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap012.Algorithm_12_7_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap12.Algorithm_12_7_1
 
 noncomputable section
 

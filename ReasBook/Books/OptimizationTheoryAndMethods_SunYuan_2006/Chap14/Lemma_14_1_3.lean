@@ -2,8 +2,8 @@ import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.Convex.Cone.Extension
 import Mathlib.Analysis.Convex.Topology
 import Mathlib.Analysis.Normed.Module.WeakDual
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Lemma_14_1_1
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Definition_14_1_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Lemma_14_1_1
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Definition_14_1_2
 
 noncomputable section
 

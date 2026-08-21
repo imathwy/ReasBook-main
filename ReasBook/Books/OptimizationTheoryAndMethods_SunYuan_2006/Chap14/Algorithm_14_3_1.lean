@@ -1,7 +1,7 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.Convex.Extrema
 import Mathlib.Analysis.InnerProductSpace.Dual
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Lemma_14_1_6
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Lemma_14_1_6
 
 noncomputable section
 

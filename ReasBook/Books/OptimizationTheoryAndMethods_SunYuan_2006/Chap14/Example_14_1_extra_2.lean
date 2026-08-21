@@ -1,7 +1,7 @@
 import OptimizationTheoryAndMethods_SunYuan_2006.Compat
 import Mathlib.Analysis.Normed.Module.Dual
 import Mathlib.Data.Real.Basic
-import OptimizationTheoryAndMethods_SunYuan_2006.Chap014.Definition_14_1_2
+import OptimizationTheoryAndMethods_SunYuan_2006.Chap14.Definition_14_1_2
 
 noncomputable section
 
