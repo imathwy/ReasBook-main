@@ -4,7 +4,7 @@ import Books.Analysis2_Tao_2022.Book
 import Books.ConvexAnalysis_Rockafellar_1970.Book
 import Books.IntegerProgramming_Conforti_2014.Book
 -- IntroductiontoRealAnalysisVolumeI_JiriLebl_2025 excluded from aggregate:
--- RiemannIntegrableOn conflicts with Books.Analysis2_Tao_2022.Chapters.Chap08.section04
+-- RiemannIntegrableOn conflicts with Books.Analysis2_Tao_2022.Chap08.section04
 
 import Papers.SmoothMinimization_Nesterov_2004.Paper
 import Papers.OnSomeLocalRings_Maassaran_2025.Paper

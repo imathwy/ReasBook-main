@@ -1,12 +1,12 @@
 
-import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap01
-import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap02
-import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap03
-import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap04
-import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap05
-import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap06
-import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap07
-import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap08
+import Books.ConvexAnalysis_Rockafellar_1970.Chap01
+import Books.ConvexAnalysis_Rockafellar_1970.Chap02
+import Books.ConvexAnalysis_Rockafellar_1970.Chap03
+import Books.ConvexAnalysis_Rockafellar_1970.Chap04
+import Books.ConvexAnalysis_Rockafellar_1970.Chap05
+import Books.ConvexAnalysis_Rockafellar_1970.Chap06
+import Books.ConvexAnalysis_Rockafellar_1970.Chap07
+import Books.ConvexAnalysis_Rockafellar_1970.Chap08
 
 /-!
 Overview page for Convex Analysis (Rockafellar, 1970).

@@ -1,12 +1,12 @@
 
-import Books.Analysis2_Tao_2022.Chapters.Chap01
-import Books.Analysis2_Tao_2022.Chapters.Chap02
-import Books.Analysis2_Tao_2022.Chapters.Chap03
-import Books.Analysis2_Tao_2022.Chapters.Chap04
-import Books.Analysis2_Tao_2022.Chapters.Chap05
-import Books.Analysis2_Tao_2022.Chapters.Chap06
-import Books.Analysis2_Tao_2022.Chapters.Chap07
-import Books.Analysis2_Tao_2022.Chapters.Chap08
+import Books.Analysis2_Tao_2022.Chap01
+import Books.Analysis2_Tao_2022.Chap02
+import Books.Analysis2_Tao_2022.Chap03
+import Books.Analysis2_Tao_2022.Chap04
+import Books.Analysis2_Tao_2022.Chap05
+import Books.Analysis2_Tao_2022.Chap06
+import Books.Analysis2_Tao_2022.Chap07
+import Books.Analysis2_Tao_2022.Chap08
 
 /-!
 Overview page for Analysis II (Tao, 2022).
@@ -109,4 +109,4 @@ Tip: keep this file minimal; add imports only after the corresponding files exis
 -/
 
 -- Example (uncomment when created):
--- import Books.Analysis2_Tao_2022.Chapters.Chap01.section01
+-- import Books.Analysis2_Tao_2022.Chap01.section01

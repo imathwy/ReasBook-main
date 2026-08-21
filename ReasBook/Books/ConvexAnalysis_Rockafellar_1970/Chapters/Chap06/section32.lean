@@ -1,4 +1,0 @@
-import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap06.section32_part1
-import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap06.section32_part2
-import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap06.section32_part3
-import Books.ConvexAnalysis_Rockafellar_1970.Chapters.Chap06.section32_part4
