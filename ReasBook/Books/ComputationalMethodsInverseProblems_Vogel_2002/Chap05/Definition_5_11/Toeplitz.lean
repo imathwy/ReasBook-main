@@ -1,0 +1,5 @@
+module
+
+public import ComputationalMethodsInverseProblems_Vogel_2002.Chap05.Definition_5_11
+
+public section

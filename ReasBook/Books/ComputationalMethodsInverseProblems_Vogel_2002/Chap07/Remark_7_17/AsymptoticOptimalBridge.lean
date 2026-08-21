@@ -1,0 +1,12 @@
+import ComputationalMethodsInverseProblems_Vogel_2002.Chap07.Definition_7_33
+
+/-- Helper for Remark 7.17: package an asymptotic equivalence as
+`ParameterChoice.IsAsymptoticallyOptimal`. -/
+theorem parameterChoiceIsAsymptoticallyOptimalOfIsEquivalent
+    {α αopt : ℕ → ℝ}
+    (h : Asymptotics.IsEquivalent Filter.atTop α αopt) :
+    ParameterChoice.IsAsymptoticallyOptimal α αopt := by
+  -- Rewrite the owner wrapper to its generated equality form before using the
+  -- given asymptotic-equivalence witness.
+  rw [ParameterChoice.IsAsymptoticallyOptimal.eq_1]
+  exact h

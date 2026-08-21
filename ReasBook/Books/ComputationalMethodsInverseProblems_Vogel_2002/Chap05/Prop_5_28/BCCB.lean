@@ -1,0 +1,3 @@
+module
+
+public import ComputationalMethodsInverseProblems_Vogel_2002.Chap05.Definition_5_27.BCCB
