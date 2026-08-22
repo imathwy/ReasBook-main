@@ -374,7 +374,7 @@ lemma pseudoinverse_entry_eq_projected_single_preimage_coord {m n : ℕ}
   classical
   simp only [Matrix.pseudoinverse]
   rw [single_eq_of_decidableEq
-    (d₁ := instDecidableEq_sunYuanOptimizationTheoryMethods (Fin m))
+    (d₁ := inferInstance)
     (d₂ := instDecidableEqFin m) j (1 : ℂ)]
   rfl
 
