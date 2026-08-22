@@ -159,8 +159,7 @@ python3 serve.py 18000     # serve at http://127.0.0.1:18000/ReasBook/
 
 ### Autoformalization and Automated Theorem Proving
 
-- Ziyu Wang, Qiming Dai, Chenyi Li, Zaiwen Wen, Beyond Formal Correctness: Structure-Aware Evaluation of Informal–Formal Proof Correspondence
-- Wentao Long, Yunfei Zhang, Chenyi Li, Zaiwen Wen, MECA: A Mechanism-Centered Agent for Constructing Well-Specified and Valuable Mathematical Conjectures
+- Wentao Long, Yunfei Zhang, Chenyi Li, Zaiwen Wen, *MECA: A Mechanism-Centered Agent for Constructing Well-Specified and Valuable Mathematical Conjectures*. [(Paper)](https://arxiv.org/abs/2607.27709)
 - Chenyi Li, Yanchen Nie, Zhenyu Ming, Gong Zhang, Kun Yuan, Zaiwen Wen. *OptProver: Bridging Olympiad and Optimization through Continual Training in Formal Theorem Proving*, ICML 2026. [(Paper)](https://arxiv.org/abs/2604.23712)
 - Zichen Wang, Wanli Ma, Zhenyu Ming, Gong Zhang, Kun Yuan, Zaiwen Wen. *M2F: Automated Formalization of Mathematical Literature at Scale*. [(Paper)](https://arxiv.org/abs/2602.17016)
 - Ziyu Wang, Bowen Yang, Chenyi Li, Yuan Zhang, Shihao Zhou, Bin Dong, Zaiwen Wen. *Translating Informal Proofs into Formal Proofs Using a Chain of States*. [(Paper)](https://arxiv.org/abs/2512.10317)
@@ -169,6 +168,7 @@ python3 serve.py 18000     # serve at http://127.0.0.1:18000/ReasBook/
 ### Theorem-Proof Checking
 
 - Ziyu Wang, Qiming Dai, Yishan Wu, Zaiwen Wen. *FaithSieve: Fine-Grained Evaluation of Math Proofs with Faithful Formal Evidence*.
+- Ziyu Wang, Qiming Dai, Chenyi Li, Zaiwen Wen, *Beyond Formal Correctness: Structure-Aware Evaluation of Informal–Formal Proof Correspondence*
 
 ### Premise Selection
 
