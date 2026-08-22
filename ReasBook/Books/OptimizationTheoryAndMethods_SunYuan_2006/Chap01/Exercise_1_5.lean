@@ -372,11 +372,7 @@ lemma pseudoinverse_entry_eq_projected_single_preimage_coord {m n : ℕ}
           EuclideanSpace ℂ (Fin n)) i) := by
   -- Unfold the owner once, then normalize the basis vector across the definitional `DecidableEq`.
   classical
-  simp only [Matrix.pseudoinverse]
-  rw [single_eq_of_decidableEq
-    (d₁ := inferInstance)
-    (d₂ := instDecidableEqFin m) j (1 : ℂ)]
-  rfl
+  simp [Matrix.pseudoinverse, single_eq_of_decidableEq (instDecidableEqFin m) (instDecidableEqFin m) j (1 : ℂ)]
 
 /-- Helper for Chapter01 Exercise 1.5: reading the `i`th coordinate of the canonical least-norm
 preimage reproduces the reciprocal diagonal formula from `(1.2.54)`. -/
