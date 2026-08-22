@@ -34,3 +34,28 @@ lean_lib ComputationalMethodsInverseProblems_Vogel_2002 where
 lean_exe "literate-extract" where
   root := `LiterateExtract
   supportInterpreter := true
+
+module_facet literate mod : System.FilePath := do
+  let ws ← getWorkspace
+
+  let exeJob ← «literate-extract».fetch
+  let modJob ← mod.olean.fetch
+
+  let buildDir := ws.root.buildDir
+  let hlFile := mod.filePath (buildDir / "literate") "json"
+
+  exeJob.bindM fun exeFile =>
+    modJob.mapM fun _oleanPath => do
+      buildFileUnlessUpToDate' (text := true) hlFile <|
+        proc {
+          cmd := exeFile.toString
+          args :=  #[mod.name.toString, hlFile.toString]
+          env := ← getAugmentedEnv
+        }
+      pure hlFile
+
+library_facet literate lib : Array System.FilePath := do
+  let mods ← (← lib.modules.fetch).await
+  let modJobs ← mods.mapM (·.facet `literate |>.fetch)
+  let out ← modJobs.mapM (·.await)
+  pure (.pure out)
