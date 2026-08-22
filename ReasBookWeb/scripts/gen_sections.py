@@ -575,7 +575,56 @@ def paper_title(paper: str) -> str:
 
 def to_module(source_root: Path, path: Path) -> str:
     rel = path.relative_to(source_root)
-    return ".".join(rel.with_suffix("").parts)
+    parts = list(rel.with_suffix("").parts)
+    # For flat layout (lean_lib BookName where srcDir:="Books"),
+    # strip the Books/ or Papers/ prefix from the module path.
+    if len(parts) >= 2 and parts[0] in ("Books", "Papers"):
+        if _layout_prefix(source_root, parts[0].lower()) == "":
+            parts = parts[1:]
+    return ".".join(parts)
+
+
+def _detect_layout(source_root: Path) -> dict[str, str]:
+    """Read lakefile.lean to determine book/paper module prefix.
+
+    Returns a dict with keys 'books' and 'papers', each mapping to the
+    module prefix (e.g. 'Books.' or '' for flat layout).
+    """
+    lakefile = source_root / "lakefile.lean"
+    result: dict[str, str] = {"books": "Books.", "papers": "Papers."}
+    if not lakefile.is_file():
+        return result
+    text = lakefile.read_text(encoding="utf-8")
+    # Aggregated: lean_lib Books where … lean_lib Papers where
+    # Flat:       lean_lib BookName where … srcDir := "Books"
+    has_aggregated_books = bool(re.search(r'lean_lib\s+[«"]?Books[»"]?\s', text))
+    has_aggregated_papers = bool(re.search(r'lean_lib\s+[«"]?Papers[»"]?\s', text))
+    if has_aggregated_books:
+        result["books"] = "Books."
+    else:
+        result["books"] = ""
+    if has_aggregated_papers:
+        result["papers"] = "Papers."
+    else:
+        result["papers"] = ""
+    return result
+
+
+def _layout_prefix(source_root: Path, kind: str) -> str:
+    """Return the module prefix for books or papers based on lakefile layout."""
+    return _detect_layout(source_root)[kind]
+
+
+def _book_module(source_root: Path, book: str, suffix: str) -> str:
+    """Return the full module name for a book's root or chapter."""
+    prefix = _layout_prefix(source_root, "books")
+    return f"{prefix}{book}.{suffix}"
+
+
+def _paper_module(source_root: Path, paper: str, leaf: str) -> str:
+    """Return the full module name for a paper's root."""
+    prefix = _layout_prefix(source_root, "papers")
+    return f"{prefix}{paper}.{leaf}"
 
 
 def normalize_path(path: str) -> str:
@@ -639,9 +688,26 @@ def docs_relative_site_link(module: str, route: str) -> str:
     return f"{'../' * depth}{route_norm}"
 
 
-def docs_relative_doc_link(from_module: str, to_module: str) -> str:
+def _module_to_docs_path(source_root: Path, module_name: str) -> str:
+    """Convert a Lean module name to a docs/ReasBook/ URL path.
+
+    For flat layout (no Books./Papers. prefix in module name), prepend the
+    physical directory prefix so the URL matches doc-gen4's output.
+    """
+    books_prefix = _layout_prefix(source_root, "books")
+    papers_prefix = _layout_prefix(source_root, "papers")
+    parts = module_name.split(".")
+    if books_prefix == "" and not module_name.startswith("Books."):
+        parts = ["Books"] + parts
+    elif papers_prefix == "" and not module_name.startswith("Papers."):
+        parts = ["Papers"] + parts
+    return "/".join(parts)
+
+
+def docs_relative_doc_link(source_root: Path, from_module: str, to_module: str) -> str:
     _ = from_module
-    return portable_site_link(f"docs/ReasBook/{to_module.replace('.', '/')}.html")
+    to_path = _module_to_docs_path(source_root, to_module)
+    return portable_site_link(f"docs/ReasBook/{to_path}.html")
 
 
 def portable_site_link(route: str) -> str:
@@ -1080,7 +1146,7 @@ def write_book_readmes(source_root: Path, entries: list[Entry]) -> None:
 
     for book in all_books:
         title = book_title(book)
-        book_module = f"Books.{book}.Book"
+        book_module = _book_module(source_root, book, "Book")
         book_file = books_root / book / "Book.lean"
         item_entries = sorted(
             [e for e in by_book.get(book, []) if (e.section_num > 0 and e.part_num == 0)],
@@ -1157,9 +1223,9 @@ def write_paper_readmes(source_root: Path, entries: list[Entry]) -> None:
         title = paper_title(paper)
         paper_file = papers_root / paper / "Paper.lean"
         if paper_file.exists():
-            paper_module = f"Papers.{paper}.Paper"
+            paper_module = _paper_module(source_root, paper, "Paper")
         else:
-            paper_module = f"Papers.{paper}.Main"
+            paper_module = _paper_module(source_root, paper, "Main")
         item_entries = sorted(
             [e for e in by_paper.get(paper, []) if (e.section_num > 0 and e.part_num == 0)],
             key=lambda e: (e.section_num, e.part_num, e.stem),
@@ -1244,7 +1310,9 @@ def write_root_readme(repo_root: Path, source_root: Path) -> None:
         has_book_agg = (source_root / "Books" / book / "Book.lean").exists()
         if has_book_agg:
             lean_src = repo_relative_link(f"ReasBook/Books/{book}/")
-            docs_link = published_site_link(f"docs/ReasBook/Books/{book}/Book.html")
+            book_mod = _book_module(source_root, book, "Book")
+            docs_path = _module_to_docs_path(source_root, book_mod)
+            docs_link = published_site_link(f"docs/ReasBook/{docs_path}.html")
         else:
             lean_src = repo_relative_link(f"ReasBook/Books/{book}/")
             docs_link = published_site_link(f"docs/ReasBook/Books/{book}/")
@@ -1326,11 +1394,7 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
         lines.append(f'#doc (Page) {lean_string(title)} =>')
         lines.append("")
         page_route = home_entry.route if home_entry is not None else f"books/{book.lower()}/"
-        docs_path = (
-            home_entry.module.replace(".", "/")
-            if home_entry is not None
-            else f"Books/{book}/Book"
-        )
+        docs_path = f"Books/{book}/Book"  # physical path, always correct
         lines.append(f"- [Documentation]({portable_site_link(f'docs/ReasBook/{docs_path}.html')})")
         if (book_dir / "Book.lean").exists():
             lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Books/{book}/')})")
@@ -1377,11 +1441,7 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
         lines.append(f'#doc (Page) {lean_string(title)} =>')
         lines.append("")
         page_route = home_entry.route if home_entry is not None else f"papers/{paper.lower()}/"
-        docs_path = (
-            home_entry.module.replace(".", "/")
-            if home_entry is not None
-            else f"Papers/{paper}/Paper"
-        )
+        docs_path = f"Papers/{paper}/Paper"  # physical path, always correct
         lines.append(f"- [Documentation]({portable_site_link(f'docs/ReasBook/{docs_path}.html')})")
         if (paper_dir / "Paper.lean").exists():
             lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Papers/{paper}/')})")
@@ -1507,7 +1567,7 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
         book_file = source_root / "Books" / book / "Book.lean"
         if not book_file.exists():
             continue
-        book_module = f"Books.{book}.Book"
+        book_module = _book_module(source_root, book, "Book")
 
         section_entries = sorted(
             [e for e in b_entries if (e.section_num > 0 and e.part_num == 0)],
@@ -1539,7 +1599,7 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
                 if not label:
                     continue
                 body.append(
-                    f"- {label} ([Documentation]({docs_relative_doc_link(book_module, e.module)})) "
+                    f"- {label} ([Documentation]({docs_relative_doc_link(source_root, book_module, e.module)})) "
                     f"([Verso]({portable_site_link(e.route)}))"
                 )
             body.append("")
@@ -1571,7 +1631,7 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
 
             chapter_route = f"books/{book.lower()}/chapters/chap{chapter_num:02d}/"
             chapter_title = chapter_title_for_book(book, chapter_num)
-            chapter_module = f"Books.{book}.Chap{chapter_num:02d}"
+            chapter_module = _book_module(source_root, book, f"Chap{chapter_num:02d}")
 
             chapter_body: list[str] = []
             chapter_body.append(f"Chapter {chapter_num:02d}")
@@ -1594,7 +1654,7 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
                 if not label:
                     continue
                 chapter_body.append(
-                    f"- {label} ([Documentation]({docs_relative_doc_link(chapter_module, e.module)})) "
+                    f"- {label} ([Documentation]({docs_relative_doc_link(source_root, chapter_module, e.module)})) "
                     f"([Verso]({portable_site_link(e.route)}))"
                 )
             chapter_body.append("")
@@ -1646,7 +1706,7 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
         body.append("")
         for p in part_entries:
             body.append(
-                f"- Part {p.part_num} ([Documentation]({docs_relative_doc_link(base.module, p.module)})) "
+                f"- Part {p.part_num} ([Documentation]({docs_relative_doc_link(source_root, base.module, p.module)})) "
                 f"([Verso]({portable_site_link(p.route)}))"
             )
         body.append("")
