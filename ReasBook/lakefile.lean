@@ -28,8 +28,10 @@ require MD4Lean from git "https://github.com/acmepjz/md4lean" @ "main"
 lean_lib «ReasBook» where
 
 -- Books from ALLBOOKS (sources live under Books/<LibName>/)
-lean_lib ComputationalMethodsInverseProblems_Vogel_2002 where
-  srcDir := "Books"
+-- lean_lib ComputationalMethodsInverseProblems_Vogel_2002 where
+--   srcDir := "Books"
+-- (Vogel book commented out: 57 mathlib v4.32.0 API incompatibilities;
+--  needs contributor adaptation.)
 
 lean_exe "literate-extract" where
   root := `LiterateExtract
