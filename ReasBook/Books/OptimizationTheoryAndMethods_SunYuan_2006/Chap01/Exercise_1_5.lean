@@ -373,8 +373,10 @@ lemma pseudoinverse_entry_eq_projected_single_preimage_coord {m n : ℕ}
   -- Unfold the owner once, then normalize the basis vector across the definitional `DecidableEq`.
   classical
   simp only [Matrix.pseudoinverse]
-  have h := single_eq_of_decidableEq (instDecidableEqFin m) (instDecidableEqFin m) j (1 : ℂ)
-  simpa [h]
+  rw [single_eq_of_decidableEq
+    (d₁ := Classical.decEq (Fin m))
+    (d₂ := instDecidableEqFin m) j (1 : ℂ)]
+  rfl
 
 /-- Helper for Chapter01 Exercise 1.5: reading the `i`th coordinate of the canonical least-norm
 preimage reproduces the reciprocal diagonal formula from `(1.2.54)`. -/
@@ -684,9 +686,9 @@ lemma pseudoinverseMulVec_mul_unitary_left {m n : ℕ}
           inner ℂ (b - U.toEuclideanLin p) (U.toEuclideanLin (B.toEuclideanLin w)) := by
         simp [hUB, LinearMap.comp_apply]
       _ = inner ℂ ((Uᴴ).toEuclideanLin (b - U.toEuclideanLin p)) (B.toEuclideanLin w) := by
-        simpa [Matrix.toEuclideanLin_conjTranspose_eq_adjoint] using
-          (LinearMap.adjoint_inner_right (A := U.toEuclideanLin)
-            (x := b - U.toEuclideanLin p) (y := B.toEuclideanLin w))
+        rw [Matrix.toEuclideanLin_conjTranspose_eq_adjoint]
+        exact (LinearMap.adjoint_inner_left (A := U.toEuclideanLin)
+            (x := B.toEuclideanLin w) (y := b - U.toEuclideanLin p)).symm
       _ = inner ℂ (((Uᴴ).toEuclideanLin b) - p) (B.toEuclideanLin w) := by
         simp [LinearMap.map_sub, hUleft_apply]
       _ = 0 := hbase
