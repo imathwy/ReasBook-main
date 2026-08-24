@@ -21,7 +21,7 @@ variable {ℱ : Filtration ℕ mΩ}
 theorem canonical_doobDecomposition [SigmaFiniteFiltration μ ℱ] {X : ℕ → Ω → ℝ}
     (hX_adapted : Adapted ℱ X)
     (hX_int : ∀ n, Integrable (X n) μ) :
-    IsStronglyPredictable ℱ (predictablePart X ℱ μ) ∧
+    IsPredictable ℱ (predictablePart X ℱ μ) ∧
       predictablePart X ℱ μ 0 = 0 ∧
       Martingale (martingalePart X ℱ μ) ℱ μ ∧
       martingalePart X ℱ μ + predictablePart X ℱ μ = X := by
@@ -29,17 +29,20 @@ theorem canonical_doobDecomposition [SigmaFiniteFiltration μ ℱ] {X : ℕ → 
     stronglyAdapted_predictablePart
   refine ⟨?_, predictablePart_zero, martingale_martingalePart hX_adapted.stronglyAdapted hX_int,
     martingalePart_add_predictablePart ℱ μ X⟩
-  refine IsStronglyPredictable.of_measurable_add_one ?_ hPredictablePart
+  refine isPredictable_of_measurable_add_one ?_ fun n ↦
+    (hPredictablePart n).measurable
   simpa [predictablePart_zero] using
-    (stronglyMeasurable_zero : StronglyMeasurable[ℱ 0] (0 : Ω → ℝ))
+    (stronglyMeasurable_zero : StronglyMeasurable[ℱ 0] (0 : Ω → ℝ)).measurable
 
 section DoobDecomposition
 
 variable {X M A : ℕ → Ω → ℝ}
 
-private theorem stronglyAdapted_succ_of_predictable (hA_pred : IsStronglyPredictable ℱ A) :
+private theorem stronglyAdapted_succ_of_predictable (hA_pred : IsPredictable ℱ A) :
     StronglyAdapted ℱ fun n ↦ A (n + 1) := by
-  exact fun n ↦ IsStronglyPredictable.measurable_add_one hA_pred n
+  have hA_adapted : Adapted ℱ fun n ↦ A (n + 1) :=
+    fun n ↦ hA_pred.measurable_add_one n
+  exact hA_adapted.stronglyAdapted
 
 private theorem integrable_predictable_component (hM : Martingale M ℱ μ) (hMX : M + A = X)
     (hX_int : ∀ n, Integrable (X n) μ) :
@@ -56,7 +59,7 @@ private theorem integrable_predictable_component (hM : Martingale M ℱ μ) (hMX
 /-- Theorem 10.1 (2): in any Doob decomposition `X = M + A`, the predictable component `A` agrees
 almost everywhere at each time with the canonical predictable part `predictablePart X ℱ μ`. -/
 theorem doobDecomposition_predictablePart_ae_eq [SigmaFiniteFiltration μ ℱ] (hM : Martingale M ℱ μ)
-    (hA_pred : IsStronglyPredictable ℱ A) (hA_zero : A 0 = 0) (hMX : M + A = X)
+    (hA_pred : IsPredictable ℱ A) (hA_zero : A 0 = 0) (hMX : M + A = X)
     (hX_int : ∀ n, Integrable (X n) μ) :
     ∀ n, A n =ᵐ[μ] predictablePart X ℱ μ n := by
   have hA : StronglyAdapted ℱ fun n ↦ A (n + 1) :=
@@ -72,7 +75,7 @@ theorem doobDecomposition_predictablePart_ae_eq [SigmaFiniteFiltration μ ℱ] (
 /-- Theorem 10.1 (3): in any Doob decomposition `X = M + A`, the martingale component `M` agrees
 almost everywhere at each time with the canonical martingale part `martingalePart X ℱ μ`. -/
 theorem doobDecomposition_martingalePart_ae_eq [SigmaFiniteFiltration μ ℱ] (hM : Martingale M ℱ μ)
-    (hA_pred : IsStronglyPredictable ℱ A) (hA_zero : A 0 = 0) (hMX : M + A = X)
+    (hA_pred : IsPredictable ℱ A) (hA_zero : A 0 = 0) (hMX : M + A = X)
     (hX_int : ∀ n, Integrable (X n) μ) :
     ∀ n, M n =ᵐ[μ] martingalePart X ℱ μ n := by
   have hA : StronglyAdapted ℱ fun n ↦ A (n + 1) :=

@@ -1,8 +1,4 @@
-import ProbabilityTheory_Klenke_2020.Chap17.Definition_17_43
-import ProbabilityTheory_Klenke_2020.Chap17.Definition_17_16
-import ProbabilityTheory_Klenke_2020.Chap18.Definition_18_1
-import ProbabilityTheory_Klenke_2020.Chap18.Definition_18_14
-import Mathlib
+import ProbabilityTheory_Klenke_2020.Chap18.Theorem_18_15.Support
 
 open MeasureTheory ProbabilityTheory
 open scoped ENNReal ProbabilityTheory
@@ -23,40 +19,30 @@ variable (hπ_pos : ∀ x : E, 0 < (π : Measure E) ({x} : Set E))
 variable (h_support_symm : ∀ x y : E, 0 < q x y ↔ 0 < q y x)
 variable [Kernel.IsIrreducible (Measure.count : Measure E) (discreteMatrixKernel q)]
 
--- Proof sketch: use the support symmetry hypothesis to show that every positive-probability
--- proposal edge for `q` remains a positive-probability Metropolis edge, because the acceptance
--- factor is strictly positive once the singleton masses of `π` are positive. Any positive
--- counting-measure set reachable from an irreducible proposal kernel is therefore still reachable
--- for the Metropolis kernel.
-/-- Theorem 18.15 (1): if the proposal matrix `q` is stochastic and irreducible, the support of
-`q` is symmetric, and the target distribution `π` has strictly positive singleton masses, then the
-Metropolis kernel built from `q` and `π` is irreducible with respect to counting measure. -/
-theorem metropolisKernel_isIrreducible_of_irreducible_proposal :
-    Kernel.IsIrreducible (Measure.count : Measure E) (metropolisKernel π q) := sorry
+include hq hπ_pos h_support_symm
 
--- Proof sketch: first show that the Metropolis kernel satisfies detailed balance with respect to
--- `π`, hence `π` is invariant. Then combine the irreducibility statement from
--- `metropolisKernel_isIrreducible_of_irreducible_proposal` with uniqueness of invariant
--- distributions for irreducible discrete kernels to identify the invariant-distribution set with
--- the singleton `{π}`.
-/-- Theorem 18.15 (2): under the same hypotheses, the invariant distributions of the Metropolis
-kernel consist exactly of the target distribution `π`; equivalently, `π` is the unique invariant
-distribution of the Metropolis chain. -/
-theorem metropolisKernel_invariantDistributions_eq_singleton :
-    invariantDistributions (metropolisKernel π q) = {π} := sorry
-
--- Proof sketch: if the proposal kernel is already aperiodic, then every state has return times of
--- greatest common divisor `1`, and the same positive-support comparison transfers this to the
--- Metropolis kernel. If instead the proposal kernel fails to be reversible with respect to `π`,
--- then the textbook argument shows that the Metropolis acceptance step necessarily inserts
--- self-loops with positive mass somewhere, forcing period `1`.
-/-- Theorem 18.15 (3): if, in addition, the proposal kernel is aperiodic or it is not reversible
-with respect to `π`, then the Metropolis kernel is aperiodic. -/
+-- Proof sketch: the two aperiodicity branches are now closed in the theorem-local support module.
+-- The wrapper theorem only performs the final disjunction split and invokes the imported branch
+-- closers.
+/-- Theorem 18.15: if, in addition, the proposal kernel is aperiodic or it is not reversible with
+respect to `π`, then the Metropolis kernel is aperiodic. -/
 theorem metropolisKernel_isAperiodic_of_proposalAperiodic_or_not_reversible
     (haperiodic_or_nonreversible :
       IsAperiodic (discreteMatrixKernel q) ∨
         ¬ Kernel.IsReversible (discreteMatrixKernel q) (π : Measure E)) :
-    IsAperiodic (metropolisKernel π q) := sorry
+    IsAperiodic (metropolisKernel π q) := by
+  -- Route correction: keep the heavy period-transport and reversibility machinery behind the
+  -- imported support lemmas, and let the target theorem only dispatch the two textbook branches.
+  rcases haperiodic_or_nonreversible with haperiodic | hnonreversible
+  · -- Proof comment: the proposal-aperiodic branch is the direct support theorem.
+    exact metropolisKernel_isAperiodic_of_proposalAperiodic
+      (π := π) (q := q) (hq := hq) (hπ_pos := hπ_pos)
+      (h_support_symm := h_support_symm) haperiodic
+  · -- Proof comment: the nonreversible branch is closed by the direct self-loop criterion from
+    -- the support module.
+    exact metropolisKernel_isAperiodic_of_notProposalReversible
+      (π := π) (q := q) (hq := hq) (hπ_pos := hπ_pos)
+      (h_support_symm := h_support_symm) hnonreversible
 
 end Metropolis
 

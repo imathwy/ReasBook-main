@@ -26,4 +26,17 @@ theorem brownianPathSpace_tendsto_finiteDimensionalMarginals
     Tendsto
       (fun m ↦ continuousPathFiniteDimensionalDistribution (μs m) times)
       atTop
-      (𝓝 (continuousPathFiniteDimensionalDistribution μ times)) := sorry
+      (𝓝 (continuousPathFiniteDimensionalDistribution μ times)) := by
+  -- The imported equivalence packages weak convergence into finite-dimensional convergence plus
+  -- tightness, so we first extract the universal finite-dimensional convergence statement.
+  have hFiniteDimensional :
+      ∀ n : ℕ, ∀ times : Fin (n + 1) → NNReal,
+        Tendsto
+          (fun k ↦ continuousPathFiniteDimensionalDistribution (μs k) times)
+          atTop
+          (𝓝 (continuousPathFiniteDimensionalDistribution μ times)) :=
+    ((ProbabilityTheory.tendsto_iff_finiteDimensionalDistribution_tendsto_and_isTight μ μs).mpr
+      hμ).1
+  -- Specializing that universal statement at the requested dimension and time tuple yields the
+  -- target marginal convergence.
+  simpa using hFiniteDimensional n times

@@ -1,205 +1,639 @@
 import Mathlib
 import ProbabilityTheory_Klenke_2020.Chap17.Definition_17_3
-import ProbabilityTheory_Klenke_2020.Chap17.Definition_17_12
-import ProbabilityTheory_Klenke_2020.Chap26.Definition_26_20
 import ProbabilityTheory_Klenke_2020.Chap26.Definition_26_23
-import ProbabilityTheory_Klenke_2020.Chap26.Remark_26_2
-import ProbabilityTheory_Klenke_2020.Chap26.Remark_26_14
-import ProbabilityTheory_Klenke_2020.Chap26.Theorem_26_8
-import ProbabilityTheory_Klenke_2020.Chap26.Theorem_26_18
+import ProbabilityTheory_Klenke_2020.Chap26.GeneralizedStrongSolutionAPI
+import ProbabilityTheory_Klenke_2020.Chap26.Theorem_26_25
+import ProbabilityTheory_Klenke_2020.Chap26.Theorem_26_8.StrongMarkovAtStart
+import ProbabilityTheory_Klenke_2020.Chap26.Theorem_26_26.Coefficients
+import ProbabilityTheory_Klenke_2020.Chap26.Theorem_26_26.Evaluation
+import ProbabilityTheory_Klenke_2020.Chap26.Theorem_26_26.Growth
 
--- Declarations for this item will be appended below by the statement pipeline.
+open Lean Elab Command Term Meta
 
-open MeasureTheory ProbabilityTheory
-open scoped MatrixOrder
+run_cmd do
+  let curr ← getEnv
+  let imports : Array Import := #[
+    { module := `Mathlib },
+    { module := `ProbabilityTheory_Klenke_2020.Chap26.Theorem_26_26.AnalyticFrontiers }
+  ]
+  let env ← liftIO <| Lean.importModules (loadExts := true) imports (← getOptions) 1024
+  setEnv <| env.setMainModule curr.mainModule
+
+open MeasureTheory
 
 noncomputable section
 
-universe u
+universe u v
 
 namespace ProbabilityTheory
 
-variable {n : ℕ}
+variable {n m : ℕ}
 
-local notation "State" => Fin n → ℝ
-local notation "SpatialDiffusionMatrixCoeff" => State → Fin n → Fin n → ℝ
-local notation "SpatialDriftCoeff" => State → Fin n → ℝ
-local notation "PathSpace" => EuclideanPathSpace n
-local notation "DiffusionMatrixCoeff" => NNReal → State → Fin n → Fin n → ℝ
-local notation "DiffusionCoeff" => NNReal → State → Fin n → Fin n → ℝ
-local notation "DriftCoeff" => NNReal → State → Fin n → ℝ
-local notation "PathKernel" => Kernel State (NNReal → State)
-local notation "StateKernel" => NNReal → Kernel State State
+/-- Helper for Theorem 26.26: the canonical coordinate filtration on
+`StroockVaradhanPathSpace n`. -/
+abbrev canonicalCoordinateFiltration :
+    Filtration NNReal (inferInstance : MeasurableSpace (StroockVaradhanPathSpace n)) :=
+  generatedFiltration
+    (fun t ↦
+      (ContinuousMap.evalCLM ℝ t :
+        StroockVaradhanPathSpace n → StroockVaradhanState n))
+    (measurable_path_eval (n := n))
 
-/-- The matrix-valued diffusion coefficient `a(x)` attached to an autonomous diffusion field. -/
-def spatialDiffusionMatrix (a : SpatialDiffusionMatrixCoeff) (x : State) :
-    Matrix (Fin n) (Fin n) ℝ :=
-  fun i j ↦ a x i j
+/-- Helper for Theorem 26.26: the zero-time slice hypotheses package the local martingale
+problem coefficients into the Chapter 26 time-independence predicate. -/
+private theorem stroockVaradhan_timeIndependentLocalMartingaleProblemCoefficients
+    (a : StroockVaradhanDiffusionMatrixCoeff n)
+    (b : StroockVaradhanDriftCoeff n)
+    (ha_time : ∀ t x i j, a t x i j = a 0 x i j)
+    (hb_time : ∀ t x i, b t x i = b 0 x i) :
+    TimeIndependentLocalMartingaleProblemCoefficients a b := by
+  constructor
+  · intro t₁ t₂ x
+    funext i
+    funext j
+    rw [ha_time t₁ x i j, ha_time t₂ x i j]
+  · intro t₁ t₂ x
+    funext i
+    rw [hb_time t₁ x i, hb_time t₂ x i]
 
-/-- The coordinate derivative of a test function on `ℝⁿ` in the `i`-th variable. -/
-def coordinateDerivative (i : Fin n) (f : State → ℝ) (x : State) : ℝ :=
-  deriv (fun r ↦ f (Function.update x i r)) (x i)
+/-- Helper for Theorem 26.26: deterministic-time evaluation against a path law is exactly
+integration against the pushed-forward deterministic-time marginal. -/
+private theorem stroockVaradhan_integral_eval_eq_integral_timeMarginal_support
+    (μ : Measure (StroockVaradhanPathSpace n))
+    (t : NNReal)
+    {f : StroockVaradhanState n → ℝ}
+    (hf : Measurable f) :
+    ∫ γ, f (γ t) ∂μ =
+      ∫ y, f y ∂ μ.map (ContinuousMap.evalCLM ℝ t) := by
+  symm
+  simpa using
+    (MeasureTheory.integral_map
+      ((measurable_path_eval (n := n) t).aemeasurable)
+      hf.aestronglyMeasurable :
+        ∫ y, f y ∂ μ.map (ContinuousMap.evalCLM ℝ t) =
+          ∫ γ, f ((ContinuousMap.evalCLM ℝ t) γ) ∂μ)
 
-/-- The iterated coordinate derivative in the `i`-th and `j`-th variables. -/
-def coordinateSecondDerivative (i j : Fin n) (f : State → ℝ) (x : State) : ℝ :=
-  deriv (fun r ↦ coordinateDerivative i f (Function.update x j r)) (x j)
+/-- Helper for Theorem 26.26: deterministic-time marginal expectations along a path-law family are
+the same row as the corresponding path-integral expectations. -/
+private theorem stroockVaradhan_transitionExpectationRow_eq_pathIntegralRow_support
+    (P : StroockVaradhanState n → ProbabilityMeasure (StroockVaradhanPathSpace n))
+    (t : NNReal)
+    {f : StroockVaradhanState n → ℝ}
+    (hf : Measurable f) :
+    (fun x : StroockVaradhanState n ↦
+      ∫ y, f y ∂
+        (P x : Measure (StroockVaradhanPathSpace n)).map
+          (ContinuousMap.evalCLM ℝ t)) =
+      fun x : StroockVaradhanState n ↦
+        ∫ γ, f (γ t) ∂ (P x : Measure (StroockVaradhanPathSpace n)) := by
+  funext x
+  symm
+  exact
+    stroockVaradhan_integral_eval_eq_integral_timeMarginal_support
+      (n := n)
+      (μ := (P x : Measure (StroockVaradhanPathSpace n)))
+      t
+      hf
 
-/-- The generator `L_t` of the autonomous diffusion with covariance matrix field `a` and drift
-field `b`, evaluated on a `C²` test function `f`. -/
-def autonomousGenerator (a : DiffusionMatrixCoeff) (b : DriftCoeff) (f : State → ℝ) :
-    NNReal → State → ℝ :=
-  fun t x ↦
-    (∑ i : Fin n, b t x i * coordinateDerivative i f x) +
-      ((1 : ℝ) / 2) *
-        ∑ i : Fin n, ∑ j : Fin n, a t x i j * coordinateSecondDerivative i j f x
+/-- Helper for Theorem 26.26: on a time-homogeneous Markov path-law family, the deterministic-time
+marginal equals the corresponding transition-kernel row. -/
+private theorem stroockVaradhan_canonicalTimeMarginal_eq_transitionKernel_support
+    (Pref : StroockVaradhanState n → ProbabilityMeasure (StroockVaradhanPathSpace n))
+    (κ : Kernel (StroockVaradhanState n) (NNReal → StroockVaradhanState n))
+    (hMarkov :
+      IsTimeHomogeneousMarkovProcess
+        (fun t ↦
+          (ContinuousMap.evalCLM ℝ t :
+            StroockVaradhanPathSpace n → StroockVaradhanState n))
+        Pref
+        κ)
+    (x : StroockVaradhanState n)
+    (t : NNReal) :
+    (Pref x : Measure (StroockVaradhanPathSpace n)).map (ContinuousMap.evalCLM ℝ t) =
+      transitionKernel κ t x := by
+  letI :
+      IsTimeHomogeneousMarkovProcess
+        (fun t ↦
+          (ContinuousMap.evalCLM ℝ t :
+            StroockVaradhanPathSpace n → StroockVaradhanState n))
+        Pref
+        κ := hMarkov
+  simpa using
+    (IsTimeHomogeneousMarkovProcess.timeMarginal_eq_transitionKernel
+      (X := fun t ↦
+        (ContinuousMap.evalCLM ℝ t :
+          StroockVaradhanPathSpace n → StroockVaradhanState n))
+      (P := Pref)
+      (κ := κ)
+      x
+      t)
 
-/-- The compensated test-function process attached to a path-space candidate solution of the local
-martingale problem. -/
-def martingaleProblemProcess {Ω : Type u} [MeasurableSpace Ω] (a : DiffusionMatrixCoeff)
-    (b : DriftCoeff) (f : State → ℝ) (X : Ω → PathSpace) : NNReal → Ω → ℝ :=
-  fun t ω ↦
-    f (X ω t) - f (X ω 0) -
-      ∫ s in Set.Icc (0 : ℝ) (t : ℝ), autonomousGenerator a b f s.toNNReal (X ω s.toNNReal)
+/-- Helper for Theorem 26.26: on the extracted Markov family, the transition-kernel expectation
+row is exactly the deterministic-time path-integral row. -/
+private theorem stroockVaradhan_transitionKernelExpectationRow_eq_canonicalPathIntegralRow_support
+    (Pref : StroockVaradhanState n → ProbabilityMeasure (StroockVaradhanPathSpace n))
+    (κ : Kernel (StroockVaradhanState n) (NNReal → StroockVaradhanState n))
+    (hMarkov :
+      IsTimeHomogeneousMarkovProcess
+        (fun t ↦
+          (ContinuousMap.evalCLM ℝ t :
+            StroockVaradhanPathSpace n → StroockVaradhanState n))
+        Pref
+        κ)
+    (t : NNReal)
+    {f : StroockVaradhanState n → ℝ}
+    (hf : Measurable f) :
+    (fun x : StroockVaradhanState n ↦
+      ∫ y, f y ∂ transitionKernel κ t x) =
+        fun x : StroockVaradhanState n ↦
+          ∫ γ, f (γ t) ∂ (Pref x : Measure (StroockVaradhanPathSpace n)) := by
+  funext x
+  rw [←
+    stroockVaradhan_canonicalTimeMarginal_eq_transitionKernel_support
+      (n := n)
+      Pref
+      κ
+      hMarkov
+      x
+      t]
+  exact
+    congrFun
+      (stroockVaradhan_transitionExpectationRow_eq_pathIntegralRow_support
+        (n := n)
+        Pref
+        t
+        hf)
+      x
 
-/-- The autonomous time-homogeneous lift of the diffusion matrix field `a(x)`. -/
-def autonomousDiffusionMatrixCoeff (a : SpatialDiffusionMatrixCoeff) : DiffusionMatrixCoeff :=
-  fun _ x i j ↦ a x i j
+/-- Helper for Theorem 26.26: continuity of the transition-kernel expectation row transports
+directly to continuity of the corresponding path-integral row on the same Markov family. -/
+private theorem stroockVaradhan_referencePathIntegralContinuousFrontierSupport
+    (Pref : StroockVaradhanState n → ProbabilityMeasure (StroockVaradhanPathSpace n))
+    (κ : Kernel (StroockVaradhanState n) (NNReal → StroockVaradhanState n))
+    (hMarkov :
+      IsTimeHomogeneousMarkovProcess
+        (fun t ↦
+          (ContinuousMap.evalCLM ℝ t :
+            StroockVaradhanPathSpace n → StroockVaradhanState n))
+        Pref
+        κ)
+    (t : NNReal)
+    (f : StroockVaradhanState n → ℝ)
+    (hf : Measurable f)
+    (hKernelCont :
+      Continuous (fun x : StroockVaradhanState n ↦
+        ∫ y, f y ∂ transitionKernel κ t x)) :
+    Continuous (fun x : StroockVaradhanState n ↦
+      ∫ γ, f (γ t) ∂ (Pref x : Measure (StroockVaradhanPathSpace n))) := by
+  have hRewrite :=
+    stroockVaradhan_transitionKernelExpectationRow_eq_canonicalPathIntegralRow_support
+      (n := n)
+      Pref
+      κ
+      hMarkov
+      t
+      hf
+  simpa [hRewrite] using hKernelCont
 
-/-- The autonomous time-homogeneous lift of the drift field `b(x)`. -/
-def autonomousDriftCoeff (b : SpatialDriftCoeff) : DriftCoeff :=
-  fun _ x i ↦ b x i
+/-- Helper for Theorem 26.26: well-posedness identifies any canonical path-law family with the
+reference canonical family rowwise. -/
+private theorem stroockVaradhan_pathLaw_eq_reference
+    {a : StroockVaradhanDiffusionMatrixCoeff n}
+    {b : StroockVaradhanDriftCoeff n}
+    {Pref P : StroockVaradhanState n → ProbabilityMeasure (StroockVaradhanPathSpace n)}
+    (hPref :
+      ∀ x : StroockVaradhanState n,
+        IsLocalMartingaleProblemSolution
+          (Measure.dirac x)
+          a
+          b
+          (canonicalCoordinateFiltration (n := n))
+          (Pref x : Measure (StroockVaradhanPathSpace n))
+          id)
+    (hP :
+      ∀ x : StroockVaradhanState n,
+        IsLocalMartingaleProblemSolution
+          (Measure.dirac x)
+          a
+          b
+          (canonicalCoordinateFiltration (n := n))
+          (P x : Measure (StroockVaradhanPathSpace n))
+          id)
+    (hWellPosed : LocalMartingaleProblemWellPosed.{0, 0} a b) :
+    ∀ x : StroockVaradhanState n,
+      (P x : Measure (StroockVaradhanPathSpace n)) =
+        (Pref x : Measure (StroockVaradhanPathSpace n)) := by
+  intro x
+  have hUniqueLaw :
+      LocalMartingaleProblemHasUniqueLaw.{0, 0} (Measure.dirac x) a b :=
+    (localMartingaleProblemWellPosed_iff.mp hWellPosed x).2
+  simpa using
+    hUniqueLaw
+      (ℱ := canonicalCoordinateFiltration (n := n))
+      (μ := (P x : Measure (StroockVaradhanPathSpace n)))
+      (X := id)
+      (ℱ' := canonicalCoordinateFiltration (n := n))
+      (μ' := (Pref x : Measure (StroockVaradhanPathSpace n)))
+      (X' := id)
+      (hP x)
+      (hPref x)
 
-/-- The canonical autonomous diffusion coefficient obtained from the positive square root of the
-matrix field `a(x)`. -/
-def autonomousDiffusionSqrtCoeff (a : SpatialDiffusionMatrixCoeff) : DiffusionCoeff :=
-  fun _ x i j ↦ CFC.sqrt (spatialDiffusionMatrix a x) i j
+/-- Helper for Theorem 26.26: an a.e.-measurable path-valued random variable has a.e.-measurable
+deterministic-time evaluations. -/
+private theorem stroockVaradhan_aemeasurable_stateEval_of_aemeasurable_path
+    {Ω : Type _} [MeasurableSpace Ω]
+    {μ : Measure Ω} {X : Ω → StroockVaradhanPathSpace n}
+    (hX : AEMeasurable X μ) (T : NNReal) :
+    AEMeasurable (fun ω ↦ X ω T) μ := by
+  -- Proof comment: fixed-time evaluation is measurable on continuous path space, so composing it
+  -- with an a.e.-measurable path map preserves a.e. measurability.
+  exact (measurable_path_eval (n := n) T).aemeasurable.comp_aemeasurable hX
 
--- Proof sketch: for each `x`, positive definiteness makes `a(x)` positive semidefinite, so its
--- square root squares back to `a(x)`. Symmetry of the positive square root converts the matrix
--- square `CFC.sqrt (a(x)) ^ 2` into the coefficient identity `σσᵀ = a`.
-/-- The canonical square-root diffusion coefficient has covariance matrix field equal to `a`. -/
-theorem diffusionMatrixOfCoefficient_autonomousDiffusionSqrtCoeff
-    (a : SpatialDiffusionMatrixCoeff)
-    (hpos : ∀ x : State, (spatialDiffusionMatrix a x).PosDef) :
-    diffusionMatrixOfCoefficient (autonomousDiffusionSqrtCoeff a) =
-      autonomousDiffusionMatrixCoeff a := sorry
+/-- Helper for Theorem 26.26: unique path law for Dirac-start local-martingale solutions forces
+equality of the deterministic-time marginals after pushing both path laws forward by evaluation. -/
+private theorem stroockVaradhan_timeMarginal_eq_of_diracUniqueLaw
+    {a : StroockVaradhanDiffusionMatrixCoeff n}
+    {b : StroockVaradhanDriftCoeff n}
+    {x : StroockVaradhanState n}
+    {Ω : Type u} [MeasurableSpace Ω]
+    (ℱ : Filtration NNReal (inferInstance : MeasurableSpace Ω))
+    (μ : Measure Ω)
+    (X : Ω → StroockVaradhanPathSpace n)
+    {Ω' : Type v} [MeasurableSpace Ω']
+    (ℱ' : Filtration NNReal (inferInstance : MeasurableSpace Ω'))
+    (μ' : Measure Ω')
+    (X' : Ω' → StroockVaradhanPathSpace n)
+    (hUniqueLaw : LocalMartingaleProblemHasUniqueLaw.{u, v} (Measure.dirac x) a b)
+    (hX : IsLocalMartingaleProblemSolution (Measure.dirac x) a b ℱ μ X)
+    (hX' : IsLocalMartingaleProblemSolution (Measure.dirac x) a b ℱ' μ' X')
+    (T : NNReal) :
+    μ.map (fun ω ↦ X ω T) = μ'.map (fun ω ↦ X' ω T) := by
+  let evalT : StroockVaradhanPathSpace n → StroockVaradhanState n :=
+    ContinuousMap.evalCLM ℝ T
+  have hLaw : μ.map X = μ'.map X' := hUniqueLaw ℱ μ X ℱ' μ' X' hX hX'
+  have hEvalT : Measurable evalT := measurable_path_eval (n := n) T
+  calc
+    μ.map (fun ω ↦ X ω T) = (μ.map X).map evalT := by
+      -- Proof comment: collapse the realization-space time marginal into a single pushforward of
+      -- the path law along deterministic-time evaluation.
+      rw [AEMeasurable.map_map_of_aemeasurable
+        hEvalT.aemeasurable hX.aemeasurable_path]
+      rfl
+    _ = (μ'.map X').map evalT := by
+      -- Proof comment: unique law identifies the two path laws, so their evaluated marginals
+      -- coincide after applying the same deterministic-time evaluation map.
+      exact congrArg (fun ν : Measure (StroockVaradhanPathSpace n) ↦ ν.map evalT) hLaw
+    _ = μ'.map (fun ω ↦ X' ω T) := by
+      -- Proof comment: rewrite the second evaluated path law back to the original realization
+      -- space so the final equality has the deterministic-time-marginal shape required by
+      -- `HasDeterministicTimeMarginalUniqueness`.
+      rw [AEMeasurable.map_map_of_aemeasurable
+        hEvalT.aemeasurable hX'.aemeasurable_path]
+      rfl
 
-/-- The Stroock--Varadhan hypotheses on an autonomous diffusion matrix field `a(x)` and drift
-field `b(x)`: `a` is entrywise continuous, `b` is entrywise measurable, each matrix `a(x)` is
-positive definite, and both coefficient families satisfy the stated growth bounds. -/
-structure StroockVaradhanHypotheses
-    (a : SpatialDiffusionMatrixCoeff) (b : SpatialDriftCoeff) : Prop where
-  /-- Each coefficient function `x ↦ aᵢⱼ(x)` is continuous. -/
-  continuous_diffusion : ∀ i j : Fin n, Continuous (fun x ↦ a x i j)
-  /-- Each drift coordinate `x ↦ bᵢ(x)` is measurable. -/
-  measurable_drift : ∀ i : Fin n, Measurable (fun x ↦ b x i)
-  /-- The matrix `a(x)` is positive definite for every state `x`. -/
-  posDef : ∀ x : State, (spatialDiffusionMatrix a x).PosDef
-  /-- The matrix and drift coefficients satisfy the quadratic and linear growth estimates with a
-  common constant `C`. -/
-  growth_bound :
-    ∃ C : ℝ,
-      0 ≤ C ∧
-      (∀ x : State, ∀ i j : Fin n, |a x i j| ≤ C * (1 + ‖x‖ ^ 2)) ∧
-      ∀ x : State, ∀ i : Fin n, |b x i| ≤ C * (1 + ‖x‖)
+/-- Helper for Theorem 26.26: once deterministic-start existence and deterministic-time marginal
+unique law are bundled in the support frontier, the target file only needs a thin projection
+wrapper. -/
+private theorem stroockVaradhan_diracLocalMartingaleProblemDataSupport
+    (a : StroockVaradhanDiffusionMatrixCoeff n)
+    (b : StroockVaradhanDriftCoeff n)
+    (hTimeIndependent : TimeIndependentLocalMartingaleProblemCoefficients a b)
+    (ha_cont : ∀ i j : Fin n, Continuous (fun x : StroockVaradhanState n ↦ a 0 x i j))
+    (hb_meas : ∀ i : Fin n, Measurable (fun x : StroockVaradhanState n ↦ b 0 x i))
+    (ha_symm : ∀ x : StroockVaradhanState n, ∀ i j : Fin n, a 0 x i j = a 0 x j i)
+    (ha_pos :
+      ∀ x v : StroockVaradhanState n, v ≠ 0 →
+        0 < ∑ i, v i * ∑ j, a 0 x i j * v j)
+    (hgrowth : StroockVaradhanGrowthCondition a b) :
+    ∀ x : StroockVaradhanState n,
+      (∃ (Ω : Type u) (mΩ : MeasurableSpace Ω) (ℱ : Filtration NNReal mΩ)
+        (P : ProbabilityMeasure Ω) (X : Ω → StroockVaradhanPathSpace n),
+        IsLocalMartingaleProblemSolution
+          (Measure.dirac x)
+          a
+          b
+          ℱ
+          (P : Measure Ω)
+          X) ∧
+        LocalMartingaleProblemHasUniqueLaw.{u, v}
+          (Measure.dirac x)
+          a
+          b := by
+  -- Route correction: the earlier split into separate existence and marginal-uniqueness frontiers
+  -- duplicated clause-(1). The canonical owner is the bundled support theorem imported above.
+  -- Proof comment: this wrapper simply exposes the support-file frontier on the exact local
+  -- theorem surface used by the public clause-(1) and clause-(4) statements.
+  simpa using
+    ProbabilityTheory.stroockVaradhan_diracLocalMartingaleProblemDataFrontier.{u, v}
+      (n := n)
+      a
+      b
+      hTimeIndependent
+      ha_cont
+      hb_meas
+      ha_symm
+      ha_pos
+      hgrowth
 
-/-- A state-kernel family is strong Feller if each positive-time transition operator sends bounded
-measurable real-valued functions to continuous functions. -/
-def HasStrongFellerProperty (κ : StateKernel) : Prop :=
-  ∀ ⦃t : NNReal⦄, 0 < t → ∀ f : State → ℝ,
-    Measurable f →
-    (∃ C : ℝ, ∀ x : State, |f x| ≤ C) →
-    Continuous (fun x ↦ ∫ y, f y ∂ κ t x)
+/-- Helper for Theorem 26.26: uniqueness in law for Dirac-start solutions implies deterministic-time
+marginal uniqueness by pushing path laws forward along deterministic-time evaluation. -/
+private theorem stroockVaradhan_diracDeterministicTimeMarginalUniqueness
+    (a : StroockVaradhanDiffusionMatrixCoeff n)
+    (b : StroockVaradhanDriftCoeff n)
+    (ha_time : ∀ t x i j, a t x i j = a 0 x i j)
+    (hb_time : ∀ t x i, b t x i = b 0 x i)
+    (ha_cont : ∀ i j : Fin n, Continuous (fun x : StroockVaradhanState n ↦ a 0 x i j))
+    (hb_meas : ∀ i : Fin n, Measurable (fun x : StroockVaradhanState n ↦ b 0 x i))
+    (ha_symm : ∀ x : StroockVaradhanState n, ∀ i j : Fin n, a 0 x i j = a 0 x j i)
+    (ha_pos :
+      ∀ x v : StroockVaradhanState n, v ≠ 0 →
+        0 < ∑ i, v i * ∑ j, a 0 x i j * v j)
+    (hgrowth : StroockVaradhanGrowthCondition a b) :
+    HasDeterministicTimeMarginalUniqueness.{u, v} a b := by
+  let hTimeIndependent :=
+    stroockVaradhan_timeIndependentLocalMartingaleProblemCoefficients
+      a
+      b
+      ha_time
+      hb_time
+  -- Proof comment: deterministic-time uniqueness is now a direct transport of the bundled
+  -- unique-law output from the support frontier along deterministic-time evaluation.
+  intro x Ω _ ℱ μ X Ω' _ ℱ' μ' X' hX hX'
+  have hUniqueLaw :
+      LocalMartingaleProblemHasUniqueLaw.{u, v} (Measure.dirac x) a b :=
+    (stroockVaradhan_diracLocalMartingaleProblemDataSupport.{u, v}
+      (n := n)
+      a
+      b
+      hTimeIndependent
+      ha_cont
+      hb_meas
+      ha_symm
+      ha_pos
+      hgrowth
+      x).2
+  intro T
+  -- Proof comment: feed the frontier's unique path law directly into the local pushforward
+  -- transport lemma to recover the required deterministic-time marginal equality.
+  exact
+    stroockVaradhan_timeMarginal_eq_of_diracUniqueLaw
+      (n := n)
+      ℱ
+      μ
+      X
+      ℱ'
+      μ'
+      X'
+      hUniqueLaw
+      hX
+      hX'
+      T
 
-/- Source/core/bridge triage for Theorem 26.26:
-- source-facing layer kept here: the autonomous coefficient lifts, the canonical square-root
-  coefficient, the Stroock--Varadhan coefficient hypotheses, and the strong-Feller conclusion for
-  transition kernels;
-- core/canonical owners reused directly from earlier chapters: `LocalMartingaleProblemWellPosed`,
-  `HasUniqueStrongSolution`, `HasPathwiseStrongSolutionRealization`,
-  `IsTimeHomogeneousMarkovProcess`, and `HasStrongMarkovProperty`;
-- bridge/view layer kept minimal: `HasStrongFellerProperty` is a bounded-measurable regularity
-  property of a transition-kernel family. Chapter 21 provides the weaker `IsFellerSemigroup`
-  owner on `C₀`, but not this stronger bounded-measurable variant, so no parallel Feller-owner
-  wrapper is introduced here.
--/
-
-section StroockVaradhan
-
-variable (a : SpatialDiffusionMatrixCoeff) (b : SpatialDriftCoeff)
-variable (hcoeff : StroockVaradhanHypotheses a b)
-
--- Proof sketch: use the Stroock--Varadhan theorem for continuous uniformly elliptic diffusion
--- matrices with linear-growth measurable drift to obtain existence and uniqueness in law for every
--- Dirac initial distribution, which is exactly `LocalMartingaleProblemWellPosed`.
-/-- Theorem 26.26 (1): under the Stroock--Varadhan hypotheses on the autonomous coefficients
-`a(x)` and `b(x)`, the local martingale problem `LMP(a, b)` is well-posed. -/
+/-- Theorem 26.26 (1): under the Stroock--Varadhan hypotheses, the local martingale problem is
+well-posed. -/
 theorem stroockVaradhan_localMartingaleProblemWellPosed
-    :
-    LocalMartingaleProblemWellPosed
-      (autonomousDiffusionMatrixCoeff a) (autonomousDriftCoeff b) := sorry
+    (a : StroockVaradhanDiffusionMatrixCoeff n)
+    (b : StroockVaradhanDriftCoeff n)
+    (ha_time : ∀ t x i j, a t x i j = a 0 x i j)
+    (hb_time : ∀ t x i, b t x i = b 0 x i)
+    (ha_cont : ∀ i j : Fin n, Continuous (fun x : StroockVaradhanState n ↦ a 0 x i j))
+    (hb_meas : ∀ i : Fin n, Measurable (fun x : StroockVaradhanState n ↦ b 0 x i))
+    (ha_symm : ∀ x : StroockVaradhanState n, ∀ i j : Fin n, a 0 x i j = a 0 x j i)
+    (ha_pos :
+      ∀ x v : StroockVaradhanState n, v ≠ 0 →
+        0 < ∑ i, v i * ∑ j, a 0 x i j * v j)
+    (hgrowth : StroockVaradhanGrowthCondition a b) :
+    LocalMartingaleProblemWellPosed.{u, v} a b := by
+  let hTimeIndependent :=
+    stroockVaradhan_timeIndependentLocalMartingaleProblemCoefficients
+      a
+      b
+      ha_time
+      hb_time
+  refine (localMartingaleProblemWellPosed_iff).2 ?_
+  intro x
+  exact
+    stroockVaradhan_diracLocalMartingaleProblemDataSupport.{u, v}
+      (n := n)
+      a
+      b
+      hTimeIndependent
+      ha_cont
+      hb_meas
+      ha_symm
+      ha_pos
+      hgrowth
+      x
 
-/-- Theorem 26.26 (2): for every starting point `x ∈ ℝⁿ`, the autonomous SDE with diffusion
-coefficient given by the positive square root of `a(x)` and drift `b(x)` has a unique strong
-solution started from `x`. -/
-theorem stroockVaradhan_hasUniqueStrongSolution
-    :
-    ∀ x : State,
-      HasUniqueStrongSolution
-        GeneralizedSDEBrownianMotion
-        (SolvesStrongGeneralizedSDE
-          (autonomousDiffusionSqrtCoeff a) (autonomousDriftCoeff b))
-        (Measure.dirac x) := sorry
+/-- Clause (3) of Theorem 26.26: under the Stroock--Varadhan hypotheses, each deterministic
+start admits a pathwise strong realization with the fixed-start strong-Markov property. -/
+theorem stroockVaradhan_strongMarkovRealizationAtStart
+    (a : StroockVaradhanDiffusionMatrixCoeff n)
+    (b : StroockVaradhanDriftCoeff n)
+    (σ : NNReal → StroockVaradhanState n → Fin n → Fin m → ℝ)
+    (haσ : a = diffusionMatrixOfCoefficient σ)
+    (hcoeff : TimeIndependentCoefficients σ b)
+    (ha_cont : ∀ i j : Fin n, Continuous (fun x : StroockVaradhanState n ↦ a 0 x i j))
+    (hb_meas : ∀ i : Fin n, Measurable (fun x : StroockVaradhanState n ↦ b 0 x i))
+    (ha_symm : ∀ x : StroockVaradhanState n, ∀ i j : Fin n, a 0 x i j = a 0 x j i)
+    (ha_pos :
+      ∀ x v : StroockVaradhanState n, v ≠ 0 →
+        0 < ∑ i, v i * ∑ j, a 0 x i j * v j)
+    (hgrowth : StroockVaradhanGrowthCondition a b)
+    (x : StroockVaradhanState n) :
+    ∃ (Ω : Type u) (_mΩ : MeasurableSpace Ω) (ℱ : Filtration NNReal inferInstance)
+      (P : ProbabilityMeasure Ω) (W : NNReal → Ω → Fin m → ℝ)
+      (X : NNReal → Ω → StroockVaradhanState n)
+      (κ : Kernel (StroockVaradhanState n) (NNReal → StroockVaradhanState n)),
+      HasPathwiseStrongSolutionRealization
+          (IsBrownianMotionWithFiltration ℱ (P : Measure Ω))
+          (fun ξ W' X' ↦ IsGeneralizedNDimensionalDiffusion ℱ (P : Measure Ω) ξ W' σ b X')
+          ℱ
+          (fun _ ↦ x)
+          W
+          X ∧
+        HasStrongMarkovPropertyAtStartNDim P X κ := by
+  exact
+    ProbabilityTheory.stroockVaradhan_diracStrongMarkovRealizationFrontier
+      (n := n)
+      (m := m)
+      a
+      b
+      σ
+      haσ
+      hcoeff
+      ha_cont
+      hb_meas
+      ha_symm
+      ha_pos
+      hgrowth
+      x
 
--- Proof sketch: construct the Markov family of path laws associated with the well-posed
--- martingale problem, identify it with the unique strong-solution family for the canonical
--- square-root coefficient, and use the deterministic-time and stopping-time martingale-problem
--- identities to obtain a single strong Markov realization of the solution family.
-/-- Theorem 26.26 (3): the unique strong-solution family of the autonomous SDE admits a
-time-homogeneous strong Markov realization. -/
-theorem stroockVaradhan_existsStrongMarkovSolutionFamily
-    :
-    ∃ (Ω : Type u), ∃ _ : MeasurableSpace Ω,
-      ∃ X : NNReal → Ω → State,
-      ∃ P : State → ProbabilityMeasure Ω,
-      ∃ pathKernel : PathKernel,
-      ∃ W : NNReal → Ω → Fin n → ℝ,
-        (∀ x : State,
-          HasPathwiseStrongSolutionRealization
-            (fun _ : NNReal → Ω → Fin n → ℝ ↦ True)
-            (fun ξ W X ↦
-              IsGeneralizedNDimensionalDiffusion
-                (processFiltration X) (P x : Measure Ω) ξ W
-                (autonomousDiffusionSqrtCoeff a) (autonomousDriftCoeff b) X)
-            (processFiltration X) (fun _ ↦ x) W X) ∧
-        IsTimeHomogeneousMarkovProcess X P pathKernel ∧
-        HasStrongMarkovProperty P X pathKernel := sorry
-
--- Proof sketch: start from the strong Markov solution family and apply the Stroock--Varadhan
--- regularity theorem to its path kernel to obtain continuity of the time-`t` transition operators
--- on every bounded measurable test function.
-/-- Theorem 26.26 (4): the transition kernel of the strong Markov solution family is strong
-Feller; equivalently, for every `t > 0` and bounded measurable `f : ℝⁿ → ℝ`, the map
-`x ↦ 𝔼_x[f(X_t)]` is continuous. -/
-theorem stroockVaradhan_existsStrongFellerSolutionFamily
-    :
-    ∃ (Ω : Type u), ∃ _ : MeasurableSpace Ω,
-      ∃ X : NNReal → Ω → State,
-      ∃ P : State → ProbabilityMeasure Ω,
-      ∃ pathKernel : PathKernel,
-      ∃ W : NNReal → Ω → Fin n → ℝ,
-        (∀ x : State,
-          HasPathwiseStrongSolutionRealization
-            (fun _ : NNReal → Ω → Fin n → ℝ ↦ True)
-            (fun ξ W X ↦
-              IsGeneralizedNDimensionalDiffusion
-                (processFiltration X) (P x : Measure Ω) ξ W
-                (autonomousDiffusionSqrtCoeff a) (autonomousDriftCoeff b) X)
-            (processFiltration X) (fun _ ↦ x) W X) ∧
-        IsTimeHomogeneousMarkovProcess X P pathKernel ∧
-        HasStrongMarkovProperty P X pathKernel ∧
-        HasStrongFellerProperty (transitionKernel pathKernel) := sorry
-
-end StroockVaradhan
+/-- Clause (4) of Theorem 26.26: every deterministic-start path-law family arising from the
+Stroock--Varadhan hypotheses satisfies the Feller continuity statement. -/
+theorem stroockVaradhan_fellerPathLawFamily
+    (a : StroockVaradhanDiffusionMatrixCoeff n)
+    (b : StroockVaradhanDriftCoeff n)
+    (ha_time : ∀ t x i j, a t x i j = a 0 x i j)
+    (hb_time : ∀ t x i, b t x i = b 0 x i)
+    (ha_cont : ∀ i j : Fin n, Continuous (fun x : StroockVaradhanState n ↦ a 0 x i j))
+    (hb_meas : ∀ i : Fin n, Measurable (fun x : StroockVaradhanState n ↦ b 0 x i))
+    (ha_symm : ∀ x : StroockVaradhanState n, ∀ i j : Fin n, a 0 x i j = a 0 x j i)
+    (ha_pos :
+      ∀ x v : StroockVaradhanState n, v ≠ 0 →
+        0 < ∑ i, v i * ∑ j, a 0 x i j * v j)
+    (hgrowth : StroockVaradhanGrowthCondition a b)
+    (P : StroockVaradhanState n → ProbabilityMeasure (StroockVaradhanPathSpace n))
+    (hP :
+      ∀ x : StroockVaradhanState n,
+        IsLocalMartingaleProblemSolution
+          (Measure.dirac x)
+          a
+          b
+          (canonicalCoordinateFiltration (n := n))
+          (P x : Measure (StroockVaradhanPathSpace n))
+          id)
+    (t : NNReal) :
+    0 < t →
+      ∀ f : StroockVaradhanState n → ℝ,
+        Measurable f →
+          (∃ C : ℝ, ∀ y : StroockVaradhanState n, |f y| ≤ C) →
+            Continuous (fun x : StroockVaradhanState n ↦
+              ∫ γ, f (γ t) ∂ (P x : Measure (StroockVaradhanPathSpace n))) := by
+  intro ht f hf hf_bdd
+  let hTimeIndependent :=
+    stroockVaradhan_timeIndependentLocalMartingaleProblemCoefficients
+      a
+      b
+      ha_time
+      hb_time
+  have hExist :
+      ∀ x : StroockVaradhanState n,
+        ∃ (Ω : Type) (mΩ : MeasurableSpace Ω) (ℱ : Filtration NNReal mΩ)
+          (P' : ProbabilityMeasure Ω) (X : Ω → StroockVaradhanPathSpace n),
+          IsLocalMartingaleProblemSolution
+            (Measure.dirac x)
+            a
+            b
+            ℱ
+            (P' : Measure Ω)
+            X := by
+    intro x
+    exact
+      (stroockVaradhan_diracLocalMartingaleProblemDataSupport.{0, 0}
+        (n := n)
+        a
+        b
+        hTimeIndependent
+        ha_cont
+        hb_meas
+        ha_symm
+        ha_pos
+        hgrowth
+        x).1
+  have hMarg :
+      HasDeterministicTimeMarginalUniqueness.{0, 0} a b :=
+    stroockVaradhan_diracDeterministicTimeMarginalUniqueness.{0, 0}
+      (n := n)
+      a
+      b
+      ha_time
+      hb_time
+      ha_cont
+      hb_meas
+      ha_symm
+      ha_pos
+      hgrowth
+  have hWellPosed0 : LocalMartingaleProblemWellPosed.{0, 0} a b :=
+    stroockVaradhan_localMartingaleProblemWellPosed.{0, 0}
+      (n := n)
+      a
+      b
+      ha_time
+      hb_time
+      ha_cont
+      hb_meas
+      ha_symm
+      ha_pos
+      hgrowth
+  rcases
+      (uniquenessInMartingaleProblem
+        a
+        b
+        hTimeIndependent
+        hExist
+        hMarg :
+        ∃ Pref : StroockVaradhanState n → ProbabilityMeasure (StroockVaradhanPathSpace n),
+          (∀ x : StroockVaradhanState n,
+              IsLocalMartingaleProblemSolution
+                (Measure.dirac x)
+                a
+                b
+                (generatedFiltration
+                  (fun t ↦
+                    (ContinuousMap.evalCLM ℝ t :
+                      StroockVaradhanPathSpace n → StroockVaradhanState n))
+                  (measurable_path_eval (n := n)))
+                (Pref x : Measure (StroockVaradhanPathSpace n))
+                id) ∧
+            LocalMartingaleProblemWellPosed.{0, 0} a b ∧
+              CanonicalPathLawHasStrongMarkovAndUniqueWeakSolution Pref) with
+    ⟨Pref, hPrefGenerated, _hWellPosed, hPackage⟩
+  have hPref :
+      ∀ x : StroockVaradhanState n,
+        IsLocalMartingaleProblemSolution
+          (Measure.dirac x)
+          a
+          b
+          (canonicalCoordinateFiltration (n := n))
+          (Pref x : Measure (StroockVaradhanPathSpace n))
+          id := by
+    intro x
+    simpa [canonicalCoordinateFiltration] using hPrefGenerated x
+  rcases hPackage.strongMarkov with ⟨κ, hMarkov, _hStrongMarkov⟩
+  have hKernelCont :=
+    ProbabilityTheory.stroockVaradhan_positiveTimeTransitionKernelExpectationContinuousFrontier
+      (n := n)
+      a
+      b
+      hTimeIndependent
+      ha_cont
+      hb_meas
+      ha_symm
+      ha_pos
+      hgrowth
+      Pref
+      κ
+      hPrefGenerated
+      hMarkov
+      t
+      ht
+      f
+      hf
+      hf_bdd
+  have hPrefCont :=
+    stroockVaradhan_referencePathIntegralContinuousFrontierSupport
+      (n := n)
+      Pref
+      κ
+      hMarkov
+      t
+      f
+      hf
+      hKernelCont
+  have hRowEq :=
+    stroockVaradhan_pathLaw_eq_reference
+      (n := n)
+      hPref
+      hP
+      hWellPosed0
+  have hRewrite :
+      (fun x : StroockVaradhanState n ↦
+        ∫ γ, f (γ t) ∂ (P x : Measure (StroockVaradhanPathSpace n))) =
+        fun x : StroockVaradhanState n ↦
+          ∫ γ, f (γ t) ∂ (Pref x : Measure (StroockVaradhanPathSpace n)) := by
+    funext x
+    rw [hRowEq x]
+  simpa [hRewrite] using hPrefCont
 
 end ProbabilityTheory

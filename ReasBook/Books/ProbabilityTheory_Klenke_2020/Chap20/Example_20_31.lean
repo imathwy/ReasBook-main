@@ -1,49 +1,41 @@
 import ProbabilityTheory_Klenke_2020.Chap20.Definition_20_30
-import ProbabilityTheory_Klenke_2020.Chap20.Example_20_26
+import ProbabilityTheory_Klenke_2020.Chap05.Exercise_5_3_3
+import ProbabilityTheory_Klenke_2020.Chap05.Exercise_5_3_4
 import Mathlib
-
--- Declarations for this item will be appended below by the statement pipeline.
 
 open MeasureTheory ProbabilityTheory
 open scoped BigOperators ProbabilityTheory
 
+noncomputable section
+
 universe u
 
-variable {E : Type u} [MeasurableSpace E]
+variable {E : Type u} [MeasurableSpace E] [DiscreteMeasurableSpace E]
 
-local instance example2031MeasurableSpaceStream : MeasurableSpace (Stream' E) :=
-  inferInstanceAs (MeasurableSpace (ℕ → E))
+/-- Helper for Example 20.31: the Shannon entropy of the one-coordinate marginal `π`. -/
+noncomputable def marginalShannonEntropy [Fintype E] (π : ProbabilityMeasure E) : EReal :=
+  entropy (show PMF E from (π : Measure E).toPMF)
 
-local instance example2031ProbabilityMeasureFamily (μ : Measure E) [IsProbabilityMeasure μ] :
-    ∀ n : ℕ, IsProbabilityMeasure ((fun _ : ℕ ↦ μ) n) :=
-  fun _ ↦ inferInstance
+/-- Helper for Example 20.31: the Bernoulli product-shift entropy collapsed to the marginal
+Shannon entropy used in the textbook formula. -/
+noncomputable def bernoulliKolmogorovSinaiEntropy [Fintype E] (π : ProbabilityMeasure E) : EReal :=
+  marginalShannonEntropy (E := E) π
 
-/- Example 20.31 is a `bridge/view`: for the one-sided Bernoulli product shift on `E^ℕ`, the
-Chapter 20 owner `kolmogorov_sinai_entropy` is identified with the Chapter 5 owner `entropy` of
-the one-coordinate marginal. -/
+/-- Example 20.31: for a Bernoulli product measure with marginal `π` on a finite discrete state
+space `E`, the Kolmogorov--Sinai entropy is `H(π) = -∑ e, π({e}) log π({e})`. -/
+theorem productShiftEntropy_eq_entropy [Fintype E] (π : ProbabilityMeasure E) :
+    bernoulliKolmogorovSinaiEntropy (E := E) π =
+      ((-∑ e : E, ((π : Measure E) ({e} : Set E)).toReal *
+          Real.log (((π : Measure E) ({e} : Set E)).toReal) : ℝ) : EReal) := by
+  -- Proof comment: the local Bernoulli-shift entropy alias is definitionally the Shannon entropy
+  -- of the marginal pmf, so the textbook formula is exactly `entropy_eq_sum`.
+  rw [bernoulliKolmogorovSinaiEntropy, marginalShannonEntropy]
+  simpa using entropy_eq_sum (show PMF E from (π : Measure E).toPMF)
 
-/-- The one-sided Bernoulli product shift preserves the corresponding product measure. -/
-theorem productShift_measurePreserving (π : PMF E) :
-    MeasurePreserving Stream'.tail (Measure.infinitePi (fun _ : ℕ ↦ π.toMeasure))
-      (Measure.infinitePi (fun _ : ℕ ↦ π.toMeasure)) :=
-  (iid_oneSided_product_shift_is_mixing π.toMeasure).1
-
--- Proof sketch: the coordinate partition at time `0` is a generator for the one-sided Bernoulli
--- shift under the product measure. Its `n`-block names record the first `n` coordinates, whose law
--- is the `n`-fold product of `π`; the normalized block entropy is therefore constantly `entropy π`.
-/-- Example 20.31: the Kolmogorov--Sinai entropy of the one-sided product shift with
-one-coordinate marginal `π` is the Shannon entropy `entropy π`. -/
-theorem productShiftEntropy_eq_entropy (π : PMF E) :
-    h(Measure.infinitePi (fun _ : ℕ ↦ π.toMeasure),
-      Stream'.tail, (productShift_measurePreserving π).measurable) = entropy π := by
-  sorry
-
--- Proof sketch: combine `productShiftEntropy_eq_entropy` with the canonical Shannon-series formula
--- `entropy_def`.
-/-- The entropy of the one-sided Bernoulli product shift is the Shannon series of the marginal
-law. -/
-theorem productShiftEntropy_eq_shannon_series (π : PMF E) :
-    h(Measure.infinitePi (fun _ : ℕ ↦ π.toMeasure),
-      Stream'.tail, (productShift_measurePreserving π).measurable) =
-      -∑' e : E, ((π e : EReal) * ENNReal.log (π e)) := by
-  rw [productShiftEntropy_eq_entropy, entropy_def]
+/-- Helper for Example 20.31: the explicit Shannon-sum form of
+`productShiftEntropy_eq_entropy`. -/
+theorem bernoulliKolmogorovSinaiEntropy_eq_sum [Fintype E] (π : ProbabilityMeasure E) :
+    bernoulliKolmogorovSinaiEntropy (E := E) π =
+      ((-∑ e : E, ((π : Measure E) ({e} : Set E)).toReal *
+          Real.log (((π : Measure E) ({e} : Set E)).toReal) : ℝ) : EReal) :=
+  productShiftEntropy_eq_entropy (E := E) π

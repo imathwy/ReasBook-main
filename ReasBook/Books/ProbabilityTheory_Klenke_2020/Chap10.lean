@@ -12,6 +12,7 @@ import ProbabilityTheory_Klenke_2020.Chap10.Example_10_7
 import ProbabilityTheory_Klenke_2020.Chap10.Example_10_8
 import ProbabilityTheory_Klenke_2020.Chap10.Exercise_10_2_1
 import ProbabilityTheory_Klenke_2020.Chap10.Exercise_10_2_2
+import ProbabilityTheory_Klenke_2020.Chap10.Exercise_10_2_2Core
 import ProbabilityTheory_Klenke_2020.Chap10.Lemma_10_10
 import ProbabilityTheory_Klenke_2020.Chap10.Lemma_10_20
 import ProbabilityTheory_Klenke_2020.Chap10.Remark_10_14

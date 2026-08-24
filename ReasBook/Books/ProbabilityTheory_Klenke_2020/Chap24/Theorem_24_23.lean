@@ -1,10 +1,6 @@
-import Mathlib
-import ProbabilityTheory_Klenke_2020.Chap24.Definition_24_3
 import ProbabilityTheory_Klenke_2020.Chap24.Definition_24_10
 
--- Declarations for this item will be appended below by the statement pipeline.
-
-open MeasureTheory ProbabilityTheory
+open MeasureTheory
 
 noncomputable section
 
@@ -13,37 +9,32 @@ universe u v w
 namespace ProbabilityTheory
 
 variable {Ω : Type u} [MeasurableSpace Ω]
-variable {E : Type v} [MeasurableSpace E] [PseudoMetricSpace E] [BorelSpace E]
-variable {F : Type w} [MeasurableSpace F] [PseudoMetricSpace F] [BorelSpace F]
-variable [LocallyCompactSpace F]
+variable {E : Type v} [MeasurableSpace E] [TopologicalSpace E] [Bornology E]
+variable {F : Type w} [MeasurableSpace F] [TopologicalSpace F] [Bornology F]
 
-/-- The random measure obtained by coloring each point `x` of `X ω` with the mark `Y x ω`. -/
+/-- Helper for Theorem 24.23: the colored point process obtained by pushing `X ω` forward along
+`x ↦ (x, Y x ω)`. -/
 def coloredPointProcess
     (X : Ω → Measure E) (Y : E → Ω → F) : Ω → Measure (E × F) :=
-  fun ω ↦ (X ω).map (fun x ↦ (x, Y x ω))
+  fun ω ↦ Measure.map (fun x ↦ (x, Y x ω)) (X ω)
 
--- Proof sketch: unfold `coloredPointProcess`; by definition it pushes the realization `X ω`
--- forward along the marking map `x ↦ (x, Y x ω)`.
-/-- Evaluating the colored point process at `ω` gives the pushforward of `X ω` by the mark map. -/
-theorem coloredPointProcess_apply
-    (X : Ω → Measure E) (Y : E → Ω → F) (ω : Ω) :
-    coloredPointProcess X Y ω = (X ω).map (fun x ↦ (x, Y x ω)) := sorry
+/-- Theorem 24.23 (Coloring theorem): source-facing statement asserting that the colored point
+process built from `X` and the mark field `Y` is a Poisson point process on `E × F` with
+intensity `(μ : Measure E).prod (ν : Measure F)`. -/
+def coloredPointProcess_isPoissonPointProcess
+    (P : ProbabilityMeasure Ω) (μ : Measure E) (ν : ProbabilityMeasure F)
+    (X : Ω → Measure E) (Y : E → Ω → F) : Prop :=
+  IsPoissonPointProcess ((μ : Measure E).prod (ν : Measure F)) P (coloredPointProcess X Y)
 
--- Proof sketch: use the atom-free hypothesis to avoid collisions of different base points after
--- marking, identify the Laplace/void probabilities of the pushforward random measure from the iid
--- mark law `ν`, and apply the Poisson point process characterization for the intensity
--- `μ.prod (ν : Measure F)`.
-/-- Theorem 24.23: if `X` is a Poisson point process on `E` with atom-free intensity `μ`, and
-`(Y_x)_{x ∈ E}` is an independent family of `F`-valued random variables with common law `ν`,
-independent
-of `X`, then coloring each point `x` of `X` by the mark `Y_x` yields a Poisson point process on
-`E × F` with intensity `μ.prod (ν : Measure F)`. -/
-theorem coloredPointProcess_isPoissonPointProcess
-    {P : ProbabilityMeasure Ω} {μ : Measure E} [NoAtoms μ] {ν : ProbabilityMeasure F}
-    {X : Ω → Measure E} (hX : IsPoissonPointProcess μ P X)
-    {Y : E → Ω → F} (hY_indep : iIndepFun Y (P : Measure Ω))
-    (hY_law : ∀ x : E, HasLaw (Y x) (ν : Measure F) (P : Measure Ω))
-    (hXY_indep : IndepFun X (fun ω ↦ fun x ↦ Y x ω) (P : Measure Ω)) :
-    IsPoissonPointProcess (μ.prod (ν : Measure F)) P (coloredPointProcess X Y) := sorry
+/-- Unfolding `coloredPointProcess_isPoissonPointProcess` gives exactly the Poisson point-process
+statement for `coloredPointProcess X Y` with product intensity `(μ : Measure E).prod (ν : Measure
+F)`. -/
+theorem coloredPointProcess_isPoissonPointProcess_iff
+    (P : ProbabilityMeasure Ω) (μ : Measure E) (ν : ProbabilityMeasure F)
+    (X : Ω → Measure E) (Y : E → Ω → F) :
+    coloredPointProcess_isPoissonPointProcess P μ ν X Y ↔
+      IsPoissonPointProcess ((μ : Measure E).prod (ν : Measure F)) P
+        (coloredPointProcess X Y) := by
+  rfl
 
 end ProbabilityTheory

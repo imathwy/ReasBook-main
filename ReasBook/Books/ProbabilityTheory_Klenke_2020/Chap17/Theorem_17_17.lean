@@ -2,7 +2,8 @@ import ProbabilityTheory_Klenke_2020.Chap08.Example_8_27
 import ProbabilityTheory_Klenke_2020.Chap09.Definition_9_10
 import ProbabilityTheory_Klenke_2020.Chap14.Definition_14_6
 import ProbabilityTheory_Klenke_2020.Chap17.Definition_17_16
-import ProbabilityTheory_Klenke_2020.Chap17.Theorem_17_8
+import ProbabilityTheory_Klenke_2020.Chap17.MarkovProcessRealization
+import ProbabilityTheory_Klenke_2020.Chap17.Theorem_17_11
 import Mathlib
 
 open MeasureTheory ProbabilityTheory
@@ -33,7 +34,18 @@ theorem canonicalProcess_isMarkovProcessRealization_of_stochasticMatrix
         (P x)⟦Function.eval (n + 1) ⁻¹' A | generatedFiltrationSpace Function.eval n⟧ =ᵐ[
             (P x : Measure (ℕ → E))]
           fun ω ↦ ((discreteMatrixKernel p) (Function.eval n ω)).real A) :
-    IsMarkovProcessRealization (fun n : ℕ ↦ discreteMatrixKernel p ^ n) P Function.eval := sorry
+    IsMarkovProcessRealization (fun n : ℕ ↦ discreteMatrixKernel p ^ n) P Function.eval := by
+  let _ : IsMarkovKernel (discreteMatrixKernel p) := discreteMatrixKernel_isMarkovKernel p hp
+  -- Proof comment: once the stochastic matrix is packaged as a one-step Markov kernel, the
+  -- owner theorem from Theorem 17.11 upgrades the given start law and one-step conditional law
+  -- to the full realization statement for the canonical coordinates.
+  refine ProbabilityTheory.isMarkovProcessRealization_of_oneStepKernel
+    (κ₁ := discreteMatrixKernel p)
+    (P := P)
+    (X := Function.eval)
+    (hmeas := fun n ↦ measurable_pi_apply n)
+    (hstart := hstart)
+    (hstep := hstep)
 
 section
 
@@ -54,7 +66,23 @@ theorem finiteDimensionalDistribution_eq_of_same_stochasticMatrix
     (x : E) {n : ℕ} (times : Fin (n + 1) → ℕ)
     (h_zero : times 0 = 0) (htimes : StrictMono times) :
     (P x : Measure Ω).map (fun ω i ↦ X (times i) ω) =
-      (Q x : Measure Ω').map (fun ω i ↦ Y (times i) ω) := sorry
+      (Q x : Measure Ω').map (fun ω i ↦ Y (times i) ω) := by
+  let hReal : IsMarkovProcessRealization (fun n : ℕ ↦ discreteMatrixKernel p ^ n) P X :=
+    inferInstance
+  have hMarkovKernel : IsMarkovKernel (discreteMatrixKernel p) := by
+    -- Proof comment: any realization of the kernel powers already carries the semigroup data, so
+    -- evaluating that semigroup at time `1` recovers the required one-step Markov-kernel
+    -- instance.
+    simpa using hReal.semigroup.isMarkovKernel 1
+  let _ : IsMarkovKernel (discreteMatrixKernel p) := hMarkovKernel
+  -- Proof comment: Theorem 17.11 already proves uniqueness of finite-dimensional distributions
+  -- for realizations sharing the same one-step kernel, so we specialize it to
+  -- `discreteMatrixKernel p`.
+  simpa using
+    (ProbabilityTheory.finiteDimensionalDistribution_eq_of_same_oneStepKernel
+      (κ₁ := discreteMatrixKernel p)
+      (P := P) (Q := Q) (X := X) (Y := Y)
+      x times h_zero htimes)
 
 end
 

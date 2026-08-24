@@ -1,6 +1,6 @@
 import ProbabilityTheory_Klenke_2020.Chap17.Definition_17_30
 import ProbabilityTheory_Klenke_2020.Chap17.Definition_17_36
-import ProbabilityTheory_Klenke_2020.Chap19.Definition_19_8
+import ProbabilityTheory_Klenke_2020.Chap17.Exercise_17_6_6
 import ProbabilityTheory_Klenke_2020.Chap19.Definition_19_11
 import Mathlib
 
@@ -56,6 +56,37 @@ theorem conductance_reversibleMarkovChainWeights
     conductance (reversibleMarkovChainWeights p π) x = π {x} := by
   simp [conductance, reversibleMarkovChainWeights, ENNReal.tsum_mul_right, hp x]
 
+-- Proof sketch: evaluating the discrete matrix kernel on a singleton keeps only the matching
+-- Dirac-mass term in the row measure.
+/-- Helper for Theorem 19.12: `discreteMatrixKernel p x` evaluates on `{y}` to the matrix entry
+`p x y`. -/
+theorem discreteMatrixKernel_singletonEqEntry
+    {p : E → E → ℝ≥0∞} (x y : E) :
+    discreteMatrixKernel p x ({y} : Set E) = p x y := by
+  -- Proof comment: expand the row kernel as a sum of weighted Dirac masses and keep the unique
+  -- singleton contribution.
+  rw [discreteMatrixKernel_apply]
+  simpa using
+    (Measure.sum_smul_dirac_singleton (f := fun z : E ↦ p x z) (a := y))
+
+-- Proof sketch: specialize setwise reversibility to the singleton sets `{x}` and `{y}` and then
+-- rewrite both restricted integrals explicitly.
+/-- Helper for Theorem 19.12: reversibility of `discreteMatrixKernel p` yields the singleton
+detailed-balance identity `p x y * π {x} = p y x * π {y}`. -/
+theorem reversibleSingletonBalance
+    {p : E → E → ℝ≥0∞} {π : Measure E}
+    (hπ_rev : IsReversible (discreteMatrixKernel p) π) :
+    ∀ x y : E, p x y * π {x} = p y x * π {y} := by
+  intro x y
+  have hxy :=
+    hπ_rev (A := ({x} : Set E)) (B := ({y} : Set E))
+      (measurableSet_singleton x) (measurableSet_singleton y)
+  -- Proof comment: the owner reversibility identity on singleton sets is exactly the textbook
+  -- entrywise detailed-balance equation.
+  rw [MeasureTheory.lintegral_singleton, MeasureTheory.lintegral_singleton] at hxy
+  rw [discreteMatrixKernel_singletonEqEntry, discreteMatrixKernel_singletonEqEntry] at hxy
+  simpa [mul_comm] using hxy
+
 -- Proof sketch: apply detailed balance to singleton sets `{x}` and `{y}`.
 /-- The reversible-chain edge weights `C(x,y) = p(x,y) π({x})` are symmetric. -/
 theorem reversibleMarkovChainWeights_symmetric
@@ -64,7 +95,9 @@ theorem reversibleMarkovChainWeights_symmetric
     ∀ x y : E,
       reversibleMarkovChainWeights p π x y = reversibleMarkovChainWeights p π y x := by
   intro x y
-  simpa using (isReversible_discreteMatrixKernel_iff.mp hπ_rev x y)
+  -- Route correction: replace the imported detailed-balance bridge with the local singleton
+  -- specialization of `Kernel.IsReversible`.
+  simpa [reversibleMarkovChainWeights] using reversibleSingletonBalance hπ_rev x y
 
 -- Proof sketch: combine the symmetry theorem above with the conductance identity
 -- `conductance (reversibleMarkovChainWeights p π) x = π {x}`.
@@ -89,8 +122,8 @@ theorem reversibleMarkovChainWeights_transition_eq
     (hp : IsStochasticMatrix p) (hπ_finite : ∀ x : E, π {x} < ∞)
     (hπ_pos : ∀ x : E, 0 < π {x}) :
     ∀ x y : E,
-      p x y =
-        reversibleMarkovChainWeights p π x y / conductance (reversibleMarkovChainWeights p π) x := by
+      p x y = reversibleMarkovChainWeights p π x y /
+        conductance (reversibleMarkovChainWeights p π) x := by
   intro x y
   rw [conductance_reversibleMarkovChainWeights hp x, reversibleMarkovChainWeights, mul_div_assoc,
     ENNReal.div_self (ne_of_gt (hπ_pos x)) (ne_of_lt (hπ_finite x)), mul_one]
@@ -129,7 +162,18 @@ theorem reversibleMarkovChainWeights_areProportional_of_irreducible_recurrent
     (hν_inv : Invariant (discreteMatrixKernel p) ν)
     (hπ_ne : π ≠ 0) (hν_ne : ν ≠ 0) :
     ∃ c : ℝ≥0∞, 0 < c ∧
-      reversibleMarkovChainWeights p ν = c • reversibleMarkovChainWeights p π := sorry
+      reversibleMarkovChainWeights p ν = c • reversibleMarkovChainWeights p π := by
+  have hrealization :
+      IsMarkovProcessRealization (fun n : ℕ ↦ discreteMatrixKernel p ^ n) P X := inferInstance
+  let _ : IsMarkovKernel (discreteMatrixKernel p) := by
+    simpa using hrealization.semigroup.isMarkovKernel 1
+  -- Route correction: use the invariant-measure uniqueness theorem directly instead of importing
+  -- the broken reversible-measure bridge from `Remark_19_9`.
+  rcases invariantMeasures_unique_up_to_scale_of_irreducible_recurrent hirr hrec
+      hπ_rev.invariant hν_inv hπ_ne hν_ne with ⟨c, hc, hν_smul⟩
+  refine ⟨c, hc, ?_⟩
+  -- Then transport the measure scaling identity to the associated edge-weight family.
+  simpa [hν_smul] using reversibleMarkovChainWeights_smul_measure p π c
 
 end
 

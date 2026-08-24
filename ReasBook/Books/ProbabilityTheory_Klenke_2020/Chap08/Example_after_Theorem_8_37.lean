@@ -31,7 +31,89 @@ theorem condDistrib_coinTossVector_given_uniform_ae_eq_coinTossingKernel
       condDistrib Y X P =ᵐ[volume] coinTossingKernel n := by
   letI : IsProbabilityMeasure P := hX_law.isProbabilityMeasure
   intro hcond_indep hcond_marg
-  sorry
+  classical
+  let κ : Kernel ↑I (Fin n → Bool) := condDistrib Y X P
+  have hκ_map :
+      κ =ᵐ[P.map X] coinTossingKernel n := by
+    have hsingleton :
+        ∀ᵐ x ∂P.map X,
+          ∀ y : Fin n → Bool,
+            κ x ({y} : Set (Fin n → Bool)) =
+              (coinTossingKernel n x) ({y} : Set (Fin n → Bool)) := by
+      refine ae_all_iff.2 fun y : Fin n → Bool ↦ ?_
+      have hfactor :
+          ∀ᵐ x ∂P.map X,
+            κ x ({y} : Set (Fin n → Bool)) =
+              ∏ i : Fin n, (κ.map (Function.eval i) x) ({y i} : Set Bool) := by
+        -- Specialize conditional independence to the singleton cylinder cutting out the word `y`.
+        have hcond_formula :=
+          (Kernel.iIndepFun_iff_measure_inter_preimage_eq_mul
+            (m := fun _ : Fin n ↦ inferInstance) (f := Function.eval)).1 hcond_indep
+        have hraw :=
+          hcond_formula (Finset.univ : Finset (Fin n)) (sets := fun i ↦ ({y i} : Set Bool))
+            (fun i _ ↦ measurableSet_singleton (y i))
+        filter_upwards [hraw] with x hx
+        have hinter :
+            (⋂ i ∈ (Finset.univ : Finset (Fin n)),
+                Function.eval i ⁻¹' ({y i} : Set Bool)) =
+              ({y} : Set (Fin n → Bool)) := by
+          ext z
+          simp [funext_iff]
+        have hprod :
+            (∏ i ∈ (Finset.univ : Finset (Fin n)),
+                κ x (Function.eval i ⁻¹' ({y i} : Set Bool))) =
+              ∏ i : Fin n, (κ.map (Function.eval i) x) ({y i} : Set Bool) := by
+          rw [show
+            (∏ i ∈ (Finset.univ : Finset (Fin n)),
+                κ x (Function.eval i ⁻¹' ({y i} : Set Bool))) =
+              ∏ i : Fin n, κ x (Function.eval i ⁻¹' ({y i} : Set Bool)) by
+            rfl]
+          refine Finset.prod_congr rfl ?_
+          intro i hi
+          symm
+          exact Kernel.map_apply' κ (by fun_prop) x (measurableSet_singleton (y i))
+        rw [hinter, hprod] at hx
+        exact hx
+      have hmarg :
+          ∀ᵐ x ∂P.map X,
+            ∀ i : Fin n,
+              (κ.map (Function.eval i) x) ({y i} : Set Bool) =
+                ((PMF.bernoulli (toNNReal x) (by simpa using x.2.2)).toMeasure)
+                  ({y i} : Set Bool) := by
+        refine ae_all_iff.2 fun i ↦ ?_
+        exact (hcond_marg i).mono fun x hx ↦
+          congrArg (fun μ : Measure Bool ↦ μ ({y i} : Set Bool)) hx
+      -- Rewrite the singleton mass using the coordinate marginals and identify it with the
+      -- Bernoulli product mass at `y`.
+      filter_upwards [hfactor, hmarg] with x hx_factor hx_marg
+      have hprod :
+          (∏ i : Fin n, (κ.map (Function.eval i) x) ({y i} : Set Bool)) =
+            ∏ i : Fin n,
+              ((PMF.bernoulli (toNNReal x) (by simpa using x.2.2)).toMeasure)
+                ({y i} : Set Bool) := by
+        refine Finset.prod_congr rfl ?_
+        intro i hi
+        exact hx_marg i
+      have hcoin :
+          (coinTossingKernel n x) ({y} : Set (Fin n → Bool)) =
+            ∏ i : Fin n,
+              ((PMF.bernoulli (toNNReal x) (by simpa using x.2.2)).toMeasure)
+                ({y i} : Set Bool) := by
+        rw [coinTossingKernel_apply, Measure.pi_singleton]
+      calc
+        κ x ({y} : Set (Fin n → Bool)) =
+            ∏ i : Fin n, (κ.map (Function.eval i) x) ({y i} : Set Bool) := hx_factor
+        _ =
+            ∏ i : Fin n,
+              ((PMF.bernoulli (toNNReal x) (by simpa using x.2.2)).toMeasure)
+                ({y i} : Set Bool) := hprod
+        _ = (coinTossingKernel n x) ({y} : Set (Fin n → Bool)) := hcoin.symm
+    filter_upwards [hsingleton] with x hx
+    -- On the finite codomain `Fin n → Bool`, equality of all singleton masses determines the
+    -- entire conditional fiber measure.
+    exact Measure.ext_of_singleton (μ := κ x) (ν := coinTossingKernel n x) (fun y ↦ hx y)
+  -- Transport the almost-everywhere equality from `P.map X` to `volume` using the law of `X`.
+  simpa [κ, hX_law.map_eq] using hκ_map
 
 /-- Pointwise form of
 `condDistrib_coinTossVector_given_uniform_ae_eq_coinTossingKernel`. For `volume`-almost every

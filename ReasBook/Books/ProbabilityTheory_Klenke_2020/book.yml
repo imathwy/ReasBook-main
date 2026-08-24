@@ -11,15 +11,16 @@ toolchain: leanprover/lean4:v4.30.0
 mathlib: v4.30.0
 branch: v4.30.0
 contributors:
+- name: Xuanzhi Ren
 - name: Zichen Wang
 - name: Zaiwen Wen
 coverage: 'Formalized content from Klenke''s Probability Theory: A Comprehensive Course.'
 statistics:
-  declarations: 6003
-  theorem_lemma_example: 4306
-  other_declarations: 1697
-  lean_files: 1285
-  lean_lines: 72419
-  proof_completion: 3875/6003
-  sorry: 2128
-  admit: 8
+  declarations: 24387
+  theorem_lemma_example: 21266
+  other_declarations: 3121
+  lean_files: 1408
+  lean_lines: 814314
+  proof_completion: 21116/21266
+  sorry: 150
+  admit: 3

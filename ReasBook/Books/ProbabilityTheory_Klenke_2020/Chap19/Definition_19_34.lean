@@ -114,11 +114,13 @@ section
 
 variable (W : RandomEnvironment) (P : ℤ → ProbabilityMeasure Ω) (X : ℕ → Ω → ℤ)
 
-/- Definition 19.34: a random walk in the random environment `W` is a discrete-time Markov
-process realization whose one-step transition matrix is `randomEnvironmentTransitionMatrix W`,
-equivalently whose one-step kernel is its canonical bridge
-`discreteMatrixKernel (randomEnvironmentTransitionMatrix W)`. -/
-#check
+/-- A process `X` with laws `P` is a random walk in the random environment `W` when it is the
+discrete-time Markov-process realization with one-step transition matrix
+`randomEnvironmentTransitionMatrix W`, equivalently with one-step kernel
+`discreteMatrixKernel (randomEnvironmentTransitionMatrix W)`. This is the notion from
+Definition 19.34. -/
+abbrev IsRandomWalkInRandomEnvironment
+    (W : RandomEnvironment) (P : ℤ → ProbabilityMeasure Ω) (X : ℕ → Ω → ℤ) : Prop :=
   IsMarkovProcessRealization
     (fun n : ℕ ↦ discreteMatrixKernel (randomEnvironmentTransitionMatrix W) ^ n)
     P X
@@ -128,25 +130,128 @@ end
 section
 
 variable {W : RandomEnvironment} {P : ℤ → ProbabilityMeasure Ω} {X : ℕ → Ω → ℤ}
-variable [IsMarkovProcessRealization
-  (fun n : ℕ ↦ discreteMatrixKernel (randomEnvironmentTransitionMatrix W) ^ n) P X]
 
 -- Proof sketch: evaluate the `initial_eq` owner field at the singleton `{x}`.
 /-- Under the canonical Chapter 17 RWRE owner, the walk started from `x` is almost surely at `x`
 at time `0`. -/
-theorem randomWalkInRandomEnvironment_start (x : ℤ) :
-    (P x : Measure Ω) (X 0 ⁻¹' {x}) = 1 := sorry
+theorem randomWalkInRandomEnvironment_start
+    [IsMarkovProcessRealization
+      (fun n : ℕ ↦ discreteMatrixKernel (randomEnvironmentTransitionMatrix W) ^ n) P X]
+    (x : ℤ) :
+    (P x : Measure Ω) (X 0 ⁻¹' {x}) = 1 := by
+  have hReal :
+      IsMarkovProcessRealization
+        (fun n : ℕ ↦ discreteMatrixKernel (randomEnvironmentTransitionMatrix W) ^ n) P X :=
+    inferInstance
+  -- Proof comment: rewrite the time-`0` singleton event through the pushed-forward law and use
+  -- the realization axiom `(P x).map (X 0) = dirac x`.
+  have hInit := congrArg (fun ν : Measure ℤ ↦ ν {x}) (hReal.initial_eq x)
+  simpa [Measure.map_apply (hReal.measurable_process 0) (measurableSet_singleton x)] using hInit
+
+/-- Helper for Definition 19.34: the discrete kernel associated to
+`randomEnvironmentTransitionMatrix W` evaluates on a singleton `{z}` to the matrix entry at
+`(y, z)`. -/
+lemma rwreKernel_apply_singleton (W : RandomEnvironment) (y z : ℤ) :
+    discreteMatrixKernel (randomEnvironmentTransitionMatrix W) y ({z} : Set ℤ) =
+      randomEnvironmentTransitionMatrix W y z := by
+  -- Proof comment: on the discrete state space `ℤ`, the singleton mass of the row measure is
+  -- exactly the weight assigned to that state in the matrix.
+  rw [discreteMatrixKernel_apply, Measure.sum_apply _ (measurableSet_singleton z)]
+  rw [tsum_eq_single z]
+  · simp
+  · intro i hi
+    simp [hi]
 
 -- Proof sketch: combine the owner-level Markov property for the one-step kernel
 -- `discreteMatrixKernel (randomEnvironmentTransitionMatrix W)` with the discrete singleton
 -- evaluation formula `discreteMatrixKernel p y {z} = p y z`.
-/-- Under the canonical Chapter 17 RWRE owner, the one-step joint law of `(X_n, X_{n+1})` is the
-textbook transition weight `randomEnvironmentTransitionMatrix W y z` times the time-`n` marginal
-at `y`. -/
+/-- Definition 19.34: under the canonical Chapter 17 RWRE owner, the one-step joint law of
+`(X_n, X_{n+1})` is the textbook transition weight
+`randomEnvironmentTransitionMatrix W y z` times the time-`n` marginal at `y`. -/
 theorem randomWalkInRandomEnvironment_transition
+    [IsMarkovProcessRealization
+      (fun n : ℕ ↦ discreteMatrixKernel (randomEnvironmentTransitionMatrix W) ^ n) P X]
     (x : ℤ) (n : ℕ) (y z : ℤ) :
     (P x : Measure Ω) {ω | X n ω = y ∧ X (n + 1) ω = z} =
-      randomEnvironmentTransitionMatrix W y z * (P x : Measure Ω) (X n ⁻¹' {y}) := sorry
+      randomEnvironmentTransitionMatrix W y z * (P x : Measure Ω) (X n ⁻¹' {y}) := by
+  let μ : Measure Ω := (P x : Measure Ω)
+  let A : Set Ω := X n ⁻¹' {y}
+  let B : Set Ω := X (n + 1) ⁻¹' {z}
+  have hReal :
+      IsMarkovProcessRealization
+        (fun n : ℕ ↦ discreteMatrixKernel (randomEnvironmentTransitionMatrix W) ^ n) P X :=
+    inferInstance
+  have hA_meas : MeasurableSet A := by
+    simpa [A] using (hReal.measurable_process n) (measurableSet_singleton y)
+  have hB_meas : MeasurableSet B := by
+    simpa [B] using (hReal.measurable_process (n + 1)) (measurableSet_singleton z)
+  have hFiltration_le : generatedFiltrationSpace X n ≤ ‹MeasurableSpace Ω› := by
+    refine iSup₂_le fun m hm ↦ ?_
+    exact (hReal.measurable_process m).comap_le
+  have hA_measFiltration : MeasurableSet[generatedFiltrationSpace X n] A := by
+    have hXn_measF : Measurable[generatedFiltrationSpace X n] (X n) := by
+      refine Measurable.of_comap_le ?_
+      exact le_iSup_of_le n <| le_iSup_of_le le_rfl le_rfl
+    simpa [A] using hXn_measF (measurableSet_singleton y)
+  have hEvent :
+      {ω | X n ω = y ∧ X (n + 1) ω = z} = A ∩ B := by
+    ext ω
+    simp [A, B]
+  have hMarkovGenerated :
+      μ⟦B | generatedFiltrationSpace X n⟧ =ᵐ[μ]
+        fun ω ↦
+          ((discreteMatrixKernel (randomEnvironmentTransitionMatrix W) (X n ω)).real
+            ({z} : Set ℤ)) :=
+    by
+      simpa [B, add_comm] using
+        hReal.markov_property x (A := ({z} : Set ℤ)) (measurableSet_singleton z) n 1
+  have hIndicatorIntegrable : Integrable (B.indicator (fun _ ↦ (1 : ℝ))) μ :=
+    (integrable_const (1 : ℝ)).indicator hB_meas
+  have hInterReal :
+      μ.real (A ∩ B) =
+        (randomEnvironmentTransitionMatrix W y z).toReal * μ.real A := by
+    -- Proof comment: integrate the one-step Markov conditional expectation over the fiber
+    -- `{X n = y}`; on that fiber, the kernel row is constant with value
+    -- `randomEnvironmentTransitionMatrix W y z`.
+    calc
+      μ.real (A ∩ B) = ∫ ω in A, (μ⟦B | generatedFiltrationSpace X n⟧) ω ∂ μ := by
+        rw [setIntegral_condExp hFiltration_le hIndicatorIntegrable hA_measFiltration,
+          ← integral_indicator hA_meas]
+        symm
+        simpa [B, Set.indicator_indicator, Set.inter_assoc, Set.inter_left_comm, Set.inter_comm,
+          smul_eq_mul] using integral_indicator_const (1 : ℝ) (hA_meas.inter hB_meas)
+      _ =
+          ∫ ω in A,
+            ((discreteMatrixKernel (randomEnvironmentTransitionMatrix W) (X n ω)).real
+              ({z} : Set ℤ)) ∂ μ := by
+            exact integral_congr_ae hMarkovGenerated.restrict
+      _ = ∫ _ in A, (randomEnvironmentTransitionMatrix W y z).toReal ∂ μ := by
+            refine integral_congr_ae ?_
+            filter_upwards [self_mem_ae_restrict (μ := μ) (s := A) hA_meas] with ω hω
+            have hω : X n ω = y := by
+              simpa [A] using hω
+            rw [hω]
+            simpa [MeasureTheory.measureReal_def] using
+              congrArg ENNReal.toReal (rwreKernel_apply_singleton (W := W) y z)
+      _ = (randomEnvironmentTransitionMatrix W y z).toReal * μ.real A := by
+            rw [setIntegral_const, smul_eq_mul]
+            rw [mul_comm]
+  have hStep_ne_top : randomEnvironmentTransitionMatrix W y z ≠ ∞ := by
+    by_cases hz1 : z = y + 1
+    · simp [randomEnvironmentTransitionMatrix, hz1]
+    · by_cases hz2 : z = y - 1
+      · have hneq : y - 1 ≠ y + 1 := by omega
+        simp [randomEnvironmentTransitionMatrix, hz2, hneq]
+      · simp [randomEnvironmentTransitionMatrix, hz1, hz2]
+  have hInter :
+      μ (A ∩ B) = randomEnvironmentTransitionMatrix W y z * μ A := by
+    refine
+      (ENNReal.toReal_eq_toReal_iff' (measure_ne_top μ (A ∩ B))
+        (ENNReal.mul_ne_top hStep_ne_top (measure_ne_top μ A))).mp ?_
+    simpa [measureReal_def, ENNReal.toReal_mul, hStep_ne_top, A] using hInterReal
+  -- Proof comment: rewrite the pair event as the intersection of the current-state and next-state
+  -- fibers, then transport the real-valued set-integral identity back to ENNReal.
+  simpa [μ, A, hEvent] using hInter
 
 end
 

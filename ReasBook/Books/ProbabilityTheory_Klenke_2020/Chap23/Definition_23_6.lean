@@ -13,21 +13,24 @@ variable {E : Type u} [TopologicalSpace E]
 `E → [0, ∞]`, modeled in Lean as `LowerSemicontinuous I` for `I : E → ℝ≥0∞`. -/
 recall LowerSemicontinuous
 
-/-- Definition 23.6 (2): A good rate function is a rate function whose finite sublevel sets
+/-- A good rate function in Definition 23.6 is a rate function whose finite sublevel sets
 `I ⁻¹' ([0, a])` are compact for every `a ∈ [0, ∞)`, written in Lean as
 `I ⁻¹' Iic (a : ℝ≥0∞)` for `a : ℝ≥0`. -/
-@[mk_iff isGoodRateFunction_iff]
 class IsGoodRateFunction (I : E → ℝ≥0∞) : Prop where
   /-- A good rate function is lower semicontinuous. -/
   lowerSemicontinuous : LowerSemicontinuous I
   /-- Every finite sublevel set of a good rate function is compact. -/
   isCompact_sublevel : ∀ a : ℝ≥0, IsCompact (I ⁻¹' Iic (a : ℝ≥0∞))
 
-/-- A good rate function is canonically lower semicontinuous. -/
-instance instLowerSemicontinuousOfIsGoodRateFunction
-    (I : E → ℝ≥0∞) [hI : IsGoodRateFunction I] : LowerSemicontinuous I :=
-  hI.lowerSemicontinuous
+/-- Definition 23.6: `IsGoodRateFunction I` means that `I` is lower semicontinuous and every
+finite sublevel set `I ⁻¹' Iic (a : ℝ≥0∞)` is compact. -/
+theorem isGoodRateFunction_iff (I : E → ℝ≥0∞) :
+    IsGoodRateFunction I ↔
+      LowerSemicontinuous I ∧ ∀ a : ℝ≥0, IsCompact (I ⁻¹' Iic (a : ℝ≥0∞)) := by
+  constructor
+  · intro hI
+    exact ⟨hI.lowerSemicontinuous, hI.isCompact_sublevel⟩
+  · rintro ⟨hI_lsc, hI_compact⟩
+    exact ⟨hI_lsc, hI_compact⟩
 
-/-- On a compact space, the constant zero map is a good rate function. -/
-instance instIsGoodRateFunctionZero [CompactSpace E] :
-    IsGoodRateFunction (fun _ : E ↦ (0 : ℝ≥0∞)) := sorry
+attribute [instance] IsGoodRateFunction.lowerSemicontinuous

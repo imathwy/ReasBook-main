@@ -260,8 +260,7 @@ theorem erealIntegral_liminf_le_liminf_erealIntegral
     -- Each gap is measurable because it is the `toENNReal` of a measurable `EReal` difference.
     intro n
     exact (hfSeq_meas n).sub hf.1 |>.ereal_toENNReal
-  have hfatou_gap :=
-    MeasureTheory.lintegral_liminf_le (μ := μ) (f := gap) (u := atTop) hgap_meas
+  have hfatou_gap := MeasureTheory.lintegral_liminf_le (μ := μ) hgap_meas
   have hgap_liminf :
       ∫⁻ ω, liminf (fun n ↦ gap n ω) atTop ∂μ =
         ∫⁻ ω, (limf ω - f ω).toENNReal ∂μ := by

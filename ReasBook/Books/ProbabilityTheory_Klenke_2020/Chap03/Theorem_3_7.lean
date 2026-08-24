@@ -1,5 +1,4 @@
 import Mathlib
-import ProbabilityTheory_Klenke_2020.Chap03.Example_3_4
 import ProbabilityTheory_Klenke_2020.Chap03.Lemma_3_6
 
 -- Declarations for this item will be appended below by the statement pipeline.
@@ -16,9 +15,30 @@ open scoped BigOperators
 `exp (λ * (z - 1))`. -/
 private theorem poissonPMF_pgf_eq_exp (lam : NNReal) (z : ℝ) :
     (∑' m : ℕ, (poissonPMF lam m).toReal * z ^ m) = Real.exp (lam * (z - 1)) := by
-  -- Translate Example 3.4 from the measure-valued statement to the pmf series used here.
-  simpa [probabilityGeneratingSeries, poissonMeasure_singleton, poissonPMF,
-    poissonPMFReal] using example_3_4_poisson_pgf lam z
+  -- Route correction: localize the Poisson pgf computation here so the theorem no longer depends
+  -- on the broken `Example_3_4` item file.
+  have hseries :
+      HasSum (fun n : ℕ ↦ Real.exp (-((lam : ℝ))) * (((lam : ℝ) * z) ^ n / ↑n.factorial))
+        (Real.exp (-((lam : ℝ))) * Real.exp ((lam : ℝ) * z)) := by
+    -- This is the exponential power series, scaled by the constant factor `exp (-λ)`.
+    simpa [Real.exp_eq_exp_ℝ] using
+      (NormedSpace.expSeries_div_hasSum_exp ((lam : ℝ) * z)).mul_left (Real.exp (-((lam : ℝ))))
+  -- Rewrite the Poisson coefficients into the exponential-series normal form.
+  calc
+    ∑' n : ℕ, (poissonPMF lam n).toReal * z ^ n
+      = ∑' n : ℕ, Real.exp (-((lam : ℝ))) * (((lam : ℝ) * z) ^ n / ↑n.factorial) := by
+          refine tsum_congr fun n ↦ ?_
+          rw [← ProbabilityTheory.poissonPMFReal_ofReal_eq_poissonPMF]
+          rw [ENNReal.toReal_ofReal ProbabilityTheory.poissonPMFReal_nonneg]
+          rw [ProbabilityTheory.poissonPMFReal]
+          have hfac : (↑n.factorial : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero n)
+          field_simp [hfac]
+          ring
+    _ = Real.exp (-((lam : ℝ))) * Real.exp ((lam : ℝ) * z) := hseries.tsum_eq
+    _ = Real.exp (lam * (z - 1)) := by
+          rw [← Real.exp_add]
+          congr 1
+          ring
 
 /-- Helper for Theorem 3.7: the source-proof bound `(∑ p_{n,l}) * sup_l p_{n,l}` tends to zero. -/
 private theorem row_sum_mul_iSup_tendsto_zero
@@ -91,11 +111,11 @@ private theorem bernoulli_factor_eq_one_add (p : NNReal) (z : ℝ) :
   ring
 
 /-- Helper for Theorem 3.7: every probability mass function has a strictly positive generating
-series at `z = 1 / 2`. -/
-private theorem pmf_series_pos_at_half (μ : PMF ℕ) :
-    0 < ∑' m : ℕ, (μ m).toReal * (1 / 2 : ℝ) ^ m := by
-  have hsummable : Summable (fun m : ℕ ↦ (μ m).toReal * (1 / 2 : ℝ) ^ m) :=
-    pgf_series_summable μ (by norm_num) (by norm_num)
+series at each point of `(0,1)`. -/
+private theorem pmf_series_pos_on_Ioo (μ : PMF ℕ) {z : ℝ} (hz0 : 0 < z) (hz1 : z < 1) :
+    0 < ∑' m : ℕ, (μ m).toReal * z ^ m := by
+  have hsummable : Summable (fun m : ℕ ↦ (μ m).toReal * z ^ m) :=
+    pgf_series_summable μ (le_of_lt hz0) hz1
   have hmass_exists : ∃ k : ℕ, (μ k).toReal ≠ 0 := by
     by_contra hmass
     have hzero : ∀ k : ℕ, (μ k).toReal = 0 := by
@@ -106,19 +126,139 @@ private theorem pmf_series_pos_at_half (μ : PMF ℕ) :
   rcases hmass_exists with ⟨k, hk_nonzero⟩
   have hk_mass_pos : 0 < (μ k).toReal := by
     exact lt_of_le_of_ne ENNReal.toReal_nonneg (Ne.symm hk_nonzero)
-  have hk_term_pos : 0 < (μ k).toReal * (1 / 2 : ℝ) ^ k := by
-    exact mul_pos hk_mass_pos (pow_pos (by norm_num) _)
-  have hterm_nonneg :
-      ∀ m : ℕ, 0 ≤ (μ m).toReal * (1 / 2 : ℝ) ^ m := by
+  have hk_term_pos : 0 < (μ k).toReal * z ^ k := by
+    exact mul_pos hk_mass_pos (pow_pos hz0 _)
+  have hterm_nonneg : ∀ m : ℕ, 0 ≤ (μ m).toReal * z ^ m := by
     intro m
-    exact mul_nonneg ENNReal.toReal_nonneg (pow_nonneg (by norm_num) _)
+    exact mul_nonneg ENNReal.toReal_nonneg (pow_nonneg hz0.le _)
   have hterm_le_tsum :
-      (μ k).toReal * (1 / 2 : ℝ) ^ k ≤ ∑' m : ℕ, (μ m).toReal * (1 / 2 : ℝ) ^ m := by
+      (μ k).toReal * z ^ k ≤ ∑' m : ℕ, (μ m).toReal * z ^ m := by
     simpa using
       (hsummable.sum_le_tsum ({k} : Finset ℕ) (by
         intro i hi
         exact hterm_nonneg i))
   exact lt_of_lt_of_le hk_term_pos hterm_le_tsum
+
+/-- Helper for Theorem 3.7: every probability mass function has a strictly positive generating
+series at `z = 1 / 2`. -/
+private theorem pmf_series_pos_at_half (μ : PMF ℕ) :
+    0 < ∑' m : ℕ, (μ m).toReal * (1 / 2 : ℝ) ^ m := by
+  -- Specialize the interior positivity statement to the fixed point `z = 1 / 2`.
+  simpa using pmf_series_pos_on_Ioo (μ := μ) (z := (1 / 2 : ℝ)) (by norm_num) (by norm_num)
+
+/-- Helper for Theorem 3.7: the pgf factorization forces each Bernoulli parameter to lie in
+`[0,1]`. -/
+private theorem row_entry_le_one_of_hpgf
+    (μ : PMF ℕ) (p : ℕ → NNReal)
+    (hpgf :
+      ∀ z : Set.Icc (0 : ℝ) 1,
+        (∑' m : ℕ, (μ m).toReal * (z : ℝ) ^ m) =
+          ∏' l : ℕ, ((p l : ℝ) * (z : ℝ) + (1 - (p l : ℝ)))) :
+    ∀ l : ℕ, (p l : ℝ) ≤ 1 := by
+  intro l
+  by_contra hp
+  have hp_one_lt : 1 < (p l : ℝ) := lt_of_not_ge hp
+  have hp_pos : 0 < (p l : ℝ) := by linarith
+  let z : ℝ := 1 - (p l : ℝ)⁻¹
+  have hz_mem : z ∈ Set.Icc (0 : ℝ) 1 := by
+    refine ⟨?_, ?_⟩
+    · dsimp [z]
+      exact sub_nonneg.mpr (inv_le_one_of_one_le₀ hp_one_lt.le)
+    · dsimp [z]
+      linarith [inv_pos.mpr hp_pos]
+  have hz_pos : 0 < z := by
+    dsimp [z]
+    exact sub_pos.mpr (inv_lt_one_of_one_lt₀ hp_one_lt)
+  have hz_lt : z < 1 := by
+    dsimp [z]
+    linarith [inv_pos.mpr hp_pos]
+  have hfactor_zero : (p l : ℝ) * z + (1 - (p l : ℝ)) = 0 := by
+    dsimp [z]
+    field_simp [show (p l : ℝ) ≠ 0 by linarith]
+    ring
+  have hproduct_zero :
+      ∏' j : ℕ, ((p j : ℝ) * z + (1 - (p j : ℝ))) = 0 := by
+    exact
+      (hasProd_zero_of_exists_eq_zero
+        (f := fun j : ℕ ↦ ((p j : ℝ) * z + (1 - (p j : ℝ))))
+        ⟨l, hfactor_zero⟩).tprod_eq
+  have hseries_zero : ∑' m : ℕ, (μ m).toReal * z ^ m = 0 := by
+    rw [hpgf ⟨z, hz_mem⟩, hproduct_zero]
+  have hseries_pos : 0 < ∑' m : ℕ, (μ m).toReal * z ^ m := pmf_series_pos_on_Ioo μ hz_pos hz_lt
+  rw [hseries_zero] at hseries_pos
+  linarith
+
+/-- Helper for Theorem 3.7: if a row is not summable but stays below `1`, then its half-point
+Bernoulli product converges to `0`. -/
+private theorem rowHalfPrefixProductLeExpNegHalfSum
+    (p : ℕ → NNReal)
+    (hbound : ∀ l : ℕ, (p l : ℝ) ≤ 1)
+    (N : ℕ) :
+    ∏ l ∈ Finset.range N, (1 - (p l : ℝ) / 2) ≤
+      Real.exp (-(1 / 2 : ℝ) * ∑ l ∈ Finset.range N, (p l : ℝ)) := by
+  -- Compare each Bernoulli half-factor with the corresponding exponential term.
+  have hterm :
+      ∀ l : ℕ, 1 - (p l : ℝ) / 2 ≤ Real.exp (-(p l : ℝ) / 2) := by
+    intro l
+    have hpos : 0 < 1 - (p l : ℝ) / 2 := by
+      have hp_lt_two : (p l : ℝ) < 2 := lt_of_le_of_lt (hbound l) (by norm_num)
+      nlinarith
+    have hlog : Real.log (1 - (p l : ℝ) / 2) ≤ -(p l : ℝ) / 2 := by
+      have hlog_aux : Real.log (1 - (p l : ℝ) / 2) ≤ (1 - (p l : ℝ) / 2) - 1 :=
+        Real.log_le_sub_one_of_pos hpos
+      linarith
+    have hexp :
+        Real.exp (Real.log (1 - (p l : ℝ) / 2)) ≤ Real.exp (-(p l : ℝ) / 2) :=
+      Real.exp_le_exp.mpr hlog
+    simpa [Real.exp_log hpos] using hexp
+  have hfactor_nonneg :
+      ∀ l : ℕ, 0 ≤ 1 - (p l : ℝ) / 2 := by
+    intro l
+    have hp_nonneg : 0 ≤ (p l : ℝ) := NNReal.coe_nonneg _
+    nlinarith [hbound l]
+  have hexp_prod :
+      ∀ n : ℕ,
+        ∏ l ∈ Finset.range n, Real.exp (-(p l : ℝ) / 2) =
+          Real.exp (∑ l ∈ Finset.range n, (-(p l : ℝ) / 2)) := by
+    intro n
+    induction n with
+    | zero =>
+        simp
+    | succ n ih =>
+        rw [Finset.prod_range_succ, Finset.sum_range_succ, ih, ← Real.exp_add]
+  calc
+    ∏ l ∈ Finset.range N, (1 - (p l : ℝ) / 2) ≤
+        ∏ l ∈ Finset.range N, Real.exp (-(p l : ℝ) / 2) := by
+          induction N with
+          | zero =>
+              simp
+          | succ n ih =>
+              rw [Finset.prod_range_succ, Finset.prod_range_succ]
+              have hprefix_nonneg :
+                  0 ≤ ∏ l ∈ Finset.range n, (1 - (p l : ℝ) / 2) := by
+                refine Finset.prod_nonneg ?_
+                intro l hl
+                exact hfactor_nonneg l
+              calc
+                (∏ l ∈ Finset.range n, (1 - (p l : ℝ) / 2)) * (1 - (p n : ℝ) / 2) ≤
+                    (∏ l ∈ Finset.range n, (1 - (p l : ℝ) / 2)) *
+                      Real.exp (-(p n : ℝ) / 2) := by
+                        exact mul_le_mul_of_nonneg_left (hterm n) hprefix_nonneg
+                _ ≤ (∏ l ∈ Finset.range n, Real.exp (-(p l : ℝ) / 2)) *
+                      Real.exp (-(p n : ℝ) / 2) := by
+                        exact mul_le_mul_of_nonneg_right ih (le_of_lt (Real.exp_pos _))
+    _ = Real.exp (∑ l ∈ Finset.range N, (-(p l : ℝ) / 2)) := hexp_prod N
+    _ = Real.exp (-(1 / 2 : ℝ) * ∑ l ∈ Finset.range N, (p l : ℝ)) := by
+      congr 1
+      calc
+        ∑ l ∈ Finset.range N, (-(p l : ℝ) / 2)
+            = ∑ l ∈ Finset.range N, (-(1 / 2 : ℝ)) * (p l : ℝ) := by
+                refine Finset.sum_congr rfl ?_
+                intro l hl
+                ring
+        _ = (-(1 / 2 : ℝ)) * ∑ l ∈ Finset.range N, (p l : ℝ) := by
+              rw [← Finset.mul_sum]
+        _ = -(1 / 2 : ℝ) * ∑ l ∈ Finset.range N, (p l : ℝ) := rfl
 
 /-- Helper for Theorem 3.7: if a row is not summable but stays below `1`, then its half-point
 Bernoulli product converges to `0`. -/
@@ -127,9 +267,91 @@ private theorem row_half_product_hasProd_zero_of_not_summable
     (hbound : ∀ l : ℕ, (p l : ℝ) ≤ 1)
     (hnot : ¬ Summable fun l : ℕ ↦ (p l : ℝ)) :
     HasProd (fun l : ℕ ↦ (1 - (p l : ℝ) / 2)) 0 := by
-  -- TODO: prove that if `∑ p_l` is not summable while each `p_l ≤ 1`, then the partial products
-  -- of `1 - p_l / 2` decay to `0` by comparing them with `exp (-(1 / 2) * ∑ p_l)`.
-  sorry
+  let factor : ℕ → ℝ := fun l ↦ 1 - (p l : ℝ) / 2
+  let factorNN : ℕ → NNReal := fun l ↦ (factor l).toNNReal
+  have hfactor_nonneg : ∀ l : ℕ, 0 ≤ factor l := by
+    intro l
+    have hp_nonneg : 0 ≤ (p l : ℝ) := NNReal.coe_nonneg _
+    dsimp [factor]
+    nlinarith [hbound l]
+  have hfactor_le_one : ∀ l : ℕ, factor l ≤ 1 := by
+    intro l
+    have hp_nonneg : 0 ≤ (p l : ℝ) := NNReal.coe_nonneg _
+    dsimp [factor]
+    nlinarith
+  have hnotNN : ¬ Summable p := by
+    simpa [NNReal.summable_coe] using hnot
+  have hsum_atTopNN :
+      Tendsto (fun N : ℕ ↦ ∑ l ∈ Finset.range N, p l) atTop atTop :=
+    (NNReal.not_summable_iff_tendsto_nat_atTop).1 hnotNN
+  have hsum_atTop :
+      Tendsto (fun N : ℕ ↦ ∑ l ∈ Finset.range N, (p l : ℝ)) atTop atTop := by
+    -- The non-summable row has divergent prefix sums.
+    simpa [NNReal.coe_sum] using (NNReal.tendsto_coe_atTop).2 hsum_atTopNN
+  have hscaled_atTop :
+      Tendsto (fun N : ℕ ↦ (1 / 2 : ℝ) * ∑ l ∈ Finset.range N, (p l : ℝ)) atTop atTop :=
+    Filter.Tendsto.const_mul_atTop' (by norm_num) hsum_atTop
+  have hexp_tendsto :
+      Tendsto
+        (fun N : ℕ ↦ Real.exp (-(1 / 2 : ℝ) * ∑ l ∈ Finset.range N, (p l : ℝ)))
+        atTop (𝓝 0) := by
+    -- The exponential comparison from the source proof therefore vanishes.
+    convert Real.tendsto_exp_neg_atTop_nhds_zero.comp hscaled_atTop using 1
+    ext N
+    congr 1
+    ring
+  have hprefix_nonneg :
+      ∀ N : ℕ, 0 ≤ ∏ l ∈ Finset.range N, factor l := by
+    intro N
+    refine Finset.prod_nonneg ?_
+    intro l hl
+    exact hfactor_nonneg l
+  have hprefix_tendsto_real :
+      Tendsto (fun N : ℕ ↦ ∏ l ∈ Finset.range N, factor l) atTop (𝓝 0) := by
+    -- Squeeze the partial products between `0` and the vanishing exponential bound.
+    refine squeeze_zero'
+      (Eventually.of_forall hprefix_nonneg)
+      ?_ hexp_tendsto
+    exact Eventually.of_forall (rowHalfPrefixProductLeExpNegHalfSum p hbound)
+  have hfactorNN_coe : ∀ l : ℕ, ((factorNN l : NNReal) : ℝ) = factor l := by
+    intro l
+    simp [factorNN, factor, Real.toNNReal_of_nonneg, hfactor_nonneg l]
+  have hprefix_tendsto_nnreal :
+      Tendsto (fun N : ℕ ↦ ∏ l ∈ Finset.range N, factorNN l) atTop (𝓝 (0 : NNReal)) := by
+    -- Move the vanishing prefix products into `NNReal`, where `HasProd` can be reconstructed
+    -- from the infimum of finite products.
+    refine (NNReal.tendsto_coe).1 ?_
+    simpa [factorNN, factor, hfactorNN_coe] using hprefix_tendsto_real
+  have hfactorNN_le_one : ∀ l : ℕ, factorNN l ≤ 1 := by
+    intro l
+    rw [← NNReal.coe_le_coe]
+    simpa [hfactorNN_coe l] using hfactor_le_one l
+  have hanti_full : Antitone fun s : Finset ℕ ↦ ∏ l ∈ s, factorNN l :=
+    Finset.prod_anti_set_of_le_one' hfactorNN_le_one
+  have hanti_range : Antitone fun N : ℕ ↦ ∏ l ∈ Finset.range N, factorNN l := by
+    intro m n hmn
+    exact hanti_full (Finset.range_mono hmn)
+  have hglb_range :
+      IsGLB (Set.range fun N : ℕ ↦ ∏ l ∈ Finset.range N, factorNN l) 0 :=
+    isGLB_of_tendsto_atTop hanti_range hprefix_tendsto_nnreal
+  have hlowerBounds :
+      lowerBounds (Set.range fun N : ℕ ↦ ∏ l ∈ Finset.range N, factorNN l) =
+        lowerBounds (Set.range fun s : Finset ℕ ↦ ∏ l ∈ s, factorNN l) := by
+    simpa [Function.comp] using
+      hanti_full.lowerBounds_range_comp_tendsto_atTop Filter.tendsto_finset_range
+  have hglb_full :
+      IsGLB (Set.range fun s : Finset ℕ ↦ ∏ l ∈ s, factorNN l) 0 := by
+    refine ⟨?_, ?_⟩
+    · rw [← hlowerBounds]
+      exact hglb_range.1
+    · intro b hb
+      exact hglb_range.2 (by rw [hlowerBounds]; exact hb)
+  have hhasProdNN : HasProd factorNN 0 :=
+    hasProd_of_isGLB_of_le_one 0 hfactorNN_le_one hglb_full
+  have hhasProdReal : HasProd (fun l : ℕ ↦ ((factorNN l : NNReal) : ℝ)) 0 :=
+    hhasProdNN.map NNReal.toRealHom NNReal.continuous_coe
+  -- Finally identify the `NNReal` factors with the original real factors.
+  exact hhasProdReal.congr_fun (fun l ↦ (hfactorNN_coe l).symm)
 
 /-- Helper for Theorem 3.7: the original `hpgf` and `hmax` hypotheses already force eventual
 rowwise summability. -/
@@ -139,12 +361,33 @@ private theorem eventually_row_summable_of_hpgf_and_hmax
       ∀ n (z : Set.Icc (0 : ℝ) 1),
         (∑' m : ℕ, (μ n m).toReal * (z : ℝ) ^ m) =
           ∏' l : ℕ, ((p n l : ℝ) * (z : ℝ) + (1 - (p n l : ℝ))))
-    (hmax : Tendsto (fun n ↦ ⨆ l : ℕ, p n l) atTop (𝓝 0)) :
+    (_hmax : Tendsto (fun n ↦ ⨆ l : ℕ, p n l) atTop (𝓝 0)) :
     ∀ᶠ n in atTop, Summable fun l : ℕ ↦ (p n l : ℝ) := by
-  -- TODO: after establishing the previous helper, combine `hpgf` at `z = 1 / 2` with the
-  -- eventual small-`iSup` hypothesis to show that non-summable rows would force a zero pgf value,
-  -- contradicting `pmf_series_pos_at_half`.
-  sorry
+  let hentry_le_one : ∀ n l : ℕ, (p n l : ℝ) ≤ 1 := fun n l ↦
+    row_entry_le_one_of_hpgf (μ := μ n) (p := p n) (hpgf := hpgf n) l
+  -- Any non-summable row would make the half-point product vanish, contradicting positivity of the
+  -- pmf generating series.
+  refine Eventually.of_forall fun n ↦ ?_
+  by_contra hnot
+  have hbound_one : ∀ l : ℕ, (p n l : ℝ) ≤ 1 := hentry_le_one n
+  have hhalfProdZero :
+      HasProd (fun l : ℕ ↦ (1 - (p n l : ℝ) / 2)) 0 :=
+    row_half_product_hasProd_zero_of_not_summable (p := p n) hbound_one hnot
+  have hsource_zero :
+      (∑' m : ℕ, (μ n m).toReal * (1 / 2 : ℝ) ^ m) = 0 := by
+    calc
+      ∑' m : ℕ, (μ n m).toReal * (1 / 2 : ℝ) ^ m =
+          ∏' l : ℕ, ((p n l : ℝ) * (1 / 2 : ℝ) + (1 - (p n l : ℝ))) := by
+            exact hpgf n ⟨1 / 2, by norm_num⟩
+      _ = ∏' l : ℕ, (1 - (p n l : ℝ) / 2) := by
+            refine tprod_congr ?_
+            intro l
+            ring
+      _ = 0 := hhalfProdZero.tprod_eq
+  -- But every pmf has a strictly positive generating series at `z = 1 / 2`.
+  have hpositive : 0 < ∑' m : ℕ, (μ n m).toReal * (1 / 2 : ℝ) ^ m := pmf_series_pos_at_half (μ n)
+  rw [hsource_zero] at hpositive
+  linarith
 
 /-- Helper for Theorem 3.7: if a row is bounded by a small real number, then every logarithmic
 factor stays strictly positive on `[0,1]`. -/
@@ -270,7 +513,7 @@ logarithmic exponents converge to the Poisson exponent. -/
 private theorem row_log_exponent_tendsto
     (p : ℕ → ℕ → NNReal) (rowSup : ℕ → ℝ) (lam : NNReal) (z : Set.Icc (0 : ℝ) 1)
     (hsummable : ∀ᶠ n in atTop, Summable fun l : ℕ ↦ (p n l : ℝ))
-    (hbound : ∀ n l : ℕ, (p n l : ℝ) ≤ rowSup n)
+    (hbound : ∀ᶠ n in atTop, ∀ l : ℕ, (p n l : ℝ) ≤ rowSup n)
     (hsum : Tendsto (fun n ↦ ∑' l : ℕ, p n l) atTop (𝓝 lam))
     (hrowSup : Tendsto rowSup atTop (𝓝 0)) :
     Tendsto
@@ -299,10 +542,10 @@ private theorem row_log_exponent_tendsto
     refine squeeze_zero'
       (Eventually.of_forall fun n ↦ abs_nonneg (exponent n - linear n)) ?_
       (row_sum_mul_bound_tendsto_zero p rowSup lam hsum hrowSup)
-    filter_upwards [hhalf, hsummable] with n hn hsummable_n
+    filter_upwards [hhalf, hsummable, hbound] with n hn hsummable_n hbound_n
     simpa [exponent, linear, a] using
       row_log_linearization_error_le (p := p n) (z := z) (rowSup := rowSup n)
-        hsummable_n (hbound n) (le_of_lt hn)
+        hsummable_n hbound_n (le_of_lt hn)
   have herror :
       Tendsto (fun n ↦ exponent n - linear n) atTop (𝓝 0) := by
     rw [tendsto_zero_iff_norm_tendsto_zero]
@@ -320,7 +563,7 @@ private theorem pgf_converges_on_unit_interval_to_poisson_of_row_summable
         (∑' m : ℕ, (μ n m).toReal * (z : ℝ) ^ m) =
           ∏' l : ℕ, ((p n l : ℝ) * (z : ℝ) + (1 - (p n l : ℝ))))
     (hsummable : ∀ᶠ n in atTop, Summable fun l : ℕ ↦ (p n l : ℝ))
-    (hbound : ∀ n l : ℕ, (p n l : ℝ) ≤ rowSup n)
+    (hbound : ∀ᶠ n in atTop, ∀ l : ℕ, (p n l : ℝ) ≤ rowSup n)
     (hsum : Tendsto (fun n ↦ ∑' l : ℕ, p n l) atTop (𝓝 lam))
     (hrowSup : Tendsto rowSup atTop (𝓝 0)) :
     probabilityGeneratingFunctionsConvergeOnUnitInterval μ (poissonPMF lam) := by
@@ -347,7 +590,7 @@ private theorem pgf_converges_on_unit_interval_to_poisson_of_row_summable
     have hsource_eq :
         (fun n : ℕ ↦ ∑' m : ℕ, (μ n m).toReal * z ^ m) =ᶠ[atTop]
           (fun n ↦ Real.exp (∑' l : ℕ, Real.log (1 + (p n l : ℝ) * (z - 1)))) := by
-      filter_upwards [hhalf, hsummable] with n hn hsummable_n
+      filter_upwards [hhalf, hsummable, hbound] with n hn hsummable_n hbound_n
       calc
         ∑' m : ℕ, (μ n m).toReal * z ^ m =
             ∏' l : ℕ, ((p n l : ℝ) * z + (1 - (p n l : ℝ))) := hpgf n zI
@@ -357,7 +600,7 @@ private theorem pgf_converges_on_unit_interval_to_poisson_of_row_summable
           simpa using bernoulli_factor_eq_one_add (p := p n l) z
         _ = Real.exp (∑' l : ℕ, Real.log (1 + (p n l : ℝ) * (z - 1))) :=
           row_product_eq_exp_tsum_log (p := p n) (a := z - 1) hsummable_n
-            (row_factor_pos_of_row_bound (p := p n) (z := zI) (rowSup := rowSup n) (hbound n)
+            (row_factor_pos_of_row_bound (p := p n) (z := zI) (rowSup := rowSup n) hbound_n
               (le_of_lt hn))
     have hexp :
         Tendsto
@@ -380,16 +623,30 @@ private theorem row_summable_and_bound_bridge
       ∀ n (z : Set.Icc (0 : ℝ) 1),
         (∑' m : ℕ, (μ n m).toReal * (z : ℝ) ^ m) =
           ∏' l : ℕ, ((p n l : ℝ) * (z : ℝ) + (1 - (p n l : ℝ))))
-    (hsum : Tendsto (fun n ↦ ∑' l : ℕ, p n l) atTop (𝓝 lam))
+    (_hsum : Tendsto (fun n ↦ ∑' l : ℕ, p n l) atTop (𝓝 lam))
     (hmax : Tendsto (fun n ↦ ⨆ l : ℕ, p n l) atTop (𝓝 0)) :
     ∃ rowSup : ℕ → ℝ,
       (∀ᶠ n in atTop, Summable fun l : ℕ ↦ (p n l : ℝ)) ∧
-        (∀ n l : ℕ, (p n l : ℝ) ≤ rowSup n) ∧
+        (∀ᶠ n in atTop, ∀ l : ℕ, (p n l : ℝ) ≤ rowSup n) ∧
           Tendsto rowSup atTop (𝓝 0) := by
-  -- TODO: package the eventual rowwise summability obtained from
-  -- `eventually_row_summable_of_hpgf_and_hmax` together with the canonical real-valued row bound
-  -- extracted from `hmax`.
-  sorry
+  let rowSup : ℕ → ℝ := fun n ↦ ((⨆ l : ℕ, p n l : NNReal) : ℝ)
+  let hentry_le_one : ∀ n l : ℕ, (p n l : ℝ) ≤ 1 := fun n l ↦
+    row_entry_le_one_of_hpgf (μ := μ n) (p := p n) (hpgf := hpgf n) l
+  have hrow_bdd : ∀ n : ℕ, BddAbove (Set.range fun l : ℕ ↦ p n l) := by
+    intro n
+    refine ⟨1, ?_⟩
+    rintro _ ⟨l, rfl⟩
+    rw [← NNReal.coe_le_coe]
+    simpa using hentry_le_one n l
+  -- Choose the real row bound to be the coercion of the rowwise `NNReal` supremum.
+  refine ⟨rowSup, ?_, ?_, ?_⟩
+  · exact eventually_row_summable_of_hpgf_and_hmax μ p hpgf hmax
+  · exact Eventually.of_forall fun n l ↦ by
+      dsimp [rowSup]
+      exact_mod_cast (le_ciSup (hrow_bdd n) l)
+  · -- The chosen row bound tends to `0` because the original `NNReal` supremum does.
+    dsimp [rowSup]
+    exact (NNReal.continuous_coe.tendsto 0).comp hmax
 
 /-- Helper for Theorem 3.7: once the product representation is linearized in the exponent, the pgfs
 converge pointwise on `[0,1]` to the Poisson pgf. -/
@@ -407,7 +664,7 @@ private theorem pgf_converges_on_unit_interval_to_poisson
   have hconv_of_summable_and_bound :
       ∀ rowSup : ℕ → ℝ,
         (∀ᶠ n in atTop, Summable fun l : ℕ ↦ (p n l : ℝ)) →
-        (∀ n l : ℕ, (p n l : ℝ) ≤ rowSup n) →
+        (∀ᶠ n in atTop, ∀ l : ℕ, (p n l : ℝ) ≤ rowSup n) →
         Tendsto rowSup atTop (𝓝 0) →
         probabilityGeneratingFunctionsConvergeOnUnitInterval μ (poissonPMF lam) := by
     intro rowSup hsummable hbound hrowSup

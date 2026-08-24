@@ -55,7 +55,9 @@ def laplaceTransform (X : Kernel Ω E) (P : ProbabilityMeasure Ω)
 theorem laplaceTransform_def (X : Kernel Ω E) (P : ProbabilityMeasure Ω)
     (f : NonnegativeMeasurableFunction E) :
     laplaceTransform X P f =
-      ∫ ω, Real.exp (-((∫⁻ x, f x ∂ X ω).toReal)) ∂(P : Measure Ω) := sorry
+      ∫ ω, Real.exp (-((∫⁻ x, f x ∂ X ω).toReal)) ∂(P : Measure Ω) := by
+  -- The theorem statement is exactly the defining equation of `laplaceTransform`.
+  rfl
 
 /-- The characteristic function of a random measure is the expectation of `exp (i ∫ f dX)` for a
 bounded measurable real-valued test function `f`. -/
@@ -70,6 +72,8 @@ def characteristicFunction (X : Kernel Ω E) (P : ProbabilityMeasure Ω)
 theorem characteristicFunction_def (X : Kernel Ω E) (P : ProbabilityMeasure Ω)
     (f : RealValuedBoundedMeasurableFunction E) :
     characteristicFunction X P f =
-      ∫ ω, Complex.exp (((∫ x, f x ∂ X ω : ℝ) : ℂ) * Complex.I) ∂(P : Measure Ω) := sorry
+      ∫ ω, Complex.exp (((∫ x, f x ∂ X ω : ℝ) : ℂ) * Complex.I) ∂(P : Measure Ω) := by
+  -- The theorem statement is exactly the defining equation of `characteristicFunction`.
+  rfl
 
 end RandomMeasure

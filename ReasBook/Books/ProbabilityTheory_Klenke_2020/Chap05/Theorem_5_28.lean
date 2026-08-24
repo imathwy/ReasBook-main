@@ -707,6 +707,592 @@ private lemma abs_first_hit_indicator_sum_eq_hit_indicator (X : ℕ → Ω → �
     rw [hsum]
     simp [hω]
 
+/-- Helper for Theorem 5.28: the one-sided first-hit layer is null measurable under the `L²`
+hypotheses on the first `n` summands. -/
+private lemma firstHitEvent_nullMeasurable (P : Measure Ω) [IsProbabilityMeasure P]
+    (X : ℕ → Ω → ℝ) {n k : ℕ} (hk : k ≤ n)
+    (hX_memLp : ∀ i ∈ Finset.range n, MemLp (X i) 2 P) (t : ℝ) :
+    NullMeasurableSet (firstHitEvent X t k) P := by
+  -- Build the first-hit layer from null measurable threshold events for the shorter partial sums.
+  have hprev :
+      NullMeasurableSet (⋂ j ∈ Finset.Icc 1 (k - 1), {ω : Ω | partialSum X j ω < t}) P := by
+    refine Finset.nullMeasurableSet_biInter (Finset.Icc 1 (k - 1)) fun j hj ↦ ?_
+    have hj_le_k : j ≤ k := le_trans (Finset.mem_Icc.mp hj).2 (Nat.sub_le _ _)
+    have hj_le_n : j ≤ n := le_trans hj_le_k hk
+    exact
+      ((partialSum_memLp_two P X hj_le_n hX_memLp).aestronglyMeasurable).nullMeasurableSet_lt
+        aestronglyMeasurable_const
+  have hlast : NullMeasurableSet {ω : Ω | t ≤ partialSum X k ω} P := by
+    exact
+      aestronglyMeasurable_const.nullMeasurableSet_le
+        ((partialSum_memLp_two P X hk hX_memLp).aestronglyMeasurable)
+  convert hprev.inter hlast using 1
+  ext ω
+  simp [firstHitEvent]
+
+/-- Helper for Theorem 5.28: the absolute first-hit layer is null measurable under the `L²`
+hypotheses on the first `n` summands. -/
+private lemma absFirstHitEvent_nullMeasurable (P : Measure Ω) [IsProbabilityMeasure P]
+    (X : ℕ → Ω → ℝ) {n k : ℕ} (hk : k ≤ n)
+    (hX_memLp : ∀ i ∈ Finset.range n, MemLp (X i) 2 P) (t : ℝ) :
+    NullMeasurableSet (absFirstHitEvent X t k) P := by
+  -- The absolute-value layers are built from the same finite intersection pattern.
+  have hprev :
+      NullMeasurableSet (⋂ j ∈ Finset.Icc 1 (k - 1), {ω : Ω | |partialSum X j ω| < t}) P := by
+    refine Finset.nullMeasurableSet_biInter (Finset.Icc 1 (k - 1)) fun j hj ↦ ?_
+    have hj_le_k : j ≤ k := le_trans (Finset.mem_Icc.mp hj).2 (Nat.sub_le _ _)
+    have hj_le_n : j ≤ n := le_trans hj_le_k hk
+    have hAbs : AEStronglyMeasurable (fun ω ↦ |partialSum X j ω|) P := by
+      simpa [Real.norm_eq_abs] using
+        ((partialSum_memLp_two P X hj_le_n hX_memLp).aestronglyMeasurable).norm
+    exact hAbs.nullMeasurableSet_lt aestronglyMeasurable_const
+  have hlast : NullMeasurableSet {ω : Ω | t ≤ |partialSum X k ω|} P := by
+    have hAbs : AEStronglyMeasurable (fun ω ↦ |partialSum X k ω|) P := by
+      simpa [Real.norm_eq_abs] using
+        ((partialSum_memLp_two P X hk hX_memLp).aestronglyMeasurable).norm
+    exact aestronglyMeasurable_const.nullMeasurableSet_le hAbs
+  convert hprev.inter hlast using 1
+  ext ω
+  simp [absFirstHitEvent]
+
+/-- Helper for Theorem 5.28: the one-sided hit event is null measurable. -/
+private lemma oneSidedHitEvent_nullMeasurable (P : Measure Ω) [IsProbabilityMeasure P]
+    (X : ℕ → Ω → ℝ) (n : ℕ)
+    (hX_memLp : ∀ i ∈ Finset.range n, MemLp (X i) 2 P) (t : ℝ) :
+    NullMeasurableSet (oneSidedHitEvent X n t) P := by
+  -- The hit event is the finite union of the one-sided threshold layers.
+  have hunion :
+      NullMeasurableSet (⋃ k ∈ Finset.Icc 1 n, {ω : Ω | t ≤ partialSum X k ω}) P := by
+    refine Finset.nullMeasurableSet_biUnion (Finset.Icc 1 n) fun k hk ↦ ?_
+    exact
+      aestronglyMeasurable_const.nullMeasurableSet_le
+        ((partialSum_memLp_two P X (Finset.mem_Icc.mp hk).2 hX_memLp).aestronglyMeasurable)
+  convert hunion using 1
+  ext ω
+  simp [oneSidedHitEvent]
+
+/-- Helper for Theorem 5.28: the absolute hit event is null measurable. -/
+private lemma absHitEvent_nullMeasurable (P : Measure Ω) [IsProbabilityMeasure P]
+    (X : ℕ → Ω → ℝ) (n : ℕ)
+    (hX_memLp : ∀ i ∈ Finset.range n, MemLp (X i) 2 P) (t : ℝ) :
+    NullMeasurableSet (absHitEvent X n t) P := by
+  -- The absolute hit event is the finite union of the absolute-value threshold layers.
+  have hunion :
+      NullMeasurableSet (⋃ k ∈ Finset.Icc 1 n, {ω : Ω | t ≤ |partialSum X k ω|}) P := by
+    refine Finset.nullMeasurableSet_biUnion (Finset.Icc 1 n) fun k hk ↦ ?_
+    have hAbs : AEStronglyMeasurable (fun ω ↦ |partialSum X k ω|) P := by
+      simpa [Real.norm_eq_abs] using
+        ((partialSum_memLp_two P X (Finset.mem_Icc.mp hk).2 hX_memLp).aestronglyMeasurable).norm
+    exact aestronglyMeasurable_const.nullMeasurableSet_le hAbs
+  convert hunion using 1
+  ext ω
+  simp [absHitEvent]
+
+/-- Helper for Theorem 5.28: the terminal variance of the partial sums is the terminal second
+moment because the terminal partial sum is centered. -/
+private lemma partialSum_variance_eq_integral_sq (P : Measure Ω) [IsProbabilityMeasure P]
+    (X : ℕ → Ω → ℝ) (n : ℕ) (hX_mean : ∀ k ∈ Finset.range n, P[X k] = 0)
+    (hX_memLp : ∀ k ∈ Finset.range n, MemLp (X k) 2 P) :
+    Var[partialSum X n; P] = ∫ ω, (partialSum X n ω)^2 ∂P := by
+  have hSn_mean : P[partialSum X n] = 0 :=
+    partialSum_mean_zero P X (show n ≤ n by rfl) hX_mean hX_memLp
+  have hSn_memLp : MemLp (partialSum X n) 2 P :=
+    partialSum_memLp_two P X (show n ≤ n by rfl) hX_memLp
+  -- Rewrite the variance through the centered second-moment formula.
+  simpa [hSn_mean] using
+    (ProbabilityTheory.variance_of_integral_eq_zero hSn_memLp.aemeasurable hSn_mean)
+
+/-- Helper for Theorem 5.28: optimizing the one-sided stopped-square bound at
+`c = v / t` gives the textbook ratio `v / (t^2 + v)`. -/
+private lemma kolmogorov_shift_ratio {v t : ℝ} (hv : 0 ≤ v) (ht : 0 < t) :
+    (v + (v / t)^2) / (t + v / t)^2 = v / (t^2 + v) := by
+  -- Clear denominators using positivity of `t` and `t^2 + v`.
+  have ht_ne : t ≠ 0 := ne_of_gt ht
+  have hden_ne : t ^ 2 + v ≠ 0 := by
+    nlinarith
+  field_simp [ht_ne, hden_ne]
+
+/-- Helper for Theorem 5.28: the one-sided first-hit decomposition yields the stopped-square bound
+`(t + c)^2 * P.real (oneSidedHitEvent X n t) ≤ Var[partialSum X n; P] + c^2`. -/
+private lemma oneSidedHit_mul_le_variance_add_sq (P : Measure Ω) [IsProbabilityMeasure P]
+    (X : ℕ → Ω → ℝ) (n : ℕ) (hX_indep : iIndepFun (fun i : Fin n ↦ X i) P)
+    (hX_mean : ∀ k ∈ Finset.range n, P[X k] = 0)
+    (hX_memLp : ∀ k ∈ Finset.range n, MemLp (X k) 2 P) {t c : ℝ} (ht : 0 < t) (hc : 0 ≤ c) :
+    (t + c)^2 * P.real (oneSidedHitEvent X n t) ≤ Var[partialSum X n; P] + c^2 := by
+  let hitSet : Set Ω := oneSidedHitEvent X n t
+  let hitLayers : Finset ℕ := Finset.Icc 1 n
+  let terminalSum : Ω → ℝ := partialSum X n
+  let shiftedSquare : Ω → ℝ := fun ω ↦ (terminalSum ω + c)^2
+  have hTerminal_memLp : MemLp terminalSum 2 P := by
+    simpa [terminalSum] using partialSum_memLp_two P X (show n ≤ n by rfl) hX_memLp
+  have hTerminal_int : Integrable terminalSum P := hTerminal_memLp.integrable (by norm_num)
+  have hShiftedSquare_int : Integrable shiftedSquare P := by
+    simpa [terminalSum, shiftedSquare] using
+      (hTerminal_memLp.add (memLp_const c)).integrable_sq
+  have hHitSet_null : NullMeasurableSet hitSet P := by
+    simpa [hitSet] using oneSidedHitEvent_nullMeasurable P X n hX_memLp t
+  have hIndicatorSum :
+      (fun ω ↦ Finset.sum hitLayers
+        (fun k ↦ Set.indicator (firstHitEvent X t k) (fun _ ↦ (1 : ℝ)) ω)) =
+        Set.indicator hitSet (fun _ ↦ (1 : ℝ)) := by
+    simpa [hitSet, hitLayers] using first_hit_indicator_sum_eq_hit_indicator X n t
+  have hWeightedIndicatorSum :
+      (fun ω ↦ Finset.sum hitLayers
+        (fun k ↦ Set.indicator (firstHitEvent X t k) shiftedSquare ω)) =
+        Set.indicator hitSet shiftedSquare := by
+    -- Multiply the indicator partition by the common shifted-square weight.
+    funext ω
+    calc
+      Finset.sum hitLayers (fun k ↦ Set.indicator (firstHitEvent X t k) shiftedSquare ω)
+        = Finset.sum hitLayers
+            (fun k ↦ Set.indicator (firstHitEvent X t k) (fun _ ↦ (1 : ℝ)) ω * shiftedSquare ω) := by
+              refine Finset.sum_congr rfl fun k hk ↦ ?_
+              simpa [shiftedSquare] using
+                (Set.indicator_mul_left (firstHitEvent X t k) (fun _ : Ω ↦ (1 : ℝ))
+                  shiftedSquare (i := ω))
+      _ =
+          (Finset.sum hitLayers
+            (fun k ↦ Set.indicator (firstHitEvent X t k) (fun _ ↦ (1 : ℝ)) ω)) *
+            shiftedSquare ω := by
+              rw [Finset.sum_mul]
+      _ = Set.indicator hitSet (fun _ ↦ (1 : ℝ)) ω * shiftedSquare ω := by
+            rw [congrFun hIndicatorSum ω]
+      _ = Set.indicator hitSet shiftedSquare ω := by
+            simpa [shiftedSquare] using
+              (Set.indicator_mul_left hitSet (fun _ : Ω ↦ (1 : ℝ)) shiftedSquare (i := ω)).symm
+  have hLayerMeasureSum :
+      ∑ k ∈ hitLayers, P.real (firstHitEvent X t k) = P.real hitSet := by
+    -- Integrate the indicator partition with weight `1`.
+    calc
+      ∑ k ∈ hitLayers, P.real (firstHitEvent X t k)
+        = ∑ k ∈ hitLayers,
+            ∫ ω, Set.indicator (firstHitEvent X t k) (fun _ ↦ (1 : ℝ)) ω ∂P := by
+              refine Finset.sum_congr rfl fun k hk ↦ ?_
+              rw [integral_indicator₀
+                (firstHitEvent_nullMeasurable P X (Finset.mem_Icc.mp hk).2 hX_memLp t),
+                setIntegral_const]
+              simp [smul_eq_mul]
+      _ = ∫ ω,
+            Finset.sum hitLayers
+              (fun k ↦ Set.indicator (firstHitEvent X t k) (fun _ ↦ (1 : ℝ)) ω) ∂P := by
+            symm
+            refine integral_finset_sum _ fun k hk ↦ ?_
+            exact (integrable_const 1).indicator₀
+              (firstHitEvent_nullMeasurable P X (Finset.mem_Icc.mp hk).2 hX_memLp t)
+      _ = ∫ ω, Set.indicator hitSet (fun _ ↦ (1 : ℝ)) ω ∂P := by
+            refine integral_congr_ae <| Filter.Eventually.of_forall fun ω ↦ ?_
+            exact congrFun hIndicatorSum ω
+      _ = P.real hitSet := by
+            rw [integral_indicator₀ hHitSet_null, setIntegral_const]
+            simp [smul_eq_mul]
+  have hWeightedLayerSum :
+      ∑ k ∈ hitLayers, ∫ ω, Set.indicator (firstHitEvent X t k) shiftedSquare ω ∂P
+        ≤ ∫ ω, shiftedSquare ω ∂P := by
+    have hHitIndicator_int : Integrable (Set.indicator hitSet shiftedSquare) P :=
+      hShiftedSquare_int.indicator₀ hHitSet_null
+    -- Sum the weighted layer integrals and compare the resulting indicator with the full square.
+    calc
+      ∑ k ∈ hitLayers, ∫ ω, Set.indicator (firstHitEvent X t k) shiftedSquare ω ∂P
+        = ∫ ω, Finset.sum hitLayers
+            (fun k ↦ Set.indicator (firstHitEvent X t k) shiftedSquare ω) ∂P := by
+              symm
+              refine integral_finset_sum _ fun k hk ↦ ?_
+              exact hShiftedSquare_int.indicator₀
+                (firstHitEvent_nullMeasurable P X (Finset.mem_Icc.mp hk).2 hX_memLp t)
+      _ = ∫ ω, Set.indicator hitSet shiftedSquare ω ∂P := by
+            refine integral_congr_ae <| Filter.Eventually.of_forall fun ω ↦ ?_
+            exact congrFun hWeightedIndicatorSum ω
+      _ ≤ ∫ ω, shiftedSquare ω ∂P := by
+            refine integral_mono_ae hHitIndicator_int hShiftedSquare_int ?_
+            exact Filter.Eventually.of_forall fun ω ↦ by
+              by_cases hω : ω ∈ hitSet
+              · simp [hitSet, shiftedSquare, hω, sq_nonneg]
+              · simp [hitSet, shiftedSquare, hω, sq_nonneg]
+  have hLayerLower :
+      ∀ k ∈ hitLayers,
+        (t + c)^2 * P.real (firstHitEvent X t k)
+          ≤ ∫ ω, Set.indicator (firstHitEvent X t k) shiftedSquare ω ∂P := by
+    intro k hk
+    let layerSet : Set Ω := firstHitEvent X t k
+    let partialPrefix : Ω → ℝ := partialSum X k
+    let tailIncrement : Ω → ℝ := fun ω ↦ partialSum X n ω - partialSum X k ω
+    have hk_le : k ≤ n := (Finset.mem_Icc.mp hk).2
+    have hLayer_null : NullMeasurableSet layerSet P := by
+      simpa [layerSet] using firstHitEvent_nullMeasurable P X hk_le hX_memLp t
+    have hPrefix_memLp : MemLp partialPrefix 2 P := by
+      simpa [partialPrefix] using partialSum_memLp_two P X hk_le hX_memLp
+    have hPrefixShift_memLp : MemLp (fun ω ↦ partialPrefix ω + c) 2 P :=
+      hPrefix_memLp.add (memLp_const c)
+    have hTail_memLp : MemLp tailIncrement 2 P := by
+      simpa [tailIncrement, terminalSum, partialPrefix] using hTerminal_memLp.sub hPrefix_memLp
+    have hPrefixShiftIndicator_memLp :
+        MemLp (Set.indicator layerSet (fun ω ↦ partialPrefix ω + c)) 2 P := by
+      refine hPrefixShift_memLp.of_le
+        (hPrefixShift_memLp.aestronglyMeasurable.indicator₀ hLayer_null) ?_
+      exact Filter.Eventually.of_forall fun ω ↦ by
+        simpa [layerSet, partialPrefix] using
+          (norm_indicator_le_norm_self (s := layerSet) (f := fun ω ↦ partialPrefix ω + c) ω)
+    have hCross_int :
+        Integrable
+          (fun ω ↦ Set.indicator layerSet (fun ω ↦ partialPrefix ω + c) ω * tailIncrement ω) P :=
+      hPrefixShiftIndicator_memLp.integrable_mul hTail_memLp
+    have hPrefixSquare_int :
+        Integrable (fun ω ↦ Set.indicator layerSet (fun ω ↦ (partialPrefix ω + c)^2) ω) P := by
+      exact hPrefixShift_memLp.integrable_sq.indicator₀ hLayer_null
+    have hTailSquare_int :
+        Integrable (fun ω ↦ Set.indicator layerSet (fun ω ↦ (tailIncrement ω)^2) ω) P := by
+      exact hTail_memLp.integrable_sq.indicator₀ hLayer_null
+    have hExpand :
+        ∫ ω, Set.indicator layerSet shiftedSquare ω ∂P
+          = ∫ ω, Set.indicator layerSet (fun ω ↦ (partialPrefix ω + c)^2) ω ∂P
+              + 2 *
+                ∫ ω,
+                  Set.indicator layerSet (fun ω ↦ partialPrefix ω + c) ω * tailIncrement ω ∂P
+              + ∫ ω, Set.indicator layerSet (fun ω ↦ (tailIncrement ω)^2) ω ∂P := by
+      have hPointwise :
+          (fun ω ↦ Set.indicator layerSet shiftedSquare ω) =
+            fun ω ↦
+              Set.indicator layerSet (fun ω ↦ (partialPrefix ω + c)^2) ω
+                + (2 *
+                    (Set.indicator layerSet (fun ω ↦ partialPrefix ω + c) ω *
+                      tailIncrement ω)
+                  + Set.indicator layerSet (fun ω ↦ (tailIncrement ω)^2) ω) := by
+        funext ω
+        by_cases hω : ω ∈ layerSet
+        · simp [layerSet, shiftedSquare, partialPrefix, tailIncrement, hω]
+          ring
+        · simp [layerSet, shiftedSquare, partialPrefix, tailIncrement, hω]
+      rw [hPointwise]
+      calc
+        ∫ ω,
+            Set.indicator layerSet (fun ω ↦ (partialPrefix ω + c)^2) ω +
+              (2 * (Set.indicator layerSet (fun ω ↦ partialPrefix ω + c) ω * tailIncrement ω) +
+                Set.indicator layerSet (fun ω ↦ (tailIncrement ω)^2) ω) ∂P
+            =
+            ∫ ω, Set.indicator layerSet (fun ω ↦ (partialPrefix ω + c)^2) ω ∂P +
+              ∫ ω,
+                2 * (Set.indicator layerSet (fun ω ↦ partialPrefix ω + c) ω * tailIncrement ω) +
+                  Set.indicator layerSet (fun ω ↦ (tailIncrement ω)^2) ω ∂P := by
+                exact integral_add hPrefixSquare_int ((hCross_int.const_mul 2).add hTailSquare_int)
+        _ =
+            ∫ ω, Set.indicator layerSet (fun ω ↦ (partialPrefix ω + c)^2) ω ∂P +
+              (∫ ω, 2 * (Set.indicator layerSet (fun ω ↦ partialPrefix ω + c) ω * tailIncrement ω) ∂P
+                + ∫ ω, Set.indicator layerSet (fun ω ↦ (tailIncrement ω)^2) ω ∂P) := by
+                rw [integral_add (hCross_int.const_mul 2) hTailSquare_int]
+        _ =
+            ∫ ω, Set.indicator layerSet (fun ω ↦ (partialPrefix ω + c)^2) ω ∂P +
+              2 * ∫ ω, Set.indicator layerSet (fun ω ↦ partialPrefix ω + c) ω * tailIncrement ω ∂P +
+                ∫ ω, Set.indicator layerSet (fun ω ↦ (tailIncrement ω)^2) ω ∂P := by
+                rw [integral_const_mul]
+                ring
+    have hCross_zero :
+        ∫ ω, Set.indicator layerSet (fun ω ↦ partialPrefix ω + c) ω * tailIncrement ω ∂P = 0 := by
+      simpa [layerSet, partialPrefix, tailIncrement] using
+        first_hit_cross_term_zero P X n hX_indep hX_mean hX_memLp hk t c
+    have hTailSquare_nonneg :
+        0 ≤ ∫ ω, Set.indicator layerSet (fun ω ↦ (tailIncrement ω)^2) ω ∂P := by
+      exact integral_nonneg fun ω ↦ by
+        by_cases hω : ω ∈ layerSet
+        · simp [layerSet, tailIncrement, hω, sq_nonneg]
+        · simp [layerSet, tailIncrement, hω, sq_nonneg]
+    have hConst_le_prefix :
+        ∫ ω, Set.indicator layerSet (fun _ ↦ (t + c)^2) ω ∂P
+          ≤ ∫ ω, Set.indicator layerSet (fun ω ↦ (partialPrefix ω + c)^2) ω ∂P := by
+      refine integral_mono ((integrable_const ((t + c)^2)).indicator₀ hLayer_null)
+        hPrefixSquare_int fun ω ↦ ?_
+      by_cases hω : ω ∈ layerSet
+      · have hω_layer : ω ∈ layerSet := hω
+        change ω ∈ firstHitEvent X t k at hω_layer
+        rcases hω_layer with ⟨_, hω_ge⟩
+        simp [hω]
+        have htc_nonneg : 0 ≤ t + c := by
+          linarith
+        have hprefix_nonneg : 0 ≤ partialPrefix ω + c := by
+          linarith
+        nlinarith
+      · simp [hω]
+    -- First bound the layer by the stopped prefix square, then absorb the nonnegative tail square.
+    calc
+      (t + c)^2 * P.real (firstHitEvent X t k)
+        = ∫ ω, Set.indicator layerSet (fun _ ↦ (t + c)^2) ω ∂P := by
+            rw [integral_indicator₀ hLayer_null, setIntegral_const]
+            simp [layerSet, smul_eq_mul, mul_comm]
+      _ ≤ ∫ ω, Set.indicator layerSet (fun ω ↦ (partialPrefix ω + c)^2) ω ∂P :=
+        hConst_le_prefix
+      _ ≤ ∫ ω, Set.indicator layerSet shiftedSquare ω ∂P := by
+            calc
+              ∫ ω, Set.indicator layerSet (fun ω ↦ (partialPrefix ω + c)^2) ω ∂P
+                ≤ ∫ ω, Set.indicator layerSet (fun ω ↦ (partialPrefix ω + c)^2) ω ∂P
+                    + 2 *
+                        ∫ ω,
+                          Set.indicator layerSet (fun ω ↦ partialPrefix ω + c) ω *
+                            tailIncrement ω ∂P
+                    + ∫ ω, Set.indicator layerSet (fun ω ↦ (tailIncrement ω)^2) ω ∂P := by
+                      rw [hCross_zero]
+                      linarith
+              _ = ∫ ω, Set.indicator layerSet shiftedSquare ω ∂P := hExpand.symm
+  have hStoppedSquare :
+      (t + c)^2 * P.real hitSet ≤ ∫ ω, shiftedSquare ω ∂P := by
+    -- Sum the layerwise lower bounds and collapse the layer partition back to the hit event.
+    calc
+      (t + c)^2 * P.real hitSet
+        = (t + c)^2 * ∑ k ∈ hitLayers, P.real (firstHitEvent X t k) := by
+            rw [← hLayerMeasureSum]
+      _ = ∑ k ∈ hitLayers, (t + c)^2 * P.real (firstHitEvent X t k) := by
+            rw [Finset.mul_sum]
+      _ ≤ ∑ k ∈ hitLayers, ∫ ω, Set.indicator (firstHitEvent X t k) shiftedSquare ω ∂P := by
+            exact Finset.sum_le_sum fun k hk ↦ hLayerLower k hk
+      _ ≤ ∫ ω, shiftedSquare ω ∂P := hWeightedLayerSum
+  have hShiftedSecondMoment :
+      ∫ ω, shiftedSquare ω ∂P = Var[partialSum X n; P] + c ^ 2 := by
+    have hTerminal_mean_zero : P[terminalSum] = 0 := by
+      simpa [terminalSum] using partialSum_mean_zero P X (show n ≤ n by rfl) hX_mean hX_memLp
+    have hShift_mean : P[fun ω ↦ terminalSum ω + c] = c := by
+      -- The centered terminal expectation makes the shift contribute exactly `c`.
+      rw [integral_add hTerminal_int (integrable_const c), integral_const, hTerminal_mean_zero]
+      simp [smul_eq_mul]
+    calc
+      ∫ ω, shiftedSquare ω ∂P
+        = Var[fun ω ↦ terminalSum ω + c; P] + P[fun ω ↦ terminalSum ω + c] ^ 2 := by
+            have hvar :
+                Var[fun ω ↦ terminalSum ω + c; P] =
+                  ∫ ω, (terminalSum ω + c) ^ 2 ∂P - P[fun ω ↦ terminalSum ω + c] ^ 2 := by
+              simpa [terminalSum, Pi.pow_apply] using
+                (ProbabilityTheory.variance_eq_sub (hTerminal_memLp.add (memLp_const c)))
+            linarith
+      _ = Var[terminalSum; P] + c ^ 2 := by
+            rw [ProbabilityTheory.variance_add_const hTerminal_memLp.aestronglyMeasurable c,
+              hShift_mean]
+      _ = Var[partialSum X n; P] + c ^ 2 := by
+            simp [terminalSum]
+  -- Put the stopped-square estimate back in the variance form from the theorem statement.
+  calc
+    (t + c)^2 * P.real (oneSidedHitEvent X n t) ≤ ∫ ω, shiftedSquare ω ∂P := by
+      simpa [hitSet] using hStoppedSquare
+    _ = Var[partialSum X n; P] + c ^ 2 := hShiftedSecondMoment
+
+/-- Helper for Theorem 5.28: the absolute first-hit decomposition yields the stopped-square bound
+`t^2 * P.real (absHitEvent X n t) ≤ Var[partialSum X n; P]`. -/
+private lemma absHit_mul_le_variance (P : Measure Ω) [IsProbabilityMeasure P]
+    (X : ℕ → Ω → ℝ) (n : ℕ) (hX_indep : iIndepFun (fun i : Fin n ↦ X i) P)
+    (hX_mean : ∀ k ∈ Finset.range n, P[X k] = 0)
+    (hX_memLp : ∀ k ∈ Finset.range n, MemLp (X k) 2 P) {t : ℝ} (ht : 0 < t) :
+    t ^ 2 * P.real (absHitEvent X n t) ≤ Var[partialSum X n; P] := by
+  let hitSet : Set Ω := absHitEvent X n t
+  let hitLayers : Finset ℕ := Finset.Icc 1 n
+  let terminalSum : Ω → ℝ := partialSum X n
+  let terminalSquare : Ω → ℝ := fun ω ↦ (terminalSum ω)^2
+  have hTerminal_memLp : MemLp terminalSum 2 P := by
+    simpa [terminalSum] using partialSum_memLp_two P X (show n ≤ n by rfl) hX_memLp
+  have hTerminalSquare_int : Integrable terminalSquare P := by
+    simpa [terminalSum, terminalSquare] using hTerminal_memLp.integrable_sq
+  have hHitSet_null : NullMeasurableSet hitSet P := by
+    simpa [hitSet] using absHitEvent_nullMeasurable P X n hX_memLp t
+  have hIndicatorSum :
+      (fun ω ↦ Finset.sum hitLayers
+        (fun k ↦ Set.indicator (absFirstHitEvent X t k) (fun _ ↦ (1 : ℝ)) ω)) =
+        Set.indicator hitSet (fun _ ↦ (1 : ℝ)) := by
+    simpa [hitSet, hitLayers] using abs_first_hit_indicator_sum_eq_hit_indicator X n t
+  have hWeightedIndicatorSum :
+      (fun ω ↦ Finset.sum hitLayers
+        (fun k ↦ Set.indicator (absFirstHitEvent X t k) terminalSquare ω)) =
+        Set.indicator hitSet terminalSquare := by
+    -- Multiply the indicator partition by the common terminal square.
+    funext ω
+    calc
+      Finset.sum hitLayers (fun k ↦ Set.indicator (absFirstHitEvent X t k) terminalSquare ω)
+        = Finset.sum hitLayers
+            (fun k ↦ Set.indicator (absFirstHitEvent X t k) (fun _ ↦ (1 : ℝ)) ω *
+              terminalSquare ω) := by
+              refine Finset.sum_congr rfl fun k hk ↦ ?_
+              simpa [terminalSquare] using
+                (Set.indicator_mul_left (absFirstHitEvent X t k) (fun _ : Ω ↦ (1 : ℝ))
+                  terminalSquare (i := ω))
+      _ =
+          (Finset.sum hitLayers
+            (fun k ↦ Set.indicator (absFirstHitEvent X t k) (fun _ ↦ (1 : ℝ)) ω)) *
+            terminalSquare ω := by
+              rw [Finset.sum_mul]
+      _ = Set.indicator hitSet (fun _ ↦ (1 : ℝ)) ω * terminalSquare ω := by
+            rw [congrFun hIndicatorSum ω]
+      _ = Set.indicator hitSet terminalSquare ω := by
+            simpa [terminalSquare] using
+              (Set.indicator_mul_left hitSet (fun _ : Ω ↦ (1 : ℝ)) terminalSquare (i := ω)).symm
+  have hLayerMeasureSum :
+      ∑ k ∈ hitLayers, P.real (absFirstHitEvent X t k) = P.real hitSet := by
+    -- Integrate the absolute indicator partition with weight `1`.
+    calc
+      ∑ k ∈ hitLayers, P.real (absFirstHitEvent X t k)
+        = ∑ k ∈ hitLayers,
+            ∫ ω, Set.indicator (absFirstHitEvent X t k) (fun _ ↦ (1 : ℝ)) ω ∂P := by
+              refine Finset.sum_congr rfl fun k hk ↦ ?_
+              rw [integral_indicator₀
+                (absFirstHitEvent_nullMeasurable P X (Finset.mem_Icc.mp hk).2 hX_memLp t),
+                setIntegral_const]
+              simp [smul_eq_mul]
+      _ = ∫ ω,
+            Finset.sum hitLayers
+              (fun k ↦ Set.indicator (absFirstHitEvent X t k) (fun _ ↦ (1 : ℝ)) ω) ∂P := by
+            symm
+            refine integral_finset_sum _ fun k hk ↦ ?_
+            exact (integrable_const 1).indicator₀
+              (absFirstHitEvent_nullMeasurable P X (Finset.mem_Icc.mp hk).2 hX_memLp t)
+      _ = ∫ ω, Set.indicator hitSet (fun _ ↦ (1 : ℝ)) ω ∂P := by
+            refine integral_congr_ae <| Filter.Eventually.of_forall fun ω ↦ ?_
+            exact congrFun hIndicatorSum ω
+      _ = P.real hitSet := by
+            rw [integral_indicator₀ hHitSet_null, setIntegral_const]
+            simp [smul_eq_mul]
+  have hWeightedLayerSum :
+      ∑ k ∈ hitLayers, ∫ ω, Set.indicator (absFirstHitEvent X t k) terminalSquare ω ∂P
+        ≤ ∫ ω, terminalSquare ω ∂P := by
+    have hHitIndicator_int : Integrable (Set.indicator hitSet terminalSquare) P :=
+      hTerminalSquare_int.indicator₀ hHitSet_null
+    -- Sum the weighted layer integrals and compare the resulting indicator with the full square.
+    calc
+      ∑ k ∈ hitLayers, ∫ ω, Set.indicator (absFirstHitEvent X t k) terminalSquare ω ∂P
+        = ∫ ω, Finset.sum hitLayers
+            (fun k ↦ Set.indicator (absFirstHitEvent X t k) terminalSquare ω) ∂P := by
+              symm
+              refine integral_finset_sum _ fun k hk ↦ ?_
+              exact hTerminalSquare_int.indicator₀
+                (absFirstHitEvent_nullMeasurable P X (Finset.mem_Icc.mp hk).2 hX_memLp t)
+      _ = ∫ ω, Set.indicator hitSet terminalSquare ω ∂P := by
+            refine integral_congr_ae <| Filter.Eventually.of_forall fun ω ↦ ?_
+            exact congrFun hWeightedIndicatorSum ω
+      _ ≤ ∫ ω, terminalSquare ω ∂P := by
+            refine integral_mono_ae hHitIndicator_int hTerminalSquare_int ?_
+            exact Filter.Eventually.of_forall fun ω ↦ by
+              by_cases hω : ω ∈ hitSet
+              · simp [hitSet, terminalSquare, hω, sq_nonneg]
+              · simp [hitSet, terminalSquare, hω, sq_nonneg]
+  have hLayerLower :
+      ∀ k ∈ hitLayers,
+        t ^ 2 * P.real (absFirstHitEvent X t k)
+          ≤ ∫ ω, Set.indicator (absFirstHitEvent X t k) terminalSquare ω ∂P := by
+    intro k hk
+    let layerSet : Set Ω := absFirstHitEvent X t k
+    let partialPrefix : Ω → ℝ := partialSum X k
+    let tailIncrement : Ω → ℝ := fun ω ↦ partialSum X n ω - partialSum X k ω
+    have hk_le : k ≤ n := (Finset.mem_Icc.mp hk).2
+    have hLayer_null : NullMeasurableSet layerSet P := by
+      simpa [layerSet] using absFirstHitEvent_nullMeasurable P X hk_le hX_memLp t
+    have hPrefix_memLp : MemLp partialPrefix 2 P := by
+      simpa [partialPrefix] using partialSum_memLp_two P X hk_le hX_memLp
+    have hTail_memLp : MemLp tailIncrement 2 P := by
+      simpa [tailIncrement, terminalSum, partialPrefix] using hTerminal_memLp.sub hPrefix_memLp
+    have hPrefixIndicator_memLp : MemLp (Set.indicator layerSet partialPrefix) 2 P := by
+      refine hPrefix_memLp.of_le (hPrefix_memLp.aestronglyMeasurable.indicator₀ hLayer_null) ?_
+      exact Filter.Eventually.of_forall fun ω ↦ by
+        simpa [layerSet, partialPrefix] using
+          (norm_indicator_le_norm_self (s := layerSet) (f := partialPrefix) ω)
+    have hCross_int :
+        Integrable (fun ω ↦ Set.indicator layerSet partialPrefix ω * tailIncrement ω) P :=
+      hPrefixIndicator_memLp.integrable_mul hTail_memLp
+    have hPrefixSquare_int :
+        Integrable (fun ω ↦ Set.indicator layerSet (fun ω ↦ (partialPrefix ω)^2) ω) P := by
+      exact hPrefix_memLp.integrable_sq.indicator₀ hLayer_null
+    have hTailSquare_int :
+        Integrable (fun ω ↦ Set.indicator layerSet (fun ω ↦ (tailIncrement ω)^2) ω) P := by
+      exact hTail_memLp.integrable_sq.indicator₀ hLayer_null
+    have hExpand :
+        ∫ ω, Set.indicator layerSet terminalSquare ω ∂P
+          = ∫ ω, Set.indicator layerSet (fun ω ↦ (partialPrefix ω)^2) ω ∂P
+              + 2 * ∫ ω, Set.indicator layerSet partialPrefix ω * tailIncrement ω ∂P
+              + ∫ ω, Set.indicator layerSet (fun ω ↦ (tailIncrement ω)^2) ω ∂P := by
+      have hPointwise :
+          (fun ω ↦ Set.indicator layerSet terminalSquare ω) =
+            fun ω ↦
+              Set.indicator layerSet (fun ω ↦ (partialPrefix ω)^2) ω
+                + (2 * (Set.indicator layerSet partialPrefix ω * tailIncrement ω)
+                  + Set.indicator layerSet (fun ω ↦ (tailIncrement ω)^2) ω) := by
+        funext ω
+        by_cases hω : ω ∈ layerSet
+        · simp [layerSet, terminalSquare, partialPrefix, tailIncrement, hω]
+          ring
+        · simp [layerSet, terminalSquare, partialPrefix, tailIncrement, hω]
+      rw [hPointwise]
+      calc
+        ∫ ω,
+            Set.indicator layerSet (fun ω ↦ (partialPrefix ω)^2) ω +
+              (2 * (Set.indicator layerSet partialPrefix ω * tailIncrement ω) +
+                Set.indicator layerSet (fun ω ↦ (tailIncrement ω)^2) ω) ∂P
+            =
+            ∫ ω, Set.indicator layerSet (fun ω ↦ (partialPrefix ω)^2) ω ∂P +
+              ∫ ω,
+                2 * (Set.indicator layerSet partialPrefix ω * tailIncrement ω) +
+                  Set.indicator layerSet (fun ω ↦ (tailIncrement ω)^2) ω ∂P := by
+                exact integral_add hPrefixSquare_int ((hCross_int.const_mul 2).add hTailSquare_int)
+        _ =
+            ∫ ω, Set.indicator layerSet (fun ω ↦ (partialPrefix ω)^2) ω ∂P +
+              (∫ ω, 2 * (Set.indicator layerSet partialPrefix ω * tailIncrement ω) ∂P
+                + ∫ ω, Set.indicator layerSet (fun ω ↦ (tailIncrement ω)^2) ω ∂P) := by
+                rw [integral_add (hCross_int.const_mul 2) hTailSquare_int]
+        _ =
+            ∫ ω, Set.indicator layerSet (fun ω ↦ (partialPrefix ω)^2) ω ∂P +
+              2 * ∫ ω, Set.indicator layerSet partialPrefix ω * tailIncrement ω ∂P +
+                ∫ ω, Set.indicator layerSet (fun ω ↦ (tailIncrement ω)^2) ω ∂P := by
+                rw [integral_const_mul]
+                ring
+    have hCross_zero :
+        ∫ ω, Set.indicator layerSet partialPrefix ω * tailIncrement ω ∂P = 0 := by
+      simpa [layerSet, partialPrefix, tailIncrement] using
+        abs_first_hit_cross_term_zero P X n hX_indep hX_mean hX_memLp hk t
+    have hTailSquare_nonneg :
+        0 ≤ ∫ ω, Set.indicator layerSet (fun ω ↦ (tailIncrement ω)^2) ω ∂P := by
+      exact integral_nonneg fun ω ↦ by
+        by_cases hω : ω ∈ layerSet
+        · simp [layerSet, tailIncrement, hω, sq_nonneg]
+        · simp [layerSet, tailIncrement, hω, sq_nonneg]
+    have hConst_le_prefix :
+        ∫ ω, Set.indicator layerSet (fun _ ↦ t ^ 2) ω ∂P
+          ≤ ∫ ω, Set.indicator layerSet (fun ω ↦ (partialPrefix ω)^2) ω ∂P := by
+      refine integral_mono ((integrable_const (t ^ 2)).indicator₀ hLayer_null) hPrefixSquare_int
+        fun ω ↦ ?_
+      by_cases hω : ω ∈ layerSet
+      · have hω_layer : ω ∈ layerSet := hω
+        change ω ∈ absFirstHitEvent X t k at hω_layer
+        rcases hω_layer with ⟨_, hω_ge⟩
+        simp [hω]
+        have hsq : t ^ 2 ≤ |partialPrefix ω| ^ 2 := by
+          nlinarith [abs_nonneg (partialPrefix ω), hω_ge]
+        simpa [sq_abs] using hsq
+      · simp [hω]
+    -- The absolute first-hit layer gives the same stopped-square comparison with `c = 0`.
+    calc
+      t ^ 2 * P.real (absFirstHitEvent X t k)
+        = ∫ ω, Set.indicator layerSet (fun _ ↦ t ^ 2) ω ∂P := by
+            rw [integral_indicator₀ hLayer_null, setIntegral_const]
+            simp [layerSet, smul_eq_mul, mul_comm]
+      _ ≤ ∫ ω, Set.indicator layerSet (fun ω ↦ (partialPrefix ω)^2) ω ∂P := hConst_le_prefix
+      _ ≤ ∫ ω, Set.indicator layerSet terminalSquare ω ∂P := by
+            calc
+              ∫ ω, Set.indicator layerSet (fun ω ↦ (partialPrefix ω)^2) ω ∂P
+                ≤ ∫ ω, Set.indicator layerSet (fun ω ↦ (partialPrefix ω)^2) ω ∂P
+                    + 2 * ∫ ω, Set.indicator layerSet partialPrefix ω * tailIncrement ω ∂P
+                    + ∫ ω, Set.indicator layerSet (fun ω ↦ (tailIncrement ω)^2) ω ∂P := by
+                      rw [hCross_zero]
+                      linarith
+              _ = ∫ ω, Set.indicator layerSet terminalSquare ω ∂P := hExpand.symm
+  have hStoppedSquare :
+      t ^ 2 * P.real hitSet ≤ ∫ ω, terminalSquare ω ∂P := by
+    -- Sum the layerwise lower bounds and collapse the layer partition back to the hit event.
+    calc
+      t ^ 2 * P.real hitSet = t ^ 2 * ∑ k ∈ hitLayers, P.real (absFirstHitEvent X t k) := by
+        rw [← hLayerMeasureSum]
+      _ = ∑ k ∈ hitLayers, t ^ 2 * P.real (absFirstHitEvent X t k) := by
+        rw [Finset.mul_sum]
+      _ ≤ ∑ k ∈ hitLayers, ∫ ω, Set.indicator (absFirstHitEvent X t k) terminalSquare ω ∂P := by
+        exact Finset.sum_le_sum fun k hk ↦ hLayerLower k hk
+      _ ≤ ∫ ω, terminalSquare ω ∂P := hWeightedLayerSum
+  -- Identify the terminal square integral with the variance of the centered terminal sum.
+  calc
+    t ^ 2 * P.real (absHitEvent X n t) ≤ ∫ ω, terminalSquare ω ∂P := by
+      simpa [hitSet] using hStoppedSquare
+    _ = Var[partialSum X n; P] := by
+      symm
+      exact partialSum_variance_eq_integral_sq P X n hX_mean hX_memLp
+
 -- Proof sketch: decompose the event according to the first index `k` for which `partialSum X k`
 -- exceeds `t`, use independence of the past and future increments, and optimize the resulting
 -- bound with the choice `c = Var[partialSum X n; P] / t`.
@@ -721,13 +1307,35 @@ theorem kolmogorov_inequality_partial_sums (P : Measure Ω) [IsProbabilityMeasur
     (hX_memLp : ∀ k ∈ Finset.range n, MemLp (X k) 2 P) {t : ℝ} (ht : 0 < t) :
     P (oneSidedHitEvent X n t) ≤
       ENNReal.ofReal (Var[partialSum X n; P] / (t ^ 2 + Var[partialSum X n; P])) :=
-  -- Route correction: the file now has the prefix `L²` control and the tail-block rewrite, so the
-  -- remaining work is the stopped-square assembly itself: the raw tuple independence bridge, the
-  -- mixed-term cancellation, and the exact first-hit indicator partition are now available above.
-  -- TODO: integrate the textbook expansion of `(partialSum X n + c)^2` over the first-hit layers,
-  -- drop the nonnegative tail-square term, rewrite the layer sum with
-  -- `first_hit_indicator_sum_eq_hit_indicator`, and optimize with `c = Var[partialSum X n; P] / t`.
-  sorry
+  by
+  let c : ℝ := Var[partialSum X n; P] / t
+  have hc : 0 ≤ c := by
+    -- The optimizing shift is nonnegative because the variance is nonnegative and `t > 0`.
+    exact div_nonneg (ProbabilityTheory.variance_nonneg (partialSum X n) P) ht.le
+  have hStopped :=
+    oneSidedHit_mul_le_variance_add_sq P X n hX_indep hX_mean hX_memLp ht hc
+  have hden_pos : 0 < (t + c) ^ 2 := by
+    have htc_pos : 0 < t + c := by
+      linarith
+    positivity
+  have hReal :
+      P.real (oneSidedHitEvent X n t) ≤
+        Var[partialSum X n; P] / (t ^ 2 + Var[partialSum X n; P]) := by
+    have hRatio :
+        P.real (oneSidedHitEvent X n t) ≤
+          (Var[partialSum X n; P] + c ^ 2) / (t + c) ^ 2 := by
+      exact (le_div_iff₀ hden_pos).2 (by simpa [mul_comm] using hStopped)
+    -- Substitute the optimizing choice `c = Var[partialSum X n; P] / t`.
+    calc
+      P.real (oneSidedHitEvent X n t) ≤
+          (Var[partialSum X n; P] + c ^ 2) / (t + c) ^ 2 := hRatio
+      _ = Var[partialSum X n; P] / (t ^ 2 + Var[partialSum X n; P]) := by
+            simpa [c] using
+              (kolmogorov_shift_ratio
+                (ProbabilityTheory.variance_nonneg (partialSum X n) P) ht)
+  -- Convert the real-valued probability estimate back to the `ENNReal` statement.
+  rw [← MeasureTheory.ofReal_measureReal (μ := P) (s := oneSidedHitEvent X n t)]
+  exact ENNReal.ofReal_le_ofReal hReal
 
 -- Proof sketch: repeat the first-exit decomposition for the event that `|partialSum X k|` reaches
 -- `t`, now with the stopped sets defined by the first index where the absolute value crosses the
@@ -742,9 +1350,13 @@ theorem kolmogorov_inequality_abs_partial_sums (P : Measure Ω) [IsProbabilityMe
     (hX_memLp : ∀ k ∈ Finset.range n, MemLp (X k) 2 P) {t : ℝ} (ht : 0 < t) :
     P (absHitEvent X n t) ≤
       ENNReal.ofReal (Var[partialSum X n; P] / t ^ 2) :=
-  -- Route correction: the absolute-value payload now also factors through the prefix tuple, so the
-  -- remaining gap is the same stopped-square assembly as in the one-sided theorem.
-  -- TODO: repeat the integrated first-hit expansion with the absolute payloads, use
-  -- `abs_first_hit_cross_term_zero` and `abs_first_hit_indicator_sum_eq_hit_indicator`, and finish
-  -- the `c = 0` case of the textbook second-moment argument.
-  sorry
+  by
+  have hStopped := absHit_mul_le_variance P X n hX_indep hX_mean hX_memLp ht
+  have hden_pos : 0 < t ^ 2 := by
+    positivity
+  have hReal : P.real (absHitEvent X n t) ≤ Var[partialSum X n; P] / t ^ 2 := by
+    -- Divide the stopped-square estimate by the positive threshold square.
+    exact (le_div_iff₀ hden_pos).2 (by simpa [mul_comm] using hStopped)
+  -- Convert the real-valued probability estimate back to the `ENNReal` statement.
+  rw [← MeasureTheory.ofReal_measureReal (μ := P) (s := absHitEvent X n t)]
+  exact ENNReal.ofReal_le_ofReal hReal

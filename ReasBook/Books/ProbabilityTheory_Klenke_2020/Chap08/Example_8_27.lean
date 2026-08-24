@@ -85,12 +85,16 @@ section PoissonKernel
 -- the family `x ↦ poissonMeasure x` is measurable as a map into measures.
 private theorem measurable_poissonMeasureFamily : Measurable (fun x : NNReal ↦ poissonMeasure x) := by
   refine Measure.measurable_of_measurable_coe _ fun s hs ↦ ?_
-  simp_rw [poissonMeasure, Measure.sum_apply _ hs]
+  change Measurable (fun x : NNReal ↦ (poissonPMF x).toMeasure s)
+  simp_rw [PMF.toMeasure_apply_eq_tsum]
   refine Measurable.ennreal_tsum fun n ↦ ?_
   by_cases hn : n ∈ s
-  · simp [Measure.smul_apply, hn]
-    fun_prop
-  · simp [Measure.smul_apply, hn]
+  · simp [Set.indicator_of_mem hn]
+    simpa [poissonPMFReal_ofReal_eq_poissonPMF] using
+      (show Measurable (fun x : NNReal ↦ ENNReal.ofReal (poissonPMFReal x n)) by
+        unfold poissonPMFReal
+        fun_prop)
+  · simp [Set.indicator_of_notMem hn]
 
 /-- Example 8.27 (3): For (iii), the Poisson laws `x ↦ Poi_x` define a stochastic kernel from
 `[0, ∞)` to `ℕ₀`, represented in Lean by a kernel `NNReal → ℕ`. -/

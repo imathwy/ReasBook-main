@@ -26,15 +26,15 @@ variable {ℱ : Filtration ℕ mΩ} {μ : Measure Ω} {X A : ℕ → Ω → ℝ}
   predictablePart_zero
 
 /-- The canonical square variation is predictable. -/
-theorem squareVariation_predictable : IsStronglyPredictable ℱ ⟨X⟩[ℱ, μ] := by
-  refine IsStronglyPredictable.of_measurable_add_one ?_ ?_
+theorem squareVariation_predictable : IsPredictable ℱ ⟨X⟩[ℱ, μ] := by
+  refine isPredictable_of_measurable_add_one ?_ ?_
   · simpa using
-      (stronglyMeasurable_zero : StronglyMeasurable[ℱ 0] (0 : Ω → ℝ))
+      (stronglyMeasurable_zero : StronglyMeasurable[ℱ 0] (0 : Ω → ℝ)).measurable
   · intro n
     simpa using
       ((stronglyAdapted_predictablePart :
           StronglyAdapted ℱ
-            (fun k ↦ predictablePart (fun m ω ↦ X m ω ^ 2) ℱ μ (k + 1))) n)
+            (fun k ↦ predictablePart (fun m ω ↦ X m ω ^ 2) ℱ μ (k + 1))) n).measurable
 
 /-- A process `A` is a source-style square-variation witness for `X` if it starts at `0`, is
 predictable, and its compensated square process is a martingale. The canonical square variation
@@ -42,7 +42,7 @@ itself is `⟨X⟩[ℱ, μ]`. -/
 def IsSquareVariationProcess (ℱ : Filtration ℕ mΩ) (μ : Measure Ω)
     (X A : ℕ → Ω → ℝ) : Prop :=
   A 0 = 0 ∧
-    IsStronglyPredictable ℱ A ∧
+    IsPredictable ℱ A ∧
     Martingale (fun n ω ↦ X n ω ^ 2 - A n ω) ℱ μ
 
 namespace IsSquareVariationProcess
@@ -53,7 +53,7 @@ theorem zero (hA : IsSquareVariationProcess ℱ μ X A) : A 0 = 0 := by
   exact h0
 
 /-- A square-variation process is predictable. -/
-theorem predictable (hA : IsSquareVariationProcess ℱ μ X A) : IsStronglyPredictable ℱ A := by
+theorem predictable (hA : IsSquareVariationProcess ℱ μ X A) : IsPredictable ℱ A := by
   rcases hA with ⟨-, hpred, -⟩
   exact hpred
 
@@ -75,8 +75,10 @@ theorem predictablePart_sq_ae_eq [SigmaFiniteFiltration μ ℱ]
     ∀ n, ⟨X⟩[ℱ, μ] n =ᵐ[μ] A n := by
   let M : ℕ → Ω → ℝ := fun n ω ↦ X n ω ^ 2 - A n ω
   have hM : Martingale M ℱ μ := hA.martingale_sq_sub
+  have hA_adapted : Adapted ℱ fun n ↦ A (n + 1) :=
+    fun n ↦ IsPredictable.measurable_add_one hA.predictable n
   have hA_stronglyAdapted : StronglyAdapted ℱ fun n ↦ A (n + 1) :=
-    fun n ↦ IsStronglyPredictable.measurable_add_one hA.predictable n
+    hA_adapted.stronglyAdapted
   have hA_int : ∀ n, Integrable (A n) μ := by
     intro n
     have hA_eq : A n = fun ω ↦ X n ω ^ 2 - M n ω := by

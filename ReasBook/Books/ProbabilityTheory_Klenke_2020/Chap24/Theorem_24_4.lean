@@ -26,4 +26,9 @@ intensity measure of the random measure `X`; on measurable sets it is given by t
 evaluations of the kernel `X`. -/
 theorem intensityMeasure_apply
     (P : ProbabilityMeasure Ω) (X : Kernel Ω E) {A : Set E} (hA : MeasurableSet A) :
-    intensityMeasure P X A = ∫⁻ ω, X ω A ∂(P : Measure Ω) := sorry
+    intensityMeasure P X A = ∫⁻ ω, X ω A ∂(P : Measure Ω) := by
+  -- Route correction: the Lean target already packages the intensity as a composed measure.
+  -- Unfold that composition so the standard kernel-measure evaluation lemma applies.
+  rw [intensityMeasure]
+  -- Evaluate the composed measure on the measurable set `A` using `Measure.bind_apply`.
+  simpa using (Measure.bind_apply hA (Kernel.aemeasurable X : AEMeasurable X (P : Measure Ω)))

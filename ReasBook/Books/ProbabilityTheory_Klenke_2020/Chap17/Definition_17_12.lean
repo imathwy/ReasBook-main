@@ -52,7 +52,11 @@ def futurePathAfterStoppingTime (X : I → Ω → E) (τ : Ω → WithTop I) : �
 value at the shifted time `τ + t`. -/
 theorem futurePathAfterStoppingTime_apply_of_ne_top
     (X : I → Ω → E) (τ : Ω → WithTop I) (ω : Ω) (t : I) (hτω : τ ω ≠ ⊤) :
-    futurePathAfterStoppingTime X τ ω t = X ((τ ω).untop hτω + t) ω := sorry
+    futurePathAfterStoppingTime X τ ω t = X ((τ ω).untop hτω + t) ω := by
+  -- Unfold the stopped future path to the underlying `stoppedValue` evaluation.
+  simp only [futurePathAfterStoppingTime, stoppedValue]
+  -- Replace the default-valued `untopA` by the genuine finite stopping-time value.
+  rw [WithTop.untopA_eq_untop hτω]
 
 /-- Definition 17.12: a Markov process with distributions `P` and path kernel `κ` has the strong
 Markov property if, for every almost surely finite stopping time `τ` of its natural history
@@ -85,7 +89,9 @@ theorem hasStrongMarkovProperty_iff
         Measurable f →
         (∃ C : ℝ, ∀ y, |f y| ≤ C) →
         (P x : Measure Ω)[fun ω ↦ f (futurePathAfterStoppingTime X τ ω) | hτ.measurableSpace] =ᵐ[
-          (P x : Measure Ω)] fun ω ↦ ∫ y, f y ∂ κ (stoppedValue X τ ω) := sorry
+          (P x : Measure Ω)] fun ω ↦ ∫ y, f y ∂ κ (stoppedValue X τ ω) := by
+  -- This theorem is the public expansion of the defining predicate.
+  rfl
 
 end
 

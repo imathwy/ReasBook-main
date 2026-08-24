@@ -26,9 +26,12 @@ def invariantDistributions (p : Kernel E E) : Set (ProbabilityMeasure E) :=
 
 -- Proof sketch: unfold `invariantDistributions`; membership is precisely the predicate
 -- `Kernel.Invariant p` on the underlying probability measure.
-/-- Membership in `invariantDistributions p` means being an invariant distribution for `p`. -/
+/-- Definition 17.43: membership in `invariantDistributions p` means being an invariant
+distribution for `p`. -/
 theorem mem_invariantDistributions_iff (p : Kernel E E) (μ : ProbabilityMeasure E) :
-    μ ∈ invariantDistributions p ↔ Kernel.Invariant p (μ : Measure E) := sorry
+    μ ∈ invariantDistributions p ↔ Kernel.Invariant p (μ : Measure E) := by
+  -- Unfold the textbook set `I`; membership is exactly the invariant-measure predicate.
+  rfl
 
 /-- A real-valued function is subharmonic for a kernel `p` if the kernel integral `p f` exists at
 every state and dominates `f`. -/
@@ -41,7 +44,9 @@ def IsSubharmonic (p : Kernel E E) (f : E → ℝ) : Prop :=
 `f x ≤ ∫ y, f y ∂p x` for all `x`. -/
 theorem isSubharmonic_iff (p : Kernel E E) (f : E → ℝ) :
     IsSubharmonic p f ↔
-      (∀ x : E, Integrable f (p x)) ∧ ∀ x : E, f x ≤ ∫ y, f y ∂p x := sorry
+      (∀ x : E, Integrable f (p x)) ∧ ∀ x : E, f x ≤ ∫ y, f y ∂p x := by
+  -- Unfold the predicate; the theorem is its rewrite-friendly companion form.
+  rfl
 
 /-- A real-valued function is superharmonic for a kernel `p` if the kernel integral `p f` exists
 at every state and is dominated by `f`. -/
@@ -54,7 +59,9 @@ def IsSuperharmonic (p : Kernel E E) (f : E → ℝ) : Prop :=
 `∫ y, f y ∂p x ≤ f x` for all `x`. -/
 theorem isSuperharmonic_iff (p : Kernel E E) (f : E → ℝ) :
     IsSuperharmonic p f ↔
-      (∀ x : E, Integrable f (p x)) ∧ ∀ x : E, ∫ y, f y ∂p x ≤ f x := sorry
+      (∀ x : E, Integrable f (p x)) ∧ ∀ x : E, ∫ y, f y ∂p x ≤ f x := by
+  -- Unfold the predicate; this exposes the defining inequality in a reusable form.
+  rfl
 
 /-- A real-valued function is harmonic for a kernel `p` if the kernel integral `p f` exists at
 every state and agrees with `f`. -/
@@ -67,6 +74,8 @@ def IsHarmonic (p : Kernel E E) (f : E → ℝ) : Prop :=
 `f x = ∫ y, f y ∂p x` for all `x`. -/
 theorem isHarmonic_iff (p : Kernel E E) (f : E → ℝ) :
     IsHarmonic p f ↔
-      (∀ x : E, Integrable f (p x)) ∧ ∀ x : E, f x = ∫ y, f y ∂p x := sorry
+      (∀ x : E, Integrable f (p x)) ∧ ∀ x : E, f x = ∫ y, f y ∂p x := by
+  -- Unfold the predicate; harmonicity is exactly the fixed-point equality with integrability.
+  rfl
 
 end ProbabilityTheory

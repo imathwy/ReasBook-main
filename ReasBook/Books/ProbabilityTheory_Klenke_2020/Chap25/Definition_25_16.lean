@@ -1,7 +1,7 @@
 import Mathlib
 import ProbabilityTheory_Klenke_2020.Chap21.Remark_21_67
 import ProbabilityTheory_Klenke_2020.Chap25.Definition_25_10
-import ProbabilityTheory_Klenke_2020.Chap25.Lemma_25_15
+import ProbabilityTheory_Klenke_2020.Chap25.Theorem_25_9
 
 -- Declarations for this item will be appended below by the statement pipeline.
 

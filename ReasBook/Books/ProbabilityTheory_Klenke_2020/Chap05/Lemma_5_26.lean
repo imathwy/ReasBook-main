@@ -320,9 +320,387 @@ private theorem cross_entropy_gap_eq_klDiv (p : PMF E) (q : E → ENNReal)
   · fun_prop
   · fun_prop
 
+/-- Helper for Lemma 5.26: the total mass of the comparison measure `Measure.count.withDensity q`
+is the `tsum` of the coefficients `q e`. -/
+private theorem comparisonMeasure_univ_eq_tsum (q : E → ENNReal) :
+    letI : MeasurableSpace E := ⊤
+    letI : MeasurableSingletonClass E := ⟨fun _ ↦ trivial⟩
+    let ν : Measure E := Measure.count.withDensity q
+    ν Set.univ = ∑' e : E, q e := by
+  letI : MeasurableSpace E := ⊤
+  letI : MeasurableSingletonClass E := ⟨fun _ ↦ trivial⟩
+  -- Evaluate the weighted counting measure on the whole space.
+  change (Measure.count.withDensity q) Set.univ = ∑' e : E, q e
+  rw [withDensity_apply _ MeasurableSet.univ, Measure.restrict_univ, lintegral_count]
+
+/-- Helper for Lemma 5.26: coercion `ℝ≥0∞ → EReal` preserves zero. -/
+private theorem ennrealToERealMap_zero : ((0 : ENNReal) : EReal) = 0 :=
+  rfl
+
+/-- Helper for Lemma 5.26: coercion `ℝ≥0∞ → EReal` preserves addition. -/
+private theorem ennrealToERealMap_add (x y : ENNReal) :
+    (((x + y : ENNReal) : EReal)) = (x : EReal) + (y : EReal) :=
+  EReal.coe_ennreal_add x y
+
+/-- Helper for Lemma 5.26: the canonical coercion `ℝ≥0∞ → EReal` as an additive homomorphism. -/
+private def ennrealToERealAddHom : ENNReal →+ EReal :=
+  { toFun := fun x ↦ (x : EReal)
+    map_zero' := ennrealToERealMap_zero
+    map_add' := ennrealToERealMap_add }
+
+/-- Helper for Lemma 5.26: coercing a nonnegative `HasSum` statement to `EReal` preserves the
+same sum. -/
+private theorem hasSum_coe_ennreal_ereal {f : E → ENNReal} {a : ENNReal} (h : HasSum f a) :
+    HasSum (fun e ↦ (f e : EReal)) (a : EReal) := by
+  -- Map the nonnegative series through the continuous coercion into `EReal`.
+  simpa [ennrealToERealAddHom] using h.map ennrealToERealAddHom continuous_coe_ennreal_ereal
+
+/-- Helper for Lemma 5.26: the `tsum` of a nonnegative family can be coerced directly from
+`ENNReal` to `EReal`. -/
+private theorem tsum_coe_ennreal_ereal {f : E → ENNReal} :
+    (∑' e : E, (f e : EReal)) = (((∑' e : E, f e) : ENNReal) : EReal) := by
+  -- Package the canonical `ENNReal` sum once, then read off the corresponding `EReal` `tsum`.
+  exact (hasSum_coe_ennreal_ereal (ENNReal.summable.hasSum : HasSum f (∑' e : E, f e))).tsum_eq
+
+/-- Helper for Lemma 5.26: the nonnegative pointwise contribution to the cross-entropy series,
+written with the minus sign absorbed into the real logarithm. -/
+private def crossEntropyPositiveSummand (p : PMF E) (q : E → ENNReal) (e : E) : ENNReal :=
+  ENNReal.ofReal ((p e).toReal * (-Real.log (q e).toReal))
+
+/-- Helper for Lemma 5.26: the nonnegative pointwise contribution to the entropy series, written
+with the minus sign absorbed into the real logarithm. -/
+private def entropyPositiveSummand (p : PMF E) (e : E) : ENNReal :=
+  ENNReal.ofReal ((p e).toReal * (-Real.log (p e).toReal))
+
+/-- Helper for Lemma 5.26: each cross-entropy summand is the base-change factor times the
+corresponding nonnegative positive-logarithm summand. -/
+private theorem crossEntropyPositiveSummand_scaled (b : LogBase) (p : PMF E)
+    (q : E → ENNReal) (hq : (∑' e : E, q e) ≤ 1)
+    (hnozero : ∀ e ∈ p.support, q e ≠ 0) (e : E) :
+    -((p e : EReal) * (((Real.log (b : ℝ) : EReal)⁻¹) * ENNReal.log (q e))) =
+      ((Real.log (b : ℝ) : EReal)⁻¹) * (crossEntropyPositiveSummand p q e : EReal) := by
+  by_cases hp : p e = 0
+  · -- Zero-mass coordinates contribute nothing to either series representation.
+    simp [crossEntropyPositiveSummand, hp]
+  · -- On the support, rewrite the logarithm through real values and fold the sign into the
+    -- nonnegative real summand.
+    have hq0 : q e ≠ 0 := hnozero e ((PMF.mem_support_iff p e).2 hp)
+    have hq_top : q e ≠ ⊤ := q_apply_ne_top_of_tsum_le_one q hq e
+    have hq_le_one : q e ≤ 1 := (ENNReal.le_tsum e).trans hq
+    have hq_toReal_le_one : (q e).toReal ≤ 1 :=
+      ENNReal.toReal_mono ENNReal.one_ne_top hq_le_one
+    have hlog_nonpos : Real.log (q e).toReal ≤ 0 := by
+      exact Real.log_nonpos ENNReal.toReal_nonneg hq_toReal_le_one
+    have hsummand_nonneg :
+        0 ≤ (p e).toReal * (-Real.log (q e).toReal) := by
+      exact mul_nonneg ENNReal.toReal_nonneg (by linarith)
+    -- After rewriting both logarithms into real form, the claim is a one-line ring identity.
+    rw [crossEntropyPositiveSummand, EReal.coe_ennreal_ofReal, max_eq_left hsummand_nonneg]
+    rw [ENNReal.log_pos_real hq0 hq_top, ← EReal.coe_ennreal_toReal (p.apply_ne_top e),
+      ← EReal.coe_inv]
+    exact_mod_cast (by ring :
+      -((p e).toReal * ((Real.log (b : ℝ))⁻¹ * Real.log (q e).toReal)) =
+        (Real.log (b : ℝ))⁻¹ * ((p e).toReal * (-Real.log (q e).toReal)))
+
+/-- Helper for Lemma 5.26: each entropy summand is the base-change factor times the corresponding
+nonnegative positive-logarithm summand. -/
+private theorem entropyPositiveSummand_scaled (b : LogBase) (p : PMF E) (e : E) :
+    -((p e : EReal) * (((Real.log (b : ℝ) : EReal)⁻¹) * ENNReal.log (p e))) =
+      ((Real.log (b : ℝ) : EReal)⁻¹) * (entropyPositiveSummand p e : EReal) := by
+  by_cases hp : p e = 0
+  · -- Zero-mass coordinates contribute nothing to either series representation.
+    simp [entropyPositiveSummand, hp]
+  · -- On the support, rewrite the logarithm through real values and fold the sign into the
+    -- nonnegative real summand.
+    have hp_toReal_le_one : (p e).toReal ≤ 1 :=
+      ENNReal.toReal_mono ENNReal.one_ne_top (p.coe_le_one e)
+    have hlog_nonpos : Real.log (p e).toReal ≤ 0 := by
+      exact Real.log_nonpos ENNReal.toReal_nonneg hp_toReal_le_one
+    have hsummand_nonneg :
+        0 ≤ (p e).toReal * (-Real.log (p e).toReal) := by
+      exact mul_nonneg ENNReal.toReal_nonneg (by linarith)
+    -- The entropy summand has the same algebraic shape as the cross-entropy summand.
+    rw [entropyPositiveSummand, EReal.coe_ennreal_ofReal, max_eq_left hsummand_nonneg]
+    rw [ENNReal.log_pos_real hp (p.apply_ne_top e), ← EReal.coe_ennreal_toReal (p.apply_ne_top e),
+      ← EReal.coe_inv]
+    exact_mod_cast (by ring :
+      -((p e).toReal * ((Real.log (b : ℝ))⁻¹ * Real.log (p e).toReal)) =
+        (Real.log (b : ℝ))⁻¹ * ((p e).toReal * (-Real.log (p e).toReal)))
+
+/-- Helper for Lemma 5.26: after adding the comparison mass term `q_e`, the pointwise
+cross-entropy gap identity becomes an identity of nonnegative `ENNReal` summands. -/
+private theorem positiveSummand_withMass_identity (p : PMF E) (q : E → ENNReal)
+    (hq : (∑' e : E, q e) ≤ 1) (hnozero : ∀ e ∈ p.support, q e ≠ 0) (e : E) :
+    crossEntropyPositiveSummand p q e + q e =
+      entropyPositiveSummand p e +
+        (ENNReal.ofReal ((q e).toReal * klFun (((p e : ENNReal) / q e).toReal)) + p e) := by
+  have hq_top : q e ≠ ⊤ := q_apply_ne_top_of_tsum_le_one q hq e
+  have hce_top : crossEntropyPositiveSummand p q e ≠ ⊤ := by
+    simp [crossEntropyPositiveSummand]
+  have hent_top : entropyPositiveSummand p e ≠ ⊤ := by
+    simp [entropyPositiveSummand]
+  have hgap_top :
+      ENNReal.ofReal ((q e).toReal * klFun (((p e : ENNReal) / q e).toReal)) ≠ ⊤ :=
+    ENNReal.ofReal_ne_top
+  have hleft_top : crossEntropyPositiveSummand p q e + q e ≠ ⊤ :=
+    ENNReal.add_ne_top.2 ⟨hce_top, hq_top⟩
+  have hright_inner_top :
+      ENNReal.ofReal ((q e).toReal * klFun (((p e : ENNReal) / q e).toReal)) + p e ≠ ⊤ :=
+    ENNReal.add_ne_top.2 ⟨hgap_top, p.apply_ne_top e⟩
+  have hright_top :
+      entropyPositiveSummand p e +
+        (ENNReal.ofReal ((q e).toReal * klFun (((p e : ENNReal) / q e).toReal)) + p e) ≠ ⊤ :=
+    ENNReal.add_ne_top.2 ⟨hent_top, hright_inner_top⟩
+  have hq_le_one : q e ≤ 1 := (ENNReal.le_tsum e).trans hq
+  have hp_toReal_le_one : (p e).toReal ≤ 1 :=
+    ENNReal.toReal_mono ENNReal.one_ne_top (p.coe_le_one e)
+  have hq_toReal_le_one : (q e).toReal ≤ 1 :=
+    ENNReal.toReal_mono ENNReal.one_ne_top hq_le_one
+  have hce_nonneg :
+      0 ≤ (p e).toReal * (-Real.log (q e).toReal) := by
+    have hlog_nonpos : Real.log (q e).toReal ≤ 0 :=
+      Real.log_nonpos ENNReal.toReal_nonneg hq_toReal_le_one
+    exact mul_nonneg ENNReal.toReal_nonneg (by linarith)
+  have hent_nonneg :
+      0 ≤ (p e).toReal * (-Real.log (p e).toReal) := by
+    have hlog_nonpos : Real.log (p e).toReal ≤ 0 :=
+      Real.log_nonpos ENNReal.toReal_nonneg hp_toReal_le_one
+    exact mul_nonneg ENNReal.toReal_nonneg (by linarith)
+  have hgap_nonneg :
+      0 ≤ (q e).toReal * klFun (((p e : ENNReal) / q e).toReal) := by
+    exact mul_nonneg ENNReal.toReal_nonneg (klFun_nonneg ENNReal.toReal_nonneg)
+  -- Compare both finite `ENNReal` sides after applying `toReal`.
+  refine (ENNReal.toReal_eq_toReal_iff' hleft_top hright_top).mp ?_
+  rw [ENNReal.toReal_add hce_top hq_top, ENNReal.toReal_add hent_top hright_inner_top,
+    ENNReal.toReal_add hgap_top (p.apply_ne_top e), crossEntropyPositiveSummand,
+    entropyPositiveSummand, ENNReal.toReal_ofReal hce_nonneg, ENNReal.toReal_ofReal hent_nonneg,
+    ENNReal.toReal_ofReal hgap_nonneg]
+  -- The remaining real identity is exactly the earlier pointwise gap decomposition.
+  linarith [cross_entropy_gap_term_identity p q hq hnozero e]
+
+/-- Helper for Lemma 5.26: summing the pointwise positive-summand identity and canceling the
+comparison mass term in `ENNReal` yields the exact unscaled entropy/cross-entropy decomposition. -/
+private theorem positiveSummandSeries_eq (p : PMF E) (q : E → ENNReal)
+    (hq : (∑' e : E, q e) ≤ 1) (hnozero : ∀ e ∈ p.support, q e ≠ 0) :
+    letI : MeasurableSpace E := ⊤
+    letI : MeasurableSingletonClass E := ⟨fun _ ↦ trivial⟩
+    let ν : Measure E := Measure.count.withDensity q
+    (∑' e : E, crossEntropyPositiveSummand p q e) =
+      (∑' e : E, entropyPositiveSummand p e) +
+        (klDiv p.toMeasure ν + (1 - ν Set.univ)) := by
+  letI : MeasurableSpace E := ⊤
+  letI : MeasurableSingletonClass E := ⟨fun _ ↦ trivial⟩
+  let ν : Measure E := Measure.count.withDensity q
+  have hgap :
+      klDiv p.toMeasure ν =
+        ∑' e : E, ENNReal.ofReal ((q e).toReal * klFun (((p e : ENNReal) / q e).toReal)) := by
+    simpa [ν] using cross_entropy_gap_eq_klDiv p q hq hnozero
+  have hmass : ν Set.univ = ∑' e : E, q e := by
+    simpa [ν] using comparisonMeasure_univ_eq_tsum q
+  have hnu_le_one : ν Set.univ ≤ 1 := by
+    rw [hmass]
+    exact hq
+  have hnu_ne_top : ν Set.univ ≠ ⊤ :=
+    ne_of_lt (lt_of_le_of_lt hnu_le_one ENNReal.one_lt_top)
+  have hmass_cancel : (1 - ν Set.univ) + ν Set.univ = (1 : ENNReal) :=
+    tsub_add_cancel_of_le hnu_le_one
+  have hkl_with_mass :
+      klDiv p.toMeasure ν + 1 =
+        (klDiv p.toMeasure ν + (1 - ν Set.univ)) + ν Set.univ := by
+    calc
+      klDiv p.toMeasure ν + 1 = klDiv p.toMeasure ν + ((1 - ν Set.univ) + ν Set.univ) := by
+        exact congrArg (fun t : ENNReal ↦ klDiv p.toMeasure ν + t) hmass_cancel.symm
+      _ = (klDiv p.toMeasure ν + (1 - ν Set.univ)) + ν Set.univ := by
+        exact (add_assoc (klDiv p.toMeasure ν) (1 - ν Set.univ) (ν Set.univ)).symm
+  have hsum_with_mass :
+      (∑' e : E, crossEntropyPositiveSummand p q e) + ν Set.univ =
+        ((∑' e : E, entropyPositiveSummand p e) +
+          (klDiv p.toMeasure ν + (1 - ν Set.univ))) + ν Set.univ := by
+    -- Sum the pointwise identity before rewriting the auxiliary series.
+    calc
+      (∑' e : E, crossEntropyPositiveSummand p q e) + ν Set.univ
+          = (∑' e : E, crossEntropyPositiveSummand p q e) + ∑' e : E, q e := by
+              rw [hmass]
+      _ = ∑' e : E, (crossEntropyPositiveSummand p q e + q e) := by
+            rw [← ENNReal.tsum_add]
+      _ = ∑' e : E,
+            (entropyPositiveSummand p e +
+              (ENNReal.ofReal ((q e).toReal * klFun (((p e : ENNReal) / q e).toReal)) + p e)) := by
+            refine tsum_congr fun e ↦ ?_
+            exact positiveSummand_withMass_identity p q hq hnozero e
+      _ = (∑' e : E, entropyPositiveSummand p e) +
+            (∑' e : E, (ENNReal.ofReal ((q e).toReal * klFun (((p e : ENNReal) / q e).toReal)) +
+              p e)) := by
+            rw [ENNReal.tsum_add]
+      _ = (∑' e : E, entropyPositiveSummand p e) +
+            ((∑' e : E, ENNReal.ofReal ((q e).toReal * klFun (((p e : ENNReal) / q e).toReal))) +
+              (∑' e : E, p e)) := by
+            rw [ENNReal.tsum_add]
+      _ = (∑' e : E, entropyPositiveSummand p e) + (klDiv p.toMeasure ν + 1) := by
+            rw [hgap, p.tsum_coe]
+      _ = (∑' e : E, entropyPositiveSummand p e) +
+            ((klDiv p.toMeasure ν + (1 - ν Set.univ)) + ν Set.univ) := by
+            exact congrArg (fun t : ENNReal ↦ (∑' e : E, entropyPositiveSummand p e) + t)
+              hkl_with_mass
+      _ = ((∑' e : E, entropyPositiveSummand p e) +
+            (klDiv p.toMeasure ν + (1 - ν Set.univ))) + ν Set.univ := by
+            exact (add_assoc
+              (∑' e : E, entropyPositiveSummand p e)
+              (klDiv p.toMeasure ν + (1 - ν Set.univ))
+              (ν Set.univ)).symm
+  -- Cancel the common finite comparison-mass term before moving to `EReal`.
+  have hsum_left :
+      ν Set.univ + (∑' e : E, crossEntropyPositiveSummand p q e) =
+        ν Set.univ +
+          ((∑' e : E, entropyPositiveSummand p e) + (klDiv p.toMeasure ν + (1 - ν Set.univ))) := by
+    simpa [add_comm, add_left_comm, add_assoc] using hsum_with_mass
+  exact (ENNReal.add_right_inj hnu_ne_top).1 hsum_left
+
+/-- Helper for Lemma 5.26: the raw cross-entropy logarithmic summand family is the negative
+base-change coefficient times the nonnegative positive-summand family. -/
+private theorem crossEntropySummandFamily_eq_negativeScaledPositive (b : LogBase) (p : PMF E)
+    (q : E → ENNReal) (hq : (∑' e : E, q e) ≤ 1)
+    (hnozero : ∀ e ∈ p.support, q e ≠ 0) :
+    (fun e ↦ ((p e : EReal) * (((Real.log (b : ℝ) : EReal)⁻¹) * ENNReal.log (q e)))) =
+      fun e ↦ (-((Real.log (b : ℝ) : EReal)⁻¹)) * (crossEntropyPositiveSummand p q e : EReal) := by
+  -- Negate the pointwise scaled identity to move the sign from the series to the coefficient.
+  funext e
+  have hscaled := crossEntropyPositiveSummand_scaled b p q hq hnozero e
+  have hneg := congrArg Neg.neg hscaled
+  simpa [neg_mul] using hneg
+
+/-- Helper for Lemma 5.26: finite sums of negatives of coerced `ENNReal` terms collapse to the
+negation of the corresponding positive finite sum. -/
+private theorem sum_negCoe_ennreal_ereal (s : Finset E) (g : E → ENNReal) :
+    Finset.sum s (fun e ↦ -((g e : ENNReal) : EReal)) =
+      -(Finset.sum s (fun e ↦ ((g e : ENNReal) : EReal))) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty =>
+      simp
+  | @insert e s he ih =>
+      have hsum_ne_bot : Finset.sum s (fun x ↦ ((g x : ENNReal) : EReal)) ≠ ⊥ := by
+        intro hbot
+        rcases (WithBot.sum_eq_bot_iff.mp hbot) with ⟨x, hx, hxbot⟩
+        exact EReal.coe_ennreal_ne_bot (g x) hxbot
+      -- Apply `EReal.neg_add` to the finite sum of nonnegative coerced terms.
+      rw [Finset.sum_insert he, Finset.sum_insert he, ih]
+      symm
+      exact EReal.neg_add (.inl (EReal.coe_ennreal_ne_bot (g e))) (.inr hsum_ne_bot)
+
+/-- Helper for Lemma 5.26: negating a series of coerced `ENNReal` terms can be packaged as a
+`HasSum` statement for the negative family. -/
+private theorem hasSum_negCoe_ennreal_ereal {g : E → ENNReal} {a : ENNReal} (h : HasSum g a) :
+    HasSum (fun e ↦ -((g e : ENNReal) : EReal)) (-(a : EReal)) := by
+  have hcoe : HasSum (fun e ↦ (g e : EReal)) (a : EReal) := hasSum_coe_ennreal_ereal h
+  rw [HasSum] at hcoe ⊢
+  have hpartial :
+      (fun s : Finset E ↦ Finset.sum s (fun e ↦ -((g e : ENNReal) : EReal))) =
+        fun s : Finset E ↦ -(Finset.sum s (fun e ↦ ((g e : ENNReal) : EReal))) := by
+    funext s
+    exact sum_negCoe_ennreal_ereal s g
+  -- Negate the already-known positive series after rewriting the finite partial sums explicitly.
+  have hneg :
+      Filter.Tendsto
+        (fun s : Finset E ↦ -(Finset.sum s (fun e ↦ ((g e : ENNReal) : EReal))))
+        Filter.atTop (nhds (-(a : EReal))) :=
+    (continuous_neg.tendsto (a : EReal)).comp hcoe
+  refine Filter.Tendsto.congr' ?_ hneg
+  exact Filter.Eventually.of_forall fun s ↦ (congrArg (fun u ↦ u s) hpartial).symm
+
+/-- Helper for Lemma 5.26: a series of negatives of coerced `ENNReal` terms evaluates to the
+negation of the coerced `ENNReal` `tsum`, so an outer negation recovers the positive coercion. -/
+private theorem negTsum_negCoe_ennreal_ereal (g : E → ENNReal) :
+    -(∑' e : E, -((g e : ENNReal) : EReal)) =
+      (((∑' e : E, g e) : ENNReal) : EReal) := by
+  have hneg :
+      HasSum (fun e ↦ -((g e : ENNReal) : EReal))
+        (-((((∑' e : E, g e) : ENNReal) : EReal))) :=
+    hasSum_negCoe_ennreal_ereal (ENNReal.summable.hasSum : HasSum g (∑' e : E, g e))
+  -- Cancel the two outer negations after identifying the negative-series `tsum`.
+  rw [hneg.tsum_eq]
+  simp
+
+/-- Helper for Lemma 5.26: the cross-entropy is the base-change factor times the `tsum` of the
+nonnegative positive-logarithm summands. -/
+private theorem crossEntropyInBase_eq_scaled_positiveSummandSeries (b : LogBase)
+    (hb : 1 < (b : ℝ)) (p : PMF E)
+    (q : E → ENNReal) (hq : (∑' e : E, q e) ≤ 1)
+    (hnozero : ∀ e ∈ p.support, q e ≠ 0) :
+    crossEntropyInBase b p q =
+      ((Real.log (b : ℝ) : EReal)⁻¹) *
+        (((∑' e : E, crossEntropyPositiveSummand p q e) : ENNReal) : EReal) := by
+  let c : ENNReal := ENNReal.ofReal ((Real.log (b : ℝ))⁻¹)
+  have hcoeff_nonneg : 0 ≤ (Real.log (b : ℝ))⁻¹ := by
+    exact le_of_lt (inv_pos.mpr (Real.log_pos hb))
+  have hcoeff : (c : EReal) = ((Real.log (b : ℝ) : EReal)⁻¹) := by
+    simp [c, EReal.coe_ennreal_ofReal, hcoeff_nonneg, EReal.coe_inv]
+  have hfamily :
+      (fun e ↦ ((p e : EReal) * (((Real.log (b : ℝ) : EReal)⁻¹) * ENNReal.log (q e)))) =
+        fun e ↦ -(((c * crossEntropyPositiveSummand p q e : ENNReal) : EReal)) := by
+    -- Route correction: rewrite the raw family as negatives of a purely nonnegative
+    -- `ENNReal` family, so the only infinite-sum transport left is ENNReal-native.
+    funext e
+    rw [show
+      ((p e : EReal) * (((Real.log (b : ℝ) : EReal)⁻¹) * ENNReal.log (q e))) =
+        (-((Real.log (b : ℝ) : EReal)⁻¹)) * (crossEntropyPositiveSummand p q e : EReal) by
+        simpa using congrArg (fun f ↦ f e)
+          (crossEntropySummandFamily_eq_negativeScaledPositive b p q hq hnozero),
+      ← hcoeff]
+    rw [neg_mul]
+    exact (congrArg Neg.neg
+      (EReal.coe_ennreal_mul c (crossEntropyPositiveSummand p q e))).symm
+  -- Rewrite the defining series into the negative coercion bridge, then collapse the ENNReal sum.
+  rw [crossEntropyInBase_def]
+  rw [hfamily]
+  rw [negTsum_negCoe_ennreal_ereal]
+  rw [ENNReal.tsum_mul_left, EReal.coe_ennreal_mul, hcoeff]
+
+/-- Helper for Lemma 5.26: the raw entropy logarithmic summand family is the negative
+base-change coefficient times the nonnegative entropy-summand family. -/
+private theorem entropySummandFamily_eq_negativeScaledPositive (b : LogBase) (p : PMF E) :
+    (fun e ↦ ((p e : EReal) * (((Real.log (b : ℝ) : EReal)⁻¹) * ENNReal.log (p e)))) =
+      fun e ↦ (-((Real.log (b : ℝ) : EReal)⁻¹)) * (entropyPositiveSummand p e : EReal) := by
+  -- Negate the pointwise entropy scaling identity to move the sign to the coefficient.
+  funext e
+  have hscaled := entropyPositiveSummand_scaled b p e
+  have hneg := congrArg Neg.neg hscaled
+  simpa [neg_mul] using hneg
+
+/-- Helper for Lemma 5.26: the entropy is the base-change factor times the `tsum` of the
+nonnegative positive-logarithm summands. -/
+private theorem entropyInBase_eq_scaled_positiveSummandSeries (b : LogBase)
+    (hb : 1 < (b : ℝ)) (p : PMF E) :
+    entropyInBase b p =
+      ((Real.log (b : ℝ) : EReal)⁻¹) *
+        (((∑' e : E, entropyPositiveSummand p e) : ENNReal) : EReal) := by
+  let c : ENNReal := ENNReal.ofReal ((Real.log (b : ℝ))⁻¹)
+  have hcoeff_nonneg : 0 ≤ (Real.log (b : ℝ))⁻¹ := by
+    exact le_of_lt (inv_pos.mpr (Real.log_pos hb))
+  have hcoeff : (c : EReal) = ((Real.log (b : ℝ) : EReal)⁻¹) := by
+    simp [c, EReal.coe_ennreal_ofReal, hcoeff_nonneg, EReal.coe_inv]
+  have hfamily :
+      (fun e ↦ ((p e : EReal) * (((Real.log (b : ℝ) : EReal)⁻¹) * ENNReal.log (p e)))) =
+        fun e ↦ -(((c * entropyPositiveSummand p e : ENNReal) : EReal)) := by
+    -- The entropy package uses the same nonnegative-family bridge as the cross-entropy package.
+    funext e
+    rw [show
+      ((p e : EReal) * (((Real.log (b : ℝ) : EReal)⁻¹) * ENNReal.log (p e))) =
+        (-((Real.log (b : ℝ) : EReal)⁻¹)) * (entropyPositiveSummand p e : EReal) by
+        simpa using congrArg (fun f ↦ f e)
+          (entropySummandFamily_eq_negativeScaledPositive b p),
+      ← hcoeff]
+    rw [neg_mul]
+    exact (congrArg Neg.neg
+      (EReal.coe_ennreal_mul c (entropyPositiveSummand p e))).symm
+  rw [entropyInBase_def]
+  rw [hfamily]
+  rw [negTsum_negCoe_ennreal_ereal]
+  rw [ENNReal.tsum_mul_left, EReal.coe_ennreal_mul, hcoeff]
+
 /-- Helper for Lemma 5.26: on the positive-support branch, the cross-entropy splits as the entropy
 plus the KL divergence against the comparison measure and the mass deficit of `q`. -/
-private theorem cross_entropy_gap_full_decomposition (b : LogBase) (p : PMF E)
+private theorem cross_entropy_gap_full_decomposition (b : LogBase) (hb : 1 < (b : ℝ)) (p : PMF E)
     (q : E → ENNReal) (hq : (∑' e : E, q e) ≤ 1)
     (hnozero : ∀ e ∈ p.support, q e ≠ 0) :
     letI : MeasurableSpace E := ⊤
@@ -332,12 +710,22 @@ private theorem cross_entropy_gap_full_decomposition (b : LogBase) (p : PMF E)
       entropyInBase b p +
         (((Real.log (b : ℝ) : EReal)⁻¹) *
           (((klDiv p.toMeasure ν) + (1 - ν Set.univ)) : ENNReal)) := by
-  -- Route correction: the stalled ambient-`tsum` identity is replaced by the KL-form target.
-  -- TODO: the pointwise identity, the finite-truncation lower bound, and the support adapter are
-  -- now proved above. The remaining blocker is the series-level packaging step: pass from the
-  -- verified finite-set inequality to the full `EReal` identity, using `cross_entropy_gap_eq_klDiv`
-  -- together with the direct evaluation of `(Measure.count.withDensity q) Set.univ`.
-  sorry
+  letI : MeasurableSpace E := ⊤
+  letI : MeasurableSingletonClass E := ⟨fun _ ↦ trivial⟩
+  let ν : Measure E := Measure.count.withDensity q
+  -- Route correction: cancel the duplicated comparison mass in `ENNReal` first.
+  rw [crossEntropyInBase_eq_scaled_positiveSummandSeries b hb p q hq hnozero,
+    entropyInBase_eq_scaled_positiveSummandSeries b hb p]
+  rw [positiveSummandSeries_eq p q hq hnozero]
+  -- After the ENNReal cancellation, the closing step is just coercion and distributivity.
+  rw [EReal.coe_ennreal_add]
+  have hsum_nonneg :
+      (0 : EReal) ≤ (((∑' e : E, entropyPositiveSummand p e) : ENNReal) : EReal) := by
+    exact_mod_cast (bot_le : (0 : ENNReal) ≤ ∑' e : E, entropyPositiveSummand p e)
+  have hrem_nonneg :
+      (0 : EReal) ≤ (((klDiv p.toMeasure ν + (1 - ν Set.univ)) : ENNReal) : EReal) := by
+    exact_mod_cast (bot_le : (0 : ENNReal) ≤ klDiv p.toMeasure ν + (1 - ν Set.univ))
+  rw [EReal.left_distrib_of_nonneg hsum_nonneg hrem_nonneg]
 
 /-- Helper for Lemma 5.26: on the finite-entropy positive-support branch, equality forces the
 comparison mass function to agree pointwise with `p`. -/
@@ -386,7 +774,7 @@ private theorem cross_entropy_remainder_eq_zero_iff (b : LogBase) (hb : 1 < (b :
       intro hbot
       exact hsum_ne_top ((EReal.neg_eq_bot_iff).mp hbot)
     -- Rewrite equality so that the nonnegative KL remainder is the only possible obstruction.
-    rw [cross_entropy_gap_full_decomposition b p q hq hnozero] at hEq
+    rw [cross_entropy_gap_full_decomposition b hb p q hq hnozero] at hEq
     let rem : ENNReal := klDiv p.toMeasure ν + (1 - ν Set.univ)
     have hrem_nonneg : (0 : EReal) ≤ (rem : EReal) := by
       exact_mod_cast (bot_le : (0 : ENNReal) ≤ rem)
@@ -435,7 +823,8 @@ private theorem cross_entropy_remainder_eq_zero_iff (b : LogBase) (hb : 1 < (b :
 -- `(Real.log (b : ℝ))⁻¹` times the Kullback-Leibler divergence term
 -- `∑ p(e) * log (p(e) / q(e))`, use the standard inequality `log x ≤ x - 1`, and identify the
 -- equality case from strictness unless the entropy side is already `⊤`.
-/-- Lemma 5.26, inequality part: the base-`b` entropy of `p` is bounded above by the base-`b`
+/-- Auxiliary inequality for Lemma 5.26: the base-`b` entropy of `p` is bounded above by the
+base-`b`
 cross-entropy against any sub-probability mass function `q`. -/
 theorem entropyInBase_le_crossEntropyInBase (b : LogBase) (hb : 1 < (b : ℝ)) (p : PMF E)
     (q : E → ENNReal) (hq : (∑' e : E, q e) ≤ 1) :
@@ -453,7 +842,7 @@ theorem entropyInBase_le_crossEntropyInBase (b : LogBase) (hb : 1 < (b : ℝ)) (
       exact hzero ⟨e, he, hqe⟩
     letI : MeasurableSpace E := ⊤
     letI : MeasurableSingletonClass E := ⟨fun _ ↦ trivial⟩
-    rw [cross_entropy_gap_full_decomposition b p q hq hnozero]
+    rw [cross_entropy_gap_full_decomposition b hb p q hq hnozero]
     have hcoeff_nonneg : (0 : EReal) ≤ ((Real.log (b : ℝ) : EReal)⁻¹) := by
       rw [← EReal.coe_inv]
       exact_mod_cast inv_nonneg.mpr (le_of_lt (Real.log_pos hb))

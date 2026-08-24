@@ -63,7 +63,11 @@ def simpleGraphWeights (G : SimpleGraph E) : E → E → ℝ≥0∞ :=
 -- `G.Adj x y ↔ G.Adj y x`, then both indicator-style cases coincide.
 /-- The unit edge weights of a simple graph are symmetric. -/
 theorem simpleGraphWeights_symmetric (G : SimpleGraph E) :
-    ∀ x y : E, simpleGraphWeights G x y = simpleGraphWeights G y x := sorry
+    ∀ x y : E, simpleGraphWeights G x y = simpleGraphWeights G y x := by
+  intro x y
+  -- Rewrite the reversed adjacency test using symmetry of edges in a simple graph.
+  -- Once both `if` conditions agree, the two weight expressions are definitionally identical.
+  simp [simpleGraphWeights, G.adj_comm x y]
 
 /-- A transition matrix is a simple random walk on `(E, K)` when its weights are the indicator of
 the edge relation of the graph. -/

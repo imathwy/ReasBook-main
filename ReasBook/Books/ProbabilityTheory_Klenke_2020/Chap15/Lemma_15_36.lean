@@ -20,7 +20,14 @@ theorem standardizedPartialSum_succ_apply
     (X : ℕ → Ω → ℝ) (μ σ2 : ℝ)
     (hμ : P[X 1] = μ) (hσ2 : Var[X 1; P] = σ2) (n : ℕ) (ω : Ω) :
     standardizedPartialSum P (fun k ↦ X (k + 1)) n ω =
-      (Real.sqrt (n * σ2))⁻¹ * ∑ k ∈ Finset.range n, (X (k + 1) ω - μ) := sorry
+      (Real.sqrt (n * σ2))⁻¹ * ∑ k ∈ Finset.range n, (X (k + 1) ω - μ) := by
+  -- Rewrite the chapter owner formula using the textbook mean and variance at index `1`.
+  rw [standardizedPartialSum]
+  simp only [hμ, hσ2]
+  -- Identify the centered finite sum with the difference of the raw sum and `n * μ`.
+  congr 1
+  rw [Finset.sum_sub_distrib]
+  simp
 
 -- Proof sketch: transfer Lemma 15.36 to the canonical pushforward law of
 -- `standardizedPartialSum P (fun k ↦ X (k + 1)) n`. The companion theorem
@@ -39,4 +46,26 @@ theorem charFun_cltNormalizedPartialSum_tendsto_standardGaussian
     Tendsto
       (fun n : ℕ ↦
         charFun (P.map (standardizedPartialSum P (fun k ↦ X (k + 1)) n)) t)
-      atTop (𝓝 (Complex.exp (-(t ^ 2 / 2 : ℝ)))) := sorry
+      atTop (𝓝 (Complex.exp (-(t ^ 2 / 2 : ℝ)))) := by
+  -- Positive variance gives the `L²` hypothesis required by the law-level CLT owner theorem.
+  have hX_memLp : MemLp (X 1) 2 P := by
+    refine memLp_two_of_variance_ne_zero (μ := P) (X := X 1)
+      (hX_ident 0).aemeasurable_fst.aestronglyMeasurable ?_
+    exact ne_of_gt hVar
+  -- Route correction: instead of rebuilding the textbook Taylor expansion, reuse the existing
+  -- weak convergence theorem for the shifted sequence `fun k ↦ X (k + 1)`.
+  have hLaw :
+      Tendsto
+        (fun n ↦
+          ProbabilityMeasure.map ⟨P, inferInstance⟩
+            (aemeasurable_standardizedPartialSum P (fun k ↦ X (k + 1))
+              (fun k ↦ (hX_ident k).aemeasurable_fst) n))
+        atTop
+        (𝓝 ((⟨gaussianReal 0 1, inferInstance⟩ : ProbabilityMeasure ℝ))) := by
+    simpa using
+      (standardizedPartialSumLaw_tendsto_standardGaussian
+        (P := P) (X := fun k ↦ X (k + 1)) hX_memLp (ne_of_gt hVar) hX_indep hX_ident)
+  -- Translate weak convergence of laws into pointwise convergence of characteristic functions.
+  have hchar := ProbabilityMeasure.tendsto_iff_tendsto_charFun.1 hLaw t
+  -- Normalize the standard Gaussian characteristic function to the displayed exponent.
+  simpa [charFun_gaussianReal, neg_div] using hchar
