@@ -6,7 +6,6 @@ import CombinatorialGroupTheory_Magnus_2004.Book
 import ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017.Book
 import IntroductiontoRealAnalysisVolumeI_JiriLebl_2025.Book
 import OptimizationTheoryAndMethods_SunYuan_2006.Book
-import ProbabilityTheory_Klenke_2020.Book
 import RiemannSurfaces_Forster_1981.Book
 import OnSomeLocalRings_Maassaran_2025.Paper
 import SmoothMinimization_Nesterov_2004.Paper
