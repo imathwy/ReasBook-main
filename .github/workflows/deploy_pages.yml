@@ -3,6 +3,8 @@ name: Deploy Verso Site to GitHub Pages
 on:
   push:
     branches: [ v4.30.0 ]
+  pull_request:
+    branches: [ v4.30.0 ]
   workflow_dispatch:
     inputs:
       full_deploy:
@@ -413,7 +415,7 @@ jobs:
           ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_core.sh" ./scripts/build_reasbook_core.sh
 
       - name: Build ReasBookWeb (sections + Verso)
-        timeout-minutes: 180
+        timeout-minutes: 300
         run: |
           set -euo pipefail
           ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_web.sh (Verso)" ./scripts/build_reasbook_web.sh
