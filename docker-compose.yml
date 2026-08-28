@@ -1,0 +1,7 @@
+services:
+  site:
+    image: ${REASBOOK_IMAGE:-reasbook:local}
+    build: .
+    ports:
+      - "${REASBOOK_PORT:-3200}:80"
+    restart: unless-stopped
