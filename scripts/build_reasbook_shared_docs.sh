@@ -9,10 +9,15 @@ LAKE_BIN="${LAKE_BIN:-$HOME_DIR/.elan/bin/lake}"
 
 cd "$ROOT_DIR/ReasBook"
 
+if ! grep -Eq '^[[:space:]]*require[[:space:]].*doc-gen4' lakefile.lean; then
+  echo "[build_reasbook_shared_docs] doc-gen4 is not registered; skipping"
+  exit 0
+fi
+
 declare -a modules=()
 
-# Default to a valid shared baseline module.
 raw_modules="${SHARED_DOC_MODULES:-ReasBook}"
+
 while IFS= read -r item; do
   item="$(printf '%s' "$item" | xargs)"
   [ -n "$item" ] || continue
