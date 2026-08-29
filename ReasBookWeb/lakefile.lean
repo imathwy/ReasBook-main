@@ -46,8 +46,8 @@ def loadSections (pkg : NPackage n) : IO (Array (Lean.Name × String)) := do
       out := out.push entry
   pure out
 
-/-- Build `+<module>:literate` JSON for many modules in one Lake invocation. -/
-def buildLiterateJsonBatch (pkg : NPackage n) (mods : Array String) : LogIO Unit := do
+/-- Build `+<module>:literate` JSON for one bounded chunk of modules. -/
+def buildLiterateJsonChunk (pkg : NPackage n) (mods : Array String) : LogIO Unit := do
   if mods.isEmpty then
     return
 
@@ -71,12 +71,29 @@ def buildLiterateJsonBatch (pkg : NPackage n) (mods : Array String) : LogIO Unit
     let mut args := #["run", "--install", toolchain, "lake", "build"]
     for mod in mods do
       args := args.push s!"+{mod}:literate"
-    proc (quiet := true) {
+    proc (quiet := false) {
       cmd, args, cwd := pkg.dir / reasbookRoot,
       env := lakeVars.map (·, none)
     }
   finally
     f.unlock
+
+/-- Build all literate JSON targets in bounded chunks.
+
+Running every `+<module>:literate` target in a single Lake invocation makes a
+single slow module block all progress and leaves the runner with no usable
+diagnostics. Splitting into small chunks bounds memory growth and keeps the
+output stream responsive, so the failing book/chapter is identifiable. -/
+def buildLiterateJsonBatches (pkg : NPackage n) (mods : Array String) : LogIO Unit := do
+  if mods.isEmpty then
+    return
+
+  let chunkSize := 16
+  let mut start := 0
+  while start < mods.size do
+    let stop := Nat.min (start + chunkSize) mods.size
+    buildLiterateJsonChunk pkg (mods.extract start stop)
+    start := stop
 
 /-- Generate `Book.*` modules and a root `Book` module. -/
 target genLib (pkg) : Unit := do
@@ -84,9 +101,8 @@ target genLib (pkg) : Unit := do
   let pageCmd := "reasbook_page"
   let sections ← liftM (m := LogIO) <| loadSections pkg
 
-  -- Batch all literate-json builds to avoid spawning one `lake build` process per module.
   let modulesToBuild := sections.map (fun (module, _) => module.toString)
-  liftM (m := LogIO) <| buildLiterateJsonBatch pkg modulesToBuild
+  liftM (m := LogIO) <| buildLiterateJsonBatches pkg modulesToBuild
 
   let j1 ← Job.mixArray <$> sections.mapM fun (module, title) => Job.async do
     let leanModName := `Book ++ module
