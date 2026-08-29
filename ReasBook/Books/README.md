@@ -21,4 +21,4 @@ map in the papers catalog.
 | **[Optimization Theory and Methods: Nonlinear Programming](./OptimizationTheoryAndMethods_SunYuan_2006/)**<br><sub>Wenyu Sun and Ya-xiang Yuan (2006)</sub> | [`v4.30.0`](https://github.com/optpku/ReasBook/tree/v4.30.0/ReasBook/Books/OptimizationTheoryAndMethods_SunYuan_2006/) |
 | **[Probability Theory: A Comprehensive Course](./ProbabilityTheory_Klenke_2020/)**<br><sub>Achim Klenke (3rd ed., 2020)</sub> | [`v4.30.0`](https://github.com/optpku/ReasBook/tree/v4.30.0/ReasBook/Books/ProbabilityTheory_Klenke_2020/) |
 | **[Lectures on Riemann Surfaces](./RiemannSurfaces_Forster_1981/)**<br><sub>Otto Forster (1981)</sub> | [`v4.30.0`](https://github.com/optpku/ReasBook/tree/v4.30.0/ReasBook/Books/RiemannSurfaces_Forster_1981/) |
-| **[Computational Methods for Inverse Problems](./ComputationalMethodsInverseProblems_Vogel_2002/)**<br><sub>Curtis R. Vogel (2002)</sub> | [`v4.32.0`](https://github.com/optpku/ReasBook/tree/v4.32.0/ReasBook/Books/ComputationalMethodsInverseProblems_Vogel_2002/) |
+| **[Computational Methods for Inverse Problems](./ComputationalMethodsInverseProblems_Vogel_2002/)**<br><sub>Curtis R. Vogel (2002)</sub> | `TBD` |

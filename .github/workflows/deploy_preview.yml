@@ -1,8 +1,6 @@
 name: Deploy Preview (Verso only)
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
 
 permissions:

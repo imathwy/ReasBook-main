@@ -1,8 +1,6 @@
 name: Deploy Verso Site to GitHub Pages
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
     inputs:
       full_deploy:
@@ -182,9 +180,10 @@ jobs:
           path: |
             ReasBook/.lake/build/bin
             ReasBook/.lake/build/lib/lean
-          key: lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}
+          key: lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ matrix.branch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}
           restore-keys: |
-            lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
+            lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ matrix.branch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
+            lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ matrix.branch }}-
             lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-
 
       - name: Restore ReasBook doc-data cache
@@ -192,9 +191,10 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ReasBook/.lake/build/doc-data
-          key: lake-reasbook-docdata-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}
+          key: lake-reasbook-docdata-v1-${{ runner.os }}-${{ runner.arch }}-${{ matrix.branch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}
           restore-keys: |
-            lake-reasbook-docdata-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
+            lake-reasbook-docdata-v1-${{ runner.os }}-${{ runner.arch }}-${{ matrix.branch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-
+            lake-reasbook-docdata-v1-${{ runner.os }}-${{ runner.arch }}-${{ matrix.branch }}-
             lake-reasbook-docdata-v1-${{ runner.os }}-${{ runner.arch }}-
 
       - name: Restore ReasBook doc cache
@@ -202,11 +202,13 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ReasBook/.lake/build/doc
-          key: lake-reasbook-docfinal-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-${{ github.sha }}
+          key: lake-reasbook-docfinal-v1-${{ runner.os }}-${{ runner.arch }}-${{ matrix.branch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}
           restore-keys: |
-            lake-reasbook-docfinal-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-
+            lake-reasbook-docfinal-v1-${{ runner.os }}-${{ runner.arch }}-${{ matrix.branch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-
+            lake-reasbook-docfinal-v1-${{ runner.os }}-${{ runner.arch }}-${{ matrix.branch }}-
             lake-reasbook-docfinal-v1-${{ runner.os }}-${{ runner.arch }}-
-            lake-reasbook-doc-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-
+            lake-reasbook-doc-v1-${{ runner.os }}-${{ runner.arch }}-${{ matrix.branch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-
+            lake-reasbook-doc-v1-${{ runner.os }}-${{ runner.arch }}-${{ matrix.branch }}-
             lake-reasbook-doc-v1-${{ runner.os }}-${{ runner.arch }}-
 
       - name: Restore ReasBookWeb build cache
@@ -216,9 +218,10 @@ jobs:
           path: |
             ReasBookWeb/.lake/build/bin
             ReasBookWeb/.lake/build/lib/lean
-          key: lake-reasbookweb-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBookWeb/lean-toolchain') }}-${{ hashFiles('ReasBookWeb/lake-manifest.json') }}
+          key: lake-reasbookweb-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ matrix.branch }}-${{ hashFiles('ReasBookWeb/lean-toolchain') }}-${{ hashFiles('ReasBookWeb/lake-manifest.json') }}
           restore-keys: |
-            lake-reasbookweb-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBookWeb/lean-toolchain') }}-
+            lake-reasbookweb-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ matrix.branch }}-${{ hashFiles('ReasBookWeb/lean-toolchain') }}-
+            lake-reasbookweb-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ matrix.branch }}-
             lake-reasbookweb-lite-v2-${{ runner.os }}-${{ runner.arch }}-
 
       - name: Prime ReasBook cache
@@ -236,7 +239,7 @@ jobs:
           ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_core.sh (${BRANCH})" ./scripts/build_reasbook_core.sh
 
       - name: Build ReasBookWeb (sections + Verso)
-        timeout-minutes: 180
+        timeout-minutes: 360
         run: |
           set -euo pipefail
           ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_web.sh (${BRANCH})" ./scripts/build_reasbook_web.sh
@@ -330,7 +333,7 @@ jobs:
           path: |
             ReasBook/.lake/build/bin
             ReasBook/.lake/build/lib/lean
-          key: lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}
+          key: lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ matrix.branch }}-${{ hashFiles('ReasBook/lean-toolchain') }}-${{ hashFiles('ReasBook/lake-manifest.json') }}-run-${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: Save ReasBookWeb build cache
         if: always()
@@ -340,7 +343,7 @@ jobs:
           path: |
             ReasBookWeb/.lake/build/bin
             ReasBookWeb/.lake/build/lib/lean
-          key: lake-reasbookweb-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('ReasBookWeb/lean-toolchain') }}-${{ hashFiles('ReasBookWeb/lake-manifest.json') }}
+          key: lake-reasbookweb-lite-v2-${{ runner.os }}-${{ runner.arch }}-${{ matrix.branch }}-${{ hashFiles('ReasBookWeb/lean-toolchain') }}-${{ hashFiles('ReasBookWeb/lake-manifest.json') }}-run-${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: Compress persistent cache
         if: always()
