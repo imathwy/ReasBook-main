@@ -566,23 +566,13 @@ jobs:
   deploy:
     needs: assemble-pages-artifact
     if: always() && needs.assemble-pages-artifact.result == 'success'
-    runs-on: [self-hosted, Linux, X64, reasbook-public]
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Download Pages artifact
-        uses: actions/download-artifact@v4
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
         with:
-          name: ${{ needs['assemble-pages-artifact'].outputs.pages_artifact_name }}
-          path: .site
-
-      - name: Deploy to local web root
-        run: |
-          set -euo pipefail
-          rsync -av --delete .site/ /var/www/reasbook/
-
-      - name: Reload nginx
-        run: |
-          sudo nginx -t && sudo systemctl reload nginx
-
-      - name: Print deployed URL
-        run: |
-          echo "ReasBook deployed to http://localhost:19080 (systemd) and /var/www/reasbook (nginx)"
+          artifact_name: ${{ needs.assemble-pages-artifact.outputs.pages_artifact_name }}
