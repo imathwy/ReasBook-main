@@ -6,4 +6,3 @@ This is a catalog link folder on `main`; the complete Lean formalization is kept
 
 **[Open the source on `v4.32.2`](https://github.com/optpku/ReasBook/tree/v4.32.2/ReasBook/Papers/TR_LALM_theory/)**
 
-- [Paper documentation](https://optpku.github.io/ReasBook/docs/TR_LALM_theory/Paper.html)
