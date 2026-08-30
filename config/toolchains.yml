@@ -9,6 +9,11 @@ branches:
     status: active
     initialization: migrated-from-main
 
+  - version: v4.29.0
+    branch: v4.29.0
+    status: empty
+    initialization: automatic
+
   - version: v4.30.0
     branch: v4.30.0
     status: active

@@ -11,6 +11,7 @@ matches the Lean/mathlib version of your book project:
 
 ```text
 v4.26.0
+v4.29.0
 v4.30.0
 v4.32.0
 ```
