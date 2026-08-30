@@ -46,6 +46,25 @@ def loadSections (pkg : NPackage n) : IO (Array (Lean.Name × String)) := do
       out := out.push entry
   pure out
 
+/-- Path to the generated literate JSON for a section module. -/
+def literateJsonFile (pkg : NPackage n) (module : Lean.Name) : System.FilePath :=
+  let jsonName := "/".intercalate (module.components.map (·.toString)) ++ ".json"
+  pkg.dir / reasbookRoot / ".lake" / "build" / "literate" / jsonName
+
+/-- Whether extraction has already been performed by `scripts/build_literate_json.sh`. -/
+def literatePrebuilt? : IO Bool := do
+  match (← IO.getEnv "REASBOOK_LITERATE_PREBUILT") with
+  | some "1" | some "true" => pure true
+  | _ => pure false
+
+/-- Verify that every section has a literate JSON file before compiling pages. -/
+def verifyLiterateJson (pkg : NPackage n) (sections : Array (Lean.Name × String)) : IO Unit := do
+  for (module, _) in sections do
+    let jsonFile := literateJsonFile pkg module
+    let jsonExists ← jsonFile.pathExists
+    unless jsonExists do
+      throw <| IO.userError s!"Missing prebuilt literate JSON for {module}: {jsonFile}"
+
 /-- Build `+<module>:literate` JSON for one bounded chunk of modules. -/
 def buildLiterateJsonChunk (pkg : NPackage n) (mods : Array String) : LogIO Unit := do
   if mods.isEmpty then
@@ -88,7 +107,7 @@ def buildLiterateJsonBatches (pkg : NPackage n) (mods : Array String) : LogIO Un
   if mods.isEmpty then
     return
 
-  let chunkSize := 16
+  let chunkSize := 1
   let mut start := 0
   while start < mods.size do
     let stop := Nat.min (start + chunkSize) mods.size
@@ -102,7 +121,11 @@ target genLib (pkg) : Unit := do
   let sections ← liftM (m := LogIO) <| loadSections pkg
 
   let modulesToBuild := sections.map (fun (module, _) => module.toString)
-  liftM (m := LogIO) <| buildLiterateJsonBatches pkg modulesToBuild
+  let prebuilt ← liftM (m := LogIO) <| literatePrebuilt?
+  if prebuilt then
+    liftM (m := LogIO) <| verifyLiterateJson pkg sections
+  else
+    liftM (m := LogIO) <| buildLiterateJsonBatches pkg modulesToBuild
 
   let j1 ← Job.mixArray <$> sections.mapM fun (module, title) => Job.async do
     let leanModName := `Book ++ module

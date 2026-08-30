@@ -21,3 +21,7 @@ __pycache__/
 
 # Ephemeral same-workspace CI checkout and preflight logs.
 .automation/
+
+# Generated literate extraction manifests.
+ReasBookWeb/.literate_modules.txt
+ReasBookWeb/.literate_manifest.json

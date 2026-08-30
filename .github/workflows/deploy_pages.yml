@@ -292,6 +292,7 @@ jobs:
       HEARTBEAT_INTERVAL_SECONDS: 45
       RETRY_ON_143_MAX_RETRIES: 1
       RETRY_ON_143_SLEEP_SECONDS: 20
+      REASBOOK_LITERATE_TIMEOUT_MINUTES: 10
       PERSIST_ROOT: ${{ vars.REASBOOK_PERSIST_ROOT }}
     steps:
       - uses: actions/checkout@v4

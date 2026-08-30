@@ -1727,6 +1727,8 @@ def main() -> None:
     source_root = repo_root / "ReasBook"
     out_file = repo_root / "ReasBookWeb" / "ReasBookSite" / "Sections.lean"
     route_file = repo_root / "ReasBookWeb" / "ReasBookSite" / "RouteTable.lean"
+    modules_file = repo_root / "ReasBookWeb" / ".literate_modules.txt"
+    manifest_file = repo_root / "ReasBookWeb" / ".literate_manifest.json"
 
     if not (source_root / "lakefile.lean").exists() and not (source_root / "lakefile.toml").exists():
         raise SystemExit(f"Lean project not found at {source_root}")
@@ -1742,12 +1744,40 @@ def main() -> None:
     out_file.parent.mkdir(parents=True, exist_ok=True)
     write_text_if_changed(out_file, emit_sections(entries), log=False)
     write_text_if_changed(route_file, emit_route_table(entries), log=False)
+    toolchain_file = source_root / "lean-toolchain"
+    toolchain = toolchain_file.read_text(encoding="utf-8").strip() if toolchain_file.is_file() else ""
+    manifest = {
+        "toolchain": toolchain,
+        "source_root": source_root.name,
+        "skip_modules": sorted(SKIP_MODULES),
+        "sections": [
+            {
+                "module": entry.module,
+                "category": entry.category,
+                "book_or_paper": entry.book_or_paper,
+                "title": entry.title,
+                "route": entry.route,
+                "chapter": entry.chapter_num,
+                "section": entry.section_num,
+                "part": entry.part_num,
+            }
+            for entry in entries
+        ],
+    }
+    write_text_if_changed(modules_file, "\n".join(entry.module for entry in entries) + "\n", log=False)
+    write_text_if_changed(
+        manifest_file,
+        json.dumps(manifest, ensure_ascii=True, indent=2) + "\n",
+        log=False,
+    )
     write_work_pages(repo_root, source_root, entries)
     write_book_readmes(source_root, entries)
     write_paper_readmes(source_root, entries)
     write_root_readme(repo_root, source_root)
     print(f"Wrote {out_file} with {len(entries)} sections")
     print(f"Wrote {route_file} with generated route macro")
+    print(f"Wrote {modules_file} with {len(entries)} modules")
+    print(f"Wrote {manifest_file}")
 
 
 if __name__ == "__main__":
