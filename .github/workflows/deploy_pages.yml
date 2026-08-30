@@ -34,89 +34,7 @@ jobs:
       - name: Collect books/papers across version branches
         id: collect
         run: |
-          python3 - <<'PY' >> "$GITHUB_OUTPUT"
-          import json
-          import os
-          import re
-          import subprocess
-          from pathlib import Path
-
-          # Read version branches from the public registry (facts only).
-          text = Path("config/toolchains.yml").read_text(encoding="utf-8")
-          # Minimal YAML branch extractor (avoids a yaml dependency on the runner).
-          branches = []
-          for m in re.finditer(r"^\s*-\s*version:\s*(\S+)\s*$", text, re.MULTILINE):
-              branches.append(m.group(1))
-          # Keep only branches that actually exist as git refs.
-          # Use origin/<branch> refs: a fresh checkout only has remote-tracking refs,
-          # not local branches named vX.Y.0.
-          existing = []
-          for b in branches:
-              try:
-                  subprocess.run(
-                      ["git", "rev-parse", "--verify", "--quiet", f"origin/{b}"],
-                      check=True, capture_output=True,
-                  )
-                  existing.append(b)
-              except subprocess.CalledProcessError:
-                  pass
-          branches = existing
-
-          projects = []
-          seen = {}  # (kind, name) -> index; newer branch wins for duplicates
-          branches_with_projects = set()
-
-          for branch in branches:
-              for kind_dir, kind_slug, kind_title, leaf in [
-                  ("ReasBook/Books", "books", "Books", "Book"),
-                  ("ReasBook/Papers", "papers", "Papers", "Paper"),
-              ]:
-                  try:
-                      out = subprocess.run(
-                          ["git", "ls-tree", "-r", "--name-only", f"origin/{branch}", kind_dir],
-                          check=True, capture_output=True, text=True,
-                      ).stdout
-                  except subprocess.CalledProcessError:
-                      continue
-                  for line in out.splitlines():
-                      parts = line.split("/")
-                      # Only the top-level book root module: ReasBook/Books/<BookId>/Book.lean
-                      if len(parts) == 4 and parts[3] == f"{leaf}.lean":
-                          name = parts[2]
-                          key = (kind_slug, name)
-                          branches_with_projects.add(branch)
-                          entry = {
-                              "kind": kind_slug,
-                              "kindTitle": kind_title,
-                              "name": name,
-                              "slug": name.lower(),
-                              "branch": branch,
-                          }
-                          if key in seen:
-                              projects[seen[key]] = entry  # newer branch overwrites
-                          else:
-                              seen[key] = len(projects)
-                              projects.append(entry)
-
-          # Only build branches that actually carry books/papers (skip empty receivers).
-          branches = [b for b in branches if b in branches_with_projects]
-
-          event_name = os.environ.get("GITHUB_EVENT_NAME", "")
-          event_payload = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text(encoding="utf-8"))
-
-          if event_name in {"push"}:
-              full_deploy = True
-          elif event_name == "workflow_dispatch":
-              raw = str((event_payload.get("inputs") or {}).get("full_deploy", "true")).strip().lower()
-              full_deploy = raw in {"1", "true", "yes", "on"}
-          else:
-              full_deploy = False
-
-          print(f"version_branches={json.dumps(branches, separators=(',', ':'))}")
-          print(f"version_branch_count={len(branches)}")
-          print(f"projects={json.dumps(projects, separators=(',', ':'))}")
-          print(f"full_deploy={'true' if full_deploy else 'false'}")
-          PY
+          python3 scripts/discover_projects.py >> "$GITHUB_OUTPUT"
 
   build-branch-sites:
     needs: discover-projects
@@ -440,107 +358,7 @@ jobs:
           PROJECTS_JSON: ${{ needs.discover-projects.outputs.projects }}
         run: |
           set -euo pipefail
-          python3 - <<'PY'
-          import json
-          import os
-          import shutil
-          from pathlib import Path
-
-          projects = json.loads(os.environ["PROJECTS_JSON"])
-          src_root = Path(".artifacts/monolith")
-          dst_root = Path(".site")
-
-          if dst_root.exists():
-              shutil.rmtree(dst_root)
-          shutil.copytree(src_root, dst_root)
-
-          sites_root = dst_root / "sites"
-          sites_root.mkdir(parents=True, exist_ok=True)
-
-          for p in projects:
-              slug = p["slug"]
-              kind = p["kind"]
-              kind_title = p["kindTitle"]
-              name = p["name"]
-
-              pages_src = dst_root / kind / slug
-              docs_src = dst_root / "docs" / "ReasBook" / kind_title / name
-              map_src = dst_root / "theorem-maps" / kind / slug
-              site_dir = sites_root / slug
-
-              if site_dir.exists():
-                  shutil.rmtree(site_dir)
-              site_dir.mkdir(parents=True, exist_ok=True)
-
-              if pages_src.is_dir():
-                  shutil.copytree(pages_src, site_dir / "pages")
-              if docs_src.is_dir():
-                  shutil.copytree(docs_src, site_dir / "docs")
-
-              navigation = []
-              if pages_src.is_dir():
-                  navigation.append('    <li><a href="./pages/">Pages</a></li>')
-              if docs_src.is_dir():
-                  navigation.append('    <li><a href="./docs/">Documentation</a></li>')
-              if map_src.is_dir():
-                  navigation.append(
-                      f'    <li><a href="../../theorem-maps/{kind}/{slug}/">Theorem map</a></li>'
-                  )
-
-              index = site_dir / "index.html"
-              index.write_text(
-                  "\n".join(
-                      [
-                          "<!doctype html>",
-                          '<html lang="en">',
-                          "<head>",
-                          '  <meta charset="utf-8" />',
-                          '  <meta name="viewport" content="width=device-width,initial-scale=1" />',
-                          f"  <title>{name}</title>",
-                          "</head>",
-                          "<body>",
-                          f"  <h1>{name}</h1>",
-                          "  <ul>",
-                          *navigation,
-                          "  </ul>",
-                          '  <p><a href="../../">Back to root</a></p>',
-                          "</body>",
-                          "</html>",
-                          "",
-                      ]
-                  ),
-                  encoding="utf-8",
-              )
-
-          root_index = dst_root / "index.html"
-          if not root_index.exists():
-              links = "\n".join(
-                  f'    <li><a href="./sites/{p["slug"]}/">{p["name"]}</a></li>' for p in projects
-              )
-              root_index.write_text(
-                  "\n".join(
-                      [
-                          "<!doctype html>",
-                          '<html lang="en">',
-                          "<head>",
-                          '  <meta charset="utf-8" />',
-                          '  <meta name="viewport" content="width=device-width,initial-scale=1" />',
-                          "  <title>ReasBook</title>",
-                          "</head>",
-                          "<body>",
-                          "  <h1>ReasBook</h1>",
-                          "  <h2>Independent Sites</h2>",
-                          "  <ul>",
-                          links,
-                          "  </ul>",
-                          "</body>",
-                          "</html>",
-                          "",
-                      ]
-                  ),
-                  encoding="utf-8",
-              )
-          PY
+          python3 scripts/assemble_pages_site.py
 
       - name: Rebuild cross-version theorem-map catalog
         run: |
@@ -548,11 +366,14 @@ jobs:
           python3 tools/theorem_map/catalog.py --site-root .site
 
       - name: Verify generated site tree
+        env:
+          PROJECTS_JSON: ${{ needs.discover-projects.outputs.projects }}
         run: |
           set -euo pipefail
           ls -la .site
           test -d .site/docs
           test -f .site/theorem-maps/index.html
+          python3 scripts/verify_pages_site.py
 
       - name: Compute Pages artifact name
         id: pages_artifact_name
