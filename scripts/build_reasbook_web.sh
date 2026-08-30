@@ -15,6 +15,11 @@ cd "$REPO_ROOT"
 echo "[build_reasbook_web] extracting literate JSON per module"
 ./scripts/build_literate_json.sh
 
+echo "[build_reasbook_web] regenerating sections/routes from literate status"
+cd "$REPO_ROOT/ReasBookWeb"
+python3 scripts/gen_sections.py
+cd "$REPO_ROOT"
+
 cd "$REPO_ROOT/ReasBookWeb"
 
 # ReasBookWeb depends on Verso/subverso/MD4Lean and does not expose the

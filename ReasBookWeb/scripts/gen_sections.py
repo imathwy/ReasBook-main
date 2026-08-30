@@ -206,6 +206,21 @@ def parse_csv_env_set(name: str) -> set[str]:
     return {item.strip() for item in raw.split(",") if item.strip()}
 
 
+def load_literate_status(repo_root: Path) -> set[str]:
+    """Read failed literate modules recorded by scripts/build_literate_json.sh."""
+    status_file = repo_root / "ReasBookWeb" / ".literate_status.json"
+    if not status_file.is_file():
+        return set()
+    try:
+        data = json.loads(status_file.read_text(encoding="utf-8"))
+    except Exception:
+        return set()
+    failed_modules = data.get("failed_modules") if isinstance(data, dict) else None
+    if not isinstance(failed_modules, list):
+        return set()
+    return {str(item).strip() for item in failed_modules if str(item).strip()}
+
+
 SKIP_MODULES = DEFAULT_SKIP_MODULES | parse_csv_env_set("REASBOOK_SKIP_MODULES")
 
 BOOK_CHAPTER_TITLES = {
@@ -1719,11 +1734,19 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
 
 
 def main() -> None:
+    global SKIP_MODULES
+
     args = parse_args()
     if args.repo_root is None:
         repo_root = Path(__file__).resolve().parents[2]
     else:
         repo_root = Path(args.repo_root).resolve()
+
+    SKIP_MODULES = (
+        DEFAULT_SKIP_MODULES
+        | parse_csv_env_set("REASBOOK_SKIP_MODULES")
+        | load_literate_status(repo_root)
+    )
 
     source_root = repo_root / "ReasBook"
     out_file = repo_root / "ReasBookWeb" / "ReasBookSite" / "Sections.lean"

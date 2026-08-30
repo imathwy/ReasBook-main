@@ -25,3 +25,5 @@ __pycache__/
 # Generated literate extraction manifests.
 ReasBookWeb/.literate_modules.txt
 ReasBookWeb/.literate_manifest.json
+ReasBookWeb/.literate_failed.txt
+ReasBookWeb/.literate_status.json
