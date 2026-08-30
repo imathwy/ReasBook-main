@@ -5,10 +5,22 @@ set -euo pipefail
 
 HOME_DIR="${HOME:-/root}"
 LAKE_BIN="${LAKE_BIN:-$HOME_DIR/.elan/bin/lake}"
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 echo "[build_reasbook_web] generating sections/routes"
-cd ReasBookWeb
+cd "$REPO_ROOT/ReasBookWeb"
 python3 scripts/gen_sections.py
+cd "$REPO_ROOT"
+
+echo "[build_reasbook_web] extracting literate JSON per module"
+./scripts/build_literate_json.sh
+
+echo "[build_reasbook_web] regenerating sections/routes from literate status"
+cd "$REPO_ROOT/ReasBookWeb"
+python3 scripts/gen_sections.py
+cd "$REPO_ROOT"
+
+cd "$REPO_ROOT/ReasBookWeb"
 
 # ReasBookWeb depends on Verso/subverso/MD4Lean and does not expose the
 # Mathlib `cache` executable. Cache priming is handled in ReasBook scripts.
@@ -20,7 +32,7 @@ if ulimit -s unlimited 2>/dev/null; then
 else
   echo "[build_reasbook_web] unable to raise stack limit; continuing with current limit"
 fi
-"$LAKE_BIN" exe reasbook-site
+REASBOOK_LITERATE_PREBUILT=1 "$LAKE_BIN" exe reasbook-site
 
 THEOREM_MAP_SOURCE="../ReasBook/Papers/TR_LALM_theory/theorem-map"
 THEOREM_MAP_TARGET="_site/theorem-maps/papers/tr_lalm_theory"
