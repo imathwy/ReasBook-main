@@ -39,38 +39,86 @@ failed=0
 ok=0
 : > "$FAILED_FILE"
 
-while IFS= read -r mod; do
-  [[ -z "$mod" ]] && continue
-  count=$((count + 1))
-  echo "[literate] start ${mod}"
+# Mirror buildLiterateJsonChunk's environment scrub so the nested Lake build
+# selects the toolchain requested by ReasBook/lean-toolchain.
+SCRUB_ENV=(
+  env -u LAKE -u LAKE_HOME -u LAKE_PKG_URL_MAP
+      -u LEAN_SYSROOT -u LEAN_AR -u LEAN_PATH -u LEAN_SRC_PATH
+      -u LEAN_GITHASH -u ELAN_TOOLCHAIN -u DYLD_LIBRARY_PATH -u LD_LIBRARY_PATH
+)
 
-  # Mirror buildLiterateJsonChunk's environment scrub so the nested Lake build
-  # selects the toolchain requested by ReasBook/lean-toolchain.
-  rc=0
+BATCH_SIZE="${REASBOOK_LITERATE_BATCH_SIZE:-100}"
+
+build_one() {
+  local mod="$1" rc=0
   set +e
   (cd "$REASBOOK_DIR" && timeout --kill-after=30 "${TIMEOUT_MINUTES}m" \
-      env -u LAKE -u LAKE_HOME -u LAKE_PKG_URL_MAP \
-          -u LEAN_SYSROOT -u LEAN_AR -u LEAN_PATH -u LEAN_SRC_PATH \
-          -u LEAN_GITHASH -u ELAN_TOOLCHAIN -u DYLD_LIBRARY_PATH -u LD_LIBRARY_PATH \
-      "$ELAN_BIN" run --install "$toolchain" lake build "+${mod}:literate")
+      "${SCRUB_ENV[@]}" "$ELAN_BIN" run --install "$toolchain" lake build "+${mod}:literate")
+  rc=$?
+  set -e
+  return "$rc"
+}
+
+record_failure() {
+  local mod="$1" rc="$2"
+  failed=$((failed + 1))
+  if [[ "$rc" -eq 124 || "$rc" -eq 137 ]]; then
+    echo "[literate] TIMEOUT ${mod}"
+    echo "::warning title=Literate extraction timed out::${mod}"
+  else
+    echo "[literate] FAILED ${mod}"
+    echo "::error title=Literate extraction failed::${mod}"
+  fi
+  echo "$mod" >> "$FAILED_FILE"
+}
+
+mapfile -t modules < <(grep -vE '^\s*$' "$MODULES_FILE")
+count=${#modules[@]}
+
+for ((start = 0; start < count; start += BATCH_SIZE)); do
+  batch=("${modules[@]:start:BATCH_SIZE}")
+
+  if [[ "${#batch[@]}" -eq 1 ]]; then
+    mod="${batch[0]}"
+    echo "[literate] start ${mod}"
+    if build_one "$mod"; then
+      ok=$((ok + 1))
+      echo "[literate] ok ${mod}"
+    else
+      record_failure "$mod" "$?"
+    fi
+    continue
+  fi
+
+  args=()
+  for mod in "${batch[@]}"; do
+    args+=("+${mod}:literate")
+  done
+  echo "[literate] batch start ${#batch[@]} modules (${batch[0]} .. ${batch[-1]})"
+
+  set +e
+  (cd "$REASBOOK_DIR" && timeout --kill-after=30 "$((TIMEOUT_MINUTES * 2))m" \
+      "${SCRUB_ENV[@]}" "$ELAN_BIN" run --install "$toolchain" lake build "${args[@]}")
   rc=$?
   set -e
 
   if [[ "$rc" -eq 0 ]]; then
-    ok=$((ok + 1))
-    echo "[literate] ok ${mod}"
-  else
-    failed=$((failed + 1))
-    if [[ "$rc" -eq 124 || "$rc" -eq 137 ]]; then
-      echo "[literate] TIMEOUT ${mod}"
-      echo "::warning title=Literate extraction timed out::${mod}"
-    else
-      echo "[literate] FAILED ${mod}"
-      echo "::error title=Literate extraction failed::${mod}"
-    fi
-    echo "$mod" >> "$FAILED_FILE"
+    ok=$((ok + ${#batch[@]}))
+    echo "[literate] batch ok ${#batch[@]}"
+    continue
   fi
-done < "$MODULES_FILE"
+
+  echo "[literate] batch failed (rc=${rc}); isolating ${#batch[@]} modules"
+  for mod in "${batch[@]}"; do
+    echo "[literate] start ${mod}"
+    if build_one "$mod"; then
+      ok=$((ok + 1))
+      echo "[literate] ok ${mod}"
+    else
+      record_failure "$mod" "$?"
+    fi
+  done
+done
 
 python3 - "$STATUS_FILE" "$FAILED_FILE" "$count" "$ok" "$failed" <<'PY'
 import json

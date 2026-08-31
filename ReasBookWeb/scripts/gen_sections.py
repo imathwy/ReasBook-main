@@ -427,6 +427,17 @@ CHAPTER_RE = re.compile(r"^(?:chapter_|chap)(\d+)$", re.IGNORECASE)
 SECTION_RE = re.compile(r"^section_?(\d+)$", re.IGNORECASE)
 PART_RE = re.compile(r"^part_?(\d+)$", re.IGNORECASE)
 
+# Books organized as one declaration per file (Definition_1_2_1.lean,
+# Lemma_13_6_3.lean, Exercise_13_1.lean, ...).  The numeric fields are
+# <chapter>_<section>[_<item>]; the optional suffix distinguishes multiple
+# items in the same book section and can also be ``extra_N``.
+DECL_RE = re.compile(
+    r"^(Definition|Theorem|Lemma|Proposition|Corollary|Example|Algorithm"
+    r"|Construction|Exercise|Problem|Method|Principle|Remark|Note|Claim"
+    r"|Axiom|Assumption|Fact|Conjecture)_(\d+)_(\d+)(?:_(.+))?$",
+    re.IGNORECASE,
+)
+
 
 @dataclass(frozen=True)
 class Entry:
@@ -439,6 +450,7 @@ class Entry:
     section_num: int
     part_num: int
     stem: str
+    part_title: str = ""
 
 
 def parse_args() -> argparse.Namespace:
@@ -532,6 +544,40 @@ def parse_section_part(stem: str) -> tuple[int, int]:
     return section_num, part_num
 
 
+def declaration_title(stem: str) -> str | None:
+    """Human-readable label for a per-declaration file stem, or None."""
+    m = DECL_RE.match(stem)
+    if not m:
+        return None
+    kind, chapter, section, suffix = m.groups()
+    label = f"{kind.capitalize()} {int(chapter)}.{int(section)}"
+    if suffix:
+        extra = re.match(r"extra_(\d+)$", suffix)
+        if extra:
+            label += f".extra{int(extra.group(1))}"
+        else:
+            label += f".{suffix}"
+    return label
+
+
+def parse_declaration_numbers(stem: str) -> tuple[int, int] | None:
+    """Return ``(section_num, part_num)`` for a per-declaration file stem."""
+    m = DECL_RE.match(stem)
+    if not m:
+        return None
+    _, _chapter, section, suffix = m.groups()
+    section_num = int(section)
+    if not suffix:
+        return section_num, 0
+    plain = re.match(r"(\d+)$", suffix)
+    if plain:
+        return section_num, int(plain.group(1))
+    extra = re.match(r"extra_(\d+)$", suffix)
+    if extra:
+        return section_num, 10000 + int(extra.group(1))
+    return section_num, 20000
+
+
 def section_title_from_stem(stem: str) -> str:
     lower = stem.lower()
     if lower in {"book", "paper", "main"}:
@@ -558,6 +604,9 @@ def entry_label(e: Entry) -> str:
             return paper_titles[e.section_num]
     if e.part_num > 0:
         return ""
+    decl = declaration_title(e.stem)
+    if decl:
+        return decl
     return section_title_from_stem(e.stem)
 
 
@@ -752,6 +801,9 @@ def should_include_book(path: Path) -> bool:
     if stem.startswith("section"):
         return True
 
+    if DECL_RE.match(stem):
+        return True
+
     return module_doc_title(path) is not None
 
 
@@ -781,13 +833,22 @@ def collect_entries(source_root: Path) -> list[Entry]:
         if book in TBD_BOOKS:
             continue
         ch_title = chapter_title(rel.parts)
-        sec_title = module_doc_title(path) or section_title_from_stem(path.stem)
+        decl_title = declaration_title(path.stem)
+        sec_title = (
+            module_doc_title(path)
+            or decl_title
+            or section_title_from_stem(path.stem)
+        )
         title_parts = [book_title(book)]
         if ch_title:
             title_parts.append(ch_title)
         if not (ch_title and sec_title.strip().lower() == ch_title.strip().lower()):
             title_parts.append(sec_title)
-        sec_num, part_num = parse_section_part(path.stem)
+        decl_nums = parse_declaration_numbers(path.stem)
+        if decl_nums is not None:
+            sec_num, part_num = decl_nums
+        else:
+            sec_num, part_num = parse_section_part(path.stem)
         entries.append(
             Entry(
                 category="books",
@@ -799,6 +860,7 @@ def collect_entries(source_root: Path) -> list[Entry]:
                 section_num=sec_num,
                 part_num=part_num,
                 stem=path.stem.lower(),
+                part_title=decl_title or "",
             )
         )
 
@@ -910,7 +972,11 @@ def emit_sections(entries: list[Entry]) -> str:
                 section["route"] = e.route
             else:
                 section["parts"].append(
-                    {"number": e.part_num, "title": f"Part {e.part_num}", "route": e.route}
+                    {
+                        "number": e.part_num,
+                        "title": e.part_title or f"Part {e.part_num}",
+                        "route": e.route,
+                    }
                 )
             continue
 
@@ -937,7 +1003,13 @@ def emit_sections(entries: list[Entry]) -> str:
             section["title"] = entry_label(e) or section["title"]
             section["route"] = e.route
         else:
-            section["parts"].append({"number": e.part_num, "title": f"Part {e.part_num}", "route": e.route})
+            section["parts"].append(
+                {
+                    "number": e.part_num,
+                    "title": e.part_title or f"Part {e.part_num}",
+                    "route": e.route,
+                }
+            )
 
     books_payload: list[dict] = []
     for book in sorted(books):
