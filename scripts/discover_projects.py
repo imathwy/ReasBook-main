@@ -106,8 +106,8 @@ def main() -> None:
     print(f"version_branch_count={len(branches)}")
     print(f"projects={json.dumps(projects, separators=(',', ':'))}")
     print(f"full_deploy={'true' if full_deploy else 'false'}")
-    print(f"excluded_projects_csv={json.dumps(','.join(excluded_projects))}")
-    print(f"only_projects_csv={json.dumps(','.join(sorted(only_projects)))}")
+    print(f"excluded_projects_csv={','.join(excluded_projects)}")
+    print(f"only_projects_csv={','.join(sorted(only_projects))}")
     print(f"max_parallel_branches={json.dumps(branch_parallelism)}")
     print(f"doc_parallelism={json.dumps(project_parallelism)}")
 
