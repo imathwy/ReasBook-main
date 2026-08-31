@@ -8,6 +8,41 @@ on:
         required: false
         default: true
         type: boolean
+      only_branches:
+        description: 'Comma-separated branch versions to build (empty = all active branches)'
+        required: false
+        default: ''
+        type: string
+      skip_branches:
+        description: 'Comma-separated branch versions to skip (empty = none)'
+        required: false
+        default: ''
+        type: string
+      only_projects:
+        description: 'Comma-separated project directory names to build (empty = all projects)'
+        required: false
+        default: ''
+        type: string
+      skip_projects:
+        description: 'Comma-separated project directory names to skip (empty = none)'
+        required: false
+        default: ''
+        type: string
+      max_parallel_branches:
+        description: 'Maximum concurrent branch jobs; 0 = auto-detect from CPU'
+        required: false
+        default: '0'
+        type: string
+      max_parallel_projects:
+        description: 'Maximum concurrent per-project docs builds; 0 = auto-detect from CPU'
+        required: false
+        default: '0'
+        type: string
+      reuse_branch_sites:
+        description: 'Reuse unchanged branch site artifacts from the persistent cache'
+        required: false
+        default: true
+        type: boolean
 
 permissions:
   contents: read
@@ -26,6 +61,10 @@ jobs:
       version_branch_count: ${{ steps.collect.outputs.version_branch_count }}
       projects: ${{ steps.collect.outputs.projects }}
       full_deploy: ${{ steps.collect.outputs.full_deploy }}
+      excluded_projects_csv: ${{ steps.collect.outputs.excluded_projects_csv }}
+      only_projects_csv: ${{ steps.collect.outputs.only_projects_csv }}
+      max_parallel_branches: ${{ steps.collect.outputs.max_parallel_branches }}
+      doc_parallelism: ${{ steps.collect.outputs.doc_parallelism }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,6 +72,13 @@ jobs:
 
       - name: Collect books/papers across version branches
         id: collect
+        env:
+          REASBOOK_ONLY_BRANCHES: ${{ inputs.only_branches }}
+          REASBOOK_SKIP_BRANCHES: ${{ inputs.skip_branches }}
+          REASBOOK_ONLY_PROJECTS: ${{ inputs.only_projects }}
+          REASBOOK_SKIP_PROJECTS: ${{ inputs.skip_projects }}
+          REASBOOK_MAX_PARALLEL_BRANCHES: ${{ inputs.max_parallel_branches }}
+          REASBOOK_MAX_PARALLEL_PROJECTS: ${{ inputs.max_parallel_projects }}
         run: |
           python3 scripts/discover_projects.py >> "$GITHUB_OUTPUT"
 
@@ -43,7 +89,7 @@ jobs:
     timeout-minutes: 300
     strategy:
       fail-fast: false
-      max-parallel: 1
+      max-parallel: ${{ fromJSON(needs.discover-projects.outputs.max_parallel_branches) }}
       matrix:
         branch: ${{ fromJSON(needs.discover-projects.outputs.version_branches) }}
     env:
@@ -54,6 +100,10 @@ jobs:
       BRANCH: ${{ matrix.branch }}
       REASBOOK_DOMAIN: ${{ vars.REASBOOK_DOMAIN }}
       REASBOOK_ROOT_PATH: ${{ vars.REASBOOK_ROOT_PATH }}
+      REASBOOK_EXCLUDED_PROJECTS: ${{ needs.discover-projects.outputs.excluded_projects_csv }}
+      REASBOOK_ONLY_PROJECTS: ${{ needs.discover-projects.outputs.only_projects_csv }}
+      REASBOOK_DOC_PARALLELISM: ${{ needs.discover-projects.outputs.doc_parallelism }}
+      REASBOOK_REUSE_BRANCH_SITES: ${{ inputs.reuse_branch_sites }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -85,13 +135,42 @@ jobs:
           # Decompress any previously compressed build subdirs
           ./scripts/decompress_persistent_cache.sh "$persist_root/reasbook_lake" || true
 
+      - name: Reuse cached branch site
+        id: branch_site_reuse
+        run: |
+          set -euo pipefail
+          if [ "${REASBOOK_REUSE_BRANCH_SITES:-true}" = "false" ]; then
+            echo "hit=false" >> "$GITHUB_OUTPUT"
+            echo "[branch-site] reuse disabled"
+            exit 0
+          fi
+          site_cache_dir="$PERSIST_ROOT/site_cache"
+          site_dir="$site_cache_dir/site"
+          marker="$site_cache_dir/.fingerprint"
+          theorem_map_ref="$(git -C .reasbook-main rev-parse HEAD)"
+          expected="$(printf '%s\n' "${BRANCH}-$(git rev-parse HEAD)-${REASBOOK_EXCLUDED_PROJECTS:-}-${REASBOOK_ONLY_PROJECTS:-}-${REASBOOK_DOMAIN:-}-${REASBOOK_ROOT_PATH:-}-${theorem_map_ref}" | sha256sum | awk '{print $1}')"
+          actual="$(cat "$marker" 2>/dev/null || true)"
+          if [ -n "$actual" ] && [ "$actual" = "$expected" ] && [ -f "$site_dir/index.html" ]; then
+            rm -rf ReasBookWeb/_site
+            mkdir -p ReasBookWeb
+            cp -a "$site_dir" ReasBookWeb/_site
+            echo "hit=true" >> "$GITHUB_OUTPUT"
+            echo "[branch-site] cache hit; reusing ${site_dir}"
+          else
+            echo "hit=false" >> "$GITHUB_OUTPUT"
+            echo "[branch-site] cache miss"
+            rm -rf "$site_dir"
+          fi
+
       - name: Install elan (Lean toolchain manager)
+        if: steps.branch_site_reuse.outputs.hit != 'true'
         run: |
           if [ ! -x "${HOME:-/root}/.elan/bin/elan" ]; then
             curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y
           fi
 
       - name: Restore ReasBook build cache
+        if: steps.branch_site_reuse.outputs.hit != 'true'
         continue-on-error: true
         uses: actions/cache/restore@v4
         with:
@@ -105,6 +184,7 @@ jobs:
             lake-reasbook-lite-v2-${{ runner.os }}-${{ runner.arch }}-
 
       - name: Restore ReasBook doc-data cache
+        if: steps.branch_site_reuse.outputs.hit != 'true'
         continue-on-error: true
         uses: actions/cache/restore@v4
         with:
@@ -116,6 +196,7 @@ jobs:
             lake-reasbook-docdata-v1-${{ runner.os }}-${{ runner.arch }}-
 
       - name: Restore ReasBook doc cache
+        if: steps.branch_site_reuse.outputs.hit != 'true'
         continue-on-error: true
         uses: actions/cache/restore@v4
         with:
@@ -130,6 +211,7 @@ jobs:
             lake-reasbook-doc-v1-${{ runner.os }}-${{ runner.arch }}-
 
       - name: Restore ReasBookWeb build cache
+        if: steps.branch_site_reuse.outputs.hit != 'true'
         continue-on-error: true
         uses: actions/cache/restore@v4
         with:
@@ -143,6 +225,7 @@ jobs:
             lake-reasbookweb-lite-v2-${{ runner.os }}-${{ runner.arch }}-
 
       - name: Prime ReasBook cache
+        if: steps.branch_site_reuse.outputs.hit != 'true'
         timeout-minutes: 30
         run: |
           set -euo pipefail
@@ -151,18 +234,22 @@ jobs:
           fi
 
       - name: Build ReasBook core target
+        if: steps.branch_site_reuse.outputs.hit != 'true'
         timeout-minutes: 90
         run: |
           set -euo pipefail
           ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_core.sh (${BRANCH})" ./scripts/build_reasbook_core.sh
 
       - name: Build ReasBookWeb (sections + Verso)
+        id: build_web
+        if: steps.branch_site_reuse.outputs.hit != 'true'
         timeout-minutes: 360
         run: |
           set -euo pipefail
           ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_web.sh (${BRANCH})" ./scripts/build_reasbook_web.sh
 
       - name: Build shared docs (${BRANCH})
+        if: steps.branch_site_reuse.outputs.hit != 'true'
         timeout-minutes: 180
         run: |
           set -euo pipefail
@@ -176,52 +263,135 @@ jobs:
           fi
           ulimit -s unlimited 2>/dev/null || true
           ./scripts/ci_retry_on_143.sh ./scripts/ci_heartbeat.sh "build_reasbook_shared_docs.sh (${BRANCH})" ./scripts/build_reasbook_shared_docs.sh
-          # Per-project docs: build each module separately so one book's doc-gen crash
-          # (e.g. SIGSEGV on a huge book like Klenke) does not fail the whole branch.
-          # Module name depends on lakefile style:
-          #   v4.26.0: lean_lib Books  -> module = Books.XXX.Book
-          #   v4.30.0+: lean_lib XXX where srcDir := "Books" -> module = XXX.Book
-          failed=""
           cd ReasBook
-          has_books_lib=false
-          has_papers_lib=false
-          if grep -qE 'lean_lib\s+[«"]?Books[»"]?\s' lakefile.lean 2>/dev/null; then has_books_lib=true; fi
-          if grep -qE 'lean_lib\s+[«"]?Papers[»"]?\s' lakefile.lean 2>/dev/null; then has_papers_lib=true; fi
-          for entry in Books/*/Book.lean Papers/*/Paper.lean; do
-            [ -f "$entry" ] || continue
-            kind="${entry%%/*}"  # "Books" or "Papers"
-            # Determine whether this kind uses a flat lib (no prefix)
-            if [ "$kind" = "Books" ] && [ "$has_books_lib" = "true" ]; then
-              mod="${entry%.lean}"; mod="${mod//\//.}"
-            elif [ "$kind" = "Papers" ] && [ "$has_papers_lib" = "true" ]; then
-              mod="${entry%.lean}"; mod="${mod//\//.}"
-            else
-              # Flat: lean_lib XXX where srcDir := "Books/Papers" — strip the kind prefix
-              inner="${entry#*/}"  # e.g. AlgebraicTopology_May_1999/Book.lean
-              mod="${inner%.lean}"; mod="${mod//\//.}"
-            fi
-            log="${RUNNER_TEMP:-/tmp}/docgen-${mod//./_}.log"
-            if ! lake -R -Kenv=dev build "$mod:docs" > "$log" 2>&1; then
-              echo "[docs] FAILED: ${mod} (site continues without it)"
-              tail -5 "$log" || true
-              failed="$failed $mod"
-            fi
-          done
+          python3 - "$REASBOOK_DOC_PARALLELISM" "$REASBOOK_EXCLUDED_PROJECTS" "$REASBOOK_ONLY_PROJECTS" <<'PY'
+          import concurrent.futures
+          import os
+          import re
+          import subprocess
+          import sys
+          from pathlib import Path
+
+          parallelism = max(1, int(sys.argv[1] or os.cpu_count() or 1))
+          excluded = {x.strip() for x in (sys.argv[2] or "").split(",") if x.strip()}
+          only = {x.strip() for x in (sys.argv[3] or "").split(",") if x.strip()}
+
+          lakefile = Path("lakefile.lean").read_text(encoding="utf-8") if Path("lakefile.lean").exists() else ""
+          has_books_lib = bool(re.search(r'lean_lib\s+[«"]?Books[»"]?\s', lakefile))
+          has_papers_lib = bool(re.search(r'lean_lib\s+[«"]?Papers[»"]?\s', lakefile))
+
+          def selected(project: str) -> bool:
+              if excluded and project in excluded:
+                  return False
+              if only and project not in only:
+                  return False
+              return True
+
+          def git_blob_hash(path: str) -> str:
+              try:
+                  return subprocess.check_output(
+                      ["git", "rev-parse", f"HEAD:ReasBook/{path}"],
+                      text=True,
+                      stderr=subprocess.DEVNULL,
+                  ).strip()
+              except subprocess.CalledProcessError:
+                  return ""
+
+          docs_root_files = ["lean-toolchain", "lakefile.lean", "lake-manifest.json"]
+          docs_env_fingerprint = "|".join(f"{name}:{git_blob_hash(name)}" for name in docs_root_files)
+
+          def project_fingerprint(kind: str, project: str) -> str | None:
+              try:
+                  tree = subprocess.check_output(
+                      ["git", "rev-parse", f"HEAD:ReasBook/{kind}/{project}"],
+                      text=True,
+                      stderr=subprocess.DEVNULL,
+                  ).strip()
+              except subprocess.CalledProcessError:
+                  return None
+              return f"{tree}|{docs_env_fingerprint}"
+
+          modules = []
+          for kind in ("Books", "Papers"):
+              root = Path(kind)
+              leaf = "Book.lean" if kind == "Books" else "Paper.lean"
+              if not root.is_dir():
+                  continue
+              for entry in sorted(root.glob(f"*/{leaf}")):
+                  project = entry.parts[1]
+                  if not selected(project):
+                      print(f"[docs] skip project {project}")
+                      continue
+                  if kind == "Books" and has_books_lib:
+                      mod = entry.with_suffix("").as_posix().replace("/", ".")
+                  elif kind == "Papers" and has_papers_lib:
+                      mod = entry.with_suffix("").as_posix().replace("/", ".")
+                  else:
+                      mod = entry.relative_to(kind).with_suffix("").as_posix().replace("/", ".")
+                  modules.append((kind, project, mod, project_fingerprint(kind, project)))
+
+          failed = []
+
+          doc_dir = Path(".lake/build/doc")
+          doc_dir.mkdir(parents=True, exist_ok=True)
+
+          def build_docs(item: tuple[str, str, str, str | None]) -> None:
+              kind, project, mod, fingerprint = item
+              marker = doc_dir / f".{kind}_{project}.docs-marker"
+              html = doc_dir / f"{mod.replace('.', '/')}.html"
+              previous = marker.read_text(encoding="utf-8").strip() if marker.is_file() else ""
+              if fingerprint and previous == fingerprint and html.is_file():
+                  print(f"[docs] reuse {project}")
+                  return
+              log = Path(os.environ.get("RUNNER_TEMP", "/tmp")) / f"docgen-{mod.replace('.', '_')}.log"
+              with log.open("w", encoding="utf-8") as out:
+                  proc = subprocess.run(
+                      ["lake", "-R", "-Kenv=dev", "build", f"{mod}:docs"],
+                      stdout=out,
+                      stderr=subprocess.STDOUT,
+                  )
+              if proc.returncode != 0:
+                  print(f"[docs] FAILED: {mod} (site continues without it)")
+                  try:
+                      print("".join(log.read_text(encoding="utf-8").splitlines(keepends=True)[-5:]).rstrip())
+                  except Exception:
+                      pass
+                  failed.append(mod)
+                  try:
+                      marker.unlink()
+                  except FileNotFoundError:
+                      pass
+              elif fingerprint:
+                  marker.write_text(fingerprint + "\n", encoding="utf-8")
+
+          if modules:
+              print(f"[docs] building {len(modules)} project docs with parallelism={parallelism}")
+              with concurrent.futures.ThreadPoolExecutor(max_workers=parallelism) as pool:
+                  list(pool.map(build_docs, modules))
+
+          overall_marker = doc_dir / ".reasbook-docs-marker"
+          if failed:
+              print(f"[docs] doc failures (skipping docs-marker so next run retries): {len(failed)}")
+              try:
+                  overall_marker.unlink()
+              except FileNotFoundError:
+                  pass
+          else:
+              head_tree = subprocess.check_output(["git", "rev-parse", "HEAD:ReasBook"], text=True).strip()
+              overall_marker.write_text(head_tree + "\n", encoding="utf-8")
+              print("[docs] all project docs built; docs-marker written")
+          PY
           cd ..
-          if [ -n "$failed" ]; then
-            echo "[docs] doc failures (skipping docs-marker so next run retries):${failed}"
-          else
-            marker="$(git rev-parse HEAD:ReasBook)"
-            printf '%s\n' "$marker" > ReasBook/.lake/build/doc/.reasbook-docs-marker
-          fi
 
       - name: Assemble docs under ReasBookWeb/_site/docs
+        if: steps.branch_site_reuse.outputs.hit != 'true'
         timeout-minutes: 20
         run: |
           set -euo pipefail
           ./scripts/ci_heartbeat.sh "assemble_site_docs.sh (${BRANCH})" ./scripts/assemble_site_docs.sh
 
       - name: Generate theorem dependency maps (${BRANCH})
+        if: steps.branch_site_reuse.outputs.hit != 'true'
         timeout-minutes: 30
         run: |
           set -euo pipefail
@@ -242,6 +412,24 @@ jobs:
           retention-days: 1
           compression-level: 6
           overwrite: true
+
+      - name: Save cached branch site
+        if: steps.build_web.outcome == 'success'
+        continue-on-error: true
+        run: |
+          set -euo pipefail
+          if [ "${REASBOOK_REUSE_BRANCH_SITES:-true}" = "false" ]; then
+            echo "[branch-site] reuse disabled; not caching site"
+            exit 0
+          fi
+          site_cache_dir="$PERSIST_ROOT/site_cache"
+          mkdir -p "$site_cache_dir"
+          rm -rf "$site_cache_dir/site"
+          cp -a ReasBookWeb/_site "$site_cache_dir/site"
+          theorem_map_ref="$(git -C .reasbook-main rev-parse HEAD)"
+          expected="$(printf '%s\n' "${BRANCH}-$(git rev-parse HEAD)-${REASBOOK_EXCLUDED_PROJECTS:-}-${REASBOOK_ONLY_PROJECTS:-}-${REASBOOK_DOMAIN:-}-${REASBOOK_ROOT_PATH:-}-${theorem_map_ref}" | sha256sum | awk '{print $1}')"
+          printf '%s\n' "$expected" > "$site_cache_dir/.fingerprint"
+          echo "[branch-site] cached site for fingerprint ${expected}"
 
       - name: Save ReasBook build cache
         if: always()
