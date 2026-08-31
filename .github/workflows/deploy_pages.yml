@@ -1,8 +1,6 @@
 name: Deploy Verso Site to GitHub Pages
 
 on:
-  push:
-    branches: [ main ]
   workflow_dispatch:
     inputs:
       full_deploy:
