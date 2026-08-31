@@ -11,6 +11,12 @@ from pathlib import Path
 from reasbook_catalog import NO_VERSO_PROJECTS
 
 
+def count_html(path: Path) -> int:
+    if not path.is_dir():
+        return 0
+    return sum(1 for _ in path.rglob("*.html"))
+
+
 def main() -> None:
     projects = json.loads(os.environ["PROJECTS_JSON"])
     site_root = Path(".site")
@@ -22,7 +28,8 @@ def main() -> None:
         name = project["name"]
 
         docs_dir = site_root / "sites" / slug / "docs"
-        pages_index = site_root / "sites" / slug / "pages" / "index.html"
+        pages_dir = site_root / "sites" / slug / "pages"
+        pages_index = pages_dir / "index.html"
 
         leaf = "Book.html" if kind_title == "Books" else "Paper.html"
         has_docs = (docs_dir / leaf).is_file()
@@ -32,6 +39,11 @@ def main() -> None:
                 errors.append(f"{name}: docs={leaf}={has_docs}")
         elif not pages_index.is_file():
             errors.append(f"{name}: missing sites/{slug}/pages/index.html")
+        elif count_html(pages_dir) < 2:
+            errors.append(
+                f"{name}: sites/{slug}/pages has no content "
+                f"({count_html(pages_dir)} html)"
+            )
 
     if errors:
         print("::error title=Incomplete ReasBook project::" + " ; ".join(errors))

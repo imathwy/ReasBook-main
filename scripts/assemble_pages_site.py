@@ -110,6 +110,35 @@ def write_pages_index(pages_dir: Path) -> None:
     )
 
 
+def write_docs_index(docs_dir: Path, leaf: str) -> None:
+    """Add an index to a copied docs tree so ``./docs/`` is not a 404.
+
+    The canonical docs tree contains ``Book.html``/``Paper.html`` plus module
+    pages but has no directory index.  GitHub Pages does not render directory
+    listings, so the site's ``Documentation`` nav link would otherwise 404 for
+    every project.
+    """
+    (docs_dir / "index.html").write_text(
+        "\n".join(
+            [
+                "<!doctype html>",
+                '<html lang="en">',
+                "<head>",
+                '  <meta charset="utf-8" />',
+                f'  <meta http-equiv="refresh" content="0; url=./{leaf}" />',
+                f"  <title>Documentation</title>",
+                "</head>",
+                "<body>",
+                f'  <p><a href="./{leaf}">Open documentation</a></p>',
+                "</body>",
+                "</html>",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+
 def html_page(title: str, links: list[tuple[str, str]], back_href: str) -> str:
     items = "\n".join(
         f'    <li><a href="{href}">{label}</a></li>' for href, label in links
@@ -196,6 +225,10 @@ def main() -> None:
             site_nav.append(("./pages/", "Pages"))
         if canonical_docs.is_dir():
             shutil.copytree(canonical_docs, site_dir / "docs")
+            write_docs_index(
+                site_dir / "docs",
+                "Book.html" if kind == "books" else "Paper.html",
+            )
             site_nav.append(("./docs/", "Documentation"))
 
         map_dir = dst_root / "theorem-maps" / kind / slug
