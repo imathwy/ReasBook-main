@@ -8,11 +8,7 @@ import os
 import sys
 from pathlib import Path
 
-
-def count_html(path: Path) -> int:
-    if not path.is_dir():
-        return 0
-    return sum(1 for _ in path.rglob("*.html"))
+from reasbook_catalog import NO_VERSO_PROJECTS
 
 
 def main() -> None:
@@ -25,17 +21,17 @@ def main() -> None:
         kind_title = project["kindTitle"]
         name = project["name"]
 
-        pages_dir = site_root / "sites" / slug / "pages"
         docs_dir = site_root / "sites" / slug / "docs"
-        page_count = count_html(pages_dir)
+        pages_index = site_root / "sites" / slug / "pages" / "index.html"
 
         leaf = "Book.html" if kind_title == "Books" else "Paper.html"
         has_docs = (docs_dir / leaf).is_file()
 
-        if page_count < 2 and not has_docs:
-            errors.append(
-                f"{name}: pages={page_count}, docs={leaf}={has_docs}"
-            )
+        if name in NO_VERSO_PROJECTS:
+            if not has_docs:
+                errors.append(f"{name}: docs={leaf}={has_docs}")
+        elif not pages_index.is_file():
+            errors.append(f"{name}: missing sites/{slug}/pages/index.html")
 
     if errors:
         print("::error title=Incomplete ReasBook project::" + " ; ".join(errors))
@@ -57,7 +53,8 @@ def main() -> None:
 
     print(
         "::notice title=ReasBook pages verified::"
-        + f"{len(projects)} projects, {sum(1 for p in projects if count_html(site_root / 'sites' / p['slug'] / 'pages') >= 2)} with pages"
+        + f"{len(projects)} projects, "
+        + f"{sum(1 for p in projects if (site_root / 'sites' / p['slug'] / 'pages' / 'index.html').is_file())} with pages"
     )
 
 

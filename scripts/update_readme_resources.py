@@ -13,6 +13,7 @@ from pathlib import Path
 
 from reasbook_catalog import (
     EXCLUDED_PROJECTS,
+    NO_VERSO_PROJECTS,
     discover_projects,
     existing_branches,
     load_registry_branches,
@@ -20,12 +21,6 @@ from reasbook_catalog import (
 
 
 SITE_BASE = "https://optpku.github.io/ReasBook"
-
-# Projects with valid docs but no complete Verso tree on any branch.
-NO_VERSO_PROJECTS = {
-    "IntegerProgramming_Conforti_2014",
-}
-
 
 def resource_cell(project: dict[str, str]) -> str:
     name = project["name"]

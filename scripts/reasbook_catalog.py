@@ -21,6 +21,14 @@ EXCLUDED_PROJECTS = {
 }
 
 
+# Projects with valid docs but no complete Verso tree on any branch.  The
+# README resource column and the Pages verification share this list so the
+# two never disagree about whether a Verso link should exist.
+NO_VERSO_PROJECTS = {
+    "IntegerProgramming_Conforti_2014",
+}
+
+
 def load_registry_branches(repo_root: Path | None = None) -> list[dict[str, str]]:
     """Parse config/toolchains.yml into (version, status) records.
 

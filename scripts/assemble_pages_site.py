@@ -43,6 +43,73 @@ def best_dir(candidates: list[Path]) -> Path | None:
     return best
 
 
+def has_index(path: Path) -> bool:
+    return (path / "index.html").is_file()
+
+
+def build_pages_tree(candidates: list[Path], dst: Path) -> None:
+    """Copy the richest Verso tree, then guarantee ``dst/index.html``.
+
+    The branch artifacts split a project's Verso landing page (often at
+    ``<kind>/<slug>/index.html``) from its chapter/section routes (often at
+    ``<slug>/...``).  ``best_dir`` alone can therefore produce a ``pages/``
+    tree with content but no directory index, which GitHub Pages serves as a
+    404.  Copy the richest tree first, overlay a landing index from any other
+    candidate, and finally generate a minimal index for trees that never had
+    one (for example the v4.26 aggregate library chapter trees).
+    """
+    present = [candidate for candidate in candidates if candidate.is_dir()]
+    if not present:
+        return
+
+    content_src = best_dir(present)
+    assert content_src is not None
+    shutil.copytree(content_src, dst)
+
+    if not has_index(dst):
+        for candidate in present:
+            if candidate != content_src and has_index(candidate):
+                shutil.copy2(candidate / "index.html", dst / "index.html")
+                break
+
+    if not has_index(dst):
+        write_pages_index(dst)
+
+
+def write_pages_index(pages_dir: Path) -> None:
+    """Generate a minimal landing page for a tree without a Verso index."""
+    entries: list[tuple[str, str]] = []
+    for child in sorted(pages_dir.iterdir()):
+        if child.is_dir() and count_html(child) > 0:
+            entries.append((f"./{child.name}/", child.name))
+
+    links = "\n".join(
+        f'    <li><a href="{href}">{label}</a></li>' for href, label in entries
+    )
+    (pages_dir / "index.html").write_text(
+        "\n".join(
+            [
+                "<!doctype html>",
+                '<html lang="en">',
+                "<head>",
+                '  <meta charset="utf-8" />',
+                '  <meta name="viewport" content="width=device-width,initial-scale=1" />',
+                "  <title>Pages</title>",
+                "</head>",
+                "<body>",
+                "  <h1>Pages</h1>",
+                "  <ul>",
+                links,
+                "  </ul>",
+                "</body>",
+                "</html>",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+
 def html_page(title: str, links: list[tuple[str, str]], back_href: str) -> str:
     items = "\n".join(
         f'    <li><a href="{href}">{label}</a></li>' for href, label in links
@@ -119,14 +186,13 @@ def main() -> None:
             src_root / kind / slug,
             src_root / slug,
         ]
-        pages_src = best_dir(pages_candidates)
 
         site_dir = sites_root / slug
         site_dir.mkdir(parents=True, exist_ok=True)
 
         site_nav: list[tuple[str, str]] = []
-        if pages_src is not None:
-            shutil.copytree(pages_src, site_dir / "pages")
+        if any(candidate.is_dir() for candidate in pages_candidates):
+            build_pages_tree(pages_candidates, site_dir / "pages")
             site_nav.append(("./pages/", "Pages"))
         if canonical_docs.is_dir():
             shutil.copytree(canonical_docs, site_dir / "docs")
