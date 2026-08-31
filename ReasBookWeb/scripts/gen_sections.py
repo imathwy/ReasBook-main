@@ -242,6 +242,16 @@ def load_literate_status(repo_root: Path) -> set[str]:
 
 
 SKIP_MODULES = DEFAULT_SKIP_MODULES | parse_csv_env_set("REASBOOK_SKIP_MODULES")
+EXCLUDED_PROJECTS = parse_csv_env_set("REASBOOK_EXCLUDED_PROJECTS")
+ONLY_PROJECTS = parse_csv_env_set("REASBOOK_ONLY_PROJECTS")
+
+
+def project_is_selected(project: str) -> bool:
+    if EXCLUDED_PROJECTS and project in EXCLUDED_PROJECTS:
+        return False
+    if ONLY_PROJECTS and project not in ONLY_PROJECTS:
+        return False
+    return True
 
 BOOK_CHAPTER_TITLES = {
     "Analysis2_Tao_2022": {
@@ -736,6 +746,8 @@ def collect_entries(source_root: Path) -> list[Entry]:
             continue
         rel = path.relative_to(books_root)
         book = rel.parts[0]
+        if not project_is_selected(book):
+            continue
         if book in TBD_BOOKS:
             continue
         ch_title = chapter_title(rel.parts)
@@ -768,6 +780,8 @@ def collect_entries(source_root: Path) -> list[Entry]:
             continue
         rel = path.relative_to(papers_root)
         paper = rel.parts[0]
+        if not project_is_selected(paper):
+            continue
         sec_title = module_doc_title(path) or section_title_from_stem(path.stem)
         sec_num, part_num = parse_section_part(path.stem)
         route = route_from_module(module)
