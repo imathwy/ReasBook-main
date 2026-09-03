@@ -1,0 +1,126 @@
+name: Publish Verified Release to Pages
+run-name: Publish ${{ inputs.release_tag }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Immutable GitHub Release tag
+        required: true
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: github-pages-production
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate release inputs
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          set -euo pipefail
+          [[ "$RELEASE_TAG" =~ ^reasbook-site-[0-9]{8}T[0-9]{6}Z-[0-9a-f]{12}$ ]]
+          release_id="site-${RELEASE_TAG#reasbook-site-}"
+          echo "RELEASE_ID=$release_id" >> "$GITHUB_ENV"
+          echo "BUNDLE_ASSET=$release_id.site.tar.zst" >> "$GITHUB_ENV"
+          tar --help | grep -q -- --zstd
+
+      - name: Download immutable release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          set -euo pipefail
+          mkdir -p .release
+          gh release download "$RELEASE_TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern "$BUNDLE_ASSET" \
+            --pattern release-manifest.json \
+            --pattern SHA256SUMS \
+            --dir .release
+          test -f ".release/$BUNDLE_ASSET"
+          test -f .release/release-manifest.json
+          test -f .release/SHA256SUMS
+          test "$(find .release -maxdepth 1 -type f | wc -l)" -eq 3
+
+      - name: Verify release tag targets this trusted revision
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          set -euo pipefail
+          object="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$RELEASE_TAG")"
+          object_type="$(python -c 'import json,sys; print(json.load(sys.stdin)["object"]["type"])' <<< "$object")"
+          object_sha="$(python -c 'import json,sys; print(json.load(sys.stdin)["object"]["sha"])' <<< "$object")"
+          if [[ "$object_type" == tag ]]; then
+            object_sha="$(gh api "repos/$GITHUB_REPOSITORY/git/tags/$object_sha" --jq .object.sha)"
+          elif [[ "$object_type" != commit ]]; then
+            echo "unsupported release tag target: $object_type" >&2
+            exit 1
+          fi
+          [[ "$object_sha" == "$GITHUB_SHA" ]]
+
+      - name: Verify and extract bundle
+        run: |
+          set -euo pipefail
+          test "$(wc -l < .release/SHA256SUMS)" -eq 1
+          read -r bundle_sha256 checksum_name checksum_extra < .release/SHA256SUMS
+          [[ "$bundle_sha256" =~ ^[0-9a-f]{64}$ ]]
+          [[ "$checksum_name" == "$BUNDLE_ASSET" ]]
+          [[ -z "${checksum_extra:-}" ]]
+          (cd .release && sha256sum --check --strict SHA256SUMS)
+          ./sdk/deploy/bin/reasbook-deploy release \
+            --repo-root . \
+            --cache-root "$RUNNER_TEMP/reasbook-release-verify" \
+            verify ".release/$BUNDLE_ASSET" \
+            --sha256 "$bundle_sha256" \
+            --extract-to .site
+          test -f .site/index.html
+          test -f .site/release-spec.json
+          tar --zstd -xOf ".release/$BUNDLE_ASSET" release-manifest.json \
+            | cmp .release/release-manifest.json -
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          manifest = json.loads(Path(".release/release-manifest.json").read_text())
+          spec = json.loads(Path(".site/release-spec.json").read_text())
+          release_id = os.environ["RELEASE_ID"]
+          if manifest["release_id"] != release_id or spec["release_id"] != release_id:
+              raise SystemExit("release tag, manifest, and spec release IDs differ")
+          if manifest["spec_digest"] != spec["spec_digest"]:
+              raise SystemExit("manifest and spec digests differ")
+          PY
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .site
+
+  deploy:
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy Pages artifact
+        id: deployment
+        uses: actions/deploy-pages@v4
