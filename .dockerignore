@@ -1,3 +1,6 @@
 *
+!docker/
+!docker/nginx.conf
+!ReasBookWeb/
 !ReasBookWeb/_site/
 !ReasBookWeb/_site/**

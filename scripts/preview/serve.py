@@ -106,21 +106,31 @@ def _safe_join(root: str, relative: str) -> str:
 
 
 class ReasBookHandler(SimpleHTTPRequestHandler):
-    def do_GET(self):
+    def _handle_special_request(self) -> bool:
         request_path = _strip_public_prefix(
             unquote(urlparse(self.path).path)
         )
         if request_path == "/favicon.ico":
             self.send_response(HTTPStatus.NO_CONTENT)
             self.end_headers()
-            return
+            return True
         if request_path == "/":
             self.send_response(HTTPStatus.MOVED_PERMANENTLY)
             self.send_header("Location", _public_site_root())
             self.send_header("Content-Length", "0")
             self.end_headers()
+            return True
+        return False
+
+    def do_GET(self):
+        if self._handle_special_request():
             return
         super().do_GET()
+
+    def do_HEAD(self):
+        if self._handle_special_request():
+            return
+        super().do_HEAD()
 
     def send_head(self):
         """Rewrite the generated site root only for explicit path proxies."""

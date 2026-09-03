@@ -128,7 +128,9 @@ The static-site deployment entrypoint is also centralized:
 ```
 
 The Docker adapter owns the Compose invocation and health probe; it invokes the
-repository-specific `scripts/build/site.sh` pipeline.
+repository-specific `scripts/build/site.sh` pipeline. The default deployment is
+available at `http://127.0.0.1:3200/ReasBook/`; use `--port` to change the host
+port.
 
 ## CI helpers
 

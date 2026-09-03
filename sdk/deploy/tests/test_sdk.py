@@ -362,9 +362,67 @@ class DeploySdkTests(unittest.TestCase):
                 DockerDeploymentConfig(
                     repo_root=root,
                     compose_file=root / "docker-compose.yml",
-                    site_root=root / "_site",
+                    site_root=root / "ReasBookWeb" / "_site",
                     dry_run=True,
                 )
+            )
+
+    def test_docker_deployment_rejects_unstaged_site_directory(self) -> None:
+        from reasbook_deploy_sdk import DockerDeploymentConfig
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            with self.assertRaisesRegex(
+                DeployConfigError,
+                "only supports the repository site directory",
+            ):
+                DockerDeploymentConfig(
+                    repo_root=root,
+                    compose_file=root / "docker-compose.yml",
+                    site_root=root / "external-site",
+                ).resolved()
+
+    def test_docker_deployment_probes_the_served_site_prefix(self) -> None:
+        from reasbook_deploy_sdk import DockerDeploymentConfig, deploy_static
+        from reasbook_sdk_common import CommandResult
+
+        class FakeRunner:
+            def run(self, command):
+                return CommandResult(argv=command.argv, returncode=0)
+
+        class HealthyResponse:
+            status = 200
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *_args):
+                return False
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            compose = root / "docker-compose.yml"
+            site = root / "ReasBookWeb" / "_site"
+            site.mkdir(parents=True)
+            (site / "index.html").write_text("site", encoding="utf-8")
+            compose.write_text("services: {}\n", encoding="utf-8")
+            with patch(
+                "reasbook_deploy_sdk.docker.urlopen",
+                return_value=HealthyResponse(),
+            ) as probe:
+                deploy_static(
+                    DockerDeploymentConfig(
+                        repo_root=root,
+                        compose_file=compose,
+                        site_root=site,
+                        skip_build=True,
+                    ),
+                    runner=FakeRunner(),
+                )
+
+            probe.assert_called_once_with(
+                "http://127.0.0.1:3200/ReasBook/",
+                timeout=1.0,
             )
 
     def test_docker_port_validation(self) -> None:
@@ -376,7 +434,7 @@ class DeploySdkTests(unittest.TestCase):
                 DockerDeploymentConfig(
                     repo_root=root,
                     compose_file=root / "compose.yml",
-                    site_root=root / "site",
+                    site_root=root / "ReasBookWeb" / "_site",
                     port=0,
                 ).resolved()
 
