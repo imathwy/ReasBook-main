@@ -17,7 +17,7 @@ reasbook-build = "reasbook_build_sdk.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-reasbook_build_sdk = ["py.typed"]
+reasbook_build_sdk = ["py.typed", "resources/*.lean"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src", "../common/src"]

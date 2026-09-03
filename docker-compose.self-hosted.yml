@@ -1,0 +1,45 @@
+name: reasbook-self-hosted
+
+services:
+  site:
+    image: ${REASBOOK_NGINX_IMAGE:-nginx:1.30.4-alpine}
+    init: true
+    ports:
+      - "${REASBOOK_BIND_ADDRESS:-127.0.0.1}:${REASBOOK_SELF_HOST_PORT:-8080}:80"
+    volumes:
+      # Mount the stable deployment root, not current/public. Docker resolves a
+      # bind source at container creation, while Nginx resolves this symlink on
+      # each request and therefore observes the installer's atomic switch.
+      - type: bind
+        source: "${REASBOOK_DEPLOY_ROOT:?set REASBOOK_DEPLOY_ROOT to an absolute path}"
+        target: /srv/reasbook
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./config/deploy/nginx-self-hosted.conf
+        target: /etc/nginx/conf.d/default.conf
+        read_only: true
+        bind:
+          create_host_path: false
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx:size=16m,mode=0755
+      - /var/run:size=1m,mode=0755
+      - /tmp:size=16m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - wget -qO- http://127.0.0.1/ReasBook/release-spec.json >/dev/null || exit 1
+      interval: 10s
+      timeout: 3s
+      retries: 6
+      start_period: 10s
+    restart: unless-stopped

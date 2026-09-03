@@ -191,7 +191,8 @@ Resolve all active version branches and explicit canonical projects without
 building:
 
 ```bash
-./sdk/deploy/bin/reasbook-deploy release plan --profile github-pages
+./sdk/deploy/bin/reasbook-deploy release plan \
+  --profile github-pages --new-release --fetch
 ```
 
 The production release flow pins every input, runs project builds and branch
@@ -200,8 +201,8 @@ derives two artifacts from that build:
 
 | Artifact | Contents | Deployment target |
 | --- | --- | --- |
-| `pages` | Catalog, canonical projects, project-root API docs, Verso, theorem maps, and dependency stubs | Temporary GitHub Pages host |
-| `full` | Every project version with the same bounded, link-closed documentation | Project-owned static server |
+| `pages` | Catalog, canonical projects, reachable project-module API docs, Verso, theorem maps, and dependency stubs | Temporary GitHub Pages host |
+| `full` | Every project version with the same bounded, link-closed project-module documentation | Project-owned static server |
 
 `release-set.json` binds both archives and their site-tree digests to the same
 immutable `ReleaseSpec`. GitHub Actions only downloads, verifies, and deploys
@@ -209,10 +210,17 @@ the small `pages` archive; it never builds Lean or documentation. See
 [ADR-0001](docs/decisions/0001-static-release-pipeline.md) and
 [ADR-0002](docs/decisions/0002-target-specific-release-artifacts.md).
 
+For each configured entry root, API documentation follows imports only through
+project-owned Lean modules, in batches of at most 128 modules. Mathlib, Lean,
+and other external libraries are excluded; referenced external HTML pages
+become explicit stubs so the static site remains link-closed. The immutable
+`project-modules-v2` cache identity makes retries reuse an exact prior result.
+
 ```bash
-./sdk/deploy/bin/reasbook-deploy release package <release-id>
-./sdk/deploy/bin/reasbook-deploy release preview <release-id> --artifact pages
-./sdk/deploy/bin/reasbook-deploy release publish <release-id> \
+RELEASE_ID="${RELEASE_ID:?set RELEASE_ID to the generated release ID}"
+./sdk/deploy/bin/reasbook-deploy release package "$RELEASE_ID"
+./sdk/deploy/bin/reasbook-deploy release preview "$RELEASE_ID" --artifact pages
+./sdk/deploy/bin/reasbook-deploy release publish "$RELEASE_ID" \
   --target github-pages --wait
 ```
 
@@ -229,7 +237,7 @@ digest before serving. It does not rebuild anything:
 
 ```bash
 export REASBOOK_CACHE_ROOT=/path/to/reasbook-cache
-RELEASE_ID=site-YYYYMMDDTHHMMSSZ-xxxxxxxxxxxx
+RELEASE_ID="${RELEASE_ID:?set RELEASE_ID to the generated release ID}"
 ./sdk/deploy/bin/reasbook-deploy release preview "$RELEASE_ID" \
   --artifact pages --host 127.0.0.1 --port 18000
 ```
@@ -247,6 +255,21 @@ file-count checks. These margins keep the site below GitHub Pages' 1 GB and
 10-minute deployment limits; compression alone does not make an oversized
 site acceptable.
 
+After the deployment workflow has reached the default branch, configure and
+audit the repository boundary once:
+
+```bash
+./sdk/deploy/bin/reasbook-deploy release configure-pages \
+  --profile github-pages --dry-run
+./sdk/deploy/bin/reasbook-deploy release configure-pages \
+  --profile github-pages
+```
+
+The command creates only missing workflow-based Pages settings and permits
+only the exact default branch to use the `github-pages` environment. It refuses
+to rewrite an existing custom domain or incompatible/extra branch policy; such
+a policy must be reviewed and removed explicitly in GitHub before rerunning.
+
 ```bash
 ./sdk/deploy/bin/reasbook-deploy release publish "$RELEASE_ID" \
   --target github-pages --wait
@@ -257,16 +280,14 @@ immutable GitHub Release, then dispatches the pinned publish-only workflow.
 For a new Release, it also requires a clean checkout whose `HEAD` exactly
 matches the GitHub default branch, so merge and pull the deployment changes
 before running it. Re-dispatching an existing immutable tag does not depend on
-the caller's branch.
-The repository's Pages source must be configured once as **GitHub Actions** in
-Settings → Pages. See the official [GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)
+the caller's branch. See the official [GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)
 and [GitHub Release limits](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases).
 
 #### Deploy the complete site on your own server
 
 Configure the web server once with `/srv/reasbook/current/public` as its
 document root; a ready Nginx example is
-[`config/deploy/nginx-self-hosted.conf.example`](config/deploy/nginx-self-hosted.conf.example).
+[`config/deploy/nginx-self-hosted.conf`](config/deploy/nginx-self-hosted.conf).
 Then either deploy directly from the shared release cache:
 
 ```bash
@@ -275,21 +296,63 @@ Then either deploy directly from the shared release cache:
   --health-url http://127.0.0.1/ReasBook/release-spec.json
 ```
 
-or transfer the full archive and install it without the source checkout or
-release cache:
+or transfer the full archive, its matching `SHA256SUMS`, and
+`release-set.json`, then supply the artifact-policy digest recorded separately
+on the trusted build side. The destination needs no source checkout or release
+cache:
 
 ```bash
-FULL_SHA256="$(awk 'NR == 1 { print $1 }' SHA256SUMS)"
-./sdk/deploy/bin/reasbook-deploy release install \
-  "$RELEASE_ID.site.tar.zst" --sha256 "$FULL_SHA256" \
+RELEASE_ID="${RELEASE_ID:?set RELEASE_ID to the generated release ID}"
+POLICY_SHA256="${POLICY_SHA256:?set the trusted sha256 artifact-policy digest}"
+FULL_BUNDLE="${RELEASE_ID}.site.tar.zst"
+FULL_SHA256="$(awk -v bundle="$FULL_BUNDLE" \
+  '$2 == bundle { print $1 }' SHA256SUMS)"
+: "${FULL_SHA256:?SHA256SUMS has no matching full bundle}"
+reasbook-deploy release install \
+  "$FULL_BUNDLE" --sha256 "$FULL_SHA256" \
+  --release-set release-set.json \
+  --artifact-policy-sha256 "$POLICY_SHA256" \
   --deploy-root /srv/reasbook \
   --health-url http://127.0.0.1/ReasBook/release-spec.json
 ```
 
-Installation verifies the archive, writes a versioned directory, atomically
-switches `current`, and restores the previous release if the health check
-fails. Roll back without rebuilding with `release rollback --target
-self-hosted --deploy-root /srv/reasbook --to <release-id>`.
+Record `POLICY_SHA256` from the trusted build/publish side; do not accept a
+replacement value supplied alongside an untrusted archive. Installation binds
+the full bundle checksum, site digest, counts, ReleaseSpec, and artifact policy
+to `release-set.json` before it creates the deployment root. It then writes a
+versioned directory, atomically switches `current`, and restores the previous
+release if the health check fails. Roll back without rebuilding:
+
+```bash
+./sdk/deploy/bin/reasbook-deploy release rollback \
+  --target self-hosted --deploy-root /srv/reasbook --to "$RELEASE_ID" \
+  --health-url http://127.0.0.1/ReasBook/release-spec.json
+```
+
+For a containerized server, make the initial install with
+`--filesystem-health-only`, then start the dedicated production Compose project
+without rebuilding the site:
+
+```bash
+RELEASE_ID="${RELEASE_ID:?set RELEASE_ID to the generated release ID}"
+POLICY_SHA256="${POLICY_SHA256:?set the trusted sha256 artifact-policy digest}"
+FULL_BUNDLE="${RELEASE_ID}.site.tar.zst"
+FULL_SHA256="$(awk -v bundle="$FULL_BUNDLE" \
+  '$2 == bundle { print $1 }' SHA256SUMS)"
+: "${FULL_SHA256:?SHA256SUMS has no matching full bundle}"
+reasbook-deploy release install \
+  "$FULL_BUNDLE" --sha256 "$FULL_SHA256" \
+  --release-set release-set.json \
+  --artifact-policy-sha256 "$POLICY_SHA256" \
+  --deploy-root /srv/reasbook \
+  --filesystem-health-only
+REASBOOK_DEPLOY_ROOT=/srv/reasbook \
+  docker compose -f docker-compose.self-hosted.yml up -d --wait
+```
+
+The container mounts the stable deploy root, so later atomic `current` switches
+take effect without restarting Nginx. This is separate from
+`docker-compose.yml`, which remains the local generated-site preview.
 
 ### Implementation layout
 

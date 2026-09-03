@@ -140,7 +140,13 @@ class GitHubPublishProfile:
         prefix = _text(self.release_tag_prefix, field="publish.release_tag_prefix")
         if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", prefix):
             raise DeployConfigError("publish.release_tag_prefix is unsafe")
-        _text(self.workflow, field="publish.workflow")
+        workflow = _text(self.workflow, field="publish.workflow")
+        if not re.fullmatch(
+            r"[A-Za-z0-9][A-Za-z0-9_.-]*\.(?:yml|yaml)", workflow
+        ):
+            raise DeployConfigError(
+                "publish.workflow must be a plain YAML workflow file name"
+            )
 
     def public_dict(self) -> dict[str, str]:
         return {

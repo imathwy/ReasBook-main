@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import sqlite3
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -10,18 +11,38 @@ from reasbook_build_sdk import docs as docs_module
 
 
 class _DocsRunner:
-    def __init__(self, modules: tuple[str, ...]) -> None:
-        self.modules = modules
+    def __init__(self) -> None:
+        self.modules: list[str] = []
         self.commands = []
 
     def run(self, command):
         self.commands.append(command)
         argv = command.argv
-        build = Path(argv[argv.index("--build") + 1])
-        if "single" in argv:
-            if "api-docs.db" in argv:
-                (build / "api-docs.db").write_text("database", encoding="utf-8")
+        if "--run" in argv:
+            adapter = Path(argv[argv.index("--run") + 1])
+            control = Path(argv[-1])
+            if adapter.name == "ProjectDocsDatabase.lean":
+                build = Path(argv[-3])
+                modules = tuple(control.read_text(encoding="utf-8").splitlines())
+                database = build / argv[-2]
+                with sqlite3.connect(database) as connection:
+                    connection.execute(
+                        "CREATE TABLE IF NOT EXISTS modules "
+                        "(name TEXT PRIMARY KEY, source_url TEXT)"
+                    )
+                    connection.executemany(
+                        "INSERT INTO modules (name, source_url) VALUES (?, NULL)",
+                        ((module,) for module in modules),
+                    )
+            else:
+                build = Path(argv[-2])
+                modules = tuple(
+                    line.split("\t", 1)[0]
+                    for line in control.read_text(encoding="utf-8").splitlines()
+                )
+            self.modules.extend(modules)
         elif "fromDb" in argv or "index" in argv:
+            build = Path(argv[argv.index("--build") + 1])
             doc = build / "doc"
             doc.mkdir(parents=True, exist_ok=True)
             (doc / "style.css").write_text("body{}", encoding="utf-8")
@@ -54,7 +75,18 @@ class ProjectDocumentationTests(unittest.TestCase):
         )
         module = project / "Books" / "Demo" / "Book.lean"
         module.parent.mkdir(parents=True)
-        module.write_text("import Mathlib\n", encoding="utf-8")
+        module.write_text(
+            "import Mathlib\nimport Books.Demo.Chapter\n",
+            encoding="utf-8",
+        )
+        (module.parent / "Chapter.lean").write_text(
+            "import Mathlib\n",
+            encoding="utf-8",
+        )
+        (module.parent / "Dead.lean").write_text(
+            "import Mathlib\n",
+            encoding="utf-8",
+        )
         package = project / ".lake" / "packages" / "doc-gen4"
         executable = package / ".lake" / "build" / "bin" / "doc-gen4"
         executable.parent.mkdir(parents=True)
@@ -64,6 +96,21 @@ class ProjectDocumentationTests(unittest.TestCase):
             "def fromDb := ()\n" if modern else "def index := ()\n",
             encoding="utf-8",
         )
+        if modern:
+            sqlite_ffi = (
+                project
+                / ".lake"
+                / "packages"
+                / "leansqlite"
+                / ".lake"
+                / "build"
+                / "lib"
+                / "lean"
+                / "leansqlite_SQLite_FFI.so"
+            )
+            sqlite_ffi.parent.mkdir(parents=True)
+            sqlite_ffi.write_bytes(b"fixture")
+            (sqlite_ffi.parent.parent / "libleansqlite.so").write_bytes(b"fixture")
         return project
 
     def test_modern_builder_closes_links_and_reuses_exact_cache(self) -> None:
@@ -71,7 +118,7 @@ class ProjectDocumentationTests(unittest.TestCase):
             root = Path(temp)
             project = self._project(root, modern=True)
             modules = ("Books.Demo.Book",)
-            runner = _DocsRunner(modules)
+            runner = _DocsRunner()
             builder = ProjectDocumentationBuilder(runner=runner)
             output = root / "cache" / "docs"
             result = builder.build(
@@ -83,6 +130,14 @@ class ProjectDocumentationTests(unittest.TestCase):
             )
             self.assertFalse(result.reused)
             self.assertEqual(result.mode, "database")
+            self.assertEqual(result.targets, modules)
+            self.assertEqual(
+                tuple(
+                    path.relative_to(output / "doc").as_posix() for path in result.pages
+                ),
+                ("Books/Demo/Book.html", "Books/Demo/Chapter.html"),
+            )
+            self.assertNotIn("Books.Demo.Dead", runner.modules)
             self.assertEqual(result.dependency_stubs, 1)
             stub = output / "doc" / "Mathlib" / "Dependency.html"
             self.assertIn("data-reasbook-doc-stub", stub.read_text(encoding="utf-8"))
@@ -98,12 +153,24 @@ class ProjectDocumentationTests(unittest.TestCase):
             self.assertTrue(cached.reused)
             self.assertEqual(len(runner.commands), command_count)
 
-    def test_legacy_builder_uses_single_then_index(self) -> None:
+            chapter = project / "Books" / "Demo" / "Chapter.lean"
+            chapter.write_text("import Mathlib\n-- changed\n", encoding="utf-8")
+            rebuilt = builder.build(
+                project,
+                modules,
+                output,
+                repository="https://github.com/acme/reasbook",
+                revision="a" * 40,
+            )
+            self.assertFalse(rebuilt.reused)
+            self.assertGreater(len(runner.commands), command_count)
+
+    def test_legacy_builder_uses_bounded_adapter_then_index(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             project = self._project(root, modern=False)
             modules = ("Books.Demo.Book",)
-            runner = _DocsRunner(modules)
+            runner = _DocsRunner()
             result = ProjectDocumentationBuilder(runner=runner).build(
                 project,
                 modules,
@@ -111,10 +178,88 @@ class ProjectDocumentationTests(unittest.TestCase):
             )
             self.assertEqual(result.mode, "legacy")
             verbs = [
-                "single" if "single" in command.argv else "index"
+                "batch" if "--run" in command.argv else "index"
                 for command in runner.commands
             ]
-            self.assertEqual(verbs, ["single", "index"])
+            self.assertEqual(verbs, ["batch", "index"])
+
+    def test_flat_layout_discovers_project_namespace(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=True)
+            book = project / "Books" / "Demo" / "Book.lean"
+            book.write_text("import Demo.Chapter\n", encoding="utf-8")
+            runner = _DocsRunner()
+
+            result = ProjectDocumentationBuilder(runner=runner).build(
+                project,
+                ("Demo.Book",),
+                root / "cache" / "docs-flat",
+            )
+
+            self.assertEqual(result.targets, ("Demo.Book",))
+            self.assertEqual(runner.modules, ["Demo.Book", "Demo.Chapter"])
+
+    def test_large_project_is_split_into_bounded_analyzer_batches(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=True)
+            module_root = project / "Books" / "Demo"
+            names = [f"Books.Demo.Part{index:03d}" for index in range(130)]
+            (module_root / "Book.lean").write_text(
+                "\n".join(f"import {name}" for name in names) + "\n",
+                encoding="utf-8",
+            )
+            for index in range(130):
+                (module_root / f"Part{index:03d}.lean").write_text(
+                    "import Mathlib\n",
+                    encoding="utf-8",
+                )
+            runner = _DocsRunner()
+
+            result = ProjectDocumentationBuilder(runner=runner).build(
+                project,
+                ("Books.Demo.Book",),
+                root / "cache" / "docs-batched",
+            )
+
+            adapter_commands = [
+                command for command in runner.commands if "--run" in command.argv
+            ]
+            self.assertEqual(len(result.pages), 131)
+            self.assertEqual(len(adapter_commands), 2)
+
+    def test_explicit_root_includes_only_reachable_sibling_modules(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=True)
+            papers = project / "Papers"
+            papers.mkdir()
+            (papers / "Theory.lean").write_text(
+                "public import Theory.Current\n",
+                encoding="utf-8",
+            )
+            namespace = papers / "Theory"
+            namespace.mkdir()
+            (namespace / "Current.lean").write_text(
+                "import Mathlib\n",
+                encoding="utf-8",
+            )
+            (namespace / "Unused.lean").write_text(
+                "import Mathlib\n",
+                encoding="utf-8",
+            )
+            runner = _DocsRunner()
+
+            result = ProjectDocumentationBuilder(runner=runner).build(
+                project,
+                ("Theory",),
+                root / "cache" / "docs-explicit",
+            )
+
+            self.assertEqual(result.targets, ("Theory",))
+            self.assertEqual(runner.modules, ["Theory", "Theory.Current"])
+            self.assertEqual(len(result.pages), 2)
 
     def test_publish_failure_restores_previous_docs(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -138,9 +283,7 @@ class ProjectDocumentationTests(unittest.TestCase):
                 side_effect=fail_publication,
             ):
                 with self.assertRaises(OSError):
-                    ProjectDocumentationBuilder(
-                        runner=_DocsRunner(("Books.Demo.Book",))
-                    ).build(
+                    ProjectDocumentationBuilder(runner=_DocsRunner()).build(
                         project,
                         ("Books.Demo.Book",),
                         output,

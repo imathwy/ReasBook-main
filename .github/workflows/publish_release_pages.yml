@@ -18,11 +18,14 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: read
       pages: read
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
@@ -68,6 +71,9 @@ jobs:
           RELEASE_TAG: ${{ inputs.release_tag }}
         run: |
           set -euo pipefail
+          default_branch="$(gh api "repos/$GITHUB_REPOSITORY" --jq .default_branch)"
+          [[ "$GITHUB_REF_TYPE" == branch ]]
+          [[ "$GITHUB_REF_NAME" == "$default_branch" ]]
           object="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$RELEASE_TAG")"
           object_type="$(python -c 'import json,sys; print(json.load(sys.stdin)["object"]["type"])' <<< "$object")"
           object_sha="$(python -c 'import json,sys; print(json.load(sys.stdin)["object"]["sha"])' <<< "$object")"
@@ -118,6 +124,8 @@ jobs:
               raise SystemExit("release tag, manifest, and spec release IDs differ")
           if manifest["spec_digest"] != spec["spec_digest"]:
               raise SystemExit("manifest and spec digests differ")
+          if manifest.get("base_path") != "/ReasBook/" or spec["site"].get("base_path") != "/ReasBook/":
+              raise SystemExit("Pages artifact must use the /ReasBook/ base path")
           if manifest.get("artifact") != "pages":
               raise SystemExit("GitHub Pages requires the pages artifact")
           if manifest["total_bytes"] > 850_000_000:
@@ -166,6 +174,7 @@ jobs:
   deploy:
     needs: verify
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       pages: write
       id-token: write

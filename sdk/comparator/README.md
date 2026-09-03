@@ -63,9 +63,9 @@ From the repository root, the bundled wrapper is:
 ```
 
 ```bash
-python -m comparator_sdk compare /work/challenge configuration.json \
+./sdk/comparator/bin/comparator compare /work/challenge configuration.json \
   --comparator-root /work/comparator
-python -m comparator_sdk validate /work/challenge configuration.json \
+./sdk/comparator/bin/comparator validate /work/challenge configuration.json \
   --comparator-root /work/comparator
 ```
 

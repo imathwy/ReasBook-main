@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 import re
 import shutil
+import sqlite3
 import tempfile
 from typing import Iterator, Protocol
 from urllib.parse import quote, unquote, urljoin, urlsplit
@@ -25,7 +26,9 @@ from .project import discover_project
 
 _MODULE_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_']*(?:[.][A-Za-z_][A-Za-z0-9_']*)*$")
 _GITHUB_RE = re.compile(r"^https://github[.]com/[^/]+/[^/]+?(?:[.]git)?$")
-_PROFILE = "project-roots-v1"
+_IMPORT_RE = re.compile(r"^[ \t]*(?:public[ \t]+)?import[ \t]+(.+?)\s*$")
+_PROFILE = "project-modules-v2"
+_MODULE_BATCH_SIZE = 128
 
 
 class _Runner(Protocol):
@@ -39,9 +42,7 @@ class _LinkParser(HTMLParser):
         self.base_href: str | None = None
         self.references: list[str] = []
 
-    def handle_starttag(
-        self, tag: str, attrs: list[tuple[str, str | None]]
-    ) -> None:
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = dict(attrs)
         if tag == "base" and self.base_href is None and values.get("href"):
             self.base_href = values["href"]
@@ -71,13 +72,15 @@ class ProjectDocsResult:
 
 
 class ProjectDocumentationBuilder:
-    """Generate only selected root-module docs in an immutable cache entry.
+    """Generate reachable project-module docs in an immutable cache entry.
 
     doc-gen4 historically rendered every transitive Mathlib page and then
     assembled one global in-memory index. That is unnecessary for ReasBook's
-    per-project entry pages and exceeds common CI/container memory limits.
-    This adapter invokes doc-gen4's single-module API and builds a small index
-    from only the requested roots. Missing dependency pages become explicit
+    per-project API pages and exceeds common CI/container memory limits. This
+    adapter discovers every project-owned module reachable from the requested
+    roots and analyzes them in bounded batches. Modern doc-gen4 writes a
+    project-only database; legacy releases render the same bounded module set
+    through a compatibility adapter. Missing external pages become explicit
     local placeholders, so both Pages and self-hosted artifacts remain
     navigable without silently publishing broken links.
     """
@@ -97,7 +100,10 @@ class ProjectDocumentationBuilder:
         timeout_seconds: float = 21600.0,
     ) -> ProjectDocsResult:
         project = discover_project(project_root)
-        modules = self._normalize_targets(targets)
+        roots = self._normalize_targets(targets)
+        batches = self._module_batches(project.root, roots)
+        module_sources = tuple(item for batch in batches for item in batch)
+        modules = tuple(module for module, _source in module_sources)
         if not lake_bin.strip() or any(char in lake_bin for char in "\x00\r\n"):
             raise ConfigurationError("lake executable must be a safe non-empty value")
         if timeout_seconds <= 0:
@@ -105,7 +111,9 @@ class ProjectDocumentationBuilder:
         repository = repository.strip().removesuffix(".git")
         revision = revision.strip()
         if repository and not _GITHUB_RE.fullmatch(repository):
-            raise ConfigurationError("documentation repository must be a GitHub HTTPS URL")
+            raise ConfigurationError(
+                "documentation repository must be a GitHub HTTPS URL"
+            )
         if revision and not re.fullmatch(r"[0-9a-f]{40}", revision):
             raise ConfigurationError("documentation revision must be a full commit SHA")
         if bool(repository) != bool(revision):
@@ -117,29 +125,45 @@ class ProjectDocumentationBuilder:
         if target in {Path("/"), project.root} or target in project.root.parents:
             raise ConfigurationError(f"unsafe documentation output root: {target}")
         if target.is_symlink():
-            raise ConfigurationError(f"documentation output must not be a symlink: {target}")
+            raise ConfigurationError(
+                f"documentation output must not be a symlink: {target}"
+            )
         target.parent.mkdir(parents=True, exist_ok=True)
 
         docgen, mode = self._docgen(project.root, lake_bin, timeout_seconds)
         identity = {
-            "schema_version": 1,
+            "schema_version": 2,
             "profile": _PROFILE,
+            "module_batch_size": _MODULE_BATCH_SIZE,
             "toolchain": project.toolchain,
-            "targets": list(modules),
+            "targets": list(roots),
+            "modules": list(modules),
+            "sources": [
+                {"module": module, "sha256": self._sha256(source)}
+                for module, source in module_sources
+            ],
             "repository": repository,
             "revision": revision,
             "docgen_sha256": self._sha256(docgen),
+            "adapter_sha256": self._sha256(self._adapter(mode)),
             "mode": mode,
         }
         lock = target.parent / f".{target.name}.lock"
         with self._exclusive_lock(lock):
-            cached = self._cached_result(target, identity, modules, mode)
+            cached = self._cached_result(
+                target,
+                identity,
+                roots,
+                modules,
+                mode,
+            )
             if cached is not None:
                 return cached
             return self._build_fresh(
                 project.root,
                 target,
-                modules,
+                roots,
+                batches,
                 docgen,
                 mode,
                 identity,
@@ -153,7 +177,8 @@ class ProjectDocumentationBuilder:
         self,
         project_root: Path,
         target: Path,
-        modules: tuple[str, ...],
+        roots: tuple[str, ...],
+        batches: tuple[tuple[tuple[str, Path], ...], ...],
         docgen: Path,
         mode: str,
         identity: dict[str, object],
@@ -168,31 +193,77 @@ class ProjectDocumentationBuilder:
         )
         backup = target.parent / f".{target.name}.backup-{uuid.uuid4().hex}"
         try:
-            for module in modules:
-                source = self._module_source(project_root, module)
-                source_uri = self._source_uri(
-                    project_root, source, repository, revision
-                )
-                argv = [
-                    lake_bin,
-                    "-R",
-                    "-Kenv=dev",
-                    "env",
-                    str(docgen),
-                    "single",
-                    "--build",
-                    str(stage),
-                    module,
-                ]
-                if mode == "database":
-                    argv.append("api-docs.db")
-                argv.append(source_uri)
-                self._run(project_root, tuple(argv), timeout_seconds)
+            module_sources = tuple(item for batch in batches for item in batch)
+            for sequence, batch in enumerate(batches):
+                control = stage / f".reasbook-docs-{sequence:04d}.txt"
+                try:
+                    if mode == "database":
+                        control.write_text(
+                            "".join(f"{module}\n" for module, _source in batch),
+                            encoding="utf-8",
+                        )
+                        argv = (
+                            lake_bin,
+                            "-R",
+                            "-Kenv=dev",
+                            "env",
+                            "lean",
+                            "-R",
+                            str(self._adapter("database").parent),
+                            *self._database_interpreter_args(project_root),
+                            "--run",
+                            str(self._adapter("database")),
+                            str(stage),
+                            "api-docs.db",
+                            str(control),
+                        )
+                    else:
+                        control.write_text(
+                            "".join(
+                                f"{module}\t"
+                                f"{self._source_uri(project_root, source, repository, revision)}\n"
+                                for module, source in batch
+                            ),
+                            encoding="utf-8",
+                        )
+                        argv = (
+                            lake_bin,
+                            "-R",
+                            "-Kenv=dev",
+                            "env",
+                            "lean",
+                            "-R",
+                            str(self._adapter("legacy").parent),
+                            "--run",
+                            str(self._adapter("legacy")),
+                            str(stage),
+                            str(control),
+                        )
+                    self._run(project_root, argv, timeout_seconds)
+                finally:
+                    control.unlink(missing_ok=True)
 
             if mode == "database":
                 database = stage / "api-docs.db"
                 if not database.is_file() or database.stat().st_size == 0:
-                    raise BuildFailed("doc-gen4 did not create its documentation database")
+                    raise BuildFailed(
+                        "doc-gen4 did not create its documentation database"
+                    )
+                self._set_database_source_urls(
+                    database,
+                    tuple(
+                        (
+                            module,
+                            self._source_uri(
+                                project_root,
+                                source,
+                                repository,
+                                revision,
+                            ),
+                        )
+                        for module, source in module_sources
+                    ),
+                )
                 self._run(
                     project_root,
                     (
@@ -207,6 +278,7 @@ class ProjectDocumentationBuilder:
                         "--manifest",
                         str(stage / "doc-manifest.json"),
                         str(database),
+                        *roots,
                     ),
                     timeout_seconds,
                 )
@@ -226,6 +298,7 @@ class ProjectDocumentationBuilder:
                     timeout_seconds,
                 )
 
+            modules = tuple(module for module, _source in module_sources)
             pages = self._expected_pages(stage, modules)
             self._validate_pages(pages)
             stub_count = self._close_documentation_links(stage / "doc")
@@ -249,7 +322,7 @@ class ProjectDocumentationBuilder:
             return ProjectDocsResult(
                 target,
                 mode,
-                modules,
+                roots,
                 self._expected_pages(target, modules),
                 stub_count,
                 False,
@@ -284,9 +357,45 @@ class ProjectDocumentationBuilder:
         mode = "database" if re.search(r"\bfromDb\b", source) else "legacy"
         return executable.resolve(), mode
 
-    def _run(
-        self, cwd: Path, argv: tuple[str, ...], timeout_seconds: float
-    ) -> None:
+    @staticmethod
+    def _adapter(mode: str) -> Path:
+        name = (
+            "ProjectDocsDatabase.lean"
+            if mode == "database"
+            else "ProjectDocsLegacy.lean"
+        )
+        adapter = Path(__file__).with_name("resources") / name
+        if not adapter.is_file() or adapter.is_symlink():
+            raise BuildFailed(f"project documentation adapter is missing: {adapter}")
+        return adapter.resolve()
+
+    @staticmethod
+    def _database_interpreter_args(project_root: Path) -> tuple[str, ...]:
+        """Load native modules needed by doc-gen4 when run via Lean's interpreter."""
+
+        packages = project_root / ".lake" / "packages"
+        sqlite_lib = packages / "leansqlite" / ".lake" / "build" / "lib"
+        required = (
+            sqlite_lib / "libleansqlite.so",
+            sqlite_lib / "lean" / "leansqlite_SQLite_FFI.so",
+        )
+        for library in required:
+            if not library.is_file() or library.is_symlink():
+                raise BuildFailed(
+                    "doc-gen4 database adapter requires a built leansqlite "
+                    f"library: {library}"
+                )
+        libraries = [library.resolve() for library in required]
+        md4lean_lib = packages / "MD4Lean" / ".lake" / "build" / "lib"
+        optional = (
+            md4lean_lib / "libMD4Lean_MD4Lean.so",
+            md4lean_lib / "lean" / "MD4Lean_MD4Lean_FFI.so",
+        )
+        if all(library.is_file() and not library.is_symlink() for library in optional):
+            libraries.extend(library.resolve() for library in optional)
+        return tuple(f"--load-dynlib={library}" for library in libraries)
+
+    def _run(self, cwd: Path, argv: tuple[str, ...], timeout_seconds: float) -> None:
         result = self.runner.run(
             Command(
                 argv=argv,
@@ -315,6 +424,34 @@ class ProjectDocumentationBuilder:
             raise ConfigurationError("at least one documentation module is required")
         return tuple(modules)
 
+    @classmethod
+    def _module_batches(
+        cls,
+        project_root: Path,
+        roots: tuple[str, ...],
+    ) -> tuple[tuple[tuple[str, Path], ...], ...]:
+        """Split each project closure into bounded analyzer batches."""
+
+        batches: list[tuple[tuple[str, Path], ...]] = []
+        seen: dict[str, Path] = {}
+        for root in roots:
+            fresh: list[tuple[str, Path]] = []
+            for module, source in cls._project_module_sources(project_root, (root,)):
+                previous = seen.get(module)
+                if previous is not None:
+                    if previous != source:
+                        raise BuildFailed(
+                            f"project module {module} resolves to multiple source files"
+                        )
+                    continue
+                seen[module] = source
+                fresh.append((module, source))
+            for offset in range(0, len(fresh), _MODULE_BATCH_SIZE):
+                batches.append(tuple(fresh[offset : offset + _MODULE_BATCH_SIZE]))
+        if not batches:
+            raise BuildFailed("no project-owned documentation modules were discovered")
+        return tuple(batches)
+
     @staticmethod
     def _module_source(project_root: Path, module: str) -> Path:
         parts = module.split(".")
@@ -334,6 +471,117 @@ class ProjectDocumentationBuilder:
             )
         return matches[0].resolve()
 
+    @classmethod
+    def _project_module_sources(
+        cls,
+        project_root: Path,
+        roots: tuple[str, ...],
+    ) -> tuple[tuple[str, Path], ...]:
+        """Return project-owned modules reachable from the selected roots.
+
+        A project may be an aggregate ``Books.X.Book`` module, a library with
+        ``srcDir := \"Books\"`` such as ``X.Book``, or an explicit root beside
+        a same-named module directory.  Candidate modules are derived from
+        those layouts, then source imports restrict the result to the actual
+        build closure.  External Mathlib/Lean modules are never candidates.
+        """
+
+        candidates: dict[str, Path] = {}
+
+        def register(module: str, source: Path) -> None:
+            if not _MODULE_RE.fullmatch(module):
+                raise BuildFailed(f"invalid project-owned module name: {module}")
+            resolved = source.resolve()
+            if source.is_symlink() or project_root not in resolved.parents:
+                raise BuildFailed(
+                    f"project documentation source escapes its root: {source}"
+                )
+            previous = candidates.get(module)
+            if previous is not None and previous != resolved:
+                raise BuildFailed(
+                    f"project module {module} resolves to multiple source files"
+                )
+            candidates[module] = resolved
+
+        for root in roots:
+            source = cls._module_source(project_root, root)
+            if source.stem in {"Book", "Paper"} and "." in root:
+                prefix = root.rsplit(".", 1)[0]
+                for owned in sorted(source.parent.rglob("*.lean")):
+                    relative = owned.relative_to(source.parent).with_suffix("")
+                    register(".".join((prefix, *relative.parts)), owned)
+                continue
+
+            register(root, source)
+            namespace = source.with_suffix("")
+            if namespace.is_dir():
+                for owned in sorted(namespace.rglob("*.lean")):
+                    relative = owned.relative_to(namespace).with_suffix("")
+                    register(".".join((root, *relative.parts)), owned)
+
+        reachable: set[str] = set()
+        pending = list(reversed(roots))
+        while pending:
+            module = pending.pop()
+            if module in reachable:
+                continue
+            source = candidates.get(module)
+            if source is None:
+                raise BuildFailed(
+                    f"project root {module} is outside its discovered source layout"
+                )
+            reachable.add(module)
+            for imported in reversed(cls._source_imports(source)):
+                if imported in candidates and imported not in reachable:
+                    pending.append(imported)
+
+        return tuple((module, candidates[module]) for module in sorted(reachable))
+
+    @staticmethod
+    def _source_imports(source: Path) -> tuple[str, ...]:
+        try:
+            lines = source.read_text(encoding="utf-8", errors="replace").splitlines()
+        except OSError as exc:
+            raise BuildFailed(f"cannot read project module: {source}") from exc
+        imports: list[str] = []
+        for line in lines:
+            match = _IMPORT_RE.match(line.split("--", 1)[0])
+            if not match:
+                continue
+            for token in match.group(1).split():
+                module = token.strip("`«»")
+                if _MODULE_RE.fullmatch(module) and module not in imports:
+                    imports.append(module)
+        return tuple(imports)
+
+    @staticmethod
+    def _set_database_source_urls(
+        database: Path,
+        module_urls: tuple[tuple[str, str], ...],
+    ) -> None:
+        if database.is_symlink():
+            raise BuildFailed(
+                f"documentation database must not be a symlink: {database}"
+            )
+        expected = {module for module, _url in module_urls}
+        try:
+            with sqlite3.connect(database) as connection:
+                rows = connection.execute("SELECT name FROM modules").fetchall()
+                actual = {str(row[0]) for row in rows}
+                if actual != expected:
+                    missing = sorted(expected - actual)
+                    unexpected = sorted(actual - expected)
+                    raise BuildFailed(
+                        "documentation database module mismatch"
+                        f"; missing={missing[:10]}; unexpected={unexpected[:10]}"
+                    )
+                connection.executemany(
+                    "UPDATE modules SET source_url = ? WHERE name = ?",
+                    ((url, module) for module, url in module_urls),
+                )
+        except sqlite3.Error as exc:
+            raise BuildFailed(f"cannot update documentation database: {exc}") from exc
+
     @staticmethod
     def _source_uri(
         project_root: Path, source: Path, repository: str, revision: str
@@ -345,7 +593,10 @@ class ProjectDocumentationBuilder:
 
     @staticmethod
     def _expected_pages(root: Path, modules: tuple[str, ...]) -> tuple[Path, ...]:
-        return tuple(root / "doc" / Path(*module.split(".")).with_suffix(".html") for module in modules)
+        return tuple(
+            root / "doc" / Path(*module.split(".")).with_suffix(".html")
+            for module in modules
+        )
 
     @staticmethod
     def _validate_pages(pages: tuple[Path, ...]) -> None:
@@ -355,7 +606,11 @@ class ProjectDocumentationBuilder:
                 content = page.read_text(encoding="utf-8", errors="replace")
             except OSError:
                 content = ""
-            if page.is_symlink() or len(content.strip()) < 64 or "<html" not in content.lower():
+            if (
+                page.is_symlink()
+                or len(content.strip()) < 64
+                or "<html" not in content.lower()
+            ):
                 missing.append(str(page))
         if missing:
             raise BuildFailed(
@@ -367,6 +622,7 @@ class ProjectDocumentationBuilder:
         cls,
         target: Path,
         identity: dict[str, object],
+        roots: tuple[str, ...],
         modules: tuple[str, ...],
         mode: str,
     ) -> ProjectDocsResult | None:
@@ -383,8 +639,10 @@ class ProjectDocumentationBuilder:
             return None
         if cached_identity != identity:
             return None
-        stubs = sum(1 for path in (target / "doc").rglob("*.html") if cls._is_stub(path))
-        return ProjectDocsResult(target, mode, modules, pages, stubs, True)
+        stubs = sum(
+            1 for path in (target / "doc").rglob("*.html") if cls._is_stub(path)
+        )
+        return ProjectDocsResult(target, mode, roots, pages, stubs, True)
 
     @classmethod
     def _close_documentation_links(cls, doc_root: Path) -> int:
@@ -395,17 +653,25 @@ class ProjectDocumentationBuilder:
         for document in sorted(doc_root.rglob("*.html")):
             parser = _LinkParser()
             parser.feed(document.read_text(encoding="utf-8", errors="replace"))
-            document_url = "https://docs.invalid/" + document.relative_to(doc_root).as_posix()
+            document_url = (
+                "https://docs.invalid/" + document.relative_to(doc_root).as_posix()
+            )
             base_url = urljoin(document_url, parser.base_href or "")
             for value in parser.references:
                 reference = value.strip()
-                if not reference or reference.startswith(("#", "data:", "javascript:", "mailto:")):
+                if not reference or reference.startswith(
+                    ("#", "data:", "javascript:", "mailto:")
+                ):
                     continue
                 resolved = urlsplit(urljoin(base_url, reference))
                 if resolved.netloc != "docs.invalid":
                     continue
                 relative_text = unquote(resolved.path).lstrip("/")
-                if not relative_text or "\\" in relative_text or "\x00" in relative_text:
+                if (
+                    not relative_text
+                    or "\\" in relative_text
+                    or "\x00" in relative_text
+                ):
                     continue
                 relative = Path(relative_text)
                 if any(part in {"", ".", ".."} for part in relative.parts):
@@ -450,8 +716,9 @@ class ProjectDocumentationBuilder:
                     '<body data-reasbook-doc-stub="true">',
                     "  <main>",
                     "    <h1>Dependency documentation</h1>",
-                    "    <p>This API page is outside the selected ReasBook project roots. "
-                    "The project documentation, source, and theorem map remain available.</p>",
+                    "    <p>This external API page is outside the bounded project module "
+                    "set. The project documentation, source, and theorem map remain "
+                    "available.</p>",
                     f'    <p><a href="{prefix}index.html">Documentation index</a></p>',
                     "  </main>",
                     "</body>",
@@ -477,7 +744,9 @@ class ProjectDocumentationBuilder:
             raise BuildFailed(f"documentation cache is not a directory: {root}")
         for path in root.rglob("*"):
             if path.is_symlink() or (not path.is_file() and not path.is_dir()):
-                raise BuildFailed(f"documentation cache contains an unsafe file: {path}")
+                raise BuildFailed(
+                    f"documentation cache contains an unsafe file: {path}"
+                )
 
     @staticmethod
     def _sha256(path: Path) -> str:

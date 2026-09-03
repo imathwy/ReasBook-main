@@ -294,8 +294,8 @@ class PagesSiteProjector:
                 '  <main class="page-shell narrow-shell">',
                 '    <p class="eyebrow">Canonical Pages Projection</p>',
                 f"    <h1><span translate=\"no\">{html.escape(branch)}</span></h1>",
-            "    <p>API links outside project roots resolve to explicit "
-            "dependency placeholders.</p>",
+                "    <p>API links outside the bounded project module set resolve "
+                "to explicit dependency placeholders.</p>",
                 '    <ul class="resource-list">',
                 items,
                 "    </ul>",
@@ -448,9 +448,9 @@ class PagesSiteProjector:
                     '  <main class="page-shell narrow-shell">',
                     '    <p class="eyebrow">Canonical Pages Projection</p>',
                     "    <h1>Dependency documentation</h1>",
-                    "    <p>This API page is outside the selected project roots. "
-                    "The project documentation, source, and theorem map remain "
-                    "available.</p>",
+                    "    <p>This API page is not included in the bounded Pages "
+                    "artifact. The project documentation, source, and theorem map "
+                    "remain available.</p>",
                     f'    <p><a class="back-link" href="{home}">'
                     "Back to ReasBook</a></p>",
                     "  </main>",

@@ -36,7 +36,9 @@ def _parser() -> argparse.ArgumentParser:
         command.add_argument("targets", nargs="*", help="optional Lake targets")
         command.add_argument("--target", action="append", help="add one Lake target")
         command.add_argument(
-            "--lake-arg", action="append", help="argument inserted before the Lake subcommand"
+            "--lake-arg",
+            action="append",
+            help="argument inserted before the Lake subcommand",
         )
         command.add_argument("--lake-bin", help="Lake executable (default: lake)")
         command.add_argument(
@@ -74,7 +76,7 @@ def _parser() -> argparse.ArgumentParser:
     targets.add_argument("--books-only", action="store_true")
     project_docs = commands.add_parser(
         "project-docs",
-        help="generate bounded-memory API docs for selected root modules",
+        help="generate bounded API docs for reachable project modules",
     )
     project_docs.add_argument("project", type=Path, help="path to the Lake project")
     project_docs.add_argument("targets", nargs="+", help="root Lean modules")
@@ -137,9 +139,7 @@ def _print_result(result: BuildResult, *, as_json: bool) -> None:
 
 def _print_targets(args: argparse.Namespace) -> int:
     if args.mode == "project-docs":
-        targets = project_doc_targets(
-            args.project, include_papers=not args.books_only
-        )
+        targets = project_doc_targets(args.project, include_papers=not args.books_only)
     else:
         raw = args.projects_json
         if raw is None:
@@ -178,8 +178,9 @@ def main(argv: list[str] | None = None) -> int:
             else:
                 disposition = "reused" if result.reused else "generated"
                 print(
-                    f"[reasbook-build] {disposition} {len(result.pages)} project "
-                    f"documentation page(s) in {result.output_root}"
+                    f"[reasbook-build] {disposition} {len(result.pages)} API "
+                    f"page(s) from {len(result.targets)} project root(s) in "
+                    f"{result.output_root}"
                 )
             return 0
         positional_targets = list(getattr(args, "targets", []) or [])
@@ -189,7 +190,11 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "cache":
             if not options.run_cache_get:
                 if args.json:
-                    print(json.dumps({"status": "skipped", "reason": "cache preflight disabled"}))
+                    print(
+                        json.dumps(
+                            {"status": "skipped", "reason": "cache preflight disabled"}
+                        )
+                    )
                 else:
                     print("[reasbook-build] cache preflight skipped")
                 return 0
@@ -204,12 +209,17 @@ def main(argv: list[str] | None = None) -> int:
             )
             result = SubprocessRunner(stream=True).run(command)
             if args.json:
-                print(json.dumps({
-                    "argv": list(result.argv),
-                    "returncode": result.returncode,
-                    "timed_out": result.timed_out,
-                    "duration_seconds": result.duration_seconds,
-                }, indent=2))
+                print(
+                    json.dumps(
+                        {
+                            "argv": list(result.argv),
+                            "returncode": result.returncode,
+                            "timed_out": result.timed_out,
+                            "duration_seconds": result.duration_seconds,
+                        },
+                        indent=2,
+                    )
+                )
             return 0 if result.succeeded else 1
         if args.command == "plan":
             plan = service.plan(args.project, options)
