@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reasbook-build-sdk"
+version = "0.1.0"
+description = "Reusable, transport-neutral build planning and execution for Lean Lake projects"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["reasbook-sdk-common==0.1.0"]
+
+[project.scripts]
+reasbook-build = "reasbook_build_sdk.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+reasbook_build_sdk = ["py.typed"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "../common/src"]

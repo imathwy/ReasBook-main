@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+COMMON_ROOT="$(cd "$ROOT_DIR/../common" && pwd)"
+export PYTHONPATH="$ROOT_DIR/src:$COMMON_ROOT/src${PYTHONPATH:+:$PYTHONPATH}"
+exec "$COMMON_ROOT/bin/python" -m reasbook_build_sdk "$@"

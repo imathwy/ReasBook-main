@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+# Select a Python 3.11+ interpreter for every capability CLI.
+set -euo pipefail
+
+COMMON_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+REPO_ROOT="$(cd "$COMMON_ROOT/../.." && pwd)"
+WORKSPACE_ROOT="$(cd "$REPO_ROOT/.." && pwd)"
+requested="${REASBOOK_PYTHON_BIN:-${PYTHON_BIN:-}}"
+if [[ -n "$requested" ]]; then
+  candidates=("$requested")
+else
+  candidates=(
+    "$WORKSPACE_ROOT/Review/reasbook-reviewer/.python311/bin/python"
+    "$WORKSPACE_ROOT/Review/reasbook-reviewer/.venv/bin/python"
+    "$WORKSPACE_ROOT/.python311/bin/python"
+    "$REPO_ROOT/.python311/bin/python"
+    python3.13
+    python3.12
+    python3.11
+    python
+  )
+fi
+
+for candidate in "${candidates[@]}"; do
+  resolved="$candidate"
+  if [[ "$candidate" != /* && "$candidate" != */* ]]; then
+    resolved="$(command -v "$candidate" 2>/dev/null || true)"
+  fi
+  if [[ -n "$resolved" && -x "$resolved" ]] && \
+    "$resolved" -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 11) else 1)' >/dev/null 2>&1; then
+    exec "$resolved" "$@"
+  fi
+done
+
+printf '%s\n' '[reasbook-sdk] Python 3.11 or newer is required; set REASBOOK_PYTHON_BIN.' >&2
+exit 2

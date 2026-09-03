@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reasbook-sdk-common"
+version = "0.1.0"
+description = "Shared command, path, and file primitives for ReasBook SDKs"
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+reasbook_sdk_common = ["py.typed"]

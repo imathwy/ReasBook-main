@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "theorem-graph-sdk"
+version = "0.1.0"
+description = "Generate reusable theorem dependency graph data for Lean projects"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["reasbook-sdk-common==0.1.0"]
+
+[project.scripts]
+theorem-graph = "theorem_graph_sdk.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+theorem_graph_sdk = [
+  "py.typed",
+  "resources/Extract.lean",
+  "resources/assets/*.html",
+  "resources/assets/*.js",
+  "resources/assets/*.css",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "../common/src"]
