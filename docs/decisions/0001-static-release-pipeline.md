@@ -28,6 +28,9 @@ site artifact to GitHub's compute environment.
 - GitHub Releases store the immutable bundle, release manifest, and checksums.
   GitHub Actions only verifies those assets and deploys the extracted static
   tree to Pages; it never performs a full Lean build.
+- GitHub Pages receives only a site that satisfies its hosting limits. A full
+  bundle that exceeds those limits remains a valid release artifact for the
+  future self-hosted service, but it is not dispatched to Pages.
 - The same verified bundle is the deployment boundary for the future
   self-hosted service. Hosting adapters must not change bundle contents.
 
@@ -57,5 +60,9 @@ history.
   all existing asset digests match exactly.
 - Rollback redeploys a previous verified release tag; it does not rebuild or
   overwrite an old release.
+- A Pages candidate must be checked independently from the compressed Release
+  asset: the published tree must stay below GitHub Pages' 1 GB limit and its
+  deployment must finish within 10 minutes. Compression does not relax the
+  published-tree limit.
 - Changes to release tooling require normal code review and CI before a new
   release is generated.

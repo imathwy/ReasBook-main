@@ -19,6 +19,7 @@ if str(PAGES) not in sys.path:
     sys.path.insert(0, str(PAGES))
 
 import assemble  # noqa: E402
+import update_readme  # noqa: E402
 import verify  # noqa: E402
 
 
@@ -33,6 +34,26 @@ def working_directory(path: Path):
 
 
 class RepositoryScriptTests(unittest.TestCase):
+    def test_readme_resource_labels_describe_release_state(self) -> None:
+        excluded = {
+            "kind": "books",
+            "name": "ProbabilityTheory_Klenke_2020",
+            "slug": "probabilitytheory_klenke_2020",
+        }
+        no_verso = {
+            "kind": "books",
+            "name": "IntegerProgramming_Conforti_2014",
+            "slug": "integerprogramming_conforti_2014",
+        }
+
+        self.assertEqual(
+            update_readme.resource_cell(excluded),
+            "Source only (excluded from the current release profile)",
+        )
+        resource = update_readme.resource_cell(no_verso)
+        self.assertIn("Verso not published", resource)
+        self.assertNotIn("TBD", resource)
+
     def test_catalog_display_names_preserve_bibliographic_structure(self) -> None:
         self.assertEqual(
             assemble.display_name("RiemannSurfaces_Forster_1981"),
