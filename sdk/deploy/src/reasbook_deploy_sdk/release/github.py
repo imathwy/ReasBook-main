@@ -111,17 +111,8 @@ class GitHubReleasePublisher:
                 "planned",
             )
 
-        exists = self._run(
-            "release",
-            "view",
-            tag,
-            "--repo",
-            self.profile.repository,
-            "--json",
-            "isDraft,targetCommitish,assets",
-            check=False,
-        )
-        if exists.returncode != 0:
+        existing_release = self._release_by_tag(tag)
+        if existing_release is None:
             trusted_sha = self._trusted_target()
             self._run(
                 "release",
@@ -148,7 +139,7 @@ class GitHubReleasePublisher:
         else:
             tag_target = self._tag_target(tag)
             missing = self._validate_existing_release(
-                exists.stdout, assets, tag_target
+                existing_release, assets, tag_target
             )
             if missing:
                 self._run(
@@ -200,6 +191,29 @@ class GitHubReleasePublisher:
             "published",
             run_id,
         )
+
+    def _release_by_tag(self, tag: str) -> dict[str, Any] | None:
+        """Return raw REST release metadata, treating only an explicit 404 as absent."""
+        result = self._run(
+            "api",
+            f"repos/{self.profile.repository}/releases/tags/{tag}",
+            check=False,
+        )
+        if result.returncode != 0:
+            detail = (result.stderr or result.stdout).strip()
+            if re.search(r"(?:HTTP\s+404|\b404\s+Not Found\b)", detail, re.I):
+                return None
+            raise DeployExecutionError(
+                "GitHub CLI release lookup failed"
+                + (f": {detail}" if detail else "")
+            )
+        try:
+            release = json.loads(result.stdout)
+        except json.JSONDecodeError as exc:
+            raise DeployExecutionError("GitHub returned invalid release JSON") from exc
+        if not isinstance(release, dict):
+            raise DeployExecutionError("GitHub release JSON must be an object")
+        return release
 
     def _trusted_target(self) -> str:
         result = self._run(
@@ -284,18 +298,16 @@ class GitHubReleasePublisher:
 
     @staticmethod
     def _validate_existing_release(
-        payload: str,
+        release: dict[str, Any],
         assets: tuple[Path, ...],
         tag_target: str,
     ) -> tuple[Path, ...]:
-        try:
-            release = json.loads(payload)
-        except json.JSONDecodeError as exc:
-            raise DeployExecutionError("GitHub CLI returned invalid release JSON") from exc
-        if not isinstance(release, dict) or release.get("targetCommitish") != tag_target:
+        if release.get("target_commitish") != tag_target:
             raise DeployExecutionError(
                 "existing release target does not match its immutable tag"
             )
+        if not isinstance(release.get("draft"), bool):
+            raise DeployExecutionError("existing release has invalid draft metadata")
         remote_assets = release.get("assets")
         if not isinstance(remote_assets, list):
             raise DeployExecutionError("existing release has invalid asset metadata")
@@ -303,14 +315,25 @@ class GitHubReleasePublisher:
             asset.name: (asset.stat().st_size, f"sha256:{_sha256_file(asset)}")
             for asset in assets
         }
-        actual = {
-            str(item.get("name")): (
-                int(item.get("size", -1)),
-                str(item.get("digest") or ""),
-            )
-            for item in remote_assets
-            if isinstance(item, dict)
-        }
+        actual: dict[str, tuple[int, str]] = {}
+        for item in remote_assets:
+            if not isinstance(item, dict):
+                raise DeployExecutionError("existing release has invalid asset metadata")
+            name = item.get("name")
+            size = item.get("size")
+            digest = item.get("digest")
+            if (
+                not isinstance(name, str)
+                or not name
+                or isinstance(size, bool)
+                or not isinstance(size, int)
+                or size < 0
+                or not isinstance(digest, str)
+                or not re.fullmatch(r"sha256:[0-9a-f]{64}", digest)
+                or name in actual
+            ):
+                raise DeployExecutionError("existing release has invalid asset metadata")
+            actual[name] = (size, digest)
         mismatched = {
             name for name in actual.keys() & expected.keys() if actual[name] != expected[name]
         }
@@ -320,7 +343,7 @@ class GitHubReleasePublisher:
                 "existing release assets differ; refusing to overwrite immutable assets"
             )
         missing_names = expected.keys() - actual.keys()
-        if missing_names and not release.get("isDraft"):
+        if missing_names and not release["draft"]:
             raise DeployExecutionError(
                 "published release is missing immutable assets; refusing to modify it"
             )
