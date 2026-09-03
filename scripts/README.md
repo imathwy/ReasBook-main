@@ -16,8 +16,24 @@ Normal local entrypoints are:
 ```bash
 ./scripts/build/all.sh
 ./scripts/build/site.sh
-./scripts/preview/serve.py 18000
+./sdk/common/bin/python ./scripts/preview/serve.py 18000
 ```
+
+The preview server expects the generated GitHub Pages root (`/ReasBook/`). If
+an authenticated workspace exposes the port below an additional path prefix,
+pass the prefix that the proxy strips before forwarding the request:
+
+```bash
+REASBOOK_SITE_DIR=/path/to/verified/site \
+./sdk/common/bin/python ./scripts/preview/serve.py 3000 \
+  --host 0.0.0.0 \
+  --site-root /ReasBook/ \
+  --public-prefix /workspace/proxy/3000
+```
+
+Open the proxy URL printed by the workspace, followed by `/ReasBook/`. The
+option rewrites responses in memory; it never modifies the verified release
+tree.
 
 Removed wrapper paths map directly to these maintained entrypoints:
 

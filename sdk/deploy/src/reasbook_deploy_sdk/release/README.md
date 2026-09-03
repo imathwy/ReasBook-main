@@ -87,12 +87,27 @@ PREVIEW="$REASBOOK_CACHE_ROOT/previews/$RELEASE_ID"
 
 REASBOOK_SITE_DIR="$PREVIEW" \
 REASBOOK_DOC_SOURCE="$PREVIEW/docs" \
-./scripts/preview/serve.py 18000 --site-root /ReasBook/
+./sdk/common/bin/python ./scripts/preview/serve.py 18000 \
+  --site-root /ReasBook/
 ```
 
 Open `http://127.0.0.1:18000/ReasBook/`. Check the catalog, a canonical
 project, a version-qualified project, API documentation, Verso output, and a
 theorem map before publication.
+
+For a path-based workspace proxy, also bind the workspace interface and pass
+the external path that the proxy removes:
+
+```bash
+REASBOOK_SITE_DIR="$PREVIEW" \
+REASBOOK_DOC_SOURCE="$PREVIEW/docs" \
+./sdk/common/bin/python ./scripts/preview/serve.py 3000 \
+  --host 0.0.0.0 --site-root /ReasBook/ \
+  --public-prefix /workspace/proxy/3000
+```
+
+This changes responses only; the verified bundle remains byte-for-byte
+unchanged.
 
 ## GitHub hosting limits
 

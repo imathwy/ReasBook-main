@@ -276,6 +276,48 @@ class RepositoryScriptTests(unittest.TestCase):
             self.assertEqual(raised.exception.code, 1)
             self.assertIn("Broken ReasBook links", output.getvalue())
 
+    def test_pages_verifier_accepts_single_page_verso_project(self) -> None:
+        project = {
+            "kind": "papers",
+            "kindTitle": "Papers",
+            "name": "DemoPaper",
+            "slug": "demopaper",
+            "branch": "v4.32.2",
+        }
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            site = root / ".site"
+            pages = site / "sites" / "demopaper" / "pages"
+            project_docs = site / "sites" / "demopaper" / "docs"
+            canonical_docs = (
+                site / "docs" / "ReasBook" / "Papers" / "DemoPaper"
+            )
+            (site / "docs" / "ReasBook" / "Books").mkdir(parents=True)
+            pages.mkdir(parents=True)
+            project_docs.mkdir(parents=True)
+            canonical_docs.mkdir(parents=True)
+            page = "<!doctype html><html><body>Complete paper</body></html>"
+            (site / "index.html").write_text(page, encoding="utf-8")
+            (pages / "index.html").write_text(page, encoding="utf-8")
+            (project_docs / "Paper.html").write_text(page, encoding="utf-8")
+            (canonical_docs / "Paper.html").write_text(page, encoding="utf-8")
+
+            output = io.StringIO()
+            values = {
+                "PROJECTS_JSON": json.dumps([project]),
+                "REASBOOK_REQUIRE_DOCS": "1",
+                "REASBOOK_REQUIRE_THEOREM_MAPS": "0",
+                "REASBOOK_SITE_ROOT": "/ReasBook/",
+            }
+            with (
+                working_directory(root),
+                patch.dict(os.environ, values, clear=False),
+                redirect_stdout(output),
+            ):
+                verify.main()
+
+            self.assertIn("ReasBook pages verified", output.getvalue())
+
     def test_link_checker_uses_base_without_treating_it_as_navigation(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             site = Path(temp)
