@@ -154,7 +154,7 @@
     var repository = String(project.repository || "").replace(/\/$/, "");
     var sourceRoot = encodePath(project.sourceRoot || "");
     var file = encodePath(item.file || "");
-    return repository + "/blob/" + encodeURIComponent(project.branch) + "/" +
+    return repository + "/blob/" + encodeURIComponent(project.commit) + "/" +
       sourceRoot + (sourceRoot ? "/" : "") + file +
       "?plain=1#L" + Number(item.line || 1);
   }

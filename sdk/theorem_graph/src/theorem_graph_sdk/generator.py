@@ -230,7 +230,19 @@ class GraphGenerator:
             output = destination / project.kind / project.slug
             curated_static = project.root / "theorem-map"
             if has_curated_map(project):
-                copy_curated_map(curated_static, output)
+                copy_curated_map(
+                    curated_static,
+                    output,
+                    project={
+                        "id": project.project_id,
+                        "title": project_title(project),
+                        "kind": project.kind,
+                        "branch": self.config.branch,
+                        "commit": commit,
+                        "repository": self.config.repository,
+                        "sourceRoot": project.source_root,
+                    },
+                )
                 nodes, edges = curated_counts(curated_static)
                 mode = "curated"
             elif self.config.include_generic:

@@ -64,8 +64,11 @@ from reasbook_deploy_sdk.release.self_hosted import SelfHostedInstaller
 from reasbook_deploy_sdk.release.source import _credential_free_remote
 from reasbook_deploy_sdk.release.store import ReleaseLayout, ReleaseStore
 from reasbook_deploy_sdk.release.tooling import (
+    TOOLING_SNAPSHOT_ENTRIES,
     bind_tooling_revision,
+    snapshot_ignore_for,
     tooling_digest_from_revision,
+    tooling_source_digest,
 )
 
 
@@ -416,6 +419,50 @@ class ReleasePlanningTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(DeployConfigError, "already bound"):
             bind_tooling_revision(revision, digest)
+
+    def test_tooling_snapshot_ignores_sdk_packaging_outputs_by_path(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "repo"
+            for sequence, relative in enumerate(TOOLING_SNAPSHOT_ENTRIES):
+                directory = root / relative
+                directory.mkdir(parents=True, exist_ok=True)
+                (directory / f"source-{sequence}.txt").write_text(
+                    f"source {sequence}\n", encoding="utf-8"
+                )
+            capability_source = (
+                root / "sdk" / "build" / "src" / "reasbook_build_sdk" / "core.py"
+            )
+            capability_source.parent.mkdir(parents=True)
+            capability_source.write_text("VALUE = 1\n", encoding="utf-8")
+            clean_digest = tooling_source_digest(root)
+
+            generated = (
+                root / "sdk" / "build" / "build" / "lib" / "stale.py",
+                root / "sdk" / "build" / "dist" / "stale.whl",
+                root
+                / "sdk"
+                / "build"
+                / "src"
+                / "reasbook_build_sdk.egg-info"
+                / "PKG-INFO",
+                root / "sdk" / "deploy" / "build" / "lib" / "stale.py",
+            )
+            for path in generated:
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(f"generated: {path.name}\n", encoding="utf-8")
+
+            self.assertEqual(tooling_source_digest(root), clean_digest)
+            copied = Path(temp) / "copied"
+            shutil.copytree(
+                root / "sdk",
+                copied / "sdk",
+                ignore=snapshot_ignore_for(root),
+            )
+            self.assertTrue(
+                (copied / capability_source.relative_to(root)).is_file()
+            )
+            for path in generated:
+                self.assertFalse((copied / path.relative_to(root)).exists())
 
     def test_duplicate_project_without_canonical_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

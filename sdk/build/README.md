@@ -45,10 +45,19 @@ explicit entry root, it follows imports through project-owned Lean sources and
 processes the reachable modules in batches of at most 128. Mathlib, Lean, and
 other external libraries are excluded. Modern doc-gen writes and renders a
 trimmed database; older doc-gen versions use a compatible bounded renderer.
-Both paths close referenced external HTML links with explicit lightweight
+The legacy renderer discovers MD4Lean's built native-library layout and loads
+its optional C provider before the single aggregate library, covering both the
+v4.26 and v4.30 naming schemes without branching on version strings. Both paths
+close referenced external HTML links with explicit lightweight
 stubs and reject missing non-HTML assets. Output is an atomic,
 content-addressed `project-modules-v2` cache; provide `--repository` and
 `--revision` together when source links must be pinned to an immutable commit.
+The repository adapter `scripts/build/project_docs.sh` uses exactly
+`REASBOOK_LAKE_TARGETS` when a release/deployment supplies it, ahead of any
+ambient `PROJECT_DOC_MODULES` operator override. Automatic Lake library
+discovery is only used when neither selection variable is present; an explicit
+but empty release selection is rejected instead of expanding to every
+registered project.
 
 For automation, use the typed API:
 
