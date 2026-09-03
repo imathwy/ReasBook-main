@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from dataclasses import dataclass
 import hashlib
 import json
 import os
 from pathlib import Path, PurePosixPath
+import re
 import shutil
 import tempfile
 import uuid
@@ -27,6 +29,20 @@ from .results import (
     ReleaseManifest,
 )
 from .store import ReleaseLayout, ReleaseStore
+
+
+def normalize_sha256(value: str | None) -> str | None:
+    """Return a lowercase bare SHA-256, rejecting present-but-empty values."""
+
+    if value is None:
+        return None
+    normalized = str(value).strip().removeprefix("sha256:")
+    if not re.fullmatch(r"[0-9A-Fa-f]{64}", normalized):
+        raise DeployConfigError(
+            "expected bundle SHA-256 must be 64 hexadecimal characters, "
+            "optionally prefixed with sha256:"
+        )
+    return normalized.lower()
 
 
 def sha256_file(path: Path) -> str:
@@ -64,6 +80,13 @@ def site_tree_digest(root: Path) -> tuple[str, int, int]:
     if file_count == 0:
         raise DeployExecutionError("site tree is empty")
     return f"sha256:{digest.hexdigest()}", file_count, total_bytes
+
+
+@dataclass(frozen=True)
+class _ArchiveMember:
+    name: str
+    kind: str
+    size: int
 
 
 class ReleaseBundler:
@@ -270,6 +293,28 @@ class ReleaseBundler:
 class BundleVerifier:
     """Verify checksums, archive paths, manifest, and extracted site digest."""
 
+    def __init__(
+        self,
+        *,
+        max_site_files: int = 500_000,
+        max_site_bytes: int = 100_000_000_000,
+        max_archive_members: int = 1_501_024,
+        max_manifest_bytes: int = 16_000_000,
+    ) -> None:
+        limits = {
+            "max_site_files": max_site_files,
+            "max_site_bytes": max_site_bytes,
+            "max_archive_members": max_archive_members,
+            "max_manifest_bytes": max_manifest_bytes,
+        }
+        for name, value in limits.items():
+            if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+                raise DeployConfigError(f"{name} must be a positive integer")
+        self.max_site_files = max_site_files
+        self.max_site_bytes = max_site_bytes
+        self.max_archive_members = max_archive_members
+        self.max_manifest_bytes = max_manifest_bytes
+
     def inspect(
         self,
         bundle: Path,
@@ -281,18 +326,19 @@ class BundleVerifier:
         archive = Path(bundle).expanduser().resolve()
         if not archive.is_file() or archive.is_symlink():
             raise DeployConfigError(f"bundle does not exist: {archive}")
+        normalized = normalize_sha256(expected_sha256)
         actual = sha256_file(archive)
-        if expected_sha256:
-            normalized = expected_sha256.removeprefix("sha256:")
+        if normalized is not None:
             if normalized != actual:
                 raise DeployExecutionError(
                     f"bundle checksum mismatch: expected {normalized}, got {actual}"
                 )
-        names = self._list_archive(archive)
-        self._validate_members(names)
+        members = self._list_archive(archive)
+        self._validate_members(members)
         manifest = ReleaseManifest.from_dict(
             self._read_archive_json(archive, "release-manifest.json")
         )
+        self._validate_archive_payload(members, manifest)
         spec = ReleaseSpec.from_dict(
             self._read_archive_json(archive, "site/release-spec.json")
         )
@@ -390,25 +436,22 @@ class BundleVerifier:
             )
         return value
 
-    @staticmethod
-    def _list_archive(bundle: Path) -> tuple[str, ...]:
+    def _list_archive(self, bundle: Path) -> tuple[_ArchiveMember, ...]:
         runner = CommandRunner()
-        try:
-            result = runner.run(
-                Command(
-                    ("tar", "--zstd", "-tf", str(bundle)),
-                    cwd=bundle.parent,
-                    timeout=300.0,
-                )
-            )
-        except CommandExecutionError as exc:
-            raise DeployExecutionError(f"cannot inspect release bundle: {exc}") from exc
-        if result.returncode != 0:
-            raise DeployExecutionError("cannot list release bundle")
         try:
             verbose = runner.run(
                 Command(
-                    ("tar", "--zstd", "-tvf", str(bundle)),
+                    (
+                        "tar",
+                        "--zstd",
+                        "--list",
+                        "--verbose",
+                        "--numeric-owner",
+                        "--full-time",
+                        "--quoting-style=escape",
+                        "--file",
+                        str(bundle),
+                    ),
                     cwd=bundle.parent,
                     timeout=300.0,
                 )
@@ -417,27 +460,70 @@ class BundleVerifier:
             raise DeployExecutionError(f"cannot inspect release bundle: {exc}") from exc
         if verbose.returncode != 0:
             raise DeployExecutionError("cannot inspect release bundle types")
-        unsupported = [
-            line
-            for line in verbose.stdout.splitlines()
-            if line and line[0] not in {"-", "d"}
-        ]
-        if unsupported:
-            raise DeployExecutionError(
-                "bundle contains links or special archive members"
-            )
-        return tuple(line for line in result.stdout.splitlines() if line)
+        members: list[_ArchiveMember] = []
+        for line in verbose.stdout.splitlines():
+            if not line:
+                continue
+            fields = line.split(maxsplit=5)
+            if len(fields) != 6 or not fields[0]:
+                raise DeployExecutionError("cannot parse release bundle members")
+            kind = fields[0][0]
+            if kind not in {"-", "d"}:
+                raise DeployExecutionError(
+                    "bundle contains links or special archive members"
+                )
+            try:
+                size = int(fields[2])
+            except ValueError as exc:
+                raise DeployExecutionError(
+                    "cannot parse release bundle member size"
+                ) from exc
+            if size < 0:
+                raise DeployExecutionError("bundle contains a negative member size")
+            members.append(_ArchiveMember(fields[5], kind, size))
+            if len(members) > self.max_archive_members:
+                raise DeployExecutionError(
+                    "bundle exceeds the archive-member safety limit"
+                )
+        return tuple(members)
 
-    @staticmethod
-    def _validate_members(names: tuple[str, ...]) -> None:
-        if "release-manifest.json" not in names:
-            raise DeployExecutionError("bundle has no release-manifest.json")
+    def _validate_members(self, members: tuple[_ArchiveMember, ...]) -> None:
+        names = [member.name for member in members]
+        if len(names) != len(set(names)):
+            raise DeployExecutionError("bundle contains duplicate archive members")
+        by_name = {member.name: member for member in members}
+        metadata = {
+            "release-manifest.json": "release manifest",
+            "site/release-spec.json": "ReleaseSpec",
+        }
+        for member_name, label in metadata.items():
+            member = by_name.get(member_name)
+            if member is None:
+                raise DeployExecutionError(f"bundle has no {member_name}")
+            if member.kind != "-":
+                raise DeployExecutionError(
+                    f"bundle {label} is not a regular file"
+                )
+            if member.size > self.max_manifest_bytes:
+                raise DeployExecutionError(
+                    f"bundle {label} exceeds its safety limit"
+                )
         if not any(name.startswith("site/") for name in names):
             raise DeployExecutionError("bundle has no site tree")
-        for name in names:
+        for member in members:
+            name = member.name
             path = PurePosixPath(name)
+            canonical = path.as_posix()
+            if member.kind == "d":
+                canonical += "/"
             if (
-                path.is_absolute()
+                "\\" in name
+                or any(
+                    ord(character) < 32 or ord(character) == 127
+                    for character in name
+                )
+                or name != canonical
+                or path.is_absolute()
                 or any(part in {"", ".", ".."} for part in path.parts)
                 or not (
                     name == "release-manifest.json"
@@ -446,6 +532,27 @@ class BundleVerifier:
                 )
             ):
                 raise DeployExecutionError(f"unsafe bundle member: {name!r}")
+
+    def _validate_archive_payload(
+        self,
+        members: tuple[_ArchiveMember, ...],
+        manifest: ReleaseManifest,
+    ) -> None:
+        site_files = tuple(
+            member
+            for member in members
+            if member.kind == "-" and member.name.startswith("site/")
+        )
+        count = len(site_files)
+        total = sum(member.size for member in site_files)
+        if count > self.max_site_files:
+            raise DeployExecutionError("bundle exceeds the site-file safety limit")
+        if total > self.max_site_bytes:
+            raise DeployExecutionError("bundle exceeds the site-byte safety limit")
+        if count != manifest.file_count or total != manifest.total_bytes:
+            raise DeployExecutionError(
+                "bundle archive sizes do not match release manifest"
+            )
 
     @staticmethod
     def _extract(bundle: Path, destination: Path) -> None:
@@ -529,6 +636,7 @@ class BundleVerifier:
 __all__ = [
     "BundleVerifier",
     "ReleaseBundler",
+    "normalize_sha256",
     "sha256_file",
     "site_tree_digest",
 ]

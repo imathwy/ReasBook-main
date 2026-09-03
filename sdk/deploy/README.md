@@ -32,8 +32,13 @@ Install the shared package and capability packages before this package:
 ```bash
 python3.11 -m pip install -e sdk/common
 python3.11 -m pip install -e sdk/build -e sdk/verso \
-  -e sdk/theorem_graph -e sdk/comparator -e 'sdk/deploy[capabilities]'
+  -e sdk/theorem_graph -e sdk/comparator -e sdk/deploy
 ```
+
+The deploy distribution declares those five sibling SDKs as required runtime
+dependencies. For a transferred wheel installation, place all six SDK wheels
+in one directory, make a compatible PyYAML wheel or package index available,
+and pass the SDK directory to pip with `--find-links`.
 
 The repository's `sdk/deploy/bin/reasbook-deploy` entry point sets local source
 paths automatically, so an editable install is not required for a checkout.
@@ -138,18 +143,86 @@ For immutable releases, use the release CLI rather than Compose directly:
 
 ```bash
 # Verify and serve the GitHub candidate from the shared cache.
-./sdk/deploy/bin/reasbook-deploy release preview RELEASE_ID --artifact pages
+RELEASE_ID="${RELEASE_ID:?set RELEASE_ID to the generated release ID}"
+./sdk/deploy/bin/reasbook-deploy release preview "$RELEASE_ID" --artifact pages
 
-# Install a transferred full bundle without requiring release-cache metadata.
-FULL_SHA256="$(awk 'NR == 1 { print $1 }' SHA256SUMS)"
-./sdk/deploy/bin/reasbook-deploy release install RELEASE_ID.site.tar.zst \
-  --sha256 "$FULL_SHA256" --deploy-root /srv/reasbook \
+# Install the transferred full bundle, SHA256SUMS, and ReleaseSet. Obtain the
+# policy digest from the trusted build channel, not from the transferred files.
+POLICY_SHA256="${POLICY_SHA256:?set the trusted sha256 artifact-policy digest}"
+FULL_BUNDLE="${RELEASE_ID}.site.tar.zst"
+FULL_SHA256="$(awk -v bundle="$FULL_BUNDLE" \
+  '$2 == bundle { print $1 }' SHA256SUMS)"
+: "${FULL_SHA256:?SHA256SUMS has no matching full bundle}"
+reasbook-deploy release install "$FULL_BUNDLE" \
+  --sha256 "$FULL_SHA256" --release-set release-set.json \
+  --artifact-policy-sha256 "$POLICY_SHA256" \
+  --deploy-root /srv/reasbook \
   --health-url http://127.0.0.1/ReasBook/release-spec.json
 ```
 
+After the pinned Pages workflow is merged to the GitHub default branch, run
+`release configure-pages --profile github-pages --dry-run` and then the same
+command without `--dry-run`. It creates only missing settings and fails closed
+when a custom domain or any branch policy other than the exact default branch
+already exists.
+
 The installer lays the configured base path below
 `/srv/reasbook/current/public`; point the static server at that stable document
-root. See `config/deploy/nginx-self-hosted.conf.example`.
+root. See `config/deploy/nginx-self-hosted.conf`.
+
+For the containerized production server, install the first release with the
+explicit filesystem probe because no HTTP server exists yet:
+
+```bash
+RELEASE_ID="${RELEASE_ID:?set RELEASE_ID to the generated release ID}"
+POLICY_SHA256="${POLICY_SHA256:?set the trusted sha256 artifact-policy digest}"
+FULL_BUNDLE="${RELEASE_ID}.site.tar.zst"
+FULL_SHA256="$(awk -v bundle="$FULL_BUNDLE" \
+  '$2 == bundle { print $1 }' SHA256SUMS)"
+: "${FULL_SHA256:?SHA256SUMS has no matching full bundle}"
+reasbook-deploy release install "$FULL_BUNDLE" \
+  --sha256 "$FULL_SHA256" --release-set release-set.json \
+  --artifact-policy-sha256 "$POLICY_SHA256" \
+  --deploy-root /srv/reasbook --filesystem-health-only
+```
+
+Then start the dedicated Compose project in one command:
+
+```bash
+REASBOOK_DEPLOY_ROOT=/srv/reasbook \
+  docker compose -f docker-compose.self-hosted.yml up -d --wait
+```
+
+This production Compose file is separate from `docker-compose.yml`, which
+remains the local generated-site preview. It mounts the entire deployment root
+read-only and serves `/srv/reasbook/current/public`; do not bind-mount
+`current/public` itself, because Docker would retain the symlink target chosen
+when the container was created. Subsequent `release install` and `release
+rollback` commands atomically replace `current`, and new Nginx requests observe
+the new release without rebuilding or restarting the container. Use
+`http://127.0.0.1:8080/ReasBook/release-spec.json` as the installer health URL;
+override `REASBOOK_BIND_ADDRESS` or `REASBOOK_SELF_HOST_PORT` when placing the
+container behind a reverse proxy. The default is a versioned stable Nginx
+image; set `REASBOOK_NGINX_IMAGE` to an approved registry image or digest when
+production policy requires a separately pinned supply chain.
+
+After the container is healthy, use the HTTP probe for every install or
+rollback so an invalid switch is automatically reverted:
+
+```bash
+reasbook-deploy release install "$FULL_BUNDLE" \
+  --sha256 "$FULL_SHA256" --release-set release-set.json \
+  --artifact-policy-sha256 "$POLICY_SHA256" \
+  --deploy-root /srv/reasbook \
+  --health-url http://127.0.0.1:8080/ReasBook/release-spec.json
+```
+
+The checksum and expected artifact-policy digest are trust inputs recorded on
+the build/publish side. The destination rejects a ReleaseSet that does not bind
+the full archive's checksum, ReleaseSpec, site digest, file count, byte count,
+and policy before writing the deployment root. Every non-dry-run install needs
+either an HTTP(S) health URL or the explicit bootstrap-only
+`--filesystem-health-only` mode.
 
 ## CI helpers
 

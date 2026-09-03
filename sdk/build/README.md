@@ -11,7 +11,7 @@ lake.py      turn project + options into immutable commands
 command.py   command/result value objects and runner contract
 executor.py  local subprocess runner and callable adapter
 service.py   plan/execute orchestration and output verification
-docs.py      bounded project-root API docs and dependency-link closure
+docs.py      bounded reachable project-module docs and dependency-link closure
 cli.py       human and JSON command-line interface
 targets.py   ReasBook aggregate/per-project target discovery
 ```
@@ -40,13 +40,15 @@ and `--no-verify-outputs` for a project whose build does not produce `.olean`
 files. Extra Lake flags are explicit and are inserted before the subcommand;
 documentation builds can use `--lake-arg=-R --lake-arg=-Kenv=dev`.
 
-Release-oriented documentation should use `project-docs`. It generates only
-the explicit project-root modules, writes the smallest supported doc-gen
-database/index, and closes internal HTML links with lightweight placeholders.
-This avoids materializing transitive Mathlib API documentation while keeping
-published links valid. Its output is an atomic, content-addressed cache;
-provide `--repository-url` and `--revision` together when source links must be
-pinned to an immutable commit.
+Release-oriented documentation should use `project-docs`. Starting from each
+explicit entry root, it follows imports through project-owned Lean sources and
+processes the reachable modules in batches of at most 128. Mathlib, Lean, and
+other external libraries are excluded. Modern doc-gen writes and renders a
+trimmed database; older doc-gen versions use a compatible bounded renderer.
+Both paths close referenced external HTML links with explicit lightweight
+stubs and reject missing non-HTML assets. Output is an atomic,
+content-addressed `project-modules-v2` cache; provide `--repository` and
+`--revision` together when source links must be pinned to an immutable commit.
 
 For automation, use the typed API:
 

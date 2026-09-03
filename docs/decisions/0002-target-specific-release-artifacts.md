@@ -28,20 +28,28 @@ pages, and theorem map remained available at their original URLs.
 
 - One immutable `ReleaseSpec` continues to identify all source commits,
   toolchains, canonical versions, and required build outputs.
-- The build SDK generates API documentation for each selected project root in
-  an isolated, content-addressed cache. It does not render the transitive
-  Mathlib documentation universe. Referenced API pages outside those roots are
-  materialized as explicit lightweight stubs so navigation is link-closed.
+- From each selected entry root, the build SDK follows imports through
+  project-owned Lean modules and documents the reachable closure in batches of
+  at most 128 modules. Mathlib, Lean, and other external libraries are excluded.
+  Referenced external HTML pages are materialized as explicit lightweight
+  stubs so navigation is link-closed.
+- Modern doc-gen writes and renders a database trimmed to that reachable
+  project closure; the legacy adapter renders the same bounded module set via
+  its compatibility path. The isolated, content-addressed cache profile is
+  `project-modules-v2`, so source, toolchain, target, module, doc-gen, or batch
+  policy changes cannot silently reuse incompatible output.
 - Packaging derives two immutable artifacts from the verified aggregate site:
   `full` retains every assembled project version; `pages` retains the public
-  catalog and explicit canonical project versions. Both retain project-root
-  docs, Verso pages, theorem maps, and dependency stubs.
+  catalog and explicit canonical project versions. Both retain reachable
+  project-module docs, Verso pages, theorem maps, and dependency stubs.
 - A `ReleaseSet` binds both artifact names, bundle SHA-256 values, site-tree
   SHA-256 values, file counts, byte counts, and the artifact-policy digest to
   the same `ReleaseSpec`.
 - GitHub Releases carry the Pages bundle, its manifest and checksum, and the
-  `ReleaseSet`. The publish-only workflow verifies all bindings before
-  deploying. It never builds Lean or documentation.
+  `ReleaseSet`. Before upload, the local publisher verifies the policy digest
+  and both artifact records. The publish-only workflow independently verifies
+  the Pages archive and its available ReleaseSet bindings before deploying; it
+  never builds Lean or documentation and does not receive the full archive.
 - Creating a new Release tag requires a clean local checkout at the current
   GitHub default-branch commit. Re-dispatching an existing tag instead trusts
   the already-resolved tag and revalidates every remote asset digest.
@@ -52,8 +60,17 @@ pages, and theorem map remained available at their original URLs.
   versioned directory, exposes the configured base path below `public/`, and
   atomically switches a `current` symlink. A failed health check restores the
   preceding link.
+- A portable self-hosted install requires the matching `ReleaseSet`, the
+  expected bundle SHA-256, and a separately trusted artifact-policy digest.
+  Before extraction it validates archive member types, canonical paths,
+  duplicate names, declared file counts and byte totals, and bounded metadata.
+  Operators must choose either an HTTP(S) health check or an explicit
+  filesystem-only bootstrap check.
 - Both hosts serve the unchanged `/ReasBook/` base path. A self-hosted web
-  server uses `<deploy-root>/current/public` as its document root.
+  server uses `<deploy-root>/current/public` as its document root. The
+  production container mounts the deploy root rather than the resolved
+  `current` target, so it observes later atomic symlink switches without being
+  recreated.
 
 This decision supersedes ADR-0001 only where that record calls for one bundle
 to serve both hosting targets. Its remote-build, canonical-version, immutable

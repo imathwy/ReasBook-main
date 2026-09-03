@@ -16,8 +16,8 @@ the runner is injectable for tests or another execution service.
 ## CLI
 
 ```bash
-python -m verso_build_sdk /path/to/ReasBookWeb \
-  --generator 'python scripts/gen_sections.py' \
+./sdk/verso/bin/verso-build /path/to/ReasBookWeb \
+  --generator 'python3.11 scripts/gen_sections.py' \
   --target exe --target reasbook-site \
   --dry-run
 ```
@@ -26,7 +26,7 @@ Install the package in editable mode when using the console entry point:
 
 ```bash
 python3.11 -m pip install -e sdk/common -e sdk/verso
-verso-build /path/to/site --generator 'python scripts/gen_sections.py'
+verso-build /path/to/site --generator 'python3.11 scripts/gen_sections.py'
 ```
 
 Useful environment settings use the `VERSO_` prefix: `VERSO_TOOLCHAIN`,

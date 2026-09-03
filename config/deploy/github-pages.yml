@@ -24,9 +24,9 @@ policy:
   max_bundle_bytes: 1900000000
 
 # A release has one build identity and two immutable delivery artifacts.
-# Both artifacts use bounded project-root API docs with explicit dependency
-# placeholders. The full artifact retains every project version for self-hosting;
-# Pages keeps only canonical versions.
+# Both artifacts use bounded reachable project-module API docs with explicit
+# external-dependency placeholders. The full artifact retains every project
+# version for self-hosting; Pages keeps only canonical versions.
 artifacts:
   full:
     history_mode: full

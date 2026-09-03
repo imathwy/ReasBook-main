@@ -44,7 +44,7 @@ job runner without changing planning code.
 
 ## Install
 
-Install the common package first, then the capabilities you need:
+For an editable checkout, install the capability packages together:
 
 ```bash
 python3.11 -m pip install -e sdk/common
@@ -52,9 +52,11 @@ python3.11 -m pip install -e sdk/build -e sdk/verso \
   -e sdk/theorem_graph -e sdk/comparator -e sdk/deploy
 ```
 
-`deploy` keeps capability dependencies optional so CI helpers can be installed
-with only `common`; install `-e 'sdk/deploy[capabilities]'` when the deploy
-process will execute Build/Verso/Graph/Comparator stages.
+`deploy` is the total orchestration layer and therefore declares all four
+capability SDKs plus `common` as runtime dependencies. When installing wheels
+on another machine, put the sibling SDK wheels in the same wheel directory and
+install `reasbook-deploy-sdk` with that directory supplied via `--find-links`;
+pip must also be able to resolve the declared PyYAML dependency.
 
 The capability packages have no third-party runtime dependencies beyond the
 sibling common package. `deploy` composes those packages and uses PyYAML for

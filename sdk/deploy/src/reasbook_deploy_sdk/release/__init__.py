@@ -18,6 +18,7 @@ from .artifacts import PagesSiteProjector
 from .builder import LocalReleaseBuilder
 from .build_plan import ReleaseBuildOptions
 from .planner import ReleasePlanner
+from .pages_config import GitHubPagesConfiguration, GitHubPagesConfigurator
 from .service import StaticReleaseService
 from .self_hosted import SelfHostedDeployment, SelfHostedInstaller
 from .results import ReleaseArtifactRecord, ReleasePackageResult, ReleaseSetManifest
@@ -28,6 +29,8 @@ __all__ = [
     "CanonicalProjects",
     "DeploymentProfile",
     "GitHubPublishProfile",
+    "GitHubPagesConfiguration",
+    "GitHubPagesConfigurator",
     "LocalReleaseBuilder",
     "PagesSiteProjector",
     "ProjectSpec",

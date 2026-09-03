@@ -11,9 +11,10 @@ import re
 import time
 from typing import Any
 
-from reasbook_sdk_common import Command, CommandExecutionError, CommandRunner
+from reasbook_sdk_common import CommandRunner
 
 from ..errors import DeployConfigError, DeployExecutionError
+from .github_client import GitHubRepositoryClient
 from .models import GitHubPublishProfile
 from .results import BundleInfo, ReleaseManifest, ReleaseSetManifest
 
@@ -68,8 +69,8 @@ class GitHubPublication:
             ) from exc
 
 
-class GitHubReleasePublisher:
-    """Upload a verified bundle, then dispatch a publish-only Pages workflow."""
+class GitHubReleasePublisher(GitHubRepositoryClient):
+    """Upload a verified Pages bundle, then dispatch a publish-only workflow."""
 
     def __init__(
         self,
@@ -77,10 +78,14 @@ class GitHubReleasePublisher:
         *,
         runner: CommandRunner | None = None,
         repo_root: Path | None = None,
+        expected_base_path: str | None = None,
+        expected_spec_digest: str | None = None,
+        expected_artifact_policy_sha256: str | None = None,
     ) -> None:
-        self.profile = profile
-        self.runner = runner or CommandRunner()
-        self.repo_root = Path(repo_root or Path.cwd()).expanduser().resolve()
+        super().__init__(profile, runner=runner, repo_root=repo_root)
+        self.expected_base_path = expected_base_path
+        self.expected_spec_digest = expected_spec_digest
+        self.expected_artifact_policy_sha256 = expected_artifact_policy_sha256
 
     def publish(
         self,
@@ -104,7 +109,19 @@ class GitHubReleasePublisher:
         for asset in assets:
             if not asset.is_file() or asset.is_symlink():
                 raise DeployExecutionError(f"release asset does not exist: {asset}")
-        self._validate_assets(bundle, assets)
+        if bundle.artifact != "pages":
+            raise DeployExecutionError(
+                "GitHub Pages publication requires the pages artifact"
+            )
+        self._validate_assets(
+            bundle,
+            assets,
+            expected_base_path=self.expected_base_path,
+            expected_spec_digest=self.expected_spec_digest,
+            expected_artifact_policy_sha256=(
+                self.expected_artifact_policy_sha256
+            ),
+        )
         tag = (
             f"{self.profile.release_tag_prefix}-"
             f"{bundle.release_id.removeprefix('site-')}"
@@ -227,48 +244,6 @@ class GitHubReleasePublisher:
             raise DeployExecutionError("GitHub release JSON must be an object")
         return release
 
-    def _default_branch(self) -> str:
-        result = self._run(
-            "repo",
-            "view",
-            self.profile.repository,
-            "--json",
-            "defaultBranchRef",
-            "--jq",
-            ".defaultBranchRef.name",
-        )
-        ref = result.stdout.strip()
-        if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._/-]*", ref) or ".." in ref:
-            raise DeployExecutionError("GitHub returned an unsafe default branch")
-        return ref
-
-    def _trusted_target(self, ref: str | None = None) -> str:
-        default_branch = ref or self._default_branch()
-        target = self._run(
-            "api",
-            f"repos/{self.profile.repository}/commits/{default_branch}",
-            "--jq",
-            ".sha",
-        ).stdout.strip()
-        if not re.fullmatch(r"[0-9a-f]{40}", target):
-            raise DeployExecutionError("GitHub returned an invalid default-branch commit")
-        local_head = self._git("rev-parse", "HEAD").stdout.strip()
-        if local_head != target:
-            raise DeployExecutionError(
-                "local HEAD is not the GitHub default-branch commit; merge and "
-                "pull the release tooling before publishing"
-            )
-        dirty = self._git(
-            "status",
-            "--porcelain=v1",
-            "--untracked-files=all",
-        ).stdout.strip()
-        if dirty:
-            raise DeployExecutionError(
-                "release publication requires a clean Git working tree"
-            )
-        return target
-
     def _tag_target(self, tag: str) -> str:
         result = self._run(
             "api", f"repos/{self.profile.repository}/git/ref/tags/{tag}"
@@ -304,7 +279,14 @@ class GitHubReleasePublisher:
         raise DeployExecutionError("release tag does not resolve to a commit")
 
     @staticmethod
-    def _validate_assets(bundle: BundleInfo, assets: tuple[Path, ...]) -> None:
+    def _validate_assets(
+        bundle: BundleInfo,
+        assets: tuple[Path, ...],
+        *,
+        expected_base_path: str | None = None,
+        expected_spec_digest: str | None = None,
+        expected_artifact_policy_sha256: str | None = None,
+    ) -> None:
         if bundle.artifact == "pages" and not bundle.release_set:
             raise DeployExecutionError(
                 "a Pages publication must include its release set"
@@ -345,9 +327,17 @@ class GitHubReleasePublisher:
         if (
             manifest.release_id != bundle.release_id
             or manifest.artifact != bundle.artifact
+            or (
+                expected_base_path is not None
+                and manifest.base_path != expected_base_path
+            )
+            or (
+                expected_spec_digest is not None
+                and manifest.spec_digest != expected_spec_digest
+            )
         ):
             raise DeployExecutionError(
-                "release manifest does not match the release ID"
+                "release manifest does not match the expected Pages release"
             )
         if bundle.release_set:
             try:
@@ -365,6 +355,11 @@ class GitHubReleasePublisher:
             if (
                 release_set.release_id != bundle.release_id
                 or release_set.spec_digest != manifest.spec_digest
+                or (
+                    expected_artifact_policy_sha256 is not None
+                    and release_set.artifact_policy_sha256
+                    != expected_artifact_policy_sha256
+                )
                 or record.bundle != assets[0].name
                 or record.bundle_sha256 != bundle.bundle_sha256
                 or record.site_tree_sha256 != manifest.site_tree_sha256
@@ -500,34 +495,7 @@ class GitHubReleasePublisher:
             time.sleep(3)
         raise DeployExecutionError(f"timed out waiting for Pages workflow for {tag}")
 
-    def _run(self, *args: str, check: bool = True):
-        try:
-            result = self.runner.run(
-                Command(("gh", *args), cwd=self.repo_root, timeout=300.0)
-            )
-        except CommandExecutionError as exc:
-            raise DeployExecutionError(f"cannot run GitHub CLI: {exc}") from exc
-        if check and result.returncode != 0:
-            detail = (result.stderr or result.stdout).strip()
-            raise DeployExecutionError(
-                f"GitHub CLI command failed: {' '.join(args[:2])}"
-                + (f": {detail}" if detail else "")
-            )
-        return result
-
-    def _git(self, *args: str):
-        try:
-            result = self.runner.run(
-                Command(("git", *args), cwd=self.repo_root, timeout=60.0)
-            )
-        except CommandExecutionError as exc:
-            raise DeployExecutionError(f"cannot inspect local Git state: {exc}") from exc
-        if result.returncode != 0:
-            detail = (result.stderr or result.stdout).strip()
-            raise DeployExecutionError(
-                "local Git inspection failed" + (f": {detail}" if detail else "")
-            )
-        return result
-
-
-__all__ = ["GitHubPublication", "GitHubReleasePublisher"]
+__all__ = [
+    "GitHubPublication",
+    "GitHubReleasePublisher",
+]

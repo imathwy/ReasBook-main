@@ -5,6 +5,7 @@ import json
 import hashlib
 from pathlib import Path
 import shutil
+import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -15,10 +16,15 @@ from reasbook_deploy_sdk.release.build_plan import (
     BranchPlanFactory,
     ReleaseBuildOptions,
 )
-from reasbook_deploy_sdk.release.bundle import BundleVerifier, ReleaseBundler
+from reasbook_deploy_sdk.release.bundle import (
+    BundleVerifier,
+    ReleaseBundler,
+    _ArchiveMember,
+)
 from reasbook_deploy_sdk.release.cli import build_parser
 from reasbook_deploy_sdk.release.artifacts import (
     PagesSiteProjector,
+    artifact_policy_digest,
     create_release_set,
 )
 from reasbook_deploy_sdk.release.config import (
@@ -41,6 +47,7 @@ from reasbook_deploy_sdk.release.models import (
 )
 from reasbook_deploy_sdk.release.planner import ReleasePlanner
 from reasbook_deploy_sdk.release.github import GitHubReleasePublisher
+from reasbook_deploy_sdk.release.pages_config import GitHubPagesConfigurator
 from reasbook_deploy_sdk.release.results import (
     BranchBuildResult,
     BundleInfo,
@@ -89,6 +96,80 @@ def release_manifest_fixture(
         "branches": [],
     }
     return value
+
+
+def github_pages_bundle_fixture(
+    root: Path,
+    release_id: str,
+) -> tuple[BundleInfo, list[Path]]:
+    """Create the four canonical, mutually bound Pages release assets."""
+
+    spec_digest = "sha256:" + release_id.rsplit("-", 1)[-1] + "a" * 52
+    site_digest = "sha256:" + "b" * 64
+    bundle_path = root / f"{release_id}.pages.site.tar.zst"
+    bundle_path.write_text("fixture", encoding="utf-8")
+    digest = hashlib.sha256(bundle_path.read_bytes()).hexdigest()
+    manifest_path = root / "release-manifest.json"
+    manifest_path.write_text(
+        json.dumps(
+            release_manifest_fixture(
+                release_id,
+                artifact="pages",
+                spec_digest=spec_digest,
+                site_digest=site_digest,
+            )
+        ),
+        encoding="utf-8",
+    )
+    checksums_path = root / "SHA256SUMS"
+    checksums_path.write_text(
+        f"{digest}  {bundle_path.name}\n",
+        encoding="utf-8",
+    )
+    release_set_path = root / "release-set.json"
+    release_set_path.write_text(
+        json.dumps(
+            {
+                "schema_version": 1,
+                "release_id": release_id,
+                "spec_digest": spec_digest,
+                "generated_at": "2026-09-01T14:00:00Z",
+                "artifact_policy_sha256": "sha256:" + "c" * 64,
+                "artifacts": [
+                    {
+                        "name": "full",
+                        "bundle": f"{release_id}.site.tar.zst",
+                        "bundle_sha256": "sha256:" + "d" * 64,
+                        "site_tree_sha256": "sha256:" + "e" * 64,
+                        "file_count": 2,
+                        "total_bytes": 8,
+                    },
+                    {
+                        "name": "pages",
+                        "bundle": bundle_path.name,
+                        "bundle_sha256": "sha256:" + digest,
+                        "site_tree_sha256": site_digest,
+                        "file_count": 1,
+                        "total_bytes": 7,
+                    },
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    assets = [bundle_path, manifest_path, checksums_path, release_set_path]
+    return (
+        BundleInfo(
+            release_id,
+            str(bundle_path),
+            str(manifest_path),
+            str(checksums_path),
+            "sha256:" + digest,
+            artifact="pages",
+            release_set=str(release_set_path),
+        ),
+        assets,
+    )
 
 
 class FakeReleaseSource:
@@ -242,18 +323,81 @@ class ReleasePlanningTests(unittest.TestCase):
                 "/transfer/release.site.tar.zst",
                 "--sha256",
                 "a" * 64,
+                "--release-set",
+                "/transfer/release-set.json",
+                "--artifact-policy-sha256",
+                "b" * 64,
                 "--deploy-root",
                 "/srv/reasbook",
+                "--filesystem-health-only",
             ]
         )
         self.assertEqual(parsed.release_command, "install")
         self.assertEqual(parsed.deploy_root, Path("/srv/reasbook"))
+
+        with self.assertRaises(SystemExit):
+            build_parser().parse_args(
+                [
+                    "install",
+                    "/transfer/release.site.tar.zst",
+                    "--sha256",
+                    "a" * 64,
+                    "--release-set",
+                    "/transfer/release-set.json",
+                    "--deploy-root",
+                    "/srv/reasbook",
+                    "--filesystem-health-only",
+                ]
+            )
+        with self.assertRaises(SystemExit):
+            build_parser().parse_args(
+                [
+                    "install",
+                    "/transfer/release.site.tar.zst",
+                    "--sha256",
+                    "",
+                    "--release-set",
+                    "/transfer/release-set.json",
+                    "--artifact-policy-sha256",
+                    "b" * 64,
+                    "--deploy-root",
+                    "/srv/reasbook",
+                    "--filesystem-health-only",
+                ]
+            )
+        with self.assertRaises(SystemExit):
+            build_parser().parse_args(
+                [
+                    "install",
+                    "/transfer/release.site.tar.zst",
+                    "--sha256",
+                    "a" * 64,
+                    "--release-set",
+                    "/transfer/release-set.json",
+                    "--artifact-policy-sha256",
+                    "b" * 64,
+                    "--deploy-root",
+                    "/srv/reasbook",
+                ]
+            )
 
         build = build_parser().parse_args(
             ["build", "site-20260901T140000Z-" + "a" * 12]
         )
         self.assertEqual(build.max_parallel_branches, 3)
         self.assertEqual(build.docs_timeout_seconds, 43200.0)
+
+        configured = build_parser().parse_args(
+            ["configure-pages", "--profile", "github-pages", "--dry-run"]
+        )
+        self.assertEqual(configured.release_command, "configure-pages")
+        self.assertTrue(configured.dry_run)
+
+        with self.assertRaisesRegex(DeployConfigError, "plain YAML"):
+            GitHubPublishProfile(
+                repository="acme/reasbook",
+                workflow="../untrusted.yml",
+            )
 
     def test_repository_identity_strips_embedded_credentials(self) -> None:
         self.assertEqual(
@@ -453,6 +597,78 @@ class ReleasePlanningTests(unittest.TestCase):
             CanonicalProjects((("books/Demo", "v4.30.0"),)),
         )
 
+    def _self_hosted_package(
+        self,
+        root: Path,
+        *,
+        generated_at: datetime | None = None,
+        content: str = "site",
+    ):
+        at = generated_at or self.now
+        spec = ReleasePlanner(FakeReleaseSource(), resolved_at=at).resolve(
+            profile(root),
+            self.registry,
+            CanonicalProjects((("books/Demo", "v4.30.0"),)),
+        )
+        layout = ReleaseLayout(root / "cache", spec.release_id)
+        store = ReleaseStore(layout)
+        store.initialize(spec)
+        layout.site.mkdir()
+        (layout.site / "index.html").write_text(content, encoding="utf-8")
+        (layout.site / "release-spec.json").write_text(
+            json.dumps(spec.public_dict()),
+            encoding="utf-8",
+        )
+        report = ReleaseBuildReport.from_branches(
+            spec,
+            tuple(
+                BranchBuildResult(
+                    branch.name,
+                    branch.commit,
+                    "success",
+                    str(root / branch.name),
+                    (StageOutcome("fixture", "success"),),
+                )
+                for branch in spec.branches
+            ),
+        )
+        bundler = ReleaseBundler(layout, store, generated_at=at)
+        full = bundler.package(spec, report)
+        shutil.copytree(layout.site, layout.pages_site)
+        pages = bundler.package_pages(
+            spec,
+            report,
+            policy=profile(root).artifact("pages"),
+        )
+        _release_set, bundles = create_release_set(
+            layout,
+            store,
+            spec,
+            profile(root).artifacts,
+            (full, pages),
+        )
+        full = next(item for item in bundles if item.artifact == "full")
+        return spec, full, layout.release_set, layout
+
+    @staticmethod
+    def _write_raw_bundle(package_root: Path, bundle: Path, *extra: str) -> None:
+        subprocess.run(
+            (
+                "tar",
+                "--zstd",
+                "-cf",
+                str(bundle),
+                *extra,
+                "-C",
+                str(package_root),
+                "site",
+                "release-manifest.json",
+            ),
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+
     def test_branch_plan_is_ordered_and_uses_isolated_runtime_cache(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
@@ -576,6 +792,11 @@ class ReleasePlanningTests(unittest.TestCase):
             bundle = bundler.package(spec, report)
             repeated = bundler.package(spec, report)
             self.assertEqual(bundle.bundle_sha256, repeated.bundle_sha256)
+            with self.assertRaisesRegex(DeployConfigError, "SHA-256"):
+                BundleVerifier().inspect(
+                    Path(bundle.bundle),
+                    expected_sha256="",
+                )
             self.assertNotIn(
                 str(root),
                 layout.manifest.read_text(encoding="utf-8"),
@@ -668,12 +889,12 @@ class ReleasePlanningTests(unittest.TestCase):
                 / "Heavy.html"
             )
             self.assertIn(
-                "outside the selected project roots",
+                "not included in the bounded Pages artifact",
                 stub.read_text(encoding="utf-8"),
             )
             self.assertLess(stub.stat().st_size, dependency.stat().st_size)
             self.assertIn(
-                "outside the selected project roots",
+                "not included in the bounded Pages artifact",
                 stub.with_name("RefreshTarget.html").read_text(encoding="utf-8"),
             )
             self.assertFalse(
@@ -724,7 +945,12 @@ class ReleasePlanningTests(unittest.TestCase):
 
             deployment = SelfHostedInstaller(root / "server").install(
                 Path(full.bundle),
+                release_set=layout.release_set,
                 expected_sha256=full.bundle_sha256,
+                expected_artifact_policy_sha256=artifact_policy_digest(
+                    profile(root).artifacts
+                ),
+                filesystem_health_only=True,
             )
             current = root / "server" / "current"
             self.assertTrue(current.is_symlink())
@@ -767,59 +993,256 @@ class ReleasePlanningTests(unittest.TestCase):
                 policy=profile(root).artifact("pages"),
             )
             with self.assertRaisesRegex(DeployExecutionError, "contains pages"):
-                SelfHostedInstaller(root / "server").install(Path(pages.bundle))
+                SelfHostedInstaller(root / "server").install(
+                    Path(pages.bundle),
+                    release_set=layout.release_set,
+                    expected_artifact_policy_sha256=artifact_policy_digest(
+                        profile(root).artifacts
+                    ),
+                    filesystem_health_only=True,
+                )
+
+    def test_bundle_preflight_rejects_unsafe_members_and_size_bombs(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            _spec, full, _release_set, layout = self._self_hosted_package(root)
+            archive = Path(full.bundle)
+
+            with self.assertRaisesRegex(DeployExecutionError, "site-byte"):
+                BundleVerifier(max_site_bytes=1).inspect(
+                    archive,
+                    expected_sha256=full.bundle_sha256,
+                )
+
+            traversal = root / "traversal.tar.zst"
+            self._write_raw_bundle(
+                layout.root,
+                traversal,
+                "--transform=s|^site/index.html$|../escape.html|",
+            )
+            with self.assertRaisesRegex(DeployExecutionError, "unsafe bundle member"):
+                BundleVerifier().inspect(traversal)
+
+            for link_kind in ("symlink", "hardlink"):
+                with self.subTest(link_kind=link_kind):
+                    package = root / f"package-{link_kind}"
+                    shutil.copytree(layout.site, package / "site")
+                    shutil.copy2(layout.manifest, package / "release-manifest.json")
+                    link = package / "site" / "linked.html"
+                    if link_kind == "symlink":
+                        link.symlink_to("index.html")
+                    else:
+                        link.hardlink_to(package / "site" / "index.html")
+                    linked = root / f"{link_kind}.tar.zst"
+                    self._write_raw_bundle(package, linked)
+                    with self.assertRaisesRegex(
+                        DeployExecutionError,
+                        "links or special",
+                    ):
+                        BundleVerifier().inspect(linked)
+
+    def test_bundle_verbose_listing_reports_regular_file_sizes(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            _spec, full, _release_set, layout = self._self_hosted_package(root)
+
+            members = BundleVerifier()._list_archive(Path(full.bundle))
+            by_name = {member.name: member for member in members}
+
+            self.assertEqual(by_name["site/index.html"].kind, "-")
+            self.assertEqual(
+                by_name["site/index.html"].size,
+                (layout.site / "index.html").stat().st_size,
+            )
+            self.assertEqual(by_name["site/"].kind, "d")
+
+    def test_bundle_metadata_limits_precede_json_reads(self) -> None:
+        members = (
+            _ArchiveMember("release-manifest.json", "-", 1),
+            _ArchiveMember("site/", "d", 0),
+            _ArchiveMember("site/release-spec.json", "-", 1),
+        )
+        with tempfile.TemporaryDirectory() as temp:
+            bundle = Path(temp) / "fixture.tar.zst"
+            bundle.write_bytes(b"fixture")
+            for oversized_name in (
+                "release-manifest.json",
+                "site/release-spec.json",
+            ):
+                with self.subTest(member=oversized_name):
+                    oversized = tuple(
+                        _ArchiveMember(
+                            member.name,
+                            member.kind,
+                            2 if member.name == oversized_name else member.size,
+                        )
+                        for member in members
+                    )
+                    verifier = BundleVerifier(max_manifest_bytes=1)
+                    with (
+                        patch.object(
+                            verifier,
+                            "_list_archive",
+                            return_value=oversized,
+                        ),
+                        patch.object(
+                            verifier,
+                            "_read_archive_json",
+                            side_effect=AssertionError("JSON read before preflight"),
+                        ) as read_json,
+                    ):
+                        with self.assertRaisesRegex(
+                            DeployExecutionError,
+                            "exceeds its safety limit",
+                        ):
+                            verifier.inspect(bundle)
+                    read_json.assert_not_called()
+
+    def test_bundle_preflight_rejects_escaped_and_control_names(self) -> None:
+        verifier = BundleVerifier()
+        metadata = (
+            _ArchiveMember("release-manifest.json", "-", 1),
+            _ArchiveMember("site/", "d", 0),
+            _ArchiveMember("site/release-spec.json", "-", 1),
+        )
+        for unsafe_name in (
+            "site/back\\slash.html",
+            "site/new\nline.html",
+            "site/nul\0name.html",
+            "site/delete\x7fname.html",
+        ):
+            with self.subTest(name=repr(unsafe_name)):
+                with self.assertRaisesRegex(
+                    DeployExecutionError,
+                    "unsafe bundle member",
+                ):
+                    verifier._validate_members(
+                        (*metadata, _ArchiveMember(unsafe_name, "-", 1))
+                    )
+
+    def test_bundle_preflight_rejects_path_aliases_and_duplicates(self) -> None:
+        verifier = BundleVerifier()
+        metadata = (
+            _ArchiveMember("release-manifest.json", "-", 1),
+            _ArchiveMember("site/", "d", 0),
+            _ArchiveMember("site/release-spec.json", "-", 1),
+        )
+        for alias in (
+            "site//alias.html",
+            "site/./alias.html",
+            "site/alias.html/",
+        ):
+            with self.subTest(alias=alias):
+                with self.assertRaisesRegex(
+                    DeployExecutionError,
+                    "unsafe bundle member",
+                ):
+                    verifier._validate_members(
+                        (*metadata, _ArchiveMember(alias, "-", 1))
+                    )
+
+        with self.assertRaisesRegex(
+            DeployExecutionError,
+            "duplicate archive members",
+        ):
+            verifier._validate_members(
+                (*metadata, _ArchiveMember("site/release-spec.json", "-", 1))
+            )
+
+    def test_self_hosted_health_url_is_restricted_to_safe_http_urls(self) -> None:
+        for health_url in (
+            "file:///srv/reasbook/release-spec.json",
+            "http:///missing-host",
+            "http://user:secret@example.test/health",
+            "https://example.test/health#fragment",
+            "http://example.test:invalid/health",
+        ):
+            with self.subTest(health_url=health_url):
+                with self.assertRaisesRegex(DeployConfigError, "health URL"):
+                    SelfHostedInstaller._validate_options(
+                        "full",
+                        1,
+                        0.01,
+                        health_url=health_url,
+                        filesystem_health_only=False,
+                    )
+
+        SelfHostedInstaller._validate_options(
+            "full",
+            1,
+            0.01,
+            health_url="http://127.0.0.1/ReasBook/release-spec.json",
+            filesystem_health_only=False,
+        )
+
+    def test_bundle_preflight_rejects_header_totals_that_disagree(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            _spec, _full, _release_set, layout = self._self_hosted_package(root)
+            package = root / "mismatched-package"
+            shutil.copytree(layout.site, package / "site")
+            value = json.loads(layout.manifest.read_text(encoding="utf-8"))
+            value["total_bytes"] += 1
+            (package / "release-manifest.json").write_text(
+                json.dumps(value),
+                encoding="utf-8",
+            )
+            archive = root / "mismatched.tar.zst"
+            self._write_raw_bundle(package, archive)
+
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                "archive sizes do not match",
+            ):
+                BundleVerifier().inspect(archive)
+
+    def test_self_hosted_release_set_mismatch_leaves_root_untouched(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            _spec, full, release_set, _layout = self._self_hosted_package(root)
+            value = json.loads(release_set.read_text(encoding="utf-8"))
+            full_record = next(
+                item for item in value["artifacts"] if item["name"] == "full"
+            )
+            full_record["total_bytes"] += 1
+            forged = root / "forged-release-set.json"
+            forged.write_text(json.dumps(value), encoding="utf-8")
+            deployment_root = root / "server"
+
+            with self.assertRaisesRegex(DeployExecutionError, "does not bind"):
+                SelfHostedInstaller(deployment_root).install(
+                    Path(full.bundle),
+                    release_set=forged,
+                    expected_artifact_policy_sha256=artifact_policy_digest(
+                        profile(root).artifacts
+                    ),
+                    expected_sha256=full.bundle_sha256,
+                    filesystem_health_only=True,
+                )
+            self.assertFalse(deployment_root.exists())
 
     def test_self_hosted_health_failure_restores_previous_release(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
-
-            def packaged(at: datetime, content: str):
-                spec = ReleasePlanner(FakeReleaseSource(), resolved_at=at).resolve(
-                    profile(root),
-                    self.registry,
-                    CanonicalProjects((("books/Demo", "v4.30.0"),)),
+            first_spec, first_bundle, first_release_set, _ = (
+                self._self_hosted_package(root, content="first")
+            )
+            second_spec, second_bundle, second_release_set, _ = (
+                self._self_hosted_package(
+                    root,
+                    generated_at=self.now.replace(minute=1),
+                    content="second",
                 )
-                layout = ReleaseLayout(root / "cache", spec.release_id)
-                store = ReleaseStore(layout)
-                store.initialize(spec)
-                layout.site.mkdir()
-                (layout.site / "index.html").write_text(
-                    content,
-                    encoding="utf-8",
-                )
-                (layout.site / "release-spec.json").write_text(
-                    json.dumps(spec.public_dict()),
-                    encoding="utf-8",
-                )
-                report = ReleaseBuildReport.from_branches(
-                    spec,
-                    tuple(
-                        BranchBuildResult(
-                            branch.name,
-                            branch.commit,
-                            "success",
-                            str(root / branch.name),
-                            (StageOutcome("fixture", "success"),),
-                        )
-                        for branch in spec.branches
-                    ),
-                )
-                bundle = ReleaseBundler(
-                    layout,
-                    store,
-                    generated_at=at,
-                ).package(spec, report)
-                return spec, bundle
-
-            first_spec, first_bundle = packaged(self.now, "first")
-            second_spec, second_bundle = packaged(
-                self.now.replace(minute=1),
-                "second",
             )
             installer = SelfHostedInstaller(root / "server")
             installer.install(
                 Path(first_bundle.bundle),
+                release_set=first_release_set,
+                expected_artifact_policy_sha256=artifact_policy_digest(
+                    profile(root).artifacts
+                ),
                 expected_sha256=first_bundle.bundle_sha256,
+                filesystem_health_only=True,
             )
             with patch.object(
                 installer,
@@ -829,7 +1252,12 @@ class ReleasePlanningTests(unittest.TestCase):
                 with self.assertRaisesRegex(DeployExecutionError, "unhealthy"):
                     installer.install(
                         Path(second_bundle.bundle),
+                        release_set=second_release_set,
+                        expected_artifact_policy_sha256=artifact_policy_digest(
+                            profile(root).artifacts
+                        ),
                         expected_sha256=second_bundle.bundle_sha256,
+                        health_url="http://127.0.0.1/health",
                     )
 
             active = (root / "server" / "current").resolve()
@@ -838,6 +1266,139 @@ class ReleasePlanningTests(unittest.TestCase):
                 root / "server" / "releases" / first_spec.release_id / "full",
             )
             self.assertNotEqual(first_spec.release_id, second_spec.release_id)
+
+    def test_self_hosted_signal_during_install_restores_previous_release(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            first_spec, first_bundle, first_release_set, _ = (
+                self._self_hosted_package(root, content="first")
+            )
+            _second_spec, second_bundle, second_release_set, _ = (
+                self._self_hosted_package(
+                    root,
+                    generated_at=self.now.replace(minute=1),
+                    content="second",
+                )
+            )
+            installer = SelfHostedInstaller(root / "server")
+            installer.install(
+                Path(first_bundle.bundle),
+                release_set=first_release_set,
+                expected_artifact_policy_sha256=artifact_policy_digest(
+                    profile(root).artifacts
+                ),
+                expected_sha256=first_bundle.bundle_sha256,
+                filesystem_health_only=True,
+            )
+
+            with patch.object(installer, "_probe", side_effect=SystemExit(143)):
+                with self.assertRaises(SystemExit) as raised:
+                    installer.install(
+                        Path(second_bundle.bundle),
+                        release_set=second_release_set,
+                        expected_artifact_policy_sha256=artifact_policy_digest(
+                            profile(root).artifacts
+                        ),
+                        expected_sha256=second_bundle.bundle_sha256,
+                        health_url="http://127.0.0.1/health",
+                    )
+
+            self.assertEqual(raised.exception.code, 143)
+            self.assertEqual(
+                (root / "server" / "current").resolve(),
+                root / "server" / "releases" / first_spec.release_id / "full",
+            )
+
+    def test_self_hosted_rollback_health_failure_restores_active_release(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            first_spec, first_bundle, first_set, _ = self._self_hosted_package(
+                root,
+                content="first",
+            )
+            second_spec, second_bundle, second_set, _ = self._self_hosted_package(
+                root,
+                generated_at=self.now.replace(minute=1),
+                content="second",
+            )
+            installer = SelfHostedInstaller(root / "server")
+            installer.install(
+                Path(first_bundle.bundle),
+                release_set=first_set,
+                expected_artifact_policy_sha256=artifact_policy_digest(
+                    profile(root).artifacts
+                ),
+                expected_sha256=first_bundle.bundle_sha256,
+                filesystem_health_only=True,
+            )
+            installer.install(
+                Path(second_bundle.bundle),
+                release_set=second_set,
+                expected_artifact_policy_sha256=artifact_policy_digest(
+                    profile(root).artifacts
+                ),
+                expected_sha256=second_bundle.bundle_sha256,
+                filesystem_health_only=True,
+            )
+
+            with patch.object(
+                installer,
+                "_probe",
+                side_effect=DeployExecutionError("unhealthy rollback"),
+            ):
+                with self.assertRaisesRegex(
+                    DeployExecutionError,
+                    "unhealthy rollback",
+                ):
+                    installer.rollback(
+                        first_spec.release_id,
+                        health_url="http://127.0.0.1/health",
+                    )
+
+            self.assertEqual(
+                (root / "server" / "current").resolve(),
+                root / "server" / "releases" / second_spec.release_id / "full",
+            )
+
+    def test_self_hosted_signal_during_rollback_restores_active_release(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            first_spec, first_bundle, first_set, _ = self._self_hosted_package(
+                root,
+                content="first",
+            )
+            second_spec, second_bundle, second_set, _ = self._self_hosted_package(
+                root,
+                generated_at=self.now.replace(minute=1),
+                content="second",
+            )
+            installer = SelfHostedInstaller(root / "server")
+            for bundle, release_set in (
+                (first_bundle, first_set),
+                (second_bundle, second_set),
+            ):
+                installer.install(
+                    Path(bundle.bundle),
+                    release_set=release_set,
+                    expected_artifact_policy_sha256=artifact_policy_digest(
+                        profile(root).artifacts
+                    ),
+                    expected_sha256=bundle.bundle_sha256,
+                    filesystem_health_only=True,
+                )
+
+            with patch.object(installer, "_probe", side_effect=SystemExit(143)):
+                with self.assertRaises(SystemExit) as raised:
+                    installer.rollback(
+                        first_spec.release_id,
+                        health_url="http://127.0.0.1/health",
+                    )
+
+            self.assertEqual(raised.exception.code, 143)
+            self.assertEqual(
+                (root / "server" / "current").resolve(),
+                root / "server" / "releases" / second_spec.release_id / "full",
+            )
 
     @staticmethod
     def _write_branch_site(
@@ -917,26 +1478,7 @@ class ReleasePlanningTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             release_id = "site-20260901T140000Z-" + "a" * 12
-            bundle_path = root / f"{release_id}.site.tar.zst"
-            bundle_path.write_text("fixture", encoding="utf-8")
-            digest = hashlib.sha256(bundle_path.read_bytes()).hexdigest()
-            manifest_path = root / "release-manifest.json"
-            manifest_path.write_text(
-                json.dumps(release_manifest_fixture(release_id)),
-                encoding="utf-8",
-            )
-            checksums_path = root / "SHA256SUMS"
-            checksums_path.write_text(
-                f"{digest}  {bundle_path.name}\n", encoding="utf-8"
-            )
-            assets = [bundle_path, manifest_path, checksums_path]
-            bundle = BundleInfo(
-                release_id,
-                str(assets[0]),
-                str(assets[1]),
-                str(assets[2]),
-                "sha256:" + digest,
-            )
+            bundle, assets = github_pages_bundle_fixture(root, release_id)
             runner = FakeRunner()
             publisher = GitHubReleasePublisher(
                 GitHubPublishProfile(repository="acme/reasbook"),
@@ -1028,6 +1570,172 @@ class ReleasePlanningTests(unittest.TestCase):
                 ),
             )._trusted_target()
 
+    def test_github_pages_configuration_is_idempotent_and_fail_closed(self) -> None:
+        class ConfigureRunner:
+            def __init__(self):
+                self.commands = []
+                self.pages = None
+                self.environment = None
+                self.policies = None
+
+            def run(self, command):
+                self.commands.append(command)
+                if command.argv[0] == "git":
+                    output = (
+                        "d" * 40 + "\n"
+                        if command.argv[1:3] == ("rev-parse", "HEAD")
+                        else ""
+                    )
+                    return CommandResult(command=command, returncode=0, stdout=output)
+                if command.argv[1:3] == ("repo", "view"):
+                    return CommandResult(command=command, returncode=0, stdout="main\n")
+                if command.argv[1] != "api":
+                    return CommandResult(command=command, returncode=0)
+                if "/commits/" in " ".join(command.argv):
+                    return CommandResult(
+                        command=command,
+                        returncode=0,
+                        stdout="d" * 40 + "\n",
+                    )
+                endpoint = next(
+                    part for part in command.argv if part.startswith("repos/")
+                )
+                method = (
+                    command.argv[command.argv.index("--method") + 1]
+                    if "--method" in command.argv
+                    else "GET"
+                )
+                if method == "POST" and endpoint.endswith("/pages"):
+                    self.pages = {"build_type": "workflow", "cname": None}
+                    value = self.pages
+                elif method == "PUT" and endpoint.endswith("/github-pages"):
+                    self.environment = {
+                        "deployment_branch_policy": {
+                            "protected_branches": False,
+                            "custom_branch_policies": True,
+                        }
+                    }
+                    value = self.environment
+                elif method == "POST" and endpoint.endswith(
+                    "/deployment-branch-policies"
+                ):
+                    request = json.loads(command.input_text or "{}")
+                    self.policies = {
+                        "total_count": 1,
+                        "branch_policies": [request],
+                    }
+                    value = request
+                elif endpoint.endswith("/pages"):
+                    value = self.pages
+                elif endpoint.split("?", 1)[0].endswith(
+                    "/deployment-branch-policies"
+                ):
+                    value = self.policies
+                else:
+                    value = self.environment
+                if value is None:
+                    return CommandResult(
+                        command=command,
+                        returncode=1,
+                        stderr="gh: Not Found (HTTP 404)",
+                    )
+                return CommandResult(
+                    command=command,
+                    returncode=0,
+                    stdout=json.dumps(value),
+                )
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            workflow = root / ".github" / "workflows" / "publish_release_pages.yml"
+            workflow.parent.mkdir(parents=True)
+            workflow.write_text("name: pages\n", encoding="utf-8")
+            runner = ConfigureRunner()
+            configurator = GitHubPagesConfigurator(
+                GitHubPublishProfile(repository="acme/reasbook"),
+                runner=runner,
+                repo_root=root,
+            )
+
+            planned = configurator.configure(dry_run=True)
+            self.assertEqual(planned.status, "planned")
+            self.assertEqual(
+                planned.actions,
+                (
+                    "create-pages-workflow-source",
+                    "create-github-pages-environment",
+                    "allow-default-branch-only",
+                ),
+            )
+            self.assertFalse(
+                any("--method" in command.argv for command in runner.commands)
+            )
+
+            configured = configurator.configure()
+            self.assertEqual(configured.status, "configured")
+            writes = [
+                command for command in runner.commands if "--method" in command.argv
+            ]
+            self.assertEqual(
+                [command.argv[command.argv.index("--method") + 1] for command in writes],
+                ["POST", "PUT", "POST"],
+            )
+            self.assertEqual(
+                json.loads(writes[-1].input_text or "{}"),
+                {"name": "main", "type": "branch"},
+            )
+
+            before = len(writes)
+            ready = configurator.configure()
+            self.assertEqual(ready.status, "ready")
+            after = sum("--method" in command.argv for command in runner.commands)
+            self.assertEqual(after, before)
+
+            runner.policies = {
+                "total_count": 2,
+                "branch_policies": [
+                    {"name": "main", "type": "branch"},
+                    {"name": "v4.30.0", "type": "branch"},
+                ],
+            }
+            before = sum("--method" in command.argv for command in runner.commands)
+            with self.assertRaisesRegex(DeployExecutionError, "default branch"):
+                configurator.configure()
+            after = sum("--method" in command.argv for command in runner.commands)
+            self.assertEqual(after, before)
+
+    def test_github_publisher_rejects_full_artifact(self) -> None:
+        class NoRunner:
+            def run(self, _command):
+                raise AssertionError("GitHub must not be called for a full artifact")
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            release_id = "site-20260901T140000Z-" + "a" * 12
+            bundle = root / f"{release_id}.site.tar.zst"
+            bundle.write_text("fixture", encoding="utf-8")
+            digest = hashlib.sha256(bundle.read_bytes()).hexdigest()
+            manifest = root / "release-manifest.json"
+            manifest.write_text(
+                json.dumps(release_manifest_fixture(release_id)),
+                encoding="utf-8",
+            )
+            checksums = root / "SHA256SUMS"
+            checksums.write_text(f"{digest}  {bundle.name}\n", encoding="utf-8")
+            with self.assertRaisesRegex(DeployExecutionError, "pages artifact"):
+                GitHubReleasePublisher(
+                    GitHubPublishProfile(repository="acme/reasbook"),
+                    runner=NoRunner(),
+                ).publish(
+                    BundleInfo(
+                        release_id,
+                        str(bundle),
+                        str(manifest),
+                        str(checksums),
+                        "sha256:" + digest,
+                    )
+                )
+
     def test_github_pages_assets_are_bound_by_release_set(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
@@ -1096,7 +1804,23 @@ class ReleasePlanningTests(unittest.TestCase):
             GitHubReleasePublisher._validate_assets(
                 bundle,
                 (bundle_path, manifest_path, checksums_path, release_set_path),
+                expected_base_path="/ReasBook/",
+                expected_spec_digest=spec_digest,
+                expected_artifact_policy_sha256="sha256:" + "c" * 64,
             )
+
+            with self.assertRaisesRegex(DeployExecutionError, "expected Pages"):
+                GitHubReleasePublisher._validate_assets(
+                    bundle,
+                    (bundle_path, manifest_path, checksums_path, release_set_path),
+                    expected_base_path="/wrong/",
+                )
+            with self.assertRaisesRegex(DeployExecutionError, "does not bind"):
+                GitHubReleasePublisher._validate_assets(
+                    bundle,
+                    (bundle_path, manifest_path, checksums_path, release_set_path),
+                    expected_artifact_policy_sha256="sha256:" + "0" * 64,
+                )
 
             release_set_path.write_text(
                 release_set_path.read_text(encoding="utf-8").replace(
@@ -1189,31 +1913,13 @@ class ReleasePlanningTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             release_id = "site-20260901T140000Z-" + "a" * 12
-            bundle_path = root / f"{release_id}.site.tar.zst"
-            bundle_path.write_text("fixture", encoding="utf-8")
-            digest = hashlib.sha256(bundle_path.read_bytes()).hexdigest()
-            manifest_path = root / "release-manifest.json"
-            manifest_path.write_text(
-                json.dumps(release_manifest_fixture(release_id)),
-                encoding="utf-8",
-            )
-            checksums_path = root / "SHA256SUMS"
-            checksums_path.write_text(
-                f"{digest}  {bundle_path.name}\n", encoding="utf-8"
-            )
-            paths = [bundle_path, manifest_path, checksums_path]
+            bundle, paths = github_pages_bundle_fixture(root, release_id)
             runner = WaitRunner(paths)
             publication = GitHubReleasePublisher(
                 GitHubPublishProfile(repository="acme/reasbook"),
                 runner=runner,
             ).publish(
-                BundleInfo(
-                    release_id,
-                    str(paths[0]),
-                    str(paths[1]),
-                    str(paths[2]),
-                    "sha256:" + digest,
-                ),
+                bundle,
                 wait=True,
                 wait_timeout_seconds=1,
             )
@@ -1283,32 +1989,13 @@ class ReleasePlanningTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             release_id = "site-20260901T140000Z-" + "a" * 12
-            archive = root / f"{release_id}.site.tar.zst"
-            archive.write_text("fixture", encoding="utf-8")
-            digest = hashlib.sha256(archive.read_bytes()).hexdigest()
-            manifest = root / "release-manifest.json"
-            manifest.write_text(
-                json.dumps(release_manifest_fixture(release_id)),
-                encoding="utf-8",
-            )
-            checksums = root / "SHA256SUMS"
-            checksums.write_text(
-                f"{digest}  {archive.name}\n", encoding="utf-8"
-            )
+            bundle, _ = github_pages_bundle_fixture(root, release_id)
             runner = ExistingRunner()
 
             with self.assertRaisesRegex(DeployExecutionError, "refusing to overwrite"):
                 GitHubReleasePublisher(
                     GitHubPublishProfile(repository="acme/reasbook"), runner=runner
-                ).publish(
-                    BundleInfo(
-                        release_id,
-                        str(archive),
-                        str(manifest),
-                        str(checksums),
-                        "sha256:" + digest,
-                    )
-                )
+                ).publish(bundle)
 
             verbs = [command.argv[1:3] for command in runner.commands]
             self.assertNotIn(("release", "upload"), verbs)

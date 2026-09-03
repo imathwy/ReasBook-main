@@ -340,6 +340,11 @@ class StaticReleaseService:
             release_publisher = publisher or GitHubReleasePublisher(
                 context.profile.publish,
                 repo_root=self.repo_root,
+                expected_base_path=context.spec.base_path,
+                expected_spec_digest=context.spec.spec_digest,
+                expected_artifact_policy_sha256=artifact_policy_digest(
+                    context.profile.artifacts
+                ),
             )
             if dry_run:
                 return release_publisher.publish(

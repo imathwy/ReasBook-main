@@ -128,7 +128,7 @@ class BranchPlanFactory:
         docs_key = hashlib.sha256(
             json.dumps(
                 {
-                    "profile": "project-roots-v1",
+                    "profile": "project-modules-v2",
                     "branch": branch.name,
                     "commit": branch.commit,
                     "manifest": branch.lake_manifest_sha256,
@@ -141,7 +141,7 @@ class BranchPlanFactory:
         docs_root = (
             self.cache_root
             / "docs"
-            / "project-roots"
+            / "project-modules-v2"
             / f"{safe_name(branch.name)}-{branch.commit[:12]}-{docs_key}"
         )
         environment = {

@@ -13,9 +13,13 @@ import threading
 
 from reasbook_sdk_common import atomic_write_json
 
+from ..errors import DeployConfigError
 from ..runtime import default_cache_root
+from .artifacts import artifact_policy_digest
 from .build_plan import ReleaseBuildOptions
-from .bundle import BundleVerifier, site_tree_digest
+from .bundle import BundleVerifier, normalize_sha256, site_tree_digest
+from .config import load_profile
+from .pages_config import GitHubPagesConfigurator
 from .service import ReleaseDeploymentResult, StaticReleaseService
 from .self_hosted import SelfHostedInstaller
 from .store import ReleaseStore
@@ -26,6 +30,15 @@ def _profile_path(repo_root: Path, value: str) -> Path:
     if candidate.suffix or "/" in value:
         return candidate if candidate.is_absolute() else repo_root / candidate
     return repo_root / "config" / "deploy" / f"{value}.yml"
+
+
+def _sha256_argument(value: str) -> str:
+    try:
+        normalized = normalize_sha256(value)
+    except DeployConfigError as exc:
+        raise argparse.ArgumentTypeError(str(exc)) from exc
+    assert normalized is not None
+    return normalized
 
 
 def _service(args: argparse.Namespace) -> StaticReleaseService:
@@ -56,6 +69,20 @@ def _add_build_options(parser: argparse.ArgumentParser) -> None:
 def _add_publish_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--wait", action="store_true")
     parser.add_argument("--wait-timeout-seconds", type=float, default=1800.0)
+
+
+def _add_health_options(
+    parser: argparse.ArgumentParser,
+    *,
+    required: bool,
+) -> None:
+    health = parser.add_mutually_exclusive_group(required=required)
+    health.add_argument("--health-url")
+    health.add_argument(
+        "--filesystem-health-only",
+        action="store_true",
+        help="explicitly validate files without probing the HTTP server",
+    )
 
 
 def _print(value, *, as_json: bool = True) -> None:
@@ -99,6 +126,13 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--cache-root", type=Path, default=default_cache_root())
     commands = parser.add_subparsers(dest="release_command", required=True)
 
+    configure_pages = commands.add_parser(
+        "configure-pages",
+        help="configure and audit the GitHub Pages deployment boundary",
+    )
+    configure_pages.add_argument("--profile", default="github-pages")
+    configure_pages.add_argument("--dry-run", action="store_true")
+
     plan = commands.add_parser("plan", help="resolve immutable release inputs")
     plan.add_argument("--profile", default="github-pages")
     plan.add_argument("--only", action="append", default=[])
@@ -131,7 +165,7 @@ def build_parser() -> argparse.ArgumentParser:
         default="github-pages",
     )
     publish.add_argument("--deploy-root", type=Path)
-    publish.add_argument("--health-url")
+    _add_health_options(publish, required=False)
 
     preview = commands.add_parser(
         "preview", help="serve an exact packaged artifact locally"
@@ -160,16 +194,23 @@ def build_parser() -> argparse.ArgumentParser:
         "verify", help="verify and optionally extract a bundle"
     )
     verify.add_argument("bundle", type=Path)
-    verify.add_argument("--sha256")
+    verify.add_argument("--sha256", type=_sha256_argument)
     verify.add_argument("--extract-to", type=Path)
 
     install = commands.add_parser(
         "install", help="atomically install a full bundle on a static server"
     )
     install.add_argument("bundle", type=Path)
-    install.add_argument("--sha256", required=True)
+    install.add_argument("--sha256", required=True, type=_sha256_argument)
+    install.add_argument("--release-set", type=Path, required=True)
+    install.add_argument(
+        "--artifact-policy-sha256",
+        required=True,
+        type=_sha256_argument,
+        help="trusted expected ReleaseSet policy digest",
+    )
     install.add_argument("--deploy-root", type=Path, required=True)
-    install.add_argument("--health-url")
+    _add_health_options(install, required=True)
 
     rollback = commands.add_parser(
         "rollback", help="republish a previous immutable release"
@@ -183,7 +224,7 @@ def build_parser() -> argparse.ArgumentParser:
         default="github-pages",
     )
     rollback.add_argument("--deploy-root", type=Path)
-    rollback.add_argument("--health-url")
+    _add_health_options(rollback, required=False)
     return parser
 
 
@@ -217,6 +258,16 @@ def _main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     service = _service(args)
     command = args.release_command
+    if command == "configure-pages":
+        profile_path = _profile_path(Path(args.repo_root), args.profile)
+        profile = load_profile(profile_path, repo_root=Path(args.repo_root))
+        _print(
+            GitHubPagesConfigurator(
+                profile.publish,
+                repo_root=Path(args.repo_root),
+            ).configure(dry_run=args.dry_run)
+        )
+        return 0
     if command == "plan":
         profile = _profile_path(Path(args.repo_root), args.profile)
         context = service.plan(
@@ -259,9 +310,14 @@ def _main(argv: list[str] | None = None) -> int:
         _print(
             SelfHostedInstaller(args.deploy_root).install(
                 args.bundle,
+                release_set=args.release_set,
                 expected_sha256=args.sha256,
+                expected_artifact_policy_sha256=(
+                    args.artifact_policy_sha256
+                ),
                 artifact="full",
                 health_url=args.health_url,
+                filesystem_health_only=args.filesystem_health_only,
             )
         )
         return 0
@@ -283,6 +339,7 @@ def _main(argv: list[str] | None = None) -> int:
             SelfHostedInstaller(args.deploy_root).rollback(
                 args.release_id,
                 health_url=args.health_url,
+                filesystem_health_only=args.filesystem_health_only,
             )
         )
         return 0
@@ -411,9 +468,14 @@ def _main(argv: list[str] | None = None) -> int:
         _print(
             SelfHostedInstaller(args.deploy_root).install(
                 Path(bundle.bundle),
+                release_set=context.layout.release_set,
                 expected_sha256=bundle.bundle_sha256,
+                expected_artifact_policy_sha256=artifact_policy_digest(
+                    context.profile.artifacts
+                ),
                 artifact="full",
                 health_url=args.health_url,
+                filesystem_health_only=args.filesystem_health_only,
             )
         )
         return 0

@@ -12,15 +12,16 @@ import shutil
 import time
 from typing import Iterator
 from urllib.error import URLError
+from urllib.parse import urlsplit
 from urllib.request import urlopen
 import uuid
 
 from reasbook_sdk_common import atomic_write_json
 
 from ..errors import DeployConfigError, DeployExecutionError
-from .bundle import BundleVerifier, site_tree_digest
+from .bundle import BundleVerifier, normalize_sha256, site_tree_digest
 from .models import ARTIFACT_NAME_RE, RELEASE_ID_RE
-from .results import ReleaseManifest
+from .results import ReleaseManifest, ReleaseSetManifest
 
 
 @dataclass(frozen=True)
@@ -65,22 +66,47 @@ class SelfHostedInstaller:
         self,
         bundle: Path,
         *,
+        release_set: Path,
+        expected_artifact_policy_sha256: str,
         expected_sha256: str | None = None,
         artifact: str = "full",
         health_url: str | None = None,
+        filesystem_health_only: bool = False,
         health_attempts: int = 20,
         health_interval_seconds: float = 1.0,
     ) -> SelfHostedDeployment:
-        self._validate_options(artifact, health_attempts, health_interval_seconds)
+        self._validate_options(
+            artifact,
+            health_attempts,
+            health_interval_seconds,
+            health_url=health_url,
+            filesystem_health_only=filesystem_health_only,
+        )
         archive = Path(bundle).expanduser().resolve()
+        expected = normalize_sha256(expected_sha256)
         manifest = self.verifier.inspect(
             archive,
-            expected_sha256=expected_sha256,
+            expected_sha256=expected,
         )
         if manifest.artifact != artifact:
             raise DeployExecutionError(
                 f"bundle contains {manifest.artifact}, expected {artifact}"
             )
+        release_set_value = self._load_release_set(Path(release_set))
+        record = release_set_value.artifact(artifact)
+        record_digest = normalize_sha256(record.bundle_sha256)
+        assert record_digest is not None
+        if expected is None:
+            self.verifier.inspect(archive, expected_sha256=record_digest)
+        elif expected != record_digest:
+            raise DeployExecutionError(
+                "expected bundle checksum does not match the ReleaseSet"
+            )
+        self._validate_release_set_binding(
+            release_set_value,
+            manifest,
+            expected_artifact_policy_sha256=expected_artifact_policy_sha256,
+        )
         self._prepare_root()
         self._require_capacity(manifest)
 
@@ -92,13 +118,33 @@ class SelfHostedInstaller:
                     raise DeployExecutionError(
                         "installed release differs from the requested bundle"
                     )
-                self._verify_installed(target, manifest)
+                installed_release_set = self._load_release_set(
+                    target / "release-set.json"
+                )
+                if installed_release_set != release_set_value:
+                    raise DeployExecutionError(
+                        "installed ReleaseSet differs from the requested ReleaseSet"
+                    )
+                self._verify_installed(
+                    target,
+                    manifest,
+                    installed_release_set,
+                    expected_artifact_policy_sha256=(
+                        expected_artifact_policy_sha256
+                    ),
+                )
             elif target.exists():
                 raise DeployExecutionError(
                     f"self-hosted release target is not a directory: {target}"
                 )
             else:
-                self._install_new(archive, target, manifest, expected_sha256)
+                self._install_new(
+                    archive,
+                    target,
+                    manifest,
+                    release_set_value,
+                    record_digest,
+                )
 
             previous = self._active_release_id()
             if self._active_target() != target:
@@ -108,16 +154,21 @@ class SelfHostedInstaller:
                     self._probe(
                         manifest,
                         health_url=health_url,
+                        filesystem_health_only=filesystem_health_only,
                         attempts=health_attempts,
                         interval=health_interval_seconds,
                     )
-                except Exception:
+                # CLI signal handlers raise SystemExit.  Treat it like every
+                # other failed health check so an interrupted activation never
+                # leaves an unverified release active.
+                except BaseException:
                     self._restore_current(previous_link)
                     raise
             else:
                 self._probe(
                     manifest,
                     health_url=health_url,
+                    filesystem_health_only=filesystem_health_only,
                     attempts=health_attempts,
                     interval=health_interval_seconds,
                 )
@@ -137,17 +188,31 @@ class SelfHostedInstaller:
         *,
         artifact: str = "full",
         health_url: str | None = None,
+        filesystem_health_only: bool = False,
+        expected_artifact_policy_sha256: str | None = None,
         health_attempts: int = 20,
         health_interval_seconds: float = 1.0,
     ) -> SelfHostedDeployment:
-        self._validate_options(artifact, health_attempts, health_interval_seconds)
+        self._validate_options(
+            artifact,
+            health_attempts,
+            health_interval_seconds,
+            health_url=health_url,
+            filesystem_health_only=filesystem_health_only,
+        )
         if not RELEASE_ID_RE.fullmatch(release_id):
             raise DeployConfigError(f"invalid release ID: {release_id!r}")
         self._prepare_root()
         with self._locked():
             target = self._target(release_id, artifact)
             manifest = self._load_installed_manifest(target)
-            self._verify_installed(target, manifest)
+            release_set = self._load_release_set(target / "release-set.json")
+            self._verify_installed(
+                target,
+                manifest,
+                release_set,
+                expected_artifact_policy_sha256=expected_artifact_policy_sha256,
+            )
             previous = self._active_release_id()
             previous_link = self._current_link_value()
             self._replace_current(target)
@@ -155,10 +220,13 @@ class SelfHostedInstaller:
                 self._probe(
                     manifest,
                     health_url=health_url,
+                    filesystem_health_only=filesystem_health_only,
                     attempts=health_attempts,
                     interval=health_interval_seconds,
                 )
-            except Exception:
+            # Preserve the transactional boundary for SIGINT/SIGTERM as well
+            # as ordinary probe failures (see the matching install path).
+            except BaseException:
                 self._restore_current(previous_link)
                 raise
             return SelfHostedDeployment(
@@ -170,11 +238,51 @@ class SelfHostedInstaller:
             )
 
     @staticmethod
-    def _validate_options(artifact: str, attempts: int, interval: float) -> None:
+    def _validate_options(
+        artifact: str,
+        attempts: int,
+        interval: float,
+        *,
+        health_url: str | None,
+        filesystem_health_only: bool,
+    ) -> None:
         if not ARTIFACT_NAME_RE.fullmatch(artifact):
             raise DeployConfigError(f"invalid release artifact: {artifact!r}")
         if isinstance(attempts, bool) or attempts < 1 or interval <= 0:
             raise DeployConfigError("health-check settings must be positive")
+        if not isinstance(filesystem_health_only, bool):
+            raise DeployConfigError("filesystem health mode must be boolean")
+        if bool(health_url) == filesystem_health_only:
+            raise DeployConfigError(
+                "select exactly one health mode: health_url or "
+                "filesystem_health_only"
+            )
+        if health_url is not None:
+            if (
+                not isinstance(health_url, str)
+                or not health_url
+                or health_url != health_url.strip()
+                or any(ord(character) <= 32 for character in health_url)
+            ):
+                raise DeployConfigError("health URL must be a valid HTTP(S) URL")
+            try:
+                parsed = urlsplit(health_url)
+                _ = parsed.port
+            except ValueError as exc:
+                raise DeployConfigError(
+                    "health URL must be a valid HTTP(S) URL"
+                ) from exc
+            if (
+                parsed.scheme not in {"http", "https"}
+                or parsed.hostname is None
+                or parsed.username is not None
+                or parsed.password is not None
+                or parsed.fragment
+            ):
+                raise DeployConfigError(
+                    "health URL must use HTTP(S), include a host, and contain "
+                    "no credentials or fragment"
+                )
 
     def _prepare_root(self) -> None:
         self.root.mkdir(parents=True, exist_ok=True)
@@ -201,7 +309,8 @@ class SelfHostedInstaller:
         archive: Path,
         target: Path,
         manifest: ReleaseManifest,
-        expected_sha256: str | None,
+        release_set: ReleaseSetManifest,
+        expected_sha256: str,
     ) -> None:
         target.parent.mkdir(parents=True, exist_ok=True)
         staged = target.parent / f".{target.name}-staging-{uuid.uuid4().hex}"
@@ -215,13 +324,25 @@ class SelfHostedInstaller:
             if verified != manifest:
                 raise DeployExecutionError("bundle changed between inspect and install")
             atomic_write_json(staged / "release-manifest.json", manifest.public_dict())
+            atomic_write_json(staged / "release-set.json", release_set.public_dict())
             os.replace(staged, target)
         finally:
             if staged.exists():
                 shutil.rmtree(staged)
 
     @staticmethod
-    def _verify_installed(target: Path, manifest: ReleaseManifest) -> None:
+    def _verify_installed(
+        target: Path,
+        manifest: ReleaseManifest,
+        release_set: ReleaseSetManifest,
+        *,
+        expected_artifact_policy_sha256: str | None,
+    ) -> None:
+        SelfHostedInstaller._validate_release_set_binding(
+            release_set,
+            manifest,
+            expected_artifact_policy_sha256=expected_artifact_policy_sha256,
+        )
         site = SelfHostedInstaller._public_site(target, manifest)
         if not (site / "index.html").is_file():
             raise DeployExecutionError(f"installed release has no index: {target}")
@@ -249,6 +370,44 @@ class SelfHostedInstaller:
         if target != self._target(manifest.release_id, manifest.artifact):
             raise DeployExecutionError("installed release manifest/path mismatch")
         return manifest
+
+    @staticmethod
+    def _load_release_set(path: Path) -> ReleaseSetManifest:
+        source = Path(path).expanduser()
+        if source.is_symlink() or not source.is_file():
+            raise DeployExecutionError(f"ReleaseSet is not a regular file: {source}")
+        try:
+            value = json.loads(source.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise DeployExecutionError(f"cannot read ReleaseSet: {source}") from exc
+        if not isinstance(value, dict):
+            raise DeployExecutionError("ReleaseSet must be a JSON object")
+        return ReleaseSetManifest.from_dict(value)
+
+    @staticmethod
+    def _validate_release_set_binding(
+        release_set: ReleaseSetManifest,
+        manifest: ReleaseManifest,
+        *,
+        expected_artifact_policy_sha256: str | None,
+    ) -> None:
+        record = release_set.artifact(manifest.artifact)
+        expected_policy = normalize_sha256(expected_artifact_policy_sha256)
+        actual_policy = normalize_sha256(release_set.artifact_policy_sha256)
+        if (
+            release_set.release_id != manifest.release_id
+            or release_set.spec_digest != manifest.spec_digest
+            or record.site_tree_sha256 != manifest.site_tree_sha256
+            or record.file_count != manifest.file_count
+            or record.total_bytes != manifest.total_bytes
+            or (
+                expected_policy is not None
+                and actual_policy != expected_policy
+            )
+        ):
+            raise DeployExecutionError(
+                "ReleaseSet does not bind the self-hosted artifact"
+            )
 
     def _target(self, release_id: str, artifact: str) -> Path:
         target = self.root / "releases" / release_id / artifact
@@ -319,10 +478,11 @@ class SelfHostedInstaller:
         manifest: ReleaseManifest,
         *,
         health_url: str | None,
+        filesystem_health_only: bool,
         attempts: int,
         interval: float,
     ) -> None:
-        if health_url is None:
+        if filesystem_health_only:
             spec = (
                 self._public_site(self._current, manifest)
                 / "release-spec.json"
@@ -333,6 +493,7 @@ class SelfHostedInstaller:
                 raise DeployExecutionError("active release has no valid ReleaseSpec") from exc
             self._validate_health_payload(value, manifest)
             return
+        assert health_url is not None
         last_error: Exception | None = None
         for attempt in range(attempts):
             try:
