@@ -2,11 +2,12 @@
 """Serve ReasBook pages locally with the generated Project Pages prefix."""
 
 import argparse
+from io import BytesIO
 import os
 from pathlib import Path
 import re
 from http import HTTPStatus
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import unquote, urlparse
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
@@ -26,6 +27,30 @@ def _normalize_site_root(value: str) -> str:
     return v
 
 
+def _normalize_public_prefix(value: str) -> str:
+    """Normalize an explicit reverse-proxy path without accepting a URL."""
+
+    prefix = value.strip()
+    if not prefix or prefix == "/":
+        return ""
+    if not prefix.startswith("/"):
+        prefix = "/" + prefix
+    prefix = prefix.rstrip("/")
+    parsed = urlparse(prefix)
+    if (
+        parsed.scheme
+        or parsed.netloc
+        or parsed.params
+        or parsed.query
+        or parsed.fragment
+        or "\\" in prefix
+        or any(ord(char) < 32 for char in prefix)
+        or any(part in {"", ".", ".."} for part in prefix.split("/")[1:])
+    ):
+        raise ValueError("public prefix must be a normalized absolute URL path")
+    return prefix
+
+
 def detect_site_root() -> str:
     env_root = os.environ.get("REASBOOK_SITE_ROOT")
     if env_root:
@@ -42,6 +67,32 @@ def detect_site_root() -> str:
 
 
 SITE_ROOT = detect_site_root()
+PUBLIC_PREFIX = _normalize_public_prefix(
+    os.environ.get("REASBOOK_PUBLIC_PREFIX", "")
+)
+
+
+def _public_site_root() -> str:
+    return PUBLIC_PREFIX + SITE_ROOT
+
+
+def _strip_public_prefix(path: str) -> str:
+    if PUBLIC_PREFIX and path == PUBLIC_PREFIX:
+        return "/"
+    if PUBLIC_PREFIX and path.startswith(PUBLIC_PREFIX + "/"):
+        return path[len(PUBLIC_PREFIX) :]
+    return path
+
+
+def _rewrite_site_root(payload: bytes) -> bytes:
+    """Prefix root-relative site URLs without touching module path segments."""
+
+    if not PUBLIC_PREFIX:
+        return payload
+    pattern = re.compile(
+        rb"(?<![A-Za-z0-9._~%/-])" + re.escape(SITE_ROOT.encode("utf-8"))
+    )
+    return pattern.sub(_public_site_root().encode("utf-8"), payload)
 
 
 def _safe_join(root: str, relative: str) -> str:
@@ -56,20 +107,68 @@ def _safe_join(root: str, relative: str) -> str:
 
 class ReasBookHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
-        if self.path == "/favicon.ico":
+        request_path = _strip_public_prefix(
+            unquote(urlparse(self.path).path)
+        )
+        if request_path == "/favicon.ico":
             self.send_response(HTTPStatus.NO_CONTENT)
             self.end_headers()
             return
-        if self.path == "/":
+        if request_path == "/":
             self.send_response(HTTPStatus.MOVED_PERMANENTLY)
-            self.send_header("Location", SITE_ROOT)
+            self.send_header("Location", _public_site_root())
+            self.send_header("Content-Length", "0")
             self.end_headers()
             return
         super().do_GET()
 
+    def send_head(self):
+        """Rewrite the generated site root only for explicit path proxies."""
+
+        if not PUBLIC_PREFIX:
+            return super().send_head()
+
+        path = self.translate_path(self.path)
+        if os.path.isdir(path):
+            if not urlparse(self.path).path.endswith("/"):
+                return super().send_head()
+            for name in ("index.html", "index.htm"):
+                candidate = os.path.join(path, name)
+                if os.path.isfile(candidate):
+                    path = candidate
+                    break
+            else:
+                return super().send_head()
+
+        content_type = self.guess_type(path)
+        textual = content_type.startswith("text/") or content_type in {
+            "application/javascript",
+            "application/json",
+            "application/xml",
+        }
+        if not textual:
+            return super().send_head()
+
+        try:
+            source = Path(path)
+            payload = _rewrite_site_root(source.read_bytes())
+        except OSError:
+            self.send_error(HTTPStatus.NOT_FOUND, "File not found")
+            return None
+
+        self.send_response(HTTPStatus.OK)
+        self.send_header("Content-type", content_type)
+        self.send_header("Content-Length", str(len(payload)))
+        self.send_header(
+            "Last-Modified",
+            self.date_time_string(source.stat().st_mtime),
+        )
+        self.end_headers()
+        return BytesIO(payload)
+
     def translate_path(self, path: str) -> str:
         parsed = urlparse(path)
-        req_path = unquote(parsed.path)
+        req_path = _strip_public_prefix(unquote(parsed.path))
 
         if req_path.startswith(f"{SITE_ROOT}docs/") or req_path.startswith("/docs/"):
             rel = req_path.split("/docs/", 1)[1]
@@ -101,17 +200,31 @@ def main() -> None:
     parser.add_argument("port", type=int, nargs="?", default=8000)
     parser.add_argument("--host", default=os.environ.get("REASBOOK_SERVE_HOST", "127.0.0.1"))
     parser.add_argument("--site-root", default=os.environ.get("REASBOOK_SITE_ROOT", ""))
+    parser.add_argument(
+        "--public-prefix",
+        default=os.environ.get("REASBOOK_PUBLIC_PREFIX", ""),
+        help="external path stripped by a reverse proxy (for example /proxy/3000)",
+    )
     args = parser.parse_args()
 
-    global SITE_ROOT
+    global PUBLIC_PREFIX, SITE_ROOT
     if args.site_root:
         SITE_ROOT = _normalize_site_root(args.site_root)
+    try:
+        PUBLIC_PREFIX = _normalize_public_prefix(args.public_prefix)
+    except ValueError as exc:
+        parser.error(str(exc))
 
-    with HTTPServer((args.host, args.port), ReasBookHandler) as httpd:
-        print(f"Serving at http://localhost:{args.port}{SITE_ROOT}")
+    with ThreadingHTTPServer((args.host, args.port), ReasBookHandler) as httpd:
+        print(f"Serving at http://localhost:{args.port}{_public_site_root()}")
         print(f"{SITE_ROOT} -> {BOOK_SITE}")
+        if PUBLIC_PREFIX:
+            print(f"reverse-proxy prefix: {PUBLIC_PREFIX}")
         print(f"{SITE_ROOT}docs/ -> {DOCS_SITE} (fallback: {os.path.join(BOOK_SITE, 'docs')})")
-        httpd.serve_forever()
+        try:
+            httpd.serve_forever()
+        except KeyboardInterrupt:
+            pass
 
 
 if __name__ == "__main__":

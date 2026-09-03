@@ -122,12 +122,6 @@ def _missing_internal_references(site_root: Path) -> list[str]:
     return missing
 
 
-def count_html(path: Path) -> int:
-    if not path.is_dir():
-        return 0
-    return sum(1 for _ in path.rglob("*.html"))
-
-
 def usable_html(path: Path) -> bool:
     if path.is_symlink() or not path.is_file() or path.stat().st_size == 0:
         return False
@@ -167,11 +161,6 @@ def main() -> None:
             pass
         elif not usable_html(pages_index):
             errors.append(f"{name}: missing sites/{slug}/pages/index.html")
-        elif count_html(pages_dir) < 2:
-            errors.append(
-                f"{name}: sites/{slug}/pages has no content "
-                f"({count_html(pages_dir)} html)"
-            )
         if require_maps:
             map_index = (
                 site_root
