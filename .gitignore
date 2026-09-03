@@ -22,11 +22,32 @@ ReasBookWeb/Book/
 __pycache__/
 **/__pycache__/
 *.py[cod]
+.venv/
+**/.venv/
+
+# Local environments and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# JavaScript tooling
+node_modules/
+**/node_modules/
+dist/
+**/dist/
 
 # Local working/private files (not pushed)
 docs/
+!docs/
+docs/*
+!docs/decisions/
+!docs/decisions/**
 CLAUDE.md
-maintenance/
+/maintenance/
+# Local SiFlow skill, credentials, task state, and generated E2E artifacts
+/SiFlow-sdk/
 
 # OS / editor junk
 .DS_Store

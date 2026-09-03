@@ -157,11 +157,12 @@ For example:
 - Branch name, book directory name, and PR title follow the conventions.
 - Book `README.md` and contributor info are complete.
 - Other books and papers in the target version branch are preserved.
-- **Local build passes**: Run `lake build` in the `ReasBook/` directory and verify
-  no errors. Attach the build output summary to the PR.
-- **PR CI will run automatically**: The `deploy_pages` workflow is triggered on
-  pull requests to `v4.30.0` and `v4.32.0`. It runs a quick build of changed files.
-  CI must pass before the PR can be merged.
+- **Focused validation passes**: validate the changed project against the
+  branch's pinned toolchain. Maintainers run authoritative full builds through
+  the incremental SiFlow build SDK; contributors should not generate or commit
+  repository-wide caches.
+- **PR CI will run automatically**: registered version branches run the
+  applicable changed-project checks. CI must pass before the PR can be merged.
 
 ## After PR submission
 
@@ -169,7 +170,8 @@ For example:
    check the logs and fix the issues.
 2. **Maintainer review**: A maintainer will review the PR. They may request changes
    or merge it directly if everything is in order.
-3. **Merged PRs are deployed**: After merging to `v4.30.0` or `v4.32.0`, the next
-   `deploy_pages` run on `main` will include the updated book in the public site.
+3. **Merged PRs enter the next static release**: maintainers pin the version
+   branch commit in a `ReleaseSpec`, build it on SiFlow, verify the complete
+   bundle, and publish that immutable bundle. GitHub Pages does not compile Lean.
 - Full build passes and the reported statistics are truthful.
 - No `.lake/`, caches, logs, or generated websites are committed.
