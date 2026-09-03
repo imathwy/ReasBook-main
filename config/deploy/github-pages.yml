@@ -1,0 +1,30 @@
+schema_version: 1
+name: github-pages
+
+registry: config/toolchains.yml
+canonical_projects: config/canonical-projects.yml
+
+selection:
+  mode: all_active
+  exclude:
+    - books/ProbabilityTheory_Klenke_2020
+    - books/ComputationalMethodsInverseProblems_Vogel_2002
+
+site:
+  base_path: /ReasBook/
+  include_historical_versions: true
+
+policy:
+  allow_partial: false
+  require_lean: true
+  require_docs: true
+  require_verso: true
+  theorem_graph: compiled_or_source
+  max_site_files: 100000
+  max_bundle_bytes: 1900000000
+
+publish:
+  adapter: github_pages
+  repository: optpku/ReasBook
+  release_tag_prefix: reasbook-site
+  workflow: publish_release_pages.yml

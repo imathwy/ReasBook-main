@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reasbook-deploy-sdk"
+version = "0.1.0"
+description = "Composable deployment orchestration for ReasBook review and site builds"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "reasbook-sdk-common==0.1.0",
+  "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+capabilities = [
+  "reasbook-build-sdk==0.1.0",
+  "verso-build-sdk==0.1.0",
+  "theorem-graph-sdk==0.1.0",
+  "comparator-sdk==0.1.0",
+]
+
+[project.scripts]
+reasbook-deploy = "reasbook_deploy_sdk.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+reasbook_deploy_sdk = ["py.typed"]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src",
+  "../common/src",
+  "../build/src",
+  "../verso/src",
+  "../theorem_graph/src",
+  "../comparator/src",
+]

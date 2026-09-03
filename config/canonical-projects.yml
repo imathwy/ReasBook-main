@@ -1,0 +1,10 @@
+# Canonical public version for projects present on multiple toolchain branches.
+schema_version: 1
+
+books:
+  Analysis2_Tao_2022: v4.30.0
+  IntroductiontoRealAnalysisVolumeI_JiriLebl_2025: v4.30.0
+
+papers:
+  OnSomeLocalRings_Maassaran_2025: v4.30.0
+  SmoothMinimization_Nesterov_2004: v4.30.0
