@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from contextlib import contextmanager
+from http.client import HTTPConnection
 import importlib.util
 from pathlib import Path
 import sys
@@ -68,6 +69,17 @@ class PreviewServerTests(unittest.TestCase):
             prefix = "/workspace/proxy/3000"
 
             with running_server(site, prefix) as origin:
+                connection = HTTPConnection(
+                    "127.0.0.1", int(origin.rsplit(":", 1)[1]), timeout=5
+                )
+                connection.request("HEAD", "/")
+                head = connection.getresponse()
+                self.assertEqual(head.status, 301)
+                self.assertEqual(
+                    head.getheader("Location"), prefix + "/ReasBook/"
+                )
+                connection.close()
+
                 with urlopen(origin + "/", timeout=5) as response:
                     self.assertEqual(
                         response.geturl(), origin + prefix + "/ReasBook/"

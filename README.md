@@ -126,7 +126,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 - Book and paper code lives on the registered version branch matching its Lean/mathlib toolchain; only registered stable `vX.Y.Z` versions are accepted.
 - **Book and paper code is not merged to `main`.** `main` remains the cross-version catalog, while its link folders point to the corresponding version branches.
-- PR base, PR title version, `ReasBook/lean-toolchain`, and `book.yml` must all match.
+- PR base, PR title version, `ReasBook/lean-toolchain`, and book metadata
+  (when applicable) must all match.
 
 ## Build
 
@@ -180,7 +181,9 @@ When `--serve` is used, host and port defaults are read from the reviewer
 For a static Docker deployment, run
 `./sdk/deploy/bin/reasbook-deploy docker`. It builds first, validates the
 generated site, starts Compose with `--remove-orphans`, and polls the published
-port before returning success. `--skip-build` reuses an existing site.
+port before returning success. The site is served at
+`http://127.0.0.1:3200/ReasBook/` by default. `--skip-build` reuses an existing
+site, and `--port` changes the host port.
 
 ### Immutable static release
 

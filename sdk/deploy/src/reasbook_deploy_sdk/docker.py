@@ -61,6 +61,12 @@ class DockerDeploymentConfig:
             or self.cache_root in self.repo_root.parents
         ):
             raise DeployConfigError("Docker build cache must be outside the checkout")
+        expected_site_root = (self.repo_root / "ReasBookWeb" / "_site").resolve()
+        if self.site_root != expected_site_root:
+            raise DeployConfigError(
+                "Docker deployment only supports the repository site directory: "
+                f"{expected_site_root}"
+            )
 
 
 def deploy_static(config: DockerDeploymentConfig, *, runner: Runner | None = None) -> None:
@@ -102,7 +108,7 @@ def deploy_static(config: DockerDeploymentConfig, *, runner: Runner | None = Non
         cwd=config.repo_root,
         env={"REASBOOK_PORT": str(config.port)},
     )
-    url = f"http://127.0.0.1:{config.port}/"
+    url = f"http://127.0.0.1:{config.port}/ReasBook/"
     for _ in range(config.health_attempts):
         try:
             with urlopen(url, timeout=config.health_interval_seconds) as response:
