@@ -1,24 +1,33 @@
 # ReasBook
 
-**ReasBook** is a Lean 4 project for formalizing mathematics from textbooks and research papers.
-The goal is to preserve the structure of original references while producing machine-checkable proofs.
-We welcome contributions from researchers, students, and practitioners.
+**ReasBook** is a Lean 4 project for formalizing mathematics from textbooks
+and research papers. It preserves the structure of the original references
+while producing machine-checkable statements and proofs. Browse the generated
+[documentation and project catalog](https://optpku.github.io/ReasBook/), or
+use the quick start below to check out one formalization without downloading
+every toolchain branch.
 
-ReasBook is generated using the tool: [M2F](https://github.com/optsuite/M2F.git). 
-- Try [Quokka (https://quokka.reaslab.io/)](https://quokka.reaslab.io/), our publicly available automated formalization system. Quokka can automatically transform long-form mathematical literature into compilable Lean 4 projects containing formally verified statements and proofs.
+Many ReasBook projects are initialized with
+[M2F](https://github.com/optsuite/M2F.git) and then checked and refined in
+Lean. You can also try [Quokka](https://quokka.reaslab.io/), the public
+automated formalization system for turning long-form mathematical literature
+into compilable Lean 4 projects.
 
 ## Toolchain Branches
 
-| Branch | Lean/mathlib | Status | Books/Papers | Last build |
-| --- | --- | --- | ---: | --- |
-| `v4.32.0` | `v4.32.0` | Active | 1 / 0 | Pending |
-| `v4.32.2` | `v4.32.2` | Active | 0 / 1 | Passed |
-| `v4.30.0` | `v4.30.0` | Active | 10 / 2 | Building |
-| `v4.26.0` | `v4.26.0` | Active | 4 / 2 | Passed |
+| Branch | Lean/mathlib | Registry status | Books/Papers |
+| --- | --- | --- | ---: |
+| `v4.32.0` | `v4.32.0` | Empty | 1 / 0 |
+| `v4.32.2` | `v4.32.2` | Active | 0 / 1 |
+| `v4.30.0` | `v4.30.0` | Active | 10 / 2 |
+| `v4.26.0` | `v4.26.0` | Active | 4 / 2 |
 
 `main` is the cross-version catalog. The source code stays on the registered version branches; the lightweight link folders below make each entry discoverable from this branch.
 
-Status: `Empty` (initialized, no source projects on that branch) · `Active` (accepting PRs) · `Frozen` (kept, no new books) · `Archived` (historical only).
+Registry status: `Empty` (not included in active releases) · `Active`
+(accepting PRs and included in release planning) · `Frozen` (kept, no new
+books) · `Archived` (historical only). Counts describe source directories and
+therefore may be nonzero on an `Empty` branch.
 
 ## Main-branch Link Folders
 
@@ -26,9 +35,29 @@ Each directory in these indexes is a landing page for one book or paper. Open a 
 
 - [Books](https://github.com/optpku/ReasBook/tree/main/ReasBook/Books/)
 - [Papers](https://github.com/optpku/ReasBook/tree/main/ReasBook/Papers/)
-- [Theorem dependency maps](https://optpku.github.io/ReasBook/theorem-maps/) (currently TR-LALM only)
+- [Theorem dependency maps](https://optpku.github.io/ReasBook/theorem-maps/)
+  (the current Pages deployment contains TR-LALM)
 
-## Download and Use One Project
+## Architecture
+
+ReasBook separates versioned mathematical sources from cross-version tooling
+and generated output:
+
+| Path | Responsibility |
+| --- | --- |
+| `ReasBook/` | Lean sources on their matching version branches |
+| `ReasBookWeb/` | Verso site shell and catalog generation |
+| `sdk/` | Reusable build, Verso, theorem-graph, comparator, and deployment APIs |
+| `scripts/` | Thin repository-specific build and Pages adapters |
+| `config/` | Toolchain registry, canonical versions, release profiles, and schemas |
+
+Generated sites, Lake artifacts, logs, and release state live outside the
+checkout under the configured cache root. Git history contains source and
+configuration, not generated sites. The immutable release and rollback model
+is recorded in [ADR-0001](docs/decisions/0001-static-release-pipeline.md); the
+SDK dependency graph and commands are in [sdk/README.md](sdk/README.md).
+
+## Quick Start: Use One Project
 
 You do not need to download every ReasBook project or the history of every
 toolchain branch. First find the book or paper in the tables below and note its
@@ -73,13 +102,13 @@ Titles open their catalog pages; version links open the Lean source directly.
 | **[Convex Analysis](ReasBook/Books/ConvexAnalysis_Rockafellar_1970/)**<br><sub>R. Tyrrell Rockafellar (1970)</sub> | [`v4.26.0`](https://github.com/optpku/ReasBook/tree/v4.26.0/ReasBook/Books/ConvexAnalysis_Rockafellar_1970/) | <details><summary>21 contributors</summary><sub>Changyu Zou, Chenyi Li, Guangxuan Pan, Pengfei Hao, Qiming Dai, Shu Miao, Siyuan Shao, Suwu Wu, Wanli Ma, Weiran Shi, Xinyi Guo, Xuran Sun, Yifan Bai, Yijie Wang, Yunfei Zhang, Yunxi Duan, Yuhao Jiang, Zebo Liu, Zhiyan Wang, Zichen Wang, Zaiwen Wen</sub></details> | [Docs](https://optpku.github.io/ReasBook/docs/ReasBook/Books/ConvexAnalysis_Rockafellar_1970/Book.html)<br>[Verso](https://optpku.github.io/ReasBook/sites/convexanalysis_rockafellar_1970/pages/) |
 | **[Convex Analysis and Monotone Operator Theory in Hilbert Spaces](ReasBook/Books/ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017/)**<br><sub>Bauschke and Combettes (2nd ed., 2017)</sub> | [`v4.30.0`](https://github.com/optpku/ReasBook/tree/v4.30.0/ReasBook/Books/ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017/) | Yifan Bai, Zichen Wang, Zaiwen Wen | [Docs](https://optpku.github.io/ReasBook/docs/ReasBook/Books/ConvexAnalysisMonotoneOperators_BauschkeCombettes_2017/Book.html)<br>[Verso](https://optpku.github.io/ReasBook/sites/convexanalysismonotoneoperators_bauschkecombettes_2017/pages/) |
 | **[First-Order Methods in Optimization](ReasBook/Books/FirstOrderMethodsOptimization_Beck_2017/)**<br><sub>Amir Beck (2017)</sub> | [`v4.30.0`](https://github.com/optpku/ReasBook/tree/v4.30.0/ReasBook/Books/FirstOrderMethodsOptimization_Beck_2017/) | Shu Miao, Zichen Wang, Zaiwen Wen | [Docs](https://optpku.github.io/ReasBook/docs/ReasBook/Books/FirstOrderMethodsOptimization_Beck_2017/Book.html)<br>[Verso](https://optpku.github.io/ReasBook/sites/firstordermethodsoptimization_beck_2017/pages/) |
-| **[Integer Programming](ReasBook/Books/IntegerProgramming_Conforti_2014/)**<br><sub>Conforti, Cornuejols, and Zambelli (2014)</sub> | [`v4.26.0`](https://github.com/optpku/ReasBook/tree/v4.26.0/ReasBook/Books/IntegerProgramming_Conforti_2014/) | <details><summary>38 contributors</summary><sub>Binghe Huang, Chenglin Li, Chenrui Yang, Chenxi Liu, Congyuan Lei, Dongye Song, Fuzhi Wang, Haodong Zhang, Jiangnan Song, Jinmin Song, Junze Qiao, Junzhe Lai, Kaiwen He, Liming Han, Lurong Yang, Meng Zhou, Pengqi Lei, Renran Luo, Siyan Chen, Wangqi Liu, Wenxin Zeng, Wanli Ma, Wenxuan Wu, Xinru Zhu, Xu Han, Xutianshi Tao, Yichao Guo, Youyou Qin, Yuhan Zhang, Yushen Guo, Yutong Zhang, Ze Zhai, Zheng Ma, Zhiyong Chen, Zichen Wang, Zichen Xu, Zihao Liu, Zaiwen Wen</sub></details> | [Docs](https://optpku.github.io/ReasBook/docs/ReasBook/Books/IntegerProgramming_Conforti_2014/Book.html)<br>Verso: TBD |
+| **[Integer Programming](ReasBook/Books/IntegerProgramming_Conforti_2014/)**<br><sub>Conforti, Cornuejols, and Zambelli (2014)</sub> | [`v4.26.0`](https://github.com/optpku/ReasBook/tree/v4.26.0/ReasBook/Books/IntegerProgramming_Conforti_2014/) | <details><summary>38 contributors</summary><sub>Binghe Huang, Chenglin Li, Chenrui Yang, Chenxi Liu, Congyuan Lei, Dongye Song, Fuzhi Wang, Haodong Zhang, Jiangnan Song, Jinmin Song, Junze Qiao, Junzhe Lai, Kaiwen He, Liming Han, Lurong Yang, Meng Zhou, Pengqi Lei, Renran Luo, Siyan Chen, Wangqi Liu, Wenxin Zeng, Wanli Ma, Wenxuan Wu, Xinru Zhu, Xu Han, Xutianshi Tao, Yichao Guo, Youyou Qin, Yuhan Zhang, Yushen Guo, Yutong Zhang, Ze Zhai, Zheng Ma, Zhiyong Chen, Zichen Wang, Zichen Xu, Zihao Liu, Zaiwen Wen</sub></details> | [Docs](https://optpku.github.io/ReasBook/docs/ReasBook/Books/IntegerProgramming_Conforti_2014/Book.html)<br>Verso not published |
 | **[Introduction to Real Analysis, Volume I](ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/)**<br><sub>Jiri Lebl (v6.2, 2025)</sub> | [`v4.26.0`](https://github.com/optpku/ReasBook/tree/v4.26.0/ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/)<br>[`v4.30.0`](https://github.com/optpku/ReasBook/tree/v4.30.0/ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/) | Zichen Wang, Zaiwen Wen | [Docs](https://optpku.github.io/ReasBook/docs/ReasBook/Books/IntroductiontoRealAnalysisVolumeI_JiriLebl_2025/Book.html)<br>[Verso](https://optpku.github.io/ReasBook/sites/introductiontorealanalysisvolumei_jirilebl_2025/pages/) |
 | **[Introductory Lectures on Convex Optimization](ReasBook/Books/IntroductoryLecturesOnConvexOptimization_Nesterov_2004/)**<br><sub>Yurii Nesterov (2004)</sub> | [`v4.30.0`](https://github.com/optpku/ReasBook/tree/v4.30.0/ReasBook/Books/IntroductoryLecturesOnConvexOptimization_Nesterov_2004/) | Chenyi Li, Siyuan Shao, Yijie Wang, Feiming Wang, Weiran Shi, Yuhao Jiang, Zebo Liu, Wentao Long | [Docs](https://optpku.github.io/ReasBook/docs/ReasBook/Books/IntroductoryLecturesOnConvexOptimization_Nesterov_2004/Book.html)<br>[Verso](https://optpku.github.io/ReasBook/sites/introductorylecturesonconvexoptimization_nesterov_2004/pages/) |
 | **[Optimization Theory and Methods: Nonlinear Programming](ReasBook/Books/OptimizationTheoryAndMethods_SunYuan_2006/)**<br><sub>Wenyu Sun and Ya-xiang Yuan (2006)</sub> | [`v4.30.0`](https://github.com/optpku/ReasBook/tree/v4.30.0/ReasBook/Books/OptimizationTheoryAndMethods_SunYuan_2006/) | Chenyi Li, Wanli Ma, Zichen Wang | [Docs](https://optpku.github.io/ReasBook/docs/ReasBook/Books/OptimizationTheoryAndMethods_SunYuan_2006/Book.html)<br>[Verso](https://optpku.github.io/ReasBook/sites/optimizationtheoryandmethods_sunyuan_2006/pages/) |
-| **[Probability Theory: A Comprehensive Course](ReasBook/Books/ProbabilityTheory_Klenke_2020/)**<br><sub>Achim Klenke (3rd ed., 2020)</sub> | [`v4.30.0`](https://github.com/optpku/ReasBook/tree/v4.30.0/ReasBook/Books/ProbabilityTheory_Klenke_2020/) | Xuanzhi Ren, Zichen Wang | Source only (CI excluded) |
+| **[Probability Theory: A Comprehensive Course](ReasBook/Books/ProbabilityTheory_Klenke_2020/)**<br><sub>Achim Klenke (3rd ed., 2020)</sub> | [`v4.30.0`](https://github.com/optpku/ReasBook/tree/v4.30.0/ReasBook/Books/ProbabilityTheory_Klenke_2020/) | Xuanzhi Ren, Zichen Wang | Source only (excluded from the current release profile) |
 | **[Lectures on Riemann Surfaces](ReasBook/Books/RiemannSurfaces_Forster_1981/)**<br><sub>Otto Forster (1981)</sub> | [`v4.30.0`](https://github.com/optpku/ReasBook/tree/v4.30.0/ReasBook/Books/RiemannSurfaces_Forster_1981/) | Zichen Wang | [Docs](https://optpku.github.io/ReasBook/docs/ReasBook/Books/RiemannSurfaces_Forster_1981/Book.html)<br>[Verso](https://optpku.github.io/ReasBook/sites/riemannsurfaces_forster_1981/pages/) |
-| **[Computational Methods for Inverse Problems](ReasBook/Books/ComputationalMethodsInverseProblems_Vogel_2002/)**<br><sub>Curtis R. Vogel (2002)</sub> | `TBD` | Yifan Bai, Wanli Ma, Zichen Wang | Source only (CI excluded) |
+| **[Computational Methods for Inverse Problems](ReasBook/Books/ComputationalMethodsInverseProblems_Vogel_2002/)**<br><sub>Curtis R. Vogel (2002)</sub> | Not assigned to an active release branch | Yifan Bai, Wanli Ma, Zichen Wang | Source only (excluded from the current release profile) |
 
 ## Papers
 
@@ -180,7 +209,49 @@ multi-version build. Use `--no-publish` to stop after local packaging or
 `--dry-run` to resolve the spec without creating release state. See
 [`sdk/deploy/release/README.md`](sdk/deploy/src/reasbook_deploy_sdk/release/README.md).
 
-### Script layout
+#### Preview the exact release bundle
+
+After the aggregate job has produced a packaged release, verify and extract
+the bundle before uploading it:
+
+```bash
+export REASBOOK_CACHE_ROOT=/path/to/reasbook-cache
+RELEASE_ID=site-YYYYMMDDTHHMMSSZ-xxxxxxxxxxxx
+RELEASE_DIR="$REASBOOK_CACHE_ROOT/releases/$RELEASE_ID"
+BUNDLE="$RELEASE_DIR/$RELEASE_ID.site.tar.zst"
+SHA256="$(awk 'NR == 1 { print $1 }' "$RELEASE_DIR/SHA256SUMS")"
+PREVIEW="$REASBOOK_CACHE_ROOT/previews/$RELEASE_ID"
+
+./sdk/deploy/bin/reasbook-deploy release verify \
+  "$BUNDLE" --sha256 "$SHA256" --extract-to "$PREVIEW"
+
+REASBOOK_SITE_DIR="$PREVIEW" \
+REASBOOK_DOC_SOURCE="$PREVIEW/docs" \
+./scripts/preview/serve.py 18000 --site-root /ReasBook/
+```
+
+Open `http://127.0.0.1:18000/ReasBook/`. This serves the verified extracted
+tree, not an intermediate build directory.
+
+#### GitHub Pages capacity check
+
+GitHub Release acceptance and Pages acceptance are separate checks. A Release
+asset may be almost 2 GiB, but GitHub Pages limits the **extracted published
+site** to 1 GB and times out deployments after 10 minutes. Before invoking
+`release publish`, measure the preview:
+
+```bash
+du -sb "$PREVIEW"
+find "$PREVIEW" -type f | wc -l
+```
+
+Use 950,000,000 bytes as the operational Pages ceiling. A larger bundle can
+still be retained as an immutable GitHub Release asset, but its complete site
+must be slimmed down or deployed to the future self-hosted target rather than
+sent to Pages. See the official [GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)
+and [GitHub Release limits](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases).
+
+### Implementation layout
 
 Repository adapters are grouped by responsibility under `scripts/`; there are
 no top-level script wrappers. Reusable Python, Lake, toolchain, external-cache,

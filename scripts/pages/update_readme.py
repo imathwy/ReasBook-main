@@ -22,13 +22,14 @@ from project_catalog import (
 
 SITE_BASE = "https://optpku.github.io/ReasBook"
 
+
 def resource_cell(project: dict[str, str]) -> str:
     name = project["name"]
     slug = project["slug"]
     kind = project["kind"]
 
     if name in EXCLUDED_PROJECTS:
-        return "Source only (CI excluded)"
+        return "Source only (excluded from the current release profile)"
 
     if kind == "books":
         docs_href = f"{SITE_BASE}/docs/ReasBook/Books/{name}/Book.html"
@@ -39,7 +40,7 @@ def resource_cell(project: dict[str, str]) -> str:
     if name not in NO_VERSO_PROJECTS:
         pieces.append(f"[Verso]({SITE_BASE}/sites/{slug}/pages/)")
     else:
-        pieces.append("Verso: TBD")
+        pieces.append("Verso not published")
 
     if name == "TR_LALM_theory":
         pieces.append(

@@ -44,9 +44,12 @@ Canonical failure never silently falls back to an older branch.
 ./sdk/deploy/bin/reasbook-deploy release plan --profile github-pages --fetch
 ./sdk/deploy/bin/reasbook-deploy release build RELEASE_ID --dry-run
 
-# One-click local build, package, upload, and Pages dispatch.
+# Small local canary: build, package, upload, and dispatch Pages.
 ./sdk/deploy/bin/reasbook-deploy release deploy \
   --profile github-pages --max-parallel-branches 3 --wait
+
+# Production: publish an existing bundle assembled from SiFlow results.
+./sdk/deploy/bin/reasbook-deploy release publish RELEASE_ID --wait
 
 # Resume or inspect a persisted release.
 ./sdk/deploy/bin/reasbook-deploy release status RELEASE_ID
@@ -61,7 +64,58 @@ Canonical failure never silently falls back to an older branch.
 Use `--only books/PROJECT_ID` to build a small release. `--dry-run` on
 `release deploy` resolves and prints the spec without creating release state.
 One-click deploy fetches `origin` first; use `--no-fetch` for an offline
-checkout.
+checkout. Do not use `release deploy` for a full public multi-version build:
+production branch builds and finalizers run through the private SiFlow
+operations layer, and only its verified aggregate bundle is passed to
+`release publish`.
+
+## Preview the publish candidate
+
+Preview the verified bundle rather than an intermediate build directory. This
+checks the same static tree that the Pages workflow will extract:
+
+```bash
+export REASBOOK_CACHE_ROOT=/path/to/reasbook-cache
+RELEASE_ID=site-YYYYMMDDTHHMMSSZ-xxxxxxxxxxxx
+RELEASE_DIR="$REASBOOK_CACHE_ROOT/releases/$RELEASE_ID"
+BUNDLE="$RELEASE_DIR/$RELEASE_ID.site.tar.zst"
+SHA256="$(awk 'NR == 1 { print $1 }' "$RELEASE_DIR/SHA256SUMS")"
+PREVIEW="$REASBOOK_CACHE_ROOT/previews/$RELEASE_ID"
+
+./sdk/deploy/bin/reasbook-deploy release verify \
+  "$BUNDLE" --sha256 "$SHA256" --extract-to "$PREVIEW"
+
+REASBOOK_SITE_DIR="$PREVIEW" \
+REASBOOK_DOC_SOURCE="$PREVIEW/docs" \
+./scripts/preview/serve.py 18000 --site-root /ReasBook/
+```
+
+Open `http://127.0.0.1:18000/ReasBook/`. Check the catalog, a canonical
+project, a version-qualified project, API documentation, Verso output, and a
+theorem map before publication.
+
+## GitHub hosting limits
+
+GitHub Release and GitHub Pages impose different limits. Each Release asset
+must be under 2 GiB, while the **extracted published Pages tree** must be under
+1 GB and a Pages deployment must finish within 10 minutes. The release profile
+currently bounds compressed bundle size and file count; before publishing to
+Pages, also measure the extracted preview and keep a margin below the Pages
+limit:
+
+```bash
+du -sb "$PREVIEW"
+find "$PREVIEW" -type f | wc -l
+```
+
+Use 950,000,000 bytes as the operational ceiling for the temporary Pages
+target. If the preview is larger, keep the immutable bundle in GitHub Release
+and publish a slim catalog, or deploy the complete bundle to the self-hosted
+target. A successful Release upload does not prove that Pages can accept the
+site.
+
+- [GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)
+- [GitHub Release limits](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases)
 
 ## Persistent State
 
