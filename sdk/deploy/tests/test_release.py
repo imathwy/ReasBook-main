@@ -547,6 +547,12 @@ class ReleasePlanningTests(unittest.TestCase):
                 if command.argv[1:3] == ("repo", "view"):
                     return CommandResult(command=command, returncode=0, stdout="main\n")
                 if command.argv[1] == "api":
+                    if "/releases/tags/" in command.argv[2]:
+                        return CommandResult(
+                            command=command,
+                            returncode=1,
+                            stderr="gh: Not Found (HTTP 404)",
+                        )
                     if "/commits/" in command.argv[2]:
                         return CommandResult(
                             command=command, returncode=0, stdout="d" * 40 + "\n"
@@ -557,11 +563,6 @@ class ReleasePlanningTests(unittest.TestCase):
                         stdout=json.dumps(
                             {"object": {"type": "commit", "sha": "c" * 40}}
                         ),
-                    )
-                if command.argv[1:3] == ("release", "view"):
-                    return CommandResult(
-                        command=command,
-                        returncode=1,
                     )
                 return CommandResult(command=command, returncode=0)
 
@@ -598,7 +599,11 @@ class ReleasePlanningTests(unittest.TestCase):
             self.assertEqual(
                 verbs,
                 [
-                    ("release", "view"),
+                    (
+                        "api",
+                        "repos/acme/reasbook/releases/tags/"
+                        "reasbook-site-20260901T140000Z-aaaaaaaaaaaa",
+                    ),
                     ("repo", "view"),
                     ("api", "repos/acme/reasbook/commits/main"),
                     ("release", "create"),
@@ -621,6 +626,24 @@ class ReleasePlanningTests(unittest.TestCase):
                 publication.tag,
             )
 
+    def test_github_release_lookup_fails_closed_on_non_404_error(self) -> None:
+        class FailedLookupRunner:
+            def run(self, command):
+                return CommandResult(
+                    command=command,
+                    returncode=1,
+                    stderr="gh: HTTP 403: rate limit exceeded",
+                )
+
+        publisher = GitHubReleasePublisher(
+            GitHubPublishProfile(repository="acme/reasbook"),
+            runner=FailedLookupRunner(),
+        )
+        with self.assertRaisesRegex(
+            DeployExecutionError, "release lookup failed.*403"
+        ):
+            publisher._release_by_tag("reasbook-site-safe")
+
     def test_github_wait_ignores_runs_that_predate_dispatch(self) -> None:
         class WaitRunner:
             def __init__(self, paths):
@@ -633,6 +656,27 @@ class ReleasePlanningTests(unittest.TestCase):
                 if command.argv[1:3] == ("repo", "view"):
                     return CommandResult(command=command, returncode=0, stdout="main\n")
                 if command.argv[1] == "api":
+                    if "/releases/tags/" in command.argv[2]:
+                        assets = [
+                            {
+                                "name": path.name,
+                                "size": path.stat().st_size,
+                                "digest": "sha256:"
+                                + hashlib.sha256(path.read_bytes()).hexdigest(),
+                            }
+                            for path in self.paths
+                        ]
+                        return CommandResult(
+                            command=command,
+                            returncode=0,
+                            stdout=json.dumps(
+                                {
+                                    "draft": False,
+                                    "target_commitish": "c" * 40,
+                                    "assets": assets,
+                                }
+                            ),
+                        )
                     if "/commits/" in command.argv[2]:
                         return CommandResult(
                             command=command, returncode=0, stdout="d" * 40 + "\n"
@@ -642,27 +686,6 @@ class ReleasePlanningTests(unittest.TestCase):
                         returncode=0,
                         stdout=json.dumps(
                             {"object": {"type": "commit", "sha": "c" * 40}}
-                        ),
-                    )
-                if command.argv[1:3] == ("release", "view"):
-                    assets = [
-                        {
-                            "name": path.name,
-                            "size": path.stat().st_size,
-                            "digest": "sha256:"
-                            + hashlib.sha256(path.read_bytes()).hexdigest(),
-                        }
-                        for path in self.paths
-                    ]
-                    return CommandResult(
-                        command=command,
-                        returncode=0,
-                        stdout=json.dumps(
-                            {
-                                "isDraft": False,
-                                "targetCommitish": "c" * 40,
-                                "assets": assets,
-                            }
                         ),
                     )
                 if command.argv[1:3] == ("run", "list"):
@@ -759,6 +782,24 @@ class ReleasePlanningTests(unittest.TestCase):
                 if command.argv[1:3] == ("repo", "view"):
                     return CommandResult(command=command, returncode=0, stdout="main\n")
                 if command.argv[1] == "api":
+                    if "/releases/tags/" in command.argv[2]:
+                        return CommandResult(
+                            command=command,
+                            returncode=0,
+                            stdout=json.dumps(
+                                {
+                                    "draft": False,
+                                    "target_commitish": "c" * 40,
+                                    "assets": [
+                                        {
+                                            "name": "unexpected.site.tar.zst",
+                                            "size": 1,
+                                            "digest": "sha256:" + "0" * 64,
+                                        }
+                                    ],
+                                }
+                            ),
+                        )
                     if "/commits/" in command.argv[2]:
                         return CommandResult(
                             command=command, returncode=0, stdout="d" * 40 + "\n"
@@ -768,24 +809,6 @@ class ReleasePlanningTests(unittest.TestCase):
                         returncode=0,
                         stdout=json.dumps(
                             {"object": {"type": "commit", "sha": "c" * 40}}
-                        ),
-                    )
-                if command.argv[1:3] == ("release", "view"):
-                    return CommandResult(
-                        command=command,
-                        returncode=0,
-                        stdout=json.dumps(
-                            {
-                                "isDraft": False,
-                                "targetCommitish": "c" * 40,
-                                "assets": [
-                                    {
-                                        "name": "unexpected.site.tar.zst",
-                                        "size": 1,
-                                        "digest": "sha256:" + "0" * 64,
-                                    }
-                                ],
-                            }
                         ),
                     )
                 return CommandResult(command=command, returncode=0)

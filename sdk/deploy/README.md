@@ -61,6 +61,10 @@ immutable cross-branch planning, explicit canonical versions, parallel local
 builds, deterministic bundles, and a GitHub Release/Pages publisher without
 mixing those concerns into reviewer deployment.
 
+The publisher supports GitHub CLI 2.4+ by reading existing releases through
+the raw REST API. Only an explicit HTTP 404 is treated as a missing release;
+all other lookup errors and incomplete asset metadata fail closed.
+
 ## Selected-book deployment
 
 Run from the ReasBook checkout (or pass `--repo-root`):
