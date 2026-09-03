@@ -1,0 +1,103 @@
+"""Standalone theorem dependency graph SDK."""
+
+from .analysis import (
+    CHAPTER_RE,
+    DECL_RE,
+    LABEL_RE,
+    NATURAL_PART_RE,
+    PALETTE,
+    SECTION_FILE_RE,
+    TITLE_PAREN_RE,
+    build_data,
+    candidate_score,
+    candidates_from_raw,
+    clean_title_text,
+    contract_dependencies,
+    fallback_raw_declarations,
+    load_curated_manifest,
+    module_relative_file,
+    natural_key,
+    normalize_label,
+    project_title,
+    section_for,
+    select_representatives,
+    slugify,
+    title_from_doc,
+)
+from .errors import (
+    ExtractionError,
+    GraphConfigError,
+    GraphRenderError,
+    TheoremGraphError,
+)
+from .extractor import (
+    DeclarationExtractor,
+    LeanEnvironmentExtractor,
+    SourceExtractor,
+)
+from .generator import GraphGenerator, TheoremGraphConfig, read_git_commit
+from .models import Candidate, GenerationReport, Project
+from .projects import (
+    discover_projects,
+    discover_root_module,
+    generic_projects,
+    has_curated_map,
+)
+from .render import (
+    collect_catalog_entries,
+    copy_curated_map,
+    copy_generic_map,
+    curated_counts,
+    read_catalog_entry,
+    write_catalog,
+)
+
+__version__ = "0.1.0"
+
+__all__ = [
+    "CHAPTER_RE",
+    "Candidate",
+    "DECL_RE",
+    "DeclarationExtractor",
+    "ExtractionError",
+    "GenerationReport",
+    "GraphConfigError",
+    "GraphGenerator",
+    "GraphRenderError",
+    "LABEL_RE",
+    "NATURAL_PART_RE",
+    "LeanEnvironmentExtractor",
+    "PALETTE",
+    "Project",
+    "SourceExtractor",
+    "TheoremGraphConfig",
+    "TheoremGraphError",
+    "build_data",
+    "candidate_score",
+    "candidates_from_raw",
+    "clean_title_text",
+    "collect_catalog_entries",
+    "contract_dependencies",
+    "copy_curated_map",
+    "copy_generic_map",
+    "curated_counts",
+    "discover_projects",
+    "discover_root_module",
+    "fallback_raw_declarations",
+    "generic_projects",
+    "has_curated_map",
+    "load_curated_manifest",
+    "module_relative_file",
+    "natural_key",
+    "normalize_label",
+    "project_title",
+    "read_git_commit",
+    "read_catalog_entry",
+    "select_representatives",
+    "section_for",
+    "SECTION_FILE_RE",
+    "slugify",
+    "TITLE_PAREN_RE",
+    "title_from_doc",
+    "write_catalog",
+]

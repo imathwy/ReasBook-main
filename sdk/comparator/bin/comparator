@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Top-level executable for the local Comparator SDK.
+set -euo pipefail
+
+SDK_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+COMMON_ROOT="$(cd "$SDK_ROOT/../common" && pwd)"
+export PYTHONPATH="$SDK_ROOT/src:$COMMON_ROOT/src${PYTHONPATH:+:$PYTHONPATH}"
+exec "$COMMON_ROOT/bin/python" -m comparator_sdk "$@"
