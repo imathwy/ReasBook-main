@@ -44,6 +44,8 @@ from .projects import (
     has_curated_map,
 )
 from .render import (
+    PROJECT_IDENTITY_FIELDS,
+    RELEASE_CONTEXT,
     collect_catalog_entries,
     copy_curated_map,
     copy_generic_map,
@@ -68,7 +70,9 @@ __all__ = [
     "NATURAL_PART_RE",
     "LeanEnvironmentExtractor",
     "PALETTE",
+    "PROJECT_IDENTITY_FIELDS",
     "Project",
+    "RELEASE_CONTEXT",
     "SourceExtractor",
     "TheoremGraphConfig",
     "TheoremGraphError",

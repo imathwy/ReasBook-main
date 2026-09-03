@@ -234,6 +234,7 @@ class ProjectDocumentationBuilder:
                             "lean",
                             "-R",
                             str(self._adapter("legacy").parent),
+                            *self._md4lean_interpreter_args(project_root),
                             "--run",
                             str(self._adapter("legacy")),
                             str(stage),
@@ -371,7 +372,7 @@ class ProjectDocumentationBuilder:
 
     @staticmethod
     def _database_interpreter_args(project_root: Path) -> tuple[str, ...]:
-        """Load native modules needed by doc-gen4 when run via Lean's interpreter."""
+        """Load native modules needed by the database compatibility adapter."""
 
         packages = project_root / ".lake" / "packages"
         sqlite_lib = packages / "leansqlite" / ".lake" / "build" / "lib"
@@ -386,13 +387,47 @@ class ProjectDocumentationBuilder:
                     f"library: {library}"
                 )
         libraries = [library.resolve() for library in required]
+        return tuple(f"--load-dynlib={library}" for library in libraries)
+
+    @staticmethod
+    def _md4lean_interpreter_args(project_root: Path) -> tuple[str, ...]:
+        """Resolve MD4Lean's version-dependent interpreter libraries.
+
+        Pre-database doc-gen4 renders HTML inside ``lean --run`` and therefore
+        requires the native implementation of ``MD4Lean.renderHtml``. MD4Lean
+        renamed its main shared library between the v4.26 and v4.30 toolchains;
+        discover the supported layouts explicitly instead of keying behavior to
+        a Lean version string.
+        """
+
+        packages = project_root / ".lake" / "packages"
         md4lean_lib = packages / "MD4Lean" / ".lake" / "build" / "lib"
-        optional = (
+        main_candidates = (
             md4lean_lib / "libMD4Lean_MD4Lean.so",
-            md4lean_lib / "lean" / "MD4Lean_MD4Lean_FFI.so",
+            md4lean_lib / "libMD4Lean.so",
         )
-        if all(library.is_file() and not library.is_symlink() for library in optional):
-            libraries.extend(library.resolve() for library in optional)
+        present = [
+            library
+            for library in main_candidates
+            if library.exists() or library.is_symlink()
+        ]
+        if len(present) != 1:
+            raise BuildFailed(
+                "project documentation adapter requires exactly one supported "
+                f"MD4Lean aggregate library under {md4lean_lib}"
+            )
+        main = present[0]
+        if not main.is_file() or main.is_symlink():
+            raise BuildFailed(f"MD4Lean aggregate library is unsafe: {main}")
+        libraries: list[Path] = []
+        md4c = md4lean_lib / "libleanmd4c.so"
+        if md4c.exists():
+            if not md4c.is_file() or md4c.is_symlink():
+                raise BuildFailed(f"MD4Lean C library is unsafe: {md4c}")
+            # Older aggregate MD4Lean libraries leave markdown conversion as
+            # an unresolved symbol, so its provider must be loaded first.
+            libraries.append(md4c.resolve())
+        libraries.append(main.resolve())
         return tuple(f"--load-dynlib={library}" for library in libraries)
 
     def _run(self, cwd: Path, argv: tuple[str, ...], timeout_seconds: float) -> None:

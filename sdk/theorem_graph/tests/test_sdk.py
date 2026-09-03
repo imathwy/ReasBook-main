@@ -16,6 +16,7 @@ from theorem_graph_sdk import (
     TheoremGraphConfig,
     build_data,
     contract_dependencies,
+    copy_curated_map,
     generic_projects,
     normalize_label,
 )
@@ -138,9 +139,33 @@ class TheoremGraphSdkTests(unittest.TestCase):
             curated.mkdir()
             (curated / "index.html").write_text("<!doctype html>", encoding="utf-8")
             (curated / "metadata.json").write_text(
-                json.dumps({"project": {"title": "Demo"}, "nodes": 1, "edges": 0}),
+                json.dumps(
+                    {
+                        "project": {
+                            "id": "stale",
+                            "title": "Demo",
+                            "kind": "papers",
+                            "branch": "old-branch",
+                            "commit": "old-commit",
+                            "repository": "https://example.invalid/old",
+                            "sourceRoot": "old/root/",
+                        },
+                        "nodes": 1,
+                        "edges": 0,
+                    }
+                ),
                 encoding="utf-8",
             )
+            original_app = (
+                '(function () {\n'
+                '  var LEAN_REF = "old-branch";\n'
+                '  var LEAN_COMMIT = "old-commit";\n'
+                '  var LEAN_BASE =\n'
+                '    "https://example.invalid/old/blob/" +\n'
+                '    LEAN_REF + "/old/root/";\n'
+                '})();\n'
+            )
+            (curated / "app.js").write_text(original_app, encoding="utf-8")
             site = root / "site"
             report = GraphGenerator(
                 TheoremGraphConfig(
@@ -148,6 +173,7 @@ class TheoremGraphSdkTests(unittest.TestCase):
                     site_root=site,
                     branch="main",
                     commit="abc",
+                    repository="https://github.com/optpku/ReasBook.git/",
                 ),
                 extractor=SourceExtractor(),
                 commit_reader=lambda _: "abc",
@@ -160,6 +186,51 @@ class TheoremGraphSdkTests(unittest.TestCase):
                 "Demo",
                 (site / "theorem-maps" / "index.html").read_text(encoding="utf-8"),
             )
+            generated = site / "theorem-maps" / "papers" / "demo"
+            metadata = json.loads(
+                (generated / "metadata.json").read_text(encoding="utf-8")
+            )
+            context = json.loads(
+                (generated / "release-context.json").read_text(encoding="utf-8")
+            )
+            expected_identity = {
+                "id": "Demo",
+                "title": "Demo",
+                "kind": "papers",
+                "branch": "main",
+                "commit": "abc",
+                "repository": "https://github.com/optpku/ReasBook",
+                "sourceRoot": "ReasBook/Papers/Demo/",
+            }
+            self.assertEqual(metadata["project"], expected_identity)
+            self.assertEqual(context, {"schemaVersion": 1, "project": expected_identity})
+            rendered_app = (generated / "app.js").read_text(encoding="utf-8")
+            self.assertIn('var LEAN_REF = "main";', rendered_app)
+            self.assertIn('var LEAN_COMMIT = "abc";', rendered_app)
+            self.assertIn(
+                'var LEAN_BASE = "https://github.com/optpku/ReasBook/blob/abc/'
+                'ReasBook/Papers/Demo/";',
+                rendered_app,
+            )
+            self.assertEqual(
+                (curated / "metadata.json").read_text(encoding="utf-8"),
+                json.dumps(
+                    {
+                        "project": {
+                            "id": "stale",
+                            "title": "Demo",
+                            "kind": "papers",
+                            "branch": "old-branch",
+                            "commit": "old-commit",
+                            "repository": "https://example.invalid/old",
+                            "sourceRoot": "old/root/",
+                        },
+                        "nodes": 1,
+                        "edges": 0,
+                    }
+                ),
+            )
+            self.assertEqual((curated / "app.js").read_text(encoding="utf-8"), original_app)
 
     def test_cli_uses_packaged_extractor_and_frontend_resources(self) -> None:
         from theorem_graph_sdk.cli import main
@@ -195,6 +266,31 @@ class TheoremGraphSdkTests(unittest.TestCase):
             self.assertTrue((generated / "index.html").is_file())
             self.assertTrue((generated / "app.js").is_file())
             self.assertTrue((generated / "styles.css").is_file())
+            self.assertTrue((generated / "release-context.json").is_file())
+            rendered_app = (generated / "app.js").read_text(encoding="utf-8")
+            self.assertIn("encodeURIComponent(project.commit)", rendered_app)
+            self.assertNotIn("encodeURIComponent(project.branch)", rendered_app)
+
+    def test_curated_release_link_contract_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "source"
+            source.mkdir()
+            (source / "index.html").write_text("<!doctype html>", encoding="utf-8")
+            (source / "app.js").write_text(
+                'var LEAN_REF = "main";\n', encoding="utf-8"
+            )
+            identity = {
+                "id": "Demo",
+                "kind": "papers",
+                "branch": "main",
+                "commit": "a" * 40,
+                "repository": "https://github.com/example/ReasBook.git",
+                "sourceRoot": "ReasBook/Papers/Demo/",
+            }
+
+            with self.assertRaisesRegex(GraphRenderError, "invalid release-link contract"):
+                copy_curated_map(source, root / "output", project=identity)
 
     def test_source_only_marks_compiled_root_as_source_fallback(self) -> None:
         """A source-only run must never claim Lean-environment evidence."""

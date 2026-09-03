@@ -6,6 +6,7 @@ import io
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -34,6 +35,103 @@ def working_directory(path: Path):
 
 
 class RepositoryScriptTests(unittest.TestCase):
+    @staticmethod
+    def _project_docs_fixture(root: Path) -> tuple[Path, Path, Path, Path]:
+        repo = root / "repo"
+        scripts = repo / "scripts" / "build"
+        build_bin = repo / "sdk" / "build" / "bin"
+        deploy_bin = repo / "sdk" / "deploy" / "bin"
+        lean_root = repo / "ReasBook"
+        for directory in (scripts, build_bin, deploy_bin, lean_root):
+            directory.mkdir(parents=True, exist_ok=True)
+        for name in ("common.sh", "project_docs.sh"):
+            shutil.copy2(ROOT / "scripts" / "build" / name, scripts / name)
+        (lean_root / "lakefile.lean").write_text(
+            'require doc-gen4 from git "https://example.invalid/doc-gen4"\n',
+            encoding="utf-8",
+        )
+        deploy = deploy_bin / "reasbook-deploy"
+        deploy.write_text(
+            "#!/usr/bin/env bash\n"
+            "set -eu\n"
+            'while [ "$#" -gt 0 ] && [ "$1" != -- ]; do shift; done\n'
+            '[ "$#" -gt 0 ] || exit 2\n'
+            "shift\n"
+            'exec "$@"\n',
+            encoding="utf-8",
+        )
+        deploy.chmod(0o755)
+        return repo, scripts, lean_root, build_bin / "reasbook-build"
+
+    def test_project_docs_honors_and_validates_release_target_boundary(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            repo, scripts, lean_root, build_sdk = self._project_docs_fixture(
+                Path(temp)
+            )
+            build_sdk.write_text(
+                "#!/usr/bin/env bash\n"
+                "set -eu\n"
+                'if [ "${1:-}" = targets ]; then\n'
+                '  : > "$DISCOVERY_LOG"\n'
+                "  printf '%s\\n' Included.Book Excluded.Book\n"
+                "  exit 0\n"
+                "fi\n"
+                "printf '%s\\n' \"$@\" > \"$INVOCATION_LOG\"\n",
+                encoding="utf-8",
+            )
+            build_sdk.chmod(0o755)
+
+            invocation = Path(temp) / "invocation.log"
+            discovery = Path(temp) / "discovery.log"
+            result = subprocess.run(
+                ["bash", str(scripts / "project_docs.sh")],
+                cwd=repo,
+                env={
+                    **os.environ,
+                    "REASBOOK_LEAN_ROOT": str(lean_root),
+                    "REASBOOK_LAKE_TARGETS": "Included.Book,Second.Paper",
+                    "PROJECT_DOC_MODULES": "Excluded.Book",
+                    "INVOCATION_LOG": str(invocation),
+                    "DISCOVERY_LOG": str(discovery),
+                },
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("2 project root(s)", result.stdout)
+            self.assertFalse(discovery.exists())
+            arguments = invocation.read_text(encoding="utf-8").splitlines()
+            self.assertEqual(
+                arguments[:4],
+                [
+                    "project-docs",
+                    str(lean_root),
+                    "Included.Book",
+                    "Second.Paper",
+                ],
+            )
+            self.assertNotIn("Excluded.Book", arguments)
+
+            empty_result = subprocess.run(
+                ["bash", str(scripts / "project_docs.sh")],
+                cwd=repo,
+                env={
+                    **os.environ,
+                    "REASBOOK_LEAN_ROOT": str(lean_root),
+                    "REASBOOK_LAKE_TARGETS": " , ",
+                    "DISCOVERY_LOG": str(discovery),
+                },
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+
+            self.assertEqual(empty_result.returncode, 2)
+            self.assertIn("contains no documentation roots", empty_result.stderr)
+            self.assertFalse(discovery.exists())
+
     def test_readme_resource_labels_describe_release_state(self) -> None:
         excluded = {
             "kind": "books",

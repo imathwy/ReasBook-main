@@ -35,13 +35,19 @@ pages, and theorem map remained available at their original URLs.
   stubs so navigation is link-closed.
 - Modern doc-gen writes and renders a database trimmed to that reachable
   project closure; the legacy adapter renders the same bounded module set via
-  its compatibility path. The isolated, content-addressed cache profile is
+  its compatibility path. Legacy native MD4Lean libraries are resolved from
+  built artifacts and loaded in dependency order, rather than inferred from a
+  Lean version. The isolated, content-addressed cache profile is
   `project-modules-v2`, so source, toolchain, target, module, doc-gen, or batch
   policy changes cannot silently reuse incompatible output.
 - Packaging derives two immutable artifacts from the verified aggregate site:
   `full` retains every assembled project version; `pages` retains the public
   catalog and explicit canonical project versions. Both retain reachable
   project-module docs, Verso pages, theorem maps, and dependency stubs.
+- Every theorem map, whether generated or curated, carries a generated release
+  context that matches its project specification. Repository source links are
+  pinned to the full project commit; the branch name remains display metadata
+  only. Finalization rejects missing or stale identities before packaging.
 - A `ReleaseSet` binds both artifact names, bundle SHA-256 values, site-tree
   SHA-256 values, file counts, byte counts, and the artifact-policy digest to
   the same `ReleaseSpec`.

@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import html
 import json
+import re
 import shutil
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Iterable, Mapping
 
 from reasbook_sdk_common import atomic_write_json, atomic_write_text
 
@@ -14,6 +15,131 @@ from .analysis import project_title
 from .errors import GraphRenderError
 
 REQUIRED_ASSETS = ("index.html", "app.js", "styles.css")
+RELEASE_CONTEXT = "release-context.json"
+PROJECT_IDENTITY_FIELDS = (
+    "id",
+    "kind",
+    "branch",
+    "commit",
+    "repository",
+    "sourceRoot",
+)
+
+
+def _project_identity(value: Any) -> dict[str, Any]:
+    """Return a validated, normalized release identity.
+
+    The display branch is intentionally retained, but consumers must use the
+    immutable commit when constructing source links.
+    """
+
+    if not isinstance(value, Mapping):
+        raise GraphRenderError("theorem graph project identity must be an object")
+    project = dict(value)
+    for field in PROJECT_IDENTITY_FIELDS:
+        item = project.get(field)
+        if not isinstance(item, str) or not item.strip():
+            raise GraphRenderError(
+                f"theorem graph project identity has no valid {field}"
+            )
+        if any(char in item for char in "\x00\r\n"):
+            raise GraphRenderError(
+                f"theorem graph project identity {field} contains a control character"
+            )
+        project[field] = item.strip()
+    project["repository"] = project["repository"].rstrip("/").removesuffix(".git")
+    if not project["repository"]:
+        raise GraphRenderError("theorem graph project repository is empty")
+    project["sourceRoot"] = project["sourceRoot"].strip("/") + "/"
+    title = project.get("title")
+    if title is not None and (not isinstance(title, str) or not title.strip()):
+        raise GraphRenderError("theorem graph project title must be non-empty text")
+    if isinstance(title, str):
+        project["title"] = title.strip()
+    return project
+
+
+def _release_context(project: Mapping[str, Any]) -> dict[str, Any]:
+    return {"schemaVersion": 1, "project": dict(project)}
+
+
+def _read_json_object(
+    path: Path, *, default: dict[str, Any] | None = None
+) -> dict[str, Any]:
+    if not path.is_file() and default is not None:
+        return dict(default)
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise GraphRenderError(f"invalid JSON object {path}: {exc}") from exc
+    if not isinstance(value, dict):
+        raise GraphRenderError(f"invalid JSON object {path}: expected an object")
+    return value
+
+
+def _js_assignment_pattern(name: str) -> re.Pattern[str]:
+    return re.compile(
+        rf"^(?P<prefix>[ \t]*(?:var|let|const)[ \t]+{re.escape(name)}"
+        rf"[ \t]*=[ \t]*)(?P<value>.*?)(?P<suffix>;[ \t]*)$",
+        re.MULTILINE | re.DOTALL,
+    )
+
+
+def _replace_js_assignment(source: str, name: str, value: str) -> tuple[str, bool]:
+    pattern = _js_assignment_pattern(name)
+
+    def replacement(match: re.Match[str]) -> str:
+        return (
+            match.group("prefix").rstrip()
+            + " "
+            + json.dumps(value)
+            + match.group("suffix")
+        )
+
+    updated, count = pattern.subn(replacement, source, count=1)
+    return updated, count == 1
+
+
+def _normalize_curated_app(output: Path, project: Mapping[str, Any]) -> None:
+    """Bind the legacy curated frontend contract to this immutable release."""
+
+    app = output / "app.js"
+    if not app.is_file():
+        return
+    try:
+        source = app.read_text(encoding="utf-8")
+    except (OSError, UnicodeError) as exc:
+        raise GraphRenderError(f"could not read curated theorem map app: {exc}") from exc
+    markers = {
+        name: len(tuple(_js_assignment_pattern(name).finditer(source)))
+        for name in ("LEAN_REF", "LEAN_COMMIT", "LEAN_BASE")
+    }
+    if not any(markers.values()):
+        return
+    if any(count != 1 for count in markers.values()):
+        invalid = ", ".join(
+            f"{name}={count}" for name, count in markers.items() if count != 1
+        )
+        raise GraphRenderError(
+            "curated theorem map uses an invalid release-link contract; "
+            f"expected one assignment for each variable, got {invalid}"
+        )
+    source_base = (
+        f'{project["repository"]}/blob/{project["commit"]}/'
+        f'{project["sourceRoot"]}'
+    )
+    for name, value in (
+        ("LEAN_REF", str(project["branch"])),
+        ("LEAN_COMMIT", str(project["commit"])),
+        ("LEAN_BASE", source_base),
+    ):
+        source, replaced = _replace_js_assignment(source, name, value)
+        if not replaced:  # pragma: no cover - guarded by the marker check above
+            raise GraphRenderError(f"could not normalize curated assignment {name}")
+    try:
+        atomic_write_text(app, source)
+    except (OSError, ValueError) as exc:
+        raise GraphRenderError(f"could not normalize curated theorem map app: {exc}") from exc
 
 
 def _write_json(path: Path, value: Any) -> None:
@@ -43,29 +169,64 @@ def copy_generic_map(assets: Path, output: Path, data: dict[str, Any]) -> None:
             shutil.copy2(assets / name, output / name)
     except OSError as exc:
         raise GraphRenderError(f"could not copy theorem graph assets: {exc}") from exc
-    _write_json(output / "data.json", data)
-    items = list(data.get("items") or [])
+    rendered_data = dict(data)
+    project = _project_identity(rendered_data.get("project"))
+    rendered_data["project"] = project
+    _write_json(output / "data.json", rendered_data)
+    items = list(rendered_data.get("items") or [])
     metadata = {
         "schemaVersion": 1,
-        "project": data.get("project") or {},
+        "project": project,
         "nodes": len(items),
         "edges": sum(len(item.get("dependencies") or []) for item in items),
-        "generation": data.get("generation") or {},
+        "generation": rendered_data.get("generation") or {},
     }
     _write_json(output / "metadata.json", metadata)
+    _write_json(output / RELEASE_CONTEXT, _release_context(project))
 
 
-def copy_curated_map(source: Path, output: Path) -> None:
-    source = Path(source).expanduser().resolve()
-    output = Path(output).expanduser().resolve()
+def copy_curated_map(
+    source: Path,
+    output: Path,
+    *,
+    project: Mapping[str, Any],
+) -> None:
+    """Copy a curated map and bind it to the current release identity."""
+
+    source_input = Path(source).expanduser()
+    output_input = Path(output).expanduser()
+    if source_input.is_symlink() or output_input.is_symlink():
+        raise GraphRenderError("curated theorem map roots must not be symlinks")
+    source = source_input.resolve()
+    output = output_input.resolve()
     if not (source / "index.html").is_file():
         raise GraphRenderError(f"curated theorem map has no index.html: {source}")
+    for path in source.rglob("*"):
+        if path.is_symlink():
+            raise GraphRenderError(f"curated theorem map must not contain symlinks: {path}")
+    identity = _project_identity(project)
+    nodes, edges = curated_counts(source)
     try:
-        if source.is_symlink() or output.is_symlink():
-            raise GraphRenderError("curated theorem map roots must not be symlinks")
-        shutil.copytree(source, output, dirs_exist_ok=True, symlinks=True)
+        shutil.copytree(source, output, dirs_exist_ok=True)
     except OSError as exc:
         raise GraphRenderError(f"could not copy curated theorem map: {exc}") from exc
+    metadata = _read_json_object(
+        output / "metadata.json",
+        default={
+            "schemaVersion": 1,
+            "nodes": nodes,
+            "edges": edges,
+            "generation": {"mode": "curated-static"},
+        },
+    )
+    metadata["schemaVersion"] = 1
+    metadata["project"] = identity
+    metadata["nodes"] = nodes
+    metadata["edges"] = edges
+    metadata.setdefault("generation", {"mode": "curated-static"})
+    _write_json(output / "metadata.json", metadata)
+    _write_json(output / RELEASE_CONTEXT, _release_context(identity))
+    _normalize_curated_app(output, identity)
 
 
 def curated_counts(source: Path) -> tuple[int, int]:
@@ -249,7 +410,9 @@ def write_catalog(
 
 
 __all__ = [
+    "PROJECT_IDENTITY_FIELDS",
     "REQUIRED_ASSETS",
+    "RELEASE_CONTEXT",
     "collect_catalog_entries",
     "copy_curated_map",
     "copy_generic_map",

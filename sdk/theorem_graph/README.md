@@ -28,6 +28,14 @@ curated theorem-map directory, opt in explicitly:
       --repo-root . --site-root ReasBookWeb/_site --branch v4.32.2 \
       --include-generic
 
+Every rendered map contains `release-context.json`. Its `project` object is the
+authoritative release identity: project id and kind, display branch, immutable
+commit, repository, and source root. The same object is written to
+`metadata.json` (and to `data.json` for generated maps). Source links use the
+commit, never the mutable branch. Curated maps that expose the legacy
+`LEAN_REF`, `LEAN_COMMIT`, and `LEAN_BASE` variables are normalized at render
+time, so authors do not hand-edit release commits in static assets.
+
 The packaged resources are used by default; `--extractor` and `--assets`
 allow explicit replacements. Compiled extraction failures fall back to source
 comments unless `--no-source-fallback` is supplied. The output tree is staged

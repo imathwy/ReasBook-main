@@ -6,7 +6,7 @@ import unittest
 from unittest.mock import patch
 from pathlib import Path
 
-from reasbook_build_sdk import CommandResult, ProjectDocumentationBuilder
+from reasbook_build_sdk import BuildFailed, CommandResult, ProjectDocumentationBuilder
 from reasbook_build_sdk import docs as docs_module
 
 
@@ -96,6 +96,19 @@ class ProjectDocumentationTests(unittest.TestCase):
             "def fromDb := ()\n" if modern else "def index := ()\n",
             encoding="utf-8",
         )
+        md4lean = (
+            project
+            / ".lake"
+            / "packages"
+            / "MD4Lean"
+            / ".lake"
+            / "build"
+            / "lib"
+            / ("libMD4Lean_MD4Lean.so" if modern else "libMD4Lean.so")
+        )
+        md4lean.parent.mkdir(parents=True)
+        md4lean.write_bytes(b"fixture")
+        (md4lean.parent / "libleanmd4c.so").write_bytes(b"fixture")
         if modern:
             sqlite_ffi = (
                 project
@@ -139,6 +152,18 @@ class ProjectDocumentationTests(unittest.TestCase):
             )
             self.assertNotIn("Books.Demo.Dead", runner.modules)
             self.assertEqual(result.dependency_stubs, 1)
+            libraries = [
+                Path(value.removeprefix("--load-dynlib=")).name
+                for value in runner.commands[0].argv
+                if value.startswith("--load-dynlib=")
+            ]
+            self.assertEqual(
+                libraries,
+                [
+                    "libleansqlite.so",
+                    "leansqlite_SQLite_FFI.so",
+                ],
+            )
             stub = output / "doc" / "Mathlib" / "Dependency.html"
             self.assertIn("data-reasbook-doc-stub", stub.read_text(encoding="utf-8"))
             command_count = len(runner.commands)
@@ -182,6 +207,28 @@ class ProjectDocumentationTests(unittest.TestCase):
                 for command in runner.commands
             ]
             self.assertEqual(verbs, ["batch", "index"])
+            adapter = runner.commands[0].argv
+            libraries = [
+                value.removeprefix("--load-dynlib=")
+                for value in adapter
+                if value.startswith("--load-dynlib=")
+            ]
+            self.assertEqual(
+                [Path(value).name for value in libraries],
+                ["libleanmd4c.so", "libMD4Lean.so"],
+            )
+
+    def test_md4lean_adapter_rejects_ambiguous_aggregate_libraries(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=False)
+            library_root = (
+                project / ".lake" / "packages" / "MD4Lean" / ".lake" / "build" / "lib"
+            )
+            (library_root / "libMD4Lean_MD4Lean.so").write_bytes(b"stale fixture")
+
+            with self.assertRaises(BuildFailed):
+                ProjectDocumentationBuilder._md4lean_interpreter_args(project)
 
     def test_flat_layout_discovers_project_namespace(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

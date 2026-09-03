@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 from pathlib import Path
 import re
-from typing import Iterable
+from typing import Callable, Iterable
 
 from ..errors import DeployConfigError, DeployExecutionError
 
@@ -21,6 +21,7 @@ TOOLING_SNAPSHOT_ENTRIES = (
 TOOLING_DIGEST_SUFFIX = "+tooling-sha256:"
 _DIGEST_RE = re.compile(r"^[0-9a-f]{64}$")
 _IGNORED_NAMES = {"__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache"}
+_GENERATED_SDK_DIRECTORIES = {"build", "dist"}
 
 
 def snapshot_ignored_name(name: str) -> bool:
@@ -33,10 +34,53 @@ def snapshot_ignored_name(name: str) -> bool:
     )
 
 
-def snapshot_ignore(_directory: str, names: list[str]) -> set[str]:
-    """``shutil.copytree`` callback using the canonical snapshot filter."""
+def snapshot_ignored_relative(relative: Path) -> bool:
+    """Return whether one repository-relative tooling path is generated.
 
-    return {name for name in names if snapshot_ignored_name(name)}
+    ``sdk/build`` is a real capability source directory, while
+    ``sdk/build/build`` is packaging output.  Matching the complete relative
+    path keeps that distinction explicit and lets hashing and copying share the
+    exact same policy.
+    """
+
+    relative = Path(relative)
+    if relative.is_absolute() or ".." in relative.parts:
+        raise DeployExecutionError(
+            f"tooling snapshot path must be repository-relative: {relative}"
+        )
+    if any(snapshot_ignored_name(part) for part in relative.parts):
+        return True
+    parts = relative.parts
+    if len(parts) >= 3 and parts[0] == "sdk":
+        if parts[2] in _GENERATED_SDK_DIRECTORIES:
+            return True
+        if any(part.endswith(".egg-info") for part in parts[2:]):
+            return True
+    return False
+
+
+def snapshot_ignore_for(
+    repo_root: Path,
+) -> Callable[[str, list[str]], set[str]]:
+    """Build a ``shutil.copytree`` callback for the canonical path filter."""
+
+    root = Path(repo_root).expanduser().resolve()
+
+    def ignore(directory: str, names: list[str]) -> set[str]:
+        current = Path(directory).resolve()
+        try:
+            parent = current.relative_to(root)
+        except ValueError as exc:
+            raise DeployExecutionError(
+                f"tooling snapshot directory escapes repository: {current}"
+            ) from exc
+        return {
+            name
+            for name in names
+            if snapshot_ignored_relative(parent / name)
+        }
+
+    return ignore
 
 
 def _digest_files(root: Path, files: Iterable[Path]) -> str:
@@ -72,8 +116,8 @@ def tooling_source_digest(repo_root: Path) -> str:
         if source.is_symlink() or not source.is_dir():
             raise DeployExecutionError(f"tooling snapshot source is invalid: {source}")
         for path in source.rglob("*"):
-            nested = path.relative_to(source)
-            if any(snapshot_ignored_name(part) for part in nested.parts):
+            relative_path = path.relative_to(root)
+            if snapshot_ignored_relative(relative_path):
                 continue
             if path.is_symlink():
                 raise DeployExecutionError(f"tooling source contains a link: {path}")
@@ -137,7 +181,8 @@ def tooling_digest_from_revision(revision: str) -> str:
 __all__ = [
     "TOOLING_SNAPSHOT_ENTRIES",
     "bind_tooling_revision",
-    "snapshot_ignore",
+    "snapshot_ignore_for",
+    "snapshot_ignored_relative",
     "tooling_digest_from_revision",
     "tooling_snapshot_digest",
     "tooling_source_digest",

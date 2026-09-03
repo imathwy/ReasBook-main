@@ -38,8 +38,21 @@ if [[ ! -x "$BUILD_SDK" ]]; then
   reasbook_die "build SDK entrypoint is missing: $BUILD_SDK"
   exit 2
 fi
-# Explicit override remains supported.
-if [ -n "${PROJECT_DOC_MODULES:-}" ]; then
+# Release/deploy callers pass their immutable profile selection through
+# REASBOOK_LAKE_TARGETS. When that variable is present, it takes precedence
+# over ambient operator settings and automatic discovery so profile exclusions
+# cannot be silently reintroduced.
+if [[ -v REASBOOK_LAKE_TARGETS ]]; then
+  while IFS= read -r item; do
+    item="$(printf '%s' "$item" | xargs)"
+    [ -n "$item" ] || continue
+    targets+=("$item")
+  done < <(printf '%s\n' "$REASBOOK_LAKE_TARGETS" | tr ',' '\n')
+  if [ "${#targets[@]}" -eq 0 ]; then
+    reasbook_die \
+      "REASBOOK_LAKE_TARGETS is set but contains no documentation roots" || exit 2
+  fi
+elif [ -n "${PROJECT_DOC_MODULES:-}" ]; then
   while IFS= read -r item; do
     item="$(printf '%s' "$item" | xargs)"
     [ -n "$item" ] || continue
