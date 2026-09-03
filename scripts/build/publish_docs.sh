@@ -13,7 +13,7 @@ REASBOOK_SITE_DIR="${REASBOOK_SITE_DIR:-$REASBOOK_WEB_ROOT/_site}"
 export REASBOOK_REPO_ROOT REASBOOK_LEAN_ROOT REASBOOK_SITE_DIR
 PYTHON_BIN="$REASBOOK_TOOLING_ROOT/sdk/common/bin/python"
 
-source_docs_dir="${REASBOOK_DOC_SOURCE:-$REASBOOK_LEAN_ROOT/.lake/build/doc}"
+source_docs_dir="${REASBOOK_DOC_SOURCE:-$REASBOOK_DOC_BUILD_DIR/doc}"
 docs_index_dir="$REASBOOK_SITE_DIR/docs"
 web_docs_dir="$docs_index_dir/ReasBook"
 

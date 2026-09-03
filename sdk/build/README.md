@@ -11,6 +11,7 @@ lake.py      turn project + options into immutable commands
 command.py   command/result value objects and runner contract
 executor.py  local subprocess runner and callable adapter
 service.py   plan/execute orchestration and output verification
+docs.py      bounded project-root API docs and dependency-link closure
 cli.py       human and JSON command-line interface
 targets.py   ReasBook aggregate/per-project target discovery
 ```
@@ -28,6 +29,8 @@ From this directory, without installing anything:
 ./bin/reasbook-build build /path/to/project --target ReasBook:docs
 ./bin/reasbook-build cache /path/to/project
 ./bin/reasbook-build targets /path/to/project --mode project-docs
+./bin/reasbook-build project-docs /path/to/project Books.Example.Book \
+  --output /path/to/cache/docs/example
 ```
 
 The project must contain `lakefile.lean` or `lakefile.toml` and a non-empty
@@ -36,6 +39,14 @@ default. Use `--skip-cache-get` when a caller has already prepared the cache,
 and `--no-verify-outputs` for a project whose build does not produce `.olean`
 files. Extra Lake flags are explicit and are inserted before the subcommand;
 documentation builds can use `--lake-arg=-R --lake-arg=-Kenv=dev`.
+
+Release-oriented documentation should use `project-docs`. It generates only
+the explicit project-root modules, writes the smallest supported doc-gen
+database/index, and closes internal HTML links with lightweight placeholders.
+This avoids materializing transitive Mathlib API documentation while keeping
+published links valid. Its output is an atomic, content-addressed cache;
+provide `--repository-url` and `--revision` together when source links must be
+pinned to an immutable commit.
 
 For automation, use the typed API:
 

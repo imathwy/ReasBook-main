@@ -39,6 +39,12 @@ from .runtime import (
     write_json,
 )
 from .service import DEFAULT_BOOKS, DeploymentService, cache_identity, launch_reviewer, utc_now
+from .release.self_hosted import SelfHostedDeployment, SelfHostedInstaller
+from .release.results import (
+    ReleaseArtifactRecord,
+    ReleasePackageResult,
+    ReleaseSetManifest,
+)
 
 __version__ = "0.1.0"
 
@@ -62,6 +68,11 @@ __all__ = [
     "ComparatorStage",
     "DEFAULT_CACHE_ROOT",
     "StageResult",
+    "SelfHostedDeployment",
+    "SelfHostedInstaller",
+    "ReleaseArtifactRecord",
+    "ReleasePackageResult",
+    "ReleaseSetManifest",
     "TheoremGraphStage",
     "VersoStage",
     "VERSION_BRANCH_RE",

@@ -2,7 +2,9 @@ server {
     listen 80;
     server_name _;
 
-    root /usr/share/nginx/html;
+    # Must match --deploy-root. The installer atomically changes only the
+    # current symlink below this stable document root.
+    root /srv/reasbook/current/public;
     index index.html;
     charset utf-8;
     autoindex off;
@@ -25,8 +27,6 @@ server {
         add_header X-Content-Type-Options "nosniff" always;
     }
 
-    # The mounted artifact lives at the same public prefix used by Pages, so
-    # production never rewrites generated HTML or asset URLs.
     location /ReasBook/ {
         try_files $uri $uri/ =404;
         add_header Cache-Control "no-cache" always;

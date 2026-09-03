@@ -367,20 +367,33 @@ class DeploySdkTests(unittest.TestCase):
                 )
             )
 
-    def test_docker_deployment_rejects_unstaged_site_directory(self) -> None:
+    def test_docker_deployment_requires_skip_build_for_custom_site(self) -> None:
         from reasbook_deploy_sdk import DockerDeploymentConfig
 
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             with self.assertRaisesRegex(
                 DeployConfigError,
-                "only supports the repository site directory",
+                "custom Docker site directory requires --skip-build",
             ):
                 DockerDeploymentConfig(
                     repo_root=root,
                     compose_file=root / "docker-compose.yml",
                     site_root=root / "external-site",
                 ).resolved()
+
+    def test_docker_deployment_accepts_packaged_site_read_only(self) -> None:
+        from reasbook_deploy_sdk import DockerDeploymentConfig
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            resolved = DockerDeploymentConfig(
+                repo_root=root,
+                compose_file=root / "docker-compose.yml",
+                site_root=root / "release" / "site",
+                skip_build=True,
+            ).resolved()
+            self.assertEqual(resolved.site_root, (root / "release" / "site").resolve())
 
     def test_docker_deployment_probes_the_served_site_prefix(self) -> None:
         from reasbook_deploy_sdk import DockerDeploymentConfig, deploy_static

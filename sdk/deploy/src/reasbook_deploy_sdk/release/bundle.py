@@ -15,11 +15,12 @@ from reasbook_sdk_common import (
     Command,
     CommandExecutionError,
     CommandRunner,
+    atomic_write_json,
     atomic_write_text,
 )
 
 from ..errors import DeployConfigError, DeployExecutionError
-from .models import ReleaseSpec
+from .models import ReleaseArtifactPolicy, ReleaseSpec
 from .results import (
     BundleInfo,
     ReleaseBuildReport,
@@ -83,16 +84,76 @@ class ReleaseBundler:
         self,
         spec: ReleaseSpec,
         report: ReleaseBuildReport,
+        *,
+        policy: ReleaseArtifactPolicy | None = None,
+    ) -> BundleInfo:
+        effective_policy = policy or ReleaseArtifactPolicy(
+            name="full",
+            history_mode="full",
+            dependency_docs="stubs",
+            max_site_files=spec.policy.max_site_files,
+            max_site_bytes=100_000_000_000,
+            max_bundle_bytes=spec.policy.max_bundle_bytes,
+        )
+        if effective_policy.name != "full":
+            raise DeployConfigError("full release packaging requires the full policy")
+        return self._package_site(
+            spec,
+            report,
+            site=self.layout.site,
+            package_root=self.layout.root,
+            bundle_path=self.layout.bundle,
+            manifest_path=self.layout.manifest,
+            checksums_path=self.layout.checksums,
+            policy=effective_policy,
+        )
+
+    def package_pages(
+        self,
+        spec: ReleaseSpec,
+        report: ReleaseBuildReport,
+        *,
+        policy: ReleaseArtifactPolicy,
+    ) -> BundleInfo:
+        if policy.name != "pages":
+            raise DeployConfigError("Pages packaging requires the pages policy")
+        return self._package_site(
+            spec,
+            report,
+            site=self.layout.pages_site,
+            package_root=self.layout.pages_root,
+            bundle_path=self.layout.pages_bundle,
+            manifest_path=self.layout.pages_manifest,
+            checksums_path=self.layout.pages_checksums,
+            policy=policy,
+        )
+
+    def _package_site(
+        self,
+        spec: ReleaseSpec,
+        report: ReleaseBuildReport,
+        *,
+        site: Path,
+        package_root: Path,
+        bundle_path: Path,
+        manifest_path: Path,
+        checksums_path: Path,
+        policy: ReleaseArtifactPolicy,
     ) -> BundleInfo:
         if report.status == "failed":
             raise DeployExecutionError("cannot package a failed release")
-        if not (self.layout.site / "index.html").is_file():
+        if not (site / "index.html").is_file():
             raise DeployExecutionError("release site has no index.html")
-        tree_digest, file_count, total_bytes = site_tree_digest(self.layout.site)
-        if file_count > spec.policy.max_site_files:
+        tree_digest, file_count, total_bytes = site_tree_digest(site)
+        if file_count > policy.max_site_files:
             raise DeployExecutionError(
                 f"site has {file_count} files; budget is "
-                f"{spec.policy.max_site_files}"
+                f"{policy.max_site_files} for {policy.name}"
+            )
+        if total_bytes > policy.max_site_bytes:
+            raise DeployExecutionError(
+                f"site is {total_bytes} bytes; budget is "
+                f"{policy.max_site_bytes} for {policy.name}"
             )
         now = self.generated_at or datetime.fromisoformat(
             spec.resolved_at.replace("Z", "+00:00")
@@ -131,32 +192,39 @@ class ReleaseBundler:
                 }
                 for branch in report.branches
             ),
+            artifact=policy.name,
         )
-        self.store.write_manifest(manifest)
-        self._create_archive()
-        bundle_size = self.layout.bundle.stat().st_size
-        if bundle_size > spec.policy.max_bundle_bytes:
+        package_root.mkdir(parents=True, exist_ok=True)
+        atomic_write_json(manifest_path, manifest.public_dict())
+        self._create_archive(package_root, bundle_path)
+        bundle_size = bundle_path.stat().st_size
+        if bundle_size > policy.max_bundle_bytes:
             raise DeployExecutionError(
                 f"bundle is {bundle_size} bytes; budget is "
-                f"{spec.policy.max_bundle_bytes}"
+                f"{policy.max_bundle_bytes} for {policy.name}"
             )
-        bundle_digest = sha256_file(self.layout.bundle)
+        bundle_digest = sha256_file(bundle_path)
         atomic_write_text(
-            self.layout.checksums,
-            f"{bundle_digest}  {self.layout.bundle.name}\n",
+            checksums_path,
+            f"{bundle_digest}  {bundle_path.name}\n",
         )
         info = BundleInfo(
             spec.release_id,
-            str(self.layout.bundle),
-            str(self.layout.manifest),
-            str(self.layout.checksums),
+            str(bundle_path),
+            str(manifest_path),
+            str(checksums_path),
             f"sha256:{bundle_digest}",
+            artifact=policy.name,
         )
-        self.store.write_bundle_info(info)
+        if policy.name == "full":
+            self.store.write_manifest(manifest)
+            self.store.write_bundle_info(info)
+        else:
+            self.store.write_pages_bundle_info(info)
         return info
 
-    def _create_archive(self) -> None:
-        temporary = self.layout.root / f".bundle-{uuid.uuid4().hex}.tar.zst"
+    def _create_archive(self, package_root: Path, bundle_path: Path) -> None:
+        temporary = package_root / f".bundle-{uuid.uuid4().hex}.tar.zst"
         command = Command(
             (
                 "tar",
@@ -170,11 +238,15 @@ class ReleaseBundler:
                 "-cf",
                 str(temporary),
                 "-C",
-                str(self.layout.root),
+                str(package_root),
                 "site",
-                self.layout.manifest.name,
+                "release-manifest.json",
             ),
-            cwd=self.layout.root,
+            cwd=package_root,
+            # Keep the worker count fixed so repeated bundles remain
+            # reproducible while large documentation trees use more than one
+            # CPU during compression.
+            env={"ZSTD_NBTHREADS": "8"},
             timeout=1800.0,
         )
         try:
@@ -189,7 +261,7 @@ class ReleaseBundler:
                 "could not create release bundle" + (f": {detail}" if detail else "")
             )
         try:
-            os.replace(temporary, self.layout.bundle)
+            os.replace(temporary, bundle_path)
         except OSError:
             temporary.unlink(missing_ok=True)
             raise
@@ -198,13 +270,14 @@ class ReleaseBundler:
 class BundleVerifier:
     """Verify checksums, archive paths, manifest, and extracted site digest."""
 
-    def verify(
+    def inspect(
         self,
         bundle: Path,
         *,
         expected_sha256: str | None = None,
-        extract_to: Path | None = None,
     ) -> ReleaseManifest:
+        """Validate archive metadata without materializing the complete site."""
+
         archive = Path(bundle).expanduser().resolve()
         if not archive.is_file() or archive.is_symlink():
             raise DeployConfigError(f"bundle does not exist: {archive}")
@@ -217,14 +290,48 @@ class BundleVerifier:
                 )
         names = self._list_archive(archive)
         self._validate_members(names)
-        with tempfile.TemporaryDirectory(prefix="reasbook-bundle-") as temp:
+        manifest = ReleaseManifest.from_dict(
+            self._read_archive_json(archive, "release-manifest.json")
+        )
+        spec = ReleaseSpec.from_dict(
+            self._read_archive_json(archive, "site/release-spec.json")
+        )
+        if (
+            spec.release_id != manifest.release_id
+            or spec.spec_digest != manifest.spec_digest
+            or spec.base_path != manifest.base_path
+        ):
+            raise DeployExecutionError(
+                "bundle manifest does not match its ReleaseSpec"
+            )
+        return manifest
+
+    def verify(
+        self,
+        bundle: Path,
+        *,
+        expected_sha256: str | None = None,
+        extract_to: Path | None = None,
+    ) -> ReleaseManifest:
+        archive = Path(bundle).expanduser().resolve()
+        inspected = self.inspect(archive, expected_sha256=expected_sha256)
+        target = self._extraction_target(extract_to)
+        temp_parent = archive.parent
+        if target is not None:
+            target.parent.mkdir(parents=True, exist_ok=True)
+            temp_parent = target.parent
+        with tempfile.TemporaryDirectory(
+            prefix=".reasbook-bundle-",
+            dir=str(temp_parent),
+        ) as temp:
             extracted = Path(temp)
             self._extract(archive, extracted)
             self._validate_extracted_tree(extracted)
             manifest = self._read_manifest(extracted / "release-manifest.json")
             spec = self._read_spec(extracted / "site" / "release-spec.json")
             if (
-                spec.release_id != manifest.release_id
+                manifest != inspected
+                or spec.release_id != manifest.release_id
                 or spec.spec_digest != manifest.spec_digest
                 or spec.base_path != manifest.base_path
             ):
@@ -240,9 +347,48 @@ class BundleVerifier:
                 raise DeployExecutionError(
                     "bundle site tree does not match release manifest"
                 )
-            if extract_to is not None:
-                self._publish_extracted(extracted / "site", extract_to)
+            if target is not None:
+                self._publish_extracted(extracted / "site", target)
             return manifest
+
+    @staticmethod
+    def _extraction_target(value: Path | None) -> Path | None:
+        if value is None:
+            return None
+        target = Path(value).expanduser().resolve(strict=False)
+        if target in {Path("/"), Path.home().resolve()}:
+            raise DeployConfigError(
+                f"refusing to replace broad extraction target: {target}"
+            )
+        return target
+
+    @staticmethod
+    def _read_archive_json(bundle: Path, member: str) -> dict:
+        try:
+            result = CommandRunner().run(
+                Command(
+                    ("tar", "--zstd", "-xOf", str(bundle), member),
+                    cwd=bundle.parent,
+                    timeout=300.0,
+                )
+            )
+        except CommandExecutionError as exc:
+            raise DeployExecutionError(
+                f"cannot read {member} from release bundle: {exc}"
+            ) from exc
+        if result.returncode != 0:
+            raise DeployExecutionError(f"cannot read {member} from release bundle")
+        try:
+            value = json.loads(result.stdout)
+        except json.JSONDecodeError as exc:
+            raise DeployExecutionError(
+                f"release bundle member is not valid JSON: {member}"
+            ) from exc
+        if not isinstance(value, dict):
+            raise DeployExecutionError(
+                f"release bundle member must be an object: {member}"
+            )
+        return value
 
     @staticmethod
     def _list_archive(bundle: Path) -> tuple[str, ...]:
@@ -360,26 +506,24 @@ class BundleVerifier:
 
     @staticmethod
     def _publish_extracted(source: Path, destination: Path) -> None:
-        target = Path(destination).expanduser().resolve(strict=False)
-        if target in {Path("/"), Path.home().resolve()}:
-            raise DeployConfigError(
-                f"refusing to replace broad extraction target: {target}"
-            )
+        target = BundleVerifier._extraction_target(destination)
+        assert target is not None
         target.parent.mkdir(parents=True, exist_ok=True)
-        staged = target.parent / f".{target.name}-{uuid.uuid4().hex}"
-        shutil.copytree(source, staged)
         backup = target.parent / f".{target.name}-backup-{uuid.uuid4().hex}"
-        had_target = target.exists()
+        had_target = target.exists() or target.is_symlink()
         if had_target:
             os.replace(target, backup)
         try:
-            os.replace(staged, target)
+            os.replace(source, target)
         except OSError:
-            if had_target and not target.exists():
+            if had_target and not (target.exists() or target.is_symlink()):
                 os.replace(backup, target)
             raise
         if had_target:
-            shutil.rmtree(backup)
+            if backup.is_dir() and not backup.is_symlink():
+                shutil.rmtree(backup)
+            else:
+                backup.unlink(missing_ok=True)
 
 
 __all__ = [

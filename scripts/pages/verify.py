@@ -131,7 +131,7 @@ def usable_html(path: Path) -> bool:
 
 def main() -> None:
     projects = json.loads(os.environ["PROJECTS_JSON"])
-    site_root = Path(".site")
+    site_root = Path(os.environ.get("REASBOOK_SITE_DIR", ".site"))
     errors: list[str] = []
     require_docs = os.environ.get("REASBOOK_REQUIRE_DOCS", "1") == "1"
     require_maps = os.environ.get("REASBOOK_REQUIRE_THEOREM_MAPS", "0") == "1"

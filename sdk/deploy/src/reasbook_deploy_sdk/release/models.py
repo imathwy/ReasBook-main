@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -21,6 +21,7 @@ PROJECT_KEY_RE = re.compile(
 )
 SHA256_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
 RELEASE_ID_RE = re.compile(r"^site-\d{8}T\d{6}Z-(?P<digest>[0-9a-f]{12})$")
+ARTIFACT_NAME_RE = re.compile(r"^[a-z][a-z0-9_-]{0,31}$")
 
 
 def _text(value: object, *, field: str) -> str:
@@ -151,6 +152,71 @@ class GitHubPublishProfile:
 
 
 @dataclass(frozen=True)
+class ReleaseArtifactPolicy:
+    """Content and capacity contract for one immutable release artifact."""
+
+    name: str
+    history_mode: str
+    dependency_docs: str
+    max_site_files: int
+    max_site_bytes: int
+    max_bundle_bytes: int
+
+    def __post_init__(self) -> None:
+        if not ARTIFACT_NAME_RE.fullmatch(self.name):
+            raise DeployConfigError(f"invalid release artifact name: {self.name!r}")
+        if self.history_mode not in {"full", "canonical"}:
+            raise DeployConfigError(
+                f"artifacts.{self.name}.history_mode must be full or canonical"
+            )
+        if self.dependency_docs not in {"full", "stubs"}:
+            raise DeployConfigError(
+                f"artifacts.{self.name}.dependency_docs must be full or stubs"
+            )
+        for field_name, value in (
+            ("max_site_files", self.max_site_files),
+            ("max_site_bytes", self.max_site_bytes),
+            ("max_bundle_bytes", self.max_bundle_bytes),
+        ):
+            if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+                raise DeployConfigError(
+                    f"artifacts.{self.name}.{field_name} must be a positive integer"
+                )
+
+    def public_dict(self) -> dict[str, Any]:
+        return {
+            "history_mode": self.history_mode,
+            "dependency_docs": self.dependency_docs,
+            "max_site_files": self.max_site_files,
+            "max_site_bytes": self.max_site_bytes,
+            "max_bundle_bytes": self.max_bundle_bytes,
+        }
+
+
+def default_artifact_policies() -> tuple[ReleaseArtifactPolicy, ...]:
+    """Return conservative defaults for pre-ReleaseSet profile snapshots."""
+
+    return (
+        ReleaseArtifactPolicy(
+            name="full",
+            history_mode="full",
+            dependency_docs="stubs",
+            max_site_files=500_000,
+            max_site_bytes=100_000_000_000,
+            max_bundle_bytes=20_000_000_000,
+        ),
+        ReleaseArtifactPolicy(
+            name="pages",
+            history_mode="canonical",
+            dependency_docs="stubs",
+            max_site_files=60_000,
+            max_site_bytes=850_000_000,
+            max_bundle_bytes=950_000_000,
+        ),
+    )
+
+
+@dataclass(frozen=True)
 class DeploymentProfile:
     name: str
     registry: Path
@@ -160,6 +226,9 @@ class DeploymentProfile:
     policy: ReleasePolicy
     publish: GitHubPublishProfile
     exclude: tuple[str, ...] = ()
+    artifacts: tuple[ReleaseArtifactPolicy, ...] = field(
+        default_factory=default_artifact_policies
+    )
 
     def __post_init__(self) -> None:
         _text(self.name, field="profile.name")
@@ -169,6 +238,34 @@ class DeploymentProfile:
         for key in self.exclude:
             if not PROJECT_KEY_RE.fullmatch(key):
                 raise DeployConfigError(f"invalid excluded project key: {key!r}")
+        names = [artifact.name for artifact in self.artifacts]
+        if len(set(names)) != len(names):
+            raise DeployConfigError("profile contains duplicate artifact policies")
+        if set(names) != {"full", "pages"}:
+            raise DeployConfigError(
+                "profile must define exactly the full and pages artifacts"
+            )
+        full = self.artifact("full")
+        pages = self.artifact("pages")
+        if (full.history_mode, full.dependency_docs) != ("full", "stubs"):
+            raise DeployConfigError(
+                "the full artifact must retain full history and explicit "
+                "dependency-doc stubs"
+            )
+        if (pages.history_mode, pages.dependency_docs) != (
+            "canonical",
+            "stubs",
+        ):
+            raise DeployConfigError(
+                "the pages artifact must retain canonical history and stub "
+                "dependency docs"
+            )
+
+    def artifact(self, name: str) -> ReleaseArtifactPolicy:
+        for artifact in self.artifacts:
+            if artifact.name == name:
+                return artifact
+        raise DeployConfigError(f"profile has no artifact named {name!r}")
 
 
 @dataclass(frozen=True)

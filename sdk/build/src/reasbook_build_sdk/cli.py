@@ -10,6 +10,7 @@ from pathlib import Path
 
 from .command import CommandExecutionError
 from .config import load_build_options
+from .docs import ProjectDocumentationBuilder
 from .errors import BuildSdkError
 from .models import BuildPlan, BuildResult
 from .lake import cache_command
@@ -71,6 +72,18 @@ def _parser() -> argparse.ArgumentParser:
     targets.add_argument("--projects-json")
     targets.add_argument("--no-docs", action="store_true")
     targets.add_argument("--books-only", action="store_true")
+    project_docs = commands.add_parser(
+        "project-docs",
+        help="generate bounded-memory API docs for selected root modules",
+    )
+    project_docs.add_argument("project", type=Path, help="path to the Lake project")
+    project_docs.add_argument("targets", nargs="+", help="root Lean modules")
+    project_docs.add_argument("--output", type=Path, required=True)
+    project_docs.add_argument("--lake-bin", default="lake")
+    project_docs.add_argument("--repository", default="")
+    project_docs.add_argument("--revision", default="")
+    project_docs.add_argument("--timeout-seconds", type=float, default=21600.0)
+    project_docs.add_argument("--json", action="store_true")
     return parser
 
 
@@ -150,6 +163,25 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.command == "targets":
             return _print_targets(args)
+        if args.command == "project-docs":
+            result = ProjectDocumentationBuilder().build(
+                args.project,
+                args.targets,
+                args.output,
+                lake_bin=args.lake_bin,
+                repository=args.repository,
+                revision=args.revision,
+                timeout_seconds=args.timeout_seconds,
+            )
+            if args.json:
+                print(json.dumps(result.public_dict(), ensure_ascii=True, indent=2))
+            else:
+                disposition = "reused" if result.reused else "generated"
+                print(
+                    f"[reasbook-build] {disposition} {len(result.pages)} project "
+                    f"documentation page(s) in {result.output_root}"
+                )
+            return 0
         positional_targets = list(getattr(args, "targets", []) or [])
         positional_targets.extend(getattr(args, "target", []) or [])
         options = load_build_options(args, targets=positional_targets)

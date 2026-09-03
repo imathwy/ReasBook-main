@@ -1,9 +1,10 @@
 # Static Release Context
 
-This package builds immutable public ReasBook sites. It is intentionally
-separate from the selected-book reviewer deployment.
+This package turns remotely built ReasBook output into immutable artifacts for
+GitHub Pages and project-owned static servers. It is separate from the
+selected-book reviewer deployment.
 
-## Boundaries
+## Architecture
 
 ```text
 profile + canonical map + Git refs
@@ -11,128 +12,188 @@ profile + canonical map + Git refs
                  v
           immutable ReleaseSpec
                  |
-       +---------+----------+
-       |                    |
- local branch builder   future executor
-       |
- canonical/versioned site
-       |
- verified tar.zst bundle
-       |
- GitHub Release -> publish-only Pages workflow
+       SiFlow build + aggregate
+                 |
+          verified full site
+             /         \
+      full artifact   Pages projection
+             \         /
+               ReleaseSet
+             /           \
+  atomic self-host     GitHub Release
+                           |
+                    publish-only Pages
 ```
 
 The domain models and planner do not start processes or access GitHub. Git
-object reads, local branch builds, archive handling, and GitHub publication are
-separate adapters.
+object reads, branch builds, site projection, archive verification, GitHub
+publication, and self-hosted installation are separate adapters.
+
+The two artifacts have deliberately different content contracts:
+
+| Name | Contract | Intended target |
+| --- | --- | --- |
+| `full` | Every assembled project version, project-root API docs, Verso, theorem maps, and explicit dependency stubs | Self-hosted server |
+| `pages` | Canonical project versions with the same bounded, link-closed documentation | GitHub Pages |
+
+Both retain the `/ReasBook/` public base path. `release-set.json` binds their
+bundle hashes, site-tree hashes, sizes, and projection-policy hash to one
+`ReleaseSpec`.
 
 ## Configuration
 
-- `config/deploy/github-pages.yml` defines site policy and the publisher.
+- `config/deploy/github-pages.yml` defines release, artifact, and publisher
+  policy.
 - `config/toolchains.yml` is the branch registry.
-- `config/canonical-projects.yml` is mandatory for projects found on multiple
-  active branches.
-- `config/schemas/release-spec.schema.json` documents the immutable output.
+- `config/canonical-projects.yml` selects the public version of projects found
+  on multiple active branches.
+- `config/schemas/release-spec.schema.json` documents immutable build identity.
+- `config/schemas/release-set.schema.json` documents target artifact identity.
 
-Canonical failure never silently falls back to an older branch.
+Canonical selection never silently falls back to another branch. Changing an
+artifact policy also produces a new release instead of mutating an existing
+one.
 
-## Commands
+## Production workflow
+
+Resolve moving refs before submitting remote work:
 
 ```bash
-# Resolve moving refs to commits without building.
-./sdk/deploy/bin/reasbook-deploy release plan --profile github-pages
-./sdk/deploy/bin/reasbook-deploy release plan --profile github-pages --fetch
-./sdk/deploy/bin/reasbook-deploy release build RELEASE_ID --dry-run
+./sdk/deploy/bin/reasbook-deploy release plan \
+  --profile github-pages --fetch
+```
 
-# Small local canary: build, package, upload, and dispatch Pages.
-./sdk/deploy/bin/reasbook-deploy release deploy \
-  --profile github-pages --max-parallel-branches 3 --wait
+Production project builds and branch finalizers run through the private SiFlow
+operations layer. The aggregate result is copied into the release's `site/`
+directory and marked validated. GitHub Actions never receives Lean caches or
+build credentials.
 
-# Production: publish an existing bundle assembled from SiFlow results.
-./sdk/deploy/bin/reasbook-deploy release publish RELEASE_ID --wait
+Package and inspect both target artifacts:
 
-# Resume or inspect a persisted release.
+```bash
+./sdk/deploy/bin/reasbook-deploy release package RELEASE_ID
 ./sdk/deploy/bin/reasbook-deploy release status RELEASE_ID
-./sdk/deploy/bin/reasbook-deploy release resume RELEASE_ID --wait
-./sdk/deploy/bin/reasbook-deploy release rollback --to RELEASE_ID --wait
-
-# Verify a downloaded asset without GitHub access.
-./sdk/deploy/bin/reasbook-deploy release verify SITE.tar.zst \
-  --sha256 EXPECTED_SHA256 --extract-to /tmp/reasbook-site
 ```
 
-Use `--only books/PROJECT_ID` to build a small release. `--dry-run` on
-`release deploy` resolves and prints the spec without creating release state.
-One-click deploy fetches `origin` first; use `--no-fetch` for an offline
-checkout. Do not use `release deploy` for a full public multi-version build:
-production branch builds and finalizers run through the private SiFlow
-operations layer, and only its verified aggregate bundle is passed to
-`release publish`.
+Packaging is incremental. A bundle is reused only when its archive checksum,
+embedded manifest, ReleaseSpec, extracted tree digest, and artifact identity
+all verify. Otherwise that artifact is regenerated; a valid sibling artifact
+is retained.
 
-## Preview the publish candidate
-
-Preview the verified bundle rather than an intermediate build directory. This
-checks the same static tree that the Pages workflow will extract:
+`release deploy` remains a convenience for a small local canary. Do not use it
+for a full public build:
 
 ```bash
-export REASBOOK_CACHE_ROOT=/path/to/reasbook-cache
-RELEASE_ID=site-YYYYMMDDTHHMMSSZ-xxxxxxxxxxxx
-RELEASE_DIR="$REASBOOK_CACHE_ROOT/releases/$RELEASE_ID"
-BUNDLE="$RELEASE_DIR/$RELEASE_ID.site.tar.zst"
-SHA256="$(awk 'NR == 1 { print $1 }' "$RELEASE_DIR/SHA256SUMS")"
-PREVIEW="$REASBOOK_CACHE_ROOT/previews/$RELEASE_ID"
-
-./sdk/deploy/bin/reasbook-deploy release verify \
-  "$BUNDLE" --sha256 "$SHA256" --extract-to "$PREVIEW"
-
-REASBOOK_SITE_DIR="$PREVIEW" \
-REASBOOK_DOC_SOURCE="$PREVIEW/docs" \
-./sdk/common/bin/python ./scripts/preview/serve.py 18000 \
-  --site-root /ReasBook/
+./sdk/deploy/bin/reasbook-deploy release deploy \
+  --profile github-pages --only papers/PROJECT_ID \
+  --max-parallel-branches 3 --no-publish
 ```
 
-Open `http://127.0.0.1:18000/ReasBook/`. Check the catalog, a canonical
-project, a version-qualified project, API documentation, Verso output, and a
-theorem map before publication.
+## Local preview
 
-For a path-based workspace proxy, also bind the workspace interface and pass
-the external path that the proxy removes:
+Preview the exact tree bound to a packaged archive:
 
 ```bash
-REASBOOK_SITE_DIR="$PREVIEW" \
-REASBOOK_DOC_SOURCE="$PREVIEW/docs" \
-./sdk/common/bin/python ./scripts/preview/serve.py 3000 \
-  --host 0.0.0.0 --site-root /ReasBook/ \
+./sdk/deploy/bin/reasbook-deploy release preview RELEASE_ID \
+  --artifact pages --host 127.0.0.1 --port 18000
+```
+
+Open `http://127.0.0.1:18000/ReasBook/`. Before starting the server, the CLI
+checks the bundle SHA-256 and compares the local tree's hash, file count, and
+byte count with the embedded manifest. Use `--artifact full` for the
+self-hosted candidate.
+
+For a path-based workspace proxy, bind all interfaces and provide the external
+prefix removed by that proxy:
+
+```bash
+./sdk/deploy/bin/reasbook-deploy release preview RELEASE_ID \
+  --artifact pages --host 0.0.0.0 --port 3000 \
   --public-prefix /workspace/proxy/3000
 ```
 
-This changes responses only; the verified bundle remains byte-for-byte
-unchanged.
+`--public-prefix` changes responses only; it never rewrites the bundle.
 
-## GitHub hosting limits
+## GitHub Pages publication
 
-GitHub Release and GitHub Pages impose different limits. Each Release asset
-must be under 2 GiB, while the **extracted published Pages tree** must be under
-1 GB and a Pages deployment must finish within 10 minutes. The release profile
-currently bounds compressed bundle size and file count; before publishing to
-Pages, also measure the extracted preview and keep a margin below the Pages
-limit:
+Configure the repository once with **Settings → Pages → GitHub Actions**. Then
+publish the already-built Pages artifact:
 
 ```bash
-du -sb "$PREVIEW"
-find "$PREVIEW" -type f | wc -l
+./sdk/deploy/bin/reasbook-deploy release publish RELEASE_ID \
+  --target github-pages --wait
 ```
 
-Use 950,000,000 bytes as the operational ceiling for the temporary Pages
-target. If the preview is larger, keep the immutable bundle in GitHub Release
-and publish a slim catalog, or deploy the complete bundle to the self-hosted
-target. A successful Release upload does not prove that Pages can accept the
-site.
+The publisher creates an immutable tag and GitHub Release, uploads exactly
+four files, and dispatches `.github/workflows/publish_release_pages.yml` from
+the repository's current default branch:
 
-- [GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)
-- [GitHub Release limits](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases)
+```text
+RELEASE_ID.pages.site.tar.zst
+release-manifest.json
+release-set.json
+SHA256SUMS
+```
 
-## Persistent State
+The workflow checks the tag target, all digests and identities, the 850 MB
+site budget, and the 60,000-file budget before calling the official Pages
+deployment action. It performs no source build. Publishing an existing tag is
+idempotent only when every remote asset has the same name, size, and digest;
+assets are never overwritten.
+
+Before creating a new tag, the publisher requires a clean local checkout whose
+`HEAD` is the current GitHub default-branch commit. This prevents a feature
+branch from accidentally tagging an unpublished tree. Every dispatch uses the
+current trusted workflow and rejects a release tag that is not on that
+default-branch history. Once an immutable release exists, an exact re-dispatch
+is allowed from another local branch because the tag ancestry and every remote
+asset digest are revalidated remotely.
+
+Both artifacts preserve project content and close referenced URLs. A link to
+an API page outside the selected project roots resolves to a small explanatory
+page, not a 404. The `full` artifact additionally retains every assembled
+project version; the Pages projection retains only explicit canonical versions.
+
+## Self-hosted installation
+
+Install the full artifact directly from the release cache:
+
+```bash
+./sdk/deploy/bin/reasbook-deploy release publish RELEASE_ID \
+  --target self-hosted --deploy-root /srv/reasbook \
+  --health-url http://127.0.0.1/ReasBook/release-spec.json
+```
+
+For a separate server, transfer the full archive and its checksum, install the
+deploy SDK, and run the portable command:
+
+```bash
+FULL_SHA256="$(awk 'NR == 1 { print $1 }' SHA256SUMS)"
+./sdk/deploy/bin/reasbook-deploy release install \
+  RELEASE_ID.site.tar.zst --sha256 "$FULL_SHA256" \
+  --deploy-root /srv/reasbook \
+  --health-url http://127.0.0.1/ReasBook/release-spec.json
+```
+
+Configure the web server once with `/srv/reasbook/current/public` as its
+document root. `config/deploy/nginx-self-hosted.conf.example` is a ready
+starting point. The installer verifies and extracts on the destination
+filesystem, writes an immutable version directory, atomically replaces the
+`current` symlink, and restores the preceding link when the health probe fails.
+
+Rollback never rebuilds:
+
+```bash
+./sdk/deploy/bin/reasbook-deploy release rollback \
+  --target self-hosted --deploy-root /srv/reasbook --to RELEASE_ID
+```
+
+Do not bind-mount `current/public/ReasBook` directly into a long-running
+container: container runtimes may resolve that symlink only when the mount is
+created. Mount `/srv/reasbook` as a whole and point the in-container server at
+`/srv/reasbook/current/public`, or run Nginx directly on the host.
+
+## Persistent state
 
 ```text
 cache/reasbook/releases/<release-id>/
@@ -144,41 +205,49 @@ cache/reasbook/releases/<release-id>/
   worktrees/
   logs/
   branches/
-  site/
-  build-report.json
-  release-manifest.json
-  <release-id>.site.tar.zst
+  site/                              complete aggregate tree
+  release-manifest.json             full manifest
+  <release-id>.site.tar.zst          full bundle
   SHA256SUMS
   bundle.json
+  artifacts/pages/
+    site/                            bounded Pages projection
+    release-manifest.json
+    <release-id>.pages.site.tar.zst
+    SHA256SUMS
+    bundle.json
+  release-set.json
   publication.json
 ```
 
-Branches run in parallel; stages within one branch remain ordered. Each branch
-gets an isolated writable Lake cache namespace. Documentation targets run one
-at a time inside their branch.
+Branches may run in parallel; stages within one branch stay ordered. Each
+branch receives an isolated writable Lake-cache namespace. One bounded
+documentation stage handles all explicit project roots for that branch and
+publishes its result atomically. The local orchestrator defaults to three
+branch workers and a 12-hour branch-documentation timeout; both remain
+explicit CLI options for unusually small or large releases.
 
-The GitHub adapter reads credentials only through `gh`/`GH_TOKEN`; credentials
-are never represented in the profile, ReleaseSpec, manifest, or command logs.
+## Security and failure behavior
+
+- Credentials come only from `gh`/`GH_TOKEN`; they are absent from profiles,
+  specs, manifests, archive commands, and logs.
+- Archive members are rejected when they contain traversal paths, links, or
+  special files.
+- A Pages link that escapes the configured base path aborts projection.
+- A failed package, upload, health check, or symlink switch leaves the previous
+  published target intact.
+- Old schema-version-1 full manifests remain readable as `full` artifacts.
 
 ## Prerequisites
 
-- Fetch every registered version branch before planning: `git fetch --all`.
-- Use Python 3.11+ and install the deploy capability dependencies.
-- GNU tar must support `--zstd`.
-- Publishing requires `gh auth status` to succeed with Release upload and
-  Actions workflow-dispatch permission.
+- Python 3.11 or newer.
+- GNU tar with `--zstd` and the deploy SDK dependencies.
+- All registered version branches fetched before planning.
+- An authenticated GitHub CLI with Release upload and workflow-dispatch access
+  for GitHub publication.
+- Enough self-hosted disk space for the incoming archive, extracted release,
+  safety margin, and currently active release.
 
-GitHub Actions never receives Lean credentials or build caches. It only
-downloads and verifies the three immutable Release assets. The release tag
-uniquely determines the bundle name; `SHA256SUMS`, the external manifest, the
-manifest embedded in the archive, and `release-spec.json` must all agree.
-Publishing an existing tag is idempotent only when every asset name, size, and
-GitHub SHA-256 digest is unchanged. Assets are never overwritten.
-
-The superseded GitHub-hosted Lean builders (`deploy_pages.yml`,
-`deploy_preview.yml`, and `docs_full.yml`) are removed. Production deployments
-use only `publish_release_pages.yml`. New Release tags are pinned to the exact
-commit currently at the trusted default branch; publication and rollback run
-the workflow from that immutable tag and verify that the tag resolves to the
-workflow's `GITHUB_SHA`. All expensive Lean and documentation work happens
-before publication.
+The hosting rationale and rejected alternatives are recorded in
+[`ADR-0001`](../../../../../docs/decisions/0001-static-release-pipeline.md) and
+[`ADR-0002`](../../../../../docs/decisions/0002-target-specific-release-artifacts.md).

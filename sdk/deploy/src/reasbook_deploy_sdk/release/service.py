@@ -8,9 +8,10 @@ from typing import Iterable
 
 from reasbook_sdk_common import atomic_write_text
 
-from ..errors import DeployExecutionError
+from ..errors import DeployError, DeployExecutionError
 from .builder import LocalReleaseBuilder
 from .build_plan import ReleaseBuildOptions
+from .artifacts import PagesSiteProjector, artifact_policy_digest, create_release_set
 from .bundle import BundleVerifier, ReleaseBundler
 from .config import (
     dump_profile_snapshot,
@@ -21,10 +22,11 @@ from .config import (
 from .github import GitHubPublication, GitHubReleasePublisher
 from .models import DeploymentProfile, ReleaseSpec
 from .planner import ReleasePlanner
-from .results import BundleInfo, ReleaseBuildReport
+from .results import BundleInfo, ReleaseBuildReport, ReleasePackageResult
 from .site import ReleaseSiteAssembler
 from .source import GitReleaseSource
 from .store import ReleaseLayout, ReleaseState, ReleaseStore
+from .tooling import tooling_digest_from_revision, tooling_source_digest
 
 
 def _utc_now() -> str:
@@ -47,7 +49,7 @@ class ReleaseContext:
 class ReleaseDeploymentResult:
     context: ReleaseContext
     build: ReleaseBuildReport | None = None
-    bundle: BundleInfo | None = None
+    package: ReleasePackageResult | None = None
     publication: GitHubPublication | None = None
 
     def public_dict(self):
@@ -55,7 +57,7 @@ class ReleaseDeploymentResult:
             "release": self.context.spec.public_dict(),
             "state": self.context.state.public_dict(),
             "build": self.build.public_dict() if self.build else None,
-            "bundle": self.bundle.public_dict() if self.bundle else None,
+            "package": self.package.public_dict() if self.package else None,
             "publication": (
                 self.publication.public_dict() if self.publication else None
             ),
@@ -100,13 +102,28 @@ class StaticReleaseService:
             load_canonical_projects(profile.canonical_projects),
             only=only,
         )
+        reused_existing = False
         if reuse:
             existing = ReleaseStore.find_by_digest(self.cache_root, spec.spec_digest)
             if existing is not None:
-                spec = existing
+                existing_layout = ReleaseLayout(self.cache_root, existing.release_id)
+                try:
+                    existing_profile = load_profile(
+                        existing_layout.profile,
+                        repo_root=existing_layout.root,
+                    )
+                except DeployError:
+                    existing_profile = None
+                if (
+                    existing_profile is not None
+                    and artifact_policy_digest(existing_profile.artifacts)
+                    == artifact_policy_digest(profile.artifacts)
+                ):
+                    spec = existing
+                    reused_existing = True
         layout = ReleaseLayout(self.cache_root, spec.release_id)
         store = ReleaseStore(layout)
-        if not reuse and layout.root.exists():
+        if layout.root.exists() and not reused_existing:
             raise DeployExecutionError(
                 "a release with this timestamp and digest already exists; "
                 "retry after one second"
@@ -201,27 +218,99 @@ class StaticReleaseService:
         context: ReleaseContext,
         *,
         bundler: ReleaseBundler | None = None,
-    ) -> BundleInfo:
+    ) -> ReleasePackageResult:
         store = ReleaseStore(context.layout)
         with store.locked():
             state = store.load_state()
-            if "package" in state.completed and context.layout.bundle_info.is_file():
-                return store.load_bundle_info()
             if "site" not in state.completed:
                 raise DeployExecutionError("release site has not been validated")
+            expected_tooling = tooling_digest_from_revision(
+                context.spec.tooling_revision
+            )
+            actual_tooling = tooling_source_digest(self.tooling_root)
+            if actual_tooling != expected_tooling:
+                raise DeployExecutionError(
+                    "release packaging tooling differs from the immutable "
+                    "ReleaseSpec; create a new release"
+                )
             report = store.load_build_report()
             release_bundler = bundler or ReleaseBundler(context.layout, store)
             try:
-                bundle = release_bundler.package(context.spec, report)
-                BundleVerifier().verify(
-                    Path(bundle.bundle),
-                    expected_sha256=bundle.bundle_sha256,
+                verified_artifacts: set[str] = set()
+                full = self._verified_cached_bundle(store, artifact="full")
+                if full is None:
+                    full = release_bundler.package(
+                        context.spec,
+                        report,
+                        policy=context.profile.artifact("full"),
+                    )
+                else:
+                    verified_artifacts.add("full")
+                pages = self._verified_cached_bundle(store, artifact="pages")
+                if pages is None:
+                    PagesSiteProjector().project(
+                        context.spec,
+                        context.layout.site,
+                        context.layout.pages_site,
+                    )
+                    pages = release_bundler.package_pages(
+                        context.spec,
+                        report,
+                        policy=context.profile.artifact("pages"),
+                    )
+                else:
+                    verified_artifacts.add("pages")
+                release_set, bundles = create_release_set(
+                    context.layout,
+                    store,
+                    context.spec,
+                    context.profile.artifacts,
+                    (full, pages),
                 )
+                verifier = BundleVerifier()
+                for bundle in bundles:
+                    if bundle.artifact in verified_artifacts:
+                        continue
+                    manifest = verifier.verify(
+                        Path(bundle.bundle),
+                        expected_sha256=bundle.bundle_sha256,
+                    )
+                    if manifest.artifact != bundle.artifact:
+                        raise DeployExecutionError(
+                            "verified bundle artifact does not match bundle metadata"
+                        )
                 store.transition("packaged", completed_stage="package")
-                return bundle
+                by_name = {bundle.artifact: bundle for bundle in bundles}
+                return ReleasePackageResult(
+                    full=by_name["full"],
+                    pages=by_name["pages"],
+                    release_set=release_set,
+                )
             except Exception as exc:
                 store.transition("failed", error=str(exc))
                 raise
+
+    @staticmethod
+    def _verified_cached_bundle(
+        store: ReleaseStore,
+        *,
+        artifact: str,
+    ) -> BundleInfo | None:
+        try:
+            bundle = (
+                store.load_bundle_info()
+                if artifact == "full"
+                else store.load_pages_bundle_info()
+            )
+            if bundle.artifact != artifact:
+                return None
+            manifest = BundleVerifier().verify(
+                Path(bundle.bundle),
+                expected_sha256=bundle.bundle_sha256,
+            )
+            return bundle if manifest.artifact == artifact else None
+        except (DeployError, OSError):
+            return None
 
     def publish(
         self,
@@ -247,9 +336,10 @@ class StaticReleaseService:
                 existing = store.load_publication()
                 if not wait or existing.status == "published":
                     return existing
-            bundle = store.load_bundle_info()
+            bundle = store.load_pages_bundle_info()
             release_publisher = publisher or GitHubReleasePublisher(
-                context.profile.publish
+                context.profile.publish,
+                repo_root=self.repo_root,
             )
             if dry_run:
                 return release_publisher.publish(
@@ -299,7 +389,7 @@ class StaticReleaseService:
         if dry_run:
             return ReleaseDeploymentResult(context)
         report = self.build(context, options=options)
-        bundle = self.package(context)
+        package = self.package(context)
         publication = (
             self.publish(
                 context,
@@ -310,7 +400,7 @@ class StaticReleaseService:
             else None
         )
         refreshed = self.context(context.spec.release_id)
-        return ReleaseDeploymentResult(refreshed, report, bundle, publication)
+        return ReleaseDeploymentResult(refreshed, report, package, publication)
 
 
 __all__ = [

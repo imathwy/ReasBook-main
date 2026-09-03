@@ -6,4 +6,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "${REASBOOK_PORT:-3200}:80"
+    volumes:
+      - "${REASBOOK_SITE_DIR:-./ReasBookWeb/_site}:/usr/share/nginx/html/ReasBook:ro"
     restart: unless-stopped

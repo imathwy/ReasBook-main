@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://optpku.github.io/ReasBook/config/schemas/release-set.schema.json",
+  "title": "ReasBook target artifact ReleaseSet",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "release_id",
+    "spec_digest",
+    "generated_at",
+    "artifact_policy_sha256",
+    "artifacts"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "release_id": {
+      "type": "string",
+      "pattern": "^site-[0-9]{8}T[0-9]{6}Z-[0-9a-f]{12}$"
+    },
+    "spec_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "artifact_policy_sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": { "$ref": "#/$defs/artifact" },
+      "allOf": [
+        {
+          "contains": {
+            "type": "object",
+            "required": ["name"],
+            "properties": { "name": { "const": "full" } }
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": ["name"],
+            "properties": { "name": { "const": "pages" } }
+          }
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "bundle",
+        "bundle_sha256",
+        "site_tree_sha256",
+        "file_count",
+        "total_bytes"
+      ],
+      "properties": {
+        "name": { "enum": ["full", "pages"] },
+        "bundle": { "type": "string", "pattern": "^[^/\\\\]+[.]tar[.]zst$" },
+        "bundle_sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "site_tree_sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "file_count": { "type": "integer", "minimum": 1 },
+        "total_bytes": { "type": "integer", "minimum": 1 }
+      }
+    }
+  }
+}

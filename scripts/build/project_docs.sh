@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Build docs for registered book/paper projects.
+# Build bounded-memory docs for registered book/paper project roots.
 #
 # Supported layouts:
 #
@@ -57,9 +57,19 @@ if [ "${#targets[@]}" -eq 0 ]; then
   exit 0
 fi
 
-for target in "${targets[@]}"; do
-  reasbook_log "building ${target}:docs"
-  reasbook_run_runtime "$REASBOOK_LEAN_ROOT" \
-    "$BUILD_SDK" build "$REASBOOK_LEAN_ROOT" "${target}:docs" \
-    --lake-arg=-R --lake-arg=-Kenv=dev --skip-cache-get --no-verify-outputs
-done
+declare -a docs_args=(
+  project-docs "$REASBOOK_LEAN_ROOT"
+  "${targets[@]}"
+  --output "$REASBOOK_DOC_BUILD_DIR"
+  --lake-bin "${REASBOOK_BUILD_LAKE_BIN:-${LAKE_BIN:-lake}}"
+  --timeout-seconds "${REASBOOK_DOC_COMMAND_TIMEOUT:-21600}"
+)
+if [[ -n "${REASBOOK_SOURCE_REPOSITORY:-}" || -n "${REASBOOK_SOURCE_COMMIT:-}" ]]; then
+  docs_args+=(
+    --repository "${REASBOOK_SOURCE_REPOSITORY:-}"
+    --revision "${REASBOOK_SOURCE_COMMIT:-}"
+  )
+fi
+
+reasbook_log "building compact API docs for ${#targets[@]} project root(s)"
+reasbook_run_runtime "$REASBOOK_LEAN_ROOT" "$BUILD_SDK" "${docs_args[@]}"

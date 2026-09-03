@@ -194,16 +194,26 @@ building:
 ./sdk/deploy/bin/reasbook-deploy release plan --profile github-pages
 ```
 
-The production release flow plans the pinned branches, submits project builds
-and branch finalizers through the private SiFlow operations skill, aggregates
-the successful results into a deterministic bundle, and verifies it locally.
-The public deployment CLI then uploads that existing bundle to an immutable
-GitHub Release and dispatches the publish-only Pages workflow. GitHub Actions
-never runs the full Lean build. See
-[ADR-0001](docs/decisions/0001-static-release-pipeline.md).
+The production release flow pins every input, runs project builds and branch
+finalizers on SiFlow, and assembles one verified site locally. Packaging then
+derives two artifacts from that build:
+
+| Artifact | Contents | Deployment target |
+| --- | --- | --- |
+| `pages` | Catalog, canonical projects, project-root API docs, Verso, theorem maps, and dependency stubs | Temporary GitHub Pages host |
+| `full` | Every project version with the same bounded, link-closed documentation | Project-owned static server |
+
+`release-set.json` binds both archives and their site-tree digests to the same
+immutable `ReleaseSpec`. GitHub Actions only downloads, verifies, and deploys
+the small `pages` archive; it never builds Lean or documentation. See
+[ADR-0001](docs/decisions/0001-static-release-pipeline.md) and
+[ADR-0002](docs/decisions/0002-target-specific-release-artifacts.md).
 
 ```bash
-./sdk/deploy/bin/reasbook-deploy release publish <release-id> --wait
+./sdk/deploy/bin/reasbook-deploy release package <release-id>
+./sdk/deploy/bin/reasbook-deploy release preview <release-id> --artifact pages
+./sdk/deploy/bin/reasbook-deploy release publish <release-id> \
+  --target github-pages --wait
 ```
 
 It requires an authenticated GitHub CLI. The `release deploy` command remains
@@ -212,47 +222,74 @@ multi-version build. Use `--no-publish` to stop after local packaging or
 `--dry-run` to resolve the spec without creating release state. See
 [`sdk/deploy/release/README.md`](sdk/deploy/src/reasbook_deploy_sdk/release/README.md).
 
-#### Preview the exact release bundle
+#### Preview the exact release artifact
 
-After the aggregate job has produced a packaged release, verify and extract
-the bundle before uploading it:
+After packaging, the CLI verifies both the archive checksum and the site-tree
+digest before serving. It does not rebuild anything:
 
 ```bash
 export REASBOOK_CACHE_ROOT=/path/to/reasbook-cache
 RELEASE_ID=site-YYYYMMDDTHHMMSSZ-xxxxxxxxxxxx
-RELEASE_DIR="$REASBOOK_CACHE_ROOT/releases/$RELEASE_ID"
-BUNDLE="$RELEASE_DIR/$RELEASE_ID.site.tar.zst"
-SHA256="$(awk 'NR == 1 { print $1 }' "$RELEASE_DIR/SHA256SUMS")"
-PREVIEW="$REASBOOK_CACHE_ROOT/previews/$RELEASE_ID"
-
-./sdk/deploy/bin/reasbook-deploy release verify \
-  "$BUNDLE" --sha256 "$SHA256" --extract-to "$PREVIEW"
-
-REASBOOK_SITE_DIR="$PREVIEW" \
-REASBOOK_DOC_SOURCE="$PREVIEW/docs" \
-./scripts/preview/serve.py 18000 --site-root /ReasBook/
+./sdk/deploy/bin/reasbook-deploy release preview "$RELEASE_ID" \
+  --artifact pages --host 127.0.0.1 --port 18000
 ```
 
-Open `http://127.0.0.1:18000/ReasBook/`. This serves the verified extracted
-tree, not an intermediate build directory.
+Open `http://127.0.0.1:18000/ReasBook/`. This serves the verified packaged
+Pages tree, not an intermediate branch build. Use `--artifact full` to inspect
+the exact self-hosted candidate. Add `--host 0.0.0.0 --public-prefix
+/path/to/proxy/18000` when accessing it through a workspace proxy.
 
-#### GitHub Pages capacity check
+#### GitHub Pages capacity and publication
 
-GitHub Release acceptance and Pages acceptance are separate checks. A Release
-asset may be almost 2 GiB, but GitHub Pages limits the **extracted published
-site** to 1 GB and times out deployments after 10 minutes. Before invoking
-`release publish`, measure the preview:
+The `pages` artifact fails during local packaging above 850 MB, 60,000 files,
+or 950 MB compressed. The publish workflow repeats the extracted-size and
+file-count checks. These margins keep the site below GitHub Pages' 1 GB and
+10-minute deployment limits; compression alone does not make an oversized
+site acceptable.
 
 ```bash
-du -sb "$PREVIEW"
-find "$PREVIEW" -type f | wc -l
+./sdk/deploy/bin/reasbook-deploy release publish "$RELEASE_ID" \
+  --target github-pages --wait
 ```
 
-Use 950,000,000 bytes as the operational Pages ceiling. A larger bundle can
-still be retained as an immutable GitHub Release asset, but its complete site
-must be slimmed down or deployed to the future self-hosted target rather than
-sent to Pages. See the official [GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)
+The command uploads the Pages archive, manifest, checksum, and ReleaseSet to an
+immutable GitHub Release, then dispatches the pinned publish-only workflow.
+For a new Release, it also requires a clean checkout whose `HEAD` exactly
+matches the GitHub default branch, so merge and pull the deployment changes
+before running it. Re-dispatching an existing immutable tag does not depend on
+the caller's branch.
+The repository's Pages source must be configured once as **GitHub Actions** in
+Settings → Pages. See the official [GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)
 and [GitHub Release limits](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases).
+
+#### Deploy the complete site on your own server
+
+Configure the web server once with `/srv/reasbook/current/public` as its
+document root; a ready Nginx example is
+[`config/deploy/nginx-self-hosted.conf.example`](config/deploy/nginx-self-hosted.conf.example).
+Then either deploy directly from the shared release cache:
+
+```bash
+./sdk/deploy/bin/reasbook-deploy release publish "$RELEASE_ID" \
+  --target self-hosted --deploy-root /srv/reasbook \
+  --health-url http://127.0.0.1/ReasBook/release-spec.json
+```
+
+or transfer the full archive and install it without the source checkout or
+release cache:
+
+```bash
+FULL_SHA256="$(awk 'NR == 1 { print $1 }' SHA256SUMS)"
+./sdk/deploy/bin/reasbook-deploy release install \
+  "$RELEASE_ID.site.tar.zst" --sha256 "$FULL_SHA256" \
+  --deploy-root /srv/reasbook \
+  --health-url http://127.0.0.1/ReasBook/release-spec.json
+```
+
+Installation verifies the archive, writes a versioned directory, atomically
+switches `current`, and restores the previous release if the health check
+fails. Roll back without rebuilding with `release rollback --target
+self-hosted --deploy-root /srv/reasbook --to <release-id>`.
 
 ### Implementation layout
 
