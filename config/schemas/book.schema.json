@@ -20,11 +20,11 @@
     "isbn": { "type": ["string", "null"] },
     "toolchain": {
       "type": "string",
-      "pattern": "^leanprover/lean4:v[0-9]+\\.[0-9]+\\.0$",
+      "pattern": "^leanprover/lean4:v[0-9]+\\.[0-9]+\\.[0-9]+$",
       "description": "Must match ReasBook/lean-toolchain"
     },
-    "mathlib": { "type": "string", "pattern": "^v[0-9]+\\.[0-9]+\\.0$" },
-    "branch": { "type": "string", "pattern": "^v[0-9]+\\.[0-9]+\\.0$" },
+    "mathlib": { "type": "string", "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "branch": { "type": "string", "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+$" },
     "contributors": {
       "type": "array",
       "items": {
