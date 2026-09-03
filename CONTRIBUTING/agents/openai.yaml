@@ -1,0 +1,4 @@
+interface:
+  display_name: "ReasBook Contributing"
+  short_description: "Prepare version-safe ReasBook source contributions"
+  default_prompt: "Use $reasbook-contributing to prepare or review this ReasBook contribution."
