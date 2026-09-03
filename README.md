@@ -13,7 +13,7 @@ ReasBook is generated using the tool: [M2F](https://github.com/optsuite/M2F.git)
 | --- | --- | --- | ---: | --- |
 | `v4.32.0` | `v4.32.0` | Active | 1 / 0 | Pending |
 | `v4.32.2` | `v4.32.2` | Active | 0 / 1 | Passed |
-| `v4.30.0` | `v4.30.0` | Active | 10 / 2 | Failed |
+| `v4.30.0` | `v4.30.0` | Active | 10 / 2 | Building |
 | `v4.26.0` | `v4.26.0` | Active | 4 / 2 | Passed |
 
 `main` is the cross-version catalog. The source code stays on the registered version branches; the lightweight link folders below make each entry discoverable from this branch.
@@ -101,14 +101,98 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Build
 
-Full Lean build and web build run on a self-hosted runner. Locally:
+Full multi-version Lean and documentation builds run on SiFlow and write only
+to the external cache. The following local commands are intended for focused
+development and preview, not for producing the public release:
 
 ```bash
-./build.sh                 # full build (cache get → shared docs → project docs → core)
-BUILD_DOCS=0 ./build.sh    # fast preview: core only
-./build-web.sh             # full pipeline + Verso site
-python3 serve.py 18000     # serve at http://127.0.0.1:18000/ReasBook/
+./scripts/build/all.sh                 # cache, core, and optional docs
+BUILD_DOCS=0 ./scripts/build/all.sh    # fast core-only build
+./scripts/build/site.sh                # full pipeline plus Verso site
+./scripts/preview/serve.py 18000       # http://127.0.0.1:18000/ReasBook/
 ```
+
+The deployment helpers require Python 3.11 or newer. If `python3` points to an
+older system interpreter, run `./sdk/deploy/bin/reasbook-deploy ci verify-python`
+first and use the reported `REASBOOK_PYTHON_BIN` for local commands.
+
+### One-command selected-book deployment
+
+From the workspace root, use the deployment command for a reproducible local
+build of one or two projects:
+
+```bash
+./sdk/deploy/bin/reasbook-deploy \
+  --book IntroductiontoRealAnalysisVolumeI_JiriLebl_2025 \
+  --book Analysis2_Tao_2022 \
+  --no-build \
+  --serve
+```
+
+The command selects the matching stable version branch, creates a detached
+sparse worktree under
+`/volume/math/users/zcwang/ReasBook_Reviewer/cache/reasbook/sources/`, installs
+the branch toolchain when needed, and stores all Lake/package/native artifacts
+under `/volume/math/users/zcwang/ReasBook_Reviewer/cache/reasbook/lake/`. It
+writes only lightweight review indexes to the sibling reviewer and records an
+atomic manifest under
+`/volume/math/users/zcwang/ReasBook_Reviewer/cache/reasbook/manifests/`.
+Override this root explicitly with `REASBOOK_CACHE_ROOT` or `--cache-root` when
+using a different volume.
+`--no-build` is the recommended first run: it creates only lightweight
+declaration indexes and does not require Lean caches. Remove it when a local
+Lean build is wanted. Pass `--dry-run` to inspect the plan, `--build-docs` only
+when documentation is needed, or `--serve` to start the Python 3.11+ reviewer
+after the build. The Stacks entry is indexed by default but its large Lean
+build is opt-in via `--build-stacks`.
+When `--serve` is used, host and port defaults are read from the reviewer
+`.env`; pass `--host`/`--port` to override them.
+
+For a static Docker deployment, run
+`./sdk/deploy/bin/reasbook-deploy docker`. It builds first, validates the
+generated site, starts Compose with `--remove-orphans`, and polls the published
+port before returning success. `--skip-build` reuses an existing site.
+
+### Immutable static release
+
+Resolve all active version branches and explicit canonical projects without
+building:
+
+```bash
+./sdk/deploy/bin/reasbook-deploy release plan --profile github-pages
+```
+
+The production release flow plans the pinned branches, submits project builds
+and branch finalizers through the private SiFlow operations skill, aggregates
+the successful results into a deterministic bundle, and verifies it locally.
+The public deployment CLI then uploads that existing bundle to an immutable
+GitHub Release and dispatches the publish-only Pages workflow. GitHub Actions
+never runs the full Lean build. See
+[ADR-0001](docs/decisions/0001-static-release-pipeline.md).
+
+```bash
+./sdk/deploy/bin/reasbook-deploy release publish <release-id> --wait
+```
+
+It requires an authenticated GitHub CLI. The `release deploy` command remains
+available for a small local canary; it must not be used for the full public
+multi-version build. Use `--no-publish` to stop after local packaging or
+`--dry-run` to resolve the spec without creating release state. See
+[`sdk/deploy/release/README.md`](sdk/deploy/src/reasbook_deploy_sdk/release/README.md).
+
+### Script layout
+
+Repository adapters are grouped by responsibility under `scripts/`; there are
+no top-level script wrappers. Reusable Python, Lake, toolchain, external-cache,
+retry, heartbeat, graph, and deployment behavior lives under `sdk/`. CI and
+local automation call the SDK entrypoints directly.
+
+Reusable build tools are maintained separately under `sdk/`: `build`, `verso`,
+`theorem_graph`, and `comparator` each provide a typed API, CLI, tests, and
+README. They all depend on the platform-neutral primitives in `sdk/common`;
+`sdk/deploy` is the composition layer for multi-stage builds. See
+[sdk/README.md](sdk/README.md) for the dependency graph and installation order,
+and [scripts/README.md](scripts/README.md) for the repository adapter boundary.
 
 ## Sponsors
 
