@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://optpku.github.io/ReasBook/config/schemas/release-spec.schema.json",
+  "title": "Immutable ReasBook static-site ReleaseSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "release_id",
+    "spec_digest",
+    "resolved_at",
+    "source",
+    "site",
+    "policy",
+    "branches",
+    "projects"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "release_id": {
+      "type": "string",
+      "pattern": "^site-[0-9]{8}T[0-9]{6}Z-[0-9a-f]{12}$"
+    },
+    "spec_digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "resolved_at": { "type": "string", "format": "date-time" },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "registry_commit", "tooling_revision"],
+      "properties": {
+        "repository": { "type": "string" },
+        "registry_commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40,64}$"
+        },
+        "tooling_revision": { "type": "string" }
+      }
+    },
+    "site": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["base_path", "include_historical_versions"],
+      "properties": {
+        "base_path": { "type": "string", "pattern": "^/([^./][^/]*/)*$" },
+        "include_historical_versions": { "type": "boolean" }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allow_partial",
+        "require_lean",
+        "require_docs",
+        "require_verso",
+        "theorem_graph",
+        "max_site_files",
+        "max_bundle_bytes"
+      ],
+      "properties": {
+        "allow_partial": { "type": "boolean" },
+        "require_lean": { "type": "boolean" },
+        "require_docs": { "type": "boolean" },
+        "require_verso": { "type": "boolean" },
+        "theorem_graph": {
+          "enum": ["none", "source", "compiled", "compiled_or_source"]
+        },
+        "max_site_files": { "type": "integer", "minimum": 1 },
+        "max_bundle_bytes": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "branches": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "commit",
+          "toolchain",
+          "lake_manifest_sha256"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^v[0-9]+[.][0-9]+[.][0-9]+$"
+          },
+          "commit": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{40,64}$"
+          },
+          "toolchain": { "type": "string" },
+          "lake_manifest_sha256": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          }
+        }
+      }
+    },
+    "projects": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "key",
+          "kind",
+          "project_id",
+          "slug",
+          "branch",
+          "commit",
+          "source_path",
+          "build_target",
+          "canonical",
+          "outputs"
+        ],
+        "properties": {
+          "key": {
+            "type": "string",
+            "pattern": "^(books|papers)/[A-Za-z0-9][A-Za-z0-9_.-]*$"
+          },
+          "kind": { "enum": ["books", "papers"] },
+          "project_id": { "type": "string" },
+          "slug": { "type": "string" },
+          "branch": { "type": "string" },
+          "commit": { "type": "string" },
+          "source_path": { "type": "string" },
+          "build_target": { "type": "string" },
+          "canonical": { "type": "boolean" },
+          "outputs": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": ["lean", "docs", "verso", "theorem_graph"]
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -4,141 +4,42 @@
 from __future__ import annotations
 
 import argparse
-import os
-import re
-import subprocess
+import json
 import posixpath
+import re
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
-import json
+
+from site_config import (
+    SKIP_MODULES,
+    SiteConfig,
+    load_site_config,
+    project_enabled,
+)
+
+TOOLING_ROOT = Path(__file__).resolve().parents[2]
+for sdk_source in (
+    TOOLING_ROOT / "sdk" / "common" / "src",
+    TOOLING_ROOT / "sdk" / "build" / "src",
+):
+    value = str(sdk_source)
+    if value not in sys.path:
+        sys.path.insert(0, value)
 
 
-def parse_github_remote(url: str) -> tuple[str, str] | None:
-    url = (url or "").strip()
-    if not url:
-        return None
-    m = re.match(r"^https?://github\.com/([^/]+)/([^/]+?)(?:\.git)?/?$", url)
-    if m:
-        return m.group(1), m.group(2)
-    m = re.match(r"^git@github\.com:([^/]+)/([^/]+?)(?:\.git)?/?$", url)
-    if m:
-        return m.group(1), m.group(2)
-    return None
+SITE_CONFIG: SiteConfig = load_site_config()
+GITHUB_OWNER = SITE_CONFIG.github_owner
+GITHUB_REPO = SITE_CONFIG.github_repo
+GITHUB_BRANCH = SITE_CONFIG.github_branch
+SITE_BASE = SITE_CONFIG.site_base
+SITE_ROOT = SITE_CONFIG.site_root
 
 
-def parse_repo_slug(slug: str) -> tuple[str, str] | None:
-    slug = (slug or "").strip().strip("/")
-    if not slug or "/" not in slug:
-        return None
-    owner, repo = slug.split("/", 1)
-    owner = owner.strip()
-    repo = repo.strip()
-    if not owner or not repo:
-        return None
-    return owner, repo
-
-
-def git_output(args: list[str]) -> str:
-    try:
-        return subprocess.check_output(args, text=True, stderr=subprocess.DEVNULL).strip()
-    except Exception:
-        return ""
-
-
-def git_config_get(key: str) -> str:
-    return git_output(["git", "config", "--get", key])
-
-
-def git_remote_url(name: str) -> str:
-    if not name:
-        return ""
-    return git_config_get(f"remote.{name}.url")
-
-
-def current_git_branch() -> str:
-    return git_output(["git", "branch", "--show-current"])
-
-
-def detect_default_branch() -> str:
-    candidate_remotes: list[str] = []
-    env_remote_name = os.environ.get("REASBOOK_GIT_REMOTE_NAME", "").strip()
-    if env_remote_name:
-        candidate_remotes.append(env_remote_name)
-
-    branch = current_git_branch()
-    if branch:
-        branch_remote = git_config_get(f"branch.{branch}.remote")
-        if branch_remote:
-            candidate_remotes.append(branch_remote)
-
-    push_default = git_config_get("remote.pushDefault")
-    if push_default:
-        candidate_remotes.append(push_default)
-
-    for fallback in ("origin", "upstream"):
-        candidate_remotes.append(fallback)
-
-    seen: set[str] = set()
-    for remote_name in candidate_remotes:
-        if not remote_name or remote_name in seen:
-            continue
-        seen.add(remote_name)
-        ref = git_output(["git", "symbolic-ref", "--quiet", "--short", f"refs/remotes/{remote_name}/HEAD"])
-        prefix = f"{remote_name}/"
-        if ref.startswith(prefix):
-            branch_name = ref[len(prefix) :].strip()
-            if branch_name:
-                return branch_name
-    return ""
-
-
-def detect_github_repo() -> tuple[str, str]:
-    for key in ("REASBOOK_GITHUB_REPO", "GITHUB_REPOSITORY"):
-        parsed = parse_repo_slug(os.environ.get(key, ""))
-        if parsed is not None:
-            return parsed
-
-    candidate_urls: list[str] = []
-
-    env_remote_url = os.environ.get("REASBOOK_GIT_REMOTE_URL", "").strip()
-    if env_remote_url:
-        candidate_urls.append(env_remote_url)
-
-    candidate_remotes: list[str] = []
-    env_remote_name = os.environ.get("REASBOOK_GIT_REMOTE_NAME", "").strip()
-    if env_remote_name:
-        candidate_remotes.append(env_remote_name)
-
-    branch = current_git_branch()
-    if branch:
-        branch_remote = git_config_get(f"branch.{branch}.remote")
-        if branch_remote:
-            candidate_remotes.append(branch_remote)
-
-    push_default = git_config_get("remote.pushDefault")
-    if push_default:
-        candidate_remotes.append(push_default)
-
-    for fallback in ("origin", "upstream"):
-        candidate_remotes.append(fallback)
-
-    seen: set[str] = set()
-    for remote_name in candidate_remotes:
-        if not remote_name or remote_name in seen:
-            continue
-        seen.add(remote_name)
-        remote_url = git_remote_url(remote_name)
-        if remote_url:
-            candidate_urls.append(remote_url)
-
-    for remote_url in candidate_urls:
-        parsed = parse_github_remote(remote_url)
-        if parsed is not None:
-            return parsed
-
-    return ("optsuite", "ReasBook")
-
+# ---------------------------------------------------------------------------
+# Configuration and source metadata
+# ---------------------------------------------------------------------------
 
 def write_text_if_changed(path: Path, content: str, *, log: bool = True) -> bool:
     old_content: str | None
@@ -156,29 +57,6 @@ def write_text_if_changed(path: Path, content: str, *, log: bool = True) -> bool
     return True
 
 
-GITHUB_OWNER, GITHUB_REPO = detect_github_repo()
-GITHUB_BRANCH = (
-    os.environ.get("REASBOOK_GITHUB_BRANCH", "").strip()
-    or os.environ.get("GITHUB_REF_NAME", "").strip()
-    or detect_default_branch()
-    or current_git_branch()
-    or "main"
-)
-
-SITE_BASE = (
-    os.environ.get("REASBOOK_SITE_BASE")
-    or f"https://{GITHUB_OWNER}.github.io/{GITHUB_REPO}/"
-).rstrip("/") + "/"
-
-DEFAULT_SITE_ROOT = "/" if GITHUB_REPO == f"{GITHUB_OWNER}.github.io" else f"/{GITHUB_REPO}/"
-SITE_ROOT = (os.environ.get("REASBOOK_SITE_ROOT") or DEFAULT_SITE_ROOT).strip()
-if not SITE_ROOT.startswith("/"):
-    SITE_ROOT = f"/{SITE_ROOT}"
-if not SITE_ROOT.endswith("/"):
-    SITE_ROOT = f"{SITE_ROOT}/"
-
-DOCS_BASE = f"{SITE_BASE}docs/ReasBook/"
-
 BOOK_TITLES = {
     "ConvexAnalysis_Rockafellar_1970": "Convex Analysis (Rockafellar, 1970)",
     "IntegerProgramming_Conforti_2014": "Integer Programming (Conforti et al., 2014)",
@@ -189,23 +67,8 @@ BOOK_TITLES = {
 PAPER_TITLES = {
     "SmoothMinimization_Nesterov_2004": "Smooth Minimization (Nesterov, 2004)",
     "OnSomeLocalRings_Maassaran_2025": "On Some Local Rings (Maassaran, 2025)",
+    "TR_LALM_theory": "TR-LALM Theory",
 }
-
-# Temporary literate extraction bypass for pathological modules.
-# Keep this list minimal and remove entries once upstream extraction is fixed.
-DEFAULT_SKIP_MODULES = {
-    "Books.ConvexAnalysis_Rockafellar_1970.Chap02.section09_part12",
-}
-
-
-def parse_csv_env_set(name: str) -> set[str]:
-    raw = (os.environ.get(name) or "").strip()
-    if not raw:
-        return set()
-    return {item.strip() for item in raw.split(",") if item.strip()}
-
-
-SKIP_MODULES = DEFAULT_SKIP_MODULES | parse_csv_env_set("REASBOOK_SKIP_MODULES")
 
 BOOK_CHAPTER_TITLES = {
     "Analysis2_Tao_2022": {
@@ -412,6 +275,10 @@ SECTION_RE = re.compile(r"^section_?(\d+)$", re.IGNORECASE)
 PART_RE = re.compile(r"^part_?(\d+)$", re.IGNORECASE)
 
 
+# ---------------------------------------------------------------------------
+# Entry discovery and naming
+# ---------------------------------------------------------------------------
+
 @dataclass(frozen=True)
 class Entry:
     category: str
@@ -431,7 +298,13 @@ def parse_args() -> argparse.Namespace:
         "repo_root",
         nargs="?",
         default=None,
-        help="Path to the ReasBook repo root (the directory containing ReasBookWeb/ and ReasBook/).",
+        help="Path to the repository root (the directory containing ReasBookWeb/ and ReasBook/).",
+    )
+    parser.add_argument(
+        "--repo-root",
+        dest="repo_root_option",
+        default=None,
+        help="Path to the repository root; equivalent to the positional argument.",
     )
     return parser.parse_args()
 
@@ -463,7 +336,10 @@ def module_doc_title(path: Path) -> str | None:
         return None
     if "`" in first or ":" in first or "." in first:
         return None
-    if len(first.split()) > 8:
+    # Chapter headings often include a short book subtitle (for example,
+    # "Chapter 01 — Lectures on Riemann Surfaces (Forster, 1981)").
+    # Keep the prose guard, but leave room for those descriptive headings.
+    if len(first.split()) > 12:
         return None
     if not re.match(r"^(Section|Chapter|Appendix)\b", first, re.IGNORECASE):
         return None
@@ -691,17 +567,23 @@ def docs_relative_site_link(module: str, route: str) -> str:
 def _module_to_docs_path(source_root: Path, module_name: str) -> str:
     """Convert a Lean module name to a docs/ReasBook/ URL path.
 
-    For flat layout (no Books./Papers. prefix in module name), prepend the
-    physical directory prefix so the URL matches doc-gen4's output.
+    doc-gen4 follows the logical module name, not the library's ``srcDir``.
+    ``source_root`` remains in the signature for callers that already carry
+    the project layout alongside the module.
     """
-    books_prefix = _layout_prefix(source_root, "books")
-    papers_prefix = _layout_prefix(source_root, "papers")
-    parts = module_name.split(".")
-    if books_prefix == "" and not module_name.startswith("Books."):
-        parts = ["Books"] + parts
-    elif papers_prefix == "" and not module_name.startswith("Papers."):
-        parts = ["Papers"] + parts
-    return "/".join(parts)
+    _ = source_root
+    return "/".join(module_name.split("."))
+
+
+def project_docs_path(source_root: Path, project: str, kind: str) -> str:
+    """Return the doc-gen4 path for a registered project's actual Lake root."""
+
+    from reasbook_build_sdk.targets import library_target
+
+    return _module_to_docs_path(
+        source_root,
+        library_target(source_root, project, kind),
+    )
 
 
 def docs_relative_doc_link(source_root: Path, from_module: str, to_module: str) -> str:
@@ -719,6 +601,10 @@ def published_site_link(route: str) -> str:
     norm = normalize_path(route)
     return f"{SITE_BASE}{norm}" if norm else SITE_BASE
 
+
+# ---------------------------------------------------------------------------
+# Source entry collection
+# ---------------------------------------------------------------------------
 
 def should_include_book(path: Path) -> bool:
     stem = path.stem.lower()
@@ -762,6 +648,8 @@ def collect_entries(source_root: Path) -> list[Entry]:
             continue
         rel = path.relative_to(books_root)
         book = rel.parts[0]
+        if not project_enabled("books", book):
+            continue
         if book in TBD_BOOKS:
             continue
         ch_title = chapter_title(rel.parts)
@@ -794,6 +682,8 @@ def collect_entries(source_root: Path) -> list[Entry]:
             continue
         rel = path.relative_to(papers_root)
         paper = rel.parts[0]
+        if not project_enabled("papers", paper):
+            continue
         sec_title = module_doc_title(path) or section_title_from_stem(path.stem)
         sec_num, part_num = parse_section_part(path.stem)
         entries.append(
@@ -826,6 +716,10 @@ def collect_entries(source_root: Path) -> list[Entry]:
 def lean_string(s: str) -> str:
     return '"' + s.replace("\\", "\\\\").replace('"', '\\"') + '"'
 
+
+# ---------------------------------------------------------------------------
+# Lean and Web artifact rendering
+# ---------------------------------------------------------------------------
 
 def emit_sections(entries: list[Entry]) -> str:
     books: dict[str, dict] = {}
@@ -1138,6 +1032,10 @@ def published_verso_link(route: str) -> str:
     return published_site_link(route)
 
 
+# ---------------------------------------------------------------------------
+# README and work-page writers
+# ---------------------------------------------------------------------------
+
 def write_book_readmes(source_root: Path, entries: list[Entry]) -> None:
     books_root = source_root / "Books"
     all_books = sorted([p.name for p in books_root.iterdir() if p.is_dir()])
@@ -1149,7 +1047,6 @@ def write_book_readmes(source_root: Path, entries: list[Entry]) -> None:
 
     for book in all_books:
         title = book_title(book)
-        book_module = _book_module(source_root, book, "Book")
         book_file = books_root / book / "Book.lean"
         item_entries = sorted(
             [e for e in by_book.get(book, []) if (e.section_num > 0 and e.part_num == 0)],
@@ -1174,8 +1071,8 @@ def write_book_readmes(source_root: Path, entries: list[Entry]) -> None:
                     else published_verso_link(f"books/{book.lower()}/")
                 )
             )
-            docs_target = doc_link(home_entry.module) if home_entry is not None else (
-                doc_link(item_entries[0].module) if item_entries else doc_link(book_module)
+            docs_target = published_site_link(
+                f"docs/ReasBook/{project_docs_path(source_root, book, 'book')}.html"
             )
             links = [
                 f"[Verso]({verso_target})",
@@ -1225,10 +1122,6 @@ def write_paper_readmes(source_root: Path, entries: list[Entry]) -> None:
     for paper in all_papers:
         title = paper_title(paper)
         paper_file = papers_root / paper / "Paper.lean"
-        if paper_file.exists():
-            paper_module = _paper_module(source_root, paper, "Paper")
-        else:
-            paper_module = _paper_module(source_root, paper, "Main")
         item_entries = sorted(
             [e for e in by_paper.get(paper, []) if (e.section_num > 0 and e.part_num == 0)],
             key=lambda e: (e.section_num, e.part_num, e.stem),
@@ -1249,8 +1142,8 @@ def write_paper_readmes(source_root: Path, entries: list[Entry]) -> None:
                 else published_verso_link(f"papers/{paper.lower()}/")
             )
         )
-        docs_target = doc_link(home_entry.module) if home_entry is not None else (
-            doc_link(item_entries[0].module) if item_entries else doc_link(paper_module)
+        docs_target = published_site_link(
+            f"docs/ReasBook/{project_docs_path(source_root, paper, 'paper')}.html"
         )
         links = [
             f"[Verso]({verso_target})",
@@ -1313,8 +1206,7 @@ def write_root_readme(repo_root: Path, source_root: Path) -> None:
         has_book_agg = (source_root / "Books" / book / "Book.lean").exists()
         if has_book_agg:
             lean_src = repo_relative_link(f"ReasBook/Books/{book}/")
-            book_mod = _book_module(source_root, book, "Book")
-            docs_path = _module_to_docs_path(source_root, book_mod)
+            docs_path = project_docs_path(source_root, book, "book")
             docs_link = published_site_link(f"docs/ReasBook/{docs_path}.html")
         else:
             lean_src = repo_relative_link(f"ReasBook/Books/{book}/")
@@ -1340,7 +1232,8 @@ def write_root_readme(repo_root: Path, source_root: Path) -> None:
         has_paper_agg = (source_root / "Papers" / paper / "Paper.lean").exists()
         if has_paper_agg:
             lean_src = repo_relative_link(f"ReasBook/Papers/{paper}/")
-            docs_link = published_site_link(f"docs/ReasBook/Papers/{paper}/Paper.html")
+            docs_path = project_docs_path(source_root, paper, "paper")
+            docs_link = published_site_link(f"docs/ReasBook/{docs_path}.html")
         else:
             lean_src = repo_relative_link(f"ReasBook/Papers/{paper}/")
             docs_link = published_site_link(f"docs/ReasBook/Papers/{paper}/")
@@ -1385,10 +1278,8 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
             [e for e in b_entries if (e.section_num > 0 and e.part_num == 0)],
             key=lambda e: (e.chapter_num, e.section_num, e.stem),
         )
-        home_entry = next((e for e in b_entries if e.stem == "book"), None)
         module_name = lean_module_name(book)
         page_file = books_root / f"{module_name}.lean"
-        book_dir = source_root / "Books" / book
 
         lines: list[str] = []
         lines.append("import VersoBlog")
@@ -1396,13 +1287,9 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
         lines.append("")
         lines.append(f'#doc (Page) {lean_string(title)} =>')
         lines.append("")
-        page_route = home_entry.route if home_entry is not None else f"books/{book.lower()}/"
-        docs_path = f"Books/{book}/Book"  # physical path, always correct
+        docs_path = project_docs_path(source_root, book, "book")
         lines.append(f"- [Documentation]({portable_site_link(f'docs/ReasBook/{docs_path}.html')})")
-        if (book_dir / "Book.lean").exists():
-            lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Books/{book}/')})")
-        else:
-            lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Books/{book}/')})")
+        lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Books/{book}/')})")
         lines.append("")
         if section_entries:
             lines.append("Section index:")
@@ -1421,7 +1308,7 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
                 lines.append(f"- [{label}]({portable_site_link(e.route)})")
             lines.append("")
         else:
-            lines.append("- (TODO: no chapter/section modules discovered yet)")
+            lines.append("No separate reading sections are published for this version.")
             lines.append("")
 
         write_text_if_changed(page_file, "\n".join(lines), log=True)
@@ -1432,10 +1319,8 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
             [e for e in p_entries if (e.section_num > 0 and e.part_num == 0)],
             key=lambda e: (e.section_num, e.stem),
         )
-        home_entry = next((e for e in p_entries if e.stem in {"paper", "main"}), None)
         module_name = lean_module_name(paper)
         page_file = papers_root / f"{module_name}.lean"
-        paper_dir = source_root / "Papers" / paper
 
         lines: list[str] = []
         lines.append("import VersoBlog")
@@ -1443,13 +1328,9 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
         lines.append("")
         lines.append(f'#doc (Page) {lean_string(title)} =>')
         lines.append("")
-        page_route = home_entry.route if home_entry is not None else f"papers/{paper.lower()}/"
-        docs_path = f"Papers/{paper}/Paper"  # physical path, always correct
+        docs_path = project_docs_path(source_root, paper, "paper")
         lines.append(f"- [Documentation]({portable_site_link(f'docs/ReasBook/{docs_path}.html')})")
-        if (paper_dir / "Paper.lean").exists():
-            lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Papers/{paper}/')})")
-        else:
-            lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Papers/{paper}/')})")
+        lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Papers/{paper}/')})")
         lines.append("")
         if section_entries:
             lines.append("Section index:")
@@ -1461,10 +1342,31 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
                 lines.append(f"- [{label}]({portable_site_link(e.route)})")
             lines.append("")
         else:
-            lines.append("- (TODO: no section modules discovered yet)")
+            lines.append("No separate reading sections are published for this version.")
             lines.append("")
 
         write_text_if_changed(page_file, "\n".join(lines), log=True)
+
+
+def write_home_page(repo_root: Path) -> None:
+    """Keep the generated release home focused on published reader paths."""
+
+    home = repo_root / "ReasBookWeb" / "ReasBookSite" / "Home.lean"
+    lines = [
+        "-- This file is generated by scripts/gen_sections.py",
+        "import VersoBlog",
+        "open Verso Genre Blog",
+        "",
+        '#doc (Page) "ReasBook" =>',
+        "",
+        "Books and research papers formalized in Lean, with source-linked API",
+        "documentation and theorem dependency maps.",
+        "",
+        f"- [API documentation]({portable_site_link('docs/')})",
+        f"- [Theorem dependency maps]({portable_site_link('theorem-maps/')})",
+        "",
+    ]
+    write_text_if_changed(home, "\n".join(lines), log=False)
 
 
 def is_generated_overview_block(body_lines: list[str]) -> bool:
@@ -1476,6 +1378,10 @@ def is_generated_overview_block(body_lines: list[str]) -> bool:
         return False
     return "Verso links:" in "\n".join(lines)
 
+
+# ---------------------------------------------------------------------------
+# Source overview maintenance
+# ---------------------------------------------------------------------------
 
 def upsert_overview_block(path: Path, body_lines: list[str]) -> None:
     orig_text = path.read_text(encoding="utf-8")
@@ -1719,10 +1625,19 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
 
 def main() -> None:
     args = parse_args()
-    if args.repo_root is None:
+    if args.repo_root is not None and args.repo_root_option is not None:
+        positional = Path(args.repo_root).expanduser().resolve()
+        option = Path(args.repo_root_option).expanduser().resolve()
+        if positional != option:
+            raise SystemExit(
+                "repo root was provided twice with different values: "
+                f"{positional} != {option}"
+            )
+    configured_root = args.repo_root_option or args.repo_root
+    if configured_root is None:
         repo_root = Path(__file__).resolve().parents[2]
     else:
-        repo_root = Path(args.repo_root).resolve()
+        repo_root = Path(configured_root).resolve()
 
     source_root = repo_root / "ReasBook"
     out_file = repo_root / "ReasBookWeb" / "ReasBookSite" / "Sections.lean"
@@ -1742,6 +1657,7 @@ def main() -> None:
     out_file.parent.mkdir(parents=True, exist_ok=True)
     write_text_if_changed(out_file, emit_sections(entries), log=False)
     write_text_if_changed(route_file, emit_route_table(entries), log=False)
+    write_home_page(repo_root)
     write_work_pages(repo_root, source_root, entries)
     write_book_readmes(source_root, entries)
     write_paper_readmes(source_root, entries)

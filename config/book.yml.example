@@ -1,7 +1,7 @@
 # Example book metadata. Copy to ReasBook/Books/<BookId>/book.yml and fill in.
 # All values must be consistent with the book's README.md and config/toolchains.yml.
 # Unknown fields: use null (do not invent).
-# Validate with: python3 scripts/validate_book_yml.py ReasBook/Books/<BookId>/book.yml
+# Validate with: python3 scripts/config/validate_book.py ReasBook/Books/<BookId>/book.yml
 
 schema_version: 1
 

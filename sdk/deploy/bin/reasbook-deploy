@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# Local checkout entry point for the deployment orchestration SDK.
+set -euo pipefail
+
+SDK_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+COMMON_ROOT="$(cd -- "$SDK_ROOT/../common" && pwd)"
+PYTHON_ROOTS=(
+  "$SDK_ROOT/src"
+  "$COMMON_ROOT/src"
+  "$(cd -- "$SDK_ROOT/../build" && pwd)/src"
+  "$(cd -- "$SDK_ROOT/../verso" && pwd)/src"
+  "$(cd -- "$SDK_ROOT/../theorem_graph" && pwd)/src"
+  "$(cd -- "$SDK_ROOT/../comparator" && pwd)/src"
+)
+joined=""
+for root in "${PYTHON_ROOTS[@]}"; do
+  joined="${joined:+$joined:}$root"
+done
+if [[ -n "${PYTHONPATH:-}" ]]; then
+  export PYTHONPATH="$joined:$PYTHONPATH"
+else
+  export PYTHONPATH="$joined"
+fi
+exec "$COMMON_ROOT/bin/python" -m reasbook_deploy_sdk "$@"
