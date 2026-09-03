@@ -61,11 +61,14 @@ class DockerDeploymentConfig:
             or self.cache_root in self.repo_root.parents
         ):
             raise DeployConfigError("Docker build cache must be outside the checkout")
-        expected_site_root = (self.repo_root / "ReasBookWeb" / "_site").resolve()
-        if self.site_root != expected_site_root:
+        if self.site_root in {Path("/"), Path.home().resolve(), self.repo_root}:
             raise DeployConfigError(
-                "Docker deployment only supports the repository site directory: "
-                f"{expected_site_root}"
+                f"refusing broad Docker site directory: {self.site_root}"
+            )
+        expected_site_root = (self.repo_root / "ReasBookWeb" / "_site").resolve()
+        if not self.skip_build and self.site_root != expected_site_root:
+            raise DeployConfigError(
+                "a custom Docker site directory requires --skip-build"
             )
 
 
@@ -106,7 +109,10 @@ def deploy_static(config: DockerDeploymentConfig, *, runner: Runner | None = Non
         ),
         runner=runner,
         cwd=config.repo_root,
-        env={"REASBOOK_PORT": str(config.port)},
+        env={
+            "REASBOOK_PORT": str(config.port),
+            "REASBOOK_SITE_DIR": str(config.site_root),
+        },
     )
     url = f"http://127.0.0.1:{config.port}/ReasBook/"
     for _ in range(config.health_attempts):

@@ -15,7 +15,12 @@ from reasbook_sdk_common import atomic_write_json
 from ..errors import DeployConfigError, DeployExecutionError
 from .models import RELEASE_ID_RE, ReleaseSpec
 from .github import GitHubPublication
-from .results import BundleInfo, ReleaseBuildReport, ReleaseManifest
+from .results import (
+    BundleInfo,
+    ReleaseBuildReport,
+    ReleaseManifest,
+    ReleaseSetManifest,
+)
 
 
 STATE_STATUSES = {
@@ -61,6 +66,38 @@ class ReleaseLayout:
     @property
     def site(self) -> Path:
         return self.root / "site"
+
+    @property
+    def artifacts(self) -> Path:
+        return self.root / "artifacts"
+
+    @property
+    def pages_root(self) -> Path:
+        return self.artifacts / "pages"
+
+    @property
+    def pages_site(self) -> Path:
+        return self.pages_root / "site"
+
+    @property
+    def pages_manifest(self) -> Path:
+        return self.pages_root / "release-manifest.json"
+
+    @property
+    def pages_bundle(self) -> Path:
+        return self.pages_root / f"{self.release_id}.pages.site.tar.zst"
+
+    @property
+    def pages_checksums(self) -> Path:
+        return self.pages_root / "SHA256SUMS"
+
+    @property
+    def pages_bundle_info(self) -> Path:
+        return self.pages_root / "bundle.json"
+
+    @property
+    def release_set(self) -> Path:
+        return self.root / "release-set.json"
 
     @property
     def spec(self) -> Path:
@@ -240,6 +277,19 @@ class ReleaseStore:
             raise DeployExecutionError("bundle belongs to another release")
         return bundle
 
+    def load_pages_bundle_info(self) -> BundleInfo:
+        bundle = BundleInfo.from_dict(self._read_json(self.layout.pages_bundle_info))
+        if bundle.release_id != self.layout.release_id or bundle.artifact != "pages":
+            raise DeployExecutionError("Pages bundle belongs to another release")
+        return bundle
+
+    def load_release_set(self) -> ReleaseSetManifest:
+        release_set = ReleaseSetManifest.from_dict(
+            self._read_json(self.layout.release_set)
+        )
+        self._validate_identity(release_set.release_id, release_set.spec_digest)
+        return release_set
+
     def load_publication(self) -> GitHubPublication:
         publication = GitHubPublication.from_dict(
             self._read_json(self.layout.publication)
@@ -286,6 +336,15 @@ class ReleaseStore:
         if bundle.release_id != self.layout.release_id:
             raise DeployExecutionError("bundle belongs to another release")
         atomic_write_json(self.layout.bundle_info, bundle.public_dict())
+
+    def write_pages_bundle_info(self, bundle: BundleInfo) -> None:
+        if bundle.release_id != self.layout.release_id or bundle.artifact != "pages":
+            raise DeployExecutionError("Pages bundle belongs to another release")
+        atomic_write_json(self.layout.pages_bundle_info, bundle.public_dict())
+
+    def write_release_set(self, release_set: ReleaseSetManifest) -> None:
+        self._validate_identity(release_set.release_id, release_set.spec_digest)
+        atomic_write_json(self.layout.release_set, release_set.public_dict())
 
     def write_publication(self, publication: GitHubPublication) -> None:
         if publication.release_id != self.layout.release_id:

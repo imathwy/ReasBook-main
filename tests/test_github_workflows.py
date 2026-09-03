@@ -16,12 +16,19 @@ class GitHubWorkflowPolicyTests(unittest.TestCase):
         self.assertNotIn("bundle_asset:", text)
         self.assertNotIn("bundle_sha256:", text)
         self.assertIn("permissions: {}", text)
+        self.assertIn("pages: read", text)
         self.assertIn("github-pages-production", text)
         self.assertIn("git/ref/tags/$RELEASE_TAG", text)
-        self.assertIn('"$object_sha" == "$GITHUB_SHA"', text)
+        self.assertIn("compare/$object_sha...$GITHUB_SHA", text)
+        self.assertIn('"$comparison" == ahead', text)
         self.assertIn("release-manifest.json", text)
+        self.assertIn("release-set.json", text)
+        self.assertIn(".pages.site.tar.zst", text)
+        self.assertIn('manifest.get("artifact") != "pages"', text)
+        self.assertIn("850_000_000", text)
         self.assertIn("SHA256SUMS", text)
         self.assertIn("cmp .release/release-manifest.json", text)
+        self.assertIn("actions/configure-pages@", text)
 
     def test_superseded_github_builders_are_removed(self) -> None:
         for name in ("deploy_pages.yml", "deploy_preview.yml", "docs_full.yml"):

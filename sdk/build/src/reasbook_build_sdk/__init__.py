@@ -2,6 +2,7 @@
 
 from .command import Command, CommandResult, CommandRunner
 from .config import load_build_options
+from .docs import ProjectDocumentationBuilder, ProjectDocsResult
 from .errors import (
     BuildFailed,
     BuildSdkError,
@@ -42,6 +43,8 @@ __all__ = [
     "LakeProject",
     "LocalBuildExecutor",
     "ProjectError",
+    "ProjectDocumentationBuilder",
+    "ProjectDocsResult",
     "SubprocessRunner",
     "build_command",
     "cache_command",

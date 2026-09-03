@@ -57,13 +57,14 @@ caller intentionally manages `.lake` itself.
 
 The static-site release bounded context is documented in
 [`release/README.md`](src/reasbook_deploy_sdk/release/README.md). It adds
-immutable cross-branch planning, explicit canonical versions, parallel local
-builds, deterministic bundles, and a GitHub Release/Pages publisher without
-mixing those concerns into reviewer deployment.
+immutable cross-branch planning, explicit canonical versions, target-specific
+`full` and `pages` artifacts, a binding ReleaseSet, and atomic self-hosted or
+GitHub Pages publication without mixing those concerns into reviewer
+deployment.
 
-The publisher supports GitHub CLI 2.4+ by reading existing releases through
-the raw REST API. Only an explicit HTTP 404 is treated as a missing release;
-all other lookup errors and incomplete asset metadata fail closed.
+The publisher reads existing releases through GitHub's raw REST API. Only an
+explicit HTTP 404 is treated as a missing release; all other lookup errors and
+incomplete asset metadata fail closed.
 
 ## Selected-book deployment
 
@@ -128,9 +129,27 @@ The static-site deployment entrypoint is also centralized:
 ```
 
 The Docker adapter owns the Compose invocation and health probe; it invokes the
-repository-specific `scripts/build/site.sh` pipeline. The default deployment is
-available at `http://127.0.0.1:3200/ReasBook/`; use `--port` to change the host
-port.
+repository-specific `scripts/build/site.sh` pipeline. The image contains only
+Nginx configuration, while the selected site is mounted read-only. The default
+deployment is available at `http://127.0.0.1:3200/ReasBook/`; use `--port` to
+change the host port. A custom packaged site requires `--skip-build`.
+
+For immutable releases, use the release CLI rather than Compose directly:
+
+```bash
+# Verify and serve the GitHub candidate from the shared cache.
+./sdk/deploy/bin/reasbook-deploy release preview RELEASE_ID --artifact pages
+
+# Install a transferred full bundle without requiring release-cache metadata.
+FULL_SHA256="$(awk 'NR == 1 { print $1 }' SHA256SUMS)"
+./sdk/deploy/bin/reasbook-deploy release install RELEASE_ID.site.tar.zst \
+  --sha256 "$FULL_SHA256" --deploy-root /srv/reasbook \
+  --health-url http://127.0.0.1/ReasBook/release-spec.json
+```
+
+The installer lays the configured base path below
+`/srv/reasbook/current/public`; point the static server at that stable document
+root. See `config/deploy/nginx-self-hosted.conf.example`.
 
 ## CI helpers
 

@@ -11,12 +11,23 @@ layout.
 | [`config/`](config/) | repository metadata validation |
 | [`preview/`](preview/) | local static-site preview server |
 
+`build/project_docs.sh` is a checkout-layout adapter around the Build SDK's
+bounded `project-docs` command. The SDK owns target normalization, doc-gen
+mode selection, cache identity, locking, and atomic publication; the script
+only supplies this repository's paths and immutable source revision.
+
 Normal local entrypoints are:
 
 ```bash
 ./scripts/build/all.sh
 ./scripts/build/site.sh
 ./sdk/common/bin/python ./scripts/preview/serve.py 18000
+```
+
+For a packaged release, prefer the integrity-checking SDK entrypoint:
+
+```bash
+./sdk/deploy/bin/reasbook-deploy release preview RELEASE_ID --artifact pages
 ```
 
 The preview server expects the generated GitHub Pages root (`/ReasBook/`). If

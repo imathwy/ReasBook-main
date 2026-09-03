@@ -12,9 +12,11 @@ from .models import (
     CanonicalProjects,
     DeploymentProfile,
     GitHubPublishProfile,
+    ReleaseArtifactPolicy,
     RegistryBranch,
     ReleasePolicy,
     ToolchainRegistry,
+    default_artifact_policies,
 )
 
 
@@ -103,6 +105,7 @@ def load_profile(path: str | Path, *, repo_root: str | Path) -> DeploymentProfil
             "selection",
             "site",
             "policy",
+            "artifacts",
             "publish",
         },
         field="profile",
@@ -150,6 +153,58 @@ def load_profile(path: str | Path, *, repo_root: str | Path) -> DeploymentProfil
     )
     if publish_value.get("adapter") != "github_pages":
         raise DeployConfigError("publish.adapter currently supports only github_pages")
+
+    defaults = {item.name: item for item in default_artifact_policies()}
+    artifacts_value = value.get("artifacts")
+    if artifacts_value is None:
+        artifacts = tuple(defaults.values())
+    else:
+        artifact_mapping = _mapping(artifacts_value, field="artifacts")
+        _expect_keys(artifact_mapping, {"full", "pages"}, field="artifacts")
+        if set(artifact_mapping) != {"full", "pages"}:
+            raise DeployConfigError("artifacts must define both full and pages")
+        parsed_artifacts: list[ReleaseArtifactPolicy] = []
+        for name in ("full", "pages"):
+            item = _mapping(artifact_mapping[name], field=f"artifacts.{name}")
+            _expect_keys(
+                item,
+                {
+                    "history_mode",
+                    "dependency_docs",
+                    "max_site_files",
+                    "max_site_bytes",
+                    "max_bundle_bytes",
+                },
+                field=f"artifacts.{name}",
+            )
+            default = defaults[name]
+            parsed_artifacts.append(
+                ReleaseArtifactPolicy(
+                    name=name,
+                    history_mode=str(
+                        item.get("history_mode", default.history_mode)
+                    ),
+                    dependency_docs=str(
+                        item.get("dependency_docs", default.dependency_docs)
+                    ),
+                    max_site_files=_positive_integer(
+                        item.get("max_site_files"),
+                        default=default.max_site_files,
+                        field=f"artifacts.{name}.max_site_files",
+                    ),
+                    max_site_bytes=_positive_integer(
+                        item.get("max_site_bytes"),
+                        default=default.max_site_bytes,
+                        field=f"artifacts.{name}.max_site_bytes",
+                    ),
+                    max_bundle_bytes=_positive_integer(
+                        item.get("max_bundle_bytes"),
+                        default=default.max_bundle_bytes,
+                        field=f"artifacts.{name}.max_bundle_bytes",
+                    ),
+                )
+            )
+        artifacts = tuple(parsed_artifacts)
 
     return DeploymentProfile(
         name=str(value.get("name", "")),
@@ -206,6 +261,7 @@ def load_profile(path: str | Path, *, repo_root: str | Path) -> DeploymentProfil
             workflow=str(publish_value.get("workflow", "publish_release_pages.yml")),
         ),
         exclude=tuple(sorted(set(raw_exclude))),
+        artifacts=artifacts,
     )
 
 
@@ -273,6 +329,10 @@ def dump_profile_snapshot(profile: DeploymentProfile) -> str:
             "include_historical_versions": (profile.include_historical_versions),
         },
         "policy": profile.policy.public_dict(),
+        "artifacts": {
+            artifact.name: artifact.public_dict()
+            for artifact in profile.artifacts
+        },
         "publish": profile.publish.public_dict(),
     }
     return yaml.safe_dump(value, sort_keys=False, allow_unicode=False)

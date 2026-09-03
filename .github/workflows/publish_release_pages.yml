@@ -20,12 +20,16 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      pages: read
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
 
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: "3.11"
+
+      - name: Confirm GitHub Pages configuration
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
 
       - name: Validate release inputs
         env:
@@ -35,7 +39,7 @@ jobs:
           [[ "$RELEASE_TAG" =~ ^reasbook-site-[0-9]{8}T[0-9]{6}Z-[0-9a-f]{12}$ ]]
           release_id="site-${RELEASE_TAG#reasbook-site-}"
           echo "RELEASE_ID=$release_id" >> "$GITHUB_ENV"
-          echo "BUNDLE_ASSET=$release_id.site.tar.zst" >> "$GITHUB_ENV"
+          echo "BUNDLE_ASSET=$release_id.pages.site.tar.zst" >> "$GITHUB_ENV"
           tar --help | grep -q -- --zstd
 
       - name: Download immutable release assets
@@ -49,14 +53,16 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --pattern "$BUNDLE_ASSET" \
             --pattern release-manifest.json \
+            --pattern release-set.json \
             --pattern SHA256SUMS \
             --dir .release
           test -f ".release/$BUNDLE_ASSET"
           test -f .release/release-manifest.json
+          test -f .release/release-set.json
           test -f .release/SHA256SUMS
-          test "$(find .release -maxdepth 1 -type f | wc -l)" -eq 3
+          test "$(find .release -maxdepth 1 -type f | wc -l)" -eq 4
 
-      - name: Verify release tag targets this trusted revision
+      - name: Verify release tag is on the trusted default-branch history
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ inputs.release_tag }}
@@ -65,13 +71,18 @@ jobs:
           object="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$RELEASE_TAG")"
           object_type="$(python -c 'import json,sys; print(json.load(sys.stdin)["object"]["type"])' <<< "$object")"
           object_sha="$(python -c 'import json,sys; print(json.load(sys.stdin)["object"]["sha"])' <<< "$object")"
-          if [[ "$object_type" == tag ]]; then
-            object_sha="$(gh api "repos/$GITHUB_REPOSITORY/git/tags/$object_sha" --jq .object.sha)"
-          elif [[ "$object_type" != commit ]]; then
-            echo "unsupported release tag target: $object_type" >&2
-            exit 1
-          fi
-          [[ "$object_sha" == "$GITHUB_SHA" ]]
+          for _ in 1 2 3 4; do
+            if [[ "$object_type" == commit ]]; then
+              break
+            fi
+            [[ "$object_type" == tag ]]
+            object="$(gh api "repos/$GITHUB_REPOSITORY/git/tags/$object_sha")"
+            object_type="$(python -c 'import json,sys; print(json.load(sys.stdin)["object"]["type"])' <<< "$object")"
+            object_sha="$(python -c 'import json,sys; print(json.load(sys.stdin)["object"]["sha"])' <<< "$object")"
+          done
+          [[ "$object_type" == commit ]]
+          comparison="$(gh api "repos/$GITHUB_REPOSITORY/compare/$object_sha...$GITHUB_SHA" --jq .status)"
+          [[ "$comparison" == ahead || "$comparison" == identical ]]
 
       - name: Verify and extract bundle
         run: |
@@ -81,6 +92,7 @@ jobs:
           [[ "$bundle_sha256" =~ ^[0-9a-f]{64}$ ]]
           [[ "$checksum_name" == "$BUNDLE_ASSET" ]]
           [[ -z "${checksum_extra:-}" ]]
+          export BUNDLE_SHA256="$bundle_sha256"
           (cd .release && sha256sum --check --strict SHA256SUMS)
           ./sdk/deploy/bin/reasbook-deploy release \
             --repo-root . \
@@ -95,21 +107,61 @@ jobs:
           python - <<'PY'
           import json
           import os
+          import re
           from pathlib import Path
 
           manifest = json.loads(Path(".release/release-manifest.json").read_text())
+          release_set = json.loads(Path(".release/release-set.json").read_text())
           spec = json.loads(Path(".site/release-spec.json").read_text())
           release_id = os.environ["RELEASE_ID"]
           if manifest["release_id"] != release_id or spec["release_id"] != release_id:
               raise SystemExit("release tag, manifest, and spec release IDs differ")
           if manifest["spec_digest"] != spec["spec_digest"]:
               raise SystemExit("manifest and spec digests differ")
+          if manifest.get("artifact") != "pages":
+              raise SystemExit("GitHub Pages requires the pages artifact")
+          if manifest["total_bytes"] > 850_000_000:
+              raise SystemExit("Pages site exceeds the 850 MB operational budget")
+          if manifest["file_count"] > 60_000:
+              raise SystemExit("Pages site exceeds the 60,000-file budget")
+          artifacts = release_set.get("artifacts")
+          if not isinstance(artifacts, list) or len(artifacts) != 2:
+              raise SystemExit("release set must contain exactly two artifacts")
+          records = {item.get("name"): item for item in artifacts if isinstance(item, dict)}
+          if set(records) != {"full", "pages"}:
+              raise SystemExit("release set must contain unique full and pages artifacts")
+          pages = records.get("pages")
+          full = records.get("full")
+          if (
+              release_set.get("schema_version") != 1
+              or release_set.get("release_id") != release_id
+              or release_set.get("spec_digest") != spec["spec_digest"]
+              or not re.fullmatch(
+                  r"sha256:[0-9a-f]{64}",
+                  str(release_set.get("artifact_policy_sha256", "")),
+              )
+              or not pages
+              or pages.get("bundle") != os.environ["BUNDLE_ASSET"]
+              or pages.get("site_tree_sha256") != manifest["site_tree_sha256"]
+              or pages.get("bundle_sha256") != "sha256:" + os.environ["BUNDLE_SHA256"]
+              or pages.get("file_count") != manifest["file_count"]
+              or pages.get("total_bytes") != manifest["total_bytes"]
+              or full.get("bundle") != f"{release_id}.site.tar.zst"
+              or not re.fullmatch(
+                  r"sha256:[0-9a-f]{64}", str(full.get("bundle_sha256", ""))
+              )
+              or not re.fullmatch(
+                  r"sha256:[0-9a-f]{64}", str(full.get("site_tree_sha256", ""))
+              )
+          ):
+              raise SystemExit("release set does not bind the Pages artifact")
           PY
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
         with:
           path: .site
+          retention-days: 1
 
   deploy:
     needs: verify

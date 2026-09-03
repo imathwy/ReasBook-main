@@ -5,16 +5,19 @@ from __future__ import annotations
 import argparse
 from contextlib import contextmanager
 import json
+import os
 from pathlib import Path
 import signal
+import sys
 import threading
 
 from reasbook_sdk_common import atomic_write_json
 
 from ..runtime import default_cache_root
 from .build_plan import ReleaseBuildOptions
-from .bundle import BundleVerifier
+from .bundle import BundleVerifier, site_tree_digest
 from .service import ReleaseDeploymentResult, StaticReleaseService
+from .self_hosted import SelfHostedInstaller
 from .store import ReleaseStore
 
 
@@ -43,9 +46,9 @@ def _build_options(args: argparse.Namespace) -> ReleaseBuildOptions:
 
 
 def _add_build_options(parser: argparse.ArgumentParser) -> None:
-    parser.add_argument("--max-parallel-branches", type=int, default=2)
+    parser.add_argument("--max-parallel-branches", type=int, default=3)
     parser.add_argument("--build-timeout-seconds", type=float, default=21600.0)
-    parser.add_argument("--docs-timeout-seconds", type=float, default=21600.0)
+    parser.add_argument("--docs-timeout-seconds", type=float, default=43200.0)
     parser.add_argument("--verso-timeout-seconds", type=float, default=21600.0)
     parser.add_argument("--graph-timeout-seconds", type=float, default=3600.0)
 
@@ -70,12 +73,18 @@ def _status_payload(context) -> dict:
         "release": context.spec.public_dict(),
         "build": None,
         "bundle": None,
+        "pages_bundle": None,
+        "release_set": None,
         "publication": None,
     }
     if context.layout.build_report.is_file():
         value["build"] = store.load_build_report().public_dict()
     if context.layout.bundle_info.is_file():
         value["bundle"] = store.load_bundle_info().public_dict()
+    if context.layout.pages_bundle_info.is_file():
+        value["pages_bundle"] = store.load_pages_bundle_info().public_dict()
+    if context.layout.release_set.is_file():
+        value["release_set"] = store.load_release_set().public_dict()
     if context.layout.publication.is_file():
         value["publication"] = store.load_publication().public_dict()
     return value
@@ -107,13 +116,32 @@ def build_parser() -> argparse.ArgumentParser:
             command.add_argument("--no-publish", action="store_true")
             _add_publish_options(command)
 
-    package = commands.add_parser("package", help="package a validated site")
+    package = commands.add_parser(
+        "package", help="package full and GitHub Pages artifacts"
+    )
     package.add_argument("release_id")
 
     publish = commands.add_parser("publish", help="publish a packaged release")
     publish.add_argument("release_id")
     _add_publish_options(publish)
     publish.add_argument("--dry-run", action="store_true")
+    publish.add_argument(
+        "--target",
+        choices=("github-pages", "self-hosted"),
+        default="github-pages",
+    )
+    publish.add_argument("--deploy-root", type=Path)
+    publish.add_argument("--health-url")
+
+    preview = commands.add_parser(
+        "preview", help="serve an exact packaged artifact locally"
+    )
+    preview.add_argument("release_id")
+    preview.add_argument("--artifact", choices=("pages", "full"), default="pages")
+    preview.add_argument("--host", default="127.0.0.1")
+    preview.add_argument("--port", type=int, default=18000)
+    preview.add_argument("--public-prefix", default="")
+    preview.add_argument("--dry-run", action="store_true")
 
     deploy = commands.add_parser("deploy", help="run the complete release flow")
     deploy.add_argument("--profile", default="github-pages")
@@ -135,12 +163,27 @@ def build_parser() -> argparse.ArgumentParser:
     verify.add_argument("--sha256")
     verify.add_argument("--extract-to", type=Path)
 
+    install = commands.add_parser(
+        "install", help="atomically install a full bundle on a static server"
+    )
+    install.add_argument("bundle", type=Path)
+    install.add_argument("--sha256", required=True)
+    install.add_argument("--deploy-root", type=Path, required=True)
+    install.add_argument("--health-url")
+
     rollback = commands.add_parser(
         "rollback", help="republish a previous immutable release"
     )
     rollback.add_argument("--to", dest="release_id", required=True)
     _add_publish_options(rollback)
     rollback.add_argument("--dry-run", action="store_true")
+    rollback.add_argument(
+        "--target",
+        choices=("github-pages", "self-hosted"),
+        default="github-pages",
+    )
+    rollback.add_argument("--deploy-root", type=Path)
+    rollback.add_argument("--health-url")
     return parser
 
 
@@ -212,8 +255,111 @@ def _main(argv: list[str] | None = None) -> int:
         )
         _print(manifest)
         return 0
+    if command == "install":
+        _print(
+            SelfHostedInstaller(args.deploy_root).install(
+                args.bundle,
+                expected_sha256=args.sha256,
+                artifact="full",
+                health_url=args.health_url,
+            )
+        )
+        return 0
+
+    if command == "rollback" and args.target == "self-hosted":
+        if args.deploy_root is None:
+            raise SystemExit("--deploy-root is required for self-hosted rollback")
+        if args.dry_run:
+            _print(
+                {
+                    "status": "planned",
+                    "target": "self-hosted",
+                    "release_id": args.release_id,
+                    "deployment_root": str(args.deploy_root.expanduser()),
+                }
+            )
+            return 0
+        _print(
+            SelfHostedInstaller(args.deploy_root).rollback(
+                args.release_id,
+                health_url=args.health_url,
+            )
+        )
+        return 0
 
     context = service.context(args.release_id)
+    if command == "preview":
+        store = ReleaseStore(context.layout)
+        site = (
+            context.layout.pages_site
+            if args.artifact == "pages"
+            else context.layout.site
+        )
+        bundle = (
+            store.load_pages_bundle_info()
+            if args.artifact == "pages"
+            else store.load_bundle_info()
+        )
+        if not (site / "index.html").is_file():
+            raise SystemExit(
+                f"{args.artifact} artifact site is not packaged: {site}"
+            )
+        manifest = BundleVerifier().inspect(
+            Path(bundle.bundle),
+            expected_sha256=bundle.bundle_sha256,
+        )
+        digest, file_count, total_bytes = site_tree_digest(site)
+        if (
+            manifest.artifact != args.artifact
+            or digest != manifest.site_tree_sha256
+            or file_count != manifest.file_count
+            or total_bytes != manifest.total_bytes
+        ):
+            raise SystemExit(
+                f"{args.artifact} preview tree differs from its packaged bundle"
+            )
+        script = (
+            Path(args.repo_root).resolve()
+            / "scripts"
+            / "preview"
+            / "serve.py"
+        )
+        url = (
+            f"http://{args.host}:{args.port}"
+            f"{args.public_prefix}{context.spec.base_path}"
+        )
+        if args.dry_run:
+            _print(
+                {
+                    "artifact": args.artifact,
+                    "site": str(site),
+                    "url": url,
+                }
+            )
+            return 0
+        environment = dict(os.environ)
+        environment.update(
+            {
+                "REASBOOK_SITE_DIR": str(site),
+                "REASBOOK_DOC_SOURCE": str(site / "docs"),
+                "REASBOOK_SITE_ROOT": context.spec.base_path,
+            }
+        )
+        os.execve(
+            sys.executable,
+            [
+                sys.executable,
+                str(script),
+                str(args.port),
+                "--host",
+                args.host,
+                "--site-root",
+                context.spec.base_path,
+                "--public-prefix",
+                args.public_prefix,
+            ],
+            environment,
+        )
     if command == "build":
         if args.dry_run:
             from .builder import LocalReleaseBuilder
@@ -243,6 +389,34 @@ def _main(argv: list[str] | None = None) -> int:
     if command == "package":
         _print(service.package(context))
         return 0
+    if command == "publish" and args.target == "self-hosted":
+        if args.deploy_root is None:
+            raise SystemExit("--deploy-root is required for self-hosted publish")
+        store = ReleaseStore(context.layout)
+        state = store.load_state()
+        if "package" not in state.completed:
+            raise SystemExit("release artifacts have not been packaged")
+        bundle = store.load_bundle_info()
+        if args.dry_run:
+            _print(
+                {
+                    "status": "planned",
+                    "target": "self-hosted",
+                    "release_id": context.spec.release_id,
+                    "bundle": bundle.bundle,
+                    "deployment_root": str(args.deploy_root.expanduser()),
+                }
+            )
+            return 0
+        _print(
+            SelfHostedInstaller(args.deploy_root).install(
+                Path(bundle.bundle),
+                expected_sha256=bundle.bundle_sha256,
+                artifact="full",
+                health_url=args.health_url,
+            )
+        )
+        return 0
     if command in {"publish", "rollback"}:
         _print(
             service.publish(
@@ -260,7 +434,7 @@ def _main(argv: list[str] | None = None) -> int:
             _print(state)
             return 0
         report = service.build(context, options=_build_options(args))
-        bundle = service.package(context)
+        package = service.package(context)
         publication = (
             None
             if args.no_publish
@@ -275,7 +449,7 @@ def _main(argv: list[str] | None = None) -> int:
             ReleaseDeploymentResult(
                 refreshed,
                 report,
-                bundle,
+                package,
                 publication,
             )
         )

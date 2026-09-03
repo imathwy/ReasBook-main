@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import hashlib
+import json
 import math
 from pathlib import Path
 import re
@@ -16,9 +18,9 @@ from .store import ReleaseLayout
 
 @dataclass(frozen=True)
 class ReleaseBuildOptions:
-    max_parallel_branches: int = 2
+    max_parallel_branches: int = 3
     build_timeout_seconds: float = 21600.0
-    docs_timeout_seconds: float = 21600.0
+    docs_timeout_seconds: float = 43200.0
     verso_timeout_seconds: float = 21600.0
     graph_timeout_seconds: float = 3600.0
 
@@ -123,6 +125,25 @@ class BranchPlanFactory:
         projects: tuple[ProjectSpec, ...],
         worktree: Path,
     ) -> dict[str, str]:
+        docs_key = hashlib.sha256(
+            json.dumps(
+                {
+                    "profile": "project-roots-v1",
+                    "branch": branch.name,
+                    "commit": branch.commit,
+                    "manifest": branch.lake_manifest_sha256,
+                    "targets": [project.build_target for project in projects],
+                },
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode("utf-8")
+        ).hexdigest()[:20]
+        docs_root = (
+            self.cache_root
+            / "docs"
+            / "project-roots"
+            / f"{safe_name(branch.name)}-{branch.commit[:12]}-{docs_key}"
+        )
         environment = {
             "REASBOOK_REPO_ROOT": str(worktree),
             "REASBOOK_CACHE_ROOT": str(self.cache_root),
@@ -146,6 +167,11 @@ class BranchPlanFactory:
                 project.build_target for project in projects
             ),
             "REASBOOK_INCLUDE_PROJECTS": ",".join(project.key for project in projects),
+            "REASBOOK_DOC_BUILD_DIR": str(docs_root),
+            "REASBOOK_DOC_SOURCE": str(docs_root / "doc"),
+            "REASBOOK_DOC_COMMAND_TIMEOUT": str(self.options.docs_timeout_seconds),
+            "REASBOOK_SOURCE_REPOSITORY": spec.repository,
+            "REASBOOK_SOURCE_COMMIT": branch.commit,
             "REASBOOK_VERSO_GENERATOR": str(
                 self.tooling_root / "ReasBookWeb" / "scripts" / "gen_sections.py"
             ),
@@ -237,17 +263,13 @@ class BranchPlanFactory:
     ) -> list[BranchStep]:
         return [
             self._step(
-                f"docs-{project.slug}",
+                "docs",
                 (str(scripts / "project_docs.sh"),),
                 worktree,
-                {
-                    **environment,
-                    "PROJECT_DOC_MODULES": project.build_target,
-                },
+                environment,
                 self.options.docs_timeout_seconds,
                 required=not spec.policy.allow_partial,
             )
-            for project in projects
         ]
 
     def _graph_step(

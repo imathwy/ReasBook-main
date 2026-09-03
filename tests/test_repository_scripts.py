@@ -441,7 +441,14 @@ class RepositoryScriptTests(unittest.TestCase):
     def test_publish_docs_uses_an_external_repository_root(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             repo = Path(temp) / "checkout"
-            docs = repo / "ReasBook" / ".lake" / "build" / "doc"
+            docs = (
+                repo
+                / "ReasBook"
+                / ".lake"
+                / "build"
+                / "reasbook-project-docs"
+                / "doc"
+            )
             site = repo / "ReasBookWeb" / "_site"
             project_docs = docs / "Books" / "DemoBook"
             project_docs.mkdir(parents=True)
@@ -474,7 +481,14 @@ class RepositoryScriptTests(unittest.TestCase):
     def test_publish_docs_indexes_flat_project_layout(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             repo = Path(temp) / "checkout"
-            docs = repo / "ReasBook" / ".lake" / "build" / "doc"
+            docs = (
+                repo
+                / "ReasBook"
+                / ".lake"
+                / "build"
+                / "reasbook-project-docs"
+                / "doc"
+            )
             site = repo / "ReasBookWeb" / "_site"
             project_docs = docs / "DemoBook"
             project_docs.mkdir(parents=True)

@@ -2,7 +2,9 @@
 
 ## Status
 
-Accepted
+Accepted. The single-artifact hosting boundary is superseded by
+[ADR-0002](0002-target-specific-release-artifacts.md); the remote-build and
+immutable-release decisions remain in force.
 
 ## Date
 

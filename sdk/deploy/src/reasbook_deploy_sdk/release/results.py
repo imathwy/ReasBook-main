@@ -3,10 +3,17 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime
+from pathlib import Path
 from typing import Any, Mapping
 
 from ..errors import DeployConfigError
-from .models import ReleaseSpec, SHA256_RE
+from .models import (
+    ARTIFACT_NAME_RE,
+    RELEASE_ID_RE,
+    ReleaseSpec,
+    SHA256_RE,
+)
 
 
 @dataclass(frozen=True)
@@ -144,16 +151,42 @@ class ReleaseManifest:
     total_bytes: int
     projects: tuple[dict[str, Any], ...]
     branches: tuple[dict[str, Any], ...]
+    artifact: str = "full"
 
     def __post_init__(self) -> None:
+        release_match = RELEASE_ID_RE.fullmatch(self.release_id)
+        if not release_match:
+            raise DeployConfigError("release manifest has an invalid release ID")
         if self.status not in {"success", "degraded"}:
             raise DeployConfigError("only a successful build can be packaged")
         if not SHA256_RE.fullmatch(self.spec_digest):
             raise DeployConfigError("release manifest has an invalid spec digest")
+        if (
+            release_match.group("digest")
+            != self.spec_digest.removeprefix("sha256:")[:12]
+        ):
+            raise DeployConfigError(
+                "release manifest ID does not match its spec digest"
+            )
         if not SHA256_RE.fullmatch(self.site_tree_sha256):
             raise DeployConfigError("release manifest has an invalid site digest")
+        if (
+            not self.base_path.startswith("/")
+            or not self.base_path.endswith("/")
+            or "//" in self.base_path
+            or ".." in self.base_path
+        ):
+            raise DeployConfigError("release manifest has an invalid base path")
+        try:
+            datetime.fromisoformat(self.generated_at.replace("Z", "+00:00"))
+        except ValueError as exc:
+            raise DeployConfigError(
+                "release manifest generated_at must be an ISO timestamp"
+            ) from exc
         if self.file_count < 1 or self.total_bytes < 1:
             raise DeployConfigError("release site must contain files")
+        if not ARTIFACT_NAME_RE.fullmatch(self.artifact):
+            raise DeployConfigError("release manifest has an invalid artifact name")
         project_fields = {
             "key",
             "kind",
@@ -191,9 +224,10 @@ class ReleaseManifest:
 
     def public_dict(self) -> dict[str, Any]:
         return {
-            "schema_version": 1,
+            "schema_version": 2,
             "release_id": self.release_id,
             "spec_digest": self.spec_digest,
+            "artifact": self.artifact,
             "status": self.status,
             "base_path": self.base_path,
             "generated_at": self.generated_at,
@@ -207,7 +241,7 @@ class ReleaseManifest:
     @classmethod
     def from_dict(cls, value: Mapping[str, Any]) -> "ReleaseManifest":
         try:
-            expected = {
+            common = {
                 "schema_version",
                 "release_id",
                 "spec_digest",
@@ -220,9 +254,11 @@ class ReleaseManifest:
                 "projects",
                 "branches",
             }
-            if set(value) != expected or value.get("schema_version") != 1:
+            version = value.get("schema_version")
+            expected = common if version == 1 else common | {"artifact"}
+            if version not in {1, 2} or set(value) != expected:
                 raise DeployConfigError(
-                    "release manifest fields do not match schema version 1"
+                    "release manifest fields do not match its schema version"
                 )
             return cls(
                 release_id=str(value["release_id"]),
@@ -235,6 +271,7 @@ class ReleaseManifest:
                 total_bytes=int(value["total_bytes"]),
                 projects=tuple(dict(item) for item in value["projects"]),
                 branches=tuple(dict(item) for item in value["branches"]),
+                artifact=str(value.get("artifact", "full")),
             )
         except (KeyError, TypeError, ValueError) as exc:
             raise DeployConfigError(f"invalid release manifest: {exc}") from exc
@@ -247,18 +284,26 @@ class BundleInfo:
     manifest: str
     checksums: str
     bundle_sha256: str
+    artifact: str = "full"
+    release_set: str | None = None
 
     def __post_init__(self) -> None:
+        if not RELEASE_ID_RE.fullmatch(self.release_id):
+            raise DeployConfigError("bundle has an invalid release ID")
         if not SHA256_RE.fullmatch(self.bundle_sha256):
             raise DeployConfigError("bundle checksum is invalid")
+        if not ARTIFACT_NAME_RE.fullmatch(self.artifact):
+            raise DeployConfigError("bundle has an invalid artifact name")
 
-    def public_dict(self) -> dict[str, str]:
+    def public_dict(self) -> dict[str, Any]:
         return {
             "release_id": self.release_id,
             "bundle": self.bundle,
             "manifest": self.manifest,
             "checksums": self.checksums,
             "bundle_sha256": self.bundle_sha256,
+            "artifact": self.artifact,
+            "release_set": self.release_set,
         }
 
     @classmethod
@@ -270,15 +315,200 @@ class BundleInfo:
                 manifest=str(value["manifest"]),
                 checksums=str(value["checksums"]),
                 bundle_sha256=str(value["bundle_sha256"]),
+                artifact=str(value.get("artifact", "full")),
+                release_set=(
+                    str(value["release_set"]) if value.get("release_set") else None
+                ),
             )
         except (KeyError, TypeError, ValueError) as exc:
             raise DeployConfigError(f"invalid bundle information: {exc}") from exc
+
+
+@dataclass(frozen=True)
+class ReleaseArtifactRecord:
+    name: str
+    bundle: str
+    bundle_sha256: str
+    site_tree_sha256: str
+    file_count: int
+    total_bytes: int
+
+    def __post_init__(self) -> None:
+        if not ARTIFACT_NAME_RE.fullmatch(self.name):
+            raise DeployConfigError("release set has an invalid artifact name")
+        if not self.bundle or "/" in self.bundle or "\\" in self.bundle:
+            raise DeployConfigError("release set bundle must be a plain file name")
+        if not SHA256_RE.fullmatch(self.bundle_sha256):
+            raise DeployConfigError("release set has an invalid bundle digest")
+        if not SHA256_RE.fullmatch(self.site_tree_sha256):
+            raise DeployConfigError("release set has an invalid site digest")
+        if self.file_count < 1 or self.total_bytes < 1:
+            raise DeployConfigError("release set artifact must contain files")
+
+    def public_dict(self) -> dict[str, Any]:
+        return {
+            "name": self.name,
+            "bundle": self.bundle,
+            "bundle_sha256": self.bundle_sha256,
+            "site_tree_sha256": self.site_tree_sha256,
+            "file_count": self.file_count,
+            "total_bytes": self.total_bytes,
+        }
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "ReleaseArtifactRecord":
+        try:
+            expected = {
+                "name",
+                "bundle",
+                "bundle_sha256",
+                "site_tree_sha256",
+                "file_count",
+                "total_bytes",
+            }
+            if set(value) != expected:
+                raise DeployConfigError("release artifact fields are invalid")
+            return cls(
+                name=str(value["name"]),
+                bundle=str(value["bundle"]),
+                bundle_sha256=str(value["bundle_sha256"]),
+                site_tree_sha256=str(value["site_tree_sha256"]),
+                file_count=int(value["file_count"]),
+                total_bytes=int(value["total_bytes"]),
+            )
+        except (KeyError, TypeError, ValueError) as exc:
+            raise DeployConfigError(f"invalid release artifact: {exc}") from exc
+
+
+@dataclass(frozen=True)
+class ReleaseSetManifest:
+    release_id: str
+    spec_digest: str
+    generated_at: str
+    artifact_policy_sha256: str
+    artifacts: tuple[ReleaseArtifactRecord, ...]
+
+    def __post_init__(self) -> None:
+        release_match = RELEASE_ID_RE.fullmatch(self.release_id)
+        if not release_match:
+            raise DeployConfigError("release set has an invalid release ID")
+        if not SHA256_RE.fullmatch(self.spec_digest):
+            raise DeployConfigError("release set has an invalid spec digest")
+        if (
+            release_match.group("digest")
+            != self.spec_digest.removeprefix("sha256:")[:12]
+        ):
+            raise DeployConfigError("release set ID does not match its spec digest")
+        if not SHA256_RE.fullmatch(self.artifact_policy_sha256):
+            raise DeployConfigError("release set has an invalid policy digest")
+        try:
+            datetime.fromisoformat(self.generated_at.replace("Z", "+00:00"))
+        except ValueError as exc:
+            raise DeployConfigError(
+                "release set generated_at must be an ISO timestamp"
+            ) from exc
+        names = [artifact.name for artifact in self.artifacts]
+        if set(names) != {"full", "pages"} or len(names) != 2:
+            raise DeployConfigError("release set must contain full and pages artifacts")
+        for artifact in self.artifacts:
+            suffix = (
+                ".site.tar.zst"
+                if artifact.name == "full"
+                else f".{artifact.name}.site.tar.zst"
+            )
+            if artifact.bundle != f"{self.release_id}{suffix}":
+                raise DeployConfigError(
+                    f"release set has a non-canonical {artifact.name} bundle name"
+                )
+
+    def artifact(self, name: str) -> ReleaseArtifactRecord:
+        for artifact in self.artifacts:
+            if artifact.name == name:
+                return artifact
+        raise DeployConfigError(f"release set has no artifact named {name!r}")
+
+    def public_dict(self) -> dict[str, Any]:
+        return {
+            "schema_version": 1,
+            "release_id": self.release_id,
+            "spec_digest": self.spec_digest,
+            "generated_at": self.generated_at,
+            "artifact_policy_sha256": self.artifact_policy_sha256,
+            "artifacts": [artifact.public_dict() for artifact in self.artifacts],
+        }
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "ReleaseSetManifest":
+        try:
+            expected = {
+                "schema_version",
+                "release_id",
+                "spec_digest",
+                "generated_at",
+                "artifact_policy_sha256",
+                "artifacts",
+            }
+            if set(value) != expected or value.get("schema_version") != 1:
+                raise DeployConfigError("release set fields are invalid")
+            return cls(
+                release_id=str(value["release_id"]),
+                spec_digest=str(value["spec_digest"]),
+                generated_at=str(value["generated_at"]),
+                artifact_policy_sha256=str(value["artifact_policy_sha256"]),
+                artifacts=tuple(
+                    ReleaseArtifactRecord.from_dict(item)
+                    for item in value["artifacts"]
+                ),
+            )
+        except (KeyError, TypeError, ValueError) as exc:
+            raise DeployConfigError(f"invalid release set: {exc}") from exc
+
+
+@dataclass(frozen=True)
+class ReleasePackageResult:
+    """The two delivery artifacts bound to one immutable release set."""
+
+    full: BundleInfo
+    pages: BundleInfo
+    release_set: ReleaseSetManifest
+
+    def __post_init__(self) -> None:
+        bundles = {self.full.artifact: self.full, self.pages.artifact: self.pages}
+        if set(bundles) != {"full", "pages"}:
+            raise DeployConfigError("release package requires full and pages bundles")
+        if any(
+            bundle.release_id != self.release_set.release_id
+            for bundle in bundles.values()
+        ):
+            raise DeployConfigError("release package IDs do not agree")
+        for name, bundle in bundles.items():
+            record = self.release_set.artifact(name)
+            if (
+                record.bundle != Path(bundle.bundle).name
+                or record.bundle_sha256 != bundle.bundle_sha256
+            ):
+                raise DeployConfigError(
+                    f"release set does not bind the {name} bundle"
+                )
+
+    def public_dict(self) -> dict[str, Any]:
+        return {
+            "release_id": self.release_set.release_id,
+            "artifacts": {
+                "full": self.full.public_dict(),
+                "pages": self.pages.public_dict(),
+            },
+            "release_set": self.release_set.public_dict(),
+        }
 
 
 __all__ = [
     "BranchBuildResult",
     "BundleInfo",
     "ReleaseBuildReport",
+    "ReleaseArtifactRecord",
     "ReleaseManifest",
+    "ReleasePackageResult",
+    "ReleaseSetManifest",
     "StageOutcome",
 ]

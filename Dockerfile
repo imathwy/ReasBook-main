@@ -1,9 +1,6 @@
 FROM nginx:1.27-alpine
 
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
-COPY ReasBookWeb/_site/ /usr/share/nginx/html/
-
-RUN test -f /usr/share/nginx/html/index.html
 
 EXPOSE 80
 
