@@ -67,7 +67,9 @@ def resource_cell(project: dict[str, str], *, language: str = "en") -> str:
             f"({SITE_BASE}/theorem-maps/papers/tr_lalm_theory/)"
         )
 
-    return "<br>".join(pieces)
+    # Use an entity so the separator is rendered inside the Markdown table
+    # cell instead of being parsed as another table column.
+    return " &#124; ".join(pieces)
 
 
 def update_resource_cells(
