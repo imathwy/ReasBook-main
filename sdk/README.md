@@ -42,6 +42,12 @@ entry point, a README, and offline tests. Commands are argument vectors and
 executors are injectable, so a caller can provide its own container, queue, or
 job runner without changing planning code.
 
+The `verso` capability drives the upstream
+[Verso](https://github.com/leanprover/verso) documentation authoring tool. The
+`comparator` capability invokes the upstream Lean FRO
+[Comparator](https://github.com/leanprover/comparator); this repository's
+package adds typed planning and execution boundaries around those tools.
+
 ## Install
 
 For an editable checkout, install the capability packages together:

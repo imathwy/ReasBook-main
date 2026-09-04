@@ -188,7 +188,7 @@ runs remove the large scratch trees and retain a small result/log directory belo
 tree for diagnosis. Pass `--keep-workdir` to retain a successful scratch tree.
 The per-project Verso exception comes from the existing
 `scripts/pages/project_catalog.py` capability registry used by assembly and
-SiFlow. Validation reads it only from the release-scoped tooling snapshot whose
+the remote build service. Validation reads it only from the release-scoped tooling snapshot whose
 SHA-256 is embedded in the ReleaseSpec. For a local canary without a snapshot,
 the current checkout is accepted only when its complete tooling digest is an
 exact match, so capability policy cannot drift after packaging.
@@ -242,7 +242,8 @@ command:
 ```
 
 This is one-command *promotion*, not a source-to-production build:
-`configure-pages` is a separate one-time idempotent setup, and the SiFlow build,
+`configure-pages` is a separate one-time idempotent setup, and the configured
+remote build service's build,
 aggregate, package, and required acceptance gate must already be complete. The
 local publisher uploads four Release assets; the workflow verifies their
 release attestations, downloads and extracts the Pages archive, uploads the

@@ -1,10 +1,10 @@
 # Comparator SDK
 
 `comparator-sdk` is a local, transport-neutral wrapper around the Lean FRO
-Comparator executable.  It validates a Challenge/Solution project, optionally
-builds the Comparator checkout, runs the comparison with argv-only subprocesses,
-and returns a structured result that an application or another execution
-service can consume.
+[`Comparator`](https://github.com/leanprover/comparator) executable. It validates
+a Challenge/Solution project, optionally builds the Comparator checkout, runs
+the comparison with argv-only subprocesses, and returns a structured result that
+an application or another execution service can consume.
 
 The package intentionally contains no deployment-platform client or platform
 credentials.  A caller can inject its own `CommandRunner` implementation when
