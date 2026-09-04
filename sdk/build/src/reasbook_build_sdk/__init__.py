@@ -2,7 +2,16 @@
 
 from .command import Command, CommandResult, CommandRunner
 from .config import load_build_options
-from .docs import ProjectDocumentationBuilder, ProjectDocsResult
+from .docs import (
+    ProjectDocumentationBuilder,
+    ProjectDocsResult,
+    ProjectOleanInspection,
+    ReachableProjectModule,
+    ReachableProjectModulePlan,
+    inspect_project_olean,
+    plan_reachable_project_modules,
+    project_olean_candidates,
+)
 from .errors import (
     BuildFailed,
     BuildSdkError,
@@ -45,18 +54,24 @@ __all__ = [
     "ProjectError",
     "ProjectDocumentationBuilder",
     "ProjectDocsResult",
+    "ProjectOleanInspection",
+    "ReachableProjectModule",
+    "ReachableProjectModulePlan",
     "SubprocessRunner",
     "build_command",
     "cache_command",
     "discover_project",
     "first_artifact",
+    "inspect_project_olean",
     "load_build_options",
     "library_target",
     "parse_library_declarations",
     "parse_library_declarations_text",
     "parse_library_roots_text",
     "plan_build",
+    "plan_reachable_project_modules",
     "project_doc_targets",
+    "project_olean_candidates",
     "selected_targets",
     "shell_preview",
     "target_from_declarations",

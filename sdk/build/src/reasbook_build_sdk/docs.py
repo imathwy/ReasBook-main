@@ -17,7 +17,7 @@ import shutil
 import sqlite3
 import stat
 import tempfile
-from typing import Iterator, Protocol
+from typing import Iterator, Literal, Protocol
 from urllib.parse import quote, unquote, urljoin, urlsplit
 import uuid
 
@@ -258,6 +258,52 @@ class ProjectDocsResult:
         }
 
 
+@dataclass(frozen=True)
+class ReachableProjectModule:
+    """One project-owned Lean module selected by a documentation root."""
+
+    name: str
+    source: Path
+    owners: frozenset[str]
+
+
+@dataclass(frozen=True)
+class ReachableProjectModulePlan:
+    """Read-only, deduplicated project-module closure for documentation."""
+
+    project_root: Path
+    roots: tuple[str, ...]
+    batches: tuple[tuple[ReachableProjectModule, ...], ...]
+
+    @property
+    def entries(self) -> tuple[ReachableProjectModule, ...]:
+        return tuple(entry for batch in self.batches for entry in batch)
+
+    @property
+    def module_sources(self) -> tuple[tuple[str, Path], ...]:
+        return tuple((entry.name, entry.source) for entry in self.entries)
+
+    @property
+    def module_owners(self) -> dict[str, frozenset[str]]:
+        return {entry.name: entry.owners for entry in self.entries}
+
+
+@dataclass(frozen=True)
+class ProjectOleanInspection:
+    """Result of resolving one reachable module to a safe compiled artifact."""
+
+    module: str
+    source: Path
+    candidates: tuple[Path, ...]
+    status: Literal["valid", "missing", "unsafe"]
+    artifact: Path | None = None
+    detail: str = ""
+
+    @property
+    def succeeded(self) -> bool:
+        return self.status == "valid" and self.artifact is not None
+
+
 class ProjectDocumentationBuilder:
     """Generate reachable project-module docs in an immutable cache entry.
 
@@ -287,9 +333,14 @@ class ProjectDocumentationBuilder:
         timeout_seconds: float = 21600.0,
     ) -> ProjectDocsResult:
         project = discover_project(project_root)
-        roots = self._normalize_targets(targets)
-        batches, module_owners = self._module_plan(project.root, roots)
-        module_sources = tuple(item for batch in batches for item in batch)
+        plan = self.plan_reachable_modules(project.root, targets)
+        roots = plan.roots
+        batches = tuple(
+            tuple((entry.name, entry.source) for entry in batch)
+            for batch in plan.batches
+        )
+        module_sources = plan.module_sources
+        module_owners = plan.module_owners
         modules = tuple(module for module, _source in module_sources)
         if not lake_bin.strip() or any(char in lake_bin for char in "\x00\r\n"):
             raise ConfigurationError("lake executable must be a safe non-empty value")
@@ -330,6 +381,10 @@ class ProjectDocumentationBuilder:
             "toolchain": project.toolchain,
             "targets": list(roots),
             "modules": list(modules),
+            "module_owners": [
+                {"module": module, "roots": sorted(module_owners[module])}
+                for module in modules
+            ],
             "sources": [
                 {"module": module, "sha256": self._sha256(source)}
                 for module, source in module_sources
@@ -841,6 +896,211 @@ class ProjectDocumentationBuilder:
         return tuple(modules)
 
     @classmethod
+    def plan_reachable_modules(
+        cls,
+        project_root: str | Path,
+        targets: tuple[str, ...] | list[str],
+    ) -> ReachableProjectModulePlan:
+        """Plan the project-owned import closure without invoking Lean or Lake.
+
+        Candidate discovery spans the project root, so cross-book imports do
+        not depend on selecting the imported book's root. Only modules reached
+        from a selected root enter the result. Modules reached by more than one
+        entry root occur once and retain the complete transitive owner set.
+        Unresolved imports are external unless a supported project-local path
+        is hidden behind an unsafe existing filesystem component.
+        Batches preserve the bounded analyzer ordering used by :meth:`build`.
+        """
+
+        project = discover_project(project_root)
+        roots = cls._normalize_targets(targets)
+        batches, owners = cls._module_plan(project.root, roots)
+        return ReachableProjectModulePlan(
+            project_root=project.root,
+            roots=roots,
+            batches=tuple(
+                tuple(
+                    ReachableProjectModule(module, source, owners[module])
+                    for module, source in batch
+                )
+                for batch in batches
+            ),
+        )
+
+    @classmethod
+    def project_olean_candidates(
+        cls,
+        project_root: str | Path,
+        compiled_root: str | Path,
+        module: str,
+        source: str | Path,
+    ) -> tuple[Path, ...]:
+        """Return supported Lake `.olean` layouts in deterministic priority order."""
+
+        if not _MODULE_RE.fullmatch(module):
+            raise ConfigurationError(f"invalid documentation module: {module!r}")
+        root_path = Path(project_root).expanduser()
+        try:
+            root = root_path.resolve(strict=True)
+        except (OSError, RuntimeError) as exc:
+            raise BuildFailed(f"cannot inspect project root: {root_path}") from exc
+        if not root.is_dir():
+            raise BuildFailed(f"project root is not a directory: {root}")
+        source_path = Path(source)
+        try:
+            source_metadata = source_path.lstat()
+            resolved_source = source_path.resolve(strict=True)
+        except (OSError, RuntimeError) as exc:
+            raise BuildFailed(f"cannot inspect project module: {source_path}") from exc
+        if stat.S_ISLNK(source_metadata.st_mode) or not stat.S_ISREG(
+            source_metadata.st_mode
+        ):
+            raise BuildFailed(f"project module source is unsafe: {source_path}")
+        try:
+            relative_source = resolved_source.relative_to(root).with_suffix(".olean")
+        except ValueError as exc:
+            raise BuildFailed(
+                f"project module source escapes its root: {source_path}"
+            ) from exc
+
+        compiled = Path(compiled_root).expanduser()
+        module_path = Path(*module.split(".")).with_suffix(".olean")
+        relative_candidates = [module_path, relative_source]
+        if relative_source.parts[0] in {"Books", "Papers"}:
+            relative_candidates.append(Path(*relative_source.parts[1:]))
+
+        candidates: list[Path] = []
+        seen: set[Path] = set()
+        for relative in relative_candidates:
+            candidate = compiled / relative
+            if candidate not in seen:
+                seen.add(candidate)
+                candidates.append(candidate)
+        return tuple(candidates)
+
+    @classmethod
+    def inspect_project_olean(
+        cls,
+        project_root: str | Path,
+        compiled_root: str | Path,
+        module: str,
+        source: str | Path,
+    ) -> ProjectOleanInspection:
+        """Resolve one module to a non-empty regular `.olean` without following links.
+
+        A symlink or non-directory in a candidate's existing parent chain is
+        unsafe, as is a symlink, non-regular, or empty candidate. Once a
+        higher-priority candidate exists but is unsafe, lower-priority layouts
+        are not considered.
+        """
+
+        lexical_root = Path(compiled_root).expanduser()
+        if not lexical_root.is_absolute():
+            lexical_root = Path.cwd() / lexical_root
+        candidates = cls.project_olean_candidates(
+            project_root, lexical_root, module, source
+        )
+        reported_candidates = candidates
+
+        def result(
+            status: Literal["valid", "missing", "unsafe"],
+            detail: str,
+            *,
+            artifact: Path | None = None,
+        ) -> ProjectOleanInspection:
+            return ProjectOleanInspection(
+                module=module,
+                source=Path(source),
+                candidates=reported_candidates,
+                status=status,
+                artifact=artifact,
+                detail=detail,
+            )
+
+        try:
+            root_metadata = lexical_root.lstat()
+        except FileNotFoundError:
+            return result(
+                "missing",
+                detail=f"compiled artifact directory is missing: {lexical_root}",
+            )
+        except OSError as exc:
+            return result(
+                "unsafe",
+                detail=f"cannot inspect compiled artifact directory: {exc}",
+            )
+        if stat.S_ISLNK(root_metadata.st_mode) or not stat.S_ISDIR(
+            root_metadata.st_mode
+        ):
+            return result(
+                "unsafe",
+                detail=f"compiled artifact directory is unsafe: {lexical_root}",
+            )
+        try:
+            resolved_root = lexical_root.resolve(strict=True)
+        except OSError as exc:
+            return result(
+                "unsafe",
+                detail=f"cannot resolve compiled artifact directory: {exc}",
+            )
+
+        reported_candidates = tuple(
+            resolved_root / candidate.relative_to(lexical_root)
+            for candidate in candidates
+        )
+        for candidate in reported_candidates:
+            relative = candidate.relative_to(resolved_root)
+            current = resolved_root
+            missing_parent = False
+            for part in relative.parts[:-1]:
+                current = current / part
+                try:
+                    metadata = current.lstat()
+                except FileNotFoundError:
+                    missing_parent = True
+                    break
+                except OSError as exc:
+                    return result(
+                        "unsafe",
+                        detail=f"cannot inspect compiled artifact path {current}: {exc}",
+                    )
+                if stat.S_ISLNK(metadata.st_mode) or not stat.S_ISDIR(metadata.st_mode):
+                    return result(
+                        "unsafe",
+                        detail=f"compiled artifact path is unsafe: {current}",
+                    )
+            if missing_parent:
+                continue
+            try:
+                metadata = candidate.lstat()
+            except FileNotFoundError:
+                continue
+            except OSError as exc:
+                return result(
+                    "unsafe",
+                    detail=f"cannot inspect compiled artifact {candidate}: {exc}",
+                )
+            if stat.S_ISLNK(metadata.st_mode) or not stat.S_ISREG(metadata.st_mode):
+                return result(
+                    "unsafe",
+                    detail=f"compiled artifact is unsafe: {candidate}",
+                )
+            if metadata.st_size <= 0:
+                return result(
+                    "unsafe",
+                    detail=f"compiled artifact is empty: {candidate}",
+                )
+            return result(
+                "valid",
+                detail="",
+                artifact=candidate,
+            )
+        return result(
+            "missing",
+            detail=f"compiled olean is missing for documentation module {module}",
+        )
+
+    @classmethod
     def _module_batches(
         cls,
         project_root: Path,
@@ -863,9 +1123,18 @@ class ProjectDocumentationBuilder:
         batches: list[tuple[tuple[str, Path], ...]] = []
         seen: dict[str, Path] = {}
         owners: dict[str, set[str]] = {}
+        candidates = cls._project_module_candidates(project_root, roots)
+        imports: dict[Path, tuple[str, ...]] = {}
+        checked_external_imports: set[str] = set()
         for root in roots:
             fresh: list[tuple[str, Path]] = []
-            for module, source in cls._project_module_sources(project_root, (root,)):
+            for module, source in cls._reachable_project_module_sources(
+                project_root,
+                root,
+                candidates,
+                imports,
+                checked_external_imports,
+            ):
                 owners.setdefault(module, set()).add(root)
                 previous = seen.get(module)
                 if previous is not None:
@@ -885,7 +1154,7 @@ class ProjectDocumentationBuilder:
         }
 
     @staticmethod
-    def _module_source(project_root: Path, module: str) -> Path:
+    def _module_lexical_sources(project_root: Path, module: str) -> tuple[Path, ...]:
         parts = module.split(".")
         relative = Path(*parts).with_suffix(".lean")
         candidates = [project_root / relative]
@@ -893,7 +1162,13 @@ class ProjectDocumentationBuilder:
             candidates.extend(
                 (project_root / kind / relative for kind in ("Books", "Papers"))
             )
+        return tuple(candidates)
+
+    @classmethod
+    def _module_source(cls, project_root: Path, module: str) -> Path:
+        candidates = cls._module_lexical_sources(project_root, module)
         matches = [path for path in candidates if path.is_file()]
+        parts = module.split(".")
         if not matches and len(parts) == 1:
             matches = sorted(project_root.glob(f"Books/**/{parts[0]}.lean"))
             matches += sorted(project_root.glob(f"Papers/**/{parts[0]}.lean"))
@@ -901,73 +1176,194 @@ class ProjectDocumentationBuilder:
             raise BuildFailed(
                 f"cannot uniquely resolve source file for documentation module {module}"
             )
-        return matches[0].resolve()
+        return matches[0]
 
     @classmethod
-    def _project_module_sources(
+    def _project_module_candidates(
         cls,
         project_root: Path,
         roots: tuple[str, ...],
-    ) -> tuple[tuple[str, Path], ...]:
-        """Return project-owned modules reachable from the selected roots.
+    ) -> dict[str, tuple[Path, ...]]:
+        """Index project-owned sources once without selecting every orphan.
 
-        A project may be an aggregate ``Books.X.Book`` module, a library with
-        ``srcDir := \"Books\"`` such as ``X.Book``, or an explicit root beside
-        a same-named module directory.  Candidate modules are derived from
-        those layouts, then source imports restrict the result to the actual
-        build closure.  External Mathlib/Lean modules are never candidates.
+        Repository-relative names support aggregate modules. Stripping a
+        leading ``Books`` or ``Papers`` supports Lake libraries whose
+        ``srcDir`` points at that directory, including explicit roots. The
+        index may contain ambiguous or unsafe orphan sources; those are
+        rejected only if a selected root reaches them.
         """
 
-        candidates: dict[str, Path] = {}
+        candidates: dict[str, set[Path]] = {}
 
         def register(module: str, source: Path) -> None:
-            if not _MODULE_RE.fullmatch(module):
-                raise BuildFailed(f"invalid project-owned module name: {module}")
-            resolved = source.resolve()
-            if source.is_symlink() or project_root not in resolved.parents:
-                raise BuildFailed(
-                    f"project documentation source escapes its root: {source}"
-                )
-            previous = candidates.get(module)
-            if previous is not None and previous != resolved:
-                raise BuildFailed(
-                    f"project module {module} resolves to multiple source files"
-                )
-            candidates[module] = resolved
+            if _MODULE_RE.fullmatch(module):
+                candidates.setdefault(module, set()).add(source)
 
+        def walk_error(error: OSError) -> None:
+            raise BuildFailed(
+                f"cannot discover project documentation sources: {error}"
+            ) from error
+
+        for raw_directory, directories, files in os.walk(
+            project_root,
+            topdown=True,
+            followlinks=False,
+            onerror=walk_error,
+        ):
+            directories[:] = sorted(
+                name for name in directories if name not in {".git", ".lake"}
+            )
+            directory = Path(raw_directory)
+            for filename in sorted(files):
+                if not filename.endswith(".lean"):
+                    continue
+                source = directory / filename
+                relative = source.relative_to(project_root).with_suffix("")
+                register(".".join(relative.parts), source)
+                if relative.parts[0] in {"Books", "Papers"} and len(relative.parts) > 1:
+                    register(".".join(relative.parts[1:]), source)
+
+        # Preserve the historical single-component fallback and fail early for
+        # an invalid selected root. The global index supplies cross-project
+        # imports even when their own Book/Paper root is not selected.
         for root in roots:
             source = cls._module_source(project_root, root)
-            if source.stem in {"Book", "Paper"} and "." in root:
-                prefix = root.rsplit(".", 1)[0]
-                for owned in sorted(source.parent.rglob("*.lean")):
-                    relative = owned.relative_to(source.parent).with_suffix("")
-                    register(".".join((prefix, *relative.parts)), owned)
-                continue
-
             register(root, source)
-            namespace = source.with_suffix("")
-            if namespace.is_dir():
-                for owned in sorted(namespace.rglob("*.lean")):
-                    relative = owned.relative_to(namespace).with_suffix("")
-                    register(".".join((root, *relative.parts)), owned)
 
-        reachable: set[str] = set()
-        pending = list(reversed(roots))
+        return {
+            module: tuple(sorted(sources, key=str))
+            for module, sources in candidates.items()
+        }
+
+    @classmethod
+    def _reachable_project_module_sources(
+        cls,
+        project_root: Path,
+        root: str,
+        candidates: dict[str, tuple[Path, ...]],
+        imports: dict[Path, tuple[str, ...]],
+        checked_external_imports: set[str],
+    ) -> tuple[tuple[str, Path], ...]:
+        """Traverse one root on the shared project-source candidate graph."""
+
+        reachable: dict[str, Path] = {}
+        pending = [root]
         while pending:
             module = pending.pop()
             if module in reachable:
                 continue
-            source = candidates.get(module)
-            if source is None:
-                raise BuildFailed(
-                    f"project root {module} is outside its discovered source layout"
-                )
-            reachable.add(module)
-            for imported in reversed(cls._source_imports(source)):
-                if imported in candidates and imported not in reachable:
-                    pending.append(imported)
+            sources = candidates.get(module)
+            if sources is None:
+                if module == root:
+                    raise BuildFailed(
+                        f"project root {module} is outside its discovered source layout"
+                    )
+                continue
+            source = cls._safe_project_module_source(
+                project_root,
+                module,
+                sources,
+            )
+            reachable[module] = source
+            imported_modules = imports.get(source)
+            if imported_modules is None:
+                imported_modules = cls._source_imports(source)
+                imports[source] = imported_modules
+            for imported in reversed(imported_modules):
+                if imported in candidates:
+                    if imported not in reachable:
+                        pending.append(imported)
+                    continue
+                if imported not in checked_external_imports:
+                    cls._reject_unsafe_unresolved_project_import(
+                        project_root,
+                        imported,
+                    )
+                    checked_external_imports.add(imported)
 
-        return tuple((module, candidates[module]) for module in sorted(reachable))
+        return tuple(sorted(reachable.items()))
+
+    @classmethod
+    def _reject_unsafe_unresolved_project_import(
+        cls,
+        project_root: Path,
+        module: str,
+    ) -> None:
+        """Fail when an unresolved import is hidden behind an unsafe local path.
+
+        A missing lexical component means the import can be external. Existing
+        components must remain real directories up to a regular ``.lean``
+        leaf; otherwise candidate discovery could silently skip a project-owned
+        source (notably beneath an untraversed directory symlink).
+        """
+
+        for candidate in cls._module_lexical_sources(project_root, module):
+            cls._resolve_safe_project_source(
+                project_root,
+                candidate,
+                subject=f"unresolved project import {module}",
+                allow_missing=True,
+            )
+
+    @staticmethod
+    def _resolve_safe_project_source(
+        project_root: Path,
+        source: Path,
+        *,
+        subject: str,
+        allow_missing: bool,
+    ) -> Path | None:
+        """Resolve a source only after a lexical no-follow chain inspection."""
+
+        try:
+            relative = source.relative_to(project_root)
+        except ValueError as exc:
+            raise BuildFailed(f"{subject} escapes its project root: {source}") from exc
+        current = project_root
+        for index, part in enumerate(relative.parts):
+            current = current / part
+            try:
+                metadata = current.lstat()
+            except FileNotFoundError:
+                if allow_missing:
+                    return None
+                raise BuildFailed(f"cannot inspect {subject}: {current}") from None
+            except OSError as exc:
+                raise BuildFailed(f"cannot inspect {subject}: {current}") from exc
+            is_leaf = index == len(relative.parts) - 1
+            expected_type = stat.S_ISREG if is_leaf else stat.S_ISDIR
+            if stat.S_ISLNK(metadata.st_mode) or not expected_type(metadata.st_mode):
+                raise BuildFailed(f"{subject} crosses an unsafe source path: {current}")
+        try:
+            resolved = source.resolve(strict=True)
+        except (OSError, RuntimeError) as exc:
+            raise BuildFailed(f"cannot resolve {subject}: {source}") from exc
+        if project_root not in resolved.parents:
+            raise BuildFailed(f"{subject} escapes its project root: {source}")
+        return resolved
+
+    @classmethod
+    def _safe_project_module_source(
+        cls,
+        project_root: Path,
+        module: str,
+        sources: tuple[Path, ...],
+    ) -> Path:
+        if len(sources) != 1:
+            raise BuildFailed(
+                f"project module {module} resolves to multiple source files"
+            )
+        source = sources[0]
+        resolved = cls._resolve_safe_project_source(
+            project_root,
+            source,
+            subject=f"project module {module}",
+            allow_missing=False,
+        )
+        assert resolved is not None
+        if resolved.suffix != ".lean":
+            raise BuildFailed(f"project module source is not Lean: {source}")
+        return resolved
 
     @staticmethod
     def _source_imports(source: Path) -> tuple[str, ...]:
@@ -1088,23 +1484,14 @@ class ProjectDocumentationBuilder:
 
         for module, source in module_sources:
             module_path = Path(*module.split(".")).with_suffix(".olean")
-            candidates = [project_lib / module_path]
-            relative_source = source.relative_to(project_root).with_suffix(".olean")
-            candidates.append(project_lib / relative_source)
-            if relative_source.parts[0] in {"Books", "Papers"}:
-                candidates.append(project_lib.joinpath(*relative_source.parts[1:]))
-            artifact = next(
-                (
-                    candidate
-                    for candidate in candidates
-                    if candidate.is_file() or candidate.is_symlink()
-                ),
-                None,
+            inspection = cls.inspect_project_olean(
+                project_root, project_lib, module, source
             )
+            if not inspection.succeeded:
+                raise BuildFailed(inspection.detail)
+            artifact = inspection.artifact
             if artifact is None:
-                raise BuildFailed(
-                    f"compiled olean is missing for documentation module {module}"
-                )
+                raise BuildFailed(inspection.detail)
             register(artifact, f"project/{module_path.as_posix()}")
 
         metadata_path = lake / "cache-metadata.json"
@@ -1977,4 +2364,48 @@ class ProjectDocumentationBuilder:
                 fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
 
 
-__all__ = ["ProjectDocumentationBuilder", "ProjectDocsResult"]
+def plan_reachable_project_modules(
+    project_root: str | Path,
+    targets: tuple[str, ...] | list[str],
+) -> ReachableProjectModulePlan:
+    """Return the read-only, project-owned closure for documentation roots."""
+
+    return ProjectDocumentationBuilder.plan_reachable_modules(project_root, targets)
+
+
+def project_olean_candidates(
+    project_root: str | Path,
+    compiled_root: str | Path,
+    module: str,
+    source: str | Path,
+) -> tuple[Path, ...]:
+    """Return the supported project `.olean` paths in priority order."""
+
+    return ProjectDocumentationBuilder.project_olean_candidates(
+        project_root, compiled_root, module, source
+    )
+
+
+def inspect_project_olean(
+    project_root: str | Path,
+    compiled_root: str | Path,
+    module: str,
+    source: str | Path,
+) -> ProjectOleanInspection:
+    """Inspect one reachable project `.olean` using no-follow semantics."""
+
+    return ProjectDocumentationBuilder.inspect_project_olean(
+        project_root, compiled_root, module, source
+    )
+
+
+__all__ = [
+    "ProjectDocumentationBuilder",
+    "ProjectDocsResult",
+    "ProjectOleanInspection",
+    "ReachableProjectModule",
+    "ReachableProjectModulePlan",
+    "inspect_project_olean",
+    "plan_reachable_project_modules",
+    "project_olean_candidates",
+]

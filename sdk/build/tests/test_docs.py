@@ -14,6 +14,9 @@ from reasbook_build_sdk import (
     CommandResult,
     ConfigurationError,
     ProjectDocumentationBuilder,
+    inspect_project_olean,
+    plan_reachable_project_modules,
+    project_olean_candidates,
 )
 from reasbook_build_sdk import docs as docs_module
 
@@ -210,6 +213,309 @@ class ProjectDocumentationTests(unittest.TestCase):
             (sqlite_ffi.parent.parent / "libleansqlite.so").write_bytes(b"fixture")
         return project
 
+    @staticmethod
+    def _cross_project_sources(
+        project: Path,
+        *,
+        b_imports_helper: bool,
+    ) -> None:
+        a_root = project / "Books" / "A"
+        b_root = project / "Books" / "B"
+        a_root.mkdir()
+        b_root.mkdir()
+        (a_root / "Book.lean").write_text(
+            "import B.Helper\n",
+            encoding="utf-8",
+        )
+        (b_root / "Book.lean").write_text(
+            "import B.Helper\n" if b_imports_helper else "import Mathlib\n",
+            encoding="utf-8",
+        )
+        (b_root / "Helper.lean").write_text("import Mathlib\n", encoding="utf-8")
+        (b_root / "Orphan.lean").write_text("import Mathlib\n", encoding="utf-8")
+        paper_root = project / "Papers" / "B"
+        paper_root.mkdir(parents=True)
+        (paper_root / "Orphan.lean").write_text("import Mathlib\n", encoding="utf-8")
+
+    def test_reachable_plan_supports_aggregate_layout_and_excludes_orphans(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            project = self._project(Path(temp), modern=True)
+
+            plan = plan_reachable_project_modules(project, ("Books.Demo.Book",))
+
+            self.assertEqual(plan.roots, ("Books.Demo.Book",))
+            self.assertEqual(
+                tuple(entry.name for entry in plan.entries),
+                ("Books.Demo.Book", "Books.Demo.Chapter"),
+            )
+            self.assertNotIn("Books.Demo.Dead", plan.module_owners)
+            self.assertEqual(
+                plan.module_owners["Books.Demo.Chapter"],
+                frozenset({"Books.Demo.Book"}),
+            )
+
+    def test_reachable_plan_supports_flat_layout(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            project = self._project(Path(temp), modern=True)
+            (project / "Books/Demo/Book.lean").write_text(
+                "import Demo.Chapter\n", encoding="utf-8"
+            )
+
+            plan = plan_reachable_project_modules(project, ("Demo.Book",))
+
+            self.assertEqual(
+                tuple(entry.name for entry in plan.entries),
+                ("Demo.Book", "Demo.Chapter"),
+            )
+
+    def test_reachable_plan_supports_explicit_root(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            project = self._project(Path(temp), modern=True)
+            papers = project / "Papers"
+            papers.mkdir()
+            (papers / "Theory.lean").write_text(
+                "import Theory.Current\n", encoding="utf-8"
+            )
+            namespace = papers / "Theory"
+            namespace.mkdir()
+            (namespace / "Current.lean").write_text(
+                "import Mathlib\n", encoding="utf-8"
+            )
+            (namespace / "Unused.lean").write_text("import Mathlib\n", encoding="utf-8")
+
+            plan = plan_reachable_project_modules(project, ("Theory",))
+
+            self.assertEqual(
+                tuple(entry.name for entry in plan.entries),
+                ("Theory", "Theory.Current"),
+            )
+
+    def test_reachable_plan_deduplicates_shared_modules_and_records_owners(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            project = self._project(Path(temp), modern=True)
+
+            plan = plan_reachable_project_modules(
+                project,
+                ("Books.Demo.Book", "Books.Demo.Chapter"),
+            )
+
+            names = tuple(entry.name for entry in plan.entries)
+            self.assertEqual(names.count("Books.Demo.Chapter"), 1)
+            self.assertEqual(
+                plan.module_owners["Books.Demo.Chapter"],
+                frozenset({"Books.Demo.Book", "Books.Demo.Chapter"}),
+            )
+
+    def test_reachable_plan_follows_cross_project_import_without_second_root(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            project = self._project(Path(temp), modern=True)
+            self._cross_project_sources(project, b_imports_helper=False)
+
+            plan = plan_reachable_project_modules(project, ("A.Book",))
+
+            self.assertEqual(
+                tuple(entry.name for entry in plan.entries),
+                ("A.Book", "B.Helper"),
+            )
+            self.assertEqual(
+                plan.module_owners["B.Helper"],
+                frozenset({"A.Book"}),
+            )
+            self.assertNotIn("B.Book", plan.module_owners)
+            self.assertNotIn("B.Orphan", plan.module_owners)
+
+    def test_reachable_plan_rejects_import_hidden_by_symlink_directory(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            project = self._project(Path(temp), modern=True)
+            a_root = project / "Books" / "A"
+            a_root.mkdir()
+            (a_root / "Book.lean").write_text(
+                "import B.Helper\n",
+                encoding="utf-8",
+            )
+            real_b = project / "RealB"
+            real_b.mkdir()
+            (real_b / "Helper.lean").write_text("import Mathlib\n", encoding="utf-8")
+            (project / "Books" / "B").symlink_to(Path("../RealB"))
+
+            with self.assertRaisesRegex(
+                BuildFailed,
+                r"unresolved project import B[.]Helper crosses an unsafe source path",
+            ):
+                plan_reachable_project_modules(project, ("A.Book",))
+
+    def test_reachable_plan_rejects_selected_root_under_symlink_directory(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            project = self._project(Path(temp), modern=True)
+            real_b = project / "RealB"
+            real_b.mkdir()
+            (real_b / "Book.lean").write_text("import Mathlib\n", encoding="utf-8")
+            (project / "Books" / "B").symlink_to(Path("../RealB"))
+
+            with self.assertRaisesRegex(
+                BuildFailed,
+                r"project module B[.]Book crosses an unsafe source path",
+            ):
+                plan_reachable_project_modules(project, ("B.Book",))
+
+    def test_reachable_plan_rejects_import_blocked_by_non_directory(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            project = self._project(Path(temp), modern=True)
+            a_root = project / "Books" / "A"
+            a_root.mkdir()
+            (a_root / "Book.lean").write_text(
+                "import B.Helper\n",
+                encoding="utf-8",
+            )
+            (project / "Books" / "B").write_text("not a directory", encoding="utf-8")
+
+            with self.assertRaisesRegex(
+                BuildFailed,
+                r"unresolved project import B[.]Helper crosses an unsafe source path",
+            ):
+                plan_reachable_project_modules(project, ("A.Book",))
+
+    def test_unreferenced_symlink_directory_does_not_poison_external_imports(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            project = self._project(Path(temp), modern=True)
+            orphan = project / "Orphan"
+            orphan.mkdir()
+            (orphan / "Helper.lean").write_text("import Mathlib\n", encoding="utf-8")
+            (project / "Books" / "OrphanLink").symlink_to(Path("../Orphan"))
+
+            plan = plan_reachable_project_modules(project, ("Books.Demo.Book",))
+
+            self.assertEqual(
+                tuple(entry.name for entry in plan.entries),
+                ("Books.Demo.Book", "Books.Demo.Chapter"),
+            )
+
+    def test_cross_project_owners_follow_each_selected_root_transitively(self) -> None:
+        for b_imports_helper in (False, True):
+            with self.subTest(b_imports_helper=b_imports_helper):
+                with tempfile.TemporaryDirectory() as temp:
+                    project = self._project(Path(temp), modern=True)
+                    self._cross_project_sources(
+                        project,
+                        b_imports_helper=b_imports_helper,
+                    )
+
+                    plan = plan_reachable_project_modules(
+                        project,
+                        ("A.Book", "B.Book"),
+                    )
+
+                    expected_owners = {"A.Book"}
+                    if b_imports_helper:
+                        expected_owners.add("B.Book")
+                    self.assertEqual(
+                        plan.module_owners["B.Helper"],
+                        frozenset(expected_owners),
+                    )
+                    self.assertEqual(
+                        tuple(entry.name for entry in plan.entries).count("B.Helper"),
+                        1,
+                    )
+                    self.assertEqual(
+                        tuple(
+                            tuple(entry.name for entry in batch)
+                            for batch in plan.batches
+                        ),
+                        (("A.Book", "B.Helper"), ("B.Book",)),
+                    )
+                    self.assertNotIn("B.Orphan", plan.module_owners)
+
+    def test_project_olean_candidates_cover_supported_lake_layouts(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            project = self._project(Path(temp), modern=True)
+            compiled = project / ".lake/build/lib/lean"
+            source = project / "Books/Demo/Book.lean"
+
+            aggregate = project_olean_candidates(
+                project, compiled, "Books.Demo.Book", source
+            )
+            flat = project_olean_candidates(project, compiled, "Demo.Book", source)
+
+            self.assertEqual(
+                tuple(path.relative_to(compiled).as_posix() for path in aggregate),
+                ("Books/Demo/Book.olean", "Demo/Book.olean"),
+            )
+            self.assertEqual(
+                tuple(path.relative_to(compiled).as_posix() for path in flat),
+                ("Demo/Book.olean", "Books/Demo/Book.olean"),
+            )
+
+    def test_project_olean_inspection_selects_each_supported_candidate(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            project = self._project(Path(temp), modern=True)
+            compiled = project / ".lake/build/lib/lean"
+            source = project / "Books/Demo/Book.lean"
+            direct = compiled / "Demo/Book.olean"
+            source_relative = compiled / "Books/Demo/Book.olean"
+
+            direct.unlink()
+            inspection = inspect_project_olean(project, compiled, "Demo.Book", source)
+            self.assertTrue(inspection.succeeded)
+            self.assertEqual(inspection.artifact, source_relative)
+
+            source_relative.unlink()
+            direct.parent.mkdir(parents=True, exist_ok=True)
+            direct.write_bytes(b"stripped books prefix")
+            inspection = inspect_project_olean(
+                project, compiled, "Books.Demo.Book", source
+            )
+            self.assertTrue(inspection.succeeded)
+            self.assertEqual(inspection.artifact, direct)
+
+            inspection = inspect_project_olean(project, compiled, "Demo.Book", source)
+            self.assertTrue(inspection.succeeded)
+            self.assertEqual(inspection.artifact, direct)
+
+    def test_project_olean_inspection_rejects_unsafe_preferred_candidate(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=True)
+            compiled = project / ".lake/build/lib/lean"
+            source = project / "Books/Demo/Book.lean"
+            preferred = compiled / "Demo/Book.olean"
+            fallback = compiled / "Books/Demo/Book.olean"
+            outside = root / "outside.olean"
+            outside.write_bytes(b"outside")
+
+            for unsafe in ("empty", "directory", "symlink"):
+                with self.subTest(unsafe=unsafe):
+                    if preferred.is_dir() and not preferred.is_symlink():
+                        preferred.rmdir()
+                    else:
+                        preferred.unlink(missing_ok=True)
+                    if unsafe == "empty":
+                        preferred.touch()
+                    elif unsafe == "directory":
+                        preferred.mkdir()
+                    else:
+                        preferred.symlink_to(outside)
+                    self.assertGreater(fallback.stat().st_size, 0)
+
+                    inspection = inspect_project_olean(
+                        project, compiled, "Demo.Book", source
+                    )
+
+                    self.assertEqual(inspection.status, "unsafe")
+                    self.assertFalse(inspection.succeeded)
+                    self.assertIsNone(inspection.artifact)
+
     def test_modern_builder_closes_links_and_reuses_exact_cache(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
@@ -250,6 +556,22 @@ class ProjectDocumentationTests(unittest.TestCase):
             )
             stub = output / "doc" / "Mathlib" / "Dependency.html"
             self.assertIn("data-reasbook-doc-stub", stub.read_text(encoding="utf-8"))
+            marker = json.loads(
+                (output / "project-docs.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(
+                marker["module_owners"],
+                [
+                    {
+                        "module": "Books.Demo.Book",
+                        "roots": ["Books.Demo.Book"],
+                    },
+                    {
+                        "module": "Books.Demo.Chapter",
+                        "roots": ["Books.Demo.Book"],
+                    },
+                ],
+            )
             command_count = len(runner.commands)
 
             cached = builder.build(
