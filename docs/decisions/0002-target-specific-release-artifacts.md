@@ -77,11 +77,13 @@ pages, and theorem map remained available at their original URLs.
   the tag equality and clean-tooling checks after dereferencing a lightweight
   or annotated tag.
 - The Pages profile fails closed above 850 MB of extracted content, 60,000
-  files, or 950 MB compressed. Archive member count and expanded bytes are
-  checked from the tar listing before extraction. Hidden files are uploaded and
-  included in the site-tree digest, except exact `.git` and `.github` path
-  segments, which are rejected because GitHub always omits them. These are
-  operational margins below GitHub's hard limits, not targets to fill.
+  files, 180,000 archive members, or 950 MB compressed. Local packaging,
+  acceptance, and the publish workflow load the same artifact policy; archive
+  member count and expanded bytes are checked from the tar listing before
+  extraction. Hidden files are uploaded and included in the site-tree digest,
+  except exact `.git` and `.github` path segments, which are rejected because
+  GitHub always omits them. These are operational margins below GitHub's hard
+  limits, not targets to fill.
 - Self-hosted deployment accepts only the `full` artifact. It installs into a
   versioned directory, exposes the configured base path below `public/`, and
   atomically switches a `current` symlink. A failed health check restores the
@@ -122,6 +124,11 @@ pages, and theorem map remained available at their original URLs.
   production container mounts the deploy root rather than the resolved
   `current` target, so it observes later atomic symlink switches without being
   recreated.
+- Wait-mode GitHub publication is complete only after both the publish workflow
+  succeeds and the public Pages ReleaseSpec converges to the exact release ID,
+  ReleaseSpec digest, and registry commit. CDN polling has its own bounded
+  timeout; a green workflow with stale or unreachable public content fails
+  closed and is not persisted as `published`.
 
 This decision supersedes ADR-0001 only where that record calls for one bundle
 to serve both hosting targets. Its remote-build, canonical-version, immutable

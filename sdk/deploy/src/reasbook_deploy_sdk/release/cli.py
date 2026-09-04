@@ -79,6 +79,12 @@ def _add_build_options(parser: argparse.ArgumentParser) -> None:
 def _add_publish_options(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--wait", action="store_true")
     parser.add_argument("--wait-timeout-seconds", type=float, default=1800.0)
+    parser.add_argument(
+        "--pages-health-timeout-seconds",
+        type=float,
+        default=300.0,
+        help="public Pages ReleaseSpec convergence timeout after Actions succeeds",
+    )
 
 
 def _add_health_options(
@@ -142,6 +148,20 @@ def build_parser() -> argparse.ArgumentParser:
     )
     configure_pages.add_argument("--profile", default="github-pages")
     configure_pages.add_argument("--dry-run", action="store_true")
+    configure_pages.add_argument(
+        "--remove-policy-id",
+        type=_positive_integer,
+        help="remove this one numeric deployment-policy ID after exact checks",
+    )
+    configure_pages.add_argument(
+        "--expected-policy-name",
+        help="exact current name required for --remove-policy-id",
+    )
+    configure_pages.add_argument(
+        "--expected-policy-type",
+        choices=("branch", "tag"),
+        help="exact current type required for --remove-policy-id",
+    )
 
     policy_digest = commands.add_parser(
         "policy-digest",
@@ -222,6 +242,11 @@ def build_parser() -> argparse.ArgumentParser:
     deploy.add_argument("--dry-run", action="store_true")
     deploy.add_argument("--new-release", action="store_true")
     deploy.add_argument("--no-fetch", action="store_true")
+    deploy.add_argument(
+        "--allow-local-all-active-build",
+        action="store_true",
+        help="explicitly permit the local builder to build every active project",
+    )
 
     status = commands.add_parser("status", help="show persisted release state")
     status.add_argument("release_id")
@@ -232,16 +257,23 @@ def build_parser() -> argparse.ArgumentParser:
     verify.add_argument("bundle", type=Path)
     verify.add_argument("--sha256", type=_sha256_argument)
     verify.add_argument("--extract-to", type=Path)
-    verify.add_argument("--max-site-files", type=_positive_integer, default=500_000)
+    verify.add_argument(
+        "--profile",
+        help="load all verifier limits from this trusted deployment profile",
+    )
+    verify.add_argument(
+        "--artifact-policy",
+        choices=("full", "pages"),
+        help="artifact policy to load with --profile",
+    )
+    verify.add_argument("--max-site-files", type=_positive_integer)
     verify.add_argument(
         "--max-site-bytes",
         type=_positive_integer,
-        default=100_000_000_000,
     )
     verify.add_argument(
         "--max-archive-members",
         type=_positive_integer,
-        default=1_501_024,
     )
 
     install = commands.add_parser(
@@ -325,7 +357,12 @@ def _main(argv: list[str] | None = None) -> int:
             GitHubPagesConfigurator(
                 profile.publish,
                 repo_root=Path(args.repo_root),
-            ).configure(dry_run=args.dry_run)
+            ).configure(
+                dry_run=args.dry_run,
+                remove_policy_id=args.remove_policy_id,
+                expected_policy_name=args.expected_policy_name,
+                expected_policy_type=args.expected_policy_type,
+            )
         )
         return 0
     if command == "plan":
@@ -352,22 +389,49 @@ def _main(argv: list[str] | None = None) -> int:
             publish=not args.no_publish,
             wait=args.wait,
             wait_timeout_seconds=args.wait_timeout_seconds,
+            pages_health_timeout_seconds=args.pages_health_timeout_seconds,
             dry_run=args.dry_run,
             reuse=not args.new_release,
             fetch=not args.no_fetch,
+            allow_local_all_active=args.allow_local_all_active_build,
         )
         _print(result)
         return 0
     if command == "verify":
-        manifest = BundleVerifier(
-            max_site_files=args.max_site_files,
-            max_site_bytes=args.max_site_bytes,
-            max_archive_members=args.max_archive_members,
-        ).verify(
+        policy_options = (args.profile, args.artifact_policy)
+        manual_limits = (
+            args.max_site_files,
+            args.max_site_bytes,
+            args.max_archive_members,
+        )
+        if any(policy_options) and not all(policy_options):
+            raise SystemExit("--profile and --artifact-policy must be used together")
+        if all(policy_options):
+            if any(value is not None for value in manual_limits):
+                raise SystemExit(
+                    "profile-backed verification cannot override artifact limits"
+                )
+            profile_path = _profile_path(Path(args.repo_root), args.profile)
+            profile = load_profile(profile_path, repo_root=Path(args.repo_root))
+            verifier = BundleVerifier.for_policy(profile.artifact(args.artifact_policy))
+        else:
+            limits = {
+                "max_site_files": args.max_site_files,
+                "max_site_bytes": args.max_site_bytes,
+                "max_archive_members": args.max_archive_members,
+            }
+            verifier = BundleVerifier(
+                **{name: value for name, value in limits.items() if value is not None}
+            )
+        manifest = verifier.verify(
             args.bundle,
             expected_sha256=args.sha256,
             extract_to=args.extract_to,
         )
+        if args.artifact_policy and manifest.artifact != args.artifact_policy:
+            raise DeployExecutionError(
+                "verified bundle artifact does not match the selected policy"
+            )
         _print(manifest)
         return 0
     if command == "install":
@@ -376,9 +440,7 @@ def _main(argv: list[str] | None = None) -> int:
                 args.bundle,
                 release_set=args.release_set,
                 expected_sha256=args.expected_bundle_sha256,
-                expected_artifact_policy_sha256=(
-                    args.artifact_policy_sha256
-                ),
+                expected_artifact_policy_sha256=(args.artifact_policy_sha256),
                 artifact="full",
                 health_url=args.health_url,
                 filesystem_health_only=args.filesystem_health_only,
@@ -431,9 +493,7 @@ def _main(argv: list[str] | None = None) -> int:
             else store.load_bundle_info()
         )
         if not (site / "index.html").is_file():
-            raise SystemExit(
-                f"{args.artifact} artifact site is not packaged: {site}"
-            )
+            raise SystemExit(f"{args.artifact} artifact site is not packaged: {site}")
         manifest = BundleVerifier().inspect(
             Path(bundle.bundle),
             expected_sha256=bundle.bundle_sha256,
@@ -448,12 +508,7 @@ def _main(argv: list[str] | None = None) -> int:
             raise SystemExit(
                 f"{args.artifact} preview tree differs from its packaged bundle"
             )
-        script = (
-            Path(args.repo_root).resolve()
-            / "scripts"
-            / "preview"
-            / "serve.py"
-        )
+        script = Path(args.repo_root).resolve() / "scripts" / "preview" / "serve.py"
         url = (
             f"http://{args.host}:{args.port}"
             f"{args.public_prefix}{context.spec.base_path}"
@@ -462,6 +517,7 @@ def _main(argv: list[str] | None = None) -> int:
             _print(
                 {
                     "artifact": args.artifact,
+                    "routing_mode": "strict",
                     "site": str(site),
                     "url": url,
                 }
@@ -487,6 +543,8 @@ def _main(argv: list[str] | None = None) -> int:
                 context.spec.base_path,
                 "--public-prefix",
                 args.public_prefix,
+                "--routing-mode",
+                "strict",
             ],
             environment,
         )
@@ -540,9 +598,7 @@ def _main(argv: list[str] | None = None) -> int:
             )
             return 0
         try:
-            accepted_full_sha256 = str(
-                acceptance["artifacts"]["full"]["bundle_sha256"]
-            )
+            accepted_full_sha256 = str(acceptance["artifacts"]["full"]["bundle_sha256"])
         except (KeyError, TypeError) as exc:
             raise DeployExecutionError(
                 "release acceptance evidence has no full-bundle identity"
@@ -571,6 +627,7 @@ def _main(argv: list[str] | None = None) -> int:
                 context,
                 wait=args.wait,
                 wait_timeout_seconds=args.wait_timeout_seconds,
+                pages_health_timeout_seconds=args.pages_health_timeout_seconds,
                 dry_run=args.dry_run,
                 force=command == "rollback",
             )
@@ -590,6 +647,7 @@ def _main(argv: list[str] | None = None) -> int:
                 context,
                 wait=args.wait,
                 wait_timeout_seconds=args.wait_timeout_seconds,
+                pages_health_timeout_seconds=args.pages_health_timeout_seconds,
             )
         )
         refreshed = service.context(context.spec.release_id)

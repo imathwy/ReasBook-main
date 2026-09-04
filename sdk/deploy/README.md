@@ -176,7 +176,10 @@ reasbook-deploy release install "$FULL_BUNDLE" \
 
 `release validate` does not rebuild. It fully extracts and verifies the `pages`
 archive, verifies and installs the `full` archive through the production atomic
-installer, then serves both with the repository preview adapter. It checks the
+installer, then serves both with the repository preview adapter in strict
+production-routing mode. Unprefixed development aliases are unavailable, and
+the base path without its trailing slash must return the same permanent
+redirect as the production server. It checks the
 catalog, canonical project, documentation, Verso, theorem-map, asset,
 ReleaseSpec, and 404 routes. It also checks every version root, every project
 version in `full`, and the canonical project versions in `pages`. Successful
@@ -218,6 +221,12 @@ when a custom domain or any branch policy other than the exact default branch
 already exists. It also audits and enables repository immutable releases; the
 GitHub token needs repository Administration read permission for both dry-run
 and publication, and write permission for the one-time enable operation.
+An obsolete policy can be removed only when it is the sole policy beside the
+default branch, using `--remove-policy-id ID --expected-policy-name NAME
+--expected-policy-type branch|tag`. All three values are mandatory; run the
+exact command with `--dry-run` first. The implementation compares every field,
+refuses the default branch and multi-policy cleanup, deletes only `/ID`, and
+re-fetches the complete list before reporting success.
 
 Promote the already packaged and browser-validated Pages artifact with one
 command:
@@ -239,6 +248,19 @@ The workflow explicitly grants `attestations: read` and installs pinned
 `PyYAML==6.0.3` for the trusted policy check. Release uploads use a bounded
 two-hour timeout (ordinary API calls remain five minutes) because transfer time
 for the allowed large archive is network-dominated.
+
+The Pages capacity policy is single-source: local packaging, local acceptance,
+and the workflow's `release verify --profile github-pages --artifact-policy
+pages` use the same checked-in 850 MB, 60,000-file, and
+180,000-archive-member limits. A bundle that the workflow would reject cannot
+pass local packaging merely because a verifier default was looser.
+
+When `--wait` is present, the command first waits up to 1,800 seconds for the
+workflow and then up to 300 seconds for the public Pages ReleaseSpec to
+converge. It verifies the exact release ID, ReleaseSpec digest, and registry
+commit before recording `published`; stale CDN content and network failures are
+retried but fail closed at the deadline. Override only the second deadline with
+`--pages-health-timeout-seconds SECONDS`.
 
 The installer lays the configured base path below
 `/srv/reasbook/current/public`; point the static server at that stable document

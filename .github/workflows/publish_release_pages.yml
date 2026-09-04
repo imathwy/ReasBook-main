@@ -160,9 +160,8 @@ jobs:
             verify ".release/$BUNDLE_ASSET" \
             --sha256 "$bundle_sha256" \
             --extract-to .site \
-            --max-site-files 60000 \
-            --max-site-bytes 850000000 \
-            --max-archive-members 180000
+            --profile github-pages \
+            --artifact-policy pages
           test -f .site/index.html
           test -f .site/release-spec.json
           tar --zstd -xOf ".release/$BUNDLE_ASSET" release-manifest.json \

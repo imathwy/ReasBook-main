@@ -10,7 +10,9 @@ from pathlib import Path
 import re
 import time
 from typing import TYPE_CHECKING, Any, Mapping
-from urllib.parse import quote
+from urllib.error import HTTPError, URLError
+from urllib.parse import quote, urlsplit
+from urllib.request import Request, urlopen
 
 from reasbook_sdk_common import CommandRunner
 
@@ -28,6 +30,8 @@ if TYPE_CHECKING:
 
 
 _RELEASE_UPLOAD_TIMEOUT_SECONDS = 7200.0
+_PAGES_HEALTH_MAX_BYTES = 1_000_000
+_PAGES_HEALTH_POLL_SECONDS = 3.0
 
 
 class _IncompleteDraftAssets(DeployExecutionError):
@@ -52,11 +56,33 @@ class GitHubPublication:
     workflow: str
     status: str
     run_id: int | None = None
+    pages_release_spec_url: str | None = None
 
     def __post_init__(self) -> None:
         if self.status not in {"planned", "dispatched", "published"}:
             raise DeployExecutionError(
                 f"invalid GitHub publication status: {self.status}"
+            )
+        if self.status == "published":
+            if self.run_id is None or self.pages_release_spec_url is None:
+                raise DeployExecutionError(
+                    "published GitHub Pages evidence requires a run and health URL"
+                )
+            parsed = urlsplit(self.pages_release_spec_url)
+            if (
+                parsed.scheme != "https"
+                or not parsed.hostname
+                or parsed.username is not None
+                or parsed.password is not None
+                or parsed.query
+                or parsed.fragment
+            ):
+                raise DeployExecutionError(
+                    "published GitHub Pages health URL is invalid"
+                )
+        elif self.pages_release_spec_url is not None:
+            raise DeployExecutionError(
+                "only a health-checked publication may record a Pages URL"
             )
 
     def public_dict(self) -> dict[str, Any]:
@@ -67,6 +93,7 @@ class GitHubPublication:
             "workflow": self.workflow,
             "status": self.status,
             "run_id": self.run_id,
+            "pages_release_spec_url": self.pages_release_spec_url,
         }
 
     @classmethod
@@ -79,6 +106,11 @@ class GitHubPublication:
                 workflow=str(value["workflow"]),
                 status=str(value["status"]),
                 run_id=int(value["run_id"]) if value.get("run_id") else None,
+                pages_release_spec_url=(
+                    str(value["pages_release_spec_url"])
+                    if value.get("pages_release_spec_url")
+                    else None
+                ),
             )
         except (KeyError, TypeError, ValueError) as exc:
             raise DeployExecutionError(
@@ -124,12 +156,18 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
         *,
         wait: bool = False,
         wait_timeout_seconds: float = 1800.0,
+        pages_health_timeout_seconds: float = 300.0,
         dry_run: bool = False,
     ) -> GitHubPublication:
         from .bundle import normalize_sha256
 
         if not math.isfinite(wait_timeout_seconds) or wait_timeout_seconds <= 0:
             raise DeployExecutionError("wait timeout must be positive")
+        if (
+            not math.isfinite(pages_health_timeout_seconds)
+            or pages_health_timeout_seconds <= 0
+        ):
+            raise DeployExecutionError("Pages health timeout must be positive")
         assets = tuple(
             Path(value).expanduser().resolve()
             for value in (
@@ -147,9 +185,7 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
             raise DeployExecutionError(
                 "GitHub Pages publication requires the pages artifact"
             )
-        expected_release_set_sha256 = normalize_sha256(
-            self.expected_release_set_sha256
-        )
+        expected_release_set_sha256 = normalize_sha256(self.expected_release_set_sha256)
         if expected_release_set_sha256 is None:
             raise DeployExecutionError(
                 "GitHub publication requires the accepted ReleaseSet checksum"
@@ -159,9 +195,7 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
             assets,
             expected_base_path=self.expected_base_path,
             expected_spec_digest=self.expected_spec_digest,
-            expected_artifact_policy_sha256=(
-                self.expected_artifact_policy_sha256
-            ),
+            expected_artifact_policy_sha256=(self.expected_artifact_policy_sha256),
             expected_release_set_sha256=expected_release_set_sha256,
         )
         self._require_external_manifest_matches_bundle(bundle, assets[1])
@@ -214,9 +248,7 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
 
         release_is_draft = existing_release.get("draft")
         if not isinstance(release_is_draft, bool):
-            raise DeployExecutionError(
-                "existing release has invalid draft metadata"
-            )
+            raise DeployExecutionError("existing release has invalid draft metadata")
         release_database_id = self._release_database_id(existing_release)
         if existing_release.get("tag_name") != tag:
             raise DeployExecutionError(
@@ -334,6 +366,12 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
             wait_timeout_seconds,
             previous_runs=previous_runs,
         )
+        pages_release_spec_url = self._wait_for_public_pages(
+            bundle.release_id,
+            expected_spec_digest=self.expected_spec_digest,
+            expected_registry_commit=expected_registry_commit,
+            timeout=pages_health_timeout_seconds,
+        )
         return GitHubPublication(
             bundle.release_id,
             self.profile.repository,
@@ -341,6 +379,7 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
             self.profile.workflow,
             "published",
             run_id,
+            pages_release_spec_url,
         )
 
     def _release_registry_commit(self) -> str:
@@ -419,8 +458,7 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
             if re.search(r"(?:HTTP\s+404|\b404\s+Not Found\b)", detail, re.I):
                 return None
             raise DeployExecutionError(
-                "GitHub CLI release lookup failed"
-                + (f": {detail}" if detail else "")
+                "GitHub CLI release lookup failed" + (f": {detail}" if detail else "")
             )
         try:
             release = json.loads(result.stdout)
@@ -727,9 +765,7 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
                 if not re.fullmatch(r"[0-9a-f]{40}", target):
                     break
                 return target
-            if target_type != "tag" or not re.fullmatch(
-                r"[0-9a-f]{40}", target
-            ):
+            if target_type != "tag" or not re.fullmatch(r"[0-9a-f]{40}", target):
                 break
             result = self._run(
                 "api", f"repos/{self.profile.repository}/git/tags/{target}"
@@ -865,17 +901,13 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
                     "release set changed after required acceptance"
                 )
             try:
-                release_set_value = json.loads(
-                    assets[3].read_text(encoding="utf-8")
-                )
+                release_set_value = json.loads(assets[3].read_text(encoding="utf-8"))
                 if not isinstance(release_set_value, dict):
                     raise DeployConfigError("release set must be an object")
                 release_set = ReleaseSetManifest.from_dict(release_set_value)
                 record = release_set.artifact(bundle.artifact)
             except (OSError, DeployConfigError, json.JSONDecodeError) as exc:
-                raise DeployExecutionError(
-                    "release set is invalid"
-                ) from exc
+                raise DeployExecutionError("release set is invalid") from exc
             if (
                 release_set.release_id != bundle.release_id
                 or release_set.spec_digest != manifest.spec_digest
@@ -911,7 +943,9 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
         incomplete: list[tuple[int, str]] = []
         for item in remote_assets:
             if not isinstance(item, dict):
-                raise DeployExecutionError("existing release has invalid asset metadata")
+                raise DeployExecutionError(
+                    "existing release has invalid asset metadata"
+                )
             name = item.get("name")
             size = item.get("size")
             digest = item.get("digest")
@@ -924,7 +958,9 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
                 or size < 0
                 or name in actual
             ):
-                raise DeployExecutionError("existing release has invalid asset metadata")
+                raise DeployExecutionError(
+                    "existing release has invalid asset metadata"
+                )
             # GitHub documents a failed upstream upload as an empty asset in
             # the ``starter`` state.  That exact draft-only shape is the sole
             # remote asset we may delete automatically; an uploaded or
@@ -951,12 +987,16 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
                 or not isinstance(digest, str)
                 or not re.fullmatch(r"sha256:[0-9a-f]{64}", digest)
             ):
-                raise DeployExecutionError("existing release has invalid asset metadata")
+                raise DeployExecutionError(
+                    "existing release has invalid asset metadata"
+                )
             actual[name] = (size, digest)
         if incomplete:
             raise _IncompleteDraftAssets(tuple(incomplete))
         mismatched = {
-            name for name in actual.keys() & expected.keys() if actual[name] != expected[name]
+            name
+            for name in actual.keys() & expected.keys()
+            if actual[name] != expected[name]
         }
         extra = actual.keys() - expected.keys()
         if mismatched or extra:
@@ -993,9 +1033,7 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
         if not isinstance(value, dict) or not isinstance(
             value.get("workflow_runs"), list
         ):
-            raise DeployExecutionError(
-                "GitHub workflow-runs response is incomplete"
-            )
+            raise DeployExecutionError("GitHub workflow-runs response is incomplete")
         runs: list[dict[str, Any]] = []
         for run in value["workflow_runs"]:
             if not isinstance(run, dict):
@@ -1027,6 +1065,111 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
             )
         return tuple(runs)
 
+    def _public_pages_release_spec_url(self) -> str:
+        base_path = self.expected_base_path
+        if (
+            not isinstance(base_path, str)
+            or not base_path.startswith("/")
+            or not base_path.endswith("/")
+            or "//" in base_path
+            or ".." in base_path
+        ):
+            raise DeployExecutionError(
+                "GitHub Pages health verification requires a safe base path"
+            )
+        owner, repository = self.profile.repository.split("/", 1)
+        if base_path != f"/{repository}/":
+            raise DeployExecutionError(
+                "GitHub Pages base path must match the repository name"
+            )
+        return f"https://{owner.lower()}.github.io" f"{base_path}release-spec.json"
+
+    @staticmethod
+    def _probe_public_pages(
+        url: str,
+        *,
+        release_id: str,
+        spec_digest: str,
+        registry_commit: str,
+        timeout: float,
+    ) -> None:
+        request = Request(url, headers={"User-Agent": "ReasBook-Release/1"})
+        with urlopen(request, timeout=max(0.1, min(10.0, timeout))) as response:
+            status = getattr(response, "status", None)
+            if status != 200:
+                raise DeployExecutionError(
+                    f"public GitHub Pages health returned HTTP {status}"
+                )
+            final_url = response.geturl()
+            if final_url != url:
+                raise DeployExecutionError(
+                    "public GitHub Pages health redirected outside its exact URL"
+                )
+            payload = response.read(_PAGES_HEALTH_MAX_BYTES + 1)
+        if len(payload) > _PAGES_HEALTH_MAX_BYTES:
+            raise DeployExecutionError(
+                "public GitHub Pages ReleaseSpec exceeds its safety limit"
+            )
+        try:
+            value = json.loads(payload.decode("utf-8"))
+        except (UnicodeError, json.JSONDecodeError) as exc:
+            raise DeployExecutionError(
+                "public GitHub Pages health is not valid JSON"
+            ) from exc
+        source = value.get("source") if isinstance(value, dict) else None
+        if (
+            not isinstance(source, dict)
+            or value.get("release_id") != release_id
+            or value.get("spec_digest") != spec_digest
+            or source.get("registry_commit") != registry_commit
+        ):
+            raise DeployExecutionError(
+                "public GitHub Pages health reports another release"
+            )
+
+    def _wait_for_public_pages(
+        self,
+        release_id: str,
+        *,
+        expected_spec_digest: str | None,
+        expected_registry_commit: str,
+        timeout: float,
+    ) -> str:
+        if not isinstance(expected_spec_digest, str) or not re.fullmatch(
+            r"sha256:[0-9a-f]{64}", expected_spec_digest
+        ):
+            raise DeployExecutionError(
+                "GitHub Pages health verification requires the ReleaseSpec digest"
+            )
+        url = self._public_pages_release_spec_url()
+        deadline = time.monotonic() + timeout
+        last_error = "the public URL has not converged"
+        while time.monotonic() < deadline:
+            remaining = deadline - time.monotonic()
+            try:
+                self._probe_public_pages(
+                    url,
+                    release_id=release_id,
+                    spec_digest=expected_spec_digest,
+                    registry_commit=expected_registry_commit,
+                    timeout=remaining,
+                )
+                return url
+            except (
+                HTTPError,
+                URLError,
+                OSError,
+                DeployExecutionError,
+            ) as exc:
+                last_error = str(exc)
+            remaining = deadline - time.monotonic()
+            if remaining > 0:
+                time.sleep(min(_PAGES_HEALTH_POLL_SECONDS, remaining))
+        raise DeployExecutionError(
+            "timed out waiting for public GitHub Pages ReleaseSpec convergence: "
+            f"{last_error}"
+        )
+
     def _wait_for_pages(
         self,
         tag: str,
@@ -1053,6 +1196,7 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
                 return run_id
             time.sleep(3)
         raise DeployExecutionError(f"timed out waiting for Pages workflow for {tag}")
+
 
 __all__ = [
     "GitHubPublication",

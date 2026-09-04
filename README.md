@@ -139,7 +139,8 @@ development and preview, not for producing the public release:
 ./scripts/build/all.sh                 # cache, core, and optional docs
 BUILD_DOCS=0 ./scripts/build/all.sh    # fast core-only build
 ./scripts/build/site.sh                # full pipeline plus Verso site
-./scripts/preview/serve.py 18000       # http://127.0.0.1:18000/ReasBook/
+./sdk/common/bin/python ./scripts/preview/serve.py 18000
+                                        # http://127.0.0.1:18000/ReasBook/
 ```
 
 The deployment helpers require Python 3.11 or newer. If `python3` points to an
@@ -242,9 +243,11 @@ routes. Install the optional browser runtime as described in
 gate.
 
 It requires an authenticated GitHub CLI. The `release deploy` command remains
-available for a small local canary; it must not be used for the full public
-multi-version build. Use `--no-publish` to stop after local packaging or
-`--dry-run` to resolve the spec without creating release state. See
+available for a small local canary selected with one or more `--only` options;
+it must not be used for the full public multi-version build. A non-dry-run
+all-active local build fails closed unless the operator explicitly adds
+`--allow-local-all-active-build`. Use `--no-publish` to stop after local
+packaging or `--dry-run` to resolve the spec without creating release state. See
 [`sdk/deploy/release/README.md`](sdk/deploy/src/reasbook_deploy_sdk/release/README.md).
 
 #### Preview the exact release artifact
@@ -262,13 +265,18 @@ RELEASE_ID="${RELEASE_ID:?set RELEASE_ID to the generated release ID}"
 Open `http://127.0.0.1:18000/ReasBook/`. This serves the verified packaged
 Pages tree, not an intermediate branch build. Use `--artifact full` to inspect
 the exact self-hosted candidate. Add `--host 0.0.0.0 --public-prefix
-/path/to/proxy/18000` when accessing it through a workspace proxy.
+/path/to/proxy/18000` when accessing it through a workspace proxy. Release
+preview and acceptance use strict production routing: unprefixed `/books/`,
+`/papers/`, `/docs/`, and `/static/` paths return 404, and `/ReasBook`
+permanently redirects to `/ReasBook/`.
 
 #### GitHub Pages capacity and publication
 
 The `pages` artifact fails during local packaging above 850 MB, 60,000 files,
-or 950 MB compressed. The publish workflow repeats the extracted-size and
-file-count checks from the archive listing before extraction. Hidden site
+180,000 archive members, or 950 MB compressed. Local packaging, acceptance,
+and the publish workflow all load these limits from the checked-in
+`github-pages` profile; the workflow does not carry a looser hard-coded member
+limit. It repeats the archive-listing checks before extraction. Hidden site
 content such as `.nojekyll` and `.well-known/` is retained and included in the
 verified tree digest. Exact `.git` and `.github` path segments are rejected
 because the Pages upload action excludes them and would otherwise change the
@@ -290,9 +298,24 @@ The command creates only missing workflow-based Pages settings, enables
 repository immutable releases, and permits only the exact default branch to
 use the `github-pages` environment. Its token therefore needs repository
 Administration read permission for an audit and write permission to enable the
-setting. It refuses to rewrite an existing custom domain or incompatible/extra
-branch policy; such a policy must be reviewed and removed explicitly in GitHub
-before rerunning.
+setting. It refuses to rewrite an existing custom domain or remove an extra
+branch policy implicitly. If inspection finds exactly the default-branch policy
+plus one obsolete policy, remove only that reviewed record by supplying all
+three of its immutable expectations, first as a dry run and then unchanged:
+
+```bash
+./sdk/deploy/bin/reasbook-deploy release configure-pages \
+  --profile github-pages --remove-policy-id 123456 \
+  --expected-policy-name v4.30.0 --expected-policy-type branch --dry-run
+./sdk/deploy/bin/reasbook-deploy release configure-pages \
+  --profile github-pages --remove-policy-id 123456 \
+  --expected-policy-name v4.30.0 --expected-policy-type branch
+```
+
+The command fetches and exactly compares the numeric ID, name, and type before
+using the single-policy DELETE endpoint. It refuses to remove the default
+branch, refuses ambiguous or multi-policy cleanup, and fetches the policies
+again to prove that only the default branch remains.
 
 ```bash
 ./sdk/deploy/bin/reasbook-deploy release publish "$RELEASE_ID" \
@@ -307,7 +330,13 @@ immutable, and only then dispatches the pinned publish-only workflow. The
 workflow uses GitHub's Release and per-asset verification commands before
 deploying the exact hidden-file-inclusive tree. Its verify job has only
 read-level contents, Pages, and artifact-attestation permissions and installs
-only the pinned PyYAML verifier dependency.
+only the pinned PyYAML verifier dependency. With `--wait`, success means more
+than a green Actions run: the publisher also waits for the public
+`/ReasBook/release-spec.json` to converge and exactly match the expected
+release ID, ReleaseSpec digest, and registry commit. The Actions wait defaults
+to 1,800 seconds and the subsequent CDN convergence wait to 300 seconds; tune
+the latter with `--pages-health-timeout-seconds`. A stale or unreachable public
+site fails closed and is not recorded as `published`.
 
 Neither the local upload nor the GitHub workflow runs Lean, Verso, doc-gen, or
 theorem-graph work, and no Lean cache is transferred. Wall-clock time is
@@ -466,7 +495,7 @@ and [scripts/README.md](scripts/README.md) for the repository adapter boundary.
 
 - [Optlib](https://github.com/optsuite/optlib)
   - A Lean4 library for mathematical optimization, covering convex analysis, optimality conditions, and algorithm convergence.
-- [ReasBook](https://github.com/optsuite/ReasBook)
+- [ReasBook](https://github.com/optpku/ReasBook)
   - A Lean4 project for textbook and paper formalization, including both theorem proving and computational problems.
 
 ### Benchmark

@@ -173,6 +173,7 @@ def load_profile(path: str | Path, *, repo_root: str | Path) -> DeploymentProfil
                     "dependency_docs",
                     "max_site_files",
                     "max_site_bytes",
+                    "max_archive_members",
                     "max_bundle_bytes",
                 },
                 field=f"artifacts.{name}",
@@ -181,9 +182,7 @@ def load_profile(path: str | Path, *, repo_root: str | Path) -> DeploymentProfil
             parsed_artifacts.append(
                 ReleaseArtifactPolicy(
                     name=name,
-                    history_mode=str(
-                        item.get("history_mode", default.history_mode)
-                    ),
+                    history_mode=str(item.get("history_mode", default.history_mode)),
                     dependency_docs=str(
                         item.get("dependency_docs", default.dependency_docs)
                     ),
@@ -196,6 +195,11 @@ def load_profile(path: str | Path, *, repo_root: str | Path) -> DeploymentProfil
                         item.get("max_site_bytes"),
                         default=default.max_site_bytes,
                         field=f"artifacts.{name}.max_site_bytes",
+                    ),
+                    max_archive_members=_positive_integer(
+                        item.get("max_archive_members"),
+                        default=default.max_archive_members,
+                        field=f"artifacts.{name}.max_archive_members",
                     ),
                     max_bundle_bytes=_positive_integer(
                         item.get("max_bundle_bytes"),
@@ -330,8 +334,7 @@ def dump_profile_snapshot(profile: DeploymentProfile) -> str:
         },
         "policy": profile.policy.public_dict(),
         "artifacts": {
-            artifact.name: artifact.public_dict()
-            for artifact in profile.artifacts
+            artifact.name: artifact.public_dict() for artifact in profile.artifacts
         },
         "publish": profile.publish.public_dict(),
     }

@@ -91,6 +91,11 @@ for a full public build:
   --max-parallel-branches 3 --no-publish
 ```
 
+A non-dry-run invocation without `--only` fails before planning. The escape
+hatch `--allow-local-all-active-build` makes an intentional local all-active
+run possible, but production multi-version work should remain on the SiFlow
+build/finalize path.
+
 ## Local preview
 
 For a completed release in the local cache, the exact package, required
@@ -128,7 +133,10 @@ To start the same preview again without rerunning acceptance:
 Open `http://127.0.0.1:18000/ReasBook/`. Before starting the server, the CLI
 checks the bundle SHA-256 and compares the local tree's hash, file count, and
 byte count with the embedded manifest. Use `--artifact full` for the
-self-hosted candidate.
+self-hosted candidate. Packaged release previews always use strict production
+routing: unprefixed development aliases return 404, `/ReasBook` returns a 308
+redirect to `/ReasBook/`, and the routing mode cannot be downgraded from this
+CLI.
 
 For a path-based workspace proxy, bind all interfaces and provide the external
 prefix removed by that proxy:
@@ -160,6 +168,23 @@ domains or incompatible/extra branch policies. The caller needs repository
 Administration read permission to audit the immutable-release setting and
 write permission to enable it.
 
+To remove one reviewed obsolete policy, provide its numeric ID and both exact
+identity fields together, and audit the same request before applying it:
+
+```bash
+./sdk/deploy/bin/reasbook-deploy release configure-pages \
+  --profile github-pages --remove-policy-id 123456 \
+  --expected-policy-name v4.30.0 --expected-policy-type branch --dry-run
+./sdk/deploy/bin/reasbook-deploy release configure-pages \
+  --profile github-pages --remove-policy-id 123456 \
+  --expected-policy-name v4.30.0 --expected-policy-type branch
+```
+
+Removal is allowed only when the simulated result is exactly the default
+branch policy. The command never pattern-matches or deletes in bulk, refuses to
+delete the default branch itself, and verifies the complete policy list again
+after the single-ID DELETE.
+
 ```bash
 ./sdk/deploy/bin/reasbook-deploy release publish RELEASE_ID \
   --target github-pages --wait
@@ -186,8 +211,10 @@ sizes and server-computed digests to match. The workflow uses GitHub's Release
 and per-asset verification commands, independently checks the tag target,
 archive/manifest/spec/ReleaseSet bindings, and recomputes the policy digest
 from its trusted checked-out profile. It enforces the compressed,
-archive-member, 850 MB site, and 60,000-file budgets before extraction. It has
-no full archive and performs no source build. Publishing an existing tag is
+180,000-archive-member, 850 MB site, and 60,000-file budgets before extraction.
+Local packaging and acceptance load the same artifact policy, so these limits
+cannot first appear as a remote-only rejection. It has no full archive and
+performs no source build. Publishing an existing tag is
 idempotent only when every remote asset has the same name, size, and digest;
 assets are never overwritten, and an already-published Release is not edited
 before re-dispatch.
@@ -204,6 +231,14 @@ extraction. The local upload has a two-hour failure timeout while normal GitHub
 API calls retain a five-minute timeout. The verify job declares read-only
 `contents`, `pages`, and `attestations` permissions, and installs only pinned
 `PyYAML==6.0.3` for the SDK policy check.
+
+`--wait` has two sequential gates: the Actions run has a default 1,800-second
+deadline, then the public Pages URL has a separate 300-second CDN-convergence
+deadline. The second gate fetches `/ReasBook/release-spec.json` and requires the
+expected release ID, ReleaseSpec digest, and registry commit. Override it with
+`--pages-health-timeout-seconds SECONDS`. A green workflow with stale,
+redirected, malformed, or unreachable public content is not recorded as
+`published`.
 
 Before creating a new tag, the publisher requires a clean local checkout whose
 `HEAD` is both the current GitHub default-branch commit and the ReleaseSpec's
