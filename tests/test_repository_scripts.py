@@ -173,10 +173,24 @@ class RepositoryScriptTests(unittest.TestCase):
         self.assertNotIn("SiFlow", chinese)
         self.assertNotIn("rather than", english)
         self.assertNotIn("而不是", chinese)
-        self.assertIn("| Category | Project | Description |", english)
-        self.assertIn("| 类别 | 项目 | 简介 |", chinese)
-        self.assertEqual(english.count("| Formalization platform |"), 1)
-        self.assertEqual(chinese.count("| 形式化平台 |"), 1)
+        self.assertIn('<th scope="col">Category</th>', english)
+        self.assertIn('<th scope="col">项目</th>', chinese)
+        for content, category, row_count in (
+            (english, "Formalization project", 2),
+            (english, "Benchmark", 2),
+            (english, "Autoformalization and theorem proving", 3),
+            (chinese, "形式化项目", 2),
+            (chinese, "基准测试", 2),
+            (chinese, "自动形式化与定理证明", 3),
+        ):
+            self.assertIn(
+                f'<td rowspan="{row_count}" scope="rowgroup">{category}</td>',
+                content,
+            )
+        self.assertIn(
+            '<td scope="rowgroup">Formalization platform</td>', english
+        )
+        self.assertIn('<td scope="rowgroup">形式化平台</td>', chinese)
         self.assertIn("https://github.com/leanprover/verso", english)
         self.assertIn("https://github.com/leanprover/comparator", english)
         self.assertIn("https://github.com/leanprover/verso", chinese)

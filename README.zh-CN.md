@@ -106,16 +106,53 @@ ReasBook 将带版本的数学源代码、跨版本工具和生成产物分开�
 
 ## Lean 项目
 
-| 类别 | 项目 | 简介 |
-| --- | --- | --- |
-| 形式化平台 | [ReasLab](https://reaslab.io) | 用于协作式定理开发和验证的在线 Lean 形式化平台。 |
-| 形式化项目 | [Optlib](https://github.com/optsuite/optlib) | 面向数学优化的 Lean 4 库，涵盖凸分析、最优性条件和算法收敛性。 |
-| 形式化项目 | [ReasBook](https://github.com/optpku/ReasBook) | 面向教材和论文形式化的 Lean 4 项目，同时覆盖定理证明和计算问题。 |
-| 基准测试 | [AMBER](https://github.com/optsuite/AMBER) | 面向应用数学形式化中构造与验证任务的 Lean 4 基准，同时覆盖定理证明和计算问题。 |
-| 基准测试 | [CAM-Bench](https://github.com/optpku/CAM-Bench) | 面向计算与应用数学形式化定理证明的 Lean 4 基准。 |
-| 自动形式化与定理证明 | [M2F](https://github.com/optsuite/M2F) | 将自然语言数学教材转换为可进行形式化的 Lean 项目的工具包。 |
-| 自动形式化与定理证明 | [SITA](https://github.com/chenyili0818/SITA) | 一种结构到实例的自动形式化框架，利用验证反馈生成 Lean 定义和定理。 |
-| 自动形式化与定理证明 | [lean-tools-mcp](https://github.com/optsuite/lean-tools-mcp) | Lean MCP 服务器，在重型 import（尤其是 Mathlib）场景中提供更高并行吞吐和更低内存占用。 |
+<table>
+<thead>
+<tr>
+<th scope="col">类别</th>
+<th scope="col">项目</th>
+<th scope="col">简介</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td scope="rowgroup">形式化平台</td>
+<td><a href="https://reaslab.io">ReasLab</a></td>
+<td>用于协作式定理开发和验证的在线 Lean 形式化平台。</td>
+</tr>
+<tr>
+<td rowspan="2" scope="rowgroup">形式化项目</td>
+<td><a href="https://github.com/optsuite/optlib">Optlib</a></td>
+<td>面向数学优化的 Lean 4 库，涵盖凸分析、最优性条件和算法收敛性。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/optpku/ReasBook">ReasBook</a></td>
+<td>面向教材和论文形式化的 Lean 4 项目，同时覆盖定理证明和计算问题。</td>
+</tr>
+<tr>
+<td rowspan="2" scope="rowgroup">基准测试</td>
+<td><a href="https://github.com/optsuite/AMBER">AMBER</a></td>
+<td>面向应用数学形式化中构造与验证任务的 Lean 4 基准，同时覆盖定理证明和计算问题。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/optpku/CAM-Bench">CAM-Bench</a></td>
+<td>面向计算与应用数学形式化定理证明的 Lean 4 基准。</td>
+</tr>
+<tr>
+<td rowspan="3" scope="rowgroup">自动形式化与定理证明</td>
+<td><a href="https://github.com/optsuite/M2F">M2F</a></td>
+<td>将自然语言数学教材转换为可进行形式化的 Lean 项目的工具包。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/chenyili0818/SITA">SITA</a></td>
+<td>一种结构到实例的自动形式化框架，利用验证反馈生成 Lean 定义和定理。</td>
+</tr>
+<tr>
+<td><a href="https://github.com/optsuite/lean-tools-mcp">lean-tools-mcp</a></td>
+<td>Lean MCP 服务器，在重型 import（尤其是 Mathlib）场景中提供更高并行吞吐和更低内存占用。</td>
+</tr>
+</tbody>
+</table>
 
 ## 研究成果
 
