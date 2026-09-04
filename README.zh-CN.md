@@ -55,7 +55,7 @@ ReasBook 将带版本的数学源代码、跨版本工具和生成产物分开�
 | Challenge/Solution 比较 | [Comparator SDK](sdk/comparator/README.md) · [Comparator 上游仓库](https://github.com/leanprover/comparator) |
 | 多阶段部署与发布组装 | [Deploy SDK](sdk/deploy/README.md) |
 
-这些指南将操作命令放在负责该能力的工具文档中，使主页保持为项目目录，而不是重复一份构建手册。
+各项操作命令请参阅对应能力的 SDK 指南，主页集中展示项目目录。
 
 ## 赞助单位
 

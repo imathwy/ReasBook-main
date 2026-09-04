@@ -171,6 +171,8 @@ class RepositoryScriptTests(unittest.TestCase):
         self.assertNotIn("\n## 构建\n", chinese)
         self.assertNotIn("SiFlow", english)
         self.assertNotIn("SiFlow", chinese)
+        self.assertNotIn("rather than", english)
+        self.assertNotIn("而不是", chinese)
         self.assertIn("| Category | Project | Description |", english)
         self.assertIn("| 类别 | 项目 | 简介 |", chinese)
         self.assertEqual(english.count("| Formalization platform |"), 1)
