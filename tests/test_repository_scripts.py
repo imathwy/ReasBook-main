@@ -152,6 +152,93 @@ class RepositoryScriptTests(unittest.TestCase):
         self.assertIn("Verso not published", resource)
         self.assertNotIn("TBD", resource)
 
+    def test_verso_build_validates_literate_cache_before_prebuilt_mode(self) -> None:
+        script = (ROOT / "scripts" / "build" / "verso.sh").read_text(
+            encoding="utf-8"
+        )
+        generated = script.index('"${generator_args[@]}"')
+        cached = script.index(
+            'reasbook_run_runtime "$REASBOOK_LEAN_ROOT" "$LITERATE_SDK"'
+        )
+        enabled = script.index("export REASBOOK_LITERATE_PREBUILT=1")
+        built = script.index('reasbook_run_runtime "$REASBOOK_WEB_ROOT"')
+        self.assertLess(generated, cached)
+        self.assertLess(cached, enabled)
+        self.assertLess(enabled, built)
+        self.assertIn('export VERSO_GENERATOR=""', script)
+        self.assertIn(
+            "export VERSO_ENV_REASBOOK_LITERATE_PREBUILT=1", script
+        )
+
+    def test_verso_literate_failure_stops_before_web_build(self) -> None:
+        source_scripts = ROOT / "scripts" / "build"
+        with tempfile.TemporaryDirectory() as temp:
+            repo = Path(temp) / "repo"
+            scripts = repo / "scripts" / "build"
+            for directory in (
+                scripts,
+                repo / "sdk/common/bin",
+                repo / "sdk/deploy/bin",
+                repo / "sdk/verso/bin",
+                repo / "ReasBook",
+                repo / "ReasBookWeb",
+            ):
+                directory.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source_scripts / "common.sh", scripts / "common.sh")
+            shutil.copy2(source_scripts / "verso.sh", scripts / "verso.sh")
+            (repo / "sdk/common/bin/python").symlink_to(sys.executable)
+            generator = repo / "generator.py"
+            generator.write_text(
+                "from pathlib import Path\n"
+                "Path('ReasBookWeb/.literate-modules.json').write_text("
+                "'{\"schema_version\":1,\"modules\":[\"Demo\"]}\\n')\n",
+                encoding="utf-8",
+            )
+            deploy = repo / "sdk/deploy/bin/reasbook-deploy"
+            deploy.write_text(
+                "#!/usr/bin/env bash\n"
+                "set -euo pipefail\n"
+                "while [[ $# -gt 0 && $1 != -- ]]; do shift; done\n"
+                "shift\n"
+                "export REASBOOK_BUILD_LAKE_BIN=/runtime/lake\n"
+                "exec \"$@\"\n",
+                encoding="utf-8",
+            )
+            deploy.chmod(0o755)
+            literate = repo / "sdk/verso/bin/verso-literate"
+            literate.write_text(
+                "#!/usr/bin/env bash\n"
+                "test \"${REASBOOK_BUILD_LAKE_BIN:-}\" = /runtime/lake\n"
+                "exit 17\n",
+                encoding="utf-8",
+            )
+            literate.chmod(0o755)
+            web_marker = repo / "web-build-ran"
+            web = repo / "sdk/verso/bin/verso-build"
+            web.write_text(
+                f"#!/usr/bin/env bash\ntouch {web_marker}\n",
+                encoding="utf-8",
+            )
+            web.chmod(0o755)
+
+            result = subprocess.run(
+                ["bash", str(scripts / "verso.sh")],
+                cwd=repo,
+                env={
+                    **os.environ,
+                    "REASBOOK_REPO_ROOT": str(repo),
+                    "REASBOOK_LEAN_ROOT": str(repo / "ReasBook"),
+                    "REASBOOK_WEB_ROOT": str(repo / "ReasBookWeb"),
+                    "REASBOOK_VERSO_GENERATOR": str(generator),
+                },
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+
+            self.assertEqual(result.returncode, 17, result.stderr)
+            self.assertFalse(web_marker.exists())
+
     def test_catalog_display_names_preserve_bibliographic_structure(self) -> None:
         self.assertEqual(
             assemble.display_name("RiemannSurfaces_Forster_1981"),
@@ -207,6 +294,18 @@ class RepositoryScriptTests(unittest.TestCase):
                 web_root / "ReasBookSite" / "Sections.lean"
             ).read_text(encoding="utf-8")
             self.assertIn("demobook/chap01/", sections)
+            literate_manifest = json.loads(
+                (web_root / ".literate-modules.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(literate_manifest["schema_version"], 1)
+            self.assertEqual(
+                (web_root / ".literate-modules.json").stat().st_mode & 0o777,
+                0o644,
+            )
+            self.assertEqual(
+                literate_manifest["modules"],
+                ["Books.DemoBook.Book", "Books.DemoBook.Chap01"],
+            )
             home = (web_root / "ReasBookSite" / "Home.lean").read_text(
                 encoding="utf-8"
             )
