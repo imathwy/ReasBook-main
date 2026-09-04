@@ -19,6 +19,7 @@ class GitHubWorkflowPolicyTests(unittest.TestCase):
         self.assertNotIn("bundle_asset:", text)
         self.assertNotIn("bundle_sha256:", text)
         self.assertIn("permissions: {}", text)
+        self.assertIn("      REASBOOK_PYTHON_BIN: python", text)
         self.assertIn("attestations: read", text)
         self.assertIn("pages: read", text)
         self.assertIn("pages: write", text)
@@ -106,6 +107,13 @@ class GitHubWorkflowPolicyTests(unittest.TestCase):
     def test_superseded_github_builders_are_removed(self) -> None:
         for name in ("deploy_pages.yml", "deploy_preview.yml", "docs_full.yml"):
             self.assertFalse((WORKFLOWS / name).exists(), name)
+
+    def test_required_offline_check_runs_for_every_pull_request(self) -> None:
+        text = (WORKFLOWS / "sdk_tests.yml").read_text(encoding="utf-8")
+
+        self.assertIn("  pull_request: {}", text)
+        self.assertEqual(text.count("    paths:"), 1)
+        self.assertIn("      REASBOOK_PYTHON_BIN: python", text)
 
 
 if __name__ == "__main__":
