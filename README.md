@@ -79,8 +79,8 @@ deployment, use the focused SDK guide for the relevant capability:
 | Challenge/Solution comparison | [Comparator SDK](sdk/comparator/README.md) · [upstream Comparator](https://github.com/leanprover/comparator) |
 | Multi-stage deployment and release assembly | [Deploy SDK](sdk/deploy/README.md) |
 
-These guides keep operational commands with the tool that owns them, so the
-homepage remains a catalog rather than a second copy of the build manuals.
+See the relevant SDK guide for operational commands. The homepage focuses on
+the project catalog.
 
 ## Sponsors
 
