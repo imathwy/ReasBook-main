@@ -19,6 +19,8 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      REASBOOK_PYTHON_BIN: python
     permissions:
       attestations: read
       contents: read
