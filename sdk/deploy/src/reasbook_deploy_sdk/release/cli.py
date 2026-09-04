@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 from contextlib import contextmanager
 import json
+import math
 import os
 from pathlib import Path
 import signal
@@ -19,7 +20,12 @@ from .artifacts import artifact_policy_digest
 from .build_plan import ReleaseBuildOptions
 from .bundle import BundleVerifier, normalize_sha256, site_tree_digest
 from .config import load_profile
-from .pages_config import GitHubPagesConfigurator
+from .pages_config import (
+    DEFAULT_IMMUTABLE_CONVERGENCE_POLL_SECONDS,
+    DEFAULT_IMMUTABLE_CONVERGENCE_TIMEOUT_SECONDS,
+    GitHubPagesConfigurator,
+    _validate_immutable_convergence,
+)
 from .service import ReleaseDeploymentResult, StaticReleaseService
 from .self_hosted import SelfHostedInstaller
 from .store import ReleaseStore
@@ -49,6 +55,47 @@ def _positive_integer(value: str) -> int:
     if parsed < 1:
         raise argparse.ArgumentTypeError("expected a positive integer")
     return parsed
+
+
+def _positive_finite_seconds(value: str) -> float:
+    try:
+        parsed = float(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError(
+            "expected a positive finite number of seconds"
+        ) from exc
+    if not math.isfinite(parsed) or parsed <= 0:
+        raise argparse.ArgumentTypeError("expected a positive finite number of seconds")
+    return parsed
+
+
+class _ReleaseArgumentParser(argparse.ArgumentParser):
+    """Apply target-dependent invariants after argparse resolves subcommands."""
+
+    def parse_args(self, args=None, namespace=None):
+        parsed = super().parse_args(args, namespace)
+        command = getattr(parsed, "release_command", None)
+        if command == "configure-pages":
+            try:
+                _validate_immutable_convergence(
+                    parsed.immutable_convergence_timeout_seconds,
+                    parsed.immutable_convergence_poll_seconds,
+                )
+            except DeployExecutionError as exc:
+                self.error(str(exc))
+        if (
+            command in {"publish", "rollback"}
+            and getattr(parsed, "target", None) == "self-hosted"
+            and not (
+                getattr(parsed, "health_url", None)
+                or getattr(parsed, "filesystem_health_only", False)
+            )
+        ):
+            self.error(
+                "--target self-hosted requires exactly one of --health-url or "
+                "--filesystem-health-only"
+            )
+        return parsed
 
 
 def _service(args: argparse.Namespace) -> StaticReleaseService:
@@ -91,13 +138,22 @@ def _add_health_options(
     parser: argparse.ArgumentParser,
     *,
     required: bool,
+    required_for_self_hosted: bool = False,
 ) -> None:
     health = parser.add_mutually_exclusive_group(required=required)
-    health.add_argument("--health-url")
+    conditional = (
+        " Required when --target self-hosted." if required_for_self_hosted else ""
+    )
+    health.add_argument(
+        "--health-url",
+        help="HTTP(S) ReleaseSpec endpoint used after activation." + conditional,
+    )
     health.add_argument(
         "--filesystem-health-only",
         action="store_true",
-        help="explicitly validate files without probing the HTTP server",
+        help=(
+            "explicitly validate files without probing the HTTP server." + conditional
+        ),
     )
 
 
@@ -134,7 +190,7 @@ def _status_payload(context) -> dict:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
+    parser = _ReleaseArgumentParser(
         prog="reasbook-deploy release",
         description="Plan, build, package, and publish immutable static releases.",
     )
@@ -161,6 +217,24 @@ def build_parser() -> argparse.ArgumentParser:
         "--expected-policy-type",
         choices=("branch", "tag"),
         help="exact current type required for --remove-policy-id",
+    )
+    configure_pages.add_argument(
+        "--immutable-convergence-timeout-seconds",
+        type=_positive_finite_seconds,
+        default=DEFAULT_IMMUTABLE_CONVERGENCE_TIMEOUT_SECONDS,
+        help=(
+            "deadline for the immutable-releases setting to converge after an "
+            "enable request (default: 300)"
+        ),
+    )
+    configure_pages.add_argument(
+        "--immutable-convergence-poll-seconds",
+        type=_positive_finite_seconds,
+        default=DEFAULT_IMMUTABLE_CONVERGENCE_POLL_SECONDS,
+        help=(
+            "GitHub polling interval while immutable releases converge "
+            "(default: 5; minimum: 1)"
+        ),
     )
 
     policy_digest = commands.add_parser(
@@ -201,7 +275,11 @@ def build_parser() -> argparse.ArgumentParser:
         default="github-pages",
     )
     publish.add_argument("--deploy-root", type=Path)
-    _add_health_options(publish, required=False)
+    _add_health_options(
+        publish,
+        required=False,
+        required_for_self_hosted=True,
+    )
 
     preview = commands.add_parser(
         "preview", help="serve an exact packaged artifact locally"
@@ -311,7 +389,11 @@ def build_parser() -> argparse.ArgumentParser:
         default="github-pages",
     )
     rollback.add_argument("--deploy-root", type=Path)
-    _add_health_options(rollback, required=False)
+    _add_health_options(
+        rollback,
+        required=False,
+        required_for_self_hosted=True,
+    )
     return parser
 
 
@@ -362,6 +444,12 @@ def _main(argv: list[str] | None = None) -> int:
                 remove_policy_id=args.remove_policy_id,
                 expected_policy_name=args.expected_policy_name,
                 expected_policy_type=args.expected_policy_type,
+                immutable_convergence_timeout_seconds=(
+                    args.immutable_convergence_timeout_seconds
+                ),
+                immutable_convergence_poll_seconds=(
+                    args.immutable_convergence_poll_seconds
+                ),
             )
         )
         return 0

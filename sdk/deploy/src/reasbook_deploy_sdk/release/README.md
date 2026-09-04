@@ -183,7 +183,12 @@ identity fields together, and audit the same request before applying it:
 Removal is allowed only when the simulated result is exactly the default
 branch policy. The command never pattern-matches or deletes in bulk, refuses to
 delete the default branch itself, and verifies the complete policy list again
-after the single-ID DELETE.
+after the single-ID DELETE. After an immutable-releases enable request, it waits
+up to 300 seconds for the repository setting to converge and polls every five
+seconds. Use `--immutable-convergence-timeout-seconds` and
+`--immutable-convergence-poll-seconds` to tune that boundary; both values must
+be positive and finite, and the poll interval must be at least one second and
+must not exceed the timeout.
 
 ```bash
 ./sdk/deploy/bin/reasbook-deploy release publish RELEASE_ID \
@@ -335,6 +340,11 @@ writes an immutable version directory, atomically replaces the `current`
 symlink, and restores the preceding link when the health probe fails. Use
 `--filesystem-health-only` explicitly only while bootstrapping a server that
 cannot yet answer an HTTP(S) health request.
+
+The CLI parser requires exactly one of `--health-url` or
+`--filesystem-health-only` for every self-hosted `publish` and `rollback`, even
+under `--dry-run`. The choice is therefore explicit before the command reads or
+changes release state.
 
 Rollback never rebuilds:
 

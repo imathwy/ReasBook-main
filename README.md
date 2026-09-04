@@ -315,7 +315,12 @@ three of its immutable expectations, first as a dry run and then unchanged:
 The command fetches and exactly compares the numeric ID, name, and type before
 using the single-policy DELETE endpoint. It refuses to remove the default
 branch, refuses ambiguous or multi-policy cleanup, and fetches the policies
-again to prove that only the default branch remains.
+again to prove that only the default branch remains. Repository settings can be
+eventually consistent: after enabling immutable releases the command polls for
+up to 300 seconds at five-second intervals before failing closed. Tune this
+bounded wait with `--immutable-convergence-timeout-seconds` and
+`--immutable-convergence-poll-seconds`; both must be positive and finite, and
+the poll interval must be at least one second and no greater than the timeout.
 
 ```bash
 ./sdk/deploy/bin/reasbook-deploy release publish "$RELEASE_ID" \
@@ -437,6 +442,11 @@ fails. Roll back without rebuilding:
   --target self-hosted --deploy-root /srv/reasbook --to "$RELEASE_ID" \
   --health-url http://127.0.0.1/ReasBook/release-spec.json
 ```
+
+For `publish --target self-hosted` and `rollback --target self-hosted`, the CLI
+parser requires exactly one of `--health-url` or
+`--filesystem-health-only`, including for a dry run. This makes the intended
+post-switch verification mode visible before release state is inspected.
 
 For a containerized server, make the initial install with
 `--filesystem-health-only`, then start the dedicated production Compose project

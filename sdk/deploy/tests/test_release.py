@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+from contextlib import redirect_stderr, redirect_stdout
 from dataclasses import replace
 from datetime import datetime, timezone
+import io
 import json
 import hashlib
 from pathlib import Path
@@ -464,8 +466,92 @@ class ReleasePlanningTests(unittest.TestCase):
         self.assertEqual(configured.remove_policy_id, 202)
         self.assertEqual(configured.expected_policy_name, "v4.30.0")
         self.assertEqual(configured.expected_policy_type, "branch")
+        self.assertEqual(configured.immutable_convergence_timeout_seconds, 300.0)
+        self.assertEqual(configured.immutable_convergence_poll_seconds, 5.0)
+        tuned = build_parser().parse_args(
+            [
+                "configure-pages",
+                "--immutable-convergence-timeout-seconds",
+                "420",
+                "--immutable-convergence-poll-seconds",
+                "7.5",
+            ]
+        )
+        self.assertEqual(tuned.immutable_convergence_timeout_seconds, 420.0)
+        self.assertEqual(tuned.immutable_convergence_poll_seconds, 7.5)
         with self.assertRaises(SystemExit):
             build_parser().parse_args(["configure-pages", "--remove-policy-id", "0"])
+        for invalid in (
+            ["--immutable-convergence-timeout-seconds", "0"],
+            ["--immutable-convergence-timeout-seconds", "nan"],
+            ["--immutable-convergence-poll-seconds", "0.5"],
+            [
+                "--immutable-convergence-timeout-seconds",
+                "4",
+                "--immutable-convergence-poll-seconds",
+                "5",
+            ],
+        ):
+            with self.subTest(invalid=invalid), redirect_stderr(io.StringIO()):
+                with self.assertRaises(SystemExit):
+                    build_parser().parse_args(["configure-pages", *invalid])
+
+        release_id = "site-20260901T140000Z-" + "a" * 12
+        parser = build_parser()
+        self_hosted_commands = (
+            [
+                "publish",
+                release_id,
+                "--target",
+                "self-hosted",
+                "--deploy-root",
+                "/srv/reasbook",
+            ],
+            [
+                "rollback",
+                "--to",
+                release_id,
+                "--target",
+                "self-hosted",
+                "--deploy-root",
+                "/srv/reasbook",
+            ],
+        )
+        for command in self_hosted_commands:
+            error = io.StringIO()
+            with self.subTest(command=command), redirect_stderr(error):
+                with self.assertRaises(SystemExit):
+                    parser.parse_args(command)
+            self.assertIn("requires exactly one", error.getvalue())
+
+        for health_mode in (
+            ["--health-url", "http://127.0.0.1/ReasBook/release-spec.json"],
+            ["--filesystem-health-only"],
+        ):
+            for command in self_hosted_commands:
+                parsed_self_hosted = build_parser().parse_args([*command, *health_mode])
+                self.assertEqual(parsed_self_hosted.target, "self-hosted")
+
+        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
+            build_parser().parse_args(
+                [
+                    "publish",
+                    release_id,
+                    "--target",
+                    "self-hosted",
+                    "--health-url",
+                    "http://127.0.0.1/ReasBook/release-spec.json",
+                    "--filesystem-health-only",
+                ]
+            )
+
+        help_output = io.StringIO()
+        with redirect_stdout(help_output), self.assertRaises(SystemExit):
+            build_parser().parse_args(["publish", "--help"])
+        self.assertIn(
+            "Required when --target self-hosted.",
+            help_output.getvalue(),
+        )
 
         digest = build_parser().parse_args(
             ["policy-digest", "--profile", "github-pages"]
@@ -510,6 +596,35 @@ class ReleasePlanningTests(unittest.TestCase):
                 repository="acme/reasbook",
                 workflow="../untrusted.yml",
             )
+
+    def test_configure_pages_cli_forwards_immutable_convergence_options(self) -> None:
+        with (
+            patch("reasbook_deploy_sdk.release.cli.GitHubPagesConfigurator") as factory,
+            patch("reasbook_deploy_sdk.release.cli._print"),
+        ):
+            factory.return_value.configure.return_value = {"status": "configured"}
+            self.assertEqual(
+                _main(
+                    [
+                        "--repo-root",
+                        str(REPO_ROOT),
+                        "configure-pages",
+                        "--immutable-convergence-timeout-seconds",
+                        "420",
+                        "--immutable-convergence-poll-seconds",
+                        "7.5",
+                    ]
+                ),
+                0,
+            )
+        factory.return_value.configure.assert_called_once_with(
+            dry_run=False,
+            remove_policy_id=None,
+            expected_policy_name=None,
+            expected_policy_type=None,
+            immutable_convergence_timeout_seconds=420.0,
+            immutable_convergence_poll_seconds=7.5,
+        )
 
     def test_policy_digest_cli_reads_the_trusted_profile(self) -> None:
         profile_value = load_profile(
@@ -3272,7 +3387,19 @@ class ReleasePlanningTests(unittest.TestCase):
                 )
             )
 
-            configured = configurator.configure()
+            with patch.object(
+                configurator,
+                "_wait_for_immutable_releases_enabled",
+                wraps=configurator._wait_for_immutable_releases_enabled,
+            ) as wait_for_immutable:
+                configured = configurator.configure(
+                    immutable_convergence_timeout_seconds=420.0,
+                    immutable_convergence_poll_seconds=7.5,
+                )
+            wait_for_immutable.assert_called_once_with(
+                timeout_seconds=420.0,
+                poll_interval_seconds=7.5,
+            )
             self.assertEqual(configured.status, "configured")
             writes = [
                 command
@@ -3553,6 +3680,73 @@ class ReleasePlanningTests(unittest.TestCase):
                     remove_policy_id=202,
                     expected_policy_name="v4.30.0",
                     expected_policy_type="branch",
+                )
+
+    def test_github_pages_immutable_configuration_wait_is_bounded(self) -> None:
+        configurator = GitHubPagesConfigurator(
+            GitHubPublishProfile(repository="acme/reasbook")
+        )
+        with (
+            patch.object(
+                configurator,
+                "_immutable_releases_enabled",
+                side_effect=(False, False, True),
+            ) as enabled,
+            patch("reasbook_deploy_sdk.release.github_client.time.sleep") as sleep,
+        ):
+            configurator._wait_for_immutable_releases_enabled(
+                timeout_seconds=10.0,
+                poll_interval_seconds=2.0,
+            )
+        self.assertEqual(enabled.call_count, 3)
+        self.assertEqual(sleep.call_count, 2)
+        sleep.assert_called_with(2.0)
+
+        with (
+            patch.object(
+                configurator,
+                "_immutable_releases_enabled",
+                return_value=False,
+            ),
+            patch(
+                "reasbook_deploy_sdk.release.github_client.time.monotonic",
+                side_effect=(0.0, 0.0, 3.0),
+            ),
+            patch(
+                "reasbook_deploy_sdk.release.github_client.time.sleep"
+            ) as timed_sleep,
+            self.assertRaisesRegex(
+                DeployExecutionError,
+                "timed out waiting for GitHub immutable releases",
+            ),
+        ):
+            configurator._wait_for_immutable_releases_enabled(
+                timeout_seconds=3.0,
+                poll_interval_seconds=2.0,
+            )
+        timed_sleep.assert_called_once_with(2.0)
+
+        invalid_options = (
+            (0.0, 1.0, "timeout"),
+            (float("inf"), 1.0, "timeout"),
+            (10.0, 0.5, "at least 1 second"),
+            (2.0, 3.0, "must not exceed"),
+            (True, 1.0, "timeout"),
+        )
+        for timeout, poll, message in invalid_options:
+            with (
+                self.subTest(timeout=timeout, poll=poll),
+                patch.object(
+                    configurator,
+                    "_default_branch",
+                    side_effect=AssertionError("GitHub must not be called"),
+                ),
+                self.assertRaisesRegex(DeployExecutionError, message),
+            ):
+                configurator.configure(
+                    dry_run=True,
+                    immutable_convergence_timeout_seconds=timeout,
+                    immutable_convergence_poll_seconds=poll,
                 )
 
     def test_github_pages_policy_removal_requires_all_expected_fields(self) -> None:

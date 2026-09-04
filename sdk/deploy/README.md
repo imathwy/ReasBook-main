@@ -226,7 +226,12 @@ default branch, using `--remove-policy-id ID --expected-policy-name NAME
 --expected-policy-type branch|tag`. All three values are mandatory; run the
 exact command with `--dry-run` first. The implementation compares every field,
 refuses the default branch and multi-policy cleanup, deletes only `/ID`, and
-re-fetches the complete list before reporting success.
+re-fetches the complete list before reporting success. Enabling immutable
+releases also has a bounded eventual-consistency wait: 300 seconds by default,
+polled every five seconds. Override it with
+`--immutable-convergence-timeout-seconds` and
+`--immutable-convergence-poll-seconds`; values must be positive and finite,
+with a poll interval of at least one second that does not exceed the timeout.
 
 Promote the already packaged and browser-validated Pages artifact with one
 command:
@@ -326,6 +331,9 @@ The destination rejects a ReleaseSet that does not bind the full archive's
 checksum, ReleaseSpec, site digest, file count, byte count, and policy before
 writing the deployment root. Every non-dry-run install needs either an HTTP(S)
 health URL or the explicit bootstrap-only `--filesystem-health-only` mode.
+The parser applies the same exactly-one requirement to self-hosted `publish`
+and `rollback` commands, including dry runs, so they cannot defer the health
+decision until activation.
 
 The Pages publisher, including `--dry-run`, requires the successful
 `validation/<release-id>/latest.json` produced by `release validate

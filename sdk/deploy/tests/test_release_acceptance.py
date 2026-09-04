@@ -831,6 +831,7 @@ class ReleaseAcceptanceTests(unittest.TestCase):
                         "self-hosted",
                         "--deploy-root",
                         str(Path(temp) / "server"),
+                        "--filesystem-health-only",
                         "--dry-run",
                     ]
                 )
