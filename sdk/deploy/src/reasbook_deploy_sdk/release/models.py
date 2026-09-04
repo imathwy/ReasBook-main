@@ -447,7 +447,14 @@ class ReleaseSpec:
         _text(self.repository, field="source.repository")
         if not COMMIT_RE.fullmatch(self.registry_commit):
             raise DeployConfigError("source.registry_commit must be a Git commit")
-        _text(self.tooling_revision, field="source.tooling_revision")
+        tooling_revision = _text(
+            self.tooling_revision,
+            field="source.tooling_revision",
+        )
+        if tooling_revision.split("+", 1)[0] != self.registry_commit:
+            raise DeployConfigError(
+                "source.tooling_revision must derive from source.registry_commit"
+            )
         if not isinstance(self.include_historical_versions, bool):
             raise DeployConfigError("site.include_historical_versions must be boolean")
         object.__setattr__(self, "base_path", _base_path(self.base_path))

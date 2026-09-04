@@ -10,6 +10,7 @@ import os
 from pathlib import Path, PurePosixPath
 import re
 import shutil
+import stat
 import tempfile
 import uuid
 
@@ -29,6 +30,18 @@ from .results import (
     ReleaseManifest,
 )
 from .store import ReleaseLayout, ReleaseStore
+
+
+_HOST_EXCLUDED_SITE_PARTS = frozenset({".git", ".github"})
+
+
+def _reject_host_excluded_path(relative: Path | PurePosixPath) -> None:
+    """Reject paths GitHub's Pages uploader omits even in hidden-file mode."""
+
+    if any(part in _HOST_EXCLUDED_SITE_PARTS for part in relative.parts):
+        raise DeployExecutionError(
+            f"site contains a host-excluded path: {relative.as_posix()}"
+        )
 
 
 def normalize_sha256(value: str | None) -> str | None:
@@ -64,11 +77,13 @@ def site_tree_digest(root: Path) -> tuple[str, int, int]:
     for path in sorted(root.rglob("*"), key=lambda item: item.as_posix()):
         if path.is_symlink():
             raise DeployExecutionError(f"site contains a symlink: {path}")
+        relative_path = path.relative_to(root)
+        _reject_host_excluded_path(relative_path)
         if path.is_dir():
             continue
         if not path.is_file():
             raise DeployExecutionError(f"site contains a special file: {path}")
-        relative = path.relative_to(root).as_posix()
+        relative = relative_path.as_posix()
         size = path.stat().st_size
         content_digest = sha256_file(path)
         digest.update(relative.encode("utf-8"))
@@ -352,6 +367,71 @@ class BundleVerifier:
             )
         return manifest
 
+    def release_manifest_bytes(
+        self,
+        bundle: Path,
+        *,
+        expected_sha256: str | None = None,
+    ) -> bytes:
+        """Read the exact manifest member after bounded archive validation."""
+
+        archive = Path(bundle).expanduser().resolve()
+        if not archive.is_file() or archive.is_symlink():
+            raise DeployConfigError(f"bundle does not exist: {archive}")
+        normalized = normalize_sha256(expected_sha256)
+        if normalized is not None and sha256_file(archive) != normalized:
+            raise DeployExecutionError("bundle checksum mismatch before manifest read")
+        members = self._list_archive(archive)
+        self._validate_members(members)
+        expected_size = next(
+            member.size
+            for member in members
+            if member.name == "release-manifest.json"
+        )
+        with tempfile.TemporaryDirectory(
+            prefix=".reasbook-manifest-",
+            dir=str(archive.parent),
+        ) as temp:
+            destination = Path(temp)
+            try:
+                result = CommandRunner().run(
+                    Command(
+                        (
+                            "tar",
+                            "--zstd",
+                            "--extract",
+                            "--file",
+                            str(archive),
+                            "--directory",
+                            str(destination),
+                            "--no-same-owner",
+                            "--no-same-permissions",
+                            "release-manifest.json",
+                        ),
+                        cwd=destination,
+                        timeout=300.0,
+                    )
+                )
+            except CommandExecutionError as exc:
+                raise DeployExecutionError(
+                    f"cannot extract release bundle manifest: {exc}"
+                ) from exc
+            if result.returncode != 0:
+                raise DeployExecutionError(
+                    "cannot extract release bundle manifest"
+                )
+            manifest_path = destination / "release-manifest.json"
+            if manifest_path.is_symlink() or not manifest_path.is_file():
+                raise DeployExecutionError(
+                    "bundle release manifest is not a regular file"
+                )
+            payload = manifest_path.read_bytes()
+            if len(payload) != expected_size:
+                raise DeployExecutionError(
+                    "bundle release manifest size changed during extraction"
+                )
+            return payload
+
     def verify(
         self,
         bundle: Path,
@@ -401,11 +481,28 @@ class BundleVerifier:
     def _extraction_target(value: Path | None) -> Path | None:
         if value is None:
             return None
-        target = Path(value).expanduser().resolve(strict=False)
+        # Normalize ``.``/``..`` lexically, without following links and losing
+        # the evidence needed to reject a link supplied as the destination (or
+        # as any existing parent component).
+        target = Path(os.path.abspath(os.fspath(Path(value).expanduser())))
         if target in {Path("/"), Path.home().resolve()}:
             raise DeployConfigError(
                 f"refusing to replace broad extraction target: {target}"
             )
+        for component in (target, *target.parents):
+            try:
+                metadata = component.lstat()
+            except FileNotFoundError:
+                continue
+            except OSError as exc:
+                raise DeployConfigError(
+                    f"cannot inspect extraction target component: {component}"
+                ) from exc
+            if stat.S_ISLNK(metadata.st_mode):
+                raise DeployConfigError(
+                    "refusing extraction target with a symbolic-link component: "
+                    f"{component}"
+                )
         return target
 
     @staticmethod
@@ -513,6 +610,8 @@ class BundleVerifier:
         for member in members:
             name = member.name
             path = PurePosixPath(name)
+            if name == "site" or name.startswith("site/"):
+                _reject_host_excluded_path(PurePosixPath(*path.parts[1:]))
             canonical = path.as_posix()
             if member.kind == "d":
                 canonical += "/"
@@ -616,6 +715,8 @@ class BundleVerifier:
         target = BundleVerifier._extraction_target(destination)
         assert target is not None
         target.parent.mkdir(parents=True, exist_ok=True)
+        rechecked = BundleVerifier._extraction_target(target)
+        assert rechecked == target
         backup = target.parent / f".{target.name}-backup-{uuid.uuid4().hex}"
         had_target = target.exists() or target.is_symlink()
         if had_target:

@@ -68,11 +68,13 @@ operations layer. The aggregate result is copied into the release's `site/`
 directory and marked validated. GitHub Actions never receives Lean caches or
 build credentials.
 
-Package and inspect both target artifacts:
+After `release status` reports a completed aggregate `site` stage, package and
+inspect both target artifacts. Branch-level Lean caches without that aggregate
+site are not sufficient:
 
 ```bash
-./sdk/deploy/bin/reasbook-deploy release package RELEASE_ID
 ./sdk/deploy/bin/reasbook-deploy release status RELEASE_ID
+./sdk/deploy/bin/reasbook-deploy release package RELEASE_ID
 ```
 
 Packaging is incremental. A bundle is reused only when its archive checksum,
@@ -91,7 +93,32 @@ for a full public build:
 
 ## Local preview
 
-Preview the exact tree bound to a packaged archive:
+For a completed release in the local cache, the exact package, required
+acceptance, and manual-preview sequence is:
+
+```bash
+RELEASE_ID="${RELEASE_ID:?set RELEASE_ID to the generated release ID}"
+./sdk/deploy/bin/reasbook-deploy release package "$RELEASE_ID"
+./sdk/deploy/bin/reasbook-deploy release validate "$RELEASE_ID" \
+  --browser-mode required
+./sdk/deploy/bin/reasbook-deploy release preview "$RELEASE_ID" \
+  --artifact pages --host 127.0.0.1 --port 18000
+```
+
+The SDK defaults to
+`/volume/math/users/zcwang/ReasBook_Reviewer/cache/reasbook`; set
+`REASBOOK_CACHE_ROOT` or pass the release-level `--cache-root` before the
+subcommand on another host or volume.
+
+This command does not rebuild. It verifies both archives and their ReleaseSet,
+serves the Pages projection, installs the full artifact through the atomic
+self-hosted adapter, and serves that installed tree. HTTP checks cover every
+declared project-version entry appropriate to each artifact; Playwright opens
+one representative of every route kind at both desktop and 390 px widths.
+Per-project Verso exceptions are loaded from the tooling snapshot cryptographically
+bound to the ReleaseSpec, never from an unrelated current checkout.
+
+To start the same preview again without rerunning acceptance:
 
 ```bash
 ./sdk/deploy/bin/reasbook-deploy release preview RELEASE_ID \
@@ -128,8 +155,10 @@ publish the already-built artifact:
 
 Configuration is idempotent and fail-closed. It creates only missing
 workflow-based Pages/environment settings, permits only the exact default
-branch, and refuses to overwrite custom domains or incompatible/extra branch
-policies.
+branch, enables repository immutable releases, and refuses to overwrite custom
+domains or incompatible/extra branch policies. The caller needs repository
+Administration read permission to audit the immutable-release setting and
+write permission to enable it.
 
 ```bash
 ./sdk/deploy/bin/reasbook-deploy release publish RELEASE_ID \
@@ -147,22 +176,61 @@ release-set.json
 SHA256SUMS
 ```
 
-The local publisher checks the configured policy digest and both artifact
-records before upload. The workflow independently checks the tag target, the
-Pages archive/manifest/spec/ReleaseSet bindings, the shape of the full record
-and policy digest, the 850 MB site budget, and the 60,000-file budget before
-calling the official Pages deployment action. It has no full archive and
-performs no source build. Publishing an existing tag is
+The local publisher first requires the browser-complete acceptance record for
+the current package, then checks the configured policy digest and both artifact
+records before upload. Dry-run crosses the same evidence and
+repository-setting gates. The publisher waits for GitHub to report the Release
+immutable before dispatch. After upload succeeds but before the draft is
+published, it re-reads the same draft ID/tag and requires all four remote asset
+sizes and server-computed digests to match. The workflow uses GitHub's Release
+and per-asset verification commands, independently checks the tag target,
+archive/manifest/spec/ReleaseSet bindings, and recomputes the policy digest
+from its trusted checked-out profile. It enforces the compressed,
+archive-member, 850 MB site, and 60,000-file budgets before extraction. It has
+no full archive and performs no source build. Publishing an existing tag is
 idempotent only when every remote asset has the same name, size, and digest;
-assets are never overwritten.
+assets are never overwritten, and an already-published Release is not edited
+before re-dispatch.
+
+The GitHub path is a one-command promotion of an already packaged and accepted
+release, not a source-to-production one-click build. `configure-pages` is a
+separate one-time idempotent setup. Publication uploads the four assets, then
+the workflow downloads/verifies the Pages archive, extracts it once, uploads
+the static tree, and deploys Pages. It never receives Lean caches and runs no
+Lean, Verso, doc-gen, or theorem-graph build. Elapsed time is therefore driven
+mainly by archive size and uplink, Actions queueing, decompression/upload, and
+the Pages deploy; runner CPU is limited to hashing, verification, and
+extraction. The local upload has a two-hour failure timeout while normal GitHub
+API calls retain a five-minute timeout. The verify job declares read-only
+`contents`, `pages`, and `attestations` permissions, and installs only pinned
+`PyYAML==6.0.3` for the SDK policy check.
 
 Before creating a new tag, the publisher requires a clean local checkout whose
-`HEAD` is the current GitHub default-branch commit. This prevents a feature
-branch from accidentally tagging an unpublished tree. Every dispatch uses the
-current trusted workflow and rejects a release tag that is not on that
-default-branch history. Once an immutable release exists, an exact re-dispatch
-is allowed from another local branch because the tag ancestry and every remote
-asset digest are revalidated remotely.
+`HEAD` is both the current GitHub default-branch commit and the ReleaseSpec's
+exact `source.registry_commit`. This prevents a feature branch or a newer main
+checkout from attaching a validated bundle to a different source revision.
+Local canaries may use a dirty tooling snapshot, but GitHub publication requires
+the exact clean `COMMIT+tooling-sha256:DIGEST` revision form. The publisher
+atomically creates the Git ref before the draft Release, invokes Release
+creation and publication through the REST API, and rechecks the fully
+dereferenced target before upload, publication, and dispatch. Release upload
+and workflow dispatch use only flags supported by GitHub CLI 2.4; wait-mode run
+discovery also reads the Actions REST API instead of version-specific CLI JSON
+fields. A pre-existing tag or a tag won by a
+concurrent creator is accepted only if it resolves to the ReleaseSpec commit.
+Every dispatch uses the current
+trusted workflow, which independently repeats the source-commit and
+clean-tooling checks and requires the tag to remain on default-branch history.
+Once an immutable release exists, an exact re-dispatch is allowed from another
+local branch because the tag identity, ancestry, and every remote asset digest
+are revalidated remotely. The workflow deliberately anchors policy to its
+current trusted default-branch profile. If that policy changed since an older
+Release was built, do not re-dispatch it; create and validate a new ReleaseSpec.
+
+The v5 Pages uploader includes digest-verified hidden files such as `.nojekyll`
+and `.well-known/`. Packaging rejects exact `.git` or `.github` path segments,
+which GitHub excludes even in hidden-file mode, so the uploaded tree cannot
+silently differ from the locally verified tree.
 
 Both artifacts preserve project content and close referenced URLs. API docs
 start at each configured entry root and include every reachable project-owned
@@ -183,24 +251,44 @@ Install the full artifact directly from the release cache:
   --health-url http://127.0.0.1/ReasBook/release-spec.json
 ```
 
-For a separate server, transfer the full archive, its matching `SHA256SUMS`,
-and `release-set.json`; obtain the expected artifact-policy digest separately
-from the trusted build side. Install the deploy SDK and run:
+For a separate server, transfer the full archive and `release-set.json`. On the
+trusted build side, record both the archive's per-release SHA-256 and the
+expected artifact-policy digest before the transfer. Deliver those values to
+the destination operator through an independent authenticated channel:
+
+```bash
+POLICY_SHA256="$(./sdk/deploy/bin/reasbook-deploy release \
+  --repo-root . policy-digest --profile github-pages)"
+CACHE_ROOT="${REASBOOK_CACHE_ROOT:-/volume/math/users/zcwang/ReasBook_Reviewer/cache/reasbook}"
+FULL_BUNDLE="$CACHE_ROOT/releases/$RELEASE_ID/$RELEASE_ID.site.tar.zst"
+FULL_SHA256="$(sha256sum "$FULL_BUNDLE" | awk '{print $1}')"
+printf 'release=%s\nfull_sha256=%s\npolicy_sha256=%s\n' \
+  "$RELEASE_ID" "$FULL_SHA256" "$POLICY_SHA256"
+```
+
+Then install the deploy SDK on the destination and run:
 
 ```bash
 RELEASE_ID="${RELEASE_ID:?set RELEASE_ID to the generated release ID}"
 POLICY_SHA256="${POLICY_SHA256:?set the trusted sha256 artifact-policy digest}"
+FULL_SHA256="${FULL_SHA256:?set the independently authenticated full-bundle SHA-256}"
 FULL_BUNDLE="${RELEASE_ID}.site.tar.zst"
-FULL_SHA256="$(awk -v bundle="$FULL_BUNDLE" \
-  '$2 == bundle { print $1 }' SHA256SUMS)"
-: "${FULL_SHA256:?SHA256SUMS has no matching full bundle}"
 reasbook-deploy release install \
-  "$FULL_BUNDLE" --sha256 "$FULL_SHA256" \
+  "$FULL_BUNDLE" --expected-bundle-sha256 "$FULL_SHA256" \
   --release-set release-set.json \
   --artifact-policy-sha256 "$POLICY_SHA256" \
   --deploy-root /srv/reasbook \
   --health-url http://127.0.0.1/ReasBook/release-spec.json
 ```
+
+This is the same `full` bundle produced in the ReleaseSet beside the Pages
+artifact. After transfer and one-time web-server setup, `release install` is
+the single atomic activation command: it validates the external trust inputs,
+stages the tree, switches `current`, and probes health without rebuilding.
+Do not derive `FULL_SHA256` from a `SHA256SUMS` file transferred with the
+archive; an attacker could replace both. Such a file is only diagnostic.
+`POLICY_SHA256` verifies deployment policy but, because it can remain constant
+across releases, it does not authenticate release identity.
 
 Configure the web server once with `/srv/reasbook/current/public` as its
 document root. `config/deploy/nginx-self-hosted.conf` is a ready

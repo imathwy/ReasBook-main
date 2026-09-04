@@ -13,7 +13,7 @@ import threading
 
 from reasbook_sdk_common import atomic_write_json
 
-from ..errors import DeployConfigError
+from ..errors import DeployConfigError, DeployExecutionError
 from ..runtime import default_cache_root
 from .artifacts import artifact_policy_digest
 from .build_plan import ReleaseBuildOptions
@@ -39,6 +39,16 @@ def _sha256_argument(value: str) -> str:
         raise argparse.ArgumentTypeError(str(exc)) from exc
     assert normalized is not None
     return normalized
+
+
+def _positive_integer(value: str) -> int:
+    try:
+        parsed = int(value)
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("expected a positive integer") from exc
+    if parsed < 1:
+        raise argparse.ArgumentTypeError("expected a positive integer")
+    return parsed
 
 
 def _service(args: argparse.Namespace) -> StaticReleaseService:
@@ -133,6 +143,12 @@ def build_parser() -> argparse.ArgumentParser:
     configure_pages.add_argument("--profile", default="github-pages")
     configure_pages.add_argument("--dry-run", action="store_true")
 
+    policy_digest = commands.add_parser(
+        "policy-digest",
+        help="print the trusted artifact-policy digest for a deployment profile",
+    )
+    policy_digest.add_argument("--profile", default="github-pages")
+
     plan = commands.add_parser("plan", help="resolve immutable release inputs")
     plan.add_argument("--profile", default="github-pages")
     plan.add_argument("--only", action="append", default=[])
@@ -177,6 +193,26 @@ def build_parser() -> argparse.ArgumentParser:
     preview.add_argument("--public-prefix", default="")
     preview.add_argument("--dry-run", action="store_true")
 
+    validate = commands.add_parser(
+        "validate",
+        help="verify and exercise both packaged artifacts locally",
+    )
+    validate.add_argument("release_id")
+    validate.add_argument(
+        "--browser-mode",
+        choices=("auto", "required", "skip"),
+        default="auto",
+        help=(
+            "run Playwright when available (auto), require it for a release "
+            "gate, or explicitly skip it"
+        ),
+    )
+    validate.add_argument(
+        "--keep-workdir",
+        action="store_true",
+        help="retain extracted validation trees after a successful run",
+    )
+
     deploy = commands.add_parser("deploy", help="run the complete release flow")
     deploy.add_argument("--profile", default="github-pages")
     deploy.add_argument("--only", action="append", default=[])
@@ -196,12 +232,31 @@ def build_parser() -> argparse.ArgumentParser:
     verify.add_argument("bundle", type=Path)
     verify.add_argument("--sha256", type=_sha256_argument)
     verify.add_argument("--extract-to", type=Path)
+    verify.add_argument("--max-site-files", type=_positive_integer, default=500_000)
+    verify.add_argument(
+        "--max-site-bytes",
+        type=_positive_integer,
+        default=100_000_000_000,
+    )
+    verify.add_argument(
+        "--max-archive-members",
+        type=_positive_integer,
+        default=1_501_024,
+    )
 
     install = commands.add_parser(
         "install", help="atomically install a full bundle on a static server"
     )
     install.add_argument("bundle", type=Path)
-    install.add_argument("--sha256", required=True, type=_sha256_argument)
+    install.add_argument(
+        "--expected-bundle-sha256",
+        required=True,
+        type=_sha256_argument,
+        help=(
+            "trusted full-bundle SHA-256 obtained independently of the "
+            "transferred bundle and ReleaseSet"
+        ),
+    )
     install.add_argument("--release-set", type=Path, required=True)
     install.add_argument(
         "--artifact-policy-sha256",
@@ -258,6 +313,11 @@ def _main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     service = _service(args)
     command = args.release_command
+    if command == "policy-digest":
+        profile_path = _profile_path(Path(args.repo_root), args.profile)
+        profile = load_profile(profile_path, repo_root=Path(args.repo_root))
+        _print(artifact_policy_digest(profile.artifacts), as_json=False)
+        return 0
     if command == "configure-pages":
         profile_path = _profile_path(Path(args.repo_root), args.profile)
         profile = load_profile(profile_path, repo_root=Path(args.repo_root))
@@ -299,7 +359,11 @@ def _main(argv: list[str] | None = None) -> int:
         _print(result)
         return 0
     if command == "verify":
-        manifest = BundleVerifier().verify(
+        manifest = BundleVerifier(
+            max_site_files=args.max_site_files,
+            max_site_bytes=args.max_site_bytes,
+            max_archive_members=args.max_archive_members,
+        ).verify(
             args.bundle,
             expected_sha256=args.sha256,
             extract_to=args.extract_to,
@@ -311,7 +375,7 @@ def _main(argv: list[str] | None = None) -> int:
             SelfHostedInstaller(args.deploy_root).install(
                 args.bundle,
                 release_set=args.release_set,
-                expected_sha256=args.sha256,
+                expected_sha256=args.expected_bundle_sha256,
                 expected_artifact_policy_sha256=(
                     args.artifact_policy_sha256
                 ),
@@ -345,6 +409,15 @@ def _main(argv: list[str] | None = None) -> int:
         return 0
 
     context = service.context(args.release_id)
+    if command == "validate":
+        _print(
+            service.validate(
+                context,
+                browser_mode=args.browser_mode,
+                keep_workdir=args.keep_workdir,
+            )
+        )
+        return 0
     if command == "preview":
         store = ReleaseStore(context.layout)
         site = (
@@ -453,6 +526,7 @@ def _main(argv: list[str] | None = None) -> int:
         state = store.load_state()
         if "package" not in state.completed:
             raise SystemExit("release artifacts have not been packaged")
+        acceptance = service.require_acceptance(context)
         bundle = store.load_bundle_info()
         if args.dry_run:
             _print(
@@ -465,11 +539,23 @@ def _main(argv: list[str] | None = None) -> int:
                 }
             )
             return 0
+        try:
+            accepted_full_sha256 = str(
+                acceptance["artifacts"]["full"]["bundle_sha256"]
+            )
+        except (KeyError, TypeError) as exc:
+            raise DeployExecutionError(
+                "release acceptance evidence has no full-bundle identity"
+            ) from exc
+        if bundle.bundle_sha256 != accepted_full_sha256:
+            raise DeployExecutionError(
+                "full bundle metadata changed after release acceptance"
+            )
         _print(
             SelfHostedInstaller(args.deploy_root).install(
                 Path(bundle.bundle),
                 release_set=context.layout.release_set,
-                expected_sha256=bundle.bundle_sha256,
+                expected_sha256=accepted_full_sha256,
                 expected_artifact_policy_sha256=artifact_policy_digest(
                     context.profile.artifacts
                 ),
@@ -500,7 +586,7 @@ def _main(argv: list[str] | None = None) -> int:
         publication = (
             None
             if args.no_publish
-            else service.publish(
+            else service.promote(
                 context,
                 wait=args.wait,
                 wait_timeout_seconds=args.wait_timeout_seconds,

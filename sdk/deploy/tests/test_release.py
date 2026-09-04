@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from datetime import datetime, timezone
 import json
 import hashlib
@@ -20,8 +21,9 @@ from reasbook_deploy_sdk.release.bundle import (
     BundleVerifier,
     ReleaseBundler,
     _ArchiveMember,
+    site_tree_digest,
 )
-from reasbook_deploy_sdk.release.cli import build_parser
+from reasbook_deploy_sdk.release.cli import _main, build_parser
 from reasbook_deploy_sdk.release.artifacts import (
     PagesSiteProjector,
     artifact_policy_digest,
@@ -110,8 +112,6 @@ def github_pages_bundle_fixture(
     spec_digest = "sha256:" + release_id.rsplit("-", 1)[-1] + "a" * 52
     site_digest = "sha256:" + "b" * 64
     bundle_path = root / f"{release_id}.pages.site.tar.zst"
-    bundle_path.write_text("fixture", encoding="utf-8")
-    digest = hashlib.sha256(bundle_path.read_bytes()).hexdigest()
     manifest_path = root / "release-manifest.json"
     manifest_path.write_text(
         json.dumps(
@@ -124,6 +124,35 @@ def github_pages_bundle_fixture(
         ),
         encoding="utf-8",
     )
+    archive_source = root / "archive-source"
+    (archive_source / "site").mkdir(parents=True)
+    shutil.copy2(manifest_path, archive_source / "release-manifest.json")
+    (archive_source / "site" / "release-spec.json").write_text(
+        "{}\n",
+        encoding="utf-8",
+    )
+    (archive_source / "site" / "index.html").write_text(
+        "fixture",
+        encoding="utf-8",
+    )
+    subprocess.run(
+        (
+            "tar",
+            "--zstd",
+            "--create",
+            "--file",
+            str(bundle_path),
+            "--directory",
+            str(archive_source),
+            "release-manifest.json",
+            "site/release-spec.json",
+            "site/index.html",
+        ),
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    digest = hashlib.sha256(bundle_path.read_bytes()).hexdigest()
     checksums_path = root / "SHA256SUMS"
     checksums_path.write_text(
         f"{digest}  {bundle_path.name}\n",
@@ -173,6 +202,27 @@ def github_pages_bundle_fixture(
         ),
         assets,
     )
+
+
+def github_release_assets(paths: list[Path] | tuple[Path, ...]) -> list[dict]:
+    """Return the exact GitHub REST metadata for local release assets."""
+
+    return [
+        {
+            "id": index,
+            "name": path.name,
+            "state": "uploaded",
+            "size": path.stat().st_size,
+            "digest": "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest(),
+        }
+        for index, path in enumerate(paths, start=100)
+    ]
+
+
+def accepted_release_set_sha256(bundle: BundleInfo) -> str:
+    assert bundle.release_set is not None
+    path = Path(bundle.release_set)
+    return "sha256:" + hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 class FakeReleaseSource:
@@ -324,7 +374,7 @@ class ReleasePlanningTests(unittest.TestCase):
             [
                 "install",
                 "/transfer/release.site.tar.zst",
-                "--sha256",
+                "--expected-bundle-sha256",
                 "a" * 64,
                 "--release-set",
                 "/transfer/release-set.json",
@@ -337,13 +387,14 @@ class ReleasePlanningTests(unittest.TestCase):
         )
         self.assertEqual(parsed.release_command, "install")
         self.assertEqual(parsed.deploy_root, Path("/srv/reasbook"))
+        self.assertEqual(parsed.expected_bundle_sha256, "a" * 64)
 
         with self.assertRaises(SystemExit):
             build_parser().parse_args(
                 [
                     "install",
                     "/transfer/release.site.tar.zst",
-                    "--sha256",
+                    "--expected-bundle-sha256",
                     "a" * 64,
                     "--release-set",
                     "/transfer/release-set.json",
@@ -357,7 +408,7 @@ class ReleasePlanningTests(unittest.TestCase):
                 [
                     "install",
                     "/transfer/release.site.tar.zst",
-                    "--sha256",
+                    "--expected-bundle-sha256",
                     "",
                     "--release-set",
                     "/transfer/release-set.json",
@@ -373,7 +424,7 @@ class ReleasePlanningTests(unittest.TestCase):
                 [
                     "install",
                     "/transfer/release.site.tar.zst",
-                    "--sha256",
+                    "--expected-bundle-sha256",
                     "a" * 64,
                     "--release-set",
                     "/transfer/release-set.json",
@@ -396,11 +447,61 @@ class ReleasePlanningTests(unittest.TestCase):
         self.assertEqual(configured.release_command, "configure-pages")
         self.assertTrue(configured.dry_run)
 
+        digest = build_parser().parse_args(
+            ["policy-digest", "--profile", "github-pages"]
+        )
+        self.assertEqual(digest.release_command, "policy-digest")
+        self.assertEqual(digest.profile, "github-pages")
+
+        verify = build_parser().parse_args(
+            [
+                "verify",
+                "/transfer/release.site.tar.zst",
+                "--max-site-files",
+                "60000",
+                "--max-site-bytes",
+                "850000000",
+                "--max-archive-members",
+                "180000",
+            ]
+        )
+        self.assertEqual(verify.max_site_files, 60_000)
+        self.assertEqual(verify.max_site_bytes, 850_000_000)
+        self.assertEqual(verify.max_archive_members, 180_000)
+        with self.assertRaises(SystemExit):
+            build_parser().parse_args(
+                ["verify", "/transfer/release.site.tar.zst", "--max-site-files", "0"]
+            )
+
         with self.assertRaisesRegex(DeployConfigError, "plain YAML"):
             GitHubPublishProfile(
                 repository="acme/reasbook",
                 workflow="../untrusted.yml",
             )
+
+    def test_policy_digest_cli_reads_the_trusted_profile(self) -> None:
+        expected = artifact_policy_digest(
+            load_profile(
+                REPO_ROOT / "config/deploy/github-pages.yml",
+                repo_root=REPO_ROOT,
+            ).artifacts
+        )
+        with tempfile.TemporaryDirectory() as temp, patch(
+            "reasbook_deploy_sdk.release.cli._print"
+        ) as emit:
+            status = _main(
+                [
+                    "--repo-root",
+                    str(REPO_ROOT),
+                    "--cache-root",
+                    temp,
+                    "policy-digest",
+                    "--profile",
+                    "github-pages",
+                ]
+            )
+        self.assertEqual(status, 0)
+        emit.assert_called_once_with(expected, as_json=False)
 
     def test_repository_identity_strips_embedded_credentials(self) -> None:
         self.assertEqual(
@@ -419,6 +520,16 @@ class ReleasePlanningTests(unittest.TestCase):
         )
         with self.assertRaisesRegex(DeployConfigError, "already bound"):
             bind_tooling_revision(revision, digest)
+
+    def test_release_spec_requires_tooling_revision_from_registry_commit(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            spec = self._spec(Path(temp))
+
+            with self.assertRaisesRegex(
+                DeployConfigError,
+                "tooling_revision must derive from source.registry_commit",
+            ):
+                replace(spec, tooling_revision="d" * 40)
 
     def test_tooling_snapshot_ignores_sdk_packaging_outputs_by_path(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -1043,6 +1154,7 @@ class ReleasePlanningTests(unittest.TestCase):
                 SelfHostedInstaller(root / "server").install(
                     Path(pages.bundle),
                     release_set=layout.release_set,
+                    expected_sha256=pages.bundle_sha256,
                     expected_artifact_policy_sha256=artifact_policy_digest(
                         profile(root).artifacts
                     ),
@@ -1087,6 +1199,52 @@ class ReleasePlanningTests(unittest.TestCase):
                         "links or special",
                     ):
                         BundleVerifier().inspect(linked)
+
+    def test_site_identity_allows_hidden_files_but_rejects_host_exclusions(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            site = Path(temp) / "site"
+            challenge = site / ".well-known" / "acme-challenge"
+            challenge.parent.mkdir(parents=True)
+            (site / ".nojekyll").write_text("", encoding="utf-8")
+            challenge.write_text("proof", encoding="utf-8")
+
+            digest, count, total = site_tree_digest(site)
+            self.assertRegex(digest, r"^sha256:[0-9a-f]{64}$")
+            self.assertEqual(count, 2)
+            self.assertEqual(total, len("proof"))
+
+            for reserved in (Path(".git/config"), Path("assets/.github/policy")):
+                with self.subTest(path=reserved):
+                    target = site / reserved
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    target.write_text("forbidden", encoding="utf-8")
+                    with self.assertRaisesRegex(
+                        DeployExecutionError,
+                        "host-excluded path",
+                    ):
+                        site_tree_digest(site)
+                    target.unlink()
+
+    def test_bundle_preflight_rejects_host_excluded_site_paths(self) -> None:
+        verifier = BundleVerifier()
+        metadata = (
+            _ArchiveMember("release-manifest.json", "-", 1),
+            _ArchiveMember("site/", "d", 0),
+            _ArchiveMember("site/release-spec.json", "-", 1),
+        )
+        for name in (
+            "site/.git/config",
+            "site/assets/.github/workflows/publish.yml",
+        ):
+            with self.subTest(name=name), self.assertRaisesRegex(
+                DeployExecutionError,
+                "host-excluded path",
+            ):
+                verifier._validate_members(
+                    (*metadata, _ArchiveMember(name, "-", 1))
+                )
 
     def test_bundle_verbose_listing_reports_regular_file_sizes(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -1268,6 +1426,104 @@ class ReleasePlanningTests(unittest.TestCase):
                 )
             self.assertFalse(deployment_root.exists())
 
+    def test_self_hosted_install_requires_an_external_bundle_checksum(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            _spec, full, release_set, _layout = self._self_hosted_package(root)
+
+            with self.assertRaises(TypeError):
+                SelfHostedInstaller(root / "server").install(
+                    Path(full.bundle),
+                    release_set=release_set,
+                    expected_artifact_policy_sha256=artifact_policy_digest(
+                        profile(root).artifacts
+                    ),
+                    filesystem_health_only=True,
+                )
+            self.assertFalse((root / "server").exists())
+
+    def test_bundle_extraction_target_rejects_symlink_components(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            _spec, full, _release_set, _layout = self._self_hosted_package(
+                root / "package"
+            )
+            verifier = BundleVerifier()
+
+            direct_external = root / "direct-external"
+            direct_external.mkdir()
+            direct_sentinel = direct_external / "sentinel.txt"
+            direct_sentinel.write_text("preserve direct", encoding="utf-8")
+            direct_link = root / "extract-link"
+            direct_link.symlink_to(direct_external, target_is_directory=True)
+
+            parent_external = root / "parent-external"
+            parent_external.mkdir()
+            parent_sentinel = parent_external / "sentinel.txt"
+            parent_sentinel.write_text("preserve parent", encoding="utf-8")
+            parent_link = root / "parent-link"
+            parent_link.symlink_to(parent_external, target_is_directory=True)
+
+            for label, target in (
+                ("target", direct_link),
+                ("parent", parent_link / "published"),
+            ):
+                with self.subTest(label=label), self.assertRaisesRegex(
+                    DeployConfigError,
+                    "symbolic-link component",
+                ):
+                    verifier.verify(
+                        Path(full.bundle),
+                        expected_sha256=full.bundle_sha256,
+                        extract_to=target,
+                    )
+
+            self.assertTrue(direct_link.is_symlink())
+            self.assertEqual(
+                direct_sentinel.read_text(encoding="utf-8"),
+                "preserve direct",
+            )
+            self.assertTrue(parent_link.is_symlink())
+            self.assertEqual(
+                parent_sentinel.read_text(encoding="utf-8"),
+                "preserve parent",
+            )
+            self.assertFalse((parent_external / "published").exists())
+
+    def test_self_hosted_external_checksum_rejects_whole_release_replacement(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            _trusted_spec, trusted, _trusted_set, _ = self._self_hosted_package(
+                root / "trusted",
+                content="trusted release",
+            )
+            _attacker_spec, attacker, attacker_set, _ = self._self_hosted_package(
+                root / "replacement",
+                generated_at=self.now.replace(minute=1),
+                content="self-consistent replacement",
+            )
+            deployment_root = root / "server"
+
+            # The replacement carries a self-consistent bundle and ReleaseSet
+            # under the same deployment policy.  Only the independently
+            # authenticated per-release checksum distinguishes its identity.
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                "bundle checksum mismatch",
+            ):
+                SelfHostedInstaller(deployment_root).install(
+                    Path(attacker.bundle),
+                    release_set=attacker_set,
+                    expected_artifact_policy_sha256=artifact_policy_digest(
+                        profile(root).artifacts
+                    ),
+                    expected_sha256=trusted.bundle_sha256,
+                    filesystem_health_only=True,
+                )
+            self.assertFalse(deployment_root.exists())
+
     def test_self_hosted_health_failure_restores_previous_release(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
@@ -1348,6 +1604,56 @@ class ReleasePlanningTests(unittest.TestCase):
                         ),
                         expected_sha256=second_bundle.bundle_sha256,
                         health_url="http://127.0.0.1/health",
+                    )
+
+            self.assertEqual(raised.exception.code, 143)
+            self.assertEqual(
+                (root / "server" / "current").resolve(),
+                root / "server" / "releases" / first_spec.release_id / "full",
+            )
+
+    def test_self_hosted_interrupt_inside_install_switch_restores_previous(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            first_spec, first_bundle, first_set, _ = self._self_hosted_package(
+                root,
+                content="first",
+            )
+            _second_spec, second_bundle, second_set, _ = self._self_hosted_package(
+                root,
+                generated_at=self.now.replace(minute=1),
+                content="second",
+            )
+            installer = SelfHostedInstaller(root / "server")
+            installer.install(
+                Path(first_bundle.bundle),
+                release_set=first_set,
+                expected_artifact_policy_sha256=artifact_policy_digest(
+                    profile(root).artifacts
+                ),
+                expected_sha256=first_bundle.bundle_sha256,
+                filesystem_health_only=True,
+            )
+            original_replace = installer._replace_current
+
+            def replace_then_interrupt(target):
+                original_replace(target)
+                raise SystemExit(143)
+
+            with patch.object(
+                installer,
+                "_replace_current",
+                side_effect=replace_then_interrupt,
+            ):
+                with self.assertRaises(SystemExit) as raised:
+                    installer.install(
+                        Path(second_bundle.bundle),
+                        release_set=second_set,
+                        expected_artifact_policy_sha256=artifact_policy_digest(
+                            profile(root).artifacts
+                        ),
+                        expected_sha256=second_bundle.bundle_sha256,
+                        filesystem_health_only=True,
                     )
 
             self.assertEqual(raised.exception.code, 143)
@@ -1447,6 +1753,55 @@ class ReleasePlanningTests(unittest.TestCase):
                 root / "server" / "releases" / second_spec.release_id / "full",
             )
 
+    def test_self_hosted_interrupt_inside_rollback_switch_restores_active(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            first_spec, first_bundle, first_set, _ = self._self_hosted_package(
+                root,
+                content="first",
+            )
+            second_spec, second_bundle, second_set, _ = self._self_hosted_package(
+                root,
+                generated_at=self.now.replace(minute=1),
+                content="second",
+            )
+            installer = SelfHostedInstaller(root / "server")
+            for bundle, release_set in (
+                (first_bundle, first_set),
+                (second_bundle, second_set),
+            ):
+                installer.install(
+                    Path(bundle.bundle),
+                    release_set=release_set,
+                    expected_artifact_policy_sha256=artifact_policy_digest(
+                        profile(root).artifacts
+                    ),
+                    expected_sha256=bundle.bundle_sha256,
+                    filesystem_health_only=True,
+                )
+            original_replace = installer._replace_current
+
+            def replace_then_interrupt(target):
+                original_replace(target)
+                raise SystemExit(143)
+
+            with patch.object(
+                installer,
+                "_replace_current",
+                side_effect=replace_then_interrupt,
+            ):
+                with self.assertRaises(SystemExit) as raised:
+                    installer.rollback(
+                        first_spec.release_id,
+                        filesystem_health_only=True,
+                    )
+
+            self.assertEqual(raised.exception.code, 143)
+            self.assertEqual(
+                (root / "server" / "current").resolve(),
+                root / "server" / "releases" / second_spec.release_id / "full",
+            )
+
     @staticmethod
     def _write_branch_site(
         root: Path,
@@ -1489,8 +1844,13 @@ class ReleasePlanningTests(unittest.TestCase):
 
     def test_github_publisher_uploads_then_dispatches_pages(self) -> None:
         class FakeRunner:
-            def __init__(self):
+            def __init__(self, paths=()):
                 self.commands = []
+                self.paths = paths
+                self.tag_exists = False
+                self.release_created = False
+                self.release_uploaded = False
+                self.release_published = False
 
             def run(self, command):
                 self.commands.append(command)
@@ -1503,15 +1863,96 @@ class ReleasePlanningTests(unittest.TestCase):
                 if command.argv[1:3] == ("repo", "view"):
                     return CommandResult(command=command, returncode=0, stdout="main\n")
                 if command.argv[1] == "api":
-                    if "/releases/tags/" in command.argv[2]:
+                    endpoint = next(
+                        part for part in command.argv if part.startswith("repos/")
+                    )
+                    method = (
+                        command.argv[command.argv.index("--method") + 1]
+                        if "--method" in command.argv
+                        else "GET"
+                    )
+                    if endpoint.endswith("/immutable-releases"):
+                        return CommandResult(
+                            command=command,
+                            returncode=0,
+                            stdout=json.dumps(
+                                {"enabled": True, "enforced_by_owner": False}
+                            ),
+                        )
+                    if "/releases/tags/" in endpoint:
+                        if self.release_created:
+                            return CommandResult(
+                                command=command,
+                                returncode=0,
+                                stdout=json.dumps(
+                                    {
+                                        "id": 123,
+                                        "tag_name": (
+                                            "reasbook-site-20260901T140000Z-"
+                                            "aaaaaaaaaaaa"
+                                        ),
+                                        "draft": not self.release_published,
+                                        "immutable": self.release_published,
+                                        "assets": (
+                                            github_release_assets(self.paths)
+                                            if self.release_uploaded
+                                            else []
+                                        ),
+                                    }
+                                ),
+                            )
                         return CommandResult(
                             command=command,
                             returncode=1,
                             stderr="gh: Not Found (HTTP 404)",
                         )
-                    if "/commits/" in command.argv[2]:
+                    if endpoint.endswith("/releases") and method == "POST":
+                        self.release_created = True
+                        return CommandResult(
+                            command=command,
+                            returncode=0,
+                            stdout=json.dumps(
+                                {
+                                    "id": 123,
+                                    "tag_name": (
+                                        "reasbook-site-20260901T140000Z-"
+                                        "aaaaaaaaaaaa"
+                                    ),
+                                    "draft": True,
+                                    "immutable": False,
+                                    "assets": [],
+                                }
+                            ),
+                        )
+                    if endpoint.endswith("/releases/123") and method == "PATCH":
+                        self.release_published = True
+                        return CommandResult(command=command, returncode=0)
+                    if "/commits/" in endpoint:
                         return CommandResult(
                             command=command, returncode=0, stdout="d" * 40 + "\n"
+                        )
+                    if endpoint.endswith("/git/refs") and method == "POST":
+                        self.tag_exists = True
+                        return CommandResult(
+                            command=command,
+                            returncode=0,
+                            stdout=json.dumps(
+                                {"object": {"type": "commit", "sha": "d" * 40}}
+                            ),
+                        )
+                    if "/git/ref/tags/" in endpoint:
+                        if not self.tag_exists:
+                            return CommandResult(
+                                command=command,
+                                returncode=1,
+                                stderr="gh: Not Found (HTTP 404)",
+                            )
+                        return CommandResult(
+                            command=command,
+                            returncode=0,
+                            stdout=json.dumps(
+                                {"object": {"type": "commit", "sha": "d" * 40}}
+                            ),
                         )
                     return CommandResult(
                         command=command,
@@ -1520,16 +1961,24 @@ class ReleasePlanningTests(unittest.TestCase):
                             {"object": {"type": "commit", "sha": "c" * 40}}
                         ),
                     )
+                if command.argv[1:3] == ("release", "upload"):
+                    self.release_uploaded = True
                 return CommandResult(command=command, returncode=0)
 
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             release_id = "site-20260901T140000Z-" + "a" * 12
             bundle, assets = github_pages_bundle_fixture(root, release_id)
-            runner = FakeRunner()
+            release_set_sha256 = accepted_release_set_sha256(bundle)
+            runner = FakeRunner(assets)
             publisher = GitHubReleasePublisher(
                 GitHubPublishProfile(repository="acme/reasbook"),
                 runner=runner,
+                expected_registry_commit="d" * 40,
+                expected_tooling_revision=(
+                    "d" * 40 + "+tooling-sha256:" + "e" * 64
+                ),
+                expected_release_set_sha256=release_set_sha256,
             )
             publication = publisher.publish(bundle)
 
@@ -1537,6 +1986,7 @@ class ReleasePlanningTests(unittest.TestCase):
             self.assertEqual(
                 verbs,
                 [
+                    ("api", "repos/acme/reasbook/immutable-releases"),
                     (
                         "api",
                         "repos/acme/reasbook/releases/tags/"
@@ -1546,9 +1996,46 @@ class ReleasePlanningTests(unittest.TestCase):
                     ("api", "repos/acme/reasbook/commits/main"),
                     ("rev-parse", "HEAD"),
                     ("status", "--porcelain=v1"),
-                    ("release", "create"),
+                    (
+                        "api",
+                        "repos/acme/reasbook/git/ref/tags/"
+                        "reasbook-site-20260901T140000Z-aaaaaaaaaaaa",
+                    ),
+                    ("api", "--method"),
+                    (
+                        "api",
+                        "repos/acme/reasbook/git/ref/tags/"
+                        "reasbook-site-20260901T140000Z-aaaaaaaaaaaa",
+                    ),
+                    ("api", "--method"),
+                    (
+                        "api",
+                        "repos/acme/reasbook/git/ref/tags/"
+                        "reasbook-site-20260901T140000Z-aaaaaaaaaaaa",
+                    ),
                     ("release", "upload"),
-                    ("release", "edit"),
+                    (
+                        "api",
+                        "repos/acme/reasbook/releases/tags/"
+                        "reasbook-site-20260901T140000Z-aaaaaaaaaaaa",
+                    ),
+                    (
+                        "api",
+                        "repos/acme/reasbook/git/ref/tags/"
+                        "reasbook-site-20260901T140000Z-aaaaaaaaaaaa",
+                    ),
+                    ("api", "repos/acme/reasbook/immutable-releases"),
+                    ("api", "--method"),
+                    (
+                        "api",
+                        "repos/acme/reasbook/releases/tags/"
+                        "reasbook-site-20260901T140000Z-aaaaaaaaaaaa",
+                    ),
+                    (
+                        "api",
+                        "repos/acme/reasbook/git/ref/tags/"
+                        "reasbook-site-20260901T140000Z-aaaaaaaaaaaa",
+                    ),
                     ("workflow", "run"),
                 ],
             )
@@ -1558,6 +2045,69 @@ class ReleasePlanningTests(unittest.TestCase):
                 "--clobber",
                 " ".join(part for command in runner.commands for part in command.argv),
             )
+            upload_command = next(
+                command
+                for command in runner.commands
+                if command.argv[1:3] == ("release", "upload")
+            )
+            self.assertEqual(upload_command.timeout, 7200.0)
+            immutable_audit = runner.commands[0]
+            self.assertEqual(immutable_audit.timeout, 300.0)
+            create_command = next(
+                command
+                for command in runner.commands
+                if command.argv[1:4] == (
+                    "api",
+                    "--method",
+                    "POST",
+                )
+                and command.argv[4] == "repos/acme/reasbook/releases"
+            )
+            self.assertEqual(
+                json.loads(create_command.input_text or "{}"),
+                {
+                    "tag_name": (
+                        "reasbook-site-20260901T140000Z-aaaaaaaaaaaa"
+                    ),
+                    "target_commitish": "d" * 40,
+                    "name": (
+                        "ReasBook static site "
+                        "site-20260901T140000Z-aaaaaaaaaaaa"
+                    ),
+                    "body": (
+                        "Immutable Pages artifact and ReleaseSet generated by "
+                        "reasbook-deploy."
+                    ),
+                    "draft": True,
+                    "prerelease": False,
+                },
+            )
+            publish_command = next(
+                command
+                for command in runner.commands
+                if command.argv[1:4] == (
+                    "api",
+                    "--method",
+                    "PATCH",
+                )
+            )
+            self.assertEqual(
+                publish_command.argv[4],
+                "repos/acme/reasbook/releases/123",
+            )
+            self.assertEqual(
+                json.loads(publish_command.input_text or "{}"),
+                {"draft": False},
+            )
+            self.assertFalse(
+                any(
+                    command.argv[1:3] in {
+                        ("release", "create"),
+                        ("release", "edit"),
+                    }
+                    for command in runner.commands
+                )
+            )
             workflow_command = runner.commands[-1].argv
             self.assertEqual(workflow_command.count("-f"), 1)
             self.assertIn("--ref", workflow_command)
@@ -1565,6 +2115,422 @@ class ReleasePlanningTests(unittest.TestCase):
                 workflow_command[workflow_command.index("--ref") + 1],
                 "main",
             )
+
+            mismatch_runner = FakeRunner()
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                "registry commit does not match the GitHub default branch",
+            ):
+                GitHubReleasePublisher(
+                    GitHubPublishProfile(repository="acme/reasbook"),
+                    runner=mismatch_runner,
+                    expected_registry_commit="c" * 40,
+                    expected_tooling_revision=(
+                        "c" * 40 + "+tooling-sha256:" + "e" * 64
+                    ),
+                    expected_release_set_sha256=release_set_sha256,
+                ).publish(bundle)
+            mismatch_verbs = [
+                command.argv[1:3] for command in mismatch_runner.commands
+            ]
+            self.assertNotIn(("release", "create"), mismatch_verbs)
+            self.assertNotIn(("release", "upload"), mismatch_verbs)
+            self.assertNotIn(("workflow", "run"), mismatch_verbs)
+
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                "requires the ReleaseSpec registry commit",
+            ):
+                GitHubReleasePublisher(
+                    GitHubPublishProfile(repository="acme/reasbook"),
+                    runner=FakeRunner(),
+                    expected_release_set_sha256=release_set_sha256,
+                ).publish(bundle, dry_run=True)
+
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                "requires a clean tooling revision",
+            ):
+                GitHubReleasePublisher(
+                    GitHubPublishProfile(repository="acme/reasbook"),
+                    runner=FakeRunner(),
+                    expected_registry_commit="d" * 40,
+                    expected_tooling_revision=(
+                        "d" * 40
+                        + "+dirty:fingerprint+tooling-sha256:"
+                        + "e" * 64
+                    ),
+                    expected_release_set_sha256=release_set_sha256,
+                ).publish(bundle, dry_run=True)
+
+            class AuditOnlyRunner:
+                def __init__(self):
+                    self.commands = []
+
+                def run(self, command):
+                    self.commands.append(command)
+                    if (
+                        command.argv[1] == "api"
+                        and command.argv[2].endswith("/immutable-releases")
+                    ):
+                        return CommandResult(
+                            command=command,
+                            returncode=0,
+                            stdout=json.dumps(
+                                {"enabled": True, "enforced_by_owner": False}
+                            ),
+                        )
+                    raise AssertionError(
+                        "a publication dry-run may only audit immutable releases"
+                    )
+
+            audit_runner = AuditOnlyRunner()
+            planned = GitHubReleasePublisher(
+                GitHubPublishProfile(repository="acme/reasbook"),
+                runner=audit_runner,
+                expected_registry_commit="d" * 40,
+                expected_tooling_revision=(
+                    "d" * 40 + "+tooling-sha256:" + "e" * 64
+                ),
+                expected_release_set_sha256=release_set_sha256,
+            ).publish(bundle, dry_run=True)
+            self.assertEqual(planned.status, "planned")
+            self.assertEqual(len(audit_runner.commands), 1)
+            self.assertIn(
+                "X-GitHub-Api-Version: 2026-03-10",
+                audit_runner.commands[0].argv,
+            )
+
+    def test_github_publisher_rejects_wrong_orphan_or_racing_tag(self) -> None:
+        class TagRunner:
+            def __init__(
+                self,
+                *,
+                paths=(),
+                preexisting_target: str | None = None,
+                raced_target: str | None = None,
+            ):
+                self.commands = []
+                self.paths = paths
+                self.preexisting_target = preexisting_target
+                self.raced_target = raced_target
+                self.create_attempted = False
+                self.release_created = False
+                self.release_uploaded = False
+                self.release_published = False
+
+            def run(self, command):
+                self.commands.append(command)
+                if command.argv == ("git", "rev-parse", "HEAD"):
+                    return CommandResult(
+                        command=command,
+                        returncode=0,
+                        stdout="d" * 40 + "\n",
+                    )
+                if command.argv[0] == "git":
+                    return CommandResult(command=command, returncode=0, stdout="")
+                if command.argv[1:3] == ("repo", "view"):
+                    return CommandResult(command=command, returncode=0, stdout="main\n")
+                if command.argv[1] != "api":
+                    if command.argv[1:3] == ("release", "upload"):
+                        self.release_uploaded = True
+                    return CommandResult(command=command, returncode=0)
+                endpoint = next(
+                    part for part in command.argv if part.startswith("repos/")
+                )
+                method = (
+                    command.argv[command.argv.index("--method") + 1]
+                    if "--method" in command.argv
+                    else "GET"
+                )
+                if endpoint.endswith("/immutable-releases"):
+                    return CommandResult(
+                        command=command,
+                        returncode=0,
+                        stdout=json.dumps(
+                            {"enabled": True, "enforced_by_owner": False}
+                        ),
+                    )
+                if "/releases/tags/" in endpoint:
+                    if self.release_created:
+                        return CommandResult(
+                            command=command,
+                            returncode=0,
+                            stdout=json.dumps(
+                                {
+                                    "id": 123,
+                                    "tag_name": (
+                                        "reasbook-site-20260901T140000Z-"
+                                        "aaaaaaaaaaaa"
+                                    ),
+                                    "draft": not self.release_published,
+                                    "immutable": self.release_published,
+                                    "assets": (
+                                        github_release_assets(self.paths)
+                                        if self.release_uploaded
+                                        else []
+                                    ),
+                                }
+                            ),
+                        )
+                    return CommandResult(
+                        command=command,
+                        returncode=1,
+                        stderr="gh: Not Found (HTTP 404)",
+                    )
+                if endpoint.endswith("/releases") and method == "POST":
+                    self.release_created = True
+                    return CommandResult(
+                        command=command,
+                        returncode=0,
+                        stdout=json.dumps(
+                            {
+                                "id": 123,
+                                "tag_name": (
+                                    "reasbook-site-20260901T140000Z-"
+                                    "aaaaaaaaaaaa"
+                                ),
+                                "draft": True,
+                                "immutable": False,
+                                "assets": [],
+                            }
+                        ),
+                    )
+                if endpoint.endswith("/releases/123") and method == "PATCH":
+                    self.release_published = True
+                    return CommandResult(command=command, returncode=0)
+                if "/commits/" in endpoint:
+                    return CommandResult(
+                        command=command,
+                        returncode=0,
+                        stdout="d" * 40 + "\n",
+                    )
+                if endpoint.endswith("/git/refs") and method == "POST":
+                    self.create_attempted = True
+                    return CommandResult(
+                        command=command,
+                        returncode=1,
+                        stderr="gh: Reference already exists (HTTP 422)",
+                    )
+                if "/git/ref/tags/" in endpoint:
+                    target = (
+                        self.raced_target
+                        if self.create_attempted
+                        else self.preexisting_target
+                    )
+                    if target is None:
+                        return CommandResult(
+                            command=command,
+                            returncode=1,
+                            stderr="gh: Not Found (HTTP 404)",
+                        )
+                    return CommandResult(
+                        command=command,
+                        returncode=0,
+                        stdout=json.dumps(
+                            {"object": {"type": "commit", "sha": target}}
+                        ),
+                    )
+                raise AssertionError(command.argv)
+
+        with tempfile.TemporaryDirectory() as temp:
+            release_id = "site-20260901T140000Z-" + "a" * 12
+            bundle, assets = github_pages_bundle_fixture(Path(temp), release_id)
+            tooling = "d" * 40 + "+tooling-sha256:" + "e" * 64
+            release_set_sha256 = accepted_release_set_sha256(bundle)
+
+            orphan_runner = TagRunner(preexisting_target="c" * 40)
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                "pre-existing release tag",
+            ):
+                GitHubReleasePublisher(
+                    GitHubPublishProfile(repository="acme/reasbook"),
+                    runner=orphan_runner,
+                    expected_registry_commit="d" * 40,
+                    expected_tooling_revision=tooling,
+                    expected_release_set_sha256=release_set_sha256,
+                ).publish(bundle)
+            self.assertFalse(orphan_runner.create_attempted)
+            self.assertFalse(
+                any(
+                    command.argv[1:3] in {
+                        ("release", "create"),
+                        ("release", "upload"),
+                        ("release", "edit"),
+                        ("workflow", "run"),
+                    }
+                    for command in orphan_runner.commands
+                )
+            )
+
+            missing_after_error_runner = TagRunner()
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                "cannot create immutable release tag.*422",
+            ):
+                GitHubReleasePublisher(
+                    GitHubPublishProfile(repository="acme/reasbook"),
+                    runner=missing_after_error_runner,
+                    expected_registry_commit="d" * 40,
+                    expected_tooling_revision=tooling,
+                    expected_release_set_sha256=release_set_sha256,
+                ).publish(bundle)
+            self.assertFalse(
+                any(
+                    command.argv[1:3] == ("release", "create")
+                    for command in missing_after_error_runner.commands
+                )
+            )
+
+            wrong_race_runner = TagRunner(raced_target="c" * 40)
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                "concurrently created release tag",
+            ):
+                GitHubReleasePublisher(
+                    GitHubPublishProfile(repository="acme/reasbook"),
+                    runner=wrong_race_runner,
+                    expected_registry_commit="d" * 40,
+                    expected_tooling_revision=tooling,
+                    expected_release_set_sha256=release_set_sha256,
+                ).publish(bundle)
+            self.assertFalse(
+                any(
+                    command.argv[1:3] == ("release", "create")
+                    for command in wrong_race_runner.commands
+                )
+            )
+
+            matching_race_runner = TagRunner(
+                paths=assets,
+                raced_target="d" * 40,
+            )
+            publication = GitHubReleasePublisher(
+                GitHubPublishProfile(repository="acme/reasbook"),
+                runner=matching_race_runner,
+                expected_registry_commit="d" * 40,
+                expected_tooling_revision=tooling,
+                expected_release_set_sha256=release_set_sha256,
+            ).publish(bundle)
+            self.assertEqual(publication.status, "dispatched")
+            create_ref = next(
+                command
+                for command in matching_race_runner.commands
+                if command.argv[1:3] == ("api", "--method")
+            )
+            self.assertEqual(
+                json.loads(create_ref.input_text or "{}"),
+                {
+                    "ref": (
+                        "refs/tags/"
+                        "reasbook-site-20260901T140000Z-aaaaaaaaaaaa"
+                    ),
+                    "sha": "d" * 40,
+                },
+            )
+
+    def test_github_tag_target_dereferences_annotated_tags(self) -> None:
+        class AnnotatedTagRunner:
+            def run(self, command):
+                endpoint = command.argv[2]
+                if "/git/ref/tags/" in endpoint:
+                    value = {"object": {"type": "tag", "sha": "a" * 40}}
+                elif endpoint.endswith("/git/tags/" + "a" * 40):
+                    value = {"object": {"type": "commit", "sha": "c" * 40}}
+                else:
+                    raise AssertionError(command.argv)
+                return CommandResult(
+                    command=command,
+                    returncode=0,
+                    stdout=json.dumps(value),
+                )
+
+        publisher = GitHubReleasePublisher(
+            GitHubPublishProfile(repository="acme/reasbook"),
+            runner=AnnotatedTagRunner(),
+        )
+        self.assertEqual(
+            publisher._tag_target("reasbook-site-safe"),
+            "c" * 40,
+        )
+
+    def test_github_publisher_rechecks_tag_after_upload(self) -> None:
+        class MovingTagRunner:
+            def __init__(self, paths):
+                self.commands = []
+                self.paths = paths
+                self.tag_reads = 0
+                self.release_uploaded = False
+
+            def run(self, command):
+                self.commands.append(command)
+                if command.argv[1] == "api":
+                    endpoint = command.argv[2]
+                    if endpoint.endswith("/immutable-releases"):
+                        return CommandResult(
+                            command=command,
+                            returncode=0,
+                            stdout=json.dumps(
+                                {"enabled": True, "enforced_by_owner": False}
+                            ),
+                        )
+                    if "/releases/tags/" in endpoint:
+                        return CommandResult(
+                            command=command,
+                            returncode=0,
+                            stdout=json.dumps(
+                                {
+                                    "id": 123,
+                                    "tag_name": (
+                                        "reasbook-site-20260901T140000Z-"
+                                        "aaaaaaaaaaaa"
+                                    ),
+                                    "draft": True,
+                                    "immutable": False,
+                                    "assets": (
+                                        github_release_assets(self.paths)
+                                        if self.release_uploaded
+                                        else []
+                                    ),
+                                }
+                            ),
+                        )
+                    if "/git/ref/tags/" in endpoint:
+                        self.tag_reads += 1
+                        target = "c" * 40 if self.tag_reads == 1 else "d" * 40
+                        return CommandResult(
+                            command=command,
+                            returncode=0,
+                            stdout=json.dumps(
+                                {"object": {"type": "commit", "sha": target}}
+                            ),
+                        )
+                if command.argv[1:3] == ("release", "upload"):
+                    self.release_uploaded = True
+                return CommandResult(command=command, returncode=0)
+
+        with tempfile.TemporaryDirectory() as temp:
+            release_id = "site-20260901T140000Z-" + "a" * 12
+            bundle, assets = github_pages_bundle_fixture(Path(temp), release_id)
+            runner = MovingTagRunner(assets)
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                "release tag before publication",
+            ):
+                GitHubReleasePublisher(
+                    GitHubPublishProfile(repository="acme/reasbook"),
+                    runner=runner,
+                    expected_registry_commit="c" * 40,
+                    expected_tooling_revision=(
+                        "c" * 40 + "+tooling-sha256:" + "e" * 64
+                    ),
+                    expected_release_set_sha256=accepted_release_set_sha256(bundle),
+                ).publish(bundle)
+            verbs = [command.argv[1:3] for command in runner.commands]
+            self.assertIn(("release", "upload"), verbs)
+            self.assertNotIn(("release", "edit"), verbs)
+            self.assertNotIn(("workflow", "run"), verbs)
 
     def test_github_release_lookup_fails_closed_on_non_404_error(self) -> None:
         class FailedLookupRunner:
@@ -1583,6 +2549,502 @@ class ReleasePlanningTests(unittest.TestCase):
             DeployExecutionError, "release lookup failed.*403"
         ):
             publisher._release_by_tag("reasbook-site-safe")
+
+    def test_github_rest_release_creation_adopts_only_an_observed_race(self) -> None:
+        tag = "reasbook-site-20260901T140000Z-aaaaaaaaaaaa"
+
+        class RaceRunner:
+            def __init__(self, *, observed: bool):
+                self.observed = observed
+                self.commands = []
+
+            def run(self, command):
+                self.commands.append(command)
+                if command.argv[1:4] == ("api", "--method", "POST"):
+                    return CommandResult(
+                        command=command,
+                        returncode=1,
+                        stderr="gh: already_exists (HTTP 422)",
+                    )
+                if "/releases/tags/" in command.argv[2]:
+                    if not self.observed:
+                        return CommandResult(
+                            command=command,
+                            returncode=1,
+                            stderr="gh: Not Found (HTTP 404)",
+                        )
+                    return CommandResult(
+                        command=command,
+                        returncode=0,
+                        stdout=json.dumps(
+                            {
+                                "id": 456,
+                                "tag_name": tag,
+                                "draft": True,
+                                "immutable": False,
+                                "assets": [],
+                            }
+                        ),
+                    )
+                raise AssertionError(command.argv)
+
+        observed = RaceRunner(observed=True)
+        release, created = GitHubReleasePublisher(
+            GitHubPublishProfile(repository="acme/reasbook"),
+            runner=observed,
+        )._create_draft_release(tag, "c" * 40, "site-fixture")
+        self.assertFalse(created)
+        self.assertEqual(release["id"], 456)
+        create = observed.commands[0]
+        self.assertEqual(
+            json.loads(create.input_text or "{}")["target_commitish"],
+            "c" * 40,
+        )
+        self.assertIn(
+            "X-GitHub-Api-Version: 2026-03-10",
+            create.argv,
+        )
+
+        missing = RaceRunner(observed=False)
+        with self.assertRaisesRegex(
+            DeployExecutionError,
+            "cannot create draft GitHub Release.*422",
+        ):
+            GitHubReleasePublisher(
+                GitHubPublishProfile(repository="acme/reasbook"),
+                runner=missing,
+            )._create_draft_release(tag, "c" * 40, "site-fixture")
+
+    def test_github_draft_asset_verification_retries_until_complete(self) -> None:
+        tag = "reasbook-site-20260901T140000Z-aaaaaaaaaaaa"
+
+        class AssetRunner:
+            def __init__(self, releases):
+                self.releases = list(releases)
+                self.calls = 0
+
+            def run(self, command):
+                self.calls += 1
+                release = self.releases.pop(0) if len(self.releases) > 1 else self.releases[0]
+                return CommandResult(
+                    command=command,
+                    returncode=0,
+                    stdout=json.dumps(release),
+                )
+
+        with tempfile.TemporaryDirectory() as temp:
+            release_id = "site-20260901T140000Z-" + "a" * 12
+            _, paths = github_pages_bundle_fixture(Path(temp), release_id)
+            exact_assets = github_release_assets(paths)
+            original = {
+                "id": 123,
+                "tag_name": tag,
+                "draft": True,
+                "immutable": False,
+                "assets": [],
+            }
+            partial = {**original, "assets": exact_assets[:2]}
+            complete = {**original, "assets": exact_assets}
+            runner = AssetRunner([partial, complete])
+            publisher = GitHubReleasePublisher(
+                GitHubPublishProfile(repository="acme/reasbook"),
+                runner=runner,
+            )
+            frozen_assets = publisher._snapshot_assets(tuple(paths))
+
+            with patch("reasbook_deploy_sdk.release.github.time.sleep") as sleep:
+                verified = publisher._wait_for_complete_draft_assets(
+                    tag,
+                    original,
+                    tuple(paths),
+                    frozen_assets,
+                )
+
+            self.assertEqual(verified, complete)
+            self.assertEqual(runner.calls, 2)
+            sleep.assert_called_once_with(1.0)
+
+    def test_github_draft_asset_verification_fails_closed(self) -> None:
+        tag = "reasbook-site-20260901T140000Z-aaaaaaaaaaaa"
+
+        class AssetRunner:
+            def __init__(self, release):
+                self.release = release
+                self.calls = 0
+
+            def run(self, command):
+                self.calls += 1
+                return CommandResult(
+                    command=command,
+                    returncode=0,
+                    stdout=json.dumps(self.release),
+                )
+
+        with tempfile.TemporaryDirectory() as temp:
+            release_id = "site-20260901T140000Z-" + "a" * 12
+            _, paths = github_pages_bundle_fixture(Path(temp), release_id)
+            exact_assets = github_release_assets(paths)
+            original = {
+                "id": 123,
+                "tag_name": tag,
+                "draft": True,
+                "immutable": False,
+                "assets": [],
+            }
+            frozen_assets = GitHubReleasePublisher._snapshot_assets(tuple(paths))
+
+            partial_runner = AssetRunner(
+                {**original, "assets": exact_assets[:3]}
+            )
+            partial_publisher = GitHubReleasePublisher(
+                GitHubPublishProfile(repository="acme/reasbook"),
+                runner=partial_runner,
+            )
+            with patch("reasbook_deploy_sdk.release.github.time.sleep") as sleep:
+                with self.assertRaisesRegex(
+                    DeployExecutionError,
+                    "assets did not become complete",
+                ):
+                    partial_publisher._wait_for_complete_draft_assets(
+                        tag,
+                        original,
+                        tuple(paths),
+                        frozen_assets,
+                    )
+            self.assertEqual(partial_runner.calls, 5)
+            self.assertEqual(sleep.call_count, 4)
+
+            mismatched_assets = list(exact_assets)
+            mismatched_assets[0] = {
+                **mismatched_assets[0],
+                "digest": "sha256:" + "0" * 64,
+            }
+            mismatch_runner = AssetRunner(
+                {**original, "assets": mismatched_assets}
+            )
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                "refusing to overwrite",
+            ):
+                GitHubReleasePublisher(
+                    GitHubPublishProfile(repository="acme/reasbook"),
+                    runner=mismatch_runner,
+                )._wait_for_complete_draft_assets(
+                    tag,
+                    original,
+                    tuple(paths),
+                    frozen_assets,
+                )
+            self.assertEqual(mismatch_runner.calls, 1)
+
+            for changed in (
+                {**original, "id": 456, "assets": exact_assets},
+                {**original, "tag_name": tag + "-other", "assets": exact_assets},
+                {**original, "draft": False, "assets": exact_assets},
+            ):
+                with self.subTest(changed=changed):
+                    identity_runner = AssetRunner(changed)
+                    with self.assertRaisesRegex(
+                        DeployExecutionError,
+                        "identity changed",
+                    ):
+                        GitHubReleasePublisher(
+                            GitHubPublishProfile(repository="acme/reasbook"),
+                            runner=identity_runner,
+                        )._wait_for_complete_draft_assets(
+                            tag,
+                            original,
+                            tuple(paths),
+                            frozen_assets,
+                        )
+                    self.assertEqual(identity_runner.calls, 1)
+
+    def test_github_draft_recovers_an_interrupted_starter_asset(self) -> None:
+        tag = "reasbook-site-20260901T140000Z-aaaaaaaaaaaa"
+
+        class RecoveryRunner:
+            def __init__(self, release):
+                self.release = release
+                self.commands = []
+
+            def run(self, command):
+                self.commands.append(command)
+                endpoint = next(
+                    part for part in command.argv if part.startswith("repos/")
+                )
+                if "--method" in command.argv:
+                    method = command.argv[command.argv.index("--method") + 1]
+                    if method == "DELETE":
+                        self.release = {**self.release, "assets": []}
+                        return CommandResult(command=command, returncode=0)
+                if "/releases/tags/" in endpoint:
+                    return CommandResult(
+                        command=command,
+                        returncode=0,
+                        stdout=json.dumps(self.release),
+                    )
+                raise AssertionError(command.argv)
+
+        with tempfile.TemporaryDirectory() as temp:
+            release_id = "site-20260901T140000Z-" + "a" * 12
+            _, paths = github_pages_bundle_fixture(Path(temp), release_id)
+            tag_release = {
+                "id": 123,
+                "tag_name": tag,
+                "draft": True,
+                "immutable": False,
+                "assets": [
+                    {
+                        "id": 987,
+                        "name": paths[0].name,
+                        "state": "starter",
+                        "size": 0,
+                        "digest": None,
+                    }
+                ],
+            }
+            runner = RecoveryRunner(tag_release)
+            publisher = GitHubReleasePublisher(
+                GitHubPublishProfile(repository="acme/reasbook"),
+                runner=runner,
+            )
+            with patch("reasbook_deploy_sdk.release.github.time.sleep") as sleep:
+                refreshed, missing = publisher._recover_incomplete_draft_assets(
+                    tag,
+                    tag_release,
+                    tuple(paths),
+                    publisher._snapshot_assets(tuple(paths)),
+                )
+
+            self.assertEqual(refreshed["assets"], [])
+            self.assertEqual(missing, tuple(paths))
+            self.assertEqual(sleep.call_count, 4)
+            delete = next(
+                command
+                for command in runner.commands
+                if command.argv[1:4] == ("api", "--method", "DELETE")
+            )
+            self.assertTrue(
+                any(
+                    part.endswith("/releases/assets/987")
+                    for part in delete.argv
+                )
+            )
+
+            frozen = publisher._snapshot_assets(tuple(paths))
+            for unsafe in (
+                {**tag_release["assets"][0], "size": 1},
+                {**tag_release["assets"][0], "name": "unexpected.bin"},
+                {**tag_release["assets"][0], "state": "open"},
+            ):
+                with self.subTest(unsafe=unsafe), self.assertRaisesRegex(
+                    DeployExecutionError,
+                    "invalid.*asset metadata",
+                ):
+                    publisher._validate_existing_release(
+                        {**tag_release, "assets": [unsafe]},
+                        tuple(paths),
+                        frozen,
+                    )
+
+    def test_github_upload_fails_if_a_local_asset_changes_after_validation(self) -> None:
+        tag = "reasbook-site-20260901T140000Z-aaaaaaaaaaaa"
+
+        class MutatingRunner:
+            def __init__(self, path):
+                self.path = path
+                self.commands = []
+
+            def run(self, command):
+                self.commands.append(command)
+                if command.argv[1:3] == ("release", "upload"):
+                    self.path.write_bytes(self.path.read_bytes() + b"\n")
+                    return CommandResult(command=command, returncode=0)
+                raise AssertionError(command.argv)
+
+        with tempfile.TemporaryDirectory() as temp:
+            release_id = "site-20260901T140000Z-" + "a" * 12
+            bundle, paths = github_pages_bundle_fixture(Path(temp), release_id)
+            runner = MutatingRunner(paths[1])
+            publisher = GitHubReleasePublisher(
+                GitHubPublishProfile(repository="acme/reasbook"),
+                runner=runner,
+                expected_registry_commit="c" * 40,
+                expected_tooling_revision=(
+                    "c" * 40 + "+tooling-sha256:" + "e" * 64
+                ),
+                expected_release_set_sha256=accepted_release_set_sha256(bundle),
+            )
+            draft = {
+                "id": 123,
+                "tag_name": tag,
+                "draft": True,
+                "immutable": False,
+                "assets": [],
+            }
+            with (
+                patch.object(
+                    publisher,
+                    "_require_immutable_releases_enabled",
+                ),
+                patch.object(publisher, "_release_by_tag", return_value=draft),
+                patch.object(publisher, "_tag_target", return_value="c" * 40),
+            ):
+                with self.assertRaisesRegex(
+                    DeployExecutionError,
+                    "assets changed after publication validation",
+                ):
+                    publisher.publish(bundle)
+
+            self.assertEqual(
+                [command.argv[1:3] for command in runner.commands],
+                [("release", "upload")],
+            )
+
+    def test_github_publisher_dry_run_requires_immutable_release_setting(self) -> None:
+        class ImmutableSettingRunner:
+            def __init__(self, *, enabled: bool = False, status: int | None = None):
+                self.enabled = enabled
+                self.status = status
+                self.commands = []
+
+            def run(self, command):
+                self.commands.append(command)
+                if not (
+                    command.argv[1] == "api"
+                    and command.argv[2].endswith("/immutable-releases")
+                ):
+                    raise AssertionError(command.argv)
+                self.assert_api_headers(command.argv)
+                if self.status is not None:
+                    return CommandResult(
+                        command=command,
+                        returncode=1,
+                        stderr=f"gh: Forbidden (HTTP {self.status})",
+                    )
+                return CommandResult(
+                    command=command,
+                    returncode=0,
+                    stdout=json.dumps(
+                        {
+                            "enabled": self.enabled,
+                            "enforced_by_owner": False,
+                        }
+                    ),
+                )
+
+            @staticmethod
+            def assert_api_headers(argv):
+                headers = [
+                    argv[index + 1]
+                    for index, item in enumerate(argv)
+                    if item == "-H"
+                ]
+                if "Accept: application/vnd.github+json" not in headers:
+                    raise AssertionError(argv)
+                if "X-GitHub-Api-Version: 2026-03-10" not in headers:
+                    raise AssertionError(argv)
+
+        with tempfile.TemporaryDirectory() as temp:
+            release_id = "site-20260901T140000Z-" + "a" * 12
+            bundle, _ = github_pages_bundle_fixture(Path(temp), release_id)
+            tooling = "d" * 40 + "+tooling-sha256:" + "e" * 64
+            release_set_sha256 = accepted_release_set_sha256(bundle)
+
+            disabled = ImmutableSettingRunner()
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                "immutable releases are disabled",
+            ):
+                GitHubReleasePublisher(
+                    GitHubPublishProfile(repository="acme/reasbook"),
+                    runner=disabled,
+                    expected_registry_commit="d" * 40,
+                    expected_tooling_revision=tooling,
+                    expected_release_set_sha256=release_set_sha256,
+                ).publish(bundle, dry_run=True)
+            self.assertEqual(len(disabled.commands), 1)
+
+            forbidden = ImmutableSettingRunner(status=403)
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                r"Administration \(read\)",
+            ):
+                GitHubReleasePublisher(
+                    GitHubPublishProfile(repository="acme/reasbook"),
+                    runner=forbidden,
+                    expected_registry_commit="d" * 40,
+                    expected_tooling_revision=tooling,
+                    expected_release_set_sha256=release_set_sha256,
+                ).publish(bundle, dry_run=True)
+
+            server_error = ImmutableSettingRunner(status=500)
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                r"cannot inspect GitHub immutable releases.*500",
+            ):
+                GitHubReleasePublisher(
+                    GitHubPublishProfile(repository="acme/reasbook"),
+                    runner=server_error,
+                    expected_registry_commit="d" * 40,
+                    expected_tooling_revision=tooling,
+                    expected_release_set_sha256=release_set_sha256,
+                ).publish(bundle, dry_run=True)
+
+            write_forbidden = ImmutableSettingRunner(status=403)
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                r"Administration \(write\)",
+            ):
+                GitHubReleasePublisher(
+                    GitHubPublishProfile(repository="acme/reasbook"),
+                    runner=write_forbidden,
+                )._enable_immutable_releases()
+
+    def test_github_publisher_waits_for_release_immutability(self) -> None:
+        class ReleaseRunner:
+            def __init__(self, states):
+                self.states = iter(states)
+                self.calls = 0
+
+            def run(self, command):
+                self.calls += 1
+                return CommandResult(
+                    command=command,
+                    returncode=0,
+                    stdout=json.dumps(
+                        {
+                            "draft": False,
+                            "immutable": next(self.states),
+                            "assets": [],
+                        }
+                    ),
+                )
+
+        runner = ReleaseRunner((False, False, True))
+        publisher = GitHubReleasePublisher(
+            GitHubPublishProfile(repository="acme/reasbook"),
+            runner=runner,
+        )
+        with patch(
+            "reasbook_deploy_sdk.release.github.time.sleep"
+        ) as sleep:
+            release = publisher._wait_for_immutable_release("reasbook-site-safe")
+        self.assertTrue(release["immutable"])
+        self.assertEqual(runner.calls, 3)
+        self.assertEqual(sleep.call_count, 2)
+
+        stuck = ReleaseRunner((False,) * 12)
+        with patch(
+            "reasbook_deploy_sdk.release.github.time.sleep"
+        ), self.assertRaisesRegex(
+            DeployExecutionError,
+            "did not become immutable",
+        ):
+            GitHubReleasePublisher(
+                GitHubPublishProfile(repository="acme/reasbook"),
+                runner=stuck,
+            )._wait_for_immutable_release("reasbook-site-safe")
 
     def test_github_new_release_requires_synced_clean_default_branch(self) -> None:
         class CheckoutRunner:
@@ -1624,6 +3086,8 @@ class ReleasePlanningTests(unittest.TestCase):
                 self.pages = None
                 self.environment = None
                 self.policies = None
+                self.immutable_releases = False
+                self.fail_policy_once = False
 
             def run(self, command):
                 self.commands.append(command)
@@ -1652,7 +3116,15 @@ class ReleasePlanningTests(unittest.TestCase):
                     if "--method" in command.argv
                     else "GET"
                 )
-                if method == "POST" and endpoint.endswith("/pages"):
+                if endpoint.endswith("/immutable-releases"):
+                    if method == "PUT":
+                        self.immutable_releases = True
+                        return CommandResult(command=command, returncode=0)
+                    value = {
+                        "enabled": self.immutable_releases,
+                        "enforced_by_owner": False,
+                    }
+                elif method == "POST" and endpoint.endswith("/pages"):
                     self.pages = {"build_type": "workflow", "cname": None}
                     value = self.pages
                 elif method == "PUT" and endpoint.endswith("/github-pages"):
@@ -1662,10 +3134,21 @@ class ReleasePlanningTests(unittest.TestCase):
                             "custom_branch_policies": True,
                         }
                     }
+                    self.policies = {
+                        "total_count": 0,
+                        "branch_policies": [],
+                    }
                     value = self.environment
                 elif method == "POST" and endpoint.endswith(
                     "/deployment-branch-policies"
                 ):
+                    if self.fail_policy_once:
+                        self.fail_policy_once = False
+                        return CommandResult(
+                            command=command,
+                            returncode=1,
+                            stderr="gh: transient failure (HTTP 503)",
+                        )
                     request = json.loads(command.input_text or "{}")
                     self.policies = {
                         "total_count": 1,
@@ -1709,23 +3192,31 @@ class ReleasePlanningTests(unittest.TestCase):
             self.assertEqual(
                 planned.actions,
                 (
+                    "enable-immutable-releases",
                     "create-pages-workflow-source",
                     "create-github-pages-environment",
                     "allow-default-branch-only",
                 ),
             )
             self.assertFalse(
-                any("--method" in command.argv for command in runner.commands)
+                any(
+                    "--method" in command.argv
+                    and command.argv[command.argv.index("--method") + 1] != "GET"
+                    for command in runner.commands
+                )
             )
 
             configured = configurator.configure()
             self.assertEqual(configured.status, "configured")
             writes = [
-                command for command in runner.commands if "--method" in command.argv
+                command
+                for command in runner.commands
+                if "--method" in command.argv
+                and command.argv[command.argv.index("--method") + 1] != "GET"
             ]
             self.assertEqual(
                 [command.argv[command.argv.index("--method") + 1] for command in writes],
-                ["POST", "PUT", "POST"],
+                ["PUT", "POST", "PUT", "POST"],
             )
             self.assertEqual(
                 json.loads(writes[-1].input_text or "{}"),
@@ -1735,8 +3226,42 @@ class ReleasePlanningTests(unittest.TestCase):
             before = len(writes)
             ready = configurator.configure()
             self.assertEqual(ready.status, "ready")
-            after = sum("--method" in command.argv for command in runner.commands)
+            after = sum(
+                "--method" in command.argv
+                and command.argv[command.argv.index("--method") + 1] != "GET"
+                for command in runner.commands
+            )
             self.assertEqual(after, before)
+
+            interrupted_runner = ConfigureRunner()
+            interrupted_runner.fail_policy_once = True
+            interrupted = GitHubPagesConfigurator(
+                GitHubPublishProfile(repository="acme/reasbook"),
+                runner=interrupted_runner,
+                repo_root=root,
+            )
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                "create default-branch deployment policy",
+            ):
+                interrupted.configure()
+            self.assertIsNotNone(interrupted_runner.environment)
+            self.assertEqual(
+                interrupted_runner.policies,
+                {"total_count": 0, "branch_policies": []},
+            )
+
+            repair_plan = interrupted.configure(dry_run=True)
+            self.assertEqual(repair_plan.actions, ("allow-default-branch-only",))
+            repaired = interrupted.configure()
+            self.assertEqual(repaired.status, "configured")
+            self.assertEqual(
+                interrupted_runner.policies,
+                {
+                    "total_count": 1,
+                    "branch_policies": [{"name": "main", "type": "branch"}],
+                },
+            )
 
             runner.policies = {
                 "total_count": 2,
@@ -1745,10 +3270,18 @@ class ReleasePlanningTests(unittest.TestCase):
                     {"name": "v4.30.0", "type": "branch"},
                 ],
             }
-            before = sum("--method" in command.argv for command in runner.commands)
+            before = sum(
+                "--method" in command.argv
+                and command.argv[command.argv.index("--method") + 1] != "GET"
+                for command in runner.commands
+            )
             with self.assertRaisesRegex(DeployExecutionError, "default branch"):
                 configurator.configure()
-            after = sum("--method" in command.argv for command in runner.commands)
+            after = sum(
+                "--method" in command.argv
+                and command.argv[command.argv.index("--method") + 1] != "GET"
+                for command in runner.commands
+            )
             self.assertEqual(after, before)
 
     def test_github_publisher_rejects_full_artifact(self) -> None:
@@ -1881,6 +3414,99 @@ class ReleasePlanningTests(unittest.TestCase):
                     (bundle_path, manifest_path, checksums_path, release_set_path),
                 )
 
+    def test_github_publisher_rejects_external_manifest_byte_drift(self) -> None:
+        class NoRunner:
+            @staticmethod
+            def run(command):
+                raise AssertionError(
+                    f"GitHub must not be contacted for invalid assets: {command.argv}"
+                )
+
+        with tempfile.TemporaryDirectory() as temp:
+            release_id = "site-20260901T140000Z-" + "a" * 12
+            bundle, assets = github_pages_bundle_fixture(Path(temp), release_id)
+            value = json.loads(assets[1].read_text(encoding="utf-8"))
+            assets[1].write_text(
+                json.dumps(value, separators=(",", ":")),
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                "external release manifest differs from the bundled manifest",
+            ):
+                GitHubReleasePublisher(
+                    GitHubPublishProfile(repository="acme/reasbook"),
+                    runner=NoRunner(),
+                    expected_registry_commit="d" * 40,
+                    expected_tooling_revision=(
+                        "d" * 40 + "+tooling-sha256:" + "e" * 64
+                    ),
+                    expected_release_set_sha256=accepted_release_set_sha256(
+                        bundle
+                    ),
+                ).publish(bundle, dry_run=True)
+
+    def test_github_publisher_revalidates_final_immutable_assets(self) -> None:
+        class NoRunner:
+            def __init__(self):
+                self.commands = []
+
+            def run(self, command):
+                self.commands.append(command)
+                raise AssertionError(
+                    f"unexpected GitHub command after final mismatch: {command.argv}"
+                )
+
+        with tempfile.TemporaryDirectory() as temp:
+            release_id = "site-20260901T140000Z-" + "a" * 12
+            bundle, assets = github_pages_bundle_fixture(Path(temp), release_id)
+            tag = "reasbook-site-20260901T140000Z-aaaaaaaaaaaa"
+            exact = {
+                "id": 123,
+                "tag_name": tag,
+                "draft": False,
+                "immutable": True,
+                "assets": github_release_assets(assets),
+            }
+            changed_assets = github_release_assets(assets)
+            changed_assets[0] = {
+                **changed_assets[0],
+                "digest": "sha256:" + "0" * 64,
+            }
+            changed = {**exact, "assets": changed_assets}
+            runner = NoRunner()
+            publisher = GitHubReleasePublisher(
+                GitHubPublishProfile(repository="acme/reasbook"),
+                runner=runner,
+                expected_registry_commit="d" * 40,
+                expected_tooling_revision=(
+                    "d" * 40 + "+tooling-sha256:" + "e" * 64
+                ),
+                expected_release_set_sha256=accepted_release_set_sha256(bundle),
+            )
+
+            with (
+                patch.object(
+                    publisher,
+                    "_require_immutable_releases_enabled",
+                ),
+                patch.object(publisher, "_release_by_tag", return_value=exact),
+                patch.object(publisher, "_tag_target", return_value="d" * 40),
+                patch.object(
+                    publisher,
+                    "_wait_for_immutable_release",
+                    return_value=changed,
+                ),
+                self.assertRaisesRegex(
+                    DeployExecutionError,
+                    "refusing to overwrite immutable assets",
+                ),
+            ):
+                publisher.publish(bundle)
+
+            self.assertEqual(runner.commands, [])
+
     def test_github_wait_ignores_runs_that_predate_dispatch(self) -> None:
         class WaitRunner:
             def __init__(self, paths):
@@ -1893,22 +3519,54 @@ class ReleasePlanningTests(unittest.TestCase):
                 if command.argv[1:3] == ("repo", "view"):
                     return CommandResult(command=command, returncode=0, stdout="main\n")
                 if command.argv[1] == "api":
+                    if command.argv[2].endswith("/immutable-releases"):
+                        return CommandResult(
+                            command=command,
+                            returncode=0,
+                            stdout=json.dumps(
+                                {"enabled": True, "enforced_by_owner": False}
+                            ),
+                        )
+                    if "/actions/workflows/" in command.argv[2]:
+                        self.list_calls += 1
+                        old = {
+                            "id": 10,
+                            "display_title": (
+                                "Publish reasbook-site-"
+                                "20260901T140000Z-aaaaaaaaaaaa"
+                            ),
+                            "status": "completed",
+                            "conclusion": "success",
+                        }
+                        payload = [old]
+                        if self.list_calls > 1:
+                            payload.append(
+                                {
+                                    "id": 11,
+                                    "display_title": old["display_title"],
+                                    "status": "completed",
+                                    "conclusion": "success",
+                                }
+                            )
+                        return CommandResult(
+                            command=command,
+                            returncode=0,
+                            stdout=json.dumps({"workflow_runs": payload}),
+                        )
                     if "/releases/tags/" in command.argv[2]:
-                        assets = [
-                            {
-                                "name": path.name,
-                                "size": path.stat().st_size,
-                                "digest": "sha256:"
-                                + hashlib.sha256(path.read_bytes()).hexdigest(),
-                            }
-                            for path in self.paths
-                        ]
+                        assets = github_release_assets(self.paths)
                         return CommandResult(
                             command=command,
                             returncode=0,
                             stdout=json.dumps(
                                 {
+                                    "id": 123,
+                                    "tag_name": (
+                                        "reasbook-site-20260901T140000Z-"
+                                        "aaaaaaaaaaaa"
+                                    ),
                                     "draft": False,
+                                    "immutable": True,
                                     "target_commitish": "c" * 40,
                                     "assets": assets,
                                 }
@@ -1925,46 +3583,22 @@ class ReleasePlanningTests(unittest.TestCase):
                             {"object": {"type": "commit", "sha": "c" * 40}}
                         ),
                     )
-                if command.argv[1:3] == ("run", "list"):
-                    self.list_calls += 1
-                    if self.list_calls == 1:
-                        payload = [{"databaseId": 10}]
-                    else:
-                        payload = [
-                            {
-                                "databaseId": 10,
-                                "displayTitle": (
-                                    "Publish reasbook-site-"
-                                    "20260901T140000Z-aaaaaaaaaaaa"
-                                ),
-                                "status": "completed",
-                                "conclusion": "success",
-                            },
-                            {
-                                "databaseId": 11,
-                                "displayTitle": (
-                                    "Publish reasbook-site-"
-                                    "20260901T140000Z-aaaaaaaaaaaa"
-                                ),
-                                "status": "completed",
-                                "conclusion": "success",
-                            },
-                        ]
-                    return CommandResult(
-                        command=command,
-                        returncode=0,
-                        stdout=json.dumps(payload),
-                    )
                 return CommandResult(command=command, returncode=0)
 
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             release_id = "site-20260901T140000Z-" + "a" * 12
             bundle, paths = github_pages_bundle_fixture(root, release_id)
+            release_set_sha256 = accepted_release_set_sha256(bundle)
             runner = WaitRunner(paths)
             publication = GitHubReleasePublisher(
                 GitHubPublishProfile(repository="acme/reasbook"),
                 runner=runner,
+                expected_registry_commit="c" * 40,
+                expected_tooling_revision=(
+                    "c" * 40 + "+tooling-sha256:" + "e" * 64
+                ),
+                expected_release_set_sha256=release_set_sha256,
             ).publish(
                 bundle,
                 wait=True,
@@ -1984,6 +3618,26 @@ class ReleasePlanningTests(unittest.TestCase):
             )
             verbs = [command.argv[1:3] for command in runner.commands]
             self.assertIn(("repo", "view"), verbs)
+            self.assertNotIn(
+                ("release", "edit"),
+                verbs,
+                "re-dispatch must not mutate an already-published release",
+            )
+            self.assertFalse(
+                any(
+                    command.argv[1:4] == ("api", "--method", "PATCH")
+                    for command in runner.commands
+                ),
+                "re-dispatch must not require or republish a draft release",
+            )
+            self.assertNotIn(("run", "list"), verbs)
+            self.assertTrue(
+                any(
+                    command.argv[1] == "api"
+                    and "/actions/workflows/" in command.argv[2]
+                    for command in runner.commands
+                )
+            )
             self.assertFalse(
                 any(
                     command.argv[1] == "api" and "/commits/" in command.argv[2]
@@ -1991,6 +3645,26 @@ class ReleasePlanningTests(unittest.TestCase):
                 ),
                 "rollback of an old tag must not depend on the current default branch",
             )
+
+            mismatch_runner = WaitRunner(paths)
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                "registry commit does not match the immutable release tag",
+            ):
+                GitHubReleasePublisher(
+                    GitHubPublishProfile(repository="acme/reasbook"),
+                    runner=mismatch_runner,
+                    expected_registry_commit="d" * 40,
+                    expected_tooling_revision=(
+                        "d" * 40 + "+tooling-sha256:" + "e" * 64
+                    ),
+                    expected_release_set_sha256=release_set_sha256,
+                ).publish(bundle)
+            mismatch_verbs = [
+                command.argv[1:3] for command in mismatch_runner.commands
+            ]
+            self.assertNotIn(("release", "edit"), mismatch_verbs)
+            self.assertNotIn(("workflow", "run"), mismatch_verbs)
 
     def test_github_publisher_refuses_to_replace_existing_assets(self) -> None:
         class ExistingRunner:
@@ -2002,17 +3676,33 @@ class ReleasePlanningTests(unittest.TestCase):
                 if command.argv[1:3] == ("repo", "view"):
                     return CommandResult(command=command, returncode=0, stdout="main\n")
                 if command.argv[1] == "api":
+                    if command.argv[2].endswith("/immutable-releases"):
+                        return CommandResult(
+                            command=command,
+                            returncode=0,
+                            stdout=json.dumps(
+                                {"enabled": True, "enforced_by_owner": False}
+                            ),
+                        )
                     if "/releases/tags/" in command.argv[2]:
                         return CommandResult(
                             command=command,
                             returncode=0,
                             stdout=json.dumps(
                                 {
+                                    "id": 123,
+                                    "tag_name": (
+                                        "reasbook-site-20260901T140000Z-"
+                                        "aaaaaaaaaaaa"
+                                    ),
                                     "draft": False,
+                                    "immutable": True,
                                     "target_commitish": "c" * 40,
                                     "assets": [
                                         {
+                                            "id": 999,
                                             "name": "unexpected.site.tar.zst",
+                                            "state": "uploaded",
                                             "size": 1,
                                             "digest": "sha256:" + "0" * 64,
                                         }
@@ -2041,7 +3731,13 @@ class ReleasePlanningTests(unittest.TestCase):
 
             with self.assertRaisesRegex(DeployExecutionError, "refusing to overwrite"):
                 GitHubReleasePublisher(
-                    GitHubPublishProfile(repository="acme/reasbook"), runner=runner
+                    GitHubPublishProfile(repository="acme/reasbook"),
+                    runner=runner,
+                    expected_registry_commit="c" * 40,
+                    expected_tooling_revision=(
+                        "c" * 40 + "+tooling-sha256:" + "e" * 64
+                    ),
+                    expected_release_set_sha256=accepted_release_set_sha256(bundle),
                 ).publish(bundle)
 
             verbs = [command.argv[1:3] for command in runner.commands]

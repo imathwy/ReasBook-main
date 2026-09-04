@@ -3,12 +3,15 @@
 
 import argparse
 from io import BytesIO
+import json
 import os
 from pathlib import Path
 import re
+import stat
 from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import unquote, urlparse
+import uuid
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
 BOOK_SITE = os.path.abspath(os.environ.get("REASBOOK_SITE_DIR", ROOT_DIR / "ReasBookWeb" / "_site"))
@@ -49,6 +52,35 @@ def _normalize_public_prefix(value: str) -> str:
     ):
         raise ValueError("public prefix must be a normalized absolute URL path")
     return prefix
+
+
+def _safe_ready_file_path(value: Path) -> Path:
+    """Prepare a lexical output path without following symbolic links."""
+
+    target = Path(os.path.abspath(os.fspath(Path(value).expanduser())))
+
+    def reject_link_components() -> None:
+        for component in (target, *target.parents):
+            try:
+                metadata = component.lstat()
+            except FileNotFoundError:
+                continue
+            except OSError as exc:
+                raise ValueError(
+                    f"cannot inspect ready-file path component: {component}"
+                ) from exc
+            if stat.S_ISLNK(metadata.st_mode):
+                raise ValueError(
+                    "ready-file path contains a symbolic-link component: "
+                    f"{component}"
+                )
+
+    reject_link_components()
+    target.parent.mkdir(parents=True, exist_ok=True)
+    # Recheck after creating missing parents so a newly materialized component
+    # cannot silently change the destination before the atomic replace.
+    reject_link_components()
+    return target
 
 
 def detect_site_root() -> str:
@@ -107,19 +139,24 @@ def _safe_join(root: str, relative: str) -> str:
 
 class ReasBookHandler(SimpleHTTPRequestHandler):
     def _handle_special_request(self) -> bool:
-        request_path = _strip_public_prefix(
-            unquote(urlparse(self.path).path)
-        )
+        public_path = unquote(urlparse(self.path).path)
+        request_path = _strip_public_prefix(public_path)
         if request_path == "/favicon.ico":
             self.send_response(HTTPStatus.NO_CONTENT)
             self.end_headers()
             return True
         if request_path == "/":
-            self.send_response(HTTPStatus.MOVED_PERMANENTLY)
-            self.send_header("Location", _public_site_root())
-            self.send_header("Content-Length", "0")
-            self.end_headers()
-            return True
+            target = _public_site_root()
+            # A root-mounted site must serve ``/`` directly.  With a public
+            # proxy prefix, redirect only until the externally visible root is
+            # reached; redirecting that target to itself creates an infinite
+            # loop.
+            if public_path != target:
+                self.send_response(HTTPStatus.MOVED_PERMANENTLY)
+                self.send_header("Location", target)
+                self.send_header("Content-Length", "0")
+                self.end_headers()
+                return True
         return False
 
     def do_GET(self):
@@ -215,6 +252,11 @@ def main() -> None:
         default=os.environ.get("REASBOOK_PUBLIC_PREFIX", ""),
         help="external path stripped by a reverse proxy (for example /proxy/3000)",
     )
+    parser.add_argument(
+        "--ready-file",
+        type=Path,
+        help="atomically write the bound origin and URL after the socket is ready",
+    )
     args = parser.parse_args()
 
     global PUBLIC_PREFIX, SITE_ROOT
@@ -225,8 +267,27 @@ def main() -> None:
     except ValueError as exc:
         parser.error(str(exc))
 
+    ready_file = None
+    if args.ready_file is not None:
+        try:
+            ready_file = _safe_ready_file_path(args.ready_file)
+        except ValueError as exc:
+            parser.error(str(exc))
+
     with ThreadingHTTPServer((args.host, args.port), ReasBookHandler) as httpd:
-        print(f"Serving at http://localhost:{args.port}{_public_site_root()}")
+        bound_port = int(httpd.server_address[1])
+        origin = f"http://127.0.0.1:{bound_port}"
+        url = origin + _public_site_root()
+        if ready_file is not None:
+            temporary = ready_file.with_name(
+                f".{ready_file.name}.{uuid.uuid4().hex}.tmp"
+            )
+            temporary.write_text(
+                json.dumps({"origin": origin, "url": url}) + "\n",
+                encoding="utf-8",
+            )
+            os.replace(temporary, ready_file)
+        print(f"Serving at {url}")
         print(f"{SITE_ROOT} -> {BOOK_SITE}")
         if PUBLIC_PREFIX:
             print(f"reverse-proxy prefix: {PUBLIC_PREFIX}")

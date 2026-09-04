@@ -142,33 +142,116 @@ change the host port. A custom packaged site requires `--skip-build`.
 For immutable releases, use the release CLI rather than Compose directly:
 
 ```bash
-# Verify and serve the GitHub candidate from the shared cache.
+# Packaging requires a completed aggregate `site` stage; branch Lean caches
+# alone are not sufficient. Confirm state, then derive both immutable bundles.
 RELEASE_ID="${RELEASE_ID:?set RELEASE_ID to the generated release ID}"
+./sdk/deploy/bin/reasbook-deploy release status "$RELEASE_ID"
+./sdk/deploy/bin/reasbook-deploy release package "$RELEASE_ID"
+
+# Verify both archives, exercise both preview shapes, and smoke-test an atomic
+# self-hosted install. This uses cache/reasbook/validation and does not rebuild.
+./sdk/deploy/bin/reasbook-deploy release validate "$RELEASE_ID" \
+  --browser-mode required
+
+# Serve the exact GitHub candidate from the shared cache for manual inspection.
 ./sdk/deploy/bin/reasbook-deploy release preview "$RELEASE_ID" --artifact pages
 
-# Install the transferred full bundle, SHA256SUMS, and ReleaseSet. Obtain the
-# policy digest from the trusted build channel, not from the transferred files.
-POLICY_SHA256="${POLICY_SHA256:?set the trusted sha256 artifact-policy digest}"
+# On the trusted build host, record the per-release full-bundle SHA-256 and the
+# policy digest. Deliver both independently of the transferred bundle/ReleaseSet.
+POLICY_SHA256="$(./sdk/deploy/bin/reasbook-deploy release \
+  --repo-root . policy-digest --profile github-pages)"
+CACHE_ROOT="${REASBOOK_CACHE_ROOT:-/volume/math/users/zcwang/ReasBook_Reviewer/cache/reasbook}"
+TRUSTED_FULL_BUNDLE="$CACHE_ROOT/releases/$RELEASE_ID/$RELEASE_ID.site.tar.zst"
+FULL_SHA256="$(sha256sum "$TRUSTED_FULL_BUNDLE" | awk '{print $1}')"
+
+# On the destination, FULL_SHA256 must come from that authenticated record.
 FULL_BUNDLE="${RELEASE_ID}.site.tar.zst"
-FULL_SHA256="$(awk -v bundle="$FULL_BUNDLE" \
-  '$2 == bundle { print $1 }' SHA256SUMS)"
-: "${FULL_SHA256:?SHA256SUMS has no matching full bundle}"
+FULL_SHA256="${FULL_SHA256:?set the independently authenticated full-bundle SHA-256}"
 reasbook-deploy release install "$FULL_BUNDLE" \
-  --sha256 "$FULL_SHA256" --release-set release-set.json \
+  --expected-bundle-sha256 "$FULL_SHA256" --release-set release-set.json \
   --artifact-policy-sha256 "$POLICY_SHA256" \
   --deploy-root /srv/reasbook \
   --health-url http://127.0.0.1/ReasBook/release-spec.json
 ```
 
+`release validate` does not rebuild. It fully extracts and verifies the `pages`
+archive, verifies and installs the `full` archive through the production atomic
+installer, then serves both with the repository preview adapter. It checks the
+catalog, canonical project, documentation, Verso, theorem-map, asset,
+ReleaseSpec, and 404 routes. It also checks every version root, every project
+version in `full`, and the canonical project versions in `pages`. Successful
+runs remove the large scratch trees and retain a small result/log directory below
+`cache/reasbook/validation/<release-id>/`; failures retain the exact scratch
+tree for diagnosis. Pass `--keep-workdir` to retain a successful scratch tree.
+The per-project Verso exception comes from the existing
+`scripts/pages/project_catalog.py` capability registry used by assembly and
+SiFlow. Validation reads it only from the release-scoped tooling snapshot whose
+SHA-256 is embedded in the ReleaseSpec. For a local canary without a snapshot,
+the current checkout is accepted only when its complete tooling digest is an
+exact match, so capability policy cannot drift after packaging.
+
+Browser checks are optional so the deployment SDK keeps no mandatory browser
+runtime. `--browser-mode auto` (the default) runs Playwright when both its
+Python package and Chromium are installed, and reports an explicit skip when
+either is absent. Other launch or browser failures still fail the gate. For the
+pre-publication gate, install both once, then require the browser check:
+
+```bash
+./sdk/common/bin/python -m pip install -e 'sdk/deploy[e2e]'
+./sdk/common/bin/python -m playwright install chromium
+./sdk/deploy/bin/reasbook-deploy release validate "$RELEASE_ID" \
+  --browser-mode required
+```
+
+Using the shared interpreter wrapper ensures Playwright is installed into the
+same Python selected by the CLI. The required browser pass opens every route
+kind at desktop and 390 px mobile widths, records screenshots, rejects HTTP and
+transport-level same-origin request failures and console/page errors, verifies
+that every final URL stays within the configured base path, and checks each
+representative page for horizontal overflow.
+Use `--browser-mode skip` only when a separate browser E2E run is recorded.
+
 After the pinned Pages workflow is merged to the GitHub default branch, run
 `release configure-pages --profile github-pages --dry-run` and then the same
 command without `--dry-run`. It creates only missing settings and fails closed
 when a custom domain or any branch policy other than the exact default branch
-already exists.
+already exists. It also audits and enables repository immutable releases; the
+GitHub token needs repository Administration read permission for both dry-run
+and publication, and write permission for the one-time enable operation.
+
+Promote the already packaged and browser-validated Pages artifact with one
+command:
+
+```bash
+./sdk/deploy/bin/reasbook-deploy release publish "$RELEASE_ID" \
+  --target github-pages --wait
+```
+
+This is one-command *promotion*, not a source-to-production build:
+`configure-pages` is a separate one-time idempotent setup, and the SiFlow build,
+aggregate, package, and required acceptance gate must already be complete. The
+local publisher uploads four Release assets; the workflow verifies their
+release attestations, downloads and extracts the Pages archive, uploads the
+static tree, and deploys Pages. Neither side runs Lean, Verso, doc-gen, or a
+theorem graph. Runtime depends mainly on the archive/uplink, Actions queue, and
+Pages deployment; CPU is limited to hashing, validation, and decompression.
+The workflow explicitly grants `attestations: read` and installs pinned
+`PyYAML==6.0.3` for the trusted policy check. Release uploads use a bounded
+two-hour timeout (ordinary API calls remain five minutes) because transfer time
+for the allowed large archive is network-dominated.
 
 The installer lays the configured base path below
 `/srv/reasbook/current/public`; point the static server at that stable document
 root. See `config/deploy/nginx-self-hosted.conf`.
+
+The portable `release install` command above consumes the same packaged `full`
+bundle paired with the Pages artifact. After transfer and one-time server
+configuration, that single command verifies the independently authenticated
+per-release checksum and the policy, stages the release, and atomically switches
+`current`; it performs no rebuild. A co-transferred `SHA256SUMS` is useful only
+for diagnostics and must not be the source of `FULL_SHA256`. The policy digest
+checks deployment policy; because it can be shared by many releases, it does
+not authenticate release identity.
 
 For the containerized production server, install the first release with the
 explicit filesystem probe because no HTTP server exists yet:
@@ -176,12 +259,10 @@ explicit filesystem probe because no HTTP server exists yet:
 ```bash
 RELEASE_ID="${RELEASE_ID:?set RELEASE_ID to the generated release ID}"
 POLICY_SHA256="${POLICY_SHA256:?set the trusted sha256 artifact-policy digest}"
+FULL_SHA256="${FULL_SHA256:?set the independently authenticated full-bundle SHA-256}"
 FULL_BUNDLE="${RELEASE_ID}.site.tar.zst"
-FULL_SHA256="$(awk -v bundle="$FULL_BUNDLE" \
-  '$2 == bundle { print $1 }' SHA256SUMS)"
-: "${FULL_SHA256:?SHA256SUMS has no matching full bundle}"
 reasbook-deploy release install "$FULL_BUNDLE" \
-  --sha256 "$FULL_SHA256" --release-set release-set.json \
+  --expected-bundle-sha256 "$FULL_SHA256" --release-set release-set.json \
   --artifact-policy-sha256 "$POLICY_SHA256" \
   --deploy-root /srv/reasbook --filesystem-health-only
 ```
@@ -211,18 +292,25 @@ rollback so an invalid switch is automatically reverted:
 
 ```bash
 reasbook-deploy release install "$FULL_BUNDLE" \
-  --sha256 "$FULL_SHA256" --release-set release-set.json \
+  --expected-bundle-sha256 "$FULL_SHA256" --release-set release-set.json \
   --artifact-policy-sha256 "$POLICY_SHA256" \
   --deploy-root /srv/reasbook \
   --health-url http://127.0.0.1:8080/ReasBook/release-spec.json
 ```
 
-The checksum and expected artifact-policy digest are trust inputs recorded on
-the build/publish side. The destination rejects a ReleaseSet that does not bind
-the full archive's checksum, ReleaseSpec, site digest, file count, byte count,
-and policy before writing the deployment root. Every non-dry-run install needs
-either an HTTP(S) health URL or the explicit bootstrap-only
-`--filesystem-health-only` mode.
+The per-release checksum and expected artifact-policy digest are trust inputs
+recorded on the build/publish side and delivered independently of the archive.
+The destination rejects a ReleaseSet that does not bind the full archive's
+checksum, ReleaseSpec, site digest, file count, byte count, and policy before
+writing the deployment root. Every non-dry-run install needs either an HTTP(S)
+health URL or the explicit bootstrap-only `--filesystem-health-only` mode.
+
+The Pages publisher, including `--dry-run`, requires the successful
+`validation/<release-id>/latest.json` produced by `release validate
+--browser-mode required`. The self-hosted `release publish` path consumes the
+same record. The portable `release install` boundary instead requires the
+externally supplied full-bundle SHA-256 and policy digest shown above; it never
+accepts either value solely from the transferred ReleaseSet.
 
 ## CI helpers
 
