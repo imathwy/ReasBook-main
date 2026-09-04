@@ -63,6 +63,47 @@ closed. The builder requires the generated stylesheet and rechecks closure in
 no-write mode after creating dependency stubs. It rejects a symlink at the
 output path or any existing parent component before resolving the destination.
 
+Controllers that need the same preflight without running doc-gen should use
+the public read-only closure and artifact APIs:
+
+```python
+from reasbook_build_sdk import (
+    inspect_project_olean,
+    plan_reachable_project_modules,
+)
+
+plan = plan_reachable_project_modules(project_root, build_targets)
+checks = tuple(
+    inspect_project_olean(
+        plan.project_root,
+        compiled_root,
+        entry.name,
+        entry.source,
+    )
+    for entry in plan.entries
+)
+```
+
+The planner builds one project-wide source candidate graph, so an entry root
+can reach a module owned by another book or paper even when that second entry
+root is not selected. It still emits only imported modules, not every source in
+the graph. The plan deduplicates modules shared by multiple roots while
+retaining each module's complete transitive `owners` set and the builder's
+bounded batch order. Artifact inspection accepts aggregate, flat `srcDir`, and
+explicit-root Lake layouts.
+An unresolved import remains external when its supported project-local paths
+are absent. If an imported path instead crosses an existing symlink or
+non-directory component, planning fails closed; unreferenced unsafe paths do
+not poison the reachable closure. Every emitted source, including a selected
+root, receives the same lexical no-follow path-chain validation.
+Each result has a `valid`, `missing`, or `unsafe` status; `succeeded` is true
+only when `artifact` names the selected non-empty regular file.
+Inspection rejects an empty, non-regular, or symlinked first existing candidate
+and does not fall through to a lower-priority path. This inspection is
+deliberately existence/structure-only and does not hash dependency packages;
+the subsequent documentation identity still hashes reachable project `.olean`
+content and applies the managed dependency-cache policy described below.
+
 Output is a content-addressed `project-modules-v2` cache; provide
 `--repository` and `--revision` together when source links must be pinned to an
 immutable commit. A cache produced before the source-link policy was recorded
@@ -75,7 +116,9 @@ under the output parent's hidden
 commit, Lake manifest, reachable source hashes and compiled `.olean` files,
 project native libraries, doc-gen/leansqlite support, doc-gen executable, and
 adapter. Its SQLite database is accepted only after digest, integrity, exact
-module-set, required-table, `schema_meta`, and schema-fingerprint checks.
+module-set, required-table, `schema_meta`, and schema-fingerprint checks. The
+outer rendered-cache identity additionally binds each reachable module's
+transitive entry-root owners because source-link disambiguation uses that graph.
 Restoring an incompatible checkpoint permits one fresh-analysis fallback; the
 old checkpoint is replaced only after fresh rendering and link closure succeed.
 Rendering or link-closure failure therefore cannot publish a partial
