@@ -156,6 +156,22 @@ class RepositoryScriptTests(unittest.TestCase):
         resource = update_readme.resource_cell(no_verso)
         self.assertIn("Verso not published", resource)
         self.assertNotIn("TBD", resource)
+        linked_resource = update_readme.resource_cell(
+            {
+                "kind": "books",
+                "name": "Analysis2_Tao_2022",
+                "slug": "analysis2_tao_2022",
+            }
+        )
+        self.assertEqual(linked_resource.count("&#124;"), 1)
+        theorem_resource = update_readme.resource_cell(
+            {
+                "kind": "papers",
+                "name": "TR_LALM_theory",
+                "slug": "tr_lalm_theory",
+            }
+        )
+        self.assertEqual(theorem_resource.count("&#124;"), 2)
         self.assertEqual(
             update_readme.resource_cell(excluded, language="zh-CN"),
             "仅源代码（不包含在当前发布配置中）",
@@ -191,6 +207,8 @@ class RepositoryScriptTests(unittest.TestCase):
             '<td scope="rowgroup">Formalization platform</td>', english
         )
         self.assertIn('<td scope="rowgroup">形式化平台</td>', chinese)
+        self.assertGreater(english.count("&#124;"), 0)
+        self.assertEqual(english.count("&#124;"), chinese.count("&#124;"))
         self.assertIn("https://github.com/leanprover/verso", english)
         self.assertIn("https://github.com/leanprover/comparator", english)
         self.assertIn("https://github.com/leanprover/verso", chinese)
