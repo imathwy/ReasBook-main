@@ -216,13 +216,30 @@ and other external libraries are excluded; referenced external HTML pages
 become explicit stubs so the static site remains link-closed. The immutable
 `project-modules-v2` cache identity makes retries reuse an exact prior result.
 
+The commands below assume that `RELEASE_ID` already has a completed aggregate
+`site` stage in the release cache. The default cache is
+`/volume/math/users/zcwang/ReasBook_Reviewer/cache/reasbook`; override it with
+`REASBOOK_CACHE_ROOT` or `--cache-root`. Branch-level Lean caches alone are not
+a packageable release—finish the aggregate stage first and confirm it with
+`release status`.
+
 ```bash
 RELEASE_ID="${RELEASE_ID:?set RELEASE_ID to the generated release ID}"
+./sdk/deploy/bin/reasbook-deploy release status "$RELEASE_ID"
 ./sdk/deploy/bin/reasbook-deploy release package "$RELEASE_ID"
+./sdk/deploy/bin/reasbook-deploy release validate "$RELEASE_ID" \
+  --browser-mode required
 ./sdk/deploy/bin/reasbook-deploy release preview "$RELEASE_ID" --artifact pages
 ./sdk/deploy/bin/reasbook-deploy release publish "$RELEASE_ID" \
   --target github-pages --wait
 ```
+
+The required validation step does not rebuild Lean or documentation. It checks
+the bounded Pages archive, the complete full archive, and an atomic
+self-hosted installation, including representative desktop and mobile browser
+routes. Install the optional browser runtime as described in
+[the deployment SDK guide](sdk/deploy/README.md) before using this publication
+gate.
 
 It requires an authenticated GitHub CLI. The `release deploy` command remains
 available for a small local canary; it must not be used for the full public
@@ -251,9 +268,13 @@ the exact self-hosted candidate. Add `--host 0.0.0.0 --public-prefix
 
 The `pages` artifact fails during local packaging above 850 MB, 60,000 files,
 or 950 MB compressed. The publish workflow repeats the extracted-size and
-file-count checks. These margins keep the site below GitHub Pages' 1 GB and
-10-minute deployment limits; compression alone does not make an oversized
-site acceptable.
+file-count checks from the archive listing before extraction. Hidden site
+content such as `.nojekyll` and `.well-known/` is retained and included in the
+verified tree digest. Exact `.git` and `.github` path segments are rejected
+because the Pages upload action excludes them and would otherwise change the
+tree after local verification. These margins keep the site below GitHub Pages'
+1 GB and 10-minute deployment limits; compression alone does not make an
+oversized site acceptable.
 
 After the deployment workflow has reached the default branch, configure and
 audit the repository boundary once:
@@ -265,23 +286,62 @@ audit the repository boundary once:
   --profile github-pages
 ```
 
-The command creates only missing workflow-based Pages settings and permits
-only the exact default branch to use the `github-pages` environment. It refuses
-to rewrite an existing custom domain or incompatible/extra branch policy; such
-a policy must be reviewed and removed explicitly in GitHub before rerunning.
+The command creates only missing workflow-based Pages settings, enables
+repository immutable releases, and permits only the exact default branch to
+use the `github-pages` environment. Its token therefore needs repository
+Administration read permission for an audit and write permission to enable the
+setting. It refuses to rewrite an existing custom domain or incompatible/extra
+branch policy; such a policy must be reviewed and removed explicitly in GitHub
+before rerunning.
 
 ```bash
 ./sdk/deploy/bin/reasbook-deploy release publish "$RELEASE_ID" \
   --target github-pages --wait
 ```
 
-The command uploads the Pages archive, manifest, checksum, and ReleaseSet to an
-immutable GitHub Release, then dispatches the pinned publish-only workflow.
+The command first consumes the successful, required-browser acceptance record
+under `cache/reasbook/validation/<release-id>/latest.json`. Dry runs use the
+same gate. It then uploads the Pages archive, manifest, checksum, and ReleaseSet
+to an immutable GitHub Release, waits until GitHub reports the Release as
+immutable, and only then dispatches the pinned publish-only workflow. The
+workflow uses GitHub's Release and per-asset verification commands before
+deploying the exact hidden-file-inclusive tree. Its verify job has only
+read-level contents, Pages, and artifact-attestation permissions and installs
+only the pinned PyYAML verifier dependency.
+
+Neither the local upload nor the GitHub workflow runs Lean, Verso, doc-gen, or
+theorem-graph work, and no Lean cache is transferred. Wall-clock time is
+therefore governed mainly by the Pages archive size and uplink, the Actions
+queue, one download/decompression/upload pass, and GitHub Pages deployment;
+CPU use is limited to hashing, validation, and archive extraction. The
+workflow's 30-minute verify and 10-minute deploy limits are failure ceilings,
+not expected runtimes. The local Release upload has a separate two-hour timeout
+so a valid archive near the 950 MB ceiling is not killed by the normal
+five-minute GitHub API-command limit.
+
+This is a one-command promotion only after packaging, required validation,
+authentication, and the one-time `configure-pages` setup. It is deliberately
+not a source-to-production one-click build: the full SiFlow build and aggregate
+stage remain explicit and independently retryable.
 For a new Release, it also requires a clean checkout whose `HEAD` exactly
-matches the GitHub default branch, so merge and pull the deployment changes
-before running it. Re-dispatching an existing immutable tag does not depend on
-the caller's branch. See the official [GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)
-and [GitHub Release limits](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases).
+matches both the GitHub default branch and the ReleaseSpec
+`source.registry_commit`, so merge and pull the deployment changes before
+running it. A dirty tooling revision remains valid for local canaries, but the
+GitHub publisher accepts only the clean
+`COMMIT+tooling-sha256:DIGEST` form. It creates the exact Git ref first, uses
+the Releases REST API to create and publish the draft, and rechecks the fully
+dereferenced tag before upload, publication, and dispatch. This avoids relying
+on release flags absent from the repository's supported GitHub CLI 2.4. A
+pre-existing or concurrently created tag is accepted only when it resolves to
+the same commit. The workflow repeats the source-commit and clean-tooling
+checks from the bundled ReleaseSpec and recomputes the artifact-policy digest
+from the trusted profile in its checked-out default-branch revision.
+Consequently, a release cannot be re-dispatched after that policy changes;
+create and validate a new ReleaseSpec instead. Otherwise re-dispatching an
+existing immutable tag does not depend on the caller's branch. See the official
+[GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)
+and
+[GitHub Release limits](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases).
 
 #### Deploy the complete site on your own server
 
@@ -296,32 +356,52 @@ Then either deploy directly from the shared release cache:
   --health-url http://127.0.0.1/ReasBook/release-spec.json
 ```
 
-or transfer the full archive, its matching `SHA256SUMS`, and
-`release-set.json`, then supply the artifact-policy digest recorded separately
-on the trusted build side. The destination needs no source checkout or release
-cache:
+or transfer the full archive and `release-set.json`. Before transfer, record
+the archive's per-release SHA-256 on the trusted build host and deliver that
+value to the operator through an independent authenticated channel (for
+example a signed deployment record). Also record the artifact-policy digest
+from the reviewed profile:
+
+```bash
+POLICY_SHA256="$(./sdk/deploy/bin/reasbook-deploy release \
+  --repo-root . policy-digest --profile github-pages)"
+CACHE_ROOT="${REASBOOK_CACHE_ROOT:-/volume/math/users/zcwang/ReasBook_Reviewer/cache/reasbook}"
+FULL_BUNDLE="$CACHE_ROOT/releases/$RELEASE_ID/$RELEASE_ID.site.tar.zst"
+FULL_SHA256="$(sha256sum "$FULL_BUNDLE" | awk '{print $1}')"
+printf 'release=%s\nfull_sha256=%s\npolicy_sha256=%s\n' \
+  "$RELEASE_ID" "$FULL_SHA256" "$POLICY_SHA256"
+```
+
+The destination needs no source checkout or release cache:
 
 ```bash
 RELEASE_ID="${RELEASE_ID:?set RELEASE_ID to the generated release ID}"
 POLICY_SHA256="${POLICY_SHA256:?set the trusted sha256 artifact-policy digest}"
+FULL_SHA256="${FULL_SHA256:?set the independently authenticated full-bundle SHA-256}"
 FULL_BUNDLE="${RELEASE_ID}.site.tar.zst"
-FULL_SHA256="$(awk -v bundle="$FULL_BUNDLE" \
-  '$2 == bundle { print $1 }' SHA256SUMS)"
-: "${FULL_SHA256:?SHA256SUMS has no matching full bundle}"
 reasbook-deploy release install \
-  "$FULL_BUNDLE" --sha256 "$FULL_SHA256" \
+  "$FULL_BUNDLE" --expected-bundle-sha256 "$FULL_SHA256" \
   --release-set release-set.json \
   --artifact-policy-sha256 "$POLICY_SHA256" \
   --deploy-root /srv/reasbook \
   --health-url http://127.0.0.1/ReasBook/release-spec.json
 ```
 
-Record `POLICY_SHA256` from the trusted build/publish side; do not accept a
-replacement value supplied alongside an untrusted archive. Installation binds
-the full bundle checksum, site digest, counts, ReleaseSpec, and artifact policy
-to `release-set.json` before it creates the deployment root. It then writes a
-versioned directory, atomically switches `current`, and restores the previous
-release if the health check fails. Roll back without rebuilding:
+This transfers and installs the same `full` bundle produced beside the Pages
+bundle. Once the web server and trust inputs are configured, the single
+`release install` invocation verifies it and performs the atomic activation;
+it does not rebuild the site.
+
+Record both trust inputs on the trusted build/publish side; do not derive
+`FULL_SHA256` from a `SHA256SUMS` file transferred with the archive. Such a
+co-transferred checksum is useful for diagnostics only and cannot authenticate
+the release. `POLICY_SHA256` verifies deployment policy, but it is normally
+stable across releases and therefore does not authenticate release identity.
+Installation binds the independently authenticated full-bundle checksum, site
+digest, counts, ReleaseSpec, and artifact policy to `release-set.json` before it
+creates the deployment root. It then writes a versioned directory, atomically
+switches `current`, and restores the previous release if the health check
+fails. Roll back without rebuilding:
 
 ```bash
 ./sdk/deploy/bin/reasbook-deploy release rollback \
@@ -336,12 +416,10 @@ without rebuilding the site:
 ```bash
 RELEASE_ID="${RELEASE_ID:?set RELEASE_ID to the generated release ID}"
 POLICY_SHA256="${POLICY_SHA256:?set the trusted sha256 artifact-policy digest}"
+FULL_SHA256="${FULL_SHA256:?set the independently authenticated full-bundle SHA-256}"
 FULL_BUNDLE="${RELEASE_ID}.site.tar.zst"
-FULL_SHA256="$(awk -v bundle="$FULL_BUNDLE" \
-  '$2 == bundle { print $1 }' SHA256SUMS)"
-: "${FULL_SHA256:?SHA256SUMS has no matching full bundle}"
 reasbook-deploy release install \
-  "$FULL_BUNDLE" --sha256 "$FULL_SHA256" \
+  "$FULL_BUNDLE" --expected-bundle-sha256 "$FULL_SHA256" \
   --release-set release-set.json \
   --artifact-policy-sha256 "$POLICY_SHA256" \
   --deploy-root /srv/reasbook \

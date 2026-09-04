@@ -17,6 +17,9 @@ dependencies = [
   "PyYAML>=6.0",
 ]
 
+[project.optional-dependencies]
+e2e = ["playwright>=1.49,<2"]
+
 [project.scripts]
 reasbook-deploy = "reasbook_deploy_sdk.cli:main"
 

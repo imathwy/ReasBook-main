@@ -14,6 +14,7 @@ from .models import (
     ToolchainRegistry,
 )
 from .bundle import BundleVerifier, ReleaseBundler
+from .acceptance import ReleaseAcceptanceRunner
 from .artifacts import PagesSiteProjector
 from .builder import LocalReleaseBuilder
 from .build_plan import ReleaseBuildOptions
@@ -36,6 +37,7 @@ __all__ = [
     "ProjectSpec",
     "ReleaseArtifactPolicy",
     "ReleaseArtifactRecord",
+    "ReleaseAcceptanceRunner",
     "ReleasePackageResult",
     "RegistryBranch",
     "ReleasePolicy",

@@ -4,11 +4,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable
+from typing import Any, Iterable, Mapping
 
 from reasbook_sdk_common import atomic_write_text
 
 from ..errors import DeployError, DeployExecutionError
+from .acceptance import ReleaseAcceptanceRunner
 from .builder import LocalReleaseBuilder
 from .build_plan import ReleaseBuildOptions
 from .artifacts import PagesSiteProjector, artifact_policy_digest, create_release_set
@@ -22,6 +23,7 @@ from .config import (
 from .github import GitHubPublication, GitHubReleasePublisher
 from .models import DeploymentProfile, ReleaseSpec
 from .planner import ReleasePlanner
+from .promotion import require_release_acceptance
 from .results import BundleInfo, ReleaseBuildReport, ReleasePackageResult
 from .site import ReleaseSiteAssembler
 from .source import GitReleaseSource
@@ -327,6 +329,7 @@ class StaticReleaseService:
             state = store.load_state()
             if "package" not in state.completed:
                 raise DeployExecutionError("release bundle has not been packaged")
+            acceptance = self.require_acceptance(context)
             if (
                 "publish" in state.completed
                 and context.layout.publication.is_file()
@@ -344,6 +347,11 @@ class StaticReleaseService:
                 expected_spec_digest=context.spec.spec_digest,
                 expected_artifact_policy_sha256=artifact_policy_digest(
                     context.profile.artifacts
+                ),
+                expected_registry_commit=context.spec.registry_commit,
+                expected_tooling_revision=context.spec.tooling_revision,
+                expected_release_set_sha256=str(
+                    acceptance["metadata"]["release_set_sha256"]
                 ),
             )
             if dry_run:
@@ -371,6 +379,55 @@ class StaticReleaseService:
             )
             return publication
 
+    def validate(
+        self,
+        context: ReleaseContext,
+        *,
+        browser_mode: str = "required",
+        keep_workdir: bool = False,
+    ) -> dict[str, Any]:
+        """Run the single local acceptance implementation used for promotion."""
+
+        return ReleaseAcceptanceRunner(
+            self.repo_root,
+            context.layout,
+            context.spec,
+            expected_artifact_policy_sha256=artifact_policy_digest(
+                context.profile.artifacts
+            ),
+        ).run(
+            browser_mode=browser_mode,
+            keep_workdir=keep_workdir,
+        )
+
+    @staticmethod
+    def require_acceptance(context: ReleaseContext) -> Mapping[str, Any]:
+        """Require current, browser-complete evidence before target mutation."""
+
+        return require_release_acceptance(
+            context.layout,
+            context.spec,
+            expected_artifact_policy_sha256=artifact_policy_digest(
+                context.profile.artifacts
+            ),
+        )
+
+    def promote(
+        self,
+        context: ReleaseContext,
+        *,
+        wait: bool = False,
+        wait_timeout_seconds: float = 1800.0,
+    ) -> GitHubPublication:
+        """Run required acceptance and publish exactly its bound package."""
+
+        self.validate(context, browser_mode="required")
+        return self.publish(
+            context,
+            wait=wait,
+            wait_timeout_seconds=wait_timeout_seconds,
+        )
+
     def deploy(
         self,
         profile_path: Path,
@@ -396,7 +453,7 @@ class StaticReleaseService:
         report = self.build(context, options=options)
         package = self.package(context)
         publication = (
-            self.publish(
+            self.promote(
                 context,
                 wait=wait,
                 wait_timeout_seconds=wait_timeout_seconds,

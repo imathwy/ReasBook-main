@@ -49,6 +49,7 @@ class GitHubPagesConfigurator(GitHubRepositoryClient):
         trusted_sha = self._trusted_target(default_branch)
         self._verify_workflow(trusted_sha)
 
+        immutable_releases_enabled = self._immutable_releases_enabled()
         pages_endpoint = f"repos/{self.profile.repository}/pages"
         environment_endpoint = (
             f"repos/{self.profile.repository}/environments/{self._ENVIRONMENT}"
@@ -68,14 +69,24 @@ class GitHubPagesConfigurator(GitHubRepositoryClient):
             )
 
         self._validate_pages(pages)
-        self._validate_environment(environment, policies, default_branch)
+        self._validate_environment(
+            environment,
+            policies,
+            default_branch,
+            allow_missing_default_policy=True,
+        )
+        policy_missing = environment is None or (
+            policies is not None and policies.get("total_count") == 0
+        )
         actions: list[str] = []
+        if not immutable_releases_enabled:
+            actions.append("enable-immutable-releases")
         if pages is None:
             actions.append("create-pages-workflow-source")
         if environment is None:
-            actions.extend(
-                ("create-github-pages-environment", "allow-default-branch-only")
-            )
+            actions.append("create-github-pages-environment")
+        if policy_missing:
+            actions.append("allow-default-branch-only")
 
         if dry_run:
             return GitHubPagesConfiguration(
@@ -86,6 +97,8 @@ class GitHubPagesConfigurator(GitHubRepositoryClient):
                 tuple(actions),
             )
 
+        if not immutable_releases_enabled:
+            self._enable_immutable_releases()
         if pages is None:
             self._write_api(
                 "POST",
@@ -105,6 +118,7 @@ class GitHubPagesConfigurator(GitHubRepositoryClient):
                 },
                 label="create github-pages environment",
             )
+        if policy_missing:
             self._write_api(
                 "POST",
                 policy_endpoint,
@@ -112,6 +126,7 @@ class GitHubPagesConfigurator(GitHubRepositoryClient):
                 label="create default-branch deployment policy",
             )
 
+        self._require_immutable_releases_enabled()
         verified_pages = self._get_required(pages_endpoint, label="Pages site")
         verified_environment = self._get_required(
             environment_endpoint,
@@ -215,6 +230,8 @@ class GitHubPagesConfigurator(GitHubRepositoryClient):
         environment: dict[str, Any] | None,
         policies: dict[str, Any] | None,
         default_branch: str,
+        *,
+        allow_missing_default_policy: bool = False,
     ) -> None:
         if environment is None:
             if policies is not None:
@@ -260,6 +277,8 @@ class GitHubPagesConfigurator(GitHubRepositoryClient):
                     "github-pages deployment policy response is invalid"
                 )
             normalized.append((name, policy_type))
+        if allow_missing_default_policy and not normalized:
+            return
         if normalized != [(default_branch, "branch")]:
             raise DeployExecutionError(
                 "github-pages environment must allow only the exact default "

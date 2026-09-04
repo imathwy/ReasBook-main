@@ -22,7 +22,12 @@ SPEC.loader.exec_module(preview)
 
 
 @contextmanager
-def running_server(site: Path, public_prefix: str):
+def running_server(
+    site: Path,
+    public_prefix: str,
+    *,
+    site_root: str = "/ReasBook/",
+):
     old_values = (
         preview.BOOK_SITE,
         preview.DOCS_SITE,
@@ -31,7 +36,7 @@ def running_server(site: Path, public_prefix: str):
     )
     preview.BOOK_SITE = str(site)
     preview.DOCS_SITE = str(site / "docs")
-    preview.SITE_ROOT = "/ReasBook/"
+    preview.SITE_ROOT = site_root
     preview.PUBLIC_PREFIX = preview._normalize_public_prefix(public_prefix)
     server = preview.ThreadingHTTPServer(
         ("127.0.0.1", 0), preview.ReasBookHandler
@@ -53,6 +58,27 @@ def running_server(site: Path, public_prefix: str):
 
 
 class PreviewServerTests(unittest.TestCase):
+    def test_origin_root_is_served_without_a_redirect_loop(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            site = Path(temp)
+            (site / "index.html").write_text(
+                "<!doctype html><html><body>Root fixture</body></html>",
+                encoding="utf-8",
+            )
+
+            with running_server(site, "", site_root="/") as origin:
+                with urlopen(origin + "/", timeout=5) as response:
+                    self.assertEqual(response.status, 200)
+                    self.assertEqual(response.geturl(), origin + "/")
+                    self.assertIn("Root fixture", response.read().decode())
+
+            prefix = "/workspace/proxy/3000"
+            with running_server(site, prefix, site_root="/") as origin:
+                with urlopen(origin + "/", timeout=5) as response:
+                    self.assertEqual(response.status, 200)
+                    self.assertEqual(response.geturl(), origin + prefix + "/")
+                    self.assertIn("Root fixture", response.read().decode())
+
     def test_reverse_proxy_prefix_rewrites_navigation_and_assets(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             site = Path(temp)
@@ -104,6 +130,37 @@ class PreviewServerTests(unittest.TestCase):
         ):
             with self.subTest(value=value), self.assertRaises(ValueError):
                 preview._normalize_public_prefix(value)
+
+    def test_ready_file_rejects_target_and_parent_symlinks(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+
+            external_file = root / "external-ready.json"
+            external_file.write_text("preserve file", encoding="utf-8")
+            ready_link = root / "ready-link.json"
+            ready_link.symlink_to(external_file)
+            with self.assertRaisesRegex(ValueError, "symbolic-link component"):
+                preview._safe_ready_file_path(ready_link)
+            self.assertTrue(ready_link.is_symlink())
+            self.assertEqual(
+                external_file.read_text(encoding="utf-8"),
+                "preserve file",
+            )
+
+            external_parent = root / "external-parent"
+            external_parent.mkdir()
+            sentinel = external_parent / "sentinel.txt"
+            sentinel.write_text("preserve parent", encoding="utf-8")
+            parent_link = root / "ready-parent-link"
+            parent_link.symlink_to(external_parent, target_is_directory=True)
+            with self.assertRaisesRegex(ValueError, "symbolic-link component"):
+                preview._safe_ready_file_path(parent_link / "ready.json")
+            self.assertTrue(parent_link.is_symlink())
+            self.assertEqual(
+                sentinel.read_text(encoding="utf-8"),
+                "preserve parent",
+            )
+            self.assertFalse((external_parent / "ready.json").exists())
 
 
 if __name__ == "__main__":

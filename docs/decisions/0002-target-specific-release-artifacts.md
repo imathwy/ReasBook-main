@@ -56,22 +56,67 @@ pages, and theorem map remained available at their original URLs.
   and both artifact records. The publish-only workflow independently verifies
   the Pages archive and its available ReleaseSet bindings before deploying; it
   never builds Lean or documentation and does not receive the full archive.
+- GitHub publication is allowed only when repository immutable releases are
+  enabled. The one-time configuration command audits and enables that setting
+  with an administrator-authorized token. The publisher waits for the Release
+  REST record to become immutable before dispatch, while the workflow uses
+  GitHub's Release and per-asset verification commands because its scoped
+  workflow token cannot inspect repository administration settings.
 - Creating a new Release tag requires a clean local checkout at the current
-  GitHub default-branch commit. Re-dispatching an existing tag instead trusts
-  the already-resolved tag and revalidates every remote asset digest.
+  GitHub default-branch commit, and that commit must be the ReleaseSpec's exact
+  `source.registry_commit`. A dirty tooling revision remains useful for local
+  canaries, but is not publishable: GitHub requires the exact clean
+  `COMMIT+tooling-sha256:DIGEST` form. The publisher creates the Git ref before
+  the draft Release, creates and publishes the draft through stable REST APIs,
+  accepts a pre-existing or concurrently created ref only when its fully
+  dereferenced target is exact, and rechecks it before upload, publication, and
+  dispatch. Wait-mode run discovery also uses the Actions REST API so the
+  release path does not depend on version-specific GitHub CLI JSON fields.
+  Re-dispatching an existing tag requires the same target and revalidates every
+  remote asset digest. The publish-only workflow independently repeats both
+  the tag equality and clean-tooling checks after dereferencing a lightweight
+  or annotated tag.
 - The Pages profile fails closed above 850 MB of extracted content, 60,000
-  files, or 950 MB compressed. These are operational margins below GitHub's
-  hard limits, not targets to fill.
+  files, or 950 MB compressed. Archive member count and expanded bytes are
+  checked from the tar listing before extraction. Hidden files are uploaded and
+  included in the site-tree digest, except exact `.git` and `.github` path
+  segments, which are rejected because GitHub always omits them. These are
+  operational margins below GitHub's hard limits, not targets to fill.
 - Self-hosted deployment accepts only the `full` artifact. It installs into a
   versioned directory, exposes the configured base path below `public/`, and
   atomically switches a `current` symlink. A failed health check restores the
   preceding link.
 - A portable self-hosted install requires the matching `ReleaseSet`, the
   expected bundle SHA-256, and a separately trusted artifact-policy digest.
+  The per-release bundle SHA-256 must arrive through an independent
+  authenticated channel: neither a co-transferred `SHA256SUMS` nor the
+  normally cross-release-stable policy digest authenticates release identity.
   Before extraction it validates archive member types, canonical paths,
   duplicate names, declared file counts and byte totals, and bounded metadata.
   Operators must choose either an HTTP(S) health check or an explicit
   filesystem-only bootstrap check.
+- Before publication, one local acceptance command verifies both archive and
+  ReleaseSet bindings, projects the Pages route contract, installs the full
+  artifact through the production atomic installer, and serves both resulting
+  trees. The HTTP pass covers every declared project-version entry; a required
+  Playwright pass exercises every route kind at desktop and mobile widths and
+  rejects base-path escapes, console/page errors, HTTP failures, and transport
+  failures.
+- The successful required-browser acceptance record is promotion evidence, not
+  advisory output. Both GitHub and direct self-hosted publication rebind its
+  release, spec, policy, two archive checksums, site digests, counts, browser
+  checks, and atomic-install result to the current package before any target
+  mutation. It also records and rechecks the exact bytes of both external
+  manifests, both checksum files, and the shared `ReleaseSet`; the GitHub
+  publisher compares the external Pages manifest to the archive member before
+  upload. Dry-runs apply the same gate. One-click deploy and resume run this
+  acceptance gate automatically after packaging.
+- ReleaseSpec v1 cannot express the one per-project Verso exception. Acceptance
+  therefore reads the existing capability registry only from the exact
+  release-scoped tooling snapshot named by `source.tooling_revision`. A local
+  checkout is a fallback only when its complete tooling digest matches that
+  immutable binding. This preserves old ReleaseSpecs without allowing later
+  checkout changes to relax validation.
 - Both hosts serve the unchanged `/ReasBook/` base path. A self-hosted web
   server uses `<deploy-root>/current/public` as its document root. The
   production container mounts the deploy root rather than the resolved
@@ -117,5 +162,9 @@ transferred directly to project-owned storage or servers.
   active release during an atomic upgrade.
 - Artifact-policy changes create a new release even when the Lean source
   commits are unchanged.
+- The Pages workflow recomputes that policy digest from its trusted checkout.
+  An older immutable Release cannot be re-dispatched after the default-branch
+  policy changes; operators must produce a new ReleaseSpec and acceptance
+  record.
 - Old schema-version-1 full bundles remain readable; new manifests identify
   their artifact explicitly.

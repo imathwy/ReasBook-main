@@ -68,7 +68,7 @@ class SelfHostedInstaller:
         *,
         release_set: Path,
         expected_artifact_policy_sha256: str,
-        expected_sha256: str | None = None,
+        expected_sha256: str,
         artifact: str = "full",
         health_url: str | None = None,
         filesystem_health_only: bool = False,
@@ -84,6 +84,7 @@ class SelfHostedInstaller:
         )
         archive = Path(bundle).expanduser().resolve()
         expected = normalize_sha256(expected_sha256)
+        assert expected is not None
         manifest = self.verifier.inspect(
             archive,
             expected_sha256=expected,
@@ -96,9 +97,7 @@ class SelfHostedInstaller:
         record = release_set_value.artifact(artifact)
         record_digest = normalize_sha256(record.bundle_sha256)
         assert record_digest is not None
-        if expected is None:
-            self.verifier.inspect(archive, expected_sha256=record_digest)
-        elif expected != record_digest:
+        if expected != record_digest:
             raise DeployExecutionError(
                 "expected bundle checksum does not match the ReleaseSet"
             )
@@ -149,8 +148,8 @@ class SelfHostedInstaller:
             previous = self._active_release_id()
             if self._active_target() != target:
                 previous_link = self._current_link_value()
-                self._replace_current(target)
                 try:
+                    self._replace_current(target)
                     self._probe(
                         manifest,
                         health_url=health_url,
@@ -215,8 +214,8 @@ class SelfHostedInstaller:
             )
             previous = self._active_release_id()
             previous_link = self._current_link_value()
-            self._replace_current(target)
             try:
+                self._replace_current(target)
                 self._probe(
                     manifest,
                     health_url=health_url,
