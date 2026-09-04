@@ -82,6 +82,15 @@ deployment, use the focused SDK guide for the relevant capability:
 These guides keep operational commands with the tool that owns them, so the
 homepage remains a catalog rather than a second copy of the build manuals.
 
+## Sponsors
+
+- Beijing International Center for Mathematical Research, Peking University
+- Great Bay University
+- Huawei
+- iQuest Research
+- Sino-Russian Mathematics Center
+- National Natural Science Foundation of China
+
 ## Books
 
 Titles open their catalog pages; version links open the Lean source directly.
