@@ -1,5 +1,7 @@
 # ReasBook
 
+**English** | [简体中文](README.zh-CN.md)
+
 **ReasBook** is a Lean 4 project for formalizing mathematics from textbooks
 and research papers. It preserves the structure of the original references
 while producing machine-checkable statements and proofs. Browse the generated

@@ -133,6 +133,11 @@ class RepositoryScriptTests(unittest.TestCase):
             self.assertFalse(discovery.exists())
 
     def test_readme_resource_labels_describe_release_state(self) -> None:
+        english = (ROOT / "README.md").read_text(encoding="utf-8")
+        chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
+        self.assertIn("[简体中文](README.zh-CN.md)", english)
+        self.assertIn("[English](README.md)", chinese)
+
         excluded = {
             "kind": "books",
             "name": "ProbabilityTheory_Klenke_2020",
@@ -151,6 +156,13 @@ class RepositoryScriptTests(unittest.TestCase):
         resource = update_readme.resource_cell(no_verso)
         self.assertIn("Verso not published", resource)
         self.assertNotIn("TBD", resource)
+        self.assertEqual(
+            update_readme.resource_cell(excluded, language="zh-CN"),
+            "仅源代码（不包含在当前发布配置中）",
+        )
+        chinese_resource = update_readme.resource_cell(no_verso, language="zh-CN")
+        self.assertIn("尚未发布 Verso", chinese_resource)
+        self.assertNotIn("TBD", chinese_resource)
 
     def test_verso_build_validates_literate_cache_before_prebuilt_mode(self) -> None:
         script = (ROOT / "scripts" / "build" / "verso.sh").read_text(
