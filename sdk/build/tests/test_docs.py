@@ -1,12 +1,20 @@
 from __future__ import annotations
 
+import json
+import platform
+import re
 import sqlite3
 import tempfile
 import unittest
 from unittest.mock import patch
 from pathlib import Path
 
-from reasbook_build_sdk import BuildFailed, CommandResult, ProjectDocumentationBuilder
+from reasbook_build_sdk import (
+    BuildFailed,
+    CommandResult,
+    ConfigurationError,
+    ProjectDocumentationBuilder,
+)
 from reasbook_build_sdk import docs as docs_module
 
 
@@ -26,10 +34,26 @@ class _DocsRunner:
                 modules = tuple(control.read_text(encoding="utf-8").splitlines())
                 database = build / argv[-2]
                 with sqlite3.connect(database) as connection:
+                    connection.execute("PRAGMA journal_mode=WAL")
                     connection.execute(
                         "CREATE TABLE IF NOT EXISTS modules "
                         "(name TEXT PRIMARY KEY, source_url TEXT)"
                     )
+                    connection.execute(
+                        "CREATE TABLE IF NOT EXISTS schema_meta "
+                        "(key TEXT PRIMARY KEY, value TEXT NOT NULL)"
+                    )
+                    connection.executemany(
+                        "INSERT OR REPLACE INTO schema_meta (key, value) VALUES (?, ?)",
+                        (("ddl_hash", "fixture-ddl"), ("type_hash", "fixture-types")),
+                    )
+                    for table in sorted(
+                        docs_module._ANALYZER_REQUIRED_TABLES
+                        - {"modules", "schema_meta"}
+                    ):
+                        connection.execute(
+                            f'CREATE TABLE IF NOT EXISTS "{table}" (fixture INTEGER)'
+                        )
                     connection.executemany(
                         "INSERT INTO modules (name, source_url) VALUES (?, NULL)",
                         ((module,) for module in modules),
@@ -43,6 +67,15 @@ class _DocsRunner:
             self.modules.extend(modules)
         elif "fromDb" in argv or "index" in argv:
             build = Path(argv[argv.index("--build") + 1])
+            if "fromDb" in argv and not self.modules:
+                database = Path(argv[argv.index("--manifest") + 2])
+                with sqlite3.connect(database) as connection:
+                    self.modules.extend(
+                        str(row[0])
+                        for row in connection.execute(
+                            "SELECT name FROM modules ORDER BY name"
+                        ).fetchall()
+                    )
             doc = build / "doc"
             doc.mkdir(parents=True, exist_ok=True)
             (doc / "style.css").write_text("body{}", encoding="utf-8")
@@ -63,7 +96,53 @@ class _DocsRunner:
         return CommandResult(command=command, returncode=0)
 
 
+class _BrokenRenderRunner(_DocsRunner):
+    def run(self, command):
+        result = super().run(command)
+        if "fromDb" in command.argv:
+            build = Path(command.argv[command.argv.index("--build") + 1])
+            (build / "doc" / "index.html").write_text(
+                '<html><body><img src="missing.png"></body></html>',
+                encoding="utf-8",
+            )
+        return result
+
+
+class _CommandRenderFailureRunner(_DocsRunner):
+    def __init__(self, *, always: bool) -> None:
+        super().__init__()
+        self.always = always
+        self.render_attempts = 0
+
+    def run(self, command):
+        result = super().run(command)
+        if "fromDb" in command.argv:
+            self.render_attempts += 1
+            if self.always or self.render_attempts == 1:
+                return CommandResult(
+                    command=command,
+                    returncode=1,
+                    stderr="simulated incompatible checkpoint",
+                )
+        return result
+
+
 class ProjectDocumentationTests(unittest.TestCase):
+    @staticmethod
+    def _package_lib(project: Path, package: str) -> Path:
+        return project / ".lake" / "packages" / package / ".lake" / "build" / "lib"
+
+    @staticmethod
+    def _write_olean(
+        project: Path, module: str, content: bytes = b"olean fixture"
+    ) -> Path:
+        artifact = (
+            project / ".lake" / "build" / "lib" / "lean" / Path(*module.split("."))
+        ).with_suffix(".olean")
+        artifact.parent.mkdir(parents=True, exist_ok=True)
+        artifact.write_bytes(content)
+        return artifact
+
     def _project(self, root: Path, *, modern: bool) -> Path:
         project = root / "ReasBook"
         project.mkdir()
@@ -87,6 +166,13 @@ class ProjectDocumentationTests(unittest.TestCase):
             "import Mathlib\n",
             encoding="utf-8",
         )
+        for compiled_module in (
+            "Books.Demo.Book",
+            "Books.Demo.Chapter",
+            "Demo.Book",
+            "Demo.Chapter",
+        ):
+            self._write_olean(project, compiled_module)
         package = project / ".lake" / "packages" / "doc-gen4"
         executable = package / ".lake" / "build" / "bin" / "doc-gen4"
         executable.parent.mkdir(parents=True)
@@ -96,19 +182,17 @@ class ProjectDocumentationTests(unittest.TestCase):
             "def fromDb := ()\n" if modern else "def index := ()\n",
             encoding="utf-8",
         )
-        md4lean = (
-            project
-            / ".lake"
-            / "packages"
-            / "MD4Lean"
-            / ".lake"
-            / "build"
-            / "lib"
-            / ("libMD4Lean_MD4Lean.so" if modern else "libMD4Lean.so")
+        md4lean = self._package_lib(project, "MD4Lean") / (
+            "libMD4Lean_MD4Lean.so" if modern else "libMD4Lean.so"
         )
         md4lean.parent.mkdir(parents=True)
         md4lean.write_bytes(b"fixture")
         (md4lean.parent / "libleanmd4c.so").write_bytes(b"fixture")
+        unicode = self._package_lib(project, "UnicodeBasic") / (
+            "libUnicodeBasic_UnicodeBasic.so" if modern else "libUnicodeBasic.so"
+        )
+        unicode.parent.mkdir(parents=True)
+        unicode.write_bytes(b"fixture")
         if modern:
             sqlite_ffi = (
                 project
@@ -190,6 +274,151 @@ class ProjectDocumentationTests(unittest.TestCase):
             self.assertFalse(rebuilt.reused)
             self.assertGreater(len(runner.commands), command_count)
 
+    def test_compiled_artifact_changes_invalidate_docs_and_analysis(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=True)
+            output = root / "cache" / "docs"
+
+            first = _DocsRunner()
+            ProjectDocumentationBuilder(runner=first).build(
+                project, ("Books.Demo.Book",), output
+            )
+            first_identity = json.loads(
+                (output / "project-docs.json").read_text(encoding="utf-8")
+            )["compiled_artifacts"]
+
+            changes = (
+                project
+                / ".lake"
+                / "build"
+                / "lib"
+                / "lean"
+                / "Books"
+                / "Demo"
+                / "Chapter.olean",
+                self._package_lib(project, "leansqlite") / "libleansqlite.so",
+            )
+            previous = first_identity
+            for artifact in changes:
+                with self.subTest(artifact=artifact):
+                    original = artifact.read_bytes()
+                    replacement = bytes(byte ^ 1 for byte in original)
+                    artifact.write_bytes(replacement)
+                    runner = _DocsRunner()
+                    result = ProjectDocumentationBuilder(runner=runner).build(
+                        project, ("Books.Demo.Book",), output
+                    )
+                    current = json.loads(
+                        (output / "project-docs.json").read_text(encoding="utf-8")
+                    )["compiled_artifacts"]
+                    self.assertFalse(result.reused)
+                    self.assertNotEqual(current["sha256"], previous["sha256"])
+                    self.assertTrue(
+                        any("--run" in command.argv for command in runner.commands)
+                    )
+                    previous = current
+
+    def test_unmanaged_metadata_cannot_suppress_dependency_hashing(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=True)
+            manifest = project / "lake-manifest.json"
+            manifest.write_text('{"version": 1}\n', encoding="utf-8")
+            dependency = self._write_olean(
+                project / ".lake" / "packages" / "Dependency",
+                "Dependency.Module",
+                b"dependency olean",
+            )
+            metadata = {
+                "schema": 1,
+                "branch": "v4.30.0",
+                "commit": "a" * 40,
+                "manifest_sha256": ProjectDocumentationBuilder._sha256(manifest),
+                "toolchain": "v4.30.0",
+                "architecture": platform.machine() or "unknown",
+            }
+            (project / ".lake" / "cache-metadata.json").write_text(
+                json.dumps(metadata), encoding="utf-8"
+            )
+            batches, _owners = ProjectDocumentationBuilder._module_plan(
+                project, ("Books.Demo.Book",)
+            )
+            sources = tuple(item for batch in batches for item in batch)
+            docgen = (
+                project
+                / ".lake"
+                / "packages"
+                / "doc-gen4"
+                / ".lake"
+                / "build"
+                / "bin"
+                / "doc-gen4"
+            ).resolve()
+
+            before = ProjectDocumentationBuilder._compiled_artifact_identity(
+                project, sources, docgen, revision="a" * 40
+            )
+            dependency.write_bytes(b"changed artifact")
+            after = ProjectDocumentationBuilder._compiled_artifact_identity(
+                project, sources, docgen, revision="a" * 40
+            )
+
+            self.assertIsNone(before["branch_cache"])
+            self.assertIsNone(after["branch_cache"])
+            self.assertNotEqual(before["sha256"], after["sha256"])
+
+    def test_managed_cache_requires_exact_namespace_and_host_identity(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=True)
+            manifest = project / "lake-manifest.json"
+            manifest.write_text('{"version": 1}\n', encoding="utf-8")
+            digest = ProjectDocumentationBuilder._sha256(manifest)
+            branch = "v4.30.0"
+            commit = "a" * 40
+            toolchain = "v4.30.0"
+            architecture = platform.machine() or "unknown"
+            namespace = (
+                f"branch-{branch}-{commit[:12]}-{digest[:16]}-"
+                f"{toolchain}-{architecture}"
+            )
+            cache_parent = root / "managed" / "lake"
+            cache_parent.mkdir(parents=True)
+            cache = cache_parent / namespace
+            (project / ".lake").rename(cache)
+            (project / ".lake").symlink_to(cache, target_is_directory=True)
+            metadata_path = cache / "cache-metadata.json"
+            metadata = {
+                "schema": 1,
+                "branch": branch,
+                "commit": commit,
+                "manifest_sha256": digest,
+                "toolchain": toolchain,
+                "architecture": architecture,
+            }
+            metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
+
+            identity = ProjectDocumentationBuilder._managed_branch_cache_identity(
+                project, project / ".lake", revision=commit
+            )
+
+            self.assertEqual(identity["purpose"], "release-branch-build")
+            self.assertEqual(identity["namespace"], namespace)
+            mutations = (
+                {**metadata, "toolchain": "v4.29.0"},
+                {**metadata, "architecture": "wrong-host"},
+                {**metadata, "branch": "other-branch"},
+                {**metadata, "purpose": "release-finalizer-web"},
+            )
+            for value in mutations:
+                with self.subTest(value=value):
+                    metadata_path.write_text(json.dumps(value), encoding="utf-8")
+                    with self.assertRaises(BuildFailed):
+                        ProjectDocumentationBuilder._managed_branch_cache_identity(
+                            project, project / ".lake", revision=commit
+                        )
+
     def test_legacy_builder_uses_bounded_adapter_then_index(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
@@ -215,20 +444,89 @@ class ProjectDocumentationTests(unittest.TestCase):
             ]
             self.assertEqual(
                 [Path(value).name for value in libraries],
-                ["libleanmd4c.so", "libMD4Lean.so"],
+                ["libUnicodeBasic.so", "libleanmd4c.so", "libMD4Lean.so"],
             )
 
-    def test_md4lean_adapter_rejects_ambiguous_aggregate_libraries(self) -> None:
+    def test_legacy_adapter_accepts_scoped_aggregate_library_names(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)
             project = self._project(root, modern=False)
-            library_root = (
-                project / ".lake" / "packages" / "MD4Lean" / ".lake" / "build" / "lib"
+            unicode_root = self._package_lib(project, "UnicodeBasic")
+            (unicode_root / "libUnicodeBasic.so").rename(
+                unicode_root / "libUnicodeBasic_UnicodeBasic.so"
             )
+            md4lean_root = self._package_lib(project, "MD4Lean")
+            (md4lean_root / "libMD4Lean.so").rename(
+                md4lean_root / "libMD4Lean_MD4Lean.so"
+            )
+
+            arguments = ProjectDocumentationBuilder._legacy_interpreter_args(project)
+
+            self.assertEqual(
+                [
+                    Path(value.removeprefix("--load-dynlib=")).name
+                    for value in arguments
+                ],
+                [
+                    "libUnicodeBasic_UnicodeBasic.so",
+                    "libleanmd4c.so",
+                    "libMD4Lean_MD4Lean.so",
+                ],
+            )
+
+    def test_legacy_adapter_rejects_ambiguous_unicode_aggregates(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=False)
+            library_root = self._package_lib(project, "UnicodeBasic")
+            (library_root / "libUnicodeBasic_UnicodeBasic.so").write_bytes(
+                b"stale fixture"
+            )
+
+            with self.assertRaises(BuildFailed):
+                ProjectDocumentationBuilder._legacy_interpreter_args(project)
+
+    def test_legacy_adapter_rejects_symlinked_unicode_aggregate(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=False)
+            library = self._package_lib(project, "UnicodeBasic") / "libUnicodeBasic.so"
+            target = library.with_name("external-unicode.so")
+            library.rename(target)
+            library.symlink_to(target)
+
+            with self.assertRaises(BuildFailed):
+                ProjectDocumentationBuilder._legacy_interpreter_args(project)
+
+    def test_legacy_adapter_rejects_empty_unicode_aggregate(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=False)
+            library = self._package_lib(project, "UnicodeBasic") / "libUnicodeBasic.so"
+            library.write_bytes(b"")
+
+            with self.assertRaises(BuildFailed):
+                ProjectDocumentationBuilder._legacy_interpreter_args(project)
+
+    def test_legacy_adapter_rejects_ambiguous_md4lean_aggregates(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=False)
+            library_root = self._package_lib(project, "MD4Lean")
             (library_root / "libMD4Lean_MD4Lean.so").write_bytes(b"stale fixture")
 
             with self.assertRaises(BuildFailed):
-                ProjectDocumentationBuilder._md4lean_interpreter_args(project)
+                ProjectDocumentationBuilder._legacy_interpreter_args(project)
+
+    def test_legacy_adapter_requires_md4lean_c_provider(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=False)
+            provider = self._package_lib(project, "MD4Lean") / "libleanmd4c.so"
+            provider.unlink()
+
+            with self.assertRaises(BuildFailed):
+                ProjectDocumentationBuilder._legacy_interpreter_args(project)
 
     def test_flat_layout_discovers_project_namespace(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -262,6 +560,7 @@ class ProjectDocumentationTests(unittest.TestCase):
                     "import Mathlib\n",
                     encoding="utf-8",
                 )
+                self._write_olean(project, f"Books.Demo.Part{index:03d}")
             runner = _DocsRunner()
 
             result = ProjectDocumentationBuilder(runner=runner).build(
@@ -275,6 +574,598 @@ class ProjectDocumentationTests(unittest.TestCase):
             ]
             self.assertEqual(len(result.pages), 131)
             self.assertEqual(len(adapter_commands), 2)
+
+    def test_local_lean_link_is_pinned_by_unique_reachable_owner(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = root / "ReasBook"
+            sources = (
+                (
+                    "BookA.Chap05.Current",
+                    project / "Books" / "BookA" / "Chap05" / "Current.lean",
+                ),
+                (
+                    "BookA.Chap04.Shared",
+                    project / "Books" / "BookA" / "Chap04" / "Shared.lean",
+                ),
+                (
+                    "BookB.Chap04.Shared",
+                    project / "Books" / "BookB" / "Chap04" / "Shared.lean",
+                ),
+            )
+            for _module, source in sources:
+                source.parent.mkdir(parents=True, exist_ok=True)
+                source.write_text("import Mathlib\n", encoding="utf-8")
+            sources[0][1].write_text(
+                "import Mathlib\n-- /old/BookA/Items/Chap04/Shared.lean\n",
+                encoding="utf-8",
+            )
+            owners = {
+                "BookA.Chap05.Current": frozenset({"BookA.Book"}),
+                "BookA.Chap04.Shared": frozenset({"BookA.Book"}),
+                "BookB.Chap04.Shared": frozenset({"BookB.Book"}),
+            }
+            doc = root / "docs" / "doc"
+            page = doc / "BookA" / "Chap05" / "Current.html"
+            page.parent.mkdir(parents=True)
+            (doc / "style.css").write_text("body{}", encoding="utf-8")
+            doc.joinpath("index.html").write_text(
+                "<html>index</html>", encoding="utf-8"
+            )
+            stale = "../.././/old/BookA/Items/Chap04/Shared.lean"
+            encoded = stale.replace(".lean", "&#46;lean")
+            page.write_text(
+                f"<html><body><a data-note=\" href='{stale}'\"\n"
+                f" href='{stale}' href=\"{encoded}\">source</a>"
+                f"<a href={stale}>bare</a>"
+                f"<script>const untouched = 'href=\"{stale}\"';</script>"
+                "</body></html>",
+                encoding="utf-8",
+            )
+
+            ProjectDocumentationBuilder._close_documentation_links(
+                doc,
+                project_root=project,
+                module_sources=sources,
+                module_owners=owners,
+                repository="https://github.com/acme/reasbook",
+                revision="a" * 40,
+            )
+
+            content = page.read_text(encoding="utf-8")
+            expected = (
+                "https://github.com/acme/reasbook/blob/"
+                + "a" * 40
+                + "/ReasBook/Books/BookA/Chap04/Shared.lean"
+            )
+            self.assertEqual(content.count(expected), 3)
+            self.assertIn(f"data-note=\" href='{stale}'\"", content)
+            self.assertIn(f"const untouched = 'href=\"{stale}\"'", content)
+
+    def test_unspanned_or_unsafe_internal_links_fail_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = root / "ReasBook"
+            source = project / "Books" / "BookA" / "Current.lean"
+            source.parent.mkdir(parents=True)
+            source.write_text("import Mathlib\n", encoding="utf-8")
+            cases = (
+                ('<a = href="missing.png">malformed</a>', "safely locate"),
+                ('<img src="missing\\asset.png">', "unsafe path"),
+                ('<a href="C:\\missing.lean">windows</a>', "unsafe scheme"),
+                ('<a href="C:/missing.lean">windows</a>', "unsafe scheme"),
+                ('<a href="%43%3A%2Fmissing.lean">windows</a>', "unsafe path"),
+                ('<img src="missing%00asset.png">', "unsafe path"),
+                ('<a href="file:///tmp/missing.lean">file</a>', "unsafe scheme"),
+                (
+                    '<a href="file://localhost/tmp/missing.lean">file</a>',
+                    "unsafe scheme",
+                ),
+                ('<a href="ftp://example.com/missing.lean">ftp</a>', "unsafe scheme"),
+                (
+                    '<a href="//example.com/missing.lean">network</a>',
+                    "protocol-relative",
+                ),
+            )
+            for sequence, (markup, error) in enumerate(cases):
+                with self.subTest(markup=markup):
+                    doc = root / f"unsafe-{sequence}" / "doc"
+                    doc.mkdir(parents=True)
+                    (doc / "style.css").write_text("body{}", encoding="utf-8")
+                    (doc / "index.html").write_text(
+                        f"<html>{markup}</html>", encoding="utf-8"
+                    )
+                    with self.assertRaisesRegex(BuildFailed, error):
+                        ProjectDocumentationBuilder._close_documentation_links(
+                            doc,
+                            project_root=project,
+                            module_sources=(("BookA.Current", source),),
+                            module_owners={"BookA.Current": frozenset({"BookA.Book"})},
+                            repository="https://github.com/acme/reasbook",
+                            revision="a" * 40,
+                        )
+
+    def test_base_element_cannot_redirect_link_closure(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = root / "ReasBook"
+            source = project / "Books" / "BookA" / "Current.lean"
+            source.parent.mkdir(parents=True)
+            source.write_text("import Mathlib\n", encoding="utf-8")
+            cases = (
+                '<base href="https://evil.example/">',
+                '<base href="../outside/">',
+                '<base href=""><base href="">',
+                '<base href="" href="">',
+            )
+            for sequence, base in enumerate(cases):
+                with self.subTest(base=base):
+                    doc = root / f"base-{sequence}" / "doc"
+                    doc.mkdir(parents=True)
+                    (doc / "style.css").write_text("body{}", encoding="utf-8")
+                    (doc / "index.html").write_text(
+                        f"<html><head>{base}</head>"
+                        '<body><img src="missing.png"></body></html>',
+                        encoding="utf-8",
+                    )
+                    with self.assertRaisesRegex(BuildFailed, "base element"):
+                        ProjectDocumentationBuilder._close_documentation_links(
+                            doc,
+                            project_root=project,
+                            module_sources=(("BookA.Current", source),),
+                            module_owners={"BookA.Current": frozenset({"BookA.Book"})},
+                            repository="https://github.com/acme/reasbook",
+                            revision="a" * 40,
+                        )
+
+    def test_missing_stylesheet_prevents_stub_publication(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = root / "ReasBook"
+            source = project / "Books" / "BookA" / "Current.lean"
+            source.parent.mkdir(parents=True)
+            source.write_text("import Mathlib\n", encoding="utf-8")
+            doc = root / "docs" / "doc"
+            doc.mkdir(parents=True)
+            (doc / "index.html").write_text(
+                '<html><a href="Mathlib/Missing.html">dependency</a></html>',
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(BuildFailed, "style.css"):
+                ProjectDocumentationBuilder._close_documentation_links(
+                    doc,
+                    project_root=project,
+                    module_sources=(("BookA.Current", source),),
+                    module_owners={"BookA.Current": frozenset({"BookA.Book"})},
+                    repository="https://github.com/acme/reasbook",
+                    revision="a" * 40,
+                )
+
+            self.assertFalse((doc / "Mathlib" / "Missing.html").exists())
+
+    def test_repository_url_is_strict_and_canonical(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=True)
+            invalid = (
+                'https://github.com/acme/repo" onmouseover="alert(1)',
+                "https://github.com/acme/repo?download=1",
+                "https://github.com/acme/repo#fragment",
+                "https://github.com/acme/repo%2Fextra",
+                "https://github.com/acme/repo%22onclick",
+                "https://user@github.com/acme/repo",
+                "https://github.com:443/acme/repo",
+                "https://github.com/acme/repo/extra",
+                " https://github.com/acme/repo",
+            )
+            for sequence, repository in enumerate(invalid):
+                with self.subTest(repository=repository):
+                    with self.assertRaises(ConfigurationError):
+                        ProjectDocumentationBuilder(runner=_DocsRunner()).build(
+                            project,
+                            ("Books.Demo.Book",),
+                            root / f"invalid-repository-{sequence}",
+                            repository=repository,
+                            revision="a" * 40,
+                        )
+
+            output = root / "canonical-repository"
+            ProjectDocumentationBuilder(runner=_DocsRunner()).build(
+                project,
+                ("Books.Demo.Book",),
+                output,
+                repository="https://github.com/acme/reasbook.git",
+                revision="a" * 40,
+            )
+            marker = json.loads(
+                (output / "project-docs.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(marker["repository"], "https://github.com/acme/reasbook")
+
+    def test_output_symlinks_are_rejected_before_canonicalization(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=True)
+            external = root / "external"
+            external.mkdir()
+            (external / "sentinel.txt").write_text("unchanged", encoding="utf-8")
+            direct = root / "direct-output"
+            direct.symlink_to(external, target_is_directory=True)
+            parent = root / "linked-parent"
+            parent.symlink_to(external, target_is_directory=True)
+
+            for output in (direct, parent / "nested-output"):
+                with self.subTest(output=output):
+                    runner = _DocsRunner()
+                    with self.assertRaisesRegex(ConfigurationError, "symlink"):
+                        ProjectDocumentationBuilder(runner=runner).build(
+                            project,
+                            ("Books.Demo.Book",),
+                            output,
+                        )
+                    self.assertEqual(runner.commands, [])
+                    self.assertEqual(
+                        sorted(path.name for path in external.iterdir()),
+                        ["sentinel.txt"],
+                    )
+
+    def test_unknown_or_ambiguous_lean_links_remain_hard_failures(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = root / "ReasBook"
+            sources = (
+                ("BookA.Current", project / "Books" / "BookA" / "Current.lean"),
+                (
+                    "BookA.Chap04.Shared",
+                    project / "Books" / "BookA" / "Chap04" / "Shared.lean",
+                ),
+                (
+                    "BookB.Chap04.Shared",
+                    project / "Books" / "BookB" / "Chap04" / "Shared.lean",
+                ),
+            )
+            for _module, source in sources:
+                source.parent.mkdir(parents=True, exist_ok=True)
+                source.write_text("import Mathlib\n", encoding="utf-8")
+            sources[0][1].write_text(
+                "import Mathlib\n"
+                "-- /old/Chap04/Shared.lean\n"
+                "-- /old/Chap04/Unknown.lean\n",
+                encoding="utf-8",
+            )
+            owners = {module: frozenset({"Combined.Book"}) for module, _ in sources}
+            references = (
+                "/old/Chap04/Shared.lean",
+                "/old/Chap04/Unknown.lean",
+                "missing.png",
+            )
+            for sequence, reference in enumerate(references):
+                with self.subTest(reference=reference):
+                    doc = root / f"docs-{sequence}" / "doc"
+                    page = doc / "BookA" / "Current.html"
+                    page.parent.mkdir(parents=True)
+                    (doc / "style.css").write_text("body{}", encoding="utf-8")
+                    (doc / "index.html").write_text(
+                        "<html>index</html>", encoding="utf-8"
+                    )
+                    page.write_text(
+                        f'<html><a href="{reference}">missing</a></html>',
+                        encoding="utf-8",
+                    )
+
+                    with self.assertRaisesRegex(BuildFailed, re.escape(reference)):
+                        ProjectDocumentationBuilder._close_documentation_links(
+                            doc,
+                            project_root=project,
+                            module_sources=sources,
+                            module_owners=owners,
+                            repository="https://github.com/acme/reasbook",
+                            revision="a" * 40,
+                        )
+
+    def test_failed_render_reuses_content_addressed_analysis_checkpoint(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=True)
+            output = root / "cache" / "docs"
+            first = _BrokenRenderRunner()
+            with self.assertRaises(BuildFailed):
+                ProjectDocumentationBuilder(runner=first).build(
+                    project,
+                    ("Books.Demo.Book",),
+                    output,
+                    repository="https://github.com/acme/reasbook",
+                    revision="a" * 40,
+                )
+            self.assertFalse(output.exists())
+            checkpoints = list(
+                output.parent.glob(".project-docs-analysis-v1/*/analysis.json")
+            )
+            self.assertEqual(len(checkpoints), 1)
+            self.assertEqual(
+                {path.name for path in checkpoints[0].parent.iterdir()},
+                {"analysis.json", "api-docs.db"},
+            )
+            checkpoint_database = checkpoints[0].parent / "api-docs.db"
+            with sqlite3.connect(
+                checkpoint_database.resolve().as_uri() + "?mode=ro&immutable=1",
+                uri=True,
+            ) as connection:
+                self.assertEqual(
+                    connection.execute("PRAGMA journal_mode").fetchone(),
+                    ("delete",),
+                )
+            checkpoint_payload = json.loads(checkpoints[0].read_text(encoding="utf-8"))
+            database_schema = checkpoint_payload["database_schema"]
+            self.assertEqual(
+                database_schema["schema_meta"],
+                {"ddl_hash": "fixture-ddl", "type_hash": "fixture-types"},
+            )
+            self.assertEqual(
+                set(database_schema["required_tables"]),
+                docs_module._ANALYZER_REQUIRED_TABLES,
+            )
+            self.assertRegex(database_schema["sqlite_schema_sha256"], r"^[0-9a-f]{64}$")
+
+            second = _DocsRunner()
+            result = ProjectDocumentationBuilder(runner=second).build(
+                project,
+                ("Books.Demo.Book",),
+                output,
+                repository="https://github.com/acme/reasbook",
+                revision="a" * 40,
+            )
+
+            self.assertFalse(result.reused)
+            self.assertFalse(
+                any("--run" in command.argv for command in second.commands)
+            )
+            self.assertEqual(len(second.commands), 1)
+            self.assertIn("fromDb", second.commands[0].argv)
+
+    def test_checkpoint_schema_tamper_forces_fresh_analysis(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=True)
+            output = root / "cache" / "docs"
+            with self.assertRaises(BuildFailed):
+                ProjectDocumentationBuilder(runner=_BrokenRenderRunner()).build(
+                    project, ("Books.Demo.Book",), output
+                )
+            marker = next(
+                output.parent.glob(".project-docs-analysis-v1/*/analysis.json")
+            )
+            database = marker.parent / "api-docs.db"
+            with sqlite3.connect(database) as connection:
+                connection.execute("DROP TABLE tactics")
+            payload = json.loads(marker.read_text(encoding="utf-8"))
+            payload["database_bytes"] = database.stat().st_size
+            payload["database_sha256"] = ProjectDocumentationBuilder._sha256(database)
+            marker.write_text(json.dumps(payload), encoding="utf-8")
+
+            runner = _DocsRunner()
+            result = ProjectDocumentationBuilder(runner=runner).build(
+                project, ("Books.Demo.Book",), output
+            )
+
+            self.assertFalse(result.reused)
+            self.assertTrue(any("--run" in command.argv for command in runner.commands))
+
+    def test_checkpoint_schema_metadata_tamper_forces_fresh_analysis(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=True)
+            output = root / "cache" / "docs"
+            with self.assertRaises(BuildFailed):
+                ProjectDocumentationBuilder(runner=_BrokenRenderRunner()).build(
+                    project, ("Books.Demo.Book",), output
+                )
+            marker = next(
+                output.parent.glob(".project-docs-analysis-v1/*/analysis.json")
+            )
+            database = marker.parent / "api-docs.db"
+            with sqlite3.connect(database) as connection:
+                connection.execute(
+                    "UPDATE schema_meta SET value = ? WHERE key = 'ddl_hash'",
+                    ("tampered-ddl",),
+                )
+            payload = json.loads(marker.read_text(encoding="utf-8"))
+            payload["database_bytes"] = database.stat().st_size
+            payload["database_sha256"] = ProjectDocumentationBuilder._sha256(database)
+            marker.write_text(json.dumps(payload), encoding="utf-8")
+
+            runner = _DocsRunner()
+            result = ProjectDocumentationBuilder(runner=runner).build(
+                project, ("Books.Demo.Book",), output
+            )
+
+            self.assertFalse(result.reused)
+            self.assertTrue(any("--run" in command.argv for command in runner.commands))
+
+    def test_restored_render_failure_retries_fresh_analysis_once(self) -> None:
+        for always_fail in (False, True):
+            with self.subTest(always_fail=always_fail):
+                with tempfile.TemporaryDirectory() as temp:
+                    root = Path(temp)
+                    project = self._project(root, modern=True)
+                    output = root / "cache" / "docs"
+                    with self.assertRaises(BuildFailed):
+                        ProjectDocumentationBuilder(runner=_BrokenRenderRunner()).build(
+                            project, ("Books.Demo.Book",), output
+                        )
+                    checkpoint_marker = next(
+                        output.parent.glob(".project-docs-analysis-v1/*/analysis.json")
+                    )
+                    before = checkpoint_marker.read_bytes()
+                    runner = _CommandRenderFailureRunner(always=always_fail)
+
+                    if always_fail:
+                        with self.assertRaises(BuildFailed):
+                            ProjectDocumentationBuilder(runner=runner).build(
+                                project, ("Books.Demo.Book",), output
+                            )
+                        self.assertFalse(output.exists())
+                        self.assertEqual(checkpoint_marker.read_bytes(), before)
+                    else:
+                        result = ProjectDocumentationBuilder(runner=runner).build(
+                            project, ("Books.Demo.Book",), output
+                        )
+                        self.assertFalse(result.reused)
+
+                    analyzer_count = sum(
+                        "--run" in command.argv for command in runner.commands
+                    )
+                    self.assertEqual(runner.render_attempts, 2)
+                    self.assertEqual(analyzer_count, 1)
+
+    def test_non_object_analysis_marker_is_a_cache_miss(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            checkpoint = Path(temp) / "checkpoint"
+            checkpoint.mkdir()
+            (checkpoint / "api-docs.db").write_bytes(b"invalid fixture")
+            marker = checkpoint / "analysis.json"
+            for payload in ("[]", '"invalid"', "null"):
+                with self.subTest(payload=payload):
+                    marker.write_text(payload, encoding="utf-8")
+                    self.assertFalse(
+                        ProjectDocumentationBuilder._valid_analysis_checkpoint(
+                            checkpoint, {}, ()
+                        )
+                    )
+
+    def test_corrupt_analysis_database_is_a_cache_miss(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            checkpoint = Path(temp) / "checkpoint"
+            checkpoint.mkdir()
+            database = checkpoint / "api-docs.db"
+            database.write_bytes(b"not a sqlite database")
+            marker = {
+                "schema_version": 1,
+                "identity": {},
+                "database_bytes": database.stat().st_size,
+                "database_sha256": ProjectDocumentationBuilder._sha256(database),
+                "database_schema": {},
+            }
+            (checkpoint / "analysis.json").write_text(
+                json.dumps(marker), encoding="utf-8"
+            )
+
+            self.assertFalse(
+                ProjectDocumentationBuilder._valid_analysis_checkpoint(
+                    checkpoint, {}, ()
+                )
+            )
+
+    def test_checkpoint_replacement_failure_restores_previous_snapshot(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=True)
+            output = root / "cache" / "docs"
+            with self.assertRaises(BuildFailed):
+                ProjectDocumentationBuilder(runner=_BrokenRenderRunner()).build(
+                    project, ("Books.Demo.Book",), output
+                )
+            marker = next(
+                output.parent.glob(".project-docs-analysis-v1/*/analysis.json")
+            )
+            checkpoint = marker.parent
+            before = marker.read_bytes()
+            payload = json.loads(before)
+            identity = payload["identity"]
+            modules = tuple(identity["modules"])
+            candidate = root / "candidate.db"
+            ProjectDocumentationBuilder._backup_analysis_database(
+                checkpoint / "api-docs.db", candidate
+            )
+            real_replace = docs_module.os.replace
+            calls = 0
+
+            def fail_checkpoint_publication(source, destination):
+                nonlocal calls
+                calls += 1
+                if calls == 2:
+                    raise OSError("simulated checkpoint publication failure")
+                return real_replace(source, destination)
+
+            with patch(
+                "reasbook_build_sdk.docs.os.replace",
+                side_effect=fail_checkpoint_publication,
+            ):
+                with self.assertRaises(OSError):
+                    ProjectDocumentationBuilder._store_analysis_checkpoint(
+                        checkpoint,
+                        candidate,
+                        identity,
+                        modules,
+                        replace_existing=True,
+                    )
+
+            self.assertEqual(marker.read_bytes(), before)
+            self.assertTrue(
+                ProjectDocumentationBuilder._valid_analysis_checkpoint(
+                    checkpoint, identity, modules
+                )
+            )
+            self.assertEqual(
+                list(checkpoint.parent.glob(f".{checkpoint.name}.stage-*")), []
+            )
+            self.assertEqual(
+                list(checkpoint.parent.glob(f".{checkpoint.name}.backup-*")), []
+            )
+
+    def test_pre_policy_cache_is_migrated_atomically_without_analysis(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=True)
+            (project / "Books" / "Demo" / "Book.lean").write_text(
+                "import Mathlib\nimport Books.Demo.Chapter\n"
+                "-- /old/Demo/Chapter.lean\n",
+                encoding="utf-8",
+            )
+            output = root / "cache" / "docs"
+            builder = ProjectDocumentationBuilder(runner=_DocsRunner())
+            builder.build(
+                project,
+                ("Books.Demo.Book",),
+                output,
+                repository="https://github.com/acme/reasbook",
+                revision="a" * 40,
+            )
+            marker = output / "project-docs.json"
+            legacy = json.loads(marker.read_text(encoding="utf-8"))
+            legacy.pop("link_policy")
+            marker.write_text(json.dumps(legacy), encoding="utf-8")
+            page = output / "doc" / "Books" / "Demo" / "Book.html"
+            content = page.read_text(encoding="utf-8")
+            page.write_text(
+                content.replace(
+                    "</body>",
+                    '<a href="../.././/old/Demo/Chapter.lean">source</a></body>',
+                ),
+                encoding="utf-8",
+            )
+            runner = _DocsRunner()
+
+            result = ProjectDocumentationBuilder(runner=runner).build(
+                project,
+                ("Books.Demo.Book",),
+                output,
+                repository="https://github.com/acme/reasbook",
+                revision="a" * 40,
+            )
+
+            self.assertTrue(result.reused)
+            self.assertEqual(runner.commands, [])
+            upgraded = json.loads(marker.read_text(encoding="utf-8"))
+            self.assertEqual(upgraded["link_policy"]["schema_version"], 1)
+            self.assertIn(
+                "https://github.com/acme/reasbook/blob/"
+                + "a" * 40
+                + "/ReasBook/Books/Demo/Chapter.lean",
+                page.read_text(encoding="utf-8"),
+            )
+            self.assertEqual(list(output.parent.glob(".docs.migration-*")), [])
 
     def test_explicit_root_includes_only_reachable_sibling_modules(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -296,6 +1187,8 @@ class ProjectDocumentationTests(unittest.TestCase):
                 "import Mathlib\n",
                 encoding="utf-8",
             )
+            self._write_olean(project, "Theory")
+            self._write_olean(project, "Theory.Current")
             runner = _DocsRunner()
 
             result = ProjectDocumentationBuilder(runner=runner).build(

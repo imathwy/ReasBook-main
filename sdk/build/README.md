@@ -45,13 +45,56 @@ explicit entry root, it follows imports through project-owned Lean sources and
 processes the reachable modules in batches of at most 128. Mathlib, Lean, and
 other external libraries are excluded. Modern doc-gen writes and renders a
 trimmed database; older doc-gen versions use a compatible bounded renderer.
-The legacy renderer discovers MD4Lean's built native-library layout and loads
-its optional C provider before the single aggregate library, covering both the
-v4.26 and v4.30 naming schemes without branching on version strings. Both paths
+The legacy renderer discovers the built native-library layouts of UnicodeBasic
+and MD4Lean and loads providers before consumers: the UnicodeBasic aggregate,
+the MD4Lean C provider, then the MD4Lean aggregate. The resolver accepts
+the explicit v4.26 and v4.30 naming schemes without branching on version
+strings, and rejects missing, ambiguous, empty, or symlinked libraries. Both paths
 close referenced external HTML links with explicit lightweight
-stubs and reject missing non-HTML assets. Output is an atomic,
-content-addressed `project-modules-v2` cache; provide `--repository` and
-`--revision` together when source links must be pinned to an immutable commit.
+stubs and reject missing non-HTML assets. Local `.lean` links embedded in
+project docstrings are rewritten only when they resolve uniquely to a source
+in the selected reachable closure. The target is then pinned to
+`<repository>/blob/<40-character-commit>/ReasBook/...`; an unknown or ambiguous
+source path remains a hard error. This prevents absolute paths captured by an
+older checkout from leaking into the static site without treating arbitrary
+missing assets as source links. Local `file:` URLs, Windows drive paths,
+protocol-relative URLs, unsafe path encodings, and unexpected schemes also fail
+closed. The builder requires the generated stylesheet and rechecks closure in
+no-write mode after creating dependency stubs. It rejects a symlink at the
+output path or any existing parent component before resolving the destination.
+
+Output is a content-addressed `project-modules-v2` cache; provide
+`--repository` and `--revision` together when source links must be pinned to an
+immutable commit. A cache produced before the source-link policy was recorded
+is upgraded only through a validated copy and a same-filesystem writer
+transaction under its lock. Individual renames are atomic and rollback keeps
+the prior cache on failure; this is not a lock-free multi-rename snapshot for
+concurrent readers. Modern doc-gen analysis is also checkpointed separately
+under the output parent's hidden
+`.project-docs-analysis-v1/` directory. Its identity binds the toolchain,
+commit, Lake manifest, reachable source hashes and compiled `.olean` files,
+project native libraries, doc-gen/leansqlite support, doc-gen executable, and
+adapter. Its SQLite database is accepted only after digest, integrity, exact
+module-set, required-table, `schema_meta`, and schema-fingerprint checks.
+Restoring an incompatible checkpoint permits one fresh-analysis fallback; the
+old checkpoint is replaced only after fresh rendering and link closure succeed.
+Rendering or link-closure failure therefore cannot publish a partial
+documentation cache. The checkpoint directory is derived cache only: it is
+never served or copied into a release and may be removed to force a fresh
+analysis.
+
+Managed branch caches are an explicit immutable trust boundary. A metadata file
+in a normal `.lake` directory is ignored for this purpose; `.lake` must be an
+explicit symlink to an exact `lake/branch-...` namespace. Its directory key and
+exact metadata fields must agree with the branch, commit, manifest, checked-out
+toolchain, and current host architecture. The exact schema-1 field set plus the
+`branch-` namespace establishes branch-build purpose and excludes web-cache
+metadata. Those values and the metadata digest stand in for rehashing the full
+dependency tree on every lookup. Never edit such a cache in place; publish a
+replacement cache as a unit. The selected project artifacts and analyzer
+support binaries are still hashed from their bytes. Without a valid structural
+opt-in, the builder hashes all dependency `.olean`, `.so`, and `.a` files
+instead.
 The repository adapter `scripts/build/project_docs.sh` uses exactly
 `REASBOOK_LAKE_TARGETS` when a release/deployment supplies it, ahead of any
 ambient `PROJECT_DOC_MODULES` operator override. Automatic Lake library

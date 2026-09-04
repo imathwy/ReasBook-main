@@ -6,13 +6,16 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 import fcntl
 import hashlib
+from html import unescape as html_unescape
 from html.parser import HTMLParser
 import json
 import os
 from pathlib import Path
+import platform
 import re
 import shutil
 import sqlite3
+import stat
 import tempfile
 from typing import Iterator, Protocol
 from urllib.parse import quote, unquote, urljoin, urlsplit
@@ -25,10 +28,63 @@ from .project import discover_project
 
 
 _MODULE_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_']*(?:[.][A-Za-z_][A-Za-z0-9_']*)*$")
-_GITHUB_RE = re.compile(r"^https://github[.]com/[^/]+/[^/]+?(?:[.]git)?$")
+_GITHUB_SEGMENT_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 _IMPORT_RE = re.compile(r"^[ \t]*(?:public[ \t]+)?import[ \t]+(.+?)\s*$")
 _PROFILE = "project-modules-v2"
 _MODULE_BATCH_SIZE = 128
+_LINK_POLICY = {
+    "schema_version": 1,
+    "project_source_links": "unique-reachable-source-to-immutable-commit",
+    "missing_html": "explicit-stub",
+    "missing_non_html": "reject",
+}
+_ANALYSIS_PROFILE = "project-docs-analysis-v1"
+_HTML_SPACE = " \t\n\r\f"
+_COMPILED_ARTIFACT_SUFFIXES = frozenset({".a", ".olean", ".so"})
+_ANALYZER_REQUIRED_TABLES = frozenset(
+    {
+        "axioms",
+        "class_inductives",
+        "constructors",
+        "declaration_args",
+        "declaration_attrs",
+        "declaration_markdown_docstrings",
+        "declaration_ranges",
+        "declaration_verso_docstrings",
+        "definition_equations",
+        "definitions",
+        "inductives",
+        "instance_args",
+        "instances",
+        "internal_names",
+        "module_docs_markdown",
+        "module_imports",
+        "modules",
+        "name_info",
+        "opaques",
+        "schema_meta",
+        "structure_constructors",
+        "structure_field_args",
+        "structure_fields",
+        "structure_parents",
+        "structures",
+        "tactic_tags",
+        "tactics",
+    }
+)
+_ANALYZER_SCHEMA_META_KEYS = frozenset({"ddl_hash", "type_hash"})
+_WINDOWS_ABSOLUTE_RE = re.compile(r"^[A-Za-z]:[/\\]")
+_MANAGED_CACHE_METADATA_KEYS = frozenset(
+    {
+        "schema",
+        "branch",
+        "commit",
+        "manifest_sha256",
+        "toolchain",
+        "architecture",
+    }
+)
+_BRANCH_RE = re.compile(r"^[A-Za-z0-9._/-]+$")
 
 
 class _Runner(Protocol):
@@ -36,19 +92,150 @@ class _Runner(Protocol):
         """Run one documentation command."""
 
 
+@dataclass(frozen=True)
+class _HtmlReference:
+    value: str
+    start: int
+    end: int
+
+
+@dataclass(frozen=True)
+class _StartTagAttribute:
+    name: str
+    value: str | None
+    start: int | None
+    end: int | None
+
+
 class _LinkParser(HTMLParser):
-    def __init__(self) -> None:
+    """Collect link values and their exact source spans in start tags."""
+
+    def __init__(self, source: str) -> None:
         super().__init__(convert_charrefs=True)
         self.base_href: str | None = None
-        self.references: list[str] = []
+        self.base_count = 0
+        self.references: list[_HtmlReference] = []
+        self._line_offsets = [0]
+        for match in re.finditer("\n", source):
+            self._line_offsets.append(match.end())
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-        values = dict(attrs)
-        if tag == "base" and self.base_href is None and values.get("href"):
-            self.base_href = values["href"]
-        for attribute in ("href", "src"):
-            if values.get(attribute):
-                self.references.append(values[attribute] or "")
+        self._capture_start_tag(tag, attrs)
+
+    def handle_startendtag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        self._capture_start_tag(tag, attrs)
+
+    def _capture_start_tag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        raw = self.get_starttag_text() or ""
+        line, column = self.getpos()
+        absolute = self._line_offsets[line - 1] + column
+        expected = [
+            (name.lower(), value)
+            for name, value in attrs
+            if name.lower() in {"href", "src"}
+        ]
+        captured = [
+            attribute
+            for attribute in self._lex_start_tag(raw)
+            if attribute.name in {"href", "src"}
+        ]
+        if [(item.name, item.value) for item in captured] != expected:
+            raise BuildFailed(
+                "cannot safely locate documentation href/src attributes in start tag"
+            )
+        if tag == "base":
+            self.base_count += 1
+            base_hrefs = [item for item in captured if item.name == "href"]
+            if (
+                self.base_count > 1
+                or len(base_hrefs) > 1
+                or (base_hrefs and base_hrefs[0].value not in {None, ""})
+            ):
+                raise BuildFailed(
+                    "documentation output contains an unsafe or duplicate base element"
+                )
+        for attribute in captured:
+            if not attribute.value:
+                continue
+            if attribute.start is None or attribute.end is None:
+                raise BuildFailed(
+                    "cannot safely locate documentation href/src attribute value"
+                )
+            self.references.append(
+                _HtmlReference(
+                    attribute.value,
+                    absolute + attribute.start,
+                    absolute + attribute.end,
+                )
+            )
+            if tag == "base" and attribute.name == "href" and self.base_href is None:
+                self.base_href = attribute.value
+
+    @staticmethod
+    def _lex_start_tag(raw: str) -> tuple[_StartTagAttribute, ...]:
+        """Return exact attribute-value spans without scanning inside quotes."""
+
+        if not raw.startswith("<"):
+            return ()
+        length = len(raw)
+        cursor = 1
+        while cursor < length and raw[cursor] not in _HTML_SPACE + "/>":
+            cursor += 1
+        result: list[_StartTagAttribute] = []
+        while cursor < length:
+            while cursor < length and raw[cursor] in _HTML_SPACE:
+                cursor += 1
+            if cursor >= length or raw[cursor] == ">":
+                break
+            if raw[cursor] == "/":
+                cursor += 1
+                continue
+
+            name_start = cursor
+            while cursor < length and raw[cursor] not in _HTML_SPACE + "/>=":
+                cursor += 1
+            if cursor == name_start:
+                # HTMLParser accepts some malformed separators. Returning the
+                # attributes seen so far makes any parsed href/src mismatch
+                # fail closed in ``_capture_start_tag``.
+                break
+            name = raw[name_start:cursor].lower()
+            while cursor < length and raw[cursor] in _HTML_SPACE:
+                cursor += 1
+            if cursor >= length or raw[cursor] != "=":
+                result.append(_StartTagAttribute(name, None, None, None))
+                continue
+
+            while cursor < length and raw[cursor] == "=":
+                cursor += 1
+            while cursor < length and raw[cursor] in _HTML_SPACE:
+                cursor += 1
+            if cursor >= length or raw[cursor] == ">":
+                result.append(_StartTagAttribute(name, "", cursor, cursor))
+                continue
+
+            quote_character = raw[cursor] if raw[cursor] in {'"', "'"} else None
+            if quote_character is not None:
+                cursor += 1
+                value_start = cursor
+                value_end = raw.find(quote_character, cursor)
+                if value_end < 0:
+                    break
+                cursor = value_end + 1
+            else:
+                value_start = cursor
+                while cursor < length and raw[cursor] not in _HTML_SPACE + ">":
+                    cursor += 1
+                value_end = cursor
+            result.append(
+                _StartTagAttribute(
+                    name,
+                    html_unescape(raw[value_start:value_end]),
+                    value_start,
+                    value_end,
+                )
+            )
+        return tuple(result)
 
 
 @dataclass(frozen=True)
@@ -101,19 +288,15 @@ class ProjectDocumentationBuilder:
     ) -> ProjectDocsResult:
         project = discover_project(project_root)
         roots = self._normalize_targets(targets)
-        batches = self._module_batches(project.root, roots)
+        batches, module_owners = self._module_plan(project.root, roots)
         module_sources = tuple(item for batch in batches for item in batch)
         modules = tuple(module for module, _source in module_sources)
         if not lake_bin.strip() or any(char in lake_bin for char in "\x00\r\n"):
             raise ConfigurationError("lake executable must be a safe non-empty value")
         if timeout_seconds <= 0:
             raise ConfigurationError("documentation timeout must be positive")
-        repository = repository.strip().removesuffix(".git")
+        repository = self._normalize_github_repository(repository)
         revision = revision.strip()
-        if repository and not _GITHUB_RE.fullmatch(repository):
-            raise ConfigurationError(
-                "documentation repository must be a GitHub HTTPS URL"
-            )
         if revision and not re.fullmatch(r"[0-9a-f]{40}", revision):
             raise ConfigurationError("documentation revision must be a full commit SHA")
         if bool(repository) != bool(revision):
@@ -121,16 +304,25 @@ class ProjectDocumentationBuilder:
                 "documentation repository and revision must be provided together"
             )
 
-        target = Path(output_root).expanduser().resolve(strict=False)
+        target = self._safe_output_root(output_root)
         if target in {Path("/"), project.root} or target in project.root.parents:
             raise ConfigurationError(f"unsafe documentation output root: {target}")
-        if target.is_symlink():
-            raise ConfigurationError(
-                f"documentation output must not be a symlink: {target}"
-            )
         target.parent.mkdir(parents=True, exist_ok=True)
+        # Recheck after creating missing parents so a concurrently introduced
+        # link cannot redirect the cache writer before canonicalization.
+        target = self._safe_output_root(target)
 
         docgen, mode = self._docgen(project.root, lake_bin, timeout_seconds)
+        compiled_artifacts = (
+            self._compiled_artifact_identity(
+                project.root,
+                module_sources,
+                docgen,
+                revision=revision,
+            )
+            if mode == "database"
+            else None
+        )
         identity = {
             "schema_version": 2,
             "profile": _PROFILE,
@@ -147,7 +339,10 @@ class ProjectDocumentationBuilder:
             "docgen_sha256": self._sha256(docgen),
             "adapter_sha256": self._sha256(self._adapter(mode)),
             "mode": mode,
+            "link_policy": _LINK_POLICY,
         }
+        if compiled_artifacts is not None:
+            identity["compiled_artifacts"] = compiled_artifacts
         lock = target.parent / f".{target.name}.lock"
         with self._exclusive_lock(lock):
             cached = self._cached_result(
@@ -156,6 +351,11 @@ class ProjectDocumentationBuilder:
                 roots,
                 modules,
                 mode,
+                project_root=project.root,
+                module_sources=module_sources,
+                module_owners=module_owners,
+                repository=repository,
+                revision=revision,
             )
             if cached is not None:
                 return cached
@@ -170,6 +370,7 @@ class ProjectDocumentationBuilder:
                 lake_bin=lake_bin,
                 repository=repository,
                 revision=revision,
+                module_owners=module_owners,
                 timeout_seconds=timeout_seconds,
             )
 
@@ -186,6 +387,7 @@ class ProjectDocumentationBuilder:
         lake_bin: str,
         repository: str,
         revision: str,
+        module_owners: dict[str, frozenset[str]],
         timeout_seconds: float,
     ) -> ProjectDocsResult:
         stage = Path(
@@ -194,115 +396,195 @@ class ProjectDocumentationBuilder:
         backup = target.parent / f".{target.name}.backup-{uuid.uuid4().hex}"
         try:
             module_sources = tuple(item for batch in batches for item in batch)
-            for sequence, batch in enumerate(batches):
-                control = stage / f".reasbook-docs-{sequence:04d}.txt"
+            modules = tuple(module for module, _source in module_sources)
+            analysis_identity: dict[str, object] | None = None
+            checkpoint: Path | None = None
+            force_analysis = False
+            fallback_candidate: Path | None = None
+            while True:
+                restored = False
                 try:
                     if mode == "database":
-                        control.write_text(
-                            "".join(f"{module}\n" for module, _source in batch),
-                            encoding="utf-8",
+                        database = stage / "api-docs.db"
+                        analysis_identity = self._analysis_identity(
+                            project_root,
+                            module_sources,
+                            docgen,
+                            compiled_artifacts=identity["compiled_artifacts"],
+                            revision=revision,
                         )
-                        argv = (
-                            lake_bin,
-                            "-R",
-                            "-Kenv=dev",
-                            "env",
-                            "lean",
-                            "-R",
-                            str(self._adapter("database").parent),
-                            *self._database_interpreter_args(project_root),
-                            "--run",
-                            str(self._adapter("database")),
-                            str(stage),
-                            "api-docs.db",
-                            str(control),
+                        checkpoint = self._analysis_checkpoint(
+                            target.parent, analysis_identity
+                        )
+                        if not force_analysis:
+                            restored = self._restore_analysis_checkpoint(
+                                checkpoint, database, analysis_identity, modules
+                            )
+                        if not restored:
+                            for sequence, batch in enumerate(batches):
+                                control = stage / f".reasbook-docs-{sequence:04d}.txt"
+                                try:
+                                    control.write_text(
+                                        "".join(
+                                            f"{module}\n" for module, _source in batch
+                                        ),
+                                        encoding="utf-8",
+                                    )
+                                    self._run(
+                                        project_root,
+                                        (
+                                            lake_bin,
+                                            "-R",
+                                            "-Kenv=dev",
+                                            "env",
+                                            "lean",
+                                            "-R",
+                                            str(self._adapter("database").parent),
+                                            *self._database_interpreter_args(
+                                                project_root
+                                            ),
+                                            "--run",
+                                            str(self._adapter("database")),
+                                            str(stage),
+                                            "api-docs.db",
+                                            str(control),
+                                        ),
+                                        timeout_seconds,
+                                    )
+                                finally:
+                                    control.unlink(missing_ok=True)
+                            self._validate_analysis_database(database, modules)
+                            if force_analysis:
+                                fallback_candidate = (
+                                    stage / ".reasbook-analysis-candidate.db"
+                                )
+                                self._backup_analysis_database(
+                                    database, fallback_candidate
+                                )
+                            else:
+                                self._store_analysis_checkpoint(
+                                    checkpoint,
+                                    database,
+                                    analysis_identity,
+                                    modules,
+                                )
+                        self._set_database_source_urls(
+                            database,
+                            tuple(
+                                (
+                                    module,
+                                    self._source_uri(
+                                        project_root,
+                                        source,
+                                        repository,
+                                        revision,
+                                    ),
+                                )
+                                for module, source in module_sources
+                            ),
+                        )
+                        self._run(
+                            project_root,
+                            (
+                                lake_bin,
+                                "-R",
+                                "-Kenv=dev",
+                                "env",
+                                str(docgen),
+                                "fromDb",
+                                "--build",
+                                str(stage),
+                                "--manifest",
+                                str(stage / "doc-manifest.json"),
+                                str(database),
+                                *roots,
+                            ),
+                            timeout_seconds,
                         )
                     else:
-                        control.write_text(
-                            "".join(
-                                f"{module}\t"
-                                f"{self._source_uri(project_root, source, repository, revision)}\n"
-                                for module, source in batch
+                        for sequence, batch in enumerate(batches):
+                            control = stage / f".reasbook-docs-{sequence:04d}.txt"
+                            try:
+                                control.write_text(
+                                    "".join(
+                                        f"{module}\t"
+                                        f"{self._source_uri(project_root, source, repository, revision)}\n"
+                                        for module, source in batch
+                                    ),
+                                    encoding="utf-8",
+                                )
+                                self._run(
+                                    project_root,
+                                    (
+                                        lake_bin,
+                                        "-R",
+                                        "-Kenv=dev",
+                                        "env",
+                                        "lean",
+                                        "-R",
+                                        str(self._adapter("legacy").parent),
+                                        *self._legacy_interpreter_args(project_root),
+                                        "--run",
+                                        str(self._adapter("legacy")),
+                                        str(stage),
+                                        str(control),
+                                    ),
+                                    timeout_seconds,
+                                )
+                            finally:
+                                control.unlink(missing_ok=True)
+                        self._run(
+                            project_root,
+                            (
+                                lake_bin,
+                                "-R",
+                                "-Kenv=dev",
+                                "env",
+                                str(docgen),
+                                "index",
+                                "--build",
+                                str(stage),
                             ),
-                            encoding="utf-8",
+                            timeout_seconds,
                         )
-                        argv = (
-                            lake_bin,
-                            "-R",
-                            "-Kenv=dev",
-                            "env",
-                            "lean",
-                            "-R",
-                            str(self._adapter("legacy").parent),
-                            *self._md4lean_interpreter_args(project_root),
-                            "--run",
-                            str(self._adapter("legacy")),
-                            str(stage),
-                            str(control),
-                        )
-                    self._run(project_root, argv, timeout_seconds)
-                finally:
-                    control.unlink(missing_ok=True)
 
-            if mode == "database":
-                database = stage / "api-docs.db"
-                if not database.is_file() or database.stat().st_size == 0:
-                    raise BuildFailed(
-                        "doc-gen4 did not create its documentation database"
+                    pages = self._expected_pages(stage, modules)
+                    self._validate_pages(pages)
+                    stub_count = self._close_documentation_links(
+                        stage / "doc",
+                        project_root=project_root,
+                        module_sources=module_sources,
+                        module_owners=module_owners,
+                        repository=repository,
+                        revision=revision,
                     )
-                self._set_database_source_urls(
-                    database,
-                    tuple(
-                        (
-                            module,
-                            self._source_uri(
-                                project_root,
-                                source,
-                                repository,
-                                revision,
-                            ),
-                        )
-                        for module, source in module_sources
-                    ),
-                )
-                self._run(
-                    project_root,
-                    (
-                        lake_bin,
-                        "-R",
-                        "-Kenv=dev",
-                        "env",
-                        str(docgen),
-                        "fromDb",
-                        "--build",
-                        str(stage),
-                        "--manifest",
-                        str(stage / "doc-manifest.json"),
-                        str(database),
-                        *roots,
-                    ),
-                    timeout_seconds,
-                )
-            else:
-                self._run(
-                    project_root,
-                    (
-                        lake_bin,
-                        "-R",
-                        "-Kenv=dev",
-                        "env",
-                        str(docgen),
-                        "index",
-                        "--build",
-                        str(stage),
-                    ),
-                    timeout_seconds,
-                )
+                except BuildFailed:
+                    if mode != "database" or not restored or force_analysis:
+                        raise
+                    # A structurally valid checkpoint can still be incompatible
+                    # with the renderer. Retry exactly once from a completely
+                    # fresh stage, retaining the published checkpoint until the
+                    # fresh analysis and render have both succeeded.
+                    self._remove_path(stage)
+                    stage.mkdir()
+                    force_analysis = True
+                    fallback_candidate = None
+                    continue
+                break
 
-            modules = tuple(module for module, _source in module_sources)
-            pages = self._expected_pages(stage, modules)
-            self._validate_pages(pages)
-            stub_count = self._close_documentation_links(stage / "doc")
+            if fallback_candidate is not None:
+                if checkpoint is None or analysis_identity is None:
+                    raise BuildFailed(
+                        "fresh documentation analysis lost its checkpoint identity"
+                    )
+                self._store_analysis_checkpoint(
+                    checkpoint,
+                    fallback_candidate,
+                    analysis_identity,
+                    modules,
+                    replace_existing=True,
+                )
+                fallback_candidate.unlink()
             (stage / "project-docs.json").write_text(
                 json.dumps(identity, ensure_ascii=True, sort_keys=True, indent=2)
                 + "\n",
@@ -359,6 +641,76 @@ class ProjectDocumentationBuilder:
         return executable.resolve(), mode
 
     @staticmethod
+    def _normalize_github_repository(repository: str) -> str:
+        """Validate and canonicalize a repository used in raw HTML attributes."""
+
+        if repository == "":
+            return ""
+        if repository != repository.strip() or any(
+            character.isspace() or ord(character) < 0x20 or ord(character) == 0x7F
+            for character in repository
+        ):
+            raise ConfigurationError(
+                "documentation repository must be a strict GitHub HTTPS URL"
+            )
+        try:
+            parsed = urlsplit(repository)
+            port = parsed.port
+        except ValueError as exc:
+            raise ConfigurationError(
+                "documentation repository must be a strict GitHub HTTPS URL"
+            ) from exc
+        if (
+            parsed.scheme != "https"
+            or parsed.netloc != "github.com"
+            or parsed.hostname != "github.com"
+            or parsed.username is not None
+            or parsed.password is not None
+            or port is not None
+            or parsed.query
+            or parsed.fragment
+        ):
+            raise ConfigurationError(
+                "documentation repository must be a strict GitHub HTTPS URL"
+            )
+        path = parsed.path.split("/")
+        if len(path) != 3 or path[0] != "":
+            raise ConfigurationError(
+                "documentation repository must contain exactly owner and repository"
+            )
+        owner, name = path[1], path[2].removesuffix(".git")
+        if not _GITHUB_SEGMENT_RE.fullmatch(owner) or not _GITHUB_SEGMENT_RE.fullmatch(
+            name
+        ):
+            raise ConfigurationError(
+                "documentation repository owner and name contain unsafe characters"
+            )
+        return f"https://github.com/{owner}/{name}"
+
+    @staticmethod
+    def _safe_output_root(output_root: str | Path) -> Path:
+        """Canonicalize an output only after rejecting lexical symlinks."""
+
+        expanded = Path(output_root).expanduser()
+        lexical = Path(os.path.abspath(os.fspath(expanded)))
+        current = Path(lexical.anchor)
+        for part in lexical.parts[1:]:
+            current /= part
+            try:
+                metadata = current.lstat()
+            except FileNotFoundError:
+                continue
+            except OSError as exc:
+                raise ConfigurationError(
+                    f"cannot inspect documentation output path: {current}"
+                ) from exc
+            if stat.S_ISLNK(metadata.st_mode):
+                raise ConfigurationError(
+                    f"documentation output path contains a symlink: {current}"
+                )
+        return lexical.resolve(strict=False)
+
+    @staticmethod
     def _adapter(mode: str) -> Path:
         name = (
             "ProjectDocsDatabase.lean"
@@ -390,45 +742,74 @@ class ProjectDocumentationBuilder:
         return tuple(f"--load-dynlib={library}" for library in libraries)
 
     @staticmethod
-    def _md4lean_interpreter_args(project_root: Path) -> tuple[str, ...]:
-        """Resolve MD4Lean's version-dependent interpreter libraries.
+    def _legacy_interpreter_args(project_root: Path) -> tuple[str, ...]:
+        """Resolve the legacy renderer's native interpreter libraries.
 
         Pre-database doc-gen4 renders HTML inside ``lean --run`` and therefore
-        requires the native implementation of ``MD4Lean.renderHtml``. MD4Lean
-        renamed its main shared library between the v4.26 and v4.30 toolchains;
-        discover the supported layouts explicitly instead of keying behavior to
-        a Lean version string.
+        requires native implementations from both UnicodeBasic and MD4Lean.
+        Both packages changed their aggregate-library names when Lake introduced
+        scoped library names. Discover those explicit artifact layouts instead
+        of keying behavior to a Lean version string or loading every ``.so`` in
+        a package build directory.
         """
 
         packages = project_root / ".lake" / "packages"
-        md4lean_lib = packages / "MD4Lean" / ".lake" / "build" / "lib"
-        main_candidates = (
-            md4lean_lib / "libMD4Lean_MD4Lean.so",
-            md4lean_lib / "libMD4Lean.so",
+        unicode_lib = packages / "UnicodeBasic" / ".lake" / "build" / "lib"
+        unicode = ProjectDocumentationBuilder._unique_native_library(
+            unicode_lib,
+            "UnicodeBasic aggregate",
+            ("libUnicodeBasic_UnicodeBasic.so", "libUnicodeBasic.so"),
         )
-        present = [
+        md4lean_lib = packages / "MD4Lean" / ".lake" / "build" / "lib"
+        main = ProjectDocumentationBuilder._unique_native_library(
+            md4lean_lib,
+            "MD4Lean aggregate",
+            ("libMD4Lean_MD4Lean.so", "libMD4Lean.so"),
+        )
+        # Providers precede consumers. UnicodeBasic's aggregate contains both
+        # the Lean wrapper and its Unicode C lookup implementation; MD4Lean's C
+        # bridge similarly precedes the MD4Lean aggregate that calls it.
+        md4c = ProjectDocumentationBuilder._safe_native_library(
+            md4lean_lib / "libleanmd4c.so", "MD4Lean C"
+        )
+        libraries = [unicode, md4c, main]
+        return tuple(f"--load-dynlib={library}" for library in libraries)
+
+    @staticmethod
+    def _unique_native_library(
+        directory: Path,
+        label: str,
+        filenames: tuple[str, ...],
+    ) -> Path:
+        """Select one known aggregate layout and reject stale/unsafe artifacts."""
+
+        candidates = tuple(directory / filename for filename in filenames)
+        present = tuple(
             library
-            for library in main_candidates
+            for library in candidates
             if library.exists() or library.is_symlink()
-        ]
+        )
         if len(present) != 1:
+            supported = ", ".join(filenames)
             raise BuildFailed(
                 "project documentation adapter requires exactly one supported "
-                f"MD4Lean aggregate library under {md4lean_lib}"
+                f"{label} library under {directory} ({supported})"
             )
-        main = present[0]
-        if not main.is_file() or main.is_symlink():
-            raise BuildFailed(f"MD4Lean aggregate library is unsafe: {main}")
-        libraries: list[Path] = []
-        md4c = md4lean_lib / "libleanmd4c.so"
-        if md4c.exists():
-            if not md4c.is_file() or md4c.is_symlink():
-                raise BuildFailed(f"MD4Lean C library is unsafe: {md4c}")
-            # Older aggregate MD4Lean libraries leave markdown conversion as
-            # an unresolved symbol, so its provider must be loaded first.
-            libraries.append(md4c.resolve())
-        libraries.append(main.resolve())
-        return tuple(f"--load-dynlib={library}" for library in libraries)
+        return ProjectDocumentationBuilder._safe_native_library(present[0], label)
+
+    @staticmethod
+    def _safe_native_library(library: Path, label: str) -> Path:
+        try:
+            safe = (
+                library.is_file()
+                and not library.is_symlink()
+                and library.stat().st_size > 0
+            )
+        except OSError as exc:
+            raise BuildFailed(f"cannot inspect {label} library: {library}") from exc
+        if not safe:
+            raise BuildFailed(f"{label} library is unsafe: {library}")
+        return library.resolve()
 
     def _run(self, cwd: Path, argv: tuple[str, ...], timeout_seconds: float) -> None:
         result = self.runner.run(
@@ -465,13 +846,27 @@ class ProjectDocumentationBuilder:
         project_root: Path,
         roots: tuple[str, ...],
     ) -> tuple[tuple[tuple[str, Path], ...], ...]:
+        batches, _owners = cls._module_plan(project_root, roots)
+        return batches
+
+    @classmethod
+    def _module_plan(
+        cls,
+        project_root: Path,
+        roots: tuple[str, ...],
+    ) -> tuple[
+        tuple[tuple[tuple[str, Path], ...], ...],
+        dict[str, frozenset[str]],
+    ]:
         """Split each project closure into bounded analyzer batches."""
 
         batches: list[tuple[tuple[str, Path], ...]] = []
         seen: dict[str, Path] = {}
+        owners: dict[str, set[str]] = {}
         for root in roots:
             fresh: list[tuple[str, Path]] = []
             for module, source in cls._project_module_sources(project_root, (root,)):
+                owners.setdefault(module, set()).add(root)
                 previous = seen.get(module)
                 if previous is not None:
                     if previous != source:
@@ -485,7 +880,9 @@ class ProjectDocumentationBuilder:
                 batches.append(tuple(fresh[offset : offset + _MODULE_BATCH_SIZE]))
         if not batches:
             raise BuildFailed("no project-owned documentation modules were discovered")
-        return tuple(batches)
+        return tuple(batches), {
+            module: frozenset(values) for module, values in owners.items()
+        }
 
     @staticmethod
     def _module_source(project_root: Path, module: str) -> Path:
@@ -617,6 +1014,519 @@ class ProjectDocumentationBuilder:
         except sqlite3.Error as exc:
             raise BuildFailed(f"cannot update documentation database: {exc}") from exc
 
+    @classmethod
+    def _analysis_identity(
+        cls,
+        project_root: Path,
+        module_sources: tuple[tuple[str, Path], ...],
+        docgen: Path,
+        *,
+        compiled_artifacts: object,
+        revision: str,
+    ) -> dict[str, object]:
+        """Describe the expensive doc-gen analysis independently of rendering."""
+
+        manifest = project_root / "lake-manifest.json"
+        return {
+            "schema_version": 1,
+            "profile": _ANALYSIS_PROFILE,
+            "module_batch_size": _MODULE_BATCH_SIZE,
+            "toolchain": (project_root / "lean-toolchain")
+            .read_text(encoding="utf-8")
+            .strip(),
+            "revision": revision,
+            "lake_manifest_sha256": cls._sha256(manifest)
+            if manifest.is_file() and not manifest.is_symlink()
+            else None,
+            "modules": [module for module, _source in module_sources],
+            "sources": [
+                {"module": module, "sha256": cls._sha256(source)}
+                for module, source in module_sources
+            ],
+            "docgen_sha256": cls._sha256(docgen),
+            "adapter_sha256": cls._sha256(cls._adapter("database")),
+            "compiled_artifacts": compiled_artifacts,
+        }
+
+    @classmethod
+    def _compiled_artifact_identity(
+        cls,
+        project_root: Path,
+        module_sources: tuple[tuple[str, Path], ...],
+        docgen: Path,
+        *,
+        revision: str,
+    ) -> dict[str, object]:
+        """Digest analyzer inputs not represented by Lean source hashes.
+
+        Managed branch caches bind dependency builds through their immutable
+        cache metadata. Reachable project oleans and analyzer-native support
+        files are always content-hashed. An unmanaged local Lake tree has no
+        such trust boundary, so all package oleans/native archives are hashed.
+        """
+
+        lake = project_root / ".lake"
+        project_build = lake / "build"
+        project_lib = project_build / "lib" / "lean"
+        packages = lake / "packages"
+        artifacts: dict[Path, str] = {}
+
+        def register(path: Path, logical: str) -> None:
+            try:
+                unsafe = (
+                    path.is_symlink() or not path.is_file() or path.stat().st_size == 0
+                )
+            except OSError as exc:
+                raise BuildFailed(f"cannot inspect compiled artifact: {path}") from exc
+            if unsafe:
+                raise BuildFailed(f"compiled artifact is missing or unsafe: {path}")
+            resolved = path.resolve()
+            previous = artifacts.get(resolved)
+            artifacts[resolved] = (
+                logical if previous is None else min(previous, logical)
+            )
+
+        for module, source in module_sources:
+            module_path = Path(*module.split(".")).with_suffix(".olean")
+            candidates = [project_lib / module_path]
+            relative_source = source.relative_to(project_root).with_suffix(".olean")
+            candidates.append(project_lib / relative_source)
+            if relative_source.parts[0] in {"Books", "Papers"}:
+                candidates.append(project_lib.joinpath(*relative_source.parts[1:]))
+            artifact = next(
+                (
+                    candidate
+                    for candidate in candidates
+                    if candidate.is_file() or candidate.is_symlink()
+                ),
+                None,
+            )
+            if artifact is None:
+                raise BuildFailed(
+                    f"compiled olean is missing for documentation module {module}"
+                )
+            register(artifact, f"project/{module_path.as_posix()}")
+
+        metadata_path = lake / "cache-metadata.json"
+        branch_cache: dict[str, object] | None = None
+        # An arbitrary metadata file inside a normal Lake workspace is not a
+        # trust signal. Only an explicit symlink to the branch-cache namespace
+        # can select the managed-cache policy; malformed opt-ins fail closed.
+        if lake.is_symlink() and (metadata_path.exists() or metadata_path.is_symlink()):
+            branch_cache = cls._managed_branch_cache_identity(
+                project_root,
+                lake,
+                revision=revision,
+            )
+
+        dependency_packages: tuple[Path, ...]
+        if branch_cache is None:
+            try:
+                dependency_packages = tuple(
+                    sorted(path for path in packages.iterdir() if path.is_dir())
+                )
+            except OSError as exc:
+                raise BuildFailed(f"cannot inspect Lake packages: {packages}") from exc
+        else:
+            dependency_packages = tuple(
+                packages / name for name in ("doc-gen4", "leansqlite")
+            )
+
+        scan_roots = [(project_build, "project-build")]
+        scan_roots.extend(
+            (package / ".lake" / "build", f"packages/{package.name}")
+            for package in dependency_packages
+        )
+        for root, prefix in scan_roots:
+            if not root.is_dir():
+                continue
+            for path in sorted(root.rglob("*")):
+                if path.suffix not in _COMPILED_ARTIFACT_SUFFIXES:
+                    continue
+                if prefix == "project-build" and path.suffix == ".olean":
+                    continue
+                register(path, f"{prefix}/{path.relative_to(root).as_posix()}")
+
+        register(docgen, "packages/doc-gen4/bin/doc-gen4")
+        for argument in cls._database_interpreter_args(project_root):
+            library = Path(argument.removeprefix("--load-dynlib="))
+            register(library, f"native/{library.name}")
+
+        digest = hashlib.sha256()
+        total_bytes = 0
+        for path, logical in sorted(
+            artifacts.items(), key=lambda item: (item[1], str(item[0]))
+        ):
+            before = path.stat()
+            content_sha256 = cls._sha256(path)
+            after = path.stat()
+            if (
+                before.st_dev,
+                before.st_ino,
+                before.st_size,
+                before.st_mtime_ns,
+                before.st_ctime_ns,
+            ) != (
+                after.st_dev,
+                after.st_ino,
+                after.st_size,
+                after.st_mtime_ns,
+                after.st_ctime_ns,
+            ):
+                raise BuildFailed(f"compiled artifact changed while hashing: {path}")
+            encoded = f"{logical}\0{before.st_size}\0{content_sha256}\n".encode()
+            digest.update(encoded)
+            total_bytes += before.st_size
+        if not artifacts:
+            raise BuildFailed("no compiled artifacts were found for documentation")
+        return {
+            "schema_version": 1,
+            "policy": "reachable-project-content-and-dependency-cache-v1",
+            "branch_cache": branch_cache,
+            "file_count": len(artifacts),
+            "total_bytes": total_bytes,
+            "sha256": digest.hexdigest(),
+        }
+
+    @classmethod
+    def _managed_branch_cache_identity(
+        cls,
+        project_root: Path,
+        lake: Path,
+        *,
+        revision: str,
+    ) -> dict[str, object]:
+        """Validate the structural opt-in for an immutable branch cache."""
+
+        try:
+            cache = lake.resolve(strict=True)
+        except OSError as exc:
+            raise BuildFailed(f"managed Lake cache link is invalid: {lake}") from exc
+        metadata_path = cache / "cache-metadata.json"
+        manifest = project_root / "lake-manifest.json"
+        toolchain_file = project_root / "lean-toolchain"
+        if (
+            not cache.is_dir()
+            or cache.is_symlink()
+            or cache.parent.name != "lake"
+            or cache.parent.is_symlink()
+            or metadata_path.is_symlink()
+            or not metadata_path.is_file()
+            or manifest.is_symlink()
+            or not manifest.is_file()
+            or toolchain_file.is_symlink()
+            or not toolchain_file.is_file()
+        ):
+            raise BuildFailed("managed Lake cache has an unsafe namespace layout")
+        try:
+            metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+            toolchain = toolchain_file.read_text(encoding="utf-8").strip()
+        except (OSError, json.JSONDecodeError) as exc:
+            raise BuildFailed("compiled branch cache metadata is invalid") from exc
+        if (
+            not isinstance(metadata, dict)
+            or set(metadata) != _MANAGED_CACHE_METADATA_KEYS
+        ):
+            raise BuildFailed("compiled branch cache metadata has an unknown purpose")
+
+        branch = metadata.get("branch")
+        commit = metadata.get("commit")
+        manifest_sha256 = cls._sha256(manifest)
+        expected_toolchain = cls._cache_component(toolchain.rsplit(":", 1)[-1])
+        architecture = cls._cache_component(platform.machine() or "unknown")
+        if (
+            not isinstance(branch, str)
+            or branch != branch.strip()
+            or branch in {".", ".."}
+            or branch.startswith("/")
+            or ".." in branch
+            or not _BRANCH_RE.fullmatch(branch)
+            or not isinstance(commit, str)
+            or not re.fullmatch(r"[0-9a-f]{40}", commit)
+            or (revision and commit != revision)
+            or metadata.get("schema") != 1
+            or metadata.get("manifest_sha256") != manifest_sha256
+            or metadata.get("toolchain") != expected_toolchain
+            or metadata.get("architecture") != architecture
+        ):
+            raise BuildFailed(
+                "compiled branch cache metadata does not match this project or host"
+            )
+        expected_name = (
+            f"branch-{cls._cache_component(branch)}-{commit[:12]}-"
+            f"{manifest_sha256[:16]}-{expected_toolchain}-{architecture}"
+        )
+        if cache.name != expected_name:
+            raise BuildFailed(
+                "managed Lake cache namespace does not match its branch metadata"
+            )
+        return {
+            "policy": "trusted-immutable-branch-cache-v1",
+            "purpose": "release-branch-build",
+            "namespace": expected_name,
+            "metadata_sha256": cls._sha256(metadata_path),
+            "branch": branch,
+            "commit": commit,
+            "manifest_sha256": manifest_sha256,
+            "toolchain": expected_toolchain,
+            "architecture": architecture,
+        }
+
+    @staticmethod
+    def _cache_component(value: str) -> str:
+        """Match the branch-cache producer's bounded filesystem component."""
+
+        normalized = re.sub(r"[^A-Za-z0-9._-]+", "_", value.strip()).strip("._")
+        if not normalized:
+            raise BuildFailed("managed Lake cache identity has an empty component")
+        return normalized[:160]
+
+    @staticmethod
+    def _analysis_checkpoint(parent: Path, identity: dict[str, object]) -> Path:
+        serialized = json.dumps(
+            identity, ensure_ascii=True, sort_keys=True, separators=(",", ":")
+        ).encode("utf-8")
+        digest = hashlib.sha256(serialized).hexdigest()
+        return parent / f".{_ANALYSIS_PROFILE}" / digest
+
+    @classmethod
+    def _restore_analysis_checkpoint(
+        cls,
+        checkpoint: Path,
+        destination: Path,
+        identity: dict[str, object],
+        modules: tuple[str, ...],
+    ) -> bool:
+        cls._ensure_analysis_cache_root(checkpoint.parent)
+        lock = checkpoint.parent / f".{checkpoint.name}.lock"
+        if lock.is_symlink():
+            raise BuildFailed(f"documentation analysis lock is unsafe: {lock}")
+        with cls._exclusive_lock(lock):
+            if not cls._valid_analysis_checkpoint(checkpoint, identity, modules):
+                return False
+            shutil.copy2(checkpoint / "api-docs.db", destination)
+        cls._validate_analysis_database(destination, modules, immutable=True)
+        return True
+
+    @classmethod
+    def _store_analysis_checkpoint(
+        cls,
+        checkpoint: Path,
+        database: Path,
+        identity: dict[str, object],
+        modules: tuple[str, ...],
+        *,
+        replace_existing: bool = False,
+    ) -> None:
+        root = checkpoint.parent
+        cls._ensure_analysis_cache_root(root)
+        lock = root / f".{checkpoint.name}.lock"
+        if lock.is_symlink():
+            raise BuildFailed(f"documentation analysis lock is unsafe: {lock}")
+        with cls._exclusive_lock(lock):
+            if not replace_existing and cls._valid_analysis_checkpoint(
+                checkpoint, identity, modules
+            ):
+                return
+            stage = Path(
+                tempfile.mkdtemp(prefix=f".{checkpoint.name}.stage-", dir=root)
+            )
+            backup = root / f".{checkpoint.name}.backup-{uuid.uuid4().hex}"
+            try:
+                staged_database = stage / "api-docs.db"
+                cls._backup_analysis_database(database, staged_database)
+                database_schema = cls._validate_analysis_database(
+                    staged_database, modules, immutable=True
+                )
+                marker = {
+                    "schema_version": 1,
+                    "identity": identity,
+                    "database_bytes": staged_database.stat().st_size,
+                    "database_sha256": cls._sha256(staged_database),
+                    "database_schema": database_schema,
+                }
+                (stage / "analysis.json").write_text(
+                    json.dumps(marker, ensure_ascii=True, sort_keys=True, indent=2)
+                    + "\n",
+                    encoding="utf-8",
+                )
+                had_checkpoint = checkpoint.exists() or checkpoint.is_symlink()
+                if had_checkpoint:
+                    os.replace(checkpoint, backup)
+                try:
+                    os.replace(stage, checkpoint)
+                except OSError:
+                    if had_checkpoint and not checkpoint.exists():
+                        os.replace(backup, checkpoint)
+                    raise
+                if had_checkpoint:
+                    cls._remove_path(backup)
+            finally:
+                if stage.exists():
+                    cls._remove_path(stage)
+                if backup.exists() and checkpoint.exists():
+                    cls._remove_path(backup)
+
+    @classmethod
+    def _valid_analysis_checkpoint(
+        cls,
+        checkpoint: Path,
+        identity: dict[str, object],
+        modules: tuple[str, ...],
+    ) -> bool:
+        marker = checkpoint / "analysis.json"
+        database = checkpoint / "api-docs.db"
+        try:
+            if checkpoint.is_symlink() or not checkpoint.is_dir():
+                return False
+            if marker.is_symlink() or database.is_symlink():
+                return False
+            if {path.name for path in checkpoint.iterdir()} != {
+                "analysis.json",
+                "api-docs.db",
+            }:
+                return False
+            payload = json.loads(marker.read_text(encoding="utf-8"))
+            if not isinstance(payload, dict):
+                return False
+            if (
+                payload.get("schema_version") != 1
+                or payload.get("identity") != identity
+                or payload.get("database_bytes") != database.stat().st_size
+                or payload.get("database_sha256") != cls._sha256(database)
+            ):
+                return False
+            expected_schema = payload.get("database_schema")
+            if not isinstance(expected_schema, dict):
+                return False
+            if (
+                cls._validate_analysis_database(database, modules, immutable=True)
+                != expected_schema
+            ):
+                return False
+        except (BuildFailed, OSError, ValueError, json.JSONDecodeError):
+            return False
+        return True
+
+    @staticmethod
+    def _ensure_analysis_cache_root(root: Path) -> None:
+        if root.exists() and (not root.is_dir() or root.is_symlink()):
+            raise BuildFailed(f"documentation analysis cache is unsafe: {root}")
+        root.mkdir(parents=True, exist_ok=True)
+
+    @staticmethod
+    def _validate_analysis_database(
+        database: Path,
+        modules: tuple[str, ...],
+        *,
+        immutable: bool = False,
+    ) -> dict[str, object]:
+        if (
+            database.is_symlink()
+            or not database.is_file()
+            or database.stat().st_size == 0
+        ):
+            raise BuildFailed(f"documentation analysis database is unsafe: {database}")
+        try:
+            suffix = "?mode=ro" + ("&immutable=1" if immutable else "")
+            with sqlite3.connect(
+                database.resolve().as_uri() + suffix, uri=True
+            ) as connection:
+                check = connection.execute("PRAGMA quick_check").fetchone()
+                if check != ("ok",):
+                    raise BuildFailed(
+                        f"documentation analysis database is corrupt: {database}"
+                    )
+                rows = connection.execute(
+                    "SELECT name, source_url FROM modules"
+                ).fetchall()
+                schema_binding = ProjectDocumentationBuilder._database_schema_binding(
+                    connection
+                )
+        except sqlite3.Error as exc:
+            raise BuildFailed(
+                f"cannot validate documentation analysis database: {exc}"
+            ) from exc
+        actual = {str(row[0]) for row in rows}
+        if actual != set(modules) or len(rows) != len(modules):
+            raise BuildFailed("documentation analysis database module mismatch")
+        if any(row[1] not in {None, ""} for row in rows):
+            raise BuildFailed(
+                "documentation analysis checkpoint contains rendered source URLs"
+            )
+        return schema_binding
+
+    @staticmethod
+    def _database_schema_binding(connection: sqlite3.Connection) -> dict[str, object]:
+        """Bind a checkpoint to doc-gen's real SQLite schema contract."""
+
+        try:
+            schema_rows = connection.execute(
+                "SELECT type, name, tbl_name, sql FROM sqlite_schema "
+                "WHERE name NOT LIKE 'sqlite_%' ORDER BY type, name, tbl_name"
+            ).fetchall()
+            table_names = {str(row[1]) for row in schema_rows if str(row[0]) == "table"}
+            missing = sorted(_ANALYZER_REQUIRED_TABLES - table_names)
+            if missing:
+                raise BuildFailed(
+                    "documentation analysis database schema is incomplete: "
+                    + ", ".join(missing)
+                )
+            meta_rows = connection.execute(
+                "SELECT key, value FROM schema_meta ORDER BY key"
+            ).fetchall()
+        except sqlite3.Error as exc:
+            raise BuildFailed(
+                f"cannot inspect documentation analysis schema: {exc}"
+            ) from exc
+        schema_meta = {str(key): str(value) for key, value in meta_rows}
+        if (
+            len(schema_meta) != len(meta_rows)
+            or not _ANALYZER_SCHEMA_META_KEYS.issubset(schema_meta)
+            or any(not schema_meta[key] for key in _ANALYZER_SCHEMA_META_KEYS)
+        ):
+            raise BuildFailed(
+                "documentation analysis database has invalid schema metadata"
+            )
+        serialized = json.dumps(
+            [
+                [str(value) if value is not None else None for value in row]
+                for row in schema_rows
+            ],
+            ensure_ascii=True,
+            separators=(",", ":"),
+        ).encode()
+        return {
+            "schema_version": 1,
+            "sqlite_schema_sha256": hashlib.sha256(serialized).hexdigest(),
+            "schema_meta": schema_meta,
+            "required_tables": sorted(_ANALYZER_REQUIRED_TABLES),
+        }
+
+    @staticmethod
+    def _backup_analysis_database(source: Path, destination: Path) -> None:
+        """Create a standalone SQLite snapshot, folding in any WAL content."""
+
+        if source.is_symlink() or not source.is_file() or destination.exists():
+            raise BuildFailed(f"documentation analysis database is unsafe: {source}")
+        try:
+            with sqlite3.connect(
+                source.resolve().as_uri() + "?mode=ro", uri=True
+            ) as source_connection:
+                with sqlite3.connect(destination) as destination_connection:
+                    source_connection.backup(destination_connection)
+                    journal_mode = destination_connection.execute(
+                        "PRAGMA journal_mode=DELETE"
+                    ).fetchone()
+                    if journal_mode != ("delete",):
+                        raise BuildFailed(
+                            "cannot make documentation analysis snapshot standalone"
+                        )
+        except sqlite3.Error as exc:
+            raise BuildFailed(
+                f"cannot snapshot documentation analysis database: {exc}"
+            ) from exc
+
     @staticmethod
     def _source_uri(
         project_root: Path, source: Path, repository: str, revision: str
@@ -660,6 +1570,12 @@ class ProjectDocumentationBuilder:
         roots: tuple[str, ...],
         modules: tuple[str, ...],
         mode: str,
+        *,
+        project_root: Path,
+        module_sources: tuple[tuple[str, Path], ...],
+        module_owners: dict[str, frozenset[str]],
+        repository: str,
+        revision: str,
     ) -> ProjectDocsResult | None:
         marker = target / "project-docs.json"
         try:
@@ -672,65 +1588,316 @@ class ProjectDocumentationBuilder:
             cls._validate_tree(target)
         except BuildFailed:
             return None
-        if cached_identity != identity:
-            return None
+        if cached_identity == identity:
+            try:
+                cls._close_documentation_links(
+                    target / "doc",
+                    project_root=project_root,
+                    module_sources=module_sources,
+                    module_owners=module_owners,
+                    repository=repository,
+                    revision=revision,
+                    allow_writes=False,
+                )
+            except BuildFailed:
+                return None
+        else:
+            legacy_identity = dict(identity)
+            legacy_identity.pop("link_policy", None)
+            if cached_identity != legacy_identity:
+                return None
+            if not cls._migrate_cached_links(
+                target,
+                identity,
+                modules,
+                project_root=project_root,
+                module_sources=module_sources,
+                module_owners=module_owners,
+                repository=repository,
+                revision=revision,
+            ):
+                return None
+            pages = cls._expected_pages(target, modules)
         stubs = sum(
             1 for path in (target / "doc").rglob("*.html") if cls._is_stub(path)
         )
         return ProjectDocsResult(target, mode, roots, pages, stubs, True)
 
     @classmethod
-    def _close_documentation_links(cls, doc_root: Path) -> int:
+    def _migrate_cached_links(
+        cls,
+        target: Path,
+        identity: dict[str, object],
+        modules: tuple[str, ...],
+        *,
+        project_root: Path,
+        module_sources: tuple[tuple[str, Path], ...],
+        module_owners: dict[str, frozenset[str]],
+        repository: str,
+        revision: str,
+    ) -> bool:
+        """Upgrade a pre-link-policy cache through an isolated atomic copy."""
+
+        stage = Path(
+            tempfile.mkdtemp(prefix=f".{target.name}.migration-", dir=target.parent)
+        )
+        stage.rmdir()
+        backup = target.parent / f".{target.name}.backup-{uuid.uuid4().hex}"
+        try:
+            shutil.copytree(target, stage, symlinks=True)
+            cls._close_documentation_links(
+                stage / "doc",
+                project_root=project_root,
+                module_sources=module_sources,
+                module_owners=module_owners,
+                repository=repository,
+                revision=revision,
+            )
+            (stage / "project-docs.json").write_text(
+                json.dumps(identity, ensure_ascii=True, sort_keys=True, indent=2)
+                + "\n",
+                encoding="utf-8",
+            )
+            cls._validate_pages(cls._expected_pages(stage, modules))
+            cls._validate_tree(stage)
+            os.replace(target, backup)
+            try:
+                os.replace(stage, target)
+            except OSError:
+                if not target.exists():
+                    os.replace(backup, target)
+                raise
+            cls._remove_path(backup)
+        except (BuildFailed, OSError, shutil.Error):
+            return False
+        finally:
+            if stage.exists():
+                cls._remove_path(stage)
+            if backup.exists() and target.exists():
+                cls._remove_path(backup)
+        return True
+
+    @classmethod
+    def _close_documentation_links(
+        cls,
+        doc_root: Path,
+        *,
+        project_root: Path,
+        module_sources: tuple[tuple[str, Path], ...],
+        module_owners: dict[str, frozenset[str]],
+        repository: str,
+        revision: str,
+        allow_writes: bool = True,
+    ) -> int:
+        """Close internal links and pin recognized project source links.
+
+        A local ``.lean`` reference is rewritten only when its path has a
+        unique suffix match in the reachable source set.  If multiple books
+        contain the same suffix, the source module of the referring page may
+        disambiguate it only through the exact selected-root ownership graph.
+        Everything else remains a missing non-HTML asset and fails closed.
+        """
+
         if not (doc_root / "index.html").is_file():
             raise BuildFailed("documentation output has no index.html")
+        stylesheet = doc_root / "style.css"
+        if (
+            stylesheet.is_symlink()
+            or not stylesheet.is_file()
+            or stylesheet.stat().st_size == 0
+        ):
+            raise BuildFailed("documentation output has no safe style.css")
         missing_assets: list[str] = []
         stubs: set[Path] = set()
         for document in sorted(doc_root.rglob("*.html")):
-            parser = _LinkParser()
-            parser.feed(document.read_text(encoding="utf-8", errors="replace"))
+            content = document.read_text(encoding="utf-8", errors="replace")
+            parser = _LinkParser(content)
+            parser.feed(content)
             document_url = (
                 "https://docs.invalid/" + document.relative_to(doc_root).as_posix()
             )
             base_url = urljoin(document_url, parser.base_href or "")
-            for value in parser.references:
-                reference = value.strip()
-                if not reference or reference.startswith(
-                    ("#", "data:", "javascript:", "mailto:")
-                ):
+            edits: list[tuple[int, int, str]] = []
+            for item in parser.references:
+                reference = item.value.strip()
+                if not reference or reference.startswith("#"):
                     continue
-                resolved = urlsplit(urljoin(base_url, reference))
-                if resolved.netloc != "docs.invalid":
-                    continue
-                relative_text = unquote(resolved.path).lstrip("/")
+                try:
+                    raw_url = urlsplit(reference)
+                except ValueError as exc:
+                    raise BuildFailed(
+                        f"documentation link has an invalid URL: {reference!r}"
+                    ) from exc
+                scheme = raw_url.scheme.lower()
+                if scheme:
+                    if scheme in {"http", "https"} and raw_url.netloc:
+                        continue
+                    if scheme in {"data", "mailto"}:
+                        continue
+                    raise BuildFailed(
+                        f"documentation link uses an unsafe scheme: {reference!r}"
+                    )
+                if raw_url.netloc:
+                    raise BuildFailed(
+                        "documentation link uses a protocol-relative URL: "
+                        f"{reference!r}"
+                    )
+                decoded_reference = unquote(reference)
                 if (
-                    not relative_text
-                    or "\\" in relative_text
-                    or "\x00" in relative_text
+                    "\\" in decoded_reference
+                    or "\x00" in decoded_reference
+                    or _WINDOWS_ABSOLUTE_RE.match(decoded_reference)
                 ):
+                    raise BuildFailed(
+                        f"documentation link has an unsafe path: {reference!r}"
+                    )
+                resolved = urlsplit(urljoin(base_url, reference))
+                if resolved.scheme != "https" or resolved.netloc != "docs.invalid":
+                    raise BuildFailed(
+                        f"documentation link escapes its synthetic origin: {reference!r}"
+                    )
+                relative_text = unquote(resolved.path).lstrip("/")
+                if not relative_text:
                     continue
+                if "\\" in relative_text or "\x00" in relative_text:
+                    raise BuildFailed(
+                        f"documentation link has an unsafe path: {reference!r}"
+                    )
                 relative = Path(relative_text)
                 if any(part in {"", ".", ".."} for part in relative.parts):
-                    raise BuildFailed(f"documentation link has an unsafe path: {value}")
+                    raise BuildFailed(
+                        f"documentation link has an unsafe path: {reference}"
+                    )
                 target = (doc_root / relative).resolve(strict=False)
                 if doc_root not in target.parents:
-                    raise BuildFailed(f"documentation link escapes its root: {value}")
+                    raise BuildFailed(
+                        f"documentation link escapes its root: {reference}"
+                    )
                 if resolved.path.endswith("/") or target.is_dir():
                     target /= "index.html"
                 if target.is_file():
                     continue
-                if target.suffix.lower() in {".html", ".htm"}:
-                    cls._write_stub(doc_root, target)
-                    stubs.add(target)
+                immutable = cls._immutable_project_source_link(
+                    document,
+                    doc_root,
+                    resolved.path,
+                    resolved.query,
+                    resolved.fragment,
+                    project_root=project_root,
+                    module_sources=module_sources,
+                    module_owners=module_owners,
+                    repository=repository,
+                    revision=revision,
+                )
+                if immutable is not None:
+                    if allow_writes:
+                        edits.append((item.start, item.end, immutable))
+                        continue
+                    missing_assets.append(
+                        f"{document.relative_to(doc_root)} -> {reference} "
+                        "(source link is not normalized)"
+                    )
+                elif target.suffix.lower() in {".html", ".htm"}:
+                    if allow_writes:
+                        cls._write_stub(doc_root, target)
+                        stubs.add(target)
+                    else:
+                        missing_assets.append(
+                            f"{document.relative_to(doc_root)} -> {reference}"
+                        )
                 else:
                     missing_assets.append(
-                        f"{document.relative_to(doc_root)} -> {value}"
+                        f"{document.relative_to(doc_root)} -> {reference}"
                     )
+            if edits:
+                for start, end, replacement in sorted(edits, reverse=True):
+                    content = content[:start] + replacement + content[end:]
+                document.write_text(content, encoding="utf-8")
         if missing_assets:
             raise BuildFailed(
                 "documentation output references missing assets: "
                 + "; ".join(missing_assets[:20])
             )
+        if allow_writes:
+            cls._close_documentation_links(
+                doc_root,
+                project_root=project_root,
+                module_sources=module_sources,
+                module_owners=module_owners,
+                repository=repository,
+                revision=revision,
+                allow_writes=False,
+            )
         return len(stubs)
+
+    @classmethod
+    def _immutable_project_source_link(
+        cls,
+        document: Path,
+        doc_root: Path,
+        resolved_path: str,
+        query: str,
+        fragment: str,
+        *,
+        project_root: Path,
+        module_sources: tuple[tuple[str, Path], ...],
+        module_owners: dict[str, frozenset[str]],
+        repository: str,
+        revision: str,
+    ) -> str | None:
+        if not repository or not revision or query:
+            return None
+        decoded = unquote(resolved_path)
+        parts = tuple(part for part in decoded.split("/") if part not in {"", "."})
+        if (
+            len(parts) < 2
+            or any(part == ".." for part in parts)
+            or not parts[-1].lower().endswith(".lean")
+        ):
+            return None
+        document_module = ".".join(document.relative_to(doc_root).with_suffix("").parts)
+        referring_source = dict(module_sources).get(document_module)
+        if referring_source is None:
+            return None
+        try:
+            referring_text = referring_source.read_text(
+                encoding="utf-8", errors="replace"
+            )
+        except OSError:
+            return None
+        # The rendered path must come from the current immutable source, not
+        # merely resemble one of its filenames. This also exposes stale olean
+        # caches whose docstrings no longer match the checked-out source.
+        if decoded not in referring_text:
+            return None
+
+        scored: list[tuple[int, str, Path]] = []
+        for module, source in module_sources:
+            current = source.relative_to(project_root).parts
+            score = 0
+            for old_part, current_part in zip(reversed(parts), reversed(current)):
+                if old_part != current_part:
+                    break
+                score += 1
+            if score >= 2:
+                scored.append((score, module, source))
+        if not scored:
+            return None
+        best_score = max(score for score, _module, _source in scored)
+        candidates = [item for item in scored if item[0] == best_score]
+        if len(candidates) != 1:
+            document_owners = module_owners.get(document_module, frozenset())
+            candidates = [
+                item
+                for item in candidates
+                if document_owners.intersection(module_owners.get(item[1], frozenset()))
+            ]
+        if len(candidates) != 1:
+            return None
+        result = cls._source_uri(project_root, candidates[0][2], repository, revision)
+        if fragment:
+            result += "#" + quote(unquote(fragment), safe="-._~:")
+        return result
 
     @staticmethod
     def _write_stub(doc_root: Path, path: Path) -> None:
