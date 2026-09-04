@@ -5,6 +5,10 @@ paper source contributions. Changes to the cross-version catalog, SDKs,
 release pipeline, or website belong on `main` and follow a separate maintainer
 workflow.
 
+When using a coding agent, follow the [ReasBook contributing skill](CONTRIBUTING/SKILL.md)
+as an execution checklist. It mirrors the branch, metadata, validation, and
+pull-request rules below without replacing this human-facing guide.
+
 ## Understand the branch model
 
 ReasBook keeps mathematical source on version branches so each project is
@@ -171,9 +175,9 @@ Use this PR body and remove fields that do not apply:
 
 GitHub workflow coverage differs between version branches, so do not assume a
 PR job has started merely because the PR is open. Any required status checks
-shown by GitHub must pass. Maintainers use the incremental build SDK and
-SiFlow for the authoritative full build; contributors should not generate or
-commit repository-wide caches.
+shown by GitHub must pass. Maintainers use the incremental build SDK and the
+configured remote build service for the authoritative full build; contributors
+should not generate or commit repository-wide caches.
 
 ## Pre-submission checklist
 
@@ -189,5 +193,6 @@ commit repository-wide caches.
 
 Respond to review and required checks without rebasing onto a different
 toolchain branch. After merge, maintainers pin the version-branch commit in a
-future `ReleaseSpec`, build and verify it on SiFlow, and publish an immutable
-static bundle. Merging a source PR does not itself rebuild GitHub Pages.
+future `ReleaseSpec`, build and verify it with the configured remote build
+service, and publish an immutable static bundle. Merging a source PR does not
+itself rebuild GitHub Pages.

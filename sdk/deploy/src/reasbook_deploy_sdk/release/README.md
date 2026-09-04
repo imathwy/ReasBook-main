@@ -12,7 +12,7 @@ profile + canonical map + Git refs
                  v
           immutable ReleaseSpec
                  |
-       SiFlow build + aggregate
+       remote build + aggregate
                  |
           verified full site
              /         \
@@ -63,8 +63,8 @@ Resolve moving refs before submitting remote work:
   --profile github-pages --fetch
 ```
 
-Production project builds and branch finalizers run through the private SiFlow
-operations layer. The aggregate result is copied into the release's `site/`
+Production project builds and branch finalizers run through the configured
+remote build service. The aggregate result is copied into the release's `site/`
 directory and marked validated. GitHub Actions never receives Lean caches or
 build credentials.
 
@@ -93,7 +93,7 @@ for a full public build:
 
 A non-dry-run invocation without `--only` fails before planning. The escape
 hatch `--allow-local-all-active-build` makes an intentional local all-active
-run possible, but production multi-version work should remain on the SiFlow
+run possible, but production multi-version work should remain on the remote
 build/finalize path.
 
 ## Local preview

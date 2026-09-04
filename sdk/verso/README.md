@@ -4,6 +4,11 @@
 It contains no platform integration, so the same package can be used locally,
 from CI, or as a stage inside an external build service.
 
+The site generator itself is the upstream
+[Lean Verso project](https://github.com/leanprover/verso). This package provides
+the transport-neutral planning, execution, and cache boundaries around it; it
+does not replace or fork the upstream generator.
+
 The generic site pipeline has two optional stages:
 
 1. run a caller-supplied generator (for example, section/route generation);
@@ -62,7 +67,7 @@ toolchain claims against local files, then rechecks source/module digests
 before every progress checkpoint and final completion.
 `REASBOOK_LITERATE_ADOPT_EXISTING=1` is
 reserved for an orchestrator that has independently locked and verified the
-exact immutable cache key; the ReasBook SiFlow finalizer provides that gate.
+exact immutable cache key; the release orchestrator provides that gate.
 It applies only when neither completion nor progress state has ever existed,
 so stale or corrupt state can never be relabeled as a new identity.
 

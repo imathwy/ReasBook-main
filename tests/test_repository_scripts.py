@@ -164,6 +164,18 @@ class RepositoryScriptTests(unittest.TestCase):
         self.assertIn("尚未发布 Verso", chinese_resource)
         self.assertNotIn("TBD", chinese_resource)
 
+    def test_public_readmes_keep_build_details_out_of_homepage(self) -> None:
+        english = (ROOT / "README.md").read_text(encoding="utf-8")
+        chinese = (ROOT / "README.zh-CN.md").read_text(encoding="utf-8")
+        self.assertNotIn("\n## Build\n", english)
+        self.assertNotIn("\n## 构建\n", chinese)
+        self.assertNotIn("SiFlow", english)
+        self.assertNotIn("SiFlow", chinese)
+        self.assertIn("https://github.com/leanprover/verso", english)
+        self.assertIn("https://github.com/leanprover/comparator", english)
+        self.assertIn("https://github.com/leanprover/verso", chinese)
+        self.assertIn("https://github.com/leanprover/comparator", chinese)
+
     def test_verso_build_validates_literate_cache_before_prebuilt_mode(self) -> None:
         script = (ROOT / "scripts" / "build" / "verso.sh").read_text(
             encoding="utf-8"
