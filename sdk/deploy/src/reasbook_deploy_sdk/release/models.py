@@ -141,9 +141,7 @@ class GitHubPublishProfile:
         if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", prefix):
             raise DeployConfigError("publish.release_tag_prefix is unsafe")
         workflow = _text(self.workflow, field="publish.workflow")
-        if not re.fullmatch(
-            r"[A-Za-z0-9][A-Za-z0-9_.-]*\.(?:yml|yaml)", workflow
-        ):
+        if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]*\.(?:yml|yaml)", workflow):
             raise DeployConfigError(
                 "publish.workflow must be a plain YAML workflow file name"
             )
@@ -166,6 +164,7 @@ class ReleaseArtifactPolicy:
     dependency_docs: str
     max_site_files: int
     max_site_bytes: int
+    max_archive_members: int
     max_bundle_bytes: int
 
     def __post_init__(self) -> None:
@@ -182,6 +181,7 @@ class ReleaseArtifactPolicy:
         for field_name, value in (
             ("max_site_files", self.max_site_files),
             ("max_site_bytes", self.max_site_bytes),
+            ("max_archive_members", self.max_archive_members),
             ("max_bundle_bytes", self.max_bundle_bytes),
         ):
             if isinstance(value, bool) or not isinstance(value, int) or value < 1:
@@ -195,6 +195,7 @@ class ReleaseArtifactPolicy:
             "dependency_docs": self.dependency_docs,
             "max_site_files": self.max_site_files,
             "max_site_bytes": self.max_site_bytes,
+            "max_archive_members": self.max_archive_members,
             "max_bundle_bytes": self.max_bundle_bytes,
         }
 
@@ -209,6 +210,7 @@ def default_artifact_policies() -> tuple[ReleaseArtifactPolicy, ...]:
             dependency_docs="stubs",
             max_site_files=500_000,
             max_site_bytes=100_000_000_000,
+            max_archive_members=1_501_024,
             max_bundle_bytes=20_000_000_000,
         ),
         ReleaseArtifactPolicy(
@@ -217,6 +219,7 @@ def default_artifact_policies() -> tuple[ReleaseArtifactPolicy, ...]:
             dependency_docs="stubs",
             max_site_files=60_000,
             max_site_bytes=850_000_000,
+            max_archive_members=180_000,
             max_bundle_bytes=950_000_000,
         ),
     )

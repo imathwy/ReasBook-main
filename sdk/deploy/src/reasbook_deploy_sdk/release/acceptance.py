@@ -29,8 +29,14 @@ import uuid
 from reasbook_sdk_common import atomic_write_json
 
 from ..errors import DeployConfigError, DeployExecutionError
+from .artifacts import artifact_policy_digest
 from .bundle import BundleVerifier, normalize_sha256
-from .models import ProjectSpec, ReleaseSpec
+from .models import (
+    ProjectSpec,
+    ReleaseArtifactPolicy,
+    ReleaseSpec,
+    default_artifact_policies,
+)
 from .results import (
     BundleInfo,
     ReleaseManifest,
@@ -47,6 +53,7 @@ from .tooling import (
 
 
 _BROWSER_MODES = {"auto", "required", "skip"}
+_PRODUCTION_ROUTING_MODE = "strict"
 
 
 @dataclass(frozen=True)
@@ -70,7 +77,7 @@ class ReleaseAcceptanceRunner:
         spec: ReleaseSpec,
         *,
         expected_artifact_policy_sha256: str,
-        verifier: BundleVerifier | None = None,
+        artifact_policies: tuple[ReleaseArtifactPolicy, ...] | None = None,
     ) -> None:
         self.repo_root = Path(repo_root).expanduser().resolve()
         self.layout = layout
@@ -78,7 +85,19 @@ class ReleaseAcceptanceRunner:
         expected = normalize_sha256(expected_artifact_policy_sha256)
         assert expected is not None
         self.expected_policy = expected
-        self.verifier = verifier or BundleVerifier()
+        policies = artifact_policies or default_artifact_policies()
+        if normalize_sha256(artifact_policy_digest(policies)) != expected:
+            raise DeployConfigError(
+                "acceptance artifact policies do not match the expected digest"
+            )
+        by_name = {policy.name: policy for policy in policies}
+        if set(by_name) != {"full", "pages"} or len(by_name) != len(policies):
+            raise DeployConfigError(
+                "acceptance requires exactly the full and pages artifact policies"
+            )
+        self.verifiers = {
+            name: BundleVerifier.for_policy(policy) for name, policy in by_name.items()
+        }
         self.preview_script = self.repo_root / "scripts" / "preview" / "serve.py"
         if not self.preview_script.is_file():
             raise DeployConfigError(
@@ -118,12 +137,12 @@ class ReleaseAcceptanceRunner:
         try:
             package, release_set = self._load_package()
             pages_site = scratch / "pages"
-            pages_manifest = self.verifier.verify(
+            pages_manifest = self.verifiers["pages"].verify(
                 Path(package.pages.bundle),
                 expected_sha256=package.pages.bundle_sha256,
                 extract_to=pages_site,
             )
-            full_manifest = self.verifier.inspect(
+            full_manifest = self.verifiers["full"].inspect(
                 Path(package.full.bundle),
                 expected_sha256=package.full.bundle_sha256,
             )
@@ -144,7 +163,7 @@ class ReleaseAcceptanceRunner:
 
             deployment = SelfHostedInstaller(
                 scratch / "self-hosted",
-                verifier=self.verifier,
+                verifier=self.verifiers["full"],
             ).install(
                 Path(package.full.bundle),
                 release_set=self.layout.release_set,
@@ -174,9 +193,7 @@ class ReleaseAcceptanceRunner:
                     )
                 artifacts[name] = {
                     "bundle": str(
-                        package.pages.bundle
-                        if name == "pages"
-                        else package.full.bundle
+                        package.pages.bundle if name == "pages" else package.full.bundle
                     ),
                     "bundle_sha256": (
                         package.pages.bundle_sha256
@@ -188,6 +205,7 @@ class ReleaseAcceptanceRunner:
                     "total_bytes": manifest.total_bytes,
                     "http": http,
                     "browser": browser,
+                    "routing_mode": _PRODUCTION_ROUTING_MODE,
                 }
 
             metadata = self._metadata_evidence(
@@ -255,7 +273,10 @@ class ReleaseAcceptanceRunner:
         """Bind every portable metadata file to the bytes acceptance checked."""
 
         release_set_path = self.layout.release_set.resolve(strict=False)
-        if self.layout.release_set.is_symlink() or not self.layout.release_set.is_file():
+        if (
+            self.layout.release_set.is_symlink()
+            or not self.layout.release_set.is_file()
+        ):
             raise DeployExecutionError("ReleaseSet is not a regular file")
         try:
             release_set_bytes = release_set_path.read_bytes()
@@ -278,12 +299,10 @@ class ReleaseAcceptanceRunner:
                 ("checksums", checksums_path),
             ):
                 if path.is_symlink() or not path.is_file():
-                    raise DeployExecutionError(
-                        f"{name} {label} is not a regular file"
-                    )
+                    raise DeployExecutionError(f"{name} {label} is not a regular file")
 
             external_manifest = manifest_path.read_bytes()
-            embedded_manifest = self.verifier.release_manifest_bytes(
+            embedded_manifest = self.verifiers[name].release_manifest_bytes(
                 bundle_path,
                 expected_sha256=bundle.bundle_sha256,
             )
@@ -306,8 +325,8 @@ class ReleaseAcceptanceRunner:
 
             expected_digest = normalize_sha256(bundle.bundle_sha256)
             assert expected_digest is not None
-            expected_checksums = (
-                f"{expected_digest}  {bundle_path.name}\n".encode("utf-8")
+            expected_checksums = f"{expected_digest}  {bundle_path.name}\n".encode(
+                "utf-8"
             )
             checksums = checksums_path.read_bytes()
             if checksums != expected_checksums:
@@ -320,9 +339,7 @@ class ReleaseAcceptanceRunner:
                     "sha256:" + hashlib.sha256(external_manifest).hexdigest()
                 ),
                 "checksums": str(checksums_path),
-                "checksums_sha256": (
-                    "sha256:" + hashlib.sha256(checksums).hexdigest()
-                ),
+                "checksums_sha256": ("sha256:" + hashlib.sha256(checksums).hexdigest()),
             }
 
         return {
@@ -385,9 +402,7 @@ class ReleaseAcceptanceRunner:
                 if index.is_file() and not index.is_symlink():
                     add_required_directory(kind, relative)
                     return
-            rendered = ", ".join(
-                f"{relative.as_posix()}/" for relative in candidates
-            )
+            rendered = ", ".join(f"{relative.as_posix()}/" for relative in candidates)
             raise DeployExecutionError(
                 f"{kind} route has no regular index in: {rendered}"
             )
@@ -453,9 +468,7 @@ class ReleaseAcceptanceRunner:
                         ),
                     )
                 if "docs" in project.outputs:
-                    kind_title = (
-                        "Books" if project.kind == "books" else "Papers"
-                    )
+                    kind_title = "Books" if project.kind == "books" else "Papers"
                     leaf = "Book.html" if project.kind == "books" else "Paper.html"
                     add_first_file(
                         "version-docs",
@@ -487,10 +500,7 @@ class ReleaseAcceptanceRunner:
                 if "theorem_graph" in project.outputs:
                     add_required_directory(
                         "version-theorem-map",
-                        version_root
-                        / "theorem-maps"
-                        / project.kind
-                        / project.slug,
+                        version_root / "theorem-maps" / project.kind / project.slug,
                     )
         return tuple(routes)
 
@@ -541,8 +551,7 @@ class ReleaseAcceptanceRunner:
                 continue
             targets = node.targets if isinstance(node, ast.Assign) else [node.target]
             if any(
-                isinstance(target, ast.Name)
-                and target.id == "NO_VERSO_PROJECTS"
+                isinstance(target, ast.Name) and target.id == "NO_VERSO_PROJECTS"
                 for target in targets
             ):
                 try:
@@ -645,9 +654,9 @@ class ReleaseAcceptanceRunner:
                 raise DeployExecutionError(
                     f"root-mounted preview returned HTTP {exc.code}"
                 ) from exc
-            if exc.code not in {301, 302, 307, 308}:
+            if exc.code != 308:
                 raise DeployExecutionError(
-                    f"preview root returned HTTP {exc.code}"
+                    f"preview root returned HTTP {exc.code}, expected 308"
                 ) from exc
             location = exc.headers.get("Location")
             if location != self.spec.base_path:
@@ -665,12 +674,42 @@ class ReleaseAcceptanceRunner:
                     raise DeployExecutionError(
                         "root-mounted preview did not serve the site at /"
                     )
+        base_path_redirect_status = None
+        if self.spec.base_path != "/":
+            path_without_slash = self.spec.base_path.rstrip("/")
+            try:
+                response = opener.open(
+                    Request(
+                        origin + path_without_slash,
+                        headers={"User-Agent": "ReasBook-E2E/1"},
+                    ),
+                    timeout=10.0,
+                )
+            except HTTPError as exc:
+                if exc.code != 308:
+                    raise DeployExecutionError(
+                        "preview base path without a trailing slash returned "
+                        f"HTTP {exc.code}, expected 308"
+                    ) from exc
+                location = exc.headers.get("Location")
+                if location != self.spec.base_path:
+                    raise DeployExecutionError(
+                        "preview base path without a trailing slash redirects "
+                        f"to {location!r}, expected {self.spec.base_path!r}"
+                    )
+                base_path_redirect_status = exc.code
+            else:
+                response.close()
+                raise DeployExecutionError(
+                    "preview base path without a trailing slash did not redirect"
+                )
         return {
             "status": "passed",
             "route_count": len(checked),
             "routes": checked,
             "release_spec": spec_path,
             "missing_route_status": 404,
+            "base_path_redirect_status": base_path_redirect_status,
         }
 
     def _browser_smoke(
@@ -783,9 +822,7 @@ class ReleaseAcceptanceRunner:
                             if (
                                 final_url.scheme != origin_parts.scheme
                                 or final_url.netloc != origin_parts.netloc
-                                or not final_url.path.startswith(
-                                    self.spec.base_path
-                                )
+                                or not final_url.path.startswith(self.spec.base_path)
                             ):
                                 raise DeployExecutionError(
                                     "browser navigation escaped the site at "
@@ -814,17 +851,14 @@ class ReleaseAcceptanceRunner:
                                     )
                                 page.screenshot(
                                     path=str(
-                                        screenshots
-                                        / f"{name}-{screenshot_suffix}.png"
+                                        screenshots / f"{name}-{screenshot_suffix}.png"
                                     ),
                                     full_page=True,
                                 )
                             checked.append(route.path)
                         checked_by_viewport[viewport_name] = checked
 
-                    page = browser.new_page(
-                        viewport={"width": 1440, "height": 1000}
-                    )
+                    page = browser.new_page(viewport={"width": 1440, "height": 1000})
                     exercise_viewport(
                         page,
                         viewport_name="1440x1000",
@@ -848,12 +882,7 @@ class ReleaseAcceptanceRunner:
 
         if console_errors or page_errors or failed_responses or failed_requests:
             details = "; ".join(
-                (
-                    console_errors
-                    + page_errors
-                    + failed_responses
-                    + failed_requests
-                )[:20]
+                (console_errors + page_errors + failed_responses + failed_requests)[:20]
             )
             raise DeployExecutionError(
                 "browser reported console, page, or request errors: " + details
@@ -892,6 +921,10 @@ class ReleaseAcceptanceRunner:
                     "127.0.0.1",
                     "--site-root",
                     self.spec.base_path,
+                    "--public-prefix",
+                    "",
+                    "--routing-mode",
+                    _PRODUCTION_ROUTING_MODE,
                     "--ready-file",
                     str(ready_file),
                 ),

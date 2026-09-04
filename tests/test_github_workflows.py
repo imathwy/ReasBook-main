@@ -43,7 +43,7 @@ class GitHubWorkflowPolicyTests(unittest.TestCase):
             text,
         )
         self.assertIn('source.get("tooling_revision")', text)
-        self.assertIn(r'\+tooling-sha256:[0-9a-f]{64}', text)
+        self.assertIn(r"\+tooling-sha256:[0-9a-f]{64}", text)
         self.assertIn(
             "GitHub publication requires a clean commit-derived tooling revision",
             text,
@@ -72,9 +72,11 @@ class GitHubWorkflowPolicyTests(unittest.TestCase):
             text.index("Download immutable release assets"),
             text.index("Verify immutable Release and downloaded asset attestations"),
         )
-        self.assertIn("--max-site-files 60000", text)
-        self.assertIn("--max-site-bytes 850000000", text)
-        self.assertIn("--max-archive-members 180000", text)
+        self.assertIn("--profile github-pages", text)
+        self.assertIn("--artifact-policy pages", text)
+        self.assertNotIn("--max-site-files", text)
+        self.assertNotIn("--max-site-bytes", text)
+        self.assertNotIn("--max-archive-members", text)
         self.assertIn('stat -c %s ".release/$BUNDLE_ASSET"', text)
         self.assertIn("policy-digest --profile github-pages", text)
         self.assertIn('export TRUSTED_POLICY_SHA256="$trusted_policy"', text)

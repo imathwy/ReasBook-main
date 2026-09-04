@@ -8,6 +8,7 @@ import sys
 import tempfile
 from threading import Thread
 import unittest
+from urllib.error import HTTPError
 from urllib.request import urlopen
 
 
@@ -27,20 +28,21 @@ def running_server(
     public_prefix: str,
     *,
     site_root: str = "/ReasBook/",
+    routing_mode: str = "compat",
 ):
     old_values = (
         preview.BOOK_SITE,
         preview.DOCS_SITE,
         preview.SITE_ROOT,
         preview.PUBLIC_PREFIX,
+        preview.ROUTING_MODE,
     )
     preview.BOOK_SITE = str(site)
     preview.DOCS_SITE = str(site / "docs")
     preview.SITE_ROOT = site_root
     preview.PUBLIC_PREFIX = preview._normalize_public_prefix(public_prefix)
-    server = preview.ThreadingHTTPServer(
-        ("127.0.0.1", 0), preview.ReasBookHandler
-    )
+    preview.ROUTING_MODE = routing_mode
+    server = preview.ThreadingHTTPServer(("127.0.0.1", 0), preview.ReasBookHandler)
     thread = Thread(target=server.serve_forever, daemon=True)
     thread.start()
     try:
@@ -54,6 +56,7 @@ def running_server(
             preview.DOCS_SITE,
             preview.SITE_ROOT,
             preview.PUBLIC_PREFIX,
+            preview.ROUTING_MODE,
         ) = old_values
 
 
@@ -100,16 +103,12 @@ class PreviewServerTests(unittest.TestCase):
                 )
                 connection.request("HEAD", "/")
                 head = connection.getresponse()
-                self.assertEqual(head.status, 301)
-                self.assertEqual(
-                    head.getheader("Location"), prefix + "/ReasBook/"
-                )
+                self.assertEqual(head.status, 308)
+                self.assertEqual(head.getheader("Location"), prefix + "/ReasBook/")
                 connection.close()
 
                 with urlopen(origin + "/", timeout=5) as response:
-                    self.assertEqual(
-                        response.geturl(), origin + prefix + "/ReasBook/"
-                    )
+                    self.assertEqual(response.geturl(), origin + prefix + "/ReasBook/")
                     body = response.read().decode()
                 self.assertIn(prefix + "/ReasBook/papers/demo/", body)
                 self.assertIn(prefix + "/ReasBook/static/app.js", body)
@@ -120,6 +119,111 @@ class PreviewServerTests(unittest.TestCase):
                 ) as response:
                     script = response.read().decode()
                 self.assertIn(prefix + "/ReasBook/", script)
+
+    def test_project_root_without_trailing_slash_redirects_permanently(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            site = Path(temp)
+            (site / "index.html").write_text("fixture", encoding="utf-8")
+
+            for prefix in ("", "/workspace/proxy/3000"):
+                with self.subTest(prefix=prefix), running_server(
+                    site,
+                    prefix,
+                    routing_mode="strict",
+                ) as origin:
+                    connection = HTTPConnection(
+                        "127.0.0.1",
+                        int(origin.rsplit(":", 1)[1]),
+                        timeout=5,
+                    )
+                    path = prefix + "/ReasBook"
+                    connection.request("GET", path)
+                    response = connection.getresponse()
+                    self.assertEqual(response.status, 308)
+                    self.assertEqual(
+                        response.getheader("Location"),
+                        prefix + "/ReasBook/",
+                    )
+                    response.read()
+                    connection.close()
+
+    def test_strict_routing_rejects_development_aliases(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            site = Path(temp)
+            fixtures = {
+                "index.html": "root",
+                "books/demo/index.html": "book",
+                "papers/demo/index.html": "paper",
+                "static/app.css": "body{}",
+                "docs/guide.html": "docs",
+            }
+            for relative, content in fixtures.items():
+                target = site / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text(content, encoding="utf-8")
+
+            prefix = "/workspace/proxy/3000"
+            with running_server(
+                site,
+                prefix,
+                routing_mode="strict",
+            ) as origin:
+                for alias in (
+                    "/books/demo/",
+                    "/papers/demo/",
+                    "/static/app.css",
+                    "/docs/guide.html",
+                    "/index.html",
+                    "/favicon.ico",
+                ):
+                    with self.subTest(alias=alias), self.assertRaises(
+                        HTTPError
+                    ) as raised:
+                        urlopen(origin + prefix + alias, timeout=5)
+                    self.assertEqual(raised.exception.code, 404)
+
+                for production_path in (
+                    "/ReasBook/books/demo/",
+                    "/ReasBook/papers/demo/",
+                    "/ReasBook/static/app.css",
+                    "/ReasBook/docs/guide.html",
+                ):
+                    with self.subTest(production_path=production_path):
+                        with urlopen(
+                            origin + prefix + production_path,
+                            timeout=5,
+                        ) as response:
+                            self.assertEqual(response.status, 200)
+
+    def test_compat_routing_keeps_development_aliases(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            site = Path(temp)
+            fixtures = {
+                "index.html": "root",
+                "books/demo/index.html": "book",
+                "papers/demo/index.html": "paper",
+                "static/app.css": "body{}",
+                "docs/guide.html": "docs",
+            }
+            for relative, content in fixtures.items():
+                target = site / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text(content, encoding="utf-8")
+
+            with running_server(site, "", routing_mode="compat") as origin:
+                for alias in (
+                    "/books/demo/",
+                    "/papers/demo/",
+                    "/static/app.css",
+                    "/docs/guide.html",
+                    "/index.html",
+                ):
+                    with self.subTest(alias=alias):
+                        with urlopen(origin + alias, timeout=5) as response:
+                            self.assertEqual(response.status, 200)
+
+                with urlopen(origin + "/favicon.ico", timeout=5) as response:
+                    self.assertEqual(response.status, 204)
 
     def test_public_prefix_rejects_urls_and_path_traversal(self) -> None:
         for value in (

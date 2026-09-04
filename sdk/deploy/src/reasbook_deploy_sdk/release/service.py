@@ -21,7 +21,7 @@ from .config import (
     load_registry,
 )
 from .github import GitHubPublication, GitHubReleasePublisher
-from .models import DeploymentProfile, ReleaseSpec
+from .models import DeploymentProfile, ReleaseArtifactPolicy, ReleaseSpec
 from .planner import ReleasePlanner
 from .promotion import require_release_acceptance
 from .results import BundleInfo, ReleaseBuildReport, ReleasePackageResult
@@ -116,11 +116,9 @@ class StaticReleaseService:
                     )
                 except DeployError:
                     existing_profile = None
-                if (
-                    existing_profile is not None
-                    and artifact_policy_digest(existing_profile.artifacts)
-                    == artifact_policy_digest(profile.artifacts)
-                ):
+                if existing_profile is not None and artifact_policy_digest(
+                    existing_profile.artifacts
+                ) == artifact_policy_digest(profile.artifacts):
                     spec = existing
                     reused_existing = True
         layout = ReleaseLayout(self.cache_root, spec.release_id)
@@ -239,16 +237,24 @@ class StaticReleaseService:
             release_bundler = bundler or ReleaseBundler(context.layout, store)
             try:
                 verified_artifacts: set[str] = set()
-                full = self._verified_cached_bundle(store, artifact="full")
+                full_policy = context.profile.artifact("full")
+                pages_policy = context.profile.artifact("pages")
+                full = self._verified_cached_bundle(
+                    store,
+                    policy=full_policy,
+                )
                 if full is None:
                     full = release_bundler.package(
                         context.spec,
                         report,
-                        policy=context.profile.artifact("full"),
+                        policy=full_policy,
                     )
                 else:
                     verified_artifacts.add("full")
-                pages = self._verified_cached_bundle(store, artifact="pages")
+                pages = self._verified_cached_bundle(
+                    store,
+                    policy=pages_policy,
+                )
                 if pages is None:
                     PagesSiteProjector().project(
                         context.spec,
@@ -258,7 +264,7 @@ class StaticReleaseService:
                     pages = release_bundler.package_pages(
                         context.spec,
                         report,
-                        policy=context.profile.artifact("pages"),
+                        policy=pages_policy,
                     )
                 else:
                     verified_artifacts.add("pages")
@@ -269,10 +275,12 @@ class StaticReleaseService:
                     context.profile.artifacts,
                     (full, pages),
                 )
-                verifier = BundleVerifier()
                 for bundle in bundles:
                     if bundle.artifact in verified_artifacts:
                         continue
+                    verifier = BundleVerifier.for_policy(
+                        context.profile.artifact(bundle.artifact)
+                    )
                     manifest = verifier.verify(
                         Path(bundle.bundle),
                         expected_sha256=bundle.bundle_sha256,
@@ -296,9 +304,10 @@ class StaticReleaseService:
     def _verified_cached_bundle(
         store: ReleaseStore,
         *,
-        artifact: str,
+        policy: ReleaseArtifactPolicy,
     ) -> BundleInfo | None:
         try:
+            artifact = policy.name
             bundle = (
                 store.load_bundle_info()
                 if artifact == "full"
@@ -306,7 +315,7 @@ class StaticReleaseService:
             )
             if bundle.artifact != artifact:
                 return None
-            manifest = BundleVerifier().verify(
+            manifest = BundleVerifier.for_policy(policy).verify(
                 Path(bundle.bundle),
                 expected_sha256=bundle.bundle_sha256,
             )
@@ -320,6 +329,7 @@ class StaticReleaseService:
         *,
         wait: bool = False,
         wait_timeout_seconds: float = 1800.0,
+        pages_health_timeout_seconds: float = 300.0,
         dry_run: bool = False,
         force: bool = False,
         publisher: GitHubReleasePublisher | None = None,
@@ -353,12 +363,16 @@ class StaticReleaseService:
                 expected_release_set_sha256=str(
                     acceptance["metadata"]["release_set_sha256"]
                 ),
+                bundle_verifier=BundleVerifier.for_policy(
+                    context.profile.artifact("pages")
+                ),
             )
             if dry_run:
                 return release_publisher.publish(
                     bundle,
                     wait=wait,
                     wait_timeout_seconds=wait_timeout_seconds,
+                    pages_health_timeout_seconds=pages_health_timeout_seconds,
                     dry_run=True,
                 )
             store.transition("uploading")
@@ -367,6 +381,7 @@ class StaticReleaseService:
                     bundle,
                     wait=wait,
                     wait_timeout_seconds=wait_timeout_seconds,
+                    pages_health_timeout_seconds=pages_health_timeout_seconds,
                     dry_run=False,
                 )
             except Exception as exc:
@@ -395,6 +410,7 @@ class StaticReleaseService:
             expected_artifact_policy_sha256=artifact_policy_digest(
                 context.profile.artifacts
             ),
+            artifact_policies=context.profile.artifacts,
         ).run(
             browser_mode=browser_mode,
             keep_workdir=keep_workdir,
@@ -418,6 +434,7 @@ class StaticReleaseService:
         *,
         wait: bool = False,
         wait_timeout_seconds: float = 1800.0,
+        pages_health_timeout_seconds: float = 300.0,
     ) -> GitHubPublication:
         """Run required acceptance and publish exactly its bound package."""
 
@@ -426,6 +443,7 @@ class StaticReleaseService:
             context,
             wait=wait,
             wait_timeout_seconds=wait_timeout_seconds,
+            pages_health_timeout_seconds=pages_health_timeout_seconds,
         )
 
     def deploy(
@@ -437,13 +455,21 @@ class StaticReleaseService:
         publish: bool = True,
         wait: bool = False,
         wait_timeout_seconds: float = 1800.0,
+        pages_health_timeout_seconds: float = 300.0,
         dry_run: bool = False,
         reuse: bool = True,
         fetch: bool = True,
+        allow_local_all_active: bool = False,
     ) -> ReleaseDeploymentResult:
+        selected = tuple(only)
+        if not selected and not dry_run and not allow_local_all_active:
+            raise DeployExecutionError(
+                "release deploy uses the local builder; select a canary with "
+                "--only or explicitly pass --allow-local-all-active-build"
+            )
         context = self.plan(
             profile_path,
-            only=only,
+            only=selected,
             reuse=reuse,
             persist=not dry_run,
             fetch=fetch and not dry_run,
@@ -457,6 +483,7 @@ class StaticReleaseService:
                 context,
                 wait=wait,
                 wait_timeout_seconds=wait_timeout_seconds,
+                pages_health_timeout_seconds=pages_health_timeout_seconds,
             )
             if publish
             else None

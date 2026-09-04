@@ -44,7 +44,11 @@ REASBOOK_SITE_DIR=/path/to/verified/site \
 
 Open the proxy URL printed by the workspace, followed by `/ReasBook/`. The
 option rewrites responses in memory; it never modifies the verified release
-tree.
+tree. Direct script use defaults to `--routing-mode compat`, which retains the
+legacy unprefixed `/books/`, `/papers/`, `/docs/`, and `/static/` aliases for
+focused development. Pass `--routing-mode strict` to reproduce the production
+base-path boundary. The release CLI and release acceptance always force strict
+routing and do not allow those aliases.
 
 Removed wrapper paths map directly to these maintained entrypoints:
 

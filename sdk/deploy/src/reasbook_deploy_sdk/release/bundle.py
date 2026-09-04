@@ -131,6 +131,7 @@ class ReleaseBundler:
             dependency_docs="stubs",
             max_site_files=spec.policy.max_site_files,
             max_site_bytes=100_000_000_000,
+            max_archive_members=1_501_024,
             max_bundle_bytes=spec.policy.max_bundle_bytes,
         )
         if effective_policy.name != "full":
@@ -242,6 +243,14 @@ class ReleaseBundler:
                 f"{policy.max_bundle_bytes} for {policy.name}"
             )
         bundle_digest = sha256_file(bundle_path)
+        verified_manifest = BundleVerifier.for_policy(policy).inspect(
+            bundle_path,
+            expected_sha256=f"sha256:{bundle_digest}",
+        )
+        if verified_manifest != manifest:
+            raise DeployExecutionError(
+                "packaged bundle manifest changed during policy verification"
+            )
         atomic_write_text(
             checksums_path,
             f"{bundle_digest}  {bundle_path.name}\n",
@@ -330,6 +339,16 @@ class BundleVerifier:
         self.max_archive_members = max_archive_members
         self.max_manifest_bytes = max_manifest_bytes
 
+    @classmethod
+    def for_policy(cls, policy: ReleaseArtifactPolicy) -> "BundleVerifier":
+        """Use the exact capacity boundary bound by an artifact policy."""
+
+        return cls(
+            max_site_files=policy.max_site_files,
+            max_site_bytes=policy.max_site_bytes,
+            max_archive_members=policy.max_archive_members,
+        )
+
     def inspect(
         self,
         bundle: Path,
@@ -362,9 +381,7 @@ class BundleVerifier:
             or spec.spec_digest != manifest.spec_digest
             or spec.base_path != manifest.base_path
         ):
-            raise DeployExecutionError(
-                "bundle manifest does not match its ReleaseSpec"
-            )
+            raise DeployExecutionError("bundle manifest does not match its ReleaseSpec")
         return manifest
 
     def release_manifest_bytes(
@@ -384,9 +401,7 @@ class BundleVerifier:
         members = self._list_archive(archive)
         self._validate_members(members)
         expected_size = next(
-            member.size
-            for member in members
-            if member.name == "release-manifest.json"
+            member.size for member in members if member.name == "release-manifest.json"
         )
         with tempfile.TemporaryDirectory(
             prefix=".reasbook-manifest-",
@@ -417,9 +432,7 @@ class BundleVerifier:
                     f"cannot extract release bundle manifest: {exc}"
                 ) from exc
             if result.returncode != 0:
-                raise DeployExecutionError(
-                    "cannot extract release bundle manifest"
-                )
+                raise DeployExecutionError("cannot extract release bundle manifest")
             manifest_path = destination / "release-manifest.json"
             if manifest_path.is_symlink() or not manifest_path.is_file():
                 raise DeployExecutionError(
@@ -598,13 +611,9 @@ class BundleVerifier:
             if member is None:
                 raise DeployExecutionError(f"bundle has no {member_name}")
             if member.kind != "-":
-                raise DeployExecutionError(
-                    f"bundle {label} is not a regular file"
-                )
+                raise DeployExecutionError(f"bundle {label} is not a regular file")
             if member.size > self.max_manifest_bytes:
-                raise DeployExecutionError(
-                    f"bundle {label} exceeds its safety limit"
-                )
+                raise DeployExecutionError(f"bundle {label} exceeds its safety limit")
         if not any(name.startswith("site/") for name in names):
             raise DeployExecutionError("bundle has no site tree")
         for member in members:
@@ -618,8 +627,7 @@ class BundleVerifier:
             if (
                 "\\" in name
                 or any(
-                    ord(character) < 32 or ord(character) == 127
-                    for character in name
+                    ord(character) < 32 or ord(character) == 127 for character in name
                 )
                 or name != canonical
                 or path.is_absolute()

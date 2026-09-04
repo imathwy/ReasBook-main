@@ -11,6 +11,8 @@ from threading import Thread
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
+from urllib.error import HTTPError
+from urllib.request import urlopen
 
 from reasbook_deploy_sdk import DeployConfigError, DeployExecutionError
 from reasbook_deploy_sdk.release.acceptance import ReleaseAcceptanceRunner, _Route
@@ -362,16 +364,90 @@ class ReleaseAcceptanceTests(unittest.TestCase):
                 r"^sha256:[0-9a-f]{64}$",
             )
             self.assertEqual(result["self_hosted"]["filesystem_health"], "passed")
+            self.assertEqual(
+                result["artifacts"]["pages"]["routing_mode"],
+                "strict",
+            )
+            self.assertEqual(
+                result["artifacts"]["pages"]["http"]["base_path_redirect_status"],
+                308,
+            )
             self.assertFalse(result["scratch_retained"])
             diagnostics = Path(result["diagnostics_root"])
             self.assertFalse((diagnostics / "scratch").exists())
             self.assertTrue((diagnostics / "result.json").is_file())
             self.assertTrue((diagnostics / "logs/pages-preview.log").is_file())
-            self.assertGreater(
-                result["artifacts"]["pages"]["http"]["route_count"], 5
-            )
+            self.assertGreater(result["artifacts"]["pages"]["http"]["route_count"], 5)
             self.assertEqual(
                 result["artifacts"]["full"]["browser"]["status"], "skipped"
+            )
+
+    def test_acceptance_preview_enforces_production_routing(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            spec, layout, policies = self._package(root)
+            runner = ReleaseAcceptanceRunner(
+                REPO_ROOT,
+                layout,
+                spec,
+                expected_artifact_policy_sha256=artifact_policy_digest(policies),
+            )
+
+            with runner._preview_server(
+                layout.pages_site,
+                root / "strict-preview.log",
+            ) as origin:
+                with urlopen(
+                    origin + "/ReasBook/static/catalog.css",
+                    timeout=5,
+                ) as response:
+                    self.assertEqual(response.status, 200)
+
+                for alias in ("/static/catalog.css", "/docs/index.html"):
+                    with self.subTest(alias=alias), self.assertRaises(
+                        HTTPError
+                    ) as raised:
+                        urlopen(origin + alias, timeout=5)
+                    self.assertEqual(raised.exception.code, 404)
+
+    def test_release_preview_cli_forces_production_routing(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            spec, layout, _policies = self._package(Path(temp))
+            context = SimpleNamespace(spec=spec, layout=layout)
+
+            class FakeService:
+                @staticmethod
+                def context(_release_id):
+                    return context
+
+            with (
+                patch(
+                    "reasbook_deploy_sdk.release.cli._service",
+                    return_value=FakeService(),
+                ),
+                patch(
+                    "reasbook_deploy_sdk.release.cli.os.execve",
+                    side_effect=RuntimeError("preview exec intercepted"),
+                ) as execute,
+                self.assertRaisesRegex(RuntimeError, "exec intercepted"),
+            ):
+                _main(
+                    [
+                        "--repo-root",
+                        str(REPO_ROOT),
+                        "--cache-root",
+                        str(layout.cache_root),
+                        "preview",
+                        spec.release_id,
+                        "--public-prefix",
+                        "/workspace/proxy/3000",
+                    ]
+                )
+
+            command = execute.call_args.args[1]
+            self.assertEqual(
+                command[command.index("--routing-mode") + 1],
+                "strict",
             )
 
     def test_promotion_accepts_current_required_browser_evidence(self) -> None:
@@ -388,10 +464,7 @@ class ReleaseAcceptanceTests(unittest.TestCase):
             self.assertEqual(accepted["release_id"], spec.release_id)
             self.assertEqual(
                 evidence,
-                layout.cache_root
-                / "validation"
-                / spec.release_id
-                / "latest.json",
+                layout.cache_root / "validation" / spec.release_id / "latest.json",
             )
 
     def test_promotion_rejects_stale_or_tampered_evidence(self) -> None:
@@ -445,9 +518,7 @@ class ReleaseAcceptanceTests(unittest.TestCase):
                 require_release_acceptance(
                     layout,
                     spec,
-                    expected_artifact_policy_sha256=artifact_policy_digest(
-                        policies
-                    ),
+                    expected_artifact_policy_sha256=artifact_policy_digest(policies),
                 )
 
     def test_acceptance_rejects_external_manifest_format_drift(self) -> None:
@@ -467,9 +538,7 @@ class ReleaseAcceptanceTests(unittest.TestCase):
                     REPO_ROOT,
                     layout,
                     spec,
-                    expected_artifact_policy_sha256=artifact_policy_digest(
-                        policies
-                    ),
+                    expected_artifact_policy_sha256=artifact_policy_digest(policies),
                 ).run(browser_mode="skip")
 
     def test_promotion_rejects_metadata_changed_after_acceptance(self) -> None:
@@ -641,13 +710,32 @@ class ReleaseAcceptanceTests(unittest.TestCase):
             ),
             patch.object(service, "context", return_value=context),
         ):
-            result = service.deploy(Path("profile.yml"), fetch=False)
+            result = service.deploy(
+                Path("profile.yml"),
+                only=("papers/Demo",),
+                fetch=False,
+            )
 
         self.assertEqual(
             events,
             ["build", "package", "validate:required", "publish"],
         )
         self.assertIs(result.publication, publication)
+
+    def test_one_click_local_all_active_build_requires_explicit_opt_in(self) -> None:
+        service = StaticReleaseService(REPO_ROOT, Path("/tmp/reasbook-unused"))
+        with (
+            patch.object(
+                service,
+                "plan",
+                side_effect=AssertionError("planning must not start"),
+            ),
+            self.assertRaisesRegex(
+                DeployExecutionError,
+                "local builder.*--only.*--allow-local-all-active-build",
+            ),
+        ):
+            service.deploy(Path("profile.yml"), fetch=False)
 
     def test_resume_uses_the_same_promotion_path(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -773,9 +861,7 @@ class ReleaseAcceptanceTests(unittest.TestCase):
                 @classmethod
                 def require_acceptance(cls, _context):
                     return {
-                        "artifacts": {
-                            "full": {"bundle_sha256": cls.accepted_sha256}
-                        }
+                        "artifacts": {"full": {"bundle_sha256": cls.accepted_sha256}}
                     }
 
             class FakeInstaller:
@@ -961,8 +1047,7 @@ class ReleaseAcceptanceTests(unittest.TestCase):
             )
 
             full = {
-                route.path
-                for route in runner._routes(layout.site, artifact="full")
+                route.path for route in runner._routes(layout.site, artifact="full")
             }
             pages = {
                 route.path
@@ -979,8 +1064,7 @@ class ReleaseAcceptanceTests(unittest.TestCase):
             )
 
             old_docs = (
-                layout.site
-                / "versions/v4.26.0/docs/ReasBook/Books/Demo/Book.html"
+                layout.site / "versions/v4.26.0/docs/ReasBook/Books/Demo/Book.html"
             )
             old_docs.unlink()
             runner._routes(layout.pages_site, artifact="pages")
@@ -1006,9 +1090,7 @@ class ReleaseAcceptanceTests(unittest.TestCase):
                     REPO_ROOT,
                     layout,
                     spec,
-                    expected_artifact_policy_sha256=(
-                        artifact_policy_digest(policies)
-                    ),
+                    expected_artifact_policy_sha256=(artifact_policy_digest(policies)),
                 )
 
     def test_browser_modes_distinguish_skip_from_required(self) -> None:
@@ -1070,9 +1152,7 @@ class ReleaseAcceptanceTests(unittest.TestCase):
                 def __exit__(self, *_args):
                     return False
 
-            fake_api = SimpleNamespace(
-                sync_playwright=lambda: FakePlaywrightContext()
-            )
+            fake_api = SimpleNamespace(sync_playwright=lambda: FakePlaywrightContext())
             with patch(
                 "reasbook_deploy_sdk.release.acceptance.importlib.import_module",
                 return_value=fake_api,
