@@ -106,33 +106,16 @@ ReasBook 将带版本的数学源代码、跨版本工具和生成产物分开�
 
 ## Lean 项目
 
-### 形式化平台
-
-- [ReasLab](https://reaslab.io)
-  - 用于协作式定理开发和验证的在线 Lean 形式化平台。
-
-### 形式化项目
-
-- [Optlib](https://github.com/optsuite/optlib)
-  - 面向数学优化的 Lean 4 库，涵盖凸分析、最优性条件和算法收敛性。
-- [ReasBook](https://github.com/optpku/ReasBook)
-  - 面向教材和论文形式化的 Lean 4 项目，同时覆盖定理证明和计算问题。
-
-### 基准测试
-
-- [AMBER](https://github.com/optsuite/AMBER)
-  - 面向应用数学形式化中构造与验证任务的 Lean 4 基准，同时覆盖定理证明和计算问题。
-- [CAM-Bench](https://github.com/optpku/CAM-Bench)
-  - 面向计算与应用数学形式化定理证明的 Lean 4 基准。
-
-### 自动形式化与定理证明系统
-
-- [M2F](https://github.com/optsuite/M2F)
-  - 将自然语言数学教材转换为可进行形式化的 Lean 项目的工具包。
-- [SITA](https://github.com/chenyili0818/SITA)
-  - 一种结构到实例的自动形式化框架，利用验证反馈生成 Lean 定义和定理。
-- [lean-tools-mcp](https://github.com/optsuite/lean-tools-mcp)
-  - Lean MCP 服务器，在重型 import（尤其是 Mathlib）场景中提供更高并行吞吐和更低内存占用。
+| 类别 | 项目 | 简介 |
+| --- | --- | --- |
+| 形式化平台 | [ReasLab](https://reaslab.io) | 用于协作式定理开发和验证的在线 Lean 形式化平台。 |
+| 形式化项目 | [Optlib](https://github.com/optsuite/optlib) | 面向数学优化的 Lean 4 库，涵盖凸分析、最优性条件和算法收敛性。 |
+| 形式化项目 | [ReasBook](https://github.com/optpku/ReasBook) | 面向教材和论文形式化的 Lean 4 项目，同时覆盖定理证明和计算问题。 |
+| 基准测试 | [AMBER](https://github.com/optsuite/AMBER) | 面向应用数学形式化中构造与验证任务的 Lean 4 基准，同时覆盖定理证明和计算问题。 |
+| 基准测试 | [CAM-Bench](https://github.com/optpku/CAM-Bench) | 面向计算与应用数学形式化定理证明的 Lean 4 基准。 |
+| 自动形式化与定理证明 | [M2F](https://github.com/optsuite/M2F) | 将自然语言数学教材转换为可进行形式化的 Lean 项目的工具包。 |
+| 自动形式化与定理证明 | [SITA](https://github.com/chenyili0818/SITA) | 一种结构到实例的自动形式化框架，利用验证反馈生成 Lean 定义和定理。 |
+| 自动形式化与定理证明 | [lean-tools-mcp](https://github.com/optsuite/lean-tools-mcp) | Lean MCP 服务器，在重型 import（尤其是 Mathlib）场景中提供更高并行吞吐和更低内存占用。 |
 
 ## 研究成果
 
