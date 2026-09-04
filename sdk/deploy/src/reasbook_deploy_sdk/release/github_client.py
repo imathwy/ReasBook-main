@@ -6,6 +6,7 @@ import json
 import math
 from pathlib import Path
 import re
+import time
 from typing import Any
 from urllib.parse import quote
 
@@ -57,7 +58,9 @@ class GitHubRepositoryClient:
             ".sha",
         ).stdout.strip()
         if not re.fullmatch(r"[0-9a-f]{40}", target):
-            raise DeployExecutionError("GitHub returned an invalid default-branch commit")
+            raise DeployExecutionError(
+                "GitHub returned an invalid default-branch commit"
+            )
         local_head = self._git("rev-parse", "HEAD").stdout.strip()
         if local_head != target:
             raise DeployExecutionError(
@@ -129,6 +132,26 @@ class GitHubRepositoryClient:
                 "GitHub immutable releases are disabled; run `release "
                 "configure-pages --profile github-pages` with an admin token"
             )
+
+    def _wait_for_immutable_releases_enabled(
+        self,
+        *,
+        timeout_seconds: float,
+        poll_interval_seconds: float,
+    ) -> None:
+        """Wait for GitHub's repository setting to reflect a successful write."""
+
+        deadline = time.monotonic() + timeout_seconds
+        while True:
+            if self._immutable_releases_enabled():
+                return
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                raise DeployExecutionError(
+                    "timed out waiting for GitHub immutable releases to become "
+                    "enabled"
+                )
+            time.sleep(min(poll_interval_seconds, remaining))
 
     def _enable_immutable_releases(self) -> None:
         endpoint = f"repos/{self.profile.repository}/immutable-releases"
@@ -210,7 +233,9 @@ class GitHubRepositoryClient:
                 Command(("git", *args), cwd=self.repo_root, timeout=60.0)
             )
         except CommandExecutionError as exc:
-            raise DeployExecutionError(f"cannot inspect local Git state: {exc}") from exc
+            raise DeployExecutionError(
+                f"cannot inspect local Git state: {exc}"
+            ) from exc
         if result.returncode != 0:
             detail = (result.stderr or result.stdout).strip()
             raise DeployExecutionError(

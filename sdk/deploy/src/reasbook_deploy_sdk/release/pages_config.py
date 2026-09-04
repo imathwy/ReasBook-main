@@ -4,12 +4,40 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import json
+import math
 from pathlib import Path
 import re
 from typing import Any
 
 from ..errors import DeployExecutionError
 from .github_client import GitHubRepositoryClient
+
+
+DEFAULT_IMMUTABLE_CONVERGENCE_TIMEOUT_SECONDS = 300.0
+DEFAULT_IMMUTABLE_CONVERGENCE_POLL_SECONDS = 5.0
+MINIMUM_IMMUTABLE_CONVERGENCE_POLL_SECONDS = 1.0
+
+
+def _validate_immutable_convergence(timeout: float, poll: float) -> None:
+    for label, value in (("timeout", timeout), ("poll interval", poll)):
+        if (
+            isinstance(value, bool)
+            or not isinstance(value, (int, float))
+            or not math.isfinite(value)
+            or value <= 0
+        ):
+            raise DeployExecutionError(
+                f"immutable-releases convergence {label} must be positive and finite"
+            )
+    if poll < MINIMUM_IMMUTABLE_CONVERGENCE_POLL_SECONDS:
+        raise DeployExecutionError(
+            "immutable-releases convergence poll interval must be at least "
+            f"{MINIMUM_IMMUTABLE_CONVERGENCE_POLL_SECONDS:g} second"
+        )
+    if poll > timeout:
+        raise DeployExecutionError(
+            "immutable-releases convergence poll interval must not exceed its timeout"
+        )
 
 
 @dataclass(frozen=True)
@@ -58,7 +86,17 @@ class GitHubPagesConfigurator(GitHubRepositoryClient):
         remove_policy_id: int | None = None,
         expected_policy_name: str | None = None,
         expected_policy_type: str | None = None,
+        immutable_convergence_timeout_seconds: float = (
+            DEFAULT_IMMUTABLE_CONVERGENCE_TIMEOUT_SECONDS
+        ),
+        immutable_convergence_poll_seconds: float = (
+            DEFAULT_IMMUTABLE_CONVERGENCE_POLL_SECONDS
+        ),
     ) -> GitHubPagesConfiguration:
+        _validate_immutable_convergence(
+            immutable_convergence_timeout_seconds,
+            immutable_convergence_poll_seconds,
+        )
         removal = self._policy_removal(
             remove_policy_id,
             expected_policy_name,
@@ -176,7 +214,10 @@ class GitHubPagesConfigurator(GitHubRepositoryClient):
                 label="create default-branch deployment policy",
             )
 
-        self._require_immutable_releases_enabled()
+        self._wait_for_immutable_releases_enabled(
+            timeout_seconds=immutable_convergence_timeout_seconds,
+            poll_interval_seconds=immutable_convergence_poll_seconds,
+        )
         verified_pages = self._get_required(pages_endpoint, label="Pages site")
         verified_environment = self._get_required(
             environment_endpoint,
