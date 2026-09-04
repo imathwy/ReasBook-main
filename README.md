@@ -134,16 +134,53 @@ metadata, validation, and pull-request rules.
 
 ## Lean Projects
 
-| Category | Project | Description |
-| --- | --- | --- |
-| Formalization platform | [ReasLab](https://reaslab.io) | An online Lean formalization platform for collaborative theorem development and verification. |
-| Formalization project | [Optlib](https://github.com/optsuite/optlib) | A Lean4 library for mathematical optimization, covering convex analysis, optimality conditions, and algorithm convergence. |
-| Formalization project | [ReasBook](https://github.com/optpku/ReasBook) | A Lean4 project for textbook and paper formalization, including both theorem proving and computational problems. |
-| Benchmark | [AMBER](https://github.com/optsuite/AMBER) | A Lean4 benchmark for construction and verification in applied mathematics formalization, covering both theorem-proving and computational problems. |
-| Benchmark | [CAM-Bench](https://github.com/optpku/CAM-Bench) | A Lean4 benchmark for formal theorem proving in computational and applied mathematics. |
-| Autoformalization and theorem proving | [M2F](https://github.com/optsuite/M2F) | A toolkit for converting natural-language mathematical textbooks into formalization-ready Lean projects. |
-| Autoformalization and theorem proving | [SITA](https://github.com/chenyili0818/SITA) | A structure-to-instance autoformalization framework for generating Lean definitions/theorems with verification feedback. |
-| Autoformalization and theorem proving | [lean-tools-mcp](https://github.com/optsuite/lean-tools-mcp) | A Lean MCP server with higher parallel throughput and lower memory usage for heavy imports (especially Mathlib). |
+<table>
+<thead>
+<tr>
+<th scope="col">Category</th>
+<th scope="col">Project</th>
+<th scope="col">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td scope="rowgroup">Formalization platform</td>
+<td><a href="https://reaslab.io">ReasLab</a></td>
+<td>An online Lean formalization platform for collaborative theorem development and verification.</td>
+</tr>
+<tr>
+<td rowspan="2" scope="rowgroup">Formalization project</td>
+<td><a href="https://github.com/optsuite/optlib">Optlib</a></td>
+<td>A Lean4 library for mathematical optimization, covering convex analysis, optimality conditions, and algorithm convergence.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/optpku/ReasBook">ReasBook</a></td>
+<td>A Lean4 project for textbook and paper formalization, including both theorem proving and computational problems.</td>
+</tr>
+<tr>
+<td rowspan="2" scope="rowgroup">Benchmark</td>
+<td><a href="https://github.com/optsuite/AMBER">AMBER</a></td>
+<td>A Lean4 benchmark for construction and verification in applied mathematics formalization, covering both theorem-proving and computational problems.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/optpku/CAM-Bench">CAM-Bench</a></td>
+<td>A Lean4 benchmark for formal theorem proving in computational and applied mathematics.</td>
+</tr>
+<tr>
+<td rowspan="3" scope="rowgroup">Autoformalization and theorem proving</td>
+<td><a href="https://github.com/optsuite/M2F">M2F</a></td>
+<td>A toolkit for converting natural-language mathematical textbooks into formalization-ready Lean projects.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/chenyili0818/SITA">SITA</a></td>
+<td>A structure-to-instance autoformalization framework for generating Lean definitions/theorems with verification feedback.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/optsuite/lean-tools-mcp">lean-tools-mcp</a></td>
+<td>A Lean MCP server with higher parallel throughput and lower memory usage for heavy imports (especially Mathlib).</td>
+</tr>
+</tbody>
+</table>
 
 ## Publications
 
