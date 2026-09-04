@@ -12,6 +12,7 @@ dependencies = ["reasbook-sdk-common==0.1.0"]
 
 [project.scripts]
 verso-build = "verso_build_sdk.cli:main"
+verso-literate = "verso_build_sdk.literate:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

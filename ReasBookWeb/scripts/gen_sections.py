@@ -5,9 +5,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import posixpath
 import re
 import sys
+import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
@@ -51,7 +53,28 @@ def write_text_if_changed(path: Path, content: str, *, log: bool = True) -> bool
     if old_content == content:
         return False
 
-    path.write_text(content, encoding="utf-8")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    descriptor, temporary_name = tempfile.mkstemp(
+        dir=path.parent,
+        prefix=f".{path.name}.",
+        suffix=".tmp",
+    )
+    temporary = Path(temporary_name)
+    try:
+        mode = (path.stat().st_mode & 0o777) if path.exists() else 0o644
+        os.fchmod(descriptor, mode)
+        with os.fdopen(descriptor, "w", encoding="utf-8") as handle:
+            handle.write(content)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+    except BaseException:
+        try:
+            os.close(descriptor)
+        except OSError:
+            pass
+        temporary.unlink(missing_ok=True)
+        raise
     if log:
         print(f"Wrote {path}")
     return True
@@ -720,6 +743,23 @@ def lean_string(s: str) -> str:
 # ---------------------------------------------------------------------------
 # Lean and Web artifact rendering
 # ---------------------------------------------------------------------------
+
+def emit_literate_manifest(entries: list[Entry]) -> str:
+    """Return the deterministic machine-readable input for literate caching."""
+
+    modules = [entry.module for entry in entries]
+    if len(modules) != len(set(modules)):
+        raise ValueError("site entry discovery returned duplicate Lean modules")
+    return (
+        json.dumps(
+            {"schema_version": 1, "modules": modules},
+            ensure_ascii=True,
+            separators=(",", ":"),
+            sort_keys=True,
+        )
+        + "\n"
+    )
+
 
 def emit_sections(entries: list[Entry]) -> str:
     books: dict[str, dict] = {}
@@ -1640,8 +1680,10 @@ def main() -> None:
         repo_root = Path(configured_root).resolve()
 
     source_root = repo_root / "ReasBook"
-    out_file = repo_root / "ReasBookWeb" / "ReasBookSite" / "Sections.lean"
-    route_file = repo_root / "ReasBookWeb" / "ReasBookSite" / "RouteTable.lean"
+    web_root = repo_root / "ReasBookWeb"
+    out_file = web_root / "ReasBookSite" / "Sections.lean"
+    route_file = web_root / "ReasBookSite" / "RouteTable.lean"
+    literate_manifest = web_root / ".literate-modules.json"
 
     if not (source_root / "lakefile.lean").exists() and not (source_root / "lakefile.toml").exists():
         raise SystemExit(f"Lean project not found at {source_root}")
@@ -1657,6 +1699,11 @@ def main() -> None:
     out_file.parent.mkdir(parents=True, exist_ok=True)
     write_text_if_changed(out_file, emit_sections(entries), log=False)
     write_text_if_changed(route_file, emit_route_table(entries), log=False)
+    write_text_if_changed(
+        literate_manifest,
+        emit_literate_manifest(entries),
+        log=False,
+    )
     write_home_page(repo_root)
     write_work_pages(repo_root, source_root, entries)
     write_book_readmes(source_root, entries)
@@ -1664,6 +1711,7 @@ def main() -> None:
     write_root_readme(repo_root, source_root)
     print(f"Wrote {out_file} with {len(entries)} sections")
     print(f"Wrote {route_file} with generated route macro")
+    print(f"Wrote {literate_manifest} with {len(entries)} modules")
 
 
 if __name__ == "__main__":

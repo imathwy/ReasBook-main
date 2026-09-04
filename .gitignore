@@ -9,6 +9,11 @@ ReasBookWeb/-verso-*/
 
 # Generated website sources
 ReasBookWeb/Book/
+/ReasBookWeb/.literate-modules.json
+/ReasBookWeb/.literate_modules.txt
+/ReasBookWeb/.literate_manifest.json
+/ReasBookWeb/.literate_failed.txt
+/ReasBookWeb/.literate_status.json
 
 # Lake build artifacts and executables
 **/.lake/build/
