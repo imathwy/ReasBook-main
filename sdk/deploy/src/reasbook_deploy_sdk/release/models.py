@@ -22,6 +22,7 @@ PROJECT_KEY_RE = re.compile(
 SHA256_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
 RELEASE_ID_RE = re.compile(r"^site-\d{8}T\d{6}Z-(?P<digest>[0-9a-f]{12})$")
 ARTIFACT_NAME_RE = re.compile(r"^[a-z][a-z0-9_-]{0,31}$")
+GITHUB_PAGES_HARD_SITE_BYTES = 1_000_000_000
 
 
 def _text(value: object, *, field: str) -> str:
@@ -218,7 +219,7 @@ def default_artifact_policies() -> tuple[ReleaseArtifactPolicy, ...]:
             history_mode="canonical",
             dependency_docs="stubs",
             max_site_files=60_000,
-            max_site_bytes=850_000_000,
+            max_site_bytes=920_000_000,
             max_archive_members=180_000,
             max_bundle_bytes=950_000_000,
         ),
@@ -268,6 +269,11 @@ class DeploymentProfile:
             raise DeployConfigError(
                 "the pages artifact must retain canonical history and stub "
                 "dependency docs"
+            )
+        if pages.max_site_bytes > GITHUB_PAGES_HARD_SITE_BYTES:
+            raise DeployConfigError(
+                "the pages artifact operational budget cannot exceed the "
+                f"GitHub Pages hard limit of {GITHUB_PAGES_HARD_SITE_BYTES} bytes"
             )
 
     def artifact(self, name: str) -> ReleaseArtifactPolicy:
