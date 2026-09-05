@@ -232,14 +232,26 @@ polled every five seconds. Override it with
 `--immutable-convergence-timeout-seconds` and
 `--immutable-convergence-poll-seconds`; values must be positive and finite,
 with a poll interval of at least one second that does not exceed the timeout.
+GitHub control-plane commands require an authenticated GitHub CLI 2.93.0 or
+newer on `PATH`; credentials may be supplied with `GH_TOKEN` and are never
+written into a ReleaseSpec or bundle.
 
 Promote the already packaged and browser-validated Pages artifact with one
 command:
 
 ```bash
 ./sdk/deploy/bin/reasbook-deploy release publish "$RELEASE_ID" \
+  --target github-pages --dry-run
+./sdk/deploy/bin/reasbook-deploy release publish "$RELEASE_ID" \
   --target github-pages --wait
 ```
+
+The dry-run is a read-only publication preflight, not an offline preview. For
+a new Release it verifies the same clean local `HEAD`, exact GitHub
+default-branch commit, optional tag target, accepted package, and immutable
+release setting required by the real publication. For an existing Release it
+also validates the tag and every present asset. It never creates or edits a
+tag or Release, uploads an asset, or dispatches the Pages workflow.
 
 This is one-command *promotion*, not a source-to-production build:
 `configure-pages` is a separate one-time idempotent setup, and the configured

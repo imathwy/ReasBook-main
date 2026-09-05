@@ -29,6 +29,15 @@ from .store import ReleaseLayout, ReleaseStore
 
 
 _SHARED_DOC_DIRECTORIES = {"declarations", "find", "src"}
+_PAGES_ROOT_FILES = {
+    ".nojekyll",
+    "-verso-docs.json",
+    "404.html",
+    "index.html",
+    "release-spec.json",
+    "tooling-snapshot.json",
+    "unavailable-documentation.json",
+}
 
 
 class _ReferenceParser(HTMLParser):
@@ -58,9 +67,7 @@ class _ReferenceParser(HTMLParser):
                 flags=re.IGNORECASE,
             )
             if match and match.group(1):
-                self.references.append(
-                    (tag, "refresh", match.group(1).strip("\"'"))
-                )
+                self.references.append((tag, "refresh", match.group(1).strip("\"'")))
         for attribute in ("href", "src"):
             value = values.get(attribute)
             if value:
@@ -86,10 +93,17 @@ def artifact_policy_digest(
 class PagesSiteProjector:
     """Create a bounded Pages view without changing the full release tree.
 
-    Canonical project pages retain their original version-qualified URLs.  Full
-    dependency API pages are replaced with explicit lightweight placeholders;
+    Canonical project pages retain their original version-qualified URLs.
+    Detailed API pages omitted from Pages become explicit lightweight placeholders;
     referenced styles, scripts, images, and search data remain byte-identical.
     """
+
+    def __init__(self, *, max_site_bytes: int | None = None) -> None:
+        if max_site_bytes is not None and (
+            isinstance(max_site_bytes, bool) or max_site_bytes < 1
+        ):
+            raise ValueError("max_site_bytes must be a positive integer")
+        self.max_site_bytes = max_site_bytes
 
     def project(
         self,
@@ -113,27 +127,37 @@ class PagesSiteProjector:
         staged = target.parent / f".pages-site-{uuid.uuid4().hex}"
         backup = target.parent / f".pages-site-backup-{uuid.uuid4().hex}"
         try:
-            shutil.copytree(
-                full_site,
-                staged,
-                ignore=self._ignore_top_level_versions(full_site),
-            )
+            staged.mkdir()
+            self._copy_catalog_shell(spec, full_site, staged)
             atomic_write_json(staged / "release-spec.json", spec.public_dict())
             versions = staged / "versions"
             versions.mkdir()
+            canonical_routes: dict[str, tuple[Path | None, Path | None]] = {}
             for branch in sorted(
                 spec.branches,
                 key=lambda item: version_key(item.name),
             ):
-                self._project_branch(spec, full_site, versions, branch.name)
+                canonical_routes.update(
+                    self._project_branch(spec, full_site, versions, branch.name)
+                )
             self._copy_if_present(
                 full_site,
                 staged,
                 Path("versions") / "index.html",
             )
+            self._write_catalog_redirects(spec, staged, canonical_routes)
             self._close_internal_references(spec, full_site, staged)
-            self._validate_required_content(spec, staged)
+            self._validate_required_content(spec, staged, canonical_routes)
             self._validate_site(staged)
+            if self.max_site_bytes is not None:
+                total_bytes = sum(
+                    path.stat().st_size for path in staged.rglob("*") if path.is_file()
+                )
+                if total_bytes > self.max_site_bytes:
+                    raise DeployExecutionError(
+                        f"Pages projection is {total_bytes} bytes; budget is "
+                        f"{self.max_site_bytes}"
+                    )
             self._publish(staged, target, backup)
             return target
         finally:
@@ -145,12 +169,50 @@ class PagesSiteProjector:
                 else:
                     backup.unlink(missing_ok=True)
 
-    @staticmethod
-    def _ignore_top_level_versions(root: Path):
-        def ignore(directory: str, names: list[str]) -> set[str]:
-            return {"versions"} if Path(directory).resolve() == root else set()
+    def _copy_catalog_shell(
+        self,
+        spec: ReleaseSpec,
+        source: Path,
+        destination: Path,
+    ) -> None:
+        """Copy only host-neutral catalog content into the Pages projection.
 
-        return ignore
+        The aggregate site also contains unversioned copies of every Verso
+        route.  Copying that tree and deleting selected paths afterwards is
+        both expensive and easy to get wrong, so Pages starts from an empty
+        directory and admits only its public shell and canonical entrypoints.
+        """
+
+        for name in sorted(_PAGES_ROOT_FILES):
+            self._copy_if_present(source, destination, Path(name))
+        for relative in (Path("static"), Path("docs")):
+            self._copy_if_present(source, destination, relative)
+        self._copy_if_present(
+            source,
+            destination,
+            Path("theorem-maps") / "index.html",
+        )
+
+        sites = source / "sites"
+        if sites.is_dir():
+            for child in sorted(sites.iterdir(), key=lambda item: item.name):
+                if child.is_file():
+                    self._copy_if_present(
+                        source,
+                        destination,
+                        child.relative_to(source),
+                    )
+        for project in spec.canonical_projects():
+            self._copy_if_present(
+                source,
+                destination,
+                Path("sites") / project.slug / "index.html",
+            )
+            self._copy_if_present(
+                source,
+                destination,
+                Path("theorem-maps") / project.kind / project.slug,
+            )
 
     def _project_branch(
         self,
@@ -158,7 +220,7 @@ class PagesSiteProjector:
         full_site: Path,
         versions: Path,
         branch: str,
-    ) -> None:
+    ) -> dict[str, tuple[Path | None, Path | None]]:
         source = full_site / "versions" / branch
         if not source.is_dir():
             raise DeployExecutionError(
@@ -167,9 +229,7 @@ class PagesSiteProjector:
         target = versions / branch
         target.mkdir()
         projects = tuple(
-            project
-            for project in spec.canonical_projects()
-            if project.branch == branch
+            project for project in spec.canonical_projects() if project.branch == branch
         )
 
         for relative in (Path("static"), Path("-verso-docs.json")):
@@ -177,21 +237,36 @@ class PagesSiteProjector:
         self._copy_doc_runtime(source, target)
 
         project_routes: list[tuple[str, str]] = []
+        canonical_routes: dict[str, tuple[Path | None, Path | None]] = {}
         for project in projects:
             candidates = (
                 Path(project.kind) / project.slug,
                 Path(project.slug),
             )
             chosen: Path | None = None
+            chosen_score = (-1, -1, -1)
             for relative in candidates:
-                if self._copy_if_present(source, target, relative) and chosen is None:
-                    chosen = relative
+                if self._copy_if_present(source, target, relative):
+                    score = self._verso_route_score(source / relative)
+                    if score > chosen_score:
+                        chosen = relative
+                        chosen_score = score
             self._copy_if_present(
                 source,
                 target,
                 Path("theorem-maps") / project.kind / project.slug,
             )
-            self._copy_project_docs(source, target, project.kind, project.project_id)
+            docs = self._copy_project_docs(
+                source,
+                target,
+                project.kind,
+                project.project_id,
+                project.build_target,
+            )
+            if "docs" in project.outputs and docs is None:
+                raise DeployExecutionError(
+                    f"Pages projection has no canonical API entry: {project.key}"
+                )
             if chosen is not None:
                 project_routes.append(
                     (
@@ -199,10 +274,40 @@ class PagesSiteProjector:
                         project.project_id,
                     )
                 )
+            canonical_routes[project.key] = (
+                Path("versions") / branch / chosen if chosen is not None else None,
+                Path("versions") / branch / docs if docs is not None else None,
+            )
 
         (target / "index.html").write_text(
             self._branch_index(branch, project_routes),
             encoding="utf-8",
+        )
+        return canonical_routes
+
+    @staticmethod
+    def _verso_route_score(root: Path) -> tuple[int, int, int]:
+        """Prefer a directly serveable landing before a larger route fragment.
+
+        Recent branch sites split the landing page under ``books|papers/slug``
+        from a usually much larger legacy ``slug`` tree.  The latter often has
+        chapter pages but no root ``index.html``; GitHub Pages cannot serve it
+        as the target of the catalog redirect.  Both trees are retained for
+        their internal URLs, but only an indexed tree may win over one without
+        a landing page.
+        """
+
+        html_files = tuple(
+            path
+            for path in root.rglob("*.html")
+            if path.is_file() and path.stat().st_size > 0
+        )
+        index = root / "index.html"
+        has_valid_index = int(index.is_file() and index.stat().st_size > 0)
+        return (
+            has_valid_index,
+            sum(path.stat().st_size for path in html_files),
+            len(html_files),
         )
 
     @staticmethod
@@ -249,7 +354,8 @@ class PagesSiteProjector:
         destination: Path,
         kind: str,
         project_id: str,
-    ) -> None:
+        build_target: str,
+    ) -> Path | None:
         kind_title = "Books" if kind == "books" else "Papers"
         candidates = (
             Path("docs") / "ReasBook" / kind_title / project_id,
@@ -259,8 +365,93 @@ class PagesSiteProjector:
             Path("docs") / "ReasBook" / f"{project_id}.html",
             Path("docs") / f"{project_id}.html",
         )
+        entry_names = tuple(
+            dict.fromkeys(
+                (
+                    build_target.rsplit(".", 1)[-1],
+                    "Book" if kind == "books" else "Paper",
+                    "Main",
+                )
+            )
+        )
+        chosen: Path | None = None
         for relative in candidates:
-            self._copy_if_present(source, destination, relative)
+            item = source / relative
+            if item.is_dir():
+                for name in entry_names:
+                    entry = relative / f"{name}.html"
+                    if self._copy_if_present(source, destination, entry):
+                        if chosen is None:
+                            chosen = entry
+                        break
+            elif item.is_file() and self._copy_if_present(
+                source,
+                destination,
+                relative,
+            ):
+                if chosen is None:
+                    chosen = relative
+        return chosen
+
+    def _write_catalog_redirects(
+        self,
+        spec: ReleaseSpec,
+        site: Path,
+        routes: dict[str, tuple[Path | None, Path | None]],
+    ) -> None:
+        for project in spec.canonical_projects():
+            route = routes.get(project.key)
+            if route is None:
+                raise DeployExecutionError(f"Pages projection omitted {project.key}")
+            pages, docs = route
+            if pages is not None:
+                self._write_redirect(
+                    site / "sites" / project.slug / "pages" / "index.html",
+                    spec.base_path + pages.as_posix().rstrip("/") + "/",
+                    f"{project.project_id} pages",
+                    spec.base_path,
+                )
+            if docs is not None:
+                self._write_redirect(
+                    site / "sites" / project.slug / "docs" / "index.html",
+                    spec.base_path + docs.as_posix(),
+                    f"{project.project_id} documentation",
+                    spec.base_path,
+                )
+
+    @staticmethod
+    def _write_redirect(
+        path: Path,
+        target: str,
+        title: str,
+        base_path: str,
+    ) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        escaped_target = html.escape(target, quote=True)
+        escaped_title = html.escape(title)
+        stylesheet = html.escape(base_path + "static/catalog.css", quote=True)
+        path.write_text(
+            "\n".join(
+                [
+                    "<!doctype html>",
+                    '<html lang="en">',
+                    "<head>",
+                    '  <meta charset="utf-8" />',
+                    '  <meta name="viewport" '
+                    'content="width=device-width,initial-scale=1" />',
+                    f'  <meta http-equiv="refresh" content="0; url={escaped_target}" />',
+                    f"  <title>{escaped_title}</title>",
+                    f'  <link rel="stylesheet" href="{stylesheet}" />',
+                    "</head>",
+                    '<body class="redirect-page">',
+                    f'  <p><a href="{escaped_target}">Open {escaped_title}</a></p>',
+                    "</body>",
+                    "</html>",
+                    "",
+                ]
+            ),
+            encoding="utf-8",
+        )
 
     @staticmethod
     def _branch_index(
@@ -268,7 +459,7 @@ class PagesSiteProjector:
         routes: list[tuple[str, str]],
     ) -> str:
         items = "\n".join(
-            "      <li><a href=\"{}\"><code>{}</code></a></li>".format(
+            '      <li><a href="{}"><code>{}</code></a></li>'.format(
                 html.escape(route, quote=True), html.escape(name)
             )
             for route, name in routes
@@ -293,9 +484,9 @@ class PagesSiteProjector:
                 "<body>",
                 '  <main class="page-shell narrow-shell">',
                 '    <p class="eyebrow">Canonical Pages Projection</p>',
-                f"    <h1><span translate=\"no\">{html.escape(branch)}</span></h1>",
-                "    <p>API links outside the bounded project module set resolve "
-                "to explicit dependency placeholders.</p>",
+                f'    <h1><span translate="no">{html.escape(branch)}</span></h1>',
+                "    <p>Detailed API links omitted from this bounded artifact "
+                "resolve to explicit placeholders.</p>",
                 '    <ul class="resource-list">',
                 items,
                 "    </ul>",
@@ -341,8 +532,8 @@ class PagesSiteProjector:
                 source = full_site / relative
                 if source.is_file():
                     if source.suffix.lower() in {".html", ".htm"}:
-                        if self._is_omitted_dependency_doc(relative):
-                            self._write_dependency_stub(target, spec.base_path)
+                        if self._is_omitted_api_doc(relative):
+                            self._write_api_stub(target, spec.base_path)
                         else:
                             errors.append(
                                 f"{relative_document}: omitted non-dependency page {value}"
@@ -351,8 +542,8 @@ class PagesSiteProjector:
                         target.parent.mkdir(parents=True, exist_ok=True)
                         shutil.copy2(source, target)
                 elif source.is_dir() and (source / "index.html").is_file():
-                    if self._is_omitted_dependency_doc(relative / "index.html"):
-                        self._write_dependency_stub(
+                    if self._is_omitted_api_doc(relative / "index.html"):
+                        self._write_api_stub(
                             target / "index.html",
                             spec.base_path,
                         )
@@ -424,12 +615,12 @@ class PagesSiteProjector:
         return relative, target
 
     @staticmethod
-    def _is_omitted_dependency_doc(relative: Path) -> bool:
+    def _is_omitted_api_doc(relative: Path) -> bool:
         parts = relative.parts
         return len(parts) >= 4 and parts[0] == "versions" and parts[2] == "docs"
 
     @staticmethod
-    def _write_dependency_stub(path: Path, base_path: str) -> None:
+    def _write_api_stub(path: Path, base_path: str) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
         home = html.escape(base_path, quote=True)
         path.write_text(
@@ -441,16 +632,17 @@ class PagesSiteProjector:
                     '  <meta charset="utf-8" />',
                     '  <meta name="viewport" '
                     'content="width=device-width,initial-scale=1" />',
-                    "  <title>Dependency documentation</title>",
+                    "  <title>Detailed API documentation</title>",
                     f'  <link rel="stylesheet" href="{home}static/catalog.css" />',
                     "</head>",
                     "<body>",
                     '  <main class="page-shell narrow-shell">',
                     '    <p class="eyebrow">Canonical Pages Projection</p>',
-                    "    <h1>Dependency documentation</h1>",
+                    "    <h1>Detailed API documentation</h1>",
                     "    <p>This API page is not included in the bounded Pages "
-                    "artifact. The project documentation, source, and theorem map "
-                    "remain available.</p>",
+                    "artifact. The project entry page, source, and theorem map "
+                    "remain available; the complete API is in the self-hosted "
+                    "artifact.</p>",
                     f'    <p><a class="back-link" href="{home}">'
                     "Back to ReasBook</a></p>",
                     "  </main>",
@@ -463,22 +655,29 @@ class PagesSiteProjector:
         )
 
     @staticmethod
-    def _validate_required_content(spec: ReleaseSpec, site: Path) -> None:
+    def _validate_required_content(
+        spec: ReleaseSpec,
+        site: Path,
+        routes: dict[str, tuple[Path | None, Path | None]],
+    ) -> None:
         required = [site / "index.html", site / "release-spec.json"]
         for project in spec.canonical_projects():
             required.append(site / "sites" / project.slug / "index.html")
+            pages, docs = routes[project.key]
+            if pages is not None:
+                required.append(site / pages / "index.html")
+            if "docs" in project.outputs:
+                if docs is None:
+                    raise DeployExecutionError(
+                        f"Pages projection has no canonical API entry: {project.key}"
+                    )
+                required.append(site / docs)
             if "theorem_graph" in project.outputs:
                 required.append(
-                    site
-                    / "theorem-maps"
-                    / project.kind
-                    / project.slug
-                    / "index.html"
+                    site / "theorem-maps" / project.kind / project.slug / "index.html"
                 )
         missing = [
-            str(path.relative_to(site))
-            for path in required
-            if not path.is_file()
+            str(path.relative_to(site)) for path in required if not path.is_file()
         ]
         if missing:
             raise DeployExecutionError(

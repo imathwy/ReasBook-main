@@ -41,9 +41,18 @@ pages, and theorem map remained available at their original URLs.
   `project-modules-v2`, so source, toolchain, target, module, doc-gen, or batch
   policy changes cannot silently reuse incompatible output.
 - Packaging derives two immutable artifacts from the verified aggregate site:
-  `full` retains every assembled project version; `pages` retains the public
-  catalog and explicit canonical project versions. Both retain reachable
-  project-module docs, Verso pages, theorem maps, and dependency stubs.
+  `full` retains every assembled project version and every generated project
+  API page. `pages` is assembled from an empty directory with an allowlist: the
+  public catalog, explicit version-qualified canonical Verso routes, project
+  entry API pages, theorem maps, and the runtime assets those pages reference.
+  It never copies the aggregate site's unversioned `books`, `papers`, bare-slug,
+  or deep `sites/*/pages` route trees. Catalog compatibility routes are small
+  redirects to the selected canonical version.
+- Detailed API pages omitted from the bounded Pages artifact resolve to
+  explicit lightweight placeholders only when the corresponding verified page
+  exists in the full site. This preserves link closure without allowing the
+  projection to hide a missing build output. The complete API documentation
+  remains in the `full` artifact for self-hosting.
 - Every theorem map, whether generated or curated, carries a generated release
   context that matches its project specification. Repository source links are
   pinned to the full project commit; the branch name remains display metadata
@@ -76,6 +85,13 @@ pages, and theorem map remained available at their original URLs.
   remote asset digest. The publish-only workflow independently repeats both
   the tag equality and clean-tooling checks after dereferencing a lightweight
   or annotated tag.
+- Publication dry-runs are online, read-only preflights. A new Release follows
+  the real path through accepted-package verification, repository settings,
+  the clean local/default-branch/ReleaseSpec commit boundary, and optional-tag
+  validation; an existing Release follows its idempotent identity and asset
+  checks. The dry-run returns before tag or Release mutation, upload, or
+  workflow dispatch, so a successful plan is meaningful without changing
+  GitHub state.
 - The Pages profile fails closed above 850 MB of extracted content, 60,000
   files, 180,000 archive members, or 950 MB compressed. Local packaging,
   acceptance, and the publish workflow load the same artifact policy; archive

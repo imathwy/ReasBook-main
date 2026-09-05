@@ -34,7 +34,7 @@ The two artifacts have deliberately different content contracts:
 | Name | Contract | Intended target |
 | --- | --- | --- |
 | `full` | Every assembled project version, reachable project-module API docs, Verso, theorem maps, and explicit dependency stubs | Self-hosted server |
-| `pages` | Canonical project versions with the same bounded, link-closed documentation | GitHub Pages |
+| `pages` | Canonical version-qualified Verso routes, project entry API pages, theorem maps, and link-closed API placeholders | GitHub Pages |
 
 Both retain the `/ReasBook/` public base path. `release-set.json` binds their
 bundle hashes, site-tree hashes, sizes, and projection-policy hash to one
@@ -192,6 +192,8 @@ must not exceed the timeout.
 
 ```bash
 ./sdk/deploy/bin/reasbook-deploy release publish RELEASE_ID \
+  --target github-pages --dry-run
+./sdk/deploy/bin/reasbook-deploy release publish RELEASE_ID \
   --target github-pages --wait
 ```
 
@@ -208,12 +210,17 @@ SHA256SUMS
 
 The local publisher first requires the browser-complete acceptance record for
 the current package, then checks the configured policy digest and both artifact
-records before upload. Dry-run crosses the same evidence and
-repository-setting gates. The publisher waits for GitHub to report the Release
-immutable before dispatch. After upload succeeds but before the draft is
-published, it re-reads the same draft ID/tag and requires all four remote asset
-sizes and server-computed digests to match. The workflow uses GitHub's Release
-and per-asset verification commands, independently checks the tag target,
+records before upload. Dry-run is a read-only remote preflight: when the
+Release is absent it crosses the same clean local `HEAD`, exact default-branch
+commit, optional-tag, evidence, and repository-setting gates as first
+publication; when the Release exists it validates its tag, identity, and every
+present asset through the idempotent retry path. It returns before any tag or
+Release mutation, asset upload, or workflow dispatch. The publisher waits for
+GitHub to report the Release immutable before dispatch. After upload succeeds
+but before the draft is published, it re-reads the same draft ID/tag and
+requires all four remote asset sizes and server-computed digests to match. The
+workflow uses GitHub's Release and per-asset verification commands,
+independently checks the tag target,
 archive/manifest/spec/ReleaseSet bindings, and recomputes the policy digest
 from its trusted checked-out profile. It enforces the compressed,
 180,000-archive-member, 850 MB site, and 60,000-file budgets before extraction.
@@ -272,14 +279,17 @@ and `.well-known/`. Packaging rejects exact `.git` or `.github` path segments,
 which GitHub excludes even in hidden-file mode, so the uploaded tree cannot
 silently differ from the locally verified tree.
 
-Both artifacts preserve project content and close referenced URLs. API docs
-start at each configured entry root and include every reachable project-owned
-module, processed in batches of at most 128; Mathlib, Lean, and other external
-libraries are not rendered. A referenced external API page resolves to a small
-explanatory stub, not a 404. Modern doc-gen renders a trimmed database and the
-legacy adapter renders the same bounded set through its compatibility path.
-The `full` artifact additionally retains every assembled project version; the
-Pages projection retains only explicit canonical versions.
+Both artifacts preserve project entrypoints and close referenced URLs. API
+docs start at each configured entry root and include every reachable
+project-owned module, processed in batches of at most 128; Mathlib, Lean, and
+other external libraries are not rendered. The `full` artifact retains those
+generated module pages and every assembled project version. The Pages
+projection is assembled from an allowlist: explicit canonical versions,
+project entry API pages, Verso pages, theorem maps, and referenced runtime
+assets. Detailed API links omitted from that bounded artifact resolve to small
+explanatory placeholders only when the verified full site contains the target;
+they never become silent 404s. Unversioned catalog compatibility paths are
+redirects rather than copies of the large Verso trees.
 
 ## Self-hosted installation
 
@@ -411,8 +421,8 @@ small or large releases.
 - Python 3.11 or newer.
 - GNU tar with `--zstd` and the deploy SDK dependencies.
 - All registered version branches fetched before planning.
-- An authenticated GitHub CLI with Release upload and workflow-dispatch access
-  for GitHub publication.
+- An authenticated GitHub CLI 2.93.0 or newer with Release upload and
+  workflow-dispatch access for GitHub publication.
 - Enough self-hosted disk space for the incoming archive, extracted release,
   safety margin, and currently active release.
 

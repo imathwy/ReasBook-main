@@ -24,9 +24,10 @@ policy:
   max_bundle_bytes: 1900000000
 
 # A release has one build identity and two immutable delivery artifacts.
-# Both artifacts use bounded reachable project-module API docs with explicit
-# external-dependency placeholders. The full artifact retains every project
-# version for self-hosting; Pages keeps only canonical versions.
+# The full artifact retains bounded reachable project-module API docs and every
+# project version for self-hosting. Pages keeps canonical Verso versions and
+# project entry API pages; omitted detailed API links become explicit
+# placeholders whose source pages must exist in the verified full artifact.
 artifacts:
   full:
     history_mode: full

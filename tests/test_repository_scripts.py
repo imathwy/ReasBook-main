@@ -65,9 +65,7 @@ class RepositoryScriptTests(unittest.TestCase):
 
     def test_project_docs_honors_and_validates_release_target_boundary(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
-            repo, scripts, lean_root, build_sdk = self._project_docs_fixture(
-                Path(temp)
-            )
+            repo, scripts, lean_root, build_sdk = self._project_docs_fixture(Path(temp))
             build_sdk.write_text(
                 "#!/usr/bin/env bash\n"
                 "set -eu\n"
@@ -76,7 +74,7 @@ class RepositoryScriptTests(unittest.TestCase):
                 "  printf '%s\\n' Included.Book Excluded.Book\n"
                 "  exit 0\n"
                 "fi\n"
-                "printf '%s\\n' \"$@\" > \"$INVOCATION_LOG\"\n",
+                'printf \'%s\\n\' "$@" > "$INVOCATION_LOG"\n',
                 encoding="utf-8",
             )
             build_sdk.chmod(0o755)
@@ -203,9 +201,7 @@ class RepositoryScriptTests(unittest.TestCase):
                 f'<td rowspan="{row_count}" scope="rowgroup">{category}</td>',
                 content,
             )
-        self.assertIn(
-            '<td scope="rowgroup">Formalization platform</td>', english
-        )
+        self.assertIn('<td scope="rowgroup">Formalization platform</td>', english)
         self.assertIn('<td scope="rowgroup">形式化平台</td>', chinese)
         self.assertGreater(english.count("&#124;"), 0)
         self.assertEqual(english.count("&#124;"), chinese.count("&#124;"))
@@ -215,9 +211,7 @@ class RepositoryScriptTests(unittest.TestCase):
         self.assertIn("https://github.com/leanprover/comparator", chinese)
 
     def test_verso_build_validates_literate_cache_before_prebuilt_mode(self) -> None:
-        script = (ROOT / "scripts" / "build" / "verso.sh").read_text(
-            encoding="utf-8"
-        )
+        script = (ROOT / "scripts" / "build" / "verso.sh").read_text(encoding="utf-8")
         generated = script.index('"${generator_args[@]}"')
         cached = script.index(
             'reasbook_run_runtime "$REASBOOK_LEAN_ROOT" "$LITERATE_SDK"'
@@ -228,9 +222,7 @@ class RepositoryScriptTests(unittest.TestCase):
         self.assertLess(cached, enabled)
         self.assertLess(enabled, built)
         self.assertIn('export VERSO_GENERATOR=""', script)
-        self.assertIn(
-            "export VERSO_ENV_REASBOOK_LITERATE_PREBUILT=1", script
-        )
+        self.assertIn("export VERSO_ENV_REASBOOK_LITERATE_PREBUILT=1", script)
 
     def test_verso_literate_failure_stops_before_web_build(self) -> None:
         source_scripts = ROOT / "scripts" / "build"
@@ -253,7 +245,7 @@ class RepositoryScriptTests(unittest.TestCase):
             generator.write_text(
                 "from pathlib import Path\n"
                 "Path('ReasBookWeb/.literate-modules.json').write_text("
-                "'{\"schema_version\":1,\"modules\":[\"Demo\"]}\\n')\n",
+                '\'{"schema_version":1,"modules":["Demo"]}\\n\')\n',
                 encoding="utf-8",
             )
             deploy = repo / "sdk/deploy/bin/reasbook-deploy"
@@ -263,14 +255,14 @@ class RepositoryScriptTests(unittest.TestCase):
                 "while [[ $# -gt 0 && $1 != -- ]]; do shift; done\n"
                 "shift\n"
                 "export REASBOOK_BUILD_LAKE_BIN=/runtime/lake\n"
-                "exec \"$@\"\n",
+                'exec "$@"\n',
                 encoding="utf-8",
             )
             deploy.chmod(0o755)
             literate = repo / "sdk/verso/bin/verso-literate"
             literate.write_text(
                 "#!/usr/bin/env bash\n"
-                "test \"${REASBOOK_BUILD_LAKE_BIN:-}\" = /runtime/lake\n"
+                'test "${REASBOOK_BUILD_LAKE_BIN:-}" = /runtime/lake\n'
                 "exit 17\n",
                 encoding="utf-8",
             )
@@ -307,9 +299,7 @@ class RepositoryScriptTests(unittest.TestCase):
             "Riemann Surfaces (Forster, 1981)",
         )
         self.assertEqual(
-            assemble.display_name(
-                "IntroductiontoRealAnalysisVolumeI_JiriLebl_2025"
-            ),
+            assemble.display_name("IntroductiontoRealAnalysisVolumeI_JiriLebl_2025"),
             "Introduction to Real Analysis Volume I (Jiri Lebl, 2025)",
         )
         self.assertEqual(
@@ -334,9 +324,7 @@ class RepositoryScriptTests(unittest.TestCase):
                 "import Mathlib\n", encoding="utf-8"
             )
             (lean_root / "Books" / "DemoBook" / "Chap01.lean").write_text(
-                "/-!\n"
-                "# Chapter 01 -- A Descriptive Demo Chapter Title\n"
-                "-/\n",
+                "/-!\n" "# Chapter 01 -- A Descriptive Demo Chapter Title\n" "-/\n",
                 encoding="utf-8",
             )
 
@@ -349,12 +337,10 @@ class RepositoryScriptTests(unittest.TestCase):
             )
 
             self.assertEqual(result.returncode, 0, result.stderr)
-            self.assertTrue(
-                (web_root / "ReasBookSite" / "Sections.lean").is_file()
+            self.assertTrue((web_root / "ReasBookSite" / "Sections.lean").is_file())
+            sections = (web_root / "ReasBookSite" / "Sections.lean").read_text(
+                encoding="utf-8"
             )
-            sections = (
-                web_root / "ReasBookSite" / "Sections.lean"
-            ).read_text(encoding="utf-8")
             self.assertIn("demobook/chap01/", sections)
             literate_manifest = json.loads(
                 (web_root / ".literate-modules.json").read_text(encoding="utf-8")
@@ -368,9 +354,7 @@ class RepositoryScriptTests(unittest.TestCase):
                 literate_manifest["modules"],
                 ["Books.DemoBook.Book", "Books.DemoBook.Chap01"],
             )
-            home = (web_root / "ReasBookSite" / "Home.lean").read_text(
-                encoding="utf-8"
-            )
+            home = (web_root / "ReasBookSite" / "Home.lean").read_text(encoding="utf-8")
             self.assertIn("API documentation", home)
             self.assertNotIn("python3 scripts/gen_sections.py", home)
 
@@ -386,7 +370,7 @@ class RepositoryScriptTests(unittest.TestCase):
                 "DemoTheory/Paper.html",
             ),
             "explicit-root": (
-                'lean_lib DemoTheory where\n'
+                "lean_lib DemoTheory where\n"
                 '  srcDir := "Papers"\n'
                 "  roots := #[`DemoTheory]\n",
                 "DemoTheory.html",
@@ -437,6 +421,201 @@ class RepositoryScriptTests(unittest.TestCase):
                 ).read_text(encoding="utf-8")
                 self.assertIn(f"docs/ReasBook/{docs_path}", page)
 
+    def test_gen_sections_project_fragment_is_exact_and_does_not_rewrite_catalog_docs(
+        self,
+    ) -> None:
+        generator = ROOT / "ReasBookWeb" / "scripts" / "gen_sections.py"
+        with tempfile.TemporaryDirectory() as temp:
+            repo = Path(temp) / "checkout"
+            lean_root = repo / "ReasBook"
+            web_root = repo / "ReasBookWeb"
+            for name in ("Selected", "Unselected"):
+                project = lean_root / "Books" / name
+                project.mkdir(parents=True)
+                (project / "Book.lean").write_text("import Mathlib\n", encoding="utf-8")
+            (lean_root / "Papers").mkdir()
+            (lean_root / "lakefile.lean").write_text(
+                "import Lake\nopen Lake DSL\n"
+                'lean_lib Selected where\n  srcDir := "Books"\n'
+                'lean_lib Unselected where\n  srcDir := "Books"\n',
+                encoding="utf-8",
+            )
+            (web_root / "ReasBookSite").mkdir(parents=True)
+            root_readme = repo / "README.md"
+            root_readme.write_text("branch catalog sentinel\n", encoding="utf-8")
+
+            result = subprocess.run(
+                [sys.executable, str(generator), "--repo-root", str(repo)],
+                cwd=repo,
+                env={
+                    **os.environ,
+                    "REASBOOK_PROJECT_FRAGMENT": "1",
+                    "REASBOOK_INCLUDE_PROJECTS": "books/Selected",
+                },
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr)
+            sections = (web_root / "ReasBookSite" / "Sections.lean").read_text(
+                encoding="utf-8"
+            )
+            self.assertIn("Selected.Book", sections)
+            self.assertNotIn("Unselected.Book", sections)
+            self.assertEqual(
+                root_readme.read_text(encoding="utf-8"), "branch catalog sentinel\n"
+            )
+
+            invalid = subprocess.run(
+                [sys.executable, str(generator), "--repo-root", str(repo)],
+                cwd=repo,
+                env={
+                    **os.environ,
+                    "REASBOOK_PROJECT_FRAGMENT": "1",
+                    "REASBOOK_INCLUDE_PROJECTS": "books/Missing",
+                },
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertNotEqual(invalid.returncode, 0)
+            self.assertIn("does not exist", invalid.stderr)
+
+            multiple = subprocess.run(
+                [sys.executable, str(generator), "--repo-root", str(repo)],
+                cwd=repo,
+                env={
+                    **os.environ,
+                    "REASBOOK_PROJECT_FRAGMENT": "1",
+                    "REASBOOK_INCLUDE_PROJECTS": "books/Selected,books/Unselected",
+                },
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertNotEqual(multiple.returncode, 0)
+            self.assertIn("requires exactly one", multiple.stderr)
+
+    def test_verso_project_fragment_requires_isolated_root(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            repo = Path(temp) / "checkout"
+            scripts = repo / "scripts" / "build"
+            scripts.mkdir(parents=True)
+            shutil.copy2(
+                ROOT / "scripts" / "build" / "common.sh", scripts / "common.sh"
+            )
+            shutil.copy2(ROOT / "scripts" / "build" / "verso.sh", scripts / "verso.sh")
+            for name in ("verso-build", "verso-literate"):
+                executable = repo / "sdk" / "verso" / "bin" / name
+                executable.parent.mkdir(parents=True, exist_ok=True)
+                executable.write_text("#!/usr/bin/env bash\nexit 0\n", encoding="utf-8")
+                executable.chmod(0o755)
+            (repo / "sdk" / "common" / "bin").mkdir(parents=True)
+            (repo / "ReasBookWeb").mkdir()
+            (repo / "ReasBook").mkdir()
+
+            result = subprocess.run(
+                ["bash", str(scripts / "verso.sh")],
+                cwd=repo,
+                env={
+                    **os.environ,
+                    "REASBOOK_REPO_ROOT": str(repo),
+                    "REASBOOK_PROJECT_FRAGMENT": "1",
+                    "REASBOOK_INCLUDE_PROJECTS": "books/Selected",
+                },
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("REASBOOK_PROJECT_FRAGMENT_ROOT is required", result.stderr)
+
+    def test_verso_project_fragment_writes_validated_disjoint_manifest(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            repo = Path(temp) / "checkout"
+            scripts = repo / "scripts" / "build"
+            scripts.mkdir(parents=True)
+            for name in ("common.sh", "verso.sh"):
+                shutil.copy2(ROOT / "scripts" / "build" / name, scripts / name)
+            web = repo / "ReasBookWeb"
+            lean = repo / "ReasBook"
+            web.mkdir()
+            lean.mkdir()
+
+            common_python = repo / "sdk" / "common" / "bin" / "python"
+            common_python.parent.mkdir(parents=True)
+            common_python.write_text(
+                f'#!/usr/bin/env bash\nexec {sys.executable!s} "$@"\n',
+                encoding="utf-8",
+            )
+            common_python.chmod(0o755)
+            deploy = repo / "sdk" / "deploy" / "bin" / "reasbook-deploy"
+            deploy.parent.mkdir(parents=True)
+            deploy.write_text(
+                "#!/usr/bin/env bash\nset -eu\n"
+                'while [ "$1" != -- ]; do shift; done\nshift\nexec "$@"\n',
+                encoding="utf-8",
+            )
+            deploy.chmod(0o755)
+            verso_bin = repo / "sdk" / "verso" / "bin"
+            verso_bin.mkdir(parents=True)
+            literate = verso_bin / "verso-literate"
+            literate.write_text("#!/usr/bin/env bash\nexit 0\n", encoding="utf-8")
+            literate.chmod(0o755)
+            build = verso_bin / "verso-build"
+            build.write_text(
+                "#!/usr/bin/env bash\nset -eu\n"
+                'mkdir -p "$VERSO_OUTPUT_DIR/books/selected/book"\n'
+                'mkdir -p "$VERSO_OUTPUT_DIR/books/selected"\n'
+                ': > "$VERSO_OUTPUT_DIR/index.html"\n'
+                ': > "$VERSO_OUTPUT_DIR/books/selected/index.html"\n'
+                ': > "$VERSO_OUTPUT_DIR/books/selected/book/index.html"\n',
+                encoding="utf-8",
+            )
+            build.chmod(0o755)
+            generator = repo / "generator.py"
+            generator.write_text(
+                "import json, os\nfrom pathlib import Path\n"
+                'web = Path(os.environ["REASBOOK_WEB_ROOT"])\n'
+                '(web / ".literate-modules.json").write_text("{}\\n")\n'
+                '(web / ".project-fragment.json").write_text(json.dumps({'
+                '"schema_version": 1, "project": "books/Selected", '
+                '"modules": ["Books.Selected.Book"], '
+                '"routes": ["books/selected/", "books/selected/book/"], '
+                '"shared_catalog": False}))\n',
+                encoding="utf-8",
+            )
+            fragments = Path(temp) / "fragments"
+
+            result = subprocess.run(
+                ["bash", str(scripts / "verso.sh")],
+                cwd=repo,
+                env={
+                    **os.environ,
+                    "REASBOOK_REPO_ROOT": str(repo),
+                    "REASBOOK_PROJECT_FRAGMENT": "1",
+                    "REASBOOK_INCLUDE_PROJECTS": "books/Selected",
+                    "REASBOOK_PROJECT_FRAGMENT_ROOT": str(fragments),
+                    "REASBOOK_VERSO_GENERATOR": str(generator),
+                },
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+
+            self.assertEqual(result.returncode, 0, result.stderr)
+            root = fragments / "books" / "Selected"
+            payload = json.loads((root / "fragment.json").read_text(encoding="utf-8"))
+            self.assertEqual(payload["project"], "books/Selected")
+            self.assertFalse(payload["shared_catalog"])
+            self.assertEqual(payload["site_dir"], "site")
+            self.assertFalse((root / "site" / "index.html").exists())
+            self.assertTrue(
+                (root / "site" / "books" / "selected" / "index.html").is_file()
+            )
+
     def test_pages_assembly_normalizes_docs_and_generates_landing_page(self) -> None:
         project = {
             "kind": "books",
@@ -450,12 +629,7 @@ class RepositoryScriptTests(unittest.TestCase):
             monolith = root / ".artifacts" / "monolith"
             docs = monolith / "docs" / "ReasBook" / "Books" / "DemoBook"
             version_docs = (
-                monolith
-                / "versions"
-                / "v4.30.0"
-                / "docs"
-                / "ReasBook"
-                / "DemoBook"
+                monolith / "versions" / "v4.30.0" / "docs" / "ReasBook" / "DemoBook"
             )
             chapter = monolith / "books" / "demobook" / "chapter-1"
             docs.mkdir(parents=True)
@@ -466,9 +640,7 @@ class RepositoryScriptTests(unittest.TestCase):
                 encoding="utf-8",
             )
             (docs / "Book.html").write_text("docs", encoding="utf-8")
-            (version_docs / "Book.html").write_text(
-                "versioned docs", encoding="utf-8"
-            )
+            (version_docs / "Book.html").write_text("versioned docs", encoding="utf-8")
             (chapter / "index.html").write_text("chapter", encoding="utf-8")
 
             values = {"PROJECTS_JSON": json.dumps([project])}
@@ -487,7 +659,7 @@ class RepositoryScriptTests(unittest.TestCase):
             docs_index = (site / "docs" / "ReasBook" / "index.html").read_text(
                 encoding="utf-8"
             )
-            self.assertIn('./Books/DemoBook/', docs_index)
+            self.assertIn("./Books/DemoBook/", docs_index)
             self.assertTrue((site / "static" / "catalog.css").is_file())
             root_page = (site / "index.html").read_text(encoding="utf-8")
             self.assertIn('id="main-content"', root_page)
@@ -535,6 +707,137 @@ class RepositoryScriptTests(unittest.TestCase):
             self.assertEqual(raised.exception.code, 1)
             self.assertIn("Broken ReasBook links", output.getvalue())
 
+    def test_pages_assembly_materializes_versioned_navbar_routes(self) -> None:
+        project = {
+            "kind": "books",
+            "kindTitle": "Books",
+            "name": "DemoBook",
+            "slug": "demobook",
+            "branch": "v4.30.0",
+        }
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            monolith = root / ".artifacts" / "monolith"
+            version = monolith / "versions" / "v4.30.0"
+            raw = version / "demobook"
+            landing = version / "books" / "demobook"
+            chapter = raw / "chap01"
+            section = chapter / "section01"
+            docs = version / "docs" / "ReasBook" / "DemoBook"
+            for directory in (landing, section, docs):
+                directory.mkdir(parents=True)
+            (monolith / "versions" / "index.html").write_text(
+                "<!doctype html><html></html>", encoding="utf-8"
+            )
+            (landing / "index.html").write_text(
+                "<!doctype html><html></html>", encoding="utf-8"
+            )
+            (section / "index.html").write_text(
+                "<!doctype html><html></html>", encoding="utf-8"
+            )
+            (docs / "Book.html").write_text(
+                "<!doctype html><html></html>", encoding="utf-8"
+            )
+
+            values = {"PROJECTS_JSON": json.dumps([project])}
+            with working_directory(root), patch.dict(os.environ, values, clear=False):
+                assemble.main()
+
+            alias = (
+                root
+                / ".site"
+                / "versions"
+                / "v4.30.0"
+                / "books"
+                / "demobook"
+                / "chapters"
+                / "chap01"
+                / "section01"
+                / "index.html"
+            )
+            self.assertTrue(alias.is_file())
+            self.assertIn("demobook/chap01/section01/", alias.read_text())
+
+    def test_pages_assembly_marks_only_unpublished_api_links_unavailable(self) -> None:
+        project = {
+            "kind": "books",
+            "kindTitle": "Books",
+            "name": "DemoBook",
+            "slug": "demobook",
+            "branch": "v4.30.0",
+        }
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            monolith = root / ".artifacts" / "monolith"
+            version = monolith / "versions" / "v4.30.0"
+            chapter = version / "demobook" / "chap01"
+            available = chapter / "available"
+            unavailable = chapter / "unavailable"
+            docs = version / "docs" / "ReasBook" / "DemoBook"
+            available_doc = docs / "Chap01" / "Available.html"
+            for directory in (available, unavailable, available_doc.parent):
+                directory.mkdir(parents=True)
+            (monolith / "versions" / "index.html").write_text(
+                "<!doctype html><html></html>", encoding="utf-8"
+            )
+            (docs / "Book.html").write_text(
+                "<!doctype html><html></html>", encoding="utf-8"
+            )
+            available_doc.write_text("<!doctype html><html></html>", encoding="utf-8")
+            for path in (available, unavailable):
+                (path / "index.html").write_text(
+                    "<!doctype html><html></html>", encoding="utf-8"
+                )
+
+            site_prefix = "/ReasBook/versions/v4.30.0/"
+            (chapter / "index.html").write_text(
+                "<!doctype html><html><body>"
+                f'(<a href="{site_prefix}docs/ReasBook/DemoBook/Chap01/'
+                'Available.html">Documentation</a>) '
+                f'(<a href="{site_prefix}demobook/chap01/available/">Verso</a>) '
+                f'(<a href="{site_prefix}docs/ReasBook/DemoBook/Chap01/'
+                'Unavailable.html">Documentation</a>) '
+                f'(<a href="{site_prefix}demobook/chap01/unavailable/">Verso</a>)'
+                "</body></html>",
+                encoding="utf-8",
+            )
+
+            values = {
+                "PROJECTS_JSON": json.dumps([project]),
+                "REASBOOK_REQUIRE_THEOREM_MAPS": "0",
+                "REASBOOK_SITE_ROOT": "/ReasBook/",
+            }
+            with working_directory(root), patch.dict(os.environ, values, clear=False):
+                assemble.main()
+                self.assertEqual(
+                    verify._missing_internal_references(root / ".site"), []
+                )
+
+            rendered = (
+                root
+                / ".site"
+                / "versions"
+                / "v4.30.0"
+                / "demobook"
+                / "chap01"
+                / "index.html"
+            ).read_text(encoding="utf-8")
+            self.assertIn('Available.html">Documentation</a>', rendered)
+            self.assertNotIn('Unavailable.html">Documentation</a>', rendered)
+            self.assertIn("Documentation unavailable", rendered)
+
+            audit = json.loads(
+                (root / ".site" / "unavailable-documentation.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(audit["schema_version"], 1)
+            self.assertEqual(len(audit["entries"]), 1)
+            self.assertGreaterEqual(audit["replacement_count"], 1)
+            self.assertTrue(
+                audit["entries"][0]["documentation_href"].endswith("/Unavailable.html")
+            )
+
     def test_pages_verifier_accepts_single_page_verso_project(self) -> None:
         project = {
             "kind": "papers",
@@ -548,9 +851,7 @@ class RepositoryScriptTests(unittest.TestCase):
             site = root / ".site"
             pages = site / "sites" / "demopaper" / "pages"
             project_docs = site / "sites" / "demopaper" / "docs"
-            canonical_docs = (
-                site / "docs" / "ReasBook" / "Papers" / "DemoPaper"
-            )
+            canonical_docs = site / "docs" / "ReasBook" / "Papers" / "DemoPaper"
             (site / "docs" / "ReasBook" / "Books").mkdir(parents=True)
             pages.mkdir(parents=True)
             project_docs.mkdir(parents=True)
@@ -648,9 +949,7 @@ class RepositoryScriptTests(unittest.TestCase):
             root = Path(temp)
             docs = root / ".artifacts" / "monolith" / "docs" / "ReasBook"
             (docs / "DemoTheory").mkdir(parents=True)
-            (docs / "DemoTheory" / "Lemma.html").write_text(
-                "lemma", encoding="utf-8"
-            )
+            (docs / "DemoTheory" / "Lemma.html").write_text("lemma", encoding="utf-8")
             (docs / "DemoTheory.html").write_text("paper", encoding="utf-8")
 
             values = {"PROJECTS_JSON": json.dumps([project])}
@@ -701,12 +1000,7 @@ class RepositoryScriptTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             repo = Path(temp) / "checkout"
             docs = (
-                repo
-                / "ReasBook"
-                / ".lake"
-                / "build"
-                / "reasbook-project-docs"
-                / "doc"
+                repo / "ReasBook" / ".lake" / "build" / "reasbook-project-docs" / "doc"
             )
             site = repo / "ReasBookWeb" / "_site"
             project_docs = docs / "Books" / "DemoBook"
@@ -727,12 +1021,7 @@ class RepositoryScriptTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertTrue(
                 (
-                    site
-                    / "docs"
-                    / "ReasBook"
-                    / "Books"
-                    / "DemoBook"
-                    / "Book.html"
+                    site / "docs" / "ReasBook" / "Books" / "DemoBook" / "Book.html"
                 ).is_file()
             )
             self.assertEqual((site / "keep.txt").read_text(encoding="utf-8"), "keep")
@@ -741,12 +1030,7 @@ class RepositoryScriptTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             repo = Path(temp) / "checkout"
             docs = (
-                repo
-                / "ReasBook"
-                / ".lake"
-                / "build"
-                / "reasbook-project-docs"
-                / "doc"
+                repo / "ReasBook" / ".lake" / "build" / "reasbook-project-docs" / "doc"
             )
             site = repo / "ReasBookWeb" / "_site"
             project_docs = docs / "DemoBook"

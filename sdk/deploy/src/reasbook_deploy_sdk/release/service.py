@@ -256,7 +256,9 @@ class StaticReleaseService:
                     policy=pages_policy,
                 )
                 if pages is None:
-                    PagesSiteProjector().project(
+                    PagesSiteProjector(
+                        max_site_bytes=pages_policy.max_site_bytes
+                    ).project(
                         context.spec,
                         context.layout.site,
                         context.layout.pages_site,
