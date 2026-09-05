@@ -12,6 +12,11 @@ Significant user-facing and release-engineering changes are recorded here.
   cache.
 - Project-scoped Verso fragments and two-barrier branch assembly for running
   independent books and papers concurrently.
+- Compact, source-derived Verso readers for books and papers organized as
+  declaration-per-file item modules, plus generated indexes for imports-only
+  paper sections whose content lives in part modules.
+- A release acceptance gate that rejects required Verso outputs which contain
+  only an empty generated shell.
 - Immutable GitHub Release to GitHub Pages publication workflow.
 
 ### Changed
@@ -21,6 +26,10 @@ Significant user-facing and release-engineering changes are recorded here.
   lightweight placeholders only for external dependencies. Its operational
   site budget is 920 MB with an independent 1 GB hard gate; the full historical
   site remains unchanged for self-hosting.
+- Book titles may come from a safe top-level `book.yml`/`book.yaml` scalar, and
+  generated book, paper-item, and paper-section routes are included in fragment
+  ownership manifests without turning every item into a Verso compilation
+  target or expanding the sidebar with thousands of item names.
 - Repository scripts are thin project adapters while reusable behavior lives
   in the SDK packages.
 

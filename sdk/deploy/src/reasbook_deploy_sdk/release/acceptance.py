@@ -12,17 +12,19 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import datetime, timezone
 import hashlib
+from html.parser import HTMLParser
 import importlib
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
 import time
 from typing import Any, Iterator
 from urllib.error import HTTPError, URLError
-from urllib.parse import urlsplit
+from urllib.parse import unquote, urljoin, urlsplit
 from urllib.request import HTTPRedirectHandler, Request, build_opener, urlopen
 import uuid
 
@@ -54,6 +56,204 @@ from .tooling import (
 
 _BROWSER_MODES = {"auto", "required", "skip"}
 _PRODUCTION_ROUTING_MODE = "strict"
+_VERSO_EMPTY_MARKERS = (
+    "no separate reading sections are published for this version.",
+    "directory: no section modules discovered yet.",
+    "todo: no chapter/section modules discovered yet",
+    "todo: no section modules discovered yet",
+)
+_VERSO_EMPTY_ATTRIBUTE_RE = re.compile(
+    r"""\bdata-reasbook-verso-empty\s*=\s*(?:
+        "\s*true\s*"
+        |'\s*true\s*'
+        |true(?=[\s/>])
+    )""",
+    flags=re.IGNORECASE | re.VERBOSE,
+)
+_VERSO_DIRECTORY_LABELS = {
+    "chapter index",
+    "directory",
+    "section index",
+}
+_VERSO_MAX_LINK_DEPTH = 12
+_VERSO_VISITING = 1
+_VERSO_VALIDATED = 2
+_META_REFRESH_RE = re.compile(
+    r"^\s*(?P<delay>\d+(?:\.\d+)?)\s*;\s*url\s*=\s*(?P<target>.*?)\s*$",
+    flags=re.IGNORECASE,
+)
+
+
+class _VersoReadableContent(Exception):
+    """Internal parser short-circuit after proving a non-root content leaf."""
+
+
+class _VersoContentProbe(HTMLParser):
+    """Collect standalone reading prose from the rendered Verso article."""
+
+    _READABLE_TAGS = {"blockquote", "figure", "p", "pre", "table"}
+    _HIDDEN_TAGS = {"nav", "script", "style", "template"}
+    _VOID_TAGS = {
+        "area",
+        "base",
+        "br",
+        "col",
+        "embed",
+        "hr",
+        "img",
+        "input",
+        "link",
+        "meta",
+        "param",
+        "source",
+        "track",
+        "wbr",
+    }
+    _HIDDEN_STYLE_RE = re.compile(
+        r"(?:^|;)\s*(?:display\s*:\s*none|visibility\s*:\s*hidden)"
+        r"\s*(?:!important\s*)?(?:;|$)",
+        flags=re.IGNORECASE,
+    )
+
+    def __init__(self, *, stop_after_readable: bool = False) -> None:
+        super().__init__(convert_charrefs=True)
+        # Verso's generated wrapper changed across supported Lean branches.
+        # Newer output uses ``article``; older output uses a ``div`` carrying
+        # ``role="main"``.  The element stack keeps both the content-root
+        # lifetime and inherited hidden state correct across nested elements,
+        # including nested elements with the same tag name.
+        self._content_root_tag: str | None = None
+        self._element_stack: list[tuple[str, bool]] = []
+        self._hidden_depth = 0
+        self._list_depth = 0
+        self._readable_depth = 0
+        self._current: list[str] = []
+        self.paragraphs: list[str] = []
+        self.links: list[str] = []
+        self.anchors: list[str] = []
+        self.refresh_meta_count = 0
+        self.refreshes: list[tuple[float, str]] = []
+        self.explicitly_empty = False
+        self.standalone = False
+        self._stop_after_readable = stop_after_readable
+
+    def handle_starttag(
+        self,
+        tag: str,
+        attrs: list[tuple[str, str | None]],
+    ) -> None:
+        tag = tag.lower()
+        normalized_attrs = {
+            name.casefold(): (value or "").strip().casefold() for name, value in attrs
+        }
+        exact_attrs = {name.casefold(): value or "" for name, value in attrs}
+        self.explicitly_empty |= (
+            normalized_attrs.get("data-reasbook-verso-empty") == "true"
+        )
+        self.standalone |= (
+            normalized_attrs.get("data-reasbook-verso-standalone") == "true"
+        )
+        if tag == "meta" and normalized_attrs.get("http-equiv") == "refresh":
+            self.refresh_meta_count += 1
+            match = _META_REFRESH_RE.fullmatch(exact_attrs.get("content", ""))
+            if match and match.group("target"):
+                target = match.group("target").strip("\"'")
+                if target:
+                    self.refreshes.append((float(match.group("delay")), target))
+        if tag == "a" and exact_attrs.get("href"):
+            self.anchors.append(exact_attrs["href"])
+        starts_hidden_scope = (
+            tag in self._HIDDEN_TAGS
+            or "hidden" in normalized_attrs
+            or normalized_attrs.get("aria-hidden") == "true"
+            or self._HIDDEN_STYLE_RE.search(exact_attrs.get("style", "")) is not None
+        )
+        if self._content_root_tag is None:
+            if tag in {"article", "main"} or normalized_attrs.get("role") == "main":
+                self._content_root_tag = tag
+                self._push_element(tag, starts_hidden_scope)
+            return
+        self._push_element(tag, starts_hidden_scope)
+        if self._hidden_depth:
+            return
+        if tag == "a":
+            href = exact_attrs.get("href")
+            if href:
+                self.links.append(href)
+        if tag in {"ol", "ul"}:
+            self._list_depth += 1
+        if tag in self._READABLE_TAGS and not self._list_depth:
+            if not self._readable_depth:
+                self._current = []
+            self._readable_depth += 1
+
+    def handle_endtag(self, tag: str) -> None:
+        tag = tag.lower()
+        if self._content_root_tag is None:
+            return
+        if tag in self._VOID_TAGS:
+            return
+        was_hidden = bool(self._hidden_depth)
+        try:
+            if not was_hidden:
+                if tag in self._READABLE_TAGS and self._readable_depth:
+                    self._readable_depth -= 1
+                    if not self._readable_depth:
+                        text = " ".join(" ".join(self._current).split())
+                        if text:
+                            self.paragraphs.append(text)
+                            normalized = text.casefold().strip(" .:-")
+                            if (
+                                self._stop_after_readable
+                                and normalized
+                                and normalized not in _VERSO_DIRECTORY_LABELS
+                            ):
+                                raise _VersoReadableContent
+                        self._current = []
+                if tag in {"ol", "ul"}:
+                    self._list_depth = max(0, self._list_depth - 1)
+        finally:
+            self._pop_element(tag)
+
+    def _push_element(self, tag: str, starts_hidden_scope: bool) -> None:
+        """Record one non-void element and its contribution to hidden state."""
+
+        if tag in self._VOID_TAGS:
+            return
+        self._element_stack.append((tag, starts_hidden_scope))
+        if starts_hidden_scope:
+            self._hidden_depth += 1
+
+    def _pop_element(self, tag: str) -> None:
+        """Close the innermost matching element without losing hidden ancestry."""
+
+        match = next(
+            (
+                index
+                for index in range(len(self._element_stack) - 1, -1, -1)
+                if self._element_stack[index][0] == tag
+            ),
+            None,
+        )
+        if match is None:
+            return
+        removed = self._element_stack[match:]
+        del self._element_stack[match:]
+        self._hidden_depth = max(
+            0,
+            self._hidden_depth - sum(1 for _removed_tag, hidden in removed if hidden),
+        )
+        if not self._element_stack:
+            self._content_root_tag = None
+
+    def handle_data(self, data: str) -> None:
+        if (
+            self._content_root_tag is not None
+            and not self._hidden_depth
+            and self._readable_depth
+            and not self._list_depth
+        ):
+            self._current.append(data)
 
 
 @dataclass(frozen=True)
@@ -396,12 +596,12 @@ class ReleaseAcceptanceRunner:
             route = self.spec.base_path + relative.as_posix().lstrip("/")
             routes.append(_Route(kind, route))
 
-        def add_first_directory(kind: str, candidates: tuple[Path, ...]) -> None:
+        def add_first_directory(kind: str, candidates: tuple[Path, ...]) -> Path:
             for relative in candidates:
                 index = site / relative / "index.html"
                 if index.is_file() and not index.is_symlink():
                     add_required_directory(kind, relative)
-                    return
+                    return relative
             rendered = ", ".join(f"{relative.as_posix()}/" for relative in candidates)
             raise DeployExecutionError(
                 f"{kind} route has no regular index in: {rendered}"
@@ -441,6 +641,24 @@ class ReleaseAcceptanceRunner:
             verso = site / project_root / "pages" / "index.html"
             if self._requires_verso(project):
                 add_required_directory("verso", project_root / "pages")
+                if artifact == "pages":
+                    direct_verso = add_first_directory(
+                        "canonical-verso-target",
+                        self._direct_verso_roots(project),
+                    )
+                    self._validate_verso_adapter(
+                        site,
+                        project_root / "pages",
+                        direct_verso,
+                        project,
+                    )
+                    self._validate_verso_content(site, direct_verso, project)
+                elif not self.spec.include_historical_versions:
+                    direct_verso = add_first_directory(
+                        "canonical-verso-target",
+                        self._direct_verso_roots(project),
+                    )
+                    self._validate_verso_content(site, direct_verso, project)
             elif verso.is_file() and not verso.is_symlink():
                 # Exercise an optional page when a formerly exempt project
                 # starts publishing one, without treating it as required yet.
@@ -459,14 +677,15 @@ class ReleaseAcceptanceRunner:
             )
             for project in projects:
                 version_root = Path("versions") / project.branch
-                if self._requires_verso(project):
-                    add_first_directory(
+                if self._requires_verso(project) and artifact == "full":
+                    direct_verso = add_first_directory(
                         "version-verso",
                         (
                             version_root / project.kind / project.slug,
                             version_root / project.slug,
                         ),
                     )
+                    self._validate_verso_content(site, direct_verso, project)
                 if "docs" in project.outputs:
                     kind_title = "Books" if project.kind == "books" else "Papers"
                     leaf = "Book.html" if project.kind == "books" else "Paper.html"
@@ -509,6 +728,313 @@ class ReleaseAcceptanceRunner:
             "verso" in project.outputs
             and (project.key, project.branch) not in self.verso_exemptions
         )
+
+    def _direct_verso_roots(self, project: ProjectSpec) -> tuple[Path, ...]:
+        prefix = (
+            Path("versions") / project.branch
+            if self.spec.include_historical_versions
+            else Path()
+        )
+        return (
+            prefix / project.kind / project.slug,
+            prefix / project.slug,
+        )
+
+    def _validate_verso_adapter(
+        self,
+        site: Path,
+        adapter: Path,
+        direct: Path,
+        project: ProjectSpec,
+    ) -> None:
+        """Bind the canonical Pages adapter to its immutable direct route."""
+
+        page = adapter / "index.html"
+        _, probe = self._read_verso_page(site / page, project)
+        expected = direct / "index.html"
+        if (
+            probe.refresh_meta_count != 1
+            or len(probe.refreshes) != 1
+            or probe.refreshes[0][0] != 0
+        ):
+            raise DeployExecutionError(
+                "canonical Verso adapter must contain exactly one valid "
+                f"zero-second meta refresh for {project.key}@{project.branch}"
+            )
+        refresh = self._local_html_target(site, page, probe.refreshes[0][1])
+        if refresh != expected:
+            raise DeployExecutionError(
+                "canonical Verso adapter refresh does not target "
+                f"{direct.as_posix()}/ for {project.key}@{project.branch}"
+            )
+        if not any(
+            self._local_html_target(site, page, href) == expected
+            for href in probe.anchors
+        ):
+            raise DeployExecutionError(
+                "canonical Verso adapter has no anchor targeting "
+                f"{direct.as_posix()}/ for {project.key}@{project.branch}"
+            )
+        if expected.is_absolute() or (site / expected).is_symlink():
+            raise DeployExecutionError(
+                f"canonical Verso adapter target is unsafe: {expected}"
+            )
+        if not (site / expected).is_file():
+            raise DeployExecutionError(
+                f"canonical Verso adapter target does not exist: {expected}"
+            )
+
+    def _validate_verso_content(
+        self,
+        site: Path,
+        relative: Path,
+        project: ProjectSpec,
+    ) -> None:
+        """Reject a generated Verso shell that has no readable project content.
+
+        ``sites/<slug>/pages`` is a canonical redirect adapter, so the content
+        contract is intentionally enforced on the direct route selected by
+        ``_routes``.  A normal book or paper has at least one chapter/section
+        route.  A deliberately single-page work must instead carry an explicit
+        standalone marker and prose inside ``article``, ``main``, or
+        ``role=main``.
+        """
+
+        self._validate_verso_page(
+            site,
+            relative / "index.html",
+            project,
+            states={},
+            depth=0,
+            is_root=True,
+        )
+
+    def _validate_verso_page(
+        self,
+        site: Path,
+        page: Path,
+        project: ProjectSpec,
+        *,
+        states: dict[Path, int],
+        depth: int,
+        is_root: bool,
+    ) -> None:
+        if depth > _VERSO_MAX_LINK_DEPTH:
+            raise DeployExecutionError(
+                "Verso content directory exceeds the maximum link depth for "
+                f"{project.key}@{project.branch}: {page.as_posix()}"
+            )
+        state = states.get(page)
+        if state == _VERSO_VALIDATED:
+            return
+        if state == _VERSO_VISITING:
+            raise DeployExecutionError(
+                "Verso content directory contains a redirect cycle for "
+                f"{project.key}@{project.branch}: {page.as_posix()}"
+            )
+        states[page] = _VERSO_VISITING
+
+        payload, probe = self._read_verso_page(
+            site / page,
+            project,
+            stop_after_readable=not is_root,
+        )
+        folded_payload = payload.casefold()
+        marker = (
+            "data-reasbook-verso-empty=true"
+            if _VERSO_EMPTY_ATTRIBUTE_RE.search(payload)
+            else next(
+                (item for item in _VERSO_EMPTY_MARKERS if item in folded_payload),
+                None,
+            )
+        )
+        if marker is not None or probe.explicitly_empty:
+            raise DeployExecutionError(
+                "version-verso is an explicit empty shell for "
+                f"{project.key}@{project.branch}: "
+                f"{marker or 'data-reasbook-verso-empty'}"
+            )
+
+        readable = any(
+            (normalized := paragraph.casefold().strip(" .:-"))
+            and normalized not in _VERSO_DIRECTORY_LABELS
+            for paragraph in probe.paragraphs
+        )
+        if probe.refresh_meta_count:
+            if (
+                probe.refresh_meta_count != 1
+                or len(probe.refreshes) != 1
+                or probe.refreshes[0][0] != 0
+            ):
+                raise DeployExecutionError(
+                    "Verso content redirect is not a single zero-second "
+                    f"refresh: {page.as_posix()}"
+                )
+            target = self._project_verso_target(
+                site,
+                page,
+                project,
+                probe.refreshes[0][1],
+            )
+            if target is None or not any(
+                self._project_verso_target(site, page, project, href) == target
+                for href in probe.anchors
+            ):
+                raise DeployExecutionError(
+                    "Verso content redirect has no matching project anchor: "
+                    f"{page.as_posix()}"
+                )
+            self._validate_verso_page(
+                site,
+                target,
+                project,
+                states=states,
+                depth=depth + 1,
+                is_root=is_root,
+            )
+            states[page] = _VERSO_VALIDATED
+            return
+
+        # Rendered theorem/definition pages contain many cross-links into the
+        # same project.  Once a non-root page has real prose it is a content
+        # leaf for this gate; walking those ordinary links turns a shared DAG
+        # into exponential repeated work and adds no stronger evidence.
+        if readable and not is_root:
+            states[page] = _VERSO_VALIDATED
+            return
+        if readable and probe.standalone:
+            states[page] = _VERSO_VALIDATED
+            return
+
+        children = {
+            target
+            for href in probe.links
+            if (
+                target := self._project_verso_target(
+                    site,
+                    page,
+                    project,
+                    href,
+                )
+            )
+            is not None
+            and target != page
+            # Ordinary content links commonly include a Book home backlink.
+            # They are not redirect edges, so ignore a grey ancestor rather
+            # than reporting a cycle.  With no remaining forward child the
+            # directory still falls through to the empty-leaf failure below.
+            and states.get(target) != _VERSO_VISITING
+        }
+        if children:
+            for child in sorted(children, key=lambda item: item.as_posix()):
+                self._validate_verso_page(
+                    site,
+                    child,
+                    project,
+                    states=states,
+                    depth=depth + 1,
+                    is_root=False,
+                )
+            states[page] = _VERSO_VALIDATED
+            return
+
+        detail = "explicit standalone marker and readable prose" if is_root else "prose"
+        raise DeployExecutionError(
+            "version-verso has no readable chapter, section, or standalone "
+            f"content for {project.key}@{project.branch}: {page.as_posix()} "
+            f"(leaf requires {detail})"
+        )
+
+    def _read_verso_page(
+        self,
+        page: Path,
+        project: ProjectSpec,
+        *,
+        stop_after_readable: bool = False,
+    ) -> tuple[str, _VersoContentProbe]:
+        if page.is_symlink() or not page.is_file():
+            raise DeployExecutionError(
+                "Verso content page is not a regular file for "
+                f"{project.key}@{project.branch}: {page}"
+            )
+        try:
+            payload = page.read_text(encoding="utf-8")
+        except (OSError, UnicodeError) as exc:
+            raise DeployExecutionError(
+                "Verso content page cannot be read for "
+                f"{project.key}@{project.branch}: {page}"
+            ) from exc
+        if "<html" not in payload.casefold():
+            raise DeployExecutionError(
+                "Verso content page is not HTML for "
+                f"{project.key}@{project.branch}: {page}"
+            )
+        # A redirect must be parsed in full.  Ordinary content pages can stop
+        # at their first real prose block; the raw empty markers were already
+        # retained in ``payload`` for the caller's fail-closed check.
+        can_short_circuit = (
+            stop_after_readable and "http-equiv" not in payload.casefold()
+        )
+        probe = _VersoContentProbe(stop_after_readable=can_short_circuit)
+        try:
+            probe.feed(payload)
+            probe.close()
+        except _VersoReadableContent:
+            pass
+        except (UnicodeError, ValueError) as exc:
+            raise DeployExecutionError(
+                "Verso content page is invalid HTML for "
+                f"{project.key}@{project.branch}: {page}"
+            ) from exc
+        return payload, probe
+
+    def _project_verso_target(
+        self,
+        site: Path,
+        page: Path,
+        project: ProjectSpec,
+        href: str,
+    ) -> Path | None:
+        target = self._local_html_target(site, page, href)
+        if target is None:
+            return None
+        for scope in self._direct_verso_roots(project):
+            try:
+                target.relative_to(scope)
+            except ValueError:
+                continue
+            return target
+        return None
+
+    def _local_html_target(
+        self,
+        site: Path,
+        page: Path,
+        href: str,
+    ) -> Path | None:
+        route = self.spec.base_path + page.as_posix().lstrip("/")
+        try:
+            parsed = urlsplit(urljoin(route, href))
+        except ValueError:
+            return None
+        if (
+            parsed.scheme
+            or parsed.netloc
+            or not parsed.path.startswith(self.spec.base_path)
+        ):
+            return None
+        candidate = Path(unquote(parsed.path[len(self.spec.base_path) :]).lstrip("/"))
+        if candidate.is_absolute() or ".." in candidate.parts:
+            return None
+        if parsed.path.endswith("/") or not candidate.suffix:
+            candidate /= "index.html"
+        elif candidate.suffix.casefold() not in {".htm", ".html"}:
+            return None
+        # ``site`` is intentionally part of the signature: callers resolve
+        # only against the extracted artifact, never the checkout filesystem.
+        if (site / candidate).is_symlink():
+            return None
+        return candidate
 
     def _load_bound_verso_exemptions(self) -> frozenset[tuple[str, str]]:
         """Read capabilities only from tooling bound to this ReleaseSpec.
