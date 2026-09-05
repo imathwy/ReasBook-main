@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from contextlib import contextmanager
+from contextlib import closing, contextmanager
 from dataclasses import dataclass
 import fcntl
 import hashlib
@@ -1397,20 +1397,21 @@ class ProjectDocumentationBuilder:
             )
         expected = {module for module, _url in module_urls}
         try:
-            with sqlite3.connect(database) as connection:
-                rows = connection.execute("SELECT name FROM modules").fetchall()
-                actual = {str(row[0]) for row in rows}
-                if actual != expected:
-                    missing = sorted(expected - actual)
-                    unexpected = sorted(actual - expected)
-                    raise BuildFailed(
-                        "documentation database module mismatch"
-                        f"; missing={missing[:10]}; unexpected={unexpected[:10]}"
+            with closing(sqlite3.connect(database)) as connection:
+                with connection:
+                    rows = connection.execute("SELECT name FROM modules").fetchall()
+                    actual = {str(row[0]) for row in rows}
+                    if actual != expected:
+                        missing = sorted(expected - actual)
+                        unexpected = sorted(actual - expected)
+                        raise BuildFailed(
+                            "documentation database module mismatch"
+                            f"; missing={missing[:10]}; unexpected={unexpected[:10]}"
+                        )
+                    connection.executemany(
+                        "UPDATE modules SET source_url = ? WHERE name = ?",
+                        ((url, module) for module, url in module_urls),
                     )
-                connection.executemany(
-                    "UPDATE modules SET source_url = ? WHERE name = ?",
-                    ((url, module) for module, url in module_urls),
-                )
         except sqlite3.Error as exc:
             raise BuildFailed(f"cannot update documentation database: {exc}") from exc
 
@@ -1820,8 +1821,8 @@ class ProjectDocumentationBuilder:
             raise BuildFailed(f"documentation analysis database is unsafe: {database}")
         try:
             suffix = "?mode=ro" + ("&immutable=1" if immutable else "")
-            with sqlite3.connect(
-                database.resolve().as_uri() + suffix, uri=True
+            with closing(
+                sqlite3.connect(database.resolve().as_uri() + suffix, uri=True)
             ) as connection:
                 check = connection.execute("PRAGMA quick_check").fetchone()
                 if check != ("ok",):
@@ -1901,18 +1902,19 @@ class ProjectDocumentationBuilder:
         if source.is_symlink() or not source.is_file() or destination.exists():
             raise BuildFailed(f"documentation analysis database is unsafe: {source}")
         try:
-            with sqlite3.connect(
-                source.resolve().as_uri() + "?mode=ro", uri=True
+            with closing(
+                sqlite3.connect(source.resolve().as_uri() + "?mode=ro", uri=True)
             ) as source_connection:
-                with sqlite3.connect(destination) as destination_connection:
-                    source_connection.backup(destination_connection)
-                    journal_mode = destination_connection.execute(
-                        "PRAGMA journal_mode=DELETE"
-                    ).fetchone()
-                    if journal_mode != ("delete",):
-                        raise BuildFailed(
-                            "cannot make documentation analysis snapshot standalone"
-                        )
+                with closing(sqlite3.connect(destination)) as destination_connection:
+                    with destination_connection:
+                        source_connection.backup(destination_connection)
+                        journal_mode = destination_connection.execute(
+                            "PRAGMA journal_mode=DELETE"
+                        ).fetchone()
+                        if journal_mode != ("delete",):
+                            raise BuildFailed(
+                                "cannot make documentation analysis snapshot standalone"
+                            )
         except sqlite3.Error as exc:
             raise BuildFailed(
                 f"cannot snapshot documentation analysis database: {exc}"
