@@ -40,15 +40,32 @@ from reasbook_deploy_sdk.release.store import ReleaseLayout, ReleaseStore
 from reasbook_deploy_sdk.release.service import StaticReleaseService
 from reasbook_deploy_sdk.release.tooling import (
     bind_tooling_revision,
-    tooling_source_digest,
 )
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-TOOLING_DIGEST = tooling_source_digest(REPO_ROOT)
+# Acceptance behavior is exercised against synthetic release fixtures below.
+# Give those fixtures an explicit tooling identity instead of hashing the test
+# checkout at import time: a source archive intentionally excludes the ignored
+# SiFlow operations adapter, while production tooling snapshots fail closed if
+# any required entry is absent.
+TOOLING_DIGEST = "e" * 64
 
 
 class ReleaseAcceptanceTests(unittest.TestCase):
+    def setUp(self) -> None:
+        # ReleaseAcceptanceRunner receives its digest provider through the
+        # module boundary.  Most tests are about acceptance semantics rather
+        # than repository snapshot discovery, so bind them to the complete
+        # synthetic package identity created by _package().  The dedicated
+        # mismatch test overrides this provider with a different digest.
+        digest = patch(
+            "reasbook_deploy_sdk.release.acceptance.tooling_source_digest",
+            return_value=TOOLING_DIGEST,
+        )
+        self.addCleanup(digest.stop)
+        digest.start()
+
     def _package(self, root: Path, *, base_path: str = "/ReasBook/"):
         at = datetime(2026, 9, 4, 12, 0, tzinfo=timezone.utc)
         branch = BranchSpec(
