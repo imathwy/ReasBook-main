@@ -493,6 +493,8 @@ class ProjectDocumentationBuilder:
                                             "-Kenv=dev",
                                             "env",
                                             "lean",
+                                            "-j",
+                                            "1",
                                             "-R",
                                             str(self._adapter("database").parent),
                                             *self._database_interpreter_args(
@@ -576,6 +578,8 @@ class ProjectDocumentationBuilder:
                                         "-Kenv=dev",
                                         "env",
                                         "lean",
+                                        "-j",
+                                        "1",
                                         "-R",
                                         str(self._adapter("legacy").parent),
                                         *self._legacy_interpreter_args(project_root),
