@@ -2169,7 +2169,14 @@ class ReleasePlanningTests(unittest.TestCase):
 
     def test_github_publisher_uploads_then_dispatches_pages(self) -> None:
         class FakeRunner:
-            def __init__(self, paths=(), *, head: str | None = None, status: str = ""):
+            def __init__(
+                self,
+                paths=(),
+                *,
+                head: str | None = None,
+                status: str = "",
+                hidden_draft: bool = False,
+            ):
                 self.commands = []
                 self.paths = paths
                 self.head = head or "d" * 40
@@ -2178,6 +2185,7 @@ class ReleasePlanningTests(unittest.TestCase):
                 self.release_created = False
                 self.release_uploaded = False
                 self.release_published = False
+                self.hidden_draft = hidden_draft
 
             def run(self, command):
                 self.commands.append(command)
@@ -2212,6 +2220,12 @@ class ReleasePlanningTests(unittest.TestCase):
                         )
                     if "/releases/tags/" in endpoint:
                         if self.release_created:
+                            if self.hidden_draft and not self.release_published:
+                                return CommandResult(
+                                    command=command,
+                                    returncode=1,
+                                    stderr="gh: Not Found (HTTP 404)",
+                                )
                             return CommandResult(
                                 command=command,
                                 returncode=0,
@@ -2236,6 +2250,51 @@ class ReleasePlanningTests(unittest.TestCase):
                             command=command,
                             returncode=1,
                             stderr="gh: Not Found (HTTP 404)",
+                        )
+                    if "/releases?per_page=100&page=" in endpoint:
+                        releases = []
+                        if (
+                            self.release_created
+                            and self.hidden_draft
+                            and not self.release_published
+                        ):
+                            releases.append(
+                                {
+                                    "id": 123,
+                                    "tag_name": (
+                                        "reasbook-site-20260901T140000Z-"
+                                        "aaaaaaaaaaaa"
+                                    ),
+                                    "draft": True,
+                                    "immutable": False,
+                                    "assets": github_release_assets(self.paths),
+                                }
+                            )
+                        return CommandResult(
+                            command=command,
+                            returncode=0,
+                            stdout=json.dumps(releases),
+                        )
+                    if endpoint.endswith("/releases/123") and method == "GET":
+                        return CommandResult(
+                            command=command,
+                            returncode=0,
+                            stdout=json.dumps(
+                                {
+                                    "id": 123,
+                                    "tag_name": (
+                                        "reasbook-site-20260901T140000Z-"
+                                        "aaaaaaaaaaaa"
+                                    ),
+                                    "draft": not self.release_published,
+                                    "immutable": self.release_published,
+                                    "assets": (
+                                        github_release_assets(self.paths)
+                                        if self.release_uploaded
+                                        else []
+                                    ),
+                                }
+                            ),
                         )
                     if endpoint.endswith("/releases") and method == "POST":
                         self.release_created = True
@@ -2320,6 +2379,10 @@ class ReleasePlanningTests(unittest.TestCase):
                         "repos/acme/reasbook/releases/tags/"
                         "reasbook-site-20260901T140000Z-aaaaaaaaaaaa",
                     ),
+                    (
+                        "api",
+                        "repos/acme/reasbook/releases?per_page=100&page=1",
+                    ),
                     ("repo", "view"),
                     ("api", "repos/acme/reasbook/commits/main"),
                     ("rev-parse", "HEAD"),
@@ -2344,8 +2407,7 @@ class ReleasePlanningTests(unittest.TestCase):
                     ("release", "upload"),
                     (
                         "api",
-                        "repos/acme/reasbook/releases/tags/"
-                        "reasbook-site-20260901T140000Z-aaaaaaaaaaaa",
+                        "repos/acme/reasbook/releases/123",
                     ),
                     (
                         "api",
@@ -2535,6 +2597,10 @@ class ReleasePlanningTests(unittest.TestCase):
                         "repos/acme/reasbook/releases/tags/"
                         "reasbook-site-20260901T140000Z-aaaaaaaaaaaa",
                     ),
+                    (
+                        "api",
+                        "repos/acme/reasbook/releases?per_page=100&page=1",
+                    ),
                     ("repo", "view"),
                     ("api", "repos/acme/reasbook/commits/main"),
                     ("rev-parse", "HEAD"),
@@ -2561,6 +2627,42 @@ class ReleasePlanningTests(unittest.TestCase):
                     for command in audit_runner.commands
                 )
             )
+
+            resumed_runner = FakeRunner(assets, hidden_draft=True)
+            resumed_runner.tag_exists = True
+            resumed_runner.release_created = True
+            resumed_runner.release_uploaded = True
+            resumed = GitHubReleasePublisher(
+                GitHubPublishProfile(repository="acme/reasbook"),
+                runner=resumed_runner,
+                expected_registry_commit="d" * 40,
+                expected_tooling_revision=(
+                    "d" * 40 + "+tooling-sha256:" + "e" * 64
+                ),
+                expected_release_set_sha256=release_set_sha256,
+            ).publish(bundle)
+            resumed_verbs = [
+                command.argv[1:3] for command in resumed_runner.commands
+            ]
+            self.assertEqual(resumed.status, "dispatched")
+            self.assertNotIn(("release", "upload"), resumed_verbs)
+            self.assertFalse(
+                any(
+                    command.argv[1:4] == ("api", "--method", "POST")
+                    and command.argv[4] == "repos/acme/reasbook/releases"
+                    for command in resumed_runner.commands
+                )
+            )
+            resumed_publish = next(
+                command
+                for command in resumed_runner.commands
+                if command.argv[1:4] == ("api", "--method", "PATCH")
+            )
+            self.assertEqual(
+                resumed_publish.argv[4],
+                "repos/acme/reasbook/releases/123",
+            )
+            self.assertIn(("workflow", "run"), resumed_verbs)
 
             dirty_runner = FakeRunner(assets, status=" M local-change.py\n")
             with self.assertRaisesRegex(DeployExecutionError, "clean Git"):
@@ -2651,6 +2753,29 @@ class ReleasePlanningTests(unittest.TestCase):
                         command=command,
                         returncode=1,
                         stderr="gh: Not Found (HTTP 404)",
+                    )
+                if "/releases?per_page=100&page=" in endpoint:
+                    return CommandResult(command=command, returncode=0, stdout="[]")
+                if endpoint.endswith("/releases/123") and method == "GET":
+                    return CommandResult(
+                        command=command,
+                        returncode=0,
+                        stdout=json.dumps(
+                            {
+                                "id": 123,
+                                "tag_name": (
+                                    "reasbook-site-20260901T140000Z-"
+                                    "aaaaaaaaaaaa"
+                                ),
+                                "draft": not self.release_published,
+                                "immutable": self.release_published,
+                                "assets": (
+                                    github_release_assets(self.paths)
+                                    if self.release_uploaded
+                                    else []
+                                ),
+                            }
+                        ),
                     )
                 if endpoint.endswith("/releases") and method == "POST":
                     self.release_created = True
@@ -2895,6 +3020,27 @@ class ReleasePlanningTests(unittest.TestCase):
                                 }
                             ),
                         )
+                    if endpoint.endswith("/releases/123"):
+                        return CommandResult(
+                            command=command,
+                            returncode=0,
+                            stdout=json.dumps(
+                                {
+                                    "id": 123,
+                                    "tag_name": (
+                                        "reasbook-site-20260901T140000Z-"
+                                        "aaaaaaaaaaaa"
+                                    ),
+                                    "draft": True,
+                                    "immutable": False,
+                                    "assets": (
+                                        github_release_assets(self.paths)
+                                        if self.release_uploaded
+                                        else []
+                                    ),
+                                }
+                            ),
+                        )
                     if "/git/ref/tags/" in endpoint:
                         self.tag_reads += 1
                         target = "c" * 40 if self.tag_reads == 1 else "d" * 40
@@ -2945,7 +3091,49 @@ class ReleasePlanningTests(unittest.TestCase):
             runner=FailedLookupRunner(),
         )
         with self.assertRaisesRegex(DeployExecutionError, "release lookup failed.*403"):
-            publisher._release_by_tag("reasbook-site-safe")
+            publisher._release_by_tag_including_drafts("reasbook-site-safe")
+
+    def test_github_release_lookup_recovers_exact_draft_hidden_by_tag_api(
+        self,
+    ) -> None:
+        tag = "reasbook-site-20260901T140000Z-aaaaaaaaaaaa"
+        draft = {
+            "id": 383249278,
+            "tag_name": tag,
+            "draft": True,
+            "immutable": False,
+            "assets": [],
+        }
+
+        class HiddenDraftRunner:
+            def __init__(self):
+                self.commands = []
+
+            def run(self, command):
+                self.commands.append(command)
+                endpoint = command.argv[2]
+                if "/releases/tags/" in endpoint:
+                    return CommandResult(
+                        command=command,
+                        returncode=1,
+                        stderr="gh: Not Found (HTTP 404)",
+                    )
+                if "/releases?per_page=100&page=1" in endpoint:
+                    return CommandResult(
+                        command=command,
+                        returncode=0,
+                        stdout=json.dumps([draft]),
+                    )
+                raise AssertionError(command.argv)
+
+        runner = HiddenDraftRunner()
+        publisher = GitHubReleasePublisher(
+            GitHubPublishProfile(repository="acme/reasbook"),
+            runner=runner,
+        )
+
+        self.assertEqual(publisher._release_by_tag_including_drafts(tag), draft)
+        self.assertEqual(len(runner.commands), 2)
 
     def test_github_rest_release_creation_adopts_only_an_observed_race(self) -> None:
         tag = "reasbook-site-20260901T140000Z-aaaaaaaaaaaa"
@@ -2982,6 +3170,23 @@ class ReleasePlanningTests(unittest.TestCase):
                                 "assets": [],
                             }
                         ),
+                    )
+                if "/releases?per_page=100&page=" in command.argv[2]:
+                    values = []
+                    if self.observed:
+                        values.append(
+                            {
+                                "id": 456,
+                                "tag_name": tag,
+                                "draft": True,
+                                "immutable": False,
+                                "assets": [],
+                            }
+                        )
+                    return CommandResult(
+                        command=command,
+                        returncode=0,
+                        stdout=json.dumps(values),
                     )
                 raise AssertionError(command.argv)
 
@@ -3062,6 +3267,65 @@ class ReleasePlanningTests(unittest.TestCase):
             self.assertEqual(verified, complete)
             self.assertEqual(runner.calls, 2)
             sleep.assert_called_once_with(1.0)
+
+    def test_github_draft_asset_verification_uses_known_release_id(self) -> None:
+        tag = "reasbook-site-20260901T140000Z-aaaaaaaaaaaa"
+
+        class DraftLookupRunner:
+            def __init__(self, release):
+                self.release = release
+                self.commands = []
+
+            def run(self, command):
+                self.commands.append(command)
+                endpoint = next(
+                    part for part in command.argv if part.startswith("repos/")
+                )
+                if "/releases/tags/" in endpoint:
+                    return CommandResult(
+                        command=command,
+                        returncode=1,
+                        stderr="gh: Not Found (HTTP 404)",
+                    )
+                if endpoint.endswith("/releases/383249278"):
+                    return CommandResult(
+                        command=command,
+                        returncode=0,
+                        stdout=json.dumps(self.release),
+                    )
+                raise AssertionError(command.argv)
+
+        with tempfile.TemporaryDirectory() as temp:
+            release_id = "site-20260901T140000Z-" + "a" * 12
+            _, paths = github_pages_bundle_fixture(Path(temp), release_id)
+            draft = {
+                "id": 383249278,
+                "tag_name": tag,
+                "draft": True,
+                "immutable": False,
+                "assets": github_release_assets(paths),
+            }
+            runner = DraftLookupRunner(draft)
+            publisher = GitHubReleasePublisher(
+                GitHubPublishProfile(repository="acme/reasbook"),
+                runner=runner,
+            )
+
+            verified = publisher._wait_for_complete_draft_assets(
+                tag,
+                draft,
+                tuple(paths),
+                publisher._snapshot_assets(tuple(paths)),
+            )
+
+            self.assertEqual(verified, draft)
+            self.assertEqual(len(runner.commands), 1)
+            self.assertTrue(
+                any(
+                    part.endswith("/releases/383249278")
+                    for part in runner.commands[0].argv
+                )
+            )
 
     def test_github_draft_asset_verification_fails_closed(self) -> None:
         tag = "reasbook-site-20260901T140000Z-aaaaaaaaaaaa"
@@ -3172,7 +3436,7 @@ class ReleasePlanningTests(unittest.TestCase):
                     if method == "DELETE":
                         self.release = {**self.release, "assets": []}
                         return CommandResult(command=command, returncode=0)
-                if "/releases/tags/" in endpoint:
+                if endpoint.endswith("/releases/123"):
                     return CommandResult(
                         command=command,
                         returncode=0,
