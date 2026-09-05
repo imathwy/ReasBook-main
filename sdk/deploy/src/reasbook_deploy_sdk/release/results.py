@@ -10,6 +10,9 @@ from typing import Any, Mapping
 from ..errors import DeployConfigError
 from .models import (
     ARTIFACT_NAME_RE,
+    BRANCH_RE,
+    COMMIT_RE,
+    PROJECT_KEY_RE,
     RELEASE_ID_RE,
     ReleaseSpec,
     SHA256_RE,
@@ -86,6 +89,106 @@ class BranchBuildResult:
             stages=tuple(StageOutcome.from_dict(item) for item in value["stages"]),
             error=str(value["error"]) if value.get("error") else None,
         )
+
+
+@dataclass(frozen=True)
+class ProjectBuildResult:
+    """Immutable evidence produced by one independently finalized project."""
+
+    project_key: str
+    branch: str
+    commit: str
+    status: str
+    site_root: str | None
+    stages: tuple[StageOutcome, ...]
+    site_tree_sha256: str | None = None
+    file_count: int = 0
+    total_bytes: int = 0
+    error: str | None = None
+
+    def __post_init__(self) -> None:
+        if not PROJECT_KEY_RE.fullmatch(self.project_key):
+            raise DeployConfigError(f"invalid project build key: {self.project_key!r}")
+        if not BRANCH_RE.fullmatch(self.branch):
+            raise DeployConfigError(f"invalid project build branch: {self.branch!r}")
+        if not COMMIT_RE.fullmatch(self.commit):
+            raise DeployConfigError(f"invalid project build commit: {self.commit!r}")
+        if self.status not in {"success", "failed"}:
+            raise DeployConfigError(f"invalid project build status: {self.status}")
+        if (
+            isinstance(self.file_count, bool)
+            or not isinstance(self.file_count, int)
+            or self.file_count < 0
+        ):
+            raise DeployConfigError("project build file_count must be non-negative")
+        if (
+            isinstance(self.total_bytes, bool)
+            or not isinstance(self.total_bytes, int)
+            or self.total_bytes < 0
+        ):
+            raise DeployConfigError("project build total_bytes must be non-negative")
+        if self.status == "success":
+            if not self.site_root:
+                raise DeployConfigError("successful project build has no site root")
+            if self.site_tree_sha256 is None or not SHA256_RE.fullmatch(
+                self.site_tree_sha256
+            ):
+                raise DeployConfigError(
+                    "successful project build has an invalid site digest"
+                )
+            if self.file_count < 1 or self.total_bytes < 1:
+                raise DeployConfigError(
+                    "successful project build site must contain files"
+                )
+        elif (
+            self.site_root is not None
+            or self.site_tree_sha256 is not None
+            or self.file_count != 0
+            or self.total_bytes != 0
+        ):
+            raise DeployConfigError(
+                "failed project build must not publish site artifact metadata"
+            )
+
+    @property
+    def succeeded(self) -> bool:
+        return self.status == "success"
+
+    def public_dict(self) -> dict[str, Any]:
+        return {
+            "project_key": self.project_key,
+            "branch": self.branch,
+            "commit": self.commit,
+            "status": self.status,
+            "site_root": self.site_root,
+            "site_tree_sha256": self.site_tree_sha256,
+            "file_count": self.file_count,
+            "total_bytes": self.total_bytes,
+            "stages": [stage.public_dict() for stage in self.stages],
+            "error": self.error,
+        }
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "ProjectBuildResult":
+        try:
+            return cls(
+                project_key=str(value["project_key"]),
+                branch=str(value["branch"]),
+                commit=str(value["commit"]),
+                status=str(value["status"]),
+                site_root=(str(value["site_root"]) if value.get("site_root") else None),
+                stages=tuple(StageOutcome.from_dict(item) for item in value["stages"]),
+                site_tree_sha256=(
+                    str(value["site_tree_sha256"])
+                    if value.get("site_tree_sha256")
+                    else None
+                ),
+                file_count=int(value.get("file_count", 0)),
+                total_bytes=int(value.get("total_bytes", 0)),
+                error=str(value["error"]) if value.get("error") else None,
+            )
+        except (KeyError, TypeError, ValueError) as exc:
+            raise DeployConfigError(f"invalid project build result: {exc}") from exc
 
 
 @dataclass(frozen=True)
@@ -456,8 +559,7 @@ class ReleaseSetManifest:
                 generated_at=str(value["generated_at"]),
                 artifact_policy_sha256=str(value["artifact_policy_sha256"]),
                 artifacts=tuple(
-                    ReleaseArtifactRecord.from_dict(item)
-                    for item in value["artifacts"]
+                    ReleaseArtifactRecord.from_dict(item) for item in value["artifacts"]
                 ),
             )
         except (KeyError, TypeError, ValueError) as exc:
@@ -487,9 +589,7 @@ class ReleasePackageResult:
                 record.bundle != Path(bundle.bundle).name
                 or record.bundle_sha256 != bundle.bundle_sha256
             ):
-                raise DeployConfigError(
-                    f"release set does not bind the {name} bundle"
-                )
+                raise DeployConfigError(f"release set does not bind the {name} bundle")
 
     def public_dict(self) -> dict[str, Any]:
         return {
@@ -505,6 +605,7 @@ class ReleasePackageResult:
 __all__ = [
     "BranchBuildResult",
     "BundleInfo",
+    "ProjectBuildResult",
     "ReleaseBuildReport",
     "ReleaseArtifactRecord",
     "ReleaseManifest",
