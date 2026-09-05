@@ -4,12 +4,15 @@ from __future__ import annotations
 
 import argparse
 import codecs
+from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures.process import BrokenProcessPool
 from contextlib import contextmanager
 import fcntl
 import hashlib
 import json
 import math
 import mmap
+from multiprocessing import get_context
 import os
 import platform
 import re
@@ -43,10 +46,9 @@ _JSON_WS_RE = re.compile(rb"[ \t\r\n]*")
 _JSON_STRING_RE = re.compile(
     rb'"(?:[^"\\\x00-\x1f]|\\(?:["\\/bfnrt]|u[0-9A-Fa-f]{4}))*"'
 )
-_JSON_NUMBER_RE = re.compile(
-    rb"-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?"
-)
+_JSON_NUMBER_RE = re.compile(rb"-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?")
 _MAX_JSON_DEPTH = 100_000
+_IGNORED_CONCURRENCY_ENV = frozenset({"LAKE_JOBS"})
 
 
 class LiterateCacheError(VersoBuildError):
@@ -227,6 +229,7 @@ class LiterateCacheBuilder:
         identity: LiterateCacheIdentity,
         lake_bin: str,
         jobs: int = 4,
+        validation_jobs: int = 1,
         chunk_size: int = 32,
         batch_timeout_seconds: float = 3600.0,
         adopt_existing: bool = False,
@@ -243,6 +246,9 @@ class LiterateCacheBuilder:
         self.identity = identity
         self.lake_bin = str(lake_bin)
         self.jobs = _positive_int(jobs, field="literate jobs", maximum=64)
+        self.validation_jobs = _positive_int(
+            validation_jobs, field="literate validation jobs", maximum=8
+        )
         self.chunk_size = _positive_int(
             chunk_size, field="literate chunk size", maximum=256
         )
@@ -286,9 +292,7 @@ class LiterateCacheBuilder:
             )
         self._assert_inputs_unchanged(modules)
         expected_identity = self.identity.public_dict()
-        marker_was_present = self._state_exists(
-            self.marker, label="completion marker"
-        )
+        marker_was_present = self._state_exists(self.marker, label="completion marker")
         progress_was_present = self._state_exists(
             self.progress, label="progress marker"
         )
@@ -308,8 +312,42 @@ class LiterateCacheBuilder:
                     "complete", True, len(modules), 0, 0, self.marker, self.identity
                 )
 
+        # A project finalizer often starts from a branch-finalizer cache whose
+        # marker covers the complete branch module set.  Replaying Lake merely
+        # because the requested ordered subset has another modules_sha256 is
+        # unnecessary.  Adopt only records from a marker/progress state whose
+        # complete source/toolchain/tooling identity is otherwise byte-for-byte
+        # equal, then revalidate every requested JSON/hash/trace artifact.
+        compatible: dict[str, LiterateArtifact] = {}
+        if self.adopt_existing:
+            compatible = self._validated_compatible_state(
+                modules, marker, expected_identity
+            )
+            if len(compatible) != len(modules):
+                progress_state = self._read_state(
+                    self.progress, label="progress marker"
+                )
+                progress_compatible = self._validated_compatible_state(
+                    modules, progress_state, expected_identity
+                )
+                compatible.update(progress_compatible)
+            if len(compatible) == len(modules):
+                self._assert_inputs_unchanged(modules)
+                artifacts = tuple(compatible[module] for module in modules)
+                payload = {
+                    "schema_version": _STATE_SCHEMA_VERSION,
+                    "identity": expected_identity,
+                    "artifacts": [item.public_dict() for item in artifacts],
+                }
+                self._write_state(self.marker, payload)
+                self._write_progress(modules, compatible, expected_identity)
+                return LiterateCacheResult(
+                    "complete", True, len(modules), 0, 0, self.marker, self.identity
+                )
+
         self._remove_regular_state(self.marker, label="completion marker")
         valid = self._validated_progress(modules, expected_identity)
+        valid.update(compatible)
         if (
             not valid
             and self.adopt_existing
@@ -329,8 +367,12 @@ class LiterateCacheBuilder:
         for start in range(0, len(pending), self.chunk_size):
             chunk = pending[start : start + self.chunk_size]
             self._run_batch(chunk)
-            for module in chunk:
-                valid[module] = self._validate_artifact(module)
+            batch_artifacts = self._validate_generated_artifacts(chunk)
+            if tuple(artifact.module for artifact in batch_artifacts) != tuple(chunk):
+                raise LiterateCacheError(
+                    "literate batch validation returned modules out of order"
+                )
+            valid.update({artifact.module: artifact for artifact in batch_artifacts})
             self._assert_inputs_unchanged(modules)
             batches += 1
             self._write_progress(modules, valid, expected_identity)
@@ -393,10 +435,11 @@ class LiterateCacheBuilder:
             )
         self.literate_root.mkdir(parents=True, exist_ok=True)
 
-    def _artifact_paths(self, module: str) -> tuple[Path, Path, Path]:
+    @staticmethod
+    def _artifact_paths_at(literate_root: Path, module: str) -> tuple[Path, Path, Path]:
         relative = Path(*module.split(".")).with_suffix(".json")
-        output = self.literate_root / relative
-        cursor = self.literate_root
+        output = literate_root / relative
+        cursor = literate_root
         for part in relative.parts[:-1]:
             cursor = cursor / part
             if cursor.is_symlink():
@@ -408,6 +451,9 @@ class LiterateCacheBuilder:
                     f"literate output parent is not a directory: {cursor}"
                 )
         return output, Path(f"{output}.hash"), Path(f"{output}.trace")
+
+    def _artifact_paths(self, module: str) -> tuple[Path, Path, Path]:
+        return self._artifact_paths_at(self.literate_root, module)
 
     @staticmethod
     def _regular_file(path: Path, *, label: str) -> os.stat_result:
@@ -572,26 +618,29 @@ class LiterateCacheBuilder:
             except (UnicodeDecodeError, json.JSONDecodeError) as exc:
                 raise LiterateCacheError(f"invalid literate JSON: {path}") from exc
             if not isinstance(value, list):
-                raise LiterateCacheError(
-                    f"literate JSON root must be an array: {path}"
-                )
+                raise LiterateCacheError(f"literate JSON root must be an array: {path}")
         else:
             LiterateCacheBuilder._validate_large_json_array(path)
         return digest.hexdigest()
 
-    def _validate_artifact(self, module: str) -> LiterateArtifact:
-        output, hash_path, trace_path = self._artifact_paths(module)
-        metadata = self._regular_file(output, label="literate JSON")
-        output_sha256 = self._inspect_literate_json(output, metadata)
+    @staticmethod
+    def _validate_artifact_at(literate_root: Path, module: str) -> LiterateArtifact:
+        output, hash_path, trace_path = LiterateCacheBuilder._artifact_paths_at(
+            literate_root, module
+        )
+        metadata = LiterateCacheBuilder._regular_file(output, label="literate JSON")
+        output_sha256 = LiterateCacheBuilder._inspect_literate_json(output, metadata)
 
         try:
-            lake_hash = self._read_small(hash_path, label="Lake hash").decode("ascii")
+            lake_hash = LiterateCacheBuilder._read_small(
+                hash_path, label="Lake hash"
+            ).decode("ascii")
         except (OSError, UnicodeDecodeError) as exc:
             raise LiterateCacheError(f"invalid Lake hash: {hash_path}") from exc
         if not _HEX_16_RE.fullmatch(lake_hash):
             raise LiterateCacheError(f"invalid Lake hash: {hash_path}")
 
-        trace_bytes = self._read_small(trace_path, label="Lake trace")
+        trace_bytes = LiterateCacheBuilder._read_small(trace_path, label="Lake trace")
         try:
             trace = json.loads(trace_bytes)
         except (UnicodeDecodeError, json.JSONDecodeError) as exc:
@@ -599,7 +648,7 @@ class LiterateCacheBuilder:
         if not isinstance(trace, dict):
             raise LiterateCacheError(f"Lake trace root must be an object: {trace_path}")
 
-        relative = output.relative_to(self.literate_root).as_posix()
+        relative = output.relative_to(literate_root).as_posix()
         return LiterateArtifact(
             module=module,
             path=relative,
@@ -608,6 +657,78 @@ class LiterateCacheBuilder:
             lake_hash=lake_hash,
             trace_sha256=hashlib.sha256(trace_bytes).hexdigest(),
         )
+
+    def _validate_artifact(self, module: str) -> LiterateArtifact:
+        return self._validate_artifact_at(self.literate_root, module)
+
+    def _artifact_size_hint(self, module: str) -> int:
+        """Return a non-authoritative scheduling hint without changing errors."""
+
+        relative = Path(*module.split(".")).with_suffix(".json")
+        cursor = self.literate_root
+        for part in relative.parts[:-1]:
+            cursor = cursor / part
+            try:
+                parent_metadata = cursor.lstat()
+            except OSError:
+                return 0
+            if stat.S_ISLNK(parent_metadata.st_mode) or not stat.S_ISDIR(
+                parent_metadata.st_mode
+            ):
+                return 0
+        try:
+            metadata = (self.literate_root / relative).lstat()
+        except OSError:
+            return 0
+        if stat.S_ISLNK(metadata.st_mode) or not stat.S_ISREG(metadata.st_mode):
+            return 0
+        return max(0, metadata.st_size)
+
+    def _validate_generated_artifacts(
+        self, modules: Sequence[str]
+    ) -> tuple[LiterateArtifact, ...]:
+        """Validate one completed Lake batch without advancing its checkpoint."""
+
+        if not modules:
+            raise LiterateCacheError("literate validation batch must contain a module")
+        size_hints = {module: self._artifact_size_hint(module) for module in modules}
+        worker_count = min(self.validation_jobs, len(modules))
+        print(
+            "[verso-literate] "
+            f"validate_targets={len(modules)} validation_workers={worker_count} "
+            f"bytes={sum(size_hints.values())}",
+            flush=True,
+        )
+        if worker_count == 1:
+            return tuple(self._validate_artifact(module) for module in modules)
+
+        # Submit large outputs first to reduce the tail from skewed generated
+        # JSON sizes. Consume futures in manifest order so the first reported
+        # artifact error remains deterministic and matches serial validation.
+        indexed_modules = tuple(enumerate(modules))
+        scheduled = sorted(
+            indexed_modules,
+            key=lambda item: (-size_hints[item[1]], item[0]),
+        )
+        executor = ProcessPoolExecutor(
+            max_workers=worker_count,
+            mp_context=get_context("spawn"),
+        )
+        futures = {}
+        try:
+            for _, module in scheduled:
+                futures[module] = executor.submit(
+                    _validate_artifact_process,
+                    str(self.literate_root),
+                    module,
+                )
+            return tuple(futures[module].result() for module in modules)
+        except BrokenProcessPool as exc:
+            raise LiterateCacheError(
+                "literate artifact validation worker pool failed"
+            ) from exc
+        finally:
+            executor.shutdown(wait=True, cancel_futures=True)
 
     def _artifact_from_record(self, module: str, raw: object) -> LiterateArtifact:
         output, _, _ = self._artifact_paths(module)
@@ -626,17 +747,13 @@ class LiterateCacheBuilder:
             raise LiterateCacheError(f"invalid artifact SHA-256 record for {module}")
         if not isinstance(lake_hash, str) or not _HEX_16_RE.fullmatch(lake_hash):
             raise LiterateCacheError(f"invalid Lake hash record for {module}")
-        if not isinstance(trace_sha256, str) or not _HEX_64_RE.fullmatch(
-            trace_sha256
-        ):
+        if not isinstance(trace_sha256, str) or not _HEX_64_RE.fullmatch(trace_sha256):
             raise LiterateCacheError(f"invalid trace SHA-256 record for {module}")
         return LiterateArtifact(
             module, expected_path, size, sha256, lake_hash, trace_sha256
         )
 
-    def _validate_recorded_artifact(
-        self, module: str, raw: object
-    ) -> LiterateArtifact:
+    def _validate_recorded_artifact(self, module: str, raw: object) -> LiterateArtifact:
         expected = self._artifact_from_record(module, raw)
         output, hash_path, trace_path = self._artifact_paths(module)
         metadata = self._regular_file(output, label="literate JSON")
@@ -707,9 +824,10 @@ class LiterateCacheBuilder:
 
     def _assert_inputs_unchanged(self, modules: Sequence[str]) -> None:
         current_modules = load_module_manifest(self.module_manifest)
-        if tuple(modules) != current_modules or _ordered_modules_digest(
-            current_modules
-        ) != self.identity.modules_sha256:
+        if (
+            tuple(modules) != current_modules
+            or _ordered_modules_digest(current_modules) != self.identity.modules_sha256
+        ):
             raise LiterateCacheError("literate module manifest changed during build")
         if _source_tree_digest(self.lean_root) != self.identity.source_tree_sha256:
             raise LiterateCacheError("Lean source tree changed during literate build")
@@ -751,6 +869,66 @@ class LiterateCacheBuilder:
         self._write_progress(modules, valid, expected_identity)
         return valid
 
+    def _validated_compatible_state(
+        self,
+        modules: Sequence[str],
+        state: Mapping[str, object] | None,
+        expected_identity: Mapping[str, object],
+    ) -> dict[str, LiterateArtifact]:
+        """Validate requested artifacts recorded by an exact-identity superset.
+
+        ``modules_sha256`` is the sole permitted identity difference.  The
+        current source tree and module manifest are independently rechecked by
+        the caller before publication.
+        """
+
+        if state is None:
+            return {}
+        raw_identity = state.get("identity")
+        if not isinstance(raw_identity, dict):
+            return {}
+        identity_without_modules = {
+            key: value for key, value in raw_identity.items() if key != "modules_sha256"
+        }
+        expected_without_modules = {
+            key: value
+            for key, value in expected_identity.items()
+            if key != "modules_sha256"
+        }
+        if (
+            set(raw_identity) != set(expected_identity)
+            or identity_without_modules != expected_without_modules
+            or raw_identity.get("modules_sha256")
+            == expected_identity.get("modules_sha256")
+        ):
+            return {}
+        records = state.get("artifacts")
+        if not isinstance(records, list):
+            return {}
+        requested = set(modules)
+        selected: dict[str, object] = {}
+        seen: set[str] = set()
+        for raw in records:
+            module = raw.get("module") if isinstance(raw, dict) else None
+            if not isinstance(module, str) or module in seen:
+                return {}
+            seen.add(module)
+            if module in requested:
+                selected[module] = raw
+        if set(selected) != requested:
+            return {}
+        valid: dict[str, LiterateArtifact] = {}
+        for module in modules:
+            try:
+                valid[module] = self._validate_recorded_artifact(
+                    module, selected[module]
+                )
+            except UnsafeLiterateCacheError:
+                raise
+            except LiterateCacheError:
+                self._remove_artifacts(module)
+        return valid
+
     def _adopt_existing_artifacts(
         self, modules: Sequence[str]
     ) -> dict[str, LiterateArtifact]:
@@ -780,12 +958,17 @@ class LiterateCacheBuilder:
         self._write_state(self.progress, payload)
 
     def _run_batch(self, modules: Sequence[str]) -> None:
+        if not modules:
+            raise LiterateCacheError("literate Lake batch must contain a module")
         environment = {
             key: value
             for key, value in self.environ.items()
-            if key not in LEAN_ENV_NAMES
+            if key not in LEAN_ENV_NAMES and key not in _IGNORED_CONCURRENCY_ENV
         }
-        environment["LAKE_JOBS"] = str(self.jobs)
+        # Lake is a generated Lean executable. Its runtime reads
+        # ``LEAN_NUM_THREADS`` when initializing the task manager, so this is
+        # the supported outer Job.async worker bound. Child compiler widths
+        # remain owned by the caller's package configuration.
         environment["LEAN_NUM_THREADS"] = str(self.jobs)
         command = Command(
             (self.lake_bin, "build", *(f"+{module}:literate" for module in modules)),
@@ -795,8 +978,9 @@ class LiterateCacheBuilder:
         )
         print(
             "[verso-literate] "
-            f"targets={len(modules)} jobs={self.jobs} first={modules[0]} "
-            f"last={modules[-1]}",
+            f"targets={len(modules)} lake_workers={self.jobs} "
+            "child_lean_threads=source-configured "
+            f"first={modules[0]} last={modules[-1]}",
             flush=True,
         )
         try:
@@ -837,6 +1021,12 @@ class LiterateCacheBuilder:
                 pass
             temporary.unlink(missing_ok=True)
             raise
+
+
+def _validate_artifact_process(literate_root: str, module: str) -> LiterateArtifact:
+    """Spawn-safe entry point for read-only generated artifact validation."""
+
+    return LiterateCacheBuilder._validate_artifact_at(Path(literate_root), module)
 
 
 def _git_value(root: Path, *args: str) -> str:
@@ -881,7 +1071,9 @@ def _source_tree_digest(lean_root: Path) -> str:
             selected.append(candidate)
 
     digest = hashlib.sha256()
-    for path in sorted(selected, key=lambda item: item.relative_to(lean_root).as_posix()):
+    for path in sorted(
+        selected, key=lambda item: item.relative_to(lean_root).as_posix()
+    ):
         relative = path.relative_to(lean_root).as_posix().encode("utf-8")
         digest.update(len(relative).to_bytes(8, "big"))
         digest.update(relative)
@@ -928,9 +1120,9 @@ def _default_identity(
             "REASBOOK_LAKE_MANIFEST_SHA256 does not match lake-manifest.json"
         )
     manifest_digest = manifest_digest or actual_manifest_digest
-    actual_toolchain = (lean_root / "lean-toolchain").read_text(
-        encoding="utf-8"
-    ).strip()
+    actual_toolchain = (
+        (lean_root / "lean-toolchain").read_text(encoding="utf-8").strip()
+    )
     toolchain = environ.get("VERSO_TOOLCHAIN") or actual_toolchain
     if toolchain != actual_toolchain:
         raise LiterateCacheError(
@@ -955,12 +1147,17 @@ def _default_identity(
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="verso-literate",
-        description="Populate and verify an identity-bound Verso literate cache."
+        description="Populate and verify an identity-bound Verso literate cache.",
     )
     parser.add_argument("--lean-root", type=Path, required=True)
     parser.add_argument("--module-manifest", type=Path, required=True)
     parser.add_argument("--lake-bin")
     parser.add_argument("--jobs", type=int)
+    parser.add_argument(
+        "--validation-jobs",
+        type=int,
+        help="spawned workers for read-only post-batch artifact validation (1-8)",
+    )
     parser.add_argument("--chunk-size", type=int)
     parser.add_argument("--batch-timeout-seconds", type=float)
     parser.add_argument(
@@ -987,6 +1184,11 @@ def main(argv: list[str] | None = None) -> int:
             jobs=args.jobs
             if args.jobs is not None
             else environ.get("REASBOOK_LITERATE_JOBS", "4"),
+            validation_jobs=(
+                args.validation_jobs
+                if args.validation_jobs is not None
+                else environ.get("REASBOOK_LITERATE_VALIDATION_JOBS", "1")
+            ),
             chunk_size=args.chunk_size
             if args.chunk_size is not None
             else environ.get("REASBOOK_LITERATE_CHUNK_SIZE", "32"),

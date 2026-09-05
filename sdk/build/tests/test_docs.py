@@ -759,6 +759,8 @@ class ProjectDocumentationTests(unittest.TestCase):
             ]
             self.assertEqual(verbs, ["batch", "index"])
             adapter = runner.commands[0].argv
+            lean = adapter.index("lean")
+            self.assertEqual(adapter[lean + 1 : lean + 3], ("-j", "1"))
             libraries = [
                 value.removeprefix("--load-dynlib=")
                 for value in adapter
@@ -896,6 +898,9 @@ class ProjectDocumentationTests(unittest.TestCase):
             ]
             self.assertEqual(len(result.pages), 131)
             self.assertEqual(len(adapter_commands), 2)
+            for command in adapter_commands:
+                lean = command.argv.index("lean")
+                self.assertEqual(command.argv[lean + 1 : lean + 3], ("-j", "1"))
 
     def test_local_lean_link_is_pinned_by_unique_reachable_owner(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

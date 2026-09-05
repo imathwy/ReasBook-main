@@ -13,6 +13,12 @@ from .literate import (
     UnsafeLiterateCacheError,
     load_module_manifest,
 )
+from .literate_fragments import (
+    LiterateFragmentIdentity,
+    assemble_fragments,
+    partition_modules,
+    publish_fragment,
+)
 from .project import VersoProject, discover_project
 from .runner import CommandResult, CommandRunner, SubprocessRunner
 
@@ -29,6 +35,7 @@ __all__ = [
     "LiterateCacheError",
     "LiterateCacheIdentity",
     "LiterateCacheResult",
+    "LiterateFragmentIdentity",
     "ProjectValidationError",
     "SubprocessRunner",
     "UnsafeLiterateCacheError",
@@ -38,8 +45,11 @@ __all__ = [
     "VersoBuilder",
     "VersoProject",
     "clean_environment",
+    "assemble_fragments",
     "discover_project",
     "lake_argv",
     "load_module_manifest",
     "pipeline",
+    "partition_modules",
+    "publish_fragment",
 ]

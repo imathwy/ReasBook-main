@@ -15,10 +15,12 @@ from pathlib import Path
 from typing import Iterable
 
 from site_config import (
+    PROJECT_FRAGMENT,
     SKIP_MODULES,
     SiteConfig,
     load_site_config,
     project_enabled,
+    validate_project_selection,
 )
 
 TOOLING_ROOT = Path(__file__).resolve().parents[2]
@@ -42,6 +44,7 @@ SITE_ROOT = SITE_CONFIG.site_root
 # ---------------------------------------------------------------------------
 # Configuration and source metadata
 # ---------------------------------------------------------------------------
+
 
 def write_text_if_changed(path: Path, content: str, *, log: bool = True) -> bool:
     old_content: str | None
@@ -302,6 +305,7 @@ PART_RE = re.compile(r"^part_?(\d+)$", re.IGNORECASE)
 # Entry discovery and naming
 # ---------------------------------------------------------------------------
 
+
 @dataclass(frozen=True)
 class Entry:
     category: str
@@ -432,7 +436,9 @@ def section_title_from_stem(stem: str) -> str:
 
 def entry_label(e: Entry) -> str:
     if e.category == "books":
-        section_titles = BOOK_SECTION_TITLES.get(e.book_or_paper, {}).get(e.chapter_num, {})
+        section_titles = BOOK_SECTION_TITLES.get(e.book_or_paper, {}).get(
+            e.chapter_num, {}
+        )
         if e.section_num in section_titles and e.part_num == 0:
             return section_titles[e.section_num]
     if e.category == "papers":
@@ -629,6 +635,7 @@ def published_site_link(route: str) -> str:
 # Source entry collection
 # ---------------------------------------------------------------------------
 
+
 def should_include_book(path: Path) -> bool:
     stem = path.stem.lower()
     if stem in SKIP_STEMS:
@@ -638,7 +645,9 @@ def should_include_book(path: Path) -> bool:
         return True
 
     parts_lower = [p.lower() for p in path.parts]
-    in_chapter_tree = any(CHAPTER_RE.match(p) for p in parts_lower) or (CHAPTER_RE.match(stem) is not None)
+    in_chapter_tree = any(CHAPTER_RE.match(p) for p in parts_lower) or (
+        CHAPTER_RE.match(stem) is not None
+    )
     if not in_chapter_tree:
         return False
 
@@ -744,6 +753,7 @@ def lean_string(s: str) -> str:
 # Lean and Web artifact rendering
 # ---------------------------------------------------------------------------
 
+
 def emit_literate_manifest(entries: list[Entry]) -> str:
     """Return the deterministic machine-readable input for literate caching."""
 
@@ -828,7 +838,11 @@ def emit_sections(entries: list[Entry]) -> str:
                 section["route"] = e.route
             else:
                 section["parts"].append(
-                    {"number": e.part_num, "title": f"Part {e.part_num}", "route": e.route}
+                    {
+                        "number": e.part_num,
+                        "title": f"Part {e.part_num}",
+                        "route": e.route,
+                    }
                 )
             continue
 
@@ -846,7 +860,8 @@ def emit_sections(entries: list[Entry]) -> str:
         if e.section_num not in sections:
             sections[e.section_num] = {
                 "number": e.section_num,
-                "title": entry_label(e) or section_title_from_stem(f"section{e.section_num:02d}"),
+                "title": entry_label(e)
+                or section_title_from_stem(f"section{e.section_num:02d}"),
                 "route": "",
                 "parts": [],
             }
@@ -855,7 +870,9 @@ def emit_sections(entries: list[Entry]) -> str:
             section["title"] = entry_label(e) or section["title"]
             section["route"] = e.route
         else:
-            section["parts"].append({"number": e.part_num, "title": f"Part {e.part_num}", "route": e.route})
+            section["parts"].append(
+                {"number": e.part_num, "title": f"Part {e.part_num}", "route": e.route}
+            )
 
     books_payload: list[dict] = []
     for book in sorted(books):
@@ -948,8 +965,12 @@ def emit_sections(entries: list[Entry]) -> str:
     lines.append("")
     lines.append(f"def siteRoot : String := {lean_string(SITE_ROOT)}")
     lines.append(f"def siteBase : String := {lean_string(SITE_ROOT)}")
-    lines.append(f"def docsRoot : String := {lean_string(local_site_link('docs/ReasBook/'))}")
-    lines.append(f"def staticRoot : String := {lean_string(local_site_link('static/style.css'))}")
+    lines.append(
+        f"def docsRoot : String := {lean_string(local_site_link('docs/ReasBook/'))}"
+    )
+    lines.append(
+        f"def staticRoot : String := {lean_string(local_site_link('static/style.css'))}"
+    )
     lines.append("")
     lines.append(f"def sidebarDataJson : String := {lean_string(sidebar_json)}")
     lines.append("")
@@ -1000,7 +1021,7 @@ def emit_route_table(entries: list[Entry]) -> str:
     lines.append("")
     lines.append("namespace ReasBookSite.RouteTable")
     lines.append("")
-    lines.append("scoped syntax \"reasbook_site_dir\" : dir_spec")
+    lines.append('scoped syntax "reasbook_site_dir" : dir_spec')
     lines.append("")
     lines.append("macro_rules")
     lines.append("  | `(dir_spec| reasbook_site_dir) =>")
@@ -1046,6 +1067,24 @@ def emit_route_table(entries: list[Entry]) -> str:
     return "\n".join(lines)
 
 
+def fragment_owned_routes(entries: list[Entry]) -> list[str]:
+    """Return every concrete route emitted for the selected project."""
+
+    routes: set[str] = set()
+    intro_prefix = "books/introductiontorealanalysisvolumei_jirilebl_2025/"
+    for entry in entries:
+        routes.add(entry.route)
+        if entry.category == "books" and entry.stem == "book":
+            routes.add(f"books/{entry.book_or_paper.lower()}/")
+        elif entry.category == "papers" and entry.stem in {"paper", "main"}:
+            routes.add(f"papers/{entry.book_or_paper.lower()}/")
+        if entry.category == "books" and entry.route.startswith(
+            intro_prefix + "chapters/chap00/"
+        ):
+            routes.add(entry.route[len(intro_prefix) :])
+    return sorted(routes)
+
+
 def doc_link(module: str) -> str:
     return published_site_link(f"docs/ReasBook/{module.replace('.', '/')}.html")
 
@@ -1076,6 +1115,7 @@ def published_verso_link(route: str) -> str:
 # README and work-page writers
 # ---------------------------------------------------------------------------
 
+
 def write_book_readmes(source_root: Path, entries: list[Entry]) -> None:
     books_root = source_root / "Books"
     all_books = sorted([p.name for p in books_root.iterdir() if p.is_dir()])
@@ -1089,7 +1129,11 @@ def write_book_readmes(source_root: Path, entries: list[Entry]) -> None:
         title = book_title(book)
         book_file = books_root / book / "Book.lean"
         item_entries = sorted(
-            [e for e in by_book.get(book, []) if (e.section_num > 0 and e.part_num == 0)],
+            [
+                e
+                for e in by_book.get(book, [])
+                if (e.section_num > 0 and e.part_num == 0)
+            ],
             key=lambda e: (e.chapter_num, e.section_num, e.part_num, e.stem),
         )
         home_entry = next(
@@ -1163,7 +1207,11 @@ def write_paper_readmes(source_root: Path, entries: list[Entry]) -> None:
         title = paper_title(paper)
         paper_file = papers_root / paper / "Paper.lean"
         item_entries = sorted(
-            [e for e in by_paper.get(paper, []) if (e.section_num > 0 and e.part_num == 0)],
+            [
+                e
+                for e in by_paper.get(paper, [])
+                if (e.section_num > 0 and e.part_num == 0)
+            ],
             key=lambda e: (e.section_num, e.part_num, e.stem),
         )
         home_entry = next(
@@ -1239,7 +1287,9 @@ def write_root_readme(repo_root: Path, source_root: Path) -> None:
             changed = True
 
     # Books block
-    for book in sorted([p.name for p in (source_root / "Books").iterdir() if p.is_dir()]):
+    for book in sorted(
+        [p.name for p in (source_root / "Books").iterdir() if p.is_dir()]
+    ):
         book_ref_re = re.compile(rf"/Books/{re.escape(book)}/?\)")
         book_repo_link = repo_relative_link(f"ReasBook/Books/{book}/")
         book_verso = published_verso_link(f"books/{book.lower()}/")
@@ -1254,7 +1304,9 @@ def write_root_readme(repo_root: Path, source_root: Path) -> None:
 
         for i, line in enumerate(lines):
             if line.startswith("- [") and book_ref_re.search(line):
-                repl = re.sub(r"\((https?://[^)]+|\.?/[^)]+)\)$", f"({book_repo_link})", line)
+                repl = re.sub(
+                    r"\((https?://[^)]+|\.?/[^)]+)\)$", f"({book_repo_link})", line
+                )
                 if repl != line:
                     lines[i] = repl
                     changed = True
@@ -1265,7 +1317,9 @@ def write_root_readme(repo_root: Path, source_root: Path) -> None:
                         break
 
     # Papers block
-    for paper in sorted([p.name for p in (source_root / "Papers").iterdir() if p.is_dir()]):
+    for paper in sorted(
+        [p.name for p in (source_root / "Papers").iterdir() if p.is_dir()]
+    ):
         paper_ref_re = re.compile(rf"/Papers/{re.escape(paper)}/?\)")
         paper_repo_link = repo_relative_link(f"ReasBook/Papers/{paper}/")
         paper_verso = published_verso_link(f"papers/{paper.lower()}/")
@@ -1280,7 +1334,9 @@ def write_root_readme(repo_root: Path, source_root: Path) -> None:
 
         for i, line in enumerate(lines):
             if line.startswith("- [") and paper_ref_re.search(line):
-                repl = re.sub(r"\((https?://[^)]+|\.?/[^)]+)\)$", f"({paper_repo_link})", line)
+                repl = re.sub(
+                    r"\((https?://[^)]+|\.?/[^)]+)\)$", f"({paper_repo_link})", line
+                )
                 if repl != line:
                     lines[i] = repl
                     changed = True
@@ -1325,11 +1381,15 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
         lines.append("import VersoBlog")
         lines.append("open Verso Genre Blog")
         lines.append("")
-        lines.append(f'#doc (Page) {lean_string(title)} =>')
+        lines.append(f"#doc (Page) {lean_string(title)} =>")
         lines.append("")
         docs_path = project_docs_path(source_root, book, "book")
-        lines.append(f"- [Documentation]({portable_site_link(f'docs/ReasBook/{docs_path}.html')})")
-        lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Books/{book}/')})")
+        lines.append(
+            f"- [Documentation]({portable_site_link(f'docs/ReasBook/{docs_path}.html')})"
+        )
+        lines.append(
+            f"- [Lean source path]({github_tree_link(f'ReasBook/Books/{book}/')})"
+        )
         lines.append("")
         if section_entries:
             lines.append("Section index:")
@@ -1366,11 +1426,15 @@ def write_work_pages(repo_root: Path, source_root: Path, entries: list[Entry]) -
         lines.append("import VersoBlog")
         lines.append("open Verso Genre Blog")
         lines.append("")
-        lines.append(f'#doc (Page) {lean_string(title)} =>')
+        lines.append(f"#doc (Page) {lean_string(title)} =>")
         lines.append("")
         docs_path = project_docs_path(source_root, paper, "paper")
-        lines.append(f"- [Documentation]({portable_site_link(f'docs/ReasBook/{docs_path}.html')})")
-        lines.append(f"- [Lean source path]({github_tree_link(f'ReasBook/Papers/{paper}/')})")
+        lines.append(
+            f"- [Documentation]({portable_site_link(f'docs/ReasBook/{docs_path}.html')})"
+        )
+        lines.append(
+            f"- [Lean source path]({github_tree_link(f'ReasBook/Papers/{paper}/')})"
+        )
         lines.append("")
         if section_entries:
             lines.append("Section index:")
@@ -1414,7 +1478,9 @@ def is_generated_overview_block(body_lines: list[str]) -> bool:
     if not lines:
         return False
     first = lines[0]
-    if not (first.startswith("Overview page for ") or re.match(r"^Chapter \d{2}$", first)):
+    if not (
+        first.startswith("Overview page for ") or re.match(r"^Chapter \d{2}$", first)
+    ):
         return False
     return "Verso links:" in "\n".join(lines)
 
@@ -1423,11 +1489,15 @@ def is_generated_overview_block(body_lines: list[str]) -> bool:
 # Source overview maintenance
 # ---------------------------------------------------------------------------
 
+
 def upsert_overview_block(path: Path, body_lines: list[str]) -> None:
     orig_text = path.read_text(encoding="utf-8")
     text = orig_text
     old_block_pattern = re.compile(
-        re.escape(OLD_OVERVIEW_BEGIN) + r"\n/-!.*?-/\n" + re.escape(OLD_OVERVIEW_END) + r"\n?",
+        re.escape(OLD_OVERVIEW_BEGIN)
+        + r"\n/-!.*?-/\n"
+        + re.escape(OLD_OVERVIEW_END)
+        + r"\n?",
         re.DOTALL,
     )
     text = old_block_pattern.sub("", text)
@@ -1439,7 +1509,8 @@ def upsert_overview_block(path: Path, body_lines: list[str]) -> None:
     lines = [
         line
         for line in lines
-        if line.strip() not in {
+        if line.strip()
+        not in {
             "-- BEGIN AUTO-IMPORTS (managed by orchestrator)",
             "-- END AUTO-IMPORTS",
         }
@@ -1468,7 +1539,10 @@ def upsert_overview_block(path: Path, body_lines: list[str]) -> None:
             candidate_body = lines[candidate_start + 1 : candidate_end]
             if is_generated_overview_block(candidate_body):
                 del lines[candidate_start : candidate_end + 1]
-                while candidate_start < len(lines) and lines[candidate_start].strip() == "":
+                while (
+                    candidate_start < len(lines)
+                    and lines[candidate_start].strip() == ""
+                ):
                     if candidate_start == 0 or lines[candidate_start - 1].strip() == "":
                         del lines[candidate_start]
                     else:
@@ -1526,12 +1600,18 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
         body: list[str] = []
         body.append(f"Overview page for {book_title(book)}.")
         body.append("")
-        body.append("This aggregation module imports the currently formalized sections in this book.")
-        body.append("Use the links below to jump directly into chapter and section overview pages.")
+        body.append(
+            "This aggregation module imports the currently formalized sections in this book."
+        )
+        body.append(
+            "Use the links below to jump directly into chapter and section overview pages."
+        )
         body.append("")
         body.append("Verso links:")
         body.append(f"- [Book home]({portable_site_link(f'books/{book.lower()}/')})")
-        body.append(f"- [Book overview]({portable_site_link(f'books/{book.lower()}/book/')})")
+        body.append(
+            f"- [Book overview]({portable_site_link(f'books/{book.lower()}/book/')})"
+        )
         body.append("")
         if section_entries:
             body.append("Directory:")
@@ -1588,10 +1668,14 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
             if chapter_title != f"Chapter {chapter_num:02d}":
                 chapter_body.append(f"Title: {chapter_title}")
                 chapter_body.append("")
-            chapter_body.append("This chapter aggregation page links to section overviews and source files.")
+            chapter_body.append(
+                "This chapter aggregation page links to section overviews and source files."
+            )
             chapter_body.append("")
             chapter_body.append("Verso links:")
-            chapter_body.append(f"- [Chapter overview]({portable_site_link(chapter_route)})")
+            chapter_body.append(
+                f"- [Chapter overview]({portable_site_link(chapter_route)})"
+            )
             chapter_body.append(
                 f"- [Book overview]({portable_site_link(f'books/{book.lower()}/book/')})"
             )
@@ -1630,8 +1714,15 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
         if not section_file.exists():
             continue
 
-        chapter_file = source_root / "Books" / base.book_or_paper / f"Chap{base.chapter_num:02d}.lean"
-        chapter_route = f"books/{base.book_or_paper.lower()}/chapters/chap{base.chapter_num:02d}/"
+        chapter_file = (
+            source_root
+            / "Books"
+            / base.book_or_paper
+            / f"Chap{base.chapter_num:02d}.lean"
+        )
+        chapter_route = (
+            f"books/{base.book_or_paper.lower()}/chapters/chap{base.chapter_num:02d}/"
+        )
         has_chapter_overview = chapter_file.exists()
 
         part_entries = sorted(part_entries, key=lambda e: (e.part_num, e.stem))
@@ -1640,7 +1731,9 @@ def write_source_overviews(source_root: Path, entries: list[Entry]) -> None:
         body: list[str] = []
         body.append(f"Overview page for {section_label}.")
         body.append("")
-        body.append("This aggregation module imports all currently available part files for this section.")
+        body.append(
+            "This aggregation module imports all currently available part files for this section."
+        )
         body.append("Use this page to jump to each part page quickly.")
         body.append("")
         body.append("Verso links:")
@@ -1684,9 +1777,18 @@ def main() -> None:
     out_file = web_root / "ReasBookSite" / "Sections.lean"
     route_file = web_root / "ReasBookSite" / "RouteTable.lean"
     literate_manifest = web_root / ".literate-modules.json"
+    fragment_manifest = web_root / ".project-fragment.json"
 
-    if not (source_root / "lakefile.lean").exists() and not (source_root / "lakefile.toml").exists():
+    if (
+        not (source_root / "lakefile.lean").exists()
+        and not (source_root / "lakefile.toml").exists()
+    ):
         raise SystemExit(f"Lean project not found at {source_root}")
+
+    try:
+        fragment_project = validate_project_selection(source_root)
+    except ValueError as exc:
+        raise SystemExit(str(exc)) from exc
 
     if SKIP_MODULES:
         print(f"INFO: skipping {len(SKIP_MODULES)} module(s) from site generation")
@@ -1694,8 +1796,12 @@ def main() -> None:
             print(f"INFO:   skip module: {mod}")
 
     entries = collect_entries(source_root)
-    write_source_overviews(source_root, entries)
-    entries = collect_entries(source_root)
+    # Fragment workers own generated web files only.  Source overviews and
+    # repository READMEs are branch-wide catalog state and must never be
+    # concurrently rewritten by one-project finalizers.
+    if not PROJECT_FRAGMENT:
+        write_source_overviews(source_root, entries)
+        entries = collect_entries(source_root)
     out_file.parent.mkdir(parents=True, exist_ok=True)
     write_text_if_changed(out_file, emit_sections(entries), log=False)
     write_text_if_changed(route_file, emit_route_table(entries), log=False)
@@ -1704,11 +1810,31 @@ def main() -> None:
         emit_literate_manifest(entries),
         log=False,
     )
+    if PROJECT_FRAGMENT:
+        write_text_if_changed(
+            fragment_manifest,
+            json.dumps(
+                {
+                    "schema_version": 1,
+                    "project": fragment_project,
+                    "modules": [entry.module for entry in entries],
+                    "routes": fragment_owned_routes(entries),
+                    "shared_catalog": False,
+                },
+                indent=2,
+                sort_keys=True,
+            )
+            + "\n",
+            log=False,
+        )
     write_home_page(repo_root)
     write_work_pages(repo_root, source_root, entries)
-    write_book_readmes(source_root, entries)
-    write_paper_readmes(source_root, entries)
-    write_root_readme(repo_root, source_root)
+    if not PROJECT_FRAGMENT:
+        write_book_readmes(source_root, entries)
+        write_paper_readmes(source_root, entries)
+        write_root_readme(repo_root, source_root)
+    else:
+        print(f"Wrote isolated project fragment inputs for {fragment_project}")
     print(f"Wrote {out_file} with {len(entries)} sections")
     print(f"Wrote {route_file} with generated route macro")
     print(f"Wrote {literate_manifest} with {len(entries)} modules")

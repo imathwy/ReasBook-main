@@ -11,11 +11,14 @@ from dataclasses import dataclass
 import os
 import re
 import subprocess
+from pathlib import Path
 
 
 def _git_output(args: list[str]) -> str:
     try:
-        return subprocess.check_output(args, text=True, stderr=subprocess.DEVNULL).strip()
+        return subprocess.check_output(
+            args, text=True, stderr=subprocess.DEVNULL
+        ).strip()
     except (OSError, subprocess.SubprocessError):
         return ""
 
@@ -86,7 +89,9 @@ def _candidate_remotes() -> list[str]:
 
 def detect_default_branch() -> str:
     for remote in _candidate_remotes():
-        ref = _git_output(["git", "symbolic-ref", "--quiet", "--short", f"refs/remotes/{remote}/HEAD"])
+        ref = _git_output(
+            ["git", "symbolic-ref", "--quiet", "--short", f"refs/remotes/{remote}/HEAD"]
+        )
         prefix = f"{remote}/"
         if ref.startswith(prefix) and ref[len(prefix) :].strip():
             return ref[len(prefix) :].strip()
@@ -122,6 +127,56 @@ DEFAULT_SKIP_MODULES = {
 SKIP_MODULES = DEFAULT_SKIP_MODULES | parse_csv_env_set("REASBOOK_SKIP_MODULES")
 INCLUDE_PROJECTS = parse_csv_env_set("REASBOOK_INCLUDE_PROJECTS")
 EXCLUDE_PROJECTS = parse_csv_env_set("REASBOOK_EXCLUDE_PROJECTS")
+PROJECT_FRAGMENT = os.environ.get("REASBOOK_PROJECT_FRAGMENT", "").strip().lower() in {
+    "1",
+    "true",
+    "yes",
+    "on",
+}
+
+
+def validate_project_selection(source_root: Path) -> str | None:
+    """Validate release selectors and return the singleton fragment key.
+
+    Ordinary branch builds may select zero or many projects.  Project-fragment
+    builds deliberately require one canonical ``books/Name`` or
+    ``papers/Name`` key so separately produced artifacts cannot overlap.
+    """
+
+    selected = INCLUDE_PROJECTS
+    invalid = sorted(
+        key
+        for key in selected | EXCLUDE_PROJECTS
+        if re.fullmatch(r"(?:books|papers)/[A-Za-z0-9_.-]+", key) is None
+    )
+    if invalid:
+        raise ValueError(f"invalid project selector(s): {', '.join(invalid)}")
+    overlap = sorted(selected & EXCLUDE_PROJECTS)
+    if overlap:
+        raise ValueError(
+            f"project selector(s) are both included and excluded: {', '.join(overlap)}"
+        )
+    missing = sorted(
+        key
+        for key in selected
+        if not (
+            source_root
+            / ("Books" if key.startswith("books/") else "Papers")
+            / key.split("/", 1)[1]
+        ).is_dir()
+    )
+    if missing:
+        raise ValueError(
+            f"selected project directory does not exist: {', '.join(missing)}"
+        )
+    if PROJECT_FRAGMENT:
+        if len(selected) != 1:
+            raise ValueError(
+                "REASBOOK_PROJECT_FRAGMENT requires exactly one "
+                "REASBOOK_INCLUDE_PROJECTS selector"
+            )
+        return next(iter(selected))
+    return None
 
 
 def project_enabled(kind: str, project: str) -> bool:
@@ -153,8 +208,7 @@ def load_site_config() -> SiteConfig:
         or "main"
     )
     site_base = (
-        os.environ.get("REASBOOK_SITE_BASE")
-        or f"https://{owner}.github.io/{repo}/"
+        os.environ.get("REASBOOK_SITE_BASE") or f"https://{owner}.github.io/{repo}/"
     ).rstrip("/") + "/"
     default_root = "/" if repo == f"{owner}.github.io" else f"/{repo}/"
     site_root = (os.environ.get("REASBOOK_SITE_ROOT") or default_root).strip()

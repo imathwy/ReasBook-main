@@ -2,7 +2,9 @@
 
 ## Status
 
-Accepted
+Accepted. The concurrency-control details are refined by
+[ADR-0005](0005-two-level-lean-concurrency.md); the cache identity and
+checkpoint decisions remain in force.
 
 ## Date
 
@@ -31,8 +33,8 @@ partial or differently identified cache.
 - The Verso SDK owns a separate `verso-literate` capability. It runs before
   the generic site builder and executes bounded batches of
   `+Module:literate` targets. Each batch is one Lake process with a controlled
-  `LEAN_NUM_THREADS` value (and `LAKE_JOBS` for forward compatibility);
-  batches remain sequential. The capability also takes a cache-local file
+  `LEAN_NUM_THREADS` value; batches remain sequential. The capability also
+  takes a cache-local file
   lock. The outer release finalizer continues to own its broader exclusive
   exact-branch-cache lock, so local or remote processes cannot race to mutate
   the literate cache.
