@@ -48,7 +48,8 @@ class GitHubWorkflowPolicyTests(unittest.TestCase):
             "GitHub publication requires a clean commit-derived tooling revision",
             text,
         )
-        self.assertIn("850_000_000", text)
+        self.assertIn("920_000_000", text)
+        self.assertIn("1_000_000_000", text)
         self.assertIn("SHA256SUMS", text)
         self.assertIn("cmp .release/release-manifest.json", text)
         self.assertGreaterEqual(text.count('gh release verify "$RELEASE_TAG"'), 2)

@@ -34,7 +34,7 @@ The two artifacts have deliberately different content contracts:
 | Name | Contract | Intended target |
 | --- | --- | --- |
 | `full` | Every assembled project version, reachable project-module API docs, Verso, theorem maps, and explicit dependency stubs | Self-hosted server |
-| `pages` | Canonical version-qualified Verso routes, project entry API pages, theorem maps, and link-closed API placeholders | GitHub Pages |
+| `pages` | Canonical version-qualified Verso routes, every selected project's API pages, theorem maps, and external-dependency API placeholders | GitHub Pages |
 
 Both retain the `/ReasBook/` public base path. `release-set.json` binds their
 bundle hashes, site-tree hashes, sizes, and projection-policy hash to one
@@ -223,7 +223,8 @@ workflow uses GitHub's Release and per-asset verification commands,
 independently checks the tag target,
 archive/manifest/spec/ReleaseSet bindings, and recomputes the policy digest
 from its trusted checked-out profile. It enforces the compressed,
-180,000-archive-member, 850 MB site, and 60,000-file budgets before extraction.
+180,000-archive-member, 920 MB site, and 60,000-file operational budgets before
+extraction, plus an independent 1 GB published-site hard gate.
 Local packaging and acceptance load the same artifact policy, so these limits
 cannot first appear as a remote-only rejection. It has no full archive and
 performs no source build. Publishing an existing tag is
@@ -284,12 +285,12 @@ docs start at each configured entry root and include every reachable
 project-owned module, processed in batches of at most 128; Mathlib, Lean, and
 other external libraries are not rendered. The `full` artifact retains those
 generated module pages and every assembled project version. The Pages
-projection is assembled from an allowlist: explicit canonical versions,
-project entry API pages, Verso pages, theorem maps, and referenced runtime
-assets. Detailed API links omitted from that bounded artifact resolve to small
-explanatory placeholders only when the verified full site contains the target;
-they never become silent 404s. Unversioned catalog compatibility paths are
-redirects rather than copies of the large Verso trees.
+projection is assembled from an allowlist: canonical Verso routes, every API
+documentation shape owned by a selected `ProjectSpec`, theorem maps, and
+referenced runtime assets. API links outside those project-owned roots resolve
+to small external-dependency placeholders only when the verified full site
+contains the target; they never become silent 404s. Unversioned catalog
+compatibility paths are redirects rather than copies of the large Verso trees.
 
 ## Self-hosted installation
 

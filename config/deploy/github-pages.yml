@@ -25,9 +25,10 @@ policy:
 
 # A release has one build identity and two immutable delivery artifacts.
 # The full artifact retains bounded reachable project-module API docs and every
-# project version for self-hosting. Pages keeps canonical Verso versions and
-# project entry API pages; omitted detailed API links become explicit
-# placeholders whose source pages must exist in the verified full artifact.
+# project version for self-hosting. Pages keeps canonical Verso routes and all
+# API pages owned by every selected ProjectSpec; omitted external-dependency
+# API links become explicit placeholders whose source pages must exist in the
+# verified full artifact.
 artifacts:
   full:
     history_mode: full
@@ -40,7 +41,7 @@ artifacts:
     history_mode: canonical
     dependency_docs: stubs
     max_site_files: 60000
-    max_site_bytes: 850000000
+    max_site_bytes: 920000000
     max_archive_members: 180000
     max_bundle_bytes: 950000000
 

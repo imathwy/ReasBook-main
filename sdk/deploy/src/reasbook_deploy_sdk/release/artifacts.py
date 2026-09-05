@@ -18,7 +18,11 @@ from reasbook_sdk_common import atomic_write_json
 
 from ..errors import DeployExecutionError
 from ..git import version_key
-from .models import ReleaseArtifactPolicy, ReleaseSpec
+from .models import (
+    GITHUB_PAGES_HARD_SITE_BYTES,
+    ReleaseArtifactPolicy,
+    ReleaseSpec,
+)
 from .results import (
     BundleInfo,
     ReleaseArtifactRecord,
@@ -29,6 +33,19 @@ from .store import ReleaseLayout, ReleaseStore
 
 
 _SHARED_DOC_DIRECTORIES = {"declarations", "find", "src"}
+_EXTERNAL_DOC_NAMESPACES = {
+    "Aesop",
+    "Batteries",
+    "Cli",
+    "ImportGraph",
+    "Init",
+    "Lake",
+    "Lean",
+    "Mathlib",
+    "Plausible",
+    "Qq",
+    "Std",
+}
 _PAGES_ROOT_FILES = {
     ".nojekyll",
     "-verso-docs.json",
@@ -94,8 +111,10 @@ class PagesSiteProjector:
     """Create a bounded Pages view without changing the full release tree.
 
     Canonical project pages retain their original version-qualified URLs.
-    Detailed API pages omitted from Pages become explicit lightweight placeholders;
-    referenced styles, scripts, images, and search data remain byte-identical.
+    Every API page owned by a selected project remains byte-identical. External
+    dependency pages reached by those documents become explicit lightweight
+    placeholders; referenced styles, scripts, images, and search data remain
+    byte-identical.
     """
 
     def __init__(self, *, max_site_bytes: int | None = None) -> None:
@@ -146,18 +165,18 @@ class PagesSiteProjector:
                 Path("versions") / "index.html",
             )
             self._write_catalog_redirects(spec, staged, canonical_routes)
-            self._close_internal_references(spec, full_site, staged)
+            self._close_internal_references(
+                spec,
+                full_site,
+                staged,
+                canonical_routes,
+            )
             self._validate_required_content(spec, staged, canonical_routes)
             self._validate_site(staged)
-            if self.max_site_bytes is not None:
-                total_bytes = sum(
-                    path.stat().st_size for path in staged.rglob("*") if path.is_file()
-                )
-                if total_bytes > self.max_site_bytes:
-                    raise DeployExecutionError(
-                        f"Pages projection is {total_bytes} bytes; budget is "
-                        f"{self.max_site_bytes}"
-                    )
+            total_bytes = sum(
+                path.stat().st_size for path in staged.rglob("*") if path.is_file()
+            )
+            self._validate_capacity(total_bytes)
             self._publish(staged, target, backup)
             return target
         finally:
@@ -228,13 +247,37 @@ class PagesSiteProjector:
             )
         target = versions / branch
         target.mkdir()
+        branch_projects = tuple(
+            project for project in spec.projects if project.branch == branch
+        )
         projects = tuple(
-            project for project in spec.canonical_projects() if project.branch == branch
+            project for project in branch_projects if project.canonical
         )
 
         for relative in (Path("static"), Path("-verso-docs.json")):
             self._copy_if_present(source, target, relative)
         self._copy_doc_runtime(source, target)
+
+        # Documentation ownership is recorded for every ProjectSpec, not only
+        # the projects selected as catalog canonicals. Copy all known project
+        # namespaces before link closure so cross-project API links remain real.
+        project_docs: dict[str, Path] = {}
+        for project in branch_projects:
+            if "docs" not in project.outputs:
+                continue
+            docs = self._copy_project_docs(
+                source,
+                target,
+                project.kind,
+                project.project_id,
+                project.build_target,
+            )
+            if docs is None:
+                raise DeployExecutionError(
+                    "Pages projection has no project-owned API entry: "
+                    f"{project.key}@{branch}"
+                )
+            project_docs[project.key] = docs
 
         project_routes: list[tuple[str, str]] = []
         canonical_routes: dict[str, tuple[Path | None, Path | None]] = {}
@@ -256,13 +299,7 @@ class PagesSiteProjector:
                 target,
                 Path("theorem-maps") / project.kind / project.slug,
             )
-            docs = self._copy_project_docs(
-                source,
-                target,
-                project.kind,
-                project.project_id,
-                project.build_target,
-            )
+            docs = project_docs.get(project.key)
             if "docs" in project.outputs and docs is None:
                 raise DeployExecutionError(
                     f"Pages projection has no canonical API entry: {project.key}"
@@ -374,24 +411,40 @@ class PagesSiteProjector:
                 )
             )
         )
-        chosen: Path | None = None
+        entry_candidates: list[Path] = []
         for relative in candidates:
             item = source / relative
             if item.is_dir():
                 for name in entry_names:
                     entry = relative / f"{name}.html"
-                    if self._copy_if_present(source, destination, entry):
-                        if chosen is None:
-                            chosen = entry
+                    if (source / entry).is_file():
+                        entry_candidates.append(entry)
                         break
-            elif item.is_file() and self._copy_if_present(
-                source,
-                destination,
-                relative,
-            ):
-                if chosen is None:
-                    chosen = relative
-        return chosen
+            elif item.is_file():
+                entry_candidates.append(relative)
+        if not entry_candidates:
+            return None
+
+        # A project may have both a top-level module HTML file and a sibling
+        # namespace directory (for example an explicit Lake root). Once an
+        # entry establishes ownership, retain every ProjectSpec-derived shape.
+        for relative in candidates:
+            self._copy_if_present(source, destination, relative)
+        return entry_candidates[0]
+
+    def _validate_capacity(self, total_bytes: int) -> None:
+        """Apply GitHub's hard limit independently of the profile safety line."""
+
+        if total_bytes > GITHUB_PAGES_HARD_SITE_BYTES:
+            raise DeployExecutionError(
+                f"Pages projection is {total_bytes} bytes; GitHub Pages hard "
+                f"limit is {GITHUB_PAGES_HARD_SITE_BYTES}"
+            )
+        if self.max_site_bytes is not None and total_bytes > self.max_site_bytes:
+            raise DeployExecutionError(
+                f"Pages projection is {total_bytes} bytes; budget is "
+                f"{self.max_site_bytes}"
+            )
 
     def _write_catalog_redirects(
         self,
@@ -485,8 +538,8 @@ class PagesSiteProjector:
                 '  <main class="page-shell narrow-shell">',
                 '    <p class="eyebrow">Canonical Pages Projection</p>',
                 f'    <h1><span translate="no">{html.escape(branch)}</span></h1>',
-                "    <p>Detailed API links omitted from this bounded artifact "
-                "resolve to explicit placeholders.</p>",
+                "    <p>Project API documentation is complete. External "
+                "dependency links resolve to explicit placeholders.</p>",
                 '    <ul class="resource-list">',
                 items,
                 "    </ul>",
@@ -503,6 +556,7 @@ class PagesSiteProjector:
         spec: ReleaseSpec,
         full_site: Path,
         pages_site: Path,
+        canonical_routes: dict[str, tuple[Path | None, Path | None]],
     ) -> None:
         origin = "https://reasbook.invalid"
         base_path = spec.base_path
@@ -532,19 +586,45 @@ class PagesSiteProjector:
                 source = full_site / relative
                 if source.is_file():
                     if source.suffix.lower() in {".html", ".htm"}:
-                        if self._is_omitted_api_doc(relative):
+                        if self._is_external_api_doc(relative, source):
                             self._write_api_stub(target, spec.base_path)
+                        elif history_target := self._canonical_history_target(
+                            spec,
+                            relative,
+                            pages_site,
+                            canonical_routes,
+                        ):
+                            self._write_history_redirect(
+                                target,
+                                history_target,
+                                spec.base_path,
+                            )
                         else:
                             errors.append(
-                                f"{relative_document}: omitted non-dependency page {value}"
+                                f"{relative_document}: omitted non-dependency "
+                                f"page {value}"
                             )
                     else:
                         target.parent.mkdir(parents=True, exist_ok=True)
                         shutil.copy2(source, target)
                 elif source.is_dir() and (source / "index.html").is_file():
-                    if self._is_omitted_api_doc(relative / "index.html"):
+                    if self._is_external_api_doc(
+                        relative / "index.html",
+                        source / "index.html",
+                    ):
                         self._write_api_stub(
                             target / "index.html",
+                            spec.base_path,
+                        )
+                    elif history_target := self._canonical_history_target(
+                        spec,
+                        relative / "index.html",
+                        pages_site,
+                        canonical_routes,
+                    ):
+                        self._write_history_redirect(
+                            target / "index.html",
+                            history_target,
                             spec.base_path,
                         )
                     else:
@@ -619,6 +699,75 @@ class PagesSiteProjector:
         parts = relative.parts
         return len(parts) >= 4 and parts[0] == "versions" and parts[2] == "docs"
 
+    @classmethod
+    def _is_external_api_doc(cls, relative: Path, source: Path) -> bool:
+        """Recognize dependency docs without silently reclassifying project pages."""
+
+        if not cls._is_omitted_api_doc(relative):
+            return False
+        if source.is_file() and 'data-reasbook-doc-stub="true"' in source.read_text(
+            encoding="utf-8",
+            errors="replace",
+        ):
+            return True
+        tail = relative.parts[3:]
+        if tail and tail[0] == "ReasBook":
+            tail = tail[1:]
+        if not tail:
+            return False
+        return Path(tail[0]).stem in _EXTERNAL_DOC_NAMESPACES
+
+    @staticmethod
+    def _canonical_history_target(
+        spec: ReleaseSpec,
+        relative: Path,
+        pages_site: Path,
+        canonical_routes: dict[str, tuple[Path | None, Path | None]],
+    ) -> str | None:
+        parts = relative.parts
+        if len(parts) < 4 or parts[0] != "versions":
+            return None
+        branch = parts[1]
+        route = Path(*parts[2:])
+        for project in spec.projects:
+            if project.branch != branch or project.canonical:
+                continue
+            for root in (Path(project.kind) / project.slug, Path(project.slug)):
+                if route == root or root in route.parents:
+                    canonical = next(
+                        (
+                            candidate
+                            for candidate in spec.projects
+                            if candidate.key == project.key and candidate.canonical
+                        ),
+                        None,
+                    )
+                    if canonical is None:
+                        return None
+                    canonical_route = canonical_routes.get(canonical.key)
+                    if canonical_route is None or canonical_route[0] is None:
+                        return None
+                    canonical_root = canonical_route[0]
+                    canonical_index = pages_site / canonical_root / "index.html"
+                    if not canonical_index.is_file():
+                        return None
+
+                    # Preserve a deep route when the canonical version exposes
+                    # the same suffix. Otherwise land on its verified root.
+                    suffix = route.relative_to(root)
+                    candidate = pages_site / canonical_root / suffix
+                    if candidate.is_file():
+                        route_target = canonical_root / suffix
+                        if route_target.name == "index.html":
+                            return (
+                                spec.base_path
+                                + route_target.parent.as_posix().rstrip("/")
+                                + "/"
+                            )
+                        return spec.base_path + route_target.as_posix()
+                    return spec.base_path + canonical_root.as_posix().rstrip("/") + "/"
+        return None
+
     @staticmethod
     def _write_api_stub(path: Path, base_path: str) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -632,17 +781,57 @@ class PagesSiteProjector:
                     '  <meta charset="utf-8" />',
                     '  <meta name="viewport" '
                     'content="width=device-width,initial-scale=1" />',
-                    "  <title>Detailed API documentation</title>",
+                    "  <title>External dependency documentation</title>",
                     f'  <link rel="stylesheet" href="{home}static/catalog.css" />',
                     "</head>",
-                    "<body>",
+                    '<body data-reasbook-doc-stub="true">',
                     '  <main class="page-shell narrow-shell">',
                     '    <p class="eyebrow">Canonical Pages Projection</p>',
-                    "    <h1>Detailed API documentation</h1>",
-                    "    <p>This API page is not included in the bounded Pages "
-                    "artifact. The project entry page, source, and theorem map "
-                    "remain available; the complete API is in the self-hosted "
-                    "artifact.</p>",
+                    "    <h1>External dependency documentation</h1>",
+                    "    <p>This external API page is outside the project-owned "
+                    "documentation retained by GitHub Pages. Project API pages "
+                    "remain available in full.</p>",
+                    f'    <p><a class="back-link" href="{home}">'
+                    "Back to ReasBook</a></p>",
+                    "  </main>",
+                    "</body>",
+                    "</html>",
+                    "",
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+    @staticmethod
+    def _write_history_redirect(
+        path: Path,
+        target: str,
+        base_path: str,
+    ) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        home = html.escape(base_path, quote=True)
+        escaped_target = html.escape(target, quote=True)
+        path.write_text(
+            "\n".join(
+                [
+                    "<!doctype html>",
+                    '<html lang="en">',
+                    "<head>",
+                    '  <meta charset="utf-8" />',
+                    '  <meta name="viewport" '
+                    'content="width=device-width,initial-scale=1" />',
+                    f'  <meta http-equiv="refresh" content="0; url={escaped_target}" />',
+                    f'  <link rel="canonical" href="{escaped_target}" />',
+                    "  <title>Canonical project version</title>",
+                    f'  <link rel="stylesheet" href="{home}static/catalog.css" />',
+                    "</head>",
+                    '<body data-reasbook-history-redirect="true">',
+                    '  <main class="page-shell narrow-shell">',
+                    '    <p class="eyebrow">Canonical Pages Projection</p>',
+                    "    <h1>Canonical project version</h1>",
+                    "    <p>This historical link now resolves to the project's "
+                    "explicit canonical version.</p>",
+                    f'    <p><a href="{escaped_target}">Open canonical version</a></p>',
                     f'    <p><a class="back-link" href="{home}">'
                     "Back to ReasBook</a></p>",
                     "  </main>",

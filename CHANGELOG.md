@@ -17,8 +17,9 @@ Significant user-facing and release-engineering changes are recorded here.
 ### Changed
 
 - GitHub Pages is a publish-only target; full Lean builds run on SiFlow.
-- GitHub Pages now receives a size-bounded canonical projection with lightweight
-  compatibility redirects and detailed-API placeholders; the full historical
+- GitHub Pages now retains every selected project's API pages while using
+  lightweight placeholders only for external dependencies. Its operational
+  site budget is 920 MB with an independent 1 GB hard gate; the full historical
   site remains unchanged for self-hosting.
 - Repository scripts are thin project adapters while reusable behavior lives
   in the SDK packages.

@@ -269,9 +269,11 @@ for the allowed large archive is network-dominated.
 
 The Pages capacity policy is single-source: local packaging, local acceptance,
 and the workflow's `release verify --profile github-pages --artifact-policy
-pages` use the same checked-in 850 MB, 60,000-file, and
-180,000-archive-member limits. A bundle that the workflow would reject cannot
-pass local packaging merely because a verifier default was looser.
+pages` use the same checked-in 920 MB, 60,000-file, and
+180,000-archive-member operational limits. A separate 1 GB hard gate is
+enforced even if the operational policy is later raised. A bundle that the
+workflow would reject cannot pass local packaging merely because a verifier
+default was looser.
 
 When `--wait` is present, the command first waits up to 1,800 seconds for the
 workflow and then up to 300 seconds for the public Pages ReleaseSpec to

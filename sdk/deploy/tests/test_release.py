@@ -40,6 +40,7 @@ from reasbook_deploy_sdk.release.config import (
 from reasbook_deploy_sdk.release.models import (
     CanonicalProjects,
     DeploymentProfile,
+    GITHUB_PAGES_HARD_SITE_BYTES,
     GitHubPublishProfile,
     ProjectSpec,
     ReleaseArtifactPolicy,
@@ -304,6 +305,38 @@ def profile(root: Path, *, historical: bool = True) -> DeploymentProfile:
 
 
 class ReleasePlanningTests(unittest.TestCase):
+    def test_project_docs_copy_flat_entry_and_sibling_namespace(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "source"
+            destination = root / "destination"
+            docs = source / "docs" / "ReasBook"
+            namespace = docs / "TR_LALM_theory"
+            namespace.mkdir(parents=True)
+            (docs / "TR_LALM_theory.html").write_text("entry", encoding="utf-8")
+            (namespace / "Current.html").write_text("detail", encoding="utf-8")
+
+            entry = PagesSiteProjector()._copy_project_docs(
+                source,
+                destination,
+                "papers",
+                "TR_LALM_theory",
+                "TR_LALM_theory",
+            )
+
+            self.assertEqual(entry, Path("docs/ReasBook/TR_LALM_theory.html"))
+            self.assertEqual(
+                (destination / "docs/ReasBook/TR_LALM_theory.html").read_text(),
+                "entry",
+            )
+            self.assertEqual(
+                (
+                    destination
+                    / "docs/ReasBook/TR_LALM_theory/Current.html"
+                ).read_text(),
+                "detail",
+            )
+
     def test_pages_route_score_prefers_indexed_landing_over_larger_fragment(
         self,
     ) -> None:
@@ -383,6 +416,57 @@ class ReleasePlanningTests(unittest.TestCase):
                         ),
                     ),
                 )
+
+    def test_deployment_profile_rejects_pages_budget_above_github_hard_limit(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            default = profile(root)
+            oversized_pages = replace(
+                default.artifact("pages"),
+                max_site_bytes=GITHUB_PAGES_HARD_SITE_BYTES + 1,
+            )
+            with self.assertRaisesRegex(DeployConfigError, "hard limit"):
+                replace(
+                    default,
+                    artifacts=(default.artifact("full"), oversized_pages),
+                )
+
+    def test_pages_projection_applies_operational_and_hard_capacity_layers(
+        self,
+    ) -> None:
+        projector = PagesSiteProjector(max_site_bytes=920_000_000)
+        with self.assertRaisesRegex(DeployExecutionError, "budget is 920000000"):
+            projector._validate_capacity(920_000_001)
+        with self.assertRaisesRegex(DeployExecutionError, "hard limit is 1000000000"):
+            projector._validate_capacity(GITHUB_PAGES_HARD_SITE_BYTES + 1)
+
+    def test_external_api_classification_fails_closed_for_unknown_real_docs(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "Unknown" / "Page.html"
+            source.parent.mkdir(parents=True)
+            source.write_text("<!doctype html><html></html>", encoding="utf-8")
+            unknown = Path("versions/v4.30.0/docs/ReasBook/Unknown/Page.html")
+            mathlib = Path("versions/v4.30.0/docs/ReasBook/Mathlib/Page.html")
+
+            self.assertFalse(
+                PagesSiteProjector._is_external_api_doc(unknown, source)
+            )
+            self.assertTrue(
+                PagesSiteProjector._is_external_api_doc(mathlib, source)
+            )
+
+            source.write_text(
+                '<body data-reasbook-doc-stub="true"></body>',
+                encoding="utf-8",
+            )
+            self.assertTrue(
+                PagesSiteProjector._is_external_api_doc(unknown, source)
+            )
 
     def test_pages_projection_rejects_encoded_parent_path(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -657,6 +741,10 @@ class ReleasePlanningTests(unittest.TestCase):
         self.assertEqual(
             profile_value.artifact("pages").max_archive_members,
             180_000,
+        )
+        self.assertEqual(
+            profile_value.artifact("pages").max_site_bytes,
+            920_000_000,
         )
         self.assertEqual(
             profile_value.artifact("full").max_archive_members,
@@ -1167,6 +1255,15 @@ class ReleasePlanningTests(unittest.TestCase):
                 books={"Demo": "canonical"},
                 papers={},
             )
+            historical_doc = (
+                branch_sites["v4.26.0"]
+                / "docs/ReasBook/Books/Demo/Book.html"
+            )
+            historical_doc.write_text(
+                '<a href="/ReasBook/versions/v4.26.0/books/demo/chapter/">'
+                "historical chapter</a>",
+                encoding="utf-8",
+            )
             rich_route = branch_sites["v4.30.0"] / "demo"
             for relative in (
                 Path("index.html"),
@@ -1198,6 +1295,8 @@ class ReleasePlanningTests(unittest.TestCase):
             )
             project_chapter = project_doc.with_name("Chapter.html")
             project_chapter.write_text("p" * 200_000, encoding="utf-8")
+            project_orphan = project_doc.with_name("UnlinkedProjectModule.html")
+            project_orphan.write_text("project-owned", encoding="utf-8")
             project_doc.write_text(
                 '<!doctype html><html><head><meta http-equiv="refresh" '
                 'content="0; url=../../Mathlib/RefreshTarget.html"></head>'
@@ -1252,7 +1351,7 @@ class ReleasePlanningTests(unittest.TestCase):
             ).unlink()
             with self.assertRaisesRegex(
                 DeployExecutionError,
-                "no canonical API entry",
+                "no project-owned API entry",
             ):
                 PagesSiteProjector().project(
                     spec,
@@ -1276,12 +1375,12 @@ class ReleasePlanningTests(unittest.TestCase):
                 / "Heavy.html"
             )
             self.assertIn(
-                "not included in the bounded Pages artifact",
+                'data-reasbook-doc-stub="true"',
                 stub.read_text(encoding="utf-8"),
             )
             self.assertLess(stub.stat().st_size, dependency.stat().st_size)
             self.assertIn(
-                "not included in the bounded Pages artifact",
+                "External dependency documentation",
                 stub.with_name("RefreshTarget.html").read_text(encoding="utf-8"),
             )
             projected_chapter = (
@@ -1294,17 +1393,39 @@ class ReleasePlanningTests(unittest.TestCase):
                 / "Demo"
                 / "Chapter.html"
             )
+            self.assertEqual(
+                projected_chapter.read_bytes(),
+                project_chapter.read_bytes(),
+            )
+            self.assertEqual(
+                projected_chapter.with_name("UnlinkedProjectModule.html").read_bytes(),
+                project_orphan.read_bytes(),
+            )
+            self.assertTrue(
+                (
+                    layout.pages_site
+                    / "versions"
+                    / "v4.26.0"
+                    / "docs"
+                    / "ReasBook"
+                    / "Papers"
+                    / "OnlyOld"
+                    / "Paper.html"
+                ).is_file()
+            )
+            history_redirect = (
+                layout.pages_site
+                / "versions/v4.26.0/books/demo/chapter/index.html"
+            ).read_text(encoding="utf-8")
             self.assertIn(
-                "not included in the bounded Pages artifact",
-                projected_chapter.read_text(encoding="utf-8"),
+                'data-reasbook-history-redirect="true"',
+                history_redirect,
             )
-            self.assertLess(
-                projected_chapter.stat().st_size,
-                project_chapter.stat().st_size,
+            self.assertIn(
+                'content="0; url=/ReasBook/versions/v4.30.0/books/demo/chapter/"',
+                history_redirect,
             )
-            self.assertFalse(
-                (layout.pages_site / "versions" / "v4.26.0" / "books" / "demo").exists()
-            )
+            self.assertNotIn('data-reasbook-doc-stub="true"', history_redirect)
             self.assertFalse((layout.pages_site / "books").exists())
             self.assertFalse((layout.pages_site / "papers").exists())
             self.assertFalse(

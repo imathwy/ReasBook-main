@@ -213,8 +213,10 @@ jobs:
               raise SystemExit("Pages artifact must use the /ReasBook/ base path")
           if manifest.get("artifact") != "pages":
               raise SystemExit("GitHub Pages requires the pages artifact")
-          if manifest["total_bytes"] > 850_000_000:
-              raise SystemExit("Pages site exceeds the 850 MB operational budget")
+          if manifest["total_bytes"] > 1_000_000_000:
+              raise SystemExit("Pages site exceeds GitHub's 1 GB hard limit")
+          if manifest["total_bytes"] > 920_000_000:
+              raise SystemExit("Pages site exceeds the 920 MB operational budget")
           if manifest["file_count"] > 60_000:
               raise SystemExit("Pages site exceeds the 60,000-file budget")
           artifacts = release_set.get("artifacts")

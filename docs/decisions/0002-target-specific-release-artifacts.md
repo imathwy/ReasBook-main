@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted
+Accepted; project-owned API projection superseded in part by ADR-0008
 
 ## Date
 
@@ -53,6 +53,8 @@ pages, and theorem map remained available at their original URLs.
   exists in the full site. This preserves link closure without allowing the
   projection to hide a missing build output. The complete API documentation
   remains in the `full` artifact for self-hosting.
+  **Superseded by ADR-0008:** Pages now retains every API page owned by a
+  selected `ProjectSpec`; only external-dependency API pages use placeholders.
 - Every theorem map, whether generated or curated, carries a generated release
   context that matches its project specification. Repository source links are
   pinned to the full project commit; the branch name remains display metadata
@@ -100,6 +102,8 @@ pages, and theorem map remained available at their original URLs.
   except exact `.git` and `.github` path segments, which are rejected because
   GitHub always omits them. These are operational margins below GitHub's hard
   limits, not targets to fill.
+  **Superseded by ADR-0008:** the extracted-content operational limit is now
+  920 MB, with a separately enforced 1 GB hard gate. The other limits remain.
 - Self-hosted deployment accepts only the `full` artifact. It installs into a
   versioned directory, exposes the configured base path below `public/`, and
   atomically switches a `current` symlink. A failed health check restores the
