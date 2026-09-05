@@ -66,7 +66,13 @@ class ReleaseAcceptanceTests(unittest.TestCase):
         self.addCleanup(digest.stop)
         digest.start()
 
-    def _package(self, root: Path, *, base_path: str = "/ReasBook/"):
+    def _package(
+        self,
+        root: Path,
+        *,
+        base_path: str = "/ReasBook/",
+        include_historical_versions: bool = True,
+    ):
         at = datetime(2026, 9, 4, 12, 0, tzinfo=timezone.utc)
         branch = BranchSpec(
             "v4.30.0",
@@ -110,7 +116,7 @@ class ReleaseAcceptanceTests(unittest.TestCase):
             registry_commit="a" * 40,
             tooling_revision=bind_tooling_revision("a" * 40, TOOLING_DIGEST),
             base_path=base_path,
-            include_historical_versions=True,
+            include_historical_versions=include_historical_versions,
             policy=policy,
             branches=(old_branch, branch),
             projects=(old_project, project),
@@ -143,7 +149,54 @@ class ReleaseAcceptanceTests(unittest.TestCase):
                 "<body>fixture</body></html>",
                 encoding="utf-8",
             )
+
+        def write_verso_tree(
+            verso_root: Path,
+            public_root: str,
+            *,
+            legacy_wrapper: bool = False,
+        ) -> None:
+            # Supported Verso versions use both the legacy role=main wrapper
+            # and the newer article wrapper for their readable content.
+            content_open, content_close = (
+                ('<div class="main" role="main"><div class="wrap">', "</div></div>")
+                if legacy_wrapper
+                else ("<article>", "</article>")
+            )
+            verso_root.mkdir(parents=True, exist_ok=True)
+            (verso_root / "index.html").write_text(
+                f"<!doctype html><html><body>{content_open}<h1>Demo</h1>"
+                "<p>Section index:</p><ul><li>"
+                f'<a href="{public_root}chapters/chap01/">Chapter 1</a>'
+                f"</li></ul>{content_close}</body></html>",
+                encoding="utf-8",
+            )
+            verso_chapter = verso_root / "chapters" / "chap01" / "index.html"
+            verso_chapter.parent.mkdir(parents=True, exist_ok=True)
+            verso_chapter.write_text(
+                "<!doctype html><html><body><main><h1>Chapter 1</h1>"
+                "<p>Section index:</p><ul><li>"
+                f'<a href="{public_root}chapters/chap01/section01/">Section 1</a>'
+                "</li></ul></main></body></html>",
+                encoding="utf-8",
+            )
+            verso_section = (
+                verso_root / "chapters" / "chap01" / "section01" / "index.html"
+            )
+            verso_section.parent.mkdir(parents=True, exist_ok=True)
+            verso_section.write_text(
+                "<!doctype html><html><head><title>Section 1</title></head>"
+                "<body><article><h1>Section 1</h1>"
+                "<p>A readable formalized section.</p></article></body></html>",
+                encoding="utf-8",
+            )
+
         for version in ("v4.26.0", "v4.30.0"):
+            write_verso_tree(
+                site / "versions" / version / "books" / "demo",
+                f"{base_path}versions/{version}/books/demo/",
+                legacy_wrapper=version == "v4.26.0",
+            )
             version_docs = (
                 site
                 / "versions"
@@ -160,6 +213,10 @@ class ReleaseAcceptanceTests(unittest.TestCase):
                 "<body>fixture</body></html>",
                 encoding="utf-8",
             )
+        write_verso_tree(
+            site / "books" / "demo",
+            f"{base_path}books/demo/",
+        )
         (site / "static").mkdir()
         (site / "static/catalog.css").write_text(
             "html,body{max-width:100%;}", encoding="utf-8"
@@ -168,6 +225,19 @@ class ReleaseAcceptanceTests(unittest.TestCase):
             json.dumps(spec.public_dict()), encoding="utf-8"
         )
         shutil.copytree(site, layout.pages_site)
+        direct = (
+            f"{base_path}versions/{branch.name}/books/demo/"
+            if include_historical_versions
+            else f"{base_path}books/demo/"
+        )
+        (layout.pages_site / "sites/demo/pages/index.html").write_text(
+            "<!doctype html><html><head>"
+            f'<meta http-equiv="refresh" content="0; url={direct}" />'
+            "</head><body>"
+            f'<p><a href="{direct}">Open Demo</a></p>'
+            "</body></html>",
+            encoding="utf-8",
+        )
 
         report = ReleaseBuildReport.from_branches(
             spec,
@@ -1052,6 +1122,467 @@ class ReleaseAcceptanceTests(unittest.TestCase):
                 "verso route has no regular index",
             ):
                 runner._routes(layout.site, artifact="full")
+
+    def test_direct_verso_semantics_rejects_empty_canonical_and_history(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            spec, layout, policies = self._package(root)
+            runner = ReleaseAcceptanceRunner(
+                REPO_ROOT,
+                layout,
+                spec,
+                expected_artifact_policy_sha256=artifact_policy_digest(policies),
+            )
+            empty_shell = (
+                "<!doctype html><html><body><article><h1>Demo</h1>"
+                "<p>No separate reading sections are published for this version.</p>"
+                "</article></body></html>"
+            )
+
+            canonical = layout.pages_site / "versions/v4.30.0/books/demo/index.html"
+            canonical.write_text(empty_shell, encoding="utf-8")
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                r"explicit empty shell.*books/Demo@v4\.30\.0",
+            ):
+                runner._routes(layout.pages_site, artifact="pages")
+
+            shutil.copy2(
+                layout.site / "versions/v4.30.0/books/demo/index.html",
+                canonical,
+            )
+            history = layout.site / "versions/v4.26.0/books/demo/index.html"
+            history.write_text(empty_shell, encoding="utf-8")
+            runner._routes(layout.pages_site, artifact="pages")
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                r"explicit empty shell.*books/Demo@v4\.26\.0",
+            ):
+                runner._routes(layout.site, artifact="full")
+
+    def test_direct_verso_semantics_accepts_sections_and_single_pages(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            spec, layout, policies = self._package(root)
+            runner = ReleaseAcceptanceRunner(
+                REPO_ROOT,
+                layout,
+                spec,
+                expected_artifact_policy_sha256=artifact_policy_digest(policies),
+            )
+
+            # The package fixture has a genuine chapter/section page in both
+            # immutable version trees.  The canonical adapter is deliberately
+            # an empty marker here: semantics must come from the version tree,
+            # not from this redirect-wrapper location.
+            adapter = layout.pages_site / "sites/demo/pages/index.html"
+            adapter.write_text(
+                adapter.read_text(encoding="utf-8").replace(
+                    "<html>",
+                    '<html data-reasbook-verso-empty="true">',
+                    1,
+                ),
+                encoding="utf-8",
+            )
+            runner._routes(layout.site, artifact="full")
+            runner._routes(layout.pages_site, artifact="pages")
+
+            for kind, overview in (("books", "book"), ("papers", "paper")):
+                project = ProjectSpec(
+                    key=f"{kind}/Standalone",
+                    kind=kind,
+                    project_id="Standalone",
+                    slug="standalone",
+                    branch="v4.30.0",
+                    commit="b" * 40,
+                    source_path=f"ReasBook/{kind.title()}/Standalone",
+                    build_target="Standalone",
+                    canonical=True,
+                    outputs=("verso",),
+                )
+                relative = Path("versions/v4.30.0") / kind / "standalone"
+                page = layout.site / relative / "index.html"
+                page.parent.mkdir(parents=True, exist_ok=True)
+                page.write_text(
+                    "<!doctype html>"
+                    '<html data-reasbook-verso-standalone="true"><body><article>'
+                    f"<h1>Standalone {overview}</h1>"
+                    "<p>This work is intentionally published as one readable page.</p>"
+                    "</article></body></html>",
+                    encoding="utf-8",
+                )
+                runner._validate_verso_content(layout.site, relative, project)
+                page.write_text(
+                    page.read_text(encoding="utf-8").replace(
+                        ' data-reasbook-verso-standalone="true"',
+                        "",
+                        1,
+                    ),
+                    encoding="utf-8",
+                )
+                with self.assertRaisesRegex(
+                    DeployExecutionError,
+                    r"leaf requires explicit standalone marker and readable prose",
+                ):
+                    runner._validate_verso_content(layout.site, relative, project)
+
+    def test_direct_verso_semantics_fails_closed_without_readable_content(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            spec, layout, policies = self._package(root)
+            runner = ReleaseAcceptanceRunner(
+                REPO_ROOT,
+                layout,
+                spec,
+                expected_artifact_policy_sha256=artifact_policy_digest(policies),
+            )
+            direct = layout.pages_site / "versions/v4.30.0/books/demo"
+            shutil.rmtree(direct / "chapters")
+            (direct / "index.html").write_text(
+                "<!doctype html><html><body><article><h1>Demo</h1>"
+                "<p>Section index:</p></article></body></html>",
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                r"no readable chapter, section, or standalone content",
+            ):
+                runner._routes(layout.pages_site, artifact="pages")
+
+    def test_direct_verso_semantics_rejects_empty_child_leaf(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            spec, layout, policies = self._package(root)
+            runner = ReleaseAcceptanceRunner(
+                REPO_ROOT,
+                layout,
+                spec,
+                expected_artifact_policy_sha256=artifact_policy_digest(policies),
+            )
+            leaf = (
+                layout.pages_site
+                / "versions/v4.30.0/books/demo/chapters/chap01/section01/index.html"
+            )
+            leaf.write_text(
+                "<!doctype html><html><body></body></html>",
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                r"no readable chapter, section, or standalone content.*section01",
+            ):
+                runner._routes(layout.pages_site, artifact="pages")
+
+    def test_direct_verso_semantics_scans_full_payload_for_empty_attribute(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            spec, layout, policies = self._package(root)
+            runner = ReleaseAcceptanceRunner(
+                REPO_ROOT,
+                layout,
+                spec,
+                expected_artifact_policy_sha256=artifact_policy_digest(policies),
+            )
+            leaf = (
+                layout.pages_site
+                / "versions/v4.30.0/books/demo/chapters/chap01/section01/index.html"
+            )
+            attributes = (
+                'data-reasbook-verso-empty = " TRUE "',
+                "DATA-REASBOOK-VERSO-EMPTY='true'",
+                "data-reasbook-verso-empty\n =\n TrUe",
+            )
+
+            for attribute in attributes:
+                with self.subTest(attribute=attribute):
+                    leaf.write_text(
+                        "<!doctype html><html><body><article>"
+                        "<p>A readable formalized section appears first.</p>"
+                        f"<div {attribute}></div>"
+                        "</article></body></html>",
+                        encoding="utf-8",
+                    )
+                    with self.assertRaisesRegex(
+                        DeployExecutionError,
+                        r"explicit empty shell.*books/Demo@v4\.30\.0",
+                    ):
+                        runner._routes(layout.pages_site, artifact="pages")
+
+    def test_direct_verso_semantics_ignores_hidden_readable_elements(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            spec, layout, policies = self._package(root)
+            runner = ReleaseAcceptanceRunner(
+                REPO_ROOT,
+                layout,
+                spec,
+                expected_artifact_policy_sha256=artifact_policy_digest(policies),
+            )
+            leaf = (
+                layout.site
+                / "versions/v4.30.0/books/demo/chapters/chap01/section01/index.html"
+            )
+            project = spec.canonical_projects()[0]
+            relative = Path("versions/v4.30.0/books/demo")
+            hidden_bodies = (
+                "<div hidden><p>Hidden prose is not published.</p></div>",
+                '<div aria-hidden=" TrUe "><p>Hidden prose is not published.</p></div>',
+                '<div style="color:red; DISPLAY : none !important; padding:0">'
+                "<p>Hidden prose is not published.</p></div>",
+                '<div style="visibility : HIDDEN">'
+                "<p>Hidden prose is not published.</p></div>",
+                # Closing the inner div must not end the outer hidden scope.
+                "<div hidden><div></div>"
+                "<p>Still hidden after a nested same-name element.</p></div>",
+            )
+
+            for body in hidden_bodies:
+                with self.subTest(body=body):
+                    leaf.write_text(
+                        f"<!doctype html><html><body><article>{body}</article>"
+                        "</body></html>",
+                        encoding="utf-8",
+                    )
+                    with self.assertRaisesRegex(
+                        DeployExecutionError,
+                        r"no readable chapter, section, or standalone content.*section01",
+                    ):
+                        runner._validate_verso_content(
+                            layout.site,
+                            relative,
+                            project,
+                        )
+
+            leaf.write_text(
+                "<!doctype html><html><body><article>"
+                "<div hidden><div></div>"
+                "<p>This remains hidden under the outer div.</p></div>"
+                "<p>This visible formalized section remains readable.</p>"
+                "</article></body></html>",
+                encoding="utf-8",
+            )
+            runner._validate_verso_content(layout.site, relative, project)
+
+    def test_direct_verso_semantics_rejects_redirect_cycle(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            spec, layout, policies = self._package(root)
+            runner = ReleaseAcceptanceRunner(
+                REPO_ROOT,
+                layout,
+                spec,
+                expected_artifact_policy_sha256=artifact_policy_digest(policies),
+            )
+            project = layout.pages_site / "versions/v4.30.0/books/demo"
+            chapter = project / "chapters/chap01/index.html"
+            section = project / "chapters/chap01/section01/index.html"
+            chapter.write_text(
+                '<!doctype html><html><head><meta http-equiv="refresh" '
+                'content="0; url=./section01/" /></head><body>'
+                '<a href="./section01/">Open section</a></body></html>',
+                encoding="utf-8",
+            )
+            section.write_text(
+                '<!doctype html><html><head><meta http-equiv="refresh" '
+                'content="0; url=../" /></head><body>'
+                '<a href="../">Open chapter</a></body></html>',
+                encoding="utf-8",
+            )
+
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                r"redirect cycle",
+            ):
+                runner._routes(layout.pages_site, artifact="pages")
+
+    def test_direct_verso_semantics_memoizes_shared_content_dag(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            spec, layout, policies = self._package(root)
+            runner = ReleaseAcceptanceRunner(
+                REPO_ROOT,
+                layout,
+                spec,
+                expected_artifact_policy_sha256=artifact_policy_digest(policies),
+            )
+            project_root = layout.site / "versions/v4.30.0/books/demo"
+            project = spec.canonical_projects()[0]
+            (project_root / "index.html").write_text(
+                "<!doctype html><html><body><article><p>Chapter index:</p><ul>"
+                '<li><a href="./chapters/chap01/">One</a></li>'
+                '<li><a href="./chapters/chap02/">Two</a></li>'
+                "</ul></article></body></html>",
+                encoding="utf-8",
+            )
+            for chapter in ("chap01", "chap02"):
+                page = project_root / "chapters" / chapter / "index.html"
+                page.parent.mkdir(parents=True, exist_ok=True)
+                page.write_text(
+                    "<!doctype html><html><body><main><p>Section index:</p>"
+                    '<ul><li><a href="../../shared/">Shared</a></li></ul>'
+                    "</main></body></html>",
+                    encoding="utf-8",
+                )
+            shared = project_root / "shared" / "index.html"
+            shared.parent.mkdir(parents=True, exist_ok=True)
+            shared.write_text(
+                "<!doctype html><html><body><article>"
+                "<p>A real shared theorem page.</p>"
+                '<a href="../missing/">ordinary cross-link</a>'
+                "</article></body></html>",
+                encoding="utf-8",
+            )
+
+            with patch.object(
+                runner,
+                "_read_verso_page",
+                wraps=runner._read_verso_page,
+            ) as read_page:
+                runner._validate_verso_content(
+                    layout.site,
+                    Path("versions/v4.30.0/books/demo"),
+                    project,
+                )
+
+            shared_reads = sum(
+                call.args[0] == shared for call in read_page.call_args_list
+            )
+            self.assertEqual(shared_reads, 1)
+
+    def test_direct_verso_directory_ignores_backlink_but_requires_forward_child(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            spec, layout, policies = self._package(root)
+            runner = ReleaseAcceptanceRunner(
+                REPO_ROOT,
+                layout,
+                spec,
+                expected_artifact_policy_sha256=artifact_policy_digest(policies),
+            )
+            project = spec.canonical_projects()[0]
+            relative = Path("versions/v4.30.0/books/demo")
+            chapter = layout.site / relative / "chapters/chap01/index.html"
+            chapter.write_text(
+                "<!doctype html><html><body><main><p>Section index:</p><ul>"
+                '<li><a href="../../">Book home</a></li>'
+                '<li><a href="./section01/">Section 1</a></li>'
+                "</ul></main></body></html>",
+                encoding="utf-8",
+            )
+            runner._validate_verso_content(layout.site, relative, project)
+
+            chapter.write_text(
+                "<!doctype html><html><body><main><p>Section index:</p><ul>"
+                '<li><a href="../../">Book home</a></li>'
+                "</ul></main></body></html>",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                r"no readable chapter, section, or standalone content.*chap01",
+            ):
+                runner._validate_verso_content(layout.site, relative, project)
+
+    def test_pages_verso_adapter_binds_refresh_and_anchor_to_direct_root(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            spec, layout, policies = self._package(root)
+            runner = ReleaseAcceptanceRunner(
+                REPO_ROOT,
+                layout,
+                spec,
+                expected_artifact_policy_sha256=artifact_policy_digest(policies),
+            )
+            adapter = layout.pages_site / "sites/demo/pages/index.html"
+            expected = "/ReasBook/versions/v4.30.0/books/demo/"
+
+            def write_adapter(refresh: str | None, anchor: str) -> None:
+                meta = (
+                    f'<meta http-equiv="refresh" content="{refresh}" />'
+                    if refresh is not None
+                    else ""
+                )
+                adapter.write_text(
+                    "<!doctype html><html><head>"
+                    f'{meta}</head><body><a href="{anchor}">Open</a>'
+                    "</body></html>",
+                    encoding="utf-8",
+                )
+
+            for refresh in (None, f"1; url={expected}"):
+                with self.subTest(refresh=refresh):
+                    write_adapter(refresh, expected)
+                    with self.assertRaisesRegex(
+                        DeployExecutionError,
+                        r"zero-second meta refresh",
+                    ):
+                        runner._routes(layout.pages_site, artifact="pages")
+
+            write_adapter("0; url=/ReasBook/versions/v4.30.0/demo/", expected)
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                r"adapter refresh does not target",
+            ):
+                runner._routes(layout.pages_site, artifact="pages")
+
+            write_adapter(f"0; url={expected}", "/ReasBook/")
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                r"adapter has no anchor targeting",
+            ):
+                runner._routes(layout.pages_site, artifact="pages")
+
+            write_adapter(f"0; url={expected}", expected)
+            (layout.pages_site / "versions/v4.30.0/books/demo/index.html").unlink()
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                r"canonical-verso-target route has no regular index",
+            ):
+                runner._routes(layout.pages_site, artifact="pages")
+
+    def test_no_history_release_validates_top_level_canonical_target(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            spec, layout, policies = self._package(
+                root,
+                include_historical_versions=False,
+            )
+            runner = ReleaseAcceptanceRunner(
+                REPO_ROOT,
+                layout,
+                spec,
+                expected_artifact_policy_sha256=artifact_policy_digest(policies),
+            )
+            pages_routes = runner._routes(layout.pages_site, artifact="pages")
+            runner._routes(layout.site, artifact="full")
+            self.assertIn(
+                "/ReasBook/books/demo/",
+                {route.path for route in pages_routes},
+            )
+
+            adapter = layout.pages_site / "sites/demo/pages/index.html"
+            adapter.write_text(
+                '<!doctype html><html><head><meta http-equiv="refresh" '
+                'content="0; url=/ReasBook/versions/v4.30.0/books/demo/" />'
+                '</head><body><a href="/ReasBook/versions/v4.30.0/books/demo/">'
+                "Open</a></body></html>",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                r"adapter refresh does not target books/demo/",
+            ):
+                runner._routes(layout.pages_site, artifact="pages")
 
     def test_route_matrix_keeps_noncanonical_history_full_only(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
