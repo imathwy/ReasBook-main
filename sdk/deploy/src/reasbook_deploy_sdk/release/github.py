@@ -207,37 +207,29 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
         expected_registry_commit = self._release_registry_commit()
         self._require_publishable_tooling_revision(expected_registry_commit)
         self._require_immutable_releases_enabled()
-        if dry_run:
-            return GitHubPublication(
-                bundle.release_id,
-                self.profile.repository,
-                tag,
-                self.profile.workflow,
-                "planned",
-            )
 
         existing_release = self._release_by_tag(tag)
         release_created = False
         workflow_ref: str | None = None
         if existing_release is None:
-            workflow_ref = self._default_branch()
-            trusted_sha = self._trusted_target(workflow_ref)
-            self._require_registry_target(
-                expected_registry_commit,
-                trusted_sha,
-                boundary="GitHub default branch",
-            )
-            self._ensure_tag_target(tag, expected_registry_commit)
-            existing_release, release_created = self._create_draft_release(
-                tag,
-                expected_registry_commit,
-                bundle.release_id,
-            )
-            self._require_registry_target(
-                expected_registry_commit,
-                self._tag_target(tag),
-                boundary="new release tag",
-            )
+            workflow_ref = self._new_release_workflow_ref(expected_registry_commit)
+            if dry_run:
+                self._validated_optional_tag_target(
+                    tag,
+                    expected_registry_commit,
+                )
+            else:
+                self._ensure_tag_target(tag, expected_registry_commit)
+                existing_release, release_created = self._create_draft_release(
+                    tag,
+                    expected_registry_commit,
+                    bundle.release_id,
+                )
+                self._require_registry_target(
+                    expected_registry_commit,
+                    self._tag_target(tag),
+                    boundary="new release tag",
+                )
         else:
             tag_target = self._tag_target(tag)
             self._require_registry_target(
@@ -246,18 +238,44 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
                 boundary="immutable release tag",
             )
 
-        release_is_draft = existing_release.get("draft")
-        if not isinstance(release_is_draft, bool):
-            raise DeployExecutionError("existing release has invalid draft metadata")
-        release_database_id = self._release_database_id(existing_release)
-        if existing_release.get("tag_name") != tag:
-            raise DeployExecutionError(
-                "GitHub Release does not match the requested tag"
+        release_is_draft: bool | None = None
+        release_database_id: int | None = None
+        missing: tuple[Path, ...] = ()
+        if existing_release is not None:
+            release_is_draft, release_database_id = self._release_identity(
+                existing_release,
+                tag,
             )
-        if not release_is_draft and existing_release.get("immutable") is not True:
-            raise DeployExecutionError(
-                "existing published GitHub Release is not immutable"
+            if not release_created:
+                try:
+                    missing = self._validate_existing_release(
+                        existing_release,
+                        assets,
+                        frozen_assets,
+                    )
+                except _IncompleteDraftAssets:
+                    if dry_run:
+                        raise
+                    existing_release, missing = self._recover_incomplete_draft_assets(
+                        tag,
+                        existing_release,
+                        assets,
+                        frozen_assets,
+                    )
+
+        if dry_run:
+            self._require_local_assets_unchanged(assets, frozen_assets)
+            return GitHubPublication(
+                bundle.release_id,
+                self.profile.repository,
+                tag,
+                self.profile.workflow,
+                "planned",
             )
+
+        assert existing_release is not None
+        assert release_is_draft is not None
+        assert release_database_id is not None
         if release_created:
             self._require_local_assets_unchanged(assets, frozen_assets)
             self._run(
@@ -269,31 +287,17 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
                 self.profile.repository,
                 timeout_seconds=_RELEASE_UPLOAD_TIMEOUT_SECONDS,
             )
-        else:
-            try:
-                missing = self._validate_existing_release(
-                    existing_release,
-                    assets,
-                    frozen_assets,
-                )
-            except _IncompleteDraftAssets:
-                existing_release, missing = self._recover_incomplete_draft_assets(
-                    tag,
-                    existing_release,
-                    assets,
-                    frozen_assets,
-                )
-            if missing:
-                self._require_local_assets_unchanged(assets, frozen_assets)
-                self._run(
-                    "release",
-                    "upload",
-                    tag,
-                    *(str(asset) for asset in missing),
-                    "--repo",
-                    self.profile.repository,
-                    timeout_seconds=_RELEASE_UPLOAD_TIMEOUT_SECONDS,
-                )
+        elif missing:
+            self._require_local_assets_unchanged(assets, frozen_assets)
+            self._run(
+                "release",
+                "upload",
+                tag,
+                *(str(asset) for asset in missing),
+                "--repo",
+                self.profile.repository,
+                timeout_seconds=_RELEASE_UPLOAD_TIMEOUT_SECONDS,
+            )
         self._require_local_assets_unchanged(assets, frozen_assets)
         if release_is_draft:
             # The upload command returning success is not sufficient evidence
@@ -389,6 +393,37 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
                 "GitHub publication requires the ReleaseSpec registry commit"
             )
         return commit
+
+    def _new_release_workflow_ref(self, registry_commit: str) -> str:
+        """Require the exact clean checkout used to create a new Release."""
+
+        workflow_ref = self._default_branch()
+        trusted_sha = self._trusted_target(workflow_ref)
+        self._require_registry_target(
+            registry_commit,
+            trusted_sha,
+            boundary="GitHub default branch",
+        )
+        return workflow_ref
+
+    @staticmethod
+    def _release_identity(
+        release: dict[str, Any],
+        tag: str,
+    ) -> tuple[bool, int]:
+        release_is_draft = release.get("draft")
+        if not isinstance(release_is_draft, bool):
+            raise DeployExecutionError("existing release has invalid draft metadata")
+        release_database_id = GitHubReleasePublisher._release_database_id(release)
+        if release.get("tag_name") != tag:
+            raise DeployExecutionError(
+                "GitHub Release does not match the requested tag"
+            )
+        if not release_is_draft and release.get("immutable") is not True:
+            raise DeployExecutionError(
+                "existing published GitHub Release is not immutable"
+            )
+        return release_is_draft, release_database_id
 
     def _require_external_manifest_matches_bundle(
         self,
@@ -780,6 +815,22 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
                 ) from exc
         raise DeployExecutionError("release tag does not resolve to a commit")
 
+    def _validated_optional_tag_target(
+        self,
+        tag: str,
+        registry_commit: str,
+    ) -> str | None:
+        """Read an optional tag and reject one bound to another release."""
+
+        target = self._optional_tag_target(tag)
+        if target is not None:
+            self._require_registry_target(
+                registry_commit,
+                target,
+                boundary="pre-existing release tag",
+            )
+        return target
+
     def _ensure_tag_target(self, tag: str, registry_commit: str) -> None:
         """Atomically establish a tag at the exact release commit.
 
@@ -789,13 +840,8 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
         exact same target.
         """
 
-        target = self._optional_tag_target(tag)
+        target = self._validated_optional_tag_target(tag, registry_commit)
         if target is not None:
-            self._require_registry_target(
-                registry_commit,
-                target,
-                boundary="pre-existing release tag",
-            )
             return
 
         endpoint = f"repos/{self.profile.repository}/git/refs"

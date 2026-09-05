@@ -304,6 +304,28 @@ def profile(root: Path, *, historical: bool = True) -> DeploymentProfile:
 
 
 class ReleasePlanningTests(unittest.TestCase):
+    def test_pages_route_score_prefers_indexed_landing_over_larger_fragment(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            landing = root / "books" / "demo"
+            fragment = root / "demo"
+            landing.mkdir(parents=True)
+            (fragment / "chapter").mkdir(parents=True)
+            (landing / "index.html").write_text(
+                "<!doctype html><html></html>", encoding="utf-8"
+            )
+            (fragment / "chapter" / "index.html").write_text(
+                "<!doctype html><html>" + ("large" * 10_000) + "</html>",
+                encoding="utf-8",
+            )
+
+            self.assertGreater(
+                PagesSiteProjector._verso_route_score(landing),
+                PagesSiteProjector._verso_route_score(fragment),
+            )
+
     def setUp(self) -> None:
         self.registry = ToolchainRegistry(
             (
@@ -1145,6 +1167,20 @@ class ReleasePlanningTests(unittest.TestCase):
                 books={"Demo": "canonical"},
                 papers={},
             )
+            rich_route = branch_sites["v4.30.0"] / "demo"
+            for relative in (
+                Path("index.html"),
+                Path("chapter") / "index.html",
+                Path("chapter") / "section" / "index.html",
+            ):
+                target = rich_route / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text(
+                    "<!doctype html><html><body>"
+                    + ("rich route " * 2_000)
+                    + "</body></html>",
+                    encoding="utf-8",
+                )
             dependency = (
                 branch_sites["v4.30.0"] / "docs" / "ReasBook" / "Mathlib" / "Heavy.html"
             )
@@ -1160,11 +1196,13 @@ class ReleasePlanningTests(unittest.TestCase):
                 / "Demo"
                 / "Book.html"
             )
+            project_chapter = project_doc.with_name("Chapter.html")
+            project_chapter.write_text("p" * 200_000, encoding="utf-8")
             project_doc.write_text(
                 '<!doctype html><html><head><meta http-equiv="refresh" '
                 'content="0; url=../../Mathlib/RefreshTarget.html"></head>'
                 '<body><a href="../../Mathlib/Heavy.html">'
-                "Dependency</a></body></html>",
+                'Dependency</a><a href="Chapter.html">Chapter</a></body></html>',
                 encoding="utf-8",
             )
             report = ReleaseBuildReport.from_branches(
@@ -1183,8 +1221,51 @@ class ReleasePlanningTests(unittest.TestCase):
             store.write_build_report(report)
             ReleaseSiteAssembler(REPO_ROOT, layout).assemble(spec, report)
             store.transition("validated", completed_stage="site")
+            shutil.copytree(
+                rich_route,
+                layout.site / "versions" / "v4.30.0" / "demo",
+                dirs_exist_ok=True,
+            )
+            # Real v4.30 branch sites split a small indexed landing route from
+            # a larger legacy fragment containing chapters but no root index.
+            # The fragment must remain available for deep links, but cannot be
+            # the catalog redirect target on a static host.
+            (layout.site / "versions" / "v4.30.0" / "demo" / "index.html").unlink()
+            (layout.site / ".nojekyll").write_text("", encoding="utf-8")
+            (layout.site / "private-build-evidence.json").write_text(
+                '{"internal":true}\n',
+                encoding="utf-8",
+            )
+            full_site_identity = site_tree_digest(layout.site)
+
+            broken_full = root / "broken-full"
+            shutil.copytree(layout.site, broken_full)
+            (
+                broken_full
+                / "versions"
+                / "v4.30.0"
+                / "docs"
+                / "ReasBook"
+                / "Books"
+                / "Demo"
+                / "Book.html"
+            ).unlink()
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                "no canonical API entry",
+            ):
+                PagesSiteProjector().project(
+                    spec,
+                    broken_full,
+                    root / "broken-pages",
+                )
 
             PagesSiteProjector().project(spec, layout.site, layout.pages_site)
+            self.assertEqual(full_site_identity, site_tree_digest(layout.site))
+            self.assertTrue((layout.pages_site / ".nojekyll").is_file())
+            self.assertFalse(
+                (layout.pages_site / "private-build-evidence.json").exists()
+            )
             stub = (
                 layout.pages_site
                 / "versions"
@@ -1203,9 +1284,71 @@ class ReleasePlanningTests(unittest.TestCase):
                 "not included in the bounded Pages artifact",
                 stub.with_name("RefreshTarget.html").read_text(encoding="utf-8"),
             )
+            projected_chapter = (
+                layout.pages_site
+                / "versions"
+                / "v4.30.0"
+                / "docs"
+                / "ReasBook"
+                / "Books"
+                / "Demo"
+                / "Chapter.html"
+            )
+            self.assertIn(
+                "not included in the bounded Pages artifact",
+                projected_chapter.read_text(encoding="utf-8"),
+            )
+            self.assertLess(
+                projected_chapter.stat().st_size,
+                project_chapter.stat().st_size,
+            )
             self.assertFalse(
                 (layout.pages_site / "versions" / "v4.26.0" / "books" / "demo").exists()
             )
+            self.assertFalse((layout.pages_site / "books").exists())
+            self.assertFalse((layout.pages_site / "papers").exists())
+            self.assertFalse(
+                (layout.pages_site / "sites" / "demo" / "pages" / "chapter").exists()
+            )
+            self.assertIn(
+                "/ReasBook/versions/v4.30.0/books/demo/",
+                (
+                    layout.pages_site / "sites" / "demo" / "pages" / "index.html"
+                ).read_text(encoding="utf-8"),
+            )
+            self.assertTrue(
+                (
+                    layout.pages_site
+                    / "versions"
+                    / "v4.30.0"
+                    / "demo"
+                    / "chapter"
+                    / "section"
+                    / "index.html"
+                ).is_file()
+            )
+            self.assertIn(
+                "/ReasBook/versions/v4.30.0/docs/ReasBook/Books/Demo/Book.html",
+                (
+                    layout.pages_site / "sites" / "demo" / "docs" / "index.html"
+                ).read_text(encoding="utf-8"),
+            )
+            self.assertTrue(
+                (layout.site / "books" / "demo" / "chapter" / "index.html").is_file()
+            )
+            self.assertEqual(
+                project_chapter.read_text(encoding="utf-8"),
+                "p" * 200_000,
+            )
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                "budget is 1",
+            ):
+                PagesSiteProjector(max_site_bytes=1).project(
+                    spec,
+                    layout.site,
+                    root / "over-budget-pages",
+                )
 
             bundler = ReleaseBundler(layout, store, generated_at=self.now)
             full = bundler.package(
@@ -2026,9 +2169,11 @@ class ReleasePlanningTests(unittest.TestCase):
 
     def test_github_publisher_uploads_then_dispatches_pages(self) -> None:
         class FakeRunner:
-            def __init__(self, paths=()):
+            def __init__(self, paths=(), *, head: str | None = None, status: str = ""):
                 self.commands = []
                 self.paths = paths
+                self.head = head or "d" * 40
+                self.status = status
                 self.tag_exists = False
                 self.release_created = False
                 self.release_uploaded = False
@@ -2038,10 +2183,14 @@ class ReleasePlanningTests(unittest.TestCase):
                 self.commands.append(command)
                 if command.argv == ("git", "rev-parse", "HEAD"):
                     return CommandResult(
-                        command=command, returncode=0, stdout="d" * 40 + "\n"
+                        command=command, returncode=0, stdout=self.head + "\n"
                     )
                 if command.argv[0] == "git":
-                    return CommandResult(command=command, returncode=0, stdout="")
+                    return CommandResult(
+                        command=command,
+                        returncode=0,
+                        stdout=self.status,
+                    )
                 if command.argv[1:3] == ("repo", "view"):
                     return CommandResult(command=command, returncode=0, stdout="main\n")
                 if command.argv[1] == "api":
@@ -2314,6 +2463,27 @@ class ReleasePlanningTests(unittest.TestCase):
             self.assertNotIn(("release", "upload"), mismatch_verbs)
             self.assertNotIn(("workflow", "run"), mismatch_verbs)
 
+            dry_mismatch_runner = FakeRunner()
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                "registry commit does not match the GitHub default branch",
+            ):
+                GitHubReleasePublisher(
+                    GitHubPublishProfile(repository="acme/reasbook"),
+                    runner=dry_mismatch_runner,
+                    expected_registry_commit="c" * 40,
+                    expected_tooling_revision=(
+                        "c" * 40 + "+tooling-sha256:" + "e" * 64
+                    ),
+                    expected_release_set_sha256=release_set_sha256,
+                ).publish(bundle, dry_run=True)
+            dry_mismatch_verbs = [
+                command.argv[1:3] for command in dry_mismatch_runner.commands
+            ]
+            self.assertNotIn(("release", "create"), dry_mismatch_verbs)
+            self.assertNotIn(("release", "upload"), dry_mismatch_verbs)
+            self.assertNotIn(("workflow", "run"), dry_mismatch_verbs)
+
             with self.assertRaisesRegex(
                 DeployExecutionError,
                 "requires the ReleaseSpec registry commit",
@@ -2338,27 +2508,7 @@ class ReleasePlanningTests(unittest.TestCase):
                     expected_release_set_sha256=release_set_sha256,
                 ).publish(bundle, dry_run=True)
 
-            class AuditOnlyRunner:
-                def __init__(self):
-                    self.commands = []
-
-                def run(self, command):
-                    self.commands.append(command)
-                    if command.argv[1] == "api" and command.argv[2].endswith(
-                        "/immutable-releases"
-                    ):
-                        return CommandResult(
-                            command=command,
-                            returncode=0,
-                            stdout=json.dumps(
-                                {"enabled": True, "enforced_by_owner": False}
-                            ),
-                        )
-                    raise AssertionError(
-                        "a publication dry-run may only audit immutable releases"
-                    )
-
-            audit_runner = AuditOnlyRunner()
+            audit_runner = FakeRunner(assets)
             planned = GitHubReleasePublisher(
                 GitHubPublishProfile(repository="acme/reasbook"),
                 runner=audit_runner,
@@ -2367,11 +2517,64 @@ class ReleasePlanningTests(unittest.TestCase):
                 expected_release_set_sha256=release_set_sha256,
             ).publish(bundle, dry_run=True)
             self.assertEqual(planned.status, "planned")
-            self.assertEqual(len(audit_runner.commands), 1)
+            self.assertFalse(audit_runner.tag_exists)
+            self.assertFalse(audit_runner.release_created)
+            self.assertFalse(audit_runner.release_uploaded)
+            self.assertFalse(audit_runner.release_published)
             self.assertIn(
                 "X-GitHub-Api-Version: 2026-03-10",
                 audit_runner.commands[0].argv,
             )
+            dry_run_verbs = [command.argv[1:3] for command in audit_runner.commands]
+            self.assertEqual(
+                dry_run_verbs,
+                [
+                    ("api", "repos/acme/reasbook/immutable-releases"),
+                    (
+                        "api",
+                        "repos/acme/reasbook/releases/tags/"
+                        "reasbook-site-20260901T140000Z-aaaaaaaaaaaa",
+                    ),
+                    ("repo", "view"),
+                    ("api", "repos/acme/reasbook/commits/main"),
+                    ("rev-parse", "HEAD"),
+                    ("status", "--porcelain=v1"),
+                    (
+                        "api",
+                        "repos/acme/reasbook/git/ref/tags/"
+                        "reasbook-site-20260901T140000Z-aaaaaaaaaaaa",
+                    ),
+                ],
+            )
+            self.assertFalse(
+                any(
+                    command.argv[1:3]
+                    in {
+                        ("release", "upload"),
+                        ("workflow", "run"),
+                    }
+                    or (
+                        command.argv[1] == "api"
+                        and "--method" in command.argv
+                        and command.argv[command.argv.index("--method") + 1] != "GET"
+                    )
+                    for command in audit_runner.commands
+                )
+            )
+
+            dirty_runner = FakeRunner(assets, status=" M local-change.py\n")
+            with self.assertRaisesRegex(DeployExecutionError, "clean Git"):
+                GitHubReleasePublisher(
+                    GitHubPublishProfile(repository="acme/reasbook"),
+                    runner=dirty_runner,
+                    expected_registry_commit="d" * 40,
+                    expected_tooling_revision=(
+                        "d" * 40 + "+tooling-sha256:" + "e" * 64
+                    ),
+                    expected_release_set_sha256=release_set_sha256,
+                ).publish(bundle, dry_run=True)
+            self.assertFalse(dirty_runner.tag_exists)
+            self.assertFalse(dirty_runner.release_created)
 
     def test_github_publisher_rejects_wrong_orphan_or_racing_tag(self) -> None:
         class TagRunner:
@@ -2532,6 +2735,35 @@ class ReleasePlanningTests(unittest.TestCase):
                         ("workflow", "run"),
                     }
                     for command in orphan_runner.commands
+                )
+            )
+
+            dry_orphan_runner = TagRunner(preexisting_target="c" * 40)
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                "pre-existing release tag",
+            ):
+                GitHubReleasePublisher(
+                    GitHubPublishProfile(repository="acme/reasbook"),
+                    runner=dry_orphan_runner,
+                    expected_registry_commit="d" * 40,
+                    expected_tooling_revision=tooling,
+                    expected_release_set_sha256=release_set_sha256,
+                ).publish(bundle, dry_run=True)
+            self.assertFalse(dry_orphan_runner.create_attempted)
+            self.assertFalse(
+                any(
+                    command.argv[1:3]
+                    in {
+                        ("release", "upload"),
+                        ("workflow", "run"),
+                    }
+                    or (
+                        command.argv[1] == "api"
+                        and "--method" in command.argv
+                        and command.argv[command.argv.index("--method") + 1] != "GET"
+                    )
+                    for command in dry_orphan_runner.commands
                 )
             )
 
@@ -3006,6 +3238,87 @@ class ReleasePlanningTests(unittest.TestCase):
                         tuple(paths),
                         frozen,
                     )
+
+    def test_github_publisher_dry_run_never_repairs_a_draft_asset(self) -> None:
+        tag = "reasbook-site-20260901T140000Z-aaaaaaaaaaaa"
+
+        class DraftRunner:
+            def __init__(self, release):
+                self.release = release
+                self.commands = []
+
+            def run(self, command):
+                self.commands.append(command)
+                if command.argv[1] != "api":
+                    raise AssertionError(command.argv)
+                endpoint = next(
+                    part for part in command.argv if part.startswith("repos/")
+                )
+                if endpoint.endswith("/immutable-releases"):
+                    return CommandResult(
+                        command=command,
+                        returncode=0,
+                        stdout=json.dumps(
+                            {"enabled": True, "enforced_by_owner": False}
+                        ),
+                    )
+                if "/releases/tags/" in endpoint:
+                    return CommandResult(
+                        command=command,
+                        returncode=0,
+                        stdout=json.dumps(self.release),
+                    )
+                if "/git/ref/tags/" in endpoint:
+                    return CommandResult(
+                        command=command,
+                        returncode=0,
+                        stdout=json.dumps(
+                            {"object": {"type": "commit", "sha": "d" * 40}}
+                        ),
+                    )
+                raise AssertionError(command.argv)
+
+        with tempfile.TemporaryDirectory() as temp:
+            release_id = "site-20260901T140000Z-" + "a" * 12
+            bundle, paths = github_pages_bundle_fixture(Path(temp), release_id)
+            tag_release = {
+                "id": 123,
+                "tag_name": tag,
+                "draft": True,
+                "immutable": False,
+                "assets": [
+                    {
+                        "id": 987,
+                        "name": paths[0].name,
+                        "state": "starter",
+                        "size": 0,
+                        "digest": None,
+                    }
+                ],
+            }
+            runner = DraftRunner(tag_release)
+            with self.assertRaisesRegex(
+                DeployExecutionError,
+                "contains incomplete uploads",
+            ):
+                GitHubReleasePublisher(
+                    GitHubPublishProfile(repository="acme/reasbook"),
+                    runner=runner,
+                    expected_registry_commit="d" * 40,
+                    expected_tooling_revision=(
+                        "d" * 40 + "+tooling-sha256:" + "e" * 64
+                    ),
+                    expected_release_set_sha256=accepted_release_set_sha256(bundle),
+                ).publish(bundle, dry_run=True)
+
+            self.assertFalse(
+                any(
+                    "--method" in command.argv
+                    and command.argv[command.argv.index("--method") + 1] != "GET"
+                    for command in runner.commands
+                ),
+                "a publication dry-run must not repair remote draft assets",
+            )
 
     def test_github_upload_fails_if_a_local_asset_changes_after_validation(
         self,
@@ -4330,22 +4643,28 @@ class ReleasePlanningTests(unittest.TestCase):
             root = Path(temp)
             release_id = "site-20260901T140000Z-" + "a" * 12
             bundle, _ = github_pages_bundle_fixture(root, release_id)
-            runner = ExistingRunner()
+            for dry_run in (False, True):
+                with self.subTest(dry_run=dry_run):
+                    runner = ExistingRunner()
+                    with self.assertRaisesRegex(
+                        DeployExecutionError,
+                        "refusing to overwrite",
+                    ):
+                        GitHubReleasePublisher(
+                            GitHubPublishProfile(repository="acme/reasbook"),
+                            runner=runner,
+                            expected_registry_commit="c" * 40,
+                            expected_tooling_revision=(
+                                "c" * 40 + "+tooling-sha256:" + "e" * 64
+                            ),
+                            expected_release_set_sha256=(
+                                accepted_release_set_sha256(bundle)
+                            ),
+                        ).publish(bundle, dry_run=dry_run)
 
-            with self.assertRaisesRegex(DeployExecutionError, "refusing to overwrite"):
-                GitHubReleasePublisher(
-                    GitHubPublishProfile(repository="acme/reasbook"),
-                    runner=runner,
-                    expected_registry_commit="c" * 40,
-                    expected_tooling_revision=(
-                        "c" * 40 + "+tooling-sha256:" + "e" * 64
-                    ),
-                    expected_release_set_sha256=accepted_release_set_sha256(bundle),
-                ).publish(bundle)
-
-            verbs = [command.argv[1:3] for command in runner.commands]
-            self.assertNotIn(("release", "upload"), verbs)
-            self.assertNotIn(("workflow", "run"), verbs)
+                    verbs = [command.argv[1:3] for command in runner.commands]
+                    self.assertNotIn(("release", "upload"), verbs)
+                    self.assertNotIn(("workflow", "run"), verbs)
 
     def test_resume_reuses_successful_branch_build_before_assembly(self) -> None:
         class FakeBuilder:

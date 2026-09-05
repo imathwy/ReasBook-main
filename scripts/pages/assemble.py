@@ -25,10 +25,24 @@ import json
 import os
 import re
 import shutil
+from collections import defaultdict
 from pathlib import Path
+from urllib.parse import unquote, urlsplit
 
 
 ASSETS_DIR = Path(__file__).resolve().parent / "assets"
+
+_DOCUMENTATION_PAIR_RE = re.compile(
+    r"\(\s*(?P<documentation><a\b[^>]*>\s*Documentation\s*</a>)\s*\)"
+    r"(?P<separator>\s*)"
+    r"\(\s*(?P<verso><a\b[^>]*>\s*Verso\s*</a>)\s*\)",
+    flags=re.IGNORECASE,
+)
+_HREF_RE = re.compile(
+    r"\bhref\s*=\s*(?P<quote>['\"])(?P<href>.*?)(?P=quote)",
+    flags=re.IGNORECASE,
+)
+_UNAVAILABLE_DOCUMENTATION_MANIFEST = "unavailable-documentation.json"
 
 
 def count_html(path: Path) -> int:
@@ -219,6 +233,189 @@ def write_redirect(path: Path, target: str, title: str) -> None:
     )
 
 
+def _site_base_path() -> str:
+    value = os.environ.get("REASBOOK_SITE_ROOT", "/ReasBook/").strip()
+    if not value.startswith("/"):
+        value = "/" + value
+    return value.rstrip("/") + "/"
+
+
+def _anchor_href(anchor: str) -> str | None:
+    match = _HREF_RE.search(anchor)
+    return html.unescape(match.group("href")) if match else None
+
+
+def _internal_link_target(
+    site_root: Path,
+    document: Path,
+    href: str,
+    *,
+    base_path: str,
+) -> Path | None:
+    """Resolve one local static-site href without accepting path escapes."""
+
+    parsed = urlsplit(href.strip())
+    if parsed.scheme or parsed.netloc or not parsed.path:
+        return None
+    decoded_path = unquote(parsed.path)
+    if decoded_path.startswith("/"):
+        if not decoded_path.startswith(base_path):
+            return None
+        candidate = site_root / decoded_path[len(base_path) :].lstrip("/")
+    else:
+        candidate = document.parent / decoded_path
+
+    resolved_root = site_root.resolve()
+    candidate = candidate.resolve()
+    if candidate != resolved_root and resolved_root not in candidate.parents:
+        return None
+    if decoded_path.endswith("/") or candidate.is_dir():
+        candidate = candidate / "index.html"
+    return candidate
+
+
+def reconcile_documentation_links(site_root: Path) -> dict[str, object]:
+    """Make unavailable API links explicit while preserving strict closure.
+
+    Verso intentionally renders source modules beyond a project's public
+    ``Book``/``Paper`` import closure, while doc-gen publishes only that
+    closure.  Historical artifacts therefore contain a small number of
+    generated ``Documentation`` links for modules that have no API page.  A
+    pair is downgraded only when its API target is absent *and* its adjacent
+    Verso target exists.  Every other missing link remains untouched so the
+    subsequent strict verifier still fails closed.
+    """
+
+    base_path = _site_base_path()
+    occurrences: dict[tuple[str, str], list[str]] = defaultdict(list)
+    replacement_count = 0
+
+    for document in sorted(site_root.rglob("*.html")):
+        if document.is_symlink() or not document.is_file():
+            continue
+        source = document.read_text(encoding="utf-8", errors="replace")
+        if "Documentation" not in source or "Verso" not in source:
+            continue
+
+        relative_document = document.relative_to(site_root).as_posix()
+
+        def replace(match: re.Match[str]) -> str:
+            nonlocal replacement_count
+            documentation = match.group("documentation")
+            verso = match.group("verso")
+            documentation_href = _anchor_href(documentation)
+            verso_href = _anchor_href(verso)
+            if documentation_href is None or verso_href is None:
+                return match.group(0)
+
+            documentation_target = _internal_link_target(
+                site_root,
+                document,
+                documentation_href,
+                base_path=base_path,
+            )
+            verso_target = _internal_link_target(
+                site_root,
+                document,
+                verso_href,
+                base_path=base_path,
+            )
+            if (
+                documentation_target is None
+                or documentation_target.is_file()
+                or verso_target is None
+                or not verso_target.is_file()
+            ):
+                return match.group(0)
+
+            occurrences[(documentation_href, verso_href)].append(relative_document)
+            replacement_count += 1
+            return (
+                '<span class="documentation-unavailable" '
+                'title="This source module is not part of the published API '
+                'documentation">Documentation unavailable</span>'
+                + match.group("separator")
+                + f"({verso})"
+            )
+
+        rendered = _DOCUMENTATION_PAIR_RE.sub(replace, source)
+        if rendered != source:
+            temporary = document.with_name(f".{document.name}.tmp")
+            temporary.write_text(rendered, encoding="utf-8")
+            os.replace(temporary, document)
+
+    entries = [
+        {
+            "documentation_href": documentation_href,
+            "source_pages": sorted(source_pages),
+            "verso_href": verso_href,
+        }
+        for (documentation_href, verso_href), source_pages in sorted(
+            occurrences.items()
+        )
+    ]
+    manifest: dict[str, object] = {
+        "entries": entries,
+        "policy": "missing-api-page-with-valid-verso-fallback",
+        "replacement_count": replacement_count,
+        "schema_version": 1,
+    }
+    (site_root / _UNAVAILABLE_DOCUMENTATION_MANIFEST).write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    return manifest
+
+
+def write_route_aliases(root: Path, project: dict[str, object]) -> None:
+    """Materialize the stable navigation routes emitted by the Verso navbar.
+
+    Older branch builders store book content as ``<slug>/chapNN/...`` (or
+    ``books/<slug>/chapNN/...``), while the shared navbar deliberately links
+    to ``books/<slug>/chapters/chapNN/...``.  Static hosts do not provide a
+    rewrite layer, so publish tiny redirect pages for every generated route.
+    The same mismatch exists for paper ``sectionNN`` routes.
+    """
+
+    kind = str(project["kind"])
+    slug = str(project["slug"])
+    destination = root / kind / slug
+    candidates = [root / slug, destination]
+    source = best_dir(candidates)
+    if source is None:
+        return
+
+    mappings: list[tuple[Path, Path]] = []
+    if kind == "books":
+        book = source / "book"
+        if has_index(book):
+            mappings.append((book, destination / "book"))
+        for chapter in sorted(source.iterdir()):
+            if chapter.is_dir() and re.fullmatch(r"chap\d+", chapter.name):
+                mappings.append((chapter, destination / "chapters" / chapter.name))
+    elif kind == "papers":
+        for section in sorted(source.iterdir()):
+            if section.is_dir() and re.fullmatch(
+                r"section\d+(?:_part\d+)?", section.name
+            ):
+                mappings.append((section, destination / "sections" / section.name))
+
+    for source_tree, alias_tree in mappings:
+        # Snapshot the source indexes before creating aliases; on v4.26 the
+        # source and destination share a parent directory.
+        indexes = list(source_tree.rglob("index.html"))
+        for source_index in indexes:
+            relative = source_index.parent.relative_to(source_tree)
+            alias_dir = alias_tree / relative
+            alias_index = alias_dir / "index.html"
+            if alias_index.is_file() or alias_index == source_index:
+                continue
+            target = Path(os.path.relpath(source_index.parent, alias_dir)).as_posix()
+            if target == ".":
+                continue
+            write_redirect(alias_index, target.rstrip("/") + "/", "Open page")
+
+
 def versioned_doc_entry(
     src_root: Path,
     project: dict[str, object],
@@ -394,9 +591,7 @@ def catalog_page(projects: list[dict[str, str]], *, has_versions: bool) -> str:
             ]
         )
     if not groups:
-        groups = [
-            '    <p class="empty-state">No published books or papers yet.</p>'
-        ]
+        groups = ['    <p class="empty-state">No published books or papers yet.</p>']
     versions_href = "./versions/" if has_versions else None
     return "\n".join(
         [
@@ -443,6 +638,16 @@ def main() -> None:
         dst_root.mkdir(parents=True)
     write_catalog_asset(dst_root)
     has_versions = (dst_root / "versions" / "index.html").is_file()
+
+    route_roots = [dst_root]
+    versions_root = dst_root / "versions"
+    if versions_root.is_dir():
+        route_roots.extend(
+            path for path in sorted(versions_root.iterdir()) if path.is_dir()
+        )
+    for route_root in route_roots:
+        for project in projects:
+            write_route_aliases(route_root, project)
 
     # Rebuild the docs tree canonically instead of merging several layouts.
     docs_root = dst_root / "docs"
@@ -563,9 +768,7 @@ def main() -> None:
 
         map_dir = dst_root / "theorem-maps" / kind / slug
         if map_dir.is_dir():
-            site_nav.append(
-                (f"../../theorem-maps/{kind}/{slug}/", "Theorem Map")
-            )
+            site_nav.append((f"../../theorem-maps/{kind}/{slug}/", "Theorem Map"))
 
         project_page_data = {str(key): str(value) for key, value in project.items()}
         (site_dir / "index.html").write_text(
@@ -636,6 +839,15 @@ def main() -> None:
         catalog_page(projects, has_versions=has_versions),
         encoding="utf-8",
     )
+
+    documentation_audit = reconcile_documentation_links(dst_root)
+    unavailable = int(documentation_audit["replacement_count"])
+    if unavailable:
+        print(
+            "Marked "
+            f"{unavailable} generated Documentation link(s) as unavailable; "
+            f"see {_UNAVAILABLE_DOCUMENTATION_MANIFEST}"
+        )
 
 
 if __name__ == "__main__":
