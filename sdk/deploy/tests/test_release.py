@@ -468,6 +468,53 @@ class ReleasePlanningTests(unittest.TestCase):
                 PagesSiteProjector._is_external_api_doc(unknown, source)
             )
 
+    def test_doc_runtime_replaces_external_root_api_pages_only(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            source = root / "source"
+            destination = root / "destination"
+            docs = source / "docs"
+            reasbook_docs = docs / "ReasBook"
+            reasbook_docs.mkdir(parents=True)
+
+            external_pages = tuple(
+                location / f"{namespace}.html"
+                for location in (docs, reasbook_docs)
+                for namespace in ("Mathlib", "Init", "Lean")
+            )
+            for page in external_pages:
+                page.write_text(
+                    f"<!doctype html><html><body>{page.stem}</body></html>",
+                    encoding="utf-8",
+                )
+
+            runtime = docs / "search.html"
+            runtime.write_bytes(b"runtime-search-page\n")
+            project_owned = reasbook_docs / "Demo.html"
+            project_owned.write_bytes(b"project-owned-api-root\n")
+
+            PagesSiteProjector()._copy_doc_runtime(
+                source,
+                destination,
+                "/ReasBook/",
+            )
+
+            for page in external_pages:
+                projected = destination / page.relative_to(source)
+                self.assertIn(
+                    'data-reasbook-doc-stub="true"',
+                    projected.read_text(encoding="utf-8"),
+                )
+                self.assertNotEqual(projected.read_bytes(), page.read_bytes())
+            self.assertEqual(
+                (destination / runtime.relative_to(source)).read_bytes(),
+                runtime.read_bytes(),
+            )
+            self.assertEqual(
+                (destination / project_owned.relative_to(source)).read_bytes(),
+                project_owned.read_bytes(),
+            )
+
     def test_pages_projection_rejects_encoded_parent_path(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             pages = Path(temp) / "pages"
