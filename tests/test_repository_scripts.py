@@ -377,6 +377,7 @@ class RepositoryScriptTests(unittest.TestCase):
             result = subprocess.run(
                 [sys.executable, str(generator), "--repo-root", str(repo)],
                 cwd=repo,
+                env={**os.environ, "REASBOOK_GITHUB_BRANCH": "main"},
                 capture_output=True,
                 text=True,
                 check=False,
@@ -431,6 +432,7 @@ class RepositoryScriptTests(unittest.TestCase):
                 "REASBOOK_INCLUDE_PROJECTS": "",
                 "REASBOOK_EXCLUDE_PROJECTS": "",
                 "REASBOOK_PROJECT_FRAGMENT": "0",
+                "REASBOOK_GITHUB_BRANCH": "main",
             }
             result = subprocess.run(
                 command,
