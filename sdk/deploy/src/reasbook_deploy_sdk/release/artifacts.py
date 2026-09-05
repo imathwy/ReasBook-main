@@ -256,7 +256,7 @@ class PagesSiteProjector:
 
         for relative in (Path("static"), Path("-verso-docs.json")):
             self._copy_if_present(source, target, relative)
-        self._copy_doc_runtime(source, target)
+        self._copy_doc_runtime(source, target, spec.base_path)
 
         # Documentation ownership is recorded for every ProjectSpec, not only
         # the projects selected as catalog canonicals. Copy all known project
@@ -364,7 +364,12 @@ class PagesSiteProjector:
             return True
         return False
 
-    def _copy_doc_runtime(self, source: Path, destination: Path) -> None:
+    def _copy_doc_runtime(
+        self,
+        source: Path,
+        destination: Path,
+        base_path: str,
+    ) -> None:
         docs = source / "docs"
         if not docs.is_dir():
             return
@@ -372,7 +377,12 @@ class PagesSiteProjector:
         target_docs.mkdir(parents=True, exist_ok=True)
         for child in docs.iterdir():
             if child.is_file():
-                self._copy_if_present(source, destination, child.relative_to(source))
+                self._copy_doc_runtime_file(
+                    source,
+                    destination,
+                    child,
+                    base_path,
+                )
 
         for root_name in ("ReasBook",):
             root = docs / root_name
@@ -382,8 +392,41 @@ class PagesSiteProjector:
             target_root.mkdir(parents=True, exist_ok=True)
             for child in root.iterdir():
                 relative = child.relative_to(source)
-                if child.is_file() or child.name in _SHARED_DOC_DIRECTORIES:
+                if child.is_file():
+                    self._copy_doc_runtime_file(
+                        source,
+                        destination,
+                        child,
+                        base_path,
+                    )
+                elif child.name in _SHARED_DOC_DIRECTORIES:
                     self._copy_if_present(source, destination, relative)
+
+    def _copy_doc_runtime_file(
+        self,
+        source: Path,
+        destination: Path,
+        item: Path,
+        base_path: str,
+    ) -> None:
+        relative = item.relative_to(source)
+        if item.is_symlink():
+            raise DeployExecutionError(f"release site contains a symlink: {item}")
+        if self._is_external_root_api_doc(item):
+            self._write_api_stub(destination / relative, base_path)
+            return
+        self._copy_if_present(source, destination, relative)
+
+    @staticmethod
+    def _is_external_root_api_doc(source: Path) -> bool:
+        if source.suffix.lower() not in {".html", ".htm"}:
+            return False
+        if source.stem in _EXTERNAL_DOC_NAMESPACES:
+            return True
+        return 'data-reasbook-doc-stub="true"' in source.read_text(
+            encoding="utf-8",
+            errors="replace",
+        )
 
     def _copy_project_docs(
         self,
