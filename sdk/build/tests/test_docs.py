@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from contextlib import closing
 import json
 import platform
 import re
@@ -21,6 +22,16 @@ from reasbook_build_sdk import (
 from reasbook_build_sdk import docs as docs_module
 
 
+class _TrackingConnection(sqlite3.Connection):
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self.was_closed = False
+
+    def close(self) -> None:
+        self.was_closed = True
+        super().close()
+
+
 class _DocsRunner:
     def __init__(self) -> None:
         self.modules: list[str] = []
@@ -36,31 +47,35 @@ class _DocsRunner:
                 build = Path(argv[-3])
                 modules = tuple(control.read_text(encoding="utf-8").splitlines())
                 database = build / argv[-2]
-                with sqlite3.connect(database) as connection:
-                    connection.execute("PRAGMA journal_mode=WAL")
-                    connection.execute(
-                        "CREATE TABLE IF NOT EXISTS modules "
-                        "(name TEXT PRIMARY KEY, source_url TEXT)"
-                    )
-                    connection.execute(
-                        "CREATE TABLE IF NOT EXISTS schema_meta "
-                        "(key TEXT PRIMARY KEY, value TEXT NOT NULL)"
-                    )
-                    connection.executemany(
-                        "INSERT OR REPLACE INTO schema_meta (key, value) VALUES (?, ?)",
-                        (("ddl_hash", "fixture-ddl"), ("type_hash", "fixture-types")),
-                    )
-                    for table in sorted(
-                        docs_module._ANALYZER_REQUIRED_TABLES
-                        - {"modules", "schema_meta"}
-                    ):
+                with closing(sqlite3.connect(database)) as connection:
+                    with connection:
+                        connection.execute("PRAGMA journal_mode=WAL")
                         connection.execute(
-                            f'CREATE TABLE IF NOT EXISTS "{table}" (fixture INTEGER)'
+                            "CREATE TABLE IF NOT EXISTS modules "
+                            "(name TEXT PRIMARY KEY, source_url TEXT)"
                         )
-                    connection.executemany(
-                        "INSERT INTO modules (name, source_url) VALUES (?, NULL)",
-                        ((module,) for module in modules),
-                    )
+                        connection.execute(
+                            "CREATE TABLE IF NOT EXISTS schema_meta "
+                            "(key TEXT PRIMARY KEY, value TEXT NOT NULL)"
+                        )
+                        connection.executemany(
+                            "INSERT OR REPLACE INTO schema_meta (key, value) VALUES (?, ?)",
+                            (
+                                ("ddl_hash", "fixture-ddl"),
+                                ("type_hash", "fixture-types"),
+                            ),
+                        )
+                        for table in sorted(
+                            docs_module._ANALYZER_REQUIRED_TABLES
+                            - {"modules", "schema_meta"}
+                        ):
+                            connection.execute(
+                                f'CREATE TABLE IF NOT EXISTS "{table}" (fixture INTEGER)'
+                            )
+                        connection.executemany(
+                            "INSERT INTO modules (name, source_url) VALUES (?, NULL)",
+                            ((module,) for module in modules),
+                        )
             else:
                 build = Path(argv[-2])
                 modules = tuple(
@@ -72,7 +87,7 @@ class _DocsRunner:
             build = Path(argv[argv.index("--build") + 1])
             if "fromDb" in argv and not self.modules:
                 database = Path(argv[argv.index("--manifest") + 2])
-                with sqlite3.connect(database) as connection:
+                with closing(sqlite3.connect(database)) as connection:
                     self.modules.extend(
                         str(row[0])
                         for row in connection.execute(
@@ -640,6 +655,36 @@ class ProjectDocumentationTests(unittest.TestCase):
                         any("--run" in command.argv for command in runner.commands)
                     )
                     previous = current
+
+    def test_database_connections_close_before_documentation_publication(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=True)
+            output = root / "cache" / "docs"
+            connections: list[_TrackingConnection] = []
+            connect = sqlite3.connect
+
+            def tracked_connect(*args, **kwargs):
+                kwargs["factory"] = _TrackingConnection
+                connection = connect(*args, **kwargs)
+                connections.append(connection)
+                return connection
+
+            with patch.object(sqlite3, "connect", side_effect=tracked_connect):
+                ProjectDocumentationBuilder(runner=_DocsRunner()).build(
+                    project, ("Books.Demo.Book",), output
+                )
+
+            self.assertGreater(len(connections), 0)
+            self.assertTrue(all(connection.was_closed for connection in connections))
+            self.assertEqual(
+                [
+                    path
+                    for path in output.rglob("*")
+                    if path.name.endswith(("-wal", "-shm"))
+                ],
+                [],
+            )
 
     def test_unmanaged_metadata_cannot_suppress_dependency_hashing(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
