@@ -138,6 +138,21 @@ replacement cache as a unit. The selected project artifacts and analyzer
 support binaries are still hashed from their bytes. Without a valid structural
 opt-in, the builder hashes all dependency `.olean`, `.so`, and `.a` files
 instead.
+
+Writable finalizer caches use separate layouts below
+`finalizer-caches/<tooling-sha256>/`: a branch worker owns either the legacy
+`lake/<branch-namespace>` or configured
+`cfg-<configuration-sha256>/lake/<branch-namespace>` shape, while an isolated
+project worker appends `projects/<safe-project-key>` to the configured shape.
+The builder accepts them only when their exact schema-2/schema-3
+`finalizer-cache.json` binds the branch metadata, tooling digest, seed
+namespace, and, where present, canonical build configuration and original
+project key to the path. Because these workspaces are writable, their markers
+never substitute for artifact content: all dependency `.olean`, `.so`, and
+`.a` files remain hashed. The validated marker is included in the analysis
+identity so checkpoints cannot cross branch/project, tooling, or
+build-configuration boundaries.
+
 The repository adapter `scripts/build/project_docs.sh` uses exactly
 `REASBOOK_LAKE_TARGETS` when a release/deployment supplies it, ahead of any
 ambient `PROJECT_DOC_MODULES` operator override. Automatic Lake library

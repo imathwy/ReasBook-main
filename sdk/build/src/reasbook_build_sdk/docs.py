@@ -84,12 +84,43 @@ _MANAGED_CACHE_METADATA_KEYS = frozenset(
         "architecture",
     }
 )
+_FINALIZER_METADATA_KEYS = frozenset(
+    {
+        "schema",
+        "purpose",
+        "workspace_policy",
+        "branch",
+        "commit",
+        "manifest_sha256",
+        "toolchain",
+        "architecture",
+        "tooling_sha256",
+        "seed_namespace",
+    }
+)
+_CONFIGURED_FINALIZER_METADATA_KEYS = _FINALIZER_METADATA_KEYS | frozenset(
+    {"build_configuration", "build_configuration_sha256"}
+)
+_PROJECT_FINALIZER_METADATA_KEYS = _CONFIGURED_FINALIZER_METADATA_KEYS | frozenset(
+    {"project_key"}
+)
+_FINALIZER_BUILD_CONFIGURATION_KEYS = frozenset(
+    {"schema", "lean_threads", "lake_threads"}
+)
+_MAX_MANAGED_CACHE_METADATA_BYTES = 1024 * 1024
+_SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 _BRANCH_RE = re.compile(r"^[A-Za-z0-9._/-]+$")
 
 
 class _Runner(Protocol):
     def run(self, command: Command) -> CommandResult:
         """Run one documentation command."""
+
+
+@dataclass(frozen=True)
+class _ManagedCacheIdentity:
+    value: dict[str, object]
+    dependency_artifacts_are_immutable: bool
 
 
 @dataclass(frozen=True)
@@ -1501,18 +1532,24 @@ class ProjectDocumentationBuilder:
 
         metadata_path = lake / "cache-metadata.json"
         branch_cache: dict[str, object] | None = None
+        dependency_artifacts_are_immutable = False
         # An arbitrary metadata file inside a normal Lake workspace is not a
-        # trust signal. Only an explicit symlink to the branch-cache namespace
-        # can select the managed-cache policy; malformed opt-ins fail closed.
+        # trust signal. Only an explicit symlink to a validated branch or
+        # project-finalizer namespace can select a managed-cache policy;
+        # malformed opt-ins fail closed.
         if lake.is_symlink() and (metadata_path.exists() or metadata_path.is_symlink()):
-            branch_cache = cls._managed_branch_cache_identity(
+            managed_cache = cls._managed_lake_cache_identity(
                 project_root,
                 lake,
                 revision=revision,
             )
+            branch_cache = managed_cache.value
+            dependency_artifacts_are_immutable = (
+                managed_cache.dependency_artifacts_are_immutable
+            )
 
         dependency_packages: tuple[Path, ...]
-        if branch_cache is None:
+        if not dependency_artifacts_are_immutable:
             try:
                 dependency_packages = tuple(
                     sorted(path for path in packages.iterdir() if path.is_dir())
@@ -1590,6 +1627,57 @@ class ProjectDocumentationBuilder:
     ) -> dict[str, object]:
         """Validate the structural opt-in for an immutable branch cache."""
 
+        return cls._managed_lake_cache_identity(
+            project_root,
+            lake,
+            revision=revision,
+        ).value
+
+    @staticmethod
+    def _read_managed_cache_json(path: Path, *, label: str) -> object:
+        """Read one small regular metadata file without following a leaf link."""
+
+        flags = os.O_RDONLY | getattr(os, "O_CLOEXEC", 0)
+        flags |= getattr(os, "O_NOFOLLOW", 0)
+        try:
+            descriptor = os.open(path, flags)
+        except OSError as exc:
+            raise BuildFailed(f"cannot open {label}: {path}") from exc
+        try:
+            metadata = os.fstat(descriptor)
+            if (
+                not stat.S_ISREG(metadata.st_mode)
+                or metadata.st_size <= 0
+                or metadata.st_size > _MAX_MANAGED_CACHE_METADATA_BYTES
+            ):
+                raise BuildFailed(f"{label} has an unsafe size or file type")
+            with os.fdopen(descriptor, "r", encoding="utf-8", closefd=False) as handle:
+                try:
+                    return json.load(handle)
+                except (UnicodeError, json.JSONDecodeError) as exc:
+                    raise BuildFailed(f"{label} is invalid") from exc
+        finally:
+            os.close(descriptor)
+
+    @classmethod
+    def _managed_lake_cache_identity(
+        cls,
+        project_root: Path,
+        lake: Path,
+        *,
+        revision: str,
+    ) -> _ManagedCacheIdentity:
+        """Validate an immutable branch cache or isolated writable project cache.
+
+        A direct ``lake/<branch-namespace>`` cache outside the
+        ``finalizer-caches`` namespace is immutable and may bind dependency
+        artifacts through its structural identity. Project finalizers use
+        ``lake/<branch-namespace>/projects/<project-component>``. Those
+        workspaces are deliberately writable, so their exact schema-3 marker
+        is part of the checkpoint identity and every dependency artifact is
+        still content-hashed.
+        """
+
         try:
             cache = lake.resolve(strict=True)
         except OSError as exc:
@@ -1598,10 +1686,9 @@ class ProjectDocumentationBuilder:
         manifest = project_root / "lake-manifest.json"
         toolchain_file = project_root / "lean-toolchain"
         if (
-            not cache.is_dir()
+            not lake.is_symlink()
+            or not cache.is_dir()
             or cache.is_symlink()
-            or cache.parent.name != "lake"
-            or cache.parent.is_symlink()
             or metadata_path.is_symlink()
             or not metadata_path.is_file()
             or manifest.is_symlink()
@@ -1610,10 +1697,13 @@ class ProjectDocumentationBuilder:
             or not toolchain_file.is_file()
         ):
             raise BuildFailed("managed Lake cache has an unsafe namespace layout")
+        metadata = cls._read_managed_cache_json(
+            metadata_path,
+            label="compiled branch cache metadata",
+        )
         try:
-            metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
             toolchain = toolchain_file.read_text(encoding="utf-8").strip()
-        except (OSError, json.JSONDecodeError) as exc:
+        except OSError as exc:
             raise BuildFailed("compiled branch cache metadata is invalid") from exc
         if (
             not isinstance(metadata, dict)
@@ -1648,21 +1738,261 @@ class ProjectDocumentationBuilder:
             f"branch-{cls._cache_component(branch)}-{commit[:12]}-"
             f"{manifest_sha256[:16]}-{expected_toolchain}-{architecture}"
         )
-        if cache.name != expected_name:
+        direct_branch_cache = cache.parent.name == "lake"
+        project_cache = cache.parent.name == "projects"
+        branch_namespace = cache if direct_branch_cache else cache.parent.parent
+        if (
+            not (direct_branch_cache or project_cache)
+            or branch_namespace.name != expected_name
+        ):
             raise BuildFailed(
                 "managed Lake cache namespace does not match its branch metadata"
             )
-        return {
-            "policy": "trusted-immutable-branch-cache-v1",
-            "purpose": "release-branch-build",
-            "namespace": expected_name,
+        if direct_branch_cache:
+            if cache.parent.is_symlink() or not cache.parent.is_dir():
+                raise BuildFailed("managed Lake cache has an unsafe namespace layout")
+            finalizer_positions = tuple(
+                index
+                for index, parent in enumerate(cache.parents)
+                if parent.name == "finalizer-caches"
+            )
+            finalizer_marker = cache / "finalizer-cache.json"
+            if (
+                finalizer_positions
+                or finalizer_marker.exists()
+                or finalizer_marker.is_symlink()
+            ):
+                if len(finalizer_positions) != 1 or finalizer_positions[0] not in {
+                    2,
+                    3,
+                }:
+                    raise BuildFailed(
+                        "managed Lake cache has an unsafe namespace layout"
+                    )
+                return cls._managed_finalizer_cache_identity(
+                    cache,
+                    metadata_path=metadata_path,
+                    branch_namespace=branch_namespace,
+                    branch=branch,
+                    commit=commit,
+                    manifest_sha256=manifest_sha256,
+                    toolchain=expected_toolchain,
+                    architecture=architecture,
+                    project_cache=False,
+                )
+            return _ManagedCacheIdentity(
+                {
+                    "policy": "trusted-immutable-branch-cache-v1",
+                    "purpose": "release-branch-build",
+                    "namespace": expected_name,
+                    "metadata_sha256": cls._sha256(metadata_path),
+                    "branch": branch,
+                    "commit": commit,
+                    "manifest_sha256": manifest_sha256,
+                    "toolchain": expected_toolchain,
+                    "architecture": architecture,
+                },
+                dependency_artifacts_are_immutable=True,
+            )
+
+        return cls._managed_finalizer_cache_identity(
+            cache,
+            metadata_path=metadata_path,
+            branch_namespace=branch_namespace,
+            branch=branch,
+            commit=commit,
+            manifest_sha256=manifest_sha256,
+            toolchain=expected_toolchain,
+            architecture=architecture,
+            project_cache=True,
+        )
+
+    @classmethod
+    def _managed_finalizer_cache_identity(
+        cls,
+        cache: Path,
+        *,
+        metadata_path: Path,
+        branch_namespace: Path,
+        branch: str,
+        commit: str,
+        manifest_sha256: str,
+        toolchain: str,
+        architecture: str,
+        project_cache: bool,
+    ) -> _ManagedCacheIdentity:
+        """Validate one exact writable branch/project finalizer cache."""
+
+        if project_cache:
+            projects = cache.parent
+            lake_namespace = branch_namespace.parent
+            configuration_namespace: Path | None = lake_namespace.parent
+            tooling_namespace = configuration_namespace.parent
+            finalizer_namespace = tooling_namespace.parent
+            layout = (
+                (cache, None),
+                (projects, "projects"),
+                (branch_namespace, None),
+                (lake_namespace, "lake"),
+                (configuration_namespace, None),
+                (tooling_namespace, None),
+                (finalizer_namespace, "finalizer-caches"),
+            )
+        else:
+            lake_namespace = cache.parent
+            legacy_finalizer = lake_namespace.parent.parent
+            configured_finalizer = legacy_finalizer.parent
+            if legacy_finalizer.name == "finalizer-caches":
+                configuration_namespace = None
+                tooling_namespace = lake_namespace.parent
+                finalizer_namespace = legacy_finalizer
+            elif configured_finalizer.name == "finalizer-caches":
+                configuration_namespace = lake_namespace.parent
+                tooling_namespace = configuration_namespace.parent
+                finalizer_namespace = configured_finalizer
+            else:
+                raise BuildFailed("managed Lake cache has an unsafe namespace layout")
+            layout = (
+                (cache, None),
+                (lake_namespace, "lake"),
+                (tooling_namespace, None),
+                (finalizer_namespace, "finalizer-caches"),
+            )
+            if configuration_namespace is not None:
+                layout += ((configuration_namespace, None),)
+        if any(
+            path.is_symlink()
+            or not path.is_dir()
+            or (expected is not None and path.name != expected)
+            for path, expected in layout
+        ):
+            raise BuildFailed("managed Lake cache has an unsafe namespace layout")
+
+        tooling_digest = tooling_namespace.name
+        configuration_name = (
+            configuration_namespace.name
+            if configuration_namespace is not None
+            else None
+        )
+        configuration_digest = (
+            configuration_name.removeprefix("cfg-")
+            if configuration_name is not None
+            else None
+        )
+        marker_path = cache / "finalizer-cache.json"
+        if (
+            not _SHA256_RE.fullmatch(tooling_digest)
+            or (
+                configuration_name is not None
+                and (
+                    not configuration_name.startswith("cfg-")
+                    or configuration_digest is None
+                    or not _SHA256_RE.fullmatch(configuration_digest)
+                )
+            )
+            or marker_path.is_symlink()
+            or not marker_path.is_file()
+        ):
+            raise BuildFailed("managed Lake cache has an unsafe namespace layout")
+        marker = cls._read_managed_cache_json(
+            marker_path,
+            label="finalizer cache metadata",
+        )
+        expected_keys = (
+            _PROJECT_FINALIZER_METADATA_KEYS
+            if project_cache
+            else _CONFIGURED_FINALIZER_METADATA_KEYS
+            if configuration_namespace is not None
+            else _FINALIZER_METADATA_KEYS
+        )
+        expected_schema = 3 if configuration_namespace is not None else 2
+        if (
+            not isinstance(marker, dict)
+            or set(marker) != expected_keys
+            or marker.get("schema") != expected_schema
+            or marker.get("purpose") != "release-finalizer-lean-workspace"
+            or marker.get("workspace_policy") != "persistent-writable-v1"
+        ):
+            raise BuildFailed("finalizer cache metadata has an unknown purpose")
+
+        project_key = marker.get("project_key")
+        configuration = marker.get("build_configuration")
+        if project_cache and (
+            not isinstance(project_key, str)
+            or cls._cache_component(project_key) != cache.name
+        ):
+            raise BuildFailed("finalizer cache metadata does not match its path")
+        actual_configuration_digest: str | None = None
+        if configuration_namespace is not None:
+            if (
+                not isinstance(configuration, dict)
+                or set(configuration) != _FINALIZER_BUILD_CONFIGURATION_KEYS
+                or configuration.get("schema") != 1
+                or isinstance(configuration.get("lean_threads"), bool)
+                or not isinstance(configuration.get("lean_threads"), int)
+                or not 1 <= configuration["lean_threads"] <= 256
+                or isinstance(configuration.get("lake_threads"), bool)
+                or configuration.get("lake_threads") != 1
+            ):
+                raise BuildFailed(
+                    "finalizer cache metadata has an invalid configuration"
+                )
+            actual_configuration_digest = hashlib.sha256(
+                json.dumps(
+                    configuration,
+                    ensure_ascii=True,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                ).encode("utf-8")
+            ).hexdigest()
+        if (
+            marker.get("branch") != branch
+            or marker.get("commit") != commit
+            or marker.get("manifest_sha256") != manifest_sha256
+            or marker.get("toolchain") != toolchain
+            or marker.get("architecture") != architecture
+            or marker.get("tooling_sha256") != tooling_digest
+            or marker.get("seed_namespace") != branch_namespace.name
+            or (
+                configuration_namespace is not None
+                and (
+                    marker.get("build_configuration_sha256")
+                    != actual_configuration_digest
+                    or configuration_digest != actual_configuration_digest
+                )
+            )
+        ):
+            raise BuildFailed("finalizer cache metadata identity mismatch")
+        identity: dict[str, object] = {
+            "policy": (
+                "validated-writable-project-finalizer-cache-v1"
+                if project_cache
+                else "validated-writable-branch-finalizer-cache-v1"
+            ),
+            "purpose": "release-finalizer-lean-workspace",
+            "namespace": branch_namespace.name,
             "metadata_sha256": cls._sha256(metadata_path),
+            "finalizer_metadata_sha256": cls._sha256(marker_path),
             "branch": branch,
             "commit": commit,
             "manifest_sha256": manifest_sha256,
-            "toolchain": expected_toolchain,
+            "toolchain": toolchain,
             "architecture": architecture,
+            "tooling_sha256": tooling_digest,
         }
+        if actual_configuration_digest is not None:
+            identity["build_configuration_sha256"] = actual_configuration_digest
+        if project_cache:
+            identity.update(
+                {
+                    "project_namespace": cache.name,
+                    "project_key": project_key,
+                }
+            )
+        return _ManagedCacheIdentity(
+            identity,
+            dependency_artifacts_are_immutable=False,
+        )
 
     @staticmethod
     def _cache_component(value: str) -> str:

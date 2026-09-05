@@ -46,6 +46,12 @@ reinterpret an in-flight branch job.
 - A project worker gets a private mutable finalizer workspace.  The immutable
   branch Lean cache remains read-only.  No two project workers share a mutable
   Lake/Web directory or branch result path.
+- The build SDK recognizes writable branch/project finalizer workspaces only
+  through their exact cache paths and schema-2/schema-3 markers.  Those
+  identities bind tooling, branch, optional build configuration, and optional
+  project key.  Documentation checkpoints continue to hash their dependency
+  artifacts; only a branch cache outside the `finalizer-caches` namespace may
+  replace those hashes with immutable namespace metadata.
 - Add one branch-assembly job per branch.  It requires the exact project set
   declared by the ReleaseSpec, revalidates every identity and content digest,
   and rejects missing, extra, duplicate, stale, symlinked, or special-file
