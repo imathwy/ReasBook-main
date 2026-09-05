@@ -13,7 +13,8 @@ from typing import Any, Iterator, Mapping
 from reasbook_sdk_common import atomic_write_json
 
 from ..errors import DeployConfigError, DeployExecutionError
-from .models import RELEASE_ID_RE, ReleaseSpec
+from .models import BRANCH_RE, PROJECT_KEY_RE, RELEASE_ID_RE, ReleaseSpec
+from ..runtime import safe_name
 from .github import GitHubPublication
 from .results import (
     BundleInfo,
@@ -58,6 +59,32 @@ class ReleaseLayout:
     @property
     def branch_sites(self) -> Path:
         return self.root / "branches"
+
+    @property
+    def project_finalizers(self) -> Path:
+        return self.root / "project-finalizers"
+
+    @staticmethod
+    def _project_components(branch: str, project_key: str) -> tuple[str, str]:
+        if not BRANCH_RE.fullmatch(branch):
+            raise DeployConfigError(f"invalid release branch: {branch!r}")
+        if not PROJECT_KEY_RE.fullmatch(project_key):
+            raise DeployConfigError(f"invalid release project key: {project_key!r}")
+        return safe_name(branch), safe_name(project_key)
+
+    def project_finalizer_root(self, branch: str, project_key: str) -> Path:
+        safe_branch, safe_project_key = self._project_components(branch, project_key)
+        return self.project_finalizers / safe_branch / safe_project_key
+
+    def project_finalizer_site(self, branch: str, project_key: str) -> Path:
+        return self.project_finalizer_root(branch, project_key) / "site"
+
+    def project_finalizer_result(self, branch: str, project_key: str) -> Path:
+        return self.project_finalizer_root(branch, project_key) / "result.json"
+
+    def project_finalizer_logs(self, branch: str, project_key: str) -> Path:
+        safe_branch, safe_project_key = self._project_components(branch, project_key)
+        return self.logs / safe_branch / "projects" / safe_project_key
 
     @property
     def logs(self) -> Path:
