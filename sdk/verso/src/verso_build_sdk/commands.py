@@ -59,9 +59,14 @@ def pipeline(config: VersoBuildConfig) -> tuple[CommandSpec, ...]:
     generator_cwd = config.generator_cwd or config.web_root
     if config.generator:
         commands.append(CommandSpec("generate", config.generator, generator_cwd))
-    commands.append(
-        CommandSpec("build", lake_argv(config, *config.targets), config.web_root)
-    )
+    targets = config.targets
+    if config.output_dir is not None:
+        # ``Verso.Genre.Blog.blogMain`` accepts this option after the Lake
+        # executable target.  Passing it explicitly is essential for
+        # concurrent project finalizers: an environment variable alone is not
+        # consumed by the generated Lean executable.
+        targets = (*targets, "--output", str(config.output_dir))
+    commands.append(CommandSpec("build", lake_argv(config, *targets), config.web_root))
     return tuple(commands)
 
 

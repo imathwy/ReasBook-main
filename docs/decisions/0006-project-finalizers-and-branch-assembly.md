@@ -43,6 +43,12 @@ reinterpret an in-flight branch job.
   It emits an identity-bound route/module inventory, does not rewrite
   branch-wide source overviews or README files, and does not claim the shared
   root catalog.
+- A project fragment's disjoint Verso output is part of the executable
+  contract, not merely a post-build assertion.  The generic Verso SDK passes
+  the normalized absolute directory to `lake exe <site> --output <directory>`
+  and rejects non-executable targets or a second explicit `--output`.  This
+  keeps the generated files and the fragment manifest under the same worker-
+  owned root instead of silently accepting Verso's shared `_site` default.
 - A project worker gets a private mutable finalizer workspace.  The immutable
   branch Lean cache remains read-only.  No two project workers share a mutable
   Lake/Web directory or branch result path.

@@ -54,6 +54,12 @@ Useful environment settings use the `VERSO_` prefix: `VERSO_TOOLCHAIN`,
 explicit build environment variable. Credentials and platform-specific values
 are intentionally outside this SDK.
 
+When `VERSO_OUTPUT_DIR` or `--output-dir` is set, the SDK resolves it to an
+absolute path and passes it to Verso as `--output`; the environment variable is
+not consumed by the generated Lean executable itself. Do not also put an
+explicit `--output` in `VERSO_TARGETS`: the SDK rejects that ambiguous
+combination instead of relying on option order.
+
 `verso-literate` accepts `REASBOOK_BUILD_LAKE_BIN`,
 `REASBOOK_LITERATE_JOBS`, `REASBOOK_LITERATE_VALIDATION_JOBS`,
 `REASBOOK_LITERATE_CHUNK_SIZE`, and

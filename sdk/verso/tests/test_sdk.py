@@ -12,7 +12,7 @@ from verso_build_sdk import (
     discover_project,
     lake_argv,
 )
-from verso_build_sdk.errors import CommandExecutionError
+from verso_build_sdk.errors import CommandExecutionError, VersoBuildError
 
 
 class RecordingRunner:
@@ -33,6 +33,21 @@ class FailingRunner(RecordingRunner):
             returncode=7,
             stderr="failed",
         )
+
+
+class SimulatedVersoRunner(RecordingRunner):
+    """Model Verso's CLI output selection without invoking Lean."""
+
+    def run(self, command: Command):
+        self.calls.append((tuple(command.argv), command.cwd))
+        argv = tuple(command.argv)
+        output = command.cwd / "_site"
+        if "--output" in argv:
+            option = argv.index("--output")
+            output = Path(argv[option + 1])
+        output.mkdir(parents=True)
+        (output / "index.html").write_text("<html>site</html>\n", encoding="utf-8")
+        return CommandResult(argv=command.argv, command=command, returncode=0)
 
 
 class VersoSdkTests(unittest.TestCase):
@@ -112,6 +127,78 @@ class VersoSdkTests(unittest.TestCase):
             )
             self.assertTrue(result.dry_run)
             self.assertEqual(runner.calls, [])
+
+    def test_configured_output_dir_is_passed_to_verso_executable(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "web"
+            root.mkdir()
+            self.project(root)
+            output = (
+                Path(temp) / "artifacts with spaces" / "project" / "site"
+            ).resolve()
+            runner = SimulatedVersoRunner()
+
+            result = VersoBuilder(
+                VersoBuildConfig(
+                    web_root=root,
+                    output_dir=output,
+                    verify_output=True,
+                ),
+                runner=runner,
+            ).run()
+
+            self.assertEqual(result.output_dir, output)
+            self.assertTrue((output / "index.html").is_file())
+            self.assertFalse((root / "_site").exists())
+            self.assertEqual(runner.calls[-1][0][-2:], ("--output", str(output)))
+
+    def test_dry_run_plans_the_resolved_output_dir(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "web"
+            root.mkdir()
+            self.project(root)
+            output = (Path(temp) / "artifacts" / "site").resolve()
+            runner = RecordingRunner()
+
+            result = VersoBuilder(
+                VersoBuildConfig(web_root=root, output_dir=output),
+                runner=runner,
+            ).run(dry_run=True)
+
+            self.assertEqual(result.output_dir, output)
+            self.assertEqual(result.commands[-1].argv[-2:], ("--output", str(output)))
+            self.assertEqual(runner.calls, [])
+
+    def test_output_dir_rejects_an_explicit_output_target(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "web"
+            root.mkdir()
+            self.project(root)
+            output = (Path(temp) / "configured-site").resolve()
+
+            with self.assertRaisesRegex(VersoBuildError, "output_dir.*--output"):
+                VersoBuilder(
+                    VersoBuildConfig(
+                        web_root=root,
+                        output_dir=output,
+                        targets=("exe", "site", "--output", str(root / "other-site")),
+                    )
+                ).plan()
+
+    def test_output_dir_requires_a_verso_executable_target(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "web"
+            root.mkdir()
+            self.project(root)
+
+            with self.assertRaisesRegex(VersoBuildError, "output_dir requires targets"):
+                VersoBuilder(
+                    VersoBuildConfig(
+                        web_root=root,
+                        output_dir=Path(temp) / "site",
+                        targets=("build", "site"),
+                    )
+                ).plan()
 
     def test_runner_failure_is_reported(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
