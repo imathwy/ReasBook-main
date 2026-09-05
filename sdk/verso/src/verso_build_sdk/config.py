@@ -151,6 +151,21 @@ class VersoBuildConfig:
             raise VersoBuildError("lake_bin and elan_bin must be non-empty")
         if not self.targets:
             raise VersoBuildError("at least one Lake target is required")
+        if self.output_dir is not None:
+            if (
+                len(self.targets) < 2
+                or self.targets[0] != "exe"
+                or not self.targets[1]
+                or self.targets[1].startswith("-")
+            ):
+                raise VersoBuildError(
+                    "output_dir requires targets to start with 'exe' and an "
+                    "executable name"
+                )
+            if "--output" in self.targets:
+                raise VersoBuildError(
+                    "output_dir may not be combined with an explicit --output target"
+                )
         for value in (*self.targets, *self.generator, self.lake_bin, self.elan_bin):
             if any(char in value for char in "\x00\r\n"):
                 raise VersoBuildError(

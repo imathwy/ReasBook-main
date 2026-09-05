@@ -1318,14 +1318,39 @@ class RepositoryScriptTests(unittest.TestCase):
             build = verso_bin / "verso-build"
             build.write_text(
                 "#!/usr/bin/env bash\nset -eu\n"
-                'mkdir -p "$VERSO_OUTPUT_DIR/books/selected/book"\n'
-                'mkdir -p "$VERSO_OUTPUT_DIR/books/selected"\n'
-                ': > "$VERSO_OUTPUT_DIR/index.html"\n'
-                ': > "$VERSO_OUTPUT_DIR/books/selected/index.html"\n'
-                ': > "$VERSO_OUTPUT_DIR/books/selected/book/index.html"\n',
+                'exec "$REASBOOK_TEST_PYTHON" -m verso_build_sdk "$@"\n',
                 encoding="utf-8",
             )
             build.chmod(0o755)
+            executable_argv = Path(temp) / "verso-executable-argv"
+            fake_elan = repo / "fake-elan"
+            fake_elan.write_text(
+                "#!/usr/bin/env bash\nset -euo pipefail\n"
+                'printf \'%s\\n\' "$@" > "$VERSO_EXECUTABLE_ARGV"\n'
+                'output=""\n'
+                'while [[ "$#" -gt 0 ]]; do\n'
+                '  if [[ "$1" == --output ]]; then\n'
+                '    [[ "$#" -ge 2 ]] || exit 9\n'
+                '    output="$2"\n'
+                "    shift 2\n"
+                "  else\n"
+                "    shift\n"
+                "  fi\n"
+                "done\n"
+                '[[ -n "$output" && "$output" == /* ]] || exit 8\n'
+                'mkdir -p "$output/books/selected/book"\n'
+                ': > "$output/index.html"\n'
+                ': > "$output/books/selected/index.html"\n'
+                ': > "$output/books/selected/book/index.html"\n',
+                encoding="utf-8",
+            )
+            fake_elan.chmod(0o755)
+            (web / "lakefile.lean").write_text(
+                'import Lake\npackage "demo-site" where\n', encoding="utf-8"
+            )
+            (web / "lean-toolchain").write_text(
+                "leanprover/lean4:v4.30.0\n", encoding="utf-8"
+            )
             generator = repo / "generator.py"
             generator.write_text(
                 "import json, os\nfrom pathlib import Path\n"
@@ -1339,6 +1364,12 @@ class RepositoryScriptTests(unittest.TestCase):
                 encoding="utf-8",
             )
             fragments = Path(temp) / "fragments"
+            pythonpath = os.pathsep.join(
+                (
+                    str(ROOT / "sdk" / "common" / "src"),
+                    str(ROOT / "sdk" / "verso" / "src"),
+                )
+            )
 
             result = subprocess.run(
                 ["bash", str(scripts / "verso.sh")],
@@ -1350,6 +1381,10 @@ class RepositoryScriptTests(unittest.TestCase):
                     "REASBOOK_INCLUDE_PROJECTS": "books/Selected",
                     "REASBOOK_PROJECT_FRAGMENT_ROOT": str(fragments),
                     "REASBOOK_VERSO_GENERATOR": str(generator),
+                    "REASBOOK_TEST_PYTHON": sys.executable,
+                    "VERSO_ELAN_BIN": str(fake_elan),
+                    "VERSO_EXECUTABLE_ARGV": str(executable_argv),
+                    "PYTHONPATH": pythonpath,
                 },
                 capture_output=True,
                 text=True,
@@ -1366,6 +1401,11 @@ class RepositoryScriptTests(unittest.TestCase):
             self.assertTrue(
                 (root / "site" / "books" / "selected" / "index.html").is_file()
             )
+            arguments = executable_argv.read_text(encoding="utf-8").splitlines()
+            self.assertEqual(arguments.count("--output"), 1)
+            output_option = arguments.index("--output")
+            self.assertEqual(arguments[output_option + 1], str(root / "site"))
+            self.assertFalse((web / "_site").exists())
 
     def test_pages_assembly_normalizes_docs_and_generates_landing_page(self) -> None:
         project = {
