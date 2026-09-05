@@ -208,7 +208,7 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
         self._require_publishable_tooling_revision(expected_registry_commit)
         self._require_immutable_releases_enabled()
 
-        existing_release = self._release_by_tag(tag)
+        existing_release = self._release_by_tag_including_drafts(tag)
         release_created = False
         workflow_ref: str | None = None
         if existing_release is None:
@@ -503,6 +503,89 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
             raise DeployExecutionError("GitHub release JSON must be an object")
         return release
 
+    def _release_by_tag_including_drafts(self, tag: str) -> dict[str, Any] | None:
+        """Resolve an exact tag while accounting for REST hiding draft releases."""
+
+        release = self._release_by_tag(tag)
+        if release is not None:
+            return release
+
+        matches: list[dict[str, Any]] = []
+        for page in range(1, 101):
+            result = self._run(
+                "api",
+                f"repos/{self.profile.repository}/releases?per_page=100&page={page}",
+                "-H",
+                f"Accept: {GITHUB_JSON_ACCEPT}",
+                "-H",
+                f"X-GitHub-Api-Version: {GITHUB_API_VERSION}",
+                check=False,
+            )
+            if result.returncode != 0:
+                detail = (result.stderr or result.stdout).strip()
+                raise DeployExecutionError(
+                    "GitHub Release enumeration failed"
+                    + (f": {detail}" if detail else "")
+                )
+            try:
+                values = json.loads(result.stdout)
+            except json.JSONDecodeError as exc:
+                raise DeployExecutionError(
+                    "GitHub returned invalid release-list JSON"
+                ) from exc
+            if not isinstance(values, list) or not all(
+                isinstance(item, dict) for item in values
+            ):
+                raise DeployExecutionError("GitHub release-list JSON must be an array")
+            matches.extend(item for item in values if item.get("tag_name") == tag)
+            if len(matches) > 1:
+                raise DeployExecutionError(
+                    "GitHub returned multiple Releases for the requested tag"
+                )
+            if len(values) < 100:
+                return matches[0] if matches else None
+        raise DeployExecutionError(
+            "GitHub Release enumeration exceeded the bounded page limit"
+        )
+
+    def _release_by_id(self, release_id: int) -> dict[str, Any]:
+        """Return a known Release by database ID, including while it is a draft.
+
+        GitHub's tag lookup does not expose draft releases consistently.  Once
+        creation has returned a database ID, every pre-publication refresh must
+        therefore use the exact-ID endpoint rather than rediscovering the draft
+        through its tag.
+        """
+
+        if (
+            isinstance(release_id, bool)
+            or not isinstance(release_id, int)
+            or release_id < 1
+        ):
+            raise DeployExecutionError("GitHub Release has an invalid database ID")
+        result = self._run(
+            "api",
+            f"repos/{self.profile.repository}/releases/{release_id}",
+            "-H",
+            f"Accept: {GITHUB_JSON_ACCEPT}",
+            "-H",
+            f"X-GitHub-Api-Version: {GITHUB_API_VERSION}",
+            check=False,
+        )
+        if result.returncode != 0:
+            detail = (result.stderr or result.stdout).strip()
+            raise DeployExecutionError(
+                "GitHub Release disappeared before publication"
+                + (f": {detail}" if detail else "")
+            )
+        try:
+            release = json.loads(result.stdout)
+        except json.JSONDecodeError as exc:
+            raise DeployExecutionError("GitHub returned invalid release JSON") from exc
+        if not isinstance(release, dict):
+            raise DeployExecutionError("GitHub release JSON must be an object")
+        return release
+
     def _create_draft_release(
         self,
         tag: str,
@@ -543,7 +626,7 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
         )
         if result.returncode != 0:
             detail = (result.stderr or result.stdout).strip()
-            raced = self._release_by_tag(tag)
+            raced = self._release_by_tag_including_drafts(tag)
             if raced is None:
                 raise DeployExecutionError(
                     "cannot create draft GitHub Release"
@@ -606,11 +689,7 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
             )
 
         for attempt in range(5):
-            release = self._release_by_tag(tag)
-            if release is None:
-                raise DeployExecutionError(
-                    "draft GitHub Release disappeared after asset upload"
-                )
+            release = self._release_by_id(expected_id)
             if (
                 release.get("draft") is not True
                 or release.get("tag_name") != tag
@@ -659,11 +738,7 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
                 pending = exc
             if attempt < 4:
                 time.sleep(1.0)
-                refreshed = self._release_by_tag(tag)
-                if refreshed is None:
-                    raise DeployExecutionError(
-                        "draft GitHub Release disappeared during upload recovery"
-                    )
+                refreshed = self._release_by_id(expected_id)
                 release = refreshed
 
         assert pending is not None
@@ -676,11 +751,7 @@ class GitHubReleasePublisher(GitHubRepositoryClient):
             )
 
         for attempt in range(5):
-            refreshed = self._release_by_tag(tag)
-            if refreshed is None:
-                raise DeployExecutionError(
-                    "draft GitHub Release disappeared after upload cleanup"
-                )
+            refreshed = self._release_by_id(expected_id)
             self._require_draft_identity(refreshed, tag, expected_id)
             try:
                 return refreshed, self._validate_existing_release(
