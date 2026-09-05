@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from contextlib import closing
+import hashlib
 import json
 import platform
 import re
@@ -227,6 +228,94 @@ class ProjectDocumentationTests(unittest.TestCase):
             sqlite_ffi.write_bytes(b"fixture")
             (sqlite_ffi.parent.parent / "libleansqlite.so").write_bytes(b"fixture")
         return project
+
+    @staticmethod
+    def _managed_finalizer_cache(
+        root: Path,
+        project: Path,
+        *,
+        project_key: str | None = "books/Demo",
+        configured: bool = True,
+    ) -> tuple[Path, dict[str, object], dict[str, object], str, str]:
+        if project_key is not None and not configured:
+            raise ValueError("project finalizer fixtures require a configuration")
+        manifest = project / "lake-manifest.json"
+        manifest.write_text('{"version": 1}\n', encoding="utf-8")
+        manifest_digest = ProjectDocumentationBuilder._sha256(manifest)
+        branch = "v4.30.0"
+        commit = "a" * 40
+        toolchain = "v4.30.0"
+        architecture = platform.machine() or "unknown"
+        namespace = (
+            f"branch-{branch}-{commit[:12]}-{manifest_digest[:16]}-"
+            f"{toolchain}-{architecture}"
+        )
+        configuration: dict[str, object] = {
+            "schema": 1,
+            "lean_threads": 8,
+            "lake_threads": 1,
+        }
+        configuration_digest = hashlib.sha256(
+            json.dumps(
+                configuration,
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode("utf-8")
+        ).hexdigest()
+        tooling_digest = "b" * 64
+        finalizer_root = root / "managed" / "finalizer-caches" / tooling_digest
+        if configured:
+            finalizer_root /= f"cfg-{configuration_digest}"
+        branch_cache = finalizer_root / "lake" / namespace
+        cache = branch_cache
+        if project_key is not None:
+            component = ProjectDocumentationBuilder._cache_component(project_key)
+            cache = branch_cache / "projects" / component
+        cache.parent.mkdir(parents=True)
+        (project / ".lake").rename(cache)
+        (project / ".lake").symlink_to(cache, target_is_directory=True)
+        branch_metadata: dict[str, object] = {
+            "schema": 1,
+            "branch": branch,
+            "commit": commit,
+            "manifest_sha256": manifest_digest,
+            "toolchain": toolchain,
+            "architecture": architecture,
+        }
+        (cache / "cache-metadata.json").write_text(
+            json.dumps(branch_metadata), encoding="utf-8"
+        )
+        finalizer_metadata: dict[str, object] = {
+            "schema": 3 if configured else 2,
+            "purpose": "release-finalizer-lean-workspace",
+            "workspace_policy": "persistent-writable-v1",
+            "branch": branch,
+            "commit": commit,
+            "manifest_sha256": manifest_digest,
+            "toolchain": toolchain,
+            "architecture": architecture,
+            "tooling_sha256": tooling_digest,
+            "seed_namespace": namespace,
+        }
+        if configured:
+            finalizer_metadata.update(
+                {
+                    "build_configuration": configuration,
+                    "build_configuration_sha256": configuration_digest,
+                }
+            )
+        if project_key is not None:
+            finalizer_metadata["project_key"] = project_key
+        (cache / "finalizer-cache.json").write_text(
+            json.dumps(finalizer_metadata), encoding="utf-8"
+        )
+        return (
+            cache,
+            branch_metadata,
+            finalizer_metadata,
+            namespace,
+            configuration_digest,
+        )
 
     @staticmethod
     def _cross_project_sources(
@@ -785,6 +874,169 @@ class ProjectDocumentationTests(unittest.TestCase):
                         ProjectDocumentationBuilder._managed_branch_cache_identity(
                             project, project / ".lake", revision=commit
                         )
+
+    def test_managed_project_cache_requires_exact_finalizer_identity(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=True)
+            cache, _branch, finalizer, namespace, _configuration = (
+                self._managed_finalizer_cache(root, project)
+            )
+
+            identity = ProjectDocumentationBuilder._managed_branch_cache_identity(
+                project, project / ".lake", revision="a" * 40
+            )
+
+            self.assertEqual(identity["namespace"], namespace)
+            self.assertEqual(identity["project_key"], "books/Demo")
+            marker = cache / "finalizer-cache.json"
+            mutations = (
+                {**finalizer, "project_key": "papers/Demo"},
+                {**finalizer, "tooling_sha256": "c" * 64},
+                {**finalizer, "seed_namespace": f"{namespace}-other"},
+                {**finalizer, "build_configuration_sha256": "d" * 64},
+                {**finalizer, "purpose": "release-finalizer-web"},
+                {**finalizer, "unexpected": True},
+            )
+            for value in mutations:
+                with self.subTest(value=value):
+                    marker.write_text(json.dumps(value), encoding="utf-8")
+                    with self.assertRaises(BuildFailed):
+                        ProjectDocumentationBuilder._managed_branch_cache_identity(
+                            project, project / ".lake", revision="a" * 40
+                        )
+
+            marker.write_bytes(b" " * (1024 * 1024 + 1))
+            with self.assertRaises(BuildFailed):
+                ProjectDocumentationBuilder._managed_branch_cache_identity(
+                    project, project / ".lake", revision="a" * 40
+                )
+
+            marker.write_text(json.dumps(finalizer), encoding="utf-8")
+            external_marker = root / "external-finalizer-cache.json"
+            external_marker.write_text(json.dumps(finalizer), encoding="utf-8")
+            marker.unlink()
+            marker.symlink_to(external_marker)
+            with self.assertRaises(BuildFailed):
+                ProjectDocumentationBuilder._managed_branch_cache_identity(
+                    project, project / ".lake", revision="a" * 40
+                )
+
+    def test_managed_project_cache_rejects_noncanonical_layouts(self) -> None:
+        for mutation in ("projects-component", "configuration-digest"):
+            with self.subTest(mutation=mutation), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                project = self._project(root, modern=True)
+                cache, _branch, _finalizer, _namespace, _configuration = (
+                    self._managed_finalizer_cache(root, project)
+                )
+                lake = project / ".lake"
+                lake.unlink()
+                if mutation == "projects-component":
+                    parent = cache.parent
+                    replacement = parent.with_name("project")
+                    parent.rename(replacement)
+                    cache = replacement / cache.name
+                else:
+                    configuration = cache.parents[3]
+                    replacement = configuration.with_name(f"cfg-{'e' * 64}")
+                    relative = cache.relative_to(configuration)
+                    configuration.rename(replacement)
+                    cache = replacement / relative
+                lake.symlink_to(cache, target_is_directory=True)
+
+                with self.assertRaises(BuildFailed):
+                    ProjectDocumentationBuilder._managed_branch_cache_identity(
+                        project, lake, revision="a" * 40
+                    )
+
+    def test_managed_project_cache_hashes_ordinary_dependency_artifacts(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = self._project(root, modern=True)
+            self._managed_finalizer_cache(root, project)
+            dependency = self._write_olean(
+                project / ".lake" / "packages" / "Dependency",
+                "Dependency.Module",
+                b"dependency olean",
+            )
+            batches, _owners = ProjectDocumentationBuilder._module_plan(
+                project, ("Books.Demo.Book",)
+            )
+            sources = tuple(item for batch in batches for item in batch)
+            docgen = (
+                project
+                / ".lake"
+                / "packages"
+                / "doc-gen4"
+                / ".lake"
+                / "build"
+                / "bin"
+                / "doc-gen4"
+            ).resolve()
+
+            before = ProjectDocumentationBuilder._compiled_artifact_identity(
+                project, sources, docgen, revision="a" * 40
+            )
+            dependency.write_bytes(b"changed dependency olean")
+            after = ProjectDocumentationBuilder._compiled_artifact_identity(
+                project, sources, docgen, revision="a" * 40
+            )
+
+            self.assertEqual(before["branch_cache"]["project_key"], "books/Demo")
+            self.assertEqual(after["branch_cache"]["project_key"], "books/Demo")
+            self.assertNotEqual(before["sha256"], after["sha256"])
+
+    def test_managed_branch_finalizer_hashes_ordinary_dependencies(self) -> None:
+        for configured in (False, True):
+            with self.subTest(
+                configured=configured
+            ), tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                project = self._project(root, modern=True)
+                self._managed_finalizer_cache(
+                    root,
+                    project,
+                    project_key=None,
+                    configured=configured,
+                )
+                dependency = self._write_olean(
+                    project / ".lake" / "packages" / "Dependency",
+                    "Dependency.Module",
+                    b"dependency olean",
+                )
+                batches, _owners = ProjectDocumentationBuilder._module_plan(
+                    project, ("Books.Demo.Book",)
+                )
+                sources = tuple(item for batch in batches for item in batch)
+                docgen = (
+                    project
+                    / ".lake"
+                    / "packages"
+                    / "doc-gen4"
+                    / ".lake"
+                    / "build"
+                    / "bin"
+                    / "doc-gen4"
+                ).resolve()
+
+                managed = ProjectDocumentationBuilder._managed_lake_cache_identity(
+                    project, project / ".lake", revision="a" * 40
+                )
+                before = ProjectDocumentationBuilder._compiled_artifact_identity(
+                    project, sources, docgen, revision="a" * 40
+                )
+                dependency.write_bytes(b"changed dependency olean")
+                after = ProjectDocumentationBuilder._compiled_artifact_identity(
+                    project, sources, docgen, revision="a" * 40
+                )
+
+                self.assertEqual(
+                    managed.value["policy"],
+                    "validated-writable-branch-finalizer-cache-v1",
+                )
+                self.assertFalse(managed.dependency_artifacts_are_immutable)
+                self.assertNotEqual(before["sha256"], after["sha256"])
 
     def test_legacy_builder_uses_bounded_adapter_then_index(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
