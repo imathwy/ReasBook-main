@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      REASBOOK_CACHE_ROOT: ${{ runner.temp }}/reasbook-cache
+      REASBOOK_CACHE_ROOT: /tmp/reasbook-reviewer-ci-cache
       REASBOOK_PYTHON_BIN: python
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
