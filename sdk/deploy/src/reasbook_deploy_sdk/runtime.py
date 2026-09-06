@@ -184,8 +184,8 @@ def find_python(
     requested = (requested or env.get("REASBOOK_PYTHON_BIN") or env.get("REASBOOK_PYTHON") or "").strip()
     workspace = workspace_root or Path.cwd().parent
     candidates: list[str] = [requested] if requested else [
-        str(workspace / "Review" / "reasbook-reviewer" / ".python311" / "bin" / "python"),
-        str(workspace / "Review" / "reasbook-reviewer" / ".venv" / "bin" / "python"),
+        str(workspace / "ReasBook" / "apps" / "reasbook-reviewer" / ".python311" / "bin" / "python"),
+        str(workspace / "ReasBook" / "apps" / "reasbook-reviewer" / ".venv" / "bin" / "python"),
         str(workspace / ".python311" / "bin" / "python"),
         "python3.13",
         "python3.12",

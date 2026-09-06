@@ -1,0 +1,15 @@
+/data
+/review-state
+/review-state/*.sqlite3
+/review-state/*.sqlite3-shm
+/review-state/*.sqlite3-wal
+/review-state/backups/
+/.venv/
+/.python311
+/.runtime/
+/.env
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+/.ruff_cache/

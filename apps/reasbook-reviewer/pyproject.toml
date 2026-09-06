@@ -1,0 +1,5 @@
+# The reviewer is deployed from the ReasBook checkout, not as a standalone wheel:
+# its static assets and the versioned SDK/config tree are part of the application.
+[tool.ruff]
+line-length = 120
+target-version = "py311"

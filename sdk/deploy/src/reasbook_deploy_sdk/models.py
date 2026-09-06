@@ -136,9 +136,13 @@ class DeploymentConfig:
             raise DeployConfigError(
                 "reviewer data and cache root must be different directories"
             )
-        if self.data_root in self.cache_root.parents or self.cache_root in self.data_root.parents:
+        shared_reviewer_data = self.cache_root / "reviewer" / "data"
+        if (
+            self.data_root in self.cache_root.parents
+            or self.cache_root in self.data_root.parents
+        ) and self.data_root != shared_reviewer_data:
             raise DeployConfigError(
-                "reviewer data and cache root must not be nested"
+                "reviewer data and cache root must not be nested except at cache_root/reviewer/data"
             )
 
     def public_dict(self) -> dict[str, Any]:

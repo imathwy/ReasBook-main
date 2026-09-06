@@ -64,6 +64,34 @@ class DeploySdkTests(unittest.TestCase):
 
         args = build_parser(Path("/tmp/reasbook-parser-test")).parse_args([])
         self.assertEqual(args.cache_root, DEFAULT_CACHE_ROOT)
+        self.assertEqual(args.reviewer_root, Path("/tmp/reasbook-parser-test/apps/reasbook-reviewer"))
+
+    def test_integrated_reviewer_uses_shared_cache_without_building(self) -> None:
+        from reasbook_deploy_sdk.cli import _deployment_config, build_parser
+        from reasbook_deploy_sdk.reviewer import reviewer_environment
+
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            repo = root / "ReasBook"
+            cache = root / "cache"
+            with patch.dict("os.environ", {}, clear=True):
+                args = build_parser(repo).parse_args(["--cache-root", str(cache), "--no-stacks", "--no-build"])
+                config = _deployment_config(args).resolved()
+            self.assertEqual(config.data_root, cache / "reviewer" / "data")
+            self.assertFalse(config.build)
+            self.assertFalse(cache.exists())
+            environment = reviewer_environment(
+                repo_root=repo, data_root=config.data_root, cache_root=cache,
+                host="127.0.0.1", port=3000, python_bin=sys.executable, base={},
+            )
+            self.assertEqual(environment["REASBOOK_CACHE_ROOT"], str(cache))
+            self.assertEqual(environment["REASBOOK_REVIEWER_RELEASE_ROOT"], str(cache / "releases"))
+            self.assertEqual(environment["REASBOOK_REVIEWER_CATALOG"], str(config.data_root / "catalog.json"))
+            with self.assertRaises(DeployConfigError):
+                DeploymentConfig(
+                    repo_root=repo, reviewer_root=repo / "apps" / "reasbook-reviewer",
+                    data_root=cache / "sources", cache_root=cache,
+                ).resolved()
 
     def test_branch_and_name_safety(self) -> None:
         self.assertTrue(_valid_branch("v4.30.0"))

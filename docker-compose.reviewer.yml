@@ -1,0 +1,50 @@
+services:
+  reviewer:
+    image: ${REASBOOK_REVIEWER_IMAGE:-reasbook-reviewer:local}
+    build:
+      context: .
+      dockerfile: apps/reasbook-reviewer/Dockerfile
+    # Run as the owner of the existing state directory; do not chown shared cache.
+    user: "${REASBOOK_REVIEWER_UID:-1000}:${REASBOOK_REVIEWER_GID:-1000}"
+    env_file:
+      - path: ${REASBOOK_REVIEWER_ENV_FILE:-./apps/reasbook-reviewer/.env}
+        required: false
+    environment:
+      REASBOOK_REVIEWER_HOST: 0.0.0.0
+      REASBOOK_REVIEWER_PORT: "8876"
+      # The app has no published port; all incoming traffic comes from gateway.
+      FORWARDED_ALLOW_IPS: "*"
+      REASBOOK_CACHE_ROOT: ${REASBOOK_CACHE_ROOT:?Set REASBOOK_CACHE_ROOT to an existing absolute cache path}
+      REASBOOK_REVIEWER_DB: /var/lib/reasbook/reviews.sqlite3
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8876/api/health', timeout=4)"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 5
+    volumes:
+      - type: bind
+        source: ${REASBOOK_CACHE_ROOT}
+        target: ${REASBOOK_CACHE_ROOT}
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ${REASBOOK_REVIEWER_STATE_DIR:?Set REASBOOK_REVIEWER_STATE_DIR to the persistent SQLite directory}
+        target: /var/lib/reasbook
+        bind:
+          create_host_path: false
+    read_only: true
+    tmpfs:
+      - /tmp
+    restart: unless-stopped
+  gateway:
+    image: nginx:1.27-alpine
+    depends_on:
+      reviewer:
+        condition: service_healthy
+    ports:
+      - "${REASBOOK_REVIEWER_BIND:-127.0.0.1}:${REASBOOK_REVIEWER_PORT:-8876}:80"
+    volumes:
+      - ./docker/reviewer.nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    restart: unless-stopped

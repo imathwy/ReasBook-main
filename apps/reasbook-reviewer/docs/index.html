@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#f1f3f2" />
+  <title>ReasBook Review</title>
+  <link rel="stylesheet" href="assets/styles.css?v=20260906-control-alignment-1" />
+</head>
+
+<body>
+  <a id="skipLink" class="skip-link" href="#workspaceMain">Skip to review workspace</a>
+  <div class="app-shell" data-mobile-view="queue">
+    <nav class="mobile-view-switcher" aria-label="Workspace views">
+      <button type="button" data-mobile-view="catalog" aria-pressed="false">Books</button>
+      <button type="button" data-mobile-view="queue" aria-pressed="true">Queue</button>
+      <button type="button" data-mobile-view="evidence" aria-pressed="false">Evidence</button>
+      <button type="button" data-mobile-view="review" aria-pressed="false">Review</button>
+    </nav>
+
+    <aside class="catalog-panel" id="catalogPanel" aria-label="ReasBook catalog">
+      <header class="brand-block">
+        <div class="brand-row">
+          <a id="brandLink" class="brand" href="/" aria-label="ReasBook Review home">
+            <span class="brand-mark" aria-hidden="true">RB</span>
+            <span><strong>ReasBook Review</strong><small>Formalization evidence desk</small></span>
+          </a>
+          <button id="catalogPanelToggle" class="catalog-panel-toggle" type="button"
+            aria-controls="catalogPanel" aria-expanded="true" aria-label="Collapse catalog" title="Collapse catalog">
+            <span aria-hidden="true">‹</span>
+          </button>
+        </div>
+        <span id="authState" class="auth-state" aria-live="polite">Checking identity</span>
+      </header>
+
+      <div class="catalog-controls">
+        <div class="catalog-controls-content">
+        <label class="search-field">
+          <span class="sr-only">Filter books and papers</span>
+          <input id="bookSearch" name="bookSearch" type="search" placeholder="Search books and papers…" autocomplete="off" spellcheck="false" />
+        </label>
+        <div class="catalog-filter-row">
+          <label class="catalog-filter"><span>Type</span><select id="kindFilter" aria-label="Resource type">
+            <option value="all">All resources</option>
+            <option value="book">Books</option>
+            <option value="paper">Papers</option>
+          </select></label>
+          <label class="catalog-filter"><span>Index</span><select id="availabilityFilter" aria-label="Index availability">
+            <option value="all">All indexes</option>
+            <option value="ready">Ready</option>
+            <option value="pending">Pending</option>
+          </select></label>
+        </div>
+        <details class="subject-filter">
+          <summary><span>Subjects</span><span id="subjectSummary">All subjects</span></summary>
+          <fieldset id="subjectOptions" class="subject-options"><legend class="sr-only">Mathematical subjects</legend></fieldset>
+          <p class="subject-filter-hint">Match any selected subject.</p>
+          <button id="clearSubjectFilters" type="button" class="clear-filters" hidden>Clear subjects</button>
+        </details>
+        <span id="bookCount" class="catalog-result-count" role="status" aria-live="polite">Loading resources</span>
+        </div>
+      </div>
+      <nav id="catalogList" class="catalog-list" aria-label="Books and papers" aria-busy="true"></nav>
+    </aside>
+
+    <div id="catalogResize" class="pane-resizer pane-resizer-catalog" role="separator" tabindex="0"
+      aria-label="Resize catalog" aria-orientation="vertical" aria-valuemin="220" aria-valuemax="520"></div>
+
+    <main id="workspaceMain" class="main-panel" tabindex="-1">
+      <header class="workspace-toolbar">
+        <div class="workspace-heading">
+          <div id="currentBookTitle" class="current-book-title">Loading catalog</div>
+          <div id="currentBookMeta" class="current-book-meta">Preparing review workspace</div>
+        </div>
+        <div class="toolbar-actions">
+          <div class="panel-toggles" role="group" aria-label="Workspace panels">
+            <button id="toggleCatalog" class="panel-toggle" type="button" aria-controls="catalogPanel" aria-expanded="true" title="Hide catalog">
+              <span class="panel-toggle-glyph panel-toggle-glyph-catalog" aria-hidden="true"></span>
+              <span>Catalog</span>
+            </button>
+            <button id="toggleQueue" class="panel-toggle" type="button" aria-controls="evidencePanel" aria-expanded="true" title="Hide queue">
+              <span class="panel-toggle-glyph panel-toggle-glyph-queue" aria-hidden="true"></span>
+              <span>Queue</span>
+            </button>
+            <button id="toggleReview" class="panel-toggle" type="button" aria-controls="reviewPanel" aria-expanded="true" title="Hide review panel">
+              <span class="panel-toggle-glyph panel-toggle-glyph-review" aria-hidden="true"></span>
+              <span>Review</span>
+            </button>
+          </div>
+          <span id="bookSync" class="sync-state" role="status" aria-live="polite">Checking sync</span>
+          <a id="loginLink" class="button button-primary" href="#" hidden>Sign in</a>
+          <button id="logoutButton" class="button button-quiet" type="button" hidden>Sign out</button>
+          <a id="exportLink" class="button button-quiet" href="#" hidden>Export log</a>
+        </div>
+      </header>
+
+      <section class="workspace-grid">
+        <section class="evidence-panel" id="evidencePanel" aria-label="Evidence workspace">
+          <button id="queueRailToggle" class="queue-rail-toggle" type="button" aria-controls="evidencePanel"
+            aria-expanded="true" aria-label="Collapse queue" title="Collapse queue"><span aria-hidden="true">‹</span></button>
+          <div class="item-toolbar">
+            <div class="item-toolbar-content">
+            <div class="item-toolbar-title">
+              <div><p class="eyebrow">Review queue</p><h2>Formal statements</h2></div>
+              <div class="item-toolbar-summary">
+                <span id="itemResultCount" class="item-result-count" role="status" aria-live="polite"></span>
+                <button id="queuePanelToggle" class="panel-edge-toggle" type="button" aria-controls="evidencePanel"
+                  aria-expanded="true" aria-label="Collapse queue" title="Collapse queue"><span aria-hidden="true">‹</span></button>
+              </div>
+            </div>
+            <div class="item-toolbar-controls">
+              <label class="compact-search">
+                <span class="sr-only">Search declarations</span>
+                <input id="itemSearch" name="itemSearch" type="search" placeholder="Search name, title, file…" autocomplete="off" />
+              </label>
+              <label class="filter-control"><span>Kind</span><select id="itemTypeFilter" aria-label="Declaration type"><option value="all">All types</option></select></label>
+              <label class="filter-control"><span>Section</span><select id="itemSectionFilter" aria-label="Chapter or section"><option value="all">All sections</option></select></label>
+              <label class="filter-control"><span>Status</span><select id="reviewFilter" aria-label="Review status">
+                <option value="all">All statuses</option><option value="unreviewed">Open</option><option value="accepted">Accepted</option><option value="mismatch">Mismatch</option><option value="other">Other</option>
+              </select></label>
+              <button id="clearItemFilters" class="clear-filters" type="button" hidden>Clear</button>
+            </div>
+            </div>
+          </div>
+          <div id="reviewQueue" class="review-queue" role="listbox" aria-label="Formal statements"></div>
+        </section>
+
+        <div id="queueResize" class="pane-resizer pane-resizer-queue" role="separator" tabindex="0"
+          aria-label="Resize review queue" aria-orientation="vertical" aria-valuemin="280" aria-valuemax="720"></div>
+
+        <section class="canvas-panel" id="canvasPanel" aria-label="Evidence view">
+          <header class="canvas-toolbar">
+            <div class="canvas-toolbar-group">
+              <div class="view-tabs" role="tablist" aria-label="Evidence view">
+                <button id="graphTab" type="button" role="tab" data-evidence-view="graph" aria-selected="true" aria-controls="graphView">Graph</button>
+                <button id="sourceTab" type="button" role="tab" data-evidence-view="source" aria-selected="false" aria-controls="sourceView">Source</button>
+                <button id="docsTab" type="button" role="tab" data-evidence-view="docs" aria-selected="false" aria-controls="docsView">Docs</button>
+                <button id="versoTab" type="button" role="tab" data-evidence-view="verso" aria-selected="false" aria-controls="versoView">Verso</button>
+              </div>
+              <div id="evidenceHistoryControls" class="evidence-history-controls" role="group" aria-label="Evidence page history" hidden>
+                <button id="evidenceBack" type="button" aria-label="Back" title="Back" disabled><span aria-hidden="true">←</span></button>
+                <button id="evidenceForward" type="button" aria-label="Forward" title="Forward" disabled><span aria-hidden="true">→</span></button>
+              </div>
+            </div>
+            <div class="canvas-toolbar-end">
+              <div id="evidenceStats" class="evidence-stats" aria-live="polite"></div>
+            </div>
+          </header>
+          <div id="bookOverview" class="book-overview" aria-live="polite" aria-busy="false"></div>
+          <div id="graphView" class="evidence-view graph-view" role="tabpanel" aria-labelledby="graphTab">
+            <iframe id="graphFrame" class="graph-frame" title="Original ReasBook theorem dependency map"
+              loading="eager" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer" hidden></iframe>
+            <div id="graphFallback" class="graph-fallback">
+              <div id="graphMessage" class="graph-message" role="status" aria-live="polite">Select a statement to inspect its dependencies.</div>
+              <div id="graphCanvas" class="graph-canvas"></div>
+            </div>
+          </div>
+          <div id="sourceView" class="evidence-view source-view" role="tabpanel" aria-labelledby="sourceTab" hidden>
+            <div id="sourceMeta" class="evidence-view-meta"></div>
+            <pre id="sourceCode" class="source-code"><code>Select a statement to load Lean source.</code></pre>
+          </div>
+          <div id="docsView" class="evidence-view document-view" role="tabpanel" aria-labelledby="docsTab" hidden>
+            <div id="docsEmpty" class="evidence-empty" hidden>Generated API documentation is not available for this declaration.</div>
+            <iframe id="docsFrame" title="Lean API documentation" loading="lazy" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer" hidden></iframe>
+          </div>
+          <div id="versoView" class="evidence-view document-view" role="tabpanel" aria-labelledby="versoTab" hidden>
+            <div id="versoEmpty" class="evidence-empty" hidden>A generated Verso page is not available for this declaration.</div>
+            <iframe id="versoFrame" title="Verso book page" loading="lazy" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer" hidden></iframe>
+          </div>
+        </section>
+
+        <div id="reviewResize" class="pane-resizer pane-resizer-review" role="separator" tabindex="0"
+          aria-label="Resize review panel" aria-orientation="vertical" aria-valuemin="300" aria-valuemax="680"></div>
+
+        <aside class="review-panel" id="reviewPanel" aria-label="Review decision">
+          <button id="reviewPanelToggle" class="review-panel-toggle" type="button" aria-controls="reviewPanel"
+            aria-expanded="true" aria-label="Collapse review panel" title="Collapse review panel"><span aria-hidden="true">›</span></button>
+          <button id="reviewRailToggle" class="review-rail-toggle" type="button" aria-controls="reviewPanel"
+            aria-expanded="false" aria-label="Show review panel" title="Show review panel"><span aria-hidden="true">‹</span></button>
+          <div id="detailEmpty" class="detail-empty">Select a statement from the queue.</div>
+          <div id="detailContent" class="detail-content" hidden>
+            <div class="detail-heading">
+              <div>
+                <p id="detailKind" class="eyebrow detail-kind">Statement</p>
+                <h2 id="detailTitle">Selected declaration</h2>
+              </div>
+              <span id="detailStatus" class="status-badge">Open</span>
+            </div>
+            <div id="detailTags" class="detail-tags"></div>
+            <section id="statementPanel" class="statement-panel">
+              <div class="statement-toolbar">
+                <span>Statement</span>
+                <div class="statement-actions" role="group" aria-label="Statement source actions">
+                  <button id="statementSourceToggle" type="button" aria-controls="statementSourcePreview" aria-expanded="false">View source</button>
+                  <button id="copyStatementSource" type="button" aria-live="polite">Copy source</button>
+                </div>
+              </div>
+              <div id="detailStatementLabel" class="detail-statement-label" hidden></div>
+              <div id="detailStatement" class="detail-statement"></div>
+              <pre id="statementSourcePreview" class="statement-source-preview" hidden><code></code></pre>
+            </section>
+            <details id="leanContract" class="lean-contract" open>
+              <summary>Lean declaration</summary>
+              <div class="lean-contract-block">
+                <pre id="leanCode" class="lean-code"><code>Loading Lean declaration…</code></pre>
+              </div>
+            </details>
+            <details id="relationSection" class="relation-section" hidden>
+              <summary class="relation-heading"><h3>Dependency relations</h3><span id="relationStats"></span></summary>
+              <div id="relationFilters" class="relation-filters" role="group" aria-label="Dependency relation type">
+                <button type="button" data-relation-mode="statement" aria-pressed="false"><span class="relation-filter-swatch statement" aria-hidden="true"></span>Stmt</button>
+                <button type="button" data-relation-mode="proof" aria-pressed="true"><span class="relation-filter-swatch proof" aria-hidden="true"></span>Proof</button>
+              </div>
+              <div class="relation-columns">
+                <div><h4>Upstream</h4><div id="upstreamRelations" class="relation-list"></div></div>
+                <div><h4>Downstream</h4><div id="downstreamRelations" class="relation-list"></div></div>
+              </div>
+            </details>
+            <section class="decision-section review-action-section">
+              <h3>Review</h3>
+              <div id="reviewerCards" class="reviewer-cards"></div>
+              <div id="reviewAccessNotice" class="review-access-notice" hidden></div>
+              <div id="reviewControls" class="review-controls">
+                <div class="decision-buttons" role="group" aria-label="Review decision">
+                  <button type="button" data-decision="accepted">Accepted</button>
+                  <button type="button" data-decision="mismatch">Mismatch</button>
+                  <button type="button" data-decision="other">Other</button>
+                  <button type="button" data-decision="unreviewed">Clear</button>
+                </div>
+                <label class="comment-field">
+                  <span>Comment <em>Optional</em></span>
+                  <textarea id="reviewComment" name="reviewComment" rows="4" placeholder="Record evidence or explain the mismatch…"></textarea>
+                </label>
+                <div class="save-row">
+                  <button id="saveReview" class="button button-primary" type="button" disabled>Save review</button>
+                  <span id="saveState" class="save-state" role="status" aria-live="polite">No unsaved changes.</span>
+                </div>
+              </div>
+            </section>
+            <details id="historySection" class="history-section">
+              <summary>Review history</summary>
+              <div id="historyList" class="history-list">Select a statement to load history.</div>
+            </details>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </div>
+
+  <script src="assets/mathjax-config.js?v=20260906-integrated-1"></script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
+  <script src="assets/app.js?v=20260906-evidence-status-1" defer></script>
+</body>
+
+</html>
