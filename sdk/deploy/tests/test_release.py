@@ -924,6 +924,20 @@ class ReleasePlanningTests(unittest.TestCase):
                 ],
             )
 
+    def test_canonical_selection_retains_version_qualified_routes(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            configured = replace(profile(Path(temp)), selection_mode="canonical")
+            spec = ReleasePlanner(FakeReleaseSource(), resolved_at=self.now).resolve(
+                configured, self.registry,
+                CanonicalProjects((("books/Demo", "v4.30.0"),)),
+            )
+            self.assertTrue(spec.include_historical_versions)
+            self.assertTrue(all(p.canonical for p in spec.projects))
+            self.assertEqual(len(spec.projects), 2)
+            self.assertIn("mode: canonical", dump_profile_snapshot(configured))
+            with self.assertRaises(DeployConfigError):
+                replace(configured, selection_mode="unknown")
+
     def test_canonical_replacement_accepts_explicit_root_doc_file(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

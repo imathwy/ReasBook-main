@@ -30,6 +30,7 @@ from .results import (
     ReleaseSetManifest,
 )
 from .store import ReleaseLayout, ReleaseStore
+from .static_assets import deduplicate_verso_assets
 
 
 _SHARED_DOC_DIRECTORIES = {"declarations", "find", "src"}
@@ -165,6 +166,7 @@ class PagesSiteProjector:
                 Path("versions") / "index.html",
             )
             self._write_catalog_redirects(spec, staged, canonical_routes)
+            deduplicate_verso_assets(staged, spec.base_path)
             self._close_internal_references(
                 spec,
                 full_site,
@@ -773,7 +775,11 @@ class PagesSiteProjector:
         branch = parts[1]
         route = Path(*parts[2:])
         for project in spec.projects:
-            if project.branch != branch or project.canonical:
+            # Canonical-only releases deliberately omit old ProjectSpecs, but
+            # old, verified API pages can still link to their Verso URLs.
+            if project.canonical and project.branch == branch:
+                continue
+            if not project.canonical and project.branch != branch:
                 continue
             for root in (Path(project.kind) / project.slug, Path(project.slug)):
                 if route == root or root in route.parents:

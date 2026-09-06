@@ -5,7 +5,9 @@ registry: config/toolchains.yml
 canonical_projects: config/canonical-projects.yml
 
 selection:
-  mode: all_active
+  # Publish one explicitly selected version per project. Existing immutable
+  # release archives retain previous versions; URLs remain version-qualified.
+  mode: canonical
   exclude:
     - books/ProbabilityTheory_Klenke_2020
     - books/ComputationalMethodsInverseProblems_Vogel_2002
@@ -25,7 +27,7 @@ policy:
 
 # A release has one build identity and two immutable delivery artifacts.
 # The full artifact retains bounded reachable project-module API docs and every
-# project version for self-hosting. Pages keeps canonical Verso routes and all
+# selected project version for self-hosting. Pages keeps canonical Verso routes and all
 # API pages owned by every selected ProjectSpec; omitted external-dependency
 # API links become explicit placeholders whose source pages must exist in the
 # verified full artifact.

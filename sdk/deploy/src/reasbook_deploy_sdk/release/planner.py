@@ -86,7 +86,7 @@ class ReleasePlanner:
             canonical_branch = self._canonical_branch(key, versions, canonical)
             for branch, project in versions:
                 is_canonical = branch.spec.name == canonical_branch
-                if not profile.include_historical_versions and not is_canonical:
+                if (not profile.include_historical_versions or profile.selection_mode == "canonical") and not is_canonical:
                     continue
                 try:
                     target = target_from_declarations(

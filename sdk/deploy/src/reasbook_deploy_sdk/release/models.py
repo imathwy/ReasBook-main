@@ -239,9 +239,12 @@ class DeploymentProfile:
     artifacts: tuple[ReleaseArtifactPolicy, ...] = field(
         default_factory=default_artifact_policies
     )
+    selection_mode: str = "all_active"
 
     def __post_init__(self) -> None:
         _text(self.name, field="profile.name")
+        if self.selection_mode not in {"all_active", "canonical"}:
+            raise DeployConfigError("selection.mode must be all_active or canonical")
         if not isinstance(self.include_historical_versions, bool):
             raise DeployConfigError("site.include_historical_versions must be boolean")
         object.__setattr__(self, "base_path", _base_path(self.base_path))

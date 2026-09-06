@@ -283,6 +283,15 @@ enforced even if the operational policy is later raised. A bundle that the
 workflow would reject cannot pass local packaging merely because a verifier
 default was looser.
 
+The public profile uses `selection.mode: canonical`: one configured canonical
+version per book or paper, while retaining version-qualified URLs. Use
+`all_active` explicitly when preparing a release containing every active
+occurrence. Existing immutable releases and compilation caches are not deleted.
+Pages shares safe, repeated Verso head scripts/styles through content-hashed
+assets; native Lean/prose body bytes and selected project Docs are preserved.
+See [ADR-0019](../../../docs/decisions/0019-canonical-release-selection-and-shared-verso-assets.md)
+for selection, historical-link and cache-reuse boundaries.
+
 When `--wait` is present, the command first waits up to 1,800 seconds for the
 workflow and then up to 300 seconds for the public Pages ReleaseSpec to
 converge. It verifies the exact release ID, ReleaseSpec digest, and registry
