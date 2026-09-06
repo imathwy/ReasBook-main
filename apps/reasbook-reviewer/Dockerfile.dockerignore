@@ -18,7 +18,10 @@
 **/*.egg-info
 **/.env
 **/.env.*
-**/build
+# sdk/build is source code, not a generated build directory.
+/build
+sdk/*/build
+apps/**/build
 **/dist
 **/data
 **/review-state
