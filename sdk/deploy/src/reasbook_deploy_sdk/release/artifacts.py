@@ -264,7 +264,11 @@ class PagesSiteProjector:
         # the projects selected as catalog canonicals. Copy all known project
         # namespaces before link closure so cross-project API links remain real.
         project_docs: dict[str, Path] = {}
-        for project in branch_projects:
+        # A retained doc-gen navbar/search database can name an older namespace
+        # of a selected project. Keep its real API pages even when that reading
+        # occurrence is no longer selected; never replace them with fake stubs.
+        documentation_owners = {project.key: project for project in spec.projects}
+        for project in documentation_owners.values():
             if "docs" not in project.outputs:
                 continue
             docs = self._copy_project_docs(
@@ -275,6 +279,8 @@ class PagesSiteProjector:
                 project.build_target,
             )
             if docs is None:
+                if project.key not in {item.key for item in branch_projects}:
+                    continue
                 raise DeployExecutionError(
                     "Pages projection has no project-owned API entry: "
                     f"{project.key}@{branch}"

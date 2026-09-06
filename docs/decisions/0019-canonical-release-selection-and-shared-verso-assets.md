@@ -29,6 +29,9 @@ a new release is not a useful substitute for the archived original release.
   project, retaining a matching deep suffix where possible. The redirect clearly
   states that it targets the canonical version. Never replace an API page with a
   capacity placeholder simply because it is large.
+- Keep existing API namespaces of known selected projects across retained
+  branches when doc-gen's navbar/search data refers to them. Canonical reader
+  selection must not turn those real API links into 404s or placeholders.
 - During Pages projection, share repeated attribute-free classic scripts and
   styles from Verso heads using content-addressed `static/shared-verso/` assets.
   Scripts remain parser-blocking and in their original order. Native Lean HTML,
@@ -42,6 +45,10 @@ a new release is not a useful substitute for the archived original release.
 - A chapter index with Docs links is labelled and reported as an index, not as
   newly compiled item-level Verso. Cached compilation status alone is not proof
   of reading content; check visible pages and real navigation before promotion.
+- When an indexed item lacks an API page, replace only its generated API link
+  with an explicit unavailable label if the adjacent same-module Lean source
+  was verified in the pinned Git tree. Keep a commit-qualified source link.
+  Never generate a fake API page or suppress unrelated link errors.
 - Keep all existing checksum, immutable release, content, browser and capacity
   gates. Selection is explicit in configuration, never an automatic response to
   exceeding the budget.
