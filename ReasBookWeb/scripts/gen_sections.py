@@ -2476,7 +2476,7 @@ def write_work_pages(
             for source in reader.support_modules:
                 docs_path = _module_to_docs_path(source_root, source.module)
                 lines.append(
-                    f"- {source.relative_path} "
+                    f"- `{source.relative_path}` "
                     f"([API documentation]({portable_site_link(f'docs/ReasBook/{docs_path}.html')})) "
                     f"([Lean source]({github_blob_link(source.source_path)}))"
                 )

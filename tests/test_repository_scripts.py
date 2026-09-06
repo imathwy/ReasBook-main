@@ -684,6 +684,8 @@ class RepositoryScriptTests(unittest.TestCase):
                     "REASBOOK_INCLUDE_PROJECTS": "books/BauschkeLike",
                     "REASBOOK_EXCLUDE_PROJECTS": "",
                     "REASBOOK_PROJECT_FRAGMENT": "0",
+                    "REASBOOK_GITHUB_REPO": "example/reasbook-test",
+                    "REASBOOK_GITHUB_BRANCH": "test-branch",
                 },
                 capture_output=True,
                 text=True,
@@ -718,9 +720,20 @@ class RepositoryScriptTests(unittest.TestCase):
             self.assertIn("# Chapter items", reader)
             self.assertIn("# Section 1.2", reader)
             self.assertIn("Definition 1.2.extra.1", reader)
-            self.assertIn("Helper_1_1.lean", reader)
-            self.assertIn("Lemma_9_1.lean", reader)
-            self.assertIn("Definition_1_1/Implementation.lean", reader)
+            self.assertIn("`Helper_1_1.lean`", reader)
+            self.assertIn("`Lemma_9_1.lean`", reader)
+            self.assertIn("`Definition_1_1/Implementation.lean`", reader)
+            self.assertIn(
+                "https://github.com/example/reasbook-test/blob/test-branch/"
+                "ReasBook/Books/BauschkeLike/Chap01/Helper_1_1.lean",
+                reader,
+            )
+            self.assertIn(
+                "https://github.com/example/reasbook-test/blob/test-branch/"
+                "ReasBook/Books/BauschkeLike/Chap01/Definition_1_1/"
+                "Implementation.lean",
+                reader,
+            )
             self.assertNotIn("## ", reader)
             self.assertFalse(
                 (
