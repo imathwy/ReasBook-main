@@ -289,7 +289,7 @@ version per book or paper, while retaining version-qualified URLs. Use
 occurrence. Existing immutable releases and compilation caches are not deleted.
 Pages shares safe, repeated Verso head scripts/styles through content-hashed
 assets; native Lean/prose body bytes and selected project Docs are preserved.
-See [ADR-0019](../../../docs/decisions/0019-canonical-release-selection-and-shared-verso-assets.md)
+See [ADR-0019](../../docs/decisions/0019-canonical-release-selection-and-shared-verso-assets.md)
 for selection, historical-link and cache-reuse boundaries.
 
 When `--wait` is present, the command first waits up to 1,800 seconds for the
