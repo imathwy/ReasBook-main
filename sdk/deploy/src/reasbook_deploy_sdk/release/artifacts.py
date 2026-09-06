@@ -30,6 +30,7 @@ from .results import (
     ReleaseSetManifest,
 )
 from .store import ReleaseLayout, ReleaseStore
+from .static_assets import deduplicate_verso_assets
 
 
 _SHARED_DOC_DIRECTORIES = {"declarations", "find", "src"}
@@ -165,6 +166,8 @@ class PagesSiteProjector:
                 Path("versions") / "index.html",
             )
             self._write_catalog_redirects(spec, staged, canonical_routes)
+            self._write_historical_reading_redirects(spec, full_site, staged, canonical_routes)
+            deduplicate_verso_assets(staged, spec.base_path)
             self._close_internal_references(
                 spec,
                 full_site,
@@ -262,7 +265,11 @@ class PagesSiteProjector:
         # the projects selected as catalog canonicals. Copy all known project
         # namespaces before link closure so cross-project API links remain real.
         project_docs: dict[str, Path] = {}
-        for project in branch_projects:
+        # A retained doc-gen navbar/search database can name an older namespace
+        # of a selected project. Keep its real API pages even when that reading
+        # occurrence is no longer selected; never replace them with fake stubs.
+        documentation_owners = {project.key: project for project in spec.projects}
+        for project in documentation_owners.values():
             if "docs" not in project.outputs:
                 continue
             docs = self._copy_project_docs(
@@ -273,6 +280,8 @@ class PagesSiteProjector:
                 project.build_target,
             )
             if docs is None:
+                if project.key not in {item.key for item in branch_projects}:
+                    continue
                 raise DeployExecutionError(
                     "Pages projection has no project-owned API entry: "
                     f"{project.key}@{branch}"
@@ -488,6 +497,28 @@ class PagesSiteProjector:
                 f"Pages projection is {total_bytes} bytes; budget is "
                 f"{self.max_site_bytes}"
             )
+
+    def _write_historical_reading_redirects(
+        self, spec: ReleaseSpec, source: Path, target: Path,
+        routes: dict[str, tuple[Path | None, Path | None]],
+    ) -> None:
+        # Sidebar URLs live in JavaScript, so ordinary HTML link closure does
+        # not discover every historical route. Keep all known reading indexes
+        # as tiny explicit redirects, never copy their old proof bodies.
+        for branch in spec.branches:
+            for project in spec.canonical_projects():
+                if project.branch == branch.name:
+                    continue
+                for root in (Path(project.kind) / project.slug, Path(project.slug)):
+                    relative = Path("versions") / branch.name / root
+                    for index in (source / relative).rglob("index.html"):
+                        route = index.relative_to(source)
+                        destination = target / route
+                        if destination.exists():
+                            continue
+                        canonical = self._canonical_history_target(spec, route, target, routes)
+                        if canonical is not None:
+                            self._write_history_redirect(destination, canonical, spec.base_path)
 
     def _write_catalog_redirects(
         self,
@@ -773,7 +804,11 @@ class PagesSiteProjector:
         branch = parts[1]
         route = Path(*parts[2:])
         for project in spec.projects:
-            if project.branch != branch or project.canonical:
+            # Canonical-only releases deliberately omit old ProjectSpecs, but
+            # old, verified API pages can still link to their Verso URLs.
+            if project.canonical and project.branch == branch:
+                continue
+            if not project.canonical and project.branch != branch:
                 continue
             for root in (Path(project.kind) / project.slug, Path(project.slug)):
                 if route == root or root in route.parents:

@@ -36,6 +36,33 @@ def working_directory(path: Path):
 
 
 class RepositoryScriptTests(unittest.TestCase):
+    def test_missing_api_link_requires_verified_matching_pinned_source(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            original = "https://github.com/acme/books/blob/v4.30.0/ReasBook/Demo/Item.lean"
+            pinned = original.replace("v4.30.0", "a" * 40)
+            doc = root / "index.html"
+            source = ('<main><p>Item (<a href="/ReasBook/docs/Item.html">API documentation</a>) '
+                      f'(<a href="{original}">Lean source</a>)</p>'
+                      '<a href="/ReasBook/missing.html">Unrelated</a></main>')
+            doc.write_text(source)
+            self.assertEqual(assemble.reconcile_documentation_links(root)["replacement_count"], 0)
+            result = assemble.reconcile_documentation_links(root, verified_source_links={original: pinned})
+            self.assertEqual(result["replacement_count"], 1)
+            text = doc.read_text()
+            self.assertIn("API documentation unavailable", text)
+            self.assertIn(pinned, text)
+            self.assertIn('href="/ReasBook/missing.html"', text)
+            self.assertFalse((root / "docs/Item.html").exists())
+            for invalid in (original, pinned.replace("Item.lean", "Other.lean")):
+                doc.write_text(source)
+                result = assemble.reconcile_documentation_links(root, verified_source_links={original: invalid})
+                self.assertEqual(result["replacement_count"], 0)
+            (root / "docs").mkdir()
+            (root / "docs/Item.html").write_text("Real documentation")
+            doc.write_text(source)
+            self.assertEqual(assemble.reconcile_documentation_links(root, verified_source_links={original: pinned})["replacement_count"], 0)
+
     @staticmethod
     def _project_docs_fixture(root: Path) -> tuple[Path, Path, Path, Path]:
         repo = root / "repo"
