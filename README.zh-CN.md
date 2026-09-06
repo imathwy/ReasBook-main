@@ -35,6 +35,7 @@ ReasBook 将带版本的数学源代码、跨版本工具和生成产物分开�
 | --- | --- |
 | `ReasBook/` | 位于对应版本分支上的 Lean 源代码 |
 | `ReasBookWeb/` | Verso 站点外壳和目录生成 |
+| `apps/reasbook-reviewer/` | 公开阅读、源码/文档/依赖图查看与登录后评论评审 |
 | `sdk/` | 可复用的构建、Verso、定理图、比较器和部署 API |
 | `scripts/` | 仓库专用的轻量构建与 Pages 适配器 |
 | `config/` | 工具链注册表、canonical 版本、发布配置和 schema |
@@ -56,6 +57,25 @@ ReasBook 将带版本的数学源代码、跨版本工具和生成产物分开�
 | 多阶段部署与发布组装 | [Deploy SDK](sdk/deploy/README.md) |
 
 各项操作命令请参阅对应能力的 SDK 指南，主页集中展示项目目录。
+
+## 部署阅读与评审平台
+
+[ReasBook Reviewer](apps/reasbook-reviewer/README.md) 是本仓库的一部分，复用
+SDK 已生成的书籍、论文和证据缓存，并支持登录后发表评论和评审意见。
+在仓库根目录使用 Python 3.11+：
+
+```bash
+python3.11 -m venv apps/reasbook-reviewer/.venv
+apps/reasbook-reviewer/.venv/bin/python -m pip install -r apps/reasbook-reviewer/requirements.txt
+export REASBOOK_CACHE_ROOT=/srv/reasbook-cache
+apps/reasbook-reviewer/start_server.sh
+```
+
+将 `REASBOOK_CACHE_ROOT` 指向已经构建好的缓存目录即可复用产物，启动服务器不会
+执行 Lean 编译。打开 <http://127.0.0.1:8876/ReasBook/>；空缓存会显示索引待生成，
+阅读无需登录，发表评论需要认证。[部署指南](apps/reasbook-reviewer/README.md#container-deployment)
+包含 Docker Compose、评论数据库持久化和 ReasLab 登录配置。
+GitHub Pages 继续发布静态站点，公众评论需要运行 reviewer 后端。
 
 ## 赞助单位
 

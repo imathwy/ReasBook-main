@@ -52,6 +52,7 @@ and generated output:
 | --- | --- |
 | `ReasBook/` | Lean sources on their matching version branches |
 | `ReasBookWeb/` | Verso site shell and catalog generation |
+| `apps/reasbook-reviewer/` | Public reading, source/docs/graph inspection and authenticated review comments |
 | `sdk/` | Reusable build, Verso, theorem-graph, comparator, and deployment APIs |
 | `scripts/` | Thin repository-specific build and Pages adapters |
 | `config/` | Toolchain registry, canonical versions, release profiles, and schemas |
@@ -81,6 +82,27 @@ deployment, use the focused SDK guide for the relevant capability:
 
 See the relevant SDK guide for operational commands. The homepage focuses on
 the project catalog.
+
+## Run the reading and review platform
+
+[ReasBook Reviewer](apps/reasbook-reviewer/README.md) is part of this repository.
+It serves books and papers from the existing SDK cache and supports signed-in
+review comments. From the repository root, with Python 3.11+:
+
+```bash
+python3.11 -m venv apps/reasbook-reviewer/.venv
+apps/reasbook-reviewer/.venv/bin/python -m pip install -r apps/reasbook-reviewer/requirements.txt
+export REASBOOK_CACHE_ROOT=/srv/reasbook-cache
+apps/reasbook-reviewer/start_server.sh
+```
+
+Point `REASBOOK_CACHE_ROOT` at the cache you already built; no Lean compilation
+runs at server startup. Open <http://127.0.0.1:8876/ReasBook/>. An empty cache
+shows pending indexes; sign-in is optional for reading and required for posting.
+The [deployment guide](apps/reasbook-reviewer/README.md#container-deployment)
+covers Docker Compose, persistent comment storage and ReasLab authentication.
+GitHub Pages remains the static publication target; public comments require the
+reviewer backend.
 
 ## Sponsors
 
